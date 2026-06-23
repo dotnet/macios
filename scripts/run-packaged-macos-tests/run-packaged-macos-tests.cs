@@ -195,7 +195,9 @@ foreach (var config in testConfigs) {
 	var timeout = config.Suite.IsLonger ? longerTimeout : defaultTimeout;
 
 	Console.WriteLine ($"Executing {config.DisplayName}...");
+	var sw = Stopwatch.StartNew ();
 	var (execExit, output) = ExecuteWithTimeout (executablePath, execArgs, timeout);
+	sw.Stop ();
 
 	// Save output file
 	if (!string.IsNullOrEmpty (testOutputDir)) {
@@ -205,7 +207,7 @@ foreach (var config in testConfigs) {
 
 	var outcome = execExit == 0 ? TestOutcome.Passed : TestOutcome.Failed;
 	var resultMessage = execExit == 0 ? "Passed" : $"Failed with exit code {execExit}";
-	suiteResults [config.Suite.Name].Add (new TestResult (config, outcome, execExit, resultMessage, output));
+	suiteResults [config.Suite.Name].Add (new TestResult (config, outcome, execExit, resultMessage, output, sw.Elapsed));
 
 	var emoji = execExit == 0 ? "✅" : "❌";
 	Console.WriteLine ($"{emoji} {config.DisplayName}: {resultMessage}");
@@ -429,6 +431,15 @@ string ExtractTestsRunLine (string output)
 	return "";
 }
 
+string FormatDuration (TimeSpan duration)
+{
+	if (duration.TotalHours >= 1)
+		return $"{(int) duration.TotalHours}h {duration.Minutes}m {duration.Seconds}s";
+	if (duration.TotalMinutes >= 1)
+		return $"{(int) duration.TotalMinutes}m {duration.Seconds}s";
+	return $"{duration.Seconds}s";
+}
+
 void GenerateHtmlReport (
 	string reportPath,
 	string reportTitle,
@@ -527,7 +538,7 @@ void GenerateHtmlReport (
 
 		// Per-config table
 		sb.AppendLine ("<table>");
-		sb.AppendLine ("<tr><th>Platform</th><th>Architecture</th><th>Result</th><th>Details</th><th>Output</th></tr>");
+		sb.AppendLine ("<tr><th>Platform</th><th>Architecture</th><th>Result</th><th>Duration</th><th>Details</th><th>Output</th></tr>");
 		foreach (var result in results) {
 			var configCss = result.Outcome switch {
 				TestOutcome.Passed => "passed",
@@ -544,17 +555,18 @@ void GenerateHtmlReport (
 			var outputLink = outputFileNames.TryGetValue (baseName, out var fileName)
 				? $"<a href='{HttpUtility.HtmlAttributeEncode (fileName)}'>output</a>"
 				: "";
-			var exitCodeCell = result.Outcome == TestOutcome.Skipped
+			var detailsCell = result.Outcome == TestOutcome.Skipped
 				? $"<em>{HttpUtility.HtmlEncode (result.Message)}</em>"
 				: HttpUtility.HtmlEncode (ExtractTestsRunLine (result.Output));
+			var durationCell = result.Duration == default ? "" : FormatDuration (result.Duration);
 			sb.AppendLine ($"<tr><td>{HttpUtility.HtmlEncode (result.Config.Platform)}</td><td>{arch}</td>" +
-				$"<td class='{configCss}'>{configText}</td><td>{exitCodeCell}</td>" +
+				$"<td class='{configCss}'>{configText}</td><td>{durationCell}</td><td>{detailsCell}</td>" +
 				$"<td>{outputLink}</td></tr>");
 
 			// Show [FAIL] lines immediately after this row
 			var failLines = ExtractFailLines (result.Output);
 			if (failLines.Count > 0) {
-				sb.AppendLine ("<tr><td colspan='5'>");
+				sb.AppendLine ("<tr><td colspan='6'>");
 				sb.AppendLine ("<ul class='fail-lines'>");
 				var maxFails = Math.Min (failLines.Count, 10);
 				for (var j = 0; j < maxFails; j++)
@@ -623,7 +635,7 @@ record TestConfig (TestSuite Suite, string Platform, string Rid, string TfmPlatf
 
 enum TestOutcome { Passed, Failed, Skipped }
 
-record TestResult (TestConfig Config, TestOutcome Outcome, int ExitCode, string Message, string Output = "");
+record TestResult (TestConfig Config, TestOutcome Outcome, int ExitCode, string Message, string Output = "", TimeSpan Duration = default);
 
 static class NativeMethods {
 	[DllImport ("/usr/lib/libc.dylib", SetLastError = true)]

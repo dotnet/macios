@@ -165,3 +165,6 @@
 !missing-type! AVPlayerItemSampleBufferOutputAudioConfiguration not bound
 !missing-type! AVPlayerItemSampleBufferOutputConfiguration not bound
 !missing-type! AVProVideoStorage not bound
+!missing-selector! AVCaptureDevice::isAdjustingSignalCompensationDelayWhileRunningSupported not bound
+!missing-selector! AVCaptureDeviceRotationCoordinator::videoRotationAngleRelativeToDeviceOrientation: not bound
+!missing-selector! AVExternalSyncDevice::isSignalCompensationDelaySupported not bound

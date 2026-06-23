@@ -31,3 +31,4 @@
 !missing-selector! PHPhotoLibrary::localIdentifierMappingsForSyncedPHPhotoLibrary: not bound
 !missing-selector! PHPhotoLibrary::registerPersistentChangesObserver: not bound
 !missing-selector! PHPhotoLibrary::unregisterPersistentChangesObserver: not bound
+!missing-enum-value! PHCollectionListSubtype native value PHCollectionListSubtypeRootFolder = 101 not bound

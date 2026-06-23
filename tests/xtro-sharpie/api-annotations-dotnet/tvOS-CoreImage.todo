@@ -12,3 +12,4 @@
 !missing-selector! CIRenderTask::plannedPeakMemory not bound
 !missing-selector! CIRenderTask::plannedPixelsOverdrawn not bound
 !missing-selector! CIRenderTask::plannedPixelsProcessed not bound
+!missing-selector! CIContext::estimateRender:fromRect:toDestination:atPoint:error: not bound

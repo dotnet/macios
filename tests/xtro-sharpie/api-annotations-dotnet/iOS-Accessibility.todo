@@ -1,0 +1,2 @@
+!missing-field! AXApplicationAccessibilityEnabledDidChangeNotification not bound
+!missing-pinvoke! AXApplicationAccessibilityEnabled is not bound

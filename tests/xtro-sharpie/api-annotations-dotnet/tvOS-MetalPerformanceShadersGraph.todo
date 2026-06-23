@@ -14,3 +14,4 @@
 !missing-selector! MPSGraphSDPADescriptor::setSinksTensor: not bound
 !missing-selector! MPSGraphSDPADescriptor::sinksTensor not bound
 !missing-type! MPSGraphSDPADescriptor not bound
+!deprecated-attribute-missing! MPSGraphCompilationDescriptor::convertLayoutToNHWC missing a [Deprecated] attribute

@@ -1,5 +1,4 @@
 !missing-enum! BEAccessibilityOrientation not bound
-!missing-enum! BEWebContentFilterPermissionDecision not bound
 !missing-selector! NSObject::browserAccessibilityDetailsElements not bound
 !missing-selector! NSObject::browserAccessibilityImageData: not bound
 !missing-selector! NSObject::browserAccessibilityImageDataSize not bound

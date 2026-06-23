@@ -28,6 +28,9 @@ public class AttributeManager {
 	// Cache HasAttribute<T> results to avoid repeated GetCustomAttributesData() calls.
 	readonly Dictionary<(ICustomAttributeProvider, System.Type), bool> hasAttributeCache = new ();
 
+	// Cache ConstructorInfo lookups per (attribute type, constructor arg types) to avoid repeated reflection.
+	internal readonly Dictionary<(Type, Type []), ConstructorInfo> constructorCache = new ();
+
 	TypeCache TypeCache { get; }
 
 	public AttributeManager (TypeCache typeCache)
@@ -282,7 +285,7 @@ public class AttributeManager {
 		return rv;
 	}
 
-	static IEnumerable<System.Attribute> ConvertOldAttributes (CustomAttributeData attribute)
+	IEnumerable<System.Attribute> ConvertOldAttributes (CustomAttributeData attribute)
 	{
 		switch (attribute.GetAttributeType ().Namespace) {
 		case null: // Root namespace such as PlatformAvailabilityShadow.cs
@@ -297,33 +300,33 @@ public class AttributeManager {
 		switch (attribute.GetAttributeType ().Name) {
 		case "SinceAttribute":
 		case "iOSAttribute":
-			return AttributeConversionManager.ConvertPlatformAttribute (attribute, PlatformName.iOS).Yield ();
+			return AttributeConversionManager.ConvertPlatformAttribute (this, attribute, PlatformName.iOS).Yield ();
 		case "MacAttribute":
-			return AttributeConversionManager.ConvertPlatformAttribute (attribute, PlatformName.MacOSX).Yield ();
+			return AttributeConversionManager.ConvertPlatformAttribute (this, attribute, PlatformName.MacOSX).Yield ();
 		case "WatchAttribute":
-			return AttributeConversionManager.ConvertPlatformAttribute (attribute, PlatformName.WatchOS).Yield ();
+			return AttributeConversionManager.ConvertPlatformAttribute (this, attribute, PlatformName.WatchOS).Yield ();
 		case "TVAttribute":
-			return AttributeConversionManager.ConvertPlatformAttribute (attribute, PlatformName.TvOS).Yield ();
+			return AttributeConversionManager.ConvertPlatformAttribute (this, attribute, PlatformName.TvOS).Yield ();
 		case "MacCatalystAttribute":
-			return AttributeConversionManager.ConvertPlatformAttribute (attribute, PlatformName.MacCatalyst).Yield ();
+			return AttributeConversionManager.ConvertPlatformAttribute (this, attribute, PlatformName.MacCatalyst).Yield ();
 		case "LionAttribute":
-			return AttributeFactory.CreateNewAttribute<IntroducedAttribute> (PlatformName.MacOSX, 10, 7).Yield ();
+			return AttributeFactory.CreateNewAttribute<IntroducedAttribute> (this, PlatformName.MacOSX, 10, 7).Yield ();
 		case "MountainLionAttribute":
-			return AttributeFactory.CreateNewAttribute<IntroducedAttribute> (PlatformName.MacOSX, 10, 8).Yield ();
+			return AttributeFactory.CreateNewAttribute<IntroducedAttribute> (this, PlatformName.MacOSX, 10, 8).Yield ();
 		case "MavericksAttribute":
-			return AttributeFactory.CreateNewAttribute<IntroducedAttribute> (PlatformName.MacOSX, 10, 9).Yield ();
+			return AttributeFactory.CreateNewAttribute<IntroducedAttribute> (this, PlatformName.MacOSX, 10, 9).Yield ();
 		case "NoMacAttribute":
-			return AttributeFactory.CreateNewAttribute<UnavailableAttribute> (PlatformName.MacOSX).Yield ();
+			return AttributeFactory.CreateNewAttribute<UnavailableAttribute> (this, PlatformName.MacOSX).Yield ();
 		case "NoiOSAttribute":
-			return AttributeFactory.CreateNewAttribute<UnavailableAttribute> (PlatformName.iOS).Yield ();
+			return AttributeFactory.CreateNewAttribute<UnavailableAttribute> (this, PlatformName.iOS).Yield ();
 		case "NoWatchAttribute":
-			return AttributeFactory.CreateNewAttribute<UnavailableAttribute> (PlatformName.WatchOS).Yield ();
+			return AttributeFactory.CreateNewAttribute<UnavailableAttribute> (this, PlatformName.WatchOS).Yield ();
 		case "NoTVAttribute":
-			return AttributeFactory.CreateNewAttribute<UnavailableAttribute> (PlatformName.TvOS).Yield ();
+			return AttributeFactory.CreateNewAttribute<UnavailableAttribute> (this, PlatformName.TvOS).Yield ();
 		case "NoMacCatalystAttribute":
-			return AttributeFactory.CreateNewAttribute<UnavailableAttribute> (PlatformName.MacCatalyst).Yield ();
+			return AttributeFactory.CreateNewAttribute<UnavailableAttribute> (this, PlatformName.MacCatalyst).Yield ();
 		case "AvailabilityAttribute":
-			return AttributeConversionManager.ConvertAvailability (attribute);
+			return AttributeConversionManager.ConvertAvailability (this, attribute);
 		case "ExperimentalAttribute":
 			var earg = attribute.ConstructorArguments [0].Value as string ?? "";
 			return new System.Diagnostics.CodeAnalysis.ExperimentalAttribute (earg).Yield ();
@@ -331,15 +334,15 @@ public class AttributeManager {
 			var sarg = attribute.ConstructorArguments [0].Value as string ?? "";
 			(var sp, var sv) = ParseOSPlatformAttribute (sarg);
 			if (sv is null)
-				return AttributeFactory.CreateNewAttribute<IntroducedAttribute> (sp).Yield ();
+				return AttributeFactory.CreateNewAttribute<IntroducedAttribute> (this, sp).Yield ();
 			else
-				return AttributeFactory.CreateNewAttribute<IntroducedAttribute> (sp, sv.Major, sv.Minor).Yield ();
+				return AttributeFactory.CreateNewAttribute<IntroducedAttribute> (this, sp, sv.Major, sv.Minor).Yield ();
 		case "UnsupportedOSPlatformAttribute":
 			var uarg = attribute.ConstructorArguments [0].Value as string ?? "";
 			(var up, var uv) = ParseOSPlatformAttribute (uarg);
 			// might have been available for a while...
 			if (uv is null)
-				return AttributeFactory.CreateNewAttribute<UnavailableAttribute> (up).Yield ();
+				return AttributeFactory.CreateNewAttribute<UnavailableAttribute> (this, up).Yield ();
 			else
 				return Enumerable.Empty<System.Attribute> ();
 		case "ObsoletedOSPlatformAttribute":
@@ -347,9 +350,9 @@ public class AttributeManager {
 			(var op, var ov) = ParseOSPlatformAttribute (oarg);
 			// might have been available for a while...
 			if (ov is null)
-				return AttributeFactory.CreateNewAttribute<ObsoletedAttribute> (op).Yield ();
+				return AttributeFactory.CreateNewAttribute<ObsoletedAttribute> (this, op).Yield ();
 			else
-				return AttributeFactory.CreateNewAttribute<ObsoletedAttribute> (op, ov.Major, ov.Minor).Yield ();
+				return AttributeFactory.CreateNewAttribute<ObsoletedAttribute> (this, op, ov.Major, ov.Minor).Yield ();
 		default:
 			return Enumerable.Empty<System.Attribute> ();
 		}

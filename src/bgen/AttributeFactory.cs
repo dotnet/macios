@@ -6,9 +6,56 @@ using System.Reflection;
 
 public static partial class AttributeFactory {
 
-	static readonly Dictionary<(Type, Type []), ConstructorInfo> constructorCache = new ();
+	public static T CreateNewAttribute<T> (AttributeManager attributeManager, Type [] ctorTypes, object? [] ctorValues)
+		where T : Attribute
+	{
+		var constructorCache = attributeManager.constructorCache;
+		var attribType = typeof (T);
+		if (!constructorCache.TryGetValue ((attribType, ctorTypes), out var ctor)) {
+			ctor = attribType.GetConstructor (ctorTypes);
+			if (ctor is null)
+				throw ErrorHelper.CreateError (1058, attribType.FullName);
+			constructorCache [(attribType, ctorTypes)] = ctor;
+		}
 
-	public static T CreateNewAttribute<T> (Type [] ctorTypes, object? [] ctorValues)
+		return (T) ctor.Invoke (ctorValues);
+	}
+
+	public static T CreateNewAttribute<T> (AttributeManager attributeManager, PlatformName platform, int major, int minor, string? message = null)
+		where T : Attribute
+	{
+		var args = new ConstructorArguments (platform, major, minor, message);
+		return CreateNewAttribute<T> (attributeManager, args.GetCtorTypes (), args.GetCtorValues ());
+	}
+
+	public static T CreateNewAttribute<T> (AttributeManager attributeManager, PlatformName platform, int major, int minor, int build, string? message = null)
+		where T : Attribute
+	{
+		var args = new ConstructorArguments (platform, major, minor, build, message);
+		return CreateNewAttribute<T> (attributeManager, args.GetCtorTypes (), args.GetCtorValues ());
+	}
+
+	public static T CreateNewAttribute<T> (AttributeManager attributeManager, PlatformName platform, string? message = null) where T : Attribute
+	{
+		var args = new ConstructorArguments (platform, message);
+		return CreateNewAttribute<T> (attributeManager, args.GetCtorTypes (), args.GetCtorValues ());
+	}
+
+	// Convenience overloads for callers that don't have an AttributeManager instance (e.g. tests).
+	public static T CreateNewAttribute<T> (PlatformName platform, int major, int minor, string? message = null)
+		where T : Attribute
+	{
+		var args = new ConstructorArguments (platform, major, minor, message);
+		return CreateNewAttribute<T> (defaultConstructorCache, args.GetCtorTypes (), args.GetCtorValues ());
+	}
+
+	public static T CreateNewAttribute<T> (PlatformName platform, string? message = null) where T : Attribute
+	{
+		var args = new ConstructorArguments (platform, message);
+		return CreateNewAttribute<T> (defaultConstructorCache, args.GetCtorTypes (), args.GetCtorValues ());
+	}
+
+	static T CreateNewAttribute<T> (Dictionary<(Type, Type []), ConstructorInfo> constructorCache, Type [] ctorTypes, object? [] ctorValues)
 		where T : Attribute
 	{
 		var attribType = typeof (T);
@@ -22,25 +69,7 @@ public static partial class AttributeFactory {
 		return (T) ctor.Invoke (ctorValues);
 	}
 
-	public static T CreateNewAttribute<T> (PlatformName platform, int major, int minor, string? message = null)
-		where T : Attribute
-	{
-		var args = new ConstructorArguments (platform, major, minor, message);
-		return CreateNewAttribute<T> (args.GetCtorTypes (), args.GetCtorValues ());
-	}
-
-	public static T CreateNewAttribute<T> (PlatformName platform, int major, int minor, int build, string? message = null)
-		where T : Attribute
-	{
-		var args = new ConstructorArguments (platform, major, minor, build, message);
-		return CreateNewAttribute<T> (args.GetCtorTypes (), args.GetCtorValues ());
-	}
-
-	public static T CreateNewAttribute<T> (PlatformName platform, string? message = null) where T : Attribute
-	{
-		var args = new ConstructorArguments (platform, message);
-		return CreateNewAttribute<T> (args.GetCtorTypes (), args.GetCtorValues ());
-	}
+	static readonly Dictionary<(Type, Type []), ConstructorInfo> defaultConstructorCache = new ();
 
 	static readonly IntroducedAttribute [] noVersionSupportedCache = new IntroducedAttribute [] {
 		new (PlatformName.iOS),

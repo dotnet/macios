@@ -121,17 +121,9 @@ var isAppleSilicon = RuntimeInformation.ProcessArchitecture == Architecture.Arm6
 
 // Detect macOS major version to skip x64 on macOS 27+ (not needed, always on Apple Silicon)
 var macOSMajorVersion = 0;
-try {
-	var swVersProcess = Process.Start (new ProcessStartInfo ("sw_vers", "-productVersion") { RedirectStandardOutput = true, UseShellExecute = false });
-	if (swVersProcess is not null) {
-		var versionOutput = swVersProcess.StandardOutput.ReadToEnd ().Trim ();
-		swVersProcess.WaitForExit ();
-		if (versionOutput.Contains ('.'))
-			int.TryParse (versionOutput.Substring (0, versionOutput.IndexOf ('.')), out macOSMajorVersion);
-	}
-} catch {
-	// Ignore errors, default to 0 (run x64)
-}
+var osVersion = NativeMethods.GetSysctlString ("kern.osproductversion");
+if (osVersion is not null && osVersion.Contains ('.'))
+	int.TryParse (osVersion.Substring (0, osVersion.IndexOf ('.')), out macOSMajorVersion);
 var runX64 = macOSMajorVersion < 27;
 
 // Define test suites
@@ -619,4 +611,22 @@ record TestResult (TestConfig Config, TestOutcome Outcome, int ExitCode, string 
 static class NativeMethods {
 	[DllImport ("/usr/lib/libc.dylib", SetLastError = true)]
 	public static extern int kill (int pid, int signal);
+
+	[DllImport ("/usr/lib/libSystem.dylib")]
+	static extern int sysctlbyname ([MarshalAs (UnmanagedType.LPStr)] string property, IntPtr output, ref nint oldLen, IntPtr newp, nint newlen);
+
+	public static string? GetSysctlString (string name)
+	{
+		nint len = 0;
+		if (sysctlbyname (name, IntPtr.Zero, ref len, IntPtr.Zero, 0) != 0 || len == 0)
+			return null;
+		var buf = Marshal.AllocHGlobal ((int) len);
+		try {
+			if (sysctlbyname (name, buf, ref len, IntPtr.Zero, 0) != 0)
+				return null;
+			return Marshal.PtrToStringAnsi (buf);
+		} finally {
+			Marshal.FreeHGlobal (buf);
+		}
+	}
 }

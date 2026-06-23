@@ -140,7 +140,7 @@ $testExitCode = $LASTEXITCODE
 
 if ($testExitCode -ne 0) {
   # We failed, so write to the comment file why we failed.
-  Set-Content -Path "$GithubFailureCommentFile" -Value "Tests failed (see HTML report for details)"
+  Set-Content -Path "$GithubFailureCommentFile" -Value "Tests failed (see test output for details)"
   Write-Host "##vso[task.setvariable variable=TESTS_JOBSTATUS;isOutput=true]Failed"
   exit 1
 } else {

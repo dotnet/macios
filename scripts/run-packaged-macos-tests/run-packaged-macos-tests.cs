@@ -261,7 +261,7 @@ return failedSuites > 0 ? 1 : 0;
 
 	for (var attempt = 0; attempt < maxLaunchAttempts; attempt++) {
 		var launchTimeoutFile = Path.GetFullPath ($"launch-timeout-sentinel-{pid}-{attempt}.txt");
-		var launchTimedOut = new ManualResetEvent (false);
+		using var launchTimedOut = new ManualResetEvent (false);
 
 		var outputSb = new StringBuilder ();
 
@@ -449,9 +449,9 @@ void GenerateHtmlReport (
 	string crashDir,
 	string vsdrops)
 {
-	var htmlDir = Path.GetDirectoryName (reportPath);
-	if (!string.IsNullOrEmpty (htmlDir))
-		Directory.CreateDirectory (htmlDir);
+	reportPath = Path.GetFullPath (reportPath);
+	var htmlDir = Path.GetDirectoryName (reportPath)!;
+	Directory.CreateDirectory (htmlDir);
 
 	var passedCount = outcomes.Count (o => o.Passed);
 	var failedCount = outcomes.Count (o => !o.Passed);
@@ -596,7 +596,7 @@ void GenerateHtmlReport (
 	sb.AppendLine ("</body></html>");
 
 	// Write index.html with relative links
-	var indexPath = Path.Combine (htmlDir!, "index.html");
+	var indexPath = Path.Combine (htmlDir, "index.html");
 	var htmlContent = sb.ToString ();
 	File.WriteAllText (indexPath, htmlContent);
 

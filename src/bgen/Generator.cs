@@ -1263,12 +1263,21 @@ public partial class Generator : IMemberGatherer {
 		return rv;
 	}
 
+	readonly Dictionary<PropertyInfo, ExportAttribute?> getterExportCache = new ();
+	readonly Dictionary<PropertyInfo, ExportAttribute?> setterExportCache = new ();
+
 	public ExportAttribute? GetSetterExportAttribute (PropertyInfo pinfo)
 	{
+		if (setterExportCache.TryGetValue (pinfo, out var cached))
+			return cached;
 		var ea = AttributeManager.GetCustomAttribute<ExportAttribute> (pinfo.GetSetMethod ());
-		if (ea is not null && ea.Selector is not null)
+		if (ea is not null && ea.Selector is not null) {
+			setterExportCache [pinfo] = ea;
 			return ea;
-		return AttributeManager.GetCustomAttribute<ExportAttribute> (pinfo)?.ToSetter (pinfo);
+		}
+		var result = AttributeManager.GetCustomAttribute<ExportAttribute> (pinfo)?.ToSetter (pinfo);
+		setterExportCache [pinfo] = result;
+		return result;
 	}
 
 	public ExportAttribute GetOneSetterExportAttribute (PropertyInfo pinfo)
@@ -1281,10 +1290,16 @@ public partial class Generator : IMemberGatherer {
 
 	public ExportAttribute? GetGetterExportAttribute (PropertyInfo pinfo)
 	{
+		if (getterExportCache.TryGetValue (pinfo, out var cached))
+			return cached;
 		var ea = AttributeManager.GetCustomAttribute<ExportAttribute> (pinfo.GetGetMethod ());
-		if (ea is not null && ea.Selector is not null)
+		if (ea is not null && ea.Selector is not null) {
+			getterExportCache [pinfo] = ea;
 			return ea;
-		return AttributeManager.GetCustomAttribute<ExportAttribute> (pinfo)?.ToGetter (pinfo);
+		}
+		var result = AttributeManager.GetCustomAttribute<ExportAttribute> (pinfo)?.ToGetter (pinfo);
+		getterExportCache [pinfo] = result;
+		return result;
 	}
 
 	public ExportAttribute GetOneGetterExportAttribute (PropertyInfo pinfo)

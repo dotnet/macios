@@ -25,6 +25,9 @@ public class AttributeManager {
 	// repeated reflection and attribute conversion work.
 	readonly Dictionary<(ICustomAttributeProvider, System.Type), object> attributeCache = new ();
 
+	// Cache HasAttribute<T> results to avoid repeated GetCustomAttributesData() calls.
+	readonly Dictionary<(ICustomAttributeProvider, System.Type), bool> hasAttributeCache = new ();
+
 	TypeCache TypeCache { get; }
 
 	public AttributeManager (TypeCache typeCache)
@@ -551,21 +554,32 @@ public class AttributeManager {
 		if (provider is null)
 			return false;
 
+		var key = (provider, typeof (T));
+		if (hasAttributeCache.TryGetValue (key, out var cached))
+			return cached;
+
 		var attributeType = ConvertTypeToMeta (typeof (T));
 		var attribs = GetAttributes (provider);
-		if (attribs is null || attribs.Count == 0)
+		if (attribs is null || attribs.Count == 0) {
+			hasAttributeCache [key] = false;
 			return false;
+		}
 
 		for (int i = 0; i < attribs.Count; i++) {
 			var attrib = attribs [i];
 			// == when comparing types uses reference equality, which is what we want here.
 			var currentType = ConvertTypeToMeta (attrib.GetAttributeType ());
-			if (currentType == attributeType)
+			if (currentType == attributeType) {
+				hasAttributeCache [key] = true;
 				return true;
-			if (currentType.IsSubclassOf (attributeType))
+			}
+			if (currentType.IsSubclassOf (attributeType)) {
+				hasAttributeCache [key] = true;
 				return true;
+			}
 		}
 
+		hasAttributeCache [key] = false;
 		return false;
 	}
 

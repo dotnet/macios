@@ -534,6 +534,11 @@ void GenerateHtmlReport (
 				$"<td class='{configCss}'>{configText}</td><td>{result.ExitCode}</td>" +
 				$"<td>{outputLink}</td></tr>");
 
+			// Show skip reason for skipped tests
+			if (result.Outcome == TestOutcome.Skipped && !string.IsNullOrEmpty (result.Message)) {
+				sb.AppendLine ($"<tr><td colspan='5'><em class='skipped'>{HttpUtility.HtmlEncode (result.Message)}</em></td></tr>");
+			}
+
 			// Show [FAIL] lines immediately after this row
 			var failLines = ExtractFailLines (result.Output);
 			if (failLines.Count > 0) {

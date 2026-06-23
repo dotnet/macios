@@ -13,6 +13,14 @@ IS_ROSETTA=1
 IS_APPLE_SILICON=1
 endif
 
+# Don't run x64 on macOS 27+, it's not needed.
+MACOS_MAJOR_VERSION:=$(shell sw_vers -productVersion | cut -d. -f1)
+ifeq ($(shell test $(MACOS_MAJOR_VERSION) -ge 27 && echo 1),1)
+RUN_X64=
+else
+RUN_X64=1
+endif
+
 CONFIG?=Debug
 LAUNCH_ARGUMENTS=--autostart --autoexit
 
@@ -57,8 +65,12 @@ build-mac-dotnet-x64-$(1): .stamp-dotnet-dependency-macOS
 	$$(Q) $$(MAKE) -C "$(1)/dotnet/macOS" build BUILD_ARGUMENTS=/p:RuntimeIdentifier=osx-x64
 
 exec-mac-dotnet-x64-$(1): $(RUN_WITH_TIMEOUT)
+ifeq ($(RUN_X64),1)
 	@echo "ℹ️  Executing the '$(1)' test for macOS/.NET (x64) ℹ️"
 	$$(Q) $(LAUNCH_WITH_TIMEOUT$(3)) "./$(1)/dotnet/macOS/bin/$(CONFIG)/$(DOTNET_TFM)-macos/osx-x64/$(2).app/Contents/MacOS/$(2)"
+else
+	@echo "⚠️  Not executing the '$(1)' test for macOS/.NET (x64) - not executing x64 on macOS 27+ ⚠️"
+endif
 
 # macOS/.NET/arm64
 build-mac-dotnet-arm64-$(1): .stamp-dotnet-dependency-macOS

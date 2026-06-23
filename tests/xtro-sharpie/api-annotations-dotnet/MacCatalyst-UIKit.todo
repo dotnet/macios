@@ -12,26 +12,15 @@
 !missing-field! UIBarButtonItemVisibilityPriorityHigh not bound
 !missing-field! UIBarButtonItemVisibilityPriorityLow not bound
 !missing-field! UIBarButtonItemVisibilityPriorityStandard not bound
-!missing-protocol-conformance! NSTextLayoutFragment should conform to NSTextViewportRenderingSurfaceKey
 !missing-protocol-conformance! UITextView should conform to NSTextViewportLayoutControllerDelegate
 !missing-protocol-conformance! UIView should conform to CLBodyIdentifiable (defined in '' category)
 !missing-protocol-conformance! UIView should conform to CMBodyIdentifiable (defined in '' category)
-!missing-protocol-member! NSTextLayoutManagerDelegate::textLayoutManager:cacheTextAttachmentViewProvider:forTextAttachment: not found
-!missing-protocol-member! NSTextLayoutManagerDelegate::textLayoutManager:retrieveCachedTextAttachmentViewProviderForTextAttachment: not found
-!missing-protocol-member! NSTextLayoutManagerDelegate::textLayoutManager:textViewportLayoutControllerForTextContainer: not found
-!missing-protocol-member! NSTextLocation::hash not found
-!missing-protocol-member! NSTextLocation::isEqual: not found
-!missing-protocol-member! NSTextViewportLayoutControllerDelegate::textViewportLayoutController:cacheRenderingSurface:forKey: not found
-!missing-protocol-member! NSTextViewportLayoutControllerDelegate::textViewportLayoutController:retrieveCachedRenderingSurfaceForKey: not found
-!missing-protocol-member! NSTextViewportLayoutControllerDelegate::textViewportLayoutControllerReceivedSetNeedsLayout: not found
 !missing-protocol-member! UIMenuLeaf::preferredImageVisibility not found
 !missing-protocol-member! UIMenuLeaf::setPreferredImageVisibility: not found
 !missing-protocol-member! UIMenuLeaf::setSubtitle: not found
 !missing-protocol-member! UIMenuLeaf::subtitle not found
 !missing-protocol-member! UITabBarControllerSidebarDelegate::tabBarController:sidebarAvailabilityDidChange: not found
 !missing-protocol-member! UIWindowSceneDelegate::supportedInterfaceOrientationsForWindowScene: not found
-!missing-protocol! NSTextViewportRenderingSurface not bound
-!missing-protocol! NSTextViewportRenderingSurfaceKey not bound
 !missing-selector! +UISceneClosureConfirmation::confirmationWithTitle:message:actions: not bound
 !missing-selector! +UISearchTab::identifier not bound
 !missing-selector! NSMutableParagraphStyle::setTextBlocks: not bound

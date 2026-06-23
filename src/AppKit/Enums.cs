@@ -94,6 +94,8 @@ namespace AppKit {
 		/// <summary>To be added.</summary>
 		AutoHideToolbar = (1 << 11),
 		DisableCursorLocationAssistance = (1 << 12),
+		[Mac (27, 0)]
+		DisableScreenCornerInteractions = (1 << 15),
 	}
 
 	[NoMacCatalyst]

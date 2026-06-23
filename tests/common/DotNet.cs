@@ -125,7 +125,7 @@ namespace Xamarin.Tests {
 				Console.WriteLine (output);
 				Assert.That (rv.ExitCode, Is.EqualTo (0), $"Exit code: {Executable} {StringUtils.FormatArguments (args)}");
 			}
-			return new ExecutionResult (output, output, rv.ExitCode);
+			return new ExecutionResult (output, output, rv.ExitCode, rv.Duration);
 		}
 
 		public static ExecutionResult InstallWorkload (params string [] workloads)
@@ -152,7 +152,7 @@ namespace Xamarin.Tests {
 				Console.WriteLine (msg);
 				Assert.Fail (msg.ToString ());
 			}
-			return new ExecutionResult (output, output, rv.ExitCode);
+			return new ExecutionResult (output, output, rv.ExitCode, rv.Duration);
 		}
 
 		public static ExecutionResult InstallTool (string tool, string path)
@@ -222,7 +222,7 @@ namespace Xamarin.Tests {
 				Console.WriteLine (msg);
 				Assert.Fail (msg.ToString ());
 			}
-			return new ExecutionResult (output, output, rv.ExitCode);
+			return new ExecutionResult (output, output, rv.ExitCode, rv.Duration);
 		}
 
 		public static ExecutionResult Execute (string verb, string project, Dictionary<string, string>? properties, bool assert_success = true, string? target = null, bool? msbuildParallelism = null, TimeSpan? timeout = null, params string [] extraArguments)
@@ -354,7 +354,7 @@ namespace Xamarin.Tests {
 					}
 					Assert.That (rv.ExitCode, Is.EqualTo (0), $"Exit code: {Executable} {StringUtils.FormatArguments (args)}");
 				}
-				return new ExecutionResult (output, output, rv.ExitCode) {
+				return new ExecutionResult (output, output, rv.ExitCode, rv.Duration) {
 					BinLogPath = binlogPath,
 				};
 			default:
@@ -516,13 +516,15 @@ namespace Xamarin.Tests {
 		public int ExitCode;
 		public bool TimedOut;
 		public string BinLogPath;
+		public TimeSpan Duration;
 
-		public ExecutionResult (string stdout, string stderr, int exitCode)
+		public ExecutionResult (string stdout, string stderr, int exitCode, TimeSpan duration)
 		{
 			StandardOutput = stdout;
 			StandardError = stderr;
 			ExitCode = exitCode;
 			BinLogPath = string.Empty;
+			Duration = duration;
 		}
 	}
 }

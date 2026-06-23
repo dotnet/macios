@@ -1,3 +1,7 @@
+#if BGENERATOR
+using ProductException = BindingException;
+#endif
+
 using Xamarin.Utils;
 
 namespace Xamarin.Bundler;
@@ -8,7 +12,8 @@ public interface IToolLog {
 	void Log (string message);
 	void LogError (string message);
 	// Log an error we raise ourselves (through an exception)
-	void LogError (Exception exception);
+	void LogError (ProductException exception);
+	void LogWarning (ProductException exception);
 	// Log an unexpected exception
 	void LogException (Exception exception);
 }
@@ -42,8 +47,10 @@ public class ConsoleLog : IToolLog {
 
 #if TESTS
 	int verbosity = 0;
-#else
+#elif BGENERATOR
 	int verbosity = Driver.GetDefaultVerbosity ();
+#else
+	int verbosity = Driver.GetDefaultVerbosity (Driver.NAME);
 #endif
 
 	public int Verbosity { get => verbosity; }
@@ -60,9 +67,14 @@ public class ConsoleLog : IToolLog {
 		Console.Error.WriteLine (message);
 	}
 
-	public void LogError (Exception exception)
+	public void LogError (ProductException exception)
 	{
 		Console.Error.WriteLine (exception);
+	}
+
+	public void LogWarning (ProductException exception)
+	{
+		Console.WriteLine (exception);
 	}
 
 	public void LogException (Exception exception)

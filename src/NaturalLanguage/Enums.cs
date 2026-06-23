@@ -368,7 +368,11 @@ namespace NaturalLanguage {
 	}
 
 	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+#if XAMCORE_5_0
+	public enum NLContextualEmbeddingKey {
+#else
 	public enum NLContextualEmebeddingKey {
+#endif
 		[Field ("NLContextualEmbeddingKeyLanguages")]
 		Languages,
 		[Field ("NLContextualEmbeddingKeyScripts")]

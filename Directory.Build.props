@@ -2,7 +2,7 @@
 	<PropertyGroup>
 		<!-- Disables the transitive restore of packages like Microsoft.AspNetCore.App.Ref, Microsoft.WindowsDesktop.App.Ref -->
 		<DisableTransitiveFrameworkReferenceDownloads>true</DisableTransitiveFrameworkReferenceDownloads>
-		<MSBuildStructuredLoggerPackageVersion>2.2.158</MSBuildStructuredLoggerPackageVersion>
+		<MSBuildStructuredLoggerPackageVersion>2.2.243</MSBuildStructuredLoggerPackageVersion>
 		<MicrosoftBuildPackageVersion>17.13.26</MicrosoftBuildPackageVersion>
 		<MicrosoftBuildFrameworkPackageVersion>$(MicrosoftBuildPackageVersion)</MicrosoftBuildFrameworkPackageVersion>
 		<MicrosoftBuildTasksCorePackageVersion>$(MicrosoftBuildPackageVersion)</MicrosoftBuildTasksCorePackageVersion>

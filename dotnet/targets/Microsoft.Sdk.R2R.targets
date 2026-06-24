@@ -86,6 +86,7 @@
 				Condition="'%(_ResolvedAssembliesToPublish.NuGetPackageId)' != ''" />
 			<_UserAssemblies Include="@(_ResolvedAssembliesToPublish)" Exclude="@(_NonUserAssemblies)" />
 			<PublishReadyToRunExclude Include="@(_UserAssemblies -> '%(Filename)%(Extension)')" />
+			<PublishReadyToRunCompositeRoots Condition="$(RuntimeIdentifier.EndsWith('-arm64'))" Include="System.Private.CoreLib.dll" KeepDuplicates="false" />
 		</ItemGroup>
 
 		<!-- Hash the R2R input assemblies so we can detect when the set actually changes -->
@@ -117,6 +118,14 @@
 			BeforeTargets="_CreateR2RImages">
 		<Touch Files="%(_ReadyToRunCompileList.OutputR2RImage)"
 			Condition="Exists('%(_ReadyToRunCompileList.OutputR2RImage)')" />
+	</Target>
+
+	<Target Name="_DedupUnrootedReadyToRunPublish"
+			Condition="@(PublishReadyToRunCompositeRoots->Count()) != 0"
+			AfterTargets="_PrepareForReadyToRunCompilation">
+		<ItemGroup>
+			<ResolvedFileToPublish Remove="@(_ReadyToRunCompositeUnrootedBuildInput)" />
+		</ItemGroup>
 	</Target>
 
 	<!--

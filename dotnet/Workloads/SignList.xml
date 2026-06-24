@@ -35,12 +35,12 @@
     <Skip Include="Build\System.Text.Json.dll" />
     <Skip Include="Build\System.Threading.Tasks.Dataflow.dll" />
     <Skip Include="Build\System.Threading.Tasks.Extensions.dll" />
-    <!-- net10.0 msbuild tools content -->
-    <Skip Include="AssemblyStripper.dll" />
+    <!-- Pre-signed msbuild tools content -->
+    <Skip Include="tools\msbuild\net10.0\AssemblyStripper.dll" />
     <Skip Include="BouncyCastle.Cryptography.dll" />
-    <Skip Include="ILLink.Tasks.dll" />
+    <Skip Include="tools\msbuild\net10.0\ILLink.Tasks.dll" />
     <Skip Include="Microsoft.Win32.SystemEvents.dll" />
-    <Skip Include="MonoTargetsTasks.dll" />
+    <Skip Include="tools\msbuild\net10.0\MonoTargetsTasks.dll" />
     <Skip Include="MQTTnet.dll" />
     <Skip Include="System.CodeDom.dll" />
     <Skip Include="System.ComponentModel.Composition.dll" />
@@ -148,6 +148,10 @@
     <FirstParty Include="Broker.resources.dll" />
     <!-- Build.zip -->
     <FirstParty Include="Build.dll" />
+    <!-- The net11.0 SDK packs ship these task assemblies unsigned, so we sign them here. -->
+    <FirstParty Include="tools\msbuild\net11.0\AssemblyStripper.dll" />
+    <FirstParty Include="tools\msbuild\net11.0\ILLink.Tasks.dll" />
+    <FirstParty Include="tools\msbuild\net11.0\MonoTargetsTasks.dll" />
     <FirstParty Include="Microsoft.Build*.dll" />
     <FirstParty Include="Microsoft.NET.StringTools.dll" />
     <FirstParty Include="System.IO.Abstractions.dll" />

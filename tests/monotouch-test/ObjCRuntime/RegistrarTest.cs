@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.Versioning;
 using System.Threading;
 
@@ -126,6 +127,12 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			}
 		}
 
+		// Returns "" at runtime, but the linker can't constant-fold this, which prevents
+		// its dataflow analysis from resolving type names passed to Assembly.GetType.
+		[MethodImpl (MethodImplOptions.NoInlining)]
+		static string GetEmptyString () => string.Intern ("");
+		static string WorkAroundLinkerHeuristics => GetEmptyString ();
+
 		[Test]
 		[UnconditionalSuppressMessage ("Trimming", "IL2026", Justification = "This test verifies linker behavior, and as such any behavioral difference when the trimmer is enabled is exactly what it's looking for.")]
 		public void RegistrarRemoval ()
@@ -139,8 +146,8 @@ namespace MonoTouchFixtures.ObjCRuntime {
 #else
 			var shouldBeRemoved = false;
 #endif
-			Assert.That (typeof (NSObject).Assembly.GetType ("Registrar.Registrar") is null, Is.EqualTo (shouldBeRemoved), "Registrar removal");
-			Assert.That (typeof (NSObject).Assembly.GetType ("Registrar.DynamicRegistrar") is null, Is.EqualTo (shouldBeRemoved), "DynamicRegistrar removal");
+			Assert.That (typeof (NSObject).Assembly.GetType ("Registrar.Registrar" + WorkAroundLinkerHeuristics) is null, Is.EqualTo (shouldBeRemoved), "Registrar removal");
+			Assert.That (typeof (NSObject).Assembly.GetType ("Registrar.DynamicRegistrar" + WorkAroundLinkerHeuristics) is null, Is.EqualTo (shouldBeRemoved), "DynamicRegistrar removal");
 		}
 
 #if !MONOMAC

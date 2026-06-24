@@ -286,6 +286,10 @@ namespace Xamarin.Linker {
 						}
 					})
 				)},
+				{ "DylibToConvertToFramework", (
+					new LoadValue ((key, value) => Application.DylibsToConvertToFrameworks.Add (value)),
+					new SaveValue ((key, storage) => storage.AddRange (Application.DylibsToConvertToFrameworks.OrderBy (v => v).Select (v => $"{key}={v}")))
+				)},
 				{ "EnableSGenConc", (
 					new LoadValue ((key, value) => Application.EnableSGenConc = string.Equals ("true", value, StringComparison.OrdinalIgnoreCase)),
 					new SaveValue ((key, storage) => storage.Add ($"{key}={(Application.EnableSGenConc ? "true" : "false")}"))
@@ -436,6 +440,20 @@ namespace Xamarin.Linker {
 					new LoadValue ((key, value) => PublishTrimmed = string.Equals ("true", value, StringComparison.OrdinalIgnoreCase)),
 					new SaveValue ((key, storage) => storage.Add ($"{key}={(PublishTrimmed ? "true" : "false")}"))
 				 )},
+				{ "PublishReadyToRun", (
+					new LoadValue ((key, value) => {
+						if (!string.IsNullOrEmpty (value)) {
+							if (!TryParseOptionalBoolean (value, out var publishReadyToRun))
+								throw new InvalidOperationException ($"Unable to parse the {key} value: {value} in {linker_file}");
+							Application.PublishReadyToRun = publishReadyToRun;
+						}
+					}),
+					new SaveValue ((key, storage) => saveNullableBool (key, Application.PublishReadyToRun, storage))
+				)},
+				{ "PublishReadyToRunContainerFormat", (
+					new LoadValue ((key, value) => Application.PublishReadyToRunContainerFormat = value),
+					new SaveValue ((key, storage) => saveNonEmpty (key, Application.PublishReadyToRunContainerFormat, storage))
+				)},
 				{ "ReferenceNativeSymbol", (
 					new LoadValue ((key, value) => {
 						(string symbolType, string symbolMode, string symbol) = SplitString3 (value, ':');

@@ -65,6 +65,7 @@ test.config: Makefile $(TOP)/Make.config $(TOP)/eng/Version.Details.xml
 	@echo "INCLUDE_TVOS=$(INCLUDE_TVOS)" >> $@
 	@echo "INCLUDE_MAC=$(INCLUDE_MAC)" >> $@
 	@echo "INCLUDE_MACCATALYST=$(INCLUDE_MACCATALYST)" >> $@
+	@echo "DOTNET_MONOVM_SUPPORTED=$(DOTNET_MONOVM_SUPPORTED)" >> $@
 	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),$(platform)_NUGET_SDK_NAME=$($(platform)_NUGET_SDK_NAME)\\n)" | sed 's/^ //' >> $@
 	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),$(platform)_NUGET_REF_NAME=$($(platform)_NUGET_REF_NAME)\\n)" | sed 's/^ //' >> $@
 	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),$(platform)_NUGET_RUNTIME_MANAGED_NAME=$($(platform)_NUGET_RUNTIME_MANAGED_NAME)\\n)" | sed 's/^ //' >> $@

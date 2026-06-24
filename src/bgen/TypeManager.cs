@@ -271,13 +271,18 @@ public class TypeManager {
 		// [NullAllowed] / IsNullable), so we skip it. The rest are for generic arguments.
 		// A single-byte array means uniform nullability for all positions.
 		var targs = type.GetGenericArguments ();
-		if (targs.Length == 0) {
+		if (targs.Length == 0 && !type.IsArray) {
 			return FormatTypeUsedIn (usedIn?.Namespace, type);
 		}
 
-		// Render the outer type name using the standard method (without nullability)
-		// and then render generic arguments with nullability from the byte array
-		int index = nullabilityBytes.Length == 1 ? 0 : 1; // for single-byte (uniform), don't skip
+		// Start index: for single-byte (uniform), don't skip byte 0 since it applies everywhere.
+		// For multi-byte, skip byte 0 (the outer type, handled by the caller via [NullAllowed]).
+		int index = nullabilityBytes.Length == 1 ? 0 : 1;
+
+		// For array types, delegate to FormatTypeUsedIn which handles arrays with nullability
+		if (type.IsArray) {
+			return FormatTypeUsedIn (usedIn?.Namespace, type, nullabilityBytes, ref index);
+		}
 		var formattedArgs = new string [targs.Length];
 		for (int i = 0; i < targs.Length; i++) {
 			formattedArgs [i] = FormatTypeUsedIn (usedIn?.Namespace, targs [i], nullabilityBytes, ref index);

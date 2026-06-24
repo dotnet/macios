@@ -224,8 +224,12 @@ namespace Mono.ApiTools {
 		{
 			foreach (var line in apichange.Member.GetStringBuilder (this).ToString ().Split (new [] { Environment.NewLine }, 0)) {
 				if (line.Contains ("+++") || line.Contains ("---")) {
-					output.WriteLine ("-{0}", Clean (line, "---", "+++"));
-					output.WriteLine ("+{0}", Clean (line, "+++", "---"));
+					var removed = Clean (line, "---", "+++");
+					var added = Clean (line, "+++", "---");
+					if (!string.IsNullOrWhiteSpace (removed))
+						output.WriteLine ("-{0}", removed);
+					if (!string.IsNullOrWhiteSpace (added))
+						output.WriteLine ("+{0}", added);
 				} else {
 					output.WriteLine (" {0}", line);
 				}

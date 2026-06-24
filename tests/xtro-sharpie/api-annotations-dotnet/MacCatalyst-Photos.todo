@@ -52,3 +52,4 @@
 !missing-selector! PHPhotoLibrary::unregisterPersistentChangesObserver: not bound
 !missing-type! PHAssetResourceUploadJob not bound
 !missing-type! PHAssetResourceUploadJobChangeRequest not bound
+!missing-enum-value! PHCollectionListSubtype native value PHCollectionListSubtypeRootFolder = 101 not bound

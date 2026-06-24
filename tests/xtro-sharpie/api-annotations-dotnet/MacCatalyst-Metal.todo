@@ -1,12 +1,7 @@
 !missing-enum-value! MTLLanguageVersion native value MTLLanguageVersion4_1 = 262145 not bound
-!missing-enum-value! MTLTensorDataType native value MTLTensorDataTypeFloat4E2M1 = 148 not bound
-!missing-enum-value! MTLTensorDataType native value MTLTensorDataTypeFloat8E4M3 = 142 not bound
-!missing-enum-value! MTLTensorDataType native value MTLTensorDataTypeFloat8E5M2 = 141 not bound
-!missing-enum-value! MTLTensorDataType native value MTLTensorDataTypeFloat8UE8M0 = 145 not bound
 !missing-enum-value! MTLTensorDataType native value MTLTensorDataTypeInt2 = 150 not bound
 !missing-enum-value! MTLTensorDataType native value MTLTensorDataTypeUInt2 = 149 not bound
 !missing-enum! MTLTensorPlaneType not bound
-!missing-protocol-conformance! MTLTensorExtents should conform to NSCopying
 !missing-protocol-member! MTL4ComputeCommandEncoder::copyFromTensor:sourceOrigin:sourceDimensions:sourcePlane:toTensor:destinationOrigin:destinationDimensions:destinationPlane: not found
 !missing-protocol-member! MTLBlitCommandEncoder::copyFromTensor:sourceOrigin:sourceDimensions:sourcePlane:toTensor:destinationOrigin:destinationDimensions:destinationPlane: not found
 !missing-protocol-member! MTLDevice::newTensorWithDescriptor:attachments:error: not found
@@ -36,3 +31,10 @@
 !missing-type! MTLTensorAuxiliaryPlaneDescriptorMap not bound
 !missing-type! MTLTensorAuxiliaryPlaneType not bound
 !missing-type! MTLTensorBufferAttachments not bound
+!missing-enum-value! MTLTensorDataType native value MTLTensorDataTypeMetalFloat4E2M1 = 148 not bound
+!missing-enum-value! MTLTensorDataType native value MTLTensorDataTypeMetalFloat8E4M3 = 142 not bound
+!missing-enum-value! MTLTensorDataType native value MTLTensorDataTypeMetalFloat8E5M2 = 141 not bound
+!missing-enum-value! MTLTensorDataType native value MTLTensorDataTypeMetalFloat8UE8M0 = 145 not bound
+!missing-enum! MTLFloatingPointConversionRoundingMode not bound
+!missing-selector! MTLCompileOptions::floatingPointConversionRoundingMode not bound
+!missing-selector! MTLCompileOptions::setFloatingPointConversionRoundingMode: not bound

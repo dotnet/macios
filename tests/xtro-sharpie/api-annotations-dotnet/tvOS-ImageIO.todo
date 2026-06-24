@@ -1,1 +1,3 @@
 !missing-field! kCGImageSourceAllowableTypes not bound
+!missing-field! kCGImagePropertyIPTCExtAISystemUsed not bound
+!missing-field! kCGImagePropertyIPTCExtAISystemVersionUsed not bound

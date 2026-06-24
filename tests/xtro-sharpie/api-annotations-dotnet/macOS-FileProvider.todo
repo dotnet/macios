@@ -1,1 +1,2 @@
 !missing-enum! NSFileProviderNamespacePolicy not bound
+!missing-protocol-member! NSFileProviderItem::namespacePolicy not found

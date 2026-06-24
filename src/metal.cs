@@ -9843,7 +9843,7 @@ namespace Metal {
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // all properties are readonly, and has a non-default ctor
-	interface MTLTensorExtents {
+	interface MTLTensorExtents : NSCopying {
 		[Internal]
 		[Export ("initWithRank:values:")]
 		NativeHandle _InitWithRank (nuint rank, /* C Array: [NullAllowed] nint[] */ IntPtr values);

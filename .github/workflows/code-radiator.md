@@ -32,6 +32,7 @@ safe-outputs:
   max-patch-size: 10240
   create-pull-request:
     max: 10
+    draft: false
     signed-commits: false
     allowed-base-branches:
       - "net*.0"

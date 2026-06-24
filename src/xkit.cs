@@ -4482,6 +4482,10 @@ namespace UIKit {
 
 		[Export ("textLayoutOrientationAtLocation:")]
 		NSTextSelectionNavigationLayoutOrientation GetTextLayoutOrientation (INSTextLocation location);
+
+		[TV (27, 0), iOS (27, 0), MacCatalyst (27, 0), Mac (27, 0)]
+		[Export ("convertInteractionPoint:toContainerAtLocation:")]
+		CGPoint ConvertInteractionPoint (CGPoint point, INSTextLocation containerLocation);
 	}
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]

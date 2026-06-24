@@ -42,11 +42,7 @@ namespace MonoTouch.Tuner {
 					if (configuration.Application.IsPostProcessingAssemblies && assembly.InputPath != assembly.OutputPath) {
 						// During post-processing, copy unchanged assemblies to the output directory
 						// so all assemblies are in the same directory (required for AOT compilation).
-						PathUtils.CreateDirectoryForFile (assembly.OutputPath);
-						File.Copy (assembly.InputPath, assembly.OutputPath, true);
-						var pdb = Path.ChangeExtension (assembly.InputPath, ".pdb");
-						if (File.Exists (pdb))
-							File.Copy (pdb, Path.ChangeExtension (assembly.OutputPath, ".pdb"), true);
+						CopyAssemblyToOutput (assembly.InputPath, assembly.OutputPath);
 					} else {
 						assembly.OutputPath = assembly.InputPath;
 					}
@@ -101,6 +97,27 @@ namespace MonoTouch.Tuner {
 					module.Characteristics |= ModuleCharacteristics.NoSEH;
 				}
 			}
+		}
+
+		static void CopyAssemblyToOutput (string source, string target)
+		{
+			PathUtils.CreateDirectoryForFile (target);
+
+			CopyIfNeeded (source, target);
+			CopyIfNeeded (Path.ChangeExtension (source, ".pdb"), Path.ChangeExtension (target, ".pdb"));
+			CopyIfNeeded (source + ".config", target + ".config");
+		}
+
+		static void CopyIfNeeded (string source, string target)
+		{
+			if (!File.Exists (source))
+				return;
+
+			// Skip if target is already up-to-date.
+			if (File.Exists (target) && File.GetLastWriteTimeUtc (source) <= File.GetLastWriteTimeUtc (target))
+				return;
+
+			File.Copy (source, target, true);
 		}
 	}
 }

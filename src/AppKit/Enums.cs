@@ -1907,7 +1907,6 @@ namespace AppKit {
 		CurveTo,
 		/// <summary>To be added.</summary>
 		ClosePath,
-		[Mac (14, 0)]
 		QuadraticCurveTo,
 	}
 	#endregion
@@ -2726,7 +2725,6 @@ namespace AppKit {
 		Sidebar,
 		/// <summary>To be added.</summary>
 		ContentList,
-		[Mac (14, 0)]
 		Inspector,
 	}
 
@@ -4589,7 +4587,7 @@ namespace AppKit {
 		Large = 3,
 	}
 
-	[NoMacCatalyst, Mac (13, 0)]
+	[NoMacCatalyst]
 	[Native]
 	public enum NSColorWellStyle : long {
 		Default = 0,
@@ -4597,14 +4595,14 @@ namespace AppKit {
 		Expanded,
 	}
 
-	[NoMacCatalyst, Mac (13, 0)]
+	[NoMacCatalyst]
 	[Native]
 	public enum NSComboButtonStyle : long {
 		Split = 0,
 		Unified = 1,
 	}
 
-	[NoMacCatalyst, Mac (14, 0)]
+	[NoMacCatalyst]
 	[Native]
 	public enum NSImageDynamicRange : long {
 		Unspecified = -1,
@@ -4613,7 +4611,7 @@ namespace AppKit {
 		High = 2,
 	}
 
-	[NoMacCatalyst, Mac (14, 0)]
+	[NoMacCatalyst]
 	[Native]
 	public enum NSMenuItemBadgeType : long {
 		None = 0,
@@ -4622,14 +4620,14 @@ namespace AppKit {
 		Alerts,
 	}
 
-	[NoMacCatalyst, Mac (14, 0)]
+	[NoMacCatalyst]
 	[Native]
 	public enum NSMenuPresentationStyle : long {
 		Regular = 0,
 		Palette = 1,
 	}
 
-	[NoMacCatalyst, Mac (14, 0)]
+	[NoMacCatalyst]
 	[Native]
 	public enum NSMenuSelectionMode : long {
 		Automatic = 0,
@@ -4637,21 +4635,21 @@ namespace AppKit {
 		SelectAny = 2,
 	}
 
-	[NoMacCatalyst, Mac (14, 0)]
+	[NoMacCatalyst]
 	[Native]
 	public enum NSPageLayoutResult : long {
 		Cancelled = 0,
 		Changed,
 	}
 
-	[NoMacCatalyst, Mac (14, 0)]
+	[NoMacCatalyst]
 	[Native]
 	public enum NSPrintPanelResult : long {
 		Cancelled = 0,
 		Printed,
 	}
 
-	[NoMacCatalyst, Mac (14, 0)]
+	[NoMacCatalyst]
 	[Native]
 	public enum NSTextCursorAccessoryPlacement : long {
 		Unspecified,
@@ -4665,7 +4663,7 @@ namespace AppKit {
 		OffscreenBottom,
 	}
 
-	[NoMacCatalyst, Mac (14, 0)]
+	[NoMacCatalyst]
 	[Native]
 	[Flags]
 	public enum NSTextInsertionIndicatorAutomaticModeOptions : long {
@@ -4673,7 +4671,7 @@ namespace AppKit {
 		WhileTracking = 1L << 1,
 	}
 
-	[NoMacCatalyst, Mac (14, 0)]
+	[NoMacCatalyst]
 	[Native]
 	public enum NSTextInsertionIndicatorDisplayMode : long {
 		Automatic = 0,

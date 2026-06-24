@@ -279,6 +279,27 @@ By default we require a provisioning profile if:
 
 Setting this property to `true` or `false` will override the default logic.
 
+## ComputeInstructionSetForReadyToRun
+
+Controls whether to automatically compute and pass the instruction set to the ReadyToRun (R2R) compiler based on the deployment target.
+
+When `PublishReadyToRun` is `true`, the build system automatically computes the minimum CPU instruction set required based on:
+* The `SupportedOSPlatformVersion` (minimum OS version the app supports)
+* The `RuntimeIdentifier` (target architecture and platform)
+
+This computed instruction set is then passed to crossgen2 via the `--instruction-set` argument, enabling the R2R compiler to generate optimized native code using appropriate CPU instructions.
+
+Set this property to `false` to disable automatic instruction set computation and use crossgen2's default behavior.
+
+Default: `true`
+
+Example:
+```xml
+<PropertyGroup>
+  <ComputeInstructionSetForReadyToRun>false</ComputeInstructionSetForReadyToRun>
+</PropertyGroup>
+```
+
 ## CompressBindingResourcePackage
 
 The native references in a binding projects are copied to the output directory during the build process, next to the binding assembly (into something we call a "binding resource package").
@@ -1475,6 +1496,12 @@ See [TrimMode](/dotnet/core/deploying/trimming/trimming-options) for a bit more 
 > [PublishTrimmed](/dotnet/core/deploying/trimming/trimming-options?#enable-trimming)
 > to `false` - to disable trimming, set `TrimMode=copy` instead (a build error
 > will be raised if `PublishTrimmed` is set to `false`).
+
+> [!NOTE]
+> Due to [a known issue](https://github.com/dotnet/runtime/issues/108269), setting `PublishTrimmed`
+> to `true` may cause confusing problems, so the build will report an error if this
+> is detected (the solution is to not set `PublishTrimmed` at all).
+
 
 The `TrimMode` property is equivalent to the existing
 [MtouchLink](#mtouchlink) (for iOS, tvOS and Mac Catalyst) and

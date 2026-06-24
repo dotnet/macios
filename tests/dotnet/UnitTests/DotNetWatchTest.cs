@@ -13,10 +13,12 @@ namespace Xamarin.Tests {
 	[TestFixture]
 	public class DotNetWatchTest : TestBaseClass {
 		[Test]
-		[TestCase (ApplePlatform.MacOSX)]
-		[TestCase (ApplePlatform.MacCatalyst)]
-		[TestCase (ApplePlatform.iOS)]
-		public void DotNetWatch (ApplePlatform platform)
+		[TestCase (ApplePlatform.MacOSX, false)]
+		[TestCase (ApplePlatform.MacCatalyst, false)]
+		[TestCase (ApplePlatform.iOS, false)]
+		[TestCase (ApplePlatform.MacCatalyst, true)]
+		[TestCase (ApplePlatform.iOS, true)]
+		public void DotNetWatch (ApplePlatform platform, bool useMonoRuntime)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 
@@ -77,8 +79,12 @@ namespace Xamarin.Tests {
 						debugLog.WriteLine ("Got 'Variable has changed'");
 				}
 				if (line.Contains ("Waiting for changes")) {
-					waitingForChanges.TrySetResult (true);
-					debugLog.WriteLine ("Got 'Waiting for changes'");
+					if (waitingForChanges.TrySetResult (true))
+						debugLog.WriteLine ("Got 'Waiting for changes'");
+				}
+				if (line.Contains ("Build FAILED.")) {
+					if (waitingForChanges.TrySetResult (false))
+						debugLog.WriteLine ("Got 'Build FAILED'");
 				}
 			});
 
@@ -117,6 +123,7 @@ namespace Xamarin.Tests {
 			var args = new List<string> {
 				"watch",
 				"--non-interactive",
+				"--disable-build-servers",
 			};
 
 			if (platform == ApplePlatform.iOS || platform == ApplePlatform.TVOS) {
@@ -129,6 +136,8 @@ namespace Xamarin.Tests {
 			var env = new Dictionary<string, string?> {
 				{ "HOTRELOAD_TEST_APP_LOGFILE", logPath },
 				{ "AdditionalFile", additionalFile },
+				{ "UseMonoRuntime", useMonoRuntime ? "true" : "false" },
+				{ "RunWithOpen", "false" }, // this makes it so that the watched process is a subprocess, which means that ctrl-c in the terminal will kill everything. It also means that it'll get killed if something times out in the test.
 			};
 
 			var watchTask = Execution.RunWithCallbacksAsync (
@@ -140,39 +149,52 @@ namespace Xamarin.Tests {
 				workingDirectory: projectDirectory,
 				timeout: TimeSpan.FromMinutes (10),
 				cancellationToken: cts.Token,
-				log: debugLog
+				log: debugLog,
+				closeStandardInput: true
 			);
 
-			// Wait for the app to start and show initial output
-			debugLog.WriteLine ("Waiting for app start...");
-			if (!appStarted.Task.Wait (TimeSpan.FromMinutes (1)))
-				Assert.Fail ($"Timed out waiting for the app to start. Output:\n{string.Join ("\n", output)}\nDebug output:\n{string.Join ("\n", File.ReadAllLines (debugLogPath))}");
-			debugLog.WriteLine ("App started!");
-
-			debugLog.WriteLine ("Waiting for 'dotnet watch' to be waiting for changes...");
-			if (!waitingForChanges.Task.Wait (TimeSpan.FromMinutes (1)))
-				Assert.Fail ($"Timed out waiting for the 'dotnet watch' to be waiting for changes. Output:\n{string.Join ("\n", output)}\nDebug output:\n{string.Join ("\n", File.ReadAllLines (debugLogPath))}");
-			debugLog.WriteLine ("Waiting for changes!");
-
-			// Write AdditionalFile.cs to trigger a rebuild via dotnet watch
-			File.WriteAllText (additionalFile, secondContent);
-
-			// Wait for dotnet watch to pick up the change and the app to show the updated output
-			debugLog.WriteLine ("Waiting for app restart...");
-			if (!variableChanged.Task.Wait (TimeSpan.FromMinutes (1)))
-				Assert.Fail ($"Timed out waiting for the variable to change. Output:\n{string.Join ("\n", output)}\nDebug output:\n{string.Join ("\n", File.ReadAllLines (debugLogPath))}");
-			debugLog.WriteLine ("App restarted!");
-
-			// Cancel the watch process
-			debugLog.WriteLine ("Terminating the watch process...");
-			cts.Cancel ();
-
 			try {
-				debugLog.WriteLine ("Waiting for exit...");
-				watchTask.Wait (TimeSpan.FromSeconds (30));
-				debugLog.WriteLine ("Waited for exit");
-			} catch {
-				// Expected - the process was cancelled
+				// Wait for the app to start and show initial output
+				debugLog.WriteLine ("Waiting for app start...");
+				var completedTask = Task.WhenAny (appStarted.Task, waitingForChanges.Task).GetAwaiter ().GetResult ();
+				if (!appStarted.Task.IsCompleted) {
+					if (waitingForChanges.Task.IsCompleted && !waitingForChanges.Task.Result)
+						Assert.Fail ($"Build failed before the app could start. Output:\n{string.Join ("\n", output)}\nDebug output:\n{string.Join ("\n", File.ReadAllLines (debugLogPath))}");
+					if (!appStarted.Task.Wait (TimeSpan.FromMinutes (1)))
+						Assert.Fail ($"Timed out waiting for the app to start. Output:\n{string.Join ("\n", output)}\nDebug output:\n{string.Join ("\n", File.ReadAllLines (debugLogPath))}");
+				}
+				debugLog.WriteLine ("App started!");
+
+				debugLog.WriteLine ("Waiting for 'dotnet watch' to be waiting for changes...");
+				if (!waitingForChanges.Task.Wait (TimeSpan.FromMinutes (1)))
+					Assert.Fail ($"Timed out waiting for the 'dotnet watch' to be waiting for changes. Output:\n{string.Join ("\n", output)}\nDebug output:\n{string.Join ("\n", File.ReadAllLines (debugLogPath))}");
+				if (!waitingForChanges.Task.Result)
+					Assert.Fail ($"Build failed. Output:\n{string.Join ("\n", output)}\nDebug output:\n{string.Join ("\n", File.ReadAllLines (debugLogPath))}");
+				debugLog.WriteLine ("Waiting for changes!");
+
+				// Write AdditionalFile.cs to trigger a rebuild via dotnet watch
+				File.WriteAllText (additionalFile, secondContent);
+
+				// Wait for dotnet watch to pick up the change and the app to show the updated output
+				debugLog.WriteLine ("Waiting for app restart...");
+				if (!variableChanged.Task.Wait (TimeSpan.FromMinutes (1)))
+					Assert.Fail ($"Timed out waiting for the variable to change. Output:\n{string.Join ("\n", output)}\nDebug output:\n{string.Join ("\n", File.ReadAllLines (debugLogPath))}");
+				debugLog.WriteLine ("App restarted!");
+			} finally {
+				// Always cancel the watch process, even if the test failed
+				debugLog.WriteLine ("Terminating the watch process...");
+				cts.Cancel ();
+
+				try {
+					debugLog.WriteLine ("Waiting for exit...");
+					if (!watchTask.Wait (TimeSpan.FromSeconds (30)))
+						debugLog.WriteLine ("Watch process did not exit within 30 seconds.");
+					else
+						debugLog.WriteLine ("Waited for exit");
+				} catch (Exception ex) {
+					// Expected - the process was cancelled
+					debugLog.WriteLine ($"Exception while waiting for exit (may be expected due to cancellation): {ex.Message}");
+				}
 			}
 		}
 

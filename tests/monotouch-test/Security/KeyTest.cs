@@ -386,11 +386,11 @@ namespace MonoTouchFixtures.Security {
 			chrono.Restart ();
 
 			byte [] hash = new byte [20] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
-			var result = rsa.Encrypt (hash, true);
+			var result = rsa.Encrypt (hash, RSAEncryptionPadding.OaepSHA1);
 			Console.WriteLine ("Encrypt {0} ms", chrono.ElapsedMilliseconds);
 			chrono.Restart ();
 
-			rsa.Decrypt (result, true);
+			rsa.Decrypt (result, RSAEncryptionPadding.OaepSHA1);
 			Console.WriteLine ("Decrypt {0} ms", chrono.ElapsedMilliseconds);
 			chrono.Restart ();
 

@@ -223,8 +223,6 @@ namespace Photos {
 		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		SmartAlbumLongExposures = 215,
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		SmartAlbumUnableToUpload = 216,
 		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
@@ -299,7 +297,7 @@ namespace Photos {
 		VideoHighFrameRate = (1 << 17),
 		/// <summary>A timelapse video.</summary>
 		VideoTimelapse = (1 << 18),
-		[iOS (13, 0), MacCatalyst (13, 1), TV (13, 0)]
+		[MacCatalyst (13, 1)]
 		VideoScreenRecording = (1 << 19),
 		VideoCinematic = (1 << 21),
 	}
@@ -360,17 +358,14 @@ namespace Photos {
 		/// <summary>Original video data for a Live Photo.</summary>
 		[MacCatalyst (13, 1)]
 		PairedVideo = 9,
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		FullSizePairedVideo = 10,
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		AdjustmentBasePairedVideo = 11,
-		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		AdjustmentBaseVideo = 12,
 		[iOS (17, 0), TV (17, 0)]
-		[MacCatalyst (17, 0), Mac (14, 0)]
+		[MacCatalyst (17, 0)]
 		PhotoProxy = 19,
 	}
 
@@ -513,7 +508,6 @@ namespace Photos {
 	}
 
 	[ErrorDomain ("PHPhotosErrorDomain")]
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PHPhotosError : long {
@@ -548,7 +542,7 @@ namespace Photos {
 		ReadWrite = 2,
 	}
 
-	[TV (16, 0), Mac (13, 0), iOS (16, 0)]
+	[TV (16, 0), iOS (16, 0)]
 	[MacCatalyst (16, 0)]
 	[Native]
 	public enum PHObjectType : long {

@@ -1585,7 +1585,9 @@ partial class TestRuntime {
 				};
 				link_any = false;
 				foreach (var uncommonType in uncommonTypes) {
-					link_any = typeof (int).Assembly.GetType (uncommonType) is null;
+					// Append WorkAroundLinkerHeuristics to prevent the linker from resolving the type name
+					// via its typeof(T).Assembly.GetType(string) dataflow analysis (dotnet/runtime#127319).
+					link_any = typeof (int).Assembly.GetType (uncommonType + WorkAroundLinkerHeuristics) is null;
 					if (link_any == true)
 						break;
 				}
@@ -1593,6 +1595,12 @@ partial class TestRuntime {
 			return link_any.Value;
 		}
 	}
+
+	// Returns "" at runtime, but the linker can't constant-fold this, which prevents
+	// its dataflow analysis from resolving type names passed to Assembly.GetType.
+	[MethodImpl (MethodImplOptions.NoInlining)]
+	static string GetEmptyString () => string.Intern ("");
+	static string WorkAroundLinkerHeuristics => GetEmptyString ();
 
 	public static bool IsOptimizeAll {
 		get {

@@ -146,8 +146,8 @@ namespace LinkAll.Attributes {
 			Assert.That (smartExtensions.GetMethod ("GetValue"), Is.Not.Null, "GetValue");
 
 			// Unused smart enums and their extensions should be linked away
-			Assert.That (typeof (NSObject).Assembly.GetType ("AVFoundation.AVMediaTypes"), Is.Null, "AVMediaTypes");
-			Assert.That (typeof (NSObject).Assembly.GetType ("AVFoundation.AVMediaTypesExtensions"), Is.Null, "AVMediaTypesExtensions");
+			Assert.That (typeof (NSObject).Assembly.GetType ("AVFoundation.AVMediaTypes" + WorkAroundLinkerHeuristics), Is.Null, "AVMediaTypes");
+			Assert.That (typeof (NSObject).Assembly.GetType ("AVFoundation.AVMediaTypesExtensions" + WorkAroundLinkerHeuristics), Is.Null, "AVMediaTypesExtensions");
 		}
 
 		[Test]

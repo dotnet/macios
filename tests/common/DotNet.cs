@@ -27,6 +27,7 @@ namespace Xamarin.Tests {
 
 		public static ExecutionResult AssertPack (string project, Dictionary<string, string>? properties = null, bool? msbuildParallelism = null)
 		{
+			IgnoreIfUnsupportedMonoRuntime (properties);
 			return Execute ("pack", project, properties, true, msbuildParallelism: msbuildParallelism);
 		}
 
@@ -39,6 +40,7 @@ namespace Xamarin.Tests {
 
 		public static ExecutionResult AssertPublish (string project, Dictionary<string, string>? properties = null)
 		{
+			IgnoreIfUnsupportedMonoRuntime (properties);
 			return Execute ("publish", project, properties, true);
 		}
 
@@ -61,7 +63,21 @@ namespace Xamarin.Tests {
 
 		public static ExecutionResult AssertBuild (string project, Dictionary<string, string>? properties = null, string? target = null, TimeSpan? timeout = null)
 		{
+			IgnoreIfUnsupportedMonoRuntime (properties);
 			return Execute ("build", project, properties, true, target: target, timeout: timeout);
+		}
+
+		static void IgnoreIfUnsupportedMonoRuntime (Dictionary<string, string>? properties)
+		{
+			if (properties is null)
+				return;
+			if (!properties.TryGetValue ("UseMonoRuntime", out var useMonoRuntime))
+				return;
+			if (!string.Equals (useMonoRuntime, "true", StringComparison.OrdinalIgnoreCase))
+				return;
+			if (Configuration.dotnet_monovm_supported)
+				return;
+			Assert.Ignore ("Mono is not supported");
 		}
 
 		public static ExecutionResult AssertRun (string project, Dictionary<string, string>? properties = null, TimeSpan? timeout = null, Dictionary<string, string>? environmentVariables = null)

@@ -158,6 +158,14 @@ public class AssemblyPreparer : IDisposable {
 			new RemoveUserResourcesSubStep (), // from PreOutputDispatcher.
 			// We're not doing ClassHandleRewriterStep, that's replaced by InlineClassGetHandleStep, which is run in Prepare().
 
+			// ManagedRegistrarStep/TrimmableRegistrarStep/ManagedRegistrarLookupTablesStep
+			// must run before SaveAssembliesStep because they modify assemblies (adding
+			// lookup tables and ldtoken instructions). SaveAssembliesStep writes the final
+			// versions to disk with correct metadata tokens.
+			new ManagedRegistrarStep (),
+			new TrimmableRegistrarStep (),
+			new ManagedRegistrarLookupTablesStep (),
+
 			new SaveAssembliesStep (),
 
 			// PopulateApplicationAssembliesStep must run after SaveAssembliesStep so that
@@ -166,9 +174,6 @@ public class AssemblyPreparer : IDisposable {
 
 			// post-output
 
-			new ManagedRegistrarStep (),
-			new TrimmableRegistrarStep (),
-			new ManagedRegistrarLookupTablesStep (),
 			new RegistrarStep (),
 
 			new GenerateMainStep (),

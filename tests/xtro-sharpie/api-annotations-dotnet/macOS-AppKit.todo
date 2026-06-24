@@ -11,8 +11,6 @@
 !missing-enum! NSViewExclusiveGestureBehavior not bound
 !missing-field! NSPaperMarginDocumentAttribute not bound
 !missing-null-allowed! 'System.Void AppKit.NSTextBlock::DrawBackground(CoreGraphics.CGRect,AppKit.NSView,Foundation.NSRange,AppKit.NSLayoutManager)' is missing an [NullAllowed] on parameter #1
-!missing-pinvoke! NSTextAlignmentFromCTTextAlignment is not bound
-!missing-pinvoke! NSTextAlignmentToCTTextAlignment is not bound
 !missing-protocol-conformance! NSTextLayoutFragment should conform to NSTextViewportRenderingSurfaceKey
 !missing-protocol-conformance! NSTextView should conform to NSTextViewportLayoutControllerDelegate
 !missing-protocol-member! NSBrowserDelegate::browser:draggingSession:endedAtPoint:operation: not found
@@ -20,7 +18,6 @@
 !missing-protocol-member! NSBrowserDelegate::browser:pasteboardWriterForRow:column: not found
 !missing-protocol-member! NSTextLayoutManagerDelegate::textLayoutManager:cacheTextAttachmentViewProvider:forTextAttachment: not found
 !missing-protocol-member! NSTextLayoutManagerDelegate::textLayoutManager:retrieveCachedTextAttachmentViewProviderForTextAttachment: not found
-!missing-protocol-member! NSTextLayoutManagerDelegate::textLayoutManager:textViewportLayoutControllerForTextContainer: not found
 !missing-protocol-member! NSTextLocation::hash not found
 !missing-protocol-member! NSTextLocation::isEqual: not found
 !missing-protocol-member! NSTextViewportLayoutControllerDelegate::textViewportLayoutController:cacheRenderingSurface:forKey: not found
@@ -124,3 +121,7 @@
 !missing-type! NSViewCornerConfiguration not bound
 !missing-type! NSViewCornerRadii not bound
 !missing-type! NSViewCornerRadius not bound
+!missing-field! NSTextCheckingAutomaticCapitalizationEnabledKey not bound
+!missing-field! NSTextCheckingWaitForAllGrammarCheckingResultsKey not bound
+!missing-protocol-member! NSTextSelectionDataSource::convertInteractionPoint:toContainerAtLocation: not found
+!missing-selector! NSSpellChecker::ignoreGrammarRange:inSentence:inSpellDocumentWithTag: not bound

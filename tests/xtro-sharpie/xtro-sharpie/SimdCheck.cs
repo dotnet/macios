@@ -375,6 +375,8 @@ namespace Extrospection {
 					attrs.AddRange (parentClass.Attrs);
 
 				foreach (var av_attr in attrs.GetAvailabilityAttributes ()) {
+					// Note: the 'anyAppleOS' meta-platform (Xcode 27+) isn't handled here; this is only a
+					// leniency heuristic for new SIMD APIs, which don't currently use 'anyappleos'.
 					if (av_attr.AvailabilityAttributePlatformIdentifierName.ToLowerInvariant () != "ios")
 						continue;
 					if (av_attr.Introduced.Major >= 11) {

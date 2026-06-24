@@ -14,7 +14,6 @@
 !missing-protocol-conformance! UIView should conform to CLBodyIdentifiable (defined in '' category)
 !missing-protocol-member! NSTextLayoutManagerDelegate::textLayoutManager:cacheTextAttachmentViewProvider:forTextAttachment: not found
 !missing-protocol-member! NSTextLayoutManagerDelegate::textLayoutManager:retrieveCachedTextAttachmentViewProviderForTextAttachment: not found
-!missing-protocol-member! NSTextLayoutManagerDelegate::textLayoutManager:textViewportLayoutControllerForTextContainer: not found
 !missing-protocol-member! NSTextLocation::hash not found
 !missing-protocol-member! NSTextLocation::isEqual: not found
 !missing-protocol-member! NSTextViewportLayoutControllerDelegate::textViewportLayoutController:cacheRenderingSurface:forKey: not found
@@ -91,3 +90,6 @@
 !missing-type! NSTextBlock not bound
 !missing-type! NSTextTable not bound
 !missing-type! NSTextTableBlock not bound
+!missing-protocol-member! NSTextSelectionDataSource::convertInteractionPoint:toContainerAtLocation: not found
+!missing-selector! UITextChecker::ignoreGrammarRange:inSentence: not bound
+!missing-selector! UITextChecker::requestGrammarCheckingOfString:range:waitForAllResults:completionHandler: not bound

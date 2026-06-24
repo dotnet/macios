@@ -6,7 +6,6 @@
 !missing-protocol! SCRecordingEditorDelegate not bound
 !missing-selector! SCClipBufferingOutput::exportClipToURL:duration:completionHandler: not bound
 !missing-selector! SCClipBufferingOutput::initWithDelegate: not bound
-!missing-selector! SCContentFilter::isCameraEnabled not bound
 !missing-selector! SCContentFilter::isMicrophoneEnabled not bound
 !missing-selector! SCContentSharingPicker::isAvailable not bound
 !missing-selector! SCRecordingEditor::delegate not bound

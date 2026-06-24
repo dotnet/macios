@@ -99,7 +99,7 @@ namespace MonoTouch.Tuner {
 			}
 		}
 
-		static void CopyAssemblyToOutput (string source, string target)
+		void CopyAssemblyToOutput (string source, string target)
 		{
 			PathUtils.CreateDirectoryForFile (target);
 
@@ -108,15 +108,18 @@ namespace MonoTouch.Tuner {
 			CopyIfNeeded (source + ".config", target + ".config");
 		}
 
-		static void CopyIfNeeded (string source, string target)
+		void CopyIfNeeded (string source, string target)
 		{
 			if (!File.Exists (source))
 				return;
 
 			// Skip if target is already up-to-date.
-			if (File.Exists (target) && File.GetLastWriteTimeUtc (source) <= File.GetLastWriteTimeUtc (target))
+			if (File.Exists (target) && File.GetLastWriteTimeUtc (source) <= File.GetLastWriteTimeUtc (target)) {
+				Configuration.Log ($"Not copying '{source}' to '{target}' because it's already up-to-date.");
 				return;
+			}
 
+			Configuration.Log ($"Copying '{source}' to '{target}'.");
 			File.Copy (source, target, true);
 		}
 	}

@@ -10,10 +10,10 @@ using NUnit.Framework;
 
 namespace Xamarin.MacDev.Tasks {
 
-	// Regression tests for https://github.com/dotnet/macios - a binding resource package's 'manifest' is
-	// passive data that may come from a restored (and potentially untrusted) package, so it must not be
-	// able to inject path/layout/identity metadata that could redirect this task's (or a downstream
-	// task's) output outside the intended output directory.
+	// Regression tests for the binding resource package 'manifest' handling: a manifest is passive data
+	// that may come from a restored package, so it must not be able to inject path/layout/identity
+	// metadata that could redirect this task's (or a downstream task's) output outside the intended
+	// output directory.
 	[TestFixture]
 	public class ResolveNativeReferencesSidecarTest : TestBase {
 
@@ -44,9 +44,15 @@ namespace Xamarin.MacDev.Tasks {
 		<Kind>Dynamic</Kind>
 		<ForceLoad>True</ForceLoad>
 		<Frameworks>CoreFoundation</Frameworks>
+		<NoDSymUtil>true</NoDSymUtil>
+		<NoSymbolStrip>true</NoSymbolStrip>
 		<RelativePath>../../../../../../tmp/escape/libpayload.dylib</RelativePath>
 		<ReidentifiedPath>/tmp/escape/libpayload.dylib</ReidentifiedPath>
+		<ComputedRelativePath>../../escape/libpayload.dylib</ComputedRelativePath>
 		<DynamicLibraryId>@executable_path/../../../../escape</DynamicLibraryId>
+		<PublishFolderType>Unknown</PublishFolderType>
+		<TargetDirectory>/tmp/escape</TargetDirectory>
+		<SourceDirectory>/tmp/escape</SourceDirectory>
 	</NativeReference>
 </BindingAssembly>";
 			var task = CreateSidecarTask (manifest, out var _);
@@ -55,20 +61,64 @@ namespace Xamarin.MacDev.Tasks {
 
 			var item = task.NativeFrameworks!.Single (v => v.GetMetadata ("Kind") == "Dynamic");
 
-			// Allowed (non-path) metadata is preserved (overriding the defaults).
+			// Legitimate native-reference metadata (standard + binding-defined) is preserved.
 			Assert.That (item.GetMetadata ("ForceLoad"), Is.EqualTo ("True"), "ForceLoad");
 			Assert.That (item.GetMetadata ("Frameworks"), Is.EqualTo ("CoreFoundation"), "Frameworks");
+			Assert.That (item.GetMetadata ("NoDSymUtil"), Is.EqualTo ("true"), "NoDSymUtil");
+			Assert.That (item.GetMetadata ("NoSymbolStrip"), Is.EqualTo ("true"), "NoSymbolStrip");
 
-			// Path/layout/identity metadata is NOT copied from the manifest.
-			Assert.That (item.GetMetadata ("RelativePath"), Is.Empty, "RelativePath");
-			Assert.That (item.GetMetadata ("ReidentifiedPath"), Is.Empty, "ReidentifiedPath");
-			Assert.That (item.GetMetadata ("DynamicLibraryId"), Is.Empty, "DynamicLibraryId");
+			// Build-controlled path/layout/identity metadata is NOT copied from the manifest.
+			foreach (var blocked in new [] { "RelativePath", "ReidentifiedPath", "ComputedRelativePath", "DynamicLibraryId", "TargetDirectory", "SourceDirectory" })
+				Assert.That (item.GetMetadata (blocked), Is.Empty, blocked);
+			// The code-set PublishFolderType survives (the manifest's value is ignored).
+			Assert.That (item.GetMetadata ("PublishFolderType"), Is.EqualTo ("DynamicLibrary"), "PublishFolderType");
 
-			// A warning is emitted for each ignored metadata.
+			// A warning is emitted for each ignored (blocked) metadata - and only for those (use the quoted
+			// name so e.g. 'ComputedRelativePath' isn't counted as 'RelativePath').
 			var warnings = Engine.Logger.WarningsEvents.Select (v => v.Message ?? "").ToArray ();
-			Assert.That (warnings.Count (v => v.Contains ("RelativePath")), Is.EqualTo (1), "RelativePath warning");
-			Assert.That (warnings.Count (v => v.Contains ("ReidentifiedPath")), Is.EqualTo (1), "ReidentifiedPath warning");
-			Assert.That (warnings.Count (v => v.Contains ("DynamicLibraryId")), Is.EqualTo (1), "DynamicLibraryId warning");
+			foreach (var blocked in new [] { "RelativePath", "ReidentifiedPath", "ComputedRelativePath", "DynamicLibraryId", "PublishFolderType", "TargetDirectory", "SourceDirectory" })
+				Assert.That (warnings.Count (v => v.Contains ($"'{blocked}'")), Is.EqualTo (1), $"{blocked} warning");
+			foreach (var allowed in new [] { "NoDSymUtil", "NoSymbolStrip", "ForceLoad", "Frameworks" })
+				Assert.That (warnings.Count (v => v.Contains ($"'{allowed}'")), Is.EqualTo (0), $"no warning for {allowed}");
+		}
+
+		[Test]
+		public void IgnoresReservedMetadata ()
+		{
+			// A crafted manifest must not be able to crash the task with reserved MSBuild metadata names
+			// (TaskItem.SetMetadata throws an ArgumentException for those).
+			var manifest = @"<BindingAssembly>
+	<NativeReference Name=""libpayload.dylib"">
+		<Kind>Dynamic</Kind>
+		<Filename>evil</Filename>
+		<Identity>evil</Identity>
+	</NativeReference>
+</BindingAssembly>";
+			var task = CreateSidecarTask (manifest, out var _);
+
+			// The task completes without throwing/erroring (reaching this assertion means it didn't crash).
+			ExecuteTask (task, 0);
+
+			var item = task.NativeFrameworks!.Single (v => v.GetMetadata ("Kind") == "Dynamic");
+			// The reserved metadata keeps its item-spec-derived value; the manifest can't override it.
+			Assert.That (item.GetMetadata ("Filename"), Is.EqualTo ("libpayload"), "Filename");
+		}
+
+		[Test]
+		public void IgnoresNativeReferenceWithoutName ()
+		{
+			var manifest = @"<BindingAssembly>
+	<NativeReference>
+		<Kind>Dynamic</Kind>
+	</NativeReference>
+</BindingAssembly>";
+			var task = CreateSidecarTask (manifest, out var _);
+
+			ExecuteTask (task, 0);
+
+			// The nameless native reference is skipped (the managed reference itself isn't added).
+			Assert.That (task.NativeFrameworks!, Is.Empty, "no native frameworks");
+			Assert.That (Engine.Logger.WarningsEvents.Count (v => (v.Message ?? "").Contains ("no name")), Is.EqualTo (1), "no-name warning");
 		}
 
 		[Test]

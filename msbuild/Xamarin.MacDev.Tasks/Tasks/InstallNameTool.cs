@@ -46,7 +46,7 @@ namespace Xamarin.MacDev.Tasks {
 				// from a (passive) binding resource package manifest. Make sure we
 				// never create directories or write files outside the intended intermediate output
 				// directory, even if the path contains traversal segments, is absolute, or uses symlinks.
-				if (!IsPathContained (IntermediateNativeLibraryDir, target)) {
+				if (!PathUtils.IsPathContained (IntermediateNativeLibraryDir, target)) {
 					Log.LogError (MSBStrings.E7181 /* The native library can't be reidentified to '{0}' because that path is outside the intended output directory '{1}'. */, target, IntermediateNativeLibraryDir);
 					processes [i] = System.Threading.Tasks.Task.CompletedTask;
 					continue;
@@ -66,11 +66,17 @@ namespace Xamarin.MacDev.Tasks {
 				arguments.Add (temporaryTarget);
 
 				processes [i] = ExecuteAsync ("xcrun", arguments).ContinueWith ((v) => {
-					if (v.IsFaulted)
+					if (v.IsFaulted) {
+						// install_name_tool faulted; don't leave the temporary copy behind.
+						File.Delete (temporaryTarget);
 						throw v.Exception;
+					}
 					if (v.Status == TaskStatus.RanToCompletion && v.Result.ExitCode == 0) {
 						File.Delete (target);
 						File.Move (temporaryTarget, target);
+					} else {
+						// install_name_tool failed; don't leave the temporary copy behind.
+						File.Delete (temporaryTarget);
 					}
 				});
 
@@ -83,49 +89,6 @@ namespace Xamarin.MacDev.Tasks {
 			ReidentifiedDynamicLibrary = ReidentifiedDynamicLibrary.Where (item => item is not null).ToArray ();
 
 			return !Log.HasLoggedErrors;
-		}
-
-		// Returns true if 'target' (which may not exist yet) is located within 'root' after fully
-		// canonicalizing both paths (resolving '..' segments and symbolic links). Used to make sure we
-		// never write reidentified native libraries outside the intended intermediate output directory,
-		// even if the path was influenced by untrusted binding resource package metadata.
-		public static bool IsPathContained (string root, string target)
-		{
-			if (string.IsNullOrEmpty (root) || string.IsNullOrEmpty (target))
-				return false;
-
-			var canonicalRoot = CanonicalizeForContainment (root);
-			var canonicalTarget = CanonicalizeForContainment (target);
-
-			var rootWithSeparator = canonicalRoot.TrimEnd (Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
-			return canonicalTarget.StartsWith (rootWithSeparator, StringComparison.Ordinal);
-		}
-
-		// Canonicalizes a path for a containment check: makes it absolute and resolves '..'/'.' segments,
-		// then resolves symbolic links for the longest existing prefix (the target file usually doesn't
-		// exist yet, so we resolve symlinks on the nearest existing ancestor and re-append the remainder).
-		static string CanonicalizeForContainment (string path)
-		{
-			// The root can come from MSBuild with Windows separators (e.g. 'obj\...\nativelibraries\')
-			// while the target has already been separator-normalized, so normalize here as well.
-			path = path.Replace ('\\', Path.DirectorySeparatorChar);
-			var full = Path.GetFullPath (path);
-
-			var existing = full;
-			var remainder = new List<string> ();
-			while (existing.Length > 0 && !Directory.Exists (existing) && !File.Exists (existing)) {
-				var parent = Path.GetDirectoryName (existing);
-				if (string.IsNullOrEmpty (parent) || parent == existing)
-					break;
-				remainder.Insert (0, Path.GetFileName (existing));
-				existing = parent;
-			}
-
-			var canonical = PathUtils.ResolveSymbolicLinks (existing) ?? existing;
-			foreach (var segment in remainder)
-				canonical = Path.Combine (canonical, segment);
-
-			return canonical;
 		}
 
 		public bool ShouldCopyToBuildServer (ITaskItem item) => true;

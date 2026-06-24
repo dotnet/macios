@@ -27,6 +27,7 @@ namespace Xamarin.Tests {
 
 		public static ExecutionResult AssertPack (string project, Dictionary<string, string>? properties = null, bool? msbuildParallelism = null)
 		{
+			IgnoreIfUnsupportedMonoRuntime (properties);
 			return Execute ("pack", project, properties, true, msbuildParallelism: msbuildParallelism);
 		}
 
@@ -39,6 +40,7 @@ namespace Xamarin.Tests {
 
 		public static ExecutionResult AssertPublish (string project, Dictionary<string, string>? properties = null)
 		{
+			IgnoreIfUnsupportedMonoRuntime (properties);
 			return Execute ("publish", project, properties, true);
 		}
 
@@ -61,7 +63,21 @@ namespace Xamarin.Tests {
 
 		public static ExecutionResult AssertBuild (string project, Dictionary<string, string>? properties = null, string? target = null, TimeSpan? timeout = null)
 		{
+			IgnoreIfUnsupportedMonoRuntime (properties);
 			return Execute ("build", project, properties, true, target: target, timeout: timeout);
+		}
+
+		static void IgnoreIfUnsupportedMonoRuntime (Dictionary<string, string>? properties)
+		{
+			if (properties is null)
+				return;
+			if (!properties.TryGetValue ("UseMonoRuntime", out var useMonoRuntime))
+				return;
+			if (!string.Equals (useMonoRuntime, "true", StringComparison.OrdinalIgnoreCase))
+				return;
+			if (Configuration.dotnet_monovm_supported)
+				return;
+			Assert.Ignore ("Mono is not supported");
 		}
 
 		public static ExecutionResult AssertRun (string project, Dictionary<string, string>? properties = null, TimeSpan? timeout = null, Dictionary<string, string>? environmentVariables = null)
@@ -109,7 +125,7 @@ namespace Xamarin.Tests {
 				Console.WriteLine (output);
 				Assert.That (rv.ExitCode, Is.EqualTo (0), $"Exit code: {Executable} {StringUtils.FormatArguments (args)}");
 			}
-			return new ExecutionResult (output, output, rv.ExitCode);
+			return new ExecutionResult (output, output, rv.ExitCode, rv.Duration);
 		}
 
 		public static ExecutionResult InstallWorkload (params string [] workloads)
@@ -136,7 +152,7 @@ namespace Xamarin.Tests {
 				Console.WriteLine (msg);
 				Assert.Fail (msg.ToString ());
 			}
-			return new ExecutionResult (output, output, rv.ExitCode);
+			return new ExecutionResult (output, output, rv.ExitCode, rv.Duration);
 		}
 
 		public static ExecutionResult InstallTool (string tool, string path)
@@ -206,7 +222,7 @@ namespace Xamarin.Tests {
 				Console.WriteLine (msg);
 				Assert.Fail (msg.ToString ());
 			}
-			return new ExecutionResult (output, output, rv.ExitCode);
+			return new ExecutionResult (output, output, rv.ExitCode, rv.Duration);
 		}
 
 		public static ExecutionResult Execute (string verb, string project, Dictionary<string, string>? properties, bool assert_success = true, string? target = null, bool? msbuildParallelism = null, TimeSpan? timeout = null, params string [] extraArguments)
@@ -343,7 +359,7 @@ namespace Xamarin.Tests {
 					}
 					Assert.That (rv.ExitCode, Is.EqualTo (0), $"Exit code: {Executable} {StringUtils.FormatArguments (args)}");
 				}
-				return new ExecutionResult (output, output, rv.ExitCode) {
+				return new ExecutionResult (output, output, rv.ExitCode, rv.Duration) {
 					BinLogPath = binlogPath,
 				};
 			default:
@@ -505,13 +521,15 @@ namespace Xamarin.Tests {
 		public int ExitCode;
 		public bool TimedOut;
 		public string BinLogPath;
+		public TimeSpan Duration;
 
-		public ExecutionResult (string stdout, string stderr, int exitCode)
+		public ExecutionResult (string stdout, string stderr, int exitCode, TimeSpan duration)
 		{
 			StandardOutput = stdout;
 			StandardError = stderr;
 			ExitCode = exitCode;
 			BinLogPath = string.Empty;
+			Duration = duration;
 		}
 	}
 }

@@ -246,7 +246,19 @@ stages:
             $versionEndpoint = 'https://maestro.dot.net/api/assets/darc-version?api-version=2019-01-16'
             $darcVersion = $(Invoke-WebRequest -Uri $versionEndpoint -UseBasicParsing).Content
             $arcadeServicesSource = 'https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-eng/nuget/v3/index.json'
-            & dotnet tool update microsoft.dotnet.darc --version "$darcVersion" --add-source "$arcadeServicesSource" --tool-path $(Agent.ToolsDirectory)\darc -v n
+            # Write an isolated NuGet.config that
+            # clears all sources and lists only the internal dnceng feed, and pass it via --configfile so
+            # 'dotnet tool update' never probes a public feed.
+            $darcNuGetConfig = Join-Path "$(Agent.TempDirectory)" 'darc-nuget.config'
+            Set-Content -Path $darcNuGetConfig -Encoding utf8 -Value @(
+              '<?xml version="1.0" encoding="utf-8"?>',
+              '<configuration>',
+              '  <packageSources>',
+              '    <clear />',
+              "    <add key=""dotnet-eng"" value=""$arcadeServicesSource"" />",
+              '  </packageSources>',
+              '</configuration>')
+            & dotnet tool update microsoft.dotnet.darc --version "$darcVersion" --configfile "$darcNuGetConfig" --tool-path $(Agent.ToolsDirectory)\darc -v n
             & $(Agent.ToolsDirectory)\darc\darc add-build-to-channel --default-channels --id $(BARBuildId) --ci --publishing-infra-version 3 --azdev-pat $(System.AccessToken)
           # We can't use the global.json located in the root of our repo, because makes it required to use the exact .NET version we're referencing in our eng/Versions.Details.xml file.
           # So in order to not use it, we set the working directory to the parent directory of our repository.

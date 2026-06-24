@@ -1598,7 +1598,7 @@ namespace Mono.ApiTools {
 					}
 					// Other generic value types: recurse into args
 					var sb = new StringBuilder ();
-					sb.Append (RemoveArityAndClean (valueGenType.ElementType.FullName));
+					sb.Append (CleanForNullability (valueGenType.ElementType.FullName));
 					sb.Append ('[');
 					for (int i = 0; i < valueGenType.GenericArguments.Count; i++) {
 						if (i > 0)
@@ -1629,7 +1629,7 @@ namespace Mono.ApiTools {
 
 			if (type is GenericInstanceType genType) {
 				var sb = new StringBuilder ();
-				sb.Append (RemoveArityAndClean (genType.ElementType.FullName));
+				sb.Append (CleanForNullability (genType.ElementType.FullName));
 				sb.Append ('[');
 				for (int i = 0; i < genType.GenericArguments.Count; i++) {
 					if (i > 0)
@@ -1645,12 +1645,11 @@ namespace Mono.ApiTools {
 			return Utils.CleanupTypeName (type) + (isNullable ? "?" : "");
 		}
 
-		// Removes generic arity suffix (e.g., `1) and converts / to + for nested types.
-		static string RemoveArityAndClean (string name)
+		// Converts / to + for nested types (same as CleanupTypeName but without <> replacement,
+		// since we build the generic argument list ourselves with nullability annotations).
+		// The generic arity suffix (e.g., `2) is preserved because mono-api-html uses it to detect generics.
+		static string CleanForNullability (string name)
 		{
-			int backtick = name.IndexOf ('`');
-			if (backtick >= 0)
-				name = name.Substring (0, backtick);
 			return name.Replace ('/', '+');
 		}
 	}

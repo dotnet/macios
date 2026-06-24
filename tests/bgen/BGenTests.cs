@@ -1690,6 +1690,11 @@ namespace GeneratorTests {
 			// Async method: completion handler with non-nullable NSError should generate Tuple<bool,NSError>
 			Assert.That (contents, Does.Contain ("Action<bool, NSError>"), "ConfirmAcquiredNonNull should have non-nullable NSError in method parameter");
 			Assert.That (contents, Does.Contain ("Tuple<bool,NSError>"), "ConfirmAcquiredNonNull async should generate Tuple with non-nullable NSError");
+
+			// Async method with array arg before NSError (depth-first byte counting)
+			Assert.That (contents, Does.Contain ("Action<NSObject[]?, NSError?>"), "FetchItems should have nullable array and NSError");
+			// When NSError is nullable, async uses Task<T> with error→exception; the result type is the non-error arg
+			Assert.That (contents, Does.Contain ("Task<NSObject[]>"), "FetchItems async should return Task<NSObject[]> (nullable NSError triggers error handling)");
 		}
 
 		[Test]

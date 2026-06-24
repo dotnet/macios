@@ -34,20 +34,22 @@ class AsyncMethodInfo : MemberInformation {
 			// the NSError type argument is nullable.
 			var outerParam = mi.GetParameters ().Last ();
 			var nullabilityBytes = generator.AttributeManager.GetNullabilityBytes (outerParam);
-			if (nullabilityBytes is not null && nullabilityBytes.Length > 1) {
-				// Walk the type arguments depth-first to find the byte index for the last param.
-				// Value types don't consume bytes, reference types do.
-				// byte[0] is for the Action<> itself, then each reference type arg consumes one byte.
-				int byteIndex = 1; // start after the outer type byte
+			if (nullabilityBytes is not null && nullabilityBytes.Length == 1) {
+				// Single-byte (uniform) form: the same byte applies to all positions
+				IsNSErrorNullable = nullabilityBytes [0] == 2;
+			} else if (nullabilityBytes is not null && nullabilityBytes.Length > 1) {
+				// Multi-byte form: walk the type arguments depth-first to find the byte
+				// index for the last param (NSError). byte[0] is for the Action<> itself.
+				int byteIndex = 1;
 				var genericArgs = lastType.GetGenericArguments ();
 				for (int i = 0; i < genericArgs.Length; i++) {
-					if (!genericArgs [i].IsValueType) {
-						if (i == genericArgs.Length - 1) {
-							// This is the last generic argument (NSError)
-							IsNSErrorNullable = byteIndex < nullabilityBytes.Length && nullabilityBytes [byteIndex] == 2;
-						}
-						byteIndex++;
+					if (i == genericArgs.Length - 1) {
+						// This is the last generic argument (NSError), which is a reference type
+						IsNSErrorNullable = byteIndex < nullabilityBytes.Length && nullabilityBytes [byteIndex] == 2;
+						break;
 					}
+					// Advance the byte index past this argument's subtree
+					byteIndex += CountNullabilityBytes (genericArgs [i]);
 				}
 			} else {
 				IsNSErrorNullable = generator.AttributeManager.IsNullable (lastParam);
@@ -76,6 +78,34 @@ class AsyncMethodInfo : MemberInformation {
 
 			suggestion = "_" + suggestion;
 		}
+	}
+
+	// Counts how many nullability bytes a type subtree consumes in depth-first order.
+	// Value types consume 0 bytes (unless they are generic and contain reference type args).
+	// Reference types consume 1 byte for themselves, plus bytes for their generic args/element types.
+	static int CountNullabilityBytes (Type type)
+	{
+		if (type.IsValueType) {
+			// Value types don't consume a byte themselves, but their generic args might
+			var vtargs = type.GetGenericArguments ();
+			int count = 0;
+			foreach (var arg in vtargs)
+				count += CountNullabilityBytes (arg);
+			return count;
+		}
+
+		// Reference types consume 1 byte for themselves
+		int bytes = 1;
+
+		if (type.IsArray) {
+			bytes += CountNullabilityBytes (type.GetElementType ()!);
+		} else {
+			var targs = type.GetGenericArguments ();
+			foreach (var arg in targs)
+				bytes += CountNullabilityBytes (arg);
+		}
+
+		return bytes;
 	}
 
 }

@@ -262,13 +262,14 @@ public class TypeManager {
 		if (type is null) {
 			throw new BindingException (1065, true);
 		}
-		if (nullabilityBytes is null || nullabilityBytes.Length <= 1) {
+		if (nullabilityBytes is null || nullabilityBytes.Length == 0) {
 			return FormatTypeUsedIn (usedIn?.Namespace, type);
 		}
 
 		// The byte array encodes nullability for the type tree in depth-first order.
 		// Byte 0 is for the outer type itself (which the caller handles separately via
 		// [NullAllowed] / IsNullable), so we skip it. The rest are for generic arguments.
+		// A single-byte array means uniform nullability for all positions.
 		var targs = type.GetGenericArguments ();
 		if (targs.Length == 0) {
 			return FormatTypeUsedIn (usedIn?.Namespace, type);
@@ -276,7 +277,7 @@ public class TypeManager {
 
 		// Render the outer type name using the standard method (without nullability)
 		// and then render generic arguments with nullability from the byte array
-		int index = 1; // skip byte[0] (the outer type)
+		int index = nullabilityBytes.Length == 1 ? 0 : 1; // for single-byte (uniform), don't skip
 		var formattedArgs = new string [targs.Length];
 		for (int i = 0; i < targs.Length; i++) {
 			formattedArgs [i] = FormatTypeUsedIn (usedIn?.Namespace, targs [i], nullabilityBytes, ref index);
@@ -489,9 +490,16 @@ public class TypeManager {
 			return vname;
 		}
 
-		// Reference types consume one byte from the array
-		byte currentByte = index < nullabilityBytes.Length ? nullabilityBytes [index] : (byte) 0;
-		index++;
+		// Reference types consume one byte from the array.
+		// For single-byte (uniform) arrays, the same byte applies to all positions
+		// without incrementing the index.
+		byte currentByte;
+		if (nullabilityBytes.Length == 1) {
+			currentByte = nullabilityBytes [0];
+		} else {
+			currentByte = index < nullabilityBytes.Length ? nullabilityBytes [index] : (byte) 0;
+			index++;
+		}
 
 		bool isCurrentNullable = currentByte == 2;
 

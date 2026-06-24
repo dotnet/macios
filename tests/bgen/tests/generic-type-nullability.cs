@@ -82,5 +82,11 @@ namespace NS {
 		[Async]
 		[Export ("confirmAcquiredNonNull:completionHandler:")]
 		void ConfirmAcquiredNonNull (NSObject obj, Action<bool, NSError> completionHandler);
+
+		// Async method with array arg before NSError (tests depth-first byte counting:
+		// the array type consumes 2 bytes — one for the array itself and one for the element type)
+		[Async]
+		[Export ("fetchItems:completionHandler:")]
+		void FetchItems (NSObject obj, Action<NSObject[]?, NSError?> completionHandler);
 	}
 }

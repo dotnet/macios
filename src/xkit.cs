@@ -3759,11 +3759,6 @@ namespace UIKit {
 		[return: NullAllowed]
 		NSDictionary<NSString, NSObject> GetRenderingAttributes (NSTextLayoutManager textLayoutManager, NSObject link, INSTextLocation location, NSDictionary<NSString, NSObject> renderingAttributes);
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
-		[Export ("textLayoutManager:textViewportLayoutControllerForTextContainer:")]
-		[return: NullAllowed]
-		NSTextViewportLayoutController GetTextViewportLayoutController (NSTextLayoutManager textLayoutManager, NSTextContainer textContainer);
-
 		[TV (27, 0), iOS (27, 0), MacCatalyst (27, 0), Mac (27, 0)]
 		[Export ("textLayoutManager:cacheTextAttachmentViewProvider:forTextAttachment:")]
 		void CacheTextAttachmentViewProvider (NSTextLayoutManager textLayoutManager, NSTextAttachmentViewProvider viewProvider, NSTextAttachment textAttachment);

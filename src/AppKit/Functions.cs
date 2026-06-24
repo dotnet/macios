@@ -24,7 +24,6 @@
 using CoreGraphics;
 using CoreImage;
 using CoreAnimation;
-using CoreText;
 
 #nullable enable
 
@@ -40,24 +39,6 @@ namespace AppKit {
 		///         <remarks>To be added.</remarks>
 		[DllImport (Constants.AppKitLibrary)]
 		public static extern void NSBeep ();
-
-		[DllImport (Constants.AppKitLibrary, EntryPoint = "NSTextAlignmentToCTTextAlignment")]
-		static extern CTTextAlignment NSTextAlignmentToCTTextAlignmentInternal (nint nsTextAlignment);
-
-		/// <summary>Converts an <see cref="NSTextAlignment" /> value to its equivalent <see cref="CoreText.CTTextAlignment" /> value.</summary>
-		/// <param name="nsTextAlignment">The text alignment to convert.</param>
-		/// <returns>The equivalent Core Text alignment.</returns>
-		public static CTTextAlignment NSTextAlignmentToCTTextAlignment (NSTextAlignment nsTextAlignment)
-			=> NSTextAlignmentToCTTextAlignmentInternal ((nint) NSTextAlignmentExtensions.ToNative (nsTextAlignment));
-
-		[DllImport (Constants.AppKitLibrary, EntryPoint = "NSTextAlignmentFromCTTextAlignment")]
-		static extern nint NSTextAlignmentFromCTTextAlignmentInternal (CTTextAlignment ctTextAlignment);
-
-		/// <summary>Converts a <see cref="CoreText.CTTextAlignment" /> value to its equivalent <see cref="NSTextAlignment" /> value.</summary>
-		/// <param name="ctTextAlignment">The Core Text alignment to convert.</param>
-		/// <returns>The equivalent text alignment.</returns>
-		public static NSTextAlignment NSTextAlignmentFromCTTextAlignment (CTTextAlignment ctTextAlignment)
-			=> NSTextAlignmentExtensions.ToManaged ((nuint) NSTextAlignmentFromCTTextAlignmentInternal (ctTextAlignment));
 	}
 #endif
 }

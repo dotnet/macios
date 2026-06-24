@@ -15735,15 +15735,19 @@ namespace UIKit {
 
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
-#if XAMCORE_5_0
-	// -[UIScreen init] became a hard, uncatchable runtime trap on iOS/tvOS 27 ("not allowed, get a reference
-	// from your local hierarchy"). A UIScreen must always be obtained from the view hierarchy (e.g.
-	// view.Window.WindowScene.Screen), so the never-useful default ctor is removed in the next major (like the
-	// sibling 'UIScreenMode'). Until then the binding keeps the ctor for API compatibility, and the introspection
-	// ctor-init probe stays skipped for UIScreen on iOS/tvOS 27+ (see iOSApiCtorInitTest).
 	[DisableDefaultCtor]
-#endif
 	interface UIScreen : UITraitEnvironment {
+#if !XAMCORE_5_0
+		// -[UIScreen init] became a hard, uncatchable runtime trap on iOS/tvOS 27 ("not allowed, get a reference
+		// from your local hierarchy"). A UIScreen must always be obtained from the view hierarchy (e.g.
+		// view.Window.WindowScene.Screen), so the never-useful default ctor is removed in the next major (like the
+		// sibling 'UIScreenMode'). Until then the binding keeps the ctor for API compatibility, and the introspection
+		// ctor-init probe stays skipped for UIScreen on iOS/tvOS 27+ (see iOSApiCtorInitTest).
+		[Obsolete ("Do not use, this will crash. A UIScreen must always be obtained from the view hierarchy (e.g. view.Window.WindowScene.Screen).")]
+		[Export ("init")]
+		NativeHandle Constructor ();
+#endif
+
 		[Export ("bounds")]
 		CGRect Bounds { get; }
 

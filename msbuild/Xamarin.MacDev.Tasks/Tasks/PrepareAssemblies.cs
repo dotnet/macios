@@ -14,6 +14,7 @@ using Microsoft.Build.Utilities;
 
 using Xamarin.Build;
 using Xamarin.Bundler;
+using Xamarin.Localization.MSBuild;
 using Xamarin.Utils;
 
 #nullable enable
@@ -112,7 +113,7 @@ namespace Xamarin.MacDev.Tasks {
 
 				OutputAssemblies = outputAssemblies.ToArray ();
 				if (!rv && !Log.HasLoggedErrors)
-					Log.LogError ("The PrepareAssemblies task failed.");
+					Log.LogError (MSBStrings.E0192);
 				return rv && !Log.HasLoggedErrors;
 			} catch (Exception e) {
 				((IToolLog) this).LogException (e);

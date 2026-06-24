@@ -279,9 +279,12 @@ public class TypeManager {
 		// For multi-byte, skip byte 0 (the outer type, handled by the caller via [NullAllowed]).
 		int index = nullabilityBytes.Length == 1 ? 0 : 1;
 
-		// For array types, delegate to FormatTypeUsedIn which handles arrays with nullability
+		// For array types, format the element type with nullability. The array's own
+		// nullability (byte 0) is handled by the caller via [NullAllowed], so we only
+		// need to format the element type starting at index (which is past byte 0).
 		if (type.IsArray) {
-			return FormatTypeUsedIn (usedIn?.Namespace, type, nullabilityBytes, ref index);
+			var elementFormatted = FormatTypeUsedIn (usedIn?.Namespace, type.GetElementType (), nullabilityBytes, ref index);
+			return elementFormatted + "[" + new string (',', type.GetArrayRank () - 1) + "]";
 		}
 		var formattedArgs = new string [targs.Length];
 		for (int i = 0; i < targs.Length; i++) {

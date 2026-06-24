@@ -98,7 +98,9 @@ class AsyncMethodInfo : MemberInformation {
 		int bytes = 1;
 
 		if (type.IsArray) {
-			bytes += CountNullabilityBytes (type.GetElementType ()!);
+			var elementType = type.GetElementType ();
+			if (elementType is not null)
+				bytes += CountNullabilityBytes (elementType);
 		} else {
 			var targs = type.GetGenericArguments ();
 			foreach (var arg in targs)

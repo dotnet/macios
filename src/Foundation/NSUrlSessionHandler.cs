@@ -1490,13 +1490,7 @@ namespace Foundation {
 						}
 					}
 
-					try {
-						await Task.Delay (50, cancellationToken).ConfigureAwait (false);
-					} catch (TaskCanceledException ex) {
-						// add a nicer exception for the user to catch, add the cancelation exception
-						// to have a decent stack
-						throw new TimeoutException ("The request timed out.", ex);
-					}
+					await Task.Delay (50, cancellationToken).ConfigureAwait (false);
 				}
 
 				// try to throw again before read

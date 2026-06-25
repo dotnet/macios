@@ -9,6 +9,7 @@ concurrency:
 permissions:
   contents: read
   pull-requests: read
+environment: gh-aw-environment
 engine:
   id: copilot
   model: claude-sonnet-4.5
@@ -32,6 +33,7 @@ safe-outputs:
   max-patch-size: 10240
   create-pull-request:
     max: 10
+    draft: false
     signed-commits: false
     allowed-base-branches:
       - "net*.0"

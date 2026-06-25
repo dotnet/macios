@@ -2949,9 +2949,9 @@ public partial class Generator : IMemberGatherer {
 				if (!bt.IsValueType && AttributeManager.IsNullable (pi))
 					sb.Append ('?');
 			} else {
-				// Only apply nullability bytes for delegate types whose generic type parameters
-				// are all contravariant (Action<> variants). Func<> types have a covariant TResult
-				// which creates a type mismatch with the trampoline's CreateNullableBlock signature.
+				// Only apply nullability bytes for void-returning delegate types (Action<> variants).
+				// Func<> types have a covariant TResult which creates a type mismatch with the
+				// trampoline's CreateNullableBlock signature.
 				byte []? nullabilityBytes = null;
 				if (parType.IsSubclassOf (TypeCache.System_Delegate)) {
 					var invokeMethod = parType.GetMethod ("Invoke");
@@ -4149,9 +4149,9 @@ public partial class Generator : IMemberGatherer {
 			// it remains nullable only if the BindAs type can be null (i.e. a reference type)
 			nullable = !bindAsAttrib.Type.IsValueType && AttributeManager.IsNullable (pi);
 		} else {
-			// Only apply nullability bytes for delegate types whose generic type parameters
-			// are all contravariant (Action<> variants). Func<> types have a covariant TResult
-			// which creates a type mismatch with the trampoline's CreateNullableBlock signature.
+			// Only apply nullability bytes for void-returning delegate types (Action<> variants).
+			// Func<> types have a covariant TResult which creates a type mismatch with the
+			// trampoline's CreateNullableBlock signature.
 			byte []? nullabilityBytes = null;
 			if (pi.PropertyType.IsSubclassOf (TypeCache.System_Delegate)) {
 				var invokeMethod = pi.PropertyType.GetMethod ("Invoke");

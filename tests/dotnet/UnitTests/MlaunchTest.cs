@@ -98,7 +98,7 @@ namespace Xamarin.Tests {
 
 			if (!BinLog.TryFindPropertyValue (rv.BinLogPath, "RunCommand", out var runCommand))
 				Assert.Fail ("Could not find the property 'RunCommand' in the binlog.");
-			Assert.That (runCommand, Is.EqualTo ($"'{mlaunchPath}'"), "Run command");
+			Assert.That (runCommand, Is.EqualTo ($"{mlaunchPath}"), "Run command");
 
 			var expectedArguments = new StringBuilder ();
 			var isSim = runtimeIdentifiers.Contains ("simulator");

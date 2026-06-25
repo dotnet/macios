@@ -4077,14 +4077,14 @@ public partial class Generator : IMemberGatherer {
 
 				if (TypeManager.IsDictionaryContainerType (pi.PropertyType)) {
 					print ("var src = {0} is not null ? new NSMutableDictionary ({0}) : null;", wrap);
-					print ("return src is null ? null! : new {0}(src);", TypeManager.FormatType (pi.DeclaringType, pi.PropertyType));
+					print ("return src is null ? null! : new {0}(src);", TypeManager.FormatType (pi.DeclaringType, pi.PropertyType, wrapNullabilityBytes));
 				} else {
 					if (TypeManager.IsArrayOfWrappedType (pi.PropertyType))
-						print ("return NSArray.FromArray<{0}>({1} as NSArray){2};", TypeManager.FormatType (pi.DeclaringType, pi.PropertyType.GetElementType ()), wrap, nullable ? "" : "!");
+						print ("return NSArray.FromArray<{0}>({1} as NSArray){2};", TypeManager.FormatType (pi.DeclaringType, pi.PropertyType.GetElementType (), wrapNullabilityBytes), wrap, nullable ? "" : "!");
 					else if (pi.PropertyType.IsValueType)
-						print ("return ({0}) ({1});", TypeManager.FormatType (pi.DeclaringType, pi.PropertyType), wrap);
+						print ("return ({0}) ({1});", TypeManager.FormatType (pi.DeclaringType, pi.PropertyType, wrapNullabilityBytes), wrap);
 					else
-						print ("return ({0} as {1})!;", wrap, TypeManager.FormatType (pi.DeclaringType, pi.PropertyType));
+						print ("return ({0} as {1})!;", wrap, TypeManager.FormatType (pi.DeclaringType, pi.PropertyType, wrapNullabilityBytes));
 				}
 				indent--;
 				print ("}");

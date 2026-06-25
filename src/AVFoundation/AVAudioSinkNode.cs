@@ -11,6 +11,23 @@ namespace AVFoundation {
 #endif // XAMCORE_5_0
 
 	public partial class AVAudioSinkNode {
+		[SupportedOSPlatform ("ios27.0")]
+		[SupportedOSPlatform ("tvos27.0")]
+		[SupportedOSPlatform ("macos27.0")]
+		[SupportedOSPlatform ("maccatalyst27.0")]
+#if XAMCORE_5_0
+		public static AVAudioSinkNode CreateRealtimeSafe (AVAudioSinkNodeReceiverHandler receiverHandler)
+#else
+		public static AVAudioSinkNode CreateRealtimeSafe (AVAudioSinkNodeReceiverHandler2 receiverHandler)
+#endif
+			=> new AVAudioSinkNode (GetHandler (receiverHandler), realtimeSafe: true);
+
+		AVAudioSinkNode (AVAudioSinkNodeReceiverHandlerRaw receiverHandler, bool realtimeSafe)
+			: base (NSObjectFlag.Empty)
+		{
+			InitializeHandle (_InitWithRealtimeSafeReceiverBlock (receiverHandler), "initWithRealtimeSafeReceiverBlock:");
+		}
+
 #if !XAMCORE_5_0
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Obsolete ("Use the overload that takes a delegate that does not take a 'ref AudioBuffers' instead. Assigning a value to the 'inputData' parameter in the callback has no effect.")]

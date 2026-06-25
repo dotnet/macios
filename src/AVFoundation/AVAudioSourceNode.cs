@@ -42,6 +42,40 @@ namespace AVFoundation {
 #endif // XAMCORE_5_0
 
 	public partial class AVAudioSourceNode {
+		[SupportedOSPlatform ("ios27.0")]
+		[SupportedOSPlatform ("tvos27.0")]
+		[SupportedOSPlatform ("macos27.0")]
+		[SupportedOSPlatform ("maccatalyst27.0")]
+#if XAMCORE_5_0
+		public static AVAudioSourceNode CreateRealtimeSafe (AVAudioSourceNodeRenderHandler renderHandler)
+#else
+		public static AVAudioSourceNode CreateRealtimeSafe (AVAudioSourceNodeRenderHandler3 renderHandler)
+#endif
+			=> new AVAudioSourceNode (GetHandler (renderHandler), realtimeSafe: true);
+
+		[SupportedOSPlatform ("ios27.0")]
+		[SupportedOSPlatform ("tvos27.0")]
+		[SupportedOSPlatform ("macos27.0")]
+		[SupportedOSPlatform ("maccatalyst27.0")]
+#if XAMCORE_5_0
+		public static AVAudioSourceNode CreateRealtimeSafe (AVAudioFormat format, AVAudioSourceNodeRenderHandler renderHandler)
+#else
+		public static AVAudioSourceNode CreateRealtimeSafe (AVAudioFormat format, AVAudioSourceNodeRenderHandler3 renderHandler)
+#endif
+			=> new AVAudioSourceNode (format, GetHandler (renderHandler), realtimeSafe: true);
+
+		AVAudioSourceNode (AVAudioSourceNodeRenderHandlerRaw renderHandler, bool realtimeSafe)
+			: base (NSObjectFlag.Empty)
+		{
+			InitializeHandle (_InitWithRealtimeSafeRenderBlock (renderHandler), "initWithRealtimeSafeRenderBlock:");
+		}
+
+		AVAudioSourceNode (AVAudioFormat format, AVAudioSourceNodeRenderHandlerRaw renderHandler, bool realtimeSafe)
+			: base (NSObjectFlag.Empty)
+		{
+			InitializeHandle (_InitWithFormatRealtimeSafeRenderBlock (format, renderHandler), "initWithFormat:realtimeSafeRenderBlock:");
+		}
+
 #if !XAMCORE_5_0
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Obsolete ("Use the overload that takes a delegate that does not take a 'ref AudioBuffers' instead. Assigning a value to the 'inputData' parameter in the callback has no effect.")]

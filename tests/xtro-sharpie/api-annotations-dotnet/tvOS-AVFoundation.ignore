@@ -21,3 +21,7 @@
 ## Introspection says otherwise
 !missing-selector! +AVCaptionRenderer::captionPreviewForProfileID:extendedLanguageTag:renderSize: not bound
 !missing-type! AVCaptionRenderer not bound
+
+# AVAudioSessionInterruptionReasonKey is API_UNAVAILABLE(tvos); the header's contradictory
+# API_DEPRECATED(tvos(14.5, 27.0)) makes upstream libclang believe it exists on tvOS.
+!missing-field! AVAudioSessionInterruptionReasonKey not bound

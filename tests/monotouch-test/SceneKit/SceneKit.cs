@@ -15,21 +15,24 @@ namespace Xamarin.Mac.Tests {
 		public void SCNGeometrySourceSemantic_ColorKeyTest ()
 		{
 			NSString s = SCNGeometrySourceSemantic.Color;
-			Assert.IsTrue (s is not null && s != (NSString) (string.Empty));
+			Assert.That (s, Is.Not.Null);
+			Assert.That (s, Is.Not.EqualTo ((NSString) (string.Empty)));
 		}
 
 		[Test]
 		public void SCNPhysicsTestKeys_SearchModeKeyTest ()
 		{
 			NSString s = SCNPhysicsTestKeys.SearchModeKey;
-			Assert.IsTrue (s is not null && s != (NSString) (string.Empty));
+			Assert.That (s, Is.Not.Null);
+			Assert.That (s, Is.Not.EqualTo ((NSString) (string.Empty)));
 		}
 
 		[Test]
 		public void SCNSceneSourceLoading_AnimationImportPolicyKeyTest ()
 		{
 			NSString s = SCNSceneSourceLoading.AnimationImportPolicyKey;
-			Assert.IsTrue (s is not null && s != (NSString) (string.Empty));
+			Assert.That (s, Is.Not.Null);
+			Assert.That (s, Is.Not.EqualTo ((NSString) (string.Empty)));
 		}
 	}
 }

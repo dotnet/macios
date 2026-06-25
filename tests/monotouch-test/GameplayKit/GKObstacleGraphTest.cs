@@ -26,7 +26,7 @@ namespace MonoTouchFixtures.GameplayKit {
 			};
 			var obstacle = GKPolygonObstacle.FromPoints (points);
 			var graph = GKObstacleGraph.FromObstacles (new GKPolygonObstacle [] { obstacle }, 1.0f);
-			Assert.IsNotNull (graph, "graph");
+			Assert.That (graph, Is.Not.Null, "graph");
 
 			var nodes = graph!.GetNodes (obstacle);
 			// May return null or a valid array depending on the graph state
@@ -43,7 +43,7 @@ namespace MonoTouchFixtures.GameplayKit {
 			var otherNodes = graph.GetNodes (otherObstacle);
 			// An obstacle not in the graph may return null or an empty array
 			if (otherNodes is not null)
-				Assert.AreEqual (0, otherNodes.Length, "otherNodes/empty");
+				Assert.That (otherNodes.Length, Is.EqualTo (0), "otherNodes/empty");
 		}
 	}
 }

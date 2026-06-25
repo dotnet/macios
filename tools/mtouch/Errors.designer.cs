@@ -3354,6 +3354,15 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot find the product assembly &apos;{0}&apos; in the list of loaded assemblies..
+        /// </summary>
+        public static string MX1504 {
+            get {
+                return ResourceManager.GetString("MX1504", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Not a Mach-O dynamic library (unknown header &apos;0x{0}&apos;): {1}..
         /// </summary>
         public static string MX1600 {
@@ -3521,6 +3530,87 @@ namespace Xamarin.Bundler {
         public static string MX2112_B {
             get {
                 return ResourceManager.GetString("MX2112_B", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unsupported primitive field type &apos;{0}&apos; for symbol &apos;{1}&apos; in method &apos;{2}&apos;. Sub-optimal but functional code will be generated. Please file an issue at https://github.com/dotnet/macios/issues/new.
+        /// </summary>
+        public static string MX2254 {
+            get {
+                return ResourceManager.GetString("MX2254", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown or unsupported Dlfcn pattern: &apos;{0}&apos; in method &apos;{1}&apos;. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new.
+        /// </summary>
+        public static string MX2255 {
+            get {
+                return ResourceManager.GetString("MX2255", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The field type &apos;{0}&apos; for symbol &apos;{1}&apos; in method &apos;{2}&apos; is not an NSObject subclass. Please file an issue at https://github.com/dotnet/macios/issues/new.
+        /// </summary>
+        public static string MX2256 {
+            get {
+                return ResourceManager.GetString("MX2256", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown IL sequence for method with call to Dlfcn.CachePointer: &apos;{0}&apos; in method &apos;{1}&apos;. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new.
+        /// </summary>
+        public static string MX2257 {
+            get {
+                return ResourceManager.GetString("MX2257", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;{0}&apos; is marked with a malformed simulator availability attribute: {1}. Please file an issue at https://github.com/dotnet/macios/issues/new.
+        /// </summary>
+        public static string MX2258 {
+            get {
+                return ResourceManager.GetString("MX2258", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;{0}&apos; is marked with a simulator availability attribute with an invalid version: {1}. Please file an issue at https://github.com/dotnet/macios/issues/new.
+        /// </summary>
+        public static string MX2259 {
+            get {
+                return ResourceManager.GetString("MX2259", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;{0}&apos; has conflicting simulator availability attributes for the &apos;{1}&apos; platform (both SupportedSimulator and UnsupportedSimulator). Please file an issue at https://github.com/dotnet/macios/issues/new.
+        /// </summary>
+        public static string MX2260 {
+            get {
+                return ResourceManager.GetString("MX2260", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;{0}&apos; has multiple SupportedSimulator attributes for the &apos;{1}&apos; platform. Please file an issue at https://github.com/dotnet/macios/issues/new.
+        /// </summary>
+        public static string MX2261 {
+            get {
+                return ResourceManager.GetString("MX2261", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The &apos;InlineClassGetHandle&apos; option is set to &apos;Strict&apos;, but we&apos;re using the dynamic registrar. This is not a supported configuration, because &apos;Strict&apos; mode requires exported Objective-C classes to be available at compile time, but the dynamic registrar will create them at runtime. Please either change the &apos;InlineClassGetHandle&apos; option to &apos;Disabled&apos; or &apos;Compat&apos;, or switch to using the static registrar..
+        /// </summary>
+        public static string MX2262 {
+            get {
+                return ResourceManager.GetString("MX2262", resourceCulture);
             }
         }
         

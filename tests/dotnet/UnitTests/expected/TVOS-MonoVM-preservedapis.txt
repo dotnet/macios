@@ -99,7 +99,6 @@ Microsoft.tvOS.dll:Foundation.NSObject..ctor()
 Microsoft.tvOS.dll:Foundation.NSObject..ctor(Foundation.NSObjectFlag)
 Microsoft.tvOS.dll:Foundation.NSObject..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.tvOS.dll:Foundation.NSObject..ctor(ObjCRuntime.NativeHandle)
-Microsoft.tvOS.dll:Foundation.NSObject.AllocateData()
 Microsoft.tvOS.dll:Foundation.NSObject.AllocIfNeeded()
 Microsoft.tvOS.dll:Foundation.NSObject.ClearHandle()
 Microsoft.tvOS.dll:Foundation.NSObject.ConformsToProtocol(ObjCRuntime.NativeHandle)
@@ -125,18 +124,15 @@ Microsoft.tvOS.dll:Foundation.NSObject.get_Handle()
 Microsoft.tvOS.dll:Foundation.NSObject.get_InFinalizerQueue()
 Microsoft.tvOS.dll:Foundation.NSObject.get_IsDirectBinding()
 Microsoft.tvOS.dll:Foundation.NSObject.get_IsRegisteredToggleRef()
-Microsoft.tvOS.dll:Foundation.NSObject.get_SuperHandle()
 Microsoft.tvOS.dll:Foundation.NSObject.GetData()
 Microsoft.tvOS.dll:Foundation.NSObject.GetHashCode()
 Microsoft.tvOS.dll:Foundation.NSObject.GetNativeHash()
-Microsoft.tvOS.dll:Foundation.NSObject.GetSuper()
 Microsoft.tvOS.dll:Foundation.NSObject.Initialize()
 Microsoft.tvOS.dll:Foundation.NSObject.InitializeHandle(ObjCRuntime.NativeHandle, System.String, System.Boolean)
 Microsoft.tvOS.dll:Foundation.NSObject.InitializeHandle(ObjCRuntime.NativeHandle, System.String)
 Microsoft.tvOS.dll:Foundation.NSObject.InitializeObject(System.Boolean)
 Microsoft.tvOS.dll:Foundation.NSObject.InvokeConformsToProtocol(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:Foundation.NSObject.IsEqual(Foundation.NSObject)
-Microsoft.tvOS.dll:Foundation.NSObject.RecreateDataHandle()
 Microsoft.tvOS.dll:Foundation.NSObject.ReleaseManagedRef()
 Microsoft.tvOS.dll:Foundation.NSObject.set_disposed(System.Boolean)
 Microsoft.tvOS.dll:Foundation.NSObject.set_flags(Foundation.NSObject/Flags)
@@ -174,16 +170,10 @@ Microsoft.tvOS.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/
 Microsoft.tvOS.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::InitialSet
 Microsoft.tvOS.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::None
 Microsoft.tvOS.dll:Foundation.NSObjectData
-Microsoft.tvOS.dll:Foundation.NSObjectData* Foundation.NSObject::__data_for_mono
 Microsoft.tvOS.dll:Foundation.NSObjectData* Foundation.NSObjectDataHandle::Data()
 Microsoft.tvOS.dll:Foundation.NSObjectDataHandle
-Microsoft.tvOS.dll:Foundation.NSObjectDataHandle Foundation.NSObject::data_handle
 Microsoft.tvOS.dll:Foundation.NSObjectDataHandle..ctor()
-Microsoft.tvOS.dll:Foundation.NSObjectDataHandle..ctor(System.IntPtr)
 Microsoft.tvOS.dll:Foundation.NSObjectDataHandle.get_Data()
-Microsoft.tvOS.dll:Foundation.NSObjectDataHandle.get_IsInvalid()
-Microsoft.tvOS.dll:Foundation.NSObjectDataHandle.Invalidate()
-Microsoft.tvOS.dll:Foundation.NSObjectDataHandle.ReleaseHandle()
 Microsoft.tvOS.dll:Foundation.NSObjectFlag
 Microsoft.tvOS.dll:Foundation.NSObjectFlag Foundation.NSObjectFlag::Empty
 Microsoft.tvOS.dll:Foundation.ProtocolAttribute
@@ -193,6 +183,12 @@ Microsoft.tvOS.dll:Foundation.RegisterAttribute
 Microsoft.tvOS.dll:Foundation.RegisterAttribute..ctor(System.String, System.Boolean)
 Microsoft.tvOS.dll:Foundation.RegisterAttribute..ctor(System.String)
 Microsoft.tvOS.dll:Foundation.RegisterAttribute.get_IsWrapper()
+Microsoft.tvOS.dll:Foundation.TrackedMemory
+Microsoft.tvOS.dll:Foundation.TrackedMemory..ctor(System.UIntPtr)
+Microsoft.tvOS.dll:Foundation.TrackedMemory.CreateHandle(Foundation.NSObject)
+Microsoft.tvOS.dll:Foundation.TrackedMemory.Finalize()
+Microsoft.tvOS.dll:Foundation.TrackedMemory.get_Value()
+Microsoft.tvOS.dll:Foundation.TrackedMemory.set_Value(System.IntPtr)
 Microsoft.tvOS.dll:Foundation.You_Should_Not_Call_base_In_This_Method
 Microsoft.tvOS.dll:Foundation.You_Should_Not_Call_base_In_This_Method..ctor()
 Microsoft.tvOS.dll:ObjCRuntime.__Registrar__
@@ -348,17 +344,17 @@ Microsoft.tvOS.dll:ObjCRuntime.MarshalObjectiveCExceptionMode ObjCRuntime.Runtim
 Microsoft.tvOS.dll:ObjCRuntime.Messaging
 Microsoft.tvOS.dll:ObjCRuntime.Messaging.bool_objc_msgSend_IntPtr(System.IntPtr, System.IntPtr, System.IntPtr)
 Microsoft.tvOS.dll:ObjCRuntime.Messaging.bool_objc_msgSend_NativeHandle(System.IntPtr, System.IntPtr, ObjCRuntime.NativeHandle)
-Microsoft.tvOS.dll:ObjCRuntime.Messaging.bool_objc_msgSendSuper_IntPtr(System.IntPtr, System.IntPtr, System.IntPtr)
-Microsoft.tvOS.dll:ObjCRuntime.Messaging.bool_objc_msgSendSuper_NativeHandle(System.IntPtr, System.IntPtr, ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:ObjCRuntime.Messaging.bool_objc_msgSendSuper_IntPtr(ObjCRuntime.ObjCSuper*, System.IntPtr, System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Messaging.bool_objc_msgSendSuper_NativeHandle(ObjCRuntime.ObjCSuper*, System.IntPtr, ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:ObjCRuntime.Messaging.CGRect_objc_msgSend(System.IntPtr, System.IntPtr)
 Microsoft.tvOS.dll:ObjCRuntime.Messaging.IntPtr_objc_msgSend(System.IntPtr, System.IntPtr)
-Microsoft.tvOS.dll:ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper(System.IntPtr, System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper(ObjCRuntime.ObjCSuper*, System.IntPtr)
 Microsoft.tvOS.dll:ObjCRuntime.Messaging.NativeHandle_objc_msgSend_CGRect(System.IntPtr, System.IntPtr, CoreGraphics.CGRect)
 Microsoft.tvOS.dll:ObjCRuntime.Messaging.NativeHandle_objc_msgSend_NativeHandle(System.IntPtr, System.IntPtr, ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:ObjCRuntime.Messaging.NativeHandle_objc_msgSend(System.IntPtr, System.IntPtr)
-Microsoft.tvOS.dll:ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper(System.IntPtr, System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper(ObjCRuntime.ObjCSuper*, System.IntPtr)
 Microsoft.tvOS.dll:ObjCRuntime.Messaging.UIntPtr_objc_msgSend(System.IntPtr, System.IntPtr)
-Microsoft.tvOS.dll:ObjCRuntime.Messaging.UIntPtr_objc_msgSendSuper(System.IntPtr, System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Messaging.UIntPtr_objc_msgSendSuper(ObjCRuntime.ObjCSuper*, System.IntPtr)
 Microsoft.tvOS.dll:ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle_NativeHandle_bool(System.IntPtr, System.IntPtr, ObjCRuntime.NativeHandle, ObjCRuntime.NativeHandle, System.Byte)
 Microsoft.tvOS.dll:ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle_UIntPtr(System.IntPtr, System.IntPtr, ObjCRuntime.NativeHandle, System.UIntPtr)
 Microsoft.tvOS.dll:ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle(System.IntPtr, System.IntPtr, ObjCRuntime.NativeHandle)
@@ -377,8 +373,6 @@ Microsoft.tvOS.dll:ObjCRuntime.NativeHandle Foundation.NSObject::class_ptr
 Microsoft.tvOS.dll:ObjCRuntime.NativeHandle Foundation.NSObject::ClassHandle()
 Microsoft.tvOS.dll:ObjCRuntime.NativeHandle Foundation.NSObject::handle()
 Microsoft.tvOS.dll:ObjCRuntime.NativeHandle Foundation.NSObject::Handle()
-Microsoft.tvOS.dll:ObjCRuntime.NativeHandle Foundation.NSObject::SuperHandle()
-Microsoft.tvOS.dll:ObjCRuntime.NativeHandle Foundation.NSObjectData::classHandle
 Microsoft.tvOS.dll:ObjCRuntime.NativeHandle Foundation.NSObjectData::handle
 Microsoft.tvOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.Class::handle
 Microsoft.tvOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.Class::Handle()
@@ -386,6 +380,8 @@ Microsoft.tvOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.DisposableObject::handle
 Microsoft.tvOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.DisposableObject::Handle()
 Microsoft.tvOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.INativeObject::Handle()
 Microsoft.tvOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.NativeHandle::Zero
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.ObjCSuper::classHandle
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.ObjCSuper::receiver
 Microsoft.tvOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.Runtime/ClassHandles::unused
 Microsoft.tvOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.Selector::handle
 Microsoft.tvOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.Selector::Handle()
@@ -428,6 +424,8 @@ Microsoft.tvOS.dll:ObjCRuntime.ObjCException.get_Name()
 Microsoft.tvOS.dll:ObjCRuntime.ObjCException.get_NSException()
 Microsoft.tvOS.dll:ObjCRuntime.ObjCException.get_Reason()
 Microsoft.tvOS.dll:ObjCRuntime.ObjCException.ToString()
+Microsoft.tvOS.dll:ObjCRuntime.ObjCSuper
+Microsoft.tvOS.dll:ObjCRuntime.ObjCSuper..ctor(Foundation.NSObject)
 Microsoft.tvOS.dll:ObjCRuntime.RegistrarHelper
 Microsoft.tvOS.dll:ObjCRuntime.RegistrarHelper.ConstructINativeObject`1(System.Type, ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.tvOS.dll:ObjCRuntime.RegistrarHelper.ConstructNSObject`1(System.Type, ObjCRuntime.NativeHandle)
@@ -662,8 +660,6 @@ Microsoft.tvOS.dll:System.Boolean Foundation.NSObject::InFinalizerQueue()
 Microsoft.tvOS.dll:System.Boolean Foundation.NSObject::IsDirectBinding()
 Microsoft.tvOS.dll:System.Boolean Foundation.NSObject::IsRegisteredToggleRef()
 Microsoft.tvOS.dll:System.Boolean Foundation.NSObject/NSObject_Disposer::draining
-Microsoft.tvOS.dll:System.Boolean Foundation.NSObjectDataHandle::invalidated
-Microsoft.tvOS.dll:System.Boolean Foundation.NSObjectDataHandle::IsInvalid()
 Microsoft.tvOS.dll:System.Boolean Foundation.ProtocolAttribute::<BackwardsCompatibleCodeGeneration>k__BackingField
 Microsoft.tvOS.dll:System.Boolean Foundation.RegisterAttribute::is_wrapper
 Microsoft.tvOS.dll:System.Boolean Foundation.RegisterAttribute::IsWrapper()
@@ -719,7 +715,10 @@ Microsoft.tvOS.dll:System.Int32 ObjCRuntime.TransientString/Encoding::value__
 Microsoft.tvOS.dll:System.IntPtr CoreFoundation.CFArray::_CFNullHandle()
 Microsoft.tvOS.dll:System.IntPtr CoreFoundation.CFRange::len
 Microsoft.tvOS.dll:System.IntPtr CoreFoundation.CFRange::loc
+Microsoft.tvOS.dll:System.IntPtr Foundation.NSObject::__data
 Microsoft.tvOS.dll:System.IntPtr Foundation.NSObject/NSObject_Disposer::class_ptr
+Microsoft.tvOS.dll:System.IntPtr Foundation.TrackedMemory::<Value>k__BackingField
+Microsoft.tvOS.dll:System.IntPtr Foundation.TrackedMemory::Value()
 Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.BlockCollector::block
 Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Libraries/CoreFoundation::Handle
 Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.NativeHandle::handle
@@ -848,8 +847,11 @@ Microsoft.tvOS.dll:System.IntPtr* ObjCRuntime.Runtime/MTRegistrationMap::classHa
 Microsoft.tvOS.dll:System.Object Foundation.NSObject/NSObject_Disposer::lock_obj
 Microsoft.tvOS.dll:System.Object ObjCRuntime.Runtime::lock_obj
 Microsoft.tvOS.dll:System.Reflection.Assembly Foundation.NSObject::PlatformAssembly
+Microsoft.tvOS.dll:System.Runtime.CompilerServices.ConditionalWeakTable`2<Foundation.NSObject,Foundation.NSObjectDataHandle> Foundation.NSObject::data_table
+Microsoft.tvOS.dll:System.Runtime.CompilerServices.ConditionalWeakTable`2<Foundation.NSObject,Foundation.TrackedMemory> Foundation.NSObject::super_map
 Microsoft.tvOS.dll:System.Runtime.CompilerServices.ConditionalWeakTable`2<System.Delegate,ObjCRuntime.BlockCollector> ObjCRuntime.Runtime::block_lifetime_table
 Microsoft.tvOS.dll:System.Runtime.CompilerServices.ConditionalWeakTable`2<System.Reflection.Assembly,System.String> ObjCRuntime.Class::assembly_to_name
+Microsoft.tvOS.dll:System.Runtime.InteropServices.GCHandle Foundation.TrackedMemory::handle
 Microsoft.tvOS.dll:System.Runtime.InteropServices.NFloat CoreGraphics.CGRect::height
 Microsoft.tvOS.dll:System.Runtime.InteropServices.NFloat CoreGraphics.CGRect::width
 Microsoft.tvOS.dll:System.Runtime.InteropServices.NFloat CoreGraphics.CGRect::x
@@ -1943,14 +1945,12 @@ System.Private.CoreLib.dll:System.Boolean System.Runtime.CompilerServices.Nullab
 System.Private.CoreLib.dll:System.Boolean System.Runtime.CompilerServices.RuntimeCompatibilityAttribute::<WrapNonExceptionThrows>k__BackingField
 System.Private.CoreLib.dll:System.Boolean System.Runtime.CompilerServices.RuntimeCompatibilityAttribute::WrapNonExceptionThrows()
 System.Private.CoreLib.dll:System.Boolean System.Runtime.DependentHandle::IsAllocated()
-System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.CriticalHandle::_isClosed
-System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.CriticalHandle::IsClosed()
-System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.CriticalHandle::IsInvalid()
 System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.DllImportAttribute::BestFitMapping
 System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.DllImportAttribute::ExactSpelling
 System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.DllImportAttribute::PreserveSig
 System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.DllImportAttribute::SetLastError
 System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.DllImportAttribute::ThrowOnUnmappableChar
+System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.GCHandle::IsAllocated()
 System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.Marshalling.SafeHandleMarshaller`1/ManagedToUnmanagedIn::_addRefd
 System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.Marshalling.SafeHandleMarshaller`1/ManagedToUnmanagedOut::_initialized
 System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.Marshalling.Utf8StringMarshaller/ManagedToUnmanagedIn::_allocated
@@ -5969,7 +5969,6 @@ System.Private.CoreLib.dll:System.IntPtr System.Reflection.RuntimePropertyInfo::
 System.Private.CoreLib.dll:System.IntPtr System.Reflection.RuntimePropertyInfo::prop
 System.Private.CoreLib.dll:System.IntPtr System.Runtime.CompilerServices.QCallAssembly::_assembly
 System.Private.CoreLib.dll:System.IntPtr System.Runtime.CompilerServices.QCallTypeHandle::_handle
-System.Private.CoreLib.dll:System.IntPtr System.Runtime.InteropServices.CriticalHandle::handle
 System.Private.CoreLib.dll:System.IntPtr System.Runtime.InteropServices.GCHandle::_handle
 System.Private.CoreLib.dll:System.IntPtr System.Runtime.InteropServices.SafeHandle::handle
 System.Private.CoreLib.dll:System.IntPtr System.Runtime.InteropServices.WeakGCHandle`1::_handle
@@ -8485,15 +8484,6 @@ System.Private.CoreLib.dll:System.Runtime.InteropServices.CollectionsMarshal
 System.Private.CoreLib.dll:System.Runtime.InteropServices.CollectionsMarshal.GetValueRefOrAddDefault`2(System.Collections.Generic.Dictionary`2<TKey,TValue>, TKey, out System.Boolean&)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.ComImportAttribute
 System.Private.CoreLib.dll:System.Runtime.InteropServices.ComImportAttribute..ctor()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.CriticalHandle
-System.Private.CoreLib.dll:System.Runtime.InteropServices.CriticalHandle..ctor(System.IntPtr)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.CriticalHandle.Cleanup()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.CriticalHandle.Dispose()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.CriticalHandle.Dispose(System.Boolean)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.CriticalHandle.Finalize()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.CriticalHandle.get_IsClosed()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.CriticalHandle.get_IsInvalid()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.CriticalHandle.ReleaseHandle()
 System.Private.CoreLib.dll:System.Runtime.InteropServices.DefaultDllImportSearchPathsAttribute
 System.Private.CoreLib.dll:System.Runtime.InteropServices.DefaultDllImportSearchPathsAttribute..ctor(System.Runtime.InteropServices.DllImportSearchPath)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.DllImportAttribute
@@ -8521,6 +8511,7 @@ System.Private.CoreLib.dll:System.Runtime.InteropServices.GCHandle.Equals(System
 System.Private.CoreLib.dll:System.Runtime.InteropServices.GCHandle.Equals(System.Runtime.InteropServices.GCHandle)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.GCHandle.Free()
 System.Private.CoreLib.dll:System.Runtime.InteropServices.GCHandle.FromIntPtr(System.IntPtr)
+System.Private.CoreLib.dll:System.Runtime.InteropServices.GCHandle.get_IsAllocated()
 System.Private.CoreLib.dll:System.Runtime.InteropServices.GCHandle.get_Target()
 System.Private.CoreLib.dll:System.Runtime.InteropServices.GCHandle.GetHandleValue(System.IntPtr)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.GCHandle.GetHashCode()

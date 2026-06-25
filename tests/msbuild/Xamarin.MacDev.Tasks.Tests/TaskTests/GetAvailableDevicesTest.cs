@@ -31,7 +31,7 @@ namespace Xamarin.MacDev.Tasks {
 				SimCtlJson = simctlJson,
 				DeviceCtlJson = devicectlJson,
 			};
-			task.SdkDevPath = Configuration.xcode_root;
+			task.SdkDevPath = Configuration.XcodeLocation;
 			task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (platform).ToString ();
 
 			if (!string.IsNullOrEmpty (appManifest)) {
@@ -58,7 +58,7 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			var platform = ApplePlatform.iOS;
 			var task = CreateTask (platform, simctl, devicectl);
-			Assert.IsTrue (task.Execute (), "Task should have succeeded.");
+			Assert.That (task.Execute (), Is.True, "Task should have succeeded.");
 			Assert.That (task.Devices.Count, Is.EqualTo (0), "Devices should be empty.");
 			Assert.That (task.DiscardedDevices.Count, Is.EqualTo (0), "No devices should have been discarded.");
 		}
@@ -68,7 +68,7 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			var platform = ApplePlatform.iOS;
 			var task = CreateTask (platform, "", DEVICECTL_JSON_1);
-			Assert.IsTrue (task.Execute (), "Task should have succeeded.");
+			Assert.That (task.Execute (), Is.True, "Task should have succeeded.");
 			Assert.Multiple (() => {
 				Assert.That (task.Devices.Count, Is.EqualTo (3), "Devices count mismatch.");
 				Assert.That (task.DiscardedDevices.Count, Is.EqualTo (1), "Discarded device count mismatch.");
@@ -111,7 +111,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			var platform = ApplePlatform.iOS;
 			var task = CreateTask (platform, SIMCTL_JSON_1, "");
-			Assert.IsTrue (task.Execute (), "Task should have succeeded.");
+			Assert.That (task.Execute (), Is.True, "Task should have succeeded.");
 			Assert.Multiple (() => {
 				Assert.That (task.Devices.Count, Is.EqualTo (2), "Devices count mismatch.");
 				Assert.That (task.DiscardedDevices.Count, Is.EqualTo (3), "Discarded device count mismatch.");
@@ -139,7 +139,7 @@ namespace Xamarin.MacDev.Tasks {
 
 				Assert.That (task.DiscardedDevices [1].ItemSpec, Is.EqualTo ("D4D95709-144A-4CAA-8469-89566EC1C935"), "Discarded Device 2 mismatch.");
 				Assert.That (task.DiscardedDevices [1].GetMetadata ("Description"), Is.EqualTo ("iPhone 17 Pro"), "Discarded Device 2 Name mismatch.");
-				Assert.That (task.DiscardedDevices [1].GetMetadata ("OSVersion"), Is.EqualTo (""), "Discarded Device 2 OSVersion mismatch.");
+				Assert.That (task.DiscardedDevices [1].GetMetadata ("OSVersion"), Is.EqualTo ("26.0"), "Discarded Device 2 OSVersion mismatch.");
 				Assert.That (task.DiscardedDevices [1].GetMetadata ("UDID"), Is.EqualTo ("D4D95709-144A-4CAA-8469-89566EC1C935"), "Discarded Device 2 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [1].GetMetadata ("RuntimeIdentifier"), Is.EqualTo (""), "Discarded Device 2 RuntimeIdentifier mismatch.");
 				Assert.That (task.DiscardedDevices [1].GetMetadata ("DiscardedReason"), Is.EqualTo ("Device is not available: runtime profile not found using \"System\" match policy"), "Discarded Device 2 reason mismatch.");
@@ -160,7 +160,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			var platform = ApplePlatform.iOS;
 			var task = CreateTask (platform, SIMCTL_JSON_1, DEVICECTL_JSON_1);
-			Assert.IsTrue (task.Execute (), "Task should have succeeded.");
+			Assert.That (task.Execute (), Is.True, "Task should have succeeded.");
 			Assert.Multiple (() => {
 				Assert.That (task.Devices.Count, Is.EqualTo (5), "Devices count mismatch.");
 				Assert.That (task.DiscardedDevices.Count, Is.EqualTo (4), "Discarded device count mismatch.");
@@ -216,7 +216,7 @@ namespace Xamarin.MacDev.Tasks {
 
 				Assert.That (task.DiscardedDevices [2].ItemSpec, Is.EqualTo ("D4D95709-144A-4CAA-8469-89566EC1C935"), "Discarded Device 3 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("Description"), Is.EqualTo ("iPhone 17 Pro"), "Discarded Device 3 Name mismatch.");
-				Assert.That (task.DiscardedDevices [2].GetMetadata ("OSVersion"), Is.EqualTo (""), "Discarded Device 3 OSVersion mismatch.");
+				Assert.That (task.DiscardedDevices [2].GetMetadata ("OSVersion"), Is.EqualTo ("26.0"), "Discarded Device 3 OSVersion mismatch.");
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("UDID"), Is.EqualTo ("D4D95709-144A-4CAA-8469-89566EC1C935"), "Discarded Device 3 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("RuntimeIdentifier"), Is.EqualTo (""), "Discarded Device 3 RuntimeIdentifier mismatch.");
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("DiscardedReason"), Is.EqualTo ("Device is not available: runtime profile not found using \"System\" match policy"), "Discarded Device 3 reason mismatch.");
@@ -250,7 +250,7 @@ namespace Xamarin.MacDev.Tasks {
 			</plist>
 			""";
 			var task = CreateTask (platform, SIMCTL_JSON_1, DEVICECTL_JSON_1, appManifestXml);
-			Assert.IsTrue (task.Execute (), "Task should have succeeded.");
+			Assert.That (task.Execute (), Is.True, "Task should have succeeded.");
 			Assert.Multiple (() => {
 				Assert.That (task.Devices.Count, Is.EqualTo (5), "Devices count mismatch.");
 				Assert.That (task.DiscardedDevices.Count, Is.EqualTo (4), "Discarded device count mismatch.");
@@ -306,7 +306,7 @@ namespace Xamarin.MacDev.Tasks {
 
 				Assert.That (task.DiscardedDevices [2].ItemSpec, Is.EqualTo ("D4D95709-144A-4CAA-8469-89566EC1C935"), "Discarded Device 3 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("Description"), Is.EqualTo ("iPhone 17 Pro"), "Discarded Device 3 Name mismatch.");
-				Assert.That (task.DiscardedDevices [2].GetMetadata ("OSVersion"), Is.EqualTo (""), "Discarded Device 3 OSVersion mismatch.");
+				Assert.That (task.DiscardedDevices [2].GetMetadata ("OSVersion"), Is.EqualTo ("26.0"), "Discarded Device 3 OSVersion mismatch.");
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("UDID"), Is.EqualTo ("D4D95709-144A-4CAA-8469-89566EC1C935"), "Discarded Device 3 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("RuntimeIdentifier"), Is.EqualTo (""), "Discarded Device 3 RuntimeIdentifier mismatch.");
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("DiscardedReason"), Is.EqualTo ("Device is not available: runtime profile not found using \"System\" match policy"), "Discarded Device 3 reason mismatch.");
@@ -344,7 +344,7 @@ namespace Xamarin.MacDev.Tasks {
 			var task = CreateTask (platform, SIMCTL_JSON_1, DEVICECTL_JSON_1, appManifestXml);
 
 
-			Assert.IsTrue (task.Execute (), "Task should have succeeded.");
+			Assert.That (task.Execute (), Is.True, "Task should have succeeded.");
 			Assert.Multiple (() => {
 				Assert.That (task.Devices.Count, Is.EqualTo (2), "Devices count mismatch.");
 				Assert.That (task.DiscardedDevices.Count, Is.EqualTo (7), "Discarded device count mismatch.");
@@ -393,7 +393,7 @@ namespace Xamarin.MacDev.Tasks {
 
 				Assert.That (task.DiscardedDevices [4].ItemSpec, Is.EqualTo ("D4D95709-144A-4CAA-8469-89566EC1C935"), "Discarded Device 5 ItemSpec mismatch.");
 				Assert.That (task.DiscardedDevices [4].GetMetadata ("Description"), Is.EqualTo ("iPhone 17 Pro"), "Discarded Device 5 Description mismatch.");
-				Assert.That (task.DiscardedDevices [4].GetMetadata ("OSVersion"), Is.EqualTo (""), "Discarded Device 5 OSVersion mismatch.");
+				Assert.That (task.DiscardedDevices [4].GetMetadata ("OSVersion"), Is.EqualTo ("26.0"), "Discarded Device 5 OSVersion mismatch.");
 				Assert.That (task.DiscardedDevices [4].GetMetadata ("UDID"), Is.EqualTo ("D4D95709-144A-4CAA-8469-89566EC1C935"), "Discarded Device 5 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [4].GetMetadata ("RuntimeIdentifier"), Is.EqualTo (""), "Discarded Device 5 RuntimeIdentifier mismatch.");
 				Assert.That (task.DiscardedDevices [4].GetMetadata ("DiscardedReason"), Is.EqualTo ("Device is not available: runtime profile not found using \"System\" match policy"), "Discarded Device 5 reason mismatch.");
@@ -438,7 +438,7 @@ namespace Xamarin.MacDev.Tasks {
 			File.WriteAllText (appManifestPath, appManifestXml);
 			task.AppBundleManifestPath = appManifestPath;
 
-			Assert.IsTrue (task.Execute (), "Task should have succeeded.");
+			Assert.That (task.Execute (), Is.True, "Task should have succeeded.");
 			Assert.Multiple (() => {
 				Assert.That (task.Devices.Count, Is.EqualTo (3), "Devices count mismatch.");
 				Assert.That (task.DiscardedDevices.Count, Is.EqualTo (6), "Discarded device count mismatch.");
@@ -487,7 +487,7 @@ namespace Xamarin.MacDev.Tasks {
 
 				Assert.That (task.DiscardedDevices [3].ItemSpec, Is.EqualTo ("D4D95709-144A-4CAA-8469-89566EC1C935"), "Discarded Device 4 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [3].GetMetadata ("Description"), Is.EqualTo ("iPhone 17 Pro"), "Discarded Device 4 Name mismatch.");
-				Assert.That (task.DiscardedDevices [3].GetMetadata ("OSVersion"), Is.EqualTo (""), "Discarded Device 4 OSVersion mismatch.");
+				Assert.That (task.DiscardedDevices [3].GetMetadata ("OSVersion"), Is.EqualTo ("26.0"), "Discarded Device 4 OSVersion mismatch.");
 				Assert.That (task.DiscardedDevices [3].GetMetadata ("UDID"), Is.EqualTo ("D4D95709-144A-4CAA-8469-89566EC1C935"), "Discarded Device 4 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [3].GetMetadata ("RuntimeIdentifier"), Is.EqualTo (""), "Discarded Device 4 RuntimeIdentifier mismatch.");
 				Assert.That (task.DiscardedDevices [3].GetMetadata ("DiscardedReason"), Is.EqualTo ("Device is not available: runtime profile not found using \"System\" match policy"), "Discarded Device 4 reason mismatch.");
@@ -531,7 +531,7 @@ namespace Xamarin.MacDev.Tasks {
 			task.AppBundleManifestPath = appManifestPath;
 			task.RuntimeIdentifier = $"ios-arm64";
 
-			Assert.IsTrue (task.Execute (), "Task should have succeeded.");
+			Assert.That (task.Execute (), Is.True, "Task should have succeeded.");
 			Assert.Multiple (() => {
 				Assert.That (task.Devices.Count, Is.EqualTo (3), "Devices count mismatch.");
 				Assert.That (task.DiscardedDevices.Count, Is.EqualTo (6), "Discarded device count mismatch.");
@@ -573,7 +573,7 @@ namespace Xamarin.MacDev.Tasks {
 
 				Assert.That (task.DiscardedDevices [2].ItemSpec, Is.EqualTo ("D4D95709-144A-4CAA-8469-89566EC1C935"), "Discarded Device 3 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("Description"), Is.EqualTo ("iPhone 17 Pro"), "Discarded Device 3 Name mismatch.");
-				Assert.That (task.DiscardedDevices [2].GetMetadata ("OSVersion"), Is.EqualTo (""), "Discarded Device 3 OSVersion mismatch.");
+				Assert.That (task.DiscardedDevices [2].GetMetadata ("OSVersion"), Is.EqualTo ("26.0"), "Discarded Device 3 OSVersion mismatch.");
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("UDID"), Is.EqualTo ("D4D95709-144A-4CAA-8469-89566EC1C935"), "Discarded Device 3 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("RuntimeIdentifier"), Is.EqualTo (""), "Discarded Device 3 RuntimeIdentifier mismatch.");
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("DiscardedReason"), Is.EqualTo ("Device is not available: runtime profile not found using \"System\" match policy"), "Discarded Device 3 reason mismatch.");
@@ -609,7 +609,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			var platform = ApplePlatform.TVOS;
 			var task = CreateTask (platform, SIMCTL_JSON_1, DEVICECTL_JSON_1);
-			Assert.IsTrue (task.Execute (), "Task should have succeeded.");
+			Assert.That (task.Execute (), Is.True, "Task should have succeeded.");
 			Assert.Multiple (() => {
 				Assert.That (task.Devices.Count, Is.EqualTo (1), "Devices count mismatch.");
 				Assert.That (task.DiscardedDevices.Count, Is.EqualTo (8), "Discarded device count mismatch.");
@@ -651,7 +651,7 @@ namespace Xamarin.MacDev.Tasks {
 
 				Assert.That (task.DiscardedDevices [4].ItemSpec, Is.EqualTo ("D4D95709-144A-4CAA-8469-89566EC1C935"), "Discarded Device 5 ItemSpec mismatch.");
 				Assert.That (task.DiscardedDevices [4].GetMetadata ("Description"), Is.EqualTo ("iPhone 17 Pro"), "Discarded Device 5 Description mismatch.");
-				Assert.That (task.DiscardedDevices [4].GetMetadata ("OSVersion"), Is.EqualTo (""), "Discarded Device 5 OSVersion mismatch.");
+				Assert.That (task.DiscardedDevices [4].GetMetadata ("OSVersion"), Is.EqualTo ("26.0"), "Discarded Device 5 OSVersion mismatch.");
 				Assert.That (task.DiscardedDevices [4].GetMetadata ("UDID"), Is.EqualTo ("D4D95709-144A-4CAA-8469-89566EC1C935"), "Discarded Device 5 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [4].GetMetadata ("RuntimeIdentifier"), Is.EqualTo (""), "Discarded Device 5 RuntimeIdentifier mismatch.");
 				Assert.That (task.DiscardedDevices [4].GetMetadata ("DiscardedReason"), Is.EqualTo ("Device is not available: runtime profile not found using \"System\" match policy"), "Discarded Device 5 reason mismatch.");
@@ -680,11 +680,35 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		[Test]
+		[TestCase ("iossimulator-x64", "iossimulator-x64")]
+		[TestCase ("iossimulator-arm64", "iossimulator-arm64")]
+		[TestCase ("", null)] // null means it depends on CanRunArm64
+		public void SimCtl_MultiArch_RuntimeIdentifier (string runtimeIdentifier, string? expectedRid)
+		{
+			var platform = ApplePlatform.iOS;
+			var task = CreateTask (platform, SIMCTL_JSON_MULTIARCH, "");
+			task.RuntimeIdentifier = runtimeIdentifier;
+			Assert.That (task.Execute (), Is.True, "Task should have succeeded.");
+			Assert.Multiple (() => {
+				Assert.That (task.Devices.Count, Is.EqualTo (1), "Devices count mismatch.");
+
+				Assert.That (task.Devices [0].ItemSpec, Is.EqualTo ("AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE"), "Device 1 mismatch.");
+				Assert.That (task.Devices [0].GetMetadata ("Description"), Is.EqualTo ("iPhone 11 - iOS 26.1"), "Device 1 Name mismatch.");
+				Assert.That (task.Devices [0].GetMetadata ("OSVersion"), Is.EqualTo ("26.1"), "Device 1 OSVersion mismatch.");
+				Assert.That (task.Devices [0].GetMetadata ("UDID"), Is.EqualTo ("AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE"), "Device 1 UDID mismatch.");
+				if (expectedRid is null)
+					expectedRid = GetAvailableDevices.CanRunArm64 ? "iossimulator-arm64" : "iossimulator-x64";
+				Assert.That (task.Devices [0].GetMetadata ("RuntimeIdentifier"), Is.EqualTo (expectedRid), "Device 1 RuntimeIdentifier mismatch.");
+				Assert.That (task.Devices [0].GetMetadata ("DiscardedReason"), Is.Empty, "Device 1 discarded reason mismatch.");
+			});
+		}
+
+		[Test]
 		public void DeviceCtl2_Mac ()
 		{
 			var platform = ApplePlatform.iOS;
 			var task = CreateTask (platform, "", DEVICECTL_JSON_2);
-			Assert.IsTrue (task.Execute (), "Task should have succeeded.");
+			Assert.That (task.Execute (), Is.True, "Task should have succeeded.");
 
 			Assert.Multiple (() => {
 				Assert.That (task.DiscardedDevices [0].ItemSpec, Is.EqualTo ("12345678-1234-1234-ABCD-1234567980AB"), "Discarded Device 1 itemspec mismatch.");
@@ -1100,6 +1124,68 @@ namespace Xamarin.MacDev.Tasks {
 						"deviceTypeIdentifier" : "com.apple.CoreSimulator.SimDeviceType.iPad-Pro-11-inch-M5-12GB",
 						"state" : "Shutdown",
 						"name" : "iPad Pro 11-inch (M5)"
+					}
+				]
+			},
+			"pairs" : {
+
+			}
+		}
+		""";
+
+		const string SIMCTL_JSON_MULTIARCH =
+		"""
+		{
+			"devicetypes" : [
+				{
+				"productFamily" : "iPhone",
+				"bundlePath" : "\/Library\/Developer\/CoreSimulator\/Profiles\/DeviceTypes\/iPhone 11.simdevicetype",
+				"maxRuntimeVersion" : 4294967295,
+				"maxRuntimeVersionString" : "65535.255.255",
+				"identifier" : "com.apple.CoreSimulator.SimDeviceType.iPhone-11",
+				"modelIdentifier" : "iPhone12,1",
+				"minRuntimeVersionString" : "13.0.0",
+				"minRuntimeVersion" : 851968,
+				"name" : "iPhone 11"
+				}
+			],
+			"runtimes" : [
+				{
+				"isAvailable" : true,
+				"version" : "26.1",
+				"isInternal" : false,
+				"buildversion" : "23B80",
+				"supportedArchitectures" : [
+					"arm64",
+					"x86_64"
+				],
+				"supportedDeviceTypes" : [
+					{
+					"bundlePath" : "\/Library\/Developer\/CoreSimulator\/Profiles\/DeviceTypes\/iPhone 11.simdevicetype",
+					"name" : "iPhone 11",
+					"identifier" : "com.apple.CoreSimulator.SimDeviceType.iPhone-11",
+					"productFamily" : "iPhone"
+					}
+				],
+				"identifier" : "com.apple.CoreSimulator.SimRuntime.iOS-26-1",
+				"platform" : "iOS",
+				"bundlePath" : "\/Library\/Developer\/CoreSimulator\/Volumes\/iOS_23B80\/Library\/Developer\/CoreSimulator\/Profiles\/Runtimes\/iOS 26.1.simruntime",
+				"runtimeRoot" : "\/Library\/Developer\/CoreSimulator\/Volumes\/iOS_23B80\/Library\/Developer\/CoreSimulator\/Profiles\/Runtimes\/iOS 26.1.simruntime\/Contents\/Resources\/RuntimeRoot",
+				"name" : "iOS 26.1"
+				}
+			],
+			"devices" : {
+				"com.apple.CoreSimulator.SimRuntime.iOS-26-1" : [
+					{
+						"dataPath" : "\/Users\/rolf\/Library\/Developer\/CoreSimulator\/Devices\/AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE\/data",
+						"dataPathSize" : 2274861056,
+						"logPath" : "\/Users\/rolf\/Library\/Logs\/CoreSimulator\/AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE",
+						"udid" : "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE",
+						"isAvailable" : true,
+						"logPathSize" : 253952,
+						"deviceTypeIdentifier" : "com.apple.CoreSimulator.SimDeviceType.iPhone-11",
+						"state" : "Shutdown",
+						"name" : "iPhone 11 - iOS 26.1"
 					}
 				]
 			},

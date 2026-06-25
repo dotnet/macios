@@ -52,7 +52,7 @@ namespace Mono.ApiTools {
 			if (e.GetAttribute ("name") != Source.GetAttribute ("name"))
 				return false;
 
-			if (e.GetAttribute ("returntype") != Source.GetAttribute ("returntype"))
+			if (Helper.StripNullability (e.GetAttribute ("returntype")) != Helper.StripNullability (Source.GetAttribute ("returntype")))
 				return false;
 
 			var eGP = e.Element ("generic-parameters");
@@ -63,8 +63,8 @@ namespace Mono.ApiTools {
 			else if (eGP is null ^ sGP is null)
 				return false;
 			else {
-				var eGPs = eGP.Elements ("generic-parameter");
-				var sGPs = sGP.Elements ("generic-parameter");
+				var eGPs = eGP!.Elements ("generic-parameter");
+				var sGPs = sGP!.Elements ("generic-parameter");
 				return eGPs.Count () == sGPs.Count ();
 			}
 		}

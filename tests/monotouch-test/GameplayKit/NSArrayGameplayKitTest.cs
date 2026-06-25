@@ -28,8 +28,8 @@ namespace MonoTouchFixtures.GameplayKit {
 			var randomSource = new GKMersenneTwisterRandomSource ();
 
 			var shuffled = array.GetShuffledArray<NSString> (randomSource);
-			Assert.IsNotNull (shuffled, "shuffled");
-			Assert.AreEqual (5, shuffled.Length, "shuffled/length");
+			Assert.That (shuffled, Is.Not.Null, "shuffled");
+			Assert.That (shuffled.Length, Is.EqualTo (5), "shuffled/length");
 		}
 
 		[Test]
@@ -44,8 +44,8 @@ namespace MonoTouchFixtures.GameplayKit {
 			);
 
 			var shuffled = array.GetShuffledArray<NSString> ();
-			Assert.IsNotNull (shuffled, "shuffled");
-			Assert.AreEqual (3, shuffled.Length, "shuffled/length");
+			Assert.That (shuffled, Is.Not.Null, "shuffled");
+			Assert.That (shuffled.Length, Is.EqualTo (3), "shuffled/length");
 		}
 	}
 }

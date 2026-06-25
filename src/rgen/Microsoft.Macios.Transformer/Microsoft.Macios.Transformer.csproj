@@ -4,8 +4,6 @@
         <OutputType>Exe</OutputType>
         <TargetFramework>net$(BundledNETCoreAppTargetFrameworkVersion)</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 
         <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
         <!-- Uncomment to get the generated code for debugging -->

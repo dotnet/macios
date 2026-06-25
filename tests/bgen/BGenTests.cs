@@ -1156,6 +1156,64 @@ namespace GeneratorTests {
 		}
 
 		[Test]
+		public void DynamicDependencyAttribute ()
+		{
+			var bgen = BuildFile (Profile.macOSMobile, "dynamic-dependency-attribute.cs");
+
+			var type = bgen.ApiAssembly.MainModule.Types.First (v => v.Name == "MyClass");
+			var getter = type.Methods.First (v => v.Name == "get_CurrentContext");
+			var setter = type.Methods.First (v => v.Name == "set_CurrentContext");
+			var doSomething = type.Methods.First (v => v.Name == "DoSomething");
+			var doSomethingElse = type.Methods.First (v => v.Name == "DoSomethingElse");
+			var doAnother = type.Methods.First (v => v.Name == "DoAnother");
+			var doYetAnother = type.Methods.First (v => v.Name == "DoYetAnother");
+			var doAll = type.Methods.First (v => v.Name == "DoAll");
+
+			// (DynamicallyAccessedMemberTypes, string, string) on property getter
+			var getterDDA = getter.CustomAttributes.Where (ca => ca.AttributeType.Name == "DynamicDependencyAttribute").ToArray ();
+			Assert.That (getterDDA.Length, Is.EqualTo (1), "Getter DynamicDependency count");
+			Assert.That ((int) getterDDA [0].ConstructorArguments [0].Value, Is.EqualTo (7), "Getter DynamicDependency MemberTypes (PublicConstructors | NonPublicConstructors)");
+			Assert.That (getterDDA [0].ConstructorArguments [1].Value, Is.EqualTo ("Foundation.NSProxy"), "Getter DynamicDependency TypeName");
+			Assert.That (getterDDA [0].ConstructorArguments [2].Value, Is.EqualTo ("Microsoft.macOS"), "Getter DynamicDependency AssemblyName");
+
+			// Setter should not have it
+			var setterDDA = setter.CustomAttributes.Where (ca => ca.AttributeType.Name == "DynamicDependencyAttribute").ToArray ();
+			Assert.That (setterDDA.Length, Is.EqualTo (0), "Setter DynamicDependency count");
+
+			// (string, string, string) on method
+			var methodDDA = doSomething.CustomAttributes.Where (ca => ca.AttributeType.Name == "DynamicDependencyAttribute").ToArray ();
+			Assert.That (methodDDA.Length, Is.EqualTo (1), "DoSomething DynamicDependency count");
+			Assert.That (methodDDA [0].ConstructorArguments [0].Value, Is.EqualTo ("Create"), "DoSomething DynamicDependency MemberSignature");
+			Assert.That (methodDDA [0].ConstructorArguments [1].Value, Is.EqualTo ("NS.MyClass"), "DoSomething DynamicDependency TypeName");
+			Assert.That (methodDDA [0].ConstructorArguments [2].Value, Is.EqualTo ("api0"), "DoSomething DynamicDependency AssemblyName");
+
+			// (string) - single member signature
+			var elseDDA = doSomethingElse.CustomAttributes.Where (ca => ca.AttributeType.Name == "DynamicDependencyAttribute").ToArray ();
+			Assert.That (elseDDA.Length, Is.EqualTo (1), "DoSomethingElse DynamicDependency count");
+			Assert.That (elseDDA [0].ConstructorArguments.Count, Is.EqualTo (1), "DoSomethingElse DynamicDependency arg count");
+			Assert.That (elseDDA [0].ConstructorArguments [0].Value, Is.EqualTo ("Activate"), "DoSomethingElse DynamicDependency MemberSignature");
+
+			// (DynamicallyAccessedMemberTypes, Type)
+			var anotherDDA = doAnother.CustomAttributes.Where (ca => ca.AttributeType.Name == "DynamicDependencyAttribute").ToArray ();
+			Assert.That (anotherDDA.Length, Is.EqualTo (1), "DoAnother DynamicDependency count");
+			Assert.That ((int) anotherDDA [0].ConstructorArguments [0].Value, Is.EqualTo (8 | 512), "DoAnother DynamicDependency MemberTypes (PublicMethods | PublicProperties)");
+			Assert.That (((Mono.Cecil.TypeReference) anotherDDA [0].ConstructorArguments [1].Value).Name, Is.EqualTo ("NSObject"), "DoAnother DynamicDependency Type");
+
+			// (string, Type)
+			var yetAnotherDDA = doYetAnother.CustomAttributes.Where (ca => ca.AttributeType.Name == "DynamicDependencyAttribute").ToArray ();
+			Assert.That (yetAnotherDDA.Length, Is.EqualTo (1), "DoYetAnother DynamicDependency count");
+			Assert.That (yetAnotherDDA [0].ConstructorArguments [0].Value, Is.EqualTo ("Create"), "DoYetAnother DynamicDependency MemberSignature");
+			Assert.That (((Mono.Cecil.TypeReference) yetAnotherDDA [0].ConstructorArguments [1].Value).Name, Is.EqualTo ("NSObject"), "DoYetAnother DynamicDependency Type");
+
+			// (DynamicallyAccessedMemberTypes.All, string, string)
+			var allDDA = doAll.CustomAttributes.Where (ca => ca.AttributeType.Name == "DynamicDependencyAttribute").ToArray ();
+			Assert.That (allDDA.Length, Is.EqualTo (1), "DoAll DynamicDependency count");
+			Assert.That ((int) allDDA [0].ConstructorArguments [0].Value, Is.EqualTo (-1), "DoAll DynamicDependency MemberTypes (All)");
+			Assert.That (allDDA [0].ConstructorArguments [1].Value, Is.EqualTo ("NS.MyClass"), "DoAll DynamicDependency TypeName");
+			Assert.That (allDDA [0].ConstructorArguments [2].Value, Is.EqualTo ("api0"), "DoAll DynamicDependency AssemblyName");
+		}
+
+		[Test]
 		[TestCase (Profile.iOS)]
 		public void NewerAvailabilityInInlinedProtocol (Profile profile)
 		{
@@ -1656,6 +1714,101 @@ namespace GeneratorTests {
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
 			var bgen = BuildFile (profile, "both-protected-and-internal.cs");
 			bgen.AssertNoWarnings ();
+		}
+
+		[Test]
+		[TestCase (Profile.iOS)]
+		[TestCase (Profile.tvOS)]
+		public void SimulatorAvailabilityAttributes (Profile profile)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
+			var bgen = BuildFile (profile, true, true, "simulator-availability-attributes.cs");
+			bgen.AssertNoWarnings ();
+
+			var module = bgen.ApiAssembly.MainModule;
+
+			// Verify [UnsupportedSimulator] is copied for the current platform
+			var unsupportedAll = module.GetType ("NS", "UnsupportedOnAllSimulators");
+			var unsupportedAttrs = unsupportedAll.CustomAttributes
+				.Where (a => a.AttributeType.Name == "UnsupportedSimulatorAttribute")
+				.ToArray ();
+			Assert.That (unsupportedAttrs.Length, Is.EqualTo (1), "UnsupportedOnAllSimulators: one attribute for current platform");
+			var platformName = (string) unsupportedAttrs [0].ConstructorArguments [0].Value;
+			var expectedPlatform = profile == Profile.iOS ? "ios" : "tvos";
+			Assert.That (platformName, Is.EqualTo (expectedPlatform), "UnsupportedOnAllSimulators platform name");
+
+			// Verify only the current platform's attribute is emitted
+			var iosOnly = module.GetType ("NS", "UnsupportedOnIosSimulatorOnly");
+			var iosOnlyAttrs = iosOnly.CustomAttributes
+				.Where (a => a.AttributeType.Name == "UnsupportedSimulatorAttribute")
+				.ToArray ();
+			if (profile == Profile.iOS)
+				Assert.That (iosOnlyAttrs.Length, Is.EqualTo (1), "UnsupportedOnIosSimulatorOnly: present for iOS");
+			else
+				Assert.That (iosOnlyAttrs.Length, Is.EqualTo (0), "UnsupportedOnIosSimulatorOnly: absent for tvOS");
+
+			// Verify [SupportedSimulator] with version is copied
+			var supported = module.GetType ("NS", "SupportedOnSimulatorFromVersion");
+			var supportedAttrs = supported.CustomAttributes
+				.Where (a => a.AttributeType.Name == "SupportedSimulatorAttribute")
+				.ToArray ();
+			Assert.That (supportedAttrs.Length, Is.EqualTo (1), "SupportedOnSimulatorFromVersion: one attribute");
+			var expectedVersion = profile == Profile.iOS ? "ios17.0" : "tvos17.0";
+			Assert.That ((string) supportedAttrs [0].ConstructorArguments [0].Value, Is.EqualTo (expectedVersion), "SupportedOnSimulatorFromVersion platform name");
+
+			// Verify no simulator attributes when none are specified
+			var noAttrs = module.GetType ("NS", "NoSimulatorAttributes");
+			var simulatorAttrs = noAttrs.CustomAttributes
+				.Where (a => a.AttributeType.Name == "UnsupportedSimulatorAttribute" || a.AttributeType.Name == "SupportedSimulatorAttribute")
+				.ToArray ();
+			Assert.That (simulatorAttrs.Length, Is.EqualTo (0), "NoSimulatorAttributes: no simulator attributes");
+
+			// Verify a [SupportedSimulator] on a smart-enum [Field] member is propagated to the generated accessor
+			var smartExtensions = module.GetType ("NS", "SmartEnumWithSimulatorFieldExtensions");
+			Assert.That (smartExtensions, Is.Not.Null, "SmartEnumWithSimulatorFieldExtensions: generated");
+			var supportedAccessor = smartExtensions.Properties.Single (p => p.Name == "SupportedSmartField");
+			var accessorAttrs = supportedAccessor.CustomAttributes
+				.Where (a => a.AttributeType.Name == "SupportedSimulatorAttribute")
+				.ToArray ();
+			Assert.That (accessorAttrs.Length, Is.EqualTo (1), "SupportedSmartField accessor: one SupportedSimulator attribute");
+			var expectedSmartVersion = profile == Profile.iOS ? "ios17.0" : "tvos17.0";
+			Assert.That ((string) accessorAttrs [0].ConstructorArguments [0].Value, Is.EqualTo (expectedSmartVersion), "SupportedSmartField accessor platform name");
+
+			// And a smart-enum member without simulator attributes must not gain any
+			var plainAccessor = smartExtensions.Properties.Single (p => p.Name == "PlainSmartField");
+			var plainAccessorAttrs = plainAccessor.CustomAttributes
+				.Where (a => a.AttributeType.Name == "SupportedSimulatorAttribute" || a.AttributeType.Name == "UnsupportedSimulatorAttribute")
+				.ToArray ();
+			Assert.That (plainAccessorAttrs.Length, Is.EqualTo (0), "PlainSmartField accessor: no simulator attributes");
+		}
+
+		[Test]
+		[TestCase (Profile.macOSMobile)]
+		[TestCase (Profile.MacCatalyst)]
+		public void SimulatorAvailabilityAttributes_NotEmittedForMacPlatforms (Profile profile)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
+			var bgen = BuildFile (profile, true, true, "simulator-availability-attributes.cs");
+			bgen.AssertNoWarnings ();
+
+			var module = bgen.ApiAssembly.MainModule;
+			foreach (var typeName in new [] { "UnsupportedOnAllSimulators", "UnsupportedOnIosSimulatorOnly", "SupportedOnSimulatorFromVersion", "NoSimulatorAttributes" }) {
+				var type = module.GetType ("NS", typeName);
+				var simulatorAttrs = type.CustomAttributes
+					.Where (a => a.AttributeType.Name == "UnsupportedSimulatorAttribute" || a.AttributeType.Name == "SupportedSimulatorAttribute")
+					.ToArray ();
+				Assert.That (simulatorAttrs.Length, Is.EqualTo (0), $"{typeName}: no simulator attributes on Mac platforms");
+			}
+
+			// The smart-enum field accessor must not carry simulator attributes on Mac platforms either
+			var smartExtensions = module.GetType ("NS", "SmartEnumWithSimulatorFieldExtensions");
+			Assert.That (smartExtensions, Is.Not.Null, "SmartEnumWithSimulatorFieldExtensions: generated");
+			foreach (var property in smartExtensions.Properties) {
+				var accessorAttrs = property.CustomAttributes
+					.Where (a => a.AttributeType.Name == "UnsupportedSimulatorAttribute" || a.AttributeType.Name == "SupportedSimulatorAttribute")
+					.ToArray ();
+				Assert.That (accessorAttrs.Length, Is.EqualTo (0), $"{property.Name} accessor: no simulator attributes on Mac platforms");
+			}
 		}
 	}
 }

@@ -37,7 +37,7 @@ namespace MonoTouchFixtures.HealthKit {
 			using (var d = new NSData ()) {
 				TestDelegate action = () => {
 					using (var s = HKCdaDocumentSample.Create (d, NSDate.DistantPast, NSDate.DistantFuture, (NSDictionary) null, out error)) {
-						Assert.NotNull (error, "error");
+						Assert.That (error, Is.Not.Null, "error");
 						var details = new HKDetailedCdaErrors (error.UserInfo);
 						Assert.That (details.ValidationError.Length, Is.EqualTo ((nint) 0), "Length");
 					}
@@ -56,7 +56,7 @@ namespace MonoTouchFixtures.HealthKit {
 						"Objective-C exception thrown.  Name: _HKObjectValidationFailureException Reason: Type HKSample can not have endDate of NSDate.distantFuture",
 					};
 					var success = possibleMessages.Any (v => Regex.IsMatch (ex.Message, v, RegexOptions.IgnoreCase));
-					Assert.IsTrue (success, $"The exception message:\n{ex.Message}\nDoes not match any of the expected messages:\n\t{string.Join ("\n\t", possibleMessages)}");
+					Assert.That (success, Is.True, $"The exception message:\n{ex.Message}\nDoes not match any of the expected messages:\n\t{string.Join ("\n\t", possibleMessages)}");
 				} else {
 					action ();
 				}

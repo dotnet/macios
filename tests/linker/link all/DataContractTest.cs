@@ -36,7 +36,7 @@ namespace LinkAll.Serialization.DataContract {
 		{
 			using (var r = XmlReader.Create (new StringReader (xml))) {
 				var s = new DataContractSerializer (typeof (T));
-				return (T) s.ReadObject (r);
+				return (T) s.ReadObject (r)!;
 			}
 		}
 
@@ -67,7 +67,7 @@ namespace LinkAll.Serialization.DataContract {
 			var t1 = new TestClass (SomeTypes.Audio | SomeTypes.Image);
 			var st = ToXml (t1);
 			var t2 = FromXml<TestClass> (st);
-			Assert.AreEqual (t2.Types, t1.Types);
+			Assert.That (t1.Types, Is.EqualTo (t2.Types));
 		}
 	}
 }

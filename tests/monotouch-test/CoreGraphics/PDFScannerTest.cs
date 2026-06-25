@@ -111,7 +111,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 
 					bt_count = 0;
 					do_checks = 7;
-					Assert.True (scanner.Scan (), "Scan");
+					Assert.That (scanner.Scan (), Is.True, "Scan");
 					Assert.That (bt_count, Is.EqualTo (45), "new paragraph");
 					Assert.That (do_checks, Is.EqualTo (0), "found the image");
 					if (TestRuntime.CheckXcodeVersion (14, 0)) {

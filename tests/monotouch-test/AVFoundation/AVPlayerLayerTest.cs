@@ -13,7 +13,7 @@ namespace Xamarin.Mac.Tests {
 		public void AVPlayerLayer_VideoGravity ()
 		{
 			AVPlayerLayer layer = new AVPlayerLayer ();
-			Assert.IsNotNull (layer.VideoGravity);
+			Assert.That (layer.VideoGravity, Is.Not.Null);
 		}
 	}
 }

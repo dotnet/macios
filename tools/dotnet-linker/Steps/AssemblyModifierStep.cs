@@ -31,7 +31,8 @@ public abstract class AssemblyModifierStep : ConfigurationAwareStep {
 	protected virtual bool ModifyAssembly (AssemblyDefinition assembly)
 	{
 		var modified = false;
-		foreach (var type in assembly.MainModule.Types)
+		// ToArray () is needed because subclasses (e.g. InlineDlfcnMethodsStep) may add new types during iteration.
+		foreach (var type in assembly.MainModule.Types.ToArray ())
 			modified |= ProcessTypeImpl (type);
 		return modified;
 	}
@@ -50,7 +51,8 @@ public abstract class AssemblyModifierStep : ConfigurationAwareStep {
 	{
 		var modified = ProcessType (type);
 		if (type.HasNestedTypes) {
-			foreach (var nested in type.NestedTypes)
+			// ToArray () is needed because subclasses may add new types during iteration.
+			foreach (var nested in type.NestedTypes.ToArray ())
 				modified |= ProcessTypeImpl (nested);
 		}
 		return modified;

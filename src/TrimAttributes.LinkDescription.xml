@@ -290,6 +290,18 @@
       </attribute>
     </type>
   </assembly>
+
+  <!-- Attributes that are allowed to be in any assembly -->
+  <assembly fullname="*">
+    <!-- Simulator availability attributes: these are documented to be trimmed away, so just do it unconditionally. -->
+    <type fullname="ObjCRuntime.SupportedSimulatorAttribute">
+      <attribute internal="RemoveAttributeInstances" />
+    </type>
+    <type fullname="ObjCRuntime.UnsupportedSimulatorAttribute">
+      <attribute internal="RemoveAttributeInstances" />
+    </type>
+  </assembly>
+
   <!-- Suppress the IL2026 warning from System.StartupHookProvider.ProcessStartupHooks when we're the ones enabling StartupHookSupport -->
   <assembly fullname="System.Private.CoreLib" feature="ObjCRuntime.SuppressStartupHookTrimWarning" featurevalue="true">
     <type fullname="System.StartupHookProvider">

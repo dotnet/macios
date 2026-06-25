@@ -29,7 +29,7 @@ namespace MonoTouchFixtures.CoreVideo {
 				Usage = MTLTextureUsage.PixelFormatView
 			});
 
-			Assert.NotNull (cache);
+			Assert.That (cache, Is.Not.Null);
 		}
 
 		[Test]
@@ -43,7 +43,7 @@ namespace MonoTouchFixtures.CoreVideo {
 				Usage = MTLTextureUsage.PixelFormatView
 			});
 
-			Assert.NotNull (cache);
+			Assert.That (cache, Is.Not.Null);
 		}
 	}
 }

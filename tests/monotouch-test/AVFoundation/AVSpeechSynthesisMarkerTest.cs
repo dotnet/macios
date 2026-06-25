@@ -20,27 +20,27 @@ namespace MonoTouchFixtures.AVFoundation {
 			Assert.Multiple (() => {
 				{
 					using var marker = new AVSpeechSynthesisMarker (range, byteOffset, AVSpeechSynthesisMarkerRangeOption.Word);
-					Assert.AreEqual (range, marker.TextRange, "TextRange W");
-					Assert.AreEqual (byteOffset, (nint) marker.ByteSampleOffset, "ByteSampleOffset W");
-					Assert.AreEqual (AVSpeechSynthesisMarkerMark.Word, marker.Mark, "AVSpeechSynthesisMarkerMark W");
-					Assert.IsNull (marker.BookmarkName, "BookmarkName W");
-					Assert.IsNull (marker.Phoneme, "Phoneme W");
+					Assert.That (marker.TextRange, Is.EqualTo (range), "TextRange W");
+					Assert.That ((nint) marker.ByteSampleOffset, Is.EqualTo (byteOffset), "ByteSampleOffset W");
+					Assert.That (marker.Mark, Is.EqualTo (AVSpeechSynthesisMarkerMark.Word), "AVSpeechSynthesisMarkerMark W");
+					Assert.That (marker.BookmarkName, Is.Null, "BookmarkName W");
+					Assert.That (marker.Phoneme, Is.Null, "Phoneme W");
 				}
 				{
 					using var marker = new AVSpeechSynthesisMarker (range, byteOffset, AVSpeechSynthesisMarkerRangeOption.Sentence);
-					Assert.AreEqual (range, marker.TextRange, "TextRange S");
-					Assert.AreEqual (byteOffset, (nint) marker.ByteSampleOffset, "ByteSampleOffset S");
-					Assert.AreEqual (AVSpeechSynthesisMarkerMark.Sentence, marker.Mark, "AVSpeechSynthesisMarkerMark S");
-					Assert.IsNull (marker.BookmarkName, "BookmarkName S");
-					Assert.IsNull (marker.Phoneme, "Phoneme S");
+					Assert.That (marker.TextRange, Is.EqualTo (range), "TextRange S");
+					Assert.That ((nint) marker.ByteSampleOffset, Is.EqualTo (byteOffset), "ByteSampleOffset S");
+					Assert.That (marker.Mark, Is.EqualTo (AVSpeechSynthesisMarkerMark.Sentence), "AVSpeechSynthesisMarkerMark S");
+					Assert.That (marker.BookmarkName, Is.Null, "BookmarkName S");
+					Assert.That (marker.Phoneme, Is.Null, "Phoneme S");
 				}
 				{
 					using var marker = new AVSpeechSynthesisMarker (range, byteOffset, AVSpeechSynthesisMarkerRangeOption.Paragraph);
-					Assert.AreEqual (range, marker.TextRange, "TextRange P");
-					Assert.AreEqual (byteOffset, (nint) marker.ByteSampleOffset, "ByteSampleOffset P");
-					Assert.AreEqual (AVSpeechSynthesisMarkerMark.Paragraph, marker.Mark, "AVSpeechSynthesisMarkerMark P");
-					Assert.IsNull (marker.BookmarkName, "BookmarkName P");
-					Assert.IsNull (marker.Phoneme, "Phoneme P");
+					Assert.That (marker.TextRange, Is.EqualTo (range), "TextRange P");
+					Assert.That ((nint) marker.ByteSampleOffset, Is.EqualTo (byteOffset), "ByteSampleOffset P");
+					Assert.That (marker.Mark, Is.EqualTo (AVSpeechSynthesisMarkerMark.Paragraph), "AVSpeechSynthesisMarkerMark P");
+					Assert.That (marker.BookmarkName, Is.Null, "BookmarkName P");
+					Assert.That (marker.Phoneme, Is.Null, "Phoneme P");
 				}
 			});
 		}
@@ -56,18 +56,18 @@ namespace MonoTouchFixtures.AVFoundation {
 			Assert.Multiple (() => {
 				{
 					using var marker = new AVSpeechSynthesisMarker (value, byteOffset, AVSpeechSynthesisMarkerStringOption.Phoneme);
-					Assert.AreEqual (range, marker.TextRange, "TextRange P");
-					Assert.AreEqual (byteOffset, (nint) marker.ByteSampleOffset, "ByteSampleOffset P");
-					Assert.AreEqual (AVSpeechSynthesisMarkerMark.Phoneme, marker.Mark, "AVSpeechSynthesisMarkerMark P");
-					Assert.IsNull (marker.BookmarkName, "BookmarkName P");
-					Assert.AreEqual (value, marker.Phoneme, "Phoneme P");
+					Assert.That (marker.TextRange, Is.EqualTo (range), "TextRange P");
+					Assert.That ((nint) marker.ByteSampleOffset, Is.EqualTo (byteOffset), "ByteSampleOffset P");
+					Assert.That (marker.Mark, Is.EqualTo (AVSpeechSynthesisMarkerMark.Phoneme), "AVSpeechSynthesisMarkerMark P");
+					Assert.That (marker.BookmarkName, Is.Null, "BookmarkName P");
+					Assert.That (marker.Phoneme, Is.EqualTo (value), "Phoneme P");
 				}
 				{
 					using var marker = new AVSpeechSynthesisMarker (value, byteOffset, AVSpeechSynthesisMarkerStringOption.Bookmark);
-					Assert.AreEqual (range, marker.TextRange, "TextRange B");
-					Assert.AreEqual (byteOffset, (nint) marker.ByteSampleOffset, "ByteSampleOffset B");
-					Assert.AreEqual (AVSpeechSynthesisMarkerMark.Bookmark, marker.Mark, "AVSpeechSynthesisMarkerMark B");
-					Assert.IsNull (marker.Phoneme, "Phoneme B");
+					Assert.That (marker.TextRange, Is.EqualTo (range), "TextRange B");
+					Assert.That ((nint) marker.ByteSampleOffset, Is.EqualTo (byteOffset), "ByteSampleOffset B");
+					Assert.That (marker.Mark, Is.EqualTo (AVSpeechSynthesisMarkerMark.Bookmark), "AVSpeechSynthesisMarkerMark B");
+					Assert.That (marker.Phoneme, Is.Null, "Phoneme B");
 				}
 			});
 		}

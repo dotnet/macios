@@ -9,6 +9,7 @@
 
 #nullable enable
 
+using System.ComponentModel;
 using System.Threading;
 using System.IO;
 
@@ -215,7 +216,12 @@ namespace PrintCore {
 		/// <summary>To be added.</summary>
 		PluginNotFound = -9701,
 		/// <summary>To be added.</summary>
-		PluginRegisterationFailed = -9702,
+		PluginRegistrationFailed = -9702,
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'PluginRegistrationFailed' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		PluginRegisterationFailed = PluginRegistrationFailed,
+#endif
 		/// <summary>To be added.</summary>
 		FontNotFound = -9703,
 		/// <summary>To be added.</summary>
@@ -282,6 +288,15 @@ namespace PrintCore {
 		ReversePortrait = 3,
 		/// <summary>To be added.</summary>
 		ReverseLandscape = 4,
+	}
+
+	/// <summary>Specifies the type of page-to-paper mapping to use when printing.</summary>
+	[SupportedOSPlatform ("macos")]
+	public enum PMPageToPaperMappingType {
+		/// <summary>No page-to-paper mapping is applied.</summary>
+		None = 1,
+		/// <summary>The page is scaled to fit the paper size.</summary>
+		ScaleToFit = 2,
 	}
 
 	/// <summary>To be added.</summary>

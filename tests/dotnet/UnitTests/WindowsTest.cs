@@ -137,7 +137,7 @@ namespace Xamarin.Tests {
 
 			var rv = DotNet.AssertBuild (project_path, properties);
 			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
-			var warningMessages = BundleStructureTest.FilterWarnings (warnings, canonicalizePaths: true);
+			var warningMessages = BundleStructureTest.FilterWarnings (warnings, platform, canonicalizePaths: true);
 
 			var isReleaseBuild = string.Equals (configuration, "Release", StringComparison.OrdinalIgnoreCase);
 			var platformString = platform.AsString ();
@@ -209,7 +209,7 @@ namespace Xamarin.Tests {
 			rv = DotNet.AssertBuild (project_path, properties);
 			var allTargets = BinLog.GetAllTargets (rv.BinLogPath);
 			warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
-			warningMessages = BundleStructureTest.FilterWarnings (warnings, canonicalizePaths: true);
+			warningMessages = BundleStructureTest.FilterWarnings (warnings, platform, canonicalizePaths: true);
 
 			BundleStructureTest.CheckZippedAppBundleContents (platform, zippedAppBundlePath, rids, signature, isReleaseBuild);
 			AssertWarningsEqual (expectedWarnings, warningMessages, "Warnings Rebuild 1");
@@ -229,7 +229,7 @@ namespace Xamarin.Tests {
 			rv = DotNet.AssertBuild (project_path, properties);
 			allTargets = BinLog.GetAllTargets (rv.BinLogPath);
 			warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
-			warningMessages = BundleStructureTest.FilterWarnings (warnings, canonicalizePaths: true);
+			warningMessages = BundleStructureTest.FilterWarnings (warnings, platform, canonicalizePaths: true);
 
 			BundleStructureTest.CheckZippedAppBundleContents (platform, zippedAppBundlePath, rids, signature, isReleaseBuild);
 			AssertWarningsEqual (expectedWarnings, warningMessages, "Warnings Rebuild 2");
@@ -246,7 +246,7 @@ namespace Xamarin.Tests {
 			rv = DotNet.AssertBuild (project_path, properties);
 			allTargets = BinLog.GetAllTargets (rv.BinLogPath);
 			warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
-			warningMessages = BundleStructureTest.FilterWarnings (warnings, canonicalizePaths: true);
+			warningMessages = BundleStructureTest.FilterWarnings (warnings, platform, canonicalizePaths: true);
 
 			BundleStructureTest.CheckZippedAppBundleContents (platform, zippedAppBundlePath, rids, signature, isReleaseBuild);
 			AssertWarningsEqual (expectedWarnings, warningMessages, "Warnings Rebuild 3");
@@ -377,21 +377,21 @@ namespace Xamarin.Tests {
 			// Open the zipped app bundle and get the Info.plist
 			using var zip = ZipFile.OpenRead (zippedAppBundlePath);
 			ZipHelpers.DumpZipFile (zip, zippedAppBundlePath);
-			var infoPlistEntry = zip.Entries.SingleOrDefault (v => v.Name == "Info.plist")!;
-			Assert.NotNull (infoPlistEntry, "Info.plist");
+			var infoPlistEntry = zip.Entries.SingleOrDefault (v => v.Name == "Info.plist");
+			Assert.That (infoPlistEntry, Is.Not.Null, "Info.plist");
 
 			// Parse the Info.plist
 			// PDictionary.FromStream requires a seekable stream, but the zip stream isn't seekable, so copy to a
 			// MemoryStream and use that. Info.plist files aren't big, so this shouldn't become a memory consumption problem.
-			using var memoryStream = new MemoryStream ((int) infoPlistEntry.Length);
+			using var memoryStream = new MemoryStream ((int) infoPlistEntry!.Length);
 			using var plistStream = infoPlistEntry.Open ();
 			plistStream.CopyTo (memoryStream);
 
 			var infoPlist = (PDictionary) PDictionary.FromStream (memoryStream)!;
-			Assert.AreEqual ("com.xamarin.mysimpleapp", infoPlist.GetString ("CFBundleIdentifier").Value, "CFBundleIdentifier");
-			Assert.AreEqual ("MySimpleApp", infoPlist.GetString ("CFBundleDisplayName").Value, "CFBundleDisplayName");
-			Assert.AreEqual ("3.14", infoPlist.GetString ("CFBundleVersion").Value, "CFBundleVersion");
-			Assert.AreEqual ("3.14", infoPlist.GetString ("CFBundleShortVersionString").Value, "CFBundleShortVersionString");
+			Assert.That (infoPlist.GetString ("CFBundleIdentifier").Value, Is.EqualTo ("com.xamarin.mysimpleapp"), "CFBundleIdentifier");
+			Assert.That (infoPlist.GetString ("CFBundleDisplayName").Value, Is.EqualTo ("MySimpleApp"), "CFBundleDisplayName");
+			Assert.That (infoPlist.GetString ("CFBundleVersion").Value, Is.EqualTo ("3.14"), "CFBundleVersion");
+			Assert.That (infoPlist.GetString ("CFBundleShortVersionString").Value, Is.EqualTo ("3.14"), "CFBundleShortVersionString");
 
 			//Validate that the output assemblies report file with the list of local assemblies, lengths and MVIDs has been created
 			var outputAssembliesReportFileName = "OutputAssembliesReport.txt";
@@ -428,7 +428,7 @@ namespace Xamarin.Tests {
 					Guid mvid = metadataReader.GetGuid (metadataReader.GetModuleDefinition ().Mvid);
 					var fileWasUpdated = fileInfo.Length != localInfo.length || mvid != localInfo.mvid;
 
-					Assert.IsTrue (fileWasUpdated, $"The file '{fileName}' is identical to the one present in the output assemblies report file '{outputAssembliesReportFile}'");
+					Assert.That (fileWasUpdated, Is.True, $"The file '{fileName}' is identical to the one present in the output assemblies report file '{outputAssembliesReportFile}'");
 				}
 			}
 		}

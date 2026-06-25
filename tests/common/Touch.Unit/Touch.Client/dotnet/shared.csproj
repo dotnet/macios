@@ -1,16 +1,12 @@
 <Project>
   <PropertyGroup>
     <DefineConstants>NUNITLITE_NUGET</DefineConstants>
-    <LangVersion>latest</LangVersion>
     <AssemblyName>Touch.Client</AssemblyName>
 
     <!-- warning CA1416: This call site is reachable on: '...'. '...' is only supported on: '...'. -->
     <NoWarn>$(NoWarn);CA1416</NoWarn>
     <!-- warning CA1422: This call site is reachable on: '...'. '...' is obsoleted on: '...'. -->
     <NoWarn>$(NoWarn);CA1422</NoWarn>
-
-    <Nullable>enable</Nullable>
-    <WarningsAsErrors>Nullable</WarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\Runner\ExcludedCategoryFilter.cs">
@@ -59,10 +55,10 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="NUnitLite">
-      <Version>3.12.0</Version>
+      <Version>$(NUnitLitePackageVersion)</Version>
     </PackageReference>
     <PackageReference Include="NUnit.Extension.NUnitV2ResultWriter">
-      <Version>3.6.0</Version>
+      <Version>$(NUnitV2ResultWriterPackageVersion)</Version>
     </PackageReference>
     <PackageReference Include="Mono.Options">
       <Version>6.12.0.148</Version>

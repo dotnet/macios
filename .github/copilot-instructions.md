@@ -136,6 +136,10 @@ interface SomeClass {
 Located in `msbuild/` directory:
 - `Xamarin.MacDev.Tasks` - Shared Apple development tasks
 
+### FileWrites
+
+If a target or task creates a file, that file must be added to the `FileWrites` item group. This ensures MSBuild's incremental clean can delete generated files. Additionally, if a target produces multiple output files, all of them should be listed in the target's `Outputs` attribute for correct incremental build behavior.
+
 ### Project Templates
 
 Common project structure for Apple platform apps:
@@ -337,3 +341,8 @@ try {
     // Code here
 }
 ```
+
+## Git Branch Safety
+
+* When creating a branch from `origin/main` (for example `git checkout -b <name> origin/main`), the new branch may be configured to track `origin/main` depending on how it is created and your Git configuration. In that case, a later `git push` or `git push origin` may try to push to `main`.
+* To avoid accidentally pushing to main, use `git push -u origin <branch>` for the first push so Git creates `origin/<branch>` and sets the branch's upstream safely. If you want to be completely explicit, use `git push origin <branch>:<branch>`.

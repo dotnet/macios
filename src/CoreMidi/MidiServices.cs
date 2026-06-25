@@ -822,7 +822,7 @@ namespace CoreMidi {
 		/// <param name="protocol">The MIDI protocol for the data this port will receive.</param>
 		/// <param name="readBlock">The callback that will be called when the port receives MIDI data.</param>
 		/// <param name="status">A status code that describes the result of this operation. This will be <see cref="MidiError.Ok" /> in case of success.</param>
-		/// <returns>A newly created <see cref="MidiEndpoint" /> if successful, otherwise null.</returns>
+		/// <returns>A newly created <see cref="MidiPort" /> if successful, otherwise null.</returns>
 		/// <remarks>The <paramref name="readBlock" /> callback receives two pointers: the first is a pointer to the <c>MIDIEventList</c>, and the second is a pointer to the source <c>MIDIEndpointRef</c>. Use <see cref="MidiEventList(IntPtr)" /> to wrap the event list pointer.</remarks>
 		[SupportedOSPlatform ("ios14.0")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -831,7 +831,7 @@ namespace CoreMidi {
 		public unsafe MidiPort? CreateInputPort (string name, MidiProtocolId protocol, delegate* unmanaged<void*, void*, void> readBlock, out MidiError status)
 		{
 			using var namePtr = new TransientCFString (name);
-			var handle = default (MidiEndpointRef);
+			var handle = default (MidiPortRef);
 			unsafe {
 				status = (MidiError) MIDIInputPortCreateWithProtocol (GetCheckedHandle (), namePtr, protocol, &handle, readBlock);
 			}

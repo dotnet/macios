@@ -101,7 +101,7 @@ namespace CoreMidi {
 			get => wordCount;
 			set {
 				if (value > 64)
-					throw new ArgumentOutOfRangeException ($"WordCount can't be higher than 64.");
+					throw new ArgumentOutOfRangeException (nameof (value), "WordCount can't be higher than 64.");
 				wordCount = value;
 			}
 		}
@@ -112,7 +112,7 @@ namespace CoreMidi {
 			get {
 				var wc = wordCount;
 				if (wc > 64)
-					throw new ArgumentOutOfRangeException ($"WordCount can't be higher than 64.");
+					throw new ArgumentOutOfRangeException (nameof (WordCount), "WordCount can't be higher than 64.");
 				var rv = new uint [wc];
 				unsafe {
 					fixed (uint* destination = rv) {
@@ -128,7 +128,7 @@ namespace CoreMidi {
 					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
 
 				if (value.Length > 64)
-					throw new ArgumentOutOfRangeException ($"WordCount can't be higher than 64.");
+					throw new ArgumentOutOfRangeException (nameof (value), "WordCount can't be higher than 64.");
 				wordCount = (uint) value.Length;
 				unsafe {
 					fixed (uint* destination = &word_00) {
@@ -146,11 +146,11 @@ namespace CoreMidi {
 		public uint this [int index] {
 			get {
 				if (index < 0)
-					throw new ArgumentOutOfRangeException ($"index must be positive.");
+					throw new ArgumentOutOfRangeException (nameof (index), "index must be positive.");
 				if (index >= 64)
-					throw new ArgumentOutOfRangeException ($"index must be less than 64.");
+					throw new ArgumentOutOfRangeException (nameof (index), "index must be less than 64.");
 				if (index + 1 > wordCount)
-					throw new ArgumentOutOfRangeException ($"index must be less than WordCount.");
+					throw new ArgumentOutOfRangeException (nameof (index), "index must be less than WordCount.");
 				unsafe {
 					fixed (uint* firstWord = &word_00)
 						return firstWord [index];
@@ -158,11 +158,11 @@ namespace CoreMidi {
 			}
 			set {
 				if (index < 0)
-					throw new ArgumentOutOfRangeException ($"index must be positive.");
+					throw new ArgumentOutOfRangeException (nameof (index), "index must be positive.");
 				if (index >= 64)
-					throw new ArgumentOutOfRangeException ($"index must be less than 64.");
+					throw new ArgumentOutOfRangeException (nameof (index), "index must be less than 64.");
 				if (index + 1 > wordCount)
-					throw new ArgumentOutOfRangeException ($"index must be less than WordCount.");
+					throw new ArgumentOutOfRangeException (nameof (index), "index must be less than WordCount.");
 				unsafe {
 					fixed (uint* firstWord = &word_00)
 						firstWord [index] = value;

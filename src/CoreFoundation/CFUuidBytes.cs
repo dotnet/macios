@@ -1,3 +1,8 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+#nullable enable
+
 namespace CoreFoundation {
 	// This struct is only used for P/Invokes.
 	struct CFUuidBytes {

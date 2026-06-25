@@ -83,7 +83,7 @@ namespace CoreMidi {
 		public MidiEventList (MidiProtocolId protocol, int size)
 		{
 			if (size < MinimumSize)
-				throw new ArgumentOutOfRangeException ($"{nameof (size)} must be at least {MinimumSize}.");
+				throw new ArgumentOutOfRangeException (nameof (size), $"{nameof (size)} must be at least {MinimumSize}.");
 
 			midiDataSize = size;
 			owns = true;

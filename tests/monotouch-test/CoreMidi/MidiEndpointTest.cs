@@ -60,21 +60,21 @@ namespace MonoTouchFixtures.CoreMidi {
 						// These APIs returns -50 (GeneralParamError) no matter what I do :/
 
 						Assert.AreEqual (AudioQueueStatus.GeneralParamError, (AudioQueueStatus) ep.GetRefCons (out var ref1, out var ref2), "GetRefCons A");
-						Assert.AreEqual (ref1, IntPtr.Zero, "GetRefCons A 1");
-						Assert.AreEqual (ref2, IntPtr.Zero, "GetRefCons A 2");
+						Assert.That (ref1, Is.EqualTo (IntPtr.Zero), "GetRefCons A 1");
+						Assert.That (ref2, Is.EqualTo (IntPtr.Zero), "GetRefCons A 2");
 
 						ref1 = unchecked((IntPtr) 0xfee1600d);
 						ref2 = 0x42f00f00;
 						Assert.AreEqual (AudioQueueStatus.GeneralParamError, (AudioQueueStatus) ep.SetRefCons (ref1, ref2), "SetRefCons B");
 						Assert.AreEqual (AudioQueueStatus.GeneralParamError, (AudioQueueStatus) ep.GetRefCons (out ref1, out ref2), "GetRefCons C");
-						Assert.AreEqual (ref1, IntPtr.Zero /* 0xfee1600d */, "GetRefCons C 1");
-						Assert.AreEqual (ref2, IntPtr.Zero /* 0x42f00f00 */, "GetRefCons C 2");
+						Assert.That (ref1, Is.EqualTo (IntPtr.Zero) /* 0xfee1600d */, "GetRefCons C 1");
+						Assert.That (ref2, Is.EqualTo (IntPtr.Zero) /* 0x42f00f00 */, "GetRefCons C 2");
 
 						Assert.AreEqual (AudioQueueStatus.GeneralParamError, (AudioQueueStatus) ep.SetRefCons (IntPtr.Zero, IntPtr.Zero), "SetRefCons D");
 
 						Assert.AreEqual (AudioQueueStatus.GeneralParamError, (AudioQueueStatus) ep.GetRefCons (out ref1, out ref2), "GetRefCons E");
-						Assert.AreEqual (ref1, IntPtr.Zero, "GetRefCons E 1");
-						Assert.AreEqual (ref2, IntPtr.Zero, "GetRefCons E 2");
+						Assert.That (ref1, Is.EqualTo (IntPtr.Zero), "GetRefCons E 1");
+						Assert.That (ref2, Is.EqualTo (IntPtr.Zero), "GetRefCons E 2");
 
 						anyChecks = true;
 					}

@@ -221,34 +221,6 @@ namespace CoreMidi {
 	}
 
 
-	/*!
-		@struct			MIDISysexSendRequestUMP
-		@abstract		A request to transmit a UMP system-exclusive event.
-
-		@discussion
-			This represents a request to send a single UMP system-exclusive MIDI event to
-			a MIDI destination asynchronously.
-
-		@field			destination
-							The endpoint to which the event is to be sent.
-		@field			words
-							Initially, a pointer to the UMP SysEx event to be sent.
-							MIDISendUMPSysex will advance this pointer as data is
-							sent.
-		@field			wordsToSend
-							Initially, the number of words to be sent.  MIDISendUMPSysex
-							will decrement this counter as data is sent.
-		@field			complete
-							The client may set this to true at any time to abort
-							transmission.  The implementation sets this to true when
-							all data been transmitted.
-		@field			completionProc
-							Called when all bytes have been sent, or after the client
-							has set complete to true.
-		@field			completionRefCon
-							Passed as a refCon to completionProc.
-	*/
-
 	/// <summary>A struct that represents a request to transmit a single UMP system-exclusive event.</summary>
 	[NativeName ("MIDISysexSendRequestUMP")]
 	struct MidiSysexSendRequestUmp {

@@ -4331,10 +4331,7 @@ public partial class Generator : IMemberGatherer {
 				// Format with nullability for inner generic args
 				var formatted = TypeManager.FormatType (minfo.type, paramType, paramBytes);
 				// Check byte 0 of the slice for the param's own nullability
-				bool isParamNullable = paramBytes.Length == 1
-					? paramBytes [0] == 2
-					: (paramBytes.Length > 0 && paramBytes [0] == 2);
-				if (isParamNullable)
+				if (paramBytes [0] == 2)
 					formatted += "?";
 				return formatted;
 			}

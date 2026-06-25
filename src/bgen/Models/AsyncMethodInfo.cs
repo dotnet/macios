@@ -83,6 +83,8 @@ class AsyncMethodInfo : MemberInformation {
 					int byteIndex = 1; // skip byte 0 (the Action<> itself)
 					for (int i = 0; i < nonErrorArgCount; i++) {
 						int paramByteCount = CountNullabilityBytes (genericArgs [i]);
+						if (byteIndex + paramByteCount > nullabilityBytes.Length)
+							break; // malformed or truncated attribute, skip remaining
 						var slice = new byte [paramByteCount];
 						Array.Copy (nullabilityBytes, byteIndex, slice, 0, paramByteCount);
 						CompletionParamNullabilityBytes [i] = slice;

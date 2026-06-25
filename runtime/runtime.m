@@ -13,6 +13,7 @@
 #include <mach/mach.h>
 #include <mach-o/dyld.h>
 #include <mach-o/loader.h>
+#include <Security/Security.h>
 
 #include "product.h"
 #include "shared.h"
@@ -2514,9 +2515,66 @@ static size_t xamarin_coreclr_get_runtime_property (const char *key, char *value
 }
 #endif // defined (CORECLR_RUNTIME)
 
+static bool
+xamarin_is_sandboxed ()
+{
+#if TARGET_OS_OSX || TARGET_OS_MACCATALYST
+	SecTaskRef task = SecTaskCreateFromSelf (NULL);
+	if (task == NULL)
+		return false;
+
+	CFTypeRef entitlement = SecTaskCopyValueForEntitlement (task, CFSTR ("com.apple.security.app-sandbox"), NULL);
+	bool is_sandboxed = false;
+	if (entitlement != NULL && CFGetTypeID (entitlement) == CFBooleanGetTypeID ())
+		is_sandboxed = CFBooleanGetValue ((CFBooleanRef) entitlement);
+
+	if (entitlement != NULL)
+		CFRelease (entitlement);
+	CFRelease (task);
+
+	return is_sandboxed;
+#elif TARGET_OS_IOS || TARGET_OS_TV
+	// TARGET_OS_IOS is set for Mac Catalyst too, so we check for TARGET_OS_MACCATALYST first.
+	return true;
+#else
+	#error Unknown platform
+#endif
+}
+
+static void
+xamarin_initialize_crash_report_directory ()
+{
+	// Set DOTNET_CrashReportRootPath before loading CoreCLR so that crash reports
+	// are written to a known, writable location that isn't backed up by iCloud.
+	// We use NSCachesDirectory for this purpose.
+	// Ref: https://github.com/dotnet/runtime/pull/128738
+
+	NSArray *paths = NSSearchPathForDirectoriesInDomains (NSCachesDirectory, NSUserDomainMask, YES);
+	if (paths == nil || [paths count] == 0) {
+		LOG (PRODUCT ": Could not find the caches directory for crash reports.\n");
+		return;
+	}
+
+	NSString *cachesDir = paths [0];
+
+	// For non-sandboxed desktop apps, NSCachesDirectory is shared between all apps,
+	// so we need to use a subdirectory specific to this app (using the bundle identifier).
+	// Sandboxed apps already get an app-specific directory.
+	if (!xamarin_is_sandboxed ()) {
+		NSString *bundleId = [[NSBundle mainBundle] bundleIdentifier];
+		if (bundleId != nil) {
+			cachesDir = [cachesDir stringByAppendingPathComponent: bundleId];
+		}
+	}
+
+	setenv ("DOTNET_CrashReportRootPath", [cachesDir UTF8String], 0 /* don't overwrite */);
+}
+
 void
 xamarin_vm_initialize ()
 {
+	xamarin_initialize_crash_report_directory ();
+
 #if defined (CORECLR_RUNTIME)
 	struct host_runtime_contract host_contract = {
 		.size = sizeof (struct host_runtime_contract),

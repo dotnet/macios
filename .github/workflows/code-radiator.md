@@ -9,6 +9,7 @@ concurrency:
 permissions:
   contents: read
   pull-requests: read
+environment: gh-aw-environment
 engine:
   id: copilot
   model: claude-sonnet-4.5

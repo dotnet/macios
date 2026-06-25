@@ -204,11 +204,10 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 			item.SetMetadata ("OSVersion", device.OSVersion);
 			item.SetMetadata ("UDID", udid);
 			// Capitalize the first letter of PairingState for the Status metadata.
-			// devicectl only lists devices it knows about (i.e. paired devices), so
-			// default to "Paired" when there's no explicit pairing state.
+			// Default to "Unpaired" when devicectl doesn't report a pairing state.
 			var pairingState = device.PairingState;
 			if (string.IsNullOrEmpty (pairingState))
-				pairingState = "paired";
+				pairingState = "unpaired";
 			item.SetMetadata ("Status", char.ToUpperInvariant (pairingState [0]) + pairingState.Substring (1));
 
 			// compute the platform and runtime identifier

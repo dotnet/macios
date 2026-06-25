@@ -86,7 +86,7 @@ namespace Xamarin.MacDev.Tasks {
 				Assert.That (task.Devices [1].GetMetadata ("OSVersion"), Is.EqualTo ("26.0"), "Device 2 Platform mismatch.");
 				Assert.That (task.Devices [1].GetMetadata ("UDID"), Is.EqualTo ("00008001-012301230123ABCD"), "Device 2 UDID mismatch.");
 				Assert.That (task.Devices [1].GetMetadata ("RuntimeIdentifier"), Is.EqualTo ("ios-arm64"), "Device 2 RuntimeIdentifier mismatch.");
-				Assert.That (task.Devices [1].GetMetadata ("Status"), Is.EqualTo ("Paired"), "Device 2 Status mismatch.");
+				Assert.That (task.Devices [1].GetMetadata ("Status"), Is.EqualTo ("Unpaired"), "Device 2 Status mismatch.");
 				Assert.That (task.Devices [1].GetMetadata ("DiscardedReason"), Is.Empty, "Device 2 discarded reason mismatch.");
 
 				Assert.That (task.Devices [2].ItemSpec, Is.EqualTo ("00008002-012301230123ABCD"), "Device 3 mismatch.");

@@ -501,6 +501,7 @@
 			SessionId="$(BuildSessionId)"
 			DynamicLibrary="@(_CreatedFrameworkExecutableFromDylibs)"
 			FixupLibraryReferences="true"
+			IntermediateNativeLibraryDir="$(_IntermediateNativeLibraryDir)"
 			SdkDevPath="$(_SdkDevPath)"
 		/>
 	</Target>

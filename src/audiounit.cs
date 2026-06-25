@@ -1347,6 +1347,6 @@ namespace AudioUnit {
 		/// <summary>Gets the unique identifier (UID) of the Bluetooth headphone device that provides IMU sensor data for head tracking.</summary>
 		/// <value>The UID of the matched Bluetooth headphone device, or <see langword="null" /> if no device is matched.</value>
 		[NullAllowed, Export ("deviceUID")]
-		string DeviceUID { get; }
+		string DeviceUId { get; }
 	}
 }

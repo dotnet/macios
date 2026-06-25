@@ -32,8 +32,12 @@ class AsyncMethodInfo : MemberInformation {
 			// on the outer method parameter (the one with the Action<...> type), not on the
 			// delegate's Invoke method parameters. Check the nullability bytes to determine if
 			// the NSError type argument is nullable.
+			// This only applies to generic delegate types (Action<...>). For non-generic delegates,
+			// the NullableAttribute on the outer parameter describes the delegate instance, not
+			// the Invoke parameters.
 			var outerParam = mi.GetParameters ().Last ();
-			var nullabilityBytes = generator.AttributeManager.GetNullabilityBytes (outerParam);
+			var genericArgs = lastType.GetGenericArguments ();
+			var nullabilityBytes = genericArgs.Length > 0 ? generator.AttributeManager.GetNullabilityBytes (outerParam) : null;
 			if (nullabilityBytes is not null && nullabilityBytes.Length == 1) {
 				// Single-byte (uniform) form: the same byte applies to all positions
 				IsNSErrorNullable = nullabilityBytes [0] == 2;
@@ -41,7 +45,6 @@ class AsyncMethodInfo : MemberInformation {
 				// Multi-byte form: walk the type arguments depth-first to find the byte
 				// index for the last param (NSError). byte[0] is for the Action<> itself.
 				int byteIndex = 1;
-				var genericArgs = lastType.GetGenericArguments ();
 				for (int i = 0; i < genericArgs.Length; i++) {
 					if (i == genericArgs.Length - 1) {
 						// This is the last generic argument (NSError), which is a reference type

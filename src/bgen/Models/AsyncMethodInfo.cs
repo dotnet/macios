@@ -16,7 +16,7 @@ class AsyncMethodInfo : MemberInformation {
 	// Each entry is a byte slice starting at that parameter's position in the
 	// delegate's NullableAttribute array (byte 0 = the param's own nullability).
 	// Null if nullability info is unavailable.
-	public byte []?[]? CompletionParamNullabilityBytes { get; }
+	public byte []? []? CompletionParamNullabilityBytes { get; }
 
 	public AsyncMethodInfo (Generator generator, IMemberGatherer gather, Type type, MethodInfo mi, Type? categoryExtensionType, bool isExtensionMethod)
 		: base (generator, gather, mi, type, categoryExtensionType, false, isExtensionMethod)
@@ -73,7 +73,7 @@ class AsyncMethodInfo : MemberInformation {
 		if (nullabilityBytes is not null && genericArgs.Length > 0) {
 			var nonErrorArgCount = HasNSError ? genericArgs.Length - 1 : genericArgs.Length;
 			if (nonErrorArgCount > 0) {
-				CompletionParamNullabilityBytes = new byte [nonErrorArgCount][];
+				CompletionParamNullabilityBytes = new byte [nonErrorArgCount] [];
 				if (nullabilityBytes.Length == 1) {
 					// Single-byte (uniform): every param gets the same byte
 					for (int i = 0; i < nonErrorArgCount; i++)

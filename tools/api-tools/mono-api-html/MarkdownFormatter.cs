@@ -206,8 +206,9 @@ namespace Mono.ApiTools {
 
 		public override void DiffModification (TextChunk chunk, string old, string @new)
 		{
-			// The 'old' text is what's being removed, and 'new' is what's being added.
-			// (The original code had these reversed.)
+			// The 'old' text is what's being removed (wrap in ---), and 'new' is
+			// what's being added (wrap in +++). The original code incorrectly called
+			// DiffAddition for 'old' and DiffRemoval for 'new'.
 			if (old is not null && old.Length > 0)
 				DiffRemoval (chunk, old);
 			if (@new is not null && @new.Length > 0)

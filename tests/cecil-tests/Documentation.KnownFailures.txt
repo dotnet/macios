@@ -35348,6 +35348,7 @@ P:ARKit.ARFaceAnchor.RightEyeTransform
 P:ARKit.ARFaceGeometry.TextureCoordinateCount
 P:ARKit.ARFaceGeometry.TriangleCount
 P:ARKit.ARFaceGeometry.VertexCount
+P:ARKit.ARFaceTrackingConfiguration.EnvironmentTexturingEnabled
 P:ARKit.ARFaceTrackingConfiguration.MaximumNumberOfTrackedFaces
 P:ARKit.ARFaceTrackingConfiguration.SupportedNumberOfTrackedFaces
 P:ARKit.ARFaceTrackingConfiguration.SupportsWorldTracking
@@ -35364,6 +35365,7 @@ P:ARKit.ARFrame.EstimatedDepthData
 P:ARKit.ARFrame.ExifData
 P:ARKit.ARFrame.GeoTrackingStatus
 P:ARKit.ARFrame.LightEstimate
+P:ARKit.ARFrame.MetadataObjects
 P:ARKit.ARFrame.RawFeaturePoints
 P:ARKit.ARFrame.SceneDepth
 P:ARKit.ARFrame.SegmentationBuffer
@@ -35392,6 +35394,7 @@ P:ARKit.ARGeoTrackingConfiguration.EnvironmentTexturing
 P:ARKit.ARGeoTrackingConfiguration.MaximumNumberOfTrackedImages
 P:ARKit.ARGeoTrackingConfiguration.PlaneDetection
 P:ARKit.ARGeoTrackingConfiguration.SupportsAppClipCodeTracking
+P:ARKit.ARGeoTrackingConfiguration.TrackingObjects
 P:ARKit.ARGeoTrackingConfiguration.WantsHdrEnvironmentTextures
 P:ARKit.ARGeoTrackingStatus.Accuracy
 P:ARKit.ARGeoTrackingStatus.State
@@ -35450,6 +35453,7 @@ P:ARKit.ARReferenceObject.Name
 P:ARKit.ARReferenceObject.RawFeaturePoints
 P:ARKit.ARReferenceObject.ResourceGroupName
 P:ARKit.ARReferenceObject.Scale
+P:ARKit.ARReferenceObject.UsdzFile
 P:ARKit.ARSCNView.AutomaticallyUpdatesLighting
 P:ARKit.ARSCNView.Delegate
 P:ARKit.ARSCNView.RendersCameraGrain
@@ -35498,6 +35502,7 @@ P:ARKit.ARWorldTrackingConfiguration.PlaneDetection
 P:ARKit.ARWorldTrackingConfiguration.SceneReconstruction
 P:ARKit.ARWorldTrackingConfiguration.SupportsAppClipCodeTracking
 P:ARKit.ARWorldTrackingConfiguration.SupportsUserFaceTracking
+P:ARKit.ARWorldTrackingConfiguration.TrackingObjects
 P:ARKit.ARWorldTrackingConfiguration.UserFaceTrackingEnabled
 P:ARKit.ARWorldTrackingConfiguration.WantsHdrEnvironmentTextures
 P:ARKit.IARSessionProviding.Session

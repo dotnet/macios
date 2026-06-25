@@ -16,9 +16,7 @@ endif
 
 SUBDIRS += tools
 
-ifndef NO_XCODE
 SUBDIRS += dotnet
-endif
 
 #
 # Common

@@ -4080,7 +4080,7 @@ public partial class Generator : IMemberGatherer {
 					print ("return src is null ? null! : new {0}(src);", TypeManager.FormatType (pi.DeclaringType, pi.PropertyType, wrapNullabilityBytes));
 				} else {
 					if (TypeManager.IsArrayOfWrappedType (pi.PropertyType))
-						print ("return NSArray.FromArray<{0}>({1} as NSArray){2};", TypeManager.FormatType (pi.DeclaringType, pi.PropertyType.GetElementType (), wrapNullabilityBytes), wrap, nullable ? "" : "!");
+						print ("return NSArray.FromArray<{0}>({1} as NSArray){2};", TypeManager.FormatType (pi.DeclaringType, pi.PropertyType.GetElementType ()), wrap, nullable ? "" : "!");
 					else if (pi.PropertyType.IsValueType)
 						print ("return ({0}) ({1});", TypeManager.FormatType (pi.DeclaringType, pi.PropertyType, wrapNullabilityBytes), wrap);
 					else

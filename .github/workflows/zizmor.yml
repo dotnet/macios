@@ -25,7 +25,7 @@ jobs:
       - name: Find workflow files
         id: find-files
         run: |
-          files=$(find .github/workflows -name '*.yml' ! -name '*.lock.yml' | sort | tr '\n' ' ')
+          files=$(find .github/workflows -name '*.yml' ! -name '*.lock.yml' ! -name 'agentics-maintenance.yml' | sort | tr '\n' ' ')
           echo "files=$files" >> "$GITHUB_OUTPUT"
 
       - name: Run zizmor

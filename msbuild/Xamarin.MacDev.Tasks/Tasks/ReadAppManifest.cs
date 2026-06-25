@@ -14,6 +14,8 @@ namespace Xamarin.MacDev.Tasks {
 	public class ReadAppManifest : XamarinTask, ITaskCallback {
 		public ITaskItem? AppManifest { get; set; }
 
+		public bool DisableMinimumOSVersion { get; set; }
+
 		[Output]
 		public string? CLKComplicationGroup { get; set; }
 
@@ -70,7 +72,7 @@ namespace Xamarin.MacDev.Tasks {
 			CLKComplicationGroup = plist?.Get<PString> (ManifestKeys.CLKComplicationGroup)?.Value;
 
 			MinimumOSVersion = plist?.Get<PString> (PlatformFrameworkHelper.GetMinimumOSVersionKey (Platform))?.Value;
-			if (Platform == ApplePlatform.MacCatalyst) {
+			if (!DisableMinimumOSVersion && Platform == ApplePlatform.MacCatalyst) {
 				// The minimum version in the Info.plist is the macOS version. However, the rest of our tooling
 				// expects the iOS version, so expose that.
 				if (!MacCatalystSupport.TryGetiOSVersion (CurrentSdk.GetSdkPath (), MinimumOSVersion!, out var convertedVersion, out var knownMacOSVersions))

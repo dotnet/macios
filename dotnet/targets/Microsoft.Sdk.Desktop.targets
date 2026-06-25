@@ -3,7 +3,7 @@
 	<Target
 		Name="_PrepareRunDesktop"
 		BeforeTargets="ComputeRunArguments"
-		DependsOnTargets="_ValidateHotReloadConfiguration;_ReadAppManifest"
+		DependsOnTargets="_ValidateHotReloadConfiguration;_GenerateBundleName"
 		Condition="'$(SdkIsDesktop)' == 'true'">
 
 		<!--
@@ -20,6 +20,15 @@
 			<OpenNewInstance Condition="'$(OpenNewInstance)' == ''">true</OpenNewInstance>
 			<OpenWaitForExit Condition="'$(OpenWaitForExit)' == ''">true</OpenWaitForExit>
 		</PropertyGroup>
+
+		<!-- Read the bundle identifier from the Info.plist -->
+		<ReadAppManifest
+			Condition="'$(IsMacEnabled)' == 'true' And '@(_DotNetWatchVariable)' != '' And '$(_BundleIdentifier)' == ''"
+			AppManifest="$(_TemporaryAppManifest)"
+			DisableMinimumOSVersion="true"
+			>
+			<Output TaskParameter="CFBundleIdentifier" PropertyName="_BundleIdentifier" />
+		</ReadAppManifest>
 
 		<!--
 			'dotnet watch' sets DOTNET_STARTUP_HOOKS to a path outside the app's sandbox,

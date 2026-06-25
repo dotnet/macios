@@ -123,8 +123,26 @@ public static partial class AttributeFactory {
 		// So determine if the build is -1, and use the 2 or 3 param ctor...
 		var version = attr.Version;
 		var minimum = Xamarin.SdkVersions.GetMinVersion (platform.AsApplePlatform ());
-		if (version < minimum)
-			version = minimum;
+		if (version <= minimum) {
+			// If the version is at or below the platform minimum, it's redundant,
+			// so create a no-version attribute instead of clamping.
+			switch (attr.AvailabilityKind) {
+			case AvailabilityKind.Introduced:
+				return string.IsNullOrEmpty (attr.Message)
+					? CreateNoVersionSupportedAttribute (platform)
+					: new IntroducedAttribute (platform, message: attr.Message);
+			case AvailabilityKind.Deprecated:
+				return new DeprecatedAttribute (platform, minimum.Major, minimum.Minor, message: attr.Message);
+			case AvailabilityKind.Obsoleted:
+				return new ObsoletedAttribute (platform, minimum.Major, minimum.Minor, message: attr.Message);
+			case AvailabilityKind.Unavailable:
+				return string.IsNullOrEmpty (attr.Message)
+					? CreateUnsupportedAttribute (platform)
+					: new UnavailableAttribute (platform, message: attr.Message);
+			default:
+				throw new NotImplementedException ();
+			}
+		}
 
 		if (version.Build == -1) {
 			switch (attr.AvailabilityKind) {

@@ -62,7 +62,6 @@ namespace Xamarin.MacDev.Tasks {
 				// directory, even if the path contains traversal segments, is absolute, or uses symlinks.
 				if (!PathUtils.IsPathContained (IntermediateNativeLibraryDir, target)) {
 					Log.LogError (MSBStrings.E7181 /* The native library can't be reidentified to '{0}' because that path is outside the intended output directory '{1}'. */, target, IntermediateNativeLibraryDir);
-					processes [i] = System.Threading.Tasks.Task.CompletedTask;
 					continue;
 				}
 
@@ -111,9 +110,6 @@ namespace Xamarin.MacDev.Tasks {
 				Task.WaitAll (processes.ToArray ());
 
 			ReidentifiedDynamicLibrary = reidentified.ToArray ();
-
-			// Drop any items we skipped because their reidentified path wasn't contained.
-			ReidentifiedDynamicLibrary = ReidentifiedDynamicLibrary.Where (item => item is not null).ToArray ();
 
 			return !Log.HasLoggedErrors;
 		}

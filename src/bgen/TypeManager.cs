@@ -512,9 +512,6 @@ public class TypeManager {
 		bool isCurrentNullable = currentByte == 2;
 
 		// Simple reference types
-		if (type == TypeCache.System_Void) {
-			return "void";
-		}
 		if (type == TypeCache.System_String) {
 			return "string" + (isCurrentNullable ? "?" : "");
 		}

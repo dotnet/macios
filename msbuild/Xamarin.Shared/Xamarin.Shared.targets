@@ -3382,7 +3382,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		</_CreateInstallerDependsOn>
 	</PropertyGroup>
 
-	<Target Name="_CreateInstaller" Condition="'$(CreatePackage)' == 'true' And '$(_CanOutputAppBundle)' == 'true'" DependsOnTargets="$(_CreateInstallerDependsOn)">
+	<Target Name="_CreateInstaller" Condition="'$(CreatePackage)' == 'true' And '$(_CanOutputAppBundle)' == 'true' And '$(SdkIsDesktop)' == 'true'" DependsOnTargets="$(_CreateInstallerDependsOn)">
 		<PropertyGroup>
 			<PkgPackageDir Condition="'$(PkgPackageDir)' == ''">$(TargetDir)</PkgPackageDir>
 		</PropertyGroup>

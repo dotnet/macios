@@ -726,14 +726,14 @@ namespace Registrar {
 			}
 		}
 
-		protected override void ReportError (int code, string message, params object [] args)
+		protected override void ReportError (int code, string message, params object? [] args)
 		{
 			throw ErrorHelper.CreateError (code, message, args);
 		}
 
-		protected override void ReportWarning (int code, string message, params object [] args)
+		protected override void ReportWarning (int code, string message, params object? [] args)
 		{
-			ErrorHelper.Show (ErrorHelper.CreateWarning (code, message, args));
+			ErrorHelper.Show (App, ErrorHelper.CreateWarning (code, message, args));
 		}
 
 		public static int GetValueTypeSize (TypeDefinition type)
@@ -1591,7 +1591,7 @@ namespace Registrar {
 		}
 
 #if !LEGACY_TOOLS
-		bool GetDotNetAvailabilityAttribute (ICustomAttribute ca, ApplePlatform currentPlatform, out Version? sdkVersion, out string? message)
+		public bool GetDotNetAvailabilityAttribute (ICustomAttribute ca, ApplePlatform currentPlatform, out Version? sdkVersion, out string? message)
 		{
 			var caType = ca.AttributeType;
 
@@ -1601,6 +1601,7 @@ namespace Registrar {
 			string supportedPlatformAndVersion;
 			switch (ca.ConstructorArguments.Count) {
 			case 1:
+			case 2: // second argument can be a message
 				supportedPlatformAndVersion = (string) ca.ConstructorArguments [0].Value;
 				break;
 			default:
@@ -1679,7 +1680,7 @@ namespace Registrar {
 			return false;
 		}
 
-		protected override Version? GetSdkIntroducedVersion (TypeReference obj, out string? message)
+		public override Version? GetSdkIntroducedVersion (TypeReference obj, out string? message)
 		{
 			TypeDefinition td = obj.Resolve ();
 
@@ -2025,7 +2026,7 @@ namespace Registrar {
 			return false;
 		}
 
-		bool IsPlatformType (TypeReference type)
+		public bool IsPlatformType (TypeReference type)
 		{
 			if (type.IsNested)
 				return false;
@@ -2102,7 +2103,7 @@ namespace Registrar {
 			namespaces.Add (ns);
 
 			if (Driver.GetFrameworks (App).TryGetValue (ns, out var fw) && fw.IsFrameworkUnavailable (App)) {
-				Driver.Log (5, "Not importing the framework {0} in the generated registrar code because it's not available in the current platform.", ns);
+				App.Log (5, "Not importing the framework {0} in the generated registrar code because it's not available in the current platform.", ns);
 				return;
 			}
 
@@ -2685,7 +2686,7 @@ namespace Registrar {
 				if (!string.IsNullOrEmpty (single_assembly) && single_assembly != @class.Type.Module.Assembly.Name.Name)
 					continue;
 
-				if (Driver.XcodeVersion.Major >= 15) {
+				if (App.XcodeVersion.Major >= 15) {
 					if (@class.Type.Is ("PassKit", "PKDisbursementAuthorizationControllerDelegate") || @class.Type.Is ("PassKit", "IPKDisbursementAuthorizationControllerDelegate")) {
 						exceptions.Add (ErrorHelper.CreateWarning (4189, $"The class '{@class.Type.FullName}' will not be registered it has been removed from the {App.Platform} SDK."));
 						continue;
@@ -2734,16 +2735,16 @@ namespace Registrar {
 
 		public void Rewrite ()
 		{
-#if !LEGACY_TOOLS
+#if !LEGACY_TOOLS && !ASSEMBLY_PREPARER
 			if (App.Optimizations.RedirectClassHandles == true) {
 				var exceptions = new List<Exception> ();
 				var map_dict = GetTypeMapDictionary (exceptions);
 				var rewriter = new Rewriter (map_dict, GetAssemblies (), LinkContext);
 				var result = rewriter.Process ();
 				if (!string.IsNullOrEmpty (result)) {
-					Driver.Log (5, $"Not redirecting class handles because {result}");
+					App.Log (5, $"Not redirecting class handles because {result}");
 				}
-				ErrorHelper.ThrowIfErrors (exceptions);
+				ErrorHelper.ThrowIfErrors (App, exceptions);
 			}
 #endif
 		}
@@ -3200,7 +3201,7 @@ namespace Registrar {
 
 			sb.WriteLine (map.ToString ());
 			sb.WriteLine (map_init.ToString ());
-			ErrorHelper.ThrowIfErrors (exceptions);
+			ErrorHelper.ThrowIfErrors (App, exceptions);
 		}
 
 		bool TryGetIntPtrBoolCtor (TypeDefinition type, List<Exception> exceptions, [NotNullWhen (true)] out MethodDefinition? ctor)
@@ -3963,7 +3964,7 @@ namespace Registrar {
 				nslog_start.AppendLine (");");
 			}
 
-#if !LEGACY_TOOLS
+#if !LEGACY_TOOLS && !ASSEMBLY_PREPARER
 			// Generate the native trampoline to call the generated UnmanagedCallersOnly method if we're using the managed static registrar.
 			if (LinkContext.App.Registrar == RegistrarMode.ManagedStatic || LinkContext.App.Registrar == RegistrarMode.TrimmableStatic) {
 				GenerateCallToUnmanagedCallersOnlyMethod (sb, method, isCtor, isVoid, num_arg, descriptiveMethodName, exceptions);
@@ -4193,7 +4194,7 @@ namespace Registrar {
 			}
 		}
 
-#if !LEGACY_TOOLS
+#if !LEGACY_TOOLS && !ASSEMBLY_PREPARER
 		void GenerateCallToUnmanagedCallersOnlyMethod (AutoIndentStringBuilder sb, ObjCMethod method, bool isCtor, bool isVoid, int num_arg, string descriptiveMethodName, List<Exception> exceptions)
 		{
 			// Generate the native trampoline to call the generated UnmanagedCallersOnly method.
@@ -4399,11 +4400,11 @@ namespace Registrar {
 					var token = "INVALID_TOKEN_REF";
 					if (App.Optimizations.OptimizeBlockLiteralSetupBlock == true) {
 						if (type.Is ("System", "Delegate") || type.Is ("System", "MulticastDelegate")) {
-							ErrorHelper.Show (ErrorHelper.CreateWarning (App, 4173, method.Method, Errors.MT4173, type.FullName, descriptiveMethodName));
+							ErrorHelper.Show (App, ErrorHelper.CreateWarning (App, 4173, method.Method, Errors.MT4173, type.FullName, descriptiveMethodName));
 						} else {
 							var delegateMethod = type.Resolve ().GetMethods ().FirstOrDefault ((v) => v.Name == "Invoke");
 							if (delegateMethod is null) {
-								ErrorHelper.Show (ErrorHelper.CreateWarning (App, 4173, method.Method, Errors.MT4173_A, type.FullName, descriptiveMethodName));
+								ErrorHelper.Show (App, ErrorHelper.CreateWarning (App, 4173, method.Method, Errors.MT4173_A, type.FullName, descriptiveMethodName));
 							} else {
 								signature = "\"" + ComputeSignature (method.DeclaringType.Type, null, method, isBlockSignature: true) + "\"";
 							}
@@ -4688,7 +4689,7 @@ namespace Registrar {
 				// One common variation is that the IDE will add the BlockProxy attribute found in base methods when the user overrides those methods,
 				// which unfortunately doesn't compile (because the type passed to the BlockProxy attribute is internal), and then
 				// the user just modifies the attribute to something that compiles.
-				ErrorHelper.Show (ErrorHelper.CreateWarning (App, 4175, method, $"{(string.IsNullOrEmpty (param.Name) ? $"Parameter #{param.Index + 1}" : $"The parameter '{param.Name}'")} in the method '{GetTypeFullName (method.DeclaringType)}.{GetDescriptiveMethodName (method)}' has an invalid BlockProxy attribute (the type passed to the attribute does not have a 'Create' method)."));
+				ErrorHelper.Show (App, ErrorHelper.CreateWarning (App, 4175, method, $"{(string.IsNullOrEmpty (param.Name) ? $"Parameter #{param.Index + 1}" : $"The parameter '{param.Name}'")} in the method '{GetTypeFullName (method.DeclaringType)}.{GetDescriptiveMethodName (method)}' has an invalid BlockProxy attribute (the type passed to the attribute does not have a 'Create' method)."));
 				// Returning null will make the caller look for the attribute in the base implementation.
 			}
 			return createMethod;
@@ -4965,7 +4966,7 @@ namespace Registrar {
 				func = GetNSStringToSmartEnumFunc (underlyingManagedType, inputType, outputType, descriptiveMethodName, managedClassExpression, out nativeTypeName);
 				if (!IsSmartEnum (underlyingManagedType, out var _, out var getValueMethod)) {
 					// method linked away!? this should already be verified
-					ErrorHelper.Show (ErrorHelper.CreateWarning (99, Errors.MX0099, $"the smart enum {underlyingManagedType.FullName} doesn't seem to be a smart enum after all"));
+					ErrorHelper.Show (App, ErrorHelper.CreateWarning (99, Errors.MX0099, $"the smart enum {underlyingManagedType.FullName} doesn't seem to be a smart enum after all"));
 					token = "INVALID_TOKEN_REF";
 				} else if (TryCreateTokenReference (getValueMethod, TokenType.Method, out var get_value_method_token_ref, out _)) {
 					token = $"0x{get_value_method_token_ref:X} /* {getValueMethod.FullName} */";
@@ -5061,7 +5062,7 @@ namespace Registrar {
 				func = GetSmartEnumToNSStringFunc (underlyingManagedType, inputType, outputType, descriptiveMethodName, classVariableName);
 				if (!IsSmartEnum (underlyingManagedType, out var getConstantMethod, out var _)) {
 					// method linked away!? this should already be verified
-					ErrorHelper.Show (ErrorHelper.CreateWarning (99, Errors.MX0099, $"the smart enum {underlyingManagedType.FullName} doesn't seem to be a smart enum after all"));
+					ErrorHelper.Show (App, ErrorHelper.CreateWarning (99, Errors.MX0099, $"the smart enum {underlyingManagedType.FullName} doesn't seem to be a smart enum after all"));
 					token = "INVALID_TOKEN_REF";
 				} else if (TryCreateTokenReference (getConstantMethod, TokenType.Method, out var get_constant_method_token_ref, out _)) {
 					token = $"0x{get_constant_method_token_ref:X} /* {getConstantMethod.FullName} */";
@@ -5169,7 +5170,7 @@ namespace Registrar {
 		{
 			var token = member.MetadataToken;
 
-#if !LEGACY_TOOLS
+#if !LEGACY_TOOLS && !ASSEMBLY_PREPARER
 			if (App.Registrar == RegistrarMode.TrimmableStatic)
 				throw ErrorHelper.CreateError (99, $"Can't create a token reference when using the trimmable static registrar (for: {member.FullName})");
 
@@ -5339,7 +5340,7 @@ namespace Registrar {
 				sb.WriteLine ("}");
 				sb.WriteLine ();
 			} else {
-				// Console.WriteLine ("Signature already processed: {0} for {1}.{2}", signature.ToString (), method.DeclaringType.FullName, method.Name);
+				// App.Log ("Signature already processed: {0} for {1}.{2}", signature.ToString (), method.DeclaringType.FullName, method.Name);
 			}
 
 			return wrapperName;
@@ -5382,12 +5383,12 @@ namespace Registrar {
 			this.input_assemblies = assemblies;
 
 			foreach (var assembly in assemblies) {
-				Driver.Log (3, "Generating static registrar for {0}", assembly.Name);
+				App.Log (3, "Generating static registrar for {0}", assembly.Name);
 				RegisterAssembly (assembly);
 			}
 		}
 
-#if !LEGACY_TOOLS
+#if !LEGACY_TOOLS && !ASSEMBLY_PREPARER
 		static bool IsPropertyTrimmed (PropertyDefinition? pd, AnnotationStore annotations)
 		{
 			if (pd is null)
@@ -5537,12 +5538,12 @@ namespace Registrar {
 
 			FlushTrace ();
 
-			Driver.WriteIfDifferent (source_path, methods.ToString (), true);
+			Driver.WriteIfDifferent (App, source_path, methods.ToString (), true);
 
 			header.AppendLine ();
 			header.AppendLine (declarations);
 			header.AppendLine (interfaces);
-			Driver.WriteIfDifferent (header_path, header.ToString (), true);
+			Driver.WriteIfDifferent (App, header_path, header.ToString (), true);
 
 			header.Dispose ();
 			header = null;

@@ -20,16 +20,14 @@ using ObjCRuntime;
 
 using Registrar;
 
-#if !LEGACY_TOOLS
+#if !LEGACY_TOOLS && !ASSEMBLY_PREPARER
 using ClassRedirector;
 #endif
 
 #if LEGACY_TOOLS
 using PlatformResolver = MonoTouch.Tuner.MonoTouchResolver;
-#elif NET
-using PlatformResolver = Xamarin.Linker.DotNetResolver;
 #else
-#error Invalid defines
+using PlatformResolver = Xamarin.Linker.DotNetResolver;
 #endif
 
 #nullable enable
@@ -59,16 +57,7 @@ namespace Xamarin.Bundler {
 		Trace = 1,
 	}
 
-	public enum RegistrarMode {
-		Default,
-		Dynamic,
-		PartialStatic,
-		Static,
-		ManagedStatic,
-		TrimmableStatic,
-	}
-
-	public partial class Application {
+	public partial class Application : IToolLog {
 		public Cache? Cache;
 		public string AppDirectory = ".";
 		public bool DeadStrip = true;
@@ -91,6 +80,13 @@ namespace Xamarin.Bundler {
 		public List<string> AotArguments = new List<string> ();
 		public List<string>? AotOtherArguments = null;
 		public bool? AotFloat32 = null;
+		public bool PrepareAssemblies; // True if '$(PrepareAssemblies)' == 'true'
+#if ASSEMBLY_PREPARER
+		public bool InCustomTrimmerStep = false;
+#else
+		public bool InCustomTrimmerStep = true;
+#endif
+		public bool IsPostProcessingAssemblies => PrepareAssemblies && InCustomTrimmerStep;
 
 #if !LEGACY_TOOLS
 		public DlsymOptions DlsymOptions;
@@ -102,7 +98,8 @@ namespace Xamarin.Bundler {
 		public HashSet<string> WeakFrameworks = new HashSet<string> ();
 
 		public bool IsExtension;
-		public ApplePlatform Platform { get { return Driver.TargetFramework.Platform; } }
+		public TargetFramework TargetFramework { get; set; }
+		public ApplePlatform Platform { get { return TargetFramework.Platform; } }
 
 		public List<string> MonoLibraries = new List<string> ();
 		public List<string> InterpretedAssemblies = new List<string> ();
@@ -160,6 +157,7 @@ namespace Xamarin.Bundler {
 		// How Mono should be embedded into the app.
 #if !LEGACY_TOOLS
 		AssemblyBuildTarget? libmono_link_mode;
+		public bool HasLibMonoLinkMode => libmono_link_mode.HasValue;
 		public AssemblyBuildTarget LibMonoLinkMode {
 			get {
 				if (!libmono_link_mode.HasValue)
@@ -173,6 +171,7 @@ namespace Xamarin.Bundler {
 
 		// How libxamarin should be embedded into the app.
 		AssemblyBuildTarget? libxamarin_link_mode;
+		public bool HasLibXamarinLinkMode => libxamarin_link_mode.HasValue;
 		public AssemblyBuildTarget LibXamarinLinkMode {
 			get {
 				if (!libxamarin_link_mode.HasValue)
@@ -265,19 +264,33 @@ namespace Xamarin.Bundler {
 
 		public Version GetMacCatalystiOSVersion (Version macOSVersion)
 		{
+#if LEGACY_TOOLS
+			if (macOSVersion.Major >= 26 && SdkRoot is null) {
+				// this shouldn't happen for normal builds, nor for customers, so just show an internal 99 warning.
+				ErrorHelper.Warning (this, 99, Errors.MX0099, $"No Xcode configured, assuming the macOS version {macOSVersion} is identical to the Mac Catalyst/iOS version.");
+				return macOSVersion;
+			}
+#endif
+
 			if (!MacCatalystSupport.TryGetiOSVersion (Driver.GetFrameworkDirectory (this), macOSVersion, out var value, out var knownMacOSVersions))
 				throw ErrorHelper.CreateError (184, Errors.MX0184 /* Could not map the macOS version {0} to a corresponding Mac Catalyst version. Valid macOS versions are: {1} */, macOSVersion.ToString (), string.Join (", ", knownMacOSVersions.OrderBy (v => v)));
 
 			return value;
 		}
 
+#if !LEGACY_TOOLS
 		public Application (LinkerConfiguration configuration)
+#else
+		public Application ()
+#endif
 		{
 #if !LEGACY_TOOLS
 			this.configuration = configuration;
 			this.LinkContext = new Tuner.DerivedLinkContext (configuration, this);
 #endif
 			this.StaticRegistrar = new StaticRegistrar (this);
+			this.Resolver = new PlatformResolver (this);
+			SetDefaultHiddenWarnings ();
 		}
 
 #if !LEGACY_TOOLS
@@ -411,9 +424,9 @@ namespace Xamarin.Bundler {
 			}
 		}
 
-		public static bool IsUptodate (string source, string target, bool check_contents = false, bool check_stamp = true)
+		public static bool IsUptodate (IToolLog log, string source, string target, bool check_contents = false, bool check_stamp = true)
 		{
-			return FileCopier.IsUptodate (source, target, check_contents, check_stamp);
+			return FileCopier.IsUptodate (log, source, target, check_contents, check_stamp);
 		}
 
 		public static void RemoveResource (ModuleDefinition module, string name)
@@ -485,14 +498,14 @@ namespace Xamarin.Bundler {
 		//
 		// If check_stamp is true, the function will use the timestamp of a "target".stamp file
 		// if it's later than the timestamp of the "target" file itself.
-		public static bool IsUptodate (IEnumerable<string> sources, IEnumerable<string> targets, bool check_stamp = true)
+		public static bool IsUptodate (IToolLog log, IEnumerable<string> sources, IEnumerable<string> targets, bool check_stamp = true)
 		{
-			return FileCopier.IsUptodate (sources, targets, check_stamp);
+			return FileCopier.IsUptodate (log, sources, targets, check_stamp);
 		}
 
-		public static void UpdateDirectory (string source, string target)
+		public static void UpdateDirectory (IToolLog log, string source, string target)
 		{
-			FileCopier.UpdateDirectory (source, target);
+			FileCopier.UpdateDirectory (log, source, target);
 		}
 
 		public void InitializeCommon ()
@@ -531,13 +544,13 @@ namespace Xamarin.Bundler {
 			if (!package_managed_debug_symbols.HasValue) {
 				package_managed_debug_symbols = EnableDebug;
 			} else if (package_managed_debug_symbols.Value && IsLLVM) {
-				ErrorHelper.Warning (3007, Errors.MX3007);
+				ErrorHelper.Warning (this, 3007, Errors.MX3007);
 			}
 
 			Optimizations.Initialize (this, out var messages);
-			ErrorHelper.Show (messages);
-			if (Driver.Verbosity > 3)
-				Driver.Log (4, $"Enabled optimizations: {Optimizations}");
+			ErrorHelper.Show (this, messages);
+			if (this.Verbosity > 3)
+				this.Log (4, $"Enabled optimizations: {Optimizations}");
 		}
 
 		void InitializeDeploymentTarget ()
@@ -553,6 +566,7 @@ namespace Xamarin.Bundler {
 			}
 		}
 
+#if !ASSEMBLY_PREPARER
 		public void RunRegistrar ()
 		{
 			// The static registrar.
@@ -567,7 +581,7 @@ namespace Xamarin.Bundler {
 				throw ErrorHelper.CreateError (99, "RegistrarOutputLibrary must be specified.");
 			var RootAssembly = RootAssemblies [0];
 			var resolvedAssemblies = new Dictionary<string, AssemblyDefinition> ();
-			var resolver = new PlatformResolver () {
+			var resolver = new PlatformResolver (this) {
 				RootDirectory = Path.GetDirectoryName (RootAssembly),
 			};
 			resolver.Configure ();
@@ -575,7 +589,7 @@ namespace Xamarin.Bundler {
 			var ps = new ReaderParameters ();
 			ps.AssemblyResolver = resolver;
 			foreach (var reference in References) {
-				var r = resolver.Load (reference);
+				var r = resolver.Load (this, reference);
 				if (r is null)
 					throw ErrorHelper.CreateError (2002, Errors.MT2002, reference);
 			}
@@ -590,21 +604,21 @@ namespace Xamarin.Bundler {
 				try {
 					AssemblyDefinition lastAssembly = ps.AssemblyResolver.Resolve (AssemblyNameReference.Parse (rootName), new ReaderParameters ());
 					if (lastAssembly is null) {
-						ErrorHelper.Warning (7, Errors.MX0007, rootName);
+						ErrorHelper.Warning (this, 7, Errors.MX0007, rootName);
 						continue;
 					}
 
 					if (resolvedAssemblies.TryGetValue (rootName, out var previousAssembly)) {
 						if (lastAssembly.MainModule.RuntimeVersion != previousAssembly.MainModule.RuntimeVersion) {
-							Driver.Log (2, "Attemping to load an assembly another time {0} (previous {1})", lastAssembly.FullName, previousAssembly.FullName);
+							this.Log (2, "Attemping to load an assembly another time {0} (previous {1})", lastAssembly.FullName, previousAssembly.FullName);
 						}
 						continue;
 					}
 
 					resolvedAssemblies.Add (rootName, lastAssembly);
-					Driver.Log (3, "Loaded {0}", lastAssembly.MainModule.FileName);
+					this.Log (3, "Loaded {0}", lastAssembly.MainModule.FileName);
 				} catch (Exception ex) {
-					ErrorHelper.Warning (9, ex, Errors.MX0009, $"{rootName}: {ex.Message}");
+					ErrorHelper.Warning (this, 9, ex, Errors.MX0009, $"{rootName}: {ex.Message}");
 					continue;
 				}
 			}
@@ -619,6 +633,7 @@ namespace Xamarin.Bundler {
 				registrar.Generate (resolver, resolvedAssemblies.Values, Path.ChangeExtension (registrar_m, "h"), registrar_m, out var _);
 			}
 		}
+#endif // !ASSEMBLY_PREPARER
 
 		public Abi Abi {
 			get { return abi; }
@@ -696,7 +711,7 @@ namespace Xamarin.Bundler {
 		}
 
 #if !LEGACY_TOOLS
-		public void ParseRegistrar (string v)
+		public void ParseRegistrar (string? v)
 		{
 			if (StringUtils.IsNullOrEmpty (v))
 				return;
@@ -704,7 +719,7 @@ namespace Xamarin.Bundler {
 			var split = v.Split ('=');
 			var name = split [0];
 			var value = split.Length > 1 ? split [1] : string.Empty;
-			switch (name) {
+			switch (name.ToLowerInvariant ()) {
 			case "static":
 				Registrar = RegistrarMode.Static;
 				break;
@@ -716,12 +731,15 @@ namespace Xamarin.Bundler {
 				break;
 			case "partial":
 			case "partial-static":
+			case "partialstatic":
 				Registrar = RegistrarMode.PartialStatic;
 				break;
 			case "managed-static":
+			case "managedstatic":
 				Registrar = RegistrarMode.ManagedStatic;
 				break;
 			case "trimmable-static":
+			case "trimmablestatic":
 				Registrar = RegistrarMode.TrimmableStatic;
 				break;
 			default:
@@ -946,7 +964,6 @@ namespace Xamarin.Bundler {
 			bool enable_debug_symbols = app.PackageManagedDebugSymbols;
 			bool interp = app.IsInterpreted (Assembly.GetIdentity (filename)) && !(isDedupAssembly.HasValue && isDedupAssembly.Value);
 			bool interp_full = !interp && app.UseInterpreter;
-			bool is32bit = (abi & Abi.Arch32Mask) > 0;
 			string arch = abi.AsArchString ();
 
 			processArguments.Add ("--debug");
@@ -1023,7 +1040,7 @@ namespace Xamarin.Bundler {
 				if (!string.IsNullOrEmpty (llvm_path)) {
 					aotArguments.Add ($"llvm-path={llvm_path}");
 				} else {
-					aotArguments.Add ($"llvm-path={Driver.GetFrameworkCurrentDirectory (app)}/LLVM/bin/");
+					aotArguments.Add ($"llvm-path={app.FrameworkCurrentDirectory}/LLVM/bin/");
 				}
 			}
 
@@ -1183,23 +1200,98 @@ namespace Xamarin.Bundler {
 			}
 
 			if (!dynamic)
-				Driver.Log (1, "The framework {0} is a framework of static libraries, and will not be copied to the app.", framework_path);
+				this.Log (1, "The framework {0} is a framework of static libraries, and will not be copied to the app.", framework_path);
 
 			return dynamic;
 		}
 #endif // !LEGACY_TOOLS
 
-		static Application ()
-		{
-			SetDefaultHiddenWarnings ();
-		}
-
-		public static void SetDefaultHiddenWarnings ()
+		public void SetDefaultHiddenWarnings ()
 		{
 			// People don't like these warnings (#20670), and they also complicate our tests, so ignore them.
-			ErrorHelper.ParseWarningLevel (ErrorHelper.WarningLevel.Disable, "4178"); // The class '{0}' will not be registered because the {1} framework has been removed from the {2} SDK.
-			ErrorHelper.ParseWarningLevel (ErrorHelper.WarningLevel.Disable, "4189"); // The class '{0}' will not be registered because it has been removed from the {1} SDK.
-			ErrorHelper.ParseWarningLevel (ErrorHelper.WarningLevel.Disable, "4190"); // The class '{0}' will not be registered because the {1} framework has been deprecated from the {2} SDK.
+			ErrorHelper.ParseWarningLevel (this, ErrorHelper.WarningLevel.Disable, "4178"); // The class '{0}' will not be registered because the {1} framework has been removed from the {2} SDK.
+			ErrorHelper.ParseWarningLevel (this, ErrorHelper.WarningLevel.Disable, "4189"); // The class '{0}' will not be registered because it has been removed from the {1} SDK.
+			ErrorHelper.ParseWarningLevel (this, ErrorHelper.WarningLevel.Disable, "4190"); // The class '{0}' will not be registered because the {1} framework has been deprecated from the {2} SDK.
 		}
+
+		IToolLog GetLog ()
+		{
+#if LEGACY_TOOLS
+			return ConsoleLog.Instance;
+#else
+			return Configuration.Logger ?? ConsoleLog.Instance;
+#endif
+		}
+
+		public void Log (string message)
+		{
+			GetLog ().Log (message);
+		}
+
+		public void LogError (string message)
+		{
+			GetLog ().LogError (message);
+		}
+
+		public void LogError (ProductException exception)
+		{
+			GetLog ().LogError (exception);
+		}
+
+		public void LogWarning (ProductException exception)
+		{
+			GetLog ().LogWarning (exception);
+		}
+
+		public void LogException (Exception exception)
+		{
+			GetLog ().LogException (exception);
+		}
+
+		int verbosity = Driver.GetDefaultVerbosity (Driver.NAME);
+		public int Verbosity {
+			get => verbosity;
+			set => verbosity = value;
+		}
+
+		public string? SdkRoot { get; set; }
+		public string? DeveloperDirectory { get; set; }
+
+		string? framework_dir;
+		public string FrameworkCurrentDirectory {
+			get {
+				if (framework_dir is null)
+					throw new InvalidOperationException ($"Teh current framework directory hasn't been set.");
+				return framework_dir;
+			}
+			set {
+				framework_dir = value;
+			}
+		}
+
+		/// <summary>
+		/// This returns the /Applications/Xcode*.app/Contents/Developer/Platforms directory
+		/// </summary>
+		public string PlatformsDirectory {
+			get {
+				if (DeveloperDirectory is null)
+					throw new InvalidOperationException ("DeveloperDirectory is not set");
+				return Path.Combine (DeveloperDirectory, "Platforms");
+			}
+		}
+
+		Version? xcode_version;
+		public Version XcodeVersion {
+			get {
+				if (xcode_version is null)
+					throw ErrorHelper.CreateError (99, Errors.MX0099, "The Xcode version has not been configured. Pass --xcode-version or configure an Xcode installation.");
+				return xcode_version;
+			}
+			set {
+				xcode_version = value;
+			}
+		}
+
+		public string? XcodeProductVersion { get; set; }
 	}
 }

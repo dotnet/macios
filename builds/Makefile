@@ -44,6 +44,11 @@ else
 	$(Q) mv "$@.tmp" "$@"
 endif
 	$(Q) echo "Downloaded and installed .NET $(DOTNET_VERSION) into $@."
+	@# Workaround for https://github.com/dotnet/runtime/issues/91987
+	@# Run 'dotnet --info' once after downloading to complete the first-time NuGet
+	@# migrations logic, avoiding a race condition when multiple parallel dotnet
+	@# processes run for the first time simultaneously (only needed in CI).
+	$(Q) if test -n "$$ACES"; then "$@/dotnet" --info; fi
 
 # Create a symlink with a persistent (non-version-dependent) name
 # The dependency on the stamp file is to ensure the symlink is re-created

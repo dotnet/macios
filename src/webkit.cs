@@ -2158,7 +2158,11 @@ namespace WebKit {
 			<summary>To be added.</summary>
 			<remarks>To be added.</remarks>
 			""")]
+#if XAMCORE_5_0
+		void CommittedLoad (WebView sender, WebFrame forFrame);
+#else
 		void CommitedLoad (WebView sender, WebFrame forFrame);
+#endif
 
 		/// <param name="sender">To be added.</param>
 		/// <param name="title">To be added.</param>

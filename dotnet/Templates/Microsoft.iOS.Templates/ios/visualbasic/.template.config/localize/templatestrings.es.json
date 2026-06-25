@@ -3,8 +3,14 @@
   "name": "Aplicación de iOS",
   "description": "Proyecto para crear una aplicación de iOS de .NET",
   "symbols/bundleId/description": "Invalida CFBundleIdentifier en Info.plist",
+  "symbols/bundleId/displayName": "Bundle ID",
   "symbols/minOSVersion/description": "Invalida SupportedOSPlatformVersion en el archivo de proyecto",
+  "symbols/minOSVersion/displayName": "Minimum OS version",
   "symbols/deviceFamily/choices/universal/description": "Compatibilidad con dispositivos iPhone y iPad",
+  "symbols/deviceFamily/choices/universal/displayName": "Universal",
   "symbols/deviceFamily/choices/iphone/description": "Admitir solo dispositivos iPhone",
-  "symbols/deviceFamily/choices/ipad/description": "Admitir solo dispositivos iPad"
+  "symbols/deviceFamily/choices/iphone/displayName": "iPhone",
+  "symbols/deviceFamily/choices/ipad/description": "Admitir solo dispositivos iPad",
+  "symbols/deviceFamily/choices/ipad/displayName": "iPad",
+  "symbols/deviceFamily/displayName": "Device family"
 }

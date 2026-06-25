@@ -14,10 +14,8 @@ namespace MediaPlayer {
 
 	// MPVolumeSettings.h
 	/// <summary>Encapsulates functions relating to the display or hiding of volume controls.</summary>
-	///     <remarks>To be added.</remarks>
 	public static class MPVolumeSettings {
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Displays the volume settings alert.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[ObsoletedOSPlatform ("ios11.3", "Use 'MPVolumeView' to present volume controls.")]
@@ -25,8 +23,7 @@ namespace MediaPlayer {
 		[DllImport (Constants.MediaPlayerLibrary, EntryPoint = "MPVolumeSettingsAlertShow")]
 		public extern static void AlertShow ();
 
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Hides the volume settings alert.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[ObsoletedOSPlatform ("ios11.3", "Use 'MPVolumeView' to present volume controls.")]
@@ -41,9 +38,8 @@ namespace MediaPlayer {
 		[DllImport (Constants.MediaPlayerLibrary)]
 		extern static /* BOOL */ byte MPVolumeSettingsAlertIsVisible ();
 
-		/// <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Returns a value indicating whether the volume settings alert is currently visible.</summary>
+		/// <returns><see langword="true" /> if the volume settings alert is visible; otherwise, <see langword="false" />.</returns>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[ObsoletedOSPlatform ("ios11.3", "Use 'MPVolumeView' to present volume controls.")]

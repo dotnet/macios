@@ -16,7 +16,9 @@ endif
 
 SUBDIRS += tools
 
+ifeq ($(UNAME_S),Darwin)
 SUBDIRS += dotnet
+endif
 
 #
 # Common

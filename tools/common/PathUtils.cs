@@ -72,6 +72,56 @@ namespace Xamarin.Utils {
 			}
 		}
 
+		/// <summary>
+		/// Returns true if <paramref name="target" /> is located strictly within <paramref name="root" />
+		/// after fully canonicalizing both paths (making them absolute, resolving '..'/'.' segments and
+		/// resolving symbolic links). Either path may point to a location that doesn't exist yet. This is
+		/// useful to make sure a computed output path can't escape an intended output directory, even if
+		/// the path was influenced by untrusted input (e.g. via traversal segments, absolute paths or
+		/// symlinks).
+		/// </summary>
+		public static bool IsPathContained (string root, string target)
+		{
+			if (string.IsNullOrEmpty (root) || string.IsNullOrEmpty (target))
+				return false;
+
+			var canonicalRoot = CanonicalizeForContainment (root).TrimEnd (Path.DirectorySeparatorChar);
+			var canonicalTarget = CanonicalizeForContainment (target).TrimEnd (Path.DirectorySeparatorChar);
+
+			// The target must be strictly inside the root, not the root directory itself.
+			if (string.Equals (canonicalTarget, canonicalRoot, StringComparison.Ordinal))
+				return false;
+
+			return canonicalTarget.StartsWith (canonicalRoot + Path.DirectorySeparatorChar, StringComparison.Ordinal);
+		}
+
+		// Canonicalizes a path for a containment check: makes it absolute and resolves '..'/'.' segments,
+		// then resolves symbolic links for the longest existing prefix (the target usually doesn't exist
+		// yet, so we resolve symlinks on the nearest existing ancestor and re-append the remainder).
+		static string CanonicalizeForContainment (string path)
+		{
+			// The path can come from MSBuild with Windows separators (e.g. 'obj\...\nativelibraries\'),
+			// so normalize the separators first.
+			path = path.Replace ('\\', Path.DirectorySeparatorChar);
+			var full = Path.GetFullPath (path);
+
+			var existing = full;
+			var remainder = new List<string> ();
+			while (existing.Length > 0 && !Directory.Exists (existing) && !File.Exists (existing)) {
+				var parent = Path.GetDirectoryName (existing);
+				if (string.IsNullOrEmpty (parent) || parent == existing)
+					break;
+				remainder.Insert (0, Path.GetFileName (existing));
+				existing = parent;
+			}
+
+			var canonical = ResolveSymbolicLinks (existing) ?? existing;
+			foreach (var segment in remainder)
+				canonical = Path.Combine (canonical, segment);
+
+			return canonical;
+		}
+
 		/// <summary>This works like <see cref="AbsoluteToRelative" />, except that it works as it executing on Windows on all platforms.</summary>
 		/// <param name="absoluteBaseDirectory">The directory the return value should be relative to. Must be an absolute path.</param>
 		/// <param name="absolutePath">The path whose relative value should be computed. Must be an absolute path.</param>

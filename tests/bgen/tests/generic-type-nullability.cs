@@ -88,5 +88,25 @@ namespace NS {
 		[Async]
 		[Export ("fetchItems:completionHandler:")]
 		void FetchItems (NSObject obj, Action<NSObject []?, NSError?> completionHandler);
+
+		// Async method with nullable result type (single arg, NSError triggers exception pattern)
+		[Async]
+		[Export ("loadData:completionHandler:")]
+		void LoadData (NSObject obj, Action<NSObject?, NSError?> completionHandler);
+
+		// Async method with non-nullable result type
+		[Async]
+		[Export ("loadDataNonNull:completionHandler:")]
+		void LoadDataNonNull (NSObject obj, Action<NSObject, NSError?> completionHandler);
+
+		// Async method with nullable array result type
+		[Async]
+		[Export ("loadItems:completionHandler:")]
+		void LoadItems (NSObject obj, Action<NSObject []?, NSError?> completionHandler);
+
+		// Async method with non-nullable array result type
+		[Async]
+		[Export ("loadItemsNonNull:completionHandler:")]
+		void LoadItemsNonNull (NSObject obj, Action<NSObject [], NSError?> completionHandler);
 	}
 }

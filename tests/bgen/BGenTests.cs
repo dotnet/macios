@@ -1693,8 +1693,18 @@ namespace GeneratorTests {
 
 			// Async method with array arg before NSError (depth-first byte counting)
 			Assert.That (contents, Does.Contain ("Action<NSObject[]?, NSError?>"), "FetchItems should have nullable array and NSError");
-			// When NSError is nullable, async uses Task<T> with error→exception; the result type is the non-error arg
-			Assert.That (contents, Does.Contain ("Task<NSObject[]>"), "FetchItems async should return Task<NSObject[]> (nullable NSError triggers error handling)");
+			// When NSError is nullable, async uses Task<T> with error→exception; the result type preserves nullability
+			Assert.That (contents, Does.Contain ("Task<NSObject[]?>"), "FetchItems async should return Task<NSObject[]?> (array nullability preserved)");
+
+			// Async method with nullable result type
+			Assert.That (contents, Does.Contain ("Task<NSObject?>"), "LoadData async should return Task<NSObject?>");
+			// Async method with non-nullable result type
+			Assert.That (contents, Does.Match (@"Task<NSObject>\s"), "LoadDataNonNull async should return Task<NSObject>");
+
+			// Async method with nullable array result type
+			Assert.That (contents, Does.Contain ("Task<NSObject[]?>"), "LoadItems async should return Task<NSObject[]?>");
+			// Async method with non-nullable array result type
+			Assert.That (contents, Does.Match (@"Task<NSObject\[\]>\s"), "LoadItemsNonNull async should return Task<NSObject[]>");
 		}
 
 		[Test]

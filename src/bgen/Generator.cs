@@ -4324,8 +4324,22 @@ public partial class Generator : IMemberGatherer {
 	HashSet<string?>? reported1077;
 	string GetAsyncTaskType (AsyncMethodInfo minfo)
 	{
-		if (minfo.IsSingleArgAsync)
-			return TypeManager.FormatType (minfo.type, minfo.AsyncCompletionParams [0].ParameterType);
+		if (minfo.IsSingleArgAsync) {
+			var paramType = minfo.AsyncCompletionParams [0].ParameterType;
+			var paramBytes = minfo.CompletionParamNullabilityBytes? [0];
+			if (paramBytes is not null && !paramType.IsValueType) {
+				// Format with nullability for inner generic args
+				var formatted = TypeManager.FormatType (minfo.type, paramType, paramBytes);
+				// Check byte 0 of the slice for the param's own nullability
+				bool isParamNullable = paramBytes.Length == 1
+					? paramBytes [0] == 2
+					: (paramBytes.Length > 0 && paramBytes [0] == 2);
+				if (isParamNullable)
+					formatted += "?";
+				return formatted;
+			}
+			return TypeManager.FormatType (minfo.type, paramType);
+		}
 
 		var attr = AttributeManager.GetOneCustomAttribute<AsyncAttribute> (minfo.mi);
 		if (attr.ResultTypeName is not null)

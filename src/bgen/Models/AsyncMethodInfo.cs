@@ -12,6 +12,11 @@ class AsyncMethodInfo : MemberInformation {
 	public bool IsVoidAsync { get; }
 	public bool IsSingleArgAsync { get; }
 	public MethodInfo MethodInfo { get; }
+	// Nullability bytes for each non-NSError completion parameter's type subtree.
+	// Each entry is a byte slice starting at that parameter's position in the
+	// delegate's NullableAttribute array (byte 0 = the param's own nullability).
+	// Null if nullability info is unavailable.
+	public byte []?[]? CompletionParamNullabilityBytes { get; }
 
 	public AsyncMethodInfo (Generator generator, IMemberGatherer gather, Type type, MethodInfo mi, Type? categoryExtensionType, bool isExtensionMethod)
 		: base (generator, gather, mi, type, categoryExtensionType, false, isExtensionMethod)
@@ -26,6 +31,10 @@ class AsyncMethodInfo : MemberInformation {
 		AsyncCompletionParams = cbParams;
 
 		var lastParam = cbParams.LastOrDefault ();
+		var outerParam = mi.GetParameters ().Last ();
+		var genericArgs = lastType.GetGenericArguments ();
+		var nullabilityBytes = genericArgs.Length > 0 ? generator.AttributeManager.GetNullabilityBytes (outerParam) : null;
+
 		if (lastParam is not null && lastParam.ParameterType.Name == "NSError") {
 			HasNSError = true;
 			// The nullability info for generic type arguments is encoded in the NullableAttribute
@@ -35,9 +44,6 @@ class AsyncMethodInfo : MemberInformation {
 			// This only applies to generic delegate types (Action<...>). For non-generic delegates,
 			// the NullableAttribute on the outer parameter describes the delegate instance, not
 			// the Invoke parameters.
-			var outerParam = mi.GetParameters ().Last ();
-			var genericArgs = lastType.GetGenericArguments ();
-			var nullabilityBytes = genericArgs.Length > 0 ? generator.AttributeManager.GetNullabilityBytes (outerParam) : null;
 			if (nullabilityBytes is not null && nullabilityBytes.Length == 1) {
 				// Single-byte (uniform) form: the same byte applies to all positions
 				IsNSErrorNullable = nullabilityBytes [0] == 2;
@@ -62,6 +68,29 @@ class AsyncMethodInfo : MemberInformation {
 
 		IsVoidAsync = cbParams.Length == 0;
 		IsSingleArgAsync = cbParams.Length == 1;
+
+		// Compute nullability byte slices for each non-NSError completion param
+		if (nullabilityBytes is not null && genericArgs.Length > 0) {
+			var nonErrorArgCount = HasNSError ? genericArgs.Length - 1 : genericArgs.Length;
+			if (nonErrorArgCount > 0) {
+				CompletionParamNullabilityBytes = new byte [nonErrorArgCount][];
+				if (nullabilityBytes.Length == 1) {
+					// Single-byte (uniform): every param gets the same byte
+					for (int i = 0; i < nonErrorArgCount; i++)
+						CompletionParamNullabilityBytes [i] = nullabilityBytes;
+				} else {
+					// Multi-byte: extract slices for each generic arg
+					int byteIndex = 1; // skip byte 0 (the Action<> itself)
+					for (int i = 0; i < nonErrorArgCount; i++) {
+						int paramByteCount = CountNullabilityBytes (genericArgs [i]);
+						var slice = new byte [paramByteCount];
+						Array.Copy (nullabilityBytes, byteIndex, slice, 0, paramByteCount);
+						CompletionParamNullabilityBytes [i] = slice;
+						byteIndex += paramByteCount;
+					}
+				}
+			}
+		}
 	}
 
 	public string GetUniqueParamName (string suggestion)

@@ -4,6 +4,7 @@ on:
 permissions:
   contents: read
   issues: read
+environment: gh-aw-environment
 engine:
   id: copilot
   model: claude-sonnet-4.5

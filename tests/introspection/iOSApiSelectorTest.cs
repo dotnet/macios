@@ -344,6 +344,15 @@ namespace Introspection {
 					break;
 				}
 				break;
+			// ARObjectAnchor was added in iOS 12.0 but the conformance to ARTrackable, where `isTracked` comes from, started with iOS 27.0
+			case "ARObjectAnchor":
+				switch (name) {
+				case "isTracked":
+					if (!TestRuntime.CheckXcodeVersion (27, 0))
+						return true;
+					break;
+				}
+				break;
 			case "UIHoverGestureRecognizer":
 				switch (name) {
 				case "azimuthAngleInView:": // Only works on iPad according to docs.

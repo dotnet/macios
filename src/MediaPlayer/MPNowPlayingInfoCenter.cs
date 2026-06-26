@@ -12,76 +12,60 @@ using System.Diagnostics.CodeAnalysis;
 #nullable enable
 
 namespace MediaPlayer {
-	/// <summary>Information relating to the <see cref="MediaPlayer.MPNowPlayingInfoCenter" />.</summary>
-	///     <remarks>To be added.</remarks>
+	/// <summary>Provides strongly-typed access to "now playing" media information displayed on the lock screen, during AirPlay, or on external accessories.</summary>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPNowPlayingInfoCenter_Class/index.html">Apple documentation for <c>MPNowPlayingInfoCenter</c></related>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("tvos")]
 	public class MPNowPlayingInfo {
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Creates a new empty <see cref="MPNowPlayingInfo" /> instance.</summary>
 		public MPNowPlayingInfo ()
 		{
 		}
 
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the elapsed playback time, in seconds.</summary>
 		public double? ElapsedPlaybackTime;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the playback rate (1.0 = normal speed).</summary>
 		public double? PlaybackRate;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the index of the current item in the playback queue.</summary>
 		public int? PlaybackQueueIndex;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the total number of items in the playback queue.</summary>
 		public int? PlaybackQueueCount;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the current chapter number.</summary>
 		public int? ChapterNumber;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the total number of chapters.</summary>
 		public int? ChapterCount;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the total number of tracks in the album.</summary>
 		public int? AlbumTrackCount;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the track number within the album.</summary>
 		public int? AlbumTrackNumber;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the total number of discs in the album.</summary>
 		public int? DiscCount;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the disc number within the album.</summary>
 		public int? DiscNumber;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the persistent identifier for the media item.</summary>
 		public ulong? PersistentID;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the total duration of the media item, in seconds.</summary>
 		public double? PlaybackDuration;
 
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the default playback rate.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 		public double? DefaultPlaybackRate;
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the available language options for the media item.</summary>
+		/// <value>An array of language option groups, or <see langword="null" /> if not set.</value>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 		public MPNowPlayingInfoLanguageOptionGroup []? AvailableLanguageOptions { get; set; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the currently selected language options for the media item.</summary>
+		/// <value>An array of language options, or <see langword="null" /> if not set.</value>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -89,95 +73,81 @@ namespace MediaPlayer {
 
 		public MPNowPlayingInfoLanguageOption []? CurrentLanguageOptions { get; set; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the identifier for the collection containing this media item.</summary>
+		/// <value>The collection identifier string, or <see langword="null" /> if not set.</value>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 		public string? CollectionIdentifier { get; set; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the external content identifier for the media item.</summary>
+		/// <value>The external content identifier string, or <see langword="null" /> if not set.</value>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 		public string? ExternalContentIdentifier { get; set; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the external user profile identifier associated with the media item.</summary>
+		/// <value>The external user profile identifier string, or <see langword="null" /> if not set.</value>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 		public string? ExternalUserProfileIdentifier { get; set; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the playback progress as a value between 0.0 and 1.0.</summary>
+		/// <value>The playback progress, or <see langword="null" /> if not set.</value>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 		public float? PlaybackProgress { get; set; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the media type of the now-playing item.</summary>
+		/// <value>The media type, or <see langword="null" /> if not set.</value>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 		public MPNowPlayingInfoMediaType? MediaType { get; set; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets a value indicating whether the media item is a live stream.</summary>
+		/// <value><see langword="true" /> if the item is a live stream; otherwise, <see langword="false" />. <see langword="null" /> if not set.</value>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 		public bool? IsLiveStream { get; set; }
 
-		/// <summary>Gets or sets the URL for the currently playing item.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the URL for the currently playing asset.</summary>
+		/// <value>The asset URL, or <see langword="null" /> if not set.</value>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 		public NSUrl? AssetUrl { get; set; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the date corresponding to the current playback position in the media item.</summary>
+		/// <value>The current playback date, or <see langword="null" /> if not set.</value>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public NSDate? CurrentPlaybackDate { get; set; }
 
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the title of the album.</summary>
 		public string? AlbumTitle;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the name of the artist.</summary>
 		public string? Artist;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the artwork image for the media item.</summary>
 		public MPMediaItemArtwork? Artwork;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the name of the composer.</summary>
 		public string? Composer;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the genre of the media item.</summary>
 		public string? Genre;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the title of the media item.</summary>
 		public string? Title;
 
 		internal NSDictionary ToDictionary ()

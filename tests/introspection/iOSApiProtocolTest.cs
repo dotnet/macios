@@ -188,6 +188,11 @@ namespace Introspection {
 				if (protocolName == "ARTrackable")
 					return !TestRuntime.CheckXcodeVersion (10, 0);
 				break;
+			case "ARObjectAnchor":
+				// the type was added in iOS 12.0 but the conformance to ARTrackable started with iOS 27.0
+				if (protocolName == "ARTrackable")
+					return !TestRuntime.CheckXcodeVersion (27, 0);
+				break;
 			case "PHLivePhoto":
 				if (protocolName == "NSItemProviderReading")
 					return !TestRuntime.CheckXcodeVersion (12, 0);

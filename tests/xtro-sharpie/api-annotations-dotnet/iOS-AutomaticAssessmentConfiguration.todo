@@ -1,4 +1,0 @@
-!missing-selector! AEAssessmentConfiguration::allowsAccessibilitySpokenContent not bound
-!missing-selector! AEAssessmentConfiguration::allowsAccessibilityVoiceOver not bound
-!missing-selector! AEAssessmentConfiguration::setAllowsAccessibilitySpokenContent: not bound
-!missing-selector! AEAssessmentConfiguration::setAllowsAccessibilityVoiceOver: not bound

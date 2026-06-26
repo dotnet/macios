@@ -54,6 +54,7 @@ using CoreVideo;
 using UniformTypeIdentifiers;
 using ImageIO;
 using MediaPlayer;
+using VideoToolbox;
 
 #if MONOMAC
 using AppKit;
@@ -4168,6 +4169,10 @@ namespace AVFoundation {
 		AVAudioSessionRouteSharingPolicy RouteSharingPolicy { get; }
 
 		[Async]
+		// 'activateWithOptions:completionHandler:' was first bound (and shipped) as Mac Catalyst-only with a 15.0
+		// availability. Xcode 27 made it available on iOS and tvOS too (still unavailable on macOS). We keep the
+		// shipped 'MacCatalyst (15, 0)' instead of raising it to 27.0, because raising an already-shipped intro
+		// version is a breaking change.
 		[NoMac, iOS (27, 0), TV (27, 0), MacCatalyst (15, 0)]
 		[Export ("activateWithOptions:completionHandler:")]
 		void Activate (AVAudioSessionActivationOptions options, Action<bool, NSError> handler);
@@ -7004,7 +7009,11 @@ namespace AVFoundation {
 
 		[Static]
 		[Export ("segmentBoundaryGuidelinesForVideoCodecType:videoEncoderSpecification:")]
-		AVPlannedVideoSegmentBoundaryGuidelines GetSegmentBoundaryGuidelines ([BindAs (typeof (AVVideoCodecType))] NSString videoCodecType, NSDictionary videoEncoderSpecification);
+		AVPlannedVideoSegmentBoundaryGuidelines GetSegmentBoundaryGuidelines (string videoCodecType, NSDictionary videoEncoderSpecification);
+
+		[Static]
+		[Wrap ("GetSegmentBoundaryGuidelines (videoCodecType.GetConstant ()!, videoEncoderSpecification.GetDictionary ()!)")]
+		AVPlannedVideoSegmentBoundaryGuidelines GetSegmentBoundaryGuidelines (AVVideoCodecType videoCodecType, VTVideoEncoderSpecification videoEncoderSpecification);
 
 		[Static]
 		[Export ("segmentBoundaryRecommendationsForVideoAVAssetTrack:minimumSegmentDuration:minimumSegmentFrameCount:")]
@@ -7072,6 +7081,9 @@ namespace AVFoundation {
 		[Export ("initWithMediaType:segmentConfigurations:assemblyTrackID:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (string mediaType, AVPlannedSegmentConfiguration [] segmentConfigurations, int trackId);
+
+		[Wrap ("this (mediaType.GetConstant ()!, segmentConfigurations, trackId)")]
+		NativeHandle Constructor (AVMediaTypes mediaType, AVPlannedSegmentConfiguration [] segmentConfigurations, int trackId);
 	}
 
 	[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
@@ -7084,7 +7096,10 @@ namespace AVFoundation {
 
 		[Export ("initWithVideoCodecType:encoderSpecification:mediaType:segmentConfigurations:assemblyTrackID:")]
 		[DesignatedInitializer]
-		NativeHandle Constructor ([BindAs (typeof (AVVideoCodecType))] NSString videoCodecType, [NullAllowed] NSDictionary encoderSpecification, string mediaType, AVPlannedSegmentConfiguration [] segmentConfigurations, int trackId);
+		NativeHandle Constructor (string videoCodecType, [NullAllowed] NSDictionary encoderSpecification, string mediaType, AVPlannedSegmentConfiguration [] segmentConfigurations, int trackId);
+
+		[Wrap ("this (videoCodecType.GetConstant ()!, encoderSpecification.GetDictionary (), mediaType.GetConstant ()!, segmentConfigurations, trackId)")]
+		NativeHandle Constructor (AVVideoCodecType videoCodecType, [NullAllowed] VTVideoEncoderSpecification encoderSpecification, AVMediaTypes mediaType, AVPlannedSegmentConfiguration [] segmentConfigurations, int trackId);
 	}
 
 	[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
@@ -7129,6 +7144,14 @@ namespace AVFoundation {
 		[Export ("resumableAssetWriterInputWithMediaType:outputSettings:sourceFormatHint:returningError:")]
 		[return: NullAllowed]
 		AVAssetWriterInput GetResumableAssetWriterInput (string mediaType, [NullAllowed] NSDictionary outputSettings, [NullAllowed] CMFormatDescription sourceFormatHint, [NullAllowed] out NSError error);
+
+		[Wrap ("GetResumableAssetWriterInput (mediaType.GetConstant ()!, outputSettings.GetDictionary (), sourceFormatHint, out error)")]
+		[return: NullAllowed]
+		AVAssetWriterInput GetResumableAssetWriterInput (AVMediaTypes mediaType, [NullAllowed] AudioSettings outputSettings, [NullAllowed] CMFormatDescription sourceFormatHint, [NullAllowed] out NSError error);
+
+		[Wrap ("GetResumableAssetWriterInput (mediaType.GetConstant ()!, outputSettings.GetDictionary (), sourceFormatHint, out error)")]
+		[return: NullAllowed]
+		AVAssetWriterInput GetResumableAssetWriterInput (AVMediaTypes mediaType, [NullAllowed] AVVideoSettingsCompressed outputSettings, [NullAllowed] CMFormatDescription sourceFormatHint, [NullAllowed] out NSError error);
 
 		[Internal]
 		[Export ("createResumableCompressionSessionWithAllocator:width:height:codecType:encoderSpecification:sourceImageBufferAttributes:compressedDataAllocator:outputCallback:outputCallbackRefCon:returningError:")]

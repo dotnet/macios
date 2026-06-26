@@ -872,7 +872,7 @@ namespace AVFoundation {
 		MediumHall3 = 11,
 		/// <summary>To be added.</summary>
 		LargeHall2 = 12,
-		/// <summary>To be added.</summary>
+		/// <summary>A reverb preset that simulates a general outdoor environment.</summary>
 		[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
 		OutdoorGeneral = 24,
 	}
@@ -1719,7 +1719,7 @@ namespace AVFoundation {
 		DepthModuleTemperature = (1 << 2),
 		[iOS (17, 0), MacCatalyst (17, 0)]
 		CameraTemperature = (1uL << 3),
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the system is 30 seconds away from unexpected power off.</summary>
 		[iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
 		SystemStress = (1uL << 4),
 	}
@@ -1752,9 +1752,9 @@ namespace AVFoundation {
 	[Flags]
 	[Native]
 	public enum AVAudioSessionDeactivationOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>No options.</summary>
 		None = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Notifies other apps that were interrupted that the interruption has ended and they may resume playback.</summary>
 		NotifyOthersOnDeactivation = 1uL << 0,
 	}
 

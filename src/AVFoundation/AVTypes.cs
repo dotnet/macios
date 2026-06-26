@@ -1055,19 +1055,28 @@ namespace AVFoundation {
 	[SupportedOSPlatform ("tvos27.0")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AVPlannedVideoSegmentBoundaryGuidelines {
+		nint minimumFrameCount;
+		CMTime minimumDuration;
+
 		/// <summary>The minimum number of frames in each incremental segment. 0 means incremental segmentation is not supported for the codec; 1 means there is no frame count restriction.</summary>
-		public nint MinimumFrameCount;
+		public nint MinimumFrameCount {
+			get => minimumFrameCount;
+			set => minimumFrameCount = value;
+		}
 
 		/// <summary>The minimum duration of each incremental segment. <see cref="CoreMedia.CMTime.Zero" /> means there is no minimum duration requirement; <see cref="CoreMedia.CMTime.PositiveInfinity" /> means incremental segmentation is not supported for the codec.</summary>
-		public CMTime MinimumDuration;
+		public CMTime MinimumDuration {
+			get => minimumDuration;
+			set => minimumDuration = value;
+		}
 
 		/// <summary>Creates a new <see cref="AVFoundation.AVPlannedVideoSegmentBoundaryGuidelines" />.</summary>
 		/// <param name="minimumFrameCount">The minimum number of frames in each incremental segment.</param>
 		/// <param name="minimumDuration">The minimum duration of each incremental segment.</param>
 		public AVPlannedVideoSegmentBoundaryGuidelines (nint minimumFrameCount, CMTime minimumDuration)
 		{
-			MinimumFrameCount = minimumFrameCount;
-			MinimumDuration = minimumDuration;
+			this.minimumFrameCount = minimumFrameCount;
+			this.minimumDuration = minimumDuration;
 		}
 	}
 }

@@ -11,6 +11,10 @@ namespace AVFoundation {
 #endif // XAMCORE_5_0
 
 	public partial class AVAudioSinkNode {
+		/// <summary>Creates an <see cref="AVAudioSinkNode" /> with a realtime-safe receiver block to receive audio data from the input.</summary>
+		/// <param name="receiverHandler">The realtime-safe callback that receives audio data from the input. It is called on the realtime thread, so it must be handled in a thread-safe manner and must not make any blocking calls.</param>
+		/// <returns>A new <see cref="AVAudioSinkNode" />.</returns>
+		/// <remarks>This is the preferred way to create an <see cref="AVAudioSinkNode" />.</remarks>
 		[SupportedOSPlatform ("ios27.0")]
 		[SupportedOSPlatform ("tvos27.0")]
 		[SupportedOSPlatform ("macos27.0")]

@@ -42,6 +42,10 @@ namespace AVFoundation {
 #endif // XAMCORE_5_0
 
 	public partial class AVAudioSourceNode {
+		/// <summary>Creates an <see cref="AVAudioSourceNode" /> with a realtime-safe render block to supply audio data.</summary>
+		/// <param name="renderHandler">The realtime-safe callback that supplies audio data. It is called on the realtime thread, so it must be handled in a thread-safe manner and must not make any blocking calls.</param>
+		/// <returns>A new <see cref="AVAudioSourceNode" />.</returns>
+		/// <remarks>This is the preferred way to create an <see cref="AVAudioSourceNode" /> when the engine is configured for realtime use.</remarks>
 		[SupportedOSPlatform ("ios27.0")]
 		[SupportedOSPlatform ("tvos27.0")]
 		[SupportedOSPlatform ("macos27.0")]
@@ -53,6 +57,11 @@ namespace AVFoundation {
 #endif
 			=> new AVAudioSourceNode (GetHandler (renderHandler), realtimeSafe: true);
 
+		/// <summary>Creates an <see cref="AVAudioSourceNode" /> with the specified format and a realtime-safe render block to supply audio data.</summary>
+		/// <param name="format">The format of the PCM audio data the callback supplies.</param>
+		/// <param name="renderHandler">The realtime-safe callback that supplies audio data. It is called on the realtime thread, so it must be handled in a thread-safe manner and must not make any blocking calls.</param>
+		/// <returns>A new <see cref="AVAudioSourceNode" />.</returns>
+		/// <remarks>This is the preferred way to create an <see cref="AVAudioSourceNode" /> when the engine is configured for realtime use.</remarks>
 		[SupportedOSPlatform ("ios27.0")]
 		[SupportedOSPlatform ("tvos27.0")]
 		[SupportedOSPlatform ("macos27.0")]

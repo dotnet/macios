@@ -125,10 +125,14 @@ if (!string.IsNullOrEmpty (testOutputDir))
 
 // Check if the current macOS build version matches the expected one.
 // If running a beta macOS that doesn't match the expected beta, skip all tests.
+// Beta build versions end with a lowercase letter (e.g. "26A5368g"), while
+// stable build versions end with a digit (e.g. "24G720"). We only skip if
+// the current OS is a beta that doesn't match the expected one.
 if (!string.IsNullOrEmpty (expectedMacOSBuildVersion)) {
 	var currentBuildVersion = NativeMethods.GetSysctlString ("kern.osversion");
-	if (currentBuildVersion != expectedMacOSBuildVersion) {
-		Console.WriteLine ($"Current macOS build version '{currentBuildVersion}' does not match expected '{expectedMacOSBuildVersion}'. Skipping tests.");
+	var isBeta = currentBuildVersion is not null && currentBuildVersion.Length > 0 && char.IsLower (currentBuildVersion [currentBuildVersion.Length - 1]);
+	if (isBeta && currentBuildVersion != expectedMacOSBuildVersion) {
+		Console.WriteLine ($"Current macOS build version '{currentBuildVersion}' is a beta that does not match expected '{expectedMacOSBuildVersion}'. Skipping tests.");
 		return 0;
 	}
 }

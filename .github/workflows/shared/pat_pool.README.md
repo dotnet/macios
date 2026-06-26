@@ -24,7 +24,7 @@ gh aw --version
 Create an environment for the agentic workflows:
   - _Configuring these settings requires repo admin permission_
   - https://github.com/dotnet/{repo}/settings/environments
-  - Recommended Name: **copilot-pat-pool**
+  - Recommended Name: **gh-aw-environment**
   - Recommended Deployment branches and tags: **Protected branches only**
 
 This environment is used for all agentic workflows, restricting agentic workflows to the repo's protected branches and preventing the workflows from accessing secrets defined for other environments.
@@ -50,7 +50,7 @@ For a PAT pool that is specific to an environment, PATs can be added to reposito
 
 * **Settings** >
    * **Environments** >
-      * **copilot-pat-pool** (or other environment name) >
+      * **gh-aw-environment** (or other environment name) >
          * **Add environment secret** (or edit your existing secret)
             * Enter your secret name of `COPILOT_PAT_{0-9}` and paste in your PAT
 
@@ -58,14 +58,14 @@ This can also be accomplished using the `gh` CLI, specifying the repo and enviro
 
 ```sh
 # Register the PAT secret. This will prompt for you to paste the PAT.
-gh secret set "<pool_name>_<0-9>" --repo <org>/<repo> --env "copilot-pat-pool"
+gh secret set "<pool_name>_<0-9>" --repo <org>/<repo> --env "gh-aw-environment"
 ```
 
 It's also helpful to record who owns each PAT within the pool. To capture which team member is associated with each PAT, a `<pool_name>_<0-9>_<username>` "sidecar secret" can be added alongside the PAT secret to make the username for the PAT pool entry visible. This sidecar secret must have a non-empty value, but it's never consumed, so any value is sufficient.
 
 ```sh
 # Record a sidecar secret that presents who owns this PAT.
-gh secret set "<pool_name>_<0-9>_<username>" --body "<username>" --repo <org>/<repo> --env "copilot-pat-pool"
+gh secret set "<pool_name>_<0-9>_<username>" --body "<username>" --repo <org>/<repo> --env "gh-aw-environment"
 ```
 
 ## Workflow Output Attribution
@@ -79,7 +79,7 @@ The [`pat_pool.md`](./pat_pool.md) workflow import defines a custom job with a `
 ```yml
 # ###############################################################
 # Select a PAT from the pool and override COPILOT_GITHUB_TOKEN.
-# Run agentic jobs in an isolated `copilot-pat-pool` environment.
+# Run agentic jobs in the existing `gh-aw-environment` environment.
 #
 # When org-level billing is available, this will be removed.
 # See `shared/pat_pool.README.md` for more information.
@@ -87,9 +87,9 @@ The [`pat_pool.md`](./pat_pool.md) workflow import defines a custom job with a `
 imports:
   - uses: shared/pat_pool.md
     with:
-      environment: copilot-pat-pool
+      environment: gh-aw-environment
 
-environment: copilot-pat-pool
+environment: gh-aw-environment
 
 engine:
   id: copilot
@@ -118,7 +118,7 @@ gh aw compile <workflow-name> --schedule-seed <org>/<repo>
 
 ### Specifying the environment
 
-The `environment` must be specified both to the `pat_pool.md` import and to the containing workflow to ensure both jobs access the PAT pool from the same environment. The `copilot-pat-pool` environment name is recommended as the isolated environment for agentic workflows that use the PAT pool.
+The `environment` must be specified both to the `pat_pool.md` import and to the containing workflow to ensure both jobs access the PAT pool from the same environment. In dotnet/macios, reuse the existing `gh-aw-environment`.
 
 ### Customizing the pool
 

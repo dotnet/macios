@@ -10,7 +10,7 @@ permissions: {}
 
 jobs:
   validate:
-    environment: copilot-pat-pool
+    environment: gh-aw-environment
     name: Validate Copilot PAT Pool
     if: ${{ github.event_name == 'workflow_dispatch' || !github.event.repository.fork }}
     runs-on: ubuntu-latest

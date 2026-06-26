@@ -5,7 +5,7 @@ on:
 
 # ###############################################################
 # Select a PAT from the pool and override COPILOT_GITHUB_TOKEN.
-# Run agentic jobs in an isolated `copilot-pat-pool` environment.
+# Run agentic jobs in the existing `gh-aw-environment` environment.
 #
 # When org-level billing is available, this will be removed.
 # See `shared/pat_pool.README.md` for more information.
@@ -13,12 +13,12 @@ on:
 imports:
   - uses: shared/pat_pool.md
     with:
-      environment: copilot-pat-pool
+      environment: gh-aw-environment
 
 permissions:
   contents: read
   issues: read
-environment: copilot-pat-pool
+environment: gh-aw-environment
 engine:
   id: copilot
   model: claude-sonnet-4.5

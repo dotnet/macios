@@ -1,0 +1,2 @@
+!missing-field! NSTextCheckingWaitForAllGrammarCheckingResultsKey not bound
+!missing-selector! NSSpellChecker::ignoreGrammarRange:inSentence:inSpellDocumentWithTag: not bound

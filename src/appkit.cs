@@ -29104,14 +29104,6 @@ namespace AppKit {
 		[Mac (26, 0)]
 		[Field ("NSTextCheckingAutomaticCapitalizationEnabledKey")]
 		NSString TextCheckingAutomaticCapitalizationEnabledKey { get; }
-
-		[Mac (27, 0)]
-		[Field ("NSTextCheckingWaitForAllGrammarCheckingResultsKey")]
-		NSString TextCheckingWaitForAllGrammarCheckingResultsKey { get; }
-
-		[Mac (27, 0)]
-		[Export ("ignoreGrammarRange:inSentence:inSpellDocumentWithTag:")]
-		void IgnoreGrammarRange (NSRange grammarRange, string sentence, nint inSpellDocumentWithTag);
 	}
 
 	partial interface NSTextViewDidChangeSelectionEventArgs {

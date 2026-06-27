@@ -45,6 +45,19 @@ namespace Introspection {
 				break;
 			}
 #endif // __TVOS__
+#if __MACCATALYST__
+			switch (type.Name) {
+			case "AVAssetWriter":
+				switch (selectorName) {
+				// These Pro Video Storage selectors are declared for Mac Catalyst 27 but are not implemented in the Mac Catalyst 27 runtime.
+				case "isProVideoStorageSupported":
+				case "usesProVideoStorage":
+				case "setUsesProVideoStorage:":
+					return true;
+				}
+				break;
+			}
+#endif // __MACCATALYST__
 			return base.Skip (type, selectorName);
 		}
 

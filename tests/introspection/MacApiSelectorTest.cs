@@ -204,6 +204,15 @@ namespace Introspection {
 					return true;
 				}
 				break;
+			// These Pro Video Storage selectors are declared for macOS 27 but are not implemented in the macOS 27 runtime.
+			case "isProVideoStorageSupported":
+			case "usesProVideoStorage":
+			case "setUsesProVideoStorage:":
+				switch (type.Name) {
+				case "AVAssetWriter":
+					return true;
+				}
+				break;
 			}
 
 			switch (type.Namespace) {

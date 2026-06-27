@@ -1755,6 +1755,7 @@ namespace AVFoundation {
 		/// <summary>No options.</summary>
 		None = 0,
 		/// <summary>Notifies other apps that were interrupted that the interruption has ended and they may resume playback.</summary>
+		[NoMac]
 		NotifyOthersOnDeactivation = 1uL << 0,
 	}
 

@@ -3,8 +3,14 @@
   "name": "iOS タブ付きアプリケーション",
   "description": ".NET iOS タブ付きアプリケーションを作成するためのプロジェクト",
   "symbols/bundleId/description": "Info.plist の CFBundleIdentifier をオーバーライドします",
+  "symbols/bundleId/displayName": "Bundle ID",
   "symbols/minOSVersion/description": "プロジェクト ファイルの SupportedOSPlatformVersion をオーバーライドします",
+  "symbols/minOSVersion/displayName": "Minimum OS version",
   "symbols/deviceFamily/choices/universal/description": "iPhone デバイスと iPad デバイスの両方をサポートする",
+  "symbols/deviceFamily/choices/universal/displayName": "Universal",
   "symbols/deviceFamily/choices/iphone/description": "iPhone デバイスのみをサポート",
-  "symbols/deviceFamily/choices/ipad/description": "iPad デバイスのみをサポート"
+  "symbols/deviceFamily/choices/iphone/displayName": "iPhone",
+  "symbols/deviceFamily/choices/ipad/description": "iPad デバイスのみをサポート",
+  "symbols/deviceFamily/choices/ipad/displayName": "iPad",
+  "symbols/deviceFamily/displayName": "Device family"
 }

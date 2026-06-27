@@ -2370,6 +2370,24 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 	<Target Name="Codesign" Condition="'$(_CanOutputAppBundle)' == 'true'" DependsOnTargets="$(CodesignDependsOn)" />
 
+	<!-- On a Windows (Pair to Mac) build the .app bundle is produced on the Mac and is not copied
+	     back to the local $(AppBundleDir) (CopyAppBundleFromMac, and only when CopyAppBundle is set,
+	     extracts it to a separate AppBundle\ subfolder instead). Skip collecting it on remote builds
+	     ($(IsRemoteBuild) == 'true') so we never surface an incomplete local bundle; surfacing the
+	     .app on Windows is left for a follow-up. -->
+	<Target Name="_CollectAppleAppBundleOutput"
+		Condition="'$(_CanOutputAppBundle)' == 'true' And '$(OutputType)' == 'Exe' And '$(IsAppExtension)' != 'true' And '$(IsWatchApp)' != 'true' And '$(IsRemoteBuild)' != 'true' And Exists('$(AppBundleDir)')"
+		AfterTargets="Codesign">
+		<ItemGroup>
+			<ApplicationArtifact Include="$([MSBuild]::NormalizePath('$(MSBuildProjectDirectory)', '$(AppBundleDir)'))">
+				<PackageFormat>app</PackageFormat>
+				<IsDirectory>true</IsDirectory>
+				<PlatformName>$(_PlatformName)</PlatformName>
+				<BundleIdentifier>$(_BundleIdentifier)</BundleIdentifier>
+			</ApplicationArtifact>
+		</ItemGroup>
+	</Target>
+
 	<!--
 
 		Code signing
@@ -2690,9 +2708,14 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 	<!-- App extensions -->
 
-	<Target Name="GetAppExtensionBundlePath" DependsOnTargets="_GenerateBundleName;$(GetTargetPathDependsOn)" Outputs="@(_AppExtensionBundlePath)" />
+	<!-- These two targets are invoked across projects (via the MSBuild task) to get the app extension's
+	     bundle path back as TargetOutputs. They must specify 'Returns' explicitly: once any target in this
+	     file uses the 'Returns' attribute (e.g. GetApplicationArtifacts), MSBuild stops treating the
+	     'Outputs' attribute of targets without 'Returns' as their return value, so relying on 'Outputs'
+	     alone would return an empty set and the extension would not be embedded into the container app. -->
+	<Target Name="GetAppExtensionBundlePath" DependsOnTargets="_GenerateBundleName;$(GetTargetPathDependsOn)" Outputs="@(_AppExtensionBundlePath)" Returns="@(_AppExtensionBundlePath)" />
 
-	<Target Name="BuildAndGetAppExtensionBundlePath" DependsOnTargets="Build" Outputs="@(_AppExtensionBundlePath)" />
+	<Target Name="BuildAndGetAppExtensionBundlePath" DependsOnTargets="Build" Outputs="@(_AppExtensionBundlePath)" Returns="@(_AppExtensionBundlePath)" />
 
 	<Target Name="_AssignAppExtensionConfiguration" Condition="'@(_AppExtensionReference)' != ''">
 		<!-- assign configs if building a solution file -->
@@ -3257,6 +3280,28 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		</Archive>
 	</Target>
 
+	<Target Name="_CollectAppleArchiveOutput"
+		Condition="'$(ArchiveOnBuild)' == 'true'"
+		AfterTargets="Archive">
+		<!-- On a Windows (Pair to Mac) build the archive is copied back to Windows by
+		     CopyArchiveFromMac (the last target in ArchiveDependsOn), which sets $(ArchivePath)
+		     to the local Windows path while $(ArchiveDir) keeps pointing to the Mac path. Prefer
+		     $(ArchiveDir) when it exists locally (the normal macOS build) and fall back to the
+		     copied-back $(ArchivePath) otherwise. -->
+		<PropertyGroup>
+			<_ApplicationArtifactArchivePath>$(ArchiveDir)</_ApplicationArtifactArchivePath>
+			<_ApplicationArtifactArchivePath Condition="'$(ArchivePath)' != '' And !Exists('$(_ApplicationArtifactArchivePath)')">$(ArchivePath)</_ApplicationArtifactArchivePath>
+		</PropertyGroup>
+		<ItemGroup Condition="'$(_ApplicationArtifactArchivePath)' != '' And Exists('$(_ApplicationArtifactArchivePath)')">
+			<ApplicationArtifact Include="$([MSBuild]::NormalizePath('$(MSBuildProjectDirectory)', '$(_ApplicationArtifactArchivePath)'))">
+				<PackageFormat>xcarchive</PackageFormat>
+				<IsDirectory>true</IsDirectory>
+				<PlatformName>$(_PlatformName)</PlatformName>
+				<BundleIdentifier>$(_BundleIdentifier)</BundleIdentifier>
+			</ApplicationArtifact>
+		</ItemGroup>
+	</Target>
+
 	<Target Name="_GenerateBundleName" Condition="'$(_CanOutputAppBundle)' == 'true'" DependsOnTargets="_ComputeTargetArchitectures;_ParseBundlerArguments">
 		<PropertyGroup Condition="'$(AppBundleDir)' == ''">
 			<_AppContainerDir Condition="'$(IsAppDistribution)' != 'true'">$(DeviceSpecificOutputPath)</_AppContainerDir>
@@ -3360,6 +3405,19 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		</CreateInstallerPackage>
 	</Target>
 
+	<Target Name="_CollectApplePkgOutput"
+		Condition="'$(CreatePackage)' == 'true' And '$(PkgPackagePath)' != '' And Exists('$(PkgPackagePath)')"
+		AfterTargets="_CreateInstaller">
+		<ItemGroup>
+			<ApplicationArtifact Include="$([MSBuild]::NormalizePath('$(MSBuildProjectDirectory)', '$(PkgPackagePath)'))">
+				<PackageFormat>pkg</PackageFormat>
+				<IsDirectory>false</IsDirectory>
+				<PlatformName>$(_PlatformName)</PlatformName>
+				<BundleIdentifier>$(_BundleIdentifier)</BundleIdentifier>
+			</ApplicationArtifact>
+		</ItemGroup>
+	</Target>
+
 	<!-- 
 		Creates a plist with the entitlements used to sign the App bundle.
 		MacCatalyst apps don't have a compiled entitlements file in the app bundle, 
@@ -3390,11 +3448,14 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			_PackageOnDemandResources;
 			_ZipIpa
 		</CreateIpaDependsOn>
+
 	</PropertyGroup>
 
 	<Target Name="_BeforeCreateIpaForDistribution" Condition="'$(IsAppDistribution)' == 'true'" DependsOnTargets="$(_BeforeCreateIpaForDistributionDependsOn)" />
 
 	<Target Name="CreateIpa" Condition="'$(_CanArchive)' == 'true' And '$(SdkIsDesktop)' != 'true'" DependsOnTargets="$(CreateIpaDependsOn)" />
+
+	<Target Name="GetApplicationArtifacts" DependsOnTargets="Build;$(GetApplicationArtifactsDependsOn)" Returns="@(ApplicationArtifact)" />
 
 	<PropertyGroup>
 		<PrepareAssemblies Condition="'$(PrepareAssemblies)' == ''">false</PrepareAssemblies>

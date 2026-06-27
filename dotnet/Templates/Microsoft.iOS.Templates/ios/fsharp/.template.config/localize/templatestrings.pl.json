@@ -3,8 +3,14 @@
   "name": "Aplikacja systemu iOS",
   "description": "Projekt służący do tworzenia aplikacji platformy .NET 6 dla systemu iOS",
   "symbols/bundleId/description": "Nadpisuje element CFBundleIdentifier w pliku Info.plist",
+  "symbols/bundleId/displayName": "Bundle ID",
   "symbols/minOSVersion/description": "Nadpisuje element SupportedOSPlatformVersion w pliku projektu",
+  "symbols/minOSVersion/displayName": "Minimum OS version",
   "symbols/deviceFamily/choices/universal/description": "Obsługa urządzeń iPhone i iPad",
+  "symbols/deviceFamily/choices/universal/displayName": "Universal",
   "symbols/deviceFamily/choices/iphone/description": "Obsługa tylko urządzeń iPhone",
-  "symbols/deviceFamily/choices/ipad/description": "Obsługa tylko urządzeń iPad"
+  "symbols/deviceFamily/choices/iphone/displayName": "iPhone",
+  "symbols/deviceFamily/choices/ipad/description": "Obsługa tylko urządzeń iPad",
+  "symbols/deviceFamily/choices/ipad/displayName": "iPad",
+  "symbols/deviceFamily/displayName": "Device family"
 }

@@ -3,5 +3,7 @@
   "name": "Aplicación Mac Catalyst",
   "description": "Proyecto para crear una aplicación Mac Catalyst de .NET",
   "symbols/bundleId/description": "Invalida CFBundleIdentifier en Info.plist",
-  "symbols/minOSVersion/description": "Invalida SupportedOSPlatformVersion en el archivo de proyecto"
+  "symbols/bundleId/displayName": "Bundle ID",
+  "symbols/minOSVersion/description": "Invalida SupportedOSPlatformVersion en el archivo de proyecto",
+  "symbols/minOSVersion/displayName": "Minimum OS version"
 }

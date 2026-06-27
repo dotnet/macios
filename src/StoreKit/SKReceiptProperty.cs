@@ -17,8 +17,7 @@ using UIKit;
 #endif
 
 namespace StoreKit {
-	/// <summary>Defines test properties for the <see cref="StoreKit.SKReceiptRefreshRequest(Foundation.NSDictionary)" /> constructor.</summary>
-	///     <remarks>To be added.</remarks>
+	/// <summary>Defines test properties for the <see cref="SKReceiptRefreshRequest" /> constructor.</summary>
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("macos")]
@@ -29,24 +28,21 @@ namespace StoreKit {
 	[ObsoletedOSPlatform ("tvos18.0")]
 	public partial class SKReceiptProperties : DictionaryContainer {
 #if !COREBUILD
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Creates a new empty <see cref="SKReceiptProperties" /> instance.</summary>
 		public SKReceiptProperties ()
 			: base (new NSMutableDictionary ())
 		{
 		}
 
-		/// <param name="dictionary">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Creates a new <see cref="SKReceiptProperties" /> instance backed by the specified dictionary.</summary>
+		/// <param name="dictionary">The dictionary containing the receipt property values.</param>
 		public SKReceiptProperties (NSDictionary dictionary)
 			: base (dictionary)
 		{
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets a value indicating whether the receipt represents an expired subscription.</summary>
+		/// <value><see langword="true" /> if the receipt is expired; otherwise, <see langword="false" />.</value>
 		public bool IsExpired {
 			get {
 				return GetInt32Value (_SKReceiptProperty.IsExpired) != 0;
@@ -56,9 +52,8 @@ namespace StoreKit {
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets a value indicating whether the receipt has been revoked.</summary>
+		/// <value><see langword="true" /> if the receipt is revoked; otherwise, <see langword="false" />.</value>
 		public bool IsRevoked {
 			get {
 				return GetInt32Value (_SKReceiptProperty.IsRevoked) != 0;
@@ -68,9 +63,8 @@ namespace StoreKit {
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets a value indicating whether the receipt represents a volume purchase.</summary>
+		/// <value><see langword="true" /> if the receipt is for a volume purchase; otherwise, <see langword="false" />.</value>
 		public bool IsVolumePurchase {
 			get {
 				return GetInt32Value (_SKReceiptProperty.IsVolumePurchase) != 0;

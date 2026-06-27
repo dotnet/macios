@@ -195,6 +195,8 @@ namespace Introspection {
 				case "CKSyncEnginePendingZoneDelete":
 				case "CKSyncEnginePendingZoneSave":
 				case "PKContact":
+				// Xcode 27 beta 2 header declares NSViewCornerRadii : NSObject <NSCopying> only; the macOS 27 runtime also reports NSCoding/NSSecureCoding (conformance not in headers).
+				case "NSViewCornerRadii":
 					return true;
 				}
 				break;
@@ -289,6 +291,8 @@ namespace Introspection {
 				case "CKSyncEnginePendingZoneDelete":
 				case "CKSyncEnginePendingZoneSave":
 				case "CKSyncEngineState":
+				// Xcode 27 beta 2 header declares NSViewCornerRadii : NSObject <NSCopying> only; the macOS 27 runtime also reports NSCoding/NSSecureCoding (conformance not in headers).
+				case "NSViewCornerRadii":
 					return true;
 				}
 				break;

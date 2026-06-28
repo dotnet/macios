@@ -132,6 +132,8 @@ namespace Introspection {
 				case "CKSyncEnginePendingZoneSave":
 				case "CKSyncEngineState":
 				case "NSCursor":
+				// Xcode 27 beta 2 header declares NSViewCornerRadii : NSObject <NSCopying> only; the macOS 27 runtime also reports NSCoding/NSSecureCoding (conformance not in headers).
+				case "NSViewCornerRadii":
 					return true;
 				default:
 					// CIFilter started implementing NSSecureCoding in 10.11
@@ -195,8 +197,6 @@ namespace Introspection {
 				case "CKSyncEnginePendingZoneDelete":
 				case "CKSyncEnginePendingZoneSave":
 				case "PKContact":
-				// Xcode 27 beta 2 header declares NSViewCornerRadii : NSObject <NSCopying> only; the macOS 27 runtime also reports NSCoding/NSSecureCoding (conformance not in headers).
-				case "NSViewCornerRadii":
 					return true;
 				}
 				break;

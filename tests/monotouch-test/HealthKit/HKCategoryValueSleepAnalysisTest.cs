@@ -23,7 +23,7 @@ namespace MonoTouchFixtures.HealthKit {
 			TestRuntime.AssertXcodeVersion (14, 0);
 
 			var sleepValues = HKCategoryValueSleepAnalysisAsleep.GetAsleepValues ();
-			Assert.IsNotNull (sleepValues, "Asleep Values should not return null.");
+			Assert.That (sleepValues, Is.Not.Null, "Asleep Values should not return null.");
 		}
 	}
 }

@@ -30,8 +30,8 @@ namespace MonoTouchFixtures.Contacts {
 			// while most input for ICNKeyDescriptor are done with NSString
 			// the output is opaque and an internal type
 			// note: this is not very robust - but I want to know if this changes during the next betas
-			Assert.True (keys.Description.StartsWith ("<CNAggregateKeyDescriptor:", StringComparison.Ordinal), "type");
-			Assert.True (keys.Description.Contains ("kind=Formatter style: 0"), "kind");
+			Assert.That (keys.Description.StartsWith ("<CNAggregateKeyDescriptor:", StringComparison.Ordinal), Is.True, "type");
+			Assert.That (keys.Description.Contains ("kind=Formatter style: 0"), Is.True, "kind");
 		}
 
 		[Test]
@@ -41,8 +41,8 @@ namespace MonoTouchFixtures.Contacts {
 			// while most input for ICNKeyDescriptor are done with NSString
 			// the output is opaque and an internal type
 			// note: this is not very robust - but I want to know if this changes during the next betas
-			Assert.True (keys.Description.StartsWith ("<CNAggregateKeyDescriptor:", StringComparison.Ordinal), "type");
-			Assert.True (keys.Description.Contains ("kind=Formatter style: 1"), "kind");
+			Assert.That (keys.Description.StartsWith ("<CNAggregateKeyDescriptor:", StringComparison.Ordinal), Is.True, "type");
+			Assert.That (keys.Description.Contains ("kind=Formatter style: 1"), Is.True, "kind");
 		}
 	}
 }

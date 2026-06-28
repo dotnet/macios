@@ -1,6 +1,6 @@
 {
   "sdk": {
-    "version": "10.0.400-preview.0.26281.104",
+    "version": "10.0.400-preview.0.26322.102",
     "paths": [
       "builds/downloads/dotnet",
       "$host$"

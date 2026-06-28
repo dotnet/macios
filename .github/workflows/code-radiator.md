@@ -9,6 +9,7 @@ concurrency:
 permissions:
   contents: read
   pull-requests: read
+environment: gh-aw-environment
 engine:
   id: copilot
   model: claude-sonnet-4.5
@@ -18,12 +19,26 @@ network:
     - github
 tools:
   github:
+    github-token: ${{ secrets.GITHUB_TOKEN }}
     toolsets: [pull_requests, repos]
     min-integrity: approved
   bash: true
+checkout:
+  github-token: ${{ secrets.GITHUB_TOKEN }}
+  fetch: ["*"]
+  fetch-depth: 0
 safe-outputs:
+  github-token: ${{ secrets.GITHUB_TOKEN }}
+  max-patch-files: 1000
+  max-patch-size: 10240
   create-pull-request:
     max: 10
+    draft: false
+    signed-commits: false
+    allowed-base-branches:
+      - "net*.0"
+      - "xcode*"
+      - "xcode*.*"
   add-comment:
     max: 10
     target: "*"
@@ -34,7 +49,14 @@ safe-outputs:
     max: 10
   push-to-pull-request-branch:
     max: 10
+    signed-commits: false
+    target: "*"
+    required-title-prefix: "🤖 Merge 'main' => '"
   update-pull-request:
+    max: 10
+  close-pull-request:
+    max: 10
+  create-issue:
     max: 10
 ---
 
@@ -45,9 +67,9 @@ Merge code from `main` into active target branches, creating pull requests for e
 ## Target Branch Patterns
 
 Only consider remote branches matching these patterns:
-- `net[0-9]*.0` (e.g., `net11.0`, `net10.0`)
-- `xcode[0-9]*` (e.g., `xcode26`)
-- `xcode[0-9]*.[0-9]*` (e.g., `xcode26.4`)
+- `net*.0` (e.g., `net11.0`, `net10.0`)
+- `xcode*` (e.g., `xcode26`)
+- `xcode*.*` (e.g., `xcode26.4`)
 
 Only process branches that have had commits in the last 30 days.
 
@@ -63,6 +85,28 @@ git for-each-ref --sort=-committerdate --format='%(refname:short) %(committerdat
 
 Filter to branches matching the patterns above AND having a commit within the last month.
 
+#### Milestone-based filtering
+
+After identifying candidate branches, check whether each branch has a corresponding
+closed milestone. If so, skip the branch — a closed milestone signals that the branch
+is no longer actively developed.
+
+Use the GitHub API to list **closed** milestones:
+
+```bash
+gh api 'repos/{owner}/{repo}/milestones?state=closed&per_page=100' --paginate -q '.[].title'
+```
+
+Map each branch name to its milestone name:
+
+| Branch pattern   | Milestone name                                                            |
+|------------------|---------------------------------------------------------------------------|
+| `net<major>.0`   | `.NET <major>` (e.g., `net10.0` → `.NET 10`)                              |
+| `xcode<version>` | `xcode<version>` (e.g., `xcode26.4` → `xcode26.4`, `xcode26` → `xcode26`) |
+
+If the corresponding milestone is found in the closed list, skip the branch and include
+it in the summary as "skipped (milestone closed)".
+
 ### 2. For Each Target Branch
 
 #### a. Determine the local branch name
@@ -76,8 +120,32 @@ Search for an open PR with:
 - Title matching: `🤖 Merge 'main' => '<target>'`
 
 If a matching PR exists:
-- If it is a **draft**: add a comment saying "⏭️ Skipping merge update: this PR is a draft. Convert to ready when you want automated updates to resume." and **skip** this target.
-- If it is **not a draft**: use its head branch name as the local branch name (to update the existing PR).
+- If it is a **draft**: check whether a manual merge from `main` into the target branch occurred after the PR was created (see below). If so, close the PR and proceed to create a new one. Otherwise, add a comment saying "⏭️ Skipping merge update: this PR is a draft. Convert to ready when you want automated updates to resume." and **skip** this target.
+- If it is **not a draft**: check whether a manual merge from `main` into the target branch occurred after the PR was created (see below). If so, close the PR and proceed to create a new one. Otherwise, use its head branch name as the local branch name (to update the existing PR).
+
+##### Detecting manual merges that supersede an existing PR
+
+After finding an existing workflow-created PR, check if someone manually merged `main`
+into the target branch after the PR was created. If so, the PR is stale and should be
+replaced with a fresh one.
+
+Detection logic:
+
+```bash
+# Find merge commits from main into the target branch that are newer than the PR creation date
+git log "origin/<target>" --merges --first-parent --after="<pr-created-at>" --format="%H %s" |
+  grep -iE "merge.* main " || true
+```
+
+The `|| true` prevents the command from failing when there are no matches.
+The pattern matches "main" as a whole word to avoid false positives from branch names
+like "maintenance".
+
+If any such merge commits exist on the target branch:
+
+1. Add a comment to the existing PR: "🔄 Closing this PR because a manual merge from `main` into `<target>` was done after this PR was created (commit `<sha>`). A fresh merge PR will be created."
+2. Close the existing PR.
+3. Proceed as if no existing PR was found (create a new branch and PR from scratch).
 
 #### c. Update from target branch
 
@@ -128,26 +196,46 @@ If there are merge conflicts:
   - Add the `do-not-merge` label.
   - Add a comment requesting human review of the conflict resolution, listing which files were manually resolved.
 
-#### e. Push and create/update the PR
+#### e. Create or update the PR
 
-```bash
-git push origin "<local-branch>"
-```
+Do **NOT** run `git push` manually. The safeoutputs tool handles pushing.
 
-- If updating an existing PR: the push is sufficient (the PR updates automatically).
-- If creating a new PR:
-  - Title: `🤖 Merge 'main' => '<target>'`
-  - Body: `Automated merge of \`main\` into \`<target>\`.\n\nCreated by the code-radiator workflow.`
-  - Base: the target branch
-  - Head: the local branch
-  - Enable automerge (merge strategy) on the new PR.
+Use the `create_pull_request` safeoutput tool to push the branch and create/update the PR:
+- `branch`: `<local-branch>` (e.g., `merge/main-to-net11.0-20260527`)
+- `base`: `<target>` (e.g., `net11.0`) — **always provide this field**
+- `title`: `🤖 Merge 'main' => '<target>'`
+- `body`: `Automated merge of \`main\` into \`<target>\`.\n\nCreated by the code-radiator workflow.`
+
+> **Important**: Do NOT unset the upstream tracking branch. After `git checkout -B "<local-branch>" "origin/<target>"`, the upstream is set to `origin/<target>`. Keep it set — the safeoutputs tool relies on this to detect the commits to push.
+
+After creating the PR, enable automerge (merge strategy) using the GitHub MCP `enable_auto_merge` tool or `gh pr merge --auto --merge`.
+
+#### f. Fallback: file an issue if PR creation fails
+
+If the `create_pull_request` safeoutput tool fails (e.g., due to permission errors, branch
+protection rules, or other unexpected errors), file a GitHub issue instead so the failure
+is tracked and can be resolved manually.
+
+Use the `create_issue` safeoutput tool with:
+- `title`: `🤖 Code radiator: failed to create merge PR for '<target>'`
+- `body`: Include:
+  - The target branch name.
+  - The source branch (`main`).
+  - The local branch name that was prepared.
+  - The error message from the failed PR creation attempt.
+  - A note that this issue was automatically filed by the code-radiator workflow.
+- `labels`: `["code-radiator"]`
+
+Do not fail the entire workflow run — continue processing the remaining target branches.
 
 ### 3. Summary
 
 After processing all branches, report:
 - Which PRs were created (with links)
 - Which PRs were updated
-- Which branches were skipped (draft PRs, no conflicts resolution possible)
+- Which PRs were closed and recreated (due to manual merges superseding them)
+- Which branches had PR creation failures (with links to the filed issues)
+- Which branches were skipped (closed milestone, draft PRs, no conflicts resolution possible)
 - Which branches had no diff (main already merged)
 
 ## Conflict Resolution Details
@@ -169,7 +257,10 @@ Split version strings on `.`, `-`, and `+`. Compare each segment numerically. Ex
 
 ## Important Notes
 
-- Never force push. Always use regular `git push`.
+- Never force push.
+- Do NOT run `git push` manually — the safeoutputs `create_pull_request` tool handles pushing.
+- Do NOT unset the upstream tracking branch after creating the local branch. The safeoutputs tool uses `@{upstream}` to detect commits that need to be pushed. Unsetting the upstream causes the tool to report "No changes to commit - no commits found" even when commits exist.
+- Always provide the `base` branch when calling `safeoutputs create_pull_request` (e.g., `base: "net11.0"`).
 - The workflow operates on the current repository checkout.
 - Run `git fetch origin` before starting to ensure up-to-date remote refs.
-- Use `gh` CLI for PR operations (create, comment, list, merge --auto).
+- Use the GitHub MCP tools or `gh` CLI for non-push PR operations (comment, list, merge --auto, enable automerge).

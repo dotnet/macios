@@ -32,7 +32,7 @@ namespace MonoTouch.NUnit.UI {
 	class TestResultElement : StyledMultilineElement {
 
 		public TestResultElement (TestResult result) :
-			base (result.Message ?? "Unknown error", result.StackTrace, UITableViewCellStyle.Subtitle)
+			base (result.Message ?? "Unknown error", result.StackTrace ?? "", UITableViewCellStyle.Subtitle)
 		{
 		}
 	}

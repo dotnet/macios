@@ -19,7 +19,7 @@ cat test.config
 INCLUDE_MAC=$(grep ^INCLUDE_MAC= test.config | sed 's/.*=//')
 INCLUDE_MACCATALYST=$(grep ^INCLUDE_MACCATALYST= test.config | sed 's/.*=//')
 XCODE_DEVELOPER_ROOT=$(grep ^XCODE_DEVELOPER_ROOT= test.config | sed 's/.*=//')
-export MD_APPLE_SDK_ROOT="$(dirname "$(dirname "$XCODE_DEVELOPER_ROOT")")"
+export DEVELOPER_DIR="$(dirname "$(dirname "$XCODE_DEVELOPER_ROOT")")"
 export RootTestsDirectory="$(pwd)"
 
 make
@@ -70,8 +70,8 @@ $CP -cp ../scripts/Directory.Build.props "$DIR/scripts/"
 $CP -cp ../scripts/*.mk "$DIR/scripts/"
 $CP -cp ../scripts/run-with-timeout/*.cs* "$DIR/scripts/run-with-timeout/"
 $CP -cp ../scripts/run-with-timeout/*.mk "$DIR/scripts/run-with-timeout/"
-mkdir -p "$DIR/scripts/mac-test-report-generator"
-$CP -cp ../scripts/mac-test-report-generator/*.cs* "$DIR/scripts/mac-test-report-generator/"
-$CP -cp ../scripts/mac-test-report-generator/*.mk "$DIR/scripts/mac-test-report-generator/"
+mkdir -p "$DIR/scripts/run-packaged-macos-tests"
+$CP -cp ../scripts/run-packaged-macos-tests/*.cs* "$DIR/scripts/run-packaged-macos-tests/"
+$CP -cp ../scripts/run-packaged-macos-tests/*.mk "$DIR/scripts/run-packaged-macos-tests/"
 
 cd mac-test-package && 7z a ../mac-test-package.7z ./*

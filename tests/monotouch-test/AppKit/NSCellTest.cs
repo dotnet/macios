@@ -25,15 +25,15 @@ namespace MonoMacFixtures.AppKit {
 			var clone_ptr = IntPtr_objc_msgSend (cell_handle, Selector.GetHandle ("copyWithZone:"), IntPtr.Zero);
 			//			Console.WriteLine ("Created cell 0x{0} (GCHandle: 0x{2}) with clone 0x{1} (GCHandle: 0x{3})", cell_handle.ToString ("x"), clone_ptr.ToString ("x"), GetGCHandle (cell_handle).ToString ("x"), GetGCHandle (clone_ptr).ToString ("x"));
 
-			Assert.AreNotEqual (GetGCHandle (cell_handle), GetGCHandle (clone_ptr), "gchandle #1");
+			Assert.That (GetGCHandle (clone_ptr), Is.Not.EqualTo (GetGCHandle (cell_handle)), "gchandle #1");
 			CustomCell.expectedHandle = cell_handle;
 			objc_msgSend (Class.GetHandle (typeof (CustomCell)), Selector.GetHandle ("foo:"), cell_handle);
 
-			Assert.AreNotEqual (GetGCHandle (cell_handle), GetGCHandle (clone_ptr), "gchandle #2");
+			Assert.That (GetGCHandle (clone_ptr), Is.Not.EqualTo (GetGCHandle (cell_handle)), "gchandle #2");
 			CustomCell.expectedHandle = clone_ptr;
 			objc_msgSend (Class.GetHandle (typeof (CustomCell)), Selector.GetHandle ("foo:"), clone_ptr);
 
-			Assert.AreNotEqual (GetGCHandle (cell_handle), GetGCHandle (clone_ptr), "gchandle #3");
+			Assert.That (GetGCHandle (clone_ptr), Is.Not.EqualTo (GetGCHandle (cell_handle)), "gchandle #3");
 
 			objc_msgSend (clone_ptr, Selector.GetHandle ("release"));
 		}
@@ -65,7 +65,7 @@ namespace MonoMacFixtures.AppKit {
 		[Export ("foo:")]
 		public static void Foo (CustomCell mySelf)
 		{
-			Assert.AreEqual (expectedHandle, mySelf.Handle, "Handle");
+			Assert.That (mySelf.Handle, Is.EqualTo (expectedHandle), "Handle");
 		}
 	}
 

@@ -4300,6 +4300,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";MX1504" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Cannot find the product assembly '{0}' in the list of loaded assemblies.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[로드된 어셈블리 목록에서 제품 어셈블리 '{0}'을(를) 찾을 수 없습니다.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";MX1600" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Not a Mach-O dynamic library (unknown header '0x{0}'): {1}.]]></Val>
@@ -4533,6 +4542,51 @@
           <Val><![CDATA[Unknown IL sequence for method with call to Dlfcn.CachePointer: '{0}' in method '{1}'. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[메서드 '{1}'에서 Dlfcn.CachePointer: '{0}'을(를) 호출하는 메서드에 대한 알 수 없는 IL 시퀀스입니다. 호출이 인라인 처리되지 않습니다. https://github.com/dotnet/macios/issues/new에서 문제를 제기하세요.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX2258" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA['{0}' is marked with a malformed simulator availability attribute: {1}. Please file an issue at https://github.com/dotnet/macios/issues/new]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA['{0}'이(가) 잘못된 시뮬레이터 가용성 특성 {1}(으)로 표시됩니다. https://github.com/dotnet/macios/issues/new에서 문제를 제기하세요.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX2259" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA['{0}' is marked with a simulator availability attribute with an invalid version: {1}. Please file an issue at https://github.com/dotnet/macios/issues/new]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA['{0}'이(가) 잘못된 버전({1})의 시뮬레이터 가용성 특성으로 표시되었습니다. https://github.com/dotnet/macios/issues/new에서 문제를 제기하세요.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX2260" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA['{0}' has conflicting simulator availability attributes for the '{1}' platform (both SupportedSimulator and UnsupportedSimulator). Please file an issue at https://github.com/dotnet/macios/issues/new]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA['{0}'에 '{1}' 플랫폼에 대한 시뮬레이터 가용성 특성이 충돌합니다(SupportedSimulator 및 UnsupportedSimulator 둘 다). https://github.com/dotnet/macios/issues/new에서 문제를 제기하세요.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX2261" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA['{0}' has multiple SupportedSimulator attributes for the '{1}' platform. Please file an issue at https://github.com/dotnet/macios/issues/new]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA['{0}'에 '{1}' 플랫폼에 대한 SupportedSimulator 특성이 여러 개 있습니다. https://github.com/dotnet/macios/issues/new에서 문제를 제기하세요.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX2262" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The 'InlineClassGetHandle' option is set to 'Strict', but we're using the dynamic registrar. This is not a supported configuration, because 'Strict' mode requires exported Objective-C classes to be available at compile time, but the dynamic registrar will create them at runtime. Please either change the 'InlineClassGetHandle' option to 'Disabled' or 'Compat', or switch to using the static registrar.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA['InlineClassGetHandle' 옵션이 'Strict'로 설정되어 있지만 동적 등록자를 사용하고 있습니다. 이 구성은 지원되지 않습니다. 'Strict' 모드에서는 내보낸 Objective-C 클래스가 컴파일 시간에 사용 가능해야 하지만, 동적 등록자는 런타임에 이를 생성하기 때문입니다. 'InlineClassGetHandle' 옵션을 'Disabled' 또는 'Compat'으로 변경하거나 정적 등록자를 사용하세요.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

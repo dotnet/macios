@@ -22,19 +22,19 @@ public class CGPointDictionaryTests {
 			var point = new CGPoint ((nfloat) 1, (nfloat) 2);
 			using var dict = point.ToDictionary ();
 			var strongDict = new CGPointDictionary (dict);
-			Assert.AreEqual (point.X, strongDict.X, "X");
-			Assert.AreEqual (point.Y, strongDict.Y, "Y");
+			Assert.That (strongDict.X, Is.EqualTo (point.X), "X");
+			Assert.That (strongDict.Y, Is.EqualTo (point.Y), "Y");
 
 			var point2 = strongDict.ToPoint ();
-			Assert.AreEqual (point, point2, "Point");
+			Assert.That (point2, Is.EqualTo (point), "Point");
 
 			strongDict = new CGPointDictionary ();
 			strongDict.X = 3;
-			Assert.AreEqual ((nfloat) 3, strongDict.X, "X 2");
+			Assert.That (strongDict.X, Is.EqualTo ((nfloat) 3), "X 2");
 			strongDict.Y = 4;
-			Assert.AreEqual ((nfloat) 4, strongDict.Y, "Y 2");
+			Assert.That (strongDict.Y, Is.EqualTo ((nfloat) 4), "Y 2");
 			point2 = strongDict.ToPoint ();
-			Assert.AreEqual (new CGPoint (3, 4), point2, "Point 2");
+			Assert.That (point2, Is.EqualTo (new CGPoint (3, 4)), "Point 2");
 		});
 	}
 
@@ -42,18 +42,18 @@ public class CGPointDictionaryTests {
 	public void Default ()
 	{
 		var strongDict = new CGPointDictionary ();
-		Assert.IsNull (strongDict.X, "X");
-		Assert.IsNull (strongDict.Y, "Y");
+		Assert.That (strongDict.X, Is.Null, "X");
+		Assert.That (strongDict.Y, Is.Null, "Y");
 		var point = strongDict.ToPoint ();
-		Assert.AreEqual (default (CGPoint), point, "Point");
+		Assert.That (point, Is.EqualTo (default (CGPoint)), "Point");
 	}
 
 	[Test]
 	public void ToStringTest1 ()
 	{
 		var strongDict = new CGPointDictionary ();
-		Assert.AreEqual ("CoreGraphics.CGPointDictionary", strongDict.ToString (), "A");
-		Assert.AreEqual ("{\n}", strongDict.Dictionary.ToString (), "B");
+		Assert.That (strongDict.ToString (), Is.EqualTo ("CoreGraphics.CGPointDictionary"), "A");
+		Assert.That (strongDict.Dictionary.ToString (), Is.EqualTo ("{\n}"), "B");
 	}
 
 	[Test]
@@ -62,7 +62,7 @@ public class CGPointDictionaryTests {
 		var strongDict = new CGPointDictionary ();
 		strongDict.X = 3;
 		strongDict.Y = 4;
-		Assert.AreEqual ("CoreGraphics.CGPointDictionary", strongDict.ToString (), "A");
-		Assert.AreEqual ("{\n    X = 3;\n    Y = 4;\n}", strongDict.Dictionary.ToString (), "B");
+		Assert.That (strongDict.ToString (), Is.EqualTo ("CoreGraphics.CGPointDictionary"), "A");
+		Assert.That (strongDict.Dictionary.ToString (), Is.EqualTo ("{\n    X = 3;\n    Y = 4;\n}"), "B");
 	}
 }

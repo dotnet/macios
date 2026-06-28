@@ -11,6 +11,7 @@
 using Mono.Options;
 
 using Xamarin.Linker;
+using Xamarin.Utils;
 
 namespace Xamarin.Bundler {
 	public partial class Driver {
@@ -18,11 +19,9 @@ namespace Xamarin.Bundler {
 
 		static int Main2 (string [] args)
 		{
-			var app = new Application (new LinkerConfiguration ());
+			var app = new Application ();
 			var os = new OptionSet ();
 			ParseOptions (app, os, args);
-
-			ValidateXcode (app, false, false);
 
 			app.InitializeCommon ();
 			app.RunRegistrar ();

@@ -9,6 +9,7 @@
     <LinkMode>$(MtouchLink)</LinkMode>
     <MtouchExtraArgs>--optimize=all,-remove-dynamic-registrar,-force-rejected-types-removal</MtouchExtraArgs>
     <MtouchExtraArgs Condition="$(Configuration.Contains('Debug'))">$(MtouchExtraArgs) --optimize=-remove-uithread-checks</MtouchExtraArgs>
+    <MtouchExtraArgs>$(MtouchExtraArgs) --nowarn:2003</MtouchExtraArgs> <!-- warning MT2003: Option '...' will be ignored since ... --> 
     <MonoBundlingExtraArgs>$(MtouchExtraArgs)</MonoBundlingExtraArgs>
     <ThisTestDirectory>$(RootTestsDirectory)\linker\link all</ThisTestDirectory>
     <SingleArchReleaseBuild>true</SingleArchReleaseBuild>
@@ -72,6 +73,9 @@
     <Compile Include="$(RootTestsDirectory)\monotouch-test\System.Net.Http\NetworkResources.cs">
       <Link>NetworkResources.cs</Link>
     </Compile>
+    <Compile Include="$(RootTestsDirectory)\monotouch-test\System.Net.Http\HttpbinTestServer.cs">
+      <Link>HttpbinTestServer.cs</Link>
+    </Compile>
     <Compile Include="$(RootTestsDirectory)\common\TestAssemblyLoader.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -84,14 +88,12 @@
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="$(ThisTestDirectory)\Assets.xcassets\AppIcons.appiconset\Contents.json" />
-    <ImageAsset Include="$(ThisTestDirectory)\Assets.xcassets\AppIcons.appiconset\Icon-app-60%403x.png" />
-    <ImageAsset Include="$(ThisTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-app-57.png" />
-    <ImageAsset Include="$(ThisTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-app-57%402x.png" />
-    <ImageAsset Include="$(ThisTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-app-60%402x.png" />
-    <ImageAsset Include="$(ThisTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-app-72.png" />
-    <ImageAsset Include="$(ThisTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-app-72%402x.png" />
-    <ImageAsset Include="$(ThisTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-app-76.png" />
-    <ImageAsset Include="$(ThisTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-app-76%402x.png" />
-    <ImageAsset Include="$(ThisTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-app-83.5%402x.png" />
+    <ImageAsset Include="$(ThisTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-1024.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- The following three classes are managed classes with [Protocol]+[BaseType], in which case we don't create a corresponding Objective-C class, so there's no native Objective-C symbol to link with -->
+    <ReferenceNativeSymbol Include="P2" SymbolType="ObjectiveCClass" SymbolMode="Ignore" />
+    <ReferenceNativeSymbol Include="ProtocolWithBlockProperties" SymbolType="ObjectiveCClass" SymbolMode="Ignore" />
+    <ReferenceNativeSymbol Include="TestProtocolRegister" SymbolType="ObjectiveCClass" SymbolMode="Ignore" />
   </ItemGroup>
 </Project>

@@ -23,21 +23,21 @@ namespace MonoTouchFixtures.CoreVideo {
 		public void AllTypes ()
 		{
 			// https://bugzilla.xamarin.com/show_bug.cgi?id=13917
-			Assert.NotNull (CVPixelFormatDescription.AllTypes);
+			Assert.That (CVPixelFormatDescription.AllTypes, Is.Not.Null);
 		}
 
 		[Test]
 		public void Create ()
 		{
 			// 0 is not defined
-			Assert.Null (CVPixelFormatDescription.Create (0), "0");
+			Assert.That (CVPixelFormatDescription.Create (0), Is.Null, "0");
 
 			using (var dict = CVPixelFormatDescription.Create (CVPixelFormatType.CV16Gray)) {
-				Assert.NotNull (dict, "CV16Gray");
+				Assert.That (dict, Is.Not.Null, "CV16Gray");
 			}
 
 			using (var dict = CVPixelFormatDescription.Create (CVPixelFormatType.CV32ARGB)) {
-				Assert.NotNull (dict, "CV32ARGB");
+				Assert.That (dict, Is.Not.Null, "CV32ARGB");
 			}
 		}
 
@@ -49,14 +49,14 @@ namespace MonoTouchFixtures.CoreVideo {
 				Assert.Ignore ("This test can only be executed once, it modifies global state.");
 			registerDone = true;
 
-			Assert.Null (CVPixelFormatDescription.Create ((CVPixelFormatType) 3), "3a");
+			Assert.That (CVPixelFormatDescription.Create ((CVPixelFormatType) 3), Is.Null, "3a");
 
 			using (var dict = CVPixelFormatDescription.Create (CVPixelFormatType.CV24RGB)) {
-				Assert.NotNull (dict, "CV24RGB");
+				Assert.That (dict, Is.Not.Null, "CV24RGB");
 				CVPixelFormatDescription.Register (dict, (CVPixelFormatType) 3);
 			}
 
-			Assert.NotNull (CVPixelFormatDescription.Create ((CVPixelFormatType) 3), "3b");
+			Assert.That (CVPixelFormatDescription.Create ((CVPixelFormatType) 3), Is.Not.Null, "3b");
 		}
 
 		[Test]
@@ -65,44 +65,44 @@ namespace MonoTouchFixtures.CoreVideo {
 			Assert.Multiple (() => {
 				var pf = CVPixelFormatType.CV32ARGB;
 				var desc = CVPixelFormatDescription.CreatePixelFormat (pf);
-				Assert.IsNull (desc.Name, "Name");
-				Assert.AreEqual (pf, desc.Constant ?? ((CVPixelFormatType) 0xFFFFFFFF), "Constant");
-				Assert.IsNull (desc.CodecType, "CodecType");
-				Assert.IsNull (desc.FourCC, "FourCC");
-				Assert.AreEqual (true, desc.ContainsAlpha, "ContainsAlpha");
-				Assert.AreEqual (false, desc.FormatContainsYCbCr, "FormatContainsYCbCr");
-				Assert.AreEqual (true, desc.FormatContainsRgb, "FormatContainsRgb");
-				Assert.AreEqual (false, desc.ContainsGrayscale, "ContainsGrayscale");
+				Assert.That (desc.Name, Is.Null, "Name");
+				Assert.That (desc.Constant ?? ((CVPixelFormatType) 0xFFFFFFFF), Is.EqualTo (pf), "Constant");
+				Assert.That (desc.CodecType, Is.Null, "CodecType");
+				Assert.That (desc.FourCC, Is.Null, "FourCC");
+				Assert.That (desc.ContainsAlpha, Is.EqualTo (true), "ContainsAlpha");
+				Assert.That (desc.FormatContainsYCbCr, Is.EqualTo (false), "FormatContainsYCbCr");
+				Assert.That (desc.FormatContainsRgb, Is.EqualTo (true), "FormatContainsRgb");
+				Assert.That (desc.ContainsGrayscale, Is.EqualTo (false), "ContainsGrayscale");
 				if (TestRuntime.CheckXcodeVersion (14, 0))
-					Assert.IsNull (desc.FormatContainsSenselArray, "FormatContainsSenselArray");
+					Assert.That (desc.FormatContainsSenselArray, Is.Null, "FormatContainsSenselArray");
 				if (TestRuntime.CheckXcodeVersion (16, 0))
-					Assert.AreEqual (CVPixelFormatComponentRangeValues.FullRange, desc.ComponentRangeValue, "ComponentRangeValue");
-				Assert.IsNull (desc.Planes, "Planes");
-				Assert.IsNull (desc.BlockWidth, "BlockWidth");
-				Assert.IsNull (desc.BlockHeight, "BlockHeight");
-				Assert.AreEqual (32, desc.BitsPerBlock, "BitsPerBlock");
-				Assert.IsNull (desc.BlockHorizontalAlignment, "BlockHorizontalAlignment");
-				Assert.IsNull (desc.BlockVerticalAlignment, "BlockVerticalAlignment");
-				Assert.IsNotNull (desc.BlackBlock, "BlackBlock");
-				Assert.IsNull (desc.HorizontalSubsampling, "HorizontalSubsampling");
-				Assert.IsNull (desc.VerticalSubsampling, "VerticalSubsampling");
+					Assert.That (desc.ComponentRangeValue, Is.EqualTo (CVPixelFormatComponentRangeValues.FullRange), "ComponentRangeValue");
+				Assert.That (desc.Planes, Is.Null, "Planes");
+				Assert.That (desc.BlockWidth, Is.Null, "BlockWidth");
+				Assert.That (desc.BlockHeight, Is.Null, "BlockHeight");
+				Assert.That (desc.BitsPerBlock, Is.EqualTo (32), "BitsPerBlock");
+				Assert.That (desc.BlockHorizontalAlignment, Is.Null, "BlockHorizontalAlignment");
+				Assert.That (desc.BlockVerticalAlignment, Is.Null, "BlockVerticalAlignment");
+				Assert.That (desc.BlackBlock, Is.Not.Null, "BlackBlock");
+				Assert.That (desc.HorizontalSubsampling, Is.Null, "HorizontalSubsampling");
+				Assert.That (desc.VerticalSubsampling, Is.Null, "VerticalSubsampling");
 #if (__IOS__ && !__MACCATALYST__) || __TVOS__
-				Assert.IsNull (desc.OpenGLFormat, "OpenGLFormat");
-				Assert.IsNull (desc.OpenGLType, "OpenGLType");
-				Assert.IsNull (desc.OpenGLInternalFormat, "OpenGLInternalFormat");
-				Assert.IsNull (desc.OpenGLCompatibility, "OpenGLCompatibility");
+				Assert.That (desc.OpenGLFormat, Is.Null, "OpenGLFormat");
+				Assert.That (desc.OpenGLType, Is.Null, "OpenGLType");
+				Assert.That (desc.OpenGLInternalFormat, Is.Null, "OpenGLInternalFormat");
+				Assert.That (desc.OpenGLCompatibility, Is.Null, "OpenGLCompatibility");
 #else
-				Assert.AreEqual (32993, desc.OpenGLFormat, "OpenGLFormat");
-				Assert.AreEqual (32821, desc.OpenGLType, "OpenGLType");
-				Assert.AreEqual (32856, desc.OpenGLInternalFormat, "OpenGLInternalFormat");
-				Assert.AreEqual (true, desc.OpenGLCompatibility, "OpenGLCompatibility");
+				Assert.That (desc.OpenGLFormat, Is.EqualTo (32993), "OpenGLFormat");
+				Assert.That (desc.OpenGLType, Is.EqualTo (32821), "OpenGLType");
+				Assert.That (desc.OpenGLInternalFormat, Is.EqualTo (32856), "OpenGLInternalFormat");
+				Assert.That (desc.OpenGLCompatibility, Is.EqualTo (true), "OpenGLCompatibility");
 #endif
-				Assert.AreEqual (CGBitmapFlags.ByteOrder32Big | CGBitmapFlags.First, desc.CGBitmapInfo, "CGBitmapInfo");
-				Assert.AreEqual (true, desc.QDCompatibility, "QDCompatibility");
-				Assert.AreEqual (true, desc.CGBitmapContextCompatibility, "CGBitmapContextCompatibility");
-				Assert.AreEqual (true, desc.CGImageCompatibility, "CGImageCompatibility");
-				Assert.IsNotNull (desc.FillExtendedPixelsCallback, "FillExtendedPixelsCallback");
-				Assert.IsNotNull (desc.FillExtendedPixelsCallbackStruct, "FillExtendedPixelsCallbackStruct");
+				Assert.That (desc.CGBitmapInfo, Is.EqualTo (CGBitmapFlags.ByteOrder32Big | CGBitmapFlags.First), "CGBitmapInfo");
+				Assert.That (desc.QDCompatibility, Is.EqualTo (true), "QDCompatibility");
+				Assert.That (desc.CGBitmapContextCompatibility, Is.EqualTo (true), "CGBitmapContextCompatibility");
+				Assert.That (desc.CGImageCompatibility, Is.EqualTo (true), "CGImageCompatibility");
+				Assert.That (desc.FillExtendedPixelsCallback, Is.Not.Null, "FillExtendedPixelsCallback");
+				Assert.That (desc.FillExtendedPixelsCallbackStruct, Is.Not.Null, "FillExtendedPixelsCallbackStruct");
 			});
 		}
 	}

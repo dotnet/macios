@@ -2,6 +2,7 @@ using CoreFoundation;
 using CoreGraphics;
 using Metal;
 using MetalPerformanceShaders;
+using System.ComponentModel;
 
 using MPSGraphTensorDataDictionary = Foundation.NSDictionary<MetalPerformanceShadersGraph.MPSGraphTensor, MetalPerformanceShadersGraph.MPSGraphTensorData>;
 using MPSGraphTensorShapedTypeDictionary = Foundation.NSDictionary<MetalPerformanceShadersGraph.MPSGraphTensor, MetalPerformanceShadersGraph.MPSGraphShapedType>;
@@ -2477,7 +2478,16 @@ namespace MetalPerformanceShadersGraph {
 		MPSGraphFftScalingMode ScalingMode { get; set; }
 
 		[Export ("roundToOddHermitean")]
+#if XAMCORE_5_0
+		bool RoundToOddHermitian { get; set; }
+#else
+		[Obsolete ("Use 'RoundToOddHermitian' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		bool RoundToOddHermitean { get; set; }
+
+		[Wrap ("RoundToOddHermitean")]
+		bool RoundToOddHermitian { get; set; }
+#endif
 
 		[Static]
 		[Export ("descriptor")]

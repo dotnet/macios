@@ -1581,9 +1581,9 @@ namespace CoreML {
 	}
 
 #if !XAMCORE_5_0
-	[Deprecated (PlatformName.MacOSX, 13, 3, message: "Use Background Assets or 'NSUrlSession' instead.")]
-	[Deprecated (PlatformName.MacCatalyst, 16, 4, message: "Use Background Assets or 'NSUrlSession' instead.")]
-	[Deprecated (PlatformName.iOS, 16, 4, message: "Use Background Assets or 'NSUrlSession' instead.")]
+	[Obsoleted (PlatformName.MacOSX, 13, 3, message: "Use Background Assets or 'NSUrlSession' instead.")]
+	[Obsoleted (PlatformName.MacCatalyst, 16, 4, message: "Use Background Assets or 'NSUrlSession' instead.")]
+	[Obsoleted (PlatformName.iOS, 16, 4, message: "Use Background Assets or 'NSUrlSession' instead.")]
 	[iOS (14, 0)]
 	[MacCatalyst (14, 0)]
 	[NoTV]
@@ -1613,9 +1613,9 @@ namespace CoreML {
 #endif // !XAMCORE_5_0
 
 #if !XAMCORE_5_0
-	[Deprecated (PlatformName.MacOSX, 13, 3, message: "Use Background Assets or 'NSUrlSession' instead.")]
-	[Deprecated (PlatformName.MacCatalyst, 16, 4, message: "Use Background Assets or 'NSUrlSession' instead.")]
-	[Deprecated (PlatformName.iOS, 16, 4, message: "Use Background Assets or 'NSUrlSession' instead.")]
+	[Obsoleted (PlatformName.MacOSX, 13, 3, message: "Use Background Assets or 'NSUrlSession' instead.")]
+	[Obsoleted (PlatformName.MacCatalyst, 16, 4, message: "Use Background Assets or 'NSUrlSession' instead.")]
+	[Obsoleted (PlatformName.iOS, 16, 4, message: "Use Background Assets or 'NSUrlSession' instead.")]
 	[iOS (14, 0)]
 	[MacCatalyst (14, 0)]
 	[NoTV]

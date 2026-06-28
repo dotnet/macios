@@ -306,7 +306,7 @@ class GitHubComments {
             return $true
         } else {
             # we might have gotten here because of the trigger type. This means that we are in a PR BUT
-            # we did not get the PR ids, but those can be found in the diff evirtoment vars
+            # we did not get the PR ids, but those can be found in the diff environment vars
             if ($Env:BUILD_REASON -eq "PullRequest") {
                 # set the PR ids to the PR we have in the VSTS env vars
                 $this.PRIds = @($Env:SYSTEM_PULLREQUEST_PULLREQUESTNUMBER)
@@ -345,6 +345,15 @@ class GitHubComments {
         $stringBuilder.AppendLine()
     }
 
+    [void] WriteCommentIdentifier(
+        [object] $stringBuilder,
+        [string] $commentId
+    ) {
+        $ciComment = $this.GetCommentIdentifier($commentId)
+        $stringBuilder.AppendLine($ciComment)
+        $stringBuilder.AppendLine("")
+    }
+
     [void] WriteCommentFooter(
         [object] $stringBuilder,
         [string] $commentId
@@ -362,10 +371,7 @@ class GitHubComments {
             $hashUrl= "https://github.com/$($this.Org)/$($this.Repo)/commit/$($this.Hash)"
             $hashSource = " [CI build]"
         }
-        $ciComment = $this.GetCommentIdentifier($commentId)
         $stringBuilder.AppendLine("Hash: [$($this.Hash)]($hashUrl) $hashSource")
-        $stringBuilder.AppendLine("")
-        $stringBuilder.AppendLine($ciComment)
     }
 
     [string] GetCommentIdentifier([string] $commentId)
@@ -473,6 +479,9 @@ class GitHubComments {
         # build the message, which will be sent to github, users can use markdown
         $msg = [System.Text.StringBuilder]::new()
 
+        # comment identifier (at the top so it's never truncated away)
+        $this.WriteCommentIdentifier($msg, $commentId)
+
         # header
         $this.WriteCommentHeader($msg, $commentTitle, $commentEmoji)
 
@@ -497,6 +506,9 @@ class GitHubComments {
 
         # build the message, which will be sent to github, users can use markdown
         $msg = [System.Text.StringBuilder]::new()
+
+        # comment identifier (at the top so it's never truncated away)
+        $this.WriteCommentIdentifier($msg, $commentId)
 
         # header
         $this.WriteCommentHeader($msg, $commentTitle, $commentEmoji)
@@ -528,6 +540,9 @@ class GitHubComments {
         $this.HandlePreviousCommentHiding($commentId)
 
         $msg = [System.Text.StringBuilder]::new()
+
+        # comment identifier (at the top so it's never truncated away)
+        $this.WriteCommentIdentifier($msg, $commentId)
 
         # header
         $this.WriteCommentHeader($msg, $commentTitle, $commentEmoji)
@@ -1118,6 +1133,13 @@ function Get-GitHubPRsForHash {
     Write-Host "Getting related PR ids for commit $Hash"
 
     $prs = [System.Collections.ArrayList]@()
+
+    if ($Env:SYSTEM_PULLREQUEST_PULLREQUESTNUMBER) {
+        Write-Host "Found PR in environment: $Env:SYSTEM_PULLREQUEST_PULLREQUESTNUMBER"
+        $prs.Add($Env:SYSTEM_PULLREQUEST_PULLREQUESTNUMBER) > $null
+        return $prs
+    }
+
     if ($Env:IS_PR -eq "false") {
         Write-Host "This isn't a PR, IS_PR=false"
         return $prs

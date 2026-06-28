@@ -220,14 +220,14 @@ namespace Xamarin.Tests {
 			var proj = Path.Combine (outputDir, $"{info.Template}.{language.AsFileExtension ()}");
 			var properties = GetDefaultProperties ();
 			var rv = DotNet.AssertBuild (proj, properties);
-			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).Select (v => v.Message);
+			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).FilterWarnings (info.Platform).Select (v => v.Message);
 			Assert.That (warnings, Is.Empty, $"Build warnings:\n\t{string.Join ("\n\t", warnings)}");
 
 			if (info.Execute) {
 				var platform = info.Platform;
 				var runtimeIdentifiers = GetDefaultRuntimeIdentifier (platform);
 
-				Assert.IsTrue (CanExecute (info.Platform, runtimeIdentifiers), "Must be executable to execute!");
+				Assert.That (CanExecute (info.Platform, runtimeIdentifiers), Is.True, "Must be executable to execute!");
 
 				// First add some code to exit the template if it launches successfully.
 				InsertCodeToExitAppAfterLaunch (language, outputDir);
@@ -236,7 +236,7 @@ namespace Xamarin.Tests {
 				rv = DotNet.AssertBuild (proj, properties);
 
 				// There should still not be any warnings
-				warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).Select (v => v.Message);
+				warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).FilterWarnings (info.Platform).Select (v => v.Message);
 				Assert.That (warnings, Is.Empty, $"Build warnings (2):\n\t{string.Join ("\n\t", warnings)}");
 
 				var appPath = GetAppPath (proj, platform, runtimeIdentifiers);
@@ -280,13 +280,13 @@ namespace Xamarin.Tests {
 			var proj = Path.Combine (outputDir, $"{info.Template}.{language.AsFileExtension ()}");
 			var properties = GetDefaultProperties ();
 			var rv = DotNet.AssertBuild (proj, properties);
-			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).Select (v => v.Message);
+			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).FilterWarnings (platform).Select (v => v.Message);
 			Assert.That (warnings, Is.Empty, $"Build warnings:\n\t{string.Join ("\n\t", warnings)}");
 
 			if (info.Execute) {
 				var runtimeIdentifiers = GetDefaultRuntimeIdentifier (platform);
 
-				Assert.IsTrue (CanExecute (info.Platform, runtimeIdentifiers), "Must be executable to execute!");
+				Assert.That (CanExecute (info.Platform, runtimeIdentifiers), Is.True, "Must be executable to execute!");
 
 				// First add some code to exit the template if it launches successfully.
 				InsertCodeToExitAppAfterLaunch (language, outputDir);
@@ -295,7 +295,7 @@ namespace Xamarin.Tests {
 				rv = DotNet.AssertBuild (proj, properties);
 
 				// There should still not be any warnings
-				warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).Select (v => v.Message);
+				warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).FilterWarnings (platform).Select (v => v.Message);
 				Assert.That (warnings, Is.Empty, $"Build warnings (2):\n\t{string.Join ("\n\t", warnings)}");
 
 				var appPath = GetAppPath (proj, platform, runtimeIdentifiers);
@@ -333,7 +333,7 @@ Environment.Exit (0);
 			var modifiedMainContents =
 				mainContents.Replace ("// This is the main entry point of the application.",
 					exitSampleWithSuccess);
-			Assert.AreNotEqual (modifiedMainContents, mainContents, "Failed to modify the main content");
+			Assert.That (mainContents, Is.Not.EqualTo (modifiedMainContents), "Failed to modify the main content");
 			File.WriteAllText (mainFile, modifiedMainContents);
 		}
 
@@ -349,7 +349,7 @@ Environment.Exit (0);
 			var modifiedMainContents =
 				mainContents.Replace ("// This is the main entry point of the application.",
 					exitSampleWithSuccess);
-			Assert.AreNotEqual (modifiedMainContents, mainContents, "Failed to modify the main content");
+			Assert.That (mainContents, Is.Not.EqualTo (modifiedMainContents), "Failed to modify the main content");
 			File.WriteAllText (mainFile, modifiedMainContents);
 		}
 
@@ -367,7 +367,7 @@ End Sub
 			var modifiedMainContents =
 				mainContents.Replace ("' This is the main entry point of the application.",
 					exitSampleWithSuccess);
-			Assert.AreNotEqual (modifiedMainContents, mainContents, "Failed to modify the main content");
+			Assert.That (mainContents, Is.Not.EqualTo (modifiedMainContents), "Failed to modify the main content");
 			File.WriteAllText (mainFile, modifiedMainContents);
 		}
 	}

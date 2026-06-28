@@ -70,7 +70,7 @@ namespace MonoTouchFixtures.CoreData {
 			managedObjectModel.SetEntities (managedObjectModel.Entities, String.Empty);
 
 			using var psc = new NSPersistentStoreCoordinator (managedObjectModel);
-			Assert.IsNull (psc.GetManagedObjectId ("magnitude"), "GetManagedObjectId");
+			Assert.That (psc.GetManagedObjectId ("magnitude"), Is.Null, "GetManagedObjectId");
 		}
 	}
 }

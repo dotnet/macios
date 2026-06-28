@@ -4300,6 +4300,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";MX1504" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Cannot find the product assembly '{0}' in the list of loaded assemblies.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA['{0}' ürün bütünleştirilmiş kodu, yüklenen bütünleştirilmiş kodlar listesinde bulunamıyor.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";MX1600" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Not a Mach-O dynamic library (unknown header '0x{0}'): {1}.]]></Val>
@@ -4533,6 +4542,51 @@
           <Val><![CDATA[Unknown IL sequence for method with call to Dlfcn.CachePointer: '{0}' in method '{1}'. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA['{1}' yönteminde Dlfcn.CachePointer '{0}' çağrısı içeren yöntem için bilinmeyen IL dizisi. Çağrı satır içine alınmayacak. Lütfen https://github.com/dotnet/macios/issues/new adresine bir sorun gönderin]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX2258" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA['{0}' is marked with a malformed simulator availability attribute: {1}. Please file an issue at https://github.com/dotnet/macios/issues/new]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA['{0}', hatalı biçimlendirilmiş bir simülatör kullanılabilirlik özniteliğiyle işaretlenmiş: {1}. Lütfen https://github.com/dotnet/macios/issues/new adresine bir sorun gönderin]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX2259" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA['{0}' is marked with a simulator availability attribute with an invalid version: {1}. Please file an issue at https://github.com/dotnet/macios/issues/new]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA['{0}', sürümü geçersiz olan bir simülatör kullanılabilirlik özniteliğiyle işaretlenmiş: {1}. Lütfen https://github.com/dotnet/macios/issues/new adresine bir sorun gönderin]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX2260" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA['{0}' has conflicting simulator availability attributes for the '{1}' platform (both SupportedSimulator and UnsupportedSimulator). Please file an issue at https://github.com/dotnet/macios/issues/new]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA['{0}', '{1}' platformu için çakışan simülatör kullanılabilirlik özniteliklerine sahip (hem SupportedSimulator hem de UnsupportedSimulator). Lütfen https://github.com/dotnet/macios/issues/new adresine bir sorun gönderin]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX2261" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA['{0}' has multiple SupportedSimulator attributes for the '{1}' platform. Please file an issue at https://github.com/dotnet/macios/issues/new]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA['{0}', '{1}' platformu için birden çok SupportedSimulator özniteliğine sahip. Lütfen https://github.com/dotnet/macios/issues/new adresine bir sorun gönderin]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX2262" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The 'InlineClassGetHandle' option is set to 'Strict', but we're using the dynamic registrar. This is not a supported configuration, because 'Strict' mode requires exported Objective-C classes to be available at compile time, but the dynamic registrar will create them at runtime. Please either change the 'InlineClassGetHandle' option to 'Disabled' or 'Compat', or switch to using the static registrar.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA['InlineClassGetHandle' seçeneği 'Strict' olarak ayarlandı ancak dinamik kaydediciyi kullanılıyor. 'Strict' modu dışarı aktarılan Objective-C sınıflarının derleme anında kullanılabilir olmasını gerektirdiğinden ancak dinamik kaydedici bunları çalışma zamanında oluşturacağından bu desteklenen bir yapılandırma değildir. Lütfen 'InlineClassGetHandle' seçeneğini 'Disabled' veya 'Compat' olarak değiştirin ya da statik kaydedici kullanmaya geçin.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

@@ -4,6 +4,7 @@ on:
     name: review
     events: [pull_request_comment]
   roles: [admin, maintain, write]
+environment: gh-aw-environment
 concurrency:
   group: "macios-reviewer-${{ github.event.issue.number || github.event.pull_request.number || github.run_id }}"
   cancel-in-progress: false

@@ -379,6 +379,9 @@ namespace AVFoundation {
 		NoSmartFramingsEnabled = -11890,
 		AutoWhiteBalanceNotLocked = -11891,
 		FollowExternalSyncDeviceTimedOut = -11892,
+		FollowExternalSyncFailed = -11894,
+		ExternalSyncDeviceFrequencyHigherThanSpecified = -11895,
+		ExternalSyncDeviceFrequencyLowerThanSpecified = -11896,
 	}
 
 	/// <summary>An enumeration whose values specify the behavior of the player when it finishes playing.</summary>
@@ -869,6 +872,9 @@ namespace AVFoundation {
 		MediumHall3 = 11,
 		/// <summary>To be added.</summary>
 		LargeHall2 = 12,
+		/// <summary>A reverb preset that simulates a general outdoor environment.</summary>
+		[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		OutdoorGeneral = 24,
 	}
 
 	/// <summary>Enumerates valid values that can be passed to <see cref="AVFoundation.AVAudioUnitDistortion.LoadFactoryPreset(AVFoundation.AVAudioUnitDistortionPreset)" />.</summary>
@@ -1598,6 +1604,39 @@ namespace AVFoundation {
 		SparselyInterleavedWithMainMediaData = 2,
 	}
 
+	[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+	public enum AVAssetExportSessionResumptionFailureReason {
+		[Field ("AVAssetExportSessionResumptionFailureReasonIncompatiblePreset")]
+		IncompatiblePreset,
+
+		[Field ("AVAssetExportSessionResumptionFailureReasonUnsupportedForPresetOnPlatform")]
+		UnsupportedForPresetOnPlatform,
+
+		[Field ("AVAssetExportSessionResumptionFailureReasonTemporaryDirectoryDoesNotExist")]
+		TemporaryDirectoryDoesNotExist,
+
+		[Field ("AVAssetExportSessionResumptionFailureReasonIncompatibleSessionSettings")]
+		IncompatibleSessionSettings,
+
+		[Field ("AVAssetExportSessionResumptionFailureReasonIncompatibleTemporaryDirectoryContents")]
+		IncompatibleTemporaryDirectoryContents,
+	}
+
+	[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+	public enum AVExternalStorageDeviceReasonNotRecommendedForCaptureUse {
+		[Field ("AVExternalStorageDeviceReasonNotRecommendedForCaptureUseEncrypted")]
+		Encrypted,
+
+		[Field ("AVExternalStorageDeviceReasonNotRecommendedForCaptureUseUnsupportedFileSystem")]
+		UnsupportedFileSystem,
+
+		[Field ("AVExternalStorageDeviceReasonNotRecommendedForCaptureUseSlowWritingSpeed")]
+		SlowWritingSpeed,
+
+		[Field ("AVExternalStorageDeviceReasonNotRecommendedForCaptureUseUnknownWritingSpeed")]
+		UnknownWritingSpeed,
+	}
+
 	/// <summary>Constants for known video codecs.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (15, 0)]
@@ -1680,6 +1719,9 @@ namespace AVFoundation {
 		DepthModuleTemperature = (1 << 2),
 		[iOS (17, 0), MacCatalyst (17, 0)]
 		CameraTemperature = (1uL << 3),
+		/// <summary>Indicates that the system is 30 seconds away from unexpected power off.</summary>
+		[iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		SystemStress = (1uL << 4),
 	}
 
 	[NoMac]
@@ -1704,6 +1746,43 @@ namespace AVFoundation {
 	public enum AVAudioSessionActivationOptions : ulong {
 		/// <summary>To be added.</summary>
 		None = 0x0,
+	}
+
+	[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+	[Flags]
+	[Native]
+	public enum AVAudioSessionDeactivationOptions : ulong {
+		/// <summary>No options.</summary>
+		None = 0,
+		/// <summary>Notifies other apps that were interrupted that the interruption has ended and they may resume playback.</summary>
+		[NoMac]
+		NotifyOthersOnDeactivation = 1uL << 0,
+	}
+
+	[NoMac]
+	[iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+	[Native]
+	public enum AVAudioSessionDeactivationSource : long {
+		/// <summary>The app requested deactivation.</summary>
+		App = 1,
+		/// <summary>The system deactivated the session.</summary>
+		System = 2,
+	}
+
+	[NoMac]
+	[iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+	[Native]
+	public enum AVAudioSessionResumptionRecommendation : long {
+		/// <summary>The system recommends not resuming.</summary>
+		ShouldNotResume = 0,
+		/// <summary>The system recommends resuming.</summary>
+		ShouldResume = 1,
+	}
+
+	[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+	public enum AVAudioMixInputParametersTrackID : int {
+		/// <summary>Indicates that the input parameters should be applied to the mix of all audio tracks rather than to a single specific audio track.</summary>
+		TrackMix = 0,
 	}
 
 	[Native]
@@ -2352,5 +2431,19 @@ namespace AVFoundation {
 		SourceUnavailable = 5,
 		SourceUnsupported = 6,
 		NotRequired = 7,
+	}
+
+	[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+	[Native]
+	public enum AVMetricPlaybackMode : long {
+		Local = 0,
+		AirPlayVideo = 1,
+	}
+
+	[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+	[Native]
+	public enum AVCaptureBroadcastVideoOutputDroppedFrameReplacementPolicy : long {
+		RepeatPreviousFrame = 0,
+		BlackFrame = 1,
 	}
 }

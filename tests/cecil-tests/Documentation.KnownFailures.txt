@@ -1207,6 +1207,11 @@ F:AVFoundation.AVAssetExportSessionPreset.MvHevc1440x1440
 F:AVFoundation.AVAssetExportSessionPreset.MvHevc4320x4320
 F:AVFoundation.AVAssetExportSessionPreset.MvHevc7680x7680
 F:AVFoundation.AVAssetExportSessionPreset.MvHevc960x960
+F:AVFoundation.AVAssetExportSessionResumptionFailureReason.IncompatiblePreset
+F:AVFoundation.AVAssetExportSessionResumptionFailureReason.IncompatibleSessionSettings
+F:AVFoundation.AVAssetExportSessionResumptionFailureReason.IncompatibleTemporaryDirectoryContents
+F:AVFoundation.AVAssetExportSessionResumptionFailureReason.TemporaryDirectoryDoesNotExist
+F:AVFoundation.AVAssetExportSessionResumptionFailureReason.UnsupportedForPresetOnPlatform
 F:AVFoundation.AVAssetImageGeneratorDynamicRangePolicy.DynamicRangePolicyForceSdr
 F:AVFoundation.AVAssetImageGeneratorDynamicRangePolicy.DynamicRangePolicyMatchSource
 F:AVFoundation.AVAssetPlaybackConfigurationOption.AppleImmersiveVideo
@@ -1369,6 +1374,8 @@ F:AVFoundation.AVCaptureAspectRatio.NineBySixteen9x16
 F:AVFoundation.AVCaptureAspectRatio.OneByOne1x1
 F:AVFoundation.AVCaptureAspectRatio.SixteenByNine16x9
 F:AVFoundation.AVCaptureAspectRatio.ThreeByFour3x4
+F:AVFoundation.AVCaptureBroadcastVideoOutputDroppedFrameReplacementPolicy.BlackFrame
+F:AVFoundation.AVCaptureBroadcastVideoOutputDroppedFrameReplacementPolicy.RepeatPreviousFrame
 F:AVFoundation.AVCaptureCameraLensSmudgeDetectionStatus.Disabled
 F:AVFoundation.AVCaptureCameraLensSmudgeDetectionStatus.Smudged
 F:AVFoundation.AVCaptureCameraLensSmudgeDetectionStatus.SmudgeNotDetected
@@ -1470,8 +1477,11 @@ F:AVFoundation.AVError.ContentKeyRequestPlaybackDestinationDoesNotSupportDeviceI
 F:AVFoundation.AVError.CreateContentKeyRequestFailed
 F:AVFoundation.AVError.EncodeFailed
 F:AVFoundation.AVError.ExternalPlaybackNotSupportedForAsset
+F:AVFoundation.AVError.ExternalSyncDeviceFrequencyHigherThanSpecified
+F:AVFoundation.AVError.ExternalSyncDeviceFrequencyLowerThanSpecified
 F:AVFoundation.AVError.FailedToLoadSampleData
 F:AVFoundation.AVError.FollowExternalSyncDeviceTimedOut
+F:AVFoundation.AVError.FollowExternalSyncFailed
 F:AVFoundation.AVError.IncorrectlyConfigured
 F:AVFoundation.AVError.InvalidSampleCursor
 F:AVFoundation.AVError.MediaExtensionConflict
@@ -1489,6 +1499,10 @@ F:AVFoundation.AVError.UnsupportedDeviceActiveFormat
 F:AVFoundation.AVExternalContentProtectionStatus.Insufficient
 F:AVFoundation.AVExternalContentProtectionStatus.Pending
 F:AVFoundation.AVExternalContentProtectionStatus.Sufficient
+F:AVFoundation.AVExternalStorageDeviceReasonNotRecommendedForCaptureUse.Encrypted
+F:AVFoundation.AVExternalStorageDeviceReasonNotRecommendedForCaptureUse.SlowWritingSpeed
+F:AVFoundation.AVExternalStorageDeviceReasonNotRecommendedForCaptureUse.UnknownWritingSpeed
+F:AVFoundation.AVExternalStorageDeviceReasonNotRecommendedForCaptureUse.UnsupportedFileSystem
 F:AVFoundation.AVExternalSyncDeviceStatus.ActiveSync
 F:AVFoundation.AVExternalSyncDeviceStatus.Calibrating
 F:AVFoundation.AVExternalSyncDeviceStatus.FreeRunSync
@@ -1527,6 +1541,8 @@ F:AVFoundation.AVMetadataObjectType.HumanFullBody
 F:AVFoundation.AVMetadataObjectType.MicroPdf417Code
 F:AVFoundation.AVMetadataObjectType.MicroQRCode
 F:AVFoundation.AVMetadataObjectType.SalientObject
+F:AVFoundation.AVMetricPlaybackMode.AirPlayVideo
+F:AVFoundation.AVMetricPlaybackMode.Local
 F:AVFoundation.AVMidiControlChangeMessageType.AllNotesOff
 F:AVFoundation.AVMidiControlChangeMessageType.AllSoundOff
 F:AVFoundation.AVMidiControlChangeMessageType.AttackTime
@@ -13055,6 +13071,8 @@ M:AVFoundation.AVAssetDownloadUrlSession.GetAssetDownloadTask(AVFoundation.AVUrl
 M:AVFoundation.AVAssetDownloadUrlSession.GetAssetDownloadTask(AVFoundation.AVUrlAsset,System.String,Foundation.NSData,Foundation.NSDictionary)
 M:AVFoundation.AVAssetExportSession.#ctor(AVFoundation.AVAsset,System.String)
 M:AVFoundation.AVAssetExportSession.CancelExport
+M:AVFoundation.AVAssetExportSession.ConfigureForResumableExport(System.Action{AVFoundation.AVAssetExportSessionResumptionState})
+M:AVFoundation.AVAssetExportSession.ConfigureForResumableExportAsync
 M:AVFoundation.AVAssetExportSession.DetermineCompatibilityOfExportPreset(System.String,AVFoundation.AVAsset,System.String,System.Action{System.Boolean})
 M:AVFoundation.AVAssetExportSession.DetermineCompatibleFileTypes(System.Action{System.String[]})
 M:AVFoundation.AVAssetExportSession.EstimateMaximumDuration(System.Action{CoreMedia.CMTime,Foundation.NSError})
@@ -13121,6 +13139,8 @@ M:AVFoundation.AVAssetTrack.MakeSampleCursorAtLastSampleInDecodeOrder
 M:AVFoundation.AVAssetTrack.MetadataForFormat(System.String)
 M:AVFoundation.AVAssetTrack.SamplePresentationTimeForTrackTime(CoreMedia.CMTime)
 M:AVFoundation.AVAssetTrack.SegmentForTrackTime(CoreMedia.CMTime)
+M:AVFoundation.AVAssetTrackPlan.#ctor(AVFoundation.AVMediaTypes,AVFoundation.AVPlannedSegmentConfiguration[],System.Int32)
+M:AVFoundation.AVAssetTrackPlan.#ctor(System.String,AVFoundation.AVPlannedSegmentConfiguration[],System.Int32)
 M:AVFoundation.AVAssetVariantAudioAttributes.GetRenditionSpecificAttributes(AVFoundation.AVMediaSelectionOption)
 M:AVFoundation.AVAssetVariantQualifier.Create(AVFoundation.AVAssetVariant)
 M:AVFoundation.AVAssetVariantQualifier.Create(Foundation.NSPredicate)
@@ -13134,6 +13154,8 @@ M:AVFoundation.AVAssetVariantQualifier.GetPredicateForDownmixAudio(System.Boolea
 M:AVFoundation.AVAssetVariantQualifier.GetPredicateForDownmixAudio(System.Boolean)
 M:AVFoundation.AVAssetVariantQualifier.GetPredicateForImmersiveAudio(System.Boolean,AVFoundation.AVMediaSelectionOption)
 M:AVFoundation.AVAssetVariantQualifier.GetPredicateForImmersiveAudio(System.Boolean)
+M:AVFoundation.AVAssetVideoTrackPlan.#ctor(AVFoundation.AVVideoCodecType,VideoToolbox.VTVideoEncoderSpecification,AVFoundation.AVMediaTypes,AVFoundation.AVPlannedSegmentConfiguration[],System.Int32)
+M:AVFoundation.AVAssetVideoTrackPlan.#ctor(System.String,Foundation.NSDictionary,System.String,AVFoundation.AVPlannedSegmentConfiguration[],System.Int32)
 M:AVFoundation.AVAssetWriter.#ctor(Foundation.NSUrl,System.String,Foundation.NSError@)
 M:AVFoundation.AVAssetWriter.#ctor(UniformTypeIdentifiers.UTType)
 M:AVFoundation.AVAssetWriter.AddInput(AVFoundation.AVAssetWriterInput)
@@ -13179,6 +13201,16 @@ M:AVFoundation.AVAssetWriterInputPixelBufferAdaptor.FromInput(AVFoundation.AVAss
 M:AVFoundation.AVAssetWriterInputTaggedPixelBufferGroupAdaptor.#ctor(AVFoundation.AVAssetWriterInput,Foundation.NSDictionary{Foundation.NSString,Foundation.NSObject})
 M:AVFoundation.AVAssetWriterInputTaggedPixelBufferGroupAdaptor.Append(CoreMedia.CMTaggedBufferGroup,CoreMedia.CMTime)
 M:AVFoundation.AVAssetWriterInputTaggedPixelBufferGroupAdaptor.Create(AVFoundation.AVAssetWriterInput,Foundation.NSDictionary{Foundation.NSString,Foundation.NSObject})
+M:AVFoundation.AVAssetWritingPlanner.#ctor(Foundation.NSUrl)
+M:AVFoundation.AVAssetWritingPlanner.ExecutePlan(AVFoundation.AVAssetWritingPlannerCompletionHandler)
+M:AVFoundation.AVAssetWritingPlanner.ExecutePlan(CoreFoundation.DispatchQueue,AVFoundation.AVAssetWritingPlannerCompletionHandler)
+M:AVFoundation.AVAssetWritingPlanner.ExecutePlanAsync
+M:AVFoundation.AVAssetWritingPlanner.ExecutePlanAsync(CoreFoundation.DispatchQueue)
+M:AVFoundation.AVAssetWritingPlanner.GetSegmentBoundaryGuidelines(AVFoundation.AVVideoCodecType,VideoToolbox.VTVideoEncoderSpecification)
+M:AVFoundation.AVAssetWritingPlanner.GetSegmentBoundaryGuidelines(System.String,Foundation.NSDictionary)
+M:AVFoundation.AVAssetWritingPlanner.GetSegmentBoundaryRecommendations(AVFoundation.AVAssetTrack,CoreMedia.CMTime,System.IntPtr)
+M:AVFoundation.AVAssetWritingPlanner.PlanTrack(AVFoundation.AVAssetTrackPlan,AVFoundation.AVAssetWritingPlannerSegmentCallback)
+M:AVFoundation.AVAssetWritingPlannerProgress.GetProgress(System.Int32)
 M:AVFoundation.AVAsynchronousCIImageFilteringRequest.Finish(CoreImage.CIImage,CoreImage.CIContext)
 M:AVFoundation.AVAsynchronousCIImageFilteringRequest.Finish(Foundation.NSError)
 M:AVFoundation.AVAsynchronousKeyValueLoading.GetStatusOfValue(System.String,Foundation.NSError@)
@@ -13210,6 +13242,11 @@ M:AVFoundation.AVAudioConnectionPoint.Dispose(System.Boolean)
 M:AVFoundation.AVAudioConverter.Reset
 M:AVFoundation.AVAudioConverterPrimeInfo.op_Equality(AVFoundation.AVAudioConverterPrimeInfo,AVFoundation.AVAudioConverterPrimeInfo)
 M:AVFoundation.AVAudioConverterPrimeInfo.op_Inequality(AVFoundation.AVAudioConverterPrimeInfo,AVFoundation.AVAudioConverterPrimeInfo)
+M:AVFoundation.AVAudioEngine.Connect(AVFoundation.AVAudioNode,AVFoundation.AVAudioConnectionPoint[],System.UIntPtr,AVFoundation.AVAudioFormat,Foundation.NSError@)
+M:AVFoundation.AVAudioEngine.Connect(AVFoundation.AVAudioNode,AVFoundation.AVAudioNode,AVFoundation.AVAudioFormat,Foundation.NSError@)
+M:AVFoundation.AVAudioEngine.Connect(AVFoundation.AVAudioNode,AVFoundation.AVAudioNode,System.UIntPtr,System.UIntPtr,AVFoundation.AVAudioFormat,Foundation.NSError@)
+M:AVFoundation.AVAudioEngine.ConnectMidi(AVFoundation.AVAudioNode,AVFoundation.AVAudioNode,AVFoundation.AVAudioFormat,AVFoundation.AVMidiEventListBlock)
+M:AVFoundation.AVAudioEngine.ConnectMidi(AVFoundation.AVAudioNode,AVFoundation.AVAudioNode[],AVFoundation.AVAudioFormat,AVFoundation.AVMidiEventListBlock)
 M:AVFoundation.AVAudioEngine.Pause
 M:AVFoundation.AVAudioEngine.Reset
 M:AVFoundation.AVAudioEnvironmentNode.#ctor
@@ -13221,15 +13258,18 @@ M:AVFoundation.AVAudioFormat.#ctor(AVFoundation.AudioSettings)
 M:AVFoundation.AVAudioFormat.#ctor(AVFoundation.AVAudioCommonFormat,System.Double,System.Boolean,AVFoundation.AVAudioChannelLayout)
 M:AVFoundation.AVAudioFormat.#ctor(AVFoundation.AVAudioCommonFormat,System.Double,System.UInt32,System.Boolean)
 M:AVFoundation.AVAudioFormat.#ctor(CoreMedia.CMAudioFormatDescription)
+M:AVFoundation.AVAudioFormat.#ctor(CoreMedia.CMFormatDescription)
 M:AVFoundation.AVAudioFormat.#ctor(Foundation.NSDictionary)
 M:AVFoundation.AVAudioFormat.#ctor(System.Double,AVFoundation.AVAudioChannelLayout)
 M:AVFoundation.AVAudioFormat.#ctor(System.Double,System.UInt32)
 M:AVFoundation.AVAudioFormat.op_Equality(AVFoundation.AVAudioFormat,AVFoundation.AVAudioFormat)
 M:AVFoundation.AVAudioFormat.op_Inequality(AVFoundation.AVAudioFormat,AVFoundation.AVAudioFormat)
 M:AVFoundation.AVAudioInputNode.SetMutedSpeechActivityEventListener(AVFoundation.AVAudioInputNodeMutedSpeechEventListener)
+M:AVFoundation.AVAudioInputNode.SetRealtimeSafeManualRenderingInputPcmFormat(AVFoundation.AVAudioFormat,AVFoundation.AVAudioIONodeInputBlock)
 M:AVFoundation.AVAudioIONode.SetVoiceProcessingEnabled(System.Boolean,Foundation.NSError@)
 M:AVFoundation.AVAudioMixerNode.#ctor
 M:AVFoundation.AVAudioMixInputParameters.GetVolumeRamp(CoreMedia.CMTime,System.Single@,System.Single@,CoreMedia.CMTimeRange@)
+M:AVFoundation.AVAudioNode.InstallTapOnBus(System.UIntPtr,System.UInt32,AVFoundation.AVAudioFormat,Foundation.NSError@,AVFoundation.AVAudioNodeTapBlock)
 M:AVFoundation.AVAudioNode.Reset
 M:AVFoundation.AVAudioPcmBuffer.#ctor(AVFoundation.AVAudioFormat,AudioToolbox.AudioBuffers,System.Action{AudioToolbox.AudioBuffers})
 M:AVFoundation.AVAudioPlayer.add_BeginInterruption(System.EventHandler)
@@ -13250,6 +13290,8 @@ M:AVFoundation.AVAudioPlayerDelegate.EndInterruption(AVFoundation.AVAudioPlayer,
 M:AVFoundation.AVAudioPlayerNode.#ctor
 M:AVFoundation.AVAudioPlayerNode.Pause
 M:AVFoundation.AVAudioPlayerNode.Play
+M:AVFoundation.AVAudioPlayerNode.Play(Foundation.NSError@)
+M:AVFoundation.AVAudioPlayerNode.PlayAtTime(AVFoundation.AVAudioTime,Foundation.NSError@)
 M:AVFoundation.AVAudioRecorder.add_BeginInterruption(System.EventHandler)
 M:AVFoundation.AVAudioRecorder.add_EncoderError(System.EventHandler{AVFoundation.AVErrorEventArgs})
 M:AVFoundation.AVAudioRecorder.add_EndInterruption(System.EventHandler)
@@ -13277,6 +13319,8 @@ M:AVFoundation.AVAudioSession.add_InputAvailabilityChanged(System.EventHandler{A
 M:AVFoundation.AVAudioSession.add_InputChannelsChanged(System.EventHandler{AVFoundation.AVChannelsEventArgs})
 M:AVFoundation.AVAudioSession.add_OutputChannelsChanged(System.EventHandler{AVFoundation.AVChannelsEventArgs})
 M:AVFoundation.AVAudioSession.add_SampleRateChanged(System.EventHandler{AVFoundation.AVSampleRateEventArgs})
+M:AVFoundation.AVAudioSession.Deactivate(AVFoundation.AVAudioSessionDeactivationOptions,System.Action{System.Boolean,Foundation.NSError})
+M:AVFoundation.AVAudioSession.DeactivateAsync(AVFoundation.AVAudioSessionDeactivationOptions)
 M:AVFoundation.AVAudioSession.Dispose(System.Boolean)
 M:AVFoundation.AVAudioSession.remove_BeginInterruption(System.EventHandler)
 M:AVFoundation.AVAudioSession.remove_CategoryChanged(System.EventHandler{AVFoundation.AVCategoryEventArgs})
@@ -13340,6 +13384,10 @@ M:AVFoundation.AVCaptureAudioDataOutput.SetSampleBufferDelegate(AVFoundation.IAV
 M:AVFoundation.AVCaptureAudioFileOutput.AvailableOutputFileTypes
 M:AVFoundation.AVCaptureAudioFileOutput.StartRecording(Foundation.NSUrl,System.String,AVFoundation.IAVCaptureFileOutputRecordingDelegate)
 M:AVFoundation.AVCaptureAutoExposureBracketedStillImageSettings.Create(System.Single)
+M:AVFoundation.AVCaptureBroadcastVideoOutput.Dispose(System.Boolean)
+M:AVFoundation.AVCaptureBroadcastVideoOutput.ResetFrameBuffer
+M:AVFoundation.AVCaptureBroadcastVideoOutput.SetDelegate(AVFoundation.IAVCaptureBroadcastVideoOutputDelegate,CoreFoundation.DispatchQueue)
+M:AVFoundation.AVCaptureBroadcastVideoOutputDelegate.DidDropVideoFrame(AVFoundation.AVCaptureBroadcastVideoOutput,CoreMedia.CMTime,AVFoundation.AVCaptureConnection)
 M:AVFoundation.AVCaptureConnection.#ctor(AVFoundation.AVCaptureInputPort,AVFoundation.AVCaptureVideoPreviewLayer)
 M:AVFoundation.AVCaptureConnection.#ctor(AVFoundation.AVCaptureInputPort[],AVFoundation.AVCaptureOutput)
 M:AVFoundation.AVCaptureConnection.FromInputPort(AVFoundation.AVCaptureInputPort,AVFoundation.AVCaptureVideoPreviewLayer)
@@ -13404,6 +13452,7 @@ M:AVFoundation.AVCaptureDeviceInput.IsMultichannelAudioModeSupported(AVFoundatio
 M:AVFoundation.AVCaptureDeviceInput.UnfollowExternalSyncDevice
 M:AVFoundation.AVCaptureDeviceRotationCoordinator.#ctor(AVFoundation.AVCaptureDevice,CoreAnimation.CALayer)
 M:AVFoundation.AVCaptureDeviceRotationCoordinator.Dispose(System.Boolean)
+M:AVFoundation.AVCaptureDeviceRotationCoordinator.GetVideoRotationAngleRelativeToDeviceOrientation(AVFoundation.AVCaptureVideoOrientation)
 M:AVFoundation.AVCaptureExternalDisplayConfigurator.#ctor(AVFoundation.AVCaptureDevice,CoreAnimation.CALayer,AVFoundation.AVCaptureExternalDisplayConfiguration)
 M:AVFoundation.AVCaptureExternalDisplayConfigurator.Dispose(System.Boolean)
 M:AVFoundation.AVCaptureExternalDisplayConfigurator.Stop
@@ -13558,6 +13607,8 @@ M:AVFoundation.AVCompositionTrackSegment.FromUrl(Foundation.NSUrl,System.Int32,C
 M:AVFoundation.AVContentKey.Revoke
 M:AVFoundation.AVContentKeyRecipient_Extensions.DidProvideContentKey(AVFoundation.IAVContentKeyRecipient,AVFoundation.AVContentKeySession,AVFoundation.AVContentKey)
 M:AVFoundation.AVContentKeyRequest.Dispose(System.Boolean)
+M:AVFoundation.AVContentKeyRequest.MakeOptionalStreamingContentKeyRequestData(Foundation.NSData,Foundation.NSData,Foundation.NSDictionary{Foundation.NSString,Foundation.NSObject},System.Action{Foundation.NSData,Foundation.NSError})
+M:AVFoundation.AVContentKeyRequest.MakeOptionalStreamingContentKeyRequestDataAsync(Foundation.NSData,Foundation.NSData,Foundation.NSDictionary{Foundation.NSString,Foundation.NSObject})
 M:AVFoundation.AVContentKeyRequest.MakeStreamingContentKeyRequestData(Foundation.NSData,Foundation.NSData,Foundation.NSDictionary{Foundation.NSString,Foundation.NSObject},System.Action{Foundation.NSData,Foundation.NSError})
 M:AVFoundation.AVContentKeyRequest.Process(AVFoundation.AVContentKeyResponse)
 M:AVFoundation.AVContentKeyRequest.Process(Foundation.NSError)
@@ -13802,6 +13853,15 @@ M:AVFoundation.AVPersistableContentKeyRequest.GetPersistableContentKey(Foundatio
 M:AVFoundation.AVPixelAspectRatio.#ctor(System.IntPtr,System.IntPtr)
 M:AVFoundation.AVPixelAspectRatio.op_Equality(AVFoundation.AVPixelAspectRatio,AVFoundation.AVPixelAspectRatio)
 M:AVFoundation.AVPixelAspectRatio.op_Inequality(AVFoundation.AVPixelAspectRatio,AVFoundation.AVPixelAspectRatio)
+M:AVFoundation.AVPlannedSegmentConfiguration.#ctor(CoreMedia.CMTime)
+M:AVFoundation.AVPlannedSegmentWritingRequest.Cancel
+M:AVFoundation.AVPlannedSegmentWritingRequest.Finish
+M:AVFoundation.AVPlannedSegmentWritingRequest.FinishWithClientState(Foundation.NSData)
+M:AVFoundation.AVPlannedSegmentWritingRequest.FinishWithError(Foundation.NSError)
+M:AVFoundation.AVPlannedVideoSegmentConfiguration.#ctor(System.IntPtr,CoreMedia.CMTime)
+M:AVFoundation.AVPlannedVideoSegmentWritingRequest.GetResumableAssetWriterInput(AVFoundation.AVMediaTypes,AVFoundation.AudioSettings,CoreMedia.CMFormatDescription,Foundation.NSError@)
+M:AVFoundation.AVPlannedVideoSegmentWritingRequest.GetResumableAssetWriterInput(AVFoundation.AVMediaTypes,AVFoundation.AVVideoSettingsCompressed,CoreMedia.CMFormatDescription,Foundation.NSError@)
+M:AVFoundation.AVPlannedVideoSegmentWritingRequest.GetResumableAssetWriterInput(System.String,Foundation.NSDictionary,CoreMedia.CMFormatDescription,Foundation.NSError@)
 M:AVFoundation.AVPlaybackCoordinator.BeginSuspension(System.String)
 M:AVFoundation.AVPlaybackCoordinator.GetExpectedItemTime(CoreMedia.CMTime)
 M:AVFoundation.AVPlaybackCoordinator.GetParticipantLimit(System.String)
@@ -13831,6 +13891,8 @@ M:AVFoundation.AVPlayer.Seek(CoreMedia.CMTime,CoreMedia.CMTime,CoreMedia.CMTime)
 M:AVFoundation.AVPlayer.Seek(CoreMedia.CMTime)
 M:AVFoundation.AVPlayer.Seek(Foundation.NSDate,AVFoundation.AVCompletion)
 M:AVFoundation.AVPlayer.Seek(Foundation.NSDate)
+M:AVFoundation.AVPlayer.SetDisconnectedFromSystemAudio(System.Boolean,System.Action)
+M:AVFoundation.AVPlayer.SetDisconnectedFromSystemAudioAsync(System.Boolean)
 M:AVFoundation.AVPlayer.SetMediaSelectionCriteria(AVFoundation.AVPlayerMediaSelectionCriteria,Foundation.NSString)
 M:AVFoundation.AVPlayer.SetRate(System.Single,CoreMedia.CMTime,CoreMedia.CMTime)
 M:AVFoundation.AVPlayerInterstitialEvent.Create(AVFoundation.AVPlayerItem,CoreMedia.CMTime)
@@ -13859,10 +13921,15 @@ M:AVFoundation.AVPlayerItem.AddOutput(AVFoundation.AVPlayerItemOutput)
 M:AVFoundation.AVPlayerItem.CancelPendingSeeks
 M:AVFoundation.AVPlayerItem.Copy
 M:AVFoundation.AVPlayerItem.Dispose(System.Boolean)
+M:AVFoundation.AVPlayerItem.FetchAccessLog(System.Action{AVFoundation.AVPlayerItemAccessLog})
+M:AVFoundation.AVPlayerItem.FetchAccessLogAsync
+M:AVFoundation.AVPlayerItem.FetchErrorLog(System.Action{AVFoundation.AVPlayerItemErrorLog})
+M:AVFoundation.AVPlayerItem.FetchErrorLogAsync
 M:AVFoundation.AVPlayerItem.FromAsset(AVFoundation.AVAsset,Foundation.NSString[])
 M:AVFoundation.AVPlayerItem.FromAsset(AVFoundation.AVAsset)
 M:AVFoundation.AVPlayerItem.FromUrl(Foundation.NSUrl)
 M:AVFoundation.AVPlayerItem.GetEffectiveMediaPresentationSettings(AVFoundation.AVMediaSelectionGroup)
+M:AVFoundation.AVPlayerItem.GetSelectableMediaSelectionOptions(AVFoundation.AVMediaSelectionGroup)
 M:AVFoundation.AVPlayerItem.GetSelectedMediaPresentationLanguage(AVFoundation.AVMediaSelectionGroup)
 M:AVFoundation.AVPlayerItem.GetSelectedMediaPresentationSettings(AVFoundation.AVMediaSelectionGroup)
 M:AVFoundation.AVPlayerItem.RemoveMediaDataCollector(AVFoundation.AVPlayerItemMediaDataCollector)
@@ -13901,6 +13968,12 @@ M:AVFoundation.AVPlayerItemRenderedLegibleOutput.#ctor(CoreGraphics.CGSize)
 M:AVFoundation.AVPlayerItemRenderedLegibleOutput.Dispose(System.Boolean)
 M:AVFoundation.AVPlayerItemRenderedLegibleOutput.SetDelegate(AVFoundation.IAVPlayerItemRenderedLegibleOutputPushDelegate,CoreFoundation.DispatchQueue)
 M:AVFoundation.AVPlayerItemRenderedLegibleOutputPushDelegate.DidOutputRenderedCaptionImages(AVFoundation.AVPlayerItemRenderedLegibleOutput,AVFoundation.AVRenderedCaptionImage[],CoreMedia.CMTime)
+M:AVFoundation.AVPlayerItemSampleBufferOutput.#ctor(AVFoundation.AVPlayerItemSampleBufferOutputConfiguration)
+M:AVFoundation.AVPlayerItemSampleBufferOutput.CopyNextSampleBuffer
+M:AVFoundation.AVPlayerItemSampleBufferOutput.Dispose(System.Boolean)
+M:AVFoundation.AVPlayerItemSampleBufferOutput.SetDelegate(AVFoundation.IAVPlayerItemSampleBufferOutputDelegate,CoreFoundation.DispatchQueue)
+M:AVFoundation.AVPlayerItemSampleBufferOutputDelegate.OutputMediaDataAvailable(AVFoundation.AVPlayerItemSampleBufferOutput)
+M:AVFoundation.AVPlayerItemSampleBufferOutputDelegate.OutputSequenceWasRestarted(AVFoundation.AVPlayerItemSampleBufferOutput)
 M:AVFoundation.AVPlayerItemVideoOutput.Dispose(System.Boolean)
 M:AVFoundation.AVPlayerItemVideoOutput.HasNewPixelBufferForItemTime(CoreMedia.CMTime)
 M:AVFoundation.AVPlayerItemVideoOutput.RequestNotificationOfMediaDataChange(System.Double)
@@ -13930,6 +14003,7 @@ M:AVFoundation.AVPortraitEffectsMatte.Create(CoreVideo.CVPixelBuffer,Foundation.
 M:AVFoundation.AVPortraitEffectsMatte.Create(Foundation.NSDictionary,Foundation.NSError@)
 M:AVFoundation.AVPortraitEffectsMatte.Create(ImageIO.CGImagePropertyOrientation)
 M:AVFoundation.AVPortraitEffectsMatte.GetDictionaryRepresentation(System.String@)
+M:AVFoundation.AVProVideoStorage.OpenSettings
 M:AVFoundation.AVQueuePlayer.#ctor(AVFoundation.AVPlayerItem[])
 M:AVFoundation.AVQueuePlayer.AdvanceToNextItem
 M:AVFoundation.AVQueuePlayer.CanInsert(AVFoundation.AVPlayerItem,AVFoundation.AVPlayerItem)
@@ -14061,6 +14135,7 @@ M:AVFoundation.IAVAssetWriterDelegate.DidOutputSegmentData(AVFoundation.AVAssetW
 M:AVFoundation.IAVAsynchronousKeyValueLoading.GetStatusOfValue(System.String,Foundation.NSError@)
 M:AVFoundation.IAVAudioPlayerDelegate.EndInterruption(AVFoundation.AVAudioPlayer,AVFoundation.AVAudioSessionInterruptionOptions)
 M:AVFoundation.IAVAudioRecorderDelegate.EndInterruption(AVFoundation.AVAudioRecorder,AVFoundation.AVAudioSessionInterruptionOptions)
+M:AVFoundation.IAVCaptureBroadcastVideoOutputDelegate.DidDropVideoFrame(AVFoundation.AVCaptureBroadcastVideoOutput,CoreMedia.CMTime,AVFoundation.AVCaptureConnection)
 M:AVFoundation.IAVCaptureFileOutputRecordingDelegate.DidStartRecording(AVFoundation.AVCaptureFileOutput,Foundation.NSUrl,CoreMedia.CMTime,Foundation.NSObject[])
 M:AVFoundation.IAVCapturePhotoCaptureDelegate.DidFinishCapturingDeferredPhotoProxy(AVFoundation.AVCapturePhotoOutput,AVFoundation.AVCaptureDeferredPhotoProxy,Foundation.NSError)
 M:AVFoundation.IAVCapturePhotoFileDataRepresentationCustomizer.GetReplacementAppleProRawCompressionSettings(AVFoundation.AVCapturePhoto,Foundation.NSDictionary{Foundation.NSString,Foundation.NSObject},System.IntPtr)
@@ -14086,6 +14161,8 @@ M:AVFoundation.IAVPlaybackCoordinatorPlaybackControlDelegate.DidIssuePauseComman
 M:AVFoundation.IAVPlaybackCoordinatorPlaybackControlDelegate.DidIssuePlayCommand(AVFoundation.AVDelegatingPlaybackCoordinator,AVFoundation.AVDelegatingPlaybackCoordinatorPlayCommand,System.Action)
 M:AVFoundation.IAVPlaybackCoordinatorPlaybackControlDelegate.DidIssueSeekCommand(AVFoundation.AVDelegatingPlaybackCoordinator,AVFoundation.AVDelegatingPlaybackCoordinatorSeekCommand,System.Action)
 M:AVFoundation.IAVPlayerItemRenderedLegibleOutputPushDelegate.DidOutputRenderedCaptionImages(AVFoundation.AVPlayerItemRenderedLegibleOutput,AVFoundation.AVRenderedCaptionImage[],CoreMedia.CMTime)
+M:AVFoundation.IAVPlayerItemSampleBufferOutputDelegate.OutputMediaDataAvailable(AVFoundation.AVPlayerItemSampleBufferOutput)
+M:AVFoundation.IAVPlayerItemSampleBufferOutputDelegate.OutputSequenceWasRestarted(AVFoundation.AVPlayerItemSampleBufferOutput)
 M:AVFoundation.IAVPlayerPlaybackCoordinatorDelegate.GetIdentifier(AVFoundation.AVPlayerPlaybackCoordinator,AVFoundation.AVPlayerItem)
 M:AVFoundation.IAVPlayerPlaybackCoordinatorDelegate.GetInterstitialTimeRanges(AVFoundation.AVPlayerPlaybackCoordinator,AVFoundation.AVPlayerItem)
 M:AVFoundation.IAVSpeechSynthesizerDelegate.WillSpeakMarker(AVFoundation.AVSpeechSynthesizer,AVFoundation.AVSpeechSynthesisMarker,AVFoundation.AVSpeechUtterance)
@@ -35939,6 +36016,7 @@ P:AVFoundation.AVAsset.AvailableMediaCharacteristicsWithMediaSelectionOptions
 P:AVFoundation.AVAsset.AvailableMetadataFormats
 P:AVFoundation.AVAsset.CanContainFragments
 P:AVFoundation.AVAsset.CommonMetadata
+P:AVFoundation.AVAsset.ConstituentFileUrls
 P:AVFoundation.AVAsset.ContainsFragments
 P:AVFoundation.AVAsset.CreationDate
 P:AVFoundation.AVAsset.Duration
@@ -35998,6 +36076,9 @@ P:AVFoundation.AVAssetExportSession.Status
 P:AVFoundation.AVAssetExportSession.SupportedFileTypes
 P:AVFoundation.AVAssetExportSession.TimeRange
 P:AVFoundation.AVAssetExportSession.VideoComposition
+P:AVFoundation.AVAssetExportSessionResumptionState.ConfigurationFailureReason
+P:AVFoundation.AVAssetExportSessionResumptionState.ResumingFromPreviousState
+P:AVFoundation.AVAssetExportSessionResumptionState.ResumptionConfigured
 P:AVFoundation.AVAssetImageGenerator.ApertureMode
 P:AVFoundation.AVAssetImageGenerator.AppliesPreferredTrackTransform
 P:AVFoundation.AVAssetImageGenerator.Asset
@@ -36086,6 +36167,9 @@ P:AVFoundation.AVAssetTrack.TimeRange
 P:AVFoundation.AVAssetTrack.TotalSampleDataLength
 P:AVFoundation.AVAssetTrack.TrackID
 P:AVFoundation.AVAssetTrackGroup.TrackIDs
+P:AVFoundation.AVAssetTrackPlan.AssemblyTrackId
+P:AVFoundation.AVAssetTrackPlan.MediaType
+P:AVFoundation.AVAssetTrackPlan.SegmentConfigurations
 P:AVFoundation.AVAssetTrackSegment.TimeMapping
 P:AVFoundation.AVAssetVariant.AudioAttributes
 P:AVFoundation.AVAssetVariant.AverageBitRate
@@ -36104,6 +36188,7 @@ P:AVFoundation.AVAssetVariantVideoAttributes.VideoLayoutAttributes
 P:AVFoundation.AVAssetVariantVideoAttributes.VideoRange
 P:AVFoundation.AVAssetVariantVideoLayoutAttributes.ProjectionType
 P:AVFoundation.AVAssetVariantVideoLayoutAttributes.StereoViewComponents
+P:AVFoundation.AVAssetVideoTrackPlan.VideoCodecType
 P:AVFoundation.AVAssetWriter.AvailableMediaTypes
 P:AVFoundation.AVAssetWriter.Delegate
 P:AVFoundation.AVAssetWriter.DirectoryForTemporaryFiles
@@ -36113,6 +36198,7 @@ P:AVFoundation.AVAssetWriter.InitialMovieFragmentSequenceNumber
 P:AVFoundation.AVAssetWriter.InitialSegmentStartTime
 P:AVFoundation.AVAssetWriter.InputGroups
 P:AVFoundation.AVAssetWriter.Inputs
+P:AVFoundation.AVAssetWriter.IsProVideoStorageSupported
 P:AVFoundation.AVAssetWriter.Metadata
 P:AVFoundation.AVAssetWriter.MovieFragmentInterval
 P:AVFoundation.AVAssetWriter.MovieTimeScale
@@ -36124,6 +36210,7 @@ P:AVFoundation.AVAssetWriter.PreferredOutputSegmentInterval
 P:AVFoundation.AVAssetWriter.ProducesCombinableFragments
 P:AVFoundation.AVAssetWriter.ShouldOptimizeForNetworkUse
 P:AVFoundation.AVAssetWriter.Status
+P:AVFoundation.AVAssetWriter.UsesProVideoStorage
 P:AVFoundation.AVAssetWriter.WeakDelegate
 P:AVFoundation.AVAssetWriterInput.CanPerformMultiplePasses
 P:AVFoundation.AVAssetWriterInput.CurrentPassDescription
@@ -36155,6 +36242,8 @@ P:AVFoundation.AVAssetWriterInputPixelBufferAdaptor.SourcePixelBufferAttributes
 P:AVFoundation.AVAssetWriterInputTaggedPixelBufferGroupAdaptor.AssetWriterInput
 P:AVFoundation.AVAssetWriterInputTaggedPixelBufferGroupAdaptor.PixelBufferPool
 P:AVFoundation.AVAssetWriterInputTaggedPixelBufferGroupAdaptor.SourcePixelBufferAttributes
+P:AVFoundation.AVAssetWritingPlanner.Progress
+P:AVFoundation.AVAssetWritingPlannerProgress.OverallProgress
 P:AVFoundation.AVAsynchronousCIImageFilteringRequest.CompositionTime
 P:AVFoundation.AVAsynchronousCIImageFilteringRequest.RenderSize
 P:AVFoundation.AVAsynchronousCIImageFilteringRequest.SourceImage
@@ -36260,6 +36349,9 @@ P:AVFoundation.AVAudioSession.SupportsMultichannelContent
 P:AVFoundation.AVAudioSession.WeakDelegate
 P:AVFoundation.AVAudioSessionCapability.Enabled
 P:AVFoundation.AVAudioSessionCapability.Supported
+P:AVFoundation.AVAudioSessionDeactivationContext.InterruptionContext
+P:AVFoundation.AVAudioSessionDeactivationContext.Source
+P:AVFoundation.AVAudioSessionInterruptionContext.Reason
 P:AVFoundation.AVAudioSessionInterruptionEventArgs.InterruptionType
 P:AVFoundation.AVAudioSessionInterruptionEventArgs.Option
 P:AVFoundation.AVAudioSessionInterruptionEventArgs.Reason
@@ -36269,6 +36361,7 @@ P:AVFoundation.AVAudioSessionPortDescription.PortType
 P:AVFoundation.AVAudioSessionPortDescription.SpatialAudioEnabled
 P:AVFoundation.AVAudioSessionPortExtensionBluetoothMicrophone.FarFieldCapture
 P:AVFoundation.AVAudioSessionPortExtensionBluetoothMicrophone.HighQualityRecording
+P:AVFoundation.AVAudioSessionResumptionContext.Recommendation
 P:AVFoundation.AVAudioSessionRouteChangeEventArgs.PreviousRoute
 P:AVFoundation.AVAudioSessionRouteChangeEventArgs.Reason
 P:AVFoundation.AVAudioSessionRouteDescription.Inputs
@@ -36352,6 +36445,13 @@ P:AVFoundation.AVCaptureAudioFileOutput.WeakAudioSettings
 P:AVFoundation.AVCaptureAudioPreviewOutput.OutputDeviceUniqueID
 P:AVFoundation.AVCaptureAudioPreviewOutput.Volume
 P:AVFoundation.AVCaptureAutoExposureBracketedStillImageSettings.ExposureTargetBias
+P:AVFoundation.AVCaptureBroadcastVideoOutput.Delegate
+P:AVFoundation.AVCaptureBroadcastVideoOutput.DelegateCallbackQueue
+P:AVFoundation.AVCaptureBroadcastVideoOutput.DroppedFrameReplacementPolicy
+P:AVFoundation.AVCaptureBroadcastVideoOutput.MaxBufferedFrameCount
+P:AVFoundation.AVCaptureBroadcastVideoOutput.MaxSupportedBufferedFrameCount
+P:AVFoundation.AVCaptureBroadcastVideoOutput.WeakDelegate
+P:AVFoundation.AVCaptureBroadcastVideoOutput.WeakVideoSettings
 P:AVFoundation.AVCaptureConnection.ActiveVideoStabilizationMode
 P:AVFoundation.AVCaptureConnection.AutomaticallyAdjustsVideoMirroring
 P:AVFoundation.AVCaptureConnection.AvailableAudioChannels
@@ -36388,6 +36488,7 @@ P:AVFoundation.AVCaptureDevice.ActivePrimaryConstituentDeviceRestrictedSwitching
 P:AVFoundation.AVCaptureDevice.ActivePrimaryConstituentDeviceSwitchingBehavior
 P:AVFoundation.AVCaptureDevice.ActiveVideoMaxFrameDuration
 P:AVFoundation.AVCaptureDevice.ActiveVideoMinFrameDuration
+P:AVFoundation.AVCaptureDevice.AdjustingSignalCompensationDelayWhileRunningSupported
 P:AVFoundation.AVCaptureDevice.AutoFocusRangeRestriction
 P:AVFoundation.AVCaptureDevice.AutomaticallyAdjustsFaceDrivenAutoExposureEnabled
 P:AVFoundation.AVCaptureDevice.AutomaticallyAdjustsFaceDrivenAutoFocusEnabled
@@ -36612,8 +36713,10 @@ P:AVFoundation.AVCaptureMovieFileOutput.MovieFragmentInterval
 P:AVFoundation.AVCaptureMovieFileOutput.PrimaryConstituentDeviceRestrictedSwitchingBehaviorConditionsForRecording
 P:AVFoundation.AVCaptureMovieFileOutput.PrimaryConstituentDeviceSwitchingBehaviorForRecording
 P:AVFoundation.AVCaptureMovieFileOutput.PrimaryConstituentDeviceSwitchingBehaviorForRecordingEnabled
+P:AVFoundation.AVCaptureMovieFileOutput.ProVideoStorageSupported
 P:AVFoundation.AVCaptureMovieFileOutput.SpatialVideoCaptureEnabled
 P:AVFoundation.AVCaptureMovieFileOutput.SpatialVideoCaptureSupported
+P:AVFoundation.AVCaptureMovieFileOutput.UsesProVideoStorage
 P:AVFoundation.AVCaptureMultiCamSession.HardwareCost
 P:AVFoundation.AVCaptureMultiCamSession.MultiCamSupported
 P:AVFoundation.AVCaptureMultiCamSession.SystemPressureCost
@@ -36829,6 +36932,7 @@ P:AVFoundation.AVCompositionTrackSegment.SourceTrackID
 P:AVFoundation.AVCompositionTrackSegment.SourceUrl
 P:AVFoundation.AVContentKey.ContentKeySpecifier
 P:AVFoundation.AVContentKey.ExternalContentProtectionStatus
+P:AVFoundation.AVContentKeyRequest.CanBeFulfilledWithAdvisoryKey
 P:AVFoundation.AVContentKeyRequest.CanProvidePersistableContentKey
 P:AVFoundation.AVContentKeyRequest.ContentKey
 P:AVFoundation.AVContentKeyRequest.ContentKeySpecifier
@@ -36843,6 +36947,7 @@ P:AVFoundation.AVContentKeySession.Delegate
 P:AVFoundation.AVContentKeySession.DelegateQueue
 P:AVFoundation.AVContentKeySession.KeySystemConstant
 P:AVFoundation.AVContentKeySession.StorageUrl
+P:AVFoundation.AVContentKeySession.SupportsAdvisoryKeys
 P:AVFoundation.AVContentKeySpecifier.Identifier
 P:AVFoundation.AVContentKeySpecifier.KeySystem
 P:AVFoundation.AVContentKeySpecifier.Options
@@ -36902,14 +37007,17 @@ P:AVFoundation.AVExternalStorageDevice.Connected
 P:AVFoundation.AVExternalStorageDevice.DisplayName
 P:AVFoundation.AVExternalStorageDevice.FreeSize
 P:AVFoundation.AVExternalStorageDevice.NotRecommendedForCaptureUse
+P:AVFoundation.AVExternalStorageDevice.ReasonsNotRecommendedForCaptureUse
 P:AVFoundation.AVExternalStorageDevice.TotalSize
 P:AVFoundation.AVExternalStorageDevice.Uuid
+P:AVFoundation.AVExternalStorageDevice.WeakReasonsNotRecommendedForCaptureUse
 P:AVFoundation.AVExternalStorageDeviceDiscoverySession.ExternalStorageDevices
 P:AVFoundation.AVExternalStorageDeviceDiscoverySession.SharedSession
 P:AVFoundation.AVExternalStorageDeviceDiscoverySession.Supported
 P:AVFoundation.AVExternalSyncDevice.Clock
 P:AVFoundation.AVExternalSyncDevice.ProductId
 P:AVFoundation.AVExternalSyncDevice.SignalCompensationDelay
+P:AVFoundation.AVExternalSyncDevice.SignalCompensationDelaySupported
 P:AVFoundation.AVExternalSyncDevice.Status
 P:AVFoundation.AVExternalSyncDevice.Uuid
 P:AVFoundation.AVExternalSyncDevice.VendorId
@@ -37026,6 +37134,7 @@ P:AVFoundation.AVMetricMediaResourceRequestEvent.ResponseEndTime
 P:AVFoundation.AVMetricMediaResourceRequestEvent.ResponseStartTime
 P:AVFoundation.AVMetricMediaResourceRequestEvent.ServerAddress
 P:AVFoundation.AVMetricMediaResourceRequestEvent.Url
+P:AVFoundation.AVMetricPlaybackModeSwitchEvent.Mode
 P:AVFoundation.AVMetricPlayerItemInitialLikelyToKeepUpEvent.ContentKeyRequestEvents
 P:AVFoundation.AVMetricPlayerItemInitialLikelyToKeepUpEvent.MediaSegmentRequestEvents
 P:AVFoundation.AVMetricPlayerItemInitialLikelyToKeepUpEvent.PlaylistRequestEvents
@@ -37184,6 +37293,14 @@ P:AVFoundation.AVParameterEvent.Element
 P:AVFoundation.AVParameterEvent.ParameterId
 P:AVFoundation.AVParameterEvent.Scope
 P:AVFoundation.AVParameterEvent.Value
+P:AVFoundation.AVPlannedSegmentConfiguration.Duration
+P:AVFoundation.AVPlannedSegmentWritingRequest.AssemblyTrackId
+P:AVFoundation.AVPlannedSegmentWritingRequest.ClientStateToRestore
+P:AVFoundation.AVPlannedSegmentWritingRequest.Progress
+P:AVFoundation.AVPlannedSegmentWritingRequest.SegmentFileOutputUrl
+P:AVFoundation.AVPlannedSegmentWritingRequest.TimeRange
+P:AVFoundation.AVPlannedVideoSegmentConfiguration.FrameCount
+P:AVFoundation.AVPlannedVideoSegmentWritingRequest.FrameCount
 P:AVFoundation.AVPlaybackCoordinationMedium.ConnectedPlaybackCoordinators
 P:AVFoundation.AVPlaybackCoordinator.OtherParticipants
 P:AVFoundation.AVPlaybackCoordinator.PauseSnapsToMediaTimeOfOriginator
@@ -37202,6 +37319,7 @@ P:AVFoundation.AVPlayer.AvailableHdrModes
 P:AVFoundation.AVPlayer.CurrentItem
 P:AVFoundation.AVPlayer.CurrentTime
 P:AVFoundation.AVPlayer.DefaultRate
+P:AVFoundation.AVPlayer.DisconnectedFromSystemAudio
 P:AVFoundation.AVPlayer.EligibleForHdrPlayback
 P:AVFoundation.AVPlayer.Error
 P:AVFoundation.AVPlayer.MasterClock
@@ -37372,6 +37490,10 @@ P:AVFoundation.AVPlayerItemRenderedLegibleOutput.Delegate
 P:AVFoundation.AVPlayerItemRenderedLegibleOutput.DelegateQueue
 P:AVFoundation.AVPlayerItemRenderedLegibleOutput.VideoDisplaySize
 P:AVFoundation.AVPlayerItemRenderedLegibleOutput.WeakDelegate
+P:AVFoundation.AVPlayerItemSampleBufferOutput.Delegate
+P:AVFoundation.AVPlayerItemSampleBufferOutput.DelegateQueue
+P:AVFoundation.AVPlayerItemSampleBufferOutput.WeakDelegate
+P:AVFoundation.AVPlayerItemSampleBufferOutputAudioConfiguration.RequestedAudioFormat
 P:AVFoundation.AVPlayerItemSegment.InterstitialEvent
 P:AVFoundation.AVPlayerItemSegment.LoadedTimeRanges
 P:AVFoundation.AVPlayerItemSegment.SegmentType
@@ -37406,6 +37528,11 @@ P:AVFoundation.AVPlayerVideoOutputConfiguration.PreferredTransform
 P:AVFoundation.AVPlayerVideoOutputConfiguration.SourcePlayerItem
 P:AVFoundation.AVPortraitEffectsMatte.MattingImage
 P:AVFoundation.AVPortraitEffectsMatte.PixelFormatType
+P:AVFoundation.AVProVideoStorage.Busy
+P:AVFoundation.AVProVideoStorage.InitialCapacity
+P:AVFoundation.AVProVideoStorage.IsSupported
+P:AVFoundation.AVProVideoStorage.RemainingCapacity
+P:AVFoundation.AVProVideoStorage.SharedStorage
 P:AVFoundation.AVQueuePlayer.Items
 P:AVFoundation.AVRenderedCaptionImage.PixelBuffer
 P:AVFoundation.AVRenderedCaptionImage.Position
@@ -56502,6 +56629,8 @@ T:AVFoundation.AVAssetDownloadedAssetEvictionPriority
 T:AVFoundation.AVAssetDownloadOptions
 T:AVFoundation.AVAssetExportPresetApple
 T:AVFoundation.AVAssetExportSession
+T:AVFoundation.AVAssetExportSessionResumptionFailureReason
+T:AVFoundation.AVAssetExportSessionResumptionState
 T:AVFoundation.AVAssetImageGenerateAsynchronouslyForTimeCompletionHandler
 T:AVFoundation.AVAssetImageGenerator
 T:AVFoundation.AVAssetImageGeneratorCompletionHandler2
@@ -56530,6 +56659,7 @@ T:AVFoundation.AVAssetSegmentType
 T:AVFoundation.AVAssetTrack
 T:AVFoundation.AVAssetTrackGroup
 T:AVFoundation.AVAssetTrackGroupOutputHandling
+T:AVFoundation.AVAssetTrackPlan
 T:AVFoundation.AVAssetTrackSegment
 T:AVFoundation.AVAssetVariant
 T:AVFoundation.AVAssetVariantAudioAttributes
@@ -56537,6 +56667,7 @@ T:AVFoundation.AVAssetVariantAudioRenditionSpecificAttributes
 T:AVFoundation.AVAssetVariantQualifier
 T:AVFoundation.AVAssetVariantVideoAttributes
 T:AVFoundation.AVAssetVariantVideoLayoutAttributes
+T:AVFoundation.AVAssetVideoTrackPlan
 T:AVFoundation.AVAssetWriter
 T:AVFoundation.AVAssetWriterInput
 T:AVFoundation.AVAssetWriterInputCaptionAdaptor
@@ -56546,6 +56677,10 @@ T:AVFoundation.AVAssetWriterInputMetadataAdaptor
 T:AVFoundation.AVAssetWriterInputPassDescription
 T:AVFoundation.AVAssetWriterInputPixelBufferAdaptor
 T:AVFoundation.AVAssetWriterInputTaggedPixelBufferGroupAdaptor
+T:AVFoundation.AVAssetWritingPlanner
+T:AVFoundation.AVAssetWritingPlannerCompletionHandler
+T:AVFoundation.AVAssetWritingPlannerProgress
+T:AVFoundation.AVAssetWritingPlannerSegmentCallback
 T:AVFoundation.AVAsynchronousCIImageFilteringRequest
 T:AVFoundation.AVAsynchronousVideoCompositionRequest
 T:AVFoundation.AVAudio3DMixingPointSourceInHeadMode
@@ -56563,6 +56698,7 @@ T:AVFoundation.AVAudioInputNodeMutedSpeechEventListener
 T:AVFoundation.AVAudioIONodeInputBlock
 T:AVFoundation.AVAudioMix
 T:AVFoundation.AVAudioMixInputParameters
+T:AVFoundation.AVAudioMixInputParametersTrackID
 T:AVFoundation.AVAudioPlayerNodeCompletionCallbackType
 T:AVFoundation.AVAudioRoutingArbiter
 T:AVFoundation.AVAudioRoutingArbitrationCategory
@@ -56570,6 +56706,8 @@ T:AVFoundation.AVAudioSequencerInfoDictionary
 T:AVFoundation.AVAudioSequencerUserCallback
 T:AVFoundation.AVAudioSessionActivationOptions
 T:AVFoundation.AVAudioSessionCapability
+T:AVFoundation.AVAudioSessionDeactivationOptions
+T:AVFoundation.AVAudioSessionDeactivationSource
 T:AVFoundation.AVAudioSessionInterruptionReason
 T:AVFoundation.AVAudioSessionIOType
 T:AVFoundation.AVAudioSessionMicrophoneInjectionMode
@@ -56577,6 +56715,7 @@ T:AVFoundation.AVAudioSessionMode
 T:AVFoundation.AVAudioSessionPortExtensionBluetoothMicrophone
 T:AVFoundation.AVAudioSessionPromptStyle
 T:AVFoundation.AVAudioSessionRenderingMode
+T:AVFoundation.AVAudioSessionResumptionRecommendation
 T:AVFoundation.AVAudioSessionRouteSharingPolicy
 T:AVFoundation.AVAudioSinkNode
 T:AVFoundation.AVAudioSinkNodeReceiverHandler
@@ -56626,6 +56765,8 @@ T:AVFoundation.AVCaptionUnitsType
 T:AVFoundation.AVCaptureAspectRatio
 T:AVFoundation.AVCaptureAudioFileOutput
 T:AVFoundation.AVCaptureAudioPreviewOutput
+T:AVFoundation.AVCaptureBroadcastVideoOutput
+T:AVFoundation.AVCaptureBroadcastVideoOutputDroppedFrameReplacementPolicy
 T:AVFoundation.AVCaptureCameraLensSmudgeDetectionStatus
 T:AVFoundation.AVCaptureCenterStageControlMode
 T:AVFoundation.AVCaptureCinematicVideoFocusMode
@@ -56716,6 +56857,7 @@ T:AVFoundation.AVExtendedTempoEvent
 T:AVFoundation.AVExternalContentProtectionStatus
 T:AVFoundation.AVExternalStorageDevice
 T:AVFoundation.AVExternalStorageDeviceDiscoverySession
+T:AVFoundation.AVExternalStorageDeviceReasonNotRecommendedForCaptureUse
 T:AVFoundation.AVExternalStorageDeviceRequestAccessCallback
 T:AVFoundation.AVExternalSyncDevice
 T:AVFoundation.AVExternalSyncDeviceDiscoverySession
@@ -56769,6 +56911,8 @@ T:AVFoundation.AVMetricHlsMediaSegmentRequestEvent
 T:AVFoundation.AVMetricHlsPlaylistRequestEvent
 T:AVFoundation.AVMetricMediaRendition
 T:AVFoundation.AVMetricMediaResourceRequestEvent
+T:AVFoundation.AVMetricPlaybackMode
+T:AVFoundation.AVMetricPlaybackModeSwitchEvent
 T:AVFoundation.AVMetricPlayerItemInitialLikelyToKeepUpEvent
 T:AVFoundation.AVMetricPlayerItemLikelyToKeepUpEvent
 T:AVFoundation.AVMetricPlayerItemPlaybackSummaryEvent
@@ -56828,6 +56972,10 @@ T:AVFoundation.AVOutputSettingsPreset
 T:AVFoundation.AVParameterEvent
 T:AVFoundation.AVPersistableContentKeyRequest
 T:AVFoundation.AVPixelAspectRatioProperties
+T:AVFoundation.AVPlannedSegmentConfiguration
+T:AVFoundation.AVPlannedSegmentWritingRequest
+T:AVFoundation.AVPlannedVideoSegmentConfiguration
+T:AVFoundation.AVPlannedVideoSegmentWritingRequest
 T:AVFoundation.AVPlaybackCoordinationMedium
 T:AVFoundation.AVPlaybackCoordinator
 T:AVFoundation.AVPlayer
@@ -56861,6 +57009,9 @@ T:AVFoundation.AVPlayerItemMetadataCollector
 T:AVFoundation.AVPlayerItemMetadataOutput
 T:AVFoundation.AVPlayerItemOutput
 T:AVFoundation.AVPlayerItemRenderedLegibleOutput
+T:AVFoundation.AVPlayerItemSampleBufferOutput
+T:AVFoundation.AVPlayerItemSampleBufferOutputAudioConfiguration
+T:AVFoundation.AVPlayerItemSampleBufferOutputConfiguration
 T:AVFoundation.AVPlayerItemSegment
 T:AVFoundation.AVPlayerItemSegmentType
 T:AVFoundation.AVPlayerItemTrack
@@ -56878,6 +57029,7 @@ T:AVFoundation.AVPlayerVideoOutputConfiguration
 T:AVFoundation.AVPlayerViewControllerSkippingBehavior
 T:AVFoundation.AVPlayerWaitingReason
 T:AVFoundation.AVPortraitEffectsMatte
+T:AVFoundation.AVProVideoStorage
 T:AVFoundation.AVQueuePlayer
 T:AVFoundation.AVRenderedCaptionImage
 T:AVFoundation.AVRouteDetector
@@ -56928,6 +57080,7 @@ T:AVFoundation.AVVideoCompositionLayerInstruction
 T:AVFoundation.AVVideoCompositionPerFrameHdrDisplayMetadataPolicy
 T:AVFoundation.AVVideoCompositionRenderContext
 T:AVFoundation.AVVideoCompositionRenderHint
+T:AVFoundation.AVVideoLogTransferFunction
 T:AVFoundation.AVVideoOutputSpecification
 T:AVFoundation.AVVideoPerformanceMetrics
 T:AVFoundation.AVVideoRange

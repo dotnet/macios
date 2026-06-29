@@ -279,6 +279,7 @@ AVFOUNDATION_SOURCES = \
 	AVFoundation/AVOutputSettingsAssistant.cs \
 	AVFoundation/AVPlayerItem.cs \
 	AVFoundation/AVPlayerItemVideoOutput.cs \
+	AVFoundation/AVPlannedVideoSegmentWritingRequest.cs \
 	AVFoundation/AVPlayerLayer.cs \
 	AVFoundation/AVSampleBufferExtensions.cs \
 	AVFoundation/AVSampleCursor.cs \

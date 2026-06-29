@@ -42,6 +42,49 @@ namespace AVFoundation {
 #endif // XAMCORE_5_0
 
 	public partial class AVAudioSourceNode {
+		/// <summary>Creates an <see cref="AVAudioSourceNode" /> with a realtime-safe render block to supply audio data.</summary>
+		/// <param name="renderHandler">The realtime-safe callback that supplies audio data. It is called on the realtime thread, so it must be handled in a thread-safe manner and must not make any blocking calls.</param>
+		/// <returns>A new <see cref="AVAudioSourceNode" />.</returns>
+		/// <remarks>This is the preferred way to create an <see cref="AVAudioSourceNode" /> when the engine is configured for realtime use.</remarks>
+		[SupportedOSPlatform ("ios27.0")]
+		[SupportedOSPlatform ("tvos27.0")]
+		[SupportedOSPlatform ("macos27.0")]
+		[SupportedOSPlatform ("maccatalyst27.0")]
+#if XAMCORE_5_0
+		public static AVAudioSourceNode CreateRealtimeSafe (AVAudioSourceNodeRenderHandler renderHandler)
+#else
+		public static AVAudioSourceNode CreateRealtimeSafe (AVAudioSourceNodeRenderHandler3 renderHandler)
+#endif
+			=> new AVAudioSourceNode (GetHandler (renderHandler), realtimeSafe: true);
+
+		/// <summary>Creates an <see cref="AVAudioSourceNode" /> with the specified format and a realtime-safe render block to supply audio data.</summary>
+		/// <param name="format">The format of the PCM audio data the callback supplies.</param>
+		/// <param name="renderHandler">The realtime-safe callback that supplies audio data. It is called on the realtime thread, so it must be handled in a thread-safe manner and must not make any blocking calls.</param>
+		/// <returns>A new <see cref="AVAudioSourceNode" />.</returns>
+		/// <remarks>This is the preferred way to create an <see cref="AVAudioSourceNode" /> when the engine is configured for realtime use.</remarks>
+		[SupportedOSPlatform ("ios27.0")]
+		[SupportedOSPlatform ("tvos27.0")]
+		[SupportedOSPlatform ("macos27.0")]
+		[SupportedOSPlatform ("maccatalyst27.0")]
+#if XAMCORE_5_0
+		public static AVAudioSourceNode CreateRealtimeSafe (AVAudioFormat format, AVAudioSourceNodeRenderHandler renderHandler)
+#else
+		public static AVAudioSourceNode CreateRealtimeSafe (AVAudioFormat format, AVAudioSourceNodeRenderHandler3 renderHandler)
+#endif
+			=> new AVAudioSourceNode (format, GetHandler (renderHandler), realtimeSafe: true);
+
+		AVAudioSourceNode (AVAudioSourceNodeRenderHandlerRaw renderHandler, bool realtimeSafe)
+			: base (NSObjectFlag.Empty)
+		{
+			InitializeHandle (_InitWithRealtimeSafeRenderBlock (renderHandler), "initWithRealtimeSafeRenderBlock:");
+		}
+
+		AVAudioSourceNode (AVAudioFormat format, AVAudioSourceNodeRenderHandlerRaw renderHandler, bool realtimeSafe)
+			: base (NSObjectFlag.Empty)
+		{
+			InitializeHandle (_InitWithFormatRealtimeSafeRenderBlock (format, renderHandler), "initWithFormat:realtimeSafeRenderBlock:");
+		}
+
 #if !XAMCORE_5_0
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Obsolete ("Use the overload that takes a delegate that does not take a 'ref AudioBuffers' instead. Assigning a value to the 'inputData' parameter in the callback has no effect.")]

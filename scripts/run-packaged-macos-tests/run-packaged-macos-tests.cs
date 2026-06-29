@@ -254,7 +254,7 @@ return failedSuites > 0 ? 1 : 0;
 
 (int ExitCode, string Output) ExecuteWithTimeout (string executable, string [] arguments, int timeoutSeconds)
 {
-	var launchTimeout = TimeSpan.FromSeconds (10);
+	var launchTimeout = TimeSpan.FromSeconds (30);
 	var executionTimeout = TimeSpan.FromSeconds (timeoutSeconds);
 	var maxLaunchAttempts = 10;
 	var pid = Process.GetCurrentProcess ().Id;

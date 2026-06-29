@@ -56,6 +56,8 @@ safe-outputs:
     max: 10
   close-pull-request:
     max: 10
+  create-issue:
+    max: 10
 ---
 
 # Code Radiator
@@ -208,12 +210,31 @@ Use the `create_pull_request` safeoutput tool to push the branch and create/upda
 
 After creating the PR, enable automerge (merge strategy) using the GitHub MCP `enable_auto_merge` tool or `gh pr merge --auto --merge`.
 
+#### f. Fallback: file an issue if PR creation fails
+
+If the `create_pull_request` safeoutput tool fails (e.g., due to permission errors, branch
+protection rules, or other unexpected errors), file a GitHub issue instead so the failure
+is tracked and can be resolved manually.
+
+Use the `create_issue` safeoutput tool with:
+- `title`: `🤖 Code radiator: failed to create merge PR for '<target>'`
+- `body`: Include:
+  - The target branch name.
+  - The source branch (`main`).
+  - The local branch name that was prepared.
+  - The error message from the failed PR creation attempt.
+  - A note that this issue was automatically filed by the code-radiator workflow.
+- `labels`: `["code-radiator"]`
+
+Do not fail the entire workflow run — continue processing the remaining target branches.
+
 ### 3. Summary
 
 After processing all branches, report:
 - Which PRs were created (with links)
 - Which PRs were updated
 - Which PRs were closed and recreated (due to manual merges superseding them)
+- Which branches had PR creation failures (with links to the filed issues)
 - Which branches were skipped (closed milestone, draft PRs, no conflicts resolution possible)
 - Which branches had no diff (main already merged)
 

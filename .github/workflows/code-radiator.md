@@ -52,6 +52,7 @@ safe-outputs:
     signed-commits: false
     target: "*"
     required-title-prefix: "🤖 Merge 'main' => '"
+    protected-files: allowed
   update-pull-request:
     max: 10
   close-pull-request:

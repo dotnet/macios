@@ -3758,6 +3758,15 @@ namespace UIKit {
 		[Export ("textLayoutManager:renderingAttributesForLink:atLocation:defaultAttributes:")]
 		[return: NullAllowed]
 		NSDictionary<NSString, NSObject> GetRenderingAttributes (NSTextLayoutManager textLayoutManager, NSObject link, INSTextLocation location, NSDictionary<NSString, NSObject> renderingAttributes);
+
+		[TV (27, 0), iOS (27, 0), MacCatalyst (27, 0), Mac (27, 0)]
+		[Export ("textLayoutManager:cacheTextAttachmentViewProvider:forTextAttachment:")]
+		void CacheTextAttachmentViewProvider (NSTextLayoutManager textLayoutManager, NSTextAttachmentViewProvider viewProvider, NSTextAttachment textAttachment);
+
+		[TV (27, 0), iOS (27, 0), MacCatalyst (27, 0), Mac (27, 0)]
+		[Export ("textLayoutManager:retrieveCachedTextAttachmentViewProviderForTextAttachment:")]
+		[return: NullAllowed]
+		NSTextAttachmentViewProvider GetCachedTextAttachmentViewProvider (NSTextLayoutManager textLayoutManager, NSTextAttachment attachment);
 	}
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
@@ -4020,6 +4029,14 @@ namespace UIKit {
 		[Abstract]
 		[Export ("compare:")]
 		NSComparisonResult Compare (INSTextLocation location);
+
+		[Abstract]
+		[Export ("isEqual:")]
+		bool IsEqual ([NullAllowed] NSObject anObject);
+
+		[Abstract]
+		[Export ("hash")]
+		nuint GetNativeHash ();
 	}
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
@@ -4147,7 +4164,7 @@ namespace UIKit {
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface NSTextLayoutFragment : NSSecureCoding {
+	interface NSTextLayoutFragment : NSSecureCoding, NSTextViewportRenderingSurfaceKey {
 		[Export ("initWithTextElement:range:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSTextElement textElement, [NullAllowed] NSTextRange rangeInElement);
@@ -4251,6 +4268,20 @@ namespace UIKit {
 		NSTextRange GetTextRangeByFormingUnion (NSTextRange textRange);
 	}
 
+	interface INSTextViewportRenderingSurface { }
+
+	[TV (27, 0), iOS (27, 0), MacCatalyst (27, 0), Mac (27, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface NSTextViewportRenderingSurface {
+	}
+
+	interface INSTextViewportRenderingSurfaceKey { }
+
+	[TV (18, 0), iOS (18, 0), MacCatalyst (18, 0), Mac (15, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface NSTextViewportRenderingSurfaceKey {
+	}
+
 	interface INSTextViewportLayoutControllerDelegate { }
 
 	[TV (15, 0), iOS (15, 0)]
@@ -4271,6 +4302,18 @@ namespace UIKit {
 
 		[Export ("textViewportLayoutControllerDidLayout:")]
 		void DidLayout (NSTextViewportLayoutController textViewportLayoutController);
+
+		[TV (27, 0), iOS (27, 0), MacCatalyst (27, 0), Mac (27, 0)]
+		[Export ("textViewportLayoutController:cacheRenderingSurface:forKey:")]
+		void CacheRenderingSurface (NSTextViewportLayoutController textViewportLayoutController, INSTextViewportRenderingSurface renderingSurface, INSTextViewportRenderingSurfaceKey renderingSurfaceKey);
+
+		[TV (27, 0), iOS (27, 0), MacCatalyst (27, 0), Mac (27, 0)]
+		[Export ("textViewportLayoutController:retrieveCachedRenderingSurfaceForKey:")]
+		INSTextViewportRenderingSurface GetCachedRenderingSurface (NSTextViewportLayoutController textViewportLayoutController, INSTextViewportRenderingSurfaceKey renderingSurfaceKey);
+
+		[TV (27, 0), iOS (27, 0), MacCatalyst (27, 0), Mac (27, 0)]
+		[Export ("textViewportLayoutControllerReceivedSetNeedsLayout:")]
+		void ReceivedSetNeedsLayout (NSTextViewportLayoutController textViewportLayoutController);
 	}
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
@@ -4434,6 +4477,10 @@ namespace UIKit {
 
 		[Export ("textLayoutOrientationAtLocation:")]
 		NSTextSelectionNavigationLayoutOrientation GetTextLayoutOrientation (INSTextLocation location);
+
+		[TV (27, 0), iOS (27, 0), MacCatalyst (27, 0), Mac (27, 0)]
+		[Export ("convertInteractionPoint:toContainerAtLocation:")]
+		CGPoint ConvertInteractionPoint (CGPoint point, INSTextLocation containerLocation);
 	}
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
@@ -4895,7 +4942,6 @@ namespace UIKit {
 		[Field ("NSPaperSizeDocumentAttribute")]
 		NSString PaperSizeDocumentAttribute { get; }
 
-		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Field ("NSPaperMarginDocumentAttribute")]
 		NSString PaperMarginDocumentAttribute { get; }

@@ -955,19 +955,12 @@ public abstract class AvailabilityBaseAttribute : Attribute {
 
 	void GenerateSupported (StringBuilder builder)
 	{
-#if BGENERATOR
-		// If the version is less than or equal to the min version for the platform in question,
-		// the version is redundant, so just skip it.
-		if (Version is not null && Version <= Xamarin.SdkVersions.GetMinVersion (Platform.AsApplePlatform ()))
-			Version = null;
-#endif
-
 		builder.Append ("[SupportedOSPlatform (\"");
-		GeneratePlatformNameAndVersion (builder);
+		GeneratePlatformNameAndVersion (builder, skipMinVersion: true);
 		builder.AppendLine ("\")]");
 	}
 
-	void GeneratePlatformNameAndVersion (StringBuilder builder)
+	void GeneratePlatformNameAndVersion (StringBuilder builder, bool skipMinVersion = false)
 	{
 		switch (Platform) {
 		case PlatformName.iOS:
@@ -989,8 +982,17 @@ public abstract class AvailabilityBaseAttribute : Attribute {
 			throw new NotSupportedException ($"Unknown platform: {Platform}");
 		}
 
-		if (Version is not null)
-			builder.Append (Version.ToString (Version.Build >= 0 ? 3 : 2));
+		if (Version is null)
+			return;
+
+#if BGENERATOR
+		// If the version is less than or equal to the min version for the platform in question,
+		// the version is redundant, so just skip it.
+		if (skipMinVersion && Version <= Xamarin.SdkVersions.GetMinVersion (Platform.AsApplePlatform ()))
+			return;
+#endif
+
+		builder.Append (Version.ToString (Version.Build >= 0 ? 3 : 2));
 	}
 
 	/// <summary>Returns a human readable version of the availability attribute.</summary>

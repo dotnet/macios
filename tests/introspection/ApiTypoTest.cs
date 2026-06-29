@@ -107,7 +107,6 @@ namespace Introspection {
 			{ "Applei", All },
 			{ "Aps", ApplePlatform.MacOSX },
 			{ "Apv", ApplePlatform.MacOSX },
-			{ "Arae", ApplePlatform.MacOSX },
 			{ "Arcball", All },
 			{ "Argb", All },
 			{ "Arraycollation", All & ~ApplePlatform.MacOSX },
@@ -450,7 +449,7 @@ namespace Introspection {
 			{ "Lzfse", All }, // acronym
 			{ "Lzma", All }, // acronym
 			{ "Lzw", ApplePlatform.MacOSX },
-			{ "Mada", All & ~ApplePlatform.TVOS }, // payment system
+			{ "Mada", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // payment system
 			{ "Matchingcoalesce", All },
 			{ "Mcp", All }, // metacarpophalangeal (hand)
 			{ "Mebibits", All },
@@ -501,7 +500,7 @@ namespace Introspection {
 			{ "Muxed", All },
 			{ "Nacs", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
 			{ "Nai", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
-			{ "Nanaco", All & ~ApplePlatform.TVOS },
+			{ "Nanaco", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
 			{ "Nand", All },
 			{ "Nanograms", All },
 			{ "Nanowatts", All },
@@ -543,7 +542,7 @@ namespace Introspection {
 			{ "Organisation", All }, // kCGImagePropertyIPTCExtRegistryOrganisationID in Xcode9.3-b1
 			{ "Orth", All },
 			{ "Osa", All }, // Open Scripting Architecture
-			{ "Otsu", All }, // threshold for image binarization
+			{ "Otsu", All & ~ApplePlatform.MacOSX }, // threshold for image binarization
 			{ "ove", All },
 			{ "Overline", All & ~ApplePlatform.TVOS },
 			{ "Paeth", All }, // PNG filter
@@ -579,6 +578,7 @@ namespace Introspection {
 			{ "Polylines", All },
 			{ "Popularimeter", All },
 			{ "Postback", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
+			{ "Ppd", ApplePlatform.MacOSX }, // PostScript Printer Description (PDEPanel / PDEPlugInCallback - macOS only)
 			{ "Ppk", All },
 			{ "Preauthentication", ApplePlatform.MacOSX },
 			{ "Preds", All },
@@ -693,7 +693,7 @@ namespace Introspection {
 			{ "Subpixel", All },
 			{ "Subresources", All },
 			{ "Subsec", All },
-			{ "Suica", All & ~ApplePlatform.TVOS }, // Japanese contactless smart card type
+			{ "Suica", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // Japanese contactless smart card type
 			{ "Superentity", All },
 			{ "Supertype", All },
 			{ "Supertypes", All },
@@ -775,7 +775,7 @@ namespace Introspection {
 			{ "Voronoi", All },
 			{ "Vpn", All },
 			{ "Vtt", All },
-			{ "Waon", All & ~ApplePlatform.TVOS },
+			{ "Waon", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
 			{ "Warichu", All },
 			{ "Warpable", All },
 			{ "Wcdma", All },

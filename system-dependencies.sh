@@ -31,6 +31,37 @@ VERBOSE=
 OPTIONAL_SIMULATORS=1
 OPTIONAL_OLD_SIMULATORS=1
 
+if test -f configure.inc; then
+	source configure.inc
+
+	if test -n "$NO_XCODE"; then
+		IGNORE_OSX=1
+		IGNORE_XCODE=1
+		IGNORE_SIMULATORS=1
+		IGNORE_OLD_SIMULATORS=1
+		IGNORE_XCODE_COMPONENTS=1
+	fi
+fi
+
+function get_xcode_developer_root ()
+{
+	local suffix="${1:-}"
+
+	if test -z "$suffix"; then
+		if test -n "${XCODE_DEVELOPER_ROOT:-}"; then
+			echo "$XCODE_DEVELOPER_ROOT"
+			return
+		fi
+
+		if XCODE_DEVELOPER_ROOT_ASSIGNMENT=$(grep "^XCODE_DEVELOPER_ROOT=" configure.inc 2>/dev/null); then
+			echo "${XCODE_DEVELOPER_ROOT_ASSIGNMENT#*=}"
+			return
+		fi
+	fi
+
+	grep "^XCODE${suffix}_DEVELOPER_ROOT[?:]*=" Make.config | sed 's/^[^=]*=//'
+}
+
 # parse command-line arguments
 while ! test -z $1; do
 	case $1 in
@@ -207,6 +238,12 @@ while ! test -z $1; do
 	esac
 done
 
+if test -z "${NO_XCODE:-}"; then
+	XCODE_DEVELOPER_ROOT=$(get_xcode_developer_root)
+	export XCODE_DEVELOPER_ROOT
+	export DEVELOPER_DIR="$XCODE_DEVELOPER_ROOT"
+fi
+
 # reporting functions
 COLOR_RED=$(tput setaf 1 2>/dev/null || true)
 COLOR_ORANGE=$(tput setaf 3 2>/dev/null || true)
@@ -328,6 +365,20 @@ function get_non_universal_simulator_runtimes ()
 	rm -f "$TMPFILE"
 }
 
+function print_non_universal_simulator_runtimes ()
+{
+	local TMPFILE
+	TMPFILE=$(mktemp)
+
+	xcrun simctl runtime list -j --json-output="$TMPFILE"
+
+	# this json query filters the json to simulator runtimes where iOS/tvOS >= 26.0 and where x64 is *not* supported (which we need to run x64 apps in the simulator on arm64)
+	JQ_QUERY='map({platformIdentifier: .platformIdentifier, identifier: .identifier, version: .version, state: .state, supportedArchitectures: .supportedArchitectures | join("|"), majorVersion: .version | split(".")[0] | tonumber }) | map(select(.majorVersion>=26) ) | map(select(.supportedArchitectures | contains("x86_64") | not))'
+	jq "$JQ_QUERY" -r "$TMPFILE"
+
+	rm -f "$TMPFILE"
+}
+
 function xcodebuild_download_selected_platforms ()
 {
 	local XCODE_DEVELOPER_ROOT
@@ -339,7 +390,7 @@ function xcodebuild_download_selected_platforms ()
 	local TVOS_NUGET_OS_VERSION
 	local TVOS_BUILD_VERSION
 
-	XCODE_DEVELOPER_ROOT=$(grep XCODE_DEVELOPER_ROOT= Make.config | sed 's/.*=//')
+	XCODE_DEVELOPER_ROOT=$(get_xcode_developer_root)
 	XCODE_NAME=$(basename "$(dirname "$(dirname "$XCODE_DEVELOPER_ROOT")")")
 	# we use the same logic here as in Make.config to determine whether we're using a stable version of Xcode or not (search for XCODE_IS_STABLE/XCODE_IS_PREVIEW)
 	XCODE_IS_STABLE=$(echo "$XCODE_NAME" | sed -e 's@^Xcode[_0-9.]*[.]app$@YES@')
@@ -385,8 +436,10 @@ function xcodebuild_download_selected_platforms ()
 		log "Looking for iOS/tvOS 26+ simulator runtimes that don't support x64..."
 
 		get_non_universal_simulator_runtimes
-		if [[ "$SIMULATORS_WITHOUT_X64_COUNT" -gt 0 ]]; then
-			log "Found ${SIMULATORS_WITHOUT_X64_COUNT} simulator runtimes that don't support x64, which will now be deleted: ${SIMULATORS_WITHOUT_X64[@]}"
+		if [[ "$SIMULATORS_WITHOUT_X64_COUNT" -gt 0 && "$ACES" == "1" ]]; then
+			log "Found ${SIMULATORS_WITHOUT_X64_COUNT} simulator runtimes that don't support x64, but we're running on ACES, so we can't do anything about that."
+		elif [[ "$SIMULATORS_WITHOUT_X64_COUNT" -gt 0 ]]; then
+			log "Found ${SIMULATORS_WITHOUT_X64_COUNT} simulator runtimes that don't support x64, which will now be deleted: ${SIMULATORS_WITHOUT_X64[*]}"
 			for sim in "${SIMULATORS_WITHOUT_X64[@]}"; do
 				log "Executing 'xcrun simctl runtime delete $sim'"
 				xcrun simctl runtime delete "$sim"
@@ -394,17 +447,24 @@ function xcodebuild_download_selected_platforms ()
 			# sadly simulator deletion is done asynchronously, so we have to wait until they're all gone
 			log "Waiting for the simulators to be deleted..."
 			printf "            "
-			for i in $(seq 1 60); do
+			for i in $(seq 1 300); do
 				sleep 1
 				get_non_universal_simulator_runtimes
 				if [[ "$SIMULATORS_WITHOUT_X64_COUNT" == "0" ]]; then
 					break
 				fi
+				# every 60 seconds print the simulators left to delete
+				if [[ $(( i % 60)) == 0 ]]; then
+					printf "\n"
+					printf "            Simulators left to delete:\n"
+					print_non_universal_simulator_runtimes | sed 's/^/            /'
+					printf "            "
+				fi
 				printf "$SIMULATORS_WITHOUT_X64_COUNT"
 			done
 			printf "\n"
 			if [[ "$SIMULATORS_WITHOUT_X64_COUNT" != "0" ]]; then
-				warn "Waited for 60 seconds, but there are still $SIMULATORS_WITHOUT_X64_COUNT simulators waiting to deleted."
+				warn "Waited for 5 minutes, but there are still $SIMULATORS_WITHOUT_X64_COUNT simulators waiting to deleted."
 			fi
 		else
 			log "All installed iOS/tvOS 26+ simulators support x64"
@@ -580,7 +640,7 @@ function install_coresimulator ()
 	local TARGET_CORESIMULATOR_VERSION
 	local CURRENT_CORESIMULATOR_VERSION
 
-	XCODE_DEVELOPER_ROOT=$(grep XCODE_DEVELOPER_ROOT= Make.config | sed 's/.*=//')
+	XCODE_DEVELOPER_ROOT=$(get_xcode_developer_root)
 	XCODE_ROOT=$(dirname "$(dirname "$XCODE_DEVELOPER_ROOT")")
 	CORESIMULATOR_PKG=$XCODE_ROOT/Contents/Resources/Packages/XcodeSystemResources.pkg
 
@@ -646,9 +706,13 @@ function install_coresimulator ()
 }
 
 function check_specific_xcode () {
-	local XCODE_DEVELOPER_ROOT=`grep XCODE$1_DEVELOPER_ROOT= Make.config | sed 's/.*=//'`
-	local XCODE_VERSION=`grep XCODE$1_VERSION= Make.config | sed 's/.*=//'`
-	local XCODE_ROOT=$(dirname `dirname $XCODE_DEVELOPER_ROOT`)
+	local XCODE_DEVELOPER_ROOT
+	local XCODE_VERSION
+	local XCODE_ROOT
+
+	XCODE_DEVELOPER_ROOT=$(get_xcode_developer_root "$1")
+	XCODE_VERSION=$(grep "XCODE$1_VERSION=" Make.config | sed 's/.*=//')
+	XCODE_ROOT=$(dirname "$(dirname "$XCODE_DEVELOPER_ROOT")")
 	
 	if ! test -d $XCODE_DEVELOPER_ROOT; then
 		if ! test -z $PROVISION_XCODE; then
@@ -686,11 +750,13 @@ function check_xcode () {
 	if ! test -z $IGNORE_XCODE; then return; fi
 
 	# must have latest Xcode in /Applications/Xcode<version>.app
-	check_specific_xcode
+	check_specific_xcode ""
 	install_coresimulator
 
 	local IOS_SDK_VERSION MACOS_SDK_VERSION TVOS_SDK_VERSION
-	local XCODE_DEVELOPER_ROOT=`grep ^XCODE_DEVELOPER_ROOT= Make.config | sed 's/.*=//'`
+	local XCODE_DEVELOPER_ROOT
+
+	XCODE_DEVELOPER_ROOT=$(get_xcode_developer_root)
 	IOS_SDK_VERSION=$(grep ^IOS_NUGET_OS_VERSION= Make.versions | sed -e 's/.*=//')
 	MACOS_SDK_VERSION=$(grep ^MACOS_NUGET_OS_VERSION= Make.versions | sed -e 's/.*=//')
 	TVOS_SDK_VERSION=$(grep ^TVOS_NUGET_OS_VERSION= Make.versions | sed -e 's/.*=//')
@@ -916,7 +982,7 @@ function check_old_simulators ()
 	local XCODE
 	local XCODE_DEVELOPER_ROOT
 
-	XCODE_DEVELOPER_ROOT=$(grep XCODE$1_DEVELOPER_ROOT= Make.config | sed 's/.*=//')
+	XCODE_DEVELOPER_ROOT=$(get_xcode_developer_root "$1")
 
 	IFS=' ' read -r -a EXTRA_SIMULATORS <<< "$(grep ^EXTRA_SIMULATORS= Make.config | sed 's/.*=//')"
 	XCODE=$(dirname "$(dirname "$XCODE_DEVELOPER_ROOT")")
@@ -994,4 +1060,3 @@ else
 	echo "System check failed"
 	exit 1
 fi
-

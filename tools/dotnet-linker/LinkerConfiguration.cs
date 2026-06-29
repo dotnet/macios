@@ -739,6 +739,8 @@ namespace Xamarin.Linker {
 			if (Application.XamarinRuntime != XamarinRuntime.MonoVM && Application.UseInterpreter) {
 				Application.Log (4, "The interpreter is enabled, but the current runtime isn't MonoVM. The interpreter settings will be ignored.");
 				Application.UnsetInterpreter ();
+				if (Application.XamarinRuntime == XamarinRuntime.CoreCLR)
+					Application.UseInterpreterCoreCLR = true;
 			}
 
 			Driver.ValidateXcode (Application, false, false);

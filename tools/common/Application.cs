@@ -65,6 +65,7 @@ namespace Xamarin.Bundler {
 		// The list of assemblies that we do generate debugging info for.
 		public bool DebugAll;
 		public bool UseInterpreter; // Only applicable to mobile platforms.
+		public bool UseInterpreterCoreCLR;
 		public List<string> DebugAssemblies = new List<string> ();
 		public Optimizations Optimizations = new Optimizations ();
 #if LEGACY_TOOLS

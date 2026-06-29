@@ -34,6 +34,10 @@ parameters:
 - name: macOSName
   type: string
 
+- name: useACES
+  type: boolean
+  default: false
+
 jobs:
 
 # This job builds the macOS tests.
@@ -49,14 +53,21 @@ jobs:
     BRANCH_NAME: $[ replace(variables['Build.SourceBranch'], 'refs/heads/', '') ]
     RUN_MAC_TESTS: $[ stageDependencies.configure_build.configure.outputs['decisions.RUN_MAC_TESTS'] ]
   condition: ne(stageDependencies.configure_build.configure.outputs['decisions.RUN_MAC_TESTS'],'')
-  pool:
-    os: macOS
-    name: ${{ parameters.pool }}
-    demands:
-    - Agent.OS -equals Darwin
-    - Agent.OSVersion -gtVersion $(minimumMacOSVersion)
-    - macOS.Name -equals ${{ parameters.macOSName }}
-    - XcodeChannel -equals ${{ parameters.xcodeChannel }}
+  ${{ if parameters.useACES }}:
+    pool:
+      os: macOS
+      name: $(CIBuildPoolACES)
+      demands:
+      - ImageOverride -equals $(CIBuildPoolACESImage)
+  ${{ else }}:
+    pool:
+      os: macOS
+      name: ${{ parameters.pool }}
+      demands:
+      - Agent.OS -equals Darwin
+      - Agent.OSVersion -gtVersion $(minimumMacOSVersion)
+      - macOS.Name -equals ${{ parameters.macOSName }}
+      - XcodeChannel -equals ${{ parameters.xcodeChannel }}
 
   steps:
   - template: build-mac-tests.yml

@@ -24,6 +24,9 @@ parameters:
 - name: macOSName
   type: string
 
+- name: useACES
+  type: boolean
+  default: false
 
 
 stages:
@@ -69,3 +72,4 @@ stages:
       gitHubToken: $(Github.Token)
       xqaCertPass: $(xqa--certificates--password)
       pool: ${{ parameters.pool }}
+      useACES: ${{ parameters.useACES }}

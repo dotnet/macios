@@ -115,9 +115,11 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 		}).ToArray ();
 
 		// sort the devices, so we return them in a stable order
+		// Booted simulators come first so the interactive device selection shows running simulators at the top.
 		var sortedDevices = devices
 			.Where (d => !d.Discarded) // discard discarded devices
-			.OrderByDescending (d => d.MinimumOSVersion) // newer devices first (probably has duplicates)
+			.OrderByDescending (d => d.Item.GetMetadata ("State") == "Booted") // booted simulators first
+			.ThenByDescending (d => d.MinimumOSVersion) // newer devices first (probably has duplicates)
 			.ThenBy (d => d.Item.GetMetadata ("Name")) // then sort by name (may have duplicates)
 			.ThenBy (d => d.Item.ItemSpec); // and finally by UDID, which should be unique
 
@@ -194,10 +196,19 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 			item.SetMetadata ("PairingState", device.PairingState);
 
 			// we provide the following metadata for both simulator and device
-			item.SetMetadata ("Description", device.Name);
+			var deviceDescription = device.Name;
+			if (!string.IsNullOrEmpty (device.OSVersion) && !deviceDescription.Contains (device.OSVersion))
+				deviceDescription = $"{deviceDescription} - {device.Platform} {device.OSVersion}";
+			item.SetMetadata ("Description", deviceDescription);
 			item.SetMetadata ("Type", "Device");
 			item.SetMetadata ("OSVersion", device.OSVersion);
 			item.SetMetadata ("UDID", udid);
+			// Capitalize the first letter of PairingState for the Status metadata.
+			// Default to "Unpaired" when devicectl doesn't report a pairing state.
+			var pairingState = device.PairingState;
+			if (string.IsNullOrEmpty (pairingState))
+				pairingState = "unpaired";
+			item.SetMetadata ("Status", char.ToUpperInvariant (pairingState [0]) + pairingState.Substring (1));
 
 			// compute the platform and runtime identifier
 			var runtimeIdentifier = "";
@@ -287,10 +298,20 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 			item.SetMetadata ("SupportedArchitectures", string.Join (",", supportedArchitectures));
 
 			// we provide the following metadata for both simulator and device
-			item.SetMetadata ("Description", device.Name);
+			var description = device.Name;
+			if (!string.IsNullOrEmpty (runtimeVersion) && !description.Contains (runtimeVersion)) {
+				if (!string.IsNullOrEmpty (runtimePlatform))
+					description = $"{description} - {runtimePlatform} {runtimeVersion}";
+				else
+					description = $"{description} - {runtimeVersion}";
+			}
+			if (!string.IsNullOrEmpty (device.State))
+				description = $"{description} ({device.State})";
+			item.SetMetadata ("Description", description);
 			item.SetMetadata ("Type", "Simulator");
 			item.SetMetadata ("OSVersion", runtimeVersion);
 			item.SetMetadata ("UDID", device.Udid);
+			item.SetMetadata ("Status", device.State);
 
 			var discardedReason = "";
 			var runtimeIdentifier = "";

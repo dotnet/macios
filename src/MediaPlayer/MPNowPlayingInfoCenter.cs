@@ -308,14 +308,12 @@ namespace MediaPlayer {
 		}
 	}
 
-	/// <summary>A class that encapsulates data and functions relating to the "now-playing" information displayed on the device lock-screen, the television during AirPlay, or (potentially) on an external accessory such as a dock or car stereo.</summary>
-	///     <remarks>To be added.</remarks>
-	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPNowPlayingInfoCenter_Class/index.html">Apple documentation for <c>MPNowPlayingInfoCenter</c></related>
+	/// <summary>Provides access to the "now playing" information displayed on the device lock screen, during AirPlay, or on external accessories such as a dock or car stereo.</summary>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPNowPlayingInfoCenter_Class/index.html">Apple documentation for <c>MPNowPlayingInfoCenter</c></related>
 	public partial class MPNowPlayingInfoCenter {
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the strongly-typed now-playing information.</summary>
+		/// <value>The current <see cref="MPNowPlayingInfo" />, or an empty instance if no information is set.</value>
 		public MPNowPlayingInfo NowPlaying {
 			get {
 				return new MPNowPlayingInfo (_NowPlayingInfo);

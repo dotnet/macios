@@ -2759,9 +2759,10 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 	<Target Name="_ResolveAppExtensionReferences" DependsOnTargets="_SplitAppExtensionReferencesByExistent">
 		<PropertyGroup>
-			<!-- When building a .sln with msbuild, the dependent projects may not be built. So, always build
-			     the referenced projects unless building from IDE. -->
-			<_BuildReferencedExtensionProjects Condition="'$(BuildingInsideVisualStudio)' != 'true'">true</_BuildReferencedExtensionProjects>
+			<!-- Always build the referenced extension projects unless the IDE has explicitly set this property.
+			     This used to only be done when not building from the IDE, but some versions of the IDE don't
+			     build extension projects correctly, so default to always building them. Ref: https://github.com/dotnet/macios/issues/25461 -->
+			<_BuildReferencedExtensionProjects Condition="'$(_BuildReferencedExtensionProjects)' == ''">true</_BuildReferencedExtensionProjects>
 		</PropertyGroup>
 
 		<!-- If the referenced projects have already been built, then just get the app extensions' bundle paths -->

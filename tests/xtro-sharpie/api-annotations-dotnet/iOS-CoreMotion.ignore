@@ -2,3 +2,9 @@
 
 ## no generator support for FastEnumeration - https://bugzilla.xamarin.com/show_bug.cgi?id=4391
 !missing-protocol-conformance! CMSensorDataList should conform to NSFastEnumeration
+
+# results from initial block parameter nullability analysis
+!missing-null-allowed! 'System.Void CoreMotion.CMBatchedSensorManager::StartAccelerometerUpdates(System.Action`2<CoreMotion.CMAccelerometerData[],Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #0
+!missing-null-allowed! 'System.Void CoreMotion.CMBatchedSensorManager::StartAccelerometerUpdates(System.Action`2<CoreMotion.CMAccelerometerData[],Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #1
+!missing-null-allowed! 'System.Void CoreMotion.CMBatchedSensorManager::StartDeviceMotionUpdates(System.Action`2<CoreMotion.CMDeviceMotion[],Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #0
+!missing-null-allowed! 'System.Void CoreMotion.CMBatchedSensorManager::StartDeviceMotionUpdates(System.Action`2<CoreMotion.CMDeviceMotion[],Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #1

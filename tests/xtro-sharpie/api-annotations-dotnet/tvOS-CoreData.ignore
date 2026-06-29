@@ -1,3 +1,7 @@
 # waiting for changes in foundation which are not trivial
 !missing-protocol-member! NSFetchedResultsControllerDelegate::controller:didChangeContentWithDifference: not found
 !missing-protocol-member! NSFetchedResultsControllerDelegate::controller:didChangeContentWithSnapshot: not found
+
+# results from initial block parameter nullability analysis
+!missing-null-allowed! 'System.Void CoreData.NSPersistentContainer::LoadPersistentStores(System.Action`2<CoreData.NSPersistentStoreDescription,Foundation.NSError>)' is missing a '?' on parameter 'block' block parameter #1
+!missing-null-allowed! 'System.Void CoreData.NSPersistentStoreCoordinator::AddPersistentStore(CoreData.NSPersistentStoreDescription,System.Action`2<CoreData.NSPersistentStoreDescription,Foundation.NSError>)' is missing a '?' on parameter 'block' block parameter #1

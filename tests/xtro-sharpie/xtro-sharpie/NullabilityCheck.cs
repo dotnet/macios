@@ -295,11 +295,11 @@ namespace Extrospection {
 				switch (nativeNullability) {
 				case CXTypeNullabilityKind.CXTypeNullability_NonNull:
 					if (managedNullability == Null.Annotated)
-						Log.On (framework).Add ($"!extra-null-allowed! '{method.FullName}' has a extraneous [NullAllowed] on parameter '{managedParam.Name}' block parameter #{nativeParamIndex}");
+						Log.On (framework).Add ($"!extra-null-allowed! '{method.FullName}' has an extraneous '?' on parameter '{managedParam.Name}' block parameter #{nativeParamIndex}");
 					break;
 				case CXTypeNullabilityKind.CXTypeNullability_Nullable:
 					if (managedNullability != Null.Annotated)
-						Log.On (framework).Add ($"!missing-null-allowed! '{method.FullName}' is missing an [NullAllowed] on parameter '{managedParam.Name}' block parameter #{nativeParamIndex}");
+						Log.On (framework).Add ($"!missing-null-allowed! '{method.FullName}' is missing a '?' on parameter '{managedParam.Name}' block parameter #{nativeParamIndex}");
 					break;
 				case CXTypeNullabilityKind.CXTypeNullability_Unspecified:
 					break;

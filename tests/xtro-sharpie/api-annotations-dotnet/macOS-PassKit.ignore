@@ -27,3 +27,16 @@
 !missing-enum! PKAddressField not bound
 
 ## all members are decorated but not the type themselves
+
+# results from initial block parameter nullability analysis
+!missing-null-allowed! 'System.Void PassKit.PKAddShareablePassConfiguration::GetConfiguration(PassKit.PKShareablePassMetadata[],PassKit.PKAddShareablePassConfigurationPrimaryAction,System.Action`2<PassKit.PKAddShareablePassConfiguration,Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void PassKit.PKAddShareablePassConfiguration::GetConfiguration(PassKit.PKShareablePassMetadata[],PassKit.PKAddShareablePassConfigurationPrimaryAction,System.Action`2<PassKit.PKAddShareablePassConfiguration,Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #1
+!missing-null-allowed! 'System.Void PassKit.PKAddShareablePassConfiguration::GetConfiguration(PassKit.PKShareablePassMetadata[],System.String,PassKit.PKAddShareablePassConfigurationPrimaryAction,System.Action`2<PassKit.PKAddShareablePassConfiguration,Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void PassKit.PKAddShareablePassConfiguration::GetConfiguration(PassKit.PKShareablePassMetadata[],System.String,PassKit.PKAddShareablePassConfigurationPrimaryAction,System.Action`2<PassKit.PKAddShareablePassConfiguration,Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #1
+!missing-null-allowed! 'System.Void PassKit.PKPassLibrary::ActivateSecureElementPass(PassKit.PKSecureElementPass,Foundation.NSData,System.Action`2<System.Boolean,Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #1
+!missing-null-allowed! 'System.Void PassKit.PKPassLibrary::GetEncryptedServiceProviderData(PassKit.PKSecureElementPass,System.Action`2<Foundation.NSDictionary,Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void PassKit.PKPassLibrary::GetEncryptedServiceProviderData(PassKit.PKSecureElementPass,System.Action`2<Foundation.NSDictionary,Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #1
+!missing-null-allowed! 'System.Void PassKit.PKPassLibrary::GetServiceProviderData(PassKit.PKSecureElementPass,System.Action`2<Foundation.NSData,Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void PassKit.PKPassLibrary::GetServiceProviderData(PassKit.PKSecureElementPass,System.Action`2<Foundation.NSData,Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #1
+!missing-null-allowed! 'System.Void PassKit.PKVehicleConnectionSession::GetSession(PassKit.PKSecureElementPass,PassKit.IPKVehicleConnectionDelegate,System.Action`2<PassKit.PKVehicleConnectionSession,Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void PassKit.PKVehicleConnectionSession::GetSession(PassKit.PKSecureElementPass,PassKit.IPKVehicleConnectionDelegate,System.Action`2<PassKit.PKVehicleConnectionSession,Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #1

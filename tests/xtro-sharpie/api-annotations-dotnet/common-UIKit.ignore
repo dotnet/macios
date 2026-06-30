@@ -191,4 +191,3 @@
 
 # updated sharpie results
 !missing-protocol-conformance! UIWindowScene should conform to UITraitEnvironment (defined in '' category)
-

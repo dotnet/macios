@@ -1,0 +1,2 @@
+!missing-null-allowed! 'System.Void GameKit.GKLocalPlayer::set_AuthenticateHandler(System.Action`2<UIKit.UIViewController,Foundation.NSError>)' is missing a '?' on parameter 'value' block parameter #0
+!missing-null-allowed! 'System.Void GameKit.GKLocalPlayer::set_AuthenticateHandler(System.Action`2<UIKit.UIViewController,Foundation.NSError>)' is missing a '?' on parameter 'value' block parameter #1

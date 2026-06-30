@@ -1,0 +1,6 @@
+
+# results from initial block parameter nullability analysis
+!missing-null-allowed! 'System.Void CryptoTokenKit.TKSmartCard::BeginSession(System.Action`2<System.Boolean,Foundation.NSError>)' is missing a '?' on parameter 'reply' block parameter #1
+!missing-null-allowed! 'System.Void CryptoTokenKit.TKSmartCard::TransmitRequest(Foundation.NSData,System.Action`2<Foundation.NSData,Foundation.NSError>)' is missing a '?' on parameter 'reply' block parameter #0
+!missing-null-allowed! 'System.Void CryptoTokenKit.TKSmartCard::TransmitRequest(Foundation.NSData,System.Action`2<Foundation.NSData,Foundation.NSError>)' is missing a '?' on parameter 'reply' block parameter #1
+!missing-null-allowed! 'System.Void CryptoTokenKit.TKSmartCardUserInteraction::Run(System.Action`2<System.Boolean,Foundation.NSError>)' is missing a '?' on parameter 'reply' block parameter #1

@@ -25,3 +25,5 @@
 # AVAudioSessionInterruptionReasonKey is API_UNAVAILABLE(tvos); the header's contradictory
 # API_DEPRECATED(tvos(14.5, 27.0)) makes upstream libclang believe it exists on tvOS.
 !missing-field! AVAudioSessionInterruptionReasonKey not bound
+
+!missing-null-allowed! 'System.Void AVFoundation.AVCapturePhotoOutput::SetPreparedPhotoSettings(AVFoundation.AVCapturePhotoSettings[],System.Action`2<System.Boolean,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1

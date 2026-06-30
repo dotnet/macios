@@ -25,29 +25,25 @@ namespace WebKit {
 		Right = 2,
 	}
 
-	/// <summary>To be added.</summary>
-	///     <remarks>To be added.</remarks>
+	/// <summary>Provides data for the web navigation policy event, including the navigation type, mouse button, and modifier flags.</summary>
 	[ObsoletedOSPlatform ("macos10.14", "No longer supported.")]
 	[SupportedOSPlatform ("macos")]
 	partial class WebNavigationPolicyEventArgs {
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the type of navigation that triggered this policy decision.</summary>
+		/// <value>The <see cref="WebNavigationType" /> of the action.</value>
 		public WebNavigationType NavigationType {
 			get { return (WebNavigationType) (((NSNumber?) ActionInformation [WebPolicyDelegate.WebActionNavigationTypeKey])?.Int32Value ?? 0); }
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the element information dictionary for the action, if available.</summary>
+		/// <value>A dictionary containing information about the element that triggered the action, or <see langword="null" /> if not available.</value>
 		public NSDictionary? ElementInfo {
 			get { return ActionInformation [WebPolicyDelegate.WebActionElementKey] as NSDictionary; }
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the mouse button that triggered the navigation action.</summary>
+		/// <value>The <see cref="WebActionMouseButton" /> that was pressed, or <see cref="WebActionMouseButton.None" /> if no button was pressed.</value>
 		public WebActionMouseButton MouseButton {
 			get {
 				var number = ActionInformation [WebPolicyDelegate.WebActionButtonKey] as NSNumber;
@@ -59,16 +55,14 @@ namespace WebKit {
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the keyboard modifier flags that were active during the navigation action.</summary>
+		/// <value>The modifier flags as an unsigned integer bitmask.</value>
 		public uint Flags {
 			get { return ((NSNumber?) ActionInformation [WebPolicyDelegate.WebActionModifierFlagsKey])?.UInt32Value ?? 0; }
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the original URL that triggered the navigation action.</summary>
+		/// <value>The original URL, or <see langword="null" /> if not available.</value>
 		public NSUrl? OriginalUrl {
 			get { return ActionInformation [WebPolicyDelegate.WebActionOriginalUrlKey] as NSUrl; }
 		}

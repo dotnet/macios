@@ -47,3 +47,12 @@
 !missing-selector! MPMediaItem::title not bound
 !missing-selector! MPMediaItem::userGrouping not bound
 !missing-selector! MPMediaItem::isPreorder not bound
+
+# results from initial block parameter nullability analysis
+!missing-null-allowed! 'System.Void MediaPlayer.MPMediaLibrary::AddItem(System.String,System.Action`2<MediaPlayer.MPMediaEntity[],Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1
+!missing-null-allowed! 'System.Void MediaPlayer.MPMediaLibrary::GetPlaylist(Foundation.NSUuid,MediaPlayer.MPMediaPlaylistCreationMetadata,System.Action`2<MediaPlayer.MPMediaPlaylist,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void MediaPlayer.MPMediaLibrary::GetPlaylist(Foundation.NSUuid,MediaPlayer.MPMediaPlaylistCreationMetadata,System.Action`2<MediaPlayer.MPMediaPlaylist,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1
+!missing-null-allowed! 'System.Void MediaPlayer.MPMediaPlaylist::AddItem(System.String,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void MediaPlayer.MPMediaPlaylist::AddMediaItems(MediaPlayer.MPMediaItem[],System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void MediaPlayer.MPMusicPlayerApplicationController::Perform(System.Action`1<MediaPlayer.MPMusicPlayerControllerMutableQueue>,System.Action`2<MediaPlayer.MPMusicPlayerControllerQueue,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1
+!missing-null-allowed! 'System.Void MediaPlayer.MPMusicPlayerController::PrepareToPlay(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0

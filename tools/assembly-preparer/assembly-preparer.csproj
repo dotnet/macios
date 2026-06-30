@@ -165,8 +165,32 @@
 		<Compile Include="../dotnet-linker/Steps/AssemblyModifierStep.cs">
 			<Link>external/tools/dotnet-linker/Steps/AssemblyModifierStep.cs</Link>
 		</Compile>
+		<Compile Include="../dotnet-linker/Steps/ComputeAOTArguments.cs">
+			<Link>external/tools/dotnet-linker/Steps/ComputeAOTArguments.cs</Link>
+		</Compile>
+		<Compile Include="../dotnet-linker/Steps/ComputeNativeBuildFlagsStep.cs">
+			<Link>external/tools/dotnet-linker/Steps/ComputeNativeBuildFlagsStep.cs</Link>
+		</Compile>
 		<Compile Include="../dotnet-linker/Steps/ConfigurationAwareStep.cs">
 			<Link>external/tools/dotnet-linker/Steps/ConfigurationAwareStep.cs</Link>
+		</Compile>
+		<Compile Include="../dotnet-linker/Steps/DoneStep.cs">
+			<Link>external/tools/dotnet-linker/Steps/DoneStep.cs</Link>
+		</Compile>
+		<Compile Include="../dotnet-linker/Steps/ExtractBindingLibrariesStep.cs">
+			<Link>external/tools/dotnet-linker/Steps/ExtractBindingLibrariesStep.cs</Link>
+		</Compile>
+		<Compile Include="../dotnet-linker/Steps/GatherFrameworksStep.cs">
+			<Link>external/tools/dotnet-linker/Steps/GatherFrameworksStep.cs</Link>
+		</Compile>
+		<Compile Include="../dotnet-linker/Steps/GenerateMainStep.cs">
+			<Link>external/tools/dotnet-linker/Steps/GenerateMainStep.cs</Link>
+		</Compile>
+		<Compile Include="../dotnet-linker/Steps/GenerateReferencesStep.cs">
+			<Link>external/tools/dotnet-linker/Steps/GenerateReferencesStep.cs</Link>
+		</Compile>
+		<Compile Include="../dotnet-linker/Steps/InlineClassGetHandleStep.cs">
+			<Link>external/tools/dotnet-linker/Steps/InlineClassGetHandleStep.cs</Link>
 		</Compile>
 		<Compile Include="../dotnet-linker/Steps/InlineDlfcnMethodsStep.cs">
 			<Link>external/tools/dotnet-linker/Steps/InlineDlfcnMethodsStep.cs</Link>
@@ -179,6 +203,9 @@
 		</Compile>
 		<Compile Include="../dotnet-linker/Steps/PreserveBlockCodeStep.cs">
 			<Link>external/tools/dotnet-linker/Steps/PreserveBlockCodeStep.cs</Link>
+		</Compile>
+		<Compile Include="../dotnet-linker/Steps/RegistrarStep.cs">
+			<Link>external/tools/dotnet-linker/Steps/RegistrarStep.cs</Link>
 		</Compile>
 		<Compile Include="../dotnet-linker/Steps/SetBeforeFieldInitStep.cs">
 			<Link>external/tools/dotnet-linker/Steps/SetBeforeFieldInitStep.cs</Link>
@@ -201,6 +228,9 @@
 		<Compile Include="../linker/MonoTouch.Tuner/Extensions.cs">
 		  <Link>external/tools/linker/MonoTouch.Tuner/Extensions.cs</Link>
 		</Compile>
+		<Compile Include="../linker/MonoTouch.Tuner/ListExportedSymbols.cs">
+		  <Link>external/tools/linker/MonoTouch.Tuner/ListExportedSymbols.cs</Link>
+		</Compile>
 		<Compile Include="../linker/ObjCExtensions.cs">
 			<Link>external/tools/linker/ObjCExtensions.cs</Link>
 		</Compile>
@@ -209,6 +239,9 @@
 		</Compile>
 		<Compile Include="../linker/RegistrarRemovalTrackingStep.cs">
 			<Link>external/tools/linker/RegistrarRemovalTrackingStep.cs</Link>
+		</Compile>
+		<Compile Include="../linker/RemoveUserResourcesSubStep.cs">
+			<Link>external/tools/linker/RemoveUserResourcesSubStep.cs</Link>
 		</Compile>
 		<Compile Include="../../src/Foundation/ExportAttribute.cs">
 			<Link>external/src/Foundation/ExportAttribute.cs</Link>
@@ -260,6 +293,9 @@
 		</Compile>
 		<Compile Include="../dotnet-linker/DocumentionComments.cs">
 			<Link>external/tools/dotnet-linker/DocumentionComments.cs</Link>
+		</Compile>
+		<Compile Include="../common/CompilerFlags.cs">
+			<Link>external/tools/common/CompilerFlags.cs</Link>
 		</Compile>
 		<Compile Include="../common/SdkVersions.cs">
 			<Link>external/tools/common/SdkVersions.cs</Link>

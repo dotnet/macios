@@ -1,0 +1,8 @@
+
+# results from initial block parameter nullability analysis
+!missing-null-allowed! 'System.Void Cinematic.CNAssetInfo::LoadFromAsset(AVFoundation.AVAsset,System.Action`2<Cinematic.CNAssetInfo,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Cinematic.CNAssetInfo::LoadFromAsset(AVFoundation.AVAsset,System.Action`2<Cinematic.CNAssetInfo,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1
+!missing-null-allowed! 'System.Void Cinematic.CNRenderingSessionAttributes::Load(AVFoundation.AVAsset,System.Action`2<Cinematic.CNRenderingSessionAttributes,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Cinematic.CNRenderingSessionAttributes::Load(AVFoundation.AVAsset,System.Action`2<Cinematic.CNRenderingSessionAttributes,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1
+!missing-null-allowed! 'System.Void Cinematic.CNScript::Load(AVFoundation.AVAsset,Cinematic.CNScriptChanges,Foundation.NSProgress,System.Action`2<Cinematic.CNScript,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Cinematic.CNScript::Load(AVFoundation.AVAsset,Cinematic.CNScriptChanges,Foundation.NSProgress,System.Action`2<Cinematic.CNScript,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1

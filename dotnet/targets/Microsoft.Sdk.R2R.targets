@@ -75,18 +75,26 @@
 	<!--
 		Exclude user assemblies from R2R composite so they run interpreted for debugging.
 		User assembly is defined as anything not coming from a NuGet package.
+
+		Only consider items published as managed assemblies to the root of the app bundle
+		(PublishFolderType == 'Assembly'). Loose assemblies copied into resource subfolders
+		(PublishFolderType == 'Resource', e.g. tooling assets) have an empty NuGetPackageId
+		and would otherwise be misclassified as user assemblies. Because the exclusion is
+		matched by file name, such a resource copy sharing a name with a framework/runtime-pack
+		assembly (e.g. Microsoft.Extensions.Primitives.dll) would wrongly exclude the real
+		assembly from the R2R composite and break crossgen2.
 	-->
 	<Target Name="_SelectR2RAssemblies"
 			Condition="'$(FilterReadyToRunAssemblies)' == 'true' And '$(RuntimeIdentifiers)' == ''"
 			BeforeTargets="ResolveReadyToRunCompilers">
 		<ItemGroup>
-			<_ResolvedAssembliesToPublish Include="@(ResolvedFileToPublish)" Condition="'%(Extension)' == '.dll' And '%(ResolvedFileToPublish.Culture)' == '' And '%(ResolvedFileToPublish.DestinationSubDirectory)' == ''" />
+			<_ResolvedAssembliesToPublish Include="@(ResolvedFileToPublish)" Condition="'%(Extension)' == '.dll' And '%(ResolvedFileToPublish.Culture)' == '' And '%(ResolvedFileToPublish.DestinationSubDirectory)' == '' And '%(ResolvedFileToPublish.PublishFolderType)' == 'Assembly'" />
 			<_NonUserAssemblies
 				Include="@(_ResolvedAssembliesToPublish)"
 				Condition="'%(_ResolvedAssembliesToPublish.NuGetPackageId)' != ''" />
 			<_UserAssemblies Include="@(_ResolvedAssembliesToPublish)" Exclude="@(_NonUserAssemblies)" />
 			<PublishReadyToRunExclude Include="@(_UserAssemblies -> '%(Filename)%(Extension)')" />
-			<PublishReadyToRunCompositeRoots Condition="$(RuntimeIdentifier.EndsWith('-arm64'))" Include="System.Private.CoreLib.dll" KeepDuplicates="false" />
+			<PublishReadyToRunCompositeRoots Include="System.Private.CoreLib.dll" KeepDuplicates="false" />
 		</ItemGroup>
 
 		<!-- Hash the R2R input assemblies so we can detect when the set actually changes -->

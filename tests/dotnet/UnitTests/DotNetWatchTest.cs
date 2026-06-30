@@ -57,11 +57,9 @@ namespace Xamarin.Tests {
 			}
 
 			var debugLog = new TeeTextWriter (debugLogWriters.ToArray ());
-			var logLock = new object ();
 			void Log (string message)
 			{
-				lock (logLock)
-					debugLog.WriteLine ($"[{DateTime.Now:HH:mm:ss.fff}] {message}");
+				debugLog.WriteLine ($"[{DateTime.Now:HH:mm:ss.fff}] {message}");
 			}
 
 			if (verboseLogging)
@@ -282,7 +280,9 @@ namespace Xamarin.Tests {
 				}
 
 				Log ("DotNetWatch test finished.");
-				debugLog.Dispose ();
+				// Don't dispose 'debugLog' here: output can still arrive after the test has finished, because things
+				// are happening on other threads (the polling thread and the 'dotnet watch' output callbacks). Just
+				// leave it for the GC to collect whenever it can.
 			}
 		}
 
@@ -366,8 +366,12 @@ namespace Xamarin.Tests {
 		}
 
 		// A TextWriter that forwards everything written to it to a set of other TextWriters.
+		// All writes are synchronized, because 'debugLog' is written to from multiple threads (the test thread, the
+		// output polling thread, and the 'dotnet watch' output callbacks), as well as passed to
+		// Execution.RunWithCallbacksAsync (which writes to it without any locking on our part).
 		sealed class TeeTextWriter : TextWriter {
 			readonly TextWriter [] writers;
+			readonly object lockObj = new object ();
 
 			public TeeTextWriter (params TextWriter [] writers)
 			{
@@ -378,39 +382,33 @@ namespace Xamarin.Tests {
 
 			public override void Write (char value)
 			{
-				foreach (var writer in writers)
-					writer.Write (value);
+				lock (lockObj) {
+					foreach (var writer in writers)
+						writer.Write (value);
+				}
 			}
 
 			public override void Write (string? value)
 			{
-				foreach (var writer in writers)
-					writer.Write (value);
+				lock (lockObj) {
+					foreach (var writer in writers)
+						writer.Write (value);
+				}
 			}
 
 			public override void WriteLine (string? value)
 			{
-				foreach (var writer in writers)
-					writer.WriteLine (value);
+				lock (lockObj) {
+					foreach (var writer in writers)
+						writer.WriteLine (value);
+				}
 			}
 
 			public override void Flush ()
 			{
-				foreach (var writer in writers)
-					writer.Flush ();
-			}
-
-			protected override void Dispose (bool disposing)
-			{
-				base.Dispose (disposing);
-				if (!disposing)
-					return;
-				foreach (var writer in writers) {
-					try {
-						writer.Dispose ();
-					} catch {
-						// Ignore exceptions when disposing (e.g. the terminal might have gone away).
-					}
+				lock (lockObj) {
+					foreach (var writer in writers)
+						writer.Flush ();
 				}
 			}
 		}

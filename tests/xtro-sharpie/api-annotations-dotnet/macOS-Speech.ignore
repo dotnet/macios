@@ -1,2 +1,5 @@
 # xcode 15, these are all private APIs
 
+# results from initial block parameter nullability analysis
+!missing-null-allowed! 'Speech.SFSpeechRecognitionTask Speech.SFSpeechRecognizer::GetRecognitionTask(Speech.SFSpeechRecognitionRequest,System.Action`2<Speech.SFSpeechRecognitionResult,Foundation.NSError>)' is missing a '?' on parameter 'resultHandler' block parameter #0
+!missing-null-allowed! 'Speech.SFSpeechRecognitionTask Speech.SFSpeechRecognizer::GetRecognitionTask(Speech.SFSpeechRecognitionRequest,System.Action`2<Speech.SFSpeechRecognitionResult,Foundation.NSError>)' is missing a '?' on parameter 'resultHandler' block parameter #1

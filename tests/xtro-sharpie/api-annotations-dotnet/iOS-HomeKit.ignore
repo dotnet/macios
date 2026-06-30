@@ -4,3 +4,59 @@
 
 # Apple removed this enum value from native headers in Xcode 26.4
 !extra-enum-value! Managed value 106 for HMError.QuotaExceeded not found in native headers
+
+# results from initial block parameter nullability analysis
+!missing-null-allowed! 'System.Void HomeKit.HMAccessory::Identify(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMAccessory::UpdateName(System.String,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMAccessorySetupManager::PerformAccessorySetup(HomeKit.HMAccessorySetupRequest,System.Action`2<HomeKit.HMAccessorySetupResult,Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMAccessorySetupManager::PerformAccessorySetup(HomeKit.HMAccessorySetupRequest,System.Action`2<HomeKit.HMAccessorySetupResult,Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #1
+!missing-null-allowed! 'System.Void HomeKit.HMCameraStream::UpdateAudioStreamSetting(HomeKit.HMCameraAudioStreamSetting,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMCharacteristic::EnableNotification(System.Boolean,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMCharacteristic::ReadValue(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMCharacteristic::UpdateAuthorizationData(Foundation.NSData,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMCharacteristic::WriteValue(Foundation.NSObject,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMCharacteristicWriteAction::UpdateTargetValue(Foundation.INSCopying,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMEventTrigger::UpdateEndEvents(HomeKit.HMEvent[],System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMEventTrigger::UpdateEvents(HomeKit.HMEvent[],System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMEventTrigger::UpdateExecuteOnce(System.Boolean,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMEventTrigger::UpdatePredicate(Foundation.NSPredicate,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMEventTrigger::UpdateRecurrences(Foundation.NSDateComponents[],System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMHome::AddAccessory(HomeKit.HMAccessory,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMHome::AddActionSet(System.String,System.Action`2<HomeKit.HMActionSet,Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMHome::AddActionSet(System.String,System.Action`2<HomeKit.HMActionSet,Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #1
+!missing-null-allowed! 'System.Void HomeKit.HMHome::AddRoom(System.String,System.Action`2<HomeKit.HMRoom,Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMHome::AddRoom(System.String,System.Action`2<HomeKit.HMRoom,Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #1
+!missing-null-allowed! 'System.Void HomeKit.HMHome::AddServiceGroup(System.String,System.Action`2<HomeKit.HMServiceGroup,Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMHome::AddServiceGroup(System.String,System.Action`2<HomeKit.HMServiceGroup,Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #1
+!missing-null-allowed! 'System.Void HomeKit.HMHome::AddTrigger(HomeKit.HMTrigger,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMHome::AddZone(System.String,System.Action`2<HomeKit.HMZone,Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMHome::AddZone(System.String,System.Action`2<HomeKit.HMZone,Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #1
+!missing-null-allowed! 'System.Void HomeKit.HMHome::AssignAccessory(HomeKit.HMAccessory,HomeKit.HMRoom,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMHome::ExecuteActionSet(HomeKit.HMActionSet,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMHome::ManageUsers(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMHome::RemoveAccessory(HomeKit.HMAccessory,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMHome::RemoveActionSet(HomeKit.HMActionSet,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMHome::RemoveRoom(HomeKit.HMRoom,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMHome::RemoveServiceGroup(HomeKit.HMServiceGroup,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMHome::RemoveTrigger(HomeKit.HMTrigger,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMHome::RemoveZone(HomeKit.HMZone,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMHome::UnblockAccessory(HomeKit.HMAccessory,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMHome::UpdateName(System.String,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMHomeManager::AddHome(System.String,System.Action`2<HomeKit.HMHome,Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMHomeManager::AddHome(System.String,System.Action`2<HomeKit.HMHome,Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #1
+!missing-null-allowed! 'System.Void HomeKit.HMHomeManager::RemoveHome(HomeKit.HMHome,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMRoom::UpdateName(System.String,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMService::UpdateAssociatedServiceType(System.String,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMService::UpdateName(System.String,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMServiceGroup::AddService(HomeKit.HMService,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMServiceGroup::RemoveService(HomeKit.HMService,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMServiceGroup::UpdateName(System.String,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMTimerTrigger::UpdateFireDate(Foundation.NSDate,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMTimerTrigger::UpdateRecurrence(Foundation.NSDateComponents,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMTrigger::AddActionSet(HomeKit.HMActionSet,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMTrigger::Enable(System.Boolean,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMTrigger::RemoveActionSet(HomeKit.HMActionSet,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMTrigger::UpdateName(System.String,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMZone::AddRoom(HomeKit.HMRoom,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMZone::RemoveRoom(HomeKit.HMRoom,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void HomeKit.HMZone::UpdateName(System.String,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0

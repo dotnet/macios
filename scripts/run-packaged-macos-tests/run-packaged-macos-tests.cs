@@ -254,16 +254,17 @@ return failedSuites > 0 ? 1 : 0;
 
 (int ExitCode, string Output) ExecuteWithTimeout (string executable, string [] arguments, int timeoutSeconds)
 {
-	var launchTimeout = TimeSpan.FromSeconds (10);
+	var launchTimeout = TimeSpan.FromSeconds (30);
 	var executionTimeout = TimeSpan.FromSeconds (timeoutSeconds);
 	var maxLaunchAttempts = 10;
 	var pid = Process.GetCurrentProcess ().Id;
 
+	var outputSb = new StringBuilder ();
+	string output;
+
 	for (var attempt = 0; attempt < maxLaunchAttempts; attempt++) {
 		var launchTimeoutFile = Path.GetFullPath ($"launch-timeout-sentinel-{pid}-{attempt}.txt");
 		using var launchTimedOut = new ManualResetEvent (false);
-
-		var outputSb = new StringBuilder ();
 
 		var p = new Process ();
 		p.StartInfo.FileName = executable;
@@ -289,7 +290,8 @@ return failedSuites > 0 ? 1 : 0;
 			if (p.WaitForExit ((int) launchTimeout.TotalMilliseconds)) {
 				// App finished before launch timeout
 			} else if (!File.Exists (launchTimeoutFile)) {
-				Console.WriteLine ($"Launch timed out after {launchTimeout.TotalSeconds} seconds.");
+				lock (outputSb)
+					outputSb.AppendLine ($"Launch timed out after {launchTimeout.TotalSeconds} seconds.");
 				launchTimedOut.Set ();
 				AbortProcess (p);
 			}
@@ -298,7 +300,8 @@ return failedSuites > 0 ? 1 : 0;
 		};
 
 		try {
-			Console.WriteLine ($"Launching (attempt #{attempt + 1}): {executable} {string.Join (" ", arguments)}");
+			lock (outputSb)
+				outputSb.AppendLine ($"Launching (attempt #{attempt + 1}): {executable} {string.Join (" ", arguments)}");
 			p.Start ();
 			p.BeginOutputReadLine ();
 			p.BeginErrorReadLine ();
@@ -306,27 +309,38 @@ return failedSuites > 0 ? 1 : 0;
 			launchTimer.Start ();
 
 			if (!p.WaitForExit ((int) executionTimeout.TotalMilliseconds)) {
-				Console.WriteLine ($"Execution timed out after {executionTimeout.TotalSeconds} seconds.");
+				lock (outputSb)
+					outputSb.AppendLine ($"Execution timed out after {executionTimeout.TotalSeconds} seconds.");
 				AbortProcess (p);
-				p.WaitForExit ();
 			}
+			// this is required, even if 'p.WaitForExit (timeout)' return true, to flush output buffers.
+			p.WaitForExit ();
 
 			launchTimer.Join ();
 
 			if (launchTimedOut.WaitOne (0)) {
-				Console.WriteLine ("Launching again since the launch timeout triggered.");
+				lock (outputSb)
+					outputSb.AppendLine ("Launching again since the launch timeout triggered.");
 				continue;
 			}
 
-			Console.WriteLine ($"Execution completed with exit code {p.ExitCode}");
-			return (p.ExitCode, outputSb.ToString ());
+			lock (outputSb) {
+				outputSb.AppendLine ($"Execution completed with exit code {p.ExitCode}");
+				output = outputSb.ToString ();
+			}
+			return (p.ExitCode, output);
 		} finally {
 			File.Delete (launchTimeoutFile);
 			p.Dispose ();
 		}
 	}
 
-	return (-1, "Failed to launch after maximum attempts");
+	lock (outputSb) {
+		outputSb.AppendLine ("Failed to launch after maximum attempts");
+		output = outputSb.ToString ();
+	}
+
+	return (-1, output);
 }
 
 void AbortProcess (Process process)

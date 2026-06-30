@@ -1,0 +1,2 @@
+# results from initial block parameter nullability analysis
+!missing-null-allowed! 'Foundation.NSProgress PhotosUI.PHProjectExtensionContext::UpdatedProjectInfo(PhotosUI.PHProjectInfo,System.Action`1<PhotosUI.PHProjectInfo>)' is missing a '?' on parameter 'completionHandler' block parameter #0

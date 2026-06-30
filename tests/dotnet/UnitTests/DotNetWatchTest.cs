@@ -334,8 +334,8 @@ namespace Xamarin.Tests {
 		// Returns the path to the terminal (tty) of the current process, similar to the "tty" command, or null if there's no terminal.
 		static string? GetCurrentTerminal ()
 		{
-			// Check the standard file descriptors (stdout = 1, stderr = 2, stdin = 0) for a terminal.
-			foreach (var fd in new [] { 1, 2, 0 }) {
+			// Check the file descriptors we write to (stdout = 1, stderr = 2) for a terminal.
+			foreach (var fd in new [] { 1, 2 }) {
 				var ptr = ttyname (fd);
 				if (ptr != IntPtr.Zero) {
 					var name = Marshal.PtrToStringAnsi (ptr);

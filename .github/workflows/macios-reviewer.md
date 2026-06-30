@@ -4,6 +4,7 @@ on:
     name: review
     events: [pull_request_comment]
   roles: [admin, maintain, write]
+environment: gh-aw-environment
 concurrency:
   group: "macios-reviewer-${{ github.event.issue.number || github.event.pull_request.number || github.run_id }}"
   cancel-in-progress: false
@@ -24,14 +25,16 @@ network:
     - "vsassets.io"
 tools:
   github:
+    github-token: ${{ secrets.GITHUB_TOKEN }}
     toolsets: [pull_requests, repos]
     min-integrity: approved
 safe-outputs:
+  github-token: ${{ secrets.GITHUB_TOKEN }}
   create-pull-request-review-comment:
     max: 50
   submit-pull-request-review:
     max: 1
-    allowed-events: [COMMENT, REQUEST_CHANGES]
+    allowed-events: [COMMENT]
     supersede-older-reviews: true
 ---
 
@@ -60,6 +63,6 @@ A maintainer commented `/review` on this pull request. Perform a thorough code r
 - Don't flag what CI catches (compiler errors, linter issues).
 - Don't review C# code formatting — it is handled automatically.
 - Avoid false positives — verify concerns given the full file context.
-- **Never submit an APPROVE event.** Use COMMENT for clean PRs (or re-reviews where previous issues are fixed) and REQUEST_CHANGES only when ❌ error-level issues are found. Submitting COMMENT on a re-review clears any previous REQUEST_CHANGES state.
+- **Never submit an APPROVE event.** Always use COMMENT — never REQUEST_CHANGES.
 - Prioritize: bugs > breaking changes > binding correctness > safety > performance > missing tests > duplication > consistency > documentation.
 - Ignore comments from the user 'vs-mobiletools-engineering-service2'.

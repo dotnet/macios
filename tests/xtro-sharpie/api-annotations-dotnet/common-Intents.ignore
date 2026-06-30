@@ -19,4 +19,3 @@
 !missing-null-allowed! 'System.Void Intents.INInteraction::DeleteGroupedInteractions(System.String,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
 !missing-null-allowed! 'System.Void Intents.INInteraction::DeleteInteractions(System.String[],System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
 !missing-null-allowed! 'System.Void Intents.INInteraction::DonateInteraction(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
-# results from initial block parameter nullability analysis

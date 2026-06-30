@@ -23,4 +23,3 @@
 !missing-null-allowed! 'System.Void CoreML.MLModelStructure::Load(CoreML.MLModelAsset,System.Action`2<CoreML.MLModelStructure,Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #1
 !missing-null-allowed! 'System.Void CoreML.MLModelStructure::Load(Foundation.NSUrl,System.Action`2<CoreML.MLModelStructure,Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #0
 !missing-null-allowed! 'System.Void CoreML.MLModelStructure::Load(Foundation.NSUrl,System.Action`2<CoreML.MLModelStructure,Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #1
-# results from initial block parameter nullability analysis

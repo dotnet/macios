@@ -12,4 +12,3 @@
 !missing-null-allowed! 'System.Void ReplayKit.RPScreenRecorder::StopRecording(Foundation.NSUrl,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
 !missing-null-allowed! 'System.Void ReplayKit.RPScreenRecorder::StopRecording(System.Action`2<ReplayKit.RPPreviewViewController,Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #0
 !missing-null-allowed! 'System.Void ReplayKit.RPScreenRecorder::StopRecording(System.Action`2<ReplayKit.RPPreviewViewController,Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #1
-# results from initial block parameter nullability analysis

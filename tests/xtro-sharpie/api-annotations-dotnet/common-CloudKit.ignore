@@ -57,4 +57,3 @@
 !missing-null-allowed! 'System.Void CloudKit.CKSyncEngine::FetchChanges(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
 !missing-null-allowed! 'System.Void CloudKit.CKSyncEngine::SendChanges(CloudKit.CKSyncEngineSendChangesOptions,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
 !missing-null-allowed! 'System.Void CloudKit.CKSyncEngine::SendChanges(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
-# results from initial block parameter nullability analysis

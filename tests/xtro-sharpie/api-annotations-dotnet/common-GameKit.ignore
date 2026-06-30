@@ -48,4 +48,3 @@
 !missing-null-allowed! 'System.Void GameKit.GKTurnBasedMatch::SendExchange(GameKit.GKTurnBasedParticipant[],Foundation.NSData,System.String,Foundation.NSObject[],System.Double,System.Action`2<GameKit.GKTurnBasedExchange,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
 !missing-null-allowed! 'System.Void GameKit.GKTurnBasedMatch::SendExchange(GameKit.GKTurnBasedParticipant[],Foundation.NSData,System.String,Foundation.NSObject[],System.Double,System.Action`2<GameKit.GKTurnBasedExchange,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1
 !missing-null-allowed! 'System.Void GameKit.GKTurnBasedMatch::SendReminder(GameKit.GKTurnBasedParticipant[],System.String,Foundation.NSObject[],System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
-# results from initial block parameter nullability analysis

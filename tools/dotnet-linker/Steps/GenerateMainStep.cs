@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
+using Xamarin.Bundler;
 using Xamarin.Linker;
 
 #nullable enable

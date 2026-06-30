@@ -227,7 +227,10 @@ namespace Xamarin.Tests {
 			try {
 				// Wait for the app to start and show initial output
 				Log ("Waiting for app start...");
-				var completedTask = Task.WhenAny (appStarted.Task, waitingForChanges.Task).GetAwaiter ().GetResult ();
+				if (!Task.WhenAny (appStarted.Task, waitingForChanges.Task).Wait (TimeSpan.FromMinutes (1))) {
+					Log ("Timed out waiting for the app to start.");
+					Assert.Fail ($"Timed out waiting for the app to start. Output:\n{string.Join ("\n", output)}\nDebug output:\n{string.Join ("\n", File.ReadAllLines (debugLogPath))}");
+				}
 				if (!appStarted.Task.IsCompleted) {
 					if (waitingForChanges.Task.IsCompleted && !waitingForChanges.Task.Result) {
 						Log ("The build failed before the app could start.");

@@ -44,16 +44,26 @@ namespace Xamarin.Bundler {
 			return log_warning_levels;
 		}
 
-		public static WarningLevel GetWarningLevel (IToolLog log, int code)
+		public static bool TryGetWarningLevel (IToolLog log, int code, out WarningLevel warningLevel)
 		{
+			warningLevel = default;
+
 			if (warning_levels.TryGetValue (log, out var log_warning_levels)) {
 				// code -1: all codes
-				if (log_warning_levels.TryGetValue (-1, out var level))
-					return level;
+				if (log_warning_levels.TryGetValue (-1, out warningLevel))
+					return true;
 
-				if (log_warning_levels.TryGetValue (code, out level))
-					return level;
+				if (log_warning_levels.TryGetValue (code, out warningLevel))
+					return true;
 			}
+
+			return false;
+		}
+
+		public static WarningLevel GetWarningLevel (IToolLog log, int code)
+		{
+			if (TryGetWarningLevel (log, code, out var warningLevel))
+				return warningLevel;
 
 			return WarningLevel.Warning;
 		}

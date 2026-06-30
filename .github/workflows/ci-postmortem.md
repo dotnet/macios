@@ -4,6 +4,7 @@ on:
 permissions:
   contents: read
   issues: read
+environment: gh-aw-environment
 engine:
   id: copilot
   model: claude-sonnet-4.5
@@ -19,9 +20,11 @@ network:
     - "vsassets.io"
 tools:
   github:
+    github-token: ${{ secrets.GITHUB_TOKEN }}
     toolsets: [issues, repos]
     min-integrity: none
 safe-outputs:
+  github-token: ${{ secrets.GITHUB_TOKEN }}
   create-issue:
     max: 20
   add-comment:

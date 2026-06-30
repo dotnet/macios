@@ -36,7 +36,7 @@ $(XTRO_SANITY): $(wildcard xtro-sanity/*.cs) $(wildcard xtro-sanity/*.csproj) $(
 	$(Q_GEN) unset MSBUILD_EXE_PATH && $(DOTNET) build xtro-sanity/xtro-sanity.csproj /bl:xtro-sanity.binlog $(DOTNET_BUILD_VERBOSITY)
 
 define DotNetAssemblyPath
-X$(2)_DOTNET ?= $(DOTNET_DIR)/packs/$($(2)_NUGET_RUNTIME_MANAGED_NAME)/$($(2)_WORKLOAD_VERSION)/runtimes/$(DOTNET_$(2)_RUNTIME_IDENTIFIERS_NO_ARCH)/lib/$(DOTNET_TFM)/$(DOTNET_$(2)_ASSEMBLY_NAME).dll
+X$(2)_DOTNET ?= $(DOTNET_DIR)/packs/$($(2)_NUGET_RUNTIME_MANAGED_NAME)/$($(2)_NUGET_VERSION_NO_METADATA)/runtimes/$(DOTNET_$(2)_RUNTIME_IDENTIFIERS_NO_ARCH)/lib/$(DOTNET_TFM)/$(DOTNET_$(2)_ASSEMBLY_NAME).dll
 endef
 $(foreach platform,$(XTRO_DOTNET_PLATFORMS),$(eval $(call DotNetAssemblyPath,$(platform),$(shell echo $(platform) | tr a-z A-Z))))
 

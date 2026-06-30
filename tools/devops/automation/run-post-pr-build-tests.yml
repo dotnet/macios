@@ -27,4 +27,4 @@ extends:
   parameters:
     isPR: true
     buildPackages: true
-    useACES: false  # flip to true to opt PR simulator tests into ACES; see templates/variables/common.yml
+    useACES: true  # flip to false to opt PR simulator tests out of ACES; see templates/variables/common.yml

@@ -5,6 +5,7 @@
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -294,6 +295,107 @@ namespace MonoTests.System.Net.Http {
 			} finally {
 				httpListener.Stop ();
 				httpListener.Close ();
+			}
+		}
+
+		// https://github.com/dotnet/macios/issues/25667
+		[Test]
+		public void StreamReadAsyncCallerCancellationThrowsOperationCanceledException ()
+		{
+			// Use a raw TCP server so we have full control over when bytes are sent on the wire.
+			var tcpListener = new TcpListener (IPAddress.Loopback, 0);
+			tcpListener.Start ();
+			var port = ((IPEndPoint) tcpListener.LocalEndpoint).Port;
+
+			var serverReady = new SemaphoreSlim (0, 1);
+
+			// Server accepts the HTTP request, sends response headers and a large
+			// first body chunk, then stalls (never sends the rest of the declared body).
+			var serverTask = Task.Run (async () => {
+				try {
+					serverReady.Release ();
+					using var tcpClient = await tcpListener.AcceptTcpClientAsync ().ConfigureAwait (false);
+					tcpClient.NoDelay = true;
+					var stream = tcpClient.GetStream ();
+
+					// Wait for the full HTTP request (ends with \r\n\r\n)
+					var requestBytes = new byte [8192];
+					var totalRead = 0;
+					while (true) {
+						var n = await stream.ReadAsync (requestBytes, totalRead, requestBytes.Length - totalRead).ConfigureAwait (false);
+						if (n == 0)
+							return;
+						totalRead += n;
+						var requestSoFar = Encoding.ASCII.GetString (requestBytes, 0, totalRead);
+						if (requestSoFar.Contains ("\r\n\r\n"))
+							break;
+					}
+
+					// Declare a large Content-Length, send a smaller body, then stall.
+					// This ensures NSUrlSession delivers the initial body data via
+					// DidReceiveData while keeping the connection open for more.
+					var bodyChunk = new string ('A', 4096);
+					var responseText = "HTTP/1.1 200 OK\r\n" +
+						$"Content-Length: {bodyChunk.Length * 10}\r\n" +
+						"Content-Type: text/plain\r\n" +
+						"\r\n" +
+						bodyChunk;
+					var responseBytes = Encoding.ASCII.GetBytes (responseText);
+					await stream.WriteAsync (responseBytes, 0, responseBytes.Length).ConfigureAwait (false);
+					await stream.FlushAsync ().ConfigureAwait (false);
+
+					// Keep the connection open until the client disconnects
+					var discardBuffer = new byte [1024];
+					while (await stream.ReadAsync (discardBuffer, 0, discardBuffer.Length).ConfigureAwait (false) > 0) {
+					}
+				} catch (ObjectDisposedException) {
+					// listener was stopped
+				} catch (SocketException) {
+					// listener was stopped
+				}
+			});
+
+			Type caughtExceptionType = null;
+
+			try {
+				var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
+					await serverReady.WaitAsync ().ConfigureAwait (false);
+
+					using var handler = new NSUrlSessionHandler ();
+					using var httpClient = new HttpClient (handler);
+					httpClient.Timeout = TimeSpan.FromMinutes (5);
+
+					using var request = new HttpRequestMessage (HttpMethod.Get, $"http://127.0.0.1:{port}/stall");
+					using var response = await httpClient.SendAsync (request, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait (false);
+					using var stream = await response.Content.ReadAsStreamAsync ().ConfigureAwait (false);
+
+					// First read succeeds (server sent 4KB of body data)
+					var buffer = new byte [8192];
+					var bytesRead = await stream.ReadAsync (buffer, 0, buffer.Length).ConfigureAwait (false);
+					Assert.That (bytesRead, Is.GreaterThan (0), "First read should return data");
+
+					// Second read: cancel after 250ms via caller token.
+					// The server declared a much larger Content-Length but stopped
+					// sending, so ReadAsync will block in the polling loop until
+					// the caller token fires.
+					using var cts = new CancellationTokenSource (TimeSpan.FromMilliseconds (250));
+					try {
+						await stream.ReadAsync (buffer, 0, buffer.Length, cts.Token).ConfigureAwait (false);
+						Assert.Fail ("Expected an exception from the cancelled ReadAsync");
+					} catch (Exception ex) {
+						caughtExceptionType = ex.GetType ();
+					}
+				}, out var ex2);
+
+				Assert.That (done, Is.True, "Test timed out");
+				Assert.That (ex2, Is.Null, $"Unexpected exception: {ex2}");
+
+				// Caller cancellation should surface as OperationCanceledException (or a subclass like TaskCanceledException),
+				// not as TimeoutException. TimeoutException should be reserved for actual request timeouts.
+				Assert.That (typeof (OperationCanceledException).IsAssignableFrom (caughtExceptionType), Is.True,
+					$"Expected OperationCanceledException but got {caughtExceptionType}");
+			} finally {
+				tcpListener.Stop ();
 			}
 		}
 

@@ -10,6 +10,9 @@ using Mono.Cecil;
 using Mono.Linker;
 using Mono.Linker.Steps;
 
+#if ASSEMBLY_PREPARER
+using Xamarin.Build;
+#endif
 using Xamarin.Bundler;
 using Xamarin.Utils;
 using Xamarin.Tuner;
@@ -88,6 +91,7 @@ namespace Xamarin.Linker {
 
 #if ASSEMBLY_PREPARER
 		public List<AssemblyDefinition> Assemblies => Application.LinkContext.Assemblies;
+		public required List<AssemblyPreparerInfo> AssemblyInfos;
 		public List<(string Path, AssemblyDefinition Assembly, string? OriginatingAssembly)> AddedAssemblies = new ();
 #else
 		// The list of assemblies is populated in CollectAssembliesStep.

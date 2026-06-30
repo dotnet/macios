@@ -5,7 +5,7 @@ using System.Reflection;
 #nullable enable
 
 public static class AttributeConversionManager {
-	public static Attribute ConvertPlatformAttribute (CustomAttributeData attribute, PlatformName platform)
+	public static Attribute ConvertPlatformAttribute (AttributeManager attributeManager, CustomAttributeData attribute, PlatformName platform)
 	{
 		var constructorArguments = new object [attribute.ConstructorArguments.Count];
 		for (int i = 0; i < attribute.ConstructorArguments.Count; ++i)
@@ -23,7 +23,7 @@ public static class AttributeConversionManager {
 
 		if (AttributeFactory.ConstructorArguments.TryGetCtorArguments (
 				constructorArguments, platform, out var ctorValues, out var ctorTypes)) {
-			return AttributeFactory.CreateNewAttribute<IntroducedAttribute> (ctorTypes!, ctorValues!);
+			return AttributeFactory.CreateNewAttribute<IntroducedAttribute> (attributeManager, ctorTypes!, ctorValues!);
 		}
 
 		throw new NotImplementedException (unknownFormatError ());
@@ -99,7 +99,7 @@ public static class AttributeConversionManager {
 		throw new NotImplementedException ($"Unknown version format \"{enumName}\" in DetermineOldAvailabilityVersion");
 	}
 
-	public static IEnumerable<Attribute> ConvertAvailability (CustomAttributeData attribute)
+	public static IEnumerable<Attribute> ConvertAvailability (AttributeManager attributeManager, CustomAttributeData attribute)
 	{
 		string? message = null;
 		if (attribute.NamedArguments is null)
@@ -112,22 +112,22 @@ public static class AttributeConversionManager {
 			switch (arg.MemberName) {
 			case "Introduced": {
 				ParsedAvailabilityInfo availInfo = DetermineOldAvailabilityVersion (arg);
-				yield return AttributeFactory.CreateNewAttribute<IntroducedAttribute> (availInfo.Platform, availInfo.Major, availInfo.Minor, message: message);
+				yield return AttributeFactory.CreateNewAttribute<IntroducedAttribute> (attributeManager, availInfo.Platform, availInfo.Major, availInfo.Minor, message: message);
 				continue;
 			}
 			case "Deprecated": {
 				ParsedAvailabilityInfo availInfo = DetermineOldAvailabilityVersion (arg);
-				yield return AttributeFactory.CreateNewAttribute<DeprecatedAttribute> (availInfo.Platform, availInfo.Major, availInfo.Minor, message: message);
+				yield return AttributeFactory.CreateNewAttribute<DeprecatedAttribute> (attributeManager, availInfo.Platform, availInfo.Major, availInfo.Minor, message: message);
 				continue;
 			}
 			case "Obsoleted": {
 				ParsedAvailabilityInfo availInfo = DetermineOldAvailabilityVersion (arg);
-				yield return AttributeFactory.CreateNewAttribute<ObsoletedAttribute> (availInfo.Platform, availInfo.Major, availInfo.Minor, message: message);
+				yield return AttributeFactory.CreateNewAttribute<ObsoletedAttribute> (attributeManager, availInfo.Platform, availInfo.Major, availInfo.Minor, message: message);
 				continue;
 			}
 			case "Unavailable": {
 				ParsedAvailabilityInfo availInfo = DetermineOldAvailabilityVersion (arg);
-				yield return AttributeFactory.CreateNewAttribute<UnavailableAttribute> (availInfo.Platform, message: message);
+				yield return AttributeFactory.CreateNewAttribute<UnavailableAttribute> (attributeManager, availInfo.Platform, message: message);
 				continue;
 			}
 			case "Message":

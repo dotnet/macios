@@ -13,16 +13,15 @@
 namespace WebKit {
 
 	// Convenience enum.
-	/// <summary>To be added.</summary>
-	///     <remarks>To be added.</remarks>
+	/// <summary>Specifies the mouse button that triggered a web navigation action.</summary>
 	public enum WebActionMouseButton {
-		/// <summary>To be added.</summary>
+		/// <summary>No mouse button was pressed.</summary>
 		None = -1,
-		/// <summary>To be added.</summary>
+		/// <summary>The left mouse button was pressed.</summary>
 		Left = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The middle mouse button was pressed.</summary>
 		Middle = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The right mouse button was pressed.</summary>
 		Right = 2,
 	}
 

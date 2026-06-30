@@ -2,11 +2,6 @@
 !missing-selector! INRideOption::identifier not bound
 !missing-selector! INRideOption::setIdentifier: not bound
 
-# results from initial block parameter nullability analysis
-!missing-null-allowed! 'System.Void Intents.INInteraction::DeleteAllInteractions(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
-!missing-null-allowed! 'System.Void Intents.INInteraction::DeleteGroupedInteractions(System.String,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
-!missing-null-allowed! 'System.Void Intents.INInteraction::DeleteInteractions(System.String[],System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
-!missing-null-allowed! 'System.Void Intents.INInteraction::DonateInteraction(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
 !missing-null-allowed! 'System.Void Intents.INRelevantShortcutStore::SetRelevantShortcuts(Intents.INRelevantShortcut[],System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
 !missing-null-allowed! 'System.Void Intents.INVoiceShortcutCenter::GetVoiceShortcut(Foundation.NSUuid,System.Action`2<Intents.INVoiceShortcut,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
 !missing-null-allowed! 'System.Void Intents.INVoiceShortcutCenter::GetVoiceShortcut(Foundation.NSUuid,System.Action`2<Intents.INVoiceShortcut,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1

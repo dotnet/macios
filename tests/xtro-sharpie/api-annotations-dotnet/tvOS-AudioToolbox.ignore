@@ -8,7 +8,3 @@
 
 # this enum is declared as not available on tvOS, not sure why it shows up (it's visionOS-only)
 !missing-enum! CASoundStageSize not bound
-
-# results from initial block parameter nullability analysis
-!missing-null-allowed! 'System.Void AudioUnit.AUAudioUnit::FromComponentDescription(AudioUnit.AudioComponentDescription,AudioUnit.AudioComponentInstantiationOptions,System.Action`2<AudioUnit.AUAudioUnit,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
-!missing-null-allowed! 'System.Void AudioUnit.AUAudioUnit::FromComponentDescription(AudioUnit.AudioComponentDescription,AudioUnit.AudioComponentInstantiationOptions,System.Action`2<AudioUnit.AUAudioUnit,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1

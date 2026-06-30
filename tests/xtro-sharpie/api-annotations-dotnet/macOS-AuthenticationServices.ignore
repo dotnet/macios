@@ -10,8 +10,6 @@
 !missing-protocol-conformance! ASAuthorizationSecurityKeyPublicKeyCredentialProvider should conform to ASAuthorizationWebBrowserSecurityKeyPublicKeyCredentialProvider (defined in '' category)
 !missing-protocol-conformance! ASAuthorizationSecurityKeyPublicKeyCredentialRegistrationRequest should conform to ASAuthorizationWebBrowserSecurityKeyPublicKeyCredentialRegistrationRequest (defined in '' category)
 
-# results from initial block parameter nullability analysis
-!missing-null-allowed! 'System.Void AuthenticationServices.ASAuthorizationAppleIdProvider::GetCredentialState(System.String,System.Action`2<AuthenticationServices.ASAuthorizationAppleIdProviderCredentialState,Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #1
 !missing-null-allowed! 'System.Void AuthenticationServices.ASAuthorizationProviderExtensionAuthorizationRequest::PresentAuthorizationViewController(System.Action`2<System.Boolean,Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #1
 !missing-null-allowed! 'System.Void AuthenticationServices.ASAuthorizationProviderExtensionLoginConfiguration::Create(Foundation.NSUrl,System.String,System.String,System.Action`2<AuthenticationServices.ASAuthorizationProviderExtensionLoginConfiguration,Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #0
 !missing-null-allowed! 'System.Void AuthenticationServices.ASAuthorizationProviderExtensionLoginConfiguration::Create(Foundation.NSUrl,System.String,System.String,System.Action`2<AuthenticationServices.ASAuthorizationProviderExtensionLoginConfiguration,Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #1

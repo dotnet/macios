@@ -30,7 +30,7 @@ checkout:
 safe-outputs:
   github-token: ${{ secrets.GITHUB_TOKEN }}
   max-patch-files: 1000
-  max-patch-size: 10240
+  max-patch-size: 10240 # this is the maximum, bigger PRs must be created manually
   create-pull-request:
     max: 10
     draft: false

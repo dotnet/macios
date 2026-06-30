@@ -3,5 +3,7 @@
   "name": "Application tvOS",
   "description": "Projet de création d’une application tvOS .NET",
   "symbols/bundleId/description": "Remplace CFBundleIdentifier dans Info.plist",
-  "symbols/minOSVersion/description": "Remplace SupportedOSPlatformVersion dans le fichier projet"
+  "symbols/bundleId/displayName": "Bundle ID",
+  "symbols/minOSVersion/description": "Remplace SupportedOSPlatformVersion dans le fichier projet",
+  "symbols/minOSVersion/displayName": "Minimum OS version"
 }

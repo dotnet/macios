@@ -21,6 +21,7 @@
 //       [--timeout <seconds>]              Default timeout per test in seconds (default: 300)
 //       [--timeout-longer <seconds>]       Longer timeout for heavy tests (default: 600)
 //       [--launch-arguments <args>]        Extra arguments passed to test executables
+//       [--expected-macos-build-version <v>] Expected macOS build version (skip tests if mismatched)
 
 using System;
 using System.Collections.Generic;
@@ -46,6 +47,7 @@ var testOutputDir = "";
 var vsdropsUri = "";
 var defaultTimeout = 300;
 var longerTimeout = 600;
+var expectedMacOSBuildVersion = "";
 var launchArguments = new [] { "--autostart", "--autoexit" };
 
 for (int i = 0; i < args.Length; i++) {
@@ -92,6 +94,9 @@ for (int i = 0; i < args.Length; i++) {
 	case "--launch-arguments":
 		launchArguments = args [++i].Split (' ', StringSplitOptions.RemoveEmptyEntries);
 		break;
+	case "--expected-macos-build-version":
+		expectedMacOSBuildVersion = args [++i];
+		break;
 	default:
 		Console.Error.WriteLine ($"Unknown argument: {args [i]}");
 		return 1;
@@ -117,6 +122,20 @@ if (!Directory.Exists (testsDirectory)) {
 
 if (!string.IsNullOrEmpty (testOutputDir))
 	Directory.CreateDirectory (testOutputDir);
+
+// Check if the current macOS build version matches the expected one.
+// If running a beta macOS that doesn't match the expected beta, skip all tests.
+// Beta build versions end with a lowercase letter (e.g. "26A5368g"), while
+// stable build versions end with a digit (e.g. "24G720"). We only skip if
+// the current OS is a beta that doesn't match the expected one.
+if (!string.IsNullOrEmpty (expectedMacOSBuildVersion)) {
+	var currentBuildVersion = NativeMethods.GetSysctlString ("kern.osversion");
+	var isBeta = currentBuildVersion is not null && currentBuildVersion.Length > 0 && char.IsLower (currentBuildVersion [currentBuildVersion.Length - 1]);
+	if (isBeta && currentBuildVersion != expectedMacOSBuildVersion) {
+		Console.WriteLine ($"Current macOS build version '{currentBuildVersion}' is a beta that does not match expected '{expectedMacOSBuildVersion}'. Skipping tests.");
+		return 0;
+	}
+}
 
 var isAppleSilicon = RuntimeInformation.ProcessArchitecture == Architecture.Arm64 ||
 	Environment.GetEnvironmentVariable ("PROCESSOR_ARCHITECTURE")?.Contains ("ARM", StringComparison.OrdinalIgnoreCase) == true;

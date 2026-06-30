@@ -874,8 +874,6 @@
 !missing-null-allowed! 'System.Void AppKit.NSText::Unscript(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Void AppKit.NSTextAttachment::.ctor(Foundation.NSFileWrapper)' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Void AppKit.NSTextAttachment::set_AttachmentCell(AppKit.NSTextAttachmentCell)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextBlock::set_BackgroundColor(AppKit.NSColor)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextBlock::SetBorderColor(AppKit.NSColor)' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Void AppKit.NSTextContainer::set_TextView(AppKit.NSTextView)' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Void AppKit.NSTextFinder::set_Client(AppKit.INSTextFinderClient)' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Void AppKit.NSTextFinder::set_FindBarContainer(AppKit.INSTextFinderBarContainer)' is missing an [NullAllowed] on parameter #0

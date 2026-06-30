@@ -28,6 +28,7 @@ using NSCell = System.Object;
 using NSGlyphGenerator = System.Object;
 using NSGlyphStorageOptions = System.Object;
 using NSImageScaling = System.Object;
+using NSRectEdge = System.Object;
 using NSRulerMarker = System.Object;
 using NSRulerView = System.Object;
 using NSTextAttachmentCell = System.Object;
@@ -4781,13 +4782,7 @@ namespace UIKit {
 	[MacCatalyst (13, 1)]
 	[DesignatedDefaultCtor]
 	[BaseType (typeof (NSObject))]
-	interface NSTextBlock :
-#if MONOMAC
-		NSCoding, NSCopying, NSSecureCoding
-#else
-		NSSecureCoding, NSCopying
-#endif
-	{
+	interface NSTextBlock : NSSecureCoding, NSCopying {
 		[Export ("setValue:type:forDimension:")]
 		void SetValue (nfloat val, NSTextBlockValueType type, NSTextBlockDimension dimension);
 
@@ -4806,41 +4801,31 @@ namespace UIKit {
 		[Export ("contentWidthValueType")]
 		NSTextBlockValueType ContentWidthValueType { get; }
 
-#if MONOMAC
-		[NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Export ("setWidth:type:forLayer:edge:")]
 		void SetWidth (nfloat val, NSTextBlockValueType type, NSTextBlockLayer layer, NSRectEdge edge);
-#endif
 
 		[Export ("setWidth:type:forLayer:")]
 		void SetWidth (nfloat val, NSTextBlockValueType type, NSTextBlockLayer layer);
 
-#if MONOMAC
-		[NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Export ("widthForLayer:edge:")]
 		nfloat GetWidth (NSTextBlockLayer layer, NSRectEdge edge);
 
-		[NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Export ("widthValueTypeForLayer:edge:")]
 		NSTextBlockValueType WidthValueTypeForLayer (NSTextBlockLayer layer, NSRectEdge edge);
 
-		[NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Export ("setBorderColor:forEdge:")]
 		void SetBorderColor (NSColor color, NSRectEdge edge);
-#endif
 
 		[Export ("setBorderColor:")]
-#if MONOMAC
-		void SetBorderColor (NSColor color);
-#else
 		void SetBorderColor ([NullAllowed] NSColor color);
-#endif
 
-#if MONOMAC
-		[NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Export ("borderColorForEdge:")]
 		NSColor GetBorderColor (NSRectEdge edge);
-#endif
 
 		[Mac (27, 0), iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
 		[Export ("setWidth:type:forLayer:rectEdge:")]
@@ -4863,31 +4848,24 @@ namespace UIKit {
 		[return: NullAllowed]
 		NSColor GetBorderColor (CGRectEdge rectEdge);
 
-#if MONOMAC
-		[NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Export ("rectForLayoutAtPoint:inRect:textContainer:characterRange:")]
 		CGRect GetRectForLayout (CGPoint startingPoint, CGRect rect, NSTextContainer textContainer, NSRange charRange);
 
-		[NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Export ("boundsRectForContentRect:inRect:textContainer:characterRange:")]
 		CGRect GetBoundsRect (CGRect contentRect, CGRect rect, NSTextContainer textContainer, NSRange charRange);
 
-		[NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Export ("drawBackgroundWithFrame:inView:characterRange:layoutManager:")]
 		void DrawBackground (CGRect frameRect, [NullAllowed] NSView controlView, NSRange charRange, NSLayoutManager layoutManager);
-#endif
 
 		//Detected properties
 		[Export ("verticalAlignment")]
 		NSTextBlockVerticalAlignment VerticalAlignment { get; set; }
 
-#if MONOMAC
-		[Export ("backgroundColor", ArgumentSemantic.Copy)]
-		NSColor BackgroundColor { get; set; }
-#else
 		[NullAllowed, Export ("backgroundColor", ArgumentSemantic.Copy)]
 		NSColor BackgroundColor { get; set; }
-#endif
 	}
 
 	[MacCatalyst (13, 1)]
@@ -4917,19 +4895,17 @@ namespace UIKit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSTextBlock))]
 	interface NSTextTable {
-#if MONOMAC
-		[NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Export ("rectForBlock:layoutAtPoint:inRect:textContainer:characterRange:")]
 		CGRect GetRectForBlock (NSTextTableBlock block, CGPoint startingPoint, CGRect rect, NSTextContainer textContainer, NSRange charRange);
 
-		[NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Export ("boundsRectForBlock:contentRect:inRect:textContainer:characterRange:")]
 		CGRect GetBoundsRect (NSTextTableBlock block, CGRect contentRect, CGRect rect, NSTextContainer textContainer, NSRange charRange);
 
-		[NoMacCatalyst]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Export ("drawBackgroundForBlock:withFrame:inView:characterRange:layoutManager:")]
 		void DrawBackground (NSTextTableBlock block, CGRect frameRect, NSView controlView, NSRange charRange, NSLayoutManager layoutManager);
-#endif
 
 		//Detected properties
 		[Export ("numberOfColumns")]

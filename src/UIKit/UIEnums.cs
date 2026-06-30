@@ -4858,8 +4858,11 @@ namespace UIKit {
 	[Native]
 	public enum UIBarMinimizeBehavior : long {
 		Automatic = 0,
+		[NoTV]
 		Never,
+		[NoTV]
 		OnScrollDown,
+		[NoTV]
 		OnScrollUp,
 	}
 
@@ -4868,7 +4871,9 @@ namespace UIKit {
 	[Native]
 	public enum UIBarMinimizationSafeAreaAdjustment : long {
 		Automatic = 0,
+		[NoTV]
 		Enabled,
+		[NoTV]
 		Disabled,
 	}
 
@@ -4899,7 +4904,7 @@ namespace UIKit {
 	}
 
 	// NSInteger -> NSTextTable.h
-	[TV (9, 0), iOS (6, 0), MacCatalyst (13, 1)]
+	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSTextBlockValueType : long {
 		Absolute = 0,
@@ -4907,7 +4912,7 @@ namespace UIKit {
 	}
 
 	// NSInteger -> NSTextTable.h
-	[TV (9, 0), iOS (6, 0), MacCatalyst (13, 1)]
+	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSTextBlockDimension : long {
 		Width = 0,
@@ -4919,7 +4924,7 @@ namespace UIKit {
 	}
 
 	// NSInteger -> NSTextTable.h
-	[TV (9, 0), iOS (6, 0), MacCatalyst (13, 1)]
+	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSTextBlockLayer : long {
 		Padding = -1,
@@ -4928,7 +4933,7 @@ namespace UIKit {
 	}
 
 	// NSInteger -> NSTextTable.h
-	[TV (9, 0), iOS (6, 0), MacCatalyst (13, 1)]
+	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSTextBlockVerticalAlignment : long {
 		Top = 0,
@@ -4938,7 +4943,7 @@ namespace UIKit {
 	}
 
 	// NSInteger -> NSTextTable.h
-	[TV (9, 0), iOS (6, 0), MacCatalyst (13, 1)]
+	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSTextTableLayoutAlgorithm : long {
 		Automatic = 0,

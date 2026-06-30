@@ -62,7 +62,8 @@ namespace Xharness {
 
 			using (var proc = new Process ()) {
 				proc.StartInfo.FileName = GetDotNetExecutable (projectPath);
-				var args = new List<string> ();
+				proc.StartInfo.WorkingDirectory = dir;
+				var args = proc.StartInfo.ArgumentList;
 
 				args.Add ("build");
 				args.Add (projectPath);
@@ -84,8 +85,6 @@ namespace Xharness {
 					{ "MSBuildSDKsPath", null },
 				};
 
-				proc.StartInfo.Arguments = StringUtils.FormatArguments (args);
-				proc.StartInfo.WorkingDirectory = dir;
 
 				// Don't evaluate in parallel on multiple threads to avoid overloading the mac.
 				var acquired = await evaluate_semaphore.WaitAsync (TimeSpan.FromMinutes (5));

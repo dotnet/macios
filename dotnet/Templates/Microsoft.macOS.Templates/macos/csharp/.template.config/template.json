@@ -43,6 +43,19 @@
       "replaces": "minOSVersion",
       "datatype": "string",
       "defaultValue": "12.0"
+    },
+    "Framework": {
+      "type": "parameter",
+      "description": "The target framework for the project.",
+      "datatype": "choice",
+      "choices": [
+        {
+          "choice": "net10.0-macos",
+          "description": "Target net10.0-macos"
+        }
+      ],
+      "replaces": "net10.0-macos",
+      "defaultValue": "net10.0-macos"
     }
   },
   "defaultName": "macOSApp1"

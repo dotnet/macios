@@ -44,6 +44,19 @@
       "replaces": "minOSVersion",
       "datatype": "string",
       "defaultValue": "15.0"
+    },
+    "Framework": {
+      "type": "parameter",
+      "description": "The target framework for the project.",
+      "datatype": "choice",
+      "choices": [
+        {
+          "choice": "net10.0-maccatalyst",
+          "description": "Target net10.0-maccatalyst"
+        }
+      ],
+      "replaces": "net10.0-maccatalyst",
+      "defaultValue": "net10.0-maccatalyst"
     }
   },
   "defaultName": "MacCatalystApp1"

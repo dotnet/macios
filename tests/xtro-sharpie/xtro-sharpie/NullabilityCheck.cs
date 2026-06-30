@@ -271,7 +271,6 @@ namespace Extrospection {
 					break;
 
 				var managedTypeArg = git.GenericArguments [nativeParamIndex];
-				var managedTypeArgResolved = managedTypeArg.Resolve ();
 
 				// Skip value types — they can't be nullable reference types
 				if (managedTypeArg.IsValueType) {

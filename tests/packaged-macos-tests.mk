@@ -22,10 +22,6 @@ DOTNET_X64_LAUNCH_TIMEOUT_ENV=env LAUNCH_TIMEOUT_SECONDS=30
 endif
 
 include $(TOP)/scripts/run-with-timeout/fragment.mk
-include $(TOP)/scripts/mac-test-report-generator/fragment.mk
-
-build-mac-test-report-generator: $(MAC_TEST_REPORT_GENERATOR)
-	@echo "mac-test-report-generator built: $(MAC_TEST_REPORT_GENERATOR)"
 
 # Time test runs out after 5 minutes (300 seconds)
 LAUNCH_WITH_TIMEOUT=$(RUN_WITH_TIMEOUT_EXEC) 300

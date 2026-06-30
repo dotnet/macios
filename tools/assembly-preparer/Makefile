@@ -4,8 +4,14 @@ include $(TOP)/mk/rules.mk
 include ../common/Make.common
 
 # assembly-preparer.csproj.inc contains the $(assembly_preparer_dependencies) variable used to determine if assembly-preparer needs to be rebuilt or not.
+# Don't include (and thus try to rebuild) the .inc file when the target is
+# generated-files, because MSBuild may invoke 'make generated-files' in parallel
+# for multiple target frameworks, and the script that creates the .inc file
+# doesn't handle concurrent invocations (it uses shared intermediate files).
+ifneq ($(MAKECMDGOALS),generated-files)
 assembly-preparer.csproj.inc: export BUILD_VERBOSITY=$(MSBUILD_VERBOSITY)
 -include assembly-preparer.csproj.inc
+endif
 
 ASSEMBLY_PREPARER_NETCORE=bin/Debug/$(DOTNET_TFM)/assembly-preparer.dll
 ASSEMBLY_PREPARER_NETSTD=bin/Debug/netstandard2.0/assembly-preparer.dll

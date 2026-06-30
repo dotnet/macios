@@ -217,6 +217,15 @@ namespace Introspection {
 					return !TestRuntime.CheckXcodeVersion (12, 0);
 				break;
 
+			// UITextView declares NSTextViewportLayoutControllerDelegate conformance in the
+			// Xcode 27 headers (so xtro requires the managed conformance), but the native
+			// Mac Catalyst UITextView does not register the conformance at runtime, even
+			// though iOS and tvOS do. Skip the runtime conformance check on Mac Catalyst only.
+			case "UITextView":
+				if (protocolName == "NSTextViewportLayoutControllerDelegate")
+					return true;
+				break;
+
 			// We have to special case the following PKPayment* in MacCatalyst
 			// since it gets all of these via inheritance from UIView
 			case "PKPaymentButton":

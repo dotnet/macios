@@ -81,6 +81,8 @@ namespace MonoTouchFixtures.Security {
 							Assert.That (s.NegotiatedTlsProtocolVersion, Is.EqualTo (TlsProtocolVersion.Tls12).Or.EqualTo (TlsProtocolVersion.Tls13), "NegotiatedTlsProtocolVersion");
 							// we want to test the binding/API - not the exact value which can vary depending on the negotiation between the client (OS) and server...
 							Assert.That (s.NegotiatedTlsCipherSuite, Is.Not.EqualTo (0), "NegotiatedTlsCipherSuite");
+							if (s.ServerName is null)
+								TestRuntime.IgnoreInCI ("ServerName is null - likely network proxy interference");
 							Assert.That (s.ServerName, Is.EqualTo ("www.microsoft.com"), "ServerName");
 							// we don't have a TLS-PSK enabled server to test this
 							Assert.That (s.AccessPreSharedKeys ((psk, pskId) => { }), Is.False, "AccessPreSharedKeys");

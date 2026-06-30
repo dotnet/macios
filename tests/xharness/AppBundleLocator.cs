@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using Microsoft.DotNet.XHarness.Common.Execution;
 using Microsoft.DotNet.XHarness.Common.Logging;
+using Microsoft.DotNet.XHarness.Common.Utilities;
 using Microsoft.DotNet.XHarness.iOS.Shared;
 using Microsoft.DotNet.XHarness.iOS.Shared.Utilities;
 
@@ -61,27 +62,30 @@ namespace Xharness {
 
 			using (var proc = new Process ()) {
 				proc.StartInfo.FileName = GetDotNetExecutable (projectPath);
-				proc.StartInfo.WorkingDirectory = dir;
+				var args = new List<string> ();
 
-				proc.StartInfo.ArgumentList.Add ("build");
-				proc.StartInfo.ArgumentList.Add (projectPath);
-				proc.StartInfo.ArgumentList.Add ($"-getProperty:{evaluateProperty}");
+				args.Add ("build");
+				args.Add (projectPath);
+				args.Add ($"-getProperty:{evaluateProperty}");
 
 				if (!string.IsNullOrEmpty (dependsOnTargets))
-					proc.StartInfo.ArgumentList.Add ($"-t:{dependsOnTargets}");
+					args.Add ($"-t:{dependsOnTargets}");
 
-				proc.StartInfo.ArgumentList.Add ("-nologo");
-				proc.StartInfo.ArgumentList.Add ("-verbosity:quiet");
+				args.Add ("-nologo");
+				args.Add ("-verbosity:quiet");
 
 				if (properties is not null) {
 					foreach (var prop in properties)
-						proc.StartInfo.ArgumentList.Add ($"/p:{prop.Key}={prop.Value}");
+						args.Add ($"/p:{prop.Key}={prop.Value}");
 				}
 
 				var env = new Dictionary<string, string?> {
 					{ "MSBUILD_EXE_PATH", null },
 					{ "MSBuildSDKsPath", null },
 				};
+
+				proc.StartInfo.Arguments = StringUtils.FormatArguments (args);
+				proc.StartInfo.WorkingDirectory = dir;
 
 				// Don't evaluate in parallel on multiple threads to avoid overloading the mac.
 				var acquired = await evaluate_semaphore.WaitAsync (TimeSpan.FromMinutes (5));

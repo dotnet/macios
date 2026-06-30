@@ -1,7 +1,7 @@
 ﻿{
   "$schema": "http://json.schemastore.org/template",
   "author": "Microsoft",
-  "classifications": [ "macOS" ],
+  "classifications": [ "Desktop", "macOS" ],
   "groupIdentity": "Microsoft.macOS.macOSLib",
   "identity": "Microsoft.macOS.macOSLib.CSharp",
   "name": "macOS Class Library",

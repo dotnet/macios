@@ -1690,4 +1690,7 @@
         <comment>Shown when a binding resource package's manifest contains a native reference whose 'Name' attribute is missing or empty.
 {0} - The path to the binding resource package.</comment>
     </data>
+    <data name="E0192" xml:space="preserve">
+        <value>The PrepareAssemblies task failed without reporting a specific error. Please rebuild with increased verbosity for more details.</value>
+    </data>
 </root>

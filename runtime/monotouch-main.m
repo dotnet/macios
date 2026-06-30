@@ -399,6 +399,7 @@ xamarin_main (int argc, char *argv[], enum XamarinLaunchMode launch_mode)
 	}
 
 #ifdef DEBUG
+	xamarin_capture_debugging_settings ();
 	xamarin_initialize_cocoa_threads (monotouch_configure_debugging);
 #else
 	xamarin_initialize_cocoa_threads (NULL);

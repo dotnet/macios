@@ -3932,11 +3932,7 @@ namespace Xamarin.Tests {
 			Assert.Multiple (() => {
 				var envContents = File.ReadAllText (tmpfile);
 				var env = File.ReadAllLines (tmpfile).Select (v => (Name: v [0..v.IndexOf ('=')], Value: v [(v.IndexOf ('=') + 1)..])).ToDictionary (v => v.Name, v => v.Value);
-				if (platform == ApplePlatform.MacOSX) {
-					Assert.That (envContents, Does.Contain ("__XAMARIN_DEBUG_"), "Xamarin debug environment variables should not leak to app");
-				} else {
-					Assert.That (envContents, Does.Not.Contain ("__XAMARIN_DEBUG_"), "Xamarin debug environment variables should not leak to app");
-				}
+				Assert.That (envContents, Does.Not.Contain ("__XAMARIN_DEBUG_"), "Xamarin debug environment variables should not leak to app");
 				Assert.That (env.Keys, Does.Contain ("VARIABLE"), "VARIABLE");
 				Assert.That (env ["VARIABLE"], Is.EqualTo ("VALUE"), "VALUE");
 

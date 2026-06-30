@@ -65,14 +65,14 @@ namespace Xamarin.MacDev.Tasks {
 				}
 			}
 
-			CFBundleExecutable = plist.GetCFBundleExecutable ();
+			CFBundleExecutable = plist?.GetCFBundleExecutable ();
 			CFBundleDisplayName = plist?.GetCFBundleDisplayName ();
 			CFBundleIdentifier = plist?.GetCFBundleIdentifier ();
 			CFBundleVersion = plist?.GetCFBundleVersion ();
 			CLKComplicationGroup = plist?.Get<PString> (ManifestKeys.CLKComplicationGroup)?.Value;
 
-			MinimumOSVersion = plist?.Get<PString> (PlatformFrameworkHelper.GetMinimumOSVersionKey (Platform))?.Value;
 			if (!DisableMinimumOSVersion && Platform == ApplePlatform.MacCatalyst) {
+				MinimumOSVersion = plist?.Get<PString> (PlatformFrameworkHelper.GetMinimumOSVersionKey (Platform))?.Value;
 				// The minimum version in the Info.plist is the macOS version. However, the rest of our tooling
 				// expects the iOS version, so expose that.
 				if (!MacCatalystSupport.TryGetiOSVersion (CurrentSdk.GetSdkPath (), MinimumOSVersion!, out var convertedVersion, out var knownMacOSVersions))

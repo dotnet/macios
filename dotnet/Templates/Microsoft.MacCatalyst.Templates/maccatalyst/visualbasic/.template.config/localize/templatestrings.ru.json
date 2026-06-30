@@ -3,5 +3,7 @@
   "name": "Приложение Mac Catalyst",
   "description": "Проект для создания приложения .NET Mac Catalyst",
   "symbols/bundleId/description": "Переопределяет CFBundleIdentifier в Info.plist",
-  "symbols/minOSVersion/description": "Переопределяет SupportedOSPlatformVersion в файле проекта"
+  "symbols/bundleId/displayName": "Bundle ID",
+  "symbols/minOSVersion/description": "Переопределяет SupportedOSPlatformVersion в файле проекта",
+  "symbols/minOSVersion/displayName": "Minimum OS version"
 }

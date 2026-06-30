@@ -364,13 +364,16 @@ class ParallelTestsResults {
     [void] WriteComment($stringBuilder) {
         if (-not [string]::IsNullOrEmpty($this.BuildFailureMessage)) {
             $pipelineLink = "$Env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI$Env:SYSTEM_TEAMPROJECT/_build/index?buildId=$Env:BUILD_BUILDID"
+            $stringBuilder.AppendLine("[comment]: <> (This is a test result report added by Azure DevOps)")
+            $stringBuilder.AppendLine()
             $stringBuilder.AppendLine("# :x: Build failure :x:")
             $stringBuilder.AppendLine()
             $stringBuilder.AppendLine("Build result: [$($this.BuildFailureMessage)]($($pipelineLink))")
-            $stringBuilder.AppendLine()
-            $stringBuilder.AppendLine("[comment]: <> (This is a test result report added by Azure DevOps)")
             return
         }
+
+        $stringBuilder.AppendLine("[comment]: <> (This is a test result report added by Azure DevOps)")
+        $stringBuilder.AppendLine()
 
         # Split results into regular tests and macOS tests
         $regularResults = @($this.Results | Where-Object { -not $_.IsMacTest })
@@ -513,7 +516,6 @@ class ParallelTestsResults {
         }
 
         $stringBuilder.AppendLine()
-        $stringBuilder.AppendLine("[comment]: <> (This is a test result report added by Azure DevOps)")
     }
 
     static [ParallelTestsResults] Create(

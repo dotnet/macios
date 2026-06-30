@@ -91,6 +91,10 @@
 		<PropertyGroup>
 			<!-- capture output by default -->
 			<_MlaunchCaptureOutput Condition="'$(_MlaunchCaptureOutput)' == ''">true</_MlaunchCaptureOutput>
+			<!-- The new WaitForExit/StandardOutputPath/StandardErrorPath properties take precedence over the old _Mlaunch-prefixed ones -->
+			<_MlaunchWaitForExit Condition="'$(WaitForExit)' != ''">$(WaitForExit)</_MlaunchWaitForExit>
+			<_MlaunchStandardOutputPath Condition="'$(StandardOutputPath)' != ''">$(StandardOutputPath)</_MlaunchStandardOutputPath>
+			<_MlaunchStandardErrorPath Condition="'$(StandardErrorPath)' != ''">$(StandardErrorPath)</_MlaunchStandardErrorPath>
 			<!-- wait for exit by default -->
 			<_MlaunchWaitForExit Condition="'$(_MlaunchWaitForExit)' == ''">true</_MlaunchWaitForExit>
 			<!-- don't set standard output/error path, mlaunch will by default write to stdout/stderr -->

@@ -254,8 +254,8 @@ static char *captured_debug_connect_timeout = NULL;
 void xamarin_capture_debugging_settings ()
 {
 	// Read (and unset) the environment variables monotouch_configure_debugging needs here,
-	// on the main thread, before any other thread has been started. This avoids a race
-	// condition: monotouch_configure_debugging runs on a separate thread, so if it both read
+	// on the main thread, before the debugging thread has been started. This avoids a race
+	// condition: monotouch_configure_debugging runs on the debugging thread, so if it both read
 	// and unset these environment variables there, it could race with code reading the
 	// environment on the main thread (such as managed code in the app's Main method).
 	char *evar;
@@ -302,13 +302,25 @@ void monotouch_configure_debugging ()
 
 	if (!strcmp (connection_mode, "default")) {
 		if (captured_debug_mode && *captured_debug_mode) {
+			// Transfer ownership of the captured string to connection_mode, which lives
+			// for the rest of the process' lifetime.
 			connection_mode = captured_debug_mode;
+			captured_debug_mode = NULL;
 			LOG (PRODUCT ": Found debug mode %s in environment variables\n", connection_mode);
 		}
 	}
-	
+	// Free the captured debug mode if it wasn't consumed above.
+	free (captured_debug_mode);
+	captured_debug_mode = NULL;
+
 	if (!strcmp (connection_mode, "none")) {
-		// nothing to do
+		// nothing to do, but free the captured values first to avoid leaking them.
+		free (captured_debug_port);
+		captured_debug_port = NULL;
+		free (captured_debug_hosts);
+		captured_debug_hosts = NULL;
+		free (captured_debug_connect_timeout);
+		captured_debug_connect_timeout = NULL;
 		return;
 	}
  
@@ -343,6 +355,8 @@ void monotouch_configure_debugging ()
 			LOG (PRODUCT ": Found port %i in environment variables\n", monodevelop_port);
 		}
 	}
+	free (captured_debug_port);
+	captured_debug_port = NULL;
 
 	if (captured_debug_hosts && *captured_debug_hosts) {
 		NSArray *ips = [[NSString stringWithUTF8String:captured_debug_hosts] componentsSeparatedByString:@";"];
@@ -354,6 +368,8 @@ void monotouch_configure_debugging ()
 			}
 		}
 	}
+	free (captured_debug_hosts);
+	captured_debug_hosts = NULL;
 
 	if (captured_debug_connect_timeout && *captured_debug_connect_timeout) {
 		if (sdb_timeout_time == -1) {
@@ -361,6 +377,8 @@ void monotouch_configure_debugging ()
 			LOG (PRODUCT ": Found connect timeout %i in environment variables\n", sdb_timeout_time);
 		}
 	}
+	free (captured_debug_connect_timeout);
+	captured_debug_connect_timeout = NULL;
 
 #if MONOTOUCH && defined (__x86_64__)
 	// Try to read shared memory as well

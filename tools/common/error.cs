@@ -51,18 +51,19 @@ namespace Xamarin.Bundler {
 
 		public bool IsError (IToolLog? log)
 		{
-			if (!Warning)
-				return true;
-			if (log is null)
-				return false;
-			return ErrorHelper.GetWarningLevel (log, Code) == ErrorHelper.WarningLevel.Error;
+			return GetWarningLevel (log) == ErrorHelper.WarningLevel.Error;
 		}
 
 		public ErrorHelper.WarningLevel GetWarningLevel (IToolLog? log)
 		{
-			if (log is null)
-				return ErrorHelper.WarningLevel.Warning;
-			return ErrorHelper.GetWarningLevel (log, Code);
+			// An error is an error, no matter what.
+			if (!Warning)
+				return ErrorHelper.WarningLevel.Error;
+
+			if (log is not null && ErrorHelper.TryGetWarningLevel (log, Code, out var warningLevel))
+				return warningLevel;
+
+			return ErrorHelper.WarningLevel.Warning;
 		}
 
 		void SetValues (int code, bool error)

@@ -1,0 +1,2 @@
+!missing-null-allowed! 'System.Void ReplayKit.RPBroadcastActivityController::ShowBroadcastPicker(CoreGraphics.CGPoint,AppKit.NSWindow,System.String,System.Action`2<ReplayKit.RPBroadcastActivityController,Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #0
+!missing-null-allowed! 'System.Void ReplayKit.RPBroadcastActivityController::ShowBroadcastPicker(CoreGraphics.CGPoint,AppKit.NSWindow,System.String,System.Action`2<ReplayKit.RPBroadcastActivityController,Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #1

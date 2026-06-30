@@ -1,2 +1,5 @@
 # This is only used as an output in a manual binding so it doesn't need the availability
 !missing-enum! EKAlarmType not bound
+
+# results from initial block parameter nullability analysis
+!missing-null-allowed! 'System.IntPtr EventKit.EKEventStore::FetchReminders(Foundation.NSPredicate,System.Action`1<EventKit.EKReminder[]>)' is missing a '?' on parameter 'completion' block parameter #0

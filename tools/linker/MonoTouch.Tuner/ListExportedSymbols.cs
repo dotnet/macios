@@ -16,7 +16,13 @@ using Xamarin.Utils;
 #nullable enable
 
 namespace Xamarin.Linker.Steps {
+#if ASSEMBLY_PREPARER
+	public class ListExportedSymbols : ConfigurationAwareStep {
+		protected override string Name { get; } = "List Exported Symbols";
+		protected override int ErrorCode { get; } = 2510;
+#else
 	public class ListExportedSymbols : BaseStep {
+#endif
 		PInvokeWrapperGenerator? state;
 
 		PInvokeWrapperGenerator? State {
@@ -34,16 +40,23 @@ namespace Xamarin.Linker.Steps {
 			}
 		}
 
+#if ASSEMBLY_PREPARER
+		protected override void TryEndProcess ()
+#else
 		protected override void EndProcess ()
+#endif
 		{
 			if (state?.Started == true) {
 				// The generator is 'started' by the linker, which means it may not
 				// be started if the linker was not executed due to re-using cached results.
 				state.End ();
 			}
+#if !ASSEMBLY_PREPARER
 			base.EndProcess ();
+#endif
 		}
 
+#if !ASSEMBLY_PREPARER
 		public LinkerConfiguration Configuration {
 			get {
 				return LinkerConfiguration.GetInstance (Context);
@@ -55,15 +68,20 @@ namespace Xamarin.Linker.Steps {
 				return Configuration.DerivedLinkContext;
 			}
 		}
+#endif
 
 		public ListExportedSymbols ()
 		{
 		}
 
+#if ASSEMBLY_PREPARER
+		protected override void TryProcessAssembly (AssemblyDefinition assembly)
+		{
+#else
 		protected override void ProcessAssembly (AssemblyDefinition assembly)
 		{
 			base.ProcessAssembly (assembly);
-
+#endif
 			if (Annotations.GetAction (assembly) == AssemblyAction.Delete)
 				return;
 
@@ -176,10 +194,11 @@ namespace Xamarin.Linker.Steps {
 				// * with and without a "lib" prefix
 				// * with and without the ".dylib" extension
 				var app = LinkerConfiguration.GetInstance (Context).Application;
-				var monoLibraryVariations = app.MonoLibraries.
+				var monoLibraryVariationsEnumerable = app.MonoLibraries.
 					Where (v => v.EndsWith (".dylib", StringComparison.OrdinalIgnoreCase) || v.EndsWith (".a", StringComparison.OrdinalIgnoreCase)).
 					Select (v => Path.GetFileNameWithoutExtension (v)).
-					Select (v => v.StartsWith ("lib", StringComparison.OrdinalIgnoreCase) ? v.Substring (3) : v).ToHashSet ();
+					Select (v => v.StartsWith ("lib", StringComparison.OrdinalIgnoreCase) ? v.Substring (3) : v);
+				var monoLibraryVariations = new HashSet<string> (monoLibraryVariationsEnumerable);
 				monoLibraryVariations.Add ("System.Globalization.Native"); // System.Private.CoreLib has P/Invokes pointing to libSystem.Globalization.Native, but they're actually in libmonosgen-2.0
 				monoLibraryVariations.UnionWith (monoLibraryVariations.Select (v => "lib" + v).ToArray ());
 				monoLibraryVariations.UnionWith (monoLibraryVariations.Select (v => v + ".dylib").ToArray ());

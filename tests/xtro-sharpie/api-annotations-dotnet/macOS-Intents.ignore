@@ -37,3 +37,6 @@
 !missing-selector! INDateComponentsRange::recurrenceRule not bound
 !missing-selector! INSendMessageIntentResponse::sentMessages not bound
 !missing-selector! INSendMessageIntentResponse::setSentMessages: not bound
+
+!missing-null-allowed! 'System.Void Intents.INVoiceShortcutCenter::GetVoiceShortcut(Foundation.NSUuid,System.Action`2<Intents.INVoiceShortcut,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Intents.INVoiceShortcutCenter::GetVoiceShortcut(Foundation.NSUuid,System.Action`2<Intents.INVoiceShortcut,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1

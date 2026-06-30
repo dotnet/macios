@@ -45,10 +45,17 @@ else
 endif
 	$(Q) echo "Downloaded and installed .NET $(DOTNET_VERSION) into $@."
 	@# Workaround for https://github.com/dotnet/runtime/issues/91987
-	@# Run 'dotnet --info' once after downloading to complete the first-time NuGet
-	@# migrations logic, avoiding a race condition when multiple parallel dotnet
-	@# processes run for the first time simultaneously (only needed in CI).
-	$(Q) if test -n "$$ACES"; then "$@/dotnet" --info; fi
+	@# Create the NuGet migration marker file directly to avoid the race condition
+	@# where multiple parallel dotnet processes attempt to acquire the "NuGet-Migrations"
+	@# mutex simultaneously. If the marker file exists, NuGet skips the mutex entirely.
+	@# The migration (Migration1) only cleans up old NuGet directories, which is a no-op
+	@# on a fresh SDK install. Only needed in CI.
+	$(Q) if test -n "$$ACES"; then \
+		NUGET_MIGRATIONS_DIR="$$HOME/.local/share/NuGet/Migrations"; \
+		mkdir -p "$$NUGET_MIGRATIONS_DIR"; \
+		touch "$$NUGET_MIGRATIONS_DIR/1"; \
+		echo "Created NuGet migrations marker file to avoid race condition (dotnet/runtime#91987)"; \
+	fi
 
 # Create a symlink with a persistent (non-version-dependent) name
 # The dependency on the stamp file is to ensure the symlink is re-created

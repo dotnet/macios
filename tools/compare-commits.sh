@@ -317,10 +317,12 @@ if test -z "$USE_EXISTING_BUILD"; then
 		# requires a different Xcode version. Check if the required Xcode is
 		# installed on this machine, and if so, create a configure.inc pointing
 		# to it and try again.
-		BASE_XCODE_DEVELOPER_ROOT=$(grep "^XCODE_DEVELOPER_ROOT[?:]*=" Make.config | sed 's/^[^=]*=//')
+		BASE_XCODE_DEVELOPER_ROOT=$(grep "^XCODE_DEVELOPER_ROOT[?:]*=" Make.config | sed 's/^[^=]*=//' || true)
 		if test -n "$BASE_XCODE_DEVELOPER_ROOT" && test -d "$BASE_XCODE_DEVELOPER_ROOT"; then
 			echo "    ${BLUE}The base hash requires a different Xcode ($WHITE$BASE_XCODE_DEVELOPER_ROOT$BLUE), which is available on this machine. Retrying...${CLEAR}"
-			echo "XCODE_DEVELOPER_ROOT=$BASE_XCODE_DEVELOPER_ROOT" > configure.inc
+			# Remove any existing XCODE_DEVELOPER_ROOT line and append the new one
+			sed -i '' '/^XCODE_DEVELOPER_ROOT=/d' configure.inc 2>/dev/null || true
+			echo "XCODE_DEVELOPER_ROOT=$BASE_XCODE_DEVELOPER_ROOT" >> configure.inc
 			if ! ./system-dependencies.sh 2>&1 | sed 's/^/        /'; then
 				report_warning_line "${RED}Warning: The system requirements for the hash to compare against ($WHITE$BASE_HASH$CLEAR) are different than for the current hash. Skipping API/generator comparison.${CLEAR}"
 				SKIP_REMAINING_BUILD=1

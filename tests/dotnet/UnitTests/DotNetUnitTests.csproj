@@ -54,9 +54,6 @@
 		<Compile Include="..\..\common\BinLog.cs">
 			<Link>external\BinLog.cs</Link>
 		</Compile>
-		<Compile Include="..\..\..\external\Xamarin.MacDev\Xamarin.MacDev\PListObject.cs">
-			<Link>external\PListObject.cs</Link>
-		</Compile>
 		<Compile Include="..\..\..\tools\common\SdkVersions.cs">
 			<Link>external\SdkVersions.cs</Link>
 		</Compile>
@@ -84,6 +81,9 @@
 	</ItemGroup>
 	<ItemGroup>
 		<Folder Include="external\" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\external\Xamarin.MacDev\Xamarin.MacDev\Xamarin.MacDev.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Remove="System.Text.Json" />

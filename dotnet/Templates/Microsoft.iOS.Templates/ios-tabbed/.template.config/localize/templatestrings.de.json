@@ -2,15 +2,17 @@
   "author": "Microsoft",
   "name": "iOS-Anwendung mit Registerkarten",
   "description": "Ein Projekt zum Erstellen einer .NET iOS-Anwendung mit Registerkarten",
-  "symbols/bundleId/description": "Überschreibt „CFBundleIdentifier“ in „Info.plist“",
   "symbols/bundleId/displayName": "Bundle ID",
-  "symbols/minOSVersion/description": "Überschreibt „SupportedOSPlatformVersion“ in der Projektdatei.",
+  "symbols/bundleId/description": "Überschreibt „CFBundleIdentifier“ in „Info.plist“",
   "symbols/minOSVersion/displayName": "Minimum OS version",
-  "symbols/deviceFamily/choices/universal/description": "iPhone- und iPad-Geräte unterstützen",
+  "symbols/minOSVersion/description": "Überschreibt „SupportedOSPlatformVersion“ in der Projektdatei.",
+  "symbols/deviceFamily/displayName": "Device family",
   "symbols/deviceFamily/choices/universal/displayName": "Universal",
-  "symbols/deviceFamily/choices/iphone/description": "Nur iPhone-Geräte unterstützen",
+  "symbols/deviceFamily/choices/universal/description": "iPhone- und iPad-Geräte unterstützen",
   "symbols/deviceFamily/choices/iphone/displayName": "iPhone",
-  "symbols/deviceFamily/choices/ipad/description": "Nur iPad-Geräte unterstützen",
+  "symbols/deviceFamily/choices/iphone/description": "Nur iPhone-Geräte unterstützen",
   "symbols/deviceFamily/choices/ipad/displayName": "iPad",
-  "symbols/deviceFamily/displayName": "Device family"
+  "symbols/deviceFamily/choices/ipad/description": "Nur iPad-Geräte unterstützen",
+  "symbols/Framework/description": "The target framework for the project.",
+  "symbols/Framework/choices/net10.0-ios/description": "Target net10.0-ios"
 }

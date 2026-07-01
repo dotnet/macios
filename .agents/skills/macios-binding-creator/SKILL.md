@@ -70,16 +70,26 @@ Before implementing, understand the native API:
 
 #### Determine the Correct Availability Version
 
-Before writing any bindings, determine the SDK version you're targeting:
+Before writing any bindings, determine the correct availability version for each API. The version represents **when Apple introduced the API**, not the current SDK version.
+
+**Primary source of truth: the generated reference bindings** from Step 2. After running `make -C tests/xtro-sharpie gen-all`, search the generated `.cs` files for the API you're binding — they include `[Introduced]` attributes extracted from Apple's SDK headers with the correct per-platform introduction versions. Always use these versions.
 
 ```bash
-# Check the current SDK versions
-grep -E 'public const string (iOS|TVOS|OSX|MacCatalyst) ' tools/common/SdkVersions.cs
-# Or from Make.versions
-grep '_NUGET_OS_VERSION=' Make.versions
+# Find the generated reference binding for a specific API
+grep -rE "SomeClassName|SomeMethodName" tests/xtro-sharpie/api/
 ```
 
-Use the version from `SdkVersions.cs` (e.g., `26.2`) for all availability attributes. If the user specifies a different version (e.g., binding a beta branch at `26.4`), use that instead. **Ask the user if you're unsure which version to use.**
+If the generated reference bindings don't include version information, fall back to these sources:
+1. **Apple SDK headers** — search under `$XCODE_DEVELOPER_ROOT` for `API_AVAILABLE` macros
+2. **Current SDK version from `SdkVersions.cs`** — use this only for **brand-new APIs** introduced in the current Xcode release:
+
+```bash
+grep -E 'public const string (iOS|TVOS|OSX|MacCatalyst) ' tools/common/SdkVersions.cs
+```
+
+> ❌ **NEVER assume the current SDK version is the introduction version for all APIs.** The SDK version (e.g., `26.5`) is only correct for APIs that are genuinely new in this Xcode release. When adding an existing framework to a new platform (e.g., MediaSetup to MacCatalyst), or adding enum members that were introduced in an earlier release, the introduction version will be different — check the generated reference bindings or Apple headers.
+
+If the user specifies a version, use that instead. **Ask the user if you're unsure which version to use.**
 
 #### File Locations
 
@@ -109,6 +119,7 @@ NSString ScheduleRequestedNotification { get; }
 > - API definition interfaces and members in `src/frameworkname.cs` — use `[iOS (X, Y)]`, `[Mac (X, Y)]`, etc.
 > - P/Invoke wrappers and manual properties in `src/FrameworkName/*.cs` — use `[SupportedOSPlatform ("iosX.Y")]`, `[SupportedOSPlatform ("macos")]`, etc.
 > - Fields, constants, and enum values
+> - **Individual enum members** added to an existing enum — each new member needs its own `[iOS (X, Y)]` etc. with the version the **member** was introduced, even if the enum itself has an older version. Check the generated reference bindings for the correct per-member version.
 
 > ❌ **NEVER** use `string.Empty` — use `""`. Never use `Array.Empty<T>()` — use `[]`.
 
@@ -124,9 +135,13 @@ NSString ScheduleRequestedNotification { get; }
 
 > ❌ **NEVER** use `#pragma warning disable 0169` for struct fields. Instead, wrap public methods and properties inside `#if !COREBUILD` (but NOT fields — bgen needs to know the struct size).
 
+> ⚠️ **Protocol methods returning opaque types**: If a protocol method returns an opaque C type (e.g., `PMPrintSession`) that has a managed `NativeObject` wrapper in `src/FrameworkName/`, do NOT use `IntPtr`. Register the type as a bgen marshal type so bgen can generate proper `Runtime.GetINativeObject<T>()` marshaling. See [references/binding-patterns.md](references/binding-patterns.md) § "NativeObject Return Types in Protocol Methods".
+
 > ⚠️ Place a space before parentheses and brackets: `Foo ()`, `Bar (1, 2)`, `myarray [0]`.
 
 > ⚠️ Method names should follow .NET naming conventions — use verb-based names, not direct Objective-C selector translations (e.g., `BuildMenu` not `MenuWithContents`).
+
+> ❌ **NEVER** change the casing of the Objective-C class name **prefix** in C# type names. `ARSession` stays `ARSession` (not `ArSession`), `AVPlayer` stays `AVPlayer` (not `AvPlayer`). But an acronym *inside* the name (after the prefix) DOES follow .NET rules — `NSURLSession` → `NSUrlSession`, `NSURLSessionHandler` → `NSUrlSessionHandler` (the `NS` prefix is kept, but `URL` becomes `Url`). When creating new manual types, match the framework's established prefix (e.g., all ARKit types use `AR*`, all CoreGraphics types use `CG*`). The .NET acronym rules (SIMD → Simd, URL → Url) apply within property/method names **and** to acronyms inside type names, NOT to the leading class prefix. (A few frameworks instead preserve an inner acronym across their whole family — e.g. CoreGraphics `CGPDF*` — so match the existing sibling types when a framework is consistent.)
 
 > ⚠️ For in depth binding patterns and conventions See [references/binding-patterns.md](references/binding-patterns.md)
 
@@ -136,17 +151,27 @@ NSString ScheduleRequestedNotification { get; }
 
 When a manually coded type (struct, extension, etc.) is not available on a specific platform (e.g., tvOS), you must handle compilation on that platform:
 
-1. In the manual code file (`src/FrameworkName/MyStruct.cs`), wrap the struct body with `#if !TVOS`
+1. In the manual code file (`src/FrameworkName/MyStruct.cs`), wrap the struct body with `#if !__TVOS__`
 2. Add `[UnsupportedOSPlatform ("tvos")]` on the struct
 3. In the API definition file (`src/frameworkname.cs`), add a type alias at the top so compilation succeeds:
 
 ```csharp
-#if TVOS
+#if __TVOS__
 using MyStruct = Foundation.NSObject;
 #endif
 ```
 
 The `[NoTV]` attribute on the API definition interface ensures the type won't appear in the final tvOS assembly, while the alias prevents compilation errors from method signatures that reference the struct.
+
+> ❌ **NEVER** use platform-specific source file lists (e.g., appending a per-framework list to `MACOS_DOTNET_SOURCES`) for platform-conditional code. Instead, use preprocessor directives (`#if __MACOS__`, `#if !__TVOS__`, `#if __IOS__`) within shared source files. Platform-specific source file lists are for the build system, not for conditional compilation of individual types or members.
+
+Available preprocessor symbols for platform checks:
+- `__MACOS__` (preferred) / `MONOMAC` — macOS
+- `__IOS__` — iOS
+- `__TVOS__` (preferred) / `TVOS` — tvOS
+- `__MACCATALYST__` — Mac Catalyst
+
+> ⚠️ **Foundation/TextKit types shared by AppKit and UIKit** (e.g. `NSTextList`, `NSParagraphStyle`) are bound once in `src/xkit.cs`, not duplicated in `appkit.cs`/`uikit.cs`. If a macOS-only type becomes exposed to UIKit, consolidate it there (share identical enums, split only divergent ones, guard macOS divergences with `#if MONOMAC`, keep back-dated availability). See [references/binding-patterns.md](references/binding-patterns.md) → "Shared AppKit/UIKit Types".
 
 ### Step 5: Build
 
@@ -213,7 +238,7 @@ make -C tests/xtro-sharpie run-maccatalyst
 
 Verify all `.todo` entries for the bound framework are resolved. If any remain, they need binding or explicit `.ignore` entries with justification.
 
-> ⚠️ **Delete empty `.todo` files** after resolving all entries: `git rm tests/xtro-sharpie/api-annotations-dotnet/{platform}-{Framework}.todo`. Do not leave empty `.todo` files in the repository.
+> ❌ **ALWAYS delete empty `.todo` files** after resolving all entries: `git rm tests/xtro-sharpie/api-annotations-dotnet/{platform}-{Framework}.todo`. Do not leave empty `.todo` files in the repository — they cause xtro test noise.
 
 #### 6b. Cecil Tests
 
@@ -275,13 +300,31 @@ Look for this pattern in test output to confirm results:
 Tests run: X Passed: X Inconclusive: X Failed: X Ignored: X
 ```
 
+> ⚠️ **Beta-SDK protocol-conformance failures** (e.g. `X conforms to NSSecureCoding but does not implement INSSecureCoding`) usually mean the **runtime** conforms `X` to a protocol the **header doesn't declare**. If xtro is silent (no `!missing-protocol-conformance!` — confirm the header truly lacks it, else fix the binding), tolerate it with a test-only introspection **Skip** in `ApiProtocolTest.cs` (or `MacApiProtocolTest.cs`/`iOSApiProtocolTest.cs`) under the matching `case "<Protocol>":` — **not** by adding the conformance to the binding. See [references/test-workflow.md](references/test-workflow.md) → "Runtime-Only Protocol Conformance".
+
 #### 6d. Monotouch Tests (only if you added tests in Step 5b)
 
 Skip this step if no monotouch-test files were added or modified.
 
+Run per-platform, using **exact casing** for platform names:
+
 ```bash
-make -C tests/monotouch-test run
+# iOS
+make -C tests/monotouch-test/dotnet/iOS run
+
+# tvOS
+make -C tests/monotouch-test/dotnet/tvOS run
+
+# macOS (use run-bare for captured output)
+make -C tests/monotouch-test/dotnet/macOS run-bare
+
+# MacCatalyst (use run-bare for captured output)
+make -C tests/monotouch-test/dotnet/MacCatalyst run-bare
 ```
+
+> ⚠️ **Platform casing matters**: Use `iOS`, `tvOS`, `macOS`, `MacCatalyst` exactly — not `ios`, `macos`, etc.
+
+> ⚠️ **Desktop platforms**: Use `run-bare` (not `run`) for macOS and MacCatalyst — same reason as introspection: `run` launches without capturing stdout. `run-bare` is only available for desktop platforms.
 
 ### Step 7: Handle Test Failures
 

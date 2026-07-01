@@ -105,16 +105,25 @@ namespace Foundation {
 
 	abstract class NSAsyncDispatcher : NSDispatcher {
 		readonly GCHandle gch;
+		internal readonly int InstrumentationId;
 
 		protected NSAsyncDispatcher ()
 		{
 			gch = GCHandle.Alloc (this);
+			InstrumentationId = NSAsyncDispatcherInstrumentation.RecordCreation (Handle);
 		}
 
 		public override void Apply ()
 		{
+			NSAsyncDispatcherInstrumentation.RecordEvent (Handle, InstrumentationId, "Apply (freeing GCHandle + Dispose)");
 			gch.Free ();
 			Dispose ();
+		}
+
+		protected override void Dispose (bool disposing)
+		{
+			NSAsyncDispatcherInstrumentation.RecordEvent (Handle, InstrumentationId, $"Dispose (disposing: {disposing})");
+			base.Dispose (disposing);
 		}
 	}
 

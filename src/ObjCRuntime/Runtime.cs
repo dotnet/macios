@@ -1274,6 +1274,19 @@ namespace ObjCRuntime {
 				AppendAdditionalInformation (msg, sel, method_handle);
 			}
 
+			// ⚠️ THROWAWAY INSTRUMENTATION for https://github.com/dotnet/macios/issues/25861 — DO NOT MERGE ⚠️
+			try {
+				var instrumentation = Foundation.NSAsyncDispatcherInstrumentation.GetInfo (ptr);
+				if (instrumentation is not null) {
+					msg.AppendLine ();
+					msg.AppendLine ("Async dispatcher instrumentation:");
+					msg.AppendLine (instrumentation);
+				}
+			} catch (Exception ie) {
+				msg.AppendLine ();
+				msg.AppendLine ($"Failed to read async dispatcher instrumentation: {ie}");
+			}
+
 			throw ErrorHelper.CreateError (8027, msg.ToString ());
 		}
 

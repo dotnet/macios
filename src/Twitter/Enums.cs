@@ -18,7 +18,7 @@ namespace Twitter {
 	public enum TWTweetComposeViewControllerResult {
 		/// <summary>The user cancelled the tweet composition.</summary>
 		Cancelled,
-		/// <summary>The tweet was successfully posted.</summary>
+		/// <summary>The user completed the tweet composition.</summary>
 		Done,
 	}
 

@@ -2812,6 +2812,29 @@ namespace Xamarin.Tests {
 		}
 
 		[Test]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64;")]
+		public void StrippedWithExportSymbolsExplicitlyFalse (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			var project = "MySimpleApp";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["NoSymbolStrip"] = "false";
+			properties ["_ExportSymbolsExplicitly"] = "false";
+			DotNet.AssertBuild (project_path, properties);
+
+			var appExecutable = GetNativeExecutable (platform, appPath);
+			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
+
+			var symbols = Configuration.GetNativeSymbols (appExecutable);
+			Assert.That (symbols, Does.Contain ("_xamarin_release_managed_ref"), "_xamarin_release_managed_ref");
+		}
+
+		[Test]
 		[TestCase (ApplePlatform.iOS, "ios-arm64;", "iOS")]
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64", "macOS")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64", "MacCatalyst")]
@@ -3932,11 +3955,7 @@ namespace Xamarin.Tests {
 			Assert.Multiple (() => {
 				var envContents = File.ReadAllText (tmpfile);
 				var env = File.ReadAllLines (tmpfile).Select (v => (Name: v [0..v.IndexOf ('=')], Value: v [(v.IndexOf ('=') + 1)..])).ToDictionary (v => v.Name, v => v.Value);
-				if (platform == ApplePlatform.MacOSX) {
-					Assert.That (envContents, Does.Contain ("__XAMARIN_DEBUG_"), "Xamarin debug environment variables should not leak to app");
-				} else {
-					Assert.That (envContents, Does.Not.Contain ("__XAMARIN_DEBUG_"), "Xamarin debug environment variables should not leak to app");
-				}
+				Assert.That (envContents, Does.Not.Contain ("__XAMARIN_DEBUG_"), "Xamarin debug environment variables should not leak to app");
 				Assert.That (env.Keys, Does.Contain ("VARIABLE"), "VARIABLE");
 				Assert.That (env ["VARIABLE"], Is.EqualTo ("VALUE"), "VALUE");
 

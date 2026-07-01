@@ -7,7 +7,7 @@ namespace Xamarin.Tests {
 	[TestFixture]
 	public class PerformanceTests : TestBaseClass {
 		[Test]
-		[TestCase (ApplePlatform.iOS, false)]
+		[TestCase (ApplePlatform.iOS, true)]
 		public void PrepareAssemblies (ApplePlatform platform, bool useMonoRuntime)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);

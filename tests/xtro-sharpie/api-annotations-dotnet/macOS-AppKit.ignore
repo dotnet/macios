@@ -1523,3 +1523,4 @@
 !missing-null-allowed! 'System.Void AppKit.NSDocument::AccommodatePresentedItemDeletion(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
 !missing-null-allowed! 'System.Void AppKit.NSDocument::SavePresentedItemChanges(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
 !missing-null-allowed! 'System.Void AppKit.NSTextContentManager::SynchronizeTextLayoutManagers(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!extra-null-allowed! 'System.Void AppKit.NSFilePromiseReceiver::ReceivePromisedFiles(Foundation.NSUrl,Foundation.NSDictionary,Foundation.NSOperationQueue,System.Action`2<Foundation.NSUrl,Foundation.NSError>)' has an extraneous '?' on parameter 'reader' block parameter #0

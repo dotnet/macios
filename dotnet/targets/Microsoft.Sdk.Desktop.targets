@@ -3,7 +3,7 @@
 	<Target
 		Name="_PrepareRunDesktop"
 		BeforeTargets="ComputeRunArguments"
-		DependsOnTargets="_ValidateHotReloadConfiguration"
+		DependsOnTargets="_ValidateHotReloadConfiguration;_GenerateBundleName"
 		Condition="'$(SdkIsDesktop)' == 'true'">
 
 		<!--
@@ -24,6 +24,43 @@
 			<OpenNewInstance Condition="'$(OpenNewInstance)' == ''">true</OpenNewInstance>
 			<OpenWaitForExit Condition="'$(OpenWaitForExit)' == ''">true</OpenWaitForExit>
 		</PropertyGroup>
+
+		<!-- Read the bundle identifier from the Info.plist -->
+		<ReadAppManifest
+			Condition="'$(IsMacEnabled)' == 'true' And '@(_DotNetWatchVariable)' != '' And '$(_BundleIdentifier)' == ''"
+			AppManifest="$(_AppBundleManifestPath)"
+			DisableMinimumOSVersion="true"
+			>
+			<Output TaskParameter="CFBundleIdentifier" PropertyName="_BundleIdentifier" />
+		</ReadAppManifest>
+
+		<Error Message="Could not find the CFBundleIdentifier value in the app's Info.plist." Condition="'$(IsMacEnabled)' == 'true' And '@(_DotNetWatchVariable)' != '' And '$(_BundleIdentifier)' == ''" />
+
+		<!--
+			'dotnet watch' sets DOTNET_STARTUP_HOOKS to a path outside the app's sandbox,
+			which sandboxed apps can't access. Copy the startup hook into the app's sandbox
+			container directory so the app can load it.
+		-->
+		<ItemGroup Condition="'@(_DotNetWatchVariable)' != ''">
+			<_StartupHooksVariable Include="@(RuntimeEnvironmentVariable)" Condition="'%(Identity)' == 'DOTNET_STARTUP_HOOKS'" />
+		</ItemGroup>
+		<PropertyGroup Condition="'@(_StartupHooksVariable)' != ''">
+			<_StartupHooksPath>@(_StartupHooksVariable->'%(Value)')</_StartupHooksPath>
+			<_StartupHooksFilename>$([System.IO.Path]::GetFileName('$(_StartupHooksPath)'))</_StartupHooksFilename>
+			<_StartupHooksContainerDir>$(HOME)/Library/Containers/$(_BundleIdentifier)/Data/tmp/</_StartupHooksContainerDir>
+		</PropertyGroup>
+		<MakeDir Directories="$(_StartupHooksContainerDir)" Condition="'$(_StartupHooksContainerDir)' != ''" />
+		<Copy
+			SourceFiles="$(_StartupHooksPath)"
+			DestinationFolder="$(_StartupHooksContainerDir)"
+			Condition="'$(_StartupHooksContainerDir)' != ''"
+		/>
+		<ItemGroup Condition="'$(_StartupHooksContainerDir)' != ''">
+			<RuntimeEnvironmentVariable Remove="DOTNET_STARTUP_HOOKS" />
+			<RuntimeEnvironmentVariable Include="DOTNET_STARTUP_HOOKS">
+				<Value>$(_StartupHooksContainerDir)$(_StartupHooksFilename)</Value>
+			</RuntimeEnvironmentVariable>
+		</ItemGroup>
 		<Exec
 			Command="tty"
 			Condition="'$(StandardOutputPath)' == '' Or '$(StandardErrorPath)' == ''"
@@ -59,6 +96,13 @@
 		<PropertyGroup Condition="'$(RunWithOpen)' == 'false'">
 			<RunCommand>$(TargetDir)/$(_AppBundleName).app/Contents/MacOS/$(_NativeExecutableName)</RunCommand>
 			<RunArguments />
+		</PropertyGroup>
+
+		<!-- Override the RunCommand to use 'env' to set DOTNET_STARTUP_HOOKS to the container path -->
+		<!-- This is a workaround for https://github.com/dotnet/sdk/pull/54922 -->
+		<PropertyGroup Condition="'$(RunWithOpen)' == 'false' And '$(_StartupHooksContainerDir)' != ''">
+			<RunArguments>"DOTNET_STARTUP_HOOKS=$(_StartupHooksContainerDir)$(_StartupHooksFilename)" "$(RunCommand)"</RunArguments>
+			<RunCommand>env</RunCommand>
 		</PropertyGroup>
 	</Target>
 </Project>

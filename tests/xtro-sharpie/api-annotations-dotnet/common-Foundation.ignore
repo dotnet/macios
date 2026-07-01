@@ -1306,3 +1306,32 @@
 
 # it is used in the selectors that support vargs and thefore cannot be used with out bindings
 !missing-field! NSInflectionConceptsKey not bound
+
+# results from initial block parameter nullability analysis
+!missing-null-allowed! 'Foundation.NSProgress Foundation.NSItemProvider::LoadDataRepresentation(System.String,System.Action`2<Foundation.NSData,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'Foundation.NSProgress Foundation.NSItemProvider::LoadDataRepresentation(System.String,System.Action`2<Foundation.NSData,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1
+!missing-null-allowed! 'Foundation.NSProgress Foundation.NSItemProvider::LoadFileRepresentation(System.String,System.Action`2<Foundation.NSUrl,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'Foundation.NSProgress Foundation.NSItemProvider::LoadFileRepresentation(System.String,System.Action`2<Foundation.NSUrl,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1
+!missing-null-allowed! 'Foundation.NSProgress Foundation.NSItemProvider::LoadObject(ObjCRuntime.Class,System.Action`2<Foundation.INSItemProviderReading,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'Foundation.NSProgress Foundation.NSItemProvider::LoadObject(ObjCRuntime.Class,System.Action`2<Foundation.INSItemProviderReading,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1
+!missing-null-allowed! 'Foundation.NSUrlSessionUploadTask Foundation.NSUrlSession::CreateUploadTask(Foundation.NSData,System.Action`3<Foundation.NSData,Foundation.NSUrlResponse,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'Foundation.NSUrlSessionUploadTask Foundation.NSUrlSession::CreateUploadTask(Foundation.NSData,System.Action`3<Foundation.NSData,Foundation.NSUrlResponse,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1
+!missing-null-allowed! 'Foundation.NSUrlSessionUploadTask Foundation.NSUrlSession::CreateUploadTask(Foundation.NSData,System.Action`3<Foundation.NSData,Foundation.NSUrlResponse,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #2
+!missing-null-allowed! 'System.Void Foundation.NSFileCoordinator::CoordinateAccess(Foundation.NSFileAccessIntent[],Foundation.NSOperationQueue,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'accessor' block parameter #0
+!missing-null-allowed! 'System.Void Foundation.NSFilePresenter::AccommodatePresentedItemDeletion(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Foundation.NSFilePresenter::AccommodatePresentedSubitemDeletion(Foundation.NSUrl,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Foundation.NSFilePresenter::SavePresentedItemChanges(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Foundation.NSHttpCookieStorage::GetCookiesForTask(Foundation.NSUrlSessionTask,System.Action`1<Foundation.NSHttpCookie[]>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Foundation.NSUrlCache::GetCachedResponse(Foundation.NSUrlSessionDataTask,System.Action`1<Foundation.NSCachedUrlResponse>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Foundation.NSUrlCredentialStorage::GetCredentials(Foundation.NSUrlProtectionSpace,Foundation.NSUrlSessionTask,System.Action`1<Foundation.NSDictionary>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Foundation.NSUrlCredentialStorage::GetDefaultCredential(Foundation.NSUrlProtectionSpace,Foundation.NSUrlSessionTask,System.Action`1<Foundation.NSUrlCredential>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Foundation.NSUrlSessionDownloadTask::Cancel(System.Action`1<Foundation.NSData>)' is missing a '?' on parameter 'resumeCallback' block parameter #0
+!missing-null-allowed! 'System.Void Foundation.NSUrlSessionStreamTask::WriteData(Foundation.NSData,System.Double,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Foundation.NSUrlSessionUploadTask::CancelByProducingResumeData(System.Action`1<Foundation.NSData>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Foundation.NSUrlSessionWebSocketTask::ReceiveMessage(System.Action`2<Foundation.NSUrlSessionWebSocketMessage,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Foundation.NSUrlSessionWebSocketTask::ReceiveMessage(System.Action`2<Foundation.NSUrlSessionWebSocketMessage,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1
+!missing-null-allowed! 'System.Void Foundation.NSUrlSessionWebSocketTask::SendMessage(Foundation.NSUrlSessionWebSocketMessage,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Foundation.NSUrlSessionWebSocketTask::SendPing(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'pongReceiveHandler' block parameter #0
+!missing-null-allowed! 'System.Void Foundation.NSUserActivity::GetContinuationStreams(System.Action`3<Foundation.NSInputStream,Foundation.NSOutputStream,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Foundation.NSUserActivity::GetContinuationStreams(System.Action`3<Foundation.NSInputStream,Foundation.NSOutputStream,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1
+!missing-null-allowed! 'System.Void Foundation.NSUserActivity::GetContinuationStreams(System.Action`3<Foundation.NSInputStream,Foundation.NSOutputStream,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #2

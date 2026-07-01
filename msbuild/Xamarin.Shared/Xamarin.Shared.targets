@@ -3030,7 +3030,8 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 				<DSymName>%(Filename).dSYM</DSymName>
 			</_PostProcessingItem>
 			<_PostProcessingItem Include="$([System.IO.Path]::GetFileName('$(AppBundleDir)'))/$(_NativeExecutableRelativePath)" Condition="'$(IsWatchApp)' != 'true'">
-				<SymbolFile Condition="'$(_ExportSymbolsExplicitly)' == 'true'">$(_SymbolsListFullPath)</SymbolFile>
+				<SymbolFile>$(_SymbolsListFullPath)</SymbolFile>
+				<SymbolFileLocalPath>$(_MtouchSymbolsList)</SymbolFileLocalPath>
 				<DSymName>$(_AppBundleName)$(AppBundleExtension).dSYM</DSymName>
 				<IsXPCService>$(IsXpcService)</IsXPCService>
 				<IsAppExtension>$(IsAppExtension)</IsAppExtension>
@@ -3202,6 +3203,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			MaxDegreeOfParallelism="$(SymbolStripMaxDegreeOfParallelism)"
 			StripPath="$(StripPath)"
 			SymbolFile="%(_NativeStripItems.SymbolFile)"
+			SymbolFileLocalPath="%(_NativeStripItems.SymbolFileLocalPath)"
 		/>
 
 		<!-- Create/touch the stamp file. -->

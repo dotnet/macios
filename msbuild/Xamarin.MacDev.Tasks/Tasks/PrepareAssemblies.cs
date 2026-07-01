@@ -14,6 +14,7 @@ using Microsoft.Build.Utilities;
 
 using Xamarin.Build;
 using Xamarin.Bundler;
+using Xamarin.Localization.MSBuild;
 using Xamarin.Utils;
 
 #nullable enable
@@ -34,6 +35,8 @@ namespace Xamarin.MacDev.Tasks {
 		[Required]
 		public ITaskItem? OptionsFile { get; set; }
 		#endregion
+
+		public bool PostProcessing { get; set; }
 
 		#region Outputs
 		[Output]
@@ -63,7 +66,14 @@ namespace Xamarin.MacDev.Tasks {
 				var infos = InputAssemblies.Select (GetAssemblyInfo).ToArray ();
 				using var preparer = new AssemblyPreparer (this, infos, OptionsFile?.ItemSpec ?? "");
 				preparer.MakeReproPath = MakeReproPath;
-				var rv = preparer.Prepare (out var exceptions);
+				bool rv;
+				List<ProductException> exceptions;
+
+				if (PostProcessing) {
+					rv = preparer.PostProcess (out exceptions);
+				} else {
+					rv = preparer.Prepare (out exceptions);
+				}
 
 				foreach (var pe in exceptions) {
 					if (pe.IsError (this)) {
@@ -100,6 +110,8 @@ namespace Xamarin.MacDev.Tasks {
 				}));
 
 				OutputAssemblies = outputAssemblies.ToArray ();
+				if (!rv && !Log.HasLoggedErrors)
+					Log.LogError (MSBStrings.E0192);
 				return rv && !Log.HasLoggedErrors;
 			} catch (Exception e) {
 				((IToolLog) this).LogException (e);

@@ -9,59 +9,87 @@ using Mono.Linker.Steps;
 using Mono.Tuner;
 
 using Xamarin.Bundler;
+using Xamarin.Linker.Steps;
 using Xamarin.Utils;
 
 #nullable enable
 
 namespace Xamarin.Linker {
 
+#if ASSEMBLY_PREPARER
+	public class RemoveUserResourcesSubStep : AssemblyModifierStep {
+#else
 	public class RemoveUserResourcesSubStep : ExceptionalSubStep {
-		string [] prefixes = Array.Empty<string> ();
+#endif
+		static string [] monotouch_prefixes = new string [] {
+			"__monotouch_content_",
+			"__monotouch_page_",
+			"__monotouch_item_",
+		};
 
+		static string [] xammac_prefixes = new string [] {
+			"__xammac_content_",
+			"__xammac_page_",
+			"__xammac_item_",
+		};
+
+#if !ASSEMBLY_PREPARER
 		public override SubStepTargets Targets {
 			get { return SubStepTargets.Assembly; }
 		}
+#endif
 
+		ApplePlatform Platform {
+			get { return Configuration.Platform; }
+		}
+
+#if ASSEMBLY_PREPARER
+		public bool Simulator { get { return Configuration.IsSimulatorBuild; } }
+#else
 		public bool Simulator { get { return LinkContext.App.IsSimulatorBuild; } }
+		public Application App { get { return LinkContext.App; } }
+#endif
 
 		protected override string Name { get; } = "Removing User Resources";
 		protected override int ErrorCode { get; } = 2030;
 
-		public override void Initialize (LinkContext context)
+		public string [] GetPrefixes (ApplePlatform platform)
 		{
-			base.Initialize (context);
-
-			switch (LinkContext.App.Platform) {
+			switch (platform) {
 			case ApplePlatform.iOS:
 			case ApplePlatform.TVOS:
 			case ApplePlatform.MacCatalyst:
-				prefixes = new string [] {
-					"__monotouch_content_",
-					"__monotouch_page_",
-					"__monotouch_item_",
-				};
-				break;
+				return monotouch_prefixes;
 			case ApplePlatform.MacOSX:
-				prefixes = new string [] {
-					"__xammac_content_",
-					"__xammac_page_",
-					"__xammac_item_",
-				};
-				break;
+				return xammac_prefixes;
 			default:
-				Report (ErrorHelper.CreateError (71, Errors.MX0071, LinkContext.App.Platform, LinkContext.App.ProductName));
+				Report (ErrorHelper.CreateError (71, Errors.MX0071, platform, App.ProductName));
 				break;
 			}
+			return Array.Empty<string> ();
 		}
 
+#if ASSEMBLY_PREPARER
+		protected override bool ModifyAssembly (AssemblyDefinition assembly)
+#else
 		protected override void Process (AssemblyDefinition assembly)
 		{
-			if (Profile.IsProductAssembly (assembly) || Profile.IsSdkAssembly (assembly))
-				return;
+			var modified = ModifyAssembly (assembly);
+
+			// we'll need to save (if we're not linking) this assembly
+			if (modified && Annotations.GetAction (assembly) != AssemblyAction.Link)
+				Annotations.SetAction (assembly, AssemblyAction.Save);
+		}
+
+		bool ModifyAssembly (AssemblyDefinition assembly)
+#endif
+		{
+			if (App.Profile.IsProductAssembly (assembly) || App.Profile.IsSdkAssembly (assembly))
+				return false;
 
 			var module = assembly.MainModule;
 			if (!module.HasResources)
-				return;
+				return false;
 
 			HashSet<string>? libraries = null;
 			if (assembly.HasCustomAttributes) {
@@ -93,9 +121,7 @@ namespace Xamarin.Linker {
 				found = true;
 			}
 
-			// we'll need to save (if we're not linking) this assembly
-			if (found && Annotations.GetAction (assembly) != AssemblyAction.Link)
-				Annotations.SetAction (assembly, AssemblyAction.Save);
+			return found;
 		}
 
 		bool IsMonoTouchResource (string resourceName)
@@ -104,7 +130,7 @@ namespace Xamarin.Linker {
 			if (Simulator)
 				return false;
 
-			foreach (var prefix in prefixes) {
+			foreach (var prefix in GetPrefixes (Platform)) {
 				if (resourceName.StartsWith (prefix, StringComparison.OrdinalIgnoreCase))
 					return true;
 			}

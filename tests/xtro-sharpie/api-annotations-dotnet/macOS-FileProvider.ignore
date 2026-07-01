@@ -4,3 +4,25 @@
 ## when deprecated (xcode12 beta 3) this member was marked as not available on macOS (but it was before)
 !extra-protocol-member! unexpected selector NSFileProviderItem::typeIdentifier found
 !incorrect-protocol-member! NSFileProviderPendingSetEnumerator::isMaximumSizeReached is REQUIRED and should be abstract
+
+# results from initial block parameter nullability analysis
+!missing-null-allowed! 'System.Void FileProvider.NSFileProviderManager::AddDomain(FileProvider.NSFileProviderDomain,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void FileProvider.NSFileProviderManager::Disconnect(System.String,FileProvider.NSFileProviderManagerDisconnectionOptions,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void FileProvider.NSFileProviderManager::EvictItem(Foundation.NSString,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void FileProvider.NSFileProviderManager::GetDomains(System.Action`2<FileProvider.NSFileProviderDomain[],Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1
+!missing-null-allowed! 'System.Void FileProvider.NSFileProviderManager::GetService(System.String,System.String,System.Action`2<Foundation.NSFileProviderService,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1
+!missing-null-allowed! 'System.Void FileProvider.NSFileProviderManager::GetUserVisibleUrl(Foundation.NSString,System.Action`2<Foundation.NSUrl,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void FileProvider.NSFileProviderManager::GetUserVisibleUrl(Foundation.NSString,System.Action`2<Foundation.NSUrl,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1
+!missing-null-allowed! 'System.Void FileProvider.NSFileProviderManager::Import(FileProvider.NSFileProviderDomain,Foundation.NSUrl,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void FileProvider.NSFileProviderManager::Reconnect(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void FileProvider.NSFileProviderManager::Register(Foundation.NSUrlSessionTask,System.String,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void FileProvider.NSFileProviderManager::ReimportItemsBelowItem(Foundation.NSString,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void FileProvider.NSFileProviderManager::RemoveAllDomains(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void FileProvider.NSFileProviderManager::RemoveDomain(FileProvider.NSFileProviderDomain,FileProvider.NSFileProviderDomainRemovalMode,System.Action`2<Foundation.NSUrl,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1
+!missing-null-allowed! 'System.Void FileProvider.NSFileProviderManager::RemoveDomain(FileProvider.NSFileProviderDomain,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void FileProvider.NSFileProviderManager::RequestDownload(System.String,Foundation.NSRange,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void FileProvider.NSFileProviderManager::RequestModification(FileProvider.NSFileProviderItemFields,System.String,FileProvider.NSFileProviderModifyItemOptions,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void FileProvider.NSFileProviderManager::SignalEnumerator(System.String,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void FileProvider.NSFileProviderManager::SignalErrorResolved(Foundation.NSError,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void FileProvider.NSFileProviderManager::WaitForChangesOnItemsBelowItem(System.String,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void FileProvider.NSFileProviderManager::WaitForStabilization(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0

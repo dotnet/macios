@@ -23,6 +23,10 @@ namespace Xamarin.MacDev.Tasks {
 		// This can also be specified as metadata on the Executable item (as 'SymbolFile')
 		public string SymbolFile { get; set; } = string.Empty;
 
+		// The local path to the symbol file (used to transfer it to the remote Mac).
+		// This can also be specified as metadata on the Executable item (as 'SymbolFileLocalPath')
+		public string SymbolFileLocalPath { get; set; } = string.Empty;
+
 		// This can also be specified as metadata on the Executable item (as 'Kind')
 		public string Kind { get; set; } = string.Empty;
 		#endregion
@@ -78,6 +82,16 @@ namespace Xamarin.MacDev.Tasks {
 
 		public bool ShouldCreateOutputFile (ITaskItem item) => false;
 
-		public IEnumerable<ITaskItem> GetAdditionalItemsToBeCopied () => Enumerable.Empty<ITaskItem> ();
+		public IEnumerable<ITaskItem> GetAdditionalItemsToBeCopied ()
+		{
+			if (!string.IsNullOrEmpty (SymbolFileLocalPath))
+				yield return new Microsoft.Build.Utilities.TaskItem (SymbolFileLocalPath);
+
+			foreach (var item in Executable) {
+				var symbolFileLocalPath = item.GetMetadata ("SymbolFileLocalPath");
+				if (!string.IsNullOrEmpty (symbolFileLocalPath))
+					yield return new Microsoft.Build.Utilities.TaskItem (symbolFileLocalPath);
+			}
+		}
 	}
 }

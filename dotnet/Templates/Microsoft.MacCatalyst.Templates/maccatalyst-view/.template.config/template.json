@@ -1,7 +1,7 @@
 {
   "$schema": "http://json.schemastore.org/template",
   "author": "Microsoft",
-  "classifications": [ "macOS", "Mac Catalyst" ],
+  "classifications": [ "Desktop", "macOS", "Mac Catalyst" ],
   "name": "Mac Catalyst View",
   "description": "A MacCatalyst View",
   "tags": {

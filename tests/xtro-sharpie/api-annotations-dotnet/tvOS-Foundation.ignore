@@ -13,4 +13,3 @@
 !missing-selector! NSXPCInterface::setXPCType:forSelector:argumentIndex:ofReply: not bound
 !missing-selector! NSXPCInterface::XPCTypeForSelector:argumentIndex:ofReply: not bound
 
-!missing-null-allowed! 'System.Void Foundation.NSBundleResourceRequest::BeginAccessingResources(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0

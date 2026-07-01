@@ -324,15 +324,15 @@ kernel void myKernel (texture2d<half, access::read> inTexture [[texture(0)]],
 
 			var rv = DotNet.AssertBuild (project_path, properties);
 			var allTargets = BinLog.GetAllTargets (rv.BinLogPath);
-			AssertTargetExecuted (allTargets, "_SelectR2RAssemblies", "A");
-			AssertTargetExecuted (allTargets, "_CreateR2RImages", "A");
+			AssertTargetExecuted (allTargets, "_SelectR2RAssemblies", "First build");
+			AssertTargetExecuted (allTargets, "_CreateR2RImages", "First build");
 
 			properties ["AdditionalDefineConstants"] = "INCLUDED_ADDITIONAL_CODE";
 
 			rv = DotNet.AssertBuild (project_path, properties);
 			allTargets = BinLog.GetAllTargets (rv.BinLogPath);
-			AssertTargetExecuted (allTargets, "_TouchR2ROutputs", "B");
-			AssertTargetNotExecuted (allTargets, "_CreateR2RImages", "B");
+			AssertTargetExecuted (allTargets, "_TouchR2ROutputs", "Second build");
+			AssertTargetNotExecuted (allTargets, "_CreateR2RImages", "Second build");
 		}
 
 		void CodeChangeSkipsTargetsImpl (ApplePlatform platform, string runtimeIdentifiers, bool useMonoRuntime, bool interpreterEnabled)

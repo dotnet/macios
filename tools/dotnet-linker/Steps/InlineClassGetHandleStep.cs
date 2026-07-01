@@ -41,6 +41,11 @@ public class InlineClassGetHandleStep : AssemblyModifierStep {
 	public const string PInvokePrefix = "xamarin_Class_GetHandle_";
 	public const string PInvokeSuffix = "_Native";
 
+	protected override bool ConditionToProcess ()
+	{
+		return Configuration.InlineClassGetHandle != InlineClassGetHandleMode.Disabled;
+	}
+
 	protected override void TryProcess ()
 	{
 		strictMode = Configuration.InlineClassGetHandle == InlineClassGetHandleMode.Strict;

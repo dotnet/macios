@@ -10,3 +10,21 @@
 !extra-enum-value! Managed value 4 for SFErrorCode.InternalError not found in native headers
 !extra-enum-value! Managed value 5 for SFErrorCode.MissingEntitlement not found in native headers
 !extra-enum-value! Managed value 6 for SFErrorCode.MaximumAttemptsExceeded not found in native headers
+
+# results from initial block parameter nullability analysis
+!missing-null-allowed! 'System.Void SafariServices.SFContentBlockerManager::GetStateOfContentBlocker(System.String,System.Action`2<SafariServices.SFContentBlockerState,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void SafariServices.SFContentBlockerManager::GetStateOfContentBlocker(System.String,System.Action`2<SafariServices.SFContentBlockerState,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1
+!missing-null-allowed! 'System.Void SafariServices.SFContentBlockerManager::ReloadContentBlocker(System.String,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void SafariServices.SFSafariApplication::DispatchMessage(System.String,System.String,Foundation.NSDictionary`2<Foundation.NSString,Foundation.NSObject>,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void SafariServices.SFSafariApplication::GetActiveWindow(System.Action`1<SafariServices.SFSafariWindow>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void SafariServices.SFSafariApplication::OpenWindow(Foundation.NSUrl,System.Action`1<SafariServices.SFSafariWindow>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void SafariServices.SFSafariApplication::ShowPreferencesForExtension(System.String,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void SafariServices.SFSafariExtension::GetBaseUri(System.Action`1<Foundation.NSUrl>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void SafariServices.SFSafariPage::GetPageProperties(System.Action`1<SafariServices.SFSafariPageProperties>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void SafariServices.SFSafariPage::GetScreenshotOfVisibleArea(System.Action`1<AppKit.NSImage>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void SafariServices.SFSafariTab::GetActivePage(System.Action`1<SafariServices.SFSafariPage>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void SafariServices.SFSafariTab::GetContainingWindow(System.Action`1<SafariServices.SFSafariWindow>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void SafariServices.SFSafariTab::GetPages(System.Action`1<SafariServices.SFSafariPage[]>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void SafariServices.SFSafariWindow::GetActiveTab(System.Action`1<SafariServices.SFSafariTab>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void SafariServices.SFSafariWindow::GetToolbarItem(System.Action`1<SafariServices.SFSafariToolbarItem>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void SafariServices.SFSafariWindow::OpenTab(Foundation.NSUrl,System.Boolean,System.Action`1<SafariServices.SFSafariTab>)' is missing a '?' on parameter 'completionHandler' block parameter #0

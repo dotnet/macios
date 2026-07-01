@@ -63,6 +63,7 @@ safe-outputs:
   create-pull-request:
     max: 10
     draft: false
+    patch-format: bundle
     signed-commits: false
     allowed-base-branches:
       - "net*.0"

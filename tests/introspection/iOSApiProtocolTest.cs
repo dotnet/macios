@@ -197,6 +197,14 @@ namespace Introspection {
 				if (protocolName == "NSItemProviderReading")
 					return !TestRuntime.CheckXcodeVersion (12, 0);
 				break;
+			case "UITextView":
+				// UITextView declares NSTextViewportLayoutControllerDelegate conformance in the
+				// Xcode 27 headers, but the runtime only registers the conformance starting with
+				// iOS 27.0 / tvOS 27.0 / Mac Catalyst 27.0 (the delegate methods are all
+				// API_AVAILABLE(ios(27.0), tvos(27.0))), so skip the check on older OS versions.
+				if (protocolName == "NSTextViewportLayoutControllerDelegate")
+					return !TestRuntime.CheckXcodeVersion (27, 0);
+				break;
 #if __MACCATALYST__
 			case "BCChatButton":
 			case "PKAddPassButton":
@@ -215,15 +223,6 @@ namespace Introspection {
 			case "INUIAddVoiceShortcutButton":
 				if (protocolName == "UIContextMenuInteractionDelegate")
 					return !TestRuntime.CheckXcodeVersion (12, 0);
-				break;
-
-			// UITextView declares NSTextViewportLayoutControllerDelegate conformance in the
-			// Xcode 27 headers (so xtro requires the managed conformance), but the native
-			// Mac Catalyst UITextView does not register the conformance at runtime, even
-			// though iOS and tvOS do. Skip the runtime conformance check on Mac Catalyst only.
-			case "UITextView":
-				if (protocolName == "NSTextViewportLayoutControllerDelegate")
-					return true;
 				break;
 
 			// We have to special case the following PKPayment* in MacCatalyst

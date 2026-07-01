@@ -4909,7 +4909,7 @@ namespace UIKit {
 
 		//Detected properties
 		[Export ("numberOfColumns")]
-#if MONOMAC
+#if MONOMAC && !XAMCORE_5_0
 		nint Columns { get; set; }
 #else
 		nint NumberOfColumns { get; set; }

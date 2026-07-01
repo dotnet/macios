@@ -321,7 +321,6 @@ kernel void myKernel (texture2d<half, access::read> inTexture [[texture(0)]],
 			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
-			properties ["UseMonoRuntime"] = "false";
 
 			var rv = DotNet.AssertBuild (project_path, properties);
 			var allTargets = BinLog.GetAllTargets (rv.BinLogPath);

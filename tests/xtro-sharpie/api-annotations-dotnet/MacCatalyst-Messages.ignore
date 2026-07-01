@@ -1,0 +1,9 @@
+# results from initial block parameter nullability analysis
+!missing-null-allowed! 'System.Void Messages.MSConversation::InsertAttachment(Foundation.NSUrl,System.String,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Messages.MSConversation::InsertMessage(Messages.MSMessage,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Messages.MSConversation::InsertSticker(Messages.MSSticker,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Messages.MSConversation::InsertText(System.String,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Messages.MSConversation::SendAttachment(Foundation.NSUrl,System.String,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Messages.MSConversation::SendMessage(Messages.MSMessage,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Messages.MSConversation::SendSticker(Messages.MSSticker,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Messages.MSConversation::SendText(System.String,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0

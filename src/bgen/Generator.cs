@@ -1263,12 +1263,21 @@ public partial class Generator : IMemberGatherer {
 		return rv;
 	}
 
+	readonly Dictionary<PropertyInfo, ExportAttribute?> getterExportCache = new ();
+	readonly Dictionary<PropertyInfo, ExportAttribute?> setterExportCache = new ();
+
 	public ExportAttribute? GetSetterExportAttribute (PropertyInfo pinfo)
 	{
+		if (setterExportCache.TryGetValue (pinfo, out var cached))
+			return cached;
 		var ea = AttributeManager.GetCustomAttribute<ExportAttribute> (pinfo.GetSetMethod ());
-		if (ea is not null && ea.Selector is not null)
+		if (ea is not null && ea.Selector is not null) {
+			setterExportCache [pinfo] = ea;
 			return ea;
-		return AttributeManager.GetCustomAttribute<ExportAttribute> (pinfo)?.ToSetter (pinfo);
+		}
+		var result = AttributeManager.GetCustomAttribute<ExportAttribute> (pinfo)?.ToSetter (pinfo);
+		setterExportCache [pinfo] = result;
+		return result;
 	}
 
 	public ExportAttribute GetOneSetterExportAttribute (PropertyInfo pinfo)
@@ -1281,10 +1290,16 @@ public partial class Generator : IMemberGatherer {
 
 	public ExportAttribute? GetGetterExportAttribute (PropertyInfo pinfo)
 	{
+		if (getterExportCache.TryGetValue (pinfo, out var cached))
+			return cached;
 		var ea = AttributeManager.GetCustomAttribute<ExportAttribute> (pinfo.GetGetMethod ());
-		if (ea is not null && ea.Selector is not null)
+		if (ea is not null && ea.Selector is not null) {
+			getterExportCache [pinfo] = ea;
 			return ea;
-		return AttributeManager.GetCustomAttribute<ExportAttribute> (pinfo)?.ToGetter (pinfo);
+		}
+		var result = AttributeManager.GetCustomAttribute<ExportAttribute> (pinfo)?.ToGetter (pinfo);
+		getterExportCache [pinfo] = result;
+		return result;
 	}
 
 	public ExportAttribute GetOneGetterExportAttribute (PropertyInfo pinfo)
@@ -2548,17 +2563,24 @@ public partial class Generator : IMemberGatherer {
 	//          The Foo property and the Klass both could have unique or duplicate attributes
 	// We collect them all, starting with the inner most first in the list.
 	// Later on CopyValidAttributes will handle only copying the first valid one down
+	readonly Dictionary<MemberInfo, List<AvailabilityBaseAttribute>> parentAttributeCache = new ();
 	List<AvailabilityBaseAttribute> GetAllParentAttributes (MemberInfo context)
 	{
+		if (parentAttributeCache.TryGetValue (context, out var cached))
+			return cached;
+
 		var parentAvailability = new List<AvailabilityBaseAttribute> ();
+		var current = context;
 		while (true) {
-			parentAvailability.AddRange (AttributeManager.GetCustomAttributes<AvailabilityBaseAttribute> (context));
-			var parentContext = FindContainingContext (context);
-			if (context == parentContext) {
-				return parentAvailability;
+			parentAvailability.AddRange (AttributeManager.GetCustomAttributes<AvailabilityBaseAttribute> (current));
+			var parentContext = FindContainingContext (current);
+			if (current == parentContext) {
+				break;
 			}
-			context = parentContext;
+			current = parentContext;
 		}
+		parentAttributeCache [context] = parentAvailability;
+		return parentAvailability;
 	}
 
 	public bool PrintPlatformAttributes (MemberInfo? mi, Type? inlinedType = null)

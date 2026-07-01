@@ -203,6 +203,9 @@ namespace Xamarin.Tests {
 				{ "EnableSandbox", enableSandbox ? "true" : "false" },
 			};
 
+
+			DotNet.IgnoreIfUnsupportedMonoRuntime (useMonoRuntime);
+
 			Log ("Starting 'dotnet watch' with:");
 			Log ($"    Executable: {DotNet.Executable}");
 			Log ($"    Arguments: {string.Join (" ", args)}");

@@ -140,6 +140,8 @@ namespace Xamarin.Tests {
 				{ "RunWithOpen", "false" }, // this makes it so that the watched process is a subprocess, which means that ctrl-c in the terminal will kill everything. It also means that it'll get killed if something times out in the test.
 			};
 
+			DotNet.IgnoreIfUnsupportedMonoRuntime (useMonoRuntime);
+
 			var watchTask = Execution.RunWithCallbacksAsync (
 				DotNet.Executable,
 				args,

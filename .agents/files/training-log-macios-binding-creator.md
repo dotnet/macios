@@ -1,5 +1,63 @@
 # Training Log: macios-binding-creator
 
+## Session: 2026-07-01 (3) — Xcode 27 test-workflow accuracy (xtro/cecil/introspection) from 3 real binding sessions
+
+**Trainer:** SkillTrainer | **Skill:** macios-binding-creator | **Trigger:** Three user requests to enhance the skill from three real copilot sessions, each an Xcode 27 binding task:
+- `3611320c-a6c6-4982-9342-8f8cc4604a37` — AudioToolbox (`AUHeadTrackingBinauralRenderer`)
+- `dcd60f0e-c28c-4b34-9623-ba3e29472001` — AuthenticationServices
+- `dc7653a5-b1f0-4a7f-ad46-539a138f423e` — AVFoundation, which went all the way to **PR #25828** with maintainer review feedback **and CI failures** (8 checkpoints) — the richest evidence source.
+
+**Method:** Every design AND implementation change was rubber-ducked READ-ONLY, in parallel, with three models (claude-sonnet-5 max, claude-opus-4.8 max, gpt-5.5 xhigh), then triple-checked against the live repo (Makefiles, test sources, `EnumCheck.cs`, `ApiCtorInitTest.cs`, `ApiSelectorTest.cs`, `Documentation.cs`). All claims cite verified file:line. **Not committed** (per standing user preference).
+
+### Assessment
+
+Mining the three on-disk session traces (checkpoints + `events.jsonl`) surfaced seven distinct, verifiable places where the skill's test-workflow guidance was factually wrong, silently no-op, or incomplete. Two sessions **independently** hit the same xtro `run-*` bug, confirming it was a real recurring blocker.
+
+**Issues found (ranked):**
+1. ❌ **Wrong: xtro `run-ios`/`run-tvos`/`run-macos`/`run-maccatalyst` targets do not exist** (SKILL.md Step 6a + test-workflow.md). Hit by sessions 1 **and** 3. Correct workflow = `gen-all` then `dotnet-classify` (which classifies all platforms then runs sanity). Verified: no such targets in `tests/xtro-sharpie/Makefile`.
+2. ❌ **Wrong: generated-bindings grep path `api-annotations-dotnet/generated/`** (Step 4). It never existed. Correct = `tests/xtro-sharpie/api/<Platform>/ApiDefinition.cs` (gitignored, produced by `gen-all`). Verified `Makefile:167`, `.gitignore:1`.
+3. ❌ **Wrong/no-op: `make -C src build`** (Step 5). No `build` target in `src/Makefile`; the word matches the `src/build/` output dir → `make: Nothing to be done for 'build'.` (exit 0, silent). Correct = `make all && make install` from the repo root (tests read installed NuGet packs). Reproduced via `make -n`.
+4. ⚠️ **Incomplete: `DesignatedInitializer` re-expose failure** (Step 7). A bound subclass of a class with a designated initializer (e.g. `AUAudioUnit`) must re-expose it or `ApiCtorInitTest` fails `<Type> should re-expose <Base>::.ctor(...)`. Two patterns documented: plain public `[DesignatedInitializer] Constructor` (passes with no test edit), and the failable→factory variant (`AVSpeechSynthesisProviderAudioUnit`), which additionally needs a `Match ()` case in `ApiCtorInitTest.cs`.
+5. ⚠️ **Missing: cecil `VerifyEveryVisibleMemberIsDocumented` baseline** (session 2). New public members fail unless documented; if the whole framework is already in `Documentation.KnownFailures.txt`, regenerate via `WRITE_KNOWN_FAILURES=1 make -C tests/cecil-tests run-tests` (exits non-zero by design), then re-run to confirm exit 0.
+6. ⚠️ **Missing: selector-level introspection failures** (session 3, CI). `ApiSelectorTest` (`respondsToSelector:`) is a **different** test from `ApiCtorInitTest`. On a beta SDK Apple often *declares* a selector but the beta OS doesn't *implement* it (session 3: `AVAssetWriter` ProVideoStorage on macOS/MacCatalyst 27). The skill only covered ctor-init crashes.
+7. ⚠️ **Missing: xtro `!extra-enum-value!`** (session 3, CI). A new enum value present in managed but `API_UNAVAILABLE` in the native header for a platform.
+
+### Cycles (one change each; ❌ factual errors first)
+
+- **Cycle 1 — xtro targets + generated path (issues 1, 2):** SKILL.md Step 6a rewritten to `gen-all` + `dotnet-classify` with the `?fixed-todo?` cleanup loop; Step 4 + binding-patterns.md version section repointed to `tests/xtro-sharpie/api/<Platform>/ApiDefinition.cs`; test-workflow.md Xtro Commands rewritten. **Outcome:** ✅ kept (3-model impl review found no factual error; all targets/paths verified real).
+- **Cycle 2 — `make -C src build` no-op (issue 3):** Step 5 changed to `make all && make install` with an ❌ NEVER-use note. **Outcome:** ✅ kept.
+- **Cycle 3 — DesignatedInitializer subclass re-expose (issue 4):** Step 7 bullet + new binding-patterns.md § "Re-exposing Designated Initializers in Subclasses" (plain + factory variants, with the `Match ()` requirement). **Outcome:** ✅ kept.
+- **Cycle 4 — cecil doc baseline (issue 5):** Step 6b ⚠️ note + test-workflow.md § "Undocumented-member failures". **Outcome:** ✅ kept.
+- **Cycle 5 — selector-level introspection (issue 6):** test-workflow.md new § "Selector Not Found (Declared but Not Implemented)" + Step 7 bullet. macOS → `MacApiSelectorTest.cs` `Skip (Type, string selectorName)` (precedent `accessibilityNotifiesWhenDestroyed`); iOS/tvOS/MacCatalyst → `iOSApiSelectorTest.cs` (existing selector skips live in `CheckResponse`/`CheckStaticResponse`; extend those or add a `Skip(Type,string)` override, `#if`-guarded). Skip only failing platforms — unconditional on real hardware, `TestRuntime.IsSimulator`-gated only for simulator-only gaps. **Design-review correction:** initial draft implied the cited iOS precedents lived in `Skip(Type,string)`; all three models showed they live in `CheckResponse` — corrected before applying.
+- **Cycle 6 — xtro `!extra-enum-value!` (issue 7):** test-workflow.md new § + Step 6a note. **SCOPE-BASED** rule: type-level `[No<Platform>]` **only** when the whole native enum is unavailable on the platform; otherwise per-**value** `[No<Platform>]`. Precedents: `AVCaptureSessionInterruptionReason` (type-level `[NoMac]`) vs `AVAudioSessionCategoryOptions` (per-value). **Design-review correction (blocking):** my first draft said "always mark the TYPE `[NoMac]`; per-value is neither needed nor sufficient." All three models independently pulled the real merged PR and proved the correct fix here was **per-value** `[NoMac]` (the enum type stays Mac-available); type-level would strip valid members like `None` and can cause `!missing-enum!`. Reworded to the scope-based rule before applying. **Impl-review correction:** the initial type-level precedent (`AVAudioSessionRecordPermission`) was `#if XAMCORE_5_0`-gated (inactive, and contradicts the skill's own "never use XAMCORE_5_0 for new code" rule) — all three models flagged it; swapped to the always-active `AVCaptureSessionInterruptionReason`, and added the third `!extra-enum-value!` variant ("not found in native headers" → `.ignore`/remove, not `[No<Platform>]`).
+
+**Polish from implementation review:** dropped an unverified exit-code `(2)` (kept "non-zero" for consistency with SKILL.md); corrected "appended" → "the whole sorted baseline is rewritten" for the cecil known-failures regen; fixed a misattribution (the `AVSpeechSynthesisProviderAudioUnit` "no `.ignore` needed" evidence belongs to the factory variant, not the plain-Constructor bullet); marked the illustrative `AUHeadTrackingBinauralRenderer` example as "not a real repo type."
+
+### Patterns Learned
+- **Xtro has no `run-*` targets; introspection does.** `tests/xtro-sharpie` only exposes `gen-all` / `dotnet-classify` / `unclassified2todo` / `run-tests`. The introspection suite *does* have `run-ios`/`run-tvos` via `shared-dotnet-test.mk`'s `run-%` pattern. Guidance must scope "no run-* targets" to xtro only, never conflate the two.
+- **Two introspection failure modes, two test classes.** `ApiCtorInitTest` = the type crashes on `init`/dispose/ToString (fix the binding, or add a ctor-init exclusion). `ApiSelectorTest` = `respondsToSelector:` returns false (on a beta OS, usually a declared-but-unimplemented selector → add a *selector-test* skip, do **not** change availability, or xtro will report the API missing).
+- **Fix `!extra-enum-value!` at the right granularity.** `EnumCheck` operates per-field, so match native availability at the same scope: whole-enum-unavailable → type-level `[No<Platform>]`; some-values-unavailable → per-value. Over-broad type-level attributes remove valid API and can flip to `!missing-enum!`.
+- **Beta-runtime gaps ≠ binding bugs.** When Apple's header declares an API but the beta runtime lacks it, the binding is correct; the remedy is a narrow, platform-scoped test skip (unconditional on real hardware, `IsSimulator`-gated only where a simulator lacks something the device has).
+- **Rubber-ducking caught a blocking design error.** The `!extra-enum-value!` "always type-level" framing would have taught agents an actively harmful fix. Three independent models pulling real repo state overturned my summary-derived assumption — evidence that the triple-model design pass is load-bearing, not ceremonial.
+
+### Open Items (deferred 💡 — noted, not changed this session)
+- `build-ios`/`build-tvos` casing in Step 6c works only because macOS is case-insensitive; canonical targets are `build-iOS`/`build-tvOS`. Low risk locally, could bite on case-sensitive filesystems.
+- Hardcoded simulator runtime ids (`iOS-26-4`, `tvOS-26-4`) in Step 6c mlaunch examples will drift each Xcode bump; the surrounding `xcrun simctl list runtimes` note mitigates it.
+- Struct marshaling nuance (session 3): a `[StructLayout(Sequential)]` struct returned **by value** must use explicit private fields + manual accessors, not get-only auto-properties (compiler-controlled backing-field layout). Reviewer-requested; not yet documented.
+- Strong/weak overload idiom for NSString-typedef params + `[StrongDictionary]` (session 3 reviewer request) — partially covered by existing StrongDictionary examples; could be made explicit.
+- Shipped-availability "don't narrow an already-shipped intro version" rule + how to recognize a false-positive from the automated `macios-reviewer` bot (session 3: bot wrongly asked to raise `AVAudioSession.Activate` MacCatalyst 15→27).
+- Replace `"To be added."` placeholder docs with meaningful XML docs for **new** members only (session 3 reviewer feedback) — the skill already forbids the placeholder but doesn't cite this as a common review bounce.
+
+### Reconciliation into `dev/alex/moarskillz` (post-hoc)
+
+This session's work was later reconciled onto a rebased branch (`dev/alex/moarskillz`) that had already committed two other 2026-07-01 sessions (`(2)` xkit consolidation + runtime-only protocol conformance) via a 3-way merge against the clean common base — all three sessions preserved, no content lost either way. Rubber-ducked read-only with three models (Sonnet 5 max, Opus 4.8 max, GPT-5.5 xhigh); all confirmed the merge lossless. Sonnet's deeper fact-check caught **two now-stale claims** in this session's own content — stale because the branch's `main`-merge had meanwhile pulled in the very source PRs this session studied:
+- `AUHeadTrackingBinauralRenderer` (AudioToolbox PR #25811) is now a **real** bound type using the **factory** variant, so the "simplest plain-`Constructor`" example that had borrowed its name was renamed to a genuinely hypothetical `MySpatialAudioUnit`; the real type is now cited as a factory-variant precedent (`ApiCtorInitTest.cs:564`, "exposed using a factory method").
+- `iOSApiSelectorTest.cs` now **already has** a `Skip (Type, string)` override (AVFoundation PR #25828, `AVAssetWriter` Pro Video Storage), so the selector-skip guidance was corrected from "add an override" (which would be CS0111) to "extend the existing one."
+- **Meta-lesson:** freshly-written file:line claims can go stale when the branch later merges the source PR they describe — re-verify "not a real type"/"no such override" negatives against the current tree at reconciliation time.
+
+
+---
+
 ## Session: 2026-07-01 (2) — Shared AppKit/UIKit type consolidation into xkit.cs
 
 **Trainer:** SkillTrainer | **Skill:** macios-binding-creator | **Trigger:** User request to enhance skill using copilot session c713d720-bbb8-4c4a-a2e1-cba321a9f92c (Xcode 27 UIKit bindings, PR #25777, branch dev/alex/xc27UIKit)

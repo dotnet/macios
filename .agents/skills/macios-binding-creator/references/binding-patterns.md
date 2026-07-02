@@ -890,6 +890,35 @@ bool DoSomething (out NSError error);
 
 > ❌ **NEVER** omit `[NullAllowed]` from `out NSError error` parameters. This is a consistent pattern across the entire codebase — every `out NSError` parameter uses `[NullAllowed]`.
 
+## Re-exposing Designated Initializers in Subclasses
+
+.NET constructors are not virtual, so when you bind a **new type that subclasses** an ObjC class that has a designated initializer (e.g. `AUAudioUnit`), the subclass must re-expose that inherited initializer — otherwise the introspection `DesignatedInitializer` test (`tests/introspection/ApiCtorInitTest.cs`) fails with `<Type> should re-expose <Base>::.ctor(...)`.
+
+**Default fix (simplest — passes with no test changes):** re-declare the inherited designated initializer as a public `[DesignatedInitializer]` `Constructor` with the same selector and signature. Giving the subclass its own designated ctor satisfies the test directly.
+
+```csharp
+[iOS (27, 0)]                       // illustrative subclass — not a real repo type
+[NoMac, NoTV, NoMacCatalyst]
+[BaseType (typeof (AUAudioUnit))]
+[DisableDefaultCtor]
+interface MySpatialAudioUnit {
+	// Re-exposed from the base AUAudioUnit designated initializer.
+	[Export ("initWithComponentDescription:options:error:")]
+	[DesignatedInitializer]
+	NativeHandle Constructor (AudioComponentDescription componentDescription, AudioComponentInstantiationOptions options, [NullAllowed] out NSError error);
+
+	// ... the subclass's own members ...
+}
+```
+
+- Return type is **`NativeHandle`** (not `IntPtr`), matching the base binding.
+- A failable init (`out NSError`) keeps `[NullAllowed]` on the error parameter — see [Error Handling](#error-handling).
+- A re-exposed inherited selector is **not** reported by xtro as an extra selector (the base declares it); no `.ignore` entry is needed. (Verified: no `.ignore` entry exists for such re-exposed inherited inits — e.g. the `AVSpeechSynthesisProviderAudioUnit` precedent below.)
+
+**Failable-initializer (factory) variant:** these inits return `nil` + `NSError` on failure, and a C# constructor can't return `null` — the auto-generated ctor *throws* on nil unless `throwOnInitFailure` is `false`. When you want clean nullable semantics instead of a throwing ctor, follow the `AVSpeechSynthesisProviderAudioUnit` precedent: bind the init as `[Internal]` `_Init...` and add a manual static `Create (...) → Type?` factory (see [Factory for Constructors](#factory-for-constructors) for the `NSObjectFlag.Empty` + `InitializeHandle (handle, "", false)` mechanics).
+
+> ⚠️ The factory variant is **not** a real constructor, so the introspection test's generic re-expose check can't find it. You **must** add a `case "<YourType>": ... return true;` to the `Match ()` override in `tests/introspection/ApiCtorInitTest.cs` (the base file covers all platforms), or the `DesignatedInitializer` test still fails. Real precedents: `AVSpeechSynthesisProviderAudioUnit` and `AUHeadTrackingBinauralRenderer` — both bind the designated init as `[Internal]` and carry a `Match ()` case in `ApiCtorInitTest.cs` with a `// This constructor is exposed using a factory method.` note. The plain `Constructor` form above avoids this extra coupling — prefer it unless a nullable return is genuinely needed.
+
 ## Per-Member Platform Attributes
 
 When a type is available on a platform but specific members are not:
@@ -1032,7 +1061,7 @@ The availability version represents **when Apple introduced the API**, not the c
 
 1. **Generated reference bindings** (best source) — after running `make -C tests/xtro-sharpie gen-all`, search for the API in the generated `.cs` files. These include `[Introduced]` attributes extracted from Apple's SDK headers:
    ```bash
-   grep -r "SomeApiName" tests/xtro-sharpie/api/
+   grep -rn "SomeApiName" tests/xtro-sharpie/api/*/ApiDefinition.cs
    ```
 
 2. **Apple SDK headers** — search for `API_AVAILABLE` macros under `$XCODE_DEVELOPER_ROOT`

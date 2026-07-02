@@ -75,8 +75,10 @@ Before writing any bindings, determine the correct availability version for each
 **Primary source of truth: the generated reference bindings** from Step 2. After running `make -C tests/xtro-sharpie gen-all`, search the generated `.cs` files for the API you're binding — they include `[Introduced]` attributes extracted from Apple's SDK headers with the correct per-platform introduction versions. Always use these versions.
 
 ```bash
-# Find the generated reference binding for a specific API
-grep -rE "SomeClassName|SomeMethodName" tests/xtro-sharpie/api/
+# Find the generated reference binding for a specific API.
+# gen-all (Step 2) writes these to api/<Platform>/ApiDefinition.cs (gitignored),
+# so run Step 2 first. Widen to api/*/ if a symbol isn't in ApiDefinition.cs.
+grep -rn "SomeClassName\|SomeMethodName" tests/xtro-sharpie/api/*/ApiDefinition.cs
 ```
 
 If the generated reference bindings don't include version information, fall back to these sources:
@@ -175,9 +177,13 @@ Available preprocessor symbols for platform checks:
 
 ### Step 5: Build
 
+Rebuild **and install** so the test suites — which read the installed NuGet packs, not `src/build/` — pick up your changes:
+
 ```bash
-make -C src build
+make all && make install
 ```
+
+> ❌ **NEVER** use `make -C src build`. There is no `build` target in `src/Makefile`, so it matches the `src/build/` output directory and is a silent no-op ("Nothing to be done for `build'") that compiles nothing — you then validate against **stale** assemblies. Use `make all && make install` (or `make world` for a full rebuild).
 
 Fix any compilation errors before proceeding. Builds can take up to 60 minutes — do not timeout early.
 
@@ -229,14 +235,21 @@ Run all three test suites. **Run them sequentially, not in parallel.**
 
 #### 6a. Xtro Tests
 
+There are **no** `run-ios`/`run-tvos`/`run-macos`/`run-maccatalyst` xtro targets. Regenerate the reference bindings, then classify every platform (this also runs the sanity check):
+
 ```bash
-make -C tests/xtro-sharpie run-ios
-make -C tests/xtro-sharpie run-tvos
-make -C tests/xtro-sharpie run-macos
-make -C tests/xtro-sharpie run-maccatalyst
+make -C tests/xtro-sharpie gen-all
+make -C tests/xtro-sharpie dotnet-classify
 ```
 
-Verify all `.todo` entries for the bound framework are resolved. If any remain, they need binding or explicit `.ignore` entries with justification.
+`dotnet-classify` classifies all platforms and then runs sanity. When a `.todo` entry has been resolved by your binding but the `.todo` file still lists it, sanity prints `?fixed-todo?` and exits non-zero — that is the cleanup signal, **not** a passing result. Loop until it passes:
+
+1. For each `?fixed-todo?` entry you bound, remove that line from its `.todo` file (and `git rm` the file if it becomes empty — see next note).
+2. Re-run `make -C tests/xtro-sharpie dotnet-classify` until it prints `Sanity check passed` (exit 0).
+
+Any entries that remain unresolved need binding or explicit `.ignore` entries with justification.
+
+> ⚠️ **`!extra-enum-value!`**: if classify reports a managed enum value that the native header marks unavailable on a platform, fix it at the right scope — put `[No<Platform>]` on the **whole enum type** only if the *entire* native enum is unavailable there, otherwise put `[No<Platform>]` on the **individual value(s)**. Never mark the whole type just to silence one value (it strips valid members like `None`). See [references/test-workflow.md](references/test-workflow.md) § "`!extra-enum-value!`".
 
 > ❌ **ALWAYS delete empty `.todo` files** after resolving all entries: `git rm tests/xtro-sharpie/api-annotations-dotnet/{platform}-{Framework}.todo`. Do not leave empty `.todo` files in the repository — they cause xtro test noise.
 
@@ -245,6 +258,8 @@ Verify all `.todo` entries for the bound framework are resolved. If any remain, 
 ```bash
 make -C tests/cecil-tests run-tests
 ```
+
+> ⚠️ Adding public members can fail `VerifyEveryVisibleMemberIsDocumented` — the failure lists your new, undocumented members. Either write real XML documentation for them, or — if the framework's existing members are already listed in `tests/cecil-tests/Documentation.KnownFailures.txt` (the whole framework is undocumented) — regenerate that baseline to stay consistent: `WRITE_KNOWN_FAILURES=1 make -C tests/cecil-tests run-tests` (this run exits non-zero by design), then re-run **without** the env var to confirm exit 0. Verify the `git diff` of the known-failures file contains **only** your new members. See [references/test-workflow.md](references/test-workflow.md).
 
 #### 6c. Introspection Tests (All Platforms)
 
@@ -334,6 +349,8 @@ If introspection tests fail for newly bound types:
 - Types that crash on init, dispose, or toString need specific exclusion entries
 - **NEVER skip an entire namespace** — always add exclusions for specific types only
 - **If a `[DesignatedInitializer]` constructor crashes (segfault) when passed null**, the correct fix is to **remove `[NullAllowed]` from that parameter** rather than adding introspection test exclusions. The null is genuinely not allowed by the native API.
+- **If the `DesignatedInitializer` test reports `<Type> should re-expose <Base>::.ctor(...)`** — you bound a subclass (e.g. of `AUAudioUnit`) that inherits a designated initializer but doesn't re-declare it. The subclass must re-expose it. Simplest fix that passes with no other changes: re-declare the init as a public `[DesignatedInitializer]` `Constructor` with the same selector/signature. See [references/binding-patterns.md](references/binding-patterns.md) § "Re-exposing Designated Initializers in Subclasses" — including the failable-initializer (factory) variant, which additionally requires a `Match ()` case in `ApiCtorInitTest.cs`.
+- **If introspection reports a selector is `not found` / does not respond** for an API you just bound (common on a **beta OS**), and the SDK header *does* declare that selector for this platform — it's a **beta-runtime gap**, not a binding bug: the binding is correct but the beta OS hasn't implemented the selector yet. **Do not** change availability or add `[No<Platform>]` (that would make xtro report the API *missing*). Add a narrow skip in the **selector** test (`ApiSelectorTest`, not `ApiCtorInitTest`) — `MacApiSelectorTest.cs` (macOS) or `iOSApiSelectorTest.cs` (iOS/tvOS/MacCatalyst) — for **only the failing platform(s)**, unconditional on real hardware (macOS/MacCatalyst) and `TestRuntime.IsSimulator`-gated only for simulator-only gaps. See [references/test-workflow.md](references/test-workflow.md) § "Selector Not Found (Declared but Not Implemented)".
 
 If xtro still shows unresolved entries:
 - Some APIs may be platform-specific (only available on device, not simulator)

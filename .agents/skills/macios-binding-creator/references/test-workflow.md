@@ -13,18 +13,30 @@ Commands and troubleshooting for validating C# bindings in dotnet/macios.
 ## Xtro Commands
 
 ```bash
-# Generate reference bindings from SDK (do this first)
+# 1. Generate reference bindings from the SDK headers (do this first).
+#    Output goes to api/<Platform>/ApiDefinition.cs (gitignored) — grep these
+#    for correct selectors, signatures, and [Introduced] versions.
 make -C tests/xtro-sharpie gen-all
 
-# Run per-platform
-make -C tests/xtro-sharpie run-ios
-make -C tests/xtro-sharpie run-tvos
-make -C tests/xtro-sharpie run-macos
-make -C tests/xtro-sharpie run-maccatalyst
+# 2. Classify all platforms and run the sanity check.
+#    There are NO run-ios/run-tvos/run-macos/run-maccatalyst targets.
+make -C tests/xtro-sharpie dotnet-classify
 
 # If unclassified entries appear
 make -C tests/xtro-sharpie unclassified2todo
 ```
+
+`dotnet-classify` runs every platform then sanity. A resolved-but-still-present `.todo` entry prints `?fixed-todo?` and returns non-zero — remove the resolved entries (and `git rm` emptied `.todo` files), then re-run until `Sanity check passed`.
+
+### `!extra-enum-value!` — a managed enum value the native platform lacks
+
+Classify reports `!extra-enum-value! Managed value N for <Enum>.<Member> is available for the current platform while the value in the native header is not` when a bound enum **value** exists in the managed assembly for a platform where the SDK header marks it unavailable. Fix it at the **right granularity** — read the header first:
+
+- **The whole native enum is unavailable** on the platform (the `NS_ENUM`/typedef itself is `API_UNAVAILABLE(macos)`, or it has no valid native values/API surface there — e.g. imported only under `#if TARGET_OS_IPHONE`) → mark the **enum type** with `[NoMac]` (type-level `[No<Platform>]` removes the entire enum from that platform's assembly). Precedent: `AVCaptureSessionInterruptionReason` in `src/AVFoundation/Enums.cs` (plain type-level `[NoMac]`).
+- **The enum type is available but only certain values are not** → put `[NoMac]` on the **individual member(s)**, leaving the type available. Precedent: `AVAudioSessionCategoryOptions` in `src/AVFoundation/Enums.cs` carries per-value `[NoMac]` on specific members.
+- **The managed value has no native counterpart at all** (the variant message is `!extra-enum-value! Managed value N … not found in native headers`) → `[No<Platform>]` cannot fix it; the value simply isn't in any header. Resolve by removing the managed value, or — for a synthetic `0`/`None` — rely on the check's zero-value allowance, or add an `.ignore` entry with justification.
+
+> ❌ **Do not** mark the whole type `[NoMac]` just to silence one value — that strips valid members (e.g. `None`) from the platform assembly and, because the native enum is still available there, flips into a `!missing-enum!` failure. Match the native availability exactly; if a sibling enum already models the same header, copy its platform attributes. (Avoid citing an `#if XAMCORE_5_0`-guarded attribute as a template — those are deferred breaking changes, not active availability.)
 
 ### Xtro File Types
 
@@ -41,6 +53,24 @@ make -C tests/cecil-tests run-tests
 ```
 
 Cecil tests check for consistency in the compiled assemblies (attribute usage, naming conventions, etc.).
+
+### Undocumented-member failures (`VerifyEveryVisibleMemberIsDocumented`)
+
+Adding public members can fail the `VerifyEveryVisibleMemberIsDocumented` test — it lists every new member that has no XML documentation. Two ways to resolve it:
+
+- **Preferred**: write real XML doc comments for the new members (the skill forbids `"To be added."` placeholders).
+- **Baseline path**: if the framework's existing members are already listed in `tests/cecil-tests/Documentation.KnownFailures.txt` (i.e. the whole framework is undocumented), add your new members to that baseline instead, to stay consistent:
+
+  ```bash
+  # Regenerates Documentation.KnownFailures.txt (the whole sorted baseline is
+  # rewritten, so the git diff should show ONLY your new members added).
+  # This run exits non-zero by design — it's the "re-run to confirm" assert.
+  WRITE_KNOWN_FAILURES=1 make -C tests/cecil-tests run-tests
+  # Confirm a clean pass (exit 0) and commit the updated known-failures file.
+  make -C tests/cecil-tests run-tests
+  ```
+
+  Review the `git diff` of `Documentation.KnownFailures.txt` — it must contain **only** your new members.
 
 ## Introspection Commands
 
@@ -121,6 +151,21 @@ Exclusion mechanisms:
 - **`do_not_dispose` list** — Types that crash on disposal
 - **`CheckHandle()` override** — Types returning `IntPtr.Zero`
 - **`CheckToString()` override** — Types that crash on `.Description`
+
+### Selector Not Found (Declared but Not Implemented)
+
+A **different** failure mode from ctor-init crashes: `ApiSelectorTest` checks at runtime whether each bound selector is actually implemented (`instancesRespondToSelector:` for instance members, `respondsToSelector:` for static members) and fails if it isn't. On a **beta SDK**, Apple often *declares* a selector in the header (so your `[Export]` and platform attributes are correct) but hasn't *implemented* it in the beta runtime yet — a genuine runtime gap, not a binding bug.
+
+**Confirm it really is a beta-runtime gap before skipping** (otherwise you'd mask a real binding bug): the SDK header declares the selector for this platform/version, the `[Export]`/`[Bind]` string is correct, and the failure is purely a runtime respond-to-selector miss. **Do not** "fix" it by changing availability or adding `[No<Platform>]` — that would be wrong (the header says it's available) and would make **xtro** report the API as *missing* (`!missing-selector!`).
+
+Add a narrow skip in the **selector** test (this is `ApiSelectorTest`, not `ApiCtorInitTest`):
+- **macOS** → `tests/introspection/MacApiSelectorTest.cs`, override `Skip (Type type, string selectorName)` (selector-first `switch`). Existing precedent: the `accessibilityNotifiesWhenDestroyed` case ("the header declares this … but it doesn't even respondsToSelector").
+- **iOS / tvOS / MacCatalyst** → `tests/introspection/iOSApiSelectorTest.cs`, which **already has** a `Skip (Type type, string selectorName)` override (selector-first `switch`) — **extend its existing `switch (type.Name)`; do not add a second override** (a duplicate is a CS0111 compile error). Follow the existing `AVAssetWriter` Pro Video Storage precedent there: `#if __TVOS__` / `#if __MACCATALYST__`-guarded `case` blocks, `TestRuntime.IsSimulator`-gated for a simulator-only gap (tvOS 27) or unconditional for a real-runtime gap (Mac Catalyst 27). The override already ends in `base.Skip (type, selectorName)`, so the base class's existing skips still apply.
+
+**Skip only the platform(s) that actually fail**, at the narrowest scope (type + selector + platform):
+- **Real-hardware platforms** (macOS, MacCatalyst) run on real Macs, so a missing selector is absent everywhere on that OS → skip **unconditionally**. Because such a skip does **not** self-expire, it will keep masking the selector once the GA OS implements it — leave a `// TODO: remove once <OS> GA ships this selector` note and revisit at the next Xcode bump.
+- **Simulator-only gaps** (a selector the device implements but the simulator lacks, e.g. iOS/tvOS) → gate with `TestRuntime.IsSimulator` (note `TestRuntime.IsSimulatorOrDesktop` is the broader idiom used elsewhere in these files).
+- Never blanket-skip a platform that actually responds — that masks future regressions.
 
 ### Simulator Infrastructure Errors
 

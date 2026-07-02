@@ -120,14 +120,44 @@ namespace Xamarin.Tests {
 			var update = forceUpdate || !string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("WRITE_KNOWN_FAILURES"));
 			var expectedDirectory = Path.Combine (Configuration.SourceRoot, "tests", "dotnet", "UnitTests", "expected");
 
-			Assert.Multiple (() => {
-				AssertAppSize (platform, name, appPath, update, forceUpdate, expectedDirectory);
+			try {
+				Assert.Multiple (() => {
+					AssertAppSize (platform, name, appPath, update, forceUpdate, expectedDirectory);
 
-				if (supportsAssemblyInspection)
-					AssertAssemblyReport (platform, name, appPath, update, expectedDirectory);
+					if (supportsAssemblyInspection)
+						AssertAssemblyReport (platform, name, appPath, update, expectedDirectory);
 
-				AssertExpectedDSyms (platform, appPath);
-			});
+					AssertExpectedDSyms (platform, appPath);
+				});
+			} catch {
+				// If the test fails on CI, copy the resulting .app bundle to a location that will be uploaded as an
+				// Azure DevOps artifact (zipped). This is for diagnostic purposes only.
+				CopyAppBundleForDiagnostics (name, appPath);
+				throw;
+			}
+		}
+
+		static void CopyAppBundleForDiagnostics (string name, string appPath)
+		{
+			var artifactStagingDir = Environment.GetEnvironmentVariable ("BUILD_ARTIFACTSTAGINGDIRECTORY");
+			if (string.IsNullOrEmpty (artifactStagingDir))
+				return; // not running in Azure DevOps CI
+
+			try {
+				var targetDir = Path.Combine (artifactStagingDir, "failed-app-size-bundles", name, Path.GetFileName (appPath));
+				Console.WriteLine ($"    Copying app bundle '{appPath}' to '{targetDir}' for diagnostics...");
+				foreach (var file in Directory.GetFiles (appPath, "*", SearchOption.AllDirectories)) {
+					var relativePath = file [(appPath.Length + 1)..];
+					var targetFile = Path.Combine (targetDir, relativePath);
+					var targetFileDir = Path.GetDirectoryName (targetFile);
+					if (!string.IsNullOrEmpty (targetFileDir))
+						Directory.CreateDirectory (targetFileDir);
+					File.Copy (file, targetFile, true);
+				}
+				Console.WriteLine ($"    Copied app bundle to '{targetDir}'.");
+			} catch (Exception e) {
+				Console.WriteLine ($"    Failed to copy app bundle for diagnostics: {e}");
+			}
 		}
 
 		static void AssertAppSize (ApplePlatform platform, string name, string appPath, bool update, bool forceUpdate, string expectedDirectory)

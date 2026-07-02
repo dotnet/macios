@@ -353,9 +353,7 @@ namespace Xamarin.MacDev.Tasks {
 
 					var extractionDirectory = Path.Combine (intermediatePath, itemType);
 					var path = Path.Combine (extractionDirectory, rpath);
-					var fullPath = Path.GetFullPath (path);
-					var expectedPrefix = Path.GetFullPath (extractionDirectory).EnsureTrailingSlash ();
-					if (!fullPath.StartsWith (expectedPrefix, StringComparison.Ordinal)) {
+					if (!PathUtils.IsPathContained (extractionDirectory, path)) {
 						Log.LogError (MSBStrings.E7183 /* The resource '{0}' in assembly '{1}' would extract to a path outside of the target directory. */, resourceName, assembly);
 						continue;
 					}

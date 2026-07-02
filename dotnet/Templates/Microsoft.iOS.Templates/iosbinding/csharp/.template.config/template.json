@@ -16,5 +16,20 @@
   "primaryOutputs": [
     { "path": "iOSBinding1.csproj" }
   ],
-  "defaultName": "iOSBinding1"
+  "defaultName": "iOSBinding1",
+  "symbols": {
+    "Framework": {
+      "type": "parameter",
+      "description": "The target framework for the project.",
+      "datatype": "choice",
+      "choices": [
+        {
+          "choice": "net10.0-ios",
+          "description": "Target net10.0-ios"
+        }
+      ],
+      "replaces": "net10.0-ios",
+      "defaultValue": "net10.0-ios"
+    }
+  }
 }

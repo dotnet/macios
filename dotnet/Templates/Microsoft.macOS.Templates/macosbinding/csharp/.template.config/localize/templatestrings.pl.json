@@ -1,5 +1,7 @@
 {
   "author": "Microsoft",
   "name": "Biblioteka powiązań dla systemu macOS",
-  "description": "Projekt służący do tworzenia biblioteki powiązań platformy .NET dla systemu tvOS"
+  "description": "Projekt służący do tworzenia biblioteki powiązań platformy .NET dla systemu tvOS",
+  "symbols/Framework/description": "The target framework for the project.",
+  "symbols/Framework/choices/net10.0-macos/description": "Target net10.0-macos"
 }

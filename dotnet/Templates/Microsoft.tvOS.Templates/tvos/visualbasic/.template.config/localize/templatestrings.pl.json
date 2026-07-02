@@ -2,8 +2,10 @@
   "author": "Microsoft",
   "name": "Aplikacja systemu tvOS",
   "description": "Projekt służący do tworzenia aplikacji tvOS platformy .NET 6",
-  "symbols/bundleId/description": "Nadpisuje element CFBundleIdentifier w pliku Info.plist",
   "symbols/bundleId/displayName": "Bundle ID",
+  "symbols/bundleId/description": "Nadpisuje element CFBundleIdentifier w pliku Info.plist",
+  "symbols/minOSVersion/displayName": "Minimum OS version",
   "symbols/minOSVersion/description": "Nadpisuje element SupportedOSPlatformVersion w pliku projektu",
-  "symbols/minOSVersion/displayName": "Minimum OS version"
+  "symbols/Framework/description": "The target framework for the project.",
+  "symbols/Framework/choices/net10.0-tvos/description": "Target net10.0-tvos"
 }

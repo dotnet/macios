@@ -8,7 +8,6 @@ using Mono.Cecil;
 
 namespace Xamarin.Tests {
 	[TestFixture]
-	[Ignore ("The results depend on the macOS version of the bot running the test")]
 	public class AppSizeTest : TestBaseClass {
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]

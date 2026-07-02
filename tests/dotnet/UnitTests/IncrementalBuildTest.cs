@@ -309,6 +309,32 @@ kernel void myKernel (texture2d<half, access::read> inTexture [[texture(0)]],
 			AssertTargetNotExecuted (allTargets, "_TemperMetal", "Second build");
 		}
 
+		[Test]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
+		public void UserCodeChangeSkipsR2RCompilation_CoreCLR (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			var project = "IncrementalTestApp";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+
+			var rv = DotNet.AssertBuild (project_path, properties);
+			var allTargets = BinLog.GetAllTargets (rv.BinLogPath);
+			AssertTargetExecuted (allTargets, "_SelectR2RAssemblies", "First build");
+			AssertTargetExecuted (allTargets, "_CreateR2RImages", "First build");
+
+			properties ["AdditionalDefineConstants"] = "INCLUDED_ADDITIONAL_CODE";
+
+			rv = DotNet.AssertBuild (project_path, properties);
+			allTargets = BinLog.GetAllTargets (rv.BinLogPath);
+			AssertTargetExecuted (allTargets, "_TouchR2ROutputs", "Second build");
+			AssertTargetNotExecuted (allTargets, "_CreateR2RImages", "Second build");
+		}
+
 		void CodeChangeSkipsTargetsImpl (ApplePlatform platform, string runtimeIdentifiers, bool useMonoRuntime, bool interpreterEnabled)
 		{
 			var project = "IncrementalTestApp";

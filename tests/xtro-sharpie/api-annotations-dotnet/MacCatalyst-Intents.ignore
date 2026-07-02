@@ -1,3 +1,7 @@
 ## The following were deprecated in ios(10.0, 10.0)
 !missing-selector! INRideOption::identifier not bound
 !missing-selector! INRideOption::setIdentifier: not bound
+
+!missing-null-allowed! 'System.Void Intents.INRelevantShortcutStore::SetRelevantShortcuts(Intents.INRelevantShortcut[],System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Intents.INVoiceShortcutCenter::GetVoiceShortcut(Foundation.NSUuid,System.Action`2<Intents.INVoiceShortcut,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Intents.INVoiceShortcutCenter::GetVoiceShortcut(Foundation.NSUuid,System.Action`2<Intents.INVoiceShortcut,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1

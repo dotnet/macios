@@ -111,6 +111,16 @@
 		</ItemGroup>
 	</Target>
 
+	<Target Name="_AddExcludedAssembliesAsR2RCompositeReferences"
+			AfterTargets="_PrepareForReadyToRunCompilation"
+			BeforeTargets="_CreateR2RImages">
+		<ItemGroup>
+			<_ReadyToRunCompositeBuildReferences
+				Include="@(_ReadyToRunAssembliesToReference)"
+				Exclude="@(_ReadyToRunCompositeBuildInput);@(_ReadyToRunCompositeUnrootedBuildInput)" />
+		</ItemGroup>
+	</Target>
+
 	<!-- Touch R2R outputs when only user assemblies changed. If hash file is older than trigger, hash didn't change, so touch outputs to skip R2R -->
 	<Target Name="_TouchR2ROutputs"
 			Condition="'$(FilterReadyToRunAssemblies)' == 'true' And Exists('$(_R2RInputHashFile)') And Exists('$(_R2RInputHashFile).trigger') And $([System.IO.File]::GetLastWriteTime('$(_R2RInputHashFile)').Ticks) &lt; $([System.IO.File]::GetLastWriteTime('$(_R2RInputHashFile).trigger').Ticks)"

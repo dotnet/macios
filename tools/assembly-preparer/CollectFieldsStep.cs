@@ -2,21 +2,22 @@
 // Licensed under the MIT License.
 
 using Mono.Cecil;
+using Mono.Linker;
 using Mono.Tuner;
+
+using Xamarin.Linker;
 
 namespace MonoTouch.Tuner {
 
-	// Populate FieldSymbols for InlineDlfcnMethodsStep's compatibility mode.
-	// This is equivalent to what ProcessExportedFields does in the ILLink pipeline.
+	// Populate FieldSymbols and ExportedFields annotation for InlineDlfcnMethodsStep
+	// and ListExportedSymbols. This is equivalent to what ProcessExportedFields does
+	// in the ILLink pipeline.
 	public class CollectFieldsStep : ConfigurationAwareStep {
 		protected override string Name { get; } = "CollectFields";
 		protected override int ErrorCode { get; } = 2480;
 
 		protected override bool IsActiveFor (AssemblyDefinition assembly)
 		{
-			if (!Configuration.InlineDlfcnMethodsEnabled)
-				return false;
-
 			if (!assembly.MainModule.HasTypeReference (Namespaces.Foundation + ".FieldAttribute"))
 				return false;
 
@@ -49,7 +50,21 @@ namespace MonoTouch.Tuner {
 						continue;
 					if (attrib.ConstructorArguments.Count < 1)
 						continue;
-					Configuration.FieldSymbols.Add ((string) attrib.ConstructorArguments [0].Value);
+
+					var symbolName = (string) attrib.ConstructorArguments [0].Value;
+
+					// Populate FieldSymbols for InlineDlfcnMethodsStep's compatibility mode.
+					if (Configuration.InlineDlfcnMethodsEnabled)
+						Configuration.FieldSymbols.Add (symbolName);
+
+					// Populate ExportedFields annotation for ListExportedSymbols
+					// (so native linker keeps __Internal field symbols for dlsym).
+					if (attrib.ConstructorArguments.Count == 2) {
+						var libraryName = (string) attrib.ConstructorArguments [1].Value;
+						if (libraryName == "__Internal")
+							Annotations.GetCustomAnnotations ("ExportedFields") [property] = symbolName;
+					}
+
 					break;
 				}
 			}

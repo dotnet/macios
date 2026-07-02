@@ -14,5 +14,5 @@
   "symbols/deviceFamily/choices/ipad/displayName": "iPad",
   "symbols/deviceFamily/choices/ipad/description": "僅支援 iPad 裝置",
   "symbols/Framework/description": "The target framework for the project.",
-  "symbols/Framework/choices/net10.0-ios/description": "Target net10.0-ios"
+  "symbols/Framework/choices/net11.0-ios/description": "Target net11.0-ios"
 }

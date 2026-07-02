@@ -3,5 +3,5 @@
   "name": "macOS Bağlama Kitaplığı",
   "description": "Bir .NET macOS bağlama kitaplığı oluşturmaya yönelik proje",
   "symbols/Framework/description": "The target framework for the project.",
-  "symbols/Framework/choices/net10.0-macos/description": "Target net10.0-macos"
+  "symbols/Framework/choices/net11.0-macos/description": "Target net11.0-macos"
 }

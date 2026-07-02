@@ -1249,10 +1249,14 @@ rejected at build time.
 When set to `false` (the default for versions before .NET 12), the legacy behavior
 is preserved: paths are computed relative to the file that declared the item.
 
-| .NET version | Default                |
-|--------------|------------------------|
-| < .NET 12    | `false` (opt-in)       |
-| .NET 12+     | `true` (opt-out)       |
+Starting with .NET 13, this property is permanently enabled and setting it to
+`false` will produce a build error.
+
+| .NET version | Default                       |
+|--------------|-------------------------------|
+| < .NET 12    | `false` (opt-in)              |
+| .NET 12      | `true` (opt-out)              |
+| .NET 13+     | `true` (permanently enabled)  |
 
 ```xml
 <PropertyGroup>

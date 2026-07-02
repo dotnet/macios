@@ -781,7 +781,9 @@
 			>
 				<TrimMode>copy</TrimMode> <!-- Don't use 'copyused', because that might still end up saving some assemblies, and if that's the platform assembly, it may break the partial static registrar -->
 			</ResolvedFileToPublish>
+		</ItemGroup>
 
+		<ItemGroup Condition="!('$(PrepareAssemblies)' == 'true' And '$(PostProcessAssemblies)' == 'true')">
 			<!--
 				pre-mark custom steps
 			-->
@@ -832,28 +834,30 @@
 			<!--
 				pre-output custom steps
 			-->
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="OutputStep" Type="Xamarin.Linker.LoadNonSkippedAssembliesStep" />
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="OutputStep" Type="Xamarin.Linker.ExtractBindingLibrariesStep" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="OutputStep" Condition="'$(PostProcessAssemblies)' != 'true'" Type="Xamarin.Linker.LoadNonSkippedAssembliesStep" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="OutputStep" Condition="'$(PostProcessAssemblies)' != 'true'" Type="Xamarin.Linker.ExtractBindingLibrariesStep" />
 			<!-- The ListExportedSymbols must run after ExtractBindingLibrariesStep, otherwise we won't properly list exported Objective-C classes from binding libraries -->
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="OutputStep" Type="Xamarin.Linker.Steps.ListExportedSymbols" />
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="OutputStep" Type="Xamarin.Linker.Steps.PreOutputDispatcher" />
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="OutputStep" Type="Xamarin.Linker.ClassHandleRewriterStep" Condition="'$(InlineClassGetHandle)' == '' Or '$(InlineClassGetHandle)' == 'disabled'" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="OutputStep" Condition="'$(PostProcessAssemblies)' != 'true'" Type="Xamarin.Linker.Steps.ListExportedSymbols" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="OutputStep" Condition="'$(PostProcessAssemblies)' != 'true'" Type="Xamarin.Linker.Steps.PreOutputDispatcher" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="OutputStep" Condition="'$(PostProcessAssemblies)' != 'true' And ('$(InlineClassGetHandle)' == '' Or '$(InlineClassGetHandle)' == 'disabled')" Type="Xamarin.Linker.ClassHandleRewriterStep" />
 
 			<!--
 				post-output steps
 			-->
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.Linker.ManagedRegistrarStep" Condition="'$(PrepareAssemblies)' == 'true' And ('$(Registrar)' == 'managed-static' Or '$(Registrar)' == 'trimmable-static')" />
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.Linker.TrimmableRegistrarStep" Condition="'$(PrepareAssemblies)' == 'true' And '$(Registrar)' == 'trimmable-static'" />
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.Linker.ManagedRegistrarLookupTablesStep" Condition="'$(PrepareAssemblies)' == 'true' And '$(Registrar)' == 'managed-static'" />
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.Linker.RegistrarStep" />
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.GenerateMainStep" />
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.GenerateReferencesStep" />
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.GatherFrameworksStep" />
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.Linker.ComputeNativeBuildFlagsStep" />
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.Linker.ComputeAOTArguments" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.Linker.ManagedRegistrarStep" Condition="'$(PrepareAssemblies)' == 'true' And '$(PostProcessAssemblies)' != 'true' And ('$(Registrar)' == 'managed-static' Or '$(Registrar)' == 'trimmable-static')" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.Linker.TrimmableRegistrarStep" Condition="'$(PrepareAssemblies)' == 'true' And '$(PostProcessAssemblies)' != 'true' And '$(Registrar)' == 'trimmable-static'" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.Linker.ManagedRegistrarLookupTablesStep" Condition="'$(PrepareAssemblies)' == 'true' And '$(PostProcessAssemblies)' != 'true' And '$(Registrar)' == 'managed-static'" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.Linker.RegistrarStep" Condition="'$(PostProcessAssemblies)' != 'true'" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.GenerateMainStep" Condition="'$(PostProcessAssemblies)' != 'true'" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.GenerateReferencesStep" Condition="'$(PostProcessAssemblies)' != 'true'" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.GatherFrameworksStep" Condition="'$(PostProcessAssemblies)' != 'true'" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.Linker.ComputeNativeBuildFlagsStep" Condition="'$(PostProcessAssemblies)' != 'true'" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.Linker.ComputeAOTArguments" Condition="'$(PostProcessAssemblies)' != 'true'" />
 			<!-- Must be the last step. -->
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.Linker.DoneStep" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.Linker.DoneStep" Condition="'$(PostProcessAssemblies)' != 'true'" />
+		</ItemGroup>
 
+		<ItemGroup>
 			<!-- _BundlerXmlDefinitions comes from any -xml arguments to mtouch/mmp -->
 			<TrimmerRootDescriptor Include="@(_BundlerXmlDefinitions)" />
 			<!-- LinkDescription can be defined in the user's csproj -->
@@ -1472,6 +1476,35 @@
 		<ItemGroup>
 			<ManagedAssemblyToLink Include="$(_DedupAssembly)" />
 			<TrimmerRootAssembly Include="$(_DedupAssembly)" />
+		</ItemGroup>
+	</Target>
+
+	<!--
+		When the assembly-preparer is used to post-process assemblies (PostProcessAssemblies=true), the set of
+		assemblies that gets AOT-compiled (and which is used to detect AOT generic instantiation deduplication)
+		is computed from ResolvedFileToPublish instead of from the linker's own assembly collection. The dedup
+		assembly (aot-instances.dll) is only added to the linker's assembly collection (via ManagedAssemblyToLink
+		and TrimmerRootAssembly in _CreateAOTDedupAssembly), so it's not part of ResolvedFileToPublish, and as a
+		result deduplication would be disabled in this case. Add the dedup assembly to ResolvedFileToPublish so
+		that it's included in the set of assemblies the assembly-preparer processes, and deduplication is enabled
+		in this case as well.
+	-->
+	<Target Name="_AddDedupAssemblyToResolvedFileToPublish"
+			Condition="'$(_IsDedupEnabled)' == 'true' And '$(PostProcessAssemblies)' == 'true'"
+			DependsOnTargets="_ComputeVariables"
+			BeforeTargets="_PrepareAssembliesForPostProcessing">
+		<ItemGroup>
+			<!-- Find out if the dedup assembly is already part of ResolvedFileToPublish (it will be when
+			     trimming is enabled, because then it goes through ILLink like any other assembly). -->
+			<_DedupAssemblyInResolvedFileToPublish Include="@(ResolvedFileToPublish)" Condition="'%(Filename)%(Extension)' == 'aot-instances.dll'" />
+		</ItemGroup>
+		<ItemGroup Condition="'@(_DedupAssemblyInResolvedFileToPublish)' == ''">
+			<ResolvedFileToPublish Include="$(_DedupAssembly)">
+				<PublishFolderType>Assembly</PublishFolderType>
+				<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+				<RelativePath>$(_AssemblyPublishDir)aot-instances.dll</RelativePath>
+				<OriginalRelativePath>aot-instances.dll</OriginalRelativePath>
+			</ResolvedFileToPublish>
 		</ItemGroup>
 	</Target>
 

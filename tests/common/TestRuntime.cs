@@ -1639,6 +1639,7 @@ partial class TestRuntime {
 		IgnoreInCIIfSshConnectionError (ex);
 		IgnoreInCIIfTimedOut (ex);
 		IgnoreInCIIfHttpClientTimedOut (ex);
+		IgnoreInCIIfResponseEndedPrematurely (ex);
 	}
 
 	public static void IgnoreInCIIfBadNetwork (NSError? error)
@@ -1713,6 +1714,15 @@ partial class TestRuntime {
 		if (se is not null && se.SocketErrorCode == System.Net.Sockets.SocketError.TimedOut) {
 			IgnoreInCI ($"Ignored due to socket timeout: {se.Message}");
 		}
+	}
+
+	public static void IgnoreInCIIfResponseEndedPrematurely (Exception ex)
+	{
+		var httpIoEx = FindInner<HttpIOException> (ex);
+		if (httpIoEx is null)
+			return;
+
+		IgnoreInCI ($"Ignored due to premature response termination: {httpIoEx.Message}");
 	}
 
 	public static void IgnoreInCIIfForbidden (Exception ex)

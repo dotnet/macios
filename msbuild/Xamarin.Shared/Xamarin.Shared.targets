@@ -1844,7 +1844,15 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<PropertyGroup Condition="'$(IsBindingProject)' == 'true'">
 		<!-- Add our own pre and post build steps -->
 		<!-- Override the CoreCompile Target to use bgen -->
+		<!--
+			ResolveReferences must come first: our binding-generation targets (_GenerateBindings /
+			_CompileApiDefinitions) need the resolved references (@(ReferencePath)) to compile the
+			API definitions. During a normal build ResolveReferences runs earlier as part of CoreBuild,
+			but when the Compile target is built directly (e.g. 'dotnet watch' runs 'dotnet build /t:Compile')
+			nothing else resolves references first, so we have to depend on it explicitly here.
+		-->
 		<CompileDependsOn>
+			ResolveReferences;
 			_GenerateBindings;
 			_PrepareNativeReferences;
 			_CollectGeneratedSources;

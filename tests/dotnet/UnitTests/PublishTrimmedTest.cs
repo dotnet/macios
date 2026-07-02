@@ -45,8 +45,15 @@ namespace Xamarin.Tests {
 			properties ["PostProcessAssemblies"] = "true";
 
 			var rv = DotNet.AssertBuild (project_path, properties);
-			Assert.That (BinLog.TryFindPropertyValue (rv.BinLogPath, "PublishTrimmed", out var publishTrimmed), Is.True, "PublishTrimmed found");
-			Assert.That (publishTrimmed, Is.EqualTo ("false"), "PublishTrimmed");
+
+			// Verify that the trimmer didn't run: when there's nothing for the trimmer to do, the
+			// 'ILLink' target isn't executed. We check the executed targets instead of the
+			// 'PublishTrimmed' property value, because 'PublishTrimmed' is computed inside a target,
+			// and target-assigned property values are only logged in the binlog when property tracking
+			// is enabled (the 'MsBuildLogPropertyTracking' environment variable), which isn't the case
+			// on CI.
+			var targets = BinLog.GetAllTargets (rv.BinLogPath);
+			AssertTargetNotExecuted (targets, "ILLink", "The trimmer should not have executed.");
 		}
 	}
 }

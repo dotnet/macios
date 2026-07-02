@@ -2,15 +2,17 @@
   "author": "Microsoft",
   "name": "iOS アプリケーション",
   "description": ".NET iOS アプリケーションを作成するためのプロジェクト",
-  "symbols/bundleId/description": "Info.plist の CFBundleIdentifier をオーバーライドします",
   "symbols/bundleId/displayName": "Bundle ID",
-  "symbols/minOSVersion/description": "プロジェクト ファイルの SupportedOSPlatformVersion をオーバーライドします",
+  "symbols/bundleId/description": "Info.plist の CFBundleIdentifier をオーバーライドします",
   "symbols/minOSVersion/displayName": "Minimum OS version",
-  "symbols/deviceFamily/choices/universal/description": "iPhone デバイスと iPad デバイスの両方をサポートする",
+  "symbols/minOSVersion/description": "プロジェクト ファイルの SupportedOSPlatformVersion をオーバーライドします",
+  "symbols/deviceFamily/displayName": "Device family",
   "symbols/deviceFamily/choices/universal/displayName": "Universal",
-  "symbols/deviceFamily/choices/iphone/description": "iPhone デバイスのみをサポート",
+  "symbols/deviceFamily/choices/universal/description": "iPhone デバイスと iPad デバイスの両方をサポートする",
   "symbols/deviceFamily/choices/iphone/displayName": "iPhone",
-  "symbols/deviceFamily/choices/ipad/description": "iPad デバイスのみをサポート",
+  "symbols/deviceFamily/choices/iphone/description": "iPhone デバイスのみをサポート",
   "symbols/deviceFamily/choices/ipad/displayName": "iPad",
-  "symbols/deviceFamily/displayName": "Device family"
+  "symbols/deviceFamily/choices/ipad/description": "iPad デバイスのみをサポート",
+  "symbols/Framework/description": "The target framework for the project.",
+  "symbols/Framework/choices/net10.0-ios/description": "Target net10.0-ios"
 }

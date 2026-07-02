@@ -2,15 +2,17 @@
   "author": "Microsoft",
   "name": "iOS aplikace s kartami",
   "description": "Projekt pro vytvoření aplikace s kartami .NET pro iOS",
-  "symbols/bundleId/description": "Přepíše CFBundleIdentifier v souboru Info.plist.",
   "symbols/bundleId/displayName": "Bundle ID",
-  "symbols/minOSVersion/description": "Přepíše SupportedOSPlatformVersion v souboru projektu.",
+  "symbols/bundleId/description": "Přepíše CFBundleIdentifier v souboru Info.plist.",
   "symbols/minOSVersion/displayName": "Minimum OS version",
-  "symbols/deviceFamily/choices/universal/description": "Podpora zařízení iPhone i iPad",
+  "symbols/minOSVersion/description": "Přepíše SupportedOSPlatformVersion v souboru projektu.",
+  "symbols/deviceFamily/displayName": "Device family",
   "symbols/deviceFamily/choices/universal/displayName": "Universal",
-  "symbols/deviceFamily/choices/iphone/description": "Podpora pouze zařízení iPhone",
+  "symbols/deviceFamily/choices/universal/description": "Podpora zařízení iPhone i iPad",
   "symbols/deviceFamily/choices/iphone/displayName": "iPhone",
-  "symbols/deviceFamily/choices/ipad/description": "Podpora pouze zařízení iPad",
+  "symbols/deviceFamily/choices/iphone/description": "Podpora pouze zařízení iPhone",
   "symbols/deviceFamily/choices/ipad/displayName": "iPad",
-  "symbols/deviceFamily/displayName": "Device family"
+  "symbols/deviceFamily/choices/ipad/description": "Podpora pouze zařízení iPad",
+  "symbols/Framework/description": "The target framework for the project.",
+  "symbols/Framework/choices/net10.0-ios/description": "Target net10.0-ios"
 }

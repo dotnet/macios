@@ -1,5 +1,7 @@
 {
   "author": "Microsoft",
   "name": "iOS クラス ライブラリ",
-  "description": ".NET iOS クラス ライブラリを作成するためのプロジェクト"
+  "description": ".NET iOS クラス ライブラリを作成するためのプロジェクト",
+  "symbols/Framework/description": "The target framework for the project.",
+  "symbols/Framework/choices/net10.0-ios/description": "Target net10.0-ios"
 }

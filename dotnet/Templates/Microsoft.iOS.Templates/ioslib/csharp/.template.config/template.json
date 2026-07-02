@@ -16,5 +16,20 @@
   "primaryOutputs": [
     { "path": "iOSLib1.csproj" }
   ],
-  "defaultName": "iOSLib1"
+  "defaultName": "iOSLib1",
+  "symbols": {
+    "Framework": {
+      "type": "parameter",
+      "description": "The target framework for the project.",
+      "datatype": "choice",
+      "choices": [
+        {
+          "choice": "net10.0-ios",
+          "description": "Target net10.0-ios"
+        }
+      ],
+      "replaces": "net10.0-ios",
+      "defaultValue": "net10.0-ios"
+    }
+  }
 }

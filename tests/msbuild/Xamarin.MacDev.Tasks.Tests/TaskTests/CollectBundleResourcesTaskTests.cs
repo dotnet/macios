@@ -43,7 +43,7 @@ namespace Xamarin.MacDev.Tasks {
 		// project should still resolve their LogicalName correctly
 		// when ResolveResourceItemsRelativeToProject is enabled.
 		[TestCase (true)]  // .NET 12+ default: resolve relative to project
-		[TestCase (false)] // .NET 10/11 default: resolve relative to defining project (legacy behavior)
+		[TestCase (false)] // < .NET 12 default: resolve relative to defining project (legacy behavior)
 		public void ContentDefinedBySdkFarFromProject (bool resolveRelativeToProject)
 		{
 			var currentDirectory = Environment.CurrentDirectory;

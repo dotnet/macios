@@ -1246,13 +1246,13 @@ file. This fixes issues where SDKs (such as the Razor SDK) add Content items
 from a directory far from the project, producing incorrect paths that get
 rejected at build time.
 
-When set to `false` (the default for .NET 10 and .NET 11), the legacy behavior
+When set to `false` (the default for versions before .NET 12), the legacy behavior
 is preserved: paths are computed relative to the file that declared the item.
 
-| .NET version | Default |
-|---|---|
-| .NET 10 - .NET 11 | `false` (opt-in) |
-| .NET 12+ | `true` (opt-out) |
+| .NET version | Default                |
+|--------------|------------------------|
+| < .NET 12    | `false` (opt-in)       |
+| .NET 12+     | `true` (opt-out)       |
 
 ```xml
 <PropertyGroup>

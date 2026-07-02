@@ -203,7 +203,7 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 		<!-- Resolve Content and BundleResource items relative to the project file instead of the defining project file.
 		     This fixes issues where SDKs (like the Razor SDK) add items from a directory far from the project,
 		     producing nonsensical paths. Ref: https://github.com/dotnet/macios/issues/23898
-		     Opt-in for .NET 10 and .NET 11, opt-out for .NET 12, gone in .NET 13. -->
+		     Opt-in for < .NET 12, opt-out (default true) for .NET 12+. -->
 		<ResolveResourceItemsRelativeToProject Condition="'$(ResolveResourceItemsRelativeToProject)' == '' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), 12.0))">true</ResolveResourceItemsRelativeToProject>
 		<ResolveResourceItemsRelativeToProject Condition="'$(ResolveResourceItemsRelativeToProject)' == ''">false</ResolveResourceItemsRelativeToProject>
 

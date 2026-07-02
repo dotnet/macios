@@ -382,7 +382,9 @@ public void SetStateChangedHandler (Action<NWConnectionState, NWError?> handler)
 	}
 
 	unsafe {
-		// Must use 'static' lambda or named method for function pointer
+		// The function-pointer target MUST be a named static method with
+		// [UnmanagedCallersOnly] (see TrampolineStateChanged above) — a lambda
+		// cannot carry [UnmanagedCallersOnly], so it can't be used here.
 		delegate* unmanaged<IntPtr, int, IntPtr, void> trampoline = &TrampolineStateChanged;
 		using var block = new BlockLiteral (trampoline, handler, typeof (MyClass),
 			nameof (TrampolineStateChanged));
@@ -498,26 +500,24 @@ Available preprocessor symbols:
 
 Some Foundation/TextKit types (Apple's `UIFoundation`) are exposed to **both** AppKit (macOS) and UIKit (iOS/tvOS/Mac Catalyst). Bind these **once** in `src/xkit.cs` — the shared API-definition file compiled into *both* assemblies — never as duplicate copies in `appkit.cs` and `uikit.cs`.
 
-`xkit.cs` is compiled twice: `#if MONOMAC namespace AppKit` else `namespace UIKit`. `#if !MONOMAC` aliases near the top (`using NSColor = UIKit.UIColor;`, `using NSView = System.Object;`, …) let AppKit type names compile on the UIKit side. `NSTextList` is a bound example (`interface NSTextList : NSCoding, NSCopying, NSSecureCoding`). (The file's namespace switch and top-of-file aliases use the legacy `MONOMAC` symbol, but `__MACOS__` and `MONOMAC` are both defined for the macOS build — **prefer `#if __MACOS__` for new members here**, consistent with the codebase-wide move away from `MONOMAC`.)
+`xkit.cs` is compiled twice: `#if MONOMAC namespace AppKit` else `namespace UIKit`. `#if !MONOMAC` aliases near the top (`using NSColor = UIKit.UIColor;`, `using NSView = System.Object;`, …) let AppKit type names compile on the UIKit side. `NSTextList` is a bound example (`interface NSTextList : NSCoding, NSCopying, NSSecureCoding`). (The file's namespace switch and top-of-file aliases use the legacy `MONOMAC` symbol; `__MACOS__` and `MONOMAC` are both defined for the macOS build. Prefer `[No*]` attributes over `#if` here — see below — but on the rare divergence that genuinely needs `#if`, prefer `#if __MACOS__` over `#if MONOMAC`.)
 
-**When to consolidate:** when a type currently in `appkit.cs` becomes exposed to UIKit too (common on a new Xcode, usually **back-dated** to its original macOS availability), and the same Objective-C type maps to one shared binding, move it into `xkit.cs` rather than adding a second copy to `uikit.cs`. Precedent: `NSTextList` was moved `appkit.cs → xkit.cs` in commit `8cecb962a4` when it became shared in UIKit.
+**When to consolidate:** when a type currently in `appkit.cs` becomes exposed to UIKit too (common on a new Xcode, usually **back-dated** to its original macOS availability), and the same Objective-C type maps to one shared binding, move it into `xkit.cs` rather than adding a second copy to `uikit.cs`. The reverse applies too — when a type currently in `uikit.cs` becomes exposed to AppKit, move it into `xkit.cs` (not a second copy in `appkit.cs`). Precedent: `NSTextList` was moved `appkit.cs → xkit.cs` in commit `8cecb962a4` when it became shared in UIKit.
 
 Steps:
 1. Add the interface to `xkit.cs` (near related types, e.g. after `NSTextList`), preserving the **exact member order, attributes, and parameter names** from the old `appkit.cs` copy.
 2. Remove the type from `appkit.cs` **and** from `uikit.cs`.
 3. Remove any `#if !MONOMAC` `using <Type> = System.Object;` dummy alias for that type near the top of `xkit.cs` — it's now a real shared type.
 
-**macOS divergences → `#if __MACOS__`.** Guard each place AppKit and UIKit differ:
-- Protocol list (e.g. macOS conforms to an extra `NSCoding`).
-- Nullability (a macOS getter lacks `[NullAllowed]`) — apply `[NullAllowed]` only `#if !__MACOS__`, and keep any existing `<platform>-AppKit.ignore` xtro suppression for it.
-- Property names (e.g. macOS `Columns` vs iOS `NumberOfColumns`).
-- macOS-only members (e.g. `NSView`/`NSLayoutManager` overloads, `NSRectEdge` methods) — put them inside `#if __MACOS__` (which already excludes Mac Catalyst — Catalyst compiles the non-macOS/UIKit branch — so no `[NoMacCatalyst]` is needed on them).
+**Handle each divergence with the narrowest tool — prefer `[No*]` attributes over `#if`.** rolfbjarne's guidance: use the `[No*]` platform attributes and avoid `#if __MACOS__`/`#if MONOMAC` whenever possible.
+- **A member that exists on only one platform** → put `[NoiOS, NoTV, NoMacCatalyst]` (macOS-only) or `[NoMac]` (mobile-only) on that member — **not** `#if`. Even when the signature references a type that exists only on the other platform (e.g. `NSView`), the top-of-file dummy aliases (`using NSView = System.Object;`) let it compile on the UIKit side, so the attribute alone is enough. Real example: `NSTextBlock`'s macOS-only members in `src/xkit.cs` (e.g. `setWidth:type:forLayer:edge:`, `drawBackgroundWithFrame:inView:characterRange:layoutManager:`) carry `[NoiOS, NoTV, NoMacCatalyst]`, no `#if`.
+- **`#if` is only for divergences an attribute can't express** — the *same* member with a different `[Export]`/`ArgumentSemantic`/`[NullAllowed]` per platform (real: `NSShadow.ShadowColor` uses `#if MONOMAC` because macOS is `Copy`+non-null while iOS is `Retain`+`[NullAllowed]`), a different managed **name** (real: `NSTextTable` `Columns` vs `NumberOfColumns` under `#if MONOMAC && !XAMCORE_5_0`, unified to `NumberOfColumns` in `XAMCORE_5_0`), or a differing base **protocol-conformance list**.
 
 **Enums: share when identical, split when they diverge.** If the AppKit and UIKit native enum declarations are identical, bind the enum **once** in `xkit.cs` (e.g. `NSTextListOptions`, `NSTextListMarkerFormats` live there). **Split** it into `AppKit/Enums.cs` and `UIKit/UIEnums.cs` only when the platforms diverge — most often when a long-shipped AppKit enum is ABI-frozen as `ulong` while the new UIKit enum should be the correct `long`. When split, the shared interface references the enum by **simple name**, which resolves to `AppKit.<Enum>` on macOS and `UIKit.<Enum>` otherwise. Do **not** unify a divergent pair with `#if XAMCORE_5_0 long #else ulong` (that would wrongly narrow the new UIKit enum). xtro flags only `!wrong-enum-size!` (size mismatch), never signedness, so `long` vs `ulong` both pass at the same 8-byte size.
 
 **Availability for back-dated shared types.** Use the header-derived original availability, not the new-Xcode version — a UIFoundation type newly *exposed* to UIKit in iOS 27 was actually introduced at iOS 6, and stamping it `27` fails xtro/cecil. Follow the `NSTextList` shape: implicit type-level availability + a single `[MacCatalyst (13, 0)]` attribute (no explicit `[iOS]`/`[TV]`/`[Mac]`). Only genuinely new members carry the new version.
 
-> ⚠️ **Verify no macOS ABI break when moving a type.** Moving a type between binding files must not change the generated macOS binding. Compare the regenerated `src/build/dotnet/macos/generated-sources/AppKit/<Type>.g.cs` against a copy saved **before** the move — it must be **byte-identical**. If it differs, adjust the macOS (`#if __MACOS__`) block in `xkit.cs` to match the old `appkit.cs` exactly (member order matters). There is no apidiff make target for `.g.cs`, so this baseline diff is the safety net.
+> ⚠️ **Verify no macOS ABI break when moving a type.** Moving a type between binding files must not change the generated macOS binding. Compare the regenerated `src/build/dotnet/macos/generated-sources/AppKit/<Type>.g.cs` against a copy saved **before** the move — it must be **byte-identical**. If it differs, adjust the shared `xkit.cs` interface (member order, `[No*]` attributes, and any `#if MONOMAC` divergence guards) to match the old `appkit.cs` exactly — member order matters. There is no apidiff make target for `.g.cs`, so this baseline diff is the safety net.
 
 ### Frameworks with Mixed API Surfaces (ObjC + C)
 
@@ -892,32 +892,48 @@ bool DoSomething (out NSError error);
 
 ## Re-exposing Designated Initializers in Subclasses
 
-.NET constructors are not virtual, so when you bind a **new type that subclasses** an ObjC class that has a designated initializer (e.g. `AUAudioUnit`), the subclass must re-expose that inherited initializer — otherwise the introspection `DesignatedInitializer` test (`tests/introspection/ApiCtorInitTest.cs`) fails with `<Type> should re-expose <Base>::.ctor(...)`.
+.NET constructors are not virtual, so when you bind a **new type that subclasses** an ObjC class that has a designated initializer, the subclass must re-expose that inherited initializer — otherwise the introspection `DesignatedInitializer` test (`tests/introspection/ApiCtorInitTest.cs`) fails with `<Type> should re-expose <Base>::.ctor(...)`. How you re-expose it depends on whether the inherited designated initializer is **failable** (returns `nil` + `NSError`).
 
-**Default fix (simplest — passes with no test changes):** re-declare the inherited designated initializer as a public `[DesignatedInitializer]` `Constructor` with the same selector and signature. Giving the subclass its own designated ctor satisfies the test directly.
+**Non-failable designated init (no `out NSError`) — re-declare it as a public `[DesignatedInitializer]` `Constructor`** with the same selector and signature. Giving the subclass its own designated ctor satisfies the test directly, with no test-file change:
 
 ```csharp
 [iOS (27, 0)]                       // illustrative subclass — not a real repo type
-[NoMac, NoTV, NoMacCatalyst]
-[BaseType (typeof (AUAudioUnit))]
+[BaseType (typeof (SomeBaseType))]
 [DisableDefaultCtor]
-interface MySpatialAudioUnit {
-	// Re-exposed from the base AUAudioUnit designated initializer.
-	[Export ("initWithComponentDescription:options:error:")]
+interface MySubclass {
+	// Re-exposed from the base type's designated initializer.
+	[Export ("initWithName:")]
 	[DesignatedInitializer]
-	NativeHandle Constructor (AudioComponentDescription componentDescription, AudioComponentInstantiationOptions options, [NullAllowed] out NSError error);
+	NativeHandle Constructor (string name);   // NativeHandle, not IntPtr — matches the base binding
 
 	// ... the subclass's own members ...
 }
 ```
 
-- Return type is **`NativeHandle`** (not `IntPtr`), matching the base binding.
-- A failable init (`out NSError`) keeps `[NullAllowed]` on the error parameter — see [Error Handling](#error-handling).
-- A re-exposed inherited selector is **not** reported by xtro as an extra selector (the base declares it); no `.ignore` entry is needed. (Verified: no `.ignore` entry exists for such re-exposed inherited inits — e.g. the `AVSpeechSynthesisProviderAudioUnit` precedent below.)
+**Failable designated init (`out NSError`) — you MUST use the factory variant, not a public constructor.** A public constructor with an `out NSError` parameter fails the cecil test `ConstructorTest.NoConstructorsWithOutErrorArguments` (`tests/cecil-tests/ConstructorTest.cs`): *"This constructor has an 'out NSError' parameter. Such constructors should be bound as factory methods instead."* (Only a fixed set of legacy ctors is grandfathered in `ConstructorTest.KnownFailures.cs`.) Bind the init as `[Internal]` `_Init...` and add a manual static `Create (...) → Type?` factory — this also gives clean nullable semantics instead of a throwing ctor. Real precedent — `AUHeadTrackingBinauralRenderer` (a subclass of `AUAudioUnit`, whose designated init `initWithComponentDescription:options:error:` is failable):
 
-**Failable-initializer (factory) variant:** these inits return `nil` + `NSError` on failure, and a C# constructor can't return `null` — the auto-generated ctor *throws* on nil unless `throwOnInitFailure` is `false`. When you want clean nullable semantics instead of a throwing ctor, follow the `AVSpeechSynthesisProviderAudioUnit` precedent: bind the init as `[Internal]` `_Init...` and add a manual static `Create (...) → Type?` factory (see [Factory for Constructors](#factory-for-constructors) for the `NSObjectFlag.Empty` + `InitializeHandle (handle, "", false)` mechanics).
+```csharp
+[iOS (27, 0)]
+[NoMac, NoTV, NoMacCatalyst]
+[BaseType (typeof (AUAudioUnit))]
+[DisableDefaultCtor]
+interface AUHeadTrackingBinauralRenderer {
+	// re-exposed from base class, bound [Internal] because a public ctor can't take out NSError
+	[Export ("initWithComponentDescription:options:error:")]
+	[DesignatedInitializer]
+	[Internal]
+	NativeHandle _InitWithComponentDescription (AudioComponentDescription componentDescription, AudioComponentInstantiationOptions options, [NullAllowed] out NSError outError);
 
-> ⚠️ The factory variant is **not** a real constructor, so the introspection test's generic re-expose check can't find it. You **must** add a `case "<YourType>": ... return true;` to the `Match ()` override in `tests/introspection/ApiCtorInitTest.cs` (the base file covers all platforms), or the `DesignatedInitializer` test still fails. Real precedents: `AVSpeechSynthesisProviderAudioUnit` and `AUHeadTrackingBinauralRenderer` — both bind the designated init as `[Internal]` and carry a `Match ()` case in `ApiCtorInitTest.cs` with a `// This constructor is exposed using a factory method.` note. The plain `Constructor` form above avoids this extra coupling — prefer it unless a nullable return is genuinely needed.
+	// ... the subclass's own members ...
+}
+```
+
+Then add the manual factory in `src/AudioUnit/AUHeadTrackingBinauralRenderer.cs` — a `public static AUHeadTrackingBinauralRenderer? Create (...)` that does `new AUHeadTrackingBinauralRenderer (NSObjectFlag.Empty)` then calls the `_Init...` (see [Factory for Constructors](#factory-for-constructors) for the `NSObjectFlag.Empty` + `InitializeHandle (handle, "", false)` mechanics).
+
+- The `[Internal]` `_Init...` keeps `[NullAllowed]` on the `out NSError` parameter — see [Error Handling](#error-handling).
+- A re-exposed inherited selector is **not** reported by xtro as an extra selector (the base declares it); no `.ignore` entry is needed.
+
+> ⚠️ The factory variant is **not** a real constructor, so the introspection test's generic re-expose check can't find it. You **must** add a `case "<YourType>": ... return true;` to the `Match ()` override in `tests/introspection/ApiCtorInitTest.cs` (the base file covers all platforms), or the `DesignatedInitializer` test still fails. Real precedents: `AVSpeechSynthesisProviderAudioUnit` and `AUHeadTrackingBinauralRenderer` — both bind the designated init as `[Internal]` and carry a `Match ()` case in `ApiCtorInitTest.cs` with a `// This constructor is exposed using a factory method.` note.
 
 ## Per-Member Platform Attributes
 
@@ -967,7 +983,7 @@ All `[Verify]` attributes must be resolved before submitting a PR.
 - **Null handling**: Always use `[NullAllowed]` where Apple's docs indicate nullability. Default assumption is non-null. However, if a `[DesignatedInitializer]` constructor crashes (segfault) when passed null, **remove `[NullAllowed]`** — the native API genuinely doesn't accept null, and removing it is better than adding introspection test exclusions.
 - **Struct backing fields**: Only use blittable types. `bool` and `char` aren't blittable — use `byte` and `ushort`/`short` instead, with typed property accessors.
 - **Threading**: UI APIs require main thread. Use `[ThreadSafe]` for thread-safe APIs.
-- **Naming**: Follow .NET PascalCase for methods/properties. Remove redundant ObjC prefixes (`NSString name` → `string Name`). **C# type names preserve the Objective-C class prefix exactly** — `ARSession` stays `ARSession` (not `ArSession`), `AVPlayer` stays `AVPlayer` (not `AvPlayer`), `CGColor` stays `CGColor` (not `CgColor`). But an acronym *inside* the name (after the prefix) follows .NET rules — `NSURLSession` → `NSUrlSession`, `NSURLSessionHandler` → `NSUrlSessionHandler` (the `NS` prefix stays, but `URL` becomes `Url`). When creating new manual types for a framework, match the established prefix (e.g., new ARKit types use `AR*`). The .NET acronym casing rules apply within property/method names **and** to acronyms inside type names (SIMD → Simd, ID → Id when it means "identifier", URL → Url), never to the leading class prefix. (A few frameworks instead preserve an inner acronym across their whole family — e.g. CoreGraphics `CGPDF*` — so match the existing sibling types when a framework is consistent.) Methods should be verbs, properties should be nouns. Don't blindly translate ObjC selector names — use .NET-appropriate verb names (e.g., `BuildMenu` not `MenuWithContents`).
+- **Naming**: Follow .NET PascalCase for methods/properties. Remove redundant ObjC prefixes (`NSString name` → `string Name`). **C# type names preserve the Objective-C class prefix exactly** — `ARSession` stays `ARSession` (not `ArSession`), `AVPlayer` stays `AVPlayer` (not `AvPlayer`), `CGColor` stays `CGColor` (not `CgColor`). But an acronym *inside* the name (after the prefix) follows .NET rules — `NSURLSession` → `NSUrlSession`, `NSURLSessionHandler` → `NSUrlSessionHandler` (the `NS` prefix stays, but `URL` becomes `Url`). When creating new manual types for a framework, match the established prefix (e.g., new ARKit types use `AR*`). The .NET acronym casing rules apply within property/method names **and** to acronyms inside type names (SIMD → Simd, ID → Id when it means "identifier", URL → Url), never to the leading class prefix. (A few frameworks instead preserve an inner acronym across their whole family — e.g. CoreGraphics `CGPDF*` — so match the existing sibling types when a framework is consistent.) **Also match the casing of existing APIs on the same type**: if a type already exposes `GetExistingURLSession ()`, name a new sibling `GetNewURLSession ()` (not `GetNewUrlSession ()`) for consistency, and add a short comment explaining why the general acronym rule wasn't followed. Methods should be verbs, properties should be nouns. Don't blindly translate ObjC selector names — use .NET-appropriate verb names (e.g., `BuildMenu` not `MenuWithContents`).
 - **Selectors**: Must match exactly — a single typo causes runtime crashes.
 - **Protocol conformance**: All `[Abstract]` methods in a protocol are required.
 - **nint/nuint**: Use `nint`/`nuint` for Objective-C `NSInteger`/`NSUInteger`.

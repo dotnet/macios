@@ -173,7 +173,7 @@ Available preprocessor symbols for platform checks:
 - `__TVOS__` (preferred) / `TVOS` — tvOS
 - `__MACCATALYST__` — Mac Catalyst
 
-> ⚠️ **Foundation/TextKit types shared by AppKit and UIKit** (e.g. `NSTextList`, `NSParagraphStyle`) are bound once in `src/xkit.cs`, not duplicated in `appkit.cs`/`uikit.cs`. If a macOS-only type becomes exposed to UIKit, consolidate it there (share identical enums, split only divergent ones, guard macOS divergences with `#if MONOMAC`, keep back-dated availability). See [references/binding-patterns.md](references/binding-patterns.md) → "Shared AppKit/UIKit Types".
+> ⚠️ **Foundation/TextKit types shared by AppKit and UIKit** (e.g. `NSTextList`, `NSParagraphStyle`) are bound once in `src/xkit.cs`, not duplicated in `appkit.cs`/`uikit.cs`. If a type in `appkit.cs` (or `uikit.cs`) becomes exposed to the other side, consolidate it there (share identical enums, split only divergent ones, handle platform-only members with `[No*]` attributes — reserving `#if` for divergences attributes can't express — keep back-dated availability). See [references/binding-patterns.md](references/binding-patterns.md) → "Shared AppKit/UIKit Types".
 
 ### Step 5: Build
 
@@ -183,7 +183,7 @@ Rebuild **and install** so the test suites — which read the installed NuGet pa
 make all && make install
 ```
 
-> ❌ **NEVER** use `make -C src build`. There is no `build` target in `src/Makefile`, so it matches the `src/build/` output directory and is a silent no-op ("Nothing to be done for `build'") that compiles nothing — you then validate against **stale** assemblies. Use `make all && make install` (or `make world` for a full rebuild).
+> ❌ **NEVER** use `make -C src build`. There is no `build` *target* in `src/Makefile`, so the command is unreliable: on a fresh checkout it fails with `make: *** No rule to make target 'build'`, and once the `src/build/` output directory exists the word `build` matches that directory and the command silently no-ops (`Nothing to be done for 'build'`). Either way it compiles nothing and you validate against **stale** (or missing) assemblies. Use `make all && make install` (or `make world` for a full rebuild).
 
 Fix any compilation errors before proceeding. Builds can take up to 60 minutes — do not timeout early.
 
@@ -246,6 +246,8 @@ make -C tests/xtro-sharpie dotnet-classify
 
 1. For each `?fixed-todo?` entry you bound, remove that line from its `.todo` file (and `git rm` the file if it becomes empty — see next note).
 2. Re-run `make -C tests/xtro-sharpie dotnet-classify` until it prints `Sanity check passed` (exit 0).
+
+> 💡 Setting `AUTO_SANITIZE=1` (e.g. `AUTO_SANITIZE=1 make -C tests/xtro-sharpie dotnet-classify`) makes xtro auto-remove the resolved `?fixed-todo?` lines and delete emptied `.todo`/`.ignore` files for you. Any surrounding **comments** related to those entries still have to be removed manually.
 
 Any entries that remain unresolved need binding or explicit `.ignore` entries with justification.
 
@@ -339,7 +341,7 @@ make -C tests/monotouch-test/dotnet/MacCatalyst run-bare
 
 > ⚠️ **Platform casing matters**: Use `iOS`, `tvOS`, `macOS`, `MacCatalyst` exactly — not `ios`, `macos`, etc.
 
-> ⚠️ **Desktop platforms**: Use `run-bare` (not `run`) for macOS and MacCatalyst — same reason as introspection: `run` launches without capturing stdout. `run-bare` is only available for desktop platforms.
+> ⚠️ **Desktop platforms**: Use `run-bare` (not `run`) for macOS and MacCatalyst — same reason as introspection: `run` launches without capturing stdout. The `run-bare` target exists for **every** platform (it just runs the built executable directly), but it **doesn't work for iOS/tvOS** — those need the simulator via `run`/mlaunch.
 
 ### Step 7: Handle Test Failures
 

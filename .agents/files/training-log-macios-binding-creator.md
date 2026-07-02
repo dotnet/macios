@@ -1,6 +1,28 @@
 # Training Log: macios-binding-creator
 
+## Session: 2026-07-02 — PR #25906 review feedback (rolfbjarne + Copilot)
+
+**Trainer:** SkillTrainer | **Skill:** macios-binding-creator | **Trigger:** Review feedback on PR #25906 (the skill work rebased onto `xcode27.0`). 6 comments from @rolfbjarne (precedence) + 3 from the Copilot reviewer. Every fix was grounded in the live repo and rubber-ducked read-only with three models (Sonnet 5 max, Opus 4.8 max, GPT-5.5 xhigh).
+
+### Fixes (each verified against real code)
+1. **[rolfbjarne] Callback function pointer must be a NAMED static method with `[UnmanagedCallersOnly]`** (binding-patterns.md). The example comment said "static lambda or named method"; a lambda can't carry `[UnmanagedCallersOnly]`. Verified: `src/Network/NWConnection.cs:112` `[UnmanagedCallersOnly] static void Trampoline_StateChangeCallback`.
+2. **[rolfbjarne] xkit consolidation also applies in reverse** (uikit.cs → AppKit), not just appkit.cs → UIKit. Added to the "When to consolidate" note + SKILL.md pointer.
+3. **[rolfbjarne] Prefer `[No*]` attributes over `#if __MACOS__` for macOS divergences** — the big one. Reworked the "macOS divergences" guidance: a member present on only one platform uses `[NoiOS, NoTV, NoMacCatalyst]`/`[NoMac]` (the dummy aliases let macOS-only-typed signatures compile on the UIKit side); `#if` is reserved for divergences attributes can't express (per-platform `[Export]`/semantic/nullability, differing managed name, differing protocol list). Verified: real `NSTextBlock`/`NSTextTable` in `src/xkit.cs` use `[NoiOS, NoTV, NoMacCatalyst]` for macOS-only members (264 `[No*]` vs 22 `#if MONOMAC`); `NSShadow.ShadowColor` (`#if MONOMAC`, differing semantic/nullability) and `NSTextTable.Columns`/`NumberOfColumns` (`#if MONOMAC && !XAMCORE_5_0`) are the genuine `#if` cases.
+4. **[rolfbjarne] Constructors must not have `out NSError` params** — a bad example. Reworked "Re-exposing Designated Initializers": a non-failable init re-exposes as a plain `[DesignatedInitializer] Constructor`; a **failable** init (`out NSError`) MUST use the `[Internal] _Init` + `Create` factory, because `ConstructorTest.NoConstructorsWithOutErrorArguments` (`tests/cecil-tests/ConstructorTest.cs:558`) fails any NSObject-subclass ctor with an `out NSError` param. Example switched to the real `AUHeadTrackingBinauralRenderer` (audiounit.cs:1326; factory at `src/AudioUnit/AUHeadTrackingBinauralRenderer.cs:11`).
+5. **[rolfbjarne] Naming: also match existing APIs on a type** — if a type already has `GetExistingURLSession ()`, name a new sibling `GetNewURLSession ()` (not `…UrlSession`) with a comment explaining the exception. Added to the naming rule.
+6. **[rolfbjarne] `AUTO_SANITIZE=1`** auto-removes resolved `?fixed-todo?` lines and emptied files (surrounding comments stay manual). Verified: `tests/xtro-sharpie/xtro-sanity/Sanitizer.cs:13,149`. Added to SKILL.md Step 6a + test-workflow.md.
+7. **[Copilot] `make -C src build`** — reworded: there is no `build` *target*, so it errors `No rule to make target 'build'` on a fresh checkout and silently no-ops once `src/build/` exists. Either way it compiles nothing.
+8. **[Copilot] `run-bare` is not "desktop-only"** — the target exists everywhere (`$(EXECUTABLE) --autostart --autoexit`, `shared-dotnet.mk:190`); it just can't launch iOS/tvOS simulator apps. Reworded in SKILL.md + test-workflow.md.
+
+### Patterns Learned
+- **`[No*]` attributes beat `#if` for platform-only members** (rolfbjarne). In shared files the dummy top-of-file aliases (`using NSView = System.Object;`) let a macOS-only-typed signature compile everywhere, so `[NoiOS, NoTV, NoMacCatalyst]` alone excludes it — reserve `#if` for same-member attribute/name/nullability/protocol-list divergence.
+- **A bound constructor may never take `out NSError`** — it's a cecil-enforced rule (`ConstructorTest`); failable inits are factory methods.
+- **`[UnmanagedCallersOnly]` requires a named static method** — never a lambda.
+
+---
+
 ## Session: 2026-07-01 (3) — Xcode 27 test-workflow accuracy (xtro/cecil/introspection) from 3 real binding sessions
+
 
 **Trainer:** SkillTrainer | **Skill:** macios-binding-creator | **Trigger:** Three user requests to enhance the skill from three real copilot sessions, each an Xcode 27 binding task:
 - `3611320c-a6c6-4982-9342-8f8cc4604a37` — AudioToolbox (`AUHeadTrackingBinauralRenderer`)

@@ -26,7 +26,7 @@ make -C tests/xtro-sharpie dotnet-classify
 make -C tests/xtro-sharpie unclassified2todo
 ```
 
-`dotnet-classify` runs every platform then sanity. A resolved-but-still-present `.todo` entry prints `?fixed-todo?` and returns non-zero — remove the resolved entries (and `git rm` emptied `.todo` files), then re-run until `Sanity check passed`.
+`dotnet-classify` runs every platform then sanity. A resolved-but-still-present `.todo` entry prints `?fixed-todo?` and returns non-zero — remove the resolved entries (and `git rm` emptied `.todo` files), then re-run until `Sanity check passed`. Setting `AUTO_SANITIZE=1` makes xtro auto-remove those resolved lines and delete emptied files for you, but any surrounding related **comments** in the `.todo`/`.ignore` files must still be removed manually.
 
 ### `!extra-enum-value!` — a managed enum value the native platform lacks
 
@@ -262,7 +262,7 @@ Alternatively, from the parent directory for the **simulator** platforms: `make 
 
 > ⚠️ **Desktop platforms (macOS, MacCatalyst)**: Use `run-bare` for captured test output — same as introspection. `run` launches the app via `dotnet build -t:Run` which doesn't capture stdout.
 
-> ⚠️ **`run-bare` is desktop-only.** iOS and tvOS use the simulator via `dotnet build -t:Run` with `SIMCTL_CHILD_NUNIT_AUTOSTART=true` and `SIMCTL_CHILD_NUNIT_AUTOEXIT=true` environment variables (set automatically by the shared Makefile). No manual mlaunch invocation is needed for monotouch-tests — unlike introspection.
+> ⚠️ **`run-bare` doesn't work for mobile.** The `run-bare` target exists on every platform (it runs the built executable directly via `$(EXECUTABLE) --autostart --autoexit`), but only desktop (macOS/MacCatalyst) can be launched that way. iOS and tvOS use the simulator via `dotnet build -t:Run` with `SIMCTL_CHILD_NUNIT_AUTOSTART=true` and `SIMCTL_CHILD_NUNIT_AUTOEXIT=true` environment variables (set automatically by the shared Makefile). No manual mlaunch invocation is needed for monotouch-tests — unlike introspection.
 
 ### Running Specific Test Fixtures
 

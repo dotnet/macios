@@ -144,19 +144,16 @@ namespace Xamarin.Tests {
 				return; // not running in Azure DevOps CI
 
 			try {
-				var targetDir = Path.Combine (artifactStagingDir, "failed-app-size-bundles", name, Path.GetFileName (appPath));
-				Console.WriteLine ($"    Copying app bundle '{appPath}' to '{targetDir}' for diagnostics...");
-				foreach (var file in Directory.GetFiles (appPath, "*", SearchOption.AllDirectories)) {
-					var relativePath = file [(appPath.Length + 1)..];
-					var targetFile = Path.Combine (targetDir, relativePath);
-					var targetFileDir = Path.GetDirectoryName (targetFile);
-					if (!string.IsNullOrEmpty (targetFileDir))
-						Directory.CreateDirectory (targetFileDir);
-					File.Copy (file, targetFile, true);
-				}
-				Console.WriteLine ($"    Copied app bundle to '{targetDir}'.");
+				var outputDir = Path.Combine (artifactStagingDir, "failed-app-size-bundles");
+				Directory.CreateDirectory (outputDir);
+				// Use a sortable timestamp to make the zip file name unique, so subsequent failing tests don't overwrite it.
+				var timestamp = DateTime.UtcNow.ToString ("yyyyMMdd'T'HHmmss'Z'");
+				var zipPath = Path.Combine (outputDir, $"{name}-{Path.GetFileName (appPath)}-{timestamp}.zip");
+				Console.WriteLine ($"    Zipping app bundle '{appPath}' to '{zipPath}' for diagnostics...");
+				System.IO.Compression.ZipFile.CreateFromDirectory (appPath, zipPath, System.IO.Compression.CompressionLevel.Optimal, includeBaseDirectory: true);
+				Console.WriteLine ($"    Zipped app bundle to '{zipPath}'.");
 			} catch (Exception e) {
-				Console.WriteLine ($"    Failed to copy app bundle for diagnostics: {e}");
+				Console.WriteLine ($"    Failed to zip app bundle for diagnostics: {e}");
 			}
 		}
 

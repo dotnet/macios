@@ -2,8 +2,10 @@
   "author": "Microsoft",
   "name": "Applicazione Mac Catalyst",
   "description": "Progetto per la creazione di un'applicazione Mac Catalyst .NET",
-  "symbols/bundleId/description": "Esegue l'override di CFBundleIdentifier in Info.plist",
   "symbols/bundleId/displayName": "Bundle ID",
+  "symbols/bundleId/description": "Esegue l'override di CFBundleIdentifier in Info.plist",
+  "symbols/minOSVersion/displayName": "Minimum OS version",
   "symbols/minOSVersion/description": "Esegue l'override di SupportedOSPlatformVersion nel file di progetto",
-  "symbols/minOSVersion/displayName": "Minimum OS version"
+  "symbols/Framework/description": "The target framework for the project.",
+  "symbols/Framework/choices/net10.0-maccatalyst/description": "Target net10.0-maccatalyst"
 }

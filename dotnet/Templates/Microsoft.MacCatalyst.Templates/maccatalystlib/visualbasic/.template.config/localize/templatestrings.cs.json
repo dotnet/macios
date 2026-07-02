@@ -1,5 +1,7 @@
 {
   "author": "Microsoft",
   "name": "Knihovna tříd Mac Catalyst",
-  "description": "Projekt pro vytvoření knihovny tříd .NET Mac Catalyst"
+  "description": "Projekt pro vytvoření knihovny tříd .NET Mac Catalyst",
+  "symbols/Framework/description": "The target framework for the project.",
+  "symbols/Framework/choices/net10.0-maccatalyst/description": "Target net10.0-maccatalyst"
 }

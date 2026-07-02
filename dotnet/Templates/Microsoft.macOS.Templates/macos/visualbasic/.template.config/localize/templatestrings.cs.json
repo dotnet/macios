@@ -2,8 +2,10 @@
   "author": "Microsoft",
   "name": "Aplikace macOS",
   "description": "Projekt pro vytvoření aplikace .NET pro macOS",
-  "symbols/bundleId/description": "Přepíše CFBundleIdentifier v souboru Info.plist.",
   "symbols/bundleId/displayName": "Bundle ID",
+  "symbols/bundleId/description": "Přepíše CFBundleIdentifier v souboru Info.plist.",
+  "symbols/minOSVersion/displayName": "Minimum OS version",
   "symbols/minOSVersion/description": "Přepíše SupportedOSPlatformVersion v souboru projektu.",
-  "symbols/minOSVersion/displayName": "Minimum OS version"
+  "symbols/Framework/description": "The target framework for the project.",
+  "symbols/Framework/choices/net10.0-macos/description": "Target net10.0-macos"
 }

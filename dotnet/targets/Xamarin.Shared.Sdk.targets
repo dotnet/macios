@@ -1479,6 +1479,35 @@
 		</ItemGroup>
 	</Target>
 
+	<!--
+		When the assembly-preparer is used to post-process assemblies (PostProcessAssemblies=true), the set of
+		assemblies that gets AOT-compiled (and which is used to detect AOT generic instantiation deduplication)
+		is computed from ResolvedFileToPublish instead of from the linker's own assembly collection. The dedup
+		assembly (aot-instances.dll) is only added to the linker's assembly collection (via ManagedAssemblyToLink
+		and TrimmerRootAssembly in _CreateAOTDedupAssembly), so it's not part of ResolvedFileToPublish, and as a
+		result deduplication would be disabled in this case. Add the dedup assembly to ResolvedFileToPublish so
+		that it's included in the set of assemblies the assembly-preparer processes, and deduplication is enabled
+		in this case as well.
+	-->
+	<Target Name="_AddDedupAssemblyToResolvedFileToPublish"
+			Condition="'$(_IsDedupEnabled)' == 'true' And '$(PostProcessAssemblies)' == 'true'"
+			DependsOnTargets="_ComputeVariables"
+			BeforeTargets="_PrepareAssembliesForPostProcessing">
+		<ItemGroup>
+			<!-- Find out if the dedup assembly is already part of ResolvedFileToPublish (it will be when
+			     trimming is enabled, because then it goes through ILLink like any other assembly). -->
+			<_DedupAssemblyInResolvedFileToPublish Include="@(ResolvedFileToPublish)" Condition="'%(Filename)%(Extension)' == 'aot-instances.dll'" />
+		</ItemGroup>
+		<ItemGroup Condition="'@(_DedupAssemblyInResolvedFileToPublish)' == ''">
+			<ResolvedFileToPublish Include="$(_DedupAssembly)">
+				<PublishFolderType>Assembly</PublishFolderType>
+				<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+				<RelativePath>$(_AssemblyPublishDir)aot-instances.dll</RelativePath>
+				<OriginalRelativePath>aot-instances.dll</OriginalRelativePath>
+			</ResolvedFileToPublish>
+		</ItemGroup>
+	</Target>
+
 	<Target Name="_ComputeDotNetRoot">
 		<PropertyGroup>
 			<_DotNetRoot Condition="'$(IsMacEnabled)' == 'true'">$(_DotNetRootRemoteDirectory)</_DotNetRoot>

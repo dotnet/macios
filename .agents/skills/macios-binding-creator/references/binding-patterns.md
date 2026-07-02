@@ -158,6 +158,23 @@ public enum SomeEnum : long {
 NSString SelectedOption { get; set; }
 ```
 
+### Adding New Members to Existing Enums
+
+When adding a new value to an existing enum, the new member needs its own availability attribute with the version that **member** was introduced — not the enum's introduction version:
+
+```csharp
+[NoTV, NoMacCatalyst, NoMac, iOS (26, 1)]
+[Native]
+public enum PHAssetResourceUploadJobAction : long {
+    Acknowledge = 1,
+    Retry = 2,
+    [iOS (26, 5)]
+    Process = 3,
+}
+```
+
+Check the generated reference bindings (`make -C tests/xtro-sharpie gen-all`) for the correct per-member introduction version.
+
 ## Notification Fields
 
 ```csharp
@@ -229,7 +246,11 @@ interface MPNowPlayingSession : MyPlayableItem {  // <-- plain name, NO I prefix
 
 > ❌ **NEVER** use the `I`-prefixed name in protocol definitions or protocol conformance declarations. The `I` prefix is ONLY used when referencing a protocol as a **type** in method parameters, return types, and properties (e.g., `INSCopying Identifier { get; }`, `void Foo (INSCoding item)`). Protocol definitions use plain names (`[Protocol, Model] interface MyDelegate`), and protocol conformance uses plain names (`interface MyClass : MyProtocol`).
 
+> ⚠️ **Only add conformance the *header* declares.** `!missing-protocol-conformance!` comes from xtro, which is header-driven, so acting on it is safe. But if a type conforms to a protocol only at **runtime** (common on new Xcode betas) while the header doesn't declare it, do NOT add the conformance here — that would be a wrong binding (and xtro never asked for it). Handle it with a test-only introspection Skip instead — see [test-workflow.md](test-workflow.md) → "Runtime-Only Protocol Conformance".
+
 > ⚠️ **Don't redeclare protocol-inherited properties.** When a type conforms to a protocol, it inherits the protocol's properties. If the type already has those properties bound (e.g., `title`, `artist`), do NOT redeclare them or you'll get CS0108 (member hides inherited member) warnings. Remove the duplicates from the conforming type.
+
+> ⚠️ **Don't bind `initWithCoder:` on `NSCoding`/`NSSecureCoding` types.** bgen auto-generates the `Constructor (NSCoder)` from an `NSCoding`/`NSSecureCoding` conformance. Adding an explicit `[Export ("initWithCoder:")]` constructor triggers a **CS0108** "member hides inherited member" warning — the explicit constructor hides the one the conformance already provides — which fails the build under bgen's `-warnaserror`. Let the conformance generate it — e.g. `NSTextList : NSCoding, NSSecureCoding` binds no `initWithCoder:`.
 
 ### Weak Delegate Pattern
 
@@ -332,12 +353,90 @@ public struct MyStruct {
 public static NSString MyConstant { get; }
 ```
 
+### C Callback Handler Binding
+
+When a C API sets a persistent callback handler (e.g., state change handlers, data providers), use the **BlockLiteral trampoline** pattern for Objective-C blocks or **GCHandle** for C function pointer contexts. Follow these patterns from `src/Network/` and `src/CoreFoundation/`.
+
+#### BlockLiteral Trampoline (preferred for ObjC block callbacks)
+
+This is the standard pattern used in Network framework (`NWConnection`, `NWBrowser`, `NWListener`):
+
+```csharp
+[DllImport (Constants.NetworkLibrary)]
+static extern void nw_connection_set_state_changed_handler (
+	IntPtr handle, /* BlockLiteral* */ IntPtr handler);
+
+[UnmanagedCallersOnly]
+static void TrampolineStateChanged (IntPtr block, int state, IntPtr error)
+{
+	var del = BlockLiteral.GetTarget<Action<NWConnectionState, NWError?>> (block);
+	if (del is not null)
+		del (/* marshal args */);
+}
+
+public void SetStateChangedHandler (Action<NWConnectionState, NWError?> handler)
+{
+	if (handler is null) {
+		nw_connection_set_state_changed_handler (GetCheckedHandle (), IntPtr.Zero);
+		return;
+	}
+
+	unsafe {
+		// The function-pointer target MUST be a named static method with
+		// [UnmanagedCallersOnly] (see TrampolineStateChanged above) — a lambda
+		// cannot carry [UnmanagedCallersOnly], so it can't be used here.
+		delegate* unmanaged<IntPtr, int, IntPtr, void> trampoline = &TrampolineStateChanged;
+		using var block = new BlockLiteral (trampoline, handler, typeof (MyClass),
+			nameof (TrampolineStateChanged));
+		nw_connection_set_state_changed_handler (GetCheckedHandle (), (IntPtr) (&block));
+	}
+}
+```
+
+#### GCHandle Context (for C function pointer + void* context)
+
+Used in CoreFoundation (`CFStream.cs`) when the native API takes a function pointer + context:
+
+```csharp
+GCHandle gch;
+
+void EnableEvents ()
+{
+	if (!gch.IsAllocated)
+		gch = GCHandle.Alloc (this);
+
+	var ctx = new CFStreamClientContext {
+		Info = GCHandle.ToIntPtr (gch)
+	};
+	DoSetClient (&NativeCallback, ref ctx);
+}
+
+[UnmanagedCallersOnly]
+static void NativeCallback (IntPtr stream, int eventType, IntPtr info)
+{
+	var instance = GCHandle.FromIntPtr (info).Target as MyClass;
+	instance?.OnCallback (eventType);
+}
+```
+
+#### Key Rules for Callback Handlers
+
+> ❌ **NEVER** access a nullable parameter (e.g., `DispatchQueue? queue`) without null-checking it first. Note: `.GetHandle()` is safe on a `null` instance (it returns `NativeHandle.Zero`), but other member accesses on nullable parameters still require null checks. Check all nullable parameters before use on every code path.
+
+> ⚠️ **Memory management ordering**: When replacing a stored handler, set the new managed reference **before** freeing the old `GCHandle`. This prevents premature collection if GC runs between the free and the assignment.
+
+> ⚠️ **GC.KeepAlive**: Call `GC.KeepAlive (queue)` or `GC.KeepAlive (handler)` after passing native handles to P/Invokes. This prevents the GC from collecting the managed object while the native call is still using its handle.
+
+Real examples: `src/Network/NWConnection.cs`, `src/Network/NWBrowser.cs`, `src/CoreFoundation/CFStream.cs`, `src/Security/SecTrust.cs`
+
 ### Struct Binding Rules
 
 - **Only use blittable types as backing fields in structs.** `bool` and `char` aren't blittable — use `byte` and `ushort`/`short` instead. This avoids `[MarshalAs]` and cecil test known failures.
 - **Wrap all public methods and properties in `#if !COREBUILD`** — never use `#pragma warning disable 0169`. Do NOT wrap fields, because bgen may do different things depending on the size of a struct, so it needs to know the final size.
 - **NEVER use `XAMCORE_5_0` for new code.** `XAMCORE_5_0` is only for fixing breaking API changes on existing types that shipped in prior releases.
-- If a struct member is platform-specific, use `#if !TVOS` (or similar) to exclude it.
+- **Don't use arrays** — they're not blittable. Add the corresponding number of individual fields instead (`byte b1; byte b2; …`).
+- **Don't use explicit layout** (`[StructLayout (LayoutKind.Explicit)]`). Use opaque backing fields instead (`byte b1; byte b2; …`) with properties that read/write to the opaque backing fields.
+- If a struct member is platform-specific, use `#if !__TVOS__` (or similar) to exclude it.
 
 ### Platform Exclusion for Manual Types
 
@@ -345,7 +444,7 @@ When a manual type (struct, helper class) is not available on tvOS:
 
 ```csharp
 // In src/FrameworkName/MyStruct.cs:
-#if !TVOS
+#if !__TVOS__
 [UnsupportedOSPlatform ("tvos")]
 [StructLayout (LayoutKind.Sequential)]
 public struct MyStruct {
@@ -358,15 +457,110 @@ public struct MyStruct {
 	}
 #endif // !COREBUILD
 }
-#endif // !TVOS
+#endif // !__TVOS__
 
 // In src/frameworkname.cs (at the top of the file):
-#if TVOS
+#if __TVOS__
 using MyStruct = Foundation.NSObject;
 #endif
 ```
 
 The type alias lets tvOS compilation succeed. The `[NoTV]` attribute on the API definition interface ensures the type won't appear in the final tvOS assembly.
+
+### Platform-Specific Code Within Shared Files
+
+Use preprocessor directives for platform-conditional code — **not** platform-specific source file lists in `frameworks.sources`:
+
+```csharp
+// macOS-only type or member
+#if __MACOS__
+public class ARCollaborationData : NSObject {
+	// macOS-only implementation
+}
+#endif
+
+// iOS-specific behavior
+#if __IOS__
+	[DllImport (Constants.ARKitLibrary)]
+	static extern void ar_session_run (IntPtr session, IntPtr config);
+#endif
+```
+
+Available preprocessor symbols:
+| Symbol | Platform |
+|--------|----------|
+| `__MACOS__` (preferred) / `MONOMAC` | macOS |
+| `__IOS__` | iOS |
+| `__TVOS__` (preferred) / `TVOS` | tvOS |
+| `__MACCATALYST__` | Mac Catalyst |
+
+> ❌ **NEVER** use platform-specific source file entries (e.g., appending a per-framework list to `MACOS_DOTNET_SOURCES`) for conditional compilation. Use `#if` directives instead — they keep the code in shared files and are the established convention across the codebase.
+
+### Shared AppKit/UIKit Types (`src/xkit.cs`)
+
+Some Foundation/TextKit types (Apple's `UIFoundation`) are exposed to **both** AppKit (macOS) and UIKit (iOS/tvOS/Mac Catalyst). Bind these **once** in `src/xkit.cs` — the shared API-definition file compiled into *both* assemblies — never as duplicate copies in `appkit.cs` and `uikit.cs`.
+
+`xkit.cs` is compiled twice: `#if MONOMAC namespace AppKit` else `namespace UIKit`. `#if !MONOMAC` aliases near the top (`using NSColor = UIKit.UIColor;`, `using NSView = System.Object;`, …) let AppKit type names compile on the UIKit side. `NSTextList` is a bound example (`interface NSTextList : NSCoding, NSCopying, NSSecureCoding`). (The file's namespace switch and top-of-file aliases use the legacy `MONOMAC` symbol; `__MACOS__` and `MONOMAC` are both defined for the macOS build. Prefer `[No*]` attributes over `#if` here — see below — but on the rare divergence that genuinely needs `#if`, prefer `#if __MACOS__` over `#if MONOMAC`.)
+
+**When to consolidate:** when a type currently in `appkit.cs` becomes exposed to UIKit too (common on a new Xcode, usually **back-dated** to its original macOS availability), and the same Objective-C type maps to one shared binding, move it into `xkit.cs` rather than adding a second copy to `uikit.cs`. The reverse applies too — when a type currently in `uikit.cs` becomes exposed to AppKit, move it into `xkit.cs` (not a second copy in `appkit.cs`). Precedent: `NSTextList` was moved `appkit.cs → xkit.cs` in commit `8cecb962a4` when it became shared in UIKit.
+
+Steps:
+1. Add the interface to `xkit.cs` (near related types, e.g. after `NSTextList`), preserving the **exact member order, attributes, and parameter names** from the old `appkit.cs` copy.
+2. Remove the type from `appkit.cs` **and** from `uikit.cs`.
+3. Remove any `#if !MONOMAC` `using <Type> = System.Object;` dummy alias for that type near the top of `xkit.cs` — it's now a real shared type.
+
+**Handle each divergence with the narrowest tool — prefer `[No*]` attributes over `#if`.** rolfbjarne's guidance: use the `[No*]` platform attributes and avoid `#if __MACOS__`/`#if MONOMAC` whenever possible.
+- **A member that exists on only one platform** → put `[NoiOS, NoTV, NoMacCatalyst]` (macOS-only) or `[NoMac]` (mobile-only) on that member — **not** `#if`. Even when the signature references a type that exists only on the other platform (e.g. `NSView`), the top-of-file dummy aliases (`using NSView = System.Object;`) let it compile on the UIKit side, so the attribute alone is enough. Real example: `NSTextBlock`'s macOS-only members in `src/xkit.cs` (e.g. `setWidth:type:forLayer:edge:`, `drawBackgroundWithFrame:inView:characterRange:layoutManager:`) carry `[NoiOS, NoTV, NoMacCatalyst]`, no `#if`.
+- **`#if` is only for divergences an attribute can't express** — the *same* member with a different `[Export]`/`ArgumentSemantic`/`[NullAllowed]` per platform (real: `NSShadow.ShadowColor` uses `#if MONOMAC` because macOS is `Copy`+non-null while iOS is `Retain`+`[NullAllowed]`), a different managed **name** (real: `NSTextTable` `Columns` vs `NumberOfColumns` under `#if MONOMAC && !XAMCORE_5_0`, unified to `NumberOfColumns` in `XAMCORE_5_0`), or a differing base **protocol-conformance list**.
+
+**Enums: share when identical, split when they diverge.** If the AppKit and UIKit native enum declarations are identical, bind the enum **once** in `xkit.cs` (e.g. `NSTextListOptions`, `NSTextListMarkerFormats` live there). **Split** it into `AppKit/Enums.cs` and `UIKit/UIEnums.cs` only when the platforms diverge — most often when a long-shipped AppKit enum is ABI-frozen as `ulong` while the new UIKit enum should be the correct `long`. When split, the shared interface references the enum by **simple name**, which resolves to `AppKit.<Enum>` on macOS and `UIKit.<Enum>` otherwise. Do **not** unify a divergent pair with `#if XAMCORE_5_0 long #else ulong` (that would wrongly narrow the new UIKit enum). xtro flags only `!wrong-enum-size!` (size mismatch), never signedness, so `long` vs `ulong` both pass at the same 8-byte size.
+
+**Availability for back-dated shared types.** Use the header-derived original availability, not the new-Xcode version — a UIFoundation type newly *exposed* to UIKit in iOS 27 was actually introduced at iOS 6, and stamping it `27` fails xtro/cecil. Follow the `NSTextList` shape: implicit type-level availability + a single `[MacCatalyst (13, 0)]` attribute (no explicit `[iOS]`/`[TV]`/`[Mac]`). Only genuinely new members carry the new version.
+
+> ⚠️ **Verify no macOS ABI break when moving a type.** Moving a type between binding files must not change the generated macOS binding. Compare the regenerated `src/build/dotnet/macos/generated-sources/AppKit/<Type>.g.cs` against a copy saved **before** the move — it must be **byte-identical**. If it differs, adjust the shared `xkit.cs` interface (member order, `[No*]` attributes, and any `#if MONOMAC` divergence guards) to match the old `appkit.cs` exactly — member order matters. There is no apidiff make target for `.g.cs`, so this baseline diff is the safety net.
+
+### Frameworks with Mixed API Surfaces (ObjC + C)
+
+Occasionally a framework exposes Objective-C APIs on the mobile platforms (iOS, tvOS, Mac Catalyst) but only a C-level API on macOS. When you hit this, keep a single framework and guard by platform rather than splitting source lists (`SomeFramework` below is a stand-in — substitute the real framework name):
+
+**The pattern:**
+
+1. Add the framework to `MACOS_FRAMEWORKS` in `src/frameworks.sources` — this tells the build system to compile it for macOS.
+2. Guard the **entire bgen file** (`src/someframework.cs`) with `#if !__MACOS__` / `#endif` — the ObjC API definitions have UIKit/AVFoundation dependencies that won't compile on macOS.
+3. Put the macOS-specific C API bindings in `src/SomeFramework/*.cs` guarded with `#if __MACOS__`.
+4. Keep everything in one `SOMEFRAMEWORK_SOURCES` list — no split source lists needed.
+
+```
+# In src/frameworks.sources — single unified list:
+SOMEFRAMEWORK_SOURCES =              \
+	SomeFramework/SomeObject.cs     \
+	SomeFramework/SomeSession.cs    \
+	SomeFramework/SomeEnums.cs      \
+```
+
+```csharp
+// src/someframework.cs — entire ObjC bgen file guarded for non-macOS
+#if !__MACOS__
+using System;
+using Foundation;
+using UIKit;
+// ... all ObjC API definitions ...
+#endif // !__MACOS__
+```
+
+```csharp
+// src/SomeFramework/SomeSession.cs — macOS C API manual binding
+#if __MACOS__
+[SupportedOSPlatform ("macos")]
+public class SomeSession : SomeObject {
+	// C API P/Invokes and wrappers
+}
+#endif // __MACOS__
+```
+
+> ⚠️ Confirm the framework really has this split (ObjC-only on mobile, C-only on macOS) before applying this. Most frameworks instead ship a single shared bgen file and use per-type `[NoMac]`/`[NoiOS]` attributes to exclude platforms; the whole-file `#if !__MACOS__` guard is only for the genuine ObjC-vs-C-surface case.
+
+> ❌ **NEVER** create separate source file lists (e.g., `SOMEFRAMEWORK_C_API_SOURCES`) and append them with `MACOS_DOTNET_SOURCES += $(SOMEFRAMEWORK_C_API_SOURCES)`. This creates a maintenance burden. Add the framework to `MACOS_FRAMEWORKS` and use `#if` guards instead.
 
 ## Struct Array Parameter Binding
 
@@ -509,6 +703,116 @@ Real example: `src/MapKit/MKMultiPoint.cs`
 
 Add the manual file to the framework's `*_SOURCES`. If the file defines types needed by the API definition (like structs), add it to both `*_API_SOURCES` and `*_SOURCES`.
 
+If the file defines types that bgen needs to resolve (e.g., NativeObject subclasses used as marshal types — see "NativeObject Return Types in Protocol Methods" below), add it to `*_CORE_SOURCES`:
+
+```
+# In src/frameworks.sources:
+PRINTCORE_CORE_SOURCES =                    \
+	PrintCore/Defs.cs                       \
+	PrintCore/PrintCore.cs                  \
+```
+
+`*_CORE_SOURCES` files are compiled into bgen's core assembly, making their types available for type resolution during code generation. Use this when bgen reports `BI1078: Do not know how to make a signature for <Type>`.
+
+## NativeObject Return Types in Protocol Methods
+
+When a protocol method returns an opaque C type (e.g., `PMPrintSession`, `PMPageFormat`) that has a managed `NativeObject` wrapper, bgen doesn't know how to marshal it by default. Bgen only handles `NSObject` subclasses, primitives, and `IntPtr` in protocol return positions.
+
+Types like `CGColor`, `CGImage`, and `CMSampleBuffer` work because they're explicitly registered as **marshal types** in bgen. The default `MarshalType` generates `Runtime.GetINativeObject<T>(ptr, owns)` marshaling — exactly what NativeObject wrappers need.
+
+### Recognition
+
+You need this pattern when:
+- A protocol method returns an opaque C type that has a managed `NativeObject` wrapper
+- bgen reports `BI1078: Do not know how to make a signature for <Type>`
+- You've been using `IntPtr` as the return type but a concrete managed type exists
+
+### Step 1: Add to CORE_SOURCES
+
+The type's manual code file must be in `FRAMEWORKNAME_CORE_SOURCES` in `src/frameworks.sources` so bgen's core assembly can resolve it. See the `frameworks.sources` section above.
+
+### Step 2: Add #if !COREBUILD guards
+
+In the manual code file (e.g., `src/PrintCore/PrintCore.cs`), wrap the class **body** in `#if !COREBUILD` but keep the class shell visible. This is the same pattern used in `src/StoreKit/StoreProductParameters.cs`:
+
+```csharp
+#nullable enable
+
+using System;
+using System.Runtime.InteropServices;
+using ObjCRuntime;
+
+namespace PrintCore {
+
+	public class PMPrintSession : PMPrintCoreBase {
+		// The base type (PMPrintCoreBase) has no parameterless constructor, so this
+		// base-chaining ctor MUST stay OUTSIDE #if !COREBUILD — otherwise the class
+		// has no constructor in the core build and fails to compile.
+		[Preserve (Conditional = true)]
+		internal PMPrintSession (NativeHandle handle, bool owns)
+			: base (handle, owns)
+		{
+		}
+
+#if !COREBUILD
+		// ... P/Invokes, properties, methods ...
+#endif // !COREBUILD
+	}
+}
+```
+
+The class shell (name, inheritance, and the base-chaining `(NativeHandle, bool)` constructor when the base lacks a default ctor) stays visible to bgen's core assembly for type resolution. The implementation body (P/Invokes, properties, methods) is excluded from the core build since bgen only needs the type identity, not the implementation.
+
+> ⚠️ **Use `#if !COREBUILD`, not separate files.** Don't split the type into a shell file and an implementation file. The `#if !COREBUILD` pattern keeps everything in one file and is the established convention (see `src/StoreKit/StoreProductParameters.cs`, `src/CoreGraphics/CGColor.cs`).
+
+### Step 3: Register in TypeCache
+
+Add a `Type?` property and register it in the constructor via `ConditionalLookup` (inside the framework guard) in `src/bgen/Caches/TypeCache.cs`:
+
+```csharp
+// Add the property (Type?, not TypeReference)
+public Type? PMPrintSession { get; }
+
+// Register it in the constructor, inside the framework guard:
+if (frameworks.HavePrintCore) {
+	// ... existing PrintCore lookups ...
+	PMPrintSession = ConditionalLookup (platformAssembly, "PrintCore", "PMPrintSession");
+}
+```
+
+### Step 4: Register in MarshalTypeList
+
+Add the type in `MarshalTypeList.Load (TypeCache typeCache, …)` in `src/bgen/Models/MarshalTypeList.cs`, inside the same framework guard:
+
+```csharp
+if (frameworks.HavePrintCore) {
+	// ... existing PrintCore adds ...
+	Add (typeCache.PMPrintSession);
+}
+```
+
+The default `MarshalType` constructor generates `Runtime.GetINativeObject<T>(ptr, owns)` marshaling, which is correct for all `NativeObject` subclasses.
+
+### Step 5: Use concrete types in API definition
+
+Now replace `IntPtr` return types with the concrete type in the bgen file:
+
+```csharp
+// Before — IntPtr with XML docs suggesting cast
+[Export ("printSession")]
+IntPtr PrintSession { get; }
+
+// After — concrete type, bgen handles marshaling
+[Export ("printSession")]
+PMPrintSession PrintSession { get; }
+```
+
+### Real Example
+
+In the PrintCore framework, `PMPrintSession`, `PMPrintSettings`, `PMPageFormat`, `PMPrinter`, and `PMPaper` were all registered as marshal types so protocol methods in `PDEPanel`, `PDEPlugIn`, and `PDEPlugInCallbackProtocol` could return them directly instead of `IntPtr`.
+
+> ❌ **NEVER leave protocol methods returning IntPtr when a managed NativeObject wrapper exists.** Always check the `src/FrameworkName/` directory for existing wrapper classes before using `IntPtr`. If a wrapper exists, register it as a bgen marshal type using this pattern.
+
 ## Strongly-Typed Dictionaries
 
 ```csharp
@@ -586,6 +890,51 @@ bool DoSomething (out NSError error);
 
 > ❌ **NEVER** omit `[NullAllowed]` from `out NSError error` parameters. This is a consistent pattern across the entire codebase — every `out NSError` parameter uses `[NullAllowed]`.
 
+## Re-exposing Designated Initializers in Subclasses
+
+.NET constructors are not virtual, so when you bind a **new type that subclasses** an ObjC class that has a designated initializer, the subclass must re-expose that inherited initializer — otherwise the introspection `DesignatedInitializer` test (`tests/introspection/ApiCtorInitTest.cs`) fails with `<Type> should re-expose <Base>::.ctor(...)`. How you re-expose it depends on whether the inherited designated initializer is **failable** (returns `nil` + `NSError`).
+
+**Non-failable designated init (no `out NSError`) — re-declare it as a public `[DesignatedInitializer]` `Constructor`** with the same selector and signature. Giving the subclass its own designated ctor satisfies the test directly, with no test-file change:
+
+```csharp
+[iOS (27, 0)]                       // illustrative subclass — not a real repo type
+[BaseType (typeof (SomeBaseType))]
+[DisableDefaultCtor]
+interface MySubclass {
+	// Re-exposed from the base type's designated initializer.
+	[Export ("initWithName:")]
+	[DesignatedInitializer]
+	NativeHandle Constructor (string name);   // NativeHandle, not IntPtr — matches the base binding
+
+	// ... the subclass's own members ...
+}
+```
+
+**Failable designated init (`out NSError`) — you MUST use the factory variant, not a public constructor.** A public constructor with an `out NSError` parameter fails the cecil test `ConstructorTest.NoConstructorsWithOutErrorArguments` (`tests/cecil-tests/ConstructorTest.cs`): *"This constructor has an 'out NSError' parameter. Such constructors should be bound as factory methods instead."* (Only a fixed set of legacy ctors is grandfathered in `ConstructorTest.KnownFailures.cs`.) Bind the init as `[Internal]` `_Init...` and add a manual static `Create (...) → Type?` factory — this also gives clean nullable semantics instead of a throwing ctor. Real precedent — `AUHeadTrackingBinauralRenderer` (a subclass of `AUAudioUnit`, whose designated init `initWithComponentDescription:options:error:` is failable):
+
+```csharp
+[iOS (27, 0)]
+[NoMac, NoTV, NoMacCatalyst]
+[BaseType (typeof (AUAudioUnit))]
+[DisableDefaultCtor]
+interface AUHeadTrackingBinauralRenderer {
+	// re-exposed from base class, bound [Internal] because a public ctor can't take out NSError
+	[Export ("initWithComponentDescription:options:error:")]
+	[DesignatedInitializer]
+	[Internal]
+	NativeHandle _InitWithComponentDescription (AudioComponentDescription componentDescription, AudioComponentInstantiationOptions options, [NullAllowed] out NSError outError);
+
+	// ... the subclass's own members ...
+}
+```
+
+Then add the manual factory in `src/AudioUnit/AUHeadTrackingBinauralRenderer.cs` — a `public static AUHeadTrackingBinauralRenderer? Create (...)` that does `new AUHeadTrackingBinauralRenderer (NSObjectFlag.Empty)` then calls the `_Init...` (see [Factory for Constructors](#factory-for-constructors) for the `NSObjectFlag.Empty` + `InitializeHandle (handle, "", false)` mechanics).
+
+- The `[Internal]` `_Init...` keeps `[NullAllowed]` on the `out NSError` parameter — see [Error Handling](#error-handling).
+- A re-exposed inherited selector is **not** reported by xtro as an extra selector (the base declares it); no `.ignore` entry is needed.
+
+> ⚠️ The factory variant is **not** a real constructor, so the introspection test's generic re-expose check can't find it. You **must** add a `case "<YourType>": ... return true;` to the `Match ()` override in `tests/introspection/ApiCtorInitTest.cs` (the base file covers all platforms), or the `DesignatedInitializer` test still fails. Real precedents: `AVSpeechSynthesisProviderAudioUnit` and `AUHeadTrackingBinauralRenderer` — both bind the designated init as `[Internal]` and carry a `Match ()` case in `ApiCtorInitTest.cs` with a `// This constructor is exposed using a factory method.` note.
+
 ## Per-Member Platform Attributes
 
 When a type is available on a platform but specific members are not:
@@ -634,13 +983,14 @@ All `[Verify]` attributes must be resolved before submitting a PR.
 - **Null handling**: Always use `[NullAllowed]` where Apple's docs indicate nullability. Default assumption is non-null. However, if a `[DesignatedInitializer]` constructor crashes (segfault) when passed null, **remove `[NullAllowed]`** — the native API genuinely doesn't accept null, and removing it is better than adding introspection test exclusions.
 - **Struct backing fields**: Only use blittable types. `bool` and `char` aren't blittable — use `byte` and `ushort`/`short` instead, with typed property accessors.
 - **Threading**: UI APIs require main thread. Use `[ThreadSafe]` for thread-safe APIs.
-- **Naming**: Follow .NET PascalCase for methods/properties. Remove redundant ObjC prefixes (`NSString name` → `string Name`). Acronyms shouldn't be all uppercase (SIMD → Simd, ID → Id when it means "identifier", URL → Url). Methods should be verbs, properties should be nouns. Don't blindly translate ObjC selector names — use .NET-appropriate verb names (e.g., `BuildMenu` not `MenuWithContents`).
+- **Naming**: Follow .NET PascalCase for methods/properties. Remove redundant ObjC prefixes (`NSString name` → `string Name`). **C# type names preserve the Objective-C class prefix exactly** — `ARSession` stays `ARSession` (not `ArSession`), `AVPlayer` stays `AVPlayer` (not `AvPlayer`), `CGColor` stays `CGColor` (not `CgColor`). But an acronym *inside* the name (after the prefix) follows .NET rules — `NSURLSession` → `NSUrlSession`, `NSURLSessionHandler` → `NSUrlSessionHandler` (the `NS` prefix stays, but `URL` becomes `Url`). When creating new manual types for a framework, match the established prefix (e.g., new ARKit types use `AR*`). The .NET acronym casing rules apply within property/method names **and** to acronyms inside type names (SIMD → Simd, ID → Id when it means "identifier", URL → Url), never to the leading class prefix. (A few frameworks instead preserve an inner acronym across their whole family — e.g. CoreGraphics `CGPDF*` — so match the existing sibling types when a framework is consistent.) **Also match the casing of existing APIs on the same type**: if a type already exposes `GetExistingURLSession ()`, name a new sibling `GetNewURLSession ()` (not `GetNewUrlSession ()`) for consistency, and add a short comment explaining why the general acronym rule wasn't followed. Methods should be verbs, properties should be nouns. Don't blindly translate ObjC selector names — use .NET-appropriate verb names (e.g., `BuildMenu` not `MenuWithContents`).
 - **Selectors**: Must match exactly — a single typo causes runtime crashes.
 - **Protocol conformance**: All `[Abstract]` methods in a protocol are required.
 - **nint/nuint**: Use `nint`/`nuint` for Objective-C `NSInteger`/`NSUInteger`.
 - **XAMCORE_5_0**: Only for fixing breaking changes on existing shipped types. Never use for new code. See "XAMCORE_5_0 Pattern for Existing Types" below.
 - **Handle access in manual code**: Use `GetCheckedHandle ()` instead of `Handle` when passing the native handle to P/Invokes in manual bindings. `GetCheckedHandle ()` throws `ObjectDisposedException` if the object has been disposed, preventing hard-to-debug native crashes.
 - **Struct members**: Wrap public methods and properties in `#if !COREBUILD`, but NOT fields (bgen needs struct size). Never use `#pragma warning disable 0169`.
+- **NativeObject class shells**: When a NativeObject type is in `CORE_SOURCES`, wrap the class body in `#if !COREBUILD` but keep the class declaration visible. See "NativeObject Return Types in Protocol Methods" above.
 - **String types**: Use `string` (not `NSString`) for string parameters in methods, properties, and delegates. The binding generator handles marshaling automatically. Only use `NSString` for dictionary keys or strong-typed constants.
 
 ## XAMCORE_5_0 Pattern for Existing Types
@@ -723,19 +1073,29 @@ Both styles are required. Omitting availability from P/Invokes or manual propert
 
 ### Determining the Correct Version
 
-Check `tools/common/SdkVersions.cs` for the current SDK versions:
+The availability version represents **when Apple introduced the API**, not the current SDK version. Use these sources in order:
 
-```bash
-grep -E 'public const string (iOS|TVOS|OSX|MacCatalyst) ' tools/common/SdkVersions.cs
-```
+1. **Generated reference bindings** (best source) — after running `make -C tests/xtro-sharpie gen-all`, search for the API in the generated `.cs` files. These include `[Introduced]` attributes extracted from Apple's SDK headers:
+   ```bash
+   grep -rn "SomeApiName" tests/xtro-sharpie/api/*/ApiDefinition.cs
+   ```
 
-Or check `Make.versions`:
+2. **Apple SDK headers** — search for `API_AVAILABLE` macros under `$XCODE_DEVELOPER_ROOT`
 
-```bash
-grep '_NUGET_OS_VERSION=' Make.versions
-```
+3. **Current SDK version** (`SdkVersions.cs`) — use only for **brand-new APIs** introduced in the current Xcode release:
+   ```bash
+   grep -E 'public const string (iOS|TVOS|OSX|MacCatalyst) ' tools/common/SdkVersions.cs
+   ```
 
-Use these values for all availability attributes. If the user specifies a different version (e.g., for a beta branch), use that instead.
+If the user specifies a different version (e.g., for a beta branch), use that instead.
+
+### Common Version Mistakes
+
+| Scenario | ❌ Wrong | ✅ Correct |
+|----------|---------|-----------|
+| Framework introduced on a new platform (e.g., MediaSetup → MacCatalyst) | Use current SDK version (26.5) | Research when Apple actually introduced it on that platform (could be 16.0) |
+| New enum member added to existing enum | No per-member attribute, or enum-level version | Per-member attribute with the member's own introduction version |
+| Brand-new API in current Xcode | — | Current SDK version from `SdkVersions.cs` is correct |
 
 ## Monotouch-Test Patterns
 
@@ -764,7 +1124,7 @@ tests/monotouch-test/
 using NUnit.Framework;
 using Foundation;
 using CoreText;  // framework under test
-#if MONOMAC
+#if __MACOS__
 using AppKit;
 #else
 using UIKit;
@@ -814,7 +1174,7 @@ namespace MonoTouchFixtures.CoreText {  // MonoTouchFixtures.{FrameworkName}
 | `[Preserve (AllMembers = true)]` | Prevents linker from stripping test methods |
 | `using` statements | Always clean up handle-based objects |
 | Namespace `MonoTouchFixtures.*` | Match framework name (e.g., `MonoTouchFixtures.CoreText`) |
-| Platform-conditional imports | `#if MONOMAC` for AppKit vs UIKit |
+| Platform-conditional imports | `#if __MACOS__` for AppKit vs UIKit |
 
 ### What to Test
 

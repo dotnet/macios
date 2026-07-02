@@ -70,16 +70,28 @@ Before implementing, understand the native API:
 
 #### Determine the Correct Availability Version
 
-Before writing any bindings, determine the SDK version you're targeting:
+Before writing any bindings, determine the correct availability version for each API. The version represents **when Apple introduced the API**, not the current SDK version.
+
+**Primary source of truth: the generated reference bindings** from Step 2. After running `make -C tests/xtro-sharpie gen-all`, search the generated `.cs` files for the API you're binding — they include `[Introduced]` attributes extracted from Apple's SDK headers with the correct per-platform introduction versions. Always use these versions.
 
 ```bash
-# Check the current SDK versions
-grep -E 'public const string (iOS|TVOS|OSX|MacCatalyst) ' tools/common/SdkVersions.cs
-# Or from Make.versions
-grep '_NUGET_OS_VERSION=' Make.versions
+# Find the generated reference binding for a specific API.
+# gen-all (Step 2) writes these to api/<Platform>/ApiDefinition.cs (gitignored),
+# so run Step 2 first. Widen to api/*/ if a symbol isn't in ApiDefinition.cs.
+grep -rn "SomeClassName\|SomeMethodName" tests/xtro-sharpie/api/*/ApiDefinition.cs
 ```
 
-Use the version from `SdkVersions.cs` (e.g., `26.2`) for all availability attributes. If the user specifies a different version (e.g., binding a beta branch at `26.4`), use that instead. **Ask the user if you're unsure which version to use.**
+If the generated reference bindings don't include version information, fall back to these sources:
+1. **Apple SDK headers** — search under `$XCODE_DEVELOPER_ROOT` for `API_AVAILABLE` macros
+2. **Current SDK version from `SdkVersions.cs`** — use this only for **brand-new APIs** introduced in the current Xcode release:
+
+```bash
+grep -E 'public const string (iOS|TVOS|OSX|MacCatalyst) ' tools/common/SdkVersions.cs
+```
+
+> ❌ **NEVER assume the current SDK version is the introduction version for all APIs.** The SDK version (e.g., `26.5`) is only correct for APIs that are genuinely new in this Xcode release. When adding an existing framework to a new platform (e.g., MediaSetup to MacCatalyst), or adding enum members that were introduced in an earlier release, the introduction version will be different — check the generated reference bindings or Apple headers.
+
+If the user specifies a version, use that instead. **Ask the user if you're unsure which version to use.**
 
 #### File Locations
 
@@ -109,6 +121,7 @@ NSString ScheduleRequestedNotification { get; }
 > - API definition interfaces and members in `src/frameworkname.cs` — use `[iOS (X, Y)]`, `[Mac (X, Y)]`, etc.
 > - P/Invoke wrappers and manual properties in `src/FrameworkName/*.cs` — use `[SupportedOSPlatform ("iosX.Y")]`, `[SupportedOSPlatform ("macos")]`, etc.
 > - Fields, constants, and enum values
+> - **Individual enum members** added to an existing enum — each new member needs its own `[iOS (X, Y)]` etc. with the version the **member** was introduced, even if the enum itself has an older version. Check the generated reference bindings for the correct per-member version.
 
 > ❌ **NEVER** use `string.Empty` — use `""`. Never use `Array.Empty<T>()` — use `[]`.
 
@@ -124,9 +137,13 @@ NSString ScheduleRequestedNotification { get; }
 
 > ❌ **NEVER** use `#pragma warning disable 0169` for struct fields. Instead, wrap public methods and properties inside `#if !COREBUILD` (but NOT fields — bgen needs to know the struct size).
 
+> ⚠️ **Protocol methods returning opaque types**: If a protocol method returns an opaque C type (e.g., `PMPrintSession`) that has a managed `NativeObject` wrapper in `src/FrameworkName/`, do NOT use `IntPtr`. Register the type as a bgen marshal type so bgen can generate proper `Runtime.GetINativeObject<T>()` marshaling. See [references/binding-patterns.md](references/binding-patterns.md) § "NativeObject Return Types in Protocol Methods".
+
 > ⚠️ Place a space before parentheses and brackets: `Foo ()`, `Bar (1, 2)`, `myarray [0]`.
 
 > ⚠️ Method names should follow .NET naming conventions — use verb-based names, not direct Objective-C selector translations (e.g., `BuildMenu` not `MenuWithContents`).
+
+> ❌ **NEVER** change the casing of the Objective-C class name **prefix** in C# type names. `ARSession` stays `ARSession` (not `ArSession`), `AVPlayer` stays `AVPlayer` (not `AvPlayer`). But an acronym *inside* the name (after the prefix) DOES follow .NET rules — `NSURLSession` → `NSUrlSession`, `NSURLSessionHandler` → `NSUrlSessionHandler` (the `NS` prefix is kept, but `URL` becomes `Url`). When creating new manual types, match the framework's established prefix (e.g., all ARKit types use `AR*`, all CoreGraphics types use `CG*`). The .NET acronym rules (SIMD → Simd, URL → Url) apply within property/method names **and** to acronyms inside type names, NOT to the leading class prefix. (A few frameworks instead preserve an inner acronym across their whole family — e.g. CoreGraphics `CGPDF*` — so match the existing sibling types when a framework is consistent.)
 
 > ⚠️ For in depth binding patterns and conventions See [references/binding-patterns.md](references/binding-patterns.md)
 
@@ -136,23 +153,37 @@ NSString ScheduleRequestedNotification { get; }
 
 When a manually coded type (struct, extension, etc.) is not available on a specific platform (e.g., tvOS), you must handle compilation on that platform:
 
-1. In the manual code file (`src/FrameworkName/MyStruct.cs`), wrap the struct body with `#if !TVOS`
+1. In the manual code file (`src/FrameworkName/MyStruct.cs`), wrap the struct body with `#if !__TVOS__`
 2. Add `[UnsupportedOSPlatform ("tvos")]` on the struct
 3. In the API definition file (`src/frameworkname.cs`), add a type alias at the top so compilation succeeds:
 
 ```csharp
-#if TVOS
+#if __TVOS__
 using MyStruct = Foundation.NSObject;
 #endif
 ```
 
 The `[NoTV]` attribute on the API definition interface ensures the type won't appear in the final tvOS assembly, while the alias prevents compilation errors from method signatures that reference the struct.
 
+> ❌ **NEVER** use platform-specific source file lists (e.g., appending a per-framework list to `MACOS_DOTNET_SOURCES`) for platform-conditional code. Instead, use preprocessor directives (`#if __MACOS__`, `#if !__TVOS__`, `#if __IOS__`) within shared source files. Platform-specific source file lists are for the build system, not for conditional compilation of individual types or members.
+
+Available preprocessor symbols for platform checks:
+- `__MACOS__` (preferred) / `MONOMAC` — macOS
+- `__IOS__` — iOS
+- `__TVOS__` (preferred) / `TVOS` — tvOS
+- `__MACCATALYST__` — Mac Catalyst
+
+> ⚠️ **Foundation/TextKit types shared by AppKit and UIKit** (e.g. `NSTextList`, `NSParagraphStyle`) are bound once in `src/xkit.cs`, not duplicated in `appkit.cs`/`uikit.cs`. If a type in `appkit.cs` (or `uikit.cs`) becomes exposed to the other side, consolidate it there (share identical enums, split only divergent ones, handle platform-only members with `[No*]` attributes — reserving `#if` for divergences attributes can't express — keep back-dated availability). See [references/binding-patterns.md](references/binding-patterns.md) → "Shared AppKit/UIKit Types".
+
 ### Step 5: Build
 
+Rebuild **and install** so the test suites — which read the installed NuGet packs, not `src/build/` — pick up your changes:
+
 ```bash
-make -C src build
+make all && make install
 ```
+
+> ❌ **NEVER** use `make -C src build`. There is no `build` *target* in `src/Makefile`, so the command is unreliable: on a fresh checkout it fails with `make: *** No rule to make target 'build'`, and once the `src/build/` output directory exists the word `build` matches that directory and the command silently no-ops (`Nothing to be done for 'build'`). Either way it compiles nothing and you validate against **stale** (or missing) assemblies. Use `make all && make install` (or `make world` for a full rebuild).
 
 Fix any compilation errors before proceeding. Builds can take up to 60 minutes — do not timeout early.
 
@@ -204,22 +235,33 @@ Run all three test suites. **Run them sequentially, not in parallel.**
 
 #### 6a. Xtro Tests
 
+There are **no** `run-ios`/`run-tvos`/`run-macos`/`run-maccatalyst` xtro targets. Regenerate the reference bindings, then classify every platform (this also runs the sanity check):
+
 ```bash
-make -C tests/xtro-sharpie run-ios
-make -C tests/xtro-sharpie run-tvos
-make -C tests/xtro-sharpie run-macos
-make -C tests/xtro-sharpie run-maccatalyst
+make -C tests/xtro-sharpie gen-all
+make -C tests/xtro-sharpie dotnet-classify
 ```
 
-Verify all `.todo` entries for the bound framework are resolved. If any remain, they need binding or explicit `.ignore` entries with justification.
+`dotnet-classify` classifies all platforms and then runs sanity. When a `.todo` entry has been resolved by your binding but the `.todo` file still lists it, sanity prints `?fixed-todo?` and exits non-zero — that is the cleanup signal, **not** a passing result. Loop until it passes:
 
-> ⚠️ **Delete empty `.todo` files** after resolving all entries: `git rm tests/xtro-sharpie/api-annotations-dotnet/{platform}-{Framework}.todo`. Do not leave empty `.todo` files in the repository.
+1. For each `?fixed-todo?` entry you bound, remove that line from its `.todo` file (and `git rm` the file if it becomes empty — see next note).
+2. Re-run `make -C tests/xtro-sharpie dotnet-classify` until it prints `Sanity check passed` (exit 0).
+
+> 💡 Setting `AUTO_SANITIZE=1` (e.g. `AUTO_SANITIZE=1 make -C tests/xtro-sharpie dotnet-classify`) makes xtro auto-remove the resolved `?fixed-todo?` lines and delete emptied `.todo`/`.ignore` files for you. Any surrounding **comments** related to those entries still have to be removed manually.
+
+Any entries that remain unresolved need binding or explicit `.ignore` entries with justification.
+
+> ⚠️ **`!extra-enum-value!`**: if classify reports a managed enum value that the native header marks unavailable on a platform, fix it at the right scope — put `[No<Platform>]` on the **whole enum type** only if the *entire* native enum is unavailable there, otherwise put `[No<Platform>]` on the **individual value(s)**. Never mark the whole type just to silence one value (it strips valid members like `None`). See [references/test-workflow.md](references/test-workflow.md) § "`!extra-enum-value!`".
+
+> ❌ **ALWAYS delete empty `.todo` files** after resolving all entries: `git rm tests/xtro-sharpie/api-annotations-dotnet/{platform}-{Framework}.todo`. Do not leave empty `.todo` files in the repository — they cause xtro test noise.
 
 #### 6b. Cecil Tests
 
 ```bash
 make -C tests/cecil-tests run-tests
 ```
+
+> ⚠️ Adding public members can fail `VerifyEveryVisibleMemberIsDocumented` — the failure lists your new, undocumented members. Either write real XML documentation for them, or — if the framework's existing members are already listed in `tests/cecil-tests/Documentation.KnownFailures.txt` (the whole framework is undocumented) — regenerate that baseline to stay consistent: `WRITE_KNOWN_FAILURES=1 make -C tests/cecil-tests run-tests` (this run exits non-zero by design), then re-run **without** the env var to confirm exit 0. Verify the `git diff` of the known-failures file contains **only** your new members. See [references/test-workflow.md](references/test-workflow.md).
 
 #### 6c. Introspection Tests (All Platforms)
 
@@ -275,13 +317,31 @@ Look for this pattern in test output to confirm results:
 Tests run: X Passed: X Inconclusive: X Failed: X Ignored: X
 ```
 
+> ⚠️ **Beta-SDK protocol-conformance failures** (e.g. `X conforms to NSSecureCoding but does not implement INSSecureCoding`) usually mean the **runtime** conforms `X` to a protocol the **header doesn't declare**. If xtro is silent (no `!missing-protocol-conformance!` — confirm the header truly lacks it, else fix the binding), tolerate it with a test-only introspection **Skip** in `ApiProtocolTest.cs` (or `MacApiProtocolTest.cs`/`iOSApiProtocolTest.cs`) under the matching `case "<Protocol>":` — **not** by adding the conformance to the binding. See [references/test-workflow.md](references/test-workflow.md) → "Runtime-Only Protocol Conformance".
+
 #### 6d. Monotouch Tests (only if you added tests in Step 5b)
 
 Skip this step if no monotouch-test files were added or modified.
 
+Run per-platform, using **exact casing** for platform names:
+
 ```bash
-make -C tests/monotouch-test run
+# iOS
+make -C tests/monotouch-test/dotnet/iOS run
+
+# tvOS
+make -C tests/monotouch-test/dotnet/tvOS run
+
+# macOS (use run-bare for captured output)
+make -C tests/monotouch-test/dotnet/macOS run-bare
+
+# MacCatalyst (use run-bare for captured output)
+make -C tests/monotouch-test/dotnet/MacCatalyst run-bare
 ```
+
+> ⚠️ **Platform casing matters**: Use `iOS`, `tvOS`, `macOS`, `MacCatalyst` exactly — not `ios`, `macos`, etc.
+
+> ⚠️ **Desktop platforms**: Use `run-bare` (not `run`) for macOS and MacCatalyst — same reason as introspection: `run` launches without capturing stdout. The `run-bare` target exists for **every** platform (it just runs the built executable directly), but it **doesn't work for iOS/tvOS** — those need the simulator via `run`/mlaunch.
 
 ### Step 7: Handle Test Failures
 
@@ -291,6 +351,8 @@ If introspection tests fail for newly bound types:
 - Types that crash on init, dispose, or toString need specific exclusion entries
 - **NEVER skip an entire namespace** — always add exclusions for specific types only
 - **If a `[DesignatedInitializer]` constructor crashes (segfault) when passed null**, the correct fix is to **remove `[NullAllowed]` from that parameter** rather than adding introspection test exclusions. The null is genuinely not allowed by the native API.
+- **If the `DesignatedInitializer` test reports `<Type> should re-expose <Base>::.ctor(...)`** — you bound a subclass (e.g. of `AUAudioUnit`) that inherits a designated initializer but doesn't re-declare it. The subclass must re-expose it. Simplest fix that passes with no other changes: re-declare the init as a public `[DesignatedInitializer]` `Constructor` with the same selector/signature. See [references/binding-patterns.md](references/binding-patterns.md) § "Re-exposing Designated Initializers in Subclasses" — including the failable-initializer (factory) variant, which additionally requires a `Match ()` case in `ApiCtorInitTest.cs`.
+- **If introspection reports a selector is `not found` / does not respond** for an API you just bound (common on a **beta OS**), and the SDK header *does* declare that selector for this platform — it's a **beta-runtime gap**, not a binding bug: the binding is correct but the beta OS hasn't implemented the selector yet. **Do not** change availability or add `[No<Platform>]` (that would make xtro report the API *missing*). Add a narrow skip in the **selector** test (`ApiSelectorTest`, not `ApiCtorInitTest`) — `MacApiSelectorTest.cs` (macOS) or `iOSApiSelectorTest.cs` (iOS/tvOS/MacCatalyst) — for **only the failing platform(s)**, unconditional on real hardware (macOS/MacCatalyst) and `TestRuntime.IsSimulator`-gated only for simulator-only gaps. See [references/test-workflow.md](references/test-workflow.md) § "Selector Not Found (Declared but Not Implemented)".
 
 If xtro still shows unresolved entries:
 - Some APIs may be platform-specific (only available on device, not simulator)

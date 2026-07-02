@@ -16,5 +16,20 @@
   "primaryOutputs": [
     { "path": "MacCatalystBinding1.csproj" }
   ],
-  "defaultName": "MacCatalystBinding1"
+  "defaultName": "MacCatalystBinding1",
+  "symbols": {
+    "Framework": {
+      "type": "parameter",
+      "description": "The target framework for the project.",
+      "datatype": "choice",
+      "choices": [
+        {
+          "choice": "net10.0-maccatalyst",
+          "description": "Target net10.0-maccatalyst"
+        }
+      ],
+      "replaces": "net10.0-maccatalyst",
+      "defaultValue": "net10.0-maccatalyst"
+    }
+  }
 }

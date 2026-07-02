@@ -35,6 +35,7 @@ namespace MonoTouch.Tuner {
 					break;
 				default:
 					var ad = Configuration.Application.AddAssembly (assemblyDefinition);
+					ad.IsDedupAssembly = Path.GetFileName (Configuration.DedupAssembly).Equals (Path.GetFileName (assembly.OutputPath), StringComparison.OrdinalIgnoreCase);
 					ad.FullPath = assembly.OutputPath;
 					break;
 				}

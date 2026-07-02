@@ -9,3 +9,9 @@ updates:
     ignore:
       - dependency-name: "github/gh-aw-actions/**"
       - dependency-name: "github/gh-aw-actions"  # Managed by gh aw compile. Version-locked to the gh-aw compiler; do not bump.
+      # The following actions only appear in gh-aw generated workflow files
+      # (*.lock.yml and agentics-maintenance.yml). They are managed by the
+      # gh-aw compiler and should not be bumped by dependabot.
+      - dependency-name: "actions/cache/**"
+      - dependency-name: "actions/download-artifact"
+      - dependency-name: "actions/setup-node"

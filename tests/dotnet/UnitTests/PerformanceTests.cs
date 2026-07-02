@@ -1,51 +1,173 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System.Diagnostics;
+
 namespace Xamarin.Tests {
 	[TestFixture]
 	public class PerformanceTests : TestBaseClass {
 		[Test]
-		[TestCase (ApplePlatform.iOS, "iossimulator-arm64")]
-		public void PrepareAssemblies (ApplePlatform platform, string runtimeIdentifiers)
+		[TestCase (ApplePlatform.iOS, true)]
+		public void PrepareAssemblies (ApplePlatform platform, bool useMonoRuntime)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			string runtimeIdentifiers;
+			switch (platform) {
+			case ApplePlatform.iOS:
+				runtimeIdentifiers = "iossimulator-arm64;ios-arm64";
+				break;
+			case ApplePlatform.TVOS:
+				runtimeIdentifiers = "tvossimulator-arm64;tvos-arm64";
+				break;
+			case ApplePlatform.MacCatalyst:
+				runtimeIdentifiers = "maccatalyst-arm64";
+				break;
+			case ApplePlatform.MacOSX:
+				runtimeIdentifiers = "osx-arm64";
+				break;
+			default:
+				Assert.Inconclusive ($"Don't know which runtime identifiers to use for {platform}");
+				return;
+			}
+
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
 
-			if (string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("ENABLE_PERFORMANCE_TESTS")))
+			var enablePerformanceTests = Environment.GetEnvironmentVariable ("ENABLE_PERFORMANCE_TESTS");
+			if (string.IsNullOrEmpty (enablePerformanceTests))
 				Assert.Ignore ("Test ignored because ENABLE_PERFORMANCE_TESTS is not set.");
 
+			var watch = Stopwatch.StartNew ();
 			var projects = new string [] { "MySimpleApp", "monotouch-test" };
 			var results = new List<PrepareAssembliesTestResult> ();
 			var attempts = 3;
+			var report = new StringBuilder ();
 			foreach (var project in projects) {
-				var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
+				var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var _);
 
-				var result = new PrepareAssembliesTestResult {
-					Project = project,
-				};
-				foreach (var propertyValue in new bool [] { false, true }) {
-					var properties = GetDefaultProperties (runtimeIdentifiers);
-					properties ["PrepareAssemblies"] = propertyValue.ToString ();
+				foreach (var rid in runtimeIdentifiers.Split (';')) {
+					foreach (var linkMode in new string [] { "None", "SdkOnly" }) {
+						var result = new PrepareAssembliesTestResult {
+							Project = project,
+							RuntimeIdentifier = rid,
+							LinkMode = linkMode,
+						};
+						foreach (var propertyValue in new bool [] { false, true }) {
+							var properties = GetDefaultProperties (rid);
+							properties ["PrepareAssemblies"] = propertyValue.ToString ();
+							properties ["MtouchLink"] = linkMode;
+							properties ["UseMonoRuntime"] = useMonoRuntime ? "true" : "false";
 
-					for (var i = 1; i <= attempts; i++) {
-						Clean (project_path);
-						var rv = DotNet.AssertBuild (project_path, properties);
-						(propertyValue ? result.EnabledBuildTimes : result.DisabledBuildTimes).Add (rv.Duration);
+							for (var i = 1; i <= attempts; i++) {
+								Clean (project_path);
+								var rv = DotNet.AssertBuild (project_path, properties);
+								result.GetBuildTimes (propertyValue).Times.Add (rv);
+							}
+						}
+						results.Add (result);
 					}
 				}
-				results.Add (result);
 			}
-			foreach (var result in results.OrderBy (v => v.Project)) {
-				Console.WriteLine ($"Results for: {result.Project}");
-				Console.WriteLine ($" Enabled timings: {string.Join (", ", result.EnabledBuildTimes.Select (v => v.ToString ()))} average: {TimeSpan.FromTicks ((long) result.EnabledBuildTimes.Average (v => v.Ticks))}");
-				Console.WriteLine ($" Disabled timings: {string.Join (", ", result.DisabledBuildTimes.Select (v => v.ToString ()))} average: {TimeSpan.FromTicks ((long) result.DisabledBuildTimes.Average (v => v.Ticks))}");
+			var orderedResults = results.OrderBy (v => v.Project).ThenBy (v => v.RuntimeIdentifier).ThenBy (v => v.LinkMode).ToList ();
+
+			var runtime = useMonoRuntime ? "MonoVM" : "CoreCLR";
+
+			report.AppendLine ($"# PrepareAssemblies performance report ({platform.AsString ()}/{runtime})");
+			report.AppendLine ();
+			report.AppendLine ("## Summary");
+			report.AppendLine ();
+			var summaryHeaders = new [] { "Project", "Runtime identifier", "Link mode", "PrepareAssemblies=false", "PrepareAssemblies=true", "Difference" };
+			var summaryRows = new List<string []> ();
+			foreach (var result in orderedResults) {
+				summaryRows.Add (new [] {
+					result.Project,
+					result.RuntimeIdentifier,
+					result.LinkMode,
+					result.GetBuildTimes (false).Average.ToString (),
+					result.GetBuildTimes (true).Average.ToString (),
+					result.AverageDifference.ToString (),
+				});
 			}
+			AppendMarkdownTable (report, summaryHeaders, summaryRows);
+			report.AppendLine ();
+
+			foreach (var result in orderedResults) {
+				report.AppendLine ($"## {result.Project} ({result.RuntimeIdentifier} / LinkMode={result.LinkMode})");
+				report.AppendLine ();
+				var disabledTimes = result.GetBuildTimes (false).Times;
+				var enabledTimes = result.GetBuildTimes (true).Times;
+				var runCount = Math.Max (disabledTimes.Count, enabledTimes.Count);
+				var detailHeaders = new [] { "Run", "Disabled", "Enabled", "Disabled binlog", "Enabled binlog" };
+				var detailRows = new List<string []> ();
+				for (var i = 0; i < runCount; i++) {
+					var disabled = i < disabledTimes.Count ? disabledTimes [i] : null;
+					var enabled = i < enabledTimes.Count ? enabledTimes [i] : null;
+					detailRows.Add (new [] {
+						$"#{i + 1}",
+						disabled?.Duration.ToString () ?? "",
+						enabled?.Duration.ToString () ?? "",
+						disabled?.BinLogPath ?? "",
+						enabled?.BinLogPath ?? "",
+					});
+				}
+				detailRows.Add (new [] {
+					"**Average**",
+					result.GetBuildTimes (false).Average.ToString (),
+					result.GetBuildTimes (true).Average.ToString (),
+					"",
+					"",
+				});
+				AppendMarkdownTable (report, detailHeaders, detailRows);
+				report.AppendLine ();
+				report.AppendLine ($"Difference (of average): {result.AverageDifference}");
+				report.AppendLine ();
+			}
+
+			report.AppendLine ($"Total duration: {watch.Elapsed}");
+			Console.WriteLine (report);
+
+			if (enablePerformanceTests.Contains ("%SPEC%")) {
+				for (var i = 1; i < 256; i++) {
+					var path = enablePerformanceTests.Replace ("%SPEC%", $"{platform.AsString ()}-{runtime}-{i}");
+					if (File.Exists (path))
+						continue;
+					File.WriteAllText (path, report.ToString ());
+					Console.WriteLine ($"Wrote report to: {path}");
+					break;
+				}
+			}
+		}
+
+		static void AppendMarkdownTable (StringBuilder report, string [] headers, List<string []> rows)
+		{
+			var widths = new int [headers.Length];
+			for (var i = 0; i < headers.Length; i++)
+				widths [i] = headers [i].Length;
+			foreach (var row in rows) {
+				for (var i = 0; i < row.Length; i++)
+					widths [i] = Math.Max (widths [i], row [i].Length);
+			}
+
+			report.AppendLine ("| " + string.Join (" | ", headers.Select ((h, i) => h.PadRight (widths [i]))) + " |");
+			report.AppendLine ("| " + string.Join (" | ", widths.Select (w => new string ('-', w))) + " |");
+			foreach (var row in rows)
+				report.AppendLine ("| " + string.Join (" | ", row.Select ((c, i) => c.PadRight (widths [i]))) + " |");
 		}
 
 		class PrepareAssembliesTestResult {
 			public required string Project;
-			public List<TimeSpan> EnabledBuildTimes = new ();
-			public List<TimeSpan> DisabledBuildTimes = new ();
+			public required string RuntimeIdentifier;
+			public required string LinkMode;
+			BuildTimes EnabledBuildTimes = new ();
+			BuildTimes DisabledBuildTimes = new ();
+
+			public BuildTimes GetBuildTimes (bool enabled) => enabled ? EnabledBuildTimes : DisabledBuildTimes;
+			public TimeSpan AverageDifference => EnabledBuildTimes.Average - DisabledBuildTimes.Average;
+		}
+
+		class BuildTimes {
+			public List<ExecutionResult> Times = new ();
+			public TimeSpan Average => TimeSpan.FromTicks ((long) Times.Average (v => v.Duration.Ticks));
 		}
 	}
 }

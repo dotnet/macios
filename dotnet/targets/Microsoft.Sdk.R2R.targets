@@ -89,10 +89,8 @@
 			<PublishReadyToRunCompositeRoots Condition="$(RuntimeIdentifier.EndsWith('-arm64'))" Include="System.Private.CoreLib.dll" KeepDuplicates="false" />
 		</ItemGroup>
 
-		<!-- Hash the R2R input assemblies so we can detect when the set actually changes.
-		     User assemblies are excluded from the composite but passed to crossgen2 as
-		     references, so include them to invalidate cached R2R images when they change. -->
-		<GetFileHash Files="@(_NonUserAssemblies);@(_UserAssemblies)" Algorithm="SHA256">
+		<!-- Hash the R2R input assemblies so we can detect when the set actually changes -->
+		<GetFileHash Files="@(_NonUserAssemblies)" Algorithm="SHA256">
 			<Output TaskParameter="Items" ItemName="_NonUserAssembliesWithHash" />
 		</GetFileHash>
 		<Hash ItemsToHash="@(_NonUserAssembliesWithHash->'%(FileHash)')" IgnoreCase="false">
@@ -123,7 +121,7 @@
 		</ItemGroup>
 	</Target>
 
-	<!-- Touch R2R outputs when the R2R input set is unchanged. If hash file is older than trigger, hash didn't change, so touch outputs to skip R2R -->
+	<!-- Touch R2R outputs when only user assemblies changed. If hash file is older than trigger, hash didn't change, so touch outputs to skip R2R -->
 	<Target Name="_TouchR2ROutputs"
 			Condition="'$(FilterReadyToRunAssemblies)' == 'true' And Exists('$(_R2RInputHashFile)') And Exists('$(_R2RInputHashFile).trigger') And $([System.IO.File]::GetLastWriteTime('$(_R2RInputHashFile)').Ticks) &lt; $([System.IO.File]::GetLastWriteTime('$(_R2RInputHashFile).trigger').Ticks)"
 			AfterTargets="_PrepareForReadyToRunCompilation"

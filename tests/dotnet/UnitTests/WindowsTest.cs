@@ -116,7 +116,19 @@ namespace Xamarin.Tests {
 
 		[Category ("RemoteWindows")]
 		[TestCase (ApplePlatform.iOS, "ios-arm64", BundleStructureTest.CodeSignature.All, "Debug")]
-		public void BundleStructureWithRemoteMac (ApplePlatform platform, string runtimeIdentifiers, BundleStructureTest.CodeSignature signature, string configuration)
+		public void BundleStructureWithRemoteMac_Mono (ApplePlatform platform, string runtimeIdentifiers, BundleStructureTest.CodeSignature signature, string configuration)
+		{
+			BundleStructureWithRemoteMac (platform, runtimeIdentifiers, signature, configuration, useMonoRuntime: true);
+		}
+
+		[Category ("RemoteWindows")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", BundleStructureTest.CodeSignature.All, "Debug")]
+		public void BundleStructureWithRemoteMac_CoreCLR (ApplePlatform platform, string runtimeIdentifiers, BundleStructureTest.CodeSignature signature, string configuration)
+		{
+			BundleStructureWithRemoteMac (platform, runtimeIdentifiers, signature, configuration, useMonoRuntime: false);
+		}
+
+		void BundleStructureWithRemoteMac (ApplePlatform platform, string runtimeIdentifiers, BundleStructureTest.CodeSignature signature, string configuration, bool useMonoRuntime)
 		{
 			var project = "BundleStructure";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -131,6 +143,7 @@ namespace Xamarin.Tests {
 			properties ["_IsAppSigned"] = signature != BundleStructureTest.CodeSignature.None ? "true" : "false";
 			if (!string.IsNullOrWhiteSpace (configuration))
 				properties ["Configuration"] = configuration;
+			properties ["UseMonoRuntime"] = useMonoRuntime ? "true" : "false";
 
 			// Copy the app bundle to Windows so that we can inspect the results.
 			properties ["CopyAppBundleToWindows"] = "true";
@@ -140,6 +153,8 @@ namespace Xamarin.Tests {
 			var warningMessages = BundleStructureTest.FilterWarnings (warnings, platform, canonicalizePaths: true);
 
 			var isReleaseBuild = string.Equals (configuration, "Release", StringComparison.OrdinalIgnoreCase);
+			var isCoreCLR = !useMonoRuntime;
+			var maxPathLength = isCoreCLR ? 180 : 130;
 			var platformString = platform.AsString ();
 			var tfm = platform.ToFramework ();
 			var testsDirectory = Path.GetDirectoryName (Path.GetDirectoryName (project_dir))!;
@@ -181,7 +196,7 @@ namespace Xamarin.Tests {
 			var compileAppManifestInputsPath = Path.Combine (objDir, "_CompileAppManifest.inputs");
 			var sharedDotNetPlistPath = Path.Combine (objDir, "unpack", "bindings-framework-test", "PartialAppManifest", "shared-dotnet.plist");
 
-			BundleStructureTest.CheckZippedAppBundleContents (platform, zippedAppBundlePath, rids, signature, isReleaseBuild);
+			BundleStructureTest.CheckZippedAppBundleContents (platform, zippedAppBundlePath, rids, signature, isReleaseBuild, isCoreCLR: isCoreCLR);
 			AssertWarningsEqual (expectedWarnings, warningMessages, "Warnings");
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 
@@ -200,7 +215,8 @@ namespace Xamarin.Tests {
 			});
 
 			// Verify that we don't create files with long paths inside bin/obj
-			AssertMaxFileLengthInBinAndObjDirectories (platform, project_path, runtimeIdentifiers, configuration);
+			// CoreCLR adds longer framework names in bin/obj (for example libSystem.Security.Cryptography.Native.Apple.framework).
+			AssertMaxFileLengthInBinAndObjDirectories (platform, project_path, runtimeIdentifiers, configuration, maxLength: maxPathLength);
 
 			// touch AppDelegate.cs, and rebuild should succeed and do the right thing
 			var appDelegatePath = Path.Combine (project_dir, "AppDelegate.cs");
@@ -211,7 +227,7 @@ namespace Xamarin.Tests {
 			warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
 			warningMessages = BundleStructureTest.FilterWarnings (warnings, platform, canonicalizePaths: true);
 
-			BundleStructureTest.CheckZippedAppBundleContents (platform, zippedAppBundlePath, rids, signature, isReleaseBuild);
+			BundleStructureTest.CheckZippedAppBundleContents (platform, zippedAppBundlePath, rids, signature, isReleaseBuild, isCoreCLR: isCoreCLR);
 			AssertWarningsEqual (expectedWarnings, warningMessages, "Warnings Rebuild 1");
 			AssertFileStateUnchanged (sharedDotNetPlistState, sharedDotNetPlistPath, "Rebuild 1: shared-dotnet.plist");
 			AssertFileStateUnchanged (compileAppManifestInputsState, compileAppManifestInputsPath, "Rebuild 1: _CompileAppManifest.inputs");
@@ -220,7 +236,7 @@ namespace Xamarin.Tests {
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 
 			// Verify that we don't create files with long paths inside bin/obj
-			AssertMaxFileLengthInBinAndObjDirectories (platform, project_path, runtimeIdentifiers, configuration);
+			AssertMaxFileLengthInBinAndObjDirectories (platform, project_path, runtimeIdentifiers, configuration, maxLength: maxPathLength);
 
 			// remove the bin directory, and rebuild should succeed and do the right thing
 			var binDirectory = Path.Combine (Path.GetDirectoryName (project_path)!, "bin");
@@ -231,7 +247,7 @@ namespace Xamarin.Tests {
 			warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
 			warningMessages = BundleStructureTest.FilterWarnings (warnings, platform, canonicalizePaths: true);
 
-			BundleStructureTest.CheckZippedAppBundleContents (platform, zippedAppBundlePath, rids, signature, isReleaseBuild);
+			BundleStructureTest.CheckZippedAppBundleContents (platform, zippedAppBundlePath, rids, signature, isReleaseBuild, isCoreCLR: isCoreCLR);
 			AssertWarningsEqual (expectedWarnings, warningMessages, "Warnings Rebuild 2");
 			AssertFileStateUnchanged (sharedDotNetPlistState, sharedDotNetPlistPath, "Rebuild 2: shared-dotnet.plist");
 			AssertFileStateUnchanged (compileAppManifestInputsState, compileAppManifestInputsPath, "Rebuild 2: _CompileAppManifest.inputs");
@@ -240,7 +256,7 @@ namespace Xamarin.Tests {
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 
 			// Verify that we don't create files with long paths inside bin/obj
-			AssertMaxFileLengthInBinAndObjDirectories (platform, project_path, runtimeIdentifiers, configuration);
+			AssertMaxFileLengthInBinAndObjDirectories (platform, project_path, runtimeIdentifiers, configuration, maxLength: maxPathLength);
 
 			// a simple rebuild should succeed
 			rv = DotNet.AssertBuild (project_path, properties);
@@ -248,7 +264,7 @@ namespace Xamarin.Tests {
 			warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
 			warningMessages = BundleStructureTest.FilterWarnings (warnings, platform, canonicalizePaths: true);
 
-			BundleStructureTest.CheckZippedAppBundleContents (platform, zippedAppBundlePath, rids, signature, isReleaseBuild);
+			BundleStructureTest.CheckZippedAppBundleContents (platform, zippedAppBundlePath, rids, signature, isReleaseBuild, isCoreCLR: isCoreCLR);
 			AssertWarningsEqual (expectedWarnings, warningMessages, "Warnings Rebuild 3");
 			AssertFileStateUnchanged (sharedDotNetPlistState, sharedDotNetPlistPath, "Rebuild 3: shared-dotnet.plist");
 			AssertFileStateUnchanged (compileAppManifestInputsState, compileAppManifestInputsPath, "Rebuild 3: _CompileAppManifest.inputs");
@@ -257,17 +273,27 @@ namespace Xamarin.Tests {
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 
 			// Verify that we don't create files with long paths inside bin/obj
-			AssertMaxFileLengthInBinAndObjDirectories (platform, project_path, runtimeIdentifiers, configuration);
+			AssertMaxFileLengthInBinAndObjDirectories (platform, project_path, runtimeIdentifiers, configuration, maxLength: maxPathLength);
 		}
 
 		[Category ("RemoteWindows")]
 		[TestCase (ApplePlatform.iOS, "ios-arm64", "Debug")]
 		[TestCase (ApplePlatform.iOS, "ios-arm64", "Release")]
 		[TestCase (ApplePlatform.iOS, "iossimulator-arm64;iossimulator-x64", "Debug")]
-		public void PluralRuntimeIdentifiersWithRemoteMac (ApplePlatform platform, string runtimeIdentifiers, string configuration)
+		public void PluralRuntimeIdentifiersWithRemoteMac_Mono (ApplePlatform platform, string runtimeIdentifiers, string configuration)
 		{
 			var properties = AddRemoteProperties ();
-			DotNetProjectTest.PluralRuntimeIdentifiersImpl (platform, runtimeIdentifiers, properties, configuration);
+			DotNetProjectTest.PluralRuntimeIdentifiersImpl (platform, runtimeIdentifiers, useMonoRuntime: true, extraProperties: properties, configuration);
+		}
+
+		[Category ("RemoteWindows")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "Debug")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "Release")]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64;iossimulator-x64", "Debug")]
+		public void PluralRuntimeIdentifiersWithRemoteMac_CoreCLR (ApplePlatform platform, string runtimeIdentifiers, string configuration)
+		{
+			var properties = AddRemoteProperties ();
+			DotNetProjectTest.PluralRuntimeIdentifiersImpl (platform, runtimeIdentifiers, useMonoRuntime: false, extraProperties: properties, configuration);
 		}
 
 		[Category ("RemoteWindows")]
@@ -321,7 +347,6 @@ namespace Xamarin.Tests {
 			Assert.Fail (sb.ToString ());
 		}
 
-		[Category ("RemoteWindows")]
 		[TestCase (ApplePlatform.iOS, "ios-arm64", "Release")]
 		public void StripTest (ApplePlatform platform, string runtimeIdentifiers, string configuration)
 		{
@@ -438,11 +463,12 @@ namespace Xamarin.Tests {
 #endif // NET11_0_OR_GREATER
 
 		[Category ("RemoteWindows")]
-		[TestCase (ApplePlatform.iOS, "ios-arm64")]
-		public void RemoteTest (ApplePlatform platform, string runtimeIdentifiers)
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "Debug", true)]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "Debug", false)]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "Release", false)]
+		public void RemoteTest (ApplePlatform platform, string runtimeIdentifiers, string configuration, bool useMonoRuntime)
 		{
 			var project = "MySimpleApp";
-			var configuration = "Debug";
 
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
@@ -453,6 +479,9 @@ namespace Xamarin.Tests {
 			Clean (project_path);
 
 			var properties = GetDefaultProperties (runtimeIdentifiers);
+
+			properties ["UseMonoRuntime"] = useMonoRuntime.ToString ();
+			properties ["Configuration"] = configuration;
 
 			// Copy the app bundle to Windows so that we can inspect the results.
 			properties ["CopyAppBundleToWindows"] = "true";
@@ -472,7 +501,7 @@ namespace Xamarin.Tests {
 			// Open the zipped app bundle and get the Info.plist
 			using var zip = ZipFile.OpenRead (zippedAppBundlePath);
 			ZipHelpers.DumpZipFile (zip, zippedAppBundlePath);
-			var infoPlistEntry = zip.Entries.SingleOrDefault (v => v.Name == "Info.plist");
+			var infoPlistEntry = zip.Entries.Where (v => v.Name == "Info.plist").OrderBy (v => v.FullName.Length).First ();
 			Assert.That (infoPlistEntry, Is.Not.Null, "Info.plist");
 
 			// Parse the Info.plist

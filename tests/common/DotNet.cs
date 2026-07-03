@@ -27,6 +27,7 @@ namespace Xamarin.Tests {
 
 		public static ExecutionResult AssertPack (string project, Dictionary<string, string>? properties = null, bool? msbuildParallelism = null)
 		{
+			IgnoreIfUnsupportedMonoRuntime (properties);
 			return Execute ("pack", project, properties, true, msbuildParallelism: msbuildParallelism);
 		}
 
@@ -39,6 +40,7 @@ namespace Xamarin.Tests {
 
 		public static ExecutionResult AssertPublish (string project, Dictionary<string, string>? properties = null)
 		{
+			IgnoreIfUnsupportedMonoRuntime (properties);
 			return Execute ("publish", project, properties, true);
 		}
 
@@ -61,7 +63,26 @@ namespace Xamarin.Tests {
 
 		public static ExecutionResult AssertBuild (string project, Dictionary<string, string>? properties = null, string? target = null, TimeSpan? timeout = null)
 		{
+			IgnoreIfUnsupportedMonoRuntime (properties);
 			return Execute ("build", project, properties, true, target: target, timeout: timeout);
+		}
+
+		static void IgnoreIfUnsupportedMonoRuntime (Dictionary<string, string>? properties)
+		{
+			if (properties is null)
+				return;
+			if (!properties.TryGetValue ("UseMonoRuntime", out var useMonoRuntime))
+				return;
+			IgnoreIfUnsupportedMonoRuntime (string.Equals (useMonoRuntime, "true", StringComparison.OrdinalIgnoreCase));
+		}
+
+		public static void IgnoreIfUnsupportedMonoRuntime (bool useMonoRuntime)
+		{
+			if (!useMonoRuntime)
+				return;
+			if (Configuration.dotnet_monovm_supported)
+				return;
+			Assert.Ignore ("Mono is not supported");
 		}
 
 		public static ExecutionResult AssertRun (string project, Dictionary<string, string>? properties = null, TimeSpan? timeout = null, Dictionary<string, string>? environmentVariables = null)
@@ -222,6 +243,7 @@ namespace Xamarin.Tests {
 			case "publish":
 			case "restore":
 			case "run":
+			case "test":
 				var args = new List<string> ();
 				args.Add (verb);
 				args.Add (project);
@@ -288,11 +310,15 @@ namespace Xamarin.Tests {
 				Console.WriteLine ($"Binlog: {binlogPath}");
 
 				// Work around https://github.com/dotnet/msbuild/issues/8845
-				args.Add ("/v:diag");
-				args.Add ("/consoleloggerparameters:Verbosity=Quiet");
-				// vb does not have preview lang, so we force it to latest
-				if (project.EndsWith (".vbproj", StringComparison.OrdinalIgnoreCase))
-					args.Add ("/p:LangVersion=latest");
+				// Skip these for 'dotnet test' because they leak through '-- ' in
+				// RunArguments and get passed to the test runner as app arguments.
+				if (verb != "test") {
+					args.Add ("/v:diag");
+					args.Add ("/consoleloggerparameters:Verbosity=Quiet");
+					// vb does not have preview lang, so we force it to latest
+					if (project.EndsWith (".vbproj", StringComparison.OrdinalIgnoreCase))
+						args.Add ("/p:LangVersion=latest");
+				}
 				// End workaround
 
 				if (msbuildParallelism.HasValue) {

@@ -270,6 +270,8 @@ namespace Xamarin.Bundler {
 			sw.WriteLine ("static const char *xamarin_runtime_libraries_array[] = {");
 			foreach (var lib in app.MonoLibraries)
 				sw.WriteLine ($"\t\"{Path.GetFileNameWithoutExtension (lib)}\",");
+			foreach (var lib in app.DylibsToConvertToFrameworks.Except (app.MonoLibraries))
+				sw.WriteLine ($"\t\"{Path.GetFileNameWithoutExtension (lib)}\", // dylib converted to framework");
 			sw.WriteLine ($"\tNULL");
 			sw.WriteLine ("};");
 

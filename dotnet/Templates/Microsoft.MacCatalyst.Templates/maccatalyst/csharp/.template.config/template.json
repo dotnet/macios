@@ -43,7 +43,20 @@
       "description": "Overrides SupportedOSPlatformVersion in the project file",
       "replaces": "minOSVersion",
       "datatype": "string",
-      "defaultValue": "15.0"
+      "defaultValue": "17.0"
+    },
+    "Framework": {
+      "type": "parameter",
+      "description": "The target framework for the project.",
+      "datatype": "choice",
+      "choices": [
+        {
+          "choice": "net11.0-maccatalyst",
+          "description": "Target net11.0-maccatalyst"
+        }
+      ],
+      "replaces": "net11.0-maccatalyst",
+      "defaultValue": "net11.0-maccatalyst"
     }
   },
   "defaultName": "MacCatalystApp1"

@@ -26,6 +26,7 @@ namespace Xamarin.Tests {
 		public static bool include_mac;
 		public static bool include_tvos;
 		public static bool include_maccatalyst;
+		public static bool dotnet_monovm_supported;
 		public static bool XcodeIsStable;
 		public static string DOTNET_DIR;
 
@@ -261,6 +262,7 @@ namespace Xamarin.Tests {
 			include_mac = !string.IsNullOrEmpty (GetVariable ("INCLUDE_MAC", ""));
 			include_tvos = !string.IsNullOrEmpty (GetVariable ("INCLUDE_TVOS", ""));
 			include_maccatalyst = !string.IsNullOrEmpty (GetVariable ("INCLUDE_MACCATALYST", ""));
+			dotnet_monovm_supported = !string.IsNullOrEmpty (GetVariable ("DOTNET_MONOVM_SUPPORTED", ""));
 			DotNetBclDir = GetVariable ("DOTNET_BCL_DIR", "");
 			DotNetCscCommand = GetVariable ("DOTNET_CSC_COMMAND", "").Trim ('\'');
 			DotNetExecutable = GetVariable ("DOTNET", "");

@@ -1,5 +1,7 @@
 {
   "author": "Microsoft",
   "name": "macOS Sınıf Kitaplığı",
-  "description": "Bir .NET macOS sınıf kitaplığı oluşturmak için proje"
+  "description": "Bir .NET macOS sınıf kitaplığı oluşturmak için proje",
+  "symbols/Framework/description": "The target framework for the project.",
+  "symbols/Framework/choices/net11.0-macos/description": "Target net11.0-macos"
 }

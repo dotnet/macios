@@ -54,7 +54,90 @@ namespace Xamarin.Tests {
 		[Test]
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
 		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
-		public void BuildIpaTest (ApplePlatform platform, string runtimeIdentifiers)
+		public void BuildIpaTest_Mono (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			BuildIpaTestImpl (platform, runtimeIdentifiers, useMonoRuntime: true);
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
+		public void BuildIpaTest_CoreCLR (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			BuildIpaTestImpl (platform, runtimeIdentifiers, useMonoRuntime: false);
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
+		public void CoreCLR_ConvertedFrameworks_HaveInfoPlist (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			// Ref: https://github.com/dotnet/macios/issues/25248
+			// Verify that converted CoreCLR dylib frameworks have a valid Info.plist
+			// with the correct CFBundleIdentifier, so that codesign signs them as
+			// framework bundles and uses the plist bundle identifier.
+			var project = "MySimpleApp";
+			var configuration = "Release";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: configuration);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["BuildIpa"] = "true";
+			properties ["Configuration"] = configuration;
+			properties ["UseMonoRuntime"] = "false";
+
+			DotNet.AssertBuild (project_path, properties);
+
+			var frameworksDir = Path.Combine (appPath, "Frameworks");
+			Assert.That (frameworksDir, Does.Exist, "Frameworks directory should exist for CoreCLR device builds");
+
+			var frameworkDirs = Directory.GetDirectories (frameworksDir, "*.framework");
+			Assert.That (frameworkDirs.Length, Is.GreaterThan (0), "Expected at least one .framework directory");
+
+			// Read the main app's bundle identifier
+			var appInfoPlistPath = Path.Combine (appPath, "Info.plist");
+			Assert.That (appInfoPlistPath, Does.Exist, "App Info.plist should exist");
+			var appPlist = PDictionary.FromFile (appInfoPlistPath);
+			Assert.That (appPlist, Is.Not.Null, $"Failed to parse Info.plist at '{appInfoPlistPath}'");
+			var bundleIdentifierValue = appPlist!.GetString ("CFBundleIdentifier");
+			Assert.That (bundleIdentifierValue, Is.Not.Null, $"CFBundleIdentifier should exist in '{appInfoPlistPath}'");
+			var bundleIdentifier = bundleIdentifierValue!.Value;
+
+			foreach (var fwDir in frameworkDirs) {
+				var fwName = Path.GetFileNameWithoutExtension (fwDir);
+				var infoPlistPath = Path.Combine (fwDir, "Info.plist");
+				Assert.That (infoPlistPath, Does.Exist, $"Info.plist should exist in {fwName}.framework");
+
+				var plist = PDictionary.FromFile (infoPlistPath);
+				Assert.That (plist, Is.Not.Null, $"Failed to parse Info.plist at '{infoPlistPath}'");
+				var fwBundleId = plist!.GetString ("CFBundleIdentifier")?.Value;
+				Assert.That (fwBundleId, Does.StartWith (bundleIdentifier + "."), $"CFBundleIdentifier for {fwName}.framework should start with the app bundle identifier");
+
+				var bundleExe = plist.GetString ("CFBundleExecutable")?.Value;
+				Assert.That (bundleExe, Is.EqualTo (fwName), $"CFBundleExecutable for {fwName}.framework");
+
+				var packageType = plist.GetString ("CFBundlePackageType")?.Value;
+				Assert.That (packageType, Is.EqualTo ("FMWK"), $"CFBundlePackageType for {fwName}.framework");
+
+				// Verify the executable binary actually exists
+				Assert.That (Path.Combine (fwDir, fwName), Does.Exist, $"Executable should exist in {fwName}.framework");
+
+				// If the framework was signed, verify it was signed as a bundle (not a bare Mach-O)
+				// and that the codesign identifier matches the Info.plist CFBundleIdentifier
+				var codeSignatureDir = Path.Combine (fwDir, "_CodeSignature");
+				if (Directory.Exists (codeSignatureDir)) {
+					var exitCode = ExecutionHelper.Execute ("/usr/bin/codesign", new string [] { "-dvvv", fwDir }, out var codesignOutput);
+					var output = codesignOutput.ToString ();
+					Assert.That (exitCode, Is.EqualTo (0), $"codesign failed for framework {fwName}. Codesign output:\n{output}");
+					Assert.That (output, Does.Contain ("Format=bundle with Mach-O"), $"Framework {fwName} should be signed as a bundle, not a bare Mach-O. Codesign output:\n{output}");
+					Assert.That (output, Does.Contain ($"Identifier={fwBundleId}"), $"Framework {fwName} codesign identifier should match its Info.plist CFBundleIdentifier. Codesign output:\n{output}");
+				}
+			}
+		}
+
+		void BuildIpaTestImpl (ApplePlatform platform, string runtimeIdentifiers, bool useMonoRuntime)
 		{
 			var project = "MySimpleApp";
 			var configuration = "Release";
@@ -66,6 +149,7 @@ namespace Xamarin.Tests {
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			properties ["BuildIpa"] = "true";
 			properties ["Configuration"] = configuration;
+			properties ["UseMonoRuntime"] = useMonoRuntime ? "true" : "false";
 
 			var result = DotNet.AssertBuild (project_path, properties);
 
@@ -74,7 +158,9 @@ namespace Xamarin.Tests {
 			AssertApplicationArtifact (result.BinLogPath, appPath, platform, "app", isDirectory: true);
 			AssertApplicationArtifact (result.BinLogPath, pkgPath, platform, "ipa", isDirectory: false);
 
-			AssertBundleAssembliesStripStatus (appPath, true);
+			// With MonoVM, AOT compiles method bodies to native code and IL gets stripped.
+			// With CoreCLR (R2R), assemblies retain their IL bodies.
+			AssertBundleAssembliesStripStatus (appPath, useMonoRuntime);
 			AssertDSymDirectory (appPath);
 		}
 
@@ -284,9 +370,23 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64")]
+		public void PublishTest_Mono (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			PublishTestImpl (platform, runtimeIdentifiers, useMonoRuntime: true);
+		}
+
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64")]
 		[TestCase (ApplePlatform.MacOSX, "osx-x64")]
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64")]
-		public void PublishTest (ApplePlatform platform, string runtimeIdentifiers)
+		public void PublishTest_CoreCLR (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			PublishTestImpl (platform, runtimeIdentifiers, useMonoRuntime: false);
+		}
+
+		void PublishTestImpl (ApplePlatform platform, string runtimeIdentifiers, bool useMonoRuntime)
 		{
 			var project = "MySimpleApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -315,6 +415,7 @@ namespace Xamarin.Tests {
 			var pkgPath = Path.Combine (tmpdir, $"MyPackage.{packageExtension}");
 
 			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["UseMonoRuntime"] = useMonoRuntime ? "true" : "false";
 			properties [pathVariable] = pkgPath;
 
 			var result = DotNet.AssertPublish (project_path, properties);
@@ -399,6 +500,23 @@ namespace Xamarin.Tests {
 			Assert.That (errors [0].Message, Is.EqualTo (expectedErrorMessage), "Error Message");
 
 			Assert.That (pkgPath, Does.Not.Exist, "ipa/pkg creation");
+		}
+
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
+		public void DefaultPublishRid (ApplePlatform platform, string expectedRuntimeIdentifier)
+		{
+			var project = "MySimpleApp";
+			var configuration = "Release";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, expectedRuntimeIdentifier);
+
+			var project_path = GetProjectPath (project, expectedRuntimeIdentifier, platform: platform, out var appPath, configuration: configuration);
+			Clean (project_path);
+
+			var properties = GetDefaultProperties ();
+			var rv = DotNet.AssertPublish (project_path, properties);
+			Assert.That (appPath, Does.Exist, "App existence");
 		}
 
 		[Test]

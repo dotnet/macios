@@ -80,13 +80,13 @@
 			Condition="'$(FilterReadyToRunAssemblies)' == 'true' And '$(RuntimeIdentifiers)' == ''"
 			BeforeTargets="ResolveReadyToRunCompilers">
 		<ItemGroup>
-			<_ResolvedAssembliesToPublish Include="@(ResolvedFileToPublish)" Condition="'%(Extension)' == '.dll' And '%(ResolvedFileToPublish.Culture)' == '' And '%(ResolvedFileToPublish.DestinationSubDirectory)' == ''" />
+			<_ResolvedAssembliesToPublish Include="@(ResolvedFileToPublish)" Condition="'%(Extension)' == '.dll' And '%(ResolvedFileToPublish.Culture)' == '' And '%(ResolvedFileToPublish.DestinationSubDirectory)' == '' And ('%(ResolvedFileToPublish.PublishFolderType)' == '' Or '%(ResolvedFileToPublish.PublishFolderType)' == 'Assembly')" />
 			<_NonUserAssemblies
 				Include="@(_ResolvedAssembliesToPublish)"
 				Condition="'%(_ResolvedAssembliesToPublish.NuGetPackageId)' != ''" />
 			<_UserAssemblies Include="@(_ResolvedAssembliesToPublish)" Exclude="@(_NonUserAssemblies)" />
 			<PublishReadyToRunExclude Include="@(_UserAssemblies -> '%(Filename)%(Extension)')" />
-			<PublishReadyToRunCompositeRoots Condition="$(RuntimeIdentifier.EndsWith('-arm64'))" Include="System.Private.CoreLib.dll" KeepDuplicates="false" />
+			<PublishReadyToRunCompositeRoots Include="System.Private.CoreLib.dll" KeepDuplicates="false" />
 		</ItemGroup>
 
 		<!-- Hash the R2R input assemblies so we can detect when the set actually changes -->

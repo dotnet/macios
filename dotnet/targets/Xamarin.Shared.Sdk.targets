@@ -319,13 +319,24 @@
 	<Target Name="_ComputePublishTrimmed">
 		<PropertyGroup>
 			<_MustTrim Condition="'$(_MustTrim)' == '' And '$(RuntimeIdentifier)' != '' And ($(_ProjectType.EndsWith('ExecutableProject')) Or $(_ProjectType.EndsWith('AppExtensionProject'))) And '$(IsMacEnabled)' == 'true'">true</_MustTrim>
+
+			<!--
+				If we're not trimming anything (the link mode is 'None', which means no assemblies are trimmed) and
+				we're not running any custom trimmer steps (which is the case when both PrepareAssemblies and
+				PostProcessAssemblies are 'true', because then all the custom trimmer steps are moved to the
+				assembly-preparer's post-processing step instead), then there's nothing for the trimmer to do, so
+				default PublishTrimmed to false to skip running the trimmer entirely.
+			-->
+			<_CanSkipTrimmer Condition="'$(_CanSkipTrimmer)' == '' And '$(_LinkMode)' == 'None' And '$(TrimMode)' == 'copy' And '$(PrepareAssemblies)' == 'true' And '$(PostProcessAssemblies)' == 'true'">true</_CanSkipTrimmer>
+			<PublishTrimmed Condition="'$(PublishTrimmed)' == '' And '$(_CanSkipTrimmer)' == 'true'">false</PublishTrimmed>
+
 			<PublishTrimmed Condition="'$(PublishTrimmed)' == '' And '$(_MustTrim)' == 'true'">true</PublishTrimmed>
 
 			<_LinkModeProperty Condition="'$(_PlatformName)' == 'macOS'">LinkMode</_LinkModeProperty>
 			<_LinkModeProperty Condition="'$(_PlatformName)' != 'macOS'">MtouchLink</_LinkModeProperty>
 		</PropertyGroup>
-		<Error Condition="'$(_MustTrim)' == 'true' And '$(PublishTrimmed)' != 'true'" Text="$(_PlatformName) projects must build with PublishTrimmed=true. Current value: $(PublishTrimmed). Set '$(_LinkModeProperty)=None' instead to disable trimming for all assemblies." />
-		<PropertyGroup Condition="'$(PublishTrimmed)' != '' And '$(IsMacEnabled)' != 'true'">
+		<Error Condition="'$(_MustTrim)' == 'true' And '$(PublishTrimmed)' != 'true' And '$(_CanSkipTrimmer)' != 'true'" Text="$(_PlatformName) projects must build with PublishTrimmed=true. Current value: $(PublishTrimmed). Set '$(_LinkModeProperty)=None' instead to disable trimming for all assemblies." />
+		<PropertyGroup Condition="'$(PublishTrimmed)' != '' And '$(IsMacEnabled)' != 'true' And '$(_CanSkipTrimmer)' != 'true'">
 			<_PreviousPublishTrimmedValue>$(PublishTrimmed)</_PreviousPublishTrimmedValue>
 			<PublishTrimmed />
 		</PropertyGroup>
@@ -1491,7 +1502,7 @@
 	-->
 	<Target Name="_AddDedupAssemblyToResolvedFileToPublish"
 			Condition="'$(_IsDedupEnabled)' == 'true' And '$(PostProcessAssemblies)' == 'true'"
-			DependsOnTargets="_ComputeVariables"
+			DependsOnTargets="_ComputeVariables;_CreateAOTDedupAssembly"
 			BeforeTargets="_PrepareAssembliesForPostProcessing">
 		<ItemGroup>
 			<!-- Find out if the dedup assembly is already part of ResolvedFileToPublish (it will be when

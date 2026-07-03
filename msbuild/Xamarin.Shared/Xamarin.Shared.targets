@@ -453,6 +453,8 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<Content Remove="@(_ProcessedContent)" />
 		</ItemGroup>
 
+		<Error Condition="'$(_ResolveResourceItemsRelativeToProjectInvalid)' == 'true'" Text="Setting ResolveResourceItemsRelativeToProject to false is not supported in .NET 13+. Remove this property from your project file." />
+
 		<CollectBundleResources
 			SessionId="$(BuildSessionId)"
 			Condition="'$(IsMacEnabled)' == 'true' Or '$(_BundleOriginalResources)' == 'true'"
@@ -461,6 +463,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			BundleResources="@(Content);@(BundleResource)"
 			ProjectDir="$(MSBuildProjectDirectory)"
 			ResourcePrefix="$(_ResourcePrefix)"
+			ResolveResourceItemsRelativeToProject="$(ResolveResourceItemsRelativeToProject)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 			UnpackedResources="@(_UnpackedBundleResourceWithLogicalName)"
 			>

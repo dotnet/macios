@@ -65,6 +65,8 @@ safe-outputs:
     draft: false
     patch-format: bundle
     signed-commits: false
+    excluded-files:
+      - "tests/dotnet/UnitTests/expected/**"
     allowed-base-branches:
       - "net*.0"
       - "xcode*"
@@ -226,6 +228,22 @@ If there are merge conflicts:
   - Do **not** enable automerge (and disable it if already enabled).
   - Add the `do-not-merge` label.
   - Add a comment requesting human review of the conflict resolution, listing which files were manually resolved.
+
+**After resolving all conflicts**, complete the merge in a single step:
+
+```bash
+git commit --no-edit
+```
+
+> **Critical**: Stage ALL resolved files first, then run `git commit --no-edit` exactly once. Never commit one file at a time while in merge state — the first `git commit` would complete the merge and clear `MERGE_HEAD`, turning any subsequent commits into plain single-parent commits.
+
+Verify the resulting commit is a proper merge commit with **two** parent SHAs:
+
+```bash
+git log --format="%P" -1
+```
+
+The output must contain **two** space-separated SHA hashes. If only one SHA is shown, `MERGE_HEAD` was lost (e.g. due to a `git reset` or `git checkout` during conflict resolution) and the branch contains a plain commit instead of a merge commit. In that case, discard the branch and restart from step c — a plain single-parent commit causes `git format-patch` to include all commits since the branch diverged from `main` (potentially tens of thousands), which will exceed the buffer limit and fail PR creation.
 
 #### e. Create or update the PR
 

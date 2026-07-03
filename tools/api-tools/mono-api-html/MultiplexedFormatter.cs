@@ -190,8 +190,12 @@ namespace Mono.ApiTools {
 
 		public override void Diff (ApiChange apichange)
 		{
-			foreach (var formatter in formatters)
+			foreach (var formatter in formatters) {
+				var sb = apichange.Member.GetStringBuilder (formatter);
+				sb.Replace (LesserThan, formatter.LesserThan);
+				sb.Replace (GreaterThan, formatter.GreaterThan);
 				formatter.Diff (apichange);
+			}
 		}
 
 		public override void PushOutput ()

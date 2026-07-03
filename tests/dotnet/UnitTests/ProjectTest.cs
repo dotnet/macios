@@ -204,6 +204,25 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacOSX)]
 		[TestCase (ApplePlatform.MacCatalyst)]
 		[Category ("WindowsInclusive")]
+		public void BuildBindingsTestWithCompileTarget (ApplePlatform platform)
+		{
+			// 'dotnet watch' builds the 'Compile' target directly ('dotnet build /t:Compile'),
+			// so make sure a binding project can be built that way.
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			var assemblyName = "bindings-test";
+			var dotnet_bindings_dir = Path.Combine (Configuration.SourceRoot, "tests", assemblyName, "dotnet");
+			var project_dir = Path.Combine (dotnet_bindings_dir, platform.AsString ());
+			var project_path = Path.Combine (project_dir, $"{assemblyName}.csproj");
+
+			Clean (project_path);
+			DotNet.AssertBuild (project_path, verbosity, target: "Compile");
+		}
+
+		[TestCase (ApplePlatform.iOS)]
+		[TestCase (ApplePlatform.TVOS)]
+		[TestCase (ApplePlatform.MacOSX)]
+		[TestCase (ApplePlatform.MacCatalyst)]
+		[Category ("WindowsInclusive")]
 		public void BuildBindingsTest (ApplePlatform platform)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);

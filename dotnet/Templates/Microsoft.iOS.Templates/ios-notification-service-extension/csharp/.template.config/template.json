@@ -75,7 +75,7 @@
           "description": "Target net10.0-ios"
         }
       ],
-      "replaces": "net10.0-ios",
+      "replaces": "DOTNET_TFM",
       "defaultValue": "net10.0-ios"
     }
   },

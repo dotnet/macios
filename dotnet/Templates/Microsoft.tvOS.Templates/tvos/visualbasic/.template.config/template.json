@@ -42,7 +42,7 @@
       "description": "Overrides SupportedOSPlatformVersion in the project file",
       "replaces": "minOSVersion",
       "datatype": "string",
-      "defaultValue": "15.0"
+      "defaultValue": "12.2"
     },
     "Framework": {
       "type": "parameter",
@@ -54,8 +54,9 @@
           "description": "Target net10.0-tvos"
         }
       ],
-      "replaces": "net10.0-tvos",
-      "defaultValue": "net10.0-tvos"    }
+      "replaces": "DOTNET_TFM",
+      "defaultValue": "net10.0-tvos"
+    }
   },
   "defaultName": "tvOSApp1"
 }

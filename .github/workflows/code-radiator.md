@@ -65,8 +65,6 @@ safe-outputs:
     draft: false
     patch-format: bundle
     signed-commits: false
-    excluded-files:
-      - "tests/dotnet/UnitTests/expected/**"
     allowed-base-branches:
       - "net*.0"
       - "xcode*"

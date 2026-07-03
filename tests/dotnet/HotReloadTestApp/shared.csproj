@@ -18,4 +18,9 @@
 		<Compile Include="../*.cs" />
 		<Compile Include="$(AdditionalFile)" Condition="'$(AdditionalFile)' != ''" />
 	</ItemGroup>
+
+	<ItemGroup Condition="'$(EnableSandbox)' == 'true'">
+		<CustomEntitlements Include="com.apple.security.app-sandbox" Type="Boolean" Value="true" />
+		<CustomEntitlements Include="com.apple.security.network.client" Type="Boolean" Value="true" />
+	</ItemGroup>
 </Project>

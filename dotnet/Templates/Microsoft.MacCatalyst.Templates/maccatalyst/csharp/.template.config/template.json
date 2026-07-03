@@ -43,7 +43,7 @@
       "description": "Overrides SupportedOSPlatformVersion in the project file",
       "replaces": "minOSVersion",
       "datatype": "string",
-      "defaultValue": "15.0"
+      "defaultValue": "17.0"
     },
     "Framework": {
       "type": "parameter",

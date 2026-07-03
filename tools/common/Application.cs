@@ -75,6 +75,8 @@ namespace Xamarin.Bundler {
 		public RegistrarOptions RegistrarOptions = RegistrarOptions.Default;
 		public SymbolMode SymbolMode;
 		public HashSet<string> IgnoredSymbols = new HashSet<string> ();
+		public bool? PublishReadyToRun;
+		public string PublishReadyToRunContainerFormat = "";
 
 		// The AOT arguments are currently not used for macOS, but they could eventually be used there as well (there's no mmp option to set these yet).
 		public List<string> AotArguments = new List<string> ();
@@ -102,6 +104,7 @@ namespace Xamarin.Bundler {
 		public TargetFramework TargetFramework { get; set; }
 		public ApplePlatform Platform { get { return TargetFramework.Platform; } }
 
+		public List<string> DylibsToConvertToFrameworks = new List<string> ();
 		public List<string> MonoLibraries = new List<string> ();
 		public List<string> InterpretedAssemblies = new List<string> ();
 

@@ -35,10 +35,14 @@ IOS_SIMULATOR_ARCHITECTURES+=x86_64
 IOS_DEVICE_ARCHITECTURES+=arm64
 
 coreclrhost.h: Makefile
-	$(Q_CURL) curl -L --retry 3 --retry-all-errors --fail --output "$@.tmp" https://raw.githubusercontent.com/dotnet/runtime/f1b8d5a4448d072c9d390744777a87921e45bf2f/src/coreclr/hosts/inc/coreclrhost.h
+	$(Q_CURL) curl -L --retry 3 --retry-all-errors --fail --output "$@.tmp" https://raw.githubusercontent.com/dotnet/runtime/61fac3bf280af337390a34c3d54157a96051e831/src/coreclr/hosts/inc/coreclrhost.h
 	$(Q) mv "$@.tmp" "$@"
 
-coreclr-bridge.m: coreclrhost.h
+host_runtime_contract.h: Makefile
+	$(Q_CURL) curl -L --retry 3 --retry-all-errors --fail --output "$@.tmp" https://raw.githubusercontent.com/dotnet/runtime/61fac3bf280af337390a34c3d54157a96051e831/src/native/corehost/host_runtime_contract.h
+	$(Q) mv "$@.tmp" "$@"
+
+coreclr-bridge.m: coreclrhost.h host_runtime_contract.h
 
 xamarin/mono-runtime.h: mono-runtime.h.t4 exports.t4
 	$(Q_GEN) $(TT) $< -o $@
@@ -89,8 +93,8 @@ MONOTOUCH_ARM64_SOURCE_STEMS = $(patsubst %.s,%,$(patsubst %.m,%,$(SHARED_ARM64_
 # .NET
 #
 
-DOTNET_iOS_LIBRARIES = libextension-dotnet.a
-DOTNET_tvOS_LIBRARIES = libextension-dotnet.a libtvextension-dotnet.a
+DOTNET_iOS_LIBRARIES = libextension-dotnet.a libextension-dotnet-coreclr.a
+DOTNET_tvOS_LIBRARIES = libextension-dotnet.a libtvextension-dotnet.a libextension-dotnet-coreclr.a libtvextension-dotnet-coreclr.a
 DOTNET_macOS_LIBRARIES = libextension-dotnet-coreclr.a
 DOTNET_MacCatalyst_LIBRARIES =
 

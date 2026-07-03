@@ -36,6 +36,7 @@ using OpenGLES;
 #if !__TVOS__
 using WebKit;
 #endif
+using Linker.Shared;
 using MonoTests.System.Net.Http;
 using Xamarin.Utils;
 
@@ -962,18 +963,17 @@ namespace LinkSdk {
 			// ILLink does not remove the method, but it can "stub" (empty) it
 			if (m is null)
 				throw new InvalidOperationException ("Method not found (null)");
-			var mb = m.GetMethodBody ();
-			if (mb is null)
-				throw new InvalidOperationException ("GetMethodBody");
-			var il = mb.GetILAsByteArray ();
-			if (il is null)
-				throw new InvalidOperationException ("GetILAsByteArray");
+			var reader = new ILReader (m);
+			var il = reader.ToArray ();
+			var actualIL = string.Join ("\n", il.Select (v => v.ToString ().Trim ()));
+			var releaseRet = "IL_0000 ret"; // only release
 #if DEBUG
 			// means some stuff in addition to the `ret` instruction
-			Assert.That (il.Length, Is.GreaterThan (1), "il > 1");
+			Assert.That (actualIL, Is.Not.EqualTo (releaseRet), $"debug il");
 #else
 			// empty means a `ret` instruction (and that's true even if IL is stripped)
-			Assert.That (il.Length, Is.EqualTo (1), "il == 1");
+			var trimmedBody = "IL_0000 ldnull\nIL_0001 throw"; // this can happen for both release and debug
+			Assert.That (actualIL, Is.EqualTo (releaseRet).Or.EqualTo (trimmedBody), $"release il");
 #endif
 		}
 

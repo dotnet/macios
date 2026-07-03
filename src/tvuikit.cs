@@ -176,7 +176,6 @@ namespace TVUIKit {
 		string Subtitle { get; set; }
 	}
 
-	[TV (13, 0)]
 	[BaseType (typeof (UICollectionViewCell))]
 	interface TVCollectionViewFullScreenCell {
 
@@ -218,7 +217,6 @@ namespace TVUIKit {
 		void NormalizedPositionDidChange ();
 	}
 
-	[TV (13, 0)]
 	[BaseType (typeof (UICollectionViewLayoutAttributes))]
 	[DisableDefaultCtor]
 	interface TVCollectionViewFullScreenLayoutAttributes {
@@ -255,7 +253,6 @@ namespace TVUIKit {
 		TVCollectionViewFullScreenLayoutAttributes CreateForSupplementaryView (NSString kind, NSIndexPath indexPath);
 	}
 
-	[TV (13, 0)]
 	[Protocol, Model]
 	[BaseType (typeof (UICollectionViewDelegate))]
 	interface TVCollectionViewDelegateFullScreenLayout {
@@ -266,7 +263,6 @@ namespace TVUIKit {
 		void DidCenterCell (UICollectionView collectionView, UICollectionViewLayout collectionViewLayout, NSIndexPath indexPath);
 	}
 
-	[TV (13, 0)]
 	[BaseType (typeof (UICollectionViewLayout))]
 	[DesignatedDefaultCtor] // same as base type
 	interface TVCollectionViewFullScreenLayout {

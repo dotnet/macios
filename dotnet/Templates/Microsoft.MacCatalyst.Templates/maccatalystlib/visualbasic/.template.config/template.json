@@ -16,5 +16,20 @@
   "primaryOutputs": [
     { "path": "MacCatalystLib1.vbproj" }
   ],
-  "defaultName": "MacCatalystLib1"
+  "defaultName": "MacCatalystLib1",
+  "symbols": {
+    "Framework": {
+      "type": "parameter",
+      "description": "The target framework for the project.",
+      "datatype": "choice",
+      "choices": [
+        {
+          "choice": "net11.0-maccatalyst",
+          "description": "Target net11.0-maccatalyst"
+        }
+      ],
+      "replaces": "net11.0-maccatalyst",
+      "defaultValue": "net11.0-maccatalyst"
+    }
+  }
 }

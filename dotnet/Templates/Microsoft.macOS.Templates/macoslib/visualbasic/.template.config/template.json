@@ -16,5 +16,20 @@
   "primaryOutputs": [
     { "path": "macOSLib1.vbproj" }
   ],
-  "defaultName": "macOSLib1"
+  "defaultName": "macOSLib1",
+  "symbols": {
+    "Framework": {
+      "type": "parameter",
+      "description": "The target framework for the project.",
+      "datatype": "choice",
+      "choices": [
+        {
+          "choice": "net11.0-macos",
+          "description": "Target net11.0-macos"
+        }
+      ],
+      "replaces": "net11.0-macos",
+      "defaultValue": "net11.0-macos"
+    }
+  }
 }

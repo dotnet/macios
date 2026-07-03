@@ -66,14 +66,14 @@ variables:
 # point — they are runtime-only. So there is no working "single global
 # variable" we can read here; the literal lives in each entry pipeline:
 #
-#   CI (uses CIBuildPool / ACES):
+#   CI:
 #     - build-pipeline.yml            -> useACES: true
 #     - run-ci-api-diff.yml           -> useACES: true
 #     - run-post-ci-build-tests.yml   -> useACES: true
-#   PR (uses PRBuildPool):
-#     - build-pull-request.yml        -> useACES: false
-#     - run-pr-api-diff.yml           -> useACES: false
-#     - run-post-pr-build-tests.yml   -> useACES: false
+#   PR:
+#     - build-pull-request.yml        -> useACES: true
+#     - run-pr-api-diff.yml           -> useACES: true
+#     - run-post-pr-build-tests.yml   -> useACES: true
 #
 # Flip the literal in the three files on the side you want to move (e.g. when
 # the ACES pool is unavailable, or when you need an Xcode/macOS beta that is

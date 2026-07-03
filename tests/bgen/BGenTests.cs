@@ -1636,6 +1636,79 @@ namespace GeneratorTests {
 
 		[Test]
 		[TestCase (Profile.iOS)]
+		public void GenericTypeNullability (Profile profile)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
+			var bgen = BuildFile (profile, "generic-type-nullability.cs");
+			bgen.AssertNoWarnings ();
+
+			// Find the generated source file and check the property signatures
+			var generatedFile = Path.Combine (bgen.TmpDirectory!, "NS", "Widget.g.cs");
+			Assert.That (File.Exists (generatedFile), Is.True, "Generated file exists");
+			var contents = File.ReadAllText (generatedFile);
+
+			// Basic: two nullable generic args
+			Assert.That (contents, Does.Contain ("Action<NSObject?, NSError?>?"), "AuthenticateHandler should have nullable generic args");
+			// Three nullable generic args
+			Assert.That (contents, Does.Contain ("Action<NSObject?, NSArray?, NSError?>?"), "CompletionHandler should have nullable generic args");
+			// Non-nullable generic args should NOT have ?
+			Assert.That (contents, Does.Contain ("Action<NSObject, NSError>?"), "NonNullableHandler should NOT have nullable generic args");
+
+			// Value type between nullable reference types (int should never get ?)
+			Assert.That (contents, Does.Contain ("Action<NSObject?, int, NSError?>?"), "WithValueType should not annotate value types");
+
+			// Four nullable reference type args
+			Assert.That (contents, Does.Contain ("Action<NSObject?, NSString?, NSArray?, NSError?>?"), "ManyNullableArgs should handle 4 nullable args");
+
+			// Mixed: first and last non-nullable, middle nullable
+			Assert.That (contents, Does.Contain ("Action<NSObject, NSString?, NSError>?"), "MixedMiddleNullable should only annotate the middle arg");
+
+			// Multiple value types (int, bool should never get ?)
+			Assert.That (contents, Does.Contain ("Action<NSObject?, int, bool, NSError?>?"), "MultipleValueTypes should not annotate any value types");
+
+			// Alternating nullable/non-nullable pattern
+			Assert.That (contents, Does.Contain ("Action<NSObject?, NSString, NSArray?, NSError, NSObject?>?"), "AlternatingNullability should preserve alternating pattern");
+
+			// All non-nullable (5 reference type args, none should get ?)
+			Assert.That (contents, Does.Contain ("Action<NSObject, NSString, NSArray, NSError, NSObject>?"), "AllNonNullable should not annotate any args");
+
+			// Value type at the end
+			Assert.That (contents, Does.Contain ("Action<NSObject?, NSError?, int>?"), "ValueTypeAtEnd should not annotate trailing value type");
+
+			// === Method parameter assertions ===
+
+			// Method with nullable Action<NSObject?> parameter
+			Assert.That (contents, Does.Contain ("Action<NSObject?>"), "DoSomething should have nullable generic arg in method parameter");
+
+			// Method with mixed nullable/non-nullable Action parameter
+			Assert.That (contents, Does.Contain ("Action<NSObject?, NSError>"), "DoSomethingElse should have mixed nullability in method parameter");
+
+			// Async method: completion handler with nullable NSError should generate Tuple<bool,NSError?>
+			Assert.That (contents, Does.Contain ("Action<bool, NSError?>"), "ConfirmAcquired should have nullable NSError in method parameter");
+			Assert.That (contents, Does.Contain ("Tuple<bool,NSError?>"), "ConfirmAcquired async should generate Tuple with nullable NSError");
+
+			// Async method: completion handler with non-nullable NSError should generate Tuple<bool,NSError>
+			Assert.That (contents, Does.Contain ("Action<bool, NSError>"), "ConfirmAcquiredNonNull should have non-nullable NSError in method parameter");
+			Assert.That (contents, Does.Contain ("Tuple<bool,NSError>"), "ConfirmAcquiredNonNull async should generate Tuple with non-nullable NSError");
+
+			// Async method with array arg before NSError (depth-first byte counting)
+			Assert.That (contents, Does.Contain ("Action<NSObject[]?, NSError?>"), "FetchItems should have nullable array and NSError");
+			// When NSError is nullable, async uses Task<T> with error→exception; the result type preserves nullability
+			Assert.That (contents, Does.Contain ("Task<NSObject[]?>"), "FetchItems async should return Task<NSObject[]?> (array nullability preserved)");
+
+			// Async method with nullable result type
+			Assert.That (contents, Does.Contain ("Task<NSObject?>"), "LoadData async should return Task<NSObject?>");
+			// Async method with non-nullable result type
+			Assert.That (contents, Does.Match (@"Task<NSObject>\s"), "LoadDataNonNull async should return Task<NSObject>");
+
+			// Async method with nullable array result type
+			Assert.That (contents, Does.Contain ("Task<NSObject[]?>"), "LoadItems async should return Task<NSObject[]?>");
+			// Async method with non-nullable array result type
+			Assert.That (contents, Does.Match (@"Task<NSObject\[\]>\s"), "LoadItemsNonNull async should return Task<NSObject[]>");
+		}
+
+		[Test]
+		[TestCase (Profile.iOS)]
 		public void DelegatesWithPointerTypes (Profile profile)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());

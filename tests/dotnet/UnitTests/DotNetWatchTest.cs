@@ -203,6 +203,8 @@ namespace Xamarin.Tests {
 				{ "EnableSandbox", enableSandbox ? "true" : "false" },
 			};
 
+			if (useMonoRuntime)
+				env ["_DisableCheckForUnsupportedMonoMobileRuntime"] = "true";
 
 			DotNet.IgnoreIfUnsupportedMonoRuntime (useMonoRuntime);
 

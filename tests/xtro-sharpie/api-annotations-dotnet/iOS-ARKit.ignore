@@ -1,0 +1,3 @@
+# results from initial block parameter nullability analysis
+!missing-null-allowed! 'System.Void ARKit.ARGeoTrackingConfiguration::CheckAvailability(CoreLocation.CLLocationCoordinate2D,System.Action`2<System.Boolean,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1
+!missing-null-allowed! 'System.Void ARKit.ARGeoTrackingConfiguration::CheckAvailability(System.Action`2<System.Boolean,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1

@@ -243,6 +243,48 @@ xamarin_track_finished_launching ()
 			}];
 }
 
+// These hold the values of the environment variables captured in
+// xamarin_capture_debugging_settings, so that monotouch_configure_debugging can read
+// them without having to access the environment from a separate thread.
+static char *captured_debug_mode = NULL;
+static char *captured_debug_port = NULL;
+static char *captured_debug_hosts = NULL;
+static char *captured_debug_connect_timeout = NULL;
+
+void xamarin_capture_debugging_settings ()
+{
+	// Read (and unset) the environment variables monotouch_configure_debugging needs here,
+	// on the main thread, before the debugging thread has been started. This avoids a race
+	// condition: monotouch_configure_debugging runs on the debugging thread, so if it both read
+	// and unset these environment variables there, it could race with code reading the
+	// environment on the main thread (such as managed code in the app's Main method).
+	char *evar;
+
+	evar = getenv ("__XAMARIN_DEBUG_MODE__");
+	if (evar != NULL) {
+		captured_debug_mode = strdup (evar);
+		unsetenv ("__XAMARIN_DEBUG_MODE__");
+	}
+
+	evar = getenv ("__XAMARIN_DEBUG_PORT__");
+	if (evar != NULL) {
+		captured_debug_port = strdup (evar);
+		unsetenv ("__XAMARIN_DEBUG_PORT__");
+	}
+
+	evar = getenv ("__XAMARIN_DEBUG_HOSTS__");
+	if (evar != NULL) {
+		captured_debug_hosts = strdup (evar);
+		unsetenv ("__XAMARIN_DEBUG_HOSTS__");
+	}
+
+	evar = getenv ("__XAMARIN_DEBUG_CONNECT_TIMEOUT__");
+	if (evar != NULL) {
+		captured_debug_connect_timeout = strdup (evar);
+		unsetenv ("__XAMARIN_DEBUG_CONNECT_TIMEOUT__");
+	}
+}
+
 void monotouch_configure_debugging ()
 {
 	xamarin_track_finished_launching ();
@@ -259,16 +301,26 @@ void monotouch_configure_debugging ()
 	NSString *monodevelop_host;
 
 	if (!strcmp (connection_mode, "default")) {
-		char *evar = getenv ("__XAMARIN_DEBUG_MODE__");
-		if (evar && *evar) {
-			connection_mode = evar;
+		if (captured_debug_mode && *captured_debug_mode) {
+			// Transfer ownership of the captured string to connection_mode, which lives
+			// for the rest of the process' lifetime.
+			connection_mode = captured_debug_mode;
+			captured_debug_mode = NULL;
 			LOG (PRODUCT ": Found debug mode %s in environment variables\n", connection_mode);
-			unsetenv ("__XAMARIN_DEBUG_MODE__");
 		}
 	}
-	
+	// Free the captured debug mode if it wasn't consumed above.
+	free (captured_debug_mode);
+	captured_debug_mode = NULL;
+
 	if (!strcmp (connection_mode, "none")) {
-		// nothing to do
+		// nothing to do, but free the captured values first to avoid leaking them.
+		free (captured_debug_port);
+		captured_debug_port = NULL;
+		free (captured_debug_hosts);
+		captured_debug_hosts = NULL;
+		free (captured_debug_connect_timeout);
+		captured_debug_connect_timeout = NULL;
 		return;
 	}
  
@@ -297,18 +349,17 @@ void monotouch_configure_debugging ()
 		LOG (PRODUCT ": Added host from settings to look for the IDE: %s\n", [monodevelop_host UTF8String]);
 	}
 
-	char *evar = getenv ("__XAMARIN_DEBUG_PORT__");
-	if (evar && *evar) {
+	if (captured_debug_port && *captured_debug_port) {
 		if (monodevelop_port == -1) {
-			monodevelop_port = strtol (evar, NULL, 10);
+			monodevelop_port = strtol (captured_debug_port, NULL, 10);
 			LOG (PRODUCT ": Found port %i in environment variables\n", monodevelop_port);
 		}
-		unsetenv ("__XAMARIN_DEBUG_PORT__");
 	}
+	free (captured_debug_port);
+	captured_debug_port = NULL;
 
-	evar = getenv ("__XAMARIN_DEBUG_HOSTS__");
-	if (evar && *evar) {
-		NSArray *ips = [[NSString stringWithUTF8String:evar] componentsSeparatedByString:@";"];
+	if (captured_debug_hosts && *captured_debug_hosts) {
+		NSArray *ips = [[NSString stringWithUTF8String:captured_debug_hosts] componentsSeparatedByString:@";"];
 		for (unsigned int i = 0; i < [ips count]; i++) {
 			NSString *ip = [ips objectAtIndex:i];
 			if (![hosts containsObject:ip]) {
@@ -316,17 +367,18 @@ void monotouch_configure_debugging ()
 				LOG (PRODUCT ": Found host %s in environment variables\n", [ip UTF8String]);
 			}
 		}
-		unsetenv ("__XAMARIN_DEBUG_HOSTS__");
 	}
+	free (captured_debug_hosts);
+	captured_debug_hosts = NULL;
 
-	evar = getenv ("__XAMARIN_DEBUG_CONNECT_TIMEOUT__");
-	if (evar && *evar) {
+	if (captured_debug_connect_timeout && *captured_debug_connect_timeout) {
 		if (sdb_timeout_time == -1) {
-			sdb_timeout_time = strtol (evar, NULL, 10);
+			sdb_timeout_time = strtol (captured_debug_connect_timeout, NULL, 10);
 			LOG (PRODUCT ": Found connect timeout %i in environment variables\n", sdb_timeout_time);
 		}
-		unsetenv ("__XAMARIN_DEBUG_CONNECT_TIMEOUT__");
 	}
+	free (captured_debug_connect_timeout);
+	captured_debug_connect_timeout = NULL;
 
 #if MONOTOUCH && defined (__x86_64__)
 	// Try to read shared memory as well

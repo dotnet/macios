@@ -2,15 +2,17 @@
   "author": "Microsoft",
   "name": "Aplicación con pestañas de iOS",
   "description": "Proyecto para crear una aplicación con pestañas de iOS de .NET",
-  "symbols/bundleId/description": "Invalida CFBundleIdentifier en Info.plist",
   "symbols/bundleId/displayName": "Bundle ID",
-  "symbols/minOSVersion/description": "Invalida SupportedOSPlatformVersion en el archivo de proyecto",
+  "symbols/bundleId/description": "Invalida CFBundleIdentifier en Info.plist",
   "symbols/minOSVersion/displayName": "Minimum OS version",
-  "symbols/deviceFamily/choices/universal/description": "Compatibilidad con dispositivos iPhone y iPad",
+  "symbols/minOSVersion/description": "Invalida SupportedOSPlatformVersion en el archivo de proyecto",
+  "symbols/deviceFamily/displayName": "Device family",
   "symbols/deviceFamily/choices/universal/displayName": "Universal",
-  "symbols/deviceFamily/choices/iphone/description": "Admitir solo dispositivos iPhone",
+  "symbols/deviceFamily/choices/universal/description": "Compatibilidad con dispositivos iPhone y iPad",
   "symbols/deviceFamily/choices/iphone/displayName": "iPhone",
-  "symbols/deviceFamily/choices/ipad/description": "Admitir solo dispositivos iPad",
+  "symbols/deviceFamily/choices/iphone/description": "Admitir solo dispositivos iPhone",
   "symbols/deviceFamily/choices/ipad/displayName": "iPad",
-  "symbols/deviceFamily/displayName": "Device family"
+  "symbols/deviceFamily/choices/ipad/description": "Admitir solo dispositivos iPad",
+  "symbols/Framework/description": "The target framework for the project.",
+  "symbols/Framework/choices/net10.0-ios/description": "Target net10.0-ios"
 }

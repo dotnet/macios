@@ -1,5 +1,7 @@
 {
   "author": "Microsoft",
   "name": "Libreria di binding iOS",
-  "description": "Progetto per la creazione di una libreria di binding iOS .NET"
+  "description": "Progetto per la creazione di una libreria di binding iOS .NET",
+  "symbols/Framework/description": "The target framework for the project.",
+  "symbols/Framework/choices/net10.0-ios/description": "Target net10.0-ios"
 }

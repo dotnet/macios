@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net10.0-tvos</TargetFramework>
+    <TargetFramework>DOTNET_TFM</TargetFramework>
     <RootNamespace Condition="'$(name)' != '$(name{-VALUE-FORMS-}safe_namespace)'">tvOSLib1</RootNamespace>
   </PropertyGroup>
 </Project>

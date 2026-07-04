@@ -17,4 +17,4 @@ extends:
   parameters:
     isPR: false
     pool: $(CIBuildPool)
-    useACES: false  # flip to true to opt CI api-diff into ACES; see templates/variables/common.yml
+    useACES: true  # see templates/variables/common.yml

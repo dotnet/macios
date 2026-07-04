@@ -17,4 +17,4 @@ extends:
   template: templates/pipelines/run-tests-pipeline.yml
   parameters:
     isPR: false
-    useACES: false  # flip to true to opt CI simulator tests into ACES; see templates/variables/common.yml
+    useACES: true  # see templates/variables/common.yml

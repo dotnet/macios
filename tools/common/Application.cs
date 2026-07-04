@@ -83,10 +83,11 @@ namespace Xamarin.Bundler {
 		public bool PrepareAssemblies; // True if '$(PrepareAssemblies)' == 'true'
 #if ASSEMBLY_PREPARER
 		public bool InCustomTrimmerStep = false;
+		public bool IsPostProcessingAssemblies;
 #else
 		public bool InCustomTrimmerStep = true;
-#endif
 		public bool IsPostProcessingAssemblies => PrepareAssemblies && InCustomTrimmerStep;
+#endif
 
 #if !LEGACY_TOOLS
 		public DlsymOptions DlsymOptions;

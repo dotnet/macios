@@ -21,3 +21,5 @@
 ## Introspection says otherwise
 !missing-selector! +AVCaptionRenderer::captionPreviewForProfileID:extendedLanguageTag:renderSize: not bound
 !missing-type! AVCaptionRenderer not bound
+
+!missing-null-allowed! 'System.Void AVFoundation.AVCapturePhotoOutput::SetPreparedPhotoSettings(AVFoundation.AVCapturePhotoSettings[],System.Action`2<System.Boolean,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1

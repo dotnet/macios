@@ -204,6 +204,25 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacOSX)]
 		[TestCase (ApplePlatform.MacCatalyst)]
 		[Category ("WindowsInclusive")]
+		public void BuildBindingsTestWithCompileTarget (ApplePlatform platform)
+		{
+			// 'dotnet watch' builds the 'Compile' target directly ('dotnet build /t:Compile'),
+			// so make sure a binding project can be built that way.
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			var assemblyName = "bindings-test";
+			var dotnet_bindings_dir = Path.Combine (Configuration.SourceRoot, "tests", assemblyName, "dotnet");
+			var project_dir = Path.Combine (dotnet_bindings_dir, platform.AsString ());
+			var project_path = Path.Combine (project_dir, $"{assemblyName}.csproj");
+
+			Clean (project_path);
+			DotNet.AssertBuild (project_path, verbosity, target: "Compile");
+		}
+
+		[TestCase (ApplePlatform.iOS)]
+		[TestCase (ApplePlatform.TVOS)]
+		[TestCase (ApplePlatform.MacOSX)]
+		[TestCase (ApplePlatform.MacCatalyst)]
+		[Category ("WindowsInclusive")]
 		public void BuildBindingsTest (ApplePlatform platform)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -2812,6 +2831,29 @@ namespace Xamarin.Tests {
 		}
 
 		[Test]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64;")]
+		public void StrippedWithExportSymbolsExplicitlyFalse (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			var project = "MySimpleApp";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["NoSymbolStrip"] = "false";
+			properties ["_ExportSymbolsExplicitly"] = "false";
+			DotNet.AssertBuild (project_path, properties);
+
+			var appExecutable = GetNativeExecutable (platform, appPath);
+			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
+
+			var symbols = Configuration.GetNativeSymbols (appExecutable);
+			Assert.That (symbols, Does.Contain ("_xamarin_release_managed_ref"), "_xamarin_release_managed_ref");
+		}
+
+		[Test]
 		[TestCase (ApplePlatform.iOS, "ios-arm64;", "iOS")]
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64", "macOS")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64", "MacCatalyst")]
@@ -3932,11 +3974,7 @@ namespace Xamarin.Tests {
 			Assert.Multiple (() => {
 				var envContents = File.ReadAllText (tmpfile);
 				var env = File.ReadAllLines (tmpfile).Select (v => (Name: v [0..v.IndexOf ('=')], Value: v [(v.IndexOf ('=') + 1)..])).ToDictionary (v => v.Name, v => v.Value);
-				if (platform == ApplePlatform.MacOSX) {
-					Assert.That (envContents, Does.Contain ("__XAMARIN_DEBUG_"), "Xamarin debug environment variables should not leak to app");
-				} else {
-					Assert.That (envContents, Does.Not.Contain ("__XAMARIN_DEBUG_"), "Xamarin debug environment variables should not leak to app");
-				}
+				Assert.That (envContents, Does.Not.Contain ("__XAMARIN_DEBUG_"), "Xamarin debug environment variables should not leak to app");
 				Assert.That (env.Keys, Does.Contain ("VARIABLE"), "VARIABLE");
 				Assert.That (env ["VARIABLE"], Is.EqualTo ("VALUE"), "VALUE");
 

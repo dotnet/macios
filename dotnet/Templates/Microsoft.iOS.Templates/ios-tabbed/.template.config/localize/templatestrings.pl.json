@@ -2,15 +2,17 @@
   "author": "Microsoft",
   "name": "Aplikacja z kartami dla systemu iOS",
   "description": "Projekt służący do tworzenia aplikacji z kartami platformy .NET dla systemu iOS",
-  "symbols/bundleId/description": "Nadpisuje element CFBundleIdentifier w pliku Info.plist",
   "symbols/bundleId/displayName": "Bundle ID",
-  "symbols/minOSVersion/description": "Nadpisuje element SupportedOSPlatformVersion w pliku projektu",
+  "symbols/bundleId/description": "Nadpisuje element CFBundleIdentifier w pliku Info.plist",
   "symbols/minOSVersion/displayName": "Minimum OS version",
-  "symbols/deviceFamily/choices/universal/description": "Obsługa urządzeń iPhone i iPad",
+  "symbols/minOSVersion/description": "Nadpisuje element SupportedOSPlatformVersion w pliku projektu",
+  "symbols/deviceFamily/displayName": "Device family",
   "symbols/deviceFamily/choices/universal/displayName": "Universal",
-  "symbols/deviceFamily/choices/iphone/description": "Obsługa tylko urządzeń iPhone",
+  "symbols/deviceFamily/choices/universal/description": "Obsługa urządzeń iPhone i iPad",
   "symbols/deviceFamily/choices/iphone/displayName": "iPhone",
-  "symbols/deviceFamily/choices/ipad/description": "Obsługa tylko urządzeń iPad",
+  "symbols/deviceFamily/choices/iphone/description": "Obsługa tylko urządzeń iPhone",
   "symbols/deviceFamily/choices/ipad/displayName": "iPad",
-  "symbols/deviceFamily/displayName": "Device family"
+  "symbols/deviceFamily/choices/ipad/description": "Obsługa tylko urządzeń iPad",
+  "symbols/Framework/description": "The target framework for the project.",
+  "symbols/Framework/choices/net10.0-ios/description": "Target net10.0-ios"
 }

@@ -16,7 +16,7 @@ endif
 
 SUBDIRS += tools
 
-ifndef NO_XCODE
+ifeq ($(UNAME_S),Darwin)
 SUBDIRS += dotnet
 endif
 

@@ -19,6 +19,7 @@ extern "C" {
 #endif
 
 void monotouch_start_launch_timer ();
+void xamarin_capture_debugging_settings ();
 void monotouch_configure_debugging ();
 void monotouch_start_debugging ();
 void monotouch_start_profiling ();

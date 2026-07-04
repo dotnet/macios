@@ -453,6 +453,8 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<Content Remove="@(_ProcessedContent)" />
 		</ItemGroup>
 
+		<Error Condition="'$(_ResolveResourceItemsRelativeToProjectInvalid)' == 'true'" Text="Setting ResolveResourceItemsRelativeToProject to false is not supported in .NET 13+. Remove this property from your project file." />
+
 		<CollectBundleResources
 			SessionId="$(BuildSessionId)"
 			Condition="'$(IsMacEnabled)' == 'true' Or '$(_BundleOriginalResources)' == 'true'"
@@ -461,6 +463,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			BundleResources="@(Content);@(BundleResource)"
 			ProjectDir="$(MSBuildProjectDirectory)"
 			ResourcePrefix="$(_ResourcePrefix)"
+			ResolveResourceItemsRelativeToProject="$(ResolveResourceItemsRelativeToProject)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 			UnpackedResources="@(_UnpackedBundleResourceWithLogicalName)"
 			>
@@ -1844,7 +1847,15 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<PropertyGroup Condition="'$(IsBindingProject)' == 'true'">
 		<!-- Add our own pre and post build steps -->
 		<!-- Override the CoreCompile Target to use bgen -->
+		<!--
+			ResolveReferences must come first: our binding-generation targets (_GenerateBindings /
+			_CompileApiDefinitions) need the resolved references (@(ReferencePath)) to compile the
+			API definitions. During a normal build ResolveReferences runs earlier as part of CoreBuild,
+			but when the Compile target is built directly (e.g. 'dotnet watch' runs 'dotnet build /t:Compile')
+			nothing else resolves references first, so we have to depend on it explicitly here.
+		-->
 		<CompileDependsOn>
+			ResolveReferences;
 			_GenerateBindings;
 			_PrepareNativeReferences;
 			_CollectGeneratedSources;
@@ -2759,9 +2770,10 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 	<Target Name="_ResolveAppExtensionReferences" DependsOnTargets="_SplitAppExtensionReferencesByExistent">
 		<PropertyGroup>
-			<!-- When building a .sln with msbuild, the dependent projects may not be built. So, always build
-			     the referenced projects unless building from IDE. -->
-			<_BuildReferencedExtensionProjects Condition="'$(BuildingInsideVisualStudio)' != 'true'">true</_BuildReferencedExtensionProjects>
+			<!-- Always build the referenced extension projects unless the IDE has explicitly set this property.
+			     This used to only be done when not building from the IDE, but some versions of the IDE don't
+			     build extension projects correctly, so default to always building them. Ref: https://github.com/dotnet/macios/issues/25461 -->
+			<_BuildReferencedExtensionProjects Condition="'$(_BuildReferencedExtensionProjects)' == ''">true</_BuildReferencedExtensionProjects>
 		</PropertyGroup>
 
 		<!-- If the referenced projects have already been built, then just get the app extensions' bundle paths -->
@@ -3029,7 +3041,8 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 				<DSymName>%(Filename).dSYM</DSymName>
 			</_PostProcessingItem>
 			<_PostProcessingItem Include="$([System.IO.Path]::GetFileName('$(AppBundleDir)'))/$(_NativeExecutableRelativePath)" Condition="'$(IsWatchApp)' != 'true'">
-				<SymbolFile Condition="'$(_ExportSymbolsExplicitly)' == 'true'">$(_SymbolsListFullPath)</SymbolFile>
+				<SymbolFile>$(_SymbolsListFullPath)</SymbolFile>
+				<SymbolFileLocalPath>$(_MtouchSymbolsList)</SymbolFileLocalPath>
 				<DSymName>$(_AppBundleName)$(AppBundleExtension).dSYM</DSymName>
 				<IsXPCService>$(IsXpcService)</IsXPCService>
 				<IsAppExtension>$(IsAppExtension)</IsAppExtension>
@@ -3201,6 +3214,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			MaxDegreeOfParallelism="$(SymbolStripMaxDegreeOfParallelism)"
 			StripPath="$(StripPath)"
 			SymbolFile="%(_NativeStripItems.SymbolFile)"
+			SymbolFileLocalPath="%(_NativeStripItems.SymbolFileLocalPath)"
 		/>
 
 		<!-- Create/touch the stamp file. -->
@@ -3381,7 +3395,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		</_CreateInstallerDependsOn>
 	</PropertyGroup>
 
-	<Target Name="_CreateInstaller" Condition="'$(CreatePackage)' == 'true' And '$(_CanOutputAppBundle)' == 'true'" DependsOnTargets="$(_CreateInstallerDependsOn)">
+	<Target Name="_CreateInstaller" Condition="'$(CreatePackage)' == 'true' And '$(_CanOutputAppBundle)' == 'true' And '$(SdkIsDesktop)' == 'true'" DependsOnTargets="$(_CreateInstallerDependsOn)">
 		<PropertyGroup>
 			<PkgPackageDir Condition="'$(PkgPackageDir)' == ''">$(TargetDir)</PkgPackageDir>
 		</PropertyGroup>
@@ -3459,6 +3473,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 	<PropertyGroup>
 		<PrepareAssemblies Condition="'$(PrepareAssemblies)' == ''">false</PrepareAssemblies>
+		<PostProcessAssemblies Condition="'$(PostProcessAssemblies)' == ''">$(PrepareAssemblies)</PostProcessAssemblies>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -3505,6 +3520,51 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<ResolvedFileToPublish Include="@(_PreparedAssemblies)" />
 			<FileWrites Include="@(_PreparedAssemblies)" />
 			<FileWrites Include="$(_UnmanagedCallersOnlyMapPath)" />
+		</ItemGroup>
+	</Target>
+
+	<Target
+		Name="_PrepareAssembliesForPostProcessing"
+		DependsOnTargets="$(_PrepareAssembliesForPostProcessingDependsOn)"
+		>
+		<ItemGroup>
+			<!-- Include all managed assemblies (not just those with PostprocessAssembly=true), because the assembly-preparer
+			     needs to know about all assemblies (including the platform assembly) to do its work. This matches what the
+			     linker does internally (via CollectAssembliesStep which resolves all referenced assemblies). -->
+			<_AssembliesToPostProcess Include="@(ResolvedFileToPublish)" Condition="'%(ResolvedFileToPublish.Extension)' == '.dll' And '%(ResolvedFileToPublish.Culture)' == '' And !$([System.String]::Copy ('%(Filename)').EndsWith ('.resources'))" />
+		</ItemGroup>
+		<PropertyGroup>
+			<_PostprocessedAssembliesDirectory>$([MSBuild]::EnsureTrailingSlash('$(DeviceSpecificIntermediateOutputPath)postprocessed-assemblies'))</_PostprocessedAssembliesDirectory>
+		</PropertyGroup>
+	</Target>
+
+	<!--
+		_PostprocessAssemblies must run after the trimmer (ILLink) and before the assemblies are (Native)AOT/R2R-compiled.
+	-->
+	<Target
+		Name="_PostprocessAssemblies"
+		Condition="'$(PostProcessAssemblies)' == 'true' And '$(RuntimeIdentifiers)' == ''"
+		Inputs="@(_AssembliesToPostProcess)"
+		Outputs="@(_AssembliesToPostProcess->'$(_PostprocessedAssembliesDirectory)%(Filename)%(Extension)')"
+		AfterTargets="ILLink"
+		BeforeTargets="NativeCompile;CreateReadyToRunImages"
+		DependsOnTargets="_PrepareAssembliesForPostProcessing;_ComputeLinkerInputs"
+		>
+		<PrepareAssemblies
+			InputAssemblies="@(_AssembliesToPostProcess)"
+			MakeReproPath="$(_PostprocessAssembliesMakeReproPath)"
+			OptionsFile="$(_CustomLinkerOptionsFile)"
+			OutputDirectory="$(_PostprocessedAssembliesDirectory)"
+			Postprocessing="true"
+			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
+		>
+			<Output TaskParameter="OutputAssemblies" ItemName="_PostProcessedAssemblies" />
+		</PrepareAssemblies>
+
+		<ItemGroup>
+			<ResolvedFileToPublish Remove="@(_AssembliesToPostProcess)" />
+			<ResolvedFileToPublish Include="@(_PostProcessedAssemblies)" />
+			<FileWrites Include="@(_PostProcessedAssemblies)" />
 		</ItemGroup>
 	</Target>
 

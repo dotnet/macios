@@ -12,3 +12,9 @@
 ## Types that use these are not available on MacCatalyst
 !missing-enum! CMWaterSubmersionDepthState not bound
 !missing-enum! CMWaterSubmersionState not bound
+
+# results from initial block parameter nullability analysis
+!missing-null-allowed! 'System.Void CoreMotion.CMBatchedSensorManager::StartAccelerometerUpdates(System.Action`2<CoreMotion.CMAccelerometerData[],Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #0
+!missing-null-allowed! 'System.Void CoreMotion.CMBatchedSensorManager::StartAccelerometerUpdates(System.Action`2<CoreMotion.CMAccelerometerData[],Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #1
+!missing-null-allowed! 'System.Void CoreMotion.CMBatchedSensorManager::StartDeviceMotionUpdates(System.Action`2<CoreMotion.CMDeviceMotion[],Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #0
+!missing-null-allowed! 'System.Void CoreMotion.CMBatchedSensorManager::StartDeviceMotionUpdates(System.Action`2<CoreMotion.CMDeviceMotion[],Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #1

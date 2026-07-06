@@ -110,6 +110,12 @@ namespace Xamarin.Tests {
 			var properties = GetDefaultProperties (runtimeIdentifiers, extraProperties: extraProperties);
 			properties ["Configuration"] = configuration;
 
+			// Disable code signing: the code signature isn't relevant to the app size we want to track, and it's not
+			// deterministic between machines. In particular the code signature's hash page size (and thus the number of
+			// hashes, and thus the signature size) depends on the version of the 'codesign' tool, which is part of the OS,
+			// so the app size would otherwise differ depending on the macOS version of the machine that built the app.
+			properties ["EnableCodeSigning"] = "false";
+
 			DotNet.AssertBuild (project_path, properties);
 
 			// FORCE_UPDATE_KNOWN_FAILURES will update the known failures files even if the test doesn't actually fail

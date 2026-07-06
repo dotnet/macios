@@ -2,12 +2,13 @@ using System;
 using System.Drawing;
 
 using Foundation;
+using ObjCRuntime;
 using Social;
 using UIKit;
 
 namespace MyShareExtension {
 	public partial class ShareViewController : SLComposeServiceViewController {
-		public ShareViewController (IntPtr handle) : base (handle)
+		public ShareViewController (NativeHandle handle) : base (handle)
 		{
 		}
 

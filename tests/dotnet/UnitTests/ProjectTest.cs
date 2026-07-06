@@ -1883,7 +1883,10 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacOSX, "osx-x64", true)]
 		[TestCase (ApplePlatform.MacOSX, "osx-x64;osx-arm64", false)]
 		[TestCase (ApplePlatform.MacOSX, "osx-x64;osx-arm64", true)]
-		// [TestCase ("MacCatalyst", "")] - No extension support yet
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64", false)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64", true)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64;maccatalyst-arm64", false)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64;maccatalyst-arm64", true)]
 		public void BuildProjectsWithExtensions (ApplePlatform platform, string runtimeIdentifier, bool isNativeAot)
 		{
 			BuildProjectsWithExtensionsImpl (platform, runtimeIdentifier, isNativeAot);
@@ -1931,7 +1934,10 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacOSX, "osx-x64", true)]
 		[TestCase (ApplePlatform.MacOSX, "osx-x64;osx-arm64", false)]
 		[TestCase (ApplePlatform.MacOSX, "osx-x64;osx-arm64", true)]
-		// [TestCase ("MacCatalyst", "")] - No extension support yet
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64", false)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64", true)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64;maccatalyst-arm64", false)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64;maccatalyst-arm64", true)]
 		public void BuildProjectsWithExtensionsAndFrameworks (ApplePlatform platform, string runtimeIdentifier, bool isNativeAot)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -1974,7 +1980,7 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.iOS)]
 		[TestCase (ApplePlatform.TVOS)]
 		[TestCase (ApplePlatform.MacOSX)]
-		// [TestCase ("MacCatalyst", "")] - No extension support yet
+		[TestCase (ApplePlatform.MacCatalyst)]
 		public void BuildTrimmedExtensionProject (ApplePlatform platform)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);

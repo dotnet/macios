@@ -105,7 +105,7 @@ namespace CoreGraphics {
 		extern static /* CGLayerRef */ IntPtr CGLayerCreateWithContext (/* CGContextRef */ IntPtr context, CGSize size, /* CFDictionaryRef */ IntPtr auxiliaryInfo);
 
 		/// <summary>Creates a new CGLayer object with the specified graphics context and size.</summary>
-		/// <param name="context">The source context.</param>
+		/// <param name="context">The source context, or <see langword="null" />.</param>
 		/// <param name="size">The size for the CGLayer.</param>
 		/// <returns>A new <see cref="CGLayer" /> instance.</returns>
 		public static CGLayer Create (CGContext? context, CGSize size)

@@ -31,9 +31,13 @@ void RemoveXcodeSymlinks (string xcodePath)
 void ListXcodes ()
 {
 	Console.WriteLine ($"Xcodes:");
-	var lines = Exec ("bash", "-c", "ls -lad /Applications/Xcode*");
-	foreach (var line in lines)
-		Console.WriteLine ($"\t{line}");
+	try {
+		var lines = Exec ("bash", "-c", "ls -lad /Applications/Xcode*");
+		foreach (var line in lines)
+			Console.WriteLine ($"\t{line}");
+	} catch {
+		Console.WriteLine ("\tNo Xcode installations found in /Applications.");
+	}
 }
 
 // Provision Xcode using the xip name declared in Make.config

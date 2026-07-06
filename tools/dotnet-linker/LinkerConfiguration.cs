@@ -913,23 +913,27 @@ namespace Xamarin.Linker {
 
 		public void FlushOutputForMSBuild ()
 		{
-			Directory.CreateDirectory (ItemsDirectory);
-			foreach (var kvp in msbuild_items) {
-				var itemName = kvp.Key;
-				var items = kvp.Value;
+			// ItemsDirectory isn't set when running in the assembly-preparer, so only write
+			// the item files when we have a directory to write them to.
+			if (!string.IsNullOrEmpty (ItemsDirectory)) {
+				Directory.CreateDirectory (ItemsDirectory);
+				foreach (var kvp in msbuild_items) {
+					var itemName = kvp.Key;
+					var items = kvp.Value;
 
-				var xmlNs = XNamespace.Get ("http://schemas.microsoft.com/developer/msbuild/2003");
-				var elements = items.Select (item =>
-					new XElement (xmlNs + itemName,
-						new XAttribute ("Include", item.Include),
-							item.Metadata.Select (metadata => new XElement (xmlNs + metadata.Key, metadata.Value))));
+					var xmlNs = XNamespace.Get ("http://schemas.microsoft.com/developer/msbuild/2003");
+					var elements = items.Select (item =>
+						new XElement (xmlNs + itemName,
+							new XAttribute ("Include", item.Include),
+								item.Metadata.Select (metadata => new XElement (xmlNs + metadata.Key, metadata.Value))));
 
-				var document = new XDocument (
-					new XElement (xmlNs + "Project",
-						new XElement (xmlNs + "ItemGroup",
-							elements)));
+					var document = new XDocument (
+						new XElement (xmlNs + "Project",
+							new XElement (xmlNs + "ItemGroup",
+								elements)));
 
-				document.Save (Path.Combine (ItemsDirectory, itemName + ".items"));
+					document.Save (Path.Combine (ItemsDirectory, itemName + ".items"));
+				}
 			}
 
 			// Write the collected MSBuild output properties (alphabetically sorted, one 'Name=Value' per line)

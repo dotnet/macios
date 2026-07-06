@@ -174,8 +174,12 @@ namespace Xamarin.Tests {
 			var report = new StringBuilder ();
 			report.AppendLine ($"AppBundleSize: {FormatBytes (appBundleSize)}");
 			report.AppendLine ($"# The following list of files and their sizes is just informational / for review, and isn't used in the test:");
-			foreach (var file in allFiles.OrderBy (v => v.FullName))
-				report.AppendLine ($"{file.FullName [(appPath.Length + 1)..]}: {FormatBytes (file.Length)}");
+			foreach (var file in allFiles.OrderBy (v => v.FullName)) {
+				// Write the file length on a different line, so that it's easier to compute length changes in a diff (the file name stays the same, only the length line changes).
+				// Also if files are added or removed, in addition to other files change their lengths, this will make those additions/removals stand out more in diffs.
+				report.AppendLine ($"{file.FullName [(appPath.Length + 1)..]}:");
+				report.AppendLine ($"    {FormatBytes (file.Length)}");
+			}
 			var expectedSizeReportPath = Path.Combine (expectedDirectory, $"{name}-size.txt");
 			var expectedSizeReport = "";
 			var expectedAppBundleSize = 0L;

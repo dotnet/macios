@@ -207,8 +207,8 @@ namespace Xamarin.Tests {
 			Console.WriteLine ($"    {msg}");
 
 			// Compare individual files in the app bundle
-			var expectedLines = expectedSizeReport.SplitLines ().Skip (2).Where (v => v.IndexOf (':') >= 0).ToDictionary (v => v [..v.IndexOf (':')], v => v [(v.IndexOf (':') + 1)..]);
-			var actualLines = report.ToString ().SplitLines ().Skip (2).Where (v => v.IndexOf (':') >= 0).ToDictionary (v => v [..v.IndexOf (':')], v => v [(v.IndexOf (':') + 1)..]);
+			var expectedLines = ParseFileSizes (expectedSizeReport);
+			var actualLines = ParseFileSizes (report.ToString ());
 			var allKeys = expectedLines.Keys.Union (actualLines.Keys).OrderBy (v => v);
 			var filesAdded = new List<string> ();
 			var filesRemoved = new List<string> ();
@@ -248,6 +248,25 @@ namespace Xamarin.Tests {
 				}
 				Assert.Fail ($"{msg} {updateHint}");
 			}
+		}
+
+		// Parse a size report (either an expected file or a freshly generated report) into a dictionary
+		// mapping each file's relative path to its formatted size. The format is two lines per file: the
+		// file name (ending with ':') followed by an indented line with the size.
+		static Dictionary<string, string> ParseFileSizes (string report)
+		{
+			var rv = new Dictionary<string, string> ();
+			var lines = report.SplitLines ();
+			// Skip the first two lines: the total 'AppBundleSize' line and the '#' comment line.
+			for (var i = 2; i < lines.Length; i++) {
+				var line = lines [i];
+				if (!line.EndsWith (":", StringComparison.Ordinal))
+					continue;
+				var name = line [..^1];
+				var size = i + 1 < lines.Length ? lines [i + 1].Trim () : "";
+				rv [name] = size;
+			}
+			return rv;
 		}
 
 		// Create a file with all the APIs that survived the trimmer; this can be useful to determine what is not trimmed away.

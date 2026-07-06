@@ -296,8 +296,16 @@ namespace Xamarin.Tests {
 			foreach (var assembly in assemblies) {
 				ModuleDefinition definition = ModuleDefinition.ReadModule (assembly, new ReaderParameters { ReadingMode = ReadingMode.Deferred });
 
+				// ReadyToRun images (produced by crossgen2) are marked as an IL library instead of IL-only,
+				// and the IL bodies of their R2R-compiled methods may have been removed (the .NET SDK enables
+				// PublishReadyToRunStripILBodies by default for iOS-like RIDs in release builds). Such methods
+				// still contain code (as native code) and weren't emptied by our own IL stripper, but their
+				// (removed) IL bodies can't be inspected with Mono.Cecil, so don't try - treat any method with
+				// a body as non-empty.
+				var isReadyToRunImage = (definition.Attributes & ModuleAttributes.ILOnly) == 0;
+
 				var nonEmptyMethods = definition.Assembly.MainModule.Types.SelectMany (t =>
-					t.Methods.Where (m => m.HasBody && m.Body.Instructions.Count > 1)).ToArray ();
+					t.Methods.Where (m => m.HasBody && (isReadyToRunImage || m.Body.Instructions.Count > 1))).ToArray ();
 				var onlyHasEmptyMethods = !nonEmptyMethods.Any ();
 				if (onlyHasEmptyMethods) {
 					assembliesWithOnlyEmptyMethods.Add (assembly);

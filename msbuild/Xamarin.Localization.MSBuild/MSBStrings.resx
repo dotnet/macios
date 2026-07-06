@@ -1690,6 +1690,14 @@
         <comment>Shown when a binding resource package's manifest contains a native reference whose 'Name' attribute is missing or empty.
 {0} - The path to the binding resource package.</comment>
     </data>
+    <data name="E7183" xml:space="preserve">
+        <value>The resource '{0}' in assembly '{1}' would extract to '{2}' which is outside of the target directory '{3}'.</value>
+        <comment>Shown when an embedded resource would be extracted to a path outside the intended output directory.
+{0} - The resource name.
+{1} - The assembly path.
+{2} - The computed extraction path.
+{3} - The intended output directory.</comment>
+    </data>
     <data name="E0192" xml:space="preserve">
         <value>The PrepareAssemblies task failed without reporting a specific error. Please rebuild with increased verbosity for more details.</value>
     </data>

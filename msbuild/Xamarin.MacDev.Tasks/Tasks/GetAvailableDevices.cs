@@ -389,10 +389,9 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 						discardedReason = $"Unknown product family '{deviceTypeInfo.ProductFamily}'";
 						break;
 					}
-					if (Version.TryParse (deviceTypeInfo.MinRuntimeVersionString, out var parsedMinimumOSVersion))
+					if (Version.TryParse (runtimeVersion, out var parsedMinimumOSVersion))
 						minimumOSVersion = parsedMinimumOSVersion;
-					if (Version.TryParse (deviceTypeInfo.MaxRuntimeVersionString, out var parsedMaximumOSVersion))
-						maximumOSVersion = parsedMaximumOSVersion;
+					maximumOSVersion = new Version (65535, 255, 255);
 				} else {
 					discardedReason = $"Unknown device type identifier '{device.DeviceTypeIdentifier}'";
 				}

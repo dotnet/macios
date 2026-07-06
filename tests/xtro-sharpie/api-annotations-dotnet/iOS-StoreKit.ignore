@@ -1,8 +1,3 @@
 # results from initial block parameter nullability analysis
-!missing-null-allowed! 'System.Void StoreKit.SKAdNetwork::EndImpression(StoreKit.SKAdImpression,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
-!missing-null-allowed! 'System.Void StoreKit.SKAdNetwork::StartImpression(StoreKit.SKAdImpression,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
-!missing-null-allowed! 'System.Void StoreKit.SKAdNetwork::UpdatePostback(System.IntPtr,StoreKit.SKAdNetworkCoarseConversionValue,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
-!missing-null-allowed! 'System.Void StoreKit.SKAdNetwork::UpdatePostback(System.IntPtr,StoreKit.SKAdNetworkCoarseConversionValue,System.Boolean,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
-!missing-null-allowed! 'System.Void StoreKit.SKAdNetwork::UpdatePostback(System.IntPtr,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
 !missing-null-allowed! 'System.Void StoreKit.SKStoreProductViewController::LoadProduct(Foundation.NSDictionary,StoreKit.SKAdImpression,System.Action`2<System.Boolean,Foundation.NSError>)' is missing a '?' on parameter 'callback' block parameter #1
 !missing-null-allowed! 'System.Void StoreKit.SKStoreProductViewController::LoadProduct(Foundation.NSDictionary,System.Action`2<System.Boolean,Foundation.NSError>)' is missing a '?' on parameter 'callback' block parameter #1

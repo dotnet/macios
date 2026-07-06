@@ -390,7 +390,7 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 						break;
 					}
 					if (Version.TryParse (runtimeVersion, out var parsedMinimumOSVersion))
-						minimumOSVersion = parsedMinimumOSVersion;
+						minimumOSVersion = parsedMinimumOSVersion; // TODO: Refactor minimumOSVersion and maximumOSVersion to use only runtimeVersion in DeviceInfo
 					maximumOSVersion = new Version (65535, 255, 255);
 				} else {
 					discardedReason = $"Unknown device type identifier '{device.DeviceTypeIdentifier}'";

@@ -35,8 +35,8 @@ void ListXcodes ()
 		var lines = Exec ("bash", "-c", "ls -lad /Applications/Xcode*");
 		foreach (var line in lines)
 			Console.WriteLine ($"\t{line}");
-	} catch {
-		Console.WriteLine ("\tNo Xcode installations found in /Applications.");
+	} catch (Exception e) {
+		Console.WriteLine ($"\tNo Xcode installations found in /Applications (ls failed: {e.Message}).");
 	}
 }
 

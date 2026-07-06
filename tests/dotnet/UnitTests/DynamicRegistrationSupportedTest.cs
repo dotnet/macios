@@ -39,6 +39,30 @@ namespace Xamarin.Tests {
 			Assert.That (featureSwitch?.GetMetadata ("Value"), Is.EqualTo (dynamicRegistrationSupported), "The feature switch value must match the user-specified value.");
 		}
 
+		[Test]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64")]
+		public void SkippedWhenPlatformAssemblyNotTrimmed (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			// When the platform assembly isn't being trimmed (link mode None), the dynamic registrar can't be
+			// removed, so RegistrarRemovalTrackingStep is skipped and no DynamicRegistrationSupported feature
+			// switch is emitted (the dynamic registrar is kept, which is the default).
+			var project = "MySimpleApp";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var project_path = GetProjectPath (project, platform: platform);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["MtouchLink"] = "None";
+			properties ["PrepareAssemblies"] = "true";
+			properties ["PostProcessAssemblies"] = "true";
+
+			var rv = DotNet.AssertBuild (project_path, properties);
+
+			var featureSwitch = GetRuntimeHostConfigurationOption (rv.BinLogPath, "ObjCRuntime.Runtime.DynamicRegistrationSupported");
+			Assert.That (featureSwitch, Is.Null, "No DynamicRegistrationSupported feature switch should be set when the platform assembly isn't trimmed.");
+		}
+
 		// Returns the last RuntimeHostConfigurationOption item with the given name (ItemSpec) added during the build.
 		static ITaskItem? GetRuntimeHostConfigurationOption (string binLogPath, string name)
 		{

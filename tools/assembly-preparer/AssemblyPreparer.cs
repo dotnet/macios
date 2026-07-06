@@ -140,9 +140,12 @@ public class AssemblyPreparer : IDisposable {
 			new InlineDlfcnMethodsStep (),
 		};
 
-		// If the user explicitly set $(DynamicRegistrationSupported), we don't need to compute the value, so
-		// skip RegistrarRemovalTrackingStep entirely (the value is passed straight through to the trimmer feature switch).
-		if (!configuration.DynamicRegistrationSupported.HasValue)
+		// Only add RegistrarRemovalTrackingStep if it's needed:
+		// * If the user explicitly set $(DynamicRegistrationSupported), we don't need to compute the value (it's
+		//   passed straight through to the trimmer feature switch).
+		// * If nothing is being trimmed, the dynamic registrar (which lives in the platform assembly, an SDK
+		//   assembly that's only trimmed when trimming is enabled) can't be removed, so there's nothing to compute.
+		if (!configuration.DynamicRegistrationSupported.HasValue && configuration.Application.AreAnyAssembliesTrimmed)
 			steps.Add (new RegistrarRemovalTrackingStep ());
 
 		// PreMarkDispatcher: I don't think we need this one

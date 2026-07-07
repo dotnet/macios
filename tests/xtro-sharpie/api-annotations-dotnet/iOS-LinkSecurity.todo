@@ -1,0 +1,6 @@
+!missing-selector! +LSLinkSecurityManager::sharedManager not bound
+!missing-selector! LSLinkSecurityManager::addFlaggedURL: not bound
+!missing-selector! LSLinkSecurityManager::addFlaggedURLs: not bound
+!missing-selector! LSLinkSecurityManager::checkIsFlaggedURL:completion: not bound
+!missing-selector! LSLinkSecurityManager::hasFlaggedURLs not bound
+!missing-type! LSLinkSecurityManager not bound

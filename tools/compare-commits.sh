@@ -138,6 +138,18 @@ function report_error_line ()
 	fi
 }
 
+function report_warning_line ()
+{
+	echo "$@"
+	if test -n "$GH_COMMENTS_FILE"; then
+		# remove color codes when writing to failure file
+		printf ":warning: Warning :warning:\\n" >> "$GH_COMMENTS_FILE"
+		printf "\\n"  >> "$GH_COMMENTS_FILE"
+		# shellcheck disable=SC2001
+		echo "$@" | sed $'s,\x1b\\[[0-9;]*[a-zA-Z],,g' >> "$GH_COMMENTS_FILE"
+	fi
+}
+
 # Figure out the pull request
 if test -z "$BASE_HASH"; then
 	if test -n "$PULL_REQUEST_ID"; then
@@ -301,18 +313,39 @@ if test -z "$USE_EXISTING_BUILD"; then
 	make reset 2>&1 | sed 's/^/    /'
 	make check-versions 2>&1 | sed 's/^/    /'
 	if ! ./system-dependencies.sh 2>&1 | sed 's/^/        /'; then
-		report_error_line "${RED}Error: The system requirements for the hash to compare against ($WHITE$BASE_HASH$CLEAR) are different than for the current hash. Comparison is currently not supported in this scenario.${CLEAR}"
-		exit 1
+		# system-dependencies.sh failed, which typically means the base hash
+		# requires a different Xcode version. Check if the required Xcode is
+		# installed on this machine, and if so, create a configure.inc pointing
+		# to it and try again.
+		BASE_XCODE_DEVELOPER_ROOT=$(grep "^XCODE_DEVELOPER_ROOT[?:]*=" Make.config | sed 's/^[^=]*=//' || true)
+		if test -n "$BASE_XCODE_DEVELOPER_ROOT" && test -d "$BASE_XCODE_DEVELOPER_ROOT"; then
+			echo "    ${BLUE}The base hash requires a different Xcode ($WHITE$BASE_XCODE_DEVELOPER_ROOT$BLUE), which is available on this machine. Retrying...${CLEAR}"
+			# Remove any existing XCODE_DEVELOPER_ROOT line and append the new one
+			sed -i '' '/^XCODE_DEVELOPER_ROOT=/d' configure.inc 2>/dev/null || true
+			echo "XCODE_DEVELOPER_ROOT=$BASE_XCODE_DEVELOPER_ROOT" >> configure.inc
+			if ! ./system-dependencies.sh 2>&1 | sed 's/^/        /'; then
+				report_warning_line "${RED}Warning: The system requirements for the hash to compare against ($WHITE$BASE_HASH$CLEAR) are different than for the current hash. Skipping API/generator comparison.${CLEAR}"
+				SKIP_REMAINING_BUILD=1
+			fi
+		else
+			report_warning_line "${RED}Warning: The system requirements for the hash to compare against ($WHITE$BASE_HASH$CLEAR) are different than for the current hash. Skipping API/generator comparison.${CLEAR}"
+			SKIP_REMAINING_BUILD=1
+		fi
 	fi
-	if ! make all -j8 2>&1 | sed 's/^/        /'; then
-		report_error_line "${RED}Error: 'make' failed for the hash $WHITE$BASE_HASH$CLEAR.${CLEAR}"
-		exit 1
+	if test -z "${SKIP_REMAINING_BUILD:-}"; then
+		if ! make all -j8 2>&1 | sed 's/^/        /'; then
+			report_error_line "${RED}Error: 'make' failed for the hash $WHITE$BASE_HASH$CLEAR.${CLEAR}"
+			exit 1
+		fi
+		if ! make install -j8 2>&1 | sed 's/^/        /'; then
+			report_error_line "${RED}Error: 'make install' failed for the hash $WHITE$BASE_HASH$CLEAR.${CLEAR}"
+			exit 1
+		fi
+		echo "    ${BLUE}Build completed for ${WHITE}$BASE_HASH${BLUE}"
+	else
+		ENABLE_GENERATOR_DIFF=
+		ENABLE_API_DIFF=
 	fi
-	if ! make install -j8 2>&1 | sed 's/^/        /'; then
-		report_error_line "${RED}Error: 'make install' failed for the hash $WHITE$BASE_HASH$CLEAR.${CLEAR}"
-		exit 1
-	fi
-	echo "    ${BLUE}Build completed for ${WHITE}$BASE_HASH${BLUE}"
 echo ""
 else
 	if ! test -d "$OUTPUT_SRC_DIR"; then

@@ -83,9 +83,9 @@ namespace Xamarin.Tests {
 					result.Project,
 					result.RuntimeIdentifier,
 					result.LinkMode,
-					result.GetBuildTimes (false).Average.ToString (),
-					result.GetBuildTimes (true).Average.ToString (),
-					result.AverageDifference.ToString (),
+					FormatTimeSpan (result.GetBuildTimes (false).Average),
+					FormatTimeSpan (result.GetBuildTimes (true).Average),
+					FormatTimeSpan (result.AverageDifference),
 				});
 			}
 			AppendMarkdownTable (report, summaryHeaders, summaryRows);
@@ -104,26 +104,26 @@ namespace Xamarin.Tests {
 					var enabled = i < enabledTimes.Count ? enabledTimes [i] : null;
 					detailRows.Add (new [] {
 						$"#{i + 1}",
-						disabled?.Duration.ToString () ?? "",
-						enabled?.Duration.ToString () ?? "",
+						disabled is not null ? FormatTimeSpan (disabled.Duration) : "",
+						enabled is not null ? FormatTimeSpan (enabled.Duration) : "",
 						disabled?.BinLogPath ?? "",
 						enabled?.BinLogPath ?? "",
 					});
 				}
 				detailRows.Add (new [] {
 					"**Average**",
-					result.GetBuildTimes (false).Average.ToString (),
-					result.GetBuildTimes (true).Average.ToString (),
+					FormatTimeSpan (result.GetBuildTimes (false).Average),
+					FormatTimeSpan (result.GetBuildTimes (true).Average),
 					"",
 					"",
 				});
 				AppendMarkdownTable (report, detailHeaders, detailRows);
 				report.AppendLine ();
-				report.AppendLine ($"Difference (of average): {result.AverageDifference}");
+				report.AppendLine ($"Difference (of average): {FormatTimeSpan (result.AverageDifference)}");
 				report.AppendLine ();
 			}
 
-			report.AppendLine ($"Total duration: {watch.Elapsed}");
+			report.AppendLine ($"Total duration: {FormatTimeSpan (watch.Elapsed)}");
 			Console.WriteLine (report);
 
 			if (enablePerformanceTests.Contains ("%SPEC%")) {
@@ -137,6 +137,8 @@ namespace Xamarin.Tests {
 				}
 			}
 		}
+
+		static string FormatTimeSpan (TimeSpan value) => value.ToString (@"hh\:mm\:ss\.ff");
 
 		static void AppendMarkdownTable (StringBuilder report, string [] headers, List<string []> rows)
 		{

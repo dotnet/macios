@@ -1,5 +1,7 @@
 {
   "author": "Microsoft",
   "name": "iOS Sınıf Kitaplığı",
-  "description": "Bir .NET iOS sınıf kitaplığı oluşturmaya yönelik proje"
+  "description": "Bir .NET iOS sınıf kitaplığı oluşturmaya yönelik proje",
+  "symbols/Framework/description": "The target framework for the project.",
+  "symbols/Framework/choices/net10.0-ios/description": "Target net10.0-ios"
 }

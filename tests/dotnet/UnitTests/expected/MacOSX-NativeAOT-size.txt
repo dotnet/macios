@@ -1,13 +1,20 @@
-AppBundleSize: 8,835,214 bytes (8,628.1 KB = 8.4 MB)
+AppBundleSize: 15,885,626 bytes (15,513.3 KB = 15.1 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
-Contents/_CodeSignature/CodeResources: 3,489 bytes (3.4 KB = 0.0 MB)
-Contents/Info.plist: 750 bytes (0.7 KB = 0.0 MB)
-Contents/MacOS/SizeTestApp: 5,841,616 bytes (5,704.7 KB = 5.6 MB)
-Contents/MonoBundle/libSystem.Globalization.Native.dylib: 252,176 bytes (246.3 KB = 0.2 MB)
-Contents/MonoBundle/libSystem.IO.Compression.Native.dylib: 2,005,440 bytes (1,958.4 KB = 1.9 MB)
-Contents/MonoBundle/libSystem.Native.dylib: 292,176 bytes (285.3 KB = 0.3 MB)
-Contents/MonoBundle/libSystem.Net.Security.Native.dylib: 136,656 bytes (133.5 KB = 0.1 MB)
-Contents/MonoBundle/libSystem.Security.Cryptography.Native.Apple.dylib: 300,896 bytes (293.8 KB = 0.3 MB)
-Contents/MonoBundle/runtimeconfig.bin: 1,766 bytes (1.7 KB = 0.0 MB)
-Contents/PkgInfo: 8 bytes (0.0 KB = 0.0 MB)
-Contents/Resources/archived-expanded-entitlements.xcent: 241 bytes (0.2 KB = 0.0 MB)
+Contents/Info.plist:
+    740 bytes (0.7 KB = 0.0 MB)
+Contents/MacOS/SizeTestApp:
+    12,796,408 bytes (12,496.5 KB = 12.2 MB)
+Contents/MonoBundle/libSystem.Globalization.Native.dylib:
+    267,872 bytes (261.6 KB = 0.3 MB)
+Contents/MonoBundle/libSystem.IO.Compression.Native.dylib:
+    2,025,904 bytes (1,978.4 KB = 1.9 MB)
+Contents/MonoBundle/libSystem.Native.dylib:
+    307,872 bytes (300.7 KB = 0.3 MB)
+Contents/MonoBundle/libSystem.Net.Security.Native.dylib:
+    151,904 bytes (148.3 KB = 0.1 MB)
+Contents/MonoBundle/libSystem.Security.Cryptography.Native.Apple.dylib:
+    333,152 bytes (325.3 KB = 0.3 MB)
+Contents/MonoBundle/runtimeconfig.bin:
+    1,766 bytes (1.7 KB = 0.0 MB)
+Contents/PkgInfo:
+    8 bytes (0.0 KB = 0.0 MB)

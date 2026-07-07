@@ -227,6 +227,24 @@ If there are merge conflicts:
   - Add the `do-not-merge` label.
   - Add a comment requesting human review of the conflict resolution, listing which files were manually resolved.
 
+##### After resolving all conflicts
+
+Complete the merge in a single step:
+
+```bash
+git commit --no-edit
+```
+
+> **Critical**: Stage ALL resolved files first, then run `git commit --no-edit` exactly once. Never commit one file at a time while in merge state — the first `git commit` would complete the merge and clear `MERGE_HEAD`, turning any subsequent commits into plain single-parent commits.
+
+Verify the resulting commit is a proper merge commit with **two** parent SHAs:
+
+```bash
+git log --format="%P" -1
+```
+
+The output must contain **two** space-separated SHA hashes. If only one SHA is shown, `MERGE_HEAD` was lost during conflict resolution (e.g. due to a `git reset` or `git checkout`). The branch then contains a plain single-parent commit instead of a merge commit. A plain commit causes `git format-patch` to include all commits since the branch diverged from `main` — potentially tens of thousands — which will exceed the buffer limit and fail PR creation. Discard the branch and restart from step c.
+
 #### e. Create or update the PR
 
 Do **NOT** run `git push` manually. The safeoutputs tool handles pushing.

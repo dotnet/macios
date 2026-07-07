@@ -2,8 +2,10 @@
   "author": "Microsoft",
   "name": "macOS-Anwendung",
   "description": "Ein Projekt zum Erstellen einer .NET macOS-Anwendung",
-  "symbols/bundleId/description": "Überschreibt „CFBundleIdentifier“ in „Info.plist“",
   "symbols/bundleId/displayName": "Bundle ID",
+  "symbols/bundleId/description": "Überschreibt „CFBundleIdentifier“ in „Info.plist“",
+  "symbols/minOSVersion/displayName": "Minimum OS version",
   "symbols/minOSVersion/description": "Überschreibt „SupportedOSPlatformVersion“ in der Projektdatei.",
-  "symbols/minOSVersion/displayName": "Minimum OS version"
+  "symbols/Framework/description": "The target framework for the project.",
+  "symbols/Framework/choices/net10.0-macos/description": "Target net10.0-macos"
 }

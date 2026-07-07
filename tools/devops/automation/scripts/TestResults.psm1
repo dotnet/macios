@@ -267,6 +267,7 @@ class ParallelTestsResults {
     [string] $VSDropsIndex
     [TestResult[]] $Results
     [string] $LinuxBuildStatus
+    [string] $BuildMacTestsStatus
 
     ParallelTestsResults (
         [TestResult[]] $results,
@@ -425,7 +426,12 @@ class ParallelTestsResults {
                 # get the result, if -1, we had a crash, else we print the result
                 $result = $r.GetPassedTests()
                 if ($result.Passed -eq -2 -or $result.Failed -eq -2) {
-                    $stringBuilder.AppendLine(":fire: Failed catastrophically on $($r.Context) (no summary found).")
+                    if ($r.IsMacTest -and -not [string]::IsNullOrEmpty($this.BuildMacTestsStatus) -and $this.BuildMacTestsStatus -ne "Succeeded") {
+                        $pipelineLink = "$Env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI$Env:SYSTEM_TEAMPROJECT/_build/results?buildId=$Env:BUILD_BUILDID"
+                        $stringBuilder.AppendLine(":warning: Tests did not run because the [Build macOS tests]($pipelineLink) job failed.")
+                    } else {
+                        $stringBuilder.AppendLine(":fire: Failed catastrophically on $($r.Context) (no summary found).")
+                    }
                     $stringBuilder.AppendLine("")
                     $stringBuilder.AppendLine($this.GetDownloadLinks($r))
                     $stringBuilder.AppendLine("")
@@ -703,6 +709,18 @@ class ParallelTestsResults {
                 if ($linuxJob.ContainsKey("result")) {
                     $result.LinuxBuildStatus = $linuxJob["result"]
                     Write-Host "Linux build verification status: $($result.LinuxBuildStatus)"
+                }
+            }
+        }
+
+        # Extract the Build macOS tests status from stage dependencies
+        if ($stageDep.ContainsKey("build_macos_tests")) {
+            $buildMacStage = $stageDep["build_macos_tests"]
+            if ($buildMacStage.ContainsKey("build_macos_tests_job")) {
+                $buildMacJob = $buildMacStage["build_macos_tests_job"]
+                if ($buildMacJob.ContainsKey("result")) {
+                    $result.BuildMacTestsStatus = $buildMacJob["result"]
+                    Write-Host "Build macOS tests status: $($result.BuildMacTestsStatus)"
                 }
             }
         }

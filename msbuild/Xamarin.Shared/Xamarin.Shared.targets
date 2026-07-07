@@ -3015,6 +3015,11 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			     that will actually be present in the app bundle. Ref: https://github.com/dotnet/macios/issues/24840 -->
 			<!-- The condition is necessary due to https://github.com/dotnet/msbuild/issues/4056 -->
 			<_PostProcessingItem Condition="@(_FilteredFrameworkToPublish->Count()) &gt; 0" Include="@(_FilteredFrameworkToPublish->'$(_AppBundleName)$(AppBundleExtension)/$(_AppFrameworksRelativePath)%(Filename)%(Extension).framework/%(Filename)%(Extension)')">
+				<!-- These are frameworks, so make sure they're stripped as such (only debug symbols are stripped from frameworks).
+				     Some frameworks (in particular ones embedded in a binding project) don't carry the 'Kind' metadata, so set it
+				     here to make sure symbol stripping doesn't do a full strip on them (which fails for dynamic libraries).
+				     Ref: https://github.com/dotnet/macios/issues/25952 -->
+				<Kind>Framework</Kind>
 				<!-- Store where this item came from -->
 				<ItemSourcePath>%(Identity)</ItemSourcePath>
 				<!-- If the item in question came with a .dSYM directory, this would be the path to it: -->

@@ -1,10 +1,3 @@
 # results from initial block parameter nullability analysis
 !missing-null-allowed! 'System.Void ARKit.ARGeoTrackingConfiguration::CheckAvailability(CoreLocation.CLLocationCoordinate2D,System.Action`2<System.Boolean,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1
 !missing-null-allowed! 'System.Void ARKit.ARGeoTrackingConfiguration::CheckAvailability(System.Action`2<System.Boolean,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1
-!missing-null-allowed! 'System.Void ARKit.ARReferenceImage::Validate(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
-!missing-null-allowed! 'System.Void ARKit.ARSession::CaptureHighResolutionFrame(System.Action`2<ARKit.ARFrame,Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #0
-!missing-null-allowed! 'System.Void ARKit.ARSession::CaptureHighResolutionFrame(System.Action`2<ARKit.ARFrame,Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #1
-!missing-null-allowed! 'System.Void ARKit.ARSession::CreateReferenceObject(CoreGraphics.NMatrix4,CoreGraphics.NVector3,CoreGraphics.NVector3,System.Action`2<ARKit.ARReferenceObject,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
-!missing-null-allowed! 'System.Void ARKit.ARSession::CreateReferenceObject(CoreGraphics.NMatrix4,CoreGraphics.NVector3,CoreGraphics.NVector3,System.Action`2<ARKit.ARReferenceObject,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1
-!missing-null-allowed! 'System.Void ARKit.ARSession::GetCurrentWorldMap(System.Action`2<ARKit.ARWorldMap,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
-!missing-null-allowed! 'System.Void ARKit.ARSession::GetCurrentWorldMap(System.Action`2<ARKit.ARWorldMap,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1

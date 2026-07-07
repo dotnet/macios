@@ -14,5 +14,6 @@
   "symbols/deviceFamily/choices/ipad/displayName": "iPad",
   "symbols/deviceFamily/choices/ipad/description": "Yalnızca iPad cihazları için destek",
   "symbols/Framework/description": "The target framework for the project.",
-  "symbols/Framework/choices/net11.0-ios/description": "Target net11.0-ios"
+  "symbols/Framework/choices/net11.0-ios/description": "Target net11.0-ios",
+  "symbols/Framework/choices/net10.0-ios/description": "Target net10.0-ios"
 }

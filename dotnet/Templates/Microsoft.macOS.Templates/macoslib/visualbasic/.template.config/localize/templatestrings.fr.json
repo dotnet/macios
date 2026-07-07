@@ -3,5 +3,6 @@
   "name": "Bibliothèque de classes macOS",
   "description": "Projet de création d’une bibliothèque de classes .NET macOS",
   "symbols/Framework/description": "The target framework for the project.",
-  "symbols/Framework/choices/net11.0-macos/description": "Target net11.0-macos"
+  "symbols/Framework/choices/net11.0-macos/description": "Target net11.0-macos",
+  "symbols/Framework/choices/net10.0-macos/description": "Target net10.0-macos"
 }

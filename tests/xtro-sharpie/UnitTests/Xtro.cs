@@ -15,7 +15,9 @@ namespace Xamarin.Tests {
 			// report.zip is always created even when index.html's recipe
 			// returns non-zero (which happens when there are unclassified entries).
 			var rv = ExecutionHelper.Execute ("make", new [] { "-C", dir, "report-dotnet/index.html", "-j", "8" });
-			ExecutionHelper.Execute ("make", new [] { "-C", dir, "report-dotnet/report.zip" });
+			var zipRv = ExecutionHelper.Execute ("make", new [] { "-C", dir, "report-dotnet/report.zip" });
+			if (zipRv != 0)
+				Console.WriteLine ($"Failed to create report.zip (exit code: {zipRv}).");
 
 			var reportDir = Path.Combine (dir, "report-dotnet");
 			var report = Path.Combine (reportDir, "index.html");

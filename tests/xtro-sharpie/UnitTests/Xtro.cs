@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using System.IO.Compression;
 using System.Xml;
 
 #nullable enable
@@ -11,12 +10,12 @@ namespace Xamarin.Tests {
 		public void RunTest ()
 		{
 			var dir = Path.Combine (Configuration.SourceRoot, "tests", "xtro-sharpie");
-			var args = new [] {
-				"-C", dir,
-				"report-dotnet/report.zip",
-				"-j", "8",
-			};
-			var rv = ExecutionHelper.Execute ("make", args);
+
+			// Run the report and zip as separate make invocations so that
+			// report.zip is always created even when index.html's recipe
+			// returns non-zero (which happens when there are unclassified entries).
+			var rv = ExecutionHelper.Execute ("make", new [] { "-C", dir, "report-dotnet/index.html", "-j", "8" });
+			ExecutionHelper.Execute ("make", new [] { "-C", dir, "report-dotnet/report.zip" });
 
 			var reportDir = Path.Combine (dir, "report-dotnet");
 			var report = Path.Combine (reportDir, "index.html");
@@ -25,16 +24,7 @@ namespace Xamarin.Tests {
 				TestContext.AddTestAttachment (report, "HTML report");
 			}
 
-			// Zip up the report directory ourselves if make didn't get to it
-			// (make stops at the index.html target when there are unclassified entries).
 			var zippedReport = Path.Combine (reportDir, "report.zip");
-			if (!File.Exists (zippedReport) && Directory.Exists (reportDir)) {
-				try {
-					ZipFile.CreateFromDirectory (reportDir, zippedReport);
-				} catch (Exception e) {
-					Console.WriteLine ($"Failed to create report zip: {e.Message}");
-				}
-			}
 			if (File.Exists (zippedReport)) {
 				Console.WriteLine ($"Added {zippedReport} as attachment.");
 				TestContext.AddTestAttachment (zippedReport, "HTML report (zipped)");

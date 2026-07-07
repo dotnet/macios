@@ -343,7 +343,6 @@
 			>
 
 		<GenerateR2RModuleRegistration
-			SessionId="$(BuildSessionId)"
 			R2RModules="@(_R2RModule)"
 			OutputFile="$(_R2RModuleRegistrationFile)"
 		/>

@@ -155,7 +155,7 @@ BUNDLE_ID=$(shell defaults read "$(APPMANIFEST)" CFBundleIdentifier 2>/dev/null)
 else ifeq ($(PLATFORM),macOS)
 EXECUTABLE="$(abspath .)/bin/$(CONFIG)/$(TEST_TFM)-macos/$(PATH_RID)$(TESTNAME).app/Contents/MacOS/$(TESTNAME)"
 APPMANIFEST:=$(abspath .)/bin/$(CONFIG)/$(TEST_TFM)-macos/$(PATH_RID)$(TESTNAME).app/Contents/Info.plist
-BUNDLE_ID:=$(shell defaults read "$(basename $(APPMANIFEST))" CFBundleIdentifier 2>/dev/null)
+BUNDLE_ID=$(shell defaults read "$(APPMANIFEST)" CFBundleIdentifier 2>/dev/null)
 else
 EXECUTABLE="unknown-executable-platform-$(PLATFORM)"
 endif

@@ -106,24 +106,37 @@ namespace Foundation {
 	abstract class NSAsyncDispatcher : NSDispatcher {
 		readonly GCHandle gch;
 		internal readonly int InstrumentationId;
+		// The native handle captured at creation time. We must use this for all
+		// lifecycle event logging, because the live Handle property may already be
+		// zeroed by the time Apply/Dispose/Finalize run.
+		internal readonly System.IntPtr CreationHandle;
 
 		protected NSAsyncDispatcher ()
 		{
 			gch = GCHandle.Alloc (this);
+			CreationHandle = (System.IntPtr) Handle;
 			InstrumentationId = NSAsyncDispatcherInstrumentation.RecordCreation (Handle);
 		}
 
 		public override void Apply ()
 		{
-			NSAsyncDispatcherInstrumentation.RecordEvent (Handle, InstrumentationId, "Apply (freeing GCHandle + Dispose)");
+			NSAsyncDispatcherInstrumentation.RecordEvent (CreationHandle, InstrumentationId, "Apply (freeing GCHandle + Dispose)");
 			gch.Free ();
 			Dispose ();
 		}
 
 		protected override void Dispose (bool disposing)
 		{
-			NSAsyncDispatcherInstrumentation.RecordEvent (Handle, InstrumentationId, $"Dispose (disposing: {disposing})");
+			NSAsyncDispatcherInstrumentation.RecordEvent (CreationHandle, InstrumentationId, $"Dispose (disposing: {disposing})");
 			base.Dispose (disposing);
+		}
+
+		~NSAsyncDispatcher ()
+		{
+			// A finalizer running means the strong GCHandle allocated in the ctor
+			// is no longer keeping this instance alive (it's only freed in Apply).
+			// This tells us whether Apply ran / whether GCHandle protection was lost.
+			NSAsyncDispatcherInstrumentation.RecordEvent (CreationHandle, InstrumentationId, $"Finalize (gch.IsAllocated: {gch.IsAllocated})");
 		}
 	}
 

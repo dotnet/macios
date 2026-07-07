@@ -1152,6 +1152,7 @@ namespace ObjCRuntime {
 
 		internal static void UnregisterNSObject (IntPtr ptr)
 		{
+			Foundation.NSAsyncDispatcherInstrumentation.LogObjectMapOp ("UnregisterNSObject(ptr)", ptr);
 			lock (lock_obj) {
 				if (object_map.Remove (ptr, out var value))
 					value.Free ();
@@ -1160,6 +1161,7 @@ namespace ObjCRuntime {
 
 		internal static void NativeObjectHasDied (IntPtr ptr, NSObject? managed_obj)
 		{
+			Foundation.NSAsyncDispatcherInstrumentation.LogObjectMapOp ("NativeObjectHasDied", ptr, $"managed_obj is null: {managed_obj is null}");
 			lock (lock_obj) {
 				if (object_map.TryGetValue (ptr, out var wr)) {
 					if (managed_obj is null || wr.Target == (object) managed_obj) {
@@ -1180,6 +1182,7 @@ namespace ObjCRuntime {
 
 		internal static void RegisterNSObject (NSObject obj, IntPtr ptr)
 		{
+			Foundation.NSAsyncDispatcherInstrumentation.LogObjectMapOp ("RegisterNSObject", ptr, $"type: {obj.GetType ().Name}");
 			GCHandle handle;
 			if (Runtime.IsCoreCLR) {
 				handle = CreateTrackingGCHandle (obj, ptr);
@@ -1280,6 +1283,25 @@ namespace ObjCRuntime {
 				if (instrumentation is not null) {
 					msg.AppendLine ();
 					msg.AppendLine ("Async dispatcher instrumentation:");
+
+					// Report current object_map state for this native handle.
+					bool inObjectMap;
+					bool hasTarget = false;
+					lock (lock_obj) {
+						inObjectMap = object_map.TryGetValue (ptr, out var wr);
+						if (inObjectMap)
+							hasTarget = wr.Target is not null;
+					}
+					msg.AppendLine ($"object_map contains 0x{ptr.ToString ("x")}: {inObjectMap} (target alive: {hasTarget})");
+
+					// Report the native retain count (best-effort).
+					try {
+						var rc = Messaging.IntPtr_objc_msgSend (ptr, Selector.GetHandle ("retainCount"));
+						msg.AppendLine ($"native retainCount: {(long) rc}");
+					} catch (Exception rce) {
+						msg.AppendLine ($"native retainCount: <failed: {rce.Message}>");
+					}
+
 					msg.AppendLine (instrumentation);
 				}
 			} catch (Exception ie) {
@@ -1737,12 +1759,15 @@ namespace ObjCRuntime {
 			lock (lock_obj) {
 				if (object_map.TryGetValue (ptr, out var reference)) {
 					var target = (NSObject?) reference.Target;
-					if (target is null)
+					if (target is null) {
+						Foundation.NSAsyncDispatcherInstrumentation.LogObjectMapOp ("TryGetNSObject->null (target collected)", ptr);
 						return null;
+					}
 
 					if (target.InFinalizerQueue) {
 						if (!evenInFinalizerQueue) {
 							// Don't return objects that's been queued for finalization unless requested to.
+							Foundation.NSAsyncDispatcherInstrumentation.LogObjectMapOp ("TryGetNSObject->null (InFinalizerQueue)", ptr);
 							return null;
 						}
 
@@ -1754,6 +1779,7 @@ namespace ObjCRuntime {
 							// the existing managed wrapper (which is the one we just found).
 							// Returning null here will cause us to re-create the managed wrapper.
 							// See bug #37670 for a real-world scenario.
+							Foundation.NSAsyncDispatcherInstrumentation.LogObjectMapOp ("TryGetNSObject->null (InFinalizerQueue direct binding)", ptr);
 							return null;
 						}
 					}
@@ -1762,6 +1788,7 @@ namespace ObjCRuntime {
 				}
 			}
 
+			Foundation.NSAsyncDispatcherInstrumentation.LogObjectMapOp ("TryGetNSObject->null (not in object_map)", ptr);
 			return null;
 		}
 
@@ -1775,6 +1802,7 @@ namespace ObjCRuntime {
 		internal static bool RemoveFromObjectMap (NSObject obj)
 		{
 			var handle = obj.GetHandle ();
+			Foundation.NSAsyncDispatcherInstrumentation.LogObjectMapOp ("RemoveFromObjectMap", (IntPtr) handle, $"type: {obj.GetType ().Name}");
 			if (handle == NativeHandle.Zero)
 				return false;
 

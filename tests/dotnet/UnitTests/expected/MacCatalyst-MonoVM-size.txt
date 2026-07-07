@@ -1,18 +1,32 @@
-AppBundleSize: 16,321,420 bytes (15,938.9 KB = 15.6 MB)
+AppBundleSize: 16,383,638 bytes (15,999.6 KB = 15.6 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
-Contents/_CodeSignature/CodeResources: 4,134 bytes (4.0 KB = 0.0 MB)
-Contents/Info.plist: 1,085 bytes (1.1 KB = 0.0 MB)
-Contents/MacOS/SizeTestApp: 13,810,240 bytes (13,486.6 KB = 13.2 MB)
-Contents/MonoBundle/aot-instances.aotdata.arm64: 1,045,032 bytes (1,020.5 KB = 1.0 MB)
-Contents/MonoBundle/Microsoft.MacCatalyst.aotdata.arm64: 36,368 bytes (35.5 KB = 0.0 MB)
-Contents/MonoBundle/Microsoft.MacCatalyst.dll: 50,688 bytes (49.5 KB = 0.0 MB)
-Contents/MonoBundle/runtimeconfig.bin: 1,481 bytes (1.4 KB = 0.0 MB)
-Contents/MonoBundle/SizeTestApp.aotdata.arm64: 1,552 bytes (1.5 KB = 0.0 MB)
-Contents/MonoBundle/SizeTestApp.dll: 7,680 bytes (7.5 KB = 0.0 MB)
-Contents/MonoBundle/System.Private.CoreLib.aotdata.arm64: 814,352 bytes (795.3 KB = 0.8 MB)
-Contents/MonoBundle/System.Private.CoreLib.dll: 534,528 bytes (522.0 KB = 0.5 MB)
-Contents/MonoBundle/System.Runtime.aotdata.arm64: 472 bytes (0.5 KB = 0.0 MB)
-Contents/MonoBundle/System.Runtime.dll: 5,120 bytes (5.0 KB = 0.0 MB)
-Contents/MonoBundle/System.Runtime.InteropServices.aotdata.arm64: 488 bytes (0.5 KB = 0.0 MB)
-Contents/MonoBundle/System.Runtime.InteropServices.dll: 8,192 bytes (8.0 KB = 0.0 MB)
-Contents/PkgInfo: 8 bytes (0.0 KB = 0.0 MB)
+Contents/Info.plist:
+    1,109 bytes (1.1 KB = 0.0 MB)
+Contents/MacOS/SizeTestApp:
+    13,876,536 bytes (13,551.3 KB = 13.2 MB)
+Contents/MonoBundle/aot-instances.aotdata.arm64:
+    1,045,352 bytes (1,020.9 KB = 1.0 MB)
+Contents/MonoBundle/Microsoft.MacCatalyst.aotdata.arm64:
+    36,312 bytes (35.5 KB = 0.0 MB)
+Contents/MonoBundle/Microsoft.MacCatalyst.dll:
+    50,688 bytes (49.5 KB = 0.0 MB)
+Contents/MonoBundle/runtimeconfig.bin:
+    1,481 bytes (1.4 KB = 0.0 MB)
+Contents/MonoBundle/SizeTestApp.aotdata.arm64:
+    1,552 bytes (1.5 KB = 0.0 MB)
+Contents/MonoBundle/SizeTestApp.dll:
+    7,680 bytes (7.5 KB = 0.0 MB)
+Contents/MonoBundle/System.Private.CoreLib.aotdata.arm64:
+    814,120 bytes (795.0 KB = 0.8 MB)
+Contents/MonoBundle/System.Private.CoreLib.dll:
+    534,528 bytes (522.0 KB = 0.5 MB)
+Contents/MonoBundle/System.Runtime.aotdata.arm64:
+    472 bytes (0.5 KB = 0.0 MB)
+Contents/MonoBundle/System.Runtime.dll:
+    5,120 bytes (5.0 KB = 0.0 MB)
+Contents/MonoBundle/System.Runtime.InteropServices.aotdata.arm64:
+    488 bytes (0.5 KB = 0.0 MB)
+Contents/MonoBundle/System.Runtime.InteropServices.dll:
+    8,192 bytes (8.0 KB = 0.0 MB)
+Contents/PkgInfo:
+    8 bytes (0.0 KB = 0.0 MB)

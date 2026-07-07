@@ -1,19 +1,32 @@
-AppBundleSize: 9,380,687 bytes (9,160.8 KB = 8.9 MB)
+AppBundleSize: 9,299,537 bytes (9,081.6 KB = 8.9 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
-_CodeSignature/CodeResources: 5,229 bytes (5.1 KB = 0.0 MB)
-aot-instances.aotdata.arm64: 827,592 bytes (808.2 KB = 0.8 MB)
-archived-expanded-entitlements.xcent: 384 bytes (0.4 KB = 0.0 MB)
-Info.plist: 1,161 bytes (1.1 KB = 0.0 MB)
-Microsoft.iOS.aotdata.arm64: 23,224 bytes (22.7 KB = 0.0 MB)
-Microsoft.iOS.dll: 48,640 bytes (47.5 KB = 0.0 MB)
-PkgInfo: 8 bytes (0.0 KB = 0.0 MB)
-runtimeconfig.bin: 1,481 bytes (1.4 KB = 0.0 MB)
-SizeTestApp: 7,277,328 bytes (7,106.8 KB = 6.9 MB)
-SizeTestApp.aotdata.arm64: 1,464 bytes (1.4 KB = 0.0 MB)
-SizeTestApp.dll: 7,680 bytes (7.5 KB = 0.0 MB)
-System.Private.CoreLib.aotdata.arm64: 640,656 bytes (625.6 KB = 0.6 MB)
-System.Private.CoreLib.dll: 530,944 bytes (518.5 KB = 0.5 MB)
-System.Runtime.aotdata.arm64: 784 bytes (0.8 KB = 0.0 MB)
-System.Runtime.dll: 5,120 bytes (5.0 KB = 0.0 MB)
-System.Runtime.InteropServices.aotdata.arm64: 800 bytes (0.8 KB = 0.0 MB)
-System.Runtime.InteropServices.dll: 8,192 bytes (8.0 KB = 0.0 MB)
+aot-instances.aotdata.arm64:
+    827,728 bytes (808.3 KB = 0.8 MB)
+Info.plist:
+    1,152 bytes (1.1 KB = 0.0 MB)
+Microsoft.iOS.aotdata.arm64:
+    23,216 bytes (22.7 KB = 0.0 MB)
+Microsoft.iOS.dll:
+    48,640 bytes (47.5 KB = 0.0 MB)
+PkgInfo:
+    8 bytes (0.0 KB = 0.0 MB)
+runtimeconfig.bin:
+    1,481 bytes (1.4 KB = 0.0 MB)
+SizeTestApp:
+    7,201,648 bytes (7,032.9 KB = 6.9 MB)
+SizeTestApp.aotdata.arm64:
+    1,464 bytes (1.4 KB = 0.0 MB)
+SizeTestApp.dll:
+    7,680 bytes (7.5 KB = 0.0 MB)
+System.Private.CoreLib.aotdata.arm64:
+    640,680 bytes (625.7 KB = 0.6 MB)
+System.Private.CoreLib.dll:
+    530,944 bytes (518.5 KB = 0.5 MB)
+System.Runtime.aotdata.arm64:
+    784 bytes (0.8 KB = 0.0 MB)
+System.Runtime.dll:
+    5,120 bytes (5.0 KB = 0.0 MB)
+System.Runtime.InteropServices.aotdata.arm64:
+    800 bytes (0.8 KB = 0.0 MB)
+System.Runtime.InteropServices.dll:
+    8,192 bytes (8.0 KB = 0.0 MB)

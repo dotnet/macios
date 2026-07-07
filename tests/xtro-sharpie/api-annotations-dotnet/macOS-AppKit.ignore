@@ -57,7 +57,6 @@
 !incorrect-protocol-member! +NSWindowRestoration::restoreWindowWithIdentifier:state:completionHandler: is REQUIRED and should be abstract
 
 # This init method is bound manually, because the managed signature is identical to another init method.
-!missing-selector! NSTextContainer::initWithContainerSize: not bound
 
 ## unsorted
 
@@ -132,7 +131,6 @@
 !missing-selector! NSATSTypesetter::usesFontLeading not bound
 !missing-selector! NSATSTypesetter::willSetLineFragmentRect:forGlyphRange:usedRect:baselineOffset: not bound
 !missing-selector! NSMutableAttributedString::fixAttributesInRange: not bound
-!missing-selector! NSTextContainer::lineFragmentRectForProposedRect:sweepDirection:movementDirection:remainingRect: not bound
 !missing-selector! NSTextStorage::attributeRuns not bound
 !missing-selector! NSTextStorage::characters not bound
 !missing-selector! NSTextStorage::font not bound

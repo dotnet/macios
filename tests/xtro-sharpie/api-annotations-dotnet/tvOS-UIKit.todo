@@ -1,1 +1,13 @@
 !missing-protocol-conformance! UIView should conform to CLBodyIdentifiable (defined in '' category)
+!missing-enum! UIBarMinimizationBehavior not bound
+!missing-enum! UIBarMinimizationRestorationBehavior not bound
+!missing-selector! UIBarMinimization::minimizationBehavior not bound
+!missing-selector! UIBarMinimization::restorationBehavior not bound
+!missing-selector! UIBarMinimization::safeAreaAdjustment not bound
+!missing-selector! UIBarMinimization::setMinimizationBehavior: not bound
+!missing-selector! UIBarMinimization::setRestorationBehavior: not bound
+!missing-selector! UIBarMinimization::setSafeAreaAdjustment: not bound
+!missing-selector! UINavigationItem::navigationBarUINavigationItem not bound
+!missing-selector! UINavigationItem::setNavigationBarUINavigationItem: not bound
+!missing-type! UIBarMinimization not bound
+!unknown-native-enum! UIBarMinimizeBehavior bound

@@ -3531,6 +3531,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<FileWrites Include="$(_UnmanagedCallersOnlyMapPath)" />
 		</ItemGroup>
 
+		<MakeDir Directories="$(PreparedAssembliesDirectory)" />
 		<Touch Files="$(_PrepareAssembliesStampFile)" AlwaysCreate="true" />
 		<ItemGroup>
 			<FileWrites Include="$(_PrepareAssembliesStampFile)" />
@@ -3589,6 +3590,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<FileWrites Include="@(_PostProcessedAssemblies)" />
 		</ItemGroup>
 
+		<MakeDir Directories="$(_PostprocessedAssembliesDirectory)" />
 		<Touch Files="$(_PostprocessAssembliesStampFile)" AlwaysCreate="true" />
 		<ItemGroup>
 			<FileWrites Include="$(_PostprocessAssembliesStampFile)" />

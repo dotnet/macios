@@ -245,6 +245,8 @@ git log --format="%P" -1
 
 The output must contain **two** space-separated SHA hashes. If only one SHA is shown, `MERGE_HEAD` was lost during conflict resolution (e.g. due to a `git reset` or `git checkout`). The branch then contains a plain single-parent commit instead of a merge commit. A plain commit causes `git format-patch` to include all commits since the branch diverged from `main` — potentially tens of thousands — which will exceed the buffer limit and fail PR creation. Discard the branch and restart from step c.
 
+Even with a **proper two-parent merge commit**, if the merge spans a large number of commits (e.g. 50+ commits from `main` with many changed files), the format-patch output may still exceed the 100 MB buffer limit. In this case `create_pull_request` will fail with `ENOBUFS` ("Git command output exceeded buffer limit"). This is a known limitation of the safe-outputs infrastructure for very large merges. When this happens, proceed to step f — do **not** retry `create_pull_request`.
+
 #### e. Create or update the PR
 
 Do **NOT** run `git push` manually. The safeoutputs tool handles pushing.
@@ -262,16 +264,33 @@ After creating the PR, enable automerge (merge strategy) using the GitHub MCP `e
 #### f. Fallback: file an issue if PR creation fails
 
 If the `create_pull_request` safeoutput tool fails (e.g., due to permission errors, branch
-protection rules, or other unexpected errors), file a GitHub issue instead so the failure
-is tracked and can be resolved manually.
+protection rules, patch too large, or other unexpected errors), file a GitHub issue instead
+so the failure is tracked and can be resolved manually.
 
 Use the `create_issue` safeoutput tool with:
 - `title`: `🤖 Code radiator: failed to create merge PR for '<target>'`
-- `body`: Include:
-  - The target branch name.
+- `body`: Include all of the following:
+  - The target branch name (e.g., `net11.0`).
   - The source branch (`main`).
-  - The local branch name that was prepared.
+  - The local branch name that was prepared (e.g., `merge/main-to-net11.0-<yyyyMMdd>`).
   - The error message from the failed PR creation attempt.
+  - The number of commits being merged (from `git rev-list --count origin/<target>..origin/main`).
+  - A section titled `### Details` describing what was completed (merge conflicts resolved, etc.).
+  - A section titled `### Manual steps needed` with the exact commands to reproduce and push
+    the merge manually:
+
+    ```bash
+    git fetch origin
+    git checkout -b <local-branch> origin/<target>
+    git merge origin/main --no-edit -m "Merge branch 'main' into '<target>'"
+    # Resolve any conflicts, then:
+    git commit --no-edit
+    git push origin <local-branch>
+    gh pr create --base <target> --head <local-branch> \
+      --title "🤖 Merge 'main' => '<target>'" \
+      --body "Automated merge of \`main\` into \`<target>\`."
+    ```
+
   - A note that this issue was automatically filed by the code-radiator workflow.
 - `labels`: `["code-radiator"]`
 

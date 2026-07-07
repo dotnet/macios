@@ -151,7 +151,7 @@ EXECUTABLE="$(abspath .)/bin/$(CONFIG)/$(TEST_TFM)-tvos/$(PATH_RID)$(TESTNAME).a
 else ifeq ($(PLATFORM),MacCatalyst)
 EXECUTABLE="$(abspath .)/bin/$(CONFIG)/$(TEST_TFM)-maccatalyst/$(PATH_RID)$(TESTNAME).app/Contents/MacOS/$(TESTNAME)"
 APPMANIFEST:=$(abspath .)/bin/$(CONFIG)/$(TEST_TFM)-maccatalyst/$(PATH_RID)$(TESTNAME).app/Contents/Info.plist
-BUNDLE_ID:=$(shell defaults read "$(basename $(APPMANIFEST))" CFBundleIdentifier 2>/dev/null)
+BUNDLE_ID=$(shell defaults read "$(APPMANIFEST)" CFBundleIdentifier 2>/dev/null)
 else ifeq ($(PLATFORM),macOS)
 EXECUTABLE="$(abspath .)/bin/$(CONFIG)/$(TEST_TFM)-macos/$(PATH_RID)$(TESTNAME).app/Contents/MacOS/$(TESTNAME)"
 APPMANIFEST:=$(abspath .)/bin/$(CONFIG)/$(TEST_TFM)-macos/$(PATH_RID)$(TESTNAME).app/Contents/Info.plist

@@ -14,7 +14,8 @@ namespace Xamarin.Tests {
 			// An incremental (second, no-source-change) build with PrepareAssemblies=true must not fail.
 			// The '_PrepareAssemblies' and '_PostprocessAssemblies' targets must not run as partial
 			// incremental builds, because the assembly-preparer needs the complete set of assemblies to
-			// resolve inter-assembly references. See https://github.com/dotnet/macios/issues/25938.
+			// resolve inter-assembly references (otherwise it fails with MT4116/MT2362). See
+			// https://github.com/dotnet/macios/issues/25938.
 			var project = "MySimpleApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);

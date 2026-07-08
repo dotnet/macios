@@ -134,6 +134,22 @@ if (!string.IsNullOrEmpty (expectedMacOSBuildVersion)) {
 	var isBeta = currentBuildVersion is not null && currentBuildVersion.Length > 0 && char.IsLower (currentBuildVersion [currentBuildVersion.Length - 1]);
 	if (isBeta && currentBuildVersion != expectedMacOSBuildVersion) {
 		Console.WriteLine ($"Current macOS build version '{currentBuildVersion}' is a beta that does not match expected '{expectedMacOSBuildVersion}'. Skipping tests.");
+
+		var skipMessage = $"Tests skipped: current macOS build version '{currentBuildVersion}' does not match expected '{expectedMacOSBuildVersion}'.";
+
+		if (!string.IsNullOrEmpty (testSummaryPath)) {
+			var summaryDir = Path.GetDirectoryName (testSummaryPath);
+			if (!string.IsNullOrEmpty (summaryDir))
+				Directory.CreateDirectory (summaryDir);
+			File.WriteAllText (testSummaryPath, $"# ⚠️ {title}: Tests skipped, incorrect beta version\n\n{skipMessage}\n");
+			Console.WriteLine ($"TestSummary written to {testSummaryPath}");
+		}
+
+		if (!string.IsNullOrEmpty (htmlReportPath)) {
+			GenerateSkippedHtmlReport (htmlReportPath, title, skipMessage);
+			Console.WriteLine ($"HTML report written to {htmlReportPath}");
+		}
+
 		return 0;
 	}
 }
@@ -477,6 +493,39 @@ string TakeScreenshot (string reason, string outputDirectory)
 		Console.WriteLine ($"Failed to take screenshot: {e.Message}");
 	}
 	return "";
+}
+
+void GenerateSkippedHtmlReport (string reportPath, string reportTitle, string message)
+{
+	reportPath = Path.GetFullPath (reportPath);
+	var htmlDir = Path.GetDirectoryName (reportPath)!;
+	Directory.CreateDirectory (htmlDir);
+
+	var sb = new StringBuilder ();
+	sb.AppendLine ("<!DOCTYPE html>");
+	sb.AppendLine ("<html>");
+	sb.AppendLine ($"<head><title>macOS Test Results - {HttpUtility.HtmlEncode (reportTitle)}</title>");
+	sb.AppendLine ("<style>");
+	sb.AppendLine ("body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; margin: 40px; color: #1f2328; background-color: #ffffff; }");
+	sb.AppendLine (".skipped { color: #9a6700; font-weight: 600; }");
+	sb.AppendLine ("h1 { border-bottom: 1px solid #d0d7de; padding-bottom: 8px; }");
+	sb.AppendLine (".summary { margin: 16px 0; padding: 12px; border-radius: 6px; background-color: #fff8c5; }");
+	sb.AppendLine ("@media (prefers-color-scheme: dark) {");
+	sb.AppendLine ("  body { color: #e6edf3; background-color: #0d1117; }");
+	sb.AppendLine ("  .skipped { color: #d29922; }");
+	sb.AppendLine ("  h1 { border-bottom-color: #30363d; }");
+	sb.AppendLine ("  .summary { background-color: #2d2000; }");
+	sb.AppendLine ("}");
+	sb.AppendLine ("</style>");
+	sb.AppendLine ("</head>");
+	sb.AppendLine ("<body>");
+	sb.AppendLine ($"<h1>macOS Test Results - {HttpUtility.HtmlEncode (reportTitle)}</h1>");
+	sb.AppendLine ($"<div class='summary'>&#x26A0;&#xFE0F; <span class='skipped'>Tests skipped, incorrect beta version.</span></div>");
+	sb.AppendLine ($"<p>{HttpUtility.HtmlEncode (message)}</p>");
+	sb.AppendLine ("</body>");
+	sb.AppendLine ("</html>");
+
+	File.WriteAllText (reportPath, sb.ToString ());
 }
 
 void GenerateTestSummary (string path, List<(string Name, bool Passed, List<TestResult> Results)> outcomes)

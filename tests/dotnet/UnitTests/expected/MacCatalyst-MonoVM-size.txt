@@ -1,9 +1,9 @@
-AppBundleSize: 16,383,638 bytes (15,999.6 KB = 15.6 MB)
+AppBundleSize: 14,450,438 bytes (14,111.8 KB = 13.8 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 Contents/Info.plist:
-    1,109 bytes (1.1 KB = 0.0 MB)
+    1,045 bytes (1.0 KB = 0.0 MB)
 Contents/MacOS/SizeTestApp:
-    13,876,536 bytes (13,551.3 KB = 13.2 MB)
+    11,943,400 bytes (11,663.5 KB = 11.4 MB)
 Contents/MonoBundle/aot-instances.aotdata.arm64:
     1,045,352 bytes (1,020.9 KB = 1.0 MB)
 Contents/MonoBundle/Microsoft.MacCatalyst.aotdata.arm64:

@@ -480,6 +480,8 @@ namespace Xamarin.Tests {
 			if (!File.Exists (executable))
 				throw new FileNotFoundException ($"The executable '{executable}' does not exists.");
 
+			DeleteSavedState (executable);
+
 			magicWord = Guid.NewGuid ().ToString ();
 			var env = new Dictionary<string, string?> {
 				{ "MAGIC_WORD", magicWord },
@@ -492,7 +494,53 @@ namespace Xamarin.Tests {
 
 			var rv = Execution.RunAsync (executable, Array.Empty<string> (), environment: env, timeout: TimeSpan.FromSeconds (30)).Result;
 			output = rv.Output.MergedOutput;
+
+			DeleteSavedState (executable);
+
 			return rv;
+		}
+
+		// Delete the saved application state for the app being launched, to prevent
+		// the "Do you want to try to reopen its windows again?" dialog from showing
+		// if the app crashed during a previous test run. See https://github.com/dotnet/macios/issues/25922
+		static void DeleteSavedState (string executable)
+		{
+			// Find the .app bundle directory from the executable path
+			var dir = Path.GetDirectoryName (executable);
+			while (!string.IsNullOrEmpty (dir) && !dir.EndsWith (".app", StringComparison.OrdinalIgnoreCase))
+				dir = Path.GetDirectoryName (dir);
+
+			if (string.IsNullOrEmpty (dir))
+				return;
+
+			// Read the bundle identifier from Info.plist
+			string? bundleIdentifier = null;
+			var infoPlistPath = Path.Combine (dir, "Contents", "Info.plist");
+			if (!File.Exists (infoPlistPath))
+				infoPlistPath = Path.Combine (dir, "Info.plist");
+			if (!File.Exists (infoPlistPath))
+				return;
+
+			try {
+				var infoPlist = PDictionary.OpenFile (infoPlistPath);
+				bundleIdentifier = infoPlist.GetString ("CFBundleIdentifier")?.Value;
+			} catch (Exception e) {
+				Console.WriteLine ($"Could not read bundle identifier from '{infoPlistPath}': {e.Message}");
+				return;
+			}
+
+			if (string.IsNullOrEmpty (bundleIdentifier))
+				return;
+
+			var savedStateDir = Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.UserProfile), "Library", "Saved Application State", $"{bundleIdentifier}.savedState");
+			try {
+				if (Directory.Exists (savedStateDir)) {
+					Directory.Delete (savedStateDir, true);
+					Console.WriteLine ($"Deleted saved application state: {savedStateDir}");
+				}
+			} catch (Exception e) {
+				Console.WriteLine ($"Could not delete saved application state '{savedStateDir}': {e.Message}");
+			}
 		}
 
 		public static StringBuilder AssertExecute (string executable, params string [] arguments)

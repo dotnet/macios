@@ -521,6 +521,16 @@ namespace Xamarin.MacDev.Tasks {
 
 		void SetRequiredArchitectures (PDictionary plist)
 		{
+			// UIRequiredDeviceCapabilities is neither required nor evaluated for Mac Catalyst: the
+			// macOS App Store ignores hardware capability values (such as 'arm64'). Injecting an
+			// architecture-specific value would also make the Info.plist differ between the x64 and
+			// arm64 slices of a universal ('maccatalyst-x64;maccatalyst-arm64') build, which breaks
+			// merging the per-RID app bundles (in particular nested app extensions, whose Info.plist
+			// isn't recomputed when merging). So leave any user-authored value untouched, and don't
+			// add our own, for Mac Catalyst.
+			if (Platform == ApplePlatform.MacCatalyst)
+				return;
+
 			PObject? capabilities;
 
 			if (plist.TryGetValue (ManifestKeys.UIRequiredDeviceCapabilities, out capabilities)) {

@@ -1,8 +1,10 @@
-AppBundleSize: 9,124,974 bytes (8,911.1 KB = 8.7 MB)
+AppBundleSize: 14,136,248 bytes (13,804.9 KB = 13.5 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
-_CodeSignature/CodeResources: 2,589 bytes (2.5 KB = 0.0 MB)
-archived-expanded-entitlements.xcent: 384 bytes (0.4 KB = 0.0 MB)
-Info.plist: 1,161 bytes (1.1 KB = 0.0 MB)
-PkgInfo: 8 bytes (0.0 KB = 0.0 MB)
-runtimeconfig.bin: 1,888 bytes (1.8 KB = 0.0 MB)
-SizeTestApp: 9,118,944 bytes (8,905.2 KB = 8.7 MB)
+Info.plist:
+    1,152 bytes (1.1 KB = 0.0 MB)
+PkgInfo:
+    8 bytes (0.0 KB = 0.0 MB)
+runtimeconfig.bin:
+    1,888 bytes (1.8 KB = 0.0 MB)
+SizeTestApp:
+    14,133,200 bytes (13,802.0 KB = 13.5 MB)

@@ -287,6 +287,7 @@ namespace Xamarin.Tests {
 
 			// Force EnableAssemblyILStripping since we are building debug which never will by default
 			properties ["EnableAssemblyILStripping"] = shouldStrip ? "true" : "false";
+			properties ["UseMonoRuntime"] = "true"; // *we* only strip assemblies when using MonoVM (R2R also does it, but that's not *us*, technically, and the result is also slightly different so a different test would be needed if we wanted to assert anything).
 
 			DotNet.AssertBuild (project_path, properties);
 
@@ -309,6 +310,7 @@ namespace Xamarin.Tests {
 
 			// Verify value defaults to false when not set
 			properties ["Configuration"] = configuration;
+			properties ["UseMonoRuntime"] = "true"; // *we* only strip assemblies when using MonoVM (R2R also does it, but that's not *us*, technically, and the result is also slightly different so a different test would be needed if we wanted to assert anything).
 
 			DotNet.AssertBuild (project_path, properties);
 

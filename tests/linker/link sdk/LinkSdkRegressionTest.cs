@@ -963,6 +963,15 @@ namespace LinkSdk {
 			// ILLink does not remove the method, but it can "stub" (empty) it
 			if (m is null)
 				throw new InvalidOperationException ("Method not found (null)");
+
+			// crossgen2 strips the IL bodies of R2R-compiled methods (the .NET SDK enables
+			// PublishReadyToRunStripILBodies by default for iOS-like RIDs in release builds), replacing them
+			// with a 2-byte "illegal" sentinel (0xFE 0x24). That's an even more stripped body than what we're
+			// checking for, so accept it - the ILReader can't parse this (invalid) IL.
+			var ilBytes = m.GetMethodBody ()?.GetILAsByteArray ();
+			if (ilBytes is not null && ilBytes.Length == 2 && ilBytes [0] == 0xFE && ilBytes [1] == 0x24)
+				return;
+
 			var reader = new ILReader (m);
 			var il = reader.ToArray ();
 			var actualIL = string.Join ("\n", il.Select (v => v.ToString ().Trim ()));

@@ -25,7 +25,7 @@
 
 namespace Foundation {
 
-	/// <summary>Flags a class as a model, indicating that only explicitly overridden methods are exposed to the Objective-C runtime.</summary>
+	/// <summary>Flags a class or interface as a model, indicating that only explicitly overridden methods are exposed to the Objective-C runtime.</summary>
 	/// <remarks>
 	///   <para>Objective-C protocols are like interfaces, but they support optional methods, that is, not all of the methods need to be implemented for the protocol to work.</para>
 	///   <para>The [Model] attribute is applied to a class that can have optional methods, and it is typically used for declaring Objective-C delegates or data models that have a number of optional methods. The runtime treats classes with the Model attribute applied specially: only when a user overrides methods in a class is the actual override exposed to the Objective-C world as existing.</para>

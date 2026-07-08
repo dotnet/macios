@@ -2,15 +2,17 @@
   "author": "Microsoft",
   "name": "iOS 應用程式",
   "description": "用於建立 .NET 6 iOS 應用程式的專案",
-  "symbols/bundleId/description": "覆寫 Info.plist 中的 CFBundleIdentifier",
   "symbols/bundleId/displayName": "Bundle ID",
-  "symbols/minOSVersion/description": "覆寫專案檔中的 SupportedOSPlatformVersion",
+  "symbols/bundleId/description": "覆寫 Info.plist 中的 CFBundleIdentifier",
   "symbols/minOSVersion/displayName": "Minimum OS version",
-  "symbols/deviceFamily/choices/universal/description": "同時支援 iPhone 與 iPad 裝置",
+  "symbols/minOSVersion/description": "覆寫專案檔中的 SupportedOSPlatformVersion",
+  "symbols/deviceFamily/displayName": "Device family",
   "symbols/deviceFamily/choices/universal/displayName": "Universal",
-  "symbols/deviceFamily/choices/iphone/description": "僅支援 iPhone 裝置",
+  "symbols/deviceFamily/choices/universal/description": "同時支援 iPhone 與 iPad 裝置",
   "symbols/deviceFamily/choices/iphone/displayName": "iPhone",
-  "symbols/deviceFamily/choices/ipad/description": "僅支援 iPad 裝置",
+  "symbols/deviceFamily/choices/iphone/description": "僅支援 iPhone 裝置",
   "symbols/deviceFamily/choices/ipad/displayName": "iPad",
-  "symbols/deviceFamily/displayName": "Device family"
+  "symbols/deviceFamily/choices/ipad/description": "僅支援 iPad 裝置",
+  "symbols/Framework/description": "The target framework for the project.",
+  "symbols/Framework/choices/net10.0-ios/description": "Target net10.0-ios"
 }

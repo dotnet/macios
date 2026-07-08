@@ -1,5 +1,7 @@
 {
   "author": "Microsoft",
   "name": "Mac Catalyst Bağlama Kitaplığı",
-  "description": ".NET Mac Catalyst bağlama kitaplığı oluşturmaya yönelik bir proje"
+  "description": ".NET Mac Catalyst bağlama kitaplığı oluşturmaya yönelik bir proje",
+  "symbols/Framework/description": "The target framework for the project.",
+  "symbols/Framework/choices/net10.0-maccatalyst/description": "Target net10.0-maccatalyst"
 }

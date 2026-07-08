@@ -1,5 +1,7 @@
 {
   "author": "Microsoft",
   "name": "iOS 바인딩 라이브러리",
-  "description": ".NET iOS 바인딩 라이브러리를 만들기 위한 프로젝트"
+  "description": ".NET iOS 바인딩 라이브러리를 만들기 위한 프로젝트",
+  "symbols/Framework/description": "The target framework for the project.",
+  "symbols/Framework/choices/net10.0-ios/description": "Target net10.0-ios"
 }

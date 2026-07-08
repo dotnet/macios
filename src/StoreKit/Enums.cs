@@ -19,7 +19,7 @@ namespace StoreKit {
 		Failed,
 		/// <summary>The transaction has restored the original content purchased by the user.</summary>
 		Restored,
-		/// <summary>To be added.</summary>
+		/// <summary>The transaction is in a deferred state, waiting for an external action such as parental approval.</summary>
 		[MacCatalyst (13, 1)]
 		Deferred,
 	}
@@ -80,21 +80,21 @@ namespace StoreKit {
 
 	// typedef NSInteger SKDownloadState;
 	// StoreKit.framework/Headers/SKDownload.h
-	/// <summary>An enumeration whose values specify the state of an <see cref="StoreKit.SKDownload" /> object. Used with the <see cref="StoreKit.SKDownload.DownloadState" /> property.</summary>
+	/// <summary>An enumeration whose values specify the state of an <see cref="SKDownload" /> object. Used with the <see cref="SKDownload.DownloadState" /> property.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SKDownloadState : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The download is waiting to start.</summary>
 		Waiting,
-		/// <summary>To be added.</summary>
+		/// <summary>The download is actively in progress.</summary>
 		Active,
-		/// <summary>To be added.</summary>
+		/// <summary>The download has been paused.</summary>
 		Paused,
-		/// <summary>To be added.</summary>
+		/// <summary>The download has completed successfully.</summary>
 		Finished,
-		/// <summary>To be added.</summary>
+		/// <summary>The download has failed.</summary>
 		Failed,
-		/// <summary>To be added.</summary>
+		/// <summary>The download has been cancelled.</summary>
 		Cancelled,
 	}
 

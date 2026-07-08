@@ -17,7 +17,7 @@ using Xamarin.Utils;
 
 namespace Xamarin.Linker.Steps {
 #if ASSEMBLY_PREPARER
-	public class ListExportedSymbols : ConfigurationAwareStep {
+	public class ListExportedSymbols : AssemblyModifierStep {
 		protected override string Name { get; } = "List Exported Symbols";
 		protected override int ErrorCode { get; } = 2510;
 #else
@@ -75,26 +75,42 @@ namespace Xamarin.Linker.Steps {
 		}
 
 #if ASSEMBLY_PREPARER
-		protected override void TryProcessAssembly (AssemblyDefinition assembly)
+		protected override bool ModifyAssembly (AssemblyDefinition assembly)
 		{
+			if (Annotations.GetAction (assembly) == AssemblyAction.Delete)
+				return false;
+
+			if (!assembly.MainModule.HasTypes)
+				return false;
+
+			if (!HasSymbols (assembly))
+				return false;
+
+			// The base class recurses into all the types (including nested types) and
+			// saves the assembly through the AppBundleRewriter if we modified it (i.e.
+			// if ProcessType/ProcessMethod returned true).
+			return base.ModifyAssembly (assembly);
+		}
+
+		protected override bool ProcessType (TypeDefinition type)
+		{
+			// The base class takes care of recursing into nested types.
+			var modified = ProcessMethods (type);
+			AddRequiredObjectiveCType (type);
+			return modified;
+		}
 #else
 		protected override void ProcessAssembly (AssemblyDefinition assembly)
 		{
 			base.ProcessAssembly (assembly);
-#endif
+
 			if (Annotations.GetAction (assembly) == AssemblyAction.Delete)
 				return;
 
 			if (!assembly.MainModule.HasTypes)
 				return;
 
-			var hasSymbols = false;
-			if (assembly.MainModule.HasModuleReferences) {
-				hasSymbols = true;
-			} else if (assembly.MainModule.HasTypeReference (Namespaces.Foundation + ".FieldAttribute")) {
-				hasSymbols = true;
-			}
-			if (!hasSymbols)
+			if (!HasSymbols (assembly))
 				return;
 
 			var modified = false;
@@ -125,6 +141,16 @@ namespace Xamarin.Linker.Steps {
 			AddRequiredObjectiveCType (type);
 
 			return modified;
+		}
+#endif
+
+		static bool HasSymbols (AssemblyDefinition assembly)
+		{
+			if (assembly.MainModule.HasModuleReferences)
+				return true;
+			if (assembly.MainModule.HasTypeReference (Namespaces.Foundation + ".FieldAttribute"))
+				return true;
+			return false;
 		}
 
 		void AddRequiredObjectiveCType (TypeDefinition type)
@@ -166,7 +192,11 @@ namespace Xamarin.Linker.Steps {
 			return true;
 		}
 
+#if ASSEMBLY_PREPARER
+		protected override bool ProcessMethod (MethodDefinition method)
+#else
 		bool ProcessMethod (MethodDefinition method)
+#endif
 		{
 			var modified = false;
 

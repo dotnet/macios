@@ -171,7 +171,12 @@ define PlatformFrameworkTemplate
 	$$(Q) mkdir -p $$(dir $$@)
 	$$(Q) lipo -create -output "$$@" $$^
 
+.libs/$(1)/$(2).framework.dSYM: .libs/$(1)/$(2).framework$($(1)_BINARY_INFIX)/$(2)
+	$$(Q) rm -rf $$@
+	$$(call Q_2,DSYM,  [$(1)/$(2)]) $(XCODE_DEVELOPER_ROOT)/Toolchains/XcodeDefault.xctoolchain/usr/bin/dsymutil "$$<" -o "$$@"
+
 .libs/$(1)/$(2).framework.stamp: .libs/$(1)/$(2).framework$($(1)_BINARY_INFIX)/$(2)
+.libs/$(1)/$(2).framework.stamp: .libs/$(1)/$(2).framework.dSYM
 	$$(Q) touch $$@
 
 PLATFORM_FRAMEWORK_TEMPLATE_$(1)_TARGETS += \
@@ -338,7 +343,7 @@ $(1)_XCFRAMEWORKS += $$(foreach xcframeworkPlatform,$$(XCFRAMEWORK_PLATFORMS),.l
 $(1)_XCTARGETS += $$(foreach xcframeworkPlatform,$$(XCFRAMEWORK_PLATFORMS),.libs/$$(xcframeworkPlatform)/$(1).framework.stamp)
 .libs/$(1).xcframework: $$($(1)_XCTARGETS) Makefile
 	$$(Q) rm -rf $$@
-	$$(Q_GEN) $$(XCODE_DEVELOPER_ROOT)/usr/bin/xcodebuild -quiet -create-xcframework $$(foreach fw,$$($(1)_XCFRAMEWORKS),-framework $$(fw)) -output $$@
+	$$(Q_GEN) $$(XCODE_DEVELOPER_ROOT)/usr/bin/xcodebuild -quiet -create-xcframework $$(foreach fw,$$($(1)_XCFRAMEWORKS),-framework $$(fw) $$(if $$(wildcard $$(fw).dSYM),-debug-symbols $$(CURDIR)/$$(fw).dSYM)) -output $$@
 all-local:: .libs/$(1).xcframework
 endef
 $(foreach testFramework,$(TEST_FRAMEWORKS),$(eval $(call TestFrameworkXCFramework,$(testFramework))))
@@ -348,7 +353,7 @@ $(1)_$(2)_XCFRAMEWORKS += $$(foreach xcframeworkPlatform,$$(XCFRAMEWORK_$(2)_PLA
 $(1)_$(2)_XCTARGETS += $$(foreach xcframeworkPlatform,$$(XCFRAMEWORK_$(2)_PLATFORMS),.libs/$$(xcframeworkPlatform)/$(1).framework.stamp)
 .libs/$(3)/$(1).xcframework: $$($(1)_$(2)_XCTARGETS) Makefile
 	$$(Q) rm -rf $$@
-	$$(Q_GEN) $$(XCODE_DEVELOPER_ROOT)/usr/bin/xcodebuild -quiet -create-xcframework $$(foreach fw,$$($(1)_$(2)_XCFRAMEWORKS),-framework $$(fw)) -output $$@
+	$$(Q_GEN) $$(XCODE_DEVELOPER_ROOT)/usr/bin/xcodebuild -quiet -create-xcframework $$(foreach fw,$$($(1)_$(2)_XCFRAMEWORKS),-framework $$(fw) $$(if $$(wildcard $$(fw).dSYM),-debug-symbols $$(CURDIR)/$$(fw).dSYM)) -output $$@
 all-local:: .libs/$(3)/$(1).xcframework
 endef
 $(foreach platform,$(DOTNET_PLATFORMS),$(foreach testFramework,$(TEST_FRAMEWORKS),$(eval $(call TestFrameworkXCFrameworkPlatformSpecific,$(testFramework),$(platform),$(shell echo $(platform) | tr 'A-Z' 'a-z')))))

@@ -610,6 +610,40 @@ namespace Xamarin.Tests {
 			return item.TryGetProperty (name, out var value) ? value.GetString () ?? "" : "";
 		}
 
+		[Test]
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
+		public void XCFrameworkDSymsCopiedToArchive (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			// https://github.com/dotnet/macios/issues/23076
+			// Verify that dSYMs from xcframeworks are copied next to the app's dSYM
+			// and included in the archive.
+			var project = "NativeXCFrameworkReferencesApp";
+			var configuration = "Release";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers, platform, out var appPath, configuration: configuration);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["ArchiveOnBuild"] = "true";
+			properties ["Configuration"] = configuration;
+			var archiveDir = Cache.CreateTemporaryDirectory ();
+			properties ["ArchiveDir"] = archiveDir;
+
+			DotNet.AssertBuild (project_path, properties);
+
+			Assert.That (archiveDir, Does.Exist, "Archive directory existence");
+
+			// Verify the xcframework's dSYM is in the archive's dSYMs directory
+			var archiveDSymsDir = Path.Combine (archiveDir, "dSYMs");
+			Assert.That (archiveDSymsDir, Does.Exist, "Archive dSYMs directory should exist");
+
+			var xcframeworkDSym = Path.Combine (archiveDSymsDir, "XTest.framework.dSYM");
+			Assert.That (xcframeworkDSym, Does.Exist, "XTest.framework.dSYM should be in the archive");
+			Assert.That (Path.Combine (xcframeworkDSym, "Contents", "Info.plist"), Does.Exist, "Archived dSYM should contain Info.plist");
+		}
+
 		static List<ITaskItem> GetPostProcessingItems (string binLogPath)
 		{
 			return GetItems (binLogPath, "_PostProcessingItem");

@@ -3127,6 +3127,8 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			_StoreCollectedItemsForPostProcessing;
 			_PreparePostProcessing;
 			_GenerateDSym;
+			_ComputeXCFrameworkDSyms;
+			_CopyXCFrameworkDSyms;
 			_NativeStripFiles;
 			_NotifySpotlight;
 		</_PostProcessAppBundleDependsOn>
@@ -3194,6 +3196,54 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		/>
 
 		<!-- There's no need to touch the stamp file, because it's a file created by dsymutil -->
+	</Target>
+
+	<!--
+		This target copies pre-existing dSYMs from xcframeworks next to the app's dSYM,
+		so that they're included in the archive when the app is archived.
+		The dSYMs directory in an xcframework is at the same level as the framework directory
+		within the architecture-specific directory:
+			MyFramework.xcframework/ios-arm64/dSYMs/MyFramework.framework.dSYM
+			MyFramework.xcframework/ios-arm64/MyFramework.framework/MyFramework
+		Ref: https://github.com/dotnet/macios/issues/23076
+	-->
+	<Target
+		Name="_ComputeXCFrameworkDSyms"
+		DependsOnTargets="_PreparePostProcessing"
+		>
+
+		<ItemGroup>
+			<!-- Compute the potential dSYM path for each framework in the post-processing items.
+			     For a framework at path/to/xcframework/ios-arm64/MyFramework.framework/MyFramework,
+			     the dSYM would be at path/to/xcframework/ios-arm64/dSYMs/MyFramework.framework.dSYM -->
+			<_XCFrameworkDSymCandidate
+				Include="@(_GenerateDSymItems->'%(ItemSourcePath)')"
+				Condition="'%(_GenerateDSymItems.ItemSourcePath)' != ''"
+			>
+				<DSymSourceDir>$([System.IO.Path]::GetDirectoryName($([System.IO.Path]::GetDirectoryName('%(_GenerateDSymItems.ItemSourcePath)'))))/dSYMs</DSymSourceDir>
+				<DSymName>%(_GenerateDSymItems.DSymName)</DSymName>
+			</_XCFrameworkDSymCandidate>
+			<_XCFrameworkDSymToCopy
+				Include="@(_XCFrameworkDSymCandidate->'%(DSymSourceDir)/%(DSymName)')"
+				Condition="Exists('%(DSymSourceDir)/%(DSymName)')"
+			/>
+		</ItemGroup>
+	</Target>
+
+	<Target
+		Name="_CopyXCFrameworkDSyms"
+		Condition="'$(_PostProcess)' == 'true'"
+		DependsOnTargets="_ComputeXCFrameworkDSyms"
+		Inputs="@(_XCFrameworkDSymToCopy->'%(Identity)/Contents/Info.plist')"
+		Outputs="@(_XCFrameworkDSymToCopy->'$(_OutputDsymLocation)%(DSymName)/Contents/Info.plist')"
+		>
+
+		<Ditto
+			SessionId="$(BuildSessionId)"
+			Condition="'$(IsMacEnabled)' == 'true'"
+			Source="%(_XCFrameworkDSymToCopy.Identity)"
+			Destination="$(_OutputDsymLocation)%(_XCFrameworkDSymToCopy.DSymName)"
+		/>
 	</Target>
 
 	<!-- This target will execute strip on items in the _NativeStripItems item group -->
@@ -3277,6 +3327,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			Condition="'$(IsMacEnabled)' == 'true'"
 			AppBundleDir="$(AppBundleDir)"
 			AppExtensionReferences="@(_ResolvedAppExtensionReferences)"
+			ArchiveDir="$(ArchiveDir)"
 			CustomBundleName="$(_CustomBundleName)"
 			InsightsApiKey="$(XamarinInsightsApiKey)"
 			ITunesSourceFiles="@(_ITunesSourceFile)"

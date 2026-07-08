@@ -11047,6 +11047,7 @@ M:AppKit.NSSpellChecker.GetLanguage(Foundation.NSRange,System.String,Foundation.
 M:AppKit.NSSpellChecker.GuessesForWordRange(Foundation.NSRange,System.String,System.String,System.IntPtr)
 M:AppKit.NSSpellChecker.HasLearnedWord(System.String)
 M:AppKit.NSSpellChecker.IgnoredWords(System.IntPtr)
+M:AppKit.NSSpellChecker.IgnoreGrammarRange(Foundation.NSRange,System.String,System.IntPtr)
 M:AppKit.NSSpellChecker.IgnoreWord(System.String,System.IntPtr)
 M:AppKit.NSSpellChecker.LearnWord(System.String)
 M:AppKit.NSSpellChecker.MenuForResults(Foundation.NSTextCheckingResult,System.String,Foundation.NSDictionary,CoreGraphics.CGPoint,AppKit.NSView)

@@ -196,7 +196,7 @@ foreach (var config in testConfigs) {
 
 	Console.WriteLine ($"Executing {config.DisplayName}...");
 	var sw = Stopwatch.StartNew ();
-	var (execExit, output) = ExecuteWithTimeout (executablePath, execArgs, timeout);
+	var (execExit, output, screenshotPath) = ExecuteWithTimeout (executablePath, execArgs, timeout);
 	sw.Stop ();
 
 	// Save output file
@@ -207,7 +207,7 @@ foreach (var config in testConfigs) {
 
 	var outcome = execExit == 0 ? TestOutcome.Passed : TestOutcome.Failed;
 	var resultMessage = execExit == 0 ? "Passed" : $"Failed with exit code {execExit}";
-	suiteResults [config.Suite.Name].Add (new TestResult (config, outcome, execExit, resultMessage, output, sw.Elapsed));
+	suiteResults [config.Suite.Name].Add (new TestResult (config, outcome, execExit, resultMessage, output, sw.Elapsed, screenshotPath));
 
 	var emoji = execExit == 0 ? "✅" : "❌";
 	Console.WriteLine ($"{emoji} {config.DisplayName}: {resultMessage}");
@@ -252,7 +252,7 @@ return failedSuites > 0 ? 1 : 0;
 
 // ===== Helper methods =====
 
-(int ExitCode, string Output) ExecuteWithTimeout (string executable, string [] arguments, int timeoutSeconds)
+(int ExitCode, string Output, string ScreenshotPath) ExecuteWithTimeout (string executable, string [] arguments, int timeoutSeconds)
 {
 	var launchTimeout = TimeSpan.FromSeconds (30);
 	var executionTimeout = TimeSpan.FromSeconds (timeoutSeconds);
@@ -261,6 +261,7 @@ return failedSuites > 0 ? 1 : 0;
 
 	var outputSb = new StringBuilder ();
 	string output;
+	var screenshotPath = "";
 
 	for (var attempt = 0; attempt < maxLaunchAttempts; attempt++) {
 		var launchTimeoutFile = Path.GetFullPath ($"launch-timeout-sentinel-{pid}-{attempt}.txt");
@@ -292,6 +293,7 @@ return failedSuites > 0 ? 1 : 0;
 			} else if (!File.Exists (launchTimeoutFile)) {
 				lock (outputSb)
 					outputSb.AppendLine ($"Launch timed out after {launchTimeout.TotalSeconds} seconds.");
+				screenshotPath = TakeScreenshot ("launch-timeout", testOutputDir);
 				launchTimedOut.Set ();
 				AbortProcess (p);
 			}
@@ -311,6 +313,7 @@ return failedSuites > 0 ? 1 : 0;
 			if (!p.WaitForExit ((int) executionTimeout.TotalMilliseconds)) {
 				lock (outputSb)
 					outputSb.AppendLine ($"Execution timed out after {executionTimeout.TotalSeconds} seconds.");
+				screenshotPath = TakeScreenshot ("execution-timeout", testOutputDir);
 				AbortProcess (p);
 			}
 			// this is required, even if 'p.WaitForExit (timeout)' return true, to flush output buffers.
@@ -328,7 +331,7 @@ return failedSuites > 0 ? 1 : 0;
 				outputSb.AppendLine ($"Execution completed with exit code {p.ExitCode}");
 				output = outputSb.ToString ();
 			}
-			return (p.ExitCode, output);
+			return (p.ExitCode, output, screenshotPath);
 		} finally {
 			File.Delete (launchTimeoutFile);
 			p.Dispose ();
@@ -340,7 +343,7 @@ return failedSuites > 0 ? 1 : 0;
 		output = outputSb.ToString ();
 	}
 
-	return (-1, output);
+	return (-1, output, screenshotPath);
 }
 
 void AbortProcess (Process process)
@@ -366,6 +369,32 @@ void AbortProcess (Process process)
 	// SIGKILL
 	Console.WriteLine ($"kill ({pid}, 9);");
 	NativeMethods.kill (pid, 9);
+}
+
+string TakeScreenshot (string reason, string outputDirectory)
+{
+	var timestamp = DateTime.Now.ToString ("yyyyMMdd-HHmmss");
+	var fileName = $"screenshot-{reason}-{timestamp}.png";
+	var path = string.IsNullOrEmpty (outputDirectory)
+		? Path.GetFullPath (fileName)
+		: Path.Combine (outputDirectory, fileName);
+	try {
+		var p = Process.Start (new ProcessStartInfo {
+			FileName = "/usr/sbin/screencapture",
+			ArgumentList = { "-x", "-T", "0", path },
+			UseShellExecute = false,
+		});
+		if (p is not null) {
+			p.WaitForExit (TimeSpan.FromSeconds (10));
+			if (File.Exists (path)) {
+				Console.WriteLine ($"Screenshot saved to {path}");
+				return path;
+			}
+		}
+	} catch (Exception e) {
+		Console.WriteLine ($"Failed to take screenshot: {e.Message}");
+	}
+	return "";
 }
 
 void GenerateTestSummary (string path, List<(string Name, bool Passed, List<TestResult> Results)> outcomes)
@@ -472,6 +501,7 @@ void GenerateHtmlReport (
 
 	// Copy per-test output files to the report directory
 	var outputFileNames = new Dictionary<string, string> ();
+	var screenshotFileNames = new Dictionary<string, string> ();
 	foreach (var (name, _, results) in outcomes) {
 		foreach (var result in results) {
 			if (!string.IsNullOrEmpty (outputDir)) {
@@ -482,6 +512,11 @@ void GenerateHtmlReport (
 					File.Copy (srcFile, Path.Combine (htmlDir, destName), overwrite: true);
 					outputFileNames [baseName] = destName;
 				}
+			}
+			if (!string.IsNullOrEmpty (result.ScreenshotPath) && File.Exists (result.ScreenshotPath)) {
+				var screenshotName = Path.GetFileName (result.ScreenshotPath);
+				File.Copy (result.ScreenshotPath, Path.Combine (htmlDir, screenshotName), overwrite: true);
+				screenshotFileNames [result.Config.OutputFileName] = screenshotName;
 			}
 		}
 	}
@@ -553,7 +588,7 @@ void GenerateHtmlReport (
 
 		// Per-config table
 		sb.AppendLine ("<table>");
-		sb.AppendLine ("<tr><th>Platform</th><th>Architecture</th><th>Result</th><th>Duration</th><th>Details</th><th>Output</th></tr>");
+		sb.AppendLine ("<tr><th>Platform</th><th>Architecture</th><th>Result</th><th>Duration</th><th>Details</th><th>Output</th><th>Screenshot</th></tr>");
 		foreach (var result in results) {
 			var configCss = result.Outcome switch {
 				TestOutcome.Passed => "passed",
@@ -570,18 +605,21 @@ void GenerateHtmlReport (
 			var outputLink = outputFileNames.TryGetValue (baseName, out var fileName)
 				? $"<a href='{HttpUtility.HtmlAttributeEncode (fileName)}'>output</a>"
 				: "";
+			var screenshotLink = screenshotFileNames.TryGetValue (baseName, out var screenshotFileName)
+				? $"<a href='{HttpUtility.HtmlAttributeEncode (screenshotFileName)}' target='_blank'>screenshot</a>"
+				: "";
 			var detailsCell = result.Outcome == TestOutcome.Skipped
 				? $"<em>{HttpUtility.HtmlEncode (result.Message)}</em>"
 				: HttpUtility.HtmlEncode (ExtractTestsRunLine (result.Output));
 			var durationCell = result.Duration == default ? "" : FormatDuration (result.Duration);
 			sb.AppendLine ($"<tr><td>{HttpUtility.HtmlEncode (result.Config.Platform)}</td><td>{arch}</td>" +
 				$"<td class='{configCss}'>{configText}</td><td>{durationCell}</td><td>{detailsCell}</td>" +
-				$"<td>{outputLink}</td></tr>");
+				$"<td>{outputLink}</td><td>{screenshotLink}</td></tr>");
 
 			// Show [FAIL] lines immediately after this row
 			var failLines = ExtractFailLines (result.Output);
 			if (failLines.Count > 0) {
-				sb.AppendLine ("<tr><td colspan='6'>");
+				sb.AppendLine ("<tr><td colspan='7'>");
 				sb.AppendLine ("<ul class='fail-lines'>");
 				var maxFails = Math.Min (failLines.Count, 10);
 				for (var j = 0; j < maxFails; j++)
@@ -650,7 +688,7 @@ record TestConfig (TestSuite Suite, string Platform, string Rid, string TfmPlatf
 
 enum TestOutcome { Passed, Failed, Skipped }
 
-record TestResult (TestConfig Config, TestOutcome Outcome, int ExitCode, string Message, string Output = "", TimeSpan Duration = default);
+record TestResult (TestConfig Config, TestOutcome Outcome, int ExitCode, string Message, string Output = "", TimeSpan Duration = default, string ScreenshotPath = "");
 
 static class NativeMethods {
 	[DllImport ("/usr/lib/libc.dylib", SetLastError = true)]

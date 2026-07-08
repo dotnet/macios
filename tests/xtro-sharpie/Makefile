@@ -177,7 +177,7 @@ report-dotnet/index.html: $(XTRO_REPORT) .stamp-dotnet-classify
 	$(Q) rm -rf report-dotnet
 	$(Q_GEN) $(XTRO_REPORT_EXEC) $(DOTNET_ANNOTATIONS_DIR) report-dotnet
 
-report-dotnet/report.zip: report-dotnet/index.html
+report-dotnet/report.zip:
 	$(Q) rm -f "$@"
 	$(Q) cd report-dotnet && zip -r9 report.zip . -x report.zip
 

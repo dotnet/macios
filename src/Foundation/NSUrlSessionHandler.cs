@@ -1036,17 +1036,17 @@ namespace Foundation {
 			}
 
 			[Preserve (Conditional = true)]
-			public override void WillPerformHttpRedirection (NSUrlSession session, NSUrlSessionTask task, NSHttpUrlResponse response, NSUrlRequest newRequest, Action<NSUrlRequest> completionHandler)
+			public override void WillPerformHttpRedirection (NSUrlSession session, NSUrlSessionTask task, NSHttpUrlResponse response, NSUrlRequest newRequest, Action<NSUrlRequest?> completionHandler)
 			{
 				if (!sessionHandler.AllowAutoRedirect) {
-					completionHandler (null!);
+					completionHandler (null);
 					return;
 				}
 
 				var inflight = GetInflightData (task);
 
 				if (inflight is null) {
-					completionHandler (null!);
+					completionHandler (null);
 					return;
 				}
 

@@ -110,11 +110,12 @@ namespace Mono.ApiTools {
 		{
 			// A '?' is a nullability suffix if it's at the end, or before a type separator.
 			// The input type names are already formatted (via GetTypeName + Formatter), so generic
-			// brackets appear as HTML entities (&lt; / &gt;). A '?' before '&' catches the &gt; case.
+			// brackets appear as HTML entities (&lt; / &gt;) or placeholders (%GREATERTHANREPLACEMENT%).
+			// A '?' before '&' catches &gt;, and '%' catches %GREATERTHANREPLACEMENT%.
 			if (index + 1 >= text.Length)
 				return true;
 			char next = text [index + 1];
-			return next == ']' || next == ',' || next == '>' || next == '&' || next == ' ';
+			return next == ']' || next == ',' || next == '>' || next == '&' || next == '%' || next == ' ';
 		}
 	}
 

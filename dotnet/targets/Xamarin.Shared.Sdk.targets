@@ -318,8 +318,16 @@
 	<!-- PublishTrimmed must be calculated as part of a target because IsMacEnabled on Windows will be set after connecting to the Mac -->
 	<Target Name="_ComputePublishTrimmed">
 		<PropertyGroup>
-			<_LinkModeProperty Condition="'$(_PlatformName)' == 'macOS'">LinkMode</_LinkModeProperty>
-			<_LinkModeProperty Condition="'$(_PlatformName)' != 'macOS'">MtouchLink</_LinkModeProperty>
+			<_MustTrim Condition="'$(_MustTrim)' == '' And '$(RuntimeIdentifier)' != '' And ($(_ProjectType.EndsWith('ExecutableProject')) Or $(_ProjectType.EndsWith('AppExtensionProject'))) And '$(IsMacEnabled)' == 'true'">true</_MustTrim>
+
+			<!--
+				If we're not trimming anything (the link mode is 'None', which means no assemblies are trimmed) and
+				we're not running any custom trimmer steps (which is the case when both PrepareAssemblies and
+				PostProcessAssemblies are 'true', because then all the custom trimmer steps are moved to the
+				assembly-preparer's post-processing step instead), then there's nothing for the trimmer to do, so
+				default PublishTrimmed to false to skip running the trimmer entirely.
+			-->
+			<_CanSkipTrimmer Condition="'$(_CanSkipTrimmer)' == '' And '$(_LinkMode)' == 'None' And '$(TrimMode)' == 'copy' And '$(PrepareAssemblies)' == 'true' And '$(PostProcessAssemblies)' == 'true'">true</_CanSkipTrimmer>
 
 			<!-- The trimmer must be enabled, so if it was explicitly disabled, show an error. -->
 			<_PublishTrimmedError Condition="'$(_PublishTrimmedError)' == '' And '$(PublishTrimmed)' != 'true' And '$(PublishTrimmed)' != ''">true</_PublishTrimmedError>
@@ -327,17 +335,20 @@
 			     except then PublishAot=true, because then the .NET SDK sets PublishTrimmed=true before we get to here, so we can't distinguish
 			     between developers setting it and the .NET SDK setting it  -->
 			<_PublishTrimmedError Condition="'$(_PublishTrimmedError)' == '' And '$(PublishTrimmed)' != '' And '$(PublishAot)' != 'true'">true</_PublishTrimmedError>
+
+			<PublishTrimmed Condition="'$(PublishTrimmed)' == '' And '$(_CanSkipTrimmer)' == 'true'">false</PublishTrimmed>
+			<PublishTrimmed Condition="'$(PublishTrimmed)' == '' And '$(_MustTrim)' == 'true'">true</PublishTrimmed>
+
+			<_LinkModeProperty Condition="'$(_PlatformName)' == 'macOS'">LinkMode</_LinkModeProperty>
+			<_LinkModeProperty Condition="'$(_PlatformName)' != 'macOS'">MtouchLink</_LinkModeProperty>
 		</PropertyGroup>
 
 		<Error Condition="'$(_PublishTrimmedError)' == 'true'" Text="$(_PlatformName) projects do not support setting 'PublishTrimmed' to any value (current value: $(PublishTrimmed)). Use the '$(_LinkModeProperty)' property to configure trimming behavior instead." />
 
-		<PropertyGroup>
-			<_MustTrim Condition="'$(_MustTrim)' == '' And '$(RuntimeIdentifier)' != '' And ($(_ProjectType.EndsWith('ExecutableProject')) Or $(_ProjectType.EndsWith('AppExtensionProject'))) And '$(IsMacEnabled)' == 'true'">true</_MustTrim>
-			<PublishTrimmed Condition="'$(PublishTrimmed)' == '' And '$(_MustTrim)' == 'true'">true</PublishTrimmed>
-		</PropertyGroup>
+		<Error Condition="'$(_MustTrim)' == 'true' And '$(PublishTrimmed)' != 'true' And '$(_CanSkipTrimmer)' != 'true'" Text="$(_PlatformName) projects must build with PublishTrimmed=true. Current value: $(PublishTrimmed). Set '$(_LinkModeProperty)=None' instead to disable trimming for all assemblies." />
 
 		<!-- Show a warning if the trimmer was disabled because there's no connection to a Mac -->
-		<PropertyGroup Condition="'$(PublishTrimmed)' != '' And '$(IsMacEnabled)' != 'true'">
+		<PropertyGroup Condition="'$(PublishTrimmed)' != '' And '$(IsMacEnabled)' != 'true' And '$(_CanSkipTrimmer)' != 'true'">
 			<_PreviousPublishTrimmedValue>$(PublishTrimmed)</_PreviousPublishTrimmedValue>
 			<PublishTrimmed />
 		</PropertyGroup>
@@ -1532,7 +1543,7 @@
 	-->
 	<Target Name="_AddDedupAssemblyToResolvedFileToPublish"
 			Condition="'$(_IsDedupEnabled)' == 'true' And '$(PostProcessAssemblies)' == 'true'"
-			DependsOnTargets="_ComputeVariables"
+			DependsOnTargets="_ComputeVariables;_CreateAOTDedupAssembly"
 			BeforeTargets="_PrepareAssembliesForPostProcessing">
 		<ItemGroup>
 			<!-- Find out if the dedup assembly is already part of ResolvedFileToPublish (it will be when
@@ -1788,7 +1799,13 @@
 		DependsOnTargets="_LoadLinkerOutput"
 		>
 		<ItemGroup>
-			<_TrimmedAssembly Include="$(IntermediateLinkDir)*.dll" />
+			<!-- Collect the assemblies to scan from the assemblies to publish. This works whether or not the
+			     trimmer ran: when the trimmer is skipped (PrepareAssemblies + PostProcessAssemblies, see
+			     _CanSkipTrimmer) its output directory (IntermediateLinkDir) is empty, and when it did run the
+			     published assemblies are derived from the trimmed output. Either way these are the final
+			     assemblies, and they contain the inlined dlfcn P/Invokes (injected by the assembly-preparer)
+			     that this step needs to collect. -->
+			<_TrimmedAssembly Condition="'%(ResolvedFileToPublish.Extension)' == '.dll' And '%(ResolvedFileToPublish.Culture)' == '' And !$([System.String]::Copy ('%(ResolvedFileToPublish.Filename)').EndsWith ('.resources'))" Include="@(ResolvedFileToPublish)" />
 		</ItemGroup>
 	</Target>
 

@@ -80,7 +80,7 @@ namespace Introspection {
 			{ "Ahap", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst }, // Apple Haptics Pattern
 			{ "Aifc", All }, // AIFF-C audio format
 			{ "Aiff", All }, // Audio Interchange File
-			{ "Aime", ApplePlatform.MacOSX }, // cashless payment brand
+			{ "Aime", All }, // AVMetadataIdentifierQuickTimeMetadataAIMEData
 			{ "Aio", ApplePlatform.MacOSX }, // all-in-one abbreviation
 			{ "Alg", All }, // short for Algorithm
 			{ "Alem", All }, // Ethiopic "Amete Alem" calendar

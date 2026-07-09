@@ -1,5 +1,7 @@
 {
   "author": "Microsoft",
   "name": "tvOS Sınıf Kitaplığı",
-  "description": "Bir .NET tvOS sınıf kitaplığı oluşturmak için proje"
+  "description": "Bir .NET tvOS sınıf kitaplığı oluşturmak için proje",
+  "symbols/Framework/description": "The target framework for the project.",
+  "symbols/Framework/choices/net10.0-tvos/description": "Target net10.0-tvos"
 }

@@ -28,11 +28,10 @@ using NSCell = System.Object;
 using NSGlyphGenerator = System.Object;
 using NSGlyphStorageOptions = System.Object;
 using NSImageScaling = System.Object;
+using NSRectEdge = System.Object;
 using NSRulerMarker = System.Object;
 using NSRulerView = System.Object;
 using NSTextAttachmentCell = System.Object;
-using NSTextBlock = System.Object;
-using NSTextTableBlock = System.Object;
 using NSTextTabType = System.Object;
 using NSTextStorageEditedFlags = System.Object;
 using NSTextView = System.Object;
@@ -1979,8 +1978,7 @@ namespace UIKit {
 		[Export ("allowsDefaultTighteningForTruncation")]
 		bool AllowsDefaultTighteningForTruncation { get; [NotImplemented] set; }
 
-		[NoiOS, NoTV]
-		[NoMacCatalyst]
+		[MacCatalyst (13, 1)]
 		[Export ("textBlocks")]
 		NSTextBlock [] TextBlocks { get; [NotImplemented] set; }
 
@@ -2192,8 +2190,7 @@ namespace UIKit {
 		[Export ("setParagraphStyle:")]
 		void SetParagraphStyle (NSParagraphStyle paragraphStyle);
 
-		[NoiOS, NoTV]
-		[NoMacCatalyst]
+		[MacCatalyst (13, 1)]
 		[Override]
 		[Export ("textBlocks")]
 		NSTextBlock [] TextBlocks { get; set; }
@@ -3758,6 +3755,15 @@ namespace UIKit {
 		[Export ("textLayoutManager:renderingAttributesForLink:atLocation:defaultAttributes:")]
 		[return: NullAllowed]
 		NSDictionary<NSString, NSObject> GetRenderingAttributes (NSTextLayoutManager textLayoutManager, NSObject link, INSTextLocation location, NSDictionary<NSString, NSObject> renderingAttributes);
+
+		[TV (27, 0), iOS (27, 0), MacCatalyst (27, 0), Mac (27, 0)]
+		[Export ("textLayoutManager:cacheTextAttachmentViewProvider:forTextAttachment:")]
+		void CacheTextAttachmentViewProvider (NSTextLayoutManager textLayoutManager, NSTextAttachmentViewProvider viewProvider, NSTextAttachment textAttachment);
+
+		[TV (27, 0), iOS (27, 0), MacCatalyst (27, 0), Mac (27, 0)]
+		[Export ("textLayoutManager:retrieveCachedTextAttachmentViewProviderForTextAttachment:")]
+		[return: NullAllowed]
+		NSTextAttachmentViewProvider GetCachedTextAttachmentViewProvider (NSTextLayoutManager textLayoutManager, NSTextAttachment attachment);
 	}
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
@@ -4020,6 +4026,14 @@ namespace UIKit {
 		[Abstract]
 		[Export ("compare:")]
 		NSComparisonResult Compare (INSTextLocation location);
+
+		[Abstract]
+		[Export ("isEqual:")]
+		bool IsEqual ([NullAllowed] NSObject anObject);
+
+		[Abstract]
+		[Export ("hash")]
+		nuint GetNativeHash ();
 	}
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
@@ -4147,7 +4161,7 @@ namespace UIKit {
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface NSTextLayoutFragment : NSSecureCoding {
+	interface NSTextLayoutFragment : NSSecureCoding, NSTextViewportRenderingSurfaceKey {
 		[Export ("initWithTextElement:range:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSTextElement textElement, [NullAllowed] NSTextRange rangeInElement);
@@ -4251,6 +4265,20 @@ namespace UIKit {
 		NSTextRange GetTextRangeByFormingUnion (NSTextRange textRange);
 	}
 
+	interface INSTextViewportRenderingSurface { }
+
+	[TV (27, 0), iOS (27, 0), MacCatalyst (27, 0), Mac (27, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface NSTextViewportRenderingSurface {
+	}
+
+	interface INSTextViewportRenderingSurfaceKey { }
+
+	[TV (18, 0), iOS (18, 0), MacCatalyst (18, 0), Mac (15, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface NSTextViewportRenderingSurfaceKey {
+	}
+
 	interface INSTextViewportLayoutControllerDelegate { }
 
 	[TV (15, 0), iOS (15, 0)]
@@ -4271,6 +4299,18 @@ namespace UIKit {
 
 		[Export ("textViewportLayoutControllerDidLayout:")]
 		void DidLayout (NSTextViewportLayoutController textViewportLayoutController);
+
+		[TV (27, 0), iOS (27, 0), MacCatalyst (27, 0), Mac (27, 0)]
+		[Export ("textViewportLayoutController:cacheRenderingSurface:forKey:")]
+		void CacheRenderingSurface (NSTextViewportLayoutController textViewportLayoutController, INSTextViewportRenderingSurface renderingSurface, INSTextViewportRenderingSurfaceKey renderingSurfaceKey);
+
+		[TV (27, 0), iOS (27, 0), MacCatalyst (27, 0), Mac (27, 0)]
+		[Export ("textViewportLayoutController:retrieveCachedRenderingSurfaceForKey:")]
+		INSTextViewportRenderingSurface GetCachedRenderingSurface (NSTextViewportLayoutController textViewportLayoutController, INSTextViewportRenderingSurfaceKey renderingSurfaceKey);
+
+		[TV (27, 0), iOS (27, 0), MacCatalyst (27, 0), Mac (27, 0)]
+		[Export ("textViewportLayoutControllerReceivedSetNeedsLayout:")]
+		void ReceivedSetNeedsLayout (NSTextViewportLayoutController textViewportLayoutController);
 	}
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
@@ -4434,6 +4474,10 @@ namespace UIKit {
 
 		[Export ("textLayoutOrientationAtLocation:")]
 		NSTextSelectionNavigationLayoutOrientation GetTextLayoutOrientation (INSTextLocation location);
+
+		[TV (27, 0), iOS (27, 0), MacCatalyst (27, 0), Mac (27, 0)]
+		[Export ("convertInteractionPoint:toContainerAtLocation:")]
+		CGPoint ConvertInteractionPoint (CGPoint point, INSTextLocation containerLocation);
 	}
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
@@ -4735,6 +4779,152 @@ namespace UIKit {
 		bool IncludesTextListMarkers { get; }
 	}
 
+	[MacCatalyst (13, 1)]
+	[DesignatedDefaultCtor]
+	[BaseType (typeof (NSObject))]
+	interface NSTextBlock : NSSecureCoding, NSCopying {
+		[Export ("setValue:type:forDimension:")]
+		void SetValue (nfloat val, NSTextBlockValueType type, NSTextBlockDimension dimension);
+
+		[Export ("valueForDimension:")]
+		nfloat GetValue (NSTextBlockDimension dimension);
+
+		[Export ("valueTypeForDimension:")]
+		NSTextBlockValueType GetValueType (NSTextBlockDimension dimension);
+
+		[Export ("setContentWidth:type:")]
+		void SetContentWidth (nfloat val, NSTextBlockValueType type);
+
+		[Export ("contentWidth")]
+		nfloat ContentWidth { get; }
+
+		[Export ("contentWidthValueType")]
+		NSTextBlockValueType ContentWidthValueType { get; }
+
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Export ("setWidth:type:forLayer:edge:")]
+		void SetWidth (nfloat val, NSTextBlockValueType type, NSTextBlockLayer layer, NSRectEdge edge);
+
+		[Export ("setWidth:type:forLayer:")]
+		void SetWidth (nfloat val, NSTextBlockValueType type, NSTextBlockLayer layer);
+
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Export ("widthForLayer:edge:")]
+		nfloat GetWidth (NSTextBlockLayer layer, NSRectEdge edge);
+
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Export ("widthValueTypeForLayer:edge:")]
+		NSTextBlockValueType WidthValueTypeForLayer (NSTextBlockLayer layer, NSRectEdge edge);
+
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Export ("setBorderColor:forEdge:")]
+		void SetBorderColor (NSColor color, NSRectEdge edge);
+
+		[Export ("setBorderColor:")]
+		void SetBorderColor ([NullAllowed] NSColor color);
+
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Export ("borderColorForEdge:")]
+		NSColor GetBorderColor (NSRectEdge edge);
+
+		[Mac (27, 0), iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Export ("setWidth:type:forLayer:rectEdge:")]
+		void SetWidth (nfloat width, NSTextBlockValueType type, NSTextBlockLayer layer, CGRectEdge rectEdge);
+
+		[Mac (27, 0), iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Export ("widthForLayer:rectEdge:")]
+		nfloat GetWidth (NSTextBlockLayer layer, CGRectEdge rectEdge);
+
+		[Mac (27, 0), iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Export ("widthValueTypeForLayer:rectEdge:")]
+		NSTextBlockValueType GetWidthValueType (NSTextBlockLayer layer, CGRectEdge rectEdge);
+
+		[Mac (27, 0), iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Export ("setBorderColor:rectEdge:")]
+		void SetBorderColor ([NullAllowed] NSColor color, CGRectEdge rectEdge);
+
+		[Mac (27, 0), iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Export ("borderColorForRectEdge:")]
+		[return: NullAllowed]
+		NSColor GetBorderColor (CGRectEdge rectEdge);
+
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Export ("rectForLayoutAtPoint:inRect:textContainer:characterRange:")]
+		CGRect GetRectForLayout (CGPoint startingPoint, CGRect rect, NSTextContainer textContainer, NSRange charRange);
+
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Export ("boundsRectForContentRect:inRect:textContainer:characterRange:")]
+		CGRect GetBoundsRect (CGRect contentRect, CGRect rect, NSTextContainer textContainer, NSRange charRange);
+
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Export ("drawBackgroundWithFrame:inView:characterRange:layoutManager:")]
+		void DrawBackground (CGRect frameRect, [NullAllowed] NSView controlView, NSRange charRange, NSLayoutManager layoutManager);
+
+		//Detected properties
+		[Export ("verticalAlignment")]
+		NSTextBlockVerticalAlignment VerticalAlignment { get; set; }
+
+		[NullAllowed, Export ("backgroundColor", ArgumentSemantic.Copy)]
+		NSColor BackgroundColor { get; set; }
+	}
+
+	[MacCatalyst (13, 1)]
+	[BaseType (typeof (NSTextBlock))]
+	[DisableDefaultCtor]
+	interface NSTextTableBlock {
+		[DesignatedInitializer]
+		[Export ("initWithTable:startingRow:rowSpan:startingColumn:columnSpan:")]
+		NativeHandle Constructor (NSTextTable table, nint row, nint rowSpan, nint col, nint colSpan);
+
+		[Export ("table")]
+		NSTextTable Table { get; }
+
+		[Export ("startingRow")]
+		nint StartingRow { get; }
+
+		[Export ("rowSpan")]
+		nint RowSpan { get; }
+
+		[Export ("startingColumn")]
+		nint StartingColumn { get; }
+
+		[Export ("columnSpan")]
+		nint ColumnSpan { get; }
+	}
+
+	[MacCatalyst (13, 1)]
+	[BaseType (typeof (NSTextBlock))]
+	interface NSTextTable {
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Export ("rectForBlock:layoutAtPoint:inRect:textContainer:characterRange:")]
+		CGRect GetRectForBlock (NSTextTableBlock block, CGPoint startingPoint, CGRect rect, NSTextContainer textContainer, NSRange charRange);
+
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Export ("boundsRectForBlock:contentRect:inRect:textContainer:characterRange:")]
+		CGRect GetBoundsRect (NSTextTableBlock block, CGRect contentRect, CGRect rect, NSTextContainer textContainer, NSRange charRange);
+
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Export ("drawBackgroundForBlock:withFrame:inView:characterRange:layoutManager:")]
+		void DrawBackground (NSTextTableBlock block, CGRect frameRect, NSView controlView, NSRange charRange, NSLayoutManager layoutManager);
+
+		//Detected properties
+		[Export ("numberOfColumns")]
+#if MONOMAC && !XAMCORE_5_0
+		nint Columns { get; set; }
+#else
+		nint NumberOfColumns { get; set; }
+#endif
+
+		[Export ("layoutAlgorithm")]
+		NSTextTableLayoutAlgorithm LayoutAlgorithm { get; set; }
+
+		[Export ("collapsesBorders")]
+		bool CollapsesBorders { get; set; }
+
+		[Export ("hidesEmptyCells")]
+		bool HidesEmptyCells { get; set; }
+	}
+
 	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSTextParagraph))]
 	interface NSTextListElement {
@@ -4895,7 +5085,6 @@ namespace UIKit {
 		[Field ("NSPaperSizeDocumentAttribute")]
 		NSString PaperSizeDocumentAttribute { get; }
 
-		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Field ("NSPaperMarginDocumentAttribute")]
 		NSString PaperMarginDocumentAttribute { get; }

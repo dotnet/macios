@@ -895,6 +895,99 @@ IFS='
 IFS=$IFS_tmp
 }
 
+# Download and install a simulator runtime from Apple's downloadable simulator index.
+#
+# This is the same index Xcode's UI uses to download simulators, and we need it because
+# 'xcodebuild -downloadPlatform' can't download the older simulators anymore with Xcode 27+
+# (Apple removed them from the platform catalog xcodebuild uses, but they're still available
+# in this index).
+#
+# $1: the simulator's os (iOS, tvOS, ...)
+# $2: the simulator's version (16.0, ...)
+function install_old_simulator_from_index ()
+{
+	local os="$1"
+	local version="$2"
+
+	local platform
+	local dldir
+	local index_url
+	local query
+	local source
+	local expectedSize
+	local path
+	local dmg
+	local actualSize
+
+	case "$os" in
+		iOS)             platform=com.apple.platform.iphoneos ;;
+		tvOS)            platform=com.apple.platform.appletvos ;;
+		watchOS)         platform=com.apple.platform.watchos ;;
+		xrOS | visionOS) platform=com.apple.platform.xros ;;
+		*)
+			warn "Don't know the platform identifier for the $os simulator."
+			return 1
+			;;
+	esac
+
+	dldir="$SD_TMP_DIR/$os-$version-runtime"
+	rm -rf -- "$dldir"
+	mkdir -p "$dldir"
+
+	# This is the index Xcode uses to find downloadable simulator runtimes.
+	index_url=https://devimages-cdn.apple.com/downloads/xcode/simulators/index2.dvtdownloadableindex
+	log "Downloading the simulator runtime index from $index_url..."
+	if ! curl --fail --location --silent --show-error --max-time 120 "$index_url" --output "$dldir/index.plist"; then
+		warn "Failed to download the simulator runtime index."
+		return 1
+	fi
+	plutil -convert json -o "$dldir/index.json" "$dldir/index.plist"
+
+	# Find the download url (and expected file size) for the requested simulator in the index.
+	query=".downloadables[] | select(.platform == \"$platform\" and .simulatorVersion.version == \"$version\")"
+	source=$(jq -r "first($query) | .source // empty" "$dldir/index.json")
+	if test -z "$source"; then
+		warn "Could not find the $os $version simulator in the downloadable simulator index."
+		return 1
+	fi
+	expectedSize=$(jq -r "first($query) | .fileSize // empty" "$dldir/index.json")
+
+	# The runtime dmgs require a download authorization cookie. No account is needed, but Apple's
+	# cdn rejects requests without the cookie, and requesting the download path from developerservices2
+	# hands out the cookie without requiring any authentication.
+	path=$(printf '%s' "$source" | sed -E 's,^https?://[^/]+,,')
+	log "Fetching a download authorization cookie..."
+	if ! curl --fail --location --silent --show-error --max-time 60 --cookie-jar "$dldir/cookies.txt" "https://developerservices2.apple.com/services/download?path=$path" --output /dev/null; then
+		warn "Failed to fetch a download authorization cookie for the $os $version simulator."
+		return 1
+	fi
+
+	dmg="$dldir/$(basename "$source")"
+	log "Downloading the $os $version simulator runtime from $source..."
+	if ! curl --fail --location --silent --show-error --cookie "$dldir/cookies.txt" "$source" --output "$dmg"; then
+		warn "Failed to download the $os $version simulator runtime."
+		return 1
+	fi
+
+	# Sanity check the size of the downloaded file (in case we got an error page instead of the dmg).
+	if test -n "$expectedSize"; then
+		actualSize=$(stat -f '%z' "$dmg")
+		if [[ "$actualSize" != "$expectedSize" ]]; then
+			warn "The downloaded $os $version simulator runtime has an unexpected size (expected $expectedSize bytes, got $actualSize bytes)."
+			return 1
+		fi
+	fi
+
+	log "Installing the $os $version simulator runtime..."
+	if ! xcrun simctl runtime add "$dmg" 2>&1 | sed 's/^/        /'; then
+		warn "Failed to install the $os $version simulator runtime."
+		return 1
+	fi
+
+	rm -rf -- "$dldir"
+	return 0
+}
+
 function check_old_simulators ()
 {
 	if test -n "$IGNORE_OLD_SIMULATORS"; then return; fi
@@ -943,8 +1036,20 @@ function check_old_simulators ()
 			$action "The $os $version simulator is not installed. Execute ${COLOR_MAGENTA}xcodebuild -downloadPlatform $os -buildVersion $version${COLOR_RESET} to install."
 		else
 			warn "The $os $version simulator is not installed. Now executing ${COLOR_BLUE}"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform $os -buildVersion $version${COLOR_RESET} to install..."
-			"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform "$os" -buildVersion "$version" 2>&1 | sed 's/^/        /'
-			warn "Successfully executed ${COLOR_BLUE}"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform $os -buildVersion $version${COLOR_RESET}."
+			if "$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform "$os" -buildVersion "$version" 2>&1 | sed 's/^/        /'; then
+				warn "Successfully executed ${COLOR_BLUE}"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform $os -buildVersion $version${COLOR_RESET}."
+			else
+				# Starting with Xcode 27 'xcodebuild -downloadPlatform' can't download the old simulators
+				# anymore (Apple removed them from the platform catalog xcodebuild uses), so fall back to
+				# downloading the runtime directly from Apple's downloadable simulator index (the same index
+				# Xcode's UI uses, which still has the old simulators).
+				warn "Failed to install the $os $version simulator using xcodebuild; falling back to Apple's downloadable simulator index..."
+				if install_old_simulator_from_index "$os" "$version"; then
+					ok "Successfully installed the $os $version simulator from the downloadable simulator index."
+				else
+					$action "The $os $version simulator is not installed, and it couldn't be downloaded."
+				fi
+			fi
 		fi
 	done
 }

@@ -561,6 +561,12 @@ namespace Introspection {
 					return true;
 				}
 				break;
+			case "AUHeadTrackingBinauralRenderer":
+				if (cstr == "Void .ctor(AudioUnit.AudioComponentDescription, AudioUnit.AudioComponentInstantiationOptions, Foundation.NSError ByRef)") {
+					// This constructor is exposed using a factory method.
+					return true;
+				}
+				break;
 			}
 
 			var ep = ctor.GetParameters ();

@@ -8,7 +8,6 @@ using Mono.Cecil;
 
 namespace Xamarin.Tests {
 	[TestFixture]
-	[Ignore ("The results depend on the macOS version of the bot running the test")]
 	public class AppSizeTest : TestBaseClass {
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
@@ -111,6 +110,12 @@ namespace Xamarin.Tests {
 			var properties = GetDefaultProperties (runtimeIdentifiers, extraProperties: extraProperties);
 			properties ["Configuration"] = configuration;
 
+			// Disable code signing: the code signature isn't relevant to the app size we want to track, and it's not
+			// deterministic between machines. In particular the code signature's hash page size (and thus the number of
+			// hashes, and thus the signature size) depends on the version of the 'codesign' tool, which is part of the OS,
+			// so the app size would otherwise differ depending on the macOS version of the machine that built the app.
+			properties ["EnableCodeSigning"] = "false";
+
 			DotNet.AssertBuild (project_path, properties);
 
 			// FORCE_UPDATE_KNOWN_FAILURES will update the known failures files even if the test doesn't actually fail
@@ -121,14 +126,41 @@ namespace Xamarin.Tests {
 			var update = forceUpdate || !string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("WRITE_KNOWN_FAILURES"));
 			var expectedDirectory = Path.Combine (Configuration.SourceRoot, "tests", "dotnet", "UnitTests", "expected");
 
-			Assert.Multiple (() => {
-				AssertAppSize (platform, name, appPath, update, forceUpdate, expectedDirectory);
+			try {
+				Assert.Multiple (() => {
+					AssertAppSize (platform, name, appPath, update, forceUpdate, expectedDirectory);
 
-				if (supportsAssemblyInspection)
-					AssertAssemblyReport (platform, name, appPath, update, expectedDirectory);
+					if (supportsAssemblyInspection)
+						AssertAssemblyReport (platform, name, appPath, update, expectedDirectory);
 
-				AssertExpectedDSyms (platform, appPath);
-			});
+					AssertExpectedDSyms (platform, appPath);
+				});
+			} catch {
+				// If the test fails on CI, copy the resulting .app bundle to a location that will be uploaded as an
+				// Azure DevOps artifact (zipped). This is for diagnostic purposes only.
+				CopyAppBundleForDiagnostics (name, appPath);
+				throw;
+			}
+		}
+
+		static void CopyAppBundleForDiagnostics (string name, string appPath)
+		{
+			var artifactStagingDir = Environment.GetEnvironmentVariable ("BUILD_ARTIFACTSTAGINGDIRECTORY");
+			if (string.IsNullOrEmpty (artifactStagingDir))
+				return; // not running in Azure DevOps CI
+
+			try {
+				var outputDir = Path.Combine (artifactStagingDir, "failed-app-size-bundles");
+				Directory.CreateDirectory (outputDir);
+				// Use a sortable timestamp to make the zip file name unique, so subsequent failing tests don't overwrite it.
+				var timestamp = DateTime.UtcNow.ToString ("yyyyMMdd'T'HHmmss'Z'");
+				var zipPath = Path.Combine (outputDir, $"{name}-{Path.GetFileName (appPath)}-{timestamp}.zip");
+				Console.WriteLine ($"    Zipping app bundle '{appPath}' to '{zipPath}' for diagnostics...");
+				System.IO.Compression.ZipFile.CreateFromDirectory (appPath, zipPath, System.IO.Compression.CompressionLevel.Optimal, includeBaseDirectory: true);
+				Console.WriteLine ($"    Zipped app bundle to '{zipPath}'.");
+			} catch (Exception e) {
+				Console.WriteLine ($"    Failed to zip app bundle for diagnostics: {e}");
+			}
 		}
 
 		static void AssertAppSize (ApplePlatform platform, string name, string appPath, bool update, bool forceUpdate, string expectedDirectory)
@@ -142,8 +174,12 @@ namespace Xamarin.Tests {
 			var report = new StringBuilder ();
 			report.AppendLine ($"AppBundleSize: {FormatBytes (appBundleSize)}");
 			report.AppendLine ($"# The following list of files and their sizes is just informational / for review, and isn't used in the test:");
-			foreach (var file in allFiles.OrderBy (v => v.FullName))
-				report.AppendLine ($"{file.FullName [(appPath.Length + 1)..]}: {FormatBytes (file.Length)}");
+			foreach (var file in allFiles.OrderBy (v => v.FullName)) {
+				// Write the file length on a different line, so that it's easier to compute length changes in a diff (the file name stays the same, only the length line changes).
+				// Also if files are added or removed, in addition to other files change their lengths, this will make those additions/removals stand out more in diffs.
+				report.AppendLine ($"{file.FullName [(appPath.Length + 1)..]}:");
+				report.AppendLine ($"    {FormatBytes (file.Length)}");
+			}
 			var expectedSizeReportPath = Path.Combine (expectedDirectory, $"{name}-size.txt");
 			var expectedSizeReport = "";
 			var expectedAppBundleSize = 0L;
@@ -171,8 +207,8 @@ namespace Xamarin.Tests {
 			Console.WriteLine ($"    {msg}");
 
 			// Compare individual files in the app bundle
-			var expectedLines = expectedSizeReport.SplitLines ().Skip (2).Where (v => v.IndexOf (':') >= 0).ToDictionary (v => v [..v.IndexOf (':')], v => v [(v.IndexOf (':') + 1)..]);
-			var actualLines = report.ToString ().SplitLines ().Skip (2).Where (v => v.IndexOf (':') >= 0).ToDictionary (v => v [..v.IndexOf (':')], v => v [(v.IndexOf (':') + 1)..]);
+			var expectedLines = ParseFileSizes (expectedSizeReport);
+			var actualLines = ParseFileSizes (report.ToString ());
 			var allKeys = expectedLines.Keys.Union (actualLines.Keys).OrderBy (v => v);
 			var filesAdded = new List<string> ();
 			var filesRemoved = new List<string> ();
@@ -212,6 +248,25 @@ namespace Xamarin.Tests {
 				}
 				Assert.Fail ($"{msg} {updateHint}");
 			}
+		}
+
+		// Parse a size report (either an expected file or a freshly generated report) into a dictionary
+		// mapping each file's relative path to its formatted size. The format is two lines per file: the
+		// file name (ending with ':') followed by an indented line with the size.
+		static Dictionary<string, string> ParseFileSizes (string report)
+		{
+			var rv = new Dictionary<string, string> ();
+			var lines = report.SplitLines ();
+			// Skip the first two lines: the total 'AppBundleSize' line and the '#' comment line.
+			for (var i = 2; i < lines.Length; i++) {
+				var line = lines [i];
+				if (!line.EndsWith (":", StringComparison.Ordinal))
+					continue;
+				var name = line [..^1];
+				var size = i + 1 < lines.Length ? lines [i + 1].Trim () : "";
+				rv [name] = size;
+			}
+			return rv;
 		}
 
 		// Create a file with all the APIs that survived the trimmer; this can be useful to determine what is not trimmed away.

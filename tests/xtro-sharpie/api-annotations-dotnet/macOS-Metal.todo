@@ -40,3 +40,5 @@
 !missing-enum! MTLFloatingPointConversionRoundingMode not bound
 !missing-selector! MTLCompileOptions::floatingPointConversionRoundingMode not bound
 !missing-selector! MTLCompileOptions::setFloatingPointConversionRoundingMode: not bound
+!deprecated-attribute-missing! MTLRenderPassAttachmentDescriptor::setStoreActionOptions: missing a [Deprecated] attribute
+!deprecated-attribute-missing! MTLRenderPassAttachmentDescriptor::storeActionOptions missing a [Deprecated] attribute

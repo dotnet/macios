@@ -2,3 +2,4 @@
 !missing-selector! CSSearchableIndex::protectionClass not bound
 !missing-selector! CSSearchableIndexDescription::protectionClass not bound
 !missing-type! CSSearchableIndexDescription not bound
+!unknown-native-enum! CSSearchQuerySourceOptions bound

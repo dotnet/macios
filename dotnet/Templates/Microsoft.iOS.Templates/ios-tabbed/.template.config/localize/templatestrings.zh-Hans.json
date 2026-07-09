@@ -2,15 +2,17 @@
   "author": "Microsoft",
   "name": "iOS 选项卡式应用程序",
   "description": "用于创建 .NET iOS 选项卡式应用程序的项目",
-  "symbols/bundleId/description": "在 Info.plist 中替代 CFBundleIdentifier",
   "symbols/bundleId/displayName": "Bundle ID",
-  "symbols/minOSVersion/description": "替代项目文件中的 SupportedOSPlatformVersion",
+  "symbols/bundleId/description": "在 Info.plist 中替代 CFBundleIdentifier",
   "symbols/minOSVersion/displayName": "Minimum OS version",
-  "symbols/deviceFamily/choices/universal/description": "同时支持 iPhone 和 iPad 设备",
+  "symbols/minOSVersion/description": "替代项目文件中的 SupportedOSPlatformVersion",
+  "symbols/deviceFamily/displayName": "Device family",
   "symbols/deviceFamily/choices/universal/displayName": "Universal",
-  "symbols/deviceFamily/choices/iphone/description": "仅支持 iPhone 设备",
+  "symbols/deviceFamily/choices/universal/description": "同时支持 iPhone 和 iPad 设备",
   "symbols/deviceFamily/choices/iphone/displayName": "iPhone",
-  "symbols/deviceFamily/choices/ipad/description": "仅支持 iPad 设备",
+  "symbols/deviceFamily/choices/iphone/description": "仅支持 iPhone 设备",
   "symbols/deviceFamily/choices/ipad/displayName": "iPad",
-  "symbols/deviceFamily/displayName": "Device family"
+  "symbols/deviceFamily/choices/ipad/description": "仅支持 iPad 设备",
+  "symbols/Framework/description": "The target framework for the project.",
+  "symbols/Framework/choices/net10.0-ios/description": "Target net10.0-ios"
 }

@@ -1339,6 +1339,9 @@ namespace AudioUnit {
 		MediumHall3 = 11,
 		/// <summary>To be added.</summary>
 		LargeHall2 = 12,
+		/// <summary>A general-purpose outdoor reverberation environment.</summary>
+		[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		OutdoorGeneral = 24,
 	}
 
 	public enum AUScheduledAudioSliceFlags : uint {

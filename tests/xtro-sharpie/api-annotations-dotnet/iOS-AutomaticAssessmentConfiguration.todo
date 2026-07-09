@@ -1,4 +1,2 @@
-!missing-selector! AEAssessmentConfiguration::allowsAccessibilitySpokenContent not bound
-!missing-selector! AEAssessmentConfiguration::allowsAccessibilityVoiceOver not bound
-!missing-selector! AEAssessmentConfiguration::setAllowsAccessibilitySpokenContent: not bound
-!missing-selector! AEAssessmentConfiguration::setAllowsAccessibilityVoiceOver: not bound
+!deprecated-attribute-missing! AEAssessmentConfiguration::allowsAccessibilitySpeech missing a [Deprecated] attribute
+!deprecated-attribute-missing! AEAssessmentConfiguration::setAllowsAccessibilitySpeech: missing a [Deprecated] attribute

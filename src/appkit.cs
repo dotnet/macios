@@ -2823,6 +2823,19 @@ namespace AppKit {
 		[Export ("browser:selectionIndexesForProposedSelection:inColumn:")]
 		NSIndexSet SelectionIndexesForProposedSelection (NSBrowser browser, NSIndexSet proposedSelectionIndexes, nint inColumn);
 
+		[Mac (27, 0)]
+		[Export ("browser:pasteboardWriterForRow:column:")]
+		[return: NullAllowed]
+		INSPasteboardWriting GetPasteboardWriter (NSBrowser browser, nint row, nint column);
+
+		[Mac (27, 0)]
+		[Export ("browser:draggingSession:willBeginAtPoint:forRowsWithIndexes:column:")]
+		void DraggingSessionWillBegin (NSBrowser browser, NSDraggingSession draggingSession, CGPoint screenPoint, NSIndexSet rowIndexes, nint column);
+
+		[Mac (27, 0)]
+		[Export ("browser:draggingSession:endedAtPoint:operation:")]
+		void DraggingSessionEnded (NSBrowser browser, NSDraggingSession draggingSession, CGPoint screenPoint, NSDragOperation operation);
+
 	}
 
 	[NoMacCatalyst]
@@ -5823,6 +5836,33 @@ namespace AppKit {
 		nuint IndexOfItem (NSComboBoxCell comboBox, string value);
 	}
 
+	[Mac (11, 0), NoMacCatalyst]
+	[Native]
+	[Flags]
+	public enum NSControlEvents : ulong {
+		TrackingBegan = 1uL << 0,
+		[Mac (27, 0)]
+		TrackingRepeated = 1uL << 1,
+		TrackingInside = 1uL << 2,
+		TrackingOutside = 1uL << 3,
+		TrackingEntered = 1uL << 4,
+		TrackingExited = 1uL << 5,
+		TrackingEndedInside = 1uL << 6,
+		TrackingEndedOutside = 1uL << 7,
+		TrackingCancelled = 1uL << 8,
+		[Mac (27, 0)]
+		ValueChanged = 1uL << 12,
+		[Mac (27, 0)]
+		PrimaryActionTriggered = 1uL << 13,
+		[Mac (27, 0)]
+		MenuActionTriggered = 1uL << 14,
+		AllTrackingEvents = 0x00000FFF,
+		[Mac (27, 0)]
+		ApplicationReserved = 0x0F000000,
+		SystemReserved = 0xF0000000,
+		AllEvents = 0xFFFFFFFF,
+	}
+
 	[NoMacCatalyst]
 	[BaseType (typeof (NSView))]
 	partial interface NSControl {
@@ -6010,6 +6050,14 @@ namespace AppKit {
 
 		[Export ("endEditing:")]
 		void EndEditing ([NullAllowed] NSText textObj);
+
+		[Mac (11, 0)]
+		[Export ("addTarget:action:forControlEvents:")]
+		void AddTarget ([NullAllowed] NSObject target, Selector action, NSControlEvents controlEvents);
+
+		[Mac (11, 0)]
+		[Export ("removeTarget:action:forControlEvents:")]
+		void RemoveTarget ([NullAllowed] NSObject target, [NullAllowed] Selector action, NSControlEvents controlEvents);
 	}
 
 	[NoMacCatalyst]
@@ -9304,6 +9352,11 @@ namespace AppKit {
 		[Export ("isSwipeTrackingFromScrollEventsEnabled")]
 		bool IsSwipeTrackingFromScrollEventsEnabled { get; }
 
+		[Mac (27, 0)]
+		[Static]
+		[Export ("isTouchSwipeNavigationEnabled")]
+		bool IsTouchSwipeNavigationEnabled { get; }
+
 		[Export ("trackSwipeEventWithOptions:dampenAmountThresholdMin:max:usingHandler:")]
 		void TrackSwipeEvent (NSEventSwipeTrackingOptions options, nfloat minDampenThreshold, nfloat maxDampenThreshold, NSEventTrackHandler trackingHandler);
 
@@ -9398,6 +9451,10 @@ namespace AppKit {
 
 		[Export ("delaysRotationEvents")]
 		bool DelaysRotationEvents { get; set; }
+
+		[Mac (27, 0)]
+		[Export ("cancellableByScrollGesture")]
+		bool CancellableByScrollGesture { [Bind ("isCancellableByScrollGesture")] get; set; }
 
 		[Export ("locationInView:")]
 		CGPoint LocationInView ([NullAllowed] NSView view);
@@ -9843,6 +9900,14 @@ namespace AppKit {
 		CGRect ConfinementRectForMenu (NSMenu menu, NSScreen screen);
 	}
 
+	[Mac (27, 0), NoMacCatalyst]
+	[Native]
+	public enum NSMenuItemImageVisibility : long {
+		Automatic = 0,
+		Visible = 1,
+		Hidden = 2,
+	}
+
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	[ThreadSafe] // Not documented anywhere, but their Finder extension sample uses it on non-ui thread
@@ -9979,6 +10044,10 @@ namespace AppKit {
 		[NullAllowed]
 		[Export ("badge", ArgumentSemantic.Copy)]
 		NSMenuItemBadge Badge { get; set; }
+
+		[Mac (27, 0)]
+		[Export ("preferredImageVisibility", ArgumentSemantic.Assign)]
+		NSMenuItemImageVisibility PreferredImageVisibility { get; set; }
 
 		[Export ("sectionHeader")]
 		bool IsSectionHeader { [Bind ("isSectionHeader")] get; }
@@ -13211,8 +13280,17 @@ namespace AppKit {
 		[Export ("velocityInView:")]
 		CGPoint VelocityInView (NSView view);
 
+		[Deprecated (PlatformName.MacOSX, 27, 0, message: "Use 'MinimumNumberOfTouches' instead.")]
 		[Export ("numberOfTouchesRequired")]
 		nint NumberOfTouchesRequired { get; set; }
+
+		[Mac (27, 0)]
+		[Export ("minimumNumberOfTouches")]
+		nint MinimumNumberOfTouches { get; set; }
+
+		[Mac (27, 0)]
+		[Export ("maximumNumberOfTouches")]
+		nint MaximumNumberOfTouches { get; set; }
 	}
 
 	[NoMacCatalyst]
@@ -16169,6 +16247,14 @@ namespace AppKit {
 		bool ShowsContentTypes { get; set; }
 	}
 
+	[Mac (27, 0), NoMacCatalyst]
+	[Native]
+	[Flags]
+	public enum NSScreenTouchCapabilities : ulong {
+		None = 0x0,
+		MultiTouch = 1uL << 0,
+	}
+
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	partial interface NSScreen {
@@ -16297,6 +16383,10 @@ namespace AppKit {
 		[Mac (26, 0)]
 		[Export ("CGDirectDisplayID")]
 		uint CGDirectDisplayId { get; }
+
+		[Mac (27, 0)]
+		[Export ("touchCapabilities")]
+		NSScreenTouchCapabilities TouchCapabilities { get; }
 	}
 
 	[NoMacCatalyst]
@@ -16573,6 +16663,51 @@ namespace AppKit {
 
 		[Export ("addFloatingSubview:forAxis:")]
 		void AddFloatingSubview (NSView view, NSEventGestureAxis axis);
+
+		[Mac (27, 0)]
+		[Export ("touchScrollingEnabled")]
+		bool TouchScrollingEnabled { [Bind ("isTouchScrollingEnabled")] get; set; }
+
+		[Mac (27, 0)]
+		[Export ("minimumNumberOfTouchesForScrolling")]
+		nint MinimumNumberOfTouchesForScrolling { get; set; }
+
+		[Mac (27, 0)]
+		[Export ("maximumNumberOfTouchesForScrolling")]
+		nint MaximumNumberOfTouchesForScrolling { get; set; }
+
+		[Mac (27, 0)]
+		[Export ("scrollGestureForRelationships", ArgumentSemantic.Strong)]
+		NSGestureRecognizer ScrollGestureForRelationships { get; }
+
+		[Mac (27, 0)]
+		[NullAllowed, Export ("refreshController", ArgumentSemantic.Strong)]
+		NSRefreshController RefreshController { get; set; }
+	}
+
+	[Mac (27, 0), NoMacCatalyst]
+	[BaseType (typeof (NSObject))]
+	interface NSRefreshController {
+		[Export ("isRefreshing")]
+		bool IsRefreshing { get; }
+
+		[NullAllowed, Export ("tintColor", ArgumentSemantic.Strong)]
+		NSColor TintColor { get; set; }
+
+		[NullAllowed, Export ("attributedTitle", ArgumentSemantic.Copy)]
+		NSAttributedString AttributedTitle { get; set; }
+
+		[NullAllowed, Export ("target", ArgumentSemantic.Weak)]
+		NSObject Target { get; set; }
+
+		[NullAllowed, Export ("action", ArgumentSemantic.Assign)]
+		Selector Action { get; set; }
+
+		[Export ("beginRefreshing")]
+		void BeginRefreshing ();
+
+		[Export ("endRefreshing")]
+		void EndRefreshing ();
 	}
 
 	[NoMacCatalyst]
@@ -16712,6 +16847,14 @@ namespace AppKit {
 		bool SendsSearchStringImmediately { get; set; }
 	}
 
+	[Mac (27, 0), NoMacCatalyst]
+	[Native]
+	public enum NSSegmentedControlRole : long {
+		Automatic = 0,
+		Tabs = 1,
+		ValueSelection = 2,
+	}
+
 	[NoMacCatalyst]
 	[BaseType (typeof (NSControl))]
 	interface NSSegmentedControl : NSUserInterfaceCompression {
@@ -16829,6 +16972,10 @@ namespace AppKit {
 		[Mac (26, 0)]
 		[Export ("borderShape", ArgumentSemantic.Assign)]
 		NSControlBorderShape BorderShape { get; set; }
+
+		[Mac (27, 0)]
+		[Export ("role", ArgumentSemantic.Assign)]
+		NSSegmentedControlRole Role { get; set; }
 	}
 
 	[NoMacCatalyst]
@@ -18331,6 +18478,41 @@ namespace AppKit {
 
 		[Export ("autosaveName")]
 		string AutosaveName { get; set; }
+
+		[Mac (27, 0)]
+		[NullAllowed, Export ("expandedInterfaceDelegate", ArgumentSemantic.Weak)]
+		NSObject WeakExpandedInterfaceDelegate { get; set; }
+
+		[Mac (27, 0)]
+		[Wrap ("WeakExpandedInterfaceDelegate")]
+		[NullAllowed]
+		INSStatusItemExpandedInterfaceDelegate ExpandedInterfaceDelegate { get; set; }
+
+		[Mac (27, 0)]
+		[NullAllowed, Export ("expandedInterfaceSession", ArgumentSemantic.Strong)]
+		NSStatusItemExpandedInterfaceSession ExpandedInterfaceSession { get; }
+	}
+
+	[Mac (27, 0), NoMacCatalyst]
+	[BaseType (typeof (NSObject))]
+	interface NSStatusItemExpandedInterfaceSession {
+		[Export ("cancel")]
+		void Cancel ();
+	}
+
+	interface INSStatusItemExpandedInterfaceDelegate { }
+
+	[Mac (27, 0), NoMacCatalyst]
+	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
+	[BaseType (typeof (NSObject))]
+	interface NSStatusItemExpandedInterfaceDelegate {
+		[Abstract]
+		[Export ("statusItem:didBeginExpandedInterfaceSession:")]
+		void DidBeginExpandedInterfaceSession (NSStatusItem statusItem, NSStatusItemExpandedInterfaceSession expandedInterfaceSession);
+
+		[Abstract]
+		[Export ("statusItemDidEndExpandedInterfaceSession:animated:")]
+		void DidEndExpandedInterfaceSession (NSStatusItem statusItem, bool animated);
 	}
 
 	[Static]
@@ -19862,6 +20044,130 @@ namespace AppKit {
 		[Mac (26, 0), NoMacCatalyst]
 		[Export ("rectForLayoutRegion:")]
 		CGRect GetRect (NSViewLayoutRegion layoutRegion);
+
+		[Mac (27, 0)]
+		[Export ("beginDraggingSessionWithItems:gesture:source:")]
+		[return: NullAllowed]
+		NSDraggingSession BeginDraggingSession (NSDraggingItem [] items, NSGestureRecognizer gesture, INSDraggingSource source);
+
+		[Mac (27, 0)]
+		[Export ("exclusiveGestureBehavior", ArgumentSemantic.Assign)]
+		NSViewExclusiveGestureBehavior ExclusiveGestureBehavior { get; set; }
+
+		[Mac (27, 0)]
+		[NullAllowed, Export ("cornerConfiguration", ArgumentSemantic.Copy)]
+		NSViewCornerConfiguration CornerConfiguration { get; }
+
+		[Mac (27, 0)]
+		[NullAllowed, Export ("effectiveCornerRadii", ArgumentSemantic.Copy)]
+		NSViewCornerRadii EffectiveCornerRadii { get; }
+
+		[Mac (27, 0)]
+		[Export ("viewDidChangeEffectiveCornerRadii")]
+		void ViewDidChangeEffectiveCornerRadii ();
+
+		[Mac (27, 0)]
+		[Export ("invalidateCornerConfiguration")]
+		void InvalidateCornerConfiguration ();
+
+		[Mac (27, 0)]
+		[NullAllowed, Export ("textSelectionManager", ArgumentSemantic.Strong)]
+		NSTextSelectionManager TextSelectionManager { get; set; }
+	}
+
+	[Mac (27, 0), NoMacCatalyst]
+	[Native]
+	public enum NSViewExclusiveGestureBehavior : long {
+		Inherit = 0,
+		Exclusive = 1,
+		NotExclusive = 2,
+	}
+
+	[Mac (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface NSViewCornerRadius : NSCopying {
+		[Static]
+		[Export ("fixedRadius:")]
+		NSViewCornerRadius CreateFixed (nfloat radius);
+
+		[Static]
+		[Export ("containerConcentricRadiusWithMinimum:")]
+		NSViewCornerRadius CreateContainerConcentric (nfloat minimumRadius);
+
+		[Static]
+		[Export ("containerConcentricRadius", ArgumentSemantic.Copy)]
+		NSViewCornerRadius ContainerConcentricRadius { get; }
+	}
+
+	[Mac (27, 0), NoMacCatalyst]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface NSViewCornerConfiguration {
+		[Static]
+		[Export ("configurationWithRadius:")]
+		NSViewCornerConfiguration CreateCorners (NSViewCornerRadius radius);
+
+		[Static]
+		[Export ("configurationWithTopLeftRadius:topRightRadius:bottomLeftRadius:bottomRightRadius:")]
+		NSViewCornerConfiguration CreateCorners ([NullAllowed] NSViewCornerRadius topLeftRadius, [NullAllowed] NSViewCornerRadius topRightRadius, [NullAllowed] NSViewCornerRadius bottomLeftRadius, [NullAllowed] NSViewCornerRadius bottomRightRadius);
+
+		[Static]
+		[Export ("capsuleCornerConfiguration", ArgumentSemantic.Copy)]
+		NSViewCornerConfiguration Capsule { get; }
+
+		[Static]
+		[Export ("capsuleCornerConfigurationWithMaximumRadius:")]
+		NSViewCornerConfiguration CreateCapsule (nfloat maximumRadius);
+
+		[Static]
+		[Export ("configurationWithUniformRadius:")]
+		NSViewCornerConfiguration CreateUniformCorners (NSViewCornerRadius radius);
+
+		[Static]
+		[Export ("configurationWithUniformRadius:topLeftRadius:topRightRadius:bottomLeftRadius:bottomRightRadius:")]
+		NSViewCornerConfiguration CreateUniformCorners (NSViewCornerRadius radius, [NullAllowed] NSViewCornerRadius topLeftRadius, [NullAllowed] NSViewCornerRadius topRightRadius, [NullAllowed] NSViewCornerRadius bottomLeftRadius, [NullAllowed] NSViewCornerRadius bottomRightRadius);
+
+		[Static]
+		[Export ("configurationWithUniformTopRadius:bottomRadius:")]
+		NSViewCornerConfiguration CreateUniformEdgesTopBottom (NSViewCornerRadius topRadius, NSViewCornerRadius bottomRadius);
+
+		[Static]
+		[Export ("configurationWithUniformLeftRadius:rightRadius:")]
+		NSViewCornerConfiguration CreateUniformEdgesLeftRight (NSViewCornerRadius leftRadius, NSViewCornerRadius rightRadius);
+
+		[Static]
+		[Export ("configurationWithUniformTopRadius:bottomLeftRadius:bottomRightRadius:")]
+		NSViewCornerConfiguration CreateUniformTopRadius (NSViewCornerRadius topRadius, [NullAllowed] NSViewCornerRadius bottomLeftRadius, [NullAllowed] NSViewCornerRadius bottomRightRadius);
+
+		[Static]
+		[Export ("configurationWithUniformBottomRadius:topLeftRadius:topRightRadius:")]
+		NSViewCornerConfiguration CreateUniformBottomRadius (NSViewCornerRadius bottomRadius, [NullAllowed] NSViewCornerRadius topLeftRadius, [NullAllowed] NSViewCornerRadius topRightRadius);
+
+		[Static]
+		[Export ("configurationWithUniformLeftRadius:topRightRadius:bottomRightRadius:")]
+		NSViewCornerConfiguration CreateUniformLeftRadius (NSViewCornerRadius leftRadius, [NullAllowed] NSViewCornerRadius topRightRadius, [NullAllowed] NSViewCornerRadius bottomRightRadius);
+
+		[Static]
+		[Export ("configurationWithUniformRightRadius:topLeftRadius:bottomLeftRadius:")]
+		NSViewCornerConfiguration CreateUniformRightRadius (NSViewCornerRadius rightRadius, [NullAllowed] NSViewCornerRadius topLeftRadius, [NullAllowed] NSViewCornerRadius bottomLeftRadius);
+	}
+
+	[Mac (27, 0), NoMacCatalyst]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface NSViewCornerRadii : NSCopying {
+		[Export ("topLeft")]
+		nfloat TopLeft { get; }
+
+		[Export ("topRight")]
+		nfloat TopRight { get; }
+
+		[Export ("bottomLeft")]
+		nfloat BottomLeft { get; }
+
+		[Export ("bottomRight")]
+		nfloat BottomRight { get; }
 	}
 
 	[NoMacCatalyst]
@@ -22069,67 +22375,6 @@ namespace AppKit {
 	}
 
 	[NoMacCatalyst]
-	[DesignatedDefaultCtor]
-	[BaseType (typeof (NSObject))]
-	interface NSTextBlock : NSCoding, NSCopying, NSSecureCoding {
-		[Export ("setValue:type:forDimension:")]
-		void SetValue (nfloat val, NSTextBlockValueType type, NSTextBlockDimension dimension);
-
-		[Export ("valueForDimension:")]
-		nfloat GetValue (NSTextBlockDimension dimension);
-
-		[Export ("valueTypeForDimension:")]
-		NSTextBlockValueType GetValueType (NSTextBlockDimension dimension);
-
-		[Export ("setContentWidth:type:")]
-		void SetContentWidth (nfloat val, NSTextBlockValueType type);
-
-		[Export ("contentWidth")]
-		nfloat ContentWidth { get; }
-
-		[Export ("contentWidthValueType")]
-		NSTextBlockValueType ContentWidthValueType { get; }
-
-		[Export ("setWidth:type:forLayer:edge:")]
-		void SetWidth (nfloat val, NSTextBlockValueType type, NSTextBlockLayer layer, NSRectEdge edge);
-
-		[Export ("setWidth:type:forLayer:")]
-		void SetWidth (nfloat val, NSTextBlockValueType type, NSTextBlockLayer layer);
-
-		[Export ("widthForLayer:edge:")]
-		nfloat GetWidth (NSTextBlockLayer layer, NSRectEdge edge);
-
-		[Export ("widthValueTypeForLayer:edge:")]
-		NSTextBlockValueType WidthValueTypeForLayer (NSTextBlockLayer layer, NSRectEdge edge);
-
-		[Export ("setBorderColor:forEdge:")]
-		void SetBorderColor (NSColor color, NSRectEdge edge);
-
-		[Export ("setBorderColor:")]
-		void SetBorderColor (NSColor color);
-
-		[Export ("borderColorForEdge:")]
-		NSColor GetBorderColor (NSRectEdge edge);
-
-		[Export ("rectForLayoutAtPoint:inRect:textContainer:characterRange:")]
-		CGRect GetRectForLayout (CGPoint startingPoint, CGRect rect, NSTextContainer textContainer, NSRange charRange);
-
-		[Export ("boundsRectForContentRect:inRect:textContainer:characterRange:")]
-		CGRect GetBoundsRect (CGRect contentRect, CGRect rect, NSTextContainer textContainer, NSRange charRange);
-
-		[Export ("drawBackgroundWithFrame:inView:characterRange:layoutManager:")]
-		void DrawBackground (CGRect frameRect, NSView controlView, NSRange charRange, NSLayoutManager layoutManager);
-
-		//Detected properties
-		[Export ("verticalAlignment")]
-		NSTextBlockVerticalAlignment VerticalAlignment { get; set; }
-
-		[Export ("backgroundColor", ArgumentSemantic.Copy)]
-		NSColor BackgroundColor { get; set; }
-
-	}
-
-	[NoMacCatalyst]
 	[BaseType (typeof (NSControl), Delegates = new string [] { "Delegate" }, Events = new Type [] { typeof (NSTextFieldDelegate) })]
 	partial interface NSTextField : NSAccessibilityNavigableStaticText, NSUserInterfaceValidations, NSTextContent {
 		[Export ("initWithFrame:")]
@@ -22770,56 +23015,6 @@ namespace AppKit {
 	}
 
 	[NoMacCatalyst]
-	[BaseType (typeof (NSTextBlock))]
-	[DisableDefaultCtor]
-	interface NSTextTableBlock {
-		[DesignatedInitializer]
-		[Export ("initWithTable:startingRow:rowSpan:startingColumn:columnSpan:")]
-		NativeHandle Constructor (NSTextTable table, nint row, nint rowSpan, nint col, nint colSpan);
-
-		[Export ("table")]
-		NSTextTable Table { get; }
-
-		[Export ("startingRow")]
-		nint StartingRow { get; }
-
-		[Export ("rowSpan")]
-		nint RowSpan { get; }
-
-		[Export ("startingColumn")]
-		nint StartingColumn { get; }
-
-		[Export ("columnSpan")]
-		nint ColumnSpan { get; }
-	}
-
-	[NoMacCatalyst]
-	[BaseType (typeof (NSTextBlock))]
-	interface NSTextTable {
-		[Export ("rectForBlock:layoutAtPoint:inRect:textContainer:characterRange:")]
-		CGRect GetRectForBlock (NSTextTableBlock block, CGPoint startingPoint, CGRect rect, NSTextContainer textContainer, NSRange charRange);
-
-		[Export ("boundsRectForBlock:contentRect:inRect:textContainer:characterRange:")]
-		CGRect GetBoundsRect (NSTextTableBlock block, CGRect contentRect, CGRect rect, NSTextContainer textContainer, NSRange charRange);
-
-		[Export ("drawBackgroundForBlock:withFrame:inView:characterRange:layoutManager:")]
-		void DrawBackground (NSTextTableBlock block, CGRect frameRect, NSView controlView, NSRange charRange, NSLayoutManager layoutManager);
-
-		//Detected properties
-		[Export ("numberOfColumns")]
-		nint Columns { get; set; }
-
-		[Export ("layoutAlgorithm")]
-		NSTextTableLayoutAlgorithm LayoutAlgorithm { get; set; }
-
-		[Export ("collapsesBorders")]
-		bool CollapsesBorders { get; set; }
-
-		[Export ("hidesEmptyCells")]
-		bool HidesEmptyCells { get; set; }
-	}
-
-	[NoMacCatalyst]
 	[Protocol]
 	interface NSTextInput {
 		/// <param name="insertString">To be added.</param>
@@ -22907,14 +23102,117 @@ namespace AppKit {
 		NSString [] ValidAttributesForMarkedText { get; }
 	}
 
+	[Mac (27, 0), NoMacCatalyst]
+	[Native]
+	public enum NSTextSelectionMode : long {
+		Editable,
+		Selectable,
+		NonInteractive,
+	}
+
+	[Mac (27, 0), NoMacCatalyst]
+	[BaseType (typeof (NSObject))]
+	interface NSTextSelectionManager {
+		[Export ("textSelectionMode", ArgumentSemantic.Assign)]
+		NSTextSelectionMode TextSelectionMode { get; set; }
+
+		[Export ("delegate", ArgumentSemantic.Weak)]
+		[NullAllowed]
+		NSObject WeakDelegate { get; set; }
+
+		[Wrap ("WeakDelegate")]
+		[NullAllowed]
+		INSTextSelectionManagerDelegate Delegate { get; set; }
+
+		[Export ("textSelectionDataSource", ArgumentSemantic.Weak)]
+		[NullAllowed]
+		NSObject WeakTextSelectionDataSource { get; set; }
+
+		[Wrap ("WeakTextSelectionDataSource")]
+		[NullAllowed]
+		INSTextSelectionDataSource TextSelectionDataSource { get; set; }
+
+		[Export ("gesturesForFailureRequirements")]
+		NSGestureRecognizer [] GesturesForFailureRequirements { get; }
+	}
+
+	interface INSTextSelectionManagerDelegate { }
+
+	[Mac (27, 0), NoMacCatalyst]
+	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
+	[BaseType (typeof (NSObject))]
+	interface NSTextSelectionManagerDelegate {
+		[Abstract]
+		[NullAllowed, Export ("textSelection", ArgumentSemantic.Strong)]
+		NSTextSelection TextSelection { get; set; }
+
+		[Export ("selectionManager:shouldBeginSelectionAtPoint:")]
+		bool ShouldBeginSelection (NSTextSelectionManager selectionManager, CGPoint point);
+
+		[Export ("selectionManagerWillBeginSelection:")]
+		void WillBeginSelection (NSTextSelectionManager selectionManager);
+
+		[Export ("selectionManagerDidEndSelection:")]
+		void DidEndSelection (NSTextSelectionManager selectionManager);
+
+		[Export ("selectionManager:locationOfTextContainerAtPoint:")]
+		[return: NullAllowed]
+		INSTextLocation GetLocationOfTextContainer (NSTextSelectionManager selectionManager, CGPoint point);
+
+		[Export ("selectionManager:frameOfTextContainerAtPoint:")]
+		CGRect GetFrameOfTextContainer (NSTextSelectionManager selectionManager, CGPoint point);
+
+		[Export ("selectionManager:makeDraggingSessionWithGesture:")]
+		[return: NullAllowed]
+		NSDraggingSession MakeDraggingSession (NSTextSelectionManager selectionManager, NSGestureRecognizer gesture);
+	}
+
+	[NoMacCatalyst]
+	[Native]
+	[Flags]
+	public enum NSTextAttachmentViewProviderReusePolicy : ulong {
+		ScrollingOutOfViewport = 1uL << 0,
+		EditingInlineParagraphs = 1uL << 1,
+	}
+
 	[NoMacCatalyst]
 	[BaseType (typeof (NSText), Delegates = new string [] { "Delegate" }, Events = new Type [] { typeof (NSTextViewDelegate) })]
 	partial interface NSTextView : NSTextInputClient, NSTextLayoutOrientationProvider, NSDraggingSource, NSAccessibilityNavigableStaticText, NSCandidateListTouchBarItemDelegate, NSTouchBarDelegate, NSMenuItemValidation, NSUserInterfaceValidations, NSTextInput, NSTextContent
 		, NSColorChanging // ChangeColor has the wrong param type
-	{
+		, NSTextViewportLayoutControllerDelegate {
 		[DesignatedInitializer]
 		[Export ("initWithFrame:textContainer:")]
 		NativeHandle Constructor (CGRect frameRect, [NullAllowed] NSTextContainer container);
+
+		[Mac (27, 0)]
+		[Export ("registerTextAttachmentViewProviderReusePolicy:forTextAttachmentViewProviderType:")]
+		void RegisterTextAttachmentViewProviderReusePolicy (NSTextAttachmentViewProviderReusePolicy policy, Class viewProviderType);
+
+		// 'new' since these are inlined from NSTextViewportLayoutControllerDelegate as NSTextView needs [RequiresSuper] and macOS 27 availability
+		[Mac (27, 0)]
+		[RequiresSuper]
+		[Export ("viewportBoundsForTextViewportLayoutController:")]
+		new CGRect GetViewportBounds (NSTextViewportLayoutController textViewportLayoutController);
+
+		[Mac (27, 0)]
+		[RequiresSuper]
+		[Export ("textViewportLayoutController:configureRenderingSurfaceForTextLayoutFragment:")]
+		new void ConfigureRenderingSurface (NSTextViewportLayoutController textViewportLayoutController, NSTextLayoutFragment textLayoutFragment);
+
+		[Mac (27, 0)]
+		[RequiresSuper]
+		[Export ("textViewportLayoutControllerWillLayout:")]
+		new void WillLayout (NSTextViewportLayoutController textViewportLayoutController);
+
+		[Mac (27, 0)]
+		[RequiresSuper]
+		[Export ("textViewportLayoutControllerDidLayout:")]
+		new void DidLayout (NSTextViewportLayoutController textViewportLayoutController);
+
+		[Mac (27, 0)]
+		[RequiresSuper]
+		[Export ("textViewportLayoutControllerReceivedSetNeedsLayout:")]
+		new void ReceivedSetNeedsLayout (NSTextViewportLayoutController textViewportLayoutController);
 
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frameRect);
@@ -24585,6 +24883,14 @@ namespace AppKit {
 		string Text { get; }
 	}
 
+	[Mac (27, 0), MacCatalyst (27, 0)]
+	[Native]
+	public enum NSToolbarItemGroupRole : long {
+		Automatic = 0,
+		Tabs = 1,
+		ValueSelection = 2,
+	}
+
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSToolbarItem))]
 	interface NSToolbarItemGroup {
@@ -24624,6 +24930,10 @@ namespace AppKit {
 		[MacCatalyst (13, 1)]
 		[Export ("isSelectedAtIndex:")]
 		bool GetSelected (nint index);
+
+		[Mac (27, 0), MacCatalyst (27, 0)]
+		[Export ("role", ArgumentSemantic.Assign)]
+		NSToolbarItemGroupRole Role { get; set; }
 	}
 
 	[NoMacCatalyst]
@@ -28658,6 +28968,10 @@ namespace AppKit {
 		[NoMacCatalyst]
 		[Field ("NSTextCheckingGenerateInlinePredictionsKey")]
 		NSString TextCheckingGenerateInlinePredictionsKey { get; }
+
+		[Mac (26, 0)]
+		[Field ("NSTextCheckingAutomaticCapitalizationEnabledKey")]
+		NSString TextCheckingAutomaticCapitalizationEnabledKey { get; }
 	}
 
 	partial interface NSTextViewDidChangeSelectionEventArgs {
@@ -34829,6 +35143,10 @@ namespace AppKit {
 
 		[Export ("style")]
 		NSGlassEffectViewStyle Style { get; set; }
+
+		[Mac (27, 0)]
+		[Export ("effectIsInteractive")]
+		bool EffectIsInteractive { get; set; }
 	}
 
 	[NoMacCatalyst, Mac (26, 0)]

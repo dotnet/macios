@@ -345,6 +345,15 @@ class GitHubComments {
         $stringBuilder.AppendLine()
     }
 
+    [void] WriteCommentIdentifier(
+        [object] $stringBuilder,
+        [string] $commentId
+    ) {
+        $ciComment = $this.GetCommentIdentifier($commentId)
+        $stringBuilder.AppendLine($ciComment)
+        $stringBuilder.AppendLine("")
+    }
+
     [void] WriteCommentFooter(
         [object] $stringBuilder,
         [string] $commentId
@@ -362,10 +371,7 @@ class GitHubComments {
             $hashUrl= "https://github.com/$($this.Org)/$($this.Repo)/commit/$($this.Hash)"
             $hashSource = " [CI build]"
         }
-        $ciComment = $this.GetCommentIdentifier($commentId)
         $stringBuilder.AppendLine("Hash: [$($this.Hash)]($hashUrl) $hashSource")
-        $stringBuilder.AppendLine("")
-        $stringBuilder.AppendLine($ciComment)
     }
 
     [string] GetCommentIdentifier([string] $commentId)
@@ -473,6 +479,9 @@ class GitHubComments {
         # build the message, which will be sent to github, users can use markdown
         $msg = [System.Text.StringBuilder]::new()
 
+        # comment identifier (at the top so it's never truncated away)
+        $this.WriteCommentIdentifier($msg, $commentId)
+
         # header
         $this.WriteCommentHeader($msg, $commentTitle, $commentEmoji)
 
@@ -497,6 +506,9 @@ class GitHubComments {
 
         # build the message, which will be sent to github, users can use markdown
         $msg = [System.Text.StringBuilder]::new()
+
+        # comment identifier (at the top so it's never truncated away)
+        $this.WriteCommentIdentifier($msg, $commentId)
 
         # header
         $this.WriteCommentHeader($msg, $commentTitle, $commentEmoji)
@@ -528,6 +540,9 @@ class GitHubComments {
         $this.HandlePreviousCommentHiding($commentId)
 
         $msg = [System.Text.StringBuilder]::new()
+
+        # comment identifier (at the top so it's never truncated away)
+        $this.WriteCommentIdentifier($msg, $commentId)
 
         # header
         $this.WriteCommentHeader($msg, $commentTitle, $commentEmoji)

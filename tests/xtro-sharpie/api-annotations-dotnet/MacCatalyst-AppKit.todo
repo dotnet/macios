@@ -1,7 +1,0 @@
-!missing-enum! NSToolbarItemGroupRole not bound
-!missing-selector! +NSViewCornerRadius::containerConcentricRadius not bound
-!missing-selector! +NSViewCornerRadius::containerConcentricRadiusWithMinimum: not bound
-!missing-selector! +NSViewCornerRadius::fixedRadius: not bound
-!missing-selector! NSToolbarItemGroup::role not bound
-!missing-selector! NSToolbarItemGroup::setRole: not bound
-!missing-type! NSViewCornerRadius not bound

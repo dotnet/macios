@@ -41,3 +41,5 @@
 !missing-type! WKJSHandle not bound
 !missing-type! WKJSScriptingBuffer not bound
 !missing-type! WKJSSerializedNode not bound
+!missing-selector! WKWebpagePreferences::globalPrivacyControlEnabled not bound
+!missing-selector! WKWebpagePreferences::setGlobalPrivacyControlEnabled: not bound

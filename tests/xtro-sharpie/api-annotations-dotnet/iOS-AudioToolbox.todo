@@ -1,5 +1,0 @@
-!missing-enum-value! AUReverbRoomType native value kReverbRoomType_OutdoorGeneral = 24 not bound
-!missing-selector! AUHeadTrackingBinauralRenderer::deviceUID not bound
-!missing-selector! AUHeadTrackingBinauralRenderer::isDisabled not bound
-!missing-selector! AUHeadTrackingBinauralRenderer::isHeadTracking not bound
-!missing-type! AUHeadTrackingBinauralRenderer not bound

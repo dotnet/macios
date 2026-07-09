@@ -200,6 +200,14 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 		<!-- that also encapsulates whether we're a library or not (this makes conditions simpler) -->
 		<_BundleOriginalResources Condition="'$(OutputType)' == 'Library' And '$(IsAppExtension)' != 'true' And '$(BundleOriginalResources)' == 'true'">true</_BundleOriginalResources>
 
+		<!-- Resolve Content and BundleResource items relative to the project file instead of the defining project file.
+		     This fixes issues where SDKs (like the Razor SDK) add items from a directory far from the project,
+		     producing nonsensical paths. Ref: https://github.com/dotnet/macios/issues/23898
+		     Opt-in for < .NET 12, opt-out (default true) for .NET 12+, permanently enabled for .NET 13+. -->
+		<ResolveResourceItemsRelativeToProject Condition="'$(ResolveResourceItemsRelativeToProject)' == '' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), 12.0))">true</ResolveResourceItemsRelativeToProject>
+		<ResolveResourceItemsRelativeToProject Condition="'$(ResolveResourceItemsRelativeToProject)' == ''">false</ResolveResourceItemsRelativeToProject>
+		<_ResolveResourceItemsRelativeToProjectInvalid Condition="'$(ResolveResourceItemsRelativeToProject)' == 'false' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), 13.0))">true</_ResolveResourceItemsRelativeToProjectInvalid>
+
 		<EnableDiagnostics Condition="'$(EnableDiagnostics)' == '' And ('$(DiagnosticConfiguration)' != '' Or '$(DiagnosticAddress)' != '' Or '$(DiagnosticPort)' != '' Or '$(DiagnosticSuspend)' != '' Or '$(DiagnosticListenMode)' != '')">true</EnableDiagnostics>
 
 		<!-- Set the name of the native executable -->

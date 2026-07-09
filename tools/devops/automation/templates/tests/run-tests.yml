@@ -175,6 +175,13 @@ steps:
   displayName: 'Check for updated expected app size files'
   condition: succeededOrFailed()
 
+- bash: |
+    if [ -d "$(Build.ArtifactStagingDirectory)/failed-app-size-bundles" ]; then
+      echo "##vso[task.setvariable variable=HAS_FAILED_APP_SIZE_BUNDLERS]true"
+    fi
+  displayName: 'Check for app bundles'
+  condition: succeededOrFailed()
+
 - task: PublishPipelineArtifact@1
   displayName: 'Publish Artifact: Updated expected app size files'
   inputs:
@@ -182,6 +189,14 @@ steps:
     artifactName: '${{ parameters.uploadPrefix }}updated-expected-sizes-${{ parameters.testPrefix }}-$(System.JobAttempt)'
   continueOnError: true
   condition: and(succeededOrFailed(), eq(variables['HAS_UPDATED_EXPECTED_SIZES'], 'true'))
+
+- task: PublishPipelineArtifact@1
+  displayName: 'Publish Artifact: Updated app bundles'
+  inputs:
+    targetPath: '$(Build.ArtifactStagingDirectory)/failed-app-size-bundles'
+    artifactName: '${{ parameters.uploadPrefix }}failed-app-size-bundles-${{ parameters.testPrefix }}-$(System.JobAttempt)'
+  continueOnError: true
+  condition: and(succeededOrFailed(), eq(variables['HAS_FAILED_APP_SIZE_BUNDLERS'], 'true'))
 
 - pwsh: |
     $summaryName = "TestSummary-${{ parameters.testPrefix }}.md"

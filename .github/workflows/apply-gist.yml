@@ -17,6 +17,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  issues: write
 
 jobs:
   apply-gist:
@@ -87,6 +88,10 @@ jobs:
           const { data: gist } = await github.rest.gists.get({
             gist_id: process.env.GIST_ID,
           });
+          if (!gist.owner) {
+            core.setFailed('Gist has no owner (anonymous or deleted). Cannot verify ownership.');
+            return;
+          }
           const owner = gist.owner.login;
           if (!approvedOwners.includes(owner)) {
             core.setFailed(`Gist owner '${owner}' is not in the approved list: [${approvedOwners.join(', ')}]`);
@@ -104,6 +109,10 @@ jobs:
             repo: context.repo.repo,
             pull_number: context.issue.number,
           });
+          if (pr.head.repo.full_name !== pr.base.repo.full_name) {
+            core.setFailed(`Cannot apply gist to fork PRs (head repo: ${pr.head.repo.full_name}). Push the updated files manually.`);
+            return;
+          }
           core.setOutput('ref', pr.head.ref);
           core.setOutput('repo_full_name', pr.head.repo.full_name);
 
@@ -122,19 +131,21 @@ jobs:
       run: |
         EXPECTED_DIR="tests/dotnet/UnitTests/expected"
         mkdir -p "$EXPECTED_DIR"
+        export EXPECTED_DIR
 
         # Download gist metadata to get file URLs
         GIST_JSON=$(gh api "gists/$GIST_ID")
         echo "$GIST_JSON" | python3 -c "
-        import json, sys, urllib.request, os
+        import json, sys, urllib.request, os, re
 
         gist = json.load(sys.stdin)
         expected_dir = os.environ['EXPECTED_DIR']
         files = gist['files']
+        # Only allow known expected-file patterns
+        allowed_pattern = re.compile(r'^[A-Za-z0-9]+-[A-Za-z0-9-]+-(size|preservedapis)\.txt$')
         for filename, file_info in files.items():
-            # Only apply .txt files that match expected file patterns
-            if not filename.endswith('.txt'):
-                print(f'Skipping non-txt file: {filename}')
+            if not allowed_pattern.match(filename):
+                print(f'Skipping file with unexpected name: {filename}')
                 continue
             content = file_info.get('content')
             if content is None:

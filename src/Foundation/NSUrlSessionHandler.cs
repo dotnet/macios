@@ -1257,14 +1257,28 @@ namespace Foundation {
 					}
 				}
 
-				// Proxy authentication challenges use the proxy credentials (either the proxy's own credentials or
-				// the DefaultProxyCredentials), and look up credentials using the proxy's URI. Server authentication
-				// challenges use the regular Credentials and look up credentials using the request's URI.
-				var isProxyChallenge = challenge.ProtectionSpace.IsProxy;
-				var challengeCredentials = isProxyChallenge
-					? (sessionHandler.Proxy?.Credentials ?? sessionHandler.DefaultProxyCredentials)
-					: sessionHandler.Credentials;
+				// Proxy authentication challenges are handled separately from server authentication challenges:
+				// for a proxy the protection space reports a proxy authentication method (HTTPProxy/HTTPSProxy)
+				// rather than a specific scheme like Basic, and the credentials come from the proxy configuration
+				// (the proxy's own credentials or the DefaultProxyCredentials).
+				if (challenge.ProtectionSpace.IsProxy) {
+					var proxyCredentials = sessionHandler.Proxy?.Credentials ?? sessionHandler.DefaultProxyCredentials;
+					// Only provide the credentials for the first challenge; if they were rejected we let the request
+					// fail instead of retrying the same (bad) credentials indefinitely.
+					if (proxyCredentials is not null && challenge.PreviousFailureCount == 0) {
+						var proxyUri = GetProxyLookupUri (challenge.ProtectionSpace);
+						var proxyCredential = proxyCredentials.GetCredential (proxyUri, "Basic");
+						if (proxyCredential is not null) {
+							var proxyNSCredential = new NSUrlCredential (proxyCredential.UserName, proxyCredential.Password, NSUrlCredentialPersistence.ForSession);
+							completionHandler (NSUrlSessionAuthChallengeDisposition.UseCredential, proxyNSCredential);
+							return;
+						}
+					}
+					completionHandler (NSUrlSessionAuthChallengeDisposition.PerformDefaultHandling, challenge.ProposedCredential);
+					return;
+				}
 
+				var challengeCredentials = sessionHandler.Credentials;
 				if (challengeCredentials is not null && TryGetAuthenticationType (challenge.ProtectionSpace, out var authType)) {
 					NetworkCredential? credentialsToUse = null;
 					if (authType != RejectProtectionSpaceAuthType) {
@@ -1285,14 +1299,9 @@ namespace Foundation {
 						var nsurlRespose = challenge.FailureResponse as NSHttpUrlResponse;
 						var responseIsUnauthorized = (nsurlRespose is null) ? false : nsurlRespose.StatusCode == (int) HttpStatusCode.Unauthorized && challenge.PreviousFailureCount > 0;
 						if (!responseIsUnauthorized) {
-							if (isProxyChallenge) {
-								var uri = GetProxyLookupUri (challenge.ProtectionSpace);
+							var uri = GetCredentialLookupUri (task, inflight);
+							if (ShouldLookupCredentials (challengeCredentials, inflight))
 								credentialsToUse = challengeCredentials.GetCredential (uri, authType);
-							} else {
-								var uri = GetCredentialLookupUri (task, inflight);
-								if (ShouldLookupCredentials (challengeCredentials, inflight))
-									credentialsToUse = challengeCredentials.GetCredential (uri, authType);
-							}
 						}
 					}
 

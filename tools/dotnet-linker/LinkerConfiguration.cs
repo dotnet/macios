@@ -30,6 +30,9 @@ namespace Xamarin.Linker {
 		public string DedupAssembly = string.Empty;
 		public string CacheDirectory { get; private set; } = string.Empty;
 		public Version? DeploymentTarget { get; private set; }
+		// The user-provided value of the $(DynamicRegistrationSupported) MSBuild property (null if not set).
+		// When set, RegistrarRemovalTrackingStep doesn't need to run in the assembly-preparer.
+		public bool? DynamicRegistrationSupported { get; private set; }
 		public HashSet<string> FrameworkAssemblies { get; private set; } = new HashSet<string> ();
 		public string IntermediateLinkDir { get; private set; } = string.Empty;
 		public bool InvariantGlobalization { get; private set; }
@@ -43,6 +46,9 @@ namespace Xamarin.Linker {
 		public HashSet<string> FieldSymbols { get; } = new HashSet<string> ();
 		public string IntermediateOutputPath { get; private set; } = string.Empty;
 		public string ItemsDirectory { get; private set; } = string.Empty;
+		// The files the assembly-preparer writes its MSBuild output properties to (one per pass).
+		public string MSBuildOutputFile { get; private set; } = string.Empty;
+		public string MSBuildPostProcessOutputFile { get; private set; } = string.Empty;
 		public bool IsSimulatorBuild { get; private set; }
 		public string PartialStaticRegistrarLibrary { get; set; } = string.Empty;
 		public ApplePlatform Platform { get; private set; }
@@ -99,6 +105,10 @@ namespace Xamarin.Linker {
 		string? user_optimize_flags;
 
 		Dictionary<string, List<MSBuildItem>> msbuild_items = new Dictionary<string, List<MSBuildItem>> ();
+
+		// MSBuild output properties (property name -> value), written (alphabetically sorted) to the
+		// MSBuild output file by FlushOutputForMSBuild.
+		SortedDictionary<string, string> msbuild_properties = new SortedDictionary<string, string> (StringComparer.Ordinal);
 
 		AppBundleRewriter? abr;
 		internal AppBundleRewriter AppBundleRewriter {
@@ -286,6 +296,24 @@ namespace Xamarin.Linker {
 						}
 					})
 				)},
+				{ "DynamicRegistrationSupported", (
+					// This is the user-overridable $(DynamicRegistrationSupported) MSBuild property. It maps to
+					// the RemoveDynamicRegistrar optimization (inverted): if dynamic registration is supported,
+					// then we're not removing the dynamic registrar. When set, RegistrarRemovalTrackingStep doesn't
+					// need to run in the assembly-preparer (the value is passed straight through to the trimmer
+					// feature switch), and it won't recompute the value in the real linker either.
+					new LoadValue ((key, value) => {
+						if (string.IsNullOrEmpty (value))
+							return; // Not set: RegistrarRemovalTrackingStep will compute a default value.
+						if (!TryParseOptionalBoolean (value, out var dynamicRegistrationSupported))
+							throw new InvalidOperationException ($"Unable to parse the {key} value: {value} in {linker_file}");
+						if (dynamicRegistrationSupported.HasValue) {
+							DynamicRegistrationSupported = dynamicRegistrationSupported.Value;
+							Application.Optimizations.RemoveDynamicRegistrar = !dynamicRegistrationSupported.Value;
+						}
+					}),
+					new SaveValue ((key, storage) => saveNullableBool (key, DynamicRegistrationSupported, storage))
+				)},
 				{ "EnableSGenConc", (
 					new LoadValue ((key, value) => Application.EnableSGenConc = string.Equals ("true", value, StringComparison.OrdinalIgnoreCase)),
 					new SaveValue ((key, storage) => storage.Add ($"{key}={(Application.EnableSGenConc ? "true" : "false")}"))
@@ -403,6 +431,16 @@ namespace Xamarin.Linker {
 				{ "MonoLibrary", (
 					new LoadValue ((key, value) => Application.MonoLibraries.Add (value)),
 					new SaveValue ((key, storage) => storage.AddRange (Application.MonoLibraries.OrderBy (v => v).Select (v => $"{key}={v}")))
+				)},
+				{ "MSBuildOutputFile", (
+					// The file the assembly-preparer's preparation pass writes its MSBuild output properties to.
+					new LoadValue ((key, value) => MSBuildOutputFile = value),
+					new SaveValue ((key, storage) => saveNonEmpty (key, MSBuildOutputFile, storage))
+				)},
+				{ "MSBuildPostProcessOutputFile", (
+					// The file the assembly-preparer's post-processing pass writes its MSBuild output properties to.
+					new LoadValue ((key, value) => MSBuildPostProcessOutputFile = value),
+					new SaveValue ((key, storage) => saveNonEmpty (key, MSBuildPostProcessOutputFile, storage))
 				)},
 				{ "MtouchFloat32", (
 					new LoadValue ((key, value) => loadNullableBool (key, value, out Application.AotFloat32)),
@@ -866,25 +904,48 @@ namespace Xamarin.Linker {
 			}
 		}
 
+		// Register an MSBuild output property. The collected properties are written to the MSBuild
+		// output file (see FlushOutputForMSBuild) so that MSBuild can read them back.
+		public void SetOutputForMSBuild (string propertyName, string value)
+		{
+			msbuild_properties [propertyName] = value;
+		}
+
 		public void FlushOutputForMSBuild ()
 		{
-			Directory.CreateDirectory (ItemsDirectory);
-			foreach (var kvp in msbuild_items) {
-				var itemName = kvp.Key;
-				var items = kvp.Value;
+			// ItemsDirectory isn't set when running in the assembly-preparer, so only write
+			// the item files when we have a directory to write them to.
+			if (!string.IsNullOrEmpty (ItemsDirectory)) {
+				Directory.CreateDirectory (ItemsDirectory);
+				foreach (var kvp in msbuild_items) {
+					var itemName = kvp.Key;
+					var items = kvp.Value;
 
-				var xmlNs = XNamespace.Get ("http://schemas.microsoft.com/developer/msbuild/2003");
-				var elements = items.Select (item =>
-					new XElement (xmlNs + itemName,
-						new XAttribute ("Include", item.Include),
-							item.Metadata.Select (metadata => new XElement (xmlNs + metadata.Key, metadata.Value))));
+					var xmlNs = XNamespace.Get ("http://schemas.microsoft.com/developer/msbuild/2003");
+					var elements = items.Select (item =>
+						new XElement (xmlNs + itemName,
+							new XAttribute ("Include", item.Include),
+								item.Metadata.Select (metadata => new XElement (xmlNs + metadata.Key, metadata.Value))));
 
-				var document = new XDocument (
-					new XElement (xmlNs + "Project",
-						new XElement (xmlNs + "ItemGroup",
-							elements)));
+					var document = new XDocument (
+						new XElement (xmlNs + "Project",
+							new XElement (xmlNs + "ItemGroup",
+								elements)));
 
-				document.Save (Path.Combine (ItemsDirectory, itemName + ".items"));
+					document.Save (Path.Combine (ItemsDirectory, itemName + ".items"));
+				}
+			}
+
+			// Write the collected MSBuild output properties (alphabetically sorted, one 'Name=Value' per line)
+			// to the output file for the current pass, so that MSBuild can read them back. We always write the
+			// file (even when there are no properties), so it's a consistent, persistent artifact of the pass
+			// (it's added to FileWrites by the _PrepareAssemblies/_PostprocessAssemblies targets).
+			var outputFile = Application.IsPostProcessingAssemblies ? MSBuildPostProcessOutputFile : MSBuildOutputFile;
+			if (!string.IsNullOrEmpty (outputFile)) {
+				var directory = Path.GetDirectoryName (outputFile);
+				if (!string.IsNullOrEmpty (directory))
+					Directory.CreateDirectory (directory);
+				File.WriteAllLines (outputFile, msbuild_properties.Select (kvp => $"{kvp.Key}={kvp.Value}"));
 			}
 		}
 

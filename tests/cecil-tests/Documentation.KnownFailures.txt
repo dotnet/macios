@@ -7004,13 +7004,15 @@ F:UIKit.UIBandSelectionInteractionState.Possible
 F:UIKit.UIBandSelectionInteractionState.Selecting
 F:UIKit.UIBarButtonSystemItem.Close
 F:UIKit.UIBarButtonSystemItem.WritingTools
+F:UIKit.UIBarMinimizationBehavior.Automatic
+F:UIKit.UIBarMinimizationBehavior.Never
+F:UIKit.UIBarMinimizationBehavior.OnScrollDown
+F:UIKit.UIBarMinimizationBehavior.OnScrollUp
+F:UIKit.UIBarMinimizationRestorationBehavior.AtScrollEdge
+F:UIKit.UIBarMinimizationRestorationBehavior.Automatic
 F:UIKit.UIBarMinimizationSafeAreaAdjustment.Automatic
 F:UIKit.UIBarMinimizationSafeAreaAdjustment.Disabled
 F:UIKit.UIBarMinimizationSafeAreaAdjustment.Enabled
-F:UIKit.UIBarMinimizeBehavior.Automatic
-F:UIKit.UIBarMinimizeBehavior.Never
-F:UIKit.UIBarMinimizeBehavior.OnScrollDown
-F:UIKit.UIBarMinimizeBehavior.OnScrollUp
 F:UIKit.UIBehavioralStyle.Automatic
 F:UIKit.UIBehavioralStyle.Mac
 F:UIKit.UIBehavioralStyle.Pad
@@ -7892,6 +7894,7 @@ F:VideoToolbox.VTOpticalFlowConfigurationQualityPrioritization.Quality
 F:VideoToolbox.VTOpticalFlowConfigurationRevision.Revision1
 F:VideoToolbox.VTOpticalFlowParametersSubmissionMode.Random
 F:VideoToolbox.VTOpticalFlowParametersSubmissionMode.Sequential
+F:VideoToolbox.VTProjectionKind.AppleImmersiveVideo
 F:VideoToolbox.VTProjectionKind.Equirectangular
 F:VideoToolbox.VTProjectionKind.HalfEquirectangular
 F:VideoToolbox.VTProjectionKind.ParametricImmersive
@@ -8010,6 +8013,8 @@ F:Vision.VNElementType.Double
 F:Vision.VNElementType.Float
 F:Vision.VNElementType.Unknown
 F:Vision.VNErrorCode.DataUnavailable
+F:Vision.VNErrorCode.ResourceCorrupted
+F:Vision.VNErrorCode.ResourceUnavailable
 F:Vision.VNErrorCode.Timeout
 F:Vision.VNErrorCode.TimeStampNotFound
 F:Vision.VNErrorCode.TuriCore
@@ -11050,6 +11055,7 @@ M:AppKit.NSSpellChecker.GetLanguage(Foundation.NSRange,System.String,Foundation.
 M:AppKit.NSSpellChecker.GuessesForWordRange(Foundation.NSRange,System.String,System.String,System.IntPtr)
 M:AppKit.NSSpellChecker.HasLearnedWord(System.String)
 M:AppKit.NSSpellChecker.IgnoredWords(System.IntPtr)
+M:AppKit.NSSpellChecker.IgnoreGrammarRange(Foundation.NSRange,System.String,System.IntPtr)
 M:AppKit.NSSpellChecker.IgnoreWord(System.String,System.IntPtr)
 M:AppKit.NSSpellChecker.LearnWord(System.String)
 M:AppKit.NSSpellChecker.MenuForResults(Foundation.NSTextCheckingResult,System.String,Foundation.NSDictionary,CoreGraphics.CGPoint,AppKit.NSView)
@@ -30175,6 +30181,8 @@ M:VideoToolbox.VTFrameProcessorOpticalFlow.#ctor(CoreVideo.CVPixelBuffer,CoreVid
 M:VideoToolbox.VTFrameRateConversionConfiguration.#ctor(System.IntPtr,System.IntPtr,System.Boolean,VideoToolbox.VTFrameRateConversionConfigurationQualityPrioritization,VideoToolbox.VTFrameRateConversionConfigurationRevision)
 M:VideoToolbox.VTFrameRateConversionParameters.#ctor(VideoToolbox.VTFrameProcessorFrame,VideoToolbox.VTFrameProcessorFrame,VideoToolbox.VTFrameProcessorOpticalFlow,Foundation.NSNumber[],VideoToolbox.VTFrameRateConversionParametersSubmissionMode,VideoToolbox.VTFrameProcessorFrame[])
 M:VideoToolbox.VTHdrPerFrameMetadataGenerationSession.#ctor(ObjCRuntime.NativeHandle,System.Boolean)
+M:VideoToolbox.VTLowLatencyFrameInterpolationConfiguration.GetMaximumDimension(System.IntPtr)
+M:VideoToolbox.VTLowLatencyFrameInterpolationConfiguration.GetMaximumPixelCount(System.IntPtr)
 M:VideoToolbox.VTLowLatencyFrameInterpolationParameters.#ctor(VideoToolbox.VTFrameProcessorFrame,VideoToolbox.VTFrameProcessorFrame,System.Single[],VideoToolbox.VTFrameProcessorFrame[])
 M:VideoToolbox.VTLowLatencySuperResolutionScalerConfiguration.#ctor(System.IntPtr,System.IntPtr,System.Single)
 M:VideoToolbox.VTLowLatencySuperResolutionScalerConfiguration.GetSupportedScaleFactors(System.IntPtr,System.IntPtr)
@@ -51381,6 +51389,7 @@ P:UIKit.UIBarAppearance.BackgroundEffect
 P:UIKit.UIBarAppearance.BackgroundImage
 P:UIKit.UIBarAppearance.BackgroundImageContentMode
 P:UIKit.UIBarAppearance.Idiom
+P:UIKit.UIBarAppearance.OverrideUserInterfaceStyle
 P:UIKit.UIBarAppearance.ShadowColor
 P:UIKit.UIBarAppearance.ShadowImage
 P:UIKit.UIBarButtonItem.Action
@@ -51458,6 +51467,9 @@ P:UIKit.UIBarItem.LargeContentSizeImageInsets
 P:UIKit.UIBarItem.ShouldGroupAccessibilityChildren
 P:UIKit.UIBarItem.Tag
 P:UIKit.UIBarItem.Title
+P:UIKit.UIBarMinimization.MinimizationBehavior
+P:UIKit.UIBarMinimization.RestorationBehavior
+P:UIKit.UIBarMinimization.SafeAreaAdjustment
 P:UIKit.UIBezierPath.Bounds
 P:UIKit.UIBezierPath.CGPath
 P:UIKit.UIBezierPath.CurrentPoint
@@ -52558,8 +52570,6 @@ P:UIKit.UINavigationItem.BackAction
 P:UIKit.UINavigationItem.BackBarButtonItem
 P:UIKit.UINavigationItem.BackButtonDisplayMode
 P:UIKit.UINavigationItem.BackButtonTitle
-P:UIKit.UINavigationItem.BarMinimizationSafeAreaAdjustment
-P:UIKit.UINavigationItem.BarMinimizeBehavior
 P:UIKit.UINavigationItem.CenterItemGroups
 P:UIKit.UINavigationItem.CompactAppearance
 P:UIKit.UINavigationItem.CompactScrollEdgeAppearance
@@ -52576,6 +52586,7 @@ P:UIKit.UINavigationItem.LeadingItemGroups
 P:UIKit.UINavigationItem.LeftBarButtonItem
 P:UIKit.UINavigationItem.LeftBarButtonItems
 P:UIKit.UINavigationItem.LeftItemsSupplementBackButton
+P:UIKit.UINavigationItem.NavigationBarMinimization
 P:UIKit.UINavigationItem.OverflowPresentationSource
 P:UIKit.UINavigationItem.PinnedTrailingGroup
 P:UIKit.UINavigationItem.PreferredSearchBarPlacement
@@ -54177,6 +54188,7 @@ P:VideoToolbox.IVTFrameProcessorParameters.DestinationFrame
 P:VideoToolbox.IVTFrameProcessorParameters.DestinationFrames
 P:VideoToolbox.IVTFrameProcessorParameters.SourceFrame
 P:VideoToolbox.VTCompressionPreset.Balanced
+P:VideoToolbox.VTCompressionPreset.ConsistentQuality
 P:VideoToolbox.VTCompressionPreset.HighQuality
 P:VideoToolbox.VTCompressionPreset.HighSpeed
 P:VideoToolbox.VTCompressionPreset.VideoConferencing
@@ -54185,6 +54197,7 @@ P:VideoToolbox.VTCompressionProperties.BaseLayerBitRateFraction
 P:VideoToolbox.VTCompressionProperties.CalculateMeanSquaredError
 P:VideoToolbox.VTCompressionProperties.CameraCalibrationDataLensCollection
 P:VideoToolbox.VTCompressionProperties.ConstantBitRate
+P:VideoToolbox.VTCompressionProperties.ConstantQualityFactor
 P:VideoToolbox.VTCompressionProperties.EnableLowLatencyRateControl
 P:VideoToolbox.VTCompressionProperties.EnableLtr
 P:VideoToolbox.VTCompressionProperties.EstimatedAverageBytesPerFrame
@@ -54194,6 +54207,7 @@ P:VideoToolbox.VTCompressionProperties.HasRightStereoEyeView
 P:VideoToolbox.VTCompressionProperties.HeroEye
 P:VideoToolbox.VTCompressionProperties.HorizontalDisparityAdjustment
 P:VideoToolbox.VTCompressionProperties.HorizontalFieldOfView
+P:VideoToolbox.VTCompressionProperties.LogTransferFunction
 P:VideoToolbox.VTCompressionProperties.MaxAllowedFrameQP
 P:VideoToolbox.VTCompressionProperties.MaximumRealTimeFrameRate
 P:VideoToolbox.VTCompressionProperties.MinAllowedFrameQP
@@ -61544,8 +61558,10 @@ T:UIKit.UIBarButtonItemGroup
 T:UIKit.UIBarButtonItemStateAppearance
 T:UIKit.UIBarButtonItemVisibilityPriority
 T:UIKit.UIBarItem
+T:UIKit.UIBarMinimization
+T:UIKit.UIBarMinimizationBehavior
+T:UIKit.UIBarMinimizationRestorationBehavior
 T:UIKit.UIBarMinimizationSafeAreaAdjustment
-T:UIKit.UIBarMinimizeBehavior
 T:UIKit.UIBehavioralStyle
 T:UIKit.UIBezierPath
 T:UIKit.UIBlurEffect

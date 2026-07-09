@@ -17635,6 +17635,10 @@ namespace AppKit {
 		[Export ("setIgnoredWords:inSpellDocumentWithTag:")]
 		void SetIgnoredWords (string [] words, nint documentTag);
 
+		[Mac (27, 0)]
+		[Export ("ignoreGrammarRange:inSentence:inSpellDocumentWithTag:")]
+		void IgnoreGrammarRange (NSRange grammarRange, string sentence, nint documentTag);
+
 		[Export ("guessesForWordRange:inString:language:inSpellDocumentWithTag:")]
 		string [] GuessesForWordRange (NSRange range, string theString, string language, nint documentTag);
 
@@ -28972,6 +28976,10 @@ namespace AppKit {
 		[Mac (26, 0)]
 		[Field ("NSTextCheckingAutomaticCapitalizationEnabledKey")]
 		NSString TextCheckingAutomaticCapitalizationEnabledKey { get; }
+
+		[Mac (27, 0)]
+		[Field ("NSTextCheckingWaitForAllGrammarCheckingResultsKey")]
+		NSString TextCheckingWaitForAllGrammarCheckingResultsKey { get; }
 	}
 
 	partial interface NSTextViewDidChangeSelectionEventArgs {

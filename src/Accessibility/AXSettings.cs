@@ -144,5 +144,23 @@ namespace Accessibility {
 		{
 			return AXOpenSettingsFeatureIsSupported ((nint) (long) feature) != 0;
 		}
+
+		[SupportedOSPlatform ("ios27.0")]
+		[SupportedOSPlatform ("maccatalyst27.0")]
+		[SupportedOSPlatform ("macos27.0")]
+		[SupportedOSPlatform ("tvos27.0")]
+		[DllImport (Constants.AccessibilityLibrary)]
+		static extern byte AXApplicationAccessibilityEnabled ();
+
+		/// <summary>Returns whether application accessibility is currently enabled for this process.</summary>
+		[SupportedOSPlatform ("ios27.0")]
+		[SupportedOSPlatform ("maccatalyst27.0")]
+		[SupportedOSPlatform ("macos27.0")]
+		[SupportedOSPlatform ("tvos27.0")]
+		public static bool IsApplicationAccessibilityEnabled {
+			get {
+				return AXApplicationAccessibilityEnabled () != 0;
+			}
+		}
 	}
 }

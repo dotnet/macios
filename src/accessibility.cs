@@ -373,6 +373,11 @@ namespace Accessibility {
 		[Notification]
 		[Field ("AXReduceHighlightingEffectsEnabledDidChangeNotification")]
 		NSString ReduceHighlightingEffectsEnabledDidChangeNotification { get; }
+
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Notification]
+		[Field ("AXApplicationAccessibilityEnabledDidChangeNotification")]
+		NSString ApplicationAccessibilityEnabledDidChangeNotification { get; }
 	}
 
 	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]

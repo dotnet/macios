@@ -2320,23 +2320,39 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<Target Name="_LoadUnpackedLibraryResources"
 		DependsOnTargets="_UnpackLibraryResources">
 		<ReadItemsFromFile File="$(_UnpackedAtlasTextureCache)" Condition="Exists('$(_UnpackedAtlasTextureCache)')">
-			<Output TaskParameter="Items" ItemName="AtlasTexture" />
+			<Output TaskParameter="Items" ItemName="_CachedUnpackedAtlasTexture" />
 		</ReadItemsFromFile>
 		<ReadItemsFromFile File="$(_UnpackedImageAssetCache)" Condition="Exists('$(_UnpackedImageAssetCache)')">
-			<Output TaskParameter="Items" ItemName="ImageAsset" />
+			<Output TaskParameter="Items" ItemName="_CachedUnpackedImageAsset" />
 		</ReadItemsFromFile>
 		<ReadItemsFromFile File="$(_UnpackedInterfaceDefinitionCache)" Condition="Exists('$(_UnpackedInterfaceDefinitionCache)')">
-			<Output TaskParameter="Items" ItemName="InterfaceDefinition" />
+			<Output TaskParameter="Items" ItemName="_CachedUnpackedInterfaceDefinition" />
 		</ReadItemsFromFile>
 		<ReadItemsFromFile File="$(_UnpackedColladaCache)" Condition="Exists('$(_UnpackedColladaCache)')">
-			<Output TaskParameter="Items" ItemName="Collada" />
+			<Output TaskParameter="Items" ItemName="_CachedUnpackedCollada" />
 		</ReadItemsFromFile>
 		<ReadItemsFromFile File="$(_UnpackedCoreMLModelCache)" Condition="Exists('$(_UnpackedCoreMLModelCache)')">
-			<Output TaskParameter="Items" ItemName="CoreMLModel" />
+			<Output TaskParameter="Items" ItemName="_CachedUnpackedCoreMLModel" />
 		</ReadItemsFromFile>
 		<ReadItemsFromFile File="$(_UnpackedSceneKitAssetCache)" Condition="Exists('$(_UnpackedSceneKitAssetCache)')">
-			<Output TaskParameter="Items" ItemName="SceneKitAsset" />
+			<Output TaskParameter="Items" ItemName="_CachedUnpackedSceneKitAsset" />
 		</ReadItemsFromFile>
+
+		<!-- Only restore cached resources whose originating library is still referenced. Otherwise resources from a
+		     library that was removed since the last full unpack (when this target is skipped because the remaining
+		     referenced libraries are unchanged) would linger and, for image assets, get compiled into Assets.car again.
+		     The cached items' 'BundledInAssembly' metadata is the referenced assembly's item spec (see UnpackLibraryResources). -->
+		<PropertyGroup>
+			<_ReferencedLibraryAssemblies>;@(_UnpackLibraryResourceItems);</_ReferencedLibraryAssemblies>
+		</PropertyGroup>
+		<ItemGroup>
+			<AtlasTexture Include="@(_CachedUnpackedAtlasTexture)" Condition="$(_ReferencedLibraryAssemblies.Contains(';%(_CachedUnpackedAtlasTexture.BundledInAssembly);'))" />
+			<ImageAsset Include="@(_CachedUnpackedImageAsset)" Condition="$(_ReferencedLibraryAssemblies.Contains(';%(_CachedUnpackedImageAsset.BundledInAssembly);'))" />
+			<InterfaceDefinition Include="@(_CachedUnpackedInterfaceDefinition)" Condition="$(_ReferencedLibraryAssemblies.Contains(';%(_CachedUnpackedInterfaceDefinition.BundledInAssembly);'))" />
+			<Collada Include="@(_CachedUnpackedCollada)" Condition="$(_ReferencedLibraryAssemblies.Contains(';%(_CachedUnpackedCollada.BundledInAssembly);'))" />
+			<CoreMLModel Include="@(_CachedUnpackedCoreMLModel)" Condition="$(_ReferencedLibraryAssemblies.Contains(';%(_CachedUnpackedCoreMLModel.BundledInAssembly);'))" />
+			<SceneKitAsset Include="@(_CachedUnpackedSceneKitAsset)" Condition="$(_ReferencedLibraryAssemblies.Contains(';%(_CachedUnpackedSceneKitAsset.BundledInAssembly);'))" />
+		</ItemGroup>
 	</Target>
 
 	<Target Name="_ParseBundlerArguments">

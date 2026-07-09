@@ -55584,7 +55584,7 @@ P:WebKit.WKContentWorld.Page
 P:WebKit.WKContentWorldConfiguration.AutofillScriptingEnabled
 P:WebKit.WKContentWorldConfiguration.ElementUserInfoEnabled
 P:WebKit.WKContentWorldConfiguration.Inspectable
-P:WebKit.WKContentWorldConfiguration.JsHandleCreationEnabled
+P:WebKit.WKContentWorldConfiguration.JSHandleCreationEnabled
 P:WebKit.WKContentWorldConfiguration.LegacyBuiltinOverridesEnabled
 P:WebKit.WKContentWorldConfiguration.NodeSerializationEnabled
 P:WebKit.WKContentWorldConfiguration.OpenClosedShadowRootsEnabled

@@ -7020,7 +7020,7 @@ namespace WebKit {
 		NSUrlRequest AlternateRequest { get; set; }
 
 		[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
-		[NullAllowed, Export ("overrideReferrer")]
+		[NullAllowed, Export ("overrideReferrer", ArgumentSemantic.Copy)]
 		string OverrideReferrer { get; set; }
 
 		[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
@@ -7088,7 +7088,7 @@ namespace WebKit {
 		bool NodeSerializationEnabled { get; set; }
 
 		[Export ("jsHandleCreationEnabled")]
-		bool JsHandleCreationEnabled { get; [Bind ("setJSHandleCreationEnabled:")] set; }
+		bool JSHandleCreationEnabled { get; [Bind ("setJSHandleCreationEnabled:")] set; }
 
 		[Export ("inspectable")]
 		bool Inspectable { [Bind ("isInspectable")] get; set; }

@@ -1437,6 +1437,7 @@
 			<_RuntimeConfigReservedProperties Include="NATIVE_DLL_SEARCH_DIRECTORIES" />
 			<_RuntimeConfigReservedProperties Include="RUNTIME_IDENTIFIER" />
 			<_RuntimeConfigReservedProperties Include="APP_CONTEXT_BASE_DIRECTORY" />
+			<_RuntimeConfigReservedProperties Include="SYSTEM_CORELIB_DIRECTORY" />
 			<_RuntimeConfigReservedProperties Include="STARTUP_HOOKS" />
 		</ItemGroup>
 		<RuntimeConfigParserTask

@@ -268,6 +268,9 @@ static class TypeMaps {
 		}
 
 		// workaround for https://github.com/dotnet/runtime/issues/127004
+		// The fix is only available in .NET 11+, so we still need the workaround for .NET 10.
+		// Tracking issue: https://github.com/dotnet/macios/issues/25276
+#if !NET11_0_OR_GREATER
 		proxyAttribute = protocol.GetCustomAttribute<ProtocolProxyAttribute> (false);
 		if (proxyAttribute is not null) {
 #if LOG_TRIMMABLE_TYPEMAP
@@ -275,6 +278,7 @@ static class TypeMaps {
 #endif
 			return true;
 		}
+#endif // !NET11_0_OR_GREATER
 
 #if LOG_TRIMMABLE_TYPEMAP
 		Runtime.NSLog ($"TryGetProtocolProxyAttribute ({protocol}) did not find proxy attribute anywhere");
@@ -338,6 +342,9 @@ static class TypeMaps {
 		proxyAttribute = null;
 
 		// workaround for https://github.com/dotnet/runtime/issues/127004
+		// The fix is only available in .NET 11+, so we still need the workaround for .NET 10.
+		// Tracking issue: https://github.com/dotnet/macios/issues/25276
+#if !NET11_0_OR_GREATER
 		proxyAttribute = managedType.GetCustomAttribute<NSObjectProxyAttribute> (false);
 		if (proxyAttribute is not null) {
 #if LOG_TRIMMABLE_TYPEMAP
@@ -348,6 +355,7 @@ static class TypeMaps {
 #if LOG_TRIMMABLE_TYPEMAP
 		Runtime.NSLog ($"TryGetNSObjectProxyAttribute ({managedType}): did not find proxy attribute on the type itself");
 #endif
+#endif // !NET11_0_OR_GREATER
 		// end workaround for https://github.com/dotnet/runtime/issues/127004
 
 		if (!NSObjectProxyTypes.TryGetValue (managedType, out var proxyType)) {

@@ -49,20 +49,20 @@ namespace StoreKit {
 		/// <summary>Indicates that the cloud service network connection failed.</summary>
 		CloudServiceNetworkConnectionFailed,
 		// iOS 10.3
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the cloud service has been revoked.</summary>
 		CloudServiceRevoked,
 		// iOS 12.2
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that a privacy acknowledgement is required before proceeding.</summary>
 		PrivacyAcknowledgementRequired,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the request data is unauthorized.</summary>
 		UnauthorizedRequestData,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the offer identifier is invalid.</summary>
 		InvalidOfferIdentifier,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the signature is invalid.</summary>
 		InvalidSignature,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that required offer parameters are missing.</summary>
 		MissingOfferParams,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the offer price is invalid.</summary>
 		InvalidOfferPrice,
 		OverlayCancelled = 15,
 

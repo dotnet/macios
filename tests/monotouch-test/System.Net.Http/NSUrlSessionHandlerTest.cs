@@ -399,6 +399,114 @@ namespace MonoTests.System.Net.Http {
 			}
 		}
 
+		[Test]
+		public void ProxyRoutesRequestsThroughProxy ()
+		{
+			using var proxy = new ProxyTestServer ();
+
+			HttpStatusCode? statusCode = null;
+			bool viaProxy = false;
+
+			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
+				using var handler = new NSUrlSessionHandler ();
+				handler.Proxy = new WebProxy (proxy.Url);
+				Assert.That (handler.UseProxy, Is.True, "UseProxy default");
+				Assert.That (handler.SupportsProxy, Is.True, "SupportsProxy");
+				using var client = new HttpClient (handler);
+				var response = await client.GetAsync (NetworkResources.Httpbin.GetUrl).ConfigureAwait (false);
+				statusCode = response.StatusCode;
+				viaProxy = response.Headers.Contains ("Via-Test-Proxy");
+			}, out var ex);
+
+			if (!done) {
+				TestRuntime.IgnoreInCI ("Transient localhost server failure - ignore in CI");
+				Assert.Inconclusive ("Request timed out.");
+			}
+			TestRuntime.IgnoreInCIIfBadNetwork (ex);
+			Assert.That (ex, Is.Null, $"Exception: {ex}");
+			Assert.That (statusCode, Is.EqualTo (HttpStatusCode.OK), "Status code");
+			Assert.That (viaProxy, Is.True, "Response should have gone through the test proxy");
+			Assert.That (proxy.AuthenticatedRequestCount, Is.GreaterThan (0), "Proxy should have forwarded at least one request");
+		}
+
+		[Test]
+		public void ProxyWithCredentialsAuthenticatesWithProxy ()
+		{
+			const string proxyUser = "proxyuser";
+			const string proxyPass = "proxypass";
+			using var proxy = new ProxyTestServer (proxyUser, proxyPass);
+
+			HttpStatusCode? statusCode = null;
+
+			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
+				using var handler = new NSUrlSessionHandler ();
+				handler.Proxy = new WebProxy (proxy.Url) {
+					Credentials = new NetworkCredential (proxyUser, proxyPass),
+				};
+				using var client = new HttpClient (handler);
+				var response = await client.GetAsync (NetworkResources.Httpbin.GetUrl).ConfigureAwait (false);
+				statusCode = response.StatusCode;
+			}, out var ex);
+
+			if (!done) {
+				TestRuntime.IgnoreInCI ("Transient localhost server failure - ignore in CI");
+				Assert.Inconclusive ("Request timed out.");
+			}
+			TestRuntime.IgnoreInCIIfBadNetwork (ex);
+			Assert.That (ex, Is.Null, $"Exception: {ex}");
+			Assert.That (statusCode, Is.EqualTo (HttpStatusCode.OK), "Status code (proxy credentials should have been used)");
+			Assert.That (proxy.AuthenticatedRequestCount, Is.GreaterThan (0), "Proxy should have forwarded an authenticated request");
+		}
+
+		[Test]
+		public void ProxyWithDefaultProxyCredentialsAuthenticatesWithProxy ()
+		{
+			const string proxyUser = "proxyuser";
+			const string proxyPass = "proxypass";
+			using var proxy = new ProxyTestServer (proxyUser, proxyPass);
+
+			HttpStatusCode? statusCode = null;
+
+			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
+				using var handler = new NSUrlSessionHandler ();
+				handler.Proxy = new WebProxy (proxy.Url);
+				handler.DefaultProxyCredentials = new NetworkCredential (proxyUser, proxyPass);
+				using var client = new HttpClient (handler);
+				var response = await client.GetAsync (NetworkResources.Httpbin.GetUrl).ConfigureAwait (false);
+				statusCode = response.StatusCode;
+			}, out var ex);
+
+			if (!done) {
+				TestRuntime.IgnoreInCI ("Transient localhost server failure - ignore in CI");
+				Assert.Inconclusive ("Request timed out.");
+			}
+			TestRuntime.IgnoreInCIIfBadNetwork (ex);
+			Assert.That (ex, Is.Null, $"Exception: {ex}");
+			Assert.That (statusCode, Is.EqualTo (HttpStatusCode.OK), "Status code (default proxy credentials should have been used)");
+			Assert.That (proxy.AuthenticatedRequestCount, Is.GreaterThan (0), "Proxy should have forwarded an authenticated request");
+		}
+
+		[Test]
+		public void ProxyPropertiesBehaveCorrectly ()
+		{
+			using var handler = new NSUrlSessionHandler ();
+			Assert.That (handler.Proxy, Is.Null, "Proxy default");
+			Assert.That (handler.UseProxy, Is.True, "UseProxy default");
+			Assert.That (handler.SupportsProxy, Is.True, "SupportsProxy");
+			Assert.That (handler.DefaultProxyCredentials, Is.Null, "DefaultProxyCredentials default");
+
+			var proxy = new WebProxy ("http://127.0.0.1:8888");
+			handler.Proxy = proxy;
+			Assert.That (handler.Proxy, Is.SameAs (proxy), "Proxy set");
+
+			handler.UseProxy = false;
+			Assert.That (handler.UseProxy, Is.False, "UseProxy set to false");
+
+			var credentials = new NetworkCredential ("user", "pass");
+			handler.DefaultProxyCredentials = credentials;
+			Assert.That (handler.DefaultProxyCredentials, Is.SameAs (credentials), "DefaultProxyCredentials set");
+		}
+
 		static HttpListener? StartListenerOnAvailablePort (out int listeningPort)
 		{
 			// IANA suggested range for dynamic or private ports

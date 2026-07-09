@@ -449,6 +449,74 @@ namespace Foundation {
 			return nsrequest;
 		}
 
+		readonly object proxyConfigurationLock = new object ();
+		bool proxyConfigured;
+
+		// NSUrlSession applies proxy settings per-session (via the configuration's connection proxy dictionary),
+		// not per-request, so we compute the proxy configuration once (using the first request's destination) and
+		// recreate the session with it before the first request is sent.
+		void ConfigureSessionProxy (HttpRequestMessage request)
+		{
+			lock (proxyConfigurationLock) {
+				if (proxyConfigured)
+					return;
+				proxyConfigured = true;
+
+				if (!TryGetProxyDictionary (request.RequestUri, out var proxyDictionary))
+					return;
+
+				var oldSession = session;
+				var configuration = session.Configuration;
+				configuration.ConnectionProxyDictionary = proxyDictionary;
+				session = NSUrlSession.FromConfiguration (configuration, (INSUrlSessionDelegate) new NSUrlSessionHandlerDelegate (this), null);
+				oldSession.Dispose ();
+			}
+		}
+
+		// Computes the connection proxy dictionary to apply to the session.
+		// Returns false (and a null dictionary) when the session's default proxy behavior (use the OS-configured proxies) should be used.
+		bool TryGetProxyDictionary (Uri? destination, out NSDictionary? proxyDictionary)
+		{
+			proxyDictionary = null;
+
+			// The developer explicitly asked us to not use any proxy: apply an empty dictionary to
+			// override any proxy configured in the OS.
+			if (!useProxy) {
+				proxyDictionary = new NSDictionary ();
+				return true;
+			}
+
+			// No custom proxy: let NSUrlSession use the OS-configured proxies (the default behavior).
+			if (proxy is null || destination is null)
+				return false;
+
+			// The proxy says this destination should not be proxied: override any OS-configured proxy.
+			if (proxy.IsBypassed (destination)) {
+				proxyDictionary = new NSDictionary ();
+				return true;
+			}
+
+			var proxyUri = proxy.GetProxy (destination);
+			// A null proxy uri (or one that points back at the destination) means "no proxy for this destination".
+			if (proxyUri is null || proxyUri == destination) {
+				proxyDictionary = new NSDictionary ();
+				return true;
+			}
+
+			var strongProxy = new ProxyConfigurationDictionary {
+				HttpEnable = true,
+				HttpProxyHost = proxyUri.Host,
+				HttpProxyPort = proxyUri.Port,
+				HttpsProxyHost = proxyUri.Host,
+				HttpsProxyPort = proxyUri.Port,
+#if MONOMAC
+				HttpsEnable = true,
+#endif
+			};
+			proxyDictionary = strongProxy.GetDictionary ();
+			return true;
+		}
+
 		/// <param name="request">To be added.</param>
 		///         <param name="cancellationToken">To be added.</param>
 		///         <summary>To be added.</summary>
@@ -456,6 +524,8 @@ namespace Foundation {
 		///         <remarks>To be added.</remarks>
 		protected override async Task<HttpResponseMessage> SendAsync (HttpRequestMessage request, CancellationToken cancellationToken)
 		{
+			ConfigureSessionProxy (request);
+
 			Volatile.Write (ref sentRequest, true);
 
 			var nsrequest = await CreateRequest (request).ConfigureAwait (false);
@@ -558,14 +628,20 @@ namespace Foundation {
 
 		public ClientCertificateOption ClientCertificateOptions { get; set; }
 
-		// We're ignoring this property, just like Xamarin.Android does:
-		// https://github.com/xamarin/xamarin-android/blob/09e8cb5c07ea6c39383185a3f90e53186749b802/src/Mono.Android/Xamarin.Android.Net/AndroidMessageHandler.cs#L152
-		[UnsupportedOSPlatform ("ios")]
-		[UnsupportedOSPlatform ("maccatalyst")]
-		[UnsupportedOSPlatform ("tvos")]
-		[UnsupportedOSPlatform ("macos")]
-		[EditorBrowsable (EditorBrowsableState.Never)]
-		public ICredentials? DefaultProxyCredentials { get; set; }
+		ICredentials? defaultProxyCredentials;
+
+		/// <summary>The credentials to submit to the proxy server for authentication.</summary>
+		/// <value>The credentials to use to authenticate with the proxy, or <see langword="null" /> to not provide any proxy credentials.</value>
+		/// <remarks>These credentials are only used when the proxy itself (<see cref="Proxy" />) doesn't provide its own credentials.</remarks>
+		public ICredentials? DefaultProxyCredentials {
+			get {
+				return defaultProxyCredentials;
+			}
+			set {
+				EnsureModifiability ();
+				defaultProxyCredentials = value;
+			}
+		}
 
 		public int MaxAutomaticRedirections {
 			get => int.MaxValue;
@@ -614,18 +690,21 @@ namespace Foundation {
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public IDictionary<string, object>? Properties { get { return null; } }
 
-		// We dont support any custom proxies, and don't let anybody wonder why their proxy isn't
-		// being used if they try to assign one (in any case we also return false from 'SupportsProxy').
-		[UnsupportedOSPlatform ("ios")]
-		[UnsupportedOSPlatform ("maccatalyst")]
-		[UnsupportedOSPlatform ("tvos")]
-		[UnsupportedOSPlatform ("macos")]
-		[EditorBrowsable (EditorBrowsableState.Never)]
+		IWebProxy? proxy;
+
+		/// <summary>The proxy to use for requests.</summary>
+		/// <value>The custom proxy to use, or <see langword="null" /> to use the proxies configured in the operating system.</value>
+		/// <remarks>
+		///   <para>Setting this property only has an effect if <see cref="UseProxy" /> is <see langword="true" /> (which is the default value).</para>
+		///   <para>NSUrlSession applies proxy settings per-session, not per-request, so the proxy returned by <see cref="IWebProxy.GetProxy(System.Uri)" /> for the first request is applied to every request made by this handler.</para>
+		/// </remarks>
 		public IWebProxy? Proxy {
-			get => null;
+			get {
+				return proxy;
+			}
 			set {
-				if (value is not null)
-					throw new PlatformNotSupportedException ();
+				EnsureModifiability ();
+				proxy = value;
 			}
 		}
 
@@ -743,9 +822,10 @@ namespace Foundation {
 			get => true;
 		}
 
-		// We don't support using custom proxies, but NSUrlSession will automatically use any proxies configured in the OS.
+		// We support custom proxies (applied per-session via the connection proxy dictionary), and
+		// NSUrlSession will also automatically use any proxies configured in the OS.
 		public bool SupportsProxy {
-			get => false;
+			get => true;
 		}
 
 		// We support the AllowAutoRedirect property, but we don't support changing the MaxAutomaticRedirections value,
@@ -754,13 +834,15 @@ namespace Foundation {
 			get => false;
 		}
 
-		// NSUrlSession will automatically use any proxies configured in the OS (so always return true in the getter).
-		// There doesn't seem to be a way to turn this off, so throw if someone attempts to disable this.
+		bool useProxy = true;
+
+		// When true (the default), NSUrlSession uses either the custom 'Proxy' (if set) or the proxies configured in the OS.
+		// When false, no proxy is used (this overrides any proxy configured in the OS).
 		public bool UseProxy {
-			get => true;
+			get => useProxy;
 			set {
-				if (!value)
-					ObjCRuntime.ThrowHelper.ThrowArgumentOutOfRangeException (nameof (value), value, "It's not possible to disable the use of system proxies."); ;
+				EnsureModifiability ();
+				useProxy = value;
 			}
 		}
 
@@ -1175,7 +1257,15 @@ namespace Foundation {
 					}
 				}
 
-				if (sessionHandler.Credentials is not null && TryGetAuthenticationType (challenge.ProtectionSpace, out var authType)) {
+				// Proxy authentication challenges use the proxy credentials (either the proxy's own credentials or
+				// the DefaultProxyCredentials), and look up credentials using the proxy's URI. Server authentication
+				// challenges use the regular Credentials and look up credentials using the request's URI.
+				var isProxyChallenge = challenge.ProtectionSpace.IsProxy;
+				var challengeCredentials = isProxyChallenge
+					? (sessionHandler.Proxy?.Credentials ?? sessionHandler.DefaultProxyCredentials)
+					: sessionHandler.Credentials;
+
+				if (challengeCredentials is not null && TryGetAuthenticationType (challenge.ProtectionSpace, out var authType)) {
 					NetworkCredential? credentialsToUse = null;
 					if (authType != RejectProtectionSpaceAuthType) {
 						// interesting situation, when we use a credential that we created that is empty, we are not getting the RejectProtectionSpaceAuthType,
@@ -1195,9 +1285,14 @@ namespace Foundation {
 						var nsurlRespose = challenge.FailureResponse as NSHttpUrlResponse;
 						var responseIsUnauthorized = (nsurlRespose is null) ? false : nsurlRespose.StatusCode == (int) HttpStatusCode.Unauthorized && challenge.PreviousFailureCount > 0;
 						if (!responseIsUnauthorized) {
-							var uri = GetCredentialLookupUri (task, inflight);
-							if (ShouldLookupCredentials (sessionHandler.Credentials, inflight))
-								credentialsToUse = sessionHandler.Credentials.GetCredential (uri, authType);
+							if (isProxyChallenge) {
+								var uri = GetProxyLookupUri (challenge.ProtectionSpace);
+								credentialsToUse = challengeCredentials.GetCredential (uri, authType);
+							} else {
+								var uri = GetCredentialLookupUri (task, inflight);
+								if (ShouldLookupCredentials (challengeCredentials, inflight))
+									credentialsToUse = challengeCredentials.GetCredential (uri, authType);
+							}
 						}
 					}
 
@@ -1212,6 +1307,13 @@ namespace Foundation {
 				} else {
 					completionHandler (NSUrlSessionAuthChallengeDisposition.PerformDefaultHandling, challenge.ProposedCredential);
 				}
+			}
+
+			static Uri GetProxyLookupUri (NSUrlProtectionSpace protectionSpace)
+			{
+				var scheme = protectionSpace.ReceivesCredentialSecurely ? "https" : "http";
+				var builder = new UriBuilder (scheme, protectionSpace.Host, (int) protectionSpace.Port);
+				return builder.Uri;
 			}
 
 			static Uri GetCredentialLookupUri (NSUrlSessionTask task, InflightData inflight)

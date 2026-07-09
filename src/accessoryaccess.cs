@@ -4,13 +4,6 @@ using CoreFoundation;
 using Foundation;
 using ObjCRuntime;
 
-// 'IOUSBHostDevice' comes from the IOUSBHost framework, which macios intentionally does not bind:
-// it's a low-level IOKit/DriverKit-adjacent framework whose API is almost entirely
-// NS_REFINED_FOR_SWIFT (see IGNORED_MACOS_FRAMEWORKS in tests/xtro-sharpie/Makefile). The instance
-// returned by AAUSBAccessory.Open is a valid IOUSBHostDevice handle; consumers that need to perform
-// USB I/O on it should hand the accessory to a native/Swift XPC service using CreateXpcRepresentation.
-using IOUSBHostDevice = Foundation.NSObject;
-
 // 'xpc_object_t' is an opaque OS_object that's shuttled across XPC boundaries; it has no managed API
 // surface of its own, so macios binds it as NSObject everywhere (see src/browserenginekit.cs).
 using OS_xpc_object = Foundation.NSObject;
@@ -28,19 +21,25 @@ namespace AccessoryAccess {
 	}
 
 	[Mac (27, 0)]
-	[Native]
-	public enum AAUSBAccessoryMatchingCriteriaInterfaceMatchingOption : long {
+	[Native ("AAUSBAccessoryMatchingCriteriaInterfaceMatchingOption")]
+	public enum AAUsbAccessoryMatchingCriteriaInterfaceMatchingOption : long {
 		MatchAll,
 		MatchAny,
 	}
 
-	delegate void AAUSBAccessoryOpenCompletionHandler ([NullAllowed] IOUSBHostDevice device, [NullAllowed] NSError error);
-	delegate void AAUSBAccessoryCloseCompletionHandler ([NullAllowed] NSError error);
+	// 'device' is a live IOUSBHostDevice handle (an IOUSBHost Objective-C object). IOUSBHost is
+	// intentionally not bound in macios (a low-level IOKit/DriverKit-adjacent, NS_REFINED_FOR_SWIFT
+	// framework; see IGNORED_MACOS_FRAMEWORKS in tests/xtro-sharpie/Makefile), so the handle is surfaced
+	// as a raw IntPtr that stays valid until the accessory is closed (Close). To perform USB I/O, hand
+	// the accessory to a native/Swift service via CreateXpcRepresentation, or bridge the handle through
+	// native IOUSBHost code.
+	delegate void AAUsbAccessoryOpenCompletionHandler (IntPtr device, [NullAllowed] NSError error);
+	delegate void AAUsbAccessoryCloseCompletionHandler ([NullAllowed] NSError error);
 
 	[Mac (27, 0)]
-	[BaseType (typeof (NSObject))]
+	[BaseType (typeof (NSObject), Name = "AAUSBAccessory")]
 	[DisableDefaultCtor]
-	interface AAUSBAccessory : NSSecureCoding {
+	interface AAUsbAccessory : NSSecureCoding {
 		[Export ("initWithXPCRepresentation:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (OS_xpc_object xpcRepresentation);
@@ -57,61 +56,58 @@ namespace AccessoryAccess {
 		[Export ("createXPCRepresentation")]
 		OS_xpc_object CreateXpcRepresentation ();
 
-		// The completion handler receives a live IOUSBHostDevice (typed as NSObject; see the
-		// IOUSBHostDevice alias at the top of this file). To perform USB I/O, forward the accessory to
-		// a native/Swift XPC service via CreateXpcRepresentation, or bridge the handle through IOUSBHost.
 		[Export ("openWithServiceQueue:completionHandler:")]
 		[Async]
-		void Open ([NullAllowed] DispatchQueue serviceQueue, AAUSBAccessoryOpenCompletionHandler completionHandler);
+		void Open ([NullAllowed] DispatchQueue serviceQueue, AAUsbAccessoryOpenCompletionHandler completionHandler);
 
 		[Export ("closeWithCompletionHandler:")]
 		[Async]
-		void Close (AAUSBAccessoryCloseCompletionHandler completionHandler);
+		void Close (AAUsbAccessoryCloseCompletionHandler completionHandler);
 	}
 
-	interface IAAUSBAccessoryListener { }
+	interface IAAUsbAccessoryListener { }
 
 	[Mac (27, 0)]
-	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
+	[Protocol (BackwardsCompatibleCodeGeneration = false, Name = "AAUSBAccessoryListener"), Model]
 	[BaseType (typeof (NSObject))]
-	interface AAUSBAccessoryListener {
+	interface AAUsbAccessoryListener {
 		[Export ("usbAccessoryDidConnect:")]
-		void UsbAccessoryDidConnect (AAUSBAccessory usbAccessory);
+		void UsbAccessoryDidConnect (AAUsbAccessory usbAccessory);
 
 		[Export ("usbAccessoryDidDisconnect:")]
-		void UsbAccessoryDidDisconnect (AAUSBAccessory usbAccessory);
+		void UsbAccessoryDidDisconnect (AAUsbAccessory usbAccessory);
 	}
 
-	delegate void AAUSBAccessoryManagerRegisterListenerCompletionHandler (AAUSBAccessory [] accessories, [NullAllowed] NSError error);
-	delegate void AAUSBAccessoryManagerUnregisterListenerCompletionHandler ();
+	delegate void AAUsbAccessoryManagerRegisterListenerCompletionHandler (AAUsbAccessory [] accessories, [NullAllowed] NSError error);
+	delegate void AAUsbAccessoryManagerUnregisterListenerCompletionHandler ();
 
 	[Mac (27, 0)]
-	[BaseType (typeof (NSObject))]
+	[BaseType (typeof (NSObject), Name = "AAUSBAccessoryManager")]
 	[DisableDefaultCtor]
-	interface AAUSBAccessoryManager {
+	interface AAUsbAccessoryManager {
 		[Static]
 		[Export ("sharedManager", ArgumentSemantic.Strong)]
-		AAUSBAccessoryManager SharedManager { get; }
+		AAUsbAccessoryManager SharedManager { get; }
 
 		[Export ("registerListener:withMatchingCriteria:completionHandler:")]
 		[Async]
-		void RegisterListener (IAAUSBAccessoryListener listener, AAUSBAccessoryMatchingCriteria [] matchingCriteria, AAUSBAccessoryManagerRegisterListenerCompletionHandler completionHandler);
+		void RegisterListener (IAAUsbAccessoryListener listener, AAUsbAccessoryMatchingCriteria [] matchingCriteria, AAUsbAccessoryManagerRegisterListenerCompletionHandler completionHandler);
 
 		[Export ("unregisterListener:completionHandler:")]
 		[Async]
-		void UnregisterListener (IAAUSBAccessoryListener listener, AAUSBAccessoryManagerUnregisterListenerCompletionHandler completionHandler);
+		void UnregisterListener (IAAUsbAccessoryListener listener, AAUsbAccessoryManagerUnregisterListenerCompletionHandler completionHandler);
 	}
 
 	[Mac (27, 0)]
-	[BaseType (typeof (NSObject))]
+	[BaseType (typeof (NSObject), Name = "AAUSBAccessoryMatchingCriteria")]
 	[DisableDefaultCtor]
-	interface AAUSBAccessoryMatchingCriteria : NSCopying {
+	interface AAUsbAccessoryMatchingCriteria : NSCopying {
 		[Export ("initWithDeviceMatchingDictionary:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSDictionary<NSString, NSObject> dictionary);
 
 		[Export ("initWithDeviceMatchingDictionary:interfaceMatchingDictionaries:interfaceMatchingOption:")]
 		[DesignatedInitializer]
-		NativeHandle Constructor ([NullAllowed] NSDictionary<NSString, NSObject> deviceMatchingDictionary, NSDictionary<NSString, NSObject> [] interfaceMatchingDictionaries, AAUSBAccessoryMatchingCriteriaInterfaceMatchingOption interfaceMatchingOption);
+		NativeHandle Constructor ([NullAllowed] NSDictionary<NSString, NSObject> deviceMatchingDictionary, NSDictionary<NSString, NSObject> [] interfaceMatchingDictionaries, AAUsbAccessoryMatchingCriteriaInterfaceMatchingOption interfaceMatchingOption);
 	}
 }

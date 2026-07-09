@@ -31,7 +31,7 @@ namespace MonoTouchFixtures.Foundation {
 					coder.Encode (double.MaxValue, "double");
 					coder.Encode (true, "bool");
 					coder.Encode (long.MaxValue, "long");
-					coder.Encode (buffer, 2, 1, "buffer2");
+					coder.Encode (buffer, 1, 1, "buffer2");
 					coder.Encode (nint.MaxValue, "nint");
 					coder.EncodeBlock (ptr, buffer.Length, "block");
 					coder.FinishEncoding ();
@@ -49,7 +49,7 @@ namespace MonoTouchFixtures.Foundation {
 					Assert.That (decoder.DecodeLong ("long"), Is.EqualTo (long.MaxValue));
 					buf = decoder.DecodeBytes ("buffer2");
 					Assert.That (buf.Length, Is.EqualTo (1), "buffer2.length");
-					Assert.That (buf [0], Is.EqualTo (buffer [2]), "buffer2 [0]");
+					Assert.That (buf [0], Is.EqualTo (buffer [1]), "buffer2 [0]");
 					Assert.That (decoder.DecodeNInt ("nint"), Is.EqualTo (nint.MaxValue));
 
 					buf = decoder.DecodeBytes ("block");

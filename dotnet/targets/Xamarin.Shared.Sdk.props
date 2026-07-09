@@ -152,12 +152,12 @@
 
 	<!-- Set the default RuntimeIdentifier when publishing -->
 	<PropertyGroup Condition="'$(PublishRuntimeIdentifier)' == ''">
-		<!--
 		<PublishRuntimeIdentifier Condition="'$(_PlatformName)' == 'iOS'">ios-arm64</PublishRuntimeIdentifier>
 		<PublishRuntimeIdentifier Condition="'$(_PlatformName)' == 'tvOS'">tvos-arm64</PublishRuntimeIdentifier>
-		-->
 		<!-- Disable the default PublishRuntimeIdentifier behavior: https://github.com/dotnet/sdk/pull/52566 -->
 		<UseDefaultPublishRuntimeIdentifier>false</UseDefaultPublishRuntimeIdentifier>
+		<!-- Don't append PublishRuntimeIdentifier to RuntimeIdentifiers: we use RuntimeIdentifiers to mean "build for all these RIDs", and appending the publish RID confuses our build: https://github.com/dotnet/sdk/pull/54291 / https://github.com/dotnet/macios/issues/24547 -->
+		<AppendPublishRuntimeIdentifierToRuntimeIdentifiers>false</AppendPublishRuntimeIdentifierToRuntimeIdentifiers>
 	</PropertyGroup>
 
 	<!-- Now that we know the runtime identifier, we can determine if we're building for a simulator -->

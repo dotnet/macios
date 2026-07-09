@@ -521,6 +521,25 @@ namespace Xamarin.Tests {
 			Assert.That (appPath, Does.Exist, "App existence");
 		}
 
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
+		public void PublishRuntimeIdentifierNotAppendedToRuntimeIdentifiers (ApplePlatform platform, string expectedPublishRuntimeIdentifier)
+		{
+			var project = "MySimpleApp";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			var project_path = GetProjectPath (project, platform: platform);
+
+			var properties = GetDefaultProperties ();
+			var publishRuntimeIdentifier = DotNet.GetProperty (project_path, "PublishRuntimeIdentifier", properties);
+			var runtimeIdentifiers = DotNet.GetProperty (project_path, "RuntimeIdentifiers", properties);
+
+			Assert.That (publishRuntimeIdentifier, Is.EqualTo (expectedPublishRuntimeIdentifier), "PublishRuntimeIdentifier");
+			// We use RuntimeIdentifiers to mean "build for all these RIDs", so PublishRuntimeIdentifier must not be
+			// appended to RuntimeIdentifiers (this used to confuse our build): https://github.com/dotnet/macios/issues/24547
+			Assert.That (runtimeIdentifiers, Does.Not.Contain (expectedPublishRuntimeIdentifier), "RuntimeIdentifiers");
+		}
+
 		[Test]
 		[TestCase (ApplePlatform.iOS, "iossimulator-arm64")]
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]

@@ -1292,8 +1292,9 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			Xamarin.iOS and Xamarin.Mac converges, more and more of this logic
 			will apply to Xamarin.Mac as well.
 		-->
+		<!-- The device-specific build support can be entirely removed in .NET 12 (see https://github.com/dotnet/macios/issues/23846) -->
 		<ParseDeviceSpecificBuildInformation
-			Condition="'$(DeviceSpecificBuild)' == 'true' And '$(TargetiOSDevice)' != '' And '$(_CanDeployToDeviceOrSimulator)' == 'true' And '$(SdkIsDesktop)' != 'true'"
+			Condition="'$(DeviceSpecificBuild)' == 'true' And '$(TargetiOSDevice)' != '' And '$(_CanDeployToDeviceOrSimulator)' == 'true' And '$(SdkIsDesktop)' != 'true' And (!$([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), 11.0)) Or '$(_DeviceSpecificBuildOverride)' == 'true')"
 			Architectures="$(TargetArchitectures)"
 			IntermediateOutputPath="$(IntermediateOutputPath)"
 			OutputPath="$(OutputPath)"

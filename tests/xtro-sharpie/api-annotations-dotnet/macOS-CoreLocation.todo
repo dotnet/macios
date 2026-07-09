@@ -1,5 +1,4 @@
 !deprecated-attribute-missing! CLLocationManager::headingOrientation missing a [Deprecated] attribute
 !deprecated-attribute-missing! CLLocationManager::setHeadingOrientation: missing a [Deprecated] attribute
-!missing-protocol! CLBodyIdentifiable not bound
 !missing-selector! CLLocationManager::headingBody not bound
 !missing-selector! CLLocationManager::setHeadingBody: not bound

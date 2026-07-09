@@ -481,6 +481,14 @@ namespace VideoToolbox {
 		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
 		[Field ("kVTCompressionPropertyKey_SupportedPresetDictionaries")]
 		NSString SupportedPresetDictionaries { get; }
+
+		[TV (27, 0), MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Field ("kVTCompressionPropertyKey_ConstantQualityFactor")]
+		NSString ConstantQualityFactor { get; }
+
+		[TV (27, 0), MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Field ("kVTCompressionPropertyKey_LogTransferFunction")]
+		NSString LogTransferFunction { get; }
 	}
 
 	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
@@ -497,6 +505,10 @@ namespace VideoToolbox {
 
 		[Field ("kVTCompressionPreset_VideoConferencing")]
 		NSString VideoConferencing { get; }
+
+		[TV (27, 0), MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Field ("kVTCompressionPreset_ConsistentQuality")]
+		NSString ConsistentQuality { get; }
 	}
 
 	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
@@ -507,6 +519,9 @@ namespace VideoToolbox {
 		NSDictionary Balanced { get; }
 		NSDictionary HighSpeed { get; }
 		NSDictionary VideoConferencing { get; }
+
+		[TV (27, 0), MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+		NSDictionary ConsistentQuality { get; }
 	}
 
 	[MacCatalyst (13, 1)]
@@ -906,6 +921,15 @@ namespace VideoToolbox {
 		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
 		[Export ("SupportedPresetDictionaries")]
 		VTCompressionPreset SupportedPresetDictionaries { get; }
+
+		[TV (27, 0), MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Export ("ConstantQualityFactor")]
+		float ConstantQualityFactor { get; set; }
+
+		[TV (27, 0), MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+		// not strongly typed to CMFormatDescriptionLogTransferFunction because other values are allowed as well
+		[Export ("LogTransferFunction")]
+		string LogTransferFunction { get; set; }
 	}
 
 	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
@@ -1031,6 +1055,10 @@ namespace VideoToolbox {
 
 		[Field ("kVTProjectionKind_ParametricImmersive")]
 		ParametricImmersive,
+
+		[NoTV, MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Field ("kVTProjectionKind_AppleImmersiveVideo")]
+		AppleImmersiveVideo,
 	}
 
 	[NoTV, MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
@@ -3146,6 +3174,16 @@ namespace VideoToolbox {
 		[Static]
 		[Export ("supported")]
 		bool Supported { [Bind ("isSupported")] get; }
+
+		[TV (27, 0), MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Static]
+		[Export ("maximumDimensionForSpatialScaleFactor:")]
+		nint GetMaximumDimension (nint spatialScaleFactor);
+
+		[TV (27, 0), MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Static]
+		[Export ("maximumPixelCountForSpatialScaleFactor:")]
+		nint GetMaximumPixelCount (nint spatialScaleFactor);
 	}
 
 	[UnsupportedSimulator ("ios")]

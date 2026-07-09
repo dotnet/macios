@@ -1152,23 +1152,25 @@ namespace ObjCRuntime {
 
 		internal static void UnregisterNSObject (IntPtr ptr)
 		{
-			Foundation.NSAsyncDispatcherInstrumentation.LogObjectMapOp ("UnregisterNSObject(ptr)", ptr);
 			lock (lock_obj) {
-				if (object_map.Remove (ptr, out var value))
+				if (object_map.Remove (ptr, out var value)) {
+					Foundation.NSAsyncDispatcherInstrumentation.LogObjectMapRemove ("UnregisterNSObject", ptr);
 					value.Free ();
+				}
 			}
 		}
 
 		internal static void NativeObjectHasDied (IntPtr ptr, NSObject? managed_obj)
 		{
-			Foundation.NSAsyncDispatcherInstrumentation.LogObjectMapOp ("NativeObjectHasDied", ptr, $"managed_obj is null: {managed_obj is null}");
 			lock (lock_obj) {
 				if (object_map.TryGetValue (ptr, out var wr)) {
 					if (managed_obj is null || wr.Target == (object) managed_obj) {
+						Foundation.NSAsyncDispatcherInstrumentation.LogObjectMapRemove ("NativeObjectHasDied", ptr);
 						object_map.Remove (ptr);
 						wr.Free ();
 					} else if (wr.Target is null) {
 						// We can remove null entries, and free the corresponding GCHandle
+						Foundation.NSAsyncDispatcherInstrumentation.LogObjectMapRemove ("NativeObjectHasDied (null target)", ptr);
 						object_map.Remove (ptr);
 						wr.Free ();
 					}
@@ -1182,7 +1184,7 @@ namespace ObjCRuntime {
 
 		internal static void RegisterNSObject (NSObject obj, IntPtr ptr)
 		{
-			Foundation.NSAsyncDispatcherInstrumentation.LogObjectMapOp ("RegisterNSObject", ptr, $"type: {obj.GetType ().Name}");
+			var isActionDispatcher = obj is Foundation.NSAsyncActionDispatcher;
 			GCHandle handle;
 			if (Runtime.IsCoreCLR) {
 				handle = CreateTrackingGCHandle (obj, ptr);
@@ -1198,6 +1200,9 @@ namespace ObjCRuntime {
 				obj.Handle = ptr;
 #pragma warning restore RBI0014
 			}
+
+			if (isActionDispatcher)
+				Foundation.NSAsyncDispatcherInstrumentation.LogObjectMapAdd (ptr, obj.GetType ().Name);
 		}
 
 		// Note that the code in this method doesn't necessarily work with NativeAOT, so assert that never happens by throwing an exception in that case
@@ -1802,7 +1807,6 @@ namespace ObjCRuntime {
 		internal static bool RemoveFromObjectMap (NSObject obj)
 		{
 			var handle = obj.GetHandle ();
-			Foundation.NSAsyncDispatcherInstrumentation.LogObjectMapOp ("RemoveFromObjectMap", (IntPtr) handle, $"type: {obj.GetType ().Name}");
 			if (handle == NativeHandle.Zero)
 				return false;
 
@@ -1813,6 +1817,7 @@ namespace ObjCRuntime {
 				if (!object.ReferenceEquals (reference.Target, obj))
 					return false;
 
+				Foundation.NSAsyncDispatcherInstrumentation.LogObjectMapRemove ("RemoveFromObjectMap", (IntPtr) handle);
 				object_map.Remove (handle);
 				reference.Free ();
 			}

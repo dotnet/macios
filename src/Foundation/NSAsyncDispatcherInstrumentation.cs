@@ -6,9 +6,11 @@
 // This file adds instrumentation to help diagnose the GC/marshalling race in
 // https://github.com/dotnet/macios/issues/25861.
 //
-// It records, for every __MonoMac_NSAsyncActionDispatcher (and other async
-// dispatchers), the stack trace at creation time and a log of lifecycle events
-// (Apply/Dispose/Finalize/object-map operations).
+// It records, for every __MonoMac_NSAsyncActionDispatcher (the type involved in
+// the issue; other async dispatchers such as
+// __MonoMac_NSAsyncSynchronizationContextDispatcher are deliberately NOT tracked
+// to keep the logs small), the stack trace at creation time and a log of
+// lifecycle events (Apply/Dispose/Finalize/object-map operations).
 //
 // Two things are recorded:
 //  1. A per-native-handle string (kept in a static managed dictionary keyed by
@@ -84,9 +86,15 @@ namespace Foundation {
 
 		// Records the creation of an async dispatcher and returns a unique id that
 		// can be used to correlate later lifecycle events.
-		public static int RecordCreation (NativeHandle handle)
+		//
+		// To keep the logs small we only track NSAsyncActionDispatcher instances
+		// (the type involved in issue #25861), not other NSAsyncDispatcher
+		// subclasses (e.g. NSAsyncSynchronizationContextDispatcher).
+		public static int RecordCreation (NativeHandle handle, bool isActionDispatcher)
 		{
 			var id = Interlocked.Increment (ref counter);
+			if (!isActionDispatcher)
+				return id;
 			var ptr = (IntPtr) handle;
 			if (ptr == IntPtr.Zero)
 				return id;
@@ -128,6 +136,11 @@ namespace Foundation {
 		// already have been zeroed by the time these events run.
 		public static void RecordEvent (IntPtr handle, int id, string @event)
 		{
+			// Only NSAsyncActionDispatcher handles are tracked; skip everything
+			// else to keep the logs small (issue #25861).
+			if (!IsTracked (handle))
+				return;
+
 			if (handle == IntPtr.Zero) {
 				Emit ($"EVENT    instance #{id} handle 0x0 (zeroed!) : {@event}");
 				return;
@@ -173,6 +186,56 @@ namespace Foundation {
 
 			if (VerboseStdout)
 				Emit ($"OBJMAP   {op} handle 0x{handle.ToString ("x")}{(extra is null ? "" : " " + extra)}");
+		}
+
+		// Records an actual object_map mutation (add/remove) for an
+		// NSAsyncActionDispatcher handle. Unlike LogObjectMapOp, this ALWAYS
+		// prints a single line to stdout when it happens AND stores the current
+		// stack trace (keyed on the native handle) so we can see all the object_map
+		// activity for a given handle when the failure exception (8027/8034) is
+		// raised later. See issue #25861.
+		static void RecordMutation (string op, IntPtr handle, string? extra)
+		{
+			// A single greppable stdout line for chronological ordering.
+			Emit ($"OBJMAP   {op} handle 0x{handle.ToString ("x")}{(extra is null ? "" : " " + extra)}");
+
+			try {
+				var sb = new StringBuilder ();
+				sb.Append ($"    [objmap] {op}{(extra is null ? "" : " " + extra)} on managed thread {Environment.CurrentManagedThreadId} at {Now ()} UTC\n");
+				sb.Append ("    Stack trace:\n");
+				sb.Append (Environment.StackTrace);
+				sb.Append ('\n');
+				var line = sb.ToString ();
+				lock (lockObj) {
+					infos.TryGetValue (handle, out var existing);
+					infos [handle] = (existing ?? string.Empty) + line;
+				}
+			} catch {
+				// Instrumentation must never throw.
+			}
+		}
+
+		// Logs that an NSAsyncActionDispatcher was added to the object_map. Called
+		// from Runtime.RegisterNSObject, which runs (during native NSObject
+		// construction) BEFORE RecordCreation, so we start tracking the handle
+		// here based on the managed type.
+		public static void LogObjectMapAdd (IntPtr handle, string typeName)
+		{
+			if (handle == IntPtr.Zero)
+				return;
+			lock (lockObj) {
+				tracked.Add (handle);
+			}
+			RecordMutation ("added to object_map", handle, typeName);
+		}
+
+		// Logs that a tracked NSAsyncActionDispatcher handle was removed from the
+		// object_map. No-op for handles we're not tracking.
+		public static void LogObjectMapRemove (string op, IntPtr handle)
+		{
+			if (!IsTracked (handle))
+				return;
+			RecordMutation ($"removed from object_map ({op})", handle, null);
 		}
 
 		// Reads the instrumentation info stored for a native handle, if any.

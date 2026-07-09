@@ -115,7 +115,7 @@ namespace Foundation {
 		{
 			gch = GCHandle.Alloc (this);
 			CreationHandle = (System.IntPtr) Handle;
-			InstrumentationId = NSAsyncDispatcherInstrumentation.RecordCreation (Handle);
+			InstrumentationId = NSAsyncDispatcherInstrumentation.RecordCreation (Handle, this is NSAsyncActionDispatcher);
 		}
 
 		public override void Apply ()

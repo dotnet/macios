@@ -8007,6 +8007,8 @@ F:Vision.VNElementType.Double
 F:Vision.VNElementType.Float
 F:Vision.VNElementType.Unknown
 F:Vision.VNErrorCode.DataUnavailable
+F:Vision.VNErrorCode.ResourceCorrupted
+F:Vision.VNErrorCode.ResourceUnavailable
 F:Vision.VNErrorCode.Timeout
 F:Vision.VNErrorCode.TimeStampNotFound
 F:Vision.VNErrorCode.TuriCore

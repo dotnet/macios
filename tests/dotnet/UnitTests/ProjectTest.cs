@@ -1817,7 +1817,10 @@ namespace Xamarin.Tests {
 				});
 
 				var missing = mustHaveContents.ToHashSet ().Except (zipContents);
-				var extra = zipContents.Except (mustHaveContents).Except (mayHaveContents);
+				// dSYM bundles may contain extra architecture-specific files (e.g. Relocations/)
+				// that vary depending on the build machine, so we only check for unexpected
+				// entries outside of dSYMs directories.
+				var extra = zipContents.Except (mustHaveContents).Except (mayHaveContents).Where (v => !v.Contains ("/dSYMs/"));
 
 				Assert.That (missing, Is.Empty, "No missing files");
 				Assert.That (extra, Is.Empty, "No extra files");

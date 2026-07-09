@@ -202,7 +202,7 @@ steps:
 
     # Create gist with all updated files
     # shellcheck disable=SC2086
-    GIST_URL=$(gh gist create --public -d "Updated expected app size files for PR #$PR_NUMBER (${{ parameters.testPrefix }})" $FILES 2>&1)
+    GIST_URL=$(gh gist create -d "Updated expected app size files for PR #$PR_NUMBER (${{ parameters.testPrefix }})" $FILES 2>&1)
     if [ $? -ne 0 ]; then
       echo "##[warning]Failed to create gist: $GIST_URL"
       exit 0

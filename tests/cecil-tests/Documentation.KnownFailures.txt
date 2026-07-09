@@ -16162,10 +16162,6 @@ M:SensorKit.ISRSensorReaderDelegate.FetchingRequestFailed(SensorKit.SRSensorRead
 M:SensorKit.ISRSensorReaderDelegate.StartRecordingFailed(SensorKit.SRSensorReader,Foundation.NSError)
 M:SensorKit.ISRSensorReaderDelegate.StopRecordingFailed(SensorKit.SRSensorReader,Foundation.NSError)
 M:SensorKit.ISRSensorReaderDelegate.WillStartRecording(SensorKit.SRSensorReader)
-M:SensorKit.SRAbsoluteTime.FromCFAbsoluteTime(System.Double)
-M:SensorKit.SRAbsoluteTime.FromContinuousTime(System.UInt64)
-M:SensorKit.SRAbsoluteTime.GetCurrent
-M:SensorKit.SRAbsoluteTime.ToCFAbsoluteTime(System.Double)
 M:SensorKit.SRSensorExtensions.GetSensorForDeletionRecords(SensorKit.SRSensor)
 M:SensorKit.SRSensorReader.#ctor(SensorKit.SRSensor)
 M:SensorKit.SRSensorReader.Dispose(System.Boolean)
@@ -28376,7 +28372,6 @@ T:SecurityUI.SFCertificatePresentation
 T:SensitiveContentAnalysis.SCSensitivityAnalysisPolicy
 T:SensitiveContentAnalysis.SCVideoStreamAnalysisChangeHandler
 T:SensitiveContentAnalysis.SCVideoStreamAnalyzerStreamDirection
-T:SensorKit.SRAbsoluteTime
 T:SensorKit.SRAcousticSettingsAccessibilityBackgroundSoundsName
 T:SensorKit.SRAcousticSettingsAccessibilityHeadphoneAccommodationsMediaEnhanceApplication
 T:SensorKit.SRAcousticSettingsAccessibilityHeadphoneAccommodationsMediaEnhanceBoosting

@@ -12,6 +12,8 @@
       <method signature="System.Int32 GetRuntimeArch()" body="stub" feature="ObjCRuntime.Runtime.Arch.IsSimulator" featurevalue="true" value="1" />
       <method signature="System.Boolean get_IsManagedStaticRegistrar()" body="stub" feature="ObjCRuntime.Runtime.IsManagedStaticRegistrar" featurevalue="false" value="false" />
       <method signature="System.Boolean get_IsManagedStaticRegistrar()" body="stub" feature="ObjCRuntime.Runtime.IsManagedStaticRegistrar" featurevalue="true" value="true" />
+      <method signature="System.Boolean get_DynamicRegistrationSupported()" body="stub" feature="ObjCRuntime.Runtime.DynamicRegistrationSupported" featurevalue="false" value="false" />
+      <method signature="System.Boolean get_DynamicRegistrationSupported()" body="stub" feature="ObjCRuntime.Runtime.DynamicRegistrationSupported" featurevalue="true" value="true" />
       <method signature="System.Boolean get_IsTrimmableStaticRegistrar()" body="stub" feature="ObjCRuntime.Runtime.IsTrimmableStaticRegistrar" featurevalue="false" value="false" />
       <method signature="System.Boolean get_IsTrimmableStaticRegistrar()" body="stub" feature="ObjCRuntime.Runtime.IsTrimmableStaticRegistrar" featurevalue="true" value="true" />
       <method signature="System.Boolean get_UseCFNetworkHandler()" body="stub" feature="System.Net.Http.NativeHandler.UseCFNetworkHandler" featurevalue="false" value="false" />

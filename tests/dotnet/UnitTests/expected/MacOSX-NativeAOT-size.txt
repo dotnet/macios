@@ -1,8 +1,10 @@
-AppBundleSize: 6,087,805 bytes (5,945.1 KB = 5.8 MB)
+AppBundleSize: 13,157,873 bytes (12,849.5 KB = 12.5 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
-Contents/_CodeSignature/CodeResources: 2,644 bytes (2.6 KB = 0.0 MB)
-Contents/Info.plist: 746 bytes (0.7 KB = 0.0 MB)
-Contents/MacOS/SizeTestApp: 6,082,400 bytes (5,939.8 KB = 5.8 MB)
-Contents/MonoBundle/runtimeconfig.bin: 1,766 bytes (1.7 KB = 0.0 MB)
-Contents/PkgInfo: 8 bytes (0.0 KB = 0.0 MB)
-Contents/Resources/archived-expanded-entitlements.xcent: 241 bytes (0.2 KB = 0.0 MB)
+Contents/Info.plist:
+    747 bytes (0.7 KB = 0.0 MB)
+Contents/MacOS/SizeTestApp:
+    13,155,352 bytes (12,847.0 KB = 12.5 MB)
+Contents/MonoBundle/runtimeconfig.bin:
+    1,766 bytes (1.7 KB = 0.0 MB)
+Contents/PkgInfo:
+    8 bytes (0.0 KB = 0.0 MB)

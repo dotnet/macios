@@ -1,14 +1,22 @@
-AppBundleSize: 3,634,778 bytes (3,549.6 KB = 3.5 MB)
+AppBundleSize: 3,610,492 bytes (3,525.9 KB = 3.4 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
-_CodeSignature/CodeResources: 3,999 bytes (3.9 KB = 0.0 MB)
-archived-expanded-entitlements.xcent: 384 bytes (0.4 KB = 0.0 MB)
-Info.plist: 1,134 bytes (1.1 KB = 0.0 MB)
-Microsoft.tvOS.dll: 154,624 bytes (151.0 KB = 0.1 MB)
-PkgInfo: 8 bytes (0.0 KB = 0.0 MB)
-runtimeconfig.bin: 1,405 bytes (1.4 KB = 0.0 MB)
-SizeTestApp: 2,404,688 bytes (2,348.3 KB = 2.3 MB)
-SizeTestApp.dll: 7,680 bytes (7.5 KB = 0.0 MB)
-System.Private.CoreLib.aotdata.arm64: 41,464 bytes (40.5 KB = 0.0 MB)
-System.Private.CoreLib.dll: 1,009,664 bytes (986.0 KB = 1.0 MB)
-System.Runtime.dll: 5,120 bytes (5.0 KB = 0.0 MB)
-System.Runtime.InteropServices.dll: 4,608 bytes (4.5 KB = 0.0 MB)
+Info.plist:
+    1,135 bytes (1.1 KB = 0.0 MB)
+Microsoft.tvOS.dll:
+    155,648 bytes (152.0 KB = 0.1 MB)
+PkgInfo:
+    8 bytes (0.0 KB = 0.0 MB)
+runtimeconfig.bin:
+    1,405 bytes (1.4 KB = 0.0 MB)
+SizeTestApp:
+    2,368,896 bytes (2,313.4 KB = 2.3 MB)
+SizeTestApp.dll:
+    7,680 bytes (7.5 KB = 0.0 MB)
+System.Private.CoreLib.aotdata.arm64:
+    41,480 bytes (40.5 KB = 0.0 MB)
+System.Private.CoreLib.dll:
+    1,024,512 bytes (1,000.5 KB = 1.0 MB)
+System.Runtime.dll:
+    5,120 bytes (5.0 KB = 0.0 MB)
+System.Runtime.InteropServices.dll:
+    4,608 bytes (4.5 KB = 0.0 MB)

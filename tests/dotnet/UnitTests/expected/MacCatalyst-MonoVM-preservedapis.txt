@@ -5,9 +5,9 @@ Microsoft.MacCatalyst.dll:AppKit.ActionDispatcher.get_WorksWhenModal()
 Microsoft.MacCatalyst.dll:AppKit.ActionDispatcher.OnActivated(Foundation.NSObject)
 Microsoft.MacCatalyst.dll:AppKit.ActionDispatcher.OnActivated2(Foundation.NSObject)
 Microsoft.MacCatalyst.dll:AppKit.ActionDispatcher/__Registrar_Callbacks__
-Microsoft.MacCatalyst.dll:AppKit.ActionDispatcher/__Registrar_Callbacks__.callback_3136_AppKit_ActionDispatcher_OnActivated(System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
-Microsoft.MacCatalyst.dll:AppKit.ActionDispatcher/__Registrar_Callbacks__.callback_3137_AppKit_ActionDispatcher_OnActivated2(System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
-Microsoft.MacCatalyst.dll:AppKit.ActionDispatcher/__Registrar_Callbacks__.callback_3139_AppKit_ActionDispatcher_get_WorksWhenModal(System.IntPtr, System.IntPtr, System.IntPtr*)
+Microsoft.MacCatalyst.dll:AppKit.ActionDispatcher/__Registrar_Callbacks__.callback_3134_AppKit_ActionDispatcher_OnActivated(System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
+Microsoft.MacCatalyst.dll:AppKit.ActionDispatcher/__Registrar_Callbacks__.callback_3135_AppKit_ActionDispatcher_OnActivated2(System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
+Microsoft.MacCatalyst.dll:AppKit.ActionDispatcher/__Registrar_Callbacks__.callback_3137_AppKit_ActionDispatcher_get_WorksWhenModal(System.IntPtr, System.IntPtr, System.IntPtr*)
 Microsoft.MacCatalyst.dll:CoreFoundation.CFArray
 Microsoft.MacCatalyst.dll:CoreFoundation.CFArray._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.MacCatalyst.dll:CoreFoundation.CFArray..cctor()
@@ -171,8 +171,8 @@ Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer.Add(Foundation.N
 Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer.Drain(Foundation.NSObject)
 Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer.ScheduleDrain()
 Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__
-Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_3055_Foundation_NSObject_NSObject_Disposer__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
-Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_3056_Foundation_NSObject_NSObject_Disposer_Drain(System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
+Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_3053_Foundation_NSObject_NSObject_Disposer__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
+Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_3054_Foundation_NSObject_NSObject_Disposer_Drain(System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
 Microsoft.MacCatalyst.dll:Foundation.NSObject/XamarinGCHandleFlags
 Microsoft.MacCatalyst.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::HasManagedRef
 Microsoft.MacCatalyst.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::InitialSet
@@ -240,14 +240,11 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.Class.GetAssemblyName(System.Reflection.As
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.GetClassForObject(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.GetClassHandle(System.Type, System.Boolean, out System.Boolean&)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.GetClassName(System.IntPtr)
-Microsoft.MacCatalyst.dll:ObjCRuntime.Class.GetHandle(System.String)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.GetHandle(System.Type)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.GetHashCode()
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.Initialize(ObjCRuntime.Runtime/InitializationOptions*)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.Lookup(System.IntPtr, System.Boolean)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.Lookup(System.IntPtr)
-Microsoft.MacCatalyst.dll:ObjCRuntime.Class.objc_getClass(System.IntPtr)
-Microsoft.MacCatalyst.dll:ObjCRuntime.Class.objc_getClass(System.String)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.object_getClass(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.ResolveAssembly(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.ResolveFullTokenReference(System.UInt32)
@@ -259,6 +256,19 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.Class.ResolveTypeTokenReference(System.UIn
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.TryGetClass(System.IntPtr, out System.IntPtr&, out System.String&)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.TryResolveAssembly(System.IntPtr, out System.Reflection.Assembly&)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.VerifyStaticRegistrarCode(System.IntPtr, System.Reflection.Assembly)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Class.xamarin_Class_GetHandle___NSObject_Disposer_Native()
+Microsoft.MacCatalyst.dll:ObjCRuntime.Class.xamarin_Class_GetHandle_NSAutoreleasePool_Native()
+Microsoft.MacCatalyst.dll:ObjCRuntime.Class.xamarin_Class_GetHandle_NSDictionary_Native()
+Microsoft.MacCatalyst.dll:ObjCRuntime.Class.xamarin_Class_GetHandle_NSException_Native()
+Microsoft.MacCatalyst.dll:ObjCRuntime.Class.xamarin_Class_GetHandle_NSObject_Native()
+Microsoft.MacCatalyst.dll:ObjCRuntime.Class.xamarin_Class_GetHandle_UIApplication_Native()
+Microsoft.MacCatalyst.dll:ObjCRuntime.Class.xamarin_Class_GetHandle_UIButton_Native()
+Microsoft.MacCatalyst.dll:ObjCRuntime.Class.xamarin_Class_GetHandle_UIControl_Native()
+Microsoft.MacCatalyst.dll:ObjCRuntime.Class.xamarin_Class_GetHandle_UIResponder_Native()
+Microsoft.MacCatalyst.dll:ObjCRuntime.Class.xamarin_Class_GetHandle_UIScreen_Native()
+Microsoft.MacCatalyst.dll:ObjCRuntime.Class.xamarin_Class_GetHandle_UIView_Native()
+Microsoft.MacCatalyst.dll:ObjCRuntime.Class.xamarin_Class_GetHandle_UIViewController_Native()
+Microsoft.MacCatalyst.dll:ObjCRuntime.Class.xamarin_Class_GetHandle_UIWindow_Native()
 Microsoft.MacCatalyst.dll:ObjCRuntime.DisposableObject
 Microsoft.MacCatalyst.dll:ObjCRuntime.DisposableObject..ctor(ObjCRuntime.NativeHandle, System.Boolean, System.Boolean)
 Microsoft.MacCatalyst.dll:ObjCRuntime.DisposableObject.Dispose()
@@ -912,7 +922,7 @@ Microsoft.MacCatalyst.dll:UIKit.UIApplicationDelegate..ctor(ObjCRuntime.NativeHa
 Microsoft.MacCatalyst.dll:UIKit.UIApplicationDelegate..ctor(System.IntPtr, ObjCRuntime.IManagedRegistrar)
 Microsoft.MacCatalyst.dll:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)
 Microsoft.MacCatalyst.dll:UIKit.UIApplicationDelegate/__Registrar_Callbacks__
-Microsoft.MacCatalyst.dll:UIKit.UIApplicationDelegate/__Registrar_Callbacks__.callback_568_UIKit_UIApplicationDelegate__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
+Microsoft.MacCatalyst.dll:UIKit.UIApplicationDelegate/__Registrar_Callbacks__.callback_566_UIKit_UIApplicationDelegate__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
 Microsoft.MacCatalyst.dll:UIKit.UIButton
 Microsoft.MacCatalyst.dll:UIKit.UIButton._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.MacCatalyst.dll:UIKit.UIButton._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
@@ -1287,6 +1297,8 @@ System.Private.CoreLib.dll:Interop/Sys.<ReadLink>g____PInvoke|114_0(System.Byte*
 System.Private.CoreLib.dll:Interop/Sys.<Stat>g____PInvoke|123_0(System.Byte*, Interop/Sys/FileStatus*)
 System.Private.CoreLib.dll:Interop/Sys.<Stat>g____PInvoke|125_0(System.Byte*, Interop/Sys/FileStatus*)
 System.Private.CoreLib.dll:Interop/Sys.<Unlink>g____PInvoke|134_0(System.Byte*)
+System.Private.CoreLib.dll:Interop/Sys.AlignedAlloc(System.UIntPtr, System.UIntPtr)
+System.Private.CoreLib.dll:Interop/Sys.AlignedFree(System.Void*)
 System.Private.CoreLib.dll:Interop/Sys.Calloc(System.UIntPtr, System.UIntPtr)
 System.Private.CoreLib.dll:Interop/Sys.CanGetHiddenFlag()
 System.Private.CoreLib.dll:Interop/Sys.Close(System.IntPtr)
@@ -1708,6 +1720,7 @@ System.Private.CoreLib.dll:System.Boolean System.Diagnostics.StackFrame::IsLastF
 System.Private.CoreLib.dll:System.Boolean System.Diagnostics.Stopwatch::IsHighResolution
 System.Private.CoreLib.dll:System.Boolean System.Enum/EnumInfo`1::HasFlagsAttribute
 System.Private.CoreLib.dll:System.Boolean System.Enum/EnumInfo`1::ValuesAreSequentialFromZero
+System.Private.CoreLib.dll:System.Boolean System.Environment::IsSingleProcessor()
 System.Private.CoreLib.dll:System.Boolean System.Exception::HasBeenThrown()
 System.Private.CoreLib.dll:System.Boolean System.Globalization.Calendar::_isReadOnly
 System.Private.CoreLib.dll:System.Boolean System.Globalization.CalendarData::bUseUserOverrides
@@ -1861,6 +1874,8 @@ System.Private.CoreLib.dll:System.Boolean System.Runtime.Intrinsics.Arm.AdvSimd:
 System.Private.CoreLib.dll:System.Boolean System.Runtime.Intrinsics.Arm.AdvSimd/Arm64::IsSupported()
 System.Private.CoreLib.dll:System.Boolean System.Runtime.Intrinsics.Arm.ArmBase::IsSupported()
 System.Private.CoreLib.dll:System.Boolean System.Runtime.Intrinsics.Arm.ArmBase/Arm64::IsSupported()
+System.Private.CoreLib.dll:System.Boolean System.Runtime.Intrinsics.Scalar`1::IsSupported()
+System.Private.CoreLib.dll:System.Boolean System.Runtime.Intrinsics.Scalar`1::IsUnsigned()
 System.Private.CoreLib.dll:System.Boolean System.Runtime.Intrinsics.Vector128::IsHardwareAccelerated()
 System.Private.CoreLib.dll:System.Boolean System.Runtime.Intrinsics.Vector128`1::IsSupported()
 System.Private.CoreLib.dll:System.Boolean System.Runtime.Intrinsics.Vector256`1::IsSupported()
@@ -1901,7 +1916,6 @@ System.Private.CoreLib.dll:System.Boolean System.Text.StringBuilder/AppendInterp
 System.Private.CoreLib.dll:System.Boolean System.Text.UTF8Encoding::_emitUTF8Identifier
 System.Private.CoreLib.dll:System.Boolean System.Text.UTF8Encoding::_isThrowException
 System.Private.CoreLib.dll:System.Boolean System.Threading.AutoreleasePool::<EnableAutoreleasePool>k__BackingField
-System.Private.CoreLib.dll:System.Boolean System.Threading.LowLevelLock::_isAnyWaitingThreadSignaled
 System.Private.CoreLib.dll:System.Boolean System.Threading.ObjectHeader/LockWord::HasHash()
 System.Private.CoreLib.dll:System.Boolean System.Threading.ObjectHeader/LockWord::IsFlat()
 System.Private.CoreLib.dll:System.Boolean System.Threading.ObjectHeader/LockWord::IsFree()
@@ -2228,7 +2242,6 @@ System.Private.CoreLib.dll:System.Byte System.Array/RawData::Data
 System.Private.CoreLib.dll:System.Byte System.Byte::m_value
 System.Private.CoreLib.dll:System.Byte System.Byte::System.IBinaryIntegerParseAndFormatInfo<System.Byte>.MaxValueDiv10()
 System.Private.CoreLib.dll:System.Byte System.Byte::System.Numerics.IMinMaxValue<System.Byte>.MaxValue()
-System.Private.CoreLib.dll:System.Byte System.Byte::System.Numerics.IMinMaxValue<System.Byte>.MinValue()
 System.Private.CoreLib.dll:System.Byte System.Byte::System.Numerics.INumberBase<System.Byte>.One()
 System.Private.CoreLib.dll:System.Byte System.Byte::System.Numerics.INumberBase<System.Byte>.Zero()
 System.Private.CoreLib.dll:System.Byte System.Collections.Generic.InsertionBehavior::value__
@@ -2291,7 +2304,6 @@ System.Private.CoreLib.dll:System.Byte.System.Numerics.IComparisonOperators<Syst
 System.Private.CoreLib.dll:System.Byte.System.Numerics.IEqualityOperators<System.Byte,System.Byte,System.Boolean>.op_Equality(System.Byte, System.Byte)
 System.Private.CoreLib.dll:System.Byte.System.Numerics.IEqualityOperators<System.Byte,System.Byte,System.Boolean>.op_Inequality(System.Byte, System.Byte)
 System.Private.CoreLib.dll:System.Byte.System.Numerics.IMinMaxValue<System.Byte>.get_MaxValue()
-System.Private.CoreLib.dll:System.Byte.System.Numerics.IMinMaxValue<System.Byte>.get_MinValue()
 System.Private.CoreLib.dll:System.Byte.System.Numerics.INumberBase<System.Byte>.get_One()
 System.Private.CoreLib.dll:System.Byte.System.Numerics.INumberBase<System.Byte>.get_Zero()
 System.Private.CoreLib.dll:System.Byte.System.Numerics.INumberBase<System.Byte>.IsFinite(System.Byte)
@@ -2300,6 +2312,7 @@ System.Private.CoreLib.dll:System.Byte.System.Numerics.INumberBase<System.Byte>.
 System.Private.CoreLib.dll:System.Byte.System.Numerics.INumberBase<System.Byte>.IsZero(System.Byte)
 System.Private.CoreLib.dll:System.Byte.System.Numerics.INumberBase<System.Byte>.TryConvertFromTruncating`1(TOther, out System.Byte&)
 System.Private.CoreLib.dll:System.Byte.System.Numerics.INumberBase<System.Byte>.TryConvertToChecked`1(System.Byte, out TOther&)
+System.Private.CoreLib.dll:System.Byte.System.Numerics.INumberBase<System.Byte>.TryConvertToSaturating`1(System.Byte, out TOther&)
 System.Private.CoreLib.dll:System.Byte.System.Numerics.INumberBase<System.Byte>.TryConvertToTruncating`1(System.Byte, out TOther&)
 System.Private.CoreLib.dll:System.Byte.System.Numerics.IShiftOperators<System.Byte,System.Int32,System.Byte>.op_LeftShift(System.Byte, System.Int32)
 System.Private.CoreLib.dll:System.Byte.System.Numerics.ISubtractionOperators<System.Byte,System.Byte,System.Byte>.op_Subtraction(System.Byte, System.Byte)
@@ -2349,7 +2362,6 @@ System.Private.CoreLib.dll:System.Char System.Buffers.RangeCharSearchValues`1::_
 System.Private.CoreLib.dll:System.Char System.Char::m_value
 System.Private.CoreLib.dll:System.Char System.Char::System.IBinaryIntegerParseAndFormatInfo<System.Char>.MaxValueDiv10()
 System.Private.CoreLib.dll:System.Char System.Char::System.Numerics.IMinMaxValue<System.Char>.MaxValue()
-System.Private.CoreLib.dll:System.Char System.Char::System.Numerics.IMinMaxValue<System.Char>.MinValue()
 System.Private.CoreLib.dll:System.Char System.Char::System.Numerics.INumberBase<System.Char>.One()
 System.Private.CoreLib.dll:System.Char System.Char::System.Numerics.INumberBase<System.Char>.Zero()
 System.Private.CoreLib.dll:System.Char System.CharEnumerator::Current()
@@ -2416,7 +2428,6 @@ System.Private.CoreLib.dll:System.Char.System.Numerics.IComparisonOperators<Syst
 System.Private.CoreLib.dll:System.Char.System.Numerics.IEqualityOperators<System.Char,System.Char,System.Boolean>.op_Equality(System.Char, System.Char)
 System.Private.CoreLib.dll:System.Char.System.Numerics.IEqualityOperators<System.Char,System.Char,System.Boolean>.op_Inequality(System.Char, System.Char)
 System.Private.CoreLib.dll:System.Char.System.Numerics.IMinMaxValue<System.Char>.get_MaxValue()
-System.Private.CoreLib.dll:System.Char.System.Numerics.IMinMaxValue<System.Char>.get_MinValue()
 System.Private.CoreLib.dll:System.Char.System.Numerics.INumberBase<System.Char>.get_One()
 System.Private.CoreLib.dll:System.Char.System.Numerics.INumberBase<System.Char>.get_Zero()
 System.Private.CoreLib.dll:System.Char.System.Numerics.INumberBase<System.Char>.IsFinite(System.Char)
@@ -2425,6 +2436,7 @@ System.Private.CoreLib.dll:System.Char.System.Numerics.INumberBase<System.Char>.
 System.Private.CoreLib.dll:System.Char.System.Numerics.INumberBase<System.Char>.IsZero(System.Char)
 System.Private.CoreLib.dll:System.Char.System.Numerics.INumberBase<System.Char>.TryConvertFromTruncating`1(TOther, out System.Char&)
 System.Private.CoreLib.dll:System.Char.System.Numerics.INumberBase<System.Char>.TryConvertToChecked`1(System.Char, out TOther&)
+System.Private.CoreLib.dll:System.Char.System.Numerics.INumberBase<System.Char>.TryConvertToSaturating`1(System.Char, out TOther&)
 System.Private.CoreLib.dll:System.Char.System.Numerics.INumberBase<System.Char>.TryConvertToTruncating`1(System.Char, out TOther&)
 System.Private.CoreLib.dll:System.Char.System.Numerics.IShiftOperators<System.Char,System.Int32,System.Char>.op_LeftShift(System.Char, System.Int32)
 System.Private.CoreLib.dll:System.Char.System.Numerics.ISubtractionOperators<System.Char,System.Char,System.Char>.op_Subtraction(System.Char, System.Char)
@@ -3064,7 +3076,6 @@ System.Private.CoreLib.dll:System.Decimal System.Decimal::MultiplicativeIdentity
 System.Private.CoreLib.dll:System.Decimal System.Decimal::NegativeOne
 System.Private.CoreLib.dll:System.Decimal System.Decimal::One
 System.Private.CoreLib.dll:System.Decimal System.Decimal::System.Numerics.IMinMaxValue<System.Decimal>.MaxValue()
-System.Private.CoreLib.dll:System.Decimal System.Decimal::System.Numerics.IMinMaxValue<System.Decimal>.MinValue()
 System.Private.CoreLib.dll:System.Decimal System.Decimal::System.Numerics.INumberBase<System.Decimal>.One()
 System.Private.CoreLib.dll:System.Decimal System.Decimal::System.Numerics.INumberBase<System.Decimal>.Zero()
 System.Private.CoreLib.dll:System.Decimal System.Decimal::Zero
@@ -3094,8 +3105,6 @@ System.Private.CoreLib.dll:System.Decimal.get_Scale()
 System.Private.CoreLib.dll:System.Decimal.GetHashCode()
 System.Private.CoreLib.dll:System.Decimal.GetTypeCode()
 System.Private.CoreLib.dll:System.Decimal.IsNegative(System.Decimal)
-System.Private.CoreLib.dll:System.Decimal.Max(System.Decimal, System.Decimal)
-System.Private.CoreLib.dll:System.Decimal.Min(System.Decimal, System.Decimal)
 System.Private.CoreLib.dll:System.Decimal.op_Addition(System.Decimal, System.Decimal)
 System.Private.CoreLib.dll:System.Decimal.op_Equality(System.Decimal, System.Decimal)
 System.Private.CoreLib.dll:System.Decimal.op_Explicit(System.Decimal) => System.Byte
@@ -3128,7 +3137,6 @@ System.Private.CoreLib.dll:System.Decimal.op_LessThanOrEqual(System.Decimal, Sys
 System.Private.CoreLib.dll:System.Decimal.op_Subtraction(System.Decimal, System.Decimal)
 System.Private.CoreLib.dll:System.Decimal.op_UnaryNegation(System.Decimal)
 System.Private.CoreLib.dll:System.Decimal.System.Numerics.IMinMaxValue<System.Decimal>.get_MaxValue()
-System.Private.CoreLib.dll:System.Decimal.System.Numerics.IMinMaxValue<System.Decimal>.get_MinValue()
 System.Private.CoreLib.dll:System.Decimal.System.Numerics.INumberBase<System.Decimal>.get_One()
 System.Private.CoreLib.dll:System.Decimal.System.Numerics.INumberBase<System.Decimal>.get_Zero()
 System.Private.CoreLib.dll:System.Decimal.System.Numerics.INumberBase<System.Decimal>.IsFinite(System.Decimal)
@@ -3136,6 +3144,7 @@ System.Private.CoreLib.dll:System.Decimal.System.Numerics.INumberBase<System.Dec
 System.Private.CoreLib.dll:System.Decimal.System.Numerics.INumberBase<System.Decimal>.IsZero(System.Decimal)
 System.Private.CoreLib.dll:System.Decimal.System.Numerics.INumberBase<System.Decimal>.TryConvertFromTruncating`1(TOther, out System.Decimal&)
 System.Private.CoreLib.dll:System.Decimal.System.Numerics.INumberBase<System.Decimal>.TryConvertToChecked`1(System.Decimal, out TOther&)
+System.Private.CoreLib.dll:System.Decimal.System.Numerics.INumberBase<System.Decimal>.TryConvertToSaturating`1(System.Decimal, out TOther&)
 System.Private.CoreLib.dll:System.Decimal.System.Numerics.INumberBase<System.Decimal>.TryConvertToTruncating`1(System.Decimal, out TOther&)
 System.Private.CoreLib.dll:System.Decimal.ToByte(System.Decimal)
 System.Private.CoreLib.dll:System.Decimal.ToInt16(System.Decimal)
@@ -3272,14 +3281,13 @@ System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicDependencyAttr
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute..ctor(System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes, System.Type)
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute..ctor(System.String, System.String, System.String)
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute..ctor(System.String, System.Type)
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute..ctor(System.String)
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.MaybeNullAttribute
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.MaybeNullAttribute..ctor()
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribute
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribute..ctor(System.Boolean)
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.NotNullAttribute
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.NotNullAttribute..ctor()
-System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.RequiresUnsafeAttribute
-System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.RequiresUnsafeAttribute..ctor()
 System.Private.CoreLib.dll:System.Diagnostics.DebuggableAttribute
 System.Private.CoreLib.dll:System.Diagnostics.DebuggableAttribute..ctor(System.Diagnostics.DebuggableAttribute/DebuggingModes)
 System.Private.CoreLib.dll:System.Diagnostics.DebuggableAttribute/DebuggingModes
@@ -3358,7 +3366,6 @@ System.Private.CoreLib.dll:System.Double System.Diagnostics.Stopwatch::s_tickFre
 System.Private.CoreLib.dll:System.Double System.Double::m_value
 System.Private.CoreLib.dll:System.Double System.Double::System.Numerics.IFloatingPointIeee754<System.Double>.NegativeZero()
 System.Private.CoreLib.dll:System.Double System.Double::System.Numerics.IMinMaxValue<System.Double>.MaxValue()
-System.Private.CoreLib.dll:System.Double System.Double::System.Numerics.IMinMaxValue<System.Double>.MinValue()
 System.Private.CoreLib.dll:System.Double System.Double::System.Numerics.INumberBase<System.Double>.One()
 System.Private.CoreLib.dll:System.Double System.Double::System.Numerics.INumberBase<System.Double>.Zero()
 System.Private.CoreLib.dll:System.Double System.Runtime.InteropServices.NFloat::_value
@@ -3399,12 +3406,12 @@ System.Private.CoreLib.dll:System.Double.System.Numerics.IBitwiseOperators<Syste
 System.Private.CoreLib.dll:System.Double.System.Numerics.IBitwiseOperators<System.Double,System.Double,System.Double>.op_OnesComplement(System.Double)
 System.Private.CoreLib.dll:System.Double.System.Numerics.IFloatingPointIeee754<System.Double>.get_NegativeZero()
 System.Private.CoreLib.dll:System.Double.System.Numerics.IMinMaxValue<System.Double>.get_MaxValue()
-System.Private.CoreLib.dll:System.Double.System.Numerics.IMinMaxValue<System.Double>.get_MinValue()
 System.Private.CoreLib.dll:System.Double.System.Numerics.INumberBase<System.Double>.get_One()
 System.Private.CoreLib.dll:System.Double.System.Numerics.INumberBase<System.Double>.get_Zero()
 System.Private.CoreLib.dll:System.Double.System.Numerics.INumberBase<System.Double>.IsZero(System.Double)
 System.Private.CoreLib.dll:System.Double.System.Numerics.INumberBase<System.Double>.TryConvertFromTruncating`1(TOther, out System.Double&)
 System.Private.CoreLib.dll:System.Double.System.Numerics.INumberBase<System.Double>.TryConvertToChecked`1(System.Double, out TOther&)
+System.Private.CoreLib.dll:System.Double.System.Numerics.INumberBase<System.Double>.TryConvertToSaturating`1(System.Double, out TOther&)
 System.Private.CoreLib.dll:System.Double.System.Numerics.INumberBase<System.Double>.TryConvertToTruncating`1(System.Double, out TOther&)
 System.Private.CoreLib.dll:System.Double.System.Numerics.ISubtractionOperators<System.Double,System.Double,System.Double>.op_Subtraction(System.Double, System.Double)
 System.Private.CoreLib.dll:System.Double.System.Numerics.IUnaryNegationOperators<System.Double,System.Double>.op_UnaryNegation(System.Double)
@@ -3478,6 +3485,7 @@ System.Private.CoreLib.dll:System.Enum/EnumInfo`1..ctor(System.Boolean, TStorage
 System.Private.CoreLib.dll:System.Environment
 System.Private.CoreLib.dll:System.Environment..cctor()
 System.Private.CoreLib.dll:System.Environment.get_CurrentManagedThreadId()
+System.Private.CoreLib.dll:System.Environment.get_IsSingleProcessor()
 System.Private.CoreLib.dll:System.Environment.get_ProcessorCount()
 System.Private.CoreLib.dll:System.Environment.get_StackTrace()
 System.Private.CoreLib.dll:System.Environment.get_TickCount()
@@ -3672,6 +3680,7 @@ System.Private.CoreLib.dll:System.ExceptionResource System.ExceptionResource::Fo
 System.Private.CoreLib.dll:System.ExceptionResource System.ExceptionResource::Format_UnexpectedClosingBrace
 System.Private.CoreLib.dll:System.ExceptionResource System.ExceptionResource::InvalidOperation_IComparerFailed
 System.Private.CoreLib.dll:System.ExceptionResource System.ExceptionResource::InvalidOperation_IncompatibleComparer
+System.Private.CoreLib.dll:System.ExceptionResource System.ExceptionResource::InvalidOperation_NoElements
 System.Private.CoreLib.dll:System.ExceptionResource System.ExceptionResource::InvalidOperation_NullArray
 System.Private.CoreLib.dll:System.ExceptionResource System.ExceptionResource::InvalidOperation_SpanOverlappedOperation
 System.Private.CoreLib.dll:System.ExceptionResource System.ExceptionResource::InvalidOperation_TimeProviderInvalidTimestampFrequency
@@ -3731,7 +3740,10 @@ System.Private.CoreLib.dll:System.Func`2<System.Char,System.Boolean> System.Time
 System.Private.CoreLib.dll:System.Func`2<System.Exception,System.Boolean> System.Runtime.ExceptionServices.ExceptionHandling::s_handler
 System.Private.CoreLib.dll:System.Func`2<System.Object,System.Boolean> System.Buffers.SharedArrayPool`1/<>c::<>9__11_0
 System.Private.CoreLib.dll:System.Func`2<System.Object,System.Boolean> System.Gen2GcCallback::_callback1
-System.Private.CoreLib.dll:System.Func`2<System.Object,System.Boolean> System.Threading.LowLevelLock::s_spinWaitTryAcquireCallback
+System.Private.CoreLib.dll:System.Func`3
+System.Private.CoreLib.dll:System.Func`3..ctor(System.Object, System.IntPtr)
+System.Private.CoreLib.dll:System.Func`3.Invoke(T1, T2)
+System.Private.CoreLib.dll:System.Func`3<System.Reflection.Assembly,System.String,System.String> System.Runtime.Loader.AssemblyLoadContext::s_assemblyLocationOverride
 System.Private.CoreLib.dll:System.Func`4
 System.Private.CoreLib.dll:System.Func`4..ctor(System.Object, System.IntPtr)
 System.Private.CoreLib.dll:System.Func`4.Invoke(T1, T2, T3)
@@ -4924,7 +4936,6 @@ System.Private.CoreLib.dll:System.Guid/ParseFailure System.Guid/ParseFailure::Ov
 System.Private.CoreLib.dll:System.Guid/ParseFailure System.Guid/ParseFailure::Overflow_UInt32
 System.Private.CoreLib.dll:System.Half
 System.Private.CoreLib.dll:System.Half System.Half::MaxValue()
-System.Private.CoreLib.dll:System.Half System.Half::MinValue()
 System.Private.CoreLib.dll:System.Half System.Half::NegativeInfinity()
 System.Private.CoreLib.dll:System.Half System.Half::NegativeZero()
 System.Private.CoreLib.dll:System.Half System.Half::One()
@@ -4944,7 +4955,6 @@ System.Private.CoreLib.dll:System.Half.ExtractBiasedExponentFromBits(System.UInt
 System.Private.CoreLib.dll:System.Half.ExtractTrailingSignificandFromBits(System.UInt16)
 System.Private.CoreLib.dll:System.Half.get_BiasedExponent()
 System.Private.CoreLib.dll:System.Half.get_MaxValue()
-System.Private.CoreLib.dll:System.Half.get_MinValue()
 System.Private.CoreLib.dll:System.Half.get_NegativeInfinity()
 System.Private.CoreLib.dll:System.Half.get_NegativeZero()
 System.Private.CoreLib.dll:System.Half.get_One()
@@ -4957,8 +4967,6 @@ System.Private.CoreLib.dll:System.Half.IsNaN(System.Half)
 System.Private.CoreLib.dll:System.Half.IsNaNOrZero(System.Half)
 System.Private.CoreLib.dll:System.Half.IsNegative(System.Half)
 System.Private.CoreLib.dll:System.Half.IsZero(System.Half)
-System.Private.CoreLib.dll:System.Half.Max(System.Half, System.Half)
-System.Private.CoreLib.dll:System.Half.Min(System.Half, System.Half)
 System.Private.CoreLib.dll:System.Half.NormSubnormalF16Sig(System.UInt32)
 System.Private.CoreLib.dll:System.Half.op_Addition(System.Half, System.Half)
 System.Private.CoreLib.dll:System.Half.op_CheckedExplicit(System.Half)
@@ -5025,6 +5033,7 @@ System.Private.CoreLib.dll:System.Half.System.Numerics.IBitwiseOperators<System.
 System.Private.CoreLib.dll:System.Half.System.Numerics.INumberBase<System.Half>.IsZero(System.Half)
 System.Private.CoreLib.dll:System.Half.System.Numerics.INumberBase<System.Half>.TryConvertFromTruncating`1(TOther, out System.Half&)
 System.Private.CoreLib.dll:System.Half.System.Numerics.INumberBase<System.Half>.TryConvertToChecked`1(System.Half, out TOther&)
+System.Private.CoreLib.dll:System.Half.System.Numerics.INumberBase<System.Half>.TryConvertToSaturating`1(System.Half, out TOther&)
 System.Private.CoreLib.dll:System.Half.System.Numerics.INumberBase<System.Half>.TryConvertToTruncating`1(System.Half, out TOther&)
 System.Private.CoreLib.dll:System.Half.ToString()
 System.Private.CoreLib.dll:System.Half.ToString(System.String, System.IFormatProvider)
@@ -5140,8 +5149,6 @@ System.Private.CoreLib.dll:System.Int128.get_Zero()
 System.Private.CoreLib.dll:System.Int128.GetHashCode()
 System.Private.CoreLib.dll:System.Int128.IsNegative(System.Int128)
 System.Private.CoreLib.dll:System.Int128.IsPositive(System.Int128)
-System.Private.CoreLib.dll:System.Int128.Max(System.Int128, System.Int128)
-System.Private.CoreLib.dll:System.Int128.Min(System.Int128, System.Int128)
 System.Private.CoreLib.dll:System.Int128.op_Addition(System.Int128, System.Int128)
 System.Private.CoreLib.dll:System.Int128.op_BitwiseAnd(System.Int128, System.Int128)
 System.Private.CoreLib.dll:System.Int128.op_BitwiseOr(System.Int128, System.Int128)
@@ -5209,6 +5216,7 @@ System.Private.CoreLib.dll:System.Int128.System.Numerics.INumberBase<System.Int1
 System.Private.CoreLib.dll:System.Int128.System.Numerics.INumberBase<System.Int128>.IsZero(System.Int128)
 System.Private.CoreLib.dll:System.Int128.System.Numerics.INumberBase<System.Int128>.TryConvertFromTruncating`1(TOther, out System.Int128&)
 System.Private.CoreLib.dll:System.Int128.System.Numerics.INumberBase<System.Int128>.TryConvertToChecked`1(System.Int128, out TOther&)
+System.Private.CoreLib.dll:System.Int128.System.Numerics.INumberBase<System.Int128>.TryConvertToSaturating`1(System.Int128, out TOther&)
 System.Private.CoreLib.dll:System.Int128.System.Numerics.INumberBase<System.Int128>.TryConvertToTruncating`1(System.Int128, out TOther&)
 System.Private.CoreLib.dll:System.Int128.ToInt128(System.Double)
 System.Private.CoreLib.dll:System.Int128.ToString()
@@ -5222,7 +5230,6 @@ System.Private.CoreLib.dll:System.Int16 System.Guid::_c
 System.Private.CoreLib.dll:System.Int16 System.Int16::m_value
 System.Private.CoreLib.dll:System.Int16 System.Int16::System.IBinaryIntegerParseAndFormatInfo<System.Int16>.MaxValueDiv10()
 System.Private.CoreLib.dll:System.Int16 System.Int16::System.Numerics.IMinMaxValue<System.Int16>.MaxValue()
-System.Private.CoreLib.dll:System.Int16 System.Int16::System.Numerics.IMinMaxValue<System.Int16>.MinValue()
 System.Private.CoreLib.dll:System.Int16 System.Int16::System.Numerics.INumberBase<System.Int16>.One()
 System.Private.CoreLib.dll:System.Int16 System.Int16::System.Numerics.INumberBase<System.Int16>.Zero()
 System.Private.CoreLib.dll:System.Int16 System.Runtime.InteropServices.MarshalAsAttribute::SizeParamIndex
@@ -5254,7 +5261,6 @@ System.Private.CoreLib.dll:System.Int16.System.Numerics.IComparisonOperators<Sys
 System.Private.CoreLib.dll:System.Int16.System.Numerics.IEqualityOperators<System.Int16,System.Int16,System.Boolean>.op_Equality(System.Int16, System.Int16)
 System.Private.CoreLib.dll:System.Int16.System.Numerics.IEqualityOperators<System.Int16,System.Int16,System.Boolean>.op_Inequality(System.Int16, System.Int16)
 System.Private.CoreLib.dll:System.Int16.System.Numerics.IMinMaxValue<System.Int16>.get_MaxValue()
-System.Private.CoreLib.dll:System.Int16.System.Numerics.IMinMaxValue<System.Int16>.get_MinValue()
 System.Private.CoreLib.dll:System.Int16.System.Numerics.INumberBase<System.Int16>.get_One()
 System.Private.CoreLib.dll:System.Int16.System.Numerics.INumberBase<System.Int16>.get_Zero()
 System.Private.CoreLib.dll:System.Int16.System.Numerics.INumberBase<System.Int16>.IsFinite(System.Int16)
@@ -5262,6 +5268,7 @@ System.Private.CoreLib.dll:System.Int16.System.Numerics.INumberBase<System.Int16
 System.Private.CoreLib.dll:System.Int16.System.Numerics.INumberBase<System.Int16>.IsZero(System.Int16)
 System.Private.CoreLib.dll:System.Int16.System.Numerics.INumberBase<System.Int16>.TryConvertFromTruncating`1(TOther, out System.Int16&)
 System.Private.CoreLib.dll:System.Int16.System.Numerics.INumberBase<System.Int16>.TryConvertToChecked`1(System.Int16, out TOther&)
+System.Private.CoreLib.dll:System.Int16.System.Numerics.INumberBase<System.Int16>.TryConvertToSaturating`1(System.Int16, out TOther&)
 System.Private.CoreLib.dll:System.Int16.System.Numerics.INumberBase<System.Int16>.TryConvertToTruncating`1(System.Int16, out TOther&)
 System.Private.CoreLib.dll:System.Int16.System.Numerics.IShiftOperators<System.Int16,System.Int32,System.Int16>.op_LeftShift(System.Int16, System.Int32)
 System.Private.CoreLib.dll:System.Int16.System.Numerics.ISubtractionOperators<System.Int16,System.Int16,System.Int16>.op_Subtraction(System.Int16, System.Int16)
@@ -5530,7 +5537,6 @@ System.Private.CoreLib.dll:System.Int32 System.Int32::System.IBinaryIntegerParse
 System.Private.CoreLib.dll:System.Int32 System.Int32::System.IBinaryIntegerParseAndFormatInfo<System.Int32>.MaxHexDigitCount()
 System.Private.CoreLib.dll:System.Int32 System.Int32::System.IBinaryIntegerParseAndFormatInfo<System.Int32>.MaxValueDiv10()
 System.Private.CoreLib.dll:System.Int32 System.Int32::System.Numerics.IMinMaxValue<System.Int32>.MaxValue()
-System.Private.CoreLib.dll:System.Int32 System.Int32::System.Numerics.IMinMaxValue<System.Int32>.MinValue()
 System.Private.CoreLib.dll:System.Int32 System.Int32::System.Numerics.INumberBase<System.Int32>.One()
 System.Private.CoreLib.dll:System.Int32 System.Int32::System.Numerics.INumberBase<System.Int32>.Zero()
 System.Private.CoreLib.dll:System.Int32 System.Int64::System.IBinaryIntegerParseAndFormatInfo<System.Int64>.MaxDigitCount()
@@ -5736,8 +5742,6 @@ System.Private.CoreLib.dll:System.Int32 System.Text.StringBuilder::m_MaxCapacity
 System.Private.CoreLib.dll:System.Int32 System.Text.TrimType::value__
 System.Private.CoreLib.dll:System.Int32 System.Text.ValueStringBuilder::_pos
 System.Private.CoreLib.dll:System.Int32 System.Text.ValueStringBuilder::Length()
-System.Private.CoreLib.dll:System.Int32 System.Threading.LowLevelLock::_state
-System.Private.CoreLib.dll:System.Int32 System.Threading.LowLevelSpinWaiter::_spinningThreadCount
 System.Private.CoreLib.dll:System.Int32 System.Threading.ObjectHeader/LockWord::FlatHash()
 System.Private.CoreLib.dll:System.Int32 System.Threading.ObjectHeader/MonoThreadsSync::hash_code
 System.Private.CoreLib.dll:System.Int32 System.Threading.ProcessorIdCache::s_processorIdRefreshRate
@@ -5786,6 +5790,7 @@ System.Private.CoreLib.dll:System.Int32 System.Version::Revision()
 System.Private.CoreLib.dll:System.Int32.CompareTo(System.Int32)
 System.Private.CoreLib.dll:System.Int32.CompareTo(System.Object)
 System.Private.CoreLib.dll:System.Int32.CreateChecked`1(TOther)
+System.Private.CoreLib.dll:System.Int32.CreateSaturating`1(TOther)
 System.Private.CoreLib.dll:System.Int32.CreateTruncating`1(TOther)
 System.Private.CoreLib.dll:System.Int32.Equals(System.Int32)
 System.Private.CoreLib.dll:System.Int32.Equals(System.Object)
@@ -5813,7 +5818,6 @@ System.Private.CoreLib.dll:System.Int32.System.Numerics.IComparisonOperators<Sys
 System.Private.CoreLib.dll:System.Int32.System.Numerics.IEqualityOperators<System.Int32,System.Int32,System.Boolean>.op_Equality(System.Int32, System.Int32)
 System.Private.CoreLib.dll:System.Int32.System.Numerics.IEqualityOperators<System.Int32,System.Int32,System.Boolean>.op_Inequality(System.Int32, System.Int32)
 System.Private.CoreLib.dll:System.Int32.System.Numerics.IMinMaxValue<System.Int32>.get_MaxValue()
-System.Private.CoreLib.dll:System.Int32.System.Numerics.IMinMaxValue<System.Int32>.get_MinValue()
 System.Private.CoreLib.dll:System.Int32.System.Numerics.INumberBase<System.Int32>.get_One()
 System.Private.CoreLib.dll:System.Int32.System.Numerics.INumberBase<System.Int32>.get_Zero()
 System.Private.CoreLib.dll:System.Int32.System.Numerics.INumberBase<System.Int32>.IsFinite(System.Int32)
@@ -5821,6 +5825,7 @@ System.Private.CoreLib.dll:System.Int32.System.Numerics.INumberBase<System.Int32
 System.Private.CoreLib.dll:System.Int32.System.Numerics.INumberBase<System.Int32>.IsZero(System.Int32)
 System.Private.CoreLib.dll:System.Int32.System.Numerics.INumberBase<System.Int32>.TryConvertFromTruncating`1(TOther, out System.Int32&)
 System.Private.CoreLib.dll:System.Int32.System.Numerics.INumberBase<System.Int32>.TryConvertToChecked`1(System.Int32, out TOther&)
+System.Private.CoreLib.dll:System.Int32.System.Numerics.INumberBase<System.Int32>.TryConvertToSaturating`1(System.Int32, out TOther&)
 System.Private.CoreLib.dll:System.Int32.System.Numerics.INumberBase<System.Int32>.TryConvertToTruncating`1(System.Int32, out TOther&)
 System.Private.CoreLib.dll:System.Int32.System.Numerics.IShiftOperators<System.Int32,System.Int32,System.Int32>.op_LeftShift(System.Int32, System.Int32)
 System.Private.CoreLib.dll:System.Int32.System.Numerics.ISubtractionOperators<System.Int32,System.Int32,System.Int32>.op_Subtraction(System.Int32, System.Int32)
@@ -5829,6 +5834,7 @@ System.Private.CoreLib.dll:System.Int32.ToString()
 System.Private.CoreLib.dll:System.Int32.ToString(System.IFormatProvider)
 System.Private.CoreLib.dll:System.Int32.ToString(System.String, System.IFormatProvider)
 System.Private.CoreLib.dll:System.Int32.TryConvertFromChecked`1(TOther, out System.Int32&)
+System.Private.CoreLib.dll:System.Int32.TryConvertFromSaturating`1(TOther, out System.Int32&)
 System.Private.CoreLib.dll:System.Int32.TryConvertFromTruncating`1(TOther, out System.Int32&)
 System.Private.CoreLib.dll:System.Int32.TryFormat(System.Span`1<System.Byte>, out System.Int32&, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider)
 System.Private.CoreLib.dll:System.Int32.TryFormat(System.Span`1<System.Char>, out System.Int32&, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider)
@@ -5848,6 +5854,7 @@ System.Private.CoreLib.dll:System.Int32[] System.Globalization.NumberFormatInfo:
 System.Private.CoreLib.dll:System.Int32[] System.Globalization.SymbolFilteringBuffer::<RentedIndexMapBuffer>k__BackingField
 System.Private.CoreLib.dll:System.Int32[] System.Globalization.SymbolFilteringBuffer::RentedIndexMapBuffer()
 System.Private.CoreLib.dll:System.Int32[] System.Runtime.CompilerServices.ConditionalWeakTable`2/Container::_buckets
+System.Private.CoreLib.dll:System.Int32* System.Threading.LowLevelThreadBlocker::_pState
 System.Private.CoreLib.dll:System.Int64
 System.Private.CoreLib.dll:System.Int64 Interop/Sys/FileStatus::ATime
 System.Private.CoreLib.dll:System.Int64 Interop/Sys/FileStatus::ATimeNsec
@@ -5905,7 +5912,6 @@ System.Private.CoreLib.dll:System.Int64 System.Globalization.PersianCalendar::s_
 System.Private.CoreLib.dll:System.Int64 System.Int64::m_value
 System.Private.CoreLib.dll:System.Int64 System.Int64::System.IBinaryIntegerParseAndFormatInfo<System.Int64>.MaxValueDiv10()
 System.Private.CoreLib.dll:System.Int64 System.Int64::System.Numerics.IMinMaxValue<System.Int64>.MaxValue()
-System.Private.CoreLib.dll:System.Int64 System.Int64::System.Numerics.IMinMaxValue<System.Int64>.MinValue()
 System.Private.CoreLib.dll:System.Int64 System.Int64::System.Numerics.INumberBase<System.Int64>.One()
 System.Private.CoreLib.dll:System.Int64 System.Int64::System.Numerics.INumberBase<System.Int64>.Zero()
 System.Private.CoreLib.dll:System.Int64 System.Runtime.Loader.AssemblyLoadContext::_id
@@ -5946,7 +5952,6 @@ System.Private.CoreLib.dll:System.Int64.System.Numerics.IComparisonOperators<Sys
 System.Private.CoreLib.dll:System.Int64.System.Numerics.IEqualityOperators<System.Int64,System.Int64,System.Boolean>.op_Equality(System.Int64, System.Int64)
 System.Private.CoreLib.dll:System.Int64.System.Numerics.IEqualityOperators<System.Int64,System.Int64,System.Boolean>.op_Inequality(System.Int64, System.Int64)
 System.Private.CoreLib.dll:System.Int64.System.Numerics.IMinMaxValue<System.Int64>.get_MaxValue()
-System.Private.CoreLib.dll:System.Int64.System.Numerics.IMinMaxValue<System.Int64>.get_MinValue()
 System.Private.CoreLib.dll:System.Int64.System.Numerics.INumberBase<System.Int64>.get_One()
 System.Private.CoreLib.dll:System.Int64.System.Numerics.INumberBase<System.Int64>.get_Zero()
 System.Private.CoreLib.dll:System.Int64.System.Numerics.INumberBase<System.Int64>.IsFinite(System.Int64)
@@ -5954,6 +5959,7 @@ System.Private.CoreLib.dll:System.Int64.System.Numerics.INumberBase<System.Int64
 System.Private.CoreLib.dll:System.Int64.System.Numerics.INumberBase<System.Int64>.IsZero(System.Int64)
 System.Private.CoreLib.dll:System.Int64.System.Numerics.INumberBase<System.Int64>.TryConvertFromTruncating`1(TOther, out System.Int64&)
 System.Private.CoreLib.dll:System.Int64.System.Numerics.INumberBase<System.Int64>.TryConvertToChecked`1(System.Int64, out TOther&)
+System.Private.CoreLib.dll:System.Int64.System.Numerics.INumberBase<System.Int64>.TryConvertToSaturating`1(System.Int64, out TOther&)
 System.Private.CoreLib.dll:System.Int64.System.Numerics.INumberBase<System.Int64>.TryConvertToTruncating`1(System.Int64, out TOther&)
 System.Private.CoreLib.dll:System.Int64.System.Numerics.IShiftOperators<System.Int64,System.Int32,System.Int64>.op_LeftShift(System.Int64, System.Int32)
 System.Private.CoreLib.dll:System.Int64.System.Numerics.ISubtractionOperators<System.Int64,System.Int64,System.Int64>.op_Subtraction(System.Int64, System.Int64)
@@ -5992,7 +5998,6 @@ System.Private.CoreLib.dll:System.IntPtr System.IntPtr::_value
 System.Private.CoreLib.dll:System.IntPtr System.IntPtr::MaxValue()
 System.Private.CoreLib.dll:System.IntPtr System.IntPtr::MinValue()
 System.Private.CoreLib.dll:System.IntPtr System.IntPtr::System.Numerics.IMinMaxValue<nint>.MaxValue()
-System.Private.CoreLib.dll:System.IntPtr System.IntPtr::System.Numerics.IMinMaxValue<nint>.MinValue()
 System.Private.CoreLib.dll:System.IntPtr System.IntPtr::System.Numerics.INumberBase<nint>.One()
 System.Private.CoreLib.dll:System.IntPtr System.IntPtr::System.Numerics.INumberBase<nint>.Zero()
 System.Private.CoreLib.dll:System.IntPtr System.IntPtr::Zero
@@ -6069,7 +6074,6 @@ System.Private.CoreLib.dll:System.IntPtr.System.Numerics.IComparisonOperators<ni
 System.Private.CoreLib.dll:System.IntPtr.System.Numerics.IComparisonOperators<nint,nint,System.Boolean>.op_LessThan(System.IntPtr, System.IntPtr)
 System.Private.CoreLib.dll:System.IntPtr.System.Numerics.IComparisonOperators<nint,nint,System.Boolean>.op_LessThanOrEqual(System.IntPtr, System.IntPtr)
 System.Private.CoreLib.dll:System.IntPtr.System.Numerics.IMinMaxValue<nint>.get_MaxValue()
-System.Private.CoreLib.dll:System.IntPtr.System.Numerics.IMinMaxValue<nint>.get_MinValue()
 System.Private.CoreLib.dll:System.IntPtr.System.Numerics.INumberBase<nint>.get_One()
 System.Private.CoreLib.dll:System.IntPtr.System.Numerics.INumberBase<nint>.get_Zero()
 System.Private.CoreLib.dll:System.IntPtr.System.Numerics.INumberBase<nint>.IsFinite(System.IntPtr)
@@ -6077,6 +6081,7 @@ System.Private.CoreLib.dll:System.IntPtr.System.Numerics.INumberBase<nint>.IsNaN
 System.Private.CoreLib.dll:System.IntPtr.System.Numerics.INumberBase<nint>.IsZero(System.IntPtr)
 System.Private.CoreLib.dll:System.IntPtr.System.Numerics.INumberBase<nint>.TryConvertFromTruncating`1(TOther, out System.IntPtr&)
 System.Private.CoreLib.dll:System.IntPtr.System.Numerics.INumberBase<nint>.TryConvertToChecked`1(System.IntPtr, out TOther&)
+System.Private.CoreLib.dll:System.IntPtr.System.Numerics.INumberBase<nint>.TryConvertToSaturating`1(System.IntPtr, out TOther&)
 System.Private.CoreLib.dll:System.IntPtr.System.Numerics.INumberBase<nint>.TryConvertToTruncating`1(System.IntPtr, out TOther&)
 System.Private.CoreLib.dll:System.IntPtr.System.Numerics.IShiftOperators<nint,System.Int32,nint>.op_LeftShift(System.IntPtr, System.Int32)
 System.Private.CoreLib.dll:System.IntPtr.System.Numerics.ISubtractionOperators<nint,nint,nint>.op_Subtraction(System.IntPtr, System.IntPtr)
@@ -6463,13 +6468,11 @@ System.Private.CoreLib.dll:System.Marvin.ComputeHash32OrdinalIgnoreCaseSlow(Syst
 System.Private.CoreLib.dll:System.Marvin.GenerateSeed()
 System.Private.CoreLib.dll:System.Marvin.get_DefaultSeed()
 System.Private.CoreLib.dll:System.Math
-System.Private.CoreLib.dll:System.Math.<BigMul>g__SoftwareFallback|48_0(System.UInt64, System.UInt64, out System.UInt64&)
-System.Private.CoreLib.dll:System.Math.<CopySign>g__SoftwareFallback|54_0(System.Double, System.Double)
+System.Private.CoreLib.dll:System.Math.<BigMul>g__SoftwareFallback|46_0(System.UInt64, System.UInt64, out System.UInt64&)
+System.Private.CoreLib.dll:System.Math.<CopySign>g__SoftwareFallback|52_0(System.Double, System.Double)
 System.Private.CoreLib.dll:System.Math.Abs(System.Double)
 System.Private.CoreLib.dll:System.Math.Abs(System.Single)
 System.Private.CoreLib.dll:System.Math.BigMul(System.UInt32, System.UInt32)
-System.Private.CoreLib.dll:System.Math.BigMul(System.UInt32, System.UInt64, out System.UInt64&)
-System.Private.CoreLib.dll:System.Math.BigMul(System.UInt64, System.UInt32, out System.UInt64&)
 System.Private.CoreLib.dll:System.Math.BigMul(System.UInt64, System.UInt64, out System.UInt64&)
 System.Private.CoreLib.dll:System.Math.Ceiling(System.Double)
 System.Private.CoreLib.dll:System.Math.Clamp(System.UInt32, System.UInt32, System.UInt32)
@@ -6518,8 +6521,8 @@ System.Private.CoreLib.dll:System.MemberAccessException
 System.Private.CoreLib.dll:System.MemberAccessException..ctor()
 System.Private.CoreLib.dll:System.MemberAccessException..ctor(System.String)
 System.Private.CoreLib.dll:System.MemoryExtensions
-System.Private.CoreLib.dll:System.MemoryExtensions.<Trim>g__TrimFallback|278_0(System.ReadOnlySpan`1<System.Char>)
-System.Private.CoreLib.dll:System.MemoryExtensions.<TrimUtf8>g__TrimFallback|292_0(System.ReadOnlySpan`1<System.Byte>)
+System.Private.CoreLib.dll:System.MemoryExtensions.<Trim>g__TrimFallback|292_0(System.ReadOnlySpan`1<System.Char>)
+System.Private.CoreLib.dll:System.MemoryExtensions.<TrimUtf8>g__TrimFallback|306_0(System.ReadOnlySpan`1<System.Byte>)
 System.Private.CoreLib.dll:System.MemoryExtensions.AsSpan(System.String, System.Int32, System.Int32)
 System.Private.CoreLib.dll:System.MemoryExtensions.AsSpan(System.String, System.Int32)
 System.Private.CoreLib.dll:System.MemoryExtensions.AsSpan(System.String)
@@ -6540,6 +6543,7 @@ System.Private.CoreLib.dll:System.MemoryExtensions.EndsWithOrdinalIgnoreCase(Sys
 System.Private.CoreLib.dll:System.MemoryExtensions.Equals(System.ReadOnlySpan`1<System.Char>, System.ReadOnlySpan`1<System.Char>, System.StringComparison)
 System.Private.CoreLib.dll:System.MemoryExtensions.EqualsOrdinal(System.ReadOnlySpan`1<System.Char>, System.ReadOnlySpan`1<System.Char>)
 System.Private.CoreLib.dll:System.MemoryExtensions.EqualsOrdinalIgnoreCase(System.ReadOnlySpan`1<System.Char>, System.ReadOnlySpan`1<System.Char>)
+System.Private.CoreLib.dll:System.MemoryExtensions.HorizontalMinMax`2(System.Runtime.Intrinsics.Vector128`1<T>)
 System.Private.CoreLib.dll:System.MemoryExtensions.IndexOf`1(System.ReadOnlySpan`1<T>, System.ReadOnlySpan`1<T>)
 System.Private.CoreLib.dll:System.MemoryExtensions.IndexOf`1(System.ReadOnlySpan`1<T>, T)
 System.Private.CoreLib.dll:System.MemoryExtensions.IndexOfAny`1(System.ReadOnlySpan`1<T>, System.ReadOnlySpan`1<T>)
@@ -6550,6 +6554,11 @@ System.Private.CoreLib.dll:System.MemoryExtensions.IndexOfAnyExceptInRange`1(Sys
 System.Private.CoreLib.dll:System.MemoryExtensions.IndexOfAnyInRange`1(System.ReadOnlySpan`1<T>, T, T)
 System.Private.CoreLib.dll:System.MemoryExtensions.IndexOfAnyWhiteSpace(System.ReadOnlySpan`1<System.Char>)
 System.Private.CoreLib.dll:System.MemoryExtensions.LastIndexOf`1(System.ReadOnlySpan`1<T>, T)
+System.Private.CoreLib.dll:System.MemoryExtensions.Max`1(System.ReadOnlySpan`1<T>)
+System.Private.CoreLib.dll:System.MemoryExtensions.Min`1(System.ReadOnlySpan`1<T>)
+System.Private.CoreLib.dll:System.MemoryExtensions.MinMax`2(System.ReadOnlySpan`1<T>, System.Collections.Generic.IComparer`1<T>)
+System.Private.CoreLib.dll:System.MemoryExtensions.MinMaxInteger`2(System.ReadOnlySpan`1<T>)
+System.Private.CoreLib.dll:System.MemoryExtensions.MinMaxInteger`3(System.ReadOnlySpan`1<TOuter>)
 System.Private.CoreLib.dll:System.MemoryExtensions.Overlaps`1(System.ReadOnlySpan`1<T>, System.ReadOnlySpan`1<T>)
 System.Private.CoreLib.dll:System.MemoryExtensions.SequenceCompareTo`1(System.ReadOnlySpan`1<T>, System.ReadOnlySpan`1<T>)
 System.Private.CoreLib.dll:System.MemoryExtensions.SequenceEqual`1(System.ReadOnlySpan`1<T>, System.ReadOnlySpan`1<T>)
@@ -6565,6 +6574,21 @@ System.Private.CoreLib.dll:System.MemoryExtensions.Trim(System.ReadOnlySpan`1<Sy
 System.Private.CoreLib.dll:System.MemoryExtensions.TrimEnd(System.ReadOnlySpan`1<System.Char>, System.Char)
 System.Private.CoreLib.dll:System.MemoryExtensions.TrimSplitEntry(System.ReadOnlySpan`1<System.Char>, System.Int32, System.Int32)
 System.Private.CoreLib.dll:System.MemoryExtensions.TrimUtf8(System.ReadOnlySpan`1<System.Byte>)
+System.Private.CoreLib.dll:System.MemoryExtensions/IMinMaxCalc`1
+System.Private.CoreLib.dll:System.MemoryExtensions/IMinMaxCalc`1.Compare(System.Runtime.Intrinsics.Vector128`1<T>, System.Runtime.Intrinsics.Vector128`1<T>)
+System.Private.CoreLib.dll:System.MemoryExtensions/IMinMaxCalc`1.Compare(T, T)
+System.Private.CoreLib.dll:System.MemoryExtensions/IMinMaxDirection
+System.Private.CoreLib.dll:System.MemoryExtensions/IMinMaxDirection.CompareResult(System.Int32)
+System.Private.CoreLib.dll:System.MemoryExtensions/MaxCalc`1
+System.Private.CoreLib.dll:System.MemoryExtensions/MaxCalc`1.Compare(System.Runtime.Intrinsics.Vector128`1<T>, System.Runtime.Intrinsics.Vector128`1<T>)
+System.Private.CoreLib.dll:System.MemoryExtensions/MaxCalc`1.Compare(T, T)
+System.Private.CoreLib.dll:System.MemoryExtensions/MaxDirection
+System.Private.CoreLib.dll:System.MemoryExtensions/MaxDirection.CompareResult(System.Int32)
+System.Private.CoreLib.dll:System.MemoryExtensions/MinCalc`1
+System.Private.CoreLib.dll:System.MemoryExtensions/MinCalc`1.Compare(System.Runtime.Intrinsics.Vector128`1<T>, System.Runtime.Intrinsics.Vector128`1<T>)
+System.Private.CoreLib.dll:System.MemoryExtensions/MinCalc`1.Compare(T, T)
+System.Private.CoreLib.dll:System.MemoryExtensions/MinDirection
+System.Private.CoreLib.dll:System.MemoryExtensions/MinDirection.CompareResult(System.Int32)
 System.Private.CoreLib.dll:System.MethodAccessException
 System.Private.CoreLib.dll:System.MethodAccessException..ctor()
 System.Private.CoreLib.dll:System.MidpointRounding
@@ -6636,22 +6660,22 @@ System.Private.CoreLib.dll:System.NullReferenceException..ctor()
 System.Private.CoreLib.dll:System.NullReferenceException..ctor(System.String)
 System.Private.CoreLib.dll:System.Number
 System.Private.CoreLib.dll:System.Number..cctor()
-System.Private.CoreLib.dll:System.Number.<AppendUnknownChar>g__AppendNonAsciiBytes|156_0`1(System.Collections.Generic.ValueListBuilder`1<TChar>&, System.Char)
-System.Private.CoreLib.dll:System.Number.<FormatInt128>g__FormatInt128Slow|28_0(System.Int128, System.String, System.IFormatProvider)
-System.Private.CoreLib.dll:System.Number.<FormatInt32>g__FormatInt32Slow|20_0(System.Int32, System.Int32, System.String, System.IFormatProvider)
-System.Private.CoreLib.dll:System.Number.<FormatInt64>g__FormatInt64Slow|24_0(System.Int64, System.String, System.IFormatProvider)
-System.Private.CoreLib.dll:System.Number.<FormatUInt128>g__FormatUInt128Slow|30_0(System.UInt128, System.String, System.IFormatProvider)
-System.Private.CoreLib.dll:System.Number.<FormatUInt32>g__FormatUInt32Slow|22_0(System.UInt32, System.String, System.IFormatProvider)
-System.Private.CoreLib.dll:System.Number.<FormatUInt64>g__FormatUInt64Slow|26_0(System.UInt64, System.String, System.IFormatProvider)
-System.Private.CoreLib.dll:System.Number.<GetFloatingPointMaxDigitsAndPrecision>g__Slow|13_0(System.Char, System.Int32&, System.Globalization.NumberFormatInfo, out System.Boolean&)
-System.Private.CoreLib.dll:System.Number.<RoundNumber>g__ShouldRoundUp|162_0(System.Byte*, System.Int32, System.Number/NumberBufferKind, System.Boolean)
-System.Private.CoreLib.dll:System.Number.<TryFormatInt128>g__TryFormatInt128Slow|29_0`1(System.Int128, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
-System.Private.CoreLib.dll:System.Number.<TryFormatInt32>g__TryFormatInt32Slow|21_0`1(System.Int32, System.Int32, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
-System.Private.CoreLib.dll:System.Number.<TryFormatInt64>g__TryFormatInt64Slow|25_0`1(System.Int64, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
-System.Private.CoreLib.dll:System.Number.<TryFormatUInt128>g__TryFormatUInt128Slow|31_0`1(System.UInt128, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
-System.Private.CoreLib.dll:System.Number.<TryFormatUInt32>g__TryFormatUInt32Slow|23_0`1(System.UInt32, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
-System.Private.CoreLib.dll:System.Number.<TryFormatUInt64>g__TryFormatUInt64Slow|27_0`1(System.UInt64, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
-System.Private.CoreLib.dll:System.Number.<UInt32ToDecStrForKnownSmallNumber>g__CreateAndCacheString|49_0(System.UInt32)
+System.Private.CoreLib.dll:System.Number.<AppendUnknownChar>g__AppendNonAsciiBytes|171_0`1(System.Collections.Generic.ValueListBuilder`1<TChar>&, System.Char)
+System.Private.CoreLib.dll:System.Number.<FormatInt128>g__FormatInt128Slow|40_0(System.Int128, System.String, System.IFormatProvider)
+System.Private.CoreLib.dll:System.Number.<FormatInt32>g__FormatInt32Slow|32_0(System.Int32, System.Int32, System.String, System.IFormatProvider)
+System.Private.CoreLib.dll:System.Number.<FormatInt64>g__FormatInt64Slow|36_0(System.Int64, System.String, System.IFormatProvider)
+System.Private.CoreLib.dll:System.Number.<FormatUInt128>g__FormatUInt128Slow|42_0(System.UInt128, System.String, System.IFormatProvider)
+System.Private.CoreLib.dll:System.Number.<FormatUInt32>g__FormatUInt32Slow|34_0(System.UInt32, System.String, System.IFormatProvider)
+System.Private.CoreLib.dll:System.Number.<FormatUInt64>g__FormatUInt64Slow|38_0(System.UInt64, System.String, System.IFormatProvider)
+System.Private.CoreLib.dll:System.Number.<GetFloatingPointMaxDigitsAndPrecision>g__Slow|25_0(System.Char, System.Int32&, System.Globalization.NumberFormatInfo, out System.Boolean&)
+System.Private.CoreLib.dll:System.Number.<RoundNumber>g__ShouldRoundUp|177_0(System.Byte*, System.Int32, System.Number/NumberBufferKind, System.Boolean)
+System.Private.CoreLib.dll:System.Number.<TryFormatInt128>g__TryFormatInt128Slow|41_0`1(System.Int128, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
+System.Private.CoreLib.dll:System.Number.<TryFormatInt32>g__TryFormatInt32Slow|33_0`1(System.Int32, System.Int32, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
+System.Private.CoreLib.dll:System.Number.<TryFormatInt64>g__TryFormatInt64Slow|37_0`1(System.Int64, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
+System.Private.CoreLib.dll:System.Number.<TryFormatUInt128>g__TryFormatUInt128Slow|43_0`1(System.UInt128, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
+System.Private.CoreLib.dll:System.Number.<TryFormatUInt32>g__TryFormatUInt32Slow|35_0`1(System.UInt32, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
+System.Private.CoreLib.dll:System.Number.<TryFormatUInt64>g__TryFormatUInt64Slow|39_0`1(System.UInt64, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
+System.Private.CoreLib.dll:System.Number.<UInt32ToDecStrForKnownSmallNumber>g__CreateAndCacheString|61_0(System.UInt32)
 System.Private.CoreLib.dll:System.Number.AppendUnknownChar`1(System.Collections.Generic.ValueListBuilder`1<TChar>&, System.Char)
 System.Private.CoreLib.dll:System.Number.CurrencyGroupSizes(System.Globalization.NumberFormatInfo)
 System.Private.CoreLib.dll:System.Number.DecimalToNumber(System.Decimal&, System.Number/NumberBuffer&)
@@ -6857,6 +6881,7 @@ System.Private.CoreLib.dll:System.Numerics.BitOperations.<PopCount>g__SoftwareFa
 System.Private.CoreLib.dll:System.Numerics.BitOperations.get_Log2DeBruijn()
 System.Private.CoreLib.dll:System.Numerics.BitOperations.get_TrailingZeroCountDeBruijn()
 System.Private.CoreLib.dll:System.Numerics.BitOperations.IsPow2(System.Int32)
+System.Private.CoreLib.dll:System.Numerics.BitOperations.IsPow2(System.UIntPtr)
 System.Private.CoreLib.dll:System.Numerics.BitOperations.LeadingZeroCount(System.UInt32)
 System.Private.CoreLib.dll:System.Numerics.BitOperations.LeadingZeroCount(System.UInt64)
 System.Private.CoreLib.dll:System.Numerics.BitOperations.Log2(System.UInt32)
@@ -6889,10 +6914,7 @@ System.Private.CoreLib.dll:System.Numerics.IFloatingPointIeee754`1
 System.Private.CoreLib.dll:System.Numerics.IFloatingPointIeee754`1.get_NegativeZero()
 System.Private.CoreLib.dll:System.Numerics.IMinMaxValue`1
 System.Private.CoreLib.dll:System.Numerics.IMinMaxValue`1.get_MaxValue()
-System.Private.CoreLib.dll:System.Numerics.IMinMaxValue`1.get_MinValue()
 System.Private.CoreLib.dll:System.Numerics.INumber`1
-System.Private.CoreLib.dll:System.Numerics.INumber`1.Max(TSelf, TSelf)
-System.Private.CoreLib.dll:System.Numerics.INumber`1.Min(TSelf, TSelf)
 System.Private.CoreLib.dll:System.Numerics.INumberBase`1
 System.Private.CoreLib.dll:System.Numerics.INumberBase`1.CreateTruncating`1(TOther)
 System.Private.CoreLib.dll:System.Numerics.INumberBase`1.get_One()
@@ -6903,6 +6925,7 @@ System.Private.CoreLib.dll:System.Numerics.INumberBase`1.IsNegative(TSelf)
 System.Private.CoreLib.dll:System.Numerics.INumberBase`1.IsZero(TSelf)
 System.Private.CoreLib.dll:System.Numerics.INumberBase`1.TryConvertFromTruncating`1(TOther, out TSelf&)
 System.Private.CoreLib.dll:System.Numerics.INumberBase`1.TryConvertToChecked`1(TSelf, out TOther&)
+System.Private.CoreLib.dll:System.Numerics.INumberBase`1.TryConvertToSaturating`1(TSelf, out TOther&)
 System.Private.CoreLib.dll:System.Numerics.INumberBase`1.TryConvertToTruncating`1(TSelf, out TOther&)
 System.Private.CoreLib.dll:System.Numerics.IShiftOperators`3
 System.Private.CoreLib.dll:System.Numerics.IShiftOperators`3.op_LeftShift(TSelf, TOther)
@@ -6922,6 +6945,7 @@ System.Private.CoreLib.dll:System.Numerics.Vector.get_Alignment()
 System.Private.CoreLib.dll:System.Numerics.Vector.get_IsHardwareAccelerated()
 System.Private.CoreLib.dll:System.Numerics.Vector.get_NegativeZero`1()
 System.Private.CoreLib.dll:System.Numerics.Vector.GetElementUnsafe`1(System.Numerics.Vector`1<T>&, System.Int32)
+System.Private.CoreLib.dll:System.Numerics.Vector.GreaterThan`1(System.Numerics.Vector`1<T>, System.Numerics.Vector`1<T>)
 System.Private.CoreLib.dll:System.Numerics.Vector.GreaterThanAny`1(System.Numerics.Vector`1<T>, System.Numerics.Vector`1<T>)
 System.Private.CoreLib.dll:System.Numerics.Vector.IsNaN`1(System.Numerics.Vector`1<T>)
 System.Private.CoreLib.dll:System.Numerics.Vector.IsNegative`1(System.Numerics.Vector`1<T>)
@@ -6965,6 +6989,7 @@ System.Private.CoreLib.dll:System.Numerics.Vector`1.System.Runtime.Intrinsics.IS
 System.Private.CoreLib.dll:System.Numerics.Vector`1.System.Runtime.Intrinsics.ISimdVector<System.Numerics.Vector<T>,T>.EqualsAny(System.Numerics.Vector`1<T>, System.Numerics.Vector`1<T>)
 System.Private.CoreLib.dll:System.Numerics.Vector`1.System.Runtime.Intrinsics.ISimdVector<System.Numerics.Vector<T>,T>.get_Alignment()
 System.Private.CoreLib.dll:System.Numerics.Vector`1.System.Runtime.Intrinsics.ISimdVector<System.Numerics.Vector<T>,T>.get_ElementCount()
+System.Private.CoreLib.dll:System.Numerics.Vector`1.System.Runtime.Intrinsics.ISimdVector<System.Numerics.Vector<T>,T>.GreaterThan(System.Numerics.Vector`1<T>, System.Numerics.Vector`1<T>)
 System.Private.CoreLib.dll:System.Numerics.Vector`1.System.Runtime.Intrinsics.ISimdVector<System.Numerics.Vector<T>,T>.GreaterThanAny(System.Numerics.Vector`1<T>, System.Numerics.Vector`1<T>)
 System.Private.CoreLib.dll:System.Numerics.Vector`1.System.Runtime.Intrinsics.ISimdVector<System.Numerics.Vector<T>,T>.IsNaN(System.Numerics.Vector`1<T>)
 System.Private.CoreLib.dll:System.Numerics.Vector`1.System.Runtime.Intrinsics.ISimdVector<System.Numerics.Vector<T>,T>.IsNegative(System.Numerics.Vector`1<T>)
@@ -7333,6 +7358,7 @@ System.Private.CoreLib.dll:System.Reflection.ConstructorInfo..cctor()
 System.Private.CoreLib.dll:System.Reflection.ConstructorInfo..ctor()
 System.Private.CoreLib.dll:System.Reflection.ConstructorInfo.Equals(System.Object)
 System.Private.CoreLib.dll:System.Reflection.ConstructorInfo.get_MemberType()
+System.Private.CoreLib.dll:System.Reflection.ConstructorInfo.GetGenericArguments()
 System.Private.CoreLib.dll:System.Reflection.ConstructorInfo.GetHashCode()
 System.Private.CoreLib.dll:System.Reflection.ConstructorInfo.op_Equality(System.Reflection.ConstructorInfo, System.Reflection.ConstructorInfo)
 System.Private.CoreLib.dll:System.Reflection.ConstructorInfo.op_Inequality(System.Reflection.ConstructorInfo, System.Reflection.ConstructorInfo)
@@ -8717,6 +8743,8 @@ System.Private.CoreLib.dll:System.Runtime.InteropServices.NativeLibrary
 System.Private.CoreLib.dll:System.Runtime.InteropServices.NativeLibrary.LoadLibraryCallbackStub(System.String, System.Reflection.Assembly, System.Boolean, System.UInt32)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.NativeLibrary.MonoLoadLibraryCallbackStub(System.String, System.Reflection.Assembly, System.Boolean, System.UInt32, System.IntPtr&)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.NativeMemory
+System.Private.CoreLib.dll:System.Runtime.InteropServices.NativeMemory.AlignedAlloc(System.UIntPtr, System.UIntPtr)
+System.Private.CoreLib.dll:System.Runtime.InteropServices.NativeMemory.AlignedFree(System.Void*)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.NativeMemory.Alloc(System.UIntPtr)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.NativeMemory.AllocZeroed(System.UIntPtr, System.UIntPtr)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.NativeMemory.AllocZeroed(System.UIntPtr)
@@ -8724,7 +8752,6 @@ System.Private.CoreLib.dll:System.Runtime.InteropServices.NativeMemory.Clear(Sys
 System.Private.CoreLib.dll:System.Runtime.InteropServices.NativeMemory.Free(System.Void*)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.NFloat
 System.Private.CoreLib.dll:System.Runtime.InteropServices.NFloat System.Runtime.InteropServices.NFloat::MaxValue()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.NFloat System.Runtime.InteropServices.NFloat::MinValue()
 System.Private.CoreLib.dll:System.Runtime.InteropServices.NFloat System.Runtime.InteropServices.NFloat::NegativeZero()
 System.Private.CoreLib.dll:System.Runtime.InteropServices.NFloat System.Runtime.InteropServices.NFloat::System.Numerics.INumberBase<System.Runtime.InteropServices.NFloat>.One()
 System.Private.CoreLib.dll:System.Runtime.InteropServices.NFloat System.Runtime.InteropServices.NFloat::System.Numerics.INumberBase<System.Runtime.InteropServices.NFloat>.Zero()
@@ -8735,14 +8762,11 @@ System.Private.CoreLib.dll:System.Runtime.InteropServices.NFloat.CreateTruncatin
 System.Private.CoreLib.dll:System.Runtime.InteropServices.NFloat.Equals(System.Object)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.NFloat.Equals(System.Runtime.InteropServices.NFloat)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.NFloat.get_MaxValue()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.NFloat.get_MinValue()
 System.Private.CoreLib.dll:System.Runtime.InteropServices.NFloat.get_NegativeZero()
 System.Private.CoreLib.dll:System.Runtime.InteropServices.NFloat.GetHashCode()
 System.Private.CoreLib.dll:System.Runtime.InteropServices.NFloat.IsFinite(System.Runtime.InteropServices.NFloat)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.NFloat.IsNaN(System.Runtime.InteropServices.NFloat)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.NFloat.IsNegative(System.Runtime.InteropServices.NFloat)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.NFloat.Max(System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.NFloat.Min(System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.NFloat.op_Addition(System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.NFloat.op_CheckedExplicit(System.Runtime.InteropServices.NFloat)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.NFloat.op_CheckedExplicit(System.Runtime.InteropServices.NFloat)
@@ -8807,6 +8831,7 @@ System.Private.CoreLib.dll:System.Runtime.InteropServices.NFloat.System.Numerics
 System.Private.CoreLib.dll:System.Runtime.InteropServices.NFloat.System.Numerics.INumberBase<System.Runtime.InteropServices.NFloat>.IsZero(System.Runtime.InteropServices.NFloat)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.NFloat.System.Numerics.INumberBase<System.Runtime.InteropServices.NFloat>.TryConvertFromTruncating`1(TOther, out System.Runtime.InteropServices.NFloat&)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.NFloat.System.Numerics.INumberBase<System.Runtime.InteropServices.NFloat>.TryConvertToChecked`1(System.Runtime.InteropServices.NFloat, out TOther&)
+System.Private.CoreLib.dll:System.Runtime.InteropServices.NFloat.System.Numerics.INumberBase<System.Runtime.InteropServices.NFloat>.TryConvertToSaturating`1(System.Runtime.InteropServices.NFloat, out TOther&)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.NFloat.System.Numerics.INumberBase<System.Runtime.InteropServices.NFloat>.TryConvertToTruncating`1(System.Runtime.InteropServices.NFloat, out TOther&)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.NFloat.ToString()
 System.Private.CoreLib.dll:System.Runtime.InteropServices.NFloat.ToString(System.String, System.IFormatProvider)
@@ -8983,6 +9008,7 @@ System.Private.CoreLib.dll:System.Runtime.Intrinsics.ISimdVector`2.EqualsAny(TSe
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.ISimdVector`2.get_Alignment()
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.ISimdVector`2.get_ElementCount()
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.ISimdVector`2.get_Zero()
+System.Private.CoreLib.dll:System.Runtime.Intrinsics.ISimdVector`2.GreaterThan(TSelf, TSelf)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.ISimdVector`2.GreaterThanAny(TSelf, TSelf)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.ISimdVector`2.IsNaN(TSelf)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.ISimdVector`2.IsNegative(TSelf)
@@ -9000,10 +9026,13 @@ System.Private.CoreLib.dll:System.Runtime.Intrinsics.Scalar`1.AddSaturate(T, T)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Scalar`1.Equals(T, T)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Scalar`1.ExtractMostSignificantBit(T)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Scalar`1.get_AllBitsSet()
+System.Private.CoreLib.dll:System.Runtime.Intrinsics.Scalar`1.get_IsSupported()
+System.Private.CoreLib.dll:System.Runtime.Intrinsics.Scalar`1.get_IsUnsigned()
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Scalar`1.GreaterThan(T, T)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Scalar`1.GreaterThanOrEqual(T, T)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Scalar`1.LessThan(T, T)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Scalar`1.LessThanOrEqual(T, T)
+System.Private.CoreLib.dll:System.Runtime.Intrinsics.Scalar`1.Max(T, T)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Scalar`1.Min(T, T)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Scalar`1.ObjectEquals(T, T)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Scalar`1.ShiftLeft(T, System.Int32)
@@ -9035,15 +9064,18 @@ System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.Create(System.Byt
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.Create(System.Byte)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.Create(System.Int16, System.Int16, System.Int16, System.Int16, System.Int16, System.Int16, System.Int16, System.Int16)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.Create(System.Int16)
+System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.Create(System.Int32, System.Int32, System.Int32, System.Int32)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.Create(System.Int64, System.Int64)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.Create(System.Runtime.Intrinsics.Vector64`1<System.Byte>, System.Runtime.Intrinsics.Vector64`1<System.Byte>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.Create(System.Runtime.Intrinsics.Vector64`1<System.Int16>, System.Runtime.Intrinsics.Vector64`1<System.Int16>)
+System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.Create(System.Runtime.Intrinsics.Vector64`1<System.Int32>, System.Runtime.Intrinsics.Vector64`1<System.Int32>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.Create(System.Runtime.Intrinsics.Vector64`1<System.Int64>, System.Runtime.Intrinsics.Vector64`1<System.Int64>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.Create(System.Runtime.Intrinsics.Vector64`1<System.UInt16>, System.Runtime.Intrinsics.Vector64`1<System.UInt16>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.Create(System.Runtime.Intrinsics.Vector64`1<System.UInt64>, System.Runtime.Intrinsics.Vector64`1<System.UInt64>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.Create(System.UInt16)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.Create(System.UInt64, System.UInt64)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.Create(System.UInt64)
+System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.Create`1(System.ReadOnlySpan`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.Create`1(System.Runtime.Intrinsics.Vector64`1<T>, System.Runtime.Intrinsics.Vector64`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.Create`1(T)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.CreateScalar(System.UInt32)
@@ -9077,6 +9109,7 @@ System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.LoadUnsafe(System
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.LoadUnsafe(System.Char&)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.LoadUnsafe`1(T&, System.UIntPtr)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.LoadUnsafe`1(T&)
+System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.Max`1(System.Runtime.Intrinsics.Vector128`1<T>, System.Runtime.Intrinsics.Vector128`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.Min`1(System.Runtime.Intrinsics.Vector128`1<T>, System.Runtime.Intrinsics.Vector128`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.Narrow(System.Runtime.Intrinsics.Vector128`1<System.UInt16>, System.Runtime.Intrinsics.Vector128`1<System.UInt16>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.Narrow`2(System.Runtime.Intrinsics.Vector128`1<TSource>, System.Runtime.Intrinsics.Vector128`1<TSource>)
@@ -9086,8 +9119,11 @@ System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.SetUpperUnsafe`1(
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.ShiftRightLogical(System.Runtime.Intrinsics.Vector128`1<System.UInt64>, System.Int32)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.Shuffle(System.Runtime.Intrinsics.Vector128`1<System.Byte>, System.Runtime.Intrinsics.Vector128`1<System.Byte>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.Shuffle(System.Runtime.Intrinsics.Vector128`1<System.Int16>, System.Runtime.Intrinsics.Vector128`1<System.Int16>)
-System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.ShuffleFallback(System.Runtime.Intrinsics.Vector128`1<System.Byte>, System.Runtime.Intrinsics.Vector128`1<System.Byte>)
+System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.Shuffle(System.Runtime.Intrinsics.Vector128`1<System.Int32>, System.Runtime.Intrinsics.Vector128`1<System.Int32>)
+System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.Shuffle(System.Runtime.Intrinsics.Vector128`1<System.Int64>, System.Runtime.Intrinsics.Vector128`1<System.Int64>)
+System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.ShuffleFallback`2(System.Runtime.Intrinsics.Vector128`1<T>, System.Runtime.Intrinsics.Vector128`1<TIndex>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.ShuffleNative(System.Runtime.Intrinsics.Vector128`1<System.Byte>, System.Runtime.Intrinsics.Vector128`1<System.Byte>)
+System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.ShuffleNativeFallback`2(System.Runtime.Intrinsics.Vector128`1<T>, System.Runtime.Intrinsics.Vector128`1<TIndex>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.Store`1(System.Runtime.Intrinsics.Vector128`1<T>, T*)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.StoreLowerUnsafe`1(System.Runtime.Intrinsics.Vector128`1<T>, T&, System.UIntPtr)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.StoreUnsafe`1(System.Runtime.Intrinsics.Vector128`1<T>, T&, System.UIntPtr)
@@ -9129,6 +9165,7 @@ System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128`1.System.Runtime.
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128`1.System.Runtime.Intrinsics.ISimdVector<System.Runtime.Intrinsics.Vector128<T>,T>.EqualsAny(System.Runtime.Intrinsics.Vector128`1<T>, System.Runtime.Intrinsics.Vector128`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128`1.System.Runtime.Intrinsics.ISimdVector<System.Runtime.Intrinsics.Vector128<T>,T>.get_Alignment()
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128`1.System.Runtime.Intrinsics.ISimdVector<System.Runtime.Intrinsics.Vector128<T>,T>.get_ElementCount()
+System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128`1.System.Runtime.Intrinsics.ISimdVector<System.Runtime.Intrinsics.Vector128<T>,T>.GreaterThan(System.Runtime.Intrinsics.Vector128`1<T>, System.Runtime.Intrinsics.Vector128`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128`1.System.Runtime.Intrinsics.ISimdVector<System.Runtime.Intrinsics.Vector128<T>,T>.GreaterThanAny(System.Runtime.Intrinsics.Vector128`1<T>, System.Runtime.Intrinsics.Vector128`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128`1.System.Runtime.Intrinsics.ISimdVector<System.Runtime.Intrinsics.Vector128<T>,T>.IsNaN(System.Runtime.Intrinsics.Vector128`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128`1.System.Runtime.Intrinsics.ISimdVector<System.Runtime.Intrinsics.Vector128<T>,T>.IsNegative(System.Runtime.Intrinsics.Vector128`1<T>)
@@ -9163,6 +9200,7 @@ System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector256.EqualsAny`1(Syste
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector256.get_NegativeZero`1()
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector256.GetElementUnsafe`1(System.Runtime.Intrinsics.Vector256`1<T>&, System.Int32)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector256.GetLower`1(System.Runtime.Intrinsics.Vector256`1<T>)
+System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector256.GreaterThan`1(System.Runtime.Intrinsics.Vector256`1<T>, System.Runtime.Intrinsics.Vector256`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector256.GreaterThanAny`1(System.Runtime.Intrinsics.Vector256`1<T>, System.Runtime.Intrinsics.Vector256`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector256.IndexOfLastMatch`1(System.Runtime.Intrinsics.Vector256`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector256.IsNaN`1(System.Runtime.Intrinsics.Vector256`1<T>)
@@ -9205,6 +9243,7 @@ System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector256`1.System.Runtime.
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector256`1.System.Runtime.Intrinsics.ISimdVector<System.Runtime.Intrinsics.Vector256<T>,T>.EqualsAny(System.Runtime.Intrinsics.Vector256`1<T>, System.Runtime.Intrinsics.Vector256`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector256`1.System.Runtime.Intrinsics.ISimdVector<System.Runtime.Intrinsics.Vector256<T>,T>.get_Alignment()
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector256`1.System.Runtime.Intrinsics.ISimdVector<System.Runtime.Intrinsics.Vector256<T>,T>.get_ElementCount()
+System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector256`1.System.Runtime.Intrinsics.ISimdVector<System.Runtime.Intrinsics.Vector256<T>,T>.GreaterThan(System.Runtime.Intrinsics.Vector256`1<T>, System.Runtime.Intrinsics.Vector256`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector256`1.System.Runtime.Intrinsics.ISimdVector<System.Runtime.Intrinsics.Vector256<T>,T>.GreaterThanAny(System.Runtime.Intrinsics.Vector256`1<T>, System.Runtime.Intrinsics.Vector256`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector256`1.System.Runtime.Intrinsics.ISimdVector<System.Runtime.Intrinsics.Vector256<T>,T>.IsNaN(System.Runtime.Intrinsics.Vector256`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector256`1.System.Runtime.Intrinsics.ISimdVector<System.Runtime.Intrinsics.Vector256<T>,T>.IsNegative(System.Runtime.Intrinsics.Vector256`1<T>)
@@ -9239,6 +9278,7 @@ System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector512.Equals`1(System.R
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector512.EqualsAny`1(System.Runtime.Intrinsics.Vector512`1<T>, System.Runtime.Intrinsics.Vector512`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector512.get_NegativeZero`1()
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector512.GetElementUnsafe`1(System.Runtime.Intrinsics.Vector512`1<T>&, System.Int32)
+System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector512.GreaterThan`1(System.Runtime.Intrinsics.Vector512`1<T>, System.Runtime.Intrinsics.Vector512`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector512.GreaterThanAny`1(System.Runtime.Intrinsics.Vector512`1<T>, System.Runtime.Intrinsics.Vector512`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector512.IndexOfLastMatch`1(System.Runtime.Intrinsics.Vector512`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector512.IsNaN`1(System.Runtime.Intrinsics.Vector512`1<T>)
@@ -9281,6 +9321,7 @@ System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector512`1.System.Runtime.
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector512`1.System.Runtime.Intrinsics.ISimdVector<System.Runtime.Intrinsics.Vector512<T>,T>.EqualsAny(System.Runtime.Intrinsics.Vector512`1<T>, System.Runtime.Intrinsics.Vector512`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector512`1.System.Runtime.Intrinsics.ISimdVector<System.Runtime.Intrinsics.Vector512<T>,T>.get_Alignment()
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector512`1.System.Runtime.Intrinsics.ISimdVector<System.Runtime.Intrinsics.Vector512<T>,T>.get_ElementCount()
+System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector512`1.System.Runtime.Intrinsics.ISimdVector<System.Runtime.Intrinsics.Vector512<T>,T>.GreaterThan(System.Runtime.Intrinsics.Vector512`1<T>, System.Runtime.Intrinsics.Vector512`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector512`1.System.Runtime.Intrinsics.ISimdVector<System.Runtime.Intrinsics.Vector512<T>,T>.GreaterThanAny(System.Runtime.Intrinsics.Vector512`1<T>, System.Runtime.Intrinsics.Vector512`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector512`1.System.Runtime.Intrinsics.ISimdVector<System.Runtime.Intrinsics.Vector512<T>,T>.IsNaN(System.Runtime.Intrinsics.Vector512`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector512`1.System.Runtime.Intrinsics.ISimdVector<System.Runtime.Intrinsics.Vector512<T>,T>.IsNegative(System.Runtime.Intrinsics.Vector512`1<T>)
@@ -9309,6 +9350,7 @@ System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.AsUInt64`1(System.
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.ConditionalSelect`1(System.Runtime.Intrinsics.Vector64`1<T>, System.Runtime.Intrinsics.Vector64`1<T>, System.Runtime.Intrinsics.Vector64`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.Create(System.Byte, System.Byte, System.Byte, System.Byte, System.Byte, System.Byte, System.Byte, System.Byte)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.Create(System.Int16, System.Int16, System.Int16, System.Int16)
+System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.Create(System.Int32, System.Int32)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.Create(System.Int64)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.Create(System.UInt64)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.Create`1(T)
@@ -9333,6 +9375,7 @@ System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.LessThanOrEqual`1(
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.Load`1(T*)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.LoadUnsafe`1(T&, System.UIntPtr)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.LoadUnsafe`1(T&)
+System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.Max`1(System.Runtime.Intrinsics.Vector64`1<T>, System.Runtime.Intrinsics.Vector64`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.Min`1(System.Runtime.Intrinsics.Vector64`1<T>, System.Runtime.Intrinsics.Vector64`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.SetElementUnsafe`1(System.Runtime.Intrinsics.Vector64`1<T>&, System.Int32, T)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.Store`1(System.Runtime.Intrinsics.Vector64`1<T>, T*)
@@ -9373,6 +9416,7 @@ System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64`1.System.Runtime.I
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64`1.System.Runtime.Intrinsics.ISimdVector<System.Runtime.Intrinsics.Vector64<T>,T>.EqualsAny(System.Runtime.Intrinsics.Vector64`1<T>, System.Runtime.Intrinsics.Vector64`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64`1.System.Runtime.Intrinsics.ISimdVector<System.Runtime.Intrinsics.Vector64<T>,T>.get_Alignment()
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64`1.System.Runtime.Intrinsics.ISimdVector<System.Runtime.Intrinsics.Vector64<T>,T>.get_ElementCount()
+System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64`1.System.Runtime.Intrinsics.ISimdVector<System.Runtime.Intrinsics.Vector64<T>,T>.GreaterThan(System.Runtime.Intrinsics.Vector64`1<T>, System.Runtime.Intrinsics.Vector64`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64`1.System.Runtime.Intrinsics.ISimdVector<System.Runtime.Intrinsics.Vector64<T>,T>.GreaterThanAny(System.Runtime.Intrinsics.Vector64`1<T>, System.Runtime.Intrinsics.Vector64`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64`1.System.Runtime.Intrinsics.ISimdVector<System.Runtime.Intrinsics.Vector64<T>,T>.IsNaN(System.Runtime.Intrinsics.Vector64`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64`1.System.Runtime.Intrinsics.ISimdVector<System.Runtime.Intrinsics.Vector64<T>,T>.IsNegative(System.Runtime.Intrinsics.Vector64`1<T>)
@@ -9391,6 +9435,7 @@ System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64`1<T> System.Runtim
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64`1<T> System.Runtime.Intrinsics.Vector64`1::AllBitsSet()
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64`1<T> System.Runtime.Intrinsics.Vector64`1::Zero()
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.VectorMath
+System.Private.CoreLib.dll:System.Runtime.Intrinsics.VectorMath.Max`2(TVector, TVector)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.VectorMath.Min`2(TVector, TVector)
 System.Private.CoreLib.dll:System.Runtime.Loader.AssemblyLoadContext
 System.Private.CoreLib.dll:System.Runtime.Loader.AssemblyLoadContext System.Runtime.Loader.AssemblyLoadContext::Default()
@@ -9412,7 +9457,7 @@ System.Private.CoreLib.dll:System.Runtime.Loader.AssemblyLoadContext.InitiateUnl
 System.Private.CoreLib.dll:System.Runtime.Loader.AssemblyLoadContext.InternalGetLoadedAssemblies()
 System.Private.CoreLib.dll:System.Runtime.Loader.AssemblyLoadContext.InternalInitializeNativeALC(System.IntPtr, System.IntPtr, System.Boolean, System.Boolean)
 System.Private.CoreLib.dll:System.Runtime.Loader.AssemblyLoadContext.InternalLoadFile(System.IntPtr, System.String, System.Threading.StackCrawlMark&)
-System.Private.CoreLib.dll:System.Runtime.Loader.AssemblyLoadContext.InternalLoadFromPath(System.String, System.String)
+System.Private.CoreLib.dll:System.Runtime.Loader.AssemblyLoadContext.InternalLoadFromPath(System.String)
 System.Private.CoreLib.dll:System.Runtime.Loader.AssemblyLoadContext.KeepLoaderAllocator()
 System.Private.CoreLib.dll:System.Runtime.Loader.AssemblyLoadContext.Load(System.Reflection.AssemblyName)
 System.Private.CoreLib.dll:System.Runtime.Loader.AssemblyLoadContext.LoadFromAssemblyName(System.Reflection.AssemblyName)
@@ -9425,6 +9470,7 @@ System.Private.CoreLib.dll:System.Runtime.Loader.AssemblyLoadContext.OnProcessEx
 System.Private.CoreLib.dll:System.Runtime.Loader.AssemblyLoadContext.PrepareForAssemblyLoadContextRelease(System.IntPtr, System.IntPtr)
 System.Private.CoreLib.dll:System.Runtime.Loader.AssemblyLoadContext.RaiseUnloadEvent()
 System.Private.CoreLib.dll:System.Runtime.Loader.AssemblyLoadContext.Resolve(System.IntPtr, System.Reflection.AssemblyName)
+System.Private.CoreLib.dll:System.Runtime.Loader.AssemblyLoadContext.ResolveAssemblyLocation(System.Reflection.Assembly, System.String)
 System.Private.CoreLib.dll:System.Runtime.Loader.AssemblyLoadContext.ResolveSatelliteAssembly(System.Reflection.AssemblyName)
 System.Private.CoreLib.dll:System.Runtime.Loader.AssemblyLoadContext.ResolveUsingLoad(System.Reflection.AssemblyName)
 System.Private.CoreLib.dll:System.Runtime.Loader.AssemblyLoadContext.ToString()
@@ -9715,7 +9761,6 @@ System.Private.CoreLib.dll:System.SByte System.NullableBool::value__
 System.Private.CoreLib.dll:System.SByte System.SByte::m_value
 System.Private.CoreLib.dll:System.SByte System.SByte::System.IBinaryIntegerParseAndFormatInfo<System.SByte>.MaxValueDiv10()
 System.Private.CoreLib.dll:System.SByte System.SByte::System.Numerics.IMinMaxValue<System.SByte>.MaxValue()
-System.Private.CoreLib.dll:System.SByte System.SByte::System.Numerics.IMinMaxValue<System.SByte>.MinValue()
 System.Private.CoreLib.dll:System.SByte System.SByte::System.Numerics.INumberBase<System.SByte>.One()
 System.Private.CoreLib.dll:System.SByte System.SByte::System.Numerics.INumberBase<System.SByte>.Zero()
 System.Private.CoreLib.dll:System.SByte.CompareTo(System.Object)
@@ -9746,7 +9791,6 @@ System.Private.CoreLib.dll:System.SByte.System.Numerics.IComparisonOperators<Sys
 System.Private.CoreLib.dll:System.SByte.System.Numerics.IEqualityOperators<System.SByte,System.SByte,System.Boolean>.op_Equality(System.SByte, System.SByte)
 System.Private.CoreLib.dll:System.SByte.System.Numerics.IEqualityOperators<System.SByte,System.SByte,System.Boolean>.op_Inequality(System.SByte, System.SByte)
 System.Private.CoreLib.dll:System.SByte.System.Numerics.IMinMaxValue<System.SByte>.get_MaxValue()
-System.Private.CoreLib.dll:System.SByte.System.Numerics.IMinMaxValue<System.SByte>.get_MinValue()
 System.Private.CoreLib.dll:System.SByte.System.Numerics.INumberBase<System.SByte>.get_One()
 System.Private.CoreLib.dll:System.SByte.System.Numerics.INumberBase<System.SByte>.get_Zero()
 System.Private.CoreLib.dll:System.SByte.System.Numerics.INumberBase<System.SByte>.IsFinite(System.SByte)
@@ -9754,6 +9798,7 @@ System.Private.CoreLib.dll:System.SByte.System.Numerics.INumberBase<System.SByte
 System.Private.CoreLib.dll:System.SByte.System.Numerics.INumberBase<System.SByte>.IsZero(System.SByte)
 System.Private.CoreLib.dll:System.SByte.System.Numerics.INumberBase<System.SByte>.TryConvertFromTruncating`1(TOther, out System.SByte&)
 System.Private.CoreLib.dll:System.SByte.System.Numerics.INumberBase<System.SByte>.TryConvertToChecked`1(System.SByte, out TOther&)
+System.Private.CoreLib.dll:System.SByte.System.Numerics.INumberBase<System.SByte>.TryConvertToSaturating`1(System.SByte, out TOther&)
 System.Private.CoreLib.dll:System.SByte.System.Numerics.INumberBase<System.SByte>.TryConvertToTruncating`1(System.SByte, out TOther&)
 System.Private.CoreLib.dll:System.SByte.System.Numerics.IShiftOperators<System.SByte,System.Int32,System.SByte>.op_LeftShift(System.SByte, System.Int32)
 System.Private.CoreLib.dll:System.SByte.System.Numerics.ISubtractionOperators<System.SByte,System.SByte,System.SByte>.op_Subtraction(System.SByte, System.SByte)
@@ -9785,7 +9830,6 @@ System.Private.CoreLib.dll:System.Single
 System.Private.CoreLib.dll:System.Single System.Single::m_value
 System.Private.CoreLib.dll:System.Single System.Single::System.Numerics.IFloatingPointIeee754<System.Single>.NegativeZero()
 System.Private.CoreLib.dll:System.Single System.Single::System.Numerics.IMinMaxValue<System.Single>.MaxValue()
-System.Private.CoreLib.dll:System.Single System.Single::System.Numerics.IMinMaxValue<System.Single>.MinValue()
 System.Private.CoreLib.dll:System.Single System.Single::System.Numerics.INumberBase<System.Single>.One()
 System.Private.CoreLib.dll:System.Single System.Single::System.Numerics.INumberBase<System.Single>.Zero()
 System.Private.CoreLib.dll:System.Single.Abs(System.Single)
@@ -9823,12 +9867,12 @@ System.Private.CoreLib.dll:System.Single.System.Numerics.IBitwiseOperators<Syste
 System.Private.CoreLib.dll:System.Single.System.Numerics.IBitwiseOperators<System.Single,System.Single,System.Single>.op_OnesComplement(System.Single)
 System.Private.CoreLib.dll:System.Single.System.Numerics.IFloatingPointIeee754<System.Single>.get_NegativeZero()
 System.Private.CoreLib.dll:System.Single.System.Numerics.IMinMaxValue<System.Single>.get_MaxValue()
-System.Private.CoreLib.dll:System.Single.System.Numerics.IMinMaxValue<System.Single>.get_MinValue()
 System.Private.CoreLib.dll:System.Single.System.Numerics.INumberBase<System.Single>.get_One()
 System.Private.CoreLib.dll:System.Single.System.Numerics.INumberBase<System.Single>.get_Zero()
 System.Private.CoreLib.dll:System.Single.System.Numerics.INumberBase<System.Single>.IsZero(System.Single)
 System.Private.CoreLib.dll:System.Single.System.Numerics.INumberBase<System.Single>.TryConvertFromTruncating`1(TOther, out System.Single&)
 System.Private.CoreLib.dll:System.Single.System.Numerics.INumberBase<System.Single>.TryConvertToChecked`1(System.Single, out TOther&)
+System.Private.CoreLib.dll:System.Single.System.Numerics.INumberBase<System.Single>.TryConvertToSaturating`1(System.Single, out TOther&)
 System.Private.CoreLib.dll:System.Single.System.Numerics.INumberBase<System.Single>.TryConvertToTruncating`1(System.Single, out TOther&)
 System.Private.CoreLib.dll:System.Single.System.Numerics.ISubtractionOperators<System.Single,System.Single,System.Single>.op_Subtraction(System.Single, System.Single)
 System.Private.CoreLib.dll:System.Single.System.Numerics.IUnaryNegationOperators<System.Single,System.Single>.op_UnaryNegation(System.Single)
@@ -9977,6 +10021,7 @@ System.Private.CoreLib.dll:System.String System.ArgumentException::Message()
 System.Private.CoreLib.dll:System.String System.ArgumentOutOfRangeException::Message()
 System.Private.CoreLib.dll:System.String System.BadImageFormatException::_fileName
 System.Private.CoreLib.dll:System.String System.BadImageFormatException::_fusionLog
+System.Private.CoreLib.dll:System.String System.BadImageFormatException::_requestingAssemblyChain
 System.Private.CoreLib.dll:System.String System.BadImageFormatException::Message()
 System.Private.CoreLib.dll:System.String System.Boolean::FalseString
 System.Private.CoreLib.dll:System.String System.Boolean::TrueString
@@ -10157,11 +10202,13 @@ System.Private.CoreLib.dll:System.String System.IO.Enumeration.FileSystemEnumera
 System.Private.CoreLib.dll:System.String System.IO.Enumeration.FileSystemEnumerator`1::_currentPath
 System.Private.CoreLib.dll:System.String System.IO.Enumeration.FileSystemEnumerator`1::_originalRootDirectory
 System.Private.CoreLib.dll:System.String System.IO.Enumeration.FileSystemEnumerator`1::_rootDirectory
+System.Private.CoreLib.dll:System.String System.IO.FileLoadException::_requestingAssemblyChain
 System.Private.CoreLib.dll:System.String System.IO.FileLoadException::<FileName>k__BackingField
 System.Private.CoreLib.dll:System.String System.IO.FileLoadException::<FusionLog>k__BackingField
 System.Private.CoreLib.dll:System.String System.IO.FileLoadException::FileName()
 System.Private.CoreLib.dll:System.String System.IO.FileLoadException::FusionLog()
 System.Private.CoreLib.dll:System.String System.IO.FileLoadException::Message()
+System.Private.CoreLib.dll:System.String System.IO.FileNotFoundException::_requestingAssemblyChain
 System.Private.CoreLib.dll:System.String System.IO.FileNotFoundException::<FileName>k__BackingField
 System.Private.CoreLib.dll:System.String System.IO.FileNotFoundException::<FusionLog>k__BackingField
 System.Private.CoreLib.dll:System.String System.IO.FileNotFoundException::FileName()
@@ -10381,7 +10428,7 @@ System.Private.CoreLib.dll:System.String.strlen(System.Byte*)
 System.Private.CoreLib.dll:System.String.Substring(System.Int32, System.Int32)
 System.Private.CoreLib.dll:System.String.Substring(System.Int32)
 System.Private.CoreLib.dll:System.String.System.Collections.Generic.IEnumerable<System.Char>.GetEnumerator()
-System.Private.CoreLib.dll:System.String.ThrowSubstringArgumentOutOfRange(System.Int32, System.Int32)
+System.Private.CoreLib.dll:System.String.ThrowSubstringArgumentOutOfRange(System.Int32, System.Int32, System.Int32)
 System.Private.CoreLib.dll:System.String.ToCharArray()
 System.Private.CoreLib.dll:System.String.ToLowerInvariant()
 System.Private.CoreLib.dll:System.String.ToString()
@@ -10750,7 +10797,7 @@ System.Private.CoreLib.dll:System.Text.StringBuilder..ctor(System.String, System
 System.Private.CoreLib.dll:System.Text.StringBuilder..ctor(System.String, System.Int32)
 System.Private.CoreLib.dll:System.Text.StringBuilder..ctor(System.String)
 System.Private.CoreLib.dll:System.Text.StringBuilder..ctor(System.Text.StringBuilder)
-System.Private.CoreLib.dll:System.Text.StringBuilder.<AppendFormat>g__MoveNext|119_0(System.String, System.Int32&)
+System.Private.CoreLib.dll:System.Text.StringBuilder.<AppendFormat>g__MoveNext|120_0(System.String, System.Int32&)
 System.Private.CoreLib.dll:System.Text.StringBuilder.Append(System.Boolean)
 System.Private.CoreLib.dll:System.Text.StringBuilder.Append(System.Char, System.Int32)
 System.Private.CoreLib.dll:System.Text.StringBuilder.Append(System.Char)
@@ -10936,6 +10983,8 @@ System.Private.CoreLib.dll:System.Threading.AutoreleasePool..cctor()
 System.Private.CoreLib.dll:System.Threading.AutoreleasePool.CheckEnableAutoreleasePool()
 System.Private.CoreLib.dll:System.Threading.AutoreleasePool.CreateAutoreleasePool()
 System.Private.CoreLib.dll:System.Threading.AutoreleasePool.DrainAutoreleasePool()
+System.Private.CoreLib.dll:System.Threading.Backoff
+System.Private.CoreLib.dll:System.Threading.Backoff.Exponential(System.UInt32)
 System.Private.CoreLib.dll:System.Threading.ExecutionContext
 System.Private.CoreLib.dll:System.Threading.ExecutionContext System.Threading.Thread::_executionContext
 System.Private.CoreLib.dll:System.Threading.ExecutionContext.GetLocalValue(System.Threading.IAsyncLocal)
@@ -10954,7 +11003,7 @@ System.Private.CoreLib.dll:System.Threading.Interlocked.CompareExchange(System.O
 System.Private.CoreLib.dll:System.Threading.Interlocked.CompareExchange(System.UInt16&, System.UInt16, System.UInt16)
 System.Private.CoreLib.dll:System.Threading.Interlocked.CompareExchange(System.UInt32&, System.UInt32, System.UInt32)
 System.Private.CoreLib.dll:System.Threading.Interlocked.CompareExchange`1(T&, T, T)
-System.Private.CoreLib.dll:System.Threading.Interlocked.Decrement(System.Int32&)
+System.Private.CoreLib.dll:System.Threading.Interlocked.Decrement(System.UInt32&)
 System.Private.CoreLib.dll:System.Threading.Interlocked.Exchange(System.Byte&, System.Byte)
 System.Private.CoreLib.dll:System.Threading.Interlocked.Exchange(System.Int32&, System.Int32)
 System.Private.CoreLib.dll:System.Threading.Interlocked.Exchange(System.Int64&, System.Int64)
@@ -10965,21 +11014,21 @@ System.Private.CoreLib.dll:System.Threading.Interlocked.Exchange(System.UInt16&,
 System.Private.CoreLib.dll:System.Threading.Interlocked.Exchange`1(T&, T)
 System.Private.CoreLib.dll:System.Threading.Interlocked.Increment(System.Int32&)
 System.Private.CoreLib.dll:System.Threading.Interlocked.MemoryBarrier()
+System.Private.CoreLib.dll:System.Threading.Interlocked.Or(System.Int32&, System.Int32)
+System.Private.CoreLib.dll:System.Threading.Interlocked.Or(System.UInt32&, System.UInt32)
 System.Private.CoreLib.dll:System.Threading.LowLevelLock
 System.Private.CoreLib.dll:System.Threading.LowLevelLock System.Threading.WaitSubsystem::s_lock
-System.Private.CoreLib.dll:System.Threading.LowLevelLock..cctor()
 System.Private.CoreLib.dll:System.Threading.LowLevelLock..ctor()
 System.Private.CoreLib.dll:System.Threading.LowLevelLock.Acquire()
 System.Private.CoreLib.dll:System.Threading.LowLevelLock.Dispose()
 System.Private.CoreLib.dll:System.Threading.LowLevelLock.Finalize()
 System.Private.CoreLib.dll:System.Threading.LowLevelLock.Release()
 System.Private.CoreLib.dll:System.Threading.LowLevelLock.SignalWaiter()
-System.Private.CoreLib.dll:System.Threading.LowLevelLock.SpinWaitTryAcquireCallback(System.Object)
-System.Private.CoreLib.dll:System.Threading.LowLevelLock.TryAcquire_NoFastPath(System.Int32)
+System.Private.CoreLib.dll:System.Threading.LowLevelLock.SpinAndAcquire()
 System.Private.CoreLib.dll:System.Threading.LowLevelLock.TryAcquire()
 System.Private.CoreLib.dll:System.Threading.LowLevelLock.WaitAndAcquire()
 System.Private.CoreLib.dll:System.Threading.LowLevelMonitor
-System.Private.CoreLib.dll:System.Threading.LowLevelMonitor System.Threading.LowLevelLock::_monitor
+System.Private.CoreLib.dll:System.Threading.LowLevelMonitor System.Threading.LowLevelThreadBlocker::_monitor
 System.Private.CoreLib.dll:System.Threading.LowLevelMonitor System.Threading.WaitSubsystem/ThreadWaitInfo::_waitMonitor
 System.Private.CoreLib.dll:System.Threading.LowLevelMonitor.Acquire()
 System.Private.CoreLib.dll:System.Threading.LowLevelMonitor.AcquireCore()
@@ -10992,10 +11041,12 @@ System.Private.CoreLib.dll:System.Threading.LowLevelMonitor.Signal_Release()
 System.Private.CoreLib.dll:System.Threading.LowLevelMonitor.Signal_ReleaseCore()
 System.Private.CoreLib.dll:System.Threading.LowLevelMonitor.Wait()
 System.Private.CoreLib.dll:System.Threading.LowLevelMonitor.WaitCore()
-System.Private.CoreLib.dll:System.Threading.LowLevelSpinWaiter
-System.Private.CoreLib.dll:System.Threading.LowLevelSpinWaiter System.Threading.LowLevelLock::_spinWaiter
-System.Private.CoreLib.dll:System.Threading.LowLevelSpinWaiter.SpinWaitForCondition(System.Func`2<System.Object,System.Boolean>, System.Object, System.Int32, System.Int32)
-System.Private.CoreLib.dll:System.Threading.LowLevelSpinWaiter.Wait(System.Int32, System.Int32, System.Boolean)
+System.Private.CoreLib.dll:System.Threading.LowLevelThreadBlocker
+System.Private.CoreLib.dll:System.Threading.LowLevelThreadBlocker System.Threading.LowLevelLock::_blocker
+System.Private.CoreLib.dll:System.Threading.LowLevelThreadBlocker..ctor()
+System.Private.CoreLib.dll:System.Threading.LowLevelThreadBlocker.Dispose()
+System.Private.CoreLib.dll:System.Threading.LowLevelThreadBlocker.Wait()
+System.Private.CoreLib.dll:System.Threading.LowLevelThreadBlocker.WakeOne()
 System.Private.CoreLib.dll:System.Threading.Monitor
 System.Private.CoreLib.dll:System.Threading.Monitor.Enter(System.Object, System.Boolean&)
 System.Private.CoreLib.dll:System.Threading.Monitor.Enter(System.Object)
@@ -11085,9 +11136,6 @@ System.Private.CoreLib.dll:System.Threading.Thread.InitInternal(System.Threading
 System.Private.CoreLib.dll:System.Threading.Thread.OnThreadExiting(System.Threading.Thread)
 System.Private.CoreLib.dll:System.Threading.Thread.SpinWait_nop()
 System.Private.CoreLib.dll:System.Threading.Thread.SpinWait(System.Int32)
-System.Private.CoreLib.dll:System.Threading.Thread.UninterruptibleSleep0()
-System.Private.CoreLib.dll:System.Threading.Thread.Yield()
-System.Private.CoreLib.dll:System.Threading.Thread.YieldInternal()
 System.Private.CoreLib.dll:System.Threading.Thread/StartHelper
 System.Private.CoreLib.dll:System.Threading.Thread/StartHelper System.Threading.Thread::_startHelper
 System.Private.CoreLib.dll:System.Threading.ThreadAbortException
@@ -11525,6 +11573,7 @@ System.Private.CoreLib.dll:System.Type System.Runtime.CompilerServices.StateMach
 System.Private.CoreLib.dll:System.Type System.Runtime.CompilerServices.StateMachineAttribute::StateMachineType()
 System.Private.CoreLib.dll:System.Type System.Runtime.InteropServices.MarshalAsAttribute::MarshalTypeRef
 System.Private.CoreLib.dll:System.Type System.Runtime.InteropServices.MarshalAsAttribute::SafeArrayUserDefinedSubType
+System.Private.CoreLib.dll:System.Type System.Runtime.InteropServices.UnmanagedCallersOnlyAttribute::AssociatedSourceType
 System.Private.CoreLib.dll:System.Type System.RuntimeType::BaseType()
 System.Private.CoreLib.dll:System.Type System.RuntimeType::DeclaringType()
 System.Private.CoreLib.dll:System.Type System.RuntimeType::ReflectedType()
@@ -11709,8 +11758,6 @@ System.Private.CoreLib.dll:System.UInt128.GetHashCode()
 System.Private.CoreLib.dll:System.UInt128.LeadingZeroCount(System.UInt128)
 System.Private.CoreLib.dll:System.UInt128.LeadingZeroCountAsInt32(System.UInt128)
 System.Private.CoreLib.dll:System.UInt128.Log2(System.UInt128)
-System.Private.CoreLib.dll:System.UInt128.Max(System.UInt128, System.UInt128)
-System.Private.CoreLib.dll:System.UInt128.Min(System.UInt128, System.UInt128)
 System.Private.CoreLib.dll:System.UInt128.op_Addition(System.UInt128, System.UInt128)
 System.Private.CoreLib.dll:System.UInt128.op_BitwiseAnd(System.UInt128, System.UInt128)
 System.Private.CoreLib.dll:System.UInt128.op_BitwiseOr(System.UInt128, System.UInt128)
@@ -11786,6 +11833,7 @@ System.Private.CoreLib.dll:System.UInt128.System.Numerics.INumberBase<System.UIn
 System.Private.CoreLib.dll:System.UInt128.System.Numerics.INumberBase<System.UInt128>.IsZero(System.UInt128)
 System.Private.CoreLib.dll:System.UInt128.System.Numerics.INumberBase<System.UInt128>.TryConvertFromTruncating`1(TOther, out System.UInt128&)
 System.Private.CoreLib.dll:System.UInt128.System.Numerics.INumberBase<System.UInt128>.TryConvertToChecked`1(System.UInt128, out TOther&)
+System.Private.CoreLib.dll:System.UInt128.System.Numerics.INumberBase<System.UInt128>.TryConvertToSaturating`1(System.UInt128, out TOther&)
 System.Private.CoreLib.dll:System.UInt128.System.Numerics.INumberBase<System.UInt128>.TryConvertToTruncating`1(System.UInt128, out TOther&)
 System.Private.CoreLib.dll:System.UInt128.ToString()
 System.Private.CoreLib.dll:System.UInt128.ToString(System.String, System.IFormatProvider)
@@ -11810,7 +11858,6 @@ System.Private.CoreLib.dll:System.UInt16 System.Single::System.IBinaryFloatParse
 System.Private.CoreLib.dll:System.UInt16 System.UInt16::m_value
 System.Private.CoreLib.dll:System.UInt16 System.UInt16::System.IBinaryIntegerParseAndFormatInfo<System.UInt16>.MaxValueDiv10()
 System.Private.CoreLib.dll:System.UInt16 System.UInt16::System.Numerics.IMinMaxValue<System.UInt16>.MaxValue()
-System.Private.CoreLib.dll:System.UInt16 System.UInt16::System.Numerics.IMinMaxValue<System.UInt16>.MinValue()
 System.Private.CoreLib.dll:System.UInt16 System.UInt16::System.Numerics.INumberBase<System.UInt16>.One()
 System.Private.CoreLib.dll:System.UInt16 System.UInt16::System.Numerics.INumberBase<System.UInt16>.Zero()
 System.Private.CoreLib.dll:System.UInt16.CompareTo(System.Object)
@@ -11840,7 +11887,6 @@ System.Private.CoreLib.dll:System.UInt16.System.Numerics.IComparisonOperators<Sy
 System.Private.CoreLib.dll:System.UInt16.System.Numerics.IEqualityOperators<System.UInt16,System.UInt16,System.Boolean>.op_Equality(System.UInt16, System.UInt16)
 System.Private.CoreLib.dll:System.UInt16.System.Numerics.IEqualityOperators<System.UInt16,System.UInt16,System.Boolean>.op_Inequality(System.UInt16, System.UInt16)
 System.Private.CoreLib.dll:System.UInt16.System.Numerics.IMinMaxValue<System.UInt16>.get_MaxValue()
-System.Private.CoreLib.dll:System.UInt16.System.Numerics.IMinMaxValue<System.UInt16>.get_MinValue()
 System.Private.CoreLib.dll:System.UInt16.System.Numerics.INumberBase<System.UInt16>.get_One()
 System.Private.CoreLib.dll:System.UInt16.System.Numerics.INumberBase<System.UInt16>.get_Zero()
 System.Private.CoreLib.dll:System.UInt16.System.Numerics.INumberBase<System.UInt16>.IsFinite(System.UInt16)
@@ -11849,6 +11895,7 @@ System.Private.CoreLib.dll:System.UInt16.System.Numerics.INumberBase<System.UInt
 System.Private.CoreLib.dll:System.UInt16.System.Numerics.INumberBase<System.UInt16>.IsZero(System.UInt16)
 System.Private.CoreLib.dll:System.UInt16.System.Numerics.INumberBase<System.UInt16>.TryConvertFromTruncating`1(TOther, out System.UInt16&)
 System.Private.CoreLib.dll:System.UInt16.System.Numerics.INumberBase<System.UInt16>.TryConvertToChecked`1(System.UInt16, out TOther&)
+System.Private.CoreLib.dll:System.UInt16.System.Numerics.INumberBase<System.UInt16>.TryConvertToSaturating`1(System.UInt16, out TOther&)
 System.Private.CoreLib.dll:System.UInt16.System.Numerics.INumberBase<System.UInt16>.TryConvertToTruncating`1(System.UInt16, out TOther&)
 System.Private.CoreLib.dll:System.UInt16.System.Numerics.IShiftOperators<System.UInt16,System.Int32,System.UInt16>.op_LeftShift(System.UInt16, System.Int32)
 System.Private.CoreLib.dll:System.UInt16.System.Numerics.ISubtractionOperators<System.UInt16,System.UInt16,System.UInt16>.op_Subtraction(System.UInt16, System.UInt16)
@@ -11930,6 +11977,7 @@ System.Private.CoreLib.dll:System.UInt32 System.Number/IHexOrBinaryParser`1::Max
 System.Private.CoreLib.dll:System.UInt32 System.Reflection.InvocationFlags::value__
 System.Private.CoreLib.dll:System.UInt32 System.Reflection.RuntimeCustomAttributeData/LazyCAttrData::data_length
 System.Private.CoreLib.dll:System.UInt32 System.Text.Rune::_value
+System.Private.CoreLib.dll:System.UInt32 System.Threading.LowLevelLock::_state
 System.Private.CoreLib.dll:System.UInt32 System.Threading.ObjectHeader/MonoThreadsSync::nest
 System.Private.CoreLib.dll:System.UInt32 System.Threading.ObjectHeader/MonoThreadsSync::status
 System.Private.CoreLib.dll:System.UInt32 System.TimeZoneInfo/TZifHead::CharCount
@@ -11942,7 +11990,6 @@ System.Private.CoreLib.dll:System.UInt32 System.TimeZoneInfo/TZifHead::TypeCount
 System.Private.CoreLib.dll:System.UInt32 System.UInt32::m_value
 System.Private.CoreLib.dll:System.UInt32 System.UInt32::System.IBinaryIntegerParseAndFormatInfo<System.UInt32>.MaxValueDiv10()
 System.Private.CoreLib.dll:System.UInt32 System.UInt32::System.Numerics.IMinMaxValue<System.UInt32>.MaxValue()
-System.Private.CoreLib.dll:System.UInt32 System.UInt32::System.Numerics.IMinMaxValue<System.UInt32>.MinValue()
 System.Private.CoreLib.dll:System.UInt32 System.UInt32::System.Numerics.INumberBase<System.UInt32>.One()
 System.Private.CoreLib.dll:System.UInt32 System.UInt32::System.Numerics.INumberBase<System.UInt32>.Zero()
 System.Private.CoreLib.dll:System.UInt32.CompareTo(System.Object)
@@ -11975,7 +12022,6 @@ System.Private.CoreLib.dll:System.UInt32.System.Numerics.IComparisonOperators<Sy
 System.Private.CoreLib.dll:System.UInt32.System.Numerics.IEqualityOperators<System.UInt32,System.UInt32,System.Boolean>.op_Equality(System.UInt32, System.UInt32)
 System.Private.CoreLib.dll:System.UInt32.System.Numerics.IEqualityOperators<System.UInt32,System.UInt32,System.Boolean>.op_Inequality(System.UInt32, System.UInt32)
 System.Private.CoreLib.dll:System.UInt32.System.Numerics.IMinMaxValue<System.UInt32>.get_MaxValue()
-System.Private.CoreLib.dll:System.UInt32.System.Numerics.IMinMaxValue<System.UInt32>.get_MinValue()
 System.Private.CoreLib.dll:System.UInt32.System.Numerics.INumberBase<System.UInt32>.get_One()
 System.Private.CoreLib.dll:System.UInt32.System.Numerics.INumberBase<System.UInt32>.get_Zero()
 System.Private.CoreLib.dll:System.UInt32.System.Numerics.INumberBase<System.UInt32>.IsFinite(System.UInt32)
@@ -11984,6 +12030,7 @@ System.Private.CoreLib.dll:System.UInt32.System.Numerics.INumberBase<System.UInt
 System.Private.CoreLib.dll:System.UInt32.System.Numerics.INumberBase<System.UInt32>.IsZero(System.UInt32)
 System.Private.CoreLib.dll:System.UInt32.System.Numerics.INumberBase<System.UInt32>.TryConvertFromTruncating`1(TOther, out System.UInt32&)
 System.Private.CoreLib.dll:System.UInt32.System.Numerics.INumberBase<System.UInt32>.TryConvertToChecked`1(System.UInt32, out TOther&)
+System.Private.CoreLib.dll:System.UInt32.System.Numerics.INumberBase<System.UInt32>.TryConvertToSaturating`1(System.UInt32, out TOther&)
 System.Private.CoreLib.dll:System.UInt32.System.Numerics.INumberBase<System.UInt32>.TryConvertToTruncating`1(System.UInt32, out TOther&)
 System.Private.CoreLib.dll:System.UInt32.System.Numerics.IShiftOperators<System.UInt32,System.Int32,System.UInt32>.op_LeftShift(System.UInt32, System.Int32)
 System.Private.CoreLib.dll:System.UInt32.System.Numerics.ISubtractionOperators<System.UInt32,System.UInt32,System.UInt32>.op_Subtraction(System.UInt32, System.UInt32)
@@ -12040,7 +12087,6 @@ System.Private.CoreLib.dll:System.UInt64 System.UInt128::Upper()
 System.Private.CoreLib.dll:System.UInt64 System.UInt64::m_value
 System.Private.CoreLib.dll:System.UInt64 System.UInt64::System.IBinaryIntegerParseAndFormatInfo<System.UInt64>.MaxValueDiv10()
 System.Private.CoreLib.dll:System.UInt64 System.UInt64::System.Numerics.IMinMaxValue<System.UInt64>.MaxValue()
-System.Private.CoreLib.dll:System.UInt64 System.UInt64::System.Numerics.IMinMaxValue<System.UInt64>.MinValue()
 System.Private.CoreLib.dll:System.UInt64 System.UInt64::System.Numerics.INumberBase<System.UInt64>.One()
 System.Private.CoreLib.dll:System.UInt64 System.UInt64::System.Numerics.INumberBase<System.UInt64>.Zero()
 System.Private.CoreLib.dll:System.UInt64.CompareTo(System.Object)
@@ -12073,7 +12119,6 @@ System.Private.CoreLib.dll:System.UInt64.System.Numerics.IComparisonOperators<Sy
 System.Private.CoreLib.dll:System.UInt64.System.Numerics.IEqualityOperators<System.UInt64,System.UInt64,System.Boolean>.op_Equality(System.UInt64, System.UInt64)
 System.Private.CoreLib.dll:System.UInt64.System.Numerics.IEqualityOperators<System.UInt64,System.UInt64,System.Boolean>.op_Inequality(System.UInt64, System.UInt64)
 System.Private.CoreLib.dll:System.UInt64.System.Numerics.IMinMaxValue<System.UInt64>.get_MaxValue()
-System.Private.CoreLib.dll:System.UInt64.System.Numerics.IMinMaxValue<System.UInt64>.get_MinValue()
 System.Private.CoreLib.dll:System.UInt64.System.Numerics.INumberBase<System.UInt64>.get_One()
 System.Private.CoreLib.dll:System.UInt64.System.Numerics.INumberBase<System.UInt64>.get_Zero()
 System.Private.CoreLib.dll:System.UInt64.System.Numerics.INumberBase<System.UInt64>.IsFinite(System.UInt64)
@@ -12082,6 +12127,7 @@ System.Private.CoreLib.dll:System.UInt64.System.Numerics.INumberBase<System.UInt
 System.Private.CoreLib.dll:System.UInt64.System.Numerics.INumberBase<System.UInt64>.IsZero(System.UInt64)
 System.Private.CoreLib.dll:System.UInt64.System.Numerics.INumberBase<System.UInt64>.TryConvertFromTruncating`1(TOther, out System.UInt64&)
 System.Private.CoreLib.dll:System.UInt64.System.Numerics.INumberBase<System.UInt64>.TryConvertToChecked`1(System.UInt64, out TOther&)
+System.Private.CoreLib.dll:System.UInt64.System.Numerics.INumberBase<System.UInt64>.TryConvertToSaturating`1(System.UInt64, out TOther&)
 System.Private.CoreLib.dll:System.UInt64.System.Numerics.INumberBase<System.UInt64>.TryConvertToTruncating`1(System.UInt64, out TOther&)
 System.Private.CoreLib.dll:System.UInt64.System.Numerics.IShiftOperators<System.UInt64,System.Int32,System.UInt64>.op_LeftShift(System.UInt64, System.Int32)
 System.Private.CoreLib.dll:System.UInt64.System.Numerics.ISubtractionOperators<System.UInt64,System.UInt64,System.UInt64>.op_Subtraction(System.UInt64, System.UInt64)
@@ -12097,7 +12143,6 @@ System.Private.CoreLib.dll:System.UIntPtr System.UIntPtr::_value
 System.Private.CoreLib.dll:System.UIntPtr System.UIntPtr::MaxValue()
 System.Private.CoreLib.dll:System.UIntPtr System.UIntPtr::MinValue()
 System.Private.CoreLib.dll:System.UIntPtr System.UIntPtr::System.Numerics.IMinMaxValue<nuint>.MaxValue()
-System.Private.CoreLib.dll:System.UIntPtr System.UIntPtr::System.Numerics.IMinMaxValue<nuint>.MinValue()
 System.Private.CoreLib.dll:System.UIntPtr System.UIntPtr::System.Numerics.INumberBase<nuint>.One()
 System.Private.CoreLib.dll:System.UIntPtr System.UIntPtr::System.Numerics.INumberBase<nuint>.Zero()
 System.Private.CoreLib.dll:System.UIntPtr.CompareTo(System.Object)
@@ -12120,7 +12165,6 @@ System.Private.CoreLib.dll:System.UIntPtr.System.Numerics.IComparisonOperators<n
 System.Private.CoreLib.dll:System.UIntPtr.System.Numerics.IComparisonOperators<nuint,nuint,System.Boolean>.op_LessThan(System.UIntPtr, System.UIntPtr)
 System.Private.CoreLib.dll:System.UIntPtr.System.Numerics.IComparisonOperators<nuint,nuint,System.Boolean>.op_LessThanOrEqual(System.UIntPtr, System.UIntPtr)
 System.Private.CoreLib.dll:System.UIntPtr.System.Numerics.IMinMaxValue<nuint>.get_MaxValue()
-System.Private.CoreLib.dll:System.UIntPtr.System.Numerics.IMinMaxValue<nuint>.get_MinValue()
 System.Private.CoreLib.dll:System.UIntPtr.System.Numerics.INumberBase<nuint>.get_One()
 System.Private.CoreLib.dll:System.UIntPtr.System.Numerics.INumberBase<nuint>.get_Zero()
 System.Private.CoreLib.dll:System.UIntPtr.System.Numerics.INumberBase<nuint>.IsFinite(System.UIntPtr)
@@ -12129,6 +12173,7 @@ System.Private.CoreLib.dll:System.UIntPtr.System.Numerics.INumberBase<nuint>.IsN
 System.Private.CoreLib.dll:System.UIntPtr.System.Numerics.INumberBase<nuint>.IsZero(System.UIntPtr)
 System.Private.CoreLib.dll:System.UIntPtr.System.Numerics.INumberBase<nuint>.TryConvertFromTruncating`1(TOther, out System.UIntPtr&)
 System.Private.CoreLib.dll:System.UIntPtr.System.Numerics.INumberBase<nuint>.TryConvertToChecked`1(System.UIntPtr, out TOther&)
+System.Private.CoreLib.dll:System.UIntPtr.System.Numerics.INumberBase<nuint>.TryConvertToSaturating`1(System.UIntPtr, out TOther&)
 System.Private.CoreLib.dll:System.UIntPtr.System.Numerics.INumberBase<nuint>.TryConvertToTruncating`1(System.UIntPtr, out TOther&)
 System.Private.CoreLib.dll:System.UIntPtr.System.Numerics.IShiftOperators<nuint,System.Int32,nuint>.op_LeftShift(System.UIntPtr, System.Int32)
 System.Private.CoreLib.dll:System.UIntPtr.System.Numerics.ISubtractionOperators<nuint,nuint,nuint>.op_Subtraction(System.UIntPtr, System.UIntPtr)
@@ -12301,7 +12346,6 @@ System.Private.CoreLib.dll:TResult System.IO.Enumeration.FileSystemEnumerator`1:
 System.Private.CoreLib.dll:TSelf System.IBinaryIntegerParseAndFormatInfo`1::MaxValueDiv10()
 System.Private.CoreLib.dll:TSelf System.Numerics.IFloatingPointIeee754`1::NegativeZero()
 System.Private.CoreLib.dll:TSelf System.Numerics.IMinMaxValue`1::MaxValue()
-System.Private.CoreLib.dll:TSelf System.Numerics.IMinMaxValue`1::MinValue()
 System.Private.CoreLib.dll:TSelf System.Numerics.INumberBase`1::One()
 System.Private.CoreLib.dll:TSelf System.Numerics.INumberBase`1::Zero()
 System.Private.CoreLib.dll:TSelf System.Runtime.Intrinsics.ISimdVector`2::Zero()

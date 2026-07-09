@@ -56,6 +56,7 @@ using NSMenuItem = Foundation.NSObject;
 using NSPasteboard = Foundation.NSObject;
 using NSPrintInfo = Foundation.NSObject;
 using NSPrintOperation = Foundation.NSObject;
+using NSRefreshController = Foundation.NSObject;
 using NSResponder = UIKit.UIResponder;
 using NSSelectionAffinity = Foundation.NSObject;
 using NSUserInterfaceValidations = Foundation.NSObjectProtocol;
@@ -5200,7 +5201,14 @@ namespace WebKit {
 		[Async]
 		[Export ("setCookies:completionHandler:")]
 		void SetCookies (NSHttpCookie [] cookies, [NullAllowed] Action completionHandler);
+
+		[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[Async]
+		[Export ("getCookiesForURL:completionHandler:")]
+		void GetCookies (NSUrl url, WKHttpCookieStoreGetCookiesCallback completionHandler);
 	}
+
+	delegate void WKHttpCookieStoreGetCookiesCallback (NSHttpCookie [] cookies);
 
 	interface IWKHttpCookieStoreObserver { }
 
@@ -5247,6 +5255,27 @@ namespace WebKit {
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("webView", ArgumentSemantic.Weak)]
 		WKWebView WebView { get; }
+	}
+
+	[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface WKFormInfo {
+
+		[Export ("targetFrame")]
+		WKFrameInfo TargetFrame { get; }
+
+		[Export ("sourceFrame")]
+		WKFrameInfo SourceFrame { get; }
+
+		[Export ("submissionURL")]
+		NSUrl SubmissionUrl { get; }
+
+		[Export ("httpMethod")]
+		string HttpMethod { get; }
+
+		[Export ("formValues")]
+		NSDictionary<NSString, NSString> FormValues { get; }
 	}
 
 	/// <summary>Tracks the loading progress of a page.</summary>
@@ -5305,6 +5334,10 @@ namespace WebKit {
 		[iOS (26, 0), Mac (26, 0), MacCatalyst (26, 0)]
 		[Export ("isContentRuleListRedirect")]
 		bool IsContentRuleListRedirect { get; }
+
+		[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[NullAllowed, Export ("mainFrameNavigation")]
+		WKNavigation MainFrameNavigation { get; }
 	}
 
 	/// <summary>Delegate object for <see cref="WebKit.WKNavigation" /> objects, provides methods relating to navigation and load policies.</summary>
@@ -5412,9 +5445,15 @@ namespace WebKit {
 		[iOS (18, 4), MacCatalyst (18, 4), Mac (15, 4), NoTV]
 		[Export ("webView:shouldGoToBackForwardListItem:willUseInstantBack:completionHandler:")]
 		void ShouldGoToBackForwardListItem (WKWebView webView, WKBackForwardListItem backForwardListItem, bool willUseInstantBack, WKNavigationDelegateShouldGoToBackForwardListItemCallback completionHandler);
+
+		[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[Export ("webView:willSubmitForm:submissionHandler:")]
+		void WillSubmitForm (WKWebView webView, WKFormInfo formInfo, WKNavigationDelegateWillSubmitFormCallback submissionHandler);
 	}
 
 	delegate void WKNavigationDelegateShouldGoToBackForwardListItemCallback (bool shouldGoToItem);
+
+	delegate void WKNavigationDelegateWillSubmitFormCallback ();
 
 	interface IWKNavigationDelegate { }
 
@@ -5437,6 +5476,10 @@ namespace WebKit {
 
 		[Export ("canShowMIMEType")]
 		bool CanShowMimeType { get; }
+
+		[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[NullAllowed, Export ("mainFrameNavigation")]
+		WKNavigation MainFrameNavigation { get; }
 	}
 
 	/// <summary>Preference settings for a <see cref="WebKit.WKWebView" />.</summary>
@@ -6055,7 +6098,14 @@ namespace WebKit {
 		[NoMacCatalyst, iOS (26, 0), NoMac]
 		[Export ("webView:insertInputSuggestion:")]
 		void InsertInputSuggestion (WKWebView webView, UIInputSuggestion inputSuggestion);
+
+		[Async]
+		[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[Export ("webView:requestGeolocationPermissionForOrigin:initiatedByFrame:decisionHandler:")]
+		void RequestGeolocationPermission (WKWebView webView, WKSecurityOrigin origin, WKFrameInfo frame, WKUIDelegateRequestGeolocationPermissionCallback decisionHandler);
 	}
+
+	delegate void WKUIDelegateRequestGeolocationPermissionCallback (WKPermissionDecision decision);
 
 	interface IWKUIDelegate { }
 
@@ -6117,6 +6167,14 @@ namespace WebKit {
 		[MacCatalyst (14, 0)]
 		[Export ("removeAllScriptMessageHandlers")]
 		void RemoveAllScriptMessageHandlers ();
+
+		[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[Export ("addBuffer:name:contentWorld:")]
+		void AddBuffer (WKJSScriptingBuffer buffer, string name, WKContentWorld world);
+
+		[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[Export ("removeBufferWithName:contentWorld:")]
+		void RemoveBuffer (string name, WKContentWorld world);
 	}
 
 	/// <summary>A script that can be injected into a Web page.</summary>
@@ -6263,9 +6321,18 @@ namespace WebKit {
 		[Export ("magnification")]
 		nfloat Magnification { get; set; }
 
+		[NoTV, NoiOS, NoMacCatalyst, Mac (27, 0)]
+		[NullAllowed, Export ("refreshController", ArgumentSemantic.Strong)]
+		NSRefreshController RefreshController { get; set; }
+
 		[Export ("loadRequest:")]
 		[return: NullAllowed]
 		WKNavigation LoadRequest (NSUrlRequest request);
+
+		[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[Export ("loadURL:")]
+		[return: NullAllowed]
+		WKNavigation LoadUrl (NSUrl url);
 
 		[Export ("loadHTMLString:baseURL:")]
 		[return: NullAllowed]
@@ -6947,6 +7014,22 @@ namespace WebKit {
 		[NoTV, Mac (26, 4), iOS (26, 4), MacCatalyst (26, 4)]
 		[Export ("securityRestrictionMode", ArgumentSemantic.Assign)]
 		WKSecurityRestrictionMode SecurityRestrictionMode { get; set; }
+
+		[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[NullAllowed, Export ("alternateRequest", ArgumentSemantic.Copy)]
+		NSUrlRequest AlternateRequest { get; set; }
+
+		[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[NullAllowed, Export ("overrideReferrer")]
+		string OverrideReferrer { get; set; }
+
+		[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[Export ("allowsJSHandleCreationInPageWorld")]
+		bool AllowsJSHandleCreationInPageWorld { get; set; }
+
+		[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[Export ("globalPrivacyControlEnabled")]
+		bool GlobalPrivacyControlEnabled { get; set; }
 	}
 
 	[NoMac]
@@ -6976,8 +7059,73 @@ namespace WebKit {
 		[Export ("worldWithName:")]
 		WKContentWorld Create (string name);
 
+		[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[Static]
+		[Export ("worldWithConfiguration:")]
+		WKContentWorld Create (WKContentWorldConfiguration configuration);
+
 		[NullAllowed, Export ("name")]
 		string Name { get; }
+	}
+
+	[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	interface WKContentWorldConfiguration : NSCopying, NSSecureCoding {
+
+		[Export ("openClosedShadowRootsEnabled")]
+		bool OpenClosedShadowRootsEnabled { get; set; }
+
+		[Export ("autofillScriptingEnabled")]
+		bool AutofillScriptingEnabled { get; set; }
+
+		[Export ("elementUserInfoEnabled")]
+		bool ElementUserInfoEnabled { get; set; }
+
+		[Export ("legacyBuiltinOverridesEnabled")]
+		bool LegacyBuiltinOverridesEnabled { get; set; }
+
+		[Export ("nodeSerializationEnabled")]
+		bool NodeSerializationEnabled { get; set; }
+
+		[Export ("jsHandleCreationEnabled")]
+		bool JsHandleCreationEnabled { get; [Bind ("setJSHandleCreationEnabled:")] set; }
+
+		[Export ("inspectable")]
+		bool Inspectable { [Bind ("isInspectable")] get; set; }
+	}
+
+	delegate void WKJSHandleWindowProxyFrameInfoCallback ([NullAllowed] WKFrameInfo frameInfo);
+
+	[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface WKJSHandle : NSCopying {
+
+		[Export ("frame", ArgumentSemantic.Copy)]
+		WKFrameInfo Frame { get; }
+
+		[NullAllowed, Export ("world", ArgumentSemantic.Weak)]
+		WKContentWorld World { get; }
+
+		[Async]
+		[Export ("windowProxyFrameInfo:")]
+		void GetWindowProxyFrameInfo (WKJSHandleWindowProxyFrameInfoCallback completionHandler);
+	}
+
+	[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface WKJSScriptingBuffer {
+
+		[Export ("initWithData:")]
+		[return: NullAllowed]
+		NativeHandle Constructor (NSData data);
+	}
+
+	[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface WKJSSerializedNode {
 	}
 
 	[iOS (14, 0)]

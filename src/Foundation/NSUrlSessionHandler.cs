@@ -513,6 +513,21 @@ namespace Foundation {
 				HttpsEnable = true,
 #endif
 			};
+
+			// If the proxy requires authentication, embed the credentials directly in the proxy dictionary.
+			// For plain HTTP proxies using Basic authentication NSUrlSession/CFNetwork won't surface the
+			// proxy authentication challenge to our session delegate, but it will use these credentials to
+			// send the Proxy-Authorization header automatically.
+			var proxyCredentials = proxy.Credentials ?? defaultProxyCredentials;
+			var proxyCredential = proxyCredentials?.GetCredential (proxyUri, "Basic");
+			if (proxyCredential is not null && !string.IsNullOrEmpty (proxyCredential.UserName)) {
+				var mutableProxy = new NSMutableDictionary (strongProxy.GetDictionary ());
+				mutableProxy [CFProxy.UsernameKey] = new NSString (proxyCredential.UserName);
+				mutableProxy [CFProxy.PasswordKey] = new NSString (proxyCredential.Password ?? "");
+				proxyDictionary = mutableProxy;
+				return true;
+			}
+
 			proxyDictionary = strongProxy.GetDictionary ();
 			return true;
 		}

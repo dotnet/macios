@@ -1758,6 +1758,11 @@ namespace CoreLocation {
 		NSNumber Minor { get; }
 	}
 
+	[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[Protocol]
+	interface CLBodyIdentifiable {
+	}
+
 	[iOS (15, 0), NoTV, NoMacCatalyst, NoMac]
 	[Protocol]
 	interface CLLocationPushServiceExtension {

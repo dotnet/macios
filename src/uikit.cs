@@ -16,6 +16,7 @@ using UIKit;
 using CloudKit;
 #if !TVOS
 using Contacts;
+using CoreMotion;
 #else
 using CNContact = System.Object;
 #endif
@@ -13727,6 +13728,19 @@ namespace UIKit {
 		UINavigationBarNSToolbarSection GetNSToolbarSection (UINavigationBar navigationBar);
 	}
 
+	[TV (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	interface UIBarMinimization : NSCopying, NSSecureCoding {
+		[Export ("minimizationBehavior", ArgumentSemantic.Assign)]
+		UIBarMinimizationBehavior MinimizationBehavior { get; set; }
+
+		[Export ("safeAreaAdjustment", ArgumentSemantic.Assign)]
+		UIBarMinimizationSafeAreaAdjustment SafeAreaAdjustment { get; set; }
+
+		[Export ("restorationBehavior", ArgumentSemantic.Assign)]
+		UIBarMinimizationRestorationBehavior RestorationBehavior { get; set; }
+	}
+
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface UINavigationItem : NSCoding {
@@ -13964,12 +13978,8 @@ namespace UIKit {
 		UIView SubtitleView { get; set; }
 
 		[TV (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
-		[Export ("barMinimizeBehavior", ArgumentSemantic.Assign)]
-		UIBarMinimizeBehavior BarMinimizeBehavior { get; set; }
-
-		[TV (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
-		[Export ("barMinimizationSafeAreaAdjustment", ArgumentSemantic.Assign)]
-		UIBarMinimizationSafeAreaAdjustment BarMinimizationSafeAreaAdjustment { get; set; }
+		[Export ("navigationBarMinimization", ArgumentSemantic.Copy)]
+		UIBarMinimization NavigationBarMinimization { get; set; }
 
 	}
 
@@ -21530,8 +21540,10 @@ namespace UIKit {
 	[BaseType (typeof (UIResponder))]
 	interface UIView : UIAppearance, UIAppearanceContainer, UIAccessibility, UIDynamicItem, NSCoding, UIAccessibilityIdentification, UITraitEnvironment, UICoordinateSpace, UIFocusItem, UIFocusItemContainer
 		, UITraitChangeObservable
+		, CLBodyIdentifiable
 #if !TVOS
 		, UILargeContentViewerItem, UIPopoverPresentationControllerSourceItem
+		, CMBodyIdentifiable
 #endif
 		, CALayerDelegate {
 		[DesignatedInitializer]
@@ -31172,6 +31184,10 @@ namespace UIKit {
 
 		[NullAllowed, Export ("shadowImage", ArgumentSemantic.Strong)]
 		UIImage ShadowImage { get; set; }
+
+		[NoTV, iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("overrideUserInterfaceStyle", ArgumentSemantic.Assign)]
+		UIUserInterfaceStyle OverrideUserInterfaceStyle { get; set; }
 	}
 
 	[MacCatalyst (13, 1)]

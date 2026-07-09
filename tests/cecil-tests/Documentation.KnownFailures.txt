@@ -7001,13 +7001,15 @@ F:UIKit.UIBandSelectionInteractionState.Possible
 F:UIKit.UIBandSelectionInteractionState.Selecting
 F:UIKit.UIBarButtonSystemItem.Close
 F:UIKit.UIBarButtonSystemItem.WritingTools
+F:UIKit.UIBarMinimizationBehavior.Automatic
+F:UIKit.UIBarMinimizationBehavior.Never
+F:UIKit.UIBarMinimizationBehavior.OnScrollDown
+F:UIKit.UIBarMinimizationBehavior.OnScrollUp
+F:UIKit.UIBarMinimizationRestorationBehavior.AtScrollEdge
+F:UIKit.UIBarMinimizationRestorationBehavior.Automatic
 F:UIKit.UIBarMinimizationSafeAreaAdjustment.Automatic
 F:UIKit.UIBarMinimizationSafeAreaAdjustment.Disabled
 F:UIKit.UIBarMinimizationSafeAreaAdjustment.Enabled
-F:UIKit.UIBarMinimizeBehavior.Automatic
-F:UIKit.UIBarMinimizeBehavior.Never
-F:UIKit.UIBarMinimizeBehavior.OnScrollDown
-F:UIKit.UIBarMinimizeBehavior.OnScrollUp
 F:UIKit.UIBehavioralStyle.Automatic
 F:UIKit.UIBehavioralStyle.Mac
 F:UIKit.UIBehavioralStyle.Pad
@@ -51375,6 +51377,7 @@ P:UIKit.UIBarAppearance.BackgroundEffect
 P:UIKit.UIBarAppearance.BackgroundImage
 P:UIKit.UIBarAppearance.BackgroundImageContentMode
 P:UIKit.UIBarAppearance.Idiom
+P:UIKit.UIBarAppearance.OverrideUserInterfaceStyle
 P:UIKit.UIBarAppearance.ShadowColor
 P:UIKit.UIBarAppearance.ShadowImage
 P:UIKit.UIBarButtonItem.Action
@@ -51452,6 +51455,9 @@ P:UIKit.UIBarItem.LargeContentSizeImageInsets
 P:UIKit.UIBarItem.ShouldGroupAccessibilityChildren
 P:UIKit.UIBarItem.Tag
 P:UIKit.UIBarItem.Title
+P:UIKit.UIBarMinimization.MinimizationBehavior
+P:UIKit.UIBarMinimization.RestorationBehavior
+P:UIKit.UIBarMinimization.SafeAreaAdjustment
 P:UIKit.UIBezierPath.Bounds
 P:UIKit.UIBezierPath.CGPath
 P:UIKit.UIBezierPath.CurrentPoint
@@ -52552,8 +52558,6 @@ P:UIKit.UINavigationItem.BackAction
 P:UIKit.UINavigationItem.BackBarButtonItem
 P:UIKit.UINavigationItem.BackButtonDisplayMode
 P:UIKit.UINavigationItem.BackButtonTitle
-P:UIKit.UINavigationItem.BarMinimizationSafeAreaAdjustment
-P:UIKit.UINavigationItem.BarMinimizeBehavior
 P:UIKit.UINavigationItem.CenterItemGroups
 P:UIKit.UINavigationItem.CompactAppearance
 P:UIKit.UINavigationItem.CompactScrollEdgeAppearance
@@ -52570,6 +52574,7 @@ P:UIKit.UINavigationItem.LeadingItemGroups
 P:UIKit.UINavigationItem.LeftBarButtonItem
 P:UIKit.UINavigationItem.LeftBarButtonItems
 P:UIKit.UINavigationItem.LeftItemsSupplementBackButton
+P:UIKit.UINavigationItem.NavigationBarMinimization
 P:UIKit.UINavigationItem.OverflowPresentationSource
 P:UIKit.UINavigationItem.PinnedTrailingGroup
 P:UIKit.UINavigationItem.PreferredSearchBarPlacement
@@ -61536,8 +61541,10 @@ T:UIKit.UIBarButtonItemGroup
 T:UIKit.UIBarButtonItemStateAppearance
 T:UIKit.UIBarButtonItemVisibilityPriority
 T:UIKit.UIBarItem
+T:UIKit.UIBarMinimization
+T:UIKit.UIBarMinimizationBehavior
+T:UIKit.UIBarMinimizationRestorationBehavior
 T:UIKit.UIBarMinimizationSafeAreaAdjustment
-T:UIKit.UIBarMinimizeBehavior
 T:UIKit.UIBehavioralStyle
 T:UIKit.UIBezierPath
 T:UIKit.UIBlurEffect

@@ -100,6 +100,8 @@ Bindings go in these locations:
 - **`src/FrameworkName/`** — Manual code (partial classes, enums, P/Invokes, extensions)
 - **`src/frameworks.sources`** — Maps frameworks to source files (update if adding new files)
 
+> ⚠️ **Binding an entirely new framework** (no `src/<fw>.cs` yet) needs extra build/test wiring — `frameworks.sources`, `tools/common/Frameworks.cs`, `ProjectTest.cs` link lists, the xtro ignore lists, plus two generated-file build gotchas. See [references/binding-patterns.md](references/binding-patterns.md) § "Registering a Brand-New Framework".
+
 Key binding patterns:
 
 ```csharp
@@ -172,6 +174,8 @@ Available preprocessor symbols for platform checks:
 - `__IOS__` — iOS
 - `__TVOS__` (preferred) / `TVOS` — tvOS
 - `__MACCATALYST__` — Mac Catalyst
+
+> ⚠️ Mac Catalyst defines **both** `__MACCATALYST__` **and** `__IOS__` (`msbuild/Xamarin.Shared/Xamarin.Shared.props`). In `#if` chains, test `__MACCATALYST__` **before** `__IOS__`, or the Catalyst case falls into the iOS branch.
 
 > ⚠️ **Foundation/TextKit types shared by AppKit and UIKit** (e.g. `NSTextList`, `NSParagraphStyle`) are bound once in `src/xkit.cs`, not duplicated in `appkit.cs`/`uikit.cs`. If a type in `appkit.cs` (or `uikit.cs`) becomes exposed to the other side, consolidate it there (share identical enums, split only divergent ones, handle platform-only members with `[No*]` attributes — reserving `#if` for divergences attributes can't express — keep back-dated availability). See [references/binding-patterns.md](references/binding-patterns.md) → "Shared AppKit/UIKit Types".
 

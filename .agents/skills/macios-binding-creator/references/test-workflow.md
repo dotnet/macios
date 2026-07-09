@@ -46,6 +46,10 @@ Classify reports `!extra-enum-value! Managed value N for <Enum>.<Member> is avai
 | `.ignore` | APIs intentionally not bound (with justification) |
 | `.deprecated` | Deprecated APIs |
 
+### Xtro only checks native → managed (no "extra selector")
+
+`SelectorCheck` iterates the **native** header declarations and emits `!missing-selector!` for any native selector with no managed binding. It **never** flags an *extra*, managed-only selector. Consequence: when Apple **removes** a selector in a new SDK, deleting the managed binding is xtro-neutral — but you must still delete it, or the introspection `ApiSelectorTest` fails at runtime (the managed selector no longer responds). (`tests/xtro-sharpie/xtro-sharpie/SelectorCheck.cs`.)
+
 ## Cecil Commands
 
 ```bash
@@ -71,6 +75,14 @@ Adding public members can fail the `VerifyEveryVisibleMemberIsDocumented` test �
   ```
 
   Review the `git diff` of `Documentation.KnownFailures.txt` — it must contain **only** your new members.
+
+### Which new members need a doc/baseline entry
+
+bgen auto-documents *some* generated members, so not every new public API fails `VerifyEveryVisibleMemberIsDocumented`. Knowing which is which predicts your diff:
+
+- **`[Field]` constant properties** (NSString notification/key constants) → bgen generates a `<summary>` → **no** baseline entry needed.
+- **`NS_TYPED_ENUM` smart enum** → the enum **type** and each **field** are **not** auto-documented → they need a `T:` line and one `F:` per member in `Documentation.KnownFailures.txt`. The bgen-generated `...Extensions` class (`GetValue`/`GetConstant`/`ToFlags`) **is** auto-documented → **no** entries for it.
+- **`[Export]` methods** → **not** auto-documented → each needs a doc comment or a baseline entry.
 
 ## Introspection Commands
 
@@ -114,6 +126,8 @@ $DOTNET_DESTDIR/Microsoft.iOS.Sdk/tools/bin/mlaunch \
 
 Use `xcrun simctl list runtimes` and `xcrun simctl list devicetypes` to find the correct identifiers for your Xcode version.
 
+> ⚠️ **Xcode 27: `simctl create` dropped `--json`.** mlaunch auto-creates the sim device via `simctl create … --json`, which now fails with `MT1008 … simctl: unrecognized option '--json'`. Workaround: **pre-create** the device with the exact name mlaunch expects so it finds it instead of creating it, e.g. `xcrun simctl create "iPhone 16 Pro - iOS 27.0" <devicetype-id> <runtime-id>`, then re-run mlaunch. (Environment-specific to Xcode 27 until mlaunch is updated.)
+
 ### Why run-bare for Desktop Platforms
 
 `make run-macOS` / `make run-MacCatalyst` uses `dotnet build -t:Run` which launches the app without waiting or capturing stdout. The make command exits immediately with success even while tests are still running.
@@ -151,6 +165,19 @@ Exclusion mechanisms:
 - **`do_not_dispose` list** — Types that crash on disposal
 - **`CheckHandle()` override** — Types returning `IntPtr.Zero`
 - **`CheckToString()` override** — Types that crash on `.Description`
+
+### Desktop `run-bare` crashes on privacy-gated types (TCC)
+
+Running desktop introspection via `run-bare` in a **headless terminal** (no GUI session) can SIGABRT with `__TCC_CRASHING_DUE_TO_PRIVACY_VIOLATION__` when a fixture instantiates a privacy-gated type the OS can't show a permission prompt for. Observed on **Mac Catalyst** (whose ctor suite is `iOSApiCtorInitTest`) instantiating `CoreLocationUI.CLLocationButton` (`src/corelocationui.cs:27` — iOS/Mac Catalyst only). This is **environmental, not a binding bug** — the same class of ctor/dealloc crash as the documented **macOS** `AVKit.AVCaptureView` exclusion (`tests/introspection/MacApiCtorInitTest.cs:158-161`, macOS-only).
+
+To still validate the other fixtures, run a **single fixture** (bypassing the crashing `ApiCtorInitTest`):
+
+```bash
+make -C tests/introspection/dotnet/MacCatalyst run-bare \
+  RUN_ARGUMENTS="--test=Introspection.iOSApiSelectorTest"
+```
+
+`run-bare` forwards `RUN_ARGUMENTS` to the executable (`tests/common/shared-dotnet.mk`), and Touch.Unit's `--test=` filter (`tests/common/Touch.Unit/Touch.Client/Runner/TouchOptions.cs:121`) runs just that fixture. Swap in `iOSApiSignatureTest`, `iOSApiFieldTest`, `iOSApiPInvokeTest`, etc. The real gate remains CI on a signed/GUI image.
 
 ### Selector Not Found (Declared but Not Implemented)
 

@@ -1,2 +1,0 @@
-!missing-enum-value! VNErrorCode native value VNErrorResourceCorrupted = 24 not bound
-!missing-enum-value! VNErrorCode native value VNErrorResourceUnavailable = 23 not bound

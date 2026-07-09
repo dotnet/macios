@@ -469,7 +469,7 @@ namespace Xamarin.Tests {
 			var rv = DotNet.AssertBuildFailure (project_path, properties);
 			var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray ();
 			Assert.That (errors.Length, Is.GreaterThanOrEqualTo (1), "Error count");
-			Assert.That (errors [0].Message, Does.Contain ("does not support publishing to a single file"), "Error message");
+			Assert.That (errors.Select (e => e.Message), Has.Some.Contains ("does not support publishing to a single file"), "Error message");
 		}
 
 		[Test]

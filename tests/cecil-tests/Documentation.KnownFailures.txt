@@ -14169,7 +14169,7 @@ M:AVFoundation.AVPortraitEffectsMatte.Create(Foundation.NSDictionary,Foundation.
 M:AVFoundation.AVPortraitEffectsMatte.Create(ImageIO.CGImagePropertyOrientation)
 M:AVFoundation.AVPortraitEffectsMatte.GetDictionaryRepresentation(System.String@)
 M:AVFoundation.AVProVideoStorage.OpenSettings
-M:AVFoundation.AVProVideoStorage.ReplenishCapacity(System.Action{System.IntPtr,Foundation.NSError})
+M:AVFoundation.AVProVideoStorage.ReplenishCapacity(AVFoundation.AVProVideoStorageReplenishCapacityCompletionHandler)
 M:AVFoundation.AVProVideoStorage.ReplenishCapacityAsync
 M:AVFoundation.AVQueuePlayer.#ctor(AVFoundation.AVPlayerItem[])
 M:AVFoundation.AVQueuePlayer.AdvanceToNextItem
@@ -57362,6 +57362,7 @@ T:AVFoundation.AVPlayerWaitingReason
 T:AVFoundation.AVPortraitEffectsMatte
 T:AVFoundation.AVProVideoStorage
 T:AVFoundation.AVProVideoStorageBusyReason
+T:AVFoundation.AVProVideoStorageReplenishCapacityCompletionHandler
 T:AVFoundation.AVQueuePlayer
 T:AVFoundation.AVRenderedCaptionImage
 T:AVFoundation.AVRouteDetector

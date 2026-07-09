@@ -7017,6 +7017,8 @@ namespace AVFoundation {
 		void DidOutputSegmentData (AVAssetWriter writer, NSData segmentData, AVAssetSegmentType segmentType);
 	}
 
+	delegate void AVProVideoStorageReplenishCapacityCompletionHandler (nint remainingCapacity, [NullAllowed] NSError error);
+
 	[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -7040,7 +7042,7 @@ namespace AVFoundation {
 
 		[Export ("replenishCapacityWithCompletionHandler:")]
 		[Async]
-		void ReplenishCapacity ([NullAllowed] Action<nint, NSError> completionHandler);
+		void ReplenishCapacity ([NullAllowed] AVProVideoStorageReplenishCapacityCompletionHandler completionHandler);
 
 		[Export ("busyReasons")]
 		NSSet<NSString> WeakBusyReasons { get; }

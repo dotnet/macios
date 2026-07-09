@@ -25,19 +25,23 @@
 
 namespace Foundation {
 
-	/// <include file="../../docs/api/Foundation/ModelAttribute.xml" path="/Documentation/Docs[@DocId='T:Foundation.ModelAttribute']/*" />
+	/// <summary>Flags a class or interface as a model, indicating that only explicitly overridden methods are exposed to the Objective-C runtime.</summary>
+	/// <remarks>
+	///   <para>Objective-C protocols are like interfaces, but they support optional methods, that is, not all of the methods need to be implemented for the protocol to work.</para>
+	///   <para>The [Model] attribute is applied to a class that can have optional methods, and it is typically used for declaring Objective-C delegates or data models that have a number of optional methods. The runtime treats classes with the Model attribute applied specially: only when a user overrides methods in a class is the actual override exposed to the Objective-C world as existing.</para>
+	///   <para>This attribute is used in all of the models and delegate classes to allow the user to only implement the methods that they are interested in.</para>
+	/// </remarks>
 	[AttributeUsage (AttributeTargets.Class | AttributeTargets.Interface)]
 	public sealed class ModelAttribute : Attribute {
 
-		/// <summary>Default constructor.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Initializes a new instance of the <see cref="ModelAttribute" /> class.</summary>
 		public ModelAttribute () { }
 
-		/// <summary>Specifies if the Objective-C type name for the model.</summary>
-		///         <value>The Objective-C type name for the model.</value>
-		///         <remarks>
-		///           <para>This value is only taken into account when used in binding code / projects.</para>
-		///         </remarks>
+		/// <summary>Gets or sets the Objective-C type name for the model.</summary>
+		/// <value>The Objective-C type name for the model.</value>
+		/// <remarks>
+		///   <para>This value is only taken into account when used in binding code / projects.</para>
+		/// </remarks>
 		public string? Name { get; set; }
 	}
 }

@@ -180,8 +180,8 @@ Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer.Add(Foundation.NSObject)
 Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer.Drain(Foundation.NSObject)
 Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer.ScheduleDrain()
 Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__
-Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_3090_Foundation_NSObject_NSObject_Disposer__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
-Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_3091_Foundation_NSObject_NSObject_Disposer_Drain(System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
+Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_3088_Foundation_NSObject_NSObject_Disposer__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
+Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_3089_Foundation_NSObject_NSObject_Disposer_Drain(System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
 Microsoft.iOS.dll:Foundation.NSObject/XamarinGCHandleFlags
 Microsoft.iOS.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::HasManagedRef
 Microsoft.iOS.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::InitialSet
@@ -970,7 +970,6 @@ Microsoft.iOS.dll:Registrar.Registrar.CreateExceptionImpl(System.Int32, System.B
 Microsoft.iOS.dll:Registrar.Registrar.CreateExceptionImpl(System.Int32, System.Boolean, System.String, System.Object[])
 Microsoft.iOS.dll:Registrar.Registrar.CreateExceptionImpl(System.Int32, System.Boolean, System.Type, System.String, System.Object[])
 Microsoft.iOS.dll:Registrar.Registrar.CreateSetterSelector(System.String)
-Microsoft.iOS.dll:Registrar.Registrar.CreateWarning(System.Int32, Registrar.Registrar/ObjCMember, System.String, System.Object[])
 Microsoft.iOS.dll:Registrar.Registrar.FindMethods(System.Type, System.String)
 Microsoft.iOS.dll:Registrar.Registrar.FindProperty(System.Type, System.String)
 Microsoft.iOS.dll:Registrar.Registrar.FindType(System.Type, System.String, System.String)
@@ -1064,6 +1063,7 @@ Microsoft.iOS.dll:Registrar.Registrar.RegisterType(System.Type, System.Collectio
 Microsoft.iOS.dll:Registrar.Registrar.RegisterType(System.Type)
 Microsoft.iOS.dll:Registrar.Registrar.RegisterTypeUnsafe(System.Type, System.Collections.Generic.List`1<System.Exception>&)
 Microsoft.iOS.dll:Registrar.Registrar.ReportError(System.Int32, System.String, System.Object[])
+Microsoft.iOS.dll:Registrar.Registrar.ReportWarning(System.Int32, System.String, System.Object[])
 Microsoft.iOS.dll:Registrar.Registrar.SanitizeObjectiveCName(System.String)
 Microsoft.iOS.dll:Registrar.Registrar.SkipRegisterAssembly(System.Reflection.Assembly)
 Microsoft.iOS.dll:Registrar.Registrar.ToSignature(System.Type, Registrar.Registrar/ObjCMember, System.Boolean)
@@ -1599,7 +1599,7 @@ Microsoft.iOS.dll:UIKit.UIApplicationDelegate..ctor(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:UIKit.UIApplicationDelegate..ctor(System.IntPtr, ObjCRuntime.IManagedRegistrar)
 Microsoft.iOS.dll:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)
 Microsoft.iOS.dll:UIKit.UIApplicationDelegate/__Registrar_Callbacks__
-Microsoft.iOS.dll:UIKit.UIApplicationDelegate/__Registrar_Callbacks__.callback_595_UIKit_UIApplicationDelegate__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
+Microsoft.iOS.dll:UIKit.UIApplicationDelegate/__Registrar_Callbacks__.callback_593_UIKit_UIApplicationDelegate__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
 Microsoft.iOS.dll:UIKit.UIButton
 Microsoft.iOS.dll:UIKit.UIButton._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:UIKit.UIButton._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
@@ -4082,6 +4082,7 @@ System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicDependencyAttr
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute..ctor(System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes, System.Type)
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute..ctor(System.String, System.String, System.String)
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute..ctor(System.String, System.Type)
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute..ctor(System.String)
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.MaybeNullAttribute
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.MaybeNullAttribute..ctor()
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribute

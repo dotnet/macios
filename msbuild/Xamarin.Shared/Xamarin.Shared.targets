@@ -3509,7 +3509,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		Name="_PrepareAssemblies"
 		Condition="'$(PrepareAssemblies)' == 'true'"
 		Inputs="@(_AssembliesToPrepare)"
-		Outputs="@(_AssembliesToPrepare->'$(PreparedAssembliesDirectory)%(Filename)%(Extension)')"
+		Outputs="@(_AssembliesToPrepare->'$(PreparedAssembliesDirectory)%(Filename)%(Extension)');$(_AssemblyPreparerMSBuildOutputFile)"
 		DependsOnTargets="_PrepareAssembliesForPreparation;_ComputeAssembliesToPostprocessOnPublish;SelectRegistrar"
 		>
 		<PrepareAssemblies
@@ -3527,6 +3527,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<ResolvedFileToPublish Include="@(_PreparedAssemblies)" />
 			<FileWrites Include="@(_PreparedAssemblies)" />
 			<FileWrites Include="$(_UnmanagedCallersOnlyMapPath)" />
+			<FileWrites Include="$(_AssemblyPreparerMSBuildOutputFile)" Condition="Exists('$(_AssemblyPreparerMSBuildOutputFile)')" />
 		</ItemGroup>
 	</Target>
 
@@ -3572,6 +3573,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<ResolvedFileToPublish Remove="@(_AssembliesToPostProcess)" />
 			<ResolvedFileToPublish Include="@(_PostProcessedAssemblies)" />
 			<FileWrites Include="@(_PostProcessedAssemblies)" />
+			<FileWrites Include="$(_AssemblyPostProcessorMSBuildOutputFile)" Condition="Exists('$(_AssemblyPostProcessorMSBuildOutputFile)')" />
 		</ItemGroup>
 	</Target>
 

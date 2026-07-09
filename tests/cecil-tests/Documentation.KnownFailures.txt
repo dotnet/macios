@@ -7777,6 +7777,7 @@ F:VideoToolbox.VTOpticalFlowConfigurationQualityPrioritization.Quality
 F:VideoToolbox.VTOpticalFlowConfigurationRevision.Revision1
 F:VideoToolbox.VTOpticalFlowParametersSubmissionMode.Random
 F:VideoToolbox.VTOpticalFlowParametersSubmissionMode.Sequential
+F:VideoToolbox.VTProjectionKind.AppleImmersiveVideo
 F:VideoToolbox.VTProjectionKind.Equirectangular
 F:VideoToolbox.VTProjectionKind.HalfEquirectangular
 F:VideoToolbox.VTProjectionKind.ParametricImmersive
@@ -29849,6 +29850,8 @@ M:VideoToolbox.VTFrameProcessorOpticalFlow.#ctor(CoreVideo.CVPixelBuffer,CoreVid
 M:VideoToolbox.VTFrameRateConversionConfiguration.#ctor(System.IntPtr,System.IntPtr,System.Boolean,VideoToolbox.VTFrameRateConversionConfigurationQualityPrioritization,VideoToolbox.VTFrameRateConversionConfigurationRevision)
 M:VideoToolbox.VTFrameRateConversionParameters.#ctor(VideoToolbox.VTFrameProcessorFrame,VideoToolbox.VTFrameProcessorFrame,VideoToolbox.VTFrameProcessorOpticalFlow,Foundation.NSNumber[],VideoToolbox.VTFrameRateConversionParametersSubmissionMode,VideoToolbox.VTFrameProcessorFrame[])
 M:VideoToolbox.VTHdrPerFrameMetadataGenerationSession.#ctor(ObjCRuntime.NativeHandle,System.Boolean)
+M:VideoToolbox.VTLowLatencyFrameInterpolationConfiguration.GetMaximumDimension(System.IntPtr)
+M:VideoToolbox.VTLowLatencyFrameInterpolationConfiguration.GetMaximumPixelCount(System.IntPtr)
 M:VideoToolbox.VTLowLatencyFrameInterpolationParameters.#ctor(VideoToolbox.VTFrameProcessorFrame,VideoToolbox.VTFrameProcessorFrame,System.Single[],VideoToolbox.VTFrameProcessorFrame[])
 M:VideoToolbox.VTLowLatencySuperResolutionScalerConfiguration.#ctor(System.IntPtr,System.IntPtr,System.Single)
 M:VideoToolbox.VTLowLatencySuperResolutionScalerConfiguration.GetSupportedScaleFactors(System.IntPtr,System.IntPtr)
@@ -53687,6 +53690,7 @@ P:VideoToolbox.IVTFrameProcessorParameters.DestinationFrame
 P:VideoToolbox.IVTFrameProcessorParameters.DestinationFrames
 P:VideoToolbox.IVTFrameProcessorParameters.SourceFrame
 P:VideoToolbox.VTCompressionPreset.Balanced
+P:VideoToolbox.VTCompressionPreset.ConsistentQuality
 P:VideoToolbox.VTCompressionPreset.HighQuality
 P:VideoToolbox.VTCompressionPreset.HighSpeed
 P:VideoToolbox.VTCompressionPreset.VideoConferencing
@@ -53695,6 +53699,7 @@ P:VideoToolbox.VTCompressionProperties.BaseLayerBitRateFraction
 P:VideoToolbox.VTCompressionProperties.CalculateMeanSquaredError
 P:VideoToolbox.VTCompressionProperties.CameraCalibrationDataLensCollection
 P:VideoToolbox.VTCompressionProperties.ConstantBitRate
+P:VideoToolbox.VTCompressionProperties.ConstantQualityFactor
 P:VideoToolbox.VTCompressionProperties.EnableLowLatencyRateControl
 P:VideoToolbox.VTCompressionProperties.EnableLtr
 P:VideoToolbox.VTCompressionProperties.EstimatedAverageBytesPerFrame
@@ -53704,6 +53709,7 @@ P:VideoToolbox.VTCompressionProperties.HasRightStereoEyeView
 P:VideoToolbox.VTCompressionProperties.HeroEye
 P:VideoToolbox.VTCompressionProperties.HorizontalDisparityAdjustment
 P:VideoToolbox.VTCompressionProperties.HorizontalFieldOfView
+P:VideoToolbox.VTCompressionProperties.LogTransferFunction
 P:VideoToolbox.VTCompressionProperties.MaxAllowedFrameQP
 P:VideoToolbox.VTCompressionProperties.MaximumRealTimeFrameRate
 P:VideoToolbox.VTCompressionProperties.MinAllowedFrameQP

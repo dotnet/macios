@@ -1,5 +1,0 @@
-!missing-field! kVTCompressionPreset_ConsistentQuality not bound
-!missing-field! kVTCompressionPropertyKey_ConstantQualityFactor not bound
-!missing-field! kVTCompressionPropertyKey_LogTransferFunction not bound
-!missing-selector! +VTLowLatencyFrameInterpolationConfiguration::maximumDimensionForSpatialScaleFactor: not bound
-!missing-selector! +VTLowLatencyFrameInterpolationConfiguration::maximumPixelCountForSpatialScaleFactor: not bound

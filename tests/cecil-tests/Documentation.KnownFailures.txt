@@ -30125,6 +30125,7 @@ M:UniformTypeIdentifiers.UTType.CreateExportedType(System.String,UniformTypeIden
 M:UniformTypeIdentifiers.UTType.CreateExportedType(System.String)
 M:UniformTypeIdentifiers.UTType.CreateFromExtension(System.String,UniformTypeIdentifiers.UTType)
 M:UniformTypeIdentifiers.UTType.CreateFromExtension(System.String)
+M:UniformTypeIdentifiers.UTType.CreateFromIdentifier(System.String,System.Boolean)
 M:UniformTypeIdentifiers.UTType.CreateFromIdentifier(System.String)
 M:UniformTypeIdentifiers.UTType.CreateFromMimeType(System.String,UniformTypeIdentifiers.UTType)
 M:UniformTypeIdentifiers.UTType.CreateFromMimeType(System.String)

@@ -7038,8 +7038,15 @@ namespace AVFoundation {
 		[Export ("remainingCapacity")]
 		nint RemainingCapacity { get; }
 
-		[Export ("busy")]
-		bool Busy { [Bind ("isBusy")] get; }
+		[Export ("replenishCapacityWithCompletionHandler:")]
+		[Async]
+		void ReplenishCapacity ([NullAllowed] Action<nint, NSError> completionHandler);
+
+		[Export ("busyReasons")]
+		NSSet<NSString> WeakBusyReasons { get; }
+
+		[Wrap ("WeakBusyReasons.ToHashSet (v => AVProVideoStorageBusyReasonExtensions.GetValue (v))")]
+		HashSet<AVProVideoStorageBusyReason> BusyReasons { get; }
 	}
 
 	delegate void AVAssetWritingPlannerSegmentCallback (AVPlannedSegmentWritingRequest segmentWriteRequest);

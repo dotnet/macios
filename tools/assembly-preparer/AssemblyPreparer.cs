@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.Serialization;
 using Mono.Cecil;
@@ -39,6 +40,12 @@ public class AssemblyPreparer : IDisposable {
 	public Optimizations Optimizations => configuration.Application.Optimizations;
 
 	public List<AssemblyPreparerInfo> Assemblies { get; set; } = new List<AssemblyPreparerInfo> ();
+
+	// The list of steps that were executed, along with how long each step took and whether it modified any assemblies.
+	public List<StepExecution> StepExecutions { get; } = new List<StepExecution> ();
+
+	// Set to true (via the AppBundleRewriter.AssemblySaved callback) whenever the currently executing step modifies an assembly.
+	bool currentStepModifiedAssemblies;
 
 	public IList<(string Path, AssemblyDefinition Assembly, string? OriginatingAssembly)> AddedAssemblies => configuration.AddedAssemblies;
 
@@ -209,8 +216,28 @@ public class AssemblyPreparer : IDisposable {
 
 		var linkContext = configuration.DerivedLinkContext;
 
-		foreach (var step in steps) {
-			step.Process (linkContext);
+		// We detect whether a step modified any assemblies by subscribing to the AppBundleRewriter's
+		// AssemblySaved callback, which is called whenever an assembly is modified. All the steps that
+		// modify assemblies go through the AppBundleRewriter to do so.
+		Action<AssemblyDefinition>? assemblySavedHandler = null;
+		try {
+			foreach (var step in steps) {
+				// Subscribe once the assemblies have been loaded: accessing the AppBundleRewriter before
+				// that point would create it without finding the corlib and platform assemblies.
+				if (assemblySavedHandler is null && configuration.Assemblies.Count > 0) {
+					assemblySavedHandler = (_) => currentStepModifiedAssemblies = true;
+					configuration.AppBundleRewriter.AssemblySaved += assemblySavedHandler;
+				}
+
+				currentStepModifiedAssemblies = false;
+				var watch = Stopwatch.StartNew ();
+				step.Process (linkContext);
+				watch.Stop ();
+				StepExecutions.Add (new StepExecution (step.GetType ().Name, watch.Elapsed, currentStepModifiedAssemblies));
+			}
+		} finally {
+			if (assemblySavedHandler is not null)
+				configuration.AppBundleRewriter.AssemblySaved -= assemblySavedHandler;
 		}
 
 		// The post-processing pass flushes its MSBuild output as its last step (DoneStep). The preparation
@@ -229,6 +256,9 @@ public class AssemblyPreparer : IDisposable {
 		configuration.DerivedLinkContext.Assemblies.Clear ();
 	}
 }
+
+// The result of executing a single step: its name, how long it took, and whether it modified any assemblies.
+public record struct StepExecution (string Name, TimeSpan Duration, bool ModifiedAssemblies);
 
 public class AssemblyPreparerInfo {
 	internal AssemblyDefinition? Assembly { get; set; }

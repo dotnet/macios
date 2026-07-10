@@ -514,6 +514,16 @@ namespace Foundation {
 #endif
 			};
 			proxyDictionary = strongProxy.GetDictionary ();
+#if !MONOMAC
+			// The strongly-typed HttpsEnable property (kCFNetworkProxiesHTTPSEnable) is only exposed on
+			// macOS, but CFNetwork honors the same "HTTPSEnable" key on the other platforms too, and it's
+			// required for HTTPS proxying (CONNECT tunneling) to work. Add it via the literal key.
+			if (proxyDictionary is not null) {
+				var mutableProxyDictionary = new NSMutableDictionary (proxyDictionary);
+				mutableProxyDictionary ["HTTPSEnable"] = NSNumber.FromBoolean (true);
+				proxyDictionary = mutableProxyDictionary;
+			}
+#endif
 			return true;
 		}
 

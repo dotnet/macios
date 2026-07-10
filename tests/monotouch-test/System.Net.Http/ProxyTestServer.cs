@@ -4,9 +4,10 @@
 //
 // An in-process HTTP forwarding proxy used to test NSUrlSessionHandler's proxy support.
 //
-// It only handles absolute-form HTTP requests (the form a client sends to an HTTP proxy),
-// which is enough to test proxying of the in-process HTTP test server (HttpbinTestServer).
-// HTTPS (CONNECT tunneling) is intentionally not supported.
+// It handles absolute-form HTTP requests (the form a client sends to an HTTP proxy) to test
+// proxying of the in-process HTTP test server (HttpbinTestServer), and it handles the CONNECT
+// method to tunnel HTTPS requests (which is the only way NSUrlSession delivers proxy
+// authentication challenges to the delegate).
 //
 
 using System;
@@ -97,6 +98,12 @@ namespace MonoTests.System.Net.Http {
 					headers.Add (new KeyValuePair<string, string> (line.Substring (0, idx).Trim (), line.Substring (idx + 1).Trim ()));
 			}
 
+			if (string.Equals (method, "CONNECT", StringComparison.OrdinalIgnoreCase)) {
+				Interlocked.Increment (ref requestCount);
+				await HandleConnect (stream, target, headers).ConfigureAwait (false);
+				return;
+			}
+
 			var body = await ReadBodyAsync (stream, headers).ConfigureAwait (false);
 
 			Interlocked.Increment (ref requestCount);
@@ -123,6 +130,48 @@ namespace MonoTests.System.Net.Http {
 
 			await ForwardAsync (stream, method, targetUri, headers, body).ConfigureAwait (false);
 		}
+
+		// Handles the CONNECT method: validate proxy authentication (if required), then establish a
+		// raw TCP tunnel to the requested host:port and pipe bytes back and forth. This is what lets
+		// an HTTPS request flow through the proxy while exercising proxy authentication.
+		async Task HandleConnect (NetworkStream clientStream, string target, List<KeyValuePair<string, string>> headers)
+		{
+			if (requiredUser is not null) {
+				var proxyAuth = FindHeader (headers, "Proxy-Authorization");
+				if (!IsValidProxyAuth (proxyAuth)) {
+					await WriteResponseAsync (clientStream, 407, "Proxy Authentication Required",
+						new List<KeyValuePair<string, string>> {
+							new ("Proxy-Authenticate", "Basic realm=\"Test Proxy\""),
+						},
+						Encoding.UTF8.GetBytes ("Proxy authentication required")).ConfigureAwait (false);
+					return;
+				}
+			}
+
+			var host = target;
+			var port = 443;
+			var colonIdx = target.LastIndexOf (':');
+			if (colonIdx > 0) {
+				host = target.Substring (0, colonIdx);
+				int.TryParse (target.Substring (colonIdx + 1), out port);
+			}
+			// The TLS test server binds to 127.0.0.1, so make sure we connect there (and not ::1).
+			if (string.Equals (host, "localhost", StringComparison.OrdinalIgnoreCase))
+				host = "127.0.0.1";
+
+			using var upstream = new TcpClient ();
+			await upstream.ConnectAsync (host, port).ConfigureAwait (false);
+
+			Interlocked.Increment (ref authenticatedRequestCount);
+
+			var established = Encoding.ASCII.GetBytes ("HTTP/1.1 200 Connection Established\r\n\r\n");
+			await clientStream.WriteAsync (established, 0, established.Length).ConfigureAwait (false);
+			await clientStream.FlushAsync ().ConfigureAwait (false);
+
+			using var upstreamStream = upstream.GetStream ();
+			var clientToUpstream = clientStream.CopyToAsync (upstreamStream);
+			var upstreamToClient = upstreamStream.CopyToAsync (clientStream);
+			await Task.WhenAny (clientToUpstream, upstreamToClient).ConfigureAwait (false);
 
 		static async Task<byte []?> ReadBodyAsync (NetworkStream stream, List<KeyValuePair<string, string>> headers)
 		{

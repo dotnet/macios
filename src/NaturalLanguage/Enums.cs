@@ -83,7 +83,7 @@ namespace NaturalLanguage {
 	/// <summary>Enumerates languages for which recognition is supported.</summary>
 	[MacCatalyst (13, 1)]
 	public enum NLLanguage {
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the language has not been evaluated yet.</summary>
 		[DefaultEnumValue]
 		[Field (null)]
 		Unevaluated,

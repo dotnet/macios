@@ -710,9 +710,10 @@ The symbols are generated from the build's dSYM directories using
 `xcrun symbols`, and only the parts Apple needs are included (the full dSYMs
 are not embedded in the IPA).
 
-The default value is `false`.
+The default value is `true` when creating an IPA (see [BuildIpa](#buildipa)),
+and `false` otherwise. Set it to `false` to opt out.
 
-Only applicable to iOS and tvOS projects (see [BuildIpa](#buildipa)).
+Only applicable to iOS and tvOS projects.
 
 ## IpaPackageName
 

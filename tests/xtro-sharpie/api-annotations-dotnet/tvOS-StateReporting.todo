@@ -1,5 +1,0 @@
-!missing-selector! +SRStateReporter::reporterForDomain: not bound
-!missing-selector! SRStateReporter::domain not bound
-!missing-selector! SRStateReporter::reportTransitionToStateLabel:stableMetadata:volatileMetadata: not bound
-!missing-selector! SRStateReporter::reportVolatileMetadataUpdate: not bound
-!missing-type! SRStateReporter not bound

@@ -27,6 +27,7 @@ namespace Xamarin.Tests {
 
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			if (deviceSpecificBuild) {
+				properties ["DeviceSpecificBuild"] = "true";
 				properties ["file:TargetiOSDevice"] =
 					"""
 					<?xml version="1.0" encoding="UTF-8"?>

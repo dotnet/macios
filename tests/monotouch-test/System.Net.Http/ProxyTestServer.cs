@@ -173,154 +173,154 @@ namespace MonoTests.System.Net.Http {
 			var upstreamToClient = upstreamStream.CopyToAsync (clientStream);
 			await Task.WhenAny (clientToUpstream, upstreamToClient).ConfigureAwait (false);
 
-		static async Task<byte []?> ReadBodyAsync (NetworkStream stream, List<KeyValuePair<string, string>> headers)
-		{
-			var contentLength = FindHeader (headers, "Content-Length");
-			if (contentLength is null || !int.TryParse (contentLength, out var length) || length <= 0)
-				return null;
+			static async Task<byte []?> ReadBodyAsync (NetworkStream stream, List<KeyValuePair<string, string>> headers)
+			{
+				var contentLength = FindHeader (headers, "Content-Length");
+				if (contentLength is null || !int.TryParse (contentLength, out var length) || length <= 0)
+					return null;
 
-			var body = new byte [length];
-			var read = 0;
-			while (read < length) {
-				var r = await stream.ReadAsync (body, read, length - read).ConfigureAwait (false);
-				if (r <= 0)
-					break;
-				read += r;
-			}
-			return body;
-		}
-
-		async Task ForwardAsync (NetworkStream clientStream, string method, Uri targetUri, List<KeyValuePair<string, string>> headers, byte []? body)
-		{
-			// Explicitly avoid using any proxy for the forwarded request, so we don't accidentally loop back into ourselves.
-			using var handler = new SocketsHttpHandler {
-				UseProxy = false,
-				AllowAutoRedirect = false,
-				AutomaticDecompression = DecompressionMethods.None,
-			};
-			using var client = new HttpClient (handler);
-			using var request = new HttpRequestMessage (new HttpMethod (method), targetUri);
-
-			if (body is not null)
-				request.Content = new ByteArrayContent (body);
-
-			foreach (var header in headers) {
-				if (IsHopByHopHeader (header.Key))
-					continue;
-				if (string.Equals (header.Key, "Host", StringComparison.OrdinalIgnoreCase))
-					continue;
-				// Content-Length is set automatically by ByteArrayContent.
-				if (string.Equals (header.Key, "Content-Length", StringComparison.OrdinalIgnoreCase))
-					continue;
-
-				if (!request.Headers.TryAddWithoutValidation (header.Key, header.Value))
-					request.Content?.Headers.TryAddWithoutValidation (header.Key, header.Value);
+				var body = new byte [length];
+				var read = 0;
+				while (read < length) {
+					var r = await stream.ReadAsync (body, read, length - read).ConfigureAwait (false);
+					if (r <= 0)
+						break;
+					read += r;
+				}
+				return body;
 			}
 
-			using var response = await client.SendAsync (request).ConfigureAwait (false);
+			async Task ForwardAsync (NetworkStream clientStream, string method, Uri targetUri, List<KeyValuePair<string, string>> headers, byte []? body)
+			{
+				// Explicitly avoid using any proxy for the forwarded request, so we don't accidentally loop back into ourselves.
+				using var handler = new SocketsHttpHandler {
+					UseProxy = false,
+					AllowAutoRedirect = false,
+					AutomaticDecompression = DecompressionMethods.None,
+				};
+				using var client = new HttpClient (handler);
+				using var request = new HttpRequestMessage (new HttpMethod (method), targetUri);
 
-			var responseHeaders = new List<KeyValuePair<string, string>> {
+				if (body is not null)
+					request.Content = new ByteArrayContent (body);
+
+				foreach (var header in headers) {
+					if (IsHopByHopHeader (header.Key))
+						continue;
+					if (string.Equals (header.Key, "Host", StringComparison.OrdinalIgnoreCase))
+						continue;
+					// Content-Length is set automatically by ByteArrayContent.
+					if (string.Equals (header.Key, "Content-Length", StringComparison.OrdinalIgnoreCase))
+						continue;
+
+					if (!request.Headers.TryAddWithoutValidation (header.Key, header.Value))
+						request.Content?.Headers.TryAddWithoutValidation (header.Key, header.Value);
+				}
+
+				using var response = await client.SendAsync (request).ConfigureAwait (false);
+
+				var responseHeaders = new List<KeyValuePair<string, string>> {
 				// A marker header so tests can verify the response actually went through this proxy.
 				new ("Via-Test-Proxy", "true"),
 			};
-			foreach (var header in response.Headers) {
-				foreach (var value in header.Value)
-					responseHeaders.Add (new (header.Key, value));
+				foreach (var header in response.Headers) {
+					foreach (var value in header.Value)
+						responseHeaders.Add (new (header.Key, value));
+				}
+
+				var content = await response.Content.ReadAsByteArrayAsync ().ConfigureAwait (false);
+
+				foreach (var header in response.Content.Headers) {
+					// We compute our own Content-Length below, and Transfer-Encoding is hop-by-hop.
+					if (string.Equals (header.Key, "Content-Length", StringComparison.OrdinalIgnoreCase))
+						continue;
+					foreach (var value in header.Value)
+						responseHeaders.Add (new (header.Key, value));
+				}
+
+				await WriteResponseAsync (clientStream, (int) response.StatusCode, response.ReasonPhrase ?? "", responseHeaders, content).ConfigureAwait (false);
 			}
 
-			var content = await response.Content.ReadAsByteArrayAsync ().ConfigureAwait (false);
-
-			foreach (var header in response.Content.Headers) {
-				// We compute our own Content-Length below, and Transfer-Encoding is hop-by-hop.
-				if (string.Equals (header.Key, "Content-Length", StringComparison.OrdinalIgnoreCase))
-					continue;
-				foreach (var value in header.Value)
-					responseHeaders.Add (new (header.Key, value));
-			}
-
-			await WriteResponseAsync (clientStream, (int) response.StatusCode, response.ReasonPhrase ?? "", responseHeaders, content).ConfigureAwait (false);
-		}
-
-		bool IsValidProxyAuth (string? proxyAuthorization)
-		{
-			if (proxyAuthorization is null || !proxyAuthorization.StartsWith ("Basic ", StringComparison.Ordinal))
-				return false;
-
-			try {
-				var credentials = Encoding.UTF8.GetString (Convert.FromBase64String (proxyAuthorization.Substring ("Basic ".Length)));
-				var colonIdx = credentials.IndexOf (':');
-				if (colonIdx <= 0)
+			bool IsValidProxyAuth (string? proxyAuthorization)
+			{
+				if (proxyAuthorization is null || !proxyAuthorization.StartsWith ("Basic ", StringComparison.Ordinal))
 					return false;
 
-				var user = credentials.Substring (0, colonIdx);
-				var password = credentials.Substring (colonIdx + 1);
-				return user == requiredUser && password == requiredPassword;
-			} catch {
-				return false;
+				try {
+					var credentials = Encoding.UTF8.GetString (Convert.FromBase64String (proxyAuthorization.Substring ("Basic ".Length)));
+					var colonIdx = credentials.IndexOf (':');
+					if (colonIdx <= 0)
+						return false;
+
+					var user = credentials.Substring (0, colonIdx);
+					var password = credentials.Substring (colonIdx + 1);
+					return user == requiredUser && password == requiredPassword;
+				} catch {
+					return false;
+				}
 			}
-		}
 
-		static string? FindHeader (List<KeyValuePair<string, string>> headers, string name)
-		{
-			foreach (var header in headers) {
-				if (string.Equals (header.Key, name, StringComparison.OrdinalIgnoreCase))
-					return header.Value;
+			static string? FindHeader (List<KeyValuePair<string, string>> headers, string name)
+			{
+				foreach (var header in headers) {
+					if (string.Equals (header.Key, name, StringComparison.OrdinalIgnoreCase))
+						return header.Value;
+				}
+				return null;
 			}
-			return null;
-		}
 
-		static bool IsHopByHopHeader (string name)
-		{
-			switch (name.ToLowerInvariant ()) {
-			case "connection":
-			case "keep-alive":
-			case "proxy-authenticate":
-			case "proxy-authorization":
-			case "te":
-			case "trailer":
-			case "transfer-encoding":
-			case "upgrade":
-				return true;
-			default:
-				return false;
+			static bool IsHopByHopHeader (string name)
+			{
+				switch (name.ToLowerInvariant ()) {
+				case "connection":
+				case "keep-alive":
+				case "proxy-authenticate":
+				case "proxy-authorization":
+				case "te":
+				case "trailer":
+				case "transfer-encoding":
+				case "upgrade":
+					return true;
+				default:
+					return false;
+				}
 			}
-		}
 
-		static async Task<string?> ReadLineAsync (NetworkStream stream)
-		{
-			var builder = new StringBuilder ();
-			var buffer = new byte [1];
-			while (true) {
-				var read = await stream.ReadAsync (buffer, 0, 1).ConfigureAwait (false);
-				if (read <= 0)
-					return builder.Length == 0 ? null : builder.ToString ();
+			static async Task<string?> ReadLineAsync (NetworkStream stream)
+			{
+				var builder = new StringBuilder ();
+				var buffer = new byte [1];
+				while (true) {
+					var read = await stream.ReadAsync (buffer, 0, 1).ConfigureAwait (false);
+					if (read <= 0)
+						return builder.Length == 0 ? null : builder.ToString ();
 
-				var c = (char) buffer [0];
-				if (c == '\n')
-					break;
-				if (c != '\r')
-					builder.Append (c);
+					var c = (char) buffer [0];
+					if (c == '\n')
+						break;
+					if (c != '\r')
+						builder.Append (c);
+				}
+				return builder.ToString ();
 			}
-			return builder.ToString ();
-		}
 
-		static async Task WriteResponseAsync (NetworkStream stream, int statusCode, string reasonPhrase, List<KeyValuePair<string, string>> headers, byte [] content)
-		{
-			var builder = new StringBuilder ();
-			builder.Append ("HTTP/1.1 ").Append (statusCode).Append (' ').Append (reasonPhrase).Append ("\r\n");
-			foreach (var header in headers)
-				builder.Append (header.Key).Append (": ").Append (header.Value).Append ("\r\n");
-			builder.Append ("Content-Length: ").Append (content.Length).Append ("\r\n");
-			// Force the connection closed so we don't have to deal with keep-alive framing.
-			builder.Append ("Connection: close\r\n");
-			builder.Append ("\r\n");
+			static async Task WriteResponseAsync (NetworkStream stream, int statusCode, string reasonPhrase, List<KeyValuePair<string, string>> headers, byte [] content)
+			{
+				var builder = new StringBuilder ();
+				builder.Append ("HTTP/1.1 ").Append (statusCode).Append (' ').Append (reasonPhrase).Append ("\r\n");
+				foreach (var header in headers)
+					builder.Append (header.Key).Append (": ").Append (header.Value).Append ("\r\n");
+				builder.Append ("Content-Length: ").Append (content.Length).Append ("\r\n");
+				// Force the connection closed so we don't have to deal with keep-alive framing.
+				builder.Append ("Connection: close\r\n");
+				builder.Append ("\r\n");
 
-			var headerBytes = Encoding.ASCII.GetBytes (builder.ToString ());
-			await stream.WriteAsync (headerBytes, 0, headerBytes.Length).ConfigureAwait (false);
-			if (content.Length > 0)
-				await stream.WriteAsync (content, 0, content.Length).ConfigureAwait (false);
-			await stream.FlushAsync ().ConfigureAwait (false);
-		}
+				var headerBytes = Encoding.ASCII.GetBytes (builder.ToString ());
+				await stream.WriteAsync (headerBytes, 0, headerBytes.Length).ConfigureAwait (false);
+				if (content.Length > 0)
+					await stream.WriteAsync (content, 0, content.Length).ConfigureAwait (false);
+				await stream.FlushAsync ().ConfigureAwait (false);
+			}
 
 		public void Dispose ()
 		{

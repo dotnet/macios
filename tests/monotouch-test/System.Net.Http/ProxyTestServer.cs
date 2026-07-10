@@ -27,6 +27,7 @@ namespace MonoTests.System.Net.Http {
 		readonly TcpListener listener;
 		readonly string? requiredUser;
 		readonly string? requiredPassword;
+		readonly int forceTunnelPort;
 		int requestCount;
 		int authenticatedRequestCount;
 
@@ -40,10 +41,15 @@ namespace MonoTests.System.Net.Http {
 
 		public string Url => $"http://127.0.0.1:{Port}";
 
-		public ProxyTestServer (string? requiredUser = null, string? requiredPassword = null)
+		// forceTunnelPort: when non-zero, every CONNECT request is tunneled to 127.0.0.1:forceTunnelPort
+		// regardless of the requested target host. This lets a test request an HTTPS URL with a non-local
+		// hostname (so CFNetwork actually routes it through the proxy instead of bypassing the proxy for
+		// localhost destinations) while still tunneling to a local TLS test server.
+		public ProxyTestServer (string? requiredUser = null, string? requiredPassword = null, int forceTunnelPort = 0)
 		{
 			this.requiredUser = requiredUser;
 			this.requiredPassword = requiredPassword;
+			this.forceTunnelPort = forceTunnelPort;
 
 			listener = new TcpListener (IPAddress.Loopback, 0);
 			listener.Start ();
@@ -155,9 +161,14 @@ namespace MonoTests.System.Net.Http {
 				host = target.Substring (0, colonIdx);
 				int.TryParse (target.Substring (colonIdx + 1), out port);
 			}
-			// The TLS test server binds to 127.0.0.1, so make sure we connect there (and not ::1).
-			if (string.Equals (host, "localhost", StringComparison.OrdinalIgnoreCase))
+			if (forceTunnelPort != 0) {
+				// Ignore the requested target and always tunnel to the local TLS test server.
 				host = "127.0.0.1";
+				port = forceTunnelPort;
+			} else if (string.Equals (host, "localhost", StringComparison.OrdinalIgnoreCase)) {
+				// The TLS test server binds to 127.0.0.1, so make sure we connect there (and not ::1).
+				host = "127.0.0.1";
+			}
 
 			using var upstream = new TcpClient ();
 			await upstream.ConnectAsync (host, port).ConfigureAwait (false);

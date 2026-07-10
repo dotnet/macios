@@ -434,17 +434,20 @@ namespace MonoTests.System.Net.Http {
 		{
 			const string proxyUser = "proxyuser";
 			const string proxyPass = "proxypass";
-			using var proxy = new ProxyTestServer (proxyUser, proxyPass);
 
 			// NSUrlSession only delivers a proxy authentication challenge to the delegate for CONNECT
 			// tunnels (i.e. HTTPS destinations); for a plain HTTP forward proxy it returns the 407
 			// directly to the caller. So we route an HTTPS request through the proxy's CONNECT support.
+			// We also request a non-local hostname: CFNetwork bypasses the proxy for localhost HTTPS
+			// destinations, so we must use a hostname that isn't local. The proxy tunnels every CONNECT
+			// to our local TLS test server regardless of the requested host.
 			Network.NWListener? destination = null;
 			HttpStatusCode? statusCode = null;
 
 			try {
 				destination = TlsTestServer.CreateNWTlsListener (requireClientCert: false);
 				var destinationPort = destination.Port;
+				using var proxy = new ProxyTestServer (proxyUser, proxyPass, forceTunnelPort: (int) destinationPort);
 
 				var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
 					using var handler = new NSUrlSessionHandler ();
@@ -453,7 +456,7 @@ namespace MonoTests.System.Net.Http {
 					};
 					handler.TrustOverrideForUrl = (sender, url, trust) => true;
 					using var client = new HttpClient (handler);
-					var response = await client.GetAsync ($"https://localhost:{destinationPort}/").ConfigureAwait (false);
+					var response = await client.GetAsync ("https://proxy-tunnel-target.example/").ConfigureAwait (false);
 					statusCode = response.StatusCode;
 				}, out var ex);
 
@@ -476,15 +479,16 @@ namespace MonoTests.System.Net.Http {
 		{
 			const string proxyUser = "proxyuser";
 			const string proxyPass = "proxypass";
-			using var proxy = new ProxyTestServer (proxyUser, proxyPass);
 
-			// See ProxyWithCredentialsAuthenticatesWithProxy for why we use an HTTPS (CONNECT) request.
+			// See ProxyWithCredentialsAuthenticatesWithProxy for why we use an HTTPS (CONNECT) request
+			// with a non-local hostname and tunnel every CONNECT to a local TLS test server.
 			Network.NWListener? destination = null;
 			HttpStatusCode? statusCode = null;
 
 			try {
 				destination = TlsTestServer.CreateNWTlsListener (requireClientCert: false);
 				var destinationPort = destination.Port;
+				using var proxy = new ProxyTestServer (proxyUser, proxyPass, forceTunnelPort: (int) destinationPort);
 
 				var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
 					using var handler = new NSUrlSessionHandler ();
@@ -492,7 +496,7 @@ namespace MonoTests.System.Net.Http {
 					handler.DefaultProxyCredentials = new NetworkCredential (proxyUser, proxyPass);
 					handler.TrustOverrideForUrl = (sender, url, trust) => true;
 					using var client = new HttpClient (handler);
-					var response = await client.GetAsync ($"https://localhost:{destinationPort}/").ConfigureAwait (false);
+					var response = await client.GetAsync ("https://proxy-tunnel-target.example/").ConfigureAwait (false);
 					statusCode = response.StatusCode;
 				}, out var ex);
 

@@ -28,6 +28,12 @@ public class AssemblyPreparer : IDisposable {
 
 	public string MakeReproPath { get; set; } = "";
 
+	// The pre-trim (untrimmed) assemblies. Used during post-processing with the trimmable static
+	// registrar to read [ProtocolMember] attributes that the trimmer has removed. This is the complete
+	// set of assemblies that were fed into the trimmer (ILLink's input), so it forms a self-contained
+	// metadata universe separate from the post-trim assemblies.
+	public List<string> PreTrimAssemblies { get; } = new List<string> ();
+
 	public RegistrarMode Registrar {
 		get => configuration.Application.Registrar;
 		set => configuration.Application.Registrar = value;
@@ -164,9 +170,29 @@ public class AssemblyPreparer : IDisposable {
 		return RunSteps (steps, out exceptions);
 	}
 
+	// Load the pre-trim (untrimmed) assemblies so the trimmable static registrar can read the
+	// [ProtocolMember] attributes the trimmer removed from the post-trim assemblies. The pre-trim
+	// assemblies are loaded into their own resolver (a separate, self-contained metadata universe from
+	// the post-trim assemblies), and stored on the Application for the registrar to consult. There's no
+	// fallback to the post-trim resolver: the pre-trim set is complete (it's the trimmer's input), and
+	// falling back would mix the two universes and resolve trimmed-away references incorrectly.
+	void LoadPreTrimAssemblies ()
+	{
+		if (PreTrimAssemblies.Count == 0)
+			return;
+
+		if (configuration.Application.Registrar != RegistrarMode.TrimmableStatic)
+			return;
+
+		var resolver = new PreTrimAssemblyResolver (configuration.Logger, PreTrimAssemblies);
+		configuration.Application.PreTrimAssemblyResolver = resolver;
+	}
+
 	public bool PostProcess (out List<ProductException> exceptions)
 	{
 		configuration.Application.IsPostProcessingAssemblies = true;
+
+		LoadPreTrimAssemblies ();
 
 		var steps = new ConfigurationAwareStep [] {
 			// All the same steps as the custom trimmer steps that are run after sweeping in Xamarin.Shared.Sdk.targets (and in the same order).
@@ -287,5 +313,33 @@ public class AssemblyPreparerInfo {
 		OutputPath = outputPath;
 		IsTrimmable = isTrimmable;
 		TrimMode = trimMode;
+	}
+}
+
+// A resolver for the pre-trim (untrimmed) assemblies. It's given the complete set of assemblies that
+// were fed into the trimmer (ILLink's input), so it forms a self-contained metadata universe: it loads
+// assemblies lazily from that set on demand and never falls back to the post-trim resolver (which would
+// mix the two universes and resolve trimmed-away references incorrectly).
+class PreTrimAssemblyResolver : Xamarin.Bundler.CoreResolver {
+	readonly IToolLog log;
+	readonly Dictionary<string, string> paths = new Dictionary<string, string> ();
+
+	public PreTrimAssemblyResolver (IToolLog log, IEnumerable<string> assemblyPaths)
+	{
+		this.log = log;
+		foreach (var path in assemblyPaths)
+			paths [Path.GetFileNameWithoutExtension (path)] = path;
+	}
+
+	public override AssemblyDefinition Resolve (AssemblyNameReference name, ReaderParameters parameters)
+	{
+		if (cache.TryGetValue (name.Name, out var assembly))
+			return assembly;
+		if (paths.TryGetValue (name.Name, out var path)) {
+			var loaded = Load (log, path);
+			if (loaded is not null)
+				return loaded;
+		}
+		throw new NotImplementedException ($"Unable to resolve the pre-trim assembly reference {name}");
 	}
 }

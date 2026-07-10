@@ -454,7 +454,7 @@ namespace MonoTests.System.Net.Http {
 			}
 			TestRuntime.IgnoreInCIIfBadNetwork (ex);
 			Assert.That (ex, Is.Null, $"Exception: {ex}");
-			Assert.That (statusCode, Is.EqualTo (HttpStatusCode.OK), "Status code (proxy credentials should have been used)");
+			Assert.That (statusCode, Is.EqualTo (HttpStatusCode.OK), $"Status code (proxy credentials should have been used); status={statusCode}, requestCount={proxy.RequestCount}, authRequestCount={proxy.AuthenticatedRequestCount}");
 			Assert.That (proxy.AuthenticatedRequestCount, Is.GreaterThan (0), "Proxy should have forwarded an authenticated request");
 		}
 
@@ -482,7 +482,7 @@ namespace MonoTests.System.Net.Http {
 			}
 			TestRuntime.IgnoreInCIIfBadNetwork (ex);
 			Assert.That (ex, Is.Null, $"Exception: {ex}");
-			Assert.That (statusCode, Is.EqualTo (HttpStatusCode.OK), "Status code (default proxy credentials should have been used)");
+			Assert.That (statusCode, Is.EqualTo (HttpStatusCode.OK), $"Status code (default proxy credentials should have been used); status={statusCode}, requestCount={proxy.RequestCount}, authRequestCount={proxy.AuthenticatedRequestCount}");
 			Assert.That (proxy.AuthenticatedRequestCount, Is.GreaterThan (0), "Proxy should have forwarded an authenticated request");
 		}
 

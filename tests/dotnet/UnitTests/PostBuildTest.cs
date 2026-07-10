@@ -541,6 +541,46 @@ namespace Xamarin.Tests {
 			Assert.That (staticFrameworkItems, Is.Empty, $"Static framework XStaticArTest should not be in post-processing items. All items:\n\t{string.Join ("\n\t", postProcessingItems.Select (i => i.ItemSpec))}");
 		}
 
+		[Test]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", false)]
+		public void PublishDSymToPublishDirectory (ApplePlatform platform, string runtimeIdentifiers, bool copyDSym)
+		{
+			// https://github.com/dotnet/macios/issues/15384
+			// When publishing, the generated *.dSYM directories should be copied to the publish
+			// directory (unless CopyDSYMToPublishDirectory=false).
+			var project = "MySimpleApp";
+			var configuration = "Release";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers, platform: platform, out var appPath, configuration: configuration);
+			Clean (project_path);
+
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["Configuration"] = configuration;
+			if (!copyDSym)
+				properties ["CopyDSYMToPublishDirectory"] = "false";
+
+			DotNet.AssertPublish (project_path, properties);
+
+			var appContainerDir = Path.GetDirectoryName (appPath)!;
+			var appBundleName = Path.GetFileName (appPath);
+			var publishDir = Path.Combine (appContainerDir, "publish");
+
+			// The dSYM must have been generated next to the app bundle in the first place.
+			var sourceDSym = Path.Combine (appContainerDir, appBundleName + ".dSYM");
+			Assert.That (sourceDSym, Does.Exist, "Source dSYM");
+
+			var publishedDSym = Path.Combine (publishDir, appBundleName + ".dSYM");
+			if (copyDSym) {
+				Assert.That (publishedDSym, Does.Exist, "Published dSYM");
+				Assert.That (Path.Combine (publishedDSym, "Contents", "Info.plist"), Does.Exist, "Published dSYM Info.plist");
+			} else {
+				Assert.That (publishedDSym, Does.Not.Exist, "Published dSYM (disabled)");
+			}
+		}
+
 		static ITaskItem AssertApplicationArtifact (string binLogPath, string path, ApplePlatform platform, string packageFormat, bool isDirectory)
 		{
 			var outputs = GetItems (binLogPath, "ApplicationArtifact");

@@ -20,8 +20,35 @@
 			Condition="$(RuntimeIdentifiers.Contains('iossimulator-')) Or $(RuntimeIdentifiers.Contains('tvossimulator-'))"
 		/>
 	</Target>
-	<Target Name="Publish" DependsOnTargets="_PrePublish;GetApplicationArtifacts" Returns="@(ApplicationArtifact)">
+	<Target Name="Publish" DependsOnTargets="_PrePublish;GetApplicationArtifacts;_CopyDSymToPublishDirectory" Returns="@(ApplicationArtifact)">
 		<Message Importance="high" Text="Created the package: $(IpaPackagePath)" Condition="'$(BuildIpa)' == 'true' And '$(SdkIsMobile)' == 'true'" />
 		<Message Importance="high" Text="Created the package: $(PkgPackagePath)" Condition="'$(CreatePackage)' == 'true' And '$(SdkIsDesktop)' == 'true'" />
+	</Target>
+
+	<!--
+		Copy any generated *.dSYM directories (which are created next to the app bundle) to the
+		publish directory, so that the debug symbols end up alongside the published .ipa/.pkg.
+		This can be disabled by setting CopyDSYMToPublishDirectory=false.
+		Ref: https://github.com/dotnet/macios/issues/15384
+	-->
+	<Target Name="_CopyDSymToPublishDirectory"
+		Condition="'$(CopyDSYMToPublishDirectory)' != 'false' And '$(_CanOutputAppBundle)' == 'true' And $([MSBuild]::IsOSPlatform('osx'))"
+		DependsOnTargets="_GenerateBundleName">
+		<GetDirectories SessionId="$(BuildSessionId)" Path="$(_AppContainerDir)" Pattern="*.dSYM">
+			<Output TaskParameter="Directories" ItemName="_DSymDirToPublish" />
+		</GetDirectories>
+		<ItemGroup>
+			<_DSymFileToPublish Include="%(_DSymDirToPublish.Identity)/**/*">
+				<DSymDirName>%(_DSymDirToPublish.Filename)%(_DSymDirToPublish.Extension)</DSymDirName>
+			</_DSymFileToPublish>
+		</ItemGroup>
+		<Copy
+			SessionId="$(BuildSessionId)"
+			Condition="'@(_DSymFileToPublish)' != ''"
+			SourceFiles="@(_DSymFileToPublish)"
+			DestinationFiles="@(_DSymFileToPublish -> '$(PublishDir)%(DSymDirName)/%(RecursiveDir)%(Filename)%(Extension)')"
+			SkipUnchangedFiles="true">
+			<Output TaskParameter="DestinationFiles" ItemName="FileWrites" />
+		</Copy>
 	</Target>
 </Project>

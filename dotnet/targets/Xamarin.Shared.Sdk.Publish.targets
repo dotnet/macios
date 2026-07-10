@@ -44,7 +44,7 @@
 		</ItemGroup>
 		<Copy
 			SessionId="$(BuildSessionId)"
-			Condition="'@(_DSymFileToPublish)' != ''"
+			Condition="'@(_DSymFileToPublish->Count())' != '0'"
 			SourceFiles="@(_DSymFileToPublish)"
 			DestinationFiles="@(_DSymFileToPublish -> '$(PublishDir)%(DSymDirName)/%(RecursiveDir)%(Filename)%(Extension)')"
 			SkipUnchangedFiles="true">

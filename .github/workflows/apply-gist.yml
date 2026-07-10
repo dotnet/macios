@@ -1,0 +1,201 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
+# This workflow applies updated expected app size files from a GitHub gist
+# when a maintainer comments '/apply-gist <gist-url>' on a pull request.
+#
+# Security:
+# - Only honors comments from users with write access to the repository
+# - Only accepts gists from approved owners (see APPROVED_GIST_OWNERS below)
+
+name: Apply Gist
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  apply-gist:
+    if: >-
+      github.event.issue.pull_request &&
+      startsWith(github.event.comment.body, '/apply-gist ')
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check commenter permissions
+      id: check-permissions
+      uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+      with:
+        script: |
+          const { data: permission } = await github.rest.repos.getCollaboratorPermissionLevel({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            username: context.payload.comment.user.login,
+          });
+          const level = permission.permission;
+          if (level !== 'admin' && level !== 'write' && level !== 'maintain') {
+            core.setFailed(`User '${context.payload.comment.user.login}' does not have write access (has '${level}'). Ignoring.`);
+            return;
+          }
+          core.info(`User '${context.payload.comment.user.login}' has '${level}' access. Proceeding.`);
+
+    - name: React to comment
+      uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+      with:
+        script: |
+          await github.rest.reactions.createForIssueComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            comment_id: context.payload.comment.id,
+            content: 'rocket',
+          });
+
+    - name: Parse gist URL
+      id: parse
+      env:
+        COMMENT_BODY: ${{ github.event.comment.body }}
+      run: |
+        GIST_URL=$(echo "$COMMENT_BODY" | grep -oP '(?<=/apply-gist\s)https://gist\.github\.com/\S+')
+        if [ -z "$GIST_URL" ]; then
+          echo "::error::Could not parse a valid gist URL from the comment."
+          exit 1
+        fi
+        # Extract gist ID (last path component, strip any trailing slash)
+        GIST_ID=$(echo "$GIST_URL" | sed 's|/$||' | awk -F/ '{print $NF}')
+        if [ -z "$GIST_ID" ]; then
+          echo "::error::Could not extract gist ID from URL: $GIST_URL"
+          exit 1
+        fi
+        echo "gist_url=$GIST_URL" >> "$GITHUB_OUTPUT"
+        echo "gist_id=$GIST_ID" >> "$GITHUB_OUTPUT"
+
+    - name: Validate gist owner
+      id: validate-owner
+      uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+      env:
+        GIST_ID: ${{ steps.parse.outputs.gist_id }}
+      with:
+        script: |
+          // Approved gist owners. Add more entries here as needed.
+          const approvedOwners = [
+            'vs-mobiletools-engineering-service2',
+          ];
+
+          const { data: gist } = await github.rest.gists.get({
+            gist_id: process.env.GIST_ID,
+          });
+          if (!gist.owner) {
+            core.setFailed('Gist has no owner (anonymous or deleted). Cannot verify ownership.');
+            return;
+          }
+          const owner = gist.owner.login;
+          if (!approvedOwners.includes(owner)) {
+            core.setFailed(`Gist owner '${owner}' is not in the approved list: [${approvedOwners.join(', ')}]`);
+            return;
+          }
+          core.info(`Gist owner '${owner}' is approved.`);
+
+    - name: Get PR branch
+      id: pr-branch
+      uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+      with:
+        script: |
+          const { data: pr } = await github.rest.pulls.get({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            pull_number: context.issue.number,
+          });
+          if (pr.head.repo.full_name !== pr.base.repo.full_name) {
+            core.setFailed(`Cannot apply gist to fork PRs (head repo: ${pr.head.repo.full_name}). Push the updated files manually.`);
+            return;
+          }
+          core.setOutput('ref', pr.head.ref);
+          core.setOutput('repo_full_name', pr.head.repo.full_name);
+
+    - name: Checkout PR branch
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      with:
+        ref: ${{ steps.pr-branch.outputs.ref }}
+        repository: ${{ steps.pr-branch.outputs.repo_full_name }}
+        token: ${{ secrets.GITHUB_TOKEN }}
+        persist-credentials: true
+
+    - name: Download and apply gist files
+      env:
+        GIST_ID: ${{ steps.parse.outputs.gist_id }}
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        EXPECTED_DIR="tests/dotnet/UnitTests/expected"
+        mkdir -p "$EXPECTED_DIR"
+        export EXPECTED_DIR
+
+        # Download gist metadata to get file URLs
+        GIST_JSON=$(gh api "gists/$GIST_ID")
+        echo "$GIST_JSON" | python3 -c "
+        import json, sys, urllib.request, os, re
+
+        gist = json.load(sys.stdin)
+        expected_dir = os.environ['EXPECTED_DIR']
+        files = gist['files']
+        # Only allow known expected-file patterns
+        allowed_pattern = re.compile(r'^[A-Za-z0-9]+-[A-Za-z0-9-]+-(size|preservedapis)\.txt$')
+        for filename, file_info in files.items():
+            if not allowed_pattern.match(filename):
+                print(f'Skipping file with unexpected name: {filename}')
+                continue
+            content = file_info.get('content')
+            if content is None:
+                # Large files need to be fetched from raw_url
+                raw_url = file_info['raw_url']
+                content = urllib.request.urlopen(raw_url).read().decode('utf-8')
+            dest = os.path.join(expected_dir, filename)
+            with open(dest, 'w') as f:
+                f.write(content)
+            print(f'Applied: {filename}')
+        "
+
+    - name: Commit and push
+      env:
+        GIST_URL: ${{ steps.parse.outputs.gist_url }}
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git add tests/dotnet/UnitTests/expected/
+        if git diff --cached --quiet; then
+          echo "No changes to commit."
+          exit 0
+        fi
+        git commit -m "[tests] Update expected app size files
+
+        Applied from gist: $GIST_URL"
+        git push
+
+    - name: Post success comment
+      if: success()
+      uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+      env:
+        GIST_URL: ${{ steps.parse.outputs.gist_url }}
+      with:
+        script: |
+          await github.rest.issues.createComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+            body: `✅ Applied expected app size files from [gist](${process.env.GIST_URL}).`,
+          });
+
+    - name: Post failure comment
+      if: failure()
+      uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+      with:
+        script: |
+          await github.rest.issues.createComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+            body: `❌ Failed to apply gist. Check the [workflow run](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}) for details.`,
+          });

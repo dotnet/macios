@@ -75,6 +75,8 @@ namespace Vision {
 		Timeout,
 		UnsupportedComputeStage,
 		UnsupportedComputeDevice,
+		ResourceUnavailable,
+		ResourceCorrupted,
 	}
 
 	/// <summary>Enumerates the emphasis of the tracking algorithm.</summary>

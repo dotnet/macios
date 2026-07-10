@@ -1710,4 +1710,9 @@ namespace CoreMotion {
 		[Export ("stopStatusUpdates")]
 		void StopStatusUpdates ();
 	}
+
+	[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[Protocol]
+	interface CMBodyIdentifiable {
+	}
 }

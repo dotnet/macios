@@ -28,7 +28,9 @@ namespace MonoTouch.Tuner {
 			Process (assembly);
 		}
 
+#if !ASSEMBLY_PREPARER
 		AssemblyDefinition? PlatformAssembly;
+#endif
 
 		bool dynamic_registration_support_required;
 
@@ -49,7 +51,9 @@ namespace MonoTouch.Tuner {
 			if (Profile.IsProductAssembly (assembly)) {
 				if (Annotations.GetAction (assembly) != AssemblyAction.Link)
 					return false;
+#if !ASSEMBLY_PREPARER
 				PlatformAssembly = assembly;
+#endif
 			}
 
 			// Can't touch the forbidden fruit in the product assembly unless there's a reference to it
@@ -166,20 +170,27 @@ namespace MonoTouch.Tuner {
 
 			App.Log (4, "Optimization dynamic registrar removal: {0}", Optimizations.RemoveDynamicRegistrar.Value ? "enabled" : "disabled");
 
-			if (Optimizations.RemoveDynamicRegistrar.Value) {
+#if ASSEMBLY_PREPARER
+			// In the assembly-preparer we don't rewrite the platform assembly. Instead we surface the computed
+			// value to MSBuild (as the DynamicRegistrationSupported output property), which enables the
+			// 'ObjCRuntime.Runtime.DynamicRegistrationSupported' trimmer feature switch so that ILLink hardcodes
+			// Runtime.DynamicRegistrationSupported. This way the assembly-preparer doesn't have to modify (and
+			// thus re-save) any assembly.
+			Configuration.SetOutputForMSBuild ("DynamicRegistrationSupported", App.DynamicRegistrationSupported ? "true" : "false");
+#else
+			if (Optimizations.RemoveDynamicRegistrar.Value && PlatformAssembly is not null) {
 				// ILLink will optimize `Runtime.Initialize` based on `DynamicRegistrationSupported` returning a constant (`true`)
 				// and this will runs before we have the chance to set it to `false` in `CoreOptimizedGeneratedCode` so we instead
 				// do the change here so the linker can do this without further ado
 				// note: it does not matter for _legacy_ so we apply the change (to earlier) to minimize the difference between them
-				if (PlatformAssembly is not null) {
-					var method = PlatformAssembly.MainModule.GetType ("ObjCRuntime.Runtime").Methods.First ((n) => n.Name == "get_DynamicRegistrationSupported");
-					// Rewrite to return 'false'
-					var instr = method.Body.Instructions;
-					instr.Clear ();
-					instr.Add (Instruction.Create (OpCodes.Ldc_I4_0));
-					instr.Add (Instruction.Create (OpCodes.Ret));
-				}
+				var method = PlatformAssembly.MainModule.GetType ("ObjCRuntime.Runtime").Methods.First ((n) => n.Name == "get_DynamicRegistrationSupported");
+				// Rewrite to return 'false'
+				var instr = method.Body.Instructions;
+				instr.Clear ();
+				instr.Add (Instruction.Create (OpCodes.Ldc_I4_0));
+				instr.Add (Instruction.Create (OpCodes.Ret));
 			}
+#endif
 		}
 	}
 }

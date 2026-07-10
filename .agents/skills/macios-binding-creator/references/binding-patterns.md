@@ -192,7 +192,7 @@ NSString SelectedOption { get; set; }
 
 ### Adding New Members to Existing Enums
 
-When adding a new value to an existing enum, the new member needs its own availability attribute with the version that **member** was introduced — not the enum's introduction version:
+When adding a new value to an existing enum, match the native header **per member**. Add a per-member availability attribute **only if** the header annotates that member differently from the enum — its own `API_AVAILABLE` version (newer than the enum), or `API_UNAVAILABLE`/absence on a platform (→ `[No<Platform>]`). Use the version the **member** was introduced, not the enum's. A member the header doesn't annotate inherits the enum's availability — leave it bare, matching its siblings:
 
 ```csharp
 [NoTV, NoMacCatalyst, NoMac, iOS (26, 1)]
@@ -205,7 +205,11 @@ public enum PHAssetResourceUploadJobAction : long {
 }
 ```
 
-Check the generated reference bindings (`make -C tests/xtro-sharpie gen-all`) for the correct per-member introduction version.
+Check the generated reference bindings (`make -C tests/xtro-sharpie gen-all`) for the correct per-member introduction version. (The example above is a single-platform, iOS-only enum, so the new member needs only `[iOS (26, 5)]`.)
+
+> ❌ **Error enums are the exception — never add availability *or* unavailability attributes to their members.** If the enum's name ends in `Error`/`ErrorCode` or it carries `[ErrorDomain]`, cecil's `EnumTest.NoAvailabilityOnError` (issue #9724) fails — with **no** known-failures allowlist — on **any** field carrying `[iOS]`/`[Mac]`/`[TV]`/`[No*]`/`[Introduced]`/`[Unavailable]`/`[Supported/UnsupportedOSPlatform]` (only `[Obsolete]`/`[Obsoleted…]` are exempt). Bind new error-code values bare, matching their siblings (e.g. `VNErrorCode.ResourceUnavailable`, `UNErrorCode.AttachmentUnsupportedType`).
+
+> ⚠️ **Multi-platform enums (numeric *or* smart): give a new member every applicable platform's version, not just one.** For any enum available on more than one platform, bgen back-fills each platform where the member has no introduced attribute with the parent enum's version (`AttributeFactory.FindHighestIntroducedAttributes`, `Generator.PrintAttributes.cs`). So `[iOS (27, 0)]` alone on a member of an enum introduced at 26.0 silently leaves the member reporting `Mac`/`MacCatalyst` **26.0**. Specify all applicable `[iOS]`/`[Mac]`/`[MacCatalyst]`/`[TV]` versions (repeating a parent `[NoTV]` is redundant but harmless). A single-platform enum needs only that platform's version, as in the example above.
 
 ## Notification Fields
 

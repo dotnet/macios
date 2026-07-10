@@ -2701,6 +2701,12 @@
 		<Error Text=".NET for $(_PlatformName) does not support server garbage collection. Please don't set the 'ServerGarbageCollection' property." />
 	</Target>
 
+	<Target Name="_ValidatePublishSingleFile"
+		Condition="'$(PublishSingleFile)' == 'true'"
+		BeforeTargets="Build;Publish">
+		<Error Text=".NET for $(_PlatformName) does not support publishing to a single file. Please don't set the 'PublishSingleFile' property." />
+	</Target>
+
 	<Target Name="_ValidateXcodeVersion"
 		AfterTargets="_DetectSdkLocations"
 		Condition="'$(ValidateXcodeVersion)' != 'false' And '$(_CanOutputAppBundle)' == 'true' And '$(IsMacEnabled)' == 'true'">

@@ -466,6 +466,23 @@ The full path to the `ditto` executable.
 
 The default behavior is to use `/usr/bin/ditto`.
 
+## DynamicRegistrationSupported
+
+Controls whether the dynamic registrar is available at runtime (as reported by
+`ObjCRuntime.Runtime.DynamicRegistrationSupported`).
+
+If this value is not specified, the build will compute a default value based
+on whether the app needs the dynamic registrar, and enables the
+`ObjCRuntime.Runtime.DynamicRegistrationSupported` trimmer feature switch
+accordingly (so the trimmer can remove the dynamic registrar when it's not
+needed, making the app smaller).
+
+Set this property to `true` or `false` to override the computed default.
+
+Removing the dynamic registrar requires a static registrar (`Registrar=static` or
+`Registrar=managed-static`) and trimming, so setting this property has no effect (and the
+build warns) when those conditions aren't met.
+
 ## EmbedOnDemandResources
 
 If on-demand resources should be embedded in the app bundle.

@@ -116,8 +116,8 @@ public class AssemblyPreparer : IDisposable {
 
 	public bool Prepare (out List<ProductException> exceptions)
 	{
-		var steps = new ConfigurationAwareStep [] {
-			// All the same steps as the custom trimmer steps that are run before MarkStep in Xamarin.Shared.Sdk.targets (and in the same order).
+		// All the same steps as the custom trimmer steps that are run before MarkStep in Xamarin.Shared.Sdk.targets (and in the same order).
+		var steps = new List<ConfigurationAwareStep> {
 			// CollectAssembliesStep
 			new LoadAssembliesStep (),
 			new ComputeMethodOverridesStep (),
@@ -131,14 +131,20 @@ public class AssemblyPreparer : IDisposable {
 			new MarkForStaticRegistrarStep (),
 			new MarkNSObjectsStep (),
 			new InlineDlfcnMethodsStep (),
-			new RegistrarRemovalTrackingStep (),
-			// PreMarkDispatcher: I don't think we need this one
-			new ManagedRegistrarStep (),
-			new TrimmableRegistrarStep (),
-			new ManagedRegistrarLookupTablesStep (),
-			new InlineClassGetHandleStep (),
-			new SaveAssembliesStep (),
 		};
+
+		// If the user explicitly set $(DynamicRegistrationSupported), we don't need to compute the value, so
+		// skip RegistrarRemovalTrackingStep entirely (the value is passed straight through to the trimmer feature switch).
+		if (!configuration.DynamicRegistrationSupported.HasValue)
+			steps.Add (new RegistrarRemovalTrackingStep ());
+
+		// PreMarkDispatcher: I don't think we need this one
+		steps.Add (new ManagedRegistrarStep ());
+		steps.Add (new TrimmableRegistrarStep ());
+		steps.Add (new ManagedRegistrarLookupTablesStep ());
+		steps.Add (new InlineClassGetHandleStep ());
+		steps.Add (new SaveAssembliesStep ());
+
 		return RunSteps (steps, out exceptions);
 	}
 
@@ -206,6 +212,11 @@ public class AssemblyPreparer : IDisposable {
 		foreach (var step in steps) {
 			step.Process (linkContext);
 		}
+
+		// The post-processing pass flushes its MSBuild output as its last step (DoneStep). The preparation
+		// pass has no DoneStep, so flush here so that its MSBuild output properties are written.
+		if (!configuration.Application.IsPostProcessingAssemblies)
+			configuration.FlushOutputForMSBuild ();
 
 		return exceptions.Count == 0;
 	}

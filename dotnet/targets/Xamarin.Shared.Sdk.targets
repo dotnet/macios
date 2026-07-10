@@ -272,6 +272,7 @@
 			_ExtendAppExtensionReferences;
 			_ComputeLinkerArguments;
 			_PrepareAssemblies;
+			_SetDynamicRegistrationSupportedFeature;
 			_ComputeFrameworkFilesToPublish;
 			_ComputeDynamicLibrariesToPublish;
 			ComputeFilesToPublish;
@@ -560,6 +561,37 @@
 		</ItemGroup>
 	</Target>
 
+	<!--
+		Enables the 'ObjCRuntime.Runtime.DynamicRegistrationSupported' trimmer feature switch so that ILLink
+		hardcodes Runtime.DynamicRegistrationSupported. When PrepareAssemblies is enabled, the assembly-preparer's
+		RegistrarRemovalTrackingStep computes whether the dynamic registrar is needed (instead of rewriting the
+		platform assembly) and writes the value - as the 'DynamicRegistrationSupported' MSBuild output property -
+		to $(_AssemblyPreparerMSBuildOutputFile). This target runs after _PrepareAssemblies and before the trimmer.
+		It's not incremental-gated, so even if _PrepareAssemblies was skipped (because its outputs were up-to-date),
+		the value is still read from the (persisted) file and the feature switch is set. A user-specified
+		$(DynamicRegistrationSupported) always wins.
+	-->
+	<Target Name="_SetDynamicRegistrationSupportedFeature" Condition="'$(PrepareAssemblies)' == 'true'">
+		<ReadLinesFromFile
+			File="$(_AssemblyPreparerMSBuildOutputFile)"
+			Condition="'$(DynamicRegistrationSupported)' == '' And Exists('$(_AssemblyPreparerMSBuildOutputFile)')">
+			<Output TaskParameter="Lines" ItemName="_AssemblyPreparerMSBuildOutputProperty" />
+		</ReadLinesFromFile>
+		<ItemGroup>
+			<_DynamicRegistrationSupportedLine Include="@(_AssemblyPreparerMSBuildOutputProperty)" Condition="$([System.String]::Copy('%(Identity)').StartsWith('DynamicRegistrationSupported='))" />
+		</ItemGroup>
+		<PropertyGroup>
+			<!-- The user-specified $(DynamicRegistrationSupported) always wins; otherwise use the value the
+			     assembly-preparer wrote (the 'DynamicRegistrationSupported=<value>' line in the output file). -->
+			<_DynamicRegistrationSupportedLineText>@(_DynamicRegistrationSupportedLine)</_DynamicRegistrationSupportedLineText>
+			<_DynamicRegistrationSupported>$(DynamicRegistrationSupported)</_DynamicRegistrationSupported>
+			<_DynamicRegistrationSupported Condition="'$(_DynamicRegistrationSupported)' == '' And '$(_DynamicRegistrationSupportedLineText)' != ''">$(_DynamicRegistrationSupportedLineText.Replace('DynamicRegistrationSupported=', ''))</_DynamicRegistrationSupported>
+		</PropertyGroup>
+		<ItemGroup Condition="'$(_DynamicRegistrationSupported)' != ''">
+			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.DynamicRegistrationSupported" Value="$(_DynamicRegistrationSupported)" Trim="true" />
+		</ItemGroup>
+	</Target>
+
 	<Target Name="_ComputeLinkerArguments" DependsOnTargets="$(_ComputeLinkerArgumentsDependsOn)" />
 
 	<Target Name="_ComputeLinkerInputs">
@@ -607,6 +639,10 @@
 			<_CustomLinkerOptionsFile>$([System.IO.Path]::GetFullPath('$(IntermediateOutputPath)custom-linker-options.txt'))</_CustomLinkerOptionsFile>
 			<_CustomLinkerOptionsFile Condition="'$(BuildSessionId)' != ''">$(IntermediateOutputPath)custom-linker-options.txt</_CustomLinkerOptionsFile>
 
+			<!-- The files the assembly-preparer writes its MSBuild output properties to (one per pass; read back in _SetDynamicRegistrationSupportedFeature and added to FileWrites). -->
+			<_AssemblyPreparerMSBuildOutputFile Condition="'$(PrepareAssemblies)' == 'true'">$(DeviceSpecificIntermediateOutputPath)assembly-preparer-msbuild-output.txt</_AssemblyPreparerMSBuildOutputFile>
+			<_AssemblyPostProcessorMSBuildOutputFile Condition="'$(PrepareAssemblies)' == 'true'">$(DeviceSpecificIntermediateOutputPath)assembly-postprocessor-msbuild-output.txt</_AssemblyPostProcessorMSBuildOutputFile>
+
 			<!-- The directory where the linker puts *.items files that will be loaded in the _LoadLinkerOutput target -->
 			<_LinkerItemsDirectory>$([System.IO.Path]::GetFullPath('$(IntermediateOutputPath)linker-items'))</_LinkerItemsDirectory>
 			<_LinkerItemsDirectory Condition="'$(BuildSessionId)' != ''">$(IntermediateOutputPath)linker-items</_LinkerItemsDirectory>
@@ -649,6 +685,7 @@
 				@(_BundlerDlsym -> 'Dlsym=%(Identity)')
 				Debug=$(_BundlerDebug)
 				DeploymentTarget=$(_MinimumOSVersion)
+				DynamicRegistrationSupported=$(DynamicRegistrationSupported)
 				@(_CustomLinkFlags -> 'CustomLinkFlags=%(Identity)')
 				EnableSGenConc=$(EnableSGenConc)
 				@(_BundlerEnvironmentVariables -> 'EnvironmentVariable=Overwrite=%(Overwrite)|%(Identity)=%(Value)')
@@ -668,6 +705,8 @@
 				MarshalManagedExceptionMode=$(MarshalManagedExceptionMode)
 				MarshalObjectiveCExceptionMode=$(MarshalObjectiveCExceptionMode)
 				@(_MonoLibrary -> 'MonoLibrary=%(Identity)')
+				MSBuildOutputFile=$(_AssemblyPreparerMSBuildOutputFile)
+				MSBuildPostProcessOutputFile=$(_AssemblyPostProcessorMSBuildOutputFile)
 				MtouchFloat32=$(MtouchFloat32)
 				NoWarn=$(_BundlerNoWarn)
 				Optimize=$(_BundlerOptimize)

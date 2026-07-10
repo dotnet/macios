@@ -290,7 +290,7 @@ namespace EventKit {
 		Exchange,
 		/// <summary>The source is a CalDAV server.</summary>
 		CalDav,
-		/// <summary>The source is MobileMe (iCloud).</summary>
+		/// <summary>The source is the legacy MobileMe service (now iCloud).</summary>
 		MobileMe,
 		/// <summary>The source is a subscribed calendar.</summary>
 		Subscribed,
@@ -299,7 +299,7 @@ namespace EventKit {
 	}
 
 	// NSInteger -> EKTypes.h
-	/// <summary>An enumeration whose values specify whether an event was raised by entering or leaving a region.</summary>
+	/// <summary>An enumeration whose values specify whether an alarm fires when entering or leaving a region.</summary>
 	[Native]
 	public enum EKAlarmProximity : long {
 		/// <summary>No proximity alarm.</summary>

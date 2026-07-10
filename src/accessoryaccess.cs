@@ -28,7 +28,7 @@ namespace AccessoryAccess {
 	}
 
 	/// <summary>A completion handler for opening a USB accessory.</summary>
-	/// <param name="device">A live IOUSBHostDevice handle that stays valid until <see cref="AAUsbAccessory.Close (AAUsbAccessoryCloseCompletionHandler)"/> is called.</param>
+	/// <param name="device">A live IOUSBHostDevice handle that remains valid until the accessory is closed.</param>
 	/// <remarks>IOUSBHost is not bound in macios, so this handle is surfaced as a raw <see cref="IntPtr"/>. To perform USB I/O, hand the accessory to a native/Swift service via <see cref="AAUsbAccessory.CreateXpcRepresentation"/> or bridge the handle through native IOUSBHost code.</remarks>
 	delegate void AAUsbAccessoryOpenCompletionHandler (IntPtr device, [NullAllowed] NSError error);
 	delegate void AAUsbAccessoryCloseCompletionHandler ([NullAllowed] NSError error);

@@ -834,7 +834,6 @@ FOUNDATION_CORE_SOURCES = \
 	Foundation/ProtocolAttribute.cs \
 	Foundation/RegisterAttribute.cs \
 	Foundation/NSAttributedStringDocumentAttributes.cs  \
-	Foundation/NSObject.mac.cs \
 	Foundation/NSDateComponents.cs \
 	Foundation/XpcInterfaceAttribute.cs \
 

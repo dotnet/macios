@@ -3546,7 +3546,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		Name="_PostprocessAssemblies"
 		Condition="'$(PostProcessAssemblies)' == 'true' And '$(RuntimeIdentifiers)' == ''"
 		Inputs="@(_AssembliesToPostProcess)"
-		Outputs="@(_AssembliesToPostProcess->'$(_PostprocessedAssembliesDirectory)%(Filename)%(Extension)')"
+		Outputs="@(_AssembliesToPostProcess->'$(_PostprocessedAssembliesDirectory)%(Filename)%(Extension)');$(_AssemblyPostProcessorMSBuildOutputFile)"
 		AfterTargets="ILLink"
 		BeforeTargets="NativeCompile;CreateReadyToRunImages"
 		DependsOnTargets="_PrepareAssembliesForPostProcessing;_ComputeLinkerInputs"

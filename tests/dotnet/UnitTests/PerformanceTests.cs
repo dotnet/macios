@@ -138,7 +138,12 @@ namespace Xamarin.Tests {
 			}
 		}
 
-		static string FormatTimeSpan (TimeSpan value) => value.ToString (@"hh\:mm\:ss\.ff");
+		static string FormatTimeSpan (TimeSpan value)
+		{
+			// A custom TimeSpan format string doesn't include the sign, so handle negative values ourselves.
+			var sign = value < TimeSpan.Zero ? "-" : " ";
+			return sign + value.Duration ().ToString (@"hh\:mm\:ss\.ff");
+		}
 
 		static void AppendMarkdownTable (StringBuilder report, string [] headers, List<string []> rows)
 		{

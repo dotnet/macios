@@ -2,7 +2,6 @@
 !incorrect-protocol-member! CMWaterSubmersionManagerDelegate::manager:didUpdateMeasurement: is OPTIONAL and should NOT be abstract
 !incorrect-protocol-member! CMWaterSubmersionManagerDelegate::manager:didUpdateTemperature: is OPTIONAL and should NOT be abstract
 !incorrect-protocol-member! CMWaterSubmersionManagerDelegate::manager:errorOccurred: is OPTIONAL and should NOT be abstract
-!missing-protocol! CMBodyIdentifiable not bound
 !missing-selector! CMDeviceMotion::headingAccuracy not bound
 !missing-selector! CMMotionManager::deviceMotionBody not bound
 !missing-selector! CMMotionManager::setDeviceMotionBody: not bound

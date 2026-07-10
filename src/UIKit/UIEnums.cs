@@ -4853,10 +4853,10 @@ namespace UIKit {
 		Hidden = 2,
 	}
 
-	// NSInteger -> UINavigationBar.h
+	// NSInteger -> UIBarMinimization.h
 	[TV (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
 	[Native]
-	public enum UIBarMinimizeBehavior : long {
+	public enum UIBarMinimizationBehavior : long {
 		Automatic = 0,
 		[NoTV]
 		Never,
@@ -4866,7 +4866,7 @@ namespace UIKit {
 		OnScrollUp,
 	}
 
-	// NSInteger -> UINavigationItem.h
+	// NSInteger -> UIBarMinimization.h
 	[TV (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
 	[Native]
 	public enum UIBarMinimizationSafeAreaAdjustment : long {
@@ -4875,6 +4875,15 @@ namespace UIKit {
 		Enabled,
 		[NoTV]
 		Disabled,
+	}
+
+	// NSInteger -> UIBarMinimization.h
+	[TV (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[Native]
+	public enum UIBarMinimizationRestorationBehavior : long {
+		Automatic = 0,
+		[NoTV]
+		AtScrollEdge,
 	}
 
 	// NSInteger -> UITabBarControllerSidebar.h

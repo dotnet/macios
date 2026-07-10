@@ -29,7 +29,7 @@ namespace EventKit {
 	/// <summary>The kind of participant to the event.</summary>
 	[Native]
 	public enum EKParticipantType : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The participant type is unknown.</summary>
 		Unknown,
 		/// <summary>A person.</summary>
 		Person,
@@ -139,15 +139,15 @@ namespace EventKit {
 		SourceDoesNotAllowReminders,
 		/// <summary>The source does not allow events.</summary>
 		SourceDoesNotAllowEvents,
-		/// <summary>To be added.</summary>
+		/// <summary>The priority value is invalid.</summary>
 		PriorityIsInvalid,
-		/// <summary>To be added.</summary>
+		/// <summary>The entity type is invalid.</summary>
 		InvalidEntityType,
-		/// <summary>To be added.</summary>
+		/// <summary>Procedure alarms cannot be modified.</summary>
 		ProcedureAlarmsNotMutable,
-		/// <summary>To be added.</summary>
+		/// <summary>The event store is not authorized to perform the operation.</summary>
 		EventStoreNotAuthorized,
-		/// <summary>To be added.</summary>
+		/// <summary>The operating system does not support this operation.</summary>
 		OSNotSupported,
 		InvalidInviteReplyCalendar,
 		NotificationsCollectionFlagNotSet,
@@ -186,21 +186,21 @@ namespace EventKit {
 	[MacCatalyst (13, 1)]
 	[Native] // NSInteger (size change from previously untyped enum)
 	public enum EKWeekday : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Not set.</summary>
 		NotSet = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Sunday.</summary>
 		Sunday = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Monday.</summary>
 		Monday,
-		/// <summary>To be added.</summary>
+		/// <summary>Tuesday.</summary>
 		Tuesday,
-		/// <summary>To be added.</summary>
+		/// <summary>Wednesday.</summary>
 		Wednesday,
-		/// <summary>To be added.</summary>
+		/// <summary>Thursday.</summary>
 		Thursday,
-		/// <summary>To be added.</summary>
+		/// <summary>Friday.</summary>
 		Friday,
-		/// <summary>To be added.</summary>
+		/// <summary>Saturday.</summary>
 		Saturday,
 	}
 

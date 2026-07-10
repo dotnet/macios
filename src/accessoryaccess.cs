@@ -27,12 +27,9 @@ namespace AccessoryAccess {
 		MatchAny,
 	}
 
-	// 'device' is a live IOUSBHostDevice handle (an IOUSBHost Objective-C object). IOUSBHost is
-	// intentionally not bound in macios (a low-level IOKit/DriverKit-adjacent, NS_REFINED_FOR_SWIFT
-	// framework; see IGNORED_MACOS_FRAMEWORKS in tests/xtro-sharpie/Makefile), so the handle is surfaced
-	// as a raw IntPtr that stays valid until the accessory is closed (Close). To perform USB I/O, hand
-	// the accessory to a native/Swift service via CreateXpcRepresentation, or bridge the handle through
-	// native IOUSBHost code.
+	/// <summary>A completion handler for opening a USB accessory.</summary>
+	/// <param name="device">A live IOUSBHostDevice handle that stays valid until <see cref="AAUsbAccessory.Close (AAUsbAccessoryCloseCompletionHandler)"/> is called.</param>
+	/// <remarks>IOUSBHost is not bound in macios, so this handle is surfaced as a raw <see cref="IntPtr"/>. To perform USB I/O, hand the accessory to a native/Swift service via <see cref="AAUsbAccessory.CreateXpcRepresentation"/> or bridge the handle through native IOUSBHost code.</remarks>
 	delegate void AAUsbAccessoryOpenCompletionHandler (IntPtr device, [NullAllowed] NSError error);
 	delegate void AAUsbAccessoryCloseCompletionHandler ([NullAllowed] NSError error);
 

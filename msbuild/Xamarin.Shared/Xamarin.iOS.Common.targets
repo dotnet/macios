@@ -474,6 +474,26 @@ Copyright (C) 2013-2016 Xamarin. All rights reserved.
 			/>
 	</Target>
 
+	<Target Name="_CreateIpaSymbols" Condition="'$(BuildIpa)' == 'true' And '$(IpaIncludeSymbols)' == 'true'">
+		<!-- Find all the dSYM directories produced by the build. -->
+		<GetDirectories SessionId="$(BuildSessionId)" Condition="'$(IsMacEnabled)' == 'true'" Path="$(DeviceSpecificOutputPath)" Pattern="*.dSYM">
+			<Output TaskParameter="Directories" ItemName="_IpaSymbolDSymDir" />
+		</GetDirectories>
+
+		<!-- Turn the dSYMs into the *.symbols files Apple expects in the .ipa's 'Symbols' directory. -->
+		<CreateSymbolsPackage
+			SessionId="$(BuildSessionId)"
+			Condition="'$(IsMacEnabled)' == 'true' And '@(_IpaSymbolDSymDir)' != ''"
+			DSymDirectories="@(_IpaSymbolDSymDir)"
+			SymbolsDirectory="$(DeviceSpecificIntermediateOutputPath)ipa\Symbols"
+		/>
+
+		<!-- Add the 'Symbols' directory to the set of files that go into the .ipa. -->
+		<ItemGroup>
+			<_IpaPackageSource Include="$(DeviceSpecificIntermediateOutputPath)ipa\Symbols" Condition="Exists ('$(DeviceSpecificIntermediateOutputPath)ipa\Symbols')" />
+		</ItemGroup>
+	</Target>
+
 	<Target Name="_ZipIpa" Condition="'$(BuildIpa)' == 'true'">
 		<MakeDir SessionId="$(BuildSessionId)" Condition="'$(IsMacEnabled)' == 'true'" Directories="$(IpaPackageDir)" />
 		<Delete SessionId="$(BuildSessionId)" Condition="'$(IsMacEnabled)' == 'true'" Files="$(IpaPackagePath)" />

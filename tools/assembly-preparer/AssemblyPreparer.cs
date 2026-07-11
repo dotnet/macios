@@ -228,7 +228,10 @@ public class AssemblyPreparer : IDisposable {
 				// Subscribe once the assemblies have been loaded: accessing the AppBundleRewriter before
 				// that point would create it without finding the corlib and platform assemblies.
 				if (assemblySavedHandler is null && configuration.Assemblies.Count > 0) {
-					assemblySavedHandler = (_) => currentStepModifiedAssemblies = true;
+					assemblySavedHandler = (asm) => {
+						currentStepModifiedAssemblies = true;
+						configuration.ModifiedAssemblies.Add (asm);
+					};
 					configuration.AppBundleRewriter.AssemblySaved += assemblySavedHandler;
 				}
 

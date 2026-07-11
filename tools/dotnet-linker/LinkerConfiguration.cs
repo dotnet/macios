@@ -97,6 +97,9 @@ namespace Xamarin.Linker {
 		public List<AssemblyDefinition> Assemblies => Application.LinkContext.Assemblies;
 		public required List<AssemblyPreparerInfo> AssemblyInfos;
 		public List<(string Path, AssemblyDefinition Assembly, string? OriginatingAssembly)> AddedAssemblies = new ();
+		// The set of assemblies that were modified (i.e. that AppBundleRewriter.SaveAssembly was called for).
+		// Assemblies that aren't modified don't need to be re-serialized when saved.
+		public HashSet<AssemblyDefinition> ModifiedAssemblies = new ();
 #else
 		// The list of assemblies is populated in CollectAssembliesStep.
 		public List<AssemblyDefinition> Assemblies = new List<AssemblyDefinition> ();

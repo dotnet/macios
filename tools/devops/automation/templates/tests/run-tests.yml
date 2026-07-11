@@ -190,6 +190,60 @@ steps:
   continueOnError: true
   condition: and(succeededOrFailed(), eq(variables['HAS_UPDATED_EXPECTED_SIZES'], 'true'))
 
+# Create a GitHub gist with the updated expected files and post a PR comment so that
+# a maintainer can apply the update by commenting '/apply-gist <url>'.
+- bash: |
+    UPDATED_DIR="$BUILD_ARTIFACTSTAGINGDIRECTORY/updated-expected-sizes"
+    FILES=$(find "$UPDATED_DIR" -name '*.txt' -type f)
+    if [ -z "$FILES" ]; then
+      echo "No updated expected files found."
+      exit 0
+    fi
+
+    # Create gist with all updated files
+    # shellcheck disable=SC2086
+    GIST_URL=$(gh gist create -d "Updated expected app size files for PR #$PR_NUMBER (${{ parameters.testPrefix }})" $FILES 2>&1)
+    if [ $? -ne 0 ]; then
+      echo "##[warning]Failed to create gist: $GIST_URL"
+      exit 0
+    fi
+    echo "Created gist: $GIST_URL"
+
+    # Build the file list for the comment
+    FILE_LIST=""
+    for f in $FILES; do
+      FNAME="${f##*/}"
+      FILE_LIST="$FILE_LIST
+    - \`$FNAME\`"
+    done
+
+    # Post a comment on the PR
+    COMMENT_BODY="### ⚠️ AppSizeTest expected files changed (${{ parameters.testPrefix }})
+
+    The AppSizeTest detected changes in the expected app size files.
+
+    To update the expected files, add a comment with the following command:
+
+    \`\`\`
+    /apply-gist $GIST_URL
+    \`\`\`
+
+    <details>
+    <summary>Updated files</summary>
+    $FILE_LIST
+
+    </details>"
+
+    gh pr comment "$PR_NUMBER" --repo "$BUILD_REPOSITORY_NAME" --body "$COMMENT_BODY"
+  displayName: 'Create gist and comment on PR with updated expected app size files'
+  continueOnError: true
+  condition: and(succeededOrFailed(), eq(variables['HAS_UPDATED_EXPECTED_SIZES'], 'true'), eq('${{ parameters.isPR }}', 'True'))
+  env:
+    GH_TOKEN: $(GitHub.Token)
+    BUILD_ARTIFACTSTAGINGDIRECTORY: $(Build.ArtifactStagingDirectory)
+    PR_NUMBER: $(System.PullRequest.PullRequestNumber)
+    BUILD_REPOSITORY_NAME: $(Build.Repository.Name)
+
 - task: PublishPipelineArtifact@1
   displayName: 'Publish Artifact: Updated app bundles'
   inputs:

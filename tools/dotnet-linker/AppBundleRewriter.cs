@@ -29,6 +29,9 @@ namespace Xamarin.Linker {
 		AssemblyDefinition? corlib_assembly;
 		AssemblyDefinition? platform_assembly;
 
+		// Invoked whenever an assembly is modified (i.e. whenever SaveAssembly is called).
+		public Action<AssemblyDefinition>? AssemblySaved { get; set; }
+
 		public AssemblyDefinition CurrentAssembly {
 			get {
 				if (current_assembly is null)
@@ -1455,6 +1458,7 @@ namespace Xamarin.Linker {
 		{
 			if (assembly != CurrentAssembly && assembly != PlatformAssembly)
 				throw new InvalidOperationException ($"Can't save assembly {assembly.Name} because it's not the current assembly ({CurrentAssembly.Name}) or the platform assembly ({PlatformAssembly.Name}).");
+			AssemblySaved?.Invoke (assembly);
 			var annotations = configuration.Context.Annotations;
 			var action = annotations.GetAction (assembly);
 			if (action == AssemblyAction.Copy) {

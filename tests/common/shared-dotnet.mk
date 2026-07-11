@@ -150,8 +150,12 @@ else ifeq ($(PLATFORM),tvOS)
 EXECUTABLE="$(abspath .)/bin/$(CONFIG)/$(TEST_TFM)-tvos/$(PATH_RID)$(TESTNAME).app/$(TESTNAME)"
 else ifeq ($(PLATFORM),MacCatalyst)
 EXECUTABLE="$(abspath .)/bin/$(CONFIG)/$(TEST_TFM)-maccatalyst/$(PATH_RID)$(TESTNAME).app/Contents/MacOS/$(TESTNAME)"
+APPMANIFEST:=$(abspath .)/bin/$(CONFIG)/$(TEST_TFM)-maccatalyst/$(PATH_RID)$(TESTNAME).app/Contents/Info.plist
+BUNDLE_ID=$(shell defaults read "$(APPMANIFEST)" CFBundleIdentifier 2>/dev/null)
 else ifeq ($(PLATFORM),macOS)
 EXECUTABLE="$(abspath .)/bin/$(CONFIG)/$(TEST_TFM)-macos/$(PATH_RID)$(TESTNAME).app/Contents/MacOS/$(TESTNAME)"
+APPMANIFEST:=$(abspath .)/bin/$(CONFIG)/$(TEST_TFM)-macos/$(PATH_RID)$(TESTNAME).app/Contents/Info.plist
+BUNDLE_ID=$(shell defaults read "$(APPMANIFEST)" CFBundleIdentifier 2>/dev/null)
 else
 EXECUTABLE="unknown-executable-platform-$(PLATFORM)"
 endif
@@ -187,8 +191,15 @@ run: prepare
 	@echo "Running $(wildcard *.?sproj)..."
 	$(Q) $(DOTNET) build "/bl:$(abspath $@-$(BINLOG_TIMESTAMP).binlog)" *.?sproj $(DOTNET_BUILD_VERBOSITY) $(BUILD_ARGUMENTS) $(CONFIG_ARGUMENT) $(UNIVERSAL_ARGUMENT) $(NATIVEAOT_ARGUMENTS) $(TEST_VARIATION_ARGUMENT) -t:Run $(RUN_ARGUMENTS) -tl:off
 
-run-bare:
+# Delete the saved application state for the app, to prevent the
+# "Do you want to try to reopen its windows again?" dialog from
+# blocking automated runs after a crash. See https://github.com/dotnet/macios/issues/25922
+delete-saved-state:
+	$(Q) if test -n "$(BUNDLE_ID)"; then rm -rf "$(HOME)/Library/Saved Application State/$(BUNDLE_ID).savedState" && echo "Deleted saved state for $(BUNDLE_ID)"; fi
+
+run-bare: delete-saved-state
 	$(Q) $(EXECUTABLE) --autostart --autoexit $(RUN_ARGUMENTS)
+	$(Q) $(MAKE) delete-saved-state
 
 # Get the list of applicable simulators, and pick the first in the list.
 # Make sure to have a matching simulator runtime installed, otherwise this won't work.

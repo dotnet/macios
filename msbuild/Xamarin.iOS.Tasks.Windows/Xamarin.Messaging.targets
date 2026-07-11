@@ -71,7 +71,7 @@
 
 	<Target Name="_DisconnectAfterBuild" Condition="'$(ShouldDisconnect)' == 'true' Or ('$(ShouldDisconnect)' == 'if-connection-established' And '$(_DidEstablishConnection)' == 'true')" DependsOnTargets="_SayGoodbye" />
 
-	<Target Name="_GenerateBuildSessionId" Condition="'$(IsRemoteBuild)' == 'true'">
+	<Target Name="_GenerateBuildSessionId" Condition="'$(IsRemoteBuild)' == 'true' And ('$(BuildSessionId)' == '' Or '$(BuildAppName)' == '')">
 		<GenerateBuildSessionId MessagingVersion="$(MessagingVersion)" 
 			TargetFramework="$(TargetFramework)"
 			ProjectFullPath="$(MSBuildProjectFullPath)" 

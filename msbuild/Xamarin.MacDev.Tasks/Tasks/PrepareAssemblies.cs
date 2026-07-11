@@ -75,6 +75,13 @@ namespace Xamarin.MacDev.Tasks {
 					rv = preparer.Prepare (out exceptions);
 				}
 
+				var totalDuration = TimeSpan.Zero;
+				foreach (var step in preparer.StepExecutions) {
+					totalDuration += step.Duration;
+					Log.LogMessage (MessageImportance.Low, $"{step.Duration.ToString (@"hh\:mm\:ss\.fffffff")} {step.Name}: {(step.ModifiedAssemblies ? " ✏️ modified one or more assemblies" : " ✅ did not modify any assemblies")}");
+				}
+				Log.LogMessage (MessageImportance.Low, $"{totalDuration.ToString (@"hh\:mm\:ss\.fffffff")} Total for all steps");
+
 				foreach (var pe in exceptions) {
 					if (pe.IsError (this)) {
 						((IToolLog) this).LogError (pe);

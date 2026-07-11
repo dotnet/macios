@@ -30,6 +30,7 @@
 //
 
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 using Vector3 = global::System.Numerics.Vector3;
 using NMatrix3 = global::CoreGraphics.NMatrix3;
@@ -5674,21 +5675,70 @@ namespace AVFoundation {
 		[Export ("loadMetadataForFormat:completionHandler:")]
 		void LoadMetadata (string format, Action<NSArray<AVMetadataItem>, NSError> completionHandler);
 
+#if !XAMCORE_5_0
+		[Obsolete ("Call 'LoadTrack2' instead.")]
 		[Async]
 		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTrackWithTrackID:completionHandler:")]
 		void LoadTrack (int trackId, Action<AVCompositionTrack, NSError> completionHandler);
+#endif
 
+		[Async]
+		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[Export ("loadTrackWithTrackID:completionHandler:")]
+#if XAMCORE_5_0
+		void LoadTrack (int trackId, AVAssetLoadTrackCallback completionHandler);
+#else
+		[Sealed]
+		void LoadTrack2 (int trackId, AVAssetLoadTrackCallback completionHandler);
+#endif
+
+#if !XAMCORE_5_0
+		[Obsolete ("Call the 'LoadTrackWithMediaCharacteristics (..., AVAssetLoadTracksCallback)' overload instead (or the 'LoadTrackWithMediaCharacteristics2Async' method).")]
+		[OverloadResolutionPriority (-1)]
 		[Async]
 		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTracksWithMediaCharacteristic:completionHandler:")]
 		void LoadTrackWithMediaCharacteristics (string mediaCharacteristic, Action<NSArray<AVCompositionTrack>, NSError> completionHandler);
+#endif
 
+#if XAMCORE_5_0
+		[Async]
+#else
+		[Async ("LoadTrackWithMediaCharacteristics2Async")]
+		[Sealed]
+#endif
+		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[Export ("loadTracksWithMediaCharacteristic:completionHandler:")]
+		void LoadTrackWithMediaCharacteristics (string mediaCharacteristic, AVAssetLoadTracksCallback completionHandler);
+
+#if !XAMCORE_5_0
+		[Obsolete ("Call 'LoadTracksWithMediaType (..., AVAssetLoadTracksCallback)' instead (or the 'LoadTracksWithMediaType2Async' method).")]
+		[OverloadResolutionPriority (-1)]
 		[Async]
 		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTracksWithMediaType:completionHandler:")]
 		void LoadTracksWithMediaType (string mediaType, Action<NSArray<AVMutableCompositionTrack>, NSError> completionHandler);
+#endif
+
+#if XAMCORE_5_0
+		[Async]
+#else
+		[Async ("LoadTracksWithMediaType2Async")]
+		[Sealed]
+#endif
+		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[Export ("loadTracksWithMediaType:completionHandler:")]
+		void LoadTracksWithMediaType (string mediaType, AVAssetLoadTracksCallback completionHandler);
+
+		[Async]
+		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[Wrap ("LoadTracksWithMediaType (mediaType.GetConstant ()!, completionHandler)")]
+		void LoadTracksWithMediaType (AVMediaTypes mediaType, AVAssetLoadTracksCallback completionHandler);
 	}
+
+	delegate void AVAssetLoadTrackCallback ([NullAllowed] AVAssetTrack track, [NullAllowed] NSError error);
+	delegate void AVAssetLoadTracksCallback ([NullAllowed] AVAssetTrack [] tracks, [NullAllowed] NSError error);
 
 	interface IAVFragmentMinding { }
 
@@ -12657,21 +12707,68 @@ namespace AVFoundation {
 		[Wrap ("This.GetTracksWithMediaCharacteristic (mediaCharacteristic.GetConstant ()!)")]
 		AVMovieTrack [] GetTracks (AVMediaCharacteristics mediaCharacteristic);
 
+#if !XAMCORE_5_0
+		[Obsolete ("Call the 'LoadTrack (..., AVMovieLoadTrackCallback)' overload instead (or the 'LoadTrack2Async' method).")]
+		[OverloadResolutionPriority (-1)]
 		[Async]
 		[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTrackWithTrackID:completionHandler:")]
 		void LoadTrack (int trackId, Action<AVMutableCompositionTrack, NSError> completionHandler);
+#endif
 
+#if XAMCORE_5_0
+		[Async]
+#else
+		[Async ("LoadTrack2Async")]
+#endif
+		[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
+		[Export ("loadTrackWithTrackID:completionHandler:")]
+		void LoadTrack (int trackId, AVMovieLoadTrackCallback completionHandler);
+
+#if !XAMCORE_5_0
+		[Obsolete ("Call the 'LoadTracksWithMediaType (..., AVMovieLoadTracksCallback)' overload instead (or the 'LoadTracksWithMediaType2Async' method).")]
+		[OverloadResolutionPriority (-1)]
 		[Async]
 		[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTracksWithMediaType:completionHandler:")]
 		void LoadTracksWithMediaType (string mediaType, Action<NSArray<AVMutableCompositionTrack>, NSError> completionHandler);
+#endif
 
+#if XAMCORE_5_0
+		[Async]
+#else
+		[Async ("LoadTracksWithMediaType2Async")]
+#endif
+		[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
+		[Export ("loadTracksWithMediaType:completionHandler:")]
+		void LoadTracksWithMediaType (string mediaType, AVMovieLoadTracksCallback completionHandler);
+
+		[Async]
+		[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
+		[Wrap ("This.LoadTracksWithMediaType (mediaType.GetConstant ()!, completionHandler)")]
+		void LoadTracksWithMediaType (AVMediaTypes mediaType, AVMovieLoadTracksCallback completionHandler);
+
+#if !XAMCORE_5_0
+		[Obsolete ("Call the 'LoadTracksWithMediaCharacteristic (..., AVMovieLoadTracksCallback)' overload instead (or the 'LoadTracksWithMediaCharacteristic2Async' method).")]
+		[OverloadResolutionPriority (-1)]
 		[Async]
 		[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTracksWithMediaCharacteristic:completionHandler:")]
 		void LoadTracksWithMediaCharacteristic (string mediaCharacteristic, Action<NSArray<AVMutableCompositionTrack>, NSError> completionHandler);
+#endif
+
+#if XAMCORE_5_0
+		[Async]
+#else
+		[Async ("LoadTracksWithMediaCharacteristic2Async")]
+#endif
+		[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
+		[Export ("loadTracksWithMediaCharacteristic:completionHandler:")]
+		void LoadTracksWithMediaCharacteristic (string mediaCharacteristic, AVMovieLoadTracksCallback completionHandler);
 	}
+
+	delegate void AVMovieLoadTrackCallback ([NullAllowed] AVMovieTrack track, [NullAllowed] NSError error);
+	delegate void AVMovieLoadTracksCallback ([NullAllowed] AVMovieTrack [] tracks, [NullAllowed] NSError error);
 
 	[NoTV, iOS (13, 0)]
 	[MacCatalyst (13, 1)]
@@ -12736,20 +12833,66 @@ namespace AVFoundation {
 		[Export ("interleavingPeriod", ArgumentSemantic.Assign)]
 		CMTime InterleavingPeriod { get; set; }
 
+#if !XAMCORE_5_0
+		[Obsolete ("Call 'LoadTrack2' instead.")]
 		[Async]
 		[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTrackWithTrackID:completionHandler:")]
 		void LoadTrack (int trackId, Action<AVMovieTrack, NSError> completionHandler);
+#endif
 
+		[Async]
+		[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
+		[Export ("loadTrackWithTrackID:completionHandler:")]
+#if XAMCORE_5_0
+		void LoadTrack (int trackId, AVMutableMovieLoadTrackCallback completionHandler);
+#else
+		[Sealed]
+		void LoadTrack2 (int trackId, AVMutableMovieLoadTrackCallback completionHandler);
+#endif
+
+#if !XAMCORE_5_0
+		[Obsolete ("Call the 'LoadTracksWithMediaType (..., AVMutableMovieLoadTracksCallback)' overload instead (or the 'LoadTracksWithMediaType2Async' method).")]
+		[OverloadResolutionPriority (-1)]
 		[Async]
 		[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTracksWithMediaType:completionHandler:")]
 		void LoadTracksWithMediaType (string mediaType, Action<NSArray<AVMovieTrack>, NSError> completionHandler);
+#endif
 
+#if XAMCORE_5_0
+		[Async]
+#else
+		[Async ("LoadTracksWithMediaType2Async")]
+		[Sealed]
+#endif
+		[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
+		[Export ("loadTracksWithMediaType:completionHandler:")]
+		void LoadTracksWithMediaType (string mediaType, AVMutableMovieLoadTracksCallback completionHandler);
+
+		[Async]
+		[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
+		[Wrap ("LoadTracksWithMediaType (mediaType.GetConstant ()!, completionHandler)")]
+		void LoadTracksWithMediaType (AVMediaTypes mediaType, AVMutableMovieLoadTracksCallback completionHandler);
+
+#if !XAMCORE_5_0
+		[Obsolete ("Call the 'LoadTracksWithMediaCharacteristic (..., AVMutableMovieLoadTracksCallback)' overload instead (or the 'LoadTracksWithMediaCharacteristic2Async' method).")]
+		[OverloadResolutionPriority (-1)]
 		[Async]
 		[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTracksWithMediaCharacteristic:completionHandler:")]
 		void LoadTracksWithMediaCharacteristic (string mediaCharacteristic, Action<NSArray<AVMovieTrack>, NSError> completionHandler);
+#endif
+
+#if XAMCORE_5_0
+		[Async]
+#else
+		[Async ("LoadTracksWithMediaCharacteristic2Async")]
+		[Sealed]
+#endif
+		[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
+		[Export ("loadTracksWithMediaCharacteristic:completionHandler:")]
+		void LoadTracksWithMediaCharacteristic (string mediaCharacteristic, AVMutableMovieLoadTracksCallback completionHandler);
 
 		// inlined from the AVMutableMovie (SynchronousAssetInterface) category
 		[Export ("metadataForFormat:")]
@@ -12772,6 +12915,9 @@ namespace AVFoundation {
 		[Export ("unusedTrackID")]
 		int GetUnusedTrackId ();
 	}
+
+	delegate void AVMutableMovieLoadTrackCallback ([NullAllowed] AVMutableMovieTrack track, [NullAllowed] NSError error);
+	delegate void AVMutableMovieLoadTracksCallback ([NullAllowed] AVMutableMovieTrack [] tracks, [NullAllowed] NSError error);
 
 	[NoTV, iOS (13, 0)]
 	[MacCatalyst (13, 1)]
@@ -12973,21 +13119,68 @@ namespace AVFoundation {
 		[Wrap ("This.GetTracksWithMediaCharacteristic (mediaCharacteristic.GetConstant ()!)")]
 		AVFragmentedMovieTrack [] GetTracks (AVMediaCharacteristics mediaCharacteristic);
 
+#if !XAMCORE_5_0
+		[Obsolete ("Call the 'LoadTrack (..., AVFragmentedMovieLoadTrackCallback)' overload instead (or the 'LoadTrack2Async' method).")]
+		[OverloadResolutionPriority (-1)]
 		[Async]
 		[iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTrackWithTrackID:completionHandler:")]
 		void LoadTrack (int trackId, Action<AVMutableCompositionTrack, NSError> completionHandler);
+#endif
 
+#if XAMCORE_5_0
+		[Async]
+#else
+		[Async ("LoadTrack2Async")]
+#endif
+		[iOS (15, 0), MacCatalyst (15, 0)]
+		[Export ("loadTrackWithTrackID:completionHandler:")]
+		void LoadTrack (int trackId, AVFragmentedMovieLoadTrackCallback completionHandler);
+
+#if !XAMCORE_5_0
+		[Obsolete ("Call the 'LoadTracksWithMediaType (..., AVFragmentedMovieLoadTracksCallback)' overload instead (or the 'LoadTracksWithMediaType2Async' method).")]
+		[OverloadResolutionPriority (-1)]
 		[Async]
 		[iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTracksWithMediaType:completionHandler:")]
 		void LoadTracksWithMediaType (string mediaType, Action<NSArray<AVMutableCompositionTrack>, NSError> completionHandler);
+#endif
 
+#if XAMCORE_5_0
+		[Async]
+#else
+		[Async ("LoadTracksWithMediaType2Async")]
+#endif
+		[iOS (15, 0), MacCatalyst (15, 0)]
+		[Export ("loadTracksWithMediaType:completionHandler:")]
+		void LoadTracksWithMediaType (string mediaType, AVFragmentedMovieLoadTracksCallback completionHandler);
+
+		[Async]
+		[iOS (15, 0), MacCatalyst (15, 0)]
+		[Wrap ("This.LoadTracksWithMediaType (mediaType.GetConstant ()!, completionHandler)")]
+		void LoadTracksWithMediaType (AVMediaTypes mediaType, AVFragmentedMovieLoadTracksCallback completionHandler);
+
+#if !XAMCORE_5_0
+		[Obsolete ("Call the 'LoadTracksWithMediaCharacteristic (..., AVFragmentedMovieLoadTracksCallback)' overload instead (or the 'LoadTracksWithMediaCharacteristic2Async' method).")]
+		[OverloadResolutionPriority (-1)]
 		[Async]
 		[iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTracksWithMediaCharacteristic:completionHandler:")]
 		void LoadTracksWithMediaCharacteristic (string mediaCharacteristic, Action<NSArray<AVMutableCompositionTrack>, NSError> completionHandler);
+#endif
+
+#if XAMCORE_5_0
+		[Async]
+#else
+		[Async ("LoadTracksWithMediaCharacteristic2Async")]
+#endif
+		[iOS (15, 0), MacCatalyst (15, 0)]
+		[Export ("loadTracksWithMediaCharacteristic:completionHandler:")]
+		void LoadTracksWithMediaCharacteristic (string mediaCharacteristic, AVFragmentedMovieLoadTracksCallback completionHandler);
 	}
+
+	delegate void AVFragmentedMovieLoadTrackCallback ([NullAllowed] AVFragmentedMovieTrack track, [NullAllowed] NSError error);
+	delegate void AVFragmentedMovieLoadTracksCallback ([NullAllowed] AVFragmentedMovieTrack [] tracks, [NullAllowed] NSError error);
 
 	[iOS (13, 0), NoTV]
 	[MacCatalyst (13, 1)]
@@ -13563,21 +13756,68 @@ namespace AVFoundation {
 		[Wrap ("This.GetTracksWithMediaCharacteristic (mediaCharacteristic.GetConstant ()!)")]
 		AVCompositionTrack [] GetTracks (AVMediaCharacteristics mediaCharacteristic);
 
+#if !XAMCORE_5_0
+		[Obsolete ("Call the 'LoadTrack (..., AVCompositionLoadTrackCallback)' overload instead (or the 'LoadTrack2Async' method).")]
+		[OverloadResolutionPriority (-1)]
 		[Async]
 		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTrackWithTrackID:completionHandler:")]
 		void LoadTrack (int trackId, Action<AVMutableCompositionTrack, NSError> completionHandler);
+#endif
 
+#if XAMCORE_5_0
+		[Async]
+#else
+		[Async ("LoadTrack2Async")]
+#endif
+		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[Export ("loadTrackWithTrackID:completionHandler:")]
+		void LoadTrack (int trackId, AVCompositionLoadTrackCallback completionHandler);
+
+#if !XAMCORE_5_0
+		[Obsolete ("Call the 'LoadTracksWithMediaType (..., AVCompositionLoadTracksCallback)' overload instead (or the 'LoadTracksWithMediaType2Async' method).")]
+		[OverloadResolutionPriority (-1)]
 		[Async]
 		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTracksWithMediaType:completionHandler:")]
 		void LoadTracksWithMediaType (string mediaType, Action<NSArray<AVMutableCompositionTrack>, NSError> completionHandler);
+#endif
 
+#if XAMCORE_5_0
+		[Async]
+#else
+		[Async ("LoadTracksWithMediaType2Async")]
+#endif
+		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[Export ("loadTracksWithMediaType:completionHandler:")]
+		void LoadTracksWithMediaType (string mediaType, AVCompositionLoadTracksCallback completionHandler);
+
+		[Async]
+		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[Wrap ("This.LoadTracksWithMediaType (mediaType.GetConstant ()!, completionHandler)")]
+		void LoadTracksWithMediaType (AVMediaTypes mediaType, AVCompositionLoadTracksCallback completionHandler);
+
+#if !XAMCORE_5_0
+		[Obsolete ("Call the 'LoadTracksWithMediaCharacteristic (..., AVCompositionLoadTracksCallback)' overload instead (or the 'LoadTracksWithMediaCharacteristic2Async' method).")]
+		[OverloadResolutionPriority (-1)]
 		[Async]
 		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTracksWithMediaCharacteristic:completionHandler:")]
 		void LoadTracksWithMediaCharacteristic (string mediaCharacteristic, Action<NSArray<AVMutableCompositionTrack>, NSError> completionHandler);
+#endif
+
+#if XAMCORE_5_0
+		[Async]
+#else
+		[Async ("LoadTracksWithMediaCharacteristic2Async")]
+#endif
+		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[Export ("loadTracksWithMediaCharacteristic:completionHandler:")]
+		void LoadTracksWithMediaCharacteristic (string mediaCharacteristic, AVCompositionLoadTracksCallback completionHandler);
 	}
+
+	delegate void AVCompositionLoadTrackCallback ([NullAllowed] AVCompositionTrack track, [NullAllowed] NSError error);
+	delegate void AVCompositionLoadTracksCallback ([NullAllowed] AVCompositionTrack [] tracks, [NullAllowed] NSError error);
 
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (AVComposition))]

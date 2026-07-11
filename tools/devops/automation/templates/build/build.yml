@@ -238,18 +238,17 @@ steps:
 
   # report the result of the build.
   - pwsh: |
+      # Only report failures, not successes.
+      if (("$Env:AGENT_JOBSTATUS" -eq "Succeeded") -or ("$Env:AGENT_JOBSTATUS" -eq "SucceededWithIssues")) {
+        Write-Host "Build passed, skipping comment."
+        return
+      }
       Import-Module $Env:SYSTEM_DEFAULTWORKINGDIRECTORY\$Env:BUILD_REPOSITORY_TITLE\tools\devops\automation\scripts\MaciosCI.psd1
       $githubComments = New-GitHubCommentsObjectFromUrl -Url "$(Build.Repository.Uri)" -Token $(GitHub.Token) -Hash $Env:COMMENT_HASH
       $commentMessage = [System.Text.StringBuilder]::new()
-      if (("$Env:AGENT_JOBSTATUS" -eq "Succeeded") -or ("$Env:AGENT_JOBSTATUS" -eq "SucceededWithIssues")) {
-        $commentTitle = "Build passed ($(System.JobDisplayName))"
-        $commentIcon = ":white_check_mark:"
-        $commentMessage.AppendLine("")
-      } else {
-        $commentTitle = "Build failed ($(System.JobDisplayName))"
-        $commentIcon = ":fire:"
-        $commentMessage.AppendLine("Build failed for the job '$(System.JobDisplayName)' (with job status '$Env:AGENT_JOBSTATUS')")
-      }
+      $commentTitle = "Build failed ($(System.JobDisplayName))"
+      $commentIcon = ":fire:"
+      $commentMessage.AppendLine("Build failed for the job '$(System.JobDisplayName)' (with job status '$Env:AGENT_JOBSTATUS')")
       $githubComments.NewCommentFromMessage($commentTitle, $commentIcon, $commentMessage.ToString(), "build $(System.JobDisplayName)")
     condition: always()
     displayName: 'Report build result'

@@ -218,6 +218,8 @@ public class AttributeManager {
 			return typeof (WrapAttribute);
 		case "System.Diagnostics.CodeAnalysis.ExperimentalAttribute":
 			return typeof (System.Diagnostics.CodeAnalysis.ExperimentalAttribute);
+		case "System.Runtime.CompilerServices.OverloadResolutionPriorityAttribute":
+			return typeof (System.Runtime.CompilerServices.OverloadResolutionPriorityAttribute);
 		case "System.Runtime.Versioning.SupportedOSPlatformAttribute":
 			return typeof (System.Runtime.Versioning.SupportedOSPlatformAttribute);
 		case "System.Runtime.Versioning.UnsupportedOSPlatformAttribute":

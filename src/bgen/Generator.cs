@@ -1481,6 +1481,7 @@ public partial class Generator : IMemberGatherer {
 						case "BindingImplAttribute":
 						case "XpcInterfaceAttribute":
 						case "NativeIntegerAttribute":
+						case "OverloadResolutionPriorityAttribute":
 							continue;
 						default:
 							throw new BindingException (1007, true, attr.GetType (), mi.DeclaringType, mi.Name);
@@ -3943,6 +3944,14 @@ public partial class Generator : IMemberGatherer {
 			print ("[EditorBrowsable (EditorBrowsableState.Never)]");
 	}
 
+	void PrintOverloadResolutionPriorityAttribute (ICustomAttributeProvider? provider)
+	{
+		var attributes = AttributeManager.GetCustomAttributes<System.Runtime.CompilerServices.OverloadResolutionPriorityAttribute> (provider);
+		foreach (var attr in attributes) {
+			print ("[OverloadResolutionPriority ({0})]", attr.Priority);
+		}
+	}
+
 	bool TryGetPrintEditorBrowsableAttribute (ICustomAttributeProvider? provider, out string attribute)
 	{
 		attribute = string.Empty;
@@ -4506,6 +4515,7 @@ public partial class Generator : IMemberGatherer {
 			print (sa.Safe ? "[ThreadSafe]" : "[ThreadSafe (false)]");
 
 		PrintObsoleteAttributes (mi);
+		PrintOverloadResolutionPriorityAttribute (mi);
 
 		if (minfo.is_return_release)
 			print ("[return: ReleaseAttribute ()]");

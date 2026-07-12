@@ -1691,6 +1691,9 @@ F:AVFoundation.AVPlayerWaitingReason.WaitingForCoordinatedPlayback
 F:AVFoundation.AVPlayerWaitingReason.WaitingToMinimizeStalls
 F:AVFoundation.AVPlayerWaitingReason.WaitingWhileEvaluatingBufferingRate
 F:AVFoundation.AVPlayerWaitingReason.WaitingWithNoItemToPlay
+F:AVFoundation.AVProVideoStorageBusyReason.AdjustingCapacity
+F:AVFoundation.AVProVideoStorageBusyReason.Capturing
+F:AVFoundation.AVProVideoStorageBusyReason.Replenishing
 F:AVFoundation.AVSampleBufferRequestMode.Opportunistic
 F:AVFoundation.AVSampleCursorAudioDependencyInfo.IsIndependentlyDecodable
 F:AVFoundation.AVSampleCursorAudioDependencyInfo.PacketRefreshCount
@@ -14194,6 +14197,8 @@ M:AVFoundation.AVPortraitEffectsMatte.Create(Foundation.NSDictionary,Foundation.
 M:AVFoundation.AVPortraitEffectsMatte.Create(ImageIO.CGImagePropertyOrientation)
 M:AVFoundation.AVPortraitEffectsMatte.GetDictionaryRepresentation(System.String@)
 M:AVFoundation.AVProVideoStorage.OpenSettings
+M:AVFoundation.AVProVideoStorage.ReplenishCapacity(AVFoundation.AVProVideoStorageReplenishCapacityCompletionHandler)
+M:AVFoundation.AVProVideoStorage.ReplenishCapacityAsync
 M:AVFoundation.AVQueuePlayer.#ctor(AVFoundation.AVPlayerItem[])
 M:AVFoundation.AVQueuePlayer.AdvanceToNextItem
 M:AVFoundation.AVQueuePlayer.CanInsert(AVFoundation.AVPlayerItem,AVFoundation.AVPlayerItem)
@@ -37836,11 +37841,12 @@ P:AVFoundation.AVPlayerVideoOutputConfiguration.PreferredTransform
 P:AVFoundation.AVPlayerVideoOutputConfiguration.SourcePlayerItem
 P:AVFoundation.AVPortraitEffectsMatte.MattingImage
 P:AVFoundation.AVPortraitEffectsMatte.PixelFormatType
-P:AVFoundation.AVProVideoStorage.Busy
+P:AVFoundation.AVProVideoStorage.BusyReasons
 P:AVFoundation.AVProVideoStorage.InitialCapacity
 P:AVFoundation.AVProVideoStorage.IsSupported
 P:AVFoundation.AVProVideoStorage.RemainingCapacity
 P:AVFoundation.AVProVideoStorage.SharedStorage
+P:AVFoundation.AVProVideoStorage.WeakBusyReasons
 P:AVFoundation.AVQueuePlayer.Items
 P:AVFoundation.AVRenderedCaptionImage.PixelBuffer
 P:AVFoundation.AVRenderedCaptionImage.Position
@@ -57438,6 +57444,8 @@ T:AVFoundation.AVPlayerViewControllerSkippingBehavior
 T:AVFoundation.AVPlayerWaitingReason
 T:AVFoundation.AVPortraitEffectsMatte
 T:AVFoundation.AVProVideoStorage
+T:AVFoundation.AVProVideoStorageBusyReason
+T:AVFoundation.AVProVideoStorageReplenishCapacityCompletionHandler
 T:AVFoundation.AVQueuePlayer
 T:AVFoundation.AVRenderedCaptionImage
 T:AVFoundation.AVRouteDetector

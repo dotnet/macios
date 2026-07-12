@@ -257,6 +257,8 @@ namespace AutomaticAssessmentConfiguration {
 
 		[NoMac, iOS (14, 0)]
 		[MacCatalyst (14, 0)]
+		[Deprecated (PlatformName.iOS, 27, 0, message: "Use 'AllowsAccessibilitySpokenContent' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Use 'AllowsAccessibilitySpokenContent' instead.")]
 		[Export ("allowsAccessibilitySpeech")]
 		bool AllowsAccessibilitySpeech { get; set; }
 

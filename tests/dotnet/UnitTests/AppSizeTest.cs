@@ -102,6 +102,9 @@ namespace Xamarin.Tests {
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
 
+			if (!Configuration.XcodeIsStable)
+				Assert.Ignore ("Using a beta version of Xcode, so disabling this test (it will need very frequent updates to the known failures, which is better delayed until the final Xcode release)");
+
 			var project = "SizeTestApp";
 			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: configuration);
 

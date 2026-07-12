@@ -1637,6 +1637,18 @@ namespace AVFoundation {
 		UnknownWritingSpeed,
 	}
 
+	[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+	public enum AVProVideoStorageBusyReason {
+		[Field ("AVProVideoStorageBusyReasonAdjustingCapacity")]
+		AdjustingCapacity,
+
+		[Field ("AVProVideoStorageBusyReasonReplenishing")]
+		Replenishing,
+
+		[Field ("AVProVideoStorageBusyReasonCapturing")]
+		Capturing,
+	}
+
 	/// <summary>Constants for known video codecs.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (15, 0)]

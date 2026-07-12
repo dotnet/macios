@@ -320,6 +320,8 @@ public class Frameworks : Dictionary<string, Framework> {
 					{ "SecurityUI", "SecurityUI", 15, 4 },
 
 					{ "GameSave", "GameSave", 26, 0 },
+
+					{ "AccessoryAccess", "AccessoryAccess", 27, 0 },
 				};
 			}
 			return mac_frameworks;

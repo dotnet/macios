@@ -3398,6 +3398,7 @@ namespace Xamarin.Tests {
 			"@executable_path/../../Contents/MonoBundle/libSystem.Security.Cryptography.Native.Apple.dylib",
 			"/System/Library/Frameworks/Accelerate.framework/Versions/A/Accelerate",
 			"/System/Library/Frameworks/Accessibility.framework/Versions/A/Accessibility",
+			"/System/Library/Frameworks/AccessoryAccess.framework/Versions/A/AccessoryAccess",
 			"/System/Library/Frameworks/Accounts.framework/Versions/A/Accounts",
 			"/System/Library/Frameworks/AdServices.framework/Versions/A/AdServices",
 			"/System/Library/Frameworks/AdSupport.framework/Versions/A/AdSupport",

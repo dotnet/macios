@@ -2,6 +2,8 @@ using CoreFoundation;
 
 namespace ThreadNetwork {
 
+	delegate void THClientEnableCredentialSharingModeCompletionHandler ([NullAllowed] NSError error);
+
 	[iOS (15, 0), MacCatalyst (16, 1), NoTV]
 	[BaseType (typeof (NSObject))]
 	interface THClient {
@@ -44,6 +46,11 @@ namespace ThreadNetwork {
 		[Async]
 		[Export ("isPreferredNetworkAvailableWithCompletion:")]
 		void IsPreferredNetworkAvailable (Action<bool> completion);
+
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Async]
+		[Export ("enableCredentialSharingModeWithExtendedPANId:completion:")]
+		void EnableCredentialSharingMode (NSData extendedPanId, THClientEnableCredentialSharingModeCompletionHandler completion);
 	}
 
 	[iOS (15, 0), MacCatalyst (16, 1), NoTV]

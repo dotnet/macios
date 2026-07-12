@@ -26379,6 +26379,8 @@ M:ThreadNetwork.THClient.CheckPreferredNetwork(Foundation.NSData,System.Action{S
 M:ThreadNetwork.THClient.CheckPreferredNetworkAsync(Foundation.NSData)
 M:ThreadNetwork.THClient.DeleteCredentialsForBorderAgent(Foundation.NSData,System.Action{Foundation.NSError})
 M:ThreadNetwork.THClient.DeleteCredentialsForBorderAgentAsync(Foundation.NSData)
+M:ThreadNetwork.THClient.EnableCredentialSharingMode(Foundation.NSData,ThreadNetwork.THClientEnableCredentialSharingModeCompletionHandler)
+M:ThreadNetwork.THClient.EnableCredentialSharingModeAsync(Foundation.NSData)
 M:ThreadNetwork.THClient.IsPreferredNetworkAvailable(System.Action{System.Boolean})
 M:ThreadNetwork.THClient.IsPreferredNetworkAvailableAsync
 M:ThreadNetwork.THClient.RetrieveAllActiveCredentials(System.Action{Foundation.NSSet{ThreadNetwork.THCredentials},Foundation.NSError})
@@ -61310,6 +61312,7 @@ T:Symbols.NSSymbolVariableColorEffect
 T:Symbols.NSSymbolWiggleEffect
 T:System.Net.Http.NSUrlSessionHandlerTrustOverrideForUrlCallback
 T:ThreadNetwork.THClient
+T:ThreadNetwork.THClientEnableCredentialSharingModeCompletionHandler
 T:ThreadNetwork.THCredentials
 T:TouchController.TCButton
 T:TouchController.TCButtonDescriptor

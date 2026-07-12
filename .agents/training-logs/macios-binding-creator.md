@@ -22,7 +22,7 @@ models (Opus 4.8, Sonnet 5, GPT-5.5) whose findings were also mined.
    - UserNotifications: new `UNErrorCode.AttachmentUnsupportedType` correctly got no attribute; a reviewer noted "your instinct beats the generic skill rule here" — i.e. the skill rule was contradicting correct behavior.
 2. ⚠️ **Enum-member availability nuance** — add a per-member attribute only when the header annotates that member (its own `API_AVAILABLE`, or `API_UNAVAILABLE`/absence); a member with no per-member annotation inherits the enum's availability and gets nothing. The old rule over-generalized ("each new member needs its own `[iOS]`").
 3. ⚠️ **Named-delegate rule was buried** — `binding-patterns.md:321` says never use `Action<T>` for callbacks, but WebKit's agent used `Action<T>` anyway and the **user had to correct it**. Reference-only critical rules get missed (skill-builder-knowledge "burying critical rules" anti-pattern).
-4. 💡 **Introspection host-OS version gating** — VideoToolbox: host macOS 26.5.2 < 27.0, so macOS/MacCatalyst introspection gated the new 27.0 symbols away (and can TCC-crash); the agent validated the new `[Field]` symbols on the iOS 27 simulator instead. Not documented in Step 6c.
+4. 💡 **Introspection host-OS version gating** — VideoToolbox: host macOS 26.5.2 < 27.0, so macOS/MacCatalyst introspection gated the new 27.0 symbols away (skipped via `SkipDueToAttribute`/`IsAvailableOnHostPlatform`, not crashed); the agent validated the new `[Field]` symbols on the iOS 27 simulator instead. Not documented in Step 6c.
 5. 💡 **Multi-platform enum-member version inheritance** — VideoToolbox smart-enum member `VTProjectionKind.AppleImmersiveVideo`: bgen inherits the parent enum's *highest* introduced version per platform, so specifying only `[iOS (27,0)]` would leave Mac/MacCatalyst reporting the parent's older 26.0.
 
 ### Cycle 1: Enum-member availability (issues #1, #2, #5)
@@ -94,3 +94,34 @@ triple-model review; each closes a false-negative in the exact rules the session
 - None filed to Arena. The three edits are documentation-only, low-risk, and evidence-backed;
   no controlled A/B needed. Re-mine future binding sessions to confirm the error-enum mistake
   no longer recurs.
+
+### Post-review revision (PR #26028, maintainer @rolfbjarne)
+
+The PR was approved but the maintainer flagged several statements that needed correcting;
+all were verified against the repo and fixed (each re-reviewed read-only by GPT-5.6 Sol,
+Opus 4.8, Sonnet 5, and GPT-5.6 Terra):
+
+- **Named-delegate rule was too absolute.** `Action<T>`/`Func<T>` now support nullable type
+  arguments, so `[NullAllowed]`/nullability is no longer a reason to avoid them. Downgraded
+  the SKILL.md + reference rule from "❌ NEVER use `Action<T>`" to "⚠️ PREFER a named delegate
+  when a parameter's meaning isn't obvious from its type" (named delegates still uniquely carry
+  parameter names + XML docs).
+- **Host-OS gating ≠ TCC crash.** A member gated away because it's unavailable on the host OS
+  is *skipped* by `SkipDueToAttribute` (`ApiBaseTest.cs:160`), not crashed. Removed the
+  "(and may TCC-crash)" conflation; TCC crashes are a separate phenomenon (instantiating a
+  privacy-gated type in `ApiCtorInitTest`).
+- **Introspection can't catch privatized selectors.** `ApiSelectorTest` only fails if a
+  selector is *truly gone* from the runtime; a header-removed-but-still-implemented ("private")
+  selector still responds, so introspection stays green while the binding rots. Clarified: don't
+  rely on introspection to decide which selectors to remove.
+- **Frameworks.cs sort convention.** Corrected the vague "keep it sorted" to the real rule:
+  grouped by the OS version recorded in the entry (newest last), then **case-insensitive**
+  alphabetical by managed name within each version (Opus caught that it's not ordinal —
+  `MetalPerformanceShadersGraph` precedes `MLCompute`).
+- **Cecil doc baseline.** Led the taxonomy with the easier `WRITE_KNOWN_FAILURES=1` self-update
+  (per the maintainer), keeping the taxonomy for the hand-written-docs path.
+- **mlaunch `--json`.** Framed as a likely mlaunch bug rather than an environment quirk.
+- **Two follow-up issues filed** at the maintainer's request: #26052 (generate-frameworks-constants
+  not rebuilt when `tools/common/Frameworks.cs` changes — root cause: `scripts/template.mk`'s
+  `TemplateScript` only tracks the tool's own `*.cs`/`*.csproj`, not its linked common sources)
+  and #26053 ([xtro] report extra/unknown selectors).

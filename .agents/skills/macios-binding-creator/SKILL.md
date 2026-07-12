@@ -135,7 +135,7 @@ NSString ScheduleRequestedNotification { get; }
 
 > ❌ **NEVER** forget `#nullable enable` at the top of every new C# file you create.
 
-> ❌ **NEVER** use `Action<T>`/`Func<T>` for completion-handler / callback parameters — always define a **named delegate type** (`delegate void SomeFrameworkSomeCallback (…)`), even though xtro-sharpie and legacy sibling bindings often use `Action<T>`. Named delegates give correct docs, IntelliSense, and `[NullAllowed]` placement. See [references/binding-patterns.md](references/binding-patterns.md) § "Blocks and Completion Handlers".
+> ⚠️ **PREFER a named delegate type** (`delegate void SomeFrameworkSomeCallback (…)`) over `Action<T>`/`Func<T>` for completion-handler / callback parameters **when the meaning of a parameter isn't obvious from its type** — only a named delegate can carry parameter names and XML docs. (`Action<T>`/`Func<T>` now support nullable type arguments, so `[NullAllowed]`/nullability is no longer a reason to avoid them.) See [references/binding-patterns.md](references/binding-patterns.md) § "Blocks and Completion Handlers".
 
 > ❌ **NEVER** use non-blittable types (`bool`, `char`) as backing fields in structs. Use `byte` (for `bool`) and `ushort`/`short` (for `char`) with property accessors. See [references/binding-patterns.md](references/binding-patterns.md) for the correct pattern.
 
@@ -320,7 +320,7 @@ make -C tests/introspection/dotnet/MacCatalyst run-bare
 
 > ⚠️ **macOS/MacCatalyst:** Use `run-bare` (not `run`) — `run` launches the app without waiting or capturing stdout. `run-bare` runs the executable directly to capture test output.
 
-> ⚠️ **Host-OS version gating (brand-new-SDK APIs):** introspection gates every check to the **running** OS (`PlatformInfo.Host.Version`). On a host whose macOS is **older** than the SDK you bound (e.g. binding 27.0 APIs on a macOS 26 host), the macOS/MacCatalyst `run-bare` runs can't exercise the new symbols — they're gated away (and may TCC-crash), so a clean pass there does **not** validate them. Validate instead on an **iOS/tvOS simulator whose runtime matches the new SDK** — bump the `--device runtime=…` in the commands above to the new-SDK runtime (e.g. `iOS-27-0` instead of `iOS-26-4`), where `ApiFieldTest`/`ApiSelectorTest` actually resolve the new symbols. (For APIs available **only** on macOS/Mac Catalyst there's no simulator fallback — validate on a host running the matching or newer macOS.)
+> ⚠️ **Host-OS version gating (brand-new-SDK APIs):** introspection gates every check to the **running** OS (`PlatformInfo.Host.Version`). On a host whose macOS is **older** than the SDK you bound (e.g. binding 27.0 APIs on a macOS 26 host), the macOS/MacCatalyst `run-bare` runs can't exercise the new symbols — they're **gated away**, not crashed — introspection's `SkipDueToAttribute` skips any member not available on the host OS (`IsAvailableOnHostPlatform`), so the check silently doesn't run and a clean pass there does **not** validate them. Validate instead on an **iOS/tvOS simulator whose runtime matches the new SDK** — bump the `--device runtime=…` in the commands above to the new-SDK runtime (e.g. `iOS-27-0` instead of `iOS-26-4`), where `ApiFieldTest`/`ApiSelectorTest` actually resolve the new symbols. (For APIs available **only** on macOS/Mac Catalyst there's no simulator fallback — validate on a host running the matching or newer macOS.)
 
 Look for this pattern in test output to confirm results:
 ```

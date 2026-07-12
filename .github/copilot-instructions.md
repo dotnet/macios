@@ -106,6 +106,10 @@ Use these attributes to specify platform availability:
 
 It's typically `make run-tests` in the directory with the test project.
 
+### Adding Test Cases
+
+When adding new test cases that require a runtime identifier, prefer `-arm64` over `-x64` unless there's a specific reason to use `-x64`.
+
 ## Apple Platform Integration
 
 ### Xcode Requirements

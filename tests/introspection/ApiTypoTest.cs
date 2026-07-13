@@ -1159,6 +1159,7 @@ namespace Introspection {
 					break;
 #endif
 #if !__MACOS__
+				case "AVSystemRoutingLibrary":
 				case "CinematicLibrary":
 				case "ThreadNetworkLibrary":
 				case "MediaSetupLibrary":

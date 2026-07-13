@@ -207,6 +207,9 @@ namespace Introspection {
 				return m.DeclaringType?.Name == "UIDocument";
 			case "PostNotification": // completion handler is not always called
 				return m.DeclaringType?.Name == "ICNotificationManager";
+			case "Start":
+				// bgen cannot generate a throwing async wrapper when NSError is the first completion argument.
+				return m.DeclaringType?.FullName == "AVSystemRouting.AVSystemRouteSession";
 			}
 			return base.IgnoreAsync (m);
 		}

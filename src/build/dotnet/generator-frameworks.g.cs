@@ -22,6 +22,7 @@ partial class Frameworks {
 		"AVFoundation",
 		"AVKit",
 		"AVRouting",
+		"AVSystemRouting",
 		"BackgroundAssets",
 		"BackgroundTasks",
 		"BrowserEngineCore",
@@ -552,6 +553,7 @@ partial class Frameworks {
 	bool? _AVFoundation;
 	bool? _AVKit;
 	bool? _AVRouting;
+	bool? _AVSystemRouting;
 	bool? _BackgroundAssets;
 	bool? _BackgroundTasks;
 	bool? _BrowserEngineCore;
@@ -727,6 +729,7 @@ partial class Frameworks {
 	public bool HaveAVFoundation { get { if (!_AVFoundation.HasValue) _AVFoundation = GetValue ("AVFoundation"); return _AVFoundation.Value; } }
 	public bool HaveAVKit { get { if (!_AVKit.HasValue) _AVKit = GetValue ("AVKit"); return _AVKit.Value; } }
 	public bool HaveAVRouting { get { if (!_AVRouting.HasValue) _AVRouting = GetValue ("AVRouting"); return _AVRouting.Value; } }
+	public bool HaveAVSystemRouting { get { if (!_AVSystemRouting.HasValue) _AVSystemRouting = GetValue ("AVSystemRouting"); return _AVSystemRouting.Value; } }
 	public bool HaveBackgroundAssets { get { if (!_BackgroundAssets.HasValue) _BackgroundAssets = GetValue ("BackgroundAssets"); return _BackgroundAssets.Value; } }
 	public bool HaveBackgroundTasks { get { if (!_BackgroundTasks.HasValue) _BackgroundTasks = GetValue ("BackgroundTasks"); return _BackgroundTasks.Value; } }
 	public bool HaveBrowserEngineCore { get { if (!_BrowserEngineCore.HasValue) _BrowserEngineCore = GetValue ("BrowserEngineCore"); return _BrowserEngineCore.Value; } }

@@ -2139,6 +2139,7 @@ IOS_FRAMEWORKS =         \
 	$(COMMON_FRAMEWORKS) \
 	AVKit \
 	AVRouting \
+	AVSystemRouting \
 	Accounts \
 	AccessorySetupKit \
 	AdServices \

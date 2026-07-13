@@ -130,15 +130,21 @@ public class AssemblyPreparer : IDisposable {
 			new ComputeMethodOverridesStep (),
 			new CoreTypeMapStep (),
 			new CollectFieldsStep (), // ProcessExportedFields
-			new PreserveProtocolsStep (),
-			new PreserveSmartEnumConversionsStep (),
-			new PreserveBlockCodeStep (),
-			new OptimizeGeneratedCodeStep (),
-			new ApplyPreserveAttributeStep (),
-			new MarkForStaticRegistrarStep (),
-			new MarkNSObjectsStep (),
-			new InlineDlfcnMethodsStep (),
 		};
+
+		// These steps only do anything for assemblies that are being trimmed (their IsActiveFor requires
+		// AssemblyAction.Link), so don't even add them to the list when nothing's being trimmed.
+		if (configuration.Application.AreAnyAssembliesTrimmed) {
+			steps.Add (new PreserveProtocolsStep ());
+			steps.Add (new PreserveSmartEnumConversionsStep ());
+			steps.Add (new PreserveBlockCodeStep ());
+			steps.Add (new OptimizeGeneratedCodeStep ());
+			steps.Add (new ApplyPreserveAttributeStep ());
+			steps.Add (new MarkForStaticRegistrarStep ());
+			steps.Add (new MarkNSObjectsStep ());
+		}
+
+		steps.Add (new InlineDlfcnMethodsStep ());
 
 		// Only add RegistrarRemovalTrackingStep if it's needed:
 		// * If the user explicitly set $(DynamicRegistrationSupported), we don't need to compute the value (it's

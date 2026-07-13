@@ -350,3 +350,7 @@ try {
 
 * When creating a branch from `origin/main` (for example `git checkout -b <name> origin/main`), the new branch may be configured to track `origin/main` depending on how it is created and your Git configuration. In that case, a later `git push` or `git push origin` may try to push to `main`.
 * To avoid accidentally pushing to main, use `git push -u origin <branch>` for the first push so Git creates `origin/<branch>` and sets the branch's upstream safely. If you want to be completely explicit, use `git push origin <branch>:<branch>`.
+
+## Process stdout/stderr Capture
+
+* Never redirect both `StandardOutput` and `StandardError` and then call `ReadToEnd ()` on both streams — this can deadlock. Instead, use the asynchronous event-based approach: set `RedirectStandardOutput = true` and `RedirectStandardError = true`, subscribe to `OutputDataReceived` and `ErrorDataReceived`, then call `BeginOutputReadLine ()` and `BeginErrorReadLine ()` after `Start ()`.

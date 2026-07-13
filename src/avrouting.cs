@@ -144,7 +144,7 @@ namespace AVRouting {
 		[Export ("sharedRoutingPlaybackArbiter")]
 		AVRoutingPlaybackArbiter SharedInstance { get; }
 
-		[TV (26, 0), NoMacCatalyst, NoMac, NoiOS]
+		[TV (26, 0), MacCatalyst (27, 0), NoMac, iOS (27, 0)]
 		[NullAllowed]
 		[Export ("preferredParticipantForNonMixableAudioRoutes", ArgumentSemantic.Weak)]
 		IAVRoutingPlaybackParticipant PreferredParticipantForNonMixableAudioRoutes { get; set; }

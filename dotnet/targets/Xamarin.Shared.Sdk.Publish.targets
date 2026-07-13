@@ -37,7 +37,7 @@
 		<GetDirectories SessionId="$(BuildSessionId)" Path="$(_AppContainerDir)" Pattern="*.dSYM">
 			<Output TaskParameter="Directories" ItemName="_DSymDirToPublish" />
 		</GetDirectories>
-		<ItemGroup>
+		<ItemGroup Condition="'@(_DSymDirToPublish->Count())' != '0'">
 			<_DSymFileToPublish Include="%(_DSymDirToPublish.Identity)/**/*">
 				<DSymDirName>%(_DSymDirToPublish.Filename)%(_DSymDirToPublish.Extension)</DSymDirName>
 			</_DSymFileToPublish>

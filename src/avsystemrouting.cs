@@ -6,7 +6,6 @@ using UniformTypeIdentifiers;
 
 namespace AVSystemRouting {
 
-	[UnsupportedSimulator ("ios")]
 	[iOS (27, 0)]
 	[Native]
 	public enum AVSystemRouteLaunchMode : long {
@@ -14,7 +13,6 @@ namespace AVSystemRouting {
 		Player,
 	}
 
-	[UnsupportedSimulator ("ios")]
 	[iOS (27, 0)]
 	[Native]
 	public enum AVSystemRouteEventReason : long {
@@ -22,7 +20,6 @@ namespace AVSystemRouting {
 		Deactivate,
 	}
 
-	[UnsupportedSimulator ("ios")]
 	[iOS (27, 0)]
 	[ErrorDomain ("AVSystemRoutingErrorDomain")]
 	[Native]
@@ -30,7 +27,6 @@ namespace AVSystemRouting {
 		ConnectionFailed = -73985,
 	}
 
-	[UnsupportedSimulator ("ios")]
 	[iOS (27, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -57,7 +53,6 @@ namespace AVSystemRouting {
 
 	delegate void AVSystemRouteSessionStartHandler ([NullAllowed] NSError launchError, [NullAllowed] AVSystemRouteMediaSession mediaSession);
 
-	[UnsupportedSimulator ("ios")]
 	[iOS (27, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -65,6 +60,7 @@ namespace AVSystemRouting {
 		[Export ("initWithURL:mode:")]
 		NativeHandle Constructor (NSUrl url, AVSystemRouteLaunchMode mode);
 
+		[Async (ResultTypeName = "AVSystemRouteSessionStartResult")]
 		[Export ("startWithCompletionHandler:")]
 		void Start (AVSystemRouteSessionStartHandler completionHandler);
 
@@ -72,7 +68,6 @@ namespace AVSystemRouting {
 		void Stop ();
 	}
 
-	[UnsupportedSimulator ("ios")]
 	[iOS (27, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -89,7 +84,6 @@ namespace AVSystemRouting {
 
 	interface IAVSystemRouteDataDelegate { }
 
-	[UnsupportedSimulator ("ios")]
 	[iOS (27, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
 	[BaseType (typeof (NSObject))]
@@ -99,7 +93,6 @@ namespace AVSystemRouting {
 		void ReceiveData (NSData data, AVSystemRouteDataCompletionHandler completionHandler);
 	}
 
-	[UnsupportedSimulator ("ios")]
 	[iOS (27, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -120,7 +113,6 @@ namespace AVSystemRouting {
 
 	interface IAVSystemRouteControllerObserver { }
 
-	[UnsupportedSimulator ("ios")]
 	[iOS (27, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
 	[BaseType (typeof (NSObject))]
@@ -130,7 +122,6 @@ namespace AVSystemRouting {
 		void HandleEvent (AVSystemRouteController controller, AVSystemRouteEvent @event, AVSystemRouteControllerObserverCompletionHandler completionHandler);
 	}
 
-	[UnsupportedSimulator ("ios")]
 	[iOS (27, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -150,7 +141,6 @@ namespace AVSystemRouting {
 		void RemoveObserver (IAVSystemRouteControllerObserver observer);
 	}
 
-	[UnsupportedSimulator ("ios")]
 	[iOS (27, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]

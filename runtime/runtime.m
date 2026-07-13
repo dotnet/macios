@@ -2368,6 +2368,31 @@ xamarin_compute_trusted_platform_assemblies ()
 	return rv;
 }
 
+// Find the directory that contains System.Private.CoreLib.dll, looking in:
+// - The bundle directory
+// - The runtimeidentifier-specific subdirectory
+// Returns an empty string if the file can't be found in any of those directories
+// (an empty value is treated by the runtime as if the property wasn't set).
+// Caller must free the return value using xamarin_free.
+char *
+xamarin_compute_system_corelib_directory ()
+{
+	const char *bundle_path = xamarin_get_bundle_path ();
+
+	NSMutableArray<NSString *> *directories = [NSMutableArray array];
+	[directories addObject: [NSString stringWithUTF8String: bundle_path]];
+	[directories addObject: [NSString stringWithFormat: @"%s/.xamarin/%s", bundle_path, RUNTIMEIDENTIFIER]];
+
+	NSFileManager *manager = [NSFileManager defaultManager];
+	for (NSString *dir in directories) {
+		NSString *corelib = [dir stringByAppendingPathComponent: @"System.Private.CoreLib.dll"];
+		if ([manager fileExistsAtPath: corelib])
+			return xamarin_strdup_printf ("%s", [dir UTF8String]);
+	}
+
+	return xamarin_strdup_printf ("%s", "");
+}
+
 char *
 xamarin_compute_native_dll_search_directories ()
 {
@@ -2592,6 +2617,7 @@ xamarin_vm_initialize ()
 
 	char *trusted_platform_assemblies = xamarin_compute_trusted_platform_assemblies ();
 	char *native_dll_search_directories = xamarin_compute_native_dll_search_directories ();
+	char *system_corelib_directory = xamarin_compute_system_corelib_directory ();
 	const char *startupHooks = getenv ("DOTNET_STARTUP_HOOKS");
 
 	// All the properties we pass here must also be listed in the _RuntimeConfigReservedProperties item group
@@ -2607,6 +2633,7 @@ xamarin_vm_initialize ()
 		"TRUSTED_PLATFORM_ASSEMBLIES",
 		"NATIVE_DLL_SEARCH_DIRECTORIES",
 		"RUNTIME_IDENTIFIER",
+		"SYSTEM_CORELIB_DIRECTORY", // the directory that contains System.Private.CoreLib.dll (must come before STARTUP_HOOKS, because we might not pass STARTUP_HOOKS)
 		"STARTUP_HOOKS", // must be last entry (because we just decrement propertyCount to not pass it if it's not set)
 	};
 	const char *propertyValues[] = {
@@ -2620,6 +2647,7 @@ xamarin_vm_initialize ()
 		trusted_platform_assemblies,
 		native_dll_search_directories,
 		RUNTIMEIDENTIFIER,
+		system_corelib_directory,
 		startupHooks,
 	};
 	static_assert (sizeof (propertyKeys) == sizeof (propertyValues), "The number of keys and values must be the same.");
@@ -2635,6 +2663,7 @@ xamarin_vm_initialize ()
 #endif
 	xamarin_free (trusted_platform_assemblies);
 	xamarin_free (native_dll_search_directories);
+	xamarin_free (system_corelib_directory);
 
 	if (!rv)
 		xamarin_assertion_message ("Failed to initialize the VM");

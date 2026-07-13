@@ -190,7 +190,7 @@ endef
 # 1: name
 # 2: sdk platform (iphoneos, iphonesimulator, tvos, tvsimulator, maccatalyst, mac)
 # 3: runtime identifier
-$(foreach name,$(NAMES),$(foreach platform,$(DOTNET_PLATFORMS),$(foreach rid,$(DOTNET_$(platform)_RUNTIME_IDENTIFIERS),$(eval $(call FrameworkTemplate,$(name),$(DOTNET_$(rid)_SDK_PLATFORM),$(rid),$(shell echo $(name) | tr '.' '_'))))))
+$(foreach name,$(NAMES),$(foreach platform,$(DOTNET_PLATFORMS),$(foreach rid,$(DOTNET_$(platform)_RUNTIME_IDENTIFIERS),$(eval $(call FrameworkTemplate,$(name),$(DOTNET_$(rid)_SDK_PLATFORM),$(rid),$(subst .,_,$(name)))))))
 
 ifneq ($(DOTNET_PLATFORMS),)
 define XCTemplate

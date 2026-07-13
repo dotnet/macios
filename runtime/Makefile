@@ -194,7 +194,7 @@ define DotNetLibXamarinTemplate
 DOTNET$(6)_$(2)_LIBDIR ?= $$(TOP)/packages/microsoft.netcore.app.runtime$(7).$(2)/$(BUNDLED_NETCORE_PLATFORMS_PACKAGE_VERSION)/runtimes/$(2)/native
 DOTNET$(6)_$(2)_DYLIB_FLAGS = $(DOTNET_$(1)$(6)_DYLIB_FLAGS) -Wl,-install_name,libxamarin$(5).dylib -framework Foundation -framework CFNetwork -lz -L$(abspath $(DOTNET$(6)_$(2)_LIBDIR))
 
-DOTNET_$(2)_$(4)_OBJECTS   = $$(patsubst %,.libs/$(2)/%$(5).o,   $(MONOTOUCH_SOURCE_STEMS)) $$(patsubst %,.libs/$(2)/%$(5).o,   $(MONOTOUCH_$(shell echo $(2) | sed 's/.*-//' | tr a-z A-Z)_SOURCE_STEMS))
+DOTNET_$(2)_$(4)_OBJECTS   = $$(patsubst %,.libs/$(2)/%$(5).o,   $(MONOTOUCH_SOURCE_STEMS)) $$(patsubst %,.libs/$(2)/%$(5).o,   $(MONOTOUCH_$(call uppercase,$(lastword $(subst -, ,$(2))))_SOURCE_STEMS))
 
 
 .libs/$(2)/libxamarin$(5).a: $$(DOTNET_$(2)_$(4)_OBJECTS)

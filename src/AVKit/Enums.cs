@@ -65,6 +65,13 @@ namespace AVKit {
 
 	[NoTV, Mac (26, 4), iOS (26, 4), MacCatalyst (26, 4)]
 	[Native]
+	public enum AVLegibleMediaOptionsMenuType : long {
+		Default = 0,
+		CaptionAppearance,
+	}
+
+	[NoTV, Mac (26, 4), iOS (26, 4), MacCatalyst (26, 4)]
+	[Native]
 	public enum AVLegibleMediaOptionsMenuStateChangeReason : long {
 		None = 0,
 		LanguageMismatch,
@@ -77,6 +84,37 @@ namespace AVKit {
 		Legible = 1L << 0,
 		CaptionAppearance = 1L << 1,
 		All = Legible | CaptionAppearance,
+	}
+
+	[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+	[Native]
+	public enum AVPlaybackUserInterfacePlaybackState : long {
+		Normal = 0,
+		Scanning,
+		Scrubbing,
+	}
+
+	[Flags]
+	[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+	[Native]
+	public enum AVPlaybackUserInterfaceSeekCapabilities : ulong {
+		None = 0,
+		ScanForward = 1uL << 0,
+		ScanBackward = 1uL << 1,
+		Seek = 1uL << 2,
+	}
+
+	[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+	[Native]
+	public enum AVPlaybackUserInterfaceTimelineSegmentType : long {
+		Primary = 0,
+		Advertisement,
+		Bonus,
+		Credits,
+		Intro,
+		Recap,
+		Trailer,
+		Other,
 	}
 
 }

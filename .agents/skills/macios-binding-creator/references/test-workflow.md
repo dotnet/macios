@@ -46,6 +46,10 @@ Classify reports `!extra-enum-value! Managed value N for <Enum>.<Member> is avai
 | `.ignore` | APIs intentionally not bound (with justification) |
 | `.deprecated` | Deprecated APIs |
 
+### Xtro only checks native → managed (no "extra selector")
+
+`SelectorCheck` iterates the **native** header declarations and emits `!missing-selector!` for any native selector with no managed binding. It **never** flags an *extra*, managed-only selector. Consequence: when Apple **removes** a selector from a new SDK's headers, deleting the managed binding is xtro-neutral — you must still delete it, but **don't rely on introspection to tell you which selectors to remove.** `ApiSelectorTest` only fails if the selector is *truly gone* from the runtime (the managed selector stops responding); if Apple merely made it **private** (dropped from the headers but still implemented) introspection can't distinguish public from private, stays green, and your stale binding ships. Proactively remove the binding for any selector Apple drops from the headers. (`tests/xtro-sharpie/xtro-sharpie/SelectorCheck.cs`; xtro reporting these extra selectors is tracked by #26053.)
+
 ## Cecil Commands
 
 ```bash
@@ -63,14 +67,23 @@ Adding public members can fail the `VerifyEveryVisibleMemberIsDocumented` test �
 
   ```bash
   # Regenerates Documentation.KnownFailures.txt (the whole sorted baseline is
-  # rewritten, so the git diff should show ONLY your new members added).
+  # rewritten, so the git diff should show your new members — plus, at most, any
+  # baseline entries your change legitimately fixed, which drop out).
   # This run exits non-zero by design — it's the "re-run to confirm" assert.
   WRITE_KNOWN_FAILURES=1 make -C tests/cecil-tests run-tests
   # Confirm a clean pass (exit 0) and commit the updated known-failures file.
   make -C tests/cecil-tests run-tests
   ```
 
-  Review the `git diff` of `Documentation.KnownFailures.txt` — it must contain **only** your new members.
+  Review the `git diff` of `Documentation.KnownFailures.txt` — it must contain **only** your new members, plus (at most) baseline entries your change legitimately fixed, which drop out.
+
+### Which new members need a doc/baseline entry
+
+For the **baseline path**, you rarely need to work this out by hand — the `WRITE_KNOWN_FAILURES=1` self-update above rewrites the baseline for you; just review the `git diff` (it should show only your new members, plus any now-fixed entries it removes). This taxonomy is mainly for the **preferred path** (hand-writing docs), where you need to know which members actually require a doc comment: bgen auto-documents *some* generated members, so not every new public API fails `VerifyEveryVisibleMemberIsDocumented`. Knowing which is which predicts your diff:
+
+- **`[Field]` constant properties** (NSString notification/key constants) → bgen generates a `<summary>` → **no** baseline entry needed.
+- **`NS_TYPED_ENUM` smart enum** → the enum **type** and each **field** are **not** auto-documented → they need a `T:` line and one `F:` per member in `Documentation.KnownFailures.txt`. The bgen-generated `...Extensions` class (`GetValue`/`GetConstant`/`ToFlags`) **is** auto-documented → **no** entries for it.
+- **`[Export]` methods** → **not** auto-documented → each needs a doc comment or a baseline entry.
 
 ## Introspection Commands
 
@@ -114,6 +127,8 @@ $DOTNET_DESTDIR/Microsoft.iOS.Sdk/tools/bin/mlaunch \
 
 Use `xcrun simctl list runtimes` and `xcrun simctl list devicetypes` to find the correct identifiers for your Xcode version.
 
+> ⚠️ **Xcode 27: `simctl create` rejects `--json`.** mlaunch auto-creates the sim device by shelling out to `simctl create … --json`, which now fails with `MT1008 … simctl: unrecognized option '--json'`. This is **likely an mlaunch bug** — passing `--json` to `simctl create` may have been accidental; earlier `simctl` versions tolerated it, but Xcode 27 no longer does. Workaround until mlaunch is fixed: **pre-create** the device with the exact name mlaunch expects so it finds it instead of creating it, e.g. `xcrun simctl create "iPhone 16 Pro - iOS 27.0" <devicetype-id> <runtime-id>`, then re-run mlaunch.
+
 ### Why run-bare for Desktop Platforms
 
 `make run-macOS` / `make run-MacCatalyst` uses `dotnet build -t:Run` which launches the app without waiting or capturing stdout. The make command exits immediately with success even while tests are still running.
@@ -151,6 +166,19 @@ Exclusion mechanisms:
 - **`do_not_dispose` list** — Types that crash on disposal
 - **`CheckHandle()` override** — Types returning `IntPtr.Zero`
 - **`CheckToString()` override** — Types that crash on `.Description`
+
+### Desktop `run-bare` crashes on privacy-gated types (TCC)
+
+Running desktop introspection via `run-bare` in a **headless terminal** (no GUI session) can SIGABRT with `__TCC_CRASHING_DUE_TO_PRIVACY_VIOLATION__` when a fixture instantiates a privacy-gated type the OS can't show a permission prompt for. Observed on **Mac Catalyst** (whose ctor suite is `iOSApiCtorInitTest`) instantiating `CoreLocationUI.CLLocationButton` (`src/corelocationui.cs:27` — iOS/Mac Catalyst only). This is **environmental, not a binding bug** — the same class of ctor/dealloc crash as the documented **macOS** `AVKit.AVCaptureView` exclusion (`tests/introspection/MacApiCtorInitTest.cs:158-161`, macOS-only).
+
+To still validate the other fixtures, run a **single fixture** (bypassing the crashing `ApiCtorInitTest`):
+
+```bash
+make -C tests/introspection/dotnet/MacCatalyst run-bare \
+  RUN_ARGUMENTS="--test=Introspection.iOSApiSelectorTest"
+```
+
+`run-bare` forwards `RUN_ARGUMENTS` to the executable (`tests/common/shared-dotnet.mk`), and Touch.Unit's `--test=` filter (`tests/common/Touch.Unit/Touch.Client/Runner/TouchOptions.cs:121`) runs just that fixture. Swap in `iOSApiSignatureTest`, `iOSApiFieldTest`, `iOSApiPInvokeTest`, etc. The real gate remains CI on a signed/GUI image.
 
 ### Selector Not Found (Declared but Not Implemented)
 

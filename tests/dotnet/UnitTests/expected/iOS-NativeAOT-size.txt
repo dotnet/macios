@@ -1,4 +1,4 @@
-AppBundleSize: 6,082,400 bytes (5,939.8 KB = 5.8 MB)
+AppBundleSize: 5,082,400 bytes (TEST: intentionally wrong to trigger AppSizeTest failure)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 Info.plist:
     1,152 bytes (1.1 KB = 0.0 MB)

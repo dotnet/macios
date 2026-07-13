@@ -124,6 +124,7 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			var archiveDir = CreateArchiveDirectory ();
+			var userProvidedArchiveDir = !string.IsNullOrEmpty (ArchiveDir);
 			try {
 				var plist = PDictionary.OpenFile (PlatformFrameworkHelper.GetAppManifestPath (Platform, AppBundleDir.ItemSpec));
 				var productsDir = Path.Combine (archiveDir, "Products");
@@ -267,7 +268,10 @@ namespace Xamarin.MacDev.Tasks {
 				ArchiveDir = archiveDir;
 			} catch (Exception ex) {
 				Log.LogErrorFromException (ex);
-				Directory.Delete (archiveDir, true);
+				// Only delete the archive directory on failure if it was auto-generated.
+				// User-provided directories should not be deleted.
+				if (!userProvidedArchiveDir)
+					Directory.Delete (archiveDir, true);
 			}
 
 			return !Log.HasLoggedErrors;

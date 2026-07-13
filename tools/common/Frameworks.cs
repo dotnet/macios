@@ -322,6 +322,7 @@ public class Frameworks : Dictionary<string, Framework> {
 					{ "GameSave", "GameSave", 26, 0 },
 
 					{ "StateReporting", "StateReporting", 27, 0 },
+					{ "AccessoryAccess", "AccessoryAccess", 27, 0 },
 				};
 			}
 			return mac_frameworks;

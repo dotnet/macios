@@ -1,5 +1,0 @@
-!missing-field! AVProVideoStorageBusyReasonAdjustingCapacity not bound
-!missing-field! AVProVideoStorageBusyReasonCapturing not bound
-!missing-field! AVProVideoStorageBusyReasonReplenishing not bound
-!missing-selector! AVProVideoStorage::busyReasons not bound
-!missing-selector! AVProVideoStorage::replenishCapacityWithCompletionHandler: not bound

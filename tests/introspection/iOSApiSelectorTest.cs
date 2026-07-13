@@ -58,6 +58,20 @@ namespace Introspection {
 				break;
 			}
 #endif // __MACCATALYST__
+#if __IOS__ && !__MACCATALYST__
+			switch (type.Name) {
+			case "WKWebpagePreferences":
+				switch (selectorName) {
+				// This selector is declared for iOS 27 but is not implemented in the iOS 27 simulator (it does respond on macOS and Mac Catalyst).
+				case "globalPrivacyControlEnabled":
+				case "setGlobalPrivacyControlEnabled:":
+					if (TestRuntime.IsSimulator)
+						return true;
+					break;
+				}
+				break;
+			}
+#endif // __IOS__ && !__MACCATALYST__
 			return base.Skip (type, selectorName);
 		}
 

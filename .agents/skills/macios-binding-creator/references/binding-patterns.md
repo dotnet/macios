@@ -17,6 +17,36 @@ src/
 - **Manual code** (`src/FrameworkName/*.cs`) — Partial classes, P/Invokes, helpers, complex conversions
 - **Enums** — Smart enums backed by NSString constants or numeric enums
 
+## Registering a Brand-New Framework
+
+Most binding work adds APIs to an **existing** framework. Binding an **entirely new** Apple framework (no `src/<fw>.cs` yet) also requires wiring it into the build and test infrastructure — miss a step and the build or CI fails in a non-obvious way. Running precedent below: the **GameSave** framework (added for Xcode 26 in commit `8ece955d31`).
+
+Checklist (apply to every platform the framework ships on):
+
+1. **`src/<frameworkname>.cs`** — the API-definition file (lowercase), plus any manual code under `src/<FrameworkName>/`.
+2. **`src/frameworks.sources`** — add the framework to each per-platform list it ships on: `IOS_FRAMEWORKS`, `MACOS_FRAMEWORKS`, `TVOS_FRAMEWORKS`, `MACCATALYST_FRAMEWORKS`. (GameSave is in the iOS/macOS/Mac Catalyst lists.)
+3. **`tools/common/Frameworks.cs`** — add an entry to the matching `iOSFrameworks` / `MacFrameworks` / `TVOSFrameworks` / `MacCatalystFrameworks` dictionary so the framework is registered for linking. Format: `{ "ManagedName", "NativeName", major, minor }`. Precedent: `{ "GameSave", "GameSave", 26, 0 }`. Keep the dictionary sorted the way new entries are expected to go in: **grouped by the OS version recorded in the entry** (roughly ascending, **newest version last**), and **alphabetical (case-insensitive) by managed name within each version** — so a new `26, 0` framework joins the last group in alphabetical position. (Older groups have some historical drift; follow the rule for your new entry rather than assuming every existing line already complies. In-file reminder near `Frameworks.cs:509`.)
+4. **Remove the framework from xtro's ignore list** for the platform(s) you're now binding. `tests/xtro-sharpie/Makefile` has `IGNORED_<PLATFORM>_FRAMEWORKS` lists; a framework left there is **not checked** by xtro at all. Example: `AccessoryAccess` currently sits in `IGNORED_MACCATALYST_FRAMEWORKS`.
+5. **`tests/dotnet/UnitTests/ProjectTest.cs`** — add the framework's native path to the `expectedFrameworks_<platform>_None` array(s). The `LinkedWithNativeLibraries` test builds an app with **LinkMode=None**, under which **every** bound SDK framework is force-linked, so a newly-registered framework appears and fails the exact-match assertion unless listed. Only the `_None` arrays need updating (the maintainer comment at `GetLinkedWithNativeLibrariesTestCases`, ~line 3750, explains why `_Full` should not). Mind the per-platform path forms:
+   - iOS / tvOS: `/System/Library/Frameworks/GameSave.framework/GameSave`
+   - macOS: `/System/Library/Frameworks/GameSave.framework/Versions/A/GameSave`
+   - Mac Catalyst: `/System/iOSSupport/System/Library/Frameworks/GameSave.framework/Versions/A/GameSave`
+6. **Delete the resolved xtro `.todo`** once the framework's entries are bound. **If** the new public members are undocumented, also update the cecil docs baseline (see [test-workflow.md](test-workflow.md) § Cecil) — that's the generic undocumented-member flow, not framework-specific (the GameSave commit didn't need it).
+
+> ❌ **Two generated-file build gotchas after editing the framework lists — different files, different fixes, both easy to misdiagnose:**
+> - **`src/build/dotnet/generator-frameworks.g.cs` is git-*tracked* and auto-regenerated.** Editing `src/frameworks.sources` makes the next `make all` regenerate it; the make rule (`src/Makefile.generator`) then runs `git diff` and **stops with `exit 1`** and *"please commit the changes."* The file is already regenerated on disk — so `git add` it and re-run `make all` (the GameSave commit committed this file). It is **not** a silent success: the first build after the edit fails until you commit it.
+> - **`Constants.generated.cs` is *untracked* and goes stale after editing `tools/common/Frameworks.cs`.** The `generate-frameworks-constants` tool is **not** rebuilt just because you edited `Frameworks.cs` (that file is a *linked* compile item; the tool's make rule only depends on files under `scripts/generate-frameworks-constants/`). The stale tool regenerates a `Constants.generated.cs` lacking your new `<Framework>Library` constant, and the build fails `CS0117: 'Constants' does not contain a definition for '<Framework>Library'` from the generated `Libraries.g.cs`. **Fix:** force-rebuild the tool — delete its `bin`/`obj` and the stale `src/build/dotnet/*/Constants.generated.cs`, then rebuild. (This missing rebuild is tracked by #26052.)
+
+### Types from Deliberately-Unbound Frameworks
+
+macios intentionally does **not** bind a handful of low-level frameworks. Some are **ignored by xtro** — `DriverKit`, `IOUSBHost`, `Kerberos` sit in `IGNORED_*_FRAMEWORKS` (`tests/xtro-sharpie/Makefile`) so their absence isn't even reported. Others are **registered for linking only** in `tools/common/Frameworks.cs` (e.g. `IOBluetooth` at line 164) with no `src/*.cs` API surface. The IOKit family as a whole is out of scope.
+
+When a framework you **are** binding hands back a type that belongs to one of these unbound frameworks (an `IOUSBHostDevice *`, an `xpc_object_t`, …), you can't "properly" bind it — use the established fallbacks:
+- **Unbound Objective-C class** → alias it to `Foundation.NSObject` with a `using` at the top of the API-definition file (a short comment naming the owning framework helps reviewers). Precedent: `src/browserenginekit.cs:47` aliases the XPC `xpc_object_t` type this way — `using OS_xpc_object = Foundation.NSObject;` — for its `xpc_object_t` parameters/returns. (This is *different* from platform-stubbing an otherwise-bound type under `#if` — for that, see "Platform Exclusion for Manual Types" below.)
+- **C primitive** (`kern_return_t`, `IOReturn`, `io_service_t`, …) → map to a plain integer / `IntPtr`, never a bound type. Verified precedent: `kern_return_t` → `int` in `src/IOSurface/IOSurface.cs` (`// kern_return_t` → `public int Lock (...)`). For other C typedefs, confirm the width/signedness from the header before choosing `int`/`uint`/`nint`/`IntPtr`.
+
+> ⚠️ Reviewers may ask "why not bind this type?" — the answer is that the owning framework is deliberately out of macios's scope (IOKit-family), so the NSObject-alias / integer fallback is the intended convention, not a shortcut.
+
 ## Platform Availability Attributes
 
 Every bound API must declare platform availability:
@@ -63,6 +93,8 @@ void OldMethod ();
 [Export ("veryOldMethod")]
 void VeryOldMethod ();
 ```
+
+> ❌ **Deprecate on EVERY platform where the member is still *available* — not on `[No*]`/unsupported platforms.** In macios a source `[Deprecated]` compiles to `[ObsoletedOSPlatform]` (bgen `Attributes.cs`), and the cecil test `FindMissingObsoleteAttributes` (`tests/cecil-tests/ApiAvailabilityTest.cs`) fails an API that is deprecated on **some** platforms but still **supported** (neither deprecated nor unavailable) on **another** — because bgen does **not** auto-propagate an iOS `[Deprecated]` to Mac Catalyst. So a member available on iOS **and** Mac Catalyst needs **both** `[Deprecated (PlatformName.iOS, …)]` **and** `[Deprecated (PlatformName.MacCatalyst, …)]`; a `[NoMacCatalyst]` member needs **no** Catalyst deprecation. Use the same message on each for self-consistency (good practice — the test collects but does **not** assert message equality). xtro is per-platform and won't catch a missing pair. Real precedent: `AVExternalStorageDevice.NotRecommendedForCaptureUse` (`src/avfoundation.cs:26071-26074`) carries paired `[Deprecated]` for **all four** platforms (iOS + TvOS + MacOSX + MacCatalyst), identical message.
 
 ### Best Practices
 
@@ -160,7 +192,7 @@ NSString SelectedOption { get; set; }
 
 ### Adding New Members to Existing Enums
 
-When adding a new value to an existing enum, the new member needs its own availability attribute with the version that **member** was introduced — not the enum's introduction version:
+When adding a new value to an existing enum, match the native header **per member**. Add a per-member availability attribute **only if** the header annotates that member differently from the enum — its own `API_AVAILABLE` version (newer than the enum), or `API_UNAVAILABLE`/absence on a platform (→ `[No<Platform>]`). Use the version the **member** was introduced, not the enum's. A member the header doesn't annotate inherits the enum's availability — leave it bare, matching its siblings:
 
 ```csharp
 [NoTV, NoMacCatalyst, NoMac, iOS (26, 1)]
@@ -173,7 +205,11 @@ public enum PHAssetResourceUploadJobAction : long {
 }
 ```
 
-Check the generated reference bindings (`make -C tests/xtro-sharpie gen-all`) for the correct per-member introduction version.
+Check the generated reference bindings (`make -C tests/xtro-sharpie gen-all`) for the correct per-member introduction version. (The example above is a single-platform, iOS-only enum, so the new member needs only `[iOS (26, 5)]`.)
+
+> ❌ **Error enums are the exception — never add availability *or* unavailability attributes to their members.** If the enum's name ends in `Error`/`ErrorCode` or it carries `[ErrorDomain]`, cecil's `EnumTest.NoAvailabilityOnError` (issue #9724) fails — with **no** known-failures allowlist — on **any** field carrying `[iOS]`/`[Mac]`/`[TV]`/`[No*]`/`[Introduced]`/`[Unavailable]`/`[Supported/UnsupportedOSPlatform]` (only `[Obsolete]`/`[Obsoleted…]` are exempt). Bind new error-code values bare, matching their siblings (e.g. `VNErrorCode.ResourceUnavailable`, `UNErrorCode.AttachmentUnsupportedType`).
+
+> ⚠️ **Multi-platform enums (numeric *or* smart): give a new member every applicable platform's version, not just one.** For any enum available on more than one platform, bgen back-fills each platform where the member has no introduced attribute with the parent enum's version (`AttributeFactory.FindHighestIntroducedAttributes`, `Generator.PrintAttributes.cs`). So `[iOS (27, 0)]` alone on a member of an enum introduced at 26.0 silently leaves the member reporting `Mac`/`MacCatalyst` **26.0**. Specify all applicable `[iOS]`/`[Mac]`/`[MacCatalyst]`/`[TV]` versions (repeating a parent `[NoTV]` is redundant but harmless). A single-platform enum needs only that platform's version, as in the example above.
 
 ## Notification Fields
 
@@ -286,7 +322,7 @@ delegate bool ValidationHandler (string input);
 bool Validate (ValidationHandler handler);
 ```
 
-> ❌ **NEVER** use `Action<T>` or `Func<T>` for completion handler parameters. Always define a **named delegate type** (e.g., `delegate void MyHandler (...)`) — this produces better API documentation and IntelliSense. Note: xtro-sharpie may generate `Action`/`Func` delegates; always convert them to named delegates in your binding.
+> ⚠️ **PREFER a named delegate type** (e.g., `delegate void MyHandler (...)`) over `Action<T>` / `Func<T>` for completion-handler parameters **when the meaning of a parameter isn't obvious from its type** — only a named delegate gives the parameters names and XML docs. `Action<T>`/`Func<T>` now support nullable type arguments, so nullability is no longer a reason to avoid them; readability is. xtro-sharpie may suggest `Action`/`Func` — convert when the extra clarity is worth it.
 
 > ⚠️ **Use `string`, not `NSString`**, for string parameters in delegates, methods, and properties. The binding generator marshals between `string` and `NSString` automatically. Use `NSString` only when the parameter is specifically a dictionary key, a strong-typed constant, or part of an `NSDictionary<NSString, ...>` signature.
 
@@ -838,6 +874,41 @@ void Configure ([NullAllowed] NSDictionary options);
 [Wrap ("Configure (options?.Dictionary)")]
 void Configure (MyOptions options);
 ```
+
+## NSSet of Typed-String Enums (NS_TYPED_ENUM)
+
+When a native property returns an `NSSet<NSString>` whose elements are `NS_TYPED_ENUM` string constants (a set of "reasons" / "statuses"), bind a **weak** raw set (`[Export]`, `Weak` prefix) plus a **`[Wrap]`** that projects to a strongly-typed value (Xcode 26+ convention). The typed shape depends on the smart enum:
+
+**Non-flags smart enum → `HashSet<TEnum>`** via `ToHashSet`:
+
+```csharp
+[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+[Export ("reasonsNotRecommendedForCaptureUse")]
+NSSet<NSString> WeakReasonsNotRecommendedForCaptureUse { get; }
+
+[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+[Wrap ("WeakReasonsNotRecommendedForCaptureUse.ToHashSet (v => AVExternalStorageDeviceReasonNotRecommendedForCaptureUseExtensions.GetValue (v))")]
+HashSet<AVExternalStorageDeviceReasonNotRecommendedForCaptureUse> ReasonsNotRecommendedForCaptureUse { get; }
+```
+
+**`[Flags]` smart enum → the flags enum itself** via `ToFlags` (read/write shown):
+
+```csharp
+[Export ("textAlignments", ArgumentSemantic.Copy)]
+NSSet<NSString> WeakTextAlignments { get; set; }
+
+UITextFormattingViewControllerTextAlignment TextAlignments {
+	[Wrap ("UITextFormattingViewControllerTextAlignmentExtensions.ToFlags (WeakTextAlignments)")]
+	get;
+	[Wrap ("WeakTextAlignments = new NSSet<NSString> (value.ToArray ())")]
+	set;
+}
+```
+
+- `...Extensions.GetValue` / `...Extensions.ToFlags` are **auto-generated** by bgen for a `[Field]`-backed smart enum; `ToHashSet<T> (Func<NSString, T>)` lives on `NSSet<NSString>` (`src/Foundation/NSSet_1.cs`).
+- ⚠️ The `...Extensions` class must belong to the **same** enum you return — `XyzExtensions.ToFlags(...)` must project to `Xyz` (the `[Flags]` enum). Do **not** wrap one enum's `Extensions.ToFlags` into an *unrelated* enum's property.
+- The older raw-`NSSet<NSString>`-only binding (no typed projection) is superseded — add the typed wrapper for new bindings.
+- Precedents: `src/avfoundation.cs` `AVExternalStorageDevice.ReasonsNotRecommendedForCaptureUse` (`ToHashSet`); `src/uikit.cs` `UITextFormattingViewControllerFormattingDescriptor.TextAlignments` (`ToFlags`).
 
 ## Complex Type Conversions
 

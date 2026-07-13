@@ -2023,6 +2023,7 @@ COMMON_FRAMEWORKS =         \
 
 MACOS_FRAMEWORKS =          \
 	$(COMMON_FRAMEWORKS)    \
+	AccessoryAccess         \
 	Accounts                \
 	AdServices              \
 	AdSupport               \

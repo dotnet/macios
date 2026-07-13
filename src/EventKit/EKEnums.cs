@@ -284,29 +284,29 @@ namespace EventKit {
 	/// <summary>An enumeration whose values indicate the type of a <see cref="EventKit.EKSource" /> object.</summary>
 	[Native]
 	public enum EKSourceType : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The source is stored locally on the device.</summary>
 		Local,
-		/// <summary>To be added.</summary>
+		/// <summary>The source is a Microsoft Exchange server.</summary>
 		Exchange,
-		/// <summary>To be added.</summary>
+		/// <summary>The source is a CalDAV server.</summary>
 		CalDav,
-		/// <summary>To be added.</summary>
+		/// <summary>The source is the legacy MobileMe service (now iCloud).</summary>
 		MobileMe,
-		/// <summary>To be added.</summary>
+		/// <summary>The source is a subscribed calendar.</summary>
 		Subscribed,
-		/// <summary>To be added.</summary>
+		/// <summary>The source provides birthday events.</summary>
 		Birthdays,
 	}
 
 	// NSInteger -> EKTypes.h
-	/// <summary>An enumeration whose values specify whether an event was raised by entering or leaving a region.</summary>
+	/// <summary>An enumeration whose values specify whether an alarm fires when entering or leaving a region.</summary>
 	[Native]
 	public enum EKAlarmProximity : long {
-		/// <summary>To be added.</summary>
+		/// <summary>No proximity alarm.</summary>
 		None,
-		/// <summary>To be added.</summary>
+		/// <summary>The alarm fires when entering the region.</summary>
 		Enter,
-		/// <summary>To be added.</summary>
+		/// <summary>The alarm fires when leaving the region.</summary>
 		Leave,
 	}
 
@@ -315,9 +315,9 @@ namespace EventKit {
 	[Native]
 	[Flags]
 	public enum EKEntityMask : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The calendar supports events.</summary>
 		Event = 1 << (int) EKEntityType.Event,
-		/// <summary>To be added.</summary>
+		/// <summary>The calendar supports reminders.</summary>
 		Reminder = 1 << (int) EKEntityType.Reminder,
 	}
 
@@ -325,9 +325,9 @@ namespace EventKit {
 	/// <summary>An enumeration that specifies whether an entity is an event or a reminder.</summary>
 	[Native]
 	public enum EKEntityType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The entity is a calendar event.</summary>
 		Event,
-		/// <summary>To be added.</summary>
+		/// <summary>The entity is a reminder.</summary>
 		Reminder,
 	}
 
@@ -336,13 +336,13 @@ namespace EventKit {
 	// turned into a typed (NSInteger) enum in El Capitan (and also an NSInteger in watchOS)
 	[Native]
 	public enum EKAlarmType : long {
-		/// <summary>To be added.</summary>
+		/// <summary>A display alarm that shows a visual notification.</summary>
 		Display,
-		/// <summary>To be added.</summary>
+		/// <summary>An audio alarm that plays a sound.</summary>
 		Audio,
-		/// <summary>To be added.</summary>
+		/// <summary>A procedure alarm that runs a script or application.</summary>
 		Procedure,
-		/// <summary>To be added.</summary>
+		/// <summary>An email alarm that sends an email.</summary>
 		Email,
 	}
 #endif

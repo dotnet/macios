@@ -100,6 +100,8 @@ Bindings go in these locations:
 - **`src/FrameworkName/`** — Manual code (partial classes, enums, P/Invokes, extensions)
 - **`src/frameworks.sources`** — Maps frameworks to source files (update if adding new files)
 
+> ⚠️ **Binding an entirely new framework** (no `src/<fw>.cs` yet) needs extra build/test wiring — `frameworks.sources`, `tools/common/Frameworks.cs`, `ProjectTest.cs` link lists, the xtro ignore lists, plus two generated-file build gotchas. See [references/binding-patterns.md](references/binding-patterns.md) § "Registering a Brand-New Framework".
+
 Key binding patterns:
 
 ```csharp
@@ -121,7 +123,9 @@ NSString ScheduleRequestedNotification { get; }
 > - API definition interfaces and members in `src/frameworkname.cs` — use `[iOS (X, Y)]`, `[Mac (X, Y)]`, etc.
 > - P/Invoke wrappers and manual properties in `src/FrameworkName/*.cs` — use `[SupportedOSPlatform ("iosX.Y")]`, `[SupportedOSPlatform ("macos")]`, etc.
 > - Fields, constants, and enum values
-> - **Individual enum members** added to an existing enum — each new member needs its own `[iOS (X, Y)]` etc. with the version the **member** was introduced, even if the enum itself has an older version. Check the generated reference bindings for the correct per-member version.
+> - **Individual enum members** added to an existing enum — match the native header **per member**: add `[iOS (X, Y)]`/`[No*]`/etc. **only** for what the header annotates on that member (its own `API_AVAILABLE` version newer than the enum, or `API_UNAVAILABLE`/absence on a platform). A member the header doesn't annotate inherits the enum's availability — add **no** attribute, matching its siblings. On a **multi-platform** enum, if you do add a per-member introduced version, add it for **every** applicable platform (bgen otherwise back-fills the enum's older version). **Error enums are an exception — see the next rule.** See [references/binding-patterns.md](references/binding-patterns.md) § "Adding New Members to Existing Enums".
+
+> ❌ **NEVER put availability *or* unavailability attributes on members of an *error enum*** — not even brand-new ones. An error enum is any enum whose name ends in `Error` or `ErrorCode`, **or** that carries `[ErrorDomain]`. The cecil test `EnumTest.NoAvailabilityOnError` (issue #9724) fails — with **no** known-failures allowlist — if **any** field carries an availability/unavailability attribute (`[iOS]`/`[Mac]`/`[TV]`/`[No*]`/`[Introduced]`/`[Unavailable]`/`[Supported/UnsupportedOSPlatform]`); only `[Obsolete]`/`[Obsoleted…]` deprecation attributes are exempt. Bind new error-code members bare — just the value (plus `[Field]` if smart) — matching their siblings (e.g. `VNErrorCode.ResourceUnavailable`, `UNErrorCode.AttachmentUnsupportedType`).
 
 > ❌ **NEVER** use `string.Empty` — use `""`. Never use `Array.Empty<T>()` — use `[]`.
 
@@ -130,6 +134,8 @@ NSString ScheduleRequestedNotification { get; }
 > ❌ **NEVER** forget `[NullAllowed]` on `out NSError error` parameters. Every method that takes `NSError**` (bound as `out NSError error`) must use `[NullAllowed] out NSError error`. This applies to all error-returning methods — the error output is null on success.
 
 > ❌ **NEVER** forget `#nullable enable` at the top of every new C# file you create.
+
+> ⚠️ **PREFER a named delegate type** (`delegate void SomeFrameworkSomeCallback (…)`) over `Action<T>`/`Func<T>` for completion-handler / callback parameters **when the meaning of a parameter isn't obvious from its type** — only a named delegate can carry parameter names and XML docs. (`Action<T>`/`Func<T>` now support nullable type arguments, so `[NullAllowed]`/nullability is no longer a reason to avoid them.) See [references/binding-patterns.md](references/binding-patterns.md) § "Blocks and Completion Handlers".
 
 > ❌ **NEVER** use non-blittable types (`bool`, `char`) as backing fields in structs. Use `byte` (for `bool`) and `ushort`/`short` (for `char`) with property accessors. See [references/binding-patterns.md](references/binding-patterns.md) for the correct pattern.
 
@@ -172,6 +178,8 @@ Available preprocessor symbols for platform checks:
 - `__IOS__` — iOS
 - `__TVOS__` (preferred) / `TVOS` — tvOS
 - `__MACCATALYST__` — Mac Catalyst
+
+> ⚠️ Mac Catalyst defines **both** `__MACCATALYST__` **and** `__IOS__` (`msbuild/Xamarin.Shared/Xamarin.Shared.props`). In `#if` chains, test `__MACCATALYST__` **before** `__IOS__`, or the Catalyst case falls into the iOS branch.
 
 > ⚠️ **Foundation/TextKit types shared by AppKit and UIKit** (e.g. `NSTextList`, `NSParagraphStyle`) are bound once in `src/xkit.cs`, not duplicated in `appkit.cs`/`uikit.cs`. If a type in `appkit.cs` (or `uikit.cs`) becomes exposed to the other side, consolidate it there (share identical enums, split only divergent ones, handle platform-only members with `[No*]` attributes — reserving `#if` for divergences attributes can't express — keep back-dated availability). See [references/binding-patterns.md](references/binding-patterns.md) → "Shared AppKit/UIKit Types".
 
@@ -311,6 +319,8 @@ make -C tests/introspection/dotnet/MacCatalyst run-bare
 > ⚠️ **`clean` and `run-bare` must be run from the platform subdirectory** (e.g., `tests/introspection/dotnet/macOS/`), not from the parent `dotnet/` directory. The parent only has `build-%` and `run-%` pattern rules — there are no `clean-%` or `run-bare-%` targets.
 
 > ⚠️ **macOS/MacCatalyst:** Use `run-bare` (not `run`) — `run` launches the app without waiting or capturing stdout. `run-bare` runs the executable directly to capture test output.
+
+> ⚠️ **Host-OS version gating (brand-new-SDK APIs):** introspection gates every check to the **running** OS (`PlatformInfo.Host.Version`). On a host whose macOS is **older** than the SDK you bound (e.g. binding 27.0 APIs on a macOS 26 host), the macOS/MacCatalyst `run-bare` runs can't exercise the new symbols — they're **gated away**, not crashed — introspection's `SkipDueToAttribute` skips any member not available on the host OS (`IsAvailableOnHostPlatform`), so the check silently doesn't run and a clean pass there does **not** validate them. Validate instead on an **iOS/tvOS simulator whose runtime matches the new SDK** — bump the `--device runtime=…` in the commands above to the new-SDK runtime (e.g. `iOS-27-0` instead of `iOS-26-4`), where `ApiFieldTest`/`ApiSelectorTest` actually resolve the new symbols. (For APIs available **only** on macOS/Mac Catalyst there's no simulator fallback — validate on a host running the matching or newer macOS.)
 
 Look for this pattern in test output to confirm results:
 ```

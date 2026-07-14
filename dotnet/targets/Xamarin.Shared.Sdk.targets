@@ -2963,6 +2963,7 @@ global using nfloat = global::System.Runtime.InteropServices.NFloat%3B
 			Condition="'$(_IsHotReloadLaunch)' == 'true' And '$(_AreAnyAssembliesTrimmed)' == 'true'"
 			Text="Can't use Hot Reload or 'dotnet watch' if any assemblies are trimmed. Set 'MtouchLink=None' in the project file to disable trimming."
 			/>
+		<!-- Hot reload currently only works with the partial-static (or dynamic) registrar, but we plan on making it work with the trimmable-static registrar too: https://github.com/dotnet/macios/issues/26069 -->
 		<Error
 			Condition="'$(_IsHotReloadLaunch)' == 'true' And ('$(Registrar)' == 'managed-static' Or '$(Registrar)' == 'trimmable-static')"
 			Text="Can't use Hot Reload or 'dotnet watch' with the '$(Registrar)' registrar, because it modifies user assemblies (which changes their MVID and prevents Hot Reload from applying changes). Set 'Registrar=partial-static' in the project file."

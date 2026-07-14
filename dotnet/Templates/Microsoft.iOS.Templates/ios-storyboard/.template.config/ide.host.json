@@ -1,6 +1,6 @@
 {
   "$schema": "http://json.schemastore.org/ide.host",
-  "appliesTo": "IOSApplication | IOSAppExtension | IOSBinding | IOSClassLibary",
+  "appliesTo": "IOSApplication | IOSAppExtension | IOSBinding | IOSClassLibrary",
   "defaultItemExtension": "cs",
   "itemHierarchyPaths": [ "iOS" ]
 }

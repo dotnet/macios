@@ -30,7 +30,7 @@ namespace VideoSubscriberAccount {
 		}
 
 		/// <summary>Asynchronously checks whether the user has provided permission for the app to access their subscription information.</summary>
-		/// <param name="accessOptions">The options to use when checking access status.</param>
+		/// <param name="accessOptions">If not empty, may specify whether the user should be asked for access permission.</param>
 		/// <returns>A task that represents the asynchronous operation. The task result contains the current <see cref="VSAccountAccessStatus" />.</returns>
 		public Task<VSAccountAccessStatus> CheckAccessStatusAsync (VSAccountManagerAccessOptions accessOptions)
 		{

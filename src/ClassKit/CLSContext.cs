@@ -14,7 +14,6 @@ namespace ClassKit {
 
 		/// <summary>Gets or sets the topic that the content of the context covers.</summary>
 		///         <value>The topic that the content of the context covers.</value>
-		///         <remarks>To be added.</remarks>
 		public CLSContextTopic Topic {
 			get => CLSContextTopicExtensions.GetValue (WeakTopic);
 			set => WeakTopic = value.GetConstant ();

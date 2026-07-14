@@ -41,7 +41,6 @@ namespace UIKit {
 		/// <param name="documentUrl">The document URL for which to get a transition controller.</param>
 		///         <summary>Creates and returns a transition controller for the document at the specified URL.</summary>
 		///         <returns>Developers should only specify values for <paramref name="documentUrl" /> that were obtained from the document browser.</returns>
-		///         <remarks>To be added.</remarks>
 		public virtual UIDocumentBrowserTransitionController GetTransitionController (NSUrl documentUrl)
 		{
 			if (CheckSystemVersion ())

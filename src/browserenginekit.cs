@@ -1204,6 +1204,7 @@ namespace BrowserEngineKit {
 		[Export ("accessibilityLineRangeForPosition:")]
 		NSRange GetAccessibilityLineRangeForPosition (nint position);
 
+		// C# does not support extension properties, so bind these category properties as methods.
 		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
 		[Export ("browserAccessibilityKeyboardShortcuts")]
 		[return: NullAllowed]

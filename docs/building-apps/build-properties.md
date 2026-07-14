@@ -588,6 +588,18 @@ Example:
 </Target>
 ```
 
+## HotReloadCompatibleBuild
+
+Indicates that the build must not modify user (reloadable) assemblies, which is
+a requirement for Hot Reload to work. Various build steps that would otherwise
+rewrite non-trimmed assemblies (for instance to inline calls to
+`ObjCRuntime.Dlfcn` APIs into direct native references) skip reloadable
+assemblies when this property is enabled, leaving those assemblies untouched.
+
+Hot Reload is a debug-only feature, so this property defaults to `true` for
+Debug builds and `false` otherwise (so release builds keep their current
+behaviour and app size).
+
 ## IBToolPath
 
 The full path to the `ibtool` tool.

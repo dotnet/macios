@@ -141,6 +141,8 @@
 		<InvariantGlobalization Condition="'$(InvariantGlobalization)' == ''">false</InvariantGlobalization>
 		<!-- Enable HybridGlobalization by default-->
 		<HybridGlobalization Condition="'$(InvariantGlobalization)' != 'true'">true</HybridGlobalization>
+		<!-- Hot Reload is a debug-only feature, so builds must not modify user (reloadable) assemblies in Debug builds. Release builds keep their current behaviour/app size. -->
+		<HotReloadCompatibleBuild Condition="'$(HotReloadCompatibleBuild)' == ''">$(_BundlerDebug)</HotReloadCompatibleBuild>
 		<UseSizeOptimizedLinq Condition="'$(UseSizeOptimizedLinq)' == ''">true</UseSizeOptimizedLinq>
 		<UseSystemResourceKeys Condition="'$(UseSystemResourceKeys)' == '' And '$(_BundlerDebug)' != 'true'">true</UseSystemResourceKeys>
 		<UseSystemResourceKeys Condition="'$(UseSystemResourceKeys)' == '' And '$(_BundlerDebug)' == 'true'">false</UseSystemResourceKeys>
@@ -692,6 +694,7 @@
 				EnableSGenConc=$(EnableSGenConc)
 				@(_BundlerEnvironmentVariables -> 'EnvironmentVariable=Overwrite=%(Overwrite)|%(Identity)=%(Value)')
 				@(_XamarinFrameworkAssemblies -> 'FrameworkAssembly=%(Filename)')
+				HotReloadCompatibleBuild=$(HotReloadCompatibleBuild)
 				Interpreter=$(MtouchInterpreter)
 				InlineClassGetHandle=$(InlineClassGetHandle)
 				InlineDlfcnMethods=$(InlineDlfcnMethods)

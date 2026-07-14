@@ -37,6 +37,9 @@ namespace Xamarin.Linker {
 		public string IntermediateLinkDir { get; private set; } = string.Empty;
 		public bool InvariantGlobalization { get; private set; }
 		public bool HybridGlobalization { get; private set; }
+		// The value of the $(HotReloadCompatibleBuild) MSBuild property. When enabled, steps must not
+		// modify reloadable (user) assemblies (those not being trimmed, i.e. AssemblyAction != Link).
+		public bool HotReloadCompatibleBuild { get; private set; }
 		public InlineDlfcnMethodsMode InlineDlfcnMethods { get; set; }
 		public bool InlineDlfcnMethodsEnabled => InlineDlfcnMethods != InlineDlfcnMethodsMode.Disabled;
 		public InlineClassGetHandleMode InlineClassGetHandle { get; set; }
@@ -349,6 +352,10 @@ namespace Xamarin.Linker {
 				{ "FrameworkAssembly", (
 					new LoadValue ((key, value) => FrameworkAssemblies.Add (value)),
 					new SaveValue ((key, storage) => storage.AddRange (FrameworkAssemblies.OrderBy (v => v).Select (v => $"{key}={v}")))
+				)},
+				{ "HotReloadCompatibleBuild", (
+					new LoadValue ((key, value) => HotReloadCompatibleBuild = string.Equals ("true", value, StringComparison.OrdinalIgnoreCase)),
+					new SaveValue ((key, storage) => saveOptionalDefaultFalseBool (key, HotReloadCompatibleBuild, storage))
 				)},
 				{ "InlineDlfcnMethods", (
 					new LoadValue ((key, value) => {

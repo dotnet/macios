@@ -51,4 +51,42 @@ public class InlineDlfcnMethodsStepTests : BaseClass {
 			AssertHasDlfcnPInvokeCall (type.Methods.Single (v => v.Name == "GetIntPtr"));
 		});
 	}
+
+	[Test]
+	[TestCase (ApplePlatform.MacCatalyst, false)]
+	[TestCase (ApplePlatform.iOS, false)]
+	[TestCase (ApplePlatform.TVOS, false)]
+	[TestCase (ApplePlatform.MacOSX, true)]
+	public void HotReloadCompatibleBuildLeavesReloadableAssemblyUnmodified (ApplePlatform platform, bool isCoreCLR)
+	{
+		var code = @"
+		using System;
+		using CoreAnimation;
+		using Foundation;
+		using ObjCRuntime;
+
+		class MyClass : NSObject {
+			void GetIntPtr ()
+			{
+				Console.WriteLine (Dlfcn.GetIntPtr (0, ""NativeSymbol""));
+			}
+		}";
+
+		// The test assembly is a reloadable (Copy) assembly, and we're building for Hot Reload compatibility,
+		// so the assembly must be left byte-unmodified: no inlining, no generated P/Invokes or helper members.
+		var modified = AssertPrepare (platform, isCoreCLR, RegistrarMode.Dynamic, code, out var assemblyDefinition, hotReloadCompatibleBuild: true, testAssemblyTrimMode: "copy");
+		Assert.That (modified, Is.False, "The reloadable assembly must not be modified.");
+
+		var type = assemblyDefinition.MainModule.Types.Single (v => v.Name == "MyClass");
+
+		// The Dlfcn call must remain an ordinary call into the platform assembly's Dlfcn type (not inlined into a
+		// generated P/Invoke in the user assembly).
+		var getIntPtr = type.Methods.Single (v => v.Name == "GetIntPtr");
+		var call = getIntPtr.Body.Instructions.FirstOrDefault (v => v.OpCode == OpCodes.Call && v.Operand is MethodReference mr && mr.DeclaringType.Name == "Dlfcn" && mr.Name == "GetIntPtr");
+		Assert.That (call, Is.Not.Null, "Expected the original call to Dlfcn.GetIntPtr to be preserved.");
+
+		// No generated Dlfcn helper type should have been added to the user assembly.
+		var generatedDlfcn = assemblyDefinition.MainModule.GetTypes ().FirstOrDefault (v => v.Name == "Dlfcn");
+		Assert.That (generatedDlfcn, Is.Null, "No Dlfcn helper type should have been generated in the reloadable assembly.");
+	}
 }

@@ -45,6 +45,16 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 		if (!ReferencesDlfcn (assembly))
 			return false;
 
+		// When building for Hot Reload compatibility, we must not modify reloadable (user) assemblies,
+		// i.e. assemblies that aren't being trimmed (AssemblyAction != Link). Inlining rewrites call sites
+		// and adds helper methods/fields, which would break Hot Reload. Leaving the Dlfcn calls as ordinary
+		// calls into the platform assembly is correct, just not optimized into direct native references.
+		// Release builds don't set this property, so they keep inlining everywhere (even non-trimmed
+		// assemblies) for the optimization. NativeAOT is not compatible with Hot Reload, so we don't have
+		// to worry about the post-NativeAOT native symbol collection here.
+		if (Configuration.HotReloadCompatibleBuild && Annotations.GetAction (assembly) != AssemblyAction.Link)
+			return false;
+
 		return base.ModifyAssembly (assembly);
 	}
 

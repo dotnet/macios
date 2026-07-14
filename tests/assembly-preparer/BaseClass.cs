@@ -23,13 +23,13 @@ public abstract class BaseClass {
 	}
 
 	// returns true if the test assembly was modified
-	public bool AssertPrepare (ApplePlatform platform, bool isCoreCLR, RegistrarMode registrar, string code, out AssemblyDefinition assemblyDefinition)
+	public bool AssertPrepare (ApplePlatform platform, bool isCoreCLR, RegistrarMode registrar, string code, out AssemblyDefinition assemblyDefinition, bool hotReloadCompatibleBuild = false, string testAssemblyTrimMode = "link")
 	{
 		AssemblyPreparer? preparer = null;
 		var rv = AssertPrepareCode (platform, isCoreCLR, p => {
 			p.Registrar = registrar;
 			preparer = p;
-		}, code, out string outputPath);
+		}, code, out string outputPath, hotReloadCompatibleBuild, testAssemblyTrimMode);
 		var resolver = new DefaultAssemblyResolver ();
 		var dirs = preparer!.Assemblies.Select (v => Path.GetDirectoryName (v.OutputPath)).Distinct ().ToList ();
 		dirs.ForEach (v => resolver.AddSearchDirectory (v));
@@ -42,7 +42,7 @@ public abstract class BaseClass {
 	}
 
 	// returns true if the test assembly was modified
-	public bool AssertPrepareCode (ApplePlatform platform, bool isCoreCLR, Action<AssemblyPreparer>? configure, string code, out string outputPath)
+	public bool AssertPrepareCode (ApplePlatform platform, bool isCoreCLR, Action<AssemblyPreparer>? configure, string code, out string outputPath, bool hotReloadCompatibleBuild = false, string testAssemblyTrimMode = "link")
 	{
 		Configuration.IgnoreIfIgnoredPlatform (platform);
 
@@ -61,6 +61,7 @@ public abstract class BaseClass {
 		var config = $@"
 		AreAnyAssembliesTrimmed=true
 		PublishTrimmed=true
+		HotReloadCompatibleBuild={(hotReloadCompatibleBuild ? "true" : "false")}
 		IntermediateOutputPath={Path.Combine (tmpdir, "intermediate")}
 		Platform={platform.AsString ()}
 		PlatformAssembly=Microsoft.{platform.AsString ()}.dll
@@ -82,7 +83,11 @@ public abstract class BaseClass {
 
 		var assemblies = Configuration.GetImplementationAssemblies (platform, isCoreCLR);
 		assemblies.Add (Path.Combine (assemblyDir, "Test.dll"));
-		var infos = assemblies.Select (v => new AssemblyPreparerInfo (v, Path.Combine (assemblyDir, "out", Path.GetFileName (v)), true, "link")).ToArray ();
+		var infos = assemblies.Select (v => {
+			// The test assembly can be built as a reloadable (Copy) assembly to exercise the Hot Reload code paths.
+			var trimMode = Path.GetFileNameWithoutExtension (v) == "Test" ? testAssemblyTrimMode : "link";
+			return new AssemblyPreparerInfo (v, Path.Combine (assemblyDir, "out", Path.GetFileName (v)), true, trimMode);
+		}).ToArray ();
 		var logger = new TestLogger () { Platform = platform };
 		var preparer = new AssemblyPreparer (logger, infos, configpath);
 		if (configure is not null)

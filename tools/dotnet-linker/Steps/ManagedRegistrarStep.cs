@@ -86,6 +86,36 @@ namespace Xamarin.Linker {
 
 		Dictionary<string, string> unmanagedCallersOnlyMap = new ();
 
+		// Set to true whenever we modify the current (user) assembly, so we know whether we need to
+		// save it. When HotReloadCompatibleBuild is enabled we relocate the registrar trampolines
+		// into the companion assembly, leaving the user assembly byte-for-byte unmodified, and in
+		// that case we must not save (and thus re-serialize) it.
+		bool modifiedCurrentAssembly;
+
+		// Whether the registrar trampolines for the given method should be relocated into the
+		// per-assembly companion assembly (_<Asm>.TypeMap.dll) instead of being emitted into the
+		// user assembly. This is required for Hot Reload (user assemblies must stay unmodified).
+		// Only non-generic types are relocated for now; generic-type proxies are a follow-up.
+		bool ShouldRelocateTrampolines (MethodDefinition method)
+		{
+			return App.HotReloadCompatibleBuild
+				&& App.Registrar == RegistrarMode.TrimmableStatic
+				&& !method.DeclaringType.HasGenericParameters;
+		}
+
+		// Finds the companion assembly (_<Asm>.TypeMap) for the given user assembly among the loaded
+		// assemblies. Used in the post-processing pass, where the companion was produced by an earlier
+		// pass (and the RegistrarCompanionAssemblies dictionary is empty because it's a fresh process).
+		AssemblyDefinition? FindRelocatedCompanionAssembly (AssemblyDefinition userAssembly)
+		{
+			var companionName = "_" + userAssembly.Name.Name + ".TypeMap";
+			foreach (var assembly in Configuration.Assemblies) {
+				if (assembly.Name.Name == companionName)
+					return assembly;
+			}
+			return null;
+		}
+
 		void AddException (Exception exception)
 		{
 			if (exceptions is null)
@@ -177,6 +207,7 @@ namespace Xamarin.Linker {
 
 			abr.SetCurrentAssembly (assembly);
 
+			modifiedCurrentAssembly = false;
 			var current_trampoline_lists = new AssemblyTrampolineInfo ();
 			Configuration.AssemblyTrampolineInfos [assembly] = current_trampoline_lists;
 			var proxyInterfaces = new List<TypeDefinition> ();
@@ -190,7 +221,11 @@ namespace Xamarin.Linker {
 
 			// Make sure the linker saves any changes in the assembly.
 			DerivedLinkContext.Annotations.SetCustomAnnotation ("ManagedRegistrarStep", assembly, current_trampoline_lists);
-			if (modified)
+			// When HotReloadCompatibleBuild is enabled we track modifications precisely (modifiedCurrentAssembly)
+			// so we can leave the user assembly unmodified when everything was relocated into the companion.
+			// Otherwise we keep the historical behavior of saving whenever any type was processed.
+			var shouldSave = App.HotReloadCompatibleBuild ? modifiedCurrentAssembly : modified;
+			if (shouldSave)
 				abr.SaveCurrentAssembly ();
 
 			// TODO: Move this to a separate "MakeEverythingWorkWithNativeAOTStep" linker step
@@ -223,6 +258,7 @@ namespace Xamarin.Linker {
 						abr.ImplementConstructNSObjectFactoryMethod (DerivedLinkContext, type, ctor);
 						// Implement INativeObject._Xamarin_ConstructINativeObject
 						abr.ImplementConstructINativeObjectFactoryMethod (DerivedLinkContext, type, ctor);
+						modifiedCurrentAssembly = true;
 					}
 				} else if (type.IsNativeObject ()) {
 					var ctorRef = AppBundleRewriter.FindINativeObjectConstructor (type);
@@ -231,6 +267,7 @@ namespace Xamarin.Linker {
 
 						// Implement INativeObject._Xamarin_ConstructINativeObject
 						abr.ImplementConstructINativeObjectFactoryMethod (DerivedLinkContext, type, ctor);
+						modifiedCurrentAssembly = true;
 					}
 				}
 			}
@@ -343,10 +380,23 @@ namespace Xamarin.Linker {
 				return;
 			}
 
-			var callbackType = method.DeclaringType.NestedTypes.SingleOrDefault (v => v.Name == "__Registrar_Callbacks__");
-			if (callbackType is null) {
-				AddException (ErrorHelper.CreateWarning (App, 99, method, $"Couldn't find the __Registrar_Callbacks__ nested type for method {method.FullName}."));
-				return;
+			TypeDefinition? callbackType;
+			if (ShouldRelocateTrampolines (method)) {
+				// The trampolines were relocated into the companion assembly (_<Asm>.TypeMap.dll),
+				// which was produced by the earlier PrepareAssemblies pass and is loaded again here.
+				// Find the top-level '__Registrar_Callbacks__' type there.
+				var companionAssembly = FindRelocatedCompanionAssembly (method.Module.Assembly);
+				callbackType = companionAssembly?.MainModule.Types.SingleOrDefault (v => v.Name == "__Registrar_Callbacks__" && v.DeclaringType is null);
+				if (callbackType is null) {
+					AddException (ErrorHelper.CreateWarning (App, 99, method, $"Couldn't find the __Registrar_Callbacks__ type in the companion assembly for method {method.FullName}."));
+					return;
+				}
+			} else {
+				callbackType = method.DeclaringType.NestedTypes.SingleOrDefault (v => v.Name == "__Registrar_Callbacks__");
+				if (callbackType is null) {
+					AddException (ErrorHelper.CreateWarning (App, 99, method, $"Couldn't find the __Registrar_Callbacks__ nested type for method {method.FullName}."));
+					return;
+				}
 			}
 
 			var candidates = callbackType.Methods.Where (v => v.Name == ucoName).ToArray ();
@@ -377,16 +427,45 @@ namespace Xamarin.Linker {
 			}
 
 			var baseMethod = StaticRegistrar.GetBaseMethodInTypeHierarchy (method);
-			var placeholderType = abr.System_IntPtr;
 			var name = $"callback_{counter++}_{Sanitize (method.DeclaringType.FullName)}_{Sanitize (method.Name)}";
 
 			unmanagedCallersOnlyMap.Add (method.FullName, name);
 
-			var callbackType = method.DeclaringType.NestedTypes.SingleOrDefault (v => v.Name == "__Registrar_Callbacks__");
-			if (callbackType is null) {
-				callbackType = new TypeDefinition (string.Empty, "__Registrar_Callbacks__", TypeAttributes.NestedPrivate | TypeAttributes.Sealed | TypeAttributes.Class);
-				callbackType.BaseType = abr.System_Object;
-				method.DeclaringType.NestedTypes.Add (callbackType);
+			var relocate = ShouldRelocateTrampolines (method);
+			RegistrarCompanionAssembly? companion = null;
+			if (relocate) {
+				// Switch the AppBundleRewriter to the companion assembly so that everything we
+				// emit below (the trampoline itself, and all the references it uses) ends up in
+				// the companion assembly instead of the user assembly.
+				abr.ClearCurrentAssembly ();
+				companion = RegistrarCompanionAssembly.GetOrCreate (Configuration, method.Module.Assembly);
+				abr.SetCurrentAssembly (companion.Assembly);
+			}
+
+			var placeholderType = abr.System_IntPtr;
+
+			TypeDefinition callbackType;
+			if (companion is not null) {
+				// A single top-level '__Registrar_Callbacks__' type in the companion holds all the
+				// trampolines for the user assembly. The callback names are unique so there are no
+				// collisions between the trampolines of different user types.
+				if (companion.CallbacksType is null) {
+					var companionCallbacksType = new TypeDefinition (string.Empty, "__Registrar_Callbacks__", TypeAttributes.Public | TypeAttributes.Sealed | TypeAttributes.Class);
+					companionCallbacksType.BaseType = abr.System_Object;
+					companion.Assembly.MainModule.Types.Add (companionCallbacksType);
+					companion.CallbacksType = companionCallbacksType;
+					callbackType = companionCallbacksType;
+				} else {
+					callbackType = companion.CallbacksType;
+				}
+			} else {
+				var existingCallbackType = method.DeclaringType.NestedTypes.SingleOrDefault (v => v.Name == "__Registrar_Callbacks__");
+				if (existingCallbackType is null) {
+					existingCallbackType = new TypeDefinition (string.Empty, "__Registrar_Callbacks__", TypeAttributes.NestedPrivate | TypeAttributes.Sealed | TypeAttributes.Class);
+					existingCallbackType.BaseType = abr.System_Object;
+					method.DeclaringType.NestedTypes.Add (existingCallbackType);
+				}
+				callbackType = existingCallbackType;
 			}
 
 			var callback = callbackType.AddMethod (name, MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.HideBySig, placeholderType);
@@ -394,7 +473,11 @@ namespace Xamarin.Linker {
 			infos.Add (new TrampolineInfo (callback, method, name));
 
 			// If the target method is marked, then we must mark the trampoline as well.
-			method.CustomAttributes.Add (abr.CreateDynamicDependencyAttribute (callback.Name, callbackType));
+			// When relocating we must not modify the user assembly, so we skip adding the
+			// [DynamicDependency] attribute to the user method. The trampoline is instead kept alive
+			// by the reference to it (via ldftn) from the companion's LookupUnmanagedFunction method.
+			if (!relocate)
+				method.CustomAttributes.Add (abr.CreateDynamicDependencyAttribute (callback.Name, callbackType));
 
 			callback.AddParameter ("pobj", abr.System_IntPtr);
 
@@ -482,6 +565,58 @@ namespace Xamarin.Linker {
 			} else {
 				EmitCallToExportedMethod (method, callback);
 			}
+
+			if (relocate) {
+				// Everything we emitted above may reference the user assembly directly (e.g. via
+				// method.Module.ImportReference or by using the user method/type as an operand).
+				// Re-import all those references into the companion module so the trampoline is a
+				// valid member of the companion assembly, then restore the user assembly as the
+				// current assembly (which is what the rest of the processing expects).
+				ImportCallbackReferences (callback);
+				abr.ClearCurrentAssembly ();
+				abr.SetCurrentAssembly (method.Module.Assembly);
+			}
+		}
+
+		// Re-imports every type/method/field reference used by the trampoline (its signature, local
+		// variables, instruction operands and exception handlers) into the module the trampoline
+		// belongs to. This is needed when we relocate a trampoline into the companion assembly,
+		// because the emission logic imports some references into the user module.
+		void ImportCallbackReferences (MethodDefinition callback)
+		{
+			var module = callback.Module;
+
+			callback.ReturnType = module.ImportReference (callback.ReturnType);
+
+			foreach (var parameter in callback.Parameters)
+				parameter.ParameterType = module.ImportReference (parameter.ParameterType);
+
+			if (!callback.HasBody)
+				return;
+
+			var body = callback.Body;
+
+			foreach (var variable in body.Variables)
+				variable.VariableType = module.ImportReference (variable.VariableType);
+
+			foreach (var instruction in body.Instructions) {
+				switch (instruction.Operand) {
+				case MethodReference methodReference:
+					instruction.Operand = module.ImportReference (methodReference);
+					break;
+				case TypeReference typeReference:
+					instruction.Operand = module.ImportReference (typeReference);
+					break;
+				case FieldReference fieldReference:
+					instruction.Operand = module.ImportReference (fieldReference);
+					break;
+				}
+			}
+
+			foreach (var handler in body.ExceptionHandlers) {
+				if (handler.CatchType is not null)
+					handler.CatchType = module.ImportReference (handler.CatchType);
+			}
 		}
 
 		public void EmitCallToProxyMethod (MethodDefinition method, MethodDefinition callback, MethodDefinition proxyInterfaceMethod)
@@ -514,6 +649,8 @@ namespace Xamarin.Linker {
 			ParameterDefinition? callSuperParameter = null;
 			VariableDefinition? returnVariable = null;
 			MethodReference? ctor = null;
+			VariableDefinition? relocatedCtorObjVar = null;
+			var relocate = ShouldRelocateTrampolines (method);
 			var leaveTryInstructions = new List<Instruction> ();
 			var isVoid = method.ReturnType.Is ("System", "Void");
 
@@ -580,6 +717,50 @@ namespace Xamarin.Linker {
 					il.Emit (OpCodes.Throw);
 					// We're throwing an exception, so there's no need for any more code.
 					skipEverythingAfter = il.Body.Instructions.Last ();
+				} else if (relocate) {
+					// We can't add a cloned constructor to the user type (that would modify the user
+					// assembly), so instead we emit the equivalent logic inline into the trampoline:
+					// allocate an uninitialized object, set its handle and flags, and then call the
+					// real constructor. Here's an example of the code we generate:
+					//
+					//     var obj = (DeclaringType) RuntimeHelpers.GetUninitializedObject (typeof (DeclaringType));
+					//     obj.handle = (NativeHandle) p0;
+					//     obj.flags = 2; // Flags.NativeRef == 2
+					//     obj..ctor (p0, p1, ...); // the arguments are pushed later, below the object
+					//
+					// The object is pushed onto the stack here so that it ends up underneath the
+					// constructor arguments that are emitted afterwards (so that the 'call' to the real
+					// constructor further down finds the object followed by the arguments on the stack).
+					var declType = abr.CurrentAssembly.MainModule.ImportReference (method.DeclaringType);
+					relocatedCtorObjVar = body.AddVariable (declType);
+
+					// var obj = (DeclaringType) RuntimeHelpers.GetUninitializedObject (typeof (DeclaringType));
+					il.Emit (OpCodes.Ldtoken, declType);
+					var firstFactoryInstruction = il.Body.Instructions.Last ();
+					il.Emit (OpCodes.Call, abr.Type_GetTypeFromHandle);
+					il.Emit (OpCodes.Call, abr.RuntimeHelpers_GetUninitializedObject);
+					il.Emit (OpCodes.Castclass, declType);
+					il.Emit (OpCodes.Stloc, relocatedCtorObjVar);
+
+					// obj.handle = (NativeHandle) p0;
+					il.Emit (OpCodes.Ldloc, relocatedCtorObjVar);
+					il.Emit (OpCodes.Ldarg_0);
+					il.Emit (OpCodes.Call, abr.NativeObject_op_Implicit_NativeHandle);
+					il.Emit (OpCodes.Call, abr.Foundation_NSObject_HandleSetterMethod);
+
+					// obj.flags = 2; // Flags.NativeRef == 2
+					il.Emit (OpCodes.Ldloc, relocatedCtorObjVar);
+					il.Emit (OpCodes.Ldc_I4_2);
+					il.Emit (OpCodes.Call, abr.Foundation_NSObject_FlagsSetterMethod);
+
+					// Push the object so it ends up underneath the constructor arguments emitted next.
+					il.Emit (OpCodes.Ldloc, relocatedCtorObjVar);
+
+					postLeaveBranch.Operand = firstFactoryInstruction;
+
+					// The companion needs access to the (possibly non-public) handle/flags setters on NSObject.
+					var companion = Configuration.RegistrarCompanionAssemblies [method.Module.Assembly];
+					companion.AccessesAssemblies.Add (abr.PlatformAssembly);
 				} else {
 					// Whenever there's an NSObject constructor that we call from a registrar callback, we need to create
 					// a separate constructor that will first set the `handle` and `flags` values of the NSObject before
@@ -651,7 +832,14 @@ namespace Xamarin.Linker {
 
 			callback.AddParameter ("exception_gchandle", new PointerType (abr.System_IntPtr));
 
-			if (ctor is not null) {
+			if (relocatedCtorObjVar is not null) {
+				// The object was allocated earlier and pushed onto the stack (underneath the
+				// constructor arguments), so we can call the real constructor directly on it, and
+				// then push the object again for the return-value conversion (which converts it to
+				// the native handle).
+				il.Emit (OpCodes.Call, method);
+				il.Emit (OpCodes.Ldloc, relocatedCtorObjVar);
+			} else if (ctor is not null) {
 				// in addition to the params of the original ctor we pass also the native handle and a null
 				// value for the dummy (de-duplication) parameter
 				il.Emit (OpCodes.Ldarg_0);

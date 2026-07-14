@@ -38,7 +38,7 @@ namespace Xamarin.MacDev.Tasks {
 		#region Outputs
 
 		[Output]
-		public string CopiedDevicePath { get; set; } = "";
+		public string? CopiedDevicePath { get; set; }
 
 		#endregion
 

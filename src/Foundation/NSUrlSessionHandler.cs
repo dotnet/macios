@@ -1275,12 +1275,13 @@ namespace Foundation {
 				// rather than a specific scheme like Basic, and the credentials come from the proxy configuration
 				// (the proxy's own credentials or the DefaultProxyCredentials).
 				if (challenge.ProtectionSpace.IsProxy) {
-					var proxyCredentials = sessionHandler.Proxy?.Credentials ?? sessionHandler.DefaultProxyCredentials;
+					var proxy = sessionHandler.Proxy;
+					var proxyCredentials = proxy?.Credentials ?? sessionHandler.DefaultProxyCredentials;
 					// Only provide the credentials for the first challenge; if they were rejected we let the request
 					// fail instead of retrying the same (bad) credentials indefinitely.
 					if (proxyCredentials is not null && challenge.PreviousFailureCount == 0) {
 						var proxyUri = GetProxyLookupUri (challenge.ProtectionSpace);
-						var proxyCredential = proxyCredentials.GetCredential (proxyUri, "Basic");
+						var proxyCredential = proxyCredentials.GetCredential (proxyUri, "basic");
 						if (proxyCredential is not null) {
 							var proxyNSCredential = new NSUrlCredential (proxyCredential.UserName, proxyCredential.Password, NSUrlCredentialPersistence.ForSession);
 							completionHandler (NSUrlSessionAuthChallengeDisposition.UseCredential, proxyNSCredential);

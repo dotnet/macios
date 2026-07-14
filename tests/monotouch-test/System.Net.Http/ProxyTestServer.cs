@@ -78,8 +78,10 @@ namespace MonoTests.System.Net.Http {
 				using (var stream = client.GetStream ()) {
 					await HandleClient (stream).ConfigureAwait (false);
 				}
-			} catch {
-				// This is a test proxy, so just swallow any errors.
+			} catch (Exception e) {
+				// This is a test proxy, so don't let errors bring down the process, but log them so
+				// test failures (which often manifest as timeouts) are actionable.
+				Console.WriteLine ($"ProxyTestServer: error handling client: {e}");
 			}
 		}
 
@@ -97,9 +99,11 @@ namespace MonoTests.System.Net.Http {
 			var target = parts [1];
 
 			var headers = new List<KeyValuePair<string, string>> ();
-			string? line;
-			while (!string.IsNullOrEmpty (line = await ReadLineAsync (stream).ConfigureAwait (false))) {
-				var idx = line!.IndexOf (':');
+			while (true) {
+				var line = await ReadLineAsync (stream).ConfigureAwait (false);
+				if (string.IsNullOrEmpty (line))
+					break;
+				var idx = line.IndexOf (':');
 				if (idx > 0)
 					headers.Add (new KeyValuePair<string, string> (line.Substring (0, idx).Trim (), line.Substring (idx + 1).Trim ()));
 			}
@@ -271,7 +275,8 @@ namespace MonoTests.System.Net.Http {
 				var user = credentials.Substring (0, colonIdx);
 				var password = credentials.Substring (colonIdx + 1);
 				return user == requiredUser && password == requiredPassword;
-			} catch {
+			} catch (FormatException) {
+				// Invalid base64.
 				return false;
 			}
 		}
@@ -342,8 +347,10 @@ namespace MonoTests.System.Net.Http {
 		{
 			try {
 				listener.Stop ();
-			} catch {
-				// ignore
+			} catch (SocketException) {
+				// ignore errors during cleanup
+			} catch (ObjectDisposedException) {
+				// already disposed
 			}
 		}
 	}

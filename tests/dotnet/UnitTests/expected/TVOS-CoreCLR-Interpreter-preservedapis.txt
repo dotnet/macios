@@ -1998,6 +1998,7 @@ System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeS
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=482
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=482 <PrivateImplementationDetails>::15C0F30B8F562907D875D51E89D58456B9AC8FF3FCEEBA3707CF8ACB719233CA
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=512
+System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=512 <PrivateImplementationDetails>::64BC3C41810FD7C78E4FD2D521B276246731F094785CFA4EBB2AA8E05985A11F
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=512 <PrivateImplementationDetails>::915DB32CFB126970AAEB23CB96C97DBC2F59FAF24BA23EBB145D0BB6F09D0638
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=52_Align=4
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=52_Align=4 <PrivateImplementationDetails>::5857EE4CE98BFABBD62B385C1098507DD0052FF3951043AAD6A1DABD495F18AA4
@@ -2158,24 +2159,24 @@ System.Private.CoreLib.dll:Interop/ErrorInfo.get_RawErrno()
 System.Private.CoreLib.dll:Interop/ErrorInfo.GetErrorMessage()
 System.Private.CoreLib.dll:Interop/ErrorInfo.ToString()
 System.Private.CoreLib.dll:Interop/Globalization
-System.Private.CoreLib.dll:Interop/Globalization.<ChangeCaseInvariantNative>g____PInvoke|15_0(System.Char*, System.Int32, System.Char*, System.Int32, System.Int32)
-System.Private.CoreLib.dll:Interop/Globalization.<ChangeCaseNative>g____PInvoke|14_0(System.UInt16*, System.Int32, System.Char*, System.Int32, System.Char*, System.Int32, System.Int32)
-System.Private.CoreLib.dll:Interop/Globalization.<CompareStringNative>g____PInvoke|27_0(System.UInt16*, System.Int32, System.Char*, System.Int32, System.Char*, System.Int32, System.Globalization.CompareOptions)
-System.Private.CoreLib.dll:Interop/Globalization.<EndsWithNative>g____PInvoke|28_0(System.UInt16*, System.Int32, System.Char*, System.Int32, System.Char*, System.Int32, System.Globalization.CompareOptions)
+System.Private.CoreLib.dll:Interop/Globalization.<ChangeCaseInvariantNative>g____PInvoke|16_0(System.Char*, System.Int32, System.Char*, System.Int32, System.Int32)
+System.Private.CoreLib.dll:Interop/Globalization.<ChangeCaseNative>g____PInvoke|15_0(System.UInt16*, System.Int32, System.Char*, System.Int32, System.Char*, System.Int32, System.Int32)
+System.Private.CoreLib.dll:Interop/Globalization.<CompareStringNative>g____PInvoke|28_0(System.UInt16*, System.Int32, System.Char*, System.Int32, System.Char*, System.Int32, System.Globalization.CompareOptions)
+System.Private.CoreLib.dll:Interop/Globalization.<EndsWithNative>g____PInvoke|29_0(System.UInt16*, System.Int32, System.Char*, System.Int32, System.Char*, System.Int32, System.Globalization.CompareOptions)
 System.Private.CoreLib.dll:Interop/Globalization.<GetCalendarInfoNative>g____PInvoke|7_0(System.Byte*, System.Globalization.CalendarId, System.Globalization.CalendarDataType)
 System.Private.CoreLib.dll:Interop/Globalization.<GetCalendarsNative>g____PInvoke|6_0(System.Byte*, System.Globalization.CalendarId*, System.Int32)
-System.Private.CoreLib.dll:Interop/Globalization.<GetDefaultLocaleNameNative>g____PInvoke|49_0()
+System.Private.CoreLib.dll:Interop/Globalization.<GetDefaultLocaleNameNative>g____PInvoke|50_0()
 System.Private.CoreLib.dll:Interop/Globalization.<GetJapaneseEraStartDateNative>g____PInvoke|9_0(System.Int32, System.Int32*, System.Int32*, System.Int32*)
-System.Private.CoreLib.dll:Interop/Globalization.<GetLocaleInfoIntNative>g____PInvoke|51_0(System.Byte*, System.UInt32)
-System.Private.CoreLib.dll:Interop/Globalization.<GetLocaleInfoPrimaryGroupingSizeNative>g____PInvoke|52_0(System.Byte*, System.UInt32)
-System.Private.CoreLib.dll:Interop/Globalization.<GetLocaleInfoSecondaryGroupingSizeNative>g____PInvoke|53_0(System.Byte*, System.UInt32)
-System.Private.CoreLib.dll:Interop/Globalization.<GetLocaleInfoStringNative>g____PInvoke|50_0(System.Byte*, System.UInt32, System.Byte*)
-System.Private.CoreLib.dll:Interop/Globalization.<GetLocaleNameNative>g____PInvoke|54_0(System.Byte*)
-System.Private.CoreLib.dll:Interop/Globalization.<GetLocaleTimeFormatNative>g____PInvoke|56_0(System.Byte*, System.Int32)
-System.Private.CoreLib.dll:Interop/Globalization.<GetTimeZoneDisplayNameNative>g____PInvoke|67_0(System.UInt16*, System.Int32, System.UInt16*, System.Int32, Interop/Globalization/TimeZoneDisplayNameType, System.Char*, System.Int32)
-System.Private.CoreLib.dll:Interop/Globalization.<IndexOfNative>g____PInvoke|29_0(System.UInt16*, System.Int32, System.Char*, System.Int32, System.Char*, System.Int32, System.Globalization.CompareOptions, System.Int32)
-System.Private.CoreLib.dll:Interop/Globalization.<IsPredefinedLocaleNative>g____PInvoke|57_0(System.Byte*)
-System.Private.CoreLib.dll:Interop/Globalization.<StartsWithNative>g____PInvoke|30_0(System.UInt16*, System.Int32, System.Char*, System.Int32, System.Char*, System.Int32, System.Globalization.CompareOptions)
+System.Private.CoreLib.dll:Interop/Globalization.<GetLocaleInfoIntNative>g____PInvoke|52_0(System.Byte*, System.UInt32)
+System.Private.CoreLib.dll:Interop/Globalization.<GetLocaleInfoPrimaryGroupingSizeNative>g____PInvoke|53_0(System.Byte*, System.UInt32)
+System.Private.CoreLib.dll:Interop/Globalization.<GetLocaleInfoSecondaryGroupingSizeNative>g____PInvoke|54_0(System.Byte*, System.UInt32)
+System.Private.CoreLib.dll:Interop/Globalization.<GetLocaleInfoStringNative>g____PInvoke|51_0(System.Byte*, System.UInt32, System.Byte*)
+System.Private.CoreLib.dll:Interop/Globalization.<GetLocaleNameNative>g____PInvoke|55_0(System.Byte*)
+System.Private.CoreLib.dll:Interop/Globalization.<GetLocaleTimeFormatNative>g____PInvoke|57_0(System.Byte*, System.Int32)
+System.Private.CoreLib.dll:Interop/Globalization.<GetTimeZoneDisplayNameNative>g____PInvoke|68_0(System.UInt16*, System.Int32, System.UInt16*, System.Int32, Interop/Globalization/TimeZoneDisplayNameType, System.Char*, System.Int32)
+System.Private.CoreLib.dll:Interop/Globalization.<IndexOfNative>g____PInvoke|30_0(System.UInt16*, System.Int32, System.Char*, System.Int32, System.Char*, System.Int32, System.Globalization.CompareOptions, System.Int32)
+System.Private.CoreLib.dll:Interop/Globalization.<IsPredefinedLocaleNative>g____PInvoke|58_0(System.Byte*)
+System.Private.CoreLib.dll:Interop/Globalization.<StartsWithNative>g____PInvoke|31_0(System.UInt16*, System.Int32, System.Char*, System.Int32, System.Char*, System.Int32, System.Globalization.CompareOptions)
 System.Private.CoreLib.dll:Interop/Globalization.ChangeCaseInvariantNative(System.Char*, System.Int32, System.Char*, System.Int32, System.Boolean)
 System.Private.CoreLib.dll:Interop/Globalization.ChangeCaseNative(System.String, System.Int32, System.Char*, System.Int32, System.Char*, System.Int32, System.Boolean)
 System.Private.CoreLib.dll:Interop/Globalization.CompareStringNative(System.String, System.Int32, System.Char*, System.Int32, System.Char*, System.Int32, System.Globalization.CompareOptions)
@@ -2506,7 +2507,9 @@ System.Private.CoreLib.dll:System.Action`1.Invoke(T)
 System.Private.CoreLib.dll:System.Action`1<Microsoft.Win32.SafeHandles.SafeFileHandle/ThreadPoolValueTaskSource> Microsoft.Win32.SafeHandles.SafeFileHandle/ThreadPoolValueTaskSource/<>c::<>9__18_0
 System.Private.CoreLib.dll:System.Action`1<System.Action> System.Threading.Tasks.AwaitTaskContinuation::s_invokeAction
 System.Private.CoreLib.dll:System.Action`1<System.Collections.Generic.KeyValuePair`2<System.Threading.SendOrPostCallback,System.Object>> System.Threading.SynchronizationContext/<>c::<>9__8_0
+System.Private.CoreLib.dll:System.Action`1<System.Object> System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncYielder/<>c::<>9__2_1
 System.Private.CoreLib.dll:System.Action`1<System.Object> System.Runtime.CompilerServices.ValueTaskAwaiter::s_invokeActionDelegate
+System.Private.CoreLib.dll:System.Action`1<System.Object> System.Runtime.CompilerServices.YieldAwaitable/YieldAwaiter/<>c::<>9__5_1
 System.Private.CoreLib.dll:System.Action`1<System.Object> System.Threading.ManualResetEventSlim::s_cancellationTokenCallback
 System.Private.CoreLib.dll:System.Action`1<System.Object> System.Threading.SemaphoreSlim::s_cancellationTokenCanceledEventHandler
 System.Private.CoreLib.dll:System.Action`1<System.Object> System.Threading.Tasks.Sources.ManualResetValueTaskSourceCore`1::_continuation
@@ -5398,6 +5401,7 @@ System.Private.CoreLib.dll:System.Delegate.GetMethodImpl()
 System.Private.CoreLib.dll:System.Delegate.GetMulticastInvoke()
 System.Private.CoreLib.dll:System.Delegate.GetMulticastInvoke(System.Runtime.CompilerServices.MethodTable*)
 System.Private.CoreLib.dll:System.Delegate.GetMulticastInvokeSlow(System.Runtime.CompilerServices.MethodTable*)
+System.Private.CoreLib.dll:System.Delegate.GetTargetForSingleCastInstanceDelegate()
 System.Private.CoreLib.dll:System.Delegate.InitializeVirtualCallStub(System.IntPtr)
 System.Private.CoreLib.dll:System.Delegate.InitializeVirtualCallStub(System.Runtime.CompilerServices.ObjectHandleOnStack, System.IntPtr)
 System.Private.CoreLib.dll:System.Delegate.InternalAlloc(System.RuntimeType)
@@ -7255,6 +7259,7 @@ System.Private.CoreLib.dll:System.Globalization.NumberStyles System.Globalizatio
 System.Private.CoreLib.dll:System.Globalization.NumberStyles System.Globalization.NumberStyles::AllowLeadingWhite
 System.Private.CoreLib.dll:System.Globalization.NumberStyles System.Globalization.NumberStyles::AllowParentheses
 System.Private.CoreLib.dll:System.Globalization.NumberStyles System.Globalization.NumberStyles::AllowThousands
+System.Private.CoreLib.dll:System.Globalization.NumberStyles System.Globalization.NumberStyles::AllowTrailingInvalidCharacters
 System.Private.CoreLib.dll:System.Globalization.NumberStyles System.Globalization.NumberStyles::AllowTrailingSign
 System.Private.CoreLib.dll:System.Globalization.NumberStyles System.Globalization.NumberStyles::AllowTrailingWhite
 System.Private.CoreLib.dll:System.Globalization.NumberStyles System.Globalization.NumberStyles::Any
@@ -7292,6 +7297,7 @@ System.Private.CoreLib.dll:System.Globalization.OrdinalCasing.get_NoCasingPage()
 System.Private.CoreLib.dll:System.Globalization.OrdinalCasing.get_s_casingTableInit()
 System.Private.CoreLib.dll:System.Globalization.OrdinalCasing.IndexOf(System.ReadOnlySpan`1<System.Char>, System.ReadOnlySpan`1<System.Char>)
 System.Private.CoreLib.dll:System.Globalization.OrdinalCasing.InitCasingTable()
+System.Private.CoreLib.dll:System.Globalization.OrdinalCasing.InitLowerCasingTable()
 System.Private.CoreLib.dll:System.Globalization.OrdinalCasing.InitOrdinalCasingPage(System.Int32)
 System.Private.CoreLib.dll:System.Globalization.OrdinalCasing.ToUpper(System.Char)
 System.Private.CoreLib.dll:System.Globalization.OrdinalCasing.ToUpperOrdinal(System.ReadOnlySpan`1<System.Char>, System.Span`1<System.Char>)
@@ -10159,8 +10165,7 @@ System.Private.CoreLib.dll:System.Memory`1.Slice(System.Int32)
 System.Private.CoreLib.dll:System.Memory`1.ToString()
 System.Private.CoreLib.dll:System.Memory`1<System.Byte> System.IO.Strategies.BufferedFileStreamStrategy/<ReadAsyncSlowPath>d__37::buffer
 System.Private.CoreLib.dll:System.MemoryExtensions
-System.Private.CoreLib.dll:System.MemoryExtensions.<Trim>g__TrimFallback|292_0(System.ReadOnlySpan`1<System.Char>)
-System.Private.CoreLib.dll:System.MemoryExtensions.<TrimUtf8>g__TrimFallback|306_0(System.ReadOnlySpan`1<System.Byte>)
+System.Private.CoreLib.dll:System.MemoryExtensions.<Trim>g__TrimFallback|294_0(System.ReadOnlySpan`1<System.Char>)
 System.Private.CoreLib.dll:System.MemoryExtensions.AsMemory`1(T[], System.Int32, System.Int32)
 System.Private.CoreLib.dll:System.MemoryExtensions.AsSpan(System.String, System.Int32, System.Int32)
 System.Private.CoreLib.dll:System.MemoryExtensions.AsSpan(System.String, System.Int32)
@@ -10214,7 +10219,7 @@ System.Private.CoreLib.dll:System.MemoryExtensions.Trim(System.ReadOnlySpan`1<Sy
 System.Private.CoreLib.dll:System.MemoryExtensions.TrimEnd(System.ReadOnlySpan`1<System.Char>, System.Char)
 System.Private.CoreLib.dll:System.MemoryExtensions.TrimSplitEntry(System.ReadOnlySpan`1<System.Char>, System.Int32, System.Int32)
 System.Private.CoreLib.dll:System.MemoryExtensions.TrimStart(System.ReadOnlySpan`1<System.Char>)
-System.Private.CoreLib.dll:System.MemoryExtensions.TrimUtf8(System.ReadOnlySpan`1<System.Byte>)
+System.Private.CoreLib.dll:System.MemoryExtensions.TrimStartUtf8(System.ReadOnlySpan`1<System.Byte>)
 System.Private.CoreLib.dll:System.MemoryExtensions/IMinMaxCalc`1
 System.Private.CoreLib.dll:System.MemoryExtensions/IMinMaxCalc`1.Compare(System.Runtime.Intrinsics.Vector128`1<T>, System.Runtime.Intrinsics.Vector128`1<T>)
 System.Private.CoreLib.dll:System.MemoryExtensions/IMinMaxCalc`1.Compare(T, T)
@@ -10367,7 +10372,7 @@ System.Private.CoreLib.dll:System.NullReferenceException..ctor(System.String, Sy
 System.Private.CoreLib.dll:System.NullReferenceException..ctor(System.String)
 System.Private.CoreLib.dll:System.Number
 System.Private.CoreLib.dll:System.Number..cctor()
-System.Private.CoreLib.dll:System.Number.<AppendUnknownChar>g__AppendNonAsciiBytes|173_0`1(System.Collections.Generic.ValueListBuilder`1<TChar>&, System.Char)
+System.Private.CoreLib.dll:System.Number.<AppendUnknownChar>g__AppendNonAsciiBytes|174_0`1(System.Collections.Generic.ValueListBuilder`1<TChar>&, System.Char)
 System.Private.CoreLib.dll:System.Number.<FormatInt128>g__FormatInt128Slow|42_0(System.Int128, System.String, System.IFormatProvider)
 System.Private.CoreLib.dll:System.Number.<FormatInt32>g__FormatInt32Slow|34_0(System.Int32, System.Int32, System.String, System.IFormatProvider)
 System.Private.CoreLib.dll:System.Number.<FormatInt64>g__FormatInt64Slow|38_0(System.Int64, System.String, System.IFormatProvider)
@@ -10375,7 +10380,7 @@ System.Private.CoreLib.dll:System.Number.<FormatUInt128>g__FormatUInt128Slow|44_
 System.Private.CoreLib.dll:System.Number.<FormatUInt32>g__FormatUInt32Slow|36_0(System.UInt32, System.String, System.IFormatProvider)
 System.Private.CoreLib.dll:System.Number.<FormatUInt64>g__FormatUInt64Slow|40_0(System.UInt64, System.String, System.IFormatProvider)
 System.Private.CoreLib.dll:System.Number.<GetFloatingPointMaxDigitsAndPrecision>g__Slow|27_0(System.Char, System.Int32&, System.Globalization.NumberFormatInfo, out System.Boolean&)
-System.Private.CoreLib.dll:System.Number.<RoundNumber>g__ShouldRoundUp|179_0(System.Byte*, System.Int32, System.Number/NumberBufferKind, System.Boolean)
+System.Private.CoreLib.dll:System.Number.<RoundNumber>g__ShouldRoundUp|180_0(System.Byte*, System.Int32, System.Number/NumberBufferKind, System.Boolean)
 System.Private.CoreLib.dll:System.Number.<TryFormatInt128>g__TryFormatInt128Slow|43_0`1(System.Int128, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
 System.Private.CoreLib.dll:System.Number.<TryFormatInt32>g__TryFormatInt32Slow|35_0`1(System.Int32, System.Int32, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
 System.Private.CoreLib.dll:System.Number.<TryFormatInt64>g__TryFormatInt64Slow|39_0`1(System.Int64, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
@@ -10389,6 +10394,7 @@ System.Private.CoreLib.dll:System.Number.AssembleFloatingPointBits`1(System.UInt
 System.Private.CoreLib.dll:System.Number.CalculatePower(System.Int32)
 System.Private.CoreLib.dll:System.Number.ComputeFloat`1(System.Int64, System.UInt64)
 System.Private.CoreLib.dll:System.Number.ComputeProductApproximation(System.Int32, System.Int64, System.UInt64)
+System.Private.CoreLib.dll:System.Number.ConsumeTrailingNulls`1(System.ReadOnlySpan`1<TChar>, System.Int32)
 System.Private.CoreLib.dll:System.Number.ConvertBigIntegerToFloatingPointBits`1(System.Number/BigInteger&, System.Int32, System.Boolean)
 System.Private.CoreLib.dll:System.Number.CurrencyGroupSizes(System.Globalization.NumberFormatInfo)
 System.Private.CoreLib.dll:System.Number.DecimalToNumber(System.Decimal&, System.Number/NumberBuffer&)
@@ -10462,12 +10468,11 @@ System.Private.CoreLib.dll:System.Number.ShouldRoundUp(System.Boolean, System.Bo
 System.Private.CoreLib.dll:System.Number.SpanEqualsOrdinalIgnoreCase`1(System.ReadOnlySpan`1<TChar>, System.ReadOnlySpan`1<TChar>)
 System.Private.CoreLib.dll:System.Number.SpanStartsWith`1(System.ReadOnlySpan`1<TChar>, System.ReadOnlySpan`1<TChar>, System.StringComparison)
 System.Private.CoreLib.dll:System.Number.SpanStartsWith`1(System.ReadOnlySpan`1<TChar>, TChar)
-System.Private.CoreLib.dll:System.Number.SpanTrim`1(System.ReadOnlySpan`1<TChar>)
+System.Private.CoreLib.dll:System.Number.SpanTrimStart`1(System.ReadOnlySpan`1<TChar>)
 System.Private.CoreLib.dll:System.Number.ThrowFormatException`1(System.ReadOnlySpan`1<TChar>)
 System.Private.CoreLib.dll:System.Number.ThrowOverflowException(System.String)
 System.Private.CoreLib.dll:System.Number.ThrowOverflowException`1()
 System.Private.CoreLib.dll:System.Number.ThrowOverflowOrFormatException`2(System.Number/ParsingStatus, System.ReadOnlySpan`1<TChar>)
-System.Private.CoreLib.dll:System.Number.TrailingZeros`1(System.ReadOnlySpan`1<TChar>, System.Int32)
 System.Private.CoreLib.dll:System.Number.TryCopyTo`1(System.String, System.Span`1<TChar>, out System.Int32&)
 System.Private.CoreLib.dll:System.Number.TryFormatDecimal`1(System.Decimal, System.ReadOnlySpan`1<System.Char>, System.Globalization.NumberFormatInfo, System.Span`1<TChar>, out System.Int32&)
 System.Private.CoreLib.dll:System.Number.TryFormatFloat`2(TNumber, System.ReadOnlySpan`1<System.Char>, System.Globalization.NumberFormatInfo, System.Span`1<TChar>, out System.Int32&)
@@ -10480,21 +10485,21 @@ System.Private.CoreLib.dll:System.Number.TryFormatUInt64`1(System.UInt64, System
 System.Private.CoreLib.dll:System.Number.TryInt128ToHexStr`1(System.Int128, System.Char, System.Int32, System.Span`1<TChar>, out System.Int32&)
 System.Private.CoreLib.dll:System.Number.TryInt32ToHexStr`1(System.Int32, System.Char, System.Int32, System.Span`1<TChar>, out System.Int32&)
 System.Private.CoreLib.dll:System.Number.TryInt64ToHexStr`1(System.Int64, System.Char, System.Int32, System.Span`1<TChar>, out System.Int32&)
+System.Private.CoreLib.dll:System.Number.TryMatchSpecialValueSymbol`1(System.ReadOnlySpan`1<TChar>, System.ReadOnlySpan`1<TChar>, System.Boolean, System.Int32&)
 System.Private.CoreLib.dll:System.Number.TryNegativeInt128ToDecStr`1(System.Int128, System.Int32, System.ReadOnlySpan`1<TChar>, System.Span`1<TChar>, out System.Int32&)
 System.Private.CoreLib.dll:System.Number.TryNegativeInt32ToDecStr`1(System.Int32, System.Int32, System.ReadOnlySpan`1<TChar>, System.Span`1<TChar>, out System.Int32&)
 System.Private.CoreLib.dll:System.Number.TryNegativeInt64ToDecStr`1(System.Int64, System.Int32, System.ReadOnlySpan`1<TChar>, System.Span`1<TChar>, out System.Int32&)
 System.Private.CoreLib.dll:System.Number.TryNumberBufferToBinaryInteger`1(System.Number/NumberBuffer&, TInteger&)
 System.Private.CoreLib.dll:System.Number.TryNumberToDecimal(System.Number/NumberBuffer&, System.Decimal&)
-System.Private.CoreLib.dll:System.Number.TryParseBinaryInteger`2(System.ReadOnlySpan`1<TChar>, System.Globalization.NumberStyles, System.Globalization.NumberFormatInfo, out TInteger&)
-System.Private.CoreLib.dll:System.Number.TryParseBinaryIntegerHexNumberStyle`2(System.ReadOnlySpan`1<TChar>, System.Globalization.NumberStyles, out TInteger&)
-System.Private.CoreLib.dll:System.Number.TryParseBinaryIntegerHexOrBinaryNumberStyle`3(System.ReadOnlySpan`1<TChar>, System.Globalization.NumberStyles, out TInteger&)
-System.Private.CoreLib.dll:System.Number.TryParseBinaryIntegerNumber`2(System.ReadOnlySpan`1<TChar>, System.Globalization.NumberStyles, System.Globalization.NumberFormatInfo, out TInteger&)
-System.Private.CoreLib.dll:System.Number.TryParseBinaryIntegerStyle`2(System.ReadOnlySpan`1<TChar>, System.Globalization.NumberStyles, System.Globalization.NumberFormatInfo, out TInteger&)
-System.Private.CoreLib.dll:System.Number.TryParseDecimal`1(System.ReadOnlySpan`1<TChar>, System.Globalization.NumberStyles, System.Globalization.NumberFormatInfo, out System.Decimal&)
-System.Private.CoreLib.dll:System.Number.TryParseFloat`2(System.ReadOnlySpan`1<TChar>, System.Globalization.NumberStyles, System.Globalization.NumberFormatInfo, out TFloat&)
-System.Private.CoreLib.dll:System.Number.TryParseHexFloatingPoint`2(System.ReadOnlySpan`1<TChar>, System.Globalization.NumberStyles, System.Globalization.NumberFormatInfo, out TFloat&)
-System.Private.CoreLib.dll:System.Number.TryParseNumber`1(TChar*&, TChar*, System.Globalization.NumberStyles, System.Number/NumberBuffer&, System.Globalization.NumberFormatInfo)
-System.Private.CoreLib.dll:System.Number.TryStringToNumber`1(System.ReadOnlySpan`1<TChar>, System.Globalization.NumberStyles, System.Number/NumberBuffer&, System.Globalization.NumberFormatInfo)
+System.Private.CoreLib.dll:System.Number.TryParseBinaryInteger`2(System.ReadOnlySpan`1<TChar>, System.Globalization.NumberStyles, System.Globalization.NumberFormatInfo, out TInteger&, out System.Int32&)
+System.Private.CoreLib.dll:System.Number.TryParseBinaryIntegerHexOrBinaryNumberStyle`3(System.ReadOnlySpan`1<TChar>, System.Globalization.NumberStyles, out TInteger&, out System.Int32&)
+System.Private.CoreLib.dll:System.Number.TryParseBinaryIntegerNumber`2(System.ReadOnlySpan`1<TChar>, System.Globalization.NumberStyles, System.Globalization.NumberFormatInfo, out TInteger&, out System.Int32&)
+System.Private.CoreLib.dll:System.Number.TryParseBinaryIntegerStyle`2(System.ReadOnlySpan`1<TChar>, System.Globalization.NumberStyles, System.Globalization.NumberFormatInfo, out TInteger&, out System.Int32&)
+System.Private.CoreLib.dll:System.Number.TryParseDecimal`1(System.ReadOnlySpan`1<TChar>, System.Globalization.NumberStyles, System.Globalization.NumberFormatInfo, out System.Decimal&, out System.Int32&)
+System.Private.CoreLib.dll:System.Number.TryParseFloat`2(System.ReadOnlySpan`1<TChar>, System.Globalization.NumberStyles, System.Globalization.NumberFormatInfo, out TFloat&, out System.Int32&)
+System.Private.CoreLib.dll:System.Number.TryParseHexFloatingPoint`2(System.ReadOnlySpan`1<TChar>, System.Globalization.NumberStyles, System.Globalization.NumberFormatInfo, out TFloat&, out System.Int32&)
+System.Private.CoreLib.dll:System.Number.TryParseNumber`1(TChar*, TChar*, System.Globalization.NumberStyles, System.Number/NumberBuffer&, System.Globalization.NumberFormatInfo, out System.Int32&)
+System.Private.CoreLib.dll:System.Number.TryStringToNumber`1(System.ReadOnlySpan`1<TChar>, System.Globalization.NumberStyles, System.Number/NumberBuffer&, System.Globalization.NumberFormatInfo, out System.Int32&)
 System.Private.CoreLib.dll:System.Number.TryUInt128ToBinaryStr`1(System.Int128, System.Int32, System.Span`1<TChar>, out System.Int32&)
 System.Private.CoreLib.dll:System.Number.TryUInt128ToDecStr`1(System.UInt128, System.Int32, System.Span`1<TChar>, out System.Int32&)
 System.Private.CoreLib.dll:System.Number.TryUInt32ToBinaryStr`1(System.UInt32, System.Int32, System.Span`1<TChar>, out System.Int32&)
@@ -13240,6 +13245,18 @@ System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers/RuntimeA
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncTask`1/<>c..ctor()
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncTask`1/<>c.<.cctor>b__14_0(System.Object)
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncTask`1/<>c<T> System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncTask`1/<>c::<>9
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncYielder
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncYielder System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncYielder::Instance
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncYielder..cctor()
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncYielder..ctor()
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncYielder.OnCompleted(System.Action)
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncYielder.UnsafeOnCompleted(System.Action)
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncYielder/<>c
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncYielder/<>c System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncYielder/<>c::<>9
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncYielder/<>c..cctor()
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncYielder/<>c..ctor()
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncYielder/<>c.<UnsafeOnCompleted>b__2_0(System.Object)
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncYielder/<>c.<UnsafeOnCompleted>b__2_1(System.Object)
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers/ValueTaskSourceContinuation
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers/ValueTaskSourceContinuation System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncAwaitState::CachedValueTaskSourceContinuation
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers/ValueTaskSourceContinuation System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncStackState::ValueTaskSourceContinuation
@@ -13988,6 +14005,20 @@ System.Private.CoreLib.dll:System.Runtime.CompilerServices.VirtualDispatchHelper
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.VirtualDispatchHelpers/VirtualResolutionData.Equals(System.Object)
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.VirtualDispatchHelpers/VirtualResolutionData.Equals(System.Runtime.CompilerServices.VirtualDispatchHelpers/VirtualResolutionData)
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.VirtualDispatchHelpers/VirtualResolutionData.GetHashCode()
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.YieldAwaitable
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.YieldAwaitable/YieldAwaiter
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.YieldAwaitable/YieldAwaiter..cctor()
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.YieldAwaitable/YieldAwaiter.OnCompleted(System.Action)
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.YieldAwaitable/YieldAwaiter.QueueContinuation(System.Action, System.Boolean)
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.YieldAwaitable/YieldAwaiter.RunAction(System.Object)
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.YieldAwaitable/YieldAwaiter.System.Runtime.CompilerServices.IStateMachineBoxAwareAwaiter.AwaitUnsafeOnCompleted(System.Runtime.CompilerServices.IAsyncStateMachineBox)
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.YieldAwaitable/YieldAwaiter.UnsafeOnCompleted(System.Action)
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.YieldAwaitable/YieldAwaiter/<>c
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.YieldAwaitable/YieldAwaiter/<>c System.Runtime.CompilerServices.YieldAwaitable/YieldAwaiter/<>c::<>9
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.YieldAwaitable/YieldAwaiter/<>c..cctor()
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.YieldAwaitable/YieldAwaiter/<>c..ctor()
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.YieldAwaitable/YieldAwaiter/<>c.<System.Runtime.CompilerServices.IStateMachineBoxAwareAwaiter.AwaitUnsafeOnCompleted>b__5_0(System.Object)
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.YieldAwaitable/YieldAwaiter/<>c.<System.Runtime.CompilerServices.IStateMachineBoxAwareAwaiter.AwaitUnsafeOnCompleted>b__5_1(System.Object)
 System.Private.CoreLib.dll:System.Runtime.ConstrainedExecution.CriticalFinalizerObject
 System.Private.CoreLib.dll:System.Runtime.ConstrainedExecution.CriticalFinalizerObject..ctor()
 System.Private.CoreLib.dll:System.Runtime.ConstrainedExecution.CriticalFinalizerObject.Finalize()
@@ -18456,7 +18487,10 @@ System.Private.CoreLib.dll:System.Threading.SemaphoreSlim/TaskNode System.Thread
 System.Private.CoreLib.dll:System.Threading.SemaphoreSlim/TaskNode..ctor()
 System.Private.CoreLib.dll:System.Threading.SendOrPostCallback
 System.Private.CoreLib.dll:System.Threading.SendOrPostCallback System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncTask`1::s_postCallback
+System.Private.CoreLib.dll:System.Threading.SendOrPostCallback System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncYielder/<>c::<>9__2_0
 System.Private.CoreLib.dll:System.Threading.SendOrPostCallback System.Runtime.CompilerServices.RuntimeAsyncTaskContinuation/TaskContinuationResume::s_postCallback
+System.Private.CoreLib.dll:System.Threading.SendOrPostCallback System.Runtime.CompilerServices.YieldAwaitable/YieldAwaiter::s_sendOrPostCallbackRunAction
+System.Private.CoreLib.dll:System.Threading.SendOrPostCallback System.Runtime.CompilerServices.YieldAwaitable/YieldAwaiter/<>c::<>9__5_0
 System.Private.CoreLib.dll:System.Threading.SendOrPostCallback System.Threading.CancellationTokenSource/<>c::<>9__36_0
 System.Private.CoreLib.dll:System.Threading.SendOrPostCallback System.Threading.Tasks.SynchronizationContextAwaitTaskContinuation::s_postCallback
 System.Private.CoreLib.dll:System.Threading.SendOrPostCallback System.Threading.Tasks.Task/<>c::<>9__135_0
@@ -18872,6 +18906,7 @@ System.Private.CoreLib.dll:System.Threading.Tasks.TaskFactory
 System.Private.CoreLib.dll:System.Threading.Tasks.TaskFactory System.Threading.Tasks.Task::<Factory>k__BackingField
 System.Private.CoreLib.dll:System.Threading.Tasks.TaskFactory System.Threading.Tasks.Task::Factory()
 System.Private.CoreLib.dll:System.Threading.Tasks.TaskFactory..ctor()
+System.Private.CoreLib.dll:System.Threading.Tasks.TaskFactory.StartNew(System.Action, System.Threading.CancellationToken, System.Threading.Tasks.TaskCreationOptions, System.Threading.Tasks.TaskScheduler)
 System.Private.CoreLib.dll:System.Threading.Tasks.TaskFactory.StartNew(System.Action`1<System.Object>, System.Object, System.Threading.CancellationToken, System.Threading.Tasks.TaskCreationOptions, System.Threading.Tasks.TaskScheduler)
 System.Private.CoreLib.dll:System.Threading.Tasks.TaskFactory`1
 System.Private.CoreLib.dll:System.Threading.Tasks.TaskFactory`1.FromAsyncTrim`2(TInstance, TArgs, System.Func`5<TInstance,TArgs,System.AsyncCallback,System.Object,System.IAsyncResult>, System.Func`3<TInstance,System.IAsyncResult,TResult>)
@@ -19180,6 +19215,7 @@ System.Private.CoreLib.dll:System.Threading.ThreadPool.ReportThreadStatus(System
 System.Private.CoreLib.dll:System.Threading.ThreadPool.TryPopCustomWorkItem(System.Object)
 System.Private.CoreLib.dll:System.Threading.ThreadPool.UnsafeQueueHighPriorityWorkItemInternal(System.Threading.IThreadPoolWorkItem)
 System.Private.CoreLib.dll:System.Threading.ThreadPool.UnsafeQueueUserWorkItem(System.Threading.IThreadPoolWorkItem, System.Boolean)
+System.Private.CoreLib.dll:System.Threading.ThreadPool.UnsafeQueueUserWorkItem(System.Threading.WaitCallback, System.Object)
 System.Private.CoreLib.dll:System.Threading.ThreadPool.UnsafeQueueUserWorkItem`1(System.Action`1<TState>, TState, System.Boolean)
 System.Private.CoreLib.dll:System.Threading.ThreadPool.UnsafeQueueUserWorkItemInternal(System.Object, System.Boolean)
 System.Private.CoreLib.dll:System.Threading.ThreadPool.YieldFromDispatchLoop(System.Int32)
@@ -19340,6 +19376,7 @@ System.Private.CoreLib.dll:System.Threading.Volatile/VolatileObject
 System.Private.CoreLib.dll:System.Threading.Volatile/VolatileUInt32
 System.Private.CoreLib.dll:System.Threading.Volatile/VolatileUIntPtr
 System.Private.CoreLib.dll:System.Threading.WaitCallback
+System.Private.CoreLib.dll:System.Threading.WaitCallback System.Runtime.CompilerServices.YieldAwaitable/YieldAwaiter::s_waitCallbackRunAction
 System.Private.CoreLib.dll:System.Threading.WaitCallback System.Threading.QueueUserWorkItemCallback::_callback
 System.Private.CoreLib.dll:System.Threading.WaitCallback System.Threading.QueueUserWorkItemCallbackDefaultContext::_callback
 System.Private.CoreLib.dll:System.Threading.WaitCallback System.Threading.Tasks.Task/<>c::<>9__135_1
@@ -20374,7 +20411,9 @@ System.Private.CoreLib.dll:System.UInt16.TryParse(System.ReadOnlySpan`1<System.C
 System.Private.CoreLib.dll:System.UInt16.TryParse(System.String, System.Globalization.NumberStyles, System.IFormatProvider, out System.UInt16&)
 System.Private.CoreLib.dll:System.UInt16[] System.Globalization.OrdinalCasing::NoCasingPage()
 System.Private.CoreLib.dll:System.UInt16[] System.Globalization.OrdinalCasing::s_basicLatin
+System.Private.CoreLib.dll:System.UInt16[] System.Globalization.OrdinalCasing::s_lowerBasicLatin
 System.Private.CoreLib.dll:System.UInt16[][] System.Globalization.OrdinalCasing::s_casingTable
+System.Private.CoreLib.dll:System.UInt16[][] System.Globalization.OrdinalCasing::s_lowerCasingTable
 System.Private.CoreLib.dll:System.UInt32
 System.Private.CoreLib.dll:System.UInt32 Interop/Sys/FileStatus::Gid
 System.Private.CoreLib.dll:System.UInt32 Interop/Sys/FileStatus::Uid

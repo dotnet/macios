@@ -1087,6 +1087,7 @@ System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeS
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=482
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=482 <PrivateImplementationDetails>::15C0F30B8F562907D875D51E89D58456B9AC8FF3FCEEBA3707CF8ACB719233CA
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=512
+System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=512 <PrivateImplementationDetails>::64BC3C41810FD7C78E4FD2D521B276246731F094785CFA4EBB2AA8E05985A11F
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=512 <PrivateImplementationDetails>::915DB32CFB126970AAEB23CB96C97DBC2F59FAF24BA23EBB145D0BB6F09D0638
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=52_Align=4
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=52_Align=4 <PrivateImplementationDetails>::5857EE4CE98BFABBD62B385C1098507DD0052FF3951043AAD6A1DABD495F18AA4
@@ -1219,24 +1220,24 @@ System.Private.CoreLib.dll:Interop/ErrorInfo.get_RawErrno()
 System.Private.CoreLib.dll:Interop/ErrorInfo.GetErrorMessage()
 System.Private.CoreLib.dll:Interop/ErrorInfo.ToString()
 System.Private.CoreLib.dll:Interop/Globalization
-System.Private.CoreLib.dll:Interop/Globalization.<ChangeCaseInvariantNative>g____PInvoke|15_0(System.Char*, System.Int32, System.Char*, System.Int32, System.Int32)
-System.Private.CoreLib.dll:Interop/Globalization.<ChangeCaseNative>g____PInvoke|14_0(System.UInt16*, System.Int32, System.Char*, System.Int32, System.Char*, System.Int32, System.Int32)
-System.Private.CoreLib.dll:Interop/Globalization.<CompareStringNative>g____PInvoke|27_0(System.UInt16*, System.Int32, System.Char*, System.Int32, System.Char*, System.Int32, System.Globalization.CompareOptions)
-System.Private.CoreLib.dll:Interop/Globalization.<EndsWithNative>g____PInvoke|28_0(System.UInt16*, System.Int32, System.Char*, System.Int32, System.Char*, System.Int32, System.Globalization.CompareOptions)
+System.Private.CoreLib.dll:Interop/Globalization.<ChangeCaseInvariantNative>g____PInvoke|16_0(System.Char*, System.Int32, System.Char*, System.Int32, System.Int32)
+System.Private.CoreLib.dll:Interop/Globalization.<ChangeCaseNative>g____PInvoke|15_0(System.UInt16*, System.Int32, System.Char*, System.Int32, System.Char*, System.Int32, System.Int32)
+System.Private.CoreLib.dll:Interop/Globalization.<CompareStringNative>g____PInvoke|28_0(System.UInt16*, System.Int32, System.Char*, System.Int32, System.Char*, System.Int32, System.Globalization.CompareOptions)
+System.Private.CoreLib.dll:Interop/Globalization.<EndsWithNative>g____PInvoke|29_0(System.UInt16*, System.Int32, System.Char*, System.Int32, System.Char*, System.Int32, System.Globalization.CompareOptions)
 System.Private.CoreLib.dll:Interop/Globalization.<GetCalendarInfoNative>g____PInvoke|7_0(System.Byte*, System.Globalization.CalendarId, System.Globalization.CalendarDataType)
 System.Private.CoreLib.dll:Interop/Globalization.<GetCalendarsNative>g____PInvoke|6_0(System.Byte*, System.Globalization.CalendarId*, System.Int32)
-System.Private.CoreLib.dll:Interop/Globalization.<GetDefaultLocaleNameNative>g____PInvoke|49_0()
+System.Private.CoreLib.dll:Interop/Globalization.<GetDefaultLocaleNameNative>g____PInvoke|50_0()
 System.Private.CoreLib.dll:Interop/Globalization.<GetJapaneseEraStartDateNative>g____PInvoke|9_0(System.Int32, System.Int32*, System.Int32*, System.Int32*)
-System.Private.CoreLib.dll:Interop/Globalization.<GetLocaleInfoIntNative>g____PInvoke|51_0(System.Byte*, System.UInt32)
-System.Private.CoreLib.dll:Interop/Globalization.<GetLocaleInfoPrimaryGroupingSizeNative>g____PInvoke|52_0(System.Byte*, System.UInt32)
-System.Private.CoreLib.dll:Interop/Globalization.<GetLocaleInfoSecondaryGroupingSizeNative>g____PInvoke|53_0(System.Byte*, System.UInt32)
-System.Private.CoreLib.dll:Interop/Globalization.<GetLocaleInfoStringNative>g____PInvoke|50_0(System.Byte*, System.UInt32, System.Byte*)
-System.Private.CoreLib.dll:Interop/Globalization.<GetLocaleNameNative>g____PInvoke|54_0(System.Byte*)
-System.Private.CoreLib.dll:Interop/Globalization.<GetLocaleTimeFormatNative>g____PInvoke|56_0(System.Byte*, System.Int32)
-System.Private.CoreLib.dll:Interop/Globalization.<GetTimeZoneDisplayNameNative>g____PInvoke|67_0(System.UInt16*, System.Int32, System.UInt16*, System.Int32, Interop/Globalization/TimeZoneDisplayNameType, System.Char*, System.Int32)
-System.Private.CoreLib.dll:Interop/Globalization.<IndexOfNative>g____PInvoke|29_0(System.UInt16*, System.Int32, System.Char*, System.Int32, System.Char*, System.Int32, System.Globalization.CompareOptions, System.Int32)
-System.Private.CoreLib.dll:Interop/Globalization.<IsPredefinedLocaleNative>g____PInvoke|57_0(System.Byte*)
-System.Private.CoreLib.dll:Interop/Globalization.<StartsWithNative>g____PInvoke|30_0(System.UInt16*, System.Int32, System.Char*, System.Int32, System.Char*, System.Int32, System.Globalization.CompareOptions)
+System.Private.CoreLib.dll:Interop/Globalization.<GetLocaleInfoIntNative>g____PInvoke|52_0(System.Byte*, System.UInt32)
+System.Private.CoreLib.dll:Interop/Globalization.<GetLocaleInfoPrimaryGroupingSizeNative>g____PInvoke|53_0(System.Byte*, System.UInt32)
+System.Private.CoreLib.dll:Interop/Globalization.<GetLocaleInfoSecondaryGroupingSizeNative>g____PInvoke|54_0(System.Byte*, System.UInt32)
+System.Private.CoreLib.dll:Interop/Globalization.<GetLocaleInfoStringNative>g____PInvoke|51_0(System.Byte*, System.UInt32, System.Byte*)
+System.Private.CoreLib.dll:Interop/Globalization.<GetLocaleNameNative>g____PInvoke|55_0(System.Byte*)
+System.Private.CoreLib.dll:Interop/Globalization.<GetLocaleTimeFormatNative>g____PInvoke|57_0(System.Byte*, System.Int32)
+System.Private.CoreLib.dll:Interop/Globalization.<GetTimeZoneDisplayNameNative>g____PInvoke|68_0(System.UInt16*, System.Int32, System.UInt16*, System.Int32, Interop/Globalization/TimeZoneDisplayNameType, System.Char*, System.Int32)
+System.Private.CoreLib.dll:Interop/Globalization.<IndexOfNative>g____PInvoke|30_0(System.UInt16*, System.Int32, System.Char*, System.Int32, System.Char*, System.Int32, System.Globalization.CompareOptions, System.Int32)
+System.Private.CoreLib.dll:Interop/Globalization.<IsPredefinedLocaleNative>g____PInvoke|58_0(System.Byte*)
+System.Private.CoreLib.dll:Interop/Globalization.<StartsWithNative>g____PInvoke|31_0(System.UInt16*, System.Int32, System.Char*, System.Int32, System.Char*, System.Int32, System.Globalization.CompareOptions)
 System.Private.CoreLib.dll:Interop/Globalization.ChangeCaseInvariantNative(System.Char*, System.Int32, System.Char*, System.Int32, System.Boolean)
 System.Private.CoreLib.dll:Interop/Globalization.ChangeCaseNative(System.String, System.Int32, System.Char*, System.Int32, System.Char*, System.Int32, System.Boolean)
 System.Private.CoreLib.dll:Interop/Globalization.CompareStringNative(System.String, System.Int32, System.Char*, System.Int32, System.Char*, System.Int32, System.Globalization.CompareOptions)
@@ -2172,6 +2173,8 @@ System.Private.CoreLib.dll:System.Buffers.SearchValues`1.ContainsAnyExcept(Syste
 System.Private.CoreLib.dll:System.Buffers.SearchValues`1.IndexOfAny(System.ReadOnlySpan`1<T>)
 System.Private.CoreLib.dll:System.Buffers.SearchValues`1.IndexOfAnyExcept(System.ReadOnlySpan`1<T>)
 System.Private.CoreLib.dll:System.Buffers.SearchValues`1<System.Char> System.Globalization.CompareInfo::s_nonSpecialAsciiChars
+System.Private.CoreLib.dll:System.Buffers.SearchValues`1<System.Char> System.String/SearchValuesStorage::AsciiExceptLowercase
+System.Private.CoreLib.dll:System.Buffers.SearchValues`1<System.Char> System.String/SearchValuesStorage::AsciiExceptUppercase
 System.Private.CoreLib.dll:System.Buffers.SearchValues`1<System.Char> System.String/SearchValuesStorage::NewLineChars
 System.Private.CoreLib.dll:System.Buffers.SearchValues`1<System.Char> System.String/SearchValuesStorage::WhiteSpaceChars
 System.Private.CoreLib.dll:System.Buffers.SharedArrayPool`1
@@ -4575,6 +4578,7 @@ System.Private.CoreLib.dll:System.Globalization.NumberStyles System.Globalizatio
 System.Private.CoreLib.dll:System.Globalization.NumberStyles System.Globalization.NumberStyles::AllowLeadingWhite
 System.Private.CoreLib.dll:System.Globalization.NumberStyles System.Globalization.NumberStyles::AllowParentheses
 System.Private.CoreLib.dll:System.Globalization.NumberStyles System.Globalization.NumberStyles::AllowThousands
+System.Private.CoreLib.dll:System.Globalization.NumberStyles System.Globalization.NumberStyles::AllowTrailingInvalidCharacters
 System.Private.CoreLib.dll:System.Globalization.NumberStyles System.Globalization.NumberStyles::AllowTrailingSign
 System.Private.CoreLib.dll:System.Globalization.NumberStyles System.Globalization.NumberStyles::AllowTrailingWhite
 System.Private.CoreLib.dll:System.Globalization.NumberStyles System.Globalization.NumberStyles::Any
@@ -4602,6 +4606,7 @@ System.Private.CoreLib.dll:System.Globalization.OrdinalCasing.get_NoCasingPage()
 System.Private.CoreLib.dll:System.Globalization.OrdinalCasing.get_s_casingTableInit()
 System.Private.CoreLib.dll:System.Globalization.OrdinalCasing.IndexOf(System.ReadOnlySpan`1<System.Char>, System.ReadOnlySpan`1<System.Char>)
 System.Private.CoreLib.dll:System.Globalization.OrdinalCasing.InitCasingTable()
+System.Private.CoreLib.dll:System.Globalization.OrdinalCasing.InitLowerCasingTable()
 System.Private.CoreLib.dll:System.Globalization.OrdinalCasing.InitOrdinalCasingPage(System.Int32)
 System.Private.CoreLib.dll:System.Globalization.OrdinalCasing.ToUpper(System.Char)
 System.Private.CoreLib.dll:System.Globalization.OrdinalCasing.ToUpperOrdinal(System.ReadOnlySpan`1<System.Char>, System.Span`1<System.Char>)
@@ -6521,8 +6526,8 @@ System.Private.CoreLib.dll:System.MemberAccessException
 System.Private.CoreLib.dll:System.MemberAccessException..ctor()
 System.Private.CoreLib.dll:System.MemberAccessException..ctor(System.String)
 System.Private.CoreLib.dll:System.MemoryExtensions
-System.Private.CoreLib.dll:System.MemoryExtensions.<Trim>g__TrimFallback|292_0(System.ReadOnlySpan`1<System.Char>)
-System.Private.CoreLib.dll:System.MemoryExtensions.<TrimUtf8>g__TrimFallback|306_0(System.ReadOnlySpan`1<System.Byte>)
+System.Private.CoreLib.dll:System.MemoryExtensions.<Trim>g__TrimFallback|294_0(System.ReadOnlySpan`1<System.Char>)
+System.Private.CoreLib.dll:System.MemoryExtensions.<TrimUtf8>g__TrimFallback|309_0(System.ReadOnlySpan`1<System.Byte>)
 System.Private.CoreLib.dll:System.MemoryExtensions.AsSpan(System.String, System.Int32, System.Int32)
 System.Private.CoreLib.dll:System.MemoryExtensions.AsSpan(System.String, System.Int32)
 System.Private.CoreLib.dll:System.MemoryExtensions.AsSpan(System.String)
@@ -6534,7 +6539,6 @@ System.Private.CoreLib.dll:System.MemoryExtensions.ContainsAny`1(System.ReadOnly
 System.Private.CoreLib.dll:System.MemoryExtensions.ContainsAny`1(System.ReadOnlySpan`1<T>, T, T, T)
 System.Private.CoreLib.dll:System.MemoryExtensions.ContainsAny`1(System.ReadOnlySpan`1<T>, T, T)
 System.Private.CoreLib.dll:System.MemoryExtensions.ContainsAnyExcept`1(System.ReadOnlySpan`1<T>, System.Buffers.SearchValues`1<T>)
-System.Private.CoreLib.dll:System.MemoryExtensions.ContainsAnyExcept`1(System.ReadOnlySpan`1<T>, T)
 System.Private.CoreLib.dll:System.MemoryExtensions.CopyTo`1(T[], System.Span`1<T>)
 System.Private.CoreLib.dll:System.MemoryExtensions.EndsWith(System.ReadOnlySpan`1<System.Char>, System.ReadOnlySpan`1<System.Char>, System.StringComparison)
 System.Private.CoreLib.dll:System.MemoryExtensions.EndsWith`1(System.ReadOnlySpan`1<T>, System.ReadOnlySpan`1<T>)
@@ -6660,7 +6664,7 @@ System.Private.CoreLib.dll:System.NullReferenceException..ctor()
 System.Private.CoreLib.dll:System.NullReferenceException..ctor(System.String)
 System.Private.CoreLib.dll:System.Number
 System.Private.CoreLib.dll:System.Number..cctor()
-System.Private.CoreLib.dll:System.Number.<AppendUnknownChar>g__AppendNonAsciiBytes|171_0`1(System.Collections.Generic.ValueListBuilder`1<TChar>&, System.Char)
+System.Private.CoreLib.dll:System.Number.<AppendUnknownChar>g__AppendNonAsciiBytes|172_0`1(System.Collections.Generic.ValueListBuilder`1<TChar>&, System.Char)
 System.Private.CoreLib.dll:System.Number.<FormatInt128>g__FormatInt128Slow|40_0(System.Int128, System.String, System.IFormatProvider)
 System.Private.CoreLib.dll:System.Number.<FormatInt32>g__FormatInt32Slow|32_0(System.Int32, System.Int32, System.String, System.IFormatProvider)
 System.Private.CoreLib.dll:System.Number.<FormatInt64>g__FormatInt64Slow|36_0(System.Int64, System.String, System.IFormatProvider)
@@ -6668,7 +6672,7 @@ System.Private.CoreLib.dll:System.Number.<FormatUInt128>g__FormatUInt128Slow|42_
 System.Private.CoreLib.dll:System.Number.<FormatUInt32>g__FormatUInt32Slow|34_0(System.UInt32, System.String, System.IFormatProvider)
 System.Private.CoreLib.dll:System.Number.<FormatUInt64>g__FormatUInt64Slow|38_0(System.UInt64, System.String, System.IFormatProvider)
 System.Private.CoreLib.dll:System.Number.<GetFloatingPointMaxDigitsAndPrecision>g__Slow|25_0(System.Char, System.Int32&, System.Globalization.NumberFormatInfo, out System.Boolean&)
-System.Private.CoreLib.dll:System.Number.<RoundNumber>g__ShouldRoundUp|177_0(System.Byte*, System.Int32, System.Number/NumberBufferKind, System.Boolean)
+System.Private.CoreLib.dll:System.Number.<RoundNumber>g__ShouldRoundUp|178_0(System.Byte*, System.Int32, System.Number/NumberBufferKind, System.Boolean)
 System.Private.CoreLib.dll:System.Number.<TryFormatInt128>g__TryFormatInt128Slow|41_0`1(System.Int128, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
 System.Private.CoreLib.dll:System.Number.<TryFormatInt32>g__TryFormatInt32Slow|33_0`1(System.Int32, System.Int32, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
 System.Private.CoreLib.dll:System.Number.<TryFormatInt64>g__TryFormatInt64Slow|37_0`1(System.Int64, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
@@ -6677,6 +6681,7 @@ System.Private.CoreLib.dll:System.Number.<TryFormatUInt32>g__TryFormatUInt32Slow
 System.Private.CoreLib.dll:System.Number.<TryFormatUInt64>g__TryFormatUInt64Slow|39_0`1(System.UInt64, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
 System.Private.CoreLib.dll:System.Number.<UInt32ToDecStrForKnownSmallNumber>g__CreateAndCacheString|61_0(System.UInt32)
 System.Private.CoreLib.dll:System.Number.AppendUnknownChar`1(System.Collections.Generic.ValueListBuilder`1<TChar>&, System.Char)
+System.Private.CoreLib.dll:System.Number.ConsumeTrailingNulls`1(System.ReadOnlySpan`1<TChar>, System.Int32)
 System.Private.CoreLib.dll:System.Number.CurrencyGroupSizes(System.Globalization.NumberFormatInfo)
 System.Private.CoreLib.dll:System.Number.DecimalToNumber(System.Decimal&, System.Number/NumberBuffer&)
 System.Private.CoreLib.dll:System.Number.Dragon4(System.UInt64, System.Int32, System.UInt32, System.Boolean, System.Int32, System.Boolean, System.Span`1<System.Byte>, out System.Int32&)
@@ -6734,7 +6739,6 @@ System.Private.CoreLib.dll:System.Number.RoundNumber(System.Number/NumberBuffer&
 System.Private.CoreLib.dll:System.Number.SpanTrim`1(System.ReadOnlySpan`1<TChar>)
 System.Private.CoreLib.dll:System.Number.ThrowOverflowException(System.String)
 System.Private.CoreLib.dll:System.Number.ThrowOverflowException`1()
-System.Private.CoreLib.dll:System.Number.TrailingZeros`1(System.ReadOnlySpan`1<TChar>, System.Int32)
 System.Private.CoreLib.dll:System.Number.TryCopyTo`1(System.String, System.Span`1<TChar>, out System.Int32&)
 System.Private.CoreLib.dll:System.Number.TryFormatDecimal`1(System.Decimal, System.ReadOnlySpan`1<System.Char>, System.Globalization.NumberFormatInfo, System.Span`1<TChar>, out System.Int32&)
 System.Private.CoreLib.dll:System.Number.TryFormatFloat`2(TNumber, System.ReadOnlySpan`1<System.Char>, System.Globalization.NumberFormatInfo, System.Span`1<TChar>, out System.Int32&)
@@ -6751,13 +6755,12 @@ System.Private.CoreLib.dll:System.Number.TryNegativeInt128ToDecStr`1(System.Int1
 System.Private.CoreLib.dll:System.Number.TryNegativeInt32ToDecStr`1(System.Int32, System.Int32, System.ReadOnlySpan`1<TChar>, System.Span`1<TChar>, out System.Int32&)
 System.Private.CoreLib.dll:System.Number.TryNegativeInt64ToDecStr`1(System.Int64, System.Int32, System.ReadOnlySpan`1<TChar>, System.Span`1<TChar>, out System.Int32&)
 System.Private.CoreLib.dll:System.Number.TryNumberBufferToBinaryInteger`1(System.Number/NumberBuffer&, TInteger&)
-System.Private.CoreLib.dll:System.Number.TryParseBinaryInteger`2(System.ReadOnlySpan`1<TChar>, System.Globalization.NumberStyles, System.Globalization.NumberFormatInfo, out TInteger&)
-System.Private.CoreLib.dll:System.Number.TryParseBinaryIntegerHexNumberStyle`2(System.ReadOnlySpan`1<TChar>, System.Globalization.NumberStyles, out TInteger&)
-System.Private.CoreLib.dll:System.Number.TryParseBinaryIntegerHexOrBinaryNumberStyle`3(System.ReadOnlySpan`1<TChar>, System.Globalization.NumberStyles, out TInteger&)
-System.Private.CoreLib.dll:System.Number.TryParseBinaryIntegerNumber`2(System.ReadOnlySpan`1<TChar>, System.Globalization.NumberStyles, System.Globalization.NumberFormatInfo, out TInteger&)
-System.Private.CoreLib.dll:System.Number.TryParseBinaryIntegerStyle`2(System.ReadOnlySpan`1<TChar>, System.Globalization.NumberStyles, System.Globalization.NumberFormatInfo, out TInteger&)
-System.Private.CoreLib.dll:System.Number.TryParseNumber`1(TChar*&, TChar*, System.Globalization.NumberStyles, System.Number/NumberBuffer&, System.Globalization.NumberFormatInfo)
-System.Private.CoreLib.dll:System.Number.TryStringToNumber`1(System.ReadOnlySpan`1<TChar>, System.Globalization.NumberStyles, System.Number/NumberBuffer&, System.Globalization.NumberFormatInfo)
+System.Private.CoreLib.dll:System.Number.TryParseBinaryInteger`2(System.ReadOnlySpan`1<TChar>, System.Globalization.NumberStyles, System.Globalization.NumberFormatInfo, out TInteger&, out System.Int32&)
+System.Private.CoreLib.dll:System.Number.TryParseBinaryIntegerHexOrBinaryNumberStyle`3(System.ReadOnlySpan`1<TChar>, System.Globalization.NumberStyles, out TInteger&, out System.Int32&)
+System.Private.CoreLib.dll:System.Number.TryParseBinaryIntegerNumber`2(System.ReadOnlySpan`1<TChar>, System.Globalization.NumberStyles, System.Globalization.NumberFormatInfo, out TInteger&, out System.Int32&)
+System.Private.CoreLib.dll:System.Number.TryParseBinaryIntegerStyle`2(System.ReadOnlySpan`1<TChar>, System.Globalization.NumberStyles, System.Globalization.NumberFormatInfo, out TInteger&, out System.Int32&)
+System.Private.CoreLib.dll:System.Number.TryParseNumber`1(TChar*, TChar*, System.Globalization.NumberStyles, System.Number/NumberBuffer&, System.Globalization.NumberFormatInfo, out System.Int32&)
+System.Private.CoreLib.dll:System.Number.TryStringToNumber`1(System.ReadOnlySpan`1<TChar>, System.Globalization.NumberStyles, System.Number/NumberBuffer&, System.Globalization.NumberFormatInfo, out System.Int32&)
 System.Private.CoreLib.dll:System.Number.TryUInt128ToBinaryStr`1(System.Int128, System.Int32, System.Span`1<TChar>, out System.Int32&)
 System.Private.CoreLib.dll:System.Number.TryUInt128ToDecStr`1(System.UInt128, System.Int32, System.Span`1<TChar>, out System.Int32&)
 System.Private.CoreLib.dll:System.Number.TryUInt32ToBinaryStr`1(System.UInt32, System.Int32, System.Span`1<TChar>, out System.Int32&)
@@ -11907,7 +11910,9 @@ System.Private.CoreLib.dll:System.UInt16.TryFormat(System.Span`1<System.Char>, o
 System.Private.CoreLib.dll:System.UInt16.TryParse(System.ReadOnlySpan`1<System.Char>, System.Globalization.NumberStyles, System.IFormatProvider, out System.UInt16&)
 System.Private.CoreLib.dll:System.UInt16[] System.Globalization.OrdinalCasing::NoCasingPage()
 System.Private.CoreLib.dll:System.UInt16[] System.Globalization.OrdinalCasing::s_basicLatin
+System.Private.CoreLib.dll:System.UInt16[] System.Globalization.OrdinalCasing::s_lowerBasicLatin
 System.Private.CoreLib.dll:System.UInt16[][] System.Globalization.OrdinalCasing::s_casingTable
+System.Private.CoreLib.dll:System.UInt16[][] System.Globalization.OrdinalCasing::s_lowerCasingTable
 System.Private.CoreLib.dll:System.UInt32
 System.Private.CoreLib.dll:System.UInt32 Interop/Sys/FileStatus::Gid
 System.Private.CoreLib.dll:System.UInt32 Interop/Sys/FileStatus::Uid

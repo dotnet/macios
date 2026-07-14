@@ -1,13 +1,13 @@
-AppBundleSize: 8,172,731 bytes (7,981.2 KB = 7.8 MB)
+AppBundleSize: 8,176,499 bytes (7,984.9 KB = 7.8 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 Frameworks/libcoreclr.framework/Info.plist:
     840 bytes (0.8 KB = 0.0 MB)
 Frameworks/libcoreclr.framework/libcoreclr:
-    4,218,064 bytes (4,119.2 KB = 4.0 MB)
+    4,218,112 bytes (4,119.2 KB = 4.0 MB)
 Frameworks/libSystem.Globalization.Native.framework/Info.plist:
     882 bytes (0.9 KB = 0.0 MB)
 Frameworks/libSystem.Globalization.Native.framework/libSystem.Globalization.Native:
-    90,440 bytes (88.3 KB = 0.1 MB)
+    90,576 bytes (88.5 KB = 0.1 MB)
 Frameworks/libSystem.IO.Compression.Native.framework/Info.plist:
     884 bytes (0.9 KB = 0.0 MB)
 Frameworks/libSystem.IO.Compression.Native.framework/libSystem.IO.Compression.Native:
@@ -45,7 +45,7 @@ System.IO.Compression.dll:
 System.IO.MemoryMappedFiles.dll:
     22,016 bytes (21.5 KB = 0.0 MB)
 System.Private.CoreLib.dll:
-    1,607,168 bytes (1,569.5 KB = 1.5 MB)
+    1,610,752 bytes (1,573.0 KB = 1.5 MB)
 System.Reflection.Metadata.dll:
     84,480 bytes (82.5 KB = 0.1 MB)
 System.Runtime.dll:

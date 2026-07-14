@@ -2858,6 +2858,36 @@ namespace Xamarin.Tests {
 		}
 
 		[Test]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
+		public void StripEmbeddedDynamicFramework (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			// A binding project with 'NoBindingEmbedding=false' embeds its native framework inside the
+			// binding assembly. The managed linker extracts the framework without any 'Kind' metadata, so
+			// make sure such an embedded dynamic framework is stripped correctly (with 'strip -S -x', and
+			// not a full strip, which fails for a dynamic library that references undefined symbols).
+			// The framework embedded by this project (XTest.framework) references the Objective-C runtime,
+			// so a full strip of it would fail. We build in Release (so the linker runs and extracts the
+			// framework) and set NoSymbolStrip=false (so the framework is stripped even for the simulator).
+			// Ref: https://github.com/dotnet/macios/issues/25952
+			var project = "EmbeddedFrameworkInBindingProjectApp";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: "Release");
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["Configuration"] = "Release";
+			properties ["NoSymbolStrip"] = "false";
+			DotNet.AssertBuild (project_path, properties);
+
+			var appExecutable = GetNativeExecutable (platform, appPath);
+			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
+		}
+
+		[Test]
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64;")]
 		public void StrippedWithExportSymbolsExplicitlyFalse (ApplePlatform platform, string runtimeIdentifiers)

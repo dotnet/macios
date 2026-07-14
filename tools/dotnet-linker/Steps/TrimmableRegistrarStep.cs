@@ -244,6 +244,11 @@ namespace Xamarin.Linker {
 			// If we need to modify an assembly that's not the typemap assembly, do it after we've finished writing the typemap assembly,
 			// to avoid having to switch between assemblies (we cache a lot of stuff, and those caches will have to be re-created for every switch).
 			var postActionsByAssembly = new Dictionary<AssemblyDefinition, List<Action<AssemblyDefinition>>> ();
+
+			// The fix for https://github.com/dotnet/runtime/issues/127004 is only available in .NET 11+, so we
+			// still need the workaround (adding the proxy type's attribute to the source type) for .NET 10.
+			// Tracking issue: https://github.com/dotnet/macios/issues/25276
+			var needsTypeMapWorkaround = App.TargetFramework.Version.Major <= 10;
 			void addPostAction (AssemblyDefinition assembly, Action<AssemblyDefinition> action)
 			{
 				if (!postActionsByAssembly.TryGetValue (assembly, out var actions)) {
@@ -491,10 +496,12 @@ namespace Xamarin.Linker {
 
 						// We also add the proxy type as an attribute to the type, as a workaround for https://github.com/dotnet/runtime/issues/127004
 						// Tracking issue: https://github.com/dotnet/macios/issues/25276
-						addPostAction (td.Module.Assembly, assembly => {
-							var attribute = new CustomAttribute (assembly.MainModule.ImportReference (ctor)); // don't use abr.CreateAttribute here, because the ctor has already been marked
-							td.CustomAttributes.Add (attribute);
-						});
+						if (needsTypeMapWorkaround) {
+							addPostAction (td.Module.Assembly, assembly => {
+								var attribute = new CustomAttribute (assembly.MainModule.ImportReference (ctor)); // don't use abr.CreateAttribute here, because the ctor has already been marked
+								td.CustomAttributes.Add (attribute);
+							});
+						}
 
 						/*
 						 * Add the [TypeMapAssociation] attribute for this type and its proxy
@@ -583,10 +590,12 @@ namespace Xamarin.Linker {
 
 						// We also add the proxy type as an attribute to the type, as a workaround for https://github.com/dotnet/runtime/issues/127004
 						// Tracking issue: https://github.com/dotnet/macios/issues/25276
-						addPostAction (td.Module.Assembly, assembly => {
-							var attribute = new CustomAttribute (assembly.MainModule.ImportReference (ctor)); // don't use abr.CreateAttribute here, because the ctor has already been marked
-							td.CustomAttributes.Add (attribute);
-						});
+						if (needsTypeMapWorkaround) {
+							addPostAction (td.Module.Assembly, assembly => {
+								var attribute = new CustomAttribute (assembly.MainModule.ImportReference (ctor)); // don't use abr.CreateAttribute here, because the ctor has already been marked
+								td.CustomAttributes.Add (attribute);
+							});
+						}
 					}
 				}
 

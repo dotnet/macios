@@ -1082,6 +1082,9 @@ Default:
 
 ## NoBindingEmbedding
 
+> [!WARNING]
+> Setting this property to `false` is currently deprecated and will produce a build error in .NET 12+.
+
 A boolean property that specifies whether native libraries in binding projects should be embedded
 in the managed assembly, or put into a `.resources` directory next to the managed assembly.
 

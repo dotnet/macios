@@ -84,6 +84,11 @@ namespace Xamarin.Linker {
 		bool ModifyAssembly (AssemblyDefinition assembly)
 #endif
 		{
+			// Skipping resource stripping keeps the user assembly byte-identical (avoids the Copy -> Save
+			// upgrade below), which is required for Hot Reload to work with reloadable (user) assemblies.
+			if (Configuration.HotReloadCompatibleBuild)
+				return false;
+
 			if (App.Profile.IsProductAssembly (assembly) || App.Profile.IsSdkAssembly (assembly))
 				return false;
 

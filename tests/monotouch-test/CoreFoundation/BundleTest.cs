@@ -9,7 +9,15 @@ namespace MonoTouchFixtures.CoreFoundation {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class BundleTest {
+#if APP_EXTENSION
+		const string ExpectedAppName = "AppExtension.appex";
+		const string ExpectedBundleId = "com.xamarin.monotouch-test.AudioUnitExtension";
+		const string ExpectedExecutableName = "AppExtension";
+#else
 		const string ExpectedAppName = "monotouchtest.app";
+		const string ExpectedBundleId = "com.xamarin.monotouch-test";
+		const string ExpectedExecutableName = "monotouchtest";
+#endif
 
 		[Test]
 		public void TestGetAll ()
@@ -70,8 +78,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 		public void TestGetMain ()
 		{
 			var main = CFBundle.GetMain ();
-			var expectedBundleId = "com.xamarin.monotouch-test";
-			Assert.That (main.Identifier, Is.EqualTo (expectedBundleId));
+			Assert.That (main.Identifier, Is.EqualTo (ExpectedBundleId));
 			Assert.That (main.HasLoadedExecutable, Is.True);
 		}
 
@@ -87,9 +94,9 @@ namespace MonoTouchFixtures.CoreFoundation {
 		{
 			var main = CFBundle.GetMain ();
 #if __MACCATALYST__ || __MACOS__
-			var executableRelativePath = Path.Combine (ExpectedAppName, "Contents", "MacOS", "monotouchtest");
+			var executableRelativePath = Path.Combine (ExpectedAppName, "Contents", "MacOS", ExpectedExecutableName);
 #else
-			var executableRelativePath = Path.Combine (ExpectedAppName, "monotouchtest");
+			var executableRelativePath = Path.Combine (ExpectedAppName, ExpectedExecutableName);
 #endif
 			var alternativeRelativePath = executableRelativePath.Replace (ExpectedAppName, "PublicStaging.app");
 			Assert.That (main.ExecutableUrl.ToString (), Does.Contain (executableRelativePath).Or.Contain (alternativeRelativePath));

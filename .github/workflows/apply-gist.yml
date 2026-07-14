@@ -96,7 +96,8 @@ jobs:
             },
           });
           if (!resp.ok) {
-            core.setFailed(`Failed to fetch gist '${process.env.GIST_ID}': ${resp.status} ${resp.statusText}`);
+            const body = await resp.text().catch(() => '');
+            core.setFailed(`Failed to fetch gist '${process.env.GIST_ID}': ${resp.status} ${resp.statusText}${body ? `\n${body}` : ''}`);
             return;
           }
           const gist = await resp.json();

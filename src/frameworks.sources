@@ -325,6 +325,7 @@ BACKGROUNDASSETS_SOURCES = \
 # BrowserEngineKit
 
 BROWSERENGINEKIT_CORE_SOURCES = \
+	BrowserEngineKit/BEWebContentFilterEvaluateUrlWithMainFrameResult.cs \
 	BrowserEngineKit/BEStructs.cs \
 
 # BusinessChat

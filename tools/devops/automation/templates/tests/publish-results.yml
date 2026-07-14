@@ -46,6 +46,7 @@ stages:
     - ${{ config.stageName }}
   - configure_build
   - simulator_tests
+  - build_macos_tests
   condition: and(succeededOrFailed(), ${{ parameters.condition }})
 
   jobs:

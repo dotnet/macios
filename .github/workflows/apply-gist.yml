@@ -91,6 +91,7 @@ jobs:
           const resp = await fetch(`https://api.github.com/gists/${process.env.GIST_ID}`, {
             headers: {
               'Accept': 'application/vnd.github+json',
+              'X-GitHub-Api-Version': '2022-11-28',
               'User-Agent': 'dotnet-macios-apply-gist',
             },
           });
@@ -145,7 +146,10 @@ jobs:
 
         # Download gist metadata to get file URLs. The Gists API isn't accessible to the
         # GitHub Actions token (a GitHub App installation token), so fetch it unauthenticated.
-        GIST_JSON=$(curl -sSL -H "Accept: application/vnd.github+json" -H "User-Agent: dotnet-macios-apply-gist" "https://api.github.com/gists/$GIST_ID")
+        if ! GIST_JSON=$(curl -fSL -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" -H "User-Agent: dotnet-macios-apply-gist" "https://api.github.com/gists/$GIST_ID"); then
+            echo "Failed to fetch gist '$GIST_ID' (404/403/rate limit?)." >&2
+            exit 1
+        fi
         echo "$GIST_JSON" | python3 -c "
         import json, sys, urllib.request, os, re
 

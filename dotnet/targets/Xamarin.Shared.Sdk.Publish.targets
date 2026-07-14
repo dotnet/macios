@@ -31,30 +31,23 @@
 		This can be disabled by setting CopyDSYMToPublishDirectory=false.
 		Ref: https://github.com/dotnet/macios/issues/15384
 
-		This only runs when building on macOS ($([MSBuild]::IsOSPlatform('osx'))). We enumerate the
-		dSYM contents using a local MSBuild wildcard (the ItemGroup below), which can only see files
-		on the machine running MSBuild. When building remotely from Windows the app bundle and its
-		dSYMs live on the Mac build host, so there's nothing local to enumerate and this target would
-		be a no-op anyway.
+		The dSYMs are located and copied on the Mac (the tasks are session-aware and run remotely
+		when building from Windows), so this works both for local macOS builds and for remote builds
+		from Windows - hence the gate on IsMacEnabled.
 	-->
 	<Target Name="_CopyDSymToPublishDirectory"
-		Condition="'$(CopyDSYMToPublishDirectory)' != 'false' And '$(_CanOutputAppBundle)' == 'true' And $([MSBuild]::IsOSPlatform('osx'))"
+		Condition="'$(CopyDSYMToPublishDirectory)' != 'false' And '$(_CanOutputAppBundle)' == 'true' And '$(IsMacEnabled)' == 'true'"
 		DependsOnTargets="_GenerateBundleName">
 		<GetDirectories SessionId="$(BuildSessionId)" Path="$(_AppContainerDir)" Pattern="*.dSYM">
 			<Output TaskParameter="Directories" ItemName="_DSymDirToPublish" />
 		</GetDirectories>
-		<ItemGroup Condition="'@(_DSymDirToPublish->Count())' != '0'">
-			<_DSymFileToPublish Include="%(_DSymDirToPublish.Identity)/**/*">
-				<DSymDirName>%(_DSymDirToPublish.Filename)%(_DSymDirToPublish.Extension)</DSymDirName>
-			</_DSymFileToPublish>
-		</ItemGroup>
-		<Copy
+		<Ditto
 			SessionId="$(BuildSessionId)"
-			Condition="'@(_DSymFileToPublish->Count())' != '0'"
-			SourceFiles="@(_DSymFileToPublish)"
-			DestinationFiles="@(_DSymFileToPublish -> '$([MSBuild]::EnsureTrailingSlash('$(PublishDir)'))%(DSymDirName)/%(RecursiveDir)%(Filename)%(Extension)')"
-			SkipUnchangedFiles="true">
-			<Output TaskParameter="DestinationFiles" ItemName="FileWrites" />
-		</Copy>
+			Condition="'@(_DSymDirToPublish->Count())' != '0'"
+			DittoPath="$(DittoPath)"
+			Source="%(_DSymDirToPublish.Identity)"
+			Destination="$([MSBuild]::EnsureTrailingSlash('$(PublishDir)'))%(_DSymDirToPublish.Filename)%(_DSymDirToPublish.Extension)">
+			<Output TaskParameter="CopiedFiles" ItemName="FileWrites" />
+		</Ditto>
 	</Target>
 </Project>

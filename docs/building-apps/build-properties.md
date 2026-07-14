@@ -311,10 +311,6 @@ generated `.ipa`/`.pkg`).
 
 The default value is `true`.
 
-This only takes effect when publishing on a macOS host. When building from Windows the app
-bundle and its `*.dSYM` directories stay on the remote Mac build host, so nothing is copied to
-the (Windows) publish directory.
-
 ## CopySceneKitAssetsPath
 
 The full path to the `copySceneKitAssets` tool.

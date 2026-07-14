@@ -218,8 +218,10 @@ namespace Xamarin.Tests {
 				"--disable-build-servers",
 			};
 
+			var deviceName = "";
 			if (usePhysicalDevice) {
-				var deviceName = Environment.GetEnvironmentVariable ("DEVICE")!;
+				deviceName = Environment.GetEnvironmentVariable ("DEVICE") ?? "";
+				Assert.That (deviceName, Is.Not.Empty, "The DEVICE environment variable must be set to a connected device name to run this test.");
 				debugLog.WriteLine ($"Using physical device: {deviceName}");
 				args.Add ($"--device={deviceName}");
 			} else if (platform == ApplePlatform.iOS || platform == ApplePlatform.TVOS) {
@@ -247,7 +249,7 @@ namespace Xamarin.Tests {
 				// The app's stdout will be captured by mlaunch and forwarded to dotnet watch.
 				// Also set the runtime identifier explicitly to target the physical device.
 				env ["RuntimeIdentifier"] = $"{platform.AsString ().ToLowerInvariant ()}-arm64";
-				env ["Device"] = Environment.GetEnvironmentVariable ("DEVICE")!;
+				env ["Device"] = deviceName;
 				// How the device connects back to the mac for hot reload (usb or wifi).
 				env ["HotReloadConnectionMode"] = connectionMode;
 			} else {
@@ -256,7 +258,7 @@ namespace Xamarin.Tests {
 			}
 
 			Log ("Starting 'dotnet watch' with:");
-			Log ($"    Command: {DotNet.Executable} {string.Join (" ", StringUtils.QuoteForProcess (args)!)}");
+			Log ($"    Command: {DotNet.Executable} {string.Join (" ", StringUtils.QuoteForProcess (args) ?? [])}");
 			Log ($"    Working directory: {projectDirectory}");
 			foreach (var kvp in env)
 				Log ($"    Environment variable: {kvp.Key}={kvp.Value}");

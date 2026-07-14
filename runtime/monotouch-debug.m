@@ -1037,7 +1037,10 @@ port_forward_thread (void *arg)
 
 	LOG (PRODUCT ": Port forwarding thread started (listen_fd=%d, dst_fd=%d)\n", listen_fd, dst_fd);
 
-	while (true) {
+	// Keep accepting incoming connections until the destination (dst_fd) disconnects: once it's
+	// gone we can never forward again, so there's no point in accepting more source connections.
+	bool keep_listening = true;
+	while (keep_listening) {
 		// Accept an incoming connection
 		struct sockaddr_in src_addr;
 		socklen_t src_len = sizeof (src_addr);
@@ -1069,6 +1072,7 @@ port_forward_thread (void *arg)
 			} while (rv == -1 && errno == EINTR);
 			if (rv < 0) {
 				LOG (PRODUCT ": Port forwarding: select failed: %s\n", strerror (errno));
+				keep_listening = false;
 				break;
 			}
 
@@ -1079,11 +1083,14 @@ port_forward_thread (void *arg)
 					n = recv (src_fd, buf, sizeof (buf), 0);
 				} while (n == -1 && errno == EINTR);
 				if (n <= 0) {
+					// The source disconnected; keep the listener open for the next connection.
 					LOG (PRODUCT ": Port forwarding: source disconnected (n=%zd, errno=%s)\n", n, strerror (errno));
 					break;
 				}
 				if (!send_uninterrupted (dst_fd, buf, (size_t) n)) {
+					// The destination is gone; stop the thread.
 					LOG (PRODUCT ": Port forwarding: failed to send to the destination: %s\n", strerror (errno));
+					keep_listening = false;
 					break;
 				}
 			}
@@ -1093,10 +1100,13 @@ port_forward_thread (void *arg)
 					n = recv (dst_fd, buf, sizeof (buf), 0);
 				} while (n == -1 && errno == EINTR);
 				if (n <= 0) {
+					// The destination disconnected; stop the thread.
 					LOG (PRODUCT ": Port forwarding: destination disconnected (n=%zd, errno=%s)\n", n, strerror (errno));
+					keep_listening = false;
 					break;
 				}
 				if (!send_uninterrupted (src_fd, buf, (size_t) n)) {
+					// The source is gone; keep the listener open for the next connection.
 					LOG (PRODUCT ": Port forwarding: failed to send to the source: %s\n", strerror (errno));
 					break;
 				}
@@ -1104,10 +1114,12 @@ port_forward_thread (void *arg)
 		}
 
 		close (src_fd);
-		LOG (PRODUCT ": Port forwarding: connection closed, waiting for next connection.\n");
+		if (keep_listening)
+			LOG (PRODUCT ": Port forwarding: connection closed, waiting for next connection.\n");
 	}
 
 	close (listen_fd);
+	close (dst_fd);
 	return NULL;
 }
 
@@ -1316,8 +1328,10 @@ monotouch_process_connection (int fd)
 					// Signal that port forwarding has been configured (and the
 					// environment variables have been set). The app startup may be
 					// waiting for this in monotouch_wait_for_port_forwarding ().
-					port_forwarding_configured = true;
+					// Set the predicate while holding the mutex (the waiter reads it under
+					// the mutex), to avoid a data race and a possible missed wakeup.
 					pthread_mutex_lock (&mutex);
+					port_forwarding_configured = true;
 					pthread_cond_signal (&cond);
 					pthread_mutex_unlock (&mutex);
 

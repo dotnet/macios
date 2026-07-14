@@ -87,7 +87,7 @@ namespace Foundation {
 
 			unsafe {
 				fixed (byte* p = buffer) {
-					EncodeBlock ((IntPtr) p, buffer.Length, key);
+					EncodeBlock ((IntPtr) (p + offset), count, key);
 				}
 			}
 		}

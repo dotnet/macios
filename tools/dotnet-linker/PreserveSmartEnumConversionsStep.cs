@@ -2,7 +2,6 @@
 
 using System.IO;
 using System.Linq;
-using System.Xml.Linq;
 
 using Mono.Cecil;
 using Mono.Linker;
@@ -35,9 +34,8 @@ namespace Xamarin.Linker.Steps {
 			}
 		}
 
-		// The framework-side conversion methods to preserve via the root-descriptor XML, grouped by
-		// assembly name -> type full name -> set of methods.
-		readonly Dictionary<string, Dictionary<string, HashSet<MethodDefinition>>> xmlPreservedMethods = new (StringComparer.Ordinal);
+		// The framework-side conversion methods to preserve via the root-descriptor XML.
+		readonly XmlDescriptor xmlDescriptor = new ();
 
 		PreserveSmartEnumConversion? preserver;
 		PreserveSmartEnumConversion Preserver {
@@ -76,8 +74,8 @@ namespace Xamarin.Linker.Steps {
 			if (UseXmlDescriptionFile) {
 				// Don't modify the (possibly user) assembly: collect the framework-side conversion methods so
 				// they can be preserved unconditionally via a root-descriptor XML instead.
-				AddXmlPreservedMethod (pair.Item1);
-				AddXmlPreservedMethod (pair.Item2);
+				xmlDescriptor.PreserveMethod (pair.Item1);
+				xmlDescriptor.PreserveMethod (pair.Item2);
 				return false;
 			}
 
@@ -90,61 +88,13 @@ namespace Xamarin.Linker.Steps {
 			return modified;
 		}
 
-		void AddXmlPreservedMethod (MethodDefinition method)
-		{
-			var assemblyName = method.DeclaringType.Module.Assembly.Name.Name;
-			if (!xmlPreservedMethods.TryGetValue (assemblyName, out var types)) {
-				types = new Dictionary<string, HashSet<MethodDefinition>> (StringComparer.Ordinal);
-				xmlPreservedMethods.Add (assemblyName, types);
-			}
-
-			var typeName = method.DeclaringType.FullName;
-			if (!types.TryGetValue (typeName, out var methods)) {
-				methods = new HashSet<MethodDefinition> ();
-				types.Add (typeName, methods);
-			}
-
-			methods.Add (method);
-		}
-
-		// The ILLink xml root-descriptor method signature is the method's full name without the declaring type prefix.
-		static string GetXmlSignature (MethodDefinition method)
-		{
-			var marker = method.DeclaringType.FullName + "::";
-			var index = method.FullName.IndexOf (marker, StringComparison.Ordinal);
-			if (index < 0)
-				return method.FullName;
-
-			return method.FullName.Substring (0, index) + method.FullName.Substring (index + marker.Length);
-		}
-
 		protected override void TryEndProcess ()
 		{
-			if (!UseXmlDescriptionFile || xmlPreservedMethods.Count == 0)
+			if (!UseXmlDescriptionFile || xmlDescriptor.IsEmpty)
 				return;
 
 			var xmlPath = Path.Combine (Configuration.CacheDirectory, "preserve-smart-enum-conversions.xml");
-			var directory = Path.GetDirectoryName (xmlPath);
-			if (!string.IsNullOrEmpty (directory))
-				Directory.CreateDirectory (directory);
-
-			var document = new XDocument (
-				new XElement ("linker",
-					xmlPreservedMethods
-						.OrderBy (v => v.Key, StringComparer.Ordinal)
-						.Select (assembly => new XElement ("assembly",
-							new XAttribute ("fullname", assembly.Key),
-							assembly.Value
-								.OrderBy (v => v.Key, StringComparer.Ordinal)
-								.Select (type => new XElement ("type",
-									new XAttribute ("fullname", type.Key),
-									new XAttribute ("preserve", "nothing"),
-									type.Value
-										.OrderBy (GetXmlSignature, StringComparer.Ordinal)
-										.Select (method => new XElement ("method",
-											new XAttribute ("signature", GetXmlSignature (method)),
-											new XAttribute ("required", "true")))))))));
-			document.Save (xmlPath);
+			xmlDescriptor.Save (xmlPath);
 
 			// The descriptor is consumed by the subsequent trimmer pass, which MSBuild wires into
 			// TrimmerRootDescriptor after reading this output property (see _SetSmartEnumConversionsRootDescriptor).

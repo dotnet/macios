@@ -175,7 +175,6 @@ define PlatformFrameworkTemplate
 	$$(Q) rm -rf $$@
 	$$(call Q_2,DSYM,  [$(1)/$(2)]) $(XCODE_DEVELOPER_ROOT)/Toolchains/XcodeDefault.xctoolchain/usr/bin/dsymutil "$$<" -o "$$@"
 
-.libs/$(1)/$(2).framework.stamp: .libs/$(1)/$(2).framework$($(1)_BINARY_INFIX)/$(2)
 .libs/$(1)/$(2).framework.stamp: .libs/$(1)/$(2).framework.dSYM
 	$$(Q) touch $$@
 
@@ -343,7 +342,7 @@ $(1)_XCFRAMEWORKS += $$(foreach xcframeworkPlatform,$$(XCFRAMEWORK_PLATFORMS),.l
 $(1)_XCTARGETS += $$(foreach xcframeworkPlatform,$$(XCFRAMEWORK_PLATFORMS),.libs/$$(xcframeworkPlatform)/$(1).framework.stamp)
 .libs/$(1).xcframework: $$($(1)_XCTARGETS) Makefile
 	$$(Q) rm -rf $$@
-	$$(Q_GEN) args=""; for fw in $$($(1)_XCFRAMEWORKS); do args="$$$$args -framework $$$$fw"; if test -d "$$$$fw.dSYM"; then args="$$$$args -debug-symbols $$(CURDIR)/$$$$fw.dSYM"; fi; done; $$(XCODE_DEVELOPER_ROOT)/usr/bin/xcodebuild -quiet -create-xcframework $$$$args -output $$@
+	$$(Q_GEN) args=""; for fw in $$($(1)_XCFRAMEWORKS); do args="$$$$args -framework \"$$$$fw\""; if test -d "$$$$fw.dSYM"; then args="$$$$args -debug-symbols \"$$(CURDIR)/$$$$fw.dSYM\""; fi; done; eval $$(XCODE_DEVELOPER_ROOT)/usr/bin/xcodebuild -quiet -create-xcframework $$$$args -output $$@
 all-local:: .libs/$(1).xcframework
 endef
 $(foreach testFramework,$(TEST_FRAMEWORKS),$(eval $(call TestFrameworkXCFramework,$(testFramework))))
@@ -353,7 +352,7 @@ $(1)_$(2)_XCFRAMEWORKS += $$(foreach xcframeworkPlatform,$$(XCFRAMEWORK_$(2)_PLA
 $(1)_$(2)_XCTARGETS += $$(foreach xcframeworkPlatform,$$(XCFRAMEWORK_$(2)_PLATFORMS),.libs/$$(xcframeworkPlatform)/$(1).framework.stamp)
 .libs/$(3)/$(1).xcframework: $$($(1)_$(2)_XCTARGETS) Makefile
 	$$(Q) rm -rf $$@
-	$$(Q_GEN) args=""; for fw in $$($(1)_$(2)_XCFRAMEWORKS); do args="$$$$args -framework $$$$fw"; if test -d "$$$$fw.dSYM"; then args="$$$$args -debug-symbols $$(CURDIR)/$$$$fw.dSYM"; fi; done; $$(XCODE_DEVELOPER_ROOT)/usr/bin/xcodebuild -quiet -create-xcframework $$$$args -output $$@
+	$$(Q_GEN) args=""; for fw in $$($(1)_$(2)_XCFRAMEWORKS); do args="$$$$args -framework \"$$$$fw\""; if test -d "$$$$fw.dSYM"; then args="$$$$args -debug-symbols \"$$(CURDIR)/$$$$fw.dSYM\""; fi; done; eval $$(XCODE_DEVELOPER_ROOT)/usr/bin/xcodebuild -quiet -create-xcframework $$$$args -output $$@
 all-local:: .libs/$(3)/$(1).xcframework
 endef
 $(foreach platform,$(DOTNET_PLATFORMS),$(foreach testFramework,$(TEST_FRAMEWORKS),$(eval $(call TestFrameworkXCFrameworkPlatformSpecific,$(testFramework),$(platform),$(shell echo $(platform) | tr 'A-Z' 'a-z')))))

@@ -592,6 +592,18 @@ Example:
 </Target>
 ```
 
+## HotReloadCompatibleBuild
+
+A boolean property that indicates whether the build must remain compatible with
+Hot Reload. When set to `true`, the build avoids modifying user assemblies so
+they stay byte-for-byte unchanged (a requirement for Hot Reload).
+
+For the trimmable static registrar this means the generated
+`[UnmanagedCallersOnly]` registrar trampolines are emitted into the per-assembly
+companion assembly (`_<AssemblyName>.TypeMap.dll`) instead of the user assembly.
+
+The default value is `false`.
+
 ## IBToolPath
 
 The full path to the `ibtool` tool.

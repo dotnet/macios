@@ -81,6 +81,7 @@ namespace Xamarin.Bundler {
 		public List<string>? AotOtherArguments = null;
 		public bool? AotFloat32 = null;
 		public bool PrepareAssemblies; // True if '$(PrepareAssemblies)' == 'true'
+		public bool HotReloadCompatibleBuild; // True if '$(HotReloadCompatibleBuild)' == 'true'
 #if ASSEMBLY_PREPARER
 		public bool InCustomTrimmerStep = false;
 		public bool IsPostProcessingAssemblies;

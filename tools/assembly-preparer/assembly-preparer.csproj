@@ -150,6 +150,9 @@
 		<Compile Include="../dotnet-linker/MarkForStaticRegistrarStep.cs">
 			<Link>external/tools/dotnet-linker/MarkForStaticRegistrarStep.cs</Link>
 		</Compile>
+		<Compile Include="../dotnet-linker/RegistrarCompanionAssembly.cs">
+			<Link>external/tools/dotnet-linker/RegistrarCompanionAssembly.cs</Link>
+		</Compile>
 		<Compile Include="../dotnet-linker/MarkNSObjectsStep.cs">
 			<Link>external/tools/dotnet-linker/MarkNSObjectsStep.cs</Link>
 		</Compile>

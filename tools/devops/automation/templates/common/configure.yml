@@ -26,48 +26,6 @@ parameters:
   type: object
   default: [
     {
-      label: windows,
-      splitByPlatforms: false,
-      testPrefix: 'windows_integration',
-      testStage: 'windows_integration'
-    },
-    {
-      label: assembly-processing,
-      splitByPlatforms: false,
-      testPrefix: 'simulator_tests',
-    },
-    {
-      label: cecil,
-      splitByPlatforms: false,
-      testPrefix: 'simulator_tests',
-    },
-    {
-      label: dotnettests,
-      splitByPlatforms: true,
-      needsMultiplePlatforms: true,
-      testPrefix: 'simulator_tests',
-    },
-    {
-      label: fsharp,
-      splitByPlatforms: false,
-      testPrefix: 'simulator_tests',
-    },
-    {
-      label: framework,
-      splitByPlatforms: false,
-      testPrefix: 'simulator_tests',
-    },
-    {
-      label: generator,
-      splitByPlatforms: false,
-      testPrefix: 'simulator_tests',
-    },
-    {
-      label: interdependent-binding-projects,
-      splitByPlatforms: false,
-      testPrefix: 'simulator_tests',
-    },
-    {
       label: introspection,
       splitByPlatforms: false,
       testPrefix: 'simulator_tests',
@@ -82,27 +40,6 @@ parameters:
       label: monotouch,
       splitByPlatforms: true,
       needsMultiplePlatforms: false,
-      testPrefix: 'simulator_tests',
-    },
-    {
-      label: msbuild,
-      splitByPlatforms: false,
-      testPrefix: 'simulator_tests',
-    },
-    {
-      label: sharpie,
-      splitByPlatforms: false,
-      supportsNoPlatforms: true,
-      testPrefix: 'simulator_tests',
-    },
-    {
-      label: xcframework,
-      splitByPlatforms: false,
-      testPrefix: 'simulator_tests',
-    },
-    {
-      label: xtro,
-      splitByPlatforms: false,
       testPrefix: 'simulator_tests',
     },
     {

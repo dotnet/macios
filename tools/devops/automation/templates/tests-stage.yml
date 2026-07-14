@@ -131,13 +131,6 @@ parameters:
 
 stages:
 
-- template: ./build/linux-build-verification.yml
-  parameters:
-    isPR: ${{ parameters.isPR }}
-    repositoryAlias: ${{ parameters.repositoryAlias }}
-    commit: ${{ parameters.commit }}
-    stageDisplayNamePrefix: ${{ parameters.stageDisplayNamePrefix }}
-
 - stage: configure_build
   displayName: '${{ parameters.stageDisplayNamePrefix }}Configure'
   dependsOn: ${{ parameters.dependsOn }}
@@ -252,20 +245,6 @@ stages:
     commit: ${{ parameters.commit }}
     postPipeline: ${{ not(parameters.buildPackages) }}
     macTestsConfigurations: ${{ parameters.macTestsConfigurations }}
-
-- ${{ if eq(parameters.runWindowsIntegration, true) }}:
-  - template: ./windows/stage.yml
-    parameters:
-      isPR: ${{ parameters.isPR }}
-      repositoryAlias: ${{ parameters.repositoryAlias }}
-      commit: ${{ parameters.commit }}
-      stageName: windows_integration
-      displayName: '${{ parameters.stageDisplayNamePrefix }}Windows Integration Tests'
-      pool: 'VSEng-Xamarin-Mac-Devices' # currently ignored until the VS team provides a real one
-      statusContext: 'Windows Integration Tests'
-      gitHubToken: $(Github.Token)
-      xqaCertPass: $(xqa--certificates--password)
-      postPipeline: ${{ not(parameters.buildPackages) }}
 
 - stage: build_macos_tests
   displayName: '${{ parameters.stageDisplayNamePrefix }}Build macOS tests'

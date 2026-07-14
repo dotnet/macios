@@ -1710,6 +1710,12 @@
 {2} - The computed extraction path.
 {3} - The intended output directory.</comment>
     </data>
+    <data name="E7184" xml:space="preserve">
+        <value>Could not determine the on-device destination path after copying '{0}' to the device. The 'xcrun devicectl' json output was: {1}</value>
+        <comment>Shown when the DeviceCtl task copied a file to a device, but the on-device destination path could not be extracted from devicectl's json output.
+{0} - The path of the file that was copied to the device.
+{1} - The json output from 'xcrun devicectl'.</comment>
+    </data>
     <data name="E0192" xml:space="preserve">
         <value>The PrepareAssemblies task failed without reporting a specific error. Please rebuild with increased verbosity for more details.</value>
     </data>

@@ -21,6 +21,37 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacCatalyst, false, true)]
 		public void DotNetWatch (ApplePlatform platform, bool useMonoRuntime, bool enableSandbox)
 		{
+			DotNetWatchImpl (platform, useMonoRuntime, enableSandbox, usePhysicalDevice: false);
+		}
+
+		// This test is opt-in: set the DEVICE environment variable to the name of a connected device.
+		[Test]
+		[TestCase (ApplePlatform.iOS)]
+		public void DotNetWatchDeviceUsb (ApplePlatform platform)
+		{
+			var deviceName = Environment.GetEnvironmentVariable ("DEVICE");
+			if (string.IsNullOrEmpty (deviceName))
+				Assert.Inconclusive ("Set the DEVICE environment variable to a connected device name to run this test.");
+
+			DotNetWatchImpl (platform, useMonoRuntime: false, enableSandbox: false, usePhysicalDevice: true, connectionMode: "usb");
+		}
+
+		// This test is opt-in: set the DEVICE environment variable to the name of a connected device.
+		// The device must also be reachable from the mac over the network (e.g. on the same wifi), since
+		// the app connects back to mlaunch over the network for hot reload in this scenario.
+		[Test]
+		[TestCase (ApplePlatform.iOS)]
+		public void DotNetWatchDeviceWifi (ApplePlatform platform)
+		{
+			var deviceName = Environment.GetEnvironmentVariable ("DEVICE");
+			if (string.IsNullOrEmpty (deviceName))
+				Assert.Inconclusive ("Set the DEVICE environment variable to a connected device name to run this test.");
+
+			DotNetWatchImpl (platform, useMonoRuntime: false, enableSandbox: false, usePhysicalDevice: true, connectionMode: "wifi");
+		}
+
+		void DotNetWatchImpl (ApplePlatform platform, bool useMonoRuntime, bool enableSandbox, bool usePhysicalDevice, string connectionMode = "usb")
+		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 
 			var projectPath = GetProjectPath ("HotReloadTestApp", platform: platform);
@@ -187,7 +218,11 @@ namespace Xamarin.Tests {
 				"--disable-build-servers",
 			};
 
-			if (platform == ApplePlatform.iOS || platform == ApplePlatform.TVOS) {
+			if (usePhysicalDevice) {
+				var deviceName = Environment.GetEnvironmentVariable ("DEVICE")!;
+				debugLog.WriteLine ($"Using physical device: {deviceName}");
+				args.Add ($"--device={deviceName}");
+			} else if (platform == ApplePlatform.iOS || platform == ApplePlatform.TVOS) {
 				var runtimeIdentifier = GetDefaultRuntimeIdentifier (platform);
 				Log ($"Computing a device to use for {platform} (runtime identifier: {runtimeIdentifier})...");
 				var device = GetDeviceAsync (projectDirectory, runtimeIdentifier).GetAwaiter ().GetResult ();
@@ -196,7 +231,6 @@ namespace Xamarin.Tests {
 			}
 
 			var env = new Dictionary<string, string?> {
-				{ "HOTRELOAD_TEST_APP_LOGFILE", logPath },
 				{ "AdditionalFile", additionalFile },
 				{ "UseMonoRuntime", useMonoRuntime ? "true" : "false" },
 				{ "RunWithOpen", "false" }, // this makes it so that the watched process is a subprocess, which means that ctrl-c in the terminal will kill everything. It also means that it'll get killed if something times out in the test.
@@ -208,9 +242,21 @@ namespace Xamarin.Tests {
 
 			DotNet.IgnoreIfUnsupportedMonoRuntime (useMonoRuntime);
 
+			if (usePhysicalDevice) {
+				// On a physical device, the app can't write to the Mac filesystem, so don't set the log file path.
+				// The app's stdout will be captured by mlaunch and forwarded to dotnet watch.
+				// Also set the runtime identifier explicitly to target the physical device.
+				env ["RuntimeIdentifier"] = $"{platform.AsString ().ToLowerInvariant ()}-arm64";
+				env ["Device"] = Environment.GetEnvironmentVariable ("DEVICE")!;
+				// How the device connects back to the mac for hot reload (usb or wifi).
+				env ["HotReloadConnectionMode"] = connectionMode;
+			} else {
+				// On simulators and desktop, the app can write to the Mac filesystem.
+				env ["HOTRELOAD_TEST_APP_LOGFILE"] = logPath;
+			}
+
 			Log ("Starting 'dotnet watch' with:");
-			Log ($"    Executable: {DotNet.Executable}");
-			Log ($"    Arguments: {string.Join (" ", args)}");
+			Log ($"    Command: {DotNet.Executable} {string.Join (" ", StringUtils.QuoteForProcess (args)!)}");
 			Log ($"    Working directory: {projectDirectory}");
 			foreach (var kvp in env)
 				Log ($"    Environment variable: {kvp.Key}={kvp.Value}");
@@ -232,9 +278,13 @@ namespace Xamarin.Tests {
 			try {
 				// Wait for the app to start and show initial output
 				Log ("Waiting for app start...");
-				if (!Task.WhenAny (appStarted.Task, waitingForChanges.Task).Wait (TimeSpan.FromMinutes (1))) {
+				if (!Task.WhenAny (appStarted.Task, waitingForChanges.Task, watchTask).Wait (TimeSpan.FromMinutes (2))) {
 					Log ("Timed out waiting for the app to start.");
 					Assert.Fail ($"Timed out waiting for the app to start. Output:\n{string.Join ("\n", output)}\nDebug output:\n{string.Join ("\n", File.ReadAllLines (debugLogPath))}");
+				}
+				if (watchTask.IsCompleted) {
+					Log ("FAIL: 'dotnet watch' finished prematurely.");
+					Assert.Fail ($"'dotnet watch' finished prematurely. Output:\n{string.Join ("\n", output)}\nDebug output:\n{string.Join ("\n", File.ReadAllLines (debugLogPath))}");
 				}
 				if (!appStarted.Task.IsCompleted) {
 					if (waitingForChanges.Task.IsCompleted && !waitingForChanges.Task.Result) {

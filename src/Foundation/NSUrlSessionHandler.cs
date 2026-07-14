@@ -534,9 +534,12 @@ namespace Foundation {
 		///         <remarks>To be added.</remarks>
 		protected override async Task<HttpResponseMessage> SendAsync (HttpRequestMessage request, CancellationToken cancellationToken)
 		{
-			ConfigureSessionProxy (request);
-
+			// Mark the handler as non-modifiable before any per-first-request initialization (such as
+			// configuring the session proxy), so other threads can't mutate handler properties once the
+			// first request has started being processed.
 			Volatile.Write (ref sentRequest, true);
+
+			ConfigureSessionProxy (request);
 
 			var nsrequest = await CreateRequest (request).ConfigureAwait (false);
 			var dataTask = session.CreateDataTask (nsrequest);

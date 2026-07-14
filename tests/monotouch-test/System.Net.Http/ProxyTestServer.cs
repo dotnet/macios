@@ -199,6 +199,10 @@ namespace MonoTests.System.Net.Http {
 					break;
 				read += r;
 			}
+			// If the client disconnected early, return only the bytes we actually read (rather than a
+			// buffer padded with trailing zero bytes).
+			if (read < length)
+				Array.Resize (ref body, read);
 			return body;
 		}
 

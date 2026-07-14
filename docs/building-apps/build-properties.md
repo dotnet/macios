@@ -702,16 +702,16 @@ Only applicable to iOS and tvOS projects.
 
 ## IpaIncludeSymbols
 
-If the app's debug symbols (dSYMs) should be included in the IPA, in the
-`Symbols` directory Apple expects. This makes App Store Connect (and Xcode's
-Organizer) symbolicate crash reports for the app automatically.
+If the app's symbols should be included in the IPA, in the `Symbols`
+directory Apple expects. This makes App Store Connect (and Xcode's Organizer)
+symbolicate crash reports for the app automatically.
 
-The symbols are generated from the build's dSYM directories using
-`xcrun symbols`, and only the parts Apple needs are included (the full dSYMs
-are not embedded in the IPA).
+The symbols are the Apple `*.symbols` files generated from the build's dSYM
+directories using `xcrun symbols` (the dSYM directories themselves are not
+embedded in the IPA).
 
-The default value is `true` when creating an IPA (see [BuildIpa](#buildipa)),
-and `false` otherwise. Set it to `false` to opt out.
+The default value is `true`. Set it to `false` to opt out. This property has
+no effect unless an IPA is being created (see [BuildIpa](#buildipa)).
 
 Only applicable to iOS and tvOS projects.
 

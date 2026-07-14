@@ -483,7 +483,7 @@ Copyright (C) 2013-2016 Xamarin. All rights reserved.
 		<!-- Turn the dSYMs into the *.symbols files Apple expects in the .ipa's 'Symbols' directory. -->
 		<CreateSymbolsPackage
 			SessionId="$(BuildSessionId)"
-			Condition="'$(IsMacEnabled)' == 'true' And '@(_IpaSymbolDSymDir)' != ''"
+			Condition="'$(IsMacEnabled)' == 'true' And '@(_IpaSymbolDSymDir->Count())' != '0'"
 			DSymDirectories="@(_IpaSymbolDSymDir)"
 			SymbolsDirectory="$(DeviceSpecificIntermediateOutputPath)ipa\Symbols"
 		/>

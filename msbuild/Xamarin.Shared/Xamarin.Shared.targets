@@ -3456,9 +3456,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		<!-- Extensibility point for VS Publishing Workflow -->
 		<_BeforeCreateIpaForDistributionDependsOn />
 
-		<!-- Embed the app's symbols in the .ipa by default whenever we're creating one. -->
-		<IpaIncludeSymbols Condition="'$(IpaIncludeSymbols)' == ''">$(BuildIpa)</IpaIncludeSymbols>
-
 		<CreateIpaDependsOn>
 			_BeforeCreateIpaForDistribution;
 			_CompileEntitlements;

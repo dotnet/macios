@@ -1,6 +1,8 @@
 // Copyright 2017 Xamarin Inc.
 
+using System.IO;
 using System.Linq;
+using System.Xml.Linq;
 
 using Mono.Cecil;
 using Mono.Linker;
@@ -16,6 +18,26 @@ namespace Xamarin.Linker.Steps {
 	public class PreserveSmartEnumConversionsStep : AssemblyModifierStep {
 		protected override string Name { get; } = "Smart Enum Conversion Preserver";
 		protected override int ErrorCode { get; } = 2200;
+
+		// When set, we can't modify user assemblies (that would break Hot Reload), so instead of injecting
+		// [DynamicDependency] attributes into the referencing (possibly user) assembly, we collect the
+		// framework-side conversion methods and emit an ILLink root-descriptor XML that preserves them
+		// unconditionally. This only makes sense in the assembly-preparer, where the descriptor is consumed
+		// by the subsequent trimmer pass (in the trimmer itself we keep the current attribute-injection
+		// behaviour, which doesn't affect Hot Reload since Hot Reload requires the assembly-preparer).
+		bool UseXmlDescriptionFile {
+			get {
+#if ASSEMBLY_PREPARER
+				return Configuration.Application.HotReloadCompatibleBuild;
+#else
+				return false;
+#endif
+			}
+		}
+
+		// The framework-side conversion methods to preserve via the root-descriptor XML, grouped by
+		// assembly name -> type full name -> set of methods.
+		readonly Dictionary<string, Dictionary<string, HashSet<MethodDefinition>>> xmlPreservedMethods = new (StringComparer.Ordinal);
 
 		PreserveSmartEnumConversion? preserver;
 		PreserveSmartEnumConversion Preserver {
@@ -34,8 +56,9 @@ namespace Xamarin.Linker.Steps {
 			// means adding dynamic dependency attributes to the methods in the unlinked assembly X,
 			// which means we need to process the unlinked assembly X.
 
-			// Hot Reload: we can't modify user assemblies when Hot Reload is enabled (otherwise Hot Reload won't work),
-			// so we'll have to come up with a different solution (emit xml definition instead maybe?)
+			// Hot Reload: we can't modify user assemblies when Hot Reload is enabled (otherwise Hot Reload won't
+			// work), so in that case (see UseXmlDescriptionFile) we emit an xml root-descriptor instead of
+			// injecting [DynamicDependency] attributes into the referencing assembly.
 
 			// Unless an assembly is or references our platform assembly, then it won't have anything we need to preserve
 			if (!Configuration.Profile.IsOrReferencesProductAssembly (assembly))
@@ -50,6 +73,14 @@ namespace Xamarin.Linker.Steps {
 			if (conds.Length == 0)
 				return false;
 
+			if (UseXmlDescriptionFile) {
+				// Don't modify the (possibly user) assembly: collect the framework-side conversion methods so
+				// they can be preserved unconditionally via a root-descriptor XML instead.
+				AddXmlPreservedMethod (pair.Item1);
+				AddXmlPreservedMethod (pair.Item2);
+				return false;
+			}
+
 			var modified = false;
 			foreach (var condition in conds) {
 				modified |= abr.AddDynamicDependencyAttribute (condition, pair.Item1);
@@ -57,6 +88,67 @@ namespace Xamarin.Linker.Steps {
 			}
 
 			return modified;
+		}
+
+		void AddXmlPreservedMethod (MethodDefinition method)
+		{
+			var assemblyName = method.DeclaringType.Module.Assembly.Name.Name;
+			if (!xmlPreservedMethods.TryGetValue (assemblyName, out var types)) {
+				types = new Dictionary<string, HashSet<MethodDefinition>> (StringComparer.Ordinal);
+				xmlPreservedMethods.Add (assemblyName, types);
+			}
+
+			var typeName = method.DeclaringType.FullName;
+			if (!types.TryGetValue (typeName, out var methods)) {
+				methods = new HashSet<MethodDefinition> ();
+				types.Add (typeName, methods);
+			}
+
+			methods.Add (method);
+		}
+
+		// The ILLink xml root-descriptor method signature is the method's full name without the declaring type prefix.
+		static string GetXmlSignature (MethodDefinition method)
+		{
+			var marker = method.DeclaringType.FullName + "::";
+			var index = method.FullName.IndexOf (marker, StringComparison.Ordinal);
+			if (index < 0)
+				return method.FullName;
+
+			return method.FullName.Substring (0, index) + method.FullName.Substring (index + marker.Length);
+		}
+
+		protected override void TryEndProcess ()
+		{
+			if (!UseXmlDescriptionFile || xmlPreservedMethods.Count == 0)
+				return;
+
+			var xmlPath = Path.Combine (Configuration.CacheDirectory, "preserve-smart-enum-conversions.xml");
+			var directory = Path.GetDirectoryName (xmlPath);
+			if (!string.IsNullOrEmpty (directory))
+				Directory.CreateDirectory (directory);
+
+			var document = new XDocument (
+				new XElement ("linker",
+					xmlPreservedMethods
+						.OrderBy (v => v.Key, StringComparer.Ordinal)
+						.Select (assembly => new XElement ("assembly",
+							new XAttribute ("fullname", assembly.Key),
+							assembly.Value
+								.OrderBy (v => v.Key, StringComparer.Ordinal)
+								.Select (type => new XElement ("type",
+									new XAttribute ("fullname", type.Key),
+									new XAttribute ("preserve", "nothing"),
+									type.Value
+										.OrderBy (GetXmlSignature, StringComparer.Ordinal)
+										.Select (method => new XElement ("method",
+											new XAttribute ("signature", GetXmlSignature (method)),
+											new XAttribute ("required", "true")))))))));
+			document.Save (xmlPath);
+
+			// The descriptor is consumed by the subsequent trimmer pass, which MSBuild wires into
+			// TrimmerRootDescriptor after reading this output property (see _SetSmartEnumConversionsRootDescriptor).
+			Configuration.SetOutputForMSBuild ("SmartEnumConversionsRootDescriptor", xmlPath);
 		}
 
 		protected override bool ProcessType (TypeDefinition type)

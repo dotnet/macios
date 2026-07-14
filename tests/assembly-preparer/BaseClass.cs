@@ -17,19 +17,19 @@ public abstract class BaseClass {
 		Assert.That (exceptions, Is.Empty, "Exceptions");
 	}
 
-	public bool AssertPrepare (ApplePlatform platform, bool isCoreCLR, string code, out AssemblyDefinition assemblyDefinition)
+	public bool AssertPrepare (ApplePlatform platform, bool isCoreCLR, string code, out AssemblyDefinition assemblyDefinition, string? extraConfig = null)
 	{
-		return AssertPrepare (platform, isCoreCLR, RegistrarMode.Dynamic, code, out assemblyDefinition);
+		return AssertPrepare (platform, isCoreCLR, RegistrarMode.Dynamic, code, out assemblyDefinition, extraConfig);
 	}
 
 	// returns true if the test assembly was modified
-	public bool AssertPrepare (ApplePlatform platform, bool isCoreCLR, RegistrarMode registrar, string code, out AssemblyDefinition assemblyDefinition)
+	public bool AssertPrepare (ApplePlatform platform, bool isCoreCLR, RegistrarMode registrar, string code, out AssemblyDefinition assemblyDefinition, string? extraConfig = null)
 	{
 		AssemblyPreparer? preparer = null;
 		var rv = AssertPrepareCode (platform, isCoreCLR, p => {
 			p.Registrar = registrar;
 			preparer = p;
-		}, code, out string outputPath);
+		}, code, out string outputPath, extraConfig);
 		var resolver = new DefaultAssemblyResolver ();
 		var dirs = preparer!.Assemblies.Select (v => Path.GetDirectoryName (v.OutputPath)).Distinct ().ToList ();
 		dirs.ForEach (v => resolver.AddSearchDirectory (v));
@@ -42,7 +42,7 @@ public abstract class BaseClass {
 	}
 
 	// returns true if the test assembly was modified
-	public bool AssertPrepareCode (ApplePlatform platform, bool isCoreCLR, Action<AssemblyPreparer>? configure, string code, out string outputPath)
+	public bool AssertPrepareCode (ApplePlatform platform, bool isCoreCLR, Action<AssemblyPreparer>? configure, string code, out string outputPath, string? extraConfig = null)
 	{
 		Configuration.IgnoreIfIgnoredPlatform (platform);
 
@@ -67,6 +67,7 @@ public abstract class BaseClass {
 		SdkDevPath={Configuration.XcodeLocation}
 		SdkVersion={Configuration.GetSdkVersion (platform)}
 		TargetFramework={TargetFramework.GetTargetFramework (platform)}
+		{extraConfig}
 		";
 		var configpath = Path.Combine (tmpdir, "config.txt");
 		File.WriteAllText (configpath, config);

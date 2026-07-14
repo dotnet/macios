@@ -35,6 +35,7 @@
       <MergedAssemblies Include="@(ReferencePath)" Condition="'%(FileName)' == 'System.Reactive'" />
       <MergedAssemblies Include="@(ReferencePath)" Condition="'%(FileName)' == 'System.Security.Cryptography.ProtectedData'" />
       <MergedAssemblies Include="@(ReferencePath)" Condition="'%(FileName)' == 'System.Text.Encoding.CodePages'" />
+      <MergedAssemblies Include="@(ReferencePath)" Condition="'%(FileName)' == 'Microsoft.Win32.SystemEvents'" />
 
       <MergedAssemblies Include="$(OutputPath)/Microsoft.Bcl.AsyncInterfaces.dll" Condition="'$(MergeSystemAssemblies)' == 'true'" />
       <MergedAssemblies Include="$(OutputPath)/System.Buffers.dll" Condition="'$(MergeSystemAssemblies)' == 'true'" />

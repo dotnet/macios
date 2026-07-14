@@ -148,6 +148,18 @@ namespace Xamarin.Linker {
 			return tr.FullName.Length == tr.Name.Length ? "" : tr.FullName.Substring (0, tr.FullName.Length - tr.Name.Length - 1).Replace (".", "__").Replace ("/", "__");
 		}
 
+		// Emits IL that throws a RuntimeException. This is used for the CreateObject method of the proxy types
+		// we generate for generic types: we can't construct an instance of a generic type from a native handle
+		// (we'd need the generic arguments, which we don't have), and emitting a 'newobj' instruction for an
+		// open generic type produces invalid IL, so throw an exception instead.
+		void EmitThrowCannotConstructGenericType (ILProcessor il, TypeReference type)
+		{
+			il.Append (il.Create (OpCodes.Ldc_I4, 4133));
+			il.Append (il.Create (OpCodes.Ldstr, $"Cannot construct an instance of the type '{type.FullName}' from Objective-C because the type is generic."));
+			il.Append (il.Create (OpCodes.Call, abr.Runtime_CreateRuntimeException));
+			il.Append (il.Create (OpCodes.Throw));
+		}
+
 		protected override void TryEndProcess (out List<Exception>? exceptions)
 		{
 			CustomAttribute attribute;
@@ -322,12 +334,16 @@ namespace Xamarin.Linker {
 					createObjectMethod.AddParameter ("handle", abr.System_IntPtr);
 					createObjectMethod.AddParameter ("owns", abr.System_Boolean);
 					il = createObjectMethod.Body.GetILProcessor ();
-					il.Append (il.Create (OpCodes.Ldarg_1));
-					if (inativeObjCtor.Parameters [0].ParameterType.Is ("ObjCRuntime", "NativeHandle"))
-						il.Append (il.Create (OpCodes.Call, abr.NativeObject_op_Implicit_NativeHandle));
-					il.Append (il.Create (OpCodes.Ldarg_2));
-					il.Append (il.Create (OpCodes.Newobj, abr.CurrentAssembly.MainModule.ImportReference (inativeObjCtor)));
-					il.Append (il.Create (OpCodes.Ret));
+					if (tr.HasGenericParameters) {
+						EmitThrowCannotConstructGenericType (il, tr);
+					} else {
+						il.Append (il.Create (OpCodes.Ldarg_1));
+						if (inativeObjCtor.Parameters [0].ParameterType.Is ("ObjCRuntime", "NativeHandle"))
+							il.Append (il.Create (OpCodes.Call, abr.NativeObject_op_Implicit_NativeHandle));
+						il.Append (il.Create (OpCodes.Ldarg_2));
+						il.Append (il.Create (OpCodes.Newobj, abr.CurrentAssembly.MainModule.ImportReference (inativeObjCtor)));
+						il.Append (il.Create (OpCodes.Ret));
+					}
 
 					// We add the proxy type as an attribute to itself
 					attribute = abr.CreateAttribute (ctor);
@@ -399,16 +415,20 @@ namespace Xamarin.Linker {
 						var createObjectMethod = proxyType.AddMethod ("CreateObject", MethodAttributes.Public | MethodAttributes.Virtual | MethodAttributes.HideBySig, abr.Foundation_NSObject);
 						createObjectMethod.AddParameter ("handle", abr.System_IntPtr);
 						il = createObjectMethod.Body.GetILProcessor ();
-						var nativeHandleCtor = AppBundleRewriter.FindNSObjectConstructor (td);
-						if (nativeHandleCtor is not null) {
-							il.Append (il.Create (OpCodes.Ldarg_1));
-							if (nativeHandleCtor.Parameters [0].ParameterType.Is ("ObjCRuntime", "NativeHandle"))
-								il.Append (il.Create (OpCodes.Call, abr.NativeObject_op_Implicit_NativeHandle));
-							il.Append (il.Create (OpCodes.Newobj, abr.CurrentAssembly.MainModule.ImportReference (nativeHandleCtor)));
+						if (td.HasGenericParameters) {
+							EmitThrowCannotConstructGenericType (il, td);
 						} else {
-							il.Append (il.Create (OpCodes.Ldnull));
+							var nativeHandleCtor = AppBundleRewriter.FindNSObjectConstructor (td);
+							if (nativeHandleCtor is not null) {
+								il.Append (il.Create (OpCodes.Ldarg_1));
+								if (nativeHandleCtor.Parameters [0].ParameterType.Is ("ObjCRuntime", "NativeHandle"))
+									il.Append (il.Create (OpCodes.Call, abr.NativeObject_op_Implicit_NativeHandle));
+								il.Append (il.Create (OpCodes.Newobj, abr.CurrentAssembly.MainModule.ImportReference (nativeHandleCtor)));
+							} else {
+								il.Append (il.Create (OpCodes.Ldnull));
+							}
+							il.Append (il.Create (OpCodes.Ret));
 						}
-						il.Append (il.Create (OpCodes.Ret));
 
 						/*
 						 * public override IntPtr GetClassHandle (out bool is_custom_type)
@@ -540,17 +560,22 @@ namespace Xamarin.Linker {
 						createObjectMethod.AddParameter ("handle", abr.System_IntPtr);
 						createObjectMethod.AddParameter ("owns", abr.System_Boolean);
 						createObjectMethod.CreateBody (out il);
-						var nativeHandleCtor = AppBundleRewriter.FindINativeObjectConstructor (objcType.ProtocolWrapperType.Resolve ());
-						if (nativeHandleCtor is not null) {
-							il.Append (il.Create (OpCodes.Ldarg_1));
-							if (nativeHandleCtor.Parameters [0].ParameterType.Is ("ObjCRuntime", "NativeHandle"))
-								il.Append (il.Create (OpCodes.Call, abr.NativeObject_op_Implicit_NativeHandle));
-							il.Append (il.Create (OpCodes.Ldarg_2));
-							il.Append (il.Create (OpCodes.Newobj, abr.CurrentAssembly.MainModule.ImportReference (nativeHandleCtor)));
+						var protocolWrapperType = objcType.ProtocolWrapperType.Resolve ();
+						if (protocolWrapperType.HasGenericParameters) {
+							EmitThrowCannotConstructGenericType (il, protocolWrapperType);
 						} else {
-							il.Append (il.Create (OpCodes.Ldnull));
+							var nativeHandleCtor = AppBundleRewriter.FindINativeObjectConstructor (protocolWrapperType);
+							if (nativeHandleCtor is not null) {
+								il.Append (il.Create (OpCodes.Ldarg_1));
+								if (nativeHandleCtor.Parameters [0].ParameterType.Is ("ObjCRuntime", "NativeHandle"))
+									il.Append (il.Create (OpCodes.Call, abr.NativeObject_op_Implicit_NativeHandle));
+								il.Append (il.Create (OpCodes.Ldarg_2));
+								il.Append (il.Create (OpCodes.Newobj, abr.CurrentAssembly.MainModule.ImportReference (nativeHandleCtor)));
+							} else {
+								il.Append (il.Create (OpCodes.Ldnull));
+							}
+							il.Append (il.Create (OpCodes.Ret));
 						}
-						il.Append (il.Create (OpCodes.Ret));
 
 						/*
 						 * public override string GetName ()

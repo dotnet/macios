@@ -1,7 +1,7 @@
-AppBundleSize: 3,610,788 bytes (3,526.2 KB = 3.4 MB)
+AppBundleSize: 3,610,791 bytes (3,526.2 KB = 3.4 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 Info.plist:
-    1,159 bytes (1.1 KB = 0.0 MB)
+    1,162 bytes (1.1 KB = 0.0 MB)
 Microsoft.iOS.dll:
     155,648 bytes (152.0 KB = 0.1 MB)
 PkgInfo:

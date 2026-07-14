@@ -177,7 +177,7 @@ steps:
 
 - bash: |
     if [ -d "$(Build.ArtifactStagingDirectory)/failed-app-size-bundles" ]; then
-      echo "##vso[task.setvariable variable=HAS_FAILED_APP_SIZE_BUNDLERS]true"
+      echo "##vso[task.setvariable variable=HAS_FAILED_APP_SIZE_BUNDLES]true"
     fi
   displayName: 'Check for app bundles'
   condition: succeededOrFailed()
@@ -250,7 +250,7 @@ steps:
     targetPath: '$(Build.ArtifactStagingDirectory)/failed-app-size-bundles'
     artifactName: '${{ parameters.uploadPrefix }}failed-app-size-bundles-${{ parameters.testPrefix }}-$(System.JobAttempt)'
   continueOnError: true
-  condition: and(succeededOrFailed(), eq(variables['HAS_FAILED_APP_SIZE_BUNDLERS'], 'true'))
+  condition: and(succeededOrFailed(), eq(variables['HAS_FAILED_APP_SIZE_BUNDLES'], 'true'))
 
 - pwsh: |
     $summaryName = "TestSummary-${{ parameters.testPrefix }}.md"

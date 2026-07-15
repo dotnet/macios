@@ -57,7 +57,7 @@ namespace Xamarin.BindingTests {
 			public Action<int> RequiredReturnValue ()
 			{
 				return new Action<int> ((v) => {
-					Assert.AreEqual (42, v, "RequiredReturnValue");
+					Assert.That (v, Is.EqualTo (42), "RequiredReturnValue");
 				});
 			}
 
@@ -65,7 +65,7 @@ namespace Xamarin.BindingTests {
 			public Action<int> OptionalReturnValue ()
 			{
 				return new Action<int> ((v) => {
-					Assert.AreEqual (42, v, "RequiredReturnValue");
+					Assert.That (v, Is.EqualTo (42), "RequiredReturnValue");
 				});
 			}
 
@@ -73,7 +73,7 @@ namespace Xamarin.BindingTests {
 			public static Action<int> RequiredStaticReturnValue ()
 			{
 				return new Action<int> ((v) => {
-					Assert.AreEqual (42, v, "RequiredReturnValue");
+					Assert.That (v, Is.EqualTo (42), "RequiredReturnValue");
 				});
 			}
 
@@ -81,7 +81,7 @@ namespace Xamarin.BindingTests {
 			public static Action<int> OptionalStaticReturnValue ()
 			{
 				return new Action<int> ((v) => {
-					Assert.AreEqual (42, v, "RequiredReturnValue");
+					Assert.That (v, Is.EqualTo (42), "RequiredReturnValue");
 				});
 			}
 		}
@@ -99,10 +99,10 @@ namespace Xamarin.BindingTests {
 				ObjCBlockTester.CallOptionalStaticCallback ();
 				DerivedBlockCallbackClass.Answer = 2;
 
-				Assert.IsFalse (obj.InvokeNullableCallbackNatively (null), "NullableCallback A rv");
+				Assert.That (obj.InvokeNullableCallbackNatively (null), Is.False, "NullableCallback A rv");
 				int nullableResult = -1;
-				Assert.IsTrue (obj.InvokeNullableCallbackNatively ((v) => nullableResult = v), "NullableCallback B rv");
-				Assert.AreEqual (24, nullableResult, "NullableCallback result");
+				Assert.That (obj.InvokeNullableCallbackNatively ((v) => nullableResult = v), Is.True, "NullableCallback B rv");
+				Assert.That (nullableResult, Is.EqualTo (24), "NullableCallback result");
 			}
 		}
 
@@ -141,7 +141,7 @@ namespace Xamarin.BindingTests {
 			public override Action<int> RequiredReturnValue ()
 			{
 				return new Action<int> ((v) => {
-					Assert.AreEqual (Answer, v, "RequiredReturnValue");
+					Assert.That (v, Is.EqualTo (Answer), "RequiredReturnValue");
 				});
 			}
 
@@ -150,7 +150,7 @@ namespace Xamarin.BindingTests {
 			{
 				return new Action<int> ((v) => {
 					Console.WriteLine ("OptionalReturnValue");
-					Assert.AreEqual (Answer, v, "RequiredReturnValue");
+					Assert.That (v, Is.EqualTo (Answer), "RequiredReturnValue");
 				});
 			}
 
@@ -158,7 +158,7 @@ namespace Xamarin.BindingTests {
 			public static Action<int> RequiredStaticReturnValue ()
 			{
 				return new Action<int> ((v) => {
-					Assert.AreEqual (Answer, v, "RequiredReturnValue");
+					Assert.That (v, Is.EqualTo (Answer), "RequiredReturnValue");
 				});
 			}
 
@@ -167,7 +167,7 @@ namespace Xamarin.BindingTests {
 			{
 				return new Action<int> ((v) => {
 					Console.WriteLine ("OptionalStaticReturnValue");
-					Assert.AreEqual (Answer, v, "RequiredReturnValue");
+					Assert.That (v, Is.EqualTo (Answer), "RequiredReturnValue");
 				});
 			}
 		}
@@ -201,7 +201,7 @@ namespace Xamarin.BindingTests {
 			Action<int> IObjCProtocolBlockTest.RequiredReturnValue ()
 			{
 				return new Action<int> ((v) => {
-					Assert.AreEqual (42, v, "RequiredReturnValue");
+					Assert.That (v, Is.EqualTo (42), "RequiredReturnValue");
 				});
 			}
 
@@ -209,7 +209,7 @@ namespace Xamarin.BindingTests {
 			public Action<int> OptionalReturnValue ()
 			{
 				return new Action<int> ((v) => {
-					Assert.AreEqual (42, v, "RequiredReturnValue");
+					Assert.That (v, Is.EqualTo (42), "RequiredReturnValue");
 				});
 			}
 
@@ -217,7 +217,7 @@ namespace Xamarin.BindingTests {
 			public static Action<int> RequiredStaticReturnValue ()
 			{
 				return new Action<int> ((v) => {
-					Assert.AreEqual (42, v, "RequiredReturnValue");
+					Assert.That (v, Is.EqualTo (42), "RequiredReturnValue");
 				});
 			}
 
@@ -225,7 +225,7 @@ namespace Xamarin.BindingTests {
 			public static Action<int> OptionalStaticReturnValue ()
 			{
 				return new Action<int> ((v) => {
-					Assert.AreEqual (42, v, "RequiredReturnValue");
+					Assert.That (v, Is.EqualTo (42), "RequiredReturnValue");
 				});
 			}
 		}
@@ -311,7 +311,7 @@ namespace Xamarin.BindingTests {
 					}
 				}
 				ObjCBlockTester.CallProtocolWithBlockProperties (pb, required, instance);
-				Assert.IsTrue (callbackCalled, "Callback");
+				Assert.That (callbackCalled, Is.True, "Callback");
 			}
 		}
 
@@ -338,7 +338,7 @@ namespace Xamarin.BindingTests {
 						PropertyBlock.MyOptionalStaticProperty! ();
 					}
 				}
-				Assert.AreEqual (calledCounter + 1, ObjCBlockTester.CalledBlockCount, "Blocks called");
+				Assert.That (ObjCBlockTester.CalledBlockCount, Is.EqualTo (calledCounter + 1), "Blocks called");
 			}
 		}
 		[Test]
@@ -372,7 +372,7 @@ namespace Xamarin.BindingTests {
 					if (re.Code == 8009) {
 						Assert.That (re.Message, Does.StartWith ("Unable to locate the block to delegate conversion method for the method Xamarin.BindingTests.RegistrarBindingTest+FakePropertyBlock.set_"), re.Message, "Message");
 					} else {
-						Assert.AreEqual ("The runtime function get_block_wrapper_creator has been linked away.", re.Message, "Message");
+						Assert.That (re.Message, Is.EqualTo ("The runtime function get_block_wrapper_creator has been linked away."), "Message");
 					}
 				}
 			}

@@ -25,8 +25,8 @@ namespace MonoTouchFixtures.CoreServices {
 		{
 			using (var m = CFHTTPMessage.CreateEmpty (true)) {
 				Assert.That (m.Handle, Is.Not.EqualTo (IntPtr.Zero), "Handle");
-				Assert.False (m.IsHeaderComplete, "IsHeaderComplete");
-				Assert.True (m.IsRequest, "IsRequest");
+				Assert.That (m.IsHeaderComplete, Is.False, "IsHeaderComplete");
+				Assert.That (m.IsRequest, Is.True, "IsRequest");
 				Assert.Throws<InvalidOperationException> (delegate { var x = m.ResponseStatusCode; }, "ResponseStatusCode");
 				Assert.Throws<InvalidOperationException> (delegate { var x = m.ResponseStatusLine; }, "ResponseStatusLine");
 				Assert.That (m.Version.ToString (), Is.EqualTo ("1.1"), "Version");
@@ -39,8 +39,8 @@ namespace MonoTouchFixtures.CoreServices {
 		{
 			using (var m = CFHTTPMessage.CreateEmpty (false)) {
 				Assert.That (m.Handle, Is.Not.EqualTo (IntPtr.Zero), "Handle");
-				Assert.False (m.IsHeaderComplete, "IsHeaderComplete");
-				Assert.False (m.IsRequest, "IsRequest");
+				Assert.That (m.IsHeaderComplete, Is.False, "IsHeaderComplete");
+				Assert.That (m.IsRequest, Is.False, "IsRequest");
 				Assert.That (m.ResponseStatusCode, Is.EqualTo (HttpStatusCode.OK), "ResponseStatusCode");
 				Assert.That (m.ResponseStatusLine, Is.Empty, "ResponseStatusLine");
 				Assert.That (m.Version.ToString (), Is.EqualTo ("1.1"), "Version");
@@ -53,8 +53,8 @@ namespace MonoTouchFixtures.CoreServices {
 		{
 			using (var m = CFHTTPMessage.CreateRequest (NetworkResources.XamarinUri, "GET", new Version (1, 0))) {
 				Assert.That (m.Handle, Is.Not.EqualTo (IntPtr.Zero), "Handle");
-				Assert.False (m.IsHeaderComplete, "IsHeaderComplete");
-				Assert.True (m.IsRequest, "IsRequest");
+				Assert.That (m.IsHeaderComplete, Is.False, "IsHeaderComplete");
+				Assert.That (m.IsRequest, Is.True, "IsRequest");
 				Assert.Throws<InvalidOperationException> (delegate { var x = m.ResponseStatusCode; }, "ResponseStatusCode");
 				Assert.Throws<InvalidOperationException> (delegate { var x = m.ResponseStatusLine; }, "ResponseStatusLine");
 				Assert.That (m.Version.ToString (), Is.EqualTo ("1.0"), "Version");
@@ -68,7 +68,7 @@ namespace MonoTouchFixtures.CoreServices {
 			using (var m = CFHTTPMessage.CreateRequest (NetworkResources.XamarinUri, "GET", new Version (1, 1))) {
 				m.SetHeaderFieldValue ("X-Test", "value");
 				var headers = m.GetAllHeaderFields ();
-				Assert.NotNull (headers, "headers");
+				Assert.That (headers, Is.Not.Null, "headers");
 				Assert.That (headers.Count, Is.GreaterThan ((nuint) 0), "Count");
 			}
 		}
@@ -86,7 +86,7 @@ namespace MonoTouchFixtures.CoreServices {
 					new Uri (NetworkResources.Httpbin.GetStatusCodeUrl (HttpStatusCode.Unauthorized)), "GET", null)) {
 					request.SetBody (Array.Empty<byte> ()); // empty body, we are not interested
 					using (var stream = CFStream.CreateForHTTPRequest (request)) {
-						Assert.IsNotNull (stream, "Null stream");
+						Assert.That (stream, Is.Not.Null, "Null stream");
 						// we are only interested in the completed event
 						stream.ClosedEvent += (sender, e) => {
 							taskCompletionSource.SetResult (stream.GetResponseHeader ());
@@ -101,10 +101,10 @@ namespace MonoTouchFixtures.CoreServices {
 			}, () => done);
 			if (!done)
 				TestRuntime.IgnoreInCI ("Transient network failure - ignore in CI");
-			Assert.IsTrue (done, "Network request completed");
+			Assert.That (done, Is.True, "Network request completed");
 			using (var auth = CFHTTPAuthentication.CreateFromResponse (response)) {
-				Assert.NotNull (auth, "Null Auth");
-				Assert.IsTrue (auth.IsValid, "Auth is valid");
+				Assert.That (auth, Is.Not.Null, "Null Auth");
+				Assert.That (auth.IsValid, Is.True, "Auth is valid");
 				Assert.That (TestRuntime.CFGetRetainCount (auth.Handle), Is.EqualTo ((nint) 1), "RetainCount");
 			}
 		}

@@ -36,8 +36,8 @@ namespace MonoTouchFixtures.Security {
 		public void Identity ()
 		{
 			using (SecIdentity id = GetIdentity ()) {
-				Assert.NotNull (id.PrivateKey, "PrivateKey");
-				Assert.NotNull (id.Certificate, "Certificate");
+				Assert.That (id.PrivateKey, Is.Not.Null, "PrivateKey");
+				Assert.That (id.Certificate, Is.Not.Null, "Certificate");
 			}
 		}
 
@@ -58,11 +58,11 @@ namespace MonoTouchFixtures.Security {
 			using (var i1 = GetIdentity ())
 			using (var i2 = new SecIdentity2 (i1, i1.Certificate)) {
 				int call = 0;
-				Assert.True (i2.AccessCertificates ((c) => {
+				Assert.That (i2.AccessCertificates ((c) => {
 					Assert.That (i1.Certificate.GetCommonName (), Is.EqualTo (c.Certificate.GetCommonName ()), "GetCommonName");
 					call++;
 
-				}), "Access");
+				}), Is.True, "Access");
 				Assert.That (call, Is.EqualTo (1), "call");
 			}
 		}
@@ -74,7 +74,7 @@ namespace MonoTouchFixtures.Security {
 			using var i1 = GetIdentity ();
 			using var i2 = new SecIdentity2 (i1, i1.Certificate);
 			var certs = i2.Certificates;
-			Assert.IsNotNull (certs, "Certificates");
+			Assert.That (certs, Is.Not.Null, "Certificates");
 			Assert.That (certs!.Length, Is.GreaterThanOrEqualTo (1), "Certificates/length");
 		}
 	}

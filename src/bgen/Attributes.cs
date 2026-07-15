@@ -517,20 +517,14 @@ public class NoDefaultValueAttribute : Attribute {
 public class IgnoredInDelegateAttribute : Attribute {
 }
 
-// Apply to strings parameters that are merely retained or assigned,
-// not copied this is an exception as it is advised in the coding
-// standard for Objective-C to avoid this, but a few properties do use
-// this.  Use this attribtue for properties flagged with `retain' or
-// `assign', which look like this:
-//
-// @property (retain) NSString foo;
-// @property (assign) NSString assigned;
-//
-// This forced the generator to create an NSString before calling the
-// API instead of using the fast string marshalling code.
+#if !XAMCORE_5_0
+// This attribute is obsolete and has no effect. Zero-copy string marshaling is no longer supported.
+[Obsolete ("Zero-copy string marshaling is no longer supported. This attribute has no effect.")]
+[AttributeUsage (AttributeTargets.Property | AttributeTargets.Parameter, AllowMultiple = true)]
 public class DisableZeroCopyAttribute : Attribute {
 	public DisableZeroCopyAttribute () { }
 }
+#endif
 
 // Apply this attribute to methods that need a custom binding method.
 //
@@ -561,29 +555,13 @@ public class MarshalDirectiveAttribute : Attribute {
 	public string? Library { get; set; }
 }
 
-//
-// By default, the generator will not do Zero Copying of strings, as most
-// third party libraries do not follow Apple's design guidelines of making
-// string properties and parameters copy parameters, instead many libraries
-// "retain" as a broken optimization [1].
-//
-// The consumer of the generator can force this by passing
-// --use-zero-copy or setting the [assembly:ZeroCopyStrings] attribute.
-// When these are set, the generator assumes the library perform
-// copies over any NSStrings it keeps instead of retains/assigns and
-// that any property that happens to be a retain/assign has the
-// [DisableZeroCopyAttribute] attribute applied.
-//
-// [1] It is broken because consumer code can pass an NSMutableString, the
-// library retains the value, but does not have a way of noticing changes
-// that might happen to the mutable string behind its back.
-//
-// In the ZeroCopy case it is a problem because we pass handles to stack-allocated
-// strings that stop existing after the invocation is over.
-//
+#if !XAMCORE_5_0
+// This attribute is obsolete and has no effect. Zero-copy string marshaling is no longer supported.
+[Obsolete ("Zero-copy string marshaling is no longer supported. This attribute has no effect.")]
 [AttributeUsage (AttributeTargets.Assembly | AttributeTargets.Method | AttributeTargets.Interface, AllowMultiple = true)]
 public class ZeroCopyStringsAttribute : Attribute {
 }
+#endif
 
 [AttributeUsage (AttributeTargets.Method | AttributeTargets.Property, AllowMultiple = true)]
 public class SnippetAttribute : Attribute {
@@ -977,19 +955,12 @@ public abstract class AvailabilityBaseAttribute : Attribute {
 
 	void GenerateSupported (StringBuilder builder)
 	{
-#if BGENERATOR
-		// If the version is less than or equal to the min version for the platform in question,
-		// the version is redundant, so just skip it.
-		if (Version is not null && Version <= Xamarin.SdkVersions.GetMinVersion (Platform.AsApplePlatform ()))
-			Version = null;
-#endif
-
 		builder.Append ("[SupportedOSPlatform (\"");
-		GeneratePlatformNameAndVersion (builder);
+		GeneratePlatformNameAndVersion (builder, skipMinVersion: true);
 		builder.AppendLine ("\")]");
 	}
 
-	void GeneratePlatformNameAndVersion (StringBuilder builder)
+	void GeneratePlatformNameAndVersion (StringBuilder builder, bool skipMinVersion = false)
 	{
 		switch (Platform) {
 		case PlatformName.iOS:
@@ -1011,8 +982,17 @@ public abstract class AvailabilityBaseAttribute : Attribute {
 			throw new NotSupportedException ($"Unknown platform: {Platform}");
 		}
 
-		if (Version is not null)
-			builder.Append (Version.ToString (Version.Build >= 0 ? 3 : 2));
+		if (Version is null)
+			return;
+
+#if BGENERATOR
+		// If the version is less than or equal to the min version for the platform in question,
+		// the version is redundant, so just skip it.
+		if (skipMinVersion && Version <= Xamarin.SdkVersions.GetMinVersion (Platform.AsApplePlatform ()))
+			return;
+#endif
+
+		builder.Append (Version.ToString (Version.Build >= 0 ? 3 : 2));
 	}
 
 	/// <summary>Returns a human readable version of the availability attribute.</summary>

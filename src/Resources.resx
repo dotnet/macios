@@ -294,7 +294,7 @@
 	</data>
 
 	<data name="BI1027" xml:space="preserve">
-		<value>Support for ZeroCopy strings is not implemented. Strings will be marshalled as NSStrings.</value>
+		<value>The --use-zero-copy option is not supported and will be ignored.</value>
 	</data>
 
 	<data name="BI1028" xml:space="preserve">

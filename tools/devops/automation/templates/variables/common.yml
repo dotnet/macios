@@ -66,14 +66,14 @@ variables:
 # point — they are runtime-only. So there is no working "single global
 # variable" we can read here; the literal lives in each entry pipeline:
 #
-#   CI (uses CIBuildPool / ACES):
+#   CI:
 #     - build-pipeline.yml            -> useACES: true
 #     - run-ci-api-diff.yml           -> useACES: true
 #     - run-post-ci-build-tests.yml   -> useACES: true
-#   PR (uses PRBuildPool):
-#     - build-pull-request.yml        -> useACES: true # ACES experiment for the simulator device-type failure
-#     - run-pr-api-diff.yml           -> useACES: true # ACES experiment for the simulator device-type failure
-#     - run-post-pr-build-tests.yml   -> useACES: true # ACES experiment for the simulator device-type failure
+#   PR:
+#     - build-pull-request.yml        -> useACES: true
+#     - run-pr-api-diff.yml           -> useACES: true
+#     - run-post-pr-build-tests.yml   -> useACES: true
 #
 # Flip the literal in the three files on the side you want to move (e.g. when
 # the ACES pool is unavailable, or when you need an Xcode/macOS beta that is
@@ -96,6 +96,13 @@ variables:
 - name: system.debug
   value: false
 
+# Tighten the needed network calls to comply with restrictions
+# See https://devdiv.visualstudio.com/DevDiv/_git/Xamarin.yaml-templates/pullrequest/749941
+- name: DOTNET_CLI_WORKLOAD_UPDATE_NOTIFY_DISABLE
+  value: 'true'
+- name: DOTNET_SDK_VULNERABILITY_CHECK_DISABLE
+  value: 'true'
+
 # the name of our repository
 - name: BUILD_REPOSITORY_TITLE
   value: ${{ split(variables['Build.Repository.Name'],'/')[1] }}
@@ -111,4 +118,4 @@ variables:
   value: 15.6
 
 - name: xcodeChannel
-  value: Beta
+  value: Stable

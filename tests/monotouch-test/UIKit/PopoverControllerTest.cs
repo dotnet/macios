@@ -27,12 +27,12 @@ namespace MonoTouchFixtures.UIKit {
 			using (var vc = new UIViewController ())
 			using (var pc = new UIPopoverController (vc)) {
 				Assert.That (pc.ContentViewController, Is.SameAs (vc), "ContentViewController");
-				Assert.Null (pc.PassthroughViews, "PassthroughViews");
+				Assert.That (pc.PassthroughViews, Is.Null, "PassthroughViews");
 				Assert.That (pc.PopoverArrowDirection, Is.EqualTo (UIPopoverArrowDirection.Unknown), "PopoverArrowDirection");
 				Assert.That (pc.PopoverContentSize.IsEmpty, Is.EqualTo (ios8), "PopoverContentSize");
 				Assert.That (pc.PopoverLayoutMargins.ToString (), Is.EqualTo (ios8 ? "{0, 0, 0, 0}" : "{30, 10, 10, 10}"), "PopoverLayoutMargins");
-				Assert.False (pc.PopoverVisible, "PopoverVisible");
-				Assert.Null (pc.ShouldDismiss, "ShouldDismiss");
+				Assert.That (pc.PopoverVisible, Is.False, "PopoverVisible");
+				Assert.That (pc.ShouldDismiss, Is.Null, "ShouldDismiss");
 			}
 		}
 
@@ -110,7 +110,7 @@ namespace MonoTouchFixtures.UIKit {
 
 			using (var vc = new UIViewController ())
 			using (var pc = new UIPopoverController (vc)) {
-				Assert.Null (pc.PopoverBackgroundViewType, "PopoverBackgroundViewType");
+				Assert.That (pc.PopoverBackgroundViewType, Is.Null, "PopoverBackgroundViewType");
 				Type my = typeof (MyPopoverBackgroundView);
 				pc.PopoverBackgroundViewType = my;
 				Assert.That (pc.PopoverBackgroundViewType, Is.SameAs (my), "MyPopoverBackgroundView");

@@ -100,7 +100,7 @@ namespace Xamarin.Bundler {
 			}
 		}
 
-		public AssemblyDefinition GetAssembly (string name)
+		public AssemblyDefinition? GetAssembly (string name)
 		{
 			return LinkerConfiguration.Context.GetLoadedAssembly (name);
 		}

@@ -1067,11 +1067,25 @@ namespace Foundation {
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("ios")]
-		public double? GpsDifferental {
+		public double? GpsDifferential {
 			get {
-				return GetNullableDouble (NSMetadataQuery.GpsDifferentalKey);
+				return GetNullableDouble (NSMetadataQuery.GpsDifferentialKey);
 			}
 		}
+
+#if !XAMCORE_5_0
+		[SupportedOSPlatform ("macos")]
+		[UnsupportedOSPlatform ("maccatalyst")]
+		[UnsupportedOSPlatform ("tvos")]
+		[UnsupportedOSPlatform ("ios")]
+		[System.Obsolete ("Use 'GpsDifferential' instead.")]
+		[System.ComponentModel.EditorBrowsable (System.ComponentModel.EditorBrowsableState.Never)]
+		public double? GpsDifferental {
+			get {
+				return GpsDifferential;
+			}
+		}
+#endif
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>

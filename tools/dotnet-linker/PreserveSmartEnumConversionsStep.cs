@@ -94,6 +94,7 @@ namespace Xamarin.Linker.Steps {
 		Dictionary<TypeDefinition, Tuple<MethodDefinition, MethodDefinition>> cache = new ();
 
 		public DerivedLinkContext LinkContext { get; private set; }
+		public Application App => LinkContext.App;
 
 		Func<Tuple<MethodDefinition, MethodDefinition>, bool, MethodDefinition? [], bool> preserve { get; set; }
 
@@ -122,14 +123,14 @@ namespace Xamarin.Linker.Steps {
 					continue;
 
 				if (ca.ConstructorArguments.Count != 1) {
-					ErrorHelper.Show (ErrorHelper.CreateWarning (LinkContext.App, 4124, provider, Errors.MT4124_E, provider.AsString (), ca.ConstructorArguments.Count));
+					ErrorHelper.Show (App, ErrorHelper.CreateWarning (LinkContext.App, 4124, provider, Errors.MT4124_E, provider.AsString (), ca.ConstructorArguments.Count));
 					continue;
 				}
 
 				var managedType = ca.ConstructorArguments [0].Value as TypeReference;
 				var managedEnumType = managedType?.GetElementType ().Resolve ();
 				if (managedEnumType is null) {
-					ErrorHelper.Show (ErrorHelper.CreateWarning (LinkContext.App, 4124, provider, Errors.MT4124_H, provider.AsString (), managedType?.FullName ?? "(null)"));
+					ErrorHelper.Show (App, ErrorHelper.CreateWarning (LinkContext.App, 4124, provider, Errors.MT4124_H, provider.AsString (), managedType?.FullName ?? "(null)"));
 					continue;
 				}
 
@@ -155,7 +156,7 @@ namespace Xamarin.Linker.Steps {
 					break;
 				}
 				if (extensionType is null) {
-					Driver.Log (1, $"Could not find a smart extension type for the enum {managedEnumType.FullName} (due to BindAs attribute on {provider.AsString ()}): most likely this is because the enum isn't a smart enum.");
+					App.Log (1, $"Could not find a smart extension type for the enum {managedEnumType.FullName} (due to BindAs attribute on {provider.AsString ()}): most likely this is because the enum isn't a smart enum.");
 					continue;
 				}
 
@@ -184,12 +185,12 @@ namespace Xamarin.Linker.Steps {
 				}
 
 				if (getConstant is null) {
-					Driver.Log (1, $"Could not find the GetConstant method on the supposedly smart extension type {extensionType.FullName} for the enum {managedEnumType.FullName} (due to BindAs attribute on {provider.AsString ()}): most likely this is because the enum isn't a smart enum.");
+					App.Log (1, $"Could not find the GetConstant method on the supposedly smart extension type {extensionType.FullName} for the enum {managedEnumType.FullName} (due to BindAs attribute on {provider.AsString ()}): most likely this is because the enum isn't a smart enum.");
 					continue;
 				}
 
 				if (getValue is null) {
-					Driver.Log (1, $"Could not find the GetValue method on the supposedly smart extension type {extensionType.FullName} for the enum {managedEnumType.FullName} (due to BindAs attribute on {provider.AsString ()}): most likely this is because the enum isn't a smart enum.");
+					App.Log (1, $"Could not find the GetValue method on the supposedly smart extension type {extensionType.FullName} for the enum {managedEnumType.FullName} (due to BindAs attribute on {provider.AsString ()}): most likely this is because the enum isn't a smart enum.");
 					continue;
 				}
 

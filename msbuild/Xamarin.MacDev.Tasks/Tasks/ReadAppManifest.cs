@@ -56,7 +56,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			if (!string.IsNullOrEmpty (AppManifest?.ItemSpec)) {
 				try {
-					plist = PDictionary.FromFile (AppManifest!.ItemSpec);
+					plist = PDictionary.OpenFile (AppManifest!.ItemSpec);
 				} catch (Exception ex) {
 					Log.LogError (null, null, null, AppManifest!.ItemSpec, 0, 0, 0, 0, MSBStrings.E0010, AppManifest.ItemSpec, ex.Message);
 					return false;
@@ -73,7 +73,7 @@ namespace Xamarin.MacDev.Tasks {
 			if (Platform == ApplePlatform.MacCatalyst) {
 				// The minimum version in the Info.plist is the macOS version. However, the rest of our tooling
 				// expects the iOS version, so expose that.
-				if (!MacCatalystSupport.TryGetiOSVersion (Sdks.GetAppleSdk (Platform).GetSdkPath (), MinimumOSVersion!, out var convertedVersion, out var knownMacOSVersions))
+				if (!MacCatalystSupport.TryGetiOSVersion (CurrentSdk.GetSdkPath (), MinimumOSVersion!, out var convertedVersion, out var knownMacOSVersions))
 					Log.LogError (MSBStrings.E0187, MinimumOSVersion, string.Join (", ", knownMacOSVersions.OrderBy (v => v)));
 				MinimumOSVersion = convertedVersion;
 			}

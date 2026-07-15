@@ -36,6 +36,7 @@
     </None>
     <Compile Include="$(RepositoryPath)\src\ObjCRuntime\Stret.cs" />
     <Compile Include="$(RepositoryPath)\tools\common\ApplePlatform.cs" />
+    <Compile Include="$(RepositoryPath)\tools\common\IToolLog.cs" />
     <Compile Include="$(RepositoryPath)\tools\common\TargetFramework.cs" />
     <Compile Include="$(RepositoryPath)\tools\common\StringUtils.cs" />
     <Compile Include="$(DotNetBuildDir)\generator-frameworks.g.cs" />

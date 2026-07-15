@@ -357,7 +357,7 @@ namespace Extrospection {
 				return true;
 
 			// If the framework is registered for the current platform, then it's included.
-			var frameworks = Frameworks.GetFrameworks (ApplePlatformExtensions.Parse (platform), false);
+			var frameworks = GetFrameworks (platform);
 			if (frameworks?.Any (x => string.Equals (x.Key, framework, StringComparison.OrdinalIgnoreCase)) == true)
 				return true;
 
@@ -372,9 +372,16 @@ namespace Extrospection {
 			return all_frameworks;
 		}
 
+		static Frameworks GetFrameworks (ApplePlatform platform)
+		{
+			if (!Frameworks.TryGetFrameworks (platform, out var frameworks))
+				throw new Exception ($"No frameworks for {platform}?");
+			return frameworks;
+		}
+
 		static Frameworks GetFrameworks (string platform)
 		{
-			return Frameworks.GetFrameworks (ApplePlatformExtensions.Parse (platform), false)!;
+			return GetFrameworks (ApplePlatformExtensions.Parse (platform));
 		}
 
 		static List<Frameworks> GetFrameworks (IEnumerable<string> platforms)

@@ -14,7 +14,7 @@ namespace Xamarin.Linker.Steps {
 
 		protected override bool IsActiveFor (AssemblyDefinition assembly)
 		{
-			return OptimizeGeneratedCodeHandler.IsActiveFor (assembly, Configuration.Profile, DerivedLinkContext.Annotations);
+			return OptimizeGeneratedCode.IsActiveFor (assembly, Configuration.Profile, DerivedLinkContext.Annotations);
 		}
 
 		protected override bool ProcessType (TypeDefinition type)
@@ -32,7 +32,7 @@ namespace Xamarin.Linker.Steps {
 					Device = App.IsDeviceBuild,
 				};
 			}
-			return OptimizeGeneratedCodeHandler.OptimizeMethod (data, method);
+			return OptimizeGeneratedCode.OptimizeMethod (data, method);
 		}
 	}
 }

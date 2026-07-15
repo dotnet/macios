@@ -1064,7 +1064,12 @@ namespace AudioUnit {
 		/// <summary>To be added.</summary>
 		GlobalReverbGain = 9,
 		/// <summary>To be added.</summary>
-		OcclussionAttenuation = 10,
+		OcclusionAttenuation = 10,
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'OcclusionAttenuation' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		OcclussionAttenuation = OcclusionAttenuation,
+#endif
 		/// <summary>To be added.</summary>
 		ObstructionAttenuation = 11,
 	}

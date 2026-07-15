@@ -899,7 +899,9 @@ Describe "TestResults tests" {
 
             Write-Host $content
 
-            $content | Should -Be "# Test results
+            $content | Should -Be "[comment]: <> (This is a test result report added by Azure DevOps)
+
+# Test results
 :x: Tests failed on context
 
 0 tests crashed, 5 tests failed, 27 tests passed.
@@ -923,7 +925,6 @@ Describe "TestResults tests" {
 :white_check_mark: dotnettests (iOS): All 3 tests passed. [Html Report (VSDrops)](vsdropsIndex/simulator_testsdotnettests_iOS-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-simulator_testsdotnettests_iOS-1&api-version=6.0&`$format=zip)
 :white_check_mark: dotnettests (Multiple platforms): All 7 tests passed. [Html Report (VSDrops)](vsdropsIndex/simulator_testsdotnettests_Multiple-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-simulator_testsdotnettests_Multiple-1&api-version=6.0&`$format=zip)
 
-[comment]: <> (This is a test result report added by Azure DevOps)
 "
         }
     }
@@ -952,7 +953,9 @@ Describe "TestResults tests" {
 
             Write-Host $content
 
-            $content | Should -Be "# Test results
+            $content | Should -Be "[comment]: <> (This is a test result report added by Azure DevOps)
+
+# Test results
 :white_check_mark: All tests passed on context.
 
 :tada: All 3 tests passed :tada:
@@ -961,7 +964,6 @@ Describe "TestResults tests" {
 :white_check_mark: cecil: All 1 tests passed. [Html Report (VSDrops)](vsdropsIndex/simulator_testscecil-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-simulator_testscecil-1&api-version=6.0&`$format=zip)
 :white_check_mark: windows: All 2 tests passed. [Html Report (VSDrops)](vsdropsIndex/windows_integrationwindows-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-windows_integrationwindows-1&api-version=6.0&`$format=zip)
 
-[comment]: <> (This is a test result report added by Azure DevOps)
 "
         }
 
@@ -993,7 +995,9 @@ Describe "TestResults tests" {
 
             Write-Host $content.Replace("&$", "&``$")
 
-            $content | Should -Be "# Test results
+            $content | Should -Be "[comment]: <> (This is a test result report added by Azure DevOps)
+
+# Test results
 :x: Tests failed on context
 
 0 tests crashed, 1 tests failed, 21 tests passed.
@@ -1017,7 +1021,6 @@ Test results reported success, but the tests job failed.
 :white_check_mark: dotnettests (Multiple platforms): All 7 tests passed. [Html Report (VSDrops)](vsdropsIndex/testStagedotnettests_multiple-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-testStagedotnettests_multiple-1&api-version=6.0&`$format=zip)
 :white_check_mark: dotnettests (tvOS): All 4 tests passed. [Html Report (VSDrops)](vsdropsIndex/testStagedotnettests_tvos-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-testStagedotnettests_tvos-1&api-version=6.0&`$format=zip)
 
-[comment]: <> (This is a test result report added by Azure DevOps)
 "
         }
 
@@ -1058,7 +1061,9 @@ Test results reported success, but the tests job failed.
 
             Write-Host $content.Replace("&$", "&``$")
 
-            $content | Should -Be "# Test results
+            $content | Should -Be "[comment]: <> (This is a test result report added by Azure DevOps)
+
+# Test results
 :x: Tests failed on context
 
 0 tests crashed, 6 tests failed, 25 tests passed.
@@ -1092,7 +1097,6 @@ Test results reported success, but the tests job failed.
 :white_check_mark: dotnettests (Multiple platforms): All 7 tests passed. [Html Report (VSDrops)](vsdropsIndex/testStagedotnettests_multiple-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-testStagedotnettests_multiple-1&api-version=6.0&`$format=zip)
 :white_check_mark: dotnettests (tvOS): All 4 tests passed. [Html Report (VSDrops)](vsdropsIndex/testStagedotnettests_tvos-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-testStagedotnettests_tvos-1&api-version=6.0&`$format=zip)
 
-[comment]: <> (This is a test result report added by Azure DevOps)
 "
         }
     }
@@ -1193,7 +1197,9 @@ Test results reported success, but the tests job failed.
 
             Write-Host $content
 
-            $content | Should -Be "# Test results
+            $content | Should -Be "[comment]: <> (This is a test result report added by Azure DevOps)
+
+# Test results
 :white_check_mark: All tests passed on context.
 
 :tada: All 6 tests passed :tada:
@@ -1205,7 +1211,6 @@ Test results reported success, but the tests job failed.
 
 :white_check_mark: Tests on macOS Monterey (12): All 5 tests passed. [Html Report (VSDrops)](vsdropsIndex/mac_12_m1mac_monterey-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-mac_12_m1mac_monterey-1&api-version=6.0&`$format=zip)
 
-[comment]: <> (This is a test result report added by Azure DevOps)
 "
         }
 

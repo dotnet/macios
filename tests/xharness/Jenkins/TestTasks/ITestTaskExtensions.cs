@@ -7,7 +7,7 @@ namespace Xharness.Jenkins.TestTasks {
 		public static string GetTestColor (this IEnumerable<TestTask> tests)
 		{
 			if (!tests.Any ())
-				return "black";
+				return "currentcolor";
 
 			var first = tests.First ();
 			if (tests.All ((v) => v.ExecutionResult == first.ExecutionResult))
@@ -23,7 +23,7 @@ namespace Xharness.Jenkins.TestTasks {
 			else if (tests.Any ((v) => v.Failed))
 				return "red";
 			else if (tests.Any ((v) => v.NotStarted))
-				return "black";
+				return "currentcolor";
 			else if (tests.Any ((v) => v.Ignored))
 				return "gray";
 			else if (tests.Any ((v) => v.DeviceNotFound))
@@ -33,13 +33,13 @@ namespace Xharness.Jenkins.TestTasks {
 			else if (tests.All ((v) => v.Succeeded))
 				return "green";
 			else
-				return "black";
+				return "currentcolor";
 		}
 
 		public static string GetTestColor (this TestTask test)
 		{
 			if (test.NotStarted) {
-				return "black";
+				return "currentcolor";
 			} else if (test.InProgress) {
 				if (test.Building) {
 					return "darkblue";

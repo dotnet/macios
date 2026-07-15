@@ -67,8 +67,8 @@ namespace MonoTouchFixtures.ARKit {
 			var skeleton = new ARSkeleton2DPoker ();
 
 			var landmarks = skeleton.JointLandmarks;
-			Assert.AreEqual (new Vector2 (1, 2), landmarks [0]);
-			Assert.AreEqual (new Vector2 (3, 4), landmarks [1]);
+			Assert.That (landmarks [0], Is.EqualTo (new Vector2 (1, 2)));
+			Assert.That (landmarks [1], Is.EqualTo (new Vector2 (3, 4)));
 		}
 	}
 }

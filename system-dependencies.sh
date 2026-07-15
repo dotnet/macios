@@ -6,7 +6,7 @@ cd $(dirname $0)
 
 # Detect if we're running on Linux
 if [[ "$(uname -s)" == "Linux" ]]; then
-	IS_LINUX=1
+	NO_XCODE=1
 	# On Linux, ignore all macOS-specific dependencies
 	IGNORE_OSX=1
 	IGNORE_XCODE=1
@@ -20,7 +20,7 @@ if [[ "$(uname -s)" == "Linux" ]]; then
 	IGNORE_YAMLLINT=1
 	IGNORE_PYTHON3=1
 else
-	IS_LINUX=
+	NO_XCODE=
 fi
 
 FAIL=
@@ -914,8 +914,8 @@ function check_osx_version () {
 }
 
 function check_checkout_dir () {
-	# Skip on Linux - this check is macOS-specific
-	if test -n "$IS_LINUX"; then
+	# Skip without Xcode - this check is macOS-specific
+	if test -n "$NO_XCODE"; then
 		return
 	fi
 	
@@ -1030,8 +1030,8 @@ function check_old_simulators ()
 
 echo "Checking system..."
 
-if test -n "$IS_LINUX"; then
-	ok "Running on ${COLOR_BLUE}Linux${COLOR_CLEAR} - skipping macOS-specific checks"
+if test -n "$NO_XCODE"; then
+	ok "No Xcode available - skipping Xcode-specific checks"
 	ok "Only .NET download and managed code builds will be available"
 fi
 

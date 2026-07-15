@@ -27,7 +27,7 @@ namespace MonoTouchFixtures.Metal {
 		public void GetSetFormatTest ()
 		{
 			descriptor.Format = MTLAttributeFormat.Invalid;
-			Assert.AreEqual (MTLAttributeFormat.Invalid, descriptor.Format);
+			Assert.That (descriptor.Format, Is.EqualTo (MTLAttributeFormat.Invalid));
 		}
 
 		[Test]
@@ -35,7 +35,7 @@ namespace MonoTouchFixtures.Metal {
 		{
 			uint offset = 0; // must be 0, other value will crash the test.
 			descriptor.Offset = offset;
-			Assert.AreEqual ((nuint) offset, descriptor.Offset);
+			Assert.That (descriptor.Offset, Is.EqualTo ((nuint) offset));
 		}
 
 		[Test]
@@ -43,7 +43,7 @@ namespace MonoTouchFixtures.Metal {
 		{
 			uint index = 0; // must be 0, other value will crash the test.
 			descriptor.BufferIndex = index;
-			Assert.AreEqual ((nuint) index, descriptor.BufferIndex);
+			Assert.That (descriptor.BufferIndex, Is.EqualTo ((nuint) index));
 		}
 	}
 }

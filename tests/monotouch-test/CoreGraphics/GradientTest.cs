@@ -105,14 +105,14 @@ namespace MonoTouchFixtures.CoreGraphics {
 			};
 
 			using var hdrCapableColorspace = CGColorSpace.CreateWithName (CGColorSpaceNames.DisplayP3_PQ);
-			Assert.IsTrue (hdrCapableColorspace.IsHdr, "IsHdr");
+			Assert.That (hdrCapableColorspace.IsHdr, Is.True, "IsHdr");
 			using (var gradient = CGGradient.Create (0.5f, hdrCapableColorspace, colorComponents, locations)) {
-				Assert.IsNotNull (gradient, "Gradient #1");
+				Assert.That (gradient, Is.Not.Null, "Gradient #1");
 				Assert.That (gradient.ContentHeadroom, Is.EqualTo (1.0f), "Gradient #1 - ContentHeadroom");
 			}
 
 			using (var gradient = CGGradient.Create (0.5f, null, colorComponents, locations)) {
-				Assert.IsNull (gradient, "Gradient #2");
+				Assert.That (gradient, Is.Null, "Gradient #2");
 			}
 		}
 	}

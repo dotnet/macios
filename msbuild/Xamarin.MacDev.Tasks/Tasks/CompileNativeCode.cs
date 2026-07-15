@@ -156,7 +156,20 @@ namespace Xamarin.MacDev.Tasks {
 			return !Log.HasLoggedErrors;
 		}
 
-		public bool ShouldCopyToBuildServer (ITaskItem item) => false;
+		public bool ShouldCopyToBuildServer (ITaskItem item)
+		{
+			// Some files are already on the Mac, and we have a 0-length
+			// output file on Windows. We don't want to copy these files.
+			// However, some files have to be copied, because they don't
+			// already exist on the Mac (if they were created on Windows). So
+			// filter to files with a non-zero length.
+
+			var finfo = new FileInfo (item.ItemSpec);
+			if (!finfo.Exists || finfo.Length == 0)
+				return false;
+
+			return true;
+		}
 
 		public bool ShouldCreateOutputFile (ITaskItem item) => true;
 

@@ -33,7 +33,7 @@ namespace Xamarin.Tests {
 		public static ExecutionResult AssertPackFailure (string project, Dictionary<string, string>? properties = null, bool? msbuildParallelism = null)
 		{
 			var rv = Execute ("pack", project, properties, false, msbuildParallelism: msbuildParallelism);
-			Assert.AreNotEqual (0, rv.ExitCode, "Unexpected success");
+			Assert.That (rv.ExitCode, Is.Not.EqualTo (0), "Unexpected success");
 			return rv;
 		}
 
@@ -45,7 +45,7 @@ namespace Xamarin.Tests {
 		public static ExecutionResult AssertPublishFailure (string project, Dictionary<string, string>? properties = null)
 		{
 			var rv = Execute ("publish", project, properties, false);
-			Assert.AreNotEqual (0, rv.ExitCode, "Unexpected success");
+			Assert.That (rv.ExitCode, Is.Not.EqualTo (0), "Unexpected success");
 			return rv;
 		}
 
@@ -73,7 +73,7 @@ namespace Xamarin.Tests {
 		public static ExecutionResult AssertBuildFailure (string project, Dictionary<string, string>? properties = null)
 		{
 			var rv = Execute ("build", project, properties, false);
-			Assert.AreNotEqual (0, rv.ExitCode, "Unexpected success");
+			Assert.That (rv.ExitCode, Is.Not.EqualTo (0), "Unexpected success");
 			return rv;
 		}
 
@@ -107,9 +107,9 @@ namespace Xamarin.Tests {
 			if (rv.ExitCode != 0) {
 				Console.WriteLine ($"'{Executable} {StringUtils.FormatArguments (args)}' failed with exit code {rv.ExitCode}.");
 				Console.WriteLine (output);
-				Assert.AreEqual (0, rv.ExitCode, $"Exit code: {Executable} {StringUtils.FormatArguments (args)}");
+				Assert.That (rv.ExitCode, Is.EqualTo (0), $"Exit code: {Executable} {StringUtils.FormatArguments (args)}");
 			}
-			return new ExecutionResult (output, output, rv.ExitCode);
+			return new ExecutionResult (output, output, rv.ExitCode, rv.Duration);
 		}
 
 		public static ExecutionResult InstallWorkload (params string [] workloads)
@@ -136,7 +136,7 @@ namespace Xamarin.Tests {
 				Console.WriteLine (msg);
 				Assert.Fail (msg.ToString ());
 			}
-			return new ExecutionResult (output, output, rv.ExitCode);
+			return new ExecutionResult (output, output, rv.ExitCode, rv.Duration);
 		}
 
 		public static ExecutionResult InstallTool (string tool, string path)
@@ -206,7 +206,7 @@ namespace Xamarin.Tests {
 				Console.WriteLine (msg);
 				Assert.Fail (msg.ToString ());
 			}
-			return new ExecutionResult (output, output, rv.ExitCode);
+			return new ExecutionResult (output, output, rv.ExitCode, rv.Duration);
 		}
 
 		public static ExecutionResult Execute (string verb, string project, Dictionary<string, string>? properties, bool assert_success = true, string? target = null, bool? msbuildParallelism = null, TimeSpan? timeout = null, params string [] extraArguments)
@@ -336,9 +336,9 @@ namespace Xamarin.Tests {
 #endif
 						Assert.Fail (msg.ToString ());
 					}
-					Assert.AreEqual (0, rv.ExitCode, $"Exit code: {Executable} {StringUtils.FormatArguments (args)}");
+					Assert.That (rv.ExitCode, Is.EqualTo (0), $"Exit code: {Executable} {StringUtils.FormatArguments (args)}");
 				}
-				return new ExecutionResult (output, output, rv.ExitCode) {
+				return new ExecutionResult (output, output, rv.ExitCode, rv.Duration) {
 					BinLogPath = binlogPath,
 				};
 			default:
@@ -500,13 +500,15 @@ namespace Xamarin.Tests {
 		public int ExitCode;
 		public bool TimedOut;
 		public string BinLogPath;
+		public TimeSpan Duration;
 
-		public ExecutionResult (string stdout, string stderr, int exitCode)
+		public ExecutionResult (string stdout, string stderr, int exitCode, TimeSpan duration)
 		{
 			StandardOutput = stdout;
 			StandardError = stderr;
 			ExitCode = exitCode;
 			BinLogPath = string.Empty;
+			Duration = duration;
 		}
 	}
 }

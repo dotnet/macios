@@ -35,7 +35,7 @@ namespace MonoTouchFixtures.MediaPlayer {
 			if (TestRuntime.CheckXcodeVersion (11, 0)) {
 				Assert.That (skip.PreferredIntervals, Is.EqualTo (new double [] { 10.0d }), "PreferredIntervals");
 			} else {
-				Assert.Null (skip.PreferredIntervals, "PreferredIntervals");
+				Assert.That (skip.PreferredIntervals, Is.Null, "PreferredIntervals");
 			}
 			double [] intervals = new [] { 1.0d, 3.14d };
 			skip.PreferredIntervals = intervals;

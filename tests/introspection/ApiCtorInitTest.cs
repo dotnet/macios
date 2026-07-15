@@ -319,7 +319,7 @@ namespace Introspection {
 				}
 				n++;
 			}
-			Assert.AreEqual (0, Errors, "{0} potential errors found in {1} default ctor validated{2}", Errors, n, Errors == 0 ? string.Empty : ":\n" + ErrorData.ToString () + "\n");
+			Assert.That (Errors, Is.EqualTo (0), $"{Errors} potential errors found in {n} default ctor validated:\n{ErrorData}\n");
 		}
 
 		// .NET constructors are not virtual, so we need to re-expose the base class .ctor when a subclass is created.
@@ -371,7 +371,7 @@ namespace Introspection {
 					n++;
 				}
 			}
-			Assert.AreEqual (0, Errors, "{0} potential errors found in {1} designated initializer validated", Errors, n);
+			Assert.That (Errors, Is.EqualTo (0), $"{Errors} potential errors found in {n} designated initializer validated");
 		}
 
 		protected virtual bool Match (ConstructorInfo ctor, Type type)
@@ -639,7 +639,7 @@ namespace Introspection {
 				}
 				n++;
 			}
-			Assert.AreEqual (0, Errors, $"{Errors} potential errors found in {n} BaseType empty ctor validated: \n{ErrorData}\n{(genObjCTestCode ? $"\n\n{objCCode}\n" : string.Empty)}");
+			Assert.That (Errors, Is.EqualTo (0), $"{Errors} potential errors found in {n} BaseType empty ctor validated: \n{ErrorData}\n{(genObjCTestCode ? $"\n\n{objCCode}\n" : string.Empty)}");
 		}
 
 		protected virtual bool SkipCheckShouldNotExposeDefaultCtor (Type type)
@@ -681,7 +681,7 @@ namespace Introspection {
 					ReportError ("{0} should re-expose IARAnchorCopying::.ctor(ARAnchor)", t);
 			}
 
-			Assert.AreEqual (0, Errors, "{0} potential errors found when validating if subclasses of 'ARAnchor' re-expose 'IARAnchorCopying' constructor", Errors);
+			Assert.That (Errors, Is.EqualTo (0), $"{Errors} potential errors found when validating if subclasses of 'ARAnchor' re-expose 'IARAnchorCopying' constructor");
 		}
 #endif
 	}

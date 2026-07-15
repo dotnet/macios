@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+
+		<ApplicationTitle>MySimpleAppWithArtifactMetadata</ApplicationTitle>
+		<ApplicationId>com.xamarin.mysimpleappwithartifactmetadata</ApplicationId>
+		<ApplicationVersion>3.14</ApplicationVersion>
+
+		<!-- Simulates an SDK (such as .NET MAUI) enriching the platform-produced @(ApplicationArtifact) items -->
+		<GetApplicationArtifactsDependsOn>$(GetApplicationArtifactsDependsOn);AddMauiApplicationArtifactMetadata</GetApplicationArtifactsDependsOn>
+	</PropertyGroup>
+
+	<Import Project="../../common/shared-dotnet.csproj" />
+
+	<ItemGroup>
+		<Compile Include="../*.cs" />
+	</ItemGroup>
+
+	<Target Name="AddMauiApplicationArtifactMetadata">
+		<ItemGroup>
+			<_MauiObservedAppArtifact Include="@(ApplicationArtifact)" Condition="'%(ApplicationArtifact.PackageFormat)' == 'app'" />
+			<_MauiObservedPackageArtifact Include="@(ApplicationArtifact)" Condition="'%(ApplicationArtifact.PackageFormat)' == '$(ExpectedAugmentedPackageFormat)'" />
+			<ApplicationArtifact Update="@(ApplicationArtifact)">
+				<ApplicationTitle>My MAUI App</ApplicationTitle>
+				<MauiObservedPackageFormat>%(ApplicationArtifact.PackageFormat)</MauiObservedPackageFormat>
+			</ApplicationArtifact>
+		</ItemGroup>
+		<Error Condition="'@(_MauiObservedAppArtifact)' == ''" Text="Expected app ApplicationArtifact items before MAUI metadata is added." />
+		<Error Condition="'@(_MauiObservedPackageArtifact)' == ''" Text="Expected $(ExpectedAugmentedPackageFormat) ApplicationArtifact items before MAUI metadata is added." />
+	</Target>
+</Project>

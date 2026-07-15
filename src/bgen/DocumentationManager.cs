@@ -10,14 +10,25 @@ using System.Xml;
 
 public class DocumentationManager {
 	string xml;
-	XmlDocument? doc;
+	Dictionary<string, XmlNode>? memberLookup;
 
 	public DocumentationManager (string assembly)
 	{
 		this.xml = Path.ChangeExtension (assembly, ".xml");
 		if (File.Exists (xml)) {
-			doc = new XmlDocument ();
+			var doc = new XmlDocument ();
 			doc.LoadWithoutNetworkAccess (xml);
+			// Pre-build a dictionary for O(1) member lookups instead of
+			// O(n) XPath queries on every TryGetDocumentation call.
+			var members = doc.SelectNodes ("/doc/members/member[@name]");
+			if (members is not null) {
+				memberLookup = new Dictionary<string, XmlNode> (members.Count);
+				foreach (XmlNode member in members) {
+					var name = member.Attributes? ["name"]?.Value;
+					if (name is not null)
+						memberLookup [name] = member;
+				}
+			}
 		}
 	}
 
@@ -38,14 +49,13 @@ public class DocumentationManager {
 	{
 		documentation = null;
 
-		if (doc is null)
+		if (memberLookup is null)
 			return false;
 
 		if (!TryGetId (member, out var id))
 			return false;
 
-		var node = doc.SelectSingleNode ($"/doc/members/member[@name='{id}']");
-		if (node is null)
+		if (!memberLookup.TryGetValue (id, out var node))
 			return false;
 
 		if (transformNode is not null)

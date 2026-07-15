@@ -25,7 +25,7 @@ namespace MonoTouchFixtures.MapKit {
 			TestRuntime.AssertSystemVersion (ApplePlatform.TVOS, 9, 2, throwIfOtherPlatform: false);
 
 			using (var lsr = new MKLocalSearchRequest ()) {
-				Assert.Null (lsr.NaturalLanguageQuery, "NaturalLanguageQuery");
+				Assert.That (lsr.NaturalLanguageQuery, Is.Null, "NaturalLanguageQuery");
 				Assert.That (lsr.Region.Center.Latitude, Is.EqualTo (0.0d), "Latitude");
 				Assert.That (lsr.Region.Center.Longitude, Is.EqualTo (0.0d), "Longitude");
 				Assert.That (lsr.Region.Span.LatitudeDelta, Is.EqualTo (0.0d), "LatitudeDelta");

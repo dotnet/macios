@@ -33,12 +33,14 @@ fi
 PROJECT_FILE="$1"
 PROJECT=$(basename -s .csproj "$PROJECT_FILE")
 PROJECT_DIR=$(dirname "$PROJECT_FILE")
-FRAGMENT_PATH="$2"
+FINAL_FRAGMENT_PATH="$2"
 REFERENCES_PATH=$(pwd)/$PROJECT-references.txt
 
-if test -z "$FRAGMENT_PATH"; then
-	FRAGMENT_PATH=$PROJECT_FILE.inc
+if test -z "$FINAL_FRAGMENT_PATH"; then
+	FINAL_FRAGMENT_PATH=$PROJECT_FILE.inc
 fi
+
+FRAGMENT_PATH="$FINAL_FRAGMENT_PATH.$$.tmp"
 
 BUILD_EXECUTABLE="dotnet build"
 
@@ -59,6 +61,7 @@ fi
 	function upon_exit ()
 	{
 		rm -f "$PROJECT_DIR/ProjectInspector.csproj"
+		rm -f "$FRAGMENT_PATH"
 	}
 	trap upon_exit EXIT
 	cp ProjectInspector.csproj "$PROJECT_DIR"
@@ -89,6 +92,7 @@ function delete_tmpproj
 	if test -n "$TMPPROJ"; then
 		rm -f "$TMPPROJ"
 	fi
+	rm -f "$FRAGMENT_PATH"
 }
 trap delete_tmpproj EXIT
 trap delete_tmpproj ERR
@@ -137,6 +141,8 @@ sort "${INPUT_PATHS[@]}" | uniq >> "$FRAGMENT_PATH"
 if test -z "$ABSOLUTE_PATHS"; then
 	sed "${SED_INPLACE_FLAGS[@]}" "s@$PROJECT_DIR/@@" "$FRAGMENT_PATH"
 fi
+
+mv "$FRAGMENT_PATH" "$FINAL_FRAGMENT_PATH"
 
 # Cleanup
 rm -f "${INPUT_PATHS[@]}"

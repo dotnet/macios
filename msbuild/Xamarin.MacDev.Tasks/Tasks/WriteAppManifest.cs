@@ -32,7 +32,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			var firstManifest = AppManifests! [0].ItemSpec;
 			try {
-				plist = PDictionary.FromFile (firstManifest)!;
+				plist = PDictionary.OpenFile (firstManifest);
 			} catch (Exception ex) {
 				Log.LogError (null, null, null, firstManifest, 0, 0, 0, 0, MSBStrings.E0010, ex.Message);
 				return false;

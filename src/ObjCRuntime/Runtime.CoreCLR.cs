@@ -205,26 +205,33 @@ namespace ObjCRuntime {
 				ExceptionHandling.RaiseAppDomainUnhandledExceptionEvent (exception);
 		}
 
-		// Size: 2 pointers
-		internal struct TrackedObjectInfo {
-			public unsafe NSObjectData* Data;
-		}
-
 		[SupportedOSPlatform ("macos")]
 		internal static GCHandle CreateTrackingGCHandle (NSObject obj, IntPtr handle)
 		{
 			var gchandle = ObjectiveCMarshal.CreateReferenceTrackingHandle (obj, out var info);
 
 			unsafe {
-				TrackedObjectInfo* tracked_info;
 				fixed (void* ptr = info)
-					tracked_info = (TrackedObjectInfo*) ptr;
-				tracked_info->Data = obj.GetData ();
-
-				log_coreclr ($"GetOrCreateTrackingGCHandle ({obj.GetType ().FullName}, 0x{handle.ToString ("x")}) => Info=0x{((IntPtr) tracked_info).ToString ("x")} Data=0x{(IntPtr) tracked_info->Data:x} Created new");
+					log_coreclr ($"GetOrCreateTrackingGCHandle ({obj.GetType ().FullName}, 0x{handle.ToString ("x")}) => 0x{((IntPtr) ptr).ToString ("x")} Created new");
 			}
 
 			return gchandle;
+		}
+
+		internal unsafe static void* GetTaggedMemory (NSObject obj)
+		{
+			// If https://github.com/dotnet/runtime/issues/128476 is accepted and implemented,
+			// can just call that new API instead of calling ObjectiveCMarshal.CreateReferenceTrackingHandle and
+			// freeing the returned handle.
+
+			var gchandle = ObjectiveCMarshal.CreateReferenceTrackingHandle (obj, out var info);
+			// We only care about the tagged memory ('info'), so just free the GCHandle.
+			// We might want to request an API to just get the tagged memory at some point.
+			gchandle.Free ();
+			// The tagged memory pointer is guaranteed to be the same for every call to ObjectiveCMarshal.CreateReferenceTrackingHandle,
+			// and it will automatically be freed once the 'obj' is freed by the GC (in particular _once the instance is freed_,
+			// not _once the instance is collectible_, which is a very important distinction for us).
+			return Unsafe.AsPointer (ref info.GetPinnableReference ());
 		}
 
 		// See  "Toggle-ref support for CoreCLR" in coreclr-bridge.m for more information.

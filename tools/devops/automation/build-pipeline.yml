@@ -45,7 +45,7 @@ resources:
     - repository: yaml-templates
       type: git
       name: xamarin.yaml-templates
-      ref: e30b445c2ffcbebe75efdd69546d7196a20c5a43
+      ref: refs/heads/main
 
     - repository: CustomPipelineTemplates
       type: git
@@ -132,7 +132,7 @@ extends:
           forceInsertion: ${{ parameters.forceInsertion }}
           pushNugets: ${{ parameters.pushNugets }}
           pushNugetsToMaestro: ${{ parameters.pushNugetsToMaestro }}
-          useACES: true  # flip to false to opt CI out of ACES; see templates/variables/common.yml
+          useACES: true  # see templates/variables/common.yml
 
       - template: localization/v1.yml@yaml-templates
         parameters:

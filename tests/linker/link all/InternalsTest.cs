@@ -22,7 +22,7 @@ namespace LinkAll.InernalCalls {
 		[Test]
 		public void RegionInfo_CountryCode ()
 		{
-			Assert.IsNotNull (xamarin_get_locale_country_code (), "xamarin_get_locale_country_code");
+			Assert.That (xamarin_get_locale_country_code (), Is.Not.Null, "xamarin_get_locale_country_code");
 		}
 
 		[DllImport ("__Internal", CharSet = CharSet.Unicode)]
@@ -47,7 +47,7 @@ namespace LinkAll.InernalCalls {
 			for (int i = 0, offset = 0; i < count; i++, offset += IntPtr.Size) {
 				IntPtr p = Marshal.ReadIntPtr (array, offset);
 				string s = Marshal.PtrToStringAnsi (p)!;
-				Assert.NotNull (s, i.ToString ());
+				Assert.That (s, Is.Not.Null, i.ToString ());
 				Marshal.FreeHGlobal (p);
 			}
 			Marshal.FreeHGlobal (array);

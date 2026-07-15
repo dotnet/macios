@@ -80,7 +80,9 @@ namespace MonoTouchFixtures.HttpClientTests {
 		}
 
 		[TestCase (typeof (HttpClientHandler), 8)]
-		[TestCase (typeof (CFNetworkHandler), 8)]
+		// There are known issues (deadlocks) with CFNetworkHandler: https://github.com/dotnet/macios/issues/25634
+		// CFNetworkHandler is obsolete, so we won't fix any such issues, so to avoid deadlocks, just avoid testing CFNetworkHandler.
+		[TestCase (typeof (CFNetworkHandler), 8, Ignore = "There are known issues (deadlocks) with CFNetworkHandler: https://github.com/dotnet/macios/issues/25634")]
 		[TestCase (typeof (NSUrlSessionHandler), 9)]
 		public void EnsureModifiabilityPostSend (Type handlerType, int macOSMinVersion)
 		{

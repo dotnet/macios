@@ -301,7 +301,7 @@ testConfigurations:
   - label: framework      # Framework tests
   - label: generator      # Binding generator tests
   - label: introspection  # Runtime introspection tests
-  - label: linker         # Linker tests
+  - label: linker         # Linker tests (split by platform)
   - label: monotouch      # MonoTouch tests (split by platform)
   - label: msbuild        # MSBuild tests
   - label: sharpie        # Sharpie tests

@@ -2,6 +2,7 @@
 // Copyright 2019 Microsoft Corporation
 
 using CoreFoundation;
+using System.ComponentModel;
 
 namespace CoreWlan {
 
@@ -169,7 +170,12 @@ namespace CoreWlan {
 		/// <summary>To be added.</summary>
 		TwentyMHz = 1,
 		/// <summary>To be added.</summary>
-		FourtyMHz = 2,
+		FortyMHz = 2,
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'FortyMHz' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		FourtyMHz = FortyMHz,
+#endif
 		/// <summary>To be added.</summary>
 		EightyMHz = 3,
 		/// <summary>To be added.</summary>

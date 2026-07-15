@@ -58,8 +58,8 @@ namespace LinkAll.Attributes {
 		{
 			var t = Type.GetType ("LinkAll.Attributes.TypeWithMembers" + WorkAroundLinkerHeuristics)!;
 			// both type and members are preserved
-			Assert.NotNull (t, "type");
-			Assert.NotNull (t.GetProperty ("Present"), "members");
+			Assert.That (t, Is.Not.Null, "type");
+			Assert.That (t.GetProperty ("Present"), Is.Not.Null, "members");
 		}
 
 		[Test]
@@ -67,9 +67,9 @@ namespace LinkAll.Attributes {
 		{
 			var t = Type.GetType ("LinkAll.Attributes.TypeWithoutMembers" + WorkAroundLinkerHeuristics)!;
 			// type is preserved
-			Assert.NotNull (t, "type");
+			Assert.That (t, Is.Not.Null, "type");
 			// but we did not ask the linker to preserve it's members
-			Assert.Null (t.GetProperty ("Absent"), "members");
+			Assert.That (t.GetProperty ("Absent"), Is.Null, "members");
 		}
 
 		[Test]
@@ -78,7 +78,7 @@ namespace LinkAll.Attributes {
 			TestRuntime.AssertSimulator ("https://github.com/dotnet/macios/issues/10457");
 
 			var klass = Type.GetType ("ObjCRuntime.Runtime, " + AssemblyName)!;
-			Assert.NotNull (klass, "Runtime");
+			Assert.That (klass, Is.Not.Null, "Runtime");
 			// RegisterEntryAssembly is only needed for the simulator (not on devices) so it's only preserved for sim builds
 			var method = klass.GetMethod ("RegisterEntryAssembly", BindingFlags.NonPublic | BindingFlags.Static, null, new [] { typeof (Assembly) }, null);
 #if __MACOS__
@@ -94,81 +94,81 @@ namespace LinkAll.Attributes {
 		{
 			const string klassName = "ObjCRuntime.ObjCException";
 			var klass = Type.GetType (klassName + ", " + AssemblyName);
-			Assert.NotNull (klass, klassName);
+			Assert.That (klass, Is.Not.Null, klassName);
 		}
 
 		[Test]
 		public void Class_Unconditional ()
 		{
 			var klass = Type.GetType ("ObjCRuntime.Class, " + AssemblyName)!;
-			Assert.NotNull (klass, "Class");
+			Assert.That (klass, Is.Not.Null, "Class");
 			// handle is unconditionally preserved
 			var field = klass.GetField ("handle", BindingFlags.NonPublic | BindingFlags.Instance);
-			Assert.NotNull (field, "handle");
+			Assert.That (field, Is.Not.Null, "handle");
 		}
 
 		[Test]
 		public void Runtime_Unconditional ()
 		{
 			var klass = Type.GetType ("ObjCRuntime.Runtime, " + AssemblyName)!;
-			Assert.NotNull (klass, "Runtime");
+			Assert.That (klass, Is.Not.Null, "Runtime");
 			// Initialize and a few other methods are unconditionally preserved
 			var method = klass.GetMethod ("Initialize", BindingFlags.NonPublic | BindingFlags.Static);
-			Assert.NotNull (method, "Initialize");
+			Assert.That (method, Is.Not.Null, "Initialize");
 			method = klass.GetMethod ("RegisterNSObject", BindingFlags.NonPublic | BindingFlags.Static, null, new Type [] { typeof (NSObject), typeof (IntPtr) }, null);
-			Assert.NotNull (method, "RegisterNSObject");
+			Assert.That (method, Is.Not.Null, "RegisterNSObject");
 		}
 
 		[Test]
 		public void Selector_Unconditional ()
 		{
 			var klass = Type.GetType ("ObjCRuntime.Selector, " + AssemblyName)!;
-			Assert.NotNull (klass, "Selector");
+			Assert.That (klass, Is.Not.Null, "Selector");
 			// handle and is unconditionally preserved
 			var field = klass.GetField ("handle", BindingFlags.NonPublic | BindingFlags.Instance);
-			Assert.NotNull (field, "handle");
+			Assert.That (field, Is.Not.Null, "handle");
 			var method = klass.GetMethod ("GetHandle", BindingFlags.Public | BindingFlags.Static);
-			Assert.NotNull (method, "GetHandle");
+			Assert.That (method, Is.Not.Null, "GetHandle");
 		}
 
 		[Test]
 		public void SmartEnumTest ()
 		{
 			var consumer = GetType ().Assembly.GetType ("LinkAll.Attributes.SmartConsumer" + WorkAroundLinkerHeuristics)!;
-			Assert.NotNull (consumer, "SmartConsumer");
-			Assert.NotNull (consumer.GetMethod ("GetSmartEnumValue"), "GetSmartEnumValue");
-			Assert.NotNull (consumer.GetMethod ("SetSmartEnumValue"), "SetSmartEnumValue");
+			Assert.That (consumer, Is.Not.Null, "SmartConsumer");
+			Assert.That (consumer.GetMethod ("GetSmartEnumValue"), Is.Not.Null, "GetSmartEnumValue");
+			Assert.That (consumer.GetMethod ("SetSmartEnumValue"), Is.Not.Null, "SetSmartEnumValue");
 			var smartEnum = GetType ().Assembly.GetType ("LinkAll.Attributes.SmartEnum")!;
-			Assert.NotNull (smartEnum, "SmartEnum");
+			Assert.That (smartEnum, Is.Not.Null, "SmartEnum");
 			var smartExtensions = GetType ().Assembly.GetType ("LinkAll.Attributes.SmartEnumExtensions" + WorkAroundLinkerHeuristics)!;
-			Assert.NotNull (smartExtensions, "SmartEnumExtensions");
-			Assert.NotNull (smartExtensions.GetMethod ("GetConstant"), "GetConstant");
-			Assert.NotNull (smartExtensions.GetMethod ("GetValue"), "GetValue");
+			Assert.That (smartExtensions, Is.Not.Null, "SmartEnumExtensions");
+			Assert.That (smartExtensions.GetMethod ("GetConstant"), Is.Not.Null, "GetConstant");
+			Assert.That (smartExtensions.GetMethod ("GetValue"), Is.Not.Null, "GetValue");
 
 			// Unused smart enums and their extensions should be linked away
-			Assert.IsNull (typeof (NSObject).Assembly.GetType ("AVFoundation.AVMediaTypes"), "AVMediaTypes");
-			Assert.IsNull (typeof (NSObject).Assembly.GetType ("AVFoundation.AVMediaTypesExtensions"), "AVMediaTypesExtensions");
+			Assert.That (typeof (NSObject).Assembly.GetType ("AVFoundation.AVMediaTypes"), Is.Null, "AVMediaTypes");
+			Assert.That (typeof (NSObject).Assembly.GetType ("AVFoundation.AVMediaTypesExtensions"), Is.Null, "AVMediaTypesExtensions");
 		}
 
 		[Test]
 		public void PreserveAllExcludesNestedTypes ()
 		{
 			var parentClass = GetType ().Assembly.GetType ("LinkAll.Attributes.ParentClass" + WorkAroundLinkerHeuristics);
-			Assert.NotNull (parentClass, "ParentClass");
+			Assert.That (parentClass, Is.Not.Null, "ParentClass");
 			var nestedEnum = GetType ().Assembly.GetType ("LinkAll.Attributes.ParentClass.NestedEnum" + WorkAroundLinkerHeuristics);
-			Assert.Null (nestedEnum, "NestedEnum");
+			Assert.That (nestedEnum, Is.Null, "NestedEnum");
 			var nestedStruct = GetType ().Assembly.GetType ("LinkAll.Attributes.ParentClass.NestedStruct" + WorkAroundLinkerHeuristics);
-			Assert.Null (nestedStruct, "NestedStruct");
+			Assert.That (nestedStruct, Is.Null, "NestedStruct");
 			var nestedClass = GetType ().Assembly.GetType ("LinkAll.Attributes.ParentClass.NestedClass" + WorkAroundLinkerHeuristics);
-			Assert.Null (nestedClass, "NestedClass");
+			Assert.That (nestedClass, Is.Null, "NestedClass");
 		}
 
 		[Test]
 		public void PreserveAllKeepsEnumValues ()
 		{
 			var enumType = GetType ().Assembly.GetType ("LinkAll.Attributes.MyEnum" + WorkAroundLinkerHeuristics)!;
-			Assert.NotNull (enumType, "MyEnum");
-			Assert.AreEqual (3, enumType.GetFields (BindingFlags.Public | BindingFlags.Static).Length, "fields");
+			Assert.That (enumType, Is.Not.Null, "MyEnum");
+			Assert.That (enumType.GetFields (BindingFlags.Public | BindingFlags.Static).Length, Is.EqualTo (3), "fields");
 			AssertHasStaticField ("A", 1);
 			AssertHasStaticField ("B", 2);
 			AssertHasStaticField ("C", 4);
@@ -176,8 +176,8 @@ namespace LinkAll.Attributes {
 			void AssertHasStaticField (string name, int value)
 			{
 				var field = enumType.GetField (name, BindingFlags.Public | BindingFlags.Static)!;
-				Assert.NotNull (field, name);
-				Assert.AreEqual (value, (int) field.GetValue (null)!, $"{name} == {value}");
+				Assert.That (field, Is.Not.Null, name);
+				Assert.That ((int) field.GetValue (null)!, Is.EqualTo (value), $"{name} == {value}");
 			}
 		}
 	}

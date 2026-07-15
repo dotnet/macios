@@ -57,7 +57,7 @@ namespace MonoTouchFixtures.CoreText {
 			TestRuntime.AssertXcodeVersion (5, 0);
 
 			using (var font = new CTFont ("HoeflerText-Regular", 10, CTFontOptions.Default)) {
-				Assert.NotNull (font.GetDefaultCascadeList (null), "null");
+				Assert.That (font.GetDefaultCascadeList (null), Is.Not.Null, "null");
 			}
 		}
 
@@ -67,7 +67,7 @@ namespace MonoTouchFixtures.CoreText {
 			TestRuntime.AssertXcodeVersion (5, 0);
 
 			using (var font = new CTFont ("HoeflerText-Regular", 10, CTFontOptions.Default)) {
-				Assert.NotNull (font.GetLocalizedName (CTFontNameKey.Copyright), "1");
+				Assert.That (font.GetLocalizedName (CTFontNameKey.Copyright), Is.Not.Null, "1");
 
 				// We need to check if we are using english as our main language since this is the known case
 				// that the following code works. It fails with spanish for example but it is a false positive
@@ -75,8 +75,8 @@ namespace MonoTouchFixtures.CoreText {
 				var language = NSLocale.PreferredLanguages [0];
 				if (language == "en") {
 					string str;
-					Assert.NotNull (font.GetLocalizedName (CTFontNameKey.Full, out str), "2");
-					Assert.NotNull (str, "out str");
+					Assert.That (font.GetLocalizedName (CTFontNameKey.Full, out str), Is.Not.Null, "2");
+					Assert.That (str, Is.Not.Null, "out str");
 				}
 			}
 		}
@@ -87,7 +87,7 @@ namespace MonoTouchFixtures.CoreText {
 			using (var font = CreateAppleColorEmojiFont ())
 			using (var ctfont = font.ToCTFont ((nfloat) 10.0)) {
 				ushort [] gid = new ushort [2];
-				Assert.True (ctfont.GetGlyphsForCharacters ("\ud83d\ude00".ToCharArray (), gid), "GetGlyphsForCharacters");
+				Assert.That (ctfont.GetGlyphsForCharacters ("\ud83d\ude00".ToCharArray (), gid), Is.True, "GetGlyphsForCharacters");
 				Assert.That (gid [0], Is.Not.EqualTo (0), "0");
 				Assert.That (gid [1], Is.EqualTo (0), "1");
 			}
@@ -135,7 +135,7 @@ namespace MonoTouchFixtures.CoreText {
 
 			using (var font = CreateAppleColorEmojiFont ())
 			using (var ctfont = font.ToCTFont ((nfloat) 10.0))
-				Assert.Null (ctfont.GetGlyphName ('\ud83d'), "2");
+				Assert.That (ctfont.GetGlyphName ('\ud83d'), Is.Null, "2");
 		}
 
 		[Test]
@@ -148,7 +148,7 @@ namespace MonoTouchFixtures.CoreText {
 			using var space = CGColorSpace.CreateDeviceRGB ();
 			using var context = new CGBitmapContext (null, 10, 10, 8, 40, space, CGBitmapFlags.PremultipliedLast);
 			font.DrawImage (provider, CGPoint.Empty, context);
-			Assert.AreEqual (1, provider.Count, "#Count");
+			Assert.That (provider.Count, Is.EqualTo (1), "#Count");
 		}
 
 		[Test]
@@ -164,7 +164,7 @@ namespace MonoTouchFixtures.CoreText {
 				new CGRect (0, -3.90625, 35, 16.40625)
 			};
 			Assert.That (bounds, Is.AnyOf (candidates).Using<CGRect> ((x, y) => x == y), "Bounds");
-			Assert.AreEqual (0, provider.Count, "#Count");
+			Assert.That (provider.Count, Is.EqualTo (0), "#Count");
 		}
 
 		[Test]
@@ -172,7 +172,7 @@ namespace MonoTouchFixtures.CoreText {
 		{
 			using (var font = new CTFont ("HoeflerText-Regular", 10, CTFontOptions.Default)) {
 				using (var name = font.GetAttribute (CTFontDescriptorAttributeKey.Name)) {
-					Assert.NotNull (name, "Name");
+					Assert.That (name, Is.Not.Null, "Name");
 				}
 			}
 		}
@@ -193,7 +193,7 @@ namespace MonoTouchFixtures.CoreText {
 		{
 			using (var font = new CTFont ("HoeflerText-Regular", 10)) {
 				var axes = font.GetVariationAxes ();
-				Assert.IsNotNull (axes, "axes");
+				Assert.That (axes, Is.Not.Null, "axes");
 				// HoeflerText-Regular has no variation axes, so we expect an empty array
 				Assert.That (axes.Length, Is.EqualTo (0), "Length");
 			}

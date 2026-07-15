@@ -20,8 +20,8 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		public void DefaultCtor ()
 		{
 			var obj = new Subclassed ();
-			Assert.AreEqual (NativeHandle.Zero, obj.Handle, "Handle");
-			Assert.AreEqual (false, obj.Owns, "Owns");
+			Assert.That (obj.Handle, Is.EqualTo (NativeHandle.Zero), "Handle");
+			Assert.That (obj.Owns, Is.EqualTo (false), "Owns");
 		}
 
 		[Test]
@@ -36,19 +36,19 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			Assert.That (ex.Message, Does.Contain ("Could not initialize an instance of the type"), "Ex 2");
 
 			obj = new Subclassed ((NativeHandle) (IntPtr) 1, true);
-			Assert.AreEqual ((NativeHandle) (IntPtr) 1, obj.Handle, "Handle 3");
-			Assert.AreEqual (true, obj.Owns, "Owns 3");
-			Assert.AreEqual ((NativeHandle) (IntPtr) 1, obj.GetCheckedHandle (), "GetCheckedHandle 3");
+			Assert.That (obj.Handle, Is.EqualTo ((NativeHandle) (IntPtr) 1), "Handle 3");
+			Assert.That (obj.Owns, Is.EqualTo (true), "Owns 3");
+			Assert.That (obj.GetCheckedHandle (), Is.EqualTo ((NativeHandle) (IntPtr) 1), "GetCheckedHandle 3");
 			obj.Dispose ();
-			Assert.AreEqual (NativeHandle.Zero, obj.Handle, "Handle 3b");
+			Assert.That (obj.Handle, Is.EqualTo (NativeHandle.Zero), "Handle 3b");
 			Assert.Throws<ObjectDisposedException> (() => obj.GetCheckedHandle (), "GetCheckedHandle 3b");
 
 			obj = new Subclassed ((NativeHandle) (IntPtr) 1, false);
-			Assert.AreEqual ((NativeHandle) (IntPtr) 1, obj.Handle, "Handle 4");
-			Assert.AreEqual (false, obj.Owns, "Owns 4");
-			Assert.AreEqual ((NativeHandle) (IntPtr) 1, obj.GetCheckedHandle (), "GetCheckedHandle 4");
+			Assert.That (obj.Handle, Is.EqualTo ((NativeHandle) (IntPtr) 1), "Handle 4");
+			Assert.That (obj.Owns, Is.EqualTo (false), "Owns 4");
+			Assert.That (obj.GetCheckedHandle (), Is.EqualTo ((NativeHandle) (IntPtr) 1), "GetCheckedHandle 4");
 			obj.Dispose ();
-			Assert.AreEqual (NativeHandle.Zero, obj.Handle, "Handle 4b");
+			Assert.That (obj.Handle, Is.EqualTo (NativeHandle.Zero), "Handle 4b");
 			Assert.Throws<ObjectDisposedException> (() => obj.GetCheckedHandle (), "GetCheckedHandle 4b");
 		}
 
@@ -56,33 +56,33 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		public void CtorOwnsVerify ()
 		{
 			var obj = new Subclassed (NativeHandle.Zero, true, false);
-			Assert.AreEqual (NativeHandle.Zero, obj.Handle, "Handle 1");
-			Assert.AreEqual (true, obj.Owns, "Owns 1");
+			Assert.That (obj.Handle, Is.EqualTo (NativeHandle.Zero), "Handle 1");
+			Assert.That (obj.Owns, Is.EqualTo (true), "Owns 1");
 			Assert.Throws<ObjectDisposedException> (() => obj.GetCheckedHandle (), "GetCheckedHandle 1");
 			obj.Dispose ();
-			Assert.AreEqual (NativeHandle.Zero, obj.Handle, "Handle 1b");
+			Assert.That (obj.Handle, Is.EqualTo (NativeHandle.Zero), "Handle 1b");
 			Assert.Throws<ObjectDisposedException> (() => obj.GetCheckedHandle (), "GetCheckedHandle 1b");
 
 			obj = new Subclassed (NativeHandle.Zero, false, false);
-			Assert.AreEqual (NativeHandle.Zero, obj.Handle, "Handle 2");
-			Assert.AreEqual (false, obj.Owns, "Owns 2");
+			Assert.That (obj.Handle, Is.EqualTo (NativeHandle.Zero), "Handle 2");
+			Assert.That (obj.Owns, Is.EqualTo (false), "Owns 2");
 			Assert.Throws<ObjectDisposedException> (() => obj.GetCheckedHandle (), "GetCheckedHandle 2");
 			obj.Dispose ();
-			Assert.AreEqual (NativeHandle.Zero, obj.Handle, "Handle 2b");
+			Assert.That (obj.Handle, Is.EqualTo (NativeHandle.Zero), "Handle 2b");
 			Assert.Throws<ObjectDisposedException> (() => obj.GetCheckedHandle (), "GetCheckedHandle 2b");
 
 			obj = new Subclassed ((NativeHandle) (IntPtr) 1, true, false);
-			Assert.AreEqual ((NativeHandle) (IntPtr) 1, obj.Handle, "Handle 3");
-			Assert.AreEqual (true, obj.Owns, "Owns 3");
-			Assert.AreEqual ((NativeHandle) (IntPtr) 1, obj.GetCheckedHandle (), "GetCheckedHandle 3");
+			Assert.That (obj.Handle, Is.EqualTo ((NativeHandle) (IntPtr) 1), "Handle 3");
+			Assert.That (obj.Owns, Is.EqualTo (true), "Owns 3");
+			Assert.That (obj.GetCheckedHandle (), Is.EqualTo ((NativeHandle) (IntPtr) 1), "GetCheckedHandle 3");
 			obj.Dispose ();
-			Assert.AreEqual (NativeHandle.Zero, obj.Handle, "Handle 3b");
+			Assert.That (obj.Handle, Is.EqualTo (NativeHandle.Zero), "Handle 3b");
 			Assert.Throws<ObjectDisposedException> (() => obj.GetCheckedHandle (), "GetCheckedHandle 3b");
 
 			obj = new Subclassed ((NativeHandle) (IntPtr) 1, false, false);
-			Assert.AreEqual ((NativeHandle) (IntPtr) 1, obj.Handle, "Handle 4");
-			Assert.AreEqual (false, obj.Owns, "Owns 4");
-			Assert.AreEqual ((NativeHandle) (IntPtr) 1, obj.GetCheckedHandle (), "GetCheckedHandle 4");
+			Assert.That (obj.Handle, Is.EqualTo ((NativeHandle) (IntPtr) 1), "Handle 4");
+			Assert.That (obj.Owns, Is.EqualTo (false), "Owns 4");
+			Assert.That (obj.GetCheckedHandle (), Is.EqualTo ((NativeHandle) (IntPtr) 1), "GetCheckedHandle 4");
 
 
 			var ex = Assert.Throws<Exception> (() => obj = new Subclassed (NativeHandle.Zero, true, true), "Handle 1V");
@@ -92,19 +92,19 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			Assert.That (ex.Message, Does.Contain ("Could not initialize an instance of the type"), "Ex 2V");
 
 			obj = new Subclassed ((NativeHandle) (IntPtr) 1, true, true);
-			Assert.AreEqual ((NativeHandle) (IntPtr) 1, obj.Handle, "Handle 3V");
-			Assert.AreEqual (true, obj.Owns, "Owns 3V");
-			Assert.AreEqual ((NativeHandle) (IntPtr) 1, obj.GetCheckedHandle (), "GetCheckedHandle 3V");
+			Assert.That (obj.Handle, Is.EqualTo ((NativeHandle) (IntPtr) 1), "Handle 3V");
+			Assert.That (obj.Owns, Is.EqualTo (true), "Owns 3V");
+			Assert.That (obj.GetCheckedHandle (), Is.EqualTo ((NativeHandle) (IntPtr) 1), "GetCheckedHandle 3V");
 			obj.Dispose ();
-			Assert.AreEqual (NativeHandle.Zero, obj.Handle, "Handle 3Vb");
+			Assert.That (obj.Handle, Is.EqualTo (NativeHandle.Zero), "Handle 3Vb");
 			Assert.Throws<ObjectDisposedException> (() => obj.GetCheckedHandle (), "GetCheckedHandle 3Vb");
 
 			obj = new Subclassed ((NativeHandle) (IntPtr) 1, false, true);
-			Assert.AreEqual ((NativeHandle) (IntPtr) 1, obj.Handle, "Handle 4V");
-			Assert.AreEqual (false, obj.Owns, "Owns 4V");
-			Assert.AreEqual ((NativeHandle) (IntPtr) 1, obj.GetCheckedHandle (), "GetCheckedHandle 4V");
+			Assert.That (obj.Handle, Is.EqualTo ((NativeHandle) (IntPtr) 1), "Handle 4V");
+			Assert.That (obj.Owns, Is.EqualTo (false), "Owns 4V");
+			Assert.That (obj.GetCheckedHandle (), Is.EqualTo ((NativeHandle) (IntPtr) 1), "GetCheckedHandle 4V");
 			obj.Dispose ();
-			Assert.AreEqual (NativeHandle.Zero, obj.Handle, "Handle 4Vb");
+			Assert.That (obj.Handle, Is.EqualTo (NativeHandle.Zero), "Handle 4Vb");
 			Assert.Throws<ObjectDisposedException> (() => obj.GetCheckedHandle (), "GetCheckedHandle 4Vb");
 		}
 
@@ -112,10 +112,10 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		public void Handle ()
 		{
 			var obj = new Subclassed ();
-			Assert.AreEqual (NativeHandle.Zero, obj.Handle, "Handle");
+			Assert.That (obj.Handle, Is.EqualTo (NativeHandle.Zero), "Handle");
 			var ex = Assert.Throws<Exception> (() => obj.Handle = NativeHandle.Zero, "SetHandle ex");
 			obj.Handle = (NativeHandle) (IntPtr) 1;
-			Assert.AreEqual ((NativeHandle) (IntPtr) 1, obj.Handle, "GetHandle");
+			Assert.That (obj.Handle, Is.EqualTo ((NativeHandle) (IntPtr) 1), "GetHandle");
 		}
 	}
 }

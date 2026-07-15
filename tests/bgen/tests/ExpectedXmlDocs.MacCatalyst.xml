@@ -158,7 +158,11 @@
                 if (IsDirectBinding) {
                     Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
                 } else {
-                    Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
+                    unsafe {
+                        var __objc_super__ = new ObjCRuntime.ObjCSuper (this);
+                        Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (&__objc_super__, initWithFrame, frame);
+                    }
+                    GC.KeepAlive (this);
                 }
             }
             ]]></code>
@@ -383,7 +387,11 @@
                 if (IsDirectBinding) {
                     Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
                 } else {
-                    Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
+                    unsafe {
+                        var __objc_super__ = new ObjCRuntime.ObjCSuper (this);
+                        Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (&__objc_super__, initWithFrame, frame);
+                    }
+                    GC.KeepAlive (this);
                 }
             }
             ]]></code>
@@ -578,7 +586,11 @@
                 if (IsDirectBinding) {
                     Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
                 } else {
-                    Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
+                    unsafe {
+                        var __objc_super__ = new ObjCRuntime.ObjCSuper (this);
+                        Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (&__objc_super__, initWithFrame, frame);
+                    }
+                    GC.KeepAlive (this);
                 }
             }
             ]]></code>
@@ -688,7 +700,11 @@
                 if (IsDirectBinding) {
                     Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
                 } else {
-                    Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
+                    unsafe {
+                        var __objc_super__ = new ObjCRuntime.ObjCSuper (this);
+                        Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (&__objc_super__, initWithFrame, frame);
+                    }
+                    GC.KeepAlive (this);
                 }
             }
             ]]></code>
@@ -768,7 +784,11 @@
                 if (IsDirectBinding) {
                     Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
                 } else {
-                    Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
+                    unsafe {
+                        var __objc_super__ = new ObjCRuntime.ObjCSuper (this);
+                        Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (&__objc_super__, initWithFrame, frame);
+                    }
+                    GC.KeepAlive (this);
                 }
             }
             ]]></code>

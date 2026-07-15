@@ -28,10 +28,41 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 
 	bool strictMode;
 
+	public const string PInvokePrefix = "xamarin_Dlfcn_";
+	public const string PInvokeSuffix = "_Native";
+
 	protected override void TryProcess ()
 	{
 		strictMode = Configuration.InlineDlfcnMethods == InlineDlfcnMethodsMode.Strict;
 		base.TryProcess ();
+	}
+
+	protected override bool ModifyAssembly (AssemblyDefinition assembly)
+	{
+		// Dlfcn calls can only appear in assemblies that reference (or, for the platform assembly, define)
+		// ObjCRuntime.Dlfcn, which is only the platform assembly and binding libraries. Skip everything else
+		// (e.g. the BCL and most user assemblies) without iterating all their types, methods and instructions.
+		if (!ReferencesDlfcn (assembly))
+			return false;
+
+		return base.ModifyAssembly (assembly);
+	}
+
+	bool ReferencesDlfcn (AssemblyDefinition assembly)
+	{
+		// Dlfcn lives in the product assembly, so an assembly that doesn't even reference the product assembly
+		// (the BCL, most third-party code) can't possibly call it. This only looks at the assembly references,
+		// so it's the cheapest check - do it first.
+		if (!Configuration.Profile.IsOrReferencesProductAssembly (assembly))
+			return false;
+
+		// The product assembly defines (and calls) Dlfcn itself.
+		if (Configuration.Profile.IsProductAssembly (assembly))
+			return true;
+
+		// Otherwise (binding libraries, user code that references the product assembly) it must reference the
+		// Dlfcn type specifically - this scans the type reference table, so it's the most expensive check.
+		return assembly.MainModule.HasTypeReference ("ObjCRuntime.Dlfcn");
 	}
 
 	string? current_framework;
@@ -39,8 +70,16 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 	{
 		var modified = false;
 		if (type.HasMethods) {
-			if (Frameworks.TryGetFramework (App, type, out Framework? framework) && App.IsSimulatorBuild && !framework.IsFrameworkAvailableInSimulator (App)) {
-				Driver.Log (3, $"Type {type.FullName} appears to be part of the '{framework.Name}' framework, which is not available in the simulator. Skipping inlining Dlfcn calls for this type.");
+			if (Frameworks.TryGetFramework (App, type, out Framework? framework) && framework.IsFrameworkUnavailable (App)) {
+				App.Log (3, $"Type {type.FullName} appears to be part of the '{framework.Name}' framework, which is not available in the current SDK. Skipping inlining Dlfcn calls for this type.");
+				return modified;
+			}
+
+			// If the type isn't available in the simulator, and we're building for the simulator, then don't
+			// inline any of its methods. Checking this once per type (instead of once per method) avoids
+			// re-scanning the declaring type's availability attributes for every method.
+			if (DerivedLinkContext.App.IsSimulatorBuild && DerivedLinkContext.HasAvailabilityAttributesShowingUnavailableInSimulator (type)) {
+				App.Log (3, $"Type {type.FullName} is not available in the simulator. Skipping inlining Dlfcn calls for this type.");
 				return modified;
 			}
 
@@ -98,19 +137,16 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 	TypeDefinition GetDlfcnType (ModuleDefinition module, string @namespace, string? fieldLibraryName = null)
 	{
 		var frameworkOverride = !string.IsNullOrEmpty (fieldLibraryName) ? fieldLibraryName : current_framework;
-		var ns = string.IsNullOrEmpty (frameworkOverride) ? @namespace : frameworkOverride;
-		var dlfcn = module.Types.FirstOrDefault (t => t.Namespace == ns && t.Name == "Dlfcn");
-		if (dlfcn is null) {
-			dlfcn = new TypeDefinition (ns, "Dlfcn", TypeAttributes.NotPublic | TypeAttributes.Sealed, module.TypeSystem.Object);
-			module.Types.Add (dlfcn);
-
+		var ns = frameworkOverride ?? @namespace;
+		var rv = abr.GetOrCreateType (module, ns, "Dlfcn", out var created);
+		if (created) {
 			if (!string.IsNullOrEmpty (frameworkOverride)) {
-				var attrib = new CustomAttribute (abr.ObjectiveCFrameworkAttribute_ctor_String);
+				var attrib = abr.CreateAttribute (abr.ObjectiveCFrameworkAttribute_ctor_String);
 				attrib.ConstructorArguments.Add (new CustomAttributeArgument (abr.System_String, frameworkOverride));
-				dlfcn.CustomAttributes.Add (attrib);
+				rv.CustomAttributes.Add (attrib);
 			}
 		}
-		return dlfcn;
+		return rv;
 	}
 
 	void AddField (string assemblyName, string symbolName)
@@ -124,30 +160,13 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 
 	MethodDefinition GetOrCreatePInvokeMethod (MethodDefinition callingMethod, string symbolName)
 	{
-		var dlfcn = GetDlfcnType (callingMethod);
-		var methodName = $"xamarin_Dlfcn_{symbolName}_Native";
-		var nativeMethod = methodName;
-		var rv = dlfcn.Methods.FirstOrDefault (m => m.Name == methodName);
-		if (rv is not null)
-			return rv; // already exists, no need to create it again
-
 		// [DllImport ("__Internal")]
 		// static extern IntPtr xamarin_Dlfcn_{symbolName}_Native ();
 
-		rv = new MethodDefinition (methodName, MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.PInvokeImpl, abr.System_IntPtr);
-		rv.IsPreserveSig = true;
-
-		var mod = callingMethod.Module.ModuleReferences.FirstOrDefault (mr => mr.Name == "__Internal");
-		if (mod is null) {
-			mod = new ModuleReference ("__Internal");
-			callingMethod.Module.ModuleReferences.Add (mod);
-		}
-		rv.PInvokeInfo = new PInvokeInfo (PInvokeAttributes.CharSetNotSpec | PInvokeAttributes.CallConvCdecl, nativeMethod, mod);
-
-		dlfcn.Methods.Add (rv);
-
-		AddField (callingMethod.Module.Assembly.Name.Name, symbolName);
-
+		var methodName = $"{PInvokePrefix}{symbolName}{PInvokeSuffix}";
+		var rv = abr.CreateInternalPInvoke (callingMethod.Module, callingMethod.DeclaringType.Namespace, "Dlfcn", methodName, out var created);
+		if (created)
+			AddField (callingMethod.Module.Assembly.Name.Name, symbolName);
 		return rv;
 	}
 
@@ -540,13 +559,10 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 			return modified; // don't process the Dlfcn methods themselves
 
 		if (DerivedLinkContext.App.IsSimulatorBuild) {
-			// if the method or its declaring type aren't available in the simulator, and we're building for the simulator, then don't inline.
+			// if the method isn't available in the simulator, and we're building for the simulator, then don't inline.
+			// (the declaring type's availability is checked once per type in ProcessType.)
 			if (DerivedLinkContext.HasAvailabilityAttributesShowingUnavailableInSimulator (method, method)) {
-				Driver.Log (3, $"Method {method.FullName} is not available in the simulator. Skipping inlining Dlfcn calls for this method.");
-				return modified;
-			}
-			if (DerivedLinkContext.HasAvailabilityAttributesShowingUnavailableInSimulator (method.DeclaringType, method)) {
-				Driver.Log (3, $"Type {method.DeclaringType.FullName} is not available in the simulator. Skipping inlining Dlfcn calls for this type.");
+				App.Log (3, $"Method {method.FullName} is not available in the simulator. Skipping inlining Dlfcn calls for this method.");
 				return modified;
 			}
 		}
@@ -560,14 +576,14 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 			// Handle Dlfcn functions of the form (libraryHandle, symbolName)
 			if (mr.Parameters.Count == 2 && mr.Parameters [0].ParameterType.FullName == "System.IntPtr" && mr.Parameters [1].ParameterType.FullName == "System.String") {
 				if (instr.Previous.OpCode != OpCodes.Ldstr) {
-					Report (ErrorHelper.CreateWarning (Configuration.Application, 2255 /* Unknown or unsupported Dlfcn pattern: '{0}' in method '{1}'. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new. */, method, Errors.MX2255, FormatMethod (mr), FormatMethod (method)));
+					App.Log (3, $"Unknown or unsupported Dlfcn pattern: '{FormatMethod (mr)}' in method '{FormatMethod (method)}'. The call will not be inlined.");
 					continue;
 				}
 
 				// In compatibility mode, only inline symbols from [Field] attributes.
 				var ldstr = instr.Previous;
 				if (ldstr.Operand is not string symbolName) {
-					Report (ErrorHelper.CreateWarning (Configuration.Application, 2255 /* Unknown or unsupported Dlfcn pattern: '{0}' in method '{1}'. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new. */, method, Errors.MX2255, FormatMethod (mr), FormatMethod (method)));
+					App.Log (3, $"Unknown or unsupported Dlfcn pattern: '{FormatMethod (mr)}' in method '{FormatMethod (method)}'. The call will not be inlined.");
 					continue;
 				}
 				if (!InlineSymbol (symbolName))
@@ -604,12 +620,12 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 					continue;
 				case "GetStruct":
 					if (mr is not GenericInstanceMethod gim || gim.GenericArguments.Count != 1) {
-						Report (ErrorHelper.CreateWarning (Configuration.Application, 2255 /* Unknown or unsupported Dlfcn pattern: '{0}' in method '{1}'. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new. */, method, Errors.MX2255, FormatMethod (mr), FormatMethod (method)));
+						App.Log (3, $"Unknown or unsupported Dlfcn pattern: '{FormatMethod (mr)}' in method '{FormatMethod (method)}'. The call will not be inlined.");
 						continue;
 					}
 					var returnType = gim.GenericArguments [0];
 					if (returnType.IsGenericInstance) {
-						Report (ErrorHelper.CreateWarning (Configuration.Application, 2255 /* Unknown or unsupported Dlfcn pattern: '{0}' in method '{1}'. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new. */, method, Errors.MX2255, FormatMethod (mr), FormatMethod (method)));
+						App.Log (3, $"Unknown or unsupported Dlfcn pattern: '{FormatMethod (mr)}' in method '{FormatMethod (method)}'. The call will not be inlined.");
 						continue;
 					}
 
@@ -637,12 +653,12 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 			// Handle Dlfcn functions of the form (RTLD, symbolName)
 			if (mr.Parameters.Count == 2 && mr.Parameters [0].ParameterType.FullName == "ObjCRuntime.Dlfcn/RTLD" && mr.Parameters [1].ParameterType.FullName == "System.String") {
 				if (instr.Previous.OpCode != OpCodes.Ldstr) {
-					Report (ErrorHelper.CreateWarning (Configuration.Application, 2255 /* Unknown or unsupported Dlfcn pattern: '{0}' in method '{1}'. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new. */, method, Errors.MX2255, FormatMethod (mr), FormatMethod (method)));
+					App.Log (3, $"Unknown or unsupported Dlfcn pattern: '{FormatMethod (mr)}' in method '{FormatMethod (method)}'. The call will not be inlined.");
 					continue;
 				}
 				var ldstr = instr.Previous;
 				if (ldstr.Operand is not string symbolName) {
-					Report (ErrorHelper.CreateWarning (Configuration.Application, 2255 /* Unknown or unsupported Dlfcn pattern: '{0}' in method '{1}'. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new. */, method, Errors.MX2255, FormatMethod (mr), FormatMethod (method)));
+					App.Log (3, $"Unknown or unsupported Dlfcn pattern: '{FormatMethod (mr)}' in method '{FormatMethod (method)}'. The call will not be inlined.");
 					continue;
 				}
 
@@ -666,12 +682,12 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 			// Handle Dlfcn functions of the form (libraryName, symbolName)
 			if (mr.Parameters.Count == 2 && mr.Parameters [0].ParameterType.FullName == "System.String" && mr.Parameters [1].ParameterType.FullName == "System.String") {
 				if (instr.Previous.OpCode != OpCodes.Ldstr) {
-					Report (ErrorHelper.CreateWarning (Configuration.Application, 2255 /* Unknown or unsupported Dlfcn pattern: '{0}' in method '{1}'. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new. */, method, Errors.MX2255, FormatMethod (mr), FormatMethod (method)));
+					App.Log (3, $"Unknown or unsupported Dlfcn pattern: '{FormatMethod (mr)}' in method '{FormatMethod (method)}'. The call will not be inlined.");
 					continue;
 				}
 				var ldstr = instr.Previous;
 				if (ldstr.Operand is not string symbolName) {
-					Report (ErrorHelper.CreateWarning (Configuration.Application, 2255 /* Unknown or unsupported Dlfcn pattern: '{0}' in method '{1}'. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new. */, method, Errors.MX2255, FormatMethod (mr), FormatMethod (method)));
+					App.Log (3, $"Unknown or unsupported Dlfcn pattern: '{FormatMethod (mr)}' in method '{FormatMethod (method)}'. The call will not be inlined.");
 					continue;
 				}
 
@@ -738,17 +754,16 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 					break;
 				}
 				if (ldstr is null) {
-					Report (ErrorHelper.CreateWarning (Configuration.Application, 2255, method, "Unknown or unsupported Dlfcn pattern: '{0}' in method '{1}'. Unknown instruction sequence: {2} ({3}/{4}). The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new.", FormatMethod (mr), FormatMethod (method), instr.Previous, instr.Previous.OpCode.StackBehaviourPop, instr.Previous.OpCode.StackBehaviourPush));
+					App.Log (3, $"Unknown or unsupported Dlfcn pattern: '{FormatMethod (mr)}' in method '{FormatMethod (method)}'. Unknown instruction sequence: {instr.Previous} ({instr.Previous.OpCode.StackBehaviourPop}/{instr.Previous.OpCode.StackBehaviourPush}). The call will not be inlined.");
 					continue;
 				}
 
 				if (ldstr.OpCode != OpCodes.Ldstr) {
-					// Report (ErrorHelper.CreateWarning (Configuration.Application, 2255 /* Unknown or unsupported Dlfcn pattern: '{0}' in method '{1}'. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new. */, method, Errors.MX2255, FormatMethod (mr), FormatMethod (method)));
-					Report (ErrorHelper.CreateWarning (Configuration.Application, 2255, method, "Unknown or unsupported Dlfcn pattern: '{0}' in method '{1}'. Expected 'ldstr' opcode, got '{2}'. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new.", FormatMethod (mr), FormatMethod (method), ldstr));
+					App.Log (3, $"Unknown or unsupported Dlfcn pattern: '{FormatMethod (mr)}' in method '{FormatMethod (method)}'. Expected 'ldstr' opcode, got '{ldstr}'. The call will not be inlined.");
 					continue;
 				}
 				if (ldstr.Operand is not string symbolName) {
-					Report (ErrorHelper.CreateWarning (Configuration.Application, 2255 /* Unknown or unsupported Dlfcn pattern: '{0}' in method '{1}'. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new. */, method, Errors.MX2255, FormatMethod (mr), FormatMethod (method)));
+					App.Log (3, $"Unknown or unsupported Dlfcn pattern: '{FormatMethod (mr)}' in method '{FormatMethod (method)}'. The call will not be inlined.");
 					continue;
 				}
 
@@ -803,11 +818,11 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 						continue;
 					}
 
-					Report (ErrorHelper.CreateWarning (Configuration.Application, 2255 /* Unknown or unsupported Dlfcn pattern: '{0}' in method '{1}'. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new. */, method, Errors.MX2255, FormatMethod (mr), FormatMethod (method)));
+					App.Log (3, $"Unknown or unsupported Dlfcn pattern: '{FormatMethod (mr)}' in method '{FormatMethod (method)}'. The call will not be inlined.");
 					continue;
 				case "CachePointer":
 					if (!(mr.Parameters [2].ParameterType is PointerType pt && pt.ElementType.FullName == "System.IntPtr")) {
-						Report (ErrorHelper.CreateWarning (Configuration.Application, 2255 /* Unknown or unsupported Dlfcn pattern: '{0}' in method '{1}'. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new. */, method, Errors.MX2255, FormatMethod (mr), FormatMethod (method)));
+						App.Log (3, $"Unknown or unsupported Dlfcn pattern: '{FormatMethod (mr)}' in method '{FormatMethod (method)}'. The call will not be inlined.");
 						continue;
 					}
 
@@ -868,7 +883,7 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 				// (PENDING CONFIRMATION) I believe dlclose is a no-op on at least some Apple platforms.
 				continue;
 			default:
-				Report (ErrorHelper.CreateWarning (Configuration.Application, 2255 /* Unknown or unsupported Dlfcn pattern: '{0}' in method '{1}'. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new. */, method, Errors.MX2255, FormatMethod (mr), FormatMethod (method)));
+				App.Log (3, $"Unknown or unsupported Dlfcn pattern: '{FormatMethod (mr)}' in method '{FormatMethod (method)}'. The call will not be inlined.");
 				continue;
 			}
 		}

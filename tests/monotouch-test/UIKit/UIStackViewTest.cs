@@ -26,7 +26,7 @@ namespace MonoTouchFixtures.UIKit {
 			TestRuntime.AssertSystemVersion (ApplePlatform.iOS, 9, 0, throwIfOtherPlatform: false);
 
 			UIStackView stack = new UIStackView (new CGRect (0, 0, 10, 10));
-			Assert.NotNull (stack, "UIStackView ctor(CGRect)");
+			Assert.That (stack, Is.Not.Null, "UIStackView ctor(CGRect)");
 
 			stack.AddArrangedSubview (new UIImageView ());
 			stack.AddArrangedSubview (new UIView ());

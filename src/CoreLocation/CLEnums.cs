@@ -71,7 +71,7 @@ namespace CoreLocation {
 		DeferredFailed,
 		/// <summary>The <see cref="CoreLocation.CLLocationManager" /> did not enter deferred mode because location updates were already paused or disabled.</summary>
 		DeferredNotUpdatingLocation,
-		/// <summary>Deferred mode is not available for the requested accuracy. For deferred mode, the accuracy must be <see cref="CoreLocation.CLLocation.AccuracyBest" /> or <see cref="CoreLocation.CLLocation.AccurracyBestForNavigation" />.</summary>
+		/// <summary>Deferred mode is not available for the requested accuracy. For deferred mode, the accuracy must be <see cref="CoreLocation.CLLocation.AccuracyBest" /> or <see cref="CoreLocation.CLLocation.AccuracyBestForNavigation" />.</summary>
 		DeferredAccuracyTooLow,
 		/// <summary>Deferred mode does not allow distance filters. The <see cref="CoreLocation.CLLocationManager.DistanceFilter" /> must be set to <see cref="CoreLocation.CLLocationDistance.FilterNone" />.</summary>
 		DeferredDistanceFiltered,

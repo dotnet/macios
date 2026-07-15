@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 
 #nullable enable
@@ -169,18 +170,10 @@ namespace ObjCBindings {
 		CustomMarshalDirective = 1 << 5,
 
 		/// <summary>
-		/// Apply to strings parameters that are merely retained or assigned,
-		/// not copied this is an exception as it is advised in the coding
-		/// standard for Objective-C to avoid this, but a few properties do use
-		/// this.  Use this falg for properties flagged with `retain' or
-		/// `assign', which look like this:
-		///
-		/// @property (retain) NSString foo;
-		/// @property (assign) NSString assigned;
-		///
-		/// This forced the generator to create an NSString before calling the
-		/// API instead of using the fast string marshalling code.
+		/// This flag is obsolete and has no effect. Zero-copy string marshaling is no longer supported.
 		/// </summary>
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Obsolete ("Zero-copy string marshaling is no longer supported. This flag has no effect.")]
 		DisableZeroCopy = 1 << 6,
 
 		/// <summary>

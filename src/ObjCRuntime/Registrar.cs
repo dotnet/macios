@@ -220,7 +220,11 @@ namespace Registrar {
 					return;
 
 				var name = RegisterAttribute.Name;
+#if NET
 				if (string.IsNullOrEmpty (name))
+#else
+				if (string.IsNullOrEmpty (name) || name is null)
+#endif
 					return;
 
 				for (int i = 0; i < name.Length; i++) {
@@ -540,7 +544,11 @@ namespace Registrar {
 
 			public bool SetExportAttribute (ExportAttribute ea, [NotNullIfNotNull (nameof (exceptions))] ref List<Exception>? exceptions)
 			{
+#if NET
 				if (string.IsNullOrEmpty (ea.Selector)) {
+#else
+				if (string.IsNullOrEmpty (ea.Selector) || ea.Selector is null) {
+#endif
 					AddException (ref exceptions, Registrar.CreateException (4135, this, Errors.MT4135, FullName));
 					return false;
 				}
@@ -1119,7 +1127,7 @@ namespace Registrar {
 		protected abstract ConnectAttribute? GetConnectAttribute (TProperty property); // Return null if no attribute is found. Do not consider inherited properties.
 		public abstract ProtocolAttribute? GetProtocolAttribute (TType type); // Return null if no attribute is found. Do not consider base types.
 		protected abstract IEnumerable<ProtocolMemberAttribute> GetProtocolMemberAttributes (TType type); // Return null if no attributes found. Do not consider base types.
-		protected virtual Version? GetSdkIntroducedVersion (TType obj, out string? message) { message = null; return null; } // returns the sdk version when the type was introduced for the current platform (null if all supported versions)
+		public virtual Version? GetSdkIntroducedVersion (TType obj, out string? message) { message = null; return null; } // returns the sdk version when the type was introduced for the current platform (null if all supported versions)
 		protected abstract Version GetSDKVersion ();
 		protected abstract TType? GetProtocolAttributeWrapperType (TType type); // Return null if no attribute is found. Do not consider base types.
 		public abstract BindAsAttribute? GetBindAsAttribute (TMethod method, int parameter_index); // If parameter_index = -1 then get the attribute for the return type. Return null if no attribute is found. Must consider base method.
@@ -2125,7 +2133,7 @@ namespace Registrar {
 					objcType.Add (new ObjCMethod (this, objcType, null) {
 						Selector = "xamarinGetNSObjectData",
 						Trampoline = Trampoline.GetNSObjectData,
-						Signature = "^{NSObjectData=@^{objc_super}I}:",
+						Signature = "^{NSObjectData=@I}:",
 						IsStatic = false,
 					}, ref exceptions);
 				}
@@ -2181,7 +2189,11 @@ namespace Registrar {
 
 							objcType.Add (objcGetter, ref exceptions);
 
+#if NET
 							if (!string.IsNullOrEmpty (attrib.SetterSelector)) {
+#else
+							if (!string.IsNullOrEmpty (attrib.SetterSelector) && attrib.SetterSelector is not null) {
+#endif
 								var objcSetter = new ObjCMethod (this, objcType, null) {
 									Name = attrib.Name,
 									Selector = attrib.SetterSelector,
@@ -2639,6 +2651,26 @@ namespace Registrar {
 			throw ErrorHelper.CreateError (4101, Errors.MT4101, GetTypeFullName (type));
 		}
 
+		// Gets the Objective-C name for the given type.
+		// Returns false if the type in question isn't exported to Objective-C, and thus doesn't have an Objective-C name.
+		public bool TryGetExportedTypeName (TType type, [NotNullWhen (true)] out string? name)
+		{
+			name = null;
+
+			var registerAttribute = GetRegisterAttribute (type);
+			if (registerAttribute is null)
+				return false;
+
+			if (!registerAttribute.IsWrapper)
+				return false;
+
+			if (HasProtocolAttribute (type))
+				return false;
+
+			name = GetExportedTypeName (type, registerAttribute);
+			return true;
+		}
+
 		public string GetExportedTypeName (TType type, RegisterAttribute? register_attribute)
 		{
 			string? name = null;
@@ -2721,8 +2753,9 @@ namespace Registrar {
 				return "#";
 
 			if (IsINativeObject (type)) {
-				if (!IsGenericType (type) && !IsInterface (type) && !IsNSObject (type) && IsAbstract (type))
-					ErrorHelper.Show (CreateWarning (4179, member, Errors.MT4179, type.FullName, member?.FullName));
+				if (!IsGenericType (type) && !IsInterface (type) && !IsNSObject (type) && IsAbstract (type)) {
+					ReportWarning (4179, Errors.MT4179, type.FullName, member?.FullName);
+				}
 				if (IsNSObject (type) && forProperty) {
 					return "@\"" + GetExportedTypeName (type) + "\"";
 				} else {
@@ -2791,7 +2824,7 @@ namespace Registrar {
 		}
 #endif
 
-		protected virtual void ReportError (int code, string message, params object [] args)
+		protected virtual void ReportError (int code, string message, params object? [] args)
 		{
 			// Using Console.WriteLine here is error prone, since if we get an early error
 			// we'll end up crashing/infinite recursion since Console.WriteLine is redirected
@@ -2800,7 +2833,7 @@ namespace Registrar {
 			R.NSLog (String.Format (message, args));
 		}
 
-		protected virtual void ReportWarning (int code, string message, params object [] args)
+		protected virtual void ReportWarning (int code, string message, params object? [] args)
 		{
 			// Using Console.WriteLine here is error prone, since if we get an early error
 			// we'll end up crashing/infinite recursion since Console.WriteLine is redirected

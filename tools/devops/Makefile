@@ -7,10 +7,8 @@ provision-shared.csx: provision-shared.in.csx Makefile $(TOP)/Make.config
 		-e 's#@XCODE_ROOT_PATH@#$(XCODE_DEVELOPER_ROOT)#g' \
 		$< > $@
 
-LocProject.json: LocProject.json.in Makefile $(TOP)/Make.config
-	$(Q_GEN) sed \
-		-e 's#@WORKING_DIRECTORY@#$(PWD)#g' \
-		$< > $(TOP)/Localize/$@;
+LocProject.json: generate-loc-project.sh Makefile $(TOP)/Make.config
+	$(Q_GEN) $(TOP)/tools/devops/generate-loc-project.sh "$(CURDIR)" "$(TOP)" > $(TOP)/Localize/$@;
 
 all check: check-sh check-yaml
 	@true

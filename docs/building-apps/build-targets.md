@@ -44,6 +44,36 @@ $ dotnet run --device UDID
 
 Added in .NET 11.
 
+## GetApplicationArtifacts
+
+Builds the project and returns the `@(ApplicationArtifact)` item group. This
+target always runs `Build` first so platform `.app`, `.ipa`, `.pkg`, and
+`.xcarchive` artifacts are produced and collected before any custom metadata
+extension targets run. The `Publish` target returns the same item group for
+artifacts it creates.
+
+The returned item group reflects the artifacts the current invocation is
+configured to build; it does not scan for `.ipa`, `.pkg`, or `.xcarchive` files
+left on disk by a previous build. The `.app` bundle is always collected for an
+application project (excluding app extension and watch app projects), while the
+`.ipa`, `.pkg`, and `.xcarchive` outputs are only collected when
+[BuildIpa](build-properties.md#buildipa),
+[CreatePackage](build-properties.md#createpackage), or
+[ArchiveOnBuild](build-properties.md#archiveonbuild) (respectively) is enabled in
+the same invocation. The `Publish` target enables `BuildIpa` (mobile) or
+`CreatePackage` (desktop) by default.
+
+```shell
+$ dotnet build MyApp.csproj -t:GetApplicationArtifacts -getItem:ApplicationArtifact
+$ dotnet build MyApp.csproj -t:Publish -getItem:ApplicationArtifact
+```
+
+See [ApplicationArtifact](build-items.md#applicationartifact) for supported metadata.
+
+Targets that need to add or update `@(ApplicationArtifact)` metadata before
+`GetApplicationArtifacts` or `Publish` returns can append to
+[GetApplicationArtifactsDependsOn](build-properties.md#getapplicationartifactsdependson).
+
 ## Run
 
 Builds the source code within a project and all dependencies, and then deploys and runs it

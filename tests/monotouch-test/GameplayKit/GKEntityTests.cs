@@ -24,18 +24,18 @@ namespace MonoTouchFixtures.GamePlayKit {
 			var entity = GKEntity.GetEntity ();
 			entity.AddComponent (new NumberComponent (10));
 			entity.AddComponent (new NameComponent ("Ten"));
-			Assert.IsTrue (entity.Components.Length == 2, "entity.Components length must be 2");
+			Assert.That (entity.Components.Length == 2, Is.True, "entity.Components length must be 2");
 
 			// Test component retrieval by type
 			var component = entity.GetComponent (typeof (NumberComponent)) as NumberComponent;
-			Assert.NotNull (component, "Component must not be null");
-			Assert.IsTrue (component.Id == 10, "Component Id must be 10");
+			Assert.That (component, Is.Not.Null, "Component must not be null");
+			Assert.That (component.Id == 10, Is.True, "Component Id must be 10");
 
 			// Test component removal by type
-			Assert.NotNull (entity.GetComponent (typeof (NameComponent)), "Component typeof NameComponent must not be null");
+			Assert.That (entity.GetComponent (typeof (NameComponent)), Is.Not.Null, "Component typeof NameComponent must not be null");
 			entity.RemoveComponent (typeof (NameComponent));
-			Assert.IsTrue (entity.Components.Length == 1, "entity.Components length must be 1");
-			Assert.IsNull (entity.GetComponent (typeof (NameComponent)), "Component typeof NameComponent must be null");
+			Assert.That (entity.Components.Length == 1, Is.True, "entity.Components length must be 1");
+			Assert.That (entity.GetComponent (typeof (NameComponent)), Is.Null, "Component typeof NameComponent must be null");
 		}
 
 		[Test]

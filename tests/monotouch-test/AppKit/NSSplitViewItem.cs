@@ -20,8 +20,8 @@ namespace Xamarin.Mac.Tests {
 			var viewController = new NSViewController ();
 			var splitViewItem = NSSplitViewItem.FromViewController (viewController);
 
-			Assert.IsFalse (splitViewItem is null, "NSSplitViewItemShouldCreateFromViewController - Returned null");
-			Assert.IsTrue (splitViewItem.ViewController == viewController, "NSSplitViewItemShouldCreateFromViewController - ViewController property not set correctly");
+			Assert.That (splitViewItem is null, Is.False, "NSSplitViewItemShouldCreateFromViewController - Returned null");
+			Assert.That (splitViewItem.ViewController == viewController, Is.True, "NSSplitViewItemShouldCreateFromViewController - ViewController property not set correctly");
 		}
 
 		[Test]
@@ -30,7 +30,7 @@ namespace Xamarin.Mac.Tests {
 			var viewController = item.ViewController;
 			item.ViewController = new NSViewController ();
 
-			Assert.IsFalse (item.ViewController == viewController, "NSSplitViewItemShouldChangeViewController - Failed to set the ViewController property");
+			Assert.That (item.ViewController == viewController, Is.False, "NSSplitViewItemShouldChangeViewController - Failed to set the ViewController property");
 		}
 
 		[Test]
@@ -39,7 +39,7 @@ namespace Xamarin.Mac.Tests {
 			var collapsed = item.Collapsed;
 			item.Collapsed = !collapsed;
 
-			Assert.IsFalse (item.Collapsed == collapsed, "NSSplitViewItemShouldChangeCollapsed - Failed to set the Collapsed property");
+			Assert.That (item.Collapsed == collapsed, Is.False, "NSSplitViewItemShouldChangeCollapsed - Failed to set the Collapsed property");
 		}
 
 		[Test]
@@ -48,7 +48,7 @@ namespace Xamarin.Mac.Tests {
 			var canCollapse = item.CanCollapse;
 			item.CanCollapse = !canCollapse;
 
-			Assert.IsFalse (item.CanCollapse == canCollapse, "NSSplitViewItemShouldChangeCanCollapse - Failed to set the CanCollapse property");
+			Assert.That (item.CanCollapse == canCollapse, Is.False, "NSSplitViewItemShouldChangeCanCollapse - Failed to set the CanCollapse property");
 		}
 
 		[Test]
@@ -57,7 +57,7 @@ namespace Xamarin.Mac.Tests {
 			var holdingPriority = item.HoldingPriority;
 			item.HoldingPriority = 0.35f;
 
-			Assert.IsFalse (item.HoldingPriority == holdingPriority, "NSSplitViewItemShouldChangeHoldingPriority - Failed to set the HoldingPriority property");
+			Assert.That (item.HoldingPriority == holdingPriority, Is.False, "NSSplitViewItemShouldChangeHoldingPriority - Failed to set the HoldingPriority property");
 		}
 	}
 }

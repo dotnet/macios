@@ -128,7 +128,7 @@ Please go to [[FieldAttribute]](https://developer.xamarin.com/guides/cross-platf
 
 ### <a name='BI1026'/>BI1026: `*`: Enums attributed with [\*] must have an underlying type of `long` or `ulong`
 
-### <a name='BI1027'/>BI1027: Support for ZeroCopy strings is not implemented. Strings will be marshalled as NSStrings.
+### <a name='BI1027'/>BI1027: Support for ZeroCopy strings is not implemented. The --use-zero-copy option is not supported and will be ignored.
 
 ### <a name='BI1028'/>BI1028: Internal sanity check failed, please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case.
 

@@ -61,21 +61,20 @@
 
 		<!-- Include everything in the project's Resources folder (as represented by the _ResourcePrefix property, which is set from the AppBundleResourcePrefix or legacy IPhoneResourcePrefix/XamMacResourcePrefix properties),
 		     except for files that are already in any of the other resource type item groups.
-		     _ResourcePrefix may contain multiple semicolon-separated paths (e.g. "Resources;PlatformResources"),
-		     so we first split it into an item list, and then use item transforms to generate the correct glob patterns for each prefix. -->
-		<_ResourcePrefixItem Include="$(_ResourcePrefix)" Condition="'$(_ResourcePrefix)' != ''" />
-
-		<BundleResource Include="@(_ResourcePrefixItem->'%(Identity)\**\*')" Exclude="
+		     _ResourcePrefix may contain multiple semicolon-separated paths (e.g. "Resources;PlatformResources").
+		     We use string Replace to append glob suffixes to each semicolon-separated entry, so that MSBuild
+		     expands them as proper glob patterns (item transforms don't expand globs). -->
+		<BundleResource Include="$(_ResourcePrefix.Replace(';','\**\*;'))\**\*" Exclude="
 			$(DefaultItemExcludes);
 			$(DefaultExcludesInProjectFolder);
-			@(_ResourcePrefixItem->'%(Identity)\**\*.xcassets\**\*.*');
-			@(_ResourcePrefixItem->'%(Identity)\**\*.icon\**\*.*');
-			@(_ResourcePrefixItem->'%(Identity)\**\*.storyboard');**\*.xib;
-			@(_ResourcePrefixItem->'%(Identity)\**\*.atlas\*.png');
-			@(_ResourcePrefixItem->'%(Identity)\**\*.mlmodel');
-			@(_ResourcePrefixItem->'%(Identity)\**\*.metal');
-			@(_ResourcePrefixItem->'%(Identity)\**\*.scnassets\*');
-			@(_ResourcePrefixItem->'%(Identity)\**\*.DS_Store');
+			$(_ResourcePrefix.Replace(';','\**\*.xcassets\**\*.*;'))\**\*.xcassets\**\*.*;
+			$(_ResourcePrefix.Replace(';','\**\*.icon\**\*.*;'))\**\*.icon\**\*.*;
+			$(_ResourcePrefix.Replace(';','\**\*.storyboard;'))\**\*.storyboard;**\*.xib;
+			$(_ResourcePrefix.Replace(';','\**\*.atlas\*.png;'))\**\*.atlas\*.png;
+			$(_ResourcePrefix.Replace(';','\**\*.mlmodel;'))\**\*.mlmodel;
+			$(_ResourcePrefix.Replace(';','\**\*.metal;'))\**\*.metal;
+			$(_ResourcePrefix.Replace(';','\**\*.scnassets\*;'))\**\*.scnassets\*;
+			$(_ResourcePrefix.Replace(';','\**\*.DS_Store;'))\**\*.DS_Store;
 			@(Compile);
 			@(EmbeddedResource);
 			" Condition="'$(_ResourcePrefix)' != ''" >

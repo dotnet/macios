@@ -25,11 +25,20 @@ public abstract class BaseClass {
 	// returns true if the test assembly was modified
 	public bool AssertPrepare (ApplePlatform platform, bool isCoreCLR, RegistrarMode registrar, string code, out AssemblyDefinition assemblyDefinition, bool hotReloadCompatibleBuild = false, string testAssemblyTrimMode = "link")
 	{
-		AssemblyPreparer? preparer = null;
+		return AssertPrepare (platform, isCoreCLR, registrar, code, out assemblyDefinition, out _, hotReloadCompatibleBuild, testAssemblyTrimMode);
+	}
+
+	// Like the overload above, but also returns the AssemblyPreparer so tests can inspect state after
+	// preparation (e.g. the collected native symbols in Configuration.DerivedLinkContext.RequiredSymbols).
+	// returns true if the test assembly was modified
+	public bool AssertPrepare (ApplePlatform platform, bool isCoreCLR, RegistrarMode registrar, string code, out AssemblyDefinition assemblyDefinition, out AssemblyPreparer preparer, bool hotReloadCompatibleBuild = false, string testAssemblyTrimMode = "link")
+	{
+		AssemblyPreparer? capturedPreparer = null;
 		var rv = AssertPrepareCode (platform, isCoreCLR, p => {
 			p.Registrar = registrar;
-			preparer = p;
+			capturedPreparer = p;
 		}, code, out string outputPath, hotReloadCompatibleBuild, testAssemblyTrimMode);
+		preparer = capturedPreparer!;
 		var resolver = new DefaultAssemblyResolver ();
 		var dirs = preparer!.Assemblies.Select (v => Path.GetDirectoryName (v.OutputPath)).Distinct ().ToList ();
 		dirs.ForEach (v => resolver.AddSearchDirectory (v));

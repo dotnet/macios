@@ -74,7 +74,7 @@ public class InlineDlfcnMethodsStepTests : BaseClass {
 
 		// The test assembly is a reloadable (Copy) assembly, and we're building for Hot Reload compatibility,
 		// so the assembly must be left byte-unmodified: no inlining, no generated P/Invokes or helper members.
-		var modified = AssertPrepare (platform, isCoreCLR, RegistrarMode.Dynamic, code, out var assemblyDefinition, hotReloadCompatibleBuild: true, testAssemblyTrimMode: "copy");
+		var modified = AssertPrepare (platform, isCoreCLR, RegistrarMode.Dynamic, code, out var assemblyDefinition, out var preparer, hotReloadCompatibleBuild: true, testAssemblyTrimMode: "copy");
 		Assert.That (modified, Is.False, "The reloadable assembly must not be modified.");
 
 		var type = assemblyDefinition.MainModule.Types.Single (v => v.Name == "MyClass");
@@ -88,5 +88,10 @@ public class InlineDlfcnMethodsStepTests : BaseClass {
 		// No generated Dlfcn helper type should have been added to the user assembly.
 		var generatedDlfcn = assemblyDefinition.MainModule.GetTypes ().FirstOrDefault (v => v.Name == "Dlfcn");
 		Assert.That (generatedDlfcn, Is.Null, "No Dlfcn helper type should have been generated in the reloadable assembly.");
+
+		// Even though we didn't inline the call, the referenced native symbol must still be collected so the
+		// native linker keeps it alive (GenerateReferencesStep turns RequiredSymbols into native references).
+		var requiredSymbol = preparer.Configuration.DerivedLinkContext.RequiredSymbols.Find ("NativeSymbol");
+		Assert.That (requiredSymbol, Is.Not.Null, "The referenced native symbol must still be collected for native linking.");
 	}
 }

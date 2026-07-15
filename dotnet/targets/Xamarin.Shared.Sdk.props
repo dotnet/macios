@@ -150,15 +150,19 @@
 
 	</PropertyGroup>
 
+	<!-- Opt out of two SDK behaviors around PublishRuntimeIdentifier. These must be set unconditionally (regardless of whether the user or we set a PublishRuntimeIdentifier or a RuntimeIdentifier), otherwise the SDK might compute a default PublishRuntimeIdentifier (the host portable RID) and/or append it to RuntimeIdentifiers, which confuses our build. -->
+	<PropertyGroup>
+		<!-- Disable the default PublishRuntimeIdentifier behavior: https://github.com/dotnet/sdk/pull/52566 -->
+		<UseDefaultPublishRuntimeIdentifier>false</UseDefaultPublishRuntimeIdentifier>
+		<!-- Don't append PublishRuntimeIdentifier to RuntimeIdentifiers: we use RuntimeIdentifiers to mean "build for all these RIDs", and appending the publish RID confuses our build: https://github.com/dotnet/sdk/pull/54291 / https://github.com/dotnet/macios/issues/24547 -->
+		<AppendPublishRuntimeIdentifierToRuntimeIdentifiers>false</AppendPublishRuntimeIdentifierToRuntimeIdentifiers>
+	</PropertyGroup>
+
 	<!-- Set the default RuntimeIdentifier when publishing.
 	     Only do this if the user didn't specify a RuntimeIdentifier, otherwise the SDK will override the user's RuntimeIdentifier with our default PublishRuntimeIdentifier when publishing (which would, for instance, turn a simulator build into a device build). Note that we can't check '$(RuntimeIdentifier)' == '' here, because we've already computed a default RuntimeIdentifier by this point; instead we check the _XamarinUsingDefaultRuntimeIdentifier property we set when the user didn't specify a RuntimeIdentifier. -->
 	<PropertyGroup Condition="'$(PublishRuntimeIdentifier)' == '' And '$(_XamarinUsingDefaultRuntimeIdentifier)' == 'true'">
 		<PublishRuntimeIdentifier Condition="'$(_PlatformName)' == 'iOS'">ios-arm64</PublishRuntimeIdentifier>
 		<PublishRuntimeIdentifier Condition="'$(_PlatformName)' == 'tvOS'">tvos-arm64</PublishRuntimeIdentifier>
-		<!-- Disable the default PublishRuntimeIdentifier behavior: https://github.com/dotnet/sdk/pull/52566 -->
-		<UseDefaultPublishRuntimeIdentifier>false</UseDefaultPublishRuntimeIdentifier>
-		<!-- Don't append PublishRuntimeIdentifier to RuntimeIdentifiers: we use RuntimeIdentifiers to mean "build for all these RIDs", and appending the publish RID confuses our build: https://github.com/dotnet/sdk/pull/54291 / https://github.com/dotnet/macios/issues/24547 -->
-		<AppendPublishRuntimeIdentifierToRuntimeIdentifiers>false</AppendPublishRuntimeIdentifierToRuntimeIdentifiers>
 	</PropertyGroup>
 
 	<!-- Now that we know the runtime identifier, we can determine if we're building for a simulator -->

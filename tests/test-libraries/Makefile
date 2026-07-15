@@ -58,9 +58,9 @@ define DefineInfixes
 $(1)_INFO_PLIST_INFIX=/Versions/A/Resources
 $(1)_BINARY_INFIX=/Versions/A
 endef
-$(foreach platform,$(DOTNET_DESKTOP_PLATFORMS),$(foreach rid,$(DOTNET_$(shell echo $(platform)| tr 'a-z' 'A-Z')_RUNTIME_IDENTIFIERS),$(eval $(call DefineInfixes,$(rid)))))
-$(foreach platform,$(DOTNET_DESKTOP_PLATFORMS),$(eval $(call DefineInfixes,$(shell echo $(platform) | tr 'A-Z' 'a-z'))))
-$(foreach platform,$(DOTNET_DESKTOP_PLATFORMS),$(eval $(call DefineInfixes,$(shell echo $(platform) | tr 'a-z' 'A-Z'))))
+$(foreach platform,$(DOTNET_DESKTOP_PLATFORMS),$(foreach rid,$(DOTNET_$(call uppercase,$(platform))_RUNTIME_IDENTIFIERS),$(eval $(call DefineInfixes,$(rid)))))
+$(foreach platform,$(DOTNET_DESKTOP_PLATFORMS),$(eval $(call DefineInfixes,$(call lowercase,$(platform)))))
+$(foreach platform,$(DOTNET_DESKTOP_PLATFORMS),$(eval $(call DefineInfixes,$(call uppercase,$(platform)))))
 
 # Create the binary for all the dynamic test frameworks
 define TestDynamicFrameworkTemplate
@@ -162,7 +162,7 @@ SYMLINK_$(1)_TARGETS += \
 
 all-locals:: $$(SYMLINK_$(1)_TARGETS)
 endef
-$(foreach testFramework,$(DYNAMIC_TEST_FRAMEWORKS),$(foreach platform,$(DOTNET_DESKTOP_PLATFORMS),$(foreach rid,$(DOTNET_$(shell echo $(platform) | tr 'a-z' 'A-Z')_RUNTIME_IDENTIFIERS),$(eval $(call TestFrameworkSymlinksTemplate,$(rid),$(testFramework))))))
+$(foreach testFramework,$(DYNAMIC_TEST_FRAMEWORKS),$(foreach platform,$(DOTNET_DESKTOP_PLATFORMS),$(foreach rid,$(DOTNET_$(call uppercase,$(platform))_RUNTIME_IDENTIFIERS),$(eval $(call TestFrameworkSymlinksTemplate,$(rid),$(testFramework))))))
 
 # Create a framework for each platform, which would potentially be a fat framework.
 # Here 'platform' is defined as a platform for xcframework - ios device is one platform, where ios simulator is another (which would be fat: iossimulator-x64,iossimulator-arm64).
@@ -305,7 +305,7 @@ EXTRA_DEPENDENCIES = libtest.h $(GENERATED_FILES) rename.h
 	$$(Q) $$(CP) $$^ $$@
 endef
 
-$(foreach platform,$(DOTNET_PLATFORMS),$(foreach rid,$(DOTNET_$(shell echo $(platform) | tr 'a-z' 'A-Z')_RUNTIME_IDENTIFIERS),$(eval $(call Template,$(rid),$(platform)))))
+$(foreach platform,$(DOTNET_PLATFORMS),$(foreach rid,$(DOTNET_$(call uppercase,$(platform))_RUNTIME_IDENTIFIERS),$(eval $(call Template,$(rid),$(platform)))))
 
 #
 # Swift libraries and frameworks
@@ -323,7 +323,7 @@ define SwiftTestsPerPlatform
 .libs/$(1)/$(3).dylib: $$(foreach rid,$(2),.libs/$(1)/$(3).dylib) | .libs/$(1)
 	$$(call Q_2,LIPO   [$(1)]) $(XCODE_DEVELOPER_ROOT)/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo $$^ -create -output $$@
 endef
-$(foreach swiftTest,$(SWIFT_TESTS),$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call SwiftTestsPerPlatform,$(platform),$(DOTNET_$(shell echo $(platform) | tr 'a-z' 'A-Z')_RUNTIME_IDENTIFIERS),$(swiftTest)))))
+$(foreach swiftTest,$(SWIFT_TESTS),$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call SwiftTestsPerPlatform,$(platform),$(DOTNET_$(call uppercase,$(platform))_RUNTIME_IDENTIFIERS),$(swiftTest)))))
 
 # Make sure libSwiftTest is built before libSwiftTest2, because libSwiftTest2 depends on libSwiftTest
 define SwiftTest2AddDependency
@@ -351,7 +351,7 @@ $(1)_$(2)_XCTARGETS += $$(foreach xcframeworkPlatform,$$(XCFRAMEWORK_$(2)_PLATFO
 	$$(Q_GEN) $$(XCODE_DEVELOPER_ROOT)/usr/bin/xcodebuild -quiet -create-xcframework $$(foreach fw,$$($(1)_$(2)_XCFRAMEWORKS),-framework $$(fw)) -output $$@
 all-local:: .libs/$(3)/$(1).xcframework
 endef
-$(foreach platform,$(DOTNET_PLATFORMS),$(foreach testFramework,$(TEST_FRAMEWORKS),$(eval $(call TestFrameworkXCFrameworkPlatformSpecific,$(testFramework),$(platform),$(shell echo $(platform) | tr 'A-Z' 'a-z')))))
+$(foreach platform,$(DOTNET_PLATFORMS),$(foreach testFramework,$(TEST_FRAMEWORKS),$(eval $(call TestFrameworkXCFrameworkPlatformSpecific,$(testFramework),$(platform),$(call lowercase,$(platform))))))
 
 # create an xcframework of libraries
 define TestLibraryXCFramework
@@ -381,7 +381,7 @@ define ZippedXcframeworkPlatformSpecific
 	$$(Q_ZIP) cd .libs/$(3) && $(ZIP) -r "$$(notdir $$@)" "$$(notdir $$<)"
 all-local:: .libs/$(3)/$(1).xcframework.zip
 endef
-$(foreach platform,$(DOTNET_PLATFORMS),$(foreach testFramework,$(TEST_FRAMEWORKS),$(eval $(call ZippedXcframeworkPlatformSpecific,$(testFramework),$(platform),$(shell echo $(platform) | tr 'A-Z' 'a-z')))))
+$(foreach platform,$(DOTNET_PLATFORMS),$(foreach testFramework,$(TEST_FRAMEWORKS),$(eval $(call ZippedXcframeworkPlatformSpecific,$(testFramework),$(platform),$(call lowercase,$(platform))))))
 endif # XCFRAMEWORK_PLATFORMS
 
 include $(TOP)/mk/rules.mk

@@ -145,7 +145,7 @@ namespace LinkAll.Attributes {
 			Assert.That (smartExtensions.GetMethod ("GetConstant"), Is.Not.Null, "GetConstant");
 			Assert.That (smartExtensions.GetMethod ("GetValue"), Is.Not.Null, "GetValue");
 
-#if DEBUG && PREPARE_ASSEMBLIES
+#if HOTRELOAD_COMPATIBLE_BUILD && PREPARE_ASSEMBLIES
 			// In a hot-reload-compatible build (the assembly-preparer runs with
 			// HotReloadCompatibleBuild=true, which is the default for Debug builds),
 			// smart enum conversions are preserved unconditionally via a root-descriptor

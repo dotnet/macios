@@ -1,9 +1,9 @@
-AppBundleSize: 8,087,931 bytes (7,898.4 KB = 7.7 MB)
+AppBundleSize: 8,087,939 bytes (7,898.4 KB = 7.7 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 Frameworks/libcoreclr.framework/Info.plist:
     816 bytes (0.8 KB = 0.0 MB)
 Frameworks/libcoreclr.framework/libcoreclr:
-    4,200,600 bytes (4,102.1 KB = 4.0 MB)
+    4,200,608 bytes (4,102.2 KB = 4.0 MB)
 Frameworks/libSystem.Globalization.Native.framework/Info.plist:
     858 bytes (0.8 KB = 0.0 MB)
 Frameworks/libSystem.Globalization.Native.framework/libSystem.Globalization.Native:

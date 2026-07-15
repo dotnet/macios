@@ -1938,8 +1938,6 @@ System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeS
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=1316 <PrivateImplementationDetails>::A72EB4166B1B422391E0F6E483BEF87AE75881E655BCB152E37F3D9688B2AA71
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=1472_Align=2
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=1472_Align=2 <PrivateImplementationDetails>::7BEC6AD454781FDCD8D475B3418629CBABB3BF9CA66FA80009D608A1A60D06962
-System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=152_Align=8
-System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=152_Align=8 <PrivateImplementationDetails>::DD471F12FFA94CC557A02A91C2CBB95F551AB28C8BBF297B2F953B8886BCCF6D8
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=15552
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=15552 <PrivateImplementationDetails>::3A2A62DD9288C777284B5B71FB3EFB59CFDF6BF81068A16795E6155DB8BFA701
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=16
@@ -1961,6 +1959,8 @@ System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeS
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=201 <PrivateImplementationDetails>::655761BC5B553103BD6B01577097EA28941852F328FFD28398C7ECA4763ADAAA
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=2176
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=2176 <PrivateImplementationDetails>::3175E2EA9A4E12A9094BD49954685869A17834D139114F90C4BA9EA2E3E94F4A
+System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=232_Align=8
+System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=232_Align=8 <PrivateImplementationDetails>::D8353ECEF607F09B477394918C403EFD3FF297A4C46D0D6C674A12D9095872198
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=24_Align=8
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=24_Align=8 <PrivateImplementationDetails>::1537CF074FEBB1EDD62F5C35E2A77A575ED00CD6C5D8F479EFA4302E2F7576888
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=24_Align=8 <PrivateImplementationDetails>::1E398465A9EE43BEF177E8E00D8C5348363E726339A46C767812C81310C00CB28
@@ -2009,8 +2009,6 @@ System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeS
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=64 <PrivateImplementationDetails>::2805A8107EE40ABA4832FDC9259087C5CD75B60A8435CC5D1E5904674E1B9054
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=64_Align=8
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=64_Align=8 <PrivateImplementationDetails>::70871E7CEBC5FB665C6CDA09BCB582780757E8F266C78289B5A1553B02AA3D828
-System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=648_Align=8
-System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=648_Align=8 <PrivateImplementationDetails>::67856A16DB0550FDAB4D1A9B208B0C155C4679CA116BF867B74ED2A0AA4D29558
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=6912
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=6912 <PrivateImplementationDetails>::1054446A755ED07153AB2C399EF1F042B7413D710FA8F72EE35D6A68F92F16B7
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=696_Align=8
@@ -5301,29 +5299,27 @@ System.Private.CoreLib.dll:System.Decimal.TryFormat(System.Span`1<System.Char>, 
 System.Private.CoreLib.dll:System.Decimal/DecCalc
 System.Private.CoreLib.dll:System.Decimal/DecCalc.DecAddSub(System.Decimal/DecCalc&, System.Decimal/DecCalc&, System.Boolean)
 System.Private.CoreLib.dll:System.Decimal/DecCalc.DecDivMod1E9(System.Decimal/DecCalc&)
+System.Private.CoreLib.dll:System.Decimal/DecCalc.DecimalToFloatingPoint`1(System.UInt64, System.UInt32, System.Int32)
+System.Private.CoreLib.dll:System.Decimal/DecCalc.DecimalToFloatingPointExact(System.UInt64, System.UInt32, System.Int32, System.Int32)
 System.Private.CoreLib.dll:System.Decimal/DecCalc.Div96ByConst(System.UInt64&, System.UInt32&, System.UInt32)
 System.Private.CoreLib.dll:System.Decimal/DecCalc.DivByConst(System.UInt32*, System.UInt32, out System.UInt32&, out System.UInt32&, System.UInt32)
-System.Private.CoreLib.dll:System.Decimal/DecCalc.get_DoublePowers10()
 System.Private.CoreLib.dll:System.Decimal/DecCalc.get_High()
 System.Private.CoreLib.dll:System.Decimal/DecCalc.get_IsNegative()
 System.Private.CoreLib.dll:System.Decimal/DecCalc.get_Low64()
 System.Private.CoreLib.dll:System.Decimal/DecCalc.get_Scale()
 System.Private.CoreLib.dll:System.Decimal/DecCalc.get_UInt32Powers10()
-System.Private.CoreLib.dll:System.Decimal/DecCalc.get_UInt64Powers10()
-System.Private.CoreLib.dll:System.Decimal/DecCalc.GetExponent(System.Double)
-System.Private.CoreLib.dll:System.Decimal/DecCalc.GetExponent(System.Single)
 System.Private.CoreLib.dll:System.Decimal/DecCalc.GetHashCode(System.Decimal&)
 System.Private.CoreLib.dll:System.Decimal/DecCalc.InternalRound(System.Decimal/DecCalc&, System.UInt32, System.MidpointRounding)
+System.Private.CoreLib.dll:System.Decimal/DecCalc.Pow5(System.Int32)
+System.Private.CoreLib.dll:System.Decimal/DecCalc.RoundShiftRightEven(System.UInt128, System.Int32)
 System.Private.CoreLib.dll:System.Decimal/DecCalc.ScaleResult(System.Decimal/DecCalc/Buf24*, System.UInt32, System.Int32)
 System.Private.CoreLib.dll:System.Decimal/DecCalc.set_High(System.UInt32)
-System.Private.CoreLib.dll:System.Decimal/DecCalc.set_Low(System.UInt32)
 System.Private.CoreLib.dll:System.Decimal/DecCalc.set_Low64(System.UInt64)
-System.Private.CoreLib.dll:System.Decimal/DecCalc.set_Mid(System.UInt32)
-System.Private.CoreLib.dll:System.Decimal/DecCalc.UInt64x64To128(System.UInt64, System.UInt64, System.Decimal/DecCalc&)
 System.Private.CoreLib.dll:System.Decimal/DecCalc.Unscale(System.UInt32&, System.UInt64&, System.Int32&)
 System.Private.CoreLib.dll:System.Decimal/DecCalc.VarCyFromDec(System.Decimal/DecCalc&)
 System.Private.CoreLib.dll:System.Decimal/DecCalc.VarDecCmp(System.Decimal&, System.Decimal&)
 System.Private.CoreLib.dll:System.Decimal/DecCalc.VarDecCmpSub(System.Decimal&, System.Decimal&)
+System.Private.CoreLib.dll:System.Decimal/DecCalc.VarDecFromFloat`1(TNumber, out System.Decimal/DecCalc&)
 System.Private.CoreLib.dll:System.Decimal/DecCalc.VarDecFromR4(System.Single, out System.Decimal/DecCalc&)
 System.Private.CoreLib.dll:System.Decimal/DecCalc.VarDecFromR8(System.Double, out System.Decimal/DecCalc&)
 System.Private.CoreLib.dll:System.Decimal/DecCalc.VarR4FromDec(System.Decimal&)
@@ -5739,6 +5735,7 @@ System.Private.CoreLib.dll:System.Double.System.IBinaryFloatParseAndFormatInfo<S
 System.Private.CoreLib.dll:System.Double.System.IBinaryFloatParseAndFormatInfo<System.Double>.get_DenormalMantissaBits()
 System.Private.CoreLib.dll:System.Double.System.IBinaryFloatParseAndFormatInfo<System.Double>.get_DenormalMantissaMask()
 System.Private.CoreLib.dll:System.Double.System.IBinaryFloatParseAndFormatInfo<System.Double>.get_ExponentBias()
+System.Private.CoreLib.dll:System.Double.System.IBinaryFloatParseAndFormatInfo<System.Double>.get_ExponentBits()
 System.Private.CoreLib.dll:System.Double.System.IBinaryFloatParseAndFormatInfo<System.Double>.get_InfinityBits()
 System.Private.CoreLib.dll:System.Double.System.IBinaryFloatParseAndFormatInfo<System.Double>.get_InfinityExponent()
 System.Private.CoreLib.dll:System.Double.System.IBinaryFloatParseAndFormatInfo<System.Double>.get_MaxBinaryExponent()
@@ -7719,6 +7716,7 @@ System.Private.CoreLib.dll:System.Half.System.IBinaryFloatParseAndFormatInfo<Sys
 System.Private.CoreLib.dll:System.Half.System.IBinaryFloatParseAndFormatInfo<System.Half>.get_DenormalMantissaBits()
 System.Private.CoreLib.dll:System.Half.System.IBinaryFloatParseAndFormatInfo<System.Half>.get_DenormalMantissaMask()
 System.Private.CoreLib.dll:System.Half.System.IBinaryFloatParseAndFormatInfo<System.Half>.get_ExponentBias()
+System.Private.CoreLib.dll:System.Half.System.IBinaryFloatParseAndFormatInfo<System.Half>.get_ExponentBits()
 System.Private.CoreLib.dll:System.Half.System.IBinaryFloatParseAndFormatInfo<System.Half>.get_InfinityBits()
 System.Private.CoreLib.dll:System.Half.System.IBinaryFloatParseAndFormatInfo<System.Half>.get_InfinityExponent()
 System.Private.CoreLib.dll:System.Half.System.IBinaryFloatParseAndFormatInfo<System.Half>.get_MaxBinaryExponent()
@@ -7797,6 +7795,7 @@ System.Private.CoreLib.dll:System.IBinaryFloatParseAndFormatInfo`1.FloatToBits(T
 System.Private.CoreLib.dll:System.IBinaryFloatParseAndFormatInfo`1.get_DenormalMantissaBits()
 System.Private.CoreLib.dll:System.IBinaryFloatParseAndFormatInfo`1.get_DenormalMantissaMask()
 System.Private.CoreLib.dll:System.IBinaryFloatParseAndFormatInfo`1.get_ExponentBias()
+System.Private.CoreLib.dll:System.IBinaryFloatParseAndFormatInfo`1.get_ExponentBits()
 System.Private.CoreLib.dll:System.IBinaryFloatParseAndFormatInfo`1.get_InfinityBits()
 System.Private.CoreLib.dll:System.IBinaryFloatParseAndFormatInfo`1.get_InfinityExponent()
 System.Private.CoreLib.dll:System.IBinaryFloatParseAndFormatInfo`1.get_MaxBinaryExponent()
@@ -10126,6 +10125,7 @@ System.Private.CoreLib.dll:System.Math.Min(System.UIntPtr, System.UIntPtr)
 System.Private.CoreLib.dll:System.Math.ModF(System.Double, System.Double*)
 System.Private.CoreLib.dll:System.Math.Pow(System.Double, System.Double)
 System.Private.CoreLib.dll:System.Math.Round(System.Double)
+System.Private.CoreLib.dll:System.Math.ScaleB(System.Double, System.Int32)
 System.Private.CoreLib.dll:System.Math.Sin(System.Double)
 System.Private.CoreLib.dll:System.Math.Sqrt(System.Double)
 System.Private.CoreLib.dll:System.Math.Tan(System.Double)
@@ -10372,22 +10372,22 @@ System.Private.CoreLib.dll:System.NullReferenceException..ctor(System.String, Sy
 System.Private.CoreLib.dll:System.NullReferenceException..ctor(System.String)
 System.Private.CoreLib.dll:System.Number
 System.Private.CoreLib.dll:System.Number..cctor()
-System.Private.CoreLib.dll:System.Number.<AppendUnknownChar>g__AppendNonAsciiBytes|174_0`1(System.Collections.Generic.ValueListBuilder`1<TChar>&, System.Char)
-System.Private.CoreLib.dll:System.Number.<FormatInt128>g__FormatInt128Slow|42_0(System.Int128, System.String, System.IFormatProvider)
-System.Private.CoreLib.dll:System.Number.<FormatInt32>g__FormatInt32Slow|34_0(System.Int32, System.Int32, System.String, System.IFormatProvider)
-System.Private.CoreLib.dll:System.Number.<FormatInt64>g__FormatInt64Slow|38_0(System.Int64, System.String, System.IFormatProvider)
-System.Private.CoreLib.dll:System.Number.<FormatUInt128>g__FormatUInt128Slow|44_0(System.UInt128, System.String, System.IFormatProvider)
-System.Private.CoreLib.dll:System.Number.<FormatUInt32>g__FormatUInt32Slow|36_0(System.UInt32, System.String, System.IFormatProvider)
-System.Private.CoreLib.dll:System.Number.<FormatUInt64>g__FormatUInt64Slow|40_0(System.UInt64, System.String, System.IFormatProvider)
-System.Private.CoreLib.dll:System.Number.<GetFloatingPointMaxDigitsAndPrecision>g__Slow|27_0(System.Char, System.Int32&, System.Globalization.NumberFormatInfo, out System.Boolean&)
-System.Private.CoreLib.dll:System.Number.<RoundNumber>g__ShouldRoundUp|180_0(System.Byte*, System.Int32, System.Number/NumberBufferKind, System.Boolean)
-System.Private.CoreLib.dll:System.Number.<TryFormatInt128>g__TryFormatInt128Slow|43_0`1(System.Int128, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
-System.Private.CoreLib.dll:System.Number.<TryFormatInt32>g__TryFormatInt32Slow|35_0`1(System.Int32, System.Int32, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
-System.Private.CoreLib.dll:System.Number.<TryFormatInt64>g__TryFormatInt64Slow|39_0`1(System.Int64, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
-System.Private.CoreLib.dll:System.Number.<TryFormatUInt128>g__TryFormatUInt128Slow|45_0`1(System.UInt128, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
-System.Private.CoreLib.dll:System.Number.<TryFormatUInt32>g__TryFormatUInt32Slow|37_0`1(System.UInt32, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
-System.Private.CoreLib.dll:System.Number.<TryFormatUInt64>g__TryFormatUInt64Slow|41_0`1(System.UInt64, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
-System.Private.CoreLib.dll:System.Number.<UInt32ToDecStrForKnownSmallNumber>g__CreateAndCacheString|63_0(System.UInt32)
+System.Private.CoreLib.dll:System.Number.<AppendUnknownChar>g__AppendNonAsciiBytes|192_0`1(System.Collections.Generic.ValueListBuilder`1<TChar>&, System.Char)
+System.Private.CoreLib.dll:System.Number.<FormatInt128>g__FormatInt128Slow|60_0(System.Int128, System.String, System.IFormatProvider)
+System.Private.CoreLib.dll:System.Number.<FormatInt32>g__FormatInt32Slow|52_0(System.Int32, System.Int32, System.String, System.IFormatProvider)
+System.Private.CoreLib.dll:System.Number.<FormatInt64>g__FormatInt64Slow|56_0(System.Int64, System.String, System.IFormatProvider)
+System.Private.CoreLib.dll:System.Number.<FormatUInt128>g__FormatUInt128Slow|62_0(System.UInt128, System.String, System.IFormatProvider)
+System.Private.CoreLib.dll:System.Number.<FormatUInt32>g__FormatUInt32Slow|54_0(System.UInt32, System.String, System.IFormatProvider)
+System.Private.CoreLib.dll:System.Number.<FormatUInt64>g__FormatUInt64Slow|58_0(System.UInt64, System.String, System.IFormatProvider)
+System.Private.CoreLib.dll:System.Number.<GetFloatingPointMaxDigitsAndPrecision>g__Slow|45_0(System.Char, System.Int32&, System.Globalization.NumberFormatInfo, out System.Boolean&)
+System.Private.CoreLib.dll:System.Number.<RoundNumber>g__ShouldRoundUp|198_0(System.Byte*, System.Int32, System.Number/NumberBufferKind, System.Boolean)
+System.Private.CoreLib.dll:System.Number.<TryFormatInt128>g__TryFormatInt128Slow|61_0`1(System.Int128, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
+System.Private.CoreLib.dll:System.Number.<TryFormatInt32>g__TryFormatInt32Slow|53_0`1(System.Int32, System.Int32, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
+System.Private.CoreLib.dll:System.Number.<TryFormatInt64>g__TryFormatInt64Slow|57_0`1(System.Int64, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
+System.Private.CoreLib.dll:System.Number.<TryFormatUInt128>g__TryFormatUInt128Slow|63_0`1(System.UInt128, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
+System.Private.CoreLib.dll:System.Number.<TryFormatUInt32>g__TryFormatUInt32Slow|55_0`1(System.UInt32, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
+System.Private.CoreLib.dll:System.Number.<TryFormatUInt64>g__TryFormatUInt64Slow|59_0`1(System.UInt64, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
+System.Private.CoreLib.dll:System.Number.<UInt32ToDecStrForKnownSmallNumber>g__CreateAndCacheString|81_0(System.UInt32)
 System.Private.CoreLib.dll:System.Number.AccumulateDecimalDigitsIntoBigInteger(System.Number/NumberBuffer&, System.UInt32, System.UInt32, out System.Number/BigInteger&)
 System.Private.CoreLib.dll:System.Number.AppendUnknownChar`1(System.Collections.Generic.ValueListBuilder`1<TChar>&, System.Char)
 System.Private.CoreLib.dll:System.Number.AssembleFloatingPointBits`1(System.UInt64, System.Int32, System.Boolean)
@@ -10428,6 +10428,7 @@ System.Private.CoreLib.dll:System.Number.get_TwoDigitsCharsAsBytes()
 System.Private.CoreLib.dll:System.Number.GetFloatingPointMaxDigitsAndPrecision(System.Char, System.Int32&, System.Globalization.NumberFormatInfo, out System.Boolean&)
 System.Private.CoreLib.dll:System.Number.GetHexBase(System.Char)
 System.Private.CoreLib.dll:System.Number.GetTwoDigitsBytesRef(System.Boolean)
+System.Private.CoreLib.dll:System.Number.HasNegativeSection(System.ReadOnlySpan`1<System.Char>)
 System.Private.CoreLib.dll:System.Number.Int128DivMod1E19(System.UInt128&)
 System.Private.CoreLib.dll:System.Number.Int128ToDecStr(System.Int128)
 System.Private.CoreLib.dll:System.Number.Int128ToHexChars`1(TChar*, System.UInt128, System.Int32, System.Int32)
@@ -11110,7 +11111,6 @@ System.Private.CoreLib.dll:System.ReadOnlySpan`1<System.Char> System.Runtime.Com
 System.Private.CoreLib.dll:System.ReadOnlySpan`1<System.Char>* System.Buffers.ProbabilisticMapState::_slowContainsValuesPtr
 System.Private.CoreLib.dll:System.ReadOnlySpan`1<System.DateTimeParse/DS> System.DateTimeParse::DateParsingStates()
 System.Private.CoreLib.dll:System.ReadOnlySpan`1<System.DefaultBinder/Primitives> System.DefaultBinder::PrimitiveConversions()
-System.Private.CoreLib.dll:System.ReadOnlySpan`1<System.Double> System.Decimal/DecCalc::DoublePowers10()
 System.Private.CoreLib.dll:System.ReadOnlySpan`1<System.Double> System.Globalization.CalendricalCalculationsHelper::AnomalyCoefficients()
 System.Private.CoreLib.dll:System.ReadOnlySpan`1<System.Double> System.Globalization.CalendricalCalculationsHelper::Coefficients()
 System.Private.CoreLib.dll:System.ReadOnlySpan`1<System.Double> System.Globalization.CalendricalCalculationsHelper::Coefficients1620to1699()
@@ -11136,7 +11136,6 @@ System.Private.CoreLib.dll:System.ReadOnlySpan`1<System.UInt32> System.Decimal/D
 System.Private.CoreLib.dll:System.ReadOnlySpan`1<System.UInt32> System.Number/BigInteger::Pow10BigNumTable()
 System.Private.CoreLib.dll:System.ReadOnlySpan`1<System.UInt32> System.Number/BigInteger::Pow10UInt32Table()
 System.Private.CoreLib.dll:System.ReadOnlySpan`1<System.UInt32> System.Number/Grisu3::SmallPowersOfTen()
-System.Private.CoreLib.dll:System.ReadOnlySpan`1<System.UInt64> System.Decimal/DecCalc::UInt64Powers10()
 System.Private.CoreLib.dll:System.ReadOnlySpan`1<System.UInt64> System.Number::Pow5128Table()
 System.Private.CoreLib.dll:System.ReadOnlySpan`1<System.UInt64> System.Number/Grisu3::CachedPowersSignificand()
 System.Private.CoreLib.dll:System.ReadOnlySpan`1<T> System.ReadOnlyMemory`1::Span()
@@ -16207,6 +16206,7 @@ System.Private.CoreLib.dll:System.Single.System.IBinaryFloatParseAndFormatInfo<S
 System.Private.CoreLib.dll:System.Single.System.IBinaryFloatParseAndFormatInfo<System.Single>.get_DenormalMantissaBits()
 System.Private.CoreLib.dll:System.Single.System.IBinaryFloatParseAndFormatInfo<System.Single>.get_DenormalMantissaMask()
 System.Private.CoreLib.dll:System.Single.System.IBinaryFloatParseAndFormatInfo<System.Single>.get_ExponentBias()
+System.Private.CoreLib.dll:System.Single.System.IBinaryFloatParseAndFormatInfo<System.Single>.get_ExponentBits()
 System.Private.CoreLib.dll:System.Single.System.IBinaryFloatParseAndFormatInfo<System.Single>.get_InfinityBits()
 System.Private.CoreLib.dll:System.Single.System.IBinaryFloatParseAndFormatInfo<System.Single>.get_InfinityExponent()
 System.Private.CoreLib.dll:System.Single.System.IBinaryFloatParseAndFormatInfo<System.Single>.get_MaxBinaryExponent()
@@ -20272,6 +20272,7 @@ System.Private.CoreLib.dll:System.UInt128.op_Implicit(System.UInt16) => System.U
 System.Private.CoreLib.dll:System.UInt128.op_Implicit(System.UInt32) => System.UInt128
 System.Private.CoreLib.dll:System.UInt128.op_Implicit(System.UInt64) => System.UInt128
 System.Private.CoreLib.dll:System.UInt128.op_Implicit(System.UIntPtr) => System.UInt128
+System.Private.CoreLib.dll:System.UInt128.op_Increment(System.UInt128)
 System.Private.CoreLib.dll:System.UInt128.op_Inequality(System.UInt128, System.UInt128)
 System.Private.CoreLib.dll:System.UInt128.op_LeftShift(System.UInt128, System.Int32)
 System.Private.CoreLib.dll:System.UInt128.op_LessThan(System.UInt128, System.UInt128)
@@ -20307,13 +20308,16 @@ System.Private.CoreLib.dll:System.UInt128.TryConvertFromTruncating`1(TOther, out
 System.Private.CoreLib.dll:System.UInt128.TryFormat(System.Span`1<System.Char>, out System.Int32&, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider)
 System.Private.CoreLib.dll:System.UInt16
 System.Private.CoreLib.dll:System.UInt16 System.Double::System.IBinaryFloatParseAndFormatInfo<System.Double>.DenormalMantissaBits()
+System.Private.CoreLib.dll:System.UInt16 System.Double::System.IBinaryFloatParseAndFormatInfo<System.Double>.ExponentBits()
 System.Private.CoreLib.dll:System.UInt16 System.Double::System.IBinaryFloatParseAndFormatInfo<System.Double>.NormalMantissaBits()
 System.Private.CoreLib.dll:System.UInt16 System.Globalization.CalendarId::value__
 System.Private.CoreLib.dll:System.UInt16 System.Half::_value
 System.Private.CoreLib.dll:System.UInt16 System.Half::System.IBinaryFloatParseAndFormatInfo<System.Half>.DenormalMantissaBits()
+System.Private.CoreLib.dll:System.UInt16 System.Half::System.IBinaryFloatParseAndFormatInfo<System.Half>.ExponentBits()
 System.Private.CoreLib.dll:System.UInt16 System.Half::System.IBinaryFloatParseAndFormatInfo<System.Half>.NormalMantissaBits()
 System.Private.CoreLib.dll:System.UInt16 System.Half::TrailingSignificand()
 System.Private.CoreLib.dll:System.UInt16 System.IBinaryFloatParseAndFormatInfo`1::DenormalMantissaBits()
+System.Private.CoreLib.dll:System.UInt16 System.IBinaryFloatParseAndFormatInfo`1::ExponentBits()
 System.Private.CoreLib.dll:System.UInt16 System.IBinaryFloatParseAndFormatInfo`1::NormalMantissaBits()
 System.Private.CoreLib.dll:System.UInt16 System.Reflection.NativeAssemblyNameParts::_build
 System.Private.CoreLib.dll:System.UInt16 System.Reflection.NativeAssemblyNameParts::_major
@@ -20331,6 +20335,7 @@ System.Private.CoreLib.dll:System.UInt16 System.Runtime.InteropServices.Marshall
 System.Private.CoreLib.dll:System.UInt16 System.Runtime.InteropServices.Marshalling.ComVariant/TypeUnion::_wReserved3
 System.Private.CoreLib.dll:System.UInt16 System.Runtime.InteropServices.Marshalling.ComVariant/UnionTypes::_ui2
 System.Private.CoreLib.dll:System.UInt16 System.Single::System.IBinaryFloatParseAndFormatInfo<System.Single>.DenormalMantissaBits()
+System.Private.CoreLib.dll:System.UInt16 System.Single::System.IBinaryFloatParseAndFormatInfo<System.Single>.ExponentBits()
 System.Private.CoreLib.dll:System.UInt16 System.Single::System.IBinaryFloatParseAndFormatInfo<System.Single>.NormalMantissaBits()
 System.Private.CoreLib.dll:System.UInt16 System.Threading.Lock::_waiterStartTimeMs
 System.Private.CoreLib.dll:System.UInt16 System.Threading.LowLevelLifoSemaphore/Counts::CountOfWaitersSignaledToWake()
@@ -20440,8 +20445,6 @@ System.Private.CoreLib.dll:System.UInt32 System.Decimal::High()
 System.Private.CoreLib.dll:System.UInt32 System.Decimal::Low()
 System.Private.CoreLib.dll:System.UInt32 System.Decimal::Mid()
 System.Private.CoreLib.dll:System.UInt32 System.Decimal/DecCalc::High()
-System.Private.CoreLib.dll:System.UInt32 System.Decimal/DecCalc::Low()
-System.Private.CoreLib.dll:System.UInt32 System.Decimal/DecCalc::Mid()
 System.Private.CoreLib.dll:System.UInt32 System.Decimal/DecCalc::uflags
 System.Private.CoreLib.dll:System.UInt32 System.Decimal/DecCalc::uhi
 System.Private.CoreLib.dll:System.UInt32 System.Decimal/DecCalc::ulo

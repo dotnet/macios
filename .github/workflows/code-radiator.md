@@ -66,7 +66,6 @@ safe-outputs:
     patch-format: bundle
     signed-commits: false
     allowed-base-branches:
-      - "net*.0"
       - "xcode*"
       - "xcode*.*"
   add-comment:

@@ -84,7 +84,7 @@ endif
 ifeq ($(PLATFORM),)
 PLATFORM=$(shell basename "$(CURDIR)")
 endif
-PLATFORM_UPPERCASE:=$(shell echo $(PLATFORM) | tr 'a-z' 'A-Z')
+PLATFORM_UPPERCASE:=$(call uppercase,$(PLATFORM))
 
 ifneq ($(RUNTIMEIDENTIFIERS)$(RUNTIMEIDENTIFIER),)
 $(error "Don't set RUNTIMEIDENTIFIER or RUNTIMEIDENTIFIERS, set RID instead")

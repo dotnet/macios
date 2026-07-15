@@ -86,8 +86,6 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 			if (Version.TryParse (minimumOSVersionString, out var minimumOSVersion)) {
 				foreach (var d in devices.Where (d => !d.Discarded && d.MinimumOSVersion < minimumOSVersion))
 					d.DiscardedReason = $"Device OS version '{d.MinimumOSVersion}' is lower than the app's minimum OS version '{minimumOSVersion}'";
-				foreach (var d in devices.Where (d => !d.Discarded && d.MaximumOSVersion < minimumOSVersion))
-					d.DiscardedReason = $"Device maximum OS version '{d.MaximumOSVersion}' is lower than the app's minimum OS version '{minimumOSVersion}'";
 			}
 		}
 
@@ -139,17 +137,15 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 		public ApplePlatform Platform { get; set; }
 		public IPhoneDeviceType DeviceType { get; set; }
 		public Version MinimumOSVersion { get; set; }
-		public Version MaximumOSVersion { get; set; }
 		public string DiscardedReason { get; set; }
 		public bool Discarded { get => !string.IsNullOrEmpty (DiscardedReason); }
-		public DeviceInfo (ITaskItem item, IEnumerable<string> runtimeIdentifiers, ApplePlatform platform, IPhoneDeviceType deviceType, Version minimumOSVersion, Version maximumOSVersion, string discardedReason)
+		public DeviceInfo (ITaskItem item, IEnumerable<string> runtimeIdentifiers, ApplePlatform platform, IPhoneDeviceType deviceType, Version minimumOSVersion, string discardedReason)
 		{
 			Item = item;
 			RuntimeIdentifiers = runtimeIdentifiers;
 			Platform = platform;
 			DeviceType = deviceType;
 			MinimumOSVersion = minimumOSVersion;
-			MaximumOSVersion = maximumOSVersion;
 			DiscardedReason = discardedReason;
 		}
 	}
@@ -255,9 +251,8 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 			}
 
 			Version.TryParse (device.OSVersion, out var minimumOSVersion);
-			var maximumOSVersion = new Version (65535, 255, 255);
 
-			rv.Add (new DeviceInfo (item, [runtimeIdentifier], platform, deviceType, minimumOSVersion ?? new Version (0, 0), maximumOSVersion, discardedReason));
+			rv.Add (new DeviceInfo (item, [runtimeIdentifier], platform, deviceType, minimumOSVersion ?? new Version (0, 0), discardedReason));
 		}
 		return rv;
 	}
@@ -370,7 +365,6 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 			}
 			var deviceType = IPhoneDeviceType.NotSet;
 			var minimumOSVersion = new Version (0, 0);
-			var maximumOSVersion = new Version (65535, 255, 255);
 			if (string.IsNullOrEmpty (discardedReason)) {
 				if (deviceTypes.TryGetValue (device.DeviceTypeIdentifier, out var deviceTypeInfo)) {
 					switch (deviceTypeInfo.ProductFamily.ToLowerInvariant ()) {
@@ -389,16 +383,14 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 						discardedReason = $"Unknown product family '{deviceTypeInfo.ProductFamily}'";
 						break;
 					}
-					if (Version.TryParse (deviceTypeInfo.MinRuntimeVersionString, out var parsedMinimumOSVersion))
+					if (Version.TryParse (runtimeVersion, out var parsedMinimumOSVersion))
 						minimumOSVersion = parsedMinimumOSVersion;
-					if (Version.TryParse (deviceTypeInfo.MaxRuntimeVersionString, out var parsedMaximumOSVersion))
-						maximumOSVersion = parsedMaximumOSVersion;
 				} else {
 					discardedReason = $"Unknown device type identifier '{device.DeviceTypeIdentifier}'";
 				}
 			}
 
-			rv.Add (new DeviceInfo (item, runtimeIdentifiers, platform, deviceType, minimumOSVersion, maximumOSVersion, discardedReason));
+			rv.Add (new DeviceInfo (item, runtimeIdentifiers, platform, deviceType, minimumOSVersion, discardedReason));
 		}
 		return rv;
 	}

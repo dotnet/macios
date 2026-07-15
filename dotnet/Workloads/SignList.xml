@@ -35,6 +35,8 @@
     <Skip Include="Build\System.Text.Json.dll" />
     <Skip Include="Build\System.Threading.Tasks.Dataflow.dll" />
     <Skip Include="Build\System.Threading.Tasks.Extensions.dll" />
+    <!-- net1*.0 msbuild tools content -->
+    <Skip Include="Microsoft.Win32.SystemEvents.dll" />
     <Skip Include="System.CodeDom.dll" />
     <Skip Include="System.ComponentModel.Composition.dll" />
     <Skip Include="System.Configuration.ConfigurationManager.dll" />

@@ -194,7 +194,7 @@ namespace Xamarin.Linker {
 				abr.SaveCurrentAssembly ();
 
 			// TODO: Move this to a separate "MakeEverythingWorkWithNativeAOTStep" linker step
-			if (App.XamarinRuntime == XamarinRuntime.NativeAOT && Configuration.Profile.IsProductAssembly (assembly)) {
+			if (App.XamarinRuntime == XamarinRuntime.NativeAOT && Configuration.Profile.IsProductAssembly (assembly) && !App.IsPostProcessingAssemblies) {
 				ImplementNSObjectRegisterToggleRefMethodStub ();
 			}
 
@@ -266,13 +266,14 @@ namespace Xamarin.Linker {
 						CollectUnmanagedCallersMethod (method, infos, proxyInterfaces);
 					} else {
 						CreateUnmanagedCallersMethod (method, infos, proxyInterfaces);
+						modified = true;
 					}
 				} catch (Exception e) {
 					AddException (ErrorHelper.CreateError (99, e, "Failed to create an UnmanagedCallersOnly trampoline for {0}: {1}", method.FullName, e.Message));
 				}
 			}
 
-			return true;
+			return modified;
 		}
 
 		void ProcessMethod (MethodDefinition method, HashSet<MethodDefinition> methods_to_wrap)

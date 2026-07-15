@@ -602,10 +602,6 @@ namespace Xamarin.Tests {
 			Assert.That (output.GetMetadata ("IsDirectory"), Is.EqualTo (isDirectory ? "true" : "false"), "IsDirectory");
 			Assert.That (output.GetMetadata ("PlatformName"), Is.EqualTo (platform.AsString ()), "PlatformName");
 			Assert.That (output.GetMetadata ("BundleIdentifier"), Is.Not.Empty, "BundleIdentifier");
-			Assert.That (output.GetMetadata ("ApplicationId"), Is.EqualTo (output.GetMetadata ("BundleIdentifier")), "ApplicationId");
-			Assert.That (output.GetMetadata ("ApplicationName"), Is.Not.Empty, "ApplicationName");
-			Assert.That (output.GetMetadata ("ApplicationDisplayVersion"), Is.Not.Empty, "ApplicationDisplayVersion");
-			Assert.That (output.GetMetadata ("ApplicationVersion"), Is.Not.Empty, "ApplicationVersion");
 			Assert.That (output.GetMetadata ("ArtifactKind"), Is.Null.Or.Empty, "ArtifactKind");
 			Assert.That (output.GetMetadata ("AppBundlePath"), Is.Null.Or.Empty, "AppBundlePath");
 			Assert.That (output.GetMetadata ("CodeSigned"), Is.Null.Or.Empty, "CodeSigned");

@@ -3542,10 +3542,16 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 	<Target Name="CreateIpa" Condition="'$(_CanArchive)' == 'true' And '$(SdkIsDesktop)' != 'true'" DependsOnTargets="$(CreateIpaDependsOn)" />
 
+	<PropertyGroup>
+		<GetApplicationArtifactsDependsOn>
+			Build;
+			_AddAppleApplicationArtifactMetadata;
+			$(GetApplicationArtifactsDependsOn);
+		</GetApplicationArtifactsDependsOn>
+	</PropertyGroup>
+
 	<Target Name="_AddAppleApplicationArtifactMetadata"
-		AfterTargets="Build"
-		BeforeTargets="BeforeDisconnect"
-		Condition="'@(ApplicationArtifact)' != '' And '$(_AppBundleManifestPath)' != '' And (Exists('$(_AppBundleManifestPath)') Or '$(IsRemoteBuild)' == 'true')">
+		Condition="'@(ApplicationArtifact->Count())' != '0' And '$(_AppBundleManifestPath)' != '' And (Exists('$(_AppBundleManifestPath)') Or '$(IsRemoteBuild)' == 'true')">
 		<ReadAppManifest
 			SessionId="$(BuildSessionId)"
 			Condition="'$(IsMacEnabled)' == 'true'"
@@ -3571,7 +3577,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		</ItemGroup>
 	</Target>
 
-	<Target Name="GetApplicationArtifacts" DependsOnTargets="Build;_AddAppleApplicationArtifactMetadata;$(GetApplicationArtifactsDependsOn)" Returns="@(ApplicationArtifact)" />
+	<Target Name="GetApplicationArtifacts" DependsOnTargets="$(GetApplicationArtifactsDependsOn)" Returns="@(ApplicationArtifact)" />
 
 	<PropertyGroup>
 		<PrepareAssemblies Condition="'$(PrepareAssemblies)' == ''">false</PrepareAssemblies>

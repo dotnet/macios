@@ -71,9 +71,9 @@ namespace Xamarin.MacDev.Tasks {
 
 			CFBundleExecutable = plist.GetCFBundleExecutable ();
 			CFBundleDisplayName = plist?.GetCFBundleDisplayName ();
-			CFBundleName = plist?.Get<PString> (ManifestKeys.CFBundleName)?.Value;
+			CFBundleName = plist?.GetCFBundleName ();
 			CFBundleIdentifier = plist?.GetCFBundleIdentifier ();
-			CFBundleShortVersionString = plist?.Get<PString> (ManifestKeys.CFBundleShortVersionString)?.Value;
+			CFBundleShortVersionString = plist?.GetCFBundleShortVersionString ();
 			CFBundleVersion = plist?.GetCFBundleVersion ();
 			CLKComplicationGroup = plist?.Get<PString> (ManifestKeys.CLKComplicationGroup)?.Value;
 

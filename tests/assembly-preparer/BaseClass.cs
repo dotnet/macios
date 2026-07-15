@@ -23,21 +23,21 @@ public abstract class BaseClass {
 	}
 
 	// returns true if the test assembly was modified
-	public bool AssertPrepare (ApplePlatform platform, bool isCoreCLR, RegistrarMode registrar, string code, out AssemblyDefinition assemblyDefinition, bool hotReloadCompatibleBuild = false, string testAssemblyTrimMode = "link")
+	public bool AssertPrepare (ApplePlatform platform, bool isCoreCLR, RegistrarMode registrar, string code, out AssemblyDefinition assemblyDefinition, bool hotReloadCompatibleBuild = false, string testAssemblyTrimMode = "link", string? inlineDlfcnMethods = null)
 	{
-		return AssertPrepare (platform, isCoreCLR, registrar, code, out assemblyDefinition, out _, hotReloadCompatibleBuild, testAssemblyTrimMode);
+		return AssertPrepare (platform, isCoreCLR, registrar, code, out assemblyDefinition, out _, hotReloadCompatibleBuild, testAssemblyTrimMode, inlineDlfcnMethods);
 	}
 
 	// Like the overload above, but also returns the AssemblyPreparer so tests can inspect state after
 	// preparation (e.g. the collected native symbols in Configuration.DerivedLinkContext.RequiredSymbols).
 	// returns true if the test assembly was modified
-	public bool AssertPrepare (ApplePlatform platform, bool isCoreCLR, RegistrarMode registrar, string code, out AssemblyDefinition assemblyDefinition, out AssemblyPreparer preparer, bool hotReloadCompatibleBuild = false, string testAssemblyTrimMode = "link")
+	public bool AssertPrepare (ApplePlatform platform, bool isCoreCLR, RegistrarMode registrar, string code, out AssemblyDefinition assemblyDefinition, out AssemblyPreparer preparer, bool hotReloadCompatibleBuild = false, string testAssemblyTrimMode = "link", string? inlineDlfcnMethods = null)
 	{
 		AssemblyPreparer? capturedPreparer = null;
 		var rv = AssertPrepareCode (platform, isCoreCLR, p => {
 			p.Registrar = registrar;
 			capturedPreparer = p;
-		}, code, out string outputPath, hotReloadCompatibleBuild, testAssemblyTrimMode);
+		}, code, out string outputPath, hotReloadCompatibleBuild, testAssemblyTrimMode, inlineDlfcnMethods);
 		preparer = capturedPreparer!;
 		var resolver = new DefaultAssemblyResolver ();
 		var dirs = preparer!.Assemblies.Select (v => Path.GetDirectoryName (v.OutputPath)).Distinct ().ToList ();
@@ -51,7 +51,7 @@ public abstract class BaseClass {
 	}
 
 	// returns true if the test assembly was modified
-	public bool AssertPrepareCode (ApplePlatform platform, bool isCoreCLR, Action<AssemblyPreparer>? configure, string code, out string outputPath, bool hotReloadCompatibleBuild = false, string testAssemblyTrimMode = "link")
+	public bool AssertPrepareCode (ApplePlatform platform, bool isCoreCLR, Action<AssemblyPreparer>? configure, string code, out string outputPath, bool hotReloadCompatibleBuild = false, string testAssemblyTrimMode = "link", string? inlineDlfcnMethods = null)
 	{
 		Configuration.IgnoreIfIgnoredPlatform (platform);
 
@@ -77,6 +77,7 @@ public abstract class BaseClass {
 		SdkDevPath={Configuration.XcodeLocation}
 		SdkVersion={Configuration.GetSdkVersion (platform)}
 		TargetFramework={TargetFramework.GetTargetFramework (platform)}
+		{(inlineDlfcnMethods is null ? "" : $"InlineDlfcnMethods={inlineDlfcnMethods}")}
 		";
 		var configpath = Path.Combine (tmpdir, "config.txt");
 		File.WriteAllText (configpath, config);

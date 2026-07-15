@@ -26,7 +26,7 @@ This file should be imported by eng/Versions.props
     <MicrosofttvOSSdknet100_260PackageVersion>26.0.11017</MicrosofttvOSSdknet100_260PackageVersion>
     <MicrosofttvOSSdknet100_265PackageVersion>26.5.10307</MicrosofttvOSSdknet100_265PackageVersion>
     <!-- dotnet-xharness dependencies -->
-    <MicrosoftDotNetXHarnessiOSSharedPackageVersion>11.0.0-prerelease.26217.1</MicrosoftDotNetXHarnessiOSSharedPackageVersion>
+    <MicrosoftDotNetXHarnessiOSSharedPackageVersion>11.0.0-prerelease.26360.1</MicrosoftDotNetXHarnessiOSSharedPackageVersion>
   </PropertyGroup>
   <!--Property group for alternate package version names-->
   <PropertyGroup>

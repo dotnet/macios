@@ -1,7 +1,7 @@
-AppBundleSize: 314,864,769 bytes (307,485.1 KB = 300.3 MB)
+AppBundleSize: 314,864,757 bytes (307,485.1 KB = 300.3 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 Contents/Info.plist:
-    750 bytes (0.7 KB = 0.0 MB)
+    738 bytes (0.7 KB = 0.0 MB)
 Contents/MacOS/SizeTestApp:
     7,992,696 bytes (7,805.4 KB = 7.6 MB)
 Contents/MonoBundle/.xamarin/osx-arm64/Microsoft.CSharp.dll:

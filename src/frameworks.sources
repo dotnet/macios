@@ -2017,6 +2017,7 @@ COMMON_FRAMEWORKS =         \
 	Symbols                 \
 	SoundAnalysis 			\
 	SpriteKit               \
+	StateReporting          \
 	StoreKit				\
 	UniformTypeIdentifiers  \
 

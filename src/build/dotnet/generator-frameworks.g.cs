@@ -136,6 +136,7 @@ partial class Frameworks {
 		"SoundAnalysis",
 		"Speech",
 		"SpriteKit",
+		"StateReporting",
 		"StoreKit",
 		"Symbols",
 		"SystemConfiguration",
@@ -286,6 +287,7 @@ partial class Frameworks {
 		"SoundAnalysis",
 		"Speech",
 		"SpriteKit",
+		"StateReporting",
 		"StoreKit",
 		"Symbols",
 		"SystemConfiguration",
@@ -379,6 +381,7 @@ partial class Frameworks {
 		"ShazamKit",
 		"SoundAnalysis",
 		"SpriteKit",
+		"StateReporting",
 		"StoreKit",
 		"Symbols",
 		"SystemConfiguration",
@@ -518,6 +521,7 @@ partial class Frameworks {
 		"SoundAnalysis",
 		"Speech",
 		"SpriteKit",
+		"StateReporting",
 		"StoreKit",
 		"Symbols",
 		"SystemConfiguration",
@@ -688,6 +692,7 @@ partial class Frameworks {
 	bool? _SoundAnalysis;
 	bool? _Speech;
 	bool? _SpriteKit;
+	bool? _StateReporting;
 	bool? _StoreKit;
 	bool? _Symbols;
 	bool? _SystemConfiguration;
@@ -864,6 +869,7 @@ partial class Frameworks {
 	public bool HaveSoundAnalysis { get { if (!_SoundAnalysis.HasValue) _SoundAnalysis = GetValue ("SoundAnalysis"); return _SoundAnalysis.Value; } }
 	public bool HaveSpeech { get { if (!_Speech.HasValue) _Speech = GetValue ("Speech"); return _Speech.Value; } }
 	public bool HaveSpriteKit { get { if (!_SpriteKit.HasValue) _SpriteKit = GetValue ("SpriteKit"); return _SpriteKit.Value; } }
+	public bool HaveStateReporting { get { if (!_StateReporting.HasValue) _StateReporting = GetValue ("StateReporting"); return _StateReporting.Value; } }
 	public bool HaveStoreKit { get { if (!_StoreKit.HasValue) _StoreKit = GetValue ("StoreKit"); return _StoreKit.Value; } }
 	public bool HaveSymbols { get { if (!_Symbols.HasValue) _Symbols = GetValue ("Symbols"); return _Symbols.Value; } }
 	public bool HaveSystemConfiguration { get { if (!_SystemConfiguration.HasValue) _SystemConfiguration = GetValue ("SystemConfiguration"); return _SystemConfiguration.Value; } }

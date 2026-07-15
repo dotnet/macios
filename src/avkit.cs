@@ -7,6 +7,7 @@ using CoreImage;
 using CoreMedia;
 using CoreVideo;
 using AVFoundation;
+using UniformTypeIdentifiers;
 #if HAS_OPENGLES
 using OpenGLES;
 #endif
@@ -1426,5 +1427,274 @@ namespace AVKit {
 
 		[Export ("legibleMenuControllerDidRequestStoppingSubtitleCaptionPreview:")]
 		void DidRequestStoppingSubtitleCaptionPreview (AVLegibleMediaOptionsMenuController menuController);
+	}
+
+	[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface AVPlaybackUserInterfaceTimelineSegment : NSCopying, NSSecureCoding {
+		[Export ("timeRange")]
+		CMTimeRange TimeRange { get; }
+
+		[Export ("segmentType")]
+		AVPlaybackUserInterfaceTimelineSegmentType SegmentType { get; }
+
+		[Export ("marked")]
+		bool Marked { [Bind ("isMarked")] get; }
+
+		[Export ("requiresLinearPlayback")]
+		bool RequiresLinearPlayback { get; }
+
+		[NullAllowed, Export ("identifier")]
+		string Identifier { get; }
+
+		[Export ("initWithTimeRange:segmentType:marked:requiresLinearPlayback:identifier:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor (CMTimeRange timeRange, AVPlaybackUserInterfaceTimelineSegmentType segmentType, bool marked, bool requiresLinearPlayback, [NullAllowed] string identifier);
+	}
+
+	[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface AVPlaybackUserInterfaceMediaSelectionOption : NSCopying, NSSecureCoding {
+		[Export ("displayName")]
+		string DisplayName { get; }
+
+		[Export ("identifier")]
+		string Identifier { get; }
+
+		[NullAllowed, Export ("extendedLanguageTag")]
+		string ExtendedLanguageTag { get; }
+
+		[BindAs (typeof (AVMediaCharacteristics []))]
+		[Export ("mediaCharacteristics", ArgumentSemantic.Copy)]
+		NSString [] MediaCharacteristics { get; }
+
+		[Export ("initWithDisplayName:identifier:extendedLanguageTag:mediaCharacteristics:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor (string displayName, string identifier, [NullAllowed] string extendedLanguageTag, [BindAs (typeof (AVMediaCharacteristics []))] NSString [] mediaCharacteristics);
+	}
+
+	[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface AVPlaybackUserInterfaceContentArtwork : NSCopying, NSSecureCoding {
+		[Export ("size")]
+		CGSize Size { get; }
+
+		[Static]
+		[Export ("artworkWithURL:contentType:size:")]
+		AVPlaybackUserInterfaceContentUrlArtwork FromUrl (NSUrl url, UTType contentType, CGSize size);
+	}
+
+	[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (AVPlaybackUserInterfaceContentArtwork), Name = "AVPlaybackUserInterfaceContentURLArtwork")]
+	[DisableDefaultCtor]
+	interface AVPlaybackUserInterfaceContentUrlArtwork {
+		[Export ("url", ArgumentSemantic.Copy)]
+		NSUrl Url { get; }
+
+		[Export ("contentType", ArgumentSemantic.Copy)]
+		UTType ContentType { get; }
+	}
+
+	[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface AVPlaybackUserInterfaceContentVideoProperties : NSCopying, NSSecureCoding {
+		[Export ("presentationSize")]
+		CGSize PresentationSize { get; }
+
+		[Export ("initWithPresentationSize:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor (CGSize presentationSize);
+	}
+
+	[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	interface AVPlaybackUserInterfaceContentMetadataTemplate : NSCopying, NSSecureCoding {
+		[NullAllowed, Export ("videoProperties", ArgumentSemantic.Copy)]
+		AVPlaybackUserInterfaceContentVideoProperties VideoProperties { get; set; }
+
+		[NullAllowed, Export ("title")]
+		string Title { get; set; }
+
+		[NullAllowed, Export ("subtitle")]
+		string Subtitle { get; set; }
+
+		[Export ("artworkRepresentations", ArgumentSemantic.Copy)]
+		AVPlaybackUserInterfaceContentArtwork [] ArtworkRepresentations { get; set; }
+	}
+
+	[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface AVPlaybackUserInterfaceContentMetadata : NSCopying, NSSecureCoding {
+		[NullAllowed, Export ("videoProperties", ArgumentSemantic.Copy)]
+		AVPlaybackUserInterfaceContentVideoProperties VideoProperties { get; }
+
+		[NullAllowed, Export ("title")]
+		string Title { get; }
+
+		[NullAllowed, Export ("subtitle")]
+		string Subtitle { get; }
+
+		[Export ("artworkRepresentations", ArgumentSemantic.Copy)]
+		AVPlaybackUserInterfaceContentArtwork [] ArtworkRepresentations { get; }
+
+		[Export ("initWithVideoProperties:title:subtitle:artworkRepresentations:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor ([NullAllowed] AVPlaybackUserInterfaceContentVideoProperties videoProperties, [NullAllowed] string title, [NullAllowed] string subtitle, AVPlaybackUserInterfaceContentArtwork [] artworkRepresentations);
+
+		[Export ("initWithTemplate:")]
+		NativeHandle Constructor ([NullAllowed] AVPlaybackUserInterfaceContentMetadataTemplate metadataTemplate);
+	}
+
+	[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface AVPlaybackUserInterfacePlaybackPosition : NSCopying, NSSecureCoding {
+		[Export ("position")]
+		CMTime Position { get; }
+
+		[Export ("hostTime")]
+		CMTime HostTime { get; }
+
+		[Export ("rate")]
+		float Rate { get; }
+
+		[Export ("initWithPosition:hostTime:rate:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor (CMTime position, CMTime hostTime, float rate);
+	}
+
+	[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface AVPlaybackUserInterfacePlaybackControllable {
+		[Abstract]
+		[Export ("ready")]
+		bool Ready { [Bind ("isReady")] get; }
+
+		[Abstract]
+		[Export ("playing")]
+		bool Playing { [Bind ("isPlaying")] get; set; }
+
+		[Abstract]
+		[Export ("buffering")]
+		bool Buffering { [Bind ("isBuffering")] get; }
+
+		[Abstract]
+		[Export ("playbackSpeed")]
+		float PlaybackSpeed { get; set; }
+
+		[Abstract]
+		[Export ("scanSpeed")]
+		float ScanSpeed { get; set; }
+
+		[Abstract]
+		[Export ("state", ArgumentSemantic.Assign)]
+		AVPlaybackUserInterfacePlaybackState State { get; set; }
+
+		[Abstract]
+		[Export ("supportedSeekCapabilities")]
+		AVPlaybackUserInterfaceSeekCapabilities SupportedSeekCapabilities { get; }
+
+		[Abstract]
+		[Export ("containsLiveStreamingContent")]
+		bool ContainsLiveStreamingContent { get; }
+
+		[Abstract]
+		[NullAllowed, Export ("error", ArgumentSemantic.Strong)]
+		NSError Error { get; }
+	}
+
+	[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface AVPlaybackUserInterfaceTimeControllable {
+		[Abstract]
+		[Export ("timeRange")]
+		CMTimeRange TimeRange { get; }
+
+		[Abstract]
+		[Export ("playbackPosition", ArgumentSemantic.Copy)]
+		AVPlaybackUserInterfacePlaybackPosition PlaybackPosition { get; }
+
+		[Abstract]
+		[Export ("seekToPosition:tolerance:")]
+		void Seek (CMTime position, CMTime tolerance);
+
+		[Abstract]
+		[Export ("segments", ArgumentSemantic.Copy)]
+		AVPlaybackUserInterfaceTimelineSegment [] Segments { get; }
+
+		[Abstract]
+		[Export ("currentSegment", ArgumentSemantic.Copy)]
+		AVPlaybackUserInterfaceTimelineSegment CurrentSegment { get; }
+
+		[Abstract]
+		[NullAllowed, Export ("seekableTimeRanges", ArgumentSemantic.Copy)]
+		NSValue [] SeekableTimeRanges { get; }
+	}
+
+	[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface AVPlaybackUserInterfaceMediaSelectionControllable {
+		[Abstract]
+		[NullAllowed, Export ("currentAudioOption", ArgumentSemantic.Copy)]
+		AVPlaybackUserInterfaceMediaSelectionOption CurrentAudioOption { get; set; }
+
+		[Abstract]
+		[NullAllowed, Export ("currentAudioDescriptionOption", ArgumentSemantic.Copy)]
+		AVPlaybackUserInterfaceMediaSelectionOption CurrentAudioDescriptionOption { get; set; }
+
+		[Abstract]
+		[NullAllowed, Export ("currentLegibleOption", ArgumentSemantic.Copy)]
+		AVPlaybackUserInterfaceMediaSelectionOption CurrentLegibleOption { get; set; }
+
+		[Abstract]
+		[Export ("audioOptions", ArgumentSemantic.Copy)]
+		AVPlaybackUserInterfaceMediaSelectionOption [] AudioOptions { get; }
+
+		[Abstract]
+		[Export ("audioDescriptionOptions", ArgumentSemantic.Copy)]
+		AVPlaybackUserInterfaceMediaSelectionOption [] AudioDescriptionOptions { get; }
+
+		[Abstract]
+		[Export ("legibleOptions", ArgumentSemantic.Copy)]
+		AVPlaybackUserInterfaceMediaSelectionOption [] LegibleOptions { get; }
+	}
+
+	[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface AVPlaybackUserInterfaceVolumeControllable {
+		[Abstract]
+		[Export ("hasAudio")]
+		bool HasAudio { get; }
+
+		[Abstract]
+		[Export ("muted")]
+		bool Muted { [Bind ("isMuted")] get; set; }
+
+		[Abstract]
+		[Export ("volume")]
+		float Volume { get; set; }
+	}
+
+	[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface AVPlaybackUserInterfaceMetadataProviding {
+		[Abstract]
+		[Export ("metadata", ArgumentSemantic.Copy)]
+		AVPlaybackUserInterfaceContentMetadata Metadata { get; }
+	}
+
+	[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface AVPlaybackUserInterfaceControllable :
+		AVPlaybackUserInterfaceTimeControllable,
+		AVPlaybackUserInterfacePlaybackControllable,
+		AVPlaybackUserInterfaceMediaSelectionControllable,
+		AVPlaybackUserInterfaceVolumeControllable,
+		AVPlaybackUserInterfaceMetadataProviding {
 	}
 }

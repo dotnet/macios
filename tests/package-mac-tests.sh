@@ -52,7 +52,6 @@ for app in linker/*/dotnet/*/bin/*/*/*/*.app */dotnet/*/bin/*/*/*/*.app; do
 done
 
 $CP -p packaged-macos-tests.mk "$DIR/tests"
-$CP -p run-with-timeout.* "$DIR/tests"
 $CP -p ../Make.config "$DIR"
 $CP -p ../Make.versions "$DIR"
 $CP -p test-dependencies.sh "$DIR"

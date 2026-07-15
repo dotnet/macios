@@ -97,7 +97,6 @@ Merge code from `main` into active target branches, creating pull requests for e
 ## Target Branch Patterns
 
 Only consider remote branches matching these patterns:
-- `net*.0` (e.g., `net11.0`, `net10.0`)
 - `xcode*` (e.g., `xcode26`)
 - `xcode*.*` (e.g., `xcode26.4`)
 
@@ -131,7 +130,6 @@ Map each branch name to its milestone name:
 
 | Branch pattern   | Milestone name                                                            |
 |------------------|---------------------------------------------------------------------------|
-| `net<major>.0`   | `.NET <major>` (e.g., `net10.0` → `.NET 10`)                              |
 | `xcode<version>` | `xcode<version>` (e.g., `xcode26.4` → `xcode26.4`, `xcode26` → `xcode26`) |
 
 If the corresponding milestone is found in the closed list, skip the branch and include

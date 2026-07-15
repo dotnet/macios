@@ -363,35 +363,35 @@ namespace EventKit {
 
 	[Native]
 	public enum EKParticipantScheduleStatus : long {
-		/// <summary>To be added.</summary>
+		/// <summary>No scheduling status.</summary>
 		None,
-		/// <summary>To be added.</summary>
+		/// <summary>The schedule request is pending.</summary>
 		Pending,
-		/// <summary>To be added.</summary>
+		/// <summary>The schedule request has been sent.</summary>
 		Sent,
-		/// <summary>To be added.</summary>
+		/// <summary>The schedule request was delivered successfully.</summary>
 		Delivered,
-		/// <summary>To be added.</summary>
+		/// <summary>The recipient was not recognized.</summary>
 		RecipientNotRecognized,
-		/// <summary>To be added.</summary>
+		/// <summary>The sender does not have sufficient privileges.</summary>
 		NoPrivileges,
-		/// <summary>To be added.</summary>
+		/// <summary>The delivery of the schedule request failed.</summary>
 		DeliveryFailed,
-		/// <summary>To be added.</summary>
+		/// <summary>The schedule request cannot be delivered.</summary>
 		CannotDeliver,
-		/// <summary>To be added.</summary>
+		/// <summary>The recipient is not allowed to receive schedule requests.</summary>
 		RecipientNotAllowed,
 	}
 
 	[Native]
 	public enum EKReminderPriority : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>No priority set.</summary>
 		None = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>High priority.</summary>
 		High = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Medium priority.</summary>
 		Medium = 5,
-		/// <summary>To be added.</summary>
+		/// <summary>Low priority.</summary>
 		Low = 9,
 	}
 

@@ -121,6 +121,31 @@ public class XmlDescriptorTest {
 	}
 
 	[Test]
+	public void PreserveTypeFields_WithMethod_KeepsPreserveFields ()
+	{
+		// An enum can be preserved with its fields (PreserveTypeFields) and also have an individual
+		// method preserved on it. The descriptor must keep preserve="fields" (so all the enum fields
+		// are preserved) while emitting the method as a child element - it must not fall back to
+		// preserve="nothing", which would stop preserving the enum's fields.
+		var module = CreateModule ();
+		var type = CreateType (module);
+		var method = AddMethod (type, "Convert", module.TypeSystem.String, module.TypeSystem.Int32);
+
+		var descriptor = new XmlDescriptor ();
+		descriptor.PreserveTypeFields (type);
+		descriptor.PreserveMethod (method, required: false);
+
+		var typeElement = descriptor.CreateXml ().Root!.Descendants ("type").Single ();
+		Assert.That ((string?) typeElement.Attribute ("preserve"), Is.EqualTo ("fields"), "type preserve");
+		// PreserveTypeFields makes the type itself required, so no required="false" on the type.
+		Assert.That (typeElement.Attribute ("required"), Is.Null, "type required");
+
+		var methodElement = typeElement.Elements ("method").Single ();
+		Assert.That ((string?) methodElement.Attribute ("signature"), Is.EqualTo ("System.String Convert(System.Int32)"), "method signature");
+		Assert.That ((string?) methodElement.Attribute ("required"), Is.EqualTo ("false"), "method required");
+	}
+
+	[Test]
 	public void PreserveMethod_GenericSignature_UsesNameInsteadOfSignature ()
 	{
 		var module = CreateModule ();

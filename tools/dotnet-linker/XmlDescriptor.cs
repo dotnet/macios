@@ -120,15 +120,14 @@ namespace Xamarin.Linker.Steps {
 				return type;
 			}
 
-			if (entry.PreserveOnlyFields && entry.Fields.Count == 0 && entry.Methods.Count == 0) {
-				type.SetAttributeValue ("preserve", "fields");
-				return type;
-			}
-
 			if (!entry.Required)
 				type.SetAttributeValue ("required", "false");
 
-			type.SetAttributeValue ("preserve", "nothing");
+			// preserve="fields" keeps all the type's fields (typically for enums); otherwise
+			// preserve="nothing" keeps only the type declaration. In both cases any explicit
+			// <field>/<method> children below are preserved in addition (the trimmer applies
+			// the preserve attribute and then processes the child elements).
+			type.SetAttributeValue ("preserve", entry.PreserveOnlyFields ? "fields" : "nothing");
 
 			foreach (var field in entry.Fields.OrderBy (v => v.Key, System.StringComparer.Ordinal))
 				type.Add (new XElement ("field", new XAttribute ("name", field.Key), new XAttribute ("required", field.Value ? "true" : "false")));

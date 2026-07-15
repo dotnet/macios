@@ -23,7 +23,9 @@ namespace Xamarin.Tests {
 			properties ["UseMonoRuntime"] = "false";
 			properties ["ExpectedReadyToRunConfiguration"] = expectedReadyToRunConfiguration;
 
-			DotNet.AssertBuild (projectPath, properties);
+			var rv = DotNet.AssertBuildFailure (projectPath, properties);
+			var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray ();
+			AssertErrorMessages (errors, "All good!");
 		}
 	}
 }

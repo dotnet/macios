@@ -79,5 +79,6 @@
 		<Error
 			Condition="'$(ExpectedReadyToRunConfiguration)' == 'Full' And '@(_ReadyToRunTestAppReference)' != ''"
 			Text="Expected $(AssemblyName).dll to be compiled into the full ReadyToRun composite instead of passed as a reference." />
+		<Error Text="All good!" />
 	</Target>
 </Project>

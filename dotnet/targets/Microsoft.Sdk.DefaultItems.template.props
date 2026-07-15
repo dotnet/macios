@@ -62,24 +62,29 @@
 		<!-- Include everything in the project's Resources folder (as represented by the _ResourcePrefix property, which is set from the AppBundleResourcePrefix or legacy IPhoneResourcePrefix/XamMacResourcePrefix properties),
 		     except for files that are already in any of the other resource type item groups.
 		     _ResourcePrefix may contain multiple semicolon-separated paths (e.g. "Resources;PlatformResources").
-		     We use string Replace to append glob suffixes to each semicolon-separated entry, so that MSBuild
-		     expands them as proper glob patterns (item transforms don't expand globs). -->
-		<BundleResource Include="$(_ResourcePrefix.Replace(';','\**\*;'))\**\*" Exclude="
+		     When _ResourcePrefix contains multiple paths, this glob only handles the single-prefix case.
+		     The _ExpandMultipleResourcePrefixes target in Xamarin.Shared.targets handles the multi-prefix case,
+		     because MSBuild glob expansion in Include attributes doesn't work with item transforms or property functions. -->
+		<BundleResource Include="$(_ResourcePrefix)\**\*" Exclude="
 			$(DefaultItemExcludes);
 			$(DefaultExcludesInProjectFolder);
-			$(_ResourcePrefix.Replace(';','\**\*.xcassets\**\*.*;'))\**\*.xcassets\**\*.*;
-			$(_ResourcePrefix.Replace(';','\**\*.icon\**\*.*;'))\**\*.icon\**\*.*;
-			$(_ResourcePrefix.Replace(';','\**\*.storyboard;'))\**\*.storyboard;**\*.xib;
-			$(_ResourcePrefix.Replace(';','\**\*.atlas\*.png;'))\**\*.atlas\*.png;
-			$(_ResourcePrefix.Replace(';','\**\*.mlmodel;'))\**\*.mlmodel;
-			$(_ResourcePrefix.Replace(';','\**\*.metal;'))\**\*.metal;
-			$(_ResourcePrefix.Replace(';','\**\*.scnassets\*;'))\**\*.scnassets\*;
-			$(_ResourcePrefix.Replace(';','\**\*.DS_Store;'))\**\*.DS_Store;
+			$(_ResourcePrefix)\**\*.xcassets\**\*.*;
+			$(_ResourcePrefix)\**\*.icon\**\*.*;
+			$(_ResourcePrefix)\**\*.storyboard;**\*.xib;
+			$(_ResourcePrefix)\**\*.atlas\*.png;
+			$(_ResourcePrefix)\**\*.mlmodel;
+			$(_ResourcePrefix)\**\*.metal;
+			$(_ResourcePrefix)\**\*.scnassets\*;
+			$(_ResourcePrefix)\**\*.DS_Store;
 			@(Compile);
 			@(EmbeddedResource);
-			" Condition="'$(_ResourcePrefix)' != ''" >
+			" Condition="'$(_ResourcePrefix)' != '' And !$(_ResourcePrefix.Contains(';'))" >
 			<Link>$([MSBuild]::MakeRelative ('$(MSBuildProjectDirectory)', '%(FullPath)'))</Link>
 			<IsDefaultItem>true</IsDefaultItem>
 		</BundleResource>
+
+		<!-- When _ResourcePrefix contains multiple semicolon-separated paths, split it into an item list
+		     so that the _ExpandMultipleResourcePrefixes target can use batched glob expansion. -->
+		<_ResourcePrefixItem Include="$(_ResourcePrefix)" Condition="'$(_ResourcePrefix)' != '' And $(_ResourcePrefix.Contains(';'))" />
 	</ItemGroup>
 </Project>

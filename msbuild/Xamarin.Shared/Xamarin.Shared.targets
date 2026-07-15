@@ -420,6 +420,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 		<CollectBundleResourcesDependsOn>
 			$(CollectBundleResourcesDependsOn);
+			_ExpandMultipleResourcePrefixes;
 			_DetectBuildType;
 			_ComputeTargetArchitectures;
 			_ComputeTargetFrameworkMoniker;
@@ -437,6 +438,35 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			_SetResourceMetadata;
 		</CollectBundleResourcesDependsOn>
 	</PropertyGroup>
+
+	<!--
+		When _ResourcePrefix contains multiple semicolon-separated paths (e.g. "Resources;PlatformResources"),
+		MSBuild glob expansion in Include attributes doesn't work with item transforms or property functions.
+		This target uses batched glob expansion (%(_ResourcePrefixItem.Identity)\**\*) inside a Target's
+		ItemGroup, which correctly expands globs for each prefix path individually.
+		The _ResourcePrefixItem item list is populated in Microsoft.*.Sdk.DefaultItems.props.
+	-->
+	<Target Name="_ExpandMultipleResourcePrefixes" Condition="@(_ResourcePrefixItem->Count()) > 0">
+		<ItemGroup>
+			<BundleResource Include="%(_ResourcePrefixItem.Identity)\**\*" Exclude="
+				$(DefaultItemExcludes);
+				$(DefaultExcludesInProjectFolder);
+				%(_ResourcePrefixItem.Identity)\**\*.xcassets\**\*.*;
+				%(_ResourcePrefixItem.Identity)\**\*.icon\**\*.*;
+				%(_ResourcePrefixItem.Identity)\**\*.storyboard;**\*.xib;
+				%(_ResourcePrefixItem.Identity)\**\*.atlas\*.png;
+				%(_ResourcePrefixItem.Identity)\**\*.mlmodel;
+				%(_ResourcePrefixItem.Identity)\**\*.metal;
+				%(_ResourcePrefixItem.Identity)\**\*.scnassets\*;
+				%(_ResourcePrefixItem.Identity)\**\*.DS_Store;
+				@(Compile);
+				@(EmbeddedResource);
+				" >
+				<Link>$([MSBuild]::MakeRelative ('$(MSBuildProjectDirectory)', '%(FullPath)'))</Link>
+				<IsDefaultItem>true</IsDefaultItem>
+			</BundleResource>
+		</ItemGroup>
+	</Target>
 
 	<Target Name="_CollectBundleResources" DependsOnTargets="$(CollectBundleResourcesDependsOn)">
 		<!-- For multi-RID builds, we first build once for each RuntimeIdentifier, then build again to create a universal app bundle.

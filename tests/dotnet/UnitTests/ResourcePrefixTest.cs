@@ -220,8 +220,8 @@ namespace Xamarin.Tests {
 
 				File.WriteAllText (projectPath, GetTestProjectContent (platformStr, (prefixProperty, prefixes)));
 
-				// Get BundleResource items
-				var bundleResources = GetBundleResourceIdentities (projectPath);
+				// Get BundleResource items (need to run the target to expand multi-prefix globs)
+				var bundleResources = GetBundleResourceIdentities (projectPath, "_ExpandMultipleResourcePrefixes");
 
 				Assert.That (bundleResources, Has.Some.EndsWith ("shared.png"),
 					$"{platform}: shared.png in Resources/ should be included as a BundleResource with multiple prefixes");
@@ -252,8 +252,8 @@ namespace Xamarin.Tests {
 
 				File.WriteAllText (projectPath, GetTestProjectContent (platformStr, (prefixProperty, prefixes)));
 
-				// Get BundleResource items
-				var bundleResources = GetBundleResourceIdentities (projectPath);
+				// Get BundleResource items (need to run the target to expand multi-prefix globs)
+				var bundleResources = GetBundleResourceIdentities (projectPath, "_ExpandMultipleResourcePrefixes");
 
 				Assert.That (bundleResources, Has.Some.EndsWith ("only-here.png"),
 					$"{platform}: only-here.png in PlatformResources/ should be included as a BundleResource even when first prefix directory doesn't exist");
@@ -286,8 +286,8 @@ namespace Xamarin.Tests {
 
 				File.WriteAllText (projectPath, GetTestProjectContent (platformStr, (prefixProperty, prefixes)));
 
-				// Get BundleResource items
-				var bundleResources = GetBundleResourceIdentities (projectPath);
+				// Get BundleResource items (need to run the target to expand multi-prefix globs)
+				var bundleResources = GetBundleResourceIdentities (projectPath, "_ExpandMultipleResourcePrefixes");
 
 				Assert.That (bundleResources, Has.Some.EndsWith ("icon.png"),
 					$"{platform}: icon.png in Resources/Images/ should be included as a BundleResource");
@@ -326,8 +326,8 @@ namespace Xamarin.Tests {
 
 				File.WriteAllText (projectPath, GetTestProjectContent (platformStr, (prefixProperty, prefixes)));
 
-				// Get BundleResource items
-				var bundleResources = GetBundleResourceIdentities (projectPath);
+				// Get BundleResource items (need to run the target to expand multi-prefix globs)
+				var bundleResources = GetBundleResourceIdentities (projectPath, "_ExpandMultipleResourcePrefixes");
 
 				Assert.That (bundleResources, Has.Some.EndsWith ("first.png"),
 					$"{platform}: first.png from first prefix should be included");
@@ -351,9 +351,9 @@ namespace Xamarin.Tests {
 			return DotNet.GetProperty (projectPath, "_ResourcePrefix", (Dictionary<string, string>?) null);
 		}
 
-		private List<string> GetBundleResourceIdentities (string projectPath)
+		private List<string> GetBundleResourceIdentities (string projectPath, string? target = null)
 		{
-			var json = DotNet.GetItems (projectPath, "BundleResource");
+			var json = DotNet.GetItems (projectPath, "BundleResource", target: target);
 			using var doc = JsonDocument.Parse (json);
 			var items = new List<string> ();
 			if (doc.RootElement.TryGetProperty ("Items", out var itemsObj) &&

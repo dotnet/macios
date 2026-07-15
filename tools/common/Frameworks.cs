@@ -321,6 +321,7 @@ public class Frameworks : Dictionary<string, Framework> {
 
 					{ "GameSave", "GameSave", 26, 0 },
 
+					{ "StateReporting", "StateReporting", 27, 0 },
 					{ "AccessoryAccess", "AccessoryAccess", 27, 0 },
 				};
 			}
@@ -506,6 +507,8 @@ public class Frameworks : Dictionary<string, Framework> {
 					{ "ExtensionKit", "ExtensionKit", 26, 0 },
 					{ "GameSave", "GameSave", 26, 0 },
 					{ "TouchController", "TouchController", 26, 0 },
+
+					{ "StateReporting", "StateReporting", 27, 0 },
 					// the above MUST be kept in sync with simlauncher
 					// see tools/mtouch/Makefile
 					// please also keep it sorted to ease comparison
@@ -626,6 +629,8 @@ public class Frameworks : Dictionary<string, Framework> {
 					{ "SecurityUI", "SecurityUI", 18, 4 },
 
 					{ "AVRouting", "AVRouting", 26, 0 },
+
+					{ "StateReporting", "StateReporting", 27, 0 },
 				};
 			}
 			return tvos_frameworks;

@@ -26257,6 +26257,9 @@ M:SpriteKit.SKWarpGeometryGrid.Create(System.IntPtr,System.IntPtr,System.Numeric
 M:SpriteKit.SKWarpGeometryGrid.GetGrid
 M:SpriteKit.SKWarpGeometryGrid.GetGridByReplacingDestPositions(System.Numerics.Vector2[])
 M:SpriteKit.SKWarpGeometryGrid.GetGridByReplacingSourcePositions(System.Numerics.Vector2[])
+M:StateReporting.SRStateReporter.FromDomain(System.String)
+M:StateReporting.SRStateReporter.ReportTransition(System.String,Foundation.NSDictionary{Foundation.NSString,Foundation.NSObject},Foundation.NSDictionary{Foundation.NSString,Foundation.NSObject})
+M:StateReporting.SRStateReporter.ReportVolatileMetadataUpdate(Foundation.NSDictionary{Foundation.NSString,Foundation.NSObject})
 M:StoreKit.ISKOverlayDelegate.DidFailToLoad(StoreKit.SKOverlay,Foundation.NSError)
 M:StoreKit.ISKOverlayDelegate.DidFinishDismissal(StoreKit.SKOverlay,StoreKit.SKOverlayTransitionContext)
 M:StoreKit.ISKOverlayDelegate.DidFinishPresentation(StoreKit.SKOverlay,StoreKit.SKOverlayTransitionContext)
@@ -50368,6 +50371,7 @@ P:SpriteKit.SKView.ShowsQuadCount
 P:SpriteKit.SKWarpGeometryGrid.NumberOfColumns
 P:SpriteKit.SKWarpGeometryGrid.NumberOfRows
 P:SpriteKit.SKWarpGeometryGrid.VertexCount
+P:StateReporting.SRStateReporter.Domain
 P:StoreKit.SKAdImpression.AdCampaignIdentifier
 P:StoreKit.SKAdImpression.AdDescription
 P:StoreKit.SKAdImpression.AdImpressionIdentifier
@@ -61429,6 +61433,7 @@ T:Speech.SFSpeechRecognitionTaskHint
 T:Speech.SFVoiceAnalytics
 T:SpriteKit.SKNodeEvent_NSEvent
 T:SpriteKit.SKTextureAtlasLoadCallback
+T:StateReporting.SRStateReporter
 T:StoreKit.SKAdImpression
 T:StoreKit.SKAdNetwork
 T:StoreKit.SKAdNetworkCoarseConversionValue

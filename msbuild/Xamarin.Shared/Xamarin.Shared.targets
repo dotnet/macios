@@ -729,7 +729,9 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			>
 			<Output TaskParameter="CFBundleExecutable" PropertyName="_ExecutableName" />
 			<Output TaskParameter="CFBundleDisplayName" PropertyName="_CFBundleDisplayName" />
+			<Output TaskParameter="CFBundleName" PropertyName="_CFBundleName" />
 			<Output TaskParameter="CFBundleIdentifier" PropertyName="_BundleIdentifier" />
+			<Output TaskParameter="CFBundleShortVersionString" PropertyName="_CFBundleShortVersionString" />
 			<Output TaskParameter="CFBundleVersion" PropertyName="_CFBundleVersion" />
 			<Output TaskParameter="CLKComplicationGroup" PropertyName="_CLKComplicationGroup" />
 			<Output TaskParameter="MinimumOSVersion" PropertyName="_MinimumOSVersion" />
@@ -3540,7 +3542,36 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 	<Target Name="CreateIpa" Condition="'$(_CanArchive)' == 'true' And '$(SdkIsDesktop)' != 'true'" DependsOnTargets="$(CreateIpaDependsOn)" />
 
-	<Target Name="GetApplicationArtifacts" DependsOnTargets="Build;$(GetApplicationArtifactsDependsOn)" Returns="@(ApplicationArtifact)" />
+	<Target Name="_AddAppleApplicationArtifactMetadata"
+		AfterTargets="Build"
+		BeforeTargets="BeforeDisconnect"
+		Condition="'@(ApplicationArtifact)' != '' And '$(_AppBundleManifestPath)' != '' And (Exists('$(_AppBundleManifestPath)') Or '$(IsRemoteBuild)' == 'true')">
+		<ReadAppManifest
+			SessionId="$(BuildSessionId)"
+			Condition="'$(IsMacEnabled)' == 'true'"
+			AppManifest="$(_AppBundleManifestPath)"
+			SdkDevPath="$(_SdkDevPath)"
+			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
+			>
+			<Output TaskParameter="CFBundleDisplayName" PropertyName="_ApplicationArtifactCFBundleDisplayName" />
+			<Output TaskParameter="CFBundleName" PropertyName="_ApplicationArtifactCFBundleName" />
+			<Output TaskParameter="CFBundleShortVersionString" PropertyName="_ApplicationArtifactCFBundleShortVersionString" />
+			<Output TaskParameter="CFBundleVersion" PropertyName="_ApplicationArtifactCFBundleVersion" />
+		</ReadAppManifest>
+
+		<ItemGroup>
+			<ApplicationArtifact Update="@(ApplicationArtifact)">
+				<ApplicationId>%(ApplicationArtifact.BundleIdentifier)</ApplicationId>
+				<ApplicationTitle>$(_ApplicationArtifactCFBundleDisplayName)</ApplicationTitle>
+				<ApplicationName Condition="'$(_ApplicationArtifactCFBundleDisplayName)' != ''">$(_ApplicationArtifactCFBundleDisplayName)</ApplicationName>
+				<ApplicationName Condition="'$(_ApplicationArtifactCFBundleDisplayName)' == ''">$(_ApplicationArtifactCFBundleName)</ApplicationName>
+				<ApplicationDisplayVersion>$(_ApplicationArtifactCFBundleShortVersionString)</ApplicationDisplayVersion>
+				<ApplicationVersion>$(_ApplicationArtifactCFBundleVersion)</ApplicationVersion>
+			</ApplicationArtifact>
+		</ItemGroup>
+	</Target>
+
+	<Target Name="GetApplicationArtifacts" DependsOnTargets="Build;_AddAppleApplicationArtifactMetadata;$(GetApplicationArtifactsDependsOn)" Returns="@(ApplicationArtifact)" />
 
 	<PropertyGroup>
 		<PrepareAssemblies Condition="'$(PrepareAssemblies)' == ''">false</PrepareAssemblies>

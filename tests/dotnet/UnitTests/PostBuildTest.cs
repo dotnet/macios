@@ -139,6 +139,57 @@ namespace Xamarin.Tests {
 		}
 
 		[Test]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", null, true)]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64", null, true)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", null, true)]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64", null, true)]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", "Info.plist", true)]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64", "Info.plist", false)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", "InfoWithoutDisplayName.plist", false)]
+		public void ApplicationArtifactMetadataTest (ApplePlatform platform, string runtimeIdentifiers, string? customApplicationManifest, bool generateApplicationManifest)
+		{
+			var project = "MySimpleAppWithArtifactMetadata";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["GenerateApplicationManifest"] = generateApplicationManifest ? "true" : "false";
+			if (customApplicationManifest is not null)
+				properties ["CustomApplicationManifest"] = customApplicationManifest;
+
+			var outputs = GetApplicationArtifacts (project_path, properties);
+			var appOutput = AssertApplicationArtifact (outputs, appPath, platform, "app", isDirectory: true);
+
+			if (customApplicationManifest is null) {
+				AssertApplicationMetadata (
+					appOutput,
+					"com.xamarin.mysimpleappwithartifactmetadata",
+					"MySimpleAppWithArtifactMetadata",
+					"MySimpleAppWithArtifactMetadata",
+					"3.14",
+					"3.14");
+			} else if (customApplicationManifest == "InfoWithoutDisplayName.plist") {
+				AssertApplicationMetadata (
+					appOutput,
+					"com.xamarin.customartifactmetadata",
+					"",
+					"Fallback Bundle Name",
+					"9.8.7",
+					"123");
+			} else {
+				AssertApplicationMetadata (
+					appOutput,
+					"com.xamarin.customartifactmetadata",
+					"$(PRODUCT_NAME)",
+					"$(PRODUCT_NAME)",
+					"9.8.7",
+					"123");
+			}
+		}
+
+		[Test]
 		[TestCase (ApplePlatform.iOS, "ios-arm64", "ipa")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", "pkg")]
 		public void GetApplicationArtifactsDependsOnTest (ApplePlatform platform, string runtimeIdentifiers, string packageFormat)
@@ -551,6 +602,10 @@ namespace Xamarin.Tests {
 			Assert.That (output.GetMetadata ("IsDirectory"), Is.EqualTo (isDirectory ? "true" : "false"), "IsDirectory");
 			Assert.That (output.GetMetadata ("PlatformName"), Is.EqualTo (platform.AsString ()), "PlatformName");
 			Assert.That (output.GetMetadata ("BundleIdentifier"), Is.Not.Empty, "BundleIdentifier");
+			Assert.That (output.GetMetadata ("ApplicationId"), Is.EqualTo (output.GetMetadata ("BundleIdentifier")), "ApplicationId");
+			Assert.That (output.GetMetadata ("ApplicationName"), Is.Not.Empty, "ApplicationName");
+			Assert.That (output.GetMetadata ("ApplicationDisplayVersion"), Is.Not.Empty, "ApplicationDisplayVersion");
+			Assert.That (output.GetMetadata ("ApplicationVersion"), Is.Not.Empty, "ApplicationVersion");
 			Assert.That (output.GetMetadata ("ArtifactKind"), Is.Null.Or.Empty, "ArtifactKind");
 			Assert.That (output.GetMetadata ("AppBundlePath"), Is.Null.Or.Empty, "AppBundlePath");
 			Assert.That (output.GetMetadata ("CodeSigned"), Is.Null.Or.Empty, "CodeSigned");
@@ -587,6 +642,10 @@ namespace Xamarin.Tests {
 			Assert.That (GetMetadata (output, "IsDirectory"), Is.EqualTo (isDirectory ? "true" : "false"), "IsDirectory");
 			Assert.That (GetMetadata (output, "PlatformName"), Is.EqualTo (platform.AsString ()), "PlatformName");
 			Assert.That (GetMetadata (output, "BundleIdentifier"), Is.Not.Empty, "BundleIdentifier");
+			Assert.That (GetMetadata (output, "ApplicationId"), Is.EqualTo (GetMetadata (output, "BundleIdentifier")), "ApplicationId");
+			Assert.That (GetMetadata (output, "ApplicationName"), Is.Not.Empty, "ApplicationName");
+			Assert.That (GetMetadata (output, "ApplicationDisplayVersion"), Is.Not.Empty, "ApplicationDisplayVersion");
+			Assert.That (GetMetadata (output, "ApplicationVersion"), Is.Not.Empty, "ApplicationVersion");
 			Assert.That (GetMetadata (output, "ArtifactKind"), Is.Empty, "ArtifactKind");
 			Assert.That (GetMetadata (output, "AppBundlePath"), Is.Empty, "AppBundlePath");
 			Assert.That (GetMetadata (output, "CodeSigned"), Is.Empty, "CodeSigned");
@@ -603,6 +662,17 @@ namespace Xamarin.Tests {
 			var fullPath = GetMetadata (matchingOutputs [0], "FullPath");
 			Assert.That (fullPath, Does.Exist, packageFormat);
 			return AssertApplicationArtifact (outputs, fullPath, platform, packageFormat, isDirectory);
+		}
+
+		static void AssertApplicationMetadata (JsonElement output, string applicationId, string applicationTitle, string applicationName, string applicationDisplayVersion, string applicationVersion)
+		{
+			Assert.Multiple (() => {
+				Assert.That (GetMetadata (output, "ApplicationId"), Is.EqualTo (applicationId), "ApplicationId");
+				Assert.That (GetMetadata (output, "ApplicationTitle"), Is.EqualTo (applicationTitle), "ApplicationTitle");
+				Assert.That (GetMetadata (output, "ApplicationName"), Is.EqualTo (applicationName), "ApplicationName");
+				Assert.That (GetMetadata (output, "ApplicationDisplayVersion"), Is.EqualTo (applicationDisplayVersion), "ApplicationDisplayVersion");
+				Assert.That (GetMetadata (output, "ApplicationVersion"), Is.EqualTo (applicationVersion), "ApplicationVersion");
+			});
 		}
 
 		static string GetMetadata (JsonElement item, string name)

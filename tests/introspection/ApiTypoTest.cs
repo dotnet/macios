@@ -223,6 +223,7 @@ namespace Introspection {
 			{ "Denoiser", All }, // noise reduction filter
 			{ "Depthwise", All }, // ML convolution term
 			{ "Dequantize", All }, // signal processing term
+			{ "Despeckle", All }, // image noise correction term
 			{ "Dfsi", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // Apple API abbreviation
 			{ "Dhe", All }, // Diffie–Hellman key exchange
 			{ "Dhs", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // Apple API abbreviation

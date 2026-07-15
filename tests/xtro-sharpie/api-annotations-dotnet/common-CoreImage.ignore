@@ -1,6 +1,8 @@
 ## new @required on existing protocols are breaking changes
 !incorrect-protocol-member! CIImageProcessorInput::digest is REQUIRED and should be abstract
 !incorrect-protocol-member! CIImageProcessorOutput::digest is REQUIRED and should be abstract
+!incorrect-protocol-member! CIImageProcessorOutput::temporarySurfaceWithIdentifier:format:width:height: is REQUIRED and should be abstract
+!incorrect-protocol-member! CIImageProcessorOutput::temporaryPixelBufferWithIdentifier:format:width:height:attributes: is REQUIRED and should be abstract
 !incorrect-protocol-member! CIAttributedTextImageGenerator::padding is REQUIRED and should be abstract
 !incorrect-protocol-member! CIAttributedTextImageGenerator::setPadding: is REQUIRED and should be abstract
 !incorrect-protocol-member! CIColorCube::extrapolate is REQUIRED and should be abstract

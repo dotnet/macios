@@ -2299,6 +2299,7 @@ F:CoreGraphics.CGPdfTagType.WarichuPunctuation
 F:CoreGraphics.CGPdfTagType.WarichuText
 F:CoreGraphics.CGToneMapping.Default
 F:CoreGraphics.CGToneMapping.ExrGamma
+F:CoreGraphics.CGToneMapping.HeadroomAdaptiveGainCurve
 F:CoreGraphics.CGToneMapping.ImageSpecificLumaScaling
 F:CoreGraphics.CGToneMapping.IturRecommended
 F:CoreGraphics.CGToneMapping.None

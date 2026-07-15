@@ -37,8 +37,7 @@ Copyright (C) 2013-2016 Xamarin. All rights reserved.
 		<EmbedOnDemandResources Condition="'$(EmbedOnDemandResources)' == ''">true</EmbedOnDemandResources>
 
 		<!-- Device-Specific Builds -->
-		<DeviceSpecificBuild Condition="'$(DeviceSpecificBuild)' == ''">$(_BundlerDebug)</DeviceSpecificBuild>
-		<DeviceSpecificBuild Condition="'$(_BundlerDebug)' != 'true'">False</DeviceSpecificBuild>
+		<DeviceSpecificBuild Condition="'$(DeviceSpecificBuild)' == ''">false</DeviceSpecificBuild>
 	</PropertyGroup>
 
 	<ItemGroup>

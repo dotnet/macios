@@ -429,6 +429,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			$(CollectBundleResourcesDependsOn);
 			_UnpackLibraryResources;
 			_LoadUnpackedPartialAppManifests;
+			_LoadUnpackedLibraryResources;
 			_CompileImageAssets;
 			_CompileInterfaceDefinitions;
 			_CompileSceneKitAssets;
@@ -1293,8 +1294,9 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			Xamarin.iOS and Xamarin.Mac converges, more and more of this logic
 			will apply to Xamarin.Mac as well.
 		-->
+		<!-- The device-specific build support can be entirely removed in .NET 12 (see https://github.com/dotnet/macios/issues/23846) -->
 		<ParseDeviceSpecificBuildInformation
-			Condition="'$(DeviceSpecificBuild)' == 'true' And '$(TargetiOSDevice)' != '' And '$(_CanDeployToDeviceOrSimulator)' == 'true' And '$(SdkIsDesktop)' != 'true'"
+			Condition="'$(DeviceSpecificBuild)' == 'true' And '$(TargetiOSDevice)' != '' And '$(_CanDeployToDeviceOrSimulator)' == 'true' And '$(SdkIsDesktop)' != 'true' And (!$([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), 11.0)) Or '$(_DeviceSpecificBuildOverride)' == 'true')"
 			Architectures="$(TargetArchitectures)"
 			IntermediateOutputPath="$(IntermediateOutputPath)"
 			OutputPath="$(OutputPath)"
@@ -1336,6 +1338,14 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 			<!-- Partial app manifest output cache -->
 			<_UnpackedPartialAppManifestCache>$(DeviceSpecificIntermediateOutputPath)partialappmanifest\_PartialAppManifests.items</_UnpackedPartialAppManifestCache>
+
+			<!-- Caches of the typed resources unpacked from referenced libraries, so they can be restored on incremental builds when _UnpackLibraryResources is skipped -->
+			<_UnpackedAtlasTextureCache>$(DeviceSpecificIntermediateOutputPath)resourcestamps\_UnpackedAtlasTextures.items</_UnpackedAtlasTextureCache>
+			<_UnpackedImageAssetCache>$(DeviceSpecificIntermediateOutputPath)resourcestamps\_UnpackedImageAssets.items</_UnpackedImageAssetCache>
+			<_UnpackedInterfaceDefinitionCache>$(DeviceSpecificIntermediateOutputPath)resourcestamps\_UnpackedInterfaceDefinitions.items</_UnpackedInterfaceDefinitionCache>
+			<_UnpackedColladaCache>$(DeviceSpecificIntermediateOutputPath)resourcestamps\_UnpackedColladaAssets.items</_UnpackedColladaCache>
+			<_UnpackedCoreMLModelCache>$(DeviceSpecificIntermediateOutputPath)resourcestamps\_UnpackedCoreMLModels.items</_UnpackedCoreMLModelCache>
+			<_UnpackedSceneKitAssetCache>$(DeviceSpecificIntermediateOutputPath)resourcestamps\_UnpackedSceneKitAssets.items</_UnpackedSceneKitAssetCache>
 
 			<!-- processed items -->
 			<_ProcessedBundleResourcesPath Condition="'$(_ProcessedBundleResourcesPath)' == ''">$(DeviceSpecificIntermediateOutputPath)\_ProcessedBundleResourcesPath.items</_ProcessedBundleResourcesPath>
@@ -2255,13 +2265,16 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 			<Output TaskParameter="ItemsFiles" ItemName="FileWrites" />
 
-			<Output TaskParameter="AtlasTextures" ItemName="AtlasTexture" />
-			<Output TaskParameter="ImageAssets" ItemName="ImageAsset" />
-			<Output TaskParameter="InterfaceDefinitions" ItemName="InterfaceDefinition" />
-			<Output TaskParameter="ColladaAssets" ItemName="Collada" />
-			<Output TaskParameter="CoreMLModels" ItemName="CoreMLModel" />
+			<!-- The typed resources are output to private item groups, cached below, and restored into the
+			     real item groups by _LoadUnpackedLibraryResources (which runs even on incremental builds
+			     when this target is skipped). -->
+			<Output TaskParameter="AtlasTextures" ItemName="_UnpackedAtlasTexture" />
+			<Output TaskParameter="ImageAssets" ItemName="_UnpackedImageAsset" />
+			<Output TaskParameter="InterfaceDefinitions" ItemName="_UnpackedInterfaceDefinition" />
+			<Output TaskParameter="ColladaAssets" ItemName="_UnpackedCollada" />
+			<Output TaskParameter="CoreMLModels" ItemName="_UnpackedCoreMLModel" />
 			<Output TaskParameter="PartialAppManifests" ItemName="_UnpackedPartialAppManifest" />
-			<Output TaskParameter="SceneKitAssets" ItemName="SceneKitAsset" />
+			<Output TaskParameter="SceneKitAssets" ItemName="_UnpackedSceneKitAsset" />
 		</UnpackLibraryResources>
 
 		<Touch
@@ -2272,11 +2285,23 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<Output TaskParameter="TouchedFiles" ItemName="FileWrites" />
 		</Touch>
 
-		<!-- Cached the partial app manifests items for incremental build support -->
+		<!-- Cache the unpacked typed resource items for incremental build support (see _LoadUnpackedLibraryResources) -->
 		<WriteItemsToFile Items="@(_UnpackedPartialAppManifest)" ItemName="_UnpackedPartialAppManifest" File="$(_UnpackedPartialAppManifestCache)" Overwrite="true" IncludeMetadata="true" />
+		<WriteItemsToFile Items="@(_UnpackedAtlasTexture)" ItemName="_UnpackedAtlasTexture" File="$(_UnpackedAtlasTextureCache)" Overwrite="true" IncludeMetadata="true" />
+		<WriteItemsToFile Items="@(_UnpackedImageAsset)" ItemName="_UnpackedImageAsset" File="$(_UnpackedImageAssetCache)" Overwrite="true" IncludeMetadata="true" />
+		<WriteItemsToFile Items="@(_UnpackedInterfaceDefinition)" ItemName="_UnpackedInterfaceDefinition" File="$(_UnpackedInterfaceDefinitionCache)" Overwrite="true" IncludeMetadata="true" />
+		<WriteItemsToFile Items="@(_UnpackedCollada)" ItemName="_UnpackedCollada" File="$(_UnpackedColladaCache)" Overwrite="true" IncludeMetadata="true" />
+		<WriteItemsToFile Items="@(_UnpackedCoreMLModel)" ItemName="_UnpackedCoreMLModel" File="$(_UnpackedCoreMLModelCache)" Overwrite="true" IncludeMetadata="true" />
+		<WriteItemsToFile Items="@(_UnpackedSceneKitAsset)" ItemName="_UnpackedSceneKitAsset" File="$(_UnpackedSceneKitAssetCache)" Overwrite="true" IncludeMetadata="true" />
 
 		<ItemGroup>
 			<FileWrites Include="$(_UnpackedPartialAppManifestCache)" />
+			<FileWrites Include="$(_UnpackedAtlasTextureCache)" />
+			<FileWrites Include="$(_UnpackedImageAssetCache)" />
+			<FileWrites Include="$(_UnpackedInterfaceDefinitionCache)" />
+			<FileWrites Include="$(_UnpackedColladaCache)" />
+			<FileWrites Include="$(_UnpackedCoreMLModelCache)" />
+			<FileWrites Include="$(_UnpackedSceneKitAssetCache)" />
 			<FileWrites Include="@(_UnpackedBundleResourceWithLogicalName)" />
 		</ItemGroup>
 	</Target>
@@ -2289,6 +2314,47 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		<ReadItemsFromFile File="$(_UnpackedPartialAppManifestCache)">
 			<Output TaskParameter="Items" ItemName="PartialAppManifest" />
 		</ReadItemsFromFile>
+	</Target>
+
+	<!-- Load the typed resources unpacked from referenced libraries into their real item groups. This runs even if
+	     '_UnpackLibraryResources' was skipped (incremental build), so that resources compiled/aggregated into a single
+	     output (e.g. image assets into Assets.car) aren't lost when the output is regenerated. See https://github.com/dotnet/macios/issues/5755. -->
+	<Target Name="_LoadUnpackedLibraryResources"
+		DependsOnTargets="_UnpackLibraryResources">
+		<ReadItemsFromFile File="$(_UnpackedAtlasTextureCache)" Condition="Exists('$(_UnpackedAtlasTextureCache)')">
+			<Output TaskParameter="Items" ItemName="_CachedUnpackedAtlasTexture" />
+		</ReadItemsFromFile>
+		<ReadItemsFromFile File="$(_UnpackedImageAssetCache)" Condition="Exists('$(_UnpackedImageAssetCache)')">
+			<Output TaskParameter="Items" ItemName="_CachedUnpackedImageAsset" />
+		</ReadItemsFromFile>
+		<ReadItemsFromFile File="$(_UnpackedInterfaceDefinitionCache)" Condition="Exists('$(_UnpackedInterfaceDefinitionCache)')">
+			<Output TaskParameter="Items" ItemName="_CachedUnpackedInterfaceDefinition" />
+		</ReadItemsFromFile>
+		<ReadItemsFromFile File="$(_UnpackedColladaCache)" Condition="Exists('$(_UnpackedColladaCache)')">
+			<Output TaskParameter="Items" ItemName="_CachedUnpackedCollada" />
+		</ReadItemsFromFile>
+		<ReadItemsFromFile File="$(_UnpackedCoreMLModelCache)" Condition="Exists('$(_UnpackedCoreMLModelCache)')">
+			<Output TaskParameter="Items" ItemName="_CachedUnpackedCoreMLModel" />
+		</ReadItemsFromFile>
+		<ReadItemsFromFile File="$(_UnpackedSceneKitAssetCache)" Condition="Exists('$(_UnpackedSceneKitAssetCache)')">
+			<Output TaskParameter="Items" ItemName="_CachedUnpackedSceneKitAsset" />
+		</ReadItemsFromFile>
+
+		<!-- Only restore cached resources whose originating library is still referenced. Otherwise resources from a
+		     library that was removed since the last full unpack (when this target is skipped because the remaining
+		     referenced libraries are unchanged) would linger and, for image assets, get compiled into Assets.car again.
+		     The cached items' 'BundledInAssembly' metadata is the referenced assembly's item spec (see UnpackLibraryResources). -->
+		<PropertyGroup>
+			<_ReferencedLibraryAssemblies>;@(_UnpackLibraryResourceItems);</_ReferencedLibraryAssemblies>
+		</PropertyGroup>
+		<ItemGroup>
+			<AtlasTexture Include="@(_CachedUnpackedAtlasTexture)" Condition="$(_ReferencedLibraryAssemblies.Contains(';%(_CachedUnpackedAtlasTexture.BundledInAssembly);'))" />
+			<ImageAsset Include="@(_CachedUnpackedImageAsset)" Condition="$(_ReferencedLibraryAssemblies.Contains(';%(_CachedUnpackedImageAsset.BundledInAssembly);'))" />
+			<InterfaceDefinition Include="@(_CachedUnpackedInterfaceDefinition)" Condition="$(_ReferencedLibraryAssemblies.Contains(';%(_CachedUnpackedInterfaceDefinition.BundledInAssembly);'))" />
+			<Collada Include="@(_CachedUnpackedCollada)" Condition="$(_ReferencedLibraryAssemblies.Contains(';%(_CachedUnpackedCollada.BundledInAssembly);'))" />
+			<CoreMLModel Include="@(_CachedUnpackedCoreMLModel)" Condition="$(_ReferencedLibraryAssemblies.Contains(';%(_CachedUnpackedCoreMLModel.BundledInAssembly);'))" />
+			<SceneKitAsset Include="@(_CachedUnpackedSceneKitAsset)" Condition="$(_ReferencedLibraryAssemblies.Contains(';%(_CachedUnpackedSceneKitAsset.BundledInAssembly);'))" />
+		</ItemGroup>
 	</Target>
 
 	<Target Name="_ParseBundlerArguments">
@@ -3016,6 +3082,11 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			     that will actually be present in the app bundle. Ref: https://github.com/dotnet/macios/issues/24840 -->
 			<!-- The condition is necessary due to https://github.com/dotnet/msbuild/issues/4056 -->
 			<_PostProcessingItem Condition="@(_FilteredFrameworkToPublish->Count()) &gt; 0" Include="@(_FilteredFrameworkToPublish->'$(_AppBundleName)$(AppBundleExtension)/$(_AppFrameworksRelativePath)%(Filename)%(Extension).framework/%(Filename)%(Extension)')">
+				<!-- These are frameworks, so make sure they're stripped as such (only debug symbols are stripped from frameworks).
+				     Some frameworks (in particular ones embedded in a binding project) don't carry the 'Kind' metadata, so set it
+				     here to make sure symbol stripping doesn't do a full strip on them (which fails for dynamic libraries).
+				     Ref: https://github.com/dotnet/macios/issues/25952 -->
+				<Kind>Framework</Kind>
 				<!-- Store where this item came from -->
 				<ItemSourcePath>%(Identity)</ItemSourcePath>
 				<!-- If the item in question came with a .dSYM directory, this would be the path to it: -->

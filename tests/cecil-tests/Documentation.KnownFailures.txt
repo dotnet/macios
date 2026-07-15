@@ -2530,6 +2530,7 @@ F:CoreMedia.CMFormatDescriptionFieldDetail.TemporalTopFirst
 F:CoreMedia.CMFormatDescriptionHeroEye.Left
 F:CoreMedia.CMFormatDescriptionHeroEye.Right
 F:CoreMedia.CMFormatDescriptionLogTransferFunction.AppleLog
+F:CoreMedia.CMFormatDescriptionLogTransferFunction.AppleLog2
 F:CoreMedia.CMFormatDescriptionProjectionKind.AppleImmersiveVideo
 F:CoreMedia.CMFormatDescriptionProjectionKind.Equirectangular
 F:CoreMedia.CMFormatDescriptionProjectionKind.HalfEquirectangular
@@ -2558,8 +2559,10 @@ F:CoreMedia.CMMetadataBaseDataType.ExtendedRasterRectangleValue
 F:CoreMedia.CMMetadataBaseDataType.Float32
 F:CoreMedia.CMMetadataBaseDataType.Float64
 F:CoreMedia.CMMetadataBaseDataType.Gif
+F:CoreMedia.CMMetadataBaseDataType.IsoLatin1
 F:CoreMedia.CMMetadataBaseDataType.Jpeg
 F:CoreMedia.CMMetadataBaseDataType.Json
+F:CoreMedia.CMMetadataBaseDataType.MacRoman
 F:CoreMedia.CMMetadataBaseDataType.PerspectiveTransformF64
 F:CoreMedia.CMMetadataBaseDataType.Png
 F:CoreMedia.CMMetadataBaseDataType.PointF32
@@ -2578,6 +2581,7 @@ F:CoreMedia.CMMetadataBaseDataType.UInt64
 F:CoreMedia.CMMetadataBaseDataType.UInt8
 F:CoreMedia.CMMetadataBaseDataType.Utf16
 F:CoreMedia.CMMetadataBaseDataType.Utf8
+F:CoreMedia.CMMetadataIdentifier.ITUT_T35MetadataSMPTE2094_50
 F:CoreMedia.CMMetadataIdentifier.QuickTimeMetadataDirection_Facing
 F:CoreMedia.CMMetadataIdentifier.QuickTimeMetadataDisplayMaskRectangleMono
 F:CoreMedia.CMMetadataIdentifier.QuickTimeMetadataDisplayMaskRectangleStereoLeft

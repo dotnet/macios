@@ -340,6 +340,6 @@ class PreTrimAssemblyResolver : Xamarin.Bundler.CoreResolver {
 			if (loaded is not null)
 				return loaded;
 		}
-		throw new NotImplementedException ($"Unable to resolve the pre-trim assembly reference {name}");
+		throw new AssemblyResolutionException (name);
 	}
 }

@@ -18,6 +18,12 @@ namespace MonoTests.System.Net.Http {
 	[Preserve (AllMembers = true)]
 	public class NSUrlSessionHandlerTest {
 
+		// The proxy tests below use in-process servers bound to 127.0.0.1, so local network
+		// connections should be reliable and we don't want to hide any failures by ignoring them
+		// in CI. Set this to true to restore the usual "ignore transient network failures in CI"
+		// behavior if these tests ever turn out to be flaky on the bots.
+		bool ignoreLocalOnlyCIFailures = false;
+
 		// https://github.com/dotnet/macios/issues/23958
 		[Test]
 		public void DecompressedResponseDoesNotHaveContentEncodingOrContentLength ()
@@ -419,10 +425,12 @@ namespace MonoTests.System.Net.Http {
 			}, out var ex);
 
 			if (!done) {
-				TestRuntime.IgnoreInCI ("Transient localhost server failure - ignore in CI");
+				if (ignoreLocalOnlyCIFailures)
+					TestRuntime.IgnoreInCI ("Transient localhost server failure - ignore in CI");
 				Assert.Inconclusive ("Request timed out.");
 			}
-			TestRuntime.IgnoreInCIIfBadNetwork (ex);
+			if (ignoreLocalOnlyCIFailures)
+				TestRuntime.IgnoreInCIIfBadNetwork (ex);
 			Assert.That (ex, Is.Null, $"Exception: {ex}");
 			Assert.That (statusCode, Is.EqualTo (HttpStatusCode.OK), "Status code");
 			Assert.That (viaProxy, Is.True, "Response should have gone through the test proxy");
@@ -461,10 +469,12 @@ namespace MonoTests.System.Net.Http {
 				}, out var ex);
 
 				if (!done) {
-					TestRuntime.IgnoreInCI ("Transient localhost server failure - ignore in CI");
+					if (ignoreLocalOnlyCIFailures)
+						TestRuntime.IgnoreInCI ("Transient localhost server failure - ignore in CI");
 					Assert.Inconclusive ("Request timed out.");
 				}
-				TestRuntime.IgnoreInCIIfBadNetwork (ex);
+				if (ignoreLocalOnlyCIFailures)
+					TestRuntime.IgnoreInCIIfBadNetwork (ex);
 				Assert.That (ex, Is.Null, $"Exception: {ex}");
 				Assert.That (statusCode, Is.EqualTo (HttpStatusCode.OK), $"Status code (proxy credentials should have been used); status={statusCode}, requestCount={proxy.RequestCount}, authRequestCount={proxy.AuthenticatedRequestCount}");
 				Assert.That (proxy.AuthenticatedRequestCount, Is.GreaterThan (0), "Proxy should have established an authenticated tunnel");
@@ -501,10 +511,12 @@ namespace MonoTests.System.Net.Http {
 				}, out var ex);
 
 				if (!done) {
-					TestRuntime.IgnoreInCI ("Transient localhost server failure - ignore in CI");
+					if (ignoreLocalOnlyCIFailures)
+						TestRuntime.IgnoreInCI ("Transient localhost server failure - ignore in CI");
 					Assert.Inconclusive ("Request timed out.");
 				}
-				TestRuntime.IgnoreInCIIfBadNetwork (ex);
+				if (ignoreLocalOnlyCIFailures)
+					TestRuntime.IgnoreInCIIfBadNetwork (ex);
 				Assert.That (ex, Is.Null, $"Exception: {ex}");
 				Assert.That (statusCode, Is.EqualTo (HttpStatusCode.OK), $"Status code (default proxy credentials should have been used); status={statusCode}, requestCount={proxy.RequestCount}, authRequestCount={proxy.AuthenticatedRequestCount}");
 				Assert.That (proxy.AuthenticatedRequestCount, Is.GreaterThan (0), "Proxy should have established an authenticated tunnel");

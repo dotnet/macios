@@ -3215,16 +3215,17 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		<ItemGroup>
 			<!-- Compute the potential dSYM path for each framework in the post-processing items.
 			     For a framework at path/to/xcframework/ios-arm64/MyFramework.framework/MyFramework,
-			     the dSYM would be at path/to/xcframework/ios-arm64/dSYMs/MyFramework.framework.dSYM -->
+			     the dSYM would be at path/to/xcframework/ios-arm64/dSYMs/MyFramework.framework.dSYM
+			     Note: this target only runs on macOS, so forward slashes are fine. -->
 			<_XCFrameworkDSymCandidate
 				Include="@(_GenerateDSymItems)"
 				Condition="'%(ItemSourcePath)' != ''"
 			>
-				<DSymSourceDir>$([System.IO.Path]::Combine($([System.IO.Path]::GetDirectoryName($([System.IO.Path]::GetDirectoryName('%(ItemSourcePath)')))), 'dSYMs'))</DSymSourceDir>
+				<DSymSourceDir>$([System.IO.Path]::GetDirectoryName($([System.IO.Path]::GetDirectoryName('%(ItemSourcePath)'))))/dSYMs</DSymSourceDir>
 			</_XCFrameworkDSymCandidate>
 			<_XCFrameworkDSymToCopy
-				Include="@(_XCFrameworkDSymCandidate->'$([System.IO.Path]::Combine('%(DSymSourceDir)', '%(DSymName)'))')"
-				Condition="Exists('$([System.IO.Path]::Combine('%(DSymSourceDir)', '%(DSymName)'))')"
+				Include="@(_XCFrameworkDSymCandidate->'%(DSymSourceDir)/%(DSymName)')"
+				Condition="Exists('%(DSymSourceDir)/%(DSymName)')"
 			>
 				<DSymName>%(DSymName)</DSymName>
 			</_XCFrameworkDSymToCopy>

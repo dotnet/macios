@@ -316,6 +316,11 @@ namespace ObjCRuntime {
 		unsafe static IntPtr FindClass (Type type, out bool is_custom_type)
 		{
 			if (Runtime.IsTrimmableStaticRegistrar) {
+				// Generic types are registered using their generic type definition (the type maps are
+				// keyed by the open generic type), so look for that instead of the closed generic type.
+				if (type.IsGenericType)
+					type = type.GetGenericTypeDefinition ();
+
 				if (TypeMaps.TryGetNSObjectProxyAttribute (type, out var proxyAttribute)) {
 					var rv = proxyAttribute.GetClassHandle (out is_custom_type);
 #if LOG_TRIMMABLE_TYPEMAP

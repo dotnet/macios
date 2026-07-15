@@ -85,9 +85,22 @@ jobs:
             'vs-mobiletools-engineering-service2',
           ];
 
-          const { data: gist } = await github.rest.gists.get({
-            gist_id: process.env.GIST_ID,
+          // The Gists API isn't accessible to the GitHub Actions token (a GitHub App
+          // installation token), so fetch the gist unauthenticated instead. Secret gists
+          // are readable by anyone who knows the id, which is all we need here.
+          const resp = await fetch(`https://api.github.com/gists/${process.env.GIST_ID}`, {
+            headers: {
+              'Accept': 'application/vnd.github+json',
+              'X-GitHub-Api-Version': '2022-11-28',
+              'User-Agent': 'dotnet-macios-apply-gist',
+            },
           });
+          if (!resp.ok) {
+            const body = await resp.text().catch(() => '');
+            core.setFailed(`Failed to fetch gist '${process.env.GIST_ID}': ${resp.status} ${resp.statusText}${body ? `\n${body}` : ''}`);
+            return;
+          }
+          const gist = await resp.json();
           if (!gist.owner) {
             core.setFailed('Gist has no owner (anonymous or deleted). Cannot verify ownership.');
             return;
@@ -127,14 +140,17 @@ jobs:
     - name: Download and apply gist files
       env:
         GIST_ID: ${{ steps.parse.outputs.gist_id }}
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         EXPECTED_DIR="tests/dotnet/UnitTests/expected"
         mkdir -p "$EXPECTED_DIR"
         export EXPECTED_DIR
 
-        # Download gist metadata to get file URLs
-        GIST_JSON=$(gh api "gists/$GIST_ID")
+        # Download gist metadata to get file URLs. The Gists API isn't accessible to the
+        # GitHub Actions token (a GitHub App installation token), so fetch it unauthenticated.
+        if ! GIST_JSON=$(curl -fSL -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" -H "User-Agent: dotnet-macios-apply-gist" "https://api.github.com/gists/$GIST_ID"); then
+            echo "Failed to fetch gist '$GIST_ID' (404/403/rate limit?)." >&2
+            exit 1
+        fi
         echo "$GIST_JSON" | python3 -c "
         import json, sys, urllib.request, os, re
 

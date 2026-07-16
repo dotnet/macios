@@ -6,6 +6,7 @@
 #if __MACCATALYST__
 
 using AudioToolbox;
+using Xamarin.Utils;
 
 namespace MonoTouchFixtures.AudioToolbox {
 
@@ -14,11 +15,12 @@ namespace MonoTouchFixtures.AudioToolbox {
 	public class AudioServerPlugInTest {
 
 		[Test]
-		public void RegisterMediaDeviceExtensionSignature ()
+		public void RegisterMediaDeviceExtension ()
 		{
-			Func<IntPtr, Action?, int> method = AudioServerPlugIn.RegisterMediaDeviceExtension;
+			TestRuntime.AssertSystemVersion (ApplePlatform.MacCatalyst, 27, 0);
 
-			Assert.That (method, Is.Not.Null);
+			_ = AudioServerPlugIn.RegisterMediaDeviceExtension (IntPtr.Zero, () => { });
+			_ = AudioServerPlugIn.RegisterMediaDeviceExtension (IntPtr.Zero, null);
 		}
 	}
 }

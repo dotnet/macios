@@ -55,6 +55,13 @@ namespace CoreNFC {
 		NdefReaderSessionErrorTagUpdateFailure = 401,
 		NdefReaderSessionErrorTagSizeTooSmall = 402,
 		NdefReaderSessionErrorZeroLengthMessage = 403,
+
+		/// <summary>Location authorization was denied by the user.</summary>
+		PaymentTagReaderSessionErrorLocationAuthorizationDenied = 500,
+		/// <summary>Active restrictions prevent the app from using location services.</summary>
+		PaymentTagReaderSessionErrorLocationServiceRestricted,
+		/// <summary>The location was provided by an accessory or simulated in software instead of produced by on-device hardware.</summary>
+		PaymentTagReaderSessionErrorOnDeviceLocationUnavailable,
 	}
 
 	//[NoTV, NoMac]

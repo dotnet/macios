@@ -15700,7 +15700,9 @@ M:CoreBluetooth.CBCentralManagerDelegate.DidDisconnectPeripheral(CoreBluetooth.C
 M:CoreBluetooth.CBCentralManagerDelegate.DidUpdateAncsAuthorization(CoreBluetooth.CBCentralManager,CoreBluetooth.CBPeripheral)
 M:CoreBluetooth.CBCharacteristic.Dispose(System.Boolean)
 M:CoreBluetooth.CBDescriptor.Dispose(System.Boolean)
+M:CoreBluetooth.CBPeripheral.add_DidCompleteChannelSoundingSession(System.EventHandler{Foundation.NSErrorEventArgs})
 M:CoreBluetooth.CBPeripheral.add_DidOpenL2CapChannel(System.EventHandler{CoreBluetooth.CBPeripheralOpenL2CapChannelEventArgs})
+M:CoreBluetooth.CBPeripheral.add_DidReceiveChannelSoundingProcedureResults(System.EventHandler{CoreBluetooth.CBChannelSoundingProcedureResultsEventArgs})
 M:CoreBluetooth.CBPeripheral.add_DiscoveredCharacteristics(System.EventHandler{CoreBluetooth.CBServiceEventArgs})
 M:CoreBluetooth.CBPeripheral.add_DiscoveredDescriptor(System.EventHandler{CoreBluetooth.CBCharacteristicEventArgs})
 M:CoreBluetooth.CBPeripheral.add_DiscoveredIncludedService(System.EventHandler{CoreBluetooth.CBServiceEventArgs})
@@ -15716,7 +15718,9 @@ M:CoreBluetooth.CBPeripheral.add_UpdatedValue(System.EventHandler{CoreBluetooth.
 M:CoreBluetooth.CBPeripheral.add_WroteCharacteristicValue(System.EventHandler{CoreBluetooth.CBCharacteristicEventArgs})
 M:CoreBluetooth.CBPeripheral.add_WroteDescriptorValue(System.EventHandler{CoreBluetooth.CBDescriptorEventArgs})
 M:CoreBluetooth.CBPeripheral.Dispose(System.Boolean)
+M:CoreBluetooth.CBPeripheral.remove_DidCompleteChannelSoundingSession(System.EventHandler{Foundation.NSErrorEventArgs})
 M:CoreBluetooth.CBPeripheral.remove_DidOpenL2CapChannel(System.EventHandler{CoreBluetooth.CBPeripheralOpenL2CapChannelEventArgs})
+M:CoreBluetooth.CBPeripheral.remove_DidReceiveChannelSoundingProcedureResults(System.EventHandler{CoreBluetooth.CBChannelSoundingProcedureResultsEventArgs})
 M:CoreBluetooth.CBPeripheral.remove_DiscoveredCharacteristics(System.EventHandler{CoreBluetooth.CBServiceEventArgs})
 M:CoreBluetooth.CBPeripheral.remove_DiscoveredDescriptor(System.EventHandler{CoreBluetooth.CBCharacteristicEventArgs})
 M:CoreBluetooth.CBPeripheral.remove_DiscoveredIncludedService(System.EventHandler{CoreBluetooth.CBServiceEventArgs})
@@ -39374,6 +39378,8 @@ P:CoreAudioKit.CANetworkBrowserWindowController.IsAvbSupported
 P:CoreBluetooth.CBAncsAuthorizationUpdateEventArgs.Peripheral
 P:CoreBluetooth.CBATTRequestEventArgs.Request
 P:CoreBluetooth.CBATTRequestsEventArgs.Requests
+P:CoreBluetooth.CBChannelSoundingProcedureResultsEventArgs.Error
+P:CoreBluetooth.CBChannelSoundingProcedureResultsEventArgs.Results
 P:CoreBluetooth.CBCharacteristicEventArgs.Characteristic
 P:CoreBluetooth.CBCharacteristicEventArgs.Error
 P:CoreBluetooth.CBConnectionEventMatchingOptions.PeripheralUuids

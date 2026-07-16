@@ -409,7 +409,7 @@ namespace ObjCRuntime {
 			var checkForIllegalCrossThreadCalls = UIKit.UIApplication.CheckForIllegalCrossThreadCalls;
 #endif
 
-			if (checkForIllegalCrossThreadCalls)
+			if (!checkForIllegalCrossThreadCalls)
 				return;
 
 			if (mainThread == Thread.CurrentThread)

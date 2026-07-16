@@ -137,6 +137,8 @@ steps:
 
     # Build the comment body.
     $sb = [System.Text.StringBuilder]::new()
+    $sb.AppendLine("### :warning: AppSizeTest expected files changed :warning:") | Out-Null
+    $sb.AppendLine() | Out-Null
     $sb.AppendLine("The AppSizeTest detected changes in the expected app size files.") | Out-Null
     $sb.AppendLine() | Out-Null
     $sb.AppendLine("To update the expected files, add a comment with the following command:") | Out-Null
@@ -156,7 +158,7 @@ steps:
 
     # Post a comment on the PR.
     $githubComments = New-GitHubCommentsObjectFromUrl -Url "$(Build.Repository.Uri)" -Token $Env:GITHUB_TOKEN -Hash $Env:COMMENT_HASH
-    $githubComments.NewCommentFromMessage("AppSizeTest expected files changed", ":warning:", $sb.ToString(), "app-size-expected-files") | Out-Null
+    $githubComments.NewCommentFromMessage("", ":warning:", $sb.ToString(), "app-size-expected-files") | Out-Null
   displayName: 'Create gist and comment on PR with updated expected app size files'
   continueOnError: true
   condition: and(succeededOrFailed(), eq('${{ parameters.isPR }}', 'True'))

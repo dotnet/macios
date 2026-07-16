@@ -74,7 +74,7 @@ namespace Accounts {
 		}
 
 		/// <param name="audience">Target audience.</param>
-		/// <param name="permissions">One or more requested permission.</param>
+		/// <param name="permissions">One or more requested permissions.</param>
 		/// <summary>Sets message posting permissions.</summary>
 		public void SetPermissions (ACFacebookAudience audience, params string [] permissions)
 		{

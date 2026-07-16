@@ -4729,9 +4729,7 @@ namespace CoreImage {
 		/// <summary>Gets a temporary surface for use as scratch storage during image processing.</summary>
 		/// <returns>A temporary surface, or <see langword="null" /> if one could not be created.</returns>
 		/// <remarks>The returned surface is valid only for the duration of the current image processor invocation.</remarks>
-#if XAMCORE_5_0
 		[Abstract]
-#endif
 		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
 		[Export ("temporarySurfaceWithIdentifier:format:width:height:")]
 		[return: NullAllowed]
@@ -4745,9 +4743,7 @@ namespace CoreImage {
 		/// <summary>Gets a temporary pixel buffer for use as scratch storage during image processing.</summary>
 		/// <returns>A temporary pixel buffer, or <see langword="null" /> if one could not be created.</returns>
 		/// <remarks>The returned pixel buffer is valid only for the duration of the current image processor invocation.</remarks>
-#if XAMCORE_5_0
 		[Abstract]
-#endif
 		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
 		[Export ("temporaryPixelBufferWithIdentifier:format:width:height:attributes:")]
 		[return: NullAllowed]

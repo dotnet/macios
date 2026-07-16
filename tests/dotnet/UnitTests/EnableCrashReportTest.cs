@@ -6,9 +6,6 @@
 namespace Xamarin.Tests {
 	[TestFixture]
 	public class EnableCrashReportTest : TestBaseClass {
-		// The application id of the MySimpleApp test project (see MySimpleApp/shared.csproj).
-		const string bundleIdentifier = "com.xamarin.mysimpleapp";
-
 		[Test]
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
@@ -45,6 +42,7 @@ namespace Xamarin.Tests {
 
 			// Run without DOTNET_CrashReportRootPath: the runtime picks a default location (the
 			// app's caches directory), so verify a crash report shows up there too.
+			var bundleIdentifier = GetBundleIdentifier (platform, appPath);
 			var cachesReportDir = Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.UserProfile), "Library", "Caches", bundleIdentifier);
 			var reportsDir = Path.Combine (cachesReportDir, ".dotnet", "crash-reports");
 			if (Directory.Exists (reportsDir))
@@ -52,6 +50,16 @@ namespace Xamarin.Tests {
 			AssertCrashReport (appExecutable, new Dictionary<string, string?> {
 				{ "CRASH_ON_LAUNCH", "1" },
 			}, cachesReportDir);
+		}
+
+		string GetBundleIdentifier (ApplePlatform platform, string appPath)
+		{
+			var infoPlistPath = Path.Combine (appPath, GetRelativeCodesignDirectory (platform), "Info.plist");
+			var infoPlist = PDictionary.OpenFile (infoPlistPath);
+			var bundleIdentifier = infoPlist?.GetString ("CFBundleIdentifier")?.Value;
+			if (string.IsNullOrEmpty (bundleIdentifier))
+				throw new InvalidOperationException ($"Could not read the bundle identifier from '{infoPlistPath}'.");
+			return bundleIdentifier;
 		}
 
 		void AssertCrashReport (string executable, Dictionary<string, string?> environment, string crashReportDir)

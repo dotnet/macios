@@ -536,15 +536,6 @@ namespace Xamarin.Linker {
 				return modified;
 			}
 
-			if (data.Optimizations.InlineIsARM64CallingConvention == true && data.InlineIsArm64CallingConvention.HasValue && method.Name == "GetIsARM64CallingConvention" && method.DeclaringType.Is (Namespaces.ObjCRuntime, "Runtime")) {
-				// Rewrite to return the constant value
-				var instr = method.Body.Instructions;
-				instr.Clear ();
-				instr.Add (Instruction.Create (data.InlineIsArm64CallingConvention.Value ? OpCodes.Ldc_I4_1 : OpCodes.Ldc_I4_0));
-				instr.Add (Instruction.Create (OpCodes.Ret));
-				return true; // nothing else to do here.
-			}
-
 			if (ProcessProtocolInterfaceStaticConstructor (data, method))
 				return true;
 
@@ -599,9 +590,6 @@ namespace Xamarin.Linker {
 			var modified = false;
 			var fr = ins.Operand as FieldReference;
 			switch (fr?.Name) {
-			case "IsARM64CallingConvention":
-				modified |= ProcessIsARM64CallingConvention (data, caller, ins);
-				break;
 			case "Arch":
 				// https://app.asana.com/0/77259014252/77812690163
 				modified |= ProcessRuntimeArch (data, caller, ins);
@@ -965,31 +953,6 @@ namespace Xamarin.Linker {
 			return ins;
 		}
 
-		static bool ProcessIsARM64CallingConvention (OptimizeGeneratedCodeData data, MethodDefinition caller, Instruction ins)
-		{
-			const string operation = "inline Runtime.IsARM64CallingConvention";
-
-			if (data.Optimizations.InlineIsARM64CallingConvention != true)
-				return false;
-
-			if (!data.InlineIsArm64CallingConvention.HasValue)
-				return false;
-
-			// Verify we're checking the right IsARM64CallingConvention field
-			var fr = ins.Operand as FieldReference;
-			if (fr is null || !fr.DeclaringType.Is (Namespaces.ObjCRuntime, "Runtime"))
-				return false;
-
-			if (!ValidateInstruction (data.App, caller, ins, operation, Code.Ldsfld))
-				return false;
-
-			// We're fine, inline the Runtime.IsARM64CallingConvention value
-			ins.OpCode = data.InlineIsArm64CallingConvention.Value ? OpCodes.Ldc_I4_1 : OpCodes.Ldc_I4_0;
-			ins.Operand = null;
-
-			return true;
-		}
-
 		static bool ProcessRuntimeArch (OptimizeGeneratedCodeData data, MethodDefinition caller, Instruction ins)
 		{
 			const string operation = "inline Runtime.Arch";
@@ -1209,7 +1172,6 @@ namespace Xamarin.Linker {
 
 		public MethodDefinition? SetupBlockImplDefinition;
 		public MethodDefinition? BlockCtorDefinition;
-		public bool? InlineIsArm64CallingConvention;
 
 		public Application App => LinkContext.App;
 	}

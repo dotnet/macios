@@ -509,6 +509,11 @@ namespace Linker.Shared {
 		{
 			IgnoreIfNotLinkAll ();
 
+			// Runtime.IsARM64CallingConvention is inlined by the trimmer (using the
+			// 'ObjCRuntime.Runtime.IsARM64CallingConvention' feature switch, which substitutes
+			// the field's value), so any read of the field is turned into a constant - regardless
+			// of whether the reading method has a [BindingImpl (BindingImplOptions.Optimizable)]
+			// attribute or not.
 #if DEBUG // Release builds will strip IL, so any IL checking has to be done in debug builds.
 			MethodInfo method;
 			IEnumerable<ILInstruction> instructions;
@@ -517,12 +522,12 @@ namespace Linker.Shared {
 			method = typeof (BaseOptimizeGeneratedCodeTest).GetMethod (nameof (GetIsARM64CallingConventionOptimized), BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public | BindingFlags.Static)!;
 			instructions = new ILReader (method);
 			call_instructions = instructions.Where ((v) => v.OpCode.Name == "ldsfld");
-			Assert.That (call_instructions.Count (), Is.EqualTo (0), "optimized: no ldsfld instruction");
+			Assert.That (call_instructions.Count (), Is.EqualTo (0), "optimizable: no ldsfld instruction");
 
 			method = typeof (BaseOptimizeGeneratedCodeTest).GetMethod (nameof (GetIsARM64CallingConventionNotOptimized), BindingFlags.NonPublic | BindingFlags.Instance)!;
 			instructions = new ILReader (method);
 			call_instructions = instructions.Where ((v) => v.OpCode.Name == "ldsfld");
-			Assert.That (call_instructions.Count (), Is.EqualTo (1), "not optimized: 1 ldsfld instruction");
+			Assert.That (call_instructions.Count (), Is.EqualTo (0), "not optimizable: no ldsfld instruction");
 
 			method = typeof (Runtime).GetMethod ("GetIsARM64CallingConvention", BindingFlags.Static | BindingFlags.NonPublic)!;
 			instructions = new ILReader (method);

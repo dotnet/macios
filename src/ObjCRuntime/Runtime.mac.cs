@@ -33,11 +33,6 @@ using AppKit;
 using Registrar;
 
 namespace ObjCRuntime {
-
-	/// <summary>Provides information about the Xamarin.iOS Runtime.</summary>
-	///     <remarks>
-	///     </remarks>
-	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/SysSound/">SysSound</related>
 	public static partial class Runtime {
 #if !COREBUILD
 		internal const string ProductName = "Microsoft.macOS";
@@ -57,26 +52,14 @@ namespace ObjCRuntime {
 			get; set;
 		}
 
-		delegate void initialize_func ();
-		unsafe delegate sbyte* get_sbyteptr_func ();
-
-		[DllImport ("__Internal")]
-		extern static void xamarin_initialize ();
-
-		internal static void EnsureInitialized ()
-		{
-			if (initialized)
-				return;
-
-			xamarin_initialize ();
-		}
-
 		unsafe static void InitializePlatform (InitializationOptions* options)
 		{
 			string basePath = AppDomain.CurrentDomain.BaseDirectory;
 
 			ResourcesPath = Path.Combine (basePath, "Resources");
 			FrameworksPath = Path.Combine (basePath, "Frameworks");
+
+			NSApplication.Initialize ();
 		}
 #endif // !COREBUILD
 	}

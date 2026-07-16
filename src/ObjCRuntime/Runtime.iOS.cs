@@ -14,15 +14,12 @@ using Registrar;
 using UIKit;
 
 namespace ObjCRuntime {
-
-	/// <summary>Provides information about the Xamarin.iOS Runtime.</summary>
-	///     <remarks>
-	///     </remarks>
-	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/SysSound/">SysSound</related>
 	public static partial class Runtime {
 #if !COREBUILD
 #if TVOS
 		internal const string ProductName = "Microsoft.tvOS";
+#elif __MACCATALYST__
+		internal const string ProductName = "Microsoft.MacCatalyst";
 #elif IOS
 		internal const string ProductName = "Microsoft.iOS";
 #else
@@ -30,6 +27,8 @@ namespace ObjCRuntime {
 #endif
 #if TVOS
 		internal const string AssemblyName = "Microsoft.tvOS.dll";
+#elif __MACCATALYST__
+		internal const string AssemblyName = "Microsoft.MacCatalyst";
 #elif IOS
 		internal const string AssemblyName = "Microsoft.iOS.dll";
 #else

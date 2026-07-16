@@ -210,7 +210,13 @@ namespace Foundation {
 				task.Dispose ();
 			}
 
-			session.InvalidateAndCancel ();
+			// Take the proxy configuration lock so we don't race with ConfigureSessionProxy: either we
+			// invalidate the session it created (if it ran first), or it observes 'disposed' and doesn't
+			// create a new session that would never be invalidated (if we ran first).
+			lock (proxyConfigurationLock) {
+				disposed = true;
+				session.InvalidateAndCancel ();
+			}
 			base.Dispose (disposing);
 		}
 
@@ -451,6 +457,7 @@ namespace Foundation {
 
 		readonly object proxyConfigurationLock = new object ();
 		bool proxyConfigured;
+		bool disposed;
 
 		// NSUrlSession applies proxy settings per-session (via the configuration's connection proxy dictionary),
 		// not per-request, so we compute the proxy configuration once (using the first request's destination) and
@@ -460,16 +467,24 @@ namespace Foundation {
 			lock (proxyConfigurationLock) {
 				if (proxyConfigured)
 					return;
-				proxyConfigured = true;
 
-				if (!TryGetProxyDictionary (request.RequestUri, out var proxyDictionary))
+				// The handler has been disposed (and the session already invalidated); don't create a new
+				// session, since it would never be invalidated.
+				if (disposed)
 					return;
 
-				var oldSession = session;
-				var configuration = session.Configuration;
-				configuration.ConnectionProxyDictionary = proxyDictionary;
-				session = NSUrlSession.FromConfiguration (configuration, (INSUrlSessionDelegate) new NSUrlSessionHandlerDelegate (this), null);
-				oldSession.Dispose ();
+				if (TryGetProxyDictionary (request.RequestUri, out var proxyDictionary)) {
+					var oldSession = session;
+					var configuration = session.Configuration;
+					configuration.ConnectionProxyDictionary = proxyDictionary;
+					session = NSUrlSession.FromConfiguration (configuration, (INSUrlSessionDelegate) new NSUrlSessionHandlerDelegate (this), null);
+					oldSession.Dispose ();
+				}
+
+				// Only mark the proxy as configured once we've successfully computed and applied the
+				// configuration, so that a failure (e.g. a throwing IWebProxy) doesn't permanently leave the
+				// session unconfigured while pretending otherwise (the next request will try again).
+				proxyConfigured = true;
 			}
 		}
 
@@ -505,9 +520,9 @@ namespace Foundation {
 
 			var strongProxy = new ProxyConfigurationDictionary {
 				HttpEnable = true,
-				HttpProxyHost = proxyUri.Host,
+				HttpProxyHost = proxyUri.DnsSafeHost,
 				HttpProxyPort = proxyUri.Port,
-				HttpsProxyHost = proxyUri.Host,
+				HttpsProxyHost = proxyUri.DnsSafeHost,
 				HttpsProxyPort = proxyUri.Port,
 #if MONOMAC
 				HttpsEnable = true,
@@ -645,7 +660,10 @@ namespace Foundation {
 
 		/// <summary>The credentials to submit to the proxy server for authentication.</summary>
 		/// <value>The credentials to use to authenticate with the proxy, or <see langword="null" /> to not provide any proxy credentials.</value>
-		/// <remarks>These credentials are only used when the proxy itself (<see cref="Proxy" />) doesn't provide its own credentials.</remarks>
+		/// <remarks>
+		///   <para>These credentials are only used when the proxy itself (<see cref="Proxy" />) doesn't provide its own credentials.</para>
+		///   <para>Proxy authentication is only supported for HTTPS destinations (which are proxied using a CONNECT tunnel). For plain HTTP destinations NSUrlSession doesn't deliver a proxy authentication challenge, so these credentials aren't applied and an authenticating proxy will return an HTTP 407 response instead.</para>
+		/// </remarks>
 		public ICredentials? DefaultProxyCredentials {
 			get {
 				return defaultProxyCredentials;
@@ -709,7 +727,13 @@ namespace Foundation {
 		/// <value>The custom proxy to use, or <see langword="null" /> to use the proxies configured in the operating system.</value>
 		/// <remarks>
 		///   <para>Setting this property only has an effect if <see cref="UseProxy" /> is <see langword="true" /> (which is the default value).</para>
-		///   <para>NSUrlSession applies proxy settings per-session, not per-request, so the proxy returned by <see cref="IWebProxy.GetProxy(System.Uri)" /> for the first request is applied to every request made by this handler.</para>
+		///   <para>NSUrlSession applies proxy settings per-session, not per-request, so the proxy is evaluated only once, using the destination of the first request sent by this handler, and the result is applied to every subsequent request made by this handler.</para>
+		///   <para>
+		///     This has important consequences when a single handler is reused for requests to multiple destinations: the proxy's per-destination decisions (<see cref="IWebProxy.IsBypassed(System.Uri)" /> and the proxy returned by <see cref="IWebProxy.GetProxy(System.Uri)" />) are computed from the first request's destination only.
+		///     As a result a proxy's bypass list and any destination-dependent proxy selection are not honored for later requests to other destinations: requests that should have been proxied might be sent directly (or through the wrong proxy), and requests that should have bypassed the proxy might be sent through it.
+		///   </para>
+		///   <para>If per-destination proxy behavior is required, use a separate <see cref="NSUrlSessionHandler" /> (and thus a separate <see cref="System.Net.Http.HttpClient" />) for each destination or proxy configuration.</para>
+		///   <para>Proxy authentication (using <see cref="Proxy" />'s own credentials or <see cref="DefaultProxyCredentials" />) is only supported for HTTPS destinations (which are proxied using a CONNECT tunnel). For plain HTTP destinations NSUrlSession doesn't deliver a proxy authentication challenge, so proxy credentials aren't applied and an authenticating proxy will return an HTTP 407 response instead.</para>
 		/// </remarks>
 		public IWebProxy? Proxy {
 			get {
@@ -1245,8 +1269,10 @@ namespace Foundation {
 				// but we are hiding such a situation from our users, we can nevertheless know if the header was added and deal with it. The idea is as follows,
 				// check if we are in the first attempt, if we are (PreviousFailureCount == 0), we check the headers of the request and if we do have the Auth 
 				// header, it means that we do not have the correct credentials, in any other case just do what it is expected.
+				// This only applies to server authentication challenges: a proxy authentication challenge is unrelated to
+				// the request's (server-targeted) Authorization header, so it's handled separately below.
 
-				if (challenge.PreviousFailureCount == 0) {
+				if (challenge.PreviousFailureCount == 0 && !challenge.ProtectionSpace.IsProxy) {
 					var authHeader = inflight.Request.Headers?.Authorization;
 					if (!(string.IsNullOrEmpty (authHeader?.Scheme) && string.IsNullOrEmpty (authHeader?.Parameter))) {
 						completionHandler (NSUrlSessionAuthChallengeDisposition.RejectProtectionSpace, null!);
@@ -1271,9 +1297,8 @@ namespace Foundation {
 				}
 
 				// Proxy authentication challenges are handled separately from server authentication challenges:
-				// for a proxy the protection space reports a proxy authentication method (HTTPProxy/HTTPSProxy)
-				// rather than a specific scheme like Basic, and the credentials come from the proxy configuration
-				// (the proxy's own credentials or the DefaultProxyCredentials).
+				// the credentials come from the proxy configuration (the proxy's own credentials or the
+				// DefaultProxyCredentials) rather than from the handler's Credentials property.
 				if (challenge.ProtectionSpace.IsProxy) {
 					var proxy = sessionHandler.Proxy;
 					var proxyCredentials = proxy?.Credentials ?? sessionHandler.DefaultProxyCredentials;
@@ -1281,7 +1306,13 @@ namespace Foundation {
 					// fail instead of retrying the same (bad) credentials indefinitely.
 					if (proxyCredentials is not null && challenge.PreviousFailureCount == 0) {
 						var proxyUri = GetProxyLookupUri (challenge.ProtectionSpace);
-						var proxyCredential = proxyCredentials.GetCredential (proxyUri, "basic");
+						// Look up the credentials using the proxy's authentication method (Basic/Digest/NTLM), so
+						// that a CredentialCache keyed by a specific scheme resolves correctly. Fall back to "basic"
+						// for any authentication method we don't recognize: a plain NetworkCredential ignores the
+						// authentication type anyway, so this preserves the behavior for the common case.
+						if (!TryGetAuthenticationType (challenge.ProtectionSpace, out var proxyAuthType) || proxyAuthType == RejectProtectionSpaceAuthType)
+							proxyAuthType = "basic";
+						var proxyCredential = proxyCredentials.GetCredential (proxyUri, proxyAuthType);
 						if (proxyCredential is not null) {
 							var proxyNSCredential = new NSUrlCredential (proxyCredential.UserName, proxyCredential.Password, NSUrlCredentialPersistence.ForSession);
 							completionHandler (NSUrlSessionAuthChallengeDisposition.UseCredential, proxyNSCredential);
@@ -1334,7 +1365,9 @@ namespace Foundation {
 
 			static Uri GetProxyLookupUri (NSUrlProtectionSpace protectionSpace)
 			{
-				var scheme = protectionSpace.ReceivesCredentialSecurely ? "https" : "http";
+				// Derive the scheme from the proxy type (HTTP vs HTTPS proxy), not from ReceivesCredentialSecurely
+				// (which describes whether the authentication method protects the credentials, not the proxy protocol).
+				var scheme = protectionSpace.ProxyType == (string) NSUrlProtectionSpace.HTTPSProxy ? "https" : "http";
 				var builder = new UriBuilder (scheme, protectionSpace.Host, (int) protectionSpace.Port);
 				return builder.Uri;
 			}

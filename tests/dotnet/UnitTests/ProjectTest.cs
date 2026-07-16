@@ -2832,6 +2832,51 @@ namespace Xamarin.Tests {
 		}
 
 		[Test]
+		[TestCase ("RunAotCompilation", "true")]
+		[TestCase ("AotAssemblies", "true")]
+		public void MonoOnlyPropertyError (string property, string value)
+		{
+			// macOS always uses CoreCLR (UseMonoRuntime=false), so it's a convenient platform to test Mono-only properties with.
+			var platform = ApplePlatform.MacOSX;
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			var project = "MySimpleApp";
+			var project_path = GetProjectPath (project, platform: platform);
+			Clean (project_path);
+			var properties = GetDefaultProperties ();
+			properties ["UseMonoRuntime"] = "false";
+			properties [property] = value;
+			var rv = DotNet.AssertBuildFailure (project_path, properties);
+			var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray ();
+			AssertErrorMessages (errors, $"The property '{property}' is set to '{value}', which is not supported when not using the Mono runtime (for instance when using CoreCLR). Please remove it from the project file.");
+		}
+
+		[Test]
+		[TestCase ("EnableSGenConc", "true")]
+		[TestCase ("MtouchEnableSGenConc", "true")]
+		[TestCase ("UseInterpreter", "true")]
+		[TestCase ("MtouchInterpreter", "all")]
+		[TestCase ("MtouchUseLlvm", "true")]
+		[TestCase ("MtouchFloat32", "true")]
+		[TestCase ("MonoUseCompressedInterfaceBitmap", "true")]
+		public void MonoOnlyPropertyWarning (string property, string value)
+		{
+			// macOS always uses CoreCLR (UseMonoRuntime=false), so it's a convenient platform to test Mono-only properties with.
+			var platform = ApplePlatform.MacOSX;
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			var project = "MySimpleApp";
+			var project_path = GetProjectPath (project, platform: platform);
+			Clean (project_path);
+			var properties = GetDefaultProperties ();
+			properties ["UseMonoRuntime"] = "false";
+			properties [property] = value;
+			var rv = DotNet.AssertBuild (project_path, properties);
+			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).FilterWarnings (platform).ToArray ();
+			AssertWarningMessages (warnings, $"The property '{property}' has no effect when not using the Mono runtime (for instance when using CoreCLR).");
+		}
+
+		[Test]
 		// The trailing semi-colon for single-arch platforms is significant:
 		// it means we'll use "RuntimeIdentifiers" (plural) instead of "RuntimeIdentifier" (singular)
 		[TestCase (ApplePlatform.iOS, "ios-arm64;")]

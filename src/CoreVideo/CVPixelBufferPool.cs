@@ -144,6 +144,7 @@ namespace CoreVideo {
 			unsafe {
 				error = CVPixelBufferPoolCreatePixelBufferWithAuxAttributes (IntPtr.Zero, Handle, allocationSettings.GetHandle (), &pb);
 			}
+			GC.KeepAlive (allocationSettings);
 			if (error != CVReturn.Success)
 				return null;
 

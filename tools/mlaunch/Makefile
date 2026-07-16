@@ -23,6 +23,9 @@ $$(DOTNET_DESTDIR)/Microsoft.$(1).Sdk/tools/bin/mlaunch: $$(DOWNLOAD_STAMP_FILE)
 	$$(Q) $$(CP) -R $(TOP)/packages/microsoft.tools.mlaunch/$$(MLAUNCH_NUGET_VERSION)/mlaunch/lib/mlaunch $$(DOTNET_DESTDIR)/$($(1)_NUGET_SDK_NAME)/tools/lib
 	$$(Q) chmod a+x $$(DOTNET_DESTDIR)/$($(1)_NUGET_SDK_NAME)/tools/bin/mlaunch
 	$$(Q) chmod a+x $$(DOTNET_DESTDIR)/$($(1)_NUGET_SDK_NAME)/tools/lib/mlaunch/mlaunch.app/Contents/MacOS/mlaunch
+	# Ad-hoc sign for macOS 26+ Gatekeeper compatibility in CI runners
+	$$(Q) codesign --force --sign - $$(DOTNET_DESTDIR)/$$($(1)_NUGET_SDK_NAME)/tools/lib/mlaunch/mlaunch.app/Contents/MacOS/mlaunch
+	$$(Q) codesign --force --sign - $$(DOTNET_DESTDIR)/$$($(1)_NUGET_SDK_NAME)/tools/lib/mlaunch/mlaunch.app
 endef
 
 $(foreach platform,$(DOTNET_PLATFORMS_MOBILE),$(eval $(call DotNetInstall,$(platform))))

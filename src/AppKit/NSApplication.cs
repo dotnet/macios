@@ -82,7 +82,7 @@ namespace AppKit {
 #else
 				NSApplicationMain (args.Length, argsPtr);
 #endif
-			}  finally {
+			} finally {
 				TransientString.FreeStringArray (argsPtr, args.Length);
 			}
 		}

@@ -74,6 +74,12 @@ namespace Xamarin.Linker {
 #else
 		protected override void Process (AssemblyDefinition assembly)
 		{
+			// In Hot Reload compatible builds, don't strip resources from reloadable (non-linked) assemblies,
+			// because doing so would upgrade the assembly from Copy to Save below, re-serializing it and
+			// breaking Hot Reload. Linked assemblies are re-saved regardless, so stripping them is fine.
+			if (Configuration.HotReloadCompatibleBuild && Annotations.GetAction (assembly) != AssemblyAction.Link)
+				return;
+
 			var modified = ModifyAssembly (assembly);
 
 			// we'll need to save (if we're not linking) this assembly
@@ -84,6 +90,13 @@ namespace Xamarin.Linker {
 		bool ModifyAssembly (AssemblyDefinition assembly)
 #endif
 		{
+#if ASSEMBLY_PREPARER
+			// In the assembly-preparer any modification re-serializes (saves) the assembly, which breaks Hot
+			// Reload. So skip resource stripping entirely for Hot Reload compatible builds.
+			if (Configuration.HotReloadCompatibleBuild)
+				return false;
+#endif
+
 			if (App.Profile.IsProductAssembly (assembly) || App.Profile.IsSdkAssembly (assembly))
 				return false;
 

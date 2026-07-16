@@ -1259,7 +1259,7 @@ $ dotnet build -getProperty:RecommendedXcodeVersion myProject.csproj
 26.6
 ```
 
-Note: the version number may contain more than 2 digits ("26.6.1" for instance). Only the two first digits are taken into account when validating the installed Xcode version.
+Note: the version number may contain more than 2 components ("26.6.1" for instance). Only the first two components (major and minor) are taken into account when validating the installed Xcode version.
 
 ## ReferenceNativeSymbol
 

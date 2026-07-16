@@ -334,7 +334,7 @@ namespace Xamarin.Linker {
 					createObjectMethod.AddParameter ("handle", abr.System_IntPtr);
 					createObjectMethod.AddParameter ("owns", abr.System_Boolean);
 					il = createObjectMethod.Body.GetILProcessor ();
-					if (tr.HasGenericParameters) {
+					if (tr.ContainsGenericParameter) {
 						EmitThrowCannotConstructGenericType (il, tr);
 					} else {
 						il.Append (il.Create (OpCodes.Ldarg_1));
@@ -415,7 +415,7 @@ namespace Xamarin.Linker {
 						var createObjectMethod = proxyType.AddMethod ("CreateObject", MethodAttributes.Public | MethodAttributes.Virtual | MethodAttributes.HideBySig, abr.Foundation_NSObject);
 						createObjectMethod.AddParameter ("handle", abr.System_IntPtr);
 						il = createObjectMethod.Body.GetILProcessor ();
-						if (td.HasGenericParameters) {
+						if (td.ContainsGenericParameter) {
 							EmitThrowCannotConstructGenericType (il, td);
 						} else {
 							var nativeHandleCtor = AppBundleRewriter.FindNSObjectConstructor (td);
@@ -561,7 +561,7 @@ namespace Xamarin.Linker {
 						createObjectMethod.AddParameter ("owns", abr.System_Boolean);
 						createObjectMethod.CreateBody (out il);
 						var protocolWrapperType = objcType.ProtocolWrapperType.Resolve ();
-						if (protocolWrapperType.HasGenericParameters) {
+						if (protocolWrapperType.ContainsGenericParameter) {
 							EmitThrowCannotConstructGenericType (il, protocolWrapperType);
 						} else {
 							var nativeHandleCtor = AppBundleRewriter.FindINativeObjectConstructor (protocolWrapperType);

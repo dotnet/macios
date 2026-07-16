@@ -6,6 +6,9 @@
 namespace Xamarin.Tests {
 	[TestFixture]
 	public class EnableCrashReportTest : TestBaseClass {
+		// The application id of the MySimpleApp test project (see MySimpleApp/shared.csproj).
+		const string bundleIdentifier = "com.xamarin.mysimpleapp";
+
 		[Test]
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
@@ -29,18 +32,31 @@ namespace Xamarin.Tests {
 			if (!CanExecute (platform, runtimeIdentifiers))
 				return;
 
-			// Use a known, writable location for the crash report. The runtime only sets
-			// DOTNET_CrashReportRootPath if it's not already set (it uses setenv with overwrite=0),
-			// so setting it here takes precedence and makes it easy to find the crash report.
-			var crashReportDir = Cache.CreateTemporaryDirectory ("crash-reports");
-
 			var appExecutable = GetNativeExecutable (platform, appPath);
-			var env = new Dictionary<string, string?> {
-				{ "CRASH_ON_LAUNCH", "1" },
-				{ "DOTNET_CrashReportRootPath", crashReportDir },
-			};
 
-			var rv = Execute (appExecutable, out var output, out var _, env);
+			// Run with DOTNET_CrashReportRootPath set to a known, writable location. The runtime
+			// only sets DOTNET_CrashReportRootPath if it's not already set (it uses setenv with
+			// overwrite=0), so setting it here takes precedence and makes it easy to find the report.
+			var customReportDir = Cache.CreateTemporaryDirectory ("crash-reports");
+			AssertCrashReport (appExecutable, new Dictionary<string, string?> {
+				{ "CRASH_ON_LAUNCH", "1" },
+				{ "DOTNET_CrashReportRootPath", customReportDir },
+			}, customReportDir);
+
+			// Run without DOTNET_CrashReportRootPath: the runtime picks a default location (the
+			// app's caches directory), so verify a crash report shows up there too.
+			var cachesReportDir = Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.UserProfile), "Library", "Caches", bundleIdentifier);
+			var reportsDir = Path.Combine (cachesReportDir, ".dotnet", "crash-reports");
+			if (Directory.Exists (reportsDir))
+				Directory.Delete (reportsDir, true);
+			AssertCrashReport (appExecutable, new Dictionary<string, string?> {
+				{ "CRASH_ON_LAUNCH", "1" },
+			}, cachesReportDir);
+		}
+
+		void AssertCrashReport (string executable, Dictionary<string, string?> environment, string crashReportDir)
+		{
+			var rv = Execute (executable, out var output, out var _, environment);
 			Assert.That (rv.ExitCode, Is.Not.EqualTo (0), $"The app should have crashed:\n{output}");
 
 			var crashReports = Directory.GetFiles (crashReportDir, "*.crashreport.json", SearchOption.AllDirectories);

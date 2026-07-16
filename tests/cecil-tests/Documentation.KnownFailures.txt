@@ -14678,7 +14678,9 @@ M:BackgroundTasks.BGTaskScheduler.CancelAll
 M:BackgroundTasks.BGTaskScheduler.GetPending(System.Action{BackgroundTasks.BGTaskRequest[]})
 M:BackgroundTasks.BGTaskScheduler.GetPendingAsync
 M:BackgroundTasks.BGTaskScheduler.Register(System.String,CoreFoundation.DispatchQueue,System.Action{BackgroundTasks.BGTask})
+M:BackgroundTasks.BGTaskScheduler.Submit(BackgroundTasks.BGTaskRequest,BackgroundTasks.BGTaskSchedulerSubmitCompletionHandler)
 M:BackgroundTasks.BGTaskScheduler.Submit(BackgroundTasks.BGTaskRequest,Foundation.NSError@)
+M:BackgroundTasks.BGTaskScheduler.SubmitAsync(BackgroundTasks.BGTaskRequest)
 M:BrowserEngineCore.BEAudioSession.#ctor(AVFoundation.AVAudioSession)
 M:BrowserEngineCore.BEAudioSession.SetPreferredOutput(AVFoundation.AVAudioSessionPortDescription,Foundation.NSError@)
 M:BrowserEngineKit.BEAccessibilityRemoteElement.#ctor(System.String,System.Int32)
@@ -57687,6 +57689,7 @@ T:BackgroundTasks.BGTask
 T:BackgroundTasks.BGTaskRequest
 T:BackgroundTasks.BGTaskScheduler
 T:BackgroundTasks.BGTaskSchedulerErrorCode
+T:BackgroundTasks.BGTaskSchedulerSubmitCompletionHandler
 T:BrowserEngineCore.BEAudioSession
 T:BrowserEngineKit.BEAccessibilityContainerType
 T:BrowserEngineKit.BEAccessibilityNotification

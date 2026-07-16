@@ -267,7 +267,6 @@ namespace Xamarin.Linker {
 				var companion = RegistrarCompanionAssembly.GetOrCreate (Configuration, assembly);
 				var typeMapAssembly = companion.Assembly;
 				var typeMapAssemblyPath = companion.Path;
-				companion.AddedToOutput = true;
 				addedAssemblies.Add ((typeMapAssemblyPath, typeMapAssembly, assembly.MainModule.FileName));
 
 				var accessesAssemblies = companion.AccessesAssemblies;

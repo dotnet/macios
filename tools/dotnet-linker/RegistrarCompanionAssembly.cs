@@ -31,9 +31,6 @@ namespace Xamarin.Linker {
 		// Created lazily by ManagedRegistrarStep when the first trampoline is emitted.
 		public TypeDefinition? CallbacksType;
 
-		// Whether TrimmableRegistrarStep has already added this companion to its output list.
-		public bool AddedToOutput;
-
 		public RegistrarCompanionAssembly (AssemblyDefinition assembly, string path, MethodDefinition ignoresAccessChecksToCtor)
 		{
 			Assembly = assembly;

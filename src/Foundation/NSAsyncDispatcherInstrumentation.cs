@@ -16,13 +16,14 @@
 //  1. A per-native-handle string (kept in a static managed dictionary keyed by
 //     the native Objective-C handle) that survives after the managed instance
 //     has been garbage collected. When the marshalling exception from the issue
-//     is raised, this info is looked up (by native handle) and appended to the
-//     error message.
-//  2. An immediate chronological line printed to stdout with a distinctive
-//     "#25861#" prefix + a monotonic sequence number + thread + native handle.
-//     This lets us reconstruct the exact ordering of events across ALL handles
-//     (including native-handle reuse across dispatcher instances), which the
-//     per-handle dictionary alone cannot show.
+//     is raised, this info (including all captured stack traces) is looked up (by
+//     native handle) and appended to the error message. This is the primary
+//     output: nothing is printed to stdout during a normal run.
+//  2. Optionally (VerboseStdout, off by default), an immediate chronological line
+//     printed to stdout with a distinctive "#25861#" prefix + a monotonic sequence
+//     number + thread + native handle. This is very high volume, so it's disabled
+//     by default to avoid flooding the CI logs; the full per-handle history is
+//     surfaced from the in-memory dictionary when the failure is detected.
 
 using System;
 using System.Collections.Generic;
@@ -196,8 +197,12 @@ namespace Foundation {
 		// raised later. See issue #25861.
 		static void RecordMutation (string op, IntPtr handle, string? extra)
 		{
-			// A single greppable stdout line for chronological ordering.
-			Emit ($"OBJMAP   {op} handle 0x{handle.ToString ("x")}{(extra is null ? "" : " " + extra)}");
+			// A single greppable stdout line for chronological ordering. Kept off
+			// by default (VerboseStdout) so we don't flood the CI logs — the full
+			// per-handle history (including stack traces) still lives in `infos`
+			// and is printed only when the failure exception (8027/8034) is raised.
+			if (VerboseStdout)
+				Emit ($"OBJMAP   {op} handle 0x{handle.ToString ("x")}{(extra is null ? "" : " " + extra)}");
 
 			try {
 				var sb = new StringBuilder ();

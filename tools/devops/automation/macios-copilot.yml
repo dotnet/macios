@@ -1,0 +1,267 @@
+# Manually queued pipeline for running GitHub Copilot CLI with a custom prompt.
+#
+# Required secret pipeline variables:
+# - COPILOT_TOKEN: fine-grained PAT with the "Copilot Requests" permission.
+# - GitHub.Token: least-privileged token for the GitHub CLI.
+
+trigger: none
+pr: none
+
+parameters:
+- name: copilotPrompt
+  displayName: Copilot prompt (do not include secrets)
+  type: string
+
+- name: provisionatorChannel
+  displayName: Provisionator channel
+  type: string
+  default: 'latest'
+
+- name: xcodeChannel
+  displayName: Xcode channel
+  type: string
+  default: 'Stable'
+  values:
+  - Stable
+  - Beta
+
+variables:
+- name: Codeql.Enabled
+  value: false
+- name: Codeql.SkipTaskAutoInjection
+  value: true
+- name: CopilotCliVersion
+  value: '1.0.70-0'
+- name: DOTNET_CLI_WORKLOAD_UPDATE_NOTIFY_DISABLE
+  value: 'true'
+- name: DOTNET_SDK_VULNERABILITY_CHECK_DISABLE
+  value: 'true'
+
+stages:
+- stage: run_copilot
+  displayName: Run Copilot
+  jobs:
+  - job: run_copilot
+    displayName: Run custom Copilot prompt
+    timeoutInMinutes: 1000
+    pool:
+      name: AcesShared
+      demands:
+      - ImageOverride -equals ACES_VM_SharedPool_Tahoe
+    workspace:
+      clean: all
+    steps:
+    - checkout: self
+      clean: true
+      fetchDepth: 0
+      fetchTags: false
+      persistCredentials: false
+      submodules: true
+
+    - ${{ if or(contains(parameters.copilotPrompt, '$('), contains(parameters.copilotPrompt, '$[')) }}:
+      - bash: |
+          echo "##vso[task.logissue type=error]Azure Pipelines variable syntax is not allowed in the Copilot prompt."
+          exit 1
+        displayName: Reject unsafe Copilot prompt
+
+    - ${{ if not(or(contains(parameters.copilotPrompt, '$('), contains(parameters.copilotPrompt, '$['))) }}:
+      - bash: |
+          set -euo pipefail
+
+          if [[ ! "$COPILOT_PROMPT" =~ [^[:space:]] ]]; then
+            echo "##vso[task.logissue type=error]The Copilot prompt cannot be empty."
+            exit 1
+          fi
+
+          case "${COPILOT_GITHUB_TOKEN:-}" in
+            ""|\$\(*)
+              echo "##vso[task.logissue type=error]Configure COPILOT_TOKEN as a secret pipeline variable."
+              exit 1
+              ;;
+          esac
+
+          case "${GH_TOKEN:-}" in
+            ""|\$\(*)
+              echo "##vso[task.logissue type=error]Configure GitHub.Token as a secret pipeline variable."
+              exit 1
+              ;;
+          esac
+
+          case "${AZURE_DEVOPS_EXT_PAT:-}" in
+            ""|\$\(*)
+              echo "##vso[task.logissue type=error]System.AccessToken is unavailable to the Copilot task."
+              exit 1
+              ;;
+          esac
+        displayName: Validate Copilot inputs
+        env:
+          COPILOT_PROMPT: ${{ parameters.copilotPrompt }}
+          COPILOT_GITHUB_TOKEN: $(COPILOT_TOKEN)
+          GH_TOKEN: $(GitHub.Token)
+          AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
+
+    - bash: $(Build.Repository.LocalPath)/tools/devops/automation/scripts/bash/ensure-xcode-select.sh
+      displayName: Ensure Xcode is selected
+
+    - bash: |
+        set -euo pipefail
+
+        FORMULAE=()
+        if ! command -v gh >/dev/null 2>&1; then
+          FORMULAE+=(gh)
+        fi
+        if ! command -v az >/dev/null 2>&1; then
+          FORMULAE+=(azure-cli)
+        fi
+
+        if [ "${#FORMULAE[@]}" -gt 0 ]; then
+          if command -v brew >/dev/null 2>&1; then
+            BREW="$(command -v brew)"
+          elif [ -x /opt/homebrew/bin/brew ]; then
+            BREW=/opt/homebrew/bin/brew
+          elif [ -x /usr/local/bin/brew ]; then
+            BREW=/usr/local/bin/brew
+          else
+            echo "##vso[task.logissue type=error]Homebrew is required to install: ${FORMULAE[*]}"
+            exit 1
+          fi
+
+          export PATH="$(dirname "$BREW"):$PATH"
+          "$BREW" install "${FORMULAE[@]}"
+        fi
+
+        mkdir -p "$AZURE_CONFIG_DIR" "$GH_CONFIG_DIR"
+        az extension add --name azure-devops --upgrade --only-show-errors
+        az devops configure --defaults organization="$AZURE_DEVOPS_ORG" project="$AZURE_DEVOPS_PROJECT"
+
+        echo "##vso[task.prependpath]$(dirname "$(command -v gh)")"
+        echo "##vso[task.prependpath]$(dirname "$(command -v az)")"
+        gh --version | sed -n '1p'
+        az --version | sed -n '1p'
+      displayName: Install GitHub and Azure CLIs
+      retryCountOnTaskFailure: 2
+      env:
+        AZURE_CONFIG_DIR: $(Agent.TempDirectory)/azure-cli
+        GH_CONFIG_DIR: $(Agent.TempDirectory)/github-cli
+        AZURE_DEVOPS_ORG: $(System.CollectionUri)
+        AZURE_DEVOPS_PROJECT: $(System.TeamProject)
+        HOMEBREW_NO_AUTO_UPDATE: '1'
+
+    - bash: |
+        set -eo pipefail
+        set -x
+
+        XCODE_PATH=$(xcode-select -p 2>/dev/null || true)
+        if [[ "$XCODE_PATH" != */Contents/Developer || ! -d "$XCODE_PATH" ]]; then
+          echo "xcode-select does not point to an Xcode developer directory: '$XCODE_PATH'"
+          exit 1
+        fi
+        export XCODE_DEVELOPER_ROOT="$XCODE_PATH"
+        export DEVELOPER_DIR="$XCODE_PATH"
+
+        make -C "$(Build.Repository.LocalPath)/tools/devops" provisioning
+      displayName: Generate provisionator files
+
+    - template: templates/common/provision.yml
+      parameters:
+        repositoryRoot: $(Build.Repository.LocalPath)
+        provisioning_script: $(Build.Repository.LocalPath)/tools/devops/build-provisioning.csx
+        displayName: Provision Products & Frameworks
+        provisionatorChannel: ${{ parameters.provisionatorChannel }}
+        retryCount: 3
+
+    - bash: $(Build.Repository.LocalPath)/tools/devops/automation/scripts/bash/validate-xcode-channel.sh
+      displayName: Validate Xcode channel
+      env:
+        XCODE_CHANNEL: ${{ parameters.xcodeChannel }}
+
+    - bash: |
+        set -eo pipefail
+        set -x
+
+        XCODE_PATH=$(xcode-select -p 2>/dev/null || true)
+        if [[ "$XCODE_PATH" != */Contents/Developer || ! -d "$XCODE_PATH" ]]; then
+          echo "xcode-select does not point to an Xcode developer directory: '$XCODE_PATH'"
+          exit 1
+        fi
+        export XCODE_DEVELOPER_ROOT="$XCODE_PATH"
+        export DEVELOPER_DIR="$XCODE_PATH"
+        xcrun -k
+
+        ARGS=()
+        ARGS+=(--ignore-all)
+        ARGS+=(--provision-xcode-components)
+        "$(Build.Repository.LocalPath)/system-dependencies.sh" "${ARGS[@]}"
+      displayName: Provision dependencies
+      timeoutInMinutes: 250
+      env:
+        XCODE_CHANNEL: ${{ parameters.xcodeChannel }}
+
+    - bash: |
+        set -eo pipefail
+        set -x
+
+        ARGS=()
+        XCODE_PATH=$(xcode-select -p 2>/dev/null || true)
+        if [[ -n "$XCODE_PATH" && -d "$XCODE_PATH" ]]; then
+          ARGS+=("--xcode=$XCODE_PATH")
+        fi
+
+        ./configure "${ARGS[@]}"
+      displayName: Configure build
+      workingDirectory: $(Build.Repository.LocalPath)
+      timeoutInMinutes: 5
+      env:
+        IsPR: 'False'
+
+    - task: UseNode@1
+      displayName: Install Node.js
+      inputs:
+        version: '24.x'
+
+    - bash: |
+        set -euo pipefail
+
+        npm install --global "@github/copilot@$(CopilotCliVersion)"
+        COPILOT_BIN_DIR="$(dirname "$(command -v copilot)")"
+        echo "##vso[task.prependpath]$COPILOT_BIN_DIR"
+        copilot --version
+      displayName: Install GitHub Copilot CLI
+
+    - ${{ if not(or(contains(parameters.copilotPrompt, '$('), contains(parameters.copilotPrompt, '$['))) }}:
+      - bash: |
+          set -euo pipefail
+
+          mkdir -p "$COPILOT_HOME"
+
+          # Do not list GH_TOKEN or AZURE_DEVOPS_EXT_PAT here: Copilot strips
+          # listed variables from its shell, where gh and az need them.
+          set +e
+          copilot \
+            --prompt "$COPILOT_PROMPT" \
+            --allow-all \
+            --no-ask-user \
+            --no-remote-export \
+            --secret-env-vars=COPILOT_GITHUB_TOKEN \
+            2>&1 \
+            | LC_ALL=C tr '\015\014\013' '   ' \
+            | sed -E 's/##(vso\[|\[)/## \1/g'
+          PIPE_STATUSES=("${PIPESTATUS[@]}")
+          set -e
+
+          if [ "${PIPE_STATUSES[1]}" -ne 0 ] || [ "${PIPE_STATUSES[2]}" -ne 0 ]; then
+            echo "##vso[task.logissue type=error]Failed to sanitize Copilot output."
+            exit 1
+          fi
+          exit "${PIPE_STATUSES[0]}"
+        displayName: Run Copilot
+        workingDirectory: $(Build.Repository.LocalPath)
+        timeoutInMinutes: 360
+        env:
+          COPILOT_PROMPT: ${{ parameters.copilotPrompt }}
+          COPILOT_GITHUB_TOKEN: $(COPILOT_TOKEN)
+          GH_TOKEN: $(GitHub.Token)
+          AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
+          AZURE_CONFIG_DIR: $(Agent.TempDirectory)/azure-cli
+          GH_CONFIG_DIR: $(Agent.TempDirectory)/github-cli
+          COPILOT_HOME: $(Agent.TempDirectory)/copilot-cli

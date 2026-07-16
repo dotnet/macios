@@ -87,7 +87,7 @@ namespace Xamarin.Linker {
 			// When building for NativeAOT, the managed assemblies are compiled to native code
 			// and not shipped in the app bundle, so removing these resources from the assemblies
 			// has no size or runtime benefit.
-			if (Configuration.Application.XamarinRuntime == XamarinRuntime.NativeAOT)
+			if (App.XamarinRuntime == XamarinRuntime.NativeAOT)
 				return false;
 
 			if (App.Profile.IsProductAssembly (assembly) || App.Profile.IsSdkAssembly (assembly))

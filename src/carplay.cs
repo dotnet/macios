@@ -3757,7 +3757,7 @@ namespace CarPlay {
 
 		[Static]
 		[Export ("routeDetailWithHOV:")]
-		CPRouteDetail CreateHOV (string hovInfo);
+		CPRouteDetail CreateHov (string highOccupancyVehicleInfo);
 
 		[Static]
 		[Export ("routeDetailWithTrafficLights:")]

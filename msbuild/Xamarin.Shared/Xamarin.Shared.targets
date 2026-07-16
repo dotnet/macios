@@ -448,23 +448,23 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	-->
 	<Target Name="_ExpandMultipleResourcePrefixes" Condition="@(_ResourcePrefixItem->Count()) > 0">
 		<ItemGroup>
-			<BundleResource Include="%(_ResourcePrefixItem.Identity)\**\*" Exclude="
-				$(DefaultItemExcludes);
-				$(DefaultExcludesInProjectFolder);
-				%(_ResourcePrefixItem.Identity)\**\*.xcassets\**\*.*;
-				%(_ResourcePrefixItem.Identity)\**\*.icon\**\*.*;
-				%(_ResourcePrefixItem.Identity)\**\*.storyboard;**\*.xib;
-				%(_ResourcePrefixItem.Identity)\**\*.atlas\*.png;
-				%(_ResourcePrefixItem.Identity)\**\*.mlmodel;
-				%(_ResourcePrefixItem.Identity)\**\*.metal;
-				%(_ResourcePrefixItem.Identity)\**\*.scnassets\*;
-				%(_ResourcePrefixItem.Identity)\**\*.DS_Store;
-				@(Compile);
-				@(EmbeddedResource);
-				" >
+			<BundleResource Include="%(_ResourcePrefixItem.Identity)\**\*" >
 				<Link>$([MSBuild]::MakeRelative ('$(MSBuildProjectDirectory)', '%(FullPath)'))</Link>
 				<IsDefaultItem>true</IsDefaultItem>
 			</BundleResource>
+			<BundleResource Remove="%(_ResourcePrefixItem.Identity)\**\*.xcassets\**\*.*" />
+			<BundleResource Remove="%(_ResourcePrefixItem.Identity)\**\*.icon\**\*.*" />
+			<BundleResource Remove="%(_ResourcePrefixItem.Identity)\**\*.storyboard" />
+			<BundleResource Remove="%(_ResourcePrefixItem.Identity)\**\*.atlas\*.png" />
+			<BundleResource Remove="%(_ResourcePrefixItem.Identity)\**\*.mlmodel" />
+			<BundleResource Remove="%(_ResourcePrefixItem.Identity)\**\*.metal" />
+			<BundleResource Remove="%(_ResourcePrefixItem.Identity)\**\*.scnassets\*" />
+			<BundleResource Remove="%(_ResourcePrefixItem.Identity)\**\*.DS_Store" />
+			<BundleResource Remove="$(DefaultItemExcludes)" />
+			<BundleResource Remove="$(DefaultExcludesInProjectFolder)" />
+			<BundleResource Remove="**\*.xib" />
+			<BundleResource Remove="@(Compile)" />
+			<BundleResource Remove="@(EmbeddedResource)" />
 		</ItemGroup>
 	</Target>
 

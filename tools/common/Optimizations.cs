@@ -11,7 +11,7 @@ namespace Xamarin.Bundler {
 	public class Optimizations {
 		static readonly string [] opt_names =
 		{
-			"remove-uithread-checks",
+			"remove-uithread-checks", // this optimization has been replaced by the 'CheckForIllegalCrossThreadCalls' MSBuild property (the 'ObjCRuntime.Runtime.CheckForIllegalCrossThreadCalls' feature switch), but leave it here so that we won't break customers trying to enable/disable it
 			"dead-code-elimination",
 			"inline-isdirectbinding",
 			"inline-intptr-size", // this optimization has been removed, but leave it here so that we won't break customers trying to enable/disable it
@@ -32,7 +32,7 @@ namespace Xamarin.Bundler {
 		};
 
 		static readonly ApplePlatform [] [] valid_platforms = new ApplePlatform [] [] {
-			/* Opt.RemoveUIThreadChecks               */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
+			/* Opt.RemoveUIThreadChecks               */ new ApplePlatform [] {                                                                                        },
 			/* Opt.DeadCodeElimination                */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 			/* Opt.InlineIsDirectBinding              */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 			/* Opt.InlineIntPtrSize                   */ new ApplePlatform [] {                                                                                        },
@@ -221,11 +221,6 @@ namespace Xamarin.Bundler {
 					break;
 				}
 			}
-
-			// by default we keep the code to ensure we're executing on the UI thread (for UI code) for debug builds
-			// but this can be overridden to either (a) remove it from debug builds or (b) keep it in release builds
-			if (!RemoveUIThreadChecks.HasValue)
-				RemoveUIThreadChecks = !app.EnableDebug;
 
 			// By default we always eliminate dead code.
 			if (!DeadCodeElimination.HasValue)

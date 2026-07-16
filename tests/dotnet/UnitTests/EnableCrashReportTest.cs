@@ -1,66 +1,50 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System.IO;
-
 #nullable enable
 
 namespace Xamarin.Tests {
 	[TestFixture]
 	public class EnableCrashReportTest : TestBaseClass {
 		[Test]
-		[TestCase (ApplePlatform.iOS, "iossimulator-arm64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
 		public void Enabled (ApplePlatform platform, string runtimeIdentifiers)
 		{
-			// When $(EnableCrashReport) is set to true, the generated native main must
-			// set the DOTNET_EnableCrashReport environment variable to 1 at startup.
+			// When $(EnableCrashReport) is set to true, the DOTNET_EnableCrashReport=1 environment
+			// variable is set at startup, which makes the .NET runtime write a JSON crash report
+			// when the app crashes. Verify this by crashing the app on launch and checking that a
+			// crash report file was created.
 			var project = "MySimpleApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
 
-			var project_path = GetProjectPath (project, platform: platform);
+			var project_path = GetProjectPath (project, runtimeIdentifiers, platform, out var appPath);
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			properties ["EnableCrashReport"] = "true";
 
 			DotNet.AssertBuild (project_path, properties);
 
-			var mainFiles = GetGeneratedMainFiles (project_path, platform, runtimeIdentifiers);
-			Assert.That (mainFiles, Is.Not.Empty, "The generated native main file must exist.");
-			foreach (var mainFile in mainFiles) {
-				var contents = File.ReadAllText (mainFile);
-				Assert.That (contents, Does.Contain ("setenv (\"DOTNET_EnableCrashReport\", \"1\""), $"The generated main file '{mainFile}' must set DOTNET_EnableCrashReport.");
-			}
-		}
+			if (!CanExecute (platform, runtimeIdentifiers))
+				return;
 
-		[Test]
-		[TestCase (ApplePlatform.iOS, "iossimulator-arm64")]
-		public void Disabled (ApplePlatform platform, string runtimeIdentifiers)
-		{
-			// When $(EnableCrashReport) is not set, the generated native main must not
-			// set the DOTNET_EnableCrashReport environment variable.
-			var project = "MySimpleApp";
-			Configuration.IgnoreIfIgnoredPlatform (platform);
-			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+			// Use a known, writable location for the crash report. The runtime only sets
+			// DOTNET_CrashReportRootPath if it's not already set (it uses setenv with overwrite=0),
+			// so setting it here takes precedence and makes it easy to find the crash report.
+			var crashReportDir = Cache.CreateTemporaryDirectory ("crash-reports");
 
-			var project_path = GetProjectPath (project, platform: platform);
-			Clean (project_path);
-			var properties = GetDefaultProperties (runtimeIdentifiers);
+			var appExecutable = GetNativeExecutable (platform, appPath);
+			var env = new Dictionary<string, string?> {
+				{ "CRASH_ON_LAUNCH", "1" },
+				{ "DOTNET_CrashReportRootPath", crashReportDir },
+			};
 
-			DotNet.AssertBuild (project_path, properties);
+			var rv = Execute (appExecutable, out var output, out var _, env);
+			Assert.That (rv.ExitCode, Is.Not.EqualTo (0), $"The app should have crashed:\n{output}");
 
-			var mainFiles = GetGeneratedMainFiles (project_path, platform, runtimeIdentifiers);
-			Assert.That (mainFiles, Is.Not.Empty, "The generated native main file must exist.");
-			foreach (var mainFile in mainFiles) {
-				var contents = File.ReadAllText (mainFile);
-				Assert.That (contents, Does.Not.Contain ("DOTNET_EnableCrashReport"), $"The generated main file '{mainFile}' must not set DOTNET_EnableCrashReport.");
-			}
-		}
-
-		static string [] GetGeneratedMainFiles (string project_path, ApplePlatform platform, string runtimeIdentifiers)
-		{
-			var objDir = GetObjDir (project_path, platform, runtimeIdentifiers);
-			return Directory.GetFiles (objDir, "main.*.mm", SearchOption.AllDirectories);
+			var crashReports = Directory.GetFiles (crashReportDir, "*.crashreport.json", SearchOption.AllDirectories);
+			Assert.That (crashReports, Is.Not.Empty, $"A crash report should have been created in '{crashReportDir}':\n{output}");
 		}
 	}
 }

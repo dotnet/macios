@@ -60,17 +60,6 @@ namespace ObjCRuntime {
 		delegate void initialize_func ();
 		unsafe delegate sbyte* get_sbyteptr_func ();
 
-		[DllImport ("__Internal")]
-		extern static void xamarin_initialize ();
-
-		internal static void EnsureInitialized ()
-		{
-			if (initialized)
-				return;
-
-			xamarin_initialize ();
-		}
-
 		unsafe static void InitializePlatform (InitializationOptions* options)
 		{
 			string basePath = AppDomain.CurrentDomain.BaseDirectory;

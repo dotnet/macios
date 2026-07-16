@@ -55,8 +55,6 @@ namespace AppKit {
 				throw new InvalidOperationException ("Init has already been invoked; it can only be invoked once");
 			}
 
-			Runtime.EnsureInitialized ();
-
 			initialized = true;
 
 			if (Runtime.DynamicRegistrationSupported)

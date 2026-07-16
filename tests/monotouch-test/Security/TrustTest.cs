@@ -87,7 +87,8 @@ namespace MonoTouchFixtures.Security {
 					called.SetResult (true);
 				});
 				Assert.That (err, Is.EqualTo (SecStatusCode.Success), "async1/err");
-				TestRuntime.RunAsync (TimeSpan.FromSeconds (5), called.Task);
+				var completed1 = TestRuntime.RunAsync (TimeSpan.FromSeconds (30), called.Task);
+				Assert.That (completed1, Is.True, "async1/completed (callback timed out)");
 				Assert.That (assert, Is.True, "async1");
 			}
 
@@ -100,7 +101,8 @@ namespace MonoTouchFixtures.Security {
 						called.SetResult (true);
 					});
 					Assert.That (err, Is.EqualTo (SecStatusCode.Success), "async2/err");
-					TestRuntime.RunAsync (TimeSpan.FromSeconds (5), called.Task);
+					var completed2 = TestRuntime.RunAsync (TimeSpan.FromSeconds (30), called.Task);
+					Assert.That (completed2, Is.True, "async2/completed (callback timed out)");
 					Assert.That (assert, Is.True, "async2");
 				}
 			}

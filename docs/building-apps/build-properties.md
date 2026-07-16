@@ -536,6 +536,10 @@ Enables the concurrent mode for the SGen garbage collector.
 
 Only applicable to iOS, tvOS and Mac Catalyst (when not using NativeAOT).
 
+This property only has an effect when using the Mono runtime, and a warning
+will be shown if it's set when not using the Mono runtime (for instance when
+using CoreCLR).
+
 ## EventSourceSupport
 
 When set to `false`, disables .NET's [EventSource][eventsource] support from
@@ -991,7 +995,8 @@ will decrease the amount of memory used at runtime:
 
 The downside is that type checks (`obj is SomeInterface`) will be slower.
 
-Only applicable when using the Mono runtime.
+Only applicable when using the Mono runtime. A warning will be shown if it's
+set when not using the Mono runtime (for instance when using CoreCLR).
 
 ## MtouchDebug
 
@@ -1008,6 +1013,10 @@ Enables the concurrent mode for the SGen garbage collector.
 Only applicable to iOS, tvOS and Mac Catalyst when not using NativeAOT.
 
 This property is deprecated, use [EnableSGenConc](#enablesgenconc) instead.
+
+This property only has an effect when using the Mono runtime, and a warning
+will be shown if it's set when not using the Mono runtime (for instance when
+using CoreCLR).
 
 ## MtouchExtraArgs
 
@@ -1052,6 +1061,10 @@ The default behavior is to not enable the interpreter.
 > [!NOTE]
 > MAUI changes the default by setting `UseInterpreter=true` for the `"Debug"` configuration.
 
+This property only has an effect when using the Mono runtime, and a warning
+will be shown if it's set when not using the Mono runtime (for instance when
+using CoreCLR).
+
 ## MtouchLink
 
 Specifies the link mode for the project (`None`, `SdkOnly`, `Full`).
@@ -1079,6 +1092,10 @@ Default:
 
 * On iOS and tvOS: enabled for Release builds (where `Configuration="Release"`).
 * On Mac Catalyst: never enabled by default.
+
+This property only has an effect when using the Mono runtime, and a warning
+will be shown if it's set when not using the Mono runtime (for instance when
+using CoreCLR).
 
 ## NoBindingEmbedding
 
@@ -1612,6 +1629,10 @@ The default behavior is to not enable the interpreter.
 > MAUI changes the default by setting `UseInterpreter=true` for the `"Debug"` configuration.
 
 See [MtouchInterpreter](#mtouchinterpreter) for more information.
+
+This property only has an effect when using the Mono runtime, and a warning
+will be shown if it's set when not using the Mono runtime (for instance when
+using CoreCLR).
 
 ## UseNativeHttpHandler
 

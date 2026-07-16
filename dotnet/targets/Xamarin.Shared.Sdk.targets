@@ -1298,6 +1298,50 @@
 			Text="The property 'XamMacArch' is deprecated, please remove it from the project file. Use 'RuntimeIdentifier' or 'RuntimeIdentifiers' instead to specify the target architecture."
 			Condition="'$(XamMacArch)' != '' And '$(AllowXamMacArchArchProperty)' != 'true'"
 			/>
+
+		<!--
+			Detect properties that only apply to the Mono runtime, and which have
+			no effect (or are directly problematic) when not using the Mono runtime
+			(such as when using CoreCLR or NativeAOT).
+		-->
+		<Error
+			Text="The property 'RunAotCompilation' is set to 'true', which is not supported when not using the Mono runtime (for instance when using CoreCLR). Please remove it from the project file."
+			Condition="'$(UseMonoRuntime)' == 'false' And '$(RunAotCompilation)' == 'true'"
+			/>
+		<Error
+			Text="The property 'AotAssemblies' is set to 'true', which is not supported when not using the Mono runtime (for instance when using CoreCLR). Please remove it from the project file."
+			Condition="'$(UseMonoRuntime)' == 'false' And '$(AotAssemblies)' == 'true'"
+			/>
+		<!-- 'MtouchEnableSGenConc' is a deprecated alias for 'EnableSGenConc' (see Xamarin.Shared.props), so only warn about 'EnableSGenConc' if the value didn't come from 'MtouchEnableSGenConc', to avoid showing two warnings for the same setting. -->
+		<Warning
+			Text="The property 'EnableSGenConc' has no effect when not using the Mono runtime (for instance when using CoreCLR)."
+			Condition="'$(UseMonoRuntime)' == 'false' And '$(EnableSGenConc)' == 'true' And '$(MtouchEnableSGenConc)' != 'true'"
+			/>
+		<Warning
+			Text="The property 'MtouchEnableSGenConc' has no effect when not using the Mono runtime (for instance when using CoreCLR)."
+			Condition="'$(UseMonoRuntime)' == 'false' And '$(MtouchEnableSGenConc)' == 'true'"
+			/>
+		<Warning
+			Text="The property 'UseInterpreter' has no effect when not using the Mono runtime (for instance when using CoreCLR)."
+			Condition="'$(UseMonoRuntime)' == 'false' And '$(UseInterpreter)' == 'true'"
+			/>
+		<!-- 'UseInterpreter' is a shorthand for 'MtouchInterpreter=all' (see Xamarin.Shared.props), so only warn about 'MtouchInterpreter' if the value didn't come from 'UseInterpreter', to avoid showing two warnings for the same setting. -->
+		<Warning
+			Text="The property 'MtouchInterpreter' has no effect when not using the Mono runtime (for instance when using CoreCLR)."
+			Condition="'$(UseMonoRuntime)' == 'false' And '$(MtouchInterpreter)' != '' And '$(UseInterpreter)' != 'true'"
+			/>
+		<Warning
+			Text="The property 'MtouchUseLlvm' has no effect when not using the Mono runtime (for instance when using CoreCLR)."
+			Condition="'$(UseMonoRuntime)' == 'false' And '$(MtouchUseLlvm)' == 'true'"
+			/>
+		<Warning
+			Text="The property 'MtouchFloat32' has no effect when not using the Mono runtime (for instance when using CoreCLR)."
+			Condition="'$(UseMonoRuntime)' == 'false' And '$(MtouchFloat32)' != ''"
+			/>
+		<Warning
+			Text="The property 'MonoUseCompressedInterfaceBitmap' has no effect when not using the Mono runtime (for instance when using CoreCLR)."
+			Condition="'$(UseMonoRuntime)' == 'false' And '$(MonoUseCompressedInterfaceBitmap)' == 'true'"
+			/>
 	</Target>
 
 	<PropertyGroup>

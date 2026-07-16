@@ -18,15 +18,19 @@ This file should be imported by eng/Versions.props
     <MicrosoftTemplateEngineAuthoringTasksPackageVersion>10.0.400-preview.26360.120</MicrosoftTemplateEngineAuthoringTasksPackageVersion>
     <!-- dotnet-macios dependencies -->
     <MicrosoftiOSSdknet100_260PackageVersion>26.0.11017</MicrosoftiOSSdknet100_260PackageVersion>
+    <MicrosoftiOSSdknet100_270PackageVersion>27.0.10241-xcode27.0</MicrosoftiOSSdknet100_270PackageVersion>
     <MicrosoftiOSSdknet90_185PackageVersion>18.5.9227</MicrosoftiOSSdknet90_185PackageVersion>
     <MicrosoftiOSSdknet90_265PackageVersion>26.5.9004</MicrosoftiOSSdknet90_265PackageVersion>
     <MicrosoftMacCatalystSdknet100_260PackageVersion>26.0.11017</MicrosoftMacCatalystSdknet100_260PackageVersion>
+    <MicrosoftMacCatalystSdknet100_270PackageVersion>27.0.10241-xcode27.0</MicrosoftMacCatalystSdknet100_270PackageVersion>
     <MicrosoftMacCatalystSdknet90_185PackageVersion>18.5.9227</MicrosoftMacCatalystSdknet90_185PackageVersion>
     <MicrosoftMacCatalystSdknet90_265PackageVersion>26.5.9004</MicrosoftMacCatalystSdknet90_265PackageVersion>
     <MicrosoftmacOSSdknet100_260PackageVersion>26.0.11017</MicrosoftmacOSSdknet100_260PackageVersion>
+    <MicrosoftmacOSSdknet100_270PackageVersion>27.0.10241-xcode27.0</MicrosoftmacOSSdknet100_270PackageVersion>
     <MicrosoftmacOSSdknet90_155PackageVersion>15.5.9227</MicrosoftmacOSSdknet90_155PackageVersion>
     <MicrosoftmacOSSdknet90_265PackageVersion>26.5.9004</MicrosoftmacOSSdknet90_265PackageVersion>
     <MicrosofttvOSSdknet100_260PackageVersion>26.0.11017</MicrosofttvOSSdknet100_260PackageVersion>
+    <MicrosofttvOSSdknet100_270PackageVersion>27.0.10241-xcode27.0</MicrosofttvOSSdknet100_270PackageVersion>
     <MicrosofttvOSSdknet90_185PackageVersion>18.5.9227</MicrosofttvOSSdknet90_185PackageVersion>
     <MicrosofttvOSSdknet90_265PackageVersion>26.5.9004</MicrosofttvOSSdknet90_265PackageVersion>
     <!-- dotnet-xharness dependencies -->
@@ -52,15 +56,19 @@ This file should be imported by eng/Versions.props
     <MicrosoftTemplateEngineAuthoringTasksVersion>$(MicrosoftTemplateEngineAuthoringTasksPackageVersion)</MicrosoftTemplateEngineAuthoringTasksVersion>
     <!-- dotnet-macios dependencies -->
     <MicrosoftiOSSdknet100_260Version>$(MicrosoftiOSSdknet100_260PackageVersion)</MicrosoftiOSSdknet100_260Version>
+    <MicrosoftiOSSdknet100_270Version>$(MicrosoftiOSSdknet100_270PackageVersion)</MicrosoftiOSSdknet100_270Version>
     <MicrosoftiOSSdknet90_185Version>$(MicrosoftiOSSdknet90_185PackageVersion)</MicrosoftiOSSdknet90_185Version>
     <MicrosoftiOSSdknet90_265Version>$(MicrosoftiOSSdknet90_265PackageVersion)</MicrosoftiOSSdknet90_265Version>
     <MicrosoftMacCatalystSdknet100_260Version>$(MicrosoftMacCatalystSdknet100_260PackageVersion)</MicrosoftMacCatalystSdknet100_260Version>
+    <MicrosoftMacCatalystSdknet100_270Version>$(MicrosoftMacCatalystSdknet100_270PackageVersion)</MicrosoftMacCatalystSdknet100_270Version>
     <MicrosoftMacCatalystSdknet90_185Version>$(MicrosoftMacCatalystSdknet90_185PackageVersion)</MicrosoftMacCatalystSdknet90_185Version>
     <MicrosoftMacCatalystSdknet90_265Version>$(MicrosoftMacCatalystSdknet90_265PackageVersion)</MicrosoftMacCatalystSdknet90_265Version>
     <MicrosoftmacOSSdknet100_260Version>$(MicrosoftmacOSSdknet100_260PackageVersion)</MicrosoftmacOSSdknet100_260Version>
+    <MicrosoftmacOSSdknet100_270Version>$(MicrosoftmacOSSdknet100_270PackageVersion)</MicrosoftmacOSSdknet100_270Version>
     <MicrosoftmacOSSdknet90_155Version>$(MicrosoftmacOSSdknet90_155PackageVersion)</MicrosoftmacOSSdknet90_155Version>
     <MicrosoftmacOSSdknet90_265Version>$(MicrosoftmacOSSdknet90_265PackageVersion)</MicrosoftmacOSSdknet90_265Version>
     <MicrosofttvOSSdknet100_260Version>$(MicrosofttvOSSdknet100_260PackageVersion)</MicrosofttvOSSdknet100_260Version>
+    <MicrosofttvOSSdknet100_270Version>$(MicrosofttvOSSdknet100_270PackageVersion)</MicrosofttvOSSdknet100_270Version>
     <MicrosofttvOSSdknet90_185Version>$(MicrosofttvOSSdknet90_185PackageVersion)</MicrosofttvOSSdknet90_185Version>
     <MicrosofttvOSSdknet90_265Version>$(MicrosofttvOSSdknet90_265PackageVersion)</MicrosofttvOSSdknet90_265Version>
     <!-- dotnet-xharness dependencies -->

@@ -3,8 +3,7 @@
 #nullable enable
 
 namespace AppKit {
-	/// <summary>To be added.</summary>
-	///     <remarks>To be added.</remarks>
+	/// <summary>Provides methods for reading data from the pasteboard.</summary>
 	public partial interface INSPasteboardReading {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public unsafe static T? CreateInstance<T> (NSObject propertyList, NSPasteboardType type) where T : NSObject, INSPasteboardReading

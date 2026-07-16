@@ -449,7 +449,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<Target Name="_ExpandMultipleResourcePrefixes" Condition="@(_ResourcePrefixItem->Count()) > 0">
 		<ItemGroup>
 			<BundleResource Include="%(_ResourcePrefixItem.Identity)\**\*" >
-				<Link>$([MSBuild]::MakeRelative ('$(MSBuildProjectDirectory)', '%(FullPath)'))</Link>
 				<IsDefaultItem>true</IsDefaultItem>
 			</BundleResource>
 			<BundleResource Remove="%(_ResourcePrefixItem.Identity)\**\*.xcassets\**\*.*" />

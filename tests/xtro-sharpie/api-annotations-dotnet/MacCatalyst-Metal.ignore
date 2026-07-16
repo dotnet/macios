@@ -1,8 +1,3 @@
-## [Notification] in protocol - https://bugzilla.xamarin.com/show_bug.cgi?id=59342
-!missing-field! MTLDeviceRemovalRequestedNotification not bound
-!missing-field! MTLDeviceWasAddedNotification not bound
-!missing-field! MTLDeviceWasRemovedNotification not bound
-
 ## bound selectors with no native declaration reachable from the class in the current SDK headers:
 ## private/SPI selectors, protocol/category members Apple inlines without declaring the conformance on
 ## the class, managed callback infrastructure, or API Apple removed/privatized - kept for compatibility

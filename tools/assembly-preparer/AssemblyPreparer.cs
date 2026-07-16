@@ -213,7 +213,7 @@ public class AssemblyPreparer : IDisposable {
 
 		// If postprocessing runs after ILC has already compiled the assemblies, then no step should
 		// modify an assembly (the change would be silently lost). Report a warning if we detect this.
-		if (configuration.Application.XamarinRuntime == XamarinRuntime.NativeAOT  && configuration.ModifiedAssemblies.Any ()) {
+		if (configuration.Application.XamarinRuntime == XamarinRuntime.NativeAOT && configuration.ModifiedAssemblies.Any ()) {
 			foreach (var name in configuration.ModifiedAssemblies.Select (v => v.Name.Name).OrderBy (v => v))
 				exceptions.Add (ErrorHelper.CreateWarning (99, $"The assembly '{name}' was modified during post-ILC postprocessing, but this is useless because the NativeAOT compiler (ILC) has already compiled it."));
 		}

@@ -15316,6 +15316,13 @@ M:Cinematic.CNDetectionTrack.GetDetectionNearestTime(CoreMedia.CMTime)
 M:Cinematic.CNDetectionTrack.GetDetectionsInTimeRange(CoreMedia.CMTimeRange)
 M:Cinematic.CNFixedDetectionTrack.#ctor(Cinematic.CNDetection)
 M:Cinematic.CNFixedDetectionTrack.#ctor(System.Single)
+M:Cinematic.CNImageRenderingSession.#ctor(Cinematic.CNImageRenderingSessionConfiguration)
+M:Cinematic.CNImageRenderingSession.EncodeRender(Metal.IMTLCommandBuffer,Metal.IMTLTexture,Metal.IMTLTexture,Metal.IMTLTexture,System.Single,System.Single)
+M:Cinematic.CNImageRenderingSession.EncodeTileRender(Metal.IMTLCommandBuffer,Metal.IMTLTexture,Metal.IMTLTexture,Metal.IMTLTexture,System.Single,System.Single,CoreGraphics.CGSize,CoreGraphics.CGPoint,CoreGraphics.CGPoint)
+M:Cinematic.CNImageRenderingSession.GetMinimumTileExtendRect(CoreGraphics.CGRect,CoreGraphics.CGSize)
+M:Cinematic.CNImageRenderingSessionConfiguration.#ctor(Cinematic.CNRenderingQuality,System.IntPtr)
+M:Cinematic.CNImageRenderingSessionConfiguration.#ctor(Cinematic.CNRenderingQuality)
+M:Cinematic.CNImageRenderingSessionConfiguration.IsRenderingVersionSupported(System.IntPtr)
 M:Cinematic.CNObjectTracker.#ctor(Metal.IMTLCommandQueue)
 M:Cinematic.CNObjectTracker.ContinueTracking(CoreMedia.CMTime,CoreVideo.CVPixelBuffer,CoreVideo.CVPixelBuffer)
 M:Cinematic.CNObjectTracker.FindObject(CoreGraphics.CGPoint,CoreVideo.CVPixelBuffer)
@@ -38805,6 +38812,10 @@ P:Cinematic.CNDetectionTrack.Discrete
 P:Cinematic.CNDetectionTrack.UserCreated
 P:Cinematic.CNFixedDetectionTrack.FocusDisparity
 P:Cinematic.CNFixedDetectionTrack.OriginalDetection
+P:Cinematic.CNImageRenderingSession.Configuration
+P:Cinematic.CNImageRenderingSessionConfiguration.LatestRenderingVersion
+P:Cinematic.CNImageRenderingSessionConfiguration.Quality
+P:Cinematic.CNImageRenderingSessionConfiguration.RenderingVersion
 P:Cinematic.CNObjectTracker.FinishDetectionTrack
 P:Cinematic.CNObjectTracker.IsSupported
 P:Cinematic.CNRenderingSession.CommandQueue
@@ -57853,6 +57864,8 @@ T:Cinematic.CNDetection
 T:Cinematic.CNDetectionTrack
 T:Cinematic.CNDetectionType
 T:Cinematic.CNFixedDetectionTrack
+T:Cinematic.CNImageRenderingSession
+T:Cinematic.CNImageRenderingSessionConfiguration
 T:Cinematic.CNObjectTracker
 T:Cinematic.CNRenderingQuality
 T:Cinematic.CNRenderingSession

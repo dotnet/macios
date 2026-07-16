@@ -15205,7 +15205,7 @@ M:CarPlay.CPRouteDetail.CreateEmissions(Foundation.NSMeasurement{Foundation.NSUn
 M:CarPlay.CPRouteDetail.CreateFuelEnergy(Foundation.NSMeasurement{Foundation.NSUnitEnergy})
 M:CarPlay.CPRouteDetail.CreateFuelLevel(Foundation.NSMeasurement{Foundation.NSUnitVolume})
 M:CarPlay.CPRouteDetail.CreateFuelMass(Foundation.NSMeasurement{Foundation.NSUnitMass})
-M:CarPlay.CPRouteDetail.CreateHOV(System.String)
+M:CarPlay.CPRouteDetail.CreateHov(System.String)
 M:CarPlay.CPRouteDetail.CreateKilowattHours(Foundation.NSMeasurement{Foundation.NSUnitEnergy})
 M:CarPlay.CPRouteDetail.CreateRating(System.Double)
 M:CarPlay.CPRouteDetail.CreateTollAmount(System.Double,Foundation.NSLocale)

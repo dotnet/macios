@@ -28,6 +28,7 @@ namespace Introspection {
 		protected override bool Skip (Type type)
 		{
 			switch (type.Namespace) {
+			case "AVSystemRouting":
 			case "MetalKit":
 			case "MetalPerformanceShaders":
 			case "MLCompute":

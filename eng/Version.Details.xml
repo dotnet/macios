@@ -93,6 +93,23 @@
       <Uri>https://github.com/dotnet/macios</Uri>
       <Sha>23eb1c2c9465fe76c810c8a69982c1254161f4b0</Sha>
     </Dependency>
+    <!-- This is a subscription of the .NET 10/Xcode 27.0 versions of our packages -->
+    <Dependency Name="Microsoft.MacCatalyst.Sdk.net10.0_27.0" Version="27.0.10241-xcode27.0">
+      <Uri>https://github.com/dotnet/macios</Uri>
+      <Sha>6807aae9f1f542afdcca3552940930793cb9ae7f</Sha>
+    </Dependency>
+    <Dependency Name="Microsoft.macOS.Sdk.net10.0_27.0" Version="27.0.10241-xcode27.0">
+      <Uri>https://github.com/dotnet/macios</Uri>
+      <Sha>6807aae9f1f542afdcca3552940930793cb9ae7f</Sha>
+    </Dependency>
+    <Dependency Name="Microsoft.iOS.Sdk.net10.0_27.0" Version="27.0.10241-xcode27.0">
+      <Uri>https://github.com/dotnet/macios</Uri>
+      <Sha>6807aae9f1f542afdcca3552940930793cb9ae7f</Sha>
+    </Dependency>
+    <Dependency Name="Microsoft.tvOS.Sdk.net10.0_27.0" Version="27.0.10241-xcode27.0">
+      <Uri>https://github.com/dotnet/macios</Uri>
+      <Sha>6807aae9f1f542afdcca3552940930793cb9ae7f</Sha>
+    </Dependency>
   </ProductDependencies>
   <ToolsetDependencies>
     <Dependency Name="Microsoft.DotNet.Build.Tasks.Feed" Version="10.0.0-beta.26360.120">
@@ -107,9 +124,9 @@
       <Uri>https://github.com/dotnet/dotnet</Uri>
       <Sha>d88a8f149a8b7a55a2ced403eb58128a0442d05e</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.XHarness.iOS.Shared" Version="11.0.0-prerelease.26360.1">
+    <Dependency Name="Microsoft.DotNet.XHarness.iOS.Shared" Version="11.0.0-prerelease.26365.2">
       <Uri>https://github.com/dotnet/xharness</Uri>
-      <Sha>ab06ed6b9b6366d219751bdd80b04f8f37768bb3</Sha>
+      <Sha>6e3f7251a2d482f71f6e6c786ded8d3b80dae792</Sha>
     </Dependency>
     <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="10.0.0-beta.26360.120">
       <Uri>https://github.com/dotnet/dotnet</Uri>

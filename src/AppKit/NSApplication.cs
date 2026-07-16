@@ -34,7 +34,7 @@ namespace AppKit {
 	public partial class NSApplication : NSResponder {
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		public static bool CheckForIllegalCrossThreadCalls = true;
+		public static bool CheckForIllegalCrossThreadCalls;
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
 		public static bool CheckForEventAndDelegateMismatches = true;
@@ -82,6 +82,12 @@ namespace AppKit {
 			// reference: https://github.com/dotnet/macios/issues/7932
 			if (class_ptr == IntPtr.Zero)
 				ResetHandle ();
+
+			// The linker replaces the 'Runtime.CheckForIllegalCrossThreadCalls' getter with a constant value, so when the UI
+			// thread checks are disabled the assignment below (and the 'CheckForIllegalCrossThreadCalls' field
+			// itself, unless something else references it) is trimmed away.
+			if (Runtime.CheckForIllegalCrossThreadCalls)
+				CheckForIllegalCrossThreadCalls = true;
 
 			// TODO:
 			//   Install hook to register dynamically loaded assemblies

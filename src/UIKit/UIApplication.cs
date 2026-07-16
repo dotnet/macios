@@ -46,7 +46,7 @@ namespace UIKit {
 		///
 		///           </para>
 		///         </remarks>
-		public static bool CheckForIllegalCrossThreadCalls = true;
+		public static bool CheckForIllegalCrossThreadCalls;
 		/// <summary>If <see langword="true" />, the system will try to diagnose potential mistakes where events and delegate-object overrides are in conflict.</summary>
 		///         <remarks>To be added.</remarks>
 		public static bool CheckForEventAndDelegateMismatches = true;
@@ -75,6 +75,12 @@ namespace UIKit {
 		{
 			if (mainThread is not null)
 				return;
+
+			// The linker replaces the 'Runtime.CheckForIllegalCrossThreadCalls' getter with a constant value, so when the UI
+			// thread checks are disabled the assignment below (and the 'CheckForIllegalCrossThreadCalls' field
+			// itself, unless something else references it) is trimmed away.
+			if (Runtime.CheckForIllegalCrossThreadCalls)
+				CheckForIllegalCrossThreadCalls = true;
 
 			SynchronizationContext.SetSynchronizationContext (new UIKitSynchronizationContext ());
 			mainThread = Thread.CurrentThread;

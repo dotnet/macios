@@ -12,94 +12,6 @@ public class OptimizeGeneratedCodeHandlerTests : BaseClass {
 	[TestCase (ApplePlatform.iOS, false)]
 	[TestCase (ApplePlatform.TVOS, false)]
 	[TestCase (ApplePlatform.MacOSX, true)]
-	public void RemoveEnsureUIThread (ApplePlatform platform, bool isCoreCLR)
-	{
-		var ensureUIThreadCall = platform == ApplePlatform.MacOSX
-			? "AppKit.NSApplication.EnsureUIThread ();"
-			: "UIKit.UIApplication.EnsureUIThread ();";
-
-		var usingDirective = platform == ApplePlatform.MacOSX
-			? "using AppKit;"
-			: "using UIKit;";
-
-		var code = $@"
-		using System;
-		using Foundation;
-		using ObjCRuntime;
-		{usingDirective}
-
-		class MyClass : NSObject {{
-			[BindingImpl (BindingImplOptions.Optimizable)]
-			[Export (""myMethod"")]
-			public void MyMethod () {{
-				{ensureUIThreadCall}
-			}}
-		}}";
-
-		AssertPrepareCode (platform, isCoreCLR, preparer => {
-			preparer.Registrar = RegistrarMode.Dynamic;
-			preparer.Optimizations.RemoveUIThreadChecks = true;
-		}, code, out var outputPath);
-
-		using var assemblyDefinition = AssemblyDefinition.ReadAssembly (outputPath);
-		var type = assemblyDefinition.MainModule.Types.Single (v => v.Name == "MyClass");
-		var method = type.Methods.Single (v => v.Name == "MyMethod");
-
-		var hasEnsureUIThread = method.Body.Instructions.Any (i =>
-			i.OpCode.Code == Code.Call &&
-			(i.Operand as MethodReference)?.Name == "EnsureUIThread");
-		Assert.That (hasEnsureUIThread, Is.False, "EnsureUIThread call should be removed");
-	}
-
-	[Test]
-	[TestCase (ApplePlatform.MacCatalyst, false)]
-	[TestCase (ApplePlatform.iOS, false)]
-	[TestCase (ApplePlatform.TVOS, false)]
-	[TestCase (ApplePlatform.MacOSX, true)]
-	public void KeepEnsureUIThreadWhenOptimizationDisabled (ApplePlatform platform, bool isCoreCLR)
-	{
-		var ensureUIThreadCall = platform == ApplePlatform.MacOSX
-			? "AppKit.NSApplication.EnsureUIThread ();"
-			: "UIKit.UIApplication.EnsureUIThread ();";
-
-		var usingDirective = platform == ApplePlatform.MacOSX
-			? "using AppKit;"
-			: "using UIKit;";
-
-		var code = $@"
-		using System;
-		using Foundation;
-		using ObjCRuntime;
-		{usingDirective}
-
-		class MyClass : NSObject {{
-			[BindingImpl (BindingImplOptions.Optimizable)]
-			[Export (""myMethod"")]
-			public void MyMethod () {{
-				{ensureUIThreadCall}
-			}}
-		}}";
-
-		AssertPrepareCode (platform, isCoreCLR, preparer => {
-			preparer.Registrar = RegistrarMode.Dynamic;
-			preparer.Optimizations.RemoveUIThreadChecks = false;
-		}, code, out var outputPath);
-
-		using var assemblyDefinition = AssemblyDefinition.ReadAssembly (outputPath);
-		var type = assemblyDefinition.MainModule.Types.Single (v => v.Name == "MyClass");
-		var method = type.Methods.Single (v => v.Name == "MyMethod");
-
-		var hasEnsureUIThread = method.Body.Instructions.Any (i =>
-			i.OpCode.Code == Code.Call &&
-			(i.Operand as MethodReference)?.Name == "EnsureUIThread");
-		Assert.That (hasEnsureUIThread, Is.True, "EnsureUIThread call should be preserved when optimization is disabled");
-	}
-
-	[Test]
-	[TestCase (ApplePlatform.MacCatalyst, false)]
-	[TestCase (ApplePlatform.iOS, false)]
-	[TestCase (ApplePlatform.TVOS, false)]
-	[TestCase (ApplePlatform.MacOSX, true)]
 	public void OptimizeProtocolInterfaceStaticConstructor (ApplePlatform platform, bool isCoreCLR)
 	{
 		var code = @"
@@ -175,40 +87,35 @@ public class OptimizeGeneratedCodeHandlerTests : BaseClass {
 	[TestCase (ApplePlatform.MacOSX, true)]
 	public void NoOptimizationWithoutBindingAttributes (ApplePlatform platform, bool isCoreCLR)
 	{
-		var ensureUIThreadCall = platform == ApplePlatform.MacOSX
-			? "AppKit.NSApplication.EnsureUIThread ();"
-			: "UIKit.UIApplication.EnsureUIThread ();";
-
-		var usingDirective = platform == ApplePlatform.MacOSX
-			? "using AppKit;"
-			: "using UIKit;";
-
-		var code = $@"
+		// The method deliberately has no [BindingImpl (BindingImplOptions.Optimizable)] attribute, so
+		// the optimizer must leave it untouched (the dead 'return 2' must not be eliminated).
+		var code = @"
 		using System;
 		using Foundation;
 		using ObjCRuntime;
-		{usingDirective}
 
-		class MyClass : NSObject {{
+		class MyClass : NSObject {
 			[Export (""myMethod"")]
-			public void MyMethod () {{
-				{ensureUIThreadCall}
-			}}
-		}}";
+			public int MyMethod () {
+				if (true) {
+					return 1;
+				}
+				return 2;
+			}
+		}";
 
 		AssertPrepareCode (platform, isCoreCLR, preparer => {
 			preparer.Registrar = RegistrarMode.Dynamic;
-			preparer.Optimizations.RemoveUIThreadChecks = true;
+			preparer.Optimizations.DeadCodeElimination = true;
 		}, code, out var outputPath);
 
 		using var assemblyDefinition = AssemblyDefinition.ReadAssembly (outputPath);
 		var type = assemblyDefinition.MainModule.Types.Single (v => v.Name == "MyClass");
 		var method = type.Methods.Single (v => v.Name == "MyMethod");
 
-		var hasEnsureUIThread = method.Body.Instructions.Any (i =>
-			i.OpCode.Code == Code.Call &&
-			(i.Operand as MethodReference)?.Name == "EnsureUIThread");
-		Assert.That (hasEnsureUIThread, Is.True, "EnsureUIThread call should be preserved without [BindingImpl(Optimizable)]");
+		var hasDeadCode = method.Body.Instructions.Any (i =>
+			i.OpCode.Code == Code.Ldc_I4_2);
+		Assert.That (hasDeadCode, Is.True, "Dead code (return 2) should be preserved without [BindingImpl(Optimizable)]");
 	}
 
 	[Test]

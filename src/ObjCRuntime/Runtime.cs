@@ -284,6 +284,10 @@ namespace ObjCRuntime {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		internal static bool UseCFNetworkHandler => AppContext.TryGetSwitch ("System.Net.Http.NativeHandler.UseCFNetworkHandler", out bool isDefault) ? isDefault : false;
 
+		// The linker may turn calls to this property into a constant
+		[BindingImpl (BindingImplOptions.Optimizable)]
+		internal static bool CheckForIllegalCrossThreadCalls => AppContext.TryGetSwitch ("ObjCRuntime.Runtime.CheckForIllegalCrossThreadCalls", out bool enabled) ? enabled : true;
+
 		internal static bool Initialized {
 			get { return initialized; }
 		}

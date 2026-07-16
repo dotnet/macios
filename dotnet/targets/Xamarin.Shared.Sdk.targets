@@ -632,7 +632,7 @@
 				standard NativeAOT flow). This simplifies the pipeline and makes it possible to run ILC before the
 				native registrar code is generated.
 			-->
-			<_SkipILLink Condition="'$(_SkipILLink)' == '' And '$(_UseNativeAot)' == 'true' And '$(PrepareAssemblies)' == 'true'">true</_SkipILLink>
+			<_SkipILLink Condition="'$(_SkipILLink)' == '' And '$(_UseNativeAot)' == 'true' And '$(PrepareAssemblies)' == 'true' And '$(PostProcessAssemblies)' == 'true'">true</_SkipILLink>
 			<_SkipILLink Condition="'$(_SkipILLink)' == ''">false</_SkipILLink>
 
 			<!-- Yep, we want to run ILLink as well, because we need our custom steps to run (NativeAOT sets this to false, so set it back to true), unless we're skipping ILLink (see _SkipILLink above) -->

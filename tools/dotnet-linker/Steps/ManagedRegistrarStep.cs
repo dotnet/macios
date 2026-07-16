@@ -391,7 +391,7 @@ namespace Xamarin.Linker {
 			}
 
 			var callback = callbackType.AddMethod (name, MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.HideBySig, placeholderType);
-			callback.CustomAttributes.Add (CreateUnmanagedCallersAttribute (name));
+			callback.CustomAttributes.Add (CreateUnmanagedCallersAttribute (name, method.DeclaringType));
 			infos.Add (new TrampolineInfo (callback, method, name));
 
 			// If the target method is marked, then we must mark the trampoline as well.
@@ -1243,10 +1243,30 @@ namespace Xamarin.Linker {
 			get { return DerivedLinkContext.StaticRegistrar; }
 		}
 
-		CustomAttribute CreateUnmanagedCallersAttribute (string entryPoint)
+		CustomAttribute CreateUnmanagedCallersAttribute (string entryPoint, TypeReference? associatedSourceType = null)
 		{
 			var unmanagedCallersAttribute = new CustomAttribute (abr.UnmanagedCallersOnlyAttribute_Constructor);
 			unmanagedCallersAttribute.Fields.Add (new CustomAttributeNamedArgument ("EntryPoint", new CustomAttributeArgument (abr.System_String, entryPoint)));
+			// The AssociatedSourceType field tells the NativeAOT compiler (ILC) that the trampoline's
+			// native export is only needed if the associated type is kept. This only works safely when
+			// all of these are true:
+			// * We're compiling for NativeAOT (only ILC understands the field; the CoreCLR runtime's
+			//   attribute parser even rejects any UnmanagedCallersOnly named argument it doesn't know).
+			// * We're using the trimmable static registrar, whose native glue references the trampoline
+			//   symbols directly. This means ILC may drop the native export for a trampoline whose
+			//   associated type can't be constructed, while the generated native registrar code still
+			//   references it - which would result in an undefined symbol at native link time.
+			// * We're preparing assemblies (PrepareAssemblies), which is the mode that has a post-ILC
+			//   step (the _PostprocessAssembliesAfterIlc target) that regenerates the native registrar
+			//   code after ILC, routing any trampoline that didn't survive ILC through the dlsym fallback
+			//   instead of a direct native reference. Without that reconciliation step (i.e. in the
+			//   non-prepare mode) we must not let ILC drop any trampoline export, so we don't emit the
+			//   field there.
+			if (associatedSourceType is not null
+				&& App.XamarinRuntime == XamarinRuntime.NativeAOT
+				&& App.Registrar == RegistrarMode.TrimmableStatic
+				&& App.PrepareAssemblies)
+				unmanagedCallersAttribute.Fields.Add (new CustomAttributeNamedArgument ("AssociatedSourceType", new CustomAttributeArgument (abr.System_Type, associatedSourceType)));
 			return unmanagedCallersAttribute;
 		}
 

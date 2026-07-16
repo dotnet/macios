@@ -2574,6 +2574,12 @@ xamarin_initialize_crash_report_directory ()
 	// We use NSCachesDirectory for this purpose.
 	// Ref: https://github.com/dotnet/runtime/pull/128738
 
+	// Only do this if crash reports are enabled (DOTNET_EnableCrashReport=1),
+	// otherwise there's no point in setting the crash report directory.
+	const char *enableCrashReport = getenv ("DOTNET_EnableCrashReport");
+	if (enableCrashReport == NULL || strcmp (enableCrashReport, "1") != 0)
+		return;
+
 	NSArray *paths = NSSearchPathForDirectoriesInDomains (NSCachesDirectory, NSUserDomainMask, YES);
 	if (paths == nil || [paths count] == 0) {
 		LOG (PRODUCT ": Could not find the caches directory for crash reports.\n");

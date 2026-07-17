@@ -37,6 +37,13 @@ namespace Xamarin.MacDev.Tasks {
 			if (string.Equals (value, "Framework", StringComparison.OrdinalIgnoreCase))
 				return true;
 
+			// A framework's executable lives inside a '*.framework' directory. Detect that even when
+			// the 'Kind' metadata is missing, so we never do a full strip on a framework (which fails
+			// for dynamic libraries). Ref: https://github.com/dotnet/macios/issues/25952
+			var directory = Path.GetDirectoryName (item.ItemSpec);
+			if (!string.IsNullOrEmpty (directory) && directory.EndsWith (".framework", StringComparison.OrdinalIgnoreCase))
+				return true;
+
 			if (string.Equals (value, "Dynamic", StringComparison.OrdinalIgnoreCase) || item.ItemSpec.EndsWith (".dylib", StringComparison.OrdinalIgnoreCase))
 				return true;
 

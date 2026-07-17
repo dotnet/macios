@@ -39,12 +39,8 @@ using AVFoundation;
 
 namespace ReplayKit {
 	public partial class RPBroadcastConfiguration {
-		/// <summary>To be added.</summary>
-		///         <value>
-		///           <para>(More documentation for this node is coming)</para>
-		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the video compression properties for the broadcast.</summary>
+		/// <value>The video compression settings, or <see langword="null" /> if not set.</value>
 		public AVVideoCodecSettings? VideoCompressionProperties {
 			get {
 				var weak = WeakVideoCompressionProperties;

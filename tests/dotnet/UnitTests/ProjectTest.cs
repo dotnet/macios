@@ -2832,6 +2832,51 @@ namespace Xamarin.Tests {
 		}
 
 		[Test]
+		[TestCase ("RunAotCompilation", "true")]
+		[TestCase ("AotAssemblies", "true")]
+		public void MonoOnlyPropertyError (string property, string value)
+		{
+			// macOS always uses CoreCLR (UseMonoRuntime=false), so it's a convenient platform to test Mono-only properties with.
+			var platform = ApplePlatform.MacOSX;
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			var project = "MySimpleApp";
+			var project_path = GetProjectPath (project, platform: platform);
+			Clean (project_path);
+			var properties = GetDefaultProperties ();
+			properties ["UseMonoRuntime"] = "false";
+			properties [property] = value;
+			var rv = DotNet.AssertBuildFailure (project_path, properties);
+			var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray ();
+			AssertErrorMessages (errors, $"The property '{property}' is set to '{value}', which is not supported when not using the Mono runtime (for instance when using CoreCLR). Please remove it from the project file.");
+		}
+
+		[Test]
+		[TestCase ("EnableSGenConc", "true")]
+		[TestCase ("MtouchEnableSGenConc", "true")]
+		[TestCase ("UseInterpreter", "true")]
+		[TestCase ("MtouchInterpreter", "all")]
+		[TestCase ("MtouchUseLlvm", "true")]
+		[TestCase ("MtouchFloat32", "true")]
+		[TestCase ("MonoUseCompressedInterfaceBitmap", "true")]
+		public void MonoOnlyPropertyWarning (string property, string value)
+		{
+			// macOS always uses CoreCLR (UseMonoRuntime=false), so it's a convenient platform to test Mono-only properties with.
+			var platform = ApplePlatform.MacOSX;
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			var project = "MySimpleApp";
+			var project_path = GetProjectPath (project, platform: platform);
+			Clean (project_path);
+			var properties = GetDefaultProperties ();
+			properties ["UseMonoRuntime"] = "false";
+			properties [property] = value;
+			var rv = DotNet.AssertBuild (project_path, properties);
+			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).FilterWarnings (platform).ToArray ();
+			AssertWarningMessages (warnings, $"The property '{property}' has no effect when not using the Mono runtime (for instance when using CoreCLR).");
+		}
+
+		[Test]
 		// The trailing semi-colon for single-arch platforms is significant:
 		// it means we'll use "RuntimeIdentifiers" (plural) instead of "RuntimeIdentifier" (singular)
 		[TestCase (ApplePlatform.iOS, "ios-arm64;")]
@@ -2855,6 +2900,36 @@ namespace Xamarin.Tests {
 
 			var symbols = Configuration.GetNativeSymbols (appExecutable);
 			Assert.That (symbols, Does.Contain ("_xamarin_release_managed_ref"), "_xamarin_release_managed_ref");
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
+		public void StripEmbeddedDynamicFramework (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			// A binding project with 'NoBindingEmbedding=false' embeds its native framework inside the
+			// binding assembly. The managed linker extracts the framework without any 'Kind' metadata, so
+			// make sure such an embedded dynamic framework is stripped correctly (with 'strip -S -x', and
+			// not a full strip, which fails for a dynamic library that references undefined symbols).
+			// The framework embedded by this project (XTest.framework) references the Objective-C runtime,
+			// so a full strip of it would fail. We build in Release (so the linker runs and extracts the
+			// framework) and set NoSymbolStrip=false (so the framework is stripped even for the simulator).
+			// Ref: https://github.com/dotnet/macios/issues/25952
+			var project = "EmbeddedFrameworkInBindingProjectApp";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: "Release");
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["Configuration"] = "Release";
+			properties ["NoSymbolStrip"] = "false";
+			DotNet.AssertBuild (project_path, properties);
+
+			var appExecutable = GetNativeExecutable (platform, appPath);
+			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 		}
 
 		[Test]
@@ -3085,6 +3160,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/AVFoundation.framework/AVFoundation",
 			"/System/Library/Frameworks/AVKit.framework/AVKit",
 			"/System/Library/Frameworks/AVRouting.framework/AVRouting",
+			"/System/Library/Frameworks/AVSystemRouting.framework/AVSystemRouting",
 			"/System/Library/Frameworks/BackgroundAssets.framework/BackgroundAssets",
 			"/System/Library/Frameworks/BackgroundTasks.framework/BackgroundTasks",
 			"/System/Library/Frameworks/BusinessChat.framework/BusinessChat",

@@ -125,7 +125,7 @@ SUPPORTED_API_VERSIONS_TVOS+=net10.0-26.0
 SUPPORTED_API_VERSIONS_MACOS+=net10.0-26.0
 SUPPORTED_API_VERSIONS_MACCATALYST+=net10.0-26.0
 
-# Add beta versions here!
+# Add beta versions here! (using BETA_API_VERSIONS_* variables)
 
 # Don't change these (even if there aren't any beta versions)!
 

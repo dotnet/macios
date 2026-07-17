@@ -293,6 +293,11 @@ namespace CoreMotion {
 		[Export ("attitudeReferenceFrame")]
 		CMAttitudeReferenceFrame AttitudeReferenceFrame { get; }
 
+		/// <summary>Gets or sets the body used as the reference for device-motion updates.</summary>
+		[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+		[NullAllowed, Export ("deviceMotionBody", ArgumentSemantic.Retain)]
+		ICMBodyIdentifiable DeviceMotionBody { get; set; }
+
 		/// <param name="referenceFrame">To be added.</param>
 		///         <summary>Requests that the device begin delivering device-motion data updates, using <paramref name="referenceFrame" />.</summary>
 		///         <remarks>To be added.</remarks>
@@ -401,10 +406,31 @@ namespace CoreMotion {
 		[Export ("heading")]
 		double Heading { get; }
 
+		/// <summary>Gets the maximum deviation, in degrees, between the estimated heading and the actual heading.</summary>
+		/// <value>A negative value indicates that the heading is invalid.</value>
+		[iOS (27, 0)]
+		[MacCatalyst (27, 0)]
+		[Export ("headingAccuracy")]
+		double HeadingAccuracy { get; }
+
 		[iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Export ("sensorLocation")]
 		CMDeviceMotionSensorLocation SensorLocation { get; }
+	}
+
+	/// <summary>Historical device-motion data recorded for later retrieval.</summary>
+	[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (CMDeviceMotion))]
+	[DisableDefaultCtor]
+	interface CMRecordedDeviceMotion {
+		/// <summary>Gets the identifier of the sensor batch that contains this sample.</summary>
+		[Export ("identifier")]
+		ulong Identifier { get; }
+
+		/// <summary>Gets the date and time when this sample was observed.</summary>
+		[Export ("startDate")]
+		NSDate StartDate { get; }
 	}
 
 	/// <summary>A single measurement of the device rotation rate.</summary>
@@ -1510,19 +1536,19 @@ namespace CoreMotion {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface CMWaterSubmersionManagerDelegate {
-		[Abstract]
+		/// <summary>Notifies the delegate that a new submersion event is available.</summary>
 		[Export ("manager:didUpdateEvent:")]
 		void DidUpdateEvent (CMWaterSubmersionManager manager, CMWaterSubmersionEvent @event);
 
-		[Abstract]
+		/// <summary>Notifies the delegate that a new depth or pressure measurement is available.</summary>
 		[Export ("manager:didUpdateMeasurement:")]
 		void DidUpdateMeasurement (CMWaterSubmersionManager manager, CMWaterSubmersionMeasurement measurement);
 
-		[Abstract]
+		/// <summary>Notifies the delegate that a new temperature measurement is available.</summary>
 		[Export ("manager:didUpdateTemperature:")]
 		void DidUpdateTemperature (CMWaterSubmersionManager manager, CMWaterTemperature measurement);
 
-		[Abstract]
+		/// <summary>Notifies the delegate that an error occurred.</summary>
 		[Export ("manager:errorOccurred:")]
 		void ErrorOccurred (CMWaterSubmersionManager manager, NSError error);
 	}
@@ -1710,6 +1736,8 @@ namespace CoreMotion {
 		[Export ("stopStatusUpdates")]
 		void StopStatusUpdates ();
 	}
+
+	interface ICMBodyIdentifiable { }
 
 	[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
 	[Protocol]

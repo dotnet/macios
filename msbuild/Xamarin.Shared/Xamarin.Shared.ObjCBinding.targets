@@ -110,6 +110,8 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 	</Target>
 
 	<Target Name="_PrepareNativeReferences" Condition="'$(_DisableBindingProjectBuild)' != 'true'" DependsOnTargets="_SanitizeNativeReferences">
+		<Warning Condition="'$(_NoBindingEmbeddingDeprecated)' == 'true'" Text="Setting 'NoBindingEmbedding' to 'false' is deprecated and will not be supported in .NET 12+. Please remove this property from your project file." />
+		<Error Condition="'$(_NoBindingEmbeddingRemoved)' == 'true'" Text="Setting 'NoBindingEmbedding' to 'false' is not supported in .NET 12+. Please remove this property from your project file." />
 		<PrepareNativeReferences
 			IntermediateOutputPath="$(IntermediateOutputPath)"
 			NativeReferences="@(NativeReference)"

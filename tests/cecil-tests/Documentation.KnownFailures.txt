@@ -4849,10 +4849,12 @@ F:MapKit.MKMapItemDetailSelectionAccessoryCalloutStyle.Automatic
 F:MapKit.MKMapItemDetailSelectionAccessoryCalloutStyle.Compact
 F:MapKit.MKMapItemDetailSelectionAccessoryCalloutStyle.Full
 F:MapKit.MKPointOfInterestCategory.Airport
+F:MapKit.MKPointOfInterestCategory.AirportTerminal
 F:MapKit.MKPointOfInterestCategory.AmusementPark
 F:MapKit.MKPointOfInterestCategory.AnimalService
 F:MapKit.MKPointOfInterestCategory.Aquarium
 F:MapKit.MKPointOfInterestCategory.Atm
+F:MapKit.MKPointOfInterestCategory.AutomotiveDealership
 F:MapKit.MKPointOfInterestCategory.AutomotiveRepair
 F:MapKit.MKPointOfInterestCategory.Bakery
 F:MapKit.MKPointOfInterestCategory.Bank
@@ -4866,6 +4868,7 @@ F:MapKit.MKPointOfInterestCategory.Cafe
 F:MapKit.MKPointOfInterestCategory.Campground
 F:MapKit.MKPointOfInterestCategory.CarRental
 F:MapKit.MKPointOfInterestCategory.Castle
+F:MapKit.MKPointOfInterestCategory.CommercialVehicleDealership
 F:MapKit.MKPointOfInterestCategory.ConventionCenter
 F:MapKit.MKPointOfInterestCategory.Distillery
 F:MapKit.MKPointOfInterestCategory.EVCharger
@@ -4881,6 +4884,7 @@ F:MapKit.MKPointOfInterestCategory.Golf
 F:MapKit.MKPointOfInterestCategory.Hiking
 F:MapKit.MKPointOfInterestCategory.Hospital
 F:MapKit.MKPointOfInterestCategory.Hotel
+F:MapKit.MKPointOfInterestCategory.InformationBooth
 F:MapKit.MKPointOfInterestCategory.Kayaking
 F:MapKit.MKPointOfInterestCategory.Landmark
 F:MapKit.MKPointOfInterestCategory.Laundry
@@ -4888,6 +4892,7 @@ F:MapKit.MKPointOfInterestCategory.Library
 F:MapKit.MKPointOfInterestCategory.Mailbox
 F:MapKit.MKPointOfInterestCategory.Marina
 F:MapKit.MKPointOfInterestCategory.MiniGolf
+F:MapKit.MKPointOfInterestCategory.MotorbikeDealership
 F:MapKit.MKPointOfInterestCategory.MovieTheater
 F:MapKit.MKPointOfInterestCategory.Museum
 F:MapKit.MKPointOfInterestCategory.MusicVenue
@@ -4897,14 +4902,18 @@ F:MapKit.MKPointOfInterestCategory.Nightlife
 F:MapKit.MKPointOfInterestCategory.Park
 F:MapKit.MKPointOfInterestCategory.Parking
 F:MapKit.MKPointOfInterestCategory.Pharmacy
+F:MapKit.MKPointOfInterestCategory.PicnicArea
 F:MapKit.MKPointOfInterestCategory.Planetarium
 F:MapKit.MKPointOfInterestCategory.Police
 F:MapKit.MKPointOfInterestCategory.PostOffice
 F:MapKit.MKPointOfInterestCategory.PublicTransport
+F:MapKit.MKPointOfInterestCategory.RangerStation
+F:MapKit.MKPointOfInterestCategory.RestArea
 F:MapKit.MKPointOfInterestCategory.Restaurant
 F:MapKit.MKPointOfInterestCategory.Restroom
 F:MapKit.MKPointOfInterestCategory.RockClimbing
 F:MapKit.MKPointOfInterestCategory.RVPark
+F:MapKit.MKPointOfInterestCategory.ScenicView
 F:MapKit.MKPointOfInterestCategory.School
 F:MapKit.MKPointOfInterestCategory.SkatePark
 F:MapKit.MKPointOfInterestCategory.Skating
@@ -4917,7 +4926,9 @@ F:MapKit.MKPointOfInterestCategory.Surfing
 F:MapKit.MKPointOfInterestCategory.Swimming
 F:MapKit.MKPointOfInterestCategory.Tennis
 F:MapKit.MKPointOfInterestCategory.Theater
+F:MapKit.MKPointOfInterestCategory.TicketOffice
 F:MapKit.MKPointOfInterestCategory.University
+F:MapKit.MKPointOfInterestCategory.VisitorCenter
 F:MapKit.MKPointOfInterestCategory.Volleyball
 F:MapKit.MKPointOfInterestCategory.Winery
 F:MapKit.MKPointOfInterestCategory.Zoo

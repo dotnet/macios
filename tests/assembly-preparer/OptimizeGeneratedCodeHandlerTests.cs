@@ -88,7 +88,8 @@ public class OptimizeGeneratedCodeHandlerTests : BaseClass {
 	public void NoOptimizationWithoutBindingAttributes (ApplePlatform platform, bool isCoreCLR)
 	{
 		// The method deliberately has no [BindingImpl (BindingImplOptions.Optimizable)] attribute, so
-		// the optimizer must leave it untouched (the dead 'return 2' must not be eliminated).
+		// the optimizer must leave it untouched: the Runtime.IsARM64CallingConvention condition must not
+		// be inlined and the dead 'return 2' must not be eliminated.
 		var code = @"
 		using System;
 		using Foundation;
@@ -97,7 +98,7 @@ public class OptimizeGeneratedCodeHandlerTests : BaseClass {
 		class MyClass : NSObject {
 			[Export (""myMethod"")]
 			public int MyMethod () {
-				if (true) {
+				if (Runtime.IsARM64CallingConvention) {
 					return 1;
 				}
 				return 2;
@@ -107,7 +108,8 @@ public class OptimizeGeneratedCodeHandlerTests : BaseClass {
 		AssertPrepareCode (platform, isCoreCLR, preparer => {
 			preparer.Registrar = RegistrarMode.Dynamic;
 			preparer.Optimizations.DeadCodeElimination = true;
-		}, code, out var outputPath);
+			preparer.Optimizations.InlineIsARM64CallingConvention = true;
+		}, code, out var outputPath, extraCsproj: "<PropertyGroup><Optimize>true</Optimize></PropertyGroup>", extraConfig: "TargetArchitectures=ARM64");
 
 		using var assemblyDefinition = AssemblyDefinition.ReadAssembly (outputPath);
 		var type = assemblyDefinition.MainModule.Types.Single (v => v.Name == "MyClass");
@@ -125,6 +127,8 @@ public class OptimizeGeneratedCodeHandlerTests : BaseClass {
 	[TestCase (ApplePlatform.MacOSX, true)]
 	public void DeadCodeElimination (ApplePlatform platform, bool isCoreCLR)
 	{
+		// The Runtime.IsARM64CallingConvention condition is inlined to a constant, after which the
+		// unreachable 'return 2' branch is eliminated (the method is optimizable via [BindingImpl]).
 		var code = @"
 		using System;
 		using Foundation;
@@ -134,7 +138,7 @@ public class OptimizeGeneratedCodeHandlerTests : BaseClass {
 			[BindingImpl (BindingImplOptions.Optimizable)]
 			[Export (""myMethod"")]
 			public int MyMethod () {
-				if (true) {
+				if (Runtime.IsARM64CallingConvention) {
 					return 1;
 				}
 				return 2;
@@ -144,7 +148,8 @@ public class OptimizeGeneratedCodeHandlerTests : BaseClass {
 		AssertPrepareCode (platform, isCoreCLR, preparer => {
 			preparer.Registrar = RegistrarMode.Dynamic;
 			preparer.Optimizations.DeadCodeElimination = true;
-		}, code, out var outputPath);
+			preparer.Optimizations.InlineIsARM64CallingConvention = true;
+		}, code, out var outputPath, extraCsproj: "<PropertyGroup><Optimize>true</Optimize></PropertyGroup>", extraConfig: "TargetArchitectures=ARM64");
 
 		using var assemblyDefinition = AssemblyDefinition.ReadAssembly (outputPath);
 		var type = assemblyDefinition.MainModule.Types.Single (v => v.Name == "MyClass");

@@ -518,6 +518,15 @@ namespace Foundation {
 				return true;
 			}
 
+			// The proxy uri's scheme indicates how to connect to the proxy itself (not which requests to
+			// proxy). NSUrlSession's connection proxy dictionary can only describe a plain-HTTP connection
+			// to the proxy (the HTTP/HTTPS proxy keys select the destination scheme, not the protocol used
+			// to reach the proxy, and there's no key to connect to the proxy over TLS or via SOCKS). Rather
+			// than silently connecting over plain HTTP and doing the wrong thing for a secure ("https") or
+			// SOCKS proxy, fail loudly for any scheme we can't honor.
+			if (!string.Equals (proxyUri.Scheme, Uri.UriSchemeHttp, StringComparison.OrdinalIgnoreCase))
+				throw new NotSupportedException ($"The proxy scheme '{proxyUri.Scheme}' is not supported. Only 'http' proxies are supported.");
+
 			var strongProxy = new ProxyConfigurationDictionary {
 				HttpEnable = true,
 				HttpProxyHost = proxyUri.DnsSafeHost,

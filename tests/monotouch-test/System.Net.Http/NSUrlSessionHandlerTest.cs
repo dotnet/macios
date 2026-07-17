@@ -527,6 +527,35 @@ namespace MonoTests.System.Net.Http {
 		}
 
 		[Test]
+		public void ProxyWithUnsupportedSchemeThrows ()
+		{
+			// A secure ("https") proxy connection can't be expressed via NSUrlSession's connection proxy
+			// dictionary, so instead of silently connecting to the proxy over plain HTTP we should fail
+			// loudly.
+			using var handler = new NSUrlSessionHandler ();
+			handler.Proxy = new WebProxy ("https://127.0.0.1:8888");
+			using var client = new HttpClient (handler);
+
+			Exception? caught = null;
+			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
+				try {
+					await client.GetAsync ("http://proxy-scheme-test.example/").ConfigureAwait (false);
+				} catch (Exception e) {
+					caught = e;
+				}
+			}, out var ex);
+
+			Assert.That (done, Is.True, "Request completed");
+			Assert.That (ex, Is.Null, $"Exception: {ex}");
+
+			// The NotSupportedException may be wrapped by HttpClient, so walk the inner exception chain.
+			var notSupported = caught;
+			while (notSupported is not null && notSupported is not NotSupportedException)
+				notSupported = notSupported.InnerException;
+			Assert.That (notSupported, Is.InstanceOf<NotSupportedException> (), $"Should have thrown a NotSupportedException for an unsupported proxy scheme, but was: {caught}");
+		}
+
+		[Test]
 		public void ProxyPropertiesBehaveCorrectly ()
 		{
 			using var handler = new NSUrlSessionHandler ();

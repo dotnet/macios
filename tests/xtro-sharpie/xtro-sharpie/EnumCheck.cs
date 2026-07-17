@@ -67,6 +67,12 @@ namespace Extrospection {
 			if (!decl.IsAvailable ())
 				return;
 
+			// The availability attribute (e.g. API_UNAVAILABLE(maccatalyst)) is sometimes attached to
+			// the typedef that names the enum instead of to the enum declaration itself, in which case
+			// decl.IsAvailable () above won't detect it. Look for the corresponding typedef and check it too.
+			if (IsUnavailableViaTypedef (decl))
+				return;
+
 			var framework = Helpers.GetFramework (decl);
 			if (framework is null)
 				return;
@@ -282,6 +288,29 @@ namespace Extrospection {
 
 			if (native_size != managed_size && !decl.IsDeprecated ())
 				Log.On (framework).Add ($"!wrong-enum-size! {name} managed {managed_size} vs native {native_size}");
+		}
+
+		// The availability attribute for an enum can be attached to the typedef that names the enum
+		// (e.g. `typedef NS_ENUM(NSInteger, Foo) { ... } API_UNAVAILABLE(maccatalyst);`) instead of to
+		// the enum declaration itself. In that case the attribute lands on the TypedefDecl, not the
+		// EnumDecl, so we look for the corresponding sibling typedef and check its availability.
+		static bool IsUnavailableViaTypedef (EnumDecl decl)
+		{
+			var context = decl.DeclContext;
+			if (context is null)
+				return false;
+
+			foreach (var sibling in context.Decls) {
+				if (sibling is not TypedefDecl typedef)
+					continue;
+				if (typedef.Name != decl.Name)
+					continue;
+				if (typedef.UnderlyingType.UnqualifiedDesugaredType is not EnumType)
+					continue;
+				if (!typedef.IsAvailable ())
+					return true;
+			}
+			return false;
 		}
 
 		static bool IsErrorEnum (string typeName)

@@ -25,6 +25,7 @@ namespace CryptoTokenKit {
 		TokenNotFound = -7,
 		BadParameter = -8,
 		AuthenticationNeeded = -9,
+		InvalidatedDeviceKey = -10,
 	}
 
 #if !STABLE_CRYPTOTOKENKIT

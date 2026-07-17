@@ -359,6 +359,7 @@ class MyObjectErr : NSObject, IFoo1, IFoo2
 					new { Framework = "AccessorySetupKit", Version = "18.0" },
 					new { Framework = "TouchController", Version = "26.0" },
 					new { Framework = "AVSystemRouting", Version = "27.0" },
+					new { Framework = "EnhancedLinkSecurity", Version = "27.0" },
 					new { Framework = "LinkSecurity", Version = "27.0" },
 				};
 				foreach (var framework in invalidFrameworks)

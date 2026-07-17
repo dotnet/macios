@@ -1401,6 +1401,14 @@ namespace CoreImage {
 		[Export ("supportedCameraModels")]
 		string [] SupportedCameraModels { get; }
 
+		/// <param name="version">The RAW decoder version.</param>
+		/// <summary>Gets the camera models supported by the specified RAW decoder version.</summary>
+		/// <returns>The names of the supported camera models.</returns>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Static]
+		[Export ("supportedCameraModelsWithVersion:")]
+		string [] GetSupportedCameraModels ([BindAs (typeof (CIRawDecoderVersion))] NSString version);
+
 		[Export ("supportedDecoderVersions")]
 		string [] SupportedDecoderVersions { get; }
 
@@ -1481,6 +1489,17 @@ namespace CoreImage {
 
 		[Export ("moireReductionAmount")]
 		float MoireReductionAmount { get; set; }
+
+		/// <summary>Gets whether the RAW image supports despeckle correction.</summary>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("despeckleSupported")]
+		bool DespeckleSupported { [Bind ("isDespeckleSupported")] get; }
+
+		/// <summary>Gets or sets the amount of despeckle correction applied to the RAW image.</summary>
+		/// <value>A value from 0 for no correction to 1 for maximum correction.</value>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("despeckleAmount")]
+		float DespeckleAmount { get; set; }
 
 		[Export ("localToneMapSupported")]
 		bool LocalToneMapSupported { [Bind ("isLocalToneMapSupported")] get; }
@@ -2902,6 +2921,21 @@ namespace CoreImage {
 
 		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
 		bool ApplyCleanAperture { get; }
+
+		/// <summary>Gets or sets the factor by which image data is downsampled while decoding.</summary>
+		/// <value>The integer value 2, 4, or 8.</value>
+		/// <remarks>Downsampling is supported for JPEG, HEIF, TIFF, PNG, and RAW image formats.</remarks>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		int SubsampleFactor { get; set; }
+
+		/// <summary>Gets or sets the uniform type identifier used when the image format cannot be determined from its contents.</summary>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		string TypeIdentifierHint { get; set; }
+
+		/// <summary>Gets or sets whether hardware-accelerated image decoding is preferred.</summary>
+		/// <remarks>If this option is not specified, hardware-accelerated decoding is preferred.</remarks>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		bool UseHardwareAcceleration { get; set; }
 	}
 
 	[Internal]
@@ -2985,6 +3019,18 @@ namespace CoreImage {
 		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
 		[Field ("kCIImageApplyCleanAperture")]
 		NSString ApplyCleanApertureKey { get; }
+
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Field ("kCIImageSubsampleFactor")]
+		NSString SubsampleFactorKey { get; }
+
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Field ("kCIImageTypeIdentifierHint")]
+		NSString TypeIdentifierHintKey { get; }
+
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Field ("kCIImageUseHardwareAcceleration")]
+		NSString UseHardwareAccelerationKey { get; }
 	}
 
 	/// <include file="../docs/api/CoreImage/CIImage.xml" path="/Documentation/Docs[@DocId='T:CoreImage.CIImage']/*" />
@@ -4675,6 +4721,33 @@ namespace CoreImage {
 		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Export ("digest")]
 		ulong Digest { get; }
+
+		/// <param name="identifier">A name that uniquely identifies the temporary surface during the processor invocation.</param>
+		/// <param name="format">The pixel format for the surface.</param>
+		/// <param name="width">The width of the surface, in pixels.</param>
+		/// <param name="height">The height of the surface, in pixels.</param>
+		/// <summary>Gets a temporary surface for use as scratch storage during image processing.</summary>
+		/// <returns>A temporary surface, or <see langword="null" /> if one could not be created.</returns>
+		/// <remarks>The returned surface is valid only for the duration of the current image processor invocation.</remarks>
+		[Abstract]
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("temporarySurfaceWithIdentifier:format:width:height:")]
+		[return: NullAllowed]
+		IOSurface.IOSurface GetTemporarySurface (string identifier, CVPixelFormatType format, nuint width, nuint height);
+
+		/// <param name="identifier">A name that uniquely identifies the temporary pixel buffer during the processor invocation.</param>
+		/// <param name="format">The pixel format for the pixel buffer.</param>
+		/// <param name="width">The width of the pixel buffer, in pixels.</param>
+		/// <param name="height">The height of the pixel buffer, in pixels.</param>
+		/// <param name="attributes">Optional pixel buffer creation attributes.</param>
+		/// <summary>Gets a temporary pixel buffer for use as scratch storage during image processing.</summary>
+		/// <returns>A temporary pixel buffer, or <see langword="null" /> if one could not be created.</returns>
+		/// <remarks>The returned pixel buffer is valid only for the duration of the current image processor invocation.</remarks>
+		[Abstract]
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("temporaryPixelBufferWithIdentifier:format:width:height:attributes:")]
+		[return: NullAllowed]
+		CVPixelBuffer GetTemporaryPixelBuffer (string identifier, CVPixelFormatType format, nuint width, nuint height, [NullAllowed] NSDictionary attributes);
 	}
 
 	/// <summary>Options used in various calls to <see cref="CoreImage.CIImage" /> involving <see cref="CoreImage.ICIImageProvider" /> objects.</summary>
@@ -5794,6 +5867,19 @@ namespace CoreImage {
 		[Export ("applyWithExtents:inputs:arguments:error:")]
 		[return: NullAllowed]
 		CIImage [] Apply (CIVector [] extents, [NullAllowed] CIImage [] inputs, [NullAllowed] NSDictionary<NSString, NSObject> arguments, [NullAllowed] out NSError error);
+
+		// From the TiledOutputSupport (CIImageProcessorKernel) category
+		/// <param name="tileExtents">The non-overlapping tile extents produced by the image processor.</param>
+		/// <param name="inputs">The input images.</param>
+		/// <param name="arguments">Additional arguments for the image processor.</param>
+		/// <param name="error">The error if the image could not be created.</param>
+		/// <summary>Creates an image by applying the image processor to the specified tile extents.</summary>
+		/// <returns>The processed image, or <see langword="null" /> if processing failed.</returns>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Static]
+		[Export ("applyWithTiledExtent:inputs:arguments:error:")]
+		[return: NullAllowed]
+		CIImage ApplyWithTiledExtent (CIVector [] tileExtents, [NullAllowed] CIImage [] inputs, [NullAllowed] NSDictionary<NSString, NSObject> arguments, [NullAllowed] out NSError error);
 	}
 
 	/// <summary>Animates a transition by creating an accordion-fold effect on the source image.</summary>
@@ -8946,6 +9032,26 @@ namespace CoreImage {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // no docs, but only returned from CIContext.StartTaskToRender. Handle is null if created thru `init`
 	interface CIRenderTask {
+		/// <summary>Gets the estimated number of pixels that the render will process.</summary>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("plannedPixelsProcessed")]
+		nint PlannedPixelsProcessed { get; }
+
+		/// <summary>Gets the estimated number of pixels that will be overdrawn during the render.</summary>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("plannedPixelsOverdrawn")]
+		nint PlannedPixelsOverdrawn { get; }
+
+		/// <summary>Gets the estimated number of passes required by the render.</summary>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("plannedPassCount")]
+		nint PlannedPassCount { get; }
+
+		/// <summary>Gets the estimated peak memory required for intermediate buffers, in megabytes.</summary>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("plannedPeakMemory")]
+		nint PlannedPeakMemory { get; }
+
 		/// <param name="error">
 		///           <para>To be added.</para>
 		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
@@ -8976,6 +9082,18 @@ namespace CoreImage {
 		/// <remarks>To be added.</remarks>
 		[Export ("prepareRender:fromRect:toDestination:atPoint:error:")]
 		bool PrepareRender (CIImage image, CGRect fromRect, CIRenderDestination destination, CGPoint atPoint, [NullAllowed] out NSError error);
+
+		/// <param name="image">The image to estimate rendering for.</param>
+		/// <param name="fromRect">The region of the image to render.</param>
+		/// <param name="destination">The render destination.</param>
+		/// <param name="atPoint">The point in the destination where the origin of <paramref name="fromRect" /> is placed.</param>
+		/// <param name="error">The error if the render could not be estimated.</param>
+		/// <summary>Estimates the resources required to render an image without executing the render.</summary>
+		/// <returns>A render task containing the estimated statistics, or <see langword="null" /> if estimation failed.</returns>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("estimateRender:fromRect:toDestination:atPoint:error:")]
+		[return: NullAllowed]
+		CIRenderTask EstimateRender (CIImage image, CGRect fromRect, CIRenderDestination destination, CGPoint atPoint, [NullAllowed] out NSError error);
 
 		/// <param name="image">To be added.</param>
 		/// <param name="fromRect">To be added.</param>

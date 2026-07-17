@@ -1,6 +1,0 @@
-!missing-enum! HKCategoryValueMenopausalState not bound
-!missing-field! HKCategoryTypeIdentifierBleedingAfterMenopause not bound
-!missing-field! HKCategoryTypeIdentifierMenopausalState not bound
-!missing-selector! HKLiveWorkoutZoneUpdate::lastSampleProcessedDate not bound
-!missing-type! HKLiveWorkoutZoneUpdate not bound
-!missing-selector! HKHealthStore::getEarliestAuthorizedSampleDateForTypes:completion: not bound

@@ -1,6 +1,0 @@
-!deprecated-attribute-missing! DDDevice::mediaContentSubtitle missing a [Deprecated] attribute
-!deprecated-attribute-missing! DDDevice::mediaContentTitle missing a [Deprecated] attribute
-!deprecated-attribute-missing! DDDevice::mediaPlaybackState missing a [Deprecated] attribute
-!deprecated-attribute-missing! DDDevice::setMediaContentSubtitle: missing a [Deprecated] attribute
-!deprecated-attribute-missing! DDDevice::setMediaContentTitle: missing a [Deprecated] attribute
-!deprecated-attribute-missing! DDDevice::setMediaPlaybackState: missing a [Deprecated] attribute

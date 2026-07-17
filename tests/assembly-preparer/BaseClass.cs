@@ -44,6 +44,18 @@ public abstract class BaseClass {
 	// returns true if the test assembly was modified
 	public bool AssertPrepareCode (ApplePlatform platform, bool isCoreCLR, Action<AssemblyPreparer>? configure, string code, out string outputPath)
 	{
+		using var preparer = CreatePreparer (platform, isCoreCLR, configure, code, out var testInfo);
+		AssertPrepare (preparer);
+
+		outputPath = testInfo.OutputPath;
+		Console.WriteLine ("Output assembly: " + outputPath);
+		return testInfo.InputPath != testInfo.OutputPath;
+	}
+
+	// Builds the provided code into a Test.dll and returns an AssemblyPreparer configured for it, without
+	// running any preparation steps. Use this when a test needs to run a custom set of steps.
+	public AssemblyPreparer CreatePreparer (ApplePlatform platform, bool isCoreCLR, Action<AssemblyPreparer>? configure, string code, out AssemblyPreparerInfo testInfo, string extraCsproj = "", string extraConfig = "", IEnumerable<(string FileName, byte [] Content)>? extraFiles = null)
+	{
 		Configuration.IgnoreIfIgnoredPlatform (platform);
 
 		var csproj = $@"
@@ -53,10 +65,16 @@ public abstract class BaseClass {
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<UseFloatingTargetPlatformVersion>true</UseFloatingTargetPlatformVersion>
 	</PropertyGroup>
+	{extraCsproj}
 </Project>
     ";
 
 		var tmpdir = Xamarin.Cache.CreateTemporaryDirectory ();
+
+		if (extraFiles is not null) {
+			foreach (var extraFile in extraFiles)
+				File.WriteAllBytes (Path.Combine (tmpdir, extraFile.FileName), extraFile.Content);
+		}
 
 		var config = $@"
 		AreAnyAssembliesTrimmed=true
@@ -67,6 +85,7 @@ public abstract class BaseClass {
 		SdkDevPath={Configuration.XcodeLocation}
 		SdkVersion={Configuration.GetSdkVersion (platform)}
 		TargetFramework={TargetFramework.GetTargetFramework (platform)}
+		{extraConfig}
 		";
 		var configpath = Path.Combine (tmpdir, "config.txt");
 		File.WriteAllText (configpath, config);
@@ -87,12 +106,8 @@ public abstract class BaseClass {
 		var preparer = new AssemblyPreparer (logger, infos, configpath);
 		if (configure is not null)
 			configure (preparer);
-		AssertPrepare (preparer);
 
-		var testInfo = infos.Single (v => Path.GetFileNameWithoutExtension (v.InputPath) == "Test");
-		outputPath = testInfo.OutputPath;
-		Console.WriteLine ("Output assembly: " + outputPath);
-		preparer.Dispose ();
-		return testInfo.InputPath != testInfo.OutputPath;
+		testInfo = infos.Single (v => Path.GetFileNameWithoutExtension (v.InputPath) == "Test");
+		return preparer;
 	}
 }

@@ -28,7 +28,10 @@ namespace NearbyInteraction {
 		[UnsupportedOSPlatform ("macos")]
 		public static NSString GetConvergenceStatusReason (NIAlgorithmConvergenceStatusReason reason)
 		{
-			return Runtime.GetNSObject<NSString> (NIAlgorithmConvergenceStatusReasonDescription (reason.GetConstant ().GetHandle ()))!;
+			var constant = reason.GetConstant ();
+			var rv = Runtime.GetNSObject<NSString> (NIAlgorithmConvergenceStatusReasonDescription (constant.GetHandle ()))!;
+			GC.KeepAlive (constant);
+			return rv;
 		}
 	}
 }

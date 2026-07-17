@@ -1,7 +1,0 @@
-!missing-selector! +IMEnhancedLinkSecurityManager::sharedManager not bound
-!missing-selector! IMEnhancedLinkSecurityManager::hasURLsRequiringEnhancedSecurity not bound
-!missing-selector! IMEnhancedLinkSecurityManager::requestEnhancedSecurityForURL: not bound
-!missing-selector! IMEnhancedLinkSecurityManager::requestEnhancedSecurityForURLs: not bound
-!missing-selector! IMEnhancedLinkSecurityManager::shouldUseEnhancedSecurityForURL: not bound
-!missing-selector! IMEnhancedLinkSecurityManager::shouldUseEnhancedSecurityForURL:completion: not bound
-!missing-type! IMEnhancedLinkSecurityManager not bound

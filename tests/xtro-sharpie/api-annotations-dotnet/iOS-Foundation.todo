@@ -1,6 +1,0 @@
-!deprecated-attribute-missing! NSBundle::preservationPriorityForTag: missing a [Deprecated] attribute
-!deprecated-attribute-missing! NSBundle::setPreservationPriority:forTags: missing a [Deprecated] attribute
-!deprecated-attribute-missing! NSBundleResourceRequest missing a [Deprecated] attribute
-!deprecated-attribute-missing! NSItemProvider::initWithItem:typeIdentifier: missing a [Deprecated] attribute
-!deprecated-attribute-missing! NSItemProvider::loadItemForTypeIdentifier:options:completionHandler: missing a [Deprecated] attribute
-!deprecated-attribute-missing! NSItemProvider::registerItemForTypeIdentifier:loadHandler: missing a [Deprecated] attribute

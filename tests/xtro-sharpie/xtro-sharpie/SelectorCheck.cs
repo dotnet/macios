@@ -178,7 +178,10 @@ namespace Extrospection {
 				return;
 
 			foreach (var iface in type.Interfaces) {
-				var protocolName = ObjCInterfaceCheck.GetProtocolName (iface.InterfaceType.Resolve ());
+				var ifaceType = iface.InterfaceType.Resolve ();
+				if (ifaceType is null)
+					continue;
+				var protocolName = ObjCInterfaceCheck.GetProtocolName (ifaceType);
 				if (!string.IsNullOrEmpty (protocolName))
 					GetOrCreate (managed_type_protocols, nativeName).Add (protocolName);
 			}
@@ -224,8 +227,8 @@ namespace Extrospection {
 		{
 			// collect the native property accessor selectors for the reverse (managed -> native)
 			// check (including protocol members, so inlined protocol properties aren't mis-reported)
-			AddNativeSelector (decl.DeclContext as Decl, decl.GetterMethodDecl?.Name, decl.GetterMethodDecl?.IsClassMethod == true);
-			AddNativeSelector (decl.DeclContext as Decl, decl.SetterMethodDecl?.Name, decl.SetterMethodDecl?.IsClassMethod == true);
+			AddNativeSelector (decl.DeclContext as Decl, decl.GetterMethodDecl?.GetSelector (), decl.GetterMethodDecl?.IsClassMethod == true);
+			AddNativeSelector (decl.DeclContext as Decl, decl.SetterMethodDecl?.GetSelector (), decl.SetterMethodDecl?.IsClassMethod == true);
 
 			// protocol members are checked in ObjCProtocolCheck
 			if (decl.DeclContext is ObjCProtocolDecl)

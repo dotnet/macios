@@ -41,12 +41,21 @@ public sealed class AvailabilityMassager : Massager<AvailabilityMassager> {
 		if (decl is null)
 			return;
 
-		if (decl.Attrs.IsUnavailableAttr ()) {
+		// For enums, the availability attributes may be attached to the typedef that names
+		// the enum (e.g. `typedef NS_ENUM(NSInteger, Foo) { ... } API_UNAVAILABLE(maccatalyst);`)
+		// rather than to the enum declaration itself. BindingGenerator.VisitTypedefDecl links
+		// that typedef to the enum, so include its attributes here as well.
+		IEnumerable<Attr> attrs = decl.Attrs;
+		var typedef = decl.GetAnnotations<TypedefDecl> ().FirstOrDefault ();
+		if (typedef is not null)
+			attrs = attrs.Concat (typedef.Attrs);
+
+		if (attrs.IsUnavailableAttr ()) {
 			entity.Remove ();
 			return;
 		}
 
-		foreach (var attr in decl.Attrs.GetAvailabilityAttributes ().SelectMany (AvailabilityBaseAttribute.FromClang))
+		foreach (var attr in attrs.GetAvailabilityAttributes ().SelectMany (AvailabilityBaseAttribute.FromClang))
 			entity.AddAttribute (attr);
 	}
 }

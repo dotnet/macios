@@ -63,7 +63,13 @@ class SceneDelegate : UIResponder, IUIWindowSceneDelegate {
 				var documentsPath = Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments);
 				var resultsPath = Path.Combine (documentsPath, "TestResults");
 
+				// Forward args from 'dotnet test', which sends the MTP protocol config
+				// (--server / --dotnet-test-pipe) via the command line.
+				// Environment.GetCommandLineArgs()[0] is the executable path, not an argument.
+				string [] cliArgs = Environment.GetCommandLineArgs ();
+				string [] mtpArgs = cliArgs.Length > 1 ? cliArgs [1..] : [];
 				var builder = await TestApplication.CreateBuilderAsync ([
+					.. mtpArgs,
 					"--results-directory", resultsPath,
 					"--report-trx"
 				]);

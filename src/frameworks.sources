@@ -937,6 +937,7 @@ FSKIT_CORE_SOURCES = \
 
 FSKIT_SOURCES = \
 	FSKit/FSBlockDeviceResource.cs \
+	FSKit/FSEntityIdentifier.cs \
 	FSKit/FSFileName.cs \
 	FSKit/FSKitFunctions.cs \
 

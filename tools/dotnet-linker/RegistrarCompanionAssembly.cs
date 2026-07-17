@@ -13,7 +13,7 @@ namespace Xamarin.Linker {
 	// Holds the state for a per-assembly companion TypeMap assembly (_<Asm>.TypeMap.dll)
 	// that's shared between ManagedRegistrarStep and TrimmableRegistrarStep when
 	// HotReloadCompatibleBuild is enabled.
-	public class RegistrarCompanionAssembly {
+	internal sealed class RegistrarCompanionAssembly {
 		// The companion assembly itself.
 		public AssemblyDefinition Assembly;
 

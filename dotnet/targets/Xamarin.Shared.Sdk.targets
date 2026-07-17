@@ -731,7 +731,6 @@
 				Platform=$(_PlatformName)
 				PlatformAssembly=$(_PlatformAssemblyName).dll
 				PrepareAssemblies=$(PrepareAssemblies)
-				HotReloadCompatibleBuild=$(HotReloadCompatibleBuild)
 				PublishTrimmed=$(PublishTrimmed)
 				RelativeAppBundlePath=$(_RelativeAppBundlePath)
 				Registrar=$(Registrar)

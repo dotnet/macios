@@ -98,7 +98,7 @@ namespace Xamarin.Linker {
 		// Only non-generic types are relocated for now; generic-type proxies are a follow-up.
 		bool ShouldRelocateTrampolines (MethodDefinition method)
 		{
-			return App.HotReloadCompatibleBuild
+			return Configuration.HotReloadCompatibleBuild
 				&& App.Registrar == RegistrarMode.TrimmableStatic
 				&& !method.DeclaringType.HasGenericParameters;
 		}
@@ -224,7 +224,7 @@ namespace Xamarin.Linker {
 			// When HotReloadCompatibleBuild is enabled we track modifications precisely (modifiedCurrentAssembly)
 			// so we can leave the user assembly unmodified when everything was relocated into the companion.
 			// Otherwise we keep the historical behavior of saving whenever any type was processed.
-			var shouldSave = App.HotReloadCompatibleBuild ? modifiedCurrentAssembly : modified;
+			var shouldSave = Configuration.HotReloadCompatibleBuild ? modifiedCurrentAssembly : modified;
 			if (shouldSave)
 				abr.SaveCurrentAssembly ();
 
@@ -440,6 +440,13 @@ namespace Xamarin.Linker {
 				abr.ClearCurrentAssembly ();
 				companion = RegistrarCompanionAssembly.GetOrCreate (Configuration, method.Module.Assembly);
 				abr.SetCurrentAssembly (companion.Assembly);
+			} else {
+				// We're emitting the trampoline (and, for generic types, a proxy interface and its
+				// implementation) into the user assembly, so make sure it gets saved. This matters
+				// when HotReloadCompatibleBuild is enabled but this particular method isn't relocated
+				// (e.g. it's declared in a generic type): the user assembly is modified here even
+				// though other methods in the same assembly may have been relocated.
+				modifiedCurrentAssembly = true;
 			}
 
 			var placeholderType = abr.System_IntPtr;

@@ -143,7 +143,7 @@ namespace Xamarin.Linker {
 		// assembly they belong to. When HotReloadCompatibleBuild is enabled, ManagedRegistrarStep
 		// creates these early (so it can emit the registrar trampolines into them instead of into
 		// the user assembly) and TrimmableRegistrarStep reuses them.
-		public Dictionary<AssemblyDefinition, RegistrarCompanionAssembly> RegistrarCompanionAssemblies = new ();
+		internal Dictionary<AssemblyDefinition, RegistrarCompanionAssembly> RegistrarCompanionAssemblies = new ();
 
 		// ASSEMBLY_PREPARER TODO move pinvoke wrapper generation out of ListExportedFields step (and remove the #pragma warning)
 #pragma warning disable CS0649 // Field is never assigned to, and will always have its default value null
@@ -485,10 +485,6 @@ namespace Xamarin.Linker {
 				{ "PrepareAssemblies", (
 					new LoadValue ((key, value) => loadBool (key, value, out Application.PrepareAssemblies)),
 					new SaveValue ((key, storage) => saveOptionalDefaultFalseBool (key, Application.PrepareAssemblies, storage))
-				)},
-				{ "HotReloadCompatibleBuild", (
-					new LoadValue ((key, value) => loadBool (key, value, out Application.HotReloadCompatibleBuild)),
-					new SaveValue ((key, storage) => saveOptionalDefaultFalseBool (key, Application.HotReloadCompatibleBuild, storage))
 				)},
 				{ "PublishTrimmed", (
 					new LoadValue ((key, value) => PublishTrimmed = string.Equals ("true", value, StringComparison.OrdinalIgnoreCase)),

@@ -3292,7 +3292,7 @@ namespace GameController {
 		/// <param name="error">The error if the settings could not be opened; otherwise, <see langword="null" />.</param>
 		/// <returns><see langword="true" /> if the settings were opened; otherwise, <see langword="false" />.</returns>
 		[Export ("openControllerHomeButtonSettingsForActivity:error:")]
-		bool OpenControllerHomeButtonSettingsForActivity (GCControllerHomeButtonSettingsCustomizationActivity activity, [NullAllowed] out NSError error);
+		bool OpenControllerHomeButtonSettings (GCControllerHomeButtonSettingsCustomizationActivity activity, [NullAllowed] out NSError error);
 
 		/// <summary>Gets the current controller Home button system action and its customization status.</summary>
 		/// <param name="customization">The customization status for the setting.</param>

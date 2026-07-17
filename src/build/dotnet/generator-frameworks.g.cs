@@ -61,6 +61,7 @@ partial class Frameworks {
 		"DeviceCheck",
 		"DeviceDiscoveryExtension",
 		"DeviceDiscoveryUI",
+		"EnhancedLinkSecurity",
 		"EventKit",
 		"EventKitUI",
 		"ExtensionKit",
@@ -206,6 +207,7 @@ partial class Frameworks {
 		"DataDetection",
 		"DeviceCheck",
 		"DeviceDiscoveryExtension",
+		"EnhancedLinkSecurity",
 		"EventKit",
 		"ExecutionPolicy",
 		"ExtensionKit",
@@ -338,6 +340,7 @@ partial class Frameworks {
 		"DataDetection",
 		"DeviceCheck",
 		"DeviceDiscoveryUI",
+		"EnhancedLinkSecurity",
 		"ExternalAccessory",
 		"Foundation",
 		"GameController",
@@ -449,6 +452,7 @@ partial class Frameworks {
 		"DataDetection",
 		"DeviceCheck",
 		"DeviceDiscoveryExtension",
+		"EnhancedLinkSecurity",
 		"EventKit",
 		"EventKitUI",
 		"ExecutionPolicy",
@@ -599,6 +603,7 @@ partial class Frameworks {
 	bool? _DeviceCheck;
 	bool? _DeviceDiscoveryExtension;
 	bool? _DeviceDiscoveryUI;
+	bool? _EnhancedLinkSecurity;
 	bool? _EventKit;
 	bool? _EventKitUI;
 	bool? _ExecutionPolicy;
@@ -776,6 +781,7 @@ partial class Frameworks {
 	public bool HaveDeviceCheck { get { if (!_DeviceCheck.HasValue) _DeviceCheck = GetValue ("DeviceCheck"); return _DeviceCheck.Value; } }
 	public bool HaveDeviceDiscoveryExtension { get { if (!_DeviceDiscoveryExtension.HasValue) _DeviceDiscoveryExtension = GetValue ("DeviceDiscoveryExtension"); return _DeviceDiscoveryExtension.Value; } }
 	public bool HaveDeviceDiscoveryUI { get { if (!_DeviceDiscoveryUI.HasValue) _DeviceDiscoveryUI = GetValue ("DeviceDiscoveryUI"); return _DeviceDiscoveryUI.Value; } }
+	public bool HaveEnhancedLinkSecurity { get { if (!_EnhancedLinkSecurity.HasValue) _EnhancedLinkSecurity = GetValue ("EnhancedLinkSecurity"); return _EnhancedLinkSecurity.Value; } }
 	public bool HaveEventKit { get { if (!_EventKit.HasValue) _EventKit = GetValue ("EventKit"); return _EventKit.Value; } }
 	public bool HaveEventKitUI { get { if (!_EventKitUI.HasValue) _EventKitUI = GetValue ("EventKitUI"); return _EventKitUI.Value; } }
 	public bool HaveExecutionPolicy { get { if (!_ExecutionPolicy.HasValue) _ExecutionPolicy = GetValue ("ExecutionPolicy"); return _ExecutionPolicy.Value; } }

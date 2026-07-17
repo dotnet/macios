@@ -17120,6 +17120,11 @@ M:DeviceCheck.DCDevice.GenerateToken(DeviceCheck.DCDeviceGenerateTokenCompletion
 M:DeviceDiscoveryExtension.DDDevice.#ctor(System.String,DeviceDiscoveryExtension.DDDeviceCategory,UniformTypeIdentifiers.UTType,System.String)
 M:DeviceDiscoveryExtension.DDDeviceEvent.#ctor(DeviceDiscoveryExtension.DDEventType,DeviceDiscoveryExtension.DDDevice)
 M:DeviceDiscoveryExtension.DDDiscoverySession.ReportEvent(DeviceDiscoveryExtension.DDDeviceEvent)
+M:EnhancedLinkSecurity.IMEnhancedLinkSecurityManager.RequestEnhancedSecurity(Foundation.NSUrl)
+M:EnhancedLinkSecurity.IMEnhancedLinkSecurityManager.RequestEnhancedSecurity(Foundation.NSUrl[])
+M:EnhancedLinkSecurity.IMEnhancedLinkSecurityManager.ShouldUseEnhancedSecurity(Foundation.NSUrl,System.Action{System.Boolean})
+M:EnhancedLinkSecurity.IMEnhancedLinkSecurityManager.ShouldUseEnhancedSecurity(Foundation.NSUrl)
+M:EnhancedLinkSecurity.IMEnhancedLinkSecurityManager.ShouldUseEnhancedSecurityAsync(Foundation.NSUrl)
 M:EventKit.EKAlarm.FromDate(Foundation.NSDate)
 M:EventKit.EKAlarm.FromTimeInterval(System.Double)
 M:EventKit.EKCalendar.Create(EventKit.EKEntityType,EventKit.EKEventStore)
@@ -41162,6 +41167,8 @@ P:DeviceDiscoveryExtension.DDDevice.WifiAwareServiceRole
 P:DeviceDiscoveryExtension.DDDevice.WifiAwareVendorName
 P:DeviceDiscoveryExtension.DDDeviceEvent.Device
 P:DeviceDiscoveryExtension.DDDeviceEvent.EventType
+P:EnhancedLinkSecurity.IMEnhancedLinkSecurityManager.HasUrlsRequiringEnhancedSecurity
+P:EnhancedLinkSecurity.IMEnhancedLinkSecurityManager.SharedManager
 P:EventKit.EKAlarm.AbsoluteDate
 P:EventKit.EKAlarm.EmailAddress
 P:EventKit.EKAlarm.Proximity
@@ -58637,6 +58644,7 @@ T:DeviceDiscoveryExtension.DDDiscoverySession
 T:DeviceDiscoveryExtension.DDErrorCode
 T:DeviceDiscoveryExtension.DDEventType
 T:DeviceDiscoveryUI.DDDevicePickerViewController
+T:EnhancedLinkSecurity.IMEnhancedLinkSecurityManager
 T:EventKit.EKAlarmType
 T:EventKit.EKEventStoreRequestAccessCompletionHandler
 T:EventKit.EKParticipantScheduleStatus

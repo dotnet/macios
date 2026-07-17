@@ -220,9 +220,9 @@ namespace Xamarin.Linker {
 						var ctor = abr.CurrentAssembly.MainModule.ImportReference (ctorRef);
 
 						// Implement INSObjectFactory._Xamarin_ConstructNSObject
-						abr.ImplementConstructNSObjectFactoryMethod (DerivedLinkContext, type, ctor);
+						modified |= abr.ImplementConstructNSObjectFactoryMethod (DerivedLinkContext, type, ctor);
 						// Implement INativeObject._Xamarin_ConstructINativeObject
-						abr.ImplementConstructINativeObjectFactoryMethod (DerivedLinkContext, type, ctor);
+						modified |= abr.ImplementConstructINativeObjectFactoryMethod (DerivedLinkContext, type, ctor);
 					}
 				} else if (type.IsNativeObject ()) {
 					var ctorRef = AppBundleRewriter.FindINativeObjectConstructor (type);
@@ -230,7 +230,7 @@ namespace Xamarin.Linker {
 						var ctor = abr.CurrentAssembly.MainModule.ImportReference (ctorRef);
 
 						// Implement INativeObject._Xamarin_ConstructINativeObject
-						abr.ImplementConstructINativeObjectFactoryMethod (DerivedLinkContext, type, ctor);
+						modified |= abr.ImplementConstructINativeObjectFactoryMethod (DerivedLinkContext, type, ctor);
 					}
 				}
 			}

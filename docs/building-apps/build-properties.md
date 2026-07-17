@@ -300,6 +300,17 @@ This also applies to how native references are stored inside NuGets.
 > [!NOTE]
 > In some cases it can be beneficial to force a zip file on iOS as well, especially when there's a framework with files that have long names, because the zip file can sometimes work around MAX_PATH issues on Windows.
 
+## CopyDSYMToPublishDirectory
+
+A boolean property that specifies whether any generated `*.dSYM` directories should be
+copied to the publish directory when publishing (`dotnet publish`).
+
+The `*.dSYM` directories are generated next to the app bundle (see [NoDSymUtil](#nodsymutil)),
+and when this property is `true` they'll also be copied to the publish directory (next to the
+generated `.ipa`/`.pkg`).
+
+The default value is `true`.
+
 ## CopySceneKitAssetsPath
 
 The full path to the `copySceneKitAssets` tool.
@@ -535,6 +546,10 @@ diagnostics, while NativeAOT never does).
 Enables the concurrent mode for the SGen garbage collector.
 
 Only applicable to iOS, tvOS and Mac Catalyst (when not using NativeAOT).
+
+This property only has an effect when using the Mono runtime, and a warning
+will be shown if it's set when not using the Mono runtime (for instance when
+using CoreCLR).
 
 ## EventSourceSupport
 
@@ -991,7 +1006,8 @@ will decrease the amount of memory used at runtime:
 
 The downside is that type checks (`obj is SomeInterface`) will be slower.
 
-Only applicable when using the Mono runtime.
+Only applicable when using the Mono runtime. A warning will be shown if it's
+set when not using the Mono runtime (for instance when using CoreCLR).
 
 ## MtouchDebug
 
@@ -1008,6 +1024,10 @@ Enables the concurrent mode for the SGen garbage collector.
 Only applicable to iOS, tvOS and Mac Catalyst when not using NativeAOT.
 
 This property is deprecated, use [EnableSGenConc](#enablesgenconc) instead.
+
+This property only has an effect when using the Mono runtime, and a warning
+will be shown if it's set when not using the Mono runtime (for instance when
+using CoreCLR).
 
 ## MtouchExtraArgs
 
@@ -1052,6 +1072,10 @@ The default behavior is to not enable the interpreter.
 > [!NOTE]
 > MAUI changes the default by setting `UseInterpreter=true` for the `"Debug"` configuration.
 
+This property only has an effect when using the Mono runtime, and a warning
+will be shown if it's set when not using the Mono runtime (for instance when
+using CoreCLR).
+
 ## MtouchLink
 
 Specifies the link mode for the project (`None`, `SdkOnly`, `Full`).
@@ -1080,7 +1104,14 @@ Default:
 * On iOS and tvOS: enabled for Release builds (where `Configuration="Release"`).
 * On Mac Catalyst: never enabled by default.
 
+This property only has an effect when using the Mono runtime, and a warning
+will be shown if it's set when not using the Mono runtime (for instance when
+using CoreCLR).
+
 ## NoBindingEmbedding
+
+> [!WARNING]
+> Setting this property to `false` is currently deprecated and will produce a build error in .NET 12+.
 
 A boolean property that specifies whether native libraries in binding projects should be embedded
 in the managed assembly, or put into a `.resources` directory next to the managed assembly.
@@ -1223,6 +1254,23 @@ The default behavior is to use `xcrun productbuild`.
 The product definition template (`.plist`) to be used when creating the product definition to pass to the product build tool when creating packages (.pkg).
 
 Only applicable to macOS and Mac Catalyst apps.
+
+## RecommendedXcodeVersion
+
+The version of Xcode recommended for use with this version of .NET for iOS, tvOS, macOS and Mac Catalyst.
+
+This is the Xcode version the build validates against (see [ValidateXcodeVersion](#validatexcodeversion)); using a different version is likely to produce problems later on in the build process.
+
+This property is read-only: it's computed by the SDK and shouldn't be set in project files.
+
+You can get the recommended Xcode version for a project by running:
+
+```shell
+$ dotnet build -getProperty:RecommendedXcodeVersion myProject.csproj
+26.6
+```
+
+Note: the version number may contain more than 2 components ("26.6.1" for instance). Only the first two components (major and minor) are taken into account when validating the installed Xcode version.
 
 ## ReferenceNativeSymbol
 
@@ -1609,6 +1657,10 @@ The default behavior is to not enable the interpreter.
 > MAUI changes the default by setting `UseInterpreter=true` for the `"Debug"` configuration.
 
 See [MtouchInterpreter](#mtouchinterpreter) for more information.
+
+This property only has an effect when using the Mono runtime, and a warning
+will be shown if it's set when not using the Mono runtime (for instance when
+using CoreCLR).
 
 ## UseNativeHttpHandler
 

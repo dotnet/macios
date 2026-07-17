@@ -441,21 +441,43 @@ string TakeScreenshot (string reason, string outputDirectory)
 	var path = string.IsNullOrEmpty (outputDirectory)
 		? Path.GetFullPath (fileName)
 		: Path.Combine (outputDirectory, fileName);
+	Console.WriteLine ($"Attempting to capture the screen to {path}...");
 	try {
-		var p = Process.Start (new ProcessStartInfo {
-			FileName = "/usr/sbin/screencapture",
-			ArgumentList = { "-x", "-T", "0", path },
-			UseShellExecute = false,
-		});
-		if (p is not null) {
-			p.WaitForExit (TimeSpan.FromSeconds (10));
-			if (File.Exists (path)) {
-				Console.WriteLine ($"Screenshot saved to {path}");
-				return path;
-			}
+		var outputSb = new StringBuilder ();
+		var p = new Process ();
+		p.StartInfo.FileName = "/usr/sbin/screencapture";
+		p.StartInfo.ArgumentList.Add ("-x");
+		p.StartInfo.ArgumentList.Add ("-T");
+		p.StartInfo.ArgumentList.Add ("0");
+		p.StartInfo.ArgumentList.Add (path);
+		p.StartInfo.UseShellExecute = false;
+		p.StartInfo.RedirectStandardOutput = true;
+		p.StartInfo.RedirectStandardError = true;
+		p.OutputDataReceived += (_, e) => {
+			if (e.Data is not null)
+				lock (outputSb)
+					outputSb.AppendLine (e.Data);
+		};
+		p.ErrorDataReceived += (_, e) => {
+			if (e.Data is not null)
+				lock (outputSb)
+					outputSb.AppendLine (e.Data);
+		};
+		p.Start ();
+		p.BeginOutputReadLine ();
+		p.BeginErrorReadLine ();
+		p.WaitForExit (TimeSpan.FromSeconds (10));
+		if (File.Exists (path)) {
+			var fileSize = new FileInfo (path).Length;
+			Console.WriteLine ($"Successfully captured the screen to {path} (file size: {fileSize})");
+			return path;
 		}
+		string output;
+		lock (outputSb)
+			output = outputSb.ToString ().Trim ();
+		Console.WriteLine ($"Failed to capture the screen (exit code: {p.ExitCode}; output: '{output}').");
 	} catch (Exception e) {
-		Console.WriteLine ($"Failed to take screenshot: {e.Message}");
+		Console.WriteLine ($"Failed to capture the screen: {e.Message}");
 	}
 	return "";
 }

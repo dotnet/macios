@@ -38,7 +38,7 @@ $(XTRO_SANITY): $(wildcard xtro-sanity/*.cs) $(wildcard xtro-sanity/*.csproj) $(
 define DotNetAssemblyPath
 X$(2)_DOTNET ?= $(DOTNET_DIR)/packs/$($(2)_NUGET_RUNTIME_MANAGED_NAME)/$($(2)_NUGET_VERSION_NO_METADATA)/runtimes/$(DOTNET_$(2)_RUNTIME_IDENTIFIERS_NO_ARCH)/lib/$(DOTNET_TFM)/$(DOTNET_$(2)_ASSEMBLY_NAME).dll
 endef
-$(foreach platform,$(XTRO_DOTNET_PLATFORMS),$(eval $(call DotNetAssemblyPath,$(platform),$(shell echo $(platform) | tr a-z A-Z))))
+$(foreach platform,$(XTRO_DOTNET_PLATFORMS),$(eval $(call DotNetAssemblyPath,$(platform),$(call uppercase,$(platform)))))
 
 CORETELEPHONY_HEADERS = \
 	-i CoreTelephony/CoreTelephonyDefines.h \
@@ -167,7 +167,7 @@ api/$(1)/ApiDefinition.cs: $(1).rsp
 gen-$(3): api/$(1)/ApiDefinition.cs
 gen-all:: gen-$(3)
 endef
-$(foreach platform,$(XTRO_DOTNET_PLATFORMS),$(eval $(call DotNetAssembly,$(platform),$(shell echo $(platform) | tr a-z A-Z),$(shell echo $(platform) | tr A-Z a-z))))
+$(foreach platform,$(XTRO_DOTNET_PLATFORMS),$(eval $(call DotNetAssembly,$(platform),$(call uppercase,$(platform)),$(call lowercase,$(platform)))))
 
 ifeq ($(XCODE_IS_STABLE),false)
 all: gen-all
@@ -200,7 +200,7 @@ xtro-sharpie-$(1).rsp: Makefile $(1).rsp
 dotnet-classify-$(1): .stamp-dotnet-classify-$(1)
 DOTNET_CLASSIFY += .stamp-dotnet-classify-$(1)
 endef
-$(foreach platform,$(XTRO_DOTNET_PLATFORMS),$(eval $(call DotNetClassify,$(platform),$(shell echo $(platform) | tr a-z A-Z))))
+$(foreach platform,$(XTRO_DOTNET_PLATFORMS),$(eval $(call DotNetClassify,$(platform),$(call uppercase,$(platform)))))
 
 .stamp-dotnet-classify: $(XTRO_SANITY) $(DOTNET_CLASSIFY)
 	$(Q_GEN) $(XTRO_SANITY_EXEC) $(abspath $(DOTNET_ANNOTATIONS_DIR)) "$(ALL_DOTNET_PLATFORMS)" $(XTRO_DOTNET_PLATFORMS)

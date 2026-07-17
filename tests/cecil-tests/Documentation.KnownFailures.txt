@@ -15376,8 +15376,6 @@ M:ObjCRuntime.NMath.Sqrt(System.Runtime.InteropServices.NFloat)
 M:ObjCRuntime.NMath.Tan(System.Runtime.InteropServices.NFloat)
 M:ObjCRuntime.NMath.Tanh(System.Runtime.InteropServices.NFloat)
 M:ObjCRuntime.NMath.Truncate(System.Runtime.InteropServices.NFloat)
-M:ObjCRuntime.ObjCException.#ctor
-M:ObjCRuntime.ObjCException.#ctor(Foundation.NSException)
 M:ObjCRuntime.ObjCException.ToString
 M:ObjCRuntime.Protocol.#ctor(ObjCRuntime.NativeHandle)
 M:ObjCRuntime.ReleaseAttribute.#ctor
@@ -23041,10 +23039,6 @@ P:ObjCRuntime.NativeAttribute.ConvertToManaged
 P:ObjCRuntime.NativeAttribute.ConvertToNative
 P:ObjCRuntime.NativeHandle.Handle
 P:ObjCRuntime.NativeNameAttribute.NativeName
-P:ObjCRuntime.ObjCException.Message
-P:ObjCRuntime.ObjCException.Name
-P:ObjCRuntime.ObjCException.NSException
-P:ObjCRuntime.ObjCException.Reason
 P:OSLog.IOSLogEntryFromProcess.ActivityIdentifier
 P:OSLog.IOSLogEntryFromProcess.Process
 P:OSLog.IOSLogEntryFromProcess.ProcessIdentifier

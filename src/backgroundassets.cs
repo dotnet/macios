@@ -26,6 +26,9 @@ namespace BackgroundAssets {
 		Install = 1,
 		Update,
 		Periodic,
+		/// <summary>A content request resulting from a change to the application's preferred language.</summary>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		LanguageChange = 4,
 	}
 
 	[TV (18, 4), iOS (17, 0), MacCatalyst (17, 0)]
@@ -70,6 +73,8 @@ namespace BackgroundAssets {
 	public enum BAManagedErrorCode : long {
 		AssetPackNotFound,
 		FileNotFound,
+		/// <summary>The system couldn't ensure local availability for some or all of the requested asset packs.</summary>
+		LocalAvailabilityFailure = 2,
 	}
 
 	[TV (18, 4), iOS (16, 0), MacCatalyst (16, 0)]
@@ -285,6 +290,13 @@ namespace BackgroundAssets {
 		[Export ("version")]
 		nint Version { get; }
 
+		/// <summary>Gets the BCP-47 identifier for the language in which the asset pack is localized.</summary>
+		/// <value>The language identifier, or <see langword="null" /> if the asset pack isn't language-specific.</value>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[NullAllowed]
+		[Export ("language")]
+		string Language { get; }
+
 		[NullAllowed, Export ("userInfo", ArgumentSemantic.Copy)]
 		NSData UserInfo { get; }
 
@@ -297,14 +309,34 @@ namespace BackgroundAssets {
 		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
 		[Field ("BAAssetPackIdentifierErrorKey")]
 		NSString IdentifierErrorKey { get; }
+
+		/// <summary>Gets the error user-info key whose value contains the asset packs made available successfully.</summary>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Field ("BASuccessesErrorKey")]
+		NSString SuccessesErrorKey { get; }
+
+		/// <summary>Gets the error user-info key whose value maps unavailable asset packs to their underlying errors.</summary>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Field ("BAFailuresErrorKey")]
+		NSString FailuresErrorKey { get; }
 	}
 
 	delegate void BAAssetPackManagerGetAllAssetPacksCompletionHandler ([NullAllowed] NSSet<BAAssetPack> assetPacks, [NullAllowed] NSError error);
 	delegate void BAAssetPackManagerGetAssetPackCompletionHandler ([NullAllowed] BAAssetPack assetPack, [NullAllowed] NSError error);
 	delegate void BAAssetPackManagerGetStatusCompletionHandler ([NullAllowed] BAAssetPackStatus status, [NullAllowed] NSError error);
+	/// <summary>Completion handler invoked with an asset-pack manifest or an error.</summary>
+	/// <param name="manifest">The asset-pack manifest, or <see langword="null" /> if an error occurred.</param>
+	/// <param name="error">The error, or <see langword="null" /> if the operation succeeded.</param>
+	delegate void BAAssetPackManagerGetManifestCompletionHandler ([NullAllowed] BAAssetPackManifest manifest, [NullAllowed] NSError error);
 	/// <summary>Completion handler invoked with the local status of an asset pack.</summary>
 	/// <param name="status">The <see cref="BAAssetPackStatus" /> of the asset pack on the local device.</param>
 	delegate void BAAssetPackManagerGetLocalStatusCompletionHandler (BAAssetPackStatus status);
+	/// <summary>Completion handler invoked with the languages used by locally available asset packs.</summary>
+	/// <param name="languageIdentifiers">The BCP-47 language identifiers.</param>
+	delegate void BAAssetPackManagerGetLocallyAvailableLanguagesCompletionHandler (string [] languageIdentifiers);
+	/// <summary>Completion handler invoked after reconciling locally available asset packs with the preferred languages.</summary>
+	/// <param name="error">The error, or <see langword="null" /> if the operation succeeded.</param>
+	delegate void BAAssetPackManagerReconcilePreferredLanguagesCompletionHandler ([NullAllowed] NSError error);
 	delegate void BAAssetPackManagerEnsureLocalAvailabilityCompletionHandler ([NullAllowed] NSError error);
 	delegate void BAAssetPackManagerCheckForUpdatesCompletionHandler ([NullAllowed] NSSet<NSString> updatingIdentifiers, [NullAllowed] NSSet<NSString> removedIdentifiers, [NullAllowed] NSError error);
 	delegate void BAAssetPackManagerRemoveAssetPackCompletionHandler ([NullAllowed] NSError error);
@@ -324,10 +356,31 @@ namespace BackgroundAssets {
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>Gets or sets the BCP-47 identifier for the language whose localized asset packs the system manages automatically.</summary>
+		/// <value>The resolved language identifier, or <see langword="null" /> to use the system-wide language preference.</value>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[NullAllowed, Export ("resolvedLanguage", ArgumentSemantic.Copy)]
+		string ResolvedLanguage { get; set; }
+
+		/// <summary>Gets the manifest of asset packs that are available to download.</summary>
+		/// <param name="completionHandler">A completion handler called with the manifest or an error.</param>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("getManifestWithCompletionHandler:")]
+		[Async]
+		void GetManifest (BAAssetPackManagerGetManifestCompletionHandler completionHandler);
+
+		[Deprecated (PlatformName.iOS, 27, 0, message: "Use 'GetManifest' and then its 'AssetPacks' property instead.")]
+		[Deprecated (PlatformName.MacOSX, 27, 0, message: "Use 'GetManifest' and then its 'AssetPacks' property instead.")]
+		[Deprecated (PlatformName.TvOS, 27, 0, message: "Use 'GetManifest' and then its 'AssetPacks' property instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Use 'GetManifest' and then its 'AssetPacks' property instead.")]
 		[Export ("getAllAssetPacksWithCompletionHandler:")]
 		[Async]
 		void GetAllAssetPacks (BAAssetPackManagerGetAllAssetPacksCompletionHandler completionHandler);
 
+		[Deprecated (PlatformName.iOS, 27, 0, message: "Use 'GetManifest' and then 'BAAssetPackManifest.GetAssetPack' instead.")]
+		[Deprecated (PlatformName.MacOSX, 27, 0, message: "Use 'GetManifest' and then 'BAAssetPackManifest.GetAssetPack' instead.")]
+		[Deprecated (PlatformName.TvOS, 27, 0, message: "Use 'GetManifest' and then 'BAAssetPackManifest.GetAssetPack' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Use 'GetManifest' and then 'BAAssetPackManifest.GetAssetPack' instead.")]
 		[Export ("getAssetPackWithIdentifier:completionHandler:")]
 		[Async]
 		void GetAssetPack (string assetPackIdentifier, BAAssetPackManagerGetAssetPackCompletionHandler completionHandler);
@@ -352,12 +405,42 @@ namespace BackgroundAssets {
 		[return: NullAllowed]
 		NSData GetContents (string path, [NullAllowed] string assetPackIdentifier, NSDataReadingOptions options, [NullAllowed] out NSError error);
 
+		/// <summary>Gets the contents of a localized asset file at the specified relative path.</summary>
+		/// <param name="path">The relative path to the asset file.</param>
+		/// <param name="languageIdentifier">The BCP-47 identifier used to select localized asset packs.</param>
+		/// <param name="options">The options used to read the file.</param>
+		/// <param name="error">The error, or <see langword="null" /> if the operation succeeded.</param>
+		/// <returns>The file contents, or <see langword="null" /> if an error occurred.</returns>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("contentsAtPath:asLocalizedForLanguage:options:error:")]
+		[return: NullAllowed]
+		NSData GetLocalizedContents (string path, string languageIdentifier, NSDataReadingOptions options, [NullAllowed] out NSError error);
+
 		[Export ("fileDescriptorForPath:searchingInAssetPackWithIdentifier:error:")]
 		int GetFileDescriptor (string path, [NullAllowed] string assetPackIdentifier, [NullAllowed] out NSError error);
+
+		/// <summary>Opens a localized asset file and returns its file descriptor.</summary>
+		/// <param name="path">The relative path to the asset file.</param>
+		/// <param name="languageIdentifier">The BCP-47 identifier used to select localized asset packs.</param>
+		/// <param name="error">The error, or <see langword="null" /> if the operation succeeded.</param>
+		/// <returns>The file descriptor, or <c>-1</c> if an error occurred. The caller must close a successful descriptor.</returns>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("fileDescriptorForPath:asLocalizedForLanguage:error:")]
+		int GetLocalizedFileDescriptor (string path, string languageIdentifier, [NullAllowed] out NSError error);
 
 		[Export ("URLForPath:error:")]
 		[return: NullAllowed]
 		NSUrl GetUrl (string path, [NullAllowed] out NSError error);
+
+		/// <summary>Gets a URL for an item in localized asset packs.</summary>
+		/// <param name="path">The relative path to the item.</param>
+		/// <param name="languageIdentifier">The BCP-47 identifier used to select localized asset packs.</param>
+		/// <param name="error">The error, or <see langword="null" /> if the operation succeeded.</param>
+		/// <returns>The item URL, or <see langword="null" /> if an error occurred. Don't persist the URL beyond the current process.</returns>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("URLForPath:asLocalizedForLanguage:error:")]
+		[return: NullAllowed]
+		NSUrl GetLocalizedUrl (string path, string languageIdentifier, [NullAllowed] out NSError error);
 
 		[Export ("removeAssetPackWithIdentifier:completionHandler:")]
 		[Async]
@@ -386,6 +469,20 @@ namespace BackgroundAssets {
 		[Export ("assetPackIsAvailableLocallyWithIdentifier:")]
 		bool IsAssetPackAvailableLocally (string assetPackIdentifier);
 
+		/// <summary>Gets the languages used by localized asset packs that are available locally.</summary>
+		/// <param name="completionHandler">A completion handler called with the BCP-47 language identifiers.</param>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("getLocallyAvailableLanguagesWithCompletionHandler:")]
+		[Async]
+		void GetLocallyAvailableLanguages (BAAssetPackManagerGetLocallyAvailableLanguagesCompletionHandler completionHandler);
+
+		/// <summary>Reconciles locally available asset packs with the current preferred languages.</summary>
+		/// <param name="completionHandler">A completion handler called when reconciliation finishes or an error occurs.</param>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("reconcilePreferredLanguagesWithCompletionHandler:")]
+		[Async]
+		void ReconcilePreferredLanguages (BAAssetPackManagerReconcilePreferredLanguagesCompletionHandler completionHandler);
+
 		/// <summary>Ensures that an asset pack is available locally, optionally requiring the latest version.</summary>
 		/// <param name="assetPack">The <see cref="BAAssetPack" /> to make available.</param>
 		/// <param name="requireLatestVersion">If <see langword="true" />, checks for updates before making the asset pack available.</param>
@@ -394,6 +491,23 @@ namespace BackgroundAssets {
 		[Export ("ensureLocalAvailabilityOfAssetPack:requireLatestVersion:completionHandler:")]
 		[Async]
 		void EnsureLocalAvailability (BAAssetPack assetPack, bool requireLatestVersion, BAAssetPackManagerEnsureLocalAvailabilityCompletionHandler completionHandler);
+
+		/// <summary>Ensures that the specified asset packs are available locally.</summary>
+		/// <param name="assetPacks">The asset packs to make available.</param>
+		/// <param name="completionHandler">A completion handler called when all requested asset packs are available or an error occurs.</param>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("ensureLocalAvailabilityOfAssetPacks:completionHandler:")]
+		[Async]
+		void EnsureLocalAvailability (NSSet<BAAssetPack> assetPacks, BAAssetPackManagerEnsureLocalAvailabilityCompletionHandler completionHandler);
+
+		/// <summary>Ensures that the latest versions of the specified asset packs are available locally.</summary>
+		/// <param name="assetPacks">The asset packs to make available.</param>
+		/// <param name="requireLatestVersions">If <see langword="true" />, checks for updates before making the asset packs available.</param>
+		/// <param name="completionHandler">A completion handler called when all requested asset packs are available or an error occurs.</param>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("ensureLocalAvailabilityOfAssetPacks:requireLatestVersions:completionHandler:")]
+		[Async]
+		void EnsureLocalAvailability (NSSet<BAAssetPack> assetPacks, bool requireLatestVersions, BAAssetPackManagerEnsureLocalAvailabilityCompletionHandler completionHandler);
 	}
 
 	[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
@@ -403,6 +517,30 @@ namespace BackgroundAssets {
 		[Export ("assetPacks", ArgumentSemantic.Copy)]
 		NSSet<BAAssetPack> AssetPacks { get; }
 
+		/// <summary>Gets the application's primary language as a BCP-47 identifier.</summary>
+		/// <value>The primary language identifier, or <see langword="null" /> if one isn't configured.</value>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[NullAllowed]
+		[Export ("primaryLanguage")]
+		string PrimaryLanguage { get; }
+
+		/// <summary>Gets the BCP-47 identifiers for languages with localized asset packs in the manifest.</summary>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("availableLanguages", ArgumentSemantic.Copy)]
+		string [] AvailableLanguages { get; }
+
+		/// <summary>Gets the language whose localized asset packs the system manages automatically.</summary>
+		/// <value>The resolved BCP-47 language identifier, or <see langword="null" /> if no localized asset packs are available.</value>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[NullAllowed]
+		[Export ("resolvedLanguage")]
+		string ResolvedLanguage { get; }
+
+		/// <summary>Gets the asset packs that best match the current preferred languages.</summary>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("localizedAssetPacks", ArgumentSemantic.Copy)]
+		NSSet<BAAssetPack> LocalizedAssetPacks { get; }
+
 		[Internal]
 		[Export ("initWithContentsOfURL:applicationGroupIdentifier:error:")]
 		NativeHandle _InitWithContentsOfUrl (NSUrl url, string applicationGroupIdentifier, [NullAllowed] out NSError error);
@@ -410,6 +548,21 @@ namespace BackgroundAssets {
 		[Internal]
 		[Export ("initFromData:applicationGroupIdentifier:error:")]
 		NativeHandle _InitFromData (NSData data, string applicationGroupIdentifier, [NullAllowed] out NSError error);
+
+		/// <summary>Gets the asset pack with the specified identifier.</summary>
+		/// <param name="assetPackIdentifier">The asset-pack identifier.</param>
+		/// <returns>The matching asset pack, or <see langword="null" /> if the manifest doesn't contain it.</returns>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("assetPackWithIdentifier:")]
+		[return: NullAllowed]
+		BAAssetPack GetAssetPack (string assetPackIdentifier);
+
+		/// <summary>Gets the asset packs that best match the specified language.</summary>
+		/// <param name="languageIdentifier">The BCP-47 language identifier.</param>
+		/// <returns>The localized asset packs.</returns>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("localizedAssetPacksForLanguage:")]
+		NSSet<BAAssetPack> GetLocalizedAssetPacks (string languageIdentifier);
 
 		[Export ("allDownloads")]
 		NSSet<BADownload> GetAllDownloads ();

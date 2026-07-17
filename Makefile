@@ -43,7 +43,7 @@ check-system:
 show-versions:
 	@echo "Building:"
 	@echo "    The .NET NuGet(s):"
-	@$(foreach platform,$(DOTNET_PLATFORMS),echo "        Microsoft.$(platform) $($(shell echo $(platform) | tr 'a-z' 'A-Z')_NUGET_VERSION_FULL)";)
+	@$(foreach platform,$(DOTNET_PLATFORMS),echo "        Microsoft.$(platform) $($(call uppercase,$(platform))_NUGET_VERSION_FULL)";)
 	@$(MAKE) -C tools/sharpie show-version
 
 all-local:: global.json

@@ -131,6 +131,7 @@ namespace Introspection {
 					return true;
 				break;
 #endif // HAS_WATCHCONNECTIVITY
+			case "AVSystemRouting":
 			case "Cinematic":
 			case "PushToTalk":
 			case "ShazamKit":

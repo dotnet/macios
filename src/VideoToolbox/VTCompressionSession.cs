@@ -18,7 +18,6 @@ using CoreVideo;
 
 namespace VideoToolbox {
 	/// <summary>Turns uncompressed frames into compressed video frames</summary>
-	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst")]

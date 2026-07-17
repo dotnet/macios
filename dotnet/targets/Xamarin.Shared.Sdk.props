@@ -219,8 +219,11 @@
 		At this point we don't necessarily know yet whether we're building for device or simulator,
 		but the MtouchUseLlvm value is ignored when using the simulator, so it doesn't matter
 		if we set it in all cases.
+
+		LLVM only applies to Mono's AOT compiler, so don't set a default value when not using the
+		Mono runtime (otherwise we'd warn about a property the user didn't set in _VerifyValidProperties).
 	-->
-	<PropertyGroup Condition="'$(MtouchUseLlvm)' == '' And '$(Configuration)' == 'Release' And '$(SdkIsMobile)' == 'true'">
+	<PropertyGroup Condition="'$(MtouchUseLlvm)' == '' And '$(Configuration)' == 'Release' And '$(SdkIsMobile)' == 'true' And '$(UseMonoRuntime)' == 'true'">
 		<MtouchUseLlvm>true</MtouchUseLlvm>
 	</PropertyGroup>
 

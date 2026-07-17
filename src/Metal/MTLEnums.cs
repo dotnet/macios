@@ -1524,6 +1524,8 @@ namespace Metal {
 		v3_2 = (3ul << 16) + 2,
 		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 		v4_0 = (4uL << 16) + 0,
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		v4_1 = (4uL << 16) + 1,
 	}
 
 	/// <summary>Enumerates values that indicate whether to clip or clamp depth values.</summary>
@@ -2565,6 +2567,18 @@ namespace Metal {
 		Int4 = 143,
 		[iOS (26, 4), TV (26, 4), Mac (26, 4), MacCatalyst (26, 4)]
 		UInt4 = 144,
+		[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		MetalFloat8UE8M0 = 145,
+		[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		UInt2 = 149,
+		[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		Int2 = 150,
+		[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		MetalFloat8E5M2 = 141,
+		[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		MetalFloat8E4M3 = 142,
+		[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		MetalFloat4E2M1 = 148,
 	}
 
 	[iOS (26, 4), TV (26, 4), Mac (26, 4), MacCatalyst (26, 4)]
@@ -2593,6 +2607,13 @@ namespace Metal {
 		Compute = 1L << 0,
 		Render = 1L << 1,
 		MachineLearning = 1L << 2,
+	}
+
+	[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+	[Native]
+	public enum MTLTensorPlaneType : long {
+		Data = 0,
+		Scales = 1,
 	}
 
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]

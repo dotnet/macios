@@ -1161,6 +1161,11 @@ namespace Metal {
 		[Abstract]
 		[Export ("copyFromTensor:sourceOrigin:sourceDimensions:toTensor:destinationOrigin:destinationDimensions:")]
 		void CopyFromTensor (IMTLTensor sourceTensor, MTLTensorExtents sourceOrigin, MTLTensorExtents sourceDimensions, IMTLTensor destinationTensor, MTLTensorExtents destinationOrigin, MTLTensorExtents destinationDimensions);
+
+		[Mac (27, 0), iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Abstract]
+		[Export ("copyFromTensor:sourceOrigin:sourceDimensions:sourcePlane:toTensor:destinationOrigin:destinationDimensions:destinationPlane:")]
+		void CopyFromTensor (IMTLTensor sourceTensor, MTLTensorExtents sourceOrigin, MTLTensorExtents sourceDimensions, MTLTensorPlaneType sourcePlane, IMTLTensor destinationTensor, MTLTensorExtents destinationOrigin, MTLTensorExtents destinationDimensions, MTLTensorPlaneType destinationPlane);
 	}
 
 	interface IMTLFence { }
@@ -1970,6 +1975,13 @@ namespace Metal {
 		[return: NullAllowed]
 		[return: Release]
 		IMTLTensor CreateTensor (MTLTensorDescriptor descriptor, [NullAllowed] out NSError error);
+
+		[Mac (27, 0), iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Abstract]
+		[Export ("newTensorWithDescriptor:attachments:error:")]
+		[return: NullAllowed]
+		[return: Release]
+		IMTLTensor CreateTensor (MTLTensorDescriptor descriptor, MTLTensorBufferAttachments attachments, [NullAllowed] out NSError error);
 
 		[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 		[Abstract]
@@ -3355,6 +3367,10 @@ namespace Metal {
 		[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 		[Export ("requiredThreadsPerThreadgroup", ArgumentSemantic.Assign)]
 		MTLSize RequiredThreadsPerThreadgroup { get; set; }
+
+		[Mac (27, 0), iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Export ("floatingPointConversionRoundingMode", ArgumentSemantic.Assign)]
+		MTLFloatingPointConversionRoundingMode FloatingPointConversionRoundingMode { get; set; }
 	}
 
 	/// <summary>Configures a stencil test operation.</summary>
@@ -4482,6 +4498,10 @@ namespace Metal {
 		[Export ("storeAction")]
 		MTLStoreAction StoreAction { get; set; }
 
+		[Deprecated (PlatformName.iOS, 27, 0, message: "Store action options have no effect on Apple Silicon")]
+		[Deprecated (PlatformName.TvOS, 27, 0, message: "Store action options have no effect on Apple Silicon")]
+		[Deprecated (PlatformName.MacOSX, 27, 0, message: "Store action options have no effect on Apple Silicon")]
+		[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Store action options have no effect on Apple Silicon")]
 		[MacCatalyst (13, 1)]
 		[Export ("storeActionOptions", ArgumentSemantic.Assign)]
 		MTLStoreActionOptions StoreActionOptions { get; set; }
@@ -7691,6 +7711,13 @@ namespace Metal {
 	}
 
 	[Native]
+	[Mac (27, 0), TV (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	enum MTLFloatingPointConversionRoundingMode : long {
+		ToNearestEven = 0,
+		TowardZero = 1,
+	}
+
+	[Native]
 	[Mac (15, 0), TV (18, 0), iOS (18, 0), MacCatalyst (18, 0)]
 	enum MTLLogLevel : long {
 		Undefined,
@@ -8388,6 +8415,11 @@ namespace Metal {
 		[Export ("copyFromTensor:sourceOrigin:sourceDimensions:toTensor:destinationOrigin:destinationDimensions:")]
 		void CopyFromTensor (IMTLTensor sourceTensor, MTLTensorExtents sourceOrigin, MTLTensorExtents sourceDimensions, IMTLTensor destinationTensor, MTLTensorExtents destinationOrigin, MTLTensorExtents destinationDimensions);
 
+		[Mac (27, 0), iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Abstract]
+		[Export ("copyFromTensor:sourceOrigin:sourceDimensions:sourcePlane:toTensor:destinationOrigin:destinationDimensions:destinationPlane:")]
+		void CopyFromTensor (IMTLTensor sourceTensor, MTLTensorExtents sourceOrigin, MTLTensorExtents sourceDimensions, MTLTensorPlaneType sourcePlane, IMTLTensor destinationTensor, MTLTensorExtents destinationOrigin, MTLTensorExtents destinationDimensions, MTLTensorPlaneType destinationPlane);
+
 		[Abstract]
 		[Export ("generateMipmapsForTexture:")]
 		void GenerateMipmaps (IMTLTexture texture);
@@ -8745,6 +8777,34 @@ namespace Metal {
 		MTLResourceId CopyResourceViews (IMTLResourceViewPool sourcePool, NSRange sourceRange, nuint destinationIndex);
 	}
 
+	interface IMTLTensorAuxiliaryPlane { }
+
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
+	[Mac (27, 0), iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface MTLTensorAuxiliaryPlane {
+		[Abstract]
+		[Export ("dataType")]
+		MTLTensorDataType DataType { get; }
+
+		[Abstract]
+		[Export ("blockFactors")]
+		MTLTensorExtents BlockFactors { get; }
+
+		[Abstract]
+		[NullAllowed, Export ("buffer")]
+		IMTLBuffer Buffer { get; }
+
+		[Abstract]
+		[Export ("bufferOffset")]
+		nuint BufferOffset { get; }
+
+		[Abstract]
+		[Export ("planeType")]
+		MTLTensorPlaneType PlaneType { get; }
+	}
+
 	interface IMTLTensor { }
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
@@ -8779,13 +8839,28 @@ namespace Metal {
 		[Export ("usage")]
 		MTLTensorUsage Usage { get; }
 
+		[Mac (27, 0), iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Abstract]
+		[Export ("auxiliaryPlanes")]
+		IMTLTensorAuxiliaryPlane [] AuxiliaryPlanes { get; }
+
 		[Abstract]
 		[Export ("replaceSliceOrigin:sliceDimensions:withBytes:strides:")]
 		void ReplaceSliceOrigin (MTLTensorExtents sliceOrigin, MTLTensorExtents sliceDimensions, /* const void * _Nonnull */ IntPtr bytes, MTLTensorExtents strides);
 
+		[Mac (27, 0), iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Abstract]
+		[Export ("replaceSliceOrigin:sliceDimensions:plane:withBytes:strides:")]
+		void ReplaceSliceOrigin (MTLTensorExtents sliceOrigin, MTLTensorExtents sliceDimensions, MTLTensorPlaneType plane, /* const void * _Nonnull */ IntPtr bytes, MTLTensorExtents strides);
+
 		[Abstract]
 		[Export ("getBytes:strides:fromSliceOrigin:sliceDimensions:")]
 		void GetBytes (IntPtr /* void * _Nonnull */ bytes, MTLTensorExtents strides, MTLTensorExtents sliceOrigin, MTLTensorExtents sliceDimensions);
+
+		[Mac (27, 0), iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Abstract]
+		[Export ("getBytes:strides:fromSliceOrigin:sliceDimensions:plane:")]
+		void GetBytes (IntPtr /* void * _Nonnull */ bytes, MTLTensorExtents strides, MTLTensorExtents sliceOrigin, MTLTensorExtents sliceDimensions, MTLTensorPlaneType plane);
 	}
 
 	interface IMTLTensorBinding { }
@@ -8804,6 +8879,11 @@ namespace Metal {
 		[Abstract]
 		[NullAllowed, Export ("dimensions")]
 		MTLTensorExtents Dimensions { get; }
+
+		[Mac (27, 0), iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Abstract]
+		[Export ("auxiliaryPlanes")]
+		MTLTensorAuxiliaryPlaneType [] AuxiliaryPlanes { get; }
 	}
 
 	interface IMTLTextureViewPool { }
@@ -9809,6 +9889,34 @@ namespace Metal {
 
 	[UnsupportedSimulator ("ios")]
 	[UnsupportedSimulator ("tvos")]
+	[Mac (27, 0), iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	interface MTLTensorAuxiliaryPlaneDescriptor : NSCopying {
+		[Export ("dataType", ArgumentSemantic.Assign)]
+		MTLTensorDataType DataType { get; set; }
+
+		[Export ("blockFactors", ArgumentSemantic.Copy)]
+		MTLTensorExtents BlockFactors { get; set; }
+	}
+
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
+	[Mac (27, 0), iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	interface MTLTensorAuxiliaryPlaneDescriptorMap : NSCopying {
+		[Export ("setDescriptor:forPlane:")]
+		void SetDescriptor (MTLTensorAuxiliaryPlaneDescriptor descriptor, MTLTensorPlaneType plane);
+
+		[Export ("descriptorForPlane:")]
+		[return: NullAllowed]
+		MTLTensorAuxiliaryPlaneDescriptor GetDescriptor (MTLTensorPlaneType plane);
+
+		[Export ("reset")]
+		void Reset ();
+	}
+
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MTLTensorDescriptor : NSCopying {
@@ -9825,6 +9933,10 @@ namespace Metal {
 		[Export ("usage", ArgumentSemantic.Assign)]
 		MTLTensorUsage Usage { get; set; }
 
+		[Mac (27, 0), iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[NullAllowed, Export ("auxiliaryPlanes", ArgumentSemantic.Retain)]
+		MTLTensorAuxiliaryPlaneDescriptorMap AuxiliaryPlanes { get; set; }
+
 		[Export ("resourceOptions", ArgumentSemantic.Assign)]
 		MTLResourceOptions ResourceOptions { get; set; }
 
@@ -9836,6 +9948,25 @@ namespace Metal {
 
 		[Export ("hazardTrackingMode", ArgumentSemantic.Assign)]
 		MTLHazardTrackingMode HazardTrackingMode { get; set; }
+	}
+
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
+	[Mac (27, 0), iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	interface MTLTensorBufferAttachments : NSCopying {
+		[Export ("setBuffer:offset:forPlane:")]
+		void SetBuffer (IMTLBuffer buffer, nuint offset, MTLTensorPlaneType plane);
+
+		[Export ("bufferForPlane:")]
+		[return: NullAllowed]
+		IMTLBuffer GetBuffer (MTLTensorPlaneType plane);
+
+		[Export ("offsetForPlane:")]
+		nuint GetOffset (MTLTensorPlaneType plane);
+
+		[Export ("reset")]
+		void Reset ();
 	}
 
 	[UnsupportedSimulator ("ios")]
@@ -9857,6 +9988,21 @@ namespace Metal {
 
 	[UnsupportedSimulator ("ios")]
 	[UnsupportedSimulator ("tvos")]
+	[Mac (27, 0), iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	interface MTLTensorAuxiliaryPlaneType {
+		[Export ("dataType")]
+		MTLTensorDataType DataType { get; }
+
+		[Export ("blockFactors")]
+		MTLTensorExtents BlockFactors { get; }
+
+		[Export ("planeType")]
+		MTLTensorPlaneType PlaneType { get; }
+	}
+
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (MTLType))]
 	interface MTLTensorReferenceType {
@@ -9868,6 +10014,10 @@ namespace Metal {
 
 		[NullAllowed, Export ("dimensions")]
 		MTLTensorExtents Dimensions { get; }
+
+		[Mac (27, 0), iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Export ("auxiliaryPlanes")]
+		MTLTensorAuxiliaryPlaneType [] AuxiliaryPlanes { get; }
 
 		[Export ("access")]
 		MTLBindingAccess Access { get; }

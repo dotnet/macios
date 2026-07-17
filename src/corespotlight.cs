@@ -110,6 +110,12 @@ namespace CoreSpotlight {
 		[NullAllowed]
 		ICSSearchableIndexDelegate IndexDelegate { get; set; }
 
+		/// <summary>Gets the file protection class used by the search index.</summary>
+		[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[Export ("protectionClass")]
+		[BindAs (typeof (NSFileProtectionType))]
+		NSString ProtectionClass { get; }
+
 		/// <summary>Gets a Boolean value that tells whether indexing is available.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -336,6 +342,14 @@ namespace CoreSpotlight {
 		[Export ("searchableItemsForIdentifiers:searchableItemsHandler:")]
 		void GetSearchableItems (string [] identifiers, CSSearchableIndexDelegateGetSearchableItemsHandler searchableItemsHandler);
 
+		/// <param name="identifiers">The identifiers of the searchable items to retrieve.</param>
+		/// <param name="protectionClass">The file protection class for the requested items.</param>
+		/// <param name="searchableItemsHandler">The handler to invoke with the matching searchable items.</param>
+		/// <summary>Provides searchable items for the specified identifiers and file protection class.</summary>
+		[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[Export ("searchableItemsForIdentifiers:protectionClass:searchableItemsHandler:")]
+		void GetSearchableItems (string [] identifiers, string protectionClass, CSSearchableIndexDelegateGetSearchableItemsHandler searchableItemsHandler);
+
 		[NoTV]
 		[iOS (18, 4), Mac (15, 4), MacCatalyst (18, 4)]
 		[Export ("searchableItemsDidUpdate:")]
@@ -343,6 +357,16 @@ namespace CoreSpotlight {
 	}
 
 	delegate void CSSearchableIndexDelegateGetSearchableItemsHandler (CSSearchableItem [] items);
+
+	/// <summary>Describes a searchable index.</summary>
+	[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	interface CSSearchableIndexDescription : NSSecureCoding, NSCopying {
+		/// <summary>Gets the file protection class associated with the searchable index.</summary>
+		[NullAllowed, Export ("protectionClass")]
+		[BindAs (typeof (NSFileProtectionType?))]
+		NSString ProtectionClass { get; }
+	}
 
 	/// <summary>A uniquely identifiable, searchable object in a <see cref="CoreSpotlight.CSSearchableIndex" />.</summary>
 	///     
@@ -518,6 +542,9 @@ namespace CoreSpotlight {
 
 	/// <summary>Represents keys that identify commonly used mailboxes.</summary>
 	/// <remarks>To be added.</remarks>
+#if XAMCORE_5_0
+	[NoTV]
+#endif
 	[MacCatalyst (13, 1)]
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
 	[Static]
@@ -2706,15 +2733,27 @@ namespace CoreSpotlight {
 		[NullAllowed, Export ("keyboardLanguage", ArgumentSemantic.Strong)]
 		string KeyboardLanguage { get; set; }
 
+#if XAMCORE_5_0
+		[NoTV, NoiOS, NoMacCatalyst]
+#endif
 		[Export ("sourceOptions", ArgumentSemantic.Assign)]
 		CSSearchQuerySourceOptions SourceOptions { get; set; }
 	}
 
+#if XAMCORE_5_0
+	[NoTV, NoiOS, NoMacCatalyst]
+#else
 	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
+#endif
+	[Flags]
 	[Native]
+#if XAMCORE_5_0
+	public enum CSSearchQuerySourceOptions : ulong {
+#else
 	public enum CSSearchQuerySourceOptions : long {
+#endif
 		Default = 0,
-		AllowMail = 1L << 0,
+		AllowMail = 1 << 0,
 	}
 
 	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
@@ -2725,8 +2764,14 @@ namespace CoreSpotlight {
 		Default,
 	}
 
+#if XAMCORE_5_0
+	[NoTV]
+#else
+	[TV (18, 4)]
+#endif
+	[Flags]
 	[Native]
-	[TV (18, 4), iOS (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
+	[iOS (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
 	public enum CSSearchableItemUpdateListenerOptions : ulong {
 		Default = 0,
 		Summarization = 1 << 1,

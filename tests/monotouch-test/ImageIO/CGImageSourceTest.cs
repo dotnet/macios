@@ -28,6 +28,27 @@ namespace MonoTouchFixtures.ImageIO {
 		}
 
 		[Test]
+		public void AllowableTypes ()
+		{
+			TestRuntime.AssertXcodeVersion (27, 0);
+			TestRuntime.AssertSystemVersion (TestRuntime.CurrentPlatform, 27, 0);
+
+			bool CanDecode (string [] allowableTypes)
+			{
+				using (var source = CGImageSource.FromUrl (fileUrl, new CGImageOptions { AllowableTypes = allowableTypes })) {
+					if (source is null)
+						return false;
+					using (var image = source.CreateImage (0, null))
+						return image is not null;
+				}
+			}
+
+			Assert.That (CanDecode (new [] { "public.png" }), Is.True, "Allowed");
+			Assert.That (CanDecode (new [] { "public.jpeg" }), Is.False, "Disallowed");
+			Assert.That (CanDecode ([]), Is.False, "Empty");
+		}
+
+		[Test]
 		public void FromDataProviderTest ()
 		{
 			var file = NSBundle.MainBundle.PathForResource ("xamarin2", "png");

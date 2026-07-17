@@ -30,8 +30,8 @@ namespace Xamarin.Tests {
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			properties ["MtouchLink"] = "SdkOnly";
+			properties ["LinkMode"] = "SdkOnly";
 			properties ["CheckForIllegalCrossThreadCalls"] = ensureUIThreadChecks;
-
 			var rv = DotNet.AssertBuild (project_path, properties);
 
 			var featureSwitch = GetRuntimeHostConfigurationOption (rv.BinLogPath, "ObjCRuntime.Runtime.CheckForIllegalCrossThreadCalls");

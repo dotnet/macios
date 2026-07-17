@@ -2165,6 +2165,7 @@ namespace Registrar {
 				header.WriteLine ("#import <CoreTelephony/CTCall.h>");
 				header.WriteLine ("#import <CoreTelephony/CTCallCenter.h>");
 				header.WriteLine ("#import <CoreTelephony/CTCarrier.h>");
+				header.WriteLine ("#import <CoreTelephony/CTQuickSwitch.h>");
 				header.WriteLine ("#import <CoreTelephony/CTTelephonyNetworkInfo.h>");
 				header.WriteLine ("#import <CoreTelephony/CTSubscriber.h>");
 				header.WriteLine ("#import <CoreTelephony/CTSubscriberInfo.h>");

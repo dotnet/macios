@@ -8,6 +8,52 @@ namespace CoreTelephony {
 		AndVoice,
 	}
 
+	/// <summary>Constants that indicate whether the device has a cellular plan for a phone number.</summary>
+	[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+	[Native]
+	public enum CTCellularPlanStatusAvailability : long {
+		/// <summary>The phone number's cellular plan is inactive, or the system can't determine its status.</summary>
+		Unavailable,
+		/// <summary>The phone number has an active cellular plan on the device.</summary>
+		Available,
+	}
+
+	/// <summary>Constants that indicate the system's confidence that the device has a cellular plan for a phone number.</summary>
+	[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+	[Native]
+	public enum CTCellularPlanStatusAvailabilityConfidence : long {
+		/// <summary>A low level of confidence about the availability of a cellular plan.</summary>
+		Low,
+		/// <summary>A high level of confidence about the availability of a cellular plan.</summary>
+		High,
+	}
+
+	/// <summary>Constants that indicate the authorization status for accessing cellular plan information for a phone number.</summary>
+	[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+	[Native]
+	public enum CTCellularPlanStatusAuthorization : long {
+		/// <summary>The user didn't grant authorization, or explicitly denied it.</summary>
+		NotAuthorized,
+		/// <summary>The user granted authorization to access cellular plan status information for the phone number.</summary>
+		Authorized,
+		/// <summary>Cellular plan status checks are unavailable for the phone number.</summary>
+		Restricted,
+	}
+
+	/// <summary>Values that describe a device's quick-switch status.</summary>
+	[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+	[Native]
+	public enum CTQuickSwitchState : long {
+		/// <summary>The framework couldn't determine the device's state due to an error.</summary>
+		Failed,
+		/// <summary>The device or phone number isn't enrolled in quick switch.</summary>
+		NotEnrolled,
+		/// <summary>The device is the active participant, and cellular service is available on it.</summary>
+		Active,
+		/// <summary>The device is passive, and another device holds the cellular service.</summary>
+		Passive,
+	}
+
 	/// <summary>Encapsulates a unique identifier for a call and it's state.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/NetworkingInternet/Reference/CTCall/index.html">Apple documentation for <c>CTCall</c></related>
@@ -503,8 +549,143 @@ namespace CoreTelephony {
 		[Static]
 		[Export ("checkValidityOfToken:completionHandler:")]
 		void CheckValidity (string token, CTCellularPlanStatusCheckValidityCompletionHandler completionHandler);
+
+		/// <param name="phoneNumber">A phone number in E.164 format, such as <c>+15550001234</c>.</param>
+		/// <param name="completionHandler">The handler to invoke with the authorization status or an error.</param>
+		/// <summary>Presents a prompt that asks the user to allow cellular plan checks for a phone number.</summary>
+		[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+		[Async (XmlDocs = """
+			<param name="phoneNumber">A phone number in E.164 format, such as <c>+15550001234</c>.</param>
+			<summary>Presents a prompt that asks the user to allow cellular plan checks for a phone number.</summary>
+			<returns>A task that represents the asynchronous operation. The task result contains the authorization status.</returns>
+			""")]
+		[Static]
+		[Export ("requestAuthorizationForPhoneNumber:completion:")]
+		void RequestAuthorization (string phoneNumber, CTCellularPlanStatusAuthorizationCompletionHandler completionHandler);
+
+		/// <param name="phoneNumber">A phone number in E.164 format, such as <c>+15550001234</c>.</param>
+		/// <param name="completionHandler">The handler to invoke with the authorization status or an error.</param>
+		/// <summary>Gets the current authorization status for a phone number without presenting any UI.</summary>
+		[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+		[Async (XmlDocs = """
+			<param name="phoneNumber">A phone number in E.164 format, such as <c>+15550001234</c>.</param>
+			<summary>Gets the current authorization status for a phone number without presenting any UI.</summary>
+			<returns>A task that represents the asynchronous operation. The task result contains the authorization status.</returns>
+			""")]
+		[Static]
+		[Export ("getAuthorizationStatusForPhoneNumber:completion:")]
+		void GetAuthorizationStatus (string phoneNumber, CTCellularPlanStatusAuthorizationCompletionHandler completionHandler);
+
+		/// <param name="phoneNumber">A phone number in E.164 format, such as <c>+15550001234</c>.</param>
+		/// <param name="completionHandler">The handler to invoke with the availability status, confidence, or an error.</param>
+		/// <summary>Estimates whether the device has an active cellular plan for a phone number and the system's confidence in that determination.</summary>
+		/// <remarks>Call this method only after an authorization request or status query returns <see cref="CTCellularPlanStatusAuthorization.Authorized" />.</remarks>
+		[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+		[Async (ResultTypeName = "CTCellularPlanStatusHintResult", XmlDocs = """
+			<param name="phoneNumber">A phone number in E.164 format, such as <c>+15550001234</c>.</param>
+			<summary>Estimates whether the device has an active cellular plan for a phone number and the system's confidence in that determination.</summary>
+			<returns>A task that represents the asynchronous operation. The task result contains the availability status and its confidence.</returns>
+			<remarks>Call this method only after an authorization request or status query returns <see cref="CTCellularPlanStatusAuthorization.Authorized" />.</remarks>
+			""")]
+		[Static]
+		[Export ("getStatusHintForPhoneNumber:completion:")]
+		void GetStatusHint (string phoneNumber, CTCellularPlanStatusHintCompletionHandler completionHandler);
 	}
 
 	delegate void CTCellularPlanStatusGetTokenCompletionHandler ([NullAllowed] string token, [NullAllowed] NSError error);
 	delegate void CTCellularPlanStatusCheckValidityCompletionHandler (bool isValid, [NullAllowed] NSError error);
+
+	/// <param name="status">The authorization status.</param>
+	/// <param name="error">The error that occurred, or <see langword="null" /> if the operation succeeded.</param>
+	/// <summary>Handles the result of a cellular plan status authorization operation.</summary>
+	[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+	delegate void CTCellularPlanStatusAuthorizationCompletionHandler (CTCellularPlanStatusAuthorization status, [NullAllowed] NSError error);
+
+	/// <param name="availability">The cellular plan availability.</param>
+	/// <param name="confidence">The confidence in the availability status.</param>
+	/// <param name="error">The error that occurred, or <see langword="null" /> if the operation succeeded.</param>
+	/// <summary>Handles the result of a cellular plan status hint operation.</summary>
+	[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+	delegate void CTCellularPlanStatusHintCompletionHandler (CTCellularPlanStatusAvailability availability, CTCellularPlanStatusAvailabilityConfidence confidence, [NullAllowed] NSError error);
+
+	interface ICTQuickSwitchManagerDelegate { }
+
+	/// <summary>Methods for responding to changes in a device's quick-switch state.</summary>
+	[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
+	[BaseType (typeof (NSObject))]
+	interface CTQuickSwitchManagerDelegate {
+		/// <param name="manager">The quick-switch manager whose state changed.</param>
+		/// <param name="state">The new quick-switch state.</param>
+		/// <summary>Notifies the delegate that the device's quick-switch state changed.</summary>
+		[Export ("quickSwitchManager:didChangeToState:")]
+		void DidChangeToState (CTQuickSwitchManager manager, CTQuickSwitchState state);
+	}
+
+	/// <param name="state">The quick-switch state.</param>
+	/// <param name="error">The error that occurred, or <see langword="null" /> if the operation succeeded.</param>
+	/// <summary>Handles the result of a quick-switch state query.</summary>
+	[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+	delegate void CTQuickSwitchManagerStateCompletionHandler (CTQuickSwitchState state, [NullAllowed] NSError error);
+
+	/// <param name="error">The error that occurred, or <see langword="null" /> if the operation succeeded.</param>
+	/// <summary>Handles the completion of a quick-switch manager operation.</summary>
+	[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+	delegate void CTQuickSwitchManagerCompletionHandler ([NullAllowed] NSError error);
+
+	/// <summary>Enables an app to register for and query a device's quick-switch state.</summary>
+	[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	interface CTQuickSwitchManager {
+		/// <summary>Gets or sets the object that the system notifies about quick-switch events.</summary>
+		[Wrap ("WeakDelegate")]
+		[NullAllowed]
+		ICTQuickSwitchManagerDelegate Delegate { get; set; }
+
+		/// <summary>Gets or sets the untyped delegate object.</summary>
+		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
+		NSObject WeakDelegate { get; set; }
+
+		/// <param name="phoneNumberSuffix">The last four digits of the phone number whose state to query.</param>
+		/// <param name="completionHandler">The handler to invoke with the quick-switch state or an error.</param>
+		/// <summary>Gets the quick-switch state for a phone number whose suffix matches the provided value.</summary>
+		/// <remarks>The framework presents a consent screen. If the user denies consent, the operation returns <see cref="CTQuickSwitchState.NotEnrolled" /> without an error.</remarks>
+		[Async (XmlDocs = """
+			<param name="phoneNumberSuffix">The last four digits of the phone number whose state to query.</param>
+			<summary>Gets the quick-switch state for a phone number whose suffix matches the provided value.</summary>
+			<returns>A task that represents the asynchronous operation. The task result contains the quick-switch state.</returns>
+			<remarks>The framework presents a consent screen. If the user denies consent, the operation returns <see cref="CTQuickSwitchState.NotEnrolled" /> without an error.</remarks>
+			""")]
+		[Export ("getPhoneNumberStateForSuffix:completion:")]
+		void GetPhoneNumberState (string phoneNumberSuffix, CTQuickSwitchManagerStateCompletionHandler completionHandler);
+
+		/// <param name="completionHandler">The handler to invoke with the quick-switch state or an error.</param>
+		/// <summary>Gets the device's quick-switch state.</summary>
+		[Async (XmlDocs = """
+			<summary>Gets the device's quick-switch state.</summary>
+			<returns>A task that represents the asynchronous operation. The task result contains the quick-switch state.</returns>
+			""")]
+		[Export ("getDeviceState:")]
+		void GetDeviceState (CTQuickSwitchManagerStateCompletionHandler completionHandler);
+
+		/// <param name="completionHandler">The handler to invoke when registration completes.</param>
+		/// <summary>Registers the app for background launch whenever the device's quick-switch state changes.</summary>
+		[Async (XmlDocs = """
+			<summary>Registers the app for background launch whenever the device's quick-switch state changes.</summary>
+			<returns>A task that represents the asynchronous operation.</returns>
+			""")]
+		[Static]
+		[Export ("registerForLaunchOnQuickSwitchStateEvents:")]
+		void RegisterForLaunchOnQuickSwitchStateEvents (CTQuickSwitchManagerCompletionHandler completionHandler);
+
+		/// <param name="completionHandler">The handler to invoke when unregistration completes.</param>
+		/// <summary>Removes the app's registration for background launch on quick-switch state changes.</summary>
+		[Async (XmlDocs = """
+			<summary>Removes the app's registration for background launch on quick-switch state changes.</summary>
+			<returns>A task that represents the asynchronous operation.</returns>
+			""")]
+		[Static]
+		[Export ("unregisterForLaunchOnQuickSwitchStateEvents:")]
+		void UnregisterForLaunchOnQuickSwitchStateEvents (CTQuickSwitchManagerCompletionHandler completionHandler);
+	}
 }

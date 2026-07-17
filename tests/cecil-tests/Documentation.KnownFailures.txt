@@ -16888,6 +16888,7 @@ M:CoreTelephony.CTCellularPlanStatus.CheckValidity(System.String,CoreTelephony.C
 M:CoreTelephony.CTCellularPlanStatus.CheckValidityAsync(System.String)
 M:CoreTelephony.CTCellularPlanStatus.GetToken(CoreTelephony.CTCellularPlanStatusGetTokenCompletionHandler)
 M:CoreTelephony.CTCellularPlanStatus.GetTokenAsync
+M:CoreTelephony.CTQuickSwitchManager.Dispose(System.Boolean)
 M:CoreTelephony.CTSubscriber.Dispose(System.Boolean)
 M:CoreTelephony.CTSubscriber.RefreshCarrierToken
 M:CoreTelephony.CTTelephonyNetworkInfo.Dispose(System.Boolean)

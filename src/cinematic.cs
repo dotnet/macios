@@ -248,6 +248,53 @@ namespace Cinematic {
 		NSNumber [] DestinationPixelFormatTypes { get; }
 	}
 
+	[TV (27, 0), MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface CNImageRenderingSessionConfiguration {
+		[Export ("initWithQuality:")]
+		NativeHandle Constructor (CNRenderingQuality quality);
+
+		[Export ("initWithQuality:renderingVersion:")]
+		[return: NullAllowed]
+		NativeHandle Constructor (CNRenderingQuality quality, nint renderingVersion);
+
+		[Export ("quality")]
+		CNRenderingQuality Quality { get; }
+
+		[Export ("renderingVersion")]
+		nint RenderingVersion { get; }
+
+		[Static]
+		[Export ("latestRenderingVersion")]
+		nint LatestRenderingVersion { get; }
+
+		[Static]
+		[Export ("isRenderingVersionSupported:")]
+		bool IsRenderingVersionSupported (nint renderingVersion);
+	}
+
+	[TV (27, 0), MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface CNImageRenderingSession {
+		[Export ("initWithConfiguration:")]
+		NativeHandle Constructor (CNImageRenderingSessionConfiguration configuration);
+
+		[Export ("configuration", ArgumentSemantic.Strong)]
+		CNImageRenderingSessionConfiguration Configuration { get; }
+
+		[Export ("encodeRenderToCommandBuffer:sourceRGBA:sourceDisparity:destinationRGBA:fNumber:focusDisparity:")]
+		bool EncodeRender (IMTLCommandBuffer commandBuffer, IMTLTexture sourceRgba, IMTLTexture sourceDisparity, IMTLTexture destinationRgba, float fNumber, float focusDisparity);
+
+		[Export ("encodeTileRenderToCommandBuffer:sourceTileRGBA:sourceDisparity:destinationTileRGBA:fNumber:focusDisparity:sourceRGBASize:tileOffset:tileExtendOffset:")]
+		bool EncodeTileRender (IMTLCommandBuffer commandBuffer, IMTLTexture sourceTileRgba, IMTLTexture sourceDisparity, IMTLTexture destinationTileRgba, float fNumber, float focusDisparity, CGSize sourceRgbaSize, CGPoint tileOffset, CGPoint tileExtendOffset);
+
+		[Static]
+		[Export ("minimumTileExtendRectForTileRect:sourceRGBASize:")]
+		CGRect GetMinimumTileExtendRect (CGRect tileRect, CGSize sourceRgbaSize);
+	}
+
 	[TV (17, 0), iOS (17, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]

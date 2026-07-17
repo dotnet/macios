@@ -240,6 +240,10 @@ namespace CoreMedia {
 	enum CMFormatDescriptionLogTransferFunction {
 		[Field ("kCMFormatDescriptionLogTransferFunction_AppleLog")]
 		AppleLog,
+
+		[MacCatalyst (27, 0), TV (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Field ("kCMFormatDescriptionLogTransferFunction_AppleLog2")]
+		AppleLog2,
 	}
 
 	[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
@@ -1298,6 +1302,10 @@ namespace CoreMedia {
 		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 		[Field ("kCMMetadataIdentifier_QuickTimeMetadataPresentationImmersiveMedia")]
 		QuickTimeMetadataPresentationImmersiveMedia,
+
+		[MacCatalyst (27, 0), TV (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Field ("kCMMetadataIdentifier_ITUT_T35MetadataSMPTE2094_50")]
+		ITUT_T35MetadataSMPTE2094_50,
 	}
 
 	enum CMMetadataBaseDataType {
@@ -1383,5 +1391,13 @@ namespace CoreMedia {
 		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 		[Field ("kCMMetadataBaseDataType_ExtendedRasterRectangleValue")]
 		ExtendedRasterRectangleValue,
+
+		[MacCatalyst (27, 0), TV (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Field ("kCMMetadataBaseDataType_MacRoman")]
+		MacRoman,
+
+		[MacCatalyst (27, 0), TV (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Field ("kCMMetadataBaseDataType_ISOLatin1")]
+		IsoLatin1,
 	}
 }

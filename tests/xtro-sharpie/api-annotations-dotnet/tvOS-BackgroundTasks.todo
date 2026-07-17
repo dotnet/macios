@@ -1,3 +1,0 @@
-!deprecated-attribute-missing! BGTaskScheduler::submitTaskRequest:error: missing a [Deprecated] attribute
-!missing-selector! BGTaskScheduler::submitTaskRequest:completionHandler: not bound
-!unknown-type! BGHealthResearchTask bound

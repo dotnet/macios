@@ -321,6 +321,7 @@ public class Frameworks : Dictionary<string, Framework> {
 
 					{ "GameSave", "GameSave", 26, 0 },
 
+					{ "StateReporting", "StateReporting", 27, 0 },
 					{ "AccessoryAccess", "AccessoryAccess", 27, 0 },
 				};
 			}
@@ -506,6 +507,9 @@ public class Frameworks : Dictionary<string, Framework> {
 					{ "ExtensionKit", "ExtensionKit", 26, 0 },
 					{ "GameSave", "GameSave", 26, 0 },
 					{ "TouchController", "TouchController", 26, 0 },
+
+					{ "AVSystemRouting", "AVSystemRouting", new Version (27, 0), NotAvailableInSimulator },
+					{ "StateReporting", "StateReporting", 27, 0 },
 					// the above MUST be kept in sync with simlauncher
 					// see tools/mtouch/Makefile
 					// please also keep it sorted to ease comparison
@@ -626,6 +630,8 @@ public class Frameworks : Dictionary<string, Framework> {
 					{ "SecurityUI", "SecurityUI", 18, 4 },
 
 					{ "AVRouting", "AVRouting", 26, 0 },
+
+					{ "StateReporting", "StateReporting", 27, 0 },
 				};
 			}
 			return tvos_frameworks;
@@ -684,6 +690,7 @@ public class Frameworks : Dictionary<string, Framework> {
 					case "GLKit":
 					case "VideoSubscriberAccount":
 					case "AccessorySetupKit":
+					case "AVSystemRouting":
 					// The headers for FileProviderUI exist, but the native linker fails
 					case "FileProviderUI":
 					// The headers for Twitter are there, , but no documentation whatsoever online and the native linker fails too

@@ -38,7 +38,6 @@ namespace AVFoundation {
 		///           <para>(More documentation for this node is coming)</para>
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
 		///         </value>
-		///         <remarks>To be added.</remarks>
 		public CGPoint []? Corners {
 			get {
 				var arr = WeakCorners;

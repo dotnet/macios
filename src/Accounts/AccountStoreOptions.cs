@@ -95,7 +95,7 @@ namespace Accounts {
 				v = ACFacebookAudienceValue.Friends;
 				break;
 			case ACFacebookAudience.OnlyMe:
-				v = ACFacebookAudienceValue.Friends;
+				v = ACFacebookAudienceValue.OnlyMe;
 				break;
 			default:
 				throw new ArgumentOutOfRangeException ("audience");

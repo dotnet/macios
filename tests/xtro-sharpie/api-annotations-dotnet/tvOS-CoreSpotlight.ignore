@@ -1,9 +1,0 @@
-# These APIs were incorrectly exposed on tvOS and are kept until XAMCORE_5_0 for binary compatibility.
-!unknown-field! CSMailboxArchive bound
-!unknown-field! CSMailboxDrafts bound
-!unknown-field! CSMailboxInbox bound
-!unknown-field! CSMailboxJunk bound
-!unknown-field! CSMailboxSent bound
-!unknown-field! CSMailboxTrash bound
-!unknown-native-enum! CSSearchableItemUpdateListenerOptions bound
-!unknown-native-enum! CSSearchQuerySourceOptions bound

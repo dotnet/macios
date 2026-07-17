@@ -348,7 +348,7 @@ namespace CoreSpotlight {
 		/// <summary>Provides searchable items for the specified identifiers and file protection class.</summary>
 		[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
 		[Export ("searchableItemsForIdentifiers:protectionClass:searchableItemsHandler:")]
-		void GetSearchableItems (string [] identifiers, string protectionClass, CSSearchableIndexDelegateGetSearchableItemsHandler searchableItemsHandler);
+		void GetSearchableItems (string [] identifiers, [BindAs (typeof (NSFileProtectionType))] NSString protectionClass, CSSearchableIndexDelegateGetSearchableItemsHandler searchableItemsHandler);
 
 		[NoTV]
 		[iOS (18, 4), Mac (15, 4), MacCatalyst (18, 4)]
@@ -456,6 +456,10 @@ namespace CoreSpotlight {
 		[Export ("isUpdate", ArgumentSemantic.Assign)]
 		bool IsUpdate { get; set; }
 
+#if !XAMCORE_5_0 && __TVOS__
+		[Obsolete ("This property is not available on tvOS.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+#endif
 		[NoTV, iOS (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
 		[Export ("updateListenerOptions", ArgumentSemantic.Assign)]
 		CSSearchableItemUpdateListenerOptions UpdateListenerOptions { get; set; }
@@ -546,7 +550,12 @@ namespace CoreSpotlight {
 	[NoTV]
 #endif
 	[MacCatalyst (13, 1)]
+#if !XAMCORE_5_0 && __TVOS__
+	[Obsolete ("This type is not available on tvOS.")]
+	[EditorBrowsable (EditorBrowsableState.Never)]
+#else
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
+#endif
 	[Static]
 	interface CSMailboxKey {
 
@@ -2734,15 +2743,30 @@ namespace CoreSpotlight {
 		string KeyboardLanguage { get; set; }
 
 #if XAMCORE_5_0
+		/// <summary>Gets or sets the sources that the query can search.</summary>
 		[NoTV, NoiOS, NoMacCatalyst]
+#elif !__MACOS__
+		/// <summary>Gets or sets the sources that the query can search.</summary>
+		[Obsolete ("This property is not available on this platform.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+#else
+		/// <summary>Gets or sets the sources that the query can search.</summary>
 #endif
 		[Export ("sourceOptions", ArgumentSemantic.Assign)]
 		CSSearchQuerySourceOptions SourceOptions { get; set; }
 	}
 
 #if XAMCORE_5_0
+	/// <summary>Specifies the sources that a Core Spotlight query can search.</summary>
 	[NoTV, NoiOS, NoMacCatalyst]
 #else
+#if !__MACOS__
+	/// <summary>Specifies the sources that a Core Spotlight query can search.</summary>
+	[Obsolete ("This enum is not available on this platform.")]
+	[EditorBrowsable (EditorBrowsableState.Never)]
+#else
+	/// <summary>Specifies the sources that a Core Spotlight query can search.</summary>
+#endif
 	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 #endif
 	[Flags]
@@ -2767,6 +2791,10 @@ namespace CoreSpotlight {
 #if XAMCORE_5_0
 	[NoTV]
 #else
+#if __TVOS__
+	[Obsolete ("This enum is not available on tvOS.")]
+	[EditorBrowsable (EditorBrowsableState.Never)]
+#endif
 	[TV (18, 4)]
 #endif
 	[Flags]

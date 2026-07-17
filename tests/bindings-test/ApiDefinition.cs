@@ -601,6 +601,15 @@ namespace Bindings.Test {
 		C,
 	}
 
+	interface IBindAsProtocol { }
+
+	[BaseType (typeof (NSObject)), Model]
+	[Protocol]
+	interface BindAsProtocol {
+		[Export ("setStrongEnum:")]
+		void SetStrongEnum ([BindAs (typeof (StrongEnum))] NSString value);
+	}
+
 	enum NormalEnum {
 		X,
 		Y,

@@ -789,11 +789,35 @@ namespace Xamarin.Linker {
 
 		BindAsAttribute? GetBindAsAttribute (MethodDefinition method, int parameter)
 		{
+			BindAsAttribute? attribute;
 			if (StaticRegistrar.IsPropertyAccessor (method, out var property)) {
-				return StaticRegistrar.GetBindAsAttribute (property);
+				attribute = StaticRegistrar.GetBindAsAttribute (property);
 			} else {
-				return StaticRegistrar.GetBindAsAttribute (method, parameter);
+				attribute = StaticRegistrar.GetBindAsAttribute (method, parameter);
 			}
+
+			if (attribute is not null || parameter < 0 || method.DeclaringType.IsInterface)
+				return attribute;
+
+			var map = StaticRegistrar.PrepareInterfaceMethodMapping (method.DeclaringType);
+			if (map is null || !map.TryGetValue (method, out var interfaceMethods))
+				return null;
+
+			List<MethodDefinition>? bindAsInterfaceMethods = null;
+			foreach (var interfaceMethod in interfaceMethods) {
+				var interfaceAttribute = StaticRegistrar.GetBindAsAttribute (interfaceMethod, parameter);
+				if (interfaceAttribute is null)
+					continue;
+
+				bindAsInterfaceMethods ??= new List<MethodDefinition> ();
+				bindAsInterfaceMethods.Add (interfaceMethod);
+				attribute = interfaceAttribute;
+			}
+
+			if (bindAsInterfaceMethods is not null && interfaceMethods.Count != 1)
+				throw new AggregateException (Shared.GetMT4127 (method, interfaceMethods));
+
+			return attribute;
 		}
 
 		// This emits a conversion between the native and the managed representation of a parameter or return value,

@@ -2580,6 +2580,11 @@ xamarin_initialize_crash_report_directory ()
 	if (enableCrashReport == NULL || strcmp (enableCrashReport, "1") != 0)
 		return;
 
+	// If DOTNET_CrashReportRootPath is already set, respect it and don't override it
+	// (nor create any directory), since the caller is then responsible for the location.
+	if (getenv ("DOTNET_CrashReportRootPath") != NULL)
+		return;
+
 	NSArray *paths = NSSearchPathForDirectoriesInDomains (NSCachesDirectory, NSUserDomainMask, YES);
 	if (paths == nil || [paths count] == 0) {
 		LOG (PRODUCT ": Could not find the caches directory for crash reports.\n");
@@ -2596,6 +2601,15 @@ xamarin_initialize_crash_report_directory ()
 		if (bundleId != nil) {
 			cachesDir = [cachesDir stringByAppendingPathComponent: bundleId];
 		}
+	}
+
+	// The .NET runtime's in-process crash reporter won't write any crash report files
+	// unless DOTNET_CrashReportRootPath points to an already-existing directory, so make
+	// sure the directory exists before setting the environment variable.
+	NSError *error = nil;
+	if (![[NSFileManager defaultManager] createDirectoryAtPath: cachesDir withIntermediateDirectories: YES attributes: nil error: &error]) {
+		LOG (PRODUCT ": Could not create the crash report directory '%s': %s\n", [cachesDir UTF8String], [[error description] UTF8String]);
+		return;
 	}
 
 	setenv ("DOTNET_CrashReportRootPath", [cachesDir UTF8String], 0 /* don't overwrite */);

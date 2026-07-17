@@ -1,4 +1,2 @@
-!missing-selector! MFMessageComposeViewController::setMFMessageComposeViewControllerVerificationCodeSendCompletion: not bound
-
 ## The inherited initializers abort at runtime, so initWithDelegate: is the designated initializer, but the header is not decorated
 !extra-designated-initializer! MFComposeAssistantViewController::initWithDelegate: is incorrectly decorated with an [DesignatedInitializer] attribute

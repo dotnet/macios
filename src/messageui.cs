@@ -22,6 +22,68 @@ namespace MessageUI {
 		AddMissingRecipients,
 	}
 
+	/// <summary>Represents the contents of an email draft.</summary>
+	[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor] // init leaves the non-null properties uninitialized
+	interface MFMailDraft {
+		/// <summary>Gets the sender address, or <see langword="null" /> if the draft does not specify one.</summary>
+		[NullAllowed, Export ("from")]
+		string From { get; }
+
+		/// <summary>Gets the subject.</summary>
+		[Export ("subject")]
+		string Subject { get; }
+
+		/// <summary>Gets the attributed message body.</summary>
+		[Export ("body")]
+		NSAttributedString Body { get; }
+
+		/// <summary>Gets the primary recipient addresses.</summary>
+		[Export ("to")]
+		string [] To { get; }
+
+		/// <summary>Gets the carbon-copy recipient addresses.</summary>
+		[Export ("cc")]
+		string [] Cc { get; }
+
+		/// <param name="subject">The subject.</param>
+		/// <param name="body">The attributed message body.</param>
+		/// <param name="from">The sender address.</param>
+		/// <param name="to">The primary recipient addresses.</param>
+		/// <param name="cc">The carbon-copy recipient addresses.</param>
+		/// <summary>Creates an email draft with the specified contents and recipients.</summary>
+		[Export ("initWithSubject:body:from:to:cc:")]
+		NativeHandle Constructor (string subject, NSAttributedString body, string from, string [] to, string [] cc);
+	}
+
+	interface IMFComposeAssistantViewControllerDelegate { }
+
+	/// <summary>Methods for receiving email drafts from a compose assistant.</summary>
+	[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
+	[BaseType (typeof (NSObject))]
+	interface MFComposeAssistantViewControllerDelegate {
+		/// <param name="controller">The compose assistant that created the draft.</param>
+		/// <param name="draft">The email draft.</param>
+		/// <summary>Notifies the delegate that the compose assistant created an email draft.</summary>
+		[Abstract]
+		[Export ("composeAssistantViewController:didComposeDraft:")]
+		void DidComposeDraft (MFComposeAssistantViewController controller, MFMailDraft draft);
+	}
+
+	/// <summary>Provides an interface for composing an email draft.</summary>
+	[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (UIViewController))]
+	[PrivateDefaultCtor] // init and initWithCoder: abort at runtime
+	interface MFComposeAssistantViewController {
+		/// <param name="delegate">The object that receives the composed draft.</param>
+		/// <summary>Creates a compose assistant with the specified delegate.</summary>
+		[Export ("initWithDelegate:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor (IMFComposeAssistantViewControllerDelegate @delegate);
+	}
+
 	/// <summary>Provides a user interface for composing and sending email messages.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MessageUI/Reference/MFMailComposeViewController_class/index.html">Apple documentation for <c>MFMailComposeViewController</c></related>

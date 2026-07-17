@@ -3099,6 +3099,7 @@ F:CryptoTokenKit.TKErrorCode.BadParameter
 F:CryptoTokenKit.TKErrorCode.CanceledByUser
 F:CryptoTokenKit.TKErrorCode.CommunicationError
 F:CryptoTokenKit.TKErrorCode.CorruptedData
+F:CryptoTokenKit.TKErrorCode.InvalidatedDeviceKey
 F:CryptoTokenKit.TKErrorCode.NotImplemented
 F:CryptoTokenKit.TKErrorCode.ObjectNotFound
 F:CryptoTokenKit.TKErrorCode.TokenNotFound

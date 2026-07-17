@@ -11,6 +11,14 @@
 		<GenerateTestingPlatformEntryPoint Condition="'$(GenerateTestingPlatformEntryPoint)' == ''">false</GenerateTestingPlatformEntryPoint>
 		<!-- Suppress trimmer warnings from test framework dependencies (e.g. Microsoft.ApplicationInsights) -->
 		<SuppressTrimAnalysisWarnings Condition="'$(SuppressTrimAnalysisWarnings)' == ''">true</SuppressTrimAnalysisWarnings>
+		<!--
+			On macOS and Mac Catalyst 'dotnet run/test' launches the app via 'open' by default,
+			which goes through LaunchServices and does not propagate the parent process's
+			environment variables or reliably forward CLI arguments to the app. That breaks
+			the Microsoft.Testing.Platform (MTP) handshake that 'dotnet test' relies on.
+			Launching the app binary directly avoids the problem.
+		-->
+		<RunWithOpen Condition="'$(RunWithOpen)' == ''">false</RunWithOpen>
 	</PropertyGroup>
 	<ItemGroup>
 		<!-- Disable ANSI escape codes in MSTest output, as they appear as garbled text in simulator/device logs -->

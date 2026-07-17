@@ -7,14 +7,17 @@ namespace Xamarin.Tests {
 	[TestFixture]
 	public class EnableCrashReportTest : TestBaseClass {
 		[Test]
-		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
 		public void Enabled (ApplePlatform platform, string runtimeIdentifiers)
 		{
 			// When $(EnableCrashReport) is set to true, the DOTNET_EnableCrashReport=1 environment
-			// variable is set at startup, which makes the .NET runtime write a JSON crash report
-			// when the app crashes. Verify this by crashing the app on launch and checking that a
-			// crash report file was created.
+			// variable is set at startup, which makes the .NET runtime's in-process crash reporter
+			// write a JSON crash report when the app crashes. Verify this by crashing the app on
+			// launch and checking that a crash report file was created.
+			//
+			// Note: only the mobile CoreCLR flavor (iOS, tvOS and Mac Catalyst) has the in-process
+			// crash reporter; the desktop macOS runtime relies on 'createdump' instead (see the
+			// BundleCreateDump property), which is why macOS isn't tested here.
 			var project = "MySimpleApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
@@ -40,8 +43,11 @@ namespace Xamarin.Tests {
 				{ "DOTNET_CrashReportRootPath", customReportDir },
 			}, customReportDir);
 
-			// Run without DOTNET_CrashReportRootPath: the runtime picks a default location (the
-			// app's caches directory), so verify a crash report shows up there too.
+			// Run without DOTNET_CrashReportRootPath: the runtime picks a default location and
+			// verify a crash report shows up there too. MySimpleApp isn't sandboxed (it has no
+			// app-sandbox entitlement), so for a non-sandboxed app the runtime uses
+			// ~/Library/Caches/<bundleId> (a sandboxed app would instead use the caches directory
+			// inside its container, ~/Library/Containers/<bundleId>/Data/Library/Caches).
 			var bundleIdentifier = GetBundleIdentifier (platform, appPath);
 			var cachesReportDir = Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.UserProfile), "Library", "Caches", bundleIdentifier);
 			var reportsDir = Path.Combine (cachesReportDir, ".dotnet", "crash-reports");

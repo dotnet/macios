@@ -57,6 +57,7 @@ namespace Xamarin.Tests {
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			properties ["MtouchLink"] = "SdkOnly";
+			properties ["LinkMode"] = "SdkOnly";
 			properties ["Configuration"] = configuration;
 
 			var rv = DotNet.AssertBuild (project_path, properties);

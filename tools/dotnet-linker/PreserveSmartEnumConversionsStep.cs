@@ -27,7 +27,7 @@ namespace Xamarin.Linker.Steps {
 		bool UseXmlDescriptionFile {
 			get {
 #if ASSEMBLY_PREPARER
-				return Configuration.Application.HotReloadCompatibleBuild;
+				return Configuration.HotReloadCompatibleBuild;
 #else
 				return false;
 #endif

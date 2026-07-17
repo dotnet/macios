@@ -669,10 +669,6 @@ namespace Xamarin.Linker {
 					new LoadValue ((key, value) => HybridGlobalization = string.Equals ("true", value, StringComparison.OrdinalIgnoreCase)),
 					new SaveValue ((key, storage) => saveOptionalDefaultFalseBool (key, HybridGlobalization, storage))
 				)},
-				{ "HotReloadCompatibleBuild", (
-					new LoadValue ((key, value) => loadBool (key, value, out Application.HotReloadCompatibleBuild)),
-					new SaveValue ((key, storage) => saveOptionalDefaultFalseBool (key, Application.HotReloadCompatibleBuild, storage))
-				)},
 				{ "XamarinNativeLibraryDirectory", (
 					new LoadValue ((key, value) => XamarinNativeLibraryDirectory = value),
 					new SaveValue ((key, storage) => saveNonEmpty (key, XamarinNativeLibraryDirectory, storage))

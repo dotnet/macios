@@ -607,7 +607,7 @@ build time.
 
 It's usually possible to determine at build time if we'll be running on an
 ARM64 cpu at runtime, and in that case we can inline the value of this
-property to a constant `true` or `false` value.
+field to a constant `true` or `false` value.
 
 This optimization has been replaced by the
 `ObjCRuntime.Runtime.IsARM64CallingConvention` trimmer feature switch: the

@@ -14,6 +14,8 @@ namespace CoreGraphics {
 		IturRecommended,
 		ExrGamma,
 		None,
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		HeadroomAdaptiveGainCurve = 6,
 	}
 
 	/// <summary>Specifies various boxes for the <see cref="CoreGraphics.CGContextPDF.BeginPage(CoreGraphics.CGPDFPageInfo)" /> method.</summary>

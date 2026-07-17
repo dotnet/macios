@@ -37,6 +37,34 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 		base.TryProcess ();
 	}
 
+	protected override bool ModifyAssembly (AssemblyDefinition assembly)
+	{
+		// Dlfcn calls can only appear in assemblies that reference (or, for the platform assembly, define)
+		// ObjCRuntime.Dlfcn, which is only the platform assembly and binding libraries. Skip everything else
+		// (e.g. the BCL and most user assemblies) without iterating all their types, methods and instructions.
+		if (!ReferencesDlfcn (assembly))
+			return false;
+
+		return base.ModifyAssembly (assembly);
+	}
+
+	bool ReferencesDlfcn (AssemblyDefinition assembly)
+	{
+		// Dlfcn lives in the product assembly, so an assembly that doesn't even reference the product assembly
+		// (the BCL, most third-party code) can't possibly call it. This only looks at the assembly references,
+		// so it's the cheapest check - do it first.
+		if (!Configuration.Profile.IsOrReferencesProductAssembly (assembly))
+			return false;
+
+		// The product assembly defines (and calls) Dlfcn itself.
+		if (Configuration.Profile.IsProductAssembly (assembly))
+			return true;
+
+		// Otherwise (binding libraries, user code that references the product assembly) it must reference the
+		// Dlfcn type specifically - this scans the type reference table, so it's the most expensive check.
+		return assembly.MainModule.HasTypeReference ("ObjCRuntime.Dlfcn");
+	}
+
 	string? current_framework;
 	protected override bool ProcessType (TypeDefinition type)
 	{
@@ -44,6 +72,14 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 		if (type.HasMethods) {
 			if (Frameworks.TryGetFramework (App, type, out Framework? framework) && framework.IsFrameworkUnavailable (App)) {
 				App.Log (3, $"Type {type.FullName} appears to be part of the '{framework.Name}' framework, which is not available in the current SDK. Skipping inlining Dlfcn calls for this type.");
+				return modified;
+			}
+
+			// If the type isn't available in the simulator, and we're building for the simulator, then don't
+			// inline any of its methods. Checking this once per type (instead of once per method) avoids
+			// re-scanning the declaring type's availability attributes for every method.
+			if (DerivedLinkContext.App.IsSimulatorBuild && DerivedLinkContext.HasAvailabilityAttributesShowingUnavailableInSimulator (type)) {
+				App.Log (3, $"Type {type.FullName} is not available in the simulator. Skipping inlining Dlfcn calls for this type.");
 				return modified;
 			}
 
@@ -523,13 +559,10 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 			return modified; // don't process the Dlfcn methods themselves
 
 		if (DerivedLinkContext.App.IsSimulatorBuild) {
-			// if the method or its declaring type aren't available in the simulator, and we're building for the simulator, then don't inline.
+			// if the method isn't available in the simulator, and we're building for the simulator, then don't inline.
+			// (the declaring type's availability is checked once per type in ProcessType.)
 			if (DerivedLinkContext.HasAvailabilityAttributesShowingUnavailableInSimulator (method, method)) {
 				App.Log (3, $"Method {method.FullName} is not available in the simulator. Skipping inlining Dlfcn calls for this method.");
-				return modified;
-			}
-			if (DerivedLinkContext.HasAvailabilityAttributesShowingUnavailableInSimulator (method.DeclaringType, method)) {
-				App.Log (3, $"Type {method.DeclaringType.FullName} is not available in the simulator. Skipping inlining Dlfcn calls for this type.");
 				return modified;
 			}
 		}

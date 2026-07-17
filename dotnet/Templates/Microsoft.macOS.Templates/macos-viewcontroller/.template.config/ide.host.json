@@ -1,7 +1,7 @@
 {
   "$schema": "http://json.schemastore.org/ide.host",
   "icon": "ide/icon.ico",
-  "appliesTo": "MacOSApplication | MacOSAppExtension | MacOSBinding | MacOSClassLibary",
+  "appliesTo": "MacOSApplication | MacOSAppExtension | MacOSBinding | MacOSClassLibrary",
   "defaultItemExtension": "cs",
   "itemHierarchyPaths": [ "macOS" ]
 }

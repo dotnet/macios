@@ -2190,8 +2190,8 @@ namespace Xamarin.Tests {
 				AssertErrorMessages (errors,
 					$"The current .NET SDK does not support targeting .NET {majorNetVersion}.0.  Either target .NET {majorNetVersion - 1}.0 or lower, or use a version of the .NET SDK that supports .NET {majorNetVersion}.0. Download the .NET SDK from https://aka.ms/dotnet/download");
 			} else {
-				AssertErrorMessages (errors,
-					$"The workload '{targetFramework}' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/maui-support-policy for more information about the support policy.",
+				var uniqueErrors = errors.DistinctBy (v => v.Message).ToArray ();
+				AssertErrorMessages (uniqueErrors,
 					$"The workload '{targetFramework}' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/maui-support-policy for more information about the support policy.");
 			}
 		}

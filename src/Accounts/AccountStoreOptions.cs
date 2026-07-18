@@ -33,8 +33,6 @@ namespace Accounts {
 
 	// XI specific, not part of ObjC (NSString mapping)
 	/// <summary>Specifies target audience for Facebook posts.</summary>
-	///     <remarks>
-	///     </remarks>
 	public enum ACFacebookAudience {
 		/// <summary>Posts are visible to everyone.</summary>
 		Everyone = 1,
@@ -45,32 +43,27 @@ namespace Accounts {
 	}
 
 	/// <summary>Options available when requesting Facebook access.</summary>
-	///     <remarks>
-	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	public class AccountStoreOptions : DictionaryContainer {
 #if !COREBUILD
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Initializes a new instance of the <see cref="AccountStoreOptions" /> class.</summary>
 		public AccountStoreOptions ()
 			: base (new NSMutableDictionary ())
 		{
 		}
 
-		/// <param name="dictionary">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <param name="dictionary">The dictionary containing account store options.</param>
+		/// <summary>Initializes a new instance of the <see cref="AccountStoreOptions" /> class from the specified dictionary.</summary>
 		public AccountStoreOptions (NSDictionary dictionary)
 			: base (dictionary)
 		{
 		}
 
 		/// <summary>Represents Facebook App ID.</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>The property uses constant ACFacebookAppIdKey value to access the underlying dictionary.</remarks>
+		/// <value>The Facebook application identifier.</value>
+		/// <remarks>The property uses constant ACFacebookAppIdKey value to access the underlying dictionary.</remarks>
 		public string? FacebookAppId {
 			set {
 				SetStringValue (ACFacebookKey.AppId, value);
@@ -81,10 +74,8 @@ namespace Accounts {
 		}
 
 		/// <param name="audience">Target audience.</param>
-		///         <param name="permissions">One or more requested permission.</param>
-		///         <summary>Sets message posting permissions.</summary>
-		///         <remarks>
-		///         </remarks>
+		/// <param name="permissions">One or more requested permissions.</param>
+		/// <summary>Sets message posting permissions.</summary>
 		public void SetPermissions (ACFacebookAudience audience, params string [] permissions)
 		{
 			if (permissions is null)
@@ -113,9 +104,8 @@ namespace Accounts {
 			SetNativeValue (ACFacebookKey.Audience, v);
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the Tencent Weibo application identifier.</summary>
+		/// <value>The Tencent Weibo application identifier.</value>
 		public string? TencentWeiboAppId {
 			set {
 				SetStringValue (ACTencentWeiboKey.AppId, value);

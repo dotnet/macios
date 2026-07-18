@@ -300,6 +300,17 @@ This also applies to how native references are stored inside NuGets.
 > [!NOTE]
 > In some cases it can be beneficial to force a zip file on iOS as well, especially when there's a framework with files that have long names, because the zip file can sometimes work around MAX_PATH issues on Windows.
 
+## CopyDSYMToPublishDirectory
+
+A boolean property that specifies whether any generated `*.dSYM` directories should be
+copied to the publish directory when publishing (`dotnet publish`).
+
+The `*.dSYM` directories are generated next to the app bundle (see [NoDSymUtil](#nodsymutil)),
+and when this property is `true` they'll also be copied to the publish directory (next to the
+generated `.ipa`/`.pkg`).
+
+The default value is `true`.
+
 ## CopySceneKitAssetsPath
 
 The full path to the `copySceneKitAssets` tool.

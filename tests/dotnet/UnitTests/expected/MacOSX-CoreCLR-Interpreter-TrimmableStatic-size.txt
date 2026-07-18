@@ -1,9 +1,9 @@
-AppBundleSize: 258,029,785 bytes (251,982.2 KB = 246.1 MB)
+AppBundleSize: 258,030,168 bytes (251,982.6 KB = 246.1 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 Contents/Info.plist:
-    740 bytes (0.7 KB = 0.0 MB)
+    755 bytes (0.7 KB = 0.0 MB)
 Contents/MacOS/SizeTestApp:
-    7,387,384 bytes (7,214.2 KB = 7.0 MB)
+    7,387,752 bytes (7,214.6 KB = 7.0 MB)
 Contents/MonoBundle/.xamarin/osx-arm64/_Microsoft.macOS.TypeMap.dll:
     4,847,616 bytes (4,734.0 KB = 4.6 MB)
 Contents/MonoBundle/.xamarin/osx-arm64/_SizeTestApp.TypeMap.dll:

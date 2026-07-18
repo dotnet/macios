@@ -34,7 +34,6 @@ namespace Xamarin.Linker {
 					LinkContext = LinkContext,
 					InlineIsArm64CallingConvention = LinkContext.App.InlineIsArm64CallingConventionForCurrentAbi,
 					Optimizations = LinkContext.App.Optimizations,
-					Device = LinkContext.App.IsDeviceBuild,
 				};
 			}
 			OptimizeGeneratedCode.OptimizeMethod (data, method);

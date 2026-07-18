@@ -621,8 +621,22 @@
 		</PropertyGroup>
 
 		<PropertyGroup>
-			<!-- Yep, we want to run ILLink as well, because we need our custom steps to run (NativeAOT sets this to false, so set it back to true) -->
-			<RunILLink Condition="'$(PublishAot)' == 'true'">true</RunILLink>
+			<!--
+				When using NativeAOT + PrepareAssemblies, all our custom linker steps are executed by the
+				assembly-preparer (in the _PrepareAssemblies / _PostprocessAssemblies targets) instead of
+				inside ILLink (they're gated out of the _TrimmerCustomSteps item group when PrepareAssemblies
+				is true). The only reason we run ILLink for NativeAOT is to execute those custom steps (NativeAOT
+				sets RunILLink=false by default and does its own trimming via ILC); now that the custom steps run
+				elsewhere, running ILLink first is redundant - it just trims the assemblies before ILC, but ILC
+				trims them again anyway. So we skip ILLink entirely here and let ILC do all the trimming (the
+				standard NativeAOT flow). This simplifies the pipeline and makes it possible to run ILC before the
+				native registrar code is generated.
+			-->
+			<_SkipILLink Condition="'$(_SkipILLink)' == '' And '$(_UseNativeAot)' == 'true' And '$(PrepareAssemblies)' == 'true' And '$(PostProcessAssemblies)' == 'true'">true</_SkipILLink>
+			<_SkipILLink Condition="'$(_SkipILLink)' == ''">false</_SkipILLink>
+
+			<!-- Yep, we want to run ILLink as well, because we need our custom steps to run (NativeAOT sets this to false, so set it back to true), unless we're skipping ILLink (see _SkipILLink above) -->
+			<RunILLink Condition="'$(PublishAot)' == 'true' And '$(_SkipILLink)' != 'true'">true</RunILLink>
 
 			<TypeMapEntryAssembly Condition="'$(Registrar)' == 'trimmable-static'">$(_TypeMapAssemblyName)</TypeMapEntryAssembly>
 			<!-- ILLink targets add typemap-entry-assembly to _ExtraTrimmerArgs in a static PropertyGroup,
@@ -699,6 +713,7 @@
 				IntermediateOutputPath=$(DeviceSpecificIntermediateOutputPath)
 				InvariantGlobalization=$(InvariantGlobalization)
 				HybridGlobalization=$(HybridGlobalization)
+				HotReloadCompatibleBuild=$(HotReloadCompatibleBuild)
 				ItemsDirectory=$(_LinkerItemsDirectory)
 				IsAppExtension=$(IsAppExtension)
 				IsSimulatorBuild=$(_SdkIsSimulator)
@@ -1298,6 +1313,50 @@
 			Text="The property 'XamMacArch' is deprecated, please remove it from the project file. Use 'RuntimeIdentifier' or 'RuntimeIdentifiers' instead to specify the target architecture."
 			Condition="'$(XamMacArch)' != '' And '$(AllowXamMacArchArchProperty)' != 'true'"
 			/>
+
+		<!--
+			Detect properties that only apply to the Mono runtime, and which have
+			no effect (or are directly problematic) when not using the Mono runtime
+			(such as when using CoreCLR or NativeAOT).
+		-->
+		<Error
+			Text="The property 'RunAotCompilation' is set to 'true', which is not supported when not using the Mono runtime (for instance when using CoreCLR). Please remove it from the project file."
+			Condition="'$(UseMonoRuntime)' == 'false' And '$(RunAotCompilation)' == 'true'"
+			/>
+		<Error
+			Text="The property 'AotAssemblies' is set to 'true', which is not supported when not using the Mono runtime (for instance when using CoreCLR). Please remove it from the project file."
+			Condition="'$(UseMonoRuntime)' == 'false' And '$(AotAssemblies)' == 'true'"
+			/>
+		<!-- 'MtouchEnableSGenConc' is a deprecated alias for 'EnableSGenConc' (see Xamarin.Shared.props), so only warn about 'EnableSGenConc' if the value didn't come from 'MtouchEnableSGenConc', to avoid showing two warnings for the same setting. -->
+		<Warning
+			Text="The property 'EnableSGenConc' has no effect when not using the Mono runtime (for instance when using CoreCLR)."
+			Condition="'$(UseMonoRuntime)' == 'false' And '$(EnableSGenConc)' == 'true' And '$(MtouchEnableSGenConc)' != 'true'"
+			/>
+		<Warning
+			Text="The property 'MtouchEnableSGenConc' has no effect when not using the Mono runtime (for instance when using CoreCLR)."
+			Condition="'$(UseMonoRuntime)' == 'false' And '$(MtouchEnableSGenConc)' == 'true'"
+			/>
+		<Warning
+			Text="The property 'UseInterpreter' has no effect when not using the Mono runtime (for instance when using CoreCLR)."
+			Condition="'$(UseMonoRuntime)' == 'false' And '$(UseInterpreter)' == 'true'"
+			/>
+		<!-- 'UseInterpreter' is a shorthand for 'MtouchInterpreter=all' (see Xamarin.Shared.props), so only warn about 'MtouchInterpreter' if the value didn't come from 'UseInterpreter', to avoid showing two warnings for the same setting. -->
+		<Warning
+			Text="The property 'MtouchInterpreter' has no effect when not using the Mono runtime (for instance when using CoreCLR)."
+			Condition="'$(UseMonoRuntime)' == 'false' And '$(MtouchInterpreter)' != '' And '$(UseInterpreter)' != 'true'"
+			/>
+		<Warning
+			Text="The property 'MtouchUseLlvm' has no effect when not using the Mono runtime (for instance when using CoreCLR)."
+			Condition="'$(UseMonoRuntime)' == 'false' And '$(MtouchUseLlvm)' == 'true'"
+			/>
+		<Warning
+			Text="The property 'MtouchFloat32' has no effect when not using the Mono runtime (for instance when using CoreCLR)."
+			Condition="'$(UseMonoRuntime)' == 'false' And '$(MtouchFloat32)' != ''"
+			/>
+		<Warning
+			Text="The property 'MonoUseCompressedInterfaceBitmap' has no effect when not using the Mono runtime (for instance when using CoreCLR)."
+			Condition="'$(UseMonoRuntime)' == 'false' And '$(MonoUseCompressedInterfaceBitmap)' == 'true'"
+			/>
 	</Target>
 
 	<PropertyGroup>
@@ -1437,6 +1496,7 @@
 			<_RuntimeConfigReservedProperties Include="NATIVE_DLL_SEARCH_DIRECTORIES" />
 			<_RuntimeConfigReservedProperties Include="RUNTIME_IDENTIFIER" />
 			<_RuntimeConfigReservedProperties Include="APP_CONTEXT_BASE_DIRECTORY" />
+			<_RuntimeConfigReservedProperties Include="SYSTEM_CORELIB_DIRECTORY" />
 			<_RuntimeConfigReservedProperties Include="STARTUP_HOOKS" />
 		</ItemGroup>
 		<RuntimeConfigParserTask
@@ -1696,7 +1756,9 @@
 		<ItemGroup>
 			<!-- We need to mark all __Internal P/Invokes as direct, so that the native linker doesn't remove them -->
 			<DirectPInvoke Include="__Internal" />
+		</ItemGroup>
 
+		<ItemGroup Condition="'$(_SkipILLink)' != 'true'">
 			<!-- Give ILLink's output to ILC -->
 			<_UpdatedManagedAssemblyToLink Include="@(ManagedAssemblyToLink->'$(IntermediateLinkDir)%(Filename)%(Extension)')" Condition="Exists('$(IntermediateLinkDir)%(Filename)%(Extension)')" />
 			<ManagedAssemblyToLink Remove="@(ManagedAssemblyToLink)" />
@@ -1705,7 +1767,9 @@
 			<IlcCompileInput Include="@(ManagedBinary)" />
 			<IlcReference Include="@(ManagedAssemblyToLink)" Exclude="@(ManagedBinary)" />
 			<IlcReference Include="@(_ManagedAssemblyToLinkFromLinker)" />
+		</ItemGroup>
 
+		<ItemGroup>
 			<!-- Process UnmanagedCallersOnly attributes from every assembly -->
 			<_UnmanagedEntryPointsAssembliesToAdd Include="@(_UpdatedManagedAssemblyToLink->'%(Filename)')" />
 			<_UnmanagedEntryPointsAssembliesToAdd Remove="System.Private.CoreLib" />
@@ -1802,7 +1866,13 @@
 		DependsOnTargets="_LoadLinkerOutput"
 		>
 		<ItemGroup>
-			<_TrimmedAssembly Include="$(IntermediateLinkDir)*.dll" />
+			<!-- Collect the assemblies to scan from the assemblies to publish. This works whether or not the
+			     trimmer ran: when the trimmer is skipped (PrepareAssemblies + PostProcessAssemblies, see
+			     _CanSkipTrimmer) its output directory (IntermediateLinkDir) is empty, and when it did run the
+			     published assemblies are derived from the trimmed output. Either way these are the final
+			     assemblies, and they contain the inlined dlfcn P/Invokes (injected by the assembly-preparer)
+			     that this step needs to collect. -->
+			<_TrimmedAssembly Condition="'%(ResolvedFileToPublish.Extension)' == '.dll' And '%(ResolvedFileToPublish.Culture)' == '' And !$([System.String]::Copy ('%(ResolvedFileToPublish.Filename)').EndsWith ('.resources'))" Include="@(ResolvedFileToPublish)" />
 		</ItemGroup>
 	</Target>
 
@@ -2713,13 +2783,13 @@
 		<!-- we only want to validate major.minor, not any revision or build numbers -->
 		<PropertyGroup>
 			<_XcodeVersionMajorMinorOnly>$([System.Version]::Parse('$(_XcodeVersion)').Major).$([System.Version]::Parse('$(_XcodeVersion)').Minor)</_XcodeVersionMajorMinorOnly>
-			<_RecommendedXcodeVersionMajorMinorOnly>$([System.Version]::Parse('$(_RecommendedXcodeVersion)').Major).$([System.Version]::Parse('$(_RecommendedXcodeVersion)').Minor)</_RecommendedXcodeVersionMajorMinorOnly>
+			<_RecommendedXcodeVersionMajorMinorOnly>$([System.Version]::Parse('$(RecommendedXcodeVersion)').Major).$([System.Version]::Parse('$(RecommendedXcodeVersion)').Minor)</_RecommendedXcodeVersionMajorMinorOnly>
 			<_IsMatchingXcode Condition="'$(_RecommendedXcodeVersionMajorMinorOnly)' == '$(_XcodeVersionMajorMinorOnly)'">true</_IsMatchingXcode>
 		</PropertyGroup>
 		<MacDevMessage
 			Error="true"
 			ResourceName="E0191"
-			FormatArguments="$(_PlatformName);$(_ShortPackageVersion);$(_RecommendedXcodeVersion);$(_XcodeVersion)"
+			FormatArguments="$(_PlatformName);$(_ShortPackageVersion);$(RecommendedXcodeVersion);$(_XcodeVersion)"
 			Condition="'$(_IsMatchingXcode)' != 'true'"
 		/>
 	</Target>

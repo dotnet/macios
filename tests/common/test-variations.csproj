@@ -29,6 +29,7 @@
 		<TestVariations Include="inline-class-gethandle-compat" Description="Enables 'InlineClassGetHandle' in compatibility mode." />
 		<TestVariations Include="inline-class-gethandle-strict" Description="Enables 'InlineClassGetHandle' in strict mode." />
 		<TestVariations Include="prepare-assemblies" Description="Enables 'PrepareAssemblies'." />
+		<TestVariations Include="dontlink" Description="Disables the trimmer (MtouchLink/LinkMode set to 'None')." />
 	</ItemGroup>
 
 	<PropertyGroup>
@@ -193,6 +194,12 @@
 
 	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|prepare-assemblies|'))">
 		<PrepareAssemblies>true</PrepareAssemblies>
+		<_TestVariationApplied>true</_TestVariationApplied>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|dontlink|'))">
+		<MtouchLink>None</MtouchLink>
+		<LinkMode>None</LinkMode>
 		<_TestVariationApplied>true</_TestVariationApplied>
 	</PropertyGroup>
 

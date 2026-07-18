@@ -28,7 +28,7 @@ jobs:
     steps:
     - name: Check commenter permissions
       id: check-permissions
-      uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+      uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
       with:
         script: |
           const { data: permission } = await github.rest.repos.getCollaboratorPermissionLevel({
@@ -44,7 +44,7 @@ jobs:
           core.info(`User '${context.payload.comment.user.login}' has '${level}' access. Proceeding.`);
 
     - name: React to comment
-      uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+      uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
       with:
         script: |
           await github.rest.reactions.createForIssueComment({
@@ -75,7 +75,7 @@ jobs:
 
     - name: Validate gist owner
       id: validate-owner
-      uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+      uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
       env:
         GIST_ID: ${{ steps.parse.outputs.gist_id }}
       with:
@@ -85,9 +85,22 @@ jobs:
             'vs-mobiletools-engineering-service2',
           ];
 
-          const { data: gist } = await github.rest.gists.get({
-            gist_id: process.env.GIST_ID,
+          // The Gists API isn't accessible to the GitHub Actions token (a GitHub App
+          // installation token), so fetch the gist unauthenticated instead. Secret gists
+          // are readable by anyone who knows the id, which is all we need here.
+          const resp = await fetch(`https://api.github.com/gists/${process.env.GIST_ID}`, {
+            headers: {
+              'Accept': 'application/vnd.github+json',
+              'X-GitHub-Api-Version': '2022-11-28',
+              'User-Agent': 'dotnet-macios-apply-gist',
+            },
           });
+          if (!resp.ok) {
+            const body = await resp.text().catch(() => '');
+            core.setFailed(`Failed to fetch gist '${process.env.GIST_ID}': ${resp.status} ${resp.statusText}${body ? `\n${body}` : ''}`);
+            return;
+          }
+          const gist = await resp.json();
           if (!gist.owner) {
             core.setFailed('Gist has no owner (anonymous or deleted). Cannot verify ownership.');
             return;
@@ -101,7 +114,7 @@ jobs:
 
     - name: Get PR branch
       id: pr-branch
-      uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+      uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
       with:
         script: |
           const { data: pr } = await github.rest.pulls.get({
@@ -117,7 +130,7 @@ jobs:
           core.setOutput('repo_full_name', pr.head.repo.full_name);
 
     - name: Checkout PR branch
-      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
       with:
         ref: ${{ steps.pr-branch.outputs.ref }}
         repository: ${{ steps.pr-branch.outputs.repo_full_name }}
@@ -127,14 +140,17 @@ jobs:
     - name: Download and apply gist files
       env:
         GIST_ID: ${{ steps.parse.outputs.gist_id }}
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         EXPECTED_DIR="tests/dotnet/UnitTests/expected"
         mkdir -p "$EXPECTED_DIR"
         export EXPECTED_DIR
 
-        # Download gist metadata to get file URLs
-        GIST_JSON=$(gh api "gists/$GIST_ID")
+        # Download gist metadata to get file URLs. The Gists API isn't accessible to the
+        # GitHub Actions token (a GitHub App installation token), so fetch it unauthenticated.
+        if ! GIST_JSON=$(curl -fSL -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" -H "User-Agent: dotnet-macios-apply-gist" "https://api.github.com/gists/$GIST_ID"); then
+            echo "Failed to fetch gist '$GIST_ID' (404/403/rate limit?)." >&2
+            exit 1
+        fi
         echo "$GIST_JSON" | python3 -c "
         import json, sys, urllib.request, os, re
 
@@ -176,7 +192,7 @@ jobs:
 
     - name: Post success comment
       if: success()
-      uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+      uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
       env:
         GIST_URL: ${{ steps.parse.outputs.gist_url }}
       with:
@@ -190,7 +206,7 @@ jobs:
 
     - name: Post failure comment
       if: failure()
-      uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+      uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
       with:
         script: |
           await github.rest.issues.createComment({

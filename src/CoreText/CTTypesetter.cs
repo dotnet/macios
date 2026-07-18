@@ -159,6 +159,7 @@ namespace CoreText {
 			: base (CTTypesetterCreateWithAttributedStringAndOptions (value.GetNonNullHandle (nameof (value)), options.GetHandle ()), true, true)
 		{
 			GC.KeepAlive (value);
+			GC.KeepAlive (options);
 		}
 		#endregion
 

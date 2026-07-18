@@ -29,7 +29,6 @@ namespace Xamarin.Linker.Steps {
 					LinkContext = DerivedLinkContext,
 					InlineIsArm64CallingConvention = App.InlineIsArm64CallingConventionForCurrentAbi,
 					Optimizations = App.Optimizations,
-					Device = App.IsDeviceBuild,
 				};
 			}
 			return OptimizeGeneratedCode.OptimizeMethod (data, method);

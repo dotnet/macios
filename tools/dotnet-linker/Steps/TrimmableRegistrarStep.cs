@@ -195,18 +195,24 @@ namespace Xamarin.Linker {
 			// conditional TypeMapAttribute entries (which require ProcessType to be promoted from
 			// _unmarkedExternalTypeMapEntries) are silently trimmed by the linker.
 			//
+			// The runtime fix (https://github.com/dotnet/runtime/pull/127504) is only available in
+			// .NET 11+, so the workaround is only applied when targeting .NET 10 or earlier.
+			//
 			// The workaround consists of two parts:
-			//   1. This HashSet identifying the affected types.
-			//   2. The conditional block below (lines starting with 'if (skippedActualTypes.Contains (td))')
+			//   1. This HashSet identifying the affected types (only populated when the workaround applies).
+			//   2. The conditional block below (lines starting with 'if (applyTypeMapWorkaround && skippedActualTypes.Contains (td))')
 			//      that uses the 2-arg TypeMapAttribute constructor for these types instead of the 3-arg one.
 			//
-			// To remove this workaround once the issue is fixed:
-			//   1. Delete this HashSet and its comment.
-			//   2. Remove the 'if (skippedActualTypes.Contains (td))' branch below, keeping only the 'else' branch.
+			// To remove this workaround once the minimum supported .NET version includes the fix:
+			//   1. Delete this HashSet, the applyTypeMapWorkaround variable, and this comment.
+			//   2. Remove the 'if (applyTypeMapWorkaround && skippedActualTypes.Contains (td))' branch below, keeping only the 'else' branch.
 			//   3. Verify by running: make build run-bare TEST_VARIATION='release|trimmable-static-registrar-all-optimizations-linkall' \
 			//        RUN_ARGUMENTS="--test MonoTouchFixtures.Foundation.NSOrderedSetTest"
 			//      in tests/monotouch-test/dotnet/MacCatalyst (the MakeNSOrderedSet_WithNull test is a good canary).
-			var skippedActualTypes = new HashSet<TypeDefinition> (App.StaticRegistrar.SkippedTypes.Select (v => v.Actual.Type.Resolve ()));
+			var applyTypeMapWorkaround = App.TargetFramework.Version.Major <= 10;
+			var skippedActualTypes = applyTypeMapWorkaround
+				? new HashSet<TypeDefinition> (App.StaticRegistrar.SkippedTypes.Select (v => v.Actual.Type.Resolve ()))
+				: new HashSet<TypeDefinition> ();
 
 			var copyAssemblyParametersFrom = abr.PlatformAssembly.MainModule;
 			var assemblyParameters = new ModuleParameters {
@@ -238,6 +244,11 @@ namespace Xamarin.Linker {
 			// If we need to modify an assembly that's not the typemap assembly, do it after we've finished writing the typemap assembly,
 			// to avoid having to switch between assemblies (we cache a lot of stuff, and those caches will have to be re-created for every switch).
 			var postActionsByAssembly = new Dictionary<AssemblyDefinition, List<Action<AssemblyDefinition>>> ();
+
+			// The fix for https://github.com/dotnet/runtime/issues/127004 is only available in .NET 11+, so we
+			// still need the workaround (adding the proxy type's attribute to the source type) for .NET 10.
+			// Tracking issue: https://github.com/dotnet/macios/issues/25276
+			var needsTypeMapWorkaround = App.TargetFramework.Version.Major <= 10;
 			void addPostAction (AssemblyDefinition assembly, Action<AssemblyDefinition> action)
 			{
 				if (!postActionsByAssembly.TryGetValue (assembly, out var actions)) {
@@ -343,7 +354,7 @@ namespace Xamarin.Linker {
 					var isCustomType = App.StaticRegistrar.IsCustomType (objcType);
 
 					if (!objcType.IsProtocol && !objcType.IsCategory) {
-						if (skippedActualTypes.Contains (td)) {
+						if (applyTypeMapWorkaround && skippedActualTypes.Contains (td)) {
 							// Workaround for https://github.com/dotnet/runtime/issues/127504
 							// Tracking issue: https://github.com/dotnet/macios/issues/25275
 							// Use the 2-arg (unconditional) TypeMap constructor for types that are
@@ -485,10 +496,12 @@ namespace Xamarin.Linker {
 
 						// We also add the proxy type as an attribute to the type, as a workaround for https://github.com/dotnet/runtime/issues/127004
 						// Tracking issue: https://github.com/dotnet/macios/issues/25276
-						addPostAction (td.Module.Assembly, assembly => {
-							var attribute = new CustomAttribute (assembly.MainModule.ImportReference (ctor)); // don't use abr.CreateAttribute here, because the ctor has already been marked
-							td.CustomAttributes.Add (attribute);
-						});
+						if (needsTypeMapWorkaround) {
+							addPostAction (td.Module.Assembly, assembly => {
+								var attribute = new CustomAttribute (assembly.MainModule.ImportReference (ctor)); // don't use abr.CreateAttribute here, because the ctor has already been marked
+								td.CustomAttributes.Add (attribute);
+							});
+						}
 
 						/*
 						 * Add the [TypeMapAssociation] attribute for this type and its proxy
@@ -577,10 +590,12 @@ namespace Xamarin.Linker {
 
 						// We also add the proxy type as an attribute to the type, as a workaround for https://github.com/dotnet/runtime/issues/127004
 						// Tracking issue: https://github.com/dotnet/macios/issues/25276
-						addPostAction (td.Module.Assembly, assembly => {
-							var attribute = new CustomAttribute (assembly.MainModule.ImportReference (ctor)); // don't use abr.CreateAttribute here, because the ctor has already been marked
-							td.CustomAttributes.Add (attribute);
-						});
+						if (needsTypeMapWorkaround) {
+							addPostAction (td.Module.Assembly, assembly => {
+								var attribute = new CustomAttribute (assembly.MainModule.ImportReference (ctor)); // don't use abr.CreateAttribute here, because the ctor has already been marked
+								td.CustomAttributes.Add (attribute);
+							});
+						}
 					}
 				}
 

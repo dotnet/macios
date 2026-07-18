@@ -56,6 +56,25 @@ checkout:
   github-token: ${{ secrets.GITHUB_TOKEN }}
   fetch: ["*"]
   fetch-depth: 0
+pre-agent-steps:
+  # The agent runs in a firewall sandbox where the `gh` CLI is NOT authenticated,
+  # so it cannot list milestones itself. Fetch the closed milestones here (this
+  # step runs on the runner, which has a token) and write them to a file in the
+  # shared agent directory (/tmp/gh-aw is bind-mounted read-write into the sandbox).
+  - name: Fetch closed milestones
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      REPO: ${{ github.repository }}
+    run: |
+      set -euo pipefail
+      # Fail hard on any error: the closed-milestone list is a safety gate that
+      # prevents creating merge PRs for inactive branches. An empty or partial
+      # list must never be silently accepted, so do NOT swallow errors here.
+      mkdir -p /tmp/gh-aw/code-radiator
+      gh api "repos/${REPO}/milestones?state=closed&per_page=100" --paginate -q '.[].title' \
+        > /tmp/gh-aw/code-radiator/closed-milestones.txt
+      echo "Closed milestones:"
+      cat /tmp/gh-aw/code-radiator/closed-milestones.txt
 safe-outputs:
   github-token: ${{ secrets.GITHUB_TOKEN }}
   max-patch-files: 1000
@@ -120,11 +139,24 @@ After identifying candidate branches, check whether each branch has a correspond
 closed milestone. If so, skip the branch — a closed milestone signals that the branch
 is no longer actively developed.
 
-Use the GitHub API to list **closed** milestones:
+The list of **closed** milestone titles has already been fetched for you by a trusted
+`pre-agent-steps` step and written to a file. The agent sandbox cannot authenticate the
+`gh` CLI, so **do not** call `gh api` yourself — just read the file:
 
 ```bash
-gh api 'repos/{owner}/{repo}/milestones?state=closed&per_page=100' --paginate -q '.[].title'
+cat /tmp/gh-aw/code-radiator/closed-milestones.txt
 ```
+
+Each line is one closed milestone title (the file is empty if there are no closed
+milestones).
+
+> **Fail-safe (critical)**: This check exists to *prevent* creating PRs for inactive
+> branches, so it must never be silently skipped. If the file
+> `/tmp/gh-aw/code-radiator/closed-milestones.txt` does **not** exist or cannot be read,
+> **abort milestone filtering and do not create any PRs for this run** — report the
+> failure in the summary instead. (An empty file is valid and means there are no closed
+> milestones.) It is better to create no PRs than to create a PR for a branch whose
+> milestone is already closed.
 
 Map each branch name to its milestone name:
 

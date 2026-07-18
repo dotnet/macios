@@ -2765,13 +2765,13 @@
 		<!-- we only want to validate major.minor, not any revision or build numbers -->
 		<PropertyGroup>
 			<_XcodeVersionMajorMinorOnly>$([System.Version]::Parse('$(_XcodeVersion)').Major).$([System.Version]::Parse('$(_XcodeVersion)').Minor)</_XcodeVersionMajorMinorOnly>
-			<_RecommendedXcodeVersionMajorMinorOnly>$([System.Version]::Parse('$(_RecommendedXcodeVersion)').Major).$([System.Version]::Parse('$(_RecommendedXcodeVersion)').Minor)</_RecommendedXcodeVersionMajorMinorOnly>
+			<_RecommendedXcodeVersionMajorMinorOnly>$([System.Version]::Parse('$(RecommendedXcodeVersion)').Major).$([System.Version]::Parse('$(RecommendedXcodeVersion)').Minor)</_RecommendedXcodeVersionMajorMinorOnly>
 			<_IsMatchingXcode Condition="'$(_RecommendedXcodeVersionMajorMinorOnly)' == '$(_XcodeVersionMajorMinorOnly)'">true</_IsMatchingXcode>
 		</PropertyGroup>
 		<MacDevMessage
 			Error="true"
 			ResourceName="E0191"
-			FormatArguments="$(_PlatformName);$(_ShortPackageVersion);$(_RecommendedXcodeVersion);$(_XcodeVersion)"
+			FormatArguments="$(_PlatformName);$(_ShortPackageVersion);$(RecommendedXcodeVersion);$(_XcodeVersion)"
 			Condition="'$(_IsMatchingXcode)' != 'true'"
 		/>
 	</Target>

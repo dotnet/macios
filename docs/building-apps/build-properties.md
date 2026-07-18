@@ -1244,6 +1244,23 @@ The product definition template (`.plist`) to be used when creating the product 
 
 Only applicable to macOS and Mac Catalyst apps.
 
+## RecommendedXcodeVersion
+
+The version of Xcode recommended for use with this version of .NET for iOS, tvOS, macOS and Mac Catalyst.
+
+This is the Xcode version the build validates against (see [ValidateXcodeVersion](#validatexcodeversion)); using a different version is likely to produce problems later on in the build process.
+
+This property is read-only: it's computed by the SDK and shouldn't be set in project files.
+
+You can get the recommended Xcode version for a project by running:
+
+```shell
+$ dotnet build -getProperty:RecommendedXcodeVersion myProject.csproj
+26.6
+```
+
+Note: the version number may contain more than 2 components ("26.6.1" for instance). Only the first two components (major and minor) are taken into account when validating the installed Xcode version.
+
 ## ReferenceNativeSymbol
 
 See [ReferenceNativeSymbol](build-items.md#referencenativesymbol)

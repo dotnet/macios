@@ -96,6 +96,12 @@ namespace Xharness.Jenkins {
 				yield return new TestData { Variation = "Release (link sdk)", TestVariation = "release|linksdk", Ignored = ignore };
 				yield return new TestData { Variation = "Release (link all)", TestVariation = "release|linkall", Ignored = ignore };
 				yield return new TestData { Variation = $"{test.ProjectConfiguration} (PrepareAssemblies)", TestVariation = "prepare-assemblies", Ignored = ignore };
+				// Explicitly disable the trimmer (dontlink) and enable InlineDlfcnMethods together with
+				// PrepareAssemblies to exercise the inlined-dlfcn native symbol generation when the trimmer
+				// is skipped. On .NET 11+ this is already covered by the plain 'prepare-assemblies' variation
+				// above (iOS defaults to CoreCLR, which doesn't link, and InlineDlfcnMethods is enabled by
+				// default there), so only run this explicit combination on .NET 10.
+				yield return new TestData { Variation = $"{test.ProjectConfiguration} (PrepareAssemblies, inline dlfcn, dont link)", TestVariation = "dontlink|prepare-assemblies|inline-dlfcn-methods-compat", Ignored = jenkins.Harness.DotNetVersion.Major >= 11 ? true : ignore };
 				break;
 			}
 

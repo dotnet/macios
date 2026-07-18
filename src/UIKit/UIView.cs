@@ -246,7 +246,7 @@ namespace UIKit {
 
 		/// <param name="afterScreenUpdates">If <see langword="true" />, the capture occurs after screen updating has finished.</param>
 		///         <summary>Performs a screen-capture of the <see cref="UIKit.UIView" />.</summary>
-		///         <returns>To be added.</returns>
+		///         <returns>A <see cref="UIKit.UIImage" /> containing the captured snapshot of the view.</returns>
 		///         <remarks>
 		///           <para>This method is slower than <see cref="UIKit.UIView.SnapshotView(System.Boolean)" />.</para>
 		///         </remarks>

@@ -361,6 +361,7 @@ namespace Introspection {
 			{ "Hlg", All }, // Hybrid Log-Gamma
 			{ "Hls", All }, // HTTP Live Streaming
 			{ "Hoa", All }, // higher-order ambisonics
+			{ "Hov", ApplePlatform.iOS }, // high-occupancy vehicle
 			{ "Hpke", ApplePlatform.MacOSX }, // Hybrid Public Key Encryption
 			{ "Hrtf", All }, // acronym used in AUSpatializationAlgorithm
 			{ "Hsb", ApplePlatform.MacOSX }, // hue-saturation-brightness

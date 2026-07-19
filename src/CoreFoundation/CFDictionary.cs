@@ -79,7 +79,10 @@ namespace CoreFoundation {
 				v [i] = objects [i].Handle;
 			}
 
-			return new CFDictionary (CFDictionaryCreate (IntPtr.Zero, k, v, k.Length, KeyCallbacks, ValueCallbacks), true);
+			var rv = new CFDictionary (CFDictionaryCreate (IntPtr.Zero, k, v, k.Length, KeyCallbacks, ValueCallbacks), true);
+			GC.KeepAlive (keys);
+			GC.KeepAlive (objects);
+			return rv;
 		}
 
 		[DllImport (Constants.CoreFoundationLibrary)]

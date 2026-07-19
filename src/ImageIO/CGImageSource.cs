@@ -511,7 +511,9 @@ namespace ImageIO {
 		[SupportedOSPlatform ("maccatalyst")]
 		public CGImageAuxiliaryDataInfo? CopyAuxiliaryDataInfo (nuint index, CGImageAuxiliaryDataType auxiliaryImageDataType)
 		{
-			var ptr = CGImageSourceCopyAuxiliaryDataInfoAtIndex (Handle, index, auxiliaryImageDataType.GetConstant ().GetHandle ());
+			var constant = auxiliaryImageDataType.GetConstant ();
+			var ptr = CGImageSourceCopyAuxiliaryDataInfoAtIndex (Handle, index, constant.GetHandle ());
+			GC.KeepAlive (constant);
 			if (ptr == IntPtr.Zero)
 				return null;
 

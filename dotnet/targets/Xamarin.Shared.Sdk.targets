@@ -621,8 +621,22 @@
 		</PropertyGroup>
 
 		<PropertyGroup>
-			<!-- Yep, we want to run ILLink as well, because we need our custom steps to run (NativeAOT sets this to false, so set it back to true) -->
-			<RunILLink Condition="'$(PublishAot)' == 'true'">true</RunILLink>
+			<!--
+				When using NativeAOT + PrepareAssemblies, all our custom linker steps are executed by the
+				assembly-preparer (in the _PrepareAssemblies / _PostprocessAssemblies targets) instead of
+				inside ILLink (they're gated out of the _TrimmerCustomSteps item group when PrepareAssemblies
+				is true). The only reason we run ILLink for NativeAOT is to execute those custom steps (NativeAOT
+				sets RunILLink=false by default and does its own trimming via ILC); now that the custom steps run
+				elsewhere, running ILLink first is redundant - it just trims the assemblies before ILC, but ILC
+				trims them again anyway. So we skip ILLink entirely here and let ILC do all the trimming (the
+				standard NativeAOT flow). This simplifies the pipeline and makes it possible to run ILC before the
+				native registrar code is generated.
+			-->
+			<_SkipILLink Condition="'$(_SkipILLink)' == '' And '$(_UseNativeAot)' == 'true' And '$(PrepareAssemblies)' == 'true' And '$(PostProcessAssemblies)' == 'true'">true</_SkipILLink>
+			<_SkipILLink Condition="'$(_SkipILLink)' == ''">false</_SkipILLink>
+
+			<!-- Yep, we want to run ILLink as well, because we need our custom steps to run (NativeAOT sets this to false, so set it back to true), unless we're skipping ILLink (see _SkipILLink above) -->
+			<RunILLink Condition="'$(PublishAot)' == 'true' And '$(_SkipILLink)' != 'true'">true</RunILLink>
 
 			<TypeMapEntryAssembly Condition="'$(Registrar)' == 'trimmable-static'">$(_TypeMapAssemblyName)</TypeMapEntryAssembly>
 			<!-- ILLink targets add typemap-entry-assembly to _ExtraTrimmerArgs in a static PropertyGroup,
@@ -1742,7 +1756,9 @@
 		<ItemGroup>
 			<!-- We need to mark all __Internal P/Invokes as direct, so that the native linker doesn't remove them -->
 			<DirectPInvoke Include="__Internal" />
+		</ItemGroup>
 
+		<ItemGroup Condition="'$(_SkipILLink)' != 'true'">
 			<!-- Give ILLink's output to ILC -->
 			<_UpdatedManagedAssemblyToLink Include="@(ManagedAssemblyToLink->'$(IntermediateLinkDir)%(Filename)%(Extension)')" Condition="Exists('$(IntermediateLinkDir)%(Filename)%(Extension)')" />
 			<ManagedAssemblyToLink Remove="@(ManagedAssemblyToLink)" />
@@ -1751,7 +1767,9 @@
 			<IlcCompileInput Include="@(ManagedBinary)" />
 			<IlcReference Include="@(ManagedAssemblyToLink)" Exclude="@(ManagedBinary)" />
 			<IlcReference Include="@(_ManagedAssemblyToLinkFromLinker)" />
+		</ItemGroup>
 
+		<ItemGroup>
 			<!-- Process UnmanagedCallersOnly attributes from every assembly -->
 			<_UnmanagedEntryPointsAssembliesToAdd Include="@(_UpdatedManagedAssemblyToLink->'%(Filename)')" />
 			<_UnmanagedEntryPointsAssembliesToAdd Remove="System.Private.CoreLib" />

@@ -114,9 +114,9 @@ steps:
 # module (the 'gh' CLI isn't installed on the test agents, and doesn't have credentials to create gists).
 - pwsh: |
     $updatedDir = Join-Path "$Env:SYSTEM_DEFAULTWORKINGDIRECTORY" "updated-expected-sizes"
-    # A file may be present in more than one artifact (e.g. across job attempts); pick one per file name.
+    # A file may be present in more than one artifact (e.g. across job attempts); pick the newest copy per file name.
     $files = Get-ChildItem -Path $updatedDir -Filter "*.txt" -File -Recurse -ErrorAction SilentlyContinue |
-      Sort-Object -Property FullName -Descending |
+      Sort-Object -Property LastWriteTimeUtc -Descending |
       Group-Object -Property Name |
       ForEach-Object { $_.Group[0] } |
       Sort-Object -Property Name
@@ -161,7 +161,7 @@ steps:
     $githubComments.NewCommentFromMessage("", ":warning:", $sb.ToString(), "app-size-expected-files") | Out-Null
   displayName: 'Create gist and comment on PR with updated expected app size files'
   continueOnError: true
-  condition: and(succeededOrFailed(), eq('${{ parameters.isPR }}', 'True'))
+  condition: and(succeededOrFailed(), eq(${{ parameters.isPR }}, true))
   timeoutInMinutes: 15
   env:
     GITHUB_TOKEN: $(GitHub.Token)

@@ -238,13 +238,16 @@ steps:
 
   # report the result of the build.
   - pwsh: |
-      # Only report failures, not successes.
-      if (("$Env:AGENT_JOBSTATUS" -eq "Succeeded") -or ("$Env:AGENT_JOBSTATUS" -eq "SucceededWithIssues")) {
-        Write-Host "Build passed, skipping comment."
-        return
-      }
       Import-Module $Env:SYSTEM_DEFAULTWORKINGDIRECTORY\$Env:BUILD_REPOSITORY_TITLE\tools\devops\automation\scripts\MaciosCI.psd1
       $githubComments = New-GitHubCommentsObjectFromUrl -Url "$(Build.Repository.Uri)" -Token $(GitHub.Token) -Hash $Env:COMMENT_HASH
+      # Only report failures, not successes. However, if the build succeeded, we
+      # still hide any previous "Build failed" comment for this job (which may
+      # have been posted by an earlier failing run of the same commit).
+      if (("$Env:AGENT_JOBSTATUS" -eq "Succeeded") -or ("$Env:AGENT_JOBSTATUS" -eq "SucceededWithIssues")) {
+        Write-Host "Build passed, hiding any previous build failure comment instead of posting a new comment."
+        $githubComments.HandlePreviousCommentHiding("build $(System.JobDisplayName)")
+        return
+      }
       $commentMessage = [System.Text.StringBuilder]::new()
       $commentTitle = "Build failed ($(System.JobDisplayName))"
       $commentIcon = ":fire:"

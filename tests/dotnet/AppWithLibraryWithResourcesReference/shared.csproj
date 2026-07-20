@@ -15,5 +15,10 @@
 	<ItemGroup>
 		<Compile Include="../*.cs" />
 		<ProjectReference Include="../../LibraryWithResources/$(_PlatformName)/LibraryWithResources.csproj" />
+
+		<!-- An app-owned image asset, so that the asset catalog compiler (actool) runs for the app itself.
+		     This is required to reproduce https://github.com/dotnet/macios/issues/5755, where an incremental
+		     build that re-runs actool would drop the image assets coming from referenced libraries. -->
+		<ImageAsset Include="../AppImages.xcassets/**/*.*" Link="AppImages.xcassets/%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
 </Project>

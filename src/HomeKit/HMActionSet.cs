@@ -3,9 +3,8 @@
 namespace HomeKit {
 
 	partial class HMActionSet {
-		/// <summary>What kind of <see cref="HomeKit.HMActionSetType" /><c>this</c> is&gt;.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the type of this action set.</summary>
+		/// <value>The <see cref="HMActionSetType" /> that this action set belongs to.</value>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]

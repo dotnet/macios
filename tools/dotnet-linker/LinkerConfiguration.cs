@@ -37,6 +37,9 @@ namespace Xamarin.Linker {
 		public string IntermediateLinkDir { get; private set; } = string.Empty;
 		public bool InvariantGlobalization { get; private set; }
 		public bool HybridGlobalization { get; private set; }
+		// The value of the $(HotReloadCompatibleBuild) MSBuild property. When enabled, steps that
+		// re-serialize user assemblies (breaking Hot Reload) must leave reloadable assemblies untouched.
+		public bool HotReloadCompatibleBuild { get; private set; }
 		public InlineDlfcnMethodsMode InlineDlfcnMethods { get; set; }
 		public bool InlineDlfcnMethodsEnabled => InlineDlfcnMethods != InlineDlfcnMethodsMode.Disabled;
 		public InlineClassGetHandleMode InlineClassGetHandle { get; set; }
@@ -97,6 +100,9 @@ namespace Xamarin.Linker {
 		public List<AssemblyDefinition> Assemblies => Application.LinkContext.Assemblies;
 		public required List<AssemblyPreparerInfo> AssemblyInfos;
 		public List<(string Path, AssemblyDefinition Assembly, string? OriginatingAssembly)> AddedAssemblies = new ();
+		// The set of assemblies that were modified (i.e. that AppBundleRewriter.SaveAssembly was called for).
+		// Assemblies that aren't modified don't need to be re-serialized when saved.
+		public HashSet<AssemblyDefinition> ModifiedAssemblies = new ();
 #else
 		// The list of assemblies is populated in CollectAssembliesStep.
 		public List<AssemblyDefinition> Assemblies = new List<AssemblyDefinition> ();
@@ -346,6 +352,10 @@ namespace Xamarin.Linker {
 				{ "FrameworkAssembly", (
 					new LoadValue ((key, value) => FrameworkAssemblies.Add (value)),
 					new SaveValue ((key, storage) => storage.AddRange (FrameworkAssemblies.OrderBy (v => v).Select (v => $"{key}={v}")))
+				)},
+				{ "HotReloadCompatibleBuild", (
+					new LoadValue ((key, value) => HotReloadCompatibleBuild = string.Equals ("true", value, StringComparison.OrdinalIgnoreCase)),
+					new SaveValue ((key, storage) => saveOptionalDefaultFalseBool (key, HotReloadCompatibleBuild, storage))
 				)},
 				{ "InlineDlfcnMethods", (
 					new LoadValue ((key, value) => {

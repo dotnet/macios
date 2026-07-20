@@ -7,8 +7,20 @@ namespace Xamarin.Tests {
 	[TestFixture]
 	public class PerformanceTests : TestBaseClass {
 		[Test]
-		[TestCase (ApplePlatform.iOS, true)]
-		public void PrepareAssemblies (ApplePlatform platform, bool useMonoRuntime)
+		[TestCase (ApplePlatform.iOS)]
+		public void PrepareAssemblies_MonoVM (ApplePlatform platform)
+		{
+			PrepareAssemblies (platform, true);
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.MacOSX)]
+		public void PrepareAssemblies_CoreCLR (ApplePlatform platform)
+		{
+			PrepareAssemblies (platform, false);
+		}
+
+		void PrepareAssemblies (ApplePlatform platform, bool useMonoRuntime)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 
@@ -138,7 +150,12 @@ namespace Xamarin.Tests {
 			}
 		}
 
-		static string FormatTimeSpan (TimeSpan value) => value.ToString (@"hh\:mm\:ss\.ff");
+		static string FormatTimeSpan (TimeSpan value)
+		{
+			// A custom TimeSpan format string doesn't include the sign, so handle negative values ourselves.
+			var sign = value < TimeSpan.Zero ? "-" : " ";
+			return sign + value.Duration ().ToString (@"hh\:mm\:ss\.ff");
+		}
 
 		static void AppendMarkdownTable (StringBuilder report, string [] headers, List<string []> rows)
 		{

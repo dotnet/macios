@@ -1,5 +1,3 @@
-using ObjCRuntime;
-
 [NoMac]
 public enum MacUnavailableEnum : uint {
 	One,

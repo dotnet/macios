@@ -11,6 +11,7 @@
 
 using CoreGraphics;
 using UniformTypeIdentifiers;
+using System.ComponentModel;
 
 namespace FileProvider {
 	/// <summary>Delegate for handling a thumbnail fetch operation.</summary>
@@ -251,9 +252,17 @@ namespace FileProvider {
 	}
 
 	/// <summary>Defines the actions the user can perform within the document browser.</summary>
+#if XAMCORE_5_0
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	[Native]
 	[Flags]
+#if __MACCATALYST__ && !XAMCORE_5_0
+	[Obsolete ("Not available on this platform.")]
+	[EditorBrowsable (EditorBrowsableState.Never)]
+#endif
 	enum NSFileProviderItemCapabilities : ulong {
 		/// <summary>To be added.</summary>
 		Reading = 1 << 0,
@@ -418,11 +427,15 @@ namespace FileProvider {
 
 		[Mac (15, 0), NoiOS]
 		[Export ("replicatedKnownFolders", ArgumentSemantic.Assign)]
+#pragma warning disable 618 // NSFileProviderKnownFolders is obsolete on some platforms
 		NSFileProviderKnownFolders ReplicatedKnownFolders { get; }
+#pragma warning restore 618
 
 		[Mac (15, 0), NoiOS]
 		[Export ("supportedKnownFolders", ArgumentSemantic.Assign)]
+#pragma warning disable 618 // NSFileProviderKnownFolders is obsolete on some platforms
 		NSFileProviderKnownFolders SupportedKnownFolders { get; set; }
+#pragma warning restore 618
 
 		[NoTV, NoMacCatalyst, NoiOS, Mac (26, 0)]
 		[Export ("supportsStringSearchRequest")]
@@ -591,7 +604,9 @@ namespace FileProvider {
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Export ("capabilities")]
+#pragma warning disable 618 // NSFileProviderItemCapabilities is obsolete on some platforms
 		NSFileProviderItemCapabilities GetCapabilities ();
+#pragma warning restore 618
 
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
@@ -1612,8 +1627,16 @@ namespace FileProvider {
 		NSProgress FetchPartialContents (string itemIdentifier, NSFileProviderItemVersion requestedVersion, NSFileProviderRequest request, NSRange requestedRange, nuint alignment, NSFileProviderFetchContentsOptions options, NSFileProviderPartialContentFetchingCompletionHandler completionHandler);
 	}
 
+#if XAMCORE_5_0
+	[NoTV, NoiOS, NoMacCatalyst, Mac (15, 0)]
+#else
 	[NoTV, iOS (18, 0), MacCatalyst (18, 0), Mac (15, 0)]
+#endif
 	[Native]
+#if IOS && !XAMCORE_5_0
+	[Obsolete ("Not available on this platform.")]
+	[EditorBrowsable (EditorBrowsableState.Never)]
+#endif
 	public enum NSFileProviderKnownFolders : ulong {
 		Desktop = 1 << 0,
 		Documents = 1 << 1,
@@ -1664,7 +1687,9 @@ namespace FileProvider {
 	interface NSFileProviderKnownFolderSupporting {
 		[Abstract]
 		[Export ("getKnownFolderLocations:completionHandler:")]
+#pragma warning disable 618 // NSFileProviderKnownFolders is obsolete on some platforms
 		void GetKnownFolderLocations (NSFileProviderKnownFolders knownFolders, NSFileProviderKnownFolderLocationCallback completionHandler);
+#pragma warning restore 618
 	}
 
 	interface INSFileProviderKnownFolderSupporting { }

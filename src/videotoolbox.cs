@@ -7,6 +7,7 @@
 // Copyright 2014 Xamarin Inc
 //
 using System.Collections.Generic;
+using System.ComponentModel;
 
 using AVFoundation;
 using CoreGraphics;
@@ -3221,6 +3222,7 @@ namespace VideoToolbox {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface VTSuperResolutionScalerConfiguration : VTFrameProcessorConfiguration {
+#pragma warning disable 618 // The VTSuperResolutionScaler* enums are obsolete on some platforms
 		[Export ("initWithFrameWidth:frameHeight:scaleFactor:inputType:usePrecomputedFlow:qualityPrioritization:revision:")]
 		NativeHandle Constructor (nint frameWidth, nint frameHeight, nint scaleFactor, VTSuperResolutionScalerConfigurationInputType inputType, bool usePrecomputedFlow, VTSuperResolutionScalerConfigurationQualityPrioritization qualityPrioritization, VTSuperResolutionScalerConfigurationRevision revision);
 
@@ -3255,6 +3257,7 @@ namespace VideoToolbox {
 
 		[Export ("configurationModelStatus")]
 		VTSuperResolutionScalerConfigurationModelStatus ConfigurationModelStatus { get; }
+#pragma warning restore 618
 
 		[Async]
 		[Export ("downloadConfigurationModelWithCompletionHandler:")]
@@ -3282,7 +3285,9 @@ namespace VideoToolbox {
 	[DisableDefaultCtor]
 	interface VTSuperResolutionScalerParameters : VTFrameProcessorParameters {
 		[Export ("initWithSourceFrame:previousFrame:previousOutputFrame:opticalFlow:submissionMode:destinationFrame:")]
+#pragma warning disable 618 // VTSuperResolutionScalerParametersSubmissionMode is obsolete on some platforms
 		NativeHandle Constructor (VTFrameProcessorFrame sourceFrame, [NullAllowed] VTFrameProcessorFrame previousFrame, [NullAllowed] VTFrameProcessorFrame previousOutputFrame, [NullAllowed] VTFrameProcessorOpticalFlow opticalFlow, VTSuperResolutionScalerParametersSubmissionMode submissionMode, VTFrameProcessorFrame destinationFrame);
+#pragma warning restore 618
 
 		[NullAllowed, Export ("previousFrame")]
 		VTFrameProcessorFrame PreviousFrame { get; }
@@ -3294,7 +3299,9 @@ namespace VideoToolbox {
 		VTFrameProcessorOpticalFlow OpticalFlow { get; }
 
 		[Export ("submissionMode")]
+#pragma warning disable 618 // VTSuperResolutionScalerParametersSubmissionMode is obsolete on some platforms
 		VTSuperResolutionScalerParametersSubmissionMode SubmissionMode { get; }
+#pragma warning restore 618
 	}
 
 	[UnsupportedSimulator ("ios")]
@@ -3411,35 +3418,75 @@ namespace VideoToolbox {
 		CGRectDictionary ContentAnalyzerCropRectangle { get; set; }
 	}
 
+#if XAMCORE_5_0
+	[NoTV, MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+#else
 	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+#endif
 	[Native]
+#if TVOS && !XAMCORE_5_0
+	[Obsolete ("Not available on this platform.")]
+	[EditorBrowsable (EditorBrowsableState.Never)]
+#endif
 	public enum VTSuperResolutionScalerConfigurationQualityPrioritization : long {
 		Normal = 1,
 	}
 
+#if XAMCORE_5_0
+	[NoTV, MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+#else
 	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+#endif
 	[Native]
+#if TVOS && !XAMCORE_5_0
+	[Obsolete ("Not available on this platform.")]
+	[EditorBrowsable (EditorBrowsableState.Never)]
+#endif
 	public enum VTSuperResolutionScalerConfigurationRevision : long {
 		Revision1 = 1,
 	}
 
+#if XAMCORE_5_0
+	[NoTV, MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+#else
 	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+#endif
 	[Native]
+#if TVOS && !XAMCORE_5_0
+	[Obsolete ("Not available on this platform.")]
+	[EditorBrowsable (EditorBrowsableState.Never)]
+#endif
 	public enum VTSuperResolutionScalerConfigurationInputType : long {
 		Video = 1,
 		Image = 2,
 	}
 
+#if XAMCORE_5_0
+	[NoTV, MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+#else
 	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+#endif
 	[Native]
+#if TVOS && !XAMCORE_5_0
+	[Obsolete ("Not available on this platform.")]
+	[EditorBrowsable (EditorBrowsableState.Never)]
+#endif
 	public enum VTSuperResolutionScalerConfigurationModelStatus : long {
 		DownloadRequired = 0,
 		Downloading = 1,
 		Ready = 2,
 	}
 
+#if XAMCORE_5_0
+	[NoTV, MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+#else
 	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+#endif
 	[Native]
+#if TVOS && !XAMCORE_5_0
+	[Obsolete ("Not available on this platform.")]
+	[EditorBrowsable (EditorBrowsableState.Never)]
+#endif
 	public enum VTSuperResolutionScalerParametersSubmissionMode : long {
 		Random = 1,
 		Sequential = 2,

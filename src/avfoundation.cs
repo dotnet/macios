@@ -24488,7 +24488,9 @@ namespace AVFoundation {
 		AVAudioRoutingArbiter SharedRoutingArbiter { get; }
 
 		[Export ("beginArbitrationWithCategory:completionHandler:")]
+#pragma warning disable 618 // AVAudioRoutingArbitrationCategory is obsolete on some platforms
 		void BeginArbitration (AVAudioRoutingArbitrationCategory category, Action<bool, NSError> handler);
+#pragma warning restore 618
 
 		[Export ("leaveArbitration")]
 		void LeaveArbitration ();

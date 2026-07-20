@@ -84,7 +84,9 @@ namespace NearbyInteraction {
 
 		[NoTV, NoMac, iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("verticalDirectionEstimate")]
+#pragma warning disable 618 // NINearbyObjectVerticalDirectionEstimate is obsolete on some platforms
 		NINearbyObjectVerticalDirectionEstimate VerticalDirectionEstimate { get; }
+#pragma warning restore 618
 
 		[NoTV, NoMac, iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("horizontalAngle")]
@@ -151,7 +153,9 @@ namespace NearbyInteraction {
 		void DidSessionUpdateNearbyObjects (NISession session, NINearbyObject [] nearbyObjects);
 
 		[Export ("session:didRemoveNearbyObjects:withReason:")]
+#pragma warning disable 618 // NINearbyObjectRemovalReason is obsolete on some platforms
 		void DidSessionRemoveNearbyObjects (NISession session, NINearbyObject [] nearbyObjects, NINearbyObjectRemovalReason reason);
+#pragma warning restore 618
 
 		[Export ("sessionWasSuspended:")]
 		void SessionWasSuspended (NISession session);
@@ -246,7 +250,9 @@ namespace NearbyInteraction {
 	[DisableDefaultCtor]
 	interface NIAlgorithmConvergence : NSCopying, NSSecureCoding {
 		[Export ("status")]
+#pragma warning disable 618 // NIAlgorithmConvergenceStatus is obsolete on some platforms
 		NIAlgorithmConvergenceStatus Status { get; }
+#pragma warning restore 618
 
 		[Export ("reasons")]
 		string [] Reasons { get; }

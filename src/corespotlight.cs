@@ -2627,11 +2627,15 @@ namespace CoreSpotlight {
 
 		[Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("userEngagedWithItem:visibleItems:userInteractionType:")]
+#pragma warning disable 618 // CSUserInteraction is obsolete on some platforms
 		void UserEngaged (CSSearchableItem item, CSSearchableItem [] visibleItems, CSUserInteraction userInteractionType);
+#pragma warning restore 618
 
 		[Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("userEngagedWithSuggestion:visibleSuggestions:userInteractionType:")]
+#pragma warning disable 618 // CSUserInteraction is obsolete on some platforms
 		void UserEngaged (CSSuggestion suggestion, CSSuggestion [] visibleSuggestions, CSUserInteraction userInteractionType);
+#pragma warning restore 618
 	}
 
 	[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
@@ -2677,7 +2681,9 @@ namespace CoreSpotlight {
 		NSAttributedString LocalizedAttributedSuggestion { get; }
 
 		[Export ("suggestionKind")]
+#pragma warning disable 618 // CSSuggestionKind is obsolete on some platforms
 		CSSuggestionKind SuggestionKind { get; }
+#pragma warning restore 618
 
 		[Export ("compare:")]
 		NSComparisonResult Compare (CSSuggestion other);
@@ -2717,8 +2723,16 @@ namespace CoreSpotlight {
 		AllowMail = 1L << 0,
 	}
 
+#if XAMCORE_5_0
+	[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
+#else
 	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
+#endif
 	[Native]
+#if TVOS && !XAMCORE_5_0
+	[Obsolete ("Not available on this platform.")]
+	[EditorBrowsable (EditorBrowsableState.Never)]
+#endif
 	public enum CSSuggestionKind : long {
 		None,
 		Custom,

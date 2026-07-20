@@ -43,17 +43,11 @@ namespace AppKit {
 		extern static int /* int */ NSApplicationMain (int /* int */ argc, IntPtr argv);
 
 #if !XAMCORE_5_0
-		/// <summary>Establishes the AppKit synchronization context on the calling thread.</summary>
+		/// <summary>This method does nothing.</summary>
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public static void Init ()
 		{
-			// Hosts (and the test runner) call Init on the thread that runs the
-			// main run loop, right before starting it, and rely on the AppKit
-			// synchronization context being established on that thread. The
-			// context is also set from Runtime.InitializePlatform, but that runs
-			// during early native startup, so establish it here too to guarantee
-			// it's current on the thread that actually runs the app.
-			Initialize ();
+			// No need anymore.
 		}
 #endif // !XAMCORE_5_0
 

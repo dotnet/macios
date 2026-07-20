@@ -79,29 +79,41 @@ namespace MonoTouchFixtures.Security {
 			var expectedTrust = SecTrustResult.RecoverableTrustFailure;
 			Assert.That (Evaluate (trust, true), Is.EqualTo (expectedTrust), "Evaluate");
 
+			// [instrumentation, do not merge] drain the main queue before starting the async test
+			DrainMainQueue ();
+
 			using (var queue = new DispatchQueue ("TrustAsync")) {
 				bool assert = false; // we don't want to assert in another queue
 				var called = new TaskCompletionSource<bool> ();
-				var err = trust.Evaluate (DispatchQueue.MainQueue, (t, result) => {
+				Console.WriteLine ($"[TrustTest] async1: calling trust.Evaluate on queue TrustAsync");
+				var err = trust.Evaluate (queue, (t, result) => {
+					Console.WriteLine ($"[TrustTest] async1: callback invoked (handle match: {t.Handle == trust.Handle}, result: {result}, expected: {expectedTrust})");
 					assert = t.Handle == trust.Handle && result == expectedTrust;
 					called.SetResult (true);
 				});
+				Console.WriteLine ($"[TrustTest] async1: trust.Evaluate returned {err}");
 				Assert.That (err, Is.EqualTo (SecStatusCode.Success), "async1/err");
 				var completed1 = TestRuntime.RunAsync (TimeSpan.FromSeconds (30), called.Task);
+				Console.WriteLine ($"[TrustTest] async1: RunAsync completed={completed1} assert={assert}");
 				Assert.That (completed1, Is.True, "async1/completed (callback timed out)");
 				Assert.That (assert, Is.True, "async1");
 			}
 
 			if (TestRuntime.CheckXcodeVersion (11, 0)) {
+				DrainMainQueue ();
 				using (var queue = new DispatchQueue ("TrustErrorAsync")) {
 					bool assert = false; // we don't want to assert in another queue
 					var called = new TaskCompletionSource<bool> ();
-					var err = trust.Evaluate (DispatchQueue.MainQueue, (t, result, error) => {
+					Console.WriteLine ($"[TrustTest] async2: calling trust.Evaluate on queue TrustErrorAsync");
+					var err = trust.Evaluate (queue, (t, result, error) => {
+						Console.WriteLine ($"[TrustTest] async2: callback invoked (handle match: {t.Handle == trust.Handle}, result: {result}, error: {error is not null})");
 						assert = t.Handle == trust.Handle && !result && error is not null;
 						called.SetResult (true);
 					});
+					Console.WriteLine ($"[TrustTest] async2: trust.Evaluate returned {err}");
 					Assert.That (err, Is.EqualTo (SecStatusCode.Success), "async2/err");
 					var completed2 = TestRuntime.RunAsync (TimeSpan.FromSeconds (30), called.Task);
+					Console.WriteLine ($"[TrustTest] async2: RunAsync completed={completed2} assert={assert}");
 					Assert.That (completed2, Is.True, "async2/completed (callback timed out)");
 					Assert.That (assert, Is.True, "async2");
 				}
@@ -123,6 +135,15 @@ namespace MonoTouchFixtures.Security {
 				Assert.That (policies.Length, Is.EqualTo (1), "Policies.Length");
 				Assert.That (policies [0].Handle, Is.EqualTo (policy.Handle), "Handle");
 			}
+		}
+
+		// [instrumentation, do not merge] pump the main run loop for a short while to drain any
+		// pending work on the main dispatch queue before starting an async test.
+		static void DrainMainQueue ()
+		{
+			var deadline = NSDate.Now.AddSeconds (0.5);
+			while (NSDate.Now.SecondsSinceReferenceDate < deadline.SecondsSinceReferenceDate)
+				NSRunLoop.Main.RunUntil (NSDate.Now.AddSeconds (0.05));
 		}
 
 		[Test]

@@ -112,7 +112,7 @@ public class DocumentationManager {
 	// There's already an implementation in Roslyn, but that's a rather heavy dependency,
 	// so we're implementing this in our own code instead.
 
-	public static string GetDocId (MethodInfo md, bool includeDeclaringType = true, bool alwaysIncludeParenthesis = false, Func<ParameterInfo, Type>? parameterTypeProvider = null)
+	public static string GetDocId (MethodInfo md, bool includeDeclaringType = true, bool alwaysIncludeParenthesis = false)
 	{
 		var methodName = md.Name.Replace ('.', '#');
 		var name = methodName;
@@ -122,7 +122,7 @@ public class DocumentationManager {
 			name += $"``{md.GetGenericArguments ().Length}";
 		var parameters = md.GetParameters ();
 		if (parameters.Length > 0) {
-			name += "(" + string.Join (",", parameters.Select (p => GetDocId (parameterTypeProvider?.Invoke (p) ?? p.ParameterType))) + ")";
+			name += "(" + string.Join (",", parameters.Select (p => GetDocId (p.ParameterType))) + ")";
 		} else if (alwaysIncludeParenthesis) {
 			name += "()";
 		}

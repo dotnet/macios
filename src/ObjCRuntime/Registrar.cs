@@ -1229,24 +1229,6 @@ namespace Registrar {
 		{
 			var mthd = method.Method!;
 			var attrib = GetBindAsAttribute (mthd, parameter_index);
-			if (attrib is null && parameter_index >= 0 && !IsInterface (method.DeclaringType.Type)) {
-				var map = PrepareMethodMapping (method.DeclaringType.Type);
-				if (map is not null && map.TryGetValue (mthd, out var interfaceMethods)) {
-					List<TMethod>? bindAsInterfaceMethods = null;
-					foreach (var interfaceMethod in interfaceMethods) {
-						var interfaceAttribute = GetBindAsAttribute (interfaceMethod, parameter_index);
-						if (interfaceAttribute is null)
-							continue;
-
-						bindAsInterfaceMethods ??= new List<TMethod> ();
-						bindAsInterfaceMethods.Add (interfaceMethod);
-						attrib = interfaceAttribute;
-					}
-
-					if (bindAsInterfaceMethods is not null && interfaceMethods.Count != 1)
-						throw new AggregateException (Shared.GetMT4127 (mthd, interfaceMethods));
-				}
-			}
 			if (attrib is not null) {
 				var type = parameter_index == -1 ? GetReturnType (mthd) : GetParameters (mthd)! [parameter_index];
 				if (parameter_index == -1) {

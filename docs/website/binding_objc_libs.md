@@ -871,9 +871,10 @@ The [`[BindAs]`](~/cross-platform/macios/binding/binding-types-reference.md#Bind
 
 You can decorate methods (on return value), parameters and properties with 
 [`[BindAs]`](~/cross-platform/macios/binding/binding-types-reference.md#BindAsAttribute). 
-In [`[Protocol]`](~/cross-platform/macios/binding/binding-types-reference.md#ProtocolAttribute)
-and [`[Model]`](~/cross-platform/macios/binding/binding-types-reference.md#ModelAttribute)
-interfaces, `BindAs` is supported on parameters, but not on properties or return values.
+The only restriction is that your member **must not** be inside a 
+[`[Protocol]`](~/cross-platform/macios/binding/binding-types-reference.md#ProtocolAttribute) 
+or [`[Model]`](~/cross-platform/macios/binding/binding-types-reference.md#ModelAttribute) 
+interface.
 
 For example:
 

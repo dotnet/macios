@@ -193,7 +193,7 @@ namespace GeneratorTests {
 			bgen.Profile = profile;
 			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "bindas1050modelerror.cs")));
 			bgen.AssertExecuteError ("build");
-			bgen.AssertError (1050, "[BindAs] cannot be used on properties or return values inside Protocol or Model types. Type: MyFooClass");
+			bgen.AssertError (1050, "[BindAs] cannot be used inside Protocol or Model types. Type: MyFooClass");
 		}
 
 		[Test]
@@ -205,7 +205,7 @@ namespace GeneratorTests {
 			bgen.Profile = profile;
 			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "bindas1050protocolerror.cs")));
 			bgen.AssertExecuteError ("build");
-			bgen.AssertError (1050, "[BindAs] cannot be used on properties or return values inside Protocol or Model types. Type: MyFooClass");
+			bgen.AssertError (1050, "[BindAs] cannot be used inside Protocol or Model types. Type: MyFooClass");
 		}
 
 		[Test]

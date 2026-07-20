@@ -4,7 +4,8 @@ using System.Reflection;
 #nullable enable
 
 //
-// Used to encapsulate flags about types in either the parameter or the return value.
+// Used to encapsulate flags about types in either the parameter or the return value
+// For now, it only supports the [PlainString] attribute on strings.
 //
 public class MarshalInfo {
 	public Generator Generator { get; }
@@ -19,7 +20,7 @@ public class MarshalInfo {
 	{
 		this.Generator = generator;
 		PlainString = Generator.AttributeManager.HasAttribute<PlainStringAttribute> (pi);
-		Type = Generator.AttributeManager.GetCustomAttribute<BindAsAttribute> (pi)?.OriginalType ?? pi.ParameterType;
+		Type = pi.ParameterType;
 		IsOut = pi.IsOut;
 	}
 
@@ -28,6 +29,6 @@ public class MarshalInfo {
 	{
 		this.Generator = generator;
 		PlainString = Generator.AttributeManager.HasAttribute<PlainStringAttribute> (mi.ReturnParameter);
-		Type = Generator.AttributeManager.GetCustomAttribute<BindAsAttribute> (mi.ReturnParameter)?.OriginalType ?? mi.ReturnType;
+		Type = mi.ReturnType;
 	}
 }

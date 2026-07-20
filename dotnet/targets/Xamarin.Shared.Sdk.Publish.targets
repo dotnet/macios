@@ -20,8 +20,34 @@
 			Condition="$(RuntimeIdentifiers.Contains('iossimulator-')) Or $(RuntimeIdentifiers.Contains('tvossimulator-'))"
 		/>
 	</Target>
-	<Target Name="Publish" DependsOnTargets="_PrePublish;GetApplicationArtifacts" Returns="@(ApplicationArtifact)">
+	<Target Name="Publish" DependsOnTargets="_PrePublish;GetApplicationArtifacts;_CopyDSymToPublishDirectory" Returns="@(ApplicationArtifact)">
 		<Message Importance="high" Text="Created the package: $(IpaPackagePath)" Condition="'$(BuildIpa)' == 'true' And '$(SdkIsMobile)' == 'true'" />
 		<Message Importance="high" Text="Created the package: $(PkgPackagePath)" Condition="'$(CreatePackage)' == 'true' And '$(SdkIsDesktop)' == 'true'" />
+	</Target>
+
+	<!--
+		Copy any generated *.dSYM directories (which are created next to the app bundle) to the
+		publish directory, so that the debug symbols end up alongside the published .ipa/.pkg.
+		This can be disabled by setting CopyDSYMToPublishDirectory=false.
+		Ref: https://github.com/dotnet/macios/issues/15384
+
+		The dSYMs are located and copied on the Mac (the tasks are session-aware and run remotely
+		when building from Windows), so this works both for local macOS builds and for remote builds
+		from Windows - hence the gate on IsMacEnabled.
+	-->
+	<Target Name="_CopyDSymToPublishDirectory"
+		Condition="'$(CopyDSYMToPublishDirectory)' != 'false' And '$(_CanOutputAppBundle)' == 'true' And '$(IsMacEnabled)' == 'true'"
+		DependsOnTargets="_GenerateBundleName">
+		<GetDirectories SessionId="$(BuildSessionId)" Path="$(_AppContainerDir)" Pattern="*.dSYM">
+			<Output TaskParameter="Directories" ItemName="_DSymDirToPublish" />
+		</GetDirectories>
+		<Ditto
+			SessionId="$(BuildSessionId)"
+			Condition="'@(_DSymDirToPublish->Count())' != '0'"
+			DittoPath="$(DittoPath)"
+			Source="%(_DSymDirToPublish.Identity)"
+			Destination="$([MSBuild]::EnsureTrailingSlash('$(PublishDir)'))%(_DSymDirToPublish.Filename)%(_DSymDirToPublish.Extension)">
+			<Output TaskParameter="CopiedFiles" ItemName="FileWrites" />
+		</Ditto>
 	</Target>
 </Project>

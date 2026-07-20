@@ -86,7 +86,7 @@ namespace UIKit {
 		{
 			using var p = new TransientCFString (principalClassName);
 			using var d = new TransientCFString (delegateClassName);
-			Initialize ();
+			InitializeApplication ();
 #if XAMCORE_5_0
 			return UIApplicationMain (args?.Length ?? 0, args, p, d);
 #else
@@ -103,7 +103,7 @@ namespace UIKit {
 		{
 			using var p = new TransientCFString (principalClass is null ? null : new Class (principalClass).Name);
 			using var d = new TransientCFString (delegateClass is null ? null : new Class (delegateClass).Name);
-			Initialize ();
+			InitializeApplication ();
 #if XAMCORE_5_0
 			return UIApplicationMain (args?.Length ?? 0, args, p, d);
 #else
@@ -120,7 +120,7 @@ namespace UIKit {
 		public static void Main (string []? args)
 #endif
 		{
-			Initialize ();
+			InitializeApplication ();
 #if XAMCORE_5_0
 			return UIApplicationMain (args?.Length ?? 0, args, IntPtr.Zero, IntPtr.Zero);
 #else

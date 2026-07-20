@@ -73,7 +73,7 @@ namespace AppKit {
 		public static void Main (string [] args)
 #endif
 		{
-			Initialize ();
+			InitializeApplication ();
 
 			var argsPtr = TransientString.AllocStringArray (args);
 			try {

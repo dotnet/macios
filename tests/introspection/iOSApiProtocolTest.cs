@@ -467,6 +467,9 @@ namespace Introspection {
 				// Xcode 26.2
 				case "SFSafariExtensionState": // Conformance not in headers
 					return true;
+				// Xcode 27.0
+				case "NIDlTdoaMeasurementFloorElevation": // Conformance not in headers
+					return true;
 				}
 				break;
 			case "NSSecureCoding":
@@ -680,6 +683,9 @@ namespace Introspection {
 					return true;
 				// Xcode 26.2
 				case "SFSafariExtensionState": // Conformance not in headers
+					return true;
+				// Xcode 27.0
+				case "NIDlTdoaMeasurementFloorElevation": // Conformance not in headers
 					return true;
 				}
 				break;

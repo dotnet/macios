@@ -1,5 +1,0 @@
-!missing-enum! NIDLTDOADiscoveryMethod not bound
-!missing-enum! NIMotionActivityState not bound
-!missing-protocol-member! NIDeviceCapability::supportsBluetoothChannelSounding not found
-!missing-selector! NINearbyAccessoryConfiguration::initWithBluetoothChannelSoundingIdentifier:previousBluetoothIdentifier: not bound
-!missing-selector! NISession::updateMotionState:forObjectWithToken: not bound

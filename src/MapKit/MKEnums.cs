@@ -548,5 +548,49 @@ namespace MapKit {
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Field ("MKPointOfInterestCategoryVolleyball")]
 		Volleyball,
+
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Field ("MKPointOfInterestCategoryAirportTerminal")]
+		AirportTerminal,
+
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Field ("MKPointOfInterestCategoryAutomotiveDealership")]
+		AutomotiveDealership,
+
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Field ("MKPointOfInterestCategoryCommercialVehicleDealership")]
+		CommercialVehicleDealership,
+
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Field ("MKPointOfInterestCategoryInformationBooth")]
+		InformationBooth,
+
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Field ("MKPointOfInterestCategoryMotorbikeDealership")]
+		MotorbikeDealership,
+
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Field ("MKPointOfInterestCategoryPicnicArea")]
+		PicnicArea,
+
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Field ("MKPointOfInterestCategoryRangerStation")]
+		RangerStation,
+
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Field ("MKPointOfInterestCategoryRestArea")]
+		RestArea,
+
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Field ("MKPointOfInterestCategoryScenicView")]
+		ScenicView,
+
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Field ("MKPointOfInterestCategoryTicketOffice")]
+		TicketOffice,
+
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Field ("MKPointOfInterestCategoryVisitorCenter")]
+		VisitorCenter,
 	}
 }

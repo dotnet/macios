@@ -3291,9 +3291,9 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			     Note: this target only runs on macOS, so forward slashes are fine. -->
 			<_XCFrameworkDSymCandidate
 				Include="@(_GenerateDSymItems)"
-				Condition="'%(ItemSourcePath)' != ''"
+				Condition="'%(_GenerateDSymItems.ItemSourcePath)' != ''"
 			>
-				<DSymSourceDir>$([System.IO.Path]::GetDirectoryName($([System.IO.Path]::GetDirectoryName('%(ItemSourcePath)'))))/dSYMs</DSymSourceDir>
+				<DSymSourceDir>$([System.IO.Path]::GetDirectoryName($([System.IO.Path]::GetDirectoryName('%(_GenerateDSymItems.ItemSourcePath)'))))/dSYMs</DSymSourceDir>
 			</_XCFrameworkDSymCandidate>
 			<_XCFrameworkDSymToCopy
 				Include="@(_XCFrameworkDSymCandidate->'%(DSymSourceDir)/%(DSymName)')"

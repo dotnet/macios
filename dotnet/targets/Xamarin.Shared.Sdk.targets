@@ -1204,7 +1204,25 @@
 	</Target>
 
 
-	<Target Name="_LoadLinkerOutput" DependsOnTargets="ComputeFilesToPublish" Condition="'$(IsMacEnabled)' == 'true'">
+	<!--
+		When building for NativeAOT with the trimmable-static registrar (and PrepareAssemblies), we generate
+		the native registrar code *after* the NativeAOT compiler (ILC) has run, instead of before. This lets
+		the registrar inspect ILC's output to see which UnmanagedCallersOnly trampolines survived trimming, and
+		avoid emitting direct native references to trampolines ILC trimmed away (which would be undefined symbols
+		at native link time). This is only possible because ILLink is skipped in this scenario (see _SkipILLink),
+		so ILC consumes the prepared (pre-postprocessing) assemblies and the postprocessing output no longer feeds
+		ILC. The gate is computed statically (all three properties are available at evaluation time) so it can be
+		used both in static target wiring and in runtime target conditions.
+	-->
+	<PropertyGroup>
+		<_PostprocessAssembliesAfterIlc Condition="'$(_PostprocessAssembliesAfterIlc)' == '' And '$(PublishAot)' == 'true' And '$(PrepareAssemblies)' == 'true' And '$(Registrar)' == 'trimmable-static'">true</_PostprocessAssembliesAfterIlc>
+		<_PostprocessAssembliesAfterIlc Condition="'$(_PostprocessAssembliesAfterIlc)' == ''">false</_PostprocessAssembliesAfterIlc>
+		<!-- When postprocessing runs after ILC, _LoadLinkerOutput must run the postprocessing target first so
+		     that the *.items files (registrar.mm etc.) exist when they're loaded. -->
+		<_LoadLinkerOutputExtraDependsOn Condition="'$(_PostprocessAssembliesAfterIlc)' == 'true'">_PostprocessAssembliesAfterIlc</_LoadLinkerOutputExtraDependsOn>
+	</PropertyGroup>
+
+	<Target Name="_LoadLinkerOutput" DependsOnTargets="ComputeFilesToPublish;$(_LoadLinkerOutputExtraDependsOn)" Condition="'$(IsMacEnabled)' == 'true'">
 		<ItemGroup>
 			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_MainFile.items" />
 			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_MainLinkWith.items" />
@@ -1269,6 +1287,38 @@
 			     from a custom linker step. This will become unnecessary when we stop using custom linker steps. -->
 			<NoWarn>$(NoWarn);IL2008</NoWarn> <!-- Could not resolve type '...' -->
 		</PropertyGroup>
+	</Target>
+
+	<!--
+		The post-ILC variant of _PostprocessAssemblies (see the _PostprocessAssembliesAfterIlc property). It runs
+		the exact same native-registrar-generating pipeline as _PostprocessAssemblies, but after the NativeAOT
+		compiler (ILC) has run, and passes ILC's output object file ($(NativeObject)) so the registrar can route
+		any UnmanagedCallersOnly trampoline that ILC trimmed away through the dlsym fallback instead of referencing
+		it directly (which would be an undefined symbol at native link time). Running the full pipeline (rather than
+		a reduced one) keeps the generated native registrar code consistent with the other native files generated
+		earlier (e.g. inlined-class-gethandle.m). It's wired to run before _LoadLinkerOutput (via
+		_LoadLinkerOutputExtraDependsOn) so the *.items files it produces are loaded and fed to the native compile.
+	-->
+	<Target
+		Name="_PostprocessAssembliesAfterIlc"
+		Condition="'$(_PostprocessAssembliesAfterIlc)' == 'true' And '$(RuntimeIdentifiers)' == ''"
+		DependsOnTargets="IlcCompile;ComputeFilesToPublish;_PrepareAssembliesForPostProcessing;_ComputeLinkerInputs"
+		>
+		<PrepareAssemblies
+			InputAssemblies="@(_AssembliesToPostProcess)"
+			MakeReproPath="$(_PostprocessAssembliesMakeReproPath)"
+			NativeAOTObjectFile="$(NativeObject)"
+			OptionsFile="$(_CustomLinkerOptionsFile)"
+			OutputDirectory="$(_PostprocessedAssembliesDirectory)"
+			Postprocessing="true"
+			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
+		>
+			<Output TaskParameter="OutputAssemblies" ItemName="_PostProcessedAssemblies" />
+		</PrepareAssemblies>
+
+		<ItemGroup>
+			<FileWrites Include="@(_PostProcessedAssemblies)" />
+		</ItemGroup>
 	</Target>
 
 	<!-- Native code -->

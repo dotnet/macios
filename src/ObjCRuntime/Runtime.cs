@@ -391,18 +391,18 @@ namespace ObjCRuntime {
 #endif
 		}
 
-		/// <summary>Assertion to ensure that this call is being done from the UIKit thread.</summary>
+		/// <summary>Assertion to ensure that this call is being done from the UI thread.</summary>
 		/// <remarks>
 		///   <para>
-		///     This method is used internally by MonoTouch to ensure that
-		///     accesses done to UIKit classes and methods are only
-		///     performed from the UIKit thread.  This is necessary because
-		///     the UIKit API is not thread-safe and accessing it from
+		///     This method is used internally to ensure that
+		///     accesses done to AppKit/UIKit classes and methods are only
+		///     performed from the main thread. This is necessary because
+		///     the AppKit/UIKit API is not thread-safe and accessing it from
 		///     multiple threads will corrupt the application state and will
 		///     likely lead to a crash that is hard to identify.
 		///   </para>
 		///   <para>
-		///     MonoTouch only performs the thread checks in debug builds.
+		///     This thread check is only done in debug builds.
 		///     Release builds have this feature disabled.
 		///   </para>
 		/// </remarks>

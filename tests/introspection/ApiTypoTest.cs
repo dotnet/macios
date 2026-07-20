@@ -784,7 +784,7 @@ namespace Introspection {
 			{ "Unsynced", ApplePlatform.MacOSX | ApplePlatform.iOS }, // sync state adjective
 			{ "Untrash", ApplePlatform.iOS }, // mail/files verb
 			{ "Upce", All }, // UPC-E barcode
-			{ "Upi", ApplePlatform.iOS }, // Unified Payments Interface
+			{ "Upi", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // Unified Payments Interface
 			{ "Uri", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst }, // Uniform Resource Identifier
 			{ "Usac", All }, // Unified Speech and Audio Coding
 			{ "Usd", All }, // Universal Scene Description

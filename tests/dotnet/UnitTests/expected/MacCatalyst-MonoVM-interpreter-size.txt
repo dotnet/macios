@@ -1,9 +1,9 @@
-AppBundleSize: 5,793,562 bytes (5,657.8 KB = 5.5 MB)
+AppBundleSize: 5,792,974 bytes (5,657.2 KB = 5.5 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 Contents/Info.plist:
-    1,109 bytes (1.1 KB = 0.0 MB)
+    1,097 bytes (1.1 KB = 0.0 MB)
 Contents/MacOS/SizeTestApp:
-    4,573,224 bytes (4,466.0 KB = 4.4 MB)
+    4,572,648 bytes (4,465.5 KB = 4.4 MB)
 Contents/MonoBundle/Microsoft.MacCatalyst.dll:
     157,696 bytes (154.0 KB = 0.2 MB)
 Contents/MonoBundle/runtimeconfig.bin:

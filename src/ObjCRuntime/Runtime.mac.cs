@@ -35,9 +35,6 @@ using Registrar;
 namespace ObjCRuntime {
 	public static partial class Runtime {
 #if !COREBUILD
-		internal const string ProductName = "Microsoft.macOS";
-		internal const string AssemblyName = "Microsoft.macOS.dll";
-
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>

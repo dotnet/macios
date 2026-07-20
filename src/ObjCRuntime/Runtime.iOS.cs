@@ -16,25 +16,6 @@ using UIKit;
 namespace ObjCRuntime {
 	public static partial class Runtime {
 #if !COREBUILD
-#if TVOS
-		internal const string ProductName = "Microsoft.tvOS";
-#elif __MACCATALYST__
-		internal const string ProductName = "Microsoft.MacCatalyst";
-#elif IOS
-		internal const string ProductName = "Microsoft.iOS";
-#else
-#error Unknown platform
-#endif
-#if TVOS
-		internal const string AssemblyName = "Microsoft.tvOS.dll";
-#elif __MACCATALYST__
-		internal const string AssemblyName = "Microsoft.MacCatalyst";
-#elif IOS
-		internal const string AssemblyName = "Microsoft.iOS.dll";
-#else
-#error Unknown platform
-#endif
-
 #if !__MACCATALYST__
 		/// <summary>The architecture where the code is currently running.</summary>
 		///         <remarks>

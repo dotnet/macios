@@ -78,15 +78,20 @@ namespace ObjCRuntime {
 
 #if __TVOS__
 		internal const string PlatformName = "tvOS";
+		internal const string ProductName = "Microsoft." + PlatformName;
 #elif __MACCATALYST__
 		internal const string PlatformName = "Mac Catalyst";
+		internal const string ProductName = "Microsoft.MacCatalyst";
 #elif __IOS__
 		internal const string PlatformName = "iOS";
+		internal const string ProductName = "Microsoft." + PlatformName;
 #elif __MACOS__
 		internal const string PlatformName = "macOS";
+		internal const string ProductName = "Microsoft." + PlatformName;
 #else
 #error Undetermined platform name
 #endif
+		internal const string AssemblyName = ProductName + ".dll";
 
 		static Thread? mainThread;
 

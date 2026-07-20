@@ -258,6 +258,10 @@ namespace Xamarin.Linker {
 				}
 			}
 
+			Dictionary<MethodDefinition, List<MethodDefinition>>? methodMap = null;
+			if (!App.IsPostProcessingAssemblies && methods_to_wrap.Count > 0 && StaticRegistrar.GetCategoryAttribute (type) is null)
+				methodMap = StaticRegistrar.PrepareInterfaceMethodMapping (type);
+
 			// Create an UnmanagedCallersOnly method for each method we need to wrap
 			foreach (var method in methods_to_wrap) {
 				try {
@@ -265,7 +269,7 @@ namespace Xamarin.Linker {
 						// We need to load what the PrepareAssemblies task did/produced
 						CollectUnmanagedCallersMethod (method, infos, proxyInterfaces);
 					} else {
-						CreateUnmanagedCallersMethod (method, infos, proxyInterfaces);
+						CreateUnmanagedCallersMethod (method, infos, proxyInterfaces, methodMap);
 						modified = true;
 					}
 				} catch (Exception e) {
@@ -370,7 +374,7 @@ namespace Xamarin.Linker {
 
 		int counter;
 		AssemblyDefinition? last_assembly;
-		void CreateUnmanagedCallersMethod (MethodDefinition method, AssemblyTrampolineInfo infos, List<TypeDefinition> proxyInterfaces)
+		void CreateUnmanagedCallersMethod (MethodDefinition method, AssemblyTrampolineInfo infos, List<TypeDefinition> proxyInterfaces, Dictionary<MethodDefinition, List<MethodDefinition>>? methodMap)
 		{
 			if (last_assembly != method.Module.Assembly) {
 				counter = 0;
@@ -463,7 +467,7 @@ namespace Xamarin.Linker {
 				var implementationMethod = method.DeclaringType.AddMethod (methodName, MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.Virtual | MethodAttributes.NewSlot | MethodAttributes.Final, placeholderType);
 
 				// the callback will only call the proxy method and the proxy method will perform all the conversions
-				EmitCallToExportedMethod (method, implementationMethod);
+				EmitCallToExportedMethod (method, implementationMethod, methodMap);
 
 				// now copy the return type and params (incl. sel and exception_gchandle) to the UCO itself
 				// and also to the proxy interface 
@@ -481,7 +485,7 @@ namespace Xamarin.Linker {
 				// we need to wait until we know all the parameters of the interface method before we generate this method
 				EmitCallToProxyMethod (method, callback, interfaceMethod);
 			} else {
-				EmitCallToExportedMethod (method, callback);
+				EmitCallToExportedMethod (method, callback, methodMap);
 			}
 		}
 
@@ -508,7 +512,7 @@ namespace Xamarin.Linker {
 			body.GenerateILOffsets ();
 		}
 
-		public void EmitCallToExportedMethod (MethodDefinition method, MethodDefinition callback)
+		public void EmitCallToExportedMethod (MethodDefinition method, MethodDefinition callback, Dictionary<MethodDefinition, List<MethodDefinition>>? methodMap)
 		{
 			var baseMethod = StaticRegistrar.GetBaseMethodInTypeHierarchy (method);
 			var placeholderType = abr.System_IntPtr;
@@ -542,7 +546,7 @@ namespace Xamarin.Linker {
 
 			if (isInstanceCategory) {
 				il.Emit (OpCodes.Ldarg_0);
-				EmitConversion (method, il, method.Parameters [0].ParameterType, true, 0, out var nativeType, postProcessing);
+				EmitConversion (method, il, method.Parameters [0].ParameterType, true, 0, out var nativeType, postProcessing, methodMap);
 			} else if (method.IsStatic) {
 				// nothing to do
 			} else if (method.IsConstructor) {
@@ -615,7 +619,7 @@ namespace Xamarin.Linker {
 			} else {
 				// instance method
 				il.Emit (OpCodes.Ldarg_0);
-				EmitConversion (method, il, method.DeclaringType, true, -1, out var nativeType, postProcessing);
+				EmitConversion (method, il, method.DeclaringType, true, -1, out var nativeType, postProcessing, methodMap);
 			}
 
 			callback.AddParameter ("sel", abr.System_IntPtr);
@@ -638,7 +642,7 @@ namespace Xamarin.Linker {
 						il.EmitLoadArgument (nativeParameterIndex);
 					}
 
-					if (EmitConversion (method, il, managedParameterType, true, p, out var nativeType, postProcessing, isOutParameter, nativeParameterIndex)) {
+					if (EmitConversion (method, il, managedParameterType, true, p, out var nativeType, postProcessing, methodMap, isOutParameter, nativeParameterIndex)) {
 						nativeParameter.ParameterType = nativeType;
 					} else {
 						nativeParameter.ParameterType = placeholderType;
@@ -668,7 +672,7 @@ namespace Xamarin.Linker {
 			}
 
 			if (returnVariable is not null) {
-				if (EmitConversion (method, il, method.ReturnType, false, -1, out var nativeReturnType, postProcessing)) {
+				if (EmitConversion (method, il, method.ReturnType, false, -1, out var nativeReturnType, postProcessing, methodMap)) {
 					returnVariable.VariableType = nativeReturnType;
 					callback.ReturnType = nativeReturnType;
 				} else {
@@ -788,21 +792,21 @@ namespace Xamarin.Linker {
 			return type.IsNSObject (DerivedLinkContext);
 		}
 
-		BindAsAttribute? GetBindAsAttribute (MethodDefinition method, int parameter)
+		BindAsAttribute? GetBindAsAttribute (MethodDefinition method, int parameter, Dictionary<MethodDefinition, List<MethodDefinition>>? methodMap)
 		{
 			BindAsAttribute? attribute;
-			if (StaticRegistrar.IsPropertyAccessor (method, out var property)) {
+			var isPropertyAccessor = StaticRegistrar.IsPropertyAccessor (method, out var property);
+			if (isPropertyAccessor) {
 				attribute = StaticRegistrar.GetBindAsAttribute (property);
 			} else {
 				attribute = StaticRegistrar.GetBindAsAttribute (method, parameter);
 			}
 
-			if (attribute is not null || parameter < 0 || method.DeclaringType.IsInterface)
+			if (attribute is not null || parameter < 0 || isPropertyAccessor || method.IsConstructor || method.DeclaringType.IsInterface)
 				return attribute;
 
 			// Parameter attributes aren't inherited from protocol methods, so look up the mapped interface method.
-			var map = StaticRegistrar.PrepareInterfaceMethodMapping (method.DeclaringType);
-			if (map is null || !map.TryGetValue (method, out var interfaceMethods))
+			if (methodMap is null || !methodMap.TryGetValue (method, out var interfaceMethods))
 				return null;
 
 			List<MethodDefinition>? bindAsInterfaceMethods = null;
@@ -824,12 +828,12 @@ namespace Xamarin.Linker {
 
 		// This emits a conversion between the native and the managed representation of a parameter or return value,
 		// and returns the corresponding native type. The returned nativeType will (must) be a blittable type.
-		bool EmitConversion (MethodDefinition method, ILProcessor il, TypeReference type, bool toManaged, int parameter, [NotNullWhen (true)] out TypeReference? nativeType, List<Instruction> postProcessing, bool isOutParameter = false, int nativeParameterIndex = -1)
+		bool EmitConversion (MethodDefinition method, ILProcessor il, TypeReference type, bool toManaged, int parameter, [NotNullWhen (true)] out TypeReference? nativeType, List<Instruction> postProcessing, Dictionary<MethodDefinition, List<MethodDefinition>>? methodMap, bool isOutParameter = false, int nativeParameterIndex = -1)
 		{
 			nativeType = null;
 
 			if (!(parameter == -1 && !method.IsStatic && method.DeclaringType == type)) {
-				var bindAsAttribute = GetBindAsAttribute (method, parameter);
+				var bindAsAttribute = GetBindAsAttribute (method, parameter, methodMap);
 				if (bindAsAttribute is not null) {
 					if (bindAsAttribute.OriginalType is null) {
 						AddException (ErrorHelper.CreateError (99, "BindAs attribute without OriginalType. Method: {0}", GetMethodSignatureWithSourceCode (method)));

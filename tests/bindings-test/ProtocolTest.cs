@@ -232,10 +232,17 @@ namespace Xamarin.BindingTests {
 
 		class BindAsProtocolImplementation : NSObject, IBindAsProtocol {
 			public StrongEnum Value { get; private set; }
+			public StrongEnum Other { get; private set; }
 
 			public void SetStrongEnum (StrongEnum value)
 			{
 				Value = value;
+			}
+
+			public void SetStrongEnums (StrongEnum value, StrongEnum other)
+			{
+				Value = value;
+				Other = other;
 			}
 		}
 
@@ -249,6 +256,21 @@ namespace Xamarin.BindingTests {
 			Messaging.void_objc_msgSend_IntPtr (implementation.Handle, Selector.GetHandle ("setStrongEnum:"), value.Handle);
 			GC.KeepAlive (value);
 			Assert.That (implementation.Value, Is.EqualTo (StrongEnum.B));
+		}
+
+		[Test]
+		public void MultipleBindAsProtocolParameters ()
+		{
+			using var implementation = new BindAsProtocolImplementation ();
+			var value = StrongEnum.B.GetConstant ();
+			var other = StrongEnum.C.GetConstant ();
+			if (value is null || other is null)
+				throw new InvalidOperationException ("Could not get the native strong enum values.");
+			Messaging.void_objc_msgSend_IntPtr_IntPtr (implementation.Handle, Selector.GetHandle ("setStrongEnum:other:"), value.Handle, other.Handle);
+			GC.KeepAlive (value);
+			GC.KeepAlive (other);
+			Assert.That (implementation.Value, Is.EqualTo (StrongEnum.B));
+			Assert.That (implementation.Other, Is.EqualTo (StrongEnum.C));
 		}
 
 		void CleanupSignatures (objc_method_description [] methods)

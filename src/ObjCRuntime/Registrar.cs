@@ -344,7 +344,7 @@ namespace Registrar {
 				Fields.Add (fieldNameInDictionary, field);
 			}
 
-			public bool Add (ObjCMethod method, [NotNullIfNotNull (nameof (exceptions))] ref List<Exception>? exceptions)
+			public bool Add (ObjCMethod method, [NotNullIfNotNull (nameof (exceptions))] ref List<Exception>? exceptions, Dictionary<TMethod, List<TMethod>>? methodMap = null, bool methodMapPrepared = false)
 			{
 				bool rv;
 
@@ -352,7 +352,7 @@ namespace Registrar {
 					Methods = new List<ObjCMethod> ();
 
 				VerifySelector (method, ref exceptions);
-				method.ValidateSignature (ref exceptions);
+				method.ValidateSignature (ref exceptions, methodMap, methodMapPrepared);
 				// Protocol members don't show up in the generated output, so it doesn't matter if we run into those.
 				// If a class implements a protocol, it will still hit this check on the implemented members.
 				if (!method.IsPropertyAccessor && !method.DeclaringType.IsProtocol)
@@ -717,24 +717,32 @@ namespace Registrar {
 
 			public TType []? NativeParameters {
 				get {
-					if (native_parameters is null && Parameters is not null) {
-						// Put the parameters in a temporary variable, and only store them in the instance field once done,
-						// so that if an exception occurs, the same exception will be raised the next time too.
-						var native_parameters = new TType [parameters!.Length];
-						for (int i = 0; i < parameters.Length; i++) {
-							var originalType = Registrar.GetBindAsAttribute (this, i)?.OriginalType;
-							if (originalType is not null) {
-								if (!IsValidToManagedTypeConversion (originalType, parameters [i]))
-									throw Registrar.CreateException (4172, Method, Errors.MT4172, Registrar.GetTypeFullName (parameters [i]), originalType.FullName, Registrar.GetParameterName (Method, i), DescriptiveMethodName);
-								native_parameters [i] = originalType;
-							} else {
-								native_parameters [i] = parameters [i];
-							}
-						}
-						this.native_parameters = native_parameters;
-					}
+					Dictionary<TMethod, List<TMethod>>? methodMap = null;
+					var methodMapPrepared = false;
+					PrepareNativeParameters (ref methodMap, ref methodMapPrepared);
 					return native_parameters;
 				}
+			}
+
+			void PrepareNativeParameters (ref Dictionary<TMethod, List<TMethod>>? methodMap, ref bool methodMapPrepared)
+			{
+				if (native_parameters is not null || Parameters is null)
+					return;
+
+				// Put the parameters in a temporary variable, and only store them in the instance field once done,
+				// so that if an exception occurs, the same exception will be raised the next time too.
+				var computedNativeParameters = new TType [parameters!.Length];
+				for (int i = 0; i < parameters.Length; i++) {
+					var originalType = Registrar.GetBindAsAttribute (this, i, ref methodMap, ref methodMapPrepared)?.OriginalType;
+					if (originalType is not null) {
+						if (!IsValidToManagedTypeConversion (originalType, parameters [i]))
+							throw Registrar.CreateException (4172, Method, Errors.MT4172, Registrar.GetTypeFullName (parameters [i]), originalType.FullName, Registrar.GetParameterName (Method, i), DescriptiveMethodName);
+						computedNativeParameters [i] = originalType;
+					} else {
+						computedNativeParameters [i] = parameters [i];
+					}
+				}
+				native_parameters = computedNativeParameters;
 			}
 
 			bool IsValidToManagedTypeConversion (TType inputType, TType outputType)
@@ -957,11 +965,17 @@ namespace Registrar {
 
 			public bool ValidateSignature ([NotNullWhen (false)][NotNullIfNotNull (nameof (exceptions))] ref List<Exception>? exceptions)
 			{
+				return ValidateSignature (ref exceptions, null, false);
+			}
+
+			public bool ValidateSignature ([NotNullWhen (false)][NotNullIfNotNull (nameof (exceptions))] ref List<Exception>? exceptions, Dictionary<TMethod, List<TMethod>>? methodMap, bool methodMapPrepared)
+			{
 				if (Registrar.LaxMode)
 					return true;
 
 				if (signature is null) {
 					try {
+						PrepareNativeParameters (ref methodMap, ref methodMapPrepared);
 						signature = ComputeSignature ();
 					} catch (ProductException mte) {
 						AddException (ref exceptions, mte);
@@ -1227,12 +1241,22 @@ namespace Registrar {
 
 		public BindAsAttribute? GetBindAsAttribute (ObjCMethod method, int parameter_index)
 		{
+			Dictionary<TMethod, List<TMethod>>? methodMap = null;
+			var methodMapPrepared = false;
+			return GetBindAsAttribute (method, parameter_index, ref methodMap, ref methodMapPrepared);
+		}
+
+		BindAsAttribute? GetBindAsAttribute (ObjCMethod method, int parameter_index, ref Dictionary<TMethod, List<TMethod>>? methodMap, ref bool methodMapPrepared)
+		{
 			var mthd = method.Method!;
 			var attrib = GetBindAsAttribute (mthd, parameter_index);
-			if (attrib is null && parameter_index >= 0 && !IsInterface (method.DeclaringType.Type)) {
+			if (attrib is null && parameter_index >= 0 && !method.IsPropertyAccessor && !method.IsConstructor && !method.IsCategory && !IsInterface (method.DeclaringType.Type)) {
 				// Parameter attributes aren't inherited from protocol methods, so look up the mapped interface method.
-				var map = PrepareMethodMapping (method.DeclaringType.Type);
-				if (map is not null && map.TryGetValue (mthd, out var interfaceMethods)) {
+				if (!methodMapPrepared) {
+					methodMap = PrepareMethodMapping (method.DeclaringType.Type);
+					methodMapPrepared = true;
+				}
+				if (methodMap is not null && methodMap.TryGetValue (mthd, out var interfaceMethods)) {
 					List<TMethod>? bindAsInterfaceMethods = null;
 					foreach (var interfaceMethod in interfaceMethods) {
 						var interfaceAttribute = GetBindAsAttribute (interfaceMethod, parameter_index);
@@ -2457,7 +2481,7 @@ namespace Registrar {
 				}
 
 				try {
-					objcType.Add (objcMethod, ref exceptions);
+					objcType.Add (objcMethod, ref exceptions, method_map, methodMapPrepared: true);
 				} catch (Exception ex) {
 					AddException (ref exceptions, ex);
 				}

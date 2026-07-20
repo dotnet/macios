@@ -127,6 +127,14 @@ namespace MetalFX {
 		[Export ("inputContentMaxScale")]
 		float InputContentMaxScale { get; set; }
 
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		[Export ("outputResolutionMotionVectorsEnabled")]
+		bool OutputResolutionMotionVectorsEnabled { [Bind ("isOutputResolutionMotionVectorsEnabled")] get; set; }
+
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		[Export ("jitteredMotionVectorsEnabled")]
+		bool JitteredMotionVectorsEnabled { [Bind ("isJitteredMotionVectorsEnabled")] get; set; }
+
 		[Mac (14, 4), iOS (17, 4), MacCatalyst (17, 4)]
 		[Export ("reactiveMaskTextureEnabled")]
 		bool ReactiveMaskTextureEnabled { [Bind ("isReactiveMaskTextureEnabled")] get; set; }
@@ -199,6 +207,14 @@ namespace MetalFX {
 
 		[Export ("outputHeight")]
 		nuint OutputHeight { get; set; }
+
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		[Export ("distortionTextureEnabled")]
+		bool DistortionTextureEnabled { [Bind ("isDistortionTextureEnabled")] get; set; }
+
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		[Export ("requiresPrevColorTexture")]
+		bool RequiresPrevColorTexture { get; set; }
 
 		[Export ("newFrameInterpolatorWithDevice:")]
 		[return: NullAllowed]
@@ -280,6 +296,66 @@ namespace MetalFX {
 		[Export ("uiTextureFormat")]
 		MTLPixelFormat UITextureFormat { get; }
 
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		[Abstract]
+		[Export ("contentWidth")]
+		nuint ContentWidth { get; set; }
+
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		[Abstract]
+		[Export ("contentHeight")]
+		nuint ContentHeight { get; set; }
+
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		[Abstract]
+		[Export ("depthContentOffsetX")]
+		nuint DepthContentOffsetX { get; set; }
+
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		[Abstract]
+		[Export ("depthContentOffsetY")]
+		nuint DepthContentOffsetY { get; set; }
+
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		[Abstract]
+		[Export ("motionContentOffsetX")]
+		nuint MotionContentOffsetX { get; set; }
+
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		[Abstract]
+		[Export ("motionContentOffsetY")]
+		nuint MotionContentOffsetY { get; set; }
+
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		[Abstract]
+		[Export ("outputOffsetX")]
+		nuint OutputOffsetX { get; set; }
+
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		[Abstract]
+		[Export ("outputOffsetY")]
+		nuint OutputOffsetY { get; set; }
+
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		[Abstract]
+		[Export ("distortionOffsetX")]
+		nuint DistortionOffsetX { get; set; }
+
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		[Abstract]
+		[Export ("distortionOffsetY")]
+		nuint DistortionOffsetY { get; set; }
+
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		[Abstract]
+		[Export ("distortionWidth")]
+		nuint DistortionWidth { get; set; }
+
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		[Abstract]
+		[Export ("distortionHeight")]
+		nuint DistortionHeight { get; set; }
+
 		[Abstract]
 		[NullAllowed, Export ("colorTexture", ArgumentSemantic.Retain)]
 		IMTLTexture ColorTexture { get; set; }
@@ -324,6 +400,28 @@ namespace MetalFX {
 		[Export ("aspectRatio")]
 		float AspectRatio { get; set; }
 
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		[Abstract]
+		[Export ("worldToViewMatrix", ArgumentSemantic.Assign)]
+		/* simd_float4x4 */
+		NMatrix4 WorldToViewMatrix {
+			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
+			get;
+			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
+			set;
+		}
+
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		[Abstract]
+		[Export ("viewToClipMatrix", ArgumentSemantic.Assign)]
+		/* simd_float4x4 */
+		NMatrix4 ViewToClipMatrix {
+			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
+			get;
+			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
+			set;
+		}
+
 		[Abstract]
 		[NullAllowed, Export ("uiTexture", ArgumentSemantic.Retain)]
 		IMTLTexture UiTexture { get; [Bind ("setUITexture:")] set; }
@@ -347,6 +445,11 @@ namespace MetalFX {
 		[Abstract]
 		[NullAllowed, Export ("outputTexture", ArgumentSemantic.Retain)]
 		IMTLTexture OutputTexture { get; set; }
+
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		[Abstract]
+		[NullAllowed, Export ("distortionTexture", ArgumentSemantic.Retain)]
+		IMTLTexture DistortionTexture { get; set; }
 
 		[Abstract]
 		[NullAllowed, Export ("fence", ArgumentSemantic.Retain)]
@@ -521,6 +624,11 @@ namespace MetalFX {
 		[Abstract]
 		[Export ("motionTextureUsage")]
 		MTLTextureUsage MotionTextureUsage { get; }
+
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		[Abstract]
+		[Export ("reactiveMaskTextureUsage")]
+		MTLTextureUsage ReactiveMaskTextureUsage { get; }
 
 		[Abstract]
 		[Export ("reactiveTextureUsage")]
@@ -762,6 +870,11 @@ namespace MetalFX {
 		[Export ("motionTextureUsage")]
 		MTLTextureUsage MotionTextureUsage { get; }
 
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		[Abstract]
+		[Export ("reactiveMaskTextureUsage")]
+		MTLTextureUsage ReactiveMaskTextureUsage { get; }
+
 		[Abstract]
 		[Export ("reactiveTextureUsage")]
 		MTLTextureUsage ReactiveTextureUsage { get; }
@@ -777,6 +890,56 @@ namespace MetalFX {
 		[Abstract]
 		[Export ("inputContentHeight")]
 		nuint InputContentHeight { get; set; }
+
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		[Abstract]
+		[Export ("colorContentOffsetX")]
+		nuint ColorContentOffsetX { get; set; }
+
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		[Abstract]
+		[Export ("colorContentOffsetY")]
+		nuint ColorContentOffsetY { get; set; }
+
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		[Abstract]
+		[Export ("depthContentOffsetX")]
+		nuint DepthContentOffsetX { get; set; }
+
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		[Abstract]
+		[Export ("depthContentOffsetY")]
+		nuint DepthContentOffsetY { get; set; }
+
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		[Abstract]
+		[Export ("motionContentOffsetX")]
+		nuint MotionContentOffsetX { get; set; }
+
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		[Abstract]
+		[Export ("motionContentOffsetY")]
+		nuint MotionContentOffsetY { get; set; }
+
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		[Abstract]
+		[Export ("reactiveMaskContentOffsetX")]
+		nuint ReactiveMaskContentOffsetX { get; set; }
+
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		[Abstract]
+		[Export ("reactiveMaskContentOffsetY")]
+		nuint ReactiveMaskContentOffsetY { get; set; }
+
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		[Abstract]
+		[Export ("outputOffsetX")]
+		nuint OutputOffsetX { get; set; }
+
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		[Abstract]
+		[Export ("outputOffsetY")]
+		nuint OutputOffsetY { get; set; }
 
 		[Abstract]
 		[NullAllowed, Export ("colorTexture", ArgumentSemantic.Retain)]

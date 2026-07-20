@@ -985,5 +985,18 @@ namespace BI1066Errors
 
 			bgen.AssertErrorCount (errorMessages.Length);
 		}
+
+		[Test]
+		[TestCase (Profile.iOS)]
+		public void BI1126 (Profile profile)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
+			var bgen = new BGenTool ();
+			bgen.Profile = profile;
+			bgen.Defines = BGenTool.GetDefaultDefines (profile);
+			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "factory-method-noninit.cs")));
+			bgen.AssertExecuteError ("build");
+			bgen.AssertError (1126, "The [FactoryMethod] attribute on 'FactoryMethodNonInitTest.BadWidget.CreateWithFoo' can only be used with an Objective-C 'init' selector (the selector must be 'init' or start with 'init' followed by an uppercase letter), but the selector is 'createWithFoo:'.");
+		}
 	}
 }

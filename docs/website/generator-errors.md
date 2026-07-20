@@ -338,6 +338,16 @@ is nullable.
 
 To fix this warning, add `[return: NullAllowed]` to the constructor.
 
+### <a name='BI1126'/>BI1126: The [FactoryMethod] attribute on '\*' can only be used with an Objective-C 'init' selector (the selector must be 'init' or start with 'init' followed by an uppercase letter), but the selector is '\*'.
+
+The `[FactoryMethod]` attribute generates a static factory method from a
+failable Objective-C initializer, so it can only be applied to a binding member
+whose selector is an `init` selector: either `init`, or a selector that starts
+with `init` followed by an uppercase letter (e.g. `initWithName:`).
+
+To fix this error, either use an `init` selector, or remove the
+`[FactoryMethod]` attribute.
+
 <!-- 2xxx: reserved -->
 <!-- 3xxx: reserved -->
 <!-- 4xxx: reserved -->

@@ -1203,5 +1203,14 @@ namespace bgen {
                 return ResourceManager.GetString("BI1125", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The [FactoryMethod] attribute on &apos;{0}.{1}&apos; can only be used with an Objective-C &apos;init&apos; selector (the selector must be &apos;init&apos; or start with &apos;init&apos; followed by an uppercase letter), but the selector is &apos;{2}&apos;..
+        /// </summary>
+        internal static string BI1126 {
+            get {
+                return ResourceManager.GetString("BI1126", resourceCulture);
+            }
+        }
     }
 }

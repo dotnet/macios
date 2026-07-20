@@ -649,33 +649,55 @@ public class DesignatedInitializerAttribute : Attribute {
 }
 #endif // !XAMCORE_5_0
 
-/// <summary>Apply this attribute to a binding constructor to generate a static factory
-/// method (instead of a public constructor) from a failable Objective-C initializer.</summary>
+/// <summary>Apply this attribute to a binding constructor (or a binding init method) to
+/// generate a static factory method (instead of a public constructor) from a failable
+/// Objective-C initializer.</summary>
 /// <remarks>
 ///   <para>When this attribute is applied to a binding constructor, the generator will:</para>
 ///   <list type="number">
 ///     <item><description>Emit the constructor as <c>internal</c> (hiding it from the public API).</description></item>
 ///     <item><description>Emit a <c>public static</c> factory method (named <see cref="MethodName" />) with the same parameters as the constructor.</description></item>
 ///   </list>
-///   <para>If the constructor's return value is nullable (annotated with <c>[return: NullAllowed]</c>), the factory method returns a nullable value and returns <see langword="null" /> when the native initializer fails (returns nil). Otherwise the factory method returns a non-nullable value.</para>
+///   <para>The attribute can also be applied to a binding init method that is not a
+///   <c>Constructor</c> (a method that returns <see cref="ObjCRuntime.NativeHandle" /> and is exported to an
+///   <c>init</c> selector). This is useful when a native class has two failable initializers with
+///   the same managed signature, which can't both be bound as constructors (C# doesn't allow two
+///   constructors with identical parameter types). In that case the generator emits an internal
+///   backing helper (prefixed with an underscore) and a <c>public static</c> factory method named after
+///   the binding method (or <see cref="MethodName" /> if specified).</para>
+///   <para>If the initializer's return value is nullable (annotated with <c>[return: NullAllowed]</c>), the factory method returns a nullable value and returns <see langword="null" /> when the native initializer fails (returns nil). Otherwise the factory method returns a non-nullable value.</para>
+///   <para>The selector must be an Objective-C <c>init</c> selector: either <c>init</c> or a selector that starts with <c>init</c> followed by an uppercase letter (e.g. <c>initWithName:</c>).</para>
 ///   <example>
 ///   <code language="csharp"><![CDATA[
+///   // As a constructor (default factory name "Create"):
 ///   [Export ("initWithUUID:qualifierData:")]
 ///   [FactoryMethod ("Create")]
 ///   [return: NullAllowed]
 ///   NativeHandle Constructor (NSUuid uuid, NSData qualifierData);
+///
+///   // As named methods, for two initializers with the same managed signature:
+///   [Export ("initWithFoo:")]
+///   [FactoryMethod]
+///   [return: NullAllowed]
+///   NativeHandle CreateWithFoo (nint foo);
+///
+///   [Export ("initWithBar:")]
+///   [FactoryMethod]
+///   [return: NullAllowed]
+///   NativeHandle CreateWithBar (nint bar);
 ///   ]]></code>
 ///   </example>
 /// </remarks>
 [AttributeUsage (AttributeTargets.Method, AllowMultiple = false)]
 public class FactoryMethodAttribute : Attribute {
-	/// <summary>The name of the generated factory method. Defaults to <c>Create</c>.</summary>
-	public string MethodName { get; set; }
+	/// <summary>The name of the generated factory method. When not specified, it defaults to
+	/// <c>Create</c> for a constructor, or to the name of the binding method for a named init method.</summary>
+	public string? MethodName { get; set; }
 
-	/// <summary>Create a new <see cref="FactoryMethodAttribute" /> whose factory method is named <c>Create</c>.</summary>
+	/// <summary>Create a new <see cref="FactoryMethodAttribute" />. The factory method name defaults to
+	/// <c>Create</c> for a constructor, or to the name of the binding method for a named init method.</summary>
 	public FactoryMethodAttribute ()
 	{
-		MethodName = "Create";
 	}
 
 	/// <summary>Create a new <see cref="FactoryMethodAttribute" /> whose factory method has the specified name.</summary>

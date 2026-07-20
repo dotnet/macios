@@ -207,6 +207,60 @@ namespace GeneratorTests {
 
 		[Test]
 		[TestCase (Profile.iOS)]
+		public void FactoryMethodInternal (Profile profile)
+		{
+			var bgen = BuildFile (profile, "factory-method-internal.cs");
+			bgen.AssertNoWarnings ();
+
+			const string type = "FactoryMethodInternalTest.InternalFactoryWidget";
+			var widget = bgen.ApiAssembly.MainModule.GetType (type);
+
+			// An [Internal] factory method is generated as 'internal static' (not
+			// 'public static'), and must still compile (no duplicate modifiers).
+			var create = widget.Methods.Single (m => m.Name == "Create");
+			Assert.That (create.IsStatic, Is.True, "Create is static");
+			Assert.That (create.IsAssembly, Is.True, "Create is internal");
+			Assert.That (create.ReturnType.FullName, Is.EqualTo (type), "Create return type");
+		}
+
+		[Test]
+		[TestCase (Profile.iOS)]
+		public void FactoryMethodMultiple (Profile profile)
+		{
+			var bgen = BuildFile (profile, "factory-method-multiple.cs");
+			bgen.AssertNoWarnings ();
+
+			const string type = "FactoryMethodMultipleTest.MultiWidget";
+			var widget = bgen.ApiAssembly.MainModule.GetType (type);
+
+			// Both initializers are generated as separate public static factory methods.
+			var createWithFoo = widget.Methods.Single (m => m.Name == "CreateWithFoo");
+			Assert.That (createWithFoo.IsStatic, Is.True, "CreateWithFoo is static");
+			Assert.That (createWithFoo.IsPublic, Is.True, "CreateWithFoo is public");
+			Assert.That (createWithFoo.ReturnType.FullName, Is.EqualTo (type), "CreateWithFoo return type");
+			Assert.That (createWithFoo.Parameters.Select (p => p.ParameterType.FullName), Is.EqualTo (new [] { "System.IntPtr" }), "CreateWithFoo parameters");
+			Assert.That (FactoryMethodDisposesOnFailure (createWithFoo), Is.True, "CreateWithFoo handles nil");
+
+			var createWithBar = widget.Methods.Single (m => m.Name == "CreateWithBar");
+			Assert.That (createWithBar.IsStatic, Is.True, "CreateWithBar is static");
+			Assert.That (createWithBar.IsPublic, Is.True, "CreateWithBar is public");
+			Assert.That (createWithBar.ReturnType.FullName, Is.EqualTo (type), "CreateWithBar return type");
+			Assert.That (createWithBar.Parameters.Select (p => p.ParameterType.FullName), Is.EqualTo (new [] { "System.IntPtr" }), "CreateWithBar parameters");
+			Assert.That (FactoryMethodDisposesOnFailure (createWithBar), Is.True, "CreateWithBar handles nil");
+
+			// The backing 'init' message-send helpers are generated as internal instance
+			// methods (prefixed with an underscore), so the public API only exposes the
+			// static factory methods.
+			var helperFoo = widget.Methods.Single (m => m.Name == "_CreateWithFoo");
+			Assert.That (helperFoo.IsStatic, Is.False, "_CreateWithFoo is an instance method");
+			Assert.That (helperFoo.IsAssembly, Is.True, "_CreateWithFoo is internal");
+			var helperBar = widget.Methods.Single (m => m.Name == "_CreateWithBar");
+			Assert.That (helperBar.IsStatic, Is.False, "_CreateWithBar is an instance method");
+			Assert.That (helperBar.IsAssembly, Is.True, "_CreateWithBar is internal");
+		}
+
+		[Test]
+		[TestCase (Profile.iOS)]
 		public void FactoryMethodOutErrorWithoutNullableReturn (Profile profile)
 		{
 			var bgen = BuildFile (profile, false, "factory-method-error.cs");

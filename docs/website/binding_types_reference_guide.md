@@ -1368,16 +1368,18 @@ being bound.
 
 ### FactoryMethodAttribute
 
-Apply this attribute to a binding constructor to generate a static factory
-method (instead of a public constructor) from a failable Objective-C
-initializer.
+Apply this attribute to a binding constructor (or a binding init method) to
+generate a static factory method (instead of a public constructor) from a
+failable Objective-C initializer.
 
 This is useful when the native initializer can fail (return `nil`), because a
 C# constructor can't return `null`. Instead of throwing, the generated factory
 method can return `null` to signal failure.
 
-It's also useful when the managed signature between two constructors are
-identical; a factory method can be used to disambiguate.
+It's also useful when two native initializers have the same managed signature:
+they can't both be bound as constructors (C# doesn't allow two constructors
+with identical parameter types), so they can be bound as named factory methods
+instead.
 
 When this attribute is applied to a constructor, the binding tool will:
 
@@ -1386,10 +1388,23 @@ When this attribute is applied to a constructor, the binding tool will:
    `MethodName`, which defaults to `Create`) with the same parameters as the
    constructor.
 
-If the constructor's return value is nullable (annotated with
+When this attribute is applied to a binding method that is not a `Constructor`
+(a method that returns `NativeHandle` and is exported to an `init` selector),
+the binding tool will:
+
+1. Emit the binding method as an `internal` helper (prefixed with an
+   underscore) that performs the `init` message send.
+2. Emit a `public static` factory method named after the binding method (or the
+   attribute's `MethodName`, if specified).
+
+If the initializer's return value is nullable (annotated with
 `[return: NullAllowed]`), the factory method returns a nullable value and
 returns `null` when the native initializer fails. Otherwise the factory method
 returns a non-nullable value.
+
+The selector must be an Objective-C `init` selector: either `init` or a
+selector that starts with `init` followed by an uppercase letter (e.g.
+`initWithName:`). Otherwise the binding tool emits an error (`BI1126`).
 
 Syntax:
 
@@ -1398,7 +1413,7 @@ Syntax:
 public class FactoryMethodAttribute : Attribute {
     public FactoryMethodAttribute ();
     public FactoryMethodAttribute (string methodName);
-    public string MethodName { get; set; }
+    public string? MethodName { get; set; }
 }
 ```
 
@@ -1414,10 +1429,28 @@ NativeHandle Constructor (string pattern);
 generates a `public static MyType? Create (string pattern)` factory method that
 returns `null` when the native `initWithString:` initializer returns `nil`.
 
-> **Note:** If the constructor has an `out NSError` parameter but its return
+The following binding declares two initializers with the same managed signature
+as named factory methods:
+
+```csharp
+[Export ("initWithFoo:")]
+[FactoryMethod]
+[return: NullAllowed]
+NativeHandle CreateWithFoo (nint foo);
+
+[Export ("initWithBar:")]
+[FactoryMethod]
+[return: NullAllowed]
+NativeHandle CreateWithBar (nint bar);
+```
+
+which generates `public static MyType? CreateWithFoo (nint foo)` and
+`public static MyType? CreateWithBar (nint bar)` factory methods.
+
+> **Note:** If the initializer has an `out NSError` parameter but its return
 > value isn't nullable, the binding tool emits a warning (`BI1125`), because
 > such a factory method can't return `null` on failure. Add
-> `[return: NullAllowed]` to the constructor to fix this.
+> `[return: NullAllowed]` to the initializer to fix this.
 
 <a name="FieldAttribute"></a>
 

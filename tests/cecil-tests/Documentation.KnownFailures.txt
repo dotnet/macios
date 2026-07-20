@@ -46023,6 +46023,7 @@ P:MediaExtension.MEDecodeFrameOptions.RealTimePlayback
 P:MediaExtension.MEEstimatedSampleLocation.ByteSource
 P:MediaExtension.MEEstimatedSampleLocation.EstimatedSampleLocation
 P:MediaExtension.MEEstimatedSampleLocation.RefinementDataLocation
+P:MediaExtension.MEFileInfo.ConstituentFileNames
 P:MediaExtension.MEFileInfo.Duration
 P:MediaExtension.MEFileInfo.FragmentsStatus
 P:MediaExtension.MEFileInfo.SidecarFileName

@@ -1,7 +1,7 @@
-AppBundleSize: 3,610,779 bytes (3,526.2 KB = 3.4 MB)
+AppBundleSize: 3,640,117 bytes (3,554.8 KB = 3.5 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 Info.plist:
-    1,150 bytes (1.1 KB = 0.0 MB)
+    1,168 bytes (1.1 KB = 0.0 MB)
 Microsoft.iOS.dll:
     155,648 bytes (152.0 KB = 0.1 MB)
 PkgInfo:
@@ -13,9 +13,9 @@ SizeTestApp:
 SizeTestApp.dll:
     7,680 bytes (7.5 KB = 0.0 MB)
 System.Private.CoreLib.aotdata.arm64:
-    41,480 bytes (40.5 KB = 0.0 MB)
+    41,616 bytes (40.6 KB = 0.0 MB)
 System.Private.CoreLib.dll:
-    1,024,512 bytes (1,000.5 KB = 1.0 MB)
+    1,053,696 bytes (1,029.0 KB = 1.0 MB)
 System.Runtime.dll:
     5,120 bytes (5.0 KB = 0.0 MB)
 System.Runtime.InteropServices.dll:

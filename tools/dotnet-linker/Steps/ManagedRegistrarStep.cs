@@ -86,12 +86,6 @@ namespace Xamarin.Linker {
 
 		Dictionary<string, string> unmanagedCallersOnlyMap = new ();
 
-		// Set to true whenever we modify the current (user) assembly, so we know whether we need to
-		// save it. When HotReloadCompatibleBuild is enabled we relocate the registrar trampolines
-		// into the companion assembly, leaving the user assembly byte-for-byte unmodified, and in
-		// that case we must not save (and thus re-serialize) it.
-		bool modifiedCurrentAssembly;
-
 		// Whether the registrar trampolines for the given method should be relocated into the
 		// per-assembly companion assembly (_<Asm>.TypeMap.dll) instead of being emitted into the
 		// user assembly. This is required for Hot Reload (user assemblies must stay unmodified).
@@ -207,7 +201,6 @@ namespace Xamarin.Linker {
 
 			abr.SetCurrentAssembly (assembly);
 
-			modifiedCurrentAssembly = false;
 			var current_trampoline_lists = new AssemblyTrampolineInfo ();
 			Configuration.AssemblyTrampolineInfos [assembly] = current_trampoline_lists;
 			var proxyInterfaces = new List<TypeDefinition> ();
@@ -221,15 +214,11 @@ namespace Xamarin.Linker {
 
 			// Make sure the linker saves any changes in the assembly.
 			DerivedLinkContext.Annotations.SetCustomAnnotation ("ManagedRegistrarStep", assembly, current_trampoline_lists);
-			// When HotReloadCompatibleBuild is enabled we track modifications precisely (modifiedCurrentAssembly)
-			// so we can leave the user assembly unmodified when everything was relocated into the companion.
-			// Otherwise we keep the historical behavior of saving whenever any type was processed.
-			var shouldSave = Configuration.HotReloadCompatibleBuild ? modifiedCurrentAssembly : modified;
-			if (shouldSave)
+			if (modified)
 				abr.SaveCurrentAssembly ();
 
 			// TODO: Move this to a separate "MakeEverythingWorkWithNativeAOTStep" linker step
-			if (App.XamarinRuntime == XamarinRuntime.NativeAOT && Configuration.Profile.IsProductAssembly (assembly)) {
+			if (App.XamarinRuntime == XamarinRuntime.NativeAOT && Configuration.Profile.IsProductAssembly (assembly) && !App.IsPostProcessingAssemblies) {
 				ImplementNSObjectRegisterToggleRefMethodStub ();
 			}
 
@@ -255,10 +244,9 @@ namespace Xamarin.Linker {
 						var ctor = abr.CurrentAssembly.MainModule.ImportReference (ctorRef);
 
 						// Implement INSObjectFactory._Xamarin_ConstructNSObject
-						abr.ImplementConstructNSObjectFactoryMethod (DerivedLinkContext, type, ctor);
+						modified |= abr.ImplementConstructNSObjectFactoryMethod (DerivedLinkContext, type, ctor);
 						// Implement INativeObject._Xamarin_ConstructINativeObject
-						abr.ImplementConstructINativeObjectFactoryMethod (DerivedLinkContext, type, ctor);
-						modifiedCurrentAssembly = true;
+						modified |= abr.ImplementConstructINativeObjectFactoryMethod (DerivedLinkContext, type, ctor);
 					}
 				} else if (type.IsNativeObject ()) {
 					var ctorRef = AppBundleRewriter.FindINativeObjectConstructor (type);
@@ -266,8 +254,7 @@ namespace Xamarin.Linker {
 						var ctor = abr.CurrentAssembly.MainModule.ImportReference (ctorRef);
 
 						// Implement INativeObject._Xamarin_ConstructINativeObject
-						abr.ImplementConstructINativeObjectFactoryMethod (DerivedLinkContext, type, ctor);
-						modifiedCurrentAssembly = true;
+						modified |= abr.ImplementConstructINativeObjectFactoryMethod (DerivedLinkContext, type, ctor);
 					}
 				}
 			}
@@ -302,14 +289,14 @@ namespace Xamarin.Linker {
 						// We need to load what the PrepareAssemblies task did/produced
 						CollectUnmanagedCallersMethod (method, infos, proxyInterfaces);
 					} else {
-						CreateUnmanagedCallersMethod (method, infos, proxyInterfaces);
+						modified |= CreateUnmanagedCallersMethod (method, infos, proxyInterfaces);
 					}
 				} catch (Exception e) {
 					AddException (ErrorHelper.CreateError (99, e, "Failed to create an UnmanagedCallersOnly trampoline for {0}: {1}", method.FullName, e.Message));
 				}
 			}
 
-			return true;
+			return modified;
 		}
 
 		void ProcessMethod (MethodDefinition method, HashSet<MethodDefinition> methods_to_wrap)
@@ -419,8 +406,10 @@ namespace Xamarin.Linker {
 
 		int counter;
 		AssemblyDefinition? last_assembly;
-		void CreateUnmanagedCallersMethod (MethodDefinition method, AssemblyTrampolineInfo infos, List<TypeDefinition> proxyInterfaces)
+		bool CreateUnmanagedCallersMethod (MethodDefinition method, AssemblyTrampolineInfo infos, List<TypeDefinition> proxyInterfaces)
 		{
+			var modified = false;
+
 			if (last_assembly != method.Module.Assembly) {
 				counter = 0;
 				last_assembly = method.Module.Assembly;
@@ -446,7 +435,7 @@ namespace Xamarin.Linker {
 				// when HotReloadCompatibleBuild is enabled but this particular method isn't relocated
 				// (e.g. it's declared in a generic type): the user assembly is modified here even
 				// though other methods in the same assembly may have been relocated.
-				modifiedCurrentAssembly = true;
+				modified = true;
 			}
 
 			var placeholderType = abr.System_IntPtr;
@@ -583,6 +572,8 @@ namespace Xamarin.Linker {
 				abr.ClearCurrentAssembly ();
 				abr.SetCurrentAssembly (method.Module.Assembly);
 			}
+
+			return modified;
 		}
 
 		// Re-imports every type/method/field reference used by the trampoline (its signature, local

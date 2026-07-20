@@ -11,6 +11,11 @@ namespace Extrospection {
 		Dictionary<object, ManagedValue> managed_values = new Dictionary<object, ManagedValue> ();
 		Dictionary<object, (string Name, EnumConstantDecl Decl)> native_values = new Dictionary<object, (string Name, EnumConstantDecl Decl)> ();
 
+		// Cache, per DeclContext, the names of the typedefs that name an enum and are unavailable.
+		// This avoids rescanning the whole DeclContext for every enum we visit (which would be
+		// O(enums × siblings)); each context is scanned once and every enum check is then O(1).
+		Dictionary<IDeclContext, HashSet<string>> unavailable_enum_typedefs = new Dictionary<IDeclContext, HashSet<string>> ();
+
 		public EnumCheck (BindingResult bindingResult)
 			: base (bindingResult)
 		{
@@ -293,24 +298,28 @@ namespace Extrospection {
 		// The availability attribute for an enum can be attached to the typedef that names the enum
 		// (e.g. `typedef NS_ENUM(NSInteger, Foo) { ... } API_UNAVAILABLE(maccatalyst);`) instead of to
 		// the enum declaration itself. In that case the attribute lands on the TypedefDecl, not the
-		// EnumDecl, so we look for the corresponding sibling typedef and check its availability.
-		static bool IsUnavailableViaTypedef (EnumDecl decl)
+		// EnumDecl, so we look for the corresponding sibling typedef and check its availability. The
+		// per-context set of unavailable enum typedefs is computed once and cached (see the field).
+		bool IsUnavailableViaTypedef (EnumDecl decl)
 		{
 			var context = decl.DeclContext;
 			if (context is null)
 				return false;
 
-			foreach (var sibling in context.Decls) {
-				if (sibling is not TypedefDecl typedef)
-					continue;
-				if (typedef.Name != decl.Name)
-					continue;
-				if (typedef.UnderlyingType.UnqualifiedDesugaredType is not EnumType)
-					continue;
-				if (!typedef.IsAvailable ())
-					return true;
+			if (!unavailable_enum_typedefs.TryGetValue (context, out var names)) {
+				names = new HashSet<string> (StringComparer.Ordinal);
+				foreach (var sibling in context.Decls) {
+					if (sibling is not TypedefDecl typedef)
+						continue;
+					if (typedef.UnderlyingType.UnqualifiedDesugaredType is not EnumType)
+						continue;
+					if (!typedef.IsAvailable ())
+						names.Add (typedef.Name);
+				}
+				unavailable_enum_typedefs [context] = names;
 			}
-			return false;
+
+			return decl.Name is string name && names.Contains (name);
 		}
 
 		static bool IsErrorEnum (string typeName)

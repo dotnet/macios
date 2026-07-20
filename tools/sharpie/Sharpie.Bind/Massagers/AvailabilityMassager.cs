@@ -44,9 +44,12 @@ public sealed class AvailabilityMassager : Massager<AvailabilityMassager> {
 		// For enums, the availability attributes may be attached to the typedef that names
 		// the enum (e.g. `typedef NS_ENUM(NSInteger, Foo) { ... } API_UNAVAILABLE(maccatalyst);`)
 		// rather than to the enum declaration itself. BindingGenerator.VisitTypedefDecl links
-		// that typedef to the enum, so include its attributes here as well.
+		// such typedefs to the enum, so include the attributes of the typedef that gives the
+		// enum its name here as well. An enum can be linked to more than one typedef (e.g. in
+		// typedef chains), so match by name to pick the one that actually names this enum and
+		// avoid applying availability from an unrelated typedef.
 		IEnumerable<Attr> attrs = decl.Attrs;
-		var typedef = decl.GetAnnotations<TypedefDecl> ().FirstOrDefault ();
+		var typedef = decl.GetAnnotations<TypedefDecl> ().FirstOrDefault (t => t is not null && t.Name == entity.Name);
 		if (typedef is not null)
 			attrs = attrs.Concat (typedef.Attrs);
 

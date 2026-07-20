@@ -35,7 +35,12 @@ namespace BundledResources {
 				.Where (r => !r.Contains ("shared-dotnet.plist"))
 				.ToArray ();
 
-#if __MACOS__ || __MACCATALYST__
+#if HOTRELOAD_COMPATIBLE_BUILD
+			// In a hot-reload-compatible build, resource stripping is skipped for reloadable (user)
+			// assemblies (stripping would re-serialize the assembly and break Hot Reload), so the
+			// bundled resources remain embedded in the assembly.
+			var hasResources = true;
+#elif __MACOS__ || __MACCATALYST__
 			var hasResources = false;
 #else
 			var hasResources = Runtime.Arch != Arch.DEVICE;

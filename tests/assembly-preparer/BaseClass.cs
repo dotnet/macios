@@ -44,7 +44,7 @@ public abstract class BaseClass {
 	// returns true if the test assembly was modified
 	public bool AssertPrepareCode (ApplePlatform platform, bool isCoreCLR, Action<AssemblyPreparer>? configure, string code, out string outputPath, string? extraConfig = null)
 	{
-		using var preparer = CreatePreparer (platform, isCoreCLR, configure, code, out var testInfo);
+		using var preparer = CreatePreparer (platform, isCoreCLR, configure, code, out var testInfo, extraConfig: extraConfig ?? "");
 		AssertPrepare (preparer);
 
 		outputPath = testInfo.OutputPath;

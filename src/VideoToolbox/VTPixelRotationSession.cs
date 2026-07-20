@@ -88,7 +88,10 @@ namespace VideoToolbox {
 			if (options is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (options));
 
-			return VTSessionSetProperties (Handle, options.Dictionary.Handle);
+			var dictionary = options.Dictionary;
+			var rv = VTSessionSetProperties (Handle, dictionary.Handle);
+			GC.KeepAlive (dictionary);
+			return rv;
 		}
 	}
 }

@@ -548,9 +548,6 @@ namespace Xamarin.Linker {
 					modified |= ProcessCalls (data, method, ins, out var instructionsAddedOrRemoved);
 					i += instructionsAddedOrRemoved;
 					break;
-				case Code.Ldsfld:
-					modified |= ProcessLoadStaticField (data, method, ins);
-					break;
 				}
 			}
 
@@ -582,19 +579,6 @@ namespace Xamarin.Linker {
 				return ProcessBlockLiteralConstructor (data, caller, ins, out instructionsAddedOrRemoved);
 			}
 
-			return modified;
-		}
-
-		static bool ProcessLoadStaticField (OptimizeGeneratedCodeData data, MethodDefinition caller, Instruction ins)
-		{
-			var modified = false;
-			var fr = ins.Operand as FieldReference;
-			switch (fr?.Name) {
-			case "Arch":
-				// https://app.asana.com/0/77259014252/77812690163
-				modified |= ProcessRuntimeArch (data, caller, ins);
-				break;
-			}
 			return modified;
 		}
 
@@ -953,29 +937,6 @@ namespace Xamarin.Linker {
 			return ins;
 		}
 
-		static bool ProcessRuntimeArch (OptimizeGeneratedCodeData data, MethodDefinition caller, Instruction ins)
-		{
-			const string operation = "inline Runtime.Arch";
-
-			if (data.Optimizations.InlineRuntimeArch != true)
-				return false;
-
-			// Verify we're checking the right Arch field
-			var fr = ins.Operand as FieldReference;
-			if (fr is null || !fr.DeclaringType.Is (Namespaces.ObjCRuntime, "Runtime"))
-				return false;
-
-			// Verify a few assumptions before doing anything
-			if (!ValidateInstruction (data.App, caller, ins, operation, Code.Ldsfld))
-				return false;
-
-			// We're fine, inline the Runtime.Arch condition
-			// The enum values are Runtime.DEVICE = 0 and Runtime.SIMULATOR = 1,
-			ins.OpCode = data.Device ? OpCodes.Ldc_I4_0 : OpCodes.Ldc_I4_1;
-			ins.Operand = null;
-			return true;
-		}
-
 		// Returns the type of the value pushed on the stack by the given instruction.
 		// Returns null for unknown instructions, or for instructions that don't push anything on the stack.
 		static TypeReference? GetPushedType (MethodDefinition method, Instruction ins)
@@ -1168,7 +1129,6 @@ namespace Xamarin.Linker {
 	public class OptimizeGeneratedCodeData {
 		public required Xamarin.Tuner.DerivedLinkContext LinkContext;
 		public required Optimizations Optimizations;
-		public required bool Device;
 
 		public MethodDefinition? SetupBlockImplDefinition;
 		public MethodDefinition? BlockCtorDefinition;

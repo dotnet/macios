@@ -143,37 +143,6 @@ never subclassed).
 The default behavior can be overridden by passing
 `--optimize=[+|-]inline-isdirectbinding` to mtouch/mmp.
 
-## Inline Runtime.Arch
-
-This optimization will change the following type of code:
-
-```csharp
-if (Runtime.Arch == Arch.DEVICE) {
-    Console.WriteLine ("Running on device");
-} else {
-    Console.WriteLine ("Running in the simulator");
-}
-```
-
-into the following (when building for device):
-
-```csharp
-if (Arch.DEVICE == Arch.DEVICE) {
-    Console.WriteLine ("Running on device");
-} else {
-    Console.WriteLine ("Running in the simulator");
-}
-```
-
-This optimization requires the linker to be enabled, and is only applied to
-methods with the `[BindingImpl (BindingImplOptions.Optimizable)]` attribute.
-
-It is always enabled by default for Xamarin.iOS (it's not available for
-Xamarin.Mac).
-
-The default behavior can be overridden by passing
-`--optimize=[+|-]inline-runtime-arch` to mtouch.
-
 ## Dead code elimination
 
 This optimization will change the following type of code:

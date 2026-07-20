@@ -28,7 +28,6 @@ namespace Xamarin.Linker.Steps {
 				data = new OptimizeGeneratedCodeData {
 					LinkContext = DerivedLinkContext,
 					Optimizations = App.Optimizations,
-					Device = App.IsDeviceBuild,
 				};
 			}
 			return OptimizeGeneratedCode.OptimizeMethod (data, method);

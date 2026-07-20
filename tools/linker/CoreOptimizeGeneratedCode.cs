@@ -33,7 +33,6 @@ namespace Xamarin.Linker {
 				data = new OptimizeGeneratedCodeData {
 					LinkContext = LinkContext,
 					Optimizations = LinkContext.App.Optimizations,
-					Device = LinkContext.App.IsDeviceBuild,
 				};
 			}
 			OptimizeGeneratedCode.OptimizeMethod (data, method);

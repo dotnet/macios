@@ -8,8 +8,6 @@
 //  Miguel de Icaza
 //
 
-using System.ComponentModel;
-
 namespace UIKit {
 	// NSInteger -> UIImagePickerController.h
 	/// <summary>An enumeration of values used to specify video quality.</summary>
@@ -4688,16 +4686,8 @@ namespace UIKit {
 		Ended,
 	}
 
-#if XAMCORE_5_0
-	[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
-#else
 	[TV (17, 0), iOS (15, 0), MacCatalyst (15, 0)]
-#endif
 	[Native]
-#if TVOS && !XAMCORE_5_0
-	[Obsolete ("Not available on this platform.")]
-	[EditorBrowsable (EditorBrowsableState.Never)]
-#endif
 	public enum UIBehavioralStyle : ulong {
 		Automatic = 0,
 		Pad,

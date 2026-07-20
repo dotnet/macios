@@ -9,8 +9,6 @@
 
 #nullable enable
 
-using System.ComponentModel;
-
 namespace CoreSpotlight {
 	// NSInteger -> CNContact.h
 	/// <summary>Enumerates possible errors associated with using Core Spotlight and searching.</summary>
@@ -68,16 +66,8 @@ namespace CoreSpotlight {
 		CompleteUntilFirstUserAuthentication,
 	}
 
-#if XAMCORE_5_0
-	[NoTV, Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-#else
 	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-#endif
 	[Native]
-#if TVOS && !XAMCORE_5_0
-	[Obsolete ("Not available on this platform.")]
-	[EditorBrowsable (EditorBrowsableState.Never)]
-#endif
 	public enum CSUserInteraction : long {
 		Select,
 		Default = Select,

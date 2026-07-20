@@ -155,16 +155,8 @@ namespace AuthenticationServices {
 		SetupAssistant = 1 << 6,
 	}
 
-#if XAMCORE_5_0
-	[NoTV, iOS (17, 0), MacCatalyst (16, 4), Mac (13, 3)]
-#else
 	[TV (17, 0), iOS (17, 0), MacCatalyst (16, 4), Mac (13, 3)]
-#endif
 	[Native]
-#if TVOS && !XAMCORE_5_0
-	[Obsolete ("Not available on this platform.")]
-	[EditorBrowsable (EditorBrowsableState.Never)]
-#endif
 	public enum ASAuthorizationWebBrowserPublicKeyCredentialManagerAuthorizationState : long {
 		Authorized,
 		Denied,
@@ -737,32 +729,16 @@ namespace AuthenticationServices {
 		Write,
 	}
 
-#if XAMCORE_5_0
-	[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
-#else
 	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
-#endif
 	[Native]
-#if TVOS && !XAMCORE_5_0
-	[Obsolete ("Not available on this platform.")]
-	[EditorBrowsable (EditorBrowsableState.Never)]
-#endif
 	public enum ASPublicKeyCredentialClientDataCrossOriginValue : long {
 		NotSet,
 		CrossOrigin,
 		SameOriginWithAncestors,
 	}
 
-#if XAMCORE_5_0
-	[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
-#else
 	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
-#endif
 	[Native]
-#if TVOS && !XAMCORE_5_0
-	[Obsolete ("Not available on this platform.")]
-	[EditorBrowsable (EditorBrowsableState.Never)]
-#endif
 	public enum ASAuthorizationPublicKeyCredentialAttachment : long {
 		Platform,
 		CrossPlatform,
@@ -1903,9 +1879,7 @@ namespace AuthenticationServices {
 
 		[iOS (17, 0), NoTV, Mac (14, 0), MacCatalyst (17, 0)]
 		[Export ("attachment")]
-#pragma warning disable 618 // ASAuthorizationPublicKeyCredentialAttachment is obsolete on some platforms
 		ASAuthorizationPublicKeyCredentialAttachment Attachment { get; }
-#pragma warning restore 618
 
 		[Obsolete ("Use 'LargeBlob2' instead, this property has an incorrect property type..")]
 		[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
@@ -1983,9 +1957,7 @@ namespace AuthenticationServices {
 
 		[iOS (17, 0), NoTV, Mac (14, 0), MacCatalyst (17, 0)]
 		[Export ("attachment")]
-#pragma warning disable 618 // ASAuthorizationPublicKeyCredentialAttachment is obsolete on some platforms
 		ASAuthorizationPublicKeyCredentialAttachment Attachment { get; }
-#pragma warning restore 618
 
 		[NullAllowed]
 		[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
@@ -2486,18 +2458,14 @@ namespace AuthenticationServices {
 
 		[Async]
 		[Export ("requestAuthorizationForPublicKeyCredentials:")]
-#pragma warning disable 618 // ASAuthorizationWebBrowserPublicKeyCredentialManagerAuthorizationState is obsolete on some platforms
 		void RequestAuthorization (Action<ASAuthorizationWebBrowserPublicKeyCredentialManagerAuthorizationState> completionHandler);
-#pragma warning restore 618
 
 		[Async]
 		[Export ("platformCredentialsForRelyingParty:completionHandler:")]
 		void GetPlatformCredentials (string relyingParty, Action<ASAuthorizationWebBrowserPlatformPublicKeyCredential []> completionHandler);
 
 		[Export ("authorizationStateForPlatformCredentials")]
-#pragma warning disable 618 // ASAuthorizationWebBrowserPublicKeyCredentialManagerAuthorizationState is obsolete on some platforms
 		ASAuthorizationWebBrowserPublicKeyCredentialManagerAuthorizationState AuthorizationStateForPlatformCredentials { get; }
-#pragma warning restore 618
 	}
 
 	delegate void ASSettingsHelperRequestToTurnOnCredentialProviderExtensionCallback (bool appWasEnabledForAutofill);
@@ -2794,9 +2762,7 @@ namespace AuthenticationServices {
 		string TopOrigin { get; set; }
 
 		[Export ("crossOrigin", ArgumentSemantic.Assign)]
-#pragma warning disable 618 // ASPublicKeyCredentialClientDataCrossOriginValue is obsolete on some platforms
 		ASPublicKeyCredentialClientDataCrossOriginValue CrossOrigin { get; set; }
-#pragma warning restore 618
 	}
 
 	[NoTV, NoiOS, NoMacCatalyst, Mac (14, 0)]

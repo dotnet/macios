@@ -38,48 +38,24 @@ namespace NearbyInteraction {
 		ActiveExtendedDistanceSessionsLimitExceeded = -5880,
 	}
 
-#if XAMCORE_5_0
-	[NoTV, NoMac, iOS (14, 0)]
-#else
 	[NoTV, Mac (13, 0), iOS (14, 0)]
-#endif
 	[MacCatalyst (14, 0)]
 	[Native]
-#if __MACOS__ && !XAMCORE_5_0
-	[Obsolete ("Not available on this platform.")]
-	[EditorBrowsable (EditorBrowsableState.Never)]
-#endif
 	public enum NINearbyObjectRemovalReason : long {
 		Timeout,
 		PeerEnded,
 	}
 
-#if XAMCORE_5_0
-	[iOS (16, 0), NoMac, NoTV, MacCatalyst (16, 0)]
-#else
 	[iOS (16, 0), Mac (13, 0), NoTV, MacCatalyst (16, 0)]
-#endif
 	[Native]
-#if __MACOS__ && !XAMCORE_5_0
-	[Obsolete ("Not available on this platform.")]
-	[EditorBrowsable (EditorBrowsableState.Never)]
-#endif
 	public enum NIAlgorithmConvergenceStatus : long {
 		Unknown,
 		NotConverged,
 		Converged,
 	}
 
-#if XAMCORE_5_0
-	[iOS (16, 0), NoMac, NoTV, MacCatalyst (16, 0)]
-#else
 	[iOS (16, 0), Mac (13, 0), NoTV, MacCatalyst (16, 0)]
-#endif
 	[Native]
-#if __MACOS__ && !XAMCORE_5_0
-	[Obsolete ("Not available on this platform.")]
-	[EditorBrowsable (EditorBrowsableState.Never)]
-#endif
 	public enum NINearbyObjectVerticalDirectionEstimate : long {
 		Unknown = 0,
 		Same = 1,

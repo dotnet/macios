@@ -12,7 +12,6 @@
 using CloudKit;
 using CoreGraphics;
 using CoreFoundation;
-using System.ComponentModel;
 #if !MONOMAC
 using UIKit;
 #endif
@@ -2067,15 +2066,7 @@ namespace CoreLocation {
 	}
 
 	[Native]
-#if XAMCORE_5_0
-	[TV (18, 0), NoMac, iOS (18, 0), MacCatalyst (18, 0)]
-#else
 	[TV (18, 0), Mac (26, 0), iOS (18, 0), MacCatalyst (18, 0)]
-#endif
-#if MONOMAC && !XAMCORE_5_0
-	[Obsolete ("Not available on this platform.")]
-	[EditorBrowsable (EditorBrowsableState.Never)]
-#endif
 	public enum CLServiceSessionAuthorizationRequirement : long {
 		None = 0,
 		WhenInUse = 1,
@@ -2118,7 +2109,6 @@ namespace CoreLocation {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CLServiceSession {
-#pragma warning disable 618 // CLServiceSessionAuthorizationRequirement is obsolete on some platforms
 		[Static]
 		[Export ("sessionRequiringAuthorization:")]
 		CLServiceSession CreateSession (CLServiceSessionAuthorizationRequirement authorizationRequirement);
@@ -2134,7 +2124,6 @@ namespace CoreLocation {
 		[Static]
 		[Export ("sessionRequiringAuthorization:fullAccuracyPurposeKey:queue:handler:")]
 		CLServiceSession CreateSession (CLServiceSessionAuthorizationRequirement authorizationRequirement, string fullAccuracyPurposeKey, DispatchQueue queue, CLServiceSessionCreateHandler handler);
-#pragma warning restore 618
 
 		[Export ("invalidate")]
 		void Invalidate ();

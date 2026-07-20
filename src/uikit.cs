@@ -4140,16 +4140,8 @@ namespace UIKit {
 		Right = 4,
 	}
 
-#if XAMCORE_5_0
-	[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
-#else
 	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
-#endif
 	[Native]
-#if TVOS && !XAMCORE_5_0
-	[Obsolete ("Not available on this platform.")]
-	[EditorBrowsable (EditorBrowsableState.Never)]
-#endif
 	public enum UIFindSessionSearchResultDisplayStyle : long {
 		CurrentAndTotal,
 		Total,
@@ -4256,16 +4248,8 @@ namespace UIKit {
 		Highlighted,
 	}
 
-#if XAMCORE_5_0
-	[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
-#else
 	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
-#endif
 	[Native]
-#if TVOS && !XAMCORE_5_0
-	[Obsolete ("Not available on this platform.")]
-	[EditorBrowsable (EditorBrowsableState.Never)]
-#endif
 	public enum UITextSearchMatchMethod : long {
 		Contains,
 		StartsWith,
@@ -12437,15 +12421,11 @@ namespace UIKit {
 
 		[NoTV, MacCatalyst (15, 0), iOS (15, 0)]
 		[Export ("behavioralStyle")]
-#pragma warning disable 618 // UIBehavioralStyle is obsolete on some platforms
 		UIBehavioralStyle BehavioralStyle { get; }
-#pragma warning restore 618
 
 		[NoTV, MacCatalyst (15, 0), iOS (15, 0)]
 		[Export ("preferredBehavioralStyle", ArgumentSemantic.Assign)]
-#pragma warning disable 618 // UIBehavioralStyle is obsolete on some platforms
 		UIBehavioralStyle PreferredBehavioralStyle { get; set; }
-#pragma warning restore 618
 
 		[TV (17, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("preferredMenuElementOrder", ArgumentSemantic.Assign)]
@@ -13750,9 +13730,7 @@ namespace UIKit {
 
 		[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("preferredBehavioralStyle", ArgumentSemantic.Assign)]
-#pragma warning disable 618 // UIBehavioralStyle is obsolete on some platforms
 		UIBehavioralStyle PreferredBehavioralStyle { get; set; }
-#pragma warning restore 618
 
 		[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("currentNSToolbarSection", ArgumentSemantic.Assign)]
@@ -13760,9 +13738,7 @@ namespace UIKit {
 
 		[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("behavioralStyle", ArgumentSemantic.Assign)]
-#pragma warning disable 618 // UIBehavioralStyle is obsolete on some platforms
 		UIBehavioralStyle BehavioralStyle { get; }
-#pragma warning restore 618
 	}
 
 	interface IUINavigationBarDelegate { }
@@ -17843,15 +17819,11 @@ namespace UIKit {
 
 		[NoTV, MacCatalyst (15, 0), iOS (15, 0)]
 		[Export ("behavioralStyle")]
-#pragma warning disable 618 // UIBehavioralStyle is obsolete on some platforms
 		UIBehavioralStyle BehavioralStyle { get; }
-#pragma warning restore 618
 
 		[NoTV, MacCatalyst (15, 0), iOS (15, 0)]
 		[Export ("preferredBehavioralStyle", ArgumentSemantic.Assign)]
-#pragma warning disable 618 // UIBehavioralStyle is obsolete on some platforms
 		UIBehavioralStyle PreferredBehavioralStyle { get; set; }
-#pragma warning restore 618
 
 		[NoTV, iOS (26, 0), MacCatalyst (26, 0)]
 		[NullAllowed]
@@ -35186,9 +35158,7 @@ namespace UIKit {
 	[BaseType (typeof (NSObject))]
 	interface UITextSearchOptions {
 		[Export ("wordMatchMethod")]
-#pragma warning disable 618 // UITextSearchMatchMethod is obsolete on some platforms
 		UITextSearchMatchMethod WordMatchMethod { get; }
-#pragma warning restore 618
 
 		[Export ("stringCompareOptions")]
 		NSStringCompareOptions StringCompareOptions { get; }
@@ -35390,9 +35360,7 @@ namespace UIKit {
 		nint HighlightedResultIndex { get; }
 
 		[Export ("searchResultDisplayStyle", ArgumentSemantic.Assign)]
-#pragma warning disable 618 // UIFindSessionSearchResultDisplayStyle is obsolete on some platforms
 		UIFindSessionSearchResultDisplayStyle SearchResultDisplayStyle { get; set; }
-#pragma warning restore 618
 
 		[Export ("performSearchWithQuery:options:")]
 		void PerformSearch (string query, [NullAllowed] UITextSearchOptions options);
@@ -35666,16 +35634,8 @@ namespace UIKit {
 		RequiresActivation = 1uL << 1,
 	}
 
-#if XAMCORE_5_0
-	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
-#else
 	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
-#endif
 	[Native]
-#if TVOS && !XAMCORE_5_0
-	[Obsolete ("Not available on this platform.")]
-	[EditorBrowsable (EditorBrowsableState.Never)]
-#endif
 	public enum UICornerCurve : long {
 		Automatic,
 		Circular,
@@ -35972,15 +35932,11 @@ namespace UIKit {
 
 		[Static]
 		[Export ("rectShapeWithCornerRadius:cornerCurve:")]
-#pragma warning disable 618 // UICornerCurve is obsolete on some platforms
 		UIShape CreateRectShape (nfloat cornerRadius, UICornerCurve cornerCurve);
-#pragma warning restore 618
 
 		[Static]
 		[Export ("rectShapeWithCornerRadius:cornerCurve:maskedCorners:")]
-#pragma warning disable 618 // UICornerCurve is obsolete on some platforms
 		UIShape CreateRectShape (nfloat cornerRadius, UICornerCurve cornerCurve, UIRectCorner maskedCorners);
-#pragma warning restore 618
 
 		[Static]
 		[Export ("fixedRectShapeWithRect:")]
@@ -35992,9 +35948,7 @@ namespace UIKit {
 
 		[Static]
 		[Export ("fixedRectShapeWithRect:cornerRadius:cornerCurve:maskedCorners:")]
-#pragma warning disable 618 // UICornerCurve is obsolete on some platforms
 		UIShape CreateFixedRectShape (CGRect rect, nfloat cornerRadius, UICornerCurve cornerCurve, UIRectCorner maskedCorners);
-#pragma warning restore 618
 
 		[Static]
 		[Export ("shapeWithBezierPath:")]

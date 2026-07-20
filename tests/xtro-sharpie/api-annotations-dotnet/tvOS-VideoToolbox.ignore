@@ -1,0 +1,6 @@
+# These enums are unavailable on tvOS natively (API_UNAVAILABLE on the typedef), but the managed enums are bound and used by bound API.
+!unknown-native-enum! VTSuperResolutionScalerConfigurationInputType bound
+!unknown-native-enum! VTSuperResolutionScalerConfigurationModelStatus bound
+!unknown-native-enum! VTSuperResolutionScalerConfigurationQualityPrioritization bound
+!unknown-native-enum! VTSuperResolutionScalerConfigurationRevision bound
+!unknown-native-enum! VTSuperResolutionScalerParametersSubmissionMode bound

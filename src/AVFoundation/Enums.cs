@@ -1835,20 +1835,10 @@ namespace AVFoundation {
 		Mpeg4CmafCompliant,
 	}
 
-#if XAMCORE_5_0
-	[NoTV]
-	[NoiOS]
-	[NoMacCatalyst]
-#else
 	[TV (15, 0)]
 	[iOS (15, 0)]
 	[MacCatalyst (15, 0)]
-#endif
 	[Native]
-#if !MONOMAC && !XAMCORE_5_0
-	[Obsolete ("Not available on this platform.")]
-	[EditorBrowsable (EditorBrowsableState.Never)]
-#endif
 	public enum AVAudioRoutingArbitrationCategory : long {
 		Playback = 0,
 		PlayAndRecord = 1,

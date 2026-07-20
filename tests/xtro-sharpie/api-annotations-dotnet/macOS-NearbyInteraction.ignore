@@ -1,0 +1,4 @@
+# These enums are unavailable on macOS natively (API_UNAVAILABLE on the typedef), but the managed enums are bound and used by bound API.
+!unknown-native-enum! NIAlgorithmConvergenceStatus bound
+!unknown-native-enum! NINearbyObjectRemovalReason bound
+!unknown-native-enum! NINearbyObjectVerticalDirectionEstimate bound

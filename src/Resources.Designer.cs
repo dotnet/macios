@@ -1212,5 +1212,14 @@ namespace bgen {
                 return ResourceManager.GetString("BI1126", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The [FactoryMethod] attribute on &apos;{0}.{1}&apos; can&apos;t specify a method name when applied to a method that isn&apos;t a constructor. Remove the method name from the [FactoryMethod] attribute; the name of the binding method is used instead..
+        /// </summary>
+        internal static string BI1127 {
+            get {
+                return ResourceManager.GetString("BI1127", resourceCulture);
+            }
+        }
     }
 }

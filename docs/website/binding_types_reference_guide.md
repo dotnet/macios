@@ -1394,8 +1394,11 @@ the binding tool will:
 
 1. Emit the binding method as an `internal` helper (prefixed with an
    underscore) that performs the `init` message send.
-2. Emit a `public static` factory method named after the binding method (or the
-   attribute's `MethodName`, if specified).
+2. Emit a `public static` factory method named after the binding method.
+
+When applied to a method that isn't a `Constructor`, the `[FactoryMethod]`
+attribute must not specify a method name (the binding method's name is used
+instead); doing so produces an error (`BI1127`).
 
 If the initializer's return value is nullable (annotated with
 `[return: NullAllowed]`), the factory method returns a nullable value and

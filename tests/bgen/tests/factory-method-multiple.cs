@@ -17,5 +17,11 @@ namespace FactoryMethodMultipleTest {
 		[FactoryMethod]
 		[return: NullAllowed]
 		NativeHandle CreateWithBar (nint bar);
+
+		// A non-failable initializer bound as a named factory method: the return value isn't
+		// nullable, so the factory method returns a non-nullable instance and doesn't nil-check.
+		[Export ("initWithBaz:")]
+		[FactoryMethod]
+		NativeHandle CreateWithBaz (nint baz);
 	}
 }

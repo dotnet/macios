@@ -4809,6 +4809,11 @@ public partial class Generator : IMemberGatherer {
 		if (!IsInitSelector (selector))
 			throw new BindingException (1126, true, mi.DeclaringType, mi.Name, selector);
 
+		// For a named factory method (not a constructor) the factory method name is the
+		// binding method's own name, so specifying an explicit name is confusing/redundant.
+		if (!minfo.is_ctor && AttributeManager.GetCustomAttribute<FactoryMethodAttribute> (mi)?.MethodName is not null)
+			throw new BindingException (1127, true, mi.DeclaringType, mi.Name);
+
 		// A failable initializer typically has an 'out NSError' parameter. If the binding
 		// author added one but didn't mark the return value as nullable, the factory method
 		// won't be able to return null on failure, which is almost certainly a mistake.

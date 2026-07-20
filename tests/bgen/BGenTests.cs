@@ -248,6 +248,14 @@ namespace GeneratorTests {
 			Assert.That (createWithBar.Parameters.Select (p => p.ParameterType.FullName), Is.EqualTo (new [] { "System.IntPtr" }), "CreateWithBar parameters");
 			Assert.That (FactoryMethodDisposesOnFailure (createWithBar), Is.True, "CreateWithBar handles nil");
 
+			// A non-failable initializer: non-nullable return, so no nil-check/Dispose.
+			var createWithBaz = widget.Methods.Single (m => m.Name == "CreateWithBaz");
+			Assert.That (createWithBaz.IsStatic, Is.True, "CreateWithBaz is static");
+			Assert.That (createWithBaz.IsPublic, Is.True, "CreateWithBaz is public");
+			Assert.That (createWithBaz.ReturnType.FullName, Is.EqualTo (type), "CreateWithBaz return type");
+			Assert.That (createWithBaz.Parameters.Select (p => p.ParameterType.FullName), Is.EqualTo (new [] { "System.IntPtr" }), "CreateWithBaz parameters");
+			Assert.That (FactoryMethodDisposesOnFailure (createWithBaz), Is.False, "CreateWithBaz doesn't handle nil");
+
 			// The backing 'init' message-send helpers are generated as internal instance
 			// methods (prefixed with an underscore), so the public API only exposes the
 			// static factory methods.

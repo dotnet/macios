@@ -348,6 +348,15 @@ with `init` followed by an uppercase letter (e.g. `initWithName:`).
 To fix this error, either use an `init` selector, or remove the
 `[FactoryMethod]` attribute.
 
+### <a name='BI1127'/>BI1127: The [FactoryMethod] attribute on '\*' can't specify a method name when applied to a method that isn't a constructor. Remove the method name from the [FactoryMethod] attribute; the name of the binding method is used instead.
+
+When `[FactoryMethod]` is applied to a binding method that isn't a constructor,
+the generated factory method is named after the binding method, so specifying an
+explicit name in the attribute is confusing and redundant.
+
+To fix this error, remove the method name from the `[FactoryMethod]` attribute,
+and rename the binding method if a different factory method name is desired.
+
 <!-- 2xxx: reserved -->
 <!-- 3xxx: reserved -->
 <!-- 4xxx: reserved -->

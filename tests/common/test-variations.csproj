@@ -194,6 +194,7 @@
 
 	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|prepare-assemblies|'))">
 		<PrepareAssemblies>true</PrepareAssemblies>
+		<DefineConstants>$(DefineConstants);PREPARE_ASSEMBLIES</DefineConstants>
 		<_TestVariationApplied>true</_TestVariationApplied>
 	</PropertyGroup>
 

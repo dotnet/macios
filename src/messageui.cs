@@ -80,7 +80,6 @@ namespace MessageUI {
 		/// <param name="delegate">The object that receives the composed draft.</param>
 		/// <summary>Creates a compose assistant with the specified delegate.</summary>
 		[Export ("initWithDelegate:")]
-		[DesignatedInitializer]
 		NativeHandle Constructor (IMFComposeAssistantViewControllerDelegate @delegate);
 	}
 

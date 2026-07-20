@@ -3628,6 +3628,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			OptionsFile="$(_CustomLinkerOptionsFile)"
 			OutputDirectory="$(_PostprocessedAssembliesDirectory)"
 			Postprocessing="true"
+			PreTrimAssemblies="@(ManagedAssemblyToLink)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 		>
 			<Output TaskParameter="OutputAssemblies" ItemName="_PostProcessedAssemblies" />

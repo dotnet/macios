@@ -274,7 +274,10 @@ namespace VideoToolbox {
 			if (options is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (options));
 
-			return VTSessionSetProperties (GetCheckedHandle (), options.Dictionary.Handle);
+			var dictionary = options.Dictionary;
+			var rv = VTSessionSetProperties (GetCheckedHandle (), dictionary.Handle);
+			GC.KeepAlive (dictionary);
+			return rv;
 		}
 
 		[SupportedOSPlatform ("macos")]

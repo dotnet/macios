@@ -59,7 +59,7 @@ namespace ObjCRuntime {
 			ResourcesPath = Path.Combine (basePath, "Resources");
 			FrameworksPath = Path.Combine (basePath, "Frameworks");
 
-			NSApplication.Initialize ();
+			NSApplication.InitializeApplication ();
 		}
 #endif // !COREBUILD
 	}

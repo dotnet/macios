@@ -51,7 +51,7 @@ namespace AppKit {
 		}
 #endif // !XAMCORE_5_0
 
-		static void Initialize ()
+		internal static void InitializeApplication ()
 		{
 			SynchronizationContext.SetSynchronizationContext (new AppKitSynchronizationContext ());
 		}

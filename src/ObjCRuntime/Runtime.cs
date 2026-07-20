@@ -362,14 +362,14 @@ namespace ObjCRuntime {
 				TypeMaps.Initialize ();
 #endif
 
-			NSObjectClass = NSObject.Initialize ();
+			NSObjectClass = NSObject.InitializeObject ();
 
 			if (DynamicRegistrationSupported) {
 				Registrar = new DynamicRegistrar ();
 				protocol_cache = new Dictionary<IntPtr, Dictionary<IntPtr, bool>> (IntPtrEqualityComparer);
 			}
 			RegisterDelegates (options);
-			Class.Initialize (options);
+			Class.InitializeClass (options);
 			InitializePlatform (options);
 
 			IsARM64CallingConvention = GetIsARM64CallingConvention (); // Can only be done after Runtime.Arch is set (i.e. InitializePlatform has been called).

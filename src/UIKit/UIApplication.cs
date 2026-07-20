@@ -70,7 +70,7 @@ namespace UIKit {
 
 		// called from NSExtension.Initialize (so other, future stuff, can be added if needed)
 		// NOTE: must be called from the main thread, e.g. for extensions
-		internal static void Initialize ()
+		internal static void InitializeApplication ()
 		{
 			SynchronizationContext.SetSynchronizationContext (new UIKitSynchronizationContext ());
 		}

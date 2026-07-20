@@ -45,7 +45,7 @@ namespace ObjCRuntime {
 
 		unsafe static void InitializePlatform (InitializationOptions* options)
 		{
-			UIApplication.Initialize ();
+			UIApplication.InitializeApplication ();
 		}
 
 #if !__MACCATALYST__

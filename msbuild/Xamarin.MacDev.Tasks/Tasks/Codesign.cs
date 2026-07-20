@@ -376,7 +376,7 @@ namespace Xamarin.MacDev.Tasks {
 				else
 					Log.LogError (MSBStrings.E0005, item.ItemSpec);
 				if (errors.Contains ("errSecInternalComponent"))
-					Log.LogError (MSBStrings.E7184);
+					Log.LogError (MSBStrings.E7184 /* Codesign failed with 'errSecInternalComponent'. This usually means the keychain is locked, which is common when building over SSH. Unlock the keychain first, for example by running 'security unlock-keychain ~/Library/Keychains/login.keychain-db'. */);
 			} else {
 				var stampFile = GetCodesignStampFile (item);
 				if (string.IsNullOrEmpty (stampFile)) {

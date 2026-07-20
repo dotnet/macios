@@ -1,4 +1,4 @@
-AppBundleSize: 5,836,410 bytes (5,699.6 KB = 5.6 MB)
+AppBundleSize: 5,866,762 bytes (5,729.3 KB = 5.6 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 Contents/Info.plist:
     1,069 bytes (1.0 KB = 0.0 MB)
@@ -11,9 +11,9 @@ Contents/MonoBundle/runtimeconfig.bin:
 Contents/MonoBundle/SizeTestApp.dll:
     7,680 bytes (7.5 KB = 0.0 MB)
 Contents/MonoBundle/System.Private.CoreLib.aotdata.arm64:
-    41,408 bytes (40.4 KB = 0.0 MB)
+    41,552 bytes (40.6 KB = 0.0 MB)
 Contents/MonoBundle/System.Private.CoreLib.dll:
-    1,035,264 bytes (1,011.0 KB = 1.0 MB)
+    1,065,472 bytes (1,040.5 KB = 1.0 MB)
 Contents/MonoBundle/System.Runtime.dll:
     5,120 bytes (5.0 KB = 0.0 MB)
 Contents/MonoBundle/System.Runtime.InteropServices.dll:

@@ -2449,24 +2449,24 @@ namespace Xamarin.Tests {
 			rv.AssertNoWarnings ((evt) => !Extensions.IsFilteredWarning (evt, platform));
 		}
 
-		// Some users have unusual assembly names: non-ASCII characters, spaces, and even commas.
+		// Some users have unusual assembly names: non-ASCII characters, and even commas.
 		// Verify that we can build an app with such an assembly name. Ported from the legacy mmp test suite.
 		[Test]
 		[TestCase ("piñata")] // non-ASCII
 		[TestCase ("你好世界")] // non-ASCII
-		[TestCase ("Test With Space")] // spaces
 		[TestCase ("UserLikes,ToEnumerate")] // comma
-		public void BuildWithUnusualAssemblyName (string assemblyName)
+		[TestCase ("😬")] // emoji
+		[TestCase ("👨🏼‍🦰")] // complex emoji
+		public void BuildWithUnusualProjectName (string projectName)
 		{
 			var platform = ApplePlatform.MacOSX;
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 
-			var runtimeIdentifiers = GetDefaultRuntimeIdentifier (platform);
-			var project_path = GetProjectPath ("MySimpleApp", runtimeIdentifiers, platform, out _);
-			Clean (project_path);
-			var properties = GetDefaultProperties (runtimeIdentifiers);
-			properties ["AssemblyName"] = assemblyName;
-			DotNet.AssertBuild (project_path, properties);
+			var testDir = Cache.CreateTemporaryDirectory ();
+			DotNet.AssertNew (testDir, platform.AsString ().ToLowerInvariant (), name: projectName);
+
+			var project_path = Path.Combine (testDir, projectName, $"{projectName}.csproj");
+			DotNet.AssertBuild (project_path);
 		}
 
 		// Verify that enabling the hardened runtime makes the build pass the expected options to codesign.

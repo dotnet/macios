@@ -85,6 +85,7 @@ partial class Frameworks {
 		"IOSurface",
 		"JavaScriptCore",
 		"LinkPresentation",
+		"LinkSecurity",
 		"LocalAuthentication",
 		"MapKit",
 		"MediaAccessibility",
@@ -232,6 +233,7 @@ partial class Frameworks {
 		"iTunesLibrary",
 		"JavaScriptCore",
 		"LinkPresentation",
+		"LinkSecurity",
 		"LocalAuthentication",
 		"LocalAuthenticationEmbeddedUI",
 		"MailKit",
@@ -353,6 +355,7 @@ partial class Frameworks {
 		"IOSurface",
 		"JavaScriptCore",
 		"LinkPresentation",
+		"LinkSecurity",
 		"MapKit",
 		"MediaAccessibility",
 		"MediaPlayer",
@@ -475,6 +478,7 @@ partial class Frameworks {
 		"IOSurface",
 		"JavaScriptCore",
 		"LinkPresentation",
+		"LinkSecurity",
 		"LocalAuthentication",
 		"MapKit",
 		"MediaAccessibility",
@@ -633,6 +637,7 @@ partial class Frameworks {
 	bool? _iTunesLibrary;
 	bool? _JavaScriptCore;
 	bool? _LinkPresentation;
+	bool? _LinkSecurity;
 	bool? _LocalAuthentication;
 	bool? _LocalAuthenticationEmbeddedUI;
 	bool? _MailKit;
@@ -811,6 +816,7 @@ partial class Frameworks {
 	public bool HaveiTunesLibrary { get { if (!_iTunesLibrary.HasValue) _iTunesLibrary = GetValue ("iTunesLibrary"); return _iTunesLibrary.Value; } }
 	public bool HaveJavaScriptCore { get { if (!_JavaScriptCore.HasValue) _JavaScriptCore = GetValue ("JavaScriptCore"); return _JavaScriptCore.Value; } }
 	public bool HaveLinkPresentation { get { if (!_LinkPresentation.HasValue) _LinkPresentation = GetValue ("LinkPresentation"); return _LinkPresentation.Value; } }
+	public bool HaveLinkSecurity { get { if (!_LinkSecurity.HasValue) _LinkSecurity = GetValue ("LinkSecurity"); return _LinkSecurity.Value; } }
 	public bool HaveLocalAuthentication { get { if (!_LocalAuthentication.HasValue) _LocalAuthentication = GetValue ("LocalAuthentication"); return _LocalAuthentication.Value; } }
 	public bool HaveLocalAuthenticationEmbeddedUI { get { if (!_LocalAuthenticationEmbeddedUI.HasValue) _LocalAuthenticationEmbeddedUI = GetValue ("LocalAuthenticationEmbeddedUI"); return _LocalAuthenticationEmbeddedUI.Value; } }
 	public bool HaveMailKit { get { if (!_MailKit.HasValue) _MailKit = GetValue ("MailKit"); return _MailKit.Value; } }

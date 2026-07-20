@@ -323,6 +323,7 @@ public class Frameworks : Dictionary<string, Framework> {
 
 					{ "AccessoryAccess", "AccessoryAccess", 27, 0 },
 					{ "EnhancedLinkSecurity", "EnhancedLinkSecurity", 27, 0 },
+					{ "LinkSecurity", "LinkSecurity", 27, 0 },
 					{ "StateReporting", "StateReporting", 27, 0 },
 				};
 			}
@@ -511,6 +512,7 @@ public class Frameworks : Dictionary<string, Framework> {
 
 					{ "AVSystemRouting", "AVSystemRouting", new Version (27, 0), NotAvailableInSimulator },
 					{ "EnhancedLinkSecurity", "EnhancedLinkSecurity", 27, 0 },
+					{ "LinkSecurity", "LinkSecurity", 27, 0 },
 					{ "StateReporting", "StateReporting", 27, 0 },
 					// the above MUST be kept in sync with simlauncher
 					// see tools/mtouch/Makefile
@@ -634,6 +636,7 @@ public class Frameworks : Dictionary<string, Framework> {
 					{ "AVRouting", "AVRouting", 26, 0 },
 
 					{ "EnhancedLinkSecurity", "EnhancedLinkSecurity", 27, 0 },
+					{ "LinkSecurity", "LinkSecurity", 27, 0 },
 					{ "StateReporting", "StateReporting", 27, 0 },
 				};
 			}

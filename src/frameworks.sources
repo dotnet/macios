@@ -2012,6 +2012,7 @@ COMMON_FRAMEWORKS =         \
 	EnhancedLinkSecurity    \
 	Foundation              \
 	GameKit                 \
+	LinkSecurity            \
 	MetalFX                 \
 	NaturalLanguage         \
 	Network                 \

@@ -360,6 +360,7 @@ class MyObjectErr : NSObject, IFoo1, IFoo2
 					new { Framework = "TouchController", Version = "26.0" },
 					new { Framework = "AVSystemRouting", Version = "27.0" },
 					new { Framework = "EnhancedLinkSecurity", Version = "27.0" },
+					new { Framework = "LinkSecurity", Version = "27.0" },
 				};
 				foreach (var framework in invalidFrameworks)
 					mtouch.AssertError (4134, $"Your application is using the '{framework.Framework}' framework, which isn't included in the iOS SDK you're using to build your app (this framework was introduced in iOS {framework.Version}, while you're building with the iOS {mtouch.Sdk} SDK.) Please select a newer SDK in your app's iOS Build options.");

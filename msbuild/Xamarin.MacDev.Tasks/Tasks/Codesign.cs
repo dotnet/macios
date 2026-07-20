@@ -375,6 +375,8 @@ namespace Xamarin.MacDev.Tasks {
 					Log.LogError (MSBStrings.E0004, item.ItemSpec, errors);
 				else
 					Log.LogError (MSBStrings.E0005, item.ItemSpec);
+				if (errors.Contains ("errSecInternalComponent"))
+					Log.LogError (MSBStrings.E7184);
 			} else {
 				var stampFile = GetCodesignStampFile (item);
 				if (string.IsNullOrEmpty (stampFile)) {

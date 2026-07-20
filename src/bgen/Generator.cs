@@ -1439,6 +1439,8 @@ public partial class Generator : IMemberGatherer {
 						continue;
 					} else if (attr is FactoryAttribute) {
 						continue;
+					} else if (attr is FactoryMethodAttribute) {
+						continue;
 					} else if (attr is AbstractAttribute) {
 						if (mi.DeclaringType == t)
 							need_abstract [t] = true;
@@ -2788,7 +2790,9 @@ public partial class Generator : IMemberGatherer {
 	{
 		var mi = minfo.Method!;
 		string name;
-		if (minfo.is_ctor) {
+		if (minfo.render_as_factory_method) {
+			name = minfo.factory_method_name!;
+		} else if (minfo.is_ctor) {
 			if (minfo.is_protocol_member) {
 				var bindAttribute = GetBindAttribute (mi);
 				name = bindAttribute?.Selector ?? "CreateInstance";
@@ -2815,6 +2819,11 @@ public partial class Generator : IMemberGatherer {
 
 		if (minfo.is_ctor && minfo.is_protocol_member) {
 			sb.Append ("T? ");
+		} else if (minfo.render_as_factory_method) {
+			sb.Append (Nomenclator.GetGeneratedTypeName (mi.DeclaringType!));
+			if (minfo.is_factory_method_nullable)
+				sb.Append ('?');
+			sb.Append (' ');
 		} else if (!minfo.is_ctor && !is_async) {
 			var prefix = "";
 			if (!BindThirdPartyLibrary) {
@@ -3165,7 +3174,7 @@ public partial class Generator : IMemberGatherer {
 				GetReturnsWrappers (mi, minfo, mi.DeclaringType, out cast_a, out cast_b, postproc);
 			else if (mi.Name == "Constructor") {
 				cast_a = "InitializeHandle (";
-				cast_b = ", \"" + selector + "\")";
+				cast_b = ", \"" + selector + "\"" + (minfo.is_factory_method && minfo.is_factory_method_nullable ? ", false" : "") + ")";
 			}
 
 			if (minfo.is_static)
@@ -4652,6 +4661,9 @@ public partial class Generator : IMemberGatherer {
 				return node;
 			});
 			WriteDocumentation (mi, transformNode: injectParamNode);
+		} else if (minfo.is_factory_method) {
+			// The xml documentation is written for the generated factory method instead
+			// of the (internal) backing constructor. See GenerateFactoryMethod.
 		} else {
 			WriteDocumentation (mi);
 		}
@@ -4688,6 +4700,11 @@ public partial class Generator : IMemberGatherer {
 		} else {
 			do_not_call_base = false;
 		}
+
+		// The constructor backing a factory method is hidden (internal); the public
+		// API is the generated static factory method instead.
+		if (minfo.is_factory_method)
+			mod = "internal";
 
 		print_generated_code (optimizable: IsOptimizable (minfo.mi));
 		print ("{0} {1}{2}{3}",
@@ -4750,6 +4767,9 @@ public partial class Generator : IMemberGatherer {
 			print ("}\n");
 		}
 
+		if (minfo.is_factory_method)
+			GenerateFactoryMethod (minfo);
+
 		if (minfo.generate_is_async_overload) {
 			// We do not want Async methods inside internal wrapper classes, they are useless
 			// internal sealed class FooWrapper : BaseWrapper, IMyFooDelegate
@@ -4765,6 +4785,63 @@ public partial class Generator : IMemberGatherer {
 				GenerateAsyncMethod (minfo, AsyncMethodKind.WithResultOutParameter);
 			}
 		}
+	}
+
+	// Generates a public static factory method for a constructor annotated with
+	// [FactoryMethod]. When the constructor's return value is nullable (i.e. the native
+	// initializer is failable), the factory method returns null if the initializer
+	// returned nil; otherwise it just returns the newly created instance.
+	void GenerateFactoryMethod (MemberInformation minfo)
+	{
+		var mi = minfo.Method!;
+		var typeName = Nomenclator.GetGeneratedTypeName (mi.DeclaringType!);
+
+		// A failable initializer typically has an 'out NSError' parameter. If the binding
+		// author added one but didn't mark the return value as nullable, the factory method
+		// won't be able to return null on failure, which is almost certainly a mistake.
+		if (!minfo.is_factory_method_nullable && HasOutNSErrorParameter (mi))
+			ErrorHelper.Warning (1125, mi.DeclaringType, mi.Name);
+
+		minfo.render_as_factory_method = true;
+
+		WriteDocumentation (mi);
+		PrintMethodAttributes (minfo);
+
+		print_generated_code (optimizable: IsOptimizable (mi));
+		print ("{0} {1}{2}",
+			   minfo.GetVisibility (),
+			   minfo.GetModifiers (),
+			   MakeSignature (minfo));
+		print ("{");
+		indent++;
+		if (minfo.is_factory_method_nullable) {
+			print ("var rv = new {0} ({1});", typeName, RenderArgs (mi.GetParameters ()));
+			print ("if (rv.Handle == global::ObjCRuntime.NativeHandle.Zero) {");
+			indent++;
+			print ("rv.Dispose ();");
+			print ("return null;");
+			indent--;
+			print ("}");
+			print ("return rv;");
+		} else {
+			print ("return new {0} ({1});", typeName, RenderArgs (mi.GetParameters ()));
+		}
+		indent--;
+		print ("}\n");
+
+		minfo.render_as_factory_method = false;
+	}
+
+	// Returns true if the method has an 'out'/'ref' NSError parameter.
+	static bool HasOutNSErrorParameter (MethodInfo mi)
+	{
+		foreach (var pi in mi.GetParameters ()) {
+			if (!pi.ParameterType.IsByRef)
+				continue;
+			if (pi.ParameterType.GetElementType ()?.Name == "NSError")
+				return true;
+		}
+		return false;
 	}
 
 	static PropertyInfo? GetProperty (MethodInfo method, bool getter = true, bool setter = true)

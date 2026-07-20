@@ -649,6 +649,43 @@ public class DesignatedInitializerAttribute : Attribute {
 }
 #endif // !XAMCORE_5_0
 
+/// <summary>Apply this attribute to a binding constructor to generate a static factory
+/// method (instead of a public constructor) from a failable Objective-C initializer.</summary>
+/// <remarks>
+///   <para>When this attribute is applied to a binding constructor, the generator will:</para>
+///   <list type="number">
+///     <item><description>Emit the constructor as <c>internal</c> (hiding it from the public API).</description></item>
+///     <item><description>Emit a <c>public static</c> factory method (named <see cref="MethodName" />) with the same parameters as the constructor.</description></item>
+///   </list>
+///   <para>If the constructor's return value is nullable (annotated with <c>[return: NullAllowed]</c>), the factory method returns a nullable value and returns <see langword="null" /> when the native initializer fails (returns nil). Otherwise the factory method returns a non-nullable value.</para>
+///   <example>
+///   <code language="csharp"><![CDATA[
+///   [Export ("initWithUUID:qualifierData:")]
+///   [FactoryMethod ("Create")]
+///   [return: NullAllowed]
+///   NativeHandle Constructor (NSUuid uuid, NSData qualifierData);
+///   ]]></code>
+///   </example>
+/// </remarks>
+[AttributeUsage (AttributeTargets.Method, AllowMultiple = false)]
+public class FactoryMethodAttribute : Attribute {
+	/// <summary>The name of the generated factory method. Defaults to <c>Create</c>.</summary>
+	public string MethodName { get; set; }
+
+	/// <summary>Create a new <see cref="FactoryMethodAttribute" /> whose factory method is named <c>Create</c>.</summary>
+	public FactoryMethodAttribute ()
+	{
+		MethodName = "Create";
+	}
+
+	/// <summary>Create a new <see cref="FactoryMethodAttribute" /> whose factory method has the specified name.</summary>
+	/// <param name="methodName">The name of the generated factory method.</param>
+	public FactoryMethodAttribute (string methodName)
+	{
+		MethodName = methodName;
+	}
+}
+
 //
 // Apple this attribute to ObjC types where the default `init` selector 
 // is decorated with `NS_DESIGNATED_INITIALIZER`

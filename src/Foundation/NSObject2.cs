@@ -820,8 +820,15 @@ namespace Foundation {
 			InitializeHandle (handle, initSelector, Class.ThrowOnInitFailure);
 		}
 
+		/// <summary>Initializes the <see cref="Handle" /> property with the result of a native initializer.</summary>
+		/// <param name="handle">The handle returned by the native initializer.</param>
+		/// <param name="initSelector">The selector of the native initializer that produced <paramref name="handle" />. Only used in the exception message when initialization fails.</param>
+		/// <param name="throwOnInitFailure">If <see langword="true" />, an exception is thrown when the native initializer failed (returned nil); if <see langword="false" />, the <see cref="Handle" /> property is set to the (possibly null) handle without throwing.</param>
+		/// <remarks>
+		///   <para>Pass <see langword="false" /> for <paramref name="throwOnInitFailure" /> to implement a factory method for a failable initializer: this makes it possible to detect a nil result (by checking the <see cref="Handle" /> property) and return <see langword="null" /> instead of throwing. This is what the generator does for constructors annotated with <c>[FactoryMethod]</c>.</para>
+		/// </remarks>
 		[EditorBrowsable (EditorBrowsableState.Never)]
-		internal void InitializeHandle (NativeHandle handle, string initSelector, bool throwOnInitFailure)
+		protected internal void InitializeHandle (NativeHandle handle, string initSelector, bool throwOnInitFailure)
 		{
 			if (this.handle == NativeHandle.Zero && throwOnInitFailure) {
 				if (ClassHandle == NativeHandle.Zero)

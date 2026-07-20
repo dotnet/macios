@@ -1364,6 +1364,61 @@ being bound.
 
 #### ExportAttribute.ArgumentSemantic
 
+<a name="FactoryMethodAttribute"></a>
+
+### FactoryMethodAttribute
+
+Apply this attribute to a binding constructor to generate a static factory
+method (instead of a public constructor) from a failable Objective-C
+initializer.
+
+This is useful when the native initializer can fail (return `nil`), because a
+C# constructor can't return `null`. Instead of throwing, the generated factory
+method can return `null` to signal failure.
+
+It's also useful when the managed signature between two constructors are
+identical; a factory method can be used to disambiguate.
+
+When this attribute is applied to a constructor, the binding tool will:
+
+1. Emit the constructor as `internal` (hiding it from the public API).
+2. Emit a `public static` factory method (named after the attribute's
+   `MethodName`, which defaults to `Create`) with the same parameters as the
+   constructor.
+
+If the constructor's return value is nullable (annotated with
+`[return: NullAllowed]`), the factory method returns a nullable value and
+returns `null` when the native initializer fails. Otherwise the factory method
+returns a non-nullable value.
+
+Syntax:
+
+```csharp
+[AttributeUsage (AttributeTargets.Method, AllowMultiple = false)]
+public class FactoryMethodAttribute : Attribute {
+    public FactoryMethodAttribute ();
+    public FactoryMethodAttribute (string methodName);
+    public string MethodName { get; set; }
+}
+```
+
+For example, the following binding:
+
+```csharp
+[Export ("initWithString:")]
+[FactoryMethod ("Create")]
+[return: NullAllowed]
+NativeHandle Constructor (string pattern);
+```
+
+generates a `public static MyType? Create (string pattern)` factory method that
+returns `null` when the native `initWithString:` initializer returns `nil`.
+
+> **Note:** If the constructor has an `out NSError` parameter but its return
+> value isn't nullable, the binding tool emits a warning (`BI1125`), because
+> such a factory method can't return `null` on failure. Add
+> `[return: NullAllowed]` to the constructor to fix this.
+
 <a name="FieldAttribute"></a>
 
 ### FieldAttribute

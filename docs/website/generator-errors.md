@@ -329,6 +329,15 @@ Historically it was used on property setters. However using the attribute on _ot
 
 To fix this warning use the `[NullAllowed]` attribute only on parameters, properties or return values.
 
+### <a name='BI1125'/>BI1125: The [FactoryMethod] constructor '\*' has an 'out NSError' parameter, but its return value is not nullable. Add [return: NullAllowed] to the constructor so the generated factory method can return null when the native initializer fails.
+
+A constructor annotated with `[FactoryMethod]` that has an `out NSError`
+parameter is a failable initializer: it can fail and return `nil`. The
+generated factory method can only return `null` on failure if its return value
+is nullable.
+
+To fix this warning, add `[return: NullAllowed]` to the constructor.
+
 <!-- 2xxx: reserved -->
 <!-- 3xxx: reserved -->
 <!-- 4xxx: reserved -->

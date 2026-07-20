@@ -156,6 +156,65 @@ namespace GeneratorTests {
 
 		[Test]
 		[TestCase (Profile.iOS)]
+		public void FactoryMethod (Profile profile)
+		{
+			var bgen = BuildFile (profile, "factory-method.cs");
+			bgen.AssertNoWarnings ();
+
+			const string type = "FactoryMethodTest.FactoryWidget";
+			var widget = bgen.ApiAssembly.MainModule.GetType (type);
+
+			// The factory methods are generated as public static methods returning the type.
+			var create = widget.Methods.Single (m => m.Name == "Create");
+			Assert.That (create.IsStatic, Is.True, "Create is static");
+			Assert.That (create.IsPublic, Is.True, "Create is public");
+			Assert.That (create.ReturnType.FullName, Is.EqualTo (type), "Create return type");
+			Assert.That (create.Parameters.Select (p => p.ParameterType.FullName), Is.EqualTo (new [] { "System.String" }), "Create parameters");
+			// A nullable factory method disposes and returns null when the initializer fails.
+			Assert.That (FactoryMethodDisposesOnFailure (create), Is.True, "Create handles nil");
+
+			// The factory method name can be customized via [FactoryMethod ("...")].
+			var createWithCount = widget.Methods.Single (m => m.Name == "CreateWithCount");
+			Assert.That (createWithCount.IsStatic, Is.True, "CreateWithCount is static");
+			Assert.That (createWithCount.IsPublic, Is.True, "CreateWithCount is public");
+			Assert.That (createWithCount.ReturnType.FullName, Is.EqualTo (type), "CreateWithCount return type");
+			Assert.That (createWithCount.Parameters.Select (p => p.ParameterType.FullName), Is.EqualTo (new [] { "System.String", "System.IntPtr" }), "CreateWithCount parameters");
+			Assert.That (FactoryMethodDisposesOnFailure (createWithCount), Is.True, "CreateWithCount handles nil");
+
+			// A non-nullable factory method (the initializer isn't failable) just returns
+			// the new instance without a nil check.
+			var createWithColor = widget.Methods.Single (m => m.Name == "CreateWithColor");
+			Assert.That (createWithColor.IsStatic, Is.True, "CreateWithColor is static");
+			Assert.That (createWithColor.IsPublic, Is.True, "CreateWithColor is public");
+			Assert.That (createWithColor.ReturnType.FullName, Is.EqualTo (type), "CreateWithColor return type");
+			Assert.That (FactoryMethodDisposesOnFailure (createWithColor), Is.False, "CreateWithColor doesn't handle nil");
+
+			// The backing constructors are generated as internal (not public), so the
+			// public API only exposes the factory methods.
+			var factoryCtors = widget.Methods.Where (m => m.IsConstructor && m.Parameters.Count > 0 && m.Parameters [0].ParameterType.FullName == "System.String").ToArray ();
+			Assert.That (factoryCtors, Is.Not.Empty, "backing constructors exist");
+			foreach (var ctor in factoryCtors)
+				Assert.That (ctor.IsAssembly, Is.True, $"{ctor.FullName} should be internal");
+		}
+
+		// A nullable factory method disposes the instance and returns null when the native
+		// initializer fails; detect this by looking for a Dispose call in the method body.
+		static bool FactoryMethodDisposesOnFailure (Mono.Cecil.MethodDefinition method)
+		{
+			return method.Body.Instructions.Any (i =>
+				i.Operand is Mono.Cecil.MethodReference mr && mr.Name == "Dispose");
+		}
+
+		[Test]
+		[TestCase (Profile.iOS)]
+		public void FactoryMethodOutErrorWithoutNullableReturn (Profile profile)
+		{
+			var bgen = BuildFile (profile, false, "factory-method-error.cs");
+			bgen.AssertWarning (1125, "The [FactoryMethod] constructor 'FactoryMethodErrorTest.FailableWidget.Constructor' has an 'out NSError' parameter, but its return value is not nullable. Add [return: NullAllowed] to the constructor so the generated factory method can return null when the native initializer fails.");
+		}
+
+		[Test]
+		[TestCase (Profile.iOS)]
 		public void NSCopyingNullability (Profile profile)
 		{
 			var bgen = BuildFile (profile, "nscopying-nullability.cs");

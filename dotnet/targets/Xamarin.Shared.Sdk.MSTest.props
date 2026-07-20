@@ -4,7 +4,7 @@
 	<!-- Default properties for MSTest runner projects on Apple platforms -->
 	<PropertyGroup>
 		<!-- MSTest runner projects need the interpreter because test platform assemblies fail AOT compilation -->
-		<MtouchInterpreter Condition="'$(MtouchInterpreter)' == ''">all</MtouchInterpreter>
+		<MtouchInterpreter Condition="'$(MtouchInterpreter)' == '' And '$(UseMonoRuntime)' == 'true'">all</MtouchInterpreter>
 		<!-- MSTest adapter has duplicate publish output files, suppress the error -->
 		<ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
 		<!-- Apple platforms provide their own entry point (UIApplication.Main, NSApplication.Main, etc.) -->

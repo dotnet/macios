@@ -187,7 +187,7 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 		<AppBundleExtension Condition="'$(AppBundleExtension)' == ''">.app</AppBundleExtension>
 
 		<!-- Accept 'UseInterpreter' as an alternative for 'MtouchInterpreter', so that we have the same variable name as Android -->
-		<MtouchInterpreter Condition="'$(MtouchInterpreter)' == '' And '$(UseInterpreter)' == 'True'">all</MtouchInterpreter>
+		<MtouchInterpreter Condition="'$(MtouchInterpreter)' == '' And '$(UseInterpreter)' == 'True' And '$(UseMonoRuntime)' == 'true'">all</MtouchInterpreter>
 
 		<_AppBundleName Condition="'$(_AppBundleName)' == '' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), 10.0)) And '$(SdkIsDesktop)' == 'true'">$(ApplicationTitle)</_AppBundleName>
 		<_AppBundleName Condition="'$(_AppBundleName)' == ''">$(AssemblyName)</_AppBundleName>

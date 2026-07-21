@@ -19,8 +19,8 @@ namespace MonoTouchFixtures.MetalPerformanceShaders {
 			TestRuntime.AssertXcodeVersion (27, 0);
 
 			Assert.That (Marshal.SizeOf<MPSFunctionsAxisAlignedBoundingBox> (), Is.EqualTo (32), "Size");
-			Assert.That (Marshal.OffsetOf<MPSFunctionsAxisAlignedBoundingBox> (nameof (MPSFunctionsAxisAlignedBoundingBox.Max)), Is.EqualTo (IntPtr.Zero), "Max");
-			Assert.That (Marshal.OffsetOf<MPSFunctionsAxisAlignedBoundingBox> (nameof (MPSFunctionsAxisAlignedBoundingBox.Min)), Is.EqualTo ((IntPtr) 16), "Min");
+			Assert.That (Marshal.OffsetOf<MPSFunctionsAxisAlignedBoundingBox> ("max"), Is.EqualTo (IntPtr.Zero), "Max");
+			Assert.That (Marshal.OffsetOf<MPSFunctionsAxisAlignedBoundingBox> ("min"), Is.EqualTo ((IntPtr) 16), "Min");
 		}
 
 		[Test]

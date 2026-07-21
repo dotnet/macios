@@ -306,10 +306,15 @@ namespace MetalPerformanceShaders {
 	[SupportedOSPlatform ("maccatalyst27.0")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MPSFunctionsAxisAlignedBoundingBox {
+		Vector4 max;
+		Vector4 min;
+
+#if !COREBUILD
 		/// <summary>The maximum value for each color channel.</summary>
-		public Vector4 Max;
+		public Vector4 Max { get => max; set => max = value; }
 		/// <summary>The minimum value for each color channel.</summary>
-		public Vector4 Min;
+		public Vector4 Min { get => min; set => min = value; }
+#endif
 	}
 
 	[SupportedOSPlatform ("ios")]

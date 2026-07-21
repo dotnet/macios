@@ -736,6 +736,21 @@ If artwork should be included in the IPA.
 
 Only applicable to iOS and tvOS projects.
 
+## IpaIncludeSymbols
+
+If the app's symbols should be included in the IPA, in the `Symbols`
+directory Apple expects. This makes App Store Connect (and Xcode's Organizer)
+symbolicate crash reports for the app automatically.
+
+The symbols are the Apple `*.symbols` files generated from the build's dSYM
+directories using `xcrun symbols` (the dSYM directories themselves are not
+embedded in the IPA).
+
+The default value is `true`. Set it to `false` to opt out. This property has
+no effect unless an IPA is being created (see [BuildIpa](#buildipa)).
+
+Only applicable to iOS and tvOS projects.
+
 ## IpaPackageName
 
 Specifies the name of the resulting .ipa file (without the path) when creating

@@ -123,8 +123,15 @@ namespace CoreText {
 		///         <remarks>
 		///         </remarks>
 		public CTFontCollection (CTFontCollectionOptions? options)
-			: base (CTFontCollectionCreateFromAvailableFonts (options.GetHandle ()), true, true)
+			: base (CreateFromAvailableFonts (options), true, true)
 		{
+		}
+
+		static IntPtr CreateFromAvailableFonts (CTFontCollectionOptions? options)
+		{
+			var rv = CTFontCollectionCreateFromAvailableFonts (options.GetHandle ());
+			GC.KeepAlive (options);
+			return rv;
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]
@@ -201,6 +208,7 @@ namespace CoreText {
 		public CTFontDescriptor [] GetMatchingFontDescriptors (CTFontCollectionOptions? options)
 		{
 			var cfArrayRef = CTFontCollectionCreateMatchingFontDescriptorsWithOptions (Handle, options.GetHandle ());
+			GC.KeepAlive (options);
 			if (cfArrayRef == IntPtr.Zero)
 				return Array.Empty<CTFontDescriptor> ();
 			return CFArray.ArrayFromHandleFunc (cfArrayRef, fd => new CTFontDescriptor (fd, false), true)!;

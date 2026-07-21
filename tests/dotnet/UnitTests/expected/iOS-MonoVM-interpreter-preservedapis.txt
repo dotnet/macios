@@ -794,14 +794,6 @@ Microsoft.iOS.dll:ObjCRuntime.Selector.GetName(System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Selector.sel_getName(System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Selector.sel_isMapped(System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Selector.sel_registerName(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Stret
-Microsoft.iOS.dll:ObjCRuntime.Stret.AlignAndAdd(System.Type, System.Int32, System.Int32, System.Int32&)
-Microsoft.iOS.dll:ObjCRuntime.Stret.GetTypeName(System.Type)
-Microsoft.iOS.dll:ObjCRuntime.Stret.GetValueTypeSize(System.Type, System.Collections.Generic.List`1<System.Type>, System.Object)
-Microsoft.iOS.dll:ObjCRuntime.Stret.GetValueTypeSize(System.Type, System.Type, System.Collections.Generic.List`1<System.Type>, System.Int32&, System.Int32&, System.Object)
-Microsoft.iOS.dll:ObjCRuntime.Stret.IsBuiltInType(System.Type, out System.Int32&)
-Microsoft.iOS.dll:ObjCRuntime.Stret.IsBuiltInType(System.Type)
-Microsoft.iOS.dll:ObjCRuntime.Stret.X86_64NeedStret(System.Type, System.Object)
 Microsoft.iOS.dll:ObjCRuntime.StringEqualityComparer
 Microsoft.iOS.dll:ObjCRuntime.StringEqualityComparer ObjCRuntime.RegistrarHelper::StringEqualityComparer
 Microsoft.iOS.dll:ObjCRuntime.StringEqualityComparer..ctor()
@@ -6529,7 +6521,6 @@ System.Private.CoreLib.dll:System.Int32 System.Runtime.InteropServices.CallingCo
 System.Private.CoreLib.dll:System.Int32 System.Runtime.InteropServices.CharSet::value__
 System.Private.CoreLib.dll:System.Int32 System.Runtime.InteropServices.DllImportSearchPath::value__
 System.Private.CoreLib.dll:System.Int32 System.Runtime.InteropServices.FieldOffsetAttribute::<Value>k__BackingField
-System.Private.CoreLib.dll:System.Int32 System.Runtime.InteropServices.FieldOffsetAttribute::Value()
 System.Private.CoreLib.dll:System.Int32 System.Runtime.InteropServices.GCHandleType::value__
 System.Private.CoreLib.dll:System.Int32 System.Runtime.InteropServices.Marshal::SystemDefaultCharSize
 System.Private.CoreLib.dll:System.Int32 System.Runtime.InteropServices.Marshal::SystemMaxDBCSCharSize
@@ -10794,7 +10785,6 @@ System.Private.CoreLib.dll:System.Runtime.InteropServices.DllImportSearchPath Sy
 System.Private.CoreLib.dll:System.Runtime.InteropServices.DllImportSearchPath System.Runtime.InteropServices.DllImportSearchPath::UserDirectories
 System.Private.CoreLib.dll:System.Runtime.InteropServices.FieldOffsetAttribute
 System.Private.CoreLib.dll:System.Runtime.InteropServices.FieldOffsetAttribute..ctor(System.Int32)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.FieldOffsetAttribute.get_Value()
 System.Private.CoreLib.dll:System.Runtime.InteropServices.GCHandle
 System.Private.CoreLib.dll:System.Runtime.InteropServices.GCHandle..ctor(System.IntPtr)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.GCHandle..ctor(System.Object, System.Runtime.InteropServices.GCHandleType)

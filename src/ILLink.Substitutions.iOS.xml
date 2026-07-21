@@ -10,6 +10,8 @@
       <method signature="System.Boolean get_IsNativeAOT()" body="stub" feature="ObjCRuntime.Runtime.IsNativeAOT" featurevalue="true" value="true" />
       <method signature="System.Int32 GetRuntimeArch()" body="stub" feature="ObjCRuntime.Runtime.Arch.IsSimulator" featurevalue="false" value="0" />
       <method signature="System.Int32 GetRuntimeArch()" body="stub" feature="ObjCRuntime.Runtime.Arch.IsSimulator" featurevalue="true" value="1" />
+      <field name="Arch" feature="ObjCRuntime.Runtime.Arch.IsSimulator" featurevalue="false" value="DEVICE" />
+      <field name="Arch" feature="ObjCRuntime.Runtime.Arch.IsSimulator" featurevalue="true" value="SIMULATOR" />
       <method signature="System.Boolean get_IsManagedStaticRegistrar()" body="stub" feature="ObjCRuntime.Runtime.IsManagedStaticRegistrar" featurevalue="false" value="false" />
       <method signature="System.Boolean get_IsManagedStaticRegistrar()" body="stub" feature="ObjCRuntime.Runtime.IsManagedStaticRegistrar" featurevalue="true" value="true" />
       <method signature="System.Boolean get_DynamicRegistrationSupported()" body="stub" feature="ObjCRuntime.Runtime.DynamicRegistrationSupported" featurevalue="false" value="false" />

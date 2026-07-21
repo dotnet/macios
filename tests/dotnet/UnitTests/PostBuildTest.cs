@@ -1,3 +1,4 @@
+using System.IO.Compression;
 using System.Text.Json;
 
 using Microsoft.Build.Framework;
@@ -76,6 +77,48 @@ namespace Xamarin.Tests {
 
 			AssertBundleAssembliesStripStatus (appPath, true);
 			AssertDSymDirectory (appPath);
+
+			// IpaIncludeSymbols defaults to true, so the .ipa must contain a populated 'Symbols' directory.
+			AssertIpaSymbols (pkgPath, shouldContainSymbols: true);
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
+		public void BuildIpaWithoutSymbolsTest (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			var project = "MySimpleApp";
+			var configuration = "Release";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: configuration);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["BuildIpa"] = "true";
+			properties ["IpaIncludeSymbols"] = "false";
+			properties ["Configuration"] = configuration;
+
+			var result = DotNet.AssertBuild (project_path, properties);
+
+			var pkgPath = Path.Combine (appPath, "..", $"{project}.ipa");
+			Assert.That (pkgPath, Does.Exist, "pkg creation");
+
+			// IpaIncludeSymbols=false, so the .ipa must not contain a 'Symbols' directory.
+			AssertIpaSymbols (pkgPath, shouldContainSymbols: false);
+		}
+
+		static void AssertIpaSymbols (string ipaPath, bool shouldContainSymbols)
+		{
+			using var archive = ZipFile.OpenRead (ipaPath);
+			var symbolFiles = archive.Entries.
+				Where (entry => entry.FullName.StartsWith ("Symbols/", StringComparison.Ordinal) && entry.FullName.EndsWith (".symbols", StringComparison.Ordinal)).
+				ToList ();
+			if (shouldContainSymbols) {
+				Assert.That (symbolFiles, Is.Not.Empty, "The .ipa should contain Symbols/*.symbols files.");
+			} else {
+				Assert.That (symbolFiles, Is.Empty, "The .ipa should not contain any Symbols/*.symbols files.");
+			}
 		}
 
 		[Test]

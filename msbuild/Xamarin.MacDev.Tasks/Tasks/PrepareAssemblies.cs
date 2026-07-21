@@ -38,6 +38,10 @@ namespace Xamarin.MacDev.Tasks {
 
 		public bool PostProcessing { get; set; }
 
+		// The pre-trim (untrimmed) assemblies (the trimmer's input), used during post-processing to read
+		// the [ProtocolMember] attributes the trimmer removed from the post-trim assemblies.
+		public ITaskItem [] PreTrimAssemblies { get; set; } = [];
+
 		#region Outputs
 		[Output]
 		public ITaskItem [] OutputAssemblies { get; set; } = [];
@@ -66,6 +70,7 @@ namespace Xamarin.MacDev.Tasks {
 				var infos = InputAssemblies.Select (GetAssemblyInfo).ToArray ();
 				using var preparer = new AssemblyPreparer (this, infos, OptionsFile?.ItemSpec ?? "");
 				preparer.MakeReproPath = MakeReproPath;
+				preparer.PreTrimAssemblies.AddRange (PreTrimAssemblies.Select (v => v.ItemSpec));
 				bool rv;
 				List<ProductException> exceptions;
 

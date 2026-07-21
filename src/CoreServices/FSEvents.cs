@@ -352,7 +352,8 @@ namespace CoreServices {
 				context.Release = &FreeGCHandle;
 			}
 
-			var allocator = options.Allocator.GetHandle ();
+			var allocatorObject = options.Allocator;
+			var allocator = allocatorObject.GetHandle ();
 			var sinceWhenId = options.SinceWhenId ?? FSEvent.SinceNowId;
 			var latency = options.Latency.TotalSeconds;
 			var flags = options.Flags |= (FSEventStreamCreateFlags) 0x1 /* UseCFTypes */;
@@ -366,6 +367,7 @@ namespace CoreServices {
 						&context,
 						options.DeviceToWatch.Value,
 						pathsToWatch.Handle, sinceWhenId, latency, flags);
+					GC.KeepAlive (allocatorObject);
 					GC.KeepAlive (pathsToWatch);
 				} else {
 					handle = FSEventStreamCreate (
@@ -373,6 +375,7 @@ namespace CoreServices {
 						&EventsCallback,
 						&context,
 						pathsToWatch.Handle, sinceWhenId, latency, flags);
+					GC.KeepAlive (allocatorObject);
 					GC.KeepAlive (pathsToWatch);
 				}
 			}

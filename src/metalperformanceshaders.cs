@@ -16413,12 +16413,13 @@ namespace MetalPerformanceShaders {
 		[Export ("encodeToCommandEncoder:commandBuffer:sourceArrays:destinationArray:")]
 		MPSNDArray EncodeToCommandEncoder ([NullAllowed] IMTLComputeCommandEncoder encoder, IMTLCommandBuffer commandBuffer, MPSNDArray [] sourceArrays, MPSNDArray destinationArray);
 
-		// The header says this method is not available in the simulator.
 		/// <summary>Encodes the kernel with a Metal 4 compute command encoder.</summary>
 		/// <param name="encoder">The Metal 4 compute command encoder.</param>
 		/// <param name="sourceArrays">The source arrays, ordered as required by the kernel.</param>
 		/// <param name="destinationArray">The array that receives the result.</param>
 		/// <remarks>The encoder associates the command with <see cref="MTLStages.Dispatch" />. Synchronize dependent workloads against that stage to prevent race conditions.</remarks>
+		[UnsupportedSimulator ("ios")]
+		[UnsupportedSimulator ("tvos")]
 		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
 		[Export ("encodeWithMTL4CommandEncoder:sourceArrays:destinationArray:")]
 		void EncodeWithMtl4CommandEncoder (IMTL4ComputeCommandEncoder encoder, MPSNDArray [] sourceArrays, MPSNDArray destinationArray);
@@ -16483,12 +16484,13 @@ namespace MetalPerformanceShaders {
 		[Export ("encodeToCommandBuffer:sourceArray:resultState:destinationArray:")]
 		MPSNDArray EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, MPSNDArray sourceArray, [NullAllowed] MPSState gradientState, MPSNDArray destinationArray);
 
-		// The header says this method is not available in the simulator.
 		/// <summary>Encodes the kernel with a Metal 4 compute command encoder.</summary>
 		/// <param name="encoder">The Metal 4 compute command encoder.</param>
 		/// <param name="sourceArray">The source array.</param>
 		/// <param name="destinationArray">The array that receives the result.</param>
 		/// <remarks>The encoder associates the command with <see cref="MTLStages.Dispatch" />. Synchronize dependent workloads against that stage to prevent race conditions.</remarks>
+		[UnsupportedSimulator ("ios")]
+		[UnsupportedSimulator ("tvos")]
 		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
 		[Export ("encodeWithMTL4CommandEncoder:sourceArray:destinationArray:")]
 		void EncodeWithMtl4CommandEncoder (IMTL4ComputeCommandEncoder encoder, MPSNDArray sourceArray, MPSNDArray destinationArray);
@@ -16529,17 +16531,20 @@ namespace MetalPerformanceShaders {
 		[return: NullAllowed]
 		MPSNDArray Reshape (MPSNDArray sourceArray, [BindAs (typeof (int []))] NSNumber [] shape);
 
-		// The header says these methods are not available in the simulator.
 		/// <summary>Encodes a reshape operation with a Metal 4 compute command encoder.</summary>
 		/// <param name="encoder">The Metal 4 compute command encoder.</param>
 		/// <param name="sourceArray">The source array.</param>
 		/// <param name="shape">The new shape in TensorFlow dimension order.</param>
 		/// <param name="destinationArray">The destination array, whose shape must match <paramref name="shape" />.</param>
 		/// <remarks>The encoder associates the command with <see cref="MTLStages.Dispatch" />. Synchronize dependent workloads against that stage to prevent race conditions.</remarks>
+		[UnsupportedSimulator ("ios")]
+		[UnsupportedSimulator ("tvos")]
 		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
 		[Export ("reshapeWithMTL4CommandEncoder:sourceArray:shape:destinationArray:")]
 		void ReshapeWithMtl4CommandEncoder (IMTL4ComputeCommandEncoder encoder, MPSNDArray sourceArray, [BindAs (typeof (int []))] NSNumber [] shape, MPSNDArray destinationArray);
 
+		[UnsupportedSimulator ("ios")]
+		[UnsupportedSimulator ("tvos")]
 		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
 		[Export ("reshapeWithMTL4CommandEncoder:sourceArray:dimensionCount:dimensionSizes:destinationArray:")]
 		[Internal]

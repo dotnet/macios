@@ -36,6 +36,8 @@ namespace MetalPerformanceShaders {
 		[SupportedOSPlatform ("maccatalyst27.0")]
 		[SupportedOSPlatform ("macos27.0")]
 		[SupportedOSPlatform ("tvos27.0")]
+		[UnsupportedSimulator ("ios")]
+		[UnsupportedSimulator ("tvos")]
 		public void ReshapeWithMtl4CommandEncoder (IMTL4ComputeCommandEncoder encoder, MPSNDArray sourceArray, nuint [] dimensionSizes, MPSNDArray destinationArray)
 		{
 			if (dimensionSizes is null)

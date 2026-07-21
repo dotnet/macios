@@ -1836,6 +1836,28 @@ namespace GeneratorTests {
 				.ToArray ();
 			Assert.That (simulatorAttrs.Length, Is.EqualTo (0), "NoSimulatorAttributes: no simulator attributes");
 
+			// Verify simulator attributes on methods are copied for the current platform
+			var methods = module.GetType ("NS", "SimulatorAvailabilityMethods");
+			var unsupportedMethod = methods.Methods.Single (m => m.Name == "Unsupported");
+			var unsupportedMethodAttrs = unsupportedMethod.CustomAttributes
+				.Where (a => a.AttributeType.Name == "UnsupportedSimulatorAttribute")
+				.ToArray ();
+			Assert.That (unsupportedMethodAttrs.Length, Is.EqualTo (1), "Unsupported method: one UnsupportedSimulator attribute");
+			Assert.That ((string) unsupportedMethodAttrs [0].ConstructorArguments [0].Value, Is.EqualTo (expectedPlatform), "Unsupported method platform name");
+
+			var supportedMethod = methods.Methods.Single (m => m.Name == "Supported");
+			var supportedMethodAttrs = supportedMethod.CustomAttributes
+				.Where (a => a.AttributeType.Name == "SupportedSimulatorAttribute")
+				.ToArray ();
+			Assert.That (supportedMethodAttrs.Length, Is.EqualTo (1), "Supported method: one SupportedSimulator attribute");
+			Assert.That ((string) supportedMethodAttrs [0].ConstructorArguments [0].Value, Is.EqualTo (expectedVersion), "Supported method platform name");
+
+			var plainMethod = methods.Methods.Single (m => m.Name == "Plain");
+			var plainMethodAttrs = plainMethod.CustomAttributes
+				.Where (a => a.AttributeType.Name == "UnsupportedSimulatorAttribute" || a.AttributeType.Name == "SupportedSimulatorAttribute")
+				.ToArray ();
+			Assert.That (plainMethodAttrs.Length, Is.EqualTo (0), "Plain method: no simulator attributes");
+
 			// Verify a [SupportedSimulator] on a smart-enum [Field] member is propagated to the generated accessor
 			var smartExtensions = module.GetType ("NS", "SmartEnumWithSimulatorFieldExtensions");
 			Assert.That (smartExtensions, Is.Not.Null, "SmartEnumWithSimulatorFieldExtensions: generated");
@@ -1871,6 +1893,14 @@ namespace GeneratorTests {
 					.Where (a => a.AttributeType.Name == "UnsupportedSimulatorAttribute" || a.AttributeType.Name == "SupportedSimulatorAttribute")
 					.ToArray ();
 				Assert.That (simulatorAttrs.Length, Is.EqualTo (0), $"{typeName}: no simulator attributes on Mac platforms");
+			}
+
+			var methods = module.GetType ("NS", "SimulatorAvailabilityMethods");
+			foreach (var method in methods.Methods.Where (m => !m.IsConstructor)) {
+				var methodAttrs = method.CustomAttributes
+					.Where (a => a.AttributeType.Name == "UnsupportedSimulatorAttribute" || a.AttributeType.Name == "SupportedSimulatorAttribute")
+					.ToArray ();
+				Assert.That (methodAttrs.Length, Is.EqualTo (0), $"{method.Name}: no simulator attributes on Mac platforms");
 			}
 
 			// The smart-enum field accessor must not carry simulator attributes on Mac platforms either

@@ -638,7 +638,7 @@
 				types the trimmable-static registrar emits), which is only fixed in the .NET 11+ ILC. On .NET 10
 				we keep running ILLink (which trims away the duplicates before ILC sees them).
 			-->
-			<_SkipILLink Condition="'$(_SkipILLink)' == '' And '$(_UseNativeAot)' == 'true' And '$(PrepareAssemblies)' == 'true' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '11.0'))">true</_SkipILLink>
+			<_SkipILLink Condition="'$(_SkipILLink)' == '' And '$(_UseNativeAot)' == 'true' And '$(PrepareAssemblies)' == 'true' And '$(PostProcessAssemblies)' == 'true' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '11.0'))">true</_SkipILLink>
 			<_SkipILLink Condition="'$(_SkipILLink)' == ''">false</_SkipILLink>
 
 			<!-- Yep, we want to run ILLink as well, because we need our custom steps to run (NativeAOT sets this to false, so set it back to true), unless we're skipping ILLink (see _SkipILLink above) -->
@@ -1211,11 +1211,14 @@
 		avoid emitting direct native references to trampolines ILC trimmed away (which would be undefined symbols
 		at native link time). This is only possible because ILLink is skipped in this scenario (see _SkipILLink),
 		so ILC consumes the prepared (pre-postprocessing) assemblies and the postprocessing output no longer feeds
-		ILC. The gate is computed statically (all three properties are available at evaluation time) so it can be
-		used both in static target wiring and in runtime target conditions.
+		ILC. The gate is computed statically (all the properties are available at evaluation time) so it can be
+		used both in static target wiring and in runtime target conditions. It mirrors the conditions that make
+		_SkipILLink true (see _SkipILLink) - in particular the .NET 11+ gate - because this reorder is only valid
+		when ILLink is skipped: when ILLink still runs (e.g. .NET 10) we must keep postprocessing before ILC, so
+		_PostprocessAssemblies handles it as usual and this target stays off.
 	-->
 	<PropertyGroup>
-		<_PostprocessAssembliesAfterIlc Condition="'$(_PostprocessAssembliesAfterIlc)' == '' And '$(PublishAot)' == 'true' And '$(PrepareAssemblies)' == 'true' And '$(Registrar)' == 'trimmable-static'">true</_PostprocessAssembliesAfterIlc>
+		<_PostprocessAssembliesAfterIlc Condition="'$(_PostprocessAssembliesAfterIlc)' == '' And '$(_UseNativeAot)' == 'true' And '$(PrepareAssemblies)' == 'true' And '$(PostProcessAssemblies)' == 'true' And '$(Registrar)' == 'trimmable-static' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '11.0'))">true</_PostprocessAssembliesAfterIlc>
 		<_PostprocessAssembliesAfterIlc Condition="'$(_PostprocessAssembliesAfterIlc)' == ''">false</_PostprocessAssembliesAfterIlc>
 		<!-- When postprocessing runs after ILC, _LoadLinkerOutput must run the postprocessing target first so
 		     that the *.items files (registrar.mm etc.) exist when they're loaded. -->
@@ -1318,6 +1321,7 @@
 
 		<ItemGroup>
 			<FileWrites Include="@(_PostProcessedAssemblies)" />
+			<FileWrites Include="$(_AssemblyPostProcessorMSBuildOutputFile)" Condition="Exists('$(_AssemblyPostProcessorMSBuildOutputFile)')" />
 		</ItemGroup>
 	</Target>
 

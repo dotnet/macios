@@ -10,8 +10,12 @@
 # to gain access (unlike GNU rm), so it fails with "Permission denied" and
 # leaves the tree behind. That would make this cleanup step fail on every
 # subsequent build. So make sure everything is writable before deleting.
+#
+# Use 'u+wX' (capital X) so that directories also get the execute bit they
+# need to be traversable and deletable, without setting execute on regular
+# files that don't already have it.
 safe_rm () {
-	chmod -R u+w "$@" || true
+	chmod -R u+wX "$@" || true
 	rm -rf "$@"
 }
 

@@ -391,6 +391,67 @@ namespace MetalPerformanceShaders {
 		}
 	}
 
+	public partial class MPSFColorConversion {
+		/// <summary>Creates a color conversion from the specified source and destination color spaces.</summary>
+		/// <param name="device">The Metal device where the generated function will run.</param>
+		/// <param name="startColorSpace">The source color space.</param>
+		/// <param name="endColorSpace">The destination color space.</param>
+		/// <param name="functionName">The name of the generated Metal Shading Language function.</param>
+		/// <param name="sourceRange">The expected input color gamut, or <see langword="null" /> if it is unknown.</param>
+		/// <param name="options">The options to use when building the conversion.</param>
+		/// <param name="error">The error if the conversion could not be created; otherwise, <see langword="null" />.</param>
+		/// <returns>A new color conversion if successful; otherwise, <see langword="null" />.</returns>
+		[SupportedOSPlatform ("ios27.0")]
+		[SupportedOSPlatform ("tvos27.0")]
+		[SupportedOSPlatform ("macos27.0")]
+		[SupportedOSPlatform ("maccatalyst27.0")]
+		public static unsafe MPSFColorConversion? Create (IMTLDevice device, CGColorSpace startColorSpace, CGColorSpace endColorSpace, string functionName, MPSFunctionsAxisAlignedBoundingBox? sourceRange, MPSFColorConversionOptions options, out NSError? error)
+		{
+			ArgumentNullException.ThrowIfNull (device);
+			ArgumentNullException.ThrowIfNull (startColorSpace);
+			ArgumentNullException.ThrowIfNull (endColorSpace);
+			ArgumentNullException.ThrowIfNull (functionName);
+
+			var rv = new MPSFColorConversion (NSObjectFlag.Empty);
+			var range = sourceRange.GetValueOrDefault ();
+			var rangePointer = sourceRange.HasValue ? (IntPtr) (&range) : IntPtr.Zero;
+			rv.InitializeHandle (rv._InitWithDevice (device, startColorSpace, endColorSpace, functionName, rangePointer, options, out error), "initWithDevice:startColorSpace:endColorSpace:functionName:sourceRange:options:error:", false);
+			if (rv.Handle == NativeHandle.Zero) {
+				rv.Dispose ();
+				return null;
+			}
+			return rv;
+		}
+
+		/// <summary>Creates a color conversion from the specified Core Graphics conversion information.</summary>
+		/// <param name="device">The Metal device where the generated function will run.</param>
+		/// <param name="conversion">The Core Graphics conversion information, or <see langword="null" /> to create an identity conversion.</param>
+		/// <param name="functionName">The name of the generated Metal Shading Language function.</param>
+		/// <param name="sourceRange">The expected input color gamut, or <see langword="null" /> if it is unknown.</param>
+		/// <param name="options">The options to use when building the conversion.</param>
+		/// <param name="error">The error if the conversion could not be created; otherwise, <see langword="null" />.</param>
+		/// <returns>A new color conversion if successful; otherwise, <see langword="null" />.</returns>
+		[SupportedOSPlatform ("ios27.0")]
+		[SupportedOSPlatform ("tvos27.0")]
+		[SupportedOSPlatform ("macos27.0")]
+		[SupportedOSPlatform ("maccatalyst27.0")]
+		public static unsafe MPSFColorConversion? Create (IMTLDevice device, CGColorConversionInfo? conversion, string functionName, MPSFunctionsAxisAlignedBoundingBox? sourceRange, MPSFColorConversionOptions options, out NSError? error)
+		{
+			ArgumentNullException.ThrowIfNull (device);
+			ArgumentNullException.ThrowIfNull (functionName);
+
+			var rv = new MPSFColorConversion (NSObjectFlag.Empty);
+			var range = sourceRange.GetValueOrDefault ();
+			var rangePointer = sourceRange.HasValue ? (IntPtr) (&range) : IntPtr.Zero;
+			rv.InitializeHandle (rv._InitWithDevice (device, conversion, functionName, rangePointer, options, out error), "initWithDevice:conversion:functionName:sourceRange:options:error:", false);
+			if (rv.Handle == NativeHandle.Zero) {
+				rv.Dispose ();
+				return null;
+			}
+			return rv;
+		}
+	}
+
 	public partial class MPSImagePyramid {
 
 		/// <param name="device">To be added.</param>

@@ -299,6 +299,19 @@ namespace MetalPerformanceShaders {
 		public Vector3 Max;
 	}
 
+	/// <summary>Defines per-channel minimum and maximum values for a color gamut.</summary>
+	[SupportedOSPlatform ("ios27.0")]
+	[SupportedOSPlatform ("tvos27.0")]
+	[SupportedOSPlatform ("macos27.0")]
+	[SupportedOSPlatform ("maccatalyst27.0")]
+	[StructLayout (LayoutKind.Sequential)]
+	public struct MPSFunctionsAxisAlignedBoundingBox {
+		/// <summary>The maximum value for each color channel.</summary>
+		public Vector4 Max;
+		/// <summary>The minimum value for each color channel.</summary>
+		public Vector4 Min;
+	}
+
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

@@ -96,3 +96,76 @@ steps:
   continueOnError: true
   condition: always()
   timeoutInMinutes: 15
+
+# Download the updated expected app size files that the various test jobs may have produced.
+# Each test job publishes its own platform's files as a separate artifact; we download them
+# all here so we can aggregate them into a single gist + PR comment below.
+- task: DownloadPipelineArtifact@2
+  displayName: Download updated expected app size files
+  continueOnError: true
+  inputs:
+    patterns: "**/updated-expected-sizes-*/**"
+    allowFailedBuilds: true
+    path: $(System.DefaultWorkingDirectory)\updated-expected-sizes
+
+# Create a single GitHub gist with all the updated expected files (across all platforms) and
+# post a single PR comment so that a maintainer can apply the update for every platform at once
+# by commenting '/apply-gist <url>'. This reuses the gist and comment helpers from our PowerShell
+# module (the 'gh' CLI isn't installed on the test agents, and doesn't have credentials to create gists).
+- pwsh: |
+    $updatedDir = Join-Path "$Env:SYSTEM_DEFAULTWORKINGDIRECTORY" "updated-expected-sizes"
+    # A file may be present in more than one artifact (e.g. across job attempts); pick the newest copy per file name.
+    $files = Get-ChildItem -Path $updatedDir -Filter "*.txt" -File -Recurse -ErrorAction SilentlyContinue |
+      Sort-Object -Property LastWriteTimeUtc -Descending |
+      Group-Object -Property Name |
+      ForEach-Object { $_.Group[0] } |
+      Sort-Object -Property Name
+    if (-not $files) {
+      Write-Host "No updated expected app size files found."
+      exit 0
+    }
+
+    Import-Module $Env:SYSTEM_DEFAULTWORKINGDIRECTORY\$Env:BUILD_REPOSITORY_TITLE\tools\devops\automation\scripts\MaciosCI.psd1
+
+    # Create a gist with all the updated files.
+    $gistFiles = @()
+    foreach ($file in $files) {
+      $gistFiles += New-GistObjectDefinition -Name $file.Name -Path $file.FullName -Type "text"
+    }
+    $gistUrl = New-GistWithFiles -Description "Updated expected app size files for build $Env:BUILD_BUILDNUMBER" -Files $gistFiles
+    Write-Host "Created gist: $gistUrl"
+
+    # Build the comment body.
+    $sb = [System.Text.StringBuilder]::new()
+    $sb.AppendLine("### :warning: AppSizeTest expected files changed :warning:") | Out-Null
+    $sb.AppendLine() | Out-Null
+    $sb.AppendLine("The AppSizeTest detected changes in the expected app size files.") | Out-Null
+    $sb.AppendLine() | Out-Null
+    $sb.AppendLine("To update the expected files, add a comment with the following command:") | Out-Null
+    $sb.AppendLine() | Out-Null
+    $sb.AppendLine('```') | Out-Null
+    $sb.AppendLine("/apply-gist $gistUrl") | Out-Null
+    $sb.AppendLine('```') | Out-Null
+    $sb.AppendLine() | Out-Null
+    $sb.AppendLine("<details>") | Out-Null
+    $sb.AppendLine("<summary>Updated files</summary>") | Out-Null
+    $sb.AppendLine() | Out-Null
+    foreach ($file in $files) {
+      $sb.AppendLine("- ``$($file.Name)``") | Out-Null
+    }
+    $sb.AppendLine() | Out-Null
+    $sb.AppendLine("</details>") | Out-Null
+
+    # Post a comment on the PR.
+    $githubComments = New-GitHubCommentsObjectFromUrl -Url "$(Build.Repository.Uri)" -Token $Env:GITHUB_TOKEN -Hash $Env:COMMENT_HASH
+    $githubComments.NewCommentFromMessage("", ":warning:", $sb.ToString(), "app-size-expected-files") | Out-Null
+  displayName: 'Create gist and comment on PR with updated expected app size files'
+  continueOnError: true
+  condition: and(succeededOrFailed(), eq(${{ parameters.isPR }}, true))
+  timeoutInMinutes: 15
+  env:
+    GITHUB_TOKEN: $(GitHub.Token)
+    ${{ if eq(parameters.repositoryAlias, 'self') }}:
+      COMMENT_HASH: $(fix_commit.GIT_HASH)
+    ${{ else }}:
+      COMMENT_HASH: $(Build.SourceVersion)

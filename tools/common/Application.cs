@@ -86,6 +86,11 @@ namespace Xamarin.Bundler {
 #if ASSEMBLY_PREPARER
 		public bool InCustomTrimmerStep = false;
 		public bool IsPostProcessingAssemblies;
+		// When post-processing assemblies with the trimmable static registrar, the [ProtocolMember] attributes
+		// have been removed by the trimmer, so the registrar reads them from the pre-trim (untrimmed) assemblies
+		// instead. This resolver provides access to the pre-trim assemblies (a separate metadata universe from
+		// the post-trim assemblies), and is null when not applicable.
+		public Mono.Cecil.IAssemblyResolver? PreTrimAssemblyResolver;
 #else
 		public bool InCustomTrimmerStep = true;
 		public bool IsPostProcessingAssemblies => PrepareAssemblies && InCustomTrimmerStep;

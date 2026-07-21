@@ -1,3 +1,4 @@
+using System.IO.Compression;
 using System.Text.Json;
 
 using Microsoft.Build.Framework;
@@ -162,6 +163,48 @@ namespace Xamarin.Tests {
 			// With CoreCLR (R2R), assemblies retain their IL bodies.
 			AssertBundleAssembliesStripStatus (appPath, useMonoRuntime);
 			AssertDSymDirectory (appPath);
+
+			// IpaIncludeSymbols defaults to true, so the .ipa must contain a populated 'Symbols' directory.
+			AssertIpaSymbols (pkgPath, shouldContainSymbols: true);
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
+		public void BuildIpaWithoutSymbolsTest (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			var project = "MySimpleApp";
+			var configuration = "Release";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: configuration);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["BuildIpa"] = "true";
+			properties ["IpaIncludeSymbols"] = "false";
+			properties ["Configuration"] = configuration;
+
+			var result = DotNet.AssertBuild (project_path, properties);
+
+			var pkgPath = Path.Combine (appPath, "..", $"{project}.ipa");
+			Assert.That (pkgPath, Does.Exist, "pkg creation");
+
+			// IpaIncludeSymbols=false, so the .ipa must not contain a 'Symbols' directory.
+			AssertIpaSymbols (pkgPath, shouldContainSymbols: false);
+		}
+
+		static void AssertIpaSymbols (string ipaPath, bool shouldContainSymbols)
+		{
+			using var archive = ZipFile.OpenRead (ipaPath);
+			var symbolFiles = archive.Entries.
+				Where (entry => entry.FullName.StartsWith ("Symbols/", StringComparison.Ordinal) && entry.FullName.EndsWith (".symbols", StringComparison.Ordinal)).
+				ToList ();
+			if (shouldContainSymbols) {
+				Assert.That (symbolFiles, Is.Not.Empty, "The .ipa should contain Symbols/*.symbols files.");
+			} else {
+				Assert.That (symbolFiles, Is.Empty, "The .ipa should not contain any Symbols/*.symbols files.");
+			}
 		}
 
 		[Test]
@@ -703,6 +746,46 @@ namespace Xamarin.Tests {
 			// because it's a static library and won't be in the app bundle.
 			var staticFrameworkItems = postProcessingItems.Where (i => i.ItemSpec.Contains ("XStaticArTest")).ToList ();
 			Assert.That (staticFrameworkItems, Is.Empty, $"Static framework XStaticArTest should not be in post-processing items. All items:\n\t{string.Join ("\n\t", postProcessingItems.Select (i => i.ItemSpec))}");
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", false)]
+		public void PublishDSymToPublishDirectory (ApplePlatform platform, string runtimeIdentifiers, bool copyDSym)
+		{
+			// https://github.com/dotnet/macios/issues/15384
+			// When publishing, the generated *.dSYM directories should be copied to the publish
+			// directory (unless CopyDSYMToPublishDirectory=false).
+			var project = "MySimpleApp";
+			var configuration = "Release";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers, platform: platform, out var appPath, configuration: configuration);
+			Clean (project_path);
+
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["Configuration"] = configuration;
+			if (!copyDSym)
+				properties ["CopyDSYMToPublishDirectory"] = "false";
+
+			DotNet.AssertPublish (project_path, properties);
+
+			var appContainerDir = Path.GetDirectoryName (appPath)!;
+			var appBundleName = Path.GetFileName (appPath);
+			var publishDir = Path.Combine (appContainerDir, "publish");
+
+			// The dSYM must have been generated next to the app bundle in the first place.
+			var sourceDSym = Path.Combine (appContainerDir, appBundleName + ".dSYM");
+			Assert.That (sourceDSym, Does.Exist, "Source dSYM");
+
+			var publishedDSym = Path.Combine (publishDir, appBundleName + ".dSYM");
+			if (copyDSym) {
+				Assert.That (publishedDSym, Does.Exist, "Published dSYM");
+				Assert.That (Path.Combine (publishedDSym, "Contents", "Info.plist"), Does.Exist, "Published dSYM Info.plist");
+			} else {
+				Assert.That (publishedDSym, Does.Not.Exist, "Published dSYM (disabled)");
+			}
 		}
 
 		static ITaskItem AssertApplicationArtifact (string binLogPath, string path, ApplePlatform platform, string packageFormat, bool isDirectory)

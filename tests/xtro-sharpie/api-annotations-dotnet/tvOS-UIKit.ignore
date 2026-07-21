@@ -361,3 +361,9 @@
 !missing-null-allowed! 'System.Void UIKit.UIImage::PrepareThumbnail(CoreGraphics.CGSize,System.Action`1<UIKit.UIImage>)' is missing a '?' on parameter 'completionHandler' block parameter #0
 !missing-null-allowed! 'System.Void UIKit.UIImageReader::GetImage(Foundation.NSData,System.Action`1<UIKit.UIImage>)' is missing a '?' on parameter 'completion' block parameter #0
 !missing-null-allowed! 'System.Void UIKit.UIImageReader::GetImage(Foundation.NSUrl,System.Action`1<UIKit.UIImage>)' is missing a '?' on parameter 'completion' block parameter #0
+
+## bound selectors with no native declaration reachable from the class in the current SDK headers:
+## private/SPI selectors, protocol/category members Apple inlines without declaring the conformance on
+## the class, managed callback infrastructure, or API Apple removed/privatized - kept for compatibility
+## (baseline for https://github.com/dotnet/macios/issues/26053)
+!unknown-selector! +UIFocusDebugger::checkFocusGroupTreeForEnvironment: not found

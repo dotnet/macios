@@ -7,29 +7,14 @@
 // Copyright 2013 Xamarin Inc. All rights reserved.
 //
 
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 
 namespace BundledResources {
 
-	// An unused type used to detect whether this assembly was linked (trimmed): the trimmer removes
-	// it when the assembly is linked, but it's kept when the assembly is only copied (e.g. "dont link"
-	// or "link sdk"). This mirrors the approach in TestRuntime.IsLinkAll.
-	class LinkerSentinel { }
-
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class ResourcesTest {
-
-		[UnconditionalSuppressMessage ("Trimming", "IL2026", Justification = "This property checks whether the trimmer is enabled by checking if a type survived trimming; it's thus trimmer safe in that any behavioral difference when the trimmer is enabled is exactly what it's looking for.")]
-		static bool AssemblyWasLinked {
-			get {
-				// Reference the sentinel by name (not typeof) so we don't root it and prevent it from
-				// being trimmed - that would defeat the detection.
-				return typeof (ResourcesTest).Assembly.GetType ("BundledResources.LinkerSentinel") is null;
-			}
-		}
 
 		[Test]
 		public void Bundled ()
@@ -61,7 +46,7 @@ namespace BundledResources {
 			// (non-linked) user assemblies, because stripping would re-serialize the assembly and
 			// break Hot Reload. So the bundled resources remain embedded unless this assembly was
 			// linked (in which case it's re-saved regardless, and stripping still applies).
-			var hasResources = isSimulator || !AssemblyWasLinked;
+			var hasResources = isSimulator || !TestRuntime.IsLinkAll;
 #else
 			// Without Hot Reload the resources are always stripped, except on the simulator (where
 			// stripping is skipped to keep simulator builds fast).

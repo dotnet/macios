@@ -199,12 +199,11 @@ namespace Xamarin.Tests {
 			var rv = Execution.RunAsync (exe, args, env, Console.Out, workingDirectory: Configuration.SourceRoot, timeout: TimeSpan.FromMinutes (10)).Result;
 			var output = rv.Output.MergedOutput;
 			if (rv.ExitCode != 0) {
-				var fullOutput = output.ToString ();
 				// Write the complete output to the console. This ends up in a separate
 				// log file, so it's fine if it's big.
 				Console.WriteLine ($"'{exe}' failed with exit code {rv.ExitCode}");
 				Console.WriteLine ($"Full command: {exe} {StringUtils.FormatArguments (args)}");
-				Console.WriteLine (fullOutput);
+				Console.WriteLine (output);
 
 				// Only include the last few lines of the output in the failure message.
 				// The failure message ends up embedded in the test results (and thus in
@@ -214,25 +213,21 @@ namespace Xamarin.Tests {
 				var msg = new StringBuilder ();
 				msg.AppendLine ($"'{exe}' failed with exit code {rv.ExitCode}");
 				msg.AppendLine ($"Full command: {exe} {StringUtils.FormatArguments (args)}");
-				msg.AppendLine (GetLastLines (fullOutput, 100));
+				msg.AppendLine (GetLastLines (rv.Output.MergedOutputLines, 100));
 				Assert.Fail (msg.ToString ());
 			}
 			return new ExecutionResult (output, output, rv.ExitCode, rv.Duration);
 		}
 
-		// Returns the last 'count' lines of the given text, prefixed with a note if any
+		// Returns the last 'count' lines of the given output, prefixed with a note if any
 		// lines were omitted.
-		static string GetLastLines (string text, int count)
+		static string GetLastLines (IList<string> lines, int count)
 		{
-			if (string.IsNullOrEmpty (text))
-				return text;
+			if (lines.Count <= count)
+				return string.Join ("\n", lines);
 
-			var lines = text.Split ('\n');
-			if (lines.Length <= count)
-				return text;
-
-			var lastLines = lines.Skip (lines.Length - count);
-			return $"[Output truncated to the last {count} lines (of {lines.Length} lines); see the full log for the complete output]{Environment.NewLine}" +
+			var lastLines = lines.Skip (lines.Count - count);
+			return $"[Output truncated to the last {count} lines (of {lines.Count} lines); see the full log for the complete output]{Environment.NewLine}" +
 				string.Join ("\n", lastLines);
 		}
 

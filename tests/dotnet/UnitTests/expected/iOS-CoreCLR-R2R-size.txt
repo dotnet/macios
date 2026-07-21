@@ -1,35 +1,35 @@
-AppBundleSize: 11,069,791 bytes (10,810.3 KB = 10.6 MB)
+AppBundleSize: 11,069,719 bytes (10,810.3 KB = 10.6 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 Frameworks/libcoreclr.framework/Info.plist:
-    840 bytes (0.8 KB = 0.0 MB)
+    831 bytes (0.8 KB = 0.0 MB)
 Frameworks/libcoreclr.framework/libcoreclr:
     4,218,112 bytes (4,119.2 KB = 4.0 MB)
 Frameworks/libSystem.Globalization.Native.framework/Info.plist:
-    882 bytes (0.9 KB = 0.0 MB)
+    873 bytes (0.9 KB = 0.0 MB)
 Frameworks/libSystem.Globalization.Native.framework/libSystem.Globalization.Native:
     90,576 bytes (88.5 KB = 0.1 MB)
 Frameworks/libSystem.IO.Compression.Native.framework/Info.plist:
-    884 bytes (0.9 KB = 0.0 MB)
+    875 bytes (0.9 KB = 0.0 MB)
 Frameworks/libSystem.IO.Compression.Native.framework/libSystem.IO.Compression.Native:
     1,393,600 bytes (1,360.9 KB = 1.3 MB)
 Frameworks/libSystem.Native.framework/Info.plist:
-    854 bytes (0.8 KB = 0.0 MB)
+    845 bytes (0.8 KB = 0.0 MB)
 Frameworks/libSystem.Native.framework/libSystem.Native:
     143,840 bytes (140.5 KB = 0.1 MB)
 Frameworks/libSystem.Net.Security.Native.framework/Info.plist:
-    880 bytes (0.9 KB = 0.0 MB)
+    871 bytes (0.9 KB = 0.0 MB)
 Frameworks/libSystem.Net.Security.Native.framework/libSystem.Net.Security.Native:
     69,328 bytes (67.7 KB = 0.1 MB)
 Frameworks/libSystem.Security.Cryptography.Native.Apple.framework/Info.plist:
-    910 bytes (0.9 KB = 0.0 MB)
+    901 bytes (0.9 KB = 0.0 MB)
 Frameworks/libSystem.Security.Cryptography.Native.Apple.framework/libSystem.Security.Cryptography.Native.Apple:
     195,104 bytes (190.5 KB = 0.2 MB)
 Frameworks/SizeTestApp.r2r.framework/Info.plist:
-    852 bytes (0.8 KB = 0.0 MB)
+    843 bytes (0.8 KB = 0.0 MB)
 Frameworks/SizeTestApp.r2r.framework/SizeTestApp.r2r:
     3,413,064 bytes (3,333.1 KB = 3.3 MB)
 Info.plist:
-    1,168 bytes (1.1 KB = 0.0 MB)
+    1,159 bytes (1.1 KB = 0.0 MB)
 Microsoft.iOS.dll:
     65,024 bytes (63.5 KB = 0.1 MB)
 PkgInfo:

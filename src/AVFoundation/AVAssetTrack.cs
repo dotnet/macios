@@ -6,8 +6,7 @@ namespace AVFoundation {
 		/// <summary>
 		/// An array of <see cref="CoreMedia.CMFormatDescription" />s that describe the formats of the samples in the <see cref="AVFoundation.AVAssetTrack" />.
 		/// </summary>
-		/// <value>To be added.</value>
-		/// <remarks>To be added.</remarks>
+		/// <value>An array of format descriptions for this track.</value>
 		public CMFormatDescription [] FormatDescriptions {
 			get {
 				return (Array.ConvertAll (FormatDescriptionsAsObjects,

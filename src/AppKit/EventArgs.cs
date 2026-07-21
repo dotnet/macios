@@ -63,7 +63,7 @@ namespace AppKit {
 		}
 
 		/// <summary>Gets the visibility of the font collection after the change.</summary>
-		/// <value>The visibility level of the font collection.</value>
+		/// <value>The visibility scope flags for the font collection.</value>
 		public NSFontCollectionVisibility Visibility {
 			get { return (NSFontCollectionVisibility) (int) _Visibility; }
 		}

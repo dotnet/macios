@@ -1839,7 +1839,9 @@ namespace CoreMidi {
 		public int Add (string name, bool embedded, nuint numSourceEndpoints, nuint numDestinationEndpoints, MidiEntity newEntity)
 		{
 			using (NSString nsName = new NSString (name)) {
-				return MIDIDeviceAddEntity (GetCheckedHandle (), nsName.Handle, embedded ? (byte) 1 : (byte) 0, numSourceEndpoints, numDestinationEndpoints, newEntity.Handle);
+				var rv = MIDIDeviceAddEntity (GetCheckedHandle (), nsName.Handle, embedded ? (byte) 1 : (byte) 0, numSourceEndpoints, numDestinationEndpoints, newEntity.Handle);
+				GC.KeepAlive (newEntity);
+				return rv;
 			}
 		}
 
@@ -2542,7 +2544,9 @@ namespace CoreMidi {
 		///         <remarks>To be added.</remarks>
 		public int Add (MidiDevice device)
 		{
-			return MIDIDeviceListAddDevice (GetCheckedHandle (), device.Handle);
+			var rv = MIDIDeviceListAddDevice (GetCheckedHandle (), device.Handle);
+			GC.KeepAlive (device);
+			return rv;
 		}
 
 		internal override void DisposeHandle ()

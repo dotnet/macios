@@ -37,8 +37,8 @@ namespace Xamarin.Linker {
 		public string IntermediateLinkDir { get; private set; } = string.Empty;
 		public bool InvariantGlobalization { get; private set; }
 		public bool HybridGlobalization { get; private set; }
-		// The value of the $(HotReloadCompatibleBuild) MSBuild property. When enabled, steps must not
-		// modify reloadable (user) assemblies (those not being trimmed, i.e. AssemblyAction != Link).
+		// The value of the $(HotReloadCompatibleBuild) MSBuild property. When enabled, steps that
+		// re-serialize user assemblies (breaking Hot Reload) must leave reloadable assemblies untouched.
 		public bool HotReloadCompatibleBuild { get; private set; }
 		public InlineDlfcnMethodsMode InlineDlfcnMethods { get; set; }
 		public bool InlineDlfcnMethodsEnabled => InlineDlfcnMethods != InlineDlfcnMethodsMode.Disabled;

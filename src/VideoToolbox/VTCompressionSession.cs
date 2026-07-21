@@ -18,7 +18,6 @@ using CoreVideo;
 
 namespace VideoToolbox {
 	/// <summary>Turns uncompressed frames into compressed video frames</summary>
-	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -342,7 +341,10 @@ namespace VideoToolbox {
 			if (options is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (options));
 
-			return VTSessionSetProperties (GetCheckedHandle (), options.Dictionary.Handle);
+			var dictionary = options.Dictionary;
+			var rv = VTSessionSetProperties (GetCheckedHandle (), dictionary.Handle);
+			GC.KeepAlive (dictionary);
+			return rv;
 		}
 
 		[SupportedOSPlatform ("macos14.0")]

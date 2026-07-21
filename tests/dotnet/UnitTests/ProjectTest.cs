@@ -2502,7 +2502,7 @@ namespace Xamarin.Tests {
 		{
 			var codesignInvocations = BinLog.GetBuildMessages (binLogPath)
 				.Select (v => v.Message)
-				.Where (v => v?.Contains ("/usr/bin/codesign") == true)
+				.Where (v => v?.Contains ("/usr/bin/codesign ") == true)
 				.ToList ();
 			Assert.That (codesignInvocations, Is.Not.Empty, "Found codesign invocation");
 			return codesignInvocations.Last () ?? "";

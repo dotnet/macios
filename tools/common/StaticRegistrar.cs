@@ -4288,6 +4288,10 @@ namespace Registrar {
 				return;
 			}
 			var ucoEntryPoint = pinvokeMethodInfo.UnmanagedCallersOnlyEntryPoint;
+			if (ucoEntryPoint is null) {
+				exceptions.Add (ErrorHelper.CreateError (99, "Could not find the UnmanagedCallersOnly entry point for {0}", descriptiveMethodName));
+				return;
+			}
 			// If the trampoline didn't survive the NativeAOT compiler (ILC), we can't emit a direct native
 			// reference to it (that would be an undefined symbol at native link time). Route it through the
 			// dlsym fallback instead - the trampoline is never actually invoked, since ILC only trims a

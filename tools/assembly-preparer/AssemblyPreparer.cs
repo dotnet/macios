@@ -3,6 +3,7 @@
 
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
@@ -234,7 +235,16 @@ public class AssemblyPreparer : IDisposable {
 			new DoneStep (),
 		};
 
-		return RunSteps (steps, out exceptions);
+		var rv = RunSteps (steps, out exceptions);
+
+		// If postprocessing runs after ILC has already compiled the assemblies, then no step should
+		// modify an assembly (the change would be silently lost). Report a warning if we detect this.
+		if (configuration.Application.XamarinRuntime == XamarinRuntime.NativeAOT && configuration.ModifiedAssemblies.Any ()) {
+			foreach (var name in configuration.ModifiedAssemblies.Select (v => v.Name.Name).OrderBy (v => v))
+				exceptions.Add (ErrorHelper.CreateWarning (99, $"The assembly '{name}' was modified during post-ILC postprocessing, but this is useless because the NativeAOT compiler (ILC) has already compiled it."));
+		}
+
+		return rv;
 	}
 
 	bool RunSteps (IList<ConfigurationAwareStep> steps, out List<ProductException> exceptions)

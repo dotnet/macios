@@ -85,8 +85,8 @@ namespace MonoTouchFixtures.Security {
 			using (var queue = new DispatchQueue ("TrustAsync")) {
 				bool assert = false; // we don't want to assert in another queue
 				var called = new TaskCompletionSource<bool> ();
-				Console.WriteLine ($"[TrustTest] async1: calling trust.Evaluate on queue TrustAsync");
-				var err = trust.Evaluate (queue, (t, result) => {
+				Console.WriteLine ($"[TrustTest] async1: calling trust.Evaluate on the main queue");
+				var err = trust.Evaluate (DispatchQueue.MainQueue, (t, result) => {
 					Console.WriteLine ($"[TrustTest] async1: callback invoked (handle match: {t.Handle == trust.Handle}, result: {result}, expected: {expectedTrust})");
 					assert = t.Handle == trust.Handle && result == expectedTrust;
 					called.SetResult (true);
@@ -104,8 +104,8 @@ namespace MonoTouchFixtures.Security {
 				using (var queue = new DispatchQueue ("TrustErrorAsync")) {
 					bool assert = false; // we don't want to assert in another queue
 					var called = new TaskCompletionSource<bool> ();
-					Console.WriteLine ($"[TrustTest] async2: calling trust.Evaluate on queue TrustErrorAsync");
-					var err = trust.Evaluate (queue, (t, result, error) => {
+					Console.WriteLine ($"[TrustTest] async2: calling trust.Evaluate on the main queue");
+					var err = trust.Evaluate (DispatchQueue.MainQueue, (t, result, error) => {
 						Console.WriteLine ($"[TrustTest] async2: callback invoked (handle match: {t.Handle == trust.Handle}, result: {result}, error: {error is not null})");
 						assert = t.Handle == trust.Handle && !result && error is not null;
 						called.SetResult (true);

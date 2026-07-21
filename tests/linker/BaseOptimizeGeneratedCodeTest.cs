@@ -509,35 +509,35 @@ namespace Linker.Shared {
 		{
 			IgnoreIfNotLinkAll ();
 
-			// Runtime.IsARM64CallingConvention is inlined by the trimmer (using the
-			// 'ObjCRuntime.Runtime.IsARM64CallingConvention' feature switch, which substitutes
-			// the field's value), so any read of the field is turned into a constant - regardless
-			// of whether the reading method has a [BindingImpl (BindingImplOptions.Optimizable)]
-			// attribute or not.
+			// Runtime.IsARM64CallingConvention is controlled by the
+			// 'ObjCRuntime.Runtime.IsARM64CallingConvention' trimmer feature switch: the trimmer
+			// stubs the private Runtime.GetIsARM64CallingConvention method to return a constant,
+			// and it evaluates the field as a constant when removing branches that depend on it
+			// (which is how the generated code uses the field). A plain read of the field is not
+			// rewritten - the field still holds the correct value at runtime.
 #if DEBUG // Release builds will strip IL, so any IL checking has to be done in debug builds.
 			MethodInfo method;
 			IEnumerable<ILInstruction> instructions;
-			IEnumerable<ILInstruction> call_instructions;
 
-			method = typeof (BaseOptimizeGeneratedCodeTest).GetMethod (nameof (GetIsARM64CallingConventionOptimized), BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public | BindingFlags.Static)!;
-			instructions = new ILReader (method);
-			call_instructions = instructions.Where ((v) => v.OpCode.Name == "ldsfld");
-			Assert.That (call_instructions.Count (), Is.EqualTo (0), "optimizable: no ldsfld instruction");
-
-			method = typeof (BaseOptimizeGeneratedCodeTest).GetMethod (nameof (GetIsARM64CallingConventionNotOptimized), BindingFlags.NonPublic | BindingFlags.Instance)!;
-			instructions = new ILReader (method);
-			call_instructions = instructions.Where ((v) => v.OpCode.Name == "ldsfld");
-			Assert.That (call_instructions.Count (), Is.EqualTo (0), "not optimizable: no ldsfld instruction");
-
+			// The trimmer stubs Runtime.GetIsARM64CallingConvention to return a constant value.
 			method = typeof (Runtime).GetMethod ("GetIsARM64CallingConvention", BindingFlags.Static | BindingFlags.NonPublic)!;
 			instructions = new ILReader (method);
 			Assert.That (instructions.Count (), Is.EqualTo (2), "IL Count");
 			Assert.That (instructions.Skip (0).First ().OpCode, Is.EqualTo (OpCodes.Ldc_I4_0).Or.EqualTo (OpCodes.Ldc_I4_1), "IL 1");
 			Assert.That (instructions.Skip (1).First ().OpCode, Is.EqualTo (OpCodes.Ret), "IL 2");
+
+			// The trimmer knows the value of Runtime.IsARM64CallingConvention (from the feature
+			// switch), so it removes any branch that depends on it. Verify that no conditional
+			// branch instruction is left in a method that branches on the field.
+			method = typeof (BaseOptimizeGeneratedCodeTest).GetMethod (nameof (BranchOnIsARM64CallingConvention), BindingFlags.NonPublic | BindingFlags.Static)!;
+			instructions = new ILReader (method);
+			var branch_instructions = instructions.Where ((v) => v.OpCode.FlowControl == FlowControl.Cond_Branch);
+			Assert.That (branch_instructions.Count (), Is.EqualTo (0), "no conditional branch instruction");
 #endif
 
 			Assert.That (GetIsARM64CallingConventionOptimized (), Is.EqualTo (Runtime.IsARM64CallingConvention), "Value optimized");
 			Assert.That (GetIsARM64CallingConventionNotOptimized (), Is.EqualTo (Runtime.IsARM64CallingConvention), "Value unoptimized");
+			Assert.That (BranchOnIsARM64CallingConvention (), Is.EqualTo (Runtime.IsARM64CallingConvention ? 1 : 2), "Value branch");
 		}
 
 		[BindingImplAttribute (BindingImplOptions.Optimizable)]
@@ -549,6 +549,14 @@ namespace Linker.Shared {
 		bool GetIsARM64CallingConventionNotOptimized ()
 		{
 			return Runtime.IsARM64CallingConvention;
+		}
+
+		[BindingImplAttribute (BindingImplOptions.Optimizable)]
+		static int BranchOnIsARM64CallingConvention ()
+		{
+			if (Runtime.IsARM64CallingConvention)
+				return 1;
+			return 2;
 		}
 	}
 }

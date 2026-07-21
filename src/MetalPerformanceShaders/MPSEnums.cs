@@ -68,6 +68,18 @@ namespace MetalPerformanceShaders {
 		Float16 = FloatBit | 16,
 		/// <summary>Indicates 32-bit floating point format data.</summary>
 		Float32 = FloatBit | 32,
+		/// <summary>Indicates a 4-bit floating-point format with a 2-bit exponent and a 1-bit mantissa.</summary>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		Float4E2M1 = FloatBit | 0x210000 | 4,
+		/// <summary>Indicates an 8-bit floating-point format with a 4-bit exponent and a 3-bit mantissa.</summary>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		Float8E4M3 = FloatBit | 0x430000 | 8,
+		/// <summary>Indicates an 8-bit floating-point format with a 5-bit exponent and a 2-bit mantissa.</summary>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		Float8E5M2 = FloatBit | 0x520000 | 8,
+		/// <summary>Indicates an 8-bit floating-point format with an 8-bit exponent and no mantissa bits.</summary>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		Float8E8M0 = FloatBit | 0x800000 | 8,
 
 		[iOS (16, 2), MacCatalyst (16, 2), TV (16, 2)]
 		ComplexBit = 0x01000000,

@@ -1196,7 +1196,7 @@ namespace bgen {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The [FactoryMethod] constructor &apos;{0}.{1}&apos; has an &apos;out NSError&apos; parameter, but its return value is not nullable. Add [return: NullAllowed] to the constructor so the generated factory method can return null when the native initializer fails..
+        ///   Looks up a localized string similar to The [FactoryMethod] binding method &apos;{0}.{1}&apos; has an &apos;out NSError&apos; parameter, but its return value is not nullable. Add [return: NullAllowed] to the binding method so the generated factory method can return null when the native initializer fails..
         /// </summary>
         internal static string BI1125 {
             get {

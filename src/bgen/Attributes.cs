@@ -664,7 +664,8 @@ public class DesignatedInitializerAttribute : Attribute {
 ///   the same managed signature, which can't both be bound as constructors (C# doesn't allow two
 ///   constructors with identical parameter types). In that case the generator emits an internal
 ///   backing helper (prefixed with an underscore) and a <c>public static</c> factory method named after
-///   the binding method (or <see cref="MethodName" /> if specified).</para>
+///   the binding method. When applied to a named init method, the <see cref="MethodName" /> property
+///   must not be set (the binding method's own name is used instead); doing so is an error.</para>
 ///   <para>If the initializer's return value is nullable (annotated with <c>[return: NullAllowed]</c>), the factory method returns a nullable value and returns <see langword="null" /> when the native initializer fails (returns nil). Otherwise the factory method returns a non-nullable value.</para>
 ///   <para>The selector must be an Objective-C <c>init</c> selector: either <c>init</c> or a selector that starts with <c>init</c> followed by an uppercase letter (e.g. <c>initWithName:</c>).</para>
 ///   <example>

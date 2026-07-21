@@ -642,7 +642,7 @@
 	</data>
 
 	<data name="BI1125" xml:space="preserve">
-		<value>The [FactoryMethod] constructor '{0}.{1}' has an 'out NSError' parameter, but its return value is not nullable. Add [return: NullAllowed] to the constructor so the generated factory method can return null when the native initializer fails.</value>
+		<value>The [FactoryMethod] binding method '{0}.{1}' has an 'out NSError' parameter, but its return value is not nullable. Add [return: NullAllowed] to the binding method so the generated factory method can return null when the native initializer fails.</value>
 	</data>
 
 	<data name="BI1126" xml:space="preserve">

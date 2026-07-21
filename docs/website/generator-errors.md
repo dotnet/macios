@@ -329,14 +329,14 @@ Historically it was used on property setters. However using the attribute on _ot
 
 To fix this warning use the `[NullAllowed]` attribute only on parameters, properties or return values.
 
-### <a name='BI1125'/>BI1125: The [FactoryMethod] constructor '\*' has an 'out NSError' parameter, but its return value is not nullable. Add [return: NullAllowed] to the constructor so the generated factory method can return null when the native initializer fails.
+### <a name='BI1125'/>BI1125: The [FactoryMethod] binding method '\*' has an 'out NSError' parameter, but its return value is not nullable. Add [return: NullAllowed] to the binding method so the generated factory method can return null when the native initializer fails.
 
-A constructor annotated with `[FactoryMethod]` that has an `out NSError`
+A binding method annotated with `[FactoryMethod]` that has an `out NSError`
 parameter is a failable initializer: it can fail and return `nil`. The
 generated factory method can only return `null` on failure if its return value
 is nullable.
 
-To fix this warning, add `[return: NullAllowed]` to the constructor.
+To fix this warning, add `[return: NullAllowed]` to the binding method.
 
 ### <a name='BI1126'/>BI1126: The [FactoryMethod] attribute on '\*' can only be used with an Objective-C 'init' selector (the selector must be 'init' or start with 'init' followed by an uppercase letter), but the selector is '\*'.
 

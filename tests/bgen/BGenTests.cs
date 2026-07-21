@@ -272,7 +272,7 @@ namespace GeneratorTests {
 		public void FactoryMethodOutErrorWithoutNullableReturn (Profile profile)
 		{
 			var bgen = BuildFile (profile, false, "factory-method-error.cs");
-			bgen.AssertWarning (1125, "The [FactoryMethod] constructor 'FactoryMethodErrorTest.FailableWidget.Constructor' has an 'out NSError' parameter, but its return value is not nullable. Add [return: NullAllowed] to the constructor so the generated factory method can return null when the native initializer fails.");
+			bgen.AssertWarning (1125, "The [FactoryMethod] binding method 'FactoryMethodErrorTest.FailableWidget.Constructor' has an 'out NSError' parameter, but its return value is not nullable. Add [return: NullAllowed] to the binding method so the generated factory method can return null when the native initializer fails.");
 		}
 
 		[Test]

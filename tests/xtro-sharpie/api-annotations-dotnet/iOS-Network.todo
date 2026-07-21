@@ -1,2 +1,0 @@
-!missing-pinvoke! nw_tcp_set_max_pacing_rate is not bound
-!wrong-enum-size! nw_link_quality_t managed 4 vs native 1

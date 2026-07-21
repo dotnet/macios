@@ -337,7 +337,11 @@ namespace Network {
 	}
 
 	[NativeName ("nw_link_quality_t")]
+#if XAMCORE_5_0
+	public enum NWLinkQuality : byte {
+#else
 	public enum NWLinkQuality : uint {
+#endif
 		Unknown = 0,
 		Minimal = 10,
 		Moderate = 20,

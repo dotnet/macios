@@ -362,6 +362,8 @@ namespace Xamarin.MacDev.Tasks {
 					var item = new TaskItem (path);
 					item.SetMetadata ("LogicalName", rpath);
 					item.SetMetadata ("Optimize", "false");
+					if (contentType == "item" && resourceType == ResourceType.BundleResource)
+						item.SetMetadata ("IsOriginalResource", "true");
 					item.SetMetadata ("BundledInAssembly", assembly);
 
 					if (file.Exists && file.LastWriteTimeUtc >= asmWriteTime) {

@@ -35,7 +35,6 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			var args = new List<string> ();
 
-			args.Add ("pngcrush");
 			args.Add ("-q");
 			args.Add ("-iphone");
 			args.Add ("-f");

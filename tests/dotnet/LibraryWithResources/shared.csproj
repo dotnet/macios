@@ -10,6 +10,7 @@
 		<Compile Include="../*.cs" />
 
 		<BundleResource Update="$(_ResourcePrefix)/B.otf" RegisterFont="true" />
+		<BundleResource Include="../../MyCatalystApp/Resources/image.png" Link="library-image.png" />
 
 		<PartialAppManifest Include="../shared.plist" />
 
@@ -23,5 +24,3 @@
 		<CoreMLModel Include="../*.mlmodel" />
 	</ItemGroup>
 </Project>
-
-

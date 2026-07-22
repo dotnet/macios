@@ -82,12 +82,20 @@ namespace Xamarin.Tests {
 			var result = DotNet.AssertBuild (project_path, properties);
 			AssertThatLinkerExecuted (result);
 			AssertAppContents (platform, appPath);
+			var targets = BinLog.GetAllTargets (result.BinLogPath);
+			AssertTargetExecuted (targets, "_OptimizePngImages", runtimeIdentifier ?? "default runtime identifier");
+			AssertTargetExecuted (targets, "_OptimizePropertyLists", runtimeIdentifier ?? "default runtime identifier");
+			AssertTargetExecuted (targets, "_OptimizeLocalizationFiles", runtimeIdentifier ?? "default runtime identifier");
 			var infoPlistPath = Path.Combine (appPath, "Contents", "Info.plist");
 			var infoPlist = PDictionary.OpenFile (infoPlistPath);
 			Assert.That (infoPlist.GetString ("CFBundleIdentifier").Value, Is.EqualTo ("com.xamarin.mycatalystapp"), "CFBundleIdentifier");
 			Assert.That (infoPlist.GetString ("CFBundleDisplayName").Value, Is.EqualTo ("MyCatalystApp"), "CFBundleDisplayName");
 			Assert.That (infoPlist.GetString ("CFBundleVersion").Value, Is.EqualTo ("3.14"), "CFBundleVersion");
 			Assert.That (infoPlist.GetString ("CFBundleShortVersionString").Value, Is.EqualTo ("3.14"), "CFBundleShortVersionString");
+			var originalImagePath = Path.Combine (Path.GetDirectoryName (project_path)!, "Resources", "image.png");
+			var optimizedImagePath = Path.Combine (appPath, "Contents", "Resources", "image.png");
+			Assert.That (optimizedImagePath, Does.Exist, "Optimized image existence");
+			Assert.That (File.ReadAllBytes (optimizedImagePath), Is.Not.EqualTo (File.ReadAllBytes (originalImagePath)), "Optimized image contents");
 		}
 
 		[TestCase (ApplePlatform.iOS)]
@@ -1132,6 +1140,15 @@ namespace Xamarin.Tests {
 				Assert.That (appBundleContents, Does.Contain (fontAFile), "A.ttc existence");
 				Assert.That (appBundleContents, Does.Contain (fontBFile), "B.otf existence");
 				Assert.That (appBundleContents, Does.Contain (fontCFile), "C.ttf existence");
+
+				var imageFile = Path.Combine (resourcesDirectory, "library-image.png");
+				AssertExists (imageFile, "library-image.png");
+				var originalImage = File.ReadAllBytes (Path.Combine (Configuration.SourceRoot, "tests", "dotnet", "MyCatalystApp", "Resources", "image.png"));
+				var bundledImage = appBundleInfo.GetFile (imageFile);
+				if (platform == ApplePlatform.MacOSX)
+					Assert.That (bundledImage, Is.EqualTo (originalImage), "Unoptimized library image");
+				else
+					Assert.That (bundledImage, Is.Not.EqualTo (originalImage), "Optimized library image");
 
 				var atlasTexture = Path.Combine (resourcesDirectory, "Archer_Attack.atlasc", "Archer_Attack.plist");
 				AssertExists (atlasTexture, "AtlasTexture - Archer_Attack");

@@ -25,10 +25,10 @@ namespace AVFoundation {
 			}
 		}
 
+		/// <summary>Initializes a new instance with the specified pixel buffer attributes.</summary>
 		/// <param name="pixelBufferAttributes">
 		///   <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
 		/// </param>
-		/// <summary>Initializes a new instance with the specified pixel buffer attributes.</summary>
 		[DesignatedInitializer]
 		[Advice ("Please use the constructor that uses one of the available StrongDictionaries. This constructor expects PixelBuffer attributes.")]
 		protected AVPlayerItemVideoOutput (NSDictionary pixelBufferAttributes) : this (pixelBufferAttributes, InitMode.PixelAttributes) { }

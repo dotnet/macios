@@ -3,14 +3,8 @@
 !missing-enum! ar_data_provider_state_t not bound
 !missing-enum! ar_device_anchor_query_status_t not bound
 !missing-enum! ar_device_anchor_tracking_state_t not bound
-!missing-enum! ar_hand_anchor_query_status_t not bound
-!missing-enum! ar_hand_chirality_t not bound
-!missing-enum! ar_hand_fidelity_t not bound
-!missing-enum! ar_hand_skeleton_joint_name_t not bound
 !missing-enum! ar_session_error_code_t not bound
 !missing-enum! ar_transform_correction_t not bound
-!missing-enum! ar_world_anchor_sharing_availability_t not bound
-!missing-enum! ar_world_tracking_error_code_t not bound
 !missing-field! ar_error_domain not bound
 !missing-pinvoke! ar_anchor_get_identifier is not bound
 !missing-pinvoke! ar_anchor_get_origin_from_anchor_transform is not bound

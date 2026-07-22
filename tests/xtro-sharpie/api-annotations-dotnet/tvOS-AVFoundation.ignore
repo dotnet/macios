@@ -33,3 +33,6 @@
 !missing-null-allowed! 'System.Void AVFoundation.AVContentKeyRequest::MakeOptionalStreamingContentKeyRequestData(Foundation.NSData,Foundation.NSData,Foundation.NSDictionary`2<Foundation.NSString,Foundation.NSObject>,System.Action`2<Foundation.NSData,Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #1
 !missing-null-allowed! 'System.Void AVFoundation.AVPlayerItem::FetchAccessLog(System.Action`1<AVFoundation.AVPlayerItemAccessLog>)' is missing a '?' on parameter 'completionHandler' block parameter #0
 !missing-null-allowed! 'System.Void AVFoundation.AVPlayerItem::FetchErrorLog(System.Action`1<AVFoundation.AVPlayerItemErrorLog>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+
+# AVAudioRoutingArbitrationCategory is macOS-only natively (API_UNAVAILABLE on the typedef), but the managed enum is bound and used by AVAudioRoutingArbiter.BeginArbitration.
+!unknown-native-enum! AVAudioRoutingArbitrationCategory bound

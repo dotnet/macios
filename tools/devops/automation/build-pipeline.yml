@@ -133,6 +133,7 @@ extends:
           pushNugets: ${{ parameters.pushNugets }}
           pushNugetsToMaestro: ${{ parameters.pushNugetsToMaestro }}
           useACES: true  # see templates/variables/common.yml
+          enableSourceIndex: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/main') }}
 
       - template: localization/v1.yml@yaml-templates
         parameters:

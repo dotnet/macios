@@ -1,9 +1,9 @@
-AppBundleSize: 13,916,926 bytes (13,590.7 KB = 13.3 MB)
+AppBundleSize: 13,866,447 bytes (13,541.5 KB = 13.2 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 Contents/Info.plist:
-    1,078 bytes (1.1 KB = 0.0 MB)
+    1,079 bytes (1.1 KB = 0.0 MB)
 Contents/MacOS/SizeTestApp:
-    13,913,944 bytes (13,587.8 KB = 13.3 MB)
+    13,863,464 bytes (13,538.5 KB = 13.2 MB)
 Contents/MonoBundle/runtimeconfig.bin:
     1,896 bytes (1.9 KB = 0.0 MB)
 Contents/PkgInfo:

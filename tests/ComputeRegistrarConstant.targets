@@ -15,4 +15,10 @@
 			<DefineConstants>$(DefineConstants);DYNAMIC_REGISTRAR</DefineConstants>
 		</PropertyGroup>
 	</Target>
+
+	<Target Name="ComputeHotReloadCompatibleBuildConstant" BeforeTargets="BeforeBuild">
+		<PropertyGroup Condition="'$(HotReloadCompatibleBuild)' == 'true'">
+			<DefineConstants>$(DefineConstants);HOTRELOAD_COMPATIBLE_BUILD</DefineConstants>
+		</PropertyGroup>
+	</Target>
 </Project>

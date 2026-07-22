@@ -12,11 +12,16 @@ using System.Linq;
 
 namespace BundledResources {
 
+	// Unused sentinel type used to detect whether this assembly was linked/trimmed: the linker removes it
+	// when this assembly is linked, so its absence at runtime means the assembly was linked.
+	class LinkerSentinel { }
+
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class ResourcesTest {
 
 		[Test]
+		[System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage ("Trimming", "IL2026", Justification = "This test checks whether the assembly was linked by checking if an unused type survived trimming; the behavioral difference when the trimmer is enabled is exactly what it's looking for.")]
 		public void Bundled ()
 		{
 			// files are extracted (by MonoDevelop) so we can see them in the file system
@@ -35,11 +40,24 @@ namespace BundledResources {
 				.Where (r => !r.Contains ("shared-dotnet.plist"))
 				.ToArray ();
 
-#if __MACOS__ || __MACCATALYST__
-			var hasResources = false;
+			// When this assembly is linked its resources are always stripped. When it's not linked, the
+			// resources are stripped by an extra step that runs on device and desktop (but not simulator) -
+			// except in a Hot Reload compatible build, where that extra step is skipped for reloadable
+			// (non-linked) assemblies to leave them byte-identical (so the resources are kept).
+			var assemblyLinked = typeof (ResourcesTest).Assembly.GetType ("BundledResources.LinkerSentinel") is null;
+#if HOTRELOAD_COMPATIBLE_BUILD
+			var hotReloadCompatibleBuild = true;
 #else
-			var hasResources = Runtime.Arch != Arch.DEVICE;
+			var hotReloadCompatibleBuild = false;
 #endif
+
+#if __MACOS__ || __MACCATALYST__
+			var simulator = false;
+#else
+			var simulator = Runtime.Arch != Arch.DEVICE;
+#endif
+
+			var hasResources = simulator || (hotReloadCompatibleBuild && !assemblyLinked);
 			if (!hasResources) {
 				Assert.That (resources.Length, Is.EqualTo (0), "No resources");
 			} else {

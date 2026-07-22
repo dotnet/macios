@@ -67,6 +67,9 @@ namespace NetworkExtension {
 		Tls1_1 = 2,
 		/// <summary>To be added.</summary>
 		Tls1_2 = 3,
+		/// <summary>Uses TLS 1.3.</summary>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		Tls1_3 = 4,
 	}
 
 	[NoTV]
@@ -3739,6 +3742,20 @@ namespace NetworkExtension {
 		nuint BytesOutboundCount { get; }
 	}
 
+	/// <summary>Specifies the IP families to which a packet tunnel network setting applies.</summary>
+	[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[Native ("NEPacketTunnelNetworkSettingsIPFamily")]
+	enum NEPacketTunnelNetworkSettingsIpFamily : long {
+		/// <summary>The setting is disabled.</summary>
+		None = 0,
+		/// <summary>The setting applies to both IPv4 and IPv6 traffic.</summary>
+		Any = 1,
+		/// <summary>The setting applies only to IPv4 traffic.</summary>
+		IPv4 = 2,
+		/// <summary>The setting applies only to IPv6 traffic.</summary>
+		IPv6 = 3,
+	}
+
 	/// <summary>Contains settings for a <see cref="NetworkExtension.NEPacketTunnelFlow" />.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/NetworkExtension/Reference/NEPacketTunnelNetworkSettingsClassRef/index.html">Apple documentation for <c>NEPacketTunnelNetworkSettings</c></related>
@@ -3791,6 +3808,36 @@ namespace NetworkExtension {
 		[Export ("MTU", ArgumentSemantic.Copy)]
 		[NullAllowed]
 		NSNumber Mtu { get; set; }
+
+		/// <summary>Gets or sets the IP families whose traffic is routed through the tunnel.</summary>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("includeAllNetworks", ArgumentSemantic.Assign)]
+		NEPacketTunnelNetworkSettingsIpFamily IncludeAllNetworks { get; set; }
+
+		/// <summary>Gets or sets the IP families whose local network traffic is excluded from the tunnel.</summary>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("excludeLocalNetworks", ArgumentSemantic.Assign)]
+		NEPacketTunnelNetworkSettingsIpFamily ExcludeLocalNetworks { get; set; }
+
+		/// <summary>Gets or sets whether internet-routable cellular services traffic is excluded from the tunnel.</summary>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("excludeCellularServices")]
+		bool ExcludeCellularServices { get; set; }
+
+		/// <summary>Gets or sets whether Apple Push Notification service traffic is excluded from the tunnel.</summary>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("excludeAPNs")]
+		bool ExcludeAPNs { get; set; }
+
+		/// <summary>Gets or sets whether traffic used to communicate with directly connected devices is excluded from the tunnel.</summary>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("excludeDeviceCommunication")]
+		bool ExcludeDeviceCommunication { get; set; }
+
+		/// <summary>Gets or sets whether this tunnel's routes take precedence over locally defined routes.</summary>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("enforceRoutes")]
+		bool EnforceRoutes { get; set; }
 	}
 
 	/// <summary>Provides IO over a TUN interface.</summary>
@@ -4681,6 +4728,11 @@ namespace NetworkExtension {
 		[MacCatalyst (26, 0), NoTV, NoMac, iOS (26, 0)]
 		[Export ("matchEthernet")]
 		bool MatchEthernet { get; set; }
+
+		/// <summary>Gets or sets whether the app push provider starts on cellular plans that support Mission Critical Services.</summary>
+		[MacCatalyst (27, 0), NoTV, NoMac, iOS (27, 0)]
+		[Export ("matchMissionCriticalService")]
+		bool MatchMissionCriticalService { get; set; }
 	}
 
 	[NoTV, NoMac, iOS (14, 0)]

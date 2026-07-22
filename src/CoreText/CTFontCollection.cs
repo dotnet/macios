@@ -143,9 +143,9 @@ namespace CoreText {
 			GC.KeepAlive (options);
 			return result;
 		}
+		/// <summary>Creates a CTFontCollection from the specified set of queryDescriptors.</summary>
 		/// <param name="queryDescriptors">An array of font descriptors, can be null.</param>
 		/// <param name="options">The options for matching font descriptors.</param>
-		/// <summary>Creates a CTFontCollection from the specified set of queryDescriptors.</summary>
 		public CTFontCollection (CTFontDescriptor []? queryDescriptors, CTFontCollectionOptions? options)
 			: base (Create (queryDescriptors, options), true, true)
 		{

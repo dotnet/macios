@@ -47,8 +47,8 @@ namespace CoreVideo {
 		{
 		}
 
-		/// <param name="dictionary">The dictionary containing pixel buffer attributes.</param>
 		/// <summary>Initializes the strongly typed <see cref="CoreVideo.CVPixelBufferAttributes" /> from the provided dictionary.</summary>
+		/// <param name="dictionary">The dictionary containing pixel buffer attributes.</param>
 		public CVPixelBufferAttributes (NSDictionary dictionary)
 			: base (dictionary)
 		{

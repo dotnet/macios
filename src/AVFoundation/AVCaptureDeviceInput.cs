@@ -34,8 +34,8 @@
 
 namespace AVFoundation {
 	public partial class AVCaptureDeviceInput {
-		/// <param name="device">The capture device to create an input for.</param>
 		/// <summary>Factory method to create an <see cref="AVFoundation.AVCaptureDeviceInput" /> for the <paramref name="device" />.</summary>
+		/// <param name="device">The capture device to create an input for.</param>
 		/// <returns>A new <see cref="AVCaptureDeviceInput" /> for the specified device, or <see langword="null" /> on failure.</returns>
 		static public AVCaptureDeviceInput? FromDevice (AVCaptureDevice device)
 		{

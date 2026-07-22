@@ -33,13 +33,13 @@ using System.Threading;
 namespace MapKit {
 	public partial class MKLocalSearch {
 
-				/// <param name="token">A cancellation token that can be used to cancel the search.</param>
-				/// <summary>Asynchronously starts the local search.</summary>
-				/// <returns>A task that represents the asynchronous search operation, containing the search response.</returns>
-				/// <remarks>
-				///   <para tool="threads">This can be used from a background thread.</para>
-				/// </remarks>
-				public virtual Task<MKLocalSearchResponse?> StartAsync (CancellationToken token)
+		/// <param name="token">A cancellation token that can be used to cancel the search.</param>
+		/// <summary>Asynchronously starts the local search.</summary>
+		/// <returns>A task that represents the asynchronous search operation, containing the search response.</returns>
+		/// <remarks>
+		///   <para tool="threads">This can be used from a background thread.</para>
+		/// </remarks>
+		public virtual Task<MKLocalSearchResponse?> StartAsync (CancellationToken token)
 		{
 			var tcs = new TaskCompletionSource<MKLocalSearchResponse?> ();
 

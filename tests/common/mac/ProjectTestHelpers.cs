@@ -90,18 +90,6 @@ namespace Xamarin.MMP.Tests {
 		}
 	}
 
-	static class FrameworkBuilder {
-		public static string CreateFatFramework (string tmpDir)
-		{
-			return Path.Combine (Configuration.RootPath, "tests", "test-libraries", "frameworks", ".libs", "MmpTestFramework.xcframework", "macos-arm64_x86_64", "MmpTestFramework.framework"); ;
-		}
-
-		public static string CreateThinFramework (string tmpDir, bool sixtyFourBits = true)
-		{
-			return Path.Combine (Configuration.RootPath, "tests", "test-libraries", "frameworks", ".libs", "osx-x64", "MmpTestFramework.framework");
-		}
-	}
-
 	// Hide the hacks and provide a nice interface for writting tests that build / run XM projects
 	static class TI {
 		public class UnifiedTestConfig {

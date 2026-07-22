@@ -2496,6 +2496,65 @@ namespace Xamarin.Tests {
 			rv.AssertNoWarnings ((evt) => !Extensions.IsFilteredWarning (evt, platform));
 		}
 
+		// Some users have unusual assembly names: non-ASCII characters, and even commas.
+		// Verify that we can build an app with such an assembly name. Ported from the legacy mmp test suite.
+		[Test]
+		[TestCase ("piñata")] // non-ASCII
+		[TestCase ("你好世界")] // non-ASCII
+		[TestCase ("UserLikes,ToEnumerate")] // comma
+		[TestCase ("😬")] // emoji
+		[TestCase ("👨🏼‍🦰")] // complex emoji
+		public void BuildWithUnusualProjectName (string projectName)
+		{
+			var platform = ApplePlatform.MacOSX;
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			var testDir = Cache.CreateTemporaryDirectory ();
+			DotNet.AssertNew (testDir, platform.AsString ().ToLowerInvariant (), name: projectName);
+
+			var project_path = Path.Combine (testDir, projectName, $"{projectName}.csproj");
+			DotNet.AssertBuild (project_path);
+		}
+
+		// Verify that enabling the hardened runtime makes the build pass the expected options to codesign.
+		// Ported from the legacy mmp test suite.
+		[Test]
+		[TestCase (ApplePlatform.MacOSX)]
+		public void HardenedRuntimeCodesign (ApplePlatform platform)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			var runtimeIdentifiers = GetDefaultRuntimeIdentifier (platform);
+			var project_path = GetProjectPath ("MySimpleApp", runtimeIdentifiers, platform, out _);
+			Clean (project_path);
+
+			// First build without the hardened runtime, and verify codesign isn't asked to use it.
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["EnableCodeSigning"] = "true";
+			var result = DotNet.AssertBuild (project_path, properties);
+			var baseCodesign = GetLastCodesignInvocation (result.BinLogPath);
+			Assert.That (baseCodesign, Does.Not.Contain (" -o runtime"), "Base codesign hardened runtime");
+			Assert.That (baseCodesign, Does.Contain (" --timestamp=none"), "Base codesign timestamp");
+
+			// Then build with the hardened runtime, and verify codesign is asked to use it.
+			Clean (project_path);
+			properties ["UseHardenedRuntime"] = "true";
+			result = DotNet.AssertBuild (project_path, properties);
+			var hardenedCodesign = GetLastCodesignInvocation (result.BinLogPath);
+			Assert.That (hardenedCodesign, Does.Contain (" -o runtime"), "Hardened codesign hardened runtime");
+			Assert.That (hardenedCodesign, Does.Not.Contain (" --timestamp=none"), "Hardened codesign timestamp");
+		}
+
+		static string GetLastCodesignInvocation (string binLogPath)
+		{
+			var codesignInvocations = BinLog.GetBuildMessages (binLogPath)
+				.Select (v => v.Message)
+				.Where (v => v?.Contains ("/usr/bin/codesign ") == true)
+				.ToList ();
+			Assert.That (codesignInvocations, Is.Not.Empty, "Found codesign invocation");
+			return codesignInvocations.Last () ?? "";
+		}
+
 		[Test]
 		[TestCase (ApplePlatform.MacOSX, "osx-x64", false)]
 		[TestCase (ApplePlatform.MacOSX, "osx-x64", true)]

@@ -92,6 +92,7 @@ namespace Network {
 
 	[NoTV, NoiOS]
 	[NoMacCatalyst]
+	[NativeName ("nw_ethernet_channel_state_t")]
 	public enum NWEthernetChannelState {
 		Invalid = 0,
 		Waiting = 1,

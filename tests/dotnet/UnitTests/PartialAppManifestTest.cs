@@ -24,6 +24,7 @@ namespace Xamarin.Tests {
 			Assert.That (infoPlist.GetString ("CFBundleShortVersionString").Value, Is.EqualTo ("3.14"), "CFBundleShortVersionString");
 			Assert.That (infoPlist.GetString ("Something").Value, Is.EqualTo ("SomeValue"), "Something");
 			Assert.That (infoPlist.GetString ("UILaunchStoryboardName").Value, Is.EqualTo ("LaunchScreen"), "UILaunchStoryboardName");
+			Assert.That (infoPlist.GetString ("a|String").Value, Is.EqualTo ("b"), "Delimiter value");
 
 			var partialAppManifestPath = Path.Combine (Path.GetDirectoryName (project_path)!, "..", "Partial.plist");
 			Configuration.Touch (partialAppManifestPath);
@@ -36,13 +37,16 @@ namespace Xamarin.Tests {
 			AssertTargetNotExecuted (allTargets, "_CompileAppManifest", "_CompileAppManifest rebuild 2");
 
 			properties = GetDefaultProperties (runtimeIdentifiers);
-			properties ["LaunchStoryboardName"] = "AnotherLaunchScreen";
+			properties ["ManifestKey"] = "a";
+			properties ["ManifestValue"] = "String|b";
 			rv = DotNet.AssertBuild (project_path, properties);
 			allTargets = BinLog.GetAllTargets (rv.BinLogPath);
 			AssertTargetExecuted (allTargets, "_CompileAppManifest", "_CompileAppManifest rebuild 3");
 
 			infoPlist = PDictionary.OpenFile (infoPlistPath);
-			Assert.That (infoPlist.GetString ("UILaunchStoryboardName").Value, Is.EqualTo ("AnotherLaunchScreen"), "UILaunchStoryboardName updated");
+			Assert.That (infoPlist.GetString ("UILaunchStoryboardName").Value, Is.EqualTo ("LaunchScreen"), "UILaunchStoryboardName unchanged");
+			Assert.That (infoPlist.ContainsKey ("a|String"), Is.False, "Old delimiter key");
+			Assert.That (infoPlist.GetString ("a").Value, Is.EqualTo ("String|b"), "Updated delimiter value");
 
 			rv = DotNet.AssertBuild (project_path, properties);
 			allTargets = BinLog.GetAllTargets (rv.BinLogPath);

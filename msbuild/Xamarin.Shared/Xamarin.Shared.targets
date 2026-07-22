@@ -623,7 +623,16 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<Target Name="_CompileAppManifestInputs" Condition="'$(IsMacEnabled)' == 'true'" >
 		<ItemGroup>
 			<_FontFilesToRegister Include="@(BundleResource)" Condition="'%(BundleResource.RegisterFont)' == 'true'" />
+			<_AppManifestEntryToHash Include="@(AppManifestEntry)" />
+			<_AppManifestEntryHashMetadata Include="Identity;Type;Value;ArraySeparator" />
 		</ItemGroup>
+		<ComputeHashForItems
+			Input="@(_AppManifestEntryToHash)"
+			InputMetadata="@(_AppManifestEntryHashMetadata)"
+			OutputMetadata="_Hash"
+			>
+			<Output TaskParameter="Output" ItemName="_AppManifestEntryWithHash" />
+		</ComputeHashForItems>
 
 		<PropertyGroup>
 			<_CompileAppManifestInputFile>$(DeviceSpecificIntermediateOutputPath)_CompileAppManifest.inputs</_CompileAppManifestInputFile>
@@ -638,7 +647,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<_CompileAppManifestInputLine Include="ApplicationTitle=$(ApplicationTitle)" />
 			<_CompileAppManifestInputLine Include="ApplicationVersion=$(ApplicationVersion)" />
 			<_CompileAppManifestInputLine Include="AppManifest=$(AppBundleManifest)" />
-			<_CompileAppManifestInputLine Include="AppManifestEntry=%(AppManifestEntry.Identity)|%(AppManifestEntry.Type)|%(AppManifestEntry.Value)|%(AppManifestEntry.ArraySeparator)" />
+			<_CompileAppManifestInputLine Include="AppManifestEntry=%(_AppManifestEntryWithHash._Hash)" />
 			<_CompileAppManifestInputLine Include="CompiledAppManifest=$(_TemporaryAppManifest)" />
 			<_CompileAppManifestInputLine Include="DefaultSdkVersion=$(_SdkVersion)" />
 			<_CompileAppManifestInputLine Include="FontFilesToRegister=$(_CompileAppManifestFontFilesToRegister)" />

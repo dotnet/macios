@@ -1,7 +1,6 @@
 #nullable enable
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -40,14 +39,18 @@ namespace Xamarin.MacDev.Tasks {
 
 			using var sha = CreateHashAlgorithm ();
 
-			var buffer = new List<byte> ();
 			for (var i = 0; i < Input.Length; i++) {
 				var input = Input [i];
-				buffer.Clear ();
+				using var buffer = new MemoryStream ();
+				using var writer = new BinaryWriter (buffer, Encoding.UTF8, true);
 				foreach (var im in InputMetadata) {
-					buffer.AddRange (Encoding.UTF8.GetBytes (input.GetMetadata (im.ItemSpec)));
+					var bytes = Encoding.UTF8.GetBytes (input.GetMetadata (im.ItemSpec));
+					writer.Write (bytes.Length);
+					writer.Write (bytes);
 				}
-				var hashBytes = sha.ComputeHash (buffer.ToArray ());
+				writer.Flush ();
+				buffer.Position = 0;
+				var hashBytes = sha.ComputeHash (buffer);
 				var hash = string.Join ("", hashBytes.Select (b => $"{b:x2}"));
 				input.SetMetadata (OutputMetadata, hash);
 			}

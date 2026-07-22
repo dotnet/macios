@@ -19,6 +19,7 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacCatalyst, true, false)]
 		[TestCase (ApplePlatform.iOS, true, false)]
 		[TestCase (ApplePlatform.MacCatalyst, false, true)]
+		[TestCase (ApplePlatform.MacOSX, false, true)]
 		public void DotNetWatch (ApplePlatform platform, bool useMonoRuntime, bool enableSandbox)
 		{
 			DotNetWatchImpl (platform, useMonoRuntime, enableSandbox, usePhysicalDevice: false);
@@ -170,6 +171,12 @@ namespace Xamarin.Tests {
 				logPath = Path.Combine (containerDir, "output.log");
 			}
 			Log ($"The app will write its output to: {logPath}");
+			// Delete any stale log file from a previous run. The sandboxed log file lives in a
+			// well-known location in the app's container (shared between all sandboxed runs), and
+			// the app opens it without truncating, so stale lines from a previous run could
+			// otherwise satisfy the output checks and make the test pass without validating anything.
+			if (File.Exists (logPath))
+				File.Delete (logPath);
 			var pollThread = new Thread ((v) => {
 				Log ($"Output polling thread started. Polling '{logPath}' for app output.");
 				var reportedLines = 0;

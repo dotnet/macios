@@ -551,7 +551,7 @@ gh issue list --repo dotnet/macios --state closed \
 
 ### Step 4.2: Collect issue-specific information
 
-When an existing open or closed issue is identified, read its full description and look for a section named **Additional info to collect** (at any heading level). If this section exists:
+When an existing open or closed issue is identified, read its full description (for example: `gh issue view <issue_number> --repo dotnet/macios --json body,comments`) and look for a section named **Additional info to collect** (at any heading level). If this section exists:
 
 1. Treat requests for diagnostic facts about the matching failure as an issue-specific checklist.
 2. Follow those checklist items for every new occurrence before proposing or performing an issue action.

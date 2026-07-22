@@ -673,7 +673,7 @@ namespace LinkSdk {
 #endif // __MACOS__ || __MACCATALYST__
 		}
 
-		string TestFolder (Environment.SpecialFolder folder, bool supported = true, bool? exists = true, bool readOnly = false)
+		string TestFolder (Environment.SpecialFolder folder, bool supported = true, bool? exists = true, bool? readOnly = false)
 		{
 			var path = Environment.GetFolderPath (folder);
 			Assert.That (path.Length > 0, Is.EqualTo (supported), $"SpecialFolder: {folder.ToString ()} Path: {path} Supported: {supported}");
@@ -685,13 +685,16 @@ namespace LinkSdk {
 				Assert.That (dirExists, Is.EqualTo (exists), path);
 			if (!dirExists)
 				return path;
+			// Access to privacy-protected folders depends on the host's TCC state.
+			if (!readOnly.HasValue)
+				return path;
 
 			string file = Path.Combine (path, "temp.txt");
 			try {
 				File.WriteAllText (file, "mine");
-				Assert.That (readOnly, Is.False, "!readOnly " + folder);
+				Assert.That (readOnly.Value, Is.False, "!readOnly " + folder);
 			} catch {
-				Assert.That (readOnly, Is.True, "readOnly " + folder);
+				Assert.That (readOnly.Value, Is.True, "readOnly " + folder);
 			} finally {
 				File.Delete (file);
 			}
@@ -772,7 +775,7 @@ namespace LinkSdk {
 			// some stuff we return a value - but the directory does not exists 
 
 #if __MACOS__
-			var path = TestFolder (Environment.SpecialFolder.Desktop, exists: true);
+			var path = TestFolder (Environment.SpecialFolder.Desktop, exists: true, readOnly: null);
 #else
 			var path = TestFolder (Environment.SpecialFolder.Desktop, exists: false);
 #endif
@@ -864,9 +867,12 @@ namespace LinkSdk {
 			if (string.IsNullOrEmpty (path) && TestRuntime.IsInCI) {
 				// ignore this
 			} else {
-				path = TestFolder (Environment.SpecialFolder.MyDocuments);
+				path = TestFolder (Environment.SpecialFolder.MyDocuments, readOnly: null);
 				Assert.That (path, Is.EqualTo (docs), "path - MyDocuments");
 			}
+#elif __MACCATALYST__
+			path = TestFolder (Environment.SpecialFolder.MyDocuments, readOnly: null);
+			Assert.That (path, Is.EqualTo (docs), "path - MyDocuments");
 #else
 			// and some stuff is read/write
 			path = TestFolder (Environment.SpecialFolder.MyDocuments);

@@ -42,8 +42,8 @@ namespace Foundation {
 
 		/// <summary>Default constructor, uses the name of the property as the name of the outlet.</summary>
 		public ConnectAttribute () { }
-		/// <param name="name">The name on the Inteface Builder file.</param>
-		///         <summary>Use this constructor to specify the name of the underlying outlet to map to, instead of defaulting to the name of the property.</summary>
+		/// <summary>Use this constructor to specify the name of the underlying outlet to map to, instead of defaulting to the name of the property.</summary>
+		/// <param name="name">The name in the Interface Builder file.</param>
 		public ConnectAttribute (string name)
 		{
 			this.name = name;

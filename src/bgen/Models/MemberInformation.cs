@@ -262,6 +262,9 @@ public class MemberInformation {
 			mods += "";
 		} else if (render_as_factory_method) {
 			mods += "static ";
+		} else if (is_factory_method && !is_ctor) {
+			// The '_Create...' helper backing a named factory method is a private, non-virtual method.
+			mods += "";
 		} else if (is_ctor && is_protocol_member) {
 			mods += "static ";
 		} else if (is_static || is_category_extension || is_extension_method || is_protocol_implementation_method) {

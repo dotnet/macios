@@ -4681,7 +4681,11 @@ public partial class Generator : IMemberGatherer {
 			return;
 		}
 
-		PrintExport (minfo);
+		// The '_Create...' helper backing a named factory method is a private, non-virtual
+		// method that's only called from the generated static factory method, so it doesn't
+		// need to be exported to the Objective-C runtime.
+		if (!(minfo.is_factory_method && !minfo.is_ctor))
+			PrintExport (minfo);
 
 		if (!minfo.is_interface_impl) {
 			PrintMethodAttributes (minfo);
@@ -4705,10 +4709,11 @@ public partial class Generator : IMemberGatherer {
 			do_not_call_base = false;
 		}
 
-		// The constructor backing a factory method is hidden (internal); the public
-		// API is the generated static factory method instead.
+		// The member backing a factory method is hidden; the public API is the generated
+		// static factory method instead. A backing constructor is kept internal so the
+		// factory method can reach it, while a named init helper ('_Create...') is private.
 		if (minfo.is_factory_method)
-			mod = "internal";
+			mod = minfo.is_ctor ? "internal" : "";
 
 		print_generated_code (optimizable: IsOptimizable (minfo.mi));
 		print ("{0} {1}{2}{3}",

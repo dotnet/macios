@@ -256,15 +256,26 @@ namespace GeneratorTests {
 			Assert.That (createWithBaz.Parameters.Select (p => p.ParameterType.FullName), Is.EqualTo (new [] { "System.IntPtr" }), "CreateWithBaz parameters");
 			Assert.That (FactoryMethodDisposesOnFailure (createWithBaz), Is.False, "CreateWithBaz doesn't handle nil");
 
-			// The backing 'init' message-send helpers are generated as internal instance
-			// methods (prefixed with an underscore), so the public API only exposes the
-			// static factory methods.
+			// The backing 'init' message-send helpers are generated as private instance
+			// methods (prefixed with an underscore) without an [Export] attribute, so the
+			// public API only exposes the static factory methods and the 'init' selectors
+			// aren't registered with the Objective-C runtime.
 			var helperFoo = widget.Methods.Single (m => m.Name == "_CreateWithFoo");
 			Assert.That (helperFoo.IsStatic, Is.False, "_CreateWithFoo is an instance method");
-			Assert.That (helperFoo.IsAssembly, Is.True, "_CreateWithFoo is internal");
+			Assert.That (helperFoo.IsPrivate, Is.True, "_CreateWithFoo is private");
+			Assert.That (helperFoo.IsVirtual, Is.False, "_CreateWithFoo is not virtual");
+			Assert.That (FactoryMethodHasExport (helperFoo), Is.False, "_CreateWithFoo has no [Export]");
 			var helperBar = widget.Methods.Single (m => m.Name == "_CreateWithBar");
 			Assert.That (helperBar.IsStatic, Is.False, "_CreateWithBar is an instance method");
-			Assert.That (helperBar.IsAssembly, Is.True, "_CreateWithBar is internal");
+			Assert.That (helperBar.IsPrivate, Is.True, "_CreateWithBar is private");
+			Assert.That (helperBar.IsVirtual, Is.False, "_CreateWithBar is not virtual");
+			Assert.That (FactoryMethodHasExport (helperBar), Is.False, "_CreateWithBar has no [Export]");
+		}
+
+		// Returns true if the method has an [Export] attribute.
+		static bool FactoryMethodHasExport (Mono.Cecil.MethodDefinition method)
+		{
+			return method.CustomAttributes.Any (a => a.AttributeType.Name == "ExportAttribute");
 		}
 
 		[Test]

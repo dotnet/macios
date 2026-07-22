@@ -41207,7 +41207,6 @@ P:CoreSpotlight.CSSearchableItemAttributeSet.TranscribedTextContent
 P:CoreSpotlight.CSSearchQueryContext.FetchAttributes
 P:CoreSpotlight.CSSearchQueryContext.FilterQueries
 P:CoreSpotlight.CSSearchQueryContext.KeyboardLanguage
-P:CoreSpotlight.CSSearchQueryContext.SourceOptions
 P:CoreSpotlight.CSSuggestion.LocalizedAttributedSuggestion
 P:CoreSpotlight.CSSuggestion.Score
 P:CoreSpotlight.CSSuggestion.SuggestionDataSources
@@ -58897,7 +58896,6 @@ T:CoreSpotlight.CSSearchableIndexDelegateGetSearchableItemsHandler
 T:CoreSpotlight.CSSearchableIndexEndIndexHandler
 T:CoreSpotlight.CSSearchableItemUpdateListenerOptions
 T:CoreSpotlight.CSSearchQueryContext
-T:CoreSpotlight.CSSearchQuerySourceOptions
 T:CoreSpotlight.CSSuggestion
 T:CoreSpotlight.CSSuggestionKind
 T:CoreSpotlight.CSUserInteraction

@@ -110,6 +110,12 @@ namespace CoreSpotlight {
 		[NullAllowed]
 		ICSSearchableIndexDelegate IndexDelegate { get; set; }
 
+		/// <summary>Gets the file protection class used by the search index.</summary>
+		[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[Export ("protectionClass")]
+		[BindAs (typeof (NSFileProtectionType))]
+		NSString ProtectionClass { get; }
+
 		/// <summary>Gets a Boolean value that tells whether indexing is available.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -344,6 +350,16 @@ namespace CoreSpotlight {
 
 	delegate void CSSearchableIndexDelegateGetSearchableItemsHandler (CSSearchableItem [] items);
 
+	/// <summary>Describes a searchable index.</summary>
+	[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	interface CSSearchableIndexDescription : NSSecureCoding, NSCopying {
+		/// <summary>Gets the file protection class associated with the searchable index.</summary>
+		[NullAllowed, Export ("protectionClass")]
+		[BindAs (typeof (NSFileProtectionType?))]
+		NSString ProtectionClass { get; }
+	}
+
 	/// <summary>A uniquely identifiable, searchable object in a <see cref="CoreSpotlight.CSSearchableIndex" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreSpotlight/Reference/CSSearchableItem_Class/index.html">Apple documentation for <c>CSSearchableItem</c></related>
@@ -432,6 +448,10 @@ namespace CoreSpotlight {
 		[Export ("isUpdate", ArgumentSemantic.Assign)]
 		bool IsUpdate { get; set; }
 
+#if !XAMCORE_5_0 && __TVOS__
+		[Obsolete ("This property is not available on tvOS.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+#endif
 		[NoTV, iOS (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
 		[Export ("updateListenerOptions", ArgumentSemantic.Assign)]
 		CSSearchableItemUpdateListenerOptions UpdateListenerOptions { get; set; }
@@ -518,8 +538,16 @@ namespace CoreSpotlight {
 
 	/// <summary>Represents keys that identify commonly used mailboxes.</summary>
 	/// <remarks>To be added.</remarks>
+#if XAMCORE_5_0
+	[NoTV]
+#endif
 	[MacCatalyst (13, 1)]
+#if !XAMCORE_5_0 && __TVOS__
+	[Obsolete ("This type is not available on tvOS.")]
+	[EditorBrowsable (EditorBrowsableState.Never)]
+#else
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
+#endif
 	[Static]
 	interface CSMailboxKey {
 
@@ -2706,15 +2734,42 @@ namespace CoreSpotlight {
 		[NullAllowed, Export ("keyboardLanguage", ArgumentSemantic.Strong)]
 		string KeyboardLanguage { get; set; }
 
+#if XAMCORE_5_0
+		/// <summary>Gets or sets the sources that the query can search.</summary>
+		[NoTV, NoiOS, NoMacCatalyst]
+#elif !__MACOS__
+		/// <summary>Gets or sets the sources that the query can search.</summary>
+		[Obsolete ("This property is not available on this platform.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+#else
+		/// <summary>Gets or sets the sources that the query can search.</summary>
+#endif
 		[Export ("sourceOptions", ArgumentSemantic.Assign)]
 		CSSearchQuerySourceOptions SourceOptions { get; set; }
 	}
 
+#if XAMCORE_5_0
+	/// <summary>Specifies the sources that a Core Spotlight query can search.</summary>
+	[NoTV, NoiOS, NoMacCatalyst]
+#else
+#if !__MACOS__
+	/// <summary>Specifies the sources that a Core Spotlight query can search.</summary>
+	[Obsolete ("This enum is not available on this platform.")]
+	[EditorBrowsable (EditorBrowsableState.Never)]
+#else
+	/// <summary>Specifies the sources that a Core Spotlight query can search.</summary>
+#endif
 	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
+#endif
+	[Flags]
 	[Native]
+#if XAMCORE_5_0
+	public enum CSSearchQuerySourceOptions : ulong {
+#else
 	public enum CSSearchQuerySourceOptions : long {
+#endif
 		Default = 0,
-		AllowMail = 1L << 0,
+		AllowMail = 1 << 0,
 	}
 
 	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
@@ -2725,8 +2780,18 @@ namespace CoreSpotlight {
 		Default,
 	}
 
+#if XAMCORE_5_0
+	[NoTV]
+#else
+#if __TVOS__
+	[Obsolete ("This enum is not available on tvOS.")]
+	[EditorBrowsable (EditorBrowsableState.Never)]
+#endif
+	[TV (18, 4)]
+#endif
+	[Flags]
 	[Native]
-	[TV (18, 4), iOS (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
+	[iOS (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
 	public enum CSSearchableItemUpdateListenerOptions : ulong {
 		Default = 0,
 		Summarization = 1 << 1,

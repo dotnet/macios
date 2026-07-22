@@ -385,9 +385,9 @@ namespace Xamarin.Tests {
 			// The native library is removed from the resources by the linker
 			var actualResources1 = ad1.MainModule.Resources.Select (v => v.Name).OrderBy (v => v).ToArray ();
 			var expectedResources = new List<string> ();
-			if (platform != ApplePlatform.MacOSX && platform != ApplePlatform.MacCatalyst) {
-				// macOS doesn't have this resources, and it's removed by the linker for Mac Catalyst
-				// it's not removed for iOS/tvOS, because we don't bother removing resources for simulator builds.
+			if (platform != ApplePlatform.MacOSX) {
+				// macOS doesn't have this resources
+				// it's not removed for iOS/tvOS/Mac Catalyst, because we're a hot reload compatible (debug) build.
 				expectedResources.Add ("__monotouch_item_PartialAppManifest_shared-dotnet.plist");
 			}
 			Assert.That (actualResources1, Is.EqualTo (expectedResources.OrderBy (v => v).ToArray ()), $"embedded resources for bindings-test.dll");

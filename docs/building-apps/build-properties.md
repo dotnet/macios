@@ -603,6 +603,14 @@ Example:
 </Target>
 ```
 
+## HotReloadCompatibleBuild
+
+A boolean property that indicates whether the build must be compatible with Hot
+Reload. When enabled, the build tasks avoid modifying user (reloadable)
+assemblies, since such modifications would break Hot Reload.
+
+The default value is `true` for debug builds and `false` otherwise.
+
 ## IBToolPath
 
 The full path to the `ibtool` tool.

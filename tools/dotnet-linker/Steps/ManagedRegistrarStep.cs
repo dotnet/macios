@@ -600,7 +600,7 @@ namespace Xamarin.Linker {
 			foreach (var instruction in body.Instructions) {
 				switch (instruction.Operand) {
 				case MethodReference methodReference:
-					instruction.Operand = module.ImportReference (methodReference);
+					instruction.Operand = ImportMethodReference (module, methodReference);
 					break;
 				case TypeReference typeReference:
 					instruction.Operand = module.ImportReference (typeReference);
@@ -615,6 +615,24 @@ namespace Xamarin.Linker {
 				if (handler.CatchType is not null)
 					handler.CatchType = module.ImportReference (handler.CatchType);
 			}
+		}
+
+		// Imports a method reference into the given module. For generic instance methods
+		// (method specs) we can't rely on ModuleDefinition.ImportReference to re-import the
+		// generic arguments (it leaves them pointing at the original module when the element
+		// method already belongs to the target module), so we rebuild the generic instance
+		// with each generic argument explicitly imported. Otherwise the module would end up
+		// referencing a type declared in another module, and writing it would fail.
+		static MethodReference ImportMethodReference (ModuleDefinition module, MethodReference methodReference)
+		{
+			if (methodReference is GenericInstanceMethod gim) {
+				var imported = new GenericInstanceMethod (module.ImportReference (gim.ElementMethod));
+				foreach (var argument in gim.GenericArguments)
+					imported.GenericArguments.Add (module.ImportReference (argument));
+				return imported;
+			}
+
+			return module.ImportReference (methodReference);
 		}
 
 		public void EmitCallToProxyMethod (MethodDefinition method, MethodDefinition callback, MethodDefinition proxyInterfaceMethod)

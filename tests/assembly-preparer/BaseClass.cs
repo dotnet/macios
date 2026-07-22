@@ -98,9 +98,16 @@ public abstract class BaseClass {
 		var logger = new TestLogger () { Platform = platform };
 		var preparer = new AssemblyPreparer (logger, infos, configpath);
 		preparer.Registrar = RegistrarMode.TrimmableStatic;
-		AssertPrepare (preparer);
 
 		var testInfo = infos.Single (v => Path.GetFileNameWithoutExtension (v.InputPath) == "Test");
+		// The assembly-preparer resets an assembly's OutputPath back to its InputPath when it decides
+		// the assembly doesn't need to be re-serialized (see SaveAssembliesStep.OutputWithoutRewriting),
+		// so capture the intended output path up front to reliably detect whether the user assembly was
+		// actually written to the output directory.
+		var expectedUserOutputPath = testInfo.OutputPath;
+
+		AssertPrepare (preparer);
+
 		var companionPath = Path.Combine (outDir, "_Test.TypeMap.dll");
 		Assert.That (File.Exists (companionPath), Is.True, $"Companion assembly should exist at {companionPath}");
 		preparer.Dispose ();
@@ -113,8 +120,8 @@ public abstract class BaseClass {
 		};
 		// When the trampolines are relocated, the user assembly is left byte-unmodified, so it's
 		// never re-saved to the output directory. Read it back from wherever it actually is.
-		userAssemblyWasSaved = File.Exists (testInfo.OutputPath);
-		var userAssemblyPath = userAssemblyWasSaved ? testInfo.OutputPath : testInfo.InputPath;
+		userAssemblyWasSaved = File.Exists (expectedUserOutputPath);
+		var userAssemblyPath = userAssemblyWasSaved ? expectedUserOutputPath : testInfo.InputPath;
 		userAssembly = AssemblyDefinition.ReadAssembly (userAssemblyPath, readerParameters);
 		companionAssembly = AssemblyDefinition.ReadAssembly (companionPath, readerParameters);
 	}

@@ -16412,6 +16412,17 @@ namespace MetalPerformanceShaders {
 		[iOS (18, 0), TV (18, 0), MacCatalyst (18, 0), Mac (15, 0)]
 		[Export ("encodeToCommandEncoder:commandBuffer:sourceArrays:destinationArray:")]
 		MPSNDArray EncodeToCommandEncoder ([NullAllowed] IMTLComputeCommandEncoder encoder, IMTLCommandBuffer commandBuffer, MPSNDArray [] sourceArrays, MPSNDArray destinationArray);
+
+		/// <summary>Encodes the kernel with a Metal 4 compute command encoder.</summary>
+		/// <param name="encoder">The Metal 4 compute command encoder.</param>
+		/// <param name="sourceArrays">The source arrays, ordered as required by the kernel.</param>
+		/// <param name="destinationArray">The array that receives the result.</param>
+		/// <remarks>The encoder associates the command with <see cref="MTLStages.Dispatch" />. Synchronize dependent workloads against that stage to prevent race conditions.</remarks>
+		[UnsupportedSimulator ("ios")]
+		[UnsupportedSimulator ("tvos")]
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("encodeWithMTL4CommandEncoder:sourceArrays:destinationArray:")]
+		void EncodeWithMtl4CommandEncoder (IMTL4ComputeCommandEncoder encoder, MPSNDArray [] sourceArrays, MPSNDArray destinationArray);
 	}
 
 	[MacCatalyst (13, 0)]
@@ -16472,6 +16483,17 @@ namespace MetalPerformanceShaders {
 
 		[Export ("encodeToCommandBuffer:sourceArray:resultState:destinationArray:")]
 		MPSNDArray EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, MPSNDArray sourceArray, [NullAllowed] MPSState gradientState, MPSNDArray destinationArray);
+
+		/// <summary>Encodes the kernel with a Metal 4 compute command encoder.</summary>
+		/// <param name="encoder">The Metal 4 compute command encoder.</param>
+		/// <param name="sourceArray">The source array.</param>
+		/// <param name="destinationArray">The array that receives the result.</param>
+		/// <remarks>The encoder associates the command with <see cref="MTLStages.Dispatch" />. Synchronize dependent workloads against that stage to prevent race conditions.</remarks>
+		[UnsupportedSimulator ("ios")]
+		[UnsupportedSimulator ("tvos")]
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("encodeWithMTL4CommandEncoder:sourceArray:destinationArray:")]
+		void EncodeWithMtl4CommandEncoder (IMTL4ComputeCommandEncoder encoder, MPSNDArray sourceArray, MPSNDArray destinationArray);
 	}
 
 	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
@@ -16499,6 +16521,34 @@ namespace MetalPerformanceShaders {
 		[return: NullAllowed]
 		[Internal]
 		MPSNDArray _Reshape ([NullAllowed] IMTLComputeCommandEncoder encoder, [NullAllowed] IMTLCommandBuffer commandBuffer, MPSNDArray sourceArray, nuint numberOfDimensions, /* NSUInteger */ IntPtr dimensionSizes, [NullAllowed] MPSNDArray destinationArray);
+
+		/// <summary>Creates a reshaped view of an array on the CPU.</summary>
+		/// <param name="sourceArray">The source array.</param>
+		/// <param name="shape">The new shape in TensorFlow dimension order.</param>
+		/// <returns>A reshaped view, or <see langword="null" /> if aliasing isn't possible.</returns>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("reshapeWithSourceArray:shape:")]
+		[return: NullAllowed]
+		MPSNDArray Reshape (MPSNDArray sourceArray, [BindAs (typeof (int []))] NSNumber [] shape);
+
+		/// <summary>Encodes a reshape operation with a Metal 4 compute command encoder.</summary>
+		/// <param name="encoder">The Metal 4 compute command encoder.</param>
+		/// <param name="sourceArray">The source array.</param>
+		/// <param name="shape">The new shape in TensorFlow dimension order.</param>
+		/// <param name="destinationArray">The destination array, whose shape must match <paramref name="shape" />.</param>
+		/// <remarks>The encoder associates the command with <see cref="MTLStages.Dispatch" />. Synchronize dependent workloads against that stage to prevent race conditions.</remarks>
+		[UnsupportedSimulator ("ios")]
+		[UnsupportedSimulator ("tvos")]
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("reshapeWithMTL4CommandEncoder:sourceArray:shape:destinationArray:")]
+		void ReshapeWithMtl4CommandEncoder (IMTL4ComputeCommandEncoder encoder, MPSNDArray sourceArray, [BindAs (typeof (int []))] NSNumber [] shape, MPSNDArray destinationArray);
+
+		[UnsupportedSimulator ("ios")]
+		[UnsupportedSimulator ("tvos")]
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("reshapeWithMTL4CommandEncoder:sourceArray:dimensionCount:dimensionSizes:destinationArray:")]
+		[Internal]
+		void _ReshapeWithMtl4CommandEncoder (IMTL4ComputeCommandEncoder encoder, MPSNDArray sourceArray, nuint numberOfDimensions, /* NSUInteger */ IntPtr dimensionSizes, MPSNDArray destinationArray);
 	}
 
 	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]

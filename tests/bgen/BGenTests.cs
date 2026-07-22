@@ -1810,6 +1810,22 @@ namespace GeneratorTests {
 			var expectedPlatform = profile == Profile.iOS ? "ios" : "tvos";
 			Assert.That (platformName, Is.EqualTo (expectedPlatform), "UnsupportedOnAllSimulators platform name");
 
+			// Verify simulator attributes are copied from methods too
+			var unsupportedMethod = unsupportedAll.Methods.Single (m => m.Name == "UnsupportedMethod");
+			var unsupportedMethodAttrs = unsupportedMethod.CustomAttributes
+				.Where (a => a.AttributeType.Name == "UnsupportedSimulatorAttribute")
+				.ToArray ();
+			Assert.That (unsupportedMethodAttrs.Length, Is.EqualTo (1), "UnsupportedMethod: one attribute for current platform");
+			Assert.That ((string) unsupportedMethodAttrs [0].ConstructorArguments [0].Value, Is.EqualTo (expectedPlatform), "UnsupportedMethod platform name");
+
+			var supportedMethod = unsupportedAll.Methods.Single (m => m.Name == "SupportedMethod");
+			var supportedMethodAttrs = supportedMethod.CustomAttributes
+				.Where (a => a.AttributeType.Name == "SupportedSimulatorAttribute")
+				.ToArray ();
+			Assert.That (supportedMethodAttrs.Length, Is.EqualTo (1), "SupportedMethod: one attribute for current platform");
+			var expectedMethodVersion = profile == Profile.iOS ? "ios17.0" : "tvos17.0";
+			Assert.That ((string) supportedMethodAttrs [0].ConstructorArguments [0].Value, Is.EqualTo (expectedMethodVersion), "SupportedMethod platform name");
+
 			// Verify only the current platform's attribute is emitted
 			var iosOnly = module.GetType ("NS", "UnsupportedOnIosSimulatorOnly");
 			var iosOnlyAttrs = iosOnly.CustomAttributes
@@ -1871,6 +1887,15 @@ namespace GeneratorTests {
 					.Where (a => a.AttributeType.Name == "UnsupportedSimulatorAttribute" || a.AttributeType.Name == "SupportedSimulatorAttribute")
 					.ToArray ();
 				Assert.That (simulatorAttrs.Length, Is.EqualTo (0), $"{typeName}: no simulator attributes on Mac platforms");
+			}
+
+			var unsupportedAll = module.GetType ("NS", "UnsupportedOnAllSimulators");
+			foreach (var methodName in new [] { "UnsupportedMethod", "SupportedMethod" }) {
+				var method = unsupportedAll.Methods.Single (m => m.Name == methodName);
+				var simulatorAttrs = method.CustomAttributes
+					.Where (a => a.AttributeType.Name == "UnsupportedSimulatorAttribute" || a.AttributeType.Name == "SupportedSimulatorAttribute")
+					.ToArray ();
+				Assert.That (simulatorAttrs.Length, Is.EqualTo (0), $"{methodName}: no simulator attributes on Mac platforms");
 			}
 
 			// The smart-enum field accessor must not carry simulator attributes on Mac platforms either

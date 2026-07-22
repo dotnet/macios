@@ -1464,6 +1464,8 @@ public partial class Generator : IMemberGatherer {
 						continue;
 					else if (attr is AvailabilityBaseAttribute)
 						continue;
+					else if (attr is SupportedSimulatorAttribute || attr is UnsupportedSimulatorAttribute)
+						continue;
 					else if (attr is RequiresSuperAttribute)
 						continue;
 					else if (attr is NoMethodAttribute)

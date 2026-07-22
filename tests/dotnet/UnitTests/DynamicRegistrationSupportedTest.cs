@@ -31,6 +31,10 @@ namespace Xamarin.Tests {
 			properties ["PrepareAssemblies"] = "true";
 			properties ["PostProcessAssemblies"] = "true";
 			properties ["DynamicRegistrationSupported"] = dynamicRegistrationSupported;
+			// Link libxamarin statically so the native linker dead-strips the dynamic registrar's trampoline
+			// into (or out of) the main executable. Otherwise the simulator default (a dynamic libxamarin)
+			// would always keep the trampoline symbol in the dylib, where the check below can't observe it.
+			properties ["_LibXamarinLinkMode"] = "static";
 
 			var rv = DotNet.AssertBuild (project_path, properties);
 

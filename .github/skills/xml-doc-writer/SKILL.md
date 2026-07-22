@@ -37,8 +37,8 @@ details before editing. Do not change API behavior while updating documentation.
 
 ### 3. Normalize formatting
 
-- Keep the existing code indentation and remove whitespace between `///` and the
-  XML element.
+- Keep the existing code indentation and remove extra whitespace between `///` and
+  the XML element (keep a single space, as in `/// <summary>`).
 - Indent nested XML elements by two spaces per level.
 - Order top-level elements as: `<summary>`, `<value>`, `<typeparam>`, `<param>`,
   `<returns>`, `<exception>`, `<remarks>`, and `<seealso>`.

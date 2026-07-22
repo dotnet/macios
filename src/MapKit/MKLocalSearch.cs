@@ -35,7 +35,7 @@ namespace MapKit {
 
 		/// <summary>Asynchronously starts the local search.</summary>
 		/// <param name="token">A cancellation token that can be used to cancel the search.</param>
-		/// <returns>A task that represents the asynchronous search operation, containing the search response.</returns>
+		/// <returns>A task that represents the asynchronous search operation. The result may be <see langword="null" /> if the search was cancelled.</returns>
 		/// <remarks>
 		///   <para tool="threads">This can be used from a background thread.</para>
 		/// </remarks>

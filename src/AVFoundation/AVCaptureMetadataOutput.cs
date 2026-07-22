@@ -34,13 +34,13 @@ namespace AVFoundation {
 
 	public partial class AVCaptureMetadataOutput {
 
-		/// <summary>Keys for the metadata types produced by the active <see cref="AVFoundation.AVCaptureInputPort" />.</summary>
+		/// <summary>Gets the metadata object types produced by the active <see cref="AVFoundation.AVCaptureInputPort" />.</summary>
 		/// <value>The available metadata object types.</value>
 		public AVMetadataObjectType AvailableMetadataObjectTypes {
 			get { return AVMetadataObjectTypeExtensions.ToFlags (WeakAvailableMetadataObjectTypes); }
 		}
 
-		/// <summary>A filter of metadata keys. Only metadata whose keys are in this array will be forwarded to the <see cref="AVFoundation.AVCaptureMetadataOutput.Delegate" /></summary>
+		/// <summary>Gets or sets the metadata object types to filter. Only metadata matching these types will be forwarded to the <see cref="AVFoundation.AVCaptureMetadataOutput.Delegate" />.</summary>
 		/// <value>
 		///   <para tool="nullallowed">This value can be <see langword="null" />.</para>
 		/// </value>

@@ -685,18 +685,24 @@ namespace LinkSdk {
 				Assert.That (dirExists, Is.EqualTo (exists), path);
 			if (!dirExists)
 				return path;
-			// Access to privacy-protected folders depends on the host's TCC state.
+			// Access to macOS privacy-protected folders depends on the host's TCC state.
 			if (!readOnly.HasValue)
 				return path;
 
-			string file = Path.Combine (path, "temp.txt");
+			string file = Path.Combine (path, Path.GetRandomFileName ());
 			try {
 				File.WriteAllText (file, "mine");
 				Assert.That (readOnly.Value, Is.False, "!readOnly " + folder);
 			} catch {
 				Assert.That (readOnly.Value, Is.True, "readOnly " + folder);
 			} finally {
-				File.Delete (file);
+				try {
+					File.Delete (file);
+				} catch (IOException e) {
+					Console.WriteLine ($"Could not delete '{file}': {e}");
+				} catch (UnauthorizedAccessException e) {
+					Console.WriteLine ($"Could not delete '{file}': {e}");
+				}
 			}
 			return path;
 		}
@@ -903,8 +909,8 @@ namespace LinkSdk {
 			path = TestFolder (Environment.SpecialFolder.Resources, readOnly: tvos && device);
 			Assert.That (path.EndsWith ("/Library", StringComparison.Ordinal), Is.True, "Resources");
 #endif
-			// Some CI VM images don't initialize all standard user directories, so tolerate
-			// missing paths only there. Access to these folders depends on the host's TCC state.
+			// Some macOS CI VM images don't initialize all standard user directories, so tolerate
+			// missing paths only there. Access to these macOS folders depends on the host's TCC state.
 			string TestFolderIfAvailableInCI (Environment.SpecialFolder folder, bool exists)
 			{
 #if __MACOS__

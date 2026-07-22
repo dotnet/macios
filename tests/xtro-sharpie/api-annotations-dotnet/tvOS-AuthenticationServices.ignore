@@ -3,3 +3,8 @@
 !extra-enum-value! Managed value 1008 for ASAuthorizationError.CredentialExport not found in native headers
 !extra-enum-value! Managed value 1009 for ASAuthorizationError.PreferSignInWithApple not found in native headers
 !extra-enum-value! Managed value 1010 for ASAuthorizationError.DeviceNotConfiguredForPasskeyCreation not found in native headers
+
+# These enums are unavailable on tvOS natively (API_UNAVAILABLE on the typedef), but the managed enums are bound and used by bound API.
+!unknown-native-enum! ASAuthorizationPublicKeyCredentialAttachment bound
+!unknown-native-enum! ASAuthorizationWebBrowserPublicKeyCredentialManagerAuthorizationState bound
+!unknown-native-enum! ASPublicKeyCredentialClientDataCrossOriginValue bound

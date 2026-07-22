@@ -414,3 +414,11 @@
 !missing-null-allowed! 'System.Void UIKit.UIPasteboard::DetectValues(Foundation.NSSet`1<Foundation.NSString>,Foundation.NSIndexSet,System.Action`2<Foundation.NSDictionary`2<Foundation.NSString,Foundation.NSObject>[],Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1
 !missing-null-allowed! 'System.Void UIKit.UIPasteboard::DetectValues(Foundation.NSSet`1<Foundation.NSString>,System.Action`2<Foundation.NSDictionary`2<Foundation.NSString,Foundation.NSObject>,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
 !missing-null-allowed! 'System.Void UIKit.UIPasteboard::DetectValues(Foundation.NSSet`1<Foundation.NSString>,System.Action`2<Foundation.NSDictionary`2<Foundation.NSString,Foundation.NSObject>,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1
+
+## bound selectors with no native declaration reachable from the class in the current SDK headers:
+## private/SPI selectors, protocol/category members Apple inlines without declaring the conformance on
+## the class, managed callback infrastructure, or API Apple removed/privatized - kept for compatibility
+## (baseline for https://github.com/dotnet/macios/issues/26053)
+!unknown-selector! +UIFocusDebugger::checkFocusGroupTreeForEnvironment: not found
+!unknown-selector! UIDocumentBrowserAction::imageOnlyForContextMenu not found
+!unknown-selector! UIDocumentBrowserAction::setImageOnlyForContextMenu: not found

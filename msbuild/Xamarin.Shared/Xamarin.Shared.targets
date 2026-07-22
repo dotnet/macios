@@ -450,22 +450,26 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	-->
 	<Target Name="_ExpandMultipleResourcePrefixes" Condition="@(_ResourcePrefixItem->Count()) > 0">
 		<ItemGroup>
-			<BundleResource Include="%(_ResourcePrefixItem.Identity)\**\*" >
+			<!-- Collect candidates into an intermediate item to avoid removing explicitly declared BundleResource items -->
+			<_DefaultBundleResourceCandidate Include="%(_ResourcePrefixItem.Identity)\**\*" />
+			<_DefaultBundleResourceCandidate Remove="%(_ResourcePrefixItem.Identity)\**\*.xcassets\**\*.*" />
+			<_DefaultBundleResourceCandidate Remove="%(_ResourcePrefixItem.Identity)\**\*.icon\**\*.*" />
+			<_DefaultBundleResourceCandidate Remove="%(_ResourcePrefixItem.Identity)\**\*.storyboard" />
+			<_DefaultBundleResourceCandidate Remove="%(_ResourcePrefixItem.Identity)\**\*.atlas\*.png" />
+			<_DefaultBundleResourceCandidate Remove="%(_ResourcePrefixItem.Identity)\**\*.mlmodel" />
+			<_DefaultBundleResourceCandidate Remove="%(_ResourcePrefixItem.Identity)\**\*.metal" />
+			<_DefaultBundleResourceCandidate Remove="%(_ResourcePrefixItem.Identity)\**\*.scnassets\*" />
+			<_DefaultBundleResourceCandidate Remove="%(_ResourcePrefixItem.Identity)\**\*.DS_Store" />
+			<_DefaultBundleResourceCandidate Remove="$(DefaultItemExcludes)" />
+			<_DefaultBundleResourceCandidate Remove="$(DefaultExcludesInProjectFolder)" />
+			<_DefaultBundleResourceCandidate Remove="**\*.xib" />
+			<_DefaultBundleResourceCandidate Remove="@(Compile)" />
+			<_DefaultBundleResourceCandidate Remove="@(EmbeddedResource)" />
+			<!-- Add surviving candidates to BundleResource -->
+			<BundleResource Include="@(_DefaultBundleResourceCandidate)" >
 				<IsDefaultItem>true</IsDefaultItem>
 			</BundleResource>
-			<BundleResource Remove="%(_ResourcePrefixItem.Identity)\**\*.xcassets\**\*.*" />
-			<BundleResource Remove="%(_ResourcePrefixItem.Identity)\**\*.icon\**\*.*" />
-			<BundleResource Remove="%(_ResourcePrefixItem.Identity)\**\*.storyboard" />
-			<BundleResource Remove="%(_ResourcePrefixItem.Identity)\**\*.atlas\*.png" />
-			<BundleResource Remove="%(_ResourcePrefixItem.Identity)\**\*.mlmodel" />
-			<BundleResource Remove="%(_ResourcePrefixItem.Identity)\**\*.metal" />
-			<BundleResource Remove="%(_ResourcePrefixItem.Identity)\**\*.scnassets\*" />
-			<BundleResource Remove="%(_ResourcePrefixItem.Identity)\**\*.DS_Store" />
-			<BundleResource Remove="$(DefaultItemExcludes)" />
-			<BundleResource Remove="$(DefaultExcludesInProjectFolder)" />
-			<BundleResource Remove="**\*.xib" />
-			<BundleResource Remove="@(Compile)" />
-			<BundleResource Remove="@(EmbeddedResource)" />
+			<_DefaultBundleResourceCandidate Remove="@(_DefaultBundleResourceCandidate)" />
 		</ItemGroup>
 	</Target>
 

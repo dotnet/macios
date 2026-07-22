@@ -359,8 +359,11 @@ namespace Xamarin.Tests {
 			if (doc.RootElement.TryGetProperty ("Items", out var itemsObj) &&
 				itemsObj.TryGetProperty ("BundleResource", out var bundleResources)) {
 				foreach (var item in bundleResources.EnumerateArray ()) {
-					if (item.TryGetProperty ("Identity", out var identity))
-						items.Add (identity.GetString ()!);
+					if (item.TryGetProperty ("Identity", out var identity)) {
+						var value = identity.GetString ();
+						if (value is not null)
+							items.Add (value);
+					}
 				}
 			}
 			return items;
@@ -384,11 +387,11 @@ namespace Xamarin.Tests {
 </Project>";
 		}
 
-		[TestCase (ApplePlatform.iOS, "iossimulator-x64")]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64")]
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
-		[TestCase (ApplePlatform.TVOS, "tvossimulator-x64")]
-		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
-		[TestCase (ApplePlatform.MacOSX, "osx-x64")]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64")]
 		public void AppWithMultipleResourcePrefixes (ApplePlatform platform, string runtimeIdentifiers)
 		{

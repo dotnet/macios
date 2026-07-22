@@ -26,7 +26,7 @@ permissions:
 environment: gh-aw-environment
 engine:
   id: copilot
-  model: sonnet
+  model: claude-sonnet-4.6
   env:
     COPILOT_GITHUB_TOKEN: |
       ${{ case(

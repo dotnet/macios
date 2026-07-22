@@ -19,6 +19,7 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacCatalyst, true, false)]
 		[TestCase (ApplePlatform.iOS, true, false)]
 		[TestCase (ApplePlatform.MacCatalyst, false, true)]
+		[TestCase (ApplePlatform.MacOSX, false, true)]
 		public void DotNetWatch (ApplePlatform platform, bool useMonoRuntime, bool enableSandbox)
 		{
 			DotNetWatchImpl (platform, useMonoRuntime, enableSandbox, usePhysicalDevice: false);

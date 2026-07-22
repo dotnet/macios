@@ -32,25 +32,22 @@
 #nullable enable
 
 namespace AppKit {
-	/// <summary>To be added.</summary>
-	///     <remarks>To be added.</remarks>
+	/// <summary>Specifies the action that occurred on a font collection.</summary>
 	public enum NSFontCollectionAction {
-		/// <summary>To be added.</summary>
+		/// <summary>An unknown action.</summary>
 		Unknown,
-		/// <summary>To be added.</summary>
+		/// <summary>The font collection was shown.</summary>
 		Shown,
-		/// <summary>To be added.</summary>
+		/// <summary>The font collection was hidden.</summary>
 		Hidden,
-		/// <summary>To be added.</summary>
+		/// <summary>The font collection was renamed.</summary>
 		Renamed,
 	}
 
-	/// <summary>To be added.</summary>
-	///     <remarks>To be added.</remarks>
+	/// <summary>Provides data for the font collection changed notification.</summary>
 	public partial class NSFontCollectionChangedEventArgs {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the action that triggered the font collection change.</summary>
+		/// <value>The action that occurred on the font collection.</value>
 		public NSFontCollectionAction Action {
 			get {
 				if (_Action == NSFontCollection.ActionWasShown) {
@@ -65,9 +62,8 @@ namespace AppKit {
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the visibility of the font collection after the change.</summary>
+		/// <value>The visibility scope flags for the font collection.</value>
 		public NSFontCollectionVisibility Visibility {
 			get { return (NSFontCollectionVisibility) (int) _Visibility; }
 		}

@@ -11,9 +11,8 @@ namespace AVFoundation {
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	public partial class AudioRendererWasFlushedAutomaticallyEventArgs {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the time at which the audio renderer was flushed.</summary>
+		/// <value>The presentation time at which the flush occurred.</value>
 		public CMTime AudioRendererFlushTime {
 			get {
 				return _AudioRendererFlushTime.CMTimeValue;

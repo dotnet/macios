@@ -5,6 +5,8 @@ BUILD_DIR=build
 RSP_DIR=rsp
 DOTNET_BUILD_DIR=$(BUILD_DIR)/dotnet
 PROJECT_DIR=.
+SOURCE_INDEX_SOLUTION=$(DOTNET_BUILD_DIR)/source-index.slnx
+SOURCE_INDEX_BINLOG?=$(DOTNET_BUILD_DIR)/source-index.binlog
 
 include $(TOP)/src/frameworks.sources
 include $(TOP)/mk/rules.mk
@@ -391,6 +393,7 @@ $(2)_DOTNET_PLATFORM_ASSEMBLY_DIR_DEPENDENCIES = \
 
 PLATFORM_$(1)_CSPROJ = $(DOTNET_BUILD_DIR)/$(1)/csproj/platform/Microsoft.$(1).csproj
 CSPROJECTS += $$(PLATFORM_$(1)_CSPROJ)
+PLATFORM_CSPROJECTS += $$(PLATFORM_$(1)_CSPROJ)
 $$(PLATFORM_$(1)_CSPROJ): $($(2)_DOTNET_BUILD_DIR)/Microsoft.$(1).rsp Makefile $(RSP_TO_CSPROJ) $($(2)_DOTNET_BUILD_DIR)/embed-files.rsp
 	$$(Q) rm -f $$@
 	$$(Q) mkdir -p $$(dir $$@)
@@ -519,6 +522,16 @@ build-csproj: $(CSPROJECTS) $(foreach platform,$(DOTNET_PLATFORMS),$($(call uppe
 		$(DOTNET) build $$csproj /bl:"$$(dirname $$csproj)/$$(basename -s .csproj $$csproj).binlog" $(DOTNET_BUILD_VERBOSITY); \
 		echo "Built $$csproj successfully."; \
 	done
+
+$(SOURCE_INDEX_SOLUTION): $(PLATFORM_CSPROJECTS) Makefile | $(DOTNET_BUILD_DIR)
+	$(Q) rm -f $@
+	$(Q) printf "<Solution>\n" > $@
+	$(Q) $(foreach project,$(PLATFORM_CSPROJECTS),printf '  <Project Path="%s" />\n' '$(patsubst $(DOTNET_BUILD_DIR)/%,%,$(project))' >> $@;)
+	$(Q) printf "</Solution>\n" >> $@
+
+.PHONY: source-index
+source-index: $(SOURCE_INDEX_SOLUTION) $(foreach platform,$(DOTNET_PLATFORMS),$($(call uppercase,$(platform))_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES))
+	$(Q) $(DOTNET) build $(SOURCE_INDEX_SOLUTION) --no-incremental /m:1 /p:UseForSourceIndex=true "/bl:$(abspath $(SOURCE_INDEX_BINLOG))" $(DOTNET_BUILD_VERBOSITY)
 
 # This targets runs 'dotnet format' on the generated project files.
 format-csproj: $(CSPROJECTS) $(foreach platform,$(DOTNET_PLATFORMS),$($(call uppercase,$(platform))_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES))

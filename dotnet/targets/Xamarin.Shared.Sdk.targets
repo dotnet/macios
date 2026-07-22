@@ -1126,6 +1126,18 @@
 	     This target will compute that stamp file location.
 	-->
 	<Target Name="_CreateStampLocationForCopyDirectoriesToBundle">
+		<PropertyGroup>
+			<_CopyDirectoriesToBundleInputFile>$(DeviceSpecificIntermediateOutputPath)CopyDirectoriesToBundleInputs.cache</_CopyDirectoriesToBundleInputFile>
+		</PropertyGroup>
+		<WriteLinesToFile
+			File="$(_CopyDirectoriesToBundleInputFile)"
+			Lines="StripFrameworkHeaders=$(StripFrameworkHeaders)"
+			Overwrite="true"
+			WriteOnlyWhenDifferent="true"
+		/>
+		<ItemGroup>
+			<FileWrites Include="$(_CopyDirectoriesToBundleInputFile)" />
+		</ItemGroup>
 		<ComputeHashForItems
 			Input="@(_DirectoriesToPublish)"
 			InputMetadata="Identity;TargetDirectory"
@@ -1153,7 +1165,7 @@
 
 	<Target Name="_CopyDirectoriesToBundle"
 		DependsOnTargets="_CollectDecompressedPlugins;_ComputeFrameworkFilesToPublish;_CollectDecompressedXpcServices;_CreateStampLocationForCopyDirectoriesToBundle"
-		Inputs="@(_DirectoriesToPublish)"
+		Inputs="@(_DirectoriesToPublish);$(_CopyDirectoriesToBundleInputFile)"
 		Outputs="@(_DirectoriesToPublish -> '%(StampLocation)')"
 		>
 

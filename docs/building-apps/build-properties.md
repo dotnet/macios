@@ -1556,6 +1556,13 @@ However, the either of the following works:
 
 Note: this property will always be `false` on macOS and Mac Catalyst.
 
+## StripFrameworkHeaders
+
+A boolean property that specifies whether the `Headers`, `PrivateHeaders`, and
+`Modules` directories are removed from embedded frameworks before code signing.
+
+The default value is `true`. Set it to `false` to preserve these directories.
+
 ## StripPath
 
 The full path to the `strip` command-line tool.

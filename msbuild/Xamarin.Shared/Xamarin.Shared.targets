@@ -96,6 +96,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ScnTool" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.SmartCopy" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.SpotlightIndexer" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.StripFrameworkHeaders" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.SymbolStrip" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.TextureAtlas" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.UnpackLibraryResources" AssemblyFile="$(_TaskAssemblyName)" />
@@ -2439,12 +2440,20 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			$(CodesignDependsOn);
 			_CreateAppBundle;
 			BeforeCodeSign;
+			_StripFrameworkHeaders;
 			CoreCodeSign;
 			AfterCodeSign;
 		</CodesignDependsOn>
 	</PropertyGroup>
 
 	<Target Name="BeforeCodesign" />
+	<Target Name="_StripFrameworkHeaders" Condition="'$(StripFrameworkHeaders)' == 'true'">
+		<StripFrameworkHeaders
+			SessionId="$(BuildSessionId)"
+			Condition="'$(IsMacEnabled)' == 'true'"
+			AppBundleDir="$(AppBundleDir)"
+		/>
+	</Target>
 	<Target Name="CoreCodesign" DependsOnTargets="$(CoreCodesignDependsOn)" />
 	<Target Name="AfterCodesign" />
 

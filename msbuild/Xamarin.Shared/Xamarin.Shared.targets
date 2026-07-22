@@ -3622,10 +3622,12 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 	<!--
 		_PostprocessAssemblies must run after the trimmer (ILLink) and before the assemblies are (Native)AOT/R2R-compiled.
+		Exception: when postprocessing runs after ILC instead (the trimmable-static + NativeAOT scenario), the
+		_PostprocessAssembliesAfterIlc target handles it, so skip this target then.
 	-->
 	<Target
 		Name="_PostprocessAssemblies"
-		Condition="'$(PostProcessAssemblies)' == 'true' And '$(RuntimeIdentifiers)' == ''"
+		Condition="'$(PostProcessAssemblies)' == 'true' And '$(RuntimeIdentifiers)' == '' And '$(_PostprocessAssembliesAfterIlc)' != 'true'"
 		Inputs="@(_AssembliesToPostProcess)"
 		Outputs="@(_AssembliesToPostProcess->'$(_PostprocessedAssembliesDirectory)%(Filename)%(Extension)');$(_AssemblyPostProcessorMSBuildOutputFile)"
 		AfterTargets="ILLink"

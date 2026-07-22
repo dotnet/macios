@@ -7,14 +7,24 @@
 // Copyright 2020 Microsoft Inc.
 //
 
+using System.ComponentModel;
+
 namespace NearbyInteraction {
 
+#if XAMCORE_5_0
+	[NoTV, NoMac, iOS (14, 0)]
+#else
 	[NoTV, iOS (14, 0)]
+#endif
 	[MacCatalyst (14, 0)]
 #if !__MACOS__
 	[ErrorDomain ("NIErrorDomain")]
 #endif
 	[Native]
+#if __MACOS__ && !XAMCORE_5_0
+	[Obsolete ("Not available on this platform.")]
+	[EditorBrowsable (EditorBrowsableState.Never)]
+#endif
 	public enum NIErrorCode : long {
 		UnsupportedPlatform = -5889,
 		InvalidConfiguration = -5888,

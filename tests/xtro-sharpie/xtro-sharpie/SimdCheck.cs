@@ -68,6 +68,7 @@ namespace Extrospection {
 			// (using [MarshalDirective]), managed code doesn't get incorrect results.
 			{ "MDLAxisAlignedBoundingBox", new NativeSimdInfo { Managed = "MDLAxisAlignedBoundingBox", }},
 			{ "MPSAxisAlignedBoundingBox", new NativeSimdInfo { Managed = "MPSAxisAlignedBoundingBox" }},
+			{ "MPSFunctions_AABB", new NativeSimdInfo { Managed = "MPSFunctionsAxisAlignedBoundingBox" }},
 			// The managed definition is identical to the native definition
 			{ "MPSImageHistogramInfo", new NativeSimdInfo { Managed = "MPSImageHistogramInfo" }},
 		};

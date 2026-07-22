@@ -3094,8 +3094,17 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 				<!-- This is the name of the dSYM that will be created (if that's the case) -->
 				<DSymName>%(Filename)%(Extension).framework.dSYM</DSymName>
 			</_PostProcessingItem>
+			<!-- Compute the app-bundle-relative path for each dynamic native library, so that dsymutil and
+			     symbol stripping target the file's actual location in the app bundle (which may include a
+			     subdirectory). Mirror the logic in the '_ComputeDynamicLibrariesToPublish' target: use the
+			     'RelativePath' metadata when it's set (normalizing directory separators to forward slashes),
+			     otherwise fall back to the default (top-level) bundle location. Ref: https://github.com/dotnet/macios/issues/21553 -->
+			<_DynamicNativeReferenceToPostProcess Include="@(_FileNativeReference)" Condition="'%(_FileNativeReference.Kind)' == 'Dynamic'">
+				<BundleRelativePath Condition="'%(_FileNativeReference.RelativePath)' != ''">$([System.String]::Copy('%(_FileNativeReference.RelativePath)').Replace('\', '/'))</BundleRelativePath>
+				<BundleRelativePath Condition="'%(_FileNativeReference.RelativePath)' == ''">$(_AppContentsRelativePathForPostProcessing)%(Filename)%(Extension)</BundleRelativePath>
+			</_DynamicNativeReferenceToPostProcess>
 			<!-- add dylibs, with the path relative to the app bundle -->
-			<_PostProcessingItem Include="@(_FileNativeReference->'$(_AppBundleName)$(AppBundleExtension)/$(_AppContentsRelativePathForPostProcessing)%(Filename)%(Extension)')" Condition="'%(_FileNativeReference.Kind)' == 'Dynamic'">
+			<_PostProcessingItem Include="@(_DynamicNativeReferenceToPostProcess->'$(_AppBundleName)$(AppBundleExtension)/%(BundleRelativePath)')">
 				<!-- Store where this item came from -->
 				<ItemSourcePath>%(Identity)</ItemSourcePath>
 				<!-- If the item in question came with a .dSYM directory, this would be the path to it: -->

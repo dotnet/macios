@@ -696,3 +696,49 @@ The default behavior can be overridden by passing
 
 The exact list of types might change over time and is best read directly from
 the [source code](https://github.com/dotnet/macios/blob/main/tools/linker/RemoveRejectedTypesStep.cs).
+
+## Remove Console.WriteLine calls
+
+This optimization removes calls to `System.Console.WriteLine` from application
+code. These calls (and any string formatting logic used to compute their
+arguments) are frequently dead weight in a shipped app, since there's usually
+nobody around to read its standard output, so removing them can help reduce
+app size.
+
+This optimization will change the following type of code:
+
+```csharp
+void Method (int x)
+{
+    Console.WriteLine ($"Computed value: {x}");
+    DoSomething (x);
+}
+```
+
+into the following:
+
+```csharp
+void Method (int x)
+{
+    DoSomething (x);
+}
+```
+
+Only calls to `Console.WriteLine` itself are removed - if any of its arguments
+have side effects (for instance a method call), those side effects are
+preserved, and only the actual write to the console is removed.
+
+This optimization only targets `Console.WriteLine`, and not the other
+`Console.Write*` members (such as `Console.Write` or writing directly to
+`Console.Out`).
+
+This optimization requires the linker to be enabled, and is applied to any
+assembly the linker processes (not just assemblies with `[BindingImpl
+(BindingImplOptions.Optimizable)]` methods).
+
+Unlike the other optimizations on this page, it is **not** enabled by default
+on any platform, because it changes the observable behavior of the app (any
+console output produced by these calls is removed). It must be explicitly
+enabled by passing `--optimize=+remove-console-writeline` to mtouch/mmp (or
+via the equivalent `MtouchExtraArgs`/`AppBundleExtraOptions` MSBuild property
+for .NET projects).

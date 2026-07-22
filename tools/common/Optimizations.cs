@@ -29,6 +29,7 @@ namespace Xamarin.Bundler {
 			"experimental-xforms-product-type",
 			"force-rejected-types-removal",
 			"redirect-class-handles",
+			"remove-console-writeline",
 		};
 
 		static readonly ApplePlatform [] [] valid_platforms = new ApplePlatform [] [] {
@@ -50,6 +51,7 @@ namespace Xamarin.Bundler {
 			/* Opt.ExperimentalFormsProductType       */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 			/* Opt.ForceRejectedTypesRemoval          */ new ApplePlatform [] { ApplePlatform.iOS,                       ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 			/* Opt.RedirectClassHandles               */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
+			/* Opt.RemoveConsoleWriteLine             */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 		};
 
 		enum Opt {
@@ -71,6 +73,7 @@ namespace Xamarin.Bundler {
 			ExperimentalFormsProductType,
 			ForceRejectedTypesRemoval,
 			RedirectClassHandles,
+			RemoveConsoleWriteLine,
 		}
 
 		bool? [] values;
@@ -155,6 +158,15 @@ namespace Xamarin.Bundler {
 		public bool? RedirectClassHandles {
 			get { return values [(int) Opt.RedirectClassHandles]; }
 			set { values [(int) Opt.RedirectClassHandles] = value; }
+		}
+
+		// Removes calls to System.Console.WriteLine (a common source of dead weight in release builds, see
+		// https://github.com/dotnet/macios/issues/16781). This is opt-in (not enabled by default for any
+		// platform), because unlike the other optimizations in this class, it changes the observable behavior
+		// of the app (any console output produced by these calls is removed).
+		public bool? RemoveConsoleWriteLineCalls {
+			get { return values [(int) Opt.RemoveConsoleWriteLine]; }
+			set { values [(int) Opt.RemoveConsoleWriteLine] = value; }
 		}
 
 		public Optimizations ()

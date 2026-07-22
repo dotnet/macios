@@ -1563,7 +1563,10 @@ namespace Xamarin.Linker {
 			var attribute = CreateAttribute (DynamicDependencyAttribute_ctor__DynamicallyAccessedMemberTypes_Type);
 			// typed as 'int' because that's how the linker expects it: https://github.com/dotnet/runtime/blob/3c5ad6c677b4a3d12bc6a776d654558cca2c36a9/src/tools/illink/src/linker/Linker/DynamicDependency.cs#L97
 			attribute.ConstructorArguments.Add (new CustomAttributeArgument (System_Diagnostics_CodeAnalysis_DynamicallyAccessedMemberTypes, (int) memberTypes));
-			attribute.ConstructorArguments.Add (new CustomAttributeArgument (System_Type, type));
+			// Import the type into the current assembly, otherwise Cecil will serialize the Type argument
+			// without an assembly-qualified name when 'type' is a TypeDefinition from another assembly (because
+			// a TypeDefinition's Scope is its own module), and the trimmer won't be able to resolve it (IL2036).
+			attribute.ConstructorArguments.Add (new CustomAttributeArgument (System_Type, CurrentAssembly.MainModule.ImportReference (type)));
 			return attribute;
 		}
 
@@ -1814,13 +1817,13 @@ namespace Xamarin.Linker {
 						&& method.Parameters [1].ParameterType.Is (ns2, cls2));
 		}
 
-		internal void ImplementConstructNSObjectFactoryMethod (Tuner.DerivedLinkContext context, TypeDefinition type, MethodReference ctor)
+		internal bool ImplementConstructNSObjectFactoryMethod (Tuner.DerivedLinkContext context, TypeDefinition type, MethodReference ctor)
 		{
 			var abr = this;
 
 			// skip creating the factory for NSObject itself
 			if (type.Is ("Foundation", "NSObject"))
-				return;
+				return false;
 
 			// Make sure the type implements INSObjectFactory, otherwise we can't override the _Xamarin_ConstructNSObject method from it.
 			AddTypeInterfaceImplementation (abr, context, type, abr.Foundation_INSObjectFactory);
@@ -1852,20 +1855,22 @@ namespace Xamarin.Linker {
 			} else {
 				context.Annotations.Mark (createInstanceMethod);
 			}
+
+			return true;
 		}
 
-		internal void ImplementConstructINativeObjectFactoryMethod (Tuner.DerivedLinkContext context, TypeDefinition type, MethodReference? ctor)
+		internal bool ImplementConstructINativeObjectFactoryMethod (Tuner.DerivedLinkContext context, TypeDefinition type, MethodReference? ctor)
 		{
 			var abr = this;
 
 			// skip creating the factory for NSObject itself
 			if (type.Is ("Foundation", "NSObject"))
-				return;
+				return false;
 
 			// If the type is a subclass of NSObject, we prefer the NSObject "IntPtr" constructor
 			MethodReference? nsobjectConstructor = type.IsNSObject (context) ? AppBundleRewriter.FindNSObjectConstructor (type) : null;
 			if (nsobjectConstructor is null && ctor is null)
-				return;
+				return false;
 
 			// Make sure the type implements INativeObject, otherwise we can't override the _Xamarin_ConstructINativeObject method from it.
 			AddTypeInterfaceImplementation (abr, context, type, abr.ObjCRuntime_INativeObject);
@@ -1934,6 +1939,8 @@ namespace Xamarin.Linker {
 			} else {
 				context.Annotations.Mark (createInstanceMethod);
 			}
+
+			return true;
 		}
 
 		static void AddTypeInterfaceImplementation (AppBundleRewriter abr, Tuner.DerivedLinkContext context, TypeDefinition type, TypeReference iface)

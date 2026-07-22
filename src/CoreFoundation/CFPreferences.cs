@@ -154,6 +154,7 @@ namespace CoreFoundation {
 				} else if (value is string) {
 					using (var valueStr = new CFString ((string) value)) {
 						CFPreferencesSetAppValue (cfKey.Handle, valueStr.Handle, applicationId.Handle);
+						GC.KeepAlive (cfKey);
 						GC.KeepAlive (applicationId);
 					}
 
@@ -164,6 +165,7 @@ namespace CoreFoundation {
 					value is NSDictionary || value is CFDictionary ||
 					value is NSNumber || value is CFBoolean) {
 					CFPreferencesSetAppValue (cfKey.Handle, ((INativeObject) value).Handle, applicationId.Handle);
+					GC.KeepAlive (cfKey);
 					GC.KeepAlive (value);
 					GC.KeepAlive (applicationId);
 					return;
@@ -173,6 +175,8 @@ namespace CoreFoundation {
 				if (nsnumber is not null) {
 					using (nsnumber) {
 						CFPreferencesSetAppValue (cfKey.Handle, nsnumber.Handle, applicationId.Handle);
+						GC.KeepAlive (cfKey);
+						GC.KeepAlive (nsnumber);
 						GC.KeepAlive (applicationId);
 					}
 					return;

@@ -9,8 +9,6 @@ NAMES+=FrameworkTest1 FrameworkTest2 FrameworkTest3 FrameworkTest4 FrameworkTest
 NAMES+=UnknownD UnknownE UnknownF1 UnknownF2 SomewhatUnknownD SomewhatUnknownE SomewhatUnknownF1 SomewhatUnknownF2
 NAMES+=Framework.With.Dots
 NAMES+=FrameworkWithLongFileNames
-# Used in mmptest
-NAMES+=MmpTestFramework
 
 FRAMEWORKS_WITH_HEADERS+=FrameworkWithLongFileNames
 
@@ -190,7 +188,7 @@ endef
 # 1: name
 # 2: sdk platform (iphoneos, iphonesimulator, tvos, tvsimulator, maccatalyst, mac)
 # 3: runtime identifier
-$(foreach name,$(NAMES),$(foreach platform,$(DOTNET_PLATFORMS),$(foreach rid,$(DOTNET_$(platform)_RUNTIME_IDENTIFIERS),$(eval $(call FrameworkTemplate,$(name),$(DOTNET_$(rid)_SDK_PLATFORM),$(rid),$(shell echo $(name) | tr '.' '_'))))))
+$(foreach name,$(NAMES),$(foreach platform,$(DOTNET_PLATFORMS),$(foreach rid,$(DOTNET_$(platform)_RUNTIME_IDENTIFIERS),$(eval $(call FrameworkTemplate,$(name),$(DOTNET_$(rid)_SDK_PLATFORM),$(rid),$(subst .,_,$(name)))))))
 
 ifneq ($(DOTNET_PLATFORMS),)
 define XCTemplate

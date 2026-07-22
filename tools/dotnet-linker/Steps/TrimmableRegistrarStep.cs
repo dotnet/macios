@@ -148,6 +148,18 @@ namespace Xamarin.Linker {
 			return tr.FullName.Length == tr.Name.Length ? "" : tr.FullName.Substring (0, tr.FullName.Length - tr.Name.Length - 1).Replace (".", "__").Replace ("/", "__");
 		}
 
+		// Emits IL that throws a RuntimeException. This is used for the CreateObject method of the proxy types
+		// we generate for generic types: we can't construct an instance of a generic type from a native handle
+		// (we'd need the generic arguments, which we don't have), and emitting a 'newobj' instruction for an
+		// open generic type produces invalid IL, so throw an exception instead.
+		void EmitThrowCannotConstructGenericType (ILProcessor il, TypeReference type)
+		{
+			il.Append (il.Create (OpCodes.Ldc_I4, 4133));
+			il.Append (il.Create (OpCodes.Ldstr, $"Cannot construct an instance of the type '{type.FullName}' from Objective-C because the type is generic."));
+			il.Append (il.Create (OpCodes.Call, abr.Runtime_CreateRuntimeException));
+			il.Append (il.Create (OpCodes.Throw));
+		}
+
 		protected override void TryEndProcess (out List<Exception>? exceptions)
 		{
 			CustomAttribute attribute;
@@ -195,18 +207,24 @@ namespace Xamarin.Linker {
 			// conditional TypeMapAttribute entries (which require ProcessType to be promoted from
 			// _unmarkedExternalTypeMapEntries) are silently trimmed by the linker.
 			//
+			// The runtime fix (https://github.com/dotnet/runtime/pull/127504) is only available in
+			// .NET 11+, so the workaround is only applied when targeting .NET 10 or earlier.
+			//
 			// The workaround consists of two parts:
-			//   1. This HashSet identifying the affected types.
-			//   2. The conditional block below (lines starting with 'if (skippedActualTypes.Contains (td))')
+			//   1. This HashSet identifying the affected types (only populated when the workaround applies).
+			//   2. The conditional block below (lines starting with 'if (applyTypeMapWorkaround && skippedActualTypes.Contains (td))')
 			//      that uses the 2-arg TypeMapAttribute constructor for these types instead of the 3-arg one.
 			//
-			// To remove this workaround once the issue is fixed:
-			//   1. Delete this HashSet and its comment.
-			//   2. Remove the 'if (skippedActualTypes.Contains (td))' branch below, keeping only the 'else' branch.
+			// To remove this workaround once the minimum supported .NET version includes the fix:
+			//   1. Delete this HashSet, the applyTypeMapWorkaround variable, and this comment.
+			//   2. Remove the 'if (applyTypeMapWorkaround && skippedActualTypes.Contains (td))' branch below, keeping only the 'else' branch.
 			//   3. Verify by running: make build run-bare TEST_VARIATION='release|trimmable-static-registrar-all-optimizations-linkall' \
 			//        RUN_ARGUMENTS="--test MonoTouchFixtures.Foundation.NSOrderedSetTest"
 			//      in tests/monotouch-test/dotnet/MacCatalyst (the MakeNSOrderedSet_WithNull test is a good canary).
-			var skippedActualTypes = new HashSet<TypeDefinition> (App.StaticRegistrar.SkippedTypes.Select (v => v.Actual.Type.Resolve ()));
+			var applyTypeMapWorkaround = App.TargetFramework.Version.Major <= 10;
+			var skippedActualTypes = applyTypeMapWorkaround
+				? new HashSet<TypeDefinition> (App.StaticRegistrar.SkippedTypes.Select (v => v.Actual.Type.Resolve ()))
+				: new HashSet<TypeDefinition> ();
 
 			var copyAssemblyParametersFrom = abr.PlatformAssembly.MainModule;
 			var assemblyParameters = new ModuleParameters {
@@ -238,6 +256,11 @@ namespace Xamarin.Linker {
 			// If we need to modify an assembly that's not the typemap assembly, do it after we've finished writing the typemap assembly,
 			// to avoid having to switch between assemblies (we cache a lot of stuff, and those caches will have to be re-created for every switch).
 			var postActionsByAssembly = new Dictionary<AssemblyDefinition, List<Action<AssemblyDefinition>>> ();
+
+			// The fix for https://github.com/dotnet/runtime/issues/127004 is only available in .NET 11+, so we
+			// still need the workaround (adding the proxy type's attribute to the source type) for .NET 10.
+			// Tracking issue: https://github.com/dotnet/macios/issues/25276
+			var needsTypeMapWorkaround = App.TargetFramework.Version.Major <= 10;
 			void addPostAction (AssemblyDefinition assembly, Action<AssemblyDefinition> action)
 			{
 				if (!postActionsByAssembly.TryGetValue (assembly, out var actions)) {
@@ -311,12 +334,16 @@ namespace Xamarin.Linker {
 					createObjectMethod.AddParameter ("handle", abr.System_IntPtr);
 					createObjectMethod.AddParameter ("owns", abr.System_Boolean);
 					il = createObjectMethod.Body.GetILProcessor ();
-					il.Append (il.Create (OpCodes.Ldarg_1));
-					if (inativeObjCtor.Parameters [0].ParameterType.Is ("ObjCRuntime", "NativeHandle"))
-						il.Append (il.Create (OpCodes.Call, abr.NativeObject_op_Implicit_NativeHandle));
-					il.Append (il.Create (OpCodes.Ldarg_2));
-					il.Append (il.Create (OpCodes.Newobj, abr.CurrentAssembly.MainModule.ImportReference (inativeObjCtor)));
-					il.Append (il.Create (OpCodes.Ret));
+					if (tr.ContainsGenericParameter) {
+						EmitThrowCannotConstructGenericType (il, tr);
+					} else {
+						il.Append (il.Create (OpCodes.Ldarg_1));
+						if (inativeObjCtor.Parameters [0].ParameterType.Is ("ObjCRuntime", "NativeHandle"))
+							il.Append (il.Create (OpCodes.Call, abr.NativeObject_op_Implicit_NativeHandle));
+						il.Append (il.Create (OpCodes.Ldarg_2));
+						il.Append (il.Create (OpCodes.Newobj, abr.CurrentAssembly.MainModule.ImportReference (inativeObjCtor)));
+						il.Append (il.Create (OpCodes.Ret));
+					}
 
 					// We add the proxy type as an attribute to itself
 					attribute = abr.CreateAttribute (ctor);
@@ -343,7 +370,7 @@ namespace Xamarin.Linker {
 					var isCustomType = App.StaticRegistrar.IsCustomType (objcType);
 
 					if (!objcType.IsProtocol && !objcType.IsCategory) {
-						if (skippedActualTypes.Contains (td)) {
+						if (applyTypeMapWorkaround && skippedActualTypes.Contains (td)) {
 							// Workaround for https://github.com/dotnet/runtime/issues/127504
 							// Tracking issue: https://github.com/dotnet/macios/issues/25275
 							// Use the 2-arg (unconditional) TypeMap constructor for types that are
@@ -388,16 +415,20 @@ namespace Xamarin.Linker {
 						var createObjectMethod = proxyType.AddMethod ("CreateObject", MethodAttributes.Public | MethodAttributes.Virtual | MethodAttributes.HideBySig, abr.Foundation_NSObject);
 						createObjectMethod.AddParameter ("handle", abr.System_IntPtr);
 						il = createObjectMethod.Body.GetILProcessor ();
-						var nativeHandleCtor = AppBundleRewriter.FindNSObjectConstructor (td);
-						if (nativeHandleCtor is not null) {
-							il.Append (il.Create (OpCodes.Ldarg_1));
-							if (nativeHandleCtor.Parameters [0].ParameterType.Is ("ObjCRuntime", "NativeHandle"))
-								il.Append (il.Create (OpCodes.Call, abr.NativeObject_op_Implicit_NativeHandle));
-							il.Append (il.Create (OpCodes.Newobj, abr.CurrentAssembly.MainModule.ImportReference (nativeHandleCtor)));
+						if (td.ContainsGenericParameter) {
+							EmitThrowCannotConstructGenericType (il, td);
 						} else {
-							il.Append (il.Create (OpCodes.Ldnull));
+							var nativeHandleCtor = AppBundleRewriter.FindNSObjectConstructor (td);
+							if (nativeHandleCtor is not null) {
+								il.Append (il.Create (OpCodes.Ldarg_1));
+								if (nativeHandleCtor.Parameters [0].ParameterType.Is ("ObjCRuntime", "NativeHandle"))
+									il.Append (il.Create (OpCodes.Call, abr.NativeObject_op_Implicit_NativeHandle));
+								il.Append (il.Create (OpCodes.Newobj, abr.CurrentAssembly.MainModule.ImportReference (nativeHandleCtor)));
+							} else {
+								il.Append (il.Create (OpCodes.Ldnull));
+							}
+							il.Append (il.Create (OpCodes.Ret));
 						}
-						il.Append (il.Create (OpCodes.Ret));
 
 						/*
 						 * public override IntPtr GetClassHandle (out bool is_custom_type)
@@ -485,10 +516,12 @@ namespace Xamarin.Linker {
 
 						// We also add the proxy type as an attribute to the type, as a workaround for https://github.com/dotnet/runtime/issues/127004
 						// Tracking issue: https://github.com/dotnet/macios/issues/25276
-						addPostAction (td.Module.Assembly, assembly => {
-							var attribute = new CustomAttribute (assembly.MainModule.ImportReference (ctor)); // don't use abr.CreateAttribute here, because the ctor has already been marked
-							td.CustomAttributes.Add (attribute);
-						});
+						if (needsTypeMapWorkaround) {
+							addPostAction (td.Module.Assembly, assembly => {
+								var attribute = new CustomAttribute (assembly.MainModule.ImportReference (ctor)); // don't use abr.CreateAttribute here, because the ctor has already been marked
+								td.CustomAttributes.Add (attribute);
+							});
+						}
 
 						/*
 						 * Add the [TypeMapAssociation] attribute for this type and its proxy
@@ -527,17 +560,22 @@ namespace Xamarin.Linker {
 						createObjectMethod.AddParameter ("handle", abr.System_IntPtr);
 						createObjectMethod.AddParameter ("owns", abr.System_Boolean);
 						createObjectMethod.CreateBody (out il);
-						var nativeHandleCtor = AppBundleRewriter.FindINativeObjectConstructor (objcType.ProtocolWrapperType.Resolve ());
-						if (nativeHandleCtor is not null) {
-							il.Append (il.Create (OpCodes.Ldarg_1));
-							if (nativeHandleCtor.Parameters [0].ParameterType.Is ("ObjCRuntime", "NativeHandle"))
-								il.Append (il.Create (OpCodes.Call, abr.NativeObject_op_Implicit_NativeHandle));
-							il.Append (il.Create (OpCodes.Ldarg_2));
-							il.Append (il.Create (OpCodes.Newobj, abr.CurrentAssembly.MainModule.ImportReference (nativeHandleCtor)));
+						var protocolWrapperType = objcType.ProtocolWrapperType.Resolve ();
+						if (protocolWrapperType.ContainsGenericParameter) {
+							EmitThrowCannotConstructGenericType (il, protocolWrapperType);
 						} else {
-							il.Append (il.Create (OpCodes.Ldnull));
+							var nativeHandleCtor = AppBundleRewriter.FindINativeObjectConstructor (protocolWrapperType);
+							if (nativeHandleCtor is not null) {
+								il.Append (il.Create (OpCodes.Ldarg_1));
+								if (nativeHandleCtor.Parameters [0].ParameterType.Is ("ObjCRuntime", "NativeHandle"))
+									il.Append (il.Create (OpCodes.Call, abr.NativeObject_op_Implicit_NativeHandle));
+								il.Append (il.Create (OpCodes.Ldarg_2));
+								il.Append (il.Create (OpCodes.Newobj, abr.CurrentAssembly.MainModule.ImportReference (nativeHandleCtor)));
+							} else {
+								il.Append (il.Create (OpCodes.Ldnull));
+							}
+							il.Append (il.Create (OpCodes.Ret));
 						}
-						il.Append (il.Create (OpCodes.Ret));
 
 						/*
 						 * public override string GetName ()
@@ -577,10 +615,12 @@ namespace Xamarin.Linker {
 
 						// We also add the proxy type as an attribute to the type, as a workaround for https://github.com/dotnet/runtime/issues/127004
 						// Tracking issue: https://github.com/dotnet/macios/issues/25276
-						addPostAction (td.Module.Assembly, assembly => {
-							var attribute = new CustomAttribute (assembly.MainModule.ImportReference (ctor)); // don't use abr.CreateAttribute here, because the ctor has already been marked
-							td.CustomAttributes.Add (attribute);
-						});
+						if (needsTypeMapWorkaround) {
+							addPostAction (td.Module.Assembly, assembly => {
+								var attribute = new CustomAttribute (assembly.MainModule.ImportReference (ctor)); // don't use abr.CreateAttribute here, because the ctor has already been marked
+								td.CustomAttributes.Add (attribute);
+							});
+						}
 					}
 				}
 

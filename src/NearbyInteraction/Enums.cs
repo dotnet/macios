@@ -53,4 +53,12 @@ namespace NearbyInteraction {
 		Below = 3,
 		AboveOrBelow = 4,
 	}
+
+	[NoTV, NoMac, iOS (15, 0), MacCatalyst (15, 0)]
+	[Native]
+	public enum NIMotionActivityState : long {
+		Unknown = 0,
+		Stationary = 1,
+		Moving = 2,
+	}
 }

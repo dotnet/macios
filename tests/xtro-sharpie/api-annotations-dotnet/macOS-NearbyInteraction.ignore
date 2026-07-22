@@ -1,3 +1,5 @@
-# Headers are clear that these two enums are not supported on macOS, don't know why xtro thinks they are
+# Headers are clear that these enums are not supported on macOS, don't know why xtro thinks they are
 !missing-enum! NIDLTDOACoordinatesType not bound
+!missing-enum! NIDLTDOADiscoveryMethod not bound
 !missing-enum! NIDLTDOAMeasurementType not bound
+!missing-enum! NIMotionActivityState not bound

@@ -697,4 +697,32 @@ namespace MetalPerformanceShaders {
 		LowPower = 0x1,
 		SkipRemovable = 0x2,
 	}
+
+	/// <summary>Specifies options for building a color conversion function.</summary>
+	[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+	[Flags]
+	public enum MPSFColorConversionOptions : ulong {
+		/// <summary>Uses no additional options.</summary>
+		None = 0,
+		/// <summary>Uses the default intermediate precision.</summary>
+		PrecisionDefault = None,
+		/// <summary>Uses signed normalized 8-bit intermediate precision.</summary>
+		PrecisionSnorm8 = 7,
+		/// <summary>Uses unsigned normalized 8-bit intermediate precision.</summary>
+		PrecisionUnorm8 = 8,
+		/// <summary>Uses signed normalized 16-bit intermediate precision.</summary>
+		PrecisionSnorm16 = 15,
+		/// <summary>Uses unsigned normalized 16-bit intermediate precision.</summary>
+		PrecisionUnorm16 = 16,
+		/// <summary>Uses 16-bit floating-point intermediate precision.</summary>
+		PrecisionFloat16 = 11,
+		/// <summary>Uses 32-bit floating-point intermediate precision.</summary>
+		PrecisionFloat32 = 24,
+		/// <summary>The mask for the intermediate precision bits.</summary>
+		PrecisionMask = 0x3f,
+		/// <summary>Replicates grayscale output across the RGB color channels.</summary>
+		ReturnGrayscaleAsRgb = 0x100,
+		/// <summary>Enables verbose logging while building the conversion.</summary>
+		VerboseLogging = 0x200,
+	}
 }

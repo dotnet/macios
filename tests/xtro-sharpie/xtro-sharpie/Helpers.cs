@@ -464,6 +464,7 @@ namespace Extrospection {
 			case "libsystem_kernel": // getxattr, removexattr and setxattr
 				return "Foundation";
 			case "MPSCore":
+			case "MPSFunctions":
 			case "MPSImage":
 			case "MPSMatrix":
 			case "MPSNDArray":

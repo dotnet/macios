@@ -1530,6 +1530,20 @@ namespace Registrar {
 		protected override IEnumerable<ProtocolMemberAttribute> GetProtocolMemberAttributes (TypeReference type)
 		{
 			var td = type.Resolve ();
+			if (td is null)
+				yield break;
+
+#if ASSEMBLY_PREPARER
+			// When post-processing assemblies with the trimmable static registrar, the [ProtocolMember]
+			// attributes have been removed by the trimmer, so read them from the pre-trim (untrimmed)
+			// assemblies instead.
+			if (App.IsPostProcessingAssemblies && App.PreTrimAssemblyResolver is not null) {
+				var preTrimAssembly = App.PreTrimAssemblyResolver.Resolve (td.Module.Assembly.Name);
+				var preTrimType = preTrimAssembly?.MainModule.GetType (td.FullName);
+				if (preTrimType is not null)
+					td = preTrimType;
+			}
+#endif
 
 			foreach (var ca in GetCustomAttributes (td, Foundation, StringConstants.ProtocolMemberAttribute)) {
 				var rv = new ProtocolMemberAttribute ();

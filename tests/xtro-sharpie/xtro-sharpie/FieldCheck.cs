@@ -95,7 +95,10 @@ namespace Extrospection {
 		{
 			// at this stage anything else we have is not something we could find in Apple's headers
 			foreach (var key in fields.Keys.Except (matchedFields)) {
-				var framework = Helpers.GetFramework (fields [key]);
+				var member = fields [key];
+				if (((ICustomAttributeProvider) member).IsObsolete () || member.DeclaringType.Resolve ()?.IsObsolete () == true)
+					continue;
+				var framework = Helpers.GetFramework (member);
 				Log.On (framework).Add ($"!unknown-field! {key} bound");
 			}
 		}

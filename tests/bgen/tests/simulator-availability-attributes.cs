@@ -8,6 +8,15 @@ namespace NS {
 	[iOS (16, 0), TV (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	interface UnsupportedOnAllSimulators {
+		[UnsupportedSimulator ("ios")]
+		[UnsupportedSimulator ("tvos")]
+		[Export ("unsupportedMethod")]
+		void UnsupportedMethod ();
+
+		[SupportedSimulator ("ios17.0")]
+		[SupportedSimulator ("tvos17.0")]
+		[Export ("supportedMethod")]
+		void SupportedMethod ();
 	}
 
 	[UnsupportedSimulator ("ios")]

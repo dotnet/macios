@@ -665,6 +665,7 @@ namespace Introspection {
 			{ "Sdk", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst }, // software development kit
 			{ "Sdnn", All & ~ApplePlatform.TVOS }, // Apple API abbreviation
 			{ "Sdof", ApplePlatform.MacOSX }, // synthetic depth of field
+			{ "Sdpa", All }, // Scaled Dot Product Attention
 			{ "Sdr", All }, // standard dynamic range
 			{ "Sdtv", ApplePlatform.TVOS }, // acronym: Standard Definition Tele Vision
 			{ "Securit", ApplePlatform.iOS }, // Apple API selector fragment

@@ -266,13 +266,13 @@ namespace Network {
 		[SupportedOSPlatform ("ios26.0")]
 		[SupportedOSPlatform ("maccatalyst26.0")]
 		[DllImport (Constants.NetworkLibrary)]
-		static extern NWLinkQuality nw_path_get_link_quality (IntPtr path);
+		static extern byte nw_path_get_link_quality (IntPtr path);
 
 		[SupportedOSPlatform ("tvos26.0")]
 		[SupportedOSPlatform ("macos26.0")]
 		[SupportedOSPlatform ("ios26.0")]
 		[SupportedOSPlatform ("maccatalyst26.0")]
-		public NWLinkQuality LinkQuality => nw_path_get_link_quality (GetCheckedHandle ());
+		public NWLinkQuality LinkQuality => (NWLinkQuality) nw_path_get_link_quality (GetCheckedHandle ());
 
 	}
 }

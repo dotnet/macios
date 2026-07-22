@@ -17734,4 +17734,109 @@ namespace MetalPerformanceShaders {
 		[Export ("encodeToCommandBuffer:sourceTexture:previousTexture:destinationTexture:motionVectorTexture:depthTexture:")]
 		void Encode (IMTLCommandBuffer commandBuffer, IMTLTexture sourceTexture, IMTLTexture previousTexture, IMTLTexture destinationTexture, [NullAllowed] IMTLTexture motionVectorTexture, [NullAllowed] IMTLTexture depthTexture);
 	}
+
+	/// <summary>Base class for objects that build Metal Shading Language functions.</summary>
+	[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface MPSFunction : NSCopying, NSSecureCoding {
+		/// <summary>Gets a value that indicates whether the type supports secure coding.</summary>
+		[Static]
+		[Export ("supportsSecureCoding")]
+		bool SupportsSecureCoding { get; }
+
+		/// <summary>Creates a copy of the function for the specified Metal device.</summary>
+		/// <param name="zone">The allocation zone, or <see langword="null" /> to use the default zone.</param>
+		/// <param name="device">The device for the copy, or <see langword="null" /> to use the current device.</param>
+		/// <returns>A copy of the function.</returns>
+		[Export ("copyWithZone:device:")]
+		[return: Release]
+		MPSFunction CopyWithZone ([NullAllowed] NSZone zone, [NullAllowed] IMTLDevice device);
+
+		/// <summary>Gets the Metal Shading Language function name.</summary>
+		[Export ("name", ArgumentSemantic.Retain)]
+		string Name { get; }
+
+		/// <summary>Gets the Metal device where the function runs.</summary>
+		[Export ("device", ArgumentSemantic.Retain)]
+		IMTLDevice Device { get; }
+
+		/// <summary>Gets the compiled Metal function, or <see langword="null" /> if compilation failed.</summary>
+		[NullAllowed]
+		[Export ("function", ArgumentSemantic.Retain)]
+		IMTLFunction Function { get; }
+
+		/// <summary>Gets the error produced while building the function, or <see langword="null" /> if no error occurred.</summary>
+		[NullAllowed]
+		[Export ("error", ArgumentSemantic.Retain)]
+		NSError Error { get; }
+
+		/// <summary>Gets a source-level declaration of the generated function prototype.</summary>
+		[Export ("functionPrototype")]
+		string FunctionPrototype { get; }
+	}
+
+	/// <summary>Builds an inline Metal function that converts colors between color spaces.</summary>
+	[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (MPSFunction))]
+	[DisableDefaultCtor]
+	interface MPSFColorConversion {
+		[Internal]
+		[Export ("initWithDevice:startColorSpace:endColorSpace:functionName:sourceRange:options:error:")]
+		NativeHandle _InitWithDevice (IMTLDevice device, CGColorSpace startColorSpace, CGColorSpace endColorSpace, string functionName, [NullAllowed] /* const MPSFunctions_AABB* */ IntPtr sourceRange, MPSFColorConversionOptions options, [NullAllowed] out NSError error);
+
+		[DesignatedInitializer]
+		[Internal]
+		[Export ("initWithDevice:conversion:functionName:sourceRange:options:error:")]
+		NativeHandle _InitWithDevice (IMTLDevice device, [NullAllowed] CGColorConversionInfo conversion, string functionName, [NullAllowed] /* const MPSFunctions_AABB* */ IntPtr sourceRange, MPSFColorConversionOptions options, [NullAllowed] out NSError error);
+
+		/// <summary>Gets the options used to build the conversion.</summary>
+		[Export ("options")]
+		MPSFColorConversionOptions Options { get; }
+
+		/// <summary>Gets the number of color channels consumed by the conversion.</summary>
+		[Export ("inputColorChannels")]
+		nuint InputColorChannels { get; }
+
+		/// <summary>Gets the number of color channels produced by the conversion.</summary>
+		[Export ("outputColorChannels")]
+		nuint OutputColorChannels { get; }
+
+		/// <summary>Estimates the output color gamut for the specified input range.</summary>
+		/// <param name="inputRange">The input color gamut.</param>
+		/// <returns>The estimated output color gamut.</returns>
+		[Export ("effectiveRange:")]
+		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
+		MPSFunctionsAxisAlignedBoundingBox GetEffectiveRange (MPSFunctionsAxisAlignedBoundingBox inputRange);
+
+		/// <summary>Gets the descriptor for the first one-dimensional lookup texture, if one is required.</summary>
+		[NullAllowed]
+		[Export ("descriptorFor1DTexture1")]
+		MTLTextureDescriptor DescriptorFor1DTexture1 { get; }
+
+		/// <summary>Gets the descriptor for the first three-dimensional lookup texture, if one is required.</summary>
+		[NullAllowed]
+		[Export ("descriptorFor3DTexture1")]
+		MTLTextureDescriptor DescriptorFor3DTexture1 { get; }
+
+		/// <summary>Gets the descriptor for the second three-dimensional lookup texture, if one is required.</summary>
+		[NullAllowed]
+		[Export ("descriptorFor3DTexture2")]
+		MTLTextureDescriptor DescriptorFor3DTexture2 { get; }
+
+		/// <summary>Initializes the first one-dimensional lookup texture.</summary>
+		/// <param name="texture">The texture to initialize, or <see langword="null" /> if no texture is available.</param>
+		[Export ("initialize1DTexture1:")]
+		void Initialize1DTexture1 ([NullAllowed] IMTLTexture texture);
+
+		/// <summary>Initializes the first three-dimensional lookup texture.</summary>
+		/// <param name="texture">The texture to initialize, or <see langword="null" /> if no texture is available.</param>
+		[Export ("initialize3DTexture1:")]
+		void Initialize3DTexture1 ([NullAllowed] IMTLTexture texture);
+
+		/// <summary>Initializes the second three-dimensional lookup texture.</summary>
+		/// <param name="texture">The texture to initialize, or <see langword="null" /> if no texture is available.</param>
+		[Export ("initialize3DTexture2:")]
+		void Initialize3DTexture2 ([NullAllowed] IMTLTexture texture);
+	}
 }

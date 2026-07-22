@@ -39,3 +39,9 @@
 !missing-null-allowed! 'System.Void AVFoundation.AVContentKeyRequest::MakeOptionalStreamingContentKeyRequestData(Foundation.NSData,Foundation.NSData,Foundation.NSDictionary`2<Foundation.NSString,Foundation.NSObject>,System.Action`2<Foundation.NSData,Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #1
 !missing-null-allowed! 'System.Void AVFoundation.AVPlayerItem::FetchAccessLog(System.Action`1<AVFoundation.AVPlayerItemAccessLog>)' is missing a '?' on parameter 'completionHandler' block parameter #0
 !missing-null-allowed! 'System.Void AVFoundation.AVPlayerItem::FetchErrorLog(System.Action`1<AVFoundation.AVPlayerItemErrorLog>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+
+## bound selectors with no native declaration reachable from the class in the current SDK headers:
+## private/SPI selectors, protocol/category members Apple inlines without declaring the conformance on
+## the class, managed callback infrastructure, or API Apple removed/privatized - kept for compatibility
+## (baseline for https://github.com/dotnet/macios/issues/26053)
+!unknown-selector! AVPlayerItem::setInterstitialTimeRanges: not found

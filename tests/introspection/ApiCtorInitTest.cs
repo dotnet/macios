@@ -498,6 +498,11 @@ namespace Introspection {
 				if (ctor.ToString () == $"Void .ctor(Metal.IMTLDevice, MetalPerformanceShaders.MPSNDArrayDescriptor)")
 					return true;
 				break;
+			case "MFComposeAssistantViewController":
+				// The inherited UIViewController initializer aborts, and the header does not designate initWithDelegate:.
+				if (cstr == $"Void .ctor(System.String, Foundation.NSBundle)")
+					return true;
+				break;
 			case "MFMailComposeViewController": // You are meant to use the system provided one
 			case "MFMessageComposeViewController": // You are meant to use the system provided one
 			case "GKFriendRequestComposeViewController": // You are meant to use the system provided one

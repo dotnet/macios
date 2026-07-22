@@ -22,6 +22,7 @@
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CollectUnresolvedNativeSymbols" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ComputeNativeAOTSurvivingNativeSymbols" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.FindAotCompiler" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.GenerateTrustedPlatformAssemblySource" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.GetFullPaths" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.InstallNameTool" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.LinkNativeCode" AssemblyFile="$(_TaskAssemblyName)" />
@@ -122,6 +123,10 @@
 		<_BundlerDebug Condition="'$(_BundlerDebug)' == '' And '$(Configuration)' == 'Debug'">true</_BundlerDebug>
 		<!-- As a last resort, the default is false for all platforms -->
 		<_BundlerDebug Condition="'$(_BundlerDebug)' == ''">false</_BundlerDebug>
+
+		<!-- Generate the trusted platform assembly list at build time for faster startup in non-debug builds. -->
+		<GenerateTrustedPlatformAssemblies Condition="'$(GenerateTrustedPlatformAssemblies)' == '' And '$(_BundlerDebug)' != 'true'">true</GenerateTrustedPlatformAssemblies>
+		<GenerateTrustedPlatformAssemblies Condition="'$(GenerateTrustedPlatformAssemblies)' == ''">false</GenerateTrustedPlatformAssemblies>
 
 		<!-- On the other hand, we want the linker to link away debug support in the actual code unless we're building for Debug -->
 		<DebuggerSupport Condition="'$(DebuggerSupport)' == ''">$(_BundlerDebug)</DebuggerSupport>
@@ -1934,9 +1939,31 @@
 		</PropertyGroup>
 	</Target>
 
-	<Target Name="_ComputeNativeExecutableInputs" DependsOnTargets="_ComputeVariables">
+	<Target Name="_GenerateTrustedPlatformAssemblySource"
+		Condition="'$(GenerateTrustedPlatformAssemblies)' == 'true'"
+		DependsOnTargets="_LoadLinkerOutput;_ComputePublishLocation"
+		>
+		<GenerateTrustedPlatformAssemblySource
+			Assemblies="@(ResolvedFileToPublish)"
+			AssemblyDirectory="$(_AssemblyPublishDir)"
+			IsMultiRidBuild="$(_IsMultiRidBuild)"
+			MainFiles="@(_MainFile)"
+			OutputDirectory="$(DeviceSpecificIntermediateOutputPath)trusted-platform-assemblies"
+		>
+			<Output TaskParameter="NativeSourceFiles" ItemName="_TrustedPlatformAssemblySource" />
+		</GenerateTrustedPlatformAssemblySource>
+
+		<ItemGroup>
+			<FileWrites Include="@(_TrustedPlatformAssemblySource)" />
+		</ItemGroup>
+	</Target>
+
+	<Target Name="_ComputeNativeExecutableInputs" DependsOnTargets="_ComputeVariables;_GenerateTrustedPlatformAssemblySource">
 		<ItemGroup>
 			<_CompileNativeExecutableFile Include="@(_MainFile)">
+				<OutputFile>$(_IntermediateNativeLibraryDir)%(Filename).o</OutputFile>
+			</_CompileNativeExecutableFile>
+			<_CompileNativeExecutableFile Include="@(_TrustedPlatformAssemblySource)">
 				<OutputFile>$(_IntermediateNativeLibraryDir)%(Filename).o</OutputFile>
 			</_CompileNativeExecutableFile>
 			<_CompileNativeExecutableFile Include="@(_RegistrarFile)">
@@ -2202,6 +2229,10 @@
 
 			<!-- In some cases ld may crash if -lobjc isn't passed -->
 			<_MainLinkerFlags Include="-lobjc" />
+
+			<_ProcessedReferenceNativeSymbol Include="_xamarin_trusted_platform_assemblies" Condition="'$(GenerateTrustedPlatformAssemblies)' == 'true'" />
+			<_ProcessedReferenceNativeSymbol Include="_xamarin_trusted_platform_assembly_count" Condition="'$(GenerateTrustedPlatformAssemblies)' == 'true'" />
+			<_ProcessedReferenceNativeSymbol Include="_xamarin_is_multi_rid_build" Condition="'$(GenerateTrustedPlatformAssemblies)' == 'true' And ('$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst' Or '$(_SdkIsSimulator)' == 'true')" />
 
 			<_MainLinkerFlags Condition="'$(_ExportSymbolsExplicitly)' == 'true'" Include="-exported_symbols_list" />
 			<_MainLinkerFlags Condition="'$(_ExportSymbolsExplicitly)' == 'true'" Include="$(_ExportedSymbolsFile)" />

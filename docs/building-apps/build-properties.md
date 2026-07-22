@@ -573,6 +573,13 @@ Default: true
 
 Where the generated source from the generator are saved.
 
+## GenerateTrustedPlatformAssemblies
+
+A boolean property that specifies whether the trusted platform assembly list is
+generated at build time instead of discovered when the app launches.
+
+The default value is `false` for debug builds and `true` for other builds.
+
 ## GetApplicationArtifactsDependsOn
 
 A semi-colon delimited property that can be used to extend the

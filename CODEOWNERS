@@ -188,7 +188,6 @@
 
 /tests/xharness @rolfbjarne
 /tests/xtro-sharpie
-/tests/mmptest @rolfbjarne
 /tests/common/mac @rolfbjarne
 
 /tools/common @rolfbjarne

@@ -630,9 +630,15 @@
 				elsewhere, running ILLink first is redundant - it just trims the assemblies before ILC, but ILC
 				trims them again anyway. So we skip ILLink entirely here and let ILC do all the trimming (the
 				standard NativeAOT flow). This simplifies the pipeline and makes it possible to run ILC before the
-				native registrar code is generated.
+				native registrar code is generated. When ILLink is skipped, we copy the prepared assemblies to the
+				IntermediateLinkDir ourselves (see _PopulateLinkDirWhenSkippingILLink).
+
+				This is gated on .NET 11+: feeding the untrimmed assemblies to ILC hits ILC's duplicate-type-name
+				bug (https://github.com/dotnet/runtime/issues/127004, e.g. the two Foundation.NSDictionary_Proxy
+				types the trimmable-static registrar emits), which is only fixed in the .NET 11+ ILC. On .NET 10
+				we keep running ILLink (which trims away the duplicates before ILC sees them).
 			-->
-			<_SkipILLink Condition="'$(_SkipILLink)' == '' And '$(_UseNativeAot)' == 'true' And '$(PrepareAssemblies)' == 'true' And '$(PostProcessAssemblies)' == 'true'">true</_SkipILLink>
+			<_SkipILLink Condition="'$(_SkipILLink)' == '' And '$(_UseNativeAot)' == 'true' And '$(PrepareAssemblies)' == 'true' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '11.0'))">true</_SkipILLink>
 			<_SkipILLink Condition="'$(_SkipILLink)' == ''">false</_SkipILLink>
 
 			<!-- Yep, we want to run ILLink as well, because we need our custom steps to run (NativeAOT sets this to false, so set it back to true), unless we're skipping ILLink (see _SkipILLink above) -->
@@ -1758,6 +1764,22 @@
 		</ItemGroup>
 	</Target>
 
+	<!--
+		When we skip ILLink (see _SkipILLink), nobody populates the IntermediateLinkDir with the assemblies
+		that ILC compiles (ILLink normally does this). So do it ourselves here: copy the prepared assemblies
+		(and their PDBs) into the IntermediateLinkDir. This must run before the assemblies are fed to ILC.
+	-->
+	<Target Name="_PopulateLinkDirWhenSkippingILLink"
+			Condition="'$(_SkipILLink)' == 'true'"
+			BeforeTargets="_PostprocessAssemblies;_XamarinComputeIlcCompileInputs"
+			DependsOnTargets="_PrepareAssemblies;PrepareForILLink">
+		<Copy SourceFiles="@(ManagedAssemblyToLink);@(_PDBToLink)"
+			  DestinationFiles="@(ManagedAssemblyToLink->'$(IntermediateLinkDir)%(Filename)%(Extension)');@(_PDBToLink->'$(IntermediateLinkDir)%(Filename)%(Extension)')"
+			  SkipUnchangedFiles="true">
+			<Output TaskParameter="CopiedFiles" ItemName="FileWrites" />
+		</Copy>
+	</Target>
+
 	<Target Name="_XamarinComputeIlcCompileInputs">
 		<PropertyGroup>
 			<!-- Ask ILC to produce a static library -->
@@ -1772,7 +1794,7 @@
 			<DirectPInvoke Include="__Internal" />
 		</ItemGroup>
 
-		<ItemGroup Condition="'$(_SkipILLink)' != 'true'">
+		<ItemGroup>
 			<!-- Give ILLink's output to ILC -->
 			<_UpdatedManagedAssemblyToLink Include="@(ManagedAssemblyToLink->'$(IntermediateLinkDir)%(Filename)%(Extension)')" Condition="Exists('$(IntermediateLinkDir)%(Filename)%(Extension)')" />
 			<ManagedAssemblyToLink Remove="@(ManagedAssemblyToLink)" />

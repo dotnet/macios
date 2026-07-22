@@ -932,6 +932,11 @@ namespace Cecil.Tests {
 						if (value.OpCode.Code == Code.Ldarg_0 && state.Method.HasThis)
 							continue;
 
+						// Assume that calling [get_]Handle on an object loaded from a static field is safe:
+						// a static field is a GC root, so the object it references can't be collected.
+						if (value.OpCode.Code == Code.Ldsfld)
+							continue;
+
 						if (!IsReferencedLater (md, value, instr)) {
 							failure = new Failure {
 								Message = $"Fetched the handle of an object, but the object was never referenced again in this method. This means the object could be collected by the GC while the handle is in use.",

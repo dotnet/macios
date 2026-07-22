@@ -583,9 +583,10 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		    * An Info.plist in their project file (by using a `None` item with filename "Info.plist" or with a `Link` metadata with filename "Info.plist"). We figure this out in the DetectAppManifest target.
 		    * A partial plist in their project (using the `PartialAppManifest` item group). Developers can add targets to the public CollectAppManifestsDependsOn
 		      property to run targets that add to the `PartialAppManifest` item group before we process them.
+		    * Individual entries in the `AppManifestEntry` item group.
 		    * Some MSBuild properties can also add values.
 
-		    The precedence is: MSBuild properties can be overridden by the Info.plist, which can be overridden by a partial plist (a partial plist can also specify the "Overwrite=false" metadata to not overwrite any existing entries).
+		    The precedence is: MSBuild properties can be overridden by the Info.plist, which can be overridden by a partial plist (a partial plist can also specify the "Overwrite=false" metadata to not overwrite any existing entries), which can be overridden by an AppManifestEntry item.
 
 		2. In the `CompileAppManifest` target we get all the inputs from above, and compute a temporary app manifest, which is written to a temporary output file.
 
@@ -637,6 +638,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<_CompileAppManifestInputLine Include="ApplicationTitle=$(ApplicationTitle)" />
 			<_CompileAppManifestInputLine Include="ApplicationVersion=$(ApplicationVersion)" />
 			<_CompileAppManifestInputLine Include="AppManifest=$(AppBundleManifest)" />
+			<_CompileAppManifestInputLine Include="AppManifestEntry=%(AppManifestEntry.Identity)|%(AppManifestEntry.Type)|%(AppManifestEntry.Value)|%(AppManifestEntry.ArraySeparator)" />
 			<_CompileAppManifestInputLine Include="CompiledAppManifest=$(_TemporaryAppManifest)" />
 			<_CompileAppManifestInputLine Include="DefaultSdkVersion=$(_SdkVersion)" />
 			<_CompileAppManifestInputLine Include="FontFilesToRegister=$(_CompileAppManifestFontFilesToRegister)" />
@@ -687,6 +689,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			ApplicationTitle="$(ApplicationTitle)"
 			ApplicationVersion="$(ApplicationVersion)"
 			AppManifest="$(AppBundleManifest)"
+			AppManifestEntries="@(AppManifestEntry)"
 			BundleExecutable="$(_NativeExecutableName)"
 			CompiledAppManifest="$(_TemporaryAppManifest)"
 			DefaultSdkVersion="$(_SdkVersion)"

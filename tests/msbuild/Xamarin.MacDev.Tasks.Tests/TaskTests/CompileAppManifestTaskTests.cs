@@ -1,5 +1,6 @@
 #nullable enable
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.Build.Utilities;
@@ -47,6 +48,61 @@ namespace Xamarin.MacDev.Tasks {
 
 			var plist = PDictionary.OpenFile (task.CompiledAppManifest!.ItemSpec);
 			Assert.That (plist.GetMinimumOSVersion (), Is.EqualTo ("14.0"), "MinimumOSVersion");
+		}
+
+		[Test]
+		public void AppManifestEntries ()
+		{
+			var dir = Cache.CreateTemporaryDirectory ();
+			var task = CreateTask (dir);
+
+			var mainPath = Path.Combine (dir, "Info.plist");
+			var main = new PDictionary {
+				{ "StringValue", new PString ("main") },
+				{ "RemoveValue", new PString ("remove me") },
+			};
+			main.Save (mainPath);
+
+			var partialPath = Path.Combine (dir, "PartialAppManifest.plist");
+			var partial = new PDictionary {
+				{ "StringValue", new PString ("partial") },
+			};
+			partial.Save (partialPath);
+
+			task.AppManifest = new TaskItem (mainPath);
+			task.PartialAppManifests = [new TaskItem (partialPath)];
+			task.AppManifestEntries = [
+				new TaskItem ("StringValue", new Dictionary<string, string> { { "Type", "String" }, { "Value", "entry" } }),
+				new TaskItem ("BooleanValue", new Dictionary<string, string> { { "Type", "Boolean" }, { "Value", "TrUe" } }),
+				new TaskItem ("StringArrayValue", new Dictionary<string, string> { { "Type", "StringArray" }, { "Value", "a;b" } }),
+				new TaskItem ("CustomStringArrayValue", new Dictionary<string, string> { { "Type", "StringArray" }, { "Value", "c|d" }, { "ArraySeparator", "|" } }),
+				new TaskItem ("RemoveValue", new Dictionary<string, string> { { "Type", "Remove" } }),
+			];
+
+			ExecuteTask (task);
+
+			var plist = PDictionary.OpenFile (task.CompiledAppManifest!.ItemSpec);
+			Assert.That (plist.GetString ("StringValue").Value, Is.EqualTo ("entry"), "StringValue");
+			Assert.That (plist.Get<PBoolean> ("BooleanValue")?.Value, Is.True, "BooleanValue");
+			Assert.That (plist.GetArray ("StringArrayValue").OfType<PString> ().Select (v => v.Value), Is.EqualTo (new [] { "a", "b" }), "StringArrayValue");
+			Assert.That (plist.GetArray ("CustomStringArrayValue").OfType<PString> ().Select (v => v.Value), Is.EqualTo (new [] { "c", "d" }), "CustomStringArrayValue");
+			Assert.That (plist.ContainsKey ("RemoveValue"), Is.False, "RemoveValue");
+		}
+
+		[Test]
+		[TestCase ("Remove", "unexpected", "Invalid value 'unexpected' for the app manifest entry 'TestEntry' of type 'Remove' specified in the AppManifestEntry item group. Expected no value at all.")]
+		[TestCase ("Boolean", "not-a-boolean", "Invalid value 'not-a-boolean' for the app manifest entry 'TestEntry' of type 'Boolean' specified in the AppManifestEntry item group. Expected 'true' or 'false'.")]
+		[TestCase ("Unknown", "value", "Unknown type 'Unknown' for the app manifest entry 'TestEntry' specified in the AppManifestEntry item group. Expected 'Remove', 'Boolean', 'String', or 'StringArray'.")]
+		public void InvalidAppManifestEntry (string type, string value, string expectedError)
+		{
+			var task = CreateTask ();
+			task.AppManifestEntries = [
+				new TaskItem ("TestEntry", new Dictionary<string, string> { { "Type", type }, { "Value", value } }),
+			];
+
+			ExecuteTask (task, expectedErrorCount: 1);
+
+			Assert.That (Engine.Logger.ErrorEvents [0].Message, Is.EqualTo (expectedError));
 		}
 
 		[Test]

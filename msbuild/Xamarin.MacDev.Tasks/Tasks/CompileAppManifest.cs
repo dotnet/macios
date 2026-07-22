@@ -34,6 +34,8 @@ namespace Xamarin.MacDev.Tasks {
 		// This must be an ITaskItem to copy the file to Windows for remote builds.
 		public ITaskItem? AppManifest { get; set; }
 
+		public ITaskItem [] AppManifestEntries { get; set; } = [];
+
 		[Required]
 		public string BundleExecutable { get; set; } = "";
 
@@ -157,6 +159,8 @@ namespace Xamarin.MacDev.Tasks {
 			// Merge with any partial plists...
 			MergePartialPlistTemplates (plist);
 
+			AddAppManifestEntries (plist);
+
 			Validation (plist);
 
 			// write the resulting app manifest
@@ -178,6 +182,45 @@ namespace Xamarin.MacDev.Tasks {
 			var dict = new PDictionary ();
 			dict.Add ("Version", new PString (value));
 			plist.Add (name, dict);
+		}
+
+		void AddAppManifestEntries (PDictionary plist)
+		{
+			foreach (var item in AppManifestEntries) {
+				var key = item.ItemSpec;
+				var type = item.GetMetadata ("Type");
+				var value = item.GetMetadata ("Value");
+
+				switch (type.ToLowerInvariant ()) {
+				case "remove":
+					if (!string.IsNullOrEmpty (value))
+						Log.LogError (MSBStrings.E7184, /* Invalid value '{0}' for the app manifest entry '{1}' of type '{2}' specified in the AppManifestEntry item group. Expected no value at all. */ value, key, type);
+					plist.Remove (key);
+					break;
+				case "boolean":
+					if (!bool.TryParse (value, out var booleanValue)) {
+						Log.LogError (MSBStrings.E7185, /* Invalid value '{0}' for the app manifest entry '{1}' of type '{2}' specified in the AppManifestEntry item group. Expected 'true' or 'false'. */ value, key, type);
+						continue;
+					}
+					plist [key] = new PBoolean (booleanValue);
+					break;
+				case "string":
+					plist [key] = new PString (value);
+					break;
+				case "stringarray":
+					var arraySeparator = item.GetMetadata ("ArraySeparator");
+					if (string.IsNullOrEmpty (arraySeparator))
+						arraySeparator = ";";
+					var array = new PArray ();
+					foreach (var element in value.Split (new [] { arraySeparator }, StringSplitOptions.None))
+						array.Add (new PString (element));
+					plist [key] = array;
+					break;
+				default:
+					Log.LogError (MSBStrings.E7186, /* Unknown type '{0}' for the app manifest entry '{1}' specified in the AppManifestEntry item group. Expected 'Remove', 'Boolean', 'String', or 'StringArray'. */ type, key);
+					break;
+				}
+			}
 		}
 
 		void RegisterFonts (PDictionary plist)

@@ -2368,6 +2368,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 		<ItemGroup>
 			<_BundlerEnvironmentVariables Condition="'$(MonoUseCompressedInterfaceBitmap)' == 'true'" Include="MONO_COMPRESSED_INTERFACE_BITMAP" Value="1" />
+			<_BundlerEnvironmentVariables Condition="'$(EnableCrashReport)' == 'true'" Include="DOTNET_EnableCrashReport" Value="1" />
 		</ItemGroup>
 
 		<ParseBundlerArguments

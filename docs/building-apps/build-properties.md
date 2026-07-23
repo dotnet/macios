@@ -527,6 +527,28 @@ If code signing is enabled.
 
 Code signing is enabled by default for all platforms; this can be overridden with this property.
 
+## EnableCrashReport
+
+Enables crash reports for the app. When enabled, the `DOTNET_EnableCrashReport`
+environment variable is set to `1` at startup, which makes the .NET runtime's
+in-process crash reporter write a JSON crash report when the app crashes.
+
+This setting is disabled by default, but it can be enabled like this:
+
+```xml
+<PropertyGroup>
+    <EnableCrashReport>true</EnableCrashReport>
+</PropertyGroup>
+```
+
+The crash reports are written to a subdirectory of the app's caches directory.
+
+See also: [Collect crash dumps](https://learn.microsoft.com/en-us/dotnet/core/diagnostics/collect-dumps-crash).
+
+The in-process crash reporter is only available in the mobile CoreCLR runtime
+(iOS, tvOS and Mac Catalyst); the desktop macOS runtime relies on the
+[`createdump`](#bundlecreatedump) tool instead.
+
 ## EnableDefaultCodesignEntitlements
 
 See [CodesignEntitlements](#codesignentitlements).

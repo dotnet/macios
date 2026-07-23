@@ -1,0 +1,2 @@
+!missing-enum-value! CLActivityType native value CLActivityTypeMaritime = 6 not bound
+!missing-enum-value! CLLiveUpdateConfiguration native value CLLiveUpdateConfigurationMaritime = 5 not bound

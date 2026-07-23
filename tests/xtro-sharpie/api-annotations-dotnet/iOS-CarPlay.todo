@@ -1,0 +1,6 @@
+!missing-null-allowed! 'System.Void CarPlay.CPMapPanelButtonConfiguration::set_TravelEstimates(CarPlay.CPTravelEstimates)' is missing an [NullAllowed] on parameter #0
+!missing-selector! +CPRouteDetail::routeDetailWithInfo: not bound
+!missing-selector! +CPRouteDetail::routeDetailWithParking: not bound
+!missing-selector! CPMapPanel::setSections: not bound
+!missing-selector! CPNavigationAlert::setShowsCloseButton: not bound
+!missing-selector! CPNavigationAlert::showsCloseButton not bound

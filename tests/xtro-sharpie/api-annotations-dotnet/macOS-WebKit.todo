@@ -1,0 +1,6 @@
+!missing-selector! WKWebpagePreferences::globalPrivacyControlStatus not bound
+!missing-selector! WKWebpagePreferences::setGlobalPrivacyControlStatus: not bound
+!unknown-selector! WKWebpagePreferences::globalPrivacyControlEnabled not found
+!unknown-selector! WKWebpagePreferences::setGlobalPrivacyControlEnabled: not found
+!missing-selector! WKUserContentController::addBuffer:name:contentWorld: not bound
+!missing-selector! WKUserContentController::removeBufferWithName:contentWorld: not bound

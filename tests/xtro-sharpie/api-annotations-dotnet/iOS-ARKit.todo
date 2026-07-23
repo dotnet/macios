@@ -1,0 +1,5 @@
+!deprecated-attribute-missing! ARCamera::projectionMatrixForOrientation:viewportSize:zNear:zFar: missing a [Deprecated] attribute
+!deprecated-attribute-missing! ARCamera::projectPoint:orientation:viewportSize: missing a [Deprecated] attribute
+!deprecated-attribute-missing! ARCamera::unprojectPoint:ontoPlaneWithTransform:orientation:viewportSize: missing a [Deprecated] attribute
+!deprecated-attribute-missing! ARCamera::viewMatrixForOrientation: missing a [Deprecated] attribute
+!deprecated-attribute-missing! ARFrame::displayTransformForOrientation:viewportSize: missing a [Deprecated] attribute

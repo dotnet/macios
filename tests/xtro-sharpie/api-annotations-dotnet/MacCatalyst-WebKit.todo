@@ -1,0 +1,4 @@
+!missing-selector! WKWebpagePreferences::globalPrivacyControlStatus not bound
+!missing-selector! WKWebpagePreferences::setGlobalPrivacyControlStatus: not bound
+!unknown-selector! WKWebpagePreferences::globalPrivacyControlEnabled not found
+!unknown-selector! WKWebpagePreferences::setGlobalPrivacyControlEnabled: not found

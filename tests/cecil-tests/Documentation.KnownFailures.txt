@@ -31444,7 +31444,6 @@ M:WebKit.WKHttpCookieStore.SetCookiesAsync(Foundation.NSHttpCookie[])
 M:WebKit.WKJSHandle.Dispose(System.Boolean)
 M:WebKit.WKJSHandle.GetWindowProxyFrameInfo(WebKit.WKJSHandleWindowProxyFrameInfoCallback)
 M:WebKit.WKJSHandle.GetWindowProxyFrameInfoAsync
-M:WebKit.WKJSScriptingBuffer.#ctor(Foundation.NSData)
 M:WebKit.WKNavigationDelegate_Extensions.DecidePolicy(WebKit.IWKNavigationDelegate,WebKit.WKWebView,WebKit.WKNavigationAction,WebKit.WKWebpagePreferences,System.Action{WebKit.WKNavigationActionPolicy,WebKit.WKWebpagePreferences})
 M:WebKit.WKNavigationDelegate_Extensions.NavigationActionDidBecomeDownload(WebKit.IWKNavigationDelegate,WebKit.WKWebView,WebKit.WKNavigationAction,WebKit.WKDownload)
 M:WebKit.WKNavigationDelegate_Extensions.NavigationResponseDidBecomeDownload(WebKit.IWKNavigationDelegate,WebKit.WKWebView,WebKit.WKNavigationResponse,WebKit.WKDownload)
@@ -31484,7 +31483,7 @@ M:WebKit.WKUIDelegate.ShowLockDownMode(WebKit.WKWebView,System.String,System.Act
 M:WebKit.WKUIDelegate.WillCommitContextMenu(WebKit.WKWebView,WebKit.WKContextMenuElementInfo,UIKit.IUIContextMenuInteractionCommitAnimating)
 M:WebKit.WKUIDelegate.WillDismissEditMenu(WebKit.WKWebView,UIKit.IUIEditMenuInteractionAnimating)
 M:WebKit.WKUIDelegate.WillPresentEditMenu(WebKit.WKWebView,UIKit.IUIEditMenuInteractionAnimating)
-M:WebKit.WKUserContentController.AddBuffer(WebKit.WKJSScriptingBuffer,System.String,WebKit.WKContentWorld)
+M:WebKit.WKUserContentController.AddBuffer(Foundation.NSData,System.String,WebKit.WKContentWorld)
 M:WebKit.WKUserContentController.AddContentRuleList(WebKit.WKContentRuleList)
 M:WebKit.WKUserContentController.AddScriptMessageHandler(WebKit.IWKScriptMessageHandler,System.String)
 M:WebKit.WKUserContentController.AddScriptMessageHandler(WebKit.IWKScriptMessageHandler,WebKit.WKContentWorld,System.String)
@@ -38983,7 +38982,6 @@ P:CarPlay.CPRouteChoice.SelectionSummaryVariants
 P:CarPlay.CPRouteChoice.SummaryVariants
 P:CarPlay.CPRouteChoice.TravelEstimates
 P:CarPlay.CPRouteChoice.UserInfo
-P:CarPlay.CPRouteDetail.LabelTintColor
 P:CarPlay.CPRouteDetail.SymbolTintColor
 P:CarPlay.CPRouteInformation.CurrentLaneGuidance
 P:CarPlay.CPRouteInformation.CurrentManeuvers
@@ -63266,7 +63264,6 @@ T:WebKit.WKHttpCookieStoreGetCookiesCallback
 T:WebKit.WKInactiveSchedulingPolicy
 T:WebKit.WKJSHandle
 T:WebKit.WKJSHandleWindowProxyFrameInfoCallback
-T:WebKit.WKJSScriptingBuffer
 T:WebKit.WKJSSerializedNode
 T:WebKit.WKMediaCaptureState
 T:WebKit.WKMediaCaptureType

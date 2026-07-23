@@ -6168,11 +6168,11 @@ namespace WebKit {
 		[Export ("removeAllScriptMessageHandlers")]
 		void RemoveAllScriptMessageHandlers ();
 
-		[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
 		[Export ("addBuffer:name:contentWorld:")]
-		void AddBuffer (WKJSScriptingBuffer buffer, string name, WKContentWorld world);
+		void AddBuffer (NSData buffer, string name, WKContentWorld world);
 
-		[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
 		[Export ("removeBufferWithName:contentWorld:")]
 		void RemoveBuffer (string name, WKContentWorld world);
 	}
@@ -7110,16 +7110,6 @@ namespace WebKit {
 		[Async]
 		[Export ("windowProxyFrameInfo:")]
 		void GetWindowProxyFrameInfo (WKJSHandleWindowProxyFrameInfoCallback completionHandler);
-	}
-
-	[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
-	[BaseType (typeof (NSObject))]
-	[DisableDefaultCtor]
-	interface WKJSScriptingBuffer {
-
-		[Export ("initWithData:")]
-		[return: NullAllowed]
-		NativeHandle Constructor (NSData data);
 	}
 
 	[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]

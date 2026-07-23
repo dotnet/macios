@@ -11,6 +11,7 @@ using AudioToolbox;
 using AudioUnit;
 using AVFoundation;
 using Foundation;
+using MonoTouch.NUnit.UI;
 using ObjCRuntime;
 
 namespace MonotouchTest.AudioUnitExtensionHost {
@@ -133,7 +134,7 @@ namespace MonotouchTest.AudioUnitExtensionHost {
 
 			var testName = GetTestName ();
 
-			var runner = ExtensionTestRunner.CreateHeadlessRunner (testName, Log);
+			var runner = ExtensionTestRunner.CreateHeadlessRunner (TestLoader.GetTestAssemblies (), testName, Log);
 			runner.LogCallback = Log;
 
 			var runDescription = string.IsNullOrEmpty (testName) ? "all monotouch-test tests" : testName;
@@ -153,7 +154,7 @@ namespace MonotouchTest.AudioUnitExtensionHost {
 
 	[Register ("MonotouchTestAudioUnitFactory")]
 	public class MonotouchTestAudioUnitFactory : NSObject, IAUAudioUnitFactory {
-		public MonotouchTestAudioUnitFactory (IntPtr handle) : base (handle)
+		public MonotouchTestAudioUnitFactory (NativeHandle handle) : base (handle)
 		{
 		}
 
@@ -193,7 +194,7 @@ namespace MonotouchTest.AudioUnitExtensionHost {
 			outputBusArray = new AUAudioUnitBusArray (this, AUAudioUnitBusType.Output, new [] { outputBus });
 		}
 
-		public MonotouchTestAudioUnit (IntPtr handle) : base (handle)
+		public MonotouchTestAudioUnit (NativeHandle handle) : base (handle)
 		{
 		}
 

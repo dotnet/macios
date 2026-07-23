@@ -2,11 +2,12 @@ using System;
 
 using CoreSpotlight;
 using Foundation;
+using ObjCRuntime;
 
 namespace SpotlightImportExtensionTest {
 	[Register ("ImportExtension")]
 	public class ImportExtension : CSImportExtension {
-		public ImportExtension (IntPtr handle) : base (handle)
+		public ImportExtension (NativeHandle handle) : base (handle)
 		{
 		}
 

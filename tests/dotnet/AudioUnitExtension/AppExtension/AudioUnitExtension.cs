@@ -4,11 +4,12 @@ using AudioToolbox;
 using AudioUnit;
 using AVFoundation;
 using Foundation;
+using ObjCRuntime;
 
 namespace AudioUnitExtensionTest {
 	[Register ("TestAudioUnitFactory")]
 	public class TestAudioUnitFactory : NSObject, IAUAudioUnitFactory {
-		public TestAudioUnitFactory (IntPtr handle) : base (handle)
+		public TestAudioUnitFactory (NativeHandle handle) : base (handle)
 		{
 		}
 
@@ -39,7 +40,7 @@ namespace AudioUnitExtensionTest {
 			outputBusArray = new AUAudioUnitBusArray (this, AUAudioUnitBusType.Output, new [] { outputBus });
 		}
 
-		public TestAudioUnit (IntPtr handle) : base (handle)
+		public TestAudioUnit (NativeHandle handle) : base (handle)
 		{
 		}
 

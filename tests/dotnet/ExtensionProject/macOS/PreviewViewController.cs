@@ -2,12 +2,13 @@ using System;
 
 using AppKit;
 using Foundation;
+using ObjCRuntime;
 using QuickLookUI;
 
 namespace PreviewExtensionTest {
 	[Register ("PreviewViewController")]
 	public class PreviewViewController : NSViewController, IQLPreviewingController {
-		public PreviewViewController (IntPtr handle) : base (handle)
+		public PreviewViewController (NativeHandle handle) : base (handle)
 		{
 		}
 

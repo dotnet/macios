@@ -41,8 +41,6 @@ namespace UserNotifications {
 		AttachmentMoveIntoDataStoreFailed,
 		/// <summary>The attached file is corrupt.</summary>
 		AttachmentCorrupt,
-		/// <summary>The type of the attached file is not supported.</summary>
-		AttachmentUnsupportedType,
 		/// <summary>To be added.</summary>
 		NotificationInvalidNoDate = 1400,
 		/// <summary>To be added.</summary>

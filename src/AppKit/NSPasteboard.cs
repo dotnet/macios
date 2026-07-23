@@ -6,8 +6,8 @@ using CoreGraphics;
 
 namespace AppKit {
 	public partial class NSPasteboard {
-		/// <param name="objects">The objects to write to the pasteboard.</param>
 		/// <summary>Writes the specified objects to the pasteboard.</summary>
+		/// <param name="objects">The objects to write to the pasteboard.</param>
 		/// <returns><see langword="true" /> if the objects were written successfully; otherwise, <see langword="false" />.</returns>
 		public bool WriteObjects (INSPasteboardWriting [] objects)
 		{

@@ -4,8 +4,8 @@
 
 namespace AppKit {
 	public partial class NSSharingService {
-		/// <param name="service">The sharing service to retrieve.</param>
 		/// <summary>Returns the sharing service for the specified service name.</summary>
+		/// <param name="service">The sharing service to retrieve.</param>
 		/// <returns>The sharing service, or <see langword="null" /> if the service is not available.</returns>
 		public static NSSharingService? GetSharingService (NSSharingServiceName service)
 		{

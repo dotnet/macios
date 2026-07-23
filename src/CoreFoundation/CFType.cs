@@ -8,19 +8,13 @@ using CoreFoundation;
 
 namespace CoreFoundation {
 	/// <summary>Base type for some Core Foundation classes, such as <see cref="CoreFoundation.CFSocket" /> and <see cref="CoreFoundation.CFStream" />.</summary>
-	///     <remarks>
-	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CFType : NativeObject, ICFType {
+		/// <summary>Returns the CoreFoundation type for the specified object.</summary>
 		/// <param name="typeRef">Handle to a CoreFoundation object.</param>
-		///         <summary>Returns the CoreFoundation type for the specified object.</summary>
-		///         <returns>
-		///         </returns>
-		///         <remarks>
-		///         </remarks>
 		[DllImport (Constants.CoreFoundationLibrary, EntryPoint = "CFGetTypeID")]
 		public static extern nint GetTypeID (IntPtr typeRef);
 
@@ -38,12 +32,8 @@ namespace CoreFoundation {
 		{
 		}
 
+		/// <summary>Returns a textual representation of the specified object.</summary>
 		/// <param name="handle">Handle to the native CoreFoundation object.</param>
-		///         <summary>Returns a textual representation of the specified object.</summary>
-		///         <returns>
-		///         </returns>
-		///         <remarks>
-		///         </remarks>
 		public string? GetDescription (IntPtr handle)
 		{
 			if (handle == IntPtr.Zero)
@@ -55,9 +45,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static byte CFEqual (/*CFTypeRef*/ IntPtr cf1, /*CFTypeRef*/ IntPtr cf2);
 
+		/// <summary>Compares two handles of native objects for equality.</summary>
 		/// <param name="cf1">The first CoreFoundation object handle.</param>
 		/// <param name="cf2">The second CoreFoundation object handle.</param>
-		/// <summary>Compares two handles of native objects for equality.</summary>
 		/// <returns>true if the types are the same.</returns>
 		public static bool Equal (IntPtr cf1, IntPtr cf2)
 		{

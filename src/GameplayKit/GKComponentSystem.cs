@@ -23,8 +23,8 @@ namespace GameplayKit {
 			get { return Class.Lookup (ComponentClass); }
 		}
 
-		/// <param name="index">The 0-based index of the component to get.</param>
 		/// <summary>Gets the component at the specified index from the array of components that are contained in the component system.</summary>
+		/// <param name="index">The 0-based index of the component to get.</param>
 		public TComponent this [nuint index] {
 			get { return ObjectAtIndexedSubscript (index); }
 		}

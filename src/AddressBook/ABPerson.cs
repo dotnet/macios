@@ -103,10 +103,14 @@ namespace AddressBook {
 	}
 
 	/// <summary>Contains keys for the components of a postal address.</summary>
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
 	public static partial class ABPersonAddressKey {
 	}
 
 	/// <summary>Contains labels for dates stored in an Address Book person record.</summary>
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
 	public static partial class ABPersonDateLabel {
 	}
 
@@ -131,6 +135,8 @@ namespace AddressBook {
 	}
 
 	/// <summary>A class whose static members define constant names for various social networks.</summary>
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
 	public static partial class ABPersonSocialProfileService {
 		/// <summary>Identifies the Twitter social-profile service.</summary>
 		public static readonly NSString? Twitter = _Twitter;
@@ -155,6 +161,8 @@ namespace AddressBook {
 	}
 
 	/// <summary>Contains labels for phone numbers stored in an Address Book person record.</summary>
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
 	public static partial class ABPersonPhoneLabel {
 	}
 
@@ -181,18 +189,26 @@ namespace AddressBook {
 	///     </remarks>
 	///     <altmember cref="AddressBook.ABPerson.GetInstantMessageServices" />
 	///     <altmember cref="AddressBook.ABPerson.SetInstantMessages(AddressBook.ABMultiValue{Foundation.NSDictionary})" />
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
 	public static partial class ABPersonInstantMessageService {
 	}
 
 	/// <summary>Contains keys for instant-messaging information stored in an Address Book person record.</summary>
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
 	public static partial class ABPersonInstantMessageKey {
 	}
 
 	/// <summary>Contains labels for URLs stored in an Address Book person record.</summary>
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
 	public static partial class ABPersonUrlLabel {
 	}
 
 	/// <summary>Contains labels for related names stored in an Address Book person record.</summary>
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
 	public static partial class ABPersonRelatedNamesLabel {
 	}
 
@@ -208,6 +224,8 @@ namespace AddressBook {
 	///         <see cref="AddressBook.ABMutableMultiValue{T}.Insert" />.
 	///       </para>
 	///     </remarks>
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
 	public static partial class ABLabel {
 	}
 

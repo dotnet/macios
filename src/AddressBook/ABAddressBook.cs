@@ -103,6 +103,8 @@ namespace AddressBook {
 	}
 
 	/// <summary>Provides access to the legacy Address Book database.</summary>
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
 	public partial class ABAddressBook : NativeObject, IEnumerable<ABRecord> {
 
 		/// <summary>Identifies the error domain under which Address Book errors are grouped.</summary>

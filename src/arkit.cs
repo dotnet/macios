@@ -13,6 +13,7 @@ using System.ComponentModel;
 using System.Numerics;
 
 using AVFoundation;
+using CoreAnimation;
 using CoreFoundation;
 using CoreGraphics;
 using CoreMedia;
@@ -425,13 +426,25 @@ namespace ARKit {
 			get;
 		}
 
+		[Deprecated (PlatformName.iOS, 27, 0, message: "Use 'Project' with a view rotation angle instead.")]
 		[Export ("projectPoint:orientation:viewportSize:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		CGPoint Project (Vector3 point, UIInterfaceOrientation orientation, CGSize viewportSize);
 
+		[iOS (27, 0)]
+		[Export ("projectPoint:viewRotationAngle:viewportSize:")]
+		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
+		CGPoint Project (Vector3 point, nfloat viewRotationAngle, CGSize viewportSize);
+
+		[Deprecated (PlatformName.iOS, 27, 0, message: "Use 'Unproject' with a view rotation angle instead.")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		[Export ("unprojectPoint:ontoPlaneWithTransform:orientation:viewportSize:")]
 		Vector3 Unproject (CGPoint point, Matrix4 planeTransform, UIInterfaceOrientation orientation, CGSize viewportSize);
+
+		[iOS (27, 0)]
+		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
+		[Export ("unprojectPoint:ontoPlaneWithTransform:viewRotationAngle:viewportSize:")]
+		Vector3 Unproject (CGPoint point, Matrix4 planeTransform, nfloat viewRotationAngle, CGSize viewportSize);
 
 		/// <param name="orientation">The camera orientation.</param>
 		/// <param name="viewportSize">The viewport size, in points.</param>
@@ -440,13 +453,25 @@ namespace ARKit {
 		/// <summary>The projection matrix used to render 3D content so that it will match the real-world imagery.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
+		[Deprecated (PlatformName.iOS, 27, 0, message: "Use 'GetProjectionMatrix' with a view rotation angle instead.")]
 		[Export ("projectionMatrixForOrientation:viewportSize:zNear:zFar:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		Matrix4 GetProjectionMatrix (UIInterfaceOrientation orientation, CGSize viewportSize, nfloat zNear, nfloat zFar);
 
+		[iOS (27, 0)]
+		[Export ("projectionMatrixForViewRotationAngle:viewportSize:zNear:zFar:")]
+		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
+		Matrix4 GetProjectionMatrix (nfloat viewRotationAngle, CGSize viewportSize, nfloat zNear, nfloat zFar);
+
+		[Deprecated (PlatformName.iOS, 27, 0, message: "Use 'GetViewMatrix' with a view rotation angle instead.")]
 		[Export ("viewMatrixForOrientation:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		Matrix4 GetViewMatrix (UIInterfaceOrientation orientation);
+
+		[iOS (27, 0)]
+		[Export ("viewMatrixForViewRotationAngle:")]
+		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
+		Matrix4 GetViewMatrix (nfloat viewRotationAngle);
 	}
 
 	/// <summary>A frame in an augmented-reality session.</summary>
@@ -507,8 +532,13 @@ namespace ARKit {
 		[Export ("raycastQueryFromPoint:allowingTarget:alignment:")]
 		ARRaycastQuery CreateRaycastQuery (CGPoint point, ARRaycastTarget target, ARRaycastTargetAlignment alignment);
 
+		[Deprecated (PlatformName.iOS, 27, 0, message: "Use 'GetDisplayTransform' with a view rotation angle instead.")]
 		[Export ("displayTransformForOrientation:viewportSize:")]
 		CGAffineTransform GetDisplayTransform (UIInterfaceOrientation orientation, CGSize viewportSize);
+
+		[iOS (27, 0)]
+		[Export ("displayTransformForViewRotationAngle:viewportSize:")]
+		CGAffineTransform GetDisplayTransform (nfloat viewRotationAngle, CGSize viewportSize);
 
 		[iOS (14, 0)]
 		[NullAllowed, Export ("geoTrackingStatus", ArgumentSemantic.Strong)]
@@ -1025,6 +1055,14 @@ namespace ARKit {
 		[Async]
 		[Export ("captureHighResolutionFrameUsingPhotoSettings:completion:")]
 		void CaptureHighResolutionFrame ([NullAllowed] AVCapturePhotoSettings photoSettings, ARSessionCaptureHighResolutionFrame completion);
+
+		[iOS (27, 0)]
+		[NullAllowed, Export ("viewLayer", ArgumentSemantic.Weak)]
+		CALayer ViewLayer { get; set; }
+
+		[iOS (27, 0)]
+		[Export ("viewRotationAngle")]
+		nfloat ViewRotationAngle { get; }
 	}
 
 	delegate void ARSessionCaptureHighResolutionFrame ([NullAllowed] ARFrame frame, [NullAllowed] NSError error);
@@ -1081,6 +1119,10 @@ namespace ARKit {
 		[iOS (14, 0)]
 		[Export ("session:didChangeGeoTrackingStatus:")]
 		void DidChangeGeoTrackingStatus (ARSession session, ARGeoTrackingStatus geoTrackingStatus);
+
+		[iOS (27, 0)]
+		[Export ("session:didChangeViewRotationAngle:")]
+		void DidChangeViewRotationAngle (ARSession session, nfloat viewRotationAngle);
 	}
 
 	interface IARSessionDelegate { }

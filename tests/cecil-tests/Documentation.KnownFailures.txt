@@ -12862,8 +12862,12 @@ M:ARKit.ARAppClipCodeAnchor.#ctor(ARKit.ARAnchor)
 M:ARKit.ARBodyAnchor.#ctor(ARKit.ARAnchor)
 M:ARKit.ARBodyTrackingConfiguration.GetSupportedVideoFormats
 M:ARKit.ARBodyTrackingConfiguration.SupportsFrameSemantics(ARKit.ARFrameSemantics)
+M:ARKit.ARCamera.GetProjectionMatrix(System.Runtime.InteropServices.NFloat,CoreGraphics.CGSize,System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat)
+M:ARKit.ARCamera.GetViewMatrix(System.Runtime.InteropServices.NFloat)
 M:ARKit.ARCamera.GetViewMatrix(UIKit.UIInterfaceOrientation)
+M:ARKit.ARCamera.Project(CoreGraphics.NVector3,System.Runtime.InteropServices.NFloat,CoreGraphics.CGSize)
 M:ARKit.ARCamera.Project(CoreGraphics.NVector3,UIKit.UIInterfaceOrientation,CoreGraphics.CGSize)
+M:ARKit.ARCamera.Unproject(CoreGraphics.CGPoint,CoreGraphics.NMatrix4,System.Runtime.InteropServices.NFloat,CoreGraphics.CGSize)
 M:ARKit.ARCamera.Unproject(CoreGraphics.CGPoint,CoreGraphics.NMatrix4,UIKit.UIInterfaceOrientation,CoreGraphics.CGSize)
 M:ARKit.ARCoachingOverlayView.#ctor(CoreGraphics.CGRect)
 M:ARKit.ARCoachingOverlayView.ARCoachingOverlayViewAppearance.#ctor(System.IntPtr)
@@ -12884,6 +12888,7 @@ M:ARKit.ARFaceAnchor.#ctor(ARKit.ARAnchor)
 M:ARKit.ARFaceTrackingConfiguration.GetSupportedVideoFormats
 M:ARKit.ARFaceTrackingConfiguration.SupportsFrameSemantics(ARKit.ARFrameSemantics)
 M:ARKit.ARFrame.CreateRaycastQuery(CoreGraphics.CGPoint,ARKit.ARRaycastTarget,ARKit.ARRaycastTargetAlignment)
+M:ARKit.ARFrame.GetDisplayTransform(System.Runtime.InteropServices.NFloat,CoreGraphics.CGSize)
 M:ARKit.ARFrame.GetDisplayTransform(UIKit.UIInterfaceOrientation,CoreGraphics.CGSize)
 M:ARKit.ARFrame.HitTest(CoreGraphics.CGPoint,ARKit.ARHitTestResultType)
 M:ARKit.ARGeoAnchor.#ctor(ARKit.ARAnchor)
@@ -12937,6 +12942,7 @@ M:ARKit.ARSCNView.GetNode(ARKit.ARAnchor)
 M:ARKit.ARSCNView.HitTest(CoreGraphics.CGPoint,ARKit.ARHitTestResultType)
 M:ARKit.ARSCNView.Unproject(CoreGraphics.CGPoint,CoreGraphics.NMatrix4)
 M:ARKit.ARSCNViewDelegate.DidChangeGeoTrackingStatus(ARKit.ARSession,ARKit.ARGeoTrackingStatus)
+M:ARKit.ARSCNViewDelegate.DidChangeViewRotationAngle(ARKit.ARSession,System.Runtime.InteropServices.NFloat)
 M:ARKit.ARSCNViewDelegate.DidOutputCollaborationData(ARKit.ARSession,ARKit.ARCollaborationData)
 M:ARKit.ARSession.AddAnchor(ARKit.ARAnchor)
 M:ARKit.ARSession.CaptureHighResolutionFrame(AVFoundation.AVCapturePhotoSettings,ARKit.ARSessionCaptureHighResolutionFrame)
@@ -12959,8 +12965,10 @@ M:ARKit.ARSession.TrackedRaycastAsync(ARKit.ARRaycastQuery,ARKit.ARTrackedRaycas
 M:ARKit.ARSession.TrackedRaycastAsync(ARKit.ARRaycastQuery)
 M:ARKit.ARSession.Update(ARKit.ARCollaborationData)
 M:ARKit.ARSessionDelegate.DidChangeGeoTrackingStatus(ARKit.ARSession,ARKit.ARGeoTrackingStatus)
+M:ARKit.ARSessionDelegate.DidChangeViewRotationAngle(ARKit.ARSession,System.Runtime.InteropServices.NFloat)
 M:ARKit.ARSessionDelegate.DidOutputCollaborationData(ARKit.ARSession,ARKit.ARCollaborationData)
 M:ARKit.ARSessionObserver_Extensions.DidChangeGeoTrackingStatus(ARKit.IARSessionObserver,ARKit.ARSession,ARKit.ARGeoTrackingStatus)
+M:ARKit.ARSessionObserver_Extensions.DidChangeViewRotationAngle(ARKit.IARSessionObserver,ARKit.ARSession,System.Runtime.InteropServices.NFloat)
 M:ARKit.ARSessionObserver_Extensions.DidOutputCollaborationData(ARKit.IARSessionObserver,ARKit.ARSession,ARKit.ARCollaborationData)
 M:ARKit.ARSkeleton.CreateJointName(Foundation.NSString)
 M:ARKit.ARSkeleton.IsJointTracked(System.IntPtr)
@@ -12974,6 +12982,7 @@ M:ARKit.ARSKView.GetAnchor(SpriteKit.SKNode)
 M:ARKit.ARSKView.GetNode(ARKit.ARAnchor)
 M:ARKit.ARSKView.HitTest(CoreGraphics.CGPoint,ARKit.ARHitTestResultType)
 M:ARKit.ARSKViewDelegate.DidChangeGeoTrackingStatus(ARKit.ARSession,ARKit.ARGeoTrackingStatus)
+M:ARKit.ARSKViewDelegate.DidChangeViewRotationAngle(ARKit.ARSession,System.Runtime.InteropServices.NFloat)
 M:ARKit.ARSKViewDelegate.DidOutputCollaborationData(ARKit.ARSession,ARKit.ARCollaborationData)
 M:ARKit.ARTrackedRaycast.StopTracking
 M:ARKit.ARWorldTrackingConfiguration.GetSupportedVideoFormats
@@ -12983,6 +12992,7 @@ M:ARKit.IARCoachingOverlayViewDelegate.DidDeactivate(ARKit.ARCoachingOverlayView
 M:ARKit.IARCoachingOverlayViewDelegate.DidRequestSessionReset(ARKit.ARCoachingOverlayView)
 M:ARKit.IARCoachingOverlayViewDelegate.WillActivate(ARKit.ARCoachingOverlayView)
 M:ARKit.IARSessionObserver.DidChangeGeoTrackingStatus(ARKit.ARSession,ARKit.ARGeoTrackingStatus)
+M:ARKit.IARSessionObserver.DidChangeViewRotationAngle(ARKit.ARSession,System.Runtime.InteropServices.NFloat)
 M:ARKit.IARSessionObserver.DidOutputCollaborationData(ARKit.ARSession,ARKit.ARCollaborationData)
 M:AssetsLibrary.ALAsset.#ctor(ObjCRuntime.NativeHandle)
 M:AssetsLibrary.ALAssetRepresentation.#ctor(ObjCRuntime.NativeHandle)
@@ -36226,6 +36236,8 @@ P:ARKit.ARSession.CurrentFrame
 P:ARKit.ARSession.Delegate
 P:ARKit.ARSession.DelegateQueue
 P:ARKit.ARSession.Identifier
+P:ARKit.ARSession.ViewLayer
+P:ARKit.ARSession.ViewRotationAngle
 P:ARKit.ARSkeleton.Definition
 P:ARKit.ARSkeleton.JointCount
 P:ARKit.ARSkeleton2D.JointLandmarks

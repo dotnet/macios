@@ -1931,6 +1931,20 @@ namespace Xamarin.BindingMethods.Generator {
 
 			data.Add (
 				new FunctionData {
+					Comment = " // CGPoint func (NVector3, nfloat, CGSize)",
+					Prefix = "simd__",
+					Variants = Variants.All,
+					ReturnType = Types.CGPoint,
+					Parameters = new ParameterData [] {
+						new ParameterData { TypeData = Types.NVector3 },
+						new ParameterData { TypeData = Types.NFloat },
+						new ParameterData { TypeData = Types.CGSize },
+					},
+				}
+			);
+
+			data.Add (
+				new FunctionData {
 					Comment = " // Matrix4 func (/* UIInterfaceOrientation */ nint)",
 					Prefix = "simd__",
 					Variants = Variants.All,
@@ -2203,12 +2217,39 @@ namespace Xamarin.BindingMethods.Generator {
 
 			data.Add (
 				new FunctionData {
+					Comment = " // NMatrix4 func (nfloat, CGSize, nfloat, nfloat)",
+					Prefix = "simd__",
+					Variants = Variants.All,
+					ReturnType = Types.NMatrix4,
+					Parameters = new ParameterData [] {
+						new ParameterData { TypeData = Types.NFloat },
+						new ParameterData { TypeData = Types.CGSize },
+						new ParameterData { TypeData = Types.NFloat },
+						new ParameterData { TypeData = Types.NFloat },
+					},
+				}
+			);
+
+			data.Add (
+				new FunctionData {
 					Comment = " // NMatrix4 func (double)",
 					Prefix = "simd__",
 					Variants = Variants.All,
 					ReturnType = Types.NMatrix4,
 					Parameters = new ParameterData [] {
 						new ParameterData { TypeData = Types.Double },
+					},
+				}
+			);
+
+			data.Add (
+				new FunctionData {
+					Comment = " // NMatrix4 func (nfloat)",
+					Prefix = "simd__",
+					Variants = Variants.All,
+					ReturnType = Types.NMatrix4,
+					Parameters = new ParameterData [] {
+						new ParameterData { TypeData = Types.NFloat },
 					},
 				}
 			);
@@ -2454,6 +2495,21 @@ namespace Xamarin.BindingMethods.Generator {
 						new ParameterData { TypeData = Types.CGPoint },
 						new ParameterData { TypeData = Types.NMatrix4 },
 						new ParameterData { TypeData = Types.NInt },
+						new ParameterData { TypeData = Types.CGSize },
+					},
+				}
+			);
+
+			data.Add (
+				new FunctionData {
+					Comment = " // NVector3 func (CGPoint, NMatrix4, nfloat, CGSize)",
+					Prefix = "simd__",
+					Variants = Variants.All,
+					ReturnType = Types.NVector3,
+					Parameters = new ParameterData [] {
+						new ParameterData { TypeData = Types.CGPoint },
+						new ParameterData { TypeData = Types.NMatrix4 },
+						new ParameterData { TypeData = Types.NFloat },
 						new ParameterData { TypeData = Types.CGSize },
 					},
 				}

@@ -1762,8 +1762,6 @@ F:AVKit.AVLegibleMediaOptionsMenuContents.CaptionAppearance
 F:AVKit.AVLegibleMediaOptionsMenuContents.Legible
 F:AVKit.AVLegibleMediaOptionsMenuStateChangeReason.LanguageMismatch
 F:AVKit.AVLegibleMediaOptionsMenuStateChangeReason.None
-F:AVKit.AVLegibleMediaOptionsMenuType.CaptionAppearance
-F:AVKit.AVLegibleMediaOptionsMenuType.Default
 F:AVKit.AVPlaybackUserInterfacePlaybackState.Normal
 F:AVKit.AVPlaybackUserInterfacePlaybackState.Scanning
 F:AVKit.AVPlaybackUserInterfacePlaybackState.Scrubbing
@@ -58105,7 +58103,6 @@ T:AVKit.AVLegibleMediaOptionsMenuContents
 T:AVKit.AVLegibleMediaOptionsMenuController
 T:AVKit.AVLegibleMediaOptionsMenuState
 T:AVKit.AVLegibleMediaOptionsMenuStateChangeReason
-T:AVKit.AVLegibleMediaOptionsMenuType
 T:AVKit.AVNavigationMarkersGroup
 T:AVKit.AVPictureInPictureControllerContentSource
 T:AVKit.AVPictureInPictureVideoCallViewController

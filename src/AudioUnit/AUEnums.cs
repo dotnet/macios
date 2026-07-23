@@ -1032,6 +1032,8 @@ namespace AudioUnit {
 		Reverb2DecayTimeAtNyquist = 5,
 		/// <summary>To be added.</summary>
 		Reverb2RandomizeReflections = 6,
+		/// <summary>Controls whether the reverb unit uses legacy processing behavior.</summary>
+		Reverb2LegacyMode = 7,
 #endif
 
 		// RoundTripAAC

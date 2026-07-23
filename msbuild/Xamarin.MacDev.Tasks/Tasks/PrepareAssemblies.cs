@@ -42,6 +42,12 @@ namespace Xamarin.MacDev.Tasks {
 		// the [ProtocolMember] attributes the trimmer removed from the post-trim assemblies.
 		public ITaskItem [] PreTrimAssemblies { get; set; } = [];
 
+		// When set (to ILC's output object file), the defined symbols in this file are used to determine
+		// which UnmanagedCallersOnly trampolines survived the NativeAOT compiler (ILC). This is passed only
+		// when postprocessing runs after ILC (trimmable-static registrar + NativeAOT), so that the native
+		// registrar code doesn't emit direct references to trampolines ILC trimmed away.
+		public string NativeAOTObjectFile { get; set; } = "";
+
 		#region Outputs
 		[Output]
 		public ITaskItem [] OutputAssemblies { get; set; } = [];
@@ -75,6 +81,17 @@ namespace Xamarin.MacDev.Tasks {
 				List<ProductException> exceptions;
 
 				if (PostProcessing) {
+					if (!string.IsNullOrEmpty (NativeAOTObjectFile)) {
+						// Determine which UnmanagedCallersOnly trampolines survived ILC by inspecting the
+						// defined symbols in ILC's output object file. The native symbols have a leading
+						// underscore that we strip to match the managed entry-point names.
+						var survivingSymbols = new HashSet<string> ();
+						foreach (var symbol in Xamarin.StaticLibrary.GetDefinedSymbols (NativeAOTObjectFile)) {
+							var name = symbol.StartsWith ("_", StringComparison.Ordinal) ? symbol.Substring (1) : symbol;
+							survivingSymbols.Add (name);
+						}
+						preparer.Configuration.Application.SurvivingTrampolineSymbols = survivingSymbols;
+					}
 					rv = preparer.PostProcess (out exceptions);
 				} else {
 					rv = preparer.Prepare (out exceptions);

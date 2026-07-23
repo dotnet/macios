@@ -27,7 +27,6 @@ namespace UIKit {
 
 	public partial class UIApplication
 	: UIResponder {
-		static Thread? mainThread;
 		/// <summary>Determines whether the debug builds of MonoTouch will enforce that calls done to UIKit are only issued from the UI thread.</summary>
 		///         <remarks>
 		///           <para>
@@ -71,11 +70,8 @@ namespace UIKit {
 
 		// called from NSExtension.Initialize (so other, future stuff, can be added if needed)
 		// NOTE: must be called from the main thread, e.g. for extensions
-		internal static void Initialize ()
+		internal static void InitializeApplication ()
 		{
-			if (mainThread is not null)
-				return;
-
 			// The linker replaces the 'Runtime.CheckForIllegalCrossThreadCalls' getter with a constant value, so when the UI
 			// thread checks are disabled the assignment below (and the 'CheckForIllegalCrossThreadCalls' field
 			// itself, unless something else references it) is trimmed away.
@@ -83,60 +79,65 @@ namespace UIKit {
 				CheckForIllegalCrossThreadCalls = true;
 
 			SynchronizationContext.SetSynchronizationContext (new UIKitSynchronizationContext ());
-			mainThread = Thread.CurrentThread;
 		}
 
 		/// <include file="../../docs/api/UIKit/UIApplication.xml" path="/Documentation/Docs[@DocId='M:UIKit.UIApplication.Main(System.String[],System.String,System.String)']/*" />
 		[Obsolete ("Use the overload with 'Type' instead of 'String' parameters for type safety.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
+#if XAMCORE_5_0
+		public static int Main (string []? args, string? principalClassName, string? delegateClassName)
+#else
 		public static void Main (string []? args, string? principalClassName, string? delegateClassName)
+#endif
 		{
 			using var p = new TransientCFString (principalClassName);
 			using var d = new TransientCFString (delegateClassName);
-			Initialize ();
+			InitializeApplication ();
+#if XAMCORE_5_0
+			return UIApplicationMain (args?.Length ?? 0, args, p, d);
+#else
 			UIApplicationMain (args?.Length ?? 0, args, p, d);
+#endif
 		}
 
 		/// <include file="../../docs/api/UIKit/UIApplication.xml" path="/Documentation/Docs[@DocId='M:UIKit.UIApplication.Main(System.String[],System.Type,System.Type)']/*" />
+#if XAMCORE_5_0
+		public static int Main (string []? args, Type? principalClass, Type? delegateClass)
+#else
 		public static void Main (string []? args, Type? principalClass, Type? delegateClass)
+#endif
 		{
 			using var p = new TransientCFString (principalClass is null ? null : new Class (principalClass).Name);
 			using var d = new TransientCFString (delegateClass is null ? null : new Class (delegateClass).Name);
-			Initialize ();
+			InitializeApplication ();
+#if XAMCORE_5_0
+			return UIApplicationMain (args?.Length ?? 0, args, p, d);
+#else
 			UIApplicationMain (args?.Length ?? 0, args, p, d);
+#endif
 		}
 
 		/// <param name="args">Command line parameters from the Main program.</param>
 		///         <summary>Launches the main application loop with the given command line parameters.</summary>
 		///         <remarks>This launches the main application loop, assumes that the main application class is UIApplication, and uses the UIApplicationDelegate instance specified in the main NIB file for this program.</remarks>
+#if XAMCORE_5_0
+		public static int Main (string []? args)
+#else
 		public static void Main (string []? args)
+#endif
 		{
-			Initialize ();
+			InitializeApplication ();
+#if XAMCORE_5_0
+			return UIApplicationMain (args?.Length ?? 0, args, IntPtr.Zero, IntPtr.Zero);
+#else
 			UIApplicationMain (args?.Length ?? 0, args, IntPtr.Zero, IntPtr.Zero);
+#endif
 		}
 
-		/// <summary>Assertion to ensure that this call is being done from the UIKit thread.</summary>
-		///         <remarks>
-		///           <para>
-		///             This method is used internally by MonoTouch to ensure that
-		///             accesses done to UIKit classes and methods are only
-		///             performed from the UIKit thread.  This is necessary because
-		///             the UIKit API is not thread-safe and accessing it from
-		///             multiple threads will corrupt the application state and will
-		///             likely lead to a crash that is hard to identify.
-		///           </para>
-		///           <para>
-		///             MonoTouch only performs the thread checks in debug builds.
-		///             Release builds have this feature disabled.
-		///
-		///           </para>
-		///         </remarks>
+		/// <inheritdoc cref="ObjCRuntime.Runtime.EnsureUIThread" />
 		public static void EnsureUIThread ()
 		{
-			// note: some extensions, like keyboards, won't call Main (and set mainThread)
-			// FIXME: do better than disabling the feature
-			if (CheckForIllegalCrossThreadCalls && (mainThread is not null) && (mainThread != Thread.CurrentThread))
-				throw new UIKitThreadAccessException ();
+			Runtime.EnsureUIThread ();
 		}
 
 		internal static void EnsureEventAndDelegateAreNotMismatched (object del, Type expectedType)

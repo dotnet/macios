@@ -48,8 +48,11 @@ function Get-GitCommitParents {
         $Commit
     )
 
-    $output = & git rev-list --parents -n 1 -- $Commit 2>$null
-    if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($output)) {
+    $output = & git rev-list --parents -n 1 $Commit 2>$null
+    $exitCode = $LASTEXITCODE
+    # Reset $LASTEXITCODE so the native git exit code doesn't leak out and fail the enclosing task.
+    $global:LASTEXITCODE = 0
+    if ($exitCode -ne 0 -or [string]::IsNullOrWhiteSpace($output)) {
         throw [System.InvalidOperationException]::new("Failed to get parent commits for '$Commit'.")
     }
 
@@ -73,7 +76,10 @@ function Test-GitIsAncestor {
     )
 
     & git merge-base --is-ancestor -- $Commit $Branch 2>$null
-    switch ($LASTEXITCODE) {
+    $exitCode = $LASTEXITCODE
+    # Reset $LASTEXITCODE so the native git exit code doesn't leak out and fail the enclosing task.
+    $global:LASTEXITCODE = 0
+    switch ($exitCode) {
         0 { return $true }
         1 { return $false }
         default { throw [System.InvalidOperationException]::new("Failed to determine whether '$Commit' is an ancestor of '$Branch'.") }

@@ -61,8 +61,8 @@ public partial class NSValue : NSObject {
 	extern static IntPtr xamarin_encode_CGAffineTransform ();
 
 	// The `+valueWithCGAffineTransform:` selector comes from UIKit and is not available on macOS
-	/// <param name="tran">The affine transform to wrap.</param>
 	/// <summary>Creates an NSValue that wraps a CGAffineTransform object.</summary>
+	/// <param name="tran">The affine transform to wrap.</param>
 	/// <returns>An <see cref="NSValue" /> containing the specified transform.</returns>
 	public unsafe static NSValue FromCGAffineTransform (CGAffineTransform tran)
 	{

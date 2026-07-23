@@ -1,6 +1,5 @@
 !deprecated-attribute-missing! UIApplication::canOpenURL: missing a [Deprecated] attribute
 !missing-enum! UITextGrammarCheckingType not bound
-!missing-enum! UIWritingToolsCoordinatorTextDecoration not bound
 !missing-field! UIApplicationSystemPrefersReducedResourceUsageDidChangeNotification not bound
 !missing-field! UITextContentTypeCellularIMEI1 not bound
 !missing-field! UITextContentTypeCellularIMEI2 not bound

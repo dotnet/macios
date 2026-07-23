@@ -22515,6 +22515,10 @@ namespace AppKit {
 		[Mac (26, 0)]
 		[Export ("resolvesNaturalAlignmentWithBaseWritingDirection")]
 		bool ResolvesNaturalAlignmentWithBaseWritingDirection { get; set; }
+
+		[Mac (26, 0)]
+		[Export ("borderShape", ArgumentSemantic.Assign)]
+		NSControlBorderShape BorderShape { get; set; }
 	}
 
 	[NoMacCatalyst]

@@ -74,29 +74,7 @@ namespace AddressBook {
 		}
 	}
 
-	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
-	[SupportedOSPlatform ("maccatalyst")]
-	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
-	[UnsupportedOSPlatform ("macos")]
-	[UnsupportedOSPlatform ("tvos")]
-	static class ABSourcePropertyId {
-
-		public static int Name { get; private set; }
-		public static int Type { get; private set; }
-
-		static ABSourcePropertyId ()
-		{
-			InitConstants.Init ();
-		}
-
-		internal static void Init ()
-		{
-			var handle = Libraries.AddressBook.Handle;
-			Name = Dlfcn.GetInt32 (handle, "kABSourceNameProperty");
-			Type = Dlfcn.GetInt32 (handle, "kABSourceTypeProperty");
-		}
-
+	static partial class ABSourcePropertyId {
 		public static int ToId (ABSourceProperty property)
 		{
 			switch (property) {

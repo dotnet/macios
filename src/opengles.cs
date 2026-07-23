@@ -167,4 +167,28 @@ namespace OpenGLES {
 		[Export ("drawableProperties", ArgumentSemantic.Copy)]
 		NSDictionary DrawableProperties { get; set; }
 	}
+
+	[NoMac, NoMacCatalyst]
+	[Static, Partial]
+	interface EAGLDrawableProperty {
+		[Internal]
+		[Field ("kEAGLDrawablePropertyColorFormat")]
+		NSString _ColorFormat { get; }
+
+		[Internal]
+		[Field ("kEAGLDrawablePropertyRetainedBacking")]
+		NSString _RetainedBacking { get; }
+	}
+
+	[NoMac, NoMacCatalyst]
+	[Static, Partial]
+	interface EAGLColorFormat {
+		[Internal]
+		[Field ("kEAGLColorFormatRGB565")]
+		NSString _RGB565 { get; }
+
+		[Internal]
+		[Field ("kEAGLColorFormatRGBA8")]
+		NSString _RGBA8 { get; }
+	}
 }

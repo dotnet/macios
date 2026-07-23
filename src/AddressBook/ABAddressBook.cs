@@ -102,77 +102,17 @@ namespace AddressBook {
 		public NSDictionary? Info { get; private set; }
 	}
 
-	// Quoth the docs: 
-	//    http://developer.apple.com/iphone/library/documentation/AddressBook/Reference/ABPersonRef_iPhoneOS/Reference/reference.html#//apple_ref/c/func/ABPersonGetSortOrdering
-	//
-	//   "The value of these constants is undefined until one of the following has
-	//    been called: ABAddressBookCreate, ABPersonCreate, ABGroupCreate."
-	//
-	// Meaning we can't rely on static constructors, as they could be invoked
-	// before those functions have been invoked. :-/
-	//
-	// Note that the above comment was removed from iOS 6.0+ documentation (and were not part of OSX docs AFAIK).
-	// It make sense since it's not possible to call those functions, from 6.0+ they will return NULL on devices,
-	// unless the application has been authorized to access the address book.
-	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
-	[SupportedOSPlatform ("maccatalyst")]
-	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
-	[UnsupportedOSPlatform ("macos")]
-	[UnsupportedOSPlatform ("tvos")]
-	static class InitConstants {
-		public static void Init () { }
+	/// <summary>Provides access to the legacy Address Book database.</summary>
+	public partial class ABAddressBook : NativeObject, IEnumerable<ABRecord> {
 
-		static InitConstants ()
-		{
-#if __MACCATALYST__
-			// avoid TypeLoadException if used before macOS 11.x
-			if (!SystemVersion.CheckiOS (14, 0))
-				return;
-#endif
-			// ensure we can init. This is needed before iOS6 (as per doc).
-			IntPtr p = ABAddressBook.ABAddressBookCreate ();
-
-			ABGroupProperty.Init ();
-			ABLabel.Init ();
-			ABPersonAddressKey.Init ();
-			ABPersonDateLabel.Init ();
-			ABPersonInstantMessageKey.Init ();
-			ABPersonInstantMessageService.Init ();
-			ABPersonKindId.Init ();
-			ABPersonPhoneLabel.Init ();
-			ABPersonPropertyId.Init ();
-			ABPersonRelatedNamesLabel.Init ();
-			ABPersonUrlLabel.Init ();
-			ABSourcePropertyId.Init ();
-
-			// From iOS 6.0+ this might return NULL, e.g. if the application is not authorized to access the
-			// address book, and we would crash if we tried to release a null pointer
-			if (p != IntPtr.Zero)
-				CFObject.CFRelease (p);
-		}
-	}
-
-	/// <include file="../../docs/api/AddressBook/ABAddressBook.xml" path="/Documentation/Docs[@DocId='T:AddressBook.ABAddressBook']/*" />
-	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
-	[SupportedOSPlatform ("maccatalyst")]
-	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
-	[UnsupportedOSPlatform ("macos")]
-	[UnsupportedOSPlatform ("tvos")]
-	public class ABAddressBook : NativeObject, IEnumerable<ABRecord> {
-
-		/// <summary>
-		///           Identifies the error domain under which address book errors are grouped.
-		///         </summary>
-		///         <remarks>
-		///           When an <see cref="CoreFoundation.CFException" /> is
-		///           thrown from a <see cref="AddressBook.ABAddressBook" />
-		///           method, the
-		///           <see cref="CoreFoundation.CFException.Domain" /> property
-		///           will be equal to <c>ErrorDomain</c>.
-		///         </remarks>
-		public static readonly NSString ErrorDomain;
+		/// <summary>Identifies the error domain under which Address Book errors are grouped.</summary>
+		/// <remarks>
+		///   <para>
+		///     When an <see cref="CoreFoundation.CFException" /> is thrown from an <see cref="ABAddressBook" /> method,
+		///     its <see cref="CoreFoundation.CFException.Domain" /> is equal to this value.
+		///   </para>
+		/// </remarks>
+		public static readonly NSString ErrorDomain = _ErrorDomain;
 
 		GCHandle sender;
 
@@ -225,12 +165,6 @@ namespace AddressBook {
 		internal ABAddressBook (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{
-			InitConstants.Init ();
-		}
-
-		static ABAddressBook ()
-		{
-			ErrorDomain = Dlfcn.GetStringConstant (Libraries.AddressBook.Handle, "ABAddressBookErrorDomain")!;
 		}
 
 		/// <inheritdoc />

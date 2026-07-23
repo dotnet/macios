@@ -38,75 +38,7 @@ using CoreFoundation;
 
 namespace AddressBook {
 
-	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
-	[SupportedOSPlatform ("maccatalyst")]
-	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
-	[UnsupportedOSPlatform ("macos")]
-	[UnsupportedOSPlatform ("tvos")]
-	static class ABPersonPropertyId {
-
-		public static int Address { get; private set; }
-		public static int Birthday { get; private set; }
-		public static int CreationDate { get; private set; }
-		public static int Date { get; private set; }
-		public static int Department { get; private set; }
-		public static int Email { get; private set; }
-		public static int FirstName { get; private set; }
-		public static int FirstNamePhonetic { get; private set; }
-		public static int InstantMessage { get; private set; }
-		public static int JobTitle { get; private set; }
-		public static int Kind { get; private set; }
-		public static int LastName { get; private set; }
-		public static int LastNamePhonetic { get; private set; }
-		public static int MiddleName { get; private set; }
-		public static int MiddleNamePhonetic { get; private set; }
-		public static int ModificationDate { get; private set; }
-		public static int Nickname { get; private set; }
-		public static int Note { get; private set; }
-		public static int Organization { get; private set; }
-		public static int Phone { get; private set; }
-		public static int Prefix { get; private set; }
-		public static int RelatedNames { get; private set; }
-		public static int Suffix { get; private set; }
-		public static int Url { get; private set; }
-		public static int SocialProfile { get; private set; }
-
-		static ABPersonPropertyId ()
-		{
-			InitConstants.Init ();
-		}
-
-		internal static void Init ()
-		{
-			var handle = Libraries.AddressBook.Handle;
-			Address = Dlfcn.GetInt32 (handle, "kABPersonAddressProperty");
-			Birthday = Dlfcn.GetInt32 (handle, "kABPersonBirthdayProperty");
-			CreationDate = Dlfcn.GetInt32 (handle, "kABPersonCreationDateProperty");
-			Date = Dlfcn.GetInt32 (handle, "kABPersonDateProperty");
-			Department = Dlfcn.GetInt32 (handle, "kABPersonDepartmentProperty");
-			Email = Dlfcn.GetInt32 (handle, "kABPersonEmailProperty");
-			FirstName = Dlfcn.GetInt32 (handle, "kABPersonFirstNameProperty");
-			FirstNamePhonetic = Dlfcn.GetInt32 (handle, "kABPersonFirstNamePhoneticProperty");
-			InstantMessage = Dlfcn.GetInt32 (handle, "kABPersonInstantMessageProperty");
-			JobTitle = Dlfcn.GetInt32 (handle, "kABPersonJobTitleProperty");
-			Kind = Dlfcn.GetInt32 (handle, "kABPersonKindProperty");
-			LastName = Dlfcn.GetInt32 (handle, "kABPersonLastNameProperty");
-			LastNamePhonetic = Dlfcn.GetInt32 (handle, "kABPersonLastNamePhoneticProperty");
-			MiddleName = Dlfcn.GetInt32 (handle, "kABPersonMiddleNameProperty");
-			MiddleNamePhonetic = Dlfcn.GetInt32 (handle, "kABPersonMiddleNamePhoneticProperty");
-			ModificationDate = Dlfcn.GetInt32 (handle, "kABPersonModificationDateProperty");
-			Nickname = Dlfcn.GetInt32 (handle, "kABPersonNicknameProperty");
-			Note = Dlfcn.GetInt32 (handle, "kABPersonNoteProperty");
-			Organization = Dlfcn.GetInt32 (handle, "kABPersonOrganizationProperty");
-			Phone = Dlfcn.GetInt32 (handle, "kABPersonPhoneProperty");
-			Prefix = Dlfcn.GetInt32 (handle, "kABPersonPrefixProperty");
-			RelatedNames = Dlfcn.GetInt32 (handle, "kABPersonRelatedNamesProperty");
-			Suffix = Dlfcn.GetInt32 (handle, "kABPersonSuffixProperty");
-			Url = Dlfcn.GetInt32 (handle, "kABPersonURLProperty");
-			SocialProfile = Dlfcn.GetInt32 (handle, "kABPersonSocialProfileProperty");
-		}
-
+	static partial class ABPersonPropertyId {
 		public static int ToId (ABPersonProperty property)
 		{
 			switch (property) {
@@ -170,138 +102,15 @@ namespace AddressBook {
 		}
 	}
 
-	/// <include file="../../docs/api/AddressBook/ABPersonAddressKey.xml" path="/Documentation/Docs[@DocId='T:AddressBook.ABPersonAddressKey']/*" />
-	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
-	[SupportedOSPlatform ("maccatalyst")]
-	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
-	[UnsupportedOSPlatform ("macos")]
-	[UnsupportedOSPlatform ("tvos")]
-	public static class ABPersonAddressKey {
-
-		/// <summary>Represents the value associated with the constant kABPersonAddressCityKey</summary>
-		///         <value>
-		///           A <see cref="Foundation.NSString" /> containing the
-		///           key to use for the City portion of the address.
-		///         </value>
-		///         <remarks>
-		///         </remarks>
-		public static NSString? City { get; private set; }
-		/// <summary>Represents the value associated with the constant kABPersonAddressCountryKey</summary>
-		///         <value>
-		///           A <see cref="Foundation.NSString" /> containing the
-		///           key to use for the Country portion of the address.
-		///         </value>
-		///         <remarks>
-		///         </remarks>
-		public static NSString? Country { get; private set; }
-		/// <summary>Represents the value associated with the constant kABPersonAddressCountryCodeKey</summary>
-		///         <value>
-		///           A <see cref="Foundation.NSString" /> containing the
-		///           key to use for the CountryCode portion of the address.
-		///         </value>
-		///         <remarks>
-		///           <para>
-		///             <format type="text/html">
-		///               <span>
-		///             See <a href="https://developer.apple.com/iphone/library/documentation/AddressBook/Reference/ABPersonRef_iPhoneOS/Reference/reference.html#//apple_ref/doc/uid/TP40007210-CH991-SW33">kABPersonAddresCountryCodeKey</a> documentation for a list of supported values.
-		///             </span>
-		///             </format>
-		///           </para>
-		///         </remarks>
-		public static NSString? CountryCode { get; private set; }
-		/// <summary>Represents the value associated with the constant kABPersonAddressStateKey</summary>
-		///         <value>
-		///           A <see cref="Foundation.NSString" /> containing the
-		///           key to use for the State portion of the address.
-		///         </value>
-		///         <remarks>
-		///         </remarks>
-		public static NSString? State { get; private set; }
-		/// <summary>Represents the value associated with the constant kABPersonAddressStreetKey</summary>
-		///         <value>
-		///           A <see cref="Foundation.NSString" /> containing the
-		///           key to use for the Street portion of the address.
-		///         </value>
-		///         <remarks>
-		///         </remarks>
-		public static NSString? Street { get; private set; }
-		/// <summary>Represents the value associated with the constant kABPersonAddressZIPKey</summary>
-		///         <value>
-		///           A <see cref="Foundation.NSString" /> containing the
-		///           key to use for the Zip portion of the address.
-		///         </value>
-		///         <remarks>
-		///         </remarks>
-		public static NSString? Zip { get; private set; }
-
-		static ABPersonAddressKey ()
-		{
-			InitConstants.Init ();
-		}
-
-		internal static void Init ()
-		{
-			var handle = Libraries.AddressBook.Handle;
-			City = Dlfcn.GetStringConstant (handle, "kABPersonAddressCityKey");
-			Country = Dlfcn.GetStringConstant (handle, "kABPersonAddressCountryKey");
-			CountryCode = Dlfcn.GetStringConstant (handle, "kABPersonAddressCountryCodeKey");
-			State = Dlfcn.GetStringConstant (handle, "kABPersonAddressStateKey");
-			Street = Dlfcn.GetStringConstant (handle, "kABPersonAddressStreetKey");
-			Zip = Dlfcn.GetStringConstant (handle, "kABPersonAddressZIPKey");
-		}
+	/// <summary>Contains keys for the components of a postal address.</summary>
+	public static partial class ABPersonAddressKey {
 	}
 
-	/// <include file="../../docs/api/AddressBook/ABPersonDateLabel.xml" path="/Documentation/Docs[@DocId='T:AddressBook.ABPersonDateLabel']/*" />
-	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
-	[SupportedOSPlatform ("maccatalyst")]
-	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
-	[UnsupportedOSPlatform ("macos")]
-	[UnsupportedOSPlatform ("tvos")]
-	public static class ABPersonDateLabel {
-		/// <summary>Represents the value associated with the constant kABPersonAnniversaryLabel</summary>
-		///         <value>
-		///           A <see cref="Foundation.NSString" /> containing
-		///           the "Birthdate" label.
-		///         </value>
-		///         <remarks>
-		///         </remarks>
-		public static NSString? Anniversary { get; private set; }
-
-		static ABPersonDateLabel ()
-		{
-			InitConstants.Init ();
-		}
-
-		internal static void Init ()
-		{
-			Anniversary = Dlfcn.GetStringConstant (Libraries.AddressBook.Handle, "kABPersonAnniversaryLabel");
-		}
+	/// <summary>Contains labels for dates stored in an Address Book person record.</summary>
+	public static partial class ABPersonDateLabel {
 	}
 
-	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
-	[SupportedOSPlatform ("maccatalyst")]
-	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
-	[UnsupportedOSPlatform ("macos")]
-	[UnsupportedOSPlatform ("tvos")]
-	static class ABPersonKindId {
-		public static NSNumber? Organization { get; private set; }
-		public static NSNumber? Person { get; private set; }
-
-		static ABPersonKindId ()
-		{
-			InitConstants.Init ();
-		}
-
-		internal static void Init ()
-		{
-			var handle = Libraries.AddressBook.Handle;
-			Organization = Dlfcn.GetNSNumber (handle, "kABPersonKindOrganization");
-			Person = Dlfcn.GetNSNumber (handle, "kABPersonKindPerson");
-		}
-
+	static partial class ABPersonKindId {
 		public static ABPersonKind ToPersonKind (NSNumber value)
 		{
 			if (object.ReferenceEquals (Organization, value))
@@ -321,150 +130,32 @@ namespace AddressBook {
 		}
 	}
 
-	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
-	[SupportedOSPlatform ("maccatalyst")]
-	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
-	[UnsupportedOSPlatform ("macos")]
-	[UnsupportedOSPlatform ("tvos")]
-	static class ABPersonSocialProfile {
-		public static readonly NSString? URLKey;
-		public static readonly NSString? ServiceKey;
-		public static readonly NSString? UsernameKey;
-		public static readonly NSString? UserIdentifierKey;
-
-		static ABPersonSocialProfile ()
-		{
-			var handle = Libraries.AddressBook.Handle;
-			URLKey = Dlfcn.GetStringConstant (handle, "kABPersonSocialProfileURLKey");
-			ServiceKey = Dlfcn.GetStringConstant (handle, "kABPersonSocialProfileServiceKey");
-			UsernameKey = Dlfcn.GetStringConstant (handle, "kABPersonSocialProfileUsernameKey");
-			UserIdentifierKey = Dlfcn.GetStringConstant (handle, "kABPersonSocialProfileUserIdentifierKey");
-		}
-	}
-
 	/// <summary>A class whose static members define constant names for various social networks.</summary>
-	///     <remarks>To be added.</remarks>
-	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
-	[SupportedOSPlatform ("maccatalyst")]
-	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
-	[UnsupportedOSPlatform ("macos")]
-	[UnsupportedOSPlatform ("tvos")]
-	public static class ABPersonSocialProfileService {
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
-		public static readonly NSString? Twitter;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
-		public static readonly NSString? GameCenter;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
-		public static readonly NSString? Facebook;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
-		public static readonly NSString? Myspace;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
-		public static readonly NSString? LinkedIn;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
-		public static readonly NSString? Flickr;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
-		public static readonly NSString? SinaWeibo;
+	public static partial class ABPersonSocialProfileService {
+		/// <summary>Identifies the Twitter social-profile service.</summary>
+		public static readonly NSString? Twitter = _Twitter;
 
-		static ABPersonSocialProfileService ()
-		{
-			var handle = Libraries.AddressBook.Handle;
-			Twitter = Dlfcn.GetStringConstant (handle, "kABPersonSocialProfileServiceTwitter");
-			GameCenter = Dlfcn.GetStringConstant (handle, "kABPersonSocialProfileServiceGameCenter");
-			Facebook = Dlfcn.GetStringConstant (handle, "kABPersonSocialProfileServiceFacebook");
-			Myspace = Dlfcn.GetStringConstant (handle, "kABPersonSocialProfileServiceMyspace");
-			LinkedIn = Dlfcn.GetStringConstant (handle, "kABPersonSocialProfileServiceLinkedIn");
-			Flickr = Dlfcn.GetStringConstant (handle, "kABPersonSocialProfileServiceFlickr");
-			SinaWeibo = Dlfcn.GetStringConstant (handle, "kABPersonSocialProfileServiceSinaWeibo");
-		}
+		/// <summary>Identifies the Game Center social-profile service.</summary>
+		public static readonly NSString? GameCenter = _GameCenter;
+
+		/// <summary>Identifies the Facebook social-profile service.</summary>
+		public static readonly NSString? Facebook = _Facebook;
+
+		/// <summary>Identifies the Myspace social-profile service.</summary>
+		public static readonly NSString? Myspace = _Myspace;
+
+		/// <summary>Identifies the LinkedIn social-profile service.</summary>
+		public static readonly NSString? LinkedIn = _LinkedIn;
+
+		/// <summary>Identifies the Flickr social-profile service.</summary>
+		public static readonly NSString? Flickr = _Flickr;
+
+		/// <summary>Identifies the Sina Weibo social-profile service.</summary>
+		public static readonly NSString? SinaWeibo = _SinaWeibo;
 	}
 
-	/// <include file="../../docs/api/AddressBook/ABPersonPhoneLabel.xml" path="/Documentation/Docs[@DocId='T:AddressBook.ABPersonPhoneLabel']/*" />
-	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
-	[SupportedOSPlatform ("maccatalyst")]
-	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
-	[UnsupportedOSPlatform ("macos")]
-	[UnsupportedOSPlatform ("tvos")]
-	public static class ABPersonPhoneLabel {
-		/// <summary>Represents the value associated with the constant kABPersonPhoneHomeFAXLabel</summary>
-		///         <value>
-		///           A <see cref="Foundation.NSString" /> containing
-		///           the Home fax phone number label.
-		///         </value>
-		///         <remarks>
-		///         </remarks>
-		public static NSString? HomeFax { get; private set; }
-		/// <summary>Represents the value associated with the constant kABPersonPhoneIPhoneLabel</summary>
-		///         <value>
-		///           A <see cref="Foundation.NSString" /> containing
-		///           the iPhone phone number label.
-		///         </value>
-		///         <remarks>
-		///         </remarks>
-		public static NSString? iPhone { get; private set; }
-		/// <summary>Represents the value associated with the constant kABPersonPhoneMainLabel</summary>
-		///         <value>
-		///           A <see cref="Foundation.NSString" /> containing
-		///           the Main phone number label.
-		///         </value>
-		///         <remarks>
-		///         </remarks>
-		public static NSString? Main { get; private set; }
-		/// <summary>Represents the value associated with the constant kABPersonPhoneMobileLabel</summary>
-		///         <value>
-		///           A <see cref="Foundation.NSString" /> containing
-		///           the Mobile phone number label.
-		///         </value>
-		///         <remarks>
-		///         </remarks>
-		public static NSString? Mobile { get; private set; }
-		/// <summary>Represents the value associated with the constant kABPersonPhonePagerLabel</summary>
-		///         <value>
-		///           A <see cref="Foundation.NSString" /> containing
-		///           the Pager phone number label.
-		///         </value>
-		///         <remarks>
-		///         </remarks>
-		public static NSString? Pager { get; private set; }
-		/// <summary>Represents the value associated with the constant kABPersonPhoneWorkFAXLabel</summary>
-		///         <value>
-		///           A <see cref="Foundation.NSString" /> containing
-		///           the Work fax phone number label.
-		///         </value>
-		///         <remarks>
-		///         </remarks>
-		public static NSString? WorkFax { get; private set; }
-		/// <summary>Represents the value associated with the constant kABPersonPhoneOtherFAXLabel</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
-		public static NSString? OtherFax { get; private set; }
-
-		static ABPersonPhoneLabel ()
-		{
-			InitConstants.Init ();
-		}
-
-		internal static void Init ()
-		{
-			var handle = Libraries.AddressBook.Handle;
-			HomeFax = Dlfcn.GetStringConstant (handle, "kABPersonPhoneHomeFAXLabel");
-			iPhone = Dlfcn.GetStringConstant (handle, "kABPersonPhoneIPhoneLabel");
-			Main = Dlfcn.GetStringConstant (handle, "kABPersonPhoneMainLabel");
-			Mobile = Dlfcn.GetStringConstant (handle, "kABPersonPhoneMobileLabel");
-			Pager = Dlfcn.GetStringConstant (handle, "kABPersonPhonePagerLabel");
-			WorkFax = Dlfcn.GetStringConstant (handle, "kABPersonPhoneWorkFAXLabel");
-			OtherFax = Dlfcn.GetStringConstant (handle, "kABPersonPhoneOtherFAXLabel");
-		}
+	/// <summary>Contains labels for phone numbers stored in an Address Book person record.</summary>
+	public static partial class ABPersonPhoneLabel {
 	}
 
 	/// <summary>
@@ -490,283 +181,19 @@ namespace AddressBook {
 	///     </remarks>
 	///     <altmember cref="AddressBook.ABPerson.GetInstantMessageServices" />
 	///     <altmember cref="AddressBook.ABPerson.SetInstantMessages(AddressBook.ABMultiValue{Foundation.NSDictionary})" />
-	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
-	[SupportedOSPlatform ("maccatalyst")]
-	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
-	[UnsupportedOSPlatform ("macos")]
-	[UnsupportedOSPlatform ("tvos")]
-	public static class ABPersonInstantMessageService {
-		/// <summary>Represents the value associated with the constant kABPersonInstantMessageServiceAIM</summary>
-		///         <value>
-		///           A <see cref="Foundation.NSString" /> containing
-		///           the AIM instant message service.
-		///         </value>
-		///         <remarks>
-		///         </remarks>
-		public static NSString? Aim { get; private set; }
-		/// <summary>Represents the value associated with the constant kABPersonInstantMessageServiceICQ</summary>
-		///         <value>
-		///           A <see cref="Foundation.NSString" /> containing
-		///           the ICQ instant message service.
-		///         </value>
-		///         <remarks>
-		///         </remarks>
-		public static NSString? Icq { get; private set; }
-		/// <summary>Represents the value associated with the constant kABPersonInstantMessageServiceJabber</summary>
-		///         <value>
-		///           A <see cref="Foundation.NSString" /> containing
-		///           the Jabber instant message service.
-		///         </value>
-		///         <remarks>
-		///         </remarks>
-		public static NSString? Jabber { get; private set; }
-		/// <summary>Represents the value associated with the constant kABPersonInstantMessageServiceMSN</summary>
-		///         <value>
-		///           A <see cref="Foundation.NSString" /> containing
-		///           the MSN instant message service.
-		///         </value>
-		///         <remarks>
-		///         </remarks>
-		public static NSString? Msn { get; private set; }
-		/// <summary>Represents the value associated with the constant kABPersonInstantMessageServiceYahoo</summary>
-		///         <value>
-		///           A <see cref="Foundation.NSString" /> containing
-		///           the Yahoo instant message service.
-		///         </value>
-		///         <remarks>
-		///         </remarks>
-		public static NSString? Yahoo { get; private set; }
-		/// <summary>Represents the value associated with the constant kABPersonInstantMessageServiceQQ</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
-		public static NSString? QQ { get; private set; }
-		/// <summary>Represents the value associated with the constant kABPersonInstantMessageServiceGoogleTalk</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
-		public static NSString? GoogleTalk { get; private set; }
-		/// <summary>Represents the value associated with the constant kABPersonInstantMessageServiceSkype</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
-		public static NSString? Skype { get; private set; }
-		/// <summary>Represents the value associated with the constant kABPersonInstantMessageServiceFacebook</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
-		public static NSString? Facebook { get; private set; }
-		/// <summary>Represents the value associated with the constant kABPersonInstantMessageServiceGaduGadu</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
-		public static NSString? GaduGadu { get; private set; }
-
-		static ABPersonInstantMessageService ()
-		{
-			InitConstants.Init ();
-		}
-
-		internal static void Init ()
-		{
-			var handle = Libraries.AddressBook.Handle;
-			Aim = Dlfcn.GetStringConstant (handle, "kABPersonInstantMessageServiceAIM");
-			Icq = Dlfcn.GetStringConstant (handle, "kABPersonInstantMessageServiceICQ");
-			Jabber = Dlfcn.GetStringConstant (handle, "kABPersonInstantMessageServiceJabber");
-			Msn = Dlfcn.GetStringConstant (handle, "kABPersonInstantMessageServiceMSN");
-			Yahoo = Dlfcn.GetStringConstant (handle, "kABPersonInstantMessageServiceYahoo");
-			QQ = Dlfcn.GetStringConstant (handle, "kABPersonInstantMessageServiceQQ");
-			GoogleTalk = Dlfcn.GetStringConstant (handle, "kABPersonInstantMessageServiceGoogleTalk");
-			Skype = Dlfcn.GetStringConstant (handle, "kABPersonInstantMessageServiceSkype");
-			Facebook = Dlfcn.GetStringConstant (handle, "kABPersonInstantMessageServiceFacebook");
-			GaduGadu = Dlfcn.GetStringConstant (handle, "kABPersonInstantMessageServiceGaduGadu");
-		}
+	public static partial class ABPersonInstantMessageService {
 	}
 
-	/// <include file="../../docs/api/AddressBook/ABPersonInstantMessageKey.xml" path="/Documentation/Docs[@DocId='T:AddressBook.ABPersonInstantMessageKey']/*" />
-	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
-	[SupportedOSPlatform ("maccatalyst")]
-	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
-	[UnsupportedOSPlatform ("macos")]
-	[UnsupportedOSPlatform ("tvos")]
-	public static class ABPersonInstantMessageKey {
-		/// <summary>Represents the value associated with the constant kABPersonInstantMessageServiceKey</summary>
-		///         <value>
-		///           A <see cref="Foundation.NSString" /> containing the
-		///           key to use for the Service portion of the instant message information.
-		///         </value>
-		///         <remarks>
-		///         </remarks>
-		public static NSString? Service { get; private set; }
-		/// <summary>Represents the value associated with the constant kABPersonInstantMessageUsernameKey</summary>
-		///         <value>
-		///           A <see cref="Foundation.NSString" /> containing the
-		///           key to use for the Username portion of the instant message information.
-		///         </value>
-		///         <remarks>
-		///         </remarks>
-		public static NSString? Username { get; private set; }
-
-		static ABPersonInstantMessageKey ()
-		{
-			InitConstants.Init ();
-		}
-
-		internal static void Init ()
-		{
-			var handle = Libraries.AddressBook.Handle;
-			Service = Dlfcn.GetStringConstant (handle, "kABPersonInstantMessageServiceKey");
-			Username = Dlfcn.GetStringConstant (handle, "kABPersonInstantMessageUsernameKey");
-		}
+	/// <summary>Contains keys for instant-messaging information stored in an Address Book person record.</summary>
+	public static partial class ABPersonInstantMessageKey {
 	}
 
-	/// <include file="../../docs/api/AddressBook/ABPersonUrlLabel.xml" path="/Documentation/Docs[@DocId='T:AddressBook.ABPersonUrlLabel']/*" />
-	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
-	[SupportedOSPlatform ("maccatalyst")]
-	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
-	[UnsupportedOSPlatform ("macos")]
-	[UnsupportedOSPlatform ("tvos")]
-	public static class ABPersonUrlLabel {
-		/// <summary>Represents the value associated with the constant kABPersonHomePageLabel</summary>
-		///         <value>
-		///           A <see cref="Foundation.NSString" /> containing
-		///           the Home page URL label.
-		///         </value>
-		///         <remarks>
-		///         </remarks>
-		public static NSString? HomePage { get; private set; }
-
-		static ABPersonUrlLabel ()
-		{
-			InitConstants.Init ();
-		}
-
-		internal static void Init ()
-		{
-			HomePage = Dlfcn.GetStringConstant (Libraries.AddressBook.Handle, "kABPersonHomePageLabel");
-		}
+	/// <summary>Contains labels for URLs stored in an Address Book person record.</summary>
+	public static partial class ABPersonUrlLabel {
 	}
 
-	/// <include file="../../docs/api/AddressBook/ABPersonRelatedNamesLabel.xml" path="/Documentation/Docs[@DocId='T:AddressBook.ABPersonRelatedNamesLabel']/*" />
-	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
-	[SupportedOSPlatform ("maccatalyst")]
-	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
-	[UnsupportedOSPlatform ("macos")]
-	[UnsupportedOSPlatform ("tvos")]
-	public static class ABPersonRelatedNamesLabel {
-		/// <summary>Represents the value associated with the constant kABPersonAssistantLabel</summary>
-		///         <value>
-		///           A <see cref="Foundation.NSString" /> containing
-		///           the Assistant related name label.
-		///         </value>
-		///         <remarks>
-		///         </remarks>
-		public static NSString? Assistant { get; private set; }
-		/// <summary>Represents the value associated with the constant kABPersonBrotherLabel</summary>
-		///         <value>
-		///           A <see cref="Foundation.NSString" /> containing
-		///           the Brother related name label.
-		///         </value>
-		///         <remarks>
-		///         </remarks>
-		public static NSString? Brother { get; private set; }
-		/// <summary>Represents the value associated with the constant kABPersonChildLabel</summary>
-		///         <value>
-		///           A <see cref="Foundation.NSString" /> containing
-		///           the Child related name label.
-		///         </value>
-		///         <remarks>
-		///         </remarks>
-		public static NSString? Child { get; private set; }
-		/// <summary>Represents the value associated with the constant kABPersonFatherLabel</summary>
-		///         <value>
-		///           A <see cref="Foundation.NSString" /> containing
-		///           the Father related name label.
-		///         </value>
-		///         <remarks>
-		///         </remarks>
-		public static NSString? Father { get; private set; }
-		/// <summary>Represents the value associated with the constant kABPersonFriendLabel</summary>
-		///         <value>
-		///           A <see cref="Foundation.NSString" /> containing
-		///           the Friend related name label.
-		///         </value>
-		///         <remarks>
-		///         </remarks>
-		public static NSString? Friend { get; private set; }
-		/// <summary>Represents the value associated with the constant kABPersonManagerLabel</summary>
-		///         <value>
-		///           A <see cref="Foundation.NSString" /> containing
-		///           the Manager related name label.
-		///         </value>
-		///         <remarks>
-		///         </remarks>
-		public static NSString? Manager { get; private set; }
-		/// <summary>Represents the value associated with the constant kABPersonMotherLabel</summary>
-		///         <value>
-		///           A <see cref="Foundation.NSString" /> containing
-		///           the Mother related name label.
-		///         </value>
-		///         <remarks>
-		///         </remarks>
-		public static NSString? Mother { get; private set; }
-		/// <summary>Represents the value associated with the constant kABPersonParentLabel</summary>
-		///         <value>
-		///           A <see cref="Foundation.NSString" /> containing
-		///           the Parent related name label.
-		///         </value>
-		///         <remarks>
-		///         </remarks>
-		public static NSString? Parent { get; private set; }
-		/// <summary>Represents the value associated with the constant kABPersonPartnerLabel</summary>
-		///         <value>
-		///           A <see cref="Foundation.NSString" /> containing
-		///           the Partner related name label.
-		///         </value>
-		///         <remarks>
-		///         </remarks>
-		public static NSString? Partner { get; private set; }
-		/// <summary>Represents the value associated with the constant kABPersonSisterLabel</summary>
-		///         <value>
-		///           A <see cref="Foundation.NSString" /> containing
-		///           the Sister related name label.
-		///         </value>
-		///         <remarks>
-		///         </remarks>
-		public static NSString? Sister { get; private set; }
-		/// <summary>Represents the value associated with the constant kABPersonSpouseLabel</summary>
-		///         <value>
-		///           A <see cref="Foundation.NSString" /> containing
-		///           the Spouse related name label.
-		///         </value>
-		///         <remarks>
-		///         </remarks>
-		public static NSString? Spouse { get; private set; }
-
-		static ABPersonRelatedNamesLabel ()
-		{
-			InitConstants.Init ();
-		}
-
-		internal static void Init ()
-		{
-			var handle = Libraries.AddressBook.Handle;
-			Assistant = Dlfcn.GetStringConstant (handle, "kABPersonAssistantLabel");
-			Brother = Dlfcn.GetStringConstant (handle, "kABPersonBrotherLabel");
-			Child = Dlfcn.GetStringConstant (handle, "kABPersonChildLabel");
-			Father = Dlfcn.GetStringConstant (handle, "kABPersonFatherLabel");
-			Friend = Dlfcn.GetStringConstant (handle, "kABPersonFriendLabel");
-			Manager = Dlfcn.GetStringConstant (handle, "kABPersonManagerLabel");
-			Mother = Dlfcn.GetStringConstant (handle, "kABPersonMotherLabel");
-			Parent = Dlfcn.GetStringConstant (handle, "kABPersonParentLabel");
-			Partner = Dlfcn.GetStringConstant (handle, "kABPersonPartnerLabel");
-			Sister = Dlfcn.GetStringConstant (handle, "kABPersonSisterLabel");
-			Spouse = Dlfcn.GetStringConstant (handle, "kABPersonSpouseLabel");
-		}
+	/// <summary>Contains labels for related names stored in an Address Book person record.</summary>
+	public static partial class ABPersonRelatedNamesLabel {
 	}
 
 	/// <summary>
@@ -781,50 +208,7 @@ namespace AddressBook {
 	///         <see cref="AddressBook.ABMutableMultiValue{T}.Insert" />.
 	///       </para>
 	///     </remarks>
-	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
-	[SupportedOSPlatform ("maccatalyst")]
-	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
-	[UnsupportedOSPlatform ("macos")]
-	[UnsupportedOSPlatform ("tvos")]
-	public static class ABLabel {
-		/// <summary>Represents the value associated with the constant kABHomeLabel</summary>
-		///         <value>
-		///           A <see cref="Foundation.NSString" /> containing
-		///           the "Home" label.
-		///         </value>
-		///         <remarks>
-		///         </remarks>
-		public static NSString? Home { get; private set; }
-		/// <summary>Represents the value associated with the constant kABOtherLabel</summary>
-		///         <value>
-		///           A <see cref="Foundation.NSString" /> containing
-		///           the "Other" label.
-		///         </value>
-		///         <remarks>
-		///         </remarks>
-		public static NSString? Other { get; private set; }
-		/// <summary>Represents the value associated with the constant kABWorkLabel</summary>
-		///         <value>
-		///           A <see cref="Foundation.NSString" /> containing
-		///           the "Work" label.
-		///         </value>
-		///         <remarks>
-		///         </remarks>
-		public static NSString? Work { get; private set; }
-
-		static ABLabel ()
-		{
-			InitConstants.Init ();
-		}
-
-		internal static void Init ()
-		{
-			var handle = Libraries.AddressBook.Handle;
-			Home = Dlfcn.GetStringConstant (handle, "kABHomeLabel");
-			Other = Dlfcn.GetStringConstant (handle, "kABOtherLabel");
-			Work = Dlfcn.GetStringConstant (handle, "kABWorkLabel");
-		}
+	public static partial class ABLabel {
 	}
 
 	/// <include file="../../docs/api/AddressBook/ABPerson.xml" path="/Documentation/Docs[@DocId='T:AddressBook.ABPerson']/*" />
@@ -847,7 +231,6 @@ namespace AddressBook {
 		public ABPerson ()
 			: base (ABPersonCreate (), true)
 		{
-			InitConstants.Init ();
 		}
 
 		[DllImport (Constants.AddressBookLibrary)]

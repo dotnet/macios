@@ -39,6 +39,55 @@ namespace CoreFoundation {
 		IntPtr /* CFNullRef */ _CFNullHandle { get; }
 	}
 
+	[Static, Partial]
+	interface CFErrorDomain {
+		[Internal]
+		[Field ("kCFErrorDomainCocoa")]
+		NSString _Cocoa { get; }
+
+		[Internal]
+		[Field ("kCFErrorDomainMach")]
+		NSString _Mach { get; }
+
+		[Internal]
+		[Field ("kCFErrorDomainOSStatus")]
+		NSString _OSStatus { get; }
+
+		[Internal]
+		[Field ("kCFErrorDomainPOSIX")]
+		NSString _Posix { get; }
+	}
+
+	[Static, Partial]
+	interface CFExceptionDataKey {
+		[Internal]
+		[Field ("kCFErrorDescriptionKey")]
+		NSString _Description { get; }
+
+		[Internal]
+		[Field ("kCFErrorLocalizedDescriptionKey")]
+		NSString _LocalizedDescription { get; }
+
+		[Internal]
+		[Field ("kCFErrorLocalizedFailureReasonKey")]
+		NSString _LocalizedFailureReason { get; }
+
+		[Internal]
+		[Field ("kCFErrorLocalizedRecoverySuggestionKey")]
+		NSString _LocalizedRecoverySuggestion { get; }
+
+		[Internal]
+		[Field ("kCFErrorUnderlyingErrorKey")]
+		NSString _UnderlyingError { get; }
+	}
+
+	[Static, Partial]
+	interface CFPreferences {
+		[Internal]
+		[Field ("kCFPreferencesCurrentApplication")]
+		NSString _CurrentApplication { get; }
+	}
+
 	[Partial]
 	[Internal]
 	interface CFBoolean {

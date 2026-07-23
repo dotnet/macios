@@ -529,9 +529,10 @@ $(SOURCE_INDEX_SOLUTION): $(PLATFORM_CSPROJECTS) Makefile | $(DOTNET_BUILD_DIR)
 	$(Q) $(foreach project,$(PLATFORM_CSPROJECTS),printf '  <Project Path="%s" />\n' '$(patsubst $(DOTNET_BUILD_DIR)/%,%,$(project))' >> $@;)
 	$(Q) printf "</Solution>\n" >> $@
 
-.PHONY: source-index
-source-index: $(SOURCE_INDEX_SOLUTION) $(foreach platform,$(DOTNET_PLATFORMS),$($(call uppercase,$(platform))_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES))
+$(SOURCE_INDEX_BINLOG): $(SOURCE_INDEX_SOLUTION) $(foreach platform,$(DOTNET_PLATFORMS),$($(call uppercase,$(platform))_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES))
 	$(Q) $(DOTNET) build $(SOURCE_INDEX_SOLUTION) --no-incremental /m:1 /p:UseForSourceIndex=true "/bl:$(abspath $(SOURCE_INDEX_BINLOG))" $(DOTNET_BUILD_VERBOSITY)
+
+source-index: $(SOURCE_INDEX_BINLOG)
 
 # This targets runs 'dotnet format' on the generated project files.
 format-csproj: $(CSPROJECTS) $(foreach platform,$(DOTNET_PLATFORMS),$($(call uppercase,$(platform))_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES))

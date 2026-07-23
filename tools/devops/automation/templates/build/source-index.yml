@@ -1,0 +1,47 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
+steps:
+  - bash: make -C $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/src source-index
+    displayName: 'Source Index: Build'
+    timeoutInMinutes: 30
+
+  - task: UseDotNet@2
+    displayName: 'Source Index: Use .NET 10 SDK'
+    inputs:
+      packageType: sdk
+      version: 10.0.x
+      installationPath: $(Agent.TempDirectory)/dotnet
+      workingDirectory: $(Agent.TempDirectory)
+
+  - bash: |
+      set -e
+      rm -rf "$(Agent.TempDirectory)/.source-index"
+      mkdir -p "$(Agent.TempDirectory)/.source-index/tools"
+      "$(Agent.TempDirectory)/dotnet/dotnet" tool install BinLogToSln --version 1.0.1-20260722.1 --source https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-tools/nuget/v3/index.json --tool-path "$(Agent.TempDirectory)/.source-index/tools"
+      "$(Agent.TempDirectory)/dotnet/dotnet" tool install UploadIndexStage1 --version 2.0.0-20260722.1 --source https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-tools/nuget/v3/index.json --tool-path "$(Agent.TempDirectory)/.source-index/tools"
+    displayName: 'Source Index: Download tools'
+    workingDirectory: $(Agent.TempDirectory)
+
+  - bash: |
+      set -e
+      "$(Agent.TempDirectory)/.source-index/tools/BinLogToSln" \
+        -i "$(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/src/build/dotnet/source-index.binlog" \
+        -r "$(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)" \
+        -n dotnet-macios \
+        -o "$(Agent.TempDirectory)/.source-index/stage1output"
+    displayName: 'Source Index: Process binlog'
+
+  - task: AzureCLI@2
+    displayName: 'Source Index: Upload stage 1 artifacts'
+    inputs:
+      azureSubscription: 'SourceDotNet Stage1 Publish'
+      addSpnToEnvironment: true
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        "$(Agent.TempDirectory)/.source-index/tools/UploadIndexStage1" \
+          -i "$(Agent.TempDirectory)/.source-index/stage1output" \
+          -n dotnet-macios \
+          -s netsourceindexstage1 \
+          -b stage1

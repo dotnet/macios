@@ -7825,6 +7825,9 @@ F:UIKit.UITextFormattingViewControllerTextList.Decimal
 F:UIKit.UITextFormattingViewControllerTextList.Disc
 F:UIKit.UITextFormattingViewControllerTextList.Hyphen
 F:UIKit.UITextFormattingViewControllerTextList.Other
+F:UIKit.UITextGrammarCheckingType.Default
+F:UIKit.UITextGrammarCheckingType.No
+F:UIKit.UITextGrammarCheckingType.Yes
 F:UIKit.UITextInlinePredictionType.Default
 F:UIKit.UITextInlinePredictionType.No
 F:UIKit.UITextInlinePredictionType.Yes
@@ -29947,12 +29950,14 @@ M:UIKit.UITextInputStringTokenizer.#ctor(UIKit.IUITextInput)
 M:UIKit.UITextInputTraits_Extensions.GetAllowedWritingToolsResultOptions(UIKit.IUITextInputTraits)
 M:UIKit.UITextInputTraits_Extensions.GetAllowsNumberPadPopover(UIKit.IUITextInputTraits)
 M:UIKit.UITextInputTraits_Extensions.GetConversationContext(UIKit.IUITextInputTraits)
+M:UIKit.UITextInputTraits_Extensions.GetGrammarCheckingType(UIKit.IUITextInputTraits)
 M:UIKit.UITextInputTraits_Extensions.GetInlinePredictionType(UIKit.IUITextInputTraits)
 M:UIKit.UITextInputTraits_Extensions.GetMathExpressionCompletionType(UIKit.IUITextInputTraits)
 M:UIKit.UITextInputTraits_Extensions.GetWritingToolsBehavior(UIKit.IUITextInputTraits)
 M:UIKit.UITextInputTraits_Extensions.SetAllowedWritingToolsResultOptions(UIKit.IUITextInputTraits,UIKit.UIWritingToolsResultOptions)
 M:UIKit.UITextInputTraits_Extensions.SetAllowsNumberPadPopover(UIKit.IUITextInputTraits,System.Boolean)
 M:UIKit.UITextInputTraits_Extensions.SetConversationContext(UIKit.IUITextInputTraits,UIKit.UIConversationContext)
+M:UIKit.UITextInputTraits_Extensions.SetGrammarCheckingType(UIKit.IUITextInputTraits,UIKit.UITextGrammarCheckingType)
 M:UIKit.UITextInputTraits_Extensions.SetInlinePredictionType(UIKit.IUITextInputTraits,UIKit.UITextInlinePredictionType)
 M:UIKit.UITextInputTraits_Extensions.SetMathExpressionCompletionType(UIKit.IUITextInputTraits,UIKit.UITextMathExpressionCompletionType)
 M:UIKit.UITextInputTraits_Extensions.SetWritingToolsBehavior(UIKit.IUITextInputTraits,UIKit.UIWritingToolsBehavior)
@@ -30105,6 +30110,7 @@ M:UIKit.UITraitCollection.FromHorizontalSizeClass(UIKit.UIUserInterfaceSizeClass
 M:UIKit.UITraitCollection.FromLayoutDirection(UIKit.UITraitEnvironmentLayoutDirection)
 M:UIKit.UITraitCollection.FromLegibilityWeight(UIKit.UILegibilityWeight)
 M:UIKit.UITraitCollection.FromSceneCaptureState(UIKit.UISceneCaptureState)
+M:UIKit.UITraitCollection.FromSystemPrefersReducedResourceUsage(System.Boolean)
 M:UIKit.UITraitCollection.FromTraitsFromCollections(UIKit.UITraitCollection[])
 M:UIKit.UITraitCollection.FromUserInterfaceIdiom(UIKit.UIUserInterfaceIdiom)
 M:UIKit.UITraitCollection.FromUserInterfaceLevel(UIKit.UIUserInterfaceLevel)
@@ -51517,6 +51523,7 @@ P:UIKit.IUIMutableTraits.PreferredContentSizeCategory
 P:UIKit.IUIMutableTraits.ResolvesNaturalAlignmentWithBaseWritingDirection
 P:UIKit.IUIMutableTraits.SceneCaptureState
 P:UIKit.IUIMutableTraits.SplitViewControllerLayoutEnvironment
+P:UIKit.IUIMutableTraits.SystemPrefersReducedResourceUsage
 P:UIKit.IUIMutableTraits.TabAccessoryEnvironment
 P:UIKit.IUIMutableTraits.ToolbarItemPresentationSize
 P:UIKit.IUIMutableTraits.TypesettingLanguage
@@ -51536,6 +51543,7 @@ P:UIKit.IUITextInput.UnobscuredContentRect
 P:UIKit.IUITextInputTraits.AllowedWritingToolsResultOptions
 P:UIKit.IUITextInputTraits.AllowsNumberPadPopover
 P:UIKit.IUITextInputTraits.ConversationContext
+P:UIKit.IUITextInputTraits.GrammarCheckingType
 P:UIKit.IUITextInputTraits.InlinePredictionType
 P:UIKit.IUITextInputTraits.MathExpressionCompletionType
 P:UIKit.IUITextInputTraits.WritingToolsBehavior
@@ -51916,6 +51924,7 @@ P:UIKit.UIApplication.StatusBarOrientationAnimationDuration
 P:UIKit.UIApplication.StatusBarStyle
 P:UIKit.UIApplication.SupportsAlternateIcons
 P:UIKit.UIApplication.SupportsMultipleScenes
+P:UIKit.UIApplication.SystemPrefersReducedResourceUsage
 P:UIKit.UIApplication.UserInterfaceLayoutDirection
 P:UIKit.UIApplication.WeakDelegate
 P:UIKit.UIApplication.Windows
@@ -53089,6 +53098,7 @@ P:UIKit.UIMutableTraits.PreferredContentSizeCategory
 P:UIKit.UIMutableTraits.ResolvesNaturalAlignmentWithBaseWritingDirection
 P:UIKit.UIMutableTraits.SceneCaptureState
 P:UIKit.UIMutableTraits.SplitViewControllerLayoutEnvironment
+P:UIKit.UIMutableTraits.SystemPrefersReducedResourceUsage
 P:UIKit.UIMutableTraits.TabAccessoryEnvironment
 P:UIKit.UIMutableTraits.ToolbarItemPresentationSize
 P:UIKit.UIMutableTraits.TypesettingLanguage
@@ -53607,6 +53617,7 @@ P:UIKit.UISearchBar.AllowsNumberPadPopover
 P:UIKit.UISearchBar.BarStyle
 P:UIKit.UISearchBar.ConversationContext
 P:UIKit.UISearchBar.Enabled
+P:UIKit.UISearchBar.GrammarCheckingType
 P:UIKit.UISearchBar.InlinePredictionType
 P:UIKit.UISearchBar.InputAccessoryView
 P:UIKit.UISearchBar.InputAssistantItem
@@ -54061,6 +54072,7 @@ P:UIKit.UITextCursorDropPositionAnimator.TextInput
 P:UIKit.UITextDocumentProxy.AllowedWritingToolsResultOptions
 P:UIKit.UITextDocumentProxy.AllowsNumberPadPopover
 P:UIKit.UITextDocumentProxy.ConversationContext
+P:UIKit.UITextDocumentProxy.GrammarCheckingType
 P:UIKit.UITextDocumentProxy.InlinePredictionType
 P:UIKit.UITextDocumentProxy.MathExpressionCompletionType
 P:UIKit.UITextDocumentProxy.WritingToolsBehavior
@@ -54088,6 +54100,7 @@ P:UIKit.UITextField.ConversationContext
 P:UIKit.UITextField.DisabledBackground
 P:UIKit.UITextField.Editable
 P:UIKit.UITextField.Font
+P:UIKit.UITextField.GrammarCheckingType
 P:UIKit.UITextField.InlinePredictionType
 P:UIKit.UITextField.InputAccessoryView
 P:UIKit.UITextField.InputView
@@ -54199,6 +54212,7 @@ P:UIKit.UITextView.FindInteraction
 P:UIKit.UITextView.FindInteractionEnabled
 P:UIKit.UITextView.Font
 P:UIKit.UITextView.GetWritingToolsIgnoredRangesInEnclosingRange
+P:UIKit.UITextView.GrammarCheckingType
 P:UIKit.UITextView.InlinePredictionType
 P:UIKit.UITextView.InputAccessoryView
 P:UIKit.UITextView.InputView
@@ -54296,6 +54310,7 @@ P:UIKit.UITraitCollection.PreferredContentSizeCategory
 P:UIKit.UITraitCollection.ResolvesNaturalAlignmentWithBaseWritingDirection
 P:UIKit.UITraitCollection.SceneCaptureState
 P:UIKit.UITraitCollection.SplitViewControllerLayoutEnvironment
+P:UIKit.UITraitCollection.SystemPrefersReducedResourceUsage
 P:UIKit.UITraitCollection.SystemTraitsAffectingColorAppearance2
 P:UIKit.UITraitCollection.SystemTraitsAffectingImageLookup2
 P:UIKit.UITraitCollection.TabAccessoryEnvironment
@@ -54357,6 +54372,10 @@ P:UIKit.UITraitSplitViewControllerLayoutEnvironment.AffectsColorAppearance
 P:UIKit.UITraitSplitViewControllerLayoutEnvironment.DefaultValue
 P:UIKit.UITraitSplitViewControllerLayoutEnvironment.Identifier
 P:UIKit.UITraitSplitViewControllerLayoutEnvironment.Name
+P:UIKit.UITraitSystemPrefersReducedResourceUsage.AffectsColorAppearance
+P:UIKit.UITraitSystemPrefersReducedResourceUsage.DefaultValue
+P:UIKit.UITraitSystemPrefersReducedResourceUsage.Identifier
+P:UIKit.UITraitSystemPrefersReducedResourceUsage.Name
 P:UIKit.UITraitTabAccessoryEnvironment.AffectsColorAppearance
 P:UIKit.UITraitTabAccessoryEnvironment.DefaultValue
 P:UIKit.UITraitTabAccessoryEnvironment.Identifier
@@ -62786,6 +62805,7 @@ T:UIKit.UITextFormattingViewControllerFormattingStyle
 T:UIKit.UITextFormattingViewControllerHighlight
 T:UIKit.UITextFormattingViewControllerTextAlignment
 T:UIKit.UITextFormattingViewControllerTextList
+T:UIKit.UITextGrammarCheckingType
 T:UIKit.UITextInlinePredictionType
 T:UIKit.UITextInputContext
 T:UIKit.UITextInputMode
@@ -62843,6 +62863,7 @@ T:UIKit.UITraitPreferredContentSizeCategory
 T:UIKit.UITraitResolvesNaturalAlignmentWithBaseWritingDirection
 T:UIKit.UITraitSceneCaptureState
 T:UIKit.UITraitSplitViewControllerLayoutEnvironment
+T:UIKit.UITraitSystemPrefersReducedResourceUsage
 T:UIKit.UITraitTabAccessoryEnvironment
 T:UIKit.UITraitToolbarItemPresentationSize
 T:UIKit.UITraitTypesettingLanguage

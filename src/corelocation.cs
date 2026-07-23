@@ -85,6 +85,9 @@ namespace CoreLocation {
 		OtherNavigation,
 		Fitness,
 		Airborne,
+		/// <summary>Configures location updates for vehicular maritime navigation.</summary>
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		Maritime = 5,
 	}
 
 

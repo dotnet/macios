@@ -9,8 +9,6 @@ NAMES+=FrameworkTest1 FrameworkTest2 FrameworkTest3 FrameworkTest4 FrameworkTest
 NAMES+=UnknownD UnknownE UnknownF1 UnknownF2 SomewhatUnknownD SomewhatUnknownE SomewhatUnknownF1 SomewhatUnknownF2
 NAMES+=Framework.With.Dots
 NAMES+=FrameworkWithLongFileNames
-# Used in mmptest
-NAMES+=MmpTestFramework
 
 FRAMEWORKS_WITH_HEADERS+=FrameworkWithLongFileNames
 

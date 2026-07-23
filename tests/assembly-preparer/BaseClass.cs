@@ -17,27 +17,27 @@ public abstract class BaseClass {
 		Assert.That (exceptions, Is.Empty, "Exceptions");
 	}
 
-	public bool AssertPrepare (ApplePlatform platform, bool isCoreCLR, string code, out AssemblyDefinition assemblyDefinition)
+	public bool AssertPrepare (ApplePlatform platform, bool isCoreCLR, string code, out AssemblyDefinition assemblyDefinition, string? extraConfig = null)
 	{
-		return AssertPrepare (platform, isCoreCLR, RegistrarMode.Dynamic, code, out assemblyDefinition);
+		return AssertPrepare (platform, isCoreCLR, RegistrarMode.Dynamic, code, out assemblyDefinition, extraConfig);
 	}
 
 	// returns true if the test assembly was modified
-	public bool AssertPrepare (ApplePlatform platform, bool isCoreCLR, RegistrarMode registrar, string code, out AssemblyDefinition assemblyDefinition, bool hotReloadCompatibleBuild = false, string testAssemblyTrimMode = "link", string? inlineDlfcnMethods = null)
+	public bool AssertPrepare (ApplePlatform platform, bool isCoreCLR, RegistrarMode registrar, string code, out AssemblyDefinition assemblyDefinition, bool hotReloadCompatibleBuild = false, string testAssemblyTrimMode = "link", string? inlineDlfcnMethods = null, string? extraConfig = null)
 	{
-		return AssertPrepare (platform, isCoreCLR, registrar, code, out assemblyDefinition, out _, hotReloadCompatibleBuild, testAssemblyTrimMode, inlineDlfcnMethods);
+		return AssertPrepare (platform, isCoreCLR, registrar, code, out assemblyDefinition, out _, hotReloadCompatibleBuild, testAssemblyTrimMode, inlineDlfcnMethods, extraConfig);
 	}
 
 	// Like the overload above, but also returns the AssemblyPreparer so tests can inspect state after
 	// preparation (e.g. the collected native symbols in Configuration.DerivedLinkContext.RequiredSymbols).
 	// returns true if the test assembly was modified
-	public bool AssertPrepare (ApplePlatform platform, bool isCoreCLR, RegistrarMode registrar, string code, out AssemblyDefinition assemblyDefinition, out AssemblyPreparer preparer, bool hotReloadCompatibleBuild = false, string testAssemblyTrimMode = "link", string? inlineDlfcnMethods = null)
+	public bool AssertPrepare (ApplePlatform platform, bool isCoreCLR, RegistrarMode registrar, string code, out AssemblyDefinition assemblyDefinition, out AssemblyPreparer preparer, bool hotReloadCompatibleBuild = false, string testAssemblyTrimMode = "link", string? inlineDlfcnMethods = null, string? extraConfig = null)
 	{
 		AssemblyPreparer? capturedPreparer = null;
 		var rv = AssertPrepareCode (platform, isCoreCLR, p => {
 			p.Registrar = registrar;
 			capturedPreparer = p;
-		}, code, out string outputPath, hotReloadCompatibleBuild, testAssemblyTrimMode, inlineDlfcnMethods);
+		}, code, out string outputPath, hotReloadCompatibleBuild, testAssemblyTrimMode, inlineDlfcnMethods, extraConfig);
 		preparer = capturedPreparer!;
 		var resolver = new DefaultAssemblyResolver ();
 		var dirs = preparer!.Assemblies.Select (v => Path.GetDirectoryName (v.OutputPath)).Distinct ().ToList ();
@@ -51,9 +51,9 @@ public abstract class BaseClass {
 	}
 
 	// returns true if the test assembly was modified
-	public bool AssertPrepareCode (ApplePlatform platform, bool isCoreCLR, Action<AssemblyPreparer>? configure, string code, out string outputPath, bool hotReloadCompatibleBuild = false, string testAssemblyTrimMode = "link", string? inlineDlfcnMethods = null)
+	public bool AssertPrepareCode (ApplePlatform platform, bool isCoreCLR, Action<AssemblyPreparer>? configure, string code, out string outputPath, bool hotReloadCompatibleBuild = false, string testAssemblyTrimMode = "link", string? inlineDlfcnMethods = null, string? extraConfig = null)
 	{
-		using var preparer = CreatePreparer (platform, isCoreCLR, configure, code, out var testInfo, hotReloadCompatibleBuild: hotReloadCompatibleBuild, testAssemblyTrimMode: testAssemblyTrimMode, inlineDlfcnMethods: inlineDlfcnMethods);
+		using var preparer = CreatePreparer (platform, isCoreCLR, configure, code, out var testInfo, hotReloadCompatibleBuild: hotReloadCompatibleBuild, testAssemblyTrimMode: testAssemblyTrimMode, inlineDlfcnMethods: inlineDlfcnMethods, extraConfig: extraConfig ?? "");
 		AssertPrepare (preparer);
 
 		outputPath = testInfo.OutputPath;

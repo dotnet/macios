@@ -93,9 +93,16 @@ public sealed class BindingGenerator : AstVisitor {
 		var underlyingDesugaredType = decl.UnderlyingType.UnqualifiedDesugaredType;
 		switch (underlyingDesugaredType?.TypeClass) {
 		case CX_TypeClass.CX_TypeClass_Enum:
-			var boundEnum = ((EnumType) underlyingDesugaredType).Decl.Annotation<TypeDeclaration> ();
-			if (boundEnum is not null)
+			var enumDecl = ((EnumType) underlyingDesugaredType).Decl;
+			var boundEnum = enumDecl.Annotation<TypeDeclaration> ();
+			if (boundEnum is not null) {
 				boundEnum.Name = decl.Name;
+				// The availability attributes for an enum may be attached to this typedef
+				// (e.g. `typedef NS_ENUM(NSInteger, Foo) { ... } API_UNAVAILABLE(maccatalyst);`)
+				// instead of to the enum declaration itself. Link the typedef to the enum so
+				// the AvailabilityMassager can pick up those attributes.
+				enumDecl.AddAnnotation (decl);
+			}
 			break;
 		case CX_TypeClass.CX_TypeClass_Record:
 			var boundRecord = ((RecordType) underlyingDesugaredType).Decl.Annotation<TypeDeclaration> ();

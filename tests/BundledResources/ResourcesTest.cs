@@ -12,16 +12,11 @@ using System.Linq;
 
 namespace BundledResources {
 
-	// Unused sentinel type used to detect whether this assembly was linked/trimmed: the linker removes it
-	// when this assembly is linked, so its absence at runtime means the assembly was linked.
-	class LinkerSentinel { }
-
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class ResourcesTest {
 
 		[Test]
-		[System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage ("Trimming", "IL2026", Justification = "This test checks whether the assembly was linked by checking if an unused type survived trimming; the behavioral difference when the trimmer is enabled is exactly what it's looking for.")]
 		public void Bundled ()
 		{
 			// files are extracted (by MonoDevelop) so we can see them in the file system
@@ -40,24 +35,23 @@ namespace BundledResources {
 				.Where (r => !r.Contains ("shared-dotnet.plist"))
 				.ToArray ();
 
-			// When this assembly is linked its resources are always stripped. When it's not linked, the
-			// resources are stripped by an extra step that runs on device and desktop (but not simulator) -
-			// except in a Hot Reload compatible build, where that extra step is skipped for reloadable
-			// (non-linked) assemblies to leave them byte-identical (so the resources are kept).
-			var assemblyLinked = typeof (ResourcesTest).Assembly.GetType ("BundledResources.LinkerSentinel") is null;
-#if HOTRELOAD_COMPATIBLE_BUILD
-			var hotReloadCompatibleBuild = true;
-#else
-			var hotReloadCompatibleBuild = false;
-#endif
-
 #if __MACOS__ || __MACCATALYST__
-			var simulator = false;
+			var isSimulator = false;
 #else
-			var simulator = Runtime.Arch != Arch.DEVICE;
+			var isSimulator = Runtime.Arch != Arch.DEVICE;
 #endif
 
-			var hasResources = simulator || (hotReloadCompatibleBuild && !assemblyLinked);
+#if HOTRELOAD_COMPATIBLE_BUILD
+			// In a hot-reload-compatible build, resource stripping is skipped for reloadable
+			// (non-linked) user assemblies, because stripping would re-serialize the assembly and
+			// break Hot Reload. So the bundled resources remain embedded unless this assembly was
+			// linked (in which case it's re-saved regardless, and stripping still applies).
+			var hasResources = isSimulator || !TestRuntime.IsLinkAll;
+#else
+			// Without Hot Reload the resources are always stripped, except on the simulator (where
+			// stripping is skipped to keep simulator builds fast).
+			var hasResources = isSimulator;
+#endif
 			if (!hasResources) {
 				Assert.That (resources.Length, Is.EqualTo (0), "No resources");
 			} else {

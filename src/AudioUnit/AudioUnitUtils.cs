@@ -35,14 +35,12 @@ using AudioToolbox;
 
 namespace AudioUnit {
 	/// <summary>Utility class to hold miscellaneous functions relating to audio streams, samples, and output categories.</summary>
-	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public static class AudioUnitUtils {
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The number of bits used for the fractional part of a fixed-point audio sample.</summary>
 		public const int SampleFractionBits = 24;
 	}
 }

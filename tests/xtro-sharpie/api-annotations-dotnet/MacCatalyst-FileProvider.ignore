@@ -1,5 +1,3 @@
-# Documentation as of Xcode 13 as macOS only
-!missing-enum! NSFileProviderFileSystemFlags not bound
-!missing-enum! NSFileProviderDomainTestingModes not bound
-# Header clearly says this enum is not available on Mac Catalyst, not sure why xtro thinks it is.
-!missing-enum! NSFileProviderContentPolicy not bound
+# These enums are unavailable on Mac Catalyst natively (API_UNAVAILABLE on the typedef), but the managed enums are bound and used by bound API.
+!unknown-native-enum! NSFileProviderItemCapabilities bound
+!unknown-native-enum! NSFileProviderKnownFolders bound

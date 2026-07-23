@@ -162,6 +162,9 @@
 		<Compile Include="../dotnet-linker/PreserveSmartEnumConversionsStep.cs">
 			<Link>external/tools/dotnet-linker/PreserveSmartEnumConversionsStep.cs</Link>
 		</Compile>
+		<Compile Include="../dotnet-linker/XmlDescriptor.cs">
+			<Link>external/tools/dotnet-linker/XmlDescriptor.cs</Link>
+		</Compile>
 		<Compile Include="../dotnet-linker/Steps/AssemblyModifierStep.cs">
 			<Link>external/tools/dotnet-linker/Steps/AssemblyModifierStep.cs</Link>
 		</Compile>

@@ -1151,12 +1151,12 @@ A boolean property that specifies whether .dSYM generation should be disabled.
 Default:
 
 * `true` for iOS and tvOS when building for the simulator.
-* `true` for macOS and Mac Catalyst unless creating an archive (`ArchiveOnBuild=true`)
+* `true` for macOS and Mac Catalyst unless creating an archive (`ArchiveOnBuild=true`) or using Native AOT.
 
 This means the .dSYM archive will be generated in the following cases (by default):
 
 * On iOS and tvOS when building for device.
-* On macOS and Mac Catalyst when creating an archive (`ArchiveOnBuild=true`).
+* On macOS and Mac Catalyst when creating an archive (`ArchiveOnBuild=true`) or using Native AOT.
 
 ## NoSymbolStrip
 

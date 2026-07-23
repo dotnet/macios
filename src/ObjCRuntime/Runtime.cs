@@ -290,6 +290,14 @@ namespace ObjCRuntime {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		internal static bool UseCFNetworkHandler => AppContext.TryGetSwitch ("System.Net.Http.NativeHandler.UseCFNetworkHandler", out bool isDefault) ? isDefault : false;
 
+		// Issue #25861: when false (the default), NSObjects created via alloc/init are
+		// added to the object_map only after 'init' has completed. This way a native
+		// 'init' that frees the alloc'd handle (and returns a different one) can't leave
+		// a stale pointer to freed memory in the map, which could later be clobbered when
+		// the memory is reused by another object. Set this AppContext switch to true to
+		// restore the previous behavior (register the object right after 'alloc').
+		internal static bool RegisterObjectsBeforeInit => AppContext.TryGetSwitch ("ObjCRuntime.Runtime.RegisterObjectsBeforeInit", out var value) && value;
+
 		internal static bool Initialized {
 			get { return initialized; }
 		}
@@ -1178,6 +1186,21 @@ namespace ObjCRuntime {
 			}
 		}
 
+		// Ownership-aware variant of UnregisterNSObject: only removes the entry if it
+		// still refers to `managed` (or is dead). This avoids clobbering an entry that
+		// another object created after reusing a freed native pointer (issue #25861).
+		internal static void UnregisterNSObject (IntPtr ptr, NSObject managed)
+		{
+			lock (lock_obj) {
+				if (object_map.TryGetValue (ptr, out var value)) {
+					if (value.Target is null || object.ReferenceEquals (value.Target, managed)) {
+						object_map.Remove (ptr);
+						value.Free ();
+					}
+				}
+			}
+		}
+
 		internal static void NativeObjectHasDied (IntPtr ptr, NSObject? managed_obj)
 		{
 			lock (lock_obj) {
@@ -1196,6 +1219,18 @@ namespace ObjCRuntime {
 				if (managed_obj is not null)
 					managed_obj.ClearHandle ();
 			}
+		}
+
+		// Completes deferred object_map registration (issue #25861): registers the object
+		// only if the pointer isn't already present. This avoids redundantly re-registering
+		// objects that were registered eagerly (e.g. direct bindings).
+		internal static void RegisterNSObjectIfNeeded (NSObject obj, IntPtr ptr)
+		{
+			lock (lock_obj) {
+				if (object_map.ContainsKey (ptr))
+					return;
+			}
+			RegisterNSObject (obj, ptr);
 		}
 
 		internal static void RegisterNSObject (NSObject obj, IntPtr ptr)
@@ -1839,6 +1874,19 @@ namespace ObjCRuntime {
 
 			var o = TryGetNSObject (ptr, evenInFinalizerQueue);
 
+			// Fallback for issue #25861: a user type that's still executing its own 'init'
+			// isn't in the object_map yet (registration is deferred until 'init' completes),
+			// but it already carries its gchandle in a native ivar. Resolve it from there to
+			// avoid creating a duplicate wrapper. This is safe because GetNSObject is only
+			// called for Objective-C objects (every NSObject responds to xamarinGetGCHandle
+			// via the NonXamarinObject category), unlike the generic TryGetNSObject which can
+			// be called with non-Objective-C native handles.
+			if (o is null) {
+				var fromIvar = TryGetNSObjectFromIvar (ptr);
+				if (fromIvar is not null && fromIvar.Handle == ptr && (evenInFinalizerQueue || !fromIvar.InFinalizerQueue))
+					o = fromIvar;
+			}
+
 			if (o is not null) {
 				if (owns)
 					o.DangerousRelease ();
@@ -1894,6 +1942,15 @@ namespace ObjCRuntime {
 				return null;
 
 			var obj = TryGetNSObject (ptr, evenInFinalizerQueue: evenInFinalizerQueue);
+
+			// Fallback for issue #25861: resolve a user type that's still executing its own
+			// 'init' (not yet in the object_map) via its native gchandle ivar. See the
+			// non-generic GetNSObject for details on why this is safe here.
+			if (obj is null) {
+				var fromIvar = TryGetNSObjectFromIvar (ptr);
+				if (fromIvar is not null && fromIvar.Handle == ptr && (evenInFinalizerQueue || !fromIvar.InFinalizerQueue))
+					obj = fromIvar;
+			}
 
 			// First check if we got an object of the expected type
 			if (obj is T o)
@@ -2769,6 +2826,28 @@ namespace ObjCRuntime {
 			if (ptr == IntPtr.Zero)
 				return null;
 			return GCHandle.FromIntPtr (ptr).Target;
+		}
+
+		// Returns the gchandle stored in the native object's gchandle ivar (user types
+		// only; INVALID_GCHANDLE/zero otherwise).
+		[DllImport ("__Internal")]
+		static extern IntPtr xamarin_get_gchandle (IntPtr obj);
+
+		internal static IntPtr GetGCHandleForObject (IntPtr ptr)
+		{
+			return xamarin_get_gchandle (ptr);
+		}
+
+		// Fallback lookup for issue #25861: a user-type object that hasn't been added to
+		// the object_map yet (e.g. it's still executing its own 'init') can still be
+		// resolved via the gchandle stored in its native ivar. Returns null for direct
+		// bindings (which have no ivar) and for objects without a managed reference.
+		internal static NSObject? TryGetNSObjectFromIvar (IntPtr ptr)
+		{
+			var gchandle = xamarin_get_gchandle (ptr);
+			if (gchandle == IntPtr.Zero)
+				return null;
+			return GetGCHandleTarget (gchandle) as NSObject;
 		}
 
 		// Allocate a GCHandle and return the IntPtr to it.

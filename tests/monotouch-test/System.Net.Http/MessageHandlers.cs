@@ -4,6 +4,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Net;
@@ -535,8 +536,8 @@ namespace MonoTests.System.Net.Http {
 				cache.Add (new Uri (server.TargetUri, "protected"), "basic", new NetworkCredential ("origin-user", "origin-password"));
 
 				using (var primingHandler = new NSUrlSessionHandler { Credentials = cache }) {
-					using var client = new HttpClient (primingHandler);
-					using var response = GetResponseWithTimeout (client, new Uri (server.OriginUri, "start"));
+					using var primingClient = new HttpClient (primingHandler);
+					using var primingResponse = GetResponseWithTimeout (primingClient, new Uri (server.OriginUri, "start"));
 				}
 
 				// Record how many auth headers the server received from the priming request
@@ -963,7 +964,7 @@ namespace MonoTests.System.Net.Http {
 		static HttpResponseMessage GetResponseWithTimeout (HttpClient client, Uri uri)
 		{
 			HttpResponseMessage? response = null;
-			var stopwatch = System.Diagnostics.Stopwatch.StartNew ();
+			var stopwatch = Stopwatch.StartNew ();
 			Console.WriteLine ($"RedirectBasicAuthServer entering TestRuntime.TryRunAsync for {uri}.");
 			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
 				Console.WriteLine ($"RedirectBasicAuthServer starting HttpClient.GetAsync for {uri} after {stopwatch.ElapsedMilliseconds} ms.");
@@ -1099,7 +1100,7 @@ namespace MonoTests.System.Net.Http {
 				const int MaxPort = 65535;
 				const int MaxAttempts = 50;
 				Exception? lastException = null;
-				var stopwatch = System.Diagnostics.Stopwatch.StartNew ();
+				var stopwatch = Stopwatch.StartNew ();
 
 				for (var attempt = 0; attempt < MaxAttempts; attempt++) {
 					var port = Random.Shared.Next (MinPort, MaxPort);

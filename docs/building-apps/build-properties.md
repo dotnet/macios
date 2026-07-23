@@ -105,6 +105,12 @@ The default is: `%LocalAppData%\Xamarin\iOS\Archives`
 
 Only applicable to iOS projects (since only iOS projects can be built remotely from Windows).
 
+## ArchiveDir
+
+An optional path for the archive directory. If set, the archive will be created
+in this directory instead of computing a unique path under
+`~/Library/Developer/Xcode/Archives`.
+
 ## ArchiveOnBuild
 
 If an Xcode archive should be created at the end of the build.

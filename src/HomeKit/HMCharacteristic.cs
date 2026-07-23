@@ -25,7 +25,7 @@ namespace HomeKit {
 			}
 		}
 
-		/// <summary>Gets a value that tells whether the characteristic is writeable.</summary>
+		/// <summary>Gets a value that tells whether the characteristic is writable.</summary>
 		public bool Writable {
 			get {
 				foreach (var p in Properties) {

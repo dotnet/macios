@@ -13,7 +13,7 @@ namespace CoreFoundation {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public class CFType : NativeObject, ICFType {
-		/// <summary>Returns the CoreFoundation type for the specified object.</summary>
+		/// <summary>Returns the CoreFoundation type identifier for the specified object.</summary>
 		/// <param name="typeRef">Handle to a CoreFoundation object.</param>
 		[DllImport (Constants.CoreFoundationLibrary, EntryPoint = "CFGetTypeID")]
 		public static extern nint GetTypeID (IntPtr typeRef);
@@ -48,7 +48,7 @@ namespace CoreFoundation {
 		/// <summary>Compares two handles of native objects for equality.</summary>
 		/// <param name="cf1">The first CoreFoundation object handle.</param>
 		/// <param name="cf2">The second CoreFoundation object handle.</param>
-		/// <returns>true if the types are the same.</returns>
+		/// <returns><see langword="true" /> if the two objects are equal; otherwise, <see langword="false" />.</returns>
 		public static bool Equal (IntPtr cf1, IntPtr cf2)
 		{
 			// CFEqual is not happy (but crashy) when it receive null

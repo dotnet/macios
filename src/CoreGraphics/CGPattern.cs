@@ -33,7 +33,7 @@ using CoreFoundation;
 namespace CoreGraphics {
 
 	// untyped enum -> CGPattern.h
-	/// <summary>Pattern styling style.</summary>
+	/// <summary>Specifies the tiling mode for a pattern.</summary>
 	public enum CGPatternTiling {
 		/// <summary>No distortion.</summary>
 		NoDistortion,

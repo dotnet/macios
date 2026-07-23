@@ -14,21 +14,21 @@ namespace AVFoundation {
 	public partial class AVAssetDownloadTask : NSUrlSessionTask {
 
 		// NSURLRequest and NSURLResponse objects are not available for AVAssetDownloadTask
-		/// <summary>Gets the original URL request object that was passed to the task when the task was initialized.</summary>
+		/// <summary>Not supported. Always throws <see cref="NotSupportedException" />.</summary>
 		public override NSUrlRequest OriginalRequest {
 			get {
 				throw new NotSupportedException ("OriginalRequest not available for AVAssetDownloadTask");
 			}
 		}
 
-		/// <summary>Gets the URL request object that the task is currently handling.</summary>
+		/// <summary>Not supported. Always throws <see cref="NotSupportedException" />.</summary>
 		public override NSUrlRequest CurrentRequest {
 			get {
 				throw new NotSupportedException ("CurrentRequest not available for AVAssetDownloadTask");
 			}
 		}
 
-		/// <summary>Gets the HTTP response for the current request.</summary>
+		/// <summary>Not supported. Always throws <see cref="NotSupportedException" />.</summary>
 		public override NSUrlResponse Response {
 			get {
 				throw new NotSupportedException ("Response not available for AVAssetDownloadTask");

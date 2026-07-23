@@ -156,6 +156,10 @@ namespace AutomaticAssessmentConfiguration {
 		bool AllowsAccessibilityBackgroundSounds { get; set; }
 
 		[NoiOS, MacCatalyst (27, 0), Mac (27, 0)]
+		[Export ("allowsAccessibilityFullKeyboardAccess")]
+		bool AllowsAccessibilityFullKeyboardAccess { get; set; }
+
+		[NoiOS, MacCatalyst (27, 0), Mac (27, 0)]
 		[Export ("allowsAccessibilityHoverText")]
 		bool AllowsAccessibilityHoverText { get; set; }
 

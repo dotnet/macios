@@ -100,7 +100,7 @@
 
     <!--
 
-      The Xamarin.MacDev.Tasks.sln solution is build with dotnet, while other
+      The Xamarin.MacDev.Tasks.sln solution is built with dotnet, while other
       projects are still built with msbuild. This becomes a problem when
       generating Errors.designer.cs, because depending on the runtime the
       output is different.

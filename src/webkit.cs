@@ -6168,11 +6168,11 @@ namespace WebKit {
 		[Export ("removeAllScriptMessageHandlers")]
 		void RemoveAllScriptMessageHandlers ();
 
-		[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+		[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
 		[Export ("addBuffer:name:contentWorld:")]
 		void AddBuffer (NSData buffer, string name, WKContentWorld world);
 
-		[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+		[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
 		[Export ("removeBufferWithName:contentWorld:")]
 		void RemoveBuffer (string name, WKContentWorld world);
 	}
@@ -7028,8 +7028,8 @@ namespace WebKit {
 		bool AllowsJSHandleCreationInPageWorld { get; set; }
 
 		[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
-		[Export ("globalPrivacyControlEnabled")]
-		bool GlobalPrivacyControlEnabled { get; set; }
+		[Export ("globalPrivacyControlStatus")]
+		bool GlobalPrivacyControlStatus { get; set; }
 	}
 
 	[NoMac]

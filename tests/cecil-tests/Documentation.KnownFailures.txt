@@ -56319,7 +56319,7 @@ P:WebKit.WKWebExtensionWindowConfiguration.WindowType
 P:WebKit.WKWebpagePreferences.AllowsContentJavaScript
 P:WebKit.WKWebpagePreferences.AllowsJSHandleCreationInPageWorld
 P:WebKit.WKWebpagePreferences.AlternateRequest
-P:WebKit.WKWebpagePreferences.GlobalPrivacyControlEnabled
+P:WebKit.WKWebpagePreferences.GlobalPrivacyControlStatus
 P:WebKit.WKWebpagePreferences.LockdownModeEnabled
 P:WebKit.WKWebpagePreferences.OverrideReferrer
 P:WebKit.WKWebpagePreferences.PreferredContentMode

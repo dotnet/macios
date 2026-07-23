@@ -354,6 +354,7 @@ namespace Introspection {
 			{ "Hfp", All & ~ApplePlatform.MacOSX }, // Bluetooth Hands-Free Profile
 			{ "Hhr", All }, // Apple API abbreviation
 			{ "Himyan", All & ~ApplePlatform.TVOS }, // South Arabian script
+			{ "Humo", All & ~ApplePlatform.TVOS }, // Uzbek payment network
 			{ "Hermitean", All }, // Apple's spelling of Hermitian in MPSGraph FFT methods
 			{ "Hindlegs", All }, // compound word
 			{ "Hipass", All }, // high-pass filter

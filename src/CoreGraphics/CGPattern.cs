@@ -87,18 +87,11 @@ namespace CoreGraphics {
 			/* CGFloat */ nfloat xStep, /* CGFloat */ nfloat yStep, CGPatternTiling tiling, byte isColored,
 			/* const CGPatternCallbacks* */ CGPatternCallbacks* callbacks);
 
-		static CGPatternCallbacks callbacks;
-
-		static CGPattern ()
-		{
-			unsafe {
-				callbacks = new CGPatternCallbacks () {
-					version = 0,
-					draw = &DrawCallback,
-					release = &ReleaseCallback,
-				};
-			}
-		}
+		unsafe static CGPatternCallbacks callbacks = new CGPatternCallbacks {
+			version = 0,
+			draw = &DrawCallback,
+			release = &ReleaseCallback,
+		};
 		GCHandle gch;
 
 		public CGPattern (CGRect bounds, CGAffineTransform matrix, nfloat xStep, nfloat yStep, CGPatternTiling tiling, bool isColored, DrawPattern drawPattern)

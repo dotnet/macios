@@ -105,6 +105,12 @@ The default is: `%LocalAppData%\Xamarin\iOS\Archives`
 
 Only applicable to iOS projects (since only iOS projects can be built remotely from Windows).
 
+## ArchiveDir
+
+An optional path for the archive directory. If set, the archive will be created
+in this directory instead of computing a unique path under
+`~/Library/Developer/Xcode/Archives`.
+
 ## ArchiveOnBuild
 
 If an Xcode archive should be created at the end of the build.
@@ -582,10 +588,10 @@ A semi-colon delimited property that can be used to extend the
 the platform build has collected `@(ApplicationArtifact)` items and before
 `GetApplicationArtifacts` or `Publish` returns them.
 
-This can be used by SDKs such as .NET MAUI to add shared application metadata
-to platform-produced artifacts. Extension targets should update existing
-`@(ApplicationArtifact)` items to add metadata; they should only add new items
-when introducing additional artifacts.
+Apple platform builds populate the common application metadata documented for
+[ApplicationArtifact](build-items.md#applicationartifact) before targets in
+this property execute. Extension targets can update or override that metadata,
+and should only add new items when introducing additional artifacts.
 
 Example:
 
@@ -611,7 +617,7 @@ assemblies so they stay byte-for-byte unchanged (a requirement for Hot
 Reload). This will disable a few minor optimizations, but will otherwies not
 affect anything.
 
-The default value is `true` for Debug builds, and `false` for Release builds.
+The default value is `true` for debug builds and `false` otherwise.
 
 ## IBToolPath
 
@@ -1153,12 +1159,12 @@ A boolean property that specifies whether .dSYM generation should be disabled.
 Default:
 
 * `true` for iOS and tvOS when building for the simulator.
-* `true` for macOS and Mac Catalyst unless creating an archive (`ArchiveOnBuild=true`)
+* `true` for macOS and Mac Catalyst unless creating an archive (`ArchiveOnBuild=true`) or using Native AOT.
 
 This means the .dSYM archive will be generated in the following cases (by default):
 
 * On iOS and tvOS when building for device.
-* On macOS and Mac Catalyst when creating an archive (`ArchiveOnBuild=true`).
+* On macOS and Mac Catalyst when creating an archive (`ArchiveOnBuild=true`) or using Native AOT.
 
 ## NoSymbolStrip
 

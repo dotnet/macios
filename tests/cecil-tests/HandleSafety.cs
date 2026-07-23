@@ -857,6 +857,38 @@ namespace Cecil.Tests {
 			return false;
 		}
 
+		// Returns true if the object represented by 'value' is passed to GC.KeepAlive after the handle
+		// fetch ('handleFetch') in the method. This handles the following (safe) code pattern:
+		//     var obj = ...;
+		//     DoSomethingWith (obj.GetHandle ());
+		//     GC.KeepAlive (obj);
+		// The C# compiler may emit a 'dup' for 'obj' instead of storing it in a local, in which case the
+		// handle looks like it's fetched from an object that was never stored anywhere - even though the
+		// object is explicitly kept alive until the GC.KeepAlive call.
+		// Only GC.KeepAlive calls that occur after the handle fetch count: a call before the fetch doesn't
+		// keep the object alive while its handle is in use.
+		bool IsKeptAlive (MethodState state, Instruction value, Instruction handleFetch)
+		{
+			for (var instr = handleFetch.Next; instr is not null; instr = instr.Next) {
+				switch (instr.OpCode.Code) {
+				case Code.Call:
+				case Code.Callvirt:
+					if (instr.Operand is not MethodReference mr)
+						continue;
+					if (mr.Name != "KeepAlive" || mr.DeclaringType.FullName != "System.GC")
+						continue;
+					try {
+						if (GetLoadInstructionForParameterAtCall (state, instr, 1).Contains (value))
+							return true;
+					} catch (InvalidOperationException) {
+						// Couldn't determine the argument being kept alive; ignore.
+					}
+					break;
+				}
+			}
+			return false;
+		}
+
 		class Failure {
 			public Instruction? LoadInstruction;
 			public Instruction? CallInstruction;
@@ -879,6 +911,11 @@ namespace Cecil.Tests {
 					var values = GetLoadInstructionForParameterAtCall (state, instr, 1).ToList ();
 
 					foreach (var value in values) {
+						// The object is explicitly kept alive by a call to GC.KeepAlive later in the
+						// method, so it's safe to fetch its handle (see IsKeptAlive for details).
+						if (IsKeptAlive (state, value, instr))
+							continue;
+
 						switch (value.OpCode.Code) {
 						case Code.Call:
 						case Code.Calli:

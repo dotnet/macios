@@ -4,4 +4,8 @@
 	<PropertyGroup>
 		<TargetFramework>net$(BundledNETCoreAppTargetFrameworkVersion)</TargetFramework>
 	</PropertyGroup>
+	<ItemGroup>
+		<Compile Include="..\..\tools\common\StringUtils.cs" />
+		<Compile Include="..\..\tools\common\Execution.cs" />
+	</ItemGroup>
 </Project>

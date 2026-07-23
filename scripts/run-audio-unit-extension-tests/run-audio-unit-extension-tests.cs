@@ -3,11 +3,16 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Globalization;
 using System.IO;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
+
+using Xamarin.Utils;
 
 if (!OperatingSystem.IsMacOS ()) {
 	Console.Error.WriteLine ("This script only supports macOS hosts.");
@@ -39,22 +44,25 @@ static void PrintUsage ()
 
 sealed class AudioUnitExtensionTestRunner {
 	const string BundleIdentifier = "com.xamarin.monotouch-test.AudioUnitExtension";
-	const string TestFilterFileName = "monotouch-extension-test-filter.txt";
-	const string LogPredicate = "process == \"AppExtension\" OR eventMessage CONTAINS[c] \"monotouch-test-audio-unit-extension\" OR eventMessage CONTAINS[c] \"AppExtensionSmokeTest\"";
-	const string ZzzzMarker = "ZZZZ ";
 
-	static readonly Regex CompletionRegex = new ("\\[monotouch-test-audio-unit-extension\\] Finished monotouch-test audio unit extension test run\\.|\\[monotouch-test-audio-unit-extension\\] Extension test run failed:", RegexOptions.Compiled);
-	static readonly Regex ExecutedTestRegex = new ("\\[PASS\\]|\\[FAIL\\]|Tests run: [1-9]", RegexOptions.Compiled);
-	static readonly Regex FilteredSuccessRegex = new ("\\[monotouch-test-audio-unit-extension\\] Finished monotouch-test audio unit extension test run\\. Passed: [0-9]+ Failed: 0", RegexOptions.Compiled);
-	static readonly Regex ZzzzLineRegex = new ("ZZZZ (.*)$", RegexOptions.Compiled);
+	// Predicate used to capture the system log for diagnostic purposes only. The
+	// actual test results are streamed back over a TCP connection (see below).
+	const string LogPredicate = "process == \"monotouchtest\" OR process == \"ContainerApp\" OR eventMessage CONTAINS[c] \"monotouch-test-audio-unit\"";
+
+	const string EndMarker = "<!-- the end -->";
+
+	static readonly Regex TestResultsTagRegex = new ("<test-results\\b[^>]*>", RegexOptions.Compiled);
 
 	readonly Options options;
-	readonly StringBuilder transcript = new ();
 	readonly object logLock = new ();
 
-	string ExtensionFilterFile => Path.Combine (options.ExtensionPath, "Contents", "Resources", TestFilterFileName);
-	string HostFilterFile => Path.Combine (options.AppPath, "Contents", "Resources", TestFilterFileName);
-	string TemporaryFilterFile => Path.Combine (Path.GetTempPath (), "monotouch-test", "extensions", "audio-unit", "test-filter.txt");
+	string ResultsFilePath {
+		get {
+			var directory = Path.GetDirectoryName (options.LogFilePath)!;
+			var name = Path.GetFileNameWithoutExtension (options.LogFilePath);
+			return Path.Combine (directory, name + ".nunit-results.xml");
+		}
+	}
 
 	public AudioUnitExtensionTestRunner (Options options)
 	{
@@ -78,470 +86,251 @@ sealed class AudioUnitExtensionTestRunner {
 
 		var exitCode = 0;
 		var logStart = DateTime.Now;
-		var logEnd = logStart;
-		Process? hostProcess = null;
-		Process? testProcess = null;
+
+		// Listen on a free localhost port. The extension connects back to this
+		// port and streams the NUnit XML result (see Touch.Client's TouchOptions
+		// / TouchRunner, which read the network configuration from NSUserDefaults).
+		var listener = new TcpListener (IPAddress.Loopback, 0);
+		listener.Start ();
+		var port = ((IPEndPoint) listener.LocalEndpoint).Port;
+		Log ($"Listening for test results on 127.0.0.1:{port}.");
+
+		using var hostCts = new CancellationTokenSource ();
+		Task<Execution>? hostTask = null;
 
 		try {
-			await ConfigureFilterAsync ();
+			await ConfigureDefaultsAsync (port);
 
 			await RunToolAsync (options.LsRegisterPath, "-f", options.AppPath);
 			Log ("");
 			await RunToolAsync ("pluginkit", "-a", options.ExtensionPath);
 			Log ("");
 
-			var existingTestPids = await GetExtensionProcessIdsAsync ();
-			hostProcess = StartHostProcess ();
-			var deadline = DateTime.UtcNow + options.Timeout;
-			testProcess = await WaitForExtensionProcessAsync (existingTestPids, hostProcess, deadline);
+			hostTask = StartHost (hostCts.Token);
 
-			if (testProcess is null) {
-				if (hostProcess.HasExited) {
-					Log ("The container host exited before the extension completed its test run.");
-				} else {
-					Log ("Timed out waiting for the extension test process to start.");
-				}
+			var (result, timedOut) = await ReceiveResultsAsync (listener);
+
+			if (timedOut) {
+				Log ($"Timed out waiting for the extension test results after {options.Timeout.TotalMinutes:0} minutes.");
 				exitCode = 1;
 			} else {
-				Log ($"Detected extension test process PID {testProcess.Id}.");
-				if (!await WaitForExtensionProcessExitAsync (testProcess, hostProcess, logStart, deadline))
-					exitCode = 1;
+				exitCode = Math.Max (exitCode, ProcessResults (result));
 			}
 		} catch (Exception ex) {
 			Log (ex.ToString ());
 			exitCode = 1;
 		} finally {
-			await CleanupAsync (hostProcess, testProcess);
-			logEnd = DateTime.Now;
+			listener.Stop ();
 
+			// Stop the container host so its process (and the extension) can exit.
+			hostCts.Cancel ();
+			if (hostTask is not null) {
+				try {
+					await hostTask;
+				} catch {
+				}
+			}
+
+			await CleanupDefaultsAsync ();
+
+			var logEnd = DateTime.Now;
 			Log ("");
-			Log ($"Executing: log show --style compact --predicate {LogPredicate} --start {FormatTimestamp (logStart)} --end {FormatTimestamp (logEnd)}");
-			var finalLog = await GetSystemLogAsync (logStart, logEnd);
-			if (!string.IsNullOrEmpty (finalLog))
-				WriteRaw (finalLog);
+			Log ("System log (diagnostics):");
+			await CaptureSystemLogAsync (logStart, logEnd);
 		}
 
-		exitCode = Math.Max (exitCode, ValidateRun ());
 		return exitCode;
 	}
 
-	async Task ConfigureFilterAsync ()
+	async Task ConfigureDefaultsAsync (int port)
 	{
-		Directory.CreateDirectory (Path.GetDirectoryName (ExtensionFilterFile)!);
-		Directory.CreateDirectory (Path.GetDirectoryName (HostFilterFile)!);
-		Directory.CreateDirectory (Path.GetDirectoryName (TemporaryFilterFile)!);
-		await RunToolAsync ("defaults", "write", BundleIdentifier, "log.file", "-string", options.LogFilePath);
+		await RunToolAsync ("defaults", "write", BundleIdentifier, "network.enabled", "-bool", "YES");
+		await RunToolAsync ("defaults", "write", BundleIdentifier, "network.host.name", "-string", "127.0.0.1");
+		await RunToolAsync ("defaults", "write", BundleIdentifier, "network.host.port", "-int", port.ToString (CultureInfo.InvariantCulture));
+		await RunToolAsync ("defaults", "write", BundleIdentifier, "network.transport", "-string", "TCP");
+		await RunToolAsync ("defaults", "write", BundleIdentifier, "execution.usetcptunnel", "-bool", "NO");
+		await RunToolAsync ("defaults", "write", BundleIdentifier, "xml.enabled", "-bool", "YES");
 
 		if (string.IsNullOrEmpty (options.TestFilter)) {
 			await RunBestEffortAsync ("defaults", "delete", BundleIdentifier, "test.name");
-			DeleteFileIfExists (ExtensionFilterFile);
-			DeleteFileIfExists (HostFilterFile);
-			DeleteFileIfExists (TemporaryFilterFile);
-			return;
+		} else {
+			await RunToolAsync ("defaults", "write", BundleIdentifier, "test.name", "-string", options.TestFilter);
 		}
-
-		await RunToolAsync ("defaults", "write", BundleIdentifier, "test.name", "-string", options.TestFilter);
-		File.WriteAllText (ExtensionFilterFile, options.TestFilter + Environment.NewLine);
-		File.WriteAllText (HostFilterFile, options.TestFilter + Environment.NewLine);
-		File.WriteAllText (TemporaryFilterFile, options.TestFilter + Environment.NewLine);
+		Log ("");
 	}
 
-	async Task CleanupAsync (Process? hostProcess, Process? testProcess)
+	async Task CleanupDefaultsAsync ()
 	{
-		await RunBestEffortAsync ("defaults", "delete", BundleIdentifier, "log.file");
-		await RunBestEffortAsync ("defaults", "delete", BundleIdentifier, "test.name");
-		DeleteFileIfExists (ExtensionFilterFile);
-		DeleteFileIfExists (HostFilterFile);
-		DeleteFileIfExists (TemporaryFilterFile);
-
-		TryKillProcess (testProcess);
-
-		if (hostProcess is null)
-			return;
-
-		TryKillProcess (hostProcess);
-		try {
-			await hostProcess.WaitForExitAsync ();
-		} catch {
-		}
-		hostProcess.Dispose ();
+		foreach (var key in new [] { "network.enabled", "network.host.name", "network.host.port", "network.transport", "execution.usetcptunnel", "xml.enabled", "test.name" })
+			await RunBestEffortAsync ("defaults", "delete", BundleIdentifier, key);
 	}
 
-	Process StartHostProcess ()
+	Task<Execution> StartHost (CancellationToken cancellationToken)
 	{
-		var process = new Process ();
-		process.StartInfo.FileName = options.ExecutablePath;
-		process.StartInfo.UseShellExecute = false;
-		process.StartInfo.RedirectStandardOutput = true;
-		process.StartInfo.RedirectStandardError = true;
-		process.StartInfo.Environment ["RUN_EXTENSION_TESTS"] = "1";
-
-		var commandText = new StringBuilder ();
-		if (!string.IsNullOrEmpty (options.TestFilter)) {
-			process.StartInfo.Environment ["NUNIT_TEST_NAME"] = options.TestFilter;
-			commandText.Append ($"NUNIT_TEST_NAME={options.TestFilter} ");
-		}
-		commandText.Append ("RUN_EXTENSION_TESTS=1 ");
-		commandText.Append (options.ExecutablePath);
-		Log ($"Executing: {commandText}");
-
-		process.OutputDataReceived += (_, e) => {
-			if (!string.IsNullOrEmpty (e.Data))
-				Log (e.Data);
+		var environment = new Dictionary<string, string?> {
+			["RUN_EXTENSION_TESTS"] = "1",
 		};
-		process.ErrorDataReceived += (_, e) => {
-			if (!string.IsNullOrEmpty (e.Data))
-				Log (e.Data);
-		};
-
-		if (!process.Start ())
-			throw new InvalidOperationException ($"Failed to start '{options.ExecutablePath}'.");
-
-		process.BeginOutputReadLine ();
-		process.BeginErrorReadLine ();
-		return process;
+		Log ($"Executing: RUN_EXTENSION_TESTS=1 {options.ExecutablePath}");
+		return Execution.RunWithCallbacksAsync (
+			options.ExecutablePath,
+			new List<string> (),
+			environment: environment,
+			standardOutput: Log,
+			standardError: Log,
+			cancellationToken: cancellationToken);
 	}
 
-	async Task<HashSet<int>> GetExtensionProcessIdsAsync ()
+	async Task<(string Result, bool TimedOut)> ReceiveResultsAsync (TcpListener listener)
 	{
-		var result = await ExecuteAsync ("ps", "-axo", "pid=,command=");
-		if (result.ExitCode != 0)
-			throw new InvalidOperationException ($"ps exited with code {result.ExitCode}:{Environment.NewLine}{result.CombinedOutput}");
+		using var timeoutCts = new CancellationTokenSource (options.Timeout);
 
-		var pids = new HashSet<int> ();
-		var extensionExecutable = GetExtensionExecutablePath ();
-		var extensionExecutableName = Path.GetFileName (extensionExecutable);
-
-		using var reader = new StringReader (result.StandardOutput);
-		string? line;
-		while ((line = reader.ReadLine ()) is not null) {
-			var trimmed = line.Trim ();
-			if (string.IsNullOrEmpty (trimmed))
-				continue;
-
-			var firstSpace = trimmed.IndexOf (' ');
-			if (firstSpace <= 0)
-				continue;
-
-			if (!int.TryParse (trimmed.Substring (0, firstSpace), out var pid))
-				continue;
-
-			var command = trimmed.Substring (firstSpace).Trim ();
-			if (command.Contains (extensionExecutable, StringComparison.Ordinal) ||
-				command.EndsWith ("/" + extensionExecutableName, StringComparison.Ordinal) ||
-				command.Equals (extensionExecutableName, StringComparison.Ordinal))
-				pids.Add (pid);
-		}
-
-		return pids;
-	}
-
-	async Task<Process?> WaitForExtensionProcessAsync (HashSet<int> existingPids, Process hostProcess, DateTime deadline)
-	{
-		while (DateTime.UtcNow < deadline) {
-			var currentPids = await GetExtensionProcessIdsAsync ();
-			foreach (var pid in currentPids) {
-				if (existingPids.Contains (pid))
-					continue;
-
-				try {
-					return Process.GetProcessById (pid);
-				} catch (ArgumentException) {
-					existingPids.Add (pid);
-				}
-			}
-
-			if (hostProcess.HasExited)
-				return null;
-
-			await Task.Delay (TimeSpan.FromSeconds (1));
-		}
-
-		return null;
-	}
-
-	async Task<bool> WaitForExtensionProcessExitAsync (Process testProcess, Process hostProcess, DateTime logStart, DateTime deadline)
-	{
-		// Use 'log stream' to get real-time test output instead of polling with 'log show'.
-		Process? logStream = null;
-		var completionDetected = false;
-		var requestedHostShutdown = false;
-
+		TcpClient client;
 		try {
-			logStream = new Process ();
-			logStream.StartInfo.FileName = "log";
-			logStream.StartInfo.ArgumentList.Add ("stream");
-			logStream.StartInfo.ArgumentList.Add ("--style");
-			logStream.StartInfo.ArgumentList.Add ("compact");
-			logStream.StartInfo.ArgumentList.Add ("--predicate");
-			logStream.StartInfo.ArgumentList.Add (LogPredicate);
-			logStream.StartInfo.UseShellExecute = false;
-			logStream.StartInfo.RedirectStandardOutput = true;
-			logStream.StartInfo.RedirectStandardError = true;
+			client = await listener.AcceptTcpClientAsync (timeoutCts.Token);
+		} catch (OperationCanceledException) {
+			Log ("The extension never connected to report test results.");
+			return ("", true);
+		}
 
-			if (!logStream.Start ())
-				throw new InvalidOperationException ("Failed to start 'log stream'.");
+		Log ("The extension connected; reading test results.");
 
-			logStream.BeginErrorReadLine ();
+		var payload = new StringBuilder ();
+		var timedOut = false;
+		var gotEnd = false;
 
-			// Read log stream output on a background thread.
-			var streamReader = Task.Run (() => ReadLogStream (logStream, ref completionDetected));
-
+		using (client)
+		using (var stream = client.GetStream ())
+		using (var reader = new StreamReader (stream, Encoding.UTF8)) {
 			while (true) {
-				if (HasExited (testProcess, out var exitCode)) {
-					if (exitCode.HasValue)
-						Log ($"Extension test process PID {testProcess.Id} exited with code {exitCode.Value}.");
-					else
-						Log ($"Extension test process PID {testProcess.Id} exited.");
-					return true;
+				string? line;
+				try {
+					line = await reader.ReadLineAsync (timeoutCts.Token);
+				} catch (OperationCanceledException) {
+					timedOut = true;
+					break;
 				}
 
-				if (!requestedHostShutdown && completionDetected) {
-					Log ("Detected the extension completion marker. Stopping the container host so the test process can exit.");
-					TryKillProcess (hostProcess);
-					requestedHostShutdown = true;
-				}
+				if (line is null)
+					break;
 
-				if (DateTime.UtcNow >= deadline) {
-					Log ($"Timed out waiting for the extension test process PID {testProcess.Id} to finish after {options.Timeout.TotalMinutes:0} minutes.");
-					TryKillProcess (testProcess);
-					TryKillProcess (hostProcess);
-					return false;
-				}
+				payload.AppendLine (line);
+				AppendToLogFile (line);
 
-				await Task.Delay (TimeSpan.FromMilliseconds (500));
+				if (line.Contains (EndMarker, StringComparison.Ordinal)) {
+					gotEnd = true;
+					break;
+				}
 			}
-		} finally {
-			TryKillProcess (logStream);
-			logStream?.Dispose ();
 		}
+
+		if (gotEnd)
+			Log ("Received the end-of-results marker.");
+		else if (!timedOut)
+			Log ("The extension disconnected before sending the end-of-results marker.");
+
+		return (payload.ToString (), timedOut);
 	}
 
-	void ReadLogStream (Process logStream, ref bool completionDetected)
+	int ProcessResults (string payload)
 	{
-		try {
-			string? line;
-			while ((line = logStream.StandardOutput.ReadLine ()) is not null) {
-				// Extract test progress from ZZZZ-prefixed lines and print to stdout.
-				var match = ZzzzLineRegex.Match (line);
-				if (match.Success) {
-					var testOutput = match.Groups [1].Value;
-					Console.WriteLine (testOutput);
-					lock (logLock) {
-						transcript.AppendLine (testOutput);
-						File.AppendAllText (options.LogFilePath, line + Environment.NewLine);
-					}
-				} else {
-					// Write full line to log file for non-ZZZZ output.
-					lock (logLock) {
-						File.AppendAllText (options.LogFilePath, line + Environment.NewLine);
-					}
-				}
-
-				if (CompletionRegex.IsMatch (line))
-					completionDetected = true;
-			}
-		} catch (Exception ex) {
-			Log ($"Error reading log stream: {ex.Message}");
+		if (string.IsNullOrWhiteSpace (payload)) {
+			Log ("Did not receive any test results from the extension.");
+			return 1;
 		}
+
+		// Persist the NUnit XML result (everything up to and including
+		// </test-results>) for consumption by CI.
+		var endTag = "</test-results>";
+		var endIndex = payload.IndexOf (endTag, StringComparison.Ordinal);
+		var xml = endIndex >= 0 ? payload.Substring (0, endIndex + endTag.Length) : payload;
+		File.WriteAllText (ResultsFilePath, xml);
+		Log ($"Wrote NUnit results to: {ResultsFilePath}");
+
+		var tagMatch = TestResultsTagRegex.Match (payload);
+		if (!tagMatch.Success) {
+			Log ("Did not find an NUnit <test-results> element in the test output.");
+			return 1;
+		}
+
+		var tag = tagMatch.Value;
+		var total = GetAttribute (tag, "total");
+		var errors = GetAttribute (tag, "errors");
+		var failures = GetAttribute (tag, "failures");
+		var notRun = GetAttribute (tag, "not-run");
+		var inconclusive = GetAttribute (tag, "inconclusive");
+		var ignored = GetAttribute (tag, "ignored");
+
+		Log ($"Tests run: {total} Failures: {failures} Errors: {errors} Not-run: {notRun} Inconclusive: {inconclusive} Ignored: {ignored}");
+
+		if (total <= 0) {
+			Log ("The extension did not execute any tests.");
+			return 1;
+		}
+
+		if (failures > 0 || errors > 0) {
+			Log ($"❌ Extension test run failed ({failures} failures, {errors} errors).");
+			return 1;
+		}
+
+		Log ("✅ Extension test run succeeded");
+		return 0;
 	}
 
-	async Task<string> GetSystemLogAsync (DateTime start, DateTime end)
+	static int GetAttribute (string tag, string name)
 	{
-		var result = await ExecuteAsync ("log", "show", "--style", "compact", "--predicate", LogPredicate, "--start", FormatTimestamp (start), "--end", FormatTimestamp (end));
-		if (result.ExitCode != 0)
-			throw new InvalidOperationException ($"log show exited with code {result.ExitCode}:{Environment.NewLine}{result.CombinedOutput}");
+		var match = Regex.Match (tag, name + "=\"(\\d+)\"");
+		return match.Success ? int.Parse (match.Groups [1].Value, CultureInfo.InvariantCulture) : -1;
+	}
 
-		return result.CombinedOutput;
+	async Task CaptureSystemLogAsync (DateTime start, DateTime end)
+	{
+		Log ($"Executing: log show --style compact --predicate {LogPredicate} --start {FormatTimestamp (start)} --end {FormatTimestamp (end)}");
+		var execution = await Execution.RunWithCallbacksAsync (
+			"log",
+			new List<string> { "show", "--style", "compact", "--predicate", LogPredicate, "--start", FormatTimestamp (start), "--end", FormatTimestamp (end) },
+			standardOutput: AppendToLogFile,
+			standardError: AppendToLogFile);
+		if (execution.ExitCode != 0)
+			Log ($"'log show' exited with code {execution.ExitCode}.");
 	}
 
 	async Task RunToolAsync (string fileName, params string [] arguments)
 	{
-		Log ($"Executing: {FormatCommand (fileName, arguments)}");
-		var result = await ExecuteAsync (fileName, arguments);
-		WriteRaw (result.CombinedOutput);
-		if (result.ExitCode != 0)
-			throw new InvalidOperationException ($"'{fileName}' exited with code {result.ExitCode}.");
+		Log ($"Executing: {StringUtils.FormatArguments (Prepend (fileName, arguments))}");
+		var execution = await Execution.RunWithCallbacksAsync (fileName, arguments, standardOutput: AppendToLogFile, standardError: AppendToLogFile);
+		if (execution.ExitCode != 0)
+			throw new InvalidOperationException ($"'{fileName}' exited with code {execution.ExitCode}.");
 	}
 
 	async Task RunBestEffortAsync (string fileName, params string [] arguments)
 	{
-		var result = await ExecuteAsync (fileName, arguments);
-		if (!string.IsNullOrEmpty (result.CombinedOutput))
-			WriteRaw (result.CombinedOutput);
+		await Execution.RunWithCallbacksAsync (fileName, arguments, standardOutput: AppendToLogFile, standardError: AppendToLogFile);
 	}
 
-	int ValidateRun ()
+	static IList<string> Prepend (string fileName, string [] arguments)
 	{
-		var logText = File.Exists (options.LogFilePath) ? File.ReadAllText (options.LogFilePath) : transcript.ToString ();
-
-		if (!logText.Contains ("[monotouch-test-audio-unit-extension] Starting monotouch-test audio unit extension test run")) {
-			Log ("Did not find the monotouch-test extension start marker.");
-			return 1;
-		}
-
-		if (!ExecutedTestRegex.IsMatch (logText)) {
-			Log ("The extension run never reached actual test execution.");
-			return 1;
-		}
-
-		if (!string.IsNullOrEmpty (options.TestFilter)) {
-			if (!FilteredSuccessRegex.IsMatch (logText)) {
-				Log ("Did not find the monotouch-test extension completion marker.");
-				return 1;
-			}
-		} else {
-			if (!logText.Contains ("(all monotouch-test tests)")) {
-				Log ("The extension run did not start the full monotouch-test suite.");
-				return 1;
-			}
-
-			if (!logText.Contains ("[monotouch-test-audio-unit-extension] Finished monotouch-test audio unit extension test run.")) {
-				Log ("Did not find the monotouch-test extension completion marker.");
-				return 1;
-			}
-		}
-
-		Log ("✅ Extension test run succeeded");
-		if (!string.IsNullOrEmpty (options.TestFilter))
-			WriteMatchingLine (logText, "Finished monotouch-test audio unit extension test run.");
-		else
-			WriteMatchingLine (logText, "Starting monotouch-test audio unit extension test run");
-
-		return 0;
-	}
-
-	void WriteMatchingLine (string logText, string marker)
-	{
-		using var reader = new StringReader (logText);
-		string? line;
-		while ((line = reader.ReadLine ()) is not null) {
-			if (line.Contains (marker)) {
-				Console.WriteLine (line);
-				return;
-			}
-		}
+		var list = new List<string> (arguments.Length + 1) { fileName };
+		list.AddRange (arguments);
+		return list;
 	}
 
 	void Log (string line)
 	{
 		lock (logLock) {
-			transcript.AppendLine (line);
+			File.AppendAllText (options.LogFilePath, line + Environment.NewLine);
+			Console.WriteLine (line);
+		}
+	}
+
+	void AppendToLogFile (string line)
+	{
+		lock (logLock) {
 			File.AppendAllText (options.LogFilePath, line + Environment.NewLine);
 		}
-		Console.WriteLine (line);
-	}
-
-	void WriteRaw (string text)
-	{
-		if (string.IsNullOrEmpty (text))
-			return;
-
-		lock (logLock) {
-			transcript.Append (text);
-			if (!text.EndsWith (Environment.NewLine, StringComparison.Ordinal))
-				transcript.AppendLine ();
-			File.AppendAllText (options.LogFilePath, text.EndsWith (Environment.NewLine, StringComparison.Ordinal) ? text : text + Environment.NewLine);
-		}
-	}
-
-	string GetExtensionExecutablePath ()
-	{
-		var executableDirectory = Path.Combine (options.ExtensionPath, "Contents", "MacOS");
-		if (!Directory.Exists (executableDirectory))
-			return Path.Combine (executableDirectory, "AppExtension");
-
-		var files = Directory.GetFiles (executableDirectory);
-		if (files.Length == 1)
-			return files [0];
-
-		return Path.Combine (executableDirectory, "AppExtension");
-	}
-
-	static bool HasExited (Process process, out int? exitCode)
-	{
-		try {
-			if (process.HasExited) {
-				exitCode = process.ExitCode;
-				return true;
-			}
-		} catch (ArgumentException) {
-			exitCode = null;
-			return true;
-		} catch (InvalidOperationException) {
-			exitCode = null;
-			return true;
-		}
-
-		exitCode = null;
-		return false;
-	}
-
-	static void TryKillProcess (Process? process)
-	{
-		if (process is null)
-			return;
-
-		try {
-			if (!process.HasExited)
-				process.Kill ();
-		} catch {
-		}
-	}
-
-	static void DeleteFileIfExists (string path)
-	{
-		if (File.Exists (path))
-			File.Delete (path);
 	}
 
 	static string FormatTimestamp (DateTime timestamp)
-		=> timestamp.ToString ("yyyy-MM-dd HH:mm:ss");
-
-	static string FormatCommand (string fileName, IReadOnlyList<string> arguments)
-	{
-		var builder = new StringBuilder (fileName);
-		foreach (var argument in arguments) {
-			builder.Append (' ');
-			builder.Append (Quote (argument));
-		}
-		return builder.ToString ();
-	}
-
-	static string Quote (string value)
-	{
-		if (string.IsNullOrEmpty (value))
-			return "\"\"";
-
-		if (value.IndexOfAny ([' ', '\t', '"']) < 0)
-			return value;
-
-		return "\"" + value.Replace ("\\", "\\\\").Replace ("\"", "\\\"") + "\"";
-	}
-
-	static async Task<CommandResult> ExecuteAsync (string fileName, params string [] arguments)
-	{
-		using var process = new Process ();
-		process.StartInfo.FileName = fileName;
-		process.StartInfo.UseShellExecute = false;
-		process.StartInfo.RedirectStandardOutput = true;
-		process.StartInfo.RedirectStandardError = true;
-		foreach (var argument in arguments)
-			process.StartInfo.ArgumentList.Add (argument);
-
-		if (!process.Start ())
-			throw new InvalidOperationException ($"Failed to start '{fileName}'.");
-
-		var stdoutTask = process.StandardOutput.ReadToEndAsync ();
-		var stderrTask = process.StandardError.ReadToEndAsync ();
-		await process.WaitForExitAsync ();
-		return new CommandResult (process.ExitCode, await stdoutTask, await stderrTask);
-	}
-
-	readonly record struct CommandResult (int ExitCode, string StandardOutput, string StandardError)
-	{
-		public string CombinedOutput => string.Concat (StandardOutput, StandardError);
-	}
+		=> timestamp.ToString ("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
 }
 
 sealed class Options {
@@ -572,7 +361,7 @@ sealed class Options {
 			parsed [argument] = args [++i];
 		}
 
-		var timeoutSeconds = int.Parse (GetRequired (parsed, "--timeout-seconds"));
+		var timeoutSeconds = int.Parse (GetRequired (parsed, "--timeout-seconds"), CultureInfo.InvariantCulture);
 		if (timeoutSeconds <= 0)
 			throw new ArgumentOutOfRangeException (nameof (args), "The timeout must be a positive number of seconds.");
 

@@ -14,9 +14,6 @@ BINLOG_TIMESTAMP:=$(shell date +%Y-%m-%d-%H%M%S)
 AUVAL_ARGUMENTS?=-v aufx test Xmrn
 RUN_TIMEOUT_SECONDS?=600
 BUILD_PARAMETERS+=$(BUILD_ARGUMENTS)
-ifneq ($(TEST_FILTER),)
-BUILD_PARAMETERS+=/p:MonotouchExtensionTestName=$(TEST_FILTER)
-endif
 
 ifeq ($(PLATFORM),)
 PLATFORM=$(shell basename "$(CURDIR)")

@@ -3,7 +3,6 @@
 
 using System;
 using System.Diagnostics;
-using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
@@ -86,42 +85,11 @@ namespace MonotouchTest.AudioUnitExtensionHost {
 
 		static string? GetTestName ()
 		{
-			var testName = Environment.GetEnvironmentVariable ("NUNIT_TEST_NAME");
-			if (!string.IsNullOrWhiteSpace (testName)) {
-				SafeLog ($"{logPrefix} Using NUNIT_TEST_NAME test filter: {testName}");
-				return testName;
-			}
-
-			var mainBundlePath = NSBundle.MainBundle.BundlePath ?? "";
-			var resourcePath = NSBundle.MainBundle.ResourcePath ?? "";
-			var extensionBundlePath = mainBundlePath.EndsWith (".app", StringComparison.OrdinalIgnoreCase)
-				? Path.Combine (mainBundlePath, "Contents", "PlugIns", "AppExtension.appex")
-				: mainBundlePath;
-			var hostAppPath = mainBundlePath.EndsWith (".appex", StringComparison.OrdinalIgnoreCase)
-				? Path.GetFullPath (Path.Combine (mainBundlePath, "..", "..", ".."))
-				: mainBundlePath;
-			SafeLog ($"{logPrefix} Main bundle path: {mainBundlePath}");
-			SafeLog ($"{logPrefix} Resource path: {resourcePath}");
-			foreach (var testFilterFile in new [] {
-				Path.Combine (resourcePath, "monotouch-extension-test-filter.txt"),
-				Path.Combine (extensionBundlePath, "Contents", "Resources", "monotouch-extension-test-filter.txt"),
-				Path.Combine (hostAppPath, "Contents", "Resources", "monotouch-extension-test-filter.txt"),
-				Path.Combine (Path.GetTempPath (), "monotouch-test", "extensions", "audio-unit", "test-filter.txt"),
-			}) {
-				SafeLog ($"{logPrefix} Checking for test filter file: {testFilterFile}");
-				if (File.Exists (testFilterFile)) {
-					testName = File.ReadAllText (testFilterFile).Trim ();
-					if (!string.IsNullOrWhiteSpace (testName)) {
-						SafeLog ($"{logPrefix} Using file-based test filter: {testName}");
-						return testName;
-					}
-				}
-			}
-
-			testName = NSBundle.MainBundle.ObjectForInfoDictionary ("MonotouchExtensionTestName")?.ToString ();
-			if (!string.IsNullOrWhiteSpace (testName) && testName.Contains ("$("))
+			var testName = NSUserDefaults.StandardUserDefaults.StringForKey ("test.name");
+			if (string.IsNullOrWhiteSpace (testName))
 				return null;
-			return string.IsNullOrWhiteSpace (testName) ? null : testName;
+			SafeLog ($"{logPrefix} Using test filter from NSUserDefaults: {testName}");
+			return testName;
 		}
 
 		public static async Task RunOnce ()

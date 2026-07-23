@@ -21,6 +21,8 @@ namespace Xamarin.Tests {
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifier);
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifier);
+			properties ["OptimizePNGs"] = "true";
+			properties ["OptimizePropertyLists"] = "true";
 			var result = DotNet.AssertBuild (project_path, properties);
 			AssertThatLinkerExecuted (result);
 			AssertAppContents (platform, appPath);
@@ -79,6 +81,8 @@ namespace Xamarin.Tests {
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifier);
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifier);
+			properties ["OptimizePNGs"] = "true";
+			properties ["OptimizePropertyLists"] = "true";
 			var result = DotNet.AssertBuild (project_path, properties);
 			AssertThatLinkerExecuted (result);
 			AssertAppContents (platform, appPath);
@@ -86,6 +90,9 @@ namespace Xamarin.Tests {
 			AssertTargetExecuted (targets, "_OptimizePngImages", runtimeIdentifier ?? "default runtime identifier");
 			AssertTargetExecuted (targets, "_OptimizePropertyLists", runtimeIdentifier ?? "default runtime identifier");
 			AssertTargetExecuted (targets, "_OptimizeLocalizationFiles", runtimeIdentifier ?? "default runtime identifier");
+			AssertTargetExecuted (targets, "_CoreOptimizePngImages", runtimeIdentifier ?? "default runtime identifier");
+			AssertTargetExecuted (targets, "_CoreOptimizePropertyLists", runtimeIdentifier ?? "default runtime identifier");
+			AssertTargetExecuted (targets, "_CoreOptimizeLocalizationFiles", runtimeIdentifier ?? "default runtime identifier");
 			var infoPlistPath = Path.Combine (appPath, "Contents", "Info.plist");
 			var infoPlist = PDictionary.OpenFile (infoPlistPath);
 			Assert.That (infoPlist.GetString ("CFBundleIdentifier").Value, Is.EqualTo ("com.xamarin.mycatalystapp"), "CFBundleIdentifier");
@@ -96,6 +103,27 @@ namespace Xamarin.Tests {
 			var optimizedImagePath = Path.Combine (appPath, "Contents", "Resources", "image.png");
 			Assert.That (optimizedImagePath, Does.Exist, "Optimized image existence");
 			Assert.That (File.ReadAllBytes (optimizedImagePath), Is.Not.EqualTo (File.ReadAllBytes (originalImagePath)), "Optimized image contents");
+			var optimizedPropertyListPath = Path.Combine (appPath, "Contents", "Resources", "settings.plist");
+			PDictionary.OpenFile (optimizedPropertyListPath, out var propertyListIsBinary);
+			Assert.That (propertyListIsBinary, Is.True, "Optimized property list format");
+			var optimizedLocalizationPath = Path.Combine (appPath, "Contents", "Resources", "en.lproj", "Localizable.strings");
+			PDictionary.OpenFile (optimizedLocalizationPath, out var localizationIsBinary);
+			Assert.That (localizationIsBinary, Is.True, "Optimized localization format");
+
+			if (runtimeIdentifier == "maccatalyst-arm64") {
+				var imageTimestamp = File.GetLastWriteTimeUtc (optimizedImagePath);
+				var propertyListTimestamp = File.GetLastWriteTimeUtc (optimizedPropertyListPath);
+				var localizationTimestamp = File.GetLastWriteTimeUtc (optimizedLocalizationPath);
+
+				result = DotNet.AssertBuild (project_path, properties);
+				targets = BinLog.GetAllTargets (result.BinLogPath);
+				AssertTargetNotExecuted (targets, "_CoreOptimizePngImages", "Incremental PNG optimization");
+				AssertTargetNotExecuted (targets, "_CoreOptimizePropertyLists", "Incremental property list optimization");
+				AssertTargetNotExecuted (targets, "_CoreOptimizeLocalizationFiles", "Incremental localization optimization");
+				Assert.That (File.GetLastWriteTimeUtc (optimizedImagePath), Is.EqualTo (imageTimestamp), "Incremental image timestamp");
+				Assert.That (File.GetLastWriteTimeUtc (optimizedPropertyListPath), Is.EqualTo (propertyListTimestamp), "Incremental property list timestamp");
+				Assert.That (File.GetLastWriteTimeUtc (optimizedLocalizationPath), Is.EqualTo (localizationTimestamp), "Incremental localization timestamp");
+			}
 		}
 
 		[TestCase (ApplePlatform.iOS)]
@@ -1114,6 +1142,10 @@ namespace Xamarin.Tests {
 			var properties = GetDefaultProperties (runtimeIdentifiers, extraProperties);
 			properties ["Configuration"] = config;
 			properties ["BundleOriginalResources"] = bundleOriginalResources ? "true" : "false";
+			if (platform != ApplePlatform.MacOSX) {
+				properties ["OptimizePNGs"] = "true";
+				properties ["OptimizePropertyLists"] = "true";
+			}
 			if (remoteWindows) {
 				// Copy the app bundle to Windows so that we can inspect the results.
 				properties ["CopyAppBundleToWindows"] = "true";

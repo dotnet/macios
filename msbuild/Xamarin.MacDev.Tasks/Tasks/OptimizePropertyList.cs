@@ -13,7 +13,7 @@ using Xamarin.Messaging.Build.Client;
 #nullable enable
 
 namespace Xamarin.MacDev.Tasks {
-	public class OptimizePropertyList : XamarinTask, ICancelableTask {
+	public class OptimizePropertyList : XamarinTask, ICancelableTask, ITaskCallback {
 		CancellationTokenSource? cancellationTokenSource;
 		#region Inputs
 
@@ -43,6 +43,20 @@ namespace Xamarin.MacDev.Tasks {
 
 		public override bool Execute ()
 		{
+			if (string.Equals (Path.GetExtension (Input!.ItemSpec), ".plist", StringComparison.OrdinalIgnoreCase)) {
+				var plist = PObject.FromFile (Input.ItemSpec);
+				if (plist is null)
+					throw new FormatException ($"Could not parse the property list '{Input.ItemSpec}'.");
+
+				Directory.CreateDirectory (Path.GetDirectoryName (Output!.ItemSpec)!);
+				plist.Save (Output!.ItemSpec, binary: true);
+
+				if (ShouldExecuteRemotely ())
+					return CopyInputsToRemoteServerAsync (this);
+
+				return true;
+			}
+
 			if (ShouldExecuteRemotely ())
 				return ExecuteRemotely ();
 
@@ -54,11 +68,11 @@ namespace Xamarin.MacDev.Tasks {
 			return !Log.HasLoggedErrors;
 		}
 
-		public bool ShouldCopyToBuildServer (Microsoft.Build.Framework.ITaskItem item) => false;
+		public bool ShouldCopyToBuildServer (Microsoft.Build.Framework.ITaskItem item) => Output is not null && item.ItemSpec == Output.ItemSpec;
 
 		public bool ShouldCreateOutputFile (Microsoft.Build.Framework.ITaskItem item) => true;
 
-		public IEnumerable<ITaskItem> GetAdditionalItemsToBeCopied () => Enumerable.Empty<ITaskItem> ();
+		public IEnumerable<ITaskItem> GetAdditionalItemsToBeCopied () => Output is null ? [] : [Output];
 
 		public void Cancel ()
 		{

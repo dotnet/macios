@@ -1,0 +1,25 @@
+!deprecated-attribute-missing! UIApplication::canOpenURL: missing a [Deprecated] attribute
+!missing-enum-value! UIWritingToolsCoordinatorTextAnimation native value UIWritingToolsCoordinatorTextAnimationIndicateGrammar = 10 not bound
+!missing-enum-value! UIWritingToolsCoordinatorTextReplacementReason native value UIWritingToolsCoordinatorTextReplacementReasonAccepted = 2 not bound
+!missing-enum-value! UIWritingToolsCoordinatorTextReplacementReason native value UIWritingToolsCoordinatorTextReplacementReasonRejected = 3 not bound
+!missing-enum-value! UIWritingToolsCoordinatorTextReplacementReason native value UIWritingToolsCoordinatorTextReplacementReasonTemporary = 4 not bound
+!missing-enum! UITextGrammarCheckingType not bound
+!missing-enum! UIWritingToolsCoordinatorTextDecoration not bound
+!missing-field! UIApplicationSystemPrefersReducedResourceUsageDidChangeNotification not bound
+!missing-field! UITextContentTypeCellularIMEI1 not bound
+!missing-field! UITextContentTypeCellularIMEI2 not bound
+!missing-field! UITextContentTypeCellularNAL not bound
+!missing-protocol-member! UIMutableTraits::setSystemPrefersReducedResourceUsage: not found
+!missing-protocol-member! UIMutableTraits::systemPrefersReducedResourceUsage not found
+!missing-protocol-member! UITextInputTraits::grammarCheckingType not found
+!missing-protocol-member! UITextInputTraits::setGrammarCheckingType: not found
+!missing-protocol-member! UIWritingToolsCoordinatorDelegate::writingToolsCoordinator:requestsGrammarResultsForContext:completion: not found
+!missing-protocol-member! UIWritingToolsCoordinatorDelegate::writingToolsCoordinator:requestsPreviewForTextAnimation:ofRange:inContext:textDecoration:completion: not found
+!missing-protocol-member! UIWritingToolsCoordinatorDelegate::writingToolsCoordinator:setGrammarCheckingEnabled: not found
+!missing-selector! +UITraitCollection::traitCollectionWithSystemPrefersReducedResourceUsage: not bound
+!missing-selector! UIApplication::systemPrefersReducedResourceUsage not bound
+!missing-selector! UITraitCollection::systemPrefersReducedResourceUsage not bound
+!missing-selector! UIWritingToolsCoordinator::cancelTextAnimationsWithIdentifiers: not bound
+!missing-selector! UIWritingToolsCoordinator::showUIWritingToolsCoordinatorForRange:inContext: not bound
+!missing-selector! UIWritingToolsCoordinator::startTextAnimation:forRange:inContext:writingDirection: not bound
+!missing-type! UITraitSystemPrefersReducedResourceUsage not bound

@@ -435,6 +435,7 @@ namespace Introspection {
 			{ "Kiloamperes", All }, // SI unit name
 			{ "Kiloohms", All }, // SI unit name
 			{ "Kilopascals", All }, // SI unit name
+			{ "Koio", ApplePlatform.MacOSX }, // Kernel Offloaded I/O
 			{ "ks", All }, // word fragment from spell checker
 			{ "Kullback", All }, // Kullback-Leibler Divergence
 			{ "Lacunarity", All }, // fractal geometry term

@@ -3771,9 +3771,6 @@ namespace CarPlay {
 		[Export ("routeDetailWithSymbolName:value:")]
 		CPRouteDetail CreateCustom (string symbolName, string value);
 
-		[NullAllowed, Export ("labelTintColor", ArgumentSemantic.Strong)]
-		UIColor LabelTintColor { get; set; }
-
 		[NullAllowed, Export ("symbolTintColor", ArgumentSemantic.Strong)]
 		UIColor SymbolTintColor { get; set; }
 	}

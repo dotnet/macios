@@ -56,22 +56,16 @@ namespace Introspection {
 					return true;
 				}
 				break;
-			}
-#endif // __MACCATALYST__
-#if __IOS__ && !__MACCATALYST__
-			switch (type.Name) {
-			case "WKWebpagePreferences":
+			case "CBPeripheral":
 				switch (selectorName) {
-				// This selector is declared for iOS 27 but is not implemented in the iOS 27 simulator (it does respond on macOS and Mac Catalyst).
-				case "globalPrivacyControlEnabled":
-				case "setGlobalPrivacyControlEnabled:":
-					if (TestRuntime.IsSimulator)
-						return true;
-					break;
+				// These selectors are declared for Mac Catalyst 27 but are not implemented in the Mac Catalyst 27 runtime.
+				case "cancelChannelSoundingSession":
+				case "startChannelSoundingSession:":
+					return true;
 				}
 				break;
 			}
-#endif // __IOS__ && !__MACCATALYST__
+#endif // __MACCATALYST__
 			return base.Skip (type, selectorName);
 		}
 

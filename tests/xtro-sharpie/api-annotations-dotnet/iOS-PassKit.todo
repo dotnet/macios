@@ -5,3 +5,15 @@
 !missing-selector! PKPaymentRequest::unsupportedPrimaryAccountIdentifiers not bound
 !missing-selector! PKSecureElementPass::isProvisioningAvailable not bound
 !deprecated-attribute-missing! PKPassLibrary::signData:withSecureElementPass:completion: missing a [Deprecated] attribute
+!missing-field! PKPaymentNetworkHumo not bound
+!missing-field! PKPaymentNetworkRuPay not bound
+!missing-field! PKPaymentNetworkUzCard not bound
+!missing-field! PKPaymentNetworkVerve not bound
+!missing-selector! PKAddPassesViewController::initWithPassesArchiveAtFileURL: not bound
+!missing-selector! PKAddPassesViewController::initWithPassesArchiveData: not bound
+!missing-selector! PKAddPassesViewController::initWithPassesData: not bound
+!missing-selector! PKDisbursementRequest::setUnsupportedPrimaryAccountIdentifiers: not bound
+!missing-selector! PKDisbursementRequest::unsupportedPrimaryAccountIdentifiers not bound
+!missing-selector! PKPassLibrary::addPassesFromArchiveAtFileURL:completionHandler: not bound
+!missing-selector! PKPassLibrary::addPassesFromArchiveWithData:completionHandler: not bound
+!missing-selector! PKPassLibrary::addPassesWithData:completionHandler: not bound

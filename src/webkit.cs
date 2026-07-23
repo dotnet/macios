@@ -6170,7 +6170,7 @@ namespace WebKit {
 
 		[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
 		[Export ("addBuffer:name:contentWorld:")]
-		void AddBuffer (WKJSScriptingBuffer buffer, string name, WKContentWorld world);
+		void AddBuffer (NSData buffer, string name, WKContentWorld world);
 
 		[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
 		[Export ("removeBufferWithName:contentWorld:")]
@@ -7028,8 +7028,8 @@ namespace WebKit {
 		bool AllowsJSHandleCreationInPageWorld { get; set; }
 
 		[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
-		[Export ("globalPrivacyControlEnabled")]
-		bool GlobalPrivacyControlEnabled { get; set; }
+		[Export ("globalPrivacyControlStatus")]
+		bool GlobalPrivacyControlStatus { get; set; }
 	}
 
 	[NoMac]
@@ -7110,16 +7110,6 @@ namespace WebKit {
 		[Async]
 		[Export ("windowProxyFrameInfo:")]
 		void GetWindowProxyFrameInfo (WKJSHandleWindowProxyFrameInfoCallback completionHandler);
-	}
-
-	[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
-	[BaseType (typeof (NSObject))]
-	[DisableDefaultCtor]
-	interface WKJSScriptingBuffer {
-
-		[Export ("initWithData:")]
-		[return: NullAllowed]
-		NativeHandle Constructor (NSData data);
 	}
 
 	[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]

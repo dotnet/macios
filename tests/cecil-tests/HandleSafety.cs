@@ -865,6 +865,11 @@ namespace Cecil.Tests {
 		// The C# compiler may emit a 'dup' for 'obj' instead of storing it in a local, in which case the
 		// handle looks like it's fetched from an object that was never stored anywhere - even though the
 		// object is explicitly kept alive until the GC.KeepAlive call.
+		// The object may also be loaded by a different (but equivalent) instruction at the GC.KeepAlive
+		// call than at the handle fetch. This happens for instance when the object is a field, in which
+		// case the compiler emits a separate 'ldfld' instruction each time the field is loaded:
+		//     DoSomethingWith (this.field.GetHandle ());
+		//     GC.KeepAlive (this.field);
 		// Only GC.KeepAlive calls that occur after the handle fetch count: a call before the fetch doesn't
 		// keep the object alive while its handle is in use.
 		bool IsKeptAlive (MethodState state, Instruction value, Instruction handleFetch)
@@ -878,7 +883,7 @@ namespace Cecil.Tests {
 					if (mr.Name != "KeepAlive" || mr.DeclaringType.FullName != "System.GC")
 						continue;
 					try {
-						if (GetLoadInstructionForParameterAtCall (state, instr, 1).Contains (value))
+						if (GetLoadInstructionForParameterAtCall (state, instr, 1).Any (load => AreEquivalentLoads (state, load, value)))
 							return true;
 					} catch (InvalidOperationException) {
 						// Couldn't determine the argument being kept alive; ignore.
@@ -887,6 +892,78 @@ namespace Cecil.Tests {
 				}
 			}
 			return false;
+		}
+
+		// Returns true if the two instructions are known to load the same value. This is either the very
+		// same instruction, or two different instructions that provably load the same object (e.g. two
+		// 'ldfld X' instructions that load the same field of the same object). If in doubt, this returns
+		// false: it must never claim that two loads are equivalent unless it's certain they are, otherwise
+		// an object could be considered kept alive when it isn't.
+		bool AreEquivalentLoads (MethodState state, Instruction a, Instruction b)
+		{
+			if (a == b)
+				return true;
+			if (a.OpCode.Code != b.OpCode.Code)
+				return false;
+
+			switch (a.OpCode.Code) {
+			// These load a fixed argument or local, so the same opcode means the same value.
+			case Code.Ldarg_0:
+			case Code.Ldarg_1:
+			case Code.Ldarg_2:
+			case Code.Ldarg_3:
+			case Code.Ldloc_0:
+			case Code.Ldloc_1:
+			case Code.Ldloc_2:
+			case Code.Ldloc_3:
+				return true;
+			// These load the argument / local / static field identified by the operand.
+			case Code.Ldarg:
+			case Code.Ldarg_S:
+			case Code.Ldloc:
+			case Code.Ldloc_S:
+			case Code.Ldsfld:
+				return Equals (a.Operand, b.Operand);
+			// A field load is equivalent if it's the same field loaded from the same object.
+			case Code.Ldfld:
+				if (a.Operand is not FieldReference fa || b.Operand is not FieldReference fb)
+					return false;
+				if (fa.FullName != fb.FullName)
+					return false;
+				return AreEquivalentSources (state, a, b);
+			default:
+				return false;
+			}
+		}
+
+		// Returns true if the objects the two field-load instructions load their field from are equivalent.
+		bool AreEquivalentSources (MethodState state, Instruction a, Instruction b)
+		{
+			var aSources = GetObjectLoads (state, a);
+			var bSources = GetObjectLoads (state, b);
+			if (aSources is null || bSources is null || aSources.Length == 0 || bSources.Length == 0)
+				return false;
+
+			// Every possible source object for 'a' must be equivalent to every possible source object for
+			// 'b', otherwise they might load the field from different objects.
+			foreach (var sa in aSources)
+				foreach (var sb in bSources)
+					if (!AreEquivalentLoads (state, sa, sb))
+						return false;
+			return true;
+		}
+
+		// Returns the load instructions for the object at the top of the stack right before the given
+		// instruction (i.e. the object a field-load instruction loads its field from).
+		Instruction []? GetObjectLoads (MethodState state, Instruction instr)
+		{
+			var idx = state.Method.Body.Instructions.IndexOf (instr);
+			if (idx < 0)
+				return null;
+			var stack = state.Entries [idx].StackBeforeInstruction;
+			if (stack is null || stack.Count == 0)
+				return null;
+			return stack [stack.Count - 1].LoadInstructions;
 		}
 
 		class Failure {

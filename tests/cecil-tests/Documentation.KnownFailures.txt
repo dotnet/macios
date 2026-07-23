@@ -15340,7 +15340,9 @@ M:CarPlay.CPRouteDetail.CreateFuelEnergy(Foundation.NSMeasurement{Foundation.NSU
 M:CarPlay.CPRouteDetail.CreateFuelLevel(Foundation.NSMeasurement{Foundation.NSUnitVolume})
 M:CarPlay.CPRouteDetail.CreateFuelMass(Foundation.NSMeasurement{Foundation.NSUnitMass})
 M:CarPlay.CPRouteDetail.CreateHov(System.String)
+M:CarPlay.CPRouteDetail.CreateInfo(System.String)
 M:CarPlay.CPRouteDetail.CreateKilowattHours(Foundation.NSMeasurement{Foundation.NSUnitEnergy})
+M:CarPlay.CPRouteDetail.CreateParking(System.String)
 M:CarPlay.CPRouteDetail.CreateRating(System.Double)
 M:CarPlay.CPRouteDetail.CreateTollAmount(System.Double,Foundation.NSLocale)
 M:CarPlay.CPRouteDetail.CreateTrafficLightCount(System.UIntPtr)
@@ -38944,6 +38946,7 @@ P:CarPlay.CPNavigationAlert.MaximumAlertImageSize
 P:CarPlay.CPNavigationAlert.MaximumAvatarImageSize
 P:CarPlay.CPNavigationAlert.PrimaryAction
 P:CarPlay.CPNavigationAlert.SecondaryAction
+P:CarPlay.CPNavigationAlert.ShowsCloseButton
 P:CarPlay.CPNavigationAlert.SubtitleVariants
 P:CarPlay.CPNavigationAlert.TitleVariants
 P:CarPlay.CPNavigationSession.CurrentLaneGuidance

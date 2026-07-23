@@ -2,8 +2,6 @@ using System.Collections.Generic;
 namespace Cecil.Tests {
 	public partial class HandleSafetyTest {
 		static HashSet<string> knownFailuresHandleSafety = new HashSet<string> {
-			"AddressBook.ABMultiValue`1/<>c.<.ctor>b__2_1`0 (T)",
-			"AddressBook.ABPerson/<>c__95`1.<CreateDictionaryMultiValue>b__95_1`0 (T)",
 			"AppKit.NSStringAttributes.Get (Foundation.NSString)",
 			"AudioUnit.AUScheduledAudioFileRegion.GetAudioFileRegion ()",
 			"AudioUnit.SamplerInstrumentData.ToStruct ()",

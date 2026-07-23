@@ -32,8 +32,7 @@ using System.Threading;
 
 namespace AppKit {
 	public partial class NSApplication : NSResponder {
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <inheritdoc cref="Runtime.CheckForIllegalCrossThreadCalls" />
 		public static bool CheckForIllegalCrossThreadCalls;
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>

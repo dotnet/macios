@@ -291,6 +291,22 @@ namespace ObjCRuntime {
 		internal static bool UseCFNetworkHandler => AppContext.TryGetSwitch ("System.Net.Http.NativeHandler.UseCFNetworkHandler", out bool isDefault) ? isDefault : false;
 
 		// The linker may turn calls to this property into a constant
+		/// <summary>Determines whether the debug builds will enforce that calls done to AppKit/UIKit APIs are only issued from the UI thread.</summary>
+		/// <remarks>
+		///   <para>
+		///     On debug builds, the runtime will enforce that calls made to
+		///     AppKit/UIKit APIs are only done from the main thread. This is
+		///     useful to spot code that could inadvertently use AppKit/UIKit from
+		///     a non-UI thread which can corrupt state and could lead to
+		///     very hard to debug problems.
+		///   </para>
+		///   <para>
+		///     But sometimes it might be useful to disable this check,
+		///     either because you can ensure that AppKit/UIKit is not in use at
+		///     this point or because the APIs in question might have later been
+		///     relaxed or made thread safe by Apple.
+		///   </para>
+		/// </remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		internal static bool CheckForIllegalCrossThreadCalls => AppContext.TryGetSwitch ("ObjCRuntime.Runtime.CheckForIllegalCrossThreadCalls", out bool enabled) ? enabled : true;
 

@@ -27,24 +27,7 @@ namespace UIKit {
 
 	public partial class UIApplication
 	: UIResponder {
-		/// <summary>Determines whether the debug builds of MonoTouch will enforce that calls done to UIKit are only issued from the UI thread.</summary>
-		///         <remarks>
-		///           <para>
-		///             On debug builds, MonoTouch will enforce that calls made to
-		///             UIKit APIs are only done from the UIKit thread.  This is
-		///             useful to spot code that could inadvertently use UIKit from
-		///             a non-UI thread which can corrupt the UIKit state and could
-		///             lead to very hard to debug problems.
-		///           </para>
-		///           <para>
-		///             But sometimes it might be useful to disable this check,
-		///             either because you can ensure that UIKit is not in use at
-		///             this point or because MonoTouch might be enforcing the
-		///             checks in APIs that might have later been relaxed or made
-		///             thread safe by iOS.
-		///
-		///           </para>
-		///         </remarks>
+		/// <inheritdoc cref="Runtime.CheckForIllegalCrossThreadCalls" />
 		public static bool CheckForIllegalCrossThreadCalls;
 		/// <summary>If <see langword="true" />, the system will try to diagnose potential mistakes where events and delegate-object overrides are in conflict.</summary>
 		///         <remarks>To be added.</remarks>

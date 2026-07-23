@@ -77,9 +77,9 @@ namespace Metal {
 	}
 
 	public partial class MTLPipelineBufferDescriptorArray {
-		/// <param name="index">The index of the buffer descriptor to get or set.</param>
-		/// <summary>Gets or sets the mutability of the buffer descriptor at the specified index.</summary>
+		/// <summary>Gets or sets the pipeline buffer descriptor at the specified index.</summary>
 		/// <value>The buffer descriptor at the specified index.</value>
+		/// <param name="index">The index of the buffer descriptor to get or set.</param>
 		public MTLPipelineBufferDescriptor this [nuint index] {
 			get {
 				return GetObject (index);

@@ -11,8 +11,8 @@
 namespace Photos {
 
 	partial class PHAssetCreationRequest {
-		/// <param name="resourceTypes">The resource types to check for support.</param>
 		/// <summary>Whether Photos supports creating an asset that combines the specified <paramref name="resourceTypes" />.</summary>
+		/// <param name="resourceTypes">The resource types to check for support.</param>
 		/// <returns><see langword="true" /> if the combination of resource types is supported; otherwise, <see langword="false" />.</returns>
 		public bool SupportsAssetResourceTypes (params PHAssetResourceType [] resourceTypes)
 		{

@@ -582,10 +582,10 @@ A semi-colon delimited property that can be used to extend the
 the platform build has collected `@(ApplicationArtifact)` items and before
 `GetApplicationArtifacts` or `Publish` returns them.
 
-This can be used by SDKs such as .NET MAUI to add shared application metadata
-to platform-produced artifacts. Extension targets should update existing
-`@(ApplicationArtifact)` items to add metadata; they should only add new items
-when introducing additional artifacts.
+Apple platform builds populate the common application metadata documented for
+[ApplicationArtifact](build-items.md#applicationartifact) before targets in
+this property execute. Extension targets can update or override that metadata,
+and should only add new items when introducing additional artifacts.
 
 Example:
 

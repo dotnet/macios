@@ -4,11 +4,25 @@
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <IsAppExtension>true</IsAppExtension>
-    <AssemblyName>AppExtension</AssemblyName>
+    <AssemblyName>monotouchtest</AssemblyName>
     <RootNamespace>monotouchtestappextension</RootNamespace>
+    <ApplicationId>com.xamarin.monotouch-test.AudioUnitExtension</ApplicationId>
+    <ApplicationVersion>1</ApplicationVersion>
+    <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
   </PropertyGroup>
 
   <Import Project="$(MSBuildThisFileDirectory)..\..\shared.csproj" />
+
+  <ItemGroup>
+    <!-- The Info.plist values that are common to all platforms. Everything else is either an MSBuild property or computed by the SDK. -->
+    <PartialAppManifest Include="$(MSBuildThisFileDirectory)AppExtension-Info.plist" />
+  </ItemGroup>
+
+  <!-- On desktop the audio unit extension must be sandboxed. On mobile there's no app sandbox entitlement. -->
+  <ItemGroup Condition="'$(SdkIsDesktop)' == 'true'">
+    <CustomEntitlements Include="com.apple.security.app-sandbox" Type="boolean" Value="true" />
+    <CustomEntitlements Include="com.apple.security.files.user-selected.read-only" Type="boolean" Value="true" />
+  </ItemGroup>
 
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)AudioUnitTestExtension.cs">

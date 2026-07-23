@@ -10,14 +10,13 @@ namespace MonoTouchFixtures.CoreFoundation {
 	[Preserve (AllMembers = true)]
 	public class BundleTest {
 #if APP_EXTENSION
-		const string ExpectedAppName = "AppExtension.appex";
+		const string ExpectedAppName = "monotouchtest.appex";
 		const string ExpectedBundleId = "com.xamarin.monotouch-test.AudioUnitExtension";
-		const string ExpectedExecutableName = "AppExtension";
 #else
 		const string ExpectedAppName = "monotouchtest.app";
 		const string ExpectedBundleId = "com.xamarin.monotouch-test";
-		const string ExpectedExecutableName = "monotouchtest";
 #endif
+		const string ExpectedExecutableName = "monotouchtest";
 
 		[Test]
 		public void TestGetAll ()

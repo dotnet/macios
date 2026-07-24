@@ -27,6 +27,8 @@ namespace Introspection {
 
 		protected override bool Skip (Type type)
 		{
+			if (type.Namespace == "ScreenCaptureKit" && TestRuntime.IsSimulator)
+				return true;
 			return base.Skip (type);
 		}
 

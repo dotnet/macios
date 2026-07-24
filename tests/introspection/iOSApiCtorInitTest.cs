@@ -49,6 +49,10 @@ namespace Introspection {
 				if (Class.GetHandle ("NFCNDEFReaderSession") == IntPtr.Zero)
 					return true;
 				break;
+			case "ScreenCaptureKit":
+				if (TestRuntime.IsSimulator)
+					return true;
+				break;
 			case "Cinematic":
 			case "DeviceCheck": // Only available on device
 			case "MLCompute": // Only available on device

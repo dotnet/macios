@@ -513,6 +513,7 @@ public class Frameworks : Dictionary<string, Framework> {
 					{ "AVSystemRouting", "AVSystemRouting", new Version (27, 0), NotAvailableInSimulator },
 					{ "EnhancedLinkSecurity", "EnhancedLinkSecurity", 27, 0 },
 					{ "LinkSecurity", "LinkSecurity", 27, 0 },
+					{ "ScreenCaptureKit", "ScreenCaptureKit", new Version (27, 0), NotAvailableInSimulator },
 					{ "StateReporting", "StateReporting", 27, 0 },
 					// the above MUST be kept in sync with simlauncher
 					// see tools/mtouch/Makefile
@@ -637,6 +638,7 @@ public class Frameworks : Dictionary<string, Framework> {
 
 					{ "EnhancedLinkSecurity", "EnhancedLinkSecurity", 27, 0 },
 					{ "LinkSecurity", "LinkSecurity", 27, 0 },
+					{ "ScreenCaptureKit", "ScreenCaptureKit", new Version (27, 0), NotAvailableInSimulator },
 					{ "StateReporting", "StateReporting", 27, 0 },
 				};
 			}
@@ -659,6 +661,7 @@ public class Frameworks : Dictionary<string, Framework> {
 				var v14_2 = new Version (14, 2);
 				var v16_1 = new Version (16, 1);
 				var v18_0 = new Version (18, 0);
+				var v18_2 = new Version (18, 2);
 				var v26_0 = new Version (26, 0);
 				var v16_0 = new Version (16, 0);
 				foreach (var f in catalyst_frameworks.Values) {
@@ -688,6 +691,10 @@ public class Frameworks : Dictionary<string, Framework> {
 					case "BrowserEngineKit":
 					case "DeviceDiscoveryExtension":
 						f.Version = v18_0;
+						break;
+					case "ScreenCaptureKit":
+						f.Version = v18_2;
+						f.VersionAvailableInSimulator = v18_2;
 						break;
 					// These frameworks are not available on Mac Catalyst
 					case "DeviceDiscoveryUI": // xtro and introspection says it's not in Mac Catalyst, Apple's website says it is. For now, listen to xtro and introspection, until proven otherwise.
@@ -723,7 +730,6 @@ public class Frameworks : Dictionary<string, Framework> {
 				catalyst_frameworks.Add ("AppKit", 13, 0);
 				catalyst_frameworks.Add ("ExecutionPolicy", 16, 0);
 				catalyst_frameworks.Add ("ServiceManagement", 16, 0);
-				catalyst_frameworks.Add ("ScreenCaptureKit", 18, 2);
 			}
 			return catalyst_frameworks;
 		}

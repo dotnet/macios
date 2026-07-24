@@ -168,6 +168,11 @@ APPKIT_SOURCES = \
 	AppKit/NSView.cs \
 	AppKit/NSCollectionLayoutAnchor.cs \
 
+# AppManagedFeatures
+
+APPMANAGEDFEATURES_SOURCES = \
+	AppManagedFeatures/AppManagedFeaturesConstants.cs \
+
 # ARKit
 
 ARKIT_SOURCES = \
@@ -2153,6 +2158,7 @@ IOS_FRAMEWORKS =         \
 	AddressBook \
 	AddressBookUI \
 	AppClip \
+	AppManagedFeatures \
 	AppTrackingTransparency \
 	ARKit \
 	AssetsLibrary \

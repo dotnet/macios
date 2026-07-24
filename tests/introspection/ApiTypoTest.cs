@@ -1163,6 +1163,7 @@ namespace Introspection {
 					break;
 #endif
 #if !__MACOS__
+				case "AppManagedFeaturesLibrary":
 				case "AVSystemRoutingLibrary":
 				case "CinematicLibrary":
 				case "ThreadNetworkLibrary":

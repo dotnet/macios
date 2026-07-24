@@ -3211,6 +3211,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/AdServices.framework/AdServices",
 			"/System/Library/Frameworks/AdSupport.framework/AdSupport",
 			"/System/Library/Frameworks/AppClip.framework/AppClip",
+			"/System/Library/Frameworks/AppManagedFeatures.framework/AppManagedFeatures",
 			"/System/Library/Frameworks/AppTrackingTransparency.framework/AppTrackingTransparency",
 			"/System/Library/Frameworks/ARKit.framework/ARKit",
 			"/System/Library/Frameworks/AudioToolbox.framework/AudioToolbox",

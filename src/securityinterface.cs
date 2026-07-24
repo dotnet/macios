@@ -620,6 +620,7 @@ namespace SecurityInterface {
 	/// <summary>A save panel for creating a new keychain file.</summary>
 	[NoiOS, NoTV, NoMacCatalyst, Mac (10, 3)]
 	[BaseType (typeof (NSSavePanel))]
+	[DisableDefaultCtor]
 	interface SFKeychainSavePanel {
 
 		/// <summary>Gets the shared keychain save panel instance.</summary>

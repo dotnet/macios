@@ -221,6 +221,11 @@ public class InlineClassGetHandleStep : AssemblyModifierStep {
 					continue;
 				}
 
+				if (objCType.Type.Is ("SecurityInterface", "SFChooseIdentityTableCellView")) {
+					// This public SDK class is available at runtime, but SecurityInterface.tbd does not export its Objective-C class symbol.
+					continue;
+				}
+
 				if (objCType.Type.Namespace == "BrowserEngineKit" || objCType.Type.Namespace == "BrowserEngineCore") {
 					// Most apps do not use BrowserEngineKit, and linking with it when an app is not supposed to will prevent it from getting approved in the App Store.
 					// So we treat these frameworks specially, where we don't link with these two frameworks by default, *even if they're detected as used*,

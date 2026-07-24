@@ -113,7 +113,7 @@ namespace CoreVideo {
 
 		// CVHostTime.h
 
-		/// <summary>GetCurrentHostTime.</summary>
+		/// <summary>Returns the current value of the host time clock, in units of the host time clock frequency.</summary>
 		[DllImport (Constants.CoreVideoLibrary, EntryPoint = "CVGetCurrentHostTime")]
 		public static extern /* uint64_t */ ulong GetCurrentHostTime ();
 

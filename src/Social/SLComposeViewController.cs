@@ -16,8 +16,8 @@ using UIKit;
 namespace Social {
 
 	public partial class SLComposeViewController {
-		/// <param name="serviceKind">The service kind.</param>
-		///         <summary>Creates a new compose view controller for the specified service.</summary>
+		/// <summary>Creates a new compose view controller for the specified service.</summary>
+		/// <param name="serviceKind">The kind of social service (such as Twitter or Facebook) to compose a message for.</param>
 		public static SLComposeViewController FromService (SLServiceKind serviceKind)
 		{
 			return FromService (serviceKind.GetConstant ()!);

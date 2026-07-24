@@ -39,10 +39,10 @@ namespace Foundation {
 			return objc_msgSend (Handle, Selector.GetHandle (selReadMaxLength), buffer, len);
 		}
 
-		/// <summary>Read.</summary>
-		/// <param name="buffer">The buffer.</param>
-		/// <param name="offset">The offset.</param>
-		/// <param name="len">The len.</param>
+		/// <summary>Reads data from the stream into the provided buffer starting at the given offset.</summary>
+		/// <param name="buffer">The buffer where data should be stored.</param>
+		/// <param name="offset">The byte offset in <paramref name="buffer" /> at which to begin storing data.</param>
+		/// <param name="len">The maximum number of bytes to read.</param>
 		public unsafe nint Read (byte [] buffer, int offset, nuint len)
 		{
 			if (offset + (long) len > buffer.Length)

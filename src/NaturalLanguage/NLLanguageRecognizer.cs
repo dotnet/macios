@@ -43,8 +43,8 @@ namespace NaturalLanguage {
 			}
 		}
 
-		/// <summary>GetLanguageHypotheses.</summary>
-		/// <param name="maxHypotheses">The max hypotheses.</param>
+		/// <summary>Returns the most likely languages for the previously processed text, ranked by confidence.</summary>
+		/// <param name="maxHypotheses">The maximum number of language hypotheses to return.</param>
 		public Dictionary<NLLanguage, double> GetLanguageHypotheses (nuint maxHypotheses)
 		{
 			using (var hypo = GetNativeLanguageHypotheses (maxHypotheses)) {

@@ -40,6 +40,18 @@
 		-->
 		<_UseNativeAot Condition="'$(PublishAot)' == 'true' And '$(_IsPublishing)' == 'true'">true</_UseNativeAot>
 
+		<!--
+			For NativeAOT + the trimmable-static registrar on .NET 11+, enable the PrepareAssemblies /
+			PostProcessAssemblies flow by default. This runs our custom linker steps in the assembly-preparer
+			and generates the native static registrar code *after* the NativeAOT compiler (ILC) has run (see
+			_PostprocessAssembliesAfterIlc), so the registrar can drop the native code for UnmanagedCallersOnly
+			trampolines ILC trimmed away (an app-size optimization). Both properties must be set here (at
+			evaluation time) so the static _PostprocessAssembliesAfterIlc / _SkipILLink gates see them. This has
+			no effect on .NET 10 (the post-ILC reorder requires the .NET 11+ ILC; see _SkipILLink).
+		-->
+		<PrepareAssemblies Condition="'$(PrepareAssemblies)' == '' And '$(_UseNativeAot)' == 'true' And '$(Registrar)' == 'trimmable-static' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '11.0'))">true</PrepareAssemblies>
+		<PostProcessAssemblies Condition="'$(PostProcessAssemblies)' == '' And '$(_UseNativeAot)' == 'true' And '$(Registrar)' == 'trimmable-static' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '11.0'))">true</PostProcessAssemblies>
+
 		<UseMonoRuntime Condition=" '$(UseMonoRuntime)' == ''">false</UseMonoRuntime>
 
 		<AfterMicrosoftNETSdkTargets>$(AfterMicrosoftNETSdkTargets);$(MSBuildThisFileDirectory)Microsoft.$(_PlatformName).Sdk.targets</AfterMicrosoftNETSdkTargets>

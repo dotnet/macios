@@ -19,7 +19,7 @@ public abstract class BaseClass {
 
 	public bool AssertPrepare (ApplePlatform platform, bool isCoreCLR, string code, out AssemblyDefinition assemblyDefinition, string? extraConfig = null)
 	{
-		return AssertPrepare (platform, isCoreCLR, RegistrarMode.Dynamic, code, out assemblyDefinition, extraConfig);
+		return AssertPrepare (platform, isCoreCLR, RegistrarMode.Dynamic, code, out assemblyDefinition, extraConfig: extraConfig);
 	}
 
 	// returns true if the test assembly was modified

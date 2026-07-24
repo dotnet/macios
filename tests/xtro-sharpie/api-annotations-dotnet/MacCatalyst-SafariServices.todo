@@ -1,5 +1,0 @@
-!missing-protocol-member! SFAddToHomeScreenActivityItem::getHomeScreenWebAppInfoWithCompletionHandler: not found
-!missing-enum! SFSafariSettingsError not bound
-!missing-field! SFSafariSettingsErrorDomain not bound
-!missing-selector! +SFSafariSettings::checkAutoFillUserNamesAndPasswordsEnabledWithCompletionHandler: not bound
-!missing-type! SFSafariSettings not bound

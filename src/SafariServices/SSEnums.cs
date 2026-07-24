@@ -59,6 +59,14 @@ namespace SafariServices {
 		MaximumAttemptsExceeded = 6,
 	}
 
+	[NoTV, NoiOS, MacCatalyst (27, 0), Mac (27, 0)]
+	[Native]
+	[ErrorDomain ("SFSafariSettingsErrorDomain")]
+	public enum SFSafariSettingsError : long {
+		NotAllowed,
+		Failed,
+	}
+
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	[Native]

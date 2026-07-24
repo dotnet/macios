@@ -124,9 +124,9 @@ namespace CoreLocation {
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use 'AuthorizedAlways' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AuthorizedAlways' instead.")]
 		Authorized,
-		/// <summary>To be added.</summary>
+		/// <summary>The user has authorized the app to access location services at any time.</summary>
 		AuthorizedAlways = Authorized,
-		/// <summary>To be added.</summary>
+		/// <summary>The user has authorized the app to access location services only while the app is in use.</summary>
 		[Deprecated (PlatformName.MacOSX, 13, 0)]
 		AuthorizedWhenInUse,
 	}
@@ -146,7 +146,7 @@ namespace CoreLocation {
 		Fitness,
 		/// <summary>Indicates that the app is involved in navigation, but not in a car. This value should be used for tracking motion in, e.g., trains, planes, and boats.</summary>
 		OtherNavigation,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the app is involved in airborne activities.</summary>
 		[MacCatalyst (13, 1)]
 		Airborne,
 	}

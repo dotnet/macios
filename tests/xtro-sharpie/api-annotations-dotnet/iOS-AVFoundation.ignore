@@ -34,6 +34,9 @@
 !missing-null-allowed! 'System.Void AVFoundation.AVMutableMovie::LoadTracksWithMediaType(System.String,System.Action`2<Foundation.NSArray`1<AVFoundation.AVMovieTrack>,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
 !missing-null-allowed! 'System.Void AVFoundation.AVMutableMovie::LoadTracksWithMediaType(System.String,System.Action`2<Foundation.NSArray`1<AVFoundation.AVMovieTrack>,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1
 
+# AVAudioRoutingArbitrationCategory is macOS-only natively (API_UNAVAILABLE on the typedef), but the managed enum is bound and used by AVAudioRoutingArbiter.BeginArbitration.
+!unknown-native-enum! AVAudioRoutingArbitrationCategory bound
+
 ## bound selectors with no native declaration reachable from the class in the current SDK headers:
 ## private/SPI selectors, protocol/category members Apple inlines without declaring the conformance on
 ## the class, managed callback infrastructure, or API Apple removed/privatized - kept for compatibility

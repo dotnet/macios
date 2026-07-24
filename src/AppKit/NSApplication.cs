@@ -39,97 +39,58 @@ namespace AppKit {
 		///         <remarks>To be added.</remarks>
 		public static bool CheckForEventAndDelegateMismatches = true;
 
-		private static Thread? mainThread;
-
 		[DllImport (Constants.AppKitLibrary)]
 		extern static int /* int */ NSApplicationMain (int /* int */ argc, IntPtr argv);
 
-		static bool initialized;
-
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
-		[Preserve]
+#if !XAMCORE_5_0
+		/// <summary>This method does nothing.</summary>
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		public static void Init ()
 		{
-			if (initialized) {
-				throw new InvalidOperationException ("Init has already been invoked; it can only be invoked once");
-			}
-
-			Runtime.EnsureInitialized ();
-
-			initialized = true;
-
-			if (Runtime.DynamicRegistrationSupported)
-				Runtime.RegisterAssemblies ();
-
-			// Runtime hosts embedding MonoMac may use a different sync context 
-			// and call NSApplicationMain externally prior to this Init, so only
-			// initialize the context if it hasn't been set externally. Alternatively,
-			// AppKitSynchronizationContext could be made public.
-			if (SynchronizationContext.Current is null)
-				SynchronizationContext.SetSynchronizationContext (new AppKitSynchronizationContext ());
-
-			// Establish the main thread at the time of Init to support hosts
-			// that don't call Main.
-			NSApplication.mainThread = Thread.CurrentThread;
-
-			// Launcher sets this to work around https://bugzilla.xamarin.com/show_bug.cgi?id=45279
-			// But can affect child xbuild processes, so unset
-			Environment.SetEnvironmentVariable ("MONO_CFG_DIR", "");
-
-			// custom initialization might have happened before native NSApplication code was full ready to be queried
-			// as such it's possible that `class_ptr` might be empty and that will make things fails later
-			// reference: https://github.com/dotnet/macios/issues/7932
-			if (class_ptr == IntPtr.Zero)
-				ResetHandle ();
-
-			// TODO:
-			//   Install hook to register dynamically loaded assemblies
+			// No need anymore.
 		}
+#endif // !XAMCORE_5_0
 
-		// separate method so it can be invoked without `Init` (if needed)
-		static void ResetHandle ()
+		internal static void InitializeApplication ()
 		{
-			// `class_ptr` is `readonly` so one can't simply do `class_ptr = Class.GetHandle ("NSApplication");`
-			typeof (NSApplication).GetField ("class_ptr", BindingFlags.Static | BindingFlags.NonPublic)?.SetValue (null, Class.GetHandle ("NSApplication"));
+			SynchronizationContext.SetSynchronizationContext (new AppKitSynchronizationContext ());
 		}
 
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+#if !XAMCORE_5_0
+		/// <summary>This method does nothing.</summary>
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		public static void InitDrawingBridge ()
 		{
-			var UseCocoaDrawableField = Type.GetType ("System.Drawing.GDIPlus, System.Drawing")?.GetField ("UseCocoaDrawable", BindingFlags.Static | BindingFlags.Public);
-			var UseCarbonDrawableField = Type.GetType ("System.Drawing.GDIPlus, System.Drawing")?.GetField ("UseCarbonDrawable", BindingFlags.Static | BindingFlags.Public);
-
-			UseCocoaDrawableField?.SetValue (null, true);
-			UseCarbonDrawableField?.SetValue (null, false);
 		}
+#endif // !XAMCORE_5_0
 
 		/// <param name="args">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
+#if XAMCORE_5_0
+		public static int Main (string [] args)
+#else
 		public static void Main (string [] args)
+#endif
 		{
-			// Switch to an AppKitSynchronizationContext if Main is invoked
-			if (SynchronizationContext.Current is null || !typeof (AppKitSynchronizationContext).IsAssignableFrom (SynchronizationContext.Current.GetType ()))
-				SynchronizationContext.SetSynchronizationContext (new AppKitSynchronizationContext ());
-
-			// Init where this is set the first time is generally paired
-			// with a call to Main, but this guarantees the right thread.
-			NSApplication.mainThread = Thread.CurrentThread;
+			InitializeApplication ();
 
 			var argsPtr = TransientString.AllocStringArray (args);
-			NSApplicationMain (args.Length, argsPtr);
-			if (argsPtr != IntPtr.Zero)
+			try {
+#if XAMCORE_5_0
+				return NSApplicationMain (args.Length, argsPtr);
+#else
+				NSApplicationMain (args.Length, argsPtr);
+#endif
+			} finally {
 				TransientString.FreeStringArray (argsPtr, args.Length);
+			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <inheritdoc cref="ObjCRuntime.Runtime.EnsureUIThread" />
 		public static void EnsureUIThread ()
 		{
-			if (NSApplication.CheckForIllegalCrossThreadCalls && NSApplication.mainThread != Thread.CurrentThread)
-				throw new AppKitThreadAccessException ();
+			Runtime.EnsureUIThread ();
 		}
 
 		/// <param name="del">To be added.</param>

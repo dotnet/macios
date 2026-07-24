@@ -2818,6 +2818,37 @@ namespace Registrar {
 			// Don't need this dictionary, but do need ClassMapIndex
 			GetTypeMapDictionary (exceptions);
 
+#if !LEGACY_TOOLS
+			// When we know which UnmanagedCallersOnly trampolines survived the NativeAOT compiler (ILC) - which
+			// is only the case for the trimmable static registrar with NativeAOT + PrepareAssemblies, where the
+			// native registrar code is generated after ILC - we can skip generating the native code for any class
+			// whose trampolines were all trimmed away by ILC (ILC only trims a class's trampolines when it has
+			// determined the class can't be constructed, so nothing will reference it). We must however keep any
+			// class that's the base class of a class we're keeping, because its @implementation is still needed
+			// as a superclass.
+			HashSet<ObjCType>? classesToKeep = null;
+			HashSet<ObjCType>? classesWithTrampolines = null;
+			if (App.Registrar == RegistrarMode.TrimmableStatic && App.SurvivingTrampolineSymbols is not null) {
+				classesToKeep = new HashSet<ObjCType> ();
+				classesWithTrampolines = new HashSet<ObjCType> ();
+				foreach (var type in allTypes) {
+					if (type.IsProtocol || type.IsCategory)
+						continue;
+					var survived = ClassHasSurvivingTrampolines (type, out var hadTrampolines);
+					if (hadTrampolines)
+						classesWithTrampolines.Add (type);
+					// A class is skipped only if it had trampolines and none survived ILC. Every other class is
+					// emitted, so we must keep its entire base class chain (their @implementation is needed as
+					// superclasses), even if a base class itself had all its trampolines trimmed away.
+					if (!hadTrampolines || survived) {
+						var keep = type;
+						while (keep is not null && classesToKeep.Add (keep))
+							keep = keep.SuperType;
+					}
+				}
+			}
+#endif
+
 			foreach (var @class in allTypes) {
 				var isPlatformType = IsPlatformType (@class.Type);
 				var flags = MTTypeFlags.None;
@@ -2826,6 +2857,15 @@ namespace Registrar {
 					flags |= MTTypeFlags.CustomType;
 
 				skip.Clear ();
+
+#if !LEGACY_TOOLS
+				// This class had UnmanagedCallersOnly trampolines, but none survived ILC, and it's not needed as
+				// a base class of a class we're keeping - so ILC determined it can't be constructed: skip it.
+				if (classesWithTrampolines is not null
+					&& classesWithTrampolines.Contains (@class)
+					&& classesToKeep?.Contains (@class) == false)
+					continue;
+#endif
 
 				uint token_ref = uint.MaxValue;
 				if (App.Registrar != RegistrarMode.TrimmableStatic && !@class.IsProtocol && !@class.IsCategory) {
@@ -4216,6 +4256,29 @@ namespace Registrar {
 		}
 
 #if !LEGACY_TOOLS
+		// Returns true if the class has at least one UnmanagedCallersOnly trampoline that survived the NativeAOT
+		// compiler (ILC). 'hadTrampolines' is set to true if the class had any UnmanagedCallersOnly trampolines at
+		// all. This is only meaningful when App.SurvivingTrampolineSymbols is set (see App.DidTrampolineSurviveIlc).
+		bool ClassHasSurvivingTrampolines (ObjCType @class, out bool hadTrampolines)
+		{
+			hadTrampolines = false;
+			if (@class.Methods is null)
+				return false;
+			foreach (var method in @class.Methods) {
+				if (method.Method is null)
+					continue;
+				if (!App.Configuration.AssemblyTrampolineInfos.TryFindInfo (method.Method, out var pinvokeMethodInfo))
+					continue;
+				var ucoEntryPoint = pinvokeMethodInfo.UnmanagedCallersOnlyEntryPoint;
+				if (ucoEntryPoint is null)
+					continue;
+				hadTrampolines = true;
+				if (App.DidTrampolineSurviveIlc (ucoEntryPoint))
+					return true;
+			}
+			return false;
+		}
+
 		void GenerateCallToUnmanagedCallersOnlyMethod (AutoIndentStringBuilder sb, ObjCMethod method, bool isCtor, bool isVoid, int num_arg, string descriptiveMethodName, List<Exception> exceptions)
 		{
 			// Generate the native trampoline to call the generated UnmanagedCallersOnly method.
@@ -4232,6 +4295,16 @@ namespace Registrar {
 				return;
 			}
 			var ucoEntryPoint = pinvokeMethodInfo.UnmanagedCallersOnlyEntryPoint;
+			if (ucoEntryPoint is null) {
+				exceptions.Add (ErrorHelper.CreateError (99, "Could not find the UnmanagedCallersOnly entry point for {0}", descriptiveMethodName));
+				return;
+			}
+			// If the trampoline didn't survive the NativeAOT compiler (ILC), we can't emit a direct native
+			// reference to it (that would be an undefined symbol at native link time). Route it through the
+			// dlsym fallback instead - the trampoline is never actually invoked, since ILC only trims a
+			// trampoline when it has determined the associated managed type can't be constructed.
+			if (staticCall && !App.DidTrampolineSurviveIlc (ucoEntryPoint))
+				staticCall = false;
 			sb.AppendLine ();
 			if (!staticCall)
 				sb.Append ("typedef ");

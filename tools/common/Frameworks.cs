@@ -510,7 +510,6 @@ public class Frameworks : Dictionary<string, Framework> {
 					{ "GameSave", "GameSave", 26, 0 },
 					{ "TouchController", "TouchController", 26, 0 },
 
-					{ "AppManagedFeatures", "AppManagedFeatures", new Version (27, 0), NotAvailableInSimulator },
 					{ "AVSystemRouting", "AVSystemRouting", new Version (27, 0), NotAvailableInSimulator },
 					{ "EnhancedLinkSecurity", "EnhancedLinkSecurity", 27, 0 },
 					{ "LinkSecurity", "LinkSecurity", 27, 0 },
@@ -697,7 +696,6 @@ public class Frameworks : Dictionary<string, Framework> {
 					case "GLKit":
 					case "VideoSubscriberAccount":
 					case "AccessorySetupKit":
-					case "AppManagedFeatures":
 					case "AVSystemRouting":
 					// The headers for FileProviderUI exist, but the native linker fails
 					case "FileProviderUI":

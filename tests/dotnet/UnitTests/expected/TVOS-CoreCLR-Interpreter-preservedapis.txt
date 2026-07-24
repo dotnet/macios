@@ -175,9 +175,9 @@ Microsoft.tvOS.dll:Foundation.NSObject.get_IsRegisteredToggleRef()
 Microsoft.tvOS.dll:Foundation.NSObject.GetData()
 Microsoft.tvOS.dll:Foundation.NSObject.GetHashCode()
 Microsoft.tvOS.dll:Foundation.NSObject.GetNativeHash()
-Microsoft.tvOS.dll:Foundation.NSObject.Initialize()
 Microsoft.tvOS.dll:Foundation.NSObject.InitializeHandle(ObjCRuntime.NativeHandle, System.String, System.Boolean)
 Microsoft.tvOS.dll:Foundation.NSObject.InitializeHandle(ObjCRuntime.NativeHandle, System.String)
+Microsoft.tvOS.dll:Foundation.NSObject.InitializeObject()
 Microsoft.tvOS.dll:Foundation.NSObject.InitializeObject(System.Boolean)
 Microsoft.tvOS.dll:Foundation.NSObject.InvokeConformsToProtocol(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:Foundation.NSObject.InvokeOnMainThread(System.Threading.SendOrPostCallback, System.Object)
@@ -319,7 +319,7 @@ Microsoft.tvOS.dll:ObjCRuntime.Class.GetClassHandle(System.Type, System.Boolean,
 Microsoft.tvOS.dll:ObjCRuntime.Class.GetClassName(System.IntPtr)
 Microsoft.tvOS.dll:ObjCRuntime.Class.GetHandle(System.Type)
 Microsoft.tvOS.dll:ObjCRuntime.Class.GetHashCode()
-Microsoft.tvOS.dll:ObjCRuntime.Class.Initialize(ObjCRuntime.Runtime/InitializationOptions*)
+Microsoft.tvOS.dll:ObjCRuntime.Class.InitializeClass(ObjCRuntime.Runtime/InitializationOptions*)
 Microsoft.tvOS.dll:ObjCRuntime.Class.Lookup(System.IntPtr, System.Boolean)
 Microsoft.tvOS.dll:ObjCRuntime.Class.Lookup(System.IntPtr)
 Microsoft.tvOS.dll:ObjCRuntime.Class.object_getClass(System.IntPtr)
@@ -549,8 +549,8 @@ Microsoft.tvOS.dll:ObjCRuntime.RegistrarHelper/MapInfo
 Microsoft.tvOS.dll:ObjCRuntime.RegistrarHelper/MapInfo..ctor(ObjCRuntime.IManagedRegistrar)
 Microsoft.tvOS.dll:ObjCRuntime.Runtime
 Microsoft.tvOS.dll:ObjCRuntime.Runtime..cctor()
-Microsoft.tvOS.dll:ObjCRuntime.Runtime.<ConstructINativeObject>g__ConstructINativeObjectViaFactoryMethod|289_0`1(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:ObjCRuntime.Runtime.<ConstructNSObject>g__ConstructNSObjectViaFactoryMethod|288_0`1(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.<ConstructINativeObject>g__ConstructINativeObjectViaFactoryMethod|291_0`1(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.<ConstructNSObject>g__ConstructNSObjectViaFactoryMethod|290_0`1(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:ObjCRuntime.Runtime.AllocGCHandle(System.Object, System.Runtime.InteropServices.GCHandleType)
 Microsoft.tvOS.dll:ObjCRuntime.Runtime.AllocGCHandle(System.Object)
 Microsoft.tvOS.dll:ObjCRuntime.Runtime.AppendAdditionalInformation(System.Text.StringBuilder, System.IntPtr, System.RuntimeMethodHandle)
@@ -1136,7 +1136,7 @@ Microsoft.tvOS.dll:System.String ObjCRuntime.ObjCException::Reason()
 Microsoft.tvOS.dll:System.String[] Foundation.NSException::CallStackSymbols()
 Microsoft.tvOS.dll:System.Threading.SendOrPostCallback Foundation.NSAsyncSynchronizationContextDispatcher::d
 Microsoft.tvOS.dll:System.Threading.SendOrPostCallback Foundation.NSSynchronizationContextDispatcher::d
-Microsoft.tvOS.dll:System.Threading.Thread UIKit.UIApplication::mainThread
+Microsoft.tvOS.dll:System.Threading.Thread ObjCRuntime.Runtime::mainThread
 Microsoft.tvOS.dll:System.Type Foundation.ProtocolAttribute::<WrapperType>k__BackingField
 Microsoft.tvOS.dll:System.Type Foundation.ProtocolAttribute::WrapperType()
 Microsoft.tvOS.dll:System.Type[] ObjCRuntime.Class::class_to_type
@@ -1161,7 +1161,7 @@ Microsoft.tvOS.dll:UIKit.UIApplication..cctor()
 Microsoft.tvOS.dll:UIKit.UIApplication..ctor(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:UIKit.UIApplication.Dispose(System.Boolean)
 Microsoft.tvOS.dll:UIKit.UIApplication.get_ClassHandle()
-Microsoft.tvOS.dll:UIKit.UIApplication.Initialize()
+Microsoft.tvOS.dll:UIKit.UIApplication.InitializeApplication()
 Microsoft.tvOS.dll:UIKit.UIApplication.Main(System.String[], System.Type, System.Type)
 Microsoft.tvOS.dll:UIKit.UIApplication.UIApplicationMain(System.Int32, System.String[], System.IntPtr, System.IntPtr)
 Microsoft.tvOS.dll:UIKit.UIApplication.xamarin_UIApplicationMain(System.Int32, System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)

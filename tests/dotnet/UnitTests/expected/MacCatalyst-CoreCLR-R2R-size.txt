@@ -1,9 +1,9 @@
-AppBundleSize: 18,171,509 bytes (17,745.6 KB = 17.3 MB)
+AppBundleSize: 18,108,709 bytes (17,684.3 KB = 17.3 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 Contents/Info.plist:
     1,060 bytes (1.0 KB = 0.0 MB)
 Contents/MacOS/SizeTestApp:
-    230,056 bytes (224.7 KB = 0.2 MB)
+    167,544 bytes (163.6 KB = 0.2 MB)
 Contents/MonoBundle/libcoreclr.dylib:
     5,482,504 bytes (5,354.0 KB = 5.2 MB)
 Contents/MonoBundle/libSystem.Globalization.Native.dylib:
@@ -23,7 +23,7 @@ Contents/MonoBundle/runtimeconfig.bin:
 Contents/MonoBundle/SizeTestApp.dll:
     7,168 bytes (7.0 KB = 0.0 MB)
 Contents/MonoBundle/SizeTestApp.r2r.dylib:
-    9,185,768 bytes (8,970.5 KB = 8.8 MB)
+    9,185,480 bytes (8,970.2 KB = 8.8 MB)
 Contents/MonoBundle/System.Collections.Immutable.dll:
     13,824 bytes (13.5 KB = 0.0 MB)
 Contents/MonoBundle/System.Diagnostics.StackTrace.dll:

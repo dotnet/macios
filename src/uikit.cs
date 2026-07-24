@@ -11417,6 +11417,7 @@ namespace UIKit {
 		UIMenu Create (string title, [NullAllowed] UIImage image, UIMenuIdentifier identifier, UIMenuOptions options, UIMenuElement [] children);
 
 		[Static]
+		[OverloadResolutionPriority (-1)]
 		[Export ("menuWithTitle:image:identifier:options:children:")]
 		UIMenu Create (string title, [NullAllowed] UIImage image, [NullAllowed] NSString identifier, UIMenuOptions options, UIMenuElement [] children);
 

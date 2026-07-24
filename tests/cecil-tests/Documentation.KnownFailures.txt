@@ -6425,8 +6425,6 @@ F:ScreenCaptureKit.SCStreamOutputType.Microphone
 F:ScreenCaptureKit.SCStreamOutputType.Screen
 F:ScreenCaptureKit.SCStreamType.Display
 F:ScreenCaptureKit.SCStreamType.Window
-F:Security.AuthorizationFlags.NoData
-F:Security.AuthorizationFlags.SkipInternalAuth
 F:Security.SecAccessControlCreateFlags.Companion
 F:Security.SecAccessControlCreateFlags.Watch
 F:Security.SecAuthenticationType.Any
@@ -25941,6 +25939,8 @@ M:Security.SslContext.Read(System.Byte[],System.IntPtr@)
 M:Security.SslContext.Write(System.Byte[],System.IntPtr@)
 M:Security.SslStreamConnection.Read(System.IntPtr,System.IntPtr@)
 M:Security.SslStreamConnection.Write(System.IntPtr,System.IntPtr@)
+M:SecurityInterface.SFAuthorizationView.Dispose(System.Boolean)
+M:SecurityInterface.SFChooseIdentityTableCellView.Dispose(System.Boolean)
 M:SecurityUI.SFCertificatePresentation.#ctor(Security.SecTrust)
 M:SecurityUI.SFCertificatePresentation.DismissSheet
 M:SecurityUI.SFCertificatePresentation.PresentSheet(AppKit.NSWindow,System.Action)

@@ -53,6 +53,7 @@ namespace Cecil.Tests {
 						failures [methodFullName] = $"Failed to process {m}: {e}";
 					}
 				}
+
 			}
 
 			Helper.AssertFailures (failures, knownFailuresHandleSafety, nameof (knownFailuresHandleSafety), "Members with unsafe handle usage");
@@ -174,6 +175,7 @@ namespace Cecil.Tests {
 			case "CoreGraphics.CGPDFObject": // just a wrapper around a pointer, doesn't free anything in its destructor
 			case "CoreText.CTRunDelegateOperations": // The Handle property is a GCHandle (converted to IntPtr)
 			case "CoreGraphics.CGEvent/TapData": // The Handle property is a GCHandle (converted to IntPtr)
+			case "Security.AuthorizationCallbacks": // non-owning wrapper around a borrowed callback struct pointer
 				switch (target.Name) {
 				case "get_Handle":
 					return false;
@@ -955,4 +957,3 @@ namespace Cecil.Tests {
 		}
 	}
 }
-

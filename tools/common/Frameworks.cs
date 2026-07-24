@@ -171,6 +171,7 @@ public class Frameworks : Dictionary<string, Framework> {
 					{ "MobileCoreServices", "CoreServices", 10, 3 },
 					{ "OpenGL", 10, 3 },
 					{ "SearchKit", "CoreServices", 10,3, "SearchKit" },
+					{ "SecurityInterface", 10, 3 },
 					{ "SystemConfiguration", 10, 3 },
 
 					{ "CoreData", 10, 4 },

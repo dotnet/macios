@@ -1597,8 +1597,12 @@ SECURITY_API_SOURCES = \
 	Security/SecureTransport.cs \
 
 SECURITY_CORE_SOURCES = \
+	Security/AuthorizationEngine.cs \
+	Security/AuthorizationEnums.cs \
 	Security/Certificate.cs \
 	Security/SecAccessControl.cs \
+	Security/SecKeychain.cs \
+	Security/SecKeychainSettings.cs \
 	Security/SecProtocolMetadata.cs \
 	Security/SecProtocolOptions.cs \
 	Security/Trust.cs \
@@ -1607,6 +1611,8 @@ SECURITY_CORE_SOURCES = \
 
 SECURITY_SOURCES = \
 	Security/Authorization.cs \
+	Security/AuthorizationCallbacks.cs \
+	Security/AuthorizationRights.cs \
 	Security/ImportExport.cs \
 	Security/Items.cs \
 	Security/Policy.cs \
@@ -1618,6 +1624,21 @@ SECURITY_SOURCES = \
 	Security/SecTrust.cs \
 	Security/SslConnection.cs \
 	Security/SslContext.cs \
+
+# SecurityInterface
+
+SECURITYINTERFACE_CORE_SOURCES = \
+	SecurityInterface/Enums.cs \
+
+SECURITYINTERFACE_SOURCES = \
+	SecurityInterface/SecurityInterfaceSheetDispatcher.cs \
+	SecurityInterface/SFCertificatePanel.cs \
+	SecurityInterface/SFCertificateView.cs \
+	SecurityInterface/SFChooseIdentityPanel.cs \
+	SecurityInterface/SFAuthorizationPluginView.cs \
+	SecurityInterface/SFAuthorizationView.cs \
+	SecurityInterface/SFKeychainSavePanel.cs \
+	SecurityInterface/SFKeychainSettingsPanel.cs \
 
 # SensitiveContentAnalysis
 
@@ -2127,6 +2148,7 @@ MACOS_FRAMEWORKS =          \
 	SensitiveContentAnalysis \
 	ServiceManagement       \
 	Security                \
+	SecurityInterface       \
 	SecurityUI              \
 	SharedWithYou           \
 	SharedWithYouCore       \

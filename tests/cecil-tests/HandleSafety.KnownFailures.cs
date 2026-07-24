@@ -124,6 +124,7 @@ namespace Cecil.Tests {
 			"ObjCRuntime.Runtime.UnwrapNSException (System.IntPtr)",
 			"ReplayKit.RPBroadcastConfiguration.set_VideoCompressionProperties (AVFoundation.AVVideoCodecSettings)",
 			"SceneKit.SCNSkinner.ToNSArray (SceneKit.SCNMatrix4[])",
+			"Security.AuthorizationCallbacks.GetTokenIdentities (Security.AuthorizationEngine, LocalAuthentication.LAContext, Foundation.NSArray&)",
 			"Security.SecIdentity.Import (System.Byte[], System.String)",
 			"Security.SecKey.Create (Foundation.NSData, Security.SecKeyType, Security.SecKeyClass, System.Int32, Foundation.NSDictionary, Foundation.NSError&)",
 			"Security.SecKey.CreateRandomKey (Security.SecKeyType, System.Int32, Foundation.NSDictionary, Foundation.NSError&)",

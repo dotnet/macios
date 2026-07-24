@@ -281,6 +281,7 @@ partial class Frameworks {
 		"ScriptingBridge",
 		"SearchKit",
 		"Security",
+		"SecurityInterface",
 		"SecurityUI",
 		"SensitiveContentAnalysis",
 		"ServiceManagement",
@@ -691,6 +692,7 @@ partial class Frameworks {
 	bool? _ScriptingBridge;
 	bool? _SearchKit;
 	bool? _Security;
+	bool? _SecurityInterface;
 	bool? _SecurityUI;
 	bool? _SensitiveContentAnalysis;
 	bool? _SensorKit;
@@ -870,6 +872,7 @@ partial class Frameworks {
 	public bool HaveScriptingBridge { get { if (!_ScriptingBridge.HasValue) _ScriptingBridge = GetValue ("ScriptingBridge"); return _ScriptingBridge.Value; } }
 	public bool HaveSearchKit { get { if (!_SearchKit.HasValue) _SearchKit = GetValue ("SearchKit"); return _SearchKit.Value; } }
 	public bool HaveSecurity { get { if (!_Security.HasValue) _Security = GetValue ("Security"); return _Security.Value; } }
+	public bool HaveSecurityInterface { get { if (!_SecurityInterface.HasValue) _SecurityInterface = GetValue ("SecurityInterface"); return _SecurityInterface.Value; } }
 	public bool HaveSecurityUI { get { if (!_SecurityUI.HasValue) _SecurityUI = GetValue ("SecurityUI"); return _SecurityUI.Value; } }
 	public bool HaveSensitiveContentAnalysis { get { if (!_SensitiveContentAnalysis.HasValue) _SensitiveContentAnalysis = GetValue ("SensitiveContentAnalysis"); return _SensitiveContentAnalysis.Value; } }
 	public bool HaveSensorKit { get { if (!_SensorKit.HasValue) _SensorKit = GetValue ("SensorKit"); return _SensorKit.Value; } }

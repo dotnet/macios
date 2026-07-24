@@ -70,7 +70,7 @@ namespace CoreVideo {
 		public int Flags { get { return (int) TimeFlags; } set { TimeFlags = (CVTimeFlags) value; } }
 
 #if !COREBUILD
-		/// <summary>Represents a zero duration..</summary>
+		/// <summary>Represents a zero duration.</summary>
 		///         <value>
 		///         </value>
 		public static CVTime ZeroTime {
@@ -89,11 +89,10 @@ namespace CoreVideo {
 		}
 #endif
 
+		/// <summary>Determines whether two CVTime objects are equal.</summary>
 		/// <param name="other">Object to compare with.</param>
-		///         <summary>Determines whether two CVTime objects are equal.</summary>
-		///         <returns>
-		///         </returns>
-		///         <remarks>Two CVTime structures are considered to be equal if their TimeValue, TimeScale and Flags fields are the same.</remarks>
+		/// <returns><see langword="true" /> if the two CVTime objects are equal; otherwise, <see langword="false" />.</returns>
+		/// <remarks>Two CVTime structures are considered to be equal if their TimeValue, TimeScale and Flags fields are the same.</remarks>
 		public override bool Equals (object? other)
 		{
 			if (!(other is CVTime))

@@ -10,8 +10,8 @@ namespace NetworkExtension {
 #if !COREBUILD
 		/// <summary>Creates a new empty hotspot helper options object.</summary>
 		public NEHotspotHelperOptions () : base (new NSMutableDictionary ()) { }
+		/// <summary>Creates a new hotspot helper options object from the provided dictionary.</summary>
 		/// <param name="dictionary">The dictionary.</param>
-		///         <summary>Creates a new hotspot helper options object from the provided dictionary.</summary>
 		public NEHotspotHelperOptions (NSDictionary dictionary) : base (dictionary) { }
 
 		/// <summary>Gets or sets the display name for the helper.</summary>

@@ -30,19 +30,19 @@ namespace Foundation {
 		CFStreamClientContext context;
 
 		// This is done manually because the generator can't handle byte[] as a native pointer (it will try to use NSArray instead).
+		/// <summary>Reads data from the stream into the provided buffer.</summary>
 		/// <param name="buffer">The buffer where data should be put.</param>
 		/// <param name="len">The size of the buffer (in bytes).</param>
-		/// <summary>Reads data from the stream into the provided buffer.</summary>
 		/// <returns>The number of bytes actually written.</returns>
 		public nint Read (byte [] buffer, nuint len)
 		{
 			return objc_msgSend (Handle, Selector.GetHandle (selReadMaxLength), buffer, len);
 		}
 
+		/// <summary>Read.</summary>
 		/// <param name="buffer">The buffer.</param>
 		/// <param name="offset">The offset.</param>
 		/// <param name="len">The len.</param>
-		/// <summary>Read.</summary>
 		public unsafe nint Read (byte [] buffer, int offset, nuint len)
 		{
 			if (offset + (long) len > buffer.Length)

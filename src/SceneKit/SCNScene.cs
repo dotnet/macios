@@ -14,8 +14,8 @@ using System.Collections.Generic;
 
 namespace SceneKit {
 	public partial class SCNScene : IEnumerable<SCNNode> {
+		/// <summary>Adds a node to the scene.</summary>
 		/// <param name="node">The node.</param>
-		///         <summary>Adds a node to the scene.</summary>
 		public void Add (SCNNode node)
 		{
 			RootNode.AddChildNode (node);

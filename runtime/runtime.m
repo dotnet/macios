@@ -1096,6 +1096,12 @@ xamarin_install_log_callbacks ()
 }
 
 void
+xamarin_initialize_dynamic_registrar ()
+{
+	options.Trampolines = &trampolines;
+}
+
+void
 xamarin_initialize ()
 {
 	GCHandle exception_gchandle = INVALID_GCHANDLE;
@@ -1133,7 +1139,6 @@ xamarin_initialize ()
 #endif
 
 	options.Delegates = &delegates;
-	options.Trampolines = &trampolines;
 	options.MarshalObjectiveCExceptionMode = xamarin_marshal_objectivec_exception_mode;
 	options.MarshalManagedExceptionMode = xamarin_marshal_managed_exception_mode;
 

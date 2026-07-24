@@ -35,8 +35,7 @@ using CVFillExtendedPixelsCallBackDataStruct = CoreVideo.CVFillExtendedPixelsCal
 #nullable enable
 
 namespace CoreVideo {
-	/// <summary>A class that supports the definition of customer pixel formats.</summary>
-	///     <remarks>To be added.</remarks>
+	/// <summary>A class that supports the definition of custom pixel formats.</summary>
 	public partial class CVPixelFormatDescription {
 #if !COREBUILD
 #if !XAMCORE_5_0

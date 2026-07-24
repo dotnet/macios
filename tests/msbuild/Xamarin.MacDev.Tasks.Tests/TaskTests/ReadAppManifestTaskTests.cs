@@ -29,6 +29,26 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		[Test]
+		public void ReadsApplicationMetadata ()
+		{
+			var task = CreateTask (createDictionary: (plist) => {
+				plist ["CFBundleDisplayName"] = "$(PRODUCT_NAME)";
+				plist ["CFBundleName"] = "Bundle Name";
+				plist ["CFBundleIdentifier"] = "com.xamarin.custom";
+				plist ["CFBundleShortVersionString"] = "2.3.4";
+				plist ["CFBundleVersion"] = "42";
+			});
+			ExecuteTask (task);
+			Assert.Multiple (() => {
+				Assert.That (task.CFBundleDisplayName, Is.EqualTo ("$(PRODUCT_NAME)"), "CFBundleDisplayName");
+				Assert.That (task.CFBundleName, Is.EqualTo ("Bundle Name"), "CFBundleName");
+				Assert.That (task.CFBundleIdentifier, Is.EqualTo ("com.xamarin.custom"), "CFBundleIdentifier");
+				Assert.That (task.CFBundleShortVersionString, Is.EqualTo ("2.3.4"), "CFBundleShortVersionString");
+				Assert.That (task.CFBundleVersion, Is.EqualTo ("42"), "CFBundleVersion");
+			});
+		}
+
+		[Test]
 		public void MacCatalystVersionConversion ()
 		{
 			var task = CreateTask (platform: ApplePlatform.MacCatalyst, (plist) => {

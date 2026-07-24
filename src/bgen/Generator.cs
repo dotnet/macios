@@ -2202,12 +2202,12 @@ public partial class Generator : IMemberGatherer {
 					print ("[Field (\"{0}\", \"{1}\")]", export.Selector, lib);
 					print ("static IntPtr {0};", kn);
 					print ("");
-					// linker will remove the attributes (but it's useful for testing)
-					print_generated_code ();
 					if (BindingTouch.SupportsXmlDocumentation) {
 						if (!WriteDocumentation (prop))
 							print ($"/// <summary>The value of the <c>{export.Selector}</c> key from the underlying <see cref=\"NSNotification\" />'s user info dictionary.</summary>");
 					}
+					// linker will remove the attributes (but it's useful for testing)
+					print_generated_code ();
 					print ("{0} {1}{2} {3} {{",
 						   is_internal ? "internal" : "public",
 						   propertyType,

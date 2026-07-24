@@ -14,6 +14,25 @@ It's highly desirable to use a direct native reference to Objective-C classes wh
 
 On the other hand there's one scenario when a direct native reference is not desirable: when the native Objective-C class does not exist.
 
+This can happen for third-party bindings: for instance a binding might declare a
+`[BaseType (typeof (NSObject))]` type for something that is a protocol - and not a class -
+natively, in which case there's no native Objective-C class to reference. A direct native
+reference to such a class would turn into a hard link error (`Undefined symbols:
+_OBJC_CLASS_$_TheClass`), even if the class is never actually used at runtime.
+
+To avoid this, we only emit a direct native reference for classes we can prove exist: classes
+that belong to a known platform (SDK) framework. For any other class (a class from a
+third-party binding, or a class we couldn't find a managed type for) we can't prove the native
+class exists, so we:
+
+* tell the native linker that the corresponding `_OBJC_CLASS_$_*` symbol is allowed to be
+  undefined (by passing `-U` to the native linker), so that a missing native class doesn't
+  break the link, and
+* fall back to `objc_getClass` at runtime if the direct reference turns out to be null.
+
+This mirrors the weak + `dlsym` fallback we do for inlined `dlfcn` symbols (see
+[native-symbols.md](native-symbols.md)).
+
 In order to create a direct native reference to Objective-C classes, we need to know the names of those Objective-C classes.
 
 ## The `InlineClassGetHandle` property

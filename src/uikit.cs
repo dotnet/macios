@@ -54,6 +54,7 @@ using NSToolbarItem = Foundation.NSObject;
 #endif
 
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 #nullable enable
 

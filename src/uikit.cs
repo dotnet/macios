@@ -3099,6 +3099,9 @@ namespace UIKit {
 			""")]
 		void OpenUrl (NSUrl url, UIApplicationOpenUrlOptions options, [NullAllowed] Action<bool> completion);
 
+		[Deprecated (PlatformName.iOS, 27, 0, message: "Prefer attempting to open URLs and handling any failures.")]
+		[Deprecated (PlatformName.TvOS, 27, 0, message: "Prefer attempting to open URLs and handling any failures.")]
+		[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Prefer attempting to open URLs and handling any failures.")]
 		[Export ("canOpenURL:")]
 		[PrologueSnippet ("if (url is null) return false;", Optimizable = true)] // null not really allowed (but it's a behaviour change with known bug reports)
 		bool CanOpenUrl (NSUrl url);
@@ -3398,6 +3401,10 @@ namespace UIKit {
 		[Export ("protectedDataAvailable")]
 		bool ProtectedDataAvailable { [Bind ("isProtectedDataAvailable")] get; }
 
+		[TV (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("systemPrefersReducedResourceUsage")]
+		bool SystemPrefersReducedResourceUsage { get; }
+
 		// from @interface UIApplication (UILocalNotifications)
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 10, 0, message: "Use 'UNUserNotificationCenter.AddNotificationRequest' instead.")]
@@ -3470,6 +3477,11 @@ namespace UIKit {
 		[Field ("UIApplicationProtectedDataDidBecomeAvailable")]
 		[Notification]
 		NSString ProtectedDataDidBecomeAvailable { get; }
+
+		[TV (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Field ("UIApplicationSystemPrefersReducedResourceUsageDidChangeNotification")]
+		[Notification]
+		NSString SystemPrefersReducedResourceUsageDidChangeNotification { get; }
 
 		/// <summary>Launch Options Key: Application was started up in response to a location event.</summary>
 		///         <value>Represents the value associated with the constant UIApplicationLaunchOptionsLocationKey</value>
@@ -9266,6 +9278,10 @@ namespace UIKit {
 		[iOS (18, 0), MacCatalyst (18, 0), TV (18, 0)]
 		[Export ("mathExpressionCompletionType")]
 		UITextMathExpressionCompletionType MathExpressionCompletionType { get; set; }
+
+		[iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		[Export ("grammarCheckingType")]
+		UITextGrammarCheckingType GrammarCheckingType { get; set; }
 
 		[NoTV, NoMacCatalyst, iOS (18, 4)]
 		[Export ("conversationContext", ArgumentSemantic.Strong)]
@@ -23961,6 +23977,11 @@ namespace UIKit {
 		[Export ("traitCollectionWithResolvesNaturalAlignmentWithBaseWritingDirection:")]
 		UITraitCollection GetTraitCollection (bool resolvesNaturalAlignmentWithBaseWritingDirection);
 
+		[TV (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Static]
+		[Export ("traitCollectionWithSystemPrefersReducedResourceUsage:")]
+		UITraitCollection FromSystemPrefersReducedResourceUsage (bool systemPrefersReducedResourceUsage);
+
 		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
 		[Export ("hdrHeadroomUsageLimit")]
 		UIHdrHeadroomUsageLimit HdrHeadroomUsageLimit { get; }
@@ -23976,6 +23997,10 @@ namespace UIKit {
 		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
 		[Export ("resolvesNaturalAlignmentWithBaseWritingDirection")]
 		bool ResolvesNaturalAlignmentWithBaseWritingDirection { get; }
+
+		[TV (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("systemPrefersReducedResourceUsage")]
+		bool SystemPrefersReducedResourceUsage { get; }
 	}
 
 	/// <summary>Provides the constants for <see cref="UIKit.UIViewControllerContextTransitioning.GetViewControllerForKey(Foundation.NSString)" />.</summary>
@@ -24831,6 +24856,18 @@ namespace UIKit {
 		[iOS (17, 4), MacCatalyst (17, 4), TV (17, 4)]
 		[Field ("UITextContentTypeCellularIMEI")]
 		NSString CellularImei { get; }
+
+		[iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		[Field ("UITextContentTypeCellularIMEI1")]
+		NSString CellularImei1 { get; }
+
+		[iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		[Field ("UITextContentTypeCellularIMEI2")]
+		NSString CellularImei2 { get; }
+
+		[iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		[Field ("UITextContentTypeCellularNAL")]
+		NSString CellularNal { get; }
 	}
 
 	[MacCatalyst (13, 1)]
@@ -36629,6 +36666,11 @@ namespace UIKit {
 		[Abstract]
 		[Export ("resolvesNaturalAlignmentWithBaseWritingDirection")]
 		bool ResolvesNaturalAlignmentWithBaseWritingDirection { get; set; }
+
+		[TV (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Abstract]
+		[Export ("systemPrefersReducedResourceUsage")]
+		bool SystemPrefersReducedResourceUsage { get; set; }
 	}
 
 
@@ -37025,6 +37067,14 @@ namespace UIKit {
 	[Native]
 	[TV (18, 0), NoMac, iOS (18, 0), MacCatalyst (18, 0)]
 	enum UITextMathExpressionCompletionType : long {
+		Default,
+		No,
+		Yes,
+	}
+
+	[Native]
+	[TV (27, 0), NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+	enum UITextGrammarCheckingType : long {
 		Default,
 		No,
 		Yes,
@@ -38419,6 +38469,12 @@ namespace UIKit {
 	[TV (26, 0), MacCatalyst (26, 0), iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
 	interface UITraitResolvesNaturalAlignmentWithBaseWritingDirection : UIObjectTraitDefinition {
+
+	}
+
+	[TV (27, 0), MacCatalyst (27, 0), iOS (27, 0)]
+	[BaseType (typeof (NSObject))]
+	interface UITraitSystemPrefersReducedResourceUsage : UINSIntegerTraitDefinition {
 
 	}
 

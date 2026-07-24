@@ -1592,6 +1592,10 @@ namespace CarPlay {
 		[Static]
 		[Export ("maximumAvatarImageSize")]
 		CGSize MaximumAvatarImageSize { get; }
+
+		[NoMacCatalyst, iOS (27, 0)]
+		[Export ("showsCloseButton")]
+		bool ShowsCloseButton { get; set; }
 	}
 
 	/// <summary>A session that may involve planning, updating, and executing a trip.</summary>
@@ -3648,7 +3652,7 @@ namespace CarPlay {
 		[Export ("initWithPrimaryAction:secondaryButton:travelEstimates:")]
 		NativeHandle Constructor (CPTextButton primaryAction, [NullAllowed] CPButton secondaryButton, CPTravelEstimates travelEstimates);
 
-		[Export ("travelEstimates", ArgumentSemantic.Copy)]
+		[NullAllowed, Export ("travelEstimates", ArgumentSemantic.Copy)]
 		CPTravelEstimates TravelEstimates { get; set; }
 
 		[NullAllowed, Export ("secondaryButton", ArgumentSemantic.Copy)]
@@ -3679,7 +3683,7 @@ namespace CarPlay {
 		string Title { get; }
 
 		[Export ("sections", ArgumentSemantic.Copy)]
-		CPMapPanelSection [] Sections { get; }
+		CPMapPanelSection [] Sections { get; set; }
 
 		[NullAllowed, Export ("buttonConfiguration", ArgumentSemantic.Strong)]
 		CPMapPanelButtonConfiguration ButtonConfiguration { get; }
@@ -3766,6 +3770,14 @@ namespace CarPlay {
 		[Static]
 		[Export ("routeDetailWithWarning:")]
 		CPRouteDetail CreateWarning (string warning);
+
+		[Static]
+		[Export ("routeDetailWithInfo:")]
+		CPRouteDetail CreateInfo (string info);
+
+		[Static]
+		[Export ("routeDetailWithParking:")]
+		CPRouteDetail CreateParking (string parking);
 
 		[Static]
 		[Export ("routeDetailWithSymbolName:value:")]

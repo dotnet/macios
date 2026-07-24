@@ -1025,9 +1025,13 @@ namespace BrowserEngineKit {
 		[Export ("createXPCRepresentation")]
 		OS_xpc_object CreateXpcRepresentation ();
 
+		[Deprecated (PlatformName.iOS, 27, 0, message: "Use 'BEProcessCapability.Activate' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Use 'BEProcessCapability.Activate' instead.")]
 		[Export ("activateWithError:")]
 		bool Activate ([NullAllowed] out NSError error);
 
+		[Deprecated (PlatformName.iOS, 27, 0, message: "Use 'BEProcessCapability.Suspend' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Use 'BEProcessCapability.Suspend' instead.")]
 		[Export ("suspendWithError:")]
 		bool Suspend ([NullAllowed] out NSError error);
 
@@ -1065,11 +1069,11 @@ namespace BrowserEngineKit {
 		[Export ("requestWithError:")]
 		IBEProcessCapabilityGrant Request ([NullAllowed] out NSError error);
 
-		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[NoMac, iOS (27, 0), MacCatalyst (27, 0)]
 		[Export ("activateWithError:")]
 		bool Activate ([NullAllowed] out NSError error);
 
-		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[NoMac, iOS (27, 0), MacCatalyst (27, 0)]
 		[Export ("suspendWithError:")]
 		bool Suspend ([NullAllowed] out NSError error);
 	}

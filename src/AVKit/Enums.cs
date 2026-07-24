@@ -65,13 +65,6 @@ namespace AVKit {
 
 	[NoTV, Mac (26, 4), iOS (26, 4), MacCatalyst (26, 4)]
 	[Native]
-	public enum AVLegibleMediaOptionsMenuType : long {
-		Default = 0,
-		CaptionAppearance,
-	}
-
-	[NoTV, Mac (26, 4), iOS (26, 4), MacCatalyst (26, 4)]
-	[Native]
 	public enum AVLegibleMediaOptionsMenuStateChangeReason : long {
 		None = 0,
 		LanguageMismatch,

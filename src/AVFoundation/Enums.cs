@@ -382,6 +382,8 @@ namespace AVFoundation {
 		FollowExternalSyncFailed = -11894,
 		ExternalSyncDeviceFrequencyHigherThanSpecified = -11895,
 		ExternalSyncDeviceFrequencyLowerThanSpecified = -11896,
+		/// <summary>Indicates that there is insufficient storage space to replenish Pro Video Storage.</summary>
+		NotEnoughSpaceForProVideoStorageReplenishment = -11897,
 	}
 
 	/// <summary>An enumeration whose values specify the behavior of the player when it finishes playing.</summary>

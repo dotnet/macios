@@ -130,6 +130,13 @@ namespace XmlDocumentation {
 		// No <param /> tag here
 		[Export ("methodWithUndocumentedArgs:")]
 		int PMethodWithUndocumentedArgs (int arg0);
+
+		/// <summary>
+		/// Summary for P1.PMethodWithBindAs
+		/// </summary>
+		/// <param name="value">Docs for value.</param>
+		[Export ("methodWithBindAs:")]
+		void PMethodWithBindAs ([BindAs (typeof (E2))] NSString value);
 	}
 
 	/// <summary>

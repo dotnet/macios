@@ -18,9 +18,9 @@ namespace SceneKit {
 
 #if !__MACCATALYST__
 
+		/// <summary>Creates an <see cref="SCNRenderer" /> from the specified OpenGL context.</summary>
 		/// <param name="context">The context.</param>
 		/// <param name="options">The options.</param>
-		/// <summary>FromContext.</summary>
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]

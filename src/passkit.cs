@@ -3498,9 +3498,7 @@ namespace PassKit {
 		/// <summary>Gets or sets the issuer identifiers for acceptable document signer certificates.</summary>
 		/// <remarks>An empty array accepts any document signer certificate. The native API limits this array to 1,000 identifiers and each identifier to 64 bytes; exceeding either limit terminates the app.</remarks>
 		[iOS (27, 0), MacCatalyst (27, 0), NoMac, NoTV]
-#if XAMCORE_5_0
 		[Abstract]
-#endif
 		[Export ("issuerIdentifiers", ArgumentSemantic.Copy)]
 		NSData [] IssuerIdentifiers { get; set; }
 

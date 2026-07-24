@@ -22,8 +22,8 @@ namespace UIKit {
 				return new UITextAttributes (_TitleTextAttributes);
 			}
 
+			/// <summary>Sets the text attributes used by the title text.</summary>
 			/// <param name="attributes">The attributes.</param>
-			///         <summary>Sets the text attributes used by the title text.</summary>
 			public virtual void SetTitleTextAttributes (UITextAttributes attributes)
 			{
 				if (attributes is null)

@@ -10,7 +10,7 @@ namespace HomeKit {
 		/// <summary>Gets or sets a value that tells whether the property supports numbered changes.</summary>
 		public bool SupportsChangeNumber { get; set; }
 
-		/// <summary>Gets or sets a value that tells whether the property support bonjour notifications.</summary>
+		/// <summary>Gets or sets a value that tells whether the property supports Bonjour notifications.</summary>
 		public bool SupportsBonjourNotification { get; set; }
 
 		/// <summary>Gets or sets a value that tells whether the property supports event notifications.</summary>

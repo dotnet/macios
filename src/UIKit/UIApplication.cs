@@ -18,7 +18,7 @@ using CoreFoundation;
 namespace UIKit {
 	/// <include file="../../docs/api/UIKit/UIKitThreadAccessException.xml" path="/Documentation/Docs[@DocId='T:UIKit.UIKitThreadAccessException']/*" />
 	public class UIKitThreadAccessException : Exception {
-		/// <summary>UIKitThreadAccessException.</summary>
+		/// <summary>Initializes a new instance of the <see cref="UIKitThreadAccessException" /> class.</summary>
 		public UIKitThreadAccessException () : base ("UIKit Consistency error: you are calling a UIKit method that can only be invoked from the UI thread.")
 		{
 		}
@@ -147,7 +147,7 @@ namespace UIKit {
 		}
 	}
 
-	/// <summary>Provides data for the  event.</summary>
+	/// <summary>Provides data for the <see cref="UIContentSizeCategory" /> changed event.</summary>
 	public partial class UIContentSizeCategoryChangedEventArgs {
 		/// <summary>The new size of the content, e.g., the new font size, in points.</summary>
 		public UIContentSizeCategory NewValue {

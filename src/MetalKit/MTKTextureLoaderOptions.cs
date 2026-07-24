@@ -19,7 +19,7 @@ namespace MetalKit {
 	[SupportedOSPlatform ("tvos")]
 	public partial class MTKTextureLoaderOptions : DictionaryContainer {
 
-		/// <summary>Gets an orable flag value that describes for which of the following the texture will be used: for blitting; as a render target; as a shader read source or write target; as a pixel format view; or for an unknown use.</summary>
+		/// <summary>Gets a flag value that describes for which of the following the texture will be used: for blitting; as a render target; as a shader read source or write target; as a pixel format view; or for an unknown use.</summary>
 		public MTLTextureUsage? TextureUsage {
 			get {
 				var val = GetNUIntValue (MTKTextureLoaderKeys.TextureUsageKey);

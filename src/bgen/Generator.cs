@@ -7112,8 +7112,8 @@ public partial class Generator : IMemberGatherer {
 						var eventArgs = AttributeManager.GetCustomAttribute<EventArgsAttribute> (mi);
 						var xmlDocs = eventArgs?.XmlDocs;
 						var hasXmlDocs = !string.IsNullOrEmpty (xmlDocs);
-						if (hasXmlDocs) {
-							var docLines = xmlDocs!.Split ('\n');
+						if (!string.IsNullOrEmpty (xmlDocs)) {
+							var docLines = xmlDocs.Split ('\n');
 							foreach (var line in docLines)
 								print ($"/// {line}");
 						}

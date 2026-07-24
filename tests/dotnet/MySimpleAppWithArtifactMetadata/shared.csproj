@@ -15,9 +15,10 @@
 
 	<ItemGroup>
 		<Compile Include="../*.cs" />
+		<None Include="../$(CustomApplicationManifest)" Link="Info.plist" Condition="'$(CustomApplicationManifest)' != ''" />
 	</ItemGroup>
 
-	<Target Name="AddMauiApplicationArtifactMetadata">
+	<Target Name="AddMauiApplicationArtifactMetadata" Condition="'$(ExpectedAugmentedPackageFormat)' != ''">
 		<ItemGroup>
 			<_MauiObservedAppArtifact Include="@(ApplicationArtifact)" Condition="'%(ApplicationArtifact.PackageFormat)' == 'app'" />
 			<_MauiObservedPackageArtifact Include="@(ApplicationArtifact)" Condition="'%(ApplicationArtifact.PackageFormat)' == '$(ExpectedAugmentedPackageFormat)'" />

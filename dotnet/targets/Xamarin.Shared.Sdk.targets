@@ -123,6 +123,14 @@
 		<!-- As a last resort, the default is false for all platforms -->
 		<_BundlerDebug Condition="'$(_BundlerDebug)' == ''">false</_BundlerDebug>
 
+		<!--
+			Hot Reload requires that we don't modify user (reloadable) assemblies. It's a debug-only
+			feature, so default $(HotReloadCompatibleBuild) to the debug state: this keeps the current
+			behaviour (and app size) for release builds, where the extra unconditional preservation of
+			smart-enum conversion methods would otherwise cost a bit of app size.
+		-->
+		<HotReloadCompatibleBuild Condition="'$(HotReloadCompatibleBuild)' == ''">$(_BundlerDebug)</HotReloadCompatibleBuild>
+
 		<!-- On the other hand, we want the linker to link away debug support in the actual code unless we're building for Debug -->
 		<DebuggerSupport Condition="'$(DebuggerSupport)' == ''">$(_BundlerDebug)</DebuggerSupport>
 
@@ -273,6 +281,7 @@
 			_ComputeLinkerArguments;
 			_PrepareAssemblies;
 			_SetDynamicRegistrationSupportedFeature;
+			_SetSmartEnumConversionsRootDescriptor;
 			_ComputeFrameworkFilesToPublish;
 			_ComputeDynamicLibrariesToPublish;
 			ComputeFilesToPublish;
@@ -591,6 +600,35 @@
 		</PropertyGroup>
 		<ItemGroup Condition="'$(_DynamicRegistrationSupported)' != ''">
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.DynamicRegistrationSupported" Value="$(_DynamicRegistrationSupported)" Trim="true" />
+		</ItemGroup>
+	</Target>
+
+	<!--
+		Wires the smart-enum conversion root-descriptor XML (emitted by the assembly-preparer's
+		PreserveSmartEnumConversionsStep when $(HotReloadCompatibleBuild) is enabled) into the trimmer.
+		Instead of injecting [DynamicDependency] attributes into user (reloadable) assemblies - which
+		would break Hot Reload - the assembly-preparer writes an ILLink root-descriptor XML that
+		preserves the framework-side conversion methods (GetConstant/GetValue), and reports its path as
+		the 'SmartEnumConversionsRootDescriptor' MSBuild output property in $(_AssemblyPreparerMSBuildOutputFile).
+		This target runs after _PrepareAssemblies and before the trimmer. It's not incremental-gated, so
+		even if _PrepareAssemblies was skipped (because its outputs were up-to-date), the value is still
+		read from the (persisted) file and the descriptor is added to the trimmer inputs.
+	-->
+	<Target Name="_SetSmartEnumConversionsRootDescriptor" Condition="'$(PrepareAssemblies)' == 'true'">
+		<ReadLinesFromFile
+			File="$(_AssemblyPreparerMSBuildOutputFile)"
+			Condition="Exists('$(_AssemblyPreparerMSBuildOutputFile)')">
+			<Output TaskParameter="Lines" ItemName="_SmartEnumConversionsMSBuildOutputProperty" />
+		</ReadLinesFromFile>
+		<ItemGroup>
+			<_SmartEnumConversionsRootDescriptorLine Include="@(_SmartEnumConversionsMSBuildOutputProperty)" Condition="$([System.String]::Copy('%(Identity)').StartsWith('SmartEnumConversionsRootDescriptor='))" />
+		</ItemGroup>
+		<PropertyGroup>
+			<_SmartEnumConversionsRootDescriptorLineText>@(_SmartEnumConversionsRootDescriptorLine)</_SmartEnumConversionsRootDescriptorLineText>
+			<_SmartEnumConversionsRootDescriptor Condition="'$(_SmartEnumConversionsRootDescriptorLineText)' != ''">$(_SmartEnumConversionsRootDescriptorLineText.Replace('SmartEnumConversionsRootDescriptor=', ''))</_SmartEnumConversionsRootDescriptor>
+		</PropertyGroup>
+		<ItemGroup Condition="'$(_SmartEnumConversionsRootDescriptor)' != '' And Exists('$(_SmartEnumConversionsRootDescriptor)')">
+			<TrimmerRootDescriptor Include="$(_SmartEnumConversionsRootDescriptor)" />
 		</ItemGroup>
 	</Target>
 

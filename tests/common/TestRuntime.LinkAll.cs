@@ -38,7 +38,7 @@ partial class TestRuntime {
 				};
 				link_any = false;
 				foreach (var uncommonType in uncommonTypes) {
-					link_any = typeof (int).Assembly.GetType (uncommonType) is null;
+					link_any = typeof (int).Assembly.GetType (uncommonType + WorkAroundLinkerHeuristics) is null;
 					if (link_any == true)
 						break;
 				}

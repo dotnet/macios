@@ -1,0 +1,45 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+using System.Diagnostics.CodeAnalysis;
+
+// This is a small, dependency-free part of TestRuntime that can be compiled on its own (e.g. into the
+// BundledResources assembly, where compiling the full TestRuntime.cs isn't possible because it would
+// re-export types that clash with other referenced test assemblies).
+partial class TestRuntime {
+
+	// Determine if linkall was enabled by checking if an unused class in this assembly is still here.
+	static bool? link_all;
+	[UnconditionalSuppressMessage ("Trimming", "IL2026", Justification = "This property checks whether the trimmer is enabled by checking if a type survived trimming; it's thus trimmer safe in that the any behavioral difference when the trimmer is enabled is exactly what it's looking for.")]
+	public static bool IsLinkAll {
+		get {
+			if (!link_all.HasValue)
+				link_all = typeof (TestRuntime).Assembly.GetType (typeof (TestRuntime).FullName + "+LinkerSentinel") is null;
+			return link_all.Value;
+		}
+	}
+	class LinkerSentinel { }
+
+	// Determine if any assemblies were linked by checking if a few uncommon classes in corlib are still here.
+	static bool? link_any;
+	[UnconditionalSuppressMessage ("Trimming", "IL2026", Justification = "This property checks whether the trimmer is enabled by checking if a type survived trimming; it's thus trimmer safe in that the any behavioral difference when the trimmer is enabled is exactly what it's looking for.")]
+	public static bool IsLinkAny {
+		get {
+			if (!link_any.HasValue) {
+				var uncommonTypes = new string [] {
+					"System.Action`14",
+					"System.DBNull",
+					"System.Diagnostics.Debugger",
+					"System.Func`15",
+				};
+				link_any = false;
+				foreach (var uncommonType in uncommonTypes) {
+					link_any = typeof (int).Assembly.GetType (uncommonType) is null;
+					if (link_any == true)
+						break;
+				}
+			}
+			return link_any.Value;
+		}
+	}
+}

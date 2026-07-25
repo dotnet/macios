@@ -34,9 +34,8 @@ namespace Foundation {
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the UUID as a 16-byte array.</summary>
+		/// <returns>A 16-byte array containing the UUID value.</returns>
 		public byte [] GetBytes ()
 		{
 			byte [] ret = new byte [16];

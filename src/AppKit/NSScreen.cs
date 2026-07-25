@@ -31,9 +31,8 @@ namespace AppKit {
 
 	public partial class NSScreen {
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the list of window depths supported by this screen.</summary>
+		/// <value>An array of supported window depth values.</value>
 		public NSWindowDepth [] SupportedWindowDepths {
 			get {
 				List<NSWindowDepth> list = new List<NSWindowDepth> ();

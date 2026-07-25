@@ -1,4 +1,5 @@
 #if __MACOS__
+using System.IO;
 using System.Linq;
 using System.Threading;
 
@@ -10,6 +11,13 @@ namespace Xamarin.Mac.Tests {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class NSPasteboardTests {
+		static string CreateTemporaryHtmlFile ()
+		{
+			var path = Path.Combine (Path.GetTempPath (), $"{nameof (NSPasteboardTests)}-{Guid.NewGuid ()}.html");
+			File.WriteAllText (path, "<html></html>");
+			return path;
+		}
+
 		[Test]
 		public void DetectPatternsTests_WeaklyTyped ()
 		{
@@ -333,7 +341,9 @@ namespace Xamarin.Mac.Tests {
 			TestRuntime.AssertXcodeVersion (16, 3);
 
 			using var pasteboard = NSPasteboard.CreateWithUniqueName ();
+			var temporaryHtmlFile = CreateTemporaryHtmlFile ();
 			try {
+				using var temporaryHtmlFileUrl = NSUrl.FromFilename (temporaryHtmlFile);
 				var evt = new ManualResetEvent (false);
 				NSDictionary<NSString, NSObject>? detected = null;
 				NSError? error = null;
@@ -354,19 +364,21 @@ namespace Xamarin.Mac.Tests {
 				Assert.That ((int) detected.Count, Is.EqualTo (0), "WeaklyTyped DetectMetadata #1 count");
 				Assert.That (error, Is.Null, "WeaklyTyped DetectMetadata #1 error");
 
-				pasteboard.ClearContents ();
-				pasteboard.SetStringForType ("file:///this/is/some/file.html", NSPasteboardType.FileUrl.GetConstant ());
 				// The pasteboard subsystem may need time to analyze content metadata,
-				// so retry detection if it returns empty results.
+				// so rewrite the contents and retry detection if it returns empty results.
 				for (int attempt = 0; attempt < 5; attempt++) {
+					pasteboard.ClearContents ();
+					Assert.That (pasteboard.SetStringForType (temporaryHtmlFileUrl.AbsoluteString, NSPasteboardType.FileUrl.GetConstant ()), Is.True, $"WeaklyTyped DetectMetadata #2 set (attempt {attempt + 1})");
 					evt.Reset ();
 					detected = null;
 					error = null;
 					pasteboard.DetectMetadata (hashSet, callback);
 					Assert.That (evt.WaitOne (TimeSpan.FromSeconds (10)), "WeaklyTyped DetectMetadata #2 wait");
 					Assert.That (detected, Is.Not.Null, "WeaklyTyped DetectMetadata #2 patterns");
+					Assert.That (error, Is.Null, $"WeaklyTyped DetectMetadata #2 error (attempt {attempt + 1})");
 					if ((int) detected.Count > 0)
 						break;
+					TestContext.Out.WriteLine ($"WeaklyTyped DetectMetadata #2 returned no metadata on attempt {attempt + 1} (change count: {pasteboard.ChangeCount}, error: {error}).");
 					Thread.Sleep (500);
 				}
 				Assert.That ((int) detected.Count, Is.EqualTo (1), "WeaklyTyped DetectMetadata #2 count");
@@ -388,6 +400,7 @@ namespace Xamarin.Mac.Tests {
 				Assert.That (error, Is.Not.Null, "WeaklyTyped DetectMetadata #3 error");
 			} finally {
 				pasteboard.ReleaseGlobally ();
+				File.Delete (temporaryHtmlFile);
 			}
 		}
 
@@ -397,7 +410,9 @@ namespace Xamarin.Mac.Tests {
 			TestRuntime.AssertXcodeVersion (16, 3);
 
 			using var pasteboard = NSPasteboard.CreateWithUniqueName ();
+			var temporaryHtmlFile = CreateTemporaryHtmlFile ();
 			try {
+				using var temporaryHtmlFileUrl = NSUrl.FromFilename (temporaryHtmlFile);
 				var evt = new ManualResetEvent (false);
 				NSDictionary<NSString, NSObject>? detected = null;
 				NSError? error = null;
@@ -418,19 +433,21 @@ namespace Xamarin.Mac.Tests {
 				Assert.That ((int) detected.Count, Is.EqualTo (0), "SomewhatStronglyTyped DetectMetadata #1 count");
 				Assert.That (error, Is.Null, "SomewhatStronglyTyped DetectMetadata #1 error");
 
-				pasteboard.ClearContents ();
-				pasteboard.SetStringForType ("file:///this/is/some/file.html", NSPasteboardType.FileUrl.GetConstant ());
 				// The pasteboard subsystem may need time to analyze content metadata,
-				// so retry detection if it returns empty results.
+				// so rewrite the contents and retry detection if it returns empty results.
 				for (int attempt = 0; attempt < 5; attempt++) {
+					pasteboard.ClearContents ();
+					Assert.That (pasteboard.SetStringForType (temporaryHtmlFileUrl.AbsoluteString, NSPasteboardType.FileUrl.GetConstant ()), Is.True, $"SomewhatStronglyTyped DetectMetadata #2 set (attempt {attempt + 1})");
 					evt.Reset ();
 					detected = null;
 					error = null;
 					pasteboard.DetectMetadata (hashSet, callback);
 					Assert.That (evt.WaitOne (TimeSpan.FromSeconds (10)), "SomewhatStronglyTyped DetectMetadata #2 wait");
 					Assert.That (detected, Is.Not.Null, "SomewhatStronglyTyped DetectMetadata #2 patterns");
+					Assert.That (error, Is.Null, $"SomewhatStronglyTyped DetectMetadata #2 error (attempt {attempt + 1})");
 					if ((int) detected.Count > 0)
 						break;
+					TestContext.Out.WriteLine ($"SomewhatStronglyTyped DetectMetadata #2 returned no metadata on attempt {attempt + 1} (change count: {pasteboard.ChangeCount}, error: {error}).");
 					Thread.Sleep (500);
 				}
 				Assert.That ((int) detected.Count, Is.EqualTo (1), "SomewhatStronglyTyped DetectMetadata #2 count");
@@ -452,6 +469,7 @@ namespace Xamarin.Mac.Tests {
 				Assert.That (error, Is.Not.Null, "SomewhatStronglyTyped DetectMetadata #3 error");
 			} finally {
 				pasteboard.ReleaseGlobally ();
+				File.Delete (temporaryHtmlFile);
 			}
 		}
 
@@ -461,7 +479,9 @@ namespace Xamarin.Mac.Tests {
 			TestRuntime.AssertXcodeVersion (16, 3);
 
 			using var pasteboard = NSPasteboard.CreateWithUniqueName ();
+			var temporaryHtmlFile = CreateTemporaryHtmlFile ();
 			try {
+				using var temporaryHtmlFileUrl = NSUrl.FromFilename (temporaryHtmlFile);
 				var evt = new ManualResetEvent (false);
 				Dictionary<NSPasteboardMetadataType, UTType>? detected = null;
 				NSError? error = null;
@@ -482,19 +502,21 @@ namespace Xamarin.Mac.Tests {
 				Assert.That ((int) detected.Count, Is.EqualTo (0), "StronglyTyped DetectMetadata #1 count");
 				Assert.That (error, Is.Null, "StronglyTyped DetectMetadata #1 error");
 
-				pasteboard.ClearContents ();
-				pasteboard.SetStringForType ("file:///this/is/some/file.html", NSPasteboardType.FileUrl.GetConstant ());
 				// The pasteboard subsystem may need time to analyze content metadata,
-				// so retry detection if it returns empty results.
+				// so rewrite the contents and retry detection if it returns empty results.
 				for (int attempt = 0; attempt < 5; attempt++) {
+					pasteboard.ClearContents ();
+					Assert.That (pasteboard.SetStringForType (temporaryHtmlFileUrl.AbsoluteString, NSPasteboardType.FileUrl.GetConstant ()), Is.True, $"StronglyTyped DetectMetadata #2 set (attempt {attempt + 1})");
 					evt.Reset ();
 					detected = null;
 					error = null;
 					pasteboard.DetectMetadata (hashSet, callback);
 					Assert.That (evt.WaitOne (TimeSpan.FromSeconds (10)), "StronglyTyped DetectMetadata #2 wait");
 					Assert.That (detected, Is.Not.Null, "StronglyTyped DetectMetadata #2 patterns");
+					Assert.That (error, Is.Null, $"StronglyTyped DetectMetadata #2 error (attempt {attempt + 1})");
 					if ((int) detected.Count > 0)
 						break;
+					TestContext.Out.WriteLine ($"StronglyTyped DetectMetadata #2 returned no metadata on attempt {attempt + 1} (change count: {pasteboard.ChangeCount}, error: {error}).");
 					Thread.Sleep (500);
 				}
 				Assert.That ((int) detected.Count, Is.EqualTo (1), "StronglyTyped DetectMetadata #2 count");
@@ -516,6 +538,7 @@ namespace Xamarin.Mac.Tests {
 				Assert.That (error, Is.Not.Null, "StronglyTyped DetectMetadata #3 error");
 			} finally {
 				pasteboard.ReleaseGlobally ();
+				File.Delete (temporaryHtmlFile);
 			}
 		}
 

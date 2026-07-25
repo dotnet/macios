@@ -496,13 +496,23 @@ namespace LinkAll {
 #endif
 		}
 
+#if PREPARE_ASSEMBLIES
+		// https://github.com/dotnet/macios/issues/11280
+		// When using the trimmable static registrar together with PrepareAssemblies, the [ProtocolMember] attributes
+		// are only needed by the assembly-preparer's registrar (not at runtime), so the trimmer is told to remove
+		// them. This means the trimmer won't mark the types referenced from these attributes, so a generic type that's
+		// only referenced from an optional protocol member (like NSSet<T> below) can be trimmed away.
 		[Test]
-		[Ignore ("BUG https://github.com/dotnet/macios/issues/11280")]
 		public void LinkedAwayGenericTypeAsOptionalMemberInProtocol ()
 		{
+			if (!global::XamarinTests.ObjCRuntime.Registrar.IsTrimmableStaticRegistrar)
+				Assert.Ignore ("This test only applies to the trimmable static registrar.");
+
 			// https://github.com/dotnet/macios/issues/3523
-			// This test will fail at build time if it regresses (usually these types of build tests go into monotouch-test, but monotouch-test uses NSSet<T> elsewhere, which this test requires to be linked away).
-			Assert.That (typeof (NSObject).Assembly.GetType (NamespacePrefix + "Foundation.NSSet`1"), Is.Null, "NSSet<T> must be linked away, otherwise this test is useless");
+			// Don't use constants here, because the linker can see what we're trying to do and keeps the type we're verifying has been removed.
+			string prefix = NamespacePrefix;
+			string suffix = AssemblyName;
+			Assert.That (Helper.GetType (prefix + "Foundation.NSSet`1, " + suffix), Is.Null, "NSSet<T> must be linked away, otherwise this test is useless");
 		}
 
 		[Protocol (Name = "ProtocolWithGenericsInOptionalMember", WrapperType = typeof (ProtocolWithGenericsInOptionalMemberWrapper))]
@@ -512,6 +522,7 @@ namespace LinkAll {
 		internal sealed class ProtocolWithGenericsInOptionalMemberWrapper : BaseWrapper, IProtocolWithGenericsInOptionalMember {
 			public ProtocolWithGenericsInOptionalMemberWrapper (IntPtr handle, bool owns) : base (handle, owns) { }
 		}
+#endif // PREPARE_ASSEMBLIES
 
 		[Test]
 		public void NoFatCorlib ()

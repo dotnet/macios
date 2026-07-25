@@ -385,9 +385,9 @@ namespace Xamarin.Tests {
 			// The native library is removed from the resources by the linker
 			var actualResources1 = ad1.MainModule.Resources.Select (v => v.Name).OrderBy (v => v).ToArray ();
 			var expectedResources = new List<string> ();
-			if (platform != ApplePlatform.MacOSX && platform != ApplePlatform.MacCatalyst) {
-				// macOS doesn't have this resources, and it's removed by the linker for Mac Catalyst
-				// it's not removed for iOS/tvOS, because we don't bother removing resources for simulator builds.
+			if (platform != ApplePlatform.MacOSX) {
+				// macOS doesn't have this resources
+				// it's not removed for iOS/tvOS/Mac Catalyst, because we're a hot reload compatible (debug) build.
 				expectedResources.Add ("__monotouch_item_PartialAppManifest_shared-dotnet.plist");
 			}
 			Assert.That (actualResources1, Is.EqualTo (expectedResources.OrderBy (v => v).ToArray ()), $"embedded resources for bindings-test.dll");
@@ -1748,10 +1748,24 @@ namespace Xamarin.Tests {
 					"XTest.xcframework/ios-arm64/XTest.framework",
 					"XTest.xcframework/ios-arm64/XTest.framework/Info.plist",
 					"XTest.xcframework/ios-arm64/XTest.framework/XTest",
+					"XTest.xcframework/ios-arm64/dSYMs",
+					"XTest.xcframework/ios-arm64/dSYMs/XTest.framework.dSYM",
+					"XTest.xcframework/ios-arm64/dSYMs/XTest.framework.dSYM/Contents",
+					"XTest.xcframework/ios-arm64/dSYMs/XTest.framework.dSYM/Contents/Info.plist",
+					"XTest.xcframework/ios-arm64/dSYMs/XTest.framework.dSYM/Contents/Resources",
+					"XTest.xcframework/ios-arm64/dSYMs/XTest.framework.dSYM/Contents/Resources/DWARF",
+					"XTest.xcframework/ios-arm64/dSYMs/XTest.framework.dSYM/Contents/Resources/DWARF/XTest",
 					"XTest.xcframework/ios-arm64_x86_64-simulator",
 					"XTest.xcframework/ios-arm64_x86_64-simulator/XTest.framework",
 					"XTest.xcframework/ios-arm64_x86_64-simulator/XTest.framework/Info.plist",
 					"XTest.xcframework/ios-arm64_x86_64-simulator/XTest.framework/XTest",
+					"XTest.xcframework/ios-arm64_x86_64-simulator/dSYMs",
+					"XTest.xcframework/ios-arm64_x86_64-simulator/dSYMs/XTest.framework.dSYM",
+					"XTest.xcframework/ios-arm64_x86_64-simulator/dSYMs/XTest.framework.dSYM/Contents",
+					"XTest.xcframework/ios-arm64_x86_64-simulator/dSYMs/XTest.framework.dSYM/Contents/Info.plist",
+					"XTest.xcframework/ios-arm64_x86_64-simulator/dSYMs/XTest.framework.dSYM/Contents/Resources",
+					"XTest.xcframework/ios-arm64_x86_64-simulator/dSYMs/XTest.framework.dSYM/Contents/Resources/DWARF",
+					"XTest.xcframework/ios-arm64_x86_64-simulator/dSYMs/XTest.framework.dSYM/Contents/Resources/DWARF/XTest",
 				});
 
 				addHere = Configuration.include_maccatalyst ? mustHaveContents : mayHaveContents;
@@ -1766,6 +1780,13 @@ namespace Xamarin.Tests {
 					"XTest.xcframework/ios-arm64_x86_64-maccatalyst/XTest.framework/Versions/A/XTest",
 					"XTest.xcframework/ios-arm64_x86_64-maccatalyst/XTest.framework/Versions/Current",
 					"XTest.xcframework/ios-arm64_x86_64-maccatalyst/XTest.framework/XTest",
+					"XTest.xcframework/ios-arm64_x86_64-maccatalyst/dSYMs",
+					"XTest.xcframework/ios-arm64_x86_64-maccatalyst/dSYMs/XTest.framework.dSYM",
+					"XTest.xcframework/ios-arm64_x86_64-maccatalyst/dSYMs/XTest.framework.dSYM/Contents",
+					"XTest.xcframework/ios-arm64_x86_64-maccatalyst/dSYMs/XTest.framework.dSYM/Contents/Info.plist",
+					"XTest.xcframework/ios-arm64_x86_64-maccatalyst/dSYMs/XTest.framework.dSYM/Contents/Resources",
+					"XTest.xcframework/ios-arm64_x86_64-maccatalyst/dSYMs/XTest.framework.dSYM/Contents/Resources/DWARF",
+					"XTest.xcframework/ios-arm64_x86_64-maccatalyst/dSYMs/XTest.framework.dSYM/Contents/Resources/DWARF/XTest",
 				});
 
 				addHere = Configuration.include_mac ? mustHaveContents : mayHaveContents;
@@ -1780,6 +1801,13 @@ namespace Xamarin.Tests {
 					"XTest.xcframework/macos-arm64_x86_64/XTest.framework/Versions/A/XTest",
 					"XTest.xcframework/macos-arm64_x86_64/XTest.framework/Versions/Current",
 					"XTest.xcframework/macos-arm64_x86_64/XTest.framework/XTest",
+					"XTest.xcframework/macos-arm64_x86_64/dSYMs",
+					"XTest.xcframework/macos-arm64_x86_64/dSYMs/XTest.framework.dSYM",
+					"XTest.xcframework/macos-arm64_x86_64/dSYMs/XTest.framework.dSYM/Contents",
+					"XTest.xcframework/macos-arm64_x86_64/dSYMs/XTest.framework.dSYM/Contents/Info.plist",
+					"XTest.xcframework/macos-arm64_x86_64/dSYMs/XTest.framework.dSYM/Contents/Resources",
+					"XTest.xcframework/macos-arm64_x86_64/dSYMs/XTest.framework.dSYM/Contents/Resources/DWARF",
+					"XTest.xcframework/macos-arm64_x86_64/dSYMs/XTest.framework.dSYM/Contents/Resources/DWARF/XTest",
 				});
 
 				addHere = Configuration.include_tvos ? mustHaveContents : mayHaveContents;
@@ -1788,14 +1816,31 @@ namespace Xamarin.Tests {
 					"XTest.xcframework/tvos-arm64/XTest.framework",
 					"XTest.xcframework/tvos-arm64/XTest.framework/Info.plist",
 					"XTest.xcframework/tvos-arm64/XTest.framework/XTest",
+					"XTest.xcframework/tvos-arm64/dSYMs",
+					"XTest.xcframework/tvos-arm64/dSYMs/XTest.framework.dSYM",
+					"XTest.xcframework/tvos-arm64/dSYMs/XTest.framework.dSYM/Contents",
+					"XTest.xcframework/tvos-arm64/dSYMs/XTest.framework.dSYM/Contents/Info.plist",
+					"XTest.xcframework/tvos-arm64/dSYMs/XTest.framework.dSYM/Contents/Resources",
+					"XTest.xcframework/tvos-arm64/dSYMs/XTest.framework.dSYM/Contents/Resources/DWARF",
+					"XTest.xcframework/tvos-arm64/dSYMs/XTest.framework.dSYM/Contents/Resources/DWARF/XTest",
 					"XTest.xcframework/tvos-arm64_x86_64-simulator",
 					"XTest.xcframework/tvos-arm64_x86_64-simulator/XTest.framework",
 					"XTest.xcframework/tvos-arm64_x86_64-simulator/XTest.framework/Info.plist",
 					"XTest.xcframework/tvos-arm64_x86_64-simulator/XTest.framework/XTest",
+					"XTest.xcframework/tvos-arm64_x86_64-simulator/dSYMs",
+					"XTest.xcframework/tvos-arm64_x86_64-simulator/dSYMs/XTest.framework.dSYM",
+					"XTest.xcframework/tvos-arm64_x86_64-simulator/dSYMs/XTest.framework.dSYM/Contents",
+					"XTest.xcframework/tvos-arm64_x86_64-simulator/dSYMs/XTest.framework.dSYM/Contents/Info.plist",
+					"XTest.xcframework/tvos-arm64_x86_64-simulator/dSYMs/XTest.framework.dSYM/Contents/Resources",
+					"XTest.xcframework/tvos-arm64_x86_64-simulator/dSYMs/XTest.framework.dSYM/Contents/Resources/DWARF",
+					"XTest.xcframework/tvos-arm64_x86_64-simulator/dSYMs/XTest.framework.dSYM/Contents/Resources/DWARF/XTest",
 				});
 
 				var missing = mustHaveContents.ToHashSet ().Except (zipContents);
-				var extra = zipContents.Except (mustHaveContents).Except (mayHaveContents);
+				// dSYM bundles may contain extra architecture-specific files (e.g. Relocations/)
+				// that vary depending on the build machine, so we only check for unexpected
+				// entries outside of dSYMs directories.
+				var extra = zipContents.Except (mustHaveContents).Except (mayHaveContents).Where (v => !v.Contains ("/dSYMs/"));
 
 				Assert.That (missing, Is.Empty, "No missing files");
 				Assert.That (extra, Is.Empty, "No extra files");
@@ -2447,6 +2492,65 @@ namespace Xamarin.Tests {
 			properties ["ExcludeTouchUnitReference"] = "true";
 			var rv = DotNet.AssertBuild (project_path, properties);
 			rv.AssertNoWarnings ((evt) => !Extensions.IsFilteredWarning (evt, platform));
+		}
+
+		// Some users have unusual assembly names: non-ASCII characters, and even commas.
+		// Verify that we can build an app with such an assembly name. Ported from the legacy mmp test suite.
+		[Test]
+		[TestCase ("piñata")] // non-ASCII
+		[TestCase ("你好世界")] // non-ASCII
+		[TestCase ("UserLikes,ToEnumerate")] // comma
+		[TestCase ("😬")] // emoji
+		[TestCase ("👨🏼‍🦰")] // complex emoji
+		public void BuildWithUnusualProjectName (string projectName)
+		{
+			var platform = ApplePlatform.MacOSX;
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			var testDir = Cache.CreateTemporaryDirectory ();
+			DotNet.AssertNew (testDir, platform.AsString ().ToLowerInvariant (), name: projectName);
+
+			var project_path = Path.Combine (testDir, projectName, $"{projectName}.csproj");
+			DotNet.AssertBuild (project_path);
+		}
+
+		// Verify that enabling the hardened runtime makes the build pass the expected options to codesign.
+		// Ported from the legacy mmp test suite.
+		[Test]
+		[TestCase (ApplePlatform.MacOSX)]
+		public void HardenedRuntimeCodesign (ApplePlatform platform)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			var runtimeIdentifiers = GetDefaultRuntimeIdentifier (platform);
+			var project_path = GetProjectPath ("MySimpleApp", runtimeIdentifiers, platform, out _);
+			Clean (project_path);
+
+			// First build without the hardened runtime, and verify codesign isn't asked to use it.
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["EnableCodeSigning"] = "true";
+			var result = DotNet.AssertBuild (project_path, properties);
+			var baseCodesign = GetLastCodesignInvocation (result.BinLogPath);
+			Assert.That (baseCodesign, Does.Not.Contain (" -o runtime"), "Base codesign hardened runtime");
+			Assert.That (baseCodesign, Does.Contain (" --timestamp=none"), "Base codesign timestamp");
+
+			// Then build with the hardened runtime, and verify codesign is asked to use it.
+			Clean (project_path);
+			properties ["UseHardenedRuntime"] = "true";
+			result = DotNet.AssertBuild (project_path, properties);
+			var hardenedCodesign = GetLastCodesignInvocation (result.BinLogPath);
+			Assert.That (hardenedCodesign, Does.Contain (" -o runtime"), "Hardened codesign hardened runtime");
+			Assert.That (hardenedCodesign, Does.Not.Contain (" --timestamp=none"), "Hardened codesign timestamp");
+		}
+
+		static string GetLastCodesignInvocation (string binLogPath)
+		{
+			var codesignInvocations = BinLog.GetBuildMessages (binLogPath)
+				.Select (v => v.Message)
+				.Where (v => v?.Contains ("/usr/bin/codesign ") == true)
+				.ToList ();
+			Assert.That (codesignInvocations, Is.Not.Empty, "Found codesign invocation");
+			return codesignInvocations.Last () ?? "";
 		}
 
 		[Test]

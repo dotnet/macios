@@ -386,7 +386,7 @@ public partial class Generator : IMemberGatherer {
 		string? temp = null;
 		var declaringType = minfo?.mi?.DeclaringType ?? pi?.Member?.DeclaringType;
 
-		if (IsMemberInsideProtocol (declaringType))
+		if (pi is null && IsMemberInsideProtocol (declaringType))
 			throw new BindingException (1050, true, declaringType?.Name);
 
 		if (pi is null) {
@@ -395,10 +395,10 @@ public partial class Generator : IMemberGatherer {
 			attrib = GetOneBindAsAttribute (minfo.mi);
 			var property = minfo.mi as PropertyInfo;
 			var method = minfo.mi as MethodInfo;
-			originalType = (method?.ReturnType ?? property?.PropertyType)!;
+			originalType = attrib.OriginalType ?? (method?.ReturnType ?? property?.PropertyType)!;
 		} else {
 			attrib = GetOneBindAsAttribute (pi);
-			originalType = pi.ParameterType;
+			originalType = attrib.OriginalType ?? pi.ParameterType;
 		}
 
 		if (originalType.IsByRef)
@@ -475,7 +475,7 @@ public partial class Generator : IMemberGatherer {
 		var append = string.Empty;
 		var property = minfo.mi as PropertyInfo;
 		var method = minfo.mi as MethodInfo;
-		var originalReturnType = method?.ReturnType ?? property?.PropertyType;
+		var originalReturnType = attrib.OriginalType ?? method?.ReturnType ?? property?.PropertyType;
 
 		if (originalReturnType == TypeCache.NSNumber) {
 			if (!TypeManager.NSNumberReturnMap.TryGetValue (retType, out append)) {
@@ -5161,7 +5161,7 @@ public partial class Generator : IMemberGatherer {
 			// linker description file (which supports conditional preservation better).
 			// Ref: https://github.com/dotnet/runtime/issues/37352#issuecomment-644385807
 			var docIds = instanceMethods
-				.Select (mi => DocumentationManager.GetDocId (mi, includeDeclaringType: false, alwaysIncludeParenthesis: true))
+				.Select (mi => DocumentationManager.GetDocId (mi, includeDeclaringType: false, alwaysIncludeParenthesis: true, parameterTypeProvider: p => AttributeManager.GetCustomAttribute<BindAsAttribute> (p)?.Type ?? p.ParameterType))
 				.Concat (instanceProperties.Select (v => v.Name))
 				.Select (v => $"\"{v}\"");
 			dynamicDependencies.AddRange (docIds);
@@ -5557,7 +5557,7 @@ public partial class Generator : IMemberGatherer {
 		var property = mi as PropertyInfo;
 		var method = mi as MethodInfo;
 		var param = mi as ParameterInfo;
-		var originalType = method?.ReturnType ?? property?.PropertyType;
+		var originalType = p.OriginalType ?? method?.ReturnType ?? property?.PropertyType;
 		originalType = originalType ?? param?.ParameterType;
 
 		var declaringType = (mi as MemberInfo)?.DeclaringType ?? param?.Member.DeclaringType;

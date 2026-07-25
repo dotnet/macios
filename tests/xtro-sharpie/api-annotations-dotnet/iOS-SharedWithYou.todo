@@ -1,3 +1,0 @@
-!missing-field! SWCopyRepresentationTypeIdentifier not bound
-!missing-selector! SWCollaborationView::pendingAccessRequestsCount not bound
-!missing-selector! SWCollaborationView::setPendingAccessRequestsCount: not bound

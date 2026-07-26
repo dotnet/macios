@@ -652,7 +652,10 @@ install_archive ()
 	payload_root="$staging_root/payload"
 	extractor="$staging_root/packagekit-extract"
 
-	# shellcheck disable=SC2329
+	# The trap handler below is only reached through 'trap', which shellcheck can't see
+	# from inside this subshell function. Older shellchecks report that as SC2317 and
+	# newer ones as SC2329, and CI doesn't pin a version, so silence both.
+	# shellcheck disable=SC2317,SC2329
 	cleanup ()
 	{
 		local status=$?

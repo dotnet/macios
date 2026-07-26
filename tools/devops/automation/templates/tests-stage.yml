@@ -1,9 +1,5 @@
 parameters:
 
-- name: provisionatorChannel
-  type: string
-  default: 'latest'
-
 - name: runTests
   type: boolean
   default: true

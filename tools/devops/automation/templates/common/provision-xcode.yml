@@ -1,0 +1,158 @@
+# Template that provisions Xcode and the build dependencies that used to be installed by
+# Provisionator.
+#
+# Xcode comes from the immutable 'xcode-apple-silicon' Universal Package pinned in
+# Make.config, downloaded from the 'macios-tools-internal' Azure Artifacts feed of the
+# Azure DevOps organization the build is running in:
+#
+#   DevDiv: https://devdiv.visualstudio.com/DevDiv/_artifacts/feed/macios-tools-internal/UPack/xcode-apple-silicon/
+#   dnceng: https://dnceng.visualstudio.com/internal/_artifacts/feed/macios-tools-internal/UPack/xcode-apple-silicon/
+#
+# download-xcode-package.sh resolves the organization and project; the feed is
+# project-scoped, so the pipeline's own build identity authenticates and no Azure
+# subscription service connection, BosStorageMirror SAS token or GitHub PAT is needed.
+
+parameters:
+  # Absolute path of the macios checkout. The callers don't agree on whether to use
+  # Build.SourcesDirectory or System.DefaultWorkingDirectory, so it must be passed in.
+  - name: repositoryPath
+    type: string
+
+  - name: provisionSimulators
+    type: boolean
+    default: false
+
+  - name: provisionXcodeComponents
+    type: boolean
+    default: true
+
+  - name: xcodeChannel
+    type: string
+    default: Stable
+
+  - name: timeoutInMinutes
+    type: number
+    default: 250
+
+  - name: retryCount
+    type: number
+    default: 3
+
+steps:
+  - bash: |
+      set -euo pipefail
+
+      # Rosetta makes 'uname -m' report x86_64 on Apple silicon, so gate on the hardware
+      # capability instead. Everything that inspects or installs Xcode is re-executed
+      # natively below, because the package only contains arm64 slices.
+      if [[ "$(sysctl -n hw.optional.arm64 2>/dev/null || echo 0)" != "1" ]]; then
+        echo "The xcode-apple-silicon package requires an Apple silicon agent."
+        exit 1
+      fi
+
+      run_native () {
+        if [[ "$(sysctl -n sysctl.proc_translated 2>/dev/null || echo 0)" == "1" ]]; then
+          /usr/bin/arch -arm64 "$@"
+        else
+          "$@"
+        fi
+      }
+
+      installer="$REPOSITORY_PATH/tools/devops/automation/scripts/bash/install-xcode.sh"
+      if [[ ! -x "$installer" ]]; then
+        echo "The Xcode installer is missing or not executable: '$installer'."
+        exit 1
+      fi
+
+      package_name=$(sed -n 's/^XCODE_PACKAGE_NAME=//p' "$REPOSITORY_PATH/Make.config")
+      package_version=$(sed -n 's/^XCODE_PACKAGE_VERSION=//p' "$REPOSITORY_PATH/Make.config")
+      if [[ -z "$package_name" || -z "$package_version" ]]; then
+        echo "Make.config does not define the Xcode Universal Package."
+        exit 1
+      fi
+
+      # Skip the multi-gigabyte download when this agent already has the exact bundle.
+      if run_native "$installer" verify --quiet; then
+        download_required=false
+        echo "Xcode $package_version is already installed; the package download will be skipped."
+      else
+        download_required=true
+        echo "Xcode $package_version must be downloaded from Azure Artifacts."
+      fi
+
+      echo "##vso[task.setvariable variable=XCODE_PACKAGE_DIRECTORY]$(Agent.TempDirectory)/xcode-universal-package"
+      echo "##vso[task.setvariable variable=XCODE_PACKAGE_DOWNLOAD_REQUIRED]$download_required"
+    displayName: 'Resolve Xcode Universal Package'
+    timeoutInMinutes: 15
+    env:
+      REPOSITORY_PATH: ${{ parameters.repositoryPath }}
+
+  # SYSTEM_ACCESSTOKEN is deliberately scoped to this step only, and this step must never
+  # enable 'set -x'. The download is restartable: the destination is removed up front and
+  # the downloader stages into a sibling directory it only renames on success.
+  - bash: |
+      set -euo pipefail
+
+      package_directory="$(Agent.TempDirectory)/xcode-universal-package"
+      rm -rf -- "$package_directory"
+
+      "$REPOSITORY_PATH/tools/devops/automation/scripts/bash/download-xcode-package.sh" \
+        --path "$package_directory"
+    displayName: 'Download Xcode Universal Package'
+    condition: and(succeeded(), eq(variables['XCODE_PACKAGE_DOWNLOAD_REQUIRED'], 'true'))
+    timeoutInMinutes: ${{ parameters.timeoutInMinutes }}
+    retryCountOnTaskFailure: ${{ parameters.retryCount }}
+    env:
+      REPOSITORY_PATH: ${{ parameters.repositoryPath }}
+      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+
+  - bash: |
+      set -euo pipefail
+
+      run_native () {
+        if [[ "$(sysctl -n sysctl.proc_translated 2>/dev/null || echo 0)" == "1" ]]; then
+          /usr/bin/arch -arm64 "$@"
+        else
+          "$@"
+        fi
+      }
+
+      args=()
+      if [[ "$PROVISION_SIMULATORS" == "true" || "$PROVISION_SIMULATORS" == "True" ]]; then
+        args=(--provision-xcode --provision-simulators)
+        if [[ "$XCODE_CHANNEL" == "Beta" ]]; then
+          args+=(--provision-old-simulators)
+        fi
+      else
+        args=(--ignore-all --provision-xcode)
+      fi
+
+      if [[ "$PROVISION_XCODE_COMPONENTS" == "true" || "$PROVISION_XCODE_COMPONENTS" == "True" ]]; then
+        args+=(--provision-xcode-components)
+      else
+        args+=(--ignore-xcode-components)
+      fi
+
+      # These used to be installed by the Provisionator brew step.
+      args+=(--provision-shellcheck --provision-yamllint --provision-7z)
+
+      if [[ "$XCODE_PACKAGE_DOWNLOAD_REQUIRED" == "true" ]]; then
+        args+=(--xcode-package-directory "$XCODE_PACKAGE_DIRECTORY")
+      fi
+
+      run_native "$REPOSITORY_PATH/system-dependencies.sh" "${args[@]}"
+    displayName: 'Provision Xcode and dependencies'
+    timeoutInMinutes: ${{ parameters.timeoutInMinutes }}
+    retryCountOnTaskFailure: ${{ parameters.retryCount }}
+    env:
+      REPOSITORY_PATH: ${{ parameters.repositoryPath }}
+      XCODE_CHANNEL: ${{ parameters.xcodeChannel }}
+      PROVISION_SIMULATORS: ${{ parameters.provisionSimulators }}
+      PROVISION_XCODE_COMPONENTS: ${{ parameters.provisionXcodeComponents }}
+      XCODE_PACKAGE_DIRECTORY: $(XCODE_PACKAGE_DIRECTORY)
+      XCODE_PACKAGE_DOWNLOAD_REQUIRED: $(XCODE_PACKAGE_DOWNLOAD_REQUIRED)
+
+  - bash: rm -rf -- "$(Agent.TempDirectory)/xcode-universal-package"
+    displayName: 'Clean Xcode package download'
+    condition: always()
+    timeoutInMinutes: 15

@@ -12,6 +12,8 @@ Run this workflow from the macios repository root.
 Collect or confirm:
 - Target Xcode version (for example `26.4`)
 - Beta number (for example `2`)
+- Azure Artifacts package version (for example `26.4.0-beta.2`)
+- Xcode product build version (for example `17E5212f`)
 - Xcode URL (for example `https://dl.internalx.com/internal-files/xcodes/Xcode_26.4_beta_2.xip`)
 - Optional prior bump PR to mirror
 - Whether to do this in two phases (non-test changes first, tests second)
@@ -26,8 +28,21 @@ Apply minimal, surgical changes in these files:
    - `NUGET_HARDCODED_PRERELEASE_IDENTIFIER=xcode<major.minor>`
    - `NUGET_HARDCODED_PRERELEASE_BRANCH=xcode<major.minor>`
    - `XCODE_VERSION=<major.minor>`
+   - `XCODE_PACKAGE_NAME=xcode-apple-silicon`
+   - `XCODE_PACKAGE_VERSION=<major.minor.patch-beta.number>`
+   - `XCODE_BUILD_VERSION=<ProductBuildVersion>`
    - `XCODE_URL=<user-provided-xip-url>`
    - `XCODE_DEVELOPER_ROOT=/Applications/Xcode_<major.minor>.0-beta<beta>.app/Contents/Developer` (for betas)
+
+   `XCODE_DEVELOPER_ROOT` must name the same application that `XCODE_PACKAGE_VERSION`
+   implies (`Xcode_<XCODE_PACKAGE_VERSION with "beta." collapsed to "beta">.app`);
+   `install-xcode.sh` refuses to run when the two disagree.
+
+   Before queuing CI, verify that the matching immutable package exists — with its
+   Apple-signed XIP and `xcode-metadata.json` — in **both** feeds, because the two
+   pipelines resolve the same coordinates in their own organization:
+   - `devdiv/DevDiv/macios-tools-internal`
+   - `dnceng/internal/macios-tools-internal`
 
 2. `Make.versions`
    - Bump:

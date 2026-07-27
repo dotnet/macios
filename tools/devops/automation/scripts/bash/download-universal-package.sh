@@ -22,32 +22,21 @@ EOF
 
 while [[ $# -gt 0 ]]; do
 	case "$1" in
-	--organization)
-		ORGANIZATION=$2
-		shift 2
-		;;
-	--project)
-		PROJECT=$2
-		shift 2
-		;;
-	--feed)
-		FEED=$2
-		shift 2
-		;;
-	--name)
-		PACKAGE_NAME=$2
-		shift 2
-		;;
-	--version)
-		PACKAGE_VERSION=$2
-		shift 2
-		;;
-	--path)
-		DESTINATION=$2
-		shift 2
-		;;
-	--filter)
-		FILTER=$2
+	--organization | --project | --feed | --name | --version | --path | --filter)
+		if [[ $# -lt 2 || -z "$2" ]]; then
+			echo "$1 requires a value." >&2
+			usage >&2
+			exit 1
+		fi
+		case "$1" in
+		--organization) ORGANIZATION=$2 ;;
+		--project) PROJECT=$2 ;;
+		--feed) FEED=$2 ;;
+		--name) PACKAGE_NAME=$2 ;;
+		--version) PACKAGE_VERSION=$2 ;;
+		--path) DESTINATION=$2 ;;
+		--filter) FILTER=$2 ;;
+		esac
 		shift 2
 		;;
 	-h | --help)

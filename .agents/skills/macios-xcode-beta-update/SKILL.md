@@ -35,8 +35,24 @@ Apply minimal, surgical changes in these files:
    - `XCODE_DEVELOPER_ROOT=/Applications/Xcode_<major.minor>.0-beta<beta>.app/Contents/Developer` (for betas)
 
    `XCODE_DEVELOPER_ROOT` must name the same application that `XCODE_PACKAGE_VERSION`
-   implies (`Xcode_<XCODE_PACKAGE_VERSION with "beta." collapsed to "beta">.app`);
-   `install-xcode.sh` refuses to run when the two disagree.
+   implies; `install-xcode.sh` refuses to run when the two disagree. The package version is
+   strict SemVer (Azure Artifacts requires it) while the application name follows this
+   repository's convention, so they are deliberately spelled differently:
+
+   | Release | `XCODE_PACKAGE_VERSION` | `XCODE_DEVELOPER_ROOT` application |
+   | --- | --- | --- |
+   | beta 1 | `27.0.0-beta` | `Xcode_27.0.0-beta.app` |
+   | beta 3 | `27.0.0-beta.3` | `Xcode_27.0.0-beta3.app` |
+   | RC 1 | `27.0.0-rc` | `Xcode_27.0.0-rc.app` |
+   | RC 2 | `27.0.0-rc.2` | `Xcode_27.0.0-rc.2.app` |
+   | stable | `27.0.0` | `Xcode_27.0.0.app` |
+   | patch | `27.0.1` | `Xcode_27.0.1.app` (`XCODE_VERSION` stays `27.0`) |
+
+   Betas drop the dot before the ordinal, release candidates keep it, and the first beta or
+   RC carries no ordinal at all. `Xcode_26.3.0-rc2.app` is wrong: it has been written twice
+   and corrected both times. Note that `XCODE_BUILD_VERSION` is what actually distinguishes
+   one beta or RC from the next, so a stale value passes every path check and only fails
+   once the package is installed.
 
    Before queuing CI, verify that the matching immutable package exists — with its
    Apple-signed XIP and `xcode-metadata.json` — in **both** feeds, because the two

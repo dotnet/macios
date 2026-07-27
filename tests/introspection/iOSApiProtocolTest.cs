@@ -49,10 +49,6 @@ namespace Introspection {
 				if (Class.GetHandle ("NFCNDEFReaderSession") == IntPtr.Zero)
 					return true;
 				break;
-			case "ScreenCaptureKit":
-				if (TestRuntime.IsSimulator)
-					return true;
-				break;
 #if __TVOS__
 			// This framework is only available on device
 			case "BrowserEngineKit":

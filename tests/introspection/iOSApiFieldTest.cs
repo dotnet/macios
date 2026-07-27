@@ -25,13 +25,6 @@ namespace Introspection {
 			//LogProgress = true;
 		}
 
-		protected override bool Skip (Type type)
-		{
-			if (type.Namespace == "ScreenCaptureKit" && TestRuntime.IsSimulator)
-				return true;
-			return base.Skip (type);
-		}
-
 		protected override bool Skip (PropertyInfo p)
 		{
 			switch (p.DeclaringType?.Namespace) {

@@ -133,10 +133,6 @@ namespace Introspection {
 				if (TestRuntime.IsSimulatorOrDesktop)
 					return true;
 				break;
-			case "ScreenCaptureKit":
-				if (TestRuntime.IsSimulator)
-					return true;
-				break;
 			}
 
 			switch (type.Name) {

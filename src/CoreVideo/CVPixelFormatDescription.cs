@@ -56,7 +56,7 @@ namespace CoreVideo {
 		public static readonly NSString CodecTypeKey = CVPixelFormatKeys.CodecType;
 
 		/// <summary>Obsolete alias for <see cref="CVPixelFormatKeys.FourCC" />.</summary>
-		[Obsolete ("Use 'CVPixelFormatKeys.FourCCKey' instead.")]
+		[Obsolete ("Use 'CVPixelFormatKeys.FourCC' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public static readonly NSString FourCCKey = CVPixelFormatKeys.FourCC;
 

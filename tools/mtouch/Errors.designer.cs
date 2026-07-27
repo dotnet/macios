@@ -3669,6 +3669,15 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Export attributes cannot be removed because {0}..
+        /// </summary>
+        public static string MX4192 {
+            get {
+                return ResourceManager.GetString("MX4192", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The native linker failed to execute: {0}. Please file a bug report at https://github.com/dotnet/macios/issues/new
         /// 		.
         /// </summary>

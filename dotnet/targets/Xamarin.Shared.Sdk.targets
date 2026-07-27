@@ -282,6 +282,7 @@
 			_PrepareAssemblies;
 			_SetDynamicRegistrationSupportedFeature;
 			_SetSmartEnumConversionsRootDescriptor;
+			_SetTrimExportAttributesFeature;
 			_ComputeFrameworkFilesToPublish;
 			_ComputeDynamicLibrariesToPublish;
 			ComputeFilesToPublish;
@@ -632,6 +633,30 @@
 		</ItemGroup>
 	</Target>
 
+	<!--
+		Enables ExportAttribute removal after the assembly-preparer has run the managed registrar and
+		verified that no runtime path still needs Export metadata. The resolved value is persisted in the
+		assembly-preparer output file so incremental builds make the same decision.
+	-->
+	<Target Name="_SetTrimExportAttributesFeature" Condition="'$(PrepareAssemblies)' == 'true'">
+		<ReadLinesFromFile
+			File="$(_AssemblyPreparerMSBuildOutputFile)"
+			Condition="Exists('$(_AssemblyPreparerMSBuildOutputFile)')">
+			<Output TaskParameter="Lines" ItemName="_AssemblyPreparerTrimExportAttributesProperty" />
+		</ReadLinesFromFile>
+		<ItemGroup>
+			<_TrimExportAttributesLine Include="@(_AssemblyPreparerTrimExportAttributesProperty)" Condition="$([System.String]::Copy('%(Identity)').StartsWith('TrimExportAttributes='))" />
+		</ItemGroup>
+		<PropertyGroup>
+			<_TrimExportAttributesLineText>@(_TrimExportAttributesLine)</_TrimExportAttributesLineText>
+			<_TrimExportAttributes>false</_TrimExportAttributes>
+			<_TrimExportAttributes Condition="'$(_TrimExportAttributesLineText)' != ''">$(_TrimExportAttributesLineText.Replace('TrimExportAttributes=', ''))</_TrimExportAttributes>
+		</PropertyGroup>
+		<ItemGroup Condition="'$(_TrimExportAttributes)' == 'true'">
+			<RuntimeHostConfigurationOption Include="ObjCRuntime.TrimExportAttributes" Value="true" Trim="true" />
+		</ItemGroup>
+	</Target>
+
 	<Target Name="_ComputeLinkerArguments" DependsOnTargets="$(_ComputeLinkerArgumentsDependsOn)" />
 
 	<Target Name="_ComputeLinkerInputs">
@@ -644,8 +669,16 @@
 			/>
 
 		<Warning Text="All assemblies must be processed by the linker when using NativeAOT. Please don't set neither the '$(_LinkModeProperty)' nor the 'TrimMode' property, so that the build can default to linking all assemblies." Condition="'$(_UseNativeAot)' == 'true' And '$(_LinkMode)' != 'Full'" />
+		<Error Text="The 'TrimExportAttributes' property must be either 'true', 'false', or unset." Condition="'$(TrimExportAttributes)' != '' And '$(TrimExportAttributes)' != 'true' And '$(TrimExportAttributes)' != 'false'" />
+		<Error
+			Text="Export attributes can only be removed when PrepareAssemblies=true, PostProcessAssemblies=true, and Registrar=trimmable-static."
+			Condition="'$(TrimExportAttributes)' == 'true' And ('$(PrepareAssemblies)' != 'true' Or '$(PostProcessAssemblies)' != 'true' Or '$(Registrar)' != 'trimmable-static')"
+			/>
 
 		<PropertyGroup>
+			<_TrimExportAttributes>false</_TrimExportAttributes>
+			<_TrimExportAttributes Condition="'$(PrepareAssemblies)' == 'true' And '$(PostProcessAssemblies)' == 'true' And '$(Registrar)' == 'trimmable-static'">$(TrimExportAttributes)</_TrimExportAttributes>
+
 			<_UseDynamicDependenciesInsteadOfMarking Condition="'$(_UseDynamicDependenciesInsteadOfMarking)' == ''">true</_UseDynamicDependenciesInsteadOfMarking>
 			<_UseDynamicDependenciesForProtocolPreservation Condition="'$(_UseDynamicDependenciesForProtocolPreservation)' == ''">$(_UseDynamicDependenciesInsteadOfMarking)</_UseDynamicDependenciesForProtocolPreservation>
 			<_UseDynamicDependenciesForSmartEnumPreservation Condition="'$(_UseDynamicDependenciesForSmartEnumPreservation)' == ''">$(_UseDynamicDependenciesInsteadOfMarking)</_UseDynamicDependenciesForSmartEnumPreservation>

@@ -87,6 +87,9 @@ namespace MonoTouch.Tuner {
 				if (name != productAssemblyName)
 					continue;
 
+				if (App.TrimExportAttributes != false && IsNSXpcInterfaceMethodInfoOverload (mr))
+					App.TrimExportAttributesBlockers.Add ("the application uses an NSXpcInterface overload that obtains a selector from MethodInfo");
+
 				switch (mr.DeclaringType.Namespace) {
 				case "ObjCRuntime":
 					switch (mr.DeclaringType.Name) {
@@ -153,6 +156,18 @@ namespace MonoTouch.Tuner {
 			}
 
 			return requires;
+		}
+
+		static bool IsNSXpcInterfaceMethodInfoOverload (MemberReference member)
+		{
+			if (member is not MethodReference method)
+				return false;
+			if (method.DeclaringType.Namespace != "Foundation" || method.DeclaringType.Name != "NSXpcInterface")
+				return false;
+			if (method.Parameters.Count == 0 || method.Parameters [0].ParameterType.Namespace != "System.Reflection" || method.Parameters [0].ParameterType.Name != "MethodInfo")
+				return false;
+
+			return method.Name == "GetAllowedClasses" || method.Name == "SetAllowedClasses";
 		}
 
 		void Warn (AssemblyDefinition assembly, MemberReference mr)

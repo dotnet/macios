@@ -30,6 +30,8 @@ namespace Xamarin.MacDev.Tasks {
 
 		public string MakeReproPath { get; set; } = "";
 
+		public string MSBuildOutputFile { get; set; } = "";
+
 		public string OutputDirectory { get; set; } = "";
 
 		[Required]
@@ -38,8 +40,10 @@ namespace Xamarin.MacDev.Tasks {
 
 		public bool PostProcessing { get; set; }
 
-		// The pre-trim (untrimmed) assemblies (the trimmer's input), used during post-processing to read
-		// the [ProtocolMember] attributes the trimmer removed from the post-trim assemblies.
+		public bool? TrimExportAttributes { get; set; }
+
+		// The original assemblies from before preparation and trimming, used during post-processing to read
+		// selected registrar attributes removed during trimming.
 		public ITaskItem [] PreTrimAssemblies { get; set; } = [];
 
 		// When set (to ILC's output object file), the defined symbols in this file are used to determine
@@ -71,11 +75,13 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			// Capture Console usage and show an error if anything uses Console.[Error.]Write*
 			using var consoleToLog = ConsoleToTaskWriter.EnsureNoConsoleUsage (Log);
+			var success = false;
 
 			try {
 				var infos = InputAssemblies.Select (GetAssemblyInfo).ToArray ();
 				using var preparer = new AssemblyPreparer (this, infos, OptionsFile?.ItemSpec ?? "");
 				preparer.MakeReproPath = MakeReproPath;
+				preparer.TrimExportAttributes = TrimExportAttributes;
 				preparer.PreTrimAssemblies.AddRange (PreTrimAssemblies.Select (v => v.ItemSpec));
 				bool rv;
 				List<ProductException> exceptions;
@@ -121,8 +127,10 @@ namespace Xamarin.MacDev.Tasks {
 
 				outputAssemblies.AddRange (preparer.AddedAssemblies.Select (v => {
 					var rv = new TaskItem (v.Path);
+					var relativePath = preparer.Configuration.AssemblyPublishDir + Path.GetFileName (v.Path);
 					rv.SetMetadata ("PostprocessAssembly", "true");
-					rv.SetMetadata ("RelativePath", preparer.Configuration.AssemblyPublishDir + Path.GetFileName (v.Path));
+					rv.SetMetadata ("OriginalRelativePath", relativePath);
+					rv.SetMetadata ("RelativePath", relativePath);
 					if (v.OriginatingAssembly is not null) {
 						var originatingItem = map.SingleOrDefault (kvp => Path.GetFileName (kvp.Key.InputPath) == Path.GetFileName (v.OriginatingAssembly)).Value;
 						if (originatingItem is null) {
@@ -141,10 +149,14 @@ namespace Xamarin.MacDev.Tasks {
 				OutputAssemblies = outputAssemblies.ToArray ();
 				if (!rv && !Log.HasLoggedErrors)
 					Log.LogError (MSBStrings.E0192);
-				return rv && !Log.HasLoggedErrors;
+				success = rv && !Log.HasLoggedErrors;
+				return success;
 			} catch (Exception e) {
 				((IToolLog) this).LogException (e);
 				return false;
+			} finally {
+				if (!success && !string.IsNullOrEmpty (MSBuildOutputFile))
+					File.Delete (MSBuildOutputFile);
 			}
 		}
 	}

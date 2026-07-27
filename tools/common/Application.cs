@@ -81,6 +81,8 @@ namespace Xamarin.Bundler {
 		public List<string>? AotOtherArguments = null;
 		public bool? AotFloat32 = null;
 		public bool PrepareAssemblies; // True if '$(PrepareAssemblies)' == 'true'
+		public bool? TrimExportAttributes;
+		public HashSet<string> TrimExportAttributesBlockers = new HashSet<string> ();
 
 		// The set of UnmanagedCallersOnly trampoline symbols (without the leading Mach-O underscore)
 		// that survived the NativeAOT compiler (ILC). This is only set when the native registrar code
@@ -103,10 +105,10 @@ namespace Xamarin.Bundler {
 #if ASSEMBLY_PREPARER
 		public bool InCustomTrimmerStep = false;
 		public bool IsPostProcessingAssemblies;
-		// When post-processing assemblies with the trimmable static registrar, the [ProtocolMember] attributes
-		// have been removed by the trimmer, so the registrar reads them from the pre-trim (untrimmed) assemblies
-		// instead. This resolver provides access to the pre-trim assemblies (a separate metadata universe from
-		// the post-trim assemblies), and is null when not applicable.
+		// When post-processing assemblies with the trimmable static registrar, selected registrar attributes
+		// have been removed during trimming, so the registrar reads them from the original assemblies.
+		// This resolver provides access to the original assemblies (a separate metadata universe from the
+		// post-trim assemblies), and is null when not applicable.
 		public Mono.Cecil.IAssemblyResolver? PreTrimAssemblyResolver;
 #else
 		public bool InCustomTrimmerStep = true;

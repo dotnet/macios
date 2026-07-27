@@ -195,7 +195,13 @@ if [[ "$CONFIGURED_XCODE_DEVELOPER_ROOT" == *"\$("* ]]; then
 fi
 
 EXPECTED_NORMALIZED_VERSION=$(normalize_numeric_version "$XCODE_PACKAGE_VERSION")
-if [[ "$(normalize_numeric_version "$XCODE_VERSION")" != "$EXPECTED_NORMALIZED_VERSION" ]]; then
+CONFIGURED_NORMALIZED_VERSION=$(normalize_numeric_version "$XCODE_VERSION")
+# XCODE_VERSION carries only a major and a minor version, while the package version also
+# carries the patch component: the repository ships e.g. XCODE_VERSION=26.4 together with
+# Xcode_26.4.1.app. Only the major and minor versions can be required to match here; the
+# full package version is still matched exactly against the manifest and the installed
+# bundle further down.
+if [[ "${CONFIGURED_NORMALIZED_VERSION%.*}" != "${EXPECTED_NORMALIZED_VERSION%.*}" ]]; then
 	error "XCODE_VERSION '$XCODE_VERSION' and XCODE_PACKAGE_VERSION '$XCODE_PACKAGE_VERSION' do not identify the same Xcode release."
 	exit 1
 fi

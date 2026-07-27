@@ -137,12 +137,6 @@ namespace Introspection {
 				// The header declares this on an NSObject category but 
 				// it doesn't even respondsToSelector on NSView/NSCell...
 				return true;
-			case "preferHDR":
-			case "setPreferHDR:":
-				// The headers declare these selectors in macOS 14, but the runtime only implements them starting in macOS 15.
-				if (type.Name == "PHLivePhotoRequestOptions" && !Mac.CheckSystemVersion (15, 0))
-					return true;
-				break;
 			case "readInBackgroundAndNotifyForModes:":
 			case "readInBackgroundAndNotify":
 			case "readToEndOfFileInBackgroundAndNotifyForModes:":

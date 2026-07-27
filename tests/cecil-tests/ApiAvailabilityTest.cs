@@ -227,7 +227,6 @@ namespace Cecil.Tests {
 			"MobileCoreServices.UTType.IsDynamic(System.String)",
 			"PassKit.PKShareablePassMetadata..ctor(System.String, System.String, CoreGraphics.CGImage, System.String, System.String, System.String, System.String, System.String, System.Boolean)",
 			"PassKit.PKShareablePassMetadata..ctor(System.String, System.String, System.String, CoreGraphics.CGImage, System.String, System.String)",
-			"Photos.PHAssetResourceUploadJobChangeRequest.CreateJob(Foundation.NSUrlRequest, Photos.PHAssetResource)",
 			"Speech.SFVoiceAnalytics Speech.SFTranscriptionSegment::VoiceAnalytics()",
 			"System.Boolean AVFoundation.AVCaptureConnection::SupportsVideoMaxFrameDuration()",
 			"System.Boolean AVFoundation.AVCaptureConnection::SupportsVideoMinFrameDuration()",

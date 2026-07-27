@@ -1633,7 +1633,8 @@ namespace Photos {
 		[Export ("version", ArgumentSemantic.Assign)]
 		PHImageRequestOptionsVersion Version { get; set; }
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		// The headers claim macOS 14 and Mac Catalyst 17, but the selectors are only available starting in macOS 15 and Mac Catalyst 18.
+		[TV (17, 0), Mac (15, 0), iOS (17, 0), MacCatalyst (18, 0)]
 		[Export ("preferHDR")]
 		bool PreferHdr { get; set; }
 	}
@@ -2077,7 +2078,7 @@ namespace Photos {
 	[BaseType (typeof (PHChangeRequest))]
 	[DisableDefaultCtor]
 	interface PHAssetResourceUploadJobChangeRequest {
-		[NoMacCatalyst]
+		[NoMac, NoMacCatalyst]
 		[Deprecated (PlatformName.iOS, 26, 4, message: "Use 'CreateJobRequest' instead.")]
 		[Static]
 		[Export ("createJobWithDestination:resource:")]

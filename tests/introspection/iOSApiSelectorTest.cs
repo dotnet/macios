@@ -9,7 +9,6 @@
 
 using System.Reflection;
 using UIKit;
-using Xamarin.Utils;
 #if HAS_WATCHCONNECTIVITY
 using WatchConnectivity;
 #endif
@@ -63,16 +62,6 @@ namespace Introspection {
 				case "cancelChannelSoundingSession":
 				case "startChannelSoundingSession:":
 					return true;
-				}
-				break;
-			case "PHLivePhotoRequestOptions":
-				switch (selectorName) {
-				// The headers declare these selectors in Mac Catalyst 17, but the runtime only implements them starting in Mac Catalyst 18.
-				case "preferHDR":
-				case "setPreferHDR:":
-					if (!TestRuntime.CheckSystemVersion (ApplePlatform.MacCatalyst, 18, 0))
-						return true;
-					break;
 				}
 				break;
 			}

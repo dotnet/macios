@@ -155,17 +155,25 @@ binary_architectures ()
 {
 	local path=$1
 	local description
+	local architectures
 
 	# Deliberately avoid lipo/otool: those are xcrun shims that fail whenever xcode-select
 	# points at a missing developer directory, which is exactly the state this script has
 	# to be able to repair. /usr/bin/file is a standalone tool and reports the same slices.
 	description=$(/usr/bin/env -u DEVELOPER_DIR -u XCODE_DEVELOPER_ROOT /usr/bin/file -b "$path" 2>/dev/null || true)
+
+	# For a universal binary, only trust the per-architecture lines: the summary line
+	# abbreviates any slice 'file' couldn't reach in its read buffer, so a large binary
+	# reports '[x86_64:Mach-O ...] [arm64e]' and the abbreviated slices would be lost.
+	architectures=$(sed -n 's/.*(for architecture \([^)]*\)).*/\1/p' <<< "$description" | tr '\n' ' ')
+	if [[ -n "$architectures" ]]; then
+		echo "$architectures"
+		return
+	fi
+
 	case "$description" in
-	*"universal binary"*)
-		tr '[' '\n' <<< "$description" | sed -n 's/^\([A-Za-z0-9_]*\):Mach-O.*/\1/p' | tr '\n' ' '
-		;;
 	Mach-O*)
-		awk '{ print $NF }' <<< "$description"
+		awk 'NR == 1 { print $NF }' <<< "$description"
 		;;
 	esac
 }

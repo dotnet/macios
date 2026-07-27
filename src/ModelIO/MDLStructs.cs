@@ -32,8 +32,8 @@ namespace ModelIO {
 		[DllImport (Constants.MetalKitLibrary)]
 		static extern /* MTLVertexFormat */ nuint MTKMetalVertexFormatFromModelIO (/* MTLVertexFormat */ nuint vertexFormat);
 
+		/// <summary>Converts the current vertex format into the specified <paramref name="vertexFormat" />.</summary>
 		/// <param name="vertexFormat">The vertex format.</param>
-		///         <summary>Converts the current vertex format into the specified <paramref name="vertexFormat" />.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]

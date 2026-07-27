@@ -13,8 +13,8 @@ namespace Foundation {
 		static IntPtr selSupportsSecureCodingHandle = Selector.GetHandle (selSupportsSecureCoding);
 #endif
 
+		/// <summary>Whether the class supports secure coding and decoding.</summary>
 		/// <param name="type">The type.</param>
-		///         <summary>Whether the class supports secure coding and decoding.</summary>
 		public static bool SupportsSecureCoding (Type type)
 		{
 			if (type is null)
@@ -34,8 +34,8 @@ namespace Foundation {
 #endif
 		}
 
+		/// <summary>Whether the class supports secure coding and decoding.</summary>
 		/// <param name="klass">The klass.</param>
-		///         <summary>Whether the class supports secure coding and decoding.</summary>
 		public static bool SupportsSecureCoding (Class klass)
 		{
 			if (klass is null)

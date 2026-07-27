@@ -64,14 +64,14 @@ namespace CoreGraphics {
 			return left.dx != right.dx || left.dy != right.dy;
 		}
 
-		/// <summary />
+		/// <summary>Returns the hash code for this vector.</summary>
 		public override int GetHashCode ()
 		{
 			return HashCode.Combine (dx, dy);
 		}
 
-		/// <param name="other">The other.</param>
-		///         <summary />
+		/// <summary>Determines whether this vector is equal to the specified object.</summary>
+		/// <param name="other">The object to compare with.</param>
 		public override bool Equals (object? other)
 		{
 			if (other is CGVector vector)
@@ -88,13 +88,7 @@ namespace CoreGraphics {
 		[DllImport (Constants.UIKitLibrary)]
 		extern static IntPtr NSStringFromCGVector (CGVector vector);
 
-		/// <summary>String representation of the vector, suitable to be passed later to <see cref="CoreGraphics.CGVector.FromString(System.String)" /> method.</summary>
-		///         <returns>
-		///           <para />
-		///         </returns>
-		///         <remarks>
-		///           <para />
-		///         </remarks>
+		/// <summary>String representation of the vector, suitable to be passed later to <see cref="CoreGraphics.CGVector.FromString(System.String)" /> method.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
@@ -111,12 +105,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.UIKitLibrary)]
 		extern static CGVector CGVectorFromString (IntPtr str);
 
-		/// <param name="s">String representation, created previously with either the <see cref="CoreGraphics.CGVector.ToString" /> method or serialized in the CGVector format.</param>
-		///         <summary>Creates a CGVector from a stringified representation of the vector.</summary>
-		///         <returns>The CGVector represented by the string representation.</returns>
-		///         <remarks>
-		///           <para />
-		///         </remarks>
+		/// <summary>Creates a CGVector from a stringified representation of the vector.</summary>
+		/// <param name="s">String representation, created previously with either the <see cref="CoreGraphics.CGVector.ToString" /> method or serialized in the CGVector format.</param>
+		/// <returns>The CGVector represented by the string representation.</returns>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]

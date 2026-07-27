@@ -131,15 +131,15 @@ namespace CoreImage {
 		{
 		}
 
+		/// <summary>Returns an array of strings that specifies the filters that the system provides for the specified <paramref name="categories" />.</summary>
 		/// <param name="categories">The categories.</param>
-		///         <summary>Returns an array of strings that specifies the filters that the system provides for the specified <paramref name="categories" />.</summary>
 		public static string [] FilterNamesInCategories (params string []? categories)
 		{
 			return _FilterNamesInCategories (categories);
 		}
 
-		/// <param name="key">The key.</param>
 		/// <summary>Gets the value that is identified by <paramref name="key" />.</summary>
+		/// <param name="key">The key.</param>
 		public NSObject? this [NSString key] {
 			get {
 				NSObject? result = ValueForKey (key.GetHandle ());

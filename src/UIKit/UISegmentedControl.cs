@@ -16,8 +16,8 @@ using UIKit;
 
 namespace UIKit {
 	public partial class UISegmentedControl {
+		/// <summary>Creates a UISegmentedControl by passing an array containing strings or <see cref="UIKit.UIImage" /> objects.</summary>
 		/// <param name="args">Array of strings or UIImage objects to use in the control.</param>
-		///         <summary>Creates a UISegmentedControl by passing an array containing strings or <see cref="UIKit.UIImage" /> objects.</summary>
 		public UISegmentedControl (params object [] args) : this (FromObjects (args))
 		{
 		}
@@ -55,14 +55,14 @@ namespace UIKit {
 			return NSArray.FromNSObjects (nsargs);
 		}
 
+		/// <summary>Creates a new segmented control with the images in the provided array.</summary>
 		/// <param name="images">The images.</param>
-		///         <summary>Creates a new segmented control with the images in the provided array.</summary>
 		public UISegmentedControl (params UIImage [] images) : this (FromNSObjects (images))
 		{
 		}
 
+		/// <summary>Creates a new segmented control with the titles in the provided array.</summary>
 		/// <param name="strings">The strings.</param>
-		///         <summary>Creates a new segmented control with the titles in the provided array.</summary>
 		public UISegmentedControl (params NSString [] strings) : this (FromNSObjects (strings))
 		{
 		}
@@ -77,8 +77,8 @@ namespace UIKit {
 			return NSArray.FromNSObjects (items);
 		}
 
+		/// <summary>Creates a new segmented control with the titles in the provided array.</summary>
 		/// <param name="strings">The strings.</param>
-		///         <summary>Creates a new segmented control with the titles in the provided array.</summary>
 		public UISegmentedControl (params string [] strings) : this (FromStrings (strings))
 		{
 		}

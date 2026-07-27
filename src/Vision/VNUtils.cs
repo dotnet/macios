@@ -28,8 +28,8 @@ namespace Vision {
 		[DllImport (Constants.VisionLibrary, EntryPoint = "VNNormalizedRectIsIdentityRect")]
 		static extern byte _IsIdentityRect (CGRect rect);
 
+		/// <summary>Returns <see langword="true" /> if the <paramref name="rect" /> is [0, 0, 1, 1].</summary>
 		/// <param name="rect">The rect.</param>
-		///         <summary>Returns <see langword="true" /> if the <paramref name="rect" /> is [0, 0, 1, 1].</summary>
 		public static bool IsIdentityRect (CGRect rect)
 		{
 			return _IsIdentityRect (rect) != 0;

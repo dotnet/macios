@@ -30,19 +30,19 @@ namespace MonoTouchFixtures.SecurityInterface {
 		}
 
 		[Test]
-		public void IsEnabled_Default ()
+		public void Enabled_Default ()
 		{
 			using var view = new SFAuthorizationView (new global::CoreGraphics.CGRect (0, 0, 100, 100));
 			// The default enabled state depends on the system, just verify it doesn't crash
-			var _ = view.IsEnabled;
+			var _ = view.Enabled;
 		}
 
 		[Test]
-		public void SetEnabled ()
+		public void Enabled_Set ()
 		{
 			using var view = new SFAuthorizationView (new global::CoreGraphics.CGRect (0, 0, 100, 100));
-			Assert.DoesNotThrow (() => view.SetEnabled (false), "SetEnabled false");
-			Assert.DoesNotThrow (() => view.SetEnabled (true), "SetEnabled true");
+			Assert.DoesNotThrow (() => view.Enabled = false, "Enabled false");
+			Assert.DoesNotThrow (() => view.Enabled = true, "Enabled true");
 		}
 
 		[Test]

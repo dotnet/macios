@@ -13,6 +13,7 @@ namespace Security {
 
 	/// <summary>Represents a keychain on macOS.</summary>
 	[SupportedOSPlatform ("macos")]
+	[ObsoletedOSPlatform ("macos10.10", "SecKeychain is deprecated.")]
 	public class SecKeychain : NativeObject {
 		[Preserve (Conditional = true)]
 		internal SecKeychain (NativeHandle handle, bool owns)

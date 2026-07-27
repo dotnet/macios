@@ -12,7 +12,7 @@ namespace Security {
 
 	/// <summary>Represents a single authorization right with a name and an optional value.</summary>
 	[SupportedOSPlatform ("macos")]
-	public readonly struct AuthorizationRight {
+	public sealed class AuthorizationRight {
 		readonly byte []? value;
 
 		/// <summary>Gets the name of the authorization right.</summary>
@@ -23,13 +23,18 @@ namespace Security {
 
 		/// <summary>Creates a new authorization right with the specified name and optional value.</summary>
 		public AuthorizationRight (string name, byte []? value = null)
+			: this (name, value is null ? default : value.AsSpan ())
+		{
+		}
+
+		internal AuthorizationRight (string name, ReadOnlySpan<byte> value)
 		{
 			ArgumentNullException.ThrowIfNull (name);
 			Name = name;
-			this.value = value is null || value.Length == 0 ? null : (byte []) value.Clone ();
+			this.value = value.IsEmpty ? null : value.ToArray ();
 		}
 
-		internal byte []? GetRawValue () => value;
+		internal ReadOnlySpan<byte> GetRawValue () => value;
 	}
 
 	[StructLayout (LayoutKind.Sequential)]
@@ -106,13 +111,12 @@ namespace Security {
 				if (name is null)
 					throw new InvalidOperationException ("A native authorization right has an invalid UTF-8 name.");
 
-				byte []? value = null;
+				ReadOnlySpan<byte> value = default;
 				if (item.ValueLength > 0) {
 					if (item.Value == IntPtr.Zero)
 						throw new InvalidOperationException ("A native authorization right has a non-zero value length and a null value pointer.");
 					var length = checked((int) item.ValueLength);
-					value = new byte [length];
-					Marshal.Copy (item.Value, value, 0, length);
+					value = new ReadOnlySpan<byte> ((void*) item.Value, length);
 				}
 
 				managedItems [i] = new AuthorizationRight (name, value);
@@ -134,8 +138,10 @@ namespace Security {
 		{
 			ArgumentNullException.ThrowIfNull (rights);
 			var result = new List<AuthorizationRight> ();
-			foreach (var right in rights)
-				result.Add (new AuthorizationRight (right.Name, right.GetRawValue ()));
+			foreach (var right in rights) {
+				ArgumentNullException.ThrowIfNull (right);
+				result.Add (right);
+			}
 			return result.ToArray ();
 		}
 
@@ -157,14 +163,14 @@ namespace Security {
 					var value = item.GetRawValue ();
 					var valuePointer = IntPtr.Zero;
 					try {
-						if (value is not null) {
+						if (!value.IsEmpty) {
 							valuePointer = Marshal.AllocHGlobal (value.Length);
-							Marshal.Copy (value, 0, valuePointer, value.Length);
+							value.CopyTo (new Span<byte> ((void*) valuePointer, value.Length));
 						}
 
 						native->Items [i] = new AuthorizationItemNative {
 							Name = name,
-							ValueLength = value is null ? 0 : (nuint) value.Length,
+							ValueLength = (nuint) value.Length,
 							Value = valuePointer,
 							Flags = 0,
 						};

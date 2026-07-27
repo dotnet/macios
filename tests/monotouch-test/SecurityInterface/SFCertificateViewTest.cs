@@ -52,20 +52,20 @@ namespace MonoTouchFixtures.SecurityInterface {
 		{
 			using var view = new SFCertificateView (new global::CoreGraphics.CGRect (0, 0, 300, 200));
 
-			Assert.DoesNotThrow (() => view.SetEditableTrust (false), "SetEditableTrust");
-			Assert.DoesNotThrow (() => { var _ = view.IsEditable; }, "IsEditable");
+			Assert.DoesNotThrow (() => view.EditableTrust = false, "EditableTrust");
+			Assert.DoesNotThrow (() => { var _ = view.EditableTrust; }, "EditableTrust getter");
 
-			Assert.DoesNotThrow (() => view.SetDisplayTrust (true), "SetDisplayTrust");
-			Assert.DoesNotThrow (() => { var _ = view.IsTrustDisplayed; }, "IsTrustDisplayed");
+			Assert.DoesNotThrow (() => view.TrustDisplayed = true, "TrustDisplayed");
+			Assert.DoesNotThrow (() => { var _ = view.TrustDisplayed; }, "TrustDisplayed getter");
 
-			Assert.DoesNotThrow (() => view.SetDisplayDetails (true), "SetDisplayDetails");
-			Assert.DoesNotThrow (() => { var _ = view.DetailsDisplayed; }, "DetailsDisplayed");
+			Assert.DoesNotThrow (() => view.DetailsDisplayed = true, "DetailsDisplayed");
+			Assert.DoesNotThrow (() => { var _ = view.DetailsDisplayed; }, "DetailsDisplayed getter");
 
-			Assert.DoesNotThrow (() => view.SetDetailsDisclosed (false), "SetDetailsDisclosed");
-			Assert.DoesNotThrow (() => { var _ = view.DetailsDisclosed; }, "DetailsDisclosed");
+			Assert.DoesNotThrow (() => view.DetailsDisclosed = false, "DetailsDisclosed");
+			Assert.DoesNotThrow (() => { var _ = view.DetailsDisclosed; }, "DetailsDisclosed getter");
 
-			Assert.DoesNotThrow (() => view.SetPoliciesDisclosed (false), "SetPoliciesDisclosed");
-			Assert.DoesNotThrow (() => { var _ = view.PoliciesDisclosed; }, "PoliciesDisclosed");
+			Assert.DoesNotThrow (() => view.PoliciesDisclosed = false, "PoliciesDisclosed");
+			Assert.DoesNotThrow (() => { var _ = view.PoliciesDisclosed; }, "PoliciesDisclosed getter");
 		}
 
 		[Test]

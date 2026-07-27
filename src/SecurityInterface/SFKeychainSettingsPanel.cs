@@ -11,7 +11,7 @@ namespace SecurityInterface {
 	public partial class SFKeychainSettingsPanel {
 
 		/// <summary>Displays the panel modally for the specified keychain and settings.</summary>
-		public NSModalResponse RunModalForSettings (ref SecKeychainSettings settings, SecKeychain keychain)
+		public NSModalResponse RunModal (ref SecKeychainSettings settings, SecKeychain keychain)
 		{
 			ArgumentNullException.ThrowIfNull (keychain);
 			var response = _RunModalForSettings (ref settings, keychain.GetCheckedHandle ());

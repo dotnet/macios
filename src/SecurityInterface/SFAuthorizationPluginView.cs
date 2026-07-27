@@ -1,6 +1,7 @@
 #nullable enable
 
 using System;
+using System.Runtime.InteropServices;
 using Foundation;
 using ObjCRuntime;
 using Security;
@@ -8,6 +9,11 @@ using Security;
 namespace SecurityInterface {
 
 	public partial class SFAuthorizationPluginView {
+		const nint retainNonatomic = 1;
+		static readonly IntPtr callbacksAssociationKey = Selector.GetHandle ("xamarin_SFAuthorizationPluginView_callbacks");
+
+		[DllImport (Constants.ObjectiveCLibrary)]
+		static extern void objc_setAssociatedObject (IntPtr obj, IntPtr key, IntPtr value, nint policy);
 
 		/// <summary>Initializes the view with the authorization callbacks and engine reference provided by the plugin host.</summary>
 		/// <param name="callbacks">The authorization callbacks for communicating with the Security Server.</param>
@@ -17,9 +23,16 @@ namespace SecurityInterface {
 		{
 			ArgumentNullException.ThrowIfNull (callbacks);
 			ArgumentNullException.ThrowIfNull (engineRef);
-			InitializeHandle (_InitWithCallbacks (callbacks.Handle, engineRef.GetCheckedHandle ()), "initWithCallbacks:andEngineRef:");
-			GC.KeepAlive (callbacks);
+			using var callbacksOwner = callbacks.Owns ? callbacks.CreateOwnedDataCopy () : null;
+			var callbacksPointer = callbacksOwner?.Bytes ?? callbacks.GetCheckedPointer ();
+			var engineHandle = engineRef.GetCheckedHandle ();
+			InitializeHandle (_InitWithCallbacks (callbacksPointer, engineHandle), "initWithCallbacks:andEngineRef:");
 			GC.KeepAlive (engineRef);
+			if (callbacksOwner is not null) {
+				objc_setAssociatedObject (Handle, callbacksAssociationKey, callbacksOwner.GetNonNullHandle (nameof (callbacksOwner)), retainNonatomic);
+				GC.KeepAlive (callbacksOwner);
+			}
+			GC.KeepAlive (callbacks);
 		}
 
 		/// <summary>Gets the authorization engine reference for communicating with the Security Server.</summary>

@@ -14,6 +14,12 @@ namespace MonoTouchFixtures.SecurityInterface {
 	public class AuthorizationRightsTest {
 
 		[Test]
+		public void AuthorizationRight_IsClass ()
+		{
+			Assert.That (typeof (AuthorizationRight).IsValueType, Is.False, "IsValueType");
+		}
+
+		[Test]
 		public void Create_FromStrings ()
 		{
 			using var rights = new AuthorizationRights ("com.example.right1", "com.example.right2");

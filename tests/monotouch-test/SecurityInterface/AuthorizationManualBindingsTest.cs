@@ -134,10 +134,31 @@ namespace MonoTouchFixtures.SecurityInterface {
 			return 27;
 		}
 
+		static AuthorizationCallbacks CreateOwnedCallbacks ()
+		{
+			return new AuthorizationCallbacks (new AuthorizationCallbacksConfiguration {
+				SetResult = &SetResultStub,
+				RequestInterrupt = &EngineOnlyStub,
+				DidDeactivate = &EngineOnlyStub,
+				GetContextValue = &GetContextValueStub,
+				SetContextValue = &SetContextValueStub,
+				GetHintValue = &GetValueStub,
+				SetHintValue = &SetValueStub,
+				GetArguments = &GetPointerStub,
+				GetSessionId = &GetPointerStub,
+				GetImmutableHintValue = &GetValueStub,
+				GetLAContext = &GetPointerStub,
+				GetTokenIdentities = &GetTokenIdentitiesStub,
+				GetTokenWatcher = &GetPointerStub,
+				RemoveHintValue = &RemoveValueStub,
+				RemoveContextValue = &RemoveValueStub,
+			});
+		}
+
 		[Test]
 		public void Create_ZeroReturnsNull ()
 		{
-			Assert.That (AuthorizationCallbacks.Create (NativeHandle.Zero), Is.Null, "Zero");
+			Assert.That (AuthorizationCallbacks.Create (IntPtr.Zero), Is.Null, "Zero");
 		}
 
 		[Test]
@@ -156,7 +177,7 @@ namespace MonoTouchFixtures.SecurityInterface {
 			var pointer = Marshal.AllocHGlobal (Marshal.SizeOf<FakeCallbacksNative> ());
 			try {
 				Marshal.StructureToPtr (native, pointer, false);
-				var callbacks = AuthorizationCallbacks.Create (pointer);
+				using var callbacks = AuthorizationCallbacks.Create (pointer);
 				Assert.That (callbacks, Is.Not.Null, "Callbacks");
 				if (callbacks is null)
 					return;
@@ -176,7 +197,7 @@ namespace MonoTouchFixtures.SecurityInterface {
 			var pointer = Marshal.AllocHGlobal (Marshal.SizeOf<FakeCallbacksNative> ());
 			try {
 				Marshal.StructureToPtr (native, pointer, false);
-				var callbacks = AuthorizationCallbacks.Create (pointer);
+				using var callbacks = AuthorizationCallbacks.Create (pointer);
 				Assert.That (callbacks, Is.Not.Null, "Callbacks");
 				if (callbacks is null)
 					return;
@@ -208,7 +229,7 @@ namespace MonoTouchFixtures.SecurityInterface {
 					GetContextValue = (IntPtr) (delegate* unmanaged<IntPtr, IntPtr, AuthorizationContextFlags*, IntPtr*, int>) &GetContextValueStub,
 				}, callbacksPointer, false);
 
-				var callbacks = AuthorizationCallbacks.Create (callbacksPointer);
+				using var callbacks = AuthorizationCallbacks.Create (callbacksPointer);
 				Assert.That (callbacks, Is.Not.Null, "Callbacks");
 				if (callbacks is null)
 					return;
@@ -235,7 +256,7 @@ namespace MonoTouchFixtures.SecurityInterface {
 			var pointer = Marshal.AllocHGlobal (Marshal.SizeOf<FakeCallbacksNative> ());
 			try {
 				Marshal.StructureToPtr (native, pointer, false);
-				var callbacks = AuthorizationCallbacks.Create (pointer);
+				using var callbacks = AuthorizationCallbacks.Create (pointer);
 				Assert.That (callbacks, Is.Not.Null, "Callbacks");
 				if (callbacks is null)
 					return;
@@ -256,7 +277,7 @@ namespace MonoTouchFixtures.SecurityInterface {
 			var pointer = Marshal.AllocHGlobal (Marshal.SizeOf<FakeCallbacksNative> ());
 			try {
 				Marshal.StructureToPtr (native, pointer, false);
-				var callbacks = AuthorizationCallbacks.Create (pointer);
+				using var callbacks = AuthorizationCallbacks.Create (pointer);
 				Assert.That (callbacks, Is.Not.Null, "Callbacks");
 				if (callbacks is null)
 					return;
@@ -273,53 +294,44 @@ namespace MonoTouchFixtures.SecurityInterface {
 		[Test]
 		public void AllCallbackSlots_Invoke ()
 		{
-			var native = new FakeCallbacksNative {
-				Version = 4,
-				SetResult = (IntPtr) (delegate* unmanaged<IntPtr, AuthorizationResult, int>) &SetResultStub,
-				RequestInterrupt = (IntPtr) (delegate* unmanaged<IntPtr, int>) &EngineOnlyStub,
-				DidDeactivate = (IntPtr) (delegate* unmanaged<IntPtr, int>) &EngineOnlyStub,
-				GetContextValue = (IntPtr) (delegate* unmanaged<IntPtr, IntPtr, AuthorizationContextFlags*, IntPtr*, int>) &GetContextValueStub,
-				SetContextValue = (IntPtr) (delegate* unmanaged<IntPtr, IntPtr, AuthorizationContextFlags, IntPtr, int>) &SetContextValueStub,
-				GetHintValue = (IntPtr) (delegate* unmanaged<IntPtr, IntPtr, IntPtr*, int>) &GetValueStub,
-				SetHintValue = (IntPtr) (delegate* unmanaged<IntPtr, IntPtr, IntPtr, int>) &SetValueStub,
-				GetArguments = (IntPtr) (delegate* unmanaged<IntPtr, IntPtr*, int>) &GetPointerStub,
-				GetSessionId = (IntPtr) (delegate* unmanaged<IntPtr, IntPtr*, int>) &GetPointerStub,
-				GetImmutableHintValue = (IntPtr) (delegate* unmanaged<IntPtr, IntPtr, IntPtr*, int>) &GetValueStub,
-				GetLAContext = (IntPtr) (delegate* unmanaged<IntPtr, IntPtr*, int>) &GetPointerStub,
-				GetTokenIdentities = (IntPtr) (delegate* unmanaged<IntPtr, IntPtr, IntPtr*, int>) &GetTokenIdentitiesStub,
-				GetTKTokenWatcher = (IntPtr) (delegate* unmanaged<IntPtr, IntPtr*, int>) &GetPointerStub,
-				RemoveHintValue = (IntPtr) (delegate* unmanaged<IntPtr, IntPtr, int>) &RemoveValueStub,
-				RemoveContextValue = (IntPtr) (delegate* unmanaged<IntPtr, IntPtr, int>) &RemoveValueStub,
-			};
-			var pointer = Marshal.AllocHGlobal (Marshal.SizeOf<FakeCallbacksNative> ());
-			try {
-				Marshal.StructureToPtr (native, pointer, false);
-				var callbacks = AuthorizationCallbacks.Create (pointer);
-				using var engine = AuthorizationEngine.Create ((NativeHandle) (IntPtr) 0x1234);
-				using var context = new LAContext ();
-				Assert.That (callbacks, Is.Not.Null, "Callbacks");
-				Assert.That (engine, Is.Not.Null, "Engine");
-				if (callbacks is null || engine is null)
-					return;
+			using var callbacks = CreateOwnedCallbacks ();
+			using var engine = AuthorizationEngine.Create ((NativeHandle) (IntPtr) 0x1234);
+			using var context = new LAContext ();
+			Assert.That (engine, Is.Not.Null, "Engine");
+			if (engine is null)
+				return;
 
-				Assert.That (callbacks.RequestInterrupt (engine), Is.EqualTo (21), "RequestInterrupt");
-				Assert.That (callbacks.DidDeactivate (engine), Is.EqualTo (21), "DidDeactivate");
-				Assert.That (callbacks.SetContextValue (engine, "key", AuthorizationContextFlags.None, []), Is.EqualTo (22), "SetContextValue");
-				Assert.That (callbacks.GetHintValue (engine, "key", out _), Is.EqualTo (23), "GetHintValue");
-				Assert.That (callbacks.SetHintValue (engine, "key", []), Is.EqualTo (24), "SetHintValue");
-				Assert.That (callbacks.GetArguments (engine, out _), Is.EqualTo (25), "GetArguments");
-				Assert.That (callbacks.GetSessionId (engine, out _), Is.EqualTo (25), "GetSessionId");
-				Assert.That (callbacks.GetImmutableHintValue (engine, "key", out _), Is.EqualTo (23), "GetImmutableHintValue");
-				Assert.That (callbacks.GetLAContext (engine, out _), Is.EqualTo (25), "GetLAContext");
-				Assert.That (callbacks.GetTokenIdentities (engine, context, out _), Is.EqualTo (26), "GetTokenIdentities");
-				Assert.That (callbacks.GetTokenWatcher (engine, out _), Is.EqualTo (25), "GetTokenWatcher");
-				Assert.That (callbacks.RemoveHintValue (engine, "key"), Is.EqualTo (27), "RemoveHintValue");
-				Assert.That (callbacks.RemoveContextValue (engine, "key"), Is.EqualTo (27), "RemoveContextValue");
-				Assert.That (lastEngine, Is.EqualTo ((IntPtr) 0x1234), "Engine");
-			} finally {
-				Marshal.FreeHGlobal (pointer);
-			}
+			Assert.That (callbacks.Version, Is.EqualTo (4), "Version");
+			Assert.That (callbacks.SetResult (engine, AuthorizationResult.Allow), Is.EqualTo (17), "SetResult");
+			Assert.That (callbacks.RequestInterrupt (engine), Is.EqualTo (21), "RequestInterrupt");
+			Assert.That (callbacks.DidDeactivate (engine), Is.EqualTo (21), "DidDeactivate");
+			contextValue = IntPtr.Zero;
+			Assert.That (callbacks.GetContextValue (engine, "key", out var flags, out var contextValueResult), Is.EqualTo (0), "GetContextValue");
+			Assert.That (flags, Is.EqualTo (AuthorizationContextFlags.Sticky), "Context flags");
+			Assert.That (contextValueResult, Is.Null, "Context value");
+			Assert.That (callbacks.SetContextValue (engine, "key", AuthorizationContextFlags.None, []), Is.EqualTo (22), "SetContextValue");
+			Assert.That (callbacks.GetHintValue (engine, "key", out _), Is.EqualTo (23), "GetHintValue");
+			Assert.That (callbacks.SetHintValue (engine, "key", []), Is.EqualTo (24), "SetHintValue");
+			Assert.That (callbacks.GetArguments (engine, out _), Is.EqualTo (25), "GetArguments");
+			Assert.That (callbacks.GetSessionId (engine, out _), Is.EqualTo (25), "GetSessionId");
+			Assert.That (callbacks.GetImmutableHintValue (engine, "key", out _), Is.EqualTo (23), "GetImmutableHintValue");
+			Assert.That (callbacks.GetLAContext (engine, out _), Is.EqualTo (25), "GetLAContext");
+			Assert.That (callbacks.GetTokenIdentities (engine, context, out _), Is.EqualTo (26), "GetTokenIdentities");
+			Assert.That (callbacks.GetTokenWatcher (engine, out _), Is.EqualTo (25), "GetTokenWatcher");
+			Assert.That (callbacks.RemoveHintValue (engine, "key"), Is.EqualTo (27), "RemoveHintValue");
+			Assert.That (callbacks.RemoveContextValue (engine, "key"), Is.EqualTo (27), "RemoveContextValue");
+			Assert.That (lastEngine, Is.EqualTo ((IntPtr) 0x1234), "Engine");
 		}
+
+		[Test]
+		public void OwnedCallbacks_DisposeIsIdempotent ()
+		{
+			var callbacks = CreateOwnedCallbacks ();
+			callbacks.Dispose ();
+			Assert.DoesNotThrow (() => callbacks.Dispose (), "Dispose twice");
+			Assert.Throws<ObjectDisposedException> (() => { var _ = callbacks.Version; });
+		}
+
 	}
 }
 #endif // __MACOS__

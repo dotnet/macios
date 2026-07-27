@@ -15,7 +15,7 @@ using Security;
 namespace SecurityInterface {
 
 	/// <summary>Host view for authorization plugin mechanisms, subclassed to provide custom UI for the loginwindow authorization process.</summary>
-	[NoiOS, NoTV, NoMacCatalyst, Mac (10, 5)]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SFAuthorizationPluginView {
@@ -37,11 +37,10 @@ namespace SecurityInterface {
 		[Export ("buttonPressed:")]
 		void ButtonPressed (SFButtonType buttonType);
 
-		/// <summary>Returns the last error that occurred during the authorization process.</summary>
-		/// <returns>An <see cref="NSError" /> describing the last error, or <see langword="null" /> if no error occurred.</returns>
+		/// <summary>Gets the last error that occurred during the authorization process.</summary>
 		[Export ("lastError")]
-		[return: NullAllowed]
-		NSError GetLastError ();
+		[NullAllowed]
+		NSError LastError { get; }
 
 		/// <summary>Called after the view has been activated.</summary>
 		[Export ("didActivate")]
@@ -56,23 +55,20 @@ namespace SecurityInterface {
 		[Export ("didDeactivate")]
 		void DidDeactivate ();
 
-		/// <summary>Returns the first view in the keyboard focus chain.</summary>
-		/// <returns>The first <see cref="NSView" /> in the key view loop, or <see langword="null" />.</returns>
+		/// <summary>Gets the first view in the keyboard focus chain.</summary>
 		[Export ("firstKeyView")]
-		[return: NullAllowed]
-		NSView GetFirstKeyView ();
+		[NullAllowed]
+		NSView FirstKeyView { get; }
 
-		/// <summary>Returns the first responder for the view.</summary>
-		/// <returns>The first <see cref="NSResponder" />, or <see langword="null" />.</returns>
+		/// <summary>Gets the first responder for the view.</summary>
 		[Export ("firstResponder")]
-		[return: NullAllowed]
-		NSResponder GetFirstResponder ();
+		[NullAllowed]
+		NSResponder FirstResponder { get; }
 
-		/// <summary>Returns the last view in the keyboard focus chain.</summary>
-		/// <returns>The last <see cref="NSView" /> in the key view loop, or <see langword="null" />.</returns>
+		/// <summary>Gets the last view in the keyboard focus chain.</summary>
 		[Export ("lastKeyView")]
-		[return: NullAllowed]
-		NSView GetLastKeyView ();
+		[NullAllowed]
+		NSView LastKeyView { get; }
 
 		/// <summary>Enables or disables the view.</summary>
 		/// <param name="enabled"><see langword="true" /> to enable the view; <see langword="false" /> to disable it.</param>
@@ -102,11 +98,11 @@ namespace SecurityInterface {
 	}
 
 	/// <summary>Interface representing the protocol methods of <see cref="SFAuthorizationViewDelegate" />.</summary>
-	[NoiOS, NoTV, NoMacCatalyst, Mac (10, 3)]
+	[NoiOS, NoTV, NoMacCatalyst]
 	interface ISFAuthorizationViewDelegate { }
 
 	/// <summary>Delegate methods for responding to authorization state changes in an <see cref="SFAuthorizationView" />.</summary>
-	[NoiOS, NoTV, NoMacCatalyst, Mac (10, 3)]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Protocol (IsInformal = true, BackwardsCompatibleCodeGeneration = false), Model]
 	[BaseType (typeof (NSObject))]
 	interface SFAuthorizationViewDelegate {
@@ -144,7 +140,7 @@ namespace SecurityInterface {
 	}
 
 	/// <summary>A view that displays a lock icon for controlling access to a privileged operation.</summary>
-	[NoiOS, NoTV, NoMacCatalyst, Mac (10, 3)]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[BaseType (typeof (NSView))]
 	interface SFAuthorizationView {
 
@@ -191,16 +187,12 @@ namespace SecurityInterface {
 		[Export ("authorizationState")]
 		SFAuthorizationViewState AuthorizationState { get; }
 
-		/// <summary>Enables or disables the view.</summary>
-		/// <param name="enabled"><see langword="true" /> to enable the view; <see langword="false" /> to disable it.</param>
-		[Export ("setEnabled:")]
-		void SetEnabled (bool enabled);
-
-		/// <summary>Gets a value indicating whether the view is currently enabled.</summary>
-		[Export ("isEnabled")]
-		bool IsEnabled { get; }
+		/// <summary>Gets or sets a value indicating whether the view is enabled.</summary>
+		[Export ("enabled")]
+		bool Enabled { [Bind ("isEnabled")] get; set; }
 
 		/// <summary>Sets the authorization flags as a bitmask of AuthorizationFlags values.</summary>
+		/// <remarks>The native API does not provide a corresponding getter.</remarks>
 		/// <param name="flags">A bitmask of authorization flag values.</param>
 		[Export ("setFlags:")]
 		void SetFlags (AuthorizationFlags flags);
@@ -229,11 +221,11 @@ namespace SecurityInterface {
 	}
 
 	/// <summary>Interface representing the protocol methods of <see cref="SFCertificatePanelDelegate" />.</summary>
-	[NoiOS, NoTV, NoMacCatalyst, Mac (10, 4)]
+	[NoiOS, NoTV, NoMacCatalyst]
 	interface ISFCertificatePanelDelegate { }
 
 	/// <summary>Delegate methods for the <see cref="SFCertificatePanel" />.</summary>
-	[NoiOS, NoTV, NoMacCatalyst, Mac (10, 4)]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Protocol (IsInformal = true, BackwardsCompatibleCodeGeneration = false), Model]
 	[BaseType (typeof (NSObject))]
 	interface SFCertificatePanelDelegate {
@@ -246,7 +238,7 @@ namespace SecurityInterface {
 	}
 
 	/// <summary>A panel that displays one or more certificates, presented as a modal dialog or a sheet.</summary>
-	[NoiOS, NoTV, NoMacCatalyst, Mac (10, 3)]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[BaseType (typeof (NSPanel))]
 	interface SFCertificatePanel {
 
@@ -259,16 +251,15 @@ namespace SecurityInterface {
 		/// <param name="trust">The <see cref="SecTrust" /> object containing the certificates to display.</param>
 		/// <param name="showGroup">Whether to display the certificate group.</param>
 		/// <returns>The button code that was pressed to dismiss the panel.</returns>
-		[Mac (10, 4)]
 		[Export ("runModalForTrust:showGroup:")]
-		NSModalResponse RunModalForTrust (SecTrust trust, bool showGroup);
+		NSModalResponse RunModal (SecTrust trust, bool showGroup);
 
 		/// <summary>Displays the panel modally for the specified array of certificates.</summary>
 		/// <param name="certificates">An array of certificates to display.</param>
 		/// <param name="showGroup">Whether to display the certificate group.</param>
 		/// <returns>The button code that was pressed to dismiss the panel.</returns>
 		[Export ("runModalForCertificates:showGroup:")]
-		NSModalResponse RunModalForCertificates (SecCertificate [] certificates, bool showGroup);
+		NSModalResponse RunModal (SecCertificate [] certificates, bool showGroup);
 
 		/// <summary>Displays the panel as a sheet for the specified <see cref="SecTrust" /> object.</summary>
 		/// <param name="docWindow">The window to which the sheet is attached.</param>
@@ -277,7 +268,6 @@ namespace SecurityInterface {
 		/// <param name="contextInfo">A pointer to context information passed to the callback.</param>
 		/// <param name="trust">The <see cref="SecTrust" /> object containing the certificates to display.</param>
 		/// <param name="showGroup">Whether to display the certificate group.</param>
-		[Mac (10, 4)]
 		[Export ("beginSheetForWindow:modalDelegate:didEndSelector:contextInfo:trust:showGroup:")]
 		void BeginSheet (NSWindow docWindow, [NullAllowed] NSObject modalDelegate, [NullAllowed] Selector didEndSelector, IntPtr contextInfo, SecTrust trust, bool showGroup);
 
@@ -293,61 +283,42 @@ namespace SecurityInterface {
 
 		/// <summary>Sets the policies used to evaluate the certificates.</summary>
 		/// <param name="policies">An <see cref="NSArray" /> of SecPolicy objects, a single SecPolicy, or <see langword="null" />.</param>
-		[Mac (10, 4)]
 		[Internal]
 		[Export ("setPolicies:")]
 		void _SetPolicies ([NullAllowed] NSObject policies);
 
 		/// <summary>Gets the policies used to evaluate the certificates.</summary>
-		[Mac (10, 4)]
 		[Internal]
 		[Export ("policies")]
 		IntPtr _Policies { get; }
 
 		/// <summary>Sets the title of the default button.</summary>
 		/// <param name="title">The button title, or <see langword="null" /> to use the default title.</param>
-		[Mac (10, 4)]
 		[Export ("setDefaultButtonTitle:")]
 		void SetDefaultButtonTitle ([NullAllowed] string title);
 
 		/// <summary>Sets the title of the alternate button.</summary>
 		/// <param name="title">The button title, or <see langword="null" /> to hide the button.</param>
-		[Mac (10, 4)]
 		[Export ("setAlternateButtonTitle:")]
 		void SetAlternateButtonTitle ([NullAllowed] string title);
 
-		/// <summary>Sets whether the panel shows a help button.</summary>
-		/// <param name="showsHelp"><see langword="true" /> to show the help button; otherwise, <see langword="false" />.</param>
-		[Mac (10, 4)]
-		[Export ("setShowsHelp:")]
-		void SetShowsHelp (bool showsHelp);
-
-		/// <summary>Gets a value indicating whether the panel shows a help button.</summary>
-		[Mac (10, 4)]
+		/// <summary>Gets or sets a value indicating whether the panel shows a help button.</summary>
 		[Export ("showsHelp")]
-		bool ShowsHelp { get; }
+		bool ShowsHelp { get; set; }
 
-		/// <summary>Sets the help anchor string for the help button.</summary>
-		/// <param name="anchor">The help anchor string, or <see langword="null" />.</param>
-		[Mac (10, 4)]
-		[Export ("setHelpAnchor:")]
-		void SetHelpAnchor ([NullAllowed] string anchor);
-
-		/// <summary>Gets the help anchor string.</summary>
-		[Mac (10, 4)]
+		/// <summary>Gets or sets the help anchor string for the help button.</summary>
 		[Export ("helpAnchor")]
 		[NullAllowed]
-		string HelpAnchor { get; }
+		string HelpAnchor { get; set; }
 
 		/// <summary>Gets the <see cref="SFCertificateView" /> used to display certificate details.</summary>
-		[Mac (10, 4)]
 		[NullAllowed]
 		[Export ("certificateView")]
 		SFCertificateView CertificateView { get; }
 	}
 
 	/// <summary>A panel for making trust decisions about certificates that cannot be verified.</summary>
-	[NoiOS, NoTV, NoMacCatalyst, Mac (10, 3)]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[BaseType (typeof (SFCertificatePanel))]
 	interface SFCertificateTrustPanel {
 
@@ -361,7 +332,7 @@ namespace SecurityInterface {
 		/// <param name="message">A message to display in the panel, or <see langword="null" />.</param>
 		/// <returns>The button code that was pressed to dismiss the panel.</returns>
 		[Export ("runModalForTrust:message:")]
-		NSModalResponse RunModalForTrust (SecTrust trust, [NullAllowed] string message);
+		NSModalResponse RunModal (SecTrust trust, [NullAllowed] string message);
 
 		/// <summary>Displays the panel as a sheet for the specified <see cref="SecTrust" /> object with a message.</summary>
 		/// <param name="docWindow">The window to which the sheet is attached.</param>
@@ -373,21 +344,14 @@ namespace SecurityInterface {
 		[Export ("beginSheetForWindow:modalDelegate:didEndSelector:contextInfo:trust:message:")]
 		void BeginSheet (NSWindow docWindow, [NullAllowed] NSObject modalDelegate, [NullAllowed] Selector didEndSelector, IntPtr contextInfo, SecTrust trust, [NullAllowed] string message);
 
-		/// <summary>Sets the informative text displayed in the panel.</summary>
-		/// <param name="informativeText">The informative text string, or <see langword="null" />.</param>
-		[Mac (10, 5)]
-		[Export ("setInformativeText:")]
-		void SetInformativeText ([NullAllowed] string informativeText);
-
-		/// <summary>Gets the informative text displayed in the panel.</summary>
-		[Mac (10, 5)]
+		/// <summary>Gets or sets the informative text displayed in the panel.</summary>
 		[Export ("informativeText")]
 		[NullAllowed]
-		string InformativeText { get; }
+		string InformativeText { get; set; }
 	}
 
 	/// <summary>A view that displays the contents of a certificate, with support for disclosable details and trust editing.</summary>
-	[NoiOS, NoTV, NoMacCatalyst, Mac (10, 3)]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[BaseType (typeof (NSVisualEffectView))]
 	interface SFCertificateView {
 
@@ -406,85 +370,51 @@ namespace SecurityInterface {
 
 		/// <summary>Sets the policies used to evaluate the certificate trust.</summary>
 		/// <param name="policies">An <see cref="NSArray" /> of SecPolicy objects, a single SecPolicy, or <see langword="null" />.</param>
-		[Mac (10, 4)]
 		[Internal]
 		[Export ("setPolicies:")]
 		void _SetPolicies ([NullAllowed] NSObject policies);
 
 		/// <summary>Gets the policies used for trust evaluation.</summary>
-		[Mac (10, 4)]
 		[Internal]
 		[Export ("policies")]
 		IntPtr _Policies { get; }
 
-		/// <summary>Sets whether the user can edit the trust settings.</summary>
-		/// <param name="editable"><see langword="true" /> to allow trust editing; otherwise, <see langword="false" />.</param>
-		[Export ("setEditableTrust:")]
-		void SetEditableTrust (bool editable);
+		/// <summary>Gets or sets a value indicating whether the user can edit the trust settings.</summary>
+		[Export ("editableTrust")]
+		bool EditableTrust { [Bind ("isEditable")] get; set; }
 
-		/// <summary>Gets a value indicating whether the trust settings are editable.</summary>
-		[Export ("isEditable")]
-		bool IsEditable { get; }
-
-		/// <summary>Sets whether trust information is displayed.</summary>
-		/// <param name="display"><see langword="true" /> to show trust information; otherwise, <see langword="false" />.</param>
-		[Export ("setDisplayTrust:")]
-		void SetDisplayTrust (bool display);
-
-		/// <summary>Gets a value indicating whether trust information is currently displayed.</summary>
-		[Export ("isTrustDisplayed")]
-		bool IsTrustDisplayed { get; }
+		/// <summary>Gets or sets a value indicating whether trust information is displayed.</summary>
+		[Export ("displayTrust")]
+		bool TrustDisplayed { [Bind ("isTrustDisplayed")] get; set; }
 
 		/// <summary>Saves the current trust settings to the user's trust database.</summary>
 		[Export ("saveTrustSettings")]
 		void SaveTrustSettings ();
 
-		/// <summary>Sets whether certificate details are displayed.</summary>
-		/// <param name="display"><see langword="true" /> to show certificate details; otherwise, <see langword="false" />.</param>
-		[Mac (10, 4)]
-		[Export ("setDisplayDetails:")]
-		void SetDisplayDetails (bool display);
+		/// <summary>Gets or sets a value indicating whether certificate details are displayed.</summary>
+		[Export ("displayDetails")]
+		bool DetailsDisplayed { [Bind ("detailsDisplayed")] get; set; }
 
-		/// <summary>Gets a value indicating whether certificate details are displayed.</summary>
-		[Mac (10, 4)]
-		[Export ("detailsDisplayed")]
-		bool DetailsDisplayed { get; }
-
-		/// <summary>Sets whether the details section is disclosed (expanded).</summary>
-		/// <param name="disclosed"><see langword="true" /> to expand the details section; otherwise, <see langword="false" />.</param>
-		[Mac (10, 5)]
-		[Export ("setDetailsDisclosed:")]
-		void SetDetailsDisclosed (bool disclosed);
-
-		/// <summary>Gets a value indicating whether the details section is disclosed.</summary>
-		[Mac (10, 5)]
+		/// <summary>Gets or sets a value indicating whether the details section is disclosed.</summary>
 		[Export ("detailsDisclosed")]
-		bool DetailsDisclosed { get; }
+		bool DetailsDisclosed { get; set; }
 
-		/// <summary>Sets whether the policies section is disclosed (expanded).</summary>
-		/// <param name="disclosed"><see langword="true" /> to expand the policies section; otherwise, <see langword="false" />.</param>
-		[Mac (10, 5)]
-		[Export ("setPoliciesDisclosed:")]
-		void SetPoliciesDisclosed (bool disclosed);
-
-		/// <summary>Gets a value indicating whether the policies section is disclosed.</summary>
-		[Mac (10, 5)]
+		/// <summary>Gets or sets a value indicating whether the policies section is disclosed.</summary>
 		[Export ("policiesDisclosed")]
-		bool PoliciesDisclosed { get; }
+		bool PoliciesDisclosed { get; set; }
 
 		/// <summary>Notification posted when the disclosure state of details or policies changes.</summary>
-		[Mac (10, 5)]
 		[Notification]
 		[Field ("SFCertificateViewDisclosureStateDidChange")]
 		NSString DisclosureStateDidChangeNotification { get; }
 	}
 
 	/// <summary>Interface representing the protocol methods of <see cref="SFChooseIdentityPanelDelegate" />.</summary>
-	[NoiOS, NoTV, NoMacCatalyst, Mac (10, 4)]
+	[NoiOS, NoTV, NoMacCatalyst]
 	interface ISFChooseIdentityPanelDelegate { }
 
 	/// <summary>Delegate methods for the <see cref="SFChooseIdentityPanel" />.</summary>
-	[NoiOS, NoTV, NoMacCatalyst, Mac (10, 4)]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Protocol (IsInformal = true, BackwardsCompatibleCodeGeneration = false), Model]
 	[BaseType (typeof (NSObject))]
 	interface SFChooseIdentityPanelDelegate {
@@ -497,7 +427,7 @@ namespace SecurityInterface {
 	}
 
 	/// <summary>A panel that lets the user choose a digital identity (certificate and private key pair) from a list.</summary>
-	[NoiOS, NoTV, NoMacCatalyst, Mac (10, 3)]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[BaseType (typeof (NSPanel))]
 	interface SFChooseIdentityPanel {
 
@@ -511,7 +441,7 @@ namespace SecurityInterface {
 		/// <param name="message">A message to display in the panel, or <see langword="null" />.</param>
 		/// <returns>The button code that was pressed to dismiss the panel.</returns>
 		[Export ("runModalForIdentities:message:")]
-		NSModalResponse RunModalForIdentities (SecIdentity [] identities, [NullAllowed] string message);
+		NSModalResponse RunModal (SecIdentity [] identities, [NullAllowed] string message);
 
 		/// <summary>Displays the panel as a sheet with the specified identities and message.</summary>
 		/// <param name="docWindow">The window to which the sheet is attached.</param>
@@ -530,79 +460,47 @@ namespace SecurityInterface {
 
 		/// <summary>Sets the policies used to evaluate the identities.</summary>
 		/// <param name="policies">An <see cref="NSArray" /> of SecPolicy objects, a single SecPolicy, or <see langword="null" />.</param>
-		[Mac (10, 4)]
 		[Internal]
 		[Export ("setPolicies:")]
 		void _SetPolicies ([NullAllowed] NSObject policies);
 
 		/// <summary>Gets the policies used to evaluate the identities.</summary>
-		[Mac (10, 4)]
 		[Internal]
 		[Export ("policies")]
 		IntPtr _Policies { get; }
 
 		/// <summary>Sets the title of the default button.</summary>
 		/// <param name="title">The button title, or <see langword="null" /> to use the default title.</param>
-		[Mac (10, 4)]
 		[Export ("setDefaultButtonTitle:")]
 		void SetDefaultButtonTitle ([NullAllowed] string title);
 
 		/// <summary>Sets the title of the alternate button.</summary>
 		/// <param name="title">The button title, or <see langword="null" /> to hide the button.</param>
-		[Mac (10, 4)]
 		[Export ("setAlternateButtonTitle:")]
 		void SetAlternateButtonTitle ([NullAllowed] string title);
 
-		/// <summary>Sets whether the panel shows a help button.</summary>
-		/// <param name="showsHelp"><see langword="true" /> to show the help button; otherwise, <see langword="false" />.</param>
-		[Mac (10, 4)]
-		[Export ("setShowsHelp:")]
-		void SetShowsHelp (bool showsHelp);
-
-		/// <summary>Gets a value indicating whether the panel shows a help button.</summary>
-		[Mac (10, 4)]
+		/// <summary>Gets or sets a value indicating whether the panel shows a help button.</summary>
 		[Export ("showsHelp")]
-		bool ShowsHelp { get; }
+		bool ShowsHelp { get; set; }
 
-		/// <summary>Sets the help anchor string for the help button.</summary>
-		/// <param name="anchor">The help anchor string, or <see langword="null" />.</param>
-		[Mac (10, 4)]
-		[Export ("setHelpAnchor:")]
-		void SetHelpAnchor ([NullAllowed] string anchor);
-
-		/// <summary>Gets the help anchor string.</summary>
-		[Mac (10, 4)]
+		/// <summary>Gets or sets the help anchor string.</summary>
 		[Export ("helpAnchor")]
 		[NullAllowed]
-		string HelpAnchor { get; }
+		string HelpAnchor { get; set; }
 
-		/// <summary>Sets the informative text displayed in the panel.</summary>
-		/// <param name="informativeText">The informative text string, or <see langword="null" />.</param>
-		[Mac (10, 5)]
-		[Export ("setInformativeText:")]
-		void SetInformativeText ([NullAllowed] string informativeText);
-
-		/// <summary>Gets the informative text displayed in the panel.</summary>
-		[Mac (10, 5)]
+		/// <summary>Gets or sets the informative text displayed in the panel.</summary>
 		[Export ("informativeText")]
 		[NullAllowed]
-		string InformativeText { get; }
+		string InformativeText { get; set; }
 
-		/// <summary>Sets the domain string used to filter identities.</summary>
-		/// <param name="domainString">The domain string, or <see langword="null" />.</param>
-		[Mac (10, 5)]
-		[Export ("setDomain:")]
-		void SetDomain ([NullAllowed] string domainString);
-
-		/// <summary>Gets the domain string used to filter identities.</summary>
-		[Mac (10, 5)]
+		/// <summary>Gets or sets the domain string used to filter identities.</summary>
 		[Export ("domain")]
 		[NullAllowed]
-		string Domain { get; }
+		string Domain { get; set; }
 	}
 
 	/// <summary>A table cell view used in the identity chooser panel to display identity and issuer information.</summary>
-	[NoiOS, NoTV, NoMacCatalyst, Mac (10, 13)]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[BaseType (typeof (NSTableCellView))]
 	interface SFChooseIdentityTableCellView {
 
@@ -618,7 +516,7 @@ namespace SecurityInterface {
 	}
 
 	/// <summary>A save panel for creating a new keychain file.</summary>
-	[NoiOS, NoTV, NoMacCatalyst, Mac (10, 3)]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[BaseType (typeof (NSSavePanel))]
 	[DisableDefaultCtor]
 	interface SFKeychainSavePanel {
@@ -633,7 +531,7 @@ namespace SecurityInterface {
 		/// <param name="name">The suggested filename, or <see langword="null" />.</param>
 		/// <returns>The button code that was pressed to dismiss the panel.</returns>
 		[Export ("runModalForDirectory:file:")]
-		NSModalResponse RunModalForDirectory ([NullAllowed] string path, [NullAllowed] string name);
+		NSModalResponse RunModal ([NullAllowed] string path, [NullAllowed] string name);
 
 		/// <summary>Sets the password for the new keychain.</summary>
 		/// <param name="password">The password to use, or <see langword="null" />.</param>
@@ -645,7 +543,6 @@ namespace SecurityInterface {
 		IntPtr _Keychain { get; }
 
 		/// <summary>Gets the last error that occurred during keychain creation, or <see langword="null" /> if no error.</summary>
-		[Mac (10, 5)]
 		[Export ("error")]
 		[NullAllowed]
 		NSError Error { get; }
@@ -662,7 +559,7 @@ namespace SecurityInterface {
 	}
 
 	/// <summary>A panel for editing keychain settings such as lock-on-sleep and auto-lock interval.</summary>
-	[NoiOS, NoTV, NoMacCatalyst, Mac (10, 3)]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[BaseType (typeof (NSPanel))]
 	interface SFKeychainSettingsPanel {
 
@@ -681,7 +578,7 @@ namespace SecurityInterface {
 	}
 
 	/// <summary>Contains keys for the user information dictionary passed to authorization plugin views.</summary>
-	[NoiOS, NoTV, NoMacCatalyst, Mac (10, 5)]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Static]
 	interface SFAuthorizationPluginViewKeys {
 
@@ -695,7 +592,7 @@ namespace SecurityInterface {
 	}
 
 	/// <summary>Contains exception names raised by authorization plugin views.</summary>
-	[NoiOS, NoTV, NoMacCatalyst, Mac (10, 5)]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Static]
 	interface SFAuthorizationPluginViewExceptions {
 

@@ -8,9 +8,10 @@
 #   DevDiv: https://devdiv.visualstudio.com/DevDiv/_artifacts/feed/macios-tools-internal/UPack/xcode-apple-silicon/
 #   dnceng: https://dnceng.visualstudio.com/internal/_artifacts/feed/macios-tools-internal/UPack/xcode-apple-silicon/
 #
-# download-xcode-package.sh resolves the organization and project; the feed is
-# project-scoped, so the pipeline's own build identity authenticates and no Azure
-# subscription service connection, BosStorageMirror SAS token or GitHub PAT is needed.
+# resolve-xcode-package.sh works out the project that hosts the feed; the download is
+# done by the UniversalPackages task. The feed is project-scoped, so the pipeline's own
+# build identity authenticates and no Azure subscription service connection,
+# BosStorageMirror SAS token or GitHub PAT is needed.
 
 parameters:
   # Absolute path of the macios checkout. The callers don't agree on whether to use
@@ -80,31 +81,43 @@ steps:
         echo "Xcode $package_version must be downloaded from Azure Artifacts."
       fi
 
-      echo "##vso[task.setvariable variable=XCODE_PACKAGE_DIRECTORY]$(Agent.TempDirectory)/xcode-universal-package"
+      # The download task always reads from the organization the build runs in, so only
+      # the project and the feed have to be published. Resolving here still validates
+      # that this organization is one we know how to serve.
+      resolver="$REPOSITORY_PATH/tools/devops/automation/scripts/bash/resolve-xcode-package.sh"
+      package_project=$("$resolver" --print project)
+      package_feed=$("$resolver" --print feed)
+      package_directory="$(Agent.TempDirectory)/xcode-universal-package"
+
+      if [[ "$download_required" == "true" ]]; then
+        echo "Downloading '$package_name/$package_version' from '$package_project/$package_feed'."
+        rm -rf -- "$package_directory"
+      fi
+
+      echo "##vso[task.setvariable variable=XCODE_PACKAGE_DIRECTORY]$package_directory"
+      echo "##vso[task.setvariable variable=XCODE_UPACK_FEED_PATH]$package_project/$package_feed"
+      echo "##vso[task.setvariable variable=XCODE_UPACK_NAME]$package_name"
+      echo "##vso[task.setvariable variable=XCODE_UPACK_VERSION]$package_version"
       echo "##vso[task.setvariable variable=XCODE_PACKAGE_DOWNLOAD_REQUIRED]$download_required"
     displayName: 'Resolve Xcode Universal Package'
     timeoutInMinutes: 15
     env:
       REPOSITORY_PATH: ${{ parameters.repositoryPath }}
 
-  # SYSTEM_ACCESSTOKEN is deliberately scoped to this step only, and this step must never
-  # enable 'set -x'. The download is restartable: the destination is removed up front and
-  # the downloader stages into a sibling directory it only renames on success.
-  - bash: |
-      set -euo pipefail
-
-      package_directory="$(Agent.TempDirectory)/xcode-universal-package"
-      rm -rf -- "$package_directory"
-
-      "$REPOSITORY_PATH/tools/devops/automation/scripts/bash/download-xcode-package.sh" \
-        --path "$package_directory"
+  # The task authenticates with the pipeline's own build identity, so no token is handled
+  # here. The feed is project-scoped and lives in the organization the build runs in.
+  - task: UniversalPackages@0
     displayName: 'Download Xcode Universal Package'
     condition: and(succeeded(), eq(variables['XCODE_PACKAGE_DOWNLOAD_REQUIRED'], 'true'))
     timeoutInMinutes: ${{ parameters.timeoutInMinutes }}
     retryCountOnTaskFailure: ${{ parameters.retryCount }}
-    env:
-      REPOSITORY_PATH: ${{ parameters.repositoryPath }}
-      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+    inputs:
+      command: download
+      downloadDirectory: $(XCODE_PACKAGE_DIRECTORY)
+      feedsToUse: internal
+      vstsFeed: $(XCODE_UPACK_FEED_PATH)
+      vstsFeedPackage: $(XCODE_UPACK_NAME)
+      vstsPackageVersion: $(XCODE_UPACK_VERSION)
 
   - bash: |
       set -euo pipefail

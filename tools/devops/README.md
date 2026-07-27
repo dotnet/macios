@@ -613,8 +613,8 @@ build-pull-request.yml (Entry Point - PR)
                             ├─► install-certificates.yml@yaml-templates
                             │
                             ├─► templates/common/provision-xcode.yml
-                            │   ├─► scripts/bash/download-xcode-package.sh
-                            │   │   └─► scripts/bash/download-universal-package.sh
+                            │   ├─► scripts/bash/resolve-xcode-package.sh
+                            │   ├─► UniversalPackages@0
                             │   └─► system-dependencies.sh
                             │       └─► scripts/bash/install-xcode.sh
                             │

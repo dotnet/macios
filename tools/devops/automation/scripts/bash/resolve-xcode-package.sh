@@ -2,7 +2,8 @@
 
 set -euo pipefail
 
-# Downloads the immutable Xcode Universal Package pinned in Make.config.
+# Resolves where to get the immutable Xcode Universal Package pinned in Make.config.
+# The UniversalPackages task does the downloading; this only works out what to ask it for.
 #
 # The same feed name and package name exist in every supported Azure DevOps
 # organization; only the organization and the project that hosts the feed differ:
@@ -24,29 +25,24 @@ TOP=$(cd "$SCRIPT_DIR/../../../../.." && pwd)
 ORGANIZATION=${SYSTEM_COLLECTIONURI:-}
 PROJECT=
 FEED=
-DESTINATION=
 PRINT=
 
 usage ()
 {
 	cat <<EOF
-Usage: $0 --path <new-absolute-directory> [options]
-       $0 --print organization|project|feed|name|version [options]
+Usage: $0 --print organization|project|feed|name|version [options]
 
 Options:
   --organization <url>   Azure DevOps organization URL. Defaults to \$SYSTEM_COLLECTIONURI.
   --project <name>       Project that hosts the feed. Defaults to the organization mapping.
   --feed <name>          Feed name. Defaults to XCODE_PACKAGE_FEED in Make.config.
-  --path <directory>     Directory to create for the downloaded package.
-  --print <field>        Print a single resolved value instead of downloading.
-
-SYSTEM_ACCESSTOKEN must contain an Azure DevOps token that can read the feed.
+  --print <field>        Print a single resolved value.
 EOF
 }
 
 while [[ $# -gt 0 ]]; do
 	case "$1" in
-	--organization | --project | --feed | --path | --print)
+	--organization | --project | --feed | --print)
 		if [[ $# -lt 2 || -z "$2" ]]; then
 			echo "$1 requires a value." >&2
 			exit 1
@@ -55,7 +51,6 @@ while [[ $# -gt 0 ]]; do
 		--organization) ORGANIZATION=$2 ;;
 		--project) PROJECT=$2 ;;
 		--feed) FEED=$2 ;;
-		--path) DESTINATION=$2 ;;
 		--print) PRINT=$2 ;;
 		esac
 		shift 2
@@ -137,32 +132,20 @@ devdiv | dnceng)
 	;;
 esac
 
-if [[ -n "$PRINT" ]]; then
-	case "$PRINT" in
-	organization) echo "$ORGANIZATION" ;;
-	project) echo "$PROJECT" ;;
-	feed) echo "$FEED" ;;
-	name) echo "$PACKAGE_NAME" ;;
-	version) echo "$PACKAGE_VERSION" ;;
-	*)
-		echo "Unknown field: '$PRINT'." >&2
-		usage >&2
-		exit 1
-		;;
-	esac
-	exit 0
-fi
-
-if [[ -z "$DESTINATION" ]]; then
+if [[ -z "$PRINT" ]]; then
 	usage >&2
 	exit 1
 fi
 
-echo "Resolved '$PACKAGE_NAME/$PACKAGE_VERSION' to '$ORGANIZATION/$PROJECT' feed '$FEED'."
-"$SCRIPT_DIR/download-universal-package.sh" \
-	--organization "$ORGANIZATION" \
-	--project "$PROJECT" \
-	--feed "$FEED" \
-	--name "$PACKAGE_NAME" \
-	--version "$PACKAGE_VERSION" \
-	--path "$DESTINATION"
+case "$PRINT" in
+organization) echo "$ORGANIZATION" ;;
+project) echo "$PROJECT" ;;
+feed) echo "$FEED" ;;
+name) echo "$PACKAGE_NAME" ;;
+version) echo "$PACKAGE_VERSION" ;;
+*)
+	echo "Unknown field: '$PRINT'." >&2
+	usage >&2
+	exit 1
+	;;
+esac

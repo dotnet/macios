@@ -92,21 +92,24 @@ else
 	exit 1
 fi
 
-case "$(uname -s)/$(uname -m)" in
+HOST_ARCH=$(uname -m)
+if [[ "$(uname -s)" == Darwin && "$(sysctl -n hw.optional.arm64 2>/dev/null || echo 0)" == "1" ]]; then
+	# Under Rosetta 'uname -m' reports x86_64, so ask the hardware instead. Executing the
+	# native tool from a translated process is fine, macOS runs it natively.
+	HOST_ARCH=arm64
+fi
+
+case "$(uname -s)/$HOST_ARCH" in
 Darwin/arm64)
-	ARTIFACTTOOL_ARCH=x86_64
-	if ! /usr/bin/arch -x86_64 /usr/bin/true 2>/dev/null; then
-		echo "Rosetta is required to run Azure DevOps ArtifactTool on arm64." >&2
-		exit 1
-	fi
-	RUN_WITH_ROSETTA=1
+	ARTIFACTTOOL_ARCH=arm64
+	ARTIFACTTOOL_RID=osx-arm64
 	;;
 Darwin/x86_64)
 	ARTIFACTTOOL_ARCH=x86_64
-	RUN_WITH_ROSETTA=
+	ARTIFACTTOOL_RID=osx-x64
 	;;
 *)
-	echo "Unsupported Universal Package host: '$(uname -s)/$(uname -m)'." >&2
+	echo "Unsupported Universal Package host: '$(uname -s)/$HOST_ARCH'." >&2
 	exit 1
 	;;
 esac
@@ -129,9 +132,9 @@ RELEASE_JSON=$(
 			"$CLIENT_TOOLS_URL"
 )
 
-if ! jq -e '
+if ! jq -e --arg rid "$ARTIFACTTOOL_RID" '
 	.name == "ArtifactTool" and
-	.rid == "osx-x64" and
+	.rid == $rid and
 	(.version | type == "string" and test("^[0-9]+[.][0-9]+[.][0-9]+$")) and
 	(.uri | type == "string" and startswith("https://"))
 ' <<< "$RELEASE_JSON" >/dev/null; then
@@ -142,7 +145,7 @@ fi
 ARTIFACTTOOL_VERSION=$(jq -r '.version' <<< "$RELEASE_JSON")
 ARTIFACTTOOL_URI=$(jq -r '.uri' <<< "$RELEASE_JSON")
 TOOLS_ROOT="${AGENT_TEMPDIRECTORY:-${TMPDIR:-/tmp}}/macios-artifacttool"
-ARTIFACTTOOL_DIRECTORY="$TOOLS_ROOT/ArtifactTool-osx-x64-$ARTIFACTTOOL_VERSION"
+ARTIFACTTOOL_DIRECTORY="$TOOLS_ROOT/ArtifactTool-$ARTIFACTTOOL_RID-$ARTIFACTTOOL_VERSION"
 ARTIFACTTOOL="$ARTIFACTTOOL_DIRECTORY/artifacttool"
 
 if [[ ! -x "$ARTIFACTTOOL" ]]; then
@@ -153,7 +156,7 @@ if [[ ! -x "$ARTIFACTTOOL" ]]; then
 	}
 	trap cleanup EXIT
 
-	echo "Downloading Azure DevOps ArtifactTool $ARTIFACTTOOL_VERSION for osx-x64."
+	echo "Downloading Azure DevOps ArtifactTool $ARTIFACTTOOL_VERSION for $ARTIFACTTOOL_RID."
 	curl \
 		--fail \
 		--silent \
@@ -206,11 +209,7 @@ if [[ -n "$FILTER" ]]; then
 fi
 
 echo "Downloading Universal Package '$PACKAGE_NAME/$PACKAGE_VERSION' from '$PROJECT/$FEED'."
-if [[ -n "$RUN_WITH_ROSETTA" ]]; then
-	/usr/bin/arch -x86_64 "$ARTIFACTTOOL" "${ARGUMENTS[@]}"
-else
-	"$ARTIFACTTOOL" "${ARGUMENTS[@]}"
-fi
+"$ARTIFACTTOOL" "${ARGUMENTS[@]}"
 
 if [[ -e "$DESTINATION" || -L "$DESTINATION" ]]; then
 	echo "The Universal Package destination appeared while downloading: '$DESTINATION'." >&2

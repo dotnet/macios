@@ -50,16 +50,6 @@ namespace Xamarin.MacDev.Tasks {
 		[Output]
 		public ITaskItem []? NativeSourceFiles { get; set; }
 
-		/// <summary>
-		/// Output list of native symbols (Objective-C class symbols) that may be undefined at link
-		/// time, and which must therefore be passed to the native linker with '-U' so that a missing
-		/// symbol doesn't turn into a hard link error. These are the Objective-C classes whose native
-		/// existence we can't prove at build time (e.g. classes from third-party bindings whose native
-		/// class doesn't actually exist). See docs/code/class-handles.md.
-		/// </summary>
-		[Output]
-		public ITaskItem []? AllowUndefinedSymbols { get; set; }
-
 		HashSet<string>? ignoredSymbols;
 
 		HashSet<string> IgnoredSymbols {
@@ -218,48 +208,24 @@ namespace Xamarin.MacDev.Tasks {
 			var sb = new StringBuilder ();
 			sb.AppendLine ($"#include <objc/runtime.h>");
 			sb.AppendLine ($"#include <Foundation/Foundation.h>");
-			var allowUndefinedSymbols = new List<ITaskItem> ();
 			foreach (var objectiveCClassName in classes) {
-				// We can't always prove that the native Objective-C class actually exists at link time: it
-				// might come from a third-party binding whose native class doesn't exist (for instance a
-				// binding that declares a [BaseType (typeof (NSObject))] type for what is a protocol - and
-				// not a class - natively). For such classes a direct native reference ([X class]) would turn
-				// into a hard link error ('Undefined symbols: _OBJC_CLASS_$_X'), even though the class is
-				// never actually used at runtime. We consider a class "provably existing" if it's a known
-				// platform (SDK) class (it has a framework), and "risky" otherwise. For risky classes we
-				// tell the native linker the symbol is allowed to be undefined ('-U'), and we fall back to
-				// 'objc_getClass' at runtime if the direct reference turns out to be null (which mirrors the
-				// weak + dlsym fallback we do for inlined dlfcn symbols).
-				var risky = false;
-
 				// We don't want to import every header under the sun to find the @interface definitions for each class, so we generate
 				// a forward declaration for each class. To avoid potential issues with missing classes at runtime, we mark each declaration with __attribute__((weak_import)).
 				// The only exception is that we need to #include Foundation, which means we can't create declarations for Foundation classes.
 				if (!typeMap.TryGetValue (objectiveCClassName, out var info)) {
-					risky = true;
 					sb.AppendLine ($"__attribute__((weak_import)) @interface {objectiveCClassName} : NSObject @end // no objc type found");
 				} else if (info.IsWrapper && info.Framework == "Foundation") {
 					// This is a special case for wrapper classes in the Foundation framework. Since we need to #include Foundation, we can't create a forward declaration for these classes. However, since they are wrappers, we know they won't be missing at runtime, so we don't need to mark them with __attribute__((weak_import)).
 					sb.AppendLine ($"// The class '{objectiveCClassName}' comes from the Foundation framework, so no generated @interface declaration.");
 				} else {
-					// If the class doesn't belong to a known platform framework, then it comes from a third-party
-					// binding, and we can't prove that the native class actually exists, so treat it as risky.
-					risky = string.IsNullOrEmpty (info.Framework);
 					if (info.IsStubClass)
 						sb.AppendLine ("__attribute__((objc_class_stub)) __attribute__((objc_subclassing_restricted))");
 					sb.AppendLine ($"__attribute__((weak_import)) @interface {objectiveCClassName} : NSObject @end // is stub: {info.IsStubClass}");
 				}
 				sb.AppendLine ($"Class xamarin_Class_GetHandle_{objectiveCClassName}_Native ();");
-				if (risky) {
-					sb.AppendLine ($"Class xamarin_Class_GetHandle_{objectiveCClassName}_Native () {{ Class rv = [{objectiveCClassName} class]; return rv ? rv : objc_getClass (\"{objectiveCClassName}\"); }}");
-					allowUndefinedSymbols.Add (new Microsoft.Build.Utilities.TaskItem (Symbol.Prefix + Symbol.ObjectiveCPrefix + objectiveCClassName));
-				} else {
-					sb.AppendLine ($"Class xamarin_Class_GetHandle_{objectiveCClassName}_Native () {{ return [{objectiveCClassName} class]; }}");
-				}
+				sb.AppendLine ($"Class xamarin_Class_GetHandle_{objectiveCClassName}_Native () {{ return [{objectiveCClassName} class]; }}");
 				sb.AppendLine ();
 			}
-
-			AllowUndefinedSymbols = allowUndefinedSymbols.ToArray ();
 
 			var outputPath = Path.Combine (OutputDirectory, "inlined-class-gethandle.m");
 			FileUtils.WriteIfDifferent (outputPath, sb.ToString (), (msg) => Log.LogMessage (MessageImportance.Low, msg));

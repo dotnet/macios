@@ -2052,7 +2052,6 @@
 			TypeMapFilePath="$(_TypeMapFilePath)"
 		>
 			<Output TaskParameter="NativeSourceFiles" ItemName="_PostTrimmingSourceFiles" />
-			<Output TaskParameter="AllowUndefinedSymbols" ItemName="_PostTrimmingAllowUndefinedSymbols" />
 		</PostTrimmingProcessing>
 
 		<ItemGroup>
@@ -2278,9 +2277,6 @@
 		<ItemGroup>
 			<_AllLinkerFlags Include="@(_AssemblyLinkerFlags);@(_MainLinkerFlags);@(_CustomLinkFlags)" />
 			<_AllLinkerFlags Condition="'$(_ExportSymbolsExplicitly)' != 'true'" Include="@(_ProcessedReferenceNativeSymbol->'-u%(Identity)')" />
-
-			<!-- Allow the inlined Class.GetHandle native references whose Objective-C class we can't prove exists to be undefined at link time (see docs/code/class-handles.md). Without this a missing native class would turn into a hard link error. -->
-			<_AllLinkerFlags Include="@(_PostTrimmingAllowUndefinedSymbols->'-Wl,-U,%(Identity)')" />
 
 			<_AllLinkerFlags Condition="'$(_UseClassicLinker)' == 'true'" Include="-Xlinker" />
 			<_AllLinkerFlags Condition="'$(_UseClassicLinker)' == 'true'" Include="-ld_classic" />

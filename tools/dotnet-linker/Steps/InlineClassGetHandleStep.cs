@@ -194,6 +194,17 @@ public class InlineClassGetHandleStep : AssemblyModifierStep {
 			}
 
 			if (objCType is not null) {
+				if (objCType.IsFakeProtocol) {
+					// This is a class with a [Protocol] attribute (typically a binding that declares a
+					// [BaseType (typeof (NSObject))] type for something that is a protocol - and not a class -
+					// natively). The static registrar doesn't register these classes, so there's no native
+					// Objective-C class to reference, which means inlining the call to Class.GetHandle would
+					// turn into a hard link error ('Undefined symbols: _OBJC_CLASS_$_X'). Don't inline it, so
+					// that the call falls back to a runtime lookup (which returns null for a missing class).
+					App.Log (3, "Not inlining the call to Class.GetHandle (\"{0}\") in method {1} because the class has a [Protocol] attribute, so there's no native Objective-C class to reference.", objectiveCClassName, FormatMethod (method));
+					continue;
+				}
+
 				if (DerivedLinkContext.App.IsSimulatorBuild) {
 					if (DerivedLinkContext.HasAvailabilityAttributesShowingUnavailableInSimulator (objCType.Type.Resolve (), method)) {
 						App.Log (3, "Not inlining the call to Class.GetHandle (\"{0}\") in method {1} because the type is marked with an attribute indicating it's not available in the simulator.", objectiveCClassName, FormatMethod (method));

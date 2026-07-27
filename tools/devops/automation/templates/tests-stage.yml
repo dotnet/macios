@@ -202,6 +202,7 @@ stages:
         - Agent.OS -equals Darwin
         - Agent.OSVersion -gtVersion $(minimumMacOSVersion)
         - macOS.Name -equals ${{ parameters.macOSName }}
+        - macOS.Architecture -equals arm64  # the pinned Xcode package is Apple silicon only
         - XcodeChannel -equals ${{ parameters.xcodeChannel }}
       steps:
       - template: build/build-pkgs.yml

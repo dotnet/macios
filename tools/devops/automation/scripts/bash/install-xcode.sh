@@ -510,10 +510,9 @@ install_command_line_tools ()
 	# softwareupdate reports everything through its output rather than its exit status: it
 	# exits 0 for an unknown label, for an invalid flag, and for a failed query, and it can
 	# hang indefinitely when the update service is unreachable. macOS has no timeout(1), so
-	# bound the query with perl's alarm and decide from the catalog contents. This probe
-	# also acts as a circuit breaker for the install below, which would otherwise be the
-	# thing that hangs.
-	catalog=$(/usr/bin/perl -e 'alarm shift; exec @ARGV or exit 127' 120 /usr/sbin/softwareupdate --list 2>/dev/null || true)
+	# bound both calls with perl's alarm and decide from the catalog contents. Both streams
+	# are captured because softwareupdate splits its output between them.
+	catalog=$(/usr/bin/perl -e 'alarm shift; exec @ARGV or exit 127' 120 /usr/sbin/softwareupdate --list 2>&1 || true)
 	if ! grep -q '^[[:space:]]*\* Label: ' <<< "$catalog"; then
 		# Indistinguishable from "reachable, nothing pending", so don't claim either.
 		log "Could not confirm that '$label' is available; keeping the command line tools that are already installed."
@@ -525,8 +524,12 @@ install_command_line_tools ()
 		return
 	fi
 
+	# Best effort: the command line tools are an addition, so a failed or stalled install
+	# must not take the whole build with it.
 	log "Installing '$label'."
-	run_privileged /usr/sbin/softwareupdate -i "$label"
+	if ! run_privileged /usr/bin/perl -e 'alarm shift; exec @ARGV or exit 127' 1800 /usr/sbin/softwareupdate -i "$label"; then
+		log "Installing '$label' did not complete; keeping the command line tools that are already installed."
+	fi
 }
 
 reconcile_xcode ()

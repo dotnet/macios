@@ -207,8 +207,6 @@ if [[ "${CONFIGURED_NORMALIZED_VERSION%.*}" != "${EXPECTED_NORMALIZED_VERSION%.*
 fi
 
 EXPECTED_APP_NAME="Xcode_${XCODE_PACKAGE_VERSION/beta./beta}.app"
-INSTALL_XCODE_APP="/Applications/$EXPECTED_APP_NAME"
-INSTALL_XCODE_DEVELOPER_ROOT="$INSTALL_XCODE_APP/Contents/Developer"
 
 # Make.config has to stay internally consistent: the pinned package version determines the
 # application name, so XCODE_DEVELOPER_ROOT must point at that same application. Without
@@ -219,22 +217,30 @@ if [[ "$MAKE_CONFIG_XCODE_APP" != "$EXPECTED_APP_NAME" ]]; then
 	exit 1
 fi
 
-if [[ "$COMMAND" == "install" && -n "$PACKAGE_DIRECTORY" ]]; then
-	XCODE_APP=$INSTALL_XCODE_APP
-	XCODE_DEVELOPER_ROOT=$INSTALL_XCODE_DEVELOPER_ROOT
-else
-	XCODE_APP=$(dirname "$(dirname "$CONFIGURED_XCODE_DEVELOPER_ROOT")")
-	if [[ -d "$XCODE_APP" ]]; then
-		XCODE_APP=$(canonicalize_directory "$XCODE_APP")
-	fi
+# The literal path Make.config names, before any symlink resolution. Privileged install
+# operations always target this: canonicalizing first would let an install overwrite a
+# bundle we had merely borrowed through the compatibility symlink below.
+LITERAL_XCODE_APP=$(dirname "$(dirname "$CONFIGURED_XCODE_DEVELOPER_ROOT")")
+
+set_xcode_target ()
+{
+	XCODE_APP=$1
 	XCODE_DEVELOPER_ROOT="$XCODE_APP/Contents/Developer"
+	XCODE_INSTALL_PARENT=$(dirname "$XCODE_APP")
+	RECONCILIATION_MARKER="$XCODE_APP.macios-reconcile-pending"
+}
+
+if [[ "$COMMAND" == "install" ]]; then
+	set_xcode_target "$LITERAL_XCODE_APP"
+elif [[ -d "$LITERAL_XCODE_APP" ]]; then
+	set_xcode_target "$(canonicalize_directory "$LITERAL_XCODE_APP")"
+else
+	set_xcode_target "$LITERAL_XCODE_APP"
 fi
 if [[ "$COMMAND" == "install" && ( "$XCODE_APP" != /* || "$XCODE_APP" != *.app ) ]]; then
 	error "The Xcode installation target must be an absolute application path: '$XCODE_APP'."
 	exit 1
 fi
-XCODE_INSTALL_PARENT=$(dirname "$XCODE_APP")
-RECONCILIATION_MARKER="$XCODE_APP.macios-reconcile-pending"
 
 verify_xcode_bundle ()
 {
@@ -335,6 +341,97 @@ verify_native_apple_silicon ()
 		error "The '$XCODE_PACKAGE_NAME' package requires a native arm64 process."
 		return 1
 	fi
+}
+
+# Mirrors the XCODE_IS_STABLE predicate in Make.config: an application named like
+# "Xcode_#.#[.#].app" is stable, and anything else is treated as a preview. Make.config
+# classifies lexically, so the name we end up selecting decides how the build is labelled.
+xcode_name_is_stable ()
+{
+	[[ "$1" =~ ^Xcode[_0-9.]*[.]app$ ]]
+}
+
+# A bot may already have exactly the Xcode we want, just under a different name than the
+# one Make.config pins (say Xcode_26.2.app rather than Xcode_26.2.0.app). Find such a
+# bundle so we can reuse it instead of downloading and installing another copy.
+find_installed_xcode ()
+{
+	local candidate name
+	local want_stable=
+	local candidate_stable=
+
+	if xcode_name_is_stable "$EXPECTED_APP_NAME"; then
+		want_stable=1
+	fi
+
+	# Sort deterministically and only consider names we would install ourselves, so that
+	# neither a Finder duplicate ("Xcode_26.6.0 2.app") nor an arbitrary application can
+	# win over the configured bundle. ./configure also rejects paths containing spaces.
+	while IFS= read -r candidate; do
+		[[ -d "$candidate" && ! -L "$candidate" ]] || continue
+		name=$(basename "$candidate")
+		[[ "$name" =~ ^Xcode[_0-9.]*(-[A-Za-z0-9.]+)?[.]app$ ]] || continue
+
+		# Reusing a bundle whose name classifies differently would silently change
+		# XCODE_IS_STABLE, and publishing a preview as stable is the dangerous direction.
+		candidate_stable=
+		if xcode_name_is_stable "$name"; then
+			candidate_stable=1
+		fi
+		[[ "$candidate_stable" == "$want_stable" ]] || continue
+
+		if verify_xcode_bundle "$candidate" >/dev/null 2>&1; then
+			echo "$candidate"
+			return 0
+		fi
+	done < <(find /Applications -maxdepth 1 -name 'Xcode*.app' 2>/dev/null | LC_ALL=C sort)
+
+	return 1
+}
+
+# Point the path Make.config names at an already-installed bundle found elsewhere, so that
+# everything reading Make.config -- this script, system-dependencies.sh, and plain 'make'
+# in jobs that never run ./configure -- keeps working unchanged.
+adopt_installed_xcode ()
+{
+	local discovered=$1
+
+	if [[ -e "$LITERAL_XCODE_APP" && ! -L "$LITERAL_XCODE_APP" ]]; then
+		error "'$LITERAL_XCODE_APP' already exists and is not a symlink; refusing to replace it."
+		return 1
+	fi
+	if [[ -L "$LITERAL_XCODE_APP" ]]; then
+		run_privileged rm -- "$LITERAL_XCODE_APP"
+	fi
+	run_privileged ln -s "$discovered" "$LITERAL_XCODE_APP"
+	if [[ "$(canonicalize_directory "$LITERAL_XCODE_APP")" != "$(canonicalize_directory "$discovered")" ]]; then
+		error "'$LITERAL_XCODE_APP' does not resolve to '$discovered'."
+		return 1
+	fi
+	log "Reusing the Xcode already installed in '$discovered'."
+}
+
+# Resolve which bundle we are going to operate on. Pass "adopt" from the privileged
+# commands to let a bundle found elsewhere be linked into the configured path; 'verify'
+# must not mutate anything, because it is the unprivileged download-decision probe.
+resolve_xcode_target ()
+{
+	local adopt=${1:-}
+	local discovered
+
+	if verify_xcode_bundle "$XCODE_APP" >/dev/null 2>&1; then
+		return 0
+	fi
+	if [[ -e "$LITERAL_XCODE_APP" && ! -L "$LITERAL_XCODE_APP" ]]; then
+		# Something real occupies the configured path; let the normal install replace it
+		# rather than adopting a different bundle behind its back.
+		return 1
+	fi
+	discovered=$(find_installed_xcode) || return 1
+	if [[ -n "$adopt" ]]; then
+		adopt_installed_xcode "$discovered" || return 1
+	fi
+	set_xcode_target "$discovered"
 }
 
 validate_xip_signature ()
@@ -765,7 +862,11 @@ install_archive ()
 
 case "$COMMAND" in
 verify)
-	verify_xcode_bundle "$XCODE_APP"
+	if ! resolve_xcode_target; then
+		# Report against the configured location: that's the one the operator has to fix.
+		verify_xcode_bundle "$XCODE_APP"
+		exit 1
+	fi
 	log "Found Xcode $XCODE_PACKAGE_VERSION ($XCODE_BUILD_VERSION) in '$XCODE_APP'."
 	;;
 verify-package)
@@ -782,6 +883,7 @@ reconcile)
 		error "reconcile does not accept a package or archive."
 		exit 1
 	fi
+	resolve_xcode_target adopt || true
 	reconcile_xcode
 	log "Selected Xcode $XCODE_PACKAGE_VERSION ($XCODE_BUILD_VERSION)."
 	;;
@@ -791,7 +893,7 @@ install)
 		exit 1
 	fi
 	clean_stale_install_paths
-	if verify_xcode_bundle "$XCODE_APP" >/dev/null 2>&1; then
+	if resolve_xcode_target adopt; then
 		reconcile_xcode
 		log "Xcode $XCODE_PACKAGE_VERSION ($XCODE_BUILD_VERSION) was already installed."
 		exit 0

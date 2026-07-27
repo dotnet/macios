@@ -29,9 +29,9 @@ namespace NaturalLanguage {
 
 	public partial class NLLanguageRecognizer {
 
+		/// <summary>Returns the language in which the text that was analyzed with <see cref="NaturalLanguage.NLLanguageRecognizer.Process(System.String)" /> was most likely written.</summary>
 		/// <param name="string">The text to recognize.</param>
-		///         <summary>Returns the language in which the text that was analyzed with <see cref="NaturalLanguage.NLLanguageRecognizer.Process(System.String)" /> was most likely written.</summary>
-		///         <returns>The language in which the text was most likely written.</returns>
+		/// <returns>The language in which the text was most likely written.</returns>
 		public static NLLanguage GetDominantLanguage (string @string)
 		{
 			var nsstring = CFString.CreateNative (@string);
@@ -53,7 +53,7 @@ namespace NaturalLanguage {
 		}
 
 		/// <summary>Gets or sets a list of language hints.</summary>
-		///         <value>A list of language hints.</value>
+		/// <value>A list of language hints.</value>
 		public Dictionary<NLLanguage, double> LanguageHints {
 			get {
 				return NLLanguageExtensions.Convert (NativeLanguageHints);

@@ -23,8 +23,8 @@ namespace Social {
 			return FromService (serviceKind.GetConstant ()!);
 		}
 
-		/// <param name="serviceKind">The service kind.</param>
-		///         <summary>Returns <see langword="true" /> if the application can send a request for the specified service type.</summary>
+		/// <summary>Returns <see langword="true" /> if the application can send a request for the specified service type.</summary>
+		/// <param name="serviceKind">The kind of social service to check availability for.</param>
 		public static bool IsAvailable (SLServiceKind serviceKind)
 		{
 			return IsAvailable (serviceKind.GetConstant ()!);

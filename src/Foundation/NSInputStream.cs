@@ -87,12 +87,11 @@ namespace Foundation {
 		}
 
 		// Private API, so no documentation.
+		/// <summary>Adds a client for the stream. This method is not supposed to be called by managed code, it will be called by consumers of the stream. When overriding it make sure to call the base implementation.</summary>
 		/// <param name="inFlags">Flags.</param>
-		///         <param name="inCallback">The callbacks to call when events occur.</param>
-		///         <param name="inContextPtr">User-defined data for the callback.</param>
-		///         <summary>Adds a client for the stream. This method is not supposed to be called by managed code, it will be called by consumers of the stream. When overriding it make sure to call the base implementation.</summary>
-		///         <returns>
-		///         </returns>
+		/// <param name="inCallback">The callbacks to call when events occur.</param>
+		/// <param name="inContextPtr">User-defined data for the callback.</param>
+		/// <returns><see langword="true" /> if the client was added successfully; otherwise, <see langword="false" />.</returns>
 		[Export ("_setCFClientFlags:callback:context:")]
 		protected virtual bool SetCFClientFlags (CFStreamEventType inFlags, IntPtr inCallback, IntPtr inContextPtr)
 		{
@@ -123,8 +122,8 @@ namespace Foundation {
 			return false;
 		}
 
+		/// <summary>Notifies consumers of events in the stream.</summary>
 		/// <param name="eventType">The events to notify.</param>
-		///         <summary>Notifies consumers of events in the stream.</summary>
 		public void Notify (CFStreamEventType eventType)
 		{
 			if ((flags & eventType) == 0)

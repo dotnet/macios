@@ -59,8 +59,8 @@ namespace CoreImage {
 		{
 		}
 
+		/// <summary>Creates a new CIImageInitializationOptionsWithMetadata by using the specified dictionary of options.</summary>
 		/// <param name="dictionary">The dictionary.</param>
-		///         <summary>Creates a new CIImageInitializationOptionsWithMetadata by using the specified dictionary of options.</summary>
 		public CIImageInitializationOptionsWithMetadata (NSDictionary dictionary)
 			: base (dictionary)
 		{

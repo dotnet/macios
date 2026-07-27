@@ -47,7 +47,7 @@ namespace Xamarin.Tests {
 		{
 			var platform = ApplePlatform.iOS;
 			var runtimeIdentifiers = "iossimulator-arm64";
-			var project = "MySimpleApp";
+			var project = "ExportAttributeRemovalApp";
 			var configuration = "Release";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
@@ -55,7 +55,6 @@ namespace Xamarin.Tests {
 			var projectPath = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out _, configuration: configuration);
 			Clean (projectPath);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
-			properties ["AdditionalDefineConstants"] = "EXPORT_ATTRIBUTE_REMOVAL";
 			properties ["Configuration"] = configuration;
 			properties ["EnableAssemblyILStripping"] = "true";
 			properties ["MtouchLink"] = registrar == "managed-static" ? "SdkOnly" : "Full";
@@ -101,7 +100,7 @@ namespace Xamarin.Tests {
 			AssertExport (nsObjectDescription.GetMethod, expected, "wrapper ancestor with application subclasses");
 
 			using var appAssembly = AssemblyDefinition.ReadAssembly (appAssemblyPath);
-			var applicationType = appAssembly.MainModule.GetType ("MySimpleApp.ExportMetadataApplicationType");
+			var applicationType = appAssembly.MainModule.GetType ("ExportAttributeRemovalApp.ExportMetadataApplicationType");
 			AssertAttribute (applicationType.Methods.Single (v => v.Name == "ApplicationExport"), "ExportAttribute", expected, "application export");
 			AssertAttribute (applicationType.Methods.Single (v => v.Name == "ApplicationAction"), "ActionAttribute", expected, "application action");
 			AssertAttribute (applicationType.Properties.Single (v => v.Name == "ApplicationOutlet"), "OutletAttribute", expected, "application outlet");
@@ -113,7 +112,7 @@ namespace Xamarin.Tests {
 		{
 			var platform = ApplePlatform.iOS;
 			var runtimeIdentifiers = "iossimulator-arm64";
-			var project = "MySimpleApp";
+			var project = "ExportAttributeRemovalApp";
 			var configuration = "Release";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
@@ -121,7 +120,7 @@ namespace Xamarin.Tests {
 			var projectPath = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out _, configuration: configuration);
 			Clean (projectPath);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
-			properties ["AdditionalDefineConstants"] = "EXPORT_ATTRIBUTE_REMOVAL;EXPORT_ATTRIBUTE_REMOVAL_NSXPC";
+			properties ["AdditionalDefineConstants"] = "EXPORT_ATTRIBUTE_REMOVAL_NSXPC";
 			properties ["Configuration"] = configuration;
 			properties ["MtouchLink"] = "Full";
 			properties ["PostProcessAssemblies"] = "true";

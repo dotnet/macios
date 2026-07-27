@@ -3,9 +3,9 @@
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
 
-		<ApplicationTitle>MySimpleApp</ApplicationTitle>
-		<ApplicationId>com.xamarin.mysimpleapp</ApplicationId>
-		<ApplicationVersion>3.14</ApplicationVersion>
+		<ApplicationTitle>ExportAttributeRemovalApp</ApplicationTitle>
+		<ApplicationId>com.xamarin.exportattributeremovalapp</ApplicationId>
+		<DefineConstants>$(DefineConstants);$(AdditionalDefineConstants)</DefineConstants>
 	</PropertyGroup>
 
 	<Import Project="../../common/shared-dotnet.csproj" />

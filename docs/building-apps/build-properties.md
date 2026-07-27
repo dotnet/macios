@@ -502,7 +502,22 @@ build warns) when those conditions aren't met.
 
 ## EmbedOnDemandResources
 
-If on-demand resources should be embedded in the app bundle.
+Controls where on-demand resource asset packs are placed when packaging an app
+for distribution. This property does **not** enable on-demand resources (use
+[EnableOnDemandResources](#enableondemandresources) for that) — it only affects
+how already-tagged asset packs are packaged.
+
+This is the property set by the "Embed on-demand resources in the app bundle"
+option in the IDE.
+
+* `true`: the asset packs are embedded in the `.app` bundle inside the IPA and
+  served locally by the app.
+* `false`: the asset packs are packaged separately (outside the app bundle) so
+  they can be streamed/hosted (for example on a web server or by the App Store).
+
+This property is only consulted when packaging an IPA for distribution (when
+`BuildIpa` is `true` and the distribution type is `AppStore` or `AdHoc`); it has
+no effect on a simulator or device debug build.
 
 Default: true
 
@@ -519,6 +534,26 @@ See [CodesignEntitlements](#codesignentitlements).
 ## EnableOnDemandResources
 
 If on-demand resources are enabled.
+
+When enabled, bundle resources that are tagged with `ResourceTags` metadata are
+placed into on-demand resource asset packs instead of being copied directly into
+the app bundle. A resource is tagged like this:
+
+```xml
+<ItemGroup>
+  <BundleResource Update="Resources\MyResource.dat" ResourceTags="MyTag" />
+</ItemGroup>
+```
+
+Use `Update` (not `Include`) when the file is already part of the project's
+default resources (for example anything under the `Resources` folder on iOS,
+which is automatically included as a `BundleResource`), otherwise the resource
+would be added twice and the untagged copy would win. In a .NET MAUI project the
+same `ResourceTags` metadata can be set on the corresponding `MauiAsset` item.
+
+This property only enables on-demand resources; it does not control how the asset
+packs are packaged for distribution — see
+[EmbedOnDemandResources](#embedondemandresources) for that.
 
 Default: false for macOS, true for all other platforms.
 

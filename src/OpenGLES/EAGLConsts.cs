@@ -13,10 +13,12 @@ namespace OpenGLES {
 	[ObsoletedOSPlatform ("tvos", "Use 'Metal' instead.")]
 	[ObsoletedOSPlatform ("ios", "Use 'Metal' instead.")]
 	public static partial class EAGLDrawableProperty {
+#if !XAMCORE_5_0
 		/// <summary>Can be used to configure the internal color format for drawables.</summary>
 		public static readonly NSString? ColorFormat = _ColorFormat;
 		/// <summary>Can be used to configure whether drawables retain their contents after displaying them.</summary>
 		public static readonly NSString? RetainedBacking = _RetainedBacking;
+#endif
 	}
 
 	/// <summary>EAGLColorFormat strings.</summary>
@@ -24,11 +26,13 @@ namespace OpenGLES {
 	[ObsoletedOSPlatform ("tvos", "Use 'Metal' instead.")]
 	[ObsoletedOSPlatform ("ios", "Use 'Metal' instead.")]
 	public static partial class EAGLColorFormat {
+#if !XAMCORE_5_0
 		/// <summary>16-bit RGB color format.</summary>
 		/// <remarks>This format uses 5 bits for the red components, 6 bits for the green component and 5 bits for the blue component. Corresponds to the OpenGL ES GL_RGB565 format.</remarks>
 		public static readonly NSString? RGB565 = _RGB565;
 		/// <summary>32-bit RGBA format.</summary>
 		/// <remarks>This is a 32 bit format that uses 8 bits for red, green, blue and alpha channels. Corresponds to the OpenGL ES GL_RGBA8888 value.</remarks>
 		public static readonly NSString? RGBA8 = _RGBA8;
+#endif
 	}
 }

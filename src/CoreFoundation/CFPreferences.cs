@@ -18,11 +18,13 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		static extern IntPtr CFPreferencesCopyAppValue (IntPtr key, IntPtr applicationId);
 
+#if !XAMCORE_5_0
 		/// <summary>The current application.</summary>
 		/// <remarks>
 		///   <para>Use this value to read or write preferences for the calling application.</para>
 		/// </remarks>
 		public static readonly NSString? CurrentApplication = _CurrentApplication;
+#endif
 
 		/*public static readonly NSString AnyApplication;
 		public static readonly NSString CurrentHost;

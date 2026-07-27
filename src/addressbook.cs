@@ -4,9 +4,22 @@ namespace AddressBook {
 	[NoMac, NoTV]
 	[Partial]
 	interface ABAddressBook {
+#if !XAMCORE_5_0
 		[Internal]
 		[Field ("ABAddressBookErrorDomain")]
 		NSString _ErrorDomain { get; }
+#endif
+#if XAMCORE_5_0
+		/// <summary>Identifies the error domain under which Address Book errors are grouped.</summary>
+		/// <remarks>
+		///   <para>
+		///     When an <see cref="CoreFoundation.CFException" /> is thrown from an <see cref="ABAddressBook" /> method,
+		///     its <see cref="CoreFoundation.CFException.Domain" /> is equal to this value.
+		///   </para>
+		/// </remarks>
+		[Field ("ABAddressBookErrorDomain")]
+		NSString ErrorDomain { get; }
+#endif
 	}
 
 	[NoMac, NoTV]
@@ -164,6 +177,7 @@ namespace AddressBook {
 	[NoMac, NoTV]
 	[Static, Partial]
 	interface ABPersonSocialProfileService {
+#if !XAMCORE_5_0
 		[Internal]
 		[Field ("kABPersonSocialProfileServiceTwitter")]
 		NSString _Twitter { get; }
@@ -191,6 +205,36 @@ namespace AddressBook {
 		[Internal]
 		[Field ("kABPersonSocialProfileServiceSinaWeibo")]
 		NSString _SinaWeibo { get; }
+#endif
+#if XAMCORE_5_0
+		/// <summary>Identifies the Twitter social-profile service.</summary>
+		[Field ("kABPersonSocialProfileServiceTwitter")]
+		NSString Twitter { get; }
+
+		/// <summary>Identifies the Game Center social-profile service.</summary>
+		[Field ("kABPersonSocialProfileServiceGameCenter")]
+		NSString GameCenter { get; }
+
+		/// <summary>Identifies the Facebook social-profile service.</summary>
+		[Field ("kABPersonSocialProfileServiceFacebook")]
+		NSString Facebook { get; }
+
+		/// <summary>Identifies the Myspace social-profile service.</summary>
+		[Field ("kABPersonSocialProfileServiceMyspace")]
+		NSString Myspace { get; }
+
+		/// <summary>Identifies the LinkedIn social-profile service.</summary>
+		[Field ("kABPersonSocialProfileServiceLinkedIn")]
+		NSString LinkedIn { get; }
+
+		/// <summary>Identifies the Flickr social-profile service.</summary>
+		[Field ("kABPersonSocialProfileServiceFlickr")]
+		NSString Flickr { get; }
+
+		/// <summary>Identifies the Sina Weibo social-profile service.</summary>
+		[Field ("kABPersonSocialProfileServiceSinaWeibo")]
+		NSString SinaWeibo { get; }
+#endif
 	}
 
 	[NoMac, NoTV]

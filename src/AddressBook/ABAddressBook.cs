@@ -107,6 +107,7 @@ namespace AddressBook {
 	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
 	public partial class ABAddressBook : NativeObject, IEnumerable<ABRecord> {
 
+#if !XAMCORE_5_0
 		/// <summary>Identifies the error domain under which Address Book errors are grouped.</summary>
 		/// <remarks>
 		///   <para>
@@ -115,6 +116,7 @@ namespace AddressBook {
 		///   </para>
 		/// </remarks>
 		public static readonly NSString ErrorDomain = _ErrorDomain;
+#endif
 
 		GCHandle sender;
 

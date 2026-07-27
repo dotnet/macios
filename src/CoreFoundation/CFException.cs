@@ -32,6 +32,7 @@ namespace CoreFoundation {
 	/// <summary>A class whose static fields define error domains for <see cref="CoreFoundation.CFException.Domain" />.</summary>
 	public static partial class CFErrorDomain {
 
+#if !XAMCORE_5_0
 		/// <summary>Identifies errors reported by Cocoa APIs.</summary>
 		public static readonly NSString? Cocoa = _Cocoa;
 
@@ -43,12 +44,14 @@ namespace CoreFoundation {
 
 		/// <summary>Identifies errors reported using POSIX error codes.</summary>
 		public static readonly NSString? Posix = _Posix;
+#endif
 	}
 
 	/// <summary>Class that contains keys that identify exception data values.</summary>
 	///     <!-- TODO: Unused? Couldn't find any references 2013-05-02 -->
 	public static partial class CFExceptionDataKey {
 
+#if !XAMCORE_5_0
 		/// <summary>Gets the key for an error's nonlocalized description.</summary>
 		public static readonly NSString? Description = _Description;
 
@@ -63,6 +66,7 @@ namespace CoreFoundation {
 
 		/// <summary>Gets the key for an underlying error.</summary>
 		public static readonly NSString? UnderlyingError = _UnderlyingError;
+#endif
 	}
 
 	/// <summary>Represents an exception arising from a Core Foundation <c>CFError</c>, having an error domain, a domain-specific error code, and perhaps additional information.</summary>

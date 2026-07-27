@@ -41,6 +41,7 @@ namespace CoreFoundation {
 
 	[Static, Partial]
 	interface CFErrorDomain {
+#if !XAMCORE_5_0
 		[Internal]
 		[Field ("kCFErrorDomainCocoa")]
 		NSString _Cocoa { get; }
@@ -56,10 +57,29 @@ namespace CoreFoundation {
 		[Internal]
 		[Field ("kCFErrorDomainPOSIX")]
 		NSString _Posix { get; }
+#endif
+#if XAMCORE_5_0
+		/// <summary>Identifies errors reported by Cocoa APIs.</summary>
+		[Field ("kCFErrorDomainCocoa")]
+		NSString Cocoa { get; }
+
+		/// <summary>Identifies errors reported by Mach APIs.</summary>
+		[Field ("kCFErrorDomainMach")]
+		NSString Mach { get; }
+
+		/// <summary>Identifies errors reported using OSStatus values.</summary>
+		[Field ("kCFErrorDomainOSStatus")]
+		NSString OSStatus { get; }
+
+		/// <summary>Identifies errors reported using POSIX error codes.</summary>
+		[Field ("kCFErrorDomainPOSIX")]
+		NSString Posix { get; }
+#endif
 	}
 
 	[Static, Partial]
 	interface CFExceptionDataKey {
+#if !XAMCORE_5_0
 		[Internal]
 		[Field ("kCFErrorDescriptionKey")]
 		NSString _Description { get; }
@@ -79,13 +99,45 @@ namespace CoreFoundation {
 		[Internal]
 		[Field ("kCFErrorUnderlyingErrorKey")]
 		NSString _UnderlyingError { get; }
+#endif
+#if XAMCORE_5_0
+		/// <summary>Gets the key for an error's nonlocalized description.</summary>
+		[Field ("kCFErrorDescriptionKey")]
+		NSString Description { get; }
+
+		/// <summary>Gets the key for an error's localized description.</summary>
+		[Field ("kCFErrorLocalizedDescriptionKey")]
+		NSString LocalizedDescription { get; }
+
+		/// <summary>Gets the key for an error's localized failure reason.</summary>
+		[Field ("kCFErrorLocalizedFailureReasonKey")]
+		NSString LocalizedFailureReason { get; }
+
+		/// <summary>Gets the key for an error's localized recovery suggestion.</summary>
+		[Field ("kCFErrorLocalizedRecoverySuggestionKey")]
+		NSString LocalizedRecoverySuggestion { get; }
+
+		/// <summary>Gets the key for an underlying error.</summary>
+		[Field ("kCFErrorUnderlyingErrorKey")]
+		NSString UnderlyingError { get; }
+#endif
 	}
 
 	[Static, Partial]
 	interface CFPreferences {
+#if !XAMCORE_5_0
 		[Internal]
 		[Field ("kCFPreferencesCurrentApplication")]
 		NSString _CurrentApplication { get; }
+#endif
+#if XAMCORE_5_0
+		/// <summary>The current application.</summary>
+		/// <remarks>
+		///   <para>Use this value to read or write preferences for the calling application.</para>
+		/// </remarks>
+		[Field ("kCFPreferencesCurrentApplication")]
+		NSString CurrentApplication { get; }
+#endif
 	}
 
 	[Partial]

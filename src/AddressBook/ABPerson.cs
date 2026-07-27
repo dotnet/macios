@@ -138,6 +138,7 @@ namespace AddressBook {
 	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
 	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
 	public static partial class ABPersonSocialProfileService {
+#if !XAMCORE_5_0
 		/// <summary>Identifies the Twitter social-profile service.</summary>
 		public static readonly NSString? Twitter = _Twitter;
 
@@ -158,6 +159,7 @@ namespace AddressBook {
 
 		/// <summary>Identifies the Sina Weibo social-profile service.</summary>
 		public static readonly NSString? SinaWeibo = _SinaWeibo;
+#endif
 	}
 
 	/// <summary>Contains labels for phone numbers stored in an Address Book person record.</summary>

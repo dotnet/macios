@@ -5,21 +5,21 @@ using PrintCore;
 
 namespace AppKit {
 	public partial class NSPrintInfo {
-		/// <summary>GetPrintSession.</summary>
+		/// <summary>Returns the print session associated with this print info.</summary>
 		public PMPrintSession GetPrintSession ()
 		{
 			var ptr = GetPMPrintSession ();
 			return new PMPrintSession (ptr, false);
 		}
 
-		/// <summary>GetPageFormat.</summary>
+		/// <summary>Returns the page format associated with this print info.</summary>
 		public PMPageFormat GetPageFormat ()
 		{
 			var ptr = GetPMPageFormat ();
 			return new PMPageFormat (ptr, false);
 		}
 
-		/// <summary>GetPrintSettings.</summary>
+		/// <summary>Returns the print settings associated with this print info.</summary>
 		public PMPrintSettings GetPrintSettings ()
 		{
 			var ptr = GetPMPrintSettings ();

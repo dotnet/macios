@@ -13,9 +13,9 @@ namespace Contacts {
 	// Strong typed Keys to enum
 	/// <summary>Enumeration of values used by all instant-message services.</summary>
 	public enum CNInstantMessageAddressOption {
-		/// <summary>Associated with the <see cref="Contacts.CNInstantMessageAddress.Username" /> property..</summary>
+		/// <summary>Associated with the <see cref="Contacts.CNInstantMessageAddress.Username" /> property.</summary>
 		Username,
-		/// <summary>Associated with the <see cref="Contacts.CNInstantMessageAddress.Service" /> property..</summary>
+		/// <summary>Associated with the <see cref="Contacts.CNInstantMessageAddress.Service" /> property.</summary>
 		Service,
 	}
 

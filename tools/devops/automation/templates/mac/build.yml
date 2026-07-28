@@ -114,6 +114,23 @@ steps:
     allowFailedBuilds: true
     path: $(Build.SourcesDirectory)/artifacts/tmp
 
+# 'Expand tests.' below needs 7z, which used to be installed by the Provisionator brew
+# step. The macOS test jobs don't provision Xcode, so they don't get 7z from
+# common/provision-xcode.yml either, and a freshly imaged agent doesn't have it at all.
+- bash: |
+    set -euo pipefail
+
+    # Homebrew refuses to run under Rosetta, so re-execute natively when translated.
+    if [[ "$(sysctl -n sysctl.proc_translated 2>/dev/null || echo 0)" == "1" ]]; then
+      /usr/bin/arch -arm64 "$REPOSITORY_PATH/system-dependencies.sh" --ignore-all --ignore-old-simulators --provision-7z
+    else
+      "$REPOSITORY_PATH/system-dependencies.sh" --ignore-all --ignore-old-simulators --provision-7z
+    fi
+  displayName: 'Provision 7z'
+  timeoutInMinutes: 30
+  env:
+    REPOSITORY_PATH: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)
+
 - bash: |
     set -ex
     ls -Rla@ $(Build.SourcesDirectory)/artifacts/tmp

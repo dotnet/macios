@@ -158,7 +158,6 @@ if (!string.IsNullOrEmpty (expectedMacOSBuildVersion)) {
 Process? logStreamProcess = null;
 string? logStreamFile = null;
 StreamWriter? logStreamWriter = null;
-var logStreamWriterClosed = false;
 if (!string.IsNullOrEmpty (crashReportsDir)) {
 	Directory.CreateDirectory (crashReportsDir);
 	logStreamFile = Path.Combine (crashReportsDir, "system.log");
@@ -174,17 +173,13 @@ if (!string.IsNullOrEmpty (crashReportsDir)) {
 	var writer = logStreamWriter;
 	logStreamProcess.OutputDataReceived += (_, e) => {
 		if (e.Data is not null)
-			lock (writer) {
-				if (!logStreamWriterClosed)
-					writer.WriteLine (e.Data);
-			}
+			lock (writer)
+				writer.WriteLine (e.Data);
 	};
 	logStreamProcess.ErrorDataReceived += (_, e) => {
 		if (e.Data is not null)
-			lock (writer) {
-				if (!logStreamWriterClosed)
-					writer.WriteLine (e.Data);
-			}
+			lock (writer)
+				writer.WriteLine (e.Data);
 	};
 	logStreamProcess.Start ();
 	logStreamProcess.BeginOutputReadLine ();
@@ -327,47 +322,13 @@ if (!string.IsNullOrEmpty (htmlReportPath)) {
 if (logStreamProcess is not null && logStreamFile is not null) {
 	try {
 		NativeMethods.kill (logStreamProcess.Id, 2 /* SIGINT */);
-		// WaitForExit (int) returns as soon as the process exits, but it doesn't wait
-		// for the asynchronous output handlers to finish processing buffered output,
-		// so the tail of the log stream would be lost (this is the same reason
-		// ExecuteWithTimeout calls the parameterless overload below).
-		//
-		// The parameterless overload can block indefinitely if anything else still
-		// holds the redirected pipes, so drain on a background thread and give up
-		// after a while rather than risk hanging the job for hours.
-		if (logStreamProcess.WaitForExit (10_000)) {
-			var drain = new Thread (() => {
-				try {
-					logStreamProcess.WaitForExit ();
-				} catch {
-					// Nothing useful to do if draining fails
-				}
-			}) { IsBackground = true };
-			drain.Start ();
-			drain.Join (30_000);
-		}
+		logStreamProcess.WaitForExit (10_000);
 	} catch {
 		// Process may have already exited
 	}
 
-	// Stop delivering output, so no further callbacks are queued.
-	try {
-		logStreamProcess.CancelOutputRead ();
-		logStreamProcess.CancelErrorRead ();
-	} catch {
-		// The asynchronous reads may already have completed
-	}
-
-	// Flush and close the log writer. The flag is what actually makes a late
-	// callback harmless: without it a queued line could still be delivered here
-	// and throw ObjectDisposedException on a thread pool thread, which would
-	// crash this process even though every test passed.
-	if (logStreamWriter is not null) {
-		lock (logStreamWriter) {
-			logStreamWriterClosed = true;
-			logStreamWriter.Dispose ();
-		}
-	}
+	// Flush and close the log writer
+	logStreamWriter?.Dispose ();
 
 	try {
 		Console.WriteLine ($"Wrote {new FileInfo (logStreamFile).Length} bytes to {logStreamFile}");

@@ -676,6 +676,22 @@ namespace PhotosUI {
 		[iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("disabledCapabilities", ArgumentSemantic.Assign)]
 		PHPickerCapabilities DisabledCapabilities { get; set; }
+
+		[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("metadataOptions", ArgumentSemantic.Assign)]
+		PHPickerMetadataOptions MetadataOptions { get; set; }
+
+		[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[NullAllowed, Export ("searchText", ArgumentSemantic.Copy)]
+		PHPickerSearchText SearchText { get; set; }
+	}
+
+	[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface PHPickerSearchText : NSCopying {
+		[Export ("initWithString:")]
+		NativeHandle Constructor (string text);
 	}
 
 	[NoTV, iOS (14, 0)]
@@ -818,5 +834,128 @@ namespace PhotosUI {
 
 		[Export ("edgesWithoutContentMargins", ArgumentSemantic.Assign)]
 		NSDirectionalRectEdge EdgesWithoutContentMargins { get; set; }
+
+		[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[NullAllowed, Export ("searchText", ArgumentSemantic.Copy)]
+		PHPickerSearchText SearchText { get; set; }
+	}
+
+	[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface PHSharedAlbumCreationConfiguration {
+		[Export ("initWithPhotoLibrary:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor (PHPhotoLibrary photoLibrary);
+
+		[Export ("photoLibrary")]
+		PHPhotoLibrary PhotoLibrary { get; }
+
+		[NullAllowed, Export ("defaultTitle", ArgumentSemantic.Copy)]
+		string DefaultTitle { get; set; }
+
+		[Export ("defaultPolicy", ArgumentSemantic.Assign)]
+		PHSharedAlbumCreationSharingPolicy DefaultPolicy { get; set; }
+	}
+
+	[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface PHSharedAlbumCreationResult {
+		[Export ("albumIdentifier")]
+		string AlbumIdentifier { get; }
+
+		[Export ("albumURL")]
+		NSUrl AlbumUrl { get; }
+	}
+
+	interface IPHSharedAlbumCreationViewControllerDelegate { }
+
+	[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
+	[BaseType (typeof (NSObject))]
+	interface PHSharedAlbumCreationViewControllerDelegate {
+		[Abstract]
+		[Export ("sharedAlbumCreationViewController:didCompleteWithError:")]
+		void DidComplete (PHSharedAlbumCreationViewController creationViewController, [NullAllowed] NSError error);
+	}
+
+	[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (UIViewController))]
+	[DisableDefaultCtor]
+	interface PHSharedAlbumCreationViewController {
+		[Export ("initWithConfiguration:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor (PHSharedAlbumCreationConfiguration configuration);
+
+		[Wrap ("WeakDelegate")]
+		[NullAllowed]
+		IPHSharedAlbumCreationViewControllerDelegate Delegate { get; set; }
+
+		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
+		NSObject WeakDelegate { get; set; }
+
+		[NullAllowed, Export ("creationResult", ArgumentSemantic.Copy)]
+		PHSharedAlbumCreationResult CreationResult { get; }
+	}
+
+	interface IPHSharedAlbumCustomizationViewControllerDelegate { }
+
+	[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
+	[BaseType (typeof (NSObject))]
+	interface PHSharedAlbumCustomizationViewControllerDelegate {
+		[Abstract]
+		[Export ("sharedAlbumCustomizationViewController:didCompleteWithError:")]
+		void DidComplete (PHSharedAlbumCustomizationViewController customizationViewController, [NullAllowed] NSError error);
+	}
+
+	[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (UIViewController))]
+	[DisableDefaultCtor]
+	interface PHSharedAlbumCustomizationViewController {
+		[Export ("initWithAlbumIdentifier:photoLibrary:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor (string albumIdentifier, PHPhotoLibrary photoLibrary);
+
+		[Wrap ("WeakDelegate")]
+		[NullAllowed]
+		IPHSharedAlbumCustomizationViewControllerDelegate Delegate { get; set; }
+
+		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
+		NSObject WeakDelegate { get; set; }
+
+		[Export ("albumIdentifier", ArgumentSemantic.Copy)]
+		string AlbumIdentifier { get; }
+	}
+
+	interface IPHSharedAlbumPostingViewControllerDelegate { }
+
+	[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
+	[BaseType (typeof (NSObject))]
+	interface PHSharedAlbumPostingViewControllerDelegate {
+		[Abstract]
+		[Export ("sharedAlbumPostingViewController:didCompleteWithError:")]
+		void DidComplete (PHSharedAlbumPostingViewController postingViewController, [NullAllowed] NSError error);
+	}
+
+	[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (UIViewController))]
+	[DisableDefaultCtor]
+	interface PHSharedAlbumPostingViewController {
+		[Export ("initWithItems:defaultAlbumIdentifier:photoLibrary:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor (PHPickerResult [] items, [NullAllowed] string defaultAlbumIdentifier, PHPhotoLibrary photoLibrary);
+
+		[Wrap ("WeakDelegate")]
+		[NullAllowed]
+		IPHSharedAlbumPostingViewControllerDelegate Delegate { get; set; }
+
+		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
+		NSObject WeakDelegate { get; set; }
+
+		[NullAllowed, Export ("albumIdentifier", ArgumentSemantic.Copy)]
+		string AlbumIdentifier { get; }
 	}
 }

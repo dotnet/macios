@@ -96,4 +96,20 @@ namespace PhotosUI {
 		SelectionActions = 1 << 3,
 		SensitivityAnalysisIntervention = 1uL << 4,
 	}
+
+	[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[Flags]
+	[Native]
+	public enum PHPickerMetadataOptions : ulong {
+		None = 0,
+		RemoveLocation = 1 << 0,
+		RemoveCaptions = 1 << 1,
+	}
+
+	[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[Native]
+	public enum PHSharedAlbumCreationSharingPolicy : long {
+		Private = 0,
+		Public = 1,
+	}
 }

@@ -331,7 +331,7 @@ namespace Foundation {
 			// deferred registration for user types (see #25861); no-op if already registered
 			// (e.g. direct bindings, which InitializeObject registers eagerly).
 			if (alloced && !Runtime.RegisterObjectsBeforeInit)
-				Runtime.RegisterNSObjectIfNeeded (this, handle);
+				Runtime.RegisterNSObject (this, handle, onlyIfNeeded: true);
 		}
 
 		// This is just here as a constructor chain that can will
@@ -902,7 +902,7 @@ namespace Foundation {
 				if (handle == previousHandle) {
 					// 'init' returned the same handle, so the setter above was a no-op.
 					// Complete the deferred registration now (no-op if already registered).
-					Runtime.RegisterNSObjectIfNeeded (this, handle);
+					Runtime.RegisterNSObject (this, handle, onlyIfNeeded: true);
 				} else {
 					// 'init' returned a different handle; the gchandle ivar was set on the
 					// previous (now typically freed) handle, so re-establish it on the final

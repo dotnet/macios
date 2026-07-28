@@ -1221,12 +1221,12 @@ namespace ObjCRuntime {
 			}
 		}
 
-		// Completes deferred object_map registration (issue #25861): registers the object
-		// only if the pointer isn't already present. This avoids redundantly re-registering
-		// objects that were registered eagerly (e.g. direct bindings). The check and the
-		// insert must happen inside a single lock, otherwise a concurrent registration
-		// (e.g. another object reusing a freed native pointer) could be silently clobbered.
-		internal static void RegisterNSObjectIfNeeded (NSObject obj, IntPtr ptr)
+		// Completes deferred object_map registration (issue #25861): when 'onlyIfNeeded' is
+		// true, registers the object only if the pointer isn't already present, and leaves
+		// any existing entry untouched. This avoids redundantly re-registering objects that
+		// were registered eagerly (e.g. direct bindings), and avoids clobbering a concurrent
+		// registration (e.g. another object reusing a freed native pointer).
+		internal static void RegisterNSObject (NSObject obj, IntPtr ptr, bool onlyIfNeeded = false)
 		{
 			GCHandle handle;
 			if (Runtime.IsCoreCLR) {
@@ -1236,31 +1236,16 @@ namespace ObjCRuntime {
 			}
 
 			lock (lock_obj) {
-				if (object_map.ContainsKey (ptr)) {
-					// Already registered (e.g. eagerly, for a direct binding). Don't touch
-					// the existing entry; just free the handle we speculatively allocated.
-					handle.Free ();
-					return;
-				}
-				object_map [ptr] = handle;
-#pragma warning disable RBI0014
-				obj.Handle = ptr;
-#pragma warning restore RBI0014
-			}
-		}
-
-		internal static void RegisterNSObject (NSObject obj, IntPtr ptr)
-		{
-			GCHandle handle;
-			if (Runtime.IsCoreCLR) {
-				handle = CreateTrackingGCHandle (obj, ptr);
-			} else {
-				handle = GCHandle.Alloc (obj, GCHandleType.WeakTrackResurrection);
-			}
-
-			lock (lock_obj) {
-				if (object_map.Remove (ptr, out var existing))
+				if (object_map.TryGetValue (ptr, out var existing)) {
+					if (onlyIfNeeded) {
+						// Already registered; don't touch the existing entry, just free the
+						// handle we speculatively allocated.
+						handle.Free ();
+						return;
+					}
+					object_map.Remove (ptr);
 					existing.Free ();
+				}
 				object_map [ptr] = handle;
 #pragma warning disable RBI0014
 				obj.Handle = ptr;

@@ -1,3 +1,6 @@
+using Cecil.Tests;
+using Mono.Cecil;
+
 namespace Xamarin.Tests {
 	[TestFixture]
 	public class PublishTrimmedTest : TestBaseClass {
@@ -54,6 +57,47 @@ namespace Xamarin.Tests {
 			// on CI.
 			var targets = BinLog.GetAllTargets (rv.BinLogPath);
 			AssertTargetNotExecuted (targets, "ILLink", "The trimmer should not have executed.");
+		}
+
+		[TestCase (ApplePlatform.iOS)]
+		public void RemoveFoundationMemberAttributes (ApplePlatform platform)
+		{
+			var project = "LinkerAttributesTestApp";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			var runtimeIdentifiers = GetDefaultRuntimeIdentifier (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var projectPath = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
+			Clean (projectPath);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["MtouchLink"] = "Full";
+			properties ["ExcludeTouchUnitReference"] = "true";
+			properties ["ExcludeNUnitLiteReference"] = "true";
+
+			var rv = DotNet.AssertBuild (projectPath, properties);
+			AssertThatLinkerExecuted (rv);
+
+			var assemblyDirectory = Path.Combine (appPath, GetRelativeAssemblyDirectory (platform));
+			var platformAssemblyPath = Path.Combine (assemblyDirectory, $"Microsoft.{platform.AsString ()}.dll");
+			using var platformAssembly = AssemblyDefinition.ReadAssembly (platformAssemblyPath, new ReaderParameters { ReadingMode = ReadingMode.Deferred });
+			var platformAttributeNames = GetCustomAttributeNames (platformAssembly);
+			Assert.That (platformAttributeNames, Does.Not.Contain ("Foundation.RequiredMemberAttribute"), platformAssemblyPath);
+			Assert.That (platformAttributeNames, Does.Not.Contain ("Foundation.OptionalMemberAttribute"), platformAssemblyPath);
+
+			var appAssemblyPath = Path.Combine (assemblyDirectory, $"{project}.dll");
+			using var appAssembly = AssemblyDefinition.ReadAssembly (appAssemblyPath, new ReaderParameters { ReadingMode = ReadingMode.Deferred });
+			var appAttributeNames = GetCustomAttributeNames (appAssembly);
+			Assert.That (appAttributeNames, Does.Not.Contain ("Foundation.RequiredMemberAttribute"), appAssemblyPath);
+			Assert.That (appAttributeNames, Does.Not.Contain ("Foundation.OptionalMemberAttribute"), appAssemblyPath);
+			Assert.That (appAttributeNames, Does.Contain ("System.Runtime.CompilerServices.RequiredMemberAttribute"), appAssemblyPath);
+		}
+
+		static string [] GetCustomAttributeNames (AssemblyDefinition assembly)
+		{
+			return assembly.EnumerateAttributeProviders ().
+				SelectMany (v => v.CustomAttributes).
+				Select (v => v.AttributeType.FullName).
+				ToArray ();
 		}
 	}
 }

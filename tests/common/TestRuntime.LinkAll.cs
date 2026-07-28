@@ -14,10 +14,14 @@ partial class TestRuntime {
 	public static bool IsLinkAll {
 		get {
 			if (!link_all.HasValue)
-				link_all = typeof (TestRuntime).Assembly.GetType (typeof (TestRuntime).FullName + "+LinkerSentinel") is null;
+				link_all = typeof (TestRuntime).Assembly.GetType (typeof (TestRuntime).FullName + "+LinkerSentinel" + WorkAroundLinkerHeuristics) is null;
 			return link_all.Value;
 		}
 	}
+	// This is used to work around the trimmer's dataflow analysis, which can otherwise constant-fold the
+	// type name passed to GetType and preserve the LinkerSentinel type (making IsLinkAll incorrectly report
+	// false in link-all builds). This property returns "" at runtime, but the trimmer can't constant-fold it.
+	static string WorkAroundLinkerHeuristics { get { return ""; } }
 	class LinkerSentinel { }
 
 	// Determine if any assemblies were linked by checking if a few uncommon classes in corlib are still here.
@@ -34,7 +38,7 @@ partial class TestRuntime {
 				};
 				link_any = false;
 				foreach (var uncommonType in uncommonTypes) {
-					link_any = typeof (int).Assembly.GetType (uncommonType) is null;
+					link_any = typeof (int).Assembly.GetType (uncommonType + WorkAroundLinkerHeuristics) is null;
 					if (link_any == true)
 						break;
 				}

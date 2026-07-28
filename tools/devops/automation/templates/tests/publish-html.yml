@@ -114,8 +114,10 @@ steps:
 # module (the 'gh' CLI isn't installed on the test agents, and doesn't have credentials to create gists).
 - pwsh: |
     $updatedDir = Join-Path "$Env:SYSTEM_DEFAULTWORKINGDIRECTORY" "updated-expected-sizes"
+    # The expected files can be very big, so the test uploads a unified diff (a '*.txt.diff' file) for each
+    # changed expected file instead of the entire file. The '/apply-gist' command applies these diffs.
     # A file may be present in more than one artifact (e.g. across job attempts); pick the newest copy per file name.
-    $files = Get-ChildItem -Path $updatedDir -Filter "*.txt" -File -Recurse -ErrorAction SilentlyContinue |
+    $files = Get-ChildItem -Path $updatedDir -Filter "*.diff" -File -Recurse -ErrorAction SilentlyContinue |
       Sort-Object -Property LastWriteTimeUtc -Descending |
       Group-Object -Property Name |
       ForEach-Object { $_.Group[0] } |
@@ -151,7 +153,7 @@ steps:
     $sb.AppendLine("<summary>Updated files</summary>") | Out-Null
     $sb.AppendLine() | Out-Null
     foreach ($file in $files) {
-      $sb.AppendLine("- ``$($file.Name)``") | Out-Null
+      $sb.AppendLine("- ``$($file.Name -replace '\.diff$', '')``") | Out-Null
     }
     $sb.AppendLine() | Out-Null
     $sb.AppendLine("</details>") | Out-Null

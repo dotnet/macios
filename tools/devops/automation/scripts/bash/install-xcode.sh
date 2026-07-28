@@ -738,14 +738,13 @@ install_archive ()
 	local archive=$1
 	local expanded_size=${2:-0}
 	local available_bytes required_bytes
-	local staging_root payload_root extractor expanded_app
-	local expanded=
+	local staging_root payload_root expanded_app
 	local backup=
 	local target_installed=
 	local target_displaced=
 	local install_committed=
 
-	# The xip fallback below runs from inside the staging directory.
+	# 'xip --expand' below runs from inside the staging directory.
 	if [[ "$archive" != /* ]]; then
 		archive="$PWD/$archive"
 	fi
@@ -764,7 +763,6 @@ install_archive ()
 	staging_root=$(run_privileged /usr/bin/mktemp -d "$XCODE_INSTALL_PARENT/.xcode-install.XXXXXX")
 	run_privileged chown "$(id -u):$(id -g)" "$staging_root"
 	payload_root="$staging_root/payload"
-	extractor="$staging_root/packagekit-extract"
 
 	# The trap handler below is only reached through 'trap', which shellcheck can't see
 	# from inside this subshell function. Older shellchecks report that as SC2317 and
@@ -790,40 +788,15 @@ install_archive ()
 	}
 	trap cleanup EXIT
 
-	# PackageKit is a private framework and packagekit-extract.m declares its interface by
-	# hand, so an OS update can break it at runtime even though it still compiles. Fall back
-	# to the supported 'xip --expand' rather than blocking every Xcode rollout. Both paths
-	# refuse archives that aren't Apple-signed, and validate_xip_signature already ran.
-	expanded=
-	log "Building the signed-XIP extractor."
-	if /usr/bin/env -u DEVELOPER_DIR -u XCODE_DEVELOPER_ROOT /usr/bin/clang \
-		"$SCRIPT_DIR/packagekit-extract.m" \
-		-o "$extractor" \
-		-arch "$(uname -m)" \
-		-Wall \
-		-Werror \
-		-fmodules \
-		-framework PackageKit \
-		-F /System/Library/PrivateFrameworks; then
-		log "Expanding '$(basename "$archive")' on the /Applications volume."
-		if "$extractor" "$archive" "$payload_root"; then
-			expanded=1
-		else
-			error "The PackageKit extractor failed; falling back to 'xip --expand'."
-		fi
-	else
-		error "The PackageKit extractor did not build; falling back to 'xip --expand'."
-	fi
-
-	if [[ -z "$expanded" ]]; then
-		rm -rf -- "$payload_root"
-		mkdir -p "$payload_root"
-		log "Expanding '$(basename "$archive")' with xip."
-		(
-			cd "$payload_root"
-			/usr/bin/xip --expand "$archive"
-		)
-	fi
+	# 'xip --expand' writes into the current directory, so it runs from the staging
+	# directory. It is a plain binary rather than an xcrun shim, so it keeps working while
+	# 'xcode-select' still points at the Xcode we are about to replace.
+	mkdir -p "$payload_root"
+	log "Expanding '$(basename "$archive")' on the /Applications volume."
+	(
+		cd "$payload_root"
+		/usr/bin/xip --expand "$archive"
+	)
 
 	if [[ $(find "$payload_root" -mindepth 1 -maxdepth 1 | wc -l | tr -d ' ') != "1" ]] ||
 		[[ $(find "$payload_root" -mindepth 1 -maxdepth 1 -type d -name '*.app' | wc -l | tr -d ' ') != "1" ]]; then

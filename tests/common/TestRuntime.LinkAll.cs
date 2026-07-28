@@ -19,10 +19,6 @@ partial class TestRuntime {
 			return link_all.Value;
 		}
 	}
-	// This is used to work around the trimmer's dataflow analysis, which can otherwise constant-fold the
-	// type name passed to GetType and preserve the LinkerSentinel type (making IsLinkAll incorrectly report
-	// false in link-all builds). This property returns "" at runtime, but the trimmer can't constant-fold it.
-	static string WorkAroundLinkerHeuristics { get { return ""; } }
 	class LinkerSentinel { }
 
 	// Determine if any assemblies were linked by checking if a few uncommon classes in corlib are still here.

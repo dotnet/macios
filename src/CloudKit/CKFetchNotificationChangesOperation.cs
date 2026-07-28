@@ -6,7 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 #nullable enable
 
 namespace CloudKit {
-	/// <summary>A <see cref="CloudKit.CKOperation" /> that ret../../summary_set.sh CKFetchNotificationChangesOperation A</summary>
+	/// <summary>A <see cref="CloudKit.CKOperation" /> that retrieves notification changes.</summary>
 	///     <remarks>To be added.</remarks>
 	[Register ("CKFetchNotificationChangesOperation", SkipRegistration = true)]
 	[UnsupportedOSPlatform ("ios", "Use 'CKDatabaseSubscription', 'CKFetchDatabaseChangesOperation' and 'CKFetchRecordZoneChangesOperation' instead.")]

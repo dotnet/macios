@@ -130,6 +130,13 @@ namespace XmlDocumentation {
 		// No <param /> tag here
 		[Export ("methodWithUndocumentedArgs:")]
 		int PMethodWithUndocumentedArgs (int arg0);
+
+		/// <summary>
+		/// Summary for P1.PMethodWithBindAs
+		/// </summary>
+		/// <param name="value">Docs for value.</param>
+		[Export ("methodWithBindAs:")]
+		void PMethodWithBindAs ([BindAs (typeof (E2))] NSString value);
 	}
 
 	/// <summary>
@@ -284,6 +291,12 @@ namespace XmlDocumentation {
 			<summary>TClassDelegate.DidChangeMutteringVolume - EventArgs.</summary>
 			""")]
 		void DidChangeMutteringVolume (TClass obj, double mutteringVolume);
+
+		// A single-parameter delegate method with no [EventArgs] docs generates a
+		// non-generic EventHandler event, which gets a default generated summary.
+		/// <summary>TClassDelegate.DidFinish</summary>
+		[Export ("speechSynthesizerDidFinish:")]
+		void DidFinish (TClass obj);
 	}
 
 	interface ITClassDelegate { }

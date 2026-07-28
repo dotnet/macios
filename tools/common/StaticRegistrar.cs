@@ -217,6 +217,7 @@ namespace Registrar {
 		const uint INVALID_TOKEN_REF = 0xFFFFFFFF;
 
 		Dictionary<ICustomAttribute, MethodDefinition>? protocol_member_method_map;
+		Dictionary<TypeReference, Dictionary<MethodDefinition, List<MethodDefinition>>?> cached_interface_method_mappings = new ();
 
 		public Dictionary<ICustomAttribute, MethodDefinition> ProtocolMemberMethodMap {
 			get {
@@ -367,14 +368,19 @@ namespace Registrar {
 		public Dictionary<MethodDefinition, List<MethodDefinition>>? PrepareInterfaceMethodMapping (TypeReference type)
 		{
 			TypeDefinition td = type.Resolve ();
+			if (cached_interface_method_mappings.TryGetValue (td, out var cachedMethodMapping))
+				return cachedMethodMapping;
+
 			List<TypeDefinition>? ifaces = null;
 			List<MethodDefinition> iface_methods;
 			Dictionary<MethodDefinition, List<MethodDefinition>>? rv = null;
 
 			CollectInterfaces (ref ifaces, td);
 
-			if (ifaces is null)
+			if (ifaces is null) {
+				cached_interface_method_mappings [td] = null;
 				return null;
+			}
 
 			iface_methods = new List<MethodDefinition> ();
 			foreach (var iface in ifaces) {
@@ -425,6 +431,7 @@ namespace Registrar {
 				}
 			}
 
+			cached_interface_method_mappings [td] = rv;
 			return rv;
 		}
 

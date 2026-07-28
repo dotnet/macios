@@ -554,6 +554,9 @@
 					- NativeAOT supported platforms in all configurations
 					- ios/tvos device builds in all configurations
 					- macOS/MacCatalyst builds in release configuration
+				  (On .NET 11+ NativeAOT defaults to 'trimmable-static' instead - that's set earlier, at
+				  evaluation time, in Xamarin.Shared.Sdk.props. The trimmable-static registrar is only smaller
+				  under NativeAOT, so the other runtimes keep managed-static.)
 				- Set 'partial-static' for:
 					- when no assemblies are trimmed and when MarshalManagedExceptionMode is default (or not set)
 				- Otherwise set 'dynamic' 
@@ -600,6 +603,21 @@
 		</PropertyGroup>
 		<ItemGroup Condition="'$(_DynamicRegistrationSupported)' != ''">
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.DynamicRegistrationSupported" Value="$(_DynamicRegistrationSupported)" Trim="true" />
+		</ItemGroup>
+		<!--
+			When using the trimmable static registrar together with PrepareAssemblies, we can tell the trimmer to
+			remove the [ProtocolMember] attributes. This makes it possible to trim away types that are only
+			referenced from these attributes (such as generic types in optional protocol members).
+			The assembly-preparer's post-processing pass still needs these attributes (it runs the registrar again
+			after the trimmer), so it reads them from the pre-trim (prepared) assemblies instead.
+			Only do this when the dynamic registrar has been removed (DynamicRegistrationSupported == false): the
+			dynamic registrar reads these attributes via reflection at runtime, so they must be kept when it's
+			present (otherwise the trimmer errors out with IL2045). This is computed here, and not in
+			_ComputeLinkerInputs, because _DynamicRegistrationSupported isn't known until this target has run.
+			See src/TrimAttributes.LinkDescription.xml and tools/assembly-preparer/AssemblyPreparer.cs.
+		-->
+		<ItemGroup Condition="'$(Registrar)' == 'trimmable-static' And '$(_DynamicRegistrationSupported)' == 'false'">
+			<RuntimeHostConfigurationOption Include="ObjCRuntime.TrimProtocolMemberAttributes" Value="true" Trim="true" />
 		</ItemGroup>
 	</Target>
 
@@ -876,15 +894,6 @@
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.Arch.IsSimulator" Value="$(_IsSimulatorFeature)" Trim="true" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsManagedStaticRegistrar" Value="$(_IsManagedStaticRegistrarFeature)" Trim="true" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsTrimmableStaticRegistrar" Value="$(_IsTrimmableStaticRegistrarFeature)" Trim="true" />
-			<!--
-				When using the trimmable static registrar together with PrepareAssemblies, we can tell the trimmer to
-				remove the [ProtocolMember] attributes. This makes it possible to trim away types that are only
-				referenced from these attributes (such as generic types in optional protocol members).
-				The assembly-preparer's post-processing pass still needs these attributes (it runs the registrar again
-				after the trimmer), so it reads them from the pre-trim (prepared) assemblies instead.
-				See src/TrimAttributes.LinkDescription.xml and tools/assembly-preparer/AssemblyPreparer.cs.
-			-->
-			<RuntimeHostConfigurationOption Include="ObjCRuntime.TrimProtocolMemberAttributes" Value="true" Trim="true" Condition="'$(Registrar)' == 'trimmable-static' And '$(PrepareAssemblies)' == 'true'" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsNativeAOT" Value="$(_IsNativeAOTFeature)" Trim="true" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsCoreCLR" Value="true" Trim="true" Condition="'$(UseMonoRuntime)' != 'true'" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsCoreCLR" Value="false" Trim="true" Condition="'$(UseMonoRuntime)' == 'true'" />
@@ -1212,6 +1221,14 @@
 		<ItemGroup>
 			<_AssembliesToBeStripped Include="@(ResolvedFileToPublish)" Condition="'%(Extension)' == '.dll' And '%(ResolvedFileToPublish.Culture)' == ''">
 				<OutputPath>$(_StrippedAssemblyDirectory)\%(ResolvedFileToPublish.OriginalRelativePath)</OutputPath>
+			</_AssembliesToBeStripped>
+
+			<!-- Some assemblies added to ResolvedFileToPublish don't have OriginalRelativePath set (e.g. the
+			     TypeMap assemblies the trimmable-static registrar generates). Without it the OutputPath above
+			     collapses to the bare stripped directory, and ILStrip fails trying to write to a directory
+			     ("Access to the path '.../stripped/' is denied"). Fall back to the file name in that case. -->
+			<_AssembliesToBeStripped Condition="'%(ResolvedFileToPublish.OriginalRelativePath)' == ''">
+				<OutputPath>$(_StrippedAssemblyDirectory)\%(Filename)%(Extension)</OutputPath>
 			</_AssembliesToBeStripped>
 
 			<!-- Use forward slashes in OutputPath, otherwise ILStrip will create filenames that resemble the part of

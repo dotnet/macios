@@ -68,9 +68,9 @@ namespace LocalAuthentication {
 		SystemCancel = -4,
 		/// <summary>Authentication could not start, because passcode is not set on the device.</summary>
 		PasscodeNotSet = -5,
-		/// <summary>To be added.</summary>
+		/// <summary>Authentication was canceled by the application.</summary>
 		AppCancel = -9,
-		/// <summary>To be added.</summary>
+		/// <summary>The authentication context was invalidated.</summary>
 		InvalidContext = -10,
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'CompanionNotAvailable' instead.")]
 		[NoiOS, NoMacCatalyst]
@@ -90,7 +90,7 @@ namespace LocalAuthentication {
 		/// <summary>Indicates that biometric authentication has failed too many times, and the user is now locked out.</summary>
 		[MacCatalyst (13, 1)]
 		BiometryLockout = -8,
-		/// <summary>To be added.</summary>
+		/// <summary>Authentication failed because the user interface was not allowed to be presented.</summary>
 		NotInteractive = -1004,
 		CompanionNotAvailable = -11,
 	}

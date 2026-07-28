@@ -674,7 +674,7 @@ namespace LinkSdk {
 #endif // __MACOS__ || __MACCATALYST__
 		}
 
-		string TestFolder (Environment.SpecialFolder folder, bool supported = true, bool? exists = true, bool readOnly = false)
+		string TestFolder (Environment.SpecialFolder folder, bool supported = true, bool? exists = true, bool? readOnly = false)
 		{
 			var path = Environment.GetFolderPath (folder);
 			Assert.That (path.Length > 0, Is.EqualTo (supported), $"SpecialFolder: {folder.ToString ()} Path: {path} Supported: {supported}");
@@ -686,15 +686,24 @@ namespace LinkSdk {
 				Assert.That (dirExists, Is.EqualTo (exists), path);
 			if (!dirExists)
 				return path;
+			// Access to macOS privacy-protected folders depends on the host's TCC state.
+			if (!readOnly.HasValue)
+				return path;
 
-			string file = Path.Combine (path, "temp.txt");
+			string file = Path.Combine (path, Path.GetRandomFileName ());
 			try {
 				File.WriteAllText (file, "mine");
-				Assert.That (readOnly, Is.False, "!readOnly " + folder);
+				Assert.That (readOnly.Value, Is.False, "!readOnly " + folder);
 			} catch {
-				Assert.That (readOnly, Is.True, "readOnly " + folder);
+				Assert.That (readOnly.Value, Is.True, "readOnly " + folder);
 			} finally {
-				File.Delete (file);
+				try {
+					File.Delete (file);
+				} catch (IOException e) {
+					Console.WriteLine ($"Could not delete '{file}': {e}");
+				} catch (UnauthorizedAccessException e) {
+					Console.WriteLine ($"Could not delete '{file}': {e}");
+				}
 			}
 			return path;
 		}
@@ -773,7 +782,7 @@ namespace LinkSdk {
 			// some stuff we return a value - but the directory does not exists 
 
 #if __MACOS__
-			var path = TestFolder (Environment.SpecialFolder.Desktop, exists: true);
+			var path = TestFolder (Environment.SpecialFolder.Desktop, exists: true, readOnly: null);
 #else
 			var path = TestFolder (Environment.SpecialFolder.Desktop, exists: false);
 #endif
@@ -865,9 +874,12 @@ namespace LinkSdk {
 			if (string.IsNullOrEmpty (path) && TestRuntime.IsInCI) {
 				// ignore this
 			} else {
-				path = TestFolder (Environment.SpecialFolder.MyDocuments);
+				path = TestFolder (Environment.SpecialFolder.MyDocuments, readOnly: null);
 				Assert.That (path, Is.EqualTo (docs), "path - MyDocuments");
 			}
+#elif __MACCATALYST__
+			path = TestFolder (Environment.SpecialFolder.MyDocuments, readOnly: null);
+			Assert.That (path, Is.EqualTo (docs), "path - MyDocuments");
 #else
 			// and some stuff is read/write
 			path = TestFolder (Environment.SpecialFolder.MyDocuments);
@@ -898,16 +910,18 @@ namespace LinkSdk {
 			path = TestFolder (Environment.SpecialFolder.Resources, readOnly: tvos && device);
 			Assert.That (path.EndsWith ("/Library", StringComparison.Ordinal), Is.True, "Resources");
 #endif
-			// Some CI VM images don't initialize all standard user directories, so keep this
-			// tolerance limited to CI VMs and preserve the stricter check for other runs.
+			// Some macOS CI VM images don't initialize all standard user directories, so tolerate
+			// missing paths only there. Access to these macOS folders depends on the host's TCC state.
 			string TestFolderIfAvailableInCI (Environment.SpecialFolder folder, bool exists)
 			{
 #if __MACOS__
 				var path = Environment.GetFolderPath (folder);
 				if (string.IsNullOrEmpty (path) && TestRuntime.IsInCI && TestRuntime.IsVM)
 					return path;
-#endif
+				return TestFolder (folder, exists: exists, readOnly: null);
+#else
 				return TestFolder (folder, exists: exists);
+#endif
 			}
 		}
 

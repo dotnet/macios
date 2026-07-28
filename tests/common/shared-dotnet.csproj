@@ -124,6 +124,17 @@
 		<DefineConstants Condition="'$(ExcludeTouchUnitReference)' == 'true'">$(DefineConstants);EXCLUDE_TOUCH_UNIT_REFERENCE</DefineConstants>
 	</PropertyGroup>
 
+	<!--
+		Define HOTRELOAD_COMPATIBLE_BUILD when building a hot-reload-compatible build. This has to
+		happen in a target (and not in a plain PropertyGroup), because $(HotReloadCompatibleBuild)
+		is computed in the platform SDK targets, which are imported after this file.
+	-->
+	<Target Name="_AddHotReloadCompatibleBuildDefine" BeforeTargets="CoreCompile" Condition="'$(HotReloadCompatibleBuild)' == 'true'">
+		<PropertyGroup>
+			<DefineConstants>$(DefineConstants);HOTRELOAD_COMPATIBLE_BUILD</DefineConstants>
+		</PropertyGroup>
+	</Target>
+
 	<Import Project="$(MSBuildThisFileDirectory)/../ComputeRegistrarConstant.targets" />
 	<Import Project="$(MSBuildThisFileDirectory)/../nunit.framework.targets" Condition="'$(ExcludeNUnitLiteReference)' != 'true'" />
 

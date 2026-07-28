@@ -75,18 +75,10 @@ namespace LinkAll.Attributes {
 		[Test]
 		public void Runtime_RegisterEntryAssembly ()
 		{
-			TestRuntime.AssertSimulator ("https://github.com/dotnet/macios/issues/10457");
-
 			var klass = Type.GetType ("ObjCRuntime.Runtime, " + AssemblyName)!;
 			Assert.That (klass, Is.Not.Null, "Runtime");
-			// RegisterEntryAssembly is only needed for the simulator (not on devices) so it's only preserved for sim builds
 			var method = klass.GetMethod ("RegisterEntryAssembly", BindingFlags.NonPublic | BindingFlags.Static, null, new [] { typeof (Assembly) }, null);
-#if __MACOS__
-			var expectedNull = true;
-#else
-			var expectedNull = TestRuntime.IsDevice;
-#endif
-			Assert.That (method is null, Is.EqualTo (expectedNull), "RegisterEntryAssembly");
+			Assert.That (method is null, Is.EqualTo (!Runtime.DynamicRegistrationSupported), "RegisterEntryAssembly");
 		}
 
 		[Test]
@@ -145,9 +137,19 @@ namespace LinkAll.Attributes {
 			Assert.That (smartExtensions.GetMethod ("GetConstant"), Is.Not.Null, "GetConstant");
 			Assert.That (smartExtensions.GetMethod ("GetValue"), Is.Not.Null, "GetValue");
 
+#if HOTRELOAD_COMPATIBLE_BUILD && PREPARE_ASSEMBLIES
+			// In a hot-reload-compatible build (the assembly-preparer runs with
+			// HotReloadCompatibleBuild=true, which is the default for Debug builds),
+			// smart enum conversions are preserved unconditionally via a root-descriptor
+			// XML instead of by modifying user assemblies. Root descriptors can't express
+			// conditional preservation, so unused smart enums are intentionally kept.
+			Assert.That (typeof (NSObject).Assembly.GetType ("AVFoundation.AVMediaTypes" + WorkAroundLinkerHeuristics), Is.Not.Null, "AVMediaTypes");
+			Assert.That (typeof (NSObject).Assembly.GetType ("AVFoundation.AVMediaTypesExtensions" + WorkAroundLinkerHeuristics), Is.Not.Null, "AVMediaTypesExtensions");
+#else
 			// Unused smart enums and their extensions should be linked away
 			Assert.That (typeof (NSObject).Assembly.GetType ("AVFoundation.AVMediaTypes" + WorkAroundLinkerHeuristics), Is.Null, "AVMediaTypes");
 			Assert.That (typeof (NSObject).Assembly.GetType ("AVFoundation.AVMediaTypesExtensions" + WorkAroundLinkerHeuristics), Is.Null, "AVMediaTypesExtensions");
+#endif
 		}
 
 		[Test]

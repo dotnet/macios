@@ -1148,7 +1148,7 @@ namespace Xamarin.Linker {
 					var createMethod = StaticRegistrar.GetBlockWrapperCreator (objcMethod, parameter);
 					if (createMethod is null) {
 						if (App.TrimExportAttributes != false)
-							App.TrimExportAttributesBlockers.Add ("the managed registrar must use Runtime.GetBlockWrapperCreator");
+							App.TrimExportAttributesBlockers.Add (ExportAttributeRemovalBlocker.RuntimeGetBlockWrapperCreatorRequired);
 						AddException (ErrorHelper.CreateWarning (App, 4174 /* Unable to locate the block to delegate conversion method for the method {0}'s parameter #{1}. */, method, Errors.MT4174, method.FullName, parameter + 1));
 						// var blockCopy = BlockLiteral.Copy (block);
 						var tmpVariable = il.Body.AddVariable (abr.System_IntPtr);
@@ -1206,7 +1206,7 @@ namespace Xamarin.Linker {
 						il.Emit (OpCodes.Call, abr.BlockLiteral_CreateBlockForDelegate);
 					} else {
 						if (App.TrimExportAttributes != false)
-							App.TrimExportAttributesBlockers.Add ("the managed registrar must use RegistrarHelper.GetBlockForDelegate");
+							App.TrimExportAttributesBlockers.Add (ExportAttributeRemovalBlocker.RegistrarHelperGetBlockForDelegateRequired);
 						il.Emit (OpCodes.Ldtoken, method);
 						il.Emit (OpCodes.Call, abr.RegistrarHelper_GetBlockForDelegate);
 					}

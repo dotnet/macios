@@ -697,13 +697,13 @@ namespace Registrar {
 			return App.TrimExportAttributes == true && name == StringConstants.ExportAttribute;
 		}
 
-		ICustomAttributeProvider? GetPreTrimAttributeProvider (ICustomAttributeProvider provider)
+		ICustomAttributeProvider? GetPreTrimAttributeProvider (ICustomAttributeProvider postTrimProvider)
 		{
 			var resolver = App.PreTrimAssemblyResolver;
 			if (resolver is null)
 				throw new InvalidOperationException ("The pre-trim assembly resolver is not available.");
 
-			switch (provider) {
+			switch (postTrimProvider) {
 			case AssemblyDefinition assembly:
 				return resolver.Resolve (assembly.Name);
 			case ModuleDefinition module:
@@ -727,7 +727,7 @@ namespace Registrar {
 				var preTrimReturnMethod = (MethodDefinition?) GetPreTrimAttributeProvider ((MethodDefinition) returnType.Method);
 				return preTrimReturnMethod?.MethodReturnType;
 			default:
-				throw new InvalidOperationException ($"Unable to map the post-trim custom attribute provider '{provider}' ({provider.GetType ().FullName}) to a pre-trim provider.");
+				throw new InvalidOperationException ($"Unable to map the post-trim custom attribute provider '{postTrimProvider}' ({postTrimProvider.GetType ().FullName}) to a pre-trim provider.");
 			}
 		}
 

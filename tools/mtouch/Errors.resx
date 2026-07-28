@@ -1641,7 +1641,27 @@
 	</data>
 
 	<data name="MX4192" xml:space="preserve">
-		<value>Export attributes cannot be removed because {0}.</value>
+		<value>Export attributes cannot be removed because dynamic registration is supported.</value>
+	</data>
+
+	<data name="MX4193" xml:space="preserve">
+		<value>Export attributes cannot be removed because the blockliteral-setupblock optimization is disabled.</value>
+	</data>
+
+	<data name="MX4194" xml:space="preserve">
+		<value>Export attributes cannot be removed because the static-block-to-delegate-lookup optimization is disabled.</value>
+	</data>
+
+	<data name="MX4195" xml:space="preserve">
+		<value>Export attributes cannot be removed because the managed registrar must use Runtime.GetBlockWrapperCreator.</value>
+	</data>
+
+	<data name="MX4196" xml:space="preserve">
+		<value>Export attributes cannot be removed because the managed registrar must use RegistrarHelper.GetBlockForDelegate.</value>
+	</data>
+
+	<data name="MX4197" xml:space="preserve">
+		<value>Export attributes cannot be removed because the application uses an NSXpcInterface overload that obtains a selector from MethodInfo.</value>
 	</data>
 
 	<data name="MT5101" xml:space="preserve">

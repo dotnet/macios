@@ -24,7 +24,6 @@ public class AssemblyPreparer : IDisposable {
 	AggregateLog log = new AggregateLog ();
 
 	LinkerConfiguration configuration;
-	bool? trimExportAttributes;
 
 	public LinkerConfiguration Configuration => configuration;
 
@@ -36,11 +35,8 @@ public class AssemblyPreparer : IDisposable {
 	public List<string> PreTrimAssemblies { get; } = new List<string> ();
 
 	public bool? TrimExportAttributes {
-		get => trimExportAttributes;
-		set {
-			trimExportAttributes = value;
-			configuration.Application.TrimExportAttributes = value;
-		}
+		get => configuration.Application.TrimExportAttributes;
+		set => configuration.Application.TrimExportAttributes = value;
 	}
 
 	public RegistrarMode Registrar {
@@ -80,21 +76,6 @@ public class AssemblyPreparer : IDisposable {
 				}),
 				new LinkerConfiguration.SaveValue ((key, storage) => SaveAssemblies (key, storage, reproPath, Assemblies))
 			)},
-			{ "TrimExportAttributes", (
-				new LinkerConfiguration.LoadValue ((key, value) => {
-					if (string.IsNullOrEmpty (value)) {
-						trimExportAttributes = null;
-					} else if (bool.TryParse (value, out var parsedValue)) {
-						trimExportAttributes = parsedValue;
-					} else {
-						throw new InvalidOperationException ($"Unable to parse the {key} value: {value}");
-					}
-				}),
-				new LinkerConfiguration.SaveValue ((key, storage) => {
-					if (trimExportAttributes.HasValue)
-						storage.Add ($"{key}={(trimExportAttributes.Value ? "true" : "false")}");
-				})
-			)},
 		};
 		return dict;
 	}
@@ -119,7 +100,6 @@ public class AssemblyPreparer : IDisposable {
 		configuration = new LinkerConfiguration (log, lines, linker_file, GetConfigurator (null, assemblies.Length == 0 ? null : (input, output) => assemblies.Single (a => a.InputPath == input && a.OutputPath == output))) {
 			AssemblyInfos = Assemblies,
 		};
-		configuration.Application.TrimExportAttributes = trimExportAttributes;
 	}
 
 	public void AddLog (IAssemblyPreparerLog log)
@@ -177,13 +157,13 @@ public class AssemblyPreparer : IDisposable {
 
 		steps.Add (new InlineDlfcnMethodsStep ());
 
-		// Only add RegistrarRemovalTrackingStep if it's needed:
+		// Only add DetectApiUsageStep if it's needed:
 		// * If the user explicitly set $(DynamicRegistrationSupported), we don't need to compute the value, but
 		//   Export attribute removal still needs the step to detect NSXpcInterface reflection.
 		// * If nothing is being trimmed, the dynamic registrar (which lives in the platform assembly, an SDK
 		//   assembly that's only trimmed when trimming is enabled) can't be removed, so there's nothing to compute.
 		if (configuration.Application.AreAnyAssembliesTrimmed && (!configuration.DynamicRegistrationSupported.HasValue || configuration.Application.TrimExportAttributes != false))
-			steps.Add (new RegistrarRemovalTrackingStep ());
+			steps.Add (new DetectApiUsageStep ());
 
 		// PreMarkDispatcher: I don't think we need this one
 		steps.Add (new ManagedRegistrarStep ());
@@ -279,9 +259,12 @@ public class AssemblyPreparer : IDisposable {
 			exceptions.Add (ErrorHelper.CreateError (99, "RegistrarMode must be explicitly set."));
 			return false;
 		}
-		if (TrimExportAttributes != false && Registrar != RegistrarMode.TrimmableStatic) {
-			exceptions.Add (ErrorHelper.CreateError (99, "Export attributes can only be trimmed with the trimmable static registrar."));
-			return false;
+		if (Registrar != RegistrarMode.TrimmableStatic) {
+			if (TrimExportAttributes == true) {
+				exceptions.Add (ErrorHelper.CreateError (99, "Export attributes can only be trimmed with the trimmable static registrar."));
+				return false;
+			}
+			TrimExportAttributes = false;
 		}
 
 		if (!string.IsNullOrEmpty (MakeReproPath) && !SaveToReproPath (exceptions))

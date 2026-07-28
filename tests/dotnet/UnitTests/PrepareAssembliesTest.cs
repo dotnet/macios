@@ -136,12 +136,12 @@ namespace Xamarin.Tests {
 				for (var i = 0; i < 2; i++) {
 					var result = DotNet.AssertBuildFailure (projectPath, properties, target: target);
 					var errors = BinLog.GetBuildLogErrors (result.BinLogPath).ToArray ();
-					Assert.That (errors.Select (v => v.Message), Has.Some.Contains (expectedMessage), $"Error #{i + 1}");
+					AssertErrorMessages (errors, expectedMessage);
 				}
 			} else {
 				var result = DotNet.AssertBuild (projectPath, properties, target: target);
-				var warnings = BinLog.GetBuildLogWarnings (result.BinLogPath).ToArray ();
-				Assert.That (warnings.Select (v => v.Message), Has.Some.Contains (expectedMessage), "Warning");
+				var warnings = BinLog.GetBuildLogWarnings (result.BinLogPath).FilterWarnings (platform).ToArray ();
+				AssertWarningMessages (warnings, expectedMessage);
 			}
 		}
 

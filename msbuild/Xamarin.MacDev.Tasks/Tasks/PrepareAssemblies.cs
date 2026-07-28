@@ -30,8 +30,6 @@ namespace Xamarin.MacDev.Tasks {
 
 		public string MakeReproPath { get; set; } = "";
 
-		public string MSBuildOutputFile { get; set; } = "";
-
 		public string OutputDirectory { get; set; } = "";
 
 		[Required]
@@ -76,10 +74,12 @@ namespace Xamarin.MacDev.Tasks {
 			// Capture Console usage and show an error if anything uses Console.[Error.]Write*
 			using var consoleToLog = ConsoleToTaskWriter.EnsureNoConsoleUsage (Log);
 			var success = false;
+			var msbuildOutputFile = "";
 
 			try {
 				var infos = InputAssemblies.Select (GetAssemblyInfo).ToArray ();
 				using var preparer = new AssemblyPreparer (this, infos, OptionsFile?.ItemSpec ?? "");
+				msbuildOutputFile = PostProcessing ? preparer.Configuration.MSBuildPostProcessOutputFile : preparer.Configuration.MSBuildOutputFile;
 				preparer.MakeReproPath = MakeReproPath;
 				preparer.TrimExportAttributes = TrimExportAttributes;
 				preparer.PreTrimAssemblies.AddRange (PreTrimAssemblies.Select (v => v.ItemSpec));
@@ -155,8 +155,8 @@ namespace Xamarin.MacDev.Tasks {
 				((IToolLog) this).LogException (e);
 				return false;
 			} finally {
-				if (!success && !string.IsNullOrEmpty (MSBuildOutputFile))
-					File.Delete (MSBuildOutputFile);
+				if (!success && !string.IsNullOrEmpty (msbuildOutputFile))
+					File.Delete (msbuildOutputFile);
 			}
 		}
 	}

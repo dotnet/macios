@@ -31,7 +31,7 @@ namespace Xamarin.Linker {
 		public string CacheDirectory { get; private set; } = string.Empty;
 		public Version? DeploymentTarget { get; private set; }
 		// The user-provided value of the $(DynamicRegistrationSupported) MSBuild property (null if not set).
-		// When set, RegistrarRemovalTrackingStep doesn't need to compute this value in the assembly-preparer,
+		// When set, DetectApiUsageStep doesn't need to compute this value in the assembly-preparer,
 		// although it may still run to detect blockers for other optimizations.
 		public bool? DynamicRegistrationSupported { get; private set; }
 		public HashSet<string> FrameworkAssemblies { get; private set; } = new HashSet<string> ();
@@ -306,12 +306,12 @@ namespace Xamarin.Linker {
 				{ "DynamicRegistrationSupported", (
 					// This is the user-overridable $(DynamicRegistrationSupported) MSBuild property. It maps to
 					// the RemoveDynamicRegistrar optimization (inverted): if dynamic registration is supported,
-					// then we're not removing the dynamic registrar. When set, RegistrarRemovalTrackingStep doesn't
+					// then we're not removing the dynamic registrar. When set, DetectApiUsageStep doesn't
 					// need to compute the value in the assembly-preparer (it's passed straight through to the trimmer
 					// feature switch), and it won't recompute the value in the real linker either.
 					new LoadValue ((key, value) => {
 						if (string.IsNullOrEmpty (value))
-							return; // Not set: RegistrarRemovalTrackingStep will compute a default value.
+							return; // Not set: DetectApiUsageStep will compute a default value.
 						if (!TryParseOptionalBoolean (value, out var dynamicRegistrationSupported))
 							throw new InvalidOperationException ($"Unable to parse the {key} value: {value} in {linker_file}");
 						if (dynamicRegistrationSupported.HasValue) {
@@ -605,6 +605,16 @@ namespace Xamarin.Linker {
 				{ "TrimMode", (
 					new LoadValue ((key, value) => TrimMode = value),
 					new SaveValue ((key, storage) => saveNonEmpty (key, TrimMode, storage))
+				)},
+				{ "TrimExportAttributes", (
+					new LoadValue ((key, value) => {
+						if (string.IsNullOrEmpty (value)) {
+							Application.TrimExportAttributes = null;
+						} else {
+							loadNullableBool (key, value, out Application.TrimExportAttributes);
+						}
+					}),
+					new SaveValue ((key, storage) => saveNullableBool (key, Application.TrimExportAttributes, storage))
 				)},
 				{ "TypeMapAssemblyName", (
 					new LoadValue ((key, value) => Application.TypeMapAssemblyName = value),

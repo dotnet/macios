@@ -57,6 +57,15 @@ namespace Xamarin.Bundler {
 		Trace = 1,
 	}
 
+	public enum ExportAttributeRemovalBlocker {
+		DynamicRegistrationSupported,
+		BlockLiteralSetupBlockOptimizationDisabled,
+		StaticBlockToDelegateLookupOptimizationDisabled,
+		RuntimeGetBlockWrapperCreatorRequired,
+		RegistrarHelperGetBlockForDelegateRequired,
+		NSXpcInterfaceMethodInfoOverloadUsed,
+	}
+
 	public partial class Application : IToolLog {
 		public Cache? Cache;
 		public string AppDirectory = ".";
@@ -82,7 +91,7 @@ namespace Xamarin.Bundler {
 		public bool? AotFloat32 = null;
 		public bool PrepareAssemblies; // True if '$(PrepareAssemblies)' == 'true'
 		public bool? TrimExportAttributes;
-		public HashSet<string> TrimExportAttributesBlockers = new HashSet<string> ();
+		public HashSet<ExportAttributeRemovalBlocker> TrimExportAttributesBlockers = new HashSet<ExportAttributeRemovalBlocker> ();
 
 		// The set of UnmanagedCallersOnly trampoline symbols (without the leading Mach-O underscore)
 		// that survived the NativeAOT compiler (ILC). This is only set when the native registrar code

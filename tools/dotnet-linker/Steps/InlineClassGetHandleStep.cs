@@ -200,7 +200,7 @@ public class InlineClassGetHandleStep : AssemblyModifierStep {
 					// natively). The static registrar doesn't register these classes, so there's no native
 					// Objective-C class to reference, which means inlining the call to Class.GetHandle would
 					// turn into a hard link error ('Undefined symbols: _OBJC_CLASS_$_X'). Don't inline it, so
-					// that the call falls back to a runtime lookup (which returns null for a missing class).
+					// that the call falls back to a runtime lookup (which returns a zero handle for a missing class).
 					App.Log (3, "Not inlining the call to Class.GetHandle (\"{0}\") in method {1} because the class has a [Protocol] attribute, so there's no native Objective-C class to reference.", objectiveCClassName, FormatMethod (method));
 					continue;
 				}

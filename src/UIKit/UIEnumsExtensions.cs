@@ -11,7 +11,7 @@
 namespace UIKit {
 
 #if IOS
-	/// <summary>Extension methods for the <see cref="UIKit.UIDeviceOrientation" /> class.</summary>
+	/// <summary>Extension methods for the <see cref="UIKit.UIDeviceOrientation" /> enumeration.</summary>
 	public static class UIDeviceOrientationExtensions {
 		/// <summary>Returns <see langword="true" /> if one of the short edges is lowest.</summary>
 		/// <param name="orientation">The orientation.</param>

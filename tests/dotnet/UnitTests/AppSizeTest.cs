@@ -355,8 +355,6 @@ namespace Xamarin.Tests {
 				var originalPath = File.Exists (expectedFilePath) ? expectedFilePath : "/dev/null";
 				var arguments = new List<string> {
 					"-u",
-					"--label", $"a/{relativePath}",
-					"--label", $"b/{relativePath}",
 					originalPath,
 					newContentPath,
 				};
@@ -365,7 +363,27 @@ namespace Xamarin.Tests {
 				var rv = Execution.RunAsync ("diff", arguments, timeout: TimeSpan.FromMinutes (1)).Result;
 				if (rv.ExitCode > 1)
 					throw new Exception ($"Failed to compute diff for '{expectedFilePath}' (exit code {rv.ExitCode}):\n{rv.Output.StandardError}");
-				return rv.Output.StandardOutput;
+
+				// 'diff' puts the input file paths (a temporary file and the committed expected file or '/dev/null')
+				// in the '---'/'+++' header lines. Rewrite them to 'a/<path>' and 'b/<path>' so the patch can be
+				// applied from the repository root with 'git apply -p1'. We rewrite the header ourselves rather than
+				// using 'diff --label', because '--label' is a GNU extension that isn't available in every 'diff'
+				// implementation. Only the first '--- '/'+++ ' lines are the file header; hunk content lines are
+				// prefixed with ' ', '+' or '-', so they never begin with '--- ' or '+++ '.
+				var lines = rv.Output.StandardOutput.Split ('\n');
+				for (var i = 0; i < lines.Length; i++) {
+					if (lines [i].StartsWith ("--- ", StringComparison.Ordinal)) {
+						lines [i] = $"--- a/{relativePath}";
+						break;
+					}
+				}
+				for (var i = 0; i < lines.Length; i++) {
+					if (lines [i].StartsWith ("+++ ", StringComparison.Ordinal)) {
+						lines [i] = $"+++ b/{relativePath}";
+						break;
+					}
+				}
+				return string.Join ('\n', lines);
 			} finally {
 				File.Delete (newContentPath);
 			}

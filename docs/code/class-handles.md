@@ -22,9 +22,9 @@ into a hard link error (`Undefined symbols: _OBJC_CLASS_$_TheClass`), even if th
 never actually used at runtime.
 
 To avoid this, we don't inline `Class.GetHandle` when the target class has a `[Protocol]`
-attribute: the call falls back to a runtime lookup instead, which returns null (`IntPtr.Zero`)
-for a missing native class - the same behavior these bindings had before `Class.GetHandle`
-inlining existed.
+attribute: the call falls back to a runtime lookup instead, which returns a zero handle
+(`IntPtr.Zero`) for a missing native class - the same behavior these bindings had before
+`Class.GetHandle` inlining existed.
 
 In order to create a direct native reference to Objective-C classes, we need to know the names of those Objective-C classes.
 

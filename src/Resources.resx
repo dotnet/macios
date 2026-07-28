@@ -389,7 +389,7 @@
 	</data>
 
 	<data name="BI1050" xml:space="preserve">
-		<value>[BindAs] cannot be used inside Protocol or Model types. Type: {0}</value>
+		<value>[BindAs] cannot be used on properties or return values inside Protocol or Model types. Type: {0}</value>
 	</data>
 
 	<data name="BI1051" xml:space="preserve">

@@ -511,7 +511,10 @@ namespace LinkAll {
 			// https://github.com/dotnet/macios/issues/3523
 			// TEMP-IGNORE-25915: temporarily ignored on net11.0 until https://github.com/dotnet/macios/pull/25915 is merged.
 			Assert.Ignore ("Temporarily ignored on net11.0: the trimmable static registrar's TypeMap path preserves the full exported method surface of registered types (e.g. UIResponder.PressesBegan takes an NSSet<UIPress>), which keeps NSSet<T> alive. Fixed by https://github.com/dotnet/macios/pull/25915.");
-			Assert.That (typeof (NSObject).Assembly.GetType (NamespacePrefix + "Foundation.NSSet`1"), Is.Null, "NSSet<T> must be linked away, otherwise this test is useless");
+			// Don't use constants here, because the linker can see what we're trying to do and keeps the type we're verifying has been removed.
+			string prefix = NamespacePrefix;
+			string suffix = AssemblyName;
+			Assert.That (Helper.GetType (prefix + "Foundation.NSSet`1, " + suffix), Is.Null, "NSSet<T> must be linked away, otherwise this test is useless");
 		}
 
 		[Protocol (Name = "ProtocolWithGenericsInOptionalMember", WrapperType = typeof (ProtocolWithGenericsInOptionalMemberWrapper))]

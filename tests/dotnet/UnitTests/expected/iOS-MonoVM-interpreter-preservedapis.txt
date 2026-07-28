@@ -217,8 +217,8 @@ Microsoft.iOS.dll:Foundation.ProtocolAttribute.get_IsInformal()
 Microsoft.iOS.dll:Foundation.ProtocolAttribute.get_Name()
 Microsoft.iOS.dll:Foundation.ProtocolAttribute.get_WrapperType()
 Microsoft.iOS.dll:Foundation.ProtocolMemberAttribute
-Microsoft.iOS.dll:Foundation.ProtocolMemberAttribute Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31::<>2__current
-Microsoft.iOS.dll:Foundation.ProtocolMemberAttribute Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31::System.Collections.Generic.IEnumerator<Foundation.ProtocolMemberAttribute>.Current()
+Microsoft.iOS.dll:Foundation.ProtocolMemberAttribute Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32::<>2__current
+Microsoft.iOS.dll:Foundation.ProtocolMemberAttribute Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32::System.Collections.Generic.IEnumerator<Foundation.ProtocolMemberAttribute>.Current()
 Microsoft.iOS.dll:Foundation.ProtocolMemberAttribute.get_ArgumentSemantic()
 Microsoft.iOS.dll:Foundation.ProtocolMemberAttribute.get_GetterSelector()
 Microsoft.iOS.dll:Foundation.ProtocolMemberAttribute.get_IsProperty()
@@ -942,12 +942,12 @@ Microsoft.iOS.dll:Registrar.DynamicRegistrar.TryGetEnumUnderlyingType(System.Typ
 Microsoft.iOS.dll:Registrar.DynamicRegistrar.TryMatchProperty(System.Type, System.Reflection.PropertyInfo)
 Microsoft.iOS.dll:Registrar.DynamicRegistrar.TypeMatch(System.Type, System.Type)
 Microsoft.iOS.dll:Registrar.DynamicRegistrar.VerifyIsConstrainedToNSObject(System.Type, out System.Type&)
-Microsoft.iOS.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31
-Microsoft.iOS.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31..ctor(System.Int32)
-Microsoft.iOS.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31.MoveNext()
-Microsoft.iOS.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31.System.Collections.Generic.IEnumerable<Foundation.ProtocolMemberAttribute>.GetEnumerator()
-Microsoft.iOS.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31.System.Collections.Generic.IEnumerator<Foundation.ProtocolMemberAttribute>.get_Current()
-Microsoft.iOS.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31.System.IDisposable.Dispose()
+Microsoft.iOS.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32
+Microsoft.iOS.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32..ctor(System.Int32)
+Microsoft.iOS.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32.MoveNext()
+Microsoft.iOS.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32.System.Collections.Generic.IEnumerable<Foundation.ProtocolMemberAttribute>.GetEnumerator()
+Microsoft.iOS.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32.System.Collections.Generic.IEnumerator<Foundation.ProtocolMemberAttribute>.get_Current()
+Microsoft.iOS.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32.System.IDisposable.Dispose()
 Microsoft.iOS.dll:Registrar.Registrar
 Microsoft.iOS.dll:Registrar.Registrar Registrar.Registrar/ObjCMember::Registrar
 Microsoft.iOS.dll:Registrar.Registrar Registrar.Registrar/ObjCType::Registrar
@@ -1121,6 +1121,7 @@ Microsoft.iOS.dll:Registrar.Registrar/ObjCMethod.get_ReturnType()
 Microsoft.iOS.dll:Registrar.Registrar/ObjCMethod.get_Signature()
 Microsoft.iOS.dll:Registrar.Registrar/ObjCMethod.get_Trampoline()
 Microsoft.iOS.dll:Registrar.Registrar/ObjCMethod.IsValidToManagedTypeConversion(System.Type, System.Type)
+Microsoft.iOS.dll:Registrar.Registrar/ObjCMethod.PrepareNativeParameters()
 Microsoft.iOS.dll:Registrar.Registrar/ObjCMethod.set_IsConstructor(System.Boolean)
 Microsoft.iOS.dll:Registrar.Registrar/ObjCMethod.set_IsStatic(System.Boolean)
 Microsoft.iOS.dll:Registrar.Registrar/ObjCMethod.set_Parameters(System.Type[])
@@ -1280,6 +1281,7 @@ Microsoft.iOS.dll:System.Collections.Generic.Dictionary`2<System.String,System.T
 Microsoft.iOS.dll:System.Collections.Generic.Dictionary`2<System.String,System.Type> Registrar.Registrar::protocol_map
 Microsoft.iOS.dll:System.Collections.Generic.Dictionary`2<System.String,System.Type> Registrar.Registrar::type_map
 Microsoft.iOS.dll:System.Collections.Generic.Dictionary`2<System.Type,Registrar.Registrar/ObjCType> Registrar.Registrar::types
+Microsoft.iOS.dll:System.Collections.Generic.Dictionary`2<System.Type,System.Collections.Generic.Dictionary`2<System.Reflection.MethodBase,System.Collections.Generic.List`1<System.Reflection.MethodBase>>> Registrar.DynamicRegistrar::cached_interface_method_mappings
 Microsoft.iOS.dll:System.Collections.Generic.Dictionary`2<System.Type,System.IntPtr> ObjCRuntime.Class::type_to_class
 Microsoft.iOS.dll:System.Collections.Generic.Dictionary`2<System.Type,System.Object> Registrar.DynamicRegistrar::custom_type_map
 Microsoft.iOS.dll:System.Collections.Generic.Dictionary`2<System.Type,System.Reflection.ConstructorInfo> ObjCRuntime.Runtime::intptr_bool_ctor_cache
@@ -1320,9 +1322,9 @@ Microsoft.iOS.dll:System.Int32 ObjCRuntime.Runtime/MTRegistrationMap::skipped_ma
 Microsoft.iOS.dll:System.Int32 ObjCRuntime.RuntimeException::<Code>k__BackingField
 Microsoft.iOS.dll:System.Int32 ObjCRuntime.RuntimeException::Code()
 Microsoft.iOS.dll:System.Int32 ObjCRuntime.TransientString/Encoding::value__
-Microsoft.iOS.dll:System.Int32 Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31::<>1__state
-Microsoft.iOS.dll:System.Int32 Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31::<>7__wrap2
-Microsoft.iOS.dll:System.Int32 Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31::<>l__initialThreadId
+Microsoft.iOS.dll:System.Int32 Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32::<>1__state
+Microsoft.iOS.dll:System.Int32 Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32::<>7__wrap2
+Microsoft.iOS.dll:System.Int32 Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32::<>l__initialThreadId
 Microsoft.iOS.dll:System.Int32 Registrar.Registrar/ObjCField::Size
 Microsoft.iOS.dll:System.Int32 Registrar.Trampoline::value__
 Microsoft.iOS.dll:System.Int64 Foundation.NSComparisonResult::value__
@@ -1486,7 +1488,7 @@ Microsoft.iOS.dll:System.Nullable`1<System.Boolean> Registrar.Registrar/ObjCProp
 Microsoft.iOS.dll:System.Object Foundation.NSObject/NSObject_Disposer::lock_obj
 Microsoft.iOS.dll:System.Object ObjCRuntime.Runtime::lock_obj
 Microsoft.iOS.dll:System.Object Registrar.DynamicRegistrar::lock_obj
-Microsoft.iOS.dll:System.Object[] Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31::<>7__wrap1
+Microsoft.iOS.dll:System.Object[] Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32::<>7__wrap1
 Microsoft.iOS.dll:System.Reflection.Assembly Foundation.NSObject::PlatformAssembly
 Microsoft.iOS.dll:System.Reflection.MethodBase Registrar.Registrar::conforms_to_protocol
 Microsoft.iOS.dll:System.Reflection.MethodBase Registrar.Registrar::invoke_conforms_to_protocol
@@ -1555,8 +1557,8 @@ Microsoft.iOS.dll:System.Type ObjCRuntime.BindAsAttribute::OriginalType
 Microsoft.iOS.dll:System.Type ObjCRuntime.BindAsAttribute::Type
 Microsoft.iOS.dll:System.Type ObjCRuntime.BlockProxyAttribute::Type()
 Microsoft.iOS.dll:System.Type ObjCRuntime.CategoryAttribute::Type()
-Microsoft.iOS.dll:System.Type Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31::<>3__type
-Microsoft.iOS.dll:System.Type Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31::type
+Microsoft.iOS.dll:System.Type Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32::<>3__type
+Microsoft.iOS.dll:System.Type Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32::type
 Microsoft.iOS.dll:System.Type Registrar.Registrar/ObjCMethod::native_return_type
 Microsoft.iOS.dll:System.Type Registrar.Registrar/ObjCMethod::NativeReturnType()
 Microsoft.iOS.dll:System.Type Registrar.Registrar/ObjCMethod::return_type

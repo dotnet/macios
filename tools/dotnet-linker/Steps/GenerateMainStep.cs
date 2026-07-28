@@ -146,7 +146,7 @@ namespace Xamarin {
 			if (!runtimeOptions.TryGetProperty ("configProperties", out var configProperties))
 				return null;
 			if (configProperties.ValueKind != JsonValueKind.Object)
-				return null;
+				throw ErrorHelper.CreateError (2323, $"The 'runtimeOptions.configProperties' value in '{path}' must be a JSON object, but it's a {configProperties.ValueKind}.");
 
 			var result = new Dictionary<string, string> ();
 			foreach (var property in configProperties.EnumerateObject ()) {

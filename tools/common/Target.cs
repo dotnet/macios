@@ -279,13 +279,15 @@ namespace Xamarin.Bundler {
 			// format and decoding it at startup.
 			var runtimeConfigProperties = app.XamarinRuntime == XamarinRuntime.CoreCLR ? app.RuntimeConfigProperties : null;
 			if (runtimeConfigProperties is not null && runtimeConfigProperties.Count > 0) {
+				// Sort by key so the generated main is stable regardless of the dictionary's enumeration order.
+				var sortedRuntimeConfigProperties = runtimeConfigProperties.OrderBy (v => v.Key, StringComparer.Ordinal).ToArray ();
 				sw.WriteLine ();
 				sw.WriteLine ("static const char *xamarin_runtime_config_property_keys_array [] = {");
-				foreach (var property in runtimeConfigProperties)
+				foreach (var property in sortedRuntimeConfigProperties)
 					sw.WriteLine ($"\t\"{EscapeCString (property.Key)}\",");
 				sw.WriteLine ("};");
 				sw.WriteLine ("static const char *xamarin_runtime_config_property_values_array [] = {");
-				foreach (var property in runtimeConfigProperties)
+				foreach (var property in sortedRuntimeConfigProperties)
 					sw.WriteLine ($"\t\"{EscapeCString (property.Value)}\",");
 				sw.WriteLine ("};");
 			}

@@ -54,7 +54,7 @@ public abstract class BaseClass {
 
 	// Builds the provided code into a Test.dll and returns an AssemblyPreparer configured for it, without
 	// running any preparation steps. Use this when a test needs to run a custom set of steps.
-	public AssemblyPreparer CreatePreparer (ApplePlatform platform, bool isCoreCLR, Action<AssemblyPreparer>? configure, string code, out AssemblyPreparerInfo testInfo, string extraCsproj = "", string extraConfig = "", IEnumerable<(string FileName, byte [] Content)>? extraFiles = null)
+	public AssemblyPreparer CreatePreparer (ApplePlatform platform, bool isCoreCLR, Action<AssemblyPreparer>? configure, string code, out AssemblyPreparerInfo testInfo, string extraCsproj = "", string extraConfig = "", IEnumerable<(string FileName, byte [] Content)>? extraFiles = null, string testTrimMode = "link")
 	{
 		Configuration.IgnoreIfIgnoredPlatform (platform);
 
@@ -101,7 +101,7 @@ public abstract class BaseClass {
 
 		var assemblies = Configuration.GetImplementationAssemblies (platform, isCoreCLR);
 		assemblies.Add (Path.Combine (assemblyDir, "Test.dll"));
-		var infos = assemblies.Select (v => new AssemblyPreparerInfo (v, Path.Combine (assemblyDir, "out", Path.GetFileName (v)), true, "link")).ToArray ();
+		var infos = assemblies.Select (v => new AssemblyPreparerInfo (v, Path.Combine (assemblyDir, "out", Path.GetFileName (v)), true, Path.GetFileNameWithoutExtension (v) == "Test" ? testTrimMode : "link")).ToArray ();
 		var logger = new TestLogger () { Platform = platform };
 		var preparer = new AssemblyPreparer (logger, infos, configpath);
 		if (configure is not null)

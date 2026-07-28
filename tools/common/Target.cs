@@ -331,8 +331,11 @@ namespace Xamarin.Bundler {
 				var overwrite = kvp.Value.Overwrite;
 				sw.WriteLine ("\tsetenv (\"{0}\", \"{1}\", {2});", name.Replace ("\"", "\\\""), value.Replace ("\"", "\\\""), overwrite ? 1 : 0);
 			}
-			if (app.XamarinRuntime != XamarinRuntime.NativeAOT)
+			if (app.XamarinRuntime != XamarinRuntime.NativeAOT) {
+				if (app.DynamicRegistrationSupported)
+					sw.WriteLine ("\txamarin_initialize_dynamic_registrar ();");
 				sw.WriteLine ("\txamarin_supports_dynamic_registration = {0};", app.DynamicRegistrationSupported ? "TRUE" : "FALSE");
+			}
 			sw.WriteLine ("\txamarin_runtime_configuration_name = {0};", string.IsNullOrEmpty (app.RuntimeConfigurationFile) ? "NULL" : $"\"{app.RuntimeConfigurationFile}\"");
 			if (app.Registrar == RegistrarMode.TrimmableStatic)
 				sw.WriteLine ("\txamarin_set_is_trimmable_static_registrar (true);");

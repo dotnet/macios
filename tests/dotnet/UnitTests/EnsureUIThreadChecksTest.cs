@@ -69,9 +69,12 @@ namespace Xamarin.Tests {
 			AssertEnsureUIThreadBody (platform, appPath, checksKept: expectedValue == "true");
 		}
 
-		// Inspects the linked platform assembly in the app bundle and verifies that the body of
-		// [NS|UI]Application.EnsureUIThread throws (checks kept) or has been stubbed to a no-op (checks removed),
-		// and that the CheckForIllegalCrossThreadCalls field is kept or trimmed away accordingly.
+		// Inspects the linked platform assembly in the app bundle and verifies that the UI thread check is kept
+		// or removed. The public [NS|UI]Application.EnsureUIThread entry point delegates to the internal
+		// ObjCRuntime.Runtime.EnsureUIThread method, which performs the actual thread check (and throw). When the
+		// checks are removed, the entry point is stubbed to a no-op via ILLink substitutions, which makes
+		// Runtime.EnsureUIThread unreferenced (and thus trimmed away) together with the
+		// CheckForIllegalCrossThreadCalls field.
 		void AssertEnsureUIThreadBody (ApplePlatform platform, string appPath, bool checksKept)
 		{
 			var platformAssembly = Path.Combine (appPath, GetRelativeAssemblyDirectory (platform), Configuration.GetBaseLibraryName (platform));
@@ -80,15 +83,17 @@ namespace Xamarin.Tests {
 			using var ad = AssemblyDefinition.ReadAssembly (platformAssembly, new ReaderParameters { ReadingMode = ReadingMode.Deferred });
 			var typeName = platform == ApplePlatform.MacOSX ? "AppKit.NSApplication" : "UIKit.UIApplication";
 			var type = ad.MainModule.Types.Single (v => v.FullName == typeName);
-			var method = type.Methods.Single (m => m.Name == "EnsureUIThread" && m.Parameters.Count == 0);
+			var runtimeType = ad.MainModule.Types.Single (v => v.FullName == "ObjCRuntime.Runtime");
 
-			var throwCount = method.Body.Instructions.Count (i => i.OpCode == OpCodes.Throw);
+			var hasRuntimeCheck = runtimeType.Methods.Any (m => m.Name == "EnsureUIThread" && m.Parameters.Count == 0);
 			var checkField = type.Fields.SingleOrDefault (f => f.Name == "CheckForIllegalCrossThreadCalls");
 			if (checksKept) {
-				Assert.That (throwCount, Is.GreaterThan (0), $"The {typeName}.EnsureUIThread body must still throw when the UI thread checks are kept.");
+				var runtimeMethod = runtimeType.Methods.Single (m => m.Name == "EnsureUIThread" && m.Parameters.Count == 0);
+				var throwCount = runtimeMethod.Body.Instructions.Count (i => i.OpCode == OpCodes.Throw);
+				Assert.That (throwCount, Is.GreaterThan (0), "The ObjCRuntime.Runtime.EnsureUIThread body must still throw when the UI thread checks are kept.");
 				Assert.That (checkField, Is.Not.Null, $"The {typeName}.CheckForIllegalCrossThreadCalls field must be present when the UI thread checks are kept.");
 			} else {
-				Assert.That (throwCount, Is.EqualTo (0), $"The {typeName}.EnsureUIThread body must be stubbed (no throw) when the UI thread checks are removed.");
+				Assert.That (hasRuntimeCheck, Is.False, "The ObjCRuntime.Runtime.EnsureUIThread method must be trimmed away when the UI thread checks are removed.");
 				Assert.That (checkField, Is.Null, $"The {typeName}.CheckForIllegalCrossThreadCalls field must be trimmed away when the UI thread checks are removed.");
 			}
 		}

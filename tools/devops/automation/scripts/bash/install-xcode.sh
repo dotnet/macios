@@ -179,6 +179,9 @@ binary_architectures ()
 }
 
 XCODE_VERSION=$(read_config_value XCODE_VERSION)
+# TEMPORARY: set to a non-empty value to reuse an Xcode installed under another name.
+# Left empty on purpose so CI exercises the Universal Package download and install.
+XCODE_REUSE_INSTALLED=
 XCODE_PACKAGE_NAME=$(read_config_value XCODE_PACKAGE_NAME)
 XCODE_PACKAGE_VERSION=$(read_config_value XCODE_PACKAGE_VERSION)
 XCODE_BUILD_VERSION=$(read_config_value XCODE_BUILD_VERSION)
@@ -359,6 +362,12 @@ find_installed_xcode ()
 	local candidate name
 	local want_stable=
 	local candidate_stable=
+
+	# TEMPORARY: reuse is disabled so that CI exercises the Universal Package download
+	# and install. Revert this commit once that path has been confirmed to work.
+	if [[ -z "$XCODE_REUSE_INSTALLED" ]]; then
+		return 1
+	fi
 
 	if xcode_name_is_stable "$EXPECTED_APP_NAME"; then
 		want_stable=1

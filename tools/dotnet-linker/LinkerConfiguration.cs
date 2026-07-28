@@ -58,6 +58,7 @@ namespace Xamarin.Linker {
 		public string PlatformAssembly { get; private set; } = string.Empty;
 		public bool PublishTrimmed { get; private set; }
 		public string RelativeAppBundlePath { get; private set; } = string.Empty;
+		public string RuntimeConfigurationFilePath { get; private set; } = string.Empty;
 		public Version? SdkVersion { get; private set; }
 		public string SdkRootDirectory { get; private set; } = string.Empty;
 		public string TypeMapFilePath { get; set; } = string.Empty;
@@ -558,6 +559,10 @@ namespace Xamarin.Linker {
 					new LoadValue ((key, value) => Application.RuntimeConfigurationFile = value),
 					new SaveValue ((key, storage) => saveNonEmpty (key, Application.RuntimeConfigurationFile, storage))
 				)},
+				{ "RuntimeConfigurationFilePath", (
+					new LoadValue ((key, value) => RuntimeConfigurationFilePath = value),
+					new SaveValue ((key, storage) => saveNonEmpty (key, RuntimeConfigurationFilePath, storage))
+				)},
 				{ "SdkDevPath", (
 					new LoadValue ((key, value) => Application.SdkRoot = value),
 					new SaveValue ((key, storage) => saveNonEmpty (key, Application.SdkRoot, storage))
@@ -882,6 +887,7 @@ namespace Xamarin.Linker {
 				Application.Log ($"    RelativeAppBundlePath: {RelativeAppBundlePath}");
 				Application.Log ($"    Registrar: {Application.Registrar} (Options: {Application.RegistrarOptions})");
 				Application.Log ($"    RuntimeConfigurationFile: {Application.RuntimeConfigurationFile}");
+				Application.Log ($"    RuntimeConfigurationFilePath: {RuntimeConfigurationFilePath}");
 				Application.Log ($"    RequirePInvokeWrappers: {Application.RequiresPInvokeWrappers}");
 				Application.Log ($"    SdkDevPath: {Application.SdkRoot}");
 				Application.Log ($"    SdkRootDirectory: {SdkRootDirectory}");

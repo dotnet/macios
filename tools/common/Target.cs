@@ -273,6 +273,25 @@ namespace Xamarin.Bundler {
 			sw.WriteLine ($"\tNULL");
 			sw.WriteLine ("};");
 
+			// For CoreCLR we bake the runtimeconfig.json 'configProperties' directly into the app as C arrays
+			// (assigned to the xamarin_runtime_config_property_* globals in xamarin_setup_impl below, and
+			// consumed by xamarin_bridge_compute_properties). This avoids shipping the binary runtimeconfig
+			// format and decoding it at startup.
+			var runtimeConfigProperties = app.RuntimeConfigProperties;
+			var hasRuntimeConfigProperties = app.XamarinRuntime == XamarinRuntime.CoreCLR && runtimeConfigProperties is not null && runtimeConfigProperties.Count > 0;
+			if (hasRuntimeConfigProperties) {
+				sw.WriteLine ();
+				sw.WriteLine ("static const char *xamarin_runtime_config_property_keys_array [] = {");
+				foreach (var property in runtimeConfigProperties!)
+					sw.WriteLine ($"\t\"{EscapeCString (property.Key)}\",");
+				sw.WriteLine ("};");
+				sw.WriteLine ("static const char *xamarin_runtime_config_property_values_array [] = {");
+				foreach (var property in runtimeConfigProperties!)
+					sw.WriteLine ($"\t\"{EscapeCString (property.Value)}\",");
+				sw.WriteLine ("};");
+			}
+			sw.WriteLine ();
+
 			sw.WriteLine ("void xamarin_setup_impl ()");
 			sw.WriteLine ("{");
 
@@ -337,6 +356,11 @@ namespace Xamarin.Bundler {
 				sw.WriteLine ("\txamarin_supports_dynamic_registration = {0};", app.DynamicRegistrationSupported ? "TRUE" : "FALSE");
 			}
 			sw.WriteLine ("\txamarin_runtime_configuration_name = {0};", string.IsNullOrEmpty (app.RuntimeConfigurationFile) ? "NULL" : $"\"{app.RuntimeConfigurationFile}\"");
+			if (hasRuntimeConfigProperties) {
+				sw.WriteLine ("\txamarin_runtime_config_property_count = {0};", runtimeConfigProperties!.Count);
+				sw.WriteLine ("\txamarin_runtime_config_property_keys = xamarin_runtime_config_property_keys_array;");
+				sw.WriteLine ("\txamarin_runtime_config_property_values = xamarin_runtime_config_property_values_array;");
+			}
 			if (app.Registrar == RegistrarMode.TrimmableStatic)
 				sw.WriteLine ("\txamarin_set_is_trimmable_static_registrar (true);");
 			if (app.Registrar == RegistrarMode.ManagedStatic)
@@ -374,6 +398,35 @@ namespace Xamarin.Bundler {
 			sw.WriteLine ("\txamarin_register_assemblies = xamarin_register_assemblies_impl;");
 			sw.WriteLine ("\txamarin_register_modules = xamarin_register_modules_impl;");
 			sw.WriteLine ("}");
+		}
+
+		// Escapes a string so it can be embedded as a C string literal (between double quotes).
+		static string EscapeCString (string value)
+		{
+			var sb = new StringBuilder (value.Length);
+			foreach (var c in value) {
+				switch (c) {
+				case '\\':
+					sb.Append ("\\\\");
+					break;
+				case '"':
+					sb.Append ("\\\"");
+					break;
+				case '\n':
+					sb.Append ("\\n");
+					break;
+				case '\r':
+					sb.Append ("\\r");
+					break;
+				case '\t':
+					sb.Append ("\\t");
+					break;
+				default:
+					sb.Append (c);
+					break;
+				}
+			}
+			return sb.ToString ();
 		}
 
 		static readonly char [] charsToReplaceAot = new [] { '.', '-', '+', '<', '>' };

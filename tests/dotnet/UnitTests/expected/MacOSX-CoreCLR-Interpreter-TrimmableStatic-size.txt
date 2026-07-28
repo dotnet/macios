@@ -734,7 +734,5 @@ Contents/MonoBundle/libSystem.Net.Security.Native.dylib:
     151,904 bytes (148.3 KB = 0.1 MB)
 Contents/MonoBundle/libSystem.Security.Cryptography.Native.Apple.dylib:
     347,888 bytes (339.7 KB = 0.3 MB)
-Contents/MonoBundle/runtimeconfig.bin:
-    1,445 bytes (1.4 KB = 0.0 MB)
 Contents/PkgInfo:
     8 bytes (0.0 KB = 0.0 MB)

@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Text.Json;
 
+using Xamarin.Bundler;
 using Xamarin.Linker;
 
 #nullable enable
@@ -12,6 +14,21 @@ namespace Xamarin {
 		protected override string Name { get; } = "Generate Main";
 		protected override int ErrorCode { get; } = 2320;
 
+		// These properties are set by the runtime (in xamarin_vm_initialize / xamarin_bridge_vm_initialize)
+		// and passed to coreclr_initialize, so they must not also come from the runtimeconfig.json (otherwise
+		// we'd pass duplicate properties to coreclr_initialize). Keep in sync with runtime/runtime.m and the
+		// _RuntimeConfigReservedProperties item group in Xamarin.Shared.Sdk.targets.
+		static readonly string [] reservedRuntimeConfigProperties = new [] {
+			"APP_CONTEXT_BASE_DIRECTORY",
+			"APP_PATHS",
+			"PINVOKE_OVERRIDE",
+			"TRUSTED_PLATFORM_ASSEMBLIES",
+			"NATIVE_DLL_SEARCH_DIRECTORIES",
+			"RUNTIME_IDENTIFIER",
+			"SYSTEM_CORELIB_DIRECTORY",
+			"STARTUP_HOOKS",
+		};
+
 		protected override void TryEndProcess ()
 		{
 			base.TryEndProcess ();
@@ -20,6 +37,12 @@ namespace Xamarin {
 			var items = new List<MSBuildItem> ();
 
 			var app = Configuration.Application;
+
+			// For CoreCLR we bake the runtimeconfig.json 'configProperties' directly into the app (as C arrays
+			// in the generated main), instead of shipping the binary runtimeconfig format and decoding it at
+			// startup. MonoVM and NativeAOT are unaffected (they don't use xamarin_bridge_compute_properties).
+			if (app.XamarinRuntime == XamarinRuntime.CoreCLR)
+				app.RuntimeConfigProperties = LoadRuntimeConfigProperties ();
 
 			// We want this called before any other initialization methods.
 			registration_methods.Insert (0, "xamarin_initialize_dotnet");
@@ -101,6 +124,47 @@ namespace Xamarin {
 			}
 
 			Configuration.WriteOutputForMSBuild ("_MainLinkWith", linkWith);
+		}
+
+		// Reads the (already merged with the *.runtimeconfig.dev.json) runtimeconfig.json file and extracts
+		// the 'runtimeOptions.configProperties' as a string->string dictionary, matching the value conversion
+		// done by the shared RuntimeConfigParserTask (from dotnet/runtime) that MonoVM uses.
+		Dictionary<string, string>? LoadRuntimeConfigProperties ()
+		{
+			var path = Configuration.RuntimeConfigurationFilePath;
+			if (string.IsNullOrEmpty (path) || !File.Exists (path))
+				return null;
+
+			var options = new JsonDocumentOptions {
+				AllowTrailingCommas = true,
+				CommentHandling = JsonCommentHandling.Skip,
+			};
+
+			using var document = JsonDocument.Parse (File.ReadAllText (path), options);
+			if (!document.RootElement.TryGetProperty ("runtimeOptions", out var runtimeOptions))
+				return null;
+			if (!runtimeOptions.TryGetProperty ("configProperties", out var configProperties))
+				return null;
+			if (configProperties.ValueKind != JsonValueKind.Object)
+				return null;
+
+			var result = new Dictionary<string, string> ();
+			foreach (var property in configProperties.EnumerateObject ()) {
+				result [property.Name] = property.Value.ValueKind switch {
+					JsonValueKind.String => property.Value.GetString ()!,
+					JsonValueKind.True => "true",
+					JsonValueKind.False => "false",
+					JsonValueKind.Number => property.Value.GetRawText (),
+					_ => throw ErrorHelper.CreateError (2321, $"Unsupported value for the runtime configuration property '{property.Name}' in '{path}'."),
+				};
+			}
+
+			foreach (var reserved in reservedRuntimeConfigProperties) {
+				if (result.ContainsKey (reserved))
+					throw ErrorHelper.CreateError (2322, $"The runtime configuration property '{reserved}' can't be set by the user, it's reserved for the runtime.");
+			}
+
+			return result;
 		}
 	}
 }

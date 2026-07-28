@@ -467,8 +467,9 @@
 		DependsOnTargets="_RunRidSpecificBuild"
 		>
 		<ItemGroup>
-			<!-- If we're creating a runtimeconfig.json file, then the resulting binary runtimeconfig.bin file can be put in the architecture-specific subdirectory -->
-			<_ArchitectureSpecificFiles Include="$(_RuntimeConfigurationFile)" Condition="'$(GenerateRuntimeConfigurationFiles)' != ''" />
+			<!-- If we're creating a runtimeconfig.json file, then the resulting binary runtimeconfig.bin file can be put in the architecture-specific subdirectory.
+			     For CoreCLR there's no such file (the runtime configuration is baked into the app as C code). -->
+			<_ArchitectureSpecificFiles Include="$(_RuntimeConfigurationFile)" Condition="'$(GenerateRuntimeConfigurationFiles)' != '' And '$(_XamarinRuntime)' != 'CoreCLR'" />
 		</ItemGroup>
 
 		<MergeAppBundles
@@ -733,6 +734,13 @@
 			<!-- Set default ValidateObjectPointers value -->
 			<_ValidateObjectPointers Condition="'$(_ValidateObjectPointers)' == ''">false</_ValidateObjectPointers>
 
+			<!-- For CoreCLR the runtime configuration is baked into the app as C code (from the merged json),
+			     so there's no runtimeconfig file to locate in the bundle; instead we hand the merged json to the
+			     linker (RuntimeConfigurationFilePath). For MonoVM/NativeAOT we ship the binary runtimeconfig
+			     format and tell the runtime its name (RuntimeConfigurationFile). -->
+			<_BundlerRuntimeConfigurationFile Condition="'$(_XamarinRuntime)' != 'CoreCLR'">$(_RuntimeConfigurationFile)</_BundlerRuntimeConfigurationFile>
+			<_BundlerRuntimeConfigurationFilePath Condition="'$(_XamarinRuntime)' == 'CoreCLR' And '$(GenerateRuntimeConfigurationFiles)' == 'true'">$(_MergedRuntimeConfigFilePath)</_BundlerRuntimeConfigurationFilePath>
+
 			<_CustomLinkerOptions>
 				AreAnyAssembliesTrimmed=$(_AreAnyAssembliesTrimmed)
 				AssemblyName=$(AssemblyName).dll
@@ -782,7 +790,8 @@
 				@(ReferenceNativeSymbol -> 'ReferenceNativeSymbol=%(SymbolType):%(SymbolMode):%(Identity)')
 				RequireLinkWithAttributeForObjectiveCClassSearch=$(RequireLinkWithAttributeForObjectiveCClassSearch)
 				RequirePInvokeWrappers=$(_RequirePInvokeWrappers)
-				RuntimeConfigurationFile=$(_RuntimeConfigurationFile)
+				RuntimeConfigurationFile=$(_BundlerRuntimeConfigurationFile)
+				RuntimeConfigurationFilePath=$(_BundlerRuntimeConfigurationFilePath)
 				SdkDevPath=$(_SdkDevPath)
 				SdkRootDirectory=$(_XamarinSdkRootDirectory)
 				SdkVersion=$(_SdkVersion)
@@ -1564,6 +1573,9 @@
 
 			<_RuntimeConfigurationFile>runtimeconfig.bin</_RuntimeConfigurationFile>
 
+			<!-- The runtimeconfig.json merged with the companion runtimeconfig.dev.json (see _CreateRuntimeConfiguration). -->
+			<_MergedRuntimeConfigFilePath>$(DeviceSpecificIntermediateOutputPath)runtimeconfig.merged.json</_MergedRuntimeConfigFilePath>
+
 			<!-- Path to the file where Objective-C type map information is stored -->
 			<_TypeMapFilePath Condition="'$(_TypeMapFilePath)' == ''">$(_LinkerCacheDirectory)/type-map.txt</_TypeMapFilePath>
 
@@ -1595,12 +1607,9 @@
 
 	<Target Name="_CreateRuntimeConfiguration"
 		Inputs="$(ProjectRuntimeConfigFilePath);$(ProjectRuntimeConfigDevFilePath)"
-		Outputs="$(_ParsedRuntimeConfigFilePath)"
+		Outputs="$(_RuntimeConfigurationOutputFile)"
 		DependsOnTargets="GenerateBuildRuntimeConfigurationFiles;_ComputePublishLocation"
 		>
-		<PropertyGroup>
-			<_MergedRuntimeConfigFilePath>$(DeviceSpecificIntermediateOutputPath)runtimeconfig.merged.json</_MergedRuntimeConfigFilePath>
-		</PropertyGroup>
 		<ItemGroup>
 			<!-- List all the properties passed to xamarin_bridge_vm_initialize in xamarin_vm_initialize (in runtime.m) -->
 			<_RuntimeConfigReservedProperties Include="APP_PATHS" />
@@ -1629,7 +1638,7 @@
 		</ItemGroup>
 
 		<RuntimeConfigParserTask
-			Condition="'$(GenerateRuntimeConfigurationFiles)' == 'true'"
+			Condition="'$(GenerateRuntimeConfigurationFiles)' == 'true' And '$(_XamarinRuntime)' != 'CoreCLR'"
 			RuntimeConfigFile="$(_MergedRuntimeConfigFilePath)"
 			OutputFile="$(_ParsedRuntimeConfigFilePath)"
 			RuntimeConfigReservedProperties="@(_RuntimeConfigReservedProperties)"
@@ -2543,10 +2552,16 @@
 			<_DylibPublishDir Condition="'$(SdkIsMobile)' == 'true'">$(_RelativeAppBundlePath)\</_DylibPublishDir>
 			<_DylibPublishDir Condition="'$(SdkIsDesktop)' == 'true'">$(_RelativeAppBundlePath)\Contents\$(_CustomBundleName)\</_DylibPublishDir>
 			<_ParsedRuntimeConfigFilePath Condition="'$(_ParsedRuntimeConfigFilePath)' == ''">$(DeviceSpecificIntermediateOutputPath)$(_RuntimeConfigurationFile)</_ParsedRuntimeConfigFilePath>
+
+			<!-- The final output of _CreateRuntimeConfiguration: for CoreCLR it's the merged json (baked into
+			     the app as C code by the linker), otherwise the binary runtimeconfig format shipped in the bundle. -->
+			<_RuntimeConfigurationOutputFile Condition="'$(_XamarinRuntime)' == 'CoreCLR'">$(_MergedRuntimeConfigFilePath)</_RuntimeConfigurationOutputFile>
+			<_RuntimeConfigurationOutputFile Condition="'$(_RuntimeConfigurationOutputFile)' == ''">$(_ParsedRuntimeConfigFilePath)</_RuntimeConfigurationOutputFile>
 		</PropertyGroup>
 		<ItemGroup>
-			<!-- Add runtimeconfig.bin to ResolvedFileToPublish so we process it in ComputeBundlePath and copy the file to the app bundle -->
-			<ResolvedFileToPublish Include="$(_ParsedRuntimeConfigFilePath)" Condition="'$(GenerateRuntimeConfigurationFiles)' == 'true'">
+			<!-- Add runtimeconfig.bin to ResolvedFileToPublish so we process it in ComputeBundlePath and copy the file to the app bundle.
+			     For CoreCLR we bake the runtime configuration into the app as C code, so there's no file to ship. -->
+			<ResolvedFileToPublish Include="$(_ParsedRuntimeConfigFilePath)" Condition="'$(GenerateRuntimeConfigurationFiles)' == 'true' And '$(_XamarinRuntime)' != 'CoreCLR'">
 				<RelativePath>$([System.IO.Path]::GetFileName('$(_ParsedRuntimeConfigFilePath)'))</RelativePath>
 				<PublishFolderType>Assembly</PublishFolderType>
 				<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>

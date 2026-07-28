@@ -322,7 +322,9 @@ namespace Xamarin.Tests {
 			expectedFiles.Add (Path.Combine (assemblyDirectory, "Mono.Options.dll"));
 			AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, "Touch.Client", runtimeIdentifiers, platform == ApplePlatform.MacOSX || (platform == ApplePlatform.MacCatalyst && !isReleaseBuild), includeDebugFiles: includeDebugFiles);
 			AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, Path.GetFileNameWithoutExtension (Configuration.GetBaseLibraryName (platform)), runtimeIdentifiers, platform == ApplePlatform.MacOSX, includeDebugFiles: includeDebugFiles);
-			expectedFiles.Add (Path.Combine (assemblyDirectory, "runtimeconfig.bin"));
+			// For CoreCLR the runtime configuration is baked into the app as C code, so there's no runtimeconfig.bin file.
+			if (!isCoreCLR)
+				expectedFiles.Add (Path.Combine (assemblyDirectory, "runtimeconfig.bin"));
 
 			switch (platform) {
 			case ApplePlatform.iOS:

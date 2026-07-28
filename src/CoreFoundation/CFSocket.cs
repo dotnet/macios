@@ -760,7 +760,7 @@ namespace CoreFoundation {
 			public CFSocketWriteEventArgs () { }
 		}
 
-		/// <summary>Raised when the listening socket accepts a new incoming connection. The event arguments provide the native handle of the accepted child socket.</summary>
+		/// <summary>Raised when the listening socket accepts a new incoming connection. Use the event arguments' <see cref="CoreFoundation.CFSocket.CFSocketAcceptEventArgs.RemoteEndPoint" /> to inspect the remote peer and <see cref="CoreFoundation.CFSocket.CFSocketAcceptEventArgs.CreateSocket" /> to obtain a <see cref="CoreFoundation.CFSocket" /> for the accepted connection.</summary>
 		public event EventHandler<CFSocketAcceptEventArgs>? AcceptEvent;
 		/// <summary>Raised when a background connection attempt started with one of the <c>Connect</c> methods completes, reporting whether the connection succeeded or failed.</summary>
 		public event EventHandler<CFSocketConnectEventArgs>? ConnectEvent;

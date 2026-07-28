@@ -474,7 +474,7 @@ namespace AVFoundation {
 			}
 			remove {
 				if (value is not null)
-					EnsureEventDelegate ().cbBeginInterruption -= value;
+					EnsureEventDelegate ().cbEndInterruption -= value;
 			}
 		}
 
@@ -540,7 +540,7 @@ namespace AVFoundation {
 
 			remove {
 				if (value is not null)
-					EnsureEventDelegate ().cbInputChanged += value;
+					EnsureEventDelegate ().cbInputChanged -= value;
 			}
 		}
 

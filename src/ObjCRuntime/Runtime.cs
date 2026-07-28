@@ -1223,14 +1223,30 @@ namespace ObjCRuntime {
 
 		// Completes deferred object_map registration (issue #25861): registers the object
 		// only if the pointer isn't already present. This avoids redundantly re-registering
-		// objects that were registered eagerly (e.g. direct bindings).
+		// objects that were registered eagerly (e.g. direct bindings). The check and the
+		// insert must happen inside a single lock, otherwise a concurrent registration
+		// (e.g. another object reusing a freed native pointer) could be silently clobbered.
 		internal static void RegisterNSObjectIfNeeded (NSObject obj, IntPtr ptr)
 		{
-			lock (lock_obj) {
-				if (object_map.ContainsKey (ptr))
-					return;
+			GCHandle handle;
+			if (Runtime.IsCoreCLR) {
+				handle = CreateTrackingGCHandle (obj, ptr);
+			} else {
+				handle = GCHandle.Alloc (obj, GCHandleType.WeakTrackResurrection);
 			}
-			RegisterNSObject (obj, ptr);
+
+			lock (lock_obj) {
+				if (object_map.ContainsKey (ptr)) {
+					// Already registered (e.g. eagerly, for a direct binding). Don't touch
+					// the existing entry; just free the handle we speculatively allocated.
+					handle.Free ();
+					return;
+				}
+				object_map [ptr] = handle;
+#pragma warning disable RBI0014
+				obj.Handle = ptr;
+#pragma warning restore RBI0014
+			}
 		}
 
 		internal static void RegisterNSObject (NSObject obj, IntPtr ptr)
@@ -1804,17 +1820,6 @@ namespace ObjCRuntime {
 				}
 			}
 
-			// Fallback for issue #25861: a user type that's still executing its own 'init'
-			// isn't in the object_map yet (registration is deferred until 'init' completes),
-			// but it already carries its gchandle in a native ivar. Resolve it from there to
-			// avoid creating a duplicate wrapper. xamarinGetGCHandle is a category method on
-			// NSObject, so it's safe to send to any Objective-C object (it returns
-			// INVALID_GCHANDLE for non-Xamarin objects); TryGetNSObject is only ever called
-			// with Objective-C object pointers.
-			var fromIvar = TryGetNSObjectFromIvar (ptr);
-			if (fromIvar is not null && fromIvar.Handle == ptr && (evenInFinalizerQueue || !fromIvar.InFinalizerQueue))
-				return fromIvar;
-
 			return null;
 		}
 
@@ -1885,6 +1890,12 @@ namespace ObjCRuntime {
 
 			var o = TryGetNSObject (ptr, evenInFinalizerQueue);
 
+			// Fallback for issue #25861: a user type still executing its own 'init' isn't in
+			// the object_map yet (deferred until 'init' completes), but carries its gchandle
+			// in a native ivar. Safe here because GetNSObject is only called for Objective-C
+			// objects. See TryGetNSObjectFromIvar for why this can't live in TryGetNSObject.
+			o ??= TryGetNSObjectFromIvar (ptr, evenInFinalizerQueue);
+
 			if (o is not null) {
 				if (owns)
 					o.DangerousRelease ();
@@ -1940,6 +1951,11 @@ namespace ObjCRuntime {
 				return null;
 
 			var obj = TryGetNSObject (ptr, evenInFinalizerQueue: evenInFinalizerQueue);
+
+			// Fallback for issue #25861: resolve a user type still executing its own 'init'
+			// (not yet in the object_map) via its native gchandle ivar. See the non-generic
+			// GetNSObject for why this is safe here.
+			obj ??= TryGetNSObjectFromIvar (ptr, evenInFinalizerQueue);
 
 			// First check if we got an object of the expected type
 			if (obj is T o)
@@ -2837,6 +2853,22 @@ namespace ObjCRuntime {
 			if (gchandle == IntPtr.Zero)
 				return null;
 			return GetGCHandleTarget (gchandle) as NSObject;
+		}
+
+		// Guarded ivar fallback for issue #25861: resolve a user type that's still executing
+		// its own 'init' (and so isn't in the object_map yet) via its native gchandle ivar,
+		// only returning it if it still owns 'ptr' and isn't queued for finalization (unless
+		// asked otherwise). MUST only be called with an Objective-C object pointer: it sends
+		// the xamarinGetGCHandle message, which crashes on non-Objective-C native handles.
+		// That's why this isn't folded into the general TryGetNSObject (which can be called
+		// with arbitrary native handles, e.g. from GetINativeObject); it's only safe from
+		// GetNSObject/GetNSObject<T>, which are only ever called for Objective-C objects.
+		static NSObject? TryGetNSObjectFromIvar (IntPtr ptr, bool evenInFinalizerQueue)
+		{
+			var fromIvar = TryGetNSObjectFromIvar (ptr);
+			if (fromIvar is not null && fromIvar.Handle == ptr && (evenInFinalizerQueue || !fromIvar.InFinalizerQueue))
+				return fromIvar;
+			return null;
 		}
 
 		// Allocate a GCHandle and return the IntPtr to it.

@@ -580,8 +580,16 @@ namespace Foundation {
 			unsafe {
 				rv = xamarin_set_gchandle_with_flags_safe (newHandle, h, gchandle_flags, (IntPtr) GetData ());
 			}
-			if (rv == 0)
+			if (rv == 0) {
+				// The ivar slot was already claimed (e.g. another managed wrapper won a race
+				// to represent this native object). Free the gchandle we allocated. We keep
+				// HasManagedRef set (it was already set by CreateManagedRef): this object
+				// still owns the +1 that 'init' transferred to 'newHandle', and that +1 must
+				// still be released via ReleaseManagedRef on disposal. This mirrors the same
+				// case in CreateManagedRef.
+				Runtime.NSLog ($"Tried to create a managed reference from an object that already has a managed reference (type: {GetType ()})");
 				gchandle.Free ();
+			}
 		}
 
 		void ReleaseManagedRef ()

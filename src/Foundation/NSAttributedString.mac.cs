@@ -217,19 +217,19 @@ namespace Foundation {
 			return rv;
 		}
 
+		/// <summary>Returns the AppKit string attributes at the specified location.</summary>
 		/// <param name="location">The location.</param>
 		/// <param name="effectiveRange">The effective range.</param>
-		/// <summary>GetAppKitAttributes.</summary>
 		public NSStringAttributes? GetAppKitAttributes (nint location, out NSRange effectiveRange)
 		{
 			var attr = GetAttributes (location, out effectiveRange);
 			return attr is null ? null : new NSStringAttributes (attr);
 		}
 
+		/// <summary>Returns the AppKit string attributes at the specified location within the given range limit.</summary>
 		/// <param name="location">The location.</param>
 		/// <param name="longestEffectiveRange">The longest effective range.</param>
 		/// <param name="rangeLimit">The range limit.</param>
-		/// <summary>GetAppKitAttributes.</summary>
 		public NSStringAttributes? GetAppKitAttributes (nint location, out NSRange longestEffectiveRange, NSRange rangeLimit)
 		{
 			var attr = GetAttributes (location, out longestEffectiveRange, rangeLimit);

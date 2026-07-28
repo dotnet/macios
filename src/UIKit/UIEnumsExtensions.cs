@@ -13,23 +13,23 @@ namespace UIKit {
 #if IOS
 	/// <summary>Extension methods for the <see cref="UIKit.UIDeviceOrientation" /> class.</summary>
 	public static class UIDeviceOrientationExtensions {
+		/// <summary>Returns <see langword="true" /> if one of the short edges is lowest.</summary>
 		/// <param name="orientation">The orientation.</param>
-		///         <summary>Returns <see langword="true" /> if one of the short edges is lowest.</summary>
 		public static bool IsPortrait (this UIDeviceOrientation orientation)
 		{
 			return orientation == UIDeviceOrientation.PortraitUpsideDown ||
 				orientation == UIDeviceOrientation.Portrait;
 		}
 
+		/// <summary>Returns <see langword="true" /> if one of the long edges of the device is lowest.</summary>
 		/// <param name="orientation">The orientation.</param>
-		///         <summary>Returns <see langword="true" /> if one of the long edges of the device is lowest.</summary>
 		public static bool IsLandscape (this UIDeviceOrientation orientation)
 		{
 			return orientation == UIDeviceOrientation.LandscapeRight || orientation == UIDeviceOrientation.LandscapeLeft;
 		}
 
+		/// <summary>Returns <see langword="true" /> if the device is lying on either its back or face.</summary>
 		/// <param name="orientation">The orientation.</param>
-		///         <summary>Returns <see langword="true" /> if the device is lying on either its back or face.</summary>
 		public static bool IsFlat (this UIDeviceOrientation orientation)
 		{
 			return orientation == UIDeviceOrientation.FaceUp || orientation == UIDeviceOrientation.FaceDown;
@@ -44,18 +44,17 @@ namespace UIKit {
 	///       </para>
 	///     </remarks>
 	public static class UIInterfaceOrientationExtensions {
+		/// <summary>Determines if the orientation is one of the portrait orientations.</summary>
+		/// <returns>true if this is a portrait orientation.</returns>
 		/// <param name="orientation">The value to operate on.</param>
-		///         <summary>Determines if the orientation is one of the portrait orientations.</summary>
-		///         <returns>true if this is a portrait orientation.</returns>
 		public static bool IsPortrait (this UIInterfaceOrientation orientation)
 		{
 			return orientation == UIInterfaceOrientation.PortraitUpsideDown ||
 				orientation == UIInterfaceOrientation.Portrait;
 		}
+		/// <summary>Determines if the orientation is one of the landscape orientations.</summary>
+		/// <returns>true if this is a landscape orientation.</returns>
 		/// <param name="orientation">The value to operate on.</param>
-		///         <summary>Determines if the origination is one of the landscape
-		///         values.</summary>
-		///         <returns>true if this is a landscape orientation.</returns>
 		public static bool IsLandscape (this UIInterfaceOrientation orientation)
 		{
 			return orientation == UIInterfaceOrientation.LandscapeRight ||

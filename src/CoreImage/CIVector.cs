@@ -37,16 +37,16 @@ namespace CoreImage {
 			}
 		}
 
-		/// <param name="values">The values.</param>
 		/// <summary>Creates a new vector from the array of values.</summary>
+		/// <param name="values">The values.</param>
 		public CIVector (nfloat [] values) :
 			this (values, values?.Length ?? 0)
 		{
 		}
 
+		/// <summary>Creates a new vector from the specified number of values in the array.</summary>
 		/// <param name="values">The values.</param>
-		/// <param name="count">The count.</param>
-		/// <summary>CIVector.</summary>
+		/// <param name="count">The number of values to use from the array.</param>
 		[DesignatedInitializer]
 		[Export ("initWithValues:count:")]
 		public unsafe CIVector (nfloat [] values, nint count) : base (NSObjectFlag.Empty)
@@ -71,8 +71,8 @@ namespace CoreImage {
 			}
 		}
 
-		/// <param name="values">The values.</param>
 		/// <summary>Creates a vector from an array of values.</summary>
+		/// <param name="values">The values.</param>
 		public unsafe static CIVector FromValues (nfloat [] values)
 		{
 			if (values is null)
@@ -82,8 +82,6 @@ namespace CoreImage {
 		}
 
 		/// <summary>Returns a string representation of the value of the current instance.</summary>
-		///         <returns>
-		///         </returns>
 		public override string ToString ()
 		{
 			return StringRepresentation ();

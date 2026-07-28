@@ -133,6 +133,8 @@ namespace Xamarin.Tests {
 			if (filterXcodeLocation) {
 				if (v.Contains ("The environment variable 'MD_APPLE_SDK_ROOT' is deprecated, and will be ignored. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use."))
 					return true;
+				if (v.Contains ("The environment variable 'MD_APPLE_SDK_ROOT' is deprecated, and will be ignored in .NET 11+. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use."))
+					return true;
 				if (Regex.IsMatch (v, @"The settings file '/.*/Library/Preferences/maui/Settings\.plist' is deprecated, and will be ignored\. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use\."))
 					return true;
 				if (Regex.IsMatch (v, @"The settings file '/.*/Library/Preferences/Xamarin/Settings\.plist' is deprecated, and will be ignored\. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use\."))

@@ -17,19 +17,19 @@ public abstract class BaseClass {
 		Assert.That (exceptions, Is.Empty, "Exceptions");
 	}
 
-	public bool AssertPrepare (ApplePlatform platform, bool isCoreCLR, string code, out AssemblyDefinition assemblyDefinition)
+	public bool AssertPrepare (ApplePlatform platform, bool isCoreCLR, string code, out AssemblyDefinition assemblyDefinition, string? extraConfig = null)
 	{
-		return AssertPrepare (platform, isCoreCLR, RegistrarMode.Dynamic, code, out assemblyDefinition);
+		return AssertPrepare (platform, isCoreCLR, RegistrarMode.Dynamic, code, out assemblyDefinition, extraConfig);
 	}
 
 	// returns true if the test assembly was modified
-	public bool AssertPrepare (ApplePlatform platform, bool isCoreCLR, RegistrarMode registrar, string code, out AssemblyDefinition assemblyDefinition)
+	public bool AssertPrepare (ApplePlatform platform, bool isCoreCLR, RegistrarMode registrar, string code, out AssemblyDefinition assemblyDefinition, string? extraConfig = null)
 	{
 		AssemblyPreparer? preparer = null;
 		var rv = AssertPrepareCode (platform, isCoreCLR, p => {
 			p.Registrar = registrar;
 			preparer = p;
-		}, code, out string outputPath);
+		}, code, out string outputPath, extraConfig);
 		var resolver = new DefaultAssemblyResolver ();
 		var dirs = preparer!.Assemblies.Select (v => Path.GetDirectoryName (v.OutputPath)).Distinct ().ToList ();
 		dirs.ForEach (v => resolver.AddSearchDirectory (v));
@@ -42,9 +42,9 @@ public abstract class BaseClass {
 	}
 
 	// returns true if the test assembly was modified
-	public bool AssertPrepareCode (ApplePlatform platform, bool isCoreCLR, Action<AssemblyPreparer>? configure, string code, out string outputPath)
+	public bool AssertPrepareCode (ApplePlatform platform, bool isCoreCLR, Action<AssemblyPreparer>? configure, string code, out string outputPath, string? extraConfig = null)
 	{
-		using var preparer = CreatePreparer (platform, isCoreCLR, configure, code, out var testInfo);
+		using var preparer = CreatePreparer (platform, isCoreCLR, configure, code, out var testInfo, extraConfig: extraConfig ?? "");
 		AssertPrepare (preparer);
 
 		outputPath = testInfo.OutputPath;
@@ -54,7 +54,7 @@ public abstract class BaseClass {
 
 	// Builds the provided code into a Test.dll and returns an AssemblyPreparer configured for it, without
 	// running any preparation steps. Use this when a test needs to run a custom set of steps.
-	public AssemblyPreparer CreatePreparer (ApplePlatform platform, bool isCoreCLR, Action<AssemblyPreparer>? configure, string code, out AssemblyPreparerInfo testInfo, string extraCsproj = "", string extraConfig = "", IEnumerable<(string FileName, byte [] Content)>? extraFiles = null)
+	public AssemblyPreparer CreatePreparer (ApplePlatform platform, bool isCoreCLR, Action<AssemblyPreparer>? configure, string code, out AssemblyPreparerInfo testInfo, string extraCsproj = "", string extraConfig = "", IEnumerable<(string FileName, byte [] Content)>? extraFiles = null, string testTrimMode = "link")
 	{
 		Configuration.IgnoreIfIgnoredPlatform (platform);
 
@@ -101,7 +101,7 @@ public abstract class BaseClass {
 
 		var assemblies = Configuration.GetImplementationAssemblies (platform, isCoreCLR);
 		assemblies.Add (Path.Combine (assemblyDir, "Test.dll"));
-		var infos = assemblies.Select (v => new AssemblyPreparerInfo (v, Path.Combine (assemblyDir, "out", Path.GetFileName (v)), true, "link")).ToArray ();
+		var infos = assemblies.Select (v => new AssemblyPreparerInfo (v, Path.Combine (assemblyDir, "out", Path.GetFileName (v)), true, Path.GetFileNameWithoutExtension (v) == "Test" ? testTrimMode : "link")).ToArray ();
 		var logger = new TestLogger () { Platform = platform };
 		var preparer = new AssemblyPreparer (logger, infos, configpath);
 		if (configure is not null)

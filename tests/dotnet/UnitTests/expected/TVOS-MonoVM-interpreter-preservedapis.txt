@@ -142,9 +142,9 @@ Microsoft.tvOS.dll:Foundation.NSObject.get_IsRegisteredToggleRef()
 Microsoft.tvOS.dll:Foundation.NSObject.GetData()
 Microsoft.tvOS.dll:Foundation.NSObject.GetHashCode()
 Microsoft.tvOS.dll:Foundation.NSObject.GetNativeHash()
-Microsoft.tvOS.dll:Foundation.NSObject.Initialize()
 Microsoft.tvOS.dll:Foundation.NSObject.InitializeHandle(ObjCRuntime.NativeHandle, System.String, System.Boolean)
 Microsoft.tvOS.dll:Foundation.NSObject.InitializeHandle(ObjCRuntime.NativeHandle, System.String)
+Microsoft.tvOS.dll:Foundation.NSObject.InitializeObject()
 Microsoft.tvOS.dll:Foundation.NSObject.InitializeObject(System.Boolean)
 Microsoft.tvOS.dll:Foundation.NSObject.InvokeConformsToProtocol(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:Foundation.NSObject.IsEqual(Foundation.NSObject)
@@ -217,8 +217,8 @@ Microsoft.tvOS.dll:Foundation.ProtocolAttribute.get_IsInformal()
 Microsoft.tvOS.dll:Foundation.ProtocolAttribute.get_Name()
 Microsoft.tvOS.dll:Foundation.ProtocolAttribute.get_WrapperType()
 Microsoft.tvOS.dll:Foundation.ProtocolMemberAttribute
-Microsoft.tvOS.dll:Foundation.ProtocolMemberAttribute Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31::<>2__current
-Microsoft.tvOS.dll:Foundation.ProtocolMemberAttribute Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31::System.Collections.Generic.IEnumerator<Foundation.ProtocolMemberAttribute>.Current()
+Microsoft.tvOS.dll:Foundation.ProtocolMemberAttribute Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32::<>2__current
+Microsoft.tvOS.dll:Foundation.ProtocolMemberAttribute Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32::System.Collections.Generic.IEnumerator<Foundation.ProtocolMemberAttribute>.Current()
 Microsoft.tvOS.dll:Foundation.ProtocolMemberAttribute.get_ArgumentSemantic()
 Microsoft.tvOS.dll:Foundation.ProtocolMemberAttribute.get_GetterSelector()
 Microsoft.tvOS.dll:Foundation.ProtocolMemberAttribute.get_IsProperty()
@@ -320,7 +320,7 @@ Microsoft.tvOS.dll:ObjCRuntime.Class.GetClassName(System.IntPtr)
 Microsoft.tvOS.dll:ObjCRuntime.Class.GetHandle(System.String)
 Microsoft.tvOS.dll:ObjCRuntime.Class.GetHandle(System.Type)
 Microsoft.tvOS.dll:ObjCRuntime.Class.GetHashCode()
-Microsoft.tvOS.dll:ObjCRuntime.Class.Initialize(ObjCRuntime.Runtime/InitializationOptions*)
+Microsoft.tvOS.dll:ObjCRuntime.Class.InitializeClass(ObjCRuntime.Runtime/InitializationOptions*)
 Microsoft.tvOS.dll:ObjCRuntime.Class.Lookup(System.IntPtr, System.Boolean)
 Microsoft.tvOS.dll:ObjCRuntime.Class.Lookup(System.IntPtr)
 Microsoft.tvOS.dll:ObjCRuntime.Class.objc_allocateClassPair(System.IntPtr, System.IntPtr, System.IntPtr)
@@ -600,8 +600,8 @@ Microsoft.tvOS.dll:ObjCRuntime.RegistrarHelper/MapInfo..ctor(ObjCRuntime.IManage
 Microsoft.tvOS.dll:ObjCRuntime.ReleaseAttribute
 Microsoft.tvOS.dll:ObjCRuntime.Runtime
 Microsoft.tvOS.dll:ObjCRuntime.Runtime..cctor()
-Microsoft.tvOS.dll:ObjCRuntime.Runtime.<ConstructINativeObject>g__ConstructINativeObjectViaFactoryMethod|289_0`1(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:ObjCRuntime.Runtime.<ConstructNSObject>g__ConstructNSObjectViaFactoryMethod|288_0`1(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.<ConstructINativeObject>g__ConstructINativeObjectViaFactoryMethod|291_0`1(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.<ConstructNSObject>g__ConstructNSObjectViaFactoryMethod|290_0`1(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:ObjCRuntime.Runtime.AllocGCHandle(System.Object, System.Runtime.InteropServices.GCHandleType)
 Microsoft.tvOS.dll:ObjCRuntime.Runtime.AllocGCHandle(System.Object)
 Microsoft.tvOS.dll:ObjCRuntime.Runtime.AppendAdditionalInformation(System.Text.StringBuilder, System.IntPtr, System.RuntimeMethodHandle)
@@ -942,12 +942,12 @@ Microsoft.tvOS.dll:Registrar.DynamicRegistrar.TryGetEnumUnderlyingType(System.Ty
 Microsoft.tvOS.dll:Registrar.DynamicRegistrar.TryMatchProperty(System.Type, System.Reflection.PropertyInfo)
 Microsoft.tvOS.dll:Registrar.DynamicRegistrar.TypeMatch(System.Type, System.Type)
 Microsoft.tvOS.dll:Registrar.DynamicRegistrar.VerifyIsConstrainedToNSObject(System.Type, out System.Type&)
-Microsoft.tvOS.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31
-Microsoft.tvOS.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31..ctor(System.Int32)
-Microsoft.tvOS.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31.MoveNext()
-Microsoft.tvOS.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31.System.Collections.Generic.IEnumerable<Foundation.ProtocolMemberAttribute>.GetEnumerator()
-Microsoft.tvOS.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31.System.Collections.Generic.IEnumerator<Foundation.ProtocolMemberAttribute>.get_Current()
-Microsoft.tvOS.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31.System.IDisposable.Dispose()
+Microsoft.tvOS.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32
+Microsoft.tvOS.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32..ctor(System.Int32)
+Microsoft.tvOS.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32.MoveNext()
+Microsoft.tvOS.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32.System.Collections.Generic.IEnumerable<Foundation.ProtocolMemberAttribute>.GetEnumerator()
+Microsoft.tvOS.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32.System.Collections.Generic.IEnumerator<Foundation.ProtocolMemberAttribute>.get_Current()
+Microsoft.tvOS.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32.System.IDisposable.Dispose()
 Microsoft.tvOS.dll:Registrar.Registrar
 Microsoft.tvOS.dll:Registrar.Registrar Registrar.Registrar/ObjCMember::Registrar
 Microsoft.tvOS.dll:Registrar.Registrar Registrar.Registrar/ObjCType::Registrar
@@ -1121,6 +1121,7 @@ Microsoft.tvOS.dll:Registrar.Registrar/ObjCMethod.get_ReturnType()
 Microsoft.tvOS.dll:Registrar.Registrar/ObjCMethod.get_Signature()
 Microsoft.tvOS.dll:Registrar.Registrar/ObjCMethod.get_Trampoline()
 Microsoft.tvOS.dll:Registrar.Registrar/ObjCMethod.IsValidToManagedTypeConversion(System.Type, System.Type)
+Microsoft.tvOS.dll:Registrar.Registrar/ObjCMethod.PrepareNativeParameters()
 Microsoft.tvOS.dll:Registrar.Registrar/ObjCMethod.set_IsConstructor(System.Boolean)
 Microsoft.tvOS.dll:Registrar.Registrar/ObjCMethod.set_IsStatic(System.Boolean)
 Microsoft.tvOS.dll:Registrar.Registrar/ObjCMethod.set_Parameters(System.Type[])
@@ -1280,6 +1281,7 @@ Microsoft.tvOS.dll:System.Collections.Generic.Dictionary`2<System.String,System.
 Microsoft.tvOS.dll:System.Collections.Generic.Dictionary`2<System.String,System.Type> Registrar.Registrar::protocol_map
 Microsoft.tvOS.dll:System.Collections.Generic.Dictionary`2<System.String,System.Type> Registrar.Registrar::type_map
 Microsoft.tvOS.dll:System.Collections.Generic.Dictionary`2<System.Type,Registrar.Registrar/ObjCType> Registrar.Registrar::types
+Microsoft.tvOS.dll:System.Collections.Generic.Dictionary`2<System.Type,System.Collections.Generic.Dictionary`2<System.Reflection.MethodBase,System.Collections.Generic.List`1<System.Reflection.MethodBase>>> Registrar.DynamicRegistrar::cached_interface_method_mappings
 Microsoft.tvOS.dll:System.Collections.Generic.Dictionary`2<System.Type,System.IntPtr> ObjCRuntime.Class::type_to_class
 Microsoft.tvOS.dll:System.Collections.Generic.Dictionary`2<System.Type,System.Object> Registrar.DynamicRegistrar::custom_type_map
 Microsoft.tvOS.dll:System.Collections.Generic.Dictionary`2<System.Type,System.Reflection.ConstructorInfo> ObjCRuntime.Runtime::intptr_bool_ctor_cache
@@ -1320,9 +1322,9 @@ Microsoft.tvOS.dll:System.Int32 ObjCRuntime.Runtime/MTRegistrationMap::skipped_m
 Microsoft.tvOS.dll:System.Int32 ObjCRuntime.RuntimeException::<Code>k__BackingField
 Microsoft.tvOS.dll:System.Int32 ObjCRuntime.RuntimeException::Code()
 Microsoft.tvOS.dll:System.Int32 ObjCRuntime.TransientString/Encoding::value__
-Microsoft.tvOS.dll:System.Int32 Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31::<>1__state
-Microsoft.tvOS.dll:System.Int32 Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31::<>7__wrap2
-Microsoft.tvOS.dll:System.Int32 Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31::<>l__initialThreadId
+Microsoft.tvOS.dll:System.Int32 Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32::<>1__state
+Microsoft.tvOS.dll:System.Int32 Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32::<>7__wrap2
+Microsoft.tvOS.dll:System.Int32 Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32::<>l__initialThreadId
 Microsoft.tvOS.dll:System.Int32 Registrar.Registrar/ObjCField::Size
 Microsoft.tvOS.dll:System.Int32 Registrar.Trampoline::value__
 Microsoft.tvOS.dll:System.Int64 Foundation.NSComparisonResult::value__
@@ -1486,7 +1488,7 @@ Microsoft.tvOS.dll:System.Nullable`1<System.Boolean> Registrar.Registrar/ObjCPro
 Microsoft.tvOS.dll:System.Object Foundation.NSObject/NSObject_Disposer::lock_obj
 Microsoft.tvOS.dll:System.Object ObjCRuntime.Runtime::lock_obj
 Microsoft.tvOS.dll:System.Object Registrar.DynamicRegistrar::lock_obj
-Microsoft.tvOS.dll:System.Object[] Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31::<>7__wrap1
+Microsoft.tvOS.dll:System.Object[] Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32::<>7__wrap1
 Microsoft.tvOS.dll:System.Reflection.Assembly Foundation.NSObject::PlatformAssembly
 Microsoft.tvOS.dll:System.Reflection.MethodBase Registrar.Registrar::conforms_to_protocol
 Microsoft.tvOS.dll:System.Reflection.MethodBase Registrar.Registrar::invoke_conforms_to_protocol
@@ -1546,7 +1548,7 @@ Microsoft.tvOS.dll:System.String Registrar.Registrar/ObjCType::ExportedName()
 Microsoft.tvOS.dll:System.String Registrar.Registrar/ObjCType::ProtocolName()
 Microsoft.tvOS.dll:System.String[] Foundation.NSException::CallStackSymbols()
 Microsoft.tvOS.dll:System.String[] Registrar.Registrar/ObjCType::AdoptedProtocols
-Microsoft.tvOS.dll:System.Threading.Thread UIKit.UIApplication::mainThread
+Microsoft.tvOS.dll:System.Threading.Thread ObjCRuntime.Runtime::mainThread
 Microsoft.tvOS.dll:System.Type Foundation.ProtocolAttribute::<WrapperType>k__BackingField
 Microsoft.tvOS.dll:System.Type Foundation.ProtocolAttribute::WrapperType()
 Microsoft.tvOS.dll:System.Type Foundation.ProtocolMemberAttribute::PropertyType()
@@ -1555,8 +1557,8 @@ Microsoft.tvOS.dll:System.Type ObjCRuntime.BindAsAttribute::OriginalType
 Microsoft.tvOS.dll:System.Type ObjCRuntime.BindAsAttribute::Type
 Microsoft.tvOS.dll:System.Type ObjCRuntime.BlockProxyAttribute::Type()
 Microsoft.tvOS.dll:System.Type ObjCRuntime.CategoryAttribute::Type()
-Microsoft.tvOS.dll:System.Type Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31::<>3__type
-Microsoft.tvOS.dll:System.Type Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31::type
+Microsoft.tvOS.dll:System.Type Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32::<>3__type
+Microsoft.tvOS.dll:System.Type Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32::type
 Microsoft.tvOS.dll:System.Type Registrar.Registrar/ObjCMethod::native_return_type
 Microsoft.tvOS.dll:System.Type Registrar.Registrar/ObjCMethod::NativeReturnType()
 Microsoft.tvOS.dll:System.Type Registrar.Registrar/ObjCMethod::return_type
@@ -1592,7 +1594,7 @@ Microsoft.tvOS.dll:UIKit.UIApplication..cctor()
 Microsoft.tvOS.dll:UIKit.UIApplication..ctor(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:UIKit.UIApplication.Dispose(System.Boolean)
 Microsoft.tvOS.dll:UIKit.UIApplication.get_ClassHandle()
-Microsoft.tvOS.dll:UIKit.UIApplication.Initialize()
+Microsoft.tvOS.dll:UIKit.UIApplication.InitializeApplication()
 Microsoft.tvOS.dll:UIKit.UIApplication.Main(System.String[], System.Type, System.Type)
 Microsoft.tvOS.dll:UIKit.UIApplication.UIApplicationMain(System.Int32, System.String[], System.IntPtr, System.IntPtr)
 Microsoft.tvOS.dll:UIKit.UIApplication.xamarin_UIApplicationMain(System.Int32, System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)

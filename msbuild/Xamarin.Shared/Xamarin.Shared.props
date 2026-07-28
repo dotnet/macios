@@ -128,8 +128,8 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 		<!-- NoDSymUtil -->
 		<!-- Xamarin.Mac never had an equivalent for MtouchNoDSymUtil and never produced them -> now, produce them by default when archiving -->
 		<NoDSymUtil Condition="'$(NoDSymUtil)' == '' And '$(_PlatformName)' != 'macOS'">$(MtouchNoDSymUtil)</NoDSymUtil>
-		<!-- Disable dsymutil on desktop unless archiving -->
-		<NoDSymUtil Condition="'$(NoDSymUtil)' == '' And '$(SdkIsDesktop)' == 'true' And '$(ArchiveOnBuild)' != 'true'">true</NoDSymUtil>
+		<!-- Disable dsymutil on desktop unless archiving, except when using NativeAOT (where dSYMs are useful) -->
+		<NoDSymUtil Condition="'$(NoDSymUtil)' == '' And '$(SdkIsDesktop)' == 'true' And '$(ArchiveOnBuild)' != 'true' And '$(_UseNativeAot)' != 'true'">true</NoDSymUtil>
 		<!-- Disable dsymutil for simulator builds by default -->
 		<NoDSymUtil Condition="'$(NoDSymUtil)' == '' And '$(SdkIsSimulator)' == 'true'">true</NoDSymUtil>
 		<NoDSymUtil Condition="'$(NoDSymUtil)' == ''">false</NoDSymUtil>

@@ -790,11 +790,37 @@ namespace Xamarin.Linker {
 
 		BindAsAttribute? GetBindAsAttribute (MethodDefinition method, int parameter)
 		{
-			if (StaticRegistrar.IsPropertyAccessor (method, out var property)) {
-				return StaticRegistrar.GetBindAsAttribute (property);
+			BindAsAttribute? attribute;
+			var isPropertyAccessor = StaticRegistrar.IsPropertyAccessor (method, out var property);
+			if (isPropertyAccessor) {
+				attribute = StaticRegistrar.GetBindAsAttribute (property);
 			} else {
-				return StaticRegistrar.GetBindAsAttribute (method, parameter);
+				attribute = StaticRegistrar.GetBindAsAttribute (method, parameter);
 			}
+
+			if (attribute is not null || parameter < 0 || isPropertyAccessor || method.IsConstructor || method.DeclaringType.IsInterface || StaticRegistrar.GetCategoryAttribute (method.DeclaringType) is not null)
+				return attribute;
+
+			// Parameter attributes aren't inherited from protocol methods, so look up the mapped interface method.
+			var methodMap = StaticRegistrar.PrepareInterfaceMethodMapping (method.DeclaringType);
+			if (methodMap is null || !methodMap.TryGetValue (method, out var interfaceMethods))
+				return null;
+
+			List<MethodDefinition>? bindAsInterfaceMethods = null;
+			foreach (var interfaceMethod in interfaceMethods) {
+				var interfaceAttribute = StaticRegistrar.GetBindAsAttribute (interfaceMethod, parameter);
+				if (interfaceAttribute is null)
+					continue;
+
+				bindAsInterfaceMethods ??= new List<MethodDefinition> ();
+				bindAsInterfaceMethods.Add (interfaceMethod);
+				attribute = interfaceAttribute;
+			}
+
+			if (bindAsInterfaceMethods is not null && interfaceMethods.Count != 1)
+				throw new AggregateException (Shared.GetMT4127 (method, interfaceMethods));
+
+			return attribute;
 		}
 
 		// This emits a conversion between the native and the managed representation of a parameter or return value,
@@ -1246,7 +1272,7 @@ namespace Xamarin.Linker {
 		CustomAttribute CreateUnmanagedCallersAttribute (string entryPoint, TypeReference? associatedSourceType = null)
 		{
 			var unmanagedCallersAttribute = new CustomAttribute (abr.UnmanagedCallersOnlyAttribute_Constructor);
-			unmanagedCallersAttribute.Fields.Add (new CustomAttributeNamedArgument ("EntryPoint", new CustomAttributeArgument (abr.System_String, entryPoint)));
+
 			// The AssociatedSourceType field tells the NativeAOT compiler (ILC) that the trampoline's
 			// native export is only needed if the associated type is kept. This only works safely when
 			// all of these are true:
@@ -1267,6 +1293,10 @@ namespace Xamarin.Linker {
 				&& App.Registrar == RegistrarMode.TrimmableStatic
 				&& App.PrepareAssemblies)
 				unmanagedCallersAttribute.Fields.Add (new CustomAttributeNamedArgument ("AssociatedSourceType", new CustomAttributeArgument (abr.System_Type, associatedSourceType)));
+
+			if (App.XamarinRuntime != XamarinRuntime.CoreCLR)
+				unmanagedCallersAttribute.Fields.Add (new CustomAttributeNamedArgument ("EntryPoint", new CustomAttributeArgument (abr.System_String, entryPoint)));
+
 			return unmanagedCallersAttribute;
 		}
 

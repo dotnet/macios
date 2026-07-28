@@ -1,9 +1,9 @@
-AppBundleSize: 9,507,341 bytes (9,284.5 KB = 9.1 MB)
+AppBundleSize: 9,444,813 bytes (9,223.5 KB = 9.0 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 Contents/Info.plist:
     1,060 bytes (1.0 KB = 0.0 MB)
 Contents/MacOS/SizeTestApp:
-    229,416 bytes (224.0 KB = 0.2 MB)
+    166,888 bytes (163.0 KB = 0.2 MB)
 Contents/MonoBundle/libcoreclr.dylib:
     5,482,504 bytes (5,354.0 KB = 5.2 MB)
 Contents/MonoBundle/libSystem.Globalization.Native.dylib:

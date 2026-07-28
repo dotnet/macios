@@ -440,7 +440,6 @@ namespace Xamarin.Tests {
 			return Path.Combine (GetSdkRoot (targetFramework), "lib", "Xamarin.Apple.BindingAttributes.dll");
 		}
 
-#if !XAMMAC_TESTS
 		public static string GetBaseLibrary (ApplePlatform platform)
 		{
 			return Path.Combine (GetRefDirectory (platform), GetBaseLibraryName (platform));
@@ -603,7 +602,6 @@ namespace Xamarin.Tests {
 
 			return assemblies;
 		}
-#endif // !XAMMAC_TESTS
 
 		public static IEnumerable<ApplePlatform> GetIncludedPlatforms ()
 		{

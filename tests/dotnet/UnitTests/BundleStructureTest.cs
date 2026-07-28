@@ -315,7 +315,11 @@ namespace Xamarin.Tests {
 			AddExpectedFrameworkFiles (platform, expectedFiles, "FrameworkTest4", isSigned);
 			AddExpectedFrameworkFiles (platform, expectedFiles, "FrameworkTest5", isSigned);
 
-			AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, "bindings-framework-test", runtimeIdentifiers, forceSingleRid: platform != ApplePlatform.MacCatalyst, includeDebugFiles: includeDebugFiles);
+			// In a hot-reload-compatible build (the default for Debug) the assembly-preparer doesn't
+			// modify reloadable user assemblies (previously it injected smart-enum conversion
+			// [DynamicDependency] attributes, which made bindings-framework-test differ per RID). So the
+			// assembly is now identical across RIDs and gets deduplicated into a single top-level copy.
+			AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, "bindings-framework-test", runtimeIdentifiers, forceSingleRid: platform != ApplePlatform.MacCatalyst || !isReleaseBuild, includeDebugFiles: includeDebugFiles);
 			AddExpectedFrameworkFiles (platform, expectedFiles, "XTest", isSigned);
 
 			AddExpectedFrameworkFiles (platform, expectedFiles, "FrameworkWithLongFileNames", isSigned, longHeader: true);

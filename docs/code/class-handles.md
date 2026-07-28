@@ -14,6 +14,18 @@ It's highly desirable to use a direct native reference to Objective-C classes wh
 
 On the other hand there's one scenario when a direct native reference is not desirable: when the native Objective-C class does not exist.
 
+This can happen for third-party bindings that declare a `[BaseType (typeof (NSObject))]`
+type for something that is a protocol - and not a class - natively (bgen generates a
+`[Protocol]` attribute on such a type). There's no native Objective-C class for these types
+(the static registrar doesn't even register them), so a direct native reference would turn
+into a hard link error (`Undefined symbols: _OBJC_CLASS_$_TheClass`), even if the class is
+never actually used at runtime.
+
+To avoid this, we don't inline `Class.GetHandle` when the target class has a `[Protocol]`
+attribute: the call falls back to a runtime lookup instead, which returns a zero handle
+(`IntPtr.Zero`) for a missing native class - the same behavior these bindings had before
+`Class.GetHandle` inlining existed.
+
 In order to create a direct native reference to Objective-C classes, we need to know the names of those Objective-C classes.
 
 ## The `InlineClassGetHandle` property

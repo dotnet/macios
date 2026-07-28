@@ -1,4 +1,4 @@
-AppBundleSize: 8,176,373 bytes (7,984.7 KB = 7.8 MB)
+AppBundleSize: 8,126,405 bytes (7,935.9 KB = 7.7 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 Frameworks/libcoreclr.framework/Info.plist:
     822 bytes (0.8 KB = 0.0 MB)
@@ -33,7 +33,7 @@ PkgInfo:
 runtimeconfig.bin:
     1,481 bytes (1.4 KB = 0.0 MB)
 SizeTestApp:
-    178,480 bytes (174.3 KB = 0.2 MB)
+    128,512 bytes (125.5 KB = 0.1 MB)
 SizeTestApp.dll:
     7,680 bytes (7.5 KB = 0.0 MB)
 System.Collections.Immutable.dll:

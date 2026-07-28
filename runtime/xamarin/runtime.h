@@ -158,6 +158,7 @@ struct AssemblyLocations {
 };
 
 void xamarin_initialize ();
+void xamarin_initialize_dynamic_registrar ();
 
 void			xamarin_assertion_message (const char *msg, ...) __attribute__((__noreturn__));
 // Gets the bundle path (where the managed executable is). This is *not* the path of the app bundle (.app/.appex).

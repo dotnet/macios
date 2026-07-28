@@ -468,8 +468,9 @@
 		>
 		<ItemGroup>
 			<!-- If we're creating a runtimeconfig.json file, then the resulting binary runtimeconfig.bin file can be put in the architecture-specific subdirectory.
-			     For CoreCLR there's no such file (the runtime configuration is baked into the app as C code). -->
-			<_ArchitectureSpecificFiles Include="$(_RuntimeConfigurationFile)" Condition="'$(GenerateRuntimeConfigurationFiles)' != '' And '$(_XamarinRuntime)' != 'CoreCLR'" />
+			     Only MonoVM ships this file; CoreCLR bakes the runtime configuration into the app as C code, and
+			     NativeAOT embeds it into the executable at publish time (neither reads runtimeconfig.bin). -->
+			<_ArchitectureSpecificFiles Include="$(_RuntimeConfigurationFile)" Condition="'$(GenerateRuntimeConfigurationFiles)' != '' And '$(_XamarinRuntime)' == 'MonoVM'" />
 		</ItemGroup>
 
 		<MergeAppBundles
@@ -734,11 +735,11 @@
 			<!-- Set default ValidateObjectPointers value -->
 			<_ValidateObjectPointers Condition="'$(_ValidateObjectPointers)' == ''">false</_ValidateObjectPointers>
 
-			<!-- For CoreCLR the runtime configuration is baked into the app as C code (from the merged json),
-			     so there's no runtimeconfig file to locate in the bundle; instead we hand the merged json to the
-			     linker (RuntimeConfigurationFilePath). For MonoVM/NativeAOT we ship the binary runtimeconfig
-			     format and tell the runtime its name (RuntimeConfigurationFile). -->
-			<_BundlerRuntimeConfigurationFile Condition="'$(_XamarinRuntime)' != 'CoreCLR'">$(_RuntimeConfigurationFile)</_BundlerRuntimeConfigurationFile>
+			<!-- Only MonoVM ships the binary runtimeconfig format and reads it at startup (locating it by name
+			     via RuntimeConfigurationFile). CoreCLR bakes the runtime configuration into the app as C code
+			     (from the merged json, handed to the linker via RuntimeConfigurationFilePath), and NativeAOT
+			     embeds it into the executable at publish time - neither ships nor reads a runtimeconfig file. -->
+			<_BundlerRuntimeConfigurationFile Condition="'$(_XamarinRuntime)' == 'MonoVM'">$(_RuntimeConfigurationFile)</_BundlerRuntimeConfigurationFile>
 			<_BundlerRuntimeConfigurationFilePath Condition="'$(_XamarinRuntime)' == 'CoreCLR' And '$(GenerateRuntimeConfigurationFiles)' == 'true'">$(_MergedRuntimeConfigFilePath)</_BundlerRuntimeConfigurationFilePath>
 
 			<_CustomLinkerOptions>
@@ -1638,7 +1639,7 @@
 		</ItemGroup>
 
 		<RuntimeConfigParserTask
-			Condition="'$(GenerateRuntimeConfigurationFiles)' == 'true' And '$(_XamarinRuntime)' != 'CoreCLR'"
+			Condition="'$(GenerateRuntimeConfigurationFiles)' == 'true' And '$(_XamarinRuntime)' == 'MonoVM'"
 			RuntimeConfigFile="$(_MergedRuntimeConfigFilePath)"
 			OutputFile="$(_ParsedRuntimeConfigFilePath)"
 			RuntimeConfigReservedProperties="@(_RuntimeConfigReservedProperties)"
@@ -2553,15 +2554,16 @@
 			<_DylibPublishDir Condition="'$(SdkIsDesktop)' == 'true'">$(_RelativeAppBundlePath)\Contents\$(_CustomBundleName)\</_DylibPublishDir>
 			<_ParsedRuntimeConfigFilePath Condition="'$(_ParsedRuntimeConfigFilePath)' == ''">$(DeviceSpecificIntermediateOutputPath)$(_RuntimeConfigurationFile)</_ParsedRuntimeConfigFilePath>
 
-			<!-- The final output of _CreateRuntimeConfiguration: for CoreCLR it's the merged json (baked into
-			     the app as C code by the linker), otherwise the binary runtimeconfig format shipped in the bundle. -->
-			<_RuntimeConfigurationOutputFile Condition="'$(_XamarinRuntime)' == 'CoreCLR'">$(_MergedRuntimeConfigFilePath)</_RuntimeConfigurationOutputFile>
+			<!-- The final output of _CreateRuntimeConfiguration: only MonoVM ships the binary runtimeconfig format;
+			     CoreCLR and NativeAOT use the merged json instead (baked into the app as C code by the linker for
+			     CoreCLR, embedded into the executable at publish time for NativeAOT). -->
+			<_RuntimeConfigurationOutputFile Condition="'$(_XamarinRuntime)' != 'MonoVM'">$(_MergedRuntimeConfigFilePath)</_RuntimeConfigurationOutputFile>
 			<_RuntimeConfigurationOutputFile Condition="'$(_RuntimeConfigurationOutputFile)' == ''">$(_ParsedRuntimeConfigFilePath)</_RuntimeConfigurationOutputFile>
 		</PropertyGroup>
 		<ItemGroup>
 			<!-- Add runtimeconfig.bin to ResolvedFileToPublish so we process it in ComputeBundlePath and copy the file to the app bundle.
-			     For CoreCLR we bake the runtime configuration into the app as C code, so there's no file to ship. -->
-			<ResolvedFileToPublish Include="$(_ParsedRuntimeConfigFilePath)" Condition="'$(GenerateRuntimeConfigurationFiles)' == 'true' And '$(_XamarinRuntime)' != 'CoreCLR'">
+			     Only MonoVM ships this file (CoreCLR bakes the configuration into the app as C code, NativeAOT embeds it at publish time). -->
+			<ResolvedFileToPublish Include="$(_ParsedRuntimeConfigFilePath)" Condition="'$(GenerateRuntimeConfigurationFiles)' == 'true' And '$(_XamarinRuntime)' == 'MonoVM'">
 				<RelativePath>$([System.IO.Path]::GetFileName('$(_ParsedRuntimeConfigFilePath)'))</RelativePath>
 				<PublishFolderType>Assembly</PublishFolderType>
 				<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>

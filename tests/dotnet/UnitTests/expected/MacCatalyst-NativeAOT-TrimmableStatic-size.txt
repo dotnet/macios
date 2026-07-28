@@ -4,7 +4,5 @@ Contents/Info.plist:
     1,062 bytes (1.0 KB = 0.0 MB)
 Contents/MacOS/SizeTestApp:
     8,785,672 bytes (8,579.8 KB = 8.4 MB)
-Contents/MonoBundle/runtimeconfig.bin:
-    1,896 bytes (1.9 KB = 0.0 MB)
 Contents/PkgInfo:
     8 bytes (0.0 KB = 0.0 MB)

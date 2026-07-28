@@ -25,11 +25,11 @@ namespace UIKit {
 #endif
 	partial class NSLayoutManager {
 		/// <summary>Fills <paramref name="glyphBuffer" /> with the glyphs in <paramref name="glyphRange" />.</summary>
-		/// <param name="glyphRange">The glyph range.</param>
-		/// <param name="glyphBuffer">The glyph buffer.</param>
-		/// <param name="props">The props.</param>
-		/// <param name="charIndexBuffer">The char index buffer.</param>
-		/// <param name="bidiLevelBuffer">The bidi level buffer.</param>
+		/// <param name="glyphRange">The range of glyphs to retrieve.</param>
+		/// <param name="glyphBuffer">An output buffer that receives the glyph identifiers for the specified range.</param>
+		/// <param name="props">An output buffer that receives the glyph properties for each glyph.</param>
+		/// <param name="charIndexBuffer">An output buffer that receives the character index corresponding to each glyph.</param>
+		/// <param name="bidiLevelBuffer">An output buffer that receives the bidirectional embedding level for each glyph.</param>
 		/// <returns>The number of glyphs in <paramref name="glyphBuffer" />.</returns>
 		public unsafe nuint GetGlyphs (
 			NSRange glyphRange,
@@ -95,11 +95,11 @@ namespace UIKit {
 		}
 
 		/// <summary>Fills <paramref name="positions" /> and <paramref name="charIndexes" /> with the positions and indices of the insertion points for a line fragment.</summary>
-		/// <param name="charIndex">The char index.</param>
-		/// <param name="alternatePosition">The alternate position.</param>
-		/// <param name="inDisplayOrder">The in display order.</param>
-		/// <param name="positions">The positions.</param>
-		/// <param name="charIndexes">The char indexes.</param>
+		/// <param name="charIndex">A character index within the line fragment.</param>
+		/// <param name="alternatePosition">Whether to use the alternate insertion point position.</param>
+		/// <param name="inDisplayOrder">Whether to return the insertion points in display order rather than logical order.</param>
+		/// <param name="positions">An output buffer that receives the horizontal positions of each insertion point.</param>
+		/// <param name="charIndexes">An output buffer that receives the character index for each insertion point.</param>
 		/// <returns>The number of insertion points returned in <paramref name="positions" /> and <paramref name="charIndexes" />.</returns>
 		public unsafe nuint GetLineFragmentInsertionPoints (
 			nuint /* NSUInteger */ charIndex,

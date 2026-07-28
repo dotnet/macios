@@ -76,8 +76,8 @@ namespace CoreML {
 		}
 
 		/// <summary>Sets the element at <paramref name="indices" />.</summary>
-		/// <param name="obj">The new value</param>
-		/// <param name="indices">The multidimensional coordinate of the item to set</param>
+		/// <param name="obj">The new value.</param>
+		/// <param name="indices">The multidimensional coordinate of the item to set.</param>
 		public void SetObject (NSNumber obj, params nint [] indices)
 		{
 			using (var arr = NSArray.FromNSObjects<nint> (NSNumber.FromNInt, indices))

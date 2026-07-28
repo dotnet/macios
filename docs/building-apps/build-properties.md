@@ -508,12 +508,15 @@ for distribution. This property does **not** enable on-demand resources (use
 how already-tagged asset packs are packaged.
 
 This is the property set by the "Embed on-demand resources in the app bundle"
-option in the IDE.
+option in the IDE. It only takes effect for `AdHoc` distribution:
 
 * `true`: the asset packs are embedded in the `.app` bundle inside the IPA and
   served locally by the app.
 * `false`: the asset packs are packaged separately (outside the app bundle) so
-  they can be streamed/hosted (for example on a web server or by the App Store).
+  they can be streamed/hosted (for example on a web server).
+
+For `AppStore` distribution the asset packs are always placed outside the `.app`
+bundle (to be hosted by the App Store), regardless of this property.
 
 This property is only consulted when packaging an IPA for distribution (when
 `BuildIpa` is `true` and the distribution type is `AppStore` or `AdHoc`); it has

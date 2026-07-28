@@ -1705,4 +1705,9 @@
         <value>Codesign failed with 'errSecInternalComponent'. This usually means the keychain is locked, which is common when building over SSH. Unlock the keychain first, for example by running 'security unlock-keychain ~/Library/Keychains/login.keychain-db'.</value>
         <comment>Shown when codesign fails with the 'errSecInternalComponent' error, which typically indicates a locked keychain.</comment>
     </data>
+    <data name="E7185" xml:space="preserve">
+        <value>The runtime configuration file '{0}' is not a valid JSON object.</value>
+        <comment>Shown when the main runtime configuration file (*.runtimeconfig.json) does not contain a valid JSON object at its root.
+{0} - The path to the runtime configuration file.</comment>
+    </data>
 </root>

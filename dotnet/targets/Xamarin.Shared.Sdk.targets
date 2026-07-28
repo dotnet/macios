@@ -26,6 +26,7 @@
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.InstallNameTool" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.LinkNativeCode" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.MergeAppBundles" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.MergeRuntimeConfigFiles" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.MobileILStrip" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.MacDevMessage" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.PostTrimmingProcessing" AssemblyFile="$(_TaskAssemblyName)" />
@@ -1593,10 +1594,13 @@
 	<!-- App bundle creation tasks -->
 
 	<Target Name="_CreateRuntimeConfiguration"
-		Inputs="$(ProjectRuntimeConfigFilePath)"
+		Inputs="$(ProjectRuntimeConfigFilePath);$(ProjectRuntimeConfigDevFilePath)"
 		Outputs="$(_ParsedRuntimeConfigFilePath)"
 		DependsOnTargets="GenerateBuildRuntimeConfigurationFiles;_ComputePublishLocation"
 		>
+		<PropertyGroup>
+			<_MergedRuntimeConfigFilePath>$(DeviceSpecificIntermediateOutputPath)runtimeconfig.merged.json</_MergedRuntimeConfigFilePath>
+		</PropertyGroup>
 		<ItemGroup>
 			<!-- List all the properties passed to xamarin_bridge_vm_initialize in xamarin_vm_initialize (in runtime.m) -->
 			<_RuntimeConfigReservedProperties Include="APP_PATHS" />
@@ -1608,9 +1612,25 @@
 			<_RuntimeConfigReservedProperties Include="SYSTEM_CORELIB_DIRECTORY" />
 			<_RuntimeConfigReservedProperties Include="STARTUP_HOOKS" />
 		</ItemGroup>
-		<RuntimeConfigParserTask
+
+		<!-- Merge the runtimeconfig.dev.json (Debug-only switches such as Hot Reload) on top of the main
+		     runtimeconfig.json, because we hand the runtime configuration directly to the runtime and thus
+		     bypass hostfxr, which is what would normally merge these files. -->
+		<MergeRuntimeConfigFiles
 			Condition="'$(GenerateRuntimeConfigurationFiles)' == 'true'"
 			RuntimeConfigFile="$(ProjectRuntimeConfigFilePath)"
+			RuntimeConfigDevFile="$(ProjectRuntimeConfigDevFilePath)"
+			OutputFile="$(_MergedRuntimeConfigFilePath)"
+			>
+		</MergeRuntimeConfigFiles>
+
+		<ItemGroup Condition="'$(GenerateRuntimeConfigurationFiles)' == 'true'">
+			<FileWrites Include="$(_MergedRuntimeConfigFilePath)" />
+		</ItemGroup>
+
+		<RuntimeConfigParserTask
+			Condition="'$(GenerateRuntimeConfigurationFiles)' == 'true'"
+			RuntimeConfigFile="$(_MergedRuntimeConfigFilePath)"
 			OutputFile="$(_ParsedRuntimeConfigFilePath)"
 			RuntimeConfigReservedProperties="@(_RuntimeConfigReservedProperties)"
 			>

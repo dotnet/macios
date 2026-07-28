@@ -151,7 +151,7 @@ namespace Xamarin {
 			var result = new Dictionary<string, string> ();
 			foreach (var property in configProperties.EnumerateObject ()) {
 				result [property.Name] = property.Value.ValueKind switch {
-					JsonValueKind.String => property.Value.GetString ()!,
+					JsonValueKind.String => property.Value.GetString () ?? "",
 					JsonValueKind.True => "true",
 					JsonValueKind.False => "false",
 					JsonValueKind.Number => property.Value.GetRawText (),

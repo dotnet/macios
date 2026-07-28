@@ -277,16 +277,15 @@ namespace Xamarin.Bundler {
 			// (assigned to the xamarin_runtime_config_property_* globals in xamarin_setup_impl below, and
 			// consumed by xamarin_bridge_compute_properties). This avoids shipping the binary runtimeconfig
 			// format and decoding it at startup.
-			var runtimeConfigProperties = app.RuntimeConfigProperties;
-			var hasRuntimeConfigProperties = app.XamarinRuntime == XamarinRuntime.CoreCLR && runtimeConfigProperties is not null && runtimeConfigProperties.Count > 0;
-			if (hasRuntimeConfigProperties) {
+			var runtimeConfigProperties = app.XamarinRuntime == XamarinRuntime.CoreCLR ? app.RuntimeConfigProperties : null;
+			if (runtimeConfigProperties is not null && runtimeConfigProperties.Count > 0) {
 				sw.WriteLine ();
 				sw.WriteLine ("static const char *xamarin_runtime_config_property_keys_array [] = {");
-				foreach (var property in runtimeConfigProperties!)
+				foreach (var property in runtimeConfigProperties)
 					sw.WriteLine ($"\t\"{EscapeCString (property.Key)}\",");
 				sw.WriteLine ("};");
 				sw.WriteLine ("static const char *xamarin_runtime_config_property_values_array [] = {");
-				foreach (var property in runtimeConfigProperties!)
+				foreach (var property in runtimeConfigProperties)
 					sw.WriteLine ($"\t\"{EscapeCString (property.Value)}\",");
 				sw.WriteLine ("};");
 			}
@@ -356,8 +355,8 @@ namespace Xamarin.Bundler {
 				sw.WriteLine ("\txamarin_supports_dynamic_registration = {0};", app.DynamicRegistrationSupported ? "TRUE" : "FALSE");
 			}
 			sw.WriteLine ("\txamarin_runtime_configuration_name = {0};", string.IsNullOrEmpty (app.RuntimeConfigurationFile) ? "NULL" : $"\"{app.RuntimeConfigurationFile}\"");
-			if (hasRuntimeConfigProperties) {
-				sw.WriteLine ("\txamarin_runtime_config_property_count = {0};", runtimeConfigProperties!.Count);
+			if (runtimeConfigProperties is not null && runtimeConfigProperties.Count > 0) {
+				sw.WriteLine ("\txamarin_runtime_config_property_count = {0};", runtimeConfigProperties.Count);
 				sw.WriteLine ("\txamarin_runtime_config_property_keys = xamarin_runtime_config_property_keys_array;");
 				sw.WriteLine ("\txamarin_runtime_config_property_values = xamarin_runtime_config_property_values_array;");
 			}

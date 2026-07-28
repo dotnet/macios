@@ -61,18 +61,22 @@ namespace CoreFoundation {
 #if XAMCORE_5_0
 		/// <summary>Identifies errors reported by Cocoa APIs.</summary>
 		[Field ("kCFErrorDomainCocoa")]
+		[NullAllowed]
 		NSString Cocoa { get; }
 
 		/// <summary>Identifies errors reported by Mach APIs.</summary>
 		[Field ("kCFErrorDomainMach")]
+		[NullAllowed]
 		NSString Mach { get; }
 
 		/// <summary>Identifies errors reported using OSStatus values.</summary>
 		[Field ("kCFErrorDomainOSStatus")]
+		[NullAllowed]
 		NSString OSStatus { get; }
 
 		/// <summary>Identifies errors reported using POSIX error codes.</summary>
 		[Field ("kCFErrorDomainPOSIX")]
+		[NullAllowed]
 		NSString Posix { get; }
 #endif
 	}
@@ -103,22 +107,27 @@ namespace CoreFoundation {
 #if XAMCORE_5_0
 		/// <summary>Gets the key for an error's nonlocalized description.</summary>
 		[Field ("kCFErrorDescriptionKey")]
+		[NullAllowed]
 		NSString Description { get; }
 
 		/// <summary>Gets the key for an error's localized description.</summary>
 		[Field ("kCFErrorLocalizedDescriptionKey")]
+		[NullAllowed]
 		NSString LocalizedDescription { get; }
 
 		/// <summary>Gets the key for an error's localized failure reason.</summary>
 		[Field ("kCFErrorLocalizedFailureReasonKey")]
+		[NullAllowed]
 		NSString LocalizedFailureReason { get; }
 
 		/// <summary>Gets the key for an error's localized recovery suggestion.</summary>
 		[Field ("kCFErrorLocalizedRecoverySuggestionKey")]
+		[NullAllowed]
 		NSString LocalizedRecoverySuggestion { get; }
 
 		/// <summary>Gets the key for an underlying error.</summary>
 		[Field ("kCFErrorUnderlyingErrorKey")]
+		[NullAllowed]
 		NSString UnderlyingError { get; }
 #endif
 	}
@@ -136,6 +145,7 @@ namespace CoreFoundation {
 		///   <para>Use this value to read or write preferences for the calling application.</para>
 		/// </remarks>
 		[Field ("kCFPreferencesCurrentApplication")]
+		[NullAllowed]
 		NSString CurrentApplication { get; }
 #endif
 	}

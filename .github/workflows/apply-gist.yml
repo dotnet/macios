@@ -145,7 +145,7 @@ jobs:
         mkdir -p "$EXPECTED_DIR"
 
         DIFF_DIR="$(mktemp -d)"
-        export DIFF_DIR
+        export DIFF_DIR EXPECTED_DIR
 
         # Download gist metadata to get file URLs. The Gists API isn't accessible to the GitHub Actions token
         # (a GitHub App installation token), so fetch it unauthenticated.
@@ -154,19 +154,25 @@ jobs:
             exit 1
         fi
 
-        # The gist contains a unified diff ('<name>.txt.diff') for each changed expected file, instead of the
-        # entire (potentially very large) expected file. Download and validate each diff, then apply it below.
+        # Newer builds upload a unified diff ('<name>.txt.diff') for each changed expected file, instead of the
+        # entire (potentially very large) expected file. For backwards compatibility we still accept gists that
+        # contain the full expected files ('<name>.txt'). Download and validate everything, applying diffs and
+        # writing full files below.
         echo "$GIST_JSON" | python3 -c "
         import json, sys, urllib.request, os, re
 
         gist = json.load(sys.stdin)
         diff_dir = os.environ['DIFF_DIR']
+        expected_dir = os.environ['EXPECTED_DIR']
         files = gist['files']
-        # Only allow diffs of known expected-file patterns.
-        allowed_name = re.compile(r'^[A-Za-z0-9]+-[A-Za-z0-9-]+-(size|preservedapis)\.txt\.diff$')
-        downloaded = 0
+        # Allowed expected-file name, and the same name with a '.diff' suffix (a unified diff of that file).
+        allowed_diff = re.compile(r'^[A-Za-z0-9]+-[A-Za-z0-9-]+-(size|preservedapis)\.txt\.diff$')
+        allowed_full = re.compile(r'^[A-Za-z0-9]+-[A-Za-z0-9-]+-(size|preservedapis)\.txt$')
+        applied = 0
         for filename, file_info in files.items():
-            if not allowed_name.match(filename):
+            is_diff = bool(allowed_diff.match(filename))
+            is_full = bool(allowed_full.match(filename))
+            if not is_diff and not is_full:
                 print(f'Skipping file with unexpected name: {filename}')
                 continue
             content = file_info.get('content')
@@ -174,23 +180,30 @@ jobs:
                 # Large files need to be fetched from raw_url
                 raw_url = file_info['raw_url']
                 content = urllib.request.urlopen(raw_url).read().decode('utf-8')
-            # The diff for '<name>.txt.diff' is only allowed to touch 'tests/dotnet/UnitTests/expected/<name>.txt'.
-            expected_target = 'tests/dotnet/UnitTests/expected/' + filename[:-len('.diff')]
-            allowed_targets = ('/dev/null', 'a/' + expected_target, 'b/' + expected_target)
-            for line in content.splitlines():
-                if line.startswith('--- ') or line.startswith('+++ '):
-                    # Strip a trailing tab + timestamp if present, then verify the target path.
-                    target = line[4:].split('\t', 1)[0].strip()
-                    if target not in allowed_targets:
-                        print(f'Rejecting diff {filename}: unexpected target path: {target}')
-                        sys.exit(1)
-            dest = os.path.join(diff_dir, filename)
-            with open(dest, 'w') as f:
-                f.write(content)
-            print(f'Downloaded diff: {filename}')
-            downloaded += 1
-        if downloaded == 0:
-            print('No applicable diffs found in gist.')
+            if is_diff:
+                # The diff for '<name>.txt.diff' is only allowed to touch 'tests/dotnet/UnitTests/expected/<name>.txt'.
+                expected_target = 'tests/dotnet/UnitTests/expected/' + filename[:-len('.diff')]
+                allowed_targets = ('/dev/null', 'a/' + expected_target, 'b/' + expected_target)
+                for line in content.splitlines():
+                    if line.startswith('--- ') or line.startswith('+++ '):
+                        # Strip a trailing tab + timestamp if present, then verify the target path.
+                        target = line[4:].split('\t', 1)[0].strip()
+                        if target not in allowed_targets:
+                            print(f'Rejecting diff {filename}: unexpected target path: {target}')
+                            sys.exit(1)
+                dest = os.path.join(diff_dir, filename)
+                with open(dest, 'w') as f:
+                    f.write(content)
+                print(f'Downloaded diff: {filename}')
+            else:
+                # Full expected file: write it directly into the expected directory.
+                dest = os.path.join(expected_dir, filename)
+                with open(dest, 'w') as f:
+                    f.write(content)
+                print(f'Applied full file: {filename}')
+            applied += 1
+        if applied == 0:
+            print('No applicable files found in gist.')
             sys.exit(1)
         "
 

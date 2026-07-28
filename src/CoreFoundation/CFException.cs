@@ -48,7 +48,6 @@ namespace CoreFoundation {
 	}
 
 	/// <summary>Class that contains keys that identify exception data values.</summary>
-	///     <!-- TODO: Unused? Couldn't find any references 2013-05-02 -->
 	public static partial class CFExceptionDataKey {
 
 #if !XAMCORE_5_0

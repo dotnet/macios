@@ -1166,6 +1166,7 @@ namespace Introspection {
 #if !__MACOS__
 				case "AVSystemRoutingLibrary":
 				case "CinematicLibrary":
+				case "ScreenCaptureKitLibrary":
 				case "ThreadNetworkLibrary":
 				case "MediaSetupLibrary":
 				case "MLComputeLibrary":

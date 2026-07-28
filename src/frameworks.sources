@@ -2019,6 +2019,7 @@ COMMON_FRAMEWORKS =         \
 	Network                 \
 	OSLog                   \
 	SceneKit                \
+	ScreenCaptureKit        \
 	ShazamKit               \
 	Symbols                 \
 	SoundAnalysis 			\
@@ -2121,7 +2122,6 @@ MACOS_FRAMEWORKS =          \
 	ReplayKit               \
 	SafariServices          \
 	SafetyKit               \
-	ScreenCaptureKit        \
 	ScreenTime              \
 	ScriptingBridge         \
 	SearchKit               \
@@ -2417,7 +2417,6 @@ MACCATALYST_FRAMEWORKS = \
 	ReplayKit \
 	SafariServices \
 	SafetyKit \
-	ScreenCaptureKit \
 	ScreenTime \
 	Security \
 	SecurityUI \

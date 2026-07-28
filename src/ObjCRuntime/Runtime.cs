@@ -1236,15 +1236,16 @@ namespace ObjCRuntime {
 			}
 
 			lock (lock_obj) {
-				if (object_map.TryGetValue (ptr, out var existing)) {
-					if (onlyIfNeeded) {
+				if (onlyIfNeeded) {
+					if (object_map.ContainsKey (ptr)) {
 						// Already registered; don't touch the existing entry, just free the
 						// handle we speculatively allocated.
 						handle.Free ();
 						return;
 					}
-					object_map.Remove (ptr);
-					existing.Free ();
+				} else {
+					if (object_map.Remove (ptr, out var existing))
+						existing.Free ();
 				}
 				object_map [ptr] = handle;
 #pragma warning disable RBI0014

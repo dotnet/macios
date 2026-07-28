@@ -300,19 +300,39 @@ if (logStreamProcess is not null && logStreamFile is not null) {
 		// The parameterless overload can block indefinitely if anything else still
 		// holds the redirected pipes, so drain on a background thread and give up
 		// after a while rather than risk hanging the job for hours.
-		if (logStreamProcess.WaitForExit (10_000)) {
+		var exited = logStreamProcess.WaitForExit (10_000);
+		if (!exited) {
+			Console.Error.WriteLine ("Warning: 'log stream' did not exit after SIGINT; terminating it.");
+			try {
+				logStreamProcess.Kill ();
+				exited = logStreamProcess.WaitForExit (10_000);
+			} catch (InvalidOperationException) {
+				// The process exited before Kill could terminate it.
+				exited = true;
+			} catch (Exception e) {
+				Console.Error.WriteLine ($"Warning: Failed to terminate 'log stream': {e.Message}");
+			}
+		}
+		if (exited) {
+			Exception? drainException = null;
 			var drain = new Thread (() => {
 				try {
 					logStreamProcess.WaitForExit ();
-				} catch {
-					// Nothing useful to do if draining fails
+				} catch (Exception e) {
+					drainException = e;
 				}
 			}) { IsBackground = true };
 			drain.Start ();
-			drain.Join (30_000);
+			if (!drain.Join (30_000)) {
+				Console.Error.WriteLine ("Warning: Timed out draining buffered 'log stream' output; system.log may be incomplete.");
+			} else if (drainException is not null) {
+				Console.Error.WriteLine ($"Warning: Failed to drain buffered 'log stream' output; system.log may be incomplete: {drainException.Message}");
+			}
+		} else {
+			Console.Error.WriteLine ("Warning: 'log stream' did not terminate; system.log may be incomplete.");
 		}
-	} catch {
-		// Process may have already exited
+	} catch (Exception e) {
+		Console.Error.WriteLine ($"Warning: Failed to stop 'log stream': {e.Message}");
 	}
 
 	// Stop delivering output, so no further callbacks are queued.
@@ -328,9 +348,13 @@ if (logStreamProcess is not null && logStreamFile is not null) {
 	// and throw ObjectDisposedException on a thread pool thread, which would
 	// crash this process even though every test passed.
 	if (logStreamWriter is not null) {
-		lock (logStreamWriter) {
-			logStreamWriterClosed = true;
-			logStreamWriter.Dispose ();
+		try {
+			lock (logStreamWriter) {
+				logStreamWriterClosed = true;
+				logStreamWriter.Dispose ();
+			}
+		} catch (Exception e) {
+			Console.Error.WriteLine ($"Warning: Failed to flush and close {logStreamFile}: {e.Message}");
 		}
 	}
 
@@ -347,7 +371,11 @@ if (logStreamProcess is not null && logStreamFile is not null) {
 		Console.Error.WriteLine ($"Warning: Failed to save log stream output: {ex.Message}");
 	}
 
-	logStreamProcess.Dispose ();
+	try {
+		logStreamProcess.Dispose ();
+	} catch (Exception e) {
+		Console.Error.WriteLine ($"Warning: Failed to dispose 'log stream': {e.Message}");
+	}
 }
 
 return failedSuites > 0 ? 1 : 0;

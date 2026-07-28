@@ -1098,12 +1098,16 @@ namespace MonoTests.System.Net.Http {
 			{
 				const int MinPort = 49215;
 				const int MaxPort = 65535;
+				const int PortRange = MaxPort - MinPort;
 				const int MaxAttempts = 50;
 				Exception? lastException = null;
 				var stopwatch = Stopwatch.StartNew ();
 
+				// Pick a random start port, then probe sequentially (with wraparound) so
+				// each attempt tries a distinct port while keeping the bounded retry behavior.
+				var startPort = Random.Shared.Next (MinPort, MaxPort);
 				for (var attempt = 0; attempt < MaxAttempts; attempt++) {
-					var port = Random.Shared.Next (MinPort, MaxPort);
+					var port = MinPort + (startPort - MinPort + attempt) % PortRange;
 					var listener = new HttpListener ();
 					var url = $"http://127.0.0.1:{port}/";
 					listener.Prefixes.Add (url);

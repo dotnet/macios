@@ -34,7 +34,8 @@ namespace Xamarin.MacDev.Tasks {
 		JsonNode? TryParse (string path)
 		{
 			try {
-				return JsonNode.Parse (File.ReadAllText (path), documentOptions: documentOptions);
+				using var stream = File.OpenRead (path);
+				return JsonNode.Parse (stream, documentOptions: documentOptions);
 			} catch (Exception e) {
 				Log.LogError (MSBStrings.E7186 /* Could not read the runtime configuration file '{0}': {1} */, path, e.Message);
 				return null;
@@ -77,7 +78,9 @@ namespace Xamarin.MacDev.Tasks {
 			if (outputDirectory is not null && outputDirectory.Length > 0)
 				Directory.CreateDirectory (outputDirectory);
 
-			File.WriteAllText (OutputFile, mainObject.ToJsonString (new JsonSerializerOptions { WriteIndented = true }));
+			using (var stream = File.Create (OutputFile))
+			using (var writer = new Utf8JsonWriter (stream, new JsonWriterOptions { Indented = true }))
+				mainObject.WriteTo (writer);
 
 			return !Log.HasLoggedErrors;
 		}

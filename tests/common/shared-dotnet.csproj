@@ -82,9 +82,12 @@
 		<IlcTreatWarningsAsErrors>false</IlcTreatWarningsAsErrors>
 		<!-- NUnit 4.x's EquatablesComparer calls Type.GetInterfaceMap() which requires complete type metadata.
 		     Without this, any Assert.That(x, Is.EqualTo(y)) where x implements IEquatable<T> will throw
-		     NotSupportedException on NativeAOT. See https://github.com/nunit/nunit/issues/3970 -->
-		<IlcGenerateCompleteTypeMetadata>true</IlcGenerateCompleteTypeMetadata>
-		<IlcTrimMetadata>false</IlcTrimMetadata>
+		     NotSupportedException on NativeAOT. See https://github.com/nunit/nunit/issues/3970
+		     Only enable this when NUnit is actually referenced: it makes every reflectable type keep
+		     complete metadata (and every method reflectable), which significantly increases the app size
+		     of any app that uses NUnit. We must not impose that cost on apps that don't reference NUnit. -->
+		<IlcGenerateCompleteTypeMetadata Condition="'$(ExcludeNUnitLiteReference)' != 'true'">true</IlcGenerateCompleteTypeMetadata>
+		<IlcTrimMetadata Condition="'$(ExcludeNUnitLiteReference)' != 'true'">false</IlcTrimMetadata>
 	</PropertyGroup>
 
 	<!-- Trimmer options -->
@@ -148,9 +151,12 @@
 		<IlcTreatWarningsAsErrors>false</IlcTreatWarningsAsErrors>
 		<!-- NUnit 4.x's EquatablesComparer calls Type.GetInterfaceMap() which requires complete type metadata.
 		     Without this, any Assert.That(x, Is.EqualTo(y)) where x implements IEquatable<T> will throw
-		     NotSupportedException on NativeAOT. See https://github.com/nunit/nunit/issues/3970 -->
-		<IlcGenerateCompleteTypeMetadata>true</IlcGenerateCompleteTypeMetadata>
-		<IlcTrimMetadata>false</IlcTrimMetadata>
+		     NotSupportedException on NativeAOT. See https://github.com/nunit/nunit/issues/3970
+		     Only enable this when NUnit is actually referenced: it makes every reflectable type keep
+		     complete metadata (and every method reflectable), which significantly increases the app size
+		     of any app that uses NUnit. We must not impose that cost on apps that don't reference NUnit. -->
+		<IlcGenerateCompleteTypeMetadata Condition="'$(ExcludeNUnitLiteReference)' != 'true'">true</IlcGenerateCompleteTypeMetadata>
+		<IlcTrimMetadata Condition="'$(ExcludeNUnitLiteReference)' != 'true'">false</IlcTrimMetadata>
 	</PropertyGroup>
 
 	<!--

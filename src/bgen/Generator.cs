@@ -7113,6 +7113,7 @@ public partial class Generator : IMemberGatherer {
 
 						var eventArgs = AttributeManager.GetCustomAttribute<EventArgsAttribute> (mi);
 						var xmlDocs = eventArgs?.XmlDocs;
+						var hasXmlDocs = !string.IsNullOrEmpty (xmlDocs);
 						if (!string.IsNullOrEmpty (xmlDocs)) {
 							var docLines = xmlDocs.Split ('\n');
 							foreach (var line in docLines)
@@ -7122,10 +7123,15 @@ public partial class Generator : IMemberGatherer {
 						if (mi.ReturnType == TypeCache.System_Void) {
 							PrintObsoleteAttributes (mi);
 
-							if (bta.Singleton && mi.GetParameters ().Length == 0 || mi.GetParameters ().Length == 1)
+							if (bta.Singleton && mi.GetParameters ().Length == 0 || mi.GetParameters ().Length == 1) {
+								if (!hasXmlDocs && BindingTouch.SupportsXmlDocumentation)
+									print ("/// <summary>Raised by the object's delegate to signal an event.</summary>");
 								print ("public event EventHandler {0} {{", Nomenclator.GetEventName (mi).CamelCase ());
-							else
+							} else {
+								if (!hasXmlDocs && BindingTouch.SupportsXmlDocumentation)
+									print ("/// <summary>Raised by the object's delegate to signal an event, providing event data in a <see cref=\"{0}\" /> object.</summary>", Nomenclator.GetEventArgName (mi));
 								print ("public event EventHandler<{0}> {1} {{", Nomenclator.GetEventArgName (mi), Nomenclator.GetEventName (mi).CamelCase ());
+							}
 							print ("\tadd {{ Ensure{0} ({1})!.{2} += value; }}", dtype.Name, ensureArg, miname);
 							print ("\tremove {{ Ensure{0} ({1})!.{2} -= value; }}", dtype.Name, ensureArg, miname);
 							print ("}\n");

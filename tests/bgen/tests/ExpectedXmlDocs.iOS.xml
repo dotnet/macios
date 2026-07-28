@@ -639,6 +639,9 @@
         <member name="E:XmlDocumentation.TClass.DidFinish">
             <summary>Raised by the object's delegate to signal an event.</summary>
         </member>
+        <member name="M:XmlDocumentation.TClass.Dispose(System.Boolean)">
+            <inheritdoc />
+        </member>
         <member name="T:XmlDocumentation.TMutteranceEventArgs">
             <summary>Provides data for an event based on an Objective-C protocol method.</summary>
         </member>

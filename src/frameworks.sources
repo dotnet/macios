@@ -460,6 +460,7 @@ COREFOUNDATION_CORE_SOURCES = \
 	CoreFoundation/CFMutableString.cs \
 	CoreFoundation/CFRunLoop.cs \
 	CoreFoundation/CFString.cs \
+	CoreFoundation/CFUuidBytes.cs \
 	CoreFoundation/Dispatch.cs \
 	CoreFoundation/DispatchData.cs \
 	CoreFoundation/NativeObject.cs \
@@ -624,6 +625,7 @@ COREMEDIA_SOURCES = \
 
 COREMIDI_CORE_SOURCES = \
 	CoreMidi/MidiCIDeviceIdentification.cs \
+	CoreMidi/MidiDriverInterface.cs \
 	CoreMidi/MidiServices.cs \
 	CoreMidi/MidiStructs.cs \
 	CoreMidi/MidiThruConnection.cs \
@@ -631,6 +633,9 @@ COREMIDI_CORE_SOURCES = \
 
 COREMIDI_SOURCES = \
 	CoreMidi/MidiBluetoothDriver.cs \
+	CoreMidi/MidiEventList.cs \
+	CoreMidi/MidiEventPacket.cs \
+	CoreMidi/MidiUniversalMessage.cs \
 
 # CoreML
 

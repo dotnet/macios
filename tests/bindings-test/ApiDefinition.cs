@@ -875,12 +875,6 @@ namespace Bindings.Test {
 		void BuildHighway ();
 	}
 
-	// Helper to reproduce the alloc/init handle race in issue #25861 (and #9478):
-	// its native 'init' method returns a different object than the one 'alloc' created.
-	[BaseType (typeof (NSObject))]
-	interface InitReturnsDifferentObjectAfterSleep {
-	}
-
 	// Helper for the issue #25861 design work: its native 'init' calls a method that
 	// can be overridden in managed code, to verify the overridden managed method is
 	// invoked (on the correct instance) while 'init' is still executing.

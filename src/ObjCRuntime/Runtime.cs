@@ -1804,6 +1804,17 @@ namespace ObjCRuntime {
 				}
 			}
 
+			// Fallback for issue #25861: a user type that's still executing its own 'init'
+			// isn't in the object_map yet (registration is deferred until 'init' completes),
+			// but it already carries its gchandle in a native ivar. Resolve it from there to
+			// avoid creating a duplicate wrapper. xamarinGetGCHandle is a category method on
+			// NSObject, so it's safe to send to any Objective-C object (it returns
+			// INVALID_GCHANDLE for non-Xamarin objects); TryGetNSObject is only ever called
+			// with Objective-C object pointers.
+			var fromIvar = TryGetNSObjectFromIvar (ptr);
+			if (fromIvar is not null && fromIvar.Handle == ptr && (evenInFinalizerQueue || !fromIvar.InFinalizerQueue))
+				return fromIvar;
+
 			return null;
 		}
 
@@ -1874,19 +1885,6 @@ namespace ObjCRuntime {
 
 			var o = TryGetNSObject (ptr, evenInFinalizerQueue);
 
-			// Fallback for issue #25861: a user type that's still executing its own 'init'
-			// isn't in the object_map yet (registration is deferred until 'init' completes),
-			// but it already carries its gchandle in a native ivar. Resolve it from there to
-			// avoid creating a duplicate wrapper. This is safe because GetNSObject is only
-			// called for Objective-C objects (every NSObject responds to xamarinGetGCHandle
-			// via the NonXamarinObject category), unlike the generic TryGetNSObject which can
-			// be called with non-Objective-C native handles.
-			if (o is null) {
-				var fromIvar = TryGetNSObjectFromIvar (ptr);
-				if (fromIvar is not null && fromIvar.Handle == ptr && (evenInFinalizerQueue || !fromIvar.InFinalizerQueue))
-					o = fromIvar;
-			}
-
 			if (o is not null) {
 				if (owns)
 					o.DangerousRelease ();
@@ -1942,15 +1940,6 @@ namespace ObjCRuntime {
 				return null;
 
 			var obj = TryGetNSObject (ptr, evenInFinalizerQueue: evenInFinalizerQueue);
-
-			// Fallback for issue #25861: resolve a user type that's still executing its own
-			// 'init' (not yet in the object_map) via its native gchandle ivar. See the
-			// non-generic GetNSObject for details on why this is safe here.
-			if (obj is null) {
-				var fromIvar = TryGetNSObjectFromIvar (ptr);
-				if (fromIvar is not null && fromIvar.Handle == ptr && (evenInFinalizerQueue || !fromIvar.InFinalizerQueue))
-					obj = fromIvar;
-			}
 
 			// First check if we got an object of the expected type
 			if (obj is T o)

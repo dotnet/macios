@@ -395,15 +395,6 @@ typedef void (^outerBlock) (innerBlock callback);
 -(void) buildHighway;
 @end
 
-// Helper to reproduce the alloc/init handle race in issue #25861 (and #9478):
-// its 'init' method releases the object created by 'alloc' (freeing that address so
-// it can be reused by another thread), sleeps a tiny bit to widen the race window,
-// and then returns a brand new, different object.
-@interface InitReturnsDifferentObjectAfterSleep : NSObject {
-}
--(instancetype) init;
-@end
-
 // Helper for the issue #25861 design work: a native class whose 'init' calls a
 // method that can be overridden in managed code. Used to verify that an overridden
 // managed method is invoked (on the correct instance) while 'init' is still
@@ -443,8 +434,8 @@ typedef void (^outerBlock) (innerBlock callback);
 }
 @end
 
-// Helper for issue #23679: a native class whose 'init' fails (releases self and returns
-// nil). Constructing the managed wrapper throws; a later GC must not crash.
+// Helper for issue #23679: a native class whose 'init' fails by raising an Objective-C
+// exception. Constructing the managed wrapper throws; a later GC must not crash.
 @interface InitReturnsNilClass : NSObject {
 }
 -(instancetype) init;

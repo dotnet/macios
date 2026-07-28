@@ -1554,20 +1554,6 @@ static void block_called ()
 }
 @end
 
-@implementation InitReturnsDifferentObjectAfterSleep
--(instancetype) init
-{
-	// Release the object created by 'alloc'. This frees the memory of 'self', making
-	// that address available for reuse by another thread. Then sleep a tiny bit to
-	// widen the window during which the managed runtime still maps this (now freed)
-	// address to this object. Finally return a brand new, different object. This is
-	// used to reproduce the alloc/init handle race in issue #25861 (and #9478).
-	[self release];
-	usleep (500);
-	return (InitReturnsDifferentObjectAfterSleep *) [[NSObject alloc] init];
-}
-@end
-
 @implementation InitCallsVirtualMethod
 -(instancetype) init
 {
@@ -1683,10 +1669,10 @@ void x_set_reuse_alloc_callback (reuse_alloc_callback callback)
 @end
 #pragma clang diagnostic pop
 
-// Helper for issue #23679: a directly-bound native class whose 'init' fails (releases
-// the alloc'd instance and returns nil, the standard Objective-C convention for a failed
-// initializer). Constructing the managed wrapper throws, and a later GC must not crash
-// trying to release a managed reference for the now-freed instance.
+// Helper for issue #23679: a directly-bound native class whose 'init' fails by raising an
+// Objective-C exception (as e.g. an invalid AVAssetWriterInput does). Constructing the
+// managed wrapper throws, and a later GC must not crash trying to release a managed
+// reference for the alloc'd instance.
 @implementation InitReturnsNilClass
 -(instancetype) init
 {

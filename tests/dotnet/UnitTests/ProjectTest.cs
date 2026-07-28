@@ -1029,6 +1029,7 @@ namespace Xamarin.Tests {
 						$"__{platformPrefix}_item_BundleResource_A.ttc",
 						$"__{platformPrefix}_item_BundleResource_B.otf",
 						$"__{platformPrefix}_item_BundleResource_C.ttf",
+						$"__{platformPrefix}_item_BundleResource_library-image.png",
 						$"__{platformPrefix}_item_Collada_scene.dae",
 						$"__{platformPrefix}_item_CoreMLModel_SqueezeNet.mlmodel",
 						$"__{platformPrefix}_item_ImageAsset_Images.xcassets_sContents.json",
@@ -1057,6 +1058,7 @@ namespace Xamarin.Tests {
 						$"__{platformPrefix}_content_C.ttf",
 						$"__{platformPrefix}_content_DirWithResources_slinkedArt.scnassets_sscene.scn",
 						$"__{platformPrefix}_content_DirWithResources_slinkedArt.scnassets_stexture.png",
+						$"__{platformPrefix}_content_library-image.png",
 						$"__{platformPrefix}_content_scene.dae"
 					};
 					switch (platform) {

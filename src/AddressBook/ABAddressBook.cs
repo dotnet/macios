@@ -588,6 +588,8 @@ namespace AddressBook {
 				h (this, e);
 		}
 
+		/// <summary>Raised when the address book database is modified by another address book instance, either in the same process or in a different process.</summary>
+		/// <remarks>Subscribing registers an external-change callback with the underlying <c>ABAddressBook</c>. When the notification fires, the local instance may be out of date; call <see cref="AddressBook.ABAddressBook.Revert" /> to reload the latest data.</remarks>
 		public event EventHandler<ExternalChangeEventArgs> ExternalChange {
 			add {
 				lock (eventLock) {

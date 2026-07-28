@@ -436,6 +436,8 @@ namespace ObjCRuntime {
 		}
 
 #if MONOMAC
+		/// <summary>Raised when an assembly is about to be registered with the Objective-C runtime, allowing an application to control whether the assembly's types are registered.</summary>
+		/// <remarks>This event is only available on macOS. Set the event argument's <see cref="ObjCRuntime.AssemblyRegistrationEventArgs.Register" /> property to <see langword="false" /> to skip registering the assembly.</remarks>
 		public static event AssemblyRegistrationHandler? AssemblyRegistration;
 
 		static bool OnAssemblyRegistration (AssemblyName assembly_name)
@@ -454,7 +456,11 @@ namespace ObjCRuntime {
 		static MarshalObjectiveCExceptionMode objc_exception_mode;
 		static MarshalManagedExceptionMode managed_exception_mode;
 
+		/// <summary>Raised when an Objective-C exception is about to be marshalled into managed code, allowing the application to choose how the exception is handled.</summary>
+		/// <remarks>Handlers can inspect the native exception and set the marshalling mode on the event arguments to control whether a managed exception is thrown.</remarks>
 		public static event MarshalObjectiveCExceptionHandler? MarshalObjectiveCException;
+		/// <summary>Raised when a managed exception is about to be marshalled into an Objective-C exception, allowing the application to choose how the exception is handled.</summary>
+		/// <remarks>Handlers can inspect the managed exception and set the marshalling mode on the event arguments to control how the exception is surfaced to native code.</remarks>
 		public static event MarshalManagedExceptionHandler? MarshalManagedException;
 
 		static MarshalObjectiveCExceptionMode OnMarshalObjectiveCException (IntPtr exception_handle, sbyte throwManagedAsDefault)

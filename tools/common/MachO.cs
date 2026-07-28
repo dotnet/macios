@@ -555,6 +555,33 @@ namespace Xamarin {
 			}
 			return symbols;
 		}
+
+		/// <summary>
+		/// Reads a static library or a Mach-O object file and returns the set of defined (external, non-undefined) symbols.
+		/// </summary>
+		public static HashSet<string> GetDefinedSymbols (string filename)
+		{
+			var symbols = new HashSet<string> ();
+			using (var fs = File.OpenRead (filename))
+			using (var reader = new BinaryReader (fs)) {
+				if (IsStaticLibrary (reader)) {
+					var lib = new StaticLibrary ();
+					lib.Read (filename, reader, fs.Length);
+					foreach (var obj in lib.ObjectFiles) {
+						foreach (var sym in obj.GetDefinedSymbols (reader))
+							symbols.Add (sym);
+					}
+				} else if (MachOFile.IsMachOLibrary (null, reader)) {
+					var obj = new MachOFile (filename);
+					obj.Read (reader);
+					foreach (var sym in obj.GetDefinedSymbols (reader))
+						symbols.Add (sym);
+				} else {
+					throw ErrorHelper.CreateError (1601, Errors.MT1601, System.Text.Encoding.ASCII.GetString (reader.ReadBytes (7), 0, 7));
+				}
+			}
+			return symbols;
+		}
 	}
 
 	public class MachOFile {
@@ -857,6 +884,53 @@ namespace Xamarin {
 				if ((n_type & N_EXT) == 0)
 					continue;
 				if ((n_type & N_TYPE) != N_UNDF)
+					continue;
+
+				// Read symbol name from string table
+				if (n_strx >= symtab.strsize)
+					continue;
+				var end = (int) n_strx;
+				while (end < stringTable.Length && stringTable [end] != 0)
+					end++;
+				var name = Encoding.UTF8.GetString (stringTable, (int) n_strx, end - (int) n_strx);
+				if (name.Length > 0)
+					symbols.Add (name);
+			}
+
+			return symbols;
+		}
+
+		/// <summary>
+		/// Reads defined (external, non-undefined) symbols from this Mach-O file.
+		/// The reader must be the same stream used to read this file.
+		/// </summary>
+		public HashSet<string> GetDefinedSymbols (BinaryReader reader)
+		{
+			var symbols = new HashSet<string> ();
+			var symtab = load_commands.OfType<SymtabLoadCommand> ().FirstOrDefault ();
+			if (symtab is null || symtab.nsyms == 0)
+				return symbols;
+
+			// Read the string table
+			reader.BaseStream.Position = streamBasePosition + symtab.stroff;
+			var stringTable = reader.ReadBytes ((int) symtab.strsize);
+
+			// Read symbol table entries
+			reader.BaseStream.Position = streamBasePosition + symtab.symoff;
+			for (uint i = 0; i < symtab.nsyms; i++) {
+				var n_strx = reader.ReadUInt32 ();
+				var n_type = reader.ReadByte ();
+				var n_sect = reader.ReadByte ();
+				var n_desc = reader.ReadInt16 ();
+				if (is64bitheader)
+					reader.ReadUInt64 (); // n_value (8 bytes)
+				else
+					reader.ReadUInt32 (); // n_value (4 bytes)
+
+				// Filter for defined external symbols (equivalent of nm -g, excluding undefined ones)
+				if ((n_type & N_EXT) == 0)
+					continue;
+				if ((n_type & N_TYPE) == N_UNDF)
 					continue;
 
 				// Read symbol name from string table

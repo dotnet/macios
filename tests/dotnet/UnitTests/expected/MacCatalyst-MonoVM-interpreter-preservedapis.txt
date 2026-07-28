@@ -150,9 +150,9 @@ Microsoft.MacCatalyst.dll:Foundation.NSObject.get_IsRegisteredToggleRef()
 Microsoft.MacCatalyst.dll:Foundation.NSObject.GetData()
 Microsoft.MacCatalyst.dll:Foundation.NSObject.GetHashCode()
 Microsoft.MacCatalyst.dll:Foundation.NSObject.GetNativeHash()
-Microsoft.MacCatalyst.dll:Foundation.NSObject.Initialize()
 Microsoft.MacCatalyst.dll:Foundation.NSObject.InitializeHandle(ObjCRuntime.NativeHandle, System.String, System.Boolean)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.InitializeHandle(ObjCRuntime.NativeHandle, System.String)
+Microsoft.MacCatalyst.dll:Foundation.NSObject.InitializeObject()
 Microsoft.MacCatalyst.dll:Foundation.NSObject.InitializeObject(System.Boolean)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.InvokeConformsToProtocol(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.IsEqual(Foundation.NSObject)
@@ -225,8 +225,8 @@ Microsoft.MacCatalyst.dll:Foundation.ProtocolAttribute.get_IsInformal()
 Microsoft.MacCatalyst.dll:Foundation.ProtocolAttribute.get_Name()
 Microsoft.MacCatalyst.dll:Foundation.ProtocolAttribute.get_WrapperType()
 Microsoft.MacCatalyst.dll:Foundation.ProtocolMemberAttribute
-Microsoft.MacCatalyst.dll:Foundation.ProtocolMemberAttribute Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31::<>2__current
-Microsoft.MacCatalyst.dll:Foundation.ProtocolMemberAttribute Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31::System.Collections.Generic.IEnumerator<Foundation.ProtocolMemberAttribute>.Current()
+Microsoft.MacCatalyst.dll:Foundation.ProtocolMemberAttribute Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32::<>2__current
+Microsoft.MacCatalyst.dll:Foundation.ProtocolMemberAttribute Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32::System.Collections.Generic.IEnumerator<Foundation.ProtocolMemberAttribute>.Current()
 Microsoft.MacCatalyst.dll:Foundation.ProtocolMemberAttribute.get_ArgumentSemantic()
 Microsoft.MacCatalyst.dll:Foundation.ProtocolMemberAttribute.get_GetterSelector()
 Microsoft.MacCatalyst.dll:Foundation.ProtocolMemberAttribute.get_IsProperty()
@@ -324,7 +324,7 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.Class.GetClassName(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.GetHandle(System.String)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.GetHandle(System.Type)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.GetHashCode()
-Microsoft.MacCatalyst.dll:ObjCRuntime.Class.Initialize(ObjCRuntime.Runtime/InitializationOptions*)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Class.InitializeClass(ObjCRuntime.Runtime/InitializationOptions*)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.Lookup(System.IntPtr, System.Boolean)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.Lookup(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.objc_allocateClassPair(System.IntPtr, System.IntPtr, System.IntPtr)
@@ -590,8 +590,8 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.RegistrarHelper/MapInfo
 Microsoft.MacCatalyst.dll:ObjCRuntime.RegistrarHelper/MapInfo..ctor(ObjCRuntime.IManagedRegistrar)
 Microsoft.MacCatalyst.dll:ObjCRuntime.ReleaseAttribute
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime
-Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.<ConstructINativeObject>g__ConstructINativeObjectViaFactoryMethod|289_0`1(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.<ConstructNSObject>g__ConstructNSObjectViaFactoryMethod|288_0`1(ObjCRuntime.NativeHandle)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.<ConstructINativeObject>g__ConstructINativeObjectViaFactoryMethod|291_0`1(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.<ConstructNSObject>g__ConstructNSObjectViaFactoryMethod|290_0`1(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.AllocGCHandle(System.Object, System.Runtime.InteropServices.GCHandleType)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.AllocGCHandle(System.Object)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.AppendAdditionalInformation(System.Text.StringBuilder, System.IntPtr, System.RuntimeMethodHandle)
@@ -941,12 +941,12 @@ Microsoft.MacCatalyst.dll:Registrar.DynamicRegistrar.TryGetEnumUnderlyingType(Sy
 Microsoft.MacCatalyst.dll:Registrar.DynamicRegistrar.TryMatchProperty(System.Type, System.Reflection.PropertyInfo)
 Microsoft.MacCatalyst.dll:Registrar.DynamicRegistrar.TypeMatch(System.Type, System.Type)
 Microsoft.MacCatalyst.dll:Registrar.DynamicRegistrar.VerifyIsConstrainedToNSObject(System.Type, out System.Type&)
-Microsoft.MacCatalyst.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31
-Microsoft.MacCatalyst.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31..ctor(System.Int32)
-Microsoft.MacCatalyst.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31.MoveNext()
-Microsoft.MacCatalyst.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31.System.Collections.Generic.IEnumerable<Foundation.ProtocolMemberAttribute>.GetEnumerator()
-Microsoft.MacCatalyst.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31.System.Collections.Generic.IEnumerator<Foundation.ProtocolMemberAttribute>.get_Current()
-Microsoft.MacCatalyst.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31.System.IDisposable.Dispose()
+Microsoft.MacCatalyst.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32
+Microsoft.MacCatalyst.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32..ctor(System.Int32)
+Microsoft.MacCatalyst.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32.MoveNext()
+Microsoft.MacCatalyst.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32.System.Collections.Generic.IEnumerable<Foundation.ProtocolMemberAttribute>.GetEnumerator()
+Microsoft.MacCatalyst.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32.System.Collections.Generic.IEnumerator<Foundation.ProtocolMemberAttribute>.get_Current()
+Microsoft.MacCatalyst.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32.System.IDisposable.Dispose()
 Microsoft.MacCatalyst.dll:Registrar.Registrar
 Microsoft.MacCatalyst.dll:Registrar.Registrar Registrar.Registrar/ObjCMember::Registrar
 Microsoft.MacCatalyst.dll:Registrar.Registrar Registrar.Registrar/ObjCType::Registrar
@@ -1122,6 +1122,7 @@ Microsoft.MacCatalyst.dll:Registrar.Registrar/ObjCMethod.get_ReturnType()
 Microsoft.MacCatalyst.dll:Registrar.Registrar/ObjCMethod.get_Signature()
 Microsoft.MacCatalyst.dll:Registrar.Registrar/ObjCMethod.get_Trampoline()
 Microsoft.MacCatalyst.dll:Registrar.Registrar/ObjCMethod.IsValidToManagedTypeConversion(System.Type, System.Type)
+Microsoft.MacCatalyst.dll:Registrar.Registrar/ObjCMethod.PrepareNativeParameters()
 Microsoft.MacCatalyst.dll:Registrar.Registrar/ObjCMethod.set_IsConstructor(System.Boolean)
 Microsoft.MacCatalyst.dll:Registrar.Registrar/ObjCMethod.set_IsStatic(System.Boolean)
 Microsoft.MacCatalyst.dll:Registrar.Registrar/ObjCMethod.set_Parameters(System.Type[])
@@ -1285,6 +1286,7 @@ Microsoft.MacCatalyst.dll:System.Collections.Generic.Dictionary`2<System.String,
 Microsoft.MacCatalyst.dll:System.Collections.Generic.Dictionary`2<System.String,System.Type> Registrar.Registrar::protocol_map
 Microsoft.MacCatalyst.dll:System.Collections.Generic.Dictionary`2<System.String,System.Type> Registrar.Registrar::type_map
 Microsoft.MacCatalyst.dll:System.Collections.Generic.Dictionary`2<System.Type,Registrar.Registrar/ObjCType> Registrar.Registrar::types
+Microsoft.MacCatalyst.dll:System.Collections.Generic.Dictionary`2<System.Type,System.Collections.Generic.Dictionary`2<System.Reflection.MethodBase,System.Collections.Generic.List`1<System.Reflection.MethodBase>>> Registrar.DynamicRegistrar::cached_interface_method_mappings
 Microsoft.MacCatalyst.dll:System.Collections.Generic.Dictionary`2<System.Type,System.IntPtr> ObjCRuntime.Class::type_to_class
 Microsoft.MacCatalyst.dll:System.Collections.Generic.Dictionary`2<System.Type,System.Object> Registrar.DynamicRegistrar::custom_type_map
 Microsoft.MacCatalyst.dll:System.Collections.Generic.Dictionary`2<System.Type,System.Reflection.ConstructorInfo> ObjCRuntime.Runtime::intptr_bool_ctor_cache
@@ -1324,9 +1326,9 @@ Microsoft.MacCatalyst.dll:System.Int32 ObjCRuntime.Runtime/MTRegistrationMap::sk
 Microsoft.MacCatalyst.dll:System.Int32 ObjCRuntime.RuntimeException::<Code>k__BackingField
 Microsoft.MacCatalyst.dll:System.Int32 ObjCRuntime.RuntimeException::Code()
 Microsoft.MacCatalyst.dll:System.Int32 ObjCRuntime.TransientString/Encoding::value__
-Microsoft.MacCatalyst.dll:System.Int32 Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31::<>1__state
-Microsoft.MacCatalyst.dll:System.Int32 Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31::<>7__wrap2
-Microsoft.MacCatalyst.dll:System.Int32 Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31::<>l__initialThreadId
+Microsoft.MacCatalyst.dll:System.Int32 Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32::<>1__state
+Microsoft.MacCatalyst.dll:System.Int32 Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32::<>7__wrap2
+Microsoft.MacCatalyst.dll:System.Int32 Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32::<>l__initialThreadId
 Microsoft.MacCatalyst.dll:System.Int32 Registrar.Registrar/ObjCField::Size
 Microsoft.MacCatalyst.dll:System.Int32 Registrar.Trampoline::value__
 Microsoft.MacCatalyst.dll:System.Int64 Foundation.NSComparisonResult::value__
@@ -1492,7 +1494,7 @@ Microsoft.MacCatalyst.dll:System.Object Foundation.NSObject/NSObject_Disposer::l
 Microsoft.MacCatalyst.dll:System.Object ObjCRuntime.Class::verification_lock
 Microsoft.MacCatalyst.dll:System.Object ObjCRuntime.Runtime::lock_obj
 Microsoft.MacCatalyst.dll:System.Object Registrar.DynamicRegistrar::lock_obj
-Microsoft.MacCatalyst.dll:System.Object[] Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31::<>7__wrap1
+Microsoft.MacCatalyst.dll:System.Object[] Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32::<>7__wrap1
 Microsoft.MacCatalyst.dll:System.Reflection.Assembly Foundation.NSObject::PlatformAssembly
 Microsoft.MacCatalyst.dll:System.Reflection.MethodBase Registrar.Registrar::conforms_to_protocol
 Microsoft.MacCatalyst.dll:System.Reflection.MethodBase Registrar.Registrar::invoke_conforms_to_protocol
@@ -1552,7 +1554,7 @@ Microsoft.MacCatalyst.dll:System.String Registrar.Registrar/ObjCType::ExportedNa
 Microsoft.MacCatalyst.dll:System.String Registrar.Registrar/ObjCType::ProtocolName()
 Microsoft.MacCatalyst.dll:System.String[] Foundation.NSException::CallStackSymbols()
 Microsoft.MacCatalyst.dll:System.String[] Registrar.Registrar/ObjCType::AdoptedProtocols
-Microsoft.MacCatalyst.dll:System.Threading.Thread UIKit.UIApplication::mainThread
+Microsoft.MacCatalyst.dll:System.Threading.Thread ObjCRuntime.Runtime::mainThread
 Microsoft.MacCatalyst.dll:System.Type Foundation.ProtocolAttribute::<WrapperType>k__BackingField
 Microsoft.MacCatalyst.dll:System.Type Foundation.ProtocolAttribute::WrapperType()
 Microsoft.MacCatalyst.dll:System.Type Foundation.ProtocolMemberAttribute::PropertyType()
@@ -1561,8 +1563,8 @@ Microsoft.MacCatalyst.dll:System.Type ObjCRuntime.BindAsAttribute::OriginalType
 Microsoft.MacCatalyst.dll:System.Type ObjCRuntime.BindAsAttribute::Type
 Microsoft.MacCatalyst.dll:System.Type ObjCRuntime.BlockProxyAttribute::Type()
 Microsoft.MacCatalyst.dll:System.Type ObjCRuntime.CategoryAttribute::Type()
-Microsoft.MacCatalyst.dll:System.Type Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31::<>3__type
-Microsoft.MacCatalyst.dll:System.Type Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31::type
+Microsoft.MacCatalyst.dll:System.Type Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32::<>3__type
+Microsoft.MacCatalyst.dll:System.Type Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32::type
 Microsoft.MacCatalyst.dll:System.Type Registrar.Registrar/ObjCMethod::native_return_type
 Microsoft.MacCatalyst.dll:System.Type Registrar.Registrar/ObjCMethod::NativeReturnType()
 Microsoft.MacCatalyst.dll:System.Type Registrar.Registrar/ObjCMethod::return_type
@@ -1598,7 +1600,7 @@ Microsoft.MacCatalyst.dll:UIKit.UIApplication..cctor()
 Microsoft.MacCatalyst.dll:UIKit.UIApplication..ctor(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:UIKit.UIApplication.Dispose(System.Boolean)
 Microsoft.MacCatalyst.dll:UIKit.UIApplication.get_ClassHandle()
-Microsoft.MacCatalyst.dll:UIKit.UIApplication.Initialize()
+Microsoft.MacCatalyst.dll:UIKit.UIApplication.InitializeApplication()
 Microsoft.MacCatalyst.dll:UIKit.UIApplication.Main(System.String[], System.Type, System.Type)
 Microsoft.MacCatalyst.dll:UIKit.UIApplication.UIApplicationMain(System.Int32, System.String[], System.IntPtr, System.IntPtr)
 Microsoft.MacCatalyst.dll:UIKit.UIApplication.xamarin_UIApplicationMain(System.Int32, System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)

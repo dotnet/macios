@@ -24,12 +24,12 @@ namespace AppKit {
 namespace UIKit {
 #endif
 	partial class NSLayoutManager {
+		/// <summary>Fills <paramref name="glyphBuffer" /> with the glyphs in <paramref name="glyphRange" />.</summary>
 		/// <param name="glyphRange">The glyph range.</param>
 		/// <param name="glyphBuffer">The glyph buffer.</param>
 		/// <param name="props">The props.</param>
 		/// <param name="charIndexBuffer">The char index buffer.</param>
 		/// <param name="bidiLevelBuffer">The bidi level buffer.</param>
-		/// <summary>Fills <paramref name="glyphBuffer" /> with the glyphs in <paramref name="glyphRange" />.</summary>
 		/// <returns>The number of glyphs in <paramref name="glyphBuffer" />.</returns>
 		public unsafe nuint GetGlyphs (
 			NSRange glyphRange,
@@ -94,12 +94,12 @@ namespace UIKit {
 			}
 		}
 
+		/// <summary>Fills <paramref name="positions" /> and <paramref name="charIndexes" /> with the positions and indices of the insertion points for a line fragment.</summary>
 		/// <param name="charIndex">The char index.</param>
 		/// <param name="alternatePosition">The alternate position.</param>
 		/// <param name="inDisplayOrder">The in display order.</param>
 		/// <param name="positions">The positions.</param>
 		/// <param name="charIndexes">The char indexes.</param>
-		/// <summary>Fills <paramref name="positions" /> and <paramref name="charIndexes" /> with the positions and indices of the insertion points for a line fragment.</summary>
 		/// <returns>The number of insertion points returned in <paramref name="positions" /> and <paramref name="charIndexes" />.</returns>
 		public unsafe nuint GetLineFragmentInsertionPoints (
 			nuint /* NSUInteger */ charIndex,

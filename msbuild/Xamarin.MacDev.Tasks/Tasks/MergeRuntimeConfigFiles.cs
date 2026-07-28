@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -30,16 +31,29 @@ namespace Xamarin.MacDev.Tasks {
 			CommentHandling = JsonCommentHandling.Skip,
 		};
 
+		JsonNode? TryParse (string path)
+		{
+			try {
+				return JsonNode.Parse (File.ReadAllText (path), documentOptions: documentOptions);
+			} catch (Exception e) {
+				Log.LogError (MSBStrings.E7186 /* Could not read the runtime configuration file '{0}': {1} */, path, e.Message);
+				return null;
+			}
+		}
+
 		public override bool Execute ()
 		{
-			var mainNode = JsonNode.Parse (File.ReadAllText (RuntimeConfigFile), documentOptions: documentOptions);
-			if (mainNode is not JsonObject mainObject) {
-				Log.LogError (MSBStrings.E7185 /* The runtime configuration file '{0}' is not a valid JSON object. */, RuntimeConfigFile);
+			if (TryParse (RuntimeConfigFile) is not JsonObject mainObject) {
+				if (!Log.HasLoggedErrors)
+					Log.LogError (MSBStrings.E7185 /* The runtime configuration file '{0}' is not a valid JSON object. */, RuntimeConfigFile);
 				return false;
 			}
 
-			if (!string.IsNullOrEmpty (RuntimeConfigDevFile) && File.Exists (RuntimeConfigDevFile)) {
-				var devNode = JsonNode.Parse (File.ReadAllText (RuntimeConfigDevFile!), documentOptions: documentOptions);
+			var devFile = RuntimeConfigDevFile;
+			if (devFile is not null && devFile.Length > 0 && File.Exists (devFile)) {
+				var devNode = TryParse (devFile);
+				if (devNode is null)
+					return false; // TryParse already logged an error.
 				var devConfigProperties = (devNode as JsonObject)? ["runtimeOptions"]? ["configProperties"] as JsonObject;
 				if (devConfigProperties is not null && devConfigProperties.Count > 0) {
 					var runtimeOptions = mainObject ["runtimeOptions"] as JsonObject;
@@ -54,15 +68,14 @@ namespace Xamarin.MacDev.Tasks {
 						runtimeOptions ["configProperties"] = configProperties;
 					}
 
-					foreach (var property in devConfigProperties) {
-						configProperties [property.Key] = property.Value is null ? null : JsonNode.Parse (property.Value.ToJsonString ());
-					}
+					foreach (var property in devConfigProperties)
+						configProperties [property.Key] = property.Value?.DeepClone ();
 				}
 			}
 
 			var outputDirectory = Path.GetDirectoryName (OutputFile);
-			if (!string.IsNullOrEmpty (outputDirectory))
-				Directory.CreateDirectory (outputDirectory!);
+			if (outputDirectory is not null && outputDirectory.Length > 0)
+				Directory.CreateDirectory (outputDirectory);
 
 			File.WriteAllText (OutputFile, mainObject.ToJsonString (new JsonSerializerOptions { WriteIndented = true }));
 

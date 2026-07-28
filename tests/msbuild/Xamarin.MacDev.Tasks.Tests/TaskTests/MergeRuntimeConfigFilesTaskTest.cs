@@ -110,5 +110,20 @@ namespace Xamarin.MacDev.Tasks {
 			// The dev file had no configProperties, so nothing from it should have leaked in.
 			Assert.That (merged, Does.Not.Contain ("additionalProbingPaths"), "dev-only non-configProperties content is not merged");
 		}
+
+		[Test]
+		public void InvalidMainJsonLogsError ()
+		{
+			var tmp = Cache.CreateTemporaryDirectory ();
+			var mainFile = Path.Combine (tmp, "app.runtimeconfig.json");
+			File.WriteAllText (mainFile, "this is not json {");
+
+			var task = CreateTask<MergeRuntimeConfigFiles> ();
+			task.RuntimeConfigFile = mainFile;
+			task.OutputFile = Path.Combine (tmp, "obj", "runtimeconfig.merged.json");
+
+			// The task must report an MSBuild error rather than throwing.
+			ExecuteTask (task, 1);
+		}
 	}
 }

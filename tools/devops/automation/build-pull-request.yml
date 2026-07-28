@@ -7,11 +7,6 @@
 
 parameters:
 
-- name: provisionatorChannel
-  displayName: Provisionator channel to use 
-  type: string
-  default: 'latest'
-
 - name: macOSName # comes from the build agent demand named macOS.Name
   displayName: Name of the version of macOS to use
   type: string
@@ -107,7 +102,6 @@ extends:
         xcodeChannel: $(xcodeChannel)
         macOSName: ${{ parameters.macOSName }}
         isPR: true
-        provisionatorChannel: ${{ parameters.provisionatorChannel }}
         pool: $(PRBuildPool)
         runGovernanceTests: ${{ parameters.runGovernanceTests }}
         forceInsertion: ${{ parameters.forceInsertion }}

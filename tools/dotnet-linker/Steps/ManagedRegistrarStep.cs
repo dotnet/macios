@@ -584,10 +584,10 @@ namespace Xamarin.Linker {
 		{
 			var module = callback.Module;
 
-			callback.ReturnType = module.ImportReference (callback.ReturnType);
+			callback.ReturnType = ImportTypeReference (module, callback.ReturnType);
 
 			foreach (var parameter in callback.Parameters)
-				parameter.ParameterType = module.ImportReference (parameter.ParameterType);
+				parameter.ParameterType = ImportTypeReference (module, parameter.ParameterType);
 
 			if (!callback.HasBody)
 				return;
@@ -595,7 +595,7 @@ namespace Xamarin.Linker {
 			var body = callback.Body;
 
 			foreach (var variable in body.Variables)
-				variable.VariableType = module.ImportReference (variable.VariableType);
+				variable.VariableType = ImportTypeReference (module, variable.VariableType);
 
 			foreach (var instruction in body.Instructions) {
 				switch (instruction.Operand) {
@@ -603,36 +603,96 @@ namespace Xamarin.Linker {
 					instruction.Operand = ImportMethodReference (module, methodReference);
 					break;
 				case TypeReference typeReference:
-					instruction.Operand = module.ImportReference (typeReference);
+					instruction.Operand = ImportTypeReference (module, typeReference);
 					break;
 				case FieldReference fieldReference:
-					instruction.Operand = module.ImportReference (fieldReference);
+					instruction.Operand = ImportFieldReference (module, fieldReference);
 					break;
 				}
 			}
 
 			foreach (var handler in body.ExceptionHandlers) {
 				if (handler.CatchType is not null)
-					handler.CatchType = module.ImportReference (handler.CatchType);
+					handler.CatchType = ImportTypeReference (module, handler.CatchType);
 			}
 		}
 
-		// Imports a method reference into the given module. For generic instance methods
-		// (method specs) we can't rely on ModuleDefinition.ImportReference to re-import the
-		// generic arguments (it leaves them pointing at the original module when the element
-		// method already belongs to the target module), so we rebuild the generic instance
-		// with each generic argument explicitly imported. Otherwise the module would end up
-		// referencing a type declared in another module, and writing it would fail.
+		// Recursively re-imports a type reference into the given module, handling type
+		// specifications (generic instances, arrays, pointers, by-references and modifiers)
+		// whose nested types may still belong to another module. ModuleDefinition.ImportReference
+		// short-circuits when the outermost element already belongs to the target module, leaving
+		// nested types (e.g. the generic arguments of a generic instance) pointing at the original
+		// module, which makes writing the module fail.
+		static TypeReference ImportTypeReference (ModuleDefinition module, TypeReference type)
+		{
+			switch (type) {
+			case GenericParameter:
+				// Generic parameters belong to their owner and must not be imported.
+				return type;
+			case GenericInstanceType git: {
+				var imported = new GenericInstanceType (ImportTypeReference (module, git.ElementType));
+				foreach (var argument in git.GenericArguments)
+					imported.GenericArguments.Add (ImportTypeReference (module, argument));
+				return imported;
+			}
+			case ArrayType array:
+				return new ArrayType (ImportTypeReference (module, array.ElementType), array.Rank);
+			case PointerType pointer:
+				return new PointerType (ImportTypeReference (module, pointer.ElementType));
+			case ByReferenceType byReference:
+				return new ByReferenceType (ImportTypeReference (module, byReference.ElementType));
+			case PinnedType pinned:
+				return new PinnedType (ImportTypeReference (module, pinned.ElementType));
+			case SentinelType sentinel:
+				return new SentinelType (ImportTypeReference (module, sentinel.ElementType));
+			case RequiredModifierType required:
+				return new RequiredModifierType (ImportTypeReference (module, required.ModifierType), ImportTypeReference (module, required.ElementType));
+			case OptionalModifierType optional:
+				return new OptionalModifierType (ImportTypeReference (module, optional.ModifierType), ImportTypeReference (module, optional.ElementType));
+			default:
+				return module.ImportReference (type);
+			}
+		}
+
+		// Imports a method reference into the given module. ModuleDefinition.ImportReference can't
+		// be relied upon to re-import nested types (it leaves them pointing at the original module
+		// when the element method/type already belongs to the target module), so we rebuild the
+		// reference with each nested type explicitly imported. This applies both to generic
+		// instance methods (their generic arguments) and to methods declared on a generic instance
+		// type (the declaring type's generic arguments, e.g. Nullable<nfloat>). Otherwise the module
+		// would end up referencing a type declared in another module, and writing it would fail.
 		static MethodReference ImportMethodReference (ModuleDefinition module, MethodReference methodReference)
 		{
 			if (methodReference is GenericInstanceMethod gim) {
-				var imported = new GenericInstanceMethod (module.ImportReference (gim.ElementMethod));
+				var imported = new GenericInstanceMethod (ImportMethodReference (module, gim.ElementMethod));
 				foreach (var argument in gim.GenericArguments)
-					imported.GenericArguments.Add (module.ImportReference (argument));
+					imported.GenericArguments.Add (ImportTypeReference (module, argument));
 				return imported;
 			}
 
+			if (methodReference.DeclaringType is GenericInstanceType) {
+				var rebuilt = new MethodReference (methodReference.Name, ImportTypeReference (module, methodReference.ReturnType), ImportTypeReference (module, methodReference.DeclaringType)) {
+					HasThis = methodReference.HasThis,
+					ExplicitThis = methodReference.ExplicitThis,
+					CallingConvention = methodReference.CallingConvention,
+				};
+				foreach (var parameter in methodReference.Parameters)
+					rebuilt.Parameters.Add (new ParameterDefinition (parameter.Name, parameter.Attributes, ImportTypeReference (module, parameter.ParameterType)));
+				return rebuilt;
+			}
+
 			return module.ImportReference (methodReference);
+		}
+
+		// Imports a field reference into the given module, rebuilding it when the declaring type is
+		// a generic instance so the declaring type's generic arguments are re-imported (see
+		// ImportMethodReference for the rationale).
+		static FieldReference ImportFieldReference (ModuleDefinition module, FieldReference fieldReference)
+		{
+			if (fieldReference.DeclaringType is GenericInstanceType)
+				return new FieldReference (fieldReference.Name, ImportTypeReference (module, fieldReference.FieldType), ImportTypeReference (module, fieldReference.DeclaringType));
+
+			return module.ImportReference (fieldReference);
 		}
 
 		public void EmitCallToProxyMethod (MethodDefinition method, MethodDefinition callback, MethodDefinition proxyInterfaceMethod)

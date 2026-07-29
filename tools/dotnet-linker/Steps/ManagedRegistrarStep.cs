@@ -89,12 +89,13 @@ namespace Xamarin.Linker {
 		// Whether the registrar trampolines for the given method should be relocated into the
 		// per-assembly companion assembly (_<Asm>.TypeMap.dll) instead of being emitted into the
 		// user assembly. This is required for Hot Reload (user assemblies must stay unmodified).
-		// Only non-generic types are relocated for now; generic-type proxies are a follow-up.
+		// This applies to both non-generic and generic declaring types (generic types dispatch to
+		// a relocated generic helper by reflection, see the generic branch in
+		// CreateUnmanagedCallersMethod).
 		bool ShouldRelocateTrampolines (MethodDefinition method)
 		{
 			return Configuration.HotReloadCompatibleBuild
-				&& App.Registrar == RegistrarMode.TrimmableStatic
-				&& !method.DeclaringType.HasGenericParameters;
+				&& App.Registrar == RegistrarMode.TrimmableStatic;
 		}
 
 		// Finds the companion assembly (_<Asm>.TypeMap) for the given user assembly among the loaded
@@ -483,6 +484,15 @@ namespace Xamarin.Linker {
 			var isGeneric = method.DeclaringType.HasGenericParameters;
 			if (isGeneric && method.IsStatic) {
 				throw ErrorHelper.CreateError (4130 /* The registrar cannot export static methods in generic classes ('{0}'). */, method.FullName);
+			} else if (relocate && isGeneric && !method.IsConstructor) {
+				// When relocating trampolines for Hot Reload we must not modify the user assembly,
+				// so the proxy-interface trick used below (which adds an interface implementation to
+				// the user type) is not an option. Instead we emit a *generic* helper method into
+				// the companion whose body performs the same type-parameter-aware conversions, and
+				// the static UnmanagedCallersOnly callback dispatches to it by reflection (closing
+				// the helper over the instance's actual generic arguments at runtime). This is only
+				// used under a Hot-Reload-compatible build, which always runs under the JIT.
+				EmitGenericCompanionTrampoline (method, callback, callbackType);
 			} else if (isGeneric && !method.IsConstructor) {
 				// We generate a proxy interface for each generic NSObject subclass. In the static UnmanagedCallersOnly methods we don't
 				// know the generic parameters of the type we're working with and we need to use this trick to be able to call methods on the
@@ -577,6 +587,181 @@ namespace Xamarin.Linker {
 			}
 
 			return modified;
+		}
+
+		// Emits the relocated generic trampoline for a method declared in a generic type, when
+		// relocating into the companion assembly for Hot Reload. Rather than adding a proxy
+		// interface implementation to the user type (which would modify the user assembly), we emit
+		// a generic helper method into the companion whose body performs the type-parameter-aware
+		// conversions, and make the static callback dispatch to it by reflection (closing the helper
+		// over the instance's actual generic arguments at runtime). The 'callback' passed in is the
+		// UnmanagedCallersOnly trampoline (with only its 'pobj' parameter added so far).
+		void EmitGenericCompanionTrampoline (MethodDefinition method, MethodDefinition callback, TypeDefinition callbackType)
+		{
+			var module = callback.Module;
+			var placeholderType = abr.System_IntPtr;
+
+			// Create the generic helper method, mirroring the user type's generic parameters.
+			var implMethod = new MethodDefinition (callback.Name + "__impl", MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.HideBySig, placeholderType);
+			callbackType.Methods.Add (implMethod);
+
+			var genericParameterMap = new Dictionary<GenericParameter, GenericParameter> ();
+			foreach (var userGenericParameter in method.DeclaringType.GenericParameters) {
+				var implGenericParameter = new GenericParameter (userGenericParameter.Name, implMethod) {
+					Attributes = userGenericParameter.Attributes,
+				};
+				implMethod.GenericParameters.Add (implGenericParameter);
+				genericParameterMap [userGenericParameter] = implGenericParameter;
+			}
+
+			// Copy the generic parameter constraints in a second pass, since a constraint may
+			// reference another generic parameter of the same type. Constraints must be copied so
+			// that the closed instantiations we create at runtime (via MakeGenericMethod) are valid,
+			// and so that the 'castclass' to the user generic type inside the body verifies.
+			for (var i = 0; i < method.DeclaringType.GenericParameters.Count; i++) {
+				var userGenericParameter = method.DeclaringType.GenericParameters [i];
+				var implGenericParameter = implMethod.GenericParameters [i];
+				foreach (var constraint in userGenericParameter.Constraints) {
+					var constraintType = ImportTypeReference (module, RemapGenericParameter (constraint.ConstraintType, genericParameterMap));
+					implGenericParameter.Constraints.Add (new GenericParameterConstraint (constraintType));
+				}
+			}
+
+			// Add the 'self' parameter (arg0), typed as the user generic type closed over the
+			// helper's own generic parameters (e.g. CustomNSObject<T>). This mirrors the 'this' of
+			// the instance implementation, so EmitCallToExportedMethod can push it with 'ldarg.0'.
+			var selfType = ImportTypeReference (module, method.DeclaringType.CreateGenericInstanceType (implMethod.GenericParameters.ToArray ()));
+			implMethod.AddParameter (selfType); // self
+
+			// Emit the body (parameter/return conversions + the call to the exported method). Because
+			// implMethod has its own generic parameters, EmitCallToExportedMethod remaps the user
+			// type's generic parameters to the helper's parameters and uses them for the call.
+			EmitCallToExportedMethod (method, implMethod);
+			ImportCallbackReferences (implMethod);
+
+			// Build the static UnmanagedCallersOnly callback that dispatches to the helper. Its
+			// signature mirrors the helper's (minus 'self', plus the native 'exception_gchandle'
+			// pointer): [pobj, sel, p0..., IntPtr* exception_gchandle].
+			callback.ReturnType = implMethod.ReturnType;
+			for (var i = 1; i < implMethod.Parameters.Count - 1; i++) {
+				callback.AddParameter (implMethod.Parameters [i].ParameterType);
+			}
+			callback.AddParameter (new PointerType (abr.System_IntPtr)); // exception_gchandle
+
+			EmitGenericReflectionDispatch (method, callback, implMethod);
+
+			// Keep the helper (and everything its body references, including the user method) alive
+			// through trimming. This is emitted on the companion side only; the user assembly is not
+			// modified. The 'ldtoken' reference to implMethod from the callback also keeps it alive.
+			abr.AddDynamicDependencyAttribute (callback, implMethod);
+		}
+
+		// Emits the body of the UnmanagedCallersOnly callback for a relocated generic trampoline. It
+		// resolves the instance, boxes the native arguments into an object array, and calls the
+		// runtime helper which closes the generic helper method over the instance's actual generic
+		// arguments and invokes it. The exception GCHandle is returned by the helper (reflection
+		// can't marshal an 'IntPtr*' output) and written back through the native pointer here.
+		void EmitGenericReflectionDispatch (MethodDefinition method, MethodDefinition callback, MethodDefinition implMethod)
+		{
+			var body = callback.CreateBody (out var il);
+
+			// The helper's leading arguments: 'self' followed by the native arguments ('sel', p0...).
+			// This excludes the trailing 'out IntPtr exception_gchandle' slot.
+			var leadingCount = implMethod.Parameters.Count - 1;
+
+			// var self = Runtime.GetNSObject (pobj);
+			var selfVar = body.AddVariable (abr.Foundation_NSObject);
+			il.Emit (OpCodes.Ldarg_0);
+			il.Emit (OpCodes.Call, abr.Runtime_GetNSObject__System_IntPtr);
+			il.Emit (OpCodes.Stloc, selfVar);
+
+			// var args = new object [leadingCount];
+			var argsVar = body.AddVariable (new ArrayType (abr.System_Object));
+			il.Emit (OpCodes.Ldc_I4, leadingCount);
+			il.Emit (OpCodes.Newarr, abr.System_Object);
+			il.Emit (OpCodes.Stloc, argsVar);
+
+			// args [0] = self;
+			il.Emit (OpCodes.Ldloc, argsVar);
+			il.Emit (OpCodes.Ldc_I4_0);
+			il.Emit (OpCodes.Ldloc, selfVar);
+			il.Emit (OpCodes.Stelem_Ref);
+
+			// args [i] = (object) <native argument i>;   (i: 1..leadingCount-1 -> sel, p0, ...)
+			for (var i = 1; i < leadingCount; i++) {
+				var parameterType = callback.Parameters [i].ParameterType;
+				il.Emit (OpCodes.Ldloc, argsVar);
+				il.Emit (OpCodes.Ldc_I4, i);
+				il.EmitLoadArgument (i);
+				il.Emit (OpCodes.Box, parameterType);
+				il.Emit (OpCodes.Stelem_Ref);
+			}
+
+			// IntPtr exception_gchandle;
+			var exceptionVar = body.AddVariable (abr.System_IntPtr);
+
+			// var rv = Runtime.InvokeGenericRegistrarTrampoline (self, ldtoken (UserType), ldtoken (implMethod), args, out exception_gchandle);
+			il.Emit (OpCodes.Ldloc, selfVar);
+			il.Emit (OpCodes.Ldtoken, method.DeclaringType);
+			il.Emit (OpCodes.Ldtoken, implMethod);
+			il.Emit (OpCodes.Ldloc, argsVar);
+			il.Emit (OpCodes.Ldloca, exceptionVar);
+			il.Emit (OpCodes.Call, abr.Runtime_InvokeGenericRegistrarTrampoline);
+
+			var isVoid = callback.ReturnType.Is ("System", "Void");
+			VariableDefinition? resultVar = null;
+			if (isVoid) {
+				il.Emit (OpCodes.Pop);
+			} else {
+				resultVar = body.AddVariable (abr.System_Object);
+				il.Emit (OpCodes.Stloc, resultVar);
+			}
+
+			// *exception_gchandle = exception_gchandle;
+			il.EmitLoadArgument (callback.Parameters.Count - 1);
+			il.Emit (OpCodes.Ldloc, exceptionVar);
+			il.Emit (OpCodes.Stind_I);
+
+			// return (<nativeReturnType>) rv;
+			if (!isVoid) {
+				il.Emit (OpCodes.Ldloc, resultVar);
+				il.Emit (OpCodes.Unbox_Any, callback.ReturnType);
+			}
+			il.Emit (OpCodes.Ret);
+
+			body.GenerateILOffsets ();
+		}
+
+		// Recursively substitutes generic parameters in a type reference according to the given map.
+		// Used when relocating a generic type's trampoline into a companion generic helper method:
+		// the user type's generic parameters (owned by the type) are remapped to the helper method's
+		// generic parameters.
+		static TypeReference RemapGenericParameter (TypeReference type, IDictionary<GenericParameter, GenericParameter> map)
+		{
+			switch (type) {
+			case GenericParameter genericParameter:
+				return map.TryGetValue (genericParameter, out var mapped) ? mapped : genericParameter;
+			case GenericInstanceType git: {
+				var result = new GenericInstanceType (RemapGenericParameter (git.ElementType, map));
+				foreach (var argument in git.GenericArguments)
+					result.GenericArguments.Add (RemapGenericParameter (argument, map));
+				return result;
+			}
+			case ArrayType array:
+				return new ArrayType (RemapGenericParameter (array.ElementType, map), array.Rank);
+			case PointerType pointer:
+				return new PointerType (RemapGenericParameter (pointer.ElementType, map));
+			case ByReferenceType byReference:
+				return new ByReferenceType (RemapGenericParameter (byReference.ElementType, map));
+			case PinnedType pinned:
+				return new PinnedType (RemapGenericParameter (pinned.ElementType, map));
+			case RequiredModifierType required:
+				return new RequiredModifierType (RemapGenericParameter (required.ModifierType, map), RemapGenericParameter (required.ElementType, map));
+			case OptionalModifierType optional:
+				return new OptionalModifierType (RemapGenericParameter (optional.ModifierType, map), RemapGenericParameter (optional.ElementType, map));
+			default:
+				return type;
+			}
 		}
 
 		// Re-imports every type/method/field reference used by the trampoline (its signature, local
@@ -742,6 +927,21 @@ namespace Xamarin.Linker {
 			var isInstanceCategory = isCategory && StaticRegistrar.HasThisAttribute (method);
 			var isGeneric = method.DeclaringType.HasGenericParameters;
 
+			// When 'callback' is itself a generic method (i.e. it has its own generic parameters), we
+			// are emitting the relocated generic helper into the companion assembly: a static method
+			// mirroring the user type's generic parameters, whose 'self' argument (arg0) is the user
+			// type closed over the helper's own generic parameters. The body is identical to the
+			// instance implementation, except every reference to the user type's generic parameters
+			// must be remapped to the helper's generic parameters.
+			var genericCompanionImpl = callback.HasGenericParameters;
+			Dictionary<GenericParameter, GenericParameter>? genericParameterMap = null;
+			if (genericCompanionImpl) {
+				genericParameterMap = new Dictionary<GenericParameter, GenericParameter> ();
+				for (var i = 0; i < method.DeclaringType.GenericParameters.Count; i++)
+					genericParameterMap [method.DeclaringType.GenericParameters [i]] = callback.GenericParameters [i];
+			}
+			TypeReference RemapType (TypeReference tr) => genericParameterMap is null ? tr : RemapGenericParameter (tr, genericParameterMap);
+
 			Trace (il, $"ENTER");
 
 			if (!isVoid || method.IsConstructor)
@@ -889,7 +1089,7 @@ namespace Xamarin.Linker {
 				for (var p = parameterStart; p < managedParameterCount; p++) {
 					var nativeParameter = callback.AddParameter (placeholderType); // p{p}
 					var nativeParameterIndex = p + nativeParameterOffset;
-					var managedParameterType = method.Parameters [p].ParameterType;
+					var managedParameterType = RemapType (method.Parameters [p].ParameterType);
 					var baseParameter = baseMethod.Parameters [p];
 					var isOutParameter = IsOutParameter (method, p, baseParameter);
 
@@ -909,7 +1109,15 @@ namespace Xamarin.Linker {
 			if (callSuperParameter is not null)
 				callback.Parameters.Add (callSuperParameter);
 
-			callback.AddParameter (new PointerType (abr.System_IntPtr)); // exception_gchandle
+			// For the relocated generic companion helper the trampoline is dispatched via reflection,
+			// which can't marshal an 'IntPtr*' (pointer) argument, so we use a byref 'out IntPtr'
+			// (which reflection handles as a standard output parameter). The runtime helper writes the
+			// resulting GCHandle into the UnmanagedCallersOnly callback's native 'IntPtr*' pointer.
+			if (genericCompanionImpl) {
+				callback.AddParameter (new ByReferenceType (abr.System_IntPtr)); // exception_gchandle
+			} else {
+				callback.AddParameter (new PointerType (abr.System_IntPtr)); // exception_gchandle
+			}
 
 			if (relocatedCtorObjVar is not null) {
 				// The object was allocated earlier and pushed onto the stack (underneath the
@@ -925,7 +1133,10 @@ namespace Xamarin.Linker {
 				il.Emit (OpCodes.Ldnull);
 				il.Emit (OpCodes.Newobj, ctor);
 			} else if (isGeneric && !method.IsConstructor) {
-				var targetMethod = method.DeclaringType.CreateMethodReferenceOnGenericType (method, method.DeclaringType.GenericParameters.ToArray ());
+				var genericArguments = genericCompanionImpl
+					? callback.GenericParameters.ToArray ()
+					: method.DeclaringType.GenericParameters.ToArray ();
+				var targetMethod = method.DeclaringType.CreateMethodReferenceOnGenericType (method, genericArguments);
 				il.Emit (OpCodes.Call, targetMethod);
 			} else if (method.IsStatic) {
 				il.Emit (OpCodes.Call, method);
@@ -934,7 +1145,7 @@ namespace Xamarin.Linker {
 			}
 
 			if (returnVariable is not null) {
-				if (EmitConversion (method, il, method.ReturnType, false, -1, out var nativeReturnType, postProcessing)) {
+				if (EmitConversion (method, il, RemapType (method.ReturnType), false, -1, out var nativeReturnType, postProcessing)) {
 					returnVariable.VariableType = nativeReturnType;
 					callback.ReturnType = nativeReturnType;
 				} else {
@@ -958,7 +1169,7 @@ namespace Xamarin.Linker {
 					body.Instructions.RemoveAt (i);
 			}
 
-			AddExceptionHandler (il, returnVariable, placeholderNextInstruction, isGeneric && !method.IsConstructor, out var eh, out var leaveEHInstruction);
+			AddExceptionHandler (il, returnVariable, placeholderNextInstruction, out var eh, out var leaveEHInstruction);
 
 			// Generate code to return null/default value/void
 			if (returnVariable is not null) {
@@ -998,7 +1209,7 @@ namespace Xamarin.Linker {
 			body.GenerateILOffsets ();
 		}
 
-		void AddExceptionHandler (ILProcessor il, VariableDefinition? returnVariable, Instruction placeholderNextInstruction, bool isGeneric, out ExceptionHandler eh, out Instruction leaveEHInstruction)
+		void AddExceptionHandler (ILProcessor il, VariableDefinition? returnVariable, Instruction placeholderNextInstruction, out ExceptionHandler eh, out Instruction leaveEHInstruction)
 		{
 			var body = il.Body;
 			var method = body.Method;
@@ -1013,7 +1224,10 @@ namespace Xamarin.Linker {
 			il.Emit (OpCodes.Stloc, exceptionVariable);
 			eh.HandlerStart = il.Body.Instructions.Last ();
 			eh.TryEnd = eh.HandlerStart;
-			il.Emit (OpCodes.Ldarg, isGeneric ? method.Parameters.Count : method.Parameters.Count - 1);
+			// The exception_gchandle output pointer is always the last parameter of the trampoline
+			// (whether the trampoline is a static callback or an instance/static implementation
+			// method). Account for the implicit 'this' argument when the method has one.
+			il.Emit (OpCodes.Ldarg, (method.HasThis ? 1 : 0) + method.Parameters.Count - 1);
 			il.Emit (OpCodes.Ldloc, exceptionVariable);
 			il.Emit (OpCodes.Call, abr.Runtime_AllocGCHandle);
 			il.Emit (OpCodes.Stind_I);

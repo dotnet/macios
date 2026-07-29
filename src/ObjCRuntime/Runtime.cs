@@ -2689,6 +2689,51 @@ namespace ObjCRuntime {
 			return parameters [parameter].ParameterType.GetElementType ()!; // FIX NAMING
 		}
 
+		// Invokes a relocated generic registrar trampoline helper.
+		//
+		// When the trimmable static registrar relocates the registrar trampolines into a companion
+		// assembly (for Hot Reload, so the user assembly stays unmodified), the trampoline for a
+		// method declared in a generic type can't be relocated as-is: the static UnmanagedCallersOnly
+		// callback doesn't know the generic parameters of the instance, and we can't add the
+		// virtual-dispatch proxy to the user type (that would modify the user assembly). Instead we
+		// emit a *generic* helper method ('open_impl' below) into the companion assembly whose body
+		// performs the type-parameter-aware conversions, and the static callback dispatches to it
+		// here: we close the generic helper over the instance's actual generic arguments and invoke
+		// it. This reflection-based dispatch is only ever used under a Hot-Reload-compatible build,
+		// which always runs under the JIT (never NativeAOT), so MakeGenericMethod is safe.
+		//
+		// 'args' holds the leading arguments of the helper (the instance followed by the native
+		// arguments); this method appends the trailing 'out IntPtr exception_gchandle' slot, invokes
+		// the closed helper, and returns its (boxed) native return value. Any failure is caught and
+		// reported through 'exception_gchandle' so no exception escapes the UnmanagedCallersOnly
+		// boundary.
+		[UnconditionalSuppressMessage ("", "IL2060", Justification = "This code is only reachable under a Hot-Reload-compatible build, which always runs under the JIT (never NativeAOT), so MakeGenericMethod is safe. The generic helper and its instantiations are kept alive by the companion assembly.")]
+		[UnconditionalSuppressMessage ("", "IL3050", Justification = "This code is only reachable under a Hot-Reload-compatible build, which always runs under the JIT (never NativeAOT), so MakeGenericMethod is safe.")]
+		internal static object? InvokeGenericRegistrarTrampoline (object instance, RuntimeTypeHandle open_user_type_handle, RuntimeMethodHandle open_impl_method_handle, object? [] args, out IntPtr exception_gchandle)
+		{
+			exception_gchandle = IntPtr.Zero;
+			try {
+				var open_user_type = Type.GetTypeFromHandle (open_user_type_handle)!;
+				var closed_user_type = FindClosedTypeInHierarchy (open_user_type, instance.GetType ())!;
+				var type_arguments = closed_user_type.GetGenericArguments ();
+				var open_impl = (MethodInfo) MethodBase.GetMethodFromHandle (open_impl_method_handle)!;
+				var closed_impl = open_impl.MakeGenericMethod (type_arguments);
+
+				// Append the trailing 'out IntPtr exception_gchandle' slot and invoke the closed helper.
+				// The slot is pre-initialized to IntPtr.Zero so that the (success) code path, which
+				// leaves the byref output untouched, reports "no exception".
+				var full = new object? [args.Length + 1];
+				Array.Copy (args, full, args.Length);
+				full [args.Length] = IntPtr.Zero;
+				var rv = closed_impl.Invoke (null, full);
+				exception_gchandle = (IntPtr) full [args.Length]!;
+				return rv;
+			} catch (Exception e) {
+				exception_gchandle = AllocGCHandle (e);
+				return null;
+			}
+		}
+
 		// This method might be called by the generated code from the managed static registrar.
 		static void TraceCaller (string message)
 		{

@@ -1133,6 +1133,20 @@ namespace Xamarin.Linker {
 			}
 		}
 
+		public MethodReference Runtime_InvokeGenericRegistrarTrampoline {
+			get {
+				return GetMethodReference (PlatformAssembly,
+						ObjCRuntime_Runtime, "InvokeGenericRegistrarTrampoline",
+						nameof (Runtime_InvokeGenericRegistrarTrampoline),
+						isStatic: true,
+						System_Object,
+						System_RuntimeTypeHandle,
+						System_RuntimeMethodHandle,
+						new ArrayType (System_Object),
+						new ByReferenceType (System_IntPtr));
+			}
+		}
+
 		public MethodReference BlockLiteral_CreateBlockForDelegate {
 			get {
 				return GetMethodReference (PlatformAssembly,

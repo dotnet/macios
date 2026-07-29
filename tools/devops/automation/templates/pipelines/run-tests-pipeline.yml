@@ -6,11 +6,6 @@ parameters:
     type: boolean
     default: false
 
-  - name: provisionatorChannel
-    displayName: Provisionator channel to use 
-    type: string
-    default: 'latest'
-
   - name: macOSName # comes from the build agent demand named macOS.Name
     displayName: Name of the version of macOS to use
     type: string
@@ -63,7 +58,6 @@ stages:
       xcodeChannel: $(xcodeChannel)
       macOSName: ${{ parameters.macOSName }}
       isPR: ${{ parameters.isPR }}
-      provisionatorChannel: ${{ parameters.provisionatorChannel }}
       runTests: ${{ parameters.runTests }}
       runWindowsIntegration: ${{ parameters.runWindowsIntegration }}
       buildPackages: ${{ parameters.buildPackages }}

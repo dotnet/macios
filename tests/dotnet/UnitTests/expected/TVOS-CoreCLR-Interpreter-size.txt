@@ -1,29 +1,29 @@
-AppBundleSize: 8,087,831 bytes (7,898.3 KB = 7.7 MB)
+AppBundleSize: 8,327,407 bytes (8,132.2 KB = 7.9 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 Frameworks/libcoreclr.framework/Info.plist:
-    798 bytes (0.8 KB = 0.0 MB)
+    834 bytes (0.8 KB = 0.0 MB)
 Frameworks/libcoreclr.framework/libcoreclr:
-    4,200,608 bytes (4,102.2 KB = 4.0 MB)
+    4,274,368 bytes (4,174.2 KB = 4.1 MB)
 Frameworks/libSystem.Globalization.Native.framework/Info.plist:
-    840 bytes (0.8 KB = 0.0 MB)
+    876 bytes (0.9 KB = 0.0 MB)
 Frameworks/libSystem.Globalization.Native.framework/libSystem.Globalization.Native:
-    90,576 bytes (88.5 KB = 0.1 MB)
+    124,608 bytes (121.7 KB = 0.1 MB)
 Frameworks/libSystem.IO.Compression.Native.framework/Info.plist:
-    842 bytes (0.8 KB = 0.0 MB)
+    878 bytes (0.9 KB = 0.0 MB)
 Frameworks/libSystem.IO.Compression.Native.framework/libSystem.IO.Compression.Native:
-    1,393,600 bytes (1,360.9 KB = 1.3 MB)
+    1,437,904 bytes (1,404.2 KB = 1.4 MB)
 Frameworks/libSystem.Native.framework/Info.plist:
-    812 bytes (0.8 KB = 0.0 MB)
+    848 bytes (0.8 KB = 0.0 MB)
 Frameworks/libSystem.Native.framework/libSystem.Native:
-    143,216 bytes (139.9 KB = 0.1 MB)
+    177,536 bytes (173.4 KB = 0.2 MB)
 Frameworks/libSystem.Security.Cryptography.Native.Apple.framework/Info.plist:
-    868 bytes (0.8 KB = 0.0 MB)
+    904 bytes (0.9 KB = 0.0 MB)
 Frameworks/libSystem.Security.Cryptography.Native.Apple.framework/libSystem.Security.Cryptography.Native.Apple:
-    195,056 bytes (190.5 KB = 0.2 MB)
+    230,080 bytes (224.7 KB = 0.2 MB)
 Info.plist:
-    1,126 bytes (1.1 KB = 0.0 MB)
+    1,162 bytes (1.1 KB = 0.0 MB)
 Microsoft.tvOS.dll:
-    98,816 bytes (96.5 KB = 0.1 MB)
+    99,328 bytes (97.0 KB = 0.1 MB)
 PkgInfo:
     8 bytes (0.0 KB = 0.0 MB)
 runtimeconfig.bin:
@@ -41,7 +41,7 @@ System.IO.Compression.dll:
 System.IO.MemoryMappedFiles.dll:
     22,016 bytes (21.5 KB = 0.0 MB)
 System.Private.CoreLib.dll:
-    1,610,752 bytes (1,573.0 KB = 1.5 MB)
+    1,628,160 bytes (1,590.0 KB = 1.6 MB)
 System.Reflection.Metadata.dll:
     84,480 bytes (82.5 KB = 0.1 MB)
 System.Runtime.dll:

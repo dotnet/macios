@@ -1,21 +1,21 @@
-AppBundleSize: 9,507,341 bytes (9,284.5 KB = 9.1 MB)
+AppBundleSize: 9,741,761 bytes (9,513.4 KB = 9.3 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 Contents/Info.plist:
-    1,060 bytes (1.0 KB = 0.0 MB)
+    1,096 bytes (1.1 KB = 0.0 MB)
 Contents/MacOS/SizeTestApp:
-    229,416 bytes (224.0 KB = 0.2 MB)
+    229,976 bytes (224.6 KB = 0.2 MB)
 Contents/MonoBundle/libcoreclr.dylib:
-    5,482,504 bytes (5,354.0 KB = 5.2 MB)
+    5,533,392 bytes (5,403.7 KB = 5.3 MB)
 Contents/MonoBundle/libSystem.Globalization.Native.dylib:
-    92,776 bytes (90.6 KB = 0.1 MB)
+    126,112 bytes (123.2 KB = 0.1 MB)
 Contents/MonoBundle/libSystem.IO.Compression.Native.dylib:
-    1,413,320 bytes (1,380.2 KB = 1.3 MB)
+    1,446,368 bytes (1,412.5 KB = 1.4 MB)
 Contents/MonoBundle/libSystem.Native.dylib:
-    130,440 bytes (127.4 KB = 0.1 MB)
+    163,472 bytes (159.6 KB = 0.2 MB)
 Contents/MonoBundle/libSystem.Net.Security.Native.dylib:
-    53,544 bytes (52.3 KB = 0.1 MB)
+    86,592 bytes (84.6 KB = 0.1 MB)
 Contents/MonoBundle/libSystem.Security.Cryptography.Native.Apple.dylib:
-    209,928 bytes (205.0 KB = 0.2 MB)
+    242,992 bytes (237.3 KB = 0.2 MB)
 Contents/MonoBundle/Microsoft.MacCatalyst.dll:
     101,888 bytes (99.5 KB = 0.1 MB)
 Contents/MonoBundle/runtimeconfig.bin:
@@ -31,7 +31,7 @@ Contents/MonoBundle/System.IO.Compression.dll:
 Contents/MonoBundle/System.IO.MemoryMappedFiles.dll:
     22,016 bytes (21.5 KB = 0.0 MB)
 Contents/MonoBundle/System.Private.CoreLib.dll:
-    1,620,992 bytes (1,583.0 KB = 1.5 MB)
+    1,638,400 bytes (1,600.0 KB = 1.6 MB)
 Contents/MonoBundle/System.Reflection.Metadata.dll:
     84,480 bytes (82.5 KB = 0.1 MB)
 Contents/MonoBundle/System.Runtime.dll:

@@ -90,6 +90,10 @@ namespace Xamarin.Linker {
 
 			abr.SetCurrentAssembly (rootTypeMapAssembly);
 
+			// Don't mark the entry assembly as trimmable, we only want to do this for the assembly we created ourselves.
+			if (!useEntryAssemblyAsRootTypeMapAssembly)
+				MarkAssemblyAsTrimmable (rootTypeMapAssembly);
+
 			foreach (var assembly in assemblies.OrderBy (v => v.FullName)) {
 				/*
 				 * [assembly: TypeMapAssemblyTarget<NSObject> ("...")]

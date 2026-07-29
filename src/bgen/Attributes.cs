@@ -228,10 +228,27 @@ public class StaticAttribute : Attribute {
 	public StaticAttribute () { }
 }
 
-// When applied to a type generate a partial class even if the type does not subclass NSObject
-// useful for Core* types that declare Fields
+/// <summary>Generates a partial type for binding members added to a manually implemented type.</summary>
 public class PartialAttribute : Attribute {
+	/// <summary>Initializes a new instance of the <see cref="PartialAttribute" /> class.</summary>
 	public PartialAttribute () { }
+
+	/// <summary>Gets or sets whether to generate a partial struct instead of a partial class.</summary>
+	public bool IsStruct { get; set; }
+}
+
+/// <summary>Loads the address of a native symbol instead of the pointer stored at that address.</summary>
+[AttributeUsage (AttributeTargets.Property)]
+public class SymbolAddressAttribute : Attribute {
+	/// <summary>Initializes a new instance of the <see cref="SymbolAddressAttribute" /> class.</summary>
+	public SymbolAddressAttribute () { }
+}
+
+/// <summary>Returns the default value when a native symbol cannot be found.</summary>
+[AttributeUsage (AttributeTargets.Property)]
+public class DefaultValueOnMissingSymbolAttribute : Attribute {
+	/// <summary>Initializes a new instance of the <see cref="DefaultValueOnMissingSymbolAttribute" /> class.</summary>
+	public DefaultValueOnMissingSymbolAttribute () { }
 }
 
 // flags the backing field for the property to with .NET's [ThreadStatic] property

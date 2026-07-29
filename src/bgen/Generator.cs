@@ -5869,7 +5869,9 @@ public partial class Generator : IMemberGatherer {
 			this.sw = sw;
 			bool is_category_class = AttributeManager.HasAttribute<CategoryAttribute> (type);
 			bool is_static_class = AttributeManager.HasAttribute<StaticAttribute> (type) || is_category_class;
-			bool is_partial = AttributeManager.HasAttribute<PartialAttribute> (type);
+			var partialAttribute = AttributeManager.GetCustomAttribute<PartialAttribute> (type);
+			bool is_partial = partialAttribute is not null;
+			bool is_partial_struct = partialAttribute?.IsStruct == true;
 			var model = AttributeManager.GetCustomAttribute<ModelAttribute> (type);
 			bool is_model = model is not null;
 			var protocol = AttributeManager.GetCustomAttribute<ProtocolAttribute> (type);
@@ -6090,9 +6092,10 @@ public partial class Generator : IMemberGatherer {
 					where_list += " ";
 			}
 
-			print ("{0} unsafe {1}partial class {2} {3} {4}{{",
+			print ("{0} unsafe {1}partial {2} {3} {4} {5}{{",
 				   class_visibility,
 				   class_mod,
+				   is_partial_struct ? "struct" : "class",
 				   class_name,
 				   implements_list.Count == 0 ? string.Empty : ": " + string.Join (", ", implements_list),
 				   where_list);
@@ -6644,7 +6647,10 @@ public partial class Generator : IMemberGatherer {
 					} else if (field_pi.PropertyType == TypeCache.System_Float) {
 						print ("return Dlfcn.GetFloat (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
 					} else if (field_pi.PropertyType == TypeCache.System_IntPtr) {
-						print ("return Dlfcn.GetIntPtr (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
+						if (AttributeManager.HasAttribute<SymbolAddressAttribute> (field_pi))
+							print ("return Dlfcn.GetIndirect (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
+						else
+							print ("return Dlfcn.GetIntPtr (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
 					} else if (field_pi.PropertyType == TypeCache.System_UIntPtr) {
 						print ("return Dlfcn.GetUIntPtr (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
 					} else if (field_pi.PropertyType == TypeCache.System_Int64) {
@@ -6698,6 +6704,12 @@ public partial class Generator : IMemberGatherer {
 								else
 									throw new BindingException (1014, true, fieldTypeName, FormatPropertyInfo (field_pi));
 							}
+						} else if (field_pi.PropertyType.IsValueType) {
+							var valueTypeName = TypeManager.FormatType (type, field_pi.PropertyType.Namespace, field_pi.PropertyType.Name);
+							if (AttributeManager.HasAttribute<DefaultValueOnMissingSymbolAttribute> (field_pi))
+								print ("return Dlfcn.GetStruct<{3}> (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name, valueTypeName);
+							else
+								print ("return *(({3} *) Dlfcn.dlsym (Libraries.{2}.Handle, \"{1}\"));", field_pi.Name, fieldAttr.SymbolName, library_name, valueTypeName);
 						} else {
 							if (field_pi.PropertyType == TypeCache.System_String)
 								throw new BindingException (1013, true);

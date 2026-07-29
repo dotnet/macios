@@ -1626,6 +1626,27 @@ namespace GeneratorTests {
 
 		[Test]
 		[TestCase (Profile.iOS)]
+		public void NativeFieldGeneration (Profile profile)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
+			var bgen = BuildFile (profile, "native-field-generation.cs");
+
+			var structFile = Path.Combine (bgen.TmpDirectory!, "NativeFieldGeneration", "NativeStruct.g.cs");
+			Assert.That (File.Exists (structFile), Is.True, "Generated struct file exists");
+			var structContents = File.ReadAllText (structFile);
+			Assert.That (structContents, Does.Contain ("public unsafe partial struct NativeStruct"), "Partial struct");
+			Assert.That (structContents, Does.Contain ("return *((NativeStruct *) Dlfcn.dlsym (Libraries.__Internal.Handle, \"RequiredStruct\"));"), "Required struct");
+			Assert.That (structContents, Does.Contain ("return Dlfcn.GetStruct<NativeStruct> (Libraries.__Internal.Handle, \"OptionalStruct\");"), "Optional struct");
+			Assert.That (structContents, Does.Contain ("public static NSString? NullableString"), "Nullable field");
+
+			var addressFile = Path.Combine (bgen.TmpDirectory!, "NativeFieldGeneration", "SymbolAddresses.g.cs");
+			Assert.That (File.Exists (addressFile), Is.True, "Generated address file exists");
+			var addressContents = File.ReadAllText (addressFile);
+			Assert.That (addressContents, Does.Contain ("return Dlfcn.GetIndirect (Libraries.__Internal.Handle, \"CallbackTable\");"), "Symbol address");
+		}
+
+		[Test]
+		[TestCase (Profile.iOS)]
 		[TestCase (Profile.tvOS)]
 		[TestCase (Profile.MacCatalyst)]
 		[TestCase (Profile.macOSMobile)]

@@ -30,15 +30,15 @@ namespace Xamarin.MacDev.Tasks {
 
 		#endregion
 
-		List<string> GenerateCommandLineCommands ()
+		List<string> GenerateCommandLineCommands (string input, string output)
 		{
 			var args = new List<string> ();
 
 			args.Add ("-convert");
 			args.Add ("binary1");
 			args.Add ("-o");
-			args.Add (Output!.ItemSpec);
-			args.Add (Input!.ItemSpec);
+			args.Add (output);
+			args.Add (input);
 
 			return args;
 		}
@@ -48,8 +48,13 @@ namespace Xamarin.MacDev.Tasks {
 			if (ShouldExecuteRemotely ())
 				return ExecuteRemotely ();
 
-			Directory.CreateDirectory (Path.GetDirectoryName (Output!.ItemSpec)!);
-			var args = GenerateCommandLineCommands ();
+			var input = Input!.ItemSpec;
+			var output = Output!.ItemSpec;
+
+			var outputDirectory = Path.GetDirectoryName (output);
+			if (!string.IsNullOrEmpty (outputDirectory))
+				Directory.CreateDirectory (outputDirectory);
+			var args = GenerateCommandLineCommands (input, output);
 			var executable = GetExecutable (args, "plutil", PlutilPath);
 			cancellationTokenSource = new CancellationTokenSource ();
 			ExecuteAsync (executable, args, cancellationToken: cancellationTokenSource.Token).Wait ();

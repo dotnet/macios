@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 
 using Microsoft.Build.Framework;
@@ -20,12 +19,19 @@ namespace Xamarin.MacDev.Tasks {
 
 		public override bool Execute ()
 		{
-			var plist = PObject.FromFile (Input!.ItemSpec);
-			if (plist is null)
-				throw new FormatException ($"Could not parse the property list '{Input.ItemSpec}'.");
+			var input = Input!.ItemSpec;
+			var output = Output!.ItemSpec;
 
-			Directory.CreateDirectory (Path.GetDirectoryName (Output!.ItemSpec)!);
-			plist.Save (Output.ItemSpec, binary: true);
+			var plist = PObject.FromFile (input);
+			if (plist is null) {
+				Log.LogError (null, null, null, input, 0, 0, 0, 0, "Could not parse the property list '{0}'.", input);
+				return false;
+			}
+
+			var outputDirectory = Path.GetDirectoryName (output);
+			if (!string.IsNullOrEmpty (outputDirectory))
+				Directory.CreateDirectory (outputDirectory);
+			plist.Save (output, binary: true);
 			return true;
 		}
 	}

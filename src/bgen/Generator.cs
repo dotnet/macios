@@ -5859,7 +5859,8 @@ public partial class Generator : IMemberGatherer {
 			type_needs_thread_checks = tsa is not null && !tsa.Safe;
 		}
 
-		string TypeName = Nomenclator.GetGeneratedTypeName (type);
+		var partialAttribute = AttributeManager.GetCustomAttribute<PartialAttribute> (type);
+		string TypeName = partialAttribute?.Name ?? Nomenclator.GetGeneratedTypeName (type);
 		indent = 0;
 		var instance_fields_to_clear_on_dispose = new List<string> ();
 		var gtype = GeneratedTypes.Lookup (type);
@@ -5869,7 +5870,6 @@ public partial class Generator : IMemberGatherer {
 			this.sw = sw;
 			bool is_category_class = AttributeManager.HasAttribute<CategoryAttribute> (type);
 			bool is_static_class = AttributeManager.HasAttribute<StaticAttribute> (type) || is_category_class;
-			var partialAttribute = AttributeManager.GetCustomAttribute<PartialAttribute> (type);
 			bool is_partial = partialAttribute is not null;
 			bool is_partial_struct = partialAttribute?.IsStruct == true;
 			var model = AttributeManager.GetCustomAttribute<ModelAttribute> (type);
@@ -7508,7 +7508,7 @@ public partial class Generator : IMemberGatherer {
 			}
 
 			indent--;
-			print ("}} /* class {0} */", TypeName);
+			print ("}} /* {0} {1} */", is_partial_struct ? "struct" : "class", TypeName);
 
 			//
 			// Copy delegates from the API files into the output if they were declared there

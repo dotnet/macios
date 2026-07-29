@@ -235,6 +235,9 @@ public class PartialAttribute : Attribute {
 
 	/// <summary>Gets or sets whether to generate a partial struct instead of a partial class.</summary>
 	public bool IsStruct { get; set; }
+
+	/// <summary>Gets or sets the name of the existing type to extend.</summary>
+	public string? Name { get; set; }
 }
 
 /// <summary>Loads the address of a native symbol instead of the pointer stored at that address.</summary>

@@ -71,6 +71,8 @@ public class AttributeManager {
 			return typeof (DefaultValueAttribute);
 		case "DefaultValueFromArgumentAttribute":
 			return typeof (DefaultValueFromArgumentAttribute);
+		case "DefaultValueOnMissingSymbolAttribute":
+			return typeof (DefaultValueOnMissingSymbolAttribute);
 		case "DelegateApiNameAttribute":
 			return typeof (DelegateApiNameAttribute);
 		case "DelegateNameAttribute":
@@ -166,6 +168,8 @@ public class AttributeManager {
 			return typeof (OptionalImplementationAttribute);
 		case "OverrideAttribute":
 			return typeof (OverrideAttribute);
+		case "PartialAttribute":
+			return typeof (PartialAttribute);
 		case "PostGetAttribute":
 			return typeof (PostGetAttribute);
 		case "PrologueSnippetAttribute":
@@ -184,6 +188,8 @@ public class AttributeManager {
 			return typeof (StaticAttribute);
 		case "StrongDictionaryAttribute":
 			return typeof (StrongDictionaryAttribute);
+		case "SymbolAddressAttribute":
+			return typeof (SymbolAddressAttribute);
 		case "System.Boolean":
 			return typeof (System.Boolean);
 		case "System.ComponentModel.EditorBrowsableAttribute":

@@ -3,12 +3,18 @@
 
 #nullable enable
 
+using System;
+
 using Foundation;
 
 namespace NativeFieldGeneration {
 
-	[Partial (IsStruct = true)]
-	interface NativeStruct {
+	public struct NativeStruct {
+		public int Value;
+	}
+
+	[Partial (IsStruct = true, Name = nameof (NativeStruct))]
+	interface NativeStructFields {
 		[Field ("RequiredStruct", "__Internal")]
 		NativeStruct Required { get; }
 

@@ -1631,7 +1631,7 @@ namespace GeneratorTests {
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
 			var bgen = BuildFile (profile, "native-field-generation.cs");
 
-			var structFile = Path.Combine (bgen.TmpDirectory!, "NativeFieldGeneration", "NativeStruct.g.cs");
+			var structFile = Path.Combine (bgen.TmpDirectory!, "NativeFieldGeneration", "NativeStructFields.g.cs");
 			Assert.That (File.Exists (structFile), Is.True, "Generated struct file exists");
 			var structContents = File.ReadAllText (structFile);
 			Assert.That (structContents, Does.Contain ("public unsafe partial struct NativeStruct"), "Partial struct");

@@ -29,7 +29,7 @@ public abstract class BaseClass {
 		var rv = AssertPrepareCode (platform, isCoreCLR, p => {
 			p.Registrar = registrar;
 			preparer = p;
-		}, code, out string outputPath, extraConfig);
+		}, code, out string outputPath, extraConfig: extraConfig);
 		var resolver = new DefaultAssemblyResolver ();
 		var dirs = preparer!.Assemblies.Select (v => Path.GetDirectoryName (v.OutputPath)).Distinct ().ToList ();
 		dirs.ForEach (v => resolver.AddSearchDirectory (v));

@@ -195,7 +195,8 @@ namespace Xamarin.Linker {
 					// Types defined in the type map assembly itself already have a TypeDef row.
 					if (type.Scope == module)
 						continue;
-					if (seen.Add (type.FullName))
+					// Deduplicate on the scope too: two different assemblies can have types with the same full name.
+					if (seen.Add (type.Scope?.Name + "!" + type.FullName))
 						externalTypes.Add (type);
 				}
 			}

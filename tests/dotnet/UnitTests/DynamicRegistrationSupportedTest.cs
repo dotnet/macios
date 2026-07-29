@@ -31,12 +31,26 @@ namespace Xamarin.Tests {
 			properties ["PrepareAssemblies"] = "true";
 			properties ["PostProcessAssemblies"] = "true";
 			properties ["DynamicRegistrationSupported"] = dynamicRegistrationSupported;
+			// Link libxamarin statically so the native linker dead-strips the dynamic registrar's trampoline
+			// into (or out of) the main executable. Otherwise the simulator default (a dynamic libxamarin)
+			// would always keep the trampoline symbol in the dylib, where the check below can't observe it.
+			properties ["_LibXamarinLinkMode"] = "static";
 
 			var rv = DotNet.AssertBuild (project_path, properties);
 
 			var featureSwitch = GetRuntimeHostConfigurationOption (rv.BinLogPath, "ObjCRuntime.Runtime.DynamicRegistrationSupported");
 			Assert.That (featureSwitch, Is.Not.Null, "The DynamicRegistrationSupported feature switch must be set.");
 			Assert.That (featureSwitch?.GetMetadata ("Value"), Is.EqualTo (dynamicRegistrationSupported), "The feature switch value must match the user-specified value.");
+
+			if (!Configuration.IsBuildingRemotely) {
+				var appPath = GetAppPath (project_path, platform, runtimeIdentifiers);
+				var appExecutable = GetNativeExecutable (platform, appPath);
+				var symbols = AssertExecute ("nm", "-j", appExecutable).ToString ().Split ('\n', StringSplitOptions.RemoveEmptyEntries);
+				if (dynamicRegistrationSupported == "true")
+					Assert.That (symbols, Does.Contain ("_xamarin_invoke_trampoline"), "The dynamic registrar's native trampoline must be linked when dynamic registration is supported.");
+				else
+					Assert.That (symbols, Does.Not.Contain ("_xamarin_invoke_trampoline"), "The dynamic registrar's native trampoline must not be linked when dynamic registration is unsupported.");
+			}
 		}
 
 		[Test]

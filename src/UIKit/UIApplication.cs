@@ -18,8 +18,7 @@ using CoreFoundation;
 namespace UIKit {
 	/// <include file="../../docs/api/UIKit/UIKitThreadAccessException.xml" path="/Documentation/Docs[@DocId='T:UIKit.UIKitThreadAccessException']/*" />
 	public class UIKitThreadAccessException : Exception {
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Initializes a new instance of the <see cref="UIKitThreadAccessException" /> class.</summary>
 		public UIKitThreadAccessException () : base ("UIKit Consistency error: you are calling a UIKit method that can only be invoked from the UI thread.")
 		{
 		}
@@ -47,7 +46,6 @@ namespace UIKit {
 		///         </remarks>
 		public static bool CheckForIllegalCrossThreadCalls = true;
 		/// <summary>If <see langword="true" />, the system will try to diagnose potential mistakes where events and delegate-object overrides are in conflict.</summary>
-		///         <remarks>To be added.</remarks>
 		public static bool CheckForEventAndDelegateMismatches = true;
 
 		// We link with __Internal here so that this function is interposable from third-party native libraries.
@@ -149,13 +147,9 @@ namespace UIKit {
 		}
 	}
 
-	/// <summary>Provides data for the  event.</summary>
-	///     <remarks>
-	///     </remarks>
+	/// <summary>Provides data for the <see cref="UIContentSizeCategory" /> changed event.</summary>
 	public partial class UIContentSizeCategoryChangedEventArgs {
 		/// <summary>The new size of the content, e.g., the new font size, in points.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		public UIContentSizeCategory NewValue {
 			get {
 				return UIContentSizeCategoryExtensions.GetValue (WeakNewValue);

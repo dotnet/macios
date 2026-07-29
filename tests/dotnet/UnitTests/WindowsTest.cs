@@ -105,12 +105,12 @@ namespace Xamarin.Tests {
 			{
 				// 'full-paths-exceeding-two-hundred-and-sixty-characters' is a subdirectory inside the FrameworkWithLongFileNames framework
 				"full-paths-exceeding-two-hundred-and-sixty-characters",
-				// 'especially-when-contained-in-other-directories.h' is a file inside the FrameworkWithLongFileNames framework
-				"especially-when-contained-in-other-directories.h",
+				// 'especially-when-contained-in-other-directories.txt' is a file inside the FrameworkWithLongFileNames framework
+				"especially-when-contained-in-other-directories.txt",
 			};
 			foreach (var ip in invalidPaths) {
 				var withLongFilenames = allFiles.Where (v => v.RelativePath.Contains (ip)).ToArray ();
-				Assert.That (longerThanMax, Is.Empty, $"No paths with '{ip}'");
+				Assert.That (withLongFilenames, Is.Empty, $"No paths with '{ip}'");
 			}
 		}
 

@@ -10,6 +10,7 @@
 
 #nullable enable
 
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -2707,17 +2708,27 @@ namespace ObjCRuntime {
 		// the closed helper, and returns its (boxed) native return value. Any failure is caught and
 		// reported through 'exception_gchandle' so no exception escapes the UnmanagedCallersOnly
 		// boundary.
+		// Caches the closed generic helper method per (open helper method, closed instance type), so
+		// that the reflection cost (FindClosedTypeInHierarchy + MakeGenericMethod) is only paid once
+		// per instantiation instead of on every call.
+		static readonly ConcurrentDictionary<(RuntimeMethodHandle OpenImplMethod, RuntimeTypeHandle ClosedInstanceType), MethodInfo> closedGenericRegistrarTrampolines = new ();
+
 		[UnconditionalSuppressMessage ("", "IL2060", Justification = "This code is only reachable under a Hot-Reload-compatible build, which always runs under the JIT (never NativeAOT), so MakeGenericMethod is safe. The generic helper and its instantiations are kept alive by the companion assembly.")]
 		[UnconditionalSuppressMessage ("", "IL3050", Justification = "This code is only reachable under a Hot-Reload-compatible build, which always runs under the JIT (never NativeAOT), so MakeGenericMethod is safe.")]
 		internal static object? InvokeGenericRegistrarTrampoline (object instance, RuntimeTypeHandle open_user_type_handle, RuntimeMethodHandle open_impl_method_handle, object? [] args, out IntPtr exception_gchandle)
 		{
 			exception_gchandle = IntPtr.Zero;
 			try {
-				var open_user_type = Type.GetTypeFromHandle (open_user_type_handle)!;
-				var closed_user_type = FindClosedTypeInHierarchy (open_user_type, instance.GetType ())!;
-				var type_arguments = closed_user_type.GetGenericArguments ();
-				var open_impl = (MethodInfo) MethodBase.GetMethodFromHandle (open_impl_method_handle)!;
-				var closed_impl = open_impl.MakeGenericMethod (type_arguments);
+				var closed_instance_type = instance.GetType ();
+				var cache_key = (open_impl_method_handle, closed_instance_type.TypeHandle);
+				if (!closedGenericRegistrarTrampolines.TryGetValue (cache_key, out var closed_impl)) {
+					var open_user_type = Type.GetTypeFromHandle (open_user_type_handle)!;
+					var closed_user_type = FindClosedTypeInHierarchy (open_user_type, closed_instance_type)!;
+					var type_arguments = closed_user_type.GetGenericArguments ();
+					var open_impl = (MethodInfo) MethodBase.GetMethodFromHandle (open_impl_method_handle)!;
+					closed_impl = open_impl.MakeGenericMethod (type_arguments);
+					closedGenericRegistrarTrampolines.TryAdd (cache_key, closed_impl);
+				}
 
 				// Append the trailing 'out IntPtr exception_gchandle' slot and invoke the closed helper.
 				// The slot is pre-initialized to IntPtr.Zero so that the (success) code path, which

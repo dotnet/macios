@@ -397,7 +397,7 @@ namespace Xamarin.Linker {
 			// If the target method is marked, then we must mark the trampoline as well.
 			method.CustomAttributes.Add (abr.CreateDynamicDependencyAttribute (callback.Name, callbackType));
 
-			callback.AddParameter ("pobj", abr.System_IntPtr);
+			callback.AddParameter (abr.System_IntPtr); // pobj
 
 			var isGeneric = method.DeclaringType.HasGenericParameters;
 			if (isGeneric && method.IsStatic) {
@@ -618,7 +618,7 @@ namespace Xamarin.Linker {
 				EmitConversion (method, il, method.DeclaringType, true, -1, out var nativeType, postProcessing);
 			}
 
-			callback.AddParameter ("sel", abr.System_IntPtr);
+			callback.AddParameter (abr.System_IntPtr); // sel
 
 			var managedParameterCount = 0;
 			var nativeParameterOffset = isInstanceCategory ? 1 : 2;
@@ -628,7 +628,7 @@ namespace Xamarin.Linker {
 
 			if (method.HasParameters) {
 				for (var p = parameterStart; p < managedParameterCount; p++) {
-					var nativeParameter = callback.AddParameter ($"p{p}", placeholderType);
+					var nativeParameter = callback.AddParameter (placeholderType); // p{p}
 					var nativeParameterIndex = p + nativeParameterOffset;
 					var managedParameterType = method.Parameters [p].ParameterType;
 					var baseParameter = baseMethod.Parameters [p];
@@ -650,7 +650,7 @@ namespace Xamarin.Linker {
 			if (callSuperParameter is not null)
 				callback.Parameters.Add (callSuperParameter);
 
-			callback.AddParameter ("exception_gchandle", new PointerType (abr.System_IntPtr));
+			callback.AddParameter (new PointerType (abr.System_IntPtr)); // exception_gchandle
 
 			if (ctor is not null) {
 				// in addition to the params of the original ctor we pass also the native handle and a null
@@ -1491,8 +1491,8 @@ namespace Xamarin.Linker {
 
 			// add a native handle param + a dummy parameter that we know for a fact won't be used anywhere
 			// to make the signature of the new constructor unique
-			var handleParameter = clonedCtor.AddParameter ("nativeHandle", abr.System_IntPtr);
-			var dummyParameter = clonedCtor.AddParameter ("dummy", abr.ObjCRuntime_IManagedRegistrar);
+			var handleParameter = clonedCtor.AddParameter (abr.System_IntPtr); // nativeHandle
+			var dummyParameter = clonedCtor.AddParameter (abr.ObjCRuntime_IManagedRegistrar); // placeholder
 
 			var body = clonedCtor.CreateBody (out var il);
 

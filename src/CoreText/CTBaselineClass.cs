@@ -76,7 +76,7 @@ namespace CoreText {
 	}
 
 	// Convenience enum for string values in ObjC.
-	/// <summary>An enumeration whose values specify the whether the baseline font is from the original font or a reference font.</summary>
+	/// <summary>An enumeration whose values specify whether the baseline font is from the original font or a reference font.</summary>
 	public enum CTBaselineFont {
 		/// <summary>The reference font baseline.</summary>
 		Reference,

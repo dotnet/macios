@@ -527,12 +527,18 @@ namespace Linker.Shared {
 			Assert.That (instructions.Skip (1).First ().OpCode, Is.EqualTo (OpCodes.Ret), "IL 2");
 
 			// The trimmer knows the value of Runtime.IsARM64CallingConvention (from the feature
-			// switch), so it removes any branch that depends on it. Verify that no conditional
-			// branch instruction is left in a method that branches on the field.
+			// switch), so it removes the dead branch in a method that branches on the field.
+			// BranchOnIsARM64CallingConvention returns 1 (ldc.i4.1) if the field is true, and
+			// 2 (ldc.i4.2) if it's false, so verify that only the instruction loading the
+			// applicable return value is left. Note that the trimmer may leave a conditional
+			// branch instruction behind (branching to the next instruction, which is a no-op),
+			// so don't check for those.
 			method = typeof (BaseOptimizeGeneratedCodeTest).GetMethod (nameof (BranchOnIsARM64CallingConvention), BindingFlags.NonPublic | BindingFlags.Static)!;
 			instructions = new ILReader (method);
-			var branch_instructions = instructions.Where ((v) => v.OpCode.FlowControl == FlowControl.Cond_Branch);
-			Assert.That (branch_instructions.Count (), Is.EqualTo (0), "no conditional branch instruction");
+			var dead_opcode = Runtime.IsARM64CallingConvention ? OpCodes.Ldc_I4_2 : OpCodes.Ldc_I4_1;
+			var live_opcode = Runtime.IsARM64CallingConvention ? OpCodes.Ldc_I4_1 : OpCodes.Ldc_I4_2;
+			Assert.That (instructions.Count ((v) => v.OpCode == dead_opcode), Is.EqualTo (0), "dead branch removed");
+			Assert.That (instructions.Count ((v) => v.OpCode == live_opcode), Is.EqualTo (1), "live branch kept");
 #endif
 
 			Assert.That (GetIsARM64CallingConventionOptimized (), Is.EqualTo (Runtime.IsARM64CallingConvention), "Value optimized");

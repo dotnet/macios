@@ -1205,6 +1205,11 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MPSKernel : NSCopying, NSSecureCoding {
+		/// <summary>Gets a region that represents the default clipping rectangle.</summary>
+		[DefaultValueOnMissingSymbol]
+		[Field ("MPSRectNoClip")]
+		MTLRegion RectNoClip { get; }
+
 		/// <param name="aDecoder">The unarchiver object.</param>
 		/// <param name="device">To be added.</param>
 		/// <summary>A constructor that initializes the object from the data stored in the unarchiver object.</summary>

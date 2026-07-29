@@ -1753,7 +1753,6 @@ UIKIT_SOURCES = \
 	UIKit/UIImagePickerController.cs \
 	UIKit/UIKeyboard.cs \
 	UIKit/UIKitSynchronizationContext.cs \
-	UIKit/UIListSeparatorConfiguration.cs \
 	UIKit/UIMenu.cs \
 	UIKit/UINavigationBar.cs \
 	UIKit/UINavigationController.cs \

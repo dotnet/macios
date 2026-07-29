@@ -6,6 +6,17 @@
 
 namespace CoreGraphics {
 
+	[Partial (IsStruct = true, Name = nameof (CGRect))]
+	interface CGRectFields {
+		/// <summary>Gets an invalid, or null, rectangle.</summary>
+		[Field ("CGRectNull", "CoreGraphics")]
+		CGRect Null { get; }
+
+		/// <summary>Gets an infinitely large rectangle.</summary>
+		[Field ("CGRectInfinite", "CoreGraphics")]
+		CGRect Infinite { get; }
+	}
+
 	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 	enum CGToneMapping : uint {
 		Default = 0,

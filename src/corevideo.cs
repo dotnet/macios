@@ -10,6 +10,19 @@ using Metal;
 
 namespace CoreVideo {
 
+	struct CVTime { }
+
+	[Partial (IsStruct = true, Name = nameof (CVTime))]
+	interface CVTimeFields {
+		/// <summary>Represents a zero duration.</summary>
+		[Field ("kCVZeroTime")]
+		CVTime ZeroTime { get; }
+
+		/// <summary>Represents an unknown or indefinite time.</summary>
+		[Field ("kCVIndefiniteTime")]
+		CVTime IndefiniteTime { get; }
+	}
+
 	/// <summary>Manages pixel buffer pool allocation settings.</summary>
 	[Partial]
 	interface CVPixelBufferPoolAllocationSettings {

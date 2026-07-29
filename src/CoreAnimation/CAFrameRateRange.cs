@@ -2,12 +2,13 @@
 #nullable enable
 
 namespace CoreAnimation {
+	/// <summary>Specifies minimum, maximum, and preferred frame rates.</summary>
 	[SupportedOSPlatform ("tvos15.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios15.0")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
-	public struct CAFrameRateRange {
+	public partial struct CAFrameRateRange {
 		public float Minimum;
 
 		public float Maximum;
@@ -22,11 +23,6 @@ namespace CoreAnimation {
 
 		public bool IsEqualTo (CAFrameRateRange other)
 			=> IsEqualTo (this, other) != 0;
-
-#if !COREBUILD
-		[Field ("CAFrameRateRangeDefault", "CoreAnimation")]
-		public static CAFrameRateRange Default => Marshal.PtrToStructure<CAFrameRateRange> (Dlfcn.GetIndirect (Libraries.CoreAnimation.Handle, "CAFrameRateRangeDefault"))!;
-#endif
 
 	}
 

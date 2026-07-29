@@ -1070,23 +1070,54 @@ namespace CoreMedia {
 		int LevelIndex { get; set; }
 	}
 
-#if false
-	// right now the generator can't add fields in a partial struct
-	[Partial]
-	interface CMTime {
+	[Partial (IsStruct = true, Name = nameof (CMTime))]
+	interface CMTimeFields {
+		[Internal]
 		[Field ("kCMTimeValueKey")]
-		NSString ValueKey { get; }
+		[NullAllowed]
+		NSString _ValueKey { get; }
 
+		[Internal]
 		[Field ("kCMTimeScaleKey")]
-		NSString ScaleKey { get; }
+		[NullAllowed]
+		NSString _ScaleKey { get; }
 
+		[Internal]
 		[Field ("kCMTimeEpochKey")]
-		NSString EpochKey { get; }
+		[NullAllowed]
+		NSString _EpochKey { get; }
 
+		[Internal]
 		[Field ("kCMTimeFlagsKey")]
-		NSString FlagsKey { get; }
+		[NullAllowed]
+		NSString _FlagsKey { get; }
 	}
-#endif
+
+	[Partial (IsStruct = true, Name = nameof (CMTimeRange))]
+	interface CMTimeRangeFields {
+		[Internal]
+		[Field ("kCMTimeRangeZero")]
+		CMTimeRange _Zero { get; }
+
+		[Internal]
+		[Field ("kCMTimeRangeInvalid")]
+		CMTimeRange _InvalidRange { get; }
+
+		[Internal]
+		[DefaultValueOnMissingSymbol]
+		[Field ("kCMTimeMappingInvalid")]
+		CMTimeRange _InvalidMapping { get; }
+
+		[Internal]
+		[Field ("kCMTimeMappingSourceKey")]
+		[NullAllowed]
+		NSString _TimeMappingSourceKey { get; }
+
+		[Internal]
+		[Field ("kCMTimeMappingTargetKey")]
+		[NullAllowed]
+		NSString _TimeMappingTargetKey { get; }
+	}
 
 	[Flags]
 	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]

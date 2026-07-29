@@ -58,6 +58,13 @@ using CGLContext = System.IntPtr;
 
 namespace CoreAnimation {
 
+	[Partial (IsStruct = true, Name = nameof (CAFrameRateRange))]
+	interface CAFrameRateRangeFields {
+		/// <summary>Gets the default frame-rate range.</summary>
+		[Field ("CAFrameRateRangeDefault", "CoreAnimation")]
+		CAFrameRateRange Default { get; }
+	}
+
 	/// <summary>Provides a hierarchical timing system, with support for repetition and sequencing.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GraphicsImaging/Reference/CAMediaTiming_protocol/index.html">Apple documentation for <c>CAMediaTiming</c></related>

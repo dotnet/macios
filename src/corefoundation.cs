@@ -37,6 +37,25 @@ namespace CoreFoundation {
 		[Internal]
 		[Field ("kCFNull")]
 		IntPtr /* CFNullRef */ _CFNullHandle { get; }
+
+		[Internal]
+		[Field ("kCFTypeArrayCallBacks")]
+		[SymbolAddress]
+		IntPtr _CFTypeArrayCallbacks { get; }
+	}
+
+	[Internal]
+	[Partial]
+	interface CFDictionary {
+		[Internal]
+		[Field ("kCFTypeDictionaryKeyCallBacks")]
+		[SymbolAddress]
+		IntPtr _KeyCallbacks { get; }
+
+		[Internal]
+		[Field ("kCFTypeDictionaryValueCallBacks")]
+		[SymbolAddress]
+		IntPtr _ValueCallbacks { get; }
 	}
 
 	[Static, Partial]

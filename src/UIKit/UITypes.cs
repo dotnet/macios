@@ -210,7 +210,7 @@ namespace UIKit {
 	[SupportedOSPlatform ("ios15.0")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
-	public struct UIPointerAccessoryPosition {
+	public partial struct UIPointerAccessoryPosition {
 		/// <summary>The offset of the accessory from its default position.</summary>
 		public nfloat Offset;
 		/// <summary>The angle of the accessory, in radians.</summary>
@@ -225,39 +225,6 @@ namespace UIKit {
 			Angle = angle;
 		}
 
-#if !COREBUILD
-		/// <summary>The accessory position at the top.</summary>
-		[Field ("UIPointerAccessoryPositionTop", "UIKit")]
-		public static UIPointerAccessoryPosition Top => Marshal.PtrToStructure<UIPointerAccessoryPosition> (Dlfcn.GetIndirect (Libraries.UIKit.Handle, "UIPointerAccessoryPositionTop"))!;
-
-		/// <summary>The accessory position at the top-right.</summary>
-		[Field ("UIPointerAccessoryPositionTopRight", "UIKit")]
-		public static UIPointerAccessoryPosition TopRight => Marshal.PtrToStructure<UIPointerAccessoryPosition> (Dlfcn.GetIndirect (Libraries.UIKit.Handle, "UIPointerAccessoryPositionTopRight"))!;
-
-		/// <summary>The accessory position at the right.</summary>
-		[Field ("UIPointerAccessoryPositionRight", "UIKit")]
-		public static UIPointerAccessoryPosition Right => Marshal.PtrToStructure<UIPointerAccessoryPosition> (Dlfcn.GetIndirect (Libraries.UIKit.Handle, "UIPointerAccessoryPositionRight"))!;
-
-		/// <summary>The accessory position at the bottom-right.</summary>
-		[Field ("UIPointerAccessoryPositionBottomRight", "UIKit")]
-		public static UIPointerAccessoryPosition BottomRight => Marshal.PtrToStructure<UIPointerAccessoryPosition> (Dlfcn.GetIndirect (Libraries.UIKit.Handle, "UIPointerAccessoryPositionBottomRight"))!;
-
-		/// <summary>The accessory position at the bottom.</summary>
-		[Field ("UIPointerAccessoryPositionBottom", "UIKit")]
-		public static UIPointerAccessoryPosition Bottom => Marshal.PtrToStructure<UIPointerAccessoryPosition> (Dlfcn.GetIndirect (Libraries.UIKit.Handle, "UIPointerAccessoryPositionBottom"))!;
-
-		/// <summary>The accessory position at the bottom-left.</summary>
-		[Field ("UIPointerAccessoryPositionBottomLeft", "UIKit")]
-		public static UIPointerAccessoryPosition BottomLeft => Marshal.PtrToStructure<UIPointerAccessoryPosition> (Dlfcn.GetIndirect (Libraries.UIKit.Handle, "UIPointerAccessoryPositionBottomLeft"))!;
-
-		/// <summary>The accessory position at the left.</summary>
-		[Field ("UIPointerAccessoryPositionLeft", "UIKit")]
-		public static UIPointerAccessoryPosition Left => Marshal.PtrToStructure<UIPointerAccessoryPosition> (Dlfcn.GetIndirect (Libraries.UIKit.Handle, "UIPointerAccessoryPositionLeft"))!;
-
-		/// <summary>The accessory position at the top-left.</summary>
-		[Field ("UIPointerAccessoryPositionTopLeft", "UIKit")]
-		public static UIPointerAccessoryPosition TopLeft => Marshal.PtrToStructure<UIPointerAccessoryPosition> (Dlfcn.GetIndirect (Libraries.UIKit.Handle, "UIPointerAccessoryPositionTopLeft"))!;
-#endif
 	}
 #endif
 

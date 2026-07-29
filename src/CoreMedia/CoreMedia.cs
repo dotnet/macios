@@ -36,13 +36,12 @@ namespace CoreMedia {
 
 	// CMTimeRange.h
 	/// <summary>A duration of time.</summary>
-	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	[StructLayout (LayoutKind.Sequential)]
-	public struct CMTimeRange {
+	public partial struct CMTimeRange {
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
 		public CMTime Start;
@@ -50,55 +49,34 @@ namespace CoreMedia {
 		///         <remarks>To be added.</remarks>
 		public CMTime Duration;
 #if !COREBUILD
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
-		public static readonly CMTimeRange Zero;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
-		public static readonly CMTimeRange InvalidRange;
+		/// <summary>Represents an empty time range starting at time zero.</summary>
+		public static readonly CMTimeRange Zero = _Zero;
 
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Represents an invalid time range.</summary>
+		public static readonly CMTimeRange InvalidRange = _InvalidRange;
+
+		/// <summary>Represents the invalid source range from the native invalid time mapping constant.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-		public static readonly CMTimeRange InvalidMapping;
+		public static readonly CMTimeRange InvalidMapping = _InvalidMapping;
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the dictionary key for the source time range in a time mapping.</summary>
+		// initialized only once (see tests/cecil-tests/)
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-		public static NSString? TimeMappingSourceKey { get; private set; }
+		public static NSString? TimeMappingSourceKey { get; private set; } = _TimeMappingSourceKey;
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the dictionary key for the target time range in a time mapping.</summary>
+		// initialized only once (see tests/cecil-tests/)
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-		public static NSString? TimeMappingTargetKey { get; private set; }
-
-		static CMTimeRange ()
-		{
-			var lib = Libraries.CoreMedia.Handle;
-			var retZero = Dlfcn.dlsym (lib, "kCMTimeRangeZero");
-			Zero = Marshal.PtrToStructure<CMTimeRange> (retZero)!;
-
-			var retInvalid = Dlfcn.dlsym (lib, "kCMTimeRangeInvalid");
-			InvalidRange = Marshal.PtrToStructure<CMTimeRange> (retInvalid)!;
-
-			var retMappingInvalid = Dlfcn.dlsym (lib, "kCMTimeMappingInvalid");
-			if (retMappingInvalid != IntPtr.Zero)
-				InvalidMapping = Marshal.PtrToStructure<CMTimeRange> (retMappingInvalid)!;
-
-			TimeMappingSourceKey = Dlfcn.GetStringConstant (lib, "kCMTimeMappingSourceKey");
-			TimeMappingTargetKey = Dlfcn.GetStringConstant (lib, "kCMTimeMappingTargetKey");
-		}
+		public static NSString? TimeMappingTargetKey { get; private set; } = _TimeMappingTargetKey;
 #endif // !COREBUILD
 	}
 

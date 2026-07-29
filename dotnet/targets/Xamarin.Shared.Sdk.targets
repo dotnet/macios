@@ -557,6 +557,9 @@
 				- Set 'partial-static' for:
 					- when no assemblies are trimmed and when MarshalManagedExceptionMode is default (or not set)
 				- Otherwise set 'dynamic' 
+
+			Note: on .NET 11+ NativeAOT defaults to 'trimmable-static' instead - that default is set
+			earlier, in Xamarin.Shared.Sdk.props, because it has to be available at evaluation time.
 			-->
 			<Registrar Condition="'$(Registrar)' == '' And '$(_UseNativeAot)' == 'true'">managed-static</Registrar>
 			<Registrar Condition="'$(Registrar)' == '' And '$(_SdkIsSimulator)' != 'true' And '$(SdkIsMobile)' == 'true'">managed-static</Registrar>

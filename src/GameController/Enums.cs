@@ -14,15 +14,15 @@ namespace GameController {
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'GCController.GetMicroGamepadController()' instead.")]
 	[Native]
 	public enum GCExtendedGamepadSnapshotDataVersion : long {
-		/// <summary>Indicates version1.</summary>
+		/// <summary>Indicates version 1.</summary>
 		Version1 = 0x0100,
-		/// <summary>Indicates version2.</summary>
+		/// <summary>Indicates version 2.</summary>
 		Version2 = 0x0101,
 	}
 
 	[Native]
 	public enum GCMicroGamepadSnapshotDataVersion : long {
-		/// <summary>Indicates version1.</summary>
+		/// <summary>Indicates version 1.</summary>
 		Version1 = 0x0100,
 	}
 

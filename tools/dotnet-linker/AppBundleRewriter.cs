@@ -1571,6 +1571,44 @@ namespace Xamarin.Linker {
 		}
 
 		/// <summary>
+		/// Preserve all the members declared on a type (and the type itself), which is what
+		/// <c>[Preserve (AllMembers = true)]</c> means.
+		/// </summary>
+		/// <remarks>
+		///   <para>
+		///     A DynamicDependency attribute with DynamicallyAccessedMemberTypes can't be used here: the trimmer
+		///     resolves those member types over the entire type hierarchy, so it would also preserve every member
+		///     of every base type (for an NSObject subclass that means all of NSObject, which is quite big).
+		///     Instead add one DynamicDependency attribute per member declared on the type itself.
+		///   </para>
+		/// </remarks>
+		/// <param name="addToMethod">The method on which to add the dynamic dependency attributes.</param>
+		/// <param name="type">The type whose members should be preserved.</param>
+		public bool AddPreserveAllMembersDynamicDependencyAttributes (MethodDefinition addToMethod, TypeDefinition type)
+		{
+			var signatures = new HashSet<string> (StringComparer.Ordinal);
+
+			foreach (var field in type.Fields)
+				signatures.Add (DocumentationComments.GetSignature (field));
+			foreach (var method in type.Methods)
+				signatures.Add (DocumentationComments.GetSignature (method));
+			// Properties and events don't have a documentation comment signature helper, but the trimmer will
+			// match any member with the given name, which is good enough (and it's what we want here anyway).
+			foreach (var property in type.Properties)
+				signatures.Add (property.Name);
+			foreach (var @event in type.Events)
+				signatures.Add (@event.Name);
+
+			if (signatures.Count == 0)
+				return AddAttributeOnlyOnce (addToMethod, CreateDynamicDependencyAttribute (DynamicallyAccessedMemberTypes.PublicParameterlessConstructor, type));
+
+			var modified = false;
+			foreach (var signature in signatures.OrderBy (v => v, StringComparer.Ordinal))
+				modified |= AddAttributeOnlyOnce (addToMethod, CreateDynamicDependencyAttribute (signature, type));
+			return modified;
+		}
+
+		/// <summary>
 		/// Preserve a method conditionally on another type
 		/// </summary>
 		/// <param name="onType">The type on which to add the dynamic dependency attribute.</param>

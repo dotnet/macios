@@ -949,6 +949,16 @@
                 <para>You can obtain an instance to this class by either accessing the static <see cref="P:XmlDocumentation.TypeWithApparance.Appearance" /> property or by calling <see cref="M:XmlDocumentation.TypeWithApparance.AppearanceWhenContainedIn(System.Type[])" /> to get a UIAppearance that is context sensitive.</para>
             </remarks>
         </member>
+        <member name="M:XmlDocumentation.TypeWithApparance.TypeWithApparanceAppearance.#ctor(System.IntPtr)">
+            <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>
+            <param name="handle">Pointer (handle) to the unmanaged object.</param>
+        </member>
+        <member name="P:XmlDocumentation.TypeWithApparance.TypeWithApparanceAppearance.BackgroundColor">
+            <summary>Appearance proxy for the <c>BackgroundColor</c> member of <see cref="T:XmlDocumentation.TypeWithApparance" />.</summary>
+        </member>
+        <member name="M:XmlDocumentation.TypeWithApparance.TypeWithApparanceAppearance.SetValue(System.IntPtr)">
+            <summary>Appearance proxy for the <c>SetValue</c> member of <see cref="T:XmlDocumentation.TypeWithApparance" />.</summary>
+        </member>
         <member name="P:XmlDocumentation.TypeWithApparance.TypeWithApparanceAppearance.TintColor">
             <summary>
             Summary for TypeWithApparance.TintColor

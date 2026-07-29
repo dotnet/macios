@@ -1227,7 +1227,7 @@
 			     TypeMap assemblies the trimmable-static registrar generates). Without it the OutputPath above
 			     collapses to the bare stripped directory, and ILStrip fails trying to write to a directory
 			     ("Access to the path '.../stripped/' is denied"). Fall back to the file name in that case. -->
-			<_AssembliesToBeStripped Condition="'%(ResolvedFileToPublish.OriginalRelativePath)' == ''">
+			<_AssembliesToBeStripped Condition="'%(_AssembliesToBeStripped.OriginalRelativePath)' == ''">
 				<OutputPath>$(_StrippedAssemblyDirectory)\%(Filename)%(Extension)</OutputPath>
 			</_AssembliesToBeStripped>
 

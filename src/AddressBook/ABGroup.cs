@@ -38,27 +38,6 @@ using System.Collections.Generic;
 using CoreFoundation;
 
 namespace AddressBook {
-	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
-	[SupportedOSPlatform ("maccatalyst")]
-	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
-	[UnsupportedOSPlatform ("macos")]
-	[UnsupportedOSPlatform ("tvos")]
-	static class ABGroupProperty {
-
-		public static int Name { get; private set; }
-
-		static ABGroupProperty ()
-		{
-			InitConstants.Init ();
-		}
-
-		internal static void Init ()
-		{
-			Name = Dlfcn.GetInt32 (Libraries.AddressBook.Handle, "kABGroupNameProperty");
-		}
-	}
-
 	/// <summary>
 	///       A grouping of <see cref="AddressBook.ABPerson" /> and
 	///       other <see cref="AddressBook.ABGroup" /> records.
@@ -104,7 +83,6 @@ namespace AddressBook {
 		public ABGroup ()
 			: base (ABGroupCreate (), true)
 		{
-			InitConstants.Init ();
 		}
 
 		[DllImport (Constants.AddressBookLibrary)]

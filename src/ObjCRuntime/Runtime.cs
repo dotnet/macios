@@ -2628,7 +2628,7 @@ namespace ObjCRuntime {
 
 		// Note that the code in this method doesn't necessarily work with NativeAOT, so assert that never happens by throwing an exception in that case
 		//
-		// IL2070: 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicMethods', 'DynamicallyAccessedMemberTypes.NonPublicMethods' in call to 'System.Type.GetMethods(BindingFlags)'. The parameter 'closed_type' of method 'ObjCRuntime.Runtime.FindClosedMethod(Type, MethodBase)' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
+		// IL2070: 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.All' in call to 'System.Type.GetMemberWithSameMetadataDefinitionAs(MemberInfo)'. The parameter 'closed_type' of method 'ObjCRuntime.Runtime.FindClosedMethod(Type, MethodBase)' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
 		[UnconditionalSuppressMessage ("", "IL2070", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
 		internal static MethodInfo FindClosedMethod (Type closed_type, MethodBase open_method)
 		{
@@ -2651,11 +2651,8 @@ namespace ObjCRuntime {
 			} while (declaring_closed_type is not null);
 
 			// Find the closed method.
-			foreach (var mi in closed_type.GetMethods (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance | BindingFlags.DeclaredOnly)) {
-				if (mi.MetadataToken == open_method.MetadataToken) {
-					return mi;
-				}
-			}
+			if (closed_type.GetMemberWithSameMetadataDefinitionAs (open_method) is MethodInfo mi)
+				return mi;
 
 			throw ErrorHelper.CreateError (8003, $"Failed to find the closed generic method '{open_method.Name}' on the type '{closed_type.FullName}'.");
 		}

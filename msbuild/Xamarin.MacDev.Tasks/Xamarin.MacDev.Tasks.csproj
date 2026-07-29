@@ -89,7 +89,7 @@
     <Compile Include="..\..\tools\common\NullableAttributes.cs">
       <Link>external\NullableAttributes.cs</Link>
     </Compile>
-    <Compile Remove="Errors.designer.cs" /> <!-- The 'CoreResGen' target will add it again from the EmbeddedResource item, this avoids a warning about the file being compiled twice -->
+    <Compile Remove="Errors.designer.cs" /> <!-- The 'CoreResGen' target will add the generated file again from the EmbeddedResource item -->
     <Compile Include="..\..\tools\common\SdkVersions.cs">
       <Link>external\SdkVersions.cs</Link>
     </Compile>
@@ -100,7 +100,7 @@
 
     <!--
 
-      The Xamarin.MacDev.Tasks.sln solution is build with dotnet, while other
+      The Xamarin.MacDev.Tasks.sln solution is built with dotnet, while other
       projects are still built with msbuild. This becomes a problem when
       generating Errors.designer.cs, because depending on the runtime the
       output is different.
@@ -110,7 +110,9 @@
       modified in git. This is quite annoying, but it also breaks the api
       comparison, which depends on the build not leaving modified files
       behind. So for now, we generate Errors.designer.cs separately
-      for Xamarin.MacDev.Tasks.sln to not conflict with the mtouch version.
+      for Xamarin.MacDev.Tasks.sln to not conflict with the mtouch version,
+      and in each target framework's intermediate output directory so that
+      parallel builds don't write to the same file.
 
     -->
 
@@ -119,7 +121,7 @@
       <LastGenOutput>Errors.designer.cs</LastGenOutput>
       <CustomToolNamespace>Xamarin.Localization.MSBuild</CustomToolNamespace>
       <ManifestResourceName>Xamarin.Localization.MSBuild.Errors</ManifestResourceName>
-      <StronglyTypedFileName>Errors.designer.cs</StronglyTypedFileName>
+      <StronglyTypedFileName>$(IntermediateOutputPath)Errors.designer.cs</StronglyTypedFileName>
       <StronglyTypedLanguage>CSharp</StronglyTypedLanguage>
       <StronglyTypedNamespace>Xamarin.Localization.MSBuild</StronglyTypedNamespace>
       <StronglyTypedClassName>Errors</StronglyTypedClassName>

@@ -27,6 +27,7 @@ FAIL=
 PROVISION_DOWNLOAD_DIR=/tmp/x-provisioning
 SUDO=sudo
 VERBOSE=
+XCODE_PACKAGE_DIRECTORY=
 
 OPTIONAL_SIMULATORS=1
 OPTIONAL_OLD_SIMULATORS=1
@@ -46,6 +47,15 @@ fi
 function get_xcode_developer_root ()
 {
 	local suffix="${1:-}"
+
+	# When we're provisioning Xcode ourselves, Make.config is the only source of truth:
+	# install-xcode.sh reads it directly, so honoring an inherited variable or a stale
+	# configure.inc here would make the rest of this script inspect a different Xcode
+	# than the one we just installed and selected.
+	if test -n "$XCODE_PACKAGE_DIRECTORY" || test -n "${PROVISION_XCODE:-}"; then
+		grep "^XCODE${suffix}_DEVELOPER_ROOT[?:]*=" Make.config | sed 's/^[^=]*=//'
+		return
+	fi
 
 	if test -z "$suffix"; then
 		if test -n "${XCODE_DEVELOPER_ROOT:-}"; then
@@ -73,6 +83,16 @@ while ! test -z $1; do
 			PROVISION_XCODE=1
 			unset IGNORE_XCODE
 			shift
+			;;
+		--xcode-package-directory)
+			if [[ $# -lt 2 || -z "$2" ]]; then
+				echo "--xcode-package-directory requires a value."
+				exit 1
+			fi
+			XCODE_PACKAGE_DIRECTORY=$2
+			PROVISION_XCODE=1
+			unset IGNORE_XCODE
+			shift 2
 			;;
 		--provision-xcode-components)
 			PROVISION_XCODE_COMPONENTS=1
@@ -472,83 +492,66 @@ function run_xcode_first_launch ()
 }
 
 function install_specific_xcode () {
-	local XCODE_URL=`grep XCODE$1_URL= Make.config | sed 's/.*=//'`
-	local XCODE_VERSION=`grep XCODE$1_VERSION= Make.config | sed 's/.*=//'`
-	local XCODE_DEVELOPER_ROOT="$2"
-	local XCODE_ROOT="$(dirname "$(dirname "$XCODE_DEVELOPER_ROOT")")"
+	local XCODE_URL
+	local XCODE_VERSION
+	local XCODE_NAME
+	local XCODE_ARCHIVE
+	local INSTALLER_ARGS=(install)
 
-	if test -z $XCODE_URL; then
+	XCODE_URL=$(grep "XCODE$1_URL=" Make.config | sed 's/.*=//')
+	XCODE_VERSION=$(grep "XCODE$1_VERSION=" Make.config | sed 's/.*=//')
+
+	if test -z "$SUDO"; then
+		INSTALLER_ARGS+=(--no-sudo)
+	fi
+
+	# CI downloads an immutable Universal Package from Azure Artifacts and hands us the
+	# directory it was expanded into; install-xcode.sh validates it before installing.
+	if test -n "$XCODE_PACKAGE_DIRECTORY"; then
+		INSTALLER_ARGS+=(--package-directory "$XCODE_PACKAGE_DIRECTORY")
+		"$PWD/tools/devops/automation/scripts/bash/install-xcode.sh" "${INSTALLER_ARGS[@]}"
+		return
+	fi
+
+	if test -z "$XCODE_URL"; then
 		fail "No XCODE$1_URL set in Make.config, cannot provision"
 		return
 	fi
 
-	mkdir -p $PROVISION_DOWNLOAD_DIR
+	# CI must never silently fall back to the storage-account URL: that dependency is
+	# exactly what the Universal Package replaced, and there are no credentials for it
+	# here, so it would fail obscurely much later.
+	if test -n "${TF_BUILD:-}"; then
+		fail "Xcode $XCODE_VERSION is not installed and no Xcode Universal Package was supplied. Re-run the 'Download Xcode Universal Package' step."
+		return
+	fi
+
+	mkdir -p "$PROVISION_DOWNLOAD_DIR"
 	log "Downloading Xcode $XCODE_VERSION from $XCODE_URL to $PROVISION_DOWNLOAD_DIR..."
-	local XCODE_NAME=`basename $XCODE_URL`
-	local XCODE_DMG=$PROVISION_DOWNLOAD_DIR/$XCODE_NAME
+	XCODE_NAME=$(basename "$XCODE_URL")
+	XCODE_ARCHIVE="$PROVISION_DOWNLOAD_DIR/$XCODE_NAME"
 
-	# To test this script with new Xcode versions, copy the downloaded file to $XCODE_DMG,
-	# uncomment the following curl line, and run ./system-dependencies.sh --provision-xcode
+	# To test this script with a local archive, place it in ~/Downloads and run
+	# ./system-dependencies.sh --provision-xcode.
 	if test -f "$HOME/Downloads/$XCODE_NAME"; then
-		log "Found $XCODE_NAME in your ~/Downloads folder, copying that version to $XCODE_DMG instead of re-downloading it."
-		cp "$HOME/Downloads/$XCODE_NAME" "$XCODE_DMG"
+		log "Found $XCODE_NAME in your ~/Downloads folder, copying that version to $XCODE_ARCHIVE instead of re-downloading it."
+		cp "$HOME/Downloads/$XCODE_NAME" "$XCODE_ARCHIVE"
 	else
-		curl -L $XCODE_URL > $XCODE_DMG
+		curl --fail --location --retry 5 --retry-all-errors "$XCODE_URL" > "$XCODE_ARCHIVE"
 	fi
 
-	if [[ ${XCODE_DMG: -4} == ".dmg" ]]; then
-		local XCODE_MOUNTPOINT=$PROVISION_DOWNLOAD_DIR/$XCODE_NAME-mount
-		log "Mounting $XCODE_DMG into $XCODE_MOUNTPOINT..."
-		hdiutil attach $XCODE_DMG -mountpoint $XCODE_MOUNTPOINT -quiet -nobrowse
-		log "Removing previous Xcode from $XCODE_ROOT"
-		rm -Rf $XCODE_ROOT
-		log "Installing Xcode $XCODE_VERSION to $XCODE_ROOT..."
-		cp -R $XCODE_MOUNTPOINT/*.app $XCODE_ROOT
-		log "Unmounting $XCODE_DMG..."
-		hdiutil detach $XCODE_MOUNTPOINT -quiet
-	elif [[ ${XCODE_DMG: -4} == ".xip" ]]; then
-		log "Extracting $XCODE_DMG..."
-		pushd . > /dev/null
-		cd $PROVISION_DOWNLOAD_DIR
-		# make sure there's nothing interfering
-		rm -Rf *.app
-		rm -Rf $XCODE_ROOT
-		# extract
-		xip --expand "$XCODE_DMG"
-		log "Installing Xcode $XCODE_VERSION to $XCODE_ROOT..."
-		mv *.app $XCODE_ROOT
-		popd > /dev/null
+	if [[ "$XCODE_ARCHIVE" == *.xip ]]; then
+		INSTALLER_ARGS+=(--archive "$XCODE_ARCHIVE")
+		"$PWD/tools/devops/automation/scripts/bash/install-xcode.sh" "${INSTALLER_ARGS[@]}"
+	elif [[ "$XCODE_ARCHIVE" == *.dmg ]]; then
+		fail "DMG-based Xcode provisioning is no longer supported. Provide an Apple-signed XIP archive."
+		return
 	else
-		fail "Don't know how to install $XCODE_DMG"
-	fi
-	rm -f $XCODE_DMG
-
-	log "Removing any com.apple.quarantine attributes from the installed Xcode"
-	$SUDO xattr -s -d -r com.apple.quarantine $XCODE_ROOT
-
-	if is_at_least_version $XCODE_VERSION 5.0; then
-		log "Accepting Xcode license"
-		$SUDO $XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild -license accept
+		fail "Don't know how to install $XCODE_ARCHIVE"
+		return
 	fi
 
-	if is_at_least_version "$XCODE_VERSION" 9.0; then
-		run_xcode_first_launch "$XCODE_VERSION" "$XCODE_DEVELOPER_ROOT"
-	elif is_at_least_version $XCODE_VERSION 8.0; then
-		PKGS="MobileDevice.pkg MobileDeviceDevelopment.pkg XcodeSystemResources.pkg"
-		for pkg in $PKGS; do
-			if test -f "$XCODE_DEVELOPER_ROOT/../Resources/Packages/$pkg"; then
-				log "Installing $pkg"
-				$SUDO /usr/sbin/installer -dumplog -verbose -pkg "$XCODE_DEVELOPER_ROOT/../Resources/Packages/$pkg" -target /
-				log "Installed $pkg"
-			else
-				log "Not installing $pkg because it doesn't exist."
-			fi
-		done
-	fi
-
-	log "Clearing xcrun cache..."
-	xcrun -k
-
+	rm -f "$XCODE_ARCHIVE"
 	ok "Xcode $XCODE_VERSION provisioned"
 }
 
@@ -630,41 +633,38 @@ function check_specific_xcode () {
 	local XCODE_DEVELOPER_ROOT
 	local XCODE_VERSION
 	local XCODE_ROOT
+	local INSTALLER="$PWD/tools/devops/automation/scripts/bash/install-xcode.sh"
+	local INSTALLER_ARGS=(verify --quiet)
 
 	XCODE_DEVELOPER_ROOT=$(get_xcode_developer_root "$1")
 	XCODE_VERSION=$(grep "XCODE$1_VERSION=" Make.config | sed 's/.*=//')
 	XCODE_ROOT=$(dirname "$(dirname "$XCODE_DEVELOPER_ROOT")")
-	
-	if ! test -d $XCODE_DEVELOPER_ROOT; then
+
+	if ! "$INSTALLER" "${INSTALLER_ARGS[@]}"; then
 		if ! test -z $PROVISION_XCODE; then
 			install_specific_xcode "$1" "$XCODE_DEVELOPER_ROOT"
 		else
+			# The probe above is quiet so that the common "not installed yet" case doesn't
+			# look like an error; repeat it verbosely so the actual reason is visible.
+			"$INSTALLER" verify || true
 			fail "You must install Xcode ($XCODE_VERSION) in $XCODE_ROOT. You can download Xcode $XCODE_VERSION here: https://developer.apple.com/downloads/index.action?name=Xcode"
+			return
 		fi
-		return
-	else
-		if is_at_least_version $XCODE_VERSION 5.0; then
-			if ! $XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild -license check >/dev/null 2>&1; then
-				if ! test -z $PROVISION_XCODE; then
-					$SUDO $XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild -license accept
-				else
-					fail "The license for Xcode $XCODE_VERSION has not been accepted. Execute '$SUDO $XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild' to review the license and accept it."
-					return
-				fi
-			fi
-		fi
-
-		run_xcode_first_launch "$XCODE_VERSION" "$XCODE_DEVELOPER_ROOT"
 	fi
 
-	local XCODE_ACTUAL_VERSION=`/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$XCODE_DEVELOPER_ROOT/../version.plist"`
-	# this is a hard match, having 4.5 when requesting 4.4 is not OK (but 4.4.1 is OK)
-	if [[ ! "x$XCODE_ACTUAL_VERSION" =~ "x$XCODE_VERSION" ]]; then
-		fail "You must install Xcode $XCODE_VERSION in $XCODE_ROOT (found $XCODE_ACTUAL_VERSION).  You can download Xcode $XCODE_VERSION here: https://developer.apple.com/downloads/index.action?name=Xcode";
+	if ! test -z $PROVISION_XCODE; then
+		INSTALLER_ARGS=(reconcile)
+		if test -z "$SUDO"; then
+			INSTALLER_ARGS+=(--no-sudo)
+		fi
+		"$INSTALLER" "${INSTALLER_ARGS[@]}"
+	elif ! "$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -license check >/dev/null 2>&1; then
+		fail "The license for Xcode $XCODE_VERSION has not been accepted. Execute '$SUDO $XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild' to review the license and accept it."
 		return
 	fi
 
-	ok "Found Xcode $XCODE_ACTUAL_VERSION in $XCODE_ROOT"
+	run_xcode_first_launch "$XCODE_VERSION" "$XCODE_DEVELOPER_ROOT"
+	ok "Found Xcode $XCODE_VERSION in $XCODE_ROOT"
 }
 
 function check_xcode () {

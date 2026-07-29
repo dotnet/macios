@@ -116,6 +116,9 @@ namespace Photos {
 		/// <summary>The collection is a regular folder.</summary>
 		RegularFolder = 100,
 
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		RootFolder = 101,
+
 		/// <summary>The collection is a smart folder of events.</summary>
 		SmartFolderEvents = 200,
 		/// <summary>The collection is a smart folder of faces.</summary>
@@ -289,6 +292,8 @@ namespace Photos {
 		/// <summary>A Depth Effect photo.</summary>
 		[MacCatalyst (13, 1)]
 		PhotoDepthEffect = (1 << 4),
+		[TV (11, 0), Mac (10, 15), iOS (11, 0), MacCatalyst (13, 1)]
+		PhotoAnimation = (1 << 6),
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		SmartAlbumSpatial = (1 << 10),
 		/// <summary>A streaming video.</summary>
@@ -314,6 +319,32 @@ namespace Photos {
 		AutoPick = (1 << 0),
 		/// <summary>The user picked the asset as a favorite.</summary>
 		UserPick = (1 << 1),
+	}
+
+	[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[Native]
+	public enum PHOriginalResourceChoice : long {
+		Compressed = 0,
+		Raw = 1,
+	}
+
+	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+	[Native]
+	public enum PHAssetAdjustmentsState : long {
+		None = 0,
+		UserAdjusted = 2,
+		CameraAutoAdjusted = 3,
+	}
+
+	[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[Native]
+	public enum PHAssetRating : long {
+		Unset = 0,
+		One,
+		Two,
+		Three,
+		Four,
+		Five,
 	}
 
 	/// <summary>Enumerates the current authorization allowed by the application user.</summary>
@@ -408,6 +439,15 @@ namespace Photos {
 		Video = 4,
 		/// <summary>To be added.</summary>
 		VideoLooping = 5,
+	}
+
+	[TV (11, 0), Mac (10, 15), iOS (11, 0), MacCatalyst (13, 1)]
+	[Native]
+	public enum PHAssetPlaybackVariation : long {
+		None = 0,
+		AutoLoop = 1,
+		Mirror = 2,
+		LongExposure = 3,
 	}
 
 	[NoiOS]

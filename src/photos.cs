@@ -94,6 +94,10 @@ namespace Photos {
 		[Export ("favorite")]
 		bool Favorite { [Bind ("isFavorite")] get; }
 
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("rating", ArgumentSemantic.Assign)]
+		PHAssetRating Rating { get; }
+
 		[MacCatalyst (13, 1)]
 		[Export ("burstIdentifier", ArgumentSemantic.Strong)]
 		[NullAllowed]
@@ -156,6 +160,10 @@ namespace Photos {
 		[Export ("playbackStyle", ArgumentSemantic.Assign)]
 		PHAssetPlaybackStyle PlaybackStyle { get; }
 
+		[TV (11, 0), Mac (10, 15), iOS (11, 0), MacCatalyst (13, 1)]
+		[Export ("playbackVariation", ArgumentSemantic.Assign)]
+		PHAssetPlaybackVariation PlaybackVariation { get; }
+
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -182,6 +190,22 @@ namespace Photos {
 		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
 		[Export ("addedDate", ArgumentSemantic.Strong)]
 		NSDate AddedDate { get; }
+
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("originalResourceChoice", ArgumentSemantic.Assign)]
+		PHOriginalResourceChoice OriginalResourceChoice { get; }
+
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("extendedMetadata", ArgumentSemantic.Strong)]
+		PHAssetExtendedMetadata ExtendedMetadata { get; }
+
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[Export ("adjustmentsState", ArgumentSemantic.Assign)]
+		PHAssetAdjustmentsState AdjustmentsState { get; }
+
+		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[NullAllowed, Export ("adjustmentTimestamp", ArgumentSemantic.Strong)]
+		NSDate AdjustmentTimestamp { get; }
 	}
 
 	/// <summary>Used within a Photos change block to create, update, or delete <see cref="Photos.PHAsset" /> objects.</summary>
@@ -209,6 +233,14 @@ namespace Photos {
 		[Export ("placeholderForCreatedAsset", ArgumentSemantic.Strong)]
 		[NullAllowed]
 		PHObjectPlaceholder PlaceholderForCreatedAsset { get; }
+
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("rating", ArgumentSemantic.Assign)]
+		PHAssetRating Rating { get; set; }
+
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[NullAllowed, Export ("caption", ArgumentSemantic.Copy)]
+		string Caption { get; set; }
 
 		[Static]
 		[Export ("deleteAssets:")]
@@ -238,12 +270,28 @@ namespace Photos {
 		[Export ("hidden", ArgumentSemantic.Assign)]
 		bool Hidden { [Bind ("isHidden")] get; set; }
 
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("setLivePhotoVideoPlaybackEnabled:")]
+		void SetLivePhotoVideoPlaybackEnabled (bool enabled);
+
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("addKeyword:")]
+		void AddKeyword (string keyword);
+
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("removeKeyword:")]
+		void RemoveKeyword (string keyword);
+
 		[NullAllowed] // by default this property is null
 		[Export ("contentEditingOutput", ArgumentSemantic.Strong)]
 		PHContentEditingOutput ContentEditingOutput { get; set; }
 
 		[Export ("revertAssetContentToOriginal")]
 		void RevertAssetContentToOriginal ();
+
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("revertAssetContentToOriginalResourceChoice:")]
+		void RevertAssetContentToOriginalResourceChoice (PHOriginalResourceChoice choice);
 
 	}
 
@@ -257,6 +305,10 @@ namespace Photos {
 		[Static]
 		[Export ("creationRequestForAsset")]
 		PHAssetCreationRequest CreationRequestForAsset ();
+
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("originalResourceChoice", ArgumentSemantic.Assign)]
+		PHOriginalResourceChoice OriginalResourceChoice { get; set; }
 
 		[Static]
 		[Internal, Export ("supportsAssetResourceTypes:")]
@@ -307,6 +359,12 @@ namespace Photos {
 		[Export ("assetResourcesForLivePhoto:")]
 		PHAssetResource [] GetAssetResources (PHLivePhoto livePhoto);
 
+		[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[Static]
+		[Export ("assetResourceForUploadJob:")]
+		[return: NullAllowed]
+		PHAssetResource GetAssetResource (PHAssetResourceUploadJob uploadJob);
+
 		[TV (16, 0), iOS (16, 0)]
 		[MacCatalyst (16, 0)]
 		[Export ("pixelWidth")]
@@ -320,6 +378,12 @@ namespace Photos {
 		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
 		[Export ("contentType", ArgumentSemantic.Copy)]
 		UTType ContentType { get; }
+
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[NullAllowed]
+		[BindAs (typeof (nint?))]
+		[Export ("dataSize", ArgumentSemantic.Copy)]
+		NSNumber DataSize { get; }
 	}
 
 	/// <summary>Options when creating assets from data resources.</summary>
@@ -365,6 +429,14 @@ namespace Photos {
 		/// <summary>Gets or sets the progress handler.</summary>
 		[NullAllowed, Export ("progressHandler", ArgumentSemantic.Copy)]
 		PHProgressHandler ProgressHandler { get; set; }
+
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("skipsDisplaySizeImage")]
+		bool SkipsDisplaySizeImage { get; set; }
+
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("originalResourceChoice", ArgumentSemantic.Assign)]
+		PHOriginalResourceChoice OriginalResourceChoice { get; set; }
 
 		/// <summary>Represents the value associated with the constant PHContentEditingInputResultIsInCloudKey</summary>
 		///         <value>
@@ -635,6 +707,10 @@ namespace Photos {
 		[Export ("localizedTitle", ArgumentSemantic.Strong)]
 		[NullAllowed]
 		string LocalizedTitle { get; }
+
+		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[NullAllowed, Export ("modificationDate", ArgumentSemantic.Strong)]
+		NSDate ModificationDate { get; }
 
 		[Export ("canPerformEditOperation:")]
 		bool CanPerformEditOperation (PHCollectionEditOperation anOperation);
@@ -992,6 +1068,10 @@ namespace Photos {
 		[MacCatalyst (13, 1)]
 		[Export ("fetchLimit", ArgumentSemantic.Assign)]
 		nuint FetchLimit { get; set; }
+
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("prefetchAssetExtendedMetadata")]
+		bool PrefetchAssetExtendedMetadata { get; set; }
 	}
 
 	/// <summary>Enumerates the assets in a fetch result.</summary>
@@ -1103,6 +1183,14 @@ namespace Photos {
 		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("allowSecondaryDegradedImage")]
 		bool AllowSecondaryDegradedImage { get; set; }
+
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[Export ("preferHDR")]
+		bool PreferHdr { get; set; }
+
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[Export ("targetHDRHeadroom")]
+		nfloat TargetHdrHeadroom { get; set; }
 	}
 
 	/// <summary>Delegate type used with <see cref="Photos.PHVideoRequestOptions.ProgressHandler" />.</summary>
@@ -1330,6 +1418,18 @@ namespace Photos {
 		void PhotoLibraryDidBecomeUnavailable (PHPhotoLibrary photoLibrary);
 	}
 
+	interface IPHPhotoLibraryPersistentChangesObserver { }
+
+	[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
+	[BaseType (typeof (NSObject))]
+	interface PHPhotoLibraryPersistentChangesObserver {
+
+		[Abstract]
+		[Export ("photoLibraryPersistentChangesDidUpdate:")]
+		void PhotoLibraryPersistentChangesDidUpdate (PHPhotoLibrary photoLibrary);
+	}
+
 	delegate void PHPhotoLibraryCancellableChangeHandler (out bool cancel);
 
 	/// <summary>The entire set of data managed by the Photos app. This includes both locally stored assets and, if user-enabled, assets stored in iCloud.</summary>
@@ -1393,6 +1493,14 @@ namespace Photos {
 		[Export ("unregisterChangeObserver:")]
 		void UnregisterChangeObserver (IPHPhotoLibraryChangeObserver observer);
 
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("registerPersistentChangesObserver:")]
+		void RegisterPersistentChangesObserver (IPHPhotoLibraryPersistentChangesObserver observer);
+
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("unregisterPersistentChangesObserver:")]
+		void UnregisterPersistentChangesObserver (IPHPhotoLibraryPersistentChangesObserver observer);
+
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("unavailabilityReason", ArgumentSemantic.Strong)]
 		NSError UnavailabilityReason { get; }
@@ -1420,11 +1528,11 @@ namespace Photos {
 		[Export ("currentChangeToken")]
 		PHPersistentChangeToken CurrentChangeToken { get; }
 
-		[NoTV, NoMacCatalyst, NoMac, iOS (26, 1)]
+		[NoTV, Mac (27, 0), iOS (26, 1), MacCatalyst (27, 0)]
 		[Export ("uploadJobExtensionEnabled")]
 		bool UploadJobExtensionEnabled { [Bind ("isUploadJobExtensionEnabled")] get; }
 
-		[NoTV, NoMacCatalyst, NoMac, iOS (26, 1)]
+		[NoTV, Mac (27, 0), iOS (26, 1), MacCatalyst (27, 0)]
 		[Export ("setUploadJobExtensionEnabled:error:")]
 		bool SetUploadJobExtensionEnabled (bool enable, [NullAllowed] out NSError error);
 	}
@@ -1441,6 +1549,10 @@ namespace Photos {
 		[MacCatalyst (13, 1)]
 		[Export ("cloudIdentifierMappingsForLocalIdentifiers:")]
 		NSDictionary<NSString, PHCloudIdentifierMapping> GetCloudIdentifierMappings (string [] localIdentifiers);
+
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("localIdentifierMappingsForSyncedCloudIdentifiers:")]
+		NSDictionary<PHCloudIdentifier, PHLocalIdentifierMapping> GetLocalIdentifierMappingsForSyncedCloudIdentifiers (PHCloudIdentifier [] cloudIdentifiers);
 
 		/// <param name="cloudIdentifiers">To be added.</param>
 		/// <summary>To be added.</summary>
@@ -1520,6 +1632,11 @@ namespace Photos {
 		[MacCatalyst (13, 1)]
 		[Export ("version", ArgumentSemantic.Assign)]
 		PHImageRequestOptionsVersion Version { get; set; }
+
+		// The headers claim macOS 14 and Mac Catalyst 17, but the selectors are only available starting in macOS 15 and Mac Catalyst 18.
+		[TV (17, 0), Mac (15, 0), iOS (17, 0), MacCatalyst (18, 0)]
+		[Export ("preferHDR")]
+		bool PreferHdr { get; set; }
 	}
 
 	/// <summary>Defines keys for the <c>info</c> dictionary passed to the result handler in <see cref="Photos.PHLivePhoto.RequestLivePhoto(Foundation.NSUrl[],UIImage,CoreGraphics.CGSize,Photos.PHImageContentMode,System.Action{Photos.PHLivePhoto,Foundation.NSDictionary})" />.</summary>
@@ -1810,9 +1927,26 @@ namespace Photos {
 		[Export ("notFoundIdentifier")]
 		PHCloudIdentifier NotFoundIdentifier { get; }
 
+		[TV (18, 2), Mac (15, 2), iOS (18, 2), MacCatalyst (18, 2)]
+		[Export ("initWithArchivalStringValue:")]
+		[Internal]
+		NativeHandle _InitWithArchivalStringValue (string archivalStringValue);
+
+		[TV (18, 2), Mac (15, 2), iOS (18, 2), MacCatalyst (18, 2)]
+		[Export ("archivalStringValue")]
+		string ArchivalStringValue { get; }
+
+		[Deprecated (PlatformName.iOS, 27, 0, message: "Use 'ArchivalStringValue' instead.")]
+		[Deprecated (PlatformName.MacOSX, 27, 0, message: "Use 'ArchivalStringValue' instead.")]
+		[Deprecated (PlatformName.TvOS, 27, 0, message: "Use 'ArchivalStringValue' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Use 'ArchivalStringValue' instead.")]
 		[Export ("stringValue")]
 		string StringValue { get; }
 
+		[Deprecated (PlatformName.iOS, 27, 0, message: "Use 'Create' instead.")]
+		[Deprecated (PlatformName.MacOSX, 27, 0, message: "Use 'Create' instead.")]
+		[Deprecated (PlatformName.TvOS, 27, 0, message: "Use 'Create' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Use 'Create' instead.")]
 		[Export ("initWithStringValue:")]
 		NativeHandle Constructor (string stringValue);
 	}
@@ -1889,7 +2023,20 @@ namespace Photos {
 		NSSet<NSString> DeletedLocalIdentifiers { get; }
 	}
 
-	[NoTV, NoMacCatalyst, NoMac, iOS (26, 1)]
+	[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	interface PHAssetExtendedMetadata {
+		[NullAllowed, Export ("caption", ArgumentSemantic.Copy)]
+		string Caption { get; }
+
+		[NullAllowed, Export ("originalFileName", ArgumentSemantic.Copy)]
+		string OriginalFileName { get; }
+
+		[Export ("keywords", ArgumentSemantic.Copy)]
+		string [] Keywords { get; }
+	}
+
+	[NoTV, Mac (27, 0), iOS (26, 1), MacCatalyst (27, 0)]
 	[BaseType (typeof (PHObject))]
 	[DisableDefaultCtor]
 	interface PHAssetResourceUploadJob {
@@ -1898,6 +2045,7 @@ namespace Photos {
 		nint JobLimit { get; }
 
 		[Export ("resource", ArgumentSemantic.Strong)]
+		[NoMac, NoMacCatalyst]
 		PHAssetResource Resource { get; }
 
 		[Export ("destination", ArgumentSemantic.Strong)]
@@ -1906,17 +2054,17 @@ namespace Photos {
 		[Export ("state")]
 		PHAssetResourceUploadJobState State { get; }
 
-		[iOS (26, 4)]
+		[Mac (27, 0), iOS (26, 4), MacCatalyst (27, 0)]
 		[Export ("type")]
 		PHAssetResourceUploadJobType Type { get; }
 
-		[iOS (26, 4)]
+		[Mac (27, 0), iOS (26, 4), MacCatalyst (27, 0)]
 		[Export ("error")]
 		[NullAllowed]
 		NSError Error { get; }
 
 		/// <summary>Gets the response header fields returned from the upload destination.</summary>
-		[iOS (26, 4)]
+		[Mac (27, 0), iOS (26, 4), MacCatalyst (27, 0)]
 		[Export ("responseHeaderFields", ArgumentSemantic.Copy)]
 		[NullAllowed]
 		NSDictionary<NSString, NSString> ResponseHeaderFields { get; }
@@ -1926,10 +2074,12 @@ namespace Photos {
 		PHFetchResult FetchJobs (PHAssetResourceUploadJobAction action, [NullAllowed] PHFetchOptions options);
 	}
 
-	[NoTV, NoMacCatalyst, NoMac, iOS (26, 1)]
+	[NoTV, Mac (27, 0), iOS (26, 1), MacCatalyst (27, 0)]
 	[BaseType (typeof (PHChangeRequest))]
 	[DisableDefaultCtor]
 	interface PHAssetResourceUploadJobChangeRequest {
+		[NoMac, NoMacCatalyst]
+		[Deprecated (PlatformName.iOS, 26, 4, message: "Use 'CreateJobRequest' instead.")]
 		[Static]
 		[Export ("createJobWithDestination:resource:")]
 		void CreateJob (NSUrlRequest destination, PHAssetResource resource);
@@ -1949,7 +2099,7 @@ namespace Photos {
 		/// <param name="destination">The URL request that specifies the upload destination.</param>
 		/// <param name="resource">The asset resource to upload.</param>
 		/// <returns>A new change request for the upload job.</returns>
-		[iOS (26, 4)]
+		[Mac (27, 0), iOS (26, 4), MacCatalyst (27, 0)]
 		[Static]
 		[Export ("creationRequestForJobWithDestination:resource:")]
 		PHAssetResourceUploadJobChangeRequest CreateJobRequest (NSUrlRequest destination, PHAssetResource resource);
@@ -1957,7 +2107,7 @@ namespace Photos {
 		/// <summary>Creates a change request for a download-only job for the specified asset resource.</summary>
 		/// <param name="resource">The asset resource to download.</param>
 		/// <returns>A new change request for the download-only job.</returns>
-		[iOS (26, 4)]
+		[Mac (27, 0), iOS (26, 4), MacCatalyst (27, 0)]
 		[Static]
 		[Export ("creationRequestForDownloadJobWithResource:")]
 		PHAssetResourceUploadJobChangeRequest CreateDownloadJobRequest (PHAssetResource resource);
@@ -1967,12 +2117,12 @@ namespace Photos {
 		[Export ("placeholderForCreatedAssetResourceUploadJob", ArgumentSemantic.Strong)]
 		PHObjectPlaceholder PlaceholderForCreatedAssetResourceUploadJob { get; }
 
-		[iOS (26, 4)]
+		[Mac (27, 0), iOS (26, 4), MacCatalyst (27, 0)]
 		[Export ("cancel")]
 		void Cancel ();
 	}
 
-	[NoTV, NoMacCatalyst, NoMac, iOS (26, 1)]
+	[NoTV, Mac (27, 0), iOS (26, 1), MacCatalyst (27, 0)]
 	[Native]
 	public enum PHAssetResourceUploadJobState : long {
 		Registered = 1,
@@ -1980,11 +2130,11 @@ namespace Photos {
 		Failed = 3,
 		Succeeded = 4,
 		/// <summary>The upload job has been cancelled.</summary>
-		[iOS (26, 4)]
+		[Mac (27, 0), iOS (26, 4), MacCatalyst (27, 0)]
 		Cancelled = 5,
 	}
 
-	[NoTV, NoMacCatalyst, NoMac, iOS (26, 1)]
+	[NoTV, Mac (27, 0), iOS (26, 1), MacCatalyst (27, 0)]
 	[Native]
 	public enum PHAssetResourceUploadJobAction : long {
 		/// <summary>Acknowledges an upload job.</summary>
@@ -1992,12 +2142,12 @@ namespace Photos {
 		/// <summary>Retries an upload job.</summary>
 		Retry = 2,
 		/// <summary>Processes an upload job.</summary>
-		[iOS (26, 5)]
+		[Mac (27, 0), iOS (26, 5), MacCatalyst (27, 0)]
 		Process = 3,
 	}
 
 	/// <summary>Enumerates the types of <see cref="PHAssetResourceUploadJob" />.</summary>
-	[NoTV, NoMacCatalyst, NoMac, iOS (26, 4)]
+	[NoTV, Mac (27, 0), iOS (26, 4), MacCatalyst (27, 0)]
 	public enum PHAssetResourceUploadJobType : short {
 		/// <summary>A standard upload job that uploads an asset resource to a destination.</summary>
 		Upload = 0,

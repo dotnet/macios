@@ -472,6 +472,9 @@ namespace Introspection {
 				// Xcode 26.4 Conformance not in headers
 				case "CNFetchRequest":
 					return true;
+				// Xcode 27.0 Conformance not in headers
+				case "PHPickerSearchText":
+					return true;
 				}
 				break;
 			case "NSSecureCoding":
@@ -712,6 +715,9 @@ namespace Introspection {
 					return true;
 				// Xcode 26.4 Conformance not in headers
 				case "CNFetchRequest":
+					return true;
+				// Xcode 27.0 Conformance not in headers
+				case "PHPickerSearchText":
 					return true;
 				}
 				break;

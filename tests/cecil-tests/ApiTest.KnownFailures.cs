@@ -341,7 +341,6 @@ namespace Cecil.Tests {
 			"AppKit.ActionDispatcher.OnActivated(Foundation.NSObject)",
 			"AppKit.ActionDispatcher.OnActivated2(Foundation.NSObject)",
 			"AppKit.NSAlertDidEndDispatcher.OnAlertDidEnd(AppKit.NSAlert, System.IntPtr, System.IntPtr)",
-			"AppKit.NSApplication.Init()",
 			"AppKit.NSClickGestureRecognizer/Callback",
 			"AppKit.NSClickGestureRecognizer/Callback.Activated(AppKit.NSClickGestureRecognizer)",
 			"AppKit.NSGestureRecognizer/ParameterlessDispatch",

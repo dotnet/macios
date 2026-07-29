@@ -4,10 +4,6 @@ parameters:
   type: string 
   default: '10.16' # default context, since we started dealing with iOS devices. 
 
-- name: clearProvisionatorCache
-  type: boolean
-  default: false
-
 # can depend on the pool, which is annoying, but we should keep it in mind
 - name: keyringPass
   type: string
@@ -104,34 +100,11 @@ steps:
 
   displayName: 'Set VM Vendor'
 
-# provision-brew-packages.csx does '#load "provision-shared.csx"', and provision-shared.csx
-# is generated (it's git-ignored) from provision-shared.in.csx by the 'provisioning' make target.
-# Every other common/provision.yml caller (build, simulator tests, windows reserve-mac) generates
-# it first, so do the same here or the provisionator step fails with 'provision-shared.csx could
-# not be opened'.
-- bash: |
-    make -C $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops provisioning
-  displayName: 'Generate Provisionator csx file'
-
-- template: ../common/provision.yml
-  parameters:
-    provisioning_script: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/provision-brew-packages.csx
-    displayName: 'Provision Brew components'
-    provisionatorChannel: $(PROVISIONATOR_CHANNEL)
-    timeoutInMinutes: 30
-
 - bash: |
     sudo rm -Rf $(Build.SourcesDirectory)/package
     sudo rm -Rf $(Build.SourcesDirectory)/artifacts
   displayName: "Remove artifacts"
   condition: always()
-
-# Executed ONLY if we want to clear the provisionator cache.
-- bash: rm -rf "$TOOLS_DIR/provisionator"
-  env:
-    TOOLS_DIR: $(Agent.ToolsDirectory)
-  displayName: 'Remove Provisionator Tool Cache'
-  condition: ${{ parameters.clearProvisionatorCache }}
 
 # Go get the tests!
 - task: DownloadPipelineArtifact@2
@@ -140,6 +113,23 @@ steps:
     artifact: 'mac-test-package'
     allowFailedBuilds: true
     path: $(Build.SourcesDirectory)/artifacts/tmp
+
+# 'Expand tests.' below needs 7z, which used to be installed by the Provisionator brew
+# step. The macOS test jobs don't provision Xcode, so they don't get 7z from
+# common/provision-xcode.yml either, and a freshly imaged agent doesn't have it at all.
+- bash: |
+    set -euo pipefail
+
+    # Homebrew refuses to run under Rosetta, so re-execute natively when translated.
+    if [[ "$(sysctl -n sysctl.proc_translated 2>/dev/null || echo 0)" == "1" ]]; then
+      /usr/bin/arch -arm64 "$REPOSITORY_PATH/system-dependencies.sh" --ignore-all --ignore-old-simulators --provision-7z
+    else
+      "$REPOSITORY_PATH/system-dependencies.sh" --ignore-all --ignore-old-simulators --provision-7z
+    fi
+  displayName: 'Provision 7z'
+  timeoutInMinutes: 30
+  env:
+    REPOSITORY_PATH: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)
 
 - bash: |
     set -ex

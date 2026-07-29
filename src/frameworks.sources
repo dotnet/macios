@@ -1478,6 +1478,7 @@ PHOTOS_API_SOURCES = \
 PHOTOS_SOURCES = \
 	Photos/PHAssetChangeRequest.cs \
 	Photos/PHAssetCreationRequest.cs \
+	Photos/PHCloudIdentifier.cs \
 	Photos/PHFetchResult.cs \
 	Photos/PHLivePhoto.cs \
 	Photos/PHPhotoLibrary.cs \
@@ -2039,6 +2040,7 @@ COMMON_FRAMEWORKS =         \
 	Network                 \
 	OSLog                   \
 	SceneKit                \
+	ScreenCaptureKit        \
 	ShazamKit               \
 	Symbols                 \
 	SoundAnalysis 			\
@@ -2141,7 +2143,6 @@ MACOS_FRAMEWORKS =          \
 	ReplayKit               \
 	SafariServices          \
 	SafetyKit               \
-	ScreenCaptureKit        \
 	ScreenTime              \
 	ScriptingBridge         \
 	SearchKit               \
@@ -2438,7 +2439,6 @@ MACCATALYST_FRAMEWORKS = \
 	ReplayKit \
 	SafariServices \
 	SafetyKit \
-	ScreenCaptureKit \
 	ScreenTime \
 	Security \
 	SecurityUI \

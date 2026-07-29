@@ -1,12 +1,6 @@
 TOP=../..
 include $(TOP)/Make.config
 
-provision-shared.csx: provision-shared.in.csx Makefile $(TOP)/Make.config
-	$(Q_GEN) sed \
-		-e 's#@XCODE_XIP_NAME@#$(notdir $(XCODE_URL))#g' \
-		-e 's#@XCODE_ROOT_PATH@#$(XCODE_DEVELOPER_ROOT)#g' \
-		$< > $@
-
 LocProject.json: generate-loc-project.sh Makefile $(TOP)/Make.config
 	$(Q_GEN) $(TOP)/tools/devops/generate-loc-project.sh "$(CURDIR)" "$(TOP)" > $(TOP)/Localize/$@;
 
@@ -29,5 +23,3 @@ print-variable:
 
 print-variable-value-to-file:
 	@echo $($(VARIABLE)) > "$(FILE)"
-
-provisioning: provision-shared.csx

@@ -97,9 +97,10 @@ namespace Xamarin.Linker {
 				return false;
 
 #if ASSEMBLY_PREPARER
-			// In the assembly-preparer any modification re-serializes (saves) the assembly, which breaks Hot
-			// Reload. So skip resource stripping entirely for Hot Reload compatible builds.
-			if (Configuration.HotReloadCompatibleBuild)
+			// In Hot Reload compatible builds, don't strip resources from reloadable (non-linked) assemblies,
+			// because modifying them re-serializes (saves) the assembly, breaking Hot Reload. Linked assemblies
+			// are re-serialized regardless, so stripping them is fine.
+			if (Configuration.HotReloadCompatibleBuild && Annotations.GetAction (assembly) != AssemblyAction.Link)
 				return false;
 #endif
 

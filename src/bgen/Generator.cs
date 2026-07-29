@@ -6663,8 +6663,11 @@ public partial class Generator : IMemberGatherer {
 						//
 						if (Frameworks.HaveCoreMedia && Frameworks.HaveAVFoundation && (field_pi.PropertyType == TypeCache.CMTime ||
 						   field_pi.PropertyType == TypeCache.AVCaptureWhiteBalanceGains)) {
-							print ("return *(({3} *) Dlfcn.dlsym (Libraries.{2}.Handle, \"{1}\"));", field_pi.Name, fieldAttr.SymbolName, library_name,
-								TypeManager.FormatType (type, field_pi.PropertyType.Namespace, field_pi.PropertyType.Name));
+							var valueTypeName = TypeManager.FormatType (type, field_pi.PropertyType.Namespace, field_pi.PropertyType.Name);
+							if (AttributeManager.HasAttribute<DefaultValueOnMissingSymbolAttribute> (field_pi))
+								print ("return Dlfcn.GetStruct<{3}> (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name, valueTypeName);
+							else
+								print ("return *(({3} *) Dlfcn.dlsym (Libraries.{2}.Handle, \"{1}\"));", field_pi.Name, fieldAttr.SymbolName, library_name, valueTypeName);
 						} else if (field_pi.PropertyType == TypeCache.System_nint) {
 							print ("return Dlfcn.GetNInt (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
 						} else if (field_pi.PropertyType == TypeCache.System_nuint) {

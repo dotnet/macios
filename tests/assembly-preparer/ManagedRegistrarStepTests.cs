@@ -21,7 +21,7 @@ public class ManagedRegistrarStepTests : BaseClass {
 		";
 
 		// The runtime is configured independently of the reference assembly set used to compile the test code.
-		AssertPrepare (ApplePlatform.iOS, false, RegistrarMode.ManagedStatic, code, out var assemblyDefinition, $"XamarinRuntime={runtime}");
+		AssertPrepare (ApplePlatform.iOS, false, RegistrarMode.ManagedStatic, code, out var assemblyDefinition, extraConfig: $"XamarinRuntime={runtime}");
 
 		var type = assemblyDefinition.MainModule.Types.Single (v => v.Name == "MyClass");
 		var callbackType = type.NestedTypes.Single (v => v.Name == "__Registrar_Callbacks__");

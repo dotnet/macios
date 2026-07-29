@@ -22,9 +22,12 @@ namespace MonoTouchFixtures.SecurityInterface {
 		{
 			Assert.That (typeof (SFCertificatePanel).GetMethod (nameof (SFCertificatePanel.RunModal), new [] { typeof (SecCertificate []), typeof (bool) }), Is.Not.Null, "Certificates");
 			Assert.That (typeof (SFChooseIdentityPanel).GetMethod (nameof (SFChooseIdentityPanel.RunModal), new [] { typeof (SecIdentity []), typeof (string) }), Is.Not.Null, "Identities");
-			Assert.That (typeof (SFCertificatePanel).GetMethod (nameof (SFCertificatePanel.SetPolicies), new [] { typeof (SecPolicy []) }), Is.Not.Null, "Certificate policies");
-			Assert.That (typeof (SFCertificateView).GetMethod (nameof (SFCertificateView.SetPolicies), new [] { typeof (SecPolicy []) }), Is.Not.Null, "View policies");
-			Assert.That (typeof (SFChooseIdentityPanel).GetMethod (nameof (SFChooseIdentityPanel.SetPolicies), new [] { typeof (SecPolicy []) }), Is.Not.Null, "Identity policies");
+			Assert.That (typeof (SFCertificatePanel).GetProperty (nameof (SFCertificatePanel.Policies))?.PropertyType, Is.EqualTo (typeof (SecPolicy [])), "Certificate policies");
+			Assert.That (typeof (SFCertificatePanel).GetProperty (nameof (SFCertificatePanel.Policies))?.CanWrite, Is.True, "Certificate policies setter");
+			Assert.That (typeof (SFCertificateView).GetProperty (nameof (SFCertificateView.Policies))?.PropertyType, Is.EqualTo (typeof (SecPolicy [])), "View policies");
+			Assert.That (typeof (SFCertificateView).GetProperty (nameof (SFCertificateView.Policies))?.CanWrite, Is.True, "View policies setter");
+			Assert.That (typeof (SFChooseIdentityPanel).GetProperty (nameof (SFChooseIdentityPanel.Policies))?.PropertyType, Is.EqualTo (typeof (SecPolicy [])), "Identity policies");
+			Assert.That (typeof (SFChooseIdentityPanel).GetProperty (nameof (SFChooseIdentityPanel.Policies))?.CanWrite, Is.True, "Identity policies setter");
 		}
 
 		[Test]
@@ -65,6 +68,7 @@ namespace MonoTouchFixtures.SecurityInterface {
 			Assert.That (typeof (SFAuthorizationPluginView).GetProperty (nameof (SFAuthorizationPluginView.FirstKeyView)), Is.Not.Null, "FirstKeyView");
 			Assert.That (typeof (SFAuthorizationPluginView).GetProperty (nameof (SFAuthorizationPluginView.FirstResponder)), Is.Not.Null, "FirstResponder");
 			Assert.That (typeof (SFAuthorizationPluginView).GetProperty (nameof (SFAuthorizationPluginView.LastKeyView)), Is.Not.Null, "LastKeyView");
+			Assert.That (typeof (SFAuthorizationPluginView).GetMethod (nameof (SFAuthorizationPluginView.WillActivate)), Is.Not.Null, "WillActivate");
 			Assert.That (typeof (SFAuthorizationView).GetProperty (nameof (SFAuthorizationView.Enabled))?.CanWrite, Is.True, "Enabled");
 			Assert.That (typeof (SFCertificatePanel).GetProperty (nameof (SFCertificatePanel.ShowsHelp))?.CanWrite, Is.True, "Certificate ShowsHelp");
 			Assert.That (typeof (SFCertificatePanel).GetProperty (nameof (SFCertificatePanel.HelpAnchor))?.CanWrite, Is.True, "Certificate HelpAnchor");

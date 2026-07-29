@@ -27,7 +27,8 @@ namespace Security {
 		{
 		}
 
-		internal AuthorizationRight (string name, ReadOnlySpan<byte> value)
+		/// <summary>Creates a new authorization right with the specified name and value.</summary>
+		public AuthorizationRight (string name, ReadOnlySpan<byte> value)
 		{
 			ArgumentNullException.ThrowIfNull (name);
 			Name = name;
@@ -54,11 +55,11 @@ namespace Security {
 	/// <summary>Represents a set of authorization rights used to configure an authorization view.</summary>
 	[SupportedOSPlatform ("macos")]
 	public sealed class AuthorizationRights : DisposableObject, IReadOnlyList<AuthorizationRight> {
-		readonly AuthorizationRight [] items;
+		readonly IList<AuthorizationRight> items;
 
 		/// <summary>Creates an empty authorization rights set.</summary>
 		public AuthorizationRights ()
-			: this ((AuthorizationRight []) [])
+			: this ((IList<AuthorizationRight>) [])
 		{
 		}
 
@@ -69,34 +70,29 @@ namespace Security {
 		}
 
 		/// <summary>Creates a new authorization rights set from the specified rights.</summary>
-		public AuthorizationRights (params IEnumerable<AuthorizationRight> rights)
-			: this (CopyItems (rights))
-		{
-		}
-
-		AuthorizationRights (AuthorizationRight [] items)
-			: base (AllocateNative (items), owns: true)
+		/// <remarks>The supplied list must not be modified after this instance is created.</remarks>
+		public unsafe AuthorizationRights (params IList<AuthorizationRight> items)
+			: base ((IntPtr) AllocateNative (items), owns: true)
 		{
 			this.items = items;
 		}
 
 		/// <summary>Gets the number of rights in this set.</summary>
-		public int Count => items.Length;
+		public int Count => items.Count;
 
 		/// <summary>Gets the authorization right at the specified index.</summary>
 		public AuthorizationRight this [int index] => items [index];
 
 		/// <summary>Returns an enumerator that iterates through the authorization rights.</summary>
-		public IEnumerator<AuthorizationRight> GetEnumerator () => ((IEnumerable<AuthorizationRight>) items).GetEnumerator ();
+		public IEnumerator<AuthorizationRight> GetEnumerator () => items.GetEnumerator ();
 
-		IEnumerator IEnumerable.GetEnumerator () => items.GetEnumerator ();
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 
-		internal static unsafe AuthorizationRights? FromHandle (NativeHandle handle)
+		internal static unsafe AuthorizationRights? FromHandle (AuthorizationRightsNative* native)
 		{
-			if (handle == NativeHandle.Zero)
+			if (native is null)
 				return null;
 
-			var native = (AuthorizationRightsNative*) handle;
 			if (native->Count > 0 && native->Items is null)
 				throw new InvalidOperationException ("The native authorization rights have a non-zero count and a null items pointer.");
 
@@ -134,31 +130,22 @@ namespace Security {
 			return result;
 		}
 
-		static AuthorizationRight [] CopyItems (IEnumerable<AuthorizationRight> rights)
+		static unsafe AuthorizationRightsNative* AllocateNative (IList<AuthorizationRight> items)
 		{
-			ArgumentNullException.ThrowIfNull (rights);
-			var result = new List<AuthorizationRight> ();
-			foreach (var right in rights) {
-				ArgumentNullException.ThrowIfNull (right);
-				result.Add (right);
-			}
-			return result.ToArray ();
-		}
-
-		static unsafe NativeHandle AllocateNative (AuthorizationRight [] items)
-		{
-			var handle = (NativeHandle) Marshal.AllocHGlobal (sizeof (AuthorizationRightsNative));
-			var native = (AuthorizationRightsNative*) handle;
+			ArgumentNullException.ThrowIfNull (items);
+			var count = items.Count;
+			var native = (AuthorizationRightsNative*) Marshal.AllocHGlobal (sizeof (AuthorizationRightsNative));
 			native->Count = 0;
 			native->Items = null;
 
 			try {
-				if (items.Length == 0)
-					return handle;
+				if (count == 0)
+					return native;
 
-				native->Items = (AuthorizationItemNative*) Marshal.AllocHGlobal (sizeof (AuthorizationItemNative) * items.Length);
-				for (var i = 0; i < items.Length; i++) {
+				native->Items = (AuthorizationItemNative*) Marshal.AllocHGlobal (sizeof (AuthorizationItemNative) * count);
+				for (var i = 0; i < count; i++) {
 					var item = items [i];
+					ArgumentNullException.ThrowIfNull (item);
 					var name = Marshal.StringToHGlobalAuto (item.Name);
 					var value = item.GetRawValue ();
 					var valuePointer = IntPtr.Zero;
@@ -183,19 +170,18 @@ namespace Security {
 					}
 				}
 
-				return handle;
+				return native;
 			} catch {
-				FreeNative (handle);
+				FreeNative (native);
 				throw;
 			}
 		}
 
-		static unsafe void FreeNative (NativeHandle handle)
+		static unsafe void FreeNative (AuthorizationRightsNative* native)
 		{
-			if (handle == NativeHandle.Zero)
+			if (native is null)
 				return;
 
-			var native = (AuthorizationRightsNative*) handle;
 			if (native->Items is not null) {
 				for (var i = 0; i < native->Count; i++) {
 					Marshal.FreeHGlobal (native->Items [i].Name);
@@ -204,14 +190,14 @@ namespace Security {
 				}
 				Marshal.FreeHGlobal ((IntPtr) native->Items);
 			}
-			Marshal.FreeHGlobal (handle);
+			Marshal.FreeHGlobal ((IntPtr) native);
 		}
 
 		/// <inheritdoc />
-		protected override void Dispose (bool disposing)
+		protected override unsafe void Dispose (bool disposing)
 		{
 			if (Owns)
-				FreeNative (Handle);
+				FreeNative ((AuthorizationRightsNative*) (IntPtr) Handle);
 			base.Dispose (disposing);
 		}
 	}

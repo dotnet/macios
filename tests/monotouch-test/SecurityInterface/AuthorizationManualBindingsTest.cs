@@ -8,6 +8,7 @@ using NUnit.Framework;
 using LocalAuthentication;
 using ObjCRuntime;
 using Security;
+using SecurityInterface;
 
 namespace MonoTouchFixtures.SecurityInterface {
 
@@ -330,6 +331,17 @@ namespace MonoTouchFixtures.SecurityInterface {
 			callbacks.Dispose ();
 			Assert.DoesNotThrow (() => callbacks.Dispose (), "Dispose twice");
 			Assert.Throws<ObjectDisposedException> (() => { var _ = callbacks.Version; });
+		}
+
+		[Test]
+		public void PluginView_RejectsOwnedCallbacks ()
+		{
+			using var callbacks = CreateOwnedCallbacks ();
+			using var engine = AuthorizationEngine.Create ((NativeHandle) (IntPtr) 0x1234);
+			Assert.That (engine, Is.Not.Null, "Engine");
+			if (engine is null)
+				return;
+			Assert.Throws<ArgumentException> (() => new SFAuthorizationPluginView (callbacks, engine));
 		}
 
 	}

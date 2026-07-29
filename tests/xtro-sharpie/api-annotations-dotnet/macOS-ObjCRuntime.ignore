@@ -21,6 +21,3 @@
 ## used in src/Darwin/KernelNotification.cs
 !unknown-pinvoke! kevent bound
 !unknown-pinvoke! kqueue bound
-
-## declared in <objc/runtime.h>, used in src/SecurityInterface/SFAuthorizationPluginView.cs
-!unknown-pinvoke! objc_setAssociatedObject bound

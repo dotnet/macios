@@ -22,7 +22,11 @@ namespace SecurityInterface {
 		/// <summary>Gets or sets the authorization rights to check for.</summary>
 		[DisallowNull]
 		public AuthorizationRights? AuthorizationRights {
-			get => Security.AuthorizationRights.FromHandle (_AuthorizationRights);
+			get {
+				unsafe {
+					return Security.AuthorizationRights.FromHandle ((AuthorizationRightsNative*) _AuthorizationRights);
+				}
+			}
 			set {
 				ArgumentNullException.ThrowIfNull (value);
 				_SetAuthorizationRights (value.GetCheckedHandle ());

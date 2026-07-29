@@ -40,7 +40,7 @@ namespace MonoTouchFixtures.SecurityInterface {
 		}
 
 		[Test]
-		public void Create_FromEnumerable ()
+		public void Create_FromList ()
 		{
 			var values = new List<AuthorizationRight> {
 				new AuthorizationRight ("a"),
@@ -48,6 +48,15 @@ namespace MonoTouchFixtures.SecurityInterface {
 			};
 			using var rights = new AuthorizationRights (values);
 			Assert.That (rights.Count, Is.EqualTo (2), "Count");
+		}
+
+		[Test]
+		public void AuthorizationRight_FromSpan ()
+		{
+			var original = new byte [] { 1, 2, 3 };
+			var right = new AuthorizationRight ("span", new ReadOnlySpan<byte> (original));
+			original [0] = 4;
+			Assert.That (right.Value, Is.EqualTo (new byte [] { 1, 2, 3 }), "Value");
 		}
 
 		[Test]

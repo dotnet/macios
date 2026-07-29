@@ -12,3 +12,9 @@
 
 # SFChooseIdentityPanelDelegate informal protocol
 !missing-selector! NSObject::chooseIdentityPanelShowHelp: not bound
+
+# The header declares SFChooseIdentityTableCellView, but SecurityInterface.tbd does not export its
+# Objective-C class symbol, so Objective-C clients cannot link against this class.
+!missing-selector! SFChooseIdentityTableCellView::issuerTextField not bound
+!missing-selector! SFChooseIdentityTableCellView::setIssuerTextField: not bound
+!missing-type! SFChooseIdentityTableCellView not bound

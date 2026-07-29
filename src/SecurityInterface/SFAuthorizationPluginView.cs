@@ -1,7 +1,6 @@
 #nullable enable
 
 using System;
-using System.Runtime.InteropServices;
 using Foundation;
 using ObjCRuntime;
 using Security;
@@ -9,29 +8,22 @@ using Security;
 namespace SecurityInterface {
 
 	public partial class SFAuthorizationPluginView {
-		const nint retainNonatomic = 1;
-		static readonly IntPtr callbacksAssociationKey = Selector.GetHandle ("xamarin_SFAuthorizationPluginView_callbacks");
-
-		[DllImport (Constants.ObjectiveCLibrary)]
-		static extern void objc_setAssociatedObject (IntPtr obj, IntPtr key, IntPtr value, nint policy);
 
 		/// <summary>Initializes the view with the authorization callbacks and engine reference provided by the plugin host.</summary>
 		/// <param name="callbacks">The authorization callbacks for communicating with the Security Server.</param>
 		/// <param name="engineRef">The authorization engine reference.</param>
+		/// <remarks>The callbacks must be the borrowed table supplied by the authorization plugin host.</remarks>
 		public SFAuthorizationPluginView (AuthorizationCallbacks callbacks, AuthorizationEngine engineRef)
 			: base (NSObjectFlag.Empty)
 		{
 			ArgumentNullException.ThrowIfNull (callbacks);
 			ArgumentNullException.ThrowIfNull (engineRef);
-			using var callbacksOwner = callbacks.Owns ? callbacks.CreateOwnedDataCopy () : null;
-			var callbacksPointer = callbacksOwner?.Bytes ?? callbacks.GetCheckedPointer ();
+			if (callbacks.Owns)
+				throw new ArgumentException ("The callbacks must be supplied by the authorization plugin host.", nameof (callbacks));
+			var callbacksPointer = callbacks.GetCheckedPointer ();
 			var engineHandle = engineRef.GetCheckedHandle ();
 			InitializeHandle (_InitWithCallbacks (callbacksPointer, engineHandle), "initWithCallbacks:andEngineRef:");
 			GC.KeepAlive (engineRef);
-			if (callbacksOwner is not null) {
-				objc_setAssociatedObject (Handle, callbacksAssociationKey, callbacksOwner.GetNonNullHandle (nameof (callbacksOwner)), retainNonatomic);
-				GC.KeepAlive (callbacksOwner);
-			}
 			GC.KeepAlive (callbacks);
 		}
 

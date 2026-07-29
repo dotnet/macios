@@ -250,18 +250,6 @@ namespace Security {
 
 		internal bool Owns => owns;
 
-		internal unsafe NSData CreateOwnedDataCopy ()
-		{
-			var pointer = (AuthorizationCallbacksNative*) Marshal.AllocHGlobal (sizeof (AuthorizationCallbacksNative));
-			try {
-				*pointer = *GetCallbacks ();
-				return NSData.FromBytesNoCopy ((IntPtr) pointer, (nuint) sizeof (AuthorizationCallbacksNative), freeWhenDone: true);
-			} catch {
-				Marshal.FreeHGlobal ((IntPtr) pointer);
-				throw;
-			}
-		}
-
 		internal unsafe IntPtr GetCheckedPointer () => (IntPtr) GetCallbacks ();
 
 		/// <summary>Gets the version of the callbacks structure.</summary>

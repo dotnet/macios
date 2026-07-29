@@ -49,7 +49,7 @@ namespace SecurityInterface {
 		/// <summary>Called before the view activates, providing a dictionary of user information.</summary>
 		/// <param name="userInformation">A dictionary containing user information, or <see langword="null" />.</param>
 		[Export ("willActivateWithUser:")]
-		void WillActivateWithUser ([NullAllowed] NSDictionary userInformation);
+		void WillActivate ([NullAllowed] NSDictionary userInformation);
 
 		/// <summary>Called after the view has been deactivated.</summary>
 		[Export ("didDeactivate")]
@@ -281,16 +281,10 @@ namespace SecurityInterface {
 		[Export ("beginSheetForWindow:modalDelegate:didEndSelector:contextInfo:certificates:showGroup:")]
 		void BeginSheet (NSWindow docWindow, [NullAllowed] NSObject modalDelegate, [NullAllowed] Selector didEndSelector, IntPtr contextInfo, SecCertificate [] certificates, bool showGroup);
 
-		/// <summary>Sets the policies used to evaluate the certificates.</summary>
-		/// <param name="policies">An <see cref="NSArray" /> of SecPolicy objects, a single SecPolicy, or <see langword="null" />.</param>
-		[Internal]
-		[Export ("setPolicies:")]
-		void _SetPolicies ([NullAllowed] NSObject policies);
-
-		/// <summary>Gets the policies used to evaluate the certificates.</summary>
+		/// <summary>Gets or sets the policies used to evaluate the certificates.</summary>
 		[Internal]
 		[Export ("policies")]
-		IntPtr _Policies { get; }
+		IntPtr _Policies { get; set; }
 
 		/// <summary>Sets the title of the default button.</summary>
 		/// <param name="title">The button title, or <see langword="null" /> to use the default title.</param>
@@ -361,23 +355,13 @@ namespace SecurityInterface {
 		NativeHandle Constructor (CoreGraphics.CGRect frameRect);
 
 		[Internal]
-		[Export ("setCertificate:")]
-		void _SetCertificate (IntPtr certificate);
-
-		[Internal]
 		[Export ("certificate")]
-		IntPtr _Certificate { get; }
+		IntPtr _Certificate { get; set; }
 
-		/// <summary>Sets the policies used to evaluate the certificate trust.</summary>
-		/// <param name="policies">An <see cref="NSArray" /> of SecPolicy objects, a single SecPolicy, or <see langword="null" />.</param>
-		[Internal]
-		[Export ("setPolicies:")]
-		void _SetPolicies ([NullAllowed] NSObject policies);
-
-		/// <summary>Gets the policies used for trust evaluation.</summary>
+		/// <summary>Gets or sets the policies used for trust evaluation.</summary>
 		[Internal]
 		[Export ("policies")]
-		IntPtr _Policies { get; }
+		IntPtr _Policies { get; set; }
 
 		/// <summary>Gets or sets a value indicating whether the user can edit the trust settings.</summary>
 		[Export ("editableTrust")]
@@ -458,16 +442,10 @@ namespace SecurityInterface {
 		[NullAllowed]
 		SecIdentity Identity { get; }
 
-		/// <summary>Sets the policies used to evaluate the identities.</summary>
-		/// <param name="policies">An <see cref="NSArray" /> of SecPolicy objects, a single SecPolicy, or <see langword="null" />.</param>
-		[Internal]
-		[Export ("setPolicies:")]
-		void _SetPolicies ([NullAllowed] NSObject policies);
-
-		/// <summary>Gets the policies used to evaluate the identities.</summary>
+		/// <summary>Gets or sets the policies used to evaluate the identities.</summary>
 		[Internal]
 		[Export ("policies")]
-		IntPtr _Policies { get; }
+		IntPtr _Policies { get; set; }
 
 		/// <summary>Sets the title of the default button.</summary>
 		/// <param name="title">The button title, or <see langword="null" /> to use the default title.</param>
@@ -497,22 +475,6 @@ namespace SecurityInterface {
 		[Export ("domain")]
 		[NullAllowed]
 		string Domain { get; set; }
-	}
-
-	/// <summary>A table cell view used in the identity chooser panel to display identity and issuer information.</summary>
-	[NoiOS, NoTV, NoMacCatalyst]
-	[BaseType (typeof (NSTableCellView))]
-	interface SFChooseIdentityTableCellView {
-
-		/// <summary>Initializes the cell view with the specified frame rectangle.</summary>
-		/// <param name="frameRect">The frame rectangle for the cell view.</param>
-		[Export ("initWithFrame:")]
-		NativeHandle Constructor (CoreGraphics.CGRect frameRect);
-
-		/// <summary>Gets or sets the text field that displays the certificate issuer name.</summary>
-		[NullAllowed]
-		[Export ("issuerTextField", ArgumentSemantic.Assign)]
-		NSTextField IssuerTextField { get; set; }
 	}
 
 	/// <summary>A save panel for creating a new keychain file.</summary>

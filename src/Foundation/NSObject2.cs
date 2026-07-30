@@ -1196,6 +1196,7 @@ namespace Foundation {
 				ScheduleDrain ();
 			}
 
+			[DynamicDependency ("Drain")]
 			static void ScheduleDrain ()
 			{
 				Messaging.void_objc_msgSend_NativeHandle_NativeHandle_bool (class_ptr, Selector.GetHandle (Selector.PerformSelectorOnMainThreadWithObjectWaitUntilDone), Selector.GetHandle ("drain:"), NativeHandle.Zero, 0);

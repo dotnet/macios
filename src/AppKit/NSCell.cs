@@ -39,16 +39,15 @@ namespace AppKit {
 			IntPtr /* NSImage* */ startCap, IntPtr /* NSImage* */ centerFill, IntPtr /* NSImage* */ endCap,
 			byte vertial, nint op, nfloat alphaFraction, byte flipped);
 
-		/// <param name="frame">To be added.</param>
-		/// <param name="startCap">To be added.</param>
-		/// <param name="centerFill">To be added.</param>
-		/// <param name="endCap">To be added.</param>
-		/// <param name="vertical">To be added.</param>
-		/// <param name="op">To be added.</param>
-		/// <param name="alphaFraction">To be added.</param>
-		/// <param name="flipped">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Draws a three-part image in the specified frame.</summary>
+		/// <param name="frame">The frame rectangle in which to draw.</param>
+		/// <param name="startCap">The image for the start cap.</param>
+		/// <param name="centerFill">The image for the center fill region.</param>
+		/// <param name="endCap">The image for the end cap.</param>
+		/// <param name="vertical">Whether to draw the image vertically.</param>
+		/// <param name="op">The compositing operation to use.</param>
+		/// <param name="alphaFraction">The alpha fraction for the drawing operation.</param>
+		/// <param name="flipped">Whether to draw with a flipped coordinate system.</param>
 		public void DrawThreePartImage (CGRect frame,
 			NSImage startCap, NSImage centerFill, NSImage endCap,
 			bool vertical, NSCompositingOperation op, nfloat alphaFraction, bool flipped)
@@ -73,21 +72,20 @@ namespace AppKit {
 			IntPtr /* NSImage* */ bottomLeftCorner, IntPtr /* NSImage* */ bottomEdgeFill, IntPtr /* NSImage* */ bottomRightCnint,
 			nint op, nfloat alphaFraction, byte flipped);
 
-		/// <param name="frame">To be added.</param>
-		/// <param name="topLeftCorner">To be added.</param>
-		/// <param name="topEdgeFill">To be added.</param>
-		/// <param name="topRightCorner">To be added.</param>
-		/// <param name="leftEdgeFill">To be added.</param>
-		/// <param name="centerFill">To be added.</param>
-		/// <param name="rightEdgeFill">To be added.</param>
-		/// <param name="bottomLeftCorner">To be added.</param>
-		/// <param name="bottomEdgeFill">To be added.</param>
-		/// <param name="bottomRightCorner">To be added.</param>
-		/// <param name="op">To be added.</param>
-		/// <param name="alphaFraction">To be added.</param>
-		/// <param name="flipped">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Draws a nine-part image in the specified frame.</summary>
+		/// <param name="frame">The frame rectangle in which to draw.</param>
+		/// <param name="topLeftCorner">The image for the top-left corner.</param>
+		/// <param name="topEdgeFill">The image for the top edge fill.</param>
+		/// <param name="topRightCorner">The image for the top-right corner.</param>
+		/// <param name="leftEdgeFill">The image for the left edge fill.</param>
+		/// <param name="centerFill">The image for the center fill region.</param>
+		/// <param name="rightEdgeFill">The image for the right edge fill.</param>
+		/// <param name="bottomLeftCorner">The image for the bottom-left corner.</param>
+		/// <param name="bottomEdgeFill">The image for the bottom edge fill.</param>
+		/// <param name="bottomRightCorner">The image for the bottom-right corner.</param>
+		/// <param name="op">The compositing operation to use.</param>
+		/// <param name="alphaFraction">The alpha fraction for the drawing operation.</param>
+		/// <param name="flipped">Whether to draw with a flipped coordinate system.</param>
 		public void DrawNinePartImage (CGRect frame,
 			NSImage topLeftCorner, NSImage topEdgeFill, NSImage topRightCorner,
 			NSImage leftEdgeFill, NSImage centerFill, NSImage rightEdgeFill,

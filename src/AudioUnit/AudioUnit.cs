@@ -1351,6 +1351,8 @@ namespace AudioUnit {
 		///         <remarks>To be added.</remarks>
 		public bool IsAtEnd { get { return current is null; } }
 
+		/// <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>
+		/// <param name="ptr">Pointer (handle) to the unmanaged object.</param>
 		public AURenderEventEnumerator (NativeHandle ptr)
 			: this (ptr, false)
 		{

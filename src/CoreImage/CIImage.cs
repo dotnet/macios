@@ -287,7 +287,7 @@ namespace CoreImage {
 		/// <param name="height">The height of the image in pixels.</param>
 		/// <param name="pixelFormat">The pixel format of the image data.</param>
 		/// <param name="colorSpace">The color space for the resulting image.</param>
-		/// <param name="options">Options that configure the image creation, or <see langword="null" />.</param>
+		/// <param name="options">Options that configure the image creation.</param>
 		public static CIImage FromProvider (ICIImageProvider provider, nuint width, nuint height, CIFormat pixelFormat, CGColorSpace colorSpace, CIImageProviderOptions options)
 		{
 			return FromProvider (provider, width, height, CIImage.CIFormatToInt (pixelFormat), colorSpace, options?.Dictionary);
@@ -299,7 +299,7 @@ namespace CoreImage {
 		/// <param name="height">The height of the image in pixels.</param>
 		/// <param name="pixelFormat">The pixel format of the image data.</param>
 		/// <param name="colorSpace">The color space for the resulting image.</param>
-		/// <param name="options">Options that configure the image creation, or <see langword="null" />.</param>
+		/// <param name="options">Options that configure the image creation.</param>
 		public CIImage (ICIImageProvider provider, nuint width, nuint height, CIFormat pixelFormat, CGColorSpace colorSpace, CIImageProviderOptions options)
 			: this (provider, width, height, CIImage.CIFormatToInt (pixelFormat), colorSpace, options?.Dictionary)
 		{

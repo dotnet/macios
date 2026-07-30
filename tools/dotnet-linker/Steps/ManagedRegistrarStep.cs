@@ -1098,7 +1098,18 @@ namespace Xamarin.Linker {
 					}
 
 					if (EmitConversion (method, il, managedParameterType, true, p, out var nativeType, postProcessing, isOutParameter, nativeParameterIndex)) {
-						nativeParameter.ParameterType = nativeType;
+						// In the generic companion helper the trampoline is dispatched via reflection,
+						// which boxes each native argument into an 'object []' and calls
+						// MethodInfo.Invoke. A pointer-typed native parameter (which is what
+						// out/ref/pointer parameters produce) can't survive that round-trip: a pointer
+						// isn't boxable and Invoke can't marshal it. Represent such parameters as a
+						// plain 'IntPtr' instead - it's a boxable, pointer-sized value type, and loading
+						// it with 'ldarg' yields a native int that the already-emitted body uses
+						// directly as the pointer (native int is usable wherever an unmanaged pointer is
+						// expected, for both reads and writes). The native ABI is unchanged since a
+						// pointer and an IntPtr are both pointer-sized, and the out/ref write-back still
+						// happens through that same pointer value inside the helper body.
+						nativeParameter.ParameterType = genericCompanionImpl && nativeType is PointerType ? abr.System_IntPtr : nativeType;
 					} else {
 						nativeParameter.ParameterType = placeholderType;
 						AddException (ErrorHelper.CreateError (99, "Unable to emit conversion for parameter {2} of type {0}. Method: {1}", method.Parameters [p].ParameterType, GetMethodSignatureWithSourceCode (method), p));

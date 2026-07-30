@@ -977,6 +977,15 @@
 			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.Linker.DoneStep" Condition="'$(PostProcessAssemblies)' != 'true'" />
 		</ItemGroup>
 
+		<ItemGroup Condition="'$(PrepareAssemblies)' == 'true' And '$(Registrar)' == 'trimmable-static'">
+			<!--
+				This step must run even when all our other custom steps are disabled (which happens when both
+				PrepareAssemblies and PostProcessAssemblies are true), because otherwise ILLink will remove the
+				type map attributes from the type map assemblies the trimmable registrar generated before ILLink ran.
+			-->
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.SetTypeMapEntryAssemblyStep" />
+		</ItemGroup>
+
 		<ItemGroup>
 			<!-- _BundlerXmlDefinitions comes from any -xml arguments to mtouch/mmp -->
 			<TrimmerRootDescriptor Include="@(_BundlerXmlDefinitions)" />

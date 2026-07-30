@@ -199,7 +199,7 @@ delete-saved-state:
 
 run-bare: delete-saved-state
 	$(Q) $(EXECUTABLE) --autostart --autoexit $(RUN_ARGUMENTS)
-	$(Q) $(MAKE) delete-saved-state
+	$(Q) $(MAKE) delete-saved-state RUNTIMEIDENTIFIER= RUNTIMEIDENTIFIERS=
 
 # Get the list of applicable simulators, and pick the first in the list.
 # Make sure to have a matching simulator runtime installed, otherwise this won't work.

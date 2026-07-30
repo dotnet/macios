@@ -733,12 +733,12 @@ namespace Xamarin.Linker {
 					var defaultVar = body.AddVariable (returnType);
 					il.Emit (OpCodes.Ldloc, resultVar);
 					il.Emit (OpCodes.Brtrue, unboxResult);
-					// rv == null: return default (<nativeReturnType>)
+					// rv is null: return default (<nativeReturnType>)
 					il.Emit (OpCodes.Ldloca, defaultVar);
 					il.Emit (OpCodes.Initobj, returnType);
 					il.Emit (OpCodes.Ldloc, defaultVar);
 					il.Emit (OpCodes.Br, returnResult);
-					// rv != null: return (<nativeReturnType>) rv
+					// rv is not null: return (<nativeReturnType>) rv
 					il.Append (unboxResult);
 					il.Emit (OpCodes.Ldloc, resultVar);
 					il.Emit (OpCodes.Unbox_Any, returnType);

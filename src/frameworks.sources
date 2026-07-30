@@ -1858,7 +1858,6 @@ WEBKIT_SOURCES = \
 	WebKit/WKContentRuleListStore.cs \
 	WebKit/WKNavigationResponse.cs \
 	WebKit/WKPreferences.cs \
-	WebKit/WKWebExtensionMatchPattern.cs \
 	WebKit/WKWindowFeatures.cs \
 
 #

@@ -315,7 +315,6 @@ BACKGROUNDTASKS_API_SOURCES = \
 # BackgroundAssets
 
 BACKGROUNDASSETS_SOURCES = \
-	BackgroundAssets/BAAssetPackManifest.cs \
 	BackgroundAssets/BACompat.cs \
 
 # BrowserEngineKit

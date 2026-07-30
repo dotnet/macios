@@ -2721,12 +2721,19 @@ namespace ObjCRuntime {
 			try {
 				var closed_instance_type = instance.GetType ();
 				var cache_key = (open_impl_method_handle, closed_instance_type.TypeHandle);
-				if (!closedGenericRegistrarTrampolines.TryGetValue (cache_key, out var closed_impl)) {
-					var open_user_type = Type.GetTypeFromHandle (open_user_type_handle)!;
-					var closed_user_type = FindClosedTypeInHierarchy (open_user_type, closed_instance_type)!;
-					var type_arguments = closed_user_type.GetGenericArguments ();
-					var open_impl = (MethodInfo) MethodBase.GetMethodFromHandle (open_impl_method_handle)!;
-					closed_impl = open_impl.MakeGenericMethod (type_arguments);
+				MethodInfo closed_impl;
+				if (closedGenericRegistrarTrampolines.TryGetValue (cache_key, out var cached_impl) && cached_impl is not null) {
+					closed_impl = cached_impl;
+				} else {
+					var open_user_type = Type.GetTypeFromHandle (open_user_type_handle);
+					if (open_user_type is null)
+						throw new InvalidOperationException ("Could not resolve the open generic type of a relocated registrar trampoline.");
+					var closed_user_type = FindClosedTypeInHierarchy (open_user_type, closed_instance_type);
+					if (closed_user_type is null)
+						throw new InvalidOperationException ($"Could not find the type '{open_user_type.FullName}' in the type hierarchy of '{closed_instance_type.FullName}'.");
+					if (MethodBase.GetMethodFromHandle (open_impl_method_handle) is not MethodInfo open_impl)
+						throw new InvalidOperationException ("Could not resolve the generic helper method of a relocated registrar trampoline.");
+					closed_impl = open_impl.MakeGenericMethod (closed_user_type.GetGenericArguments ());
 					closedGenericRegistrarTrampolines.TryAdd (cache_key, closed_impl);
 				}
 
@@ -2737,7 +2744,7 @@ namespace ObjCRuntime {
 				Array.Copy (args, full, args.Length);
 				full [args.Length] = IntPtr.Zero;
 				var rv = closed_impl.Invoke (null, full);
-				exception_gchandle = (IntPtr) full [args.Length]!;
+				exception_gchandle = (IntPtr) (full [args.Length] ?? IntPtr.Zero);
 				return rv;
 			} catch (Exception e) {
 				exception_gchandle = AllocGCHandle (e);

@@ -41,7 +41,7 @@ namespace MonoTouchFixtures.GamePlayKit {
 			TestRuntime.AssertXcodeVersion (7, 0);
 
 			var path = GKPath.FromPoints (points, 1, false);
-			Assert.NotNull (path, "GKPath.FromPoints should not be null");
+			Assert.That (path, Is.Not.Null, "GKPath.FromPoints should not be null");
 		}
 
 		[Test]
@@ -50,7 +50,7 @@ namespace MonoTouchFixtures.GamePlayKit {
 			TestRuntime.AssertXcodeVersion (7, 0);
 
 			var path = new GKPath (points, 1, false);
-			Assert.NotNull (path, "GKPath.FromPoints should not be null");
+			Assert.That (path, Is.Not.Null, "GKPath.FromPoints should not be null");
 		}
 
 		[Test]
@@ -59,7 +59,7 @@ namespace MonoTouchFixtures.GamePlayKit {
 			TestRuntime.AssertXcodeVersion (8, 0);
 
 			var path = GKPath.FromPoints (test_vectors3, 1, false);
-			Assert.NotNull (path, "GKPath.FromPoints should not be null");
+			Assert.That (path, Is.Not.Null, "GKPath.FromPoints should not be null");
 
 			for (int i = 0; i < test_vectors3.Length; i++)
 				Asserts.AreEqual (path.GetVector3Point ((nuint) i), test_vectors3 [i], $"FromPointsVector3 iter {i}");
@@ -71,7 +71,7 @@ namespace MonoTouchFixtures.GamePlayKit {
 			TestRuntime.AssertXcodeVersion (8, 0);
 
 			var path = new GKPath (test_vectors3, 1, false);
-			Assert.NotNull (path, "GKPath.FromPoints should not be null");
+			Assert.That (path, Is.Not.Null, "GKPath.FromPoints should not be null");
 
 			for (int i = 0; i < test_vectors3.Length; i++)
 				Asserts.AreEqual (path.GetVector3Point ((nuint) i), test_vectors3 [i], $"InitWithVector3 iter {i}");

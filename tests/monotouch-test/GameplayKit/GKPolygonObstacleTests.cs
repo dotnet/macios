@@ -29,13 +29,13 @@ namespace MonoTouchFixtures.GamePlayKit {
 			TestRuntime.AssertXcodeVersion (7, 0);
 
 			var obstacle = GKPolygonObstacle.FromPoints (points);
-			Assert.NotNull (obstacle, "GKPolygonObstacle.FromPoints should not be null");
+			Assert.That (obstacle, Is.Not.Null, "GKPolygonObstacle.FromPoints should not be null");
 
 			var count = obstacle.VertexCount;
-			Assert.AreEqual (points.Length, (int) count, "GKPolygonObstacle lengt should be equal");
+			Assert.That ((int) count, Is.EqualTo (points.Length), "GKPolygonObstacle lengt should be equal");
 
 			for (nuint i = 0; i < count; i++)
-				Assert.AreEqual (points [(int) i], obstacle.GetVertex (i), "GKPolygonObstacle vectors should be equal");
+				Assert.That (obstacle.GetVertex (i), Is.EqualTo (points [(int) i]), "GKPolygonObstacle vectors should be equal");
 		}
 
 		[Test]
@@ -44,13 +44,13 @@ namespace MonoTouchFixtures.GamePlayKit {
 			TestRuntime.AssertXcodeVersion (7, 0);
 
 			var obstacle = new GKPolygonObstacle (points);
-			Assert.NotNull (obstacle, "GKPolygonObstacle ctor should not be null");
+			Assert.That (obstacle, Is.Not.Null, "GKPolygonObstacle ctor should not be null");
 
 			var count = obstacle.VertexCount;
-			Assert.AreEqual (points.Length, (int) count, "GKPolygonObstacle lengt should be equal");
+			Assert.That ((int) count, Is.EqualTo (points.Length), "GKPolygonObstacle lengt should be equal");
 
 			for (nuint i = 0; i < count; i++)
-				Assert.AreEqual (points [(int) i], obstacle.GetVertex (i), "GKPolygonObstacle vectors should be equal");
+				Assert.That (obstacle.GetVertex (i), Is.EqualTo (points [(int) i]), "GKPolygonObstacle vectors should be equal");
 		}
 	}
 }

@@ -59,7 +59,7 @@ namespace Xamarin.MacDev.Tasks {
 				{ "_CanOutputAppBundle", "true" },
 			};
 			var rv = engine.RunTarget (ApplePlatform.MacOSX, csprojPath, target: "_DetectSigningIdentity", properties: properties);
-			Assert.AreEqual (0, rv.ExitCode, "Exit code");
+			Assert.That (rv.ExitCode, Is.EqualTo (0), "Exit code");
 
 			// Find the BundleIdentifier parameter to the DetectSigningIdentity task.
 			var recordArgs = BinLog.ReadBuildEvents (rv.BinLogPath).ToList ();
@@ -85,7 +85,7 @@ namespace Xamarin.MacDev.Tasks {
 			} else {
 				bundleIdentifier = "Unhandled task message format.";
 			}
-			Assert.AreEqual ("com.xamarin.detectsigningidentitytest", bundleIdentifier, "Bundle identifier");
+			Assert.That (bundleIdentifier, Is.EqualTo ("com.xamarin.detectsigningidentitytest"), "Bundle identifier");
 		}
 	}
 }

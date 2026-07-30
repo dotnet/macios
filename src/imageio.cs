@@ -371,11 +371,14 @@ namespace ImageIO {
 		///         <remarks>To be added.</remarks>
 		[Field ("kCGImagePropertyExifSubsecTime")]
 		NSString ExifSubsecTime { get; }
+#if !XAMCORE_5_0
 		/// <summary>Represents the value associated with the constant kCGImagePropertyExifSubsecTimeOrginal</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Obsolete ("Use 'ExifSubsecTimeOriginal' instead.")]
 		[Field ("kCGImagePropertyExifSubsecTimeOrginal")]
 		NSString ExifSubsecTimeOrginal { get; }
+#endif
 		/// <summary>Represents the value associated with the constant kCGImagePropertyExifSubsecTimeOriginal.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -838,11 +841,20 @@ namespace ImageIO {
 		///         <remarks>To be added.</remarks>
 		[Field ("kCGImagePropertyGPSDateStamp")]
 		NSString GPSDateStamp { get; }
-		/// <summary>Represents the value associated with the constant kCGImagePropertyGPSDifferental</summary>
+		/// <summary>Represents the value associated with the constant kCGImagePropertyGPSDifferental.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kCGImagePropertyGPSDifferental")]
+		NSString GPSDifferential { get; }
+
+#if !XAMCORE_5_0
+		/// <summary>Represents the value associated with the constant kCGImagePropertyGPSDifferental</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[Obsolete ("Use 'GPSDifferential' instead.")]
+		[Field ("kCGImagePropertyGPSDifferental")]
 		NSString GPSDifferental { get; }
+#endif
 
 		/// <summary>Represents the value associated with the constant kCGImagePropertyGPSHPositioningError</summary>
 		///         <value>To be added.</value>

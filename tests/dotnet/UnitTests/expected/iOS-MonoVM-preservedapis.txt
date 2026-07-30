@@ -99,7 +99,6 @@ Microsoft.iOS.dll:Foundation.NSObject..ctor()
 Microsoft.iOS.dll:Foundation.NSObject..ctor(Foundation.NSObjectFlag)
 Microsoft.iOS.dll:Foundation.NSObject..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:Foundation.NSObject..ctor(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:Foundation.NSObject.AllocateData()
 Microsoft.iOS.dll:Foundation.NSObject.AllocIfNeeded()
 Microsoft.iOS.dll:Foundation.NSObject.ClearHandle()
 Microsoft.iOS.dll:Foundation.NSObject.ConformsToProtocol(ObjCRuntime.NativeHandle)
@@ -125,18 +124,15 @@ Microsoft.iOS.dll:Foundation.NSObject.get_Handle()
 Microsoft.iOS.dll:Foundation.NSObject.get_InFinalizerQueue()
 Microsoft.iOS.dll:Foundation.NSObject.get_IsDirectBinding()
 Microsoft.iOS.dll:Foundation.NSObject.get_IsRegisteredToggleRef()
-Microsoft.iOS.dll:Foundation.NSObject.get_SuperHandle()
 Microsoft.iOS.dll:Foundation.NSObject.GetData()
 Microsoft.iOS.dll:Foundation.NSObject.GetHashCode()
 Microsoft.iOS.dll:Foundation.NSObject.GetNativeHash()
-Microsoft.iOS.dll:Foundation.NSObject.GetSuper()
-Microsoft.iOS.dll:Foundation.NSObject.Initialize()
 Microsoft.iOS.dll:Foundation.NSObject.InitializeHandle(ObjCRuntime.NativeHandle, System.String, System.Boolean)
 Microsoft.iOS.dll:Foundation.NSObject.InitializeHandle(ObjCRuntime.NativeHandle, System.String)
+Microsoft.iOS.dll:Foundation.NSObject.InitializeObject()
 Microsoft.iOS.dll:Foundation.NSObject.InitializeObject(System.Boolean)
 Microsoft.iOS.dll:Foundation.NSObject.InvokeConformsToProtocol(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:Foundation.NSObject.IsEqual(Foundation.NSObject)
-Microsoft.iOS.dll:Foundation.NSObject.RecreateDataHandle()
 Microsoft.iOS.dll:Foundation.NSObject.ReleaseManagedRef()
 Microsoft.iOS.dll:Foundation.NSObject.set_disposed(System.Boolean)
 Microsoft.iOS.dll:Foundation.NSObject.set_flags(Foundation.NSObject/Flags)
@@ -167,23 +163,17 @@ Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer.Add(Foundation.NSObject)
 Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer.Drain(Foundation.NSObject)
 Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer.ScheduleDrain()
 Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__
-Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_3090_Foundation_NSObject_NSObject_Disposer__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
-Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_3091_Foundation_NSObject_NSObject_Disposer_Drain(System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
+Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_3088_Foundation_NSObject_NSObject_Disposer__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
+Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_3089_Foundation_NSObject_NSObject_Disposer_Drain(System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
 Microsoft.iOS.dll:Foundation.NSObject/XamarinGCHandleFlags
 Microsoft.iOS.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::HasManagedRef
 Microsoft.iOS.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::InitialSet
 Microsoft.iOS.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::None
 Microsoft.iOS.dll:Foundation.NSObjectData
-Microsoft.iOS.dll:Foundation.NSObjectData* Foundation.NSObject::__data_for_mono
 Microsoft.iOS.dll:Foundation.NSObjectData* Foundation.NSObjectDataHandle::Data()
 Microsoft.iOS.dll:Foundation.NSObjectDataHandle
-Microsoft.iOS.dll:Foundation.NSObjectDataHandle Foundation.NSObject::data_handle
 Microsoft.iOS.dll:Foundation.NSObjectDataHandle..ctor()
-Microsoft.iOS.dll:Foundation.NSObjectDataHandle..ctor(System.IntPtr)
 Microsoft.iOS.dll:Foundation.NSObjectDataHandle.get_Data()
-Microsoft.iOS.dll:Foundation.NSObjectDataHandle.get_IsInvalid()
-Microsoft.iOS.dll:Foundation.NSObjectDataHandle.Invalidate()
-Microsoft.iOS.dll:Foundation.NSObjectDataHandle.ReleaseHandle()
 Microsoft.iOS.dll:Foundation.NSObjectFlag
 Microsoft.iOS.dll:Foundation.NSObjectFlag Foundation.NSObjectFlag::Empty
 Microsoft.iOS.dll:Foundation.ProtocolAttribute
@@ -193,6 +183,12 @@ Microsoft.iOS.dll:Foundation.RegisterAttribute
 Microsoft.iOS.dll:Foundation.RegisterAttribute..ctor(System.String, System.Boolean)
 Microsoft.iOS.dll:Foundation.RegisterAttribute..ctor(System.String)
 Microsoft.iOS.dll:Foundation.RegisterAttribute.get_IsWrapper()
+Microsoft.iOS.dll:Foundation.TrackedMemory
+Microsoft.iOS.dll:Foundation.TrackedMemory..ctor(System.UIntPtr)
+Microsoft.iOS.dll:Foundation.TrackedMemory.CreateHandle(Foundation.NSObject)
+Microsoft.iOS.dll:Foundation.TrackedMemory.Finalize()
+Microsoft.iOS.dll:Foundation.TrackedMemory.get_Value()
+Microsoft.iOS.dll:Foundation.TrackedMemory.set_Value(System.IntPtr)
 Microsoft.iOS.dll:Foundation.You_Should_Not_Call_base_In_This_Method
 Microsoft.iOS.dll:Foundation.You_Should_Not_Call_base_In_This_Method..ctor()
 Microsoft.iOS.dll:ObjCRuntime.__Registrar__
@@ -243,7 +239,7 @@ Microsoft.iOS.dll:ObjCRuntime.Class.GetClassName(System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Class.GetHandle(System.String)
 Microsoft.iOS.dll:ObjCRuntime.Class.GetHandle(System.Type)
 Microsoft.iOS.dll:ObjCRuntime.Class.GetHashCode()
-Microsoft.iOS.dll:ObjCRuntime.Class.Initialize(ObjCRuntime.Runtime/InitializationOptions*)
+Microsoft.iOS.dll:ObjCRuntime.Class.InitializeClass(ObjCRuntime.Runtime/InitializationOptions*)
 Microsoft.iOS.dll:ObjCRuntime.Class.Lookup(System.IntPtr, System.Boolean)
 Microsoft.iOS.dll:ObjCRuntime.Class.Lookup(System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Class.objc_getClass(System.IntPtr)
@@ -348,17 +344,17 @@ Microsoft.iOS.dll:ObjCRuntime.MarshalObjectiveCExceptionMode ObjCRuntime.Runtime
 Microsoft.iOS.dll:ObjCRuntime.Messaging
 Microsoft.iOS.dll:ObjCRuntime.Messaging.bool_objc_msgSend_IntPtr(System.IntPtr, System.IntPtr, System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Messaging.bool_objc_msgSend_NativeHandle(System.IntPtr, System.IntPtr, ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:ObjCRuntime.Messaging.bool_objc_msgSendSuper_IntPtr(System.IntPtr, System.IntPtr, System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Messaging.bool_objc_msgSendSuper_NativeHandle(System.IntPtr, System.IntPtr, ObjCRuntime.NativeHandle)
+Microsoft.iOS.dll:ObjCRuntime.Messaging.bool_objc_msgSendSuper_IntPtr(ObjCRuntime.ObjCSuper*, System.IntPtr, System.IntPtr)
+Microsoft.iOS.dll:ObjCRuntime.Messaging.bool_objc_msgSendSuper_NativeHandle(ObjCRuntime.ObjCSuper*, System.IntPtr, ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:ObjCRuntime.Messaging.CGRect_objc_msgSend(System.IntPtr, System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Messaging.IntPtr_objc_msgSend(System.IntPtr, System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper(System.IntPtr, System.IntPtr)
+Microsoft.iOS.dll:ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper(ObjCRuntime.ObjCSuper*, System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Messaging.NativeHandle_objc_msgSend_CGRect(System.IntPtr, System.IntPtr, CoreGraphics.CGRect)
 Microsoft.iOS.dll:ObjCRuntime.Messaging.NativeHandle_objc_msgSend_NativeHandle(System.IntPtr, System.IntPtr, ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:ObjCRuntime.Messaging.NativeHandle_objc_msgSend(System.IntPtr, System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper(System.IntPtr, System.IntPtr)
+Microsoft.iOS.dll:ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper(ObjCRuntime.ObjCSuper*, System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Messaging.UIntPtr_objc_msgSend(System.IntPtr, System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Messaging.UIntPtr_objc_msgSendSuper(System.IntPtr, System.IntPtr)
+Microsoft.iOS.dll:ObjCRuntime.Messaging.UIntPtr_objc_msgSendSuper(ObjCRuntime.ObjCSuper*, System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle_NativeHandle_bool(System.IntPtr, System.IntPtr, ObjCRuntime.NativeHandle, ObjCRuntime.NativeHandle, System.Byte)
 Microsoft.iOS.dll:ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle_UIntPtr(System.IntPtr, System.IntPtr, ObjCRuntime.NativeHandle, System.UIntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle(System.IntPtr, System.IntPtr, ObjCRuntime.NativeHandle)
@@ -377,8 +373,6 @@ Microsoft.iOS.dll:ObjCRuntime.NativeHandle Foundation.NSObject::class_ptr
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle Foundation.NSObject::ClassHandle()
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle Foundation.NSObject::handle()
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle Foundation.NSObject::Handle()
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle Foundation.NSObject::SuperHandle()
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle Foundation.NSObjectData::classHandle
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle Foundation.NSObjectData::handle
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.Class::handle
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.Class::Handle()
@@ -386,6 +380,8 @@ Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.DisposableObject::handle
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.DisposableObject::Handle()
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.INativeObject::Handle()
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.NativeHandle::Zero
+Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.ObjCSuper::classHandle
+Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.ObjCSuper::receiver
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.Runtime/ClassHandles::unused
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.Selector::handle
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.Selector::Handle()
@@ -428,6 +424,8 @@ Microsoft.iOS.dll:ObjCRuntime.ObjCException.get_Name()
 Microsoft.iOS.dll:ObjCRuntime.ObjCException.get_NSException()
 Microsoft.iOS.dll:ObjCRuntime.ObjCException.get_Reason()
 Microsoft.iOS.dll:ObjCRuntime.ObjCException.ToString()
+Microsoft.iOS.dll:ObjCRuntime.ObjCSuper
+Microsoft.iOS.dll:ObjCRuntime.ObjCSuper..ctor(Foundation.NSObject)
 Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper
 Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper.ConstructINativeObject`1(System.Type, ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper.ConstructNSObject`1(System.Type, ObjCRuntime.NativeHandle)
@@ -446,8 +444,8 @@ Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper/MapInfo
 Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper/MapInfo..ctor(ObjCRuntime.IManagedRegistrar)
 Microsoft.iOS.dll:ObjCRuntime.Runtime
 Microsoft.iOS.dll:ObjCRuntime.Runtime..cctor()
-Microsoft.iOS.dll:ObjCRuntime.Runtime.<ConstructINativeObject>g__ConstructINativeObjectViaFactoryMethod|289_0`1(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.<ConstructNSObject>g__ConstructNSObjectViaFactoryMethod|288_0`1(ObjCRuntime.NativeHandle)
+Microsoft.iOS.dll:ObjCRuntime.Runtime.<ConstructINativeObject>g__ConstructINativeObjectViaFactoryMethod|291_0`1(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.iOS.dll:ObjCRuntime.Runtime.<ConstructNSObject>g__ConstructNSObjectViaFactoryMethod|290_0`1(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.AllocGCHandle(System.Object, System.Runtime.InteropServices.GCHandleType)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.AllocGCHandle(System.Object)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.AppendAdditionalInformation(System.Text.StringBuilder, System.IntPtr, System.RuntimeMethodHandle)
@@ -662,8 +660,6 @@ Microsoft.iOS.dll:System.Boolean Foundation.NSObject::InFinalizerQueue()
 Microsoft.iOS.dll:System.Boolean Foundation.NSObject::IsDirectBinding()
 Microsoft.iOS.dll:System.Boolean Foundation.NSObject::IsRegisteredToggleRef()
 Microsoft.iOS.dll:System.Boolean Foundation.NSObject/NSObject_Disposer::draining
-Microsoft.iOS.dll:System.Boolean Foundation.NSObjectDataHandle::invalidated
-Microsoft.iOS.dll:System.Boolean Foundation.NSObjectDataHandle::IsInvalid()
 Microsoft.iOS.dll:System.Boolean Foundation.ProtocolAttribute::<BackwardsCompatibleCodeGeneration>k__BackingField
 Microsoft.iOS.dll:System.Boolean Foundation.RegisterAttribute::is_wrapper
 Microsoft.iOS.dll:System.Boolean Foundation.RegisterAttribute::IsWrapper()
@@ -719,7 +715,10 @@ Microsoft.iOS.dll:System.Int32 ObjCRuntime.TransientString/Encoding::value__
 Microsoft.iOS.dll:System.IntPtr CoreFoundation.CFArray::_CFNullHandle()
 Microsoft.iOS.dll:System.IntPtr CoreFoundation.CFRange::len
 Microsoft.iOS.dll:System.IntPtr CoreFoundation.CFRange::loc
+Microsoft.iOS.dll:System.IntPtr Foundation.NSObject::__data
 Microsoft.iOS.dll:System.IntPtr Foundation.NSObject/NSObject_Disposer::class_ptr
+Microsoft.iOS.dll:System.IntPtr Foundation.TrackedMemory::<Value>k__BackingField
+Microsoft.iOS.dll:System.IntPtr Foundation.TrackedMemory::Value()
 Microsoft.iOS.dll:System.IntPtr ObjCRuntime.BlockCollector::block
 Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Libraries/CoreFoundation::Handle
 Microsoft.iOS.dll:System.IntPtr ObjCRuntime.NativeHandle::handle
@@ -848,8 +847,11 @@ Microsoft.iOS.dll:System.IntPtr* ObjCRuntime.Runtime/MTRegistrationMap::classHan
 Microsoft.iOS.dll:System.Object Foundation.NSObject/NSObject_Disposer::lock_obj
 Microsoft.iOS.dll:System.Object ObjCRuntime.Runtime::lock_obj
 Microsoft.iOS.dll:System.Reflection.Assembly Foundation.NSObject::PlatformAssembly
+Microsoft.iOS.dll:System.Runtime.CompilerServices.ConditionalWeakTable`2<Foundation.NSObject,Foundation.NSObjectDataHandle> Foundation.NSObject::data_table
+Microsoft.iOS.dll:System.Runtime.CompilerServices.ConditionalWeakTable`2<Foundation.NSObject,Foundation.TrackedMemory> Foundation.NSObject::super_map
 Microsoft.iOS.dll:System.Runtime.CompilerServices.ConditionalWeakTable`2<System.Delegate,ObjCRuntime.BlockCollector> ObjCRuntime.Runtime::block_lifetime_table
 Microsoft.iOS.dll:System.Runtime.CompilerServices.ConditionalWeakTable`2<System.Reflection.Assembly,System.String> ObjCRuntime.Class::assembly_to_name
+Microsoft.iOS.dll:System.Runtime.InteropServices.GCHandle Foundation.TrackedMemory::handle
 Microsoft.iOS.dll:System.Runtime.InteropServices.NFloat CoreGraphics.CGRect::height
 Microsoft.iOS.dll:System.Runtime.InteropServices.NFloat CoreGraphics.CGRect::width
 Microsoft.iOS.dll:System.Runtime.InteropServices.NFloat CoreGraphics.CGRect::x
@@ -865,7 +867,7 @@ Microsoft.iOS.dll:System.String ObjCRuntime.ObjCException::Message()
 Microsoft.iOS.dll:System.String ObjCRuntime.ObjCException::Name()
 Microsoft.iOS.dll:System.String ObjCRuntime.ObjCException::Reason()
 Microsoft.iOS.dll:System.String[] Foundation.NSException::CallStackSymbols()
-Microsoft.iOS.dll:System.Threading.Thread UIKit.UIApplication::mainThread
+Microsoft.iOS.dll:System.Threading.Thread ObjCRuntime.Runtime::mainThread
 Microsoft.iOS.dll:System.Type Foundation.ProtocolAttribute::<WrapperType>k__BackingField
 Microsoft.iOS.dll:System.Type Foundation.ProtocolAttribute::WrapperType()
 Microsoft.iOS.dll:System.Type[] ObjCRuntime.Class::class_to_type
@@ -890,7 +892,7 @@ Microsoft.iOS.dll:UIKit.UIApplication..cctor()
 Microsoft.iOS.dll:UIKit.UIApplication..ctor(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:UIKit.UIApplication.Dispose(System.Boolean)
 Microsoft.iOS.dll:UIKit.UIApplication.get_ClassHandle()
-Microsoft.iOS.dll:UIKit.UIApplication.Initialize()
+Microsoft.iOS.dll:UIKit.UIApplication.InitializeApplication()
 Microsoft.iOS.dll:UIKit.UIApplication.Main(System.String[], System.Type, System.Type)
 Microsoft.iOS.dll:UIKit.UIApplication.UIApplicationMain(System.Int32, System.String[], System.IntPtr, System.IntPtr)
 Microsoft.iOS.dll:UIKit.UIApplication.xamarin_UIApplicationMain(System.Int32, System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
@@ -903,7 +905,7 @@ Microsoft.iOS.dll:UIKit.UIApplicationDelegate..ctor(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:UIKit.UIApplicationDelegate..ctor(System.IntPtr, ObjCRuntime.IManagedRegistrar)
 Microsoft.iOS.dll:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)
 Microsoft.iOS.dll:UIKit.UIApplicationDelegate/__Registrar_Callbacks__
-Microsoft.iOS.dll:UIKit.UIApplicationDelegate/__Registrar_Callbacks__.callback_595_UIKit_UIApplicationDelegate__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
+Microsoft.iOS.dll:UIKit.UIApplicationDelegate/__Registrar_Callbacks__.callback_593_UIKit_UIApplicationDelegate__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
 Microsoft.iOS.dll:UIKit.UIButton
 Microsoft.iOS.dll:UIKit.UIButton._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:UIKit.UIButton._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
@@ -1087,6 +1089,8 @@ System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeS
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=696_Align=8 <PrivateImplementationDetails>::02BF302F66F50150BCF5E322DA879E92E417084D14FBE4F5345DDCB68F863E518
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=76_Align=4
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=76_Align=4 <PrivateImplementationDetails>::25308BAB47481701F1E861B1EA4F2409E73ABB14E9579C26DF4ABE440A0DCF0A4
+System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=8_Align=2
+System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=8_Align=2 <PrivateImplementationDetails>::8BFD94DEAAC0F168DC8B50A00AC120A113B550B68FEF344F807D503D1A6E5DED2
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=88_Align=8
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=88_Align=8 <PrivateImplementationDetails>::40EC13C575237954625B718CA2B291A90543D086FE5E3258F158FDDD3A9067CC8
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=936_Align=4
@@ -1943,14 +1947,12 @@ System.Private.CoreLib.dll:System.Boolean System.Runtime.CompilerServices.Nullab
 System.Private.CoreLib.dll:System.Boolean System.Runtime.CompilerServices.RuntimeCompatibilityAttribute::<WrapNonExceptionThrows>k__BackingField
 System.Private.CoreLib.dll:System.Boolean System.Runtime.CompilerServices.RuntimeCompatibilityAttribute::WrapNonExceptionThrows()
 System.Private.CoreLib.dll:System.Boolean System.Runtime.DependentHandle::IsAllocated()
-System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.CriticalHandle::_isClosed
-System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.CriticalHandle::IsClosed()
-System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.CriticalHandle::IsInvalid()
 System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.DllImportAttribute::BestFitMapping
 System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.DllImportAttribute::ExactSpelling
 System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.DllImportAttribute::PreserveSig
 System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.DllImportAttribute::SetLastError
 System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.DllImportAttribute::ThrowOnUnmappableChar
+System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.GCHandle::IsAllocated()
 System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.Marshalling.SafeHandleMarshaller`1/ManagedToUnmanagedIn::_addRefd
 System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.Marshalling.SafeHandleMarshaller`1/ManagedToUnmanagedOut::_initialized
 System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.Marshalling.Utf8StringMarshaller/ManagedToUnmanagedIn::_allocated
@@ -3311,6 +3313,7 @@ System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicDependencyAttr
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute..ctor(System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes, System.Type)
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute..ctor(System.String, System.String, System.String)
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute..ctor(System.String, System.Type)
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute..ctor(System.String)
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.MaybeNullAttribute
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.MaybeNullAttribute..ctor()
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribute
@@ -5969,7 +5972,6 @@ System.Private.CoreLib.dll:System.IntPtr System.Reflection.RuntimePropertyInfo::
 System.Private.CoreLib.dll:System.IntPtr System.Reflection.RuntimePropertyInfo::prop
 System.Private.CoreLib.dll:System.IntPtr System.Runtime.CompilerServices.QCallAssembly::_assembly
 System.Private.CoreLib.dll:System.IntPtr System.Runtime.CompilerServices.QCallTypeHandle::_handle
-System.Private.CoreLib.dll:System.IntPtr System.Runtime.InteropServices.CriticalHandle::handle
 System.Private.CoreLib.dll:System.IntPtr System.Runtime.InteropServices.GCHandle::_handle
 System.Private.CoreLib.dll:System.IntPtr System.Runtime.InteropServices.SafeHandle::handle
 System.Private.CoreLib.dll:System.IntPtr System.Runtime.InteropServices.WeakGCHandle`1::_handle
@@ -6085,8 +6087,7 @@ System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEntry.ToSpecifiedFull
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEntry/FileNameBuffer
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEntry/FileNameBuffer System.IO.Enumeration.FileSystemEntry::_fileNameBuffer
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerable`1
-System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerable`1..ctor(System.String, System.IO.Enumeration.FileSystemEnumerable`1/FindTransform<TResult>, System.IO.EnumerationOptions, System.Boolean)
-System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerable`1..ctor(System.String, System.IO.Enumeration.FileSystemEnumerable`1/FindTransform<TResult>, System.IO.EnumerationOptions)
+System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerable`1..ctor(System.String, System.IO.Enumeration.FileSystemEnumerable`1/FindTransform<TResult>, System.IO.EnumerationOptions, System.Boolean, System.String)
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerable`1.get_ShouldIncludePredicate()
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerable`1.get_ShouldRecursePredicate()
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerable`1.GetEnumerator()
@@ -6135,8 +6136,9 @@ System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerableFactory/<>c
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerableFactory/<>c.<UserEntries>b__4_0(System.IO.Enumeration.FileSystemEntry&)
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerableFactory/<>c.<UserFiles>b__2_0(System.IO.Enumeration.FileSystemEntry&)
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerator`1
+System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerator`1..ctor(System.String, System.Boolean, System.IO.EnumerationOptions, System.String)
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerator`1..ctor(System.String, System.Boolean, System.IO.EnumerationOptions)
-System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerator`1.<MoveNext>g__ShouldSkip|35_0(System.IO.FileAttributes)
+System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerator`1.<MoveNext>g__ShouldSkip|36_0(System.IO.FileAttributes)
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerator`1.CloseDirectoryHandle()
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerator`1.ContinueOnError(System.Int32)
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerator`1.CreateDirectoryHandle(System.String, System.Boolean)
@@ -6158,6 +6160,7 @@ System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerator`1.ShouldIn
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerator`1.ShouldRecurseIntoEntry(System.IO.Enumeration.FileSystemEntry&)
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerator`1.TransformEntry(System.IO.Enumeration.FileSystemEntry&)
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemName
+System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemName.EscapeExpression(System.String)
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemName.MatchesSimpleExpression(System.ReadOnlySpan`1<System.Char>, System.ReadOnlySpan`1<System.Char>, System.Boolean)
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemName.MatchesWin32Expression(System.ReadOnlySpan`1<System.Char>, System.ReadOnlySpan`1<System.Char>, System.Boolean)
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemName.MatchPattern(System.ReadOnlySpan`1<System.Char>, System.ReadOnlySpan`1<System.Char>, System.Boolean, System.Boolean)
@@ -8485,15 +8488,6 @@ System.Private.CoreLib.dll:System.Runtime.InteropServices.CollectionsMarshal
 System.Private.CoreLib.dll:System.Runtime.InteropServices.CollectionsMarshal.GetValueRefOrAddDefault`2(System.Collections.Generic.Dictionary`2<TKey,TValue>, TKey, out System.Boolean&)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.ComImportAttribute
 System.Private.CoreLib.dll:System.Runtime.InteropServices.ComImportAttribute..ctor()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.CriticalHandle
-System.Private.CoreLib.dll:System.Runtime.InteropServices.CriticalHandle..ctor(System.IntPtr)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.CriticalHandle.Cleanup()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.CriticalHandle.Dispose()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.CriticalHandle.Dispose(System.Boolean)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.CriticalHandle.Finalize()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.CriticalHandle.get_IsClosed()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.CriticalHandle.get_IsInvalid()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.CriticalHandle.ReleaseHandle()
 System.Private.CoreLib.dll:System.Runtime.InteropServices.DefaultDllImportSearchPathsAttribute
 System.Private.CoreLib.dll:System.Runtime.InteropServices.DefaultDllImportSearchPathsAttribute..ctor(System.Runtime.InteropServices.DllImportSearchPath)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.DllImportAttribute
@@ -8521,6 +8515,7 @@ System.Private.CoreLib.dll:System.Runtime.InteropServices.GCHandle.Equals(System
 System.Private.CoreLib.dll:System.Runtime.InteropServices.GCHandle.Equals(System.Runtime.InteropServices.GCHandle)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.GCHandle.Free()
 System.Private.CoreLib.dll:System.Runtime.InteropServices.GCHandle.FromIntPtr(System.IntPtr)
+System.Private.CoreLib.dll:System.Runtime.InteropServices.GCHandle.get_IsAllocated()
 System.Private.CoreLib.dll:System.Runtime.InteropServices.GCHandle.get_Target()
 System.Private.CoreLib.dll:System.Runtime.InteropServices.GCHandle.GetHandleValue(System.IntPtr)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.GCHandle.GetHashCode()
@@ -10032,6 +10027,7 @@ System.Private.CoreLib.dll:System.String System.Int16::System.IBinaryIntegerPars
 System.Private.CoreLib.dll:System.String System.Int32::System.IBinaryIntegerParseAndFormatInfo<System.Int32>.OverflowMessage()
 System.Private.CoreLib.dll:System.String System.Int64::System.IBinaryIntegerParseAndFormatInfo<System.Int64>.OverflowMessage()
 System.Private.CoreLib.dll:System.String System.IO.Enumeration.FileSystemEnumerable`1::_directory
+System.Private.CoreLib.dll:System.String System.IO.Enumeration.FileSystemEnumerable`1::_expression
 System.Private.CoreLib.dll:System.String System.IO.Enumeration.FileSystemEnumerableFactory/<>c__DisplayClass2_0::expression
 System.Private.CoreLib.dll:System.String System.IO.Enumeration.FileSystemEnumerableFactory/<>c__DisplayClass3_0::expression
 System.Private.CoreLib.dll:System.String System.IO.Enumeration.FileSystemEnumerableFactory/<>c__DisplayClass4_0::expression
@@ -10250,8 +10246,6 @@ System.Private.CoreLib.dll:System.String.memset(System.Byte*, System.Int32, Syst
 System.Private.CoreLib.dll:System.String.op_Equality(System.String, System.String)
 System.Private.CoreLib.dll:System.String.op_Inequality(System.String, System.String)
 System.Private.CoreLib.dll:System.String.Replace(System.Char, System.Char)
-System.Private.CoreLib.dll:System.String.Replace(System.String, System.String)
-System.Private.CoreLib.dll:System.String.ReplaceHelper(System.Int32, System.String, System.ReadOnlySpan`1<System.Int32>)
 System.Private.CoreLib.dll:System.String.Split(System.String, System.StringSplitOptions)
 System.Private.CoreLib.dll:System.String.SplitInternal(System.ReadOnlySpan`1<System.Char>, System.Int32, System.StringSplitOptions)
 System.Private.CoreLib.dll:System.String.SplitInternal(System.String, System.Int32, System.StringSplitOptions)

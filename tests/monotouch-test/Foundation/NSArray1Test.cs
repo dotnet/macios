@@ -21,7 +21,7 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			var arr = new NSArray<NSData> ();
 
-			Assert.AreEqual ((nuint) 0, arr.Count, "NSArray Count");
+			Assert.That (arr.Count, Is.EqualTo ((nuint) 0), "NSArray Count");
 		}
 
 		[Test]
@@ -32,10 +32,10 @@ namespace MonoTouchFixtures.Foundation {
 			var str3 = (NSString) "3";
 
 			using (var arr = NSArray<NSString>.FromNSObjects (str1, str2, str3)) {
-				Assert.AreEqual ((nuint) 3, arr.Count, "NSArray Count");
-				Assert.AreSame (str1, arr [0], "NSArray indexer");
-				Assert.AreSame (str2, arr [1], "NSArray indexer");
-				Assert.AreSame (str3, arr [2], "NSArray indexer");
+				Assert.That (arr.Count, Is.EqualTo ((nuint) 3), "NSArray Count");
+				Assert.That (arr [0], Is.SameAs (str1), "NSArray indexer");
+				Assert.That (arr [1], Is.SameAs (str2), "NSArray indexer");
+				Assert.That (arr [2], Is.SameAs (str3), "NSArray indexer");
 			}
 		}
 
@@ -47,10 +47,10 @@ namespace MonoTouchFixtures.Foundation {
 			var str3 = (NSString) "3";
 
 			using (var arr = NSArray<NSString>.FromNSObjects (3, str1, str2, str3)) {
-				Assert.AreEqual ((nuint) 3, arr.Count, "NSArray Count");
-				Assert.AreSame (str1, arr [0], "NSArray indexer");
-				Assert.AreSame (str2, arr [1], "NSArray indexer");
-				Assert.AreSame (str3, arr [2], "NSArray indexer");
+				Assert.That (arr.Count, Is.EqualTo ((nuint) 3), "NSArray Count");
+				Assert.That (arr [0], Is.SameAs (str1), "NSArray indexer");
+				Assert.That (arr [1], Is.SameAs (str2), "NSArray indexer");
+				Assert.That (arr [2], Is.SameAs (str3), "NSArray indexer");
 			}
 		}
 
@@ -63,16 +63,16 @@ namespace MonoTouchFixtures.Foundation {
 				values [i] = (NSString) i.ToString ();
 
 			var st = NSArray<NSString>.FromNSObjects (values);
-			Assert.AreEqual ((nuint) C, st.Count, "Count 1");
+			Assert.That (st.Count, Is.EqualTo ((nuint) C), "Count 1");
 
 			var lst = new List<NSString> ();
 			foreach (NSString a in (IEnumerable) st) {
-				Assert.IsNotNull (a, "null item iterator");
-				Assert.IsFalse (lst.Contains (a), "duplicated item iterator");
+				Assert.That (a, Is.Not.Null, "null item iterator");
+				Assert.That (lst.Contains (a), Is.False, "duplicated item iterator");
 				lst.Add (a);
-				Assert.IsTrue (Array.IndexOf (values, a) >= 0, "different object");
+				Assert.That (Array.IndexOf (values, a) >= 0, Is.True, "different object");
 			}
-			Assert.AreEqual (C, lst.Count, "iterator count");
+			Assert.That (lst.Count, Is.EqualTo (C), "iterator count");
 		}
 
 		[Test]
@@ -94,10 +94,10 @@ namespace MonoTouchFixtures.Foundation {
 			var str3 = (NSString) "3";
 
 			using (var arr = NSArray<NSString>.FromNSObjects (str1, str2, str3)) {
-				Assert.AreEqual ((nuint) 3, arr.Count, "NSArray Count");
-				Assert.AreSame (str1, arr [0], "NSArray indexer");
-				Assert.IsNull (arr [1], "NSArray null indexer");
-				Assert.AreSame (str3, arr [2], "NSArray indexer");
+				Assert.That (arr.Count, Is.EqualTo ((nuint) 3), "NSArray Count");
+				Assert.That (arr [0], Is.SameAs (str1), "NSArray indexer");
+				Assert.That (arr [1], Is.Null, "NSArray null indexer");
+				Assert.That (arr [2], Is.SameAs (str3), "NSArray indexer");
 			}
 		}
 
@@ -107,9 +107,9 @@ namespace MonoTouchFixtures.Foundation {
 			using (var a = NSArray<NSString>.FromNSObjects ((NSString) "abc")) {
 				var arr = a.ToArray ();
 				NSString element = arr [0];
-				Assert.AreEqual (1, arr.Length, "Length");
-				Assert.AreEqual ("abc", arr [0].ToString (), "Value");
-				Assert.AreEqual ("abc", (string) element, "Value element");
+				Assert.That (arr.Length, Is.EqualTo (1), "Length");
+				Assert.That (arr [0].ToString (), Is.EqualTo ("abc"), "Value");
+				Assert.That ((string) element, Is.EqualTo ("abc"), "Value element");
 			}
 		}
 
@@ -119,9 +119,9 @@ namespace MonoTouchFixtures.Foundation {
 			using (var a = NSArray<NSString>.FromNSObjects ((NSString) "abc")) {
 				var arr = a.ToArray ();
 				NSString element = arr [0];
-				Assert.AreEqual (1, arr.Length, "Length");
-				Assert.AreEqual ("abc", arr [0].ToString (), "Value");
-				Assert.AreEqual ("abc", (string) element, "Value element");
+				Assert.That (arr.Length, Is.EqualTo (1), "Length");
+				Assert.That (arr [0].ToString (), Is.EqualTo ("abc"), "Value");
+				Assert.That ((string) element, Is.EqualTo ("abc"), "Value element");
 			}
 		}
 
@@ -134,10 +134,10 @@ namespace MonoTouchFixtures.Foundation {
 
 			var handles = new NativeHandle [] { str1.Handle, str2.Handle, str3.Handle };
 			using (var arr = NSArray.FromIntPtrs (handles)) {
-				Assert.AreEqual ((nuint) 3, arr.Count, "NSArray Count");
-				Assert.AreEqual ("1", arr.GetItem<NSString> (0).ToString (), "NSArray item 0");
-				Assert.AreEqual ("2", arr.GetItem<NSString> (1).ToString (), "NSArray item 1");
-				Assert.AreEqual ("3", arr.GetItem<NSString> (2).ToString (), "NSArray item 2");
+				Assert.That (arr.Count, Is.EqualTo ((nuint) 3), "NSArray Count");
+				Assert.That (arr.GetItem<NSString> (0).ToString (), Is.EqualTo ("1"), "NSArray item 0");
+				Assert.That (arr.GetItem<NSString> (1).ToString (), Is.EqualTo ("2"), "NSArray item 1");
+				Assert.That (arr.GetItem<NSString> (2).ToString (), Is.EqualTo ("3"), "NSArray item 2");
 			}
 		}
 
@@ -153,7 +153,7 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			var handles = new NativeHandle [0];
 			using (var arr = NSArray.FromIntPtrs (handles)) {
-				Assert.AreEqual ((nuint) 0, arr.Count, "NSArray Count");
+				Assert.That (arr.Count, Is.EqualTo ((nuint) 0), "NSArray Count");
 			}
 		}
 
@@ -171,15 +171,15 @@ namespace MonoTouchFixtures.Foundation {
 			};
 
 			using (var arr = NSArray.FromNSObjects (jaggedArray)) {
-				Assert.AreEqual ((nuint) 2, arr.Count, "Outer array count");
+				Assert.That (arr.Count, Is.EqualTo ((nuint) 2), "Outer array count");
 				var row0 = arr.GetItem<NSArray> (0);
 				var row1 = arr.GetItem<NSArray> (1);
-				Assert.AreEqual ((nuint) 2, row0.Count, "Row 0 count");
-				Assert.AreEqual ((nuint) 2, row1.Count, "Row 1 count");
-				Assert.AreEqual ("1", row0.GetItem<NSString> (0).ToString (), "Row 0, Item 0");
-				Assert.AreEqual ("2", row0.GetItem<NSString> (1).ToString (), "Row 0, Item 1");
-				Assert.AreEqual ("3", row1.GetItem<NSString> (0).ToString (), "Row 1, Item 0");
-				Assert.AreEqual ("4", row1.GetItem<NSString> (1).ToString (), "Row 1, Item 1");
+				Assert.That (row0.Count, Is.EqualTo ((nuint) 2), "Row 0 count");
+				Assert.That (row1.Count, Is.EqualTo ((nuint) 2), "Row 1 count");
+				Assert.That (row0.GetItem<NSString> (0).ToString (), Is.EqualTo ("1"), "Row 0, Item 0");
+				Assert.That (row0.GetItem<NSString> (1).ToString (), Is.EqualTo ("2"), "Row 0, Item 1");
+				Assert.That (row1.GetItem<NSString> (0).ToString (), Is.EqualTo ("3"), "Row 1, Item 0");
+				Assert.That (row1.GetItem<NSString> (1).ToString (), Is.EqualTo ("4"), "Row 1, Item 1");
 			}
 		}
 
@@ -188,7 +188,7 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			NSString [] []? jaggedArray = null;
 			var arr = NSArray.FromNSObjects (jaggedArray);
-			Assert.IsNull (arr, "Should return null for null input");
+			Assert.That (arr, Is.Null, "Should return null for null input");
 		}
 
 		[Test]
@@ -228,11 +228,11 @@ namespace MonoTouchFixtures.Foundation {
 			};
 
 			using (var arr = NSArray.FromNSObjects (array2D)) {
-				Assert.AreEqual ((nuint) 2, arr.Count, "Outer array count");
+				Assert.That (arr.Count, Is.EqualTo ((nuint) 2), "Outer array count");
 				var row0 = arr.GetItem<NSArray> (0);
 				var row1 = arr.GetItem<NSArray> (1);
-				Assert.AreEqual ((nuint) 2, row0.Count, "Row 0 count");
-				Assert.AreEqual ((nuint) 2, row1.Count, "Row 1 count");
+				Assert.That (row0.Count, Is.EqualTo ((nuint) 2), "Row 0 count");
+				Assert.That (row1.Count, Is.EqualTo ((nuint) 2), "Row 1 count");
 			}
 		}
 
@@ -241,7 +241,7 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			NSString [,]? array2D = null;
 			var arr = NSArray.FromNSObjects (array2D);
-			Assert.IsNull (arr, "Should return null for null input");
+			Assert.That (arr, Is.Null, "Should return null for null input");
 		}
 
 		[Test]
@@ -249,10 +249,10 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			var numbers = new int [] { 1, 2, 3 };
 			using (var arr = NSArray.FromNSObjects<int> (x => NSNumber.FromInt32 (x), numbers)) {
-				Assert.AreEqual ((nuint) 3, arr.Count, "Count");
-				Assert.AreEqual (1, arr.GetItem<NSNumber> (0).Int32Value, "Item 0");
-				Assert.AreEqual (2, arr.GetItem<NSNumber> (1).Int32Value, "Item 1");
-				Assert.AreEqual (3, arr.GetItem<NSNumber> (2).Int32Value, "Item 2");
+				Assert.That (arr.Count, Is.EqualTo ((nuint) 3), "Count");
+				Assert.That (arr.GetItem<NSNumber> (0).Int32Value, Is.EqualTo (1), "Item 0");
+				Assert.That (arr.GetItem<NSNumber> (1).Int32Value, Is.EqualTo (2), "Item 1");
+				Assert.That (arr.GetItem<NSNumber> (2).Int32Value, Is.EqualTo (3), "Item 2");
 			}
 		}
 
@@ -261,7 +261,7 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			int []? numbers = null;
 			var arr = NSArray.FromNSObjects<int> (x => NSNumber.FromInt32 (x), numbers);
-			Assert.IsNull (arr, "Should return null for null input");
+			Assert.That (arr, Is.Null, "Should return null for null input");
 		}
 
 		[Test]
@@ -276,15 +276,15 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			var numbers = new int? [] { 1, null, 3 };
 			var arr = NSArray.FromNSObjects<int?> (x => x.HasValue ? NSNumber.FromInt32 (x.Value) : null, numbers);
-			Assert.IsNotNull (arr, "Array should not be null");
-			Assert.AreEqual ((nuint) 3, arr!.Count, "Count");
+			Assert.That (arr, Is.Not.Null, "Array should not be null");
+			Assert.That (arr!.Count, Is.EqualTo ((nuint) 3), "Count");
 
 			// Check if the array actually contains NSNull at index 1
 			// Use reflection or try-catch to see what's there
 			try {
 				var item0 = arr.GetItem<NSNumber> (0);
-				Assert.IsNotNull (item0, "Item 0 should not be null");
-				Assert.AreEqual (1, item0.Int32Value, "Item 0");
+				Assert.That (item0, Is.Not.Null, "Item 0 should not be null");
+				Assert.That (item0.Int32Value, Is.EqualTo (1), "Item 0");
 			} catch (Exception ex) {
 				Assert.Fail ($"Item 0 failed: {ex.Message}");
 			}
@@ -292,12 +292,12 @@ namespace MonoTouchFixtures.Foundation {
 			// The converter returns null, so we expect NSNull in the array
 			// But GetItem<T> might skip null items or return null
 			var count = arr.Count;
-			Assert.AreEqual ((nuint) 3, count, "Should have 3 items including null");
+			Assert.That (count, Is.EqualTo ((nuint) 3), "Should have 3 items including null");
 
 			try {
 				var item2 = arr.GetItem<NSNumber> (2);
-				Assert.IsNotNull (item2, "Item 2 should not be null");
-				Assert.AreEqual (3, item2.Int32Value, "Item 2");
+				Assert.That (item2, Is.Not.Null, "Item 2 should not be null");
+				Assert.That (item2.Int32Value, Is.EqualTo (3), "Item 2");
 			} catch (Exception ex) {
 				Assert.Fail ($"Item 2 failed: {ex.Message}");
 			}
@@ -312,7 +312,7 @@ namespace MonoTouchFixtures.Foundation {
 
 			using (var arr = NSArray.FromObjects (2, items)) {
 				// This should only convert the first 2 items
-				Assert.AreEqual ((nuint) 2, arr.Count, "Count should be 2");
+				Assert.That (arr.Count, Is.EqualTo ((nuint) 2), "Count should be 2");
 			}
 		}
 
@@ -340,11 +340,11 @@ namespace MonoTouchFixtures.Foundation {
 			var items = new NSString? [] { str1, null, str3, str1 };
 
 			using (var arr = NSArray.FromNSObjects<NSString> (3, items)) {
-				Assert.AreEqual ((nuint) 3, arr.Count, "Count should include null");
-				Assert.AreEqual (str1, arr.GetItem<NSString> (0), "Item 0");
+				Assert.That (arr.Count, Is.EqualTo ((nuint) 3), "Count should include null");
+				Assert.That (arr.GetItem<NSString> (0), Is.EqualTo (str1), "Item 0");
 				// Item 1 is null, but GetItem may not retrieve it properly
 				// Just verify count is correct (3 items including the null)
-				Assert.AreEqual (str3, arr.GetItem<NSString> (2), "Item 2");
+				Assert.That (arr.GetItem<NSString> (2), Is.EqualTo (str3), "Item 2");
 			}
 		}
 
@@ -358,9 +358,9 @@ namespace MonoTouchFixtures.Foundation {
 			var items = new NSString [] { str1, str2, str3, str4 };
 
 			using (var arr = NSArray.FromNSObjects<NSString> (2, items)) {
-				Assert.AreEqual ((nuint) 2, arr.Count, "Count");
-				Assert.AreEqual (str1, arr.GetItem<NSString> (0), "Item 0");
-				Assert.AreEqual (str2, arr.GetItem<NSString> (1), "Item 1");
+				Assert.That (arr.Count, Is.EqualTo ((nuint) 2), "Count");
+				Assert.That (arr.GetItem<NSString> (0), Is.EqualTo (str1), "Item 0");
+				Assert.That (arr.GetItem<NSString> (1), Is.EqualTo (str2), "Item 1");
 			}
 		}
 
@@ -369,7 +369,7 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			NSString []? items = null;
 			using (var arr = NSArray.FromNSObjects<NSString> (0, items)) {
-				Assert.AreEqual ((nuint) 0, arr.Count, "Null array should create empty array");
+				Assert.That (arr.Count, Is.EqualTo ((nuint) 0), "Null array should create empty array");
 			}
 		}
 
@@ -378,11 +378,11 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			var items = new object [] { 1, "hello", 3.14, true };
 			using (var arr = NSArray.FromObjects (items)) {
-				Assert.AreEqual ((nuint) 4, arr.Count, "Count");
-				Assert.AreEqual (1, arr.GetItem<NSNumber> (0).Int32Value, "Item 0");
-				Assert.AreEqual ("hello", arr.GetItem<NSString> (1).ToString (), "Item 1");
-				Assert.AreEqual (3.14, arr.GetItem<NSNumber> (2).DoubleValue, 0.01, "Item 2");
-				Assert.AreEqual (true, arr.GetItem<NSNumber> (3).BoolValue, "Item 3");
+				Assert.That (arr.Count, Is.EqualTo ((nuint) 4), "Count");
+				Assert.That (arr.GetItem<NSNumber> (0).Int32Value, Is.EqualTo (1), "Item 0");
+				Assert.That (arr.GetItem<NSString> (1).ToString (), Is.EqualTo ("hello"), "Item 1");
+				Assert.That (arr.GetItem<NSNumber> (2).DoubleValue, Is.EqualTo (3.14).Within (0.01), "Item 2");
+				Assert.That (arr.GetItem<NSNumber> (3).BoolValue, Is.EqualTo (true), "Item 3");
 			}
 		}
 
@@ -391,7 +391,7 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			object []? items = null;
 			using (var arr = NSArray.FromObjects (items)) {
-				Assert.AreEqual ((nuint) 0, arr.Count, "Should return empty array for null input");
+				Assert.That (arr.Count, Is.EqualTo ((nuint) 0), "Should return empty array for null input");
 			}
 		}
 
@@ -400,10 +400,10 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			var items = new object [] { 1, 2, 3, 4, 5 };
 			using (var arr = NSArray.FromObjects (3, items)) {
-				Assert.AreEqual ((nuint) 3, arr.Count, "Count");
-				Assert.AreEqual (1, arr.GetItem<NSNumber> (0).Int32Value, "Item 0");
-				Assert.AreEqual (2, arr.GetItem<NSNumber> (1).Int32Value, "Item 1");
-				Assert.AreEqual (3, arr.GetItem<NSNumber> (2).Int32Value, "Item 2");
+				Assert.That (arr.Count, Is.EqualTo ((nuint) 3), "Count");
+				Assert.That (arr.GetItem<NSNumber> (0).Int32Value, Is.EqualTo (1), "Item 0");
+				Assert.That (arr.GetItem<NSNumber> (1).Int32Value, Is.EqualTo (2), "Item 1");
+				Assert.That (arr.GetItem<NSNumber> (2).Int32Value, Is.EqualTo (3), "Item 2");
 			}
 		}
 
@@ -412,7 +412,7 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			var items = new object [] { 1, 2, 3 };
 			using (var arr = NSArray.FromObjects (0, items)) {
-				Assert.AreEqual ((nuint) 0, arr.Count, "Count should be 0");
+				Assert.That (arr.Count, Is.EqualTo ((nuint) 0), "Count should be 0");
 			}
 		}
 
@@ -427,7 +427,7 @@ namespace MonoTouchFixtures.Foundation {
 		public void FromObjects_WithCount_Null ()
 		{
 			using (var arr = NSArray.FromObjects (0, null)) {
-				Assert.AreEqual ((nuint) 0, arr.Count, "Should return empty array");
+				Assert.That (arr.Count, Is.EqualTo ((nuint) 0), "Should return empty array");
 			}
 		}
 
@@ -435,7 +435,7 @@ namespace MonoTouchFixtures.Foundation {
 		public void EnumsFromHandle_ReturnsNullForZeroHandle ()
 		{
 			var result = NSArray.EnumsFromHandle<NSComparisonResult> (NativeHandle.Zero);
-			Assert.IsNull (result, "null for zero handle");
+			Assert.That (result, Is.Null, "null for zero handle");
 		}
 
 		[Test]
@@ -451,7 +451,7 @@ namespace MonoTouchFixtures.Foundation {
 			using var n2 = NSNumber.FromNInt ((nint) (long) expected [2]);
 			using var array = NSArray.FromNSObjects (n0, n1, n2);
 			var actual = NSArray.EnumsFromHandle<NSComparisonResult> (array.Handle);
-			Assert.IsNotNull (actual, "not null");
+			Assert.That (actual, Is.Not.Null, "not null");
 			Assert.That (actual!.Length, Is.EqualTo (3), "Length");
 			Assert.That (actual, Is.EqualTo (expected), "values");
 		}
@@ -485,7 +485,7 @@ namespace MonoTouchFixtures.Foundation {
 			}, "Not throws");
 			// https://github.com/dotnet/macios/issues/15577 - Did not rewrite tests that were disabled
 			// Maybe assert that we get a specific diff result as well?
-			Assert.NotNull (diff, "Not null");
+			Assert.That (diff, Is.Not.Null, "Not null");
 		}
 #endif
 
@@ -498,20 +498,20 @@ namespace MonoTouchFixtures.Foundation {
 
 			var result = NSArray.FromArrayOfArray (outer);
 
-			Assert.IsNotNull (result, "result");
-			Assert.AreEqual (2, result!.Length, "outer length");
-			Assert.AreEqual (2, result [0].Length, "inner1 length");
-			Assert.AreEqual (1, result [1].Length, "inner2 length");
-			Assert.AreEqual ("a", result [0] [0].ToString (), "inner1[0]");
-			Assert.AreEqual ("b", result [0] [1].ToString (), "inner1[1]");
-			Assert.AreEqual ("c", result [1] [0].ToString (), "inner2[0]");
+			Assert.That (result, Is.Not.Null, "result");
+			Assert.That (result!.Length, Is.EqualTo (2), "outer length");
+			Assert.That (result [0].Length, Is.EqualTo (2), "inner1 length");
+			Assert.That (result [1].Length, Is.EqualTo (1), "inner2 length");
+			Assert.That (result [0] [0].ToString (), Is.EqualTo ("a"), "inner1[0]");
+			Assert.That (result [0] [1].ToString (), Is.EqualTo ("b"), "inner1[1]");
+			Assert.That (result [1] [0].ToString (), Is.EqualTo ("c"), "inner2[0]");
 		}
 
 		[Test]
 		public void FromArrayOfArray_Null ()
 		{
 			var result = NSArray.FromArrayOfArray (null);
-			Assert.IsNull (result, "result");
+			Assert.That (result, Is.Null, "result");
 		}
 
 		[Test]
@@ -524,19 +524,19 @@ namespace MonoTouchFixtures.Foundation {
 
 			using var arr = NSArray.From (items);
 
-			Assert.IsNotNull (arr, "arr");
-			Assert.AreEqual ((nuint) 2, arr!.Count, "outer count");
+			Assert.That (arr, Is.Not.Null, "arr");
+			Assert.That (arr!.Count, Is.EqualTo ((nuint) 2), "outer count");
 			var row0 = arr.GetItem<NSArray> (0)!;
 			var row1 = arr.GetItem<NSArray> (1)!;
-			Assert.AreEqual ((nuint) 2, row0.Count, "row0 count");
-			Assert.AreEqual ((nuint) 1, row1.Count, "row1 count");
+			Assert.That (row0.Count, Is.EqualTo ((nuint) 2), "row0 count");
+			Assert.That (row1.Count, Is.EqualTo ((nuint) 1), "row1 count");
 		}
 
 		[Test]
 		public void From_JaggedArray_Null ()
 		{
 			var result = NSArray.From ((NSObject [] []?) null);
-			Assert.IsNull (result, "result");
+			Assert.That (result, Is.Null, "result");
 		}
 
 		[Test]
@@ -548,16 +548,16 @@ namespace MonoTouchFixtures.Foundation {
 			};
 
 			using var native = NSArray.From (original);
-			Assert.IsNotNull (native, "native");
+			Assert.That (native, Is.Not.Null, "native");
 
 			var roundtripped = NSArray.FromArrayOfArray (native);
-			Assert.IsNotNull (roundtripped, "roundtripped");
-			Assert.AreEqual (original.Length, roundtripped!.Length, "outer length");
-			Assert.AreEqual (original [0].Length, roundtripped [0].Length, "inner0 length");
-			Assert.AreEqual (original [1].Length, roundtripped [1].Length, "inner1 length");
-			Assert.AreEqual ("1", roundtripped [0] [0].ToString (), "[0][0]");
-			Assert.AreEqual ("2", roundtripped [0] [1].ToString (), "[0][1]");
-			Assert.AreEqual ("3", roundtripped [1] [0].ToString (), "[1][0]");
+			Assert.That (roundtripped, Is.Not.Null, "roundtripped");
+			Assert.That (roundtripped!.Length, Is.EqualTo (original.Length), "outer length");
+			Assert.That (roundtripped [0].Length, Is.EqualTo (original [0].Length), "inner0 length");
+			Assert.That (roundtripped [1].Length, Is.EqualTo (original [1].Length), "inner1 length");
+			Assert.That (roundtripped [0] [0].ToString (), Is.EqualTo ("1"), "[0][0]");
+			Assert.That (roundtripped [0] [1].ToString (), Is.EqualTo ("2"), "[0][1]");
+			Assert.That (roundtripped [1] [0].ToString (), Is.EqualTo ("3"), "[1][0]");
 		}
 	}
 }

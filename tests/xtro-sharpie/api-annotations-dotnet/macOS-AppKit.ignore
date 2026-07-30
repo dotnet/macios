@@ -1,9 +1,6 @@
 ## https://bugzilla.xamarin.com/show_bug.cgi?id=30717
 !duplicate-register! _NSDatePickerCellDelegate exists as both AppKit.NSDatePickerCell/_NSDatePickerCellDelegate and AppKit.NSDatePicker/_NSDatePickerCellDelegate
 
-## Proxy class for NSGraphicsContext internal to AppKit
-!unknown-type! NSPrintPreviewGraphicsContext bound
-
 ## In header as old style unnamaed enum
 !unknown-native-enum! NSModalResponse bound
 !unknown-native-enum! NSWindowLevel bound
@@ -1520,3 +1517,36 @@
 !missing-protocol-conformance! NSImage should conform to NSItemProviderReading (defined in '' category)
 !missing-protocol-conformance! NSImage should conform to NSItemProviderWriting (defined in '' category)
 !missing-protocol-conformance! NSLayoutConstraint should conform to NSAnimatablePropertyContainer (defined in '' category)
+
+# results from initial block parameter nullability analysis
+!missing-null-allowed! 'System.Void AppKit.NSColorSampler::ShowSampler(System.Action`1<AppKit.NSColor>)' is missing a '?' on parameter 'selectionHandler' block parameter #0
+!missing-null-allowed! 'System.Void AppKit.NSDocument::AccommodatePresentedItemDeletion(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void AppKit.NSDocument::SavePresentedItemChanges(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void AppKit.NSTextContentManager::SynchronizeTextLayoutManagers(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!extra-null-allowed! 'System.Void AppKit.NSFilePromiseReceiver::ReceivePromisedFiles(Foundation.NSUrl,Foundation.NSDictionary,Foundation.NSOperationQueue,System.Action`2<Foundation.NSUrl,Foundation.NSError>)' has an extraneous '?' on parameter 'reader' block parameter #0
+
+## bound selectors with no native declaration reachable from the class in the current SDK headers:
+## private/SPI selectors, protocol/category members Apple inlines without declaring the conformance on
+## the class, managed callback infrastructure, or API Apple removed/privatized - kept for compatibility
+## (baseline for https://github.com/dotnet/macios/issues/26053)
+!unknown-selector! +NSCollectionLayoutGroup::horizontalGroupWithLayoutSize:repeatingSubitem:count: not found
+!unknown-selector! +NSCollectionLayoutGroup::verticalGroupWithLayoutSize:repeatingSubitem:count: not found
+!unknown-selector! +NSMenu::accessibilityElementWithRole:frame:label:parent: not found
+!unknown-selector! +NSMenuItem::accessibilityElementWithRole:frame:label:parent: not found
+!unknown-selector! +NSViewAnimation::defaultAnimationForKey: not found
+!unknown-selector! NSDiffableDataSourceSnapshot::reconfiguredItemIdentifiers not found
+!unknown-selector! NSDiffableDataSourceSnapshot::reconfigureItemsWithIdentifiers: not found
+!unknown-selector! NSDiffableDataSourceSnapshot::reloadedItemIdentifiers not found
+!unknown-selector! NSDiffableDataSourceSnapshot::reloadedSectionIdentifiers not found
+!unknown-selector! NSMenu::accessibilityAddChildElement: not found
+!unknown-selector! NSMenu::accessibilityFrameInParentSpace not found
+!unknown-selector! NSMenu::setAccessibilityFrameInParentSpace: not found
+!unknown-selector! NSMenuItem::accessibilityAddChildElement: not found
+!unknown-selector! NSMenuItem::accessibilityFrameInParentSpace not found
+!unknown-selector! NSMenuItem::setAccessibilityFrameInParentSpace: not found
+!unknown-selector! NSSharingCollaborationModeRestriction::setAlertRecoverySuggestionButtonLaunchURL: not found
+!unknown-selector! NSTextField::automaticTextCompletionEnabled: not found
+!unknown-selector! NSViewAnimation::animationForKey: not found
+!unknown-selector! NSViewAnimation::animations not found
+!unknown-selector! NSViewAnimation::animator not found
+!unknown-selector! NSViewAnimation::setAnimations: not found

@@ -36,6 +36,7 @@
     </None>
     <Compile Include="$(RepositoryPath)\src\ObjCRuntime\Stret.cs" />
     <Compile Include="$(RepositoryPath)\tools\common\ApplePlatform.cs" />
+    <Compile Include="$(RepositoryPath)\tools\common\IToolLog.cs" />
     <Compile Include="$(RepositoryPath)\tools\common\TargetFramework.cs" />
     <Compile Include="$(RepositoryPath)\tools\common\StringUtils.cs" />
     <Compile Include="$(DotNetBuildDir)\generator-frameworks.g.cs" />
@@ -57,6 +58,7 @@
     <Compile Include="$(RepositoryPath)\src\ObjCRuntime\NativeAttribute.cs" />
     <Compile Include="$(RepositoryPath)\src\ObjCRuntime\NativeNameAttribute.cs" />
     <Compile Include="$(RepositoryPath)\src\ObjCRuntime\ObjectiveCFrameworkAttribute.cs" />
+    <Compile Include="$(RepositoryPath)\src\ObjCRuntime\SupportedSimulatorAttribute.cs" />
     <Compile Include="$(RepositoryPath)\src\ObjCRuntime\Registrar.core.cs" />
     <Compile Include="$(RepositoryPath)\src\ObjCRuntime\RequiresSuperAttribute.cs" />
     <Compile Include="$(RepositoryPath)\tools\common\Execution.cs">

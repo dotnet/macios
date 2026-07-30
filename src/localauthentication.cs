@@ -1,5 +1,11 @@
 using Security;
 
+#if MONOMAC
+using LAPresentationContext = AppKit.NSWindow;
+#else
+using LAPresentationContext = UIKit.UIWindow;
+#endif
+
 namespace LocalAuthentication {
 
 	/// <summary>Enumerates supported biometric authentication types.</summary>
@@ -312,6 +318,13 @@ namespace LocalAuthentication {
 		[Async]
 		[Export ("deauthorizeWithCompletion:")]
 		void Deauthorize (Action handler);
+
+		// From LARight_UI
+		[NoMacCatalyst] // Intro says no no
+		[iOS (17, 0)]
+		[Async]
+		[Export ("authorizeWithLocalizedReason:inPresentationContext:completion:")]
+		void Authorize (string localizedReason, LAPresentationContext presentationContext, LARightAuthorizeCompletionHandler handler);
 	}
 
 	delegate void LARightStoreCompletionHandler ([NullAllowed] LAPersistedRight right, [NullAllowed] NSError error);

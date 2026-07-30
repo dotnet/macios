@@ -6,11 +6,6 @@
 # https://jenkins.internalx.com/view/Xamarin.MaciOS/job/macios/job/main/
 # https://jenkins.internalx.com/view/Xamarin.MaciOS/job/macios/configure
 parameters:
-  - name: provisionatorChannel
-    displayName: Provisionator channel to use
-    type: string
-    default: 'latest'
-
   - name: macOSName  # comes from the build agent demand named macOS.Name
     displayName: Name of the version of macOS to use
     type: string
@@ -45,7 +40,7 @@ resources:
     - repository: yaml-templates
       type: git
       name: xamarin.yaml-templates
-      ref: e30b445c2ffcbebe75efdd69546d7196a20c5a43
+      ref: refs/heads/main
 
     - repository: CustomPipelineTemplates
       type: git
@@ -126,12 +121,12 @@ extends:
           xcodeChannel: $(xcodeChannel)
           macOSName: ${{ parameters.macOSName }}
           isPR: false
-          provisionatorChannel: ${{ parameters.provisionatorChannel }}
           pool: $(CIBuildPool)
           runGovernanceTests: ${{ parameters.runGovernanceTests }}
           forceInsertion: ${{ parameters.forceInsertion }}
           pushNugets: ${{ parameters.pushNugets }}
           pushNugetsToMaestro: ${{ parameters.pushNugetsToMaestro }}
+          useACES: true  # see templates/variables/common.yml
 
       - template: localization/v1.yml@yaml-templates
         parameters:

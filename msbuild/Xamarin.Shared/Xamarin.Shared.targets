@@ -59,6 +59,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CreateEmbeddedResources" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CreateInstallerPackage" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CreatePkgInfo" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CreateSymbolsPackage" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.DetectDebugNetworkConfiguration" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.DetectSdkLocations" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.DetectSigningIdentity" AssemblyFile="$(_TaskAssemblyName)" />
@@ -84,6 +85,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.PackLibraryResources" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ParseBundlerArguments" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ParseDeviceSpecificBuildInformation" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.PrepareAssemblies" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.PrepareNativeReferences" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.PrepareResourceRules" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.PropertyListEditor" AssemblyFile="$(_TaskAssemblyName)" />
@@ -94,6 +96,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ScnTool" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.SmartCopy" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.SpotlightIndexer" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.StripFrameworkHeaders" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.SymbolStrip" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.TextureAtlas" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.UnpackLibraryResources" AssemblyFile="$(_TaskAssemblyName)" />
@@ -427,6 +430,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			$(CollectBundleResourcesDependsOn);
 			_UnpackLibraryResources;
 			_LoadUnpackedPartialAppManifests;
+			_LoadUnpackedLibraryResources;
 			_CompileImageAssets;
 			_CompileInterfaceDefinitions;
 			_CompileSceneKitAssets;
@@ -452,6 +456,8 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<Content Remove="@(_ProcessedContent)" />
 		</ItemGroup>
 
+		<Error Condition="'$(_ResolveResourceItemsRelativeToProjectInvalid)' == 'true'" Text="Setting ResolveResourceItemsRelativeToProject to false is not supported in .NET 13+. Remove this property from your project file." />
+
 		<CollectBundleResources
 			SessionId="$(BuildSessionId)"
 			Condition="'$(IsMacEnabled)' == 'true' Or '$(_BundleOriginalResources)' == 'true'"
@@ -460,6 +466,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			BundleResources="@(Content);@(BundleResource)"
 			ProjectDir="$(MSBuildProjectDirectory)"
 			ResourcePrefix="$(_ResourcePrefix)"
+			ResolveResourceItemsRelativeToProject="$(ResolveResourceItemsRelativeToProject)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 			UnpackedResources="@(_UnpackedBundleResourceWithLogicalName)"
 			>
@@ -481,10 +488,18 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<FileWrites Include="$(_ProcessedContentPath)" />
 		</ItemGroup>
 
-		<!-- Copy any items with the PublishFolderType metadata directly to the ResolvedFileToPublish item group -->
+		<!-- Copy any items with the PublishFolderType metadata directly to the ResolvedFileToPublish item group.
+		     Set TargetPath from the Link metadata (if not already set) so that the .NET SDK's conflict resolution
+		     (ResolveOverlappingItemGroupConflicts) sees the full relative path instead of just the filename.
+		     Without this, items whose filename matches an SDK assembly or runtime file would be incorrectly
+		     removed as conflicts. Ref: https://github.com/dotnet/macios/issues/25497 -->
 		<ItemGroup>
-			<ResolvedFileToPublish Include="@(BundleResource)" Condition="'%(BundleResource.PublishFolderType)' != ''" />
-			<ResolvedFileToPublish Include="@(Content)" Condition="'%(Content.PublishFolderType)' != ''" />
+			<ResolvedFileToPublish Include="@(BundleResource)" Condition="'%(BundleResource.PublishFolderType)' != ''">
+				<TargetPath Condition="'%(BundleResource.TargetPath)' == '' and '%(BundleResource.Link)' != ''">%(BundleResource.Link)</TargetPath>
+			</ResolvedFileToPublish>
+			<ResolvedFileToPublish Include="@(Content)" Condition="'%(Content.PublishFolderType)' != ''">
+				<TargetPath Condition="'%(Content.TargetPath)' == '' and '%(Content.Link)' != ''">%(Content.Link)</TargetPath>
+			</ResolvedFileToPublish>
 		</ItemGroup>
 	</Target>
 
@@ -684,6 +699,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			ProjectDir="$(MSBuildProjectDirectory)"
 			ResourcePrefix="$(_ResourcePrefix)"
 			ResourceRules="$(_PreparedResourceRules)"
+			SdkDevPath="$(_SdkDevPath)"
 			SdkIsSimulator="$(_SdkIsSimulator)"
 			SdkVersion="$(_SdkVersion)"
 			SupportedOSPlatformVersion="$(SupportedOSPlatformVersion)"
@@ -710,11 +726,14 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			Condition="'$(IsMacEnabled)' == 'true' And '$(_BundleOriginalResources)' != 'true'"
 			SessionId="$(BuildSessionId)"
 			AppManifest="$(_TemporaryAppManifest)"
+			SdkDevPath="$(_SdkDevPath)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 			>
 			<Output TaskParameter="CFBundleExecutable" PropertyName="_ExecutableName" />
 			<Output TaskParameter="CFBundleDisplayName" PropertyName="_CFBundleDisplayName" />
+			<Output TaskParameter="CFBundleName" PropertyName="_CFBundleName" />
 			<Output TaskParameter="CFBundleIdentifier" PropertyName="_BundleIdentifier" />
+			<Output TaskParameter="CFBundleShortVersionString" PropertyName="_CFBundleShortVersionString" />
 			<Output TaskParameter="CFBundleVersion" PropertyName="_CFBundleVersion" />
 			<Output TaskParameter="CLKComplicationGroup" PropertyName="_CLKComplicationGroup" />
 			<Output TaskParameter="MinimumOSVersion" PropertyName="_MinimumOSVersion" />
@@ -797,6 +816,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			Entitlements="$(CodesignEntitlements)"
 			CompiledEntitlements="$(_CompiledEntitlementsPath)"
 			ProvisioningProfile="$(_ProvisioningProfile)"
+			SdkDevPath="$(_SdkDevPath)"
 			SdkIsSimulator="$(_SdkIsSimulator)"
 			SdkPlatform="$(_SdkPlatform)"
 			SdkVersion="$(_SdkVersion)"
@@ -1277,8 +1297,9 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			Xamarin.iOS and Xamarin.Mac converges, more and more of this logic
 			will apply to Xamarin.Mac as well.
 		-->
+		<!-- The device-specific build support can be entirely removed in .NET 12 (see https://github.com/dotnet/macios/issues/23846) -->
 		<ParseDeviceSpecificBuildInformation
-			Condition="'$(DeviceSpecificBuild)' == 'true' And '$(TargetiOSDevice)' != '' And '$(_CanDeployToDeviceOrSimulator)' == 'true' And '$(SdkIsDesktop)' != 'true'"
+			Condition="'$(DeviceSpecificBuild)' == 'true' And '$(TargetiOSDevice)' != '' And '$(_CanDeployToDeviceOrSimulator)' == 'true' And '$(SdkIsDesktop)' != 'true' And (!$([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), 11.0)) Or '$(_DeviceSpecificBuildOverride)' == 'true')"
 			Architectures="$(TargetArchitectures)"
 			IntermediateOutputPath="$(IntermediateOutputPath)"
 			OutputPath="$(OutputPath)"
@@ -1320,6 +1341,14 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 			<!-- Partial app manifest output cache -->
 			<_UnpackedPartialAppManifestCache>$(DeviceSpecificIntermediateOutputPath)partialappmanifest\_PartialAppManifests.items</_UnpackedPartialAppManifestCache>
+
+			<!-- Caches of the typed resources unpacked from referenced libraries, so they can be restored on incremental builds when _UnpackLibraryResources is skipped -->
+			<_UnpackedAtlasTextureCache>$(DeviceSpecificIntermediateOutputPath)resourcestamps\_UnpackedAtlasTextures.items</_UnpackedAtlasTextureCache>
+			<_UnpackedImageAssetCache>$(DeviceSpecificIntermediateOutputPath)resourcestamps\_UnpackedImageAssets.items</_UnpackedImageAssetCache>
+			<_UnpackedInterfaceDefinitionCache>$(DeviceSpecificIntermediateOutputPath)resourcestamps\_UnpackedInterfaceDefinitions.items</_UnpackedInterfaceDefinitionCache>
+			<_UnpackedColladaCache>$(DeviceSpecificIntermediateOutputPath)resourcestamps\_UnpackedColladaAssets.items</_UnpackedColladaCache>
+			<_UnpackedCoreMLModelCache>$(DeviceSpecificIntermediateOutputPath)resourcestamps\_UnpackedCoreMLModels.items</_UnpackedCoreMLModelCache>
+			<_UnpackedSceneKitAssetCache>$(DeviceSpecificIntermediateOutputPath)resourcestamps\_UnpackedSceneKitAssets.items</_UnpackedSceneKitAssetCache>
 
 			<!-- processed items -->
 			<_ProcessedBundleResourcesPath Condition="'$(_ProcessedBundleResourcesPath)' == ''">$(DeviceSpecificIntermediateOutputPath)\_ProcessedBundleResourcesPath.items</_ProcessedBundleResourcesPath>
@@ -1832,7 +1861,15 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<PropertyGroup Condition="'$(IsBindingProject)' == 'true'">
 		<!-- Add our own pre and post build steps -->
 		<!-- Override the CoreCompile Target to use bgen -->
+		<!--
+			ResolveReferences must come first: our binding-generation targets (_GenerateBindings /
+			_CompileApiDefinitions) need the resolved references (@(ReferencePath)) to compile the
+			API definitions. During a normal build ResolveReferences runs earlier as part of CoreBuild,
+			but when the Compile target is built directly (e.g. 'dotnet watch' runs 'dotnet build /t:Compile')
+			nothing else resolves references first, so we have to depend on it explicitly here.
+		-->
 		<CompileDependsOn>
+			ResolveReferences;
 			_GenerateBindings;
 			_PrepareNativeReferences;
 			_CollectGeneratedSources;
@@ -2069,6 +2106,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			SdkIsSimulator="$(_SdkIsSimulator)"
 			SdkPlatform="$(_SdkPlatform)"
 			ProvisioningProfile="$(CodesignProvision)"
+			SdkDevPath="$(_SdkDevPath)"
 			SigningKey="$(_SpecifiedCodesignKey)"
 			DetectedCodeSigningKey="$(_CodeSigningKey)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
@@ -2091,6 +2129,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		<DetectSdkLocations
 			SessionId="$(BuildSessionId)"
 			Condition="'$(IsMacEnabled)' == 'true'"
+			SdkDevPath="$(XcodeLocation)"
 			SdkVersion="$(_SdkVersion)"
 			SdkIsSimulator="$(SdkIsSimulator)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
@@ -2229,13 +2268,16 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 			<Output TaskParameter="ItemsFiles" ItemName="FileWrites" />
 
-			<Output TaskParameter="AtlasTextures" ItemName="AtlasTexture" />
-			<Output TaskParameter="ImageAssets" ItemName="ImageAsset" />
-			<Output TaskParameter="InterfaceDefinitions" ItemName="InterfaceDefinition" />
-			<Output TaskParameter="ColladaAssets" ItemName="Collada" />
-			<Output TaskParameter="CoreMLModels" ItemName="CoreMLModel" />
+			<!-- The typed resources are output to private item groups, cached below, and restored into the
+			     real item groups by _LoadUnpackedLibraryResources (which runs even on incremental builds
+			     when this target is skipped). -->
+			<Output TaskParameter="AtlasTextures" ItemName="_UnpackedAtlasTexture" />
+			<Output TaskParameter="ImageAssets" ItemName="_UnpackedImageAsset" />
+			<Output TaskParameter="InterfaceDefinitions" ItemName="_UnpackedInterfaceDefinition" />
+			<Output TaskParameter="ColladaAssets" ItemName="_UnpackedCollada" />
+			<Output TaskParameter="CoreMLModels" ItemName="_UnpackedCoreMLModel" />
 			<Output TaskParameter="PartialAppManifests" ItemName="_UnpackedPartialAppManifest" />
-			<Output TaskParameter="SceneKitAssets" ItemName="SceneKitAsset" />
+			<Output TaskParameter="SceneKitAssets" ItemName="_UnpackedSceneKitAsset" />
 		</UnpackLibraryResources>
 
 		<Touch
@@ -2246,11 +2288,23 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<Output TaskParameter="TouchedFiles" ItemName="FileWrites" />
 		</Touch>
 
-		<!-- Cached the partial app manifests items for incremental build support -->
+		<!-- Cache the unpacked typed resource items for incremental build support (see _LoadUnpackedLibraryResources) -->
 		<WriteItemsToFile Items="@(_UnpackedPartialAppManifest)" ItemName="_UnpackedPartialAppManifest" File="$(_UnpackedPartialAppManifestCache)" Overwrite="true" IncludeMetadata="true" />
+		<WriteItemsToFile Items="@(_UnpackedAtlasTexture)" ItemName="_UnpackedAtlasTexture" File="$(_UnpackedAtlasTextureCache)" Overwrite="true" IncludeMetadata="true" />
+		<WriteItemsToFile Items="@(_UnpackedImageAsset)" ItemName="_UnpackedImageAsset" File="$(_UnpackedImageAssetCache)" Overwrite="true" IncludeMetadata="true" />
+		<WriteItemsToFile Items="@(_UnpackedInterfaceDefinition)" ItemName="_UnpackedInterfaceDefinition" File="$(_UnpackedInterfaceDefinitionCache)" Overwrite="true" IncludeMetadata="true" />
+		<WriteItemsToFile Items="@(_UnpackedCollada)" ItemName="_UnpackedCollada" File="$(_UnpackedColladaCache)" Overwrite="true" IncludeMetadata="true" />
+		<WriteItemsToFile Items="@(_UnpackedCoreMLModel)" ItemName="_UnpackedCoreMLModel" File="$(_UnpackedCoreMLModelCache)" Overwrite="true" IncludeMetadata="true" />
+		<WriteItemsToFile Items="@(_UnpackedSceneKitAsset)" ItemName="_UnpackedSceneKitAsset" File="$(_UnpackedSceneKitAssetCache)" Overwrite="true" IncludeMetadata="true" />
 
 		<ItemGroup>
 			<FileWrites Include="$(_UnpackedPartialAppManifestCache)" />
+			<FileWrites Include="$(_UnpackedAtlasTextureCache)" />
+			<FileWrites Include="$(_UnpackedImageAssetCache)" />
+			<FileWrites Include="$(_UnpackedInterfaceDefinitionCache)" />
+			<FileWrites Include="$(_UnpackedColladaCache)" />
+			<FileWrites Include="$(_UnpackedCoreMLModelCache)" />
+			<FileWrites Include="$(_UnpackedSceneKitAssetCache)" />
 			<FileWrites Include="@(_UnpackedBundleResourceWithLogicalName)" />
 		</ItemGroup>
 	</Target>
@@ -2263,6 +2317,47 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		<ReadItemsFromFile File="$(_UnpackedPartialAppManifestCache)">
 			<Output TaskParameter="Items" ItemName="PartialAppManifest" />
 		</ReadItemsFromFile>
+	</Target>
+
+	<!-- Load the typed resources unpacked from referenced libraries into their real item groups. This runs even if
+	     '_UnpackLibraryResources' was skipped (incremental build), so that resources compiled/aggregated into a single
+	     output (e.g. image assets into Assets.car) aren't lost when the output is regenerated. See https://github.com/dotnet/macios/issues/5755. -->
+	<Target Name="_LoadUnpackedLibraryResources"
+		DependsOnTargets="_UnpackLibraryResources">
+		<ReadItemsFromFile File="$(_UnpackedAtlasTextureCache)" Condition="Exists('$(_UnpackedAtlasTextureCache)')">
+			<Output TaskParameter="Items" ItemName="_CachedUnpackedAtlasTexture" />
+		</ReadItemsFromFile>
+		<ReadItemsFromFile File="$(_UnpackedImageAssetCache)" Condition="Exists('$(_UnpackedImageAssetCache)')">
+			<Output TaskParameter="Items" ItemName="_CachedUnpackedImageAsset" />
+		</ReadItemsFromFile>
+		<ReadItemsFromFile File="$(_UnpackedInterfaceDefinitionCache)" Condition="Exists('$(_UnpackedInterfaceDefinitionCache)')">
+			<Output TaskParameter="Items" ItemName="_CachedUnpackedInterfaceDefinition" />
+		</ReadItemsFromFile>
+		<ReadItemsFromFile File="$(_UnpackedColladaCache)" Condition="Exists('$(_UnpackedColladaCache)')">
+			<Output TaskParameter="Items" ItemName="_CachedUnpackedCollada" />
+		</ReadItemsFromFile>
+		<ReadItemsFromFile File="$(_UnpackedCoreMLModelCache)" Condition="Exists('$(_UnpackedCoreMLModelCache)')">
+			<Output TaskParameter="Items" ItemName="_CachedUnpackedCoreMLModel" />
+		</ReadItemsFromFile>
+		<ReadItemsFromFile File="$(_UnpackedSceneKitAssetCache)" Condition="Exists('$(_UnpackedSceneKitAssetCache)')">
+			<Output TaskParameter="Items" ItemName="_CachedUnpackedSceneKitAsset" />
+		</ReadItemsFromFile>
+
+		<!-- Only restore cached resources whose originating library is still referenced. Otherwise resources from a
+		     library that was removed since the last full unpack (when this target is skipped because the remaining
+		     referenced libraries are unchanged) would linger and, for image assets, get compiled into Assets.car again.
+		     The cached items' 'BundledInAssembly' metadata is the referenced assembly's item spec (see UnpackLibraryResources). -->
+		<PropertyGroup>
+			<_ReferencedLibraryAssemblies>;@(_UnpackLibraryResourceItems);</_ReferencedLibraryAssemblies>
+		</PropertyGroup>
+		<ItemGroup>
+			<AtlasTexture Include="@(_CachedUnpackedAtlasTexture)" Condition="$(_ReferencedLibraryAssemblies.Contains(';%(_CachedUnpackedAtlasTexture.BundledInAssembly);'))" />
+			<ImageAsset Include="@(_CachedUnpackedImageAsset)" Condition="$(_ReferencedLibraryAssemblies.Contains(';%(_CachedUnpackedImageAsset.BundledInAssembly);'))" />
+			<InterfaceDefinition Include="@(_CachedUnpackedInterfaceDefinition)" Condition="$(_ReferencedLibraryAssemblies.Contains(';%(_CachedUnpackedInterfaceDefinition.BundledInAssembly);'))" />
+			<Collada Include="@(_CachedUnpackedCollada)" Condition="$(_ReferencedLibraryAssemblies.Contains(';%(_CachedUnpackedCollada.BundledInAssembly);'))" />
+			<CoreMLModel Include="@(_CachedUnpackedCoreMLModel)" Condition="$(_ReferencedLibraryAssemblies.Contains(';%(_CachedUnpackedCoreMLModel.BundledInAssembly);'))" />
+			<SceneKitAsset Include="@(_CachedUnpackedSceneKitAsset)" Condition="$(_ReferencedLibraryAssemblies.Contains(';%(_CachedUnpackedSceneKitAsset.BundledInAssembly);'))" />
+		</ItemGroup>
 	</Target>
 
 	<Target Name="_ParseBundlerArguments">
@@ -2285,7 +2380,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			NoDSymUtil="$(NoDSymUtil)"
 			PackageDebugSymbols="$(PackageDebugSymbols)"
 			Registrar="$(Registrar)"
-			Verbosity="$(_BundlerVerbosity)"
+			BundlerVerbosity="$(_BundlerVerbosity)"
 			>
 			<Output TaskParameter="Aot" ItemName="_AotArguments" />
 			<Output TaskParameter="CustomBundleName" PropertyName="_CustomBundleName" />
@@ -2302,7 +2397,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<Output TaskParameter="Registrar" PropertyName="Registrar" />
 			<Output TaskParameter="RequirePInvokeWrappers" PropertyName="_RequirePInvokeWrappers" />
 			<Output TaskParameter="SkipMarkingNSObjectsInUserAssemblies" PropertyName="_SkipMarkingNSObjectsInUserAssemblies" />
-			<Output TaskParameter="Verbosity" PropertyName="_BundlerVerbosity" />
+			<Output TaskParameter="BundlerVerbosity" PropertyName="_BundlerVerbosity" />
 			<Output TaskParameter="WarnAsError" PropertyName="_BundlerWarnAsError" />
 			<Output TaskParameter="Warn" PropertyName="_BundlerWarn" />
 			<Output TaskParameter="XmlDefinitions" ItemName="_BundlerXmlDefinitions" />
@@ -2345,16 +2440,42 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			$(CodesignDependsOn);
 			_CreateAppBundle;
 			BeforeCodeSign;
+			_StripFrameworkHeaders;
 			CoreCodeSign;
 			AfterCodeSign;
 		</CodesignDependsOn>
 	</PropertyGroup>
 
 	<Target Name="BeforeCodesign" />
+	<Target Name="_StripFrameworkHeaders" Condition="'$(StripFrameworkHeaders)' == 'true'">
+		<StripFrameworkHeaders
+			SessionId="$(BuildSessionId)"
+			Condition="'$(IsMacEnabled)' == 'true'"
+			AppBundleDir="$(AppBundleDir)"
+		/>
+	</Target>
 	<Target Name="CoreCodesign" DependsOnTargets="$(CoreCodesignDependsOn)" />
 	<Target Name="AfterCodesign" />
 
 	<Target Name="Codesign" Condition="'$(_CanOutputAppBundle)' == 'true'" DependsOnTargets="$(CodesignDependsOn)" />
+
+	<!-- On a Windows (Pair to Mac) build the .app bundle is produced on the Mac and is not copied
+	     back to the local $(AppBundleDir) (CopyAppBundleFromMac, and only when CopyAppBundle is set,
+	     extracts it to a separate AppBundle\ subfolder instead). Skip collecting it on remote builds
+	     ($(IsRemoteBuild) == 'true') so we never surface an incomplete local bundle; surfacing the
+	     .app on Windows is left for a follow-up. -->
+	<Target Name="_CollectAppleAppBundleOutput"
+		Condition="'$(_CanOutputAppBundle)' == 'true' And '$(OutputType)' == 'Exe' And '$(IsAppExtension)' != 'true' And '$(IsWatchApp)' != 'true' And '$(IsRemoteBuild)' != 'true' And Exists('$(AppBundleDir)')"
+		AfterTargets="Codesign">
+		<ItemGroup>
+			<ApplicationArtifact Include="$([MSBuild]::NormalizePath('$(MSBuildProjectDirectory)', '$(AppBundleDir)'))">
+				<PackageFormat>app</PackageFormat>
+				<IsDirectory>true</IsDirectory>
+				<PlatformName>$(_PlatformName)</PlatformName>
+				<BundleIdentifier>$(_BundleIdentifier)</BundleIdentifier>
+			</ApplicationArtifact>
+		</ItemGroup>
+	</Target>
 
 	<!--
 
@@ -2676,9 +2797,14 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 	<!-- App extensions -->
 
-	<Target Name="GetAppExtensionBundlePath" DependsOnTargets="_GenerateBundleName;$(GetTargetPathDependsOn)" Outputs="@(_AppExtensionBundlePath)" />
+	<!-- These two targets are invoked across projects (via the MSBuild task) to get the app extension's
+	     bundle path back as TargetOutputs. They must specify 'Returns' explicitly: once any target in this
+	     file uses the 'Returns' attribute (e.g. GetApplicationArtifacts), MSBuild stops treating the
+	     'Outputs' attribute of targets without 'Returns' as their return value, so relying on 'Outputs'
+	     alone would return an empty set and the extension would not be embedded into the container app. -->
+	<Target Name="GetAppExtensionBundlePath" DependsOnTargets="_GenerateBundleName;$(GetTargetPathDependsOn)" Outputs="@(_AppExtensionBundlePath)" Returns="@(_AppExtensionBundlePath)" />
 
-	<Target Name="BuildAndGetAppExtensionBundlePath" DependsOnTargets="Build" Outputs="@(_AppExtensionBundlePath)" />
+	<Target Name="BuildAndGetAppExtensionBundlePath" DependsOnTargets="Build" Outputs="@(_AppExtensionBundlePath)" Returns="@(_AppExtensionBundlePath)" />
 
 	<Target Name="_AssignAppExtensionConfiguration" Condition="'@(_AppExtensionReference)' != ''">
 		<!-- assign configs if building a solution file -->
@@ -2722,9 +2848,10 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 	<Target Name="_ResolveAppExtensionReferences" DependsOnTargets="_SplitAppExtensionReferencesByExistent">
 		<PropertyGroup>
-			<!-- When building a .sln with msbuild, the dependent projects may not be built. So, always build
-			     the referenced projects unless building from IDE. -->
-			<_BuildReferencedExtensionProjects Condition="'$(BuildingInsideVisualStudio)' != 'true'">true</_BuildReferencedExtensionProjects>
+			<!-- Always build the referenced extension projects unless the IDE has explicitly set this property.
+			     This used to only be done when not building from the IDE, but some versions of the IDE don't
+			     build extension projects correctly, so default to always building them. Ref: https://github.com/dotnet/macios/issues/25461 -->
+			<_BuildReferencedExtensionProjects Condition="'$(_BuildReferencedExtensionProjects)' == ''">true</_BuildReferencedExtensionProjects>
 		</PropertyGroup>
 
 		<!-- If the referenced projects have already been built, then just get the app extensions' bundle paths -->
@@ -2966,6 +3093,11 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			     that will actually be present in the app bundle. Ref: https://github.com/dotnet/macios/issues/24840 -->
 			<!-- The condition is necessary due to https://github.com/dotnet/msbuild/issues/4056 -->
 			<_PostProcessingItem Condition="@(_FilteredFrameworkToPublish->Count()) &gt; 0" Include="@(_FilteredFrameworkToPublish->'$(_AppBundleName)$(AppBundleExtension)/$(_AppFrameworksRelativePath)%(Filename)%(Extension).framework/%(Filename)%(Extension)')">
+				<!-- These are frameworks, so make sure they're stripped as such (only debug symbols are stripped from frameworks).
+				     Some frameworks (in particular ones embedded in a binding project) don't carry the 'Kind' metadata, so set it
+				     here to make sure symbol stripping doesn't do a full strip on them (which fails for dynamic libraries).
+				     Ref: https://github.com/dotnet/macios/issues/25952 -->
+				<Kind>Framework</Kind>
 				<!-- Store where this item came from -->
 				<ItemSourcePath>%(Identity)</ItemSourcePath>
 				<!-- If the item in question came with a .dSYM directory, this would be the path to it: -->
@@ -2973,8 +3105,17 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 				<!-- This is the name of the dSYM that will be created (if that's the case) -->
 				<DSymName>%(Filename)%(Extension).framework.dSYM</DSymName>
 			</_PostProcessingItem>
+			<!-- Compute the app-bundle-relative path for each dynamic native library, so that dsymutil and
+			     symbol stripping target the file's actual location in the app bundle (which may include a
+			     subdirectory). Mirror the logic in the '_ComputeDynamicLibrariesToPublish' target: use the
+			     'RelativePath' metadata when it's set (normalizing directory separators to forward slashes),
+			     otherwise fall back to the default (top-level) bundle location. Ref: https://github.com/dotnet/macios/issues/21553 -->
+			<_DynamicNativeReferenceToPostProcess Include="@(_FileNativeReference)" Condition="'%(_FileNativeReference.Kind)' == 'Dynamic'">
+				<BundleRelativePath Condition="'%(_FileNativeReference.RelativePath)' != ''">$([System.String]::Copy('%(_FileNativeReference.RelativePath)').Replace('\', '/'))</BundleRelativePath>
+				<BundleRelativePath Condition="'%(_FileNativeReference.RelativePath)' == ''">$(_AppContentsRelativePathForPostProcessing)%(Filename)%(Extension)</BundleRelativePath>
+			</_DynamicNativeReferenceToPostProcess>
 			<!-- add dylibs, with the path relative to the app bundle -->
-			<_PostProcessingItem Include="@(_FileNativeReference->'$(_AppBundleName)$(AppBundleExtension)/$(_AppContentsRelativePathForPostProcessing)%(Filename)%(Extension)')" Condition="'%(_FileNativeReference.Kind)' == 'Dynamic'">
+			<_PostProcessingItem Include="@(_DynamicNativeReferenceToPostProcess->'$(_AppBundleName)$(AppBundleExtension)/%(BundleRelativePath)')">
 				<!-- Store where this item came from -->
 				<ItemSourcePath>%(Identity)</ItemSourcePath>
 				<!-- If the item in question came with a .dSYM directory, this would be the path to it: -->
@@ -2992,7 +3133,8 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 				<DSymName>%(Filename).dSYM</DSymName>
 			</_PostProcessingItem>
 			<_PostProcessingItem Include="$([System.IO.Path]::GetFileName('$(AppBundleDir)'))/$(_NativeExecutableRelativePath)" Condition="'$(IsWatchApp)' != 'true'">
-				<SymbolFile Condition="'$(_ExportSymbolsExplicitly)' == 'true'">$(_SymbolsListFullPath)</SymbolFile>
+				<SymbolFile>$(_SymbolsListFullPath)</SymbolFile>
+				<SymbolFileLocalPath>$(_MtouchSymbolsList)</SymbolFileLocalPath>
 				<DSymName>$(_AppBundleName)$(AppBundleExtension).dSYM</DSymName>
 				<IsXPCService>$(IsXpcService)</IsXPCService>
 				<IsAppExtension>$(IsAppExtension)</IsAppExtension>
@@ -3077,6 +3219,8 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			_StoreCollectedItemsForPostProcessing;
 			_PreparePostProcessing;
 			_GenerateDSym;
+			_ComputeXCFrameworkDSyms;
+			_CopyXCFrameworkDSyms;
 			_NativeStripFiles;
 			_NotifySpotlight;
 		</_PostProcessAppBundleDependsOn>
@@ -3146,6 +3290,70 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		<!-- There's no need to touch the stamp file, because it's a file created by dsymutil -->
 	</Target>
 
+	<!--
+		This target copies pre-existing dSYMs from xcframeworks next to the app's dSYM,
+		so that they're included in the archive when the app is archived.
+		The dSYMs directory in an xcframework is at the same level as the framework directory
+		within the architecture-specific directory:
+			MyFramework.xcframework/ios-arm64/dSYMs/MyFramework.framework.dSYM
+			MyFramework.xcframework/ios-arm64/MyFramework.framework/MyFramework
+		Ref: https://github.com/dotnet/macios/issues/23076
+	-->
+	<Target
+		Name="_ComputeXCFrameworkDSyms"
+		DependsOnTargets="_PreparePostProcessing"
+		>
+
+		<ItemGroup>
+			<!-- Compute the potential dSYMs directory for each framework in the post-processing items.
+			     For a framework at path/to/xcframework/ios-arm64/MyFramework.framework/MyFramework,
+			     the dSYMs directory would be at path/to/xcframework/ios-arm64/dSYMs -->
+			<_XCFrameworkDSymCandidate
+				Include="@(_GenerateDSymItems)"
+				Condition="'%(_GenerateDSymItems.ItemSourcePath)' != ''"
+			>
+				<DSymSourceDir>$([System.IO.Path]::GetDirectoryName($([System.IO.Path]::GetDirectoryName('%(_GenerateDSymItems.ItemSourcePath)'))))/dSYMs</DSymSourceDir>
+			</_XCFrameworkDSymCandidate>
+		</ItemGroup>
+
+		<!-- Find which dSYMs actually exist using a task instead of the MSBuild Exists() function.
+		     Exists() evaluates on the build host (Windows for remote builds), but the dSYMs live on
+		     the Mac, so we have to use the remote-capable GetFileSystemEntries task to look for them. -->
+		<GetFileSystemEntries
+			SessionId="$(BuildSessionId)"
+			Condition="'$(IsMacEnabled)' == 'true'"
+			DirectoryPath="@(_XCFrameworkDSymCandidate->'%(DSymSourceDir)')"
+			Pattern="*.dSYM"
+			Recursive="false"
+			IncludeDirectories="true"
+			>
+			<Output TaskParameter="Entries" ItemName="_XCFrameworkDSymToCopy" />
+		</GetFileSystemEntries>
+
+		<ItemGroup>
+			<!-- The dSYM directory is named the same as the DSymName metadata used for the copy destination. -->
+			<_XCFrameworkDSymToCopy>
+				<DSymName>%(Filename)%(Extension)</DSymName>
+			</_XCFrameworkDSymToCopy>
+		</ItemGroup>
+	</Target>
+
+	<Target
+		Name="_CopyXCFrameworkDSyms"
+		Condition="'$(_PostProcess)' == 'true'"
+		DependsOnTargets="_ComputeXCFrameworkDSyms"
+		Inputs="@(_XCFrameworkDSymToCopy->'%(Identity)/Contents/Info.plist')"
+		Outputs="@(_XCFrameworkDSymToCopy->'$(_OutputDsymLocation)%(DSymName)/Contents/Info.plist')"
+		>
+
+		<Ditto
+			SessionId="$(BuildSessionId)"
+			Condition="'$(IsMacEnabled)' == 'true'"
+			Source="%(_XCFrameworkDSymToCopy.Identity)"
+			Destination="$(_OutputDsymLocation)%(_XCFrameworkDSymToCopy.DSymName)"
+		/>
+	</Target>
+
 	<!-- This target will execute strip on items in the _NativeStripItems item group -->
 	<Target
 		Name="_NativeStripFiles"
@@ -3164,6 +3372,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			MaxDegreeOfParallelism="$(SymbolStripMaxDegreeOfParallelism)"
 			StripPath="$(StripPath)"
 			SymbolFile="%(_NativeStripItems.SymbolFile)"
+			SymbolFileLocalPath="%(_NativeStripItems.SymbolFileLocalPath)"
 		/>
 
 		<!-- Create/touch the stamp file. -->
@@ -3226,6 +3435,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			Condition="'$(IsMacEnabled)' == 'true'"
 			AppBundleDir="$(AppBundleDir)"
 			AppExtensionReferences="@(_ResolvedAppExtensionReferences)"
+			ArchiveDir="$(ArchiveDir)"
 			CustomBundleName="$(_CustomBundleName)"
 			InsightsApiKey="$(XamarinInsightsApiKey)"
 			ITunesSourceFiles="@(_ITunesSourceFile)"
@@ -3241,6 +3451,28 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			>
 			<Output TaskParameter="ArchiveDir" PropertyName="ArchiveDir"/>
 		</Archive>
+	</Target>
+
+	<Target Name="_CollectAppleArchiveOutput"
+		Condition="'$(ArchiveOnBuild)' == 'true'"
+		AfterTargets="Archive">
+		<!-- On a Windows (Pair to Mac) build the archive is copied back to Windows by
+		     CopyArchiveFromMac (the last target in ArchiveDependsOn), which sets $(ArchivePath)
+		     to the local Windows path while $(ArchiveDir) keeps pointing to the Mac path. Prefer
+		     $(ArchiveDir) when it exists locally (the normal macOS build) and fall back to the
+		     copied-back $(ArchivePath) otherwise. -->
+		<PropertyGroup>
+			<_ApplicationArtifactArchivePath>$(ArchiveDir)</_ApplicationArtifactArchivePath>
+			<_ApplicationArtifactArchivePath Condition="'$(ArchivePath)' != '' And !Exists('$(_ApplicationArtifactArchivePath)')">$(ArchivePath)</_ApplicationArtifactArchivePath>
+		</PropertyGroup>
+		<ItemGroup Condition="'$(_ApplicationArtifactArchivePath)' != '' And Exists('$(_ApplicationArtifactArchivePath)')">
+			<ApplicationArtifact Include="$([MSBuild]::NormalizePath('$(MSBuildProjectDirectory)', '$(_ApplicationArtifactArchivePath)'))">
+				<PackageFormat>xcarchive</PackageFormat>
+				<IsDirectory>true</IsDirectory>
+				<PlatformName>$(_PlatformName)</PlatformName>
+				<BundleIdentifier>$(_BundleIdentifier)</BundleIdentifier>
+			</ApplicationArtifact>
+		</ItemGroup>
 	</Target>
 
 	<Target Name="_GenerateBundleName" Condition="'$(_CanOutputAppBundle)' == 'true'" DependsOnTargets="_ComputeTargetArchitectures;_ParseBundlerArguments">
@@ -3322,7 +3554,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		</_CreateInstallerDependsOn>
 	</PropertyGroup>
 
-	<Target Name="_CreateInstaller" Condition="'$(CreatePackage)' == 'true' And '$(_CanOutputAppBundle)' == 'true'" DependsOnTargets="$(_CreateInstallerDependsOn)">
+	<Target Name="_CreateInstaller" Condition="'$(CreatePackage)' == 'true' And '$(_CanOutputAppBundle)' == 'true' And '$(SdkIsDesktop)' == 'true'" DependsOnTargets="$(_CreateInstallerDependsOn)">
 		<PropertyGroup>
 			<PkgPackageDir Condition="'$(PkgPackageDir)' == ''">$(TargetDir)</PkgPackageDir>
 		</PropertyGroup>
@@ -3344,6 +3576,19 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		>
 			<Output TaskParameter="PkgPackagePath" PropertyName="PkgPackagePath" />
 		</CreateInstallerPackage>
+	</Target>
+
+	<Target Name="_CollectApplePkgOutput"
+		Condition="'$(CreatePackage)' == 'true' And '$(PkgPackagePath)' != '' And Exists('$(PkgPackagePath)')"
+		AfterTargets="_CreateInstaller">
+		<ItemGroup>
+			<ApplicationArtifact Include="$([MSBuild]::NormalizePath('$(MSBuildProjectDirectory)', '$(PkgPackagePath)'))">
+				<PackageFormat>pkg</PackageFormat>
+				<IsDirectory>false</IsDirectory>
+				<PlatformName>$(_PlatformName)</PlatformName>
+				<BundleIdentifier>$(_BundleIdentifier)</BundleIdentifier>
+			</ApplicationArtifact>
+		</ItemGroup>
 	</Target>
 
 	<!-- 
@@ -3374,13 +3619,154 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			_CompileEntitlements;
 			_CoreCreateIpa;
 			_PackageOnDemandResources;
+			_CreateIpaSymbols;
 			_ZipIpa
 		</CreateIpaDependsOn>
+
 	</PropertyGroup>
 
 	<Target Name="_BeforeCreateIpaForDistribution" Condition="'$(IsAppDistribution)' == 'true'" DependsOnTargets="$(_BeforeCreateIpaForDistributionDependsOn)" />
 
 	<Target Name="CreateIpa" Condition="'$(_CanArchive)' == 'true' And '$(SdkIsDesktop)' != 'true'" DependsOnTargets="$(CreateIpaDependsOn)" />
+
+	<PropertyGroup>
+		<GetApplicationArtifactsDependsOn>
+			Build;
+			_AddAppleApplicationArtifactMetadata;
+			$(GetApplicationArtifactsDependsOn);
+		</GetApplicationArtifactsDependsOn>
+	</PropertyGroup>
+
+	<Target Name="_AddAppleApplicationArtifactMetadata"
+		Condition="'@(ApplicationArtifact->Count())' != '0' And '$(_AppBundleManifestPath)' != '' And (Exists('$(_AppBundleManifestPath)') Or '$(IsRemoteBuild)' == 'true')">
+		<ReadAppManifest
+			SessionId="$(BuildSessionId)"
+			Condition="'$(IsMacEnabled)' == 'true'"
+			AppManifest="$(_AppBundleManifestPath)"
+			SdkDevPath="$(_SdkDevPath)"
+			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
+			>
+			<Output TaskParameter="CFBundleDisplayName" PropertyName="_ApplicationArtifactCFBundleDisplayName" />
+			<Output TaskParameter="CFBundleName" PropertyName="_ApplicationArtifactCFBundleName" />
+			<Output TaskParameter="CFBundleShortVersionString" PropertyName="_ApplicationArtifactCFBundleShortVersionString" />
+			<Output TaskParameter="CFBundleVersion" PropertyName="_ApplicationArtifactCFBundleVersion" />
+		</ReadAppManifest>
+
+		<ItemGroup>
+			<ApplicationArtifact Update="@(ApplicationArtifact)">
+				<ApplicationId>%(ApplicationArtifact.BundleIdentifier)</ApplicationId>
+				<ApplicationTitle>$(_ApplicationArtifactCFBundleDisplayName)</ApplicationTitle>
+				<ApplicationName Condition="'$(_ApplicationArtifactCFBundleDisplayName)' != ''">$(_ApplicationArtifactCFBundleDisplayName)</ApplicationName>
+				<ApplicationName Condition="'$(_ApplicationArtifactCFBundleDisplayName)' == ''">$(_ApplicationArtifactCFBundleName)</ApplicationName>
+				<ApplicationDisplayVersion>$(_ApplicationArtifactCFBundleShortVersionString)</ApplicationDisplayVersion>
+				<ApplicationVersion>$(_ApplicationArtifactCFBundleVersion)</ApplicationVersion>
+			</ApplicationArtifact>
+		</ItemGroup>
+	</Target>
+
+	<Target Name="GetApplicationArtifacts" DependsOnTargets="$(GetApplicationArtifactsDependsOn)" Returns="@(ApplicationArtifact)" />
+
+	<PropertyGroup>
+		<PrepareAssemblies Condition="'$(PrepareAssemblies)' == ''">false</PrepareAssemblies>
+		<PostProcessAssemblies Condition="'$(PostProcessAssemblies)' == ''">$(PrepareAssemblies)</PostProcessAssemblies>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<_PrepareAssembliesForPreparationDependsOn>
+			_ComputeAssembliesToPostprocessOnPublish;
+			_ComputeLinkerInputs;
+		</_PrepareAssembliesForPreparationDependsOn>
+	</PropertyGroup>
+
+	<Target
+		Name="_PrepareAssembliesForPreparation"
+		DependsOnTargets="$(_PrepareAssembliesForPreparationDependsOn)"
+		>
+		<ItemGroup>
+			<!-- Include all managed assemblies (not just those with PostprocessAssembly=true), because the assembly-preparer
+			     needs to know about all assemblies (including the platform assembly) to do its work. This matches what the
+			     linker does internally (via CollectAssembliesStep which resolves all referenced assemblies). -->
+			<_AssembliesToPrepare Include="@(ResolvedFileToPublish)" Condition="'%(ResolvedFileToPublish.Extension)' == '.dll' And '%(ResolvedFileToPublish.Culture)' == '' And !$([System.String]::Copy ('%(Filename)').EndsWith ('.resources'))" />
+		</ItemGroup>
+		<PropertyGroup>
+			<PreparedAssembliesDirectory>$([MSBuild]::EnsureTrailingSlash('$(DeviceSpecificIntermediateOutputPath)prepared-assemblies'))</PreparedAssembliesDirectory>
+		</PropertyGroup>
+	</Target>
+
+	<Target
+		Name="_PrepareAssemblies"
+		Condition="'$(PrepareAssemblies)' == 'true'"
+		Inputs="@(_AssembliesToPrepare)"
+		Outputs="@(_AssembliesToPrepare->'$(PreparedAssembliesDirectory)%(Filename)%(Extension)');$(_AssemblyPreparerMSBuildOutputFile)"
+		DependsOnTargets="_PrepareAssembliesForPreparation;_ComputeAssembliesToPostprocessOnPublish;SelectRegistrar"
+		>
+		<PrepareAssemblies
+			InputAssemblies="@(_AssembliesToPrepare)"
+			MakeReproPath="$(_PrepareAssembliesMakeReproPath)"
+			OptionsFile="$(_CustomLinkerOptionsFile)"
+			OutputDirectory="$(PreparedAssembliesDirectory)"
+			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
+		>
+			<Output TaskParameter="OutputAssemblies" ItemName="_PreparedAssemblies" />
+		</PrepareAssemblies>
+
+		<ItemGroup>
+			<ResolvedFileToPublish Remove="@(_AssembliesToPrepare)" />
+			<ResolvedFileToPublish Include="@(_PreparedAssemblies)" />
+			<FileWrites Include="@(_PreparedAssemblies)" />
+			<FileWrites Include="$(_UnmanagedCallersOnlyMapPath)" />
+			<FileWrites Include="$(_AssemblyPreparerMSBuildOutputFile)" Condition="Exists('$(_AssemblyPreparerMSBuildOutputFile)')" />
+		</ItemGroup>
+	</Target>
+
+	<Target
+		Name="_PrepareAssembliesForPostProcessing"
+		DependsOnTargets="$(_PrepareAssembliesForPostProcessingDependsOn)"
+		>
+		<ItemGroup>
+			<!-- Include all managed assemblies (not just those with PostprocessAssembly=true), because the assembly-preparer
+			     needs to know about all assemblies (including the platform assembly) to do its work. This matches what the
+			     linker does internally (via CollectAssembliesStep which resolves all referenced assemblies). -->
+			<_AssembliesToPostProcess Include="@(ResolvedFileToPublish)" Condition="'%(ResolvedFileToPublish.Extension)' == '.dll' And '%(ResolvedFileToPublish.Culture)' == '' And !$([System.String]::Copy ('%(Filename)').EndsWith ('.resources'))" />
+		</ItemGroup>
+		<PropertyGroup>
+			<_PostprocessedAssembliesDirectory>$([MSBuild]::EnsureTrailingSlash('$(DeviceSpecificIntermediateOutputPath)postprocessed-assemblies'))</_PostprocessedAssembliesDirectory>
+		</PropertyGroup>
+	</Target>
+
+	<!--
+		_PostprocessAssemblies must run after the trimmer (ILLink) and before the assemblies are (Native)AOT/R2R-compiled.
+		Exception: when postprocessing runs after ILC instead (the trimmable-static + NativeAOT scenario), the
+		_PostprocessAssembliesAfterIlc target handles it, so skip this target then.
+	-->
+	<Target
+		Name="_PostprocessAssemblies"
+		Condition="'$(PostProcessAssemblies)' == 'true' And '$(RuntimeIdentifiers)' == '' And '$(_PostprocessAssembliesAfterIlc)' != 'true'"
+		Inputs="@(_AssembliesToPostProcess)"
+		Outputs="@(_AssembliesToPostProcess->'$(_PostprocessedAssembliesDirectory)%(Filename)%(Extension)');$(_AssemblyPostProcessorMSBuildOutputFile)"
+		AfterTargets="ILLink"
+		BeforeTargets="NativeCompile;CreateReadyToRunImages"
+		DependsOnTargets="_PrepareAssembliesForPostProcessing;_ComputeLinkerInputs"
+		>
+		<PrepareAssemblies
+			InputAssemblies="@(_AssembliesToPostProcess)"
+			MakeReproPath="$(_PostprocessAssembliesMakeReproPath)"
+			OptionsFile="$(_CustomLinkerOptionsFile)"
+			OutputDirectory="$(_PostprocessedAssembliesDirectory)"
+			Postprocessing="true"
+			PreTrimAssemblies="@(ManagedAssemblyToLink)"
+			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
+		>
+			<Output TaskParameter="OutputAssemblies" ItemName="_PostProcessedAssemblies" />
+		</PrepareAssemblies>
+
+		<ItemGroup>
+			<ResolvedFileToPublish Remove="@(_AssembliesToPostProcess)" />
+			<ResolvedFileToPublish Include="@(_PostProcessedAssemblies)" />
+			<FileWrites Include="@(_PostProcessedAssemblies)" />
+			<FileWrites Include="$(_AssemblyPostProcessorMSBuildOutputFile)" Condition="Exists('$(_AssemblyPostProcessorMSBuildOutputFile)')" />
+		</ItemGroup>
+	</Target>
 
 	<Import Project="$(MSBuildThisFileDirectory)Xamarin.Shared.ObjCBinding.targets" Condition="'$(IsBindingProject)' == 'true'" />
 

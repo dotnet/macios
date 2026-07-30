@@ -2285,7 +2285,16 @@ namespace CoreSpotlight {
 		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("GPSDifferental", ArgumentSemantic.Strong)]
+#if XAMCORE_5_0
+		NSNumber GpsDifferential { get; set; }
+#else
+		[Obsolete ("Use 'GpsDifferential' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		NSNumber GpsDifferental { get; set; }
+
+		[Wrap ("GpsDifferental")]
+		NSNumber GpsDifferential { get; set; }
+#endif
 
 		/// <summary>Gets or sets the fully formatted geographic address of the item.</summary>
 		///         <value>

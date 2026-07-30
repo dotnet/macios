@@ -17,9 +17,9 @@ namespace MonoTouchFixtures.CoreMedia {
 		public void InvalidRangeFieldTest ()
 		{
 			var invalid = CMTimeRange.InvalidRange;
-			Assert.NotNull (invalid, "CMTimeRange.InvalidRange Should Not be null");
-			Assert.NotNull (invalid.Duration, "CMTimeRange.InvalidRange.Duration Should Not be null");
-			Assert.NotNull (invalid.Start, "CMTimeRange.InvalidRange.Duration Should Not be null");
+			Assert.That (invalid, Is.Not.Null, "CMTimeRange.InvalidRange Should Not be null");
+			Assert.That (invalid.Duration, Is.Not.Null, "CMTimeRange.InvalidRange.Duration Should Not be null");
+			Assert.That (invalid.Start, Is.Not.Null, "CMTimeRange.InvalidRange.Duration Should Not be null");
 			Assert.That (invalid.Duration.IsInvalid, "CMTimeRange.InvalidRange.Duration.IsInvalid");
 			Assert.That (invalid.Start.IsInvalid, "CMTimeRange.InvalidRange.Start.IsInvalid");
 			Assert.That (invalid.Duration.Description, Is.EqualTo ("{INVALID}"), "Duration Description");
@@ -30,9 +30,9 @@ namespace MonoTouchFixtures.CoreMedia {
 		public void InvalidMappingFieldTest ()
 		{
 			var invalid = CMTimeRange.InvalidMapping;
-			Assert.NotNull (invalid, "CMTimeRange.InvalidMapping Should Not be null");
-			Assert.NotNull (invalid.Duration, "CMTimeRange.InvalidMapping.Duration Should Not be null");
-			Assert.NotNull (invalid.Start, "CMTimeRange.InvalidMapping.Duration Should Not be null");
+			Assert.That (invalid, Is.Not.Null, "CMTimeRange.InvalidMapping Should Not be null");
+			Assert.That (invalid.Duration, Is.Not.Null, "CMTimeRange.InvalidMapping.Duration Should Not be null");
+			Assert.That (invalid.Start, Is.Not.Null, "CMTimeRange.InvalidMapping.Duration Should Not be null");
 			Assert.That (invalid.Duration.IsInvalid, "CMTimeRange.InvalidMapping.Duration.IsInvalid");
 			Assert.That (invalid.Start.IsInvalid, "CMTimeRange.InvalidMapping.Start.IsInvalid");
 			Assert.That (invalid.Duration.Description, Is.EqualTo ("{INVALID}"), "Duration Description");
@@ -43,9 +43,9 @@ namespace MonoTouchFixtures.CoreMedia {
 		public void ZeroFieldTest ()
 		{
 			var zero = CMTimeRange.Zero;
-			Assert.NotNull (zero, "CMTimeRange.Zero Should Not be null");
-			Assert.NotNull (zero.Duration, "CMTimeRange.Zero.Duration Should Not be null");
-			Assert.NotNull (zero.Start, "CMTimeRange.Zero.Duration Should Not be null");
+			Assert.That (zero, Is.Not.Null, "CMTimeRange.Zero Should Not be null");
+			Assert.That (zero.Duration, Is.Not.Null, "CMTimeRange.Zero.Duration Should Not be null");
+			Assert.That (zero.Start, Is.Not.Null, "CMTimeRange.Zero.Duration Should Not be null");
 			Assert.That (!zero.Duration.IsInvalid, "CMTimeRange.Zero.Duration.IsInvalid");
 			Assert.That (!zero.Start.IsInvalid, "CMTimeRange.Zero.Start.IsInvalid");
 			Assert.That (zero.Duration.Description, Is.EqualTo ("{0/1 = 0.000}"), "Duration Description");

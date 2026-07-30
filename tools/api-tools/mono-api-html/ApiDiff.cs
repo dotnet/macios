@@ -42,17 +42,17 @@ using System.Xml.Linq;
 namespace Mono.ApiTools {
 
 	class State {
-		public Formatter Formatter { get; set; }
-		public Formatter [] Formatters { get; set; }
-		public string Assembly { get; set; }
-		public string Namespace { get; set; }
-		public string Type { get; set; }
-		public string BaseType { get; set; }
-		public string Parent { get; set; }
+		public Formatter Formatter { get; set; } = null!;
+		public Formatter [] Formatters { get; set; } = [];
+		public string Assembly { get; set; } = "";
+		public string Namespace { get; set; } = "";
+		public string Type { get; set; } = "";
+		public string BaseType { get; set; } = "";
+		public string Parent { get; set; } = "";
 		public bool Colorize { get; set; } = true;
 		public int Verbosity { get; set; }
-		public string SourceFile;
-		public string TargetFile;
+		public string SourceFile = "";
+		public string TargetFile = "";
 
 		public void LogDebugMessage (string value)
 		{
@@ -70,7 +70,7 @@ namespace Mono.ApiTools {
 		public static int Main (string [] args)
 		{
 			var showHelp = false;
-			List<string> extra = null;
+			List<string>? extra = null;
 			var config = new ApiDiffFormattedConfig ();
 
 			var options = new Mono.Options.OptionSet {
@@ -130,9 +130,9 @@ namespace Mono.ApiTools {
 #endif
 
 	public class ApiDiffFormattedConfig {
-		public string HtmlOutput { get; set; }
-		public string HtmlHeader { get; set; }
-		public string MarkdownOutput { get; set; }
+		public string? HtmlOutput { get; set; }
+		public string? HtmlHeader { get; set; }
+		public string? MarkdownOutput { get; set; }
 		// public bool IgnoreDuplicateXml { get; set; }
 		public bool Colorize { get; set; } = true;
 
@@ -140,7 +140,7 @@ namespace Mono.ApiTools {
 	}
 
 	public static class ApiDiffFormatted {
-		public static void Generate (string firstInfo, string secondInfo, ApiDiffFormattedConfig config = null)
+		public static void Generate (string firstInfo, string secondInfo, ApiDiffFormattedConfig? config = null)
 		{
 			var state = CreateState (config, firstInfo, secondInfo);
 			var ac = new AssemblyComparer (state);
@@ -171,14 +171,14 @@ namespace Mono.ApiTools {
 			}
 		}
 
-		static State CreateState (ApiDiffFormattedConfig config, string firstInfo, string secondInfo)
+		static State CreateState (ApiDiffFormattedConfig? config, string firstInfo, string secondInfo)
 		{
 			if (config is null)
 				config = new ApiDiffFormattedConfig ();
 
 			var state = new State {
 				Colorize = config.Colorize,
-				Formatter = null,
+				Formatter = null!,
 				SourceFile = firstInfo,
 				TargetFile = secondInfo,
 
@@ -187,9 +187,9 @@ namespace Mono.ApiTools {
 
 			var formatters = new List<Formatter> ();
 			if (!string.IsNullOrWhiteSpace (config.HtmlOutput))
-				formatters.Add (new HtmlFormatter (state) { OutputPath = config.HtmlOutput, Header = config.HtmlHeader });
+				formatters.Add (new HtmlFormatter (state) { OutputPath = config.HtmlOutput!, Header = config.HtmlHeader ?? "" });
 			if (!string.IsNullOrWhiteSpace (config.MarkdownOutput))
-				formatters.Add (new MarkdownFormatter (state) { OutputPath = config.MarkdownOutput });
+				formatters.Add (new MarkdownFormatter (state) { OutputPath = config.MarkdownOutput! });
 			if (formatters.Count > 1) {
 				state.Formatter = new MultiplexedFormatter (state, formatters.ToArray ());
 			} else if (formatters.Count == 0) {

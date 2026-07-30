@@ -117,8 +117,10 @@ namespace Xamarin.Linker {
 				return link_context.CachedIsNSObject.Contains (type);
 
 			return type.Inherits (Namespaces.Foundation, "NSObject"
-#if !LEGACY_TOOLS
-				, link_context.LinkerConfiguration.Context
+#if ASSEMBLY_PREPARER
+				, link_context!.Configuration.MetadataResolver
+#elif !LEGACY_TOOLS
+				, link_context!.LinkerConfiguration.Context
 #endif
 			);
 		}

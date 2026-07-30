@@ -10,6 +10,8 @@ namespace MLCompute {
 	public static class MLCActivationTypeExtensions {
 
 		[DllImport (Constants.MLComputeLibrary)]
+		[UnsupportedSimulator ("ios")]
+		[UnsupportedSimulator ("tvos")]
 		static extern /* NSString */ IntPtr MLCActivationTypeDebugDescription (MLCActivationType activationType);
 
 		public static string? GetDebugDescription (this MLCActivationType self)
@@ -25,6 +27,8 @@ namespace MLCompute {
 	public static class MLCArithmeticOperationExtensions {
 
 		[DllImport (Constants.MLComputeLibrary)]
+		[UnsupportedSimulator ("ios")]
+		[UnsupportedSimulator ("tvos")]
 		static extern /* NSString */ IntPtr MLCArithmeticOperationDebugDescription (MLCArithmeticOperation operation);
 
 		public static string? GetDebugDescription (this MLCArithmeticOperation self)
@@ -40,6 +44,8 @@ namespace MLCompute {
 	public static class MLCPaddingPolicyExtensions {
 
 		[DllImport (Constants.MLComputeLibrary)]
+		[UnsupportedSimulator ("ios")]
+		[UnsupportedSimulator ("tvos")]
 		static extern /* NSString */ IntPtr MLCPaddingPolicyDebugDescription (MLCPaddingPolicy paddingPolicy);
 
 		public static string? GetDebugDescription (this MLCPaddingPolicy self)
@@ -55,6 +61,8 @@ namespace MLCompute {
 	public static class MLCLossTypeExtensions {
 
 		[DllImport (Constants.MLComputeLibrary)]
+		[UnsupportedSimulator ("ios")]
+		[UnsupportedSimulator ("tvos")]
 		static extern /* NSString */ IntPtr MLCLossTypeDebugDescription (MLCLossType lossType);
 
 		public static string? GetDebugDescription (this MLCLossType self)
@@ -70,6 +78,8 @@ namespace MLCompute {
 	public static class MLCReductionTypeExtensions {
 
 		[DllImport (Constants.MLComputeLibrary)]
+		[UnsupportedSimulator ("ios")]
+		[UnsupportedSimulator ("tvos")]
 		static extern /* NSString */ IntPtr MLCReductionTypeDebugDescription (MLCReductionType reductionType);
 
 		public static string? GetDebugDescription (this MLCReductionType self)
@@ -85,6 +95,8 @@ namespace MLCompute {
 	public static class MLCPaddingTypeExtensions {
 
 		[DllImport (Constants.MLComputeLibrary)]
+		[UnsupportedSimulator ("ios")]
+		[UnsupportedSimulator ("tvos")]
 		static extern /* NSString */ IntPtr MLCPaddingTypeDebugDescription (MLCPaddingType paddingType);
 
 		public static string? GetDebugDescription (this MLCPaddingType self)
@@ -100,6 +112,8 @@ namespace MLCompute {
 	public static class MLCConvolutionTypeExtensions {
 
 		[DllImport (Constants.MLComputeLibrary)]
+		[UnsupportedSimulator ("ios")]
+		[UnsupportedSimulator ("tvos")]
 		static extern /* NSString */ IntPtr MLCConvolutionTypeDebugDescription (MLCConvolutionType convolutionType);
 
 		public static string? GetDebugDescription (this MLCConvolutionType self)
@@ -115,6 +129,8 @@ namespace MLCompute {
 	public static class MLCPoolingTypeExtensions {
 
 		[DllImport (Constants.MLComputeLibrary)]
+		[UnsupportedSimulator ("ios")]
+		[UnsupportedSimulator ("tvos")]
 		static extern /* NSString */ IntPtr MLCPoolingTypeDebugDescription (MLCPoolingType poolingType);
 
 		public static string? GetDebugDescription (this MLCPoolingType self)
@@ -130,6 +146,8 @@ namespace MLCompute {
 	public static class MLCSoftmaxOperationExtensions {
 
 		[DllImport (Constants.MLComputeLibrary)]
+		[UnsupportedSimulator ("ios")]
+		[UnsupportedSimulator ("tvos")]
 		static extern /* NSString */ IntPtr MLCSoftmaxOperationDebugDescription (MLCSoftmaxOperation operation);
 
 		public static string? GetDebugDescription (this MLCSoftmaxOperation self)
@@ -145,6 +163,8 @@ namespace MLCompute {
 	public static class MLCSampleModeExtensions {
 
 		[DllImport (Constants.MLComputeLibrary)]
+		[UnsupportedSimulator ("ios")]
+		[UnsupportedSimulator ("tvos")]
 		static extern /* NSString */ IntPtr MLCSampleModeDebugDescription (MLCSampleMode mode);
 
 		public static string? GetDebugDescription (this MLCSampleMode self)
@@ -160,6 +180,8 @@ namespace MLCompute {
 	public static class MLCLstmResultModeExtensions {
 
 		[DllImport (Constants.MLComputeLibrary)]
+		[UnsupportedSimulator ("ios")]
+		[UnsupportedSimulator ("tvos")]
 		static extern /* NSString */ IntPtr MLCLSTMResultModeDebugDescription (MLCLstmResultMode mode);
 
 		public static string? GetDebugDescription (this MLCLstmResultMode self)
@@ -175,6 +197,8 @@ namespace MLCompute {
 	public static class MLCComparisonOperationExtensions {
 
 		[DllImport (Constants.MLComputeLibrary)]
+		[UnsupportedSimulator ("ios")]
+		[UnsupportedSimulator ("tvos")]
 		static extern /* NSString */ IntPtr MLCComparisonOperationDebugDescription (MLCComparisonOperation operation);
 
 		public static string? GetDebugDescription (this MLCComparisonOperation self)
@@ -190,6 +214,8 @@ namespace MLCompute {
 	public static class MLCGradientClippingTypeExtensions {
 
 		[DllImport (Constants.MLComputeLibrary)]
+		[UnsupportedSimulator ("ios")]
+		[UnsupportedSimulator ("tvos")]
 		static extern /* NSString */ IntPtr MLCGradientClippingTypeDebugDescription (MLCGradientClippingType gradientClippingType);
 
 		public static string? GetDebugDescription (this MLCGradientClippingType self)

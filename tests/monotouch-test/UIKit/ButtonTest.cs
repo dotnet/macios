@@ -27,7 +27,7 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			using (var b = new UIButton ()) {
 				b.SetTitle (null, UIControlState.Normal);
-				Assert.IsNull (b.Title (UIControlState.Normal), "title");
+				Assert.That (b.Title (UIControlState.Normal), Is.Null, "title");
 
 				b.SetTitleColor (null, UIControlState.Normal);
 				var hasTitleColor = true;
@@ -38,10 +38,10 @@ namespace MonoTouchFixtures.UIKit {
 				if (hasTitleColor)
 					Assert.That (b.TitleColor (UIControlState.Normal), Is.EqualTo (UIColor.White), "titlecolor");
 				else
-					Assert.IsNull (b.TitleColor (UIControlState.Normal), "titlecolor");
+					Assert.That (b.TitleColor (UIControlState.Normal), Is.Null, "titlecolor");
 
 				b.SetTitleShadowColor (null, UIControlState.Normal);
-				Assert.IsNull (b.TitleShadowColor (UIControlState.Normal), "titleshadowcolor");
+				Assert.That (b.TitleShadowColor (UIControlState.Normal), Is.Null, "titleshadowcolor");
 			}
 		}
 

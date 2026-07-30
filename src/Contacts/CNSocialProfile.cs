@@ -12,7 +12,6 @@
 namespace Contacts {
 	// Strong typed Keys to enum
 	/// <summary>Enumerates properties of social services that are always fetched.</summary>
-	///     <remarks>To be added.</remarks>
 	public enum CNSocialProfileOption {
 		/// <summary>Associated with the <see cref="Contacts.CNSocialProfileKey.UrlString" /> property.</summary>
 		UrlString,
@@ -26,7 +25,6 @@ namespace Contacts {
 
 	// Strong typed Keys to enum
 	/// <summary>Enumerates known social services.</summary>
-	///     <remarks>To be added.</remarks>
 	public enum CNSocialProfileServiceOption {
 		/// <summary>Facebook.</summary>
 		Facebook,
@@ -50,10 +48,8 @@ namespace Contacts {
 
 	public partial class CNSocialProfile {
 
-		/// <param name="option">To be added.</param>
-		///         <summary>Returns the localized string representing the <paramref name="option" />.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Returns the localized string representing the <paramref name="option" />.</summary>
+		/// <param name="option">The option.</param>
 		public static string LocalizeProperty (CNSocialProfileOption option)
 		{
 			switch (option) {
@@ -70,10 +66,8 @@ namespace Contacts {
 			}
 		}
 
-		/// <param name="serviceOption">To be added.</param>
-		///         <summary>Returns the localized string representing the <paramref name="serviceOption" />.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Returns the localized string representing the <paramref name="serviceOption" />.</summary>
+		/// <param name="serviceOption">The service option.</param>
 		public static string LocalizeService (CNSocialProfileServiceOption serviceOption)
 		{
 			var srvc = ServiceOptionsToNSString (serviceOption);

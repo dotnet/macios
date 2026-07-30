@@ -41,7 +41,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 
 						if (obj is not null) {
 							var rtrip = getValue.Invoke (null, new object [] { obj });
-							Assert.AreEqual (Enum.ToObject (type, enumValue), rtrip, $"{type.FullName}.{enumValue}: Round trip failed: {enumValue}.GetConstant () -> {obj} but GetValue ({obj}) -> {rtrip}");
+							Assert.That (rtrip, Is.EqualTo (Enum.ToObject (type, enumValue)), $"{type.FullName}.{enumValue}: Round trip failed: {enumValue}.GetConstant () -> {obj} but GetValue ({obj}) -> {rtrip}");
 						}
 					}
 				}

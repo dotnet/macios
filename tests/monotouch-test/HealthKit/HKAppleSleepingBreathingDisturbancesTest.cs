@@ -14,7 +14,7 @@ namespace MonoTouchFixtures.HealthKit {
 
 			var minimum = HKAppleSleepingBreathingDisturbances.GetMinimumQuantity (HKAppleSleepingBreathingDisturbancesClassification.Elevated);
 			var classification = HKAppleSleepingBreathingDisturbances.GetClassification (minimum);
-			Assert.AreEqual (HKAppleSleepingBreathingDisturbancesClassification.Elevated, classification, "Classification");
+			Assert.That (classification, Is.EqualTo (HKAppleSleepingBreathingDisturbancesClassification.Elevated), "Classification");
 		}
 	}
 }

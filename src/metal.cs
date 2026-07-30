@@ -5926,6 +5926,8 @@ namespace Metal {
 		MTLResourceId GpuResourceID { get; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[iOS (13, 0), TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
@@ -7804,6 +7806,8 @@ namespace Metal {
 
 	interface IMTL4Archive { }
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface MTL4Archive {
@@ -7843,6 +7847,9 @@ namespace Metal {
 	}
 
 	interface IMTL4ArgumentTable { }
+
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface MTL4ArgumentTable {
@@ -7877,6 +7884,8 @@ namespace Metal {
 
 	interface IMTL4BinaryFunction { }
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface MTL4BinaryFunction {
@@ -7891,6 +7900,8 @@ namespace Metal {
 
 	interface IMTL4CommandAllocator { }
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface MTL4CommandAllocator {
@@ -7913,6 +7924,8 @@ namespace Metal {
 
 	interface IMTL4CommandBuffer { }
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface MTL4CommandBuffer {
@@ -7983,6 +7996,8 @@ namespace Metal {
 
 	interface IMTL4CommandEncoder { }
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface MTL4CommandEncoder {
@@ -8033,6 +8048,8 @@ namespace Metal {
 
 	interface IMTL4CommandQueue { }
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface MTL4CommandQueue {
@@ -8103,6 +8120,8 @@ namespace Metal {
 
 	interface IMTL4CommitFeedback { }
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface MTL4CommitFeedback {
@@ -8122,6 +8141,8 @@ namespace Metal {
 
 	interface IMTL4CompilerTask { }
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface MTL4CompilerTask {
@@ -8149,6 +8170,8 @@ namespace Metal {
 
 	interface IMTL4Compiler { }
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface MTL4Compiler {
@@ -8277,6 +8300,8 @@ namespace Metal {
 
 	interface IMTL4ComputeCommandEncoder { }
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface MTL4ComputeCommandEncoder : MTL4CommandEncoder {
@@ -8427,6 +8452,8 @@ namespace Metal {
 
 	interface IMTL4CounterHeap { }
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface MTL4CounterHeap {
@@ -8454,6 +8481,8 @@ namespace Metal {
 
 	interface IMTL4MachineLearningCommandEncoder { }
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface MTL4MachineLearningCommandEncoder : MTL4CommandEncoder {
@@ -8472,6 +8501,8 @@ namespace Metal {
 
 	interface IMTL4MachineLearningPipelineState { }
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface MTL4MachineLearningPipelineState : MTLAllocation {
@@ -8494,6 +8525,8 @@ namespace Metal {
 
 	interface IMTL4PipelineDataSetSerializer { }
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface MTL4PipelineDataSetSerializer {
@@ -8509,6 +8542,8 @@ namespace Metal {
 
 	interface IMTL4RenderCommandEncoder { }
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface MTL4RenderCommandEncoder : MTL4CommandEncoder {
@@ -8782,6 +8817,8 @@ namespace Metal {
 		MTLResourceId SetTextureViewFromBuffer (IMTLBuffer buffer, MTLTextureDescriptor descriptor, nuint offset, nuint bytesPerRow, nuint index);
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (MTL4AccelerationStructureGeometryDescriptor))]
 	interface MTL4AccelerationStructureBoundingBoxGeometryDescriptor {
@@ -8795,6 +8832,8 @@ namespace Metal {
 		nuint BoundingBoxCount { get; set; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (MTL4AccelerationStructureGeometryDescriptor))]
 	interface MTL4AccelerationStructureCurveGeometryDescriptor {
@@ -8841,11 +8880,15 @@ namespace Metal {
 		MTLCurveEndCaps CurveEndCaps { get; set; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (MTLAccelerationStructureDescriptor))]
 	interface MTL4AccelerationStructureDescriptor {
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MTL4AccelerationStructureGeometryDescriptor : NSCopying {
@@ -8871,6 +8914,8 @@ namespace Metal {
 		nuint PrimitiveDataElementSize { get; set; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (MTL4AccelerationStructureGeometryDescriptor))]
 	interface MTL4AccelerationStructureMotionBoundingBoxGeometryDescriptor {
@@ -8884,6 +8929,8 @@ namespace Metal {
 		nuint BoundingBoxCount { get; set; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (MTL4AccelerationStructureGeometryDescriptor))]
 	interface MTL4AccelerationStructureMotionCurveGeometryDescriptor {
@@ -8930,6 +8977,8 @@ namespace Metal {
 		MTLCurveEndCaps CurveEndCaps { get; set; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (MTL4AccelerationStructureGeometryDescriptor))]
 	interface MTL4AccelerationStructureMotionTriangleGeometryDescriptor {
@@ -8958,6 +9007,8 @@ namespace Metal {
 		MTLMatrixLayout TransformationMatrixLayout { get; set; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (MTL4AccelerationStructureGeometryDescriptor))]
 	interface MTL4AccelerationStructureTriangleGeometryDescriptor {
@@ -8986,6 +9037,8 @@ namespace Metal {
 		MTLMatrixLayout TransformationMatrixLayout { get; set; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MTL4ArgumentTableDescriptor : NSCopying {
@@ -9008,6 +9061,8 @@ namespace Metal {
 		string Label { get; set; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MTL4BinaryFunctionDescriptor : NSCopying {
@@ -9021,6 +9076,8 @@ namespace Metal {
 		MTL4BinaryFunctionOptions Options { get; set; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MTL4CommandAllocatorDescriptor : NSCopying {
@@ -9028,6 +9085,8 @@ namespace Metal {
 		string Label { get; set; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MTL4CommandBufferOptions : NSCopying {
@@ -9035,6 +9094,8 @@ namespace Metal {
 		IMTLLogState LogState { get; set; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MTL4CommandQueueDescriptor : NSCopying {
@@ -9047,6 +9108,8 @@ namespace Metal {
 
 	delegate void MTL4CommitFeedbackHandler (IMTL4CommitFeedback commitFeedback);
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MTL4CommitOptions {
@@ -9054,6 +9117,8 @@ namespace Metal {
 		void AddFeedbackHandler (MTL4CommitFeedbackHandler block);
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MTL4CompilerDescriptor : NSCopying {
@@ -9064,6 +9129,8 @@ namespace Metal {
 		IMTL4PipelineDataSetSerializer PipelineDataSetSerializer { get; set; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MTL4CompilerTaskOptions : NSCopying {
@@ -9071,6 +9138,8 @@ namespace Metal {
 		IMTL4Archive [] LookupArchives { get; set; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (MTL4PipelineDescriptor))]
 	interface MTL4ComputePipelineDescriptor {
@@ -9099,6 +9168,8 @@ namespace Metal {
 		void Reset ();
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MTL4CounterHeapDescriptor : NSCopying {
@@ -9109,11 +9180,15 @@ namespace Metal {
 		nuint Count { get; set; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MTL4FunctionDescriptor : NSCopying {
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (MTL4AccelerationStructureDescriptor))]
 	interface MTL4IndirectInstanceAccelerationStructureDescriptor {
@@ -9151,6 +9226,8 @@ namespace Metal {
 		nuint MotionTransformStride { get; set; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (MTL4AccelerationStructureDescriptor))]
 	interface MTL4InstanceAccelerationStructureDescriptor {
@@ -9182,6 +9259,8 @@ namespace Metal {
 		nuint MotionTransformStride { get; set; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MTL4LibraryDescriptor : NSCopying {
@@ -9195,6 +9274,8 @@ namespace Metal {
 		string Name { get; set; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (MTL4FunctionDescriptor))]
 	interface MTL4LibraryFunctionDescriptor {
@@ -9205,6 +9286,8 @@ namespace Metal {
 		IMTLLibrary Library { get; set; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (MTL4PipelineDescriptor))]
 	interface MTL4MachineLearningPipelineDescriptor {
@@ -9228,6 +9311,8 @@ namespace Metal {
 		void Reset ();
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MTL4MachineLearningPipelineReflection {
@@ -9235,6 +9320,8 @@ namespace Metal {
 		IMTLBinding [] Bindings { get; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (MTL4PipelineDescriptor))]
 	interface MTL4MeshRenderPipelineDescriptor {
@@ -9317,6 +9404,8 @@ namespace Metal {
 		void Reset ();
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MTL4PipelineDataSetSerializerDescriptor : NSCopying {
@@ -9324,6 +9413,8 @@ namespace Metal {
 		MTL4PipelineDataSetSerializerConfiguration Configuration { get; set; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MTL4PipelineDescriptor : NSCopying {
@@ -9335,6 +9426,8 @@ namespace Metal {
 		MTL4PipelineOptions Options { get; set; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MTL4PipelineOptions : NSCopying {
@@ -9345,6 +9438,8 @@ namespace Metal {
 		MTL4ShaderReflection ShaderReflection { get; set; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MTL4PipelineStageDynamicLinkingDescriptor : NSCopying {
@@ -9358,6 +9453,8 @@ namespace Metal {
 		IMTLDynamicLibrary [] PreloadedLibraries { get; set; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (MTL4AccelerationStructureDescriptor))]
 	interface MTL4PrimitiveAccelerationStructureDescriptor {
@@ -9380,6 +9477,8 @@ namespace Metal {
 		nuint MotionKeyframeCount { get; set; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MTL4RenderPassDescriptor : NSCopying {
@@ -9435,6 +9534,8 @@ namespace Metal {
 		bool SupportColorAttachmentMapping { get; set; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MTL4RenderPipelineBinaryFunctionsDescriptor : NSCopying {
@@ -9457,6 +9558,8 @@ namespace Metal {
 		void Reset ();
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MTL4RenderPipelineColorAttachmentDescriptor : NSCopying {
@@ -9491,6 +9594,8 @@ namespace Metal {
 		void Reset ();
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MTL4RenderPipelineColorAttachmentDescriptorArray : NSCopying {
@@ -9504,6 +9609,8 @@ namespace Metal {
 		void Reset ();
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (MTL4PipelineDescriptor))]
 	interface MTL4RenderPipelineDescriptor {
@@ -9559,6 +9666,8 @@ namespace Metal {
 		void Reset ();
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MTL4RenderPipelineDynamicLinkingDescriptor : NSCopying {
@@ -9578,6 +9687,8 @@ namespace Metal {
 		MTL4PipelineStageDynamicLinkingDescriptor MeshLinkingDescriptor { get; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (MTL4FunctionDescriptor))]
 	interface MTL4SpecializedFunctionDescriptor {
@@ -9591,6 +9702,8 @@ namespace Metal {
 		MTLFunctionConstantValues ConstantValues { get; set; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MTL4StaticLinkingDescriptor : NSCopying {
@@ -9604,6 +9717,8 @@ namespace Metal {
 		NSDictionary<NSString, NSArray<MTL4FunctionDescriptor>> Groups { get; set; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (MTL4FunctionDescriptor))]
 	interface MTL4StitchedFunctionDescriptor {
@@ -9614,6 +9729,8 @@ namespace Metal {
 		MTL4FunctionDescriptor [] FunctionDescriptors { get; set; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (MTL4PipelineDescriptor))]
 	interface MTL4TileRenderPipelineDescriptor {
@@ -9656,6 +9773,8 @@ namespace Metal {
 		string UserAnnotation { get; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MTLLogicalToPhysicalColorAttachmentMap : NSCopying {
@@ -9669,6 +9788,8 @@ namespace Metal {
 		void Reset ();
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MTLResourceViewPoolDescriptor : NSCopying {
@@ -9679,6 +9800,8 @@ namespace Metal {
 		string Label { get; set; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MTLTensorDescriptor : NSCopying {
@@ -9708,6 +9831,8 @@ namespace Metal {
 		MTLHazardTrackingMode HazardTrackingMode { get; set; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // all properties are readonly, and has a non-default ctor
@@ -9723,6 +9848,8 @@ namespace Metal {
 		nint GetExtent (nuint dimensionIndex);
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (MTLType))]
 	interface MTLTensorReferenceType {
@@ -9739,6 +9866,8 @@ namespace Metal {
 		MTLBindingAccess Access { get; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MTLTextureViewDescriptor : NSCopying {

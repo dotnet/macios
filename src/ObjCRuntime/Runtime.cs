@@ -19,6 +19,7 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 
 using CoreFoundation;
 using Registrar;
@@ -30,7 +31,6 @@ using AppKit;
 namespace ObjCRuntime {
 
 	/// <summary>Provides information about the runtime.</summary>
-	/// <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/SysSound/">SysSound</related>
 	public partial class Runtime {
 #if !COREBUILD
 #pragma warning disable 8618 // "Non-nullable field '...' must contain a non-null value when exiting constructor. Consider declaring the field as nullable.": we make sure through other means that these will never be null
@@ -78,15 +78,22 @@ namespace ObjCRuntime {
 
 #if __TVOS__
 		internal const string PlatformName = "tvOS";
+		internal const string ProductName = "Microsoft." + PlatformName;
 #elif __MACCATALYST__
 		internal const string PlatformName = "Mac Catalyst";
+		internal const string ProductName = "Microsoft.MacCatalyst";
 #elif __IOS__
 		internal const string PlatformName = "iOS";
+		internal const string ProductName = "Microsoft." + PlatformName;
 #elif __MACOS__
 		internal const string PlatformName = "macOS";
+		internal const string ProductName = "Microsoft." + PlatformName;
 #else
 #error Undetermined platform name
 #endif
+		internal const string AssemblyName = ProductName + ".dll";
+
+		static Thread? mainThread;
 
 		[Flags]
 		internal enum MTTypeFlags : uint {
@@ -353,19 +360,21 @@ namespace ObjCRuntime {
 			block_lifetime_table = new ConditionalWeakTable<Delegate, BlockCollector> ();
 			lock_obj = new object ();
 
+			mainThread = Thread.CurrentThread;
+
 #if NET11_0_OR_GREATER
 			if (IsTrimmableStaticRegistrar)
 				TypeMaps.Initialize ();
 #endif
 
-			NSObjectClass = NSObject.Initialize ();
+			NSObjectClass = NSObject.InitializeObject ();
 
 			if (DynamicRegistrationSupported) {
 				Registrar = new DynamicRegistrar ();
 				protocol_cache = new Dictionary<IntPtr, Dictionary<IntPtr, bool>> (IntPtrEqualityComparer);
 			}
 			RegisterDelegates (options);
-			Class.Initialize (options);
+			Class.InitializeClass (options);
 			InitializePlatform (options);
 
 			IsARM64CallingConvention = GetIsARM64CallingConvention (); // Can only be done after Runtime.Arch is set (i.e. InitializePlatform has been called).
@@ -382,7 +391,45 @@ namespace ObjCRuntime {
 #endif
 		}
 
+		/// <summary>Assertion to ensure that this call is being done from the UI thread.</summary>
+		/// <remarks>
+		///   <para>
+		///     This method is used internally to ensure that
+		///     accesses done to AppKit/UIKit classes and methods are only
+		///     performed from the main thread. This is necessary because
+		///     the AppKit/UIKit API is not thread-safe and accessing it from
+		///     multiple threads will corrupt the application state and will
+		///     likely lead to a crash that is hard to identify.
+		///   </para>
+		///   <para>
+		///     This thread check is only done in debug builds.
+		///     Release builds have this feature disabled.
+		///   </para>
+		/// </remarks>
+		internal static void EnsureUIThread ()
+		{
 #if MONOMAC
+			var checkForIllegalCrossThreadCalls = AppKit.NSApplication.CheckForIllegalCrossThreadCalls;
+#else
+			var checkForIllegalCrossThreadCalls = UIKit.UIApplication.CheckForIllegalCrossThreadCalls;
+#endif
+
+			if (!checkForIllegalCrossThreadCalls)
+				return;
+
+			if (mainThread == Thread.CurrentThread)
+				return;
+
+#if MONOMAC
+			throw new AppKit.AppKitThreadAccessException ();
+#else
+			throw new UIKit.UIKitThreadAccessException ();
+#endif
+		}
+
+#if MONOMAC
+		/// <summary>Raised when an assembly is about to be registered with the Objective-C runtime, allowing an application to control whether the assembly's types are registered.</summary>
+		/// <remarks>This event is only available on macOS. Set the event argument's <see cref="ObjCRuntime.AssemblyRegistrationEventArgs.Register" /> property to <see langword="false" /> to skip registering the assembly.</remarks>
 		public static event AssemblyRegistrationHandler? AssemblyRegistration;
 
 		static bool OnAssemblyRegistration (AssemblyName assembly_name)
@@ -401,7 +448,11 @@ namespace ObjCRuntime {
 		static MarshalObjectiveCExceptionMode objc_exception_mode;
 		static MarshalManagedExceptionMode managed_exception_mode;
 
+		/// <summary>Raised when an Objective-C exception is about to be marshalled into managed code, allowing the application to choose how the exception is handled.</summary>
+		/// <remarks>Handlers can inspect the native exception and set the marshalling mode on the event arguments to control whether a managed exception is thrown.</remarks>
 		public static event MarshalObjectiveCExceptionHandler? MarshalObjectiveCException;
+		/// <summary>Raised when a managed exception is about to be marshalled into an Objective-C exception, allowing the application to choose how the exception is handled.</summary>
+		/// <remarks>Handlers can inspect the managed exception and set the marshalling mode on the event arguments to control how the exception is surfaced to native code.</remarks>
 		public static event MarshalManagedExceptionHandler? MarshalManagedException;
 
 		static MarshalObjectiveCExceptionMode OnMarshalObjectiveCException (IntPtr exception_handle, sbyte throwManagedAsDefault)
@@ -578,30 +629,6 @@ namespace ObjCRuntime {
 			}
 
 			return Marshal.StringToHGlobalAuto (str.ToString ());
-		}
-
-		static unsafe Assembly? GetEntryAssembly ()
-		{
-			return Assembly.GetEntryAssembly ();
-		}
-
-		// This method will register all assemblies referenced by the entry assembly.
-		// For XM it will also register all assemblies loaded in the current appdomain.
-		internal static void RegisterAssemblies ()
-		{
-			if (IsNativeAOT) {
-				return;
-			}
-
-#if PROFILE
-			var watch = new Stopwatch ();
-#endif
-
-			RegisterEntryAssembly (GetEntryAssembly ());
-
-#if PROFILE
-			Console.WriteLine ("RegisterAssemblies completed in {0} ms", watch.ElapsedMilliseconds);
-#endif
 		}
 
 		// This method will register all assemblies referenced by the entry assembly.
@@ -2601,7 +2628,7 @@ namespace ObjCRuntime {
 
 		// Note that the code in this method doesn't necessarily work with NativeAOT, so assert that never happens by throwing an exception in that case
 		//
-		// IL2070: 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicMethods', 'DynamicallyAccessedMemberTypes.NonPublicMethods' in call to 'System.Type.GetMethods(BindingFlags)'. The parameter 'closed_type' of method 'ObjCRuntime.Runtime.FindClosedMethod(Type, MethodBase)' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
+		// IL2070: 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.All' in call to 'System.Type.GetMemberWithSameMetadataDefinitionAs(MemberInfo)'. The parameter 'closed_type' of method 'ObjCRuntime.Runtime.FindClosedMethod(Type, MethodBase)' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
 		[UnconditionalSuppressMessage ("", "IL2070", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
 		internal static MethodInfo FindClosedMethod (Type closed_type, MethodBase open_method)
 		{
@@ -2624,11 +2651,8 @@ namespace ObjCRuntime {
 			} while (declaring_closed_type is not null);
 
 			// Find the closed method.
-			foreach (var mi in closed_type.GetMethods (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance | BindingFlags.DeclaredOnly)) {
-				if (mi.MetadataToken == open_method.MetadataToken) {
-					return mi;
-				}
-			}
+			if (closed_type.GetMemberWithSameMetadataDefinitionAs (open_method) is MethodInfo mi)
+				return mi;
 
 			throw ErrorHelper.CreateError (8003, $"Failed to find the closed generic method '{open_method.Name}' on the type '{closed_type.FullName}'.");
 		}
@@ -2856,6 +2880,13 @@ namespace ObjCRuntime {
 		internal static bool ValidateObjectPointers {
 			get => validate_object_pointers;
 			set => validate_object_pointers = value;
+		}
+
+		/// <summary>Allocate unmanaged zeroed memory of the specified struct.</summary>
+		/// <remarks>Call <see cref="NativeMemory.Free" /> to free the returned pointer.</remarks>
+		internal unsafe static T* AllocZeroed<T> () where T : unmanaged
+		{
+			return (T*) NativeMemory.AllocZeroed ((nuint) sizeof (T));
 		}
 	}
 

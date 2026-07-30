@@ -381,10 +381,13 @@
       </Item>
       <Item ItemId=";BI1027" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Support for ZeroCopy strings is not implemented. Strings will be marshalled as NSStrings.]]></Val>
+          <Val><![CDATA[The --use-zero-copy option is not supported and will be ignored.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[No se ha implementado la compatibilidad con cadenas de ZeroCopy. Las cadenas se deben serializar como NSStrings.]]></Val>
+            <Val><![CDATA[La opción --use-zero-copy no se admite y se omitirá.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[Support for ZeroCopy strings is not implemented. Strings will be marshalled as NSStrings.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>

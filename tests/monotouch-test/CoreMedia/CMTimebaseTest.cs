@@ -21,8 +21,8 @@ namespace MonoTouchFixtures.CoreMedia {
 
 			var htc = CMClock.HostTimeClock;
 			using (var tb = new CMTimebase (htc)) {
-				Assert.AreEqual (0, tb.EffectiveRate, "EffectiveRate");
-				Assert.AreEqual (0, tb.Rate, "Rate");
+				Assert.That (tb.EffectiveRate, Is.EqualTo (0), "EffectiveRate");
+				Assert.That (tb.Rate, Is.EqualTo (0), "Rate");
 
 				using (var m = tb.GetMaster ()) {
 					Assert.That (m.Handle, Is.Not.EqualTo (IntPtr.Zero), "GetMaster");
@@ -30,7 +30,7 @@ namespace MonoTouchFixtures.CoreMedia {
 				using (var m = tb.GetMasterClock ()) {
 					Assert.That (m.Handle, Is.Not.EqualTo (IntPtr.Zero), "GetMasterClock");
 				}
-				Assert.Null (tb.GetMasterTimebase (), "GetMasterTimebase");
+				Assert.That (tb.GetMasterTimebase (), Is.Null, "GetMasterTimebase");
 			}
 		}
 
@@ -40,9 +40,9 @@ namespace MonoTouchFixtures.CoreMedia {
 			TestRuntime.AssertSystemVersion (ApplePlatform.MacOSX, 10, 8, throwIfOtherPlatform: false);
 
 			using (var tb = new CMTimebase (CMClock.HostTimeClock)) {
-				Assert.AreEqual (CMTimebaseError.None, tb.SetAnchorTime (new CMTime (1000000, 200), new CMTime (-1, -2)));
+				Assert.That (tb.SetAnchorTime (new CMTime (1000000, 200), new CMTime (-1, -2)), Is.EqualTo (CMTimebaseError.None));
 				var cmt = tb.GetTime (new CMTimeScale (int.MaxValue), CMTimeRoundingMethod.QuickTime);
-				Assert.AreEqual (5000, cmt.Seconds);
+				Assert.That (cmt.Seconds, Is.EqualTo (5000));
 			}
 		}
 
@@ -54,8 +54,8 @@ namespace MonoTouchFixtures.CoreMedia {
 			using (var tb = new CMTimebase (CMClock.HostTimeClock)) {
 				var timer = NSTimer.CreateRepeatingTimer (CMTimebase.VeryLongTimeInterval, delegate { });
 
-				Assert.AreEqual (CMTimebaseError.None, tb.AddTimer (timer, NSRunLoop.Current), "#1");
-				Assert.AreEqual (CMTimebaseError.None, tb.SetTimerNextFireTime (timer, new CMTime (100, 2)), "#2");
+				Assert.That (tb.AddTimer (timer, NSRunLoop.Current), Is.EqualTo (CMTimebaseError.None), "#1");
+				Assert.That (tb.SetTimerNextFireTime (timer, new CMTime (100, 2)), Is.EqualTo (CMTimebaseError.None), "#2");
 
 				tb.RemoveTimer (timer);
 			}
@@ -106,7 +106,7 @@ namespace MonoTouchFixtures.CoreMedia {
 		{
 			if (o is null)
 				return;
-			Assert.AreNotEqual (IntPtr.Zero, o.Handle, "AssertNullOrValidHandle - " + description);
+			Assert.That (o.Handle, Is.Not.EqualTo (IntPtr.Zero), "AssertNullOrValidHandle - " + description);
 		}
 
 		[Test]
@@ -119,7 +119,7 @@ namespace MonoTouchFixtures.CoreMedia {
 
 			// if it throws we fail the test
 			using var timebase = new CMTimebase (null, CMClock.HostTimeClock);
-			Assert.NotNull (timebase, "Not null");
+			Assert.That (timebase, Is.Not.Null, "Not null");
 		}
 
 		[Test]
@@ -127,7 +127,7 @@ namespace MonoTouchFixtures.CoreMedia {
 		{
 			TestRuntime.AssertXcodeVersion (13, 0);
 			using var timebase = new CMTimebase (null, CMClock.HostTimeClock);
-			Assert.NotNull (timebase.SourceClock, "not null source clock");
+			Assert.That (timebase.SourceClock, Is.Not.Null, "not null source clock");
 			// set and if it throws we fail the test
 			timebase.SourceClock = CMClock.HostTimeClock;
 		}
@@ -151,7 +151,7 @@ namespace MonoTouchFixtures.CoreMedia {
 			TestRuntime.AssertXcodeVersion (13, 0);
 			using var mainTimebase = new CMTimebase (CMClock.HostTimeClock);
 			using var timebase = new CMTimebase (null, mainTimebase);
-			Assert.NotNull (timebase.SourceTimebase, "Not null timebase");
+			Assert.That (timebase.SourceTimebase, Is.Not.Null, "Not null timebase");
 			// if we throw we fail test test
 			using var secondTimebase = new CMTimebase (CMClock.HostTimeClock);
 			timebase.SourceTimebase = secondTimebase;

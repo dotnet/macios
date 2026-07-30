@@ -16,8 +16,8 @@ namespace MonoTouchFixtures.CoreData {
 
 			// Default is an empty array, not null
 			var defaultValue = entity.UniquenessConstraints;
-			Assert.IsNotNull (defaultValue, "default not null");
-			Assert.AreEqual (0, defaultValue!.Length, "default empty");
+			Assert.That (defaultValue, Is.Not.Null, "default not null");
+			Assert.That (defaultValue!.Length, Is.EqualTo (0), "default empty");
 
 			// Add attributes so the entity knows about these property names
 			using var nameAttr = new NSAttributeDescription { Name = "name", AttributeType = NSAttributeType.String };
@@ -32,10 +32,10 @@ namespace MonoTouchFixtures.CoreData {
 			entity.UniquenessConstraints = constraints;
 
 			var result = entity.UniquenessConstraints;
-			Assert.IsNotNull (result, "result");
-			Assert.AreEqual (2, result!.Length, "outer length");
-			Assert.AreEqual (2, result [0].Length, "constraint0 length");
-			Assert.AreEqual (1, result [1].Length, "constraint1 length");
+			Assert.That (result, Is.Not.Null, "result");
+			Assert.That (result!.Length, Is.EqualTo (2), "outer length");
+			Assert.That (result [0].Length, Is.EqualTo (2), "constraint0 length");
+			Assert.That (result [1].Length, Is.EqualTo (1), "constraint1 length");
 		}
 	}
 }

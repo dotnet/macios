@@ -130,6 +130,7 @@ APPKIT_SOURCES = \
 	AppKit/NSPopUpButtonCell.cs \
 	AppKit/NSPredicateEditorRowTemplate.cs \
 	AppKit/NSPrintInfo.cs \
+	AppKit/NSPrintPreviewGraphicsContext.cs \
 	AppKit/NSScreen.cs \
 	AppKit/NSSegmentedControl.cs \
 	AppKit/NSSharingService.cs \
@@ -573,6 +574,7 @@ COREIMAGE_SOURCES = \
 	CoreImage/CIDetector.cs \
 	CoreImage/CIDetectorOptions.cs \
 	CoreImage/CIFilter.cs \
+	CoreImage/CIFilterGenerator.cs \
 	CoreImage/CIImage.cs \
 	CoreImage/CISampler.cs \
 	CoreImage/CISystemToneMap.cs \
@@ -1481,10 +1483,12 @@ PHOTOS_SOURCES = \
 PHOTOSUI_API_SOURCES = \
 	PhotosUI/PHEnums.cs \
 
-# PrintCode
-PRINTCORE_SOURCES = \
+# PrintCore
+PRINTCORE_CORE_SOURCES = \
 	PrintCore/Defs.cs	\
 	PrintCore/PrintCore.cs
+
+PRINTCORE_SOURCES =
 
 # PushToTalk
 PUSHTOTALK_SOURCES = \
@@ -1906,12 +1910,14 @@ SHARED_CORE_SOURCES = \
 	ObjCRuntime/TransientCFString.cs \
 	ObjCRuntime/TransientString.cs \
 	ObjCRuntime/NFloat.cs \
+	ObjCRuntime/ObjCSuper.cs \
 	ObjCRuntime/ObjectiveCFrameworkAttribute.cs \
 	ObjCRuntime/ObsoleteConstants.cs \
 	ObjCRuntime/Protocol.cs \
 	ObjCRuntime/Registrar.core.cs \
 	ObjCRuntime/RequiresSuperAttribute.cs \
 	ObjCRuntime/Selector.cs \
+	ObjCRuntime/SupportedSimulatorAttribute.cs \
 	ObjCRuntime/SystemVersion.cs \
 	ObjCRuntime/ThrowHelper.cs \
 	Simd/MathHelper.cs \
@@ -2373,6 +2379,7 @@ MACCATALYST_FRAMEWORKS = \
 	MapKit \
 	MediaAccessibility \
 	MediaPlayer \
+	MediaSetup \
 	MediaToolbox \
 	Messages \
 	MessageUI \
@@ -2398,6 +2405,7 @@ MACCATALYST_FRAMEWORKS = \
 	QuickLookThumbnailing \
 	ReplayKit \
 	SafariServices \
+	SafetyKit \
 	ScreenCaptureKit \
 	ScreenTime \
 	Security \
@@ -2423,25 +2431,25 @@ MACCATALYST_FRAMEWORKS = \
 # Compute the SOURCES variables.
 #
 
-IOS_DOTNET_CORE_SOURCES      := $(sort $(foreach framework,$(shell echo $(IOS_FRAMEWORKS) | tr '[:lower:]' '[:upper:]'),$($(framework)_CORE_SOURCES))     $(SHARED_CORE_SOURCES))
-IOS_DOTNET_API_SOURCES       := $(sort $(foreach framework,$(shell echo $(IOS_FRAMEWORKS) | tr '[:lower:]' '[:upper:]'),$($(framework)_API_SOURCES))      $(SHARED_API_SOURCES))
-IOS_DOTNET_APIS              := $(sort $(foreach framework,$(shell echo $(IOS_FRAMEWORKS) | tr '[:upper:]' '[:lower:]'),$(framework).cs)                  $(IOS_DOTNET_API_SOURCES))
-IOS_DOTNET_SOURCES           := $(sort $(foreach framework,$(shell echo $(IOS_FRAMEWORKS) | tr '[:lower:]' '[:upper:]'),$($(framework)_SOURCES))          $(SHARED_SOURCES) $(IOS_DOTNET_CORE_SOURCES))
+IOS_DOTNET_CORE_SOURCES      := $(sort $(foreach framework,$(call uppercase,$(IOS_FRAMEWORKS)),$($(framework)_CORE_SOURCES))     $(SHARED_CORE_SOURCES))
+IOS_DOTNET_API_SOURCES       := $(sort $(foreach framework,$(call uppercase,$(IOS_FRAMEWORKS)),$($(framework)_API_SOURCES))      $(SHARED_API_SOURCES))
+IOS_DOTNET_APIS              := $(sort $(foreach framework,$(call lowercase,$(IOS_FRAMEWORKS)),$(framework).cs)                  $(IOS_DOTNET_API_SOURCES))
+IOS_DOTNET_SOURCES           := $(sort $(foreach framework,$(call uppercase,$(IOS_FRAMEWORKS)),$($(framework)_SOURCES))          $(SHARED_SOURCES) $(IOS_DOTNET_CORE_SOURCES))
 
-MACOS_DOTNET_CORE_SOURCES    := $(sort $(foreach framework,$(shell echo $(MACOS_FRAMEWORKS) | tr '[:lower:]' '[:upper:]'),$($(framework)_CORE_SOURCES))   $(SHARED_CORE_SOURCES))
-MACOS_DOTNET_API_SOURCES     := $(sort $(foreach framework,$(shell echo $(MACOS_FRAMEWORKS) | tr '[:lower:]' '[:upper:]'),$($(framework)_API_SOURCES))    $(SHARED_API_SOURCES))
-MACOS_DOTNET_APIS            := $(sort $(foreach framework,$(shell echo $(MACOS_FRAMEWORKS) | tr '[:upper:]' '[:lower:]'),$(framework).cs)                $(MACOS_DOTNET_API_SOURCES))
-MACOS_DOTNET_SOURCES         := $(sort $(foreach framework,$(shell echo $(MACOS_FRAMEWORKS) | tr '[:lower:]' '[:upper:]'),$($(framework)_SOURCES))        $(SHARED_SOURCES) $(MACOS_DOTNET_CORE_SOURCES))
+MACOS_DOTNET_CORE_SOURCES    := $(sort $(foreach framework,$(call uppercase,$(MACOS_FRAMEWORKS)),$($(framework)_CORE_SOURCES))   $(SHARED_CORE_SOURCES))
+MACOS_DOTNET_API_SOURCES     := $(sort $(foreach framework,$(call uppercase,$(MACOS_FRAMEWORKS)),$($(framework)_API_SOURCES))    $(SHARED_API_SOURCES))
+MACOS_DOTNET_APIS            := $(sort $(foreach framework,$(call lowercase,$(MACOS_FRAMEWORKS)),$(framework).cs)                $(MACOS_DOTNET_API_SOURCES))
+MACOS_DOTNET_SOURCES         := $(sort $(foreach framework,$(call uppercase,$(MACOS_FRAMEWORKS)),$($(framework)_SOURCES))        $(SHARED_SOURCES) $(MACOS_DOTNET_CORE_SOURCES))
 
-TVOS_DOTNET_CORE_SOURCES     := $(sort $(foreach framework,$(shell echo $(TVOS_FRAMEWORKS) | tr '[:lower:]' '[:upper:]'),$($(framework)_CORE_SOURCES))    $(SHARED_CORE_SOURCES))
-TVOS_DOTNET_API_SOURCES      := $(sort $(foreach framework,$(shell echo $(TVOS_FRAMEWORKS) | tr '[:lower:]' '[:upper:]'),$($(framework)_API_SOURCES))     $(SHARED_API_SOURCES))
-TVOS_DOTNET_APIS             := $(sort $(foreach framework,$(shell echo $(TVOS_FRAMEWORKS) | tr '[:upper:]' '[:lower:]'),$(framework).cs)                 $(TVOS_DOTNET_API_SOURCES))
-TVOS_DOTNET_SOURCES          := $(sort $(foreach framework,$(shell echo $(TVOS_FRAMEWORKS) | tr '[:lower:]' '[:upper:]'),$($(framework)_SOURCES))         $(SHARED_SOURCES) $(TVOS_DOTNET_CORE_SOURCES))
+TVOS_DOTNET_CORE_SOURCES     := $(sort $(foreach framework,$(call uppercase,$(TVOS_FRAMEWORKS)),$($(framework)_CORE_SOURCES))    $(SHARED_CORE_SOURCES))
+TVOS_DOTNET_API_SOURCES      := $(sort $(foreach framework,$(call uppercase,$(TVOS_FRAMEWORKS)),$($(framework)_API_SOURCES))     $(SHARED_API_SOURCES))
+TVOS_DOTNET_APIS             := $(sort $(foreach framework,$(call lowercase,$(TVOS_FRAMEWORKS)),$(framework).cs)                 $(TVOS_DOTNET_API_SOURCES))
+TVOS_DOTNET_SOURCES          := $(sort $(foreach framework,$(call uppercase,$(TVOS_FRAMEWORKS)),$($(framework)_SOURCES))         $(SHARED_SOURCES) $(TVOS_DOTNET_CORE_SOURCES))
 
-MACCATALYST_DOTNET_CORE_SOURCES := $(sort $(foreach framework,$(shell echo $(MACCATALYST_FRAMEWORKS) | tr '[:lower:]' '[:upper:]'),$($(framework)_CORE_SOURCES)) $(SHARED_CORE_SOURCES))
-MACCATALYST_DOTNET_API_SOURCES  := $(sort $(foreach framework,$(shell echo $(MACCATALYST_FRAMEWORKS) | tr '[:lower:]' '[:upper:]'),$($(framework)_API_SOURCES))  $(SHARED_API_SOURCES))
-MACCATALYST_DOTNET_APIS         := $(sort $(foreach framework,$(shell echo $(MACCATALYST_FRAMEWORKS) | tr '[:upper:]' '[:lower:]'),$(framework).cs)              $(MACCATALYST_DOTNET_API_SOURCES))
-MACCATALYST_DOTNET_SOURCES      := $(sort $(foreach framework,$(shell echo $(MACCATALYST_FRAMEWORKS) | tr '[:lower:]' '[:upper:]'),$($(framework)_SOURCES))      $(SHARED_SOURCES) $(MACCATALYST_DOTNET_CORE_SOURCES))
+MACCATALYST_DOTNET_CORE_SOURCES := $(sort $(foreach framework,$(call uppercase,$(MACCATALYST_FRAMEWORKS)),$($(framework)_CORE_SOURCES)) $(SHARED_CORE_SOURCES))
+MACCATALYST_DOTNET_API_SOURCES  := $(sort $(foreach framework,$(call uppercase,$(MACCATALYST_FRAMEWORKS)),$($(framework)_API_SOURCES))  $(SHARED_API_SOURCES))
+MACCATALYST_DOTNET_APIS         := $(sort $(foreach framework,$(call lowercase,$(MACCATALYST_FRAMEWORKS)),$(framework).cs)              $(MACCATALYST_DOTNET_API_SOURCES))
+MACCATALYST_DOTNET_SOURCES      := $(sort $(foreach framework,$(call uppercase,$(MACCATALYST_FRAMEWORKS)),$($(framework)_SOURCES))      $(SHARED_SOURCES) $(MACCATALYST_DOTNET_CORE_SOURCES))
 
 IOS_CORE_SOURCES         := $(IOS_DOTNET_CORE_SOURCES)
 IOS_API_SOURCES          := $(IOS_DOTNET_API_SOURCES)

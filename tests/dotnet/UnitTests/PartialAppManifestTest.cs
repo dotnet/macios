@@ -17,12 +17,12 @@ namespace Xamarin.Tests {
 			DotNet.AssertBuild (project_path, properties);
 
 			var infoPlistPath = GetInfoPListPath (platform, appPath);
-			var infoPlist = PDictionary.FromFile (infoPlistPath)!;
-			Assert.AreEqual ("com.xamarin.mypartialappmanifestapp", infoPlist.GetString ("CFBundleIdentifier").Value, "CFBundleIdentifier");
-			Assert.AreEqual ("MyPartialAppManifestApp", infoPlist.GetString ("CFBundleDisplayName").Value, "CFBundleDisplayName");
-			Assert.AreEqual ("3.14", infoPlist.GetString ("CFBundleVersion").Value, "CFBundleVersion");
-			Assert.AreEqual ("3.14", infoPlist.GetString ("CFBundleShortVersionString").Value, "CFBundleShortVersionString");
-			Assert.AreEqual ("SomeValue", infoPlist.GetString ("Something").Value, "Something");
+			var infoPlist = PDictionary.OpenFile (infoPlistPath);
+			Assert.That (infoPlist.GetString ("CFBundleIdentifier").Value, Is.EqualTo ("com.xamarin.mypartialappmanifestapp"), "CFBundleIdentifier");
+			Assert.That (infoPlist.GetString ("CFBundleDisplayName").Value, Is.EqualTo ("MyPartialAppManifestApp"), "CFBundleDisplayName");
+			Assert.That (infoPlist.GetString ("CFBundleVersion").Value, Is.EqualTo ("3.14"), "CFBundleVersion");
+			Assert.That (infoPlist.GetString ("CFBundleShortVersionString").Value, Is.EqualTo ("3.14"), "CFBundleShortVersionString");
+			Assert.That (infoPlist.GetString ("Something").Value, Is.EqualTo ("SomeValue"), "Something");
 
 			var partialAppManifestPath = Path.Combine (Path.GetDirectoryName (project_path)!, "..", "Partial.plist");
 			Configuration.Touch (partialAppManifestPath);
@@ -55,14 +55,14 @@ namespace Xamarin.Tests {
 			DotNet.AssertBuild (project_path, properties);
 
 			var infoPlistPath = GetInfoPListPath (platform, appPath);
-			var infoPlist = PDictionary.FromFile (infoPlistPath)!;
-			Assert.AreEqual ("Here I am", infoPlist.GetString ("LibraryWithResources").Value, "LibraryWithResources 1");
+			var infoPlist = PDictionary.OpenFile (infoPlistPath);
+			Assert.That (infoPlist.GetString ("LibraryWithResources").Value, Is.EqualTo ("Here I am"), "LibraryWithResources 1");
 
 			// build again, nothing should change
 			DotNet.AssertBuild (project_path, properties);
 
-			infoPlist = PDictionary.FromFile (infoPlistPath)!;
-			Assert.AreEqual ("Here I am", infoPlist.GetString ("LibraryWithResources").Value, "LibraryWithResources 2");
+			infoPlist = PDictionary.OpenFile (infoPlistPath);
+			Assert.That (infoPlist.GetString ("LibraryWithResources").Value, Is.EqualTo ("Here I am"), "LibraryWithResources 2");
 		}
 	}
 }

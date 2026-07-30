@@ -36,7 +36,7 @@ namespace MonoTouchFixtures.Photos {
 			using (var cei = new PHContentEditingInput ())
 			using (var lpec = new PHLivePhotoEditingContext (cei)) {
 				// not much but it means the linker cannot remove it
-				Assert.Null (lpec.FrameProcessor, "FrameProcessor");
+				Assert.That (lpec.FrameProcessor, Is.Null, "FrameProcessor");
 			}
 		}
 
@@ -60,10 +60,10 @@ namespace MonoTouchFixtures.Photos {
 				Assert.Ignore ("This test requires support for the dynamic registrar to setup the block");
 
 			var t = typeof (NSObject).Assembly.GetType ("ObjCRuntime.Trampolines+SDPHLivePhotoFrameProcessingBlock");
-			Assert.NotNull (t, "SDPHLivePhotoFrameProcessingBlock2");
+			Assert.That (t, Is.Not.Null, "SDPHLivePhotoFrameProcessingBlock2");
 
 			var m = t.GetMethod ("Invoke", BindingFlags.Static | BindingFlags.NonPublic);
-			Assert.NotNull (m, "Invoke");
+			Assert.That (m, Is.Not.Null, "Invoke");
 			var d = m.CreateDelegate (typeof (DPHLivePhotoFrameProcessingBlock2));
 			var fptr = m.MethodHandle.GetFunctionPointer ();
 			var del = new DPHLivePhotoFrameProcessingBlock2 ((IntPtr a, NativeHandle b, NativeHandle* c) => (NativeHandle) global::Bindings.Test.CFunctions.x_call_func_3 (fptr, (IntPtr) a, (IntPtr) b, (IntPtr) (void*) c));

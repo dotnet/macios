@@ -34,7 +34,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 #else
 			using (var ui = new UIImage (img, 1.0f, UIImageOrientation.Up)) {
 #endif
-				Assert.IsNotNull (ui.CGImage, "CGImage");
+				Assert.That (ui.CGImage, Is.Not.Null, "CGImage");
 				if (TestRuntime.CheckXcodeVersion (7, 0))
 					Assert.That (img.UTType.ToString (), Is.EqualTo ("public.png"), "UTType");
 			}
@@ -50,18 +50,18 @@ namespace MonoTouchFixtures.CoreGraphics {
 				using var provider = new CGDataProvider (new byte [(int) frame.Width * (int) frame.Height * 4]);
 				using var colorSpace = CGColorSpace.CreateWithName (CGColorSpaceNames.Itur_2100_PQ);
 				using var img = new CGImage (0.0f, (int) frame.Width, (int) frame.Height, 8, 32, 4 * (int) frame.Width, colorSpace, CGBitmapFlags.ByteOrderDefault | CGBitmapFlags.Last, provider, null, false, CGColorRenderingIntent.Default);
-				Assert.IsNotNull (img, "Image");
-				Assert.AreEqual (4.92610836f, img.ContentHeadroom, "ContentHeadroom A");
-				Assert.IsTrue (img.ShouldToneMap, "ShouldToneMap A");
-				Assert.IsFalse (img.ContainsImageSpecificToneMappingMetadata, "ContainsImageSpecificToneMappingMetadata A");
+				Assert.That (img, Is.Not.Null, "Image");
+				Assert.That (img.ContentHeadroom, Is.EqualTo (4.92610836f), "ContentHeadroom A");
+				Assert.That (img.ShouldToneMap, Is.True, "ShouldToneMap A");
+				Assert.That (img.ContainsImageSpecificToneMappingMetadata, Is.False, "ContainsImageSpecificToneMappingMetadata A");
 
 				using var copy = img.Copy (3.0f);
-				Assert.IsNotNull (copy, "Copy");
-				Assert.AreEqual (3.0f, copy.ContentHeadroom, "ContentHeadroom B");
-				Assert.IsTrue (copy.ShouldToneMap, "ShouldToneMap B");
-				Assert.IsFalse (copy.ContainsImageSpecificToneMappingMetadata, "ContainsImageSpecificToneMappingMetadata B");
+				Assert.That (copy, Is.Not.Null, "Copy");
+				Assert.That (copy.ContentHeadroom, Is.EqualTo (3.0f), "ContentHeadroom B");
+				Assert.That (copy.ShouldToneMap, Is.True, "ShouldToneMap B");
+				Assert.That (copy.ContainsImageSpecificToneMappingMetadata, Is.False, "ContainsImageSpecificToneMappingMetadata B");
 
-				Assert.AreEqual (4.92610836f, CGImage.DefaultHdrImageContentHeadroom, "DefaultHdrImageContentHeadroom");
+				Assert.That (CGImage.DefaultHdrImageContentHeadroom, Is.EqualTo (4.92610836f), "DefaultHdrImageContentHeadroom");
 
 				if (TestRuntime.CheckXcodeVersion (26, 0)) {
 					Assert.That (copy.CalculatedContentHeadroom, Is.EqualTo (0.0f), "CalculatedContentHeadroom B");

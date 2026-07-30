@@ -119,7 +119,13 @@ public partial class Generator {
 		indent--;
 		print ("} else {");
 		indent++;
-		print ("h = global::ObjCRuntime.Messaging.{0}_objc_msgSendSuper_{0} (this.SuperHandle, Selector.GetHandle (\"initWithCoder:\"), coder.Handle);", NativeHandleType);
+		print ("unsafe {");
+		indent++;
+		print ("var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this);");
+		print ("h = global::ObjCRuntime.Messaging.{0}_objc_msgSendSuper_{0} (&__objc_super__, Selector.GetHandle (\"initWithCoder:\"), coder.Handle);", NativeHandleType);
+		print ("GC.KeepAlive (this);");
+		indent--;
+		print ("}");
 		indent--;
 		print ("}");
 		print ("InitializeHandle (h, \"initWithCoder:\");");

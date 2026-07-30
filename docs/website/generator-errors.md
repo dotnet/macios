@@ -128,7 +128,7 @@ Please go to [[FieldAttribute]](https://developer.xamarin.com/guides/cross-platf
 
 ### <a name='BI1026'/>BI1026: `*`: Enums attributed with [\*] must have an underlying type of `long` or `ulong`
 
-### <a name='BI1027'/>BI1027: Support for ZeroCopy strings is not implemented. Strings will be marshalled as NSStrings.
+### <a name='BI1027'/>BI1027: Support for ZeroCopy strings is not implemented. The --use-zero-copy option is not supported and will be ignored.
 
 ### <a name='BI1028'/>BI1028: Internal sanity check failed, please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case.
 
@@ -178,7 +178,7 @@ This usually indicates a bug in the product; please [file a bug report](https://
 
 ### <a name='BI1049'/>BI1049: Could not unbox type \* from \* container used on \* member decorated with [BindAs].
 
-### <a name='BI1050'/>BI1050: [BindAs] cannot be used inside Protocol or Model types. Type: \*
+### <a name='BI1050'/>BI1050: [BindAs] cannot be used on properties or return values inside Protocol or Model types. Type: \*
 
 ### <a name='BI1051'/>BI1051: Internal error: Don't know how to get attributes for \*. Please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case.
 

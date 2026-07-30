@@ -488,7 +488,12 @@ namespace AppKit {
 		/// <summary>To be added.</summary>
 		EditableTextArea = 2,
 		/// <summary>To be added.</summary>
-		TrackableArae = 4,
+		TrackableArea = 4,
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'TrackableArea' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		TrackableArae = TrackableArea,
+#endif
 	}
 
 	[NoMacCatalyst]
@@ -1718,7 +1723,12 @@ namespace AppKit {
 	[Native]
 	public enum NSAnimationEffect : ulong {
 		/// <summary>To be added.</summary>
-		DissapearingItemDefault = 0,
+		DisappearingItemDefault = 0,
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'DisappearingItemDefault' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		DissapearingItemDefault = DisappearingItemDefault,
+#endif
 		/// <summary>To be added.</summary>
 		EffectPoof = 10,
 	}

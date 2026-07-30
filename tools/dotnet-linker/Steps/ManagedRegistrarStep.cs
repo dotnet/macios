@@ -84,6 +84,8 @@ namespace Xamarin.Linker {
 		AppBundleRewriter abr { get { return Configuration.AppBundleRewriter; } }
 		List<Exception> exceptions = new List<Exception> ();
 
+		Dictionary<string, string> unmanagedCallersOnlyMap = new ();
+
 		void AddException (Exception exception)
 		{
 			if (exceptions is null)
@@ -97,6 +99,23 @@ namespace Xamarin.Linker {
 
 			if (App.Registrar != RegistrarMode.ManagedStatic && App.Registrar != RegistrarMode.TrimmableStatic)
 				return;
+
+			if (App.IsPostProcessingAssemblies) {
+				var ucoMapPath = Configuration.UnmanagedCallersOnlyMapPath;
+				if (File.Exists (ucoMapPath)) {
+					foreach (var line in File.ReadAllLines (ucoMapPath)) {
+						var parts = line.Split ('|');
+						if (parts.Length != 2) {
+							Console.WriteLine ($"Warning: Invalid line in unmanaged_callers_only_map.txt: {line}");
+							continue;
+						}
+						var methodFullName = parts [0];
+						var ucoEntryPoint = parts [1];
+						unmanagedCallersOnlyMap.Add (methodFullName, ucoEntryPoint);
+					}
+					File.Delete (ucoMapPath);
+				}
+			}
 
 			Configuration.Application.StaticRegistrar.Register (Configuration.GetNonDeletedAssemblies (this));
 		}
@@ -113,10 +132,23 @@ namespace Xamarin.Linker {
 			// Report back any exceptions that occurred during the processing.
 			exceptions = this.exceptions;
 
+			if (App.PrepareAssemblies && !App.InCustomTrimmerStep) {
+				var ucoMapPath = Configuration.UnmanagedCallersOnlyMapPath;
+				using (var writer = new StreamWriter (ucoMapPath, false)) {
+					foreach (var entry in unmanagedCallersOnlyMap.Select (kvp => $"{kvp.Key}|{kvp.Value}").OrderBy (v => v)) {
+						writer.WriteLine (entry);
+					}
+				}
+			}
+
+#if !ASSEMBLY_PREPARER
 			// Mark some stuff we use later on.
-			abr.SetCurrentAssembly (abr.PlatformAssembly);
-			Annotations.Mark (abr.RegistrarHelper_Register.Resolve ());
-			abr.ClearCurrentAssembly ();
+			if (App.InCustomTrimmerStep && App.PrepareAssemblies == false) {
+				abr.SetCurrentAssembly (abr.PlatformAssembly);
+				Annotations.Mark (abr.RegistrarHelper_Register.Resolve ());
+				abr.ClearCurrentAssembly ();
+			}
+#endif
 		}
 
 		protected override void TryProcessAssembly (AssemblyDefinition assembly)
@@ -162,7 +194,7 @@ namespace Xamarin.Linker {
 				abr.SaveCurrentAssembly ();
 
 			// TODO: Move this to a separate "MakeEverythingWorkWithNativeAOTStep" linker step
-			if (App.XamarinRuntime == XamarinRuntime.NativeAOT && Configuration.Profile.IsProductAssembly (assembly)) {
+			if (App.XamarinRuntime == XamarinRuntime.NativeAOT && Configuration.Profile.IsProductAssembly (assembly) && !App.IsPostProcessingAssemblies) {
 				ImplementNSObjectRegisterToggleRefMethodStub ();
 			}
 
@@ -181,24 +213,24 @@ namespace Xamarin.Linker {
 			var process = false;
 			var isNSObject = IsNSObject (type);
 
-			if (App.Registrar == RegistrarMode.TrimmableStatic && !type.IsAbstract && !type.IsInterface) {
+			if (App.Registrar == RegistrarMode.TrimmableStatic && !type.IsAbstract && !type.IsInterface && App.PrepareAssemblies == false) {
 				if (isNSObject) {
-					var ctorRef = ManagedRegistrarLookupTablesStep.FindNSObjectConstructor (type);
+					var ctorRef = AppBundleRewriter.FindNSObjectConstructor (type);
 					if (ctorRef is not null) {
 						var ctor = abr.CurrentAssembly.MainModule.ImportReference (ctorRef);
 
 						// Implement INSObjectFactory._Xamarin_ConstructNSObject
-						ManagedRegistrarLookupTablesStep.ImplementConstructNSObjectFactoryMethod (abr, DerivedLinkContext, type, ctor);
+						modified |= abr.ImplementConstructNSObjectFactoryMethod (DerivedLinkContext, type, ctor);
 						// Implement INativeObject._Xamarin_ConstructINativeObject
-						ManagedRegistrarLookupTablesStep.ImplementConstructINativeObjectFactoryMethod (abr, DerivedLinkContext, type, ctor);
+						modified |= abr.ImplementConstructINativeObjectFactoryMethod (DerivedLinkContext, type, ctor);
 					}
 				} else if (type.IsNativeObject ()) {
-					var ctorRef = ManagedRegistrarLookupTablesStep.FindINativeObjectConstructor (type);
+					var ctorRef = AppBundleRewriter.FindINativeObjectConstructor (type);
 					if (ctorRef is not null) {
 						var ctor = abr.CurrentAssembly.MainModule.ImportReference (ctorRef);
 
 						// Implement INativeObject._Xamarin_ConstructINativeObject
-						ManagedRegistrarLookupTablesStep.ImplementConstructINativeObjectFactoryMethod (abr, DerivedLinkContext, type, ctor);
+						modified |= abr.ImplementConstructINativeObjectFactoryMethod (DerivedLinkContext, type, ctor);
 					}
 				}
 			}
@@ -229,13 +261,19 @@ namespace Xamarin.Linker {
 			// Create an UnmanagedCallersOnly method for each method we need to wrap
 			foreach (var method in methods_to_wrap) {
 				try {
-					CreateUnmanagedCallersMethod (method, infos, proxyInterfaces);
+					if (App.IsPostProcessingAssemblies) {
+						// We need to load what the PrepareAssemblies task did/produced
+						CollectUnmanagedCallersMethod (method, infos, proxyInterfaces);
+					} else {
+						CreateUnmanagedCallersMethod (method, infos, proxyInterfaces);
+						modified = true;
+					}
 				} catch (Exception e) {
 					AddException (ErrorHelper.CreateError (99, e, "Failed to create an UnmanagedCallersOnly trampoline for {0}: {1}", method.FullName, e.Message));
 				}
 			}
 
-			return true;
+			return modified;
 		}
 
 		void ProcessMethod (MethodDefinition method, HashSet<MethodDefinition> methods_to_wrap)
@@ -299,12 +337,51 @@ namespace Xamarin.Linker {
 			}
 		}
 
+		void CollectUnmanagedCallersMethod (MethodDefinition method, AssemblyTrampolineInfo infos, List<TypeDefinition> proxyInterfaces)
+		{
+			if (!unmanagedCallersOnlyMap.TryGetValue (method.FullName, out var ucoName)) {
+				AddException (ErrorHelper.CreateWarning (App, 99, method, $"Couldn't find an entry in the unmanaged_callers_only_map for method {method.FullName}."));
+				return;
+			}
+
+			var callbackType = method.DeclaringType.NestedTypes.SingleOrDefault (v => v.Name == "__Registrar_Callbacks__");
+			if (callbackType is null) {
+				AddException (ErrorHelper.CreateWarning (App, 99, method, $"Couldn't find the __Registrar_Callbacks__ nested type for method {method.FullName}."));
+				return;
+			}
+
+			var candidates = callbackType.Methods.Where (v => v.Name == ucoName).ToArray ();
+			if (candidates.Length != 1) {
+				AddException (ErrorHelper.CreateWarning (App, 99, method, $"Didn't find exactly one matching callback method in __Registrar_Callbacks__ for method {method.FullName}, found {candidates.Length}"));
+				return;
+			}
+			var callback = candidates [0];
+
+			var info = new TrampolineInfo (callback, method, ucoName);
+			if (this.App.Registrar == RegistrarMode.TrimmableStatic) {
+				// Don't set Id here, it's not used.
+			} else if (int.TryParse (ucoName.Split ('_') [1], NumberStyles.None, CultureInfo.InvariantCulture, out var id)) {
+				info.Id = id;
+			} else {
+				AddException (ErrorHelper.CreateError (App, 99, method, $"Failed to parse the ID from the DynamicDependencyAttribute for method {method.FullName}, the trampoline won't be registered correctly. The member signature was: {ucoName}"));
+			}
+			infos.Add (info);
+		}
+
 		int counter;
+		AssemblyDefinition? last_assembly;
 		void CreateUnmanagedCallersMethod (MethodDefinition method, AssemblyTrampolineInfo infos, List<TypeDefinition> proxyInterfaces)
 		{
+			if (last_assembly != method.Module.Assembly) {
+				counter = 0;
+				last_assembly = method.Module.Assembly;
+			}
+
 			var baseMethod = StaticRegistrar.GetBaseMethodInTypeHierarchy (method);
 			var placeholderType = abr.System_IntPtr;
 			var name = $"callback_{counter++}_{Sanitize (method.DeclaringType.FullName)}_{Sanitize (method.Name)}";
+
+			unmanagedCallersOnlyMap.Add (method.FullName, name);
 
 			var callbackType = method.DeclaringType.NestedTypes.SingleOrDefault (v => v.Name == "__Registrar_Callbacks__");
 			if (callbackType is null) {
@@ -713,11 +790,37 @@ namespace Xamarin.Linker {
 
 		BindAsAttribute? GetBindAsAttribute (MethodDefinition method, int parameter)
 		{
-			if (StaticRegistrar.IsPropertyAccessor (method, out var property)) {
-				return StaticRegistrar.GetBindAsAttribute (property);
+			BindAsAttribute? attribute;
+			var isPropertyAccessor = StaticRegistrar.IsPropertyAccessor (method, out var property);
+			if (isPropertyAccessor) {
+				attribute = StaticRegistrar.GetBindAsAttribute (property);
 			} else {
-				return StaticRegistrar.GetBindAsAttribute (method, parameter);
+				attribute = StaticRegistrar.GetBindAsAttribute (method, parameter);
 			}
+
+			if (attribute is not null || parameter < 0 || isPropertyAccessor || method.IsConstructor || method.DeclaringType.IsInterface || StaticRegistrar.GetCategoryAttribute (method.DeclaringType) is not null)
+				return attribute;
+
+			// Parameter attributes aren't inherited from protocol methods, so look up the mapped interface method.
+			var methodMap = StaticRegistrar.PrepareInterfaceMethodMapping (method.DeclaringType);
+			if (methodMap is null || !methodMap.TryGetValue (method, out var interfaceMethods))
+				return null;
+
+			List<MethodDefinition>? bindAsInterfaceMethods = null;
+			foreach (var interfaceMethod in interfaceMethods) {
+				var interfaceAttribute = StaticRegistrar.GetBindAsAttribute (interfaceMethod, parameter);
+				if (interfaceAttribute is null)
+					continue;
+
+				bindAsInterfaceMethods ??= new List<MethodDefinition> ();
+				bindAsInterfaceMethods.Add (interfaceMethod);
+				attribute = interfaceAttribute;
+			}
+
+			if (bindAsInterfaceMethods is not null && interfaceMethods.Count != 1)
+				throw new AggregateException (Shared.GetMT4127 (method, interfaceMethods));
+
+			return attribute;
 		}
 
 		// This emits a conversion between the native and the managed representation of a parameter or return value,
@@ -1169,7 +1272,8 @@ namespace Xamarin.Linker {
 		CustomAttribute CreateUnmanagedCallersAttribute (string entryPoint)
 		{
 			var unmanagedCallersAttribute = new CustomAttribute (abr.UnmanagedCallersOnlyAttribute_Constructor);
-			unmanagedCallersAttribute.Fields.Add (new CustomAttributeNamedArgument ("EntryPoint", new CustomAttributeArgument (abr.System_String, entryPoint)));
+			if (App.XamarinRuntime != XamarinRuntime.CoreCLR)
+				unmanagedCallersAttribute.Fields.Add (new CustomAttributeNamedArgument ("EntryPoint", new CustomAttributeArgument (abr.System_String, entryPoint)));
 			return unmanagedCallersAttribute;
 		}
 
@@ -1315,7 +1419,7 @@ namespace Xamarin.Linker {
 			} else if (underlyingNativeType.Is ("Foundation", "NSString")) {
 				if (!StaticRegistrar.IsSmartEnum (underlyingManagedType, out var getConstantMethod, out var getValueMethod)) {
 					// method linked away!? this should already be verified
-					ErrorHelper.Show (ErrorHelper.CreateError (99, Errors.MX0099, $"the smart enum {underlyingManagedType.FullName} doesn't seem to be a smart enum after all"));
+					ErrorHelper.Show (App, ErrorHelper.CreateError (99, Errors.MX0099, $"the smart enum {underlyingManagedType.FullName} doesn't seem to be a smart enum after all"));
 					return;
 				}
 

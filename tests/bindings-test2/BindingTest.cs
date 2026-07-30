@@ -9,8 +9,8 @@ namespace Xamarin.BindingTests2 {
 		[Test]
 		public void Test ()
 		{
-			Assert.AreEqual (42, CFunctions.getIntOfChocolate (), "chocolate");
-			Assert.AreEqual (42, Bindings.Test.CFunctions.theUltimateAnswer (), "theUltimateAnswer");
+			Assert.That (CFunctions.getIntOfChocolate (), Is.EqualTo (42), "chocolate");
+			Assert.That (Bindings.Test.CFunctions.theUltimateAnswer (), Is.EqualTo (42), "theUltimateAnswer");
 		}
 	}
 }

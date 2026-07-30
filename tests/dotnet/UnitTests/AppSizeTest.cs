@@ -102,6 +102,9 @@ namespace Xamarin.Tests {
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
 
+			if (!Configuration.XcodeIsStable)
+				Assert.Ignore ("Using a beta version of Xcode, so disabling this test (it will need very frequent updates to the known failures, which is better delayed until the final Xcode release)");
+
 			var project = "SizeTestApp";
 			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: configuration);
 
@@ -110,23 +113,57 @@ namespace Xamarin.Tests {
 			var properties = GetDefaultProperties (runtimeIdentifiers, extraProperties: extraProperties);
 			properties ["Configuration"] = configuration;
 
+			// Disable code signing: the code signature isn't relevant to the app size we want to track, and it's not
+			// deterministic between machines. In particular the code signature's hash page size (and thus the number of
+			// hashes, and thus the signature size) depends on the version of the 'codesign' tool, which is part of the OS,
+			// so the app size would otherwise differ depending on the macOS version of the machine that built the app.
+			properties ["EnableCodeSigning"] = "false";
+
 			DotNet.AssertBuild (project_path, properties);
 
 			// FORCE_UPDATE_KNOWN_FAILURES will update the known failures files even if the test doesn't actually fail
-			// WRITE_KNOWN_FAILURES will only update the known failures files if the test fails
+			// WRITE_KNOWN_FAILURES will only update the known failures files if the test fails (and mark the test as passed)
+			// If neither is set, the updated expected file is uploaded as an Azure DevOps artifact.
 
 			var forceUpdate = !string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("FORCE_UPDATE_KNOWN_FAILURES"));
 			var update = forceUpdate || !string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("WRITE_KNOWN_FAILURES"));
 			var expectedDirectory = Path.Combine (Configuration.SourceRoot, "tests", "dotnet", "UnitTests", "expected");
 
-			Assert.Multiple (() => {
-				AssertAppSize (platform, name, appPath, update, forceUpdate, expectedDirectory);
+			try {
+				Assert.Multiple (() => {
+					AssertAppSize (platform, name, appPath, update, forceUpdate, expectedDirectory);
 
-				if (supportsAssemblyInspection)
-					AssertAssemblyReport (platform, name, appPath, update, expectedDirectory);
+					if (supportsAssemblyInspection)
+						AssertAssemblyReport (platform, name, appPath, update, expectedDirectory);
 
-				AssertExpectedDSyms (platform, appPath);
-			});
+					AssertExpectedDSyms (platform, appPath);
+				});
+			} catch {
+				// If the test fails on CI, copy the resulting .app bundle to a location that will be uploaded as an
+				// Azure DevOps artifact (zipped). This is for diagnostic purposes only.
+				CopyAppBundleForDiagnostics (name, appPath);
+				throw;
+			}
+		}
+
+		static void CopyAppBundleForDiagnostics (string name, string appPath)
+		{
+			var artifactStagingDir = Environment.GetEnvironmentVariable ("BUILD_ARTIFACTSTAGINGDIRECTORY");
+			if (string.IsNullOrEmpty (artifactStagingDir))
+				return; // not running in Azure DevOps CI
+
+			try {
+				var outputDir = Path.Combine (artifactStagingDir, "failed-app-size-bundles");
+				Directory.CreateDirectory (outputDir);
+				// Use a sortable timestamp to make the zip file name unique, so subsequent failing tests don't overwrite it.
+				var timestamp = DateTime.UtcNow.ToString ("yyyyMMdd'T'HHmmss'Z'");
+				var zipPath = Path.Combine (outputDir, $"{name}-{Path.GetFileName (appPath)}-{timestamp}.zip");
+				Console.WriteLine ($"    Zipping app bundle '{appPath}' to '{zipPath}' for diagnostics...");
+				System.IO.Compression.ZipFile.CreateFromDirectory (appPath, zipPath, System.IO.Compression.CompressionLevel.Optimal, includeBaseDirectory: true);
+				Console.WriteLine ($"    Zipped app bundle to '{zipPath}'.");
+			} catch (Exception e) {
+				Console.WriteLine ($"    Failed to zip app bundle for diagnostics: {e}");
+			}
 		}
 
 		static void AssertAppSize (ApplePlatform platform, string name, string appPath, bool update, bool forceUpdate, string expectedDirectory)
@@ -140,8 +177,12 @@ namespace Xamarin.Tests {
 			var report = new StringBuilder ();
 			report.AppendLine ($"AppBundleSize: {FormatBytes (appBundleSize)}");
 			report.AppendLine ($"# The following list of files and their sizes is just informational / for review, and isn't used in the test:");
-			foreach (var file in allFiles.OrderBy (v => v.FullName))
-				report.AppendLine ($"{file.FullName [(appPath.Length + 1)..]}: {FormatBytes (file.Length)}");
+			foreach (var file in allFiles.OrderBy (v => v.FullName)) {
+				// Write the file length on a different line, so that it's easier to compute length changes in a diff (the file name stays the same, only the length line changes).
+				// Also if files are added or removed, in addition to other files change their lengths, this will make those additions/removals stand out more in diffs.
+				report.AppendLine ($"{file.FullName [(appPath.Length + 1)..]}:");
+				report.AppendLine ($"    {FormatBytes (file.Length)}");
+			}
 			var expectedSizeReportPath = Path.Combine (expectedDirectory, $"{name}-size.txt");
 			var expectedSizeReport = "";
 			var expectedAppBundleSize = 0L;
@@ -166,30 +207,21 @@ namespace Xamarin.Tests {
 				msg = $"App size changed significantly ({FormatBytes (appSizeDifference, true)} different > tolerance of +-{FormatBytes (toleranceInBytes)}). Expected app size: {FormatBytes (expectedAppBundleSize)}, actual app size: {FormatBytes (appBundleSize)}.";
 			}
 
-			var updated = false;
-			if (forceUpdate || (update && !withinTolerance)) {
-				Directory.CreateDirectory (expectedDirectory);
-				File.WriteAllText (expectedSizeReportPath, report.ToString ());
-				msg += " Check the modified files for more information.";
-				updated = true;
-			} else if (!withinTolerance) {
-				msg += " Set the environment variable WRITE_KNOWN_FAILURES=1, run the test again, and verify the modified files for more information.";
-			}
-
 			Console.WriteLine ($"    {msg}");
 
-			var expectedLines = expectedSizeReport.SplitLines ().Skip (2).Where (v => v.IndexOf (':') >= 0).ToDictionary (v => v [..v.IndexOf (':')], v => v [(v.IndexOf (':') + 1)..]);
-			var actualLines = report.ToString ().SplitLines ().Skip (2).Where (v => v.IndexOf (':') >= 0).ToDictionary (v => v [..v.IndexOf (':')], v => v [(v.IndexOf (':') + 1)..]);
+			// Compare individual files in the app bundle
+			var expectedLines = ParseFileSizes (expectedSizeReport);
+			var actualLines = ParseFileSizes (report.ToString ());
 			var allKeys = expectedLines.Keys.Union (actualLines.Keys).OrderBy (v => v);
+			var filesAdded = new List<string> ();
+			var filesRemoved = new List<string> ();
 			foreach (var key in allKeys) {
 				if (!expectedLines.TryGetValue (key, out var expectedLine)) {
 					Console.WriteLine ($"        File '{key}' was added to app bundle: {actualLines [key]}");
-					if (!updated)
-						Assert.Fail ($"The file '{key}' was added to the app bundle.");
+					filesAdded.Add (key);
 				} else if (!actualLines.TryGetValue (key, out var actualLine)) {
 					Console.WriteLine ($"        File '{key}' was removed from app bundle: {expectedLine}");
-					if (!updated)
-						Assert.Fail ($"The file '{key}' was removed from the app bundle.");
+					filesRemoved.Add (key);
 				} else if (expectedLine != actualLine) {
 					Console.WriteLine ($"        File '{key}' changed in app bundle:");
 					Console.WriteLine ($"            -{expectedLine}");
@@ -197,8 +229,47 @@ namespace Xamarin.Tests {
 				}
 			}
 
-			if (!updated && !withinTolerance)
-				Assert.Fail (msg);
+			// Determine if there are any meaningful differences
+			var hasFileDifferences = filesAdded.Count > 0 || filesRemoved.Count > 0;
+			var hasSizeDifference = !withinTolerance;
+			var hasDifferences = hasFileDifferences || hasSizeDifference;
+
+			if (forceUpdate || (update && hasDifferences)) {
+				Directory.CreateDirectory (expectedDirectory);
+				File.WriteAllText (expectedSizeReportPath, report.ToString ());
+				Console.WriteLine ($"    Updated expected file: {expectedSizeReportPath}");
+			} else if (hasDifferences) {
+				UploadUpdatedExpectedFile (expectedSizeReportPath, report.ToString ());
+				var updateHint = GetUpdateHint ();
+				if (hasFileDifferences) {
+					var details = new List<string> ();
+					foreach (var key in filesAdded)
+						details.Add ($"added: '{key}'");
+					foreach (var key in filesRemoved)
+						details.Add ($"removed: '{key}'");
+					Assert.Fail ($"The app bundle's file list changed ({string.Join (", ", details)}). {updateHint}");
+				}
+				Assert.Fail ($"{msg} {updateHint}");
+			}
+		}
+
+		// Parse a size report (either an expected file or a freshly generated report) into a dictionary
+		// mapping each file's relative path to its formatted size. The format is two lines per file: the
+		// file name (ending with ':') followed by an indented line with the size.
+		static Dictionary<string, string> ParseFileSizes (string report)
+		{
+			var rv = new Dictionary<string, string> ();
+			var lines = report.SplitLines ();
+			// Skip the first two lines: the total 'AppBundleSize' line and the '#' comment line.
+			for (var i = 2; i < lines.Length; i++) {
+				var line = lines [i];
+				if (!line.EndsWith (":", StringComparison.Ordinal))
+					continue;
+				var name = line [..^1];
+				var size = i + 1 < lines.Length ? lines [i + 1].Trim () : "";
+				rv [name] = size;
+			}
+			return rv;
 		}
 
 		// Create a file with all the APIs that survived the trimmer; this can be useful to determine what is not trimmed away.
@@ -237,9 +308,92 @@ namespace Xamarin.Tests {
 			}
 
 			if (!update) {
-				Assert.That (addedAPIs, Is.Empty, "No added APIs (set the environment variable WRITE_KNOWN_FAILURES=1 and run the test again to update the expected set of APIs)");
-				Assert.That (removedAPIs, Is.Empty, "No removed APIs (set the environment variable WRITE_KNOWN_FAILURES=1 and run the test again to update the expected set of APIs)");
+				if (addedAPIs.Count > 0 || removedAPIs.Count > 0) {
+					UploadUpdatedExpectedFile (expectedFile, string.Join ('\n', preservedAPIs) + "\n");
+					var updateHint = " " + GetUpdateHint ();
+					Assert.That (addedAPIs, Is.Empty, "Unexpected APIs were added to the preserved set." + updateHint);
+					Assert.That (removedAPIs, Is.Empty, "APIs were unexpectedly removed from the preserved set." + updateHint);
+				}
 			}
+		}
+
+		static void UploadUpdatedExpectedFile (string expectedFilePath, string content)
+		{
+			var fileName = Path.GetFileName (expectedFilePath);
+			var artifactStagingDir = Environment.GetEnvironmentVariable ("BUILD_ARTIFACTSTAGINGDIRECTORY");
+			string outputDir;
+			if (!string.IsNullOrEmpty (artifactStagingDir)) {
+				outputDir = Path.Combine (artifactStagingDir, "updated-expected-sizes");
+			} else {
+				outputDir = Path.Combine (Cache.CreateTemporaryDirectory ("AppSizeTest"), "updated-expected-sizes");
+			}
+			Directory.CreateDirectory (outputDir);
+
+			// The expected files can be very big, so instead of uploading the entire updated file, compute a
+			// unified diff between the committed expected file and the new content. The diff is typically much
+			// smaller, and it can be applied later using the '/apply-gist' command. The '.diff' extension makes
+			// it clear that these files are diffs rather than full expected files.
+			var diff = CreateExpectedFileDiff (expectedFilePath, content);
+			var outputFile = Path.Combine (outputDir, fileName + ".diff");
+			File.WriteAllText (outputFile, diff);
+			Console.WriteLine ($"    Updated expected file diff written to: {outputFile}");
+		}
+
+		// Compute a unified diff (applyable from the repository root with 'git apply -p1' or 'patch -p1') between
+		// the committed expected file and the new content. If the expected file doesn't exist yet, the diff
+		// describes the creation of a new file.
+		static string CreateExpectedFileDiff (string expectedFilePath, string content)
+		{
+			// The path the diff refers to, relative to the repository root, using forward slashes.
+			var relativePath = Path.GetRelativePath (Configuration.SourceRoot, expectedFilePath).Replace ('\\', '/');
+
+			var newContentPath = Path.GetTempFileName ();
+			try {
+				File.WriteAllText (newContentPath, content);
+
+				// '/dev/null' represents a non-existing original file (i.e. a brand new expected file).
+				var originalPath = File.Exists (expectedFilePath) ? expectedFilePath : "/dev/null";
+				var arguments = new List<string> {
+					"-u",
+					originalPath,
+					newContentPath,
+				};
+				// 'diff' returns 0 when the files are identical, 1 when they differ, and >1 on error. We only
+				// get here when there are differences, so an exit code of 1 is expected; anything else is an error.
+				var rv = Execution.RunAsync ("diff", arguments, timeout: TimeSpan.FromMinutes (1)).Result;
+				if (rv.ExitCode > 1)
+					throw new Exception ($"Failed to compute diff for '{expectedFilePath}' (exit code {rv.ExitCode}):\n{rv.Output.StandardError}");
+
+				// 'diff' puts the input file paths (a temporary file and the committed expected file or '/dev/null')
+				// in the '---'/'+++' header lines. Rewrite them to 'a/<path>' and 'b/<path>' so the patch can be
+				// applied from the repository root with 'git apply -p1'. We rewrite the header ourselves rather than
+				// using 'diff --label', because '--label' is a GNU extension that isn't available in every 'diff'
+				// implementation. Only the first '--- '/'+++ ' lines are the file header; hunk content lines are
+				// prefixed with ' ', '+' or '-', so they never begin with '--- ' or '+++ '.
+				var lines = rv.Output.StandardOutput.Split ('\n');
+				for (var i = 0; i < lines.Length; i++) {
+					if (lines [i].StartsWith ("--- ", StringComparison.Ordinal)) {
+						lines [i] = $"--- a/{relativePath}";
+						break;
+					}
+				}
+				for (var i = 0; i < lines.Length; i++) {
+					if (lines [i].StartsWith ("+++ ", StringComparison.Ordinal)) {
+						lines [i] = $"+++ b/{relativePath}";
+						break;
+					}
+				}
+				return string.Join ('\n', lines);
+			} finally {
+				File.Delete (newContentPath);
+			}
+		}
+
+		static string GetUpdateHint ()
+		{
+			if (IsInCI)
+				return "The updated expected file is available as a build artifact (set WRITE_KNOWN_FAILURES=1 to update locally).";
+			return "Set WRITE_KNOWN_FAILURES=1 to update the expected files in-place.";
 		}
 
 		static string FormatBytes (long bytes, bool alwaysShowSign = false)

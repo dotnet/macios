@@ -61,13 +61,13 @@ namespace MonoTouchFixtures.AVFoundation {
 				Assert.Ignore ("The current system doesn't have a microphone.");
 
 			session.SetCategory (AVAudioSessionCategory.PlayAndRecord, AVAudioSessionCategoryOptions.DefaultToSpeaker, out var categoryError);
-			Assert.IsNull (categoryError, "Category Error");
+			Assert.That (categoryError, Is.Null, "Category Error");
 			session.SetPreferredSampleRate (48000, out var sampleRateError);
-			Assert.IsNull (sampleRateError, "Sample Rate Error");
+			Assert.That (sampleRateError, Is.Null, "Sample Rate Error");
 			if (session.MaximumInputNumberOfChannels == 0)
 				Assert.Ignore ("The current system doesn't support any input channels");
 			session.SetPreferredInputNumberOfChannels (1, out var inputChannelCountError);
-			Assert.IsNull (inputChannelCountError, "Input Channel Count Error");
+			Assert.That (inputChannelCountError, Is.Null, "Input Channel Count Error");
 			session.SetActive (true);
 #endif // __MACOS__
 
@@ -84,8 +84,8 @@ namespace MonoTouchFixtures.AVFoundation {
 				engine.Connect (SourceNode, engine.MainMixerNode, inputFormat);
 				engine.StartAndReturnError (out var error);
 
-				Assert.IsNull (error, "Start error");
-				Assert.True (callbackEvent.Task.Wait (TimeSpan.FromSeconds (5)), "Called back");
+				Assert.That (error, Is.Null, "Start error");
+				Assert.That (callbackEvent.Task.Wait (TimeSpan.FromSeconds (5)), Is.True, "Called back");
 			} finally {
 				engine.Stop ();
 			}
@@ -94,7 +94,7 @@ namespace MonoTouchFixtures.AVFoundation {
 		int SourceHandler (ref bool isSilence, ref AudioTimeStamp timestamp, uint frameCount, AudioBuffers outputData, TaskCompletionSource<bool> evt)
 		{
 			try {
-				Assert.AreEqual (1, outputData.Count, "Count");
+				Assert.That (outputData.Count, Is.EqualTo (1), "Count");
 				Assert.That (((IntPtr) outputData.Handle).ToInt64 (), Is.GreaterThan (1024), "Valid handle");
 				Assert.That (outputData [0].DataByteSize, Is.GreaterThan (1023), "Valid data size");
 				Assert.That (outputData [0].NumberChannels, Is.GreaterThan (0), "NumberChannels");

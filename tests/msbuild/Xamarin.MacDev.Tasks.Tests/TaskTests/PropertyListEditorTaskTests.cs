@@ -11,10 +11,10 @@ namespace Xamarin.MacDev.Tasks {
 	public class PropertyListEditorTaskTests : TestBase {
 		static void CheckArray (PArray array, PArray expected)
 		{
-			Assert.AreEqual (expected.Count, array.Count, "Unexpected number of array elements");
+			Assert.That (array.Count, Is.EqualTo (expected.Count), "Unexpected number of array elements");
 
 			for (int i = 0; i < expected.Count; i++) {
-				Assert.AreEqual (expected [i].Type, array [i].Type, "Type-mismatch for array element {0}", i);
+				Assert.That (array [i].Type, Is.EqualTo (expected [i].Type), $"Type-mismatch for array element {i}");
 				CheckValue (array [i], expected [i]);
 			}
 		}
@@ -22,10 +22,10 @@ namespace Xamarin.MacDev.Tasks {
 		static void CheckDictionary (PDictionary dict, PDictionary expected)
 		{
 			foreach (var kvp in expected) {
-				Assert.IsTrue (dict.TryGetValue (kvp.Key, out PObject? value), "Expected key '{0}'", kvp.Key);
+				Assert.That (dict.TryGetValue (kvp.Key, out PObject? value), Is.True, $"Expected key '{kvp.Key}'");
 				if (value is null)
 					continue;
-				Assert.AreEqual (kvp.Value.Type, value.Type, "Type-mismatch for '{0}'", kvp.Key);
+				Assert.That (value.Type, Is.EqualTo (kvp.Value.Type), $"Type-mismatch for '{kvp.Key}'");
 
 				CheckValue (value, kvp.Value);
 			}
@@ -45,22 +45,22 @@ namespace Xamarin.MacDev.Tasks {
 				CheckArray ((PArray) value, (PArray) expected);
 				break;
 			case PObjectType.Real:
-				Assert.AreEqual (((PReal) expected).Value, ((PReal) value).Value);
+				Assert.That (((PReal) value).Value, Is.EqualTo (((PReal) expected).Value));
 				break;
 			case PObjectType.Number:
-				Assert.AreEqual (((PNumber) expected).Value, ((PNumber) value).Value);
+				Assert.That (((PNumber) value).Value, Is.EqualTo (((PNumber) expected).Value));
 				break;
 			case PObjectType.Boolean:
-				Assert.AreEqual (((PBoolean) expected).Value, ((PBoolean) value).Value);
+				Assert.That (((PBoolean) value).Value, Is.EqualTo (((PBoolean) expected).Value));
 				break;
 			case PObjectType.Data:
 				// TODO: implement this
 				break;
 			case PObjectType.String:
-				Assert.AreEqual (((PString) expected).Value, ((PString) value).Value);
+				Assert.That (((PString) value).Value, Is.EqualTo (((PString) expected).Value));
 				break;
 			case PObjectType.Date:
-				Assert.AreEqual (((PDate) expected).Value, ((PDate) value).Value);
+				Assert.That (((PDate) value).Value, Is.EqualTo (((PDate) expected).Value));
 				break;
 			}
 		}
@@ -90,7 +90,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			var output = PObject.FromFile (task.PropertyList) ?? throw new InvalidOperationException ("PObject.FromFile returned null");
 
-			Assert.AreEqual (expected.Type, output.Type, "Task produced the incorrect plist output.");
+			Assert.That (output.Type, Is.EqualTo (expected.Type), "Task produced the incorrect plist output.");
 
 			CheckValue (output, expected);
 		}

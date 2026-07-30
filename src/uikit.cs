@@ -54,6 +54,7 @@ using NSToolbarItem = Foundation.NSObject;
 #endif
 
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 #nullable enable
 
@@ -10312,7 +10313,16 @@ namespace UIKit {
 		nint GetSectionForObject (NSObject obj, Selector collationStringSelector);
 
 		[Export ("sortedArrayFromArray:collationStringSelector:")]
+#if XAMCORE_5_0
+		NSObject [] SortedArrayFromArrayCollationStringSelector (NSObject [] array, Selector collationStringSelector);
+#else
+		[Obsolete ("Use 'SortedArrayFromArrayCollationStringSelector' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		NSObject [] SortedArrayFromArraycollationStringSelector (NSObject [] array, Selector collationStringSelector);
+
+		[Wrap ("SortedArrayFromArraycollationStringSelector (array, collationStringSelector)")]
+		NSObject [] SortedArrayFromArrayCollationStringSelector (NSObject [] array, Selector collationStringSelector);
+#endif
 	}
 
 	/// <summary>Creates time-based notifications that the operating system delivers to the user.</summary>
@@ -11408,6 +11418,7 @@ namespace UIKit {
 		UIMenu Create (string title, [NullAllowed] UIImage image, UIMenuIdentifier identifier, UIMenuOptions options, UIMenuElement [] children);
 
 		[Static]
+		[OverloadResolutionPriority (-1)]
 		[Export ("menuWithTitle:image:identifier:options:children:")]
 		UIMenu Create (string title, [NullAllowed] UIImage image, [NullAllowed] NSString identifier, UIMenuOptions options, UIMenuElement [] children);
 
@@ -16699,7 +16710,16 @@ namespace UIKit {
 		/// <remarks>To be added.</remarks>
 		[Export ("setImage:forSearchBarIcon:state:")]
 		[Appearance]
+#if XAMCORE_5_0
+		void SetImageForSearchBarIcon ([NullAllowed] UIImage iconImage, UISearchBarIcon icon, UIControlState state);
+#else
+		[Obsolete ("Use 'SetImageForSearchBarIcon' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		void SetImageforSearchBarIcon ([NullAllowed] UIImage iconImage, UISearchBarIcon icon, UIControlState state);
+
+		[Wrap ("SetImageforSearchBarIcon (iconImage, icon, state)")]
+		void SetImageForSearchBarIcon ([NullAllowed] UIImage iconImage, UISearchBarIcon icon, UIControlState state);
+#endif
 
 		/// <param name="icon">To be added.</param>
 		/// <param name="state">To be added.</param>
@@ -16755,7 +16775,16 @@ namespace UIKit {
 
 		[Appearance]
 		[Export ("setPositionAdjustment:forSearchBarIcon:")]
+#if XAMCORE_5_0
+		void SetPositionAdjustmentForSearchBarIcon (UIOffset adjustment, UISearchBarIcon icon);
+#else
+		[Obsolete ("Use 'SetPositionAdjustmentForSearchBarIcon' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		void SetPositionAdjustmentforSearchBarIcon (UIOffset adjustment, UISearchBarIcon icon);
+
+		[Wrap ("SetPositionAdjustmentforSearchBarIcon (adjustment, icon)")]
+		void SetPositionAdjustmentForSearchBarIcon (UIOffset adjustment, UISearchBarIcon icon);
+#endif
 
 		[Appearance]
 		[Export ("positionAdjustmentForSearchBarIcon:")]
@@ -24555,7 +24584,15 @@ namespace UIKit {
 
 		[Static]
 		[Export ("availableLanguages")]
+		string AvailableLanguages { get; }
+
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'AvailableLanguages' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("AvailableLanguages")]
+		[Static]
 		string AvailableLangauges { get; }
+#endif
 	}
 
 	/// <summary>Known values for <see cref="UIKit.UITextField.TextContentType" /> that are hints to the system of the kind of <see cref="UIKit.UITextField" /> data.</summary>

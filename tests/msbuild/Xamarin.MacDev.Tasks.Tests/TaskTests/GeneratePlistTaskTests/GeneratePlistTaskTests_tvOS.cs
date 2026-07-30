@@ -14,7 +14,7 @@ namespace Xamarin.MacDev.Tasks {
 			Configuration.IgnoreIfIgnoredPlatform (ApplePlatform.TVOS);
 
 			base.ConfigureTask ();
-			Task.DefaultSdkVersion = Sdks.TVOS.GetClosestInstalledSdk (AppleSdkVersion.V9_0, true).ToString ();
+			Task.DefaultSdkVersion = Task.CurrentSdk.GetClosestInstalledSdk (AppleSdkVersion.V9_0, true).ToString () ?? "";
 			Task.TargetFrameworkMoniker = TargetFramework.DotNet_tvOS_String;
 		}
 	}

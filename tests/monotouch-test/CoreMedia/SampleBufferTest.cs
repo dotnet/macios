@@ -30,8 +30,8 @@ namespace MonoTouchFixtures.CoreMedia {
 
 			CMSampleBufferError sbe;
 			var sb = CMSampleBuffer.CreateForImageBuffer (pixelBuffer, true, desc, sampleTiming, out sbe);
-			Assert.IsNotNull (sb, "#1");
-			Assert.AreEqual (CMSampleBufferError.None, sbe, "#2");
+			Assert.That (sb, Is.Not.Null, "#1");
+			Assert.That (sbe, Is.EqualTo (CMSampleBufferError.None), "#2");
 		}
 
 		[Test]
@@ -46,7 +46,7 @@ namespace MonoTouchFixtures.CoreMedia {
 				using (var fd = CMFormatDescription.Create (CMMediaType.ClosedCaption, (uint) CMClosedCaptionFormatType.CEA608, out fde)) {
 					CMSampleBufferError sbe;
 					using (var sb = CMSampleBuffer.CreateReadyWithPacketDescriptions (bb, fd, 1, CMTime.Indefinite, null, out sbe)) {
-						Assert.Null (sb, "CMSampleBuffer");
+						Assert.That (sb, Is.Null, "CMSampleBuffer");
 						// the `null` does not match format description (but I lack a better test, at least it's callable)
 						Assert.That (sbe, Is.EqualTo (CMSampleBufferError.RequiredParameterMissing), "CMSampleBufferError");
 					}
@@ -108,7 +108,7 @@ namespace MonoTouchFixtures.CoreMedia {
 						result = sb.SetInvalidateCallback (delegate (CMSampleBuffer buffer)
 						{
 							i--;
-							Assert.AreSame (buffer, sb, "same");
+							Assert.That (sb, Is.SameAs (buffer), "same");
 						});
 						Assert.That (result, Is.EqualTo (CMSampleBufferError.RequiredParameterMissing), "RequiredParameterMissing");
 
@@ -132,7 +132,7 @@ namespace MonoTouchFixtures.CoreMedia {
 						var result = sb.SetInvalidateCallback (delegate (CMSampleBuffer buffer)
 						{
 							i++;
-							Assert.AreSame (buffer, sb, "same");
+							Assert.That (sb, Is.SameAs (buffer), "same");
 						});
 						Assert.That (result, Is.EqualTo (CMSampleBufferError.None), "SetInvalidateCallback/None");
 
@@ -164,7 +164,7 @@ namespace MonoTouchFixtures.CoreMedia {
 						var result = sb.SetInvalidateCallback (delegate (CMSampleBuffer buffer)
 						{
 							i++;
-							Assert.AreSame (buffer, sb, "same");
+							Assert.That (sb, Is.SameAs (buffer), "same");
 						});
 						Assert.That (result, Is.EqualTo (CMSampleBufferError.None), "SetInvalidateCallback/None");
 
@@ -192,7 +192,7 @@ namespace MonoTouchFixtures.CoreMedia {
 						var result = sb.CallForEachSample (delegate (CMSampleBuffer buffer, int index)
 						{
 							i++;
-							Assert.AreSame (buffer, sb, "same-1");
+							Assert.That (sb, Is.SameAs (buffer), "same-1");
 							return CMSampleBufferError.CannotSubdivide;
 						});
 						Assert.That (result, Is.EqualTo (CMSampleBufferError.CannotSubdivide), "custom error");

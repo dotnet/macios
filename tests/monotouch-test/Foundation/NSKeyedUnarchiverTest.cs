@@ -10,25 +10,25 @@ namespace MonoTouchFixtures.Foundation {
 
 			NSDictionary<NSString, NSString> testValues = new NSDictionary<NSString, NSString> ((NSString) "1", (NSString) "a");
 			NSData data = NSKeyedArchiver.GetArchivedData (testValues, true, out NSError error);
-			Assert.IsNull (error);
+			Assert.That (error, Is.Null);
 
 			Type dictionaryType = typeof (NSDictionary<NSString, NSString>);
 			Class dictionaryClass = new Class (dictionaryType);
 			NSObject o = NSKeyedUnarchiver.GetUnarchivedObject (dictionaryClass, data, out error);
-			Assert.IsNotNull (o);
-			Assert.IsNull (error, "GetUnarchivedObject - Class");
+			Assert.That (o, Is.Not.Null);
+			Assert.That (error, Is.Null, "GetUnarchivedObject - Class");
 
 			o = NSKeyedUnarchiver.GetUnarchivedObject (new NSSet<Class> (new Class [] { dictionaryClass }), data, out error);
-			Assert.IsNotNull (o);
-			Assert.IsNull (error, "GetUnarchivedObject - NSSet<Class>");
+			Assert.That (o, Is.Not.Null);
+			Assert.That (error, Is.Null, "GetUnarchivedObject - NSSet<Class>");
 
 			o = NSKeyedUnarchiver.GetUnarchivedObject (dictionaryType, data, out error);
-			Assert.IsNotNull (o);
-			Assert.IsNull (error, "GetUnarchivedObject - Type");
+			Assert.That (o, Is.Not.Null);
+			Assert.That (error, Is.Null, "GetUnarchivedObject - Type");
 
 			o = NSKeyedUnarchiver.GetUnarchivedObject (new Type [] { dictionaryType }, data, out error);
-			Assert.IsNotNull (o);
-			Assert.IsNull (error, "GetUnarchivedObject - Type []");
+			Assert.That (o, Is.Not.Null);
+			Assert.That (error, Is.Null, "GetUnarchivedObject - Type []");
 		}
 
 		[Test]
@@ -39,7 +39,7 @@ namespace MonoTouchFixtures.Foundation {
 			Class [] classes = NSSecureUnarchiveFromDataTransformer.AllowedTopLevelClasses;
 			Type [] types = NSSecureUnarchiveFromDataTransformer.AllowedTopLevelTypes;
 
-			Assert.AreEqual (classes.Length, types.Length, "Lengths not equal");
+			Assert.That (types.Length, Is.EqualTo (classes.Length), "Lengths not equal");
 		}
 	}
 }

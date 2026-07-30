@@ -92,7 +92,7 @@ namespace MonoTests {
 
 		public static void Assert (string msg, bool condition)
 		{
-			NUnit.Framework.Assert.True (condition, msg);
+			Assert.That (condition, Is.True, msg);
 		}
 
 		public static void AssertEquals (object a, object b)

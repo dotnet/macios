@@ -26,7 +26,7 @@ namespace MonoTouchFixtures.VideoToolbox {
 			TestRuntime.AssertSystemVersion (ApplePlatform.TVOS, 10, 2, throwIfOtherPlatform: false);
 
 			var encoders = VTVideoEncoder.GetEncoderList ();
-			Assert.NotNull (encoders, "VTVideoEncoder.GetEncoderList () Should Not be null");
+			Assert.That (encoders, Is.Not.Null, "VTVideoEncoder.GetEncoderList () Should Not be null");
 		}
 
 		[Test]
@@ -35,7 +35,7 @@ namespace MonoTouchFixtures.VideoToolbox {
 			TestRuntime.AssertXcodeVersion (9, 0);
 
 			var props = VTVideoEncoder.GetSupportedEncoderProperties (1920, 1080, CMVideoCodecType.H264);
-			Assert.NotNull (props, "props should Not be null");
+			Assert.That (props, Is.Not.Null, "props should Not be null");
 		}
 	}
 }

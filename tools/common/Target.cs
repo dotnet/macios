@@ -33,22 +33,25 @@ namespace Xamarin.Bundler {
 #else
 		public PlatformLinkContext LinkContext;
 #endif
-		public PlatformResolver Resolver = new PlatformResolver ();
+		public PlatformResolver Resolver;
 
 		internal StaticRegistrar StaticRegistrar { get; set; }
 
+#if !LEGACY_TOOLS
 		public Assembly AddAssembly (AssemblyDefinition assembly)
 		{
 			var asm = new Assembly (this, assembly);
 			Assemblies.Add (asm);
 			return asm;
 		}
+#endif // !LEGACY_TOOLS
 
 		public PlatformLinkContext? GetLinkContext ()
 		{
 			return LinkContext;
 		}
 
+#if !LEGACY_TOOLS
 		public void ExtractNativeLinkInfo (List<Exception> exceptions)
 		{
 			foreach (var a in Assemblies) {
@@ -59,11 +62,12 @@ namespace Xamarin.Bundler {
 				}
 			}
 		}
+#endif // !LEGACY_TOOLS
 
-		[DllImport (Constants.libSystemLibrary, SetLastError = true)]
+		[DllImport ("libc", SetLastError = true)]
 		static extern string realpath (string path, IntPtr zero);
 
-		public static string GetRealPath (string path, bool warnIfNoSuchPathExists = true)
+		public static string GetRealPath (IToolLog log, string path, bool warnIfNoSuchPathExists = true)
 		{
 			// For some reason realpath doesn't always like filenames only, and will randomly fail.
 			// Prepend the current directory if there's no directory specified.
@@ -76,118 +80,17 @@ namespace Xamarin.Bundler {
 
 			var errno = Marshal.GetLastWin32Error ();
 			if (warnIfNoSuchPathExists || (errno != 2))
-				ErrorHelper.Warning (54, Errors.MT0054, path, FileCopier.strerror (errno), errno);
+				ErrorHelper.Warning (log, 54, Errors.MT0054, path, FileCopier.strerror (errno), errno);
 			return path;
 		}
 
-		public void ValidateAssembliesBeforeLink ()
-		{
-			if (App.AreAnyAssembliesTrimmed) {
-				foreach (Assembly assembly in Assemblies) {
-					if ((assembly.AssemblyDefinition.MainModule.Attributes & ModuleAttributes.ILOnly) == 0)
-						throw ErrorHelper.CreateError (2014, Errors.MT2014, assembly.AssemblyDefinition.MainModule.FileName);
-				}
-			}
-		}
-
+#if !LEGACY_TOOLS
 		public void ComputeLinkerFlags ()
 		{
 			foreach (var a in Assemblies)
 				a.ComputeLinkerFlags ();
 		}
-
-		public void GatherFrameworks ()
-		{
-			Assembly? asm = null;
-
-			foreach (var assembly in Assemblies) {
-				if (assembly.AssemblyDefinition.Name.Name == Driver.GetProductAssembly (App)) {
-					asm = assembly;
-					break;
-				}
-			}
-
-			if (asm is null)
-				throw ErrorHelper.CreateError (99, Errors.MX0099, $"could not find the product assembly {Driver.GetProductAssembly (App)} in the list of assemblies referenced by the executable");
-
-			AssemblyDefinition productAssembly = asm.AssemblyDefinition;
-
-			// *** make sure any change in the above lists (or new list) are also reflected in 
-			// *** Makefile so simlauncher-sgen does not miss any framework
-
-			var processed = new HashSet<string> ();
-			var v80 = new Version (8, 0);
-
-			foreach (ModuleDefinition md in productAssembly.Modules) {
-				foreach (TypeDefinition td in md.Types) {
-					// process only once each namespace (as we keep adding logic below)
-					string nspace = td.Namespace;
-#if !XAMCORE_5_0
-					// AVCustomRoutingControllerDelegate was incorrectly placed in AVKit
-					if (td.Is ("AVKit", "AVCustomRoutingControllerDelegate"))
-						nspace = "AVRouting";
-#endif
-
-					if (processed.Contains (nspace))
-						continue;
-					processed.Add (nspace);
-
-					if (Driver.GetFrameworks (App).TryGetValue (nspace, out var framework) && framework is not null) {
-						// framework specific processing
-						switch (framework.Name) {
-						case "Metal":
-						case "MetalKit":
-						case "MetalPerformanceShaders":
-						case "PHASE":
-						case "ThreadNetwork":
-							// some frameworks do not exists on simulators and will result in linker errors if we include them
-							if (App.IsSimulatorBuild)
-								continue;
-							break;
-						case "NewsstandKit":
-							if (Driver.XcodeVersion.Major >= 15) {
-								Driver.Log (3, "Not linking with the framework {0} because it's not available when using Xcode 15+.", framework.Name);
-								continue;
-							}
-							break;
-						case "AssetsLibrary":
-							if (Driver.XcodeVersion.Major >= 16 || (Driver.XcodeVersion.Major == 15 && Driver.XcodeVersion.Minor >= 3)) {
-								Driver.Log (3, "Not linking with the framework {0} because it's not available when using Xcode 15.3+.", framework.Name);
-								continue;
-							}
-							break;
-						default:
-							if (App.IsSimulatorBuild && !App.IsFrameworkAvailableInSimulator (framework.Name)) {
-								if (App.AreAnyAssembliesTrimmed) {
-									ErrorHelper.Warning (5223, Errors.MX5223, framework.Name, App.PlatformName);
-								} else {
-									Driver.Log (3, Errors.MX5223, framework.Name, App.PlatformName);
-								}
-								continue;
-							}
-							break;
-						}
-
-						if (framework.Unavailable) {
-							ErrorHelper.Warning (181, Errors.MX0181 /* Not linking with the framework {0} (used by the type {1}) because it's not available on the current platform ({2}). */, framework.Name, td.FullName, App.PlatformName);
-							continue;
-						}
-
-						if (App.SdkVersion >= framework.Version) {
-							var add_to = framework.AlwaysWeakLinked || App.DeploymentTarget < framework.Version ? asm.WeakFrameworks : asm.Frameworks;
-							add_to.Add (framework.Name);
-							continue;
-						} else {
-							Driver.Log (3, "Not linking with the framework {0} (used by the type {1}) because it was introduced in {2} {3}, and we're using the {2} {4} SDK.", framework.Name, td.FullName, App.PlatformName, framework.Version, App.SdkVersion);
-						}
-					}
-				}
-			}
-
-			// Make sure there are no duplicates between frameworks and weak frameworks.
-			// Keep the weak ones.
-			asm.Frameworks.ExceptWith (asm.WeakFrameworks);
-		}
+#endif // !LEGACY_TOOLS
 
 #if !LEGACY_TOOLS
 		internal string? GenerateReferencingSource (string reference_m, IEnumerable<Symbol> symbols)
@@ -232,7 +135,7 @@ namespace Xamarin.Bundler {
 			sb.AppendLine ("}");
 			sb.AppendLine ();
 
-			Driver.WriteIfDifferent (reference_m, sb.ToString (), true);
+			Driver.WriteIfDifferent (App, reference_m, sb.ToString (), true);
 
 			return reference_m;
 		}
@@ -290,7 +193,7 @@ namespace Xamarin.Bundler {
 						throw ErrorHelper.CreateError (71, Errors.MX0071, platform, App.ProductName);
 					}
 				}
-				Driver.WriteIfDifferent (main_source, sb.ToString (), true);
+				Driver.WriteIfDifferent (App, main_source, sb.ToString (), true);
 			} catch (ProductException) {
 				throw;
 			} catch (Exception e) {
@@ -412,7 +315,7 @@ namespace Xamarin.Bundler {
 			sw.WriteLine ("\txamarin_executable_name = \"{0}\";", assembly_name);
 			if (app.XamarinRuntime == XamarinRuntime.MonoVM)
 				sw.WriteLine ("\tmono_use_llvm = {0};", enable_llvm ? "TRUE" : "FALSE");
-			sw.WriteLine ("\txamarin_log_level = {0};", Driver.Verbosity.ToString (CultureInfo.InvariantCulture));
+			sw.WriteLine ("\txamarin_log_level = {0};", Verbosity.ToString (CultureInfo.InvariantCulture));
 			sw.WriteLine ("\txamarin_arch_name = \"{0}\";", abi.AsArchString ());
 			if (!app.IsDefaultMarshalManagedExceptionMode)
 				sw.WriteLine ("\txamarin_marshal_managed_exception_mode = MarshalManagedExceptionMode{0};", app.MarshalManagedExceptions);
@@ -428,8 +331,11 @@ namespace Xamarin.Bundler {
 				var overwrite = kvp.Value.Overwrite;
 				sw.WriteLine ("\tsetenv (\"{0}\", \"{1}\", {2});", name.Replace ("\"", "\\\""), value.Replace ("\"", "\\\""), overwrite ? 1 : 0);
 			}
-			if (app.XamarinRuntime != XamarinRuntime.NativeAOT)
+			if (app.XamarinRuntime != XamarinRuntime.NativeAOT) {
+				if (app.DynamicRegistrationSupported)
+					sw.WriteLine ("\txamarin_initialize_dynamic_registrar ();");
 				sw.WriteLine ("\txamarin_supports_dynamic_registration = {0};", app.DynamicRegistrationSupported ? "TRUE" : "FALSE");
+			}
 			sw.WriteLine ("\txamarin_runtime_configuration_name = {0};", string.IsNullOrEmpty (app.RuntimeConfigurationFile) ? "NULL" : $"\"{app.RuntimeConfigurationFile}\"");
 			if (app.Registrar == RegistrarMode.TrimmableStatic)
 				sw.WriteLine ("\txamarin_set_is_trimmable_static_registrar (true);");

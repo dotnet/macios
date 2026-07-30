@@ -43,7 +43,7 @@ namespace Xamarin.MacDev.Tasks {
 
 				ExecuteTask (task, 1);
 				bool isTranslated = Engine.Logger.ErrorEvents [0].Message?.Contains (errorMessage) == true;
-				Assert.IsTrue (isTranslated, $"Should contain \"{errorMessage}\", but instead has value: \"{Engine.Logger.ErrorEvents [0].Message}\"");
+				Assert.That (isTranslated, Is.True, $"Should contain \"{errorMessage}\", but instead has value: \"{Engine.Logger.ErrorEvents [0].Message}\"");
 			} finally {
 				Thread.CurrentThread.CurrentUICulture = originalUICulture;
 				Thread.CurrentThread.CurrentCulture = originalCulture;
@@ -71,11 +71,11 @@ namespace Xamarin.MacDev.Tasks {
 			CultureInfo originalCulture = Thread.CurrentThread.CurrentCulture;
 
 			try {
-				Assert.IsFalse (string.IsNullOrEmpty (errorCode), "Error code is null or empty");
+				Assert.That (string.IsNullOrEmpty (errorCode), Is.False, "Error code is null or empty");
 				string? englishError = TranslateError ("en-US", errorCode);
 				string? newCultureError = TranslateError (culture, errorCode);
 
-				Assert.AreNotEqual (englishError, newCultureError, $"\"{errorCode}\" is not translated in {culture}.");
+				Assert.That (newCultureError, Is.Not.EqualTo (englishError), $"\"{errorCode}\" is not translated in {culture}.");
 			} catch (NullReferenceException) {
 				Assert.Fail ($"Error code \"{errorCode}\" was not found");
 			} finally {
@@ -110,8 +110,8 @@ namespace Xamarin.MacDev.Tasks {
 			var errorsNotInResources = string.Join (" ", resxHashSet.Where (n => !resourceHashSet.Contains (n) && !ignoreList.Contains (n)));
 			var errorsNotInResx = string.Join (" ", resourceHashSet.Where (n => !resxHashSet.Contains (n) && !ignoreList.Contains (n)));
 
-			Assert.IsEmpty (errorsNotInResources, $"The following error(s) were found in MSBStrings.resx but not through the MSBStrings resource. Try to recompile the msbuild project and then the test project\n{errorsNotInResources}");
-			Assert.IsEmpty (errorsNotInResx, $"The following error(s) were found in the MSBStrings resource but not in MSBStrings.resx. Try to recompile the msbuild project and then the test project\n{errorsNotInResx}");
+			Assert.That (errorsNotInResources, Is.Empty, $"The following error(s) were found in MSBStrings.resx but not through the MSBStrings resource. Try to recompile the msbuild project and then the test project\n{errorsNotInResources}");
+			Assert.That (errorsNotInResx, Is.Empty, $"The following error(s) were found in the MSBStrings resource but not in MSBStrings.resx. Try to recompile the msbuild project and then the test project\n{errorsNotInResx}");
 		}
 	}
 }

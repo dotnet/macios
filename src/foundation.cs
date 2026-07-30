@@ -4738,7 +4738,14 @@ namespace Foundation {
 		///         <remarks>To be added.</remarks>
 		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemGPSDifferentalKey")]
+		NSString GpsDifferentialKey { get; }
+
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'GpsDifferentialKey' instead.")]
+		[NoTV, NoiOS, NoMacCatalyst]
+		[Wrap ("GpsDifferentialKey")]
 		NSString GpsDifferentalKey { get; }
+#endif
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
@@ -5471,7 +5478,11 @@ namespace Foundation {
 			<remarks>Developers assign a function, delegate or anonymous method to this property to return a value to the object.   If developers assign a value to this property, it this will reset the value for the Delegate property to an internal handler that maps delegates to events.</remarks>
 			""")]
 		[Export ("metadataQuery:replacementValueForAttribute:value:"), DelegateName ("NSMetadataQueryValue"), DefaultValue (null)]
+#if XAMCORE_5_0
+		NSObject ReplacementValueForAttributeValue (NSMetadataQuery query, string attributeName, NSObject value);
+#else
 		NSObject ReplacementValueForAttributevalue (NSMetadataQuery query, string attributeName, NSObject value);
+#endif
 	}
 
 	[BaseType (typeof (NSObject))]
@@ -10081,7 +10092,15 @@ namespace Foundation {
 
 		[Static]
 		[Export ("credentialWithUser:password:persistence:")]
+		NSUrlCredential Create (string user, string password, NSUrlCredentialPersistence persistence);
+
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'Create' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("Create (user, password, persistence)")]
+		[Static]
 		NSUrlCredential FromUserPasswordPersistance (string user, string password, NSUrlCredentialPersistence persistence);
+#endif
 
 		[Export ("user")]
 		string User { get; }
@@ -11096,7 +11115,9 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("URLSession:task:willPerformHTTPRedirection:newRequest:completionHandler:")]
-		void WillPerformHttpRedirection (NSUrlSession session, NSUrlSessionTask task, NSHttpUrlResponse response, NSUrlRequest newRequest, Action<NSUrlRequest> completionHandler);
+#nullable enable
+		void WillPerformHttpRedirection (NSUrlSession session, NSUrlSessionTask task, NSHttpUrlResponse response, NSUrlRequest newRequest, Action<NSUrlRequest?> completionHandler);
+#nullable disable
 
 		/// <param name="session">To be added.</param>
 		/// <param name="task">To be added.</param>
@@ -12350,7 +12371,16 @@ namespace Foundation {
 		NSString ExpandTildeInPath ();
 
 		[Export ("stringByStandardizingPath")]
+#if XAMCORE_5_0
+		NSString StandardizePath ();
+#else
+		[Obsolete ("Use 'StandardizePath' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		NSString StandarizePath ();
+
+		[Wrap ("StandarizePath ()")]
+		NSString StandardizePath ();
+#endif
 
 		[Export ("stringByResolvingSymlinksInPath")]
 		NSString ResolveSymlinksInPath ();
@@ -12587,7 +12617,16 @@ namespace Foundation {
 
 		[PreSnippet ("Check (range);", Optimizable = true)]
 		[Export ("replaceOccurrencesOfString:withString:options:range:")]
+#if XAMCORE_5_0
+		nuint ReplaceOccurrences (NSString target, NSString replacement, NSStringCompareOptions options, NSRange range);
+#else
+		[Obsolete ("Use 'ReplaceOccurrences' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		nuint ReplaceOcurrences (NSString target, NSString replacement, NSStringCompareOptions options, NSRange range);
+
+		[Wrap ("ReplaceOcurrences (target, replacement, options, range)")]
+		nuint ReplaceOccurrences (NSString target, NSString replacement, NSStringCompareOptions options, NSRange range);
+#endif
 
 		[MacCatalyst (13, 1)]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
@@ -13062,6 +13101,7 @@ namespace Foundation {
 	[NoTV]
 	[NoiOS]
 	[NoMacCatalyst]
+	[ObjectiveCFramework ("AppKit")]
 	interface NSBindingSelectionMarker : NSCopying {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
@@ -15755,7 +15795,16 @@ namespace Foundation {
 		void EnqueueNotification (NSNotification notification, NSPostingStyle postingStyle, NSNotificationCoalescing coalesceMask, [NullAllowed] NSRunLoopMode [] modes);
 
 		[Export ("dequeueNotificationsMatching:coalesceMask:")]
+#if XAMCORE_5_0
+		void DequeueNotifications (NSNotification notification, NSNotificationCoalescing coalesceMask);
+#else
+		[Obsolete ("Use 'DequeueNotifications' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		void DequeueNotificationsMatchingcoalesceMask (NSNotification notification, NSNotificationCoalescing coalesceMask);
+
+		[Wrap ("DequeueNotificationsMatchingcoalesceMask (notification, coalesceMask)")]
+		void DequeueNotifications (NSNotification notification, NSNotificationCoalescing coalesceMask);
+#endif
 	}
 
 	[BaseType (typeof (NSObject))]
@@ -18743,7 +18792,16 @@ namespace Foundation {
 		NSDictionary DirectoryAttributes { get; }
 
 		[Export ("skipDescendents")]
+#if XAMCORE_5_0
+		void SkipDescendants ();
+#else
+		[Obsolete ("Use 'SkipDescendants' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		void SkipDescendents ();
+
+		[Wrap ("SkipDescendents ()")]
+		void SkipDescendants ();
+#endif
 
 		[NoMac]
 		[MacCatalyst (13, 1)]
@@ -20464,7 +20522,16 @@ namespace Foundation {
 		AETransactionID TransactionID ();*/
 
 		[Export ("setParamDescriptor:forKeyword:")]
+#if XAMCORE_5_0
+		void SetParamDescriptor (NSAppleEventDescriptor descriptor, AEKeyword keyword);
+#else
+		[Obsolete ("Use 'SetParamDescriptor' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		void SetParamDescriptorforKeyword (NSAppleEventDescriptor descriptor, AEKeyword keyword);
+
+		[Wrap ("SetParamDescriptorforKeyword (descriptor, keyword)")]
+		void SetParamDescriptor (NSAppleEventDescriptor descriptor, AEKeyword keyword);
+#endif
 
 		[return: NullAllowed]
 		[Export ("paramDescriptorForKeyword:")]
@@ -20474,7 +20541,16 @@ namespace Foundation {
 		void RemoveParamDescriptorWithKeyword (AEKeyword keyword);
 
 		[Export ("setAttributeDescriptor:forKeyword:")]
+#if XAMCORE_5_0
+		void SetAttributeDescriptor (NSAppleEventDescriptor descriptor, AEKeyword keyword);
+#else
+		[Obsolete ("Use 'SetAttributeDescriptor' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		void SetAttributeDescriptorforKeyword (NSAppleEventDescriptor descriptor, AEKeyword keyword);
+
+		[Wrap ("SetAttributeDescriptorforKeyword (descriptor, keyword)")]
+		void SetAttributeDescriptor (NSAppleEventDescriptor descriptor, AEKeyword keyword);
+#endif
 
 		[return: NullAllowed]
 		[Export ("attributeDescriptorForKeyword:")]
@@ -20488,7 +20564,16 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("insertDescriptor:atIndex:")]
+#if XAMCORE_5_0
+		void InsertDescriptor (NSAppleEventDescriptor descriptor, nint index);
+#else
+		[Obsolete ("Use 'InsertDescriptor' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		void InsertDescriptoratIndex (NSAppleEventDescriptor descriptor, nint index);
+
+		[Wrap ("InsertDescriptoratIndex (descriptor, index)")]
+		void InsertDescriptor (NSAppleEventDescriptor descriptor, nint index);
+#endif
 
 		/// <param name="index">To be added.</param>
 		/// <summary>To be added.</summary>
@@ -20505,7 +20590,16 @@ namespace Foundation {
 		void RemoveDescriptorAtIndex (nint index);
 
 		[Export ("setDescriptor:forKeyword:")]
+#if XAMCORE_5_0
+		void SetDescriptor (NSAppleEventDescriptor descriptor, AEKeyword keyword);
+#else
+		[Obsolete ("Use 'SetDescriptor' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		void SetDescriptorforKeyword (NSAppleEventDescriptor descriptor, AEKeyword keyword);
+
+		[Wrap ("SetDescriptorforKeyword (descriptor, keyword)")]
+		void SetDescriptor (NSAppleEventDescriptor descriptor, AEKeyword keyword);
+#endif
 
 		[return: NullAllowed]
 		[Export ("descriptorForKeyword:")]

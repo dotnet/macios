@@ -121,21 +121,21 @@ namespace MonoTouchFixtures.Security {
 					byte [] plain = new byte [20] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
 					byte [] cipher;
 					if (TestRuntime.CheckXcodeVersion (8, 0)) {
-						Assert.True (public_key.IsAlgorithmSupported (SecKeyOperationType.Encrypt, SecKeyAlgorithm.RsaEncryptionPkcs1), "public/IsAlgorithmSupported/Encrypt");
+						Assert.That (public_key.IsAlgorithmSupported (SecKeyOperationType.Encrypt, SecKeyAlgorithm.RsaEncryptionPkcs1), Is.True, "public/IsAlgorithmSupported/Encrypt");
 
 #if MONOMAC
-						Assert.True (public_key.IsAlgorithmSupported (SecKeyOperationType.Decrypt, SecKeyAlgorithm.RsaEncryptionPkcs1), "public/IsAlgorithmSupported/Decrypt");
+						Assert.That (public_key.IsAlgorithmSupported (SecKeyOperationType.Decrypt, SecKeyAlgorithm.RsaEncryptionPkcs1), Is.True, "public/IsAlgorithmSupported/Decrypt");
 
 						using (var pub = public_key.GetPublicKey ()) {
 							// macOS behaviour is not consistent - but the test main goal is to check we get a key
 							Assert.That (pub.Handle, Is.Not.EqualTo (IntPtr.Zero), "public/GetPublicKey");
 						}
 #else
-						Assert.True (public_key.IsAlgorithmSupported (SecKeyOperationType.Decrypt, SecKeyAlgorithm.RsaEncryptionPkcs1), "public/IsAlgorithmSupported/Decrypt");
+						Assert.That (public_key.IsAlgorithmSupported (SecKeyOperationType.Decrypt, SecKeyAlgorithm.RsaEncryptionPkcs1), Is.True, "public/IsAlgorithmSupported/Decrypt");
 
 						using (var pub = public_key.GetPublicKey ()) {
 							// a new native instance of the key is returned (so having a new managed SecKey is fine)
-							Assert.False (pub.Handle == public_key.Handle, "public/GetPublicKey");
+							Assert.That (pub.Handle == public_key.Handle, Is.False, "public/GetPublicKey");
 						}
 #endif
 
@@ -143,11 +143,11 @@ namespace MonoTouchFixtures.Security {
 							Assert.That (attrs.Count, Is.GreaterThan ((nuint) 0), "public/GetAttributes");
 						}
 						using (var data = public_key.GetExternalRepresentation (out error)) {
-							Assert.Null (error, "public/error-1");
-							Assert.NotNull (data, "public/GetExternalRepresentation");
+							Assert.That (error, Is.Null, "public/error-1");
+							Assert.That (data, Is.Not.Null, "public/GetExternalRepresentation");
 
 							using (var key = SecKey.Create (data, SecKeyType.RSA, SecKeyClass.Public, MinRsaKeySize, null, out error)) {
-								Assert.Null (error, "public/Create/error-1");
+								Assert.That (error, Is.Null, "public/Create/error-1");
 							}
 						}
 					}
@@ -155,8 +155,8 @@ namespace MonoTouchFixtures.Security {
 
 					byte [] result;
 					if (TestRuntime.CheckXcodeVersion (8, 0)) {
-						Assert.False (private_key.IsAlgorithmSupported (SecKeyOperationType.Encrypt, SecKeyAlgorithm.RsaEncryptionPkcs1), "private/IsAlgorithmSupported/Encrypt");
-						Assert.True (private_key.IsAlgorithmSupported (SecKeyOperationType.Decrypt, SecKeyAlgorithm.RsaEncryptionPkcs1), "private/IsAlgorithmSupported/Decrypt");
+						Assert.That (private_key.IsAlgorithmSupported (SecKeyOperationType.Encrypt, SecKeyAlgorithm.RsaEncryptionPkcs1), Is.False, "private/IsAlgorithmSupported/Encrypt");
+						Assert.That (private_key.IsAlgorithmSupported (SecKeyOperationType.Decrypt, SecKeyAlgorithm.RsaEncryptionPkcs1), Is.True, "private/IsAlgorithmSupported/Decrypt");
 
 						using (var pub2 = private_key.GetPublicKey ()) {
 #if MONOMAC
@@ -172,11 +172,11 @@ namespace MonoTouchFixtures.Security {
 							Assert.That (attrs.Count, Is.GreaterThan ((nuint) 0), "private/GetAttributes");
 						}
 						using (var data2 = private_key.GetExternalRepresentation (out error)) {
-							Assert.Null (error, "private/error-1");
-							Assert.NotNull (data2, "private/GetExternalRepresentation");
+							Assert.That (error, Is.Null, "private/error-1");
+							Assert.That (data2, Is.Not.Null, "private/GetExternalRepresentation");
 
 							using (var key = SecKey.Create (data2, SecKeyType.RSA, SecKeyClass.Private, MinRsaKeySize, null, out error)) {
-								Assert.Null (error, "private/Create/error-1");
+								Assert.That (error, Is.Null, "private/Create/error-1");
 							}
 						}
 					}
@@ -238,12 +238,12 @@ namespace MonoTouchFixtures.Security {
 					byte [] plain = new byte [0];
 					byte [] cipher;
 					if (TestRuntime.CheckXcodeVersion (8, 0)) {
-						Assert.True (public_key.IsAlgorithmSupported (SecKeyOperationType.Encrypt, SecKeyAlgorithm.RsaEncryptionOaepSha1), "public/IsAlgorithmSupported/Encrypt");
+						Assert.That (public_key.IsAlgorithmSupported (SecKeyOperationType.Encrypt, SecKeyAlgorithm.RsaEncryptionOaepSha1), Is.True, "public/IsAlgorithmSupported/Encrypt");
 						// I would have expect false
 #if MONOMAC
-						Assert.True (public_key.IsAlgorithmSupported (SecKeyOperationType.Decrypt, SecKeyAlgorithm.RsaEncryptionOaepSha1), "public/IsAlgorithmSupported/Decrypt");
+						Assert.That (public_key.IsAlgorithmSupported (SecKeyOperationType.Decrypt, SecKeyAlgorithm.RsaEncryptionOaepSha1), Is.True, "public/IsAlgorithmSupported/Decrypt");
 #else
-						Assert.True (public_key.IsAlgorithmSupported (SecKeyOperationType.Decrypt, SecKeyAlgorithm.RsaEncryptionOaepSha1), "public/IsAlgorithmSupported/Decrypt");
+						Assert.That (public_key.IsAlgorithmSupported (SecKeyOperationType.Decrypt, SecKeyAlgorithm.RsaEncryptionOaepSha1), Is.True, "public/IsAlgorithmSupported/Decrypt");
 #endif
 					}
 					Assert.That (public_key.Encrypt (SecPadding.OAEP, plain, out cipher), Is.EqualTo (SecStatusCode.Success), "Encrypt");
@@ -251,8 +251,8 @@ namespace MonoTouchFixtures.Security {
 
 					byte [] result;
 					if (TestRuntime.CheckXcodeVersion (8, 0)) {
-						Assert.False (private_key.IsAlgorithmSupported (SecKeyOperationType.Encrypt, SecKeyAlgorithm.RsaEncryptionOaepSha1), "private/IsAlgorithmSupported/Encrypt");
-						Assert.True (private_key.IsAlgorithmSupported (SecKeyOperationType.Decrypt, SecKeyAlgorithm.RsaEncryptionOaepSha1), "private/IsAlgorithmSupported/Decrypt");
+						Assert.That (private_key.IsAlgorithmSupported (SecKeyOperationType.Encrypt, SecKeyAlgorithm.RsaEncryptionOaepSha1), Is.False, "private/IsAlgorithmSupported/Encrypt");
+						Assert.That (private_key.IsAlgorithmSupported (SecKeyOperationType.Decrypt, SecKeyAlgorithm.RsaEncryptionOaepSha1), Is.True, "private/IsAlgorithmSupported/Decrypt");
 					}
 					Assert.That (private_key.Decrypt (SecPadding.OAEP, cipher, out result), Is.EqualTo (SecStatusCode.Success), "Decrypt");
 					Assert.That (plain, Is.EqualTo (result), "match");
@@ -381,7 +381,7 @@ namespace MonoTouchFixtures.Security {
 			var chrono = new Stopwatch ();
 			chrono.Start ();
 			var rsa = new RSACryptoServiceProvider (4096);
-			Assert.IsNotNull (rsa.ExportParameters (true), "ExportParameters"); // that will provoke the key generation
+			Assert.That (rsa.ExportParameters (true), Is.Not.Null, "ExportParameters"); // that will provoke the key generation
 			Console.WriteLine ("Key generation {0} ms", chrono.ElapsedMilliseconds);
 			chrono.Restart ();
 
@@ -454,26 +454,26 @@ namespace MonoTouchFixtures.Security {
 			TestRuntime.AssertXcodeVersion (8, 0);
 			NSError error;
 			using (var key = SecKey.CreateRandomKey (SecKeyType.RSA, MinRsaKeySize, null, out error)) {
-				Assert.Null (error, "RSA/error");
+				Assert.That (error, Is.Null, "RSA/error");
 
 				using (var data = NSData.FromArray (new byte [] { 1, 2, 3 })) {
 					using (var sig = key.CreateSignature (SecKeyAlgorithm.RsaSignatureRaw, data, out error)) {
-						Assert.Null (error, "Sign/error");
+						Assert.That (error, Is.Null, "Sign/error");
 
 						using (var pub = key.GetPublicKey ()) {
 							var result = pub.VerifySignature (SecKeyAlgorithm.RsaSignatureRaw, data, sig, out error);
-							Assert.Null (error, "Verify/no-error");
-							Assert.True (result, "Verify/true");
+							Assert.That (error, Is.Null, "Verify/no-error");
+							Assert.That (result, Is.True, "Verify/true");
 
 							result = pub.VerifySignature (SecKeyAlgorithm.RsaSignatureRaw, data, data, out error);
-							Assert.NotNull (error, "Verify/error");
-							Assert.False (result, "Verify/false");
+							Assert.That (error, Is.Not.Null, "Verify/error");
+							Assert.That (result, Is.False, "Verify/false");
 
 							using (var cipher = pub.CreateEncryptedData (SecKeyAlgorithm.RsaEncryptionPkcs1, data, out error)) {
-								Assert.Null (error, "Encrypt/error");
+								Assert.That (error, Is.Null, "Encrypt/error");
 
 								using (var plain = key.CreateDecryptedData (SecKeyAlgorithm.RsaEncryptionPkcs1, cipher, out error)) {
-									Assert.Null (error, "Decrypt/error");
+									Assert.That (error, Is.Null, "Decrypt/error");
 									Assert.That (data.ToArray (), Is.EqualTo (plain.ToArray ()), "roundtrip");
 								}
 
@@ -487,15 +487,15 @@ namespace MonoTouchFixtures.Security {
 								if (badDecrypt) {
 									// on macOS this fails with CSSMERR_CSP_INPUT_LENGTH_ERROR (I haven't checked on iOS/tvOS)
 									// but on  Mac Catalyst apps on Sonoma this succeeds... which means Mac Catalyst can decrypt random data? the returned data looks random too. 🤷‍♂️
-									Assert.Null (key.CreateDecryptedData (SecKeyAlgorithm.RsaEncryptionPkcs1, data, out error), "bad data");
-									Assert.NotNull (error, "bad decrypt");
+									Assert.That (key.CreateDecryptedData (SecKeyAlgorithm.RsaEncryptionPkcs1, data, out error), Is.Null, "bad data");
+									Assert.That (error, Is.Not.Null, "bad decrypt");
 								}
 							}
 						}
 					}
 
 					using (var sig = key.CreateSignature (SecKeyAlgorithm.EcdsaSignatureRfc4754, data, out error)) {
-						Assert.NotNull (error, "wrong key type");
+						Assert.That (error, Is.Not.Null, "wrong key type");
 					}
 				}
 			}
@@ -507,36 +507,36 @@ namespace MonoTouchFixtures.Security {
 			TestRuntime.AssertXcodeVersion (8, 0);
 			NSError error;
 			using (var key = SecKey.CreateRandomKey (SecKeyType.EC, 384, null, out error)) {
-				Assert.Null (error, "EC/error");
+				Assert.That (error, Is.Null, "EC/error");
 				using (var data = NSData.FromArray (new byte [] { 1, 2, 3 })) {
 					using (var sig = key.CreateSignature (SecKeyAlgorithm.EcdsaSignatureRfc4754, data, out error)) {
-						Assert.Null (error, "Sign/error");
+						Assert.That (error, Is.Null, "Sign/error");
 
 						using (var pub = key.GetPublicKey ()) {
 							var result = pub.VerifySignature (SecKeyAlgorithm.EcdsaSignatureRfc4754, data, sig, out error);
-							Assert.Null (error, "Verify/no-error");
-							Assert.True (result, "Verify/true");
+							Assert.That (error, Is.Null, "Verify/no-error");
+							Assert.That (result, Is.True, "Verify/true");
 
 							result = pub.VerifySignature (SecKeyAlgorithm.EcdsaSignatureRfc4754, data, data, out error);
-							Assert.NotNull (error, "Verify/error");
-							Assert.False (result, "Verify/false");
+							Assert.That (error, Is.Not.Null, "Verify/error");
+							Assert.That (result, Is.False, "Verify/false");
 
 							using (var cipher = pub.CreateEncryptedData (SecKeyAlgorithm.EciesEncryptionCofactorX963Sha1AesGcm, data, out error)) {
-								Assert.Null (error, "Encrypt/error");
+								Assert.That (error, Is.Null, "Encrypt/error");
 
 								using (var plain = key.CreateDecryptedData (SecKeyAlgorithm.EciesEncryptionCofactorX963Sha1AesGcm, cipher, out error)) {
-									Assert.Null (error, "Decrypt/error");
+									Assert.That (error, Is.Null, "Decrypt/error");
 									Assert.That (data.ToArray (), Is.EqualTo (plain.ToArray ()), "roundtrip");
 								}
 
-								Assert.Null (key.CreateDecryptedData (SecKeyAlgorithm.EciesEncryptionCofactorX963Sha1AesGcm, data, out error), "bad data");
-								Assert.NotNull (error, "bad decrypt");
+								Assert.That (key.CreateDecryptedData (SecKeyAlgorithm.EciesEncryptionCofactorX963Sha1AesGcm, data, out error), Is.Null, "bad data");
+								Assert.That (error, Is.Not.Null, "bad decrypt");
 							}
 						}
 					}
 
 					using (var sig = key.CreateSignature (SecKeyAlgorithm.RsaSignatureRaw, data, out error)) {
-						Assert.NotNull (error, "wrong key type");
+						Assert.That (error, Is.Not.Null, "wrong key type");
 					}
 				}
 			}
@@ -548,7 +548,7 @@ namespace MonoTouchFixtures.Security {
 			TestRuntime.AssertXcodeVersion (8, 0);
 			NSError error;
 			using (var key = SecKey.CreateRandomKey (SecKeyType.ECSecPrimeRandom, 384, null, out error)) {
-				Assert.Null (error, "ECSecPrimeRandom/error");
+				Assert.That (error, Is.Null, "ECSecPrimeRandom/error");
 
 				SecKeyKeyExchangeParameter p = new SecKeyKeyExchangeParameter () {
 					RequestedSize = 16,
@@ -557,7 +557,7 @@ namespace MonoTouchFixtures.Security {
 
 				using (var pub = key.GetPublicKey ())
 				using (var ex = key.GetKeyExchangeResult (SecKeyAlgorithm.EcdhKeyExchangeStandardX963Sha512, pub, p.Dictionary, out error)) {
-					Assert.Null (error, "GetKeyExchangeResult/error");
+					Assert.That (error, Is.Null, "GetKeyExchangeResult/error");
 					Assert.That (ex.Length, Is.EqualTo ((nuint) p.RequestedSize), "GetKeyExchangeResult/result");
 				}
 			}

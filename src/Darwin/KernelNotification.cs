@@ -32,6 +32,7 @@
 using CoreFoundation;
 using System.Runtime.CompilerServices;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace Darwin {
 	/// <summary>To be added.</summary>
@@ -183,7 +184,12 @@ namespace Darwin {
 
 		// iOS only
 		/// <summary>To be added.</summary>
-		ProcAppactive = 0x00800000,
+		ProcAppActive = 0x00800000,
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'ProcAppActive' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		ProcAppactive = ProcAppActive,
+#endif
 		/// <summary>To be added.</summary>
 		ProcAppBackground = 0x00400000,
 		/// <summary>To be added.</summary>

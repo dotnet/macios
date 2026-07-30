@@ -26,7 +26,7 @@ namespace MonoTouchFixtures.NaturalLanguage {
 		{
 			var text = "Die Kleinen haben friedlich zusammen gespielt.";
 			var lang = NLLanguageRecognizer.GetDominantLanguage (text);
-			Assert.AreEqual (NLLanguage.German, lang);
+			Assert.That (lang, Is.EqualTo (NLLanguage.German));
 		}
 
 		[Test]

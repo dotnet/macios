@@ -123,6 +123,14 @@
 		<!-- As a last resort, the default is false for all platforms -->
 		<_BundlerDebug Condition="'$(_BundlerDebug)' == ''">false</_BundlerDebug>
 
+		<!--
+			Hot Reload requires that we don't modify user (reloadable) assemblies. It's a debug-only
+			feature, so default $(HotReloadCompatibleBuild) to the debug state: this keeps the current
+			behaviour (and app size) for release builds, where the extra unconditional preservation of
+			smart-enum conversion methods would otherwise cost a bit of app size.
+		-->
+		<HotReloadCompatibleBuild Condition="'$(HotReloadCompatibleBuild)' == ''">$(_BundlerDebug)</HotReloadCompatibleBuild>
+
 		<!-- On the other hand, we want the linker to link away debug support in the actual code unless we're building for Debug -->
 		<DebuggerSupport Condition="'$(DebuggerSupport)' == ''">$(_BundlerDebug)</DebuggerSupport>
 
@@ -271,6 +279,9 @@
 			_ResolveAppExtensionReferences;
 			_ExtendAppExtensionReferences;
 			_ComputeLinkerArguments;
+			_PrepareAssemblies;
+			_SetDynamicRegistrationSupportedFeature;
+			_SetSmartEnumConversionsRootDescriptor;
 			_ComputeFrameworkFilesToPublish;
 			_ComputeDynamicLibrariesToPublish;
 			ComputeFilesToPublish;
@@ -318,13 +329,24 @@
 	<Target Name="_ComputePublishTrimmed">
 		<PropertyGroup>
 			<_MustTrim Condition="'$(_MustTrim)' == '' And '$(RuntimeIdentifier)' != '' And ($(_ProjectType.EndsWith('ExecutableProject')) Or $(_ProjectType.EndsWith('AppExtensionProject'))) And '$(IsMacEnabled)' == 'true'">true</_MustTrim>
+
+			<!--
+				If we're not trimming anything (the link mode is 'None', which means no assemblies are trimmed) and
+				we're not running any custom trimmer steps (which is the case when both PrepareAssemblies and
+				PostProcessAssemblies are 'true', because then all the custom trimmer steps are moved to the
+				assembly-preparer's post-processing step instead), then there's nothing for the trimmer to do, so
+				default PublishTrimmed to false to skip running the trimmer entirely.
+			-->
+			<_CanSkipTrimmer Condition="'$(_CanSkipTrimmer)' == '' And '$(_LinkMode)' == 'None' And '$(TrimMode)' == 'copy' And '$(PrepareAssemblies)' == 'true' And '$(PostProcessAssemblies)' == 'true'">true</_CanSkipTrimmer>
+			<PublishTrimmed Condition="'$(PublishTrimmed)' == '' And '$(_CanSkipTrimmer)' == 'true'">false</PublishTrimmed>
+
 			<PublishTrimmed Condition="'$(PublishTrimmed)' == '' And '$(_MustTrim)' == 'true'">true</PublishTrimmed>
 
 			<_LinkModeProperty Condition="'$(_PlatformName)' == 'macOS'">LinkMode</_LinkModeProperty>
 			<_LinkModeProperty Condition="'$(_PlatformName)' != 'macOS'">MtouchLink</_LinkModeProperty>
 		</PropertyGroup>
-		<Error Condition="'$(_MustTrim)' == 'true' And '$(PublishTrimmed)' != 'true'" Text="$(_PlatformName) projects must build with PublishTrimmed=true. Current value: $(PublishTrimmed). Set '$(_LinkModeProperty)=None' instead to disable trimming for all assemblies." />
-		<PropertyGroup Condition="'$(PublishTrimmed)' != '' And '$(IsMacEnabled)' != 'true'">
+		<Error Condition="'$(_MustTrim)' == 'true' And '$(PublishTrimmed)' != 'true' And '$(_CanSkipTrimmer)' != 'true'" Text="$(_PlatformName) projects must build with PublishTrimmed=true. Current value: $(PublishTrimmed). Set '$(_LinkModeProperty)=None' instead to disable trimming for all assemblies." />
+		<PropertyGroup Condition="'$(PublishTrimmed)' != '' And '$(IsMacEnabled)' != 'true' And '$(_CanSkipTrimmer)' != 'true'">
 			<_PreviousPublishTrimmedValue>$(PublishTrimmed)</_PreviousPublishTrimmedValue>
 			<PublishTrimmed />
 		</PropertyGroup>
@@ -415,6 +437,8 @@
 			Targets="_BuildRidSpecificAppBundle"
 			Properties="
 				AppendRuntimeIdentifierToOutputPath=true;
+				BuildSessionId=$(BuildSessionId);
+				BuildAppName=$(BuildAppName);
 				RuntimeIdentifier=%(_RuntimeIdentifiersAsItems.Identity);
 				_CodesignItemsPath=%(_RuntimeIdentifiersAsItems.RidSpecificCodesignItemsPath);
 				_MtouchSymbolsList=%(_RuntimeIdentifiersAsItems.RidSpecificSymbolsListPath);
@@ -548,6 +572,66 @@
 		</ItemGroup>
 	</Target>
 
+	<!--
+		Enables the 'ObjCRuntime.Runtime.DynamicRegistrationSupported' trimmer feature switch so that ILLink
+		hardcodes Runtime.DynamicRegistrationSupported. When PrepareAssemblies is enabled, the assembly-preparer's
+		RegistrarRemovalTrackingStep computes whether the dynamic registrar is needed (instead of rewriting the
+		platform assembly) and writes the value - as the 'DynamicRegistrationSupported' MSBuild output property -
+		to $(_AssemblyPreparerMSBuildOutputFile). This target runs after _PrepareAssemblies and before the trimmer.
+		It's not incremental-gated, so even if _PrepareAssemblies was skipped (because its outputs were up-to-date),
+		the value is still read from the (persisted) file and the feature switch is set. A user-specified
+		$(DynamicRegistrationSupported) always wins.
+	-->
+	<Target Name="_SetDynamicRegistrationSupportedFeature" Condition="'$(PrepareAssemblies)' == 'true'">
+		<ReadLinesFromFile
+			File="$(_AssemblyPreparerMSBuildOutputFile)"
+			Condition="'$(DynamicRegistrationSupported)' == '' And Exists('$(_AssemblyPreparerMSBuildOutputFile)')">
+			<Output TaskParameter="Lines" ItemName="_AssemblyPreparerMSBuildOutputProperty" />
+		</ReadLinesFromFile>
+		<ItemGroup>
+			<_DynamicRegistrationSupportedLine Include="@(_AssemblyPreparerMSBuildOutputProperty)" Condition="$([System.String]::Copy('%(Identity)').StartsWith('DynamicRegistrationSupported='))" />
+		</ItemGroup>
+		<PropertyGroup>
+			<!-- The user-specified $(DynamicRegistrationSupported) always wins; otherwise use the value the
+			     assembly-preparer wrote (the 'DynamicRegistrationSupported=<value>' line in the output file). -->
+			<_DynamicRegistrationSupportedLineText>@(_DynamicRegistrationSupportedLine)</_DynamicRegistrationSupportedLineText>
+			<_DynamicRegistrationSupported>$(DynamicRegistrationSupported)</_DynamicRegistrationSupported>
+			<_DynamicRegistrationSupported Condition="'$(_DynamicRegistrationSupported)' == '' And '$(_DynamicRegistrationSupportedLineText)' != ''">$(_DynamicRegistrationSupportedLineText.Replace('DynamicRegistrationSupported=', ''))</_DynamicRegistrationSupported>
+		</PropertyGroup>
+		<ItemGroup Condition="'$(_DynamicRegistrationSupported)' != ''">
+			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.DynamicRegistrationSupported" Value="$(_DynamicRegistrationSupported)" Trim="true" />
+		</ItemGroup>
+	</Target>
+
+	<!--
+		Wires the smart-enum conversion root-descriptor XML (emitted by the assembly-preparer's
+		PreserveSmartEnumConversionsStep when $(HotReloadCompatibleBuild) is enabled) into the trimmer.
+		Instead of injecting [DynamicDependency] attributes into user (reloadable) assemblies - which
+		would break Hot Reload - the assembly-preparer writes an ILLink root-descriptor XML that
+		preserves the framework-side conversion methods (GetConstant/GetValue), and reports its path as
+		the 'SmartEnumConversionsRootDescriptor' MSBuild output property in $(_AssemblyPreparerMSBuildOutputFile).
+		This target runs after _PrepareAssemblies and before the trimmer. It's not incremental-gated, so
+		even if _PrepareAssemblies was skipped (because its outputs were up-to-date), the value is still
+		read from the (persisted) file and the descriptor is added to the trimmer inputs.
+	-->
+	<Target Name="_SetSmartEnumConversionsRootDescriptor" Condition="'$(PrepareAssemblies)' == 'true'">
+		<ReadLinesFromFile
+			File="$(_AssemblyPreparerMSBuildOutputFile)"
+			Condition="Exists('$(_AssemblyPreparerMSBuildOutputFile)')">
+			<Output TaskParameter="Lines" ItemName="_SmartEnumConversionsMSBuildOutputProperty" />
+		</ReadLinesFromFile>
+		<ItemGroup>
+			<_SmartEnumConversionsRootDescriptorLine Include="@(_SmartEnumConversionsMSBuildOutputProperty)" Condition="$([System.String]::Copy('%(Identity)').StartsWith('SmartEnumConversionsRootDescriptor='))" />
+		</ItemGroup>
+		<PropertyGroup>
+			<_SmartEnumConversionsRootDescriptorLineText>@(_SmartEnumConversionsRootDescriptorLine)</_SmartEnumConversionsRootDescriptorLineText>
+			<_SmartEnumConversionsRootDescriptor Condition="'$(_SmartEnumConversionsRootDescriptorLineText)' != ''">$(_SmartEnumConversionsRootDescriptorLineText.Replace('SmartEnumConversionsRootDescriptor=', ''))</_SmartEnumConversionsRootDescriptor>
+		</PropertyGroup>
+		<ItemGroup Condition="'$(_SmartEnumConversionsRootDescriptor)' != '' And Exists('$(_SmartEnumConversionsRootDescriptor)')">
+			<TrimmerRootDescriptor Include="$(_SmartEnumConversionsRootDescriptor)" />
+		</ItemGroup>
+	</Target>
+
 	<Target Name="_ComputeLinkerArguments" DependsOnTargets="$(_ComputeLinkerArgumentsDependsOn)" />
 
 	<Target Name="_ComputeLinkerInputs">
@@ -575,10 +659,33 @@
 		</PropertyGroup>
 
 		<PropertyGroup>
-			<!-- Yep, we want to run ILLink as well, because we need our custom steps to run (NativeAOT sets this to false, so set it back to true) -->
-			<RunILLink Condition="'$(PublishAot)' == 'true'">true</RunILLink>
+			<!--
+				When using NativeAOT + PrepareAssemblies, all our custom linker steps are executed by the
+				assembly-preparer (in the _PrepareAssemblies / _PostprocessAssemblies targets) instead of
+				inside ILLink (they're gated out of the _TrimmerCustomSteps item group when PrepareAssemblies
+				is true). The only reason we run ILLink for NativeAOT is to execute those custom steps (NativeAOT
+				sets RunILLink=false by default and does its own trimming via ILC); now that the custom steps run
+				elsewhere, running ILLink first is redundant - it just trims the assemblies before ILC, but ILC
+				trims them again anyway. So we skip ILLink entirely here and let ILC do all the trimming (the
+				standard NativeAOT flow). This simplifies the pipeline and makes it possible to run ILC before the
+				native registrar code is generated. When ILLink is skipped, we copy the prepared assemblies to the
+				IntermediateLinkDir ourselves (see _PopulateLinkDirWhenSkippingILLink).
+
+				This is gated on .NET 11+: feeding the untrimmed assemblies to ILC hits ILC's duplicate-type-name
+				bug (https://github.com/dotnet/runtime/issues/127004, e.g. the two Foundation.NSDictionary_Proxy
+				types the trimmable-static registrar emits), which is only fixed in the .NET 11+ ILC. On .NET 10
+				we keep running ILLink (which trims away the duplicates before ILC sees them).
+			-->
+			<_SkipILLink Condition="'$(_SkipILLink)' == '' And '$(_UseNativeAot)' == 'true' And '$(PrepareAssemblies)' == 'true' And '$(PostProcessAssemblies)' == 'true' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '11.0'))">true</_SkipILLink>
+			<_SkipILLink Condition="'$(_SkipILLink)' == ''">false</_SkipILLink>
+
+			<!-- Yep, we want to run ILLink as well, because we need our custom steps to run (NativeAOT sets this to false, so set it back to true), unless we're skipping ILLink (see _SkipILLink above) -->
+			<RunILLink Condition="'$(PublishAot)' == 'true' And '$(_SkipILLink)' != 'true'">true</RunILLink>
 
 			<TypeMapEntryAssembly Condition="'$(Registrar)' == 'trimmable-static'">$(_TypeMapAssemblyName)</TypeMapEntryAssembly>
+			<!-- ILLink targets add typemap-entry-assembly to _ExtraTrimmerArgs in a static PropertyGroup,
+			     but that's evaluated at import time before TypeMapEntryAssembly is set. Add it here instead. -->
+			<_ExtraTrimmerArgs Condition="'$(Registrar)' == 'trimmable-static' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '11.0'))">$(_ExtraTrimmerArgs) --typemap-entry-assembly &quot;$(_TypeMapAssemblyName)&quot;</_ExtraTrimmerArgs>
 
 			<!--
 				In the case of NativeAOT builds, the trim warnings will be produced either by the ILLink roslyn analyzer in Debug builds
@@ -592,13 +699,13 @@
 			<_CustomLinkerOptionsFile>$([System.IO.Path]::GetFullPath('$(IntermediateOutputPath)custom-linker-options.txt'))</_CustomLinkerOptionsFile>
 			<_CustomLinkerOptionsFile Condition="'$(BuildSessionId)' != ''">$(IntermediateOutputPath)custom-linker-options.txt</_CustomLinkerOptionsFile>
 
+			<!-- The files the assembly-preparer writes its MSBuild output properties to (one per pass; read back in _SetDynamicRegistrationSupportedFeature and added to FileWrites). -->
+			<_AssemblyPreparerMSBuildOutputFile Condition="'$(PrepareAssemblies)' == 'true'">$(DeviceSpecificIntermediateOutputPath)assembly-preparer-msbuild-output.txt</_AssemblyPreparerMSBuildOutputFile>
+			<_AssemblyPostProcessorMSBuildOutputFile Condition="'$(PrepareAssemblies)' == 'true'">$(DeviceSpecificIntermediateOutputPath)assembly-postprocessor-msbuild-output.txt</_AssemblyPostProcessorMSBuildOutputFile>
+
 			<!-- The directory where the linker puts *.items files that will be loaded in the _LoadLinkerOutput target -->
 			<_LinkerItemsDirectory>$([System.IO.Path]::GetFullPath('$(IntermediateOutputPath)linker-items'))</_LinkerItemsDirectory>
 			<_LinkerItemsDirectory Condition="'$(BuildSessionId)' != ''">$(IntermediateOutputPath)linker-items</_LinkerItemsDirectory>
-
-			<!-- A temporary output directory for our linker steps -->
-			<_LinkerCacheDirectory>$([System.IO.Path]::GetFullPath('$(IntermediateOutputPath)linker-cache'))</_LinkerCacheDirectory>
-			<_LinkerCacheDirectory Condition="'$(BuildSessionId)' != ''">$(IntermediateOutputPath)linker-cache</_LinkerCacheDirectory>
 
 			<!-- Set linker feature flags for device/simulator builds -->
 			<_IsSimulatorFeature Condition="'$(SdkIsMobile)' == 'true' And '$(_SdkIsSimulator)' == 'true'">true</_IsSimulatorFeature>
@@ -633,20 +740,24 @@
 				AOTOutputDirectory=$(_AOTOutputDirectory)
 				DedupAssembly=$(_DedupAssembly)
 				AppBundleManifestPath=$(_AppBundleManifestPath)
+				AssemblyPublishDir=$(_AssemblyPublishDir)
 				CacheDirectory=$(_LinkerCacheDirectory)
 				@(_BundlerDlsym -> 'Dlsym=%(Identity)')
 				Debug=$(_BundlerDebug)
 				DeploymentTarget=$(_MinimumOSVersion)
+				DynamicRegistrationSupported=$(DynamicRegistrationSupported)
 				@(_CustomLinkFlags -> 'CustomLinkFlags=%(Identity)')
 				EnableSGenConc=$(EnableSGenConc)
 				@(_BundlerEnvironmentVariables -> 'EnvironmentVariable=Overwrite=%(Overwrite)|%(Identity)=%(Value)')
 				@(_XamarinFrameworkAssemblies -> 'FrameworkAssembly=%(Filename)')
 				Interpreter=$(MtouchInterpreter)
+				InlineClassGetHandle=$(InlineClassGetHandle)
 				InlineDlfcnMethods=$(InlineDlfcnMethods)
 				IntermediateLinkDir=$(IntermediateLinkDir)
 				IntermediateOutputPath=$(DeviceSpecificIntermediateOutputPath)
 				InvariantGlobalization=$(InvariantGlobalization)
 				HybridGlobalization=$(HybridGlobalization)
+				HotReloadCompatibleBuild=$(HotReloadCompatibleBuild)
 				ItemsDirectory=$(_LinkerItemsDirectory)
 				IsAppExtension=$(IsAppExtension)
 				IsSimulatorBuild=$(_SdkIsSimulator)
@@ -655,12 +766,16 @@
 				MarshalManagedExceptionMode=$(MarshalManagedExceptionMode)
 				MarshalObjectiveCExceptionMode=$(MarshalObjectiveCExceptionMode)
 				@(_MonoLibrary -> 'MonoLibrary=%(Identity)')
+				MSBuildOutputFile=$(_AssemblyPreparerMSBuildOutputFile)
+				MSBuildPostProcessOutputFile=$(_AssemblyPostProcessorMSBuildOutputFile)
 				MtouchFloat32=$(MtouchFloat32)
 				NoWarn=$(_BundlerNoWarn)
 				Optimize=$(_BundlerOptimize)
 				PartialStaticRegistrarLibrary=$(_LibPartialStaticRegistrar)
 				Platform=$(_PlatformName)
 				PlatformAssembly=$(_PlatformAssemblyName).dll
+				PrepareAssemblies=$(PrepareAssemblies)
+				PublishTrimmed=$(PublishTrimmed)
 				RelativeAppBundlePath=$(_RelativeAppBundlePath)
 				Registrar=$(Registrar)
 				@(ReferenceNativeSymbol -> 'ReferenceNativeSymbol=%(SymbolType):%(SymbolMode):%(Identity)')
@@ -673,8 +788,11 @@
 				SkipMarkingNSObjectsInUserAssemblies=$(_SkipMarkingNSObjectsInUserAssemblies)
 				TargetArchitectures=$(TargetArchitectures)
 				TargetFramework=$(_ComputedTargetFrameworkMoniker)
+				TrimMode=$(TrimMode)
 				TypeMapAssemblyName=$(_TypeMapAssemblyName)
+				TypeMapFilePath=$(_TypeMapFilePath)
 				TypeMapOutputDirectory=$(_TypeMapOutputDirectory)
+				UnmanagedCallersOnlyMapPath=$(_UnmanagedCallersOnlyMapPath)
 				UseLlvm=$(MtouchUseLlvm)
 				Verbosity=$(_BundlerVerbosity)
 				Warn=$(_BundlerWarn)
@@ -758,6 +876,15 @@
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.Arch.IsSimulator" Value="$(_IsSimulatorFeature)" Trim="true" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsManagedStaticRegistrar" Value="$(_IsManagedStaticRegistrarFeature)" Trim="true" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsTrimmableStaticRegistrar" Value="$(_IsTrimmableStaticRegistrarFeature)" Trim="true" />
+			<!--
+				When using the trimmable static registrar together with PrepareAssemblies, we can tell the trimmer to
+				remove the [ProtocolMember] attributes. This makes it possible to trim away types that are only
+				referenced from these attributes (such as generic types in optional protocol members).
+				The assembly-preparer's post-processing pass still needs these attributes (it runs the registrar again
+				after the trimmer), so it reads them from the pre-trim (prepared) assemblies instead.
+				See src/TrimAttributes.LinkDescription.xml and tools/assembly-preparer/AssemblyPreparer.cs.
+			-->
+			<RuntimeHostConfigurationOption Include="ObjCRuntime.TrimProtocolMemberAttributes" Value="true" Trim="true" Condition="'$(Registrar)' == 'trimmable-static' And '$(PrepareAssemblies)' == 'true'" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsNativeAOT" Value="$(_IsNativeAOTFeature)" Trim="true" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsCoreCLR" Value="true" Trim="true" Condition="'$(UseMonoRuntime)' != 'true'" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsCoreCLR" Value="false" Trim="true" Condition="'$(UseMonoRuntime)' == 'true'" />
@@ -774,7 +901,9 @@
 			>
 				<TrimMode>copy</TrimMode> <!-- Don't use 'copyused', because that might still end up saving some assemblies, and if that's the platform assembly, it may break the partial static registrar -->
 			</ResolvedFileToPublish>
+		</ItemGroup>
 
+		<ItemGroup Condition="!('$(PrepareAssemblies)' == 'true' And '$(PostProcessAssemblies)' == 'true')">
 			<!--
 				pre-mark custom steps
 			-->
@@ -782,66 +911,73 @@
 			<!-- Load the list of assemblies loaded by the linker. -->
 			<!-- This would not be needed if LinkContext.GetAssemblies () was exposed to us. -->
 			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.CollectAssembliesStep" />
+			<!-- CoreTypeMapStep is used by other steps, so it can't be disabled (if PrepareAssemblies=true) until support for those other steps has been added to assembly-preparer -->
 			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="MonoTouch.Tuner.CoreTypeMapStep" />
 			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="MonoTouch.Tuner.ProcessExportedFields" />
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.PreserveProtocolsStep" Condition="'$(_AreAnyAssembliesTrimmed)' == 'true' And '$(_UseDynamicDependenciesForProtocolPreservation)' == 'true'" />
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.Steps.PreserveSmartEnumConversionsStep" Condition="'$(_AreAnyAssembliesTrimmed)' == 'true' And '$(_UseDynamicDependenciesForSmartEnumPreservation)' == 'true'" />
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.Steps.PreserveBlockCodeStep" Condition="'$(_AreAnyAssembliesTrimmed)' == 'true' And '$(_UseDynamicDependenciesForBlockCodePreservation)' == 'true'" />
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.Steps.OptimizeGeneratedCodeStep" Condition="'$(_AreAnyAssembliesTrimmed)' == 'true' And '$(_UseDynamicDependenciesForGeneratedCodeOptimizations)' == 'true'" />
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.Steps.ApplyPreserveAttributeStep" Condition="'$(_AreAnyAssembliesTrimmed)' == 'true' And '$(_UseLinkDescriptionForApplyPreserveAttribute)' == 'true'" />
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.Steps.MarkForStaticRegistrarStep" Condition="'$(_AreAnyAssembliesTrimmed)' == 'true' And '$(_UseDynamicDependenciesForMarkStaticRegistrar)' == 'true'" />
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.Steps.MarkNSObjectsStep" Condition="'$(_AreAnyAssembliesTrimmed)' == 'true' And '$(_UseDynamicDependenciesForMarkNSObjects)' == 'true'" />
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.Steps.InlineDlfcnMethodsStep" Condition="'$(InlineDlfcnMethods)' != ''" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.PreserveProtocolsStep" Condition="'$(PrepareAssemblies)' != 'true' And '$(_AreAnyAssembliesTrimmed)' == 'true' And '$(_UseDynamicDependenciesForProtocolPreservation)' == 'true'" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.Steps.PreserveSmartEnumConversionsStep" Condition="'$(PrepareAssemblies)' != 'true' And '$(_AreAnyAssembliesTrimmed)' == 'true' And '$(_UseDynamicDependenciesForSmartEnumPreservation)' == 'true'" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.Steps.PreserveBlockCodeStep" Condition="'$(PrepareAssemblies)' != 'true' And '$(_AreAnyAssembliesTrimmed)' == 'true' And '$(_UseDynamicDependenciesForBlockCodePreservation)' == 'true'" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.Steps.OptimizeGeneratedCodeStep" Condition="'$(PrepareAssemblies)' != 'true' And '$(_AreAnyAssembliesTrimmed)' == 'true' And '$(_UseDynamicDependenciesForGeneratedCodeOptimizations)' == 'true'" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.Steps.ApplyPreserveAttributeStep" Condition="'$(PrepareAssemblies)' != 'true' And '$(_AreAnyAssembliesTrimmed)' == 'true' And '$(_UseLinkDescriptionForApplyPreserveAttribute)' == 'true'" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.Steps.MarkForStaticRegistrarStep" Condition="'$(PrepareAssemblies)' != 'true' And '$(_AreAnyAssembliesTrimmed)' == 'true' And '$(_UseDynamicDependenciesForMarkStaticRegistrar)' == 'true'" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.Steps.MarkNSObjectsStep" Condition="'$(PrepareAssemblies)' != 'true' And '$(_AreAnyAssembliesTrimmed)' == 'true' And '$(_UseDynamicDependenciesForMarkNSObjects)' == 'true'" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.Steps.InlineDlfcnMethodsStep" Condition="'$(PrepareAssemblies)' != 'true' And '$(InlineDlfcnMethods)' != ''" />
 			<!-- The final decision to remove/keep the dynamic registrar must be done before the linking step -->
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="MonoTouch.Tuner.RegistrarRemovalTrackingStep" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="MonoTouch.Tuner.RegistrarRemovalTrackingStep" Condition="'$(PrepareAssemblies)' != 'true'" />
 			<!-- TODO: these steps should probably run after mark. -->
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Condition="'$(_AreAnyAssembliesTrimmed)' == 'true'" Type="Xamarin.Linker.Steps.PreMarkDispatcher" />
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.ManagedRegistrarStep" Condition="'$(Registrar)' == 'managed-static' Or '$(Registrar)' == 'trimmable-static'" />
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.TrimmableRegistrarStep" Condition="'$(Registrar)' == 'trimmable-static'" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.Steps.PreMarkDispatcher" Condition="'$(PrepareAssemblies)' != 'true' And '$(_AreAnyAssembliesTrimmed)' == 'true'" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.ManagedRegistrarStep" Condition="'$(PrepareAssemblies)' != 'true' And ('$(Registrar)' == 'managed-static' Or '$(Registrar)' == 'trimmable-static')" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.TrimmableRegistrarStep" Condition="'$(PrepareAssemblies)' != 'true' And '$(Registrar)' == 'trimmable-static'" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.Steps.InlineClassGetHandleStep" Condition="'$(PrepareAssemblies)' != 'true' And '$(InlineClassGetHandle)' != '' And '$(InlineClassGetHandle)' != 'disabled'"  />
 
 			<!--
 				IMarkHandlers which run during Mark
 			-->
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Condition="'$(_AreAnyAssembliesTrimmed)' == 'true' And '$(_UseDynamicDependenciesForBlockCodePreservation)' != 'true'" Type="Xamarin.Linker.Steps.PreserveBlockCodeHandler" />
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Condition="'$(_AreAnyAssembliesTrimmed)' == 'true' And '$(_UseDynamicDependenciesForGeneratedCodeOptimizations)' != 'true'" Type="Xamarin.Linker.OptimizeGeneratedCodeHandler" />
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Condition="'$(_AreAnyAssembliesTrimmed)' == 'true'" Type="Xamarin.Linker.BackingFieldDelayHandler" />
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Condition="'$(_AreAnyAssembliesTrimmed)' == 'true' And '$(_UseDynamicDependenciesForProtocolPreservation)' != 'true'" Type="Xamarin.Linker.MarkIProtocolHandler" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Condition="'$(PrepareAssemblies)' != 'true' And '$(_AreAnyAssembliesTrimmed)' == 'true' And '$(_UseDynamicDependenciesForBlockCodePreservation)' != 'true'" Type="Xamarin.Linker.Steps.PreserveBlockCodeHandler" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Condition="'$(PrepareAssemblies)' != 'true' And '$(_AreAnyAssembliesTrimmed)' == 'true' And '$(_UseDynamicDependenciesForGeneratedCodeOptimizations)' != 'true'" Type="Xamarin.Linker.OptimizeGeneratedCodeHandler" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Condition="'$(PrepareAssemblies)' != 'true' And '$(_AreAnyAssembliesTrimmed)' == 'true'" Type="Xamarin.Linker.BackingFieldDelayHandler" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Condition="'$(PrepareAssemblies)' != 'true' And '$(_AreAnyAssembliesTrimmed)' == 'true' And '$(_UseDynamicDependenciesForProtocolPreservation)' != 'true'" Type="Xamarin.Linker.MarkIProtocolHandler" />
 			<!-- MarkDispatcher substeps will run for all marked assemblies. -->
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Condition="'$(_AreAnyAssembliesTrimmed)' == 'true' And '$(_UseDynamicDependenciesForMarkDispatcher)' != 'true'" Type="Xamarin.Linker.Steps.MarkDispatcher" />
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Condition="'$(_AreAnyAssembliesTrimmed)' == 'true' And '$(_UseDynamicDependenciesForSmartEnumPreservation)' != 'true'" Type="Xamarin.Linker.Steps.PreserveSmartEnumConversionsHandler" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Condition="'$(PrepareAssemblies)' != 'true' And '$(_AreAnyAssembliesTrimmed)' == 'true' And '$(_UseDynamicDependenciesForMarkDispatcher)' != 'true'" Type="Xamarin.Linker.Steps.MarkDispatcher" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Condition="'$(PrepareAssemblies)' != 'true' And '$(_AreAnyAssembliesTrimmed)' == 'true' And '$(_UseDynamicDependenciesForSmartEnumPreservation)' != 'true'" Type="Xamarin.Linker.Steps.PreserveSmartEnumConversionsHandler" />
 
 			<!--
 				pre-sweep custom steps
 			-->
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="SweepStep" Type="Xamarin.Linker.ManagedRegistrarLookupTablesStep" Condition="'$(Registrar)' == 'managed-static'" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="SweepStep" Type="Xamarin.Linker.ManagedRegistrarLookupTablesStep" Condition="'$(PrepareAssemblies)' != 'true' And '$(Registrar)' == 'managed-static'" />
 
 			<!--
 				post-sweep custom steps
 			-->
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" AfterStep="SweepStep" Condition="'$(_AreAnyAssembliesTrimmed)' == 'true'" Type="Xamarin.Linker.Steps.PostSweepDispatcher" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" AfterStep="SweepStep" Condition="'$(PrepareAssemblies)' != 'true' And '$(_AreAnyAssembliesTrimmed)' == 'true'" Type="Xamarin.Linker.Steps.PostSweepDispatcher" />
 
 			<!--
 				pre-output custom steps
 			-->
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="OutputStep" Type="Xamarin.Linker.LoadNonSkippedAssembliesStep" />
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="OutputStep" Type="Xamarin.Linker.ExtractBindingLibrariesStep" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="OutputStep" Condition="'$(PostProcessAssemblies)' != 'true'" Type="Xamarin.Linker.LoadNonSkippedAssembliesStep" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="OutputStep" Condition="'$(PostProcessAssemblies)' != 'true'" Type="Xamarin.Linker.ExtractBindingLibrariesStep" />
 			<!-- The ListExportedSymbols must run after ExtractBindingLibrariesStep, otherwise we won't properly list exported Objective-C classes from binding libraries -->
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="OutputStep" Type="Xamarin.Linker.Steps.ListExportedSymbols" />
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="OutputStep" Type="Xamarin.Linker.Steps.PreOutputDispatcher" />
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="OutputStep" Type="Xamarin.Linker.ClassHandleRewriterStep" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="OutputStep" Condition="'$(PostProcessAssemblies)' != 'true'" Type="Xamarin.Linker.Steps.ListExportedSymbols" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="OutputStep" Condition="'$(PostProcessAssemblies)' != 'true'" Type="Xamarin.Linker.Steps.PreOutputDispatcher" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="OutputStep" Condition="'$(PostProcessAssemblies)' != 'true' And ('$(InlineClassGetHandle)' == '' Or '$(InlineClassGetHandle)' == 'disabled')" Type="Xamarin.Linker.ClassHandleRewriterStep" />
 
 			<!--
 				post-output steps
 			-->
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.Linker.RegistrarStep" />
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.GenerateMainStep" />
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.GenerateReferencesStep" />
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.GatherFrameworksStep" />
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.Linker.ComputeNativeBuildFlagsStep" />
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.Linker.ComputeAOTArguments" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.Linker.ManagedRegistrarStep" Condition="'$(PrepareAssemblies)' == 'true' And '$(PostProcessAssemblies)' != 'true' And ('$(Registrar)' == 'managed-static' Or '$(Registrar)' == 'trimmable-static')" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.Linker.TrimmableRegistrarStep" Condition="'$(PrepareAssemblies)' == 'true' And '$(PostProcessAssemblies)' != 'true' And '$(Registrar)' == 'trimmable-static'" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.Linker.ManagedRegistrarLookupTablesStep" Condition="'$(PrepareAssemblies)' == 'true' And '$(PostProcessAssemblies)' != 'true' And '$(Registrar)' == 'managed-static'" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.Linker.RegistrarStep" Condition="'$(PostProcessAssemblies)' != 'true'" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.GenerateMainStep" Condition="'$(PostProcessAssemblies)' != 'true'" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.GenerateReferencesStep" Condition="'$(PostProcessAssemblies)' != 'true'" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.GatherFrameworksStep" Condition="'$(PostProcessAssemblies)' != 'true'" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.Linker.ComputeNativeBuildFlagsStep" Condition="'$(PostProcessAssemblies)' != 'true'" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.Linker.ComputeAOTArguments" Condition="'$(PostProcessAssemblies)' != 'true'" />
 			<!-- Must be the last step. -->
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.Linker.DoneStep" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.Linker.DoneStep" Condition="'$(PostProcessAssemblies)' != 'true'" />
+		</ItemGroup>
 
+		<ItemGroup>
 			<!-- _BundlerXmlDefinitions comes from any -xml arguments to mtouch/mmp -->
 			<TrimmerRootDescriptor Include="@(_BundlerXmlDefinitions)" />
 			<!-- LinkDescription can be defined in the user's csproj -->
@@ -935,25 +1071,6 @@
 			<Output TaskParameter="FrameworkToPublish" ItemName="_FilteredFrameworkToPublish" />
 		</FilterStaticFrameworks>
 
-		<!--
-
-			We need to use the full path to the framework for frameworks that
-			come from app extensions (since any relative paths from the app
-			extension projects won't be correct once loaded into the
-			containing project), so compute that. However, also do this for
-			app projects, so that we can properly deduplicate frameworks that
-			come from both extensions and the main app project.
-
-		 -->
-		<GetFullPaths
-			Condition="'$(IsMacEnabled)' == 'true'"
-			SessionId="$(BuildSessionId)"
-			Items="@(_FilteredFrameworkToPublish)"
-			Metadata="Identity;SourceDirectory"
-		>
-			<Output TaskParameter="Output" ItemName="_FilteredFrameworkToPublishWithFullPath" />
-		</GetFullPaths>
-
 		<!-- If we're an app extension, store the list of all the frameworks to disk (and don't publish any of them to the appex) -->
 		<!-- Note that app extensions may be nested, so we first check if we have any app extensions with frameworks, read those, then store the full list to disk if we're an app extension, so the containing app project sees everything -->
 		<ReadItemsFromFile File="@(_ResolvedAppExtensionReferences->'%(Identity)\..\native-frameworks.items')" Condition="Exists('%(Identity)\..\native-frameworks.items')">
@@ -962,7 +1079,7 @@
 
 		<WriteItemsToFile
 			Condition="'$(IsAppExtension)' == 'true'"
-			Items="@(_FilteredFrameworkToPublishWithFullPath);@(_FrameworksFromAppExtensions)"
+			Items="@(_FilteredFrameworkToPublish);@(_FrameworksFromAppExtensions)"
 			ItemName="_FrameworksFromAppExtensions"
 			File="$(DeviceSpecificOutputPath)\native-frameworks.items"
 			IncludeMetadata="true"
@@ -977,7 +1094,7 @@
 
 		<ItemGroup>
 			<_DirectoriesToPublish Include="@(_FrameworksFromAppExtensions)" Condition="'$(IsAppExtension)' != 'true'" />
-			<_DirectoriesToPublish Include="@(_FilteredFrameworkToPublishWithFullPath)" Condition="'$(IsAppExtension)' != 'true'" />
+			<_DirectoriesToPublish Include="@(_FilteredFrameworkToPublish)" Condition="'$(IsAppExtension)' != 'true'" />
 		</ItemGroup>
 	</Target>
 
@@ -990,6 +1107,18 @@
 	     This target will compute that stamp file location.
 	-->
 	<Target Name="_CreateStampLocationForCopyDirectoriesToBundle">
+		<PropertyGroup>
+			<_CopyDirectoriesToBundleInputFile>$(DeviceSpecificIntermediateOutputPath)CopyDirectoriesToBundleInputs.cache</_CopyDirectoriesToBundleInputFile>
+		</PropertyGroup>
+		<WriteLinesToFile
+			File="$(_CopyDirectoriesToBundleInputFile)"
+			Lines="StripFrameworkHeaders=$(StripFrameworkHeaders)"
+			Overwrite="true"
+			WriteOnlyWhenDifferent="true"
+		/>
+		<ItemGroup>
+			<FileWrites Include="$(_CopyDirectoriesToBundleInputFile)" />
+		</ItemGroup>
 		<ComputeHashForItems
 			Input="@(_DirectoriesToPublish)"
 			InputMetadata="Identity;TargetDirectory"
@@ -1017,7 +1146,7 @@
 
 	<Target Name="_CopyDirectoriesToBundle"
 		DependsOnTargets="_CollectDecompressedPlugins;_ComputeFrameworkFilesToPublish;_CollectDecompressedXpcServices;_CreateStampLocationForCopyDirectoriesToBundle"
-		Inputs="@(_DirectoriesToPublish)"
+		Inputs="@(_DirectoriesToPublish);$(_CopyDirectoriesToBundleInputFile)"
 		Outputs="@(_DirectoriesToPublish -> '%(StampLocation)')"
 		>
 
@@ -1106,7 +1235,28 @@
 	</Target>
 
 
-	<Target Name="_LoadLinkerOutput" DependsOnTargets="ComputeFilesToPublish" Condition="'$(IsMacEnabled)' == 'true'">
+	<!--
+		When building for NativeAOT with the trimmable-static registrar (and PrepareAssemblies), we generate
+		the native registrar code *after* the NativeAOT compiler (ILC) has run, instead of before. This lets
+		the registrar inspect ILC's output to see which UnmanagedCallersOnly trampolines survived trimming, and
+		avoid emitting direct native references to trampolines ILC trimmed away (which would be undefined symbols
+		at native link time). This is only possible because ILLink is skipped in this scenario (see _SkipILLink),
+		so ILC consumes the prepared (pre-postprocessing) assemblies and the postprocessing output no longer feeds
+		ILC. The gate is computed statically (all the properties are available at evaluation time) so it can be
+		used both in static target wiring and in runtime target conditions. It mirrors the conditions that make
+		_SkipILLink true (see _SkipILLink) - in particular the .NET 11+ gate - because this reorder is only valid
+		when ILLink is skipped: when ILLink still runs (e.g. .NET 10) we must keep postprocessing before ILC, so
+		_PostprocessAssemblies handles it as usual and this target stays off.
+	-->
+	<PropertyGroup>
+		<_PostprocessAssembliesAfterIlc Condition="'$(_PostprocessAssembliesAfterIlc)' == '' And '$(_UseNativeAot)' == 'true' And '$(PrepareAssemblies)' == 'true' And '$(PostProcessAssemblies)' == 'true' And '$(Registrar)' == 'trimmable-static' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '11.0'))">true</_PostprocessAssembliesAfterIlc>
+		<_PostprocessAssembliesAfterIlc Condition="'$(_PostprocessAssembliesAfterIlc)' == ''">false</_PostprocessAssembliesAfterIlc>
+		<!-- When postprocessing runs after ILC, _LoadLinkerOutput must run the postprocessing target first so
+		     that the *.items files (registrar.mm etc.) exist when they're loaded. -->
+		<_LoadLinkerOutputExtraDependsOn Condition="'$(_PostprocessAssembliesAfterIlc)' == 'true'">_PostprocessAssembliesAfterIlc</_LoadLinkerOutputExtraDependsOn>
+	</PropertyGroup>
+
+	<Target Name="_LoadLinkerOutput" DependsOnTargets="ComputeFilesToPublish;$(_LoadLinkerOutputExtraDependsOn)" Condition="'$(IsMacEnabled)' == 'true'">
 		<ItemGroup>
 			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_MainFile.items" />
 			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_MainLinkWith.items" />
@@ -1173,6 +1323,41 @@
 		</PropertyGroup>
 	</Target>
 
+	<!--
+		The post-ILC variant of _PostprocessAssemblies (see the _PostprocessAssembliesAfterIlc property). It runs
+		the exact same native-registrar-generating pipeline as _PostprocessAssemblies, but after the NativeAOT
+		compiler (ILC) has run, and passes ILC's output object file ($(NativeObject)) so the registrar can route
+		any UnmanagedCallersOnly trampoline that ILC trimmed away through the dlsym fallback instead of referencing
+		it directly (which would be an undefined symbol at native link time). Running the full pipeline (rather than
+		a reduced one) keeps the generated native registrar code consistent with the other native files generated
+		earlier (e.g. inlined-class-gethandle.m). It's wired to run before _LoadLinkerOutput (via
+		_LoadLinkerOutputExtraDependsOn) so the *.items files it produces are loaded and fed to the native compile.
+	-->
+	<Target
+		Name="_PostprocessAssembliesAfterIlc"
+		Condition="'$(_PostprocessAssembliesAfterIlc)' == 'true' And '$(RuntimeIdentifiers)' == ''"
+		Inputs="@(_AssembliesToPostProcess);$(NativeObject)"
+		Outputs="@(_AssembliesToPostProcess->'$(_PostprocessedAssembliesDirectory)%(Filename)%(Extension)');$(_AssemblyPostProcessorMSBuildOutputFile)"
+		DependsOnTargets="IlcCompile;ComputeFilesToPublish;_PrepareAssembliesForPostProcessing;_ComputeLinkerInputs"
+		>
+		<PrepareAssemblies
+			InputAssemblies="@(_AssembliesToPostProcess)"
+			MakeReproPath="$(_PostprocessAssembliesMakeReproPath)"
+			NativeAOTObjectFile="$(NativeObject)"
+			OptionsFile="$(_CustomLinkerOptionsFile)"
+			OutputDirectory="$(_PostprocessedAssembliesDirectory)"
+			Postprocessing="true"
+			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
+		>
+			<Output TaskParameter="OutputAssemblies" ItemName="_PostProcessedAssemblies" />
+		</PrepareAssemblies>
+
+		<ItemGroup>
+			<FileWrites Include="@(_PostProcessedAssemblies)" />
+			<FileWrites Include="$(_AssemblyPostProcessorMSBuildOutputFile)" Condition="Exists('$(_AssemblyPostProcessorMSBuildOutputFile)')" />
+		</ItemGroup>
+	</Target>
+
 	<!-- Native code -->
 
 	<Target Name="_ComputeFrameworkVariables" DependsOnTargets="ResolveRuntimePackAssets;ResolveFrameworkReferences">
@@ -1229,6 +1414,50 @@
 		<Error
 			Text="The property 'XamMacArch' is deprecated, please remove it from the project file. Use 'RuntimeIdentifier' or 'RuntimeIdentifiers' instead to specify the target architecture."
 			Condition="'$(XamMacArch)' != '' And '$(AllowXamMacArchArchProperty)' != 'true'"
+			/>
+
+		<!--
+			Detect properties that only apply to the Mono runtime, and which have
+			no effect (or are directly problematic) when not using the Mono runtime
+			(such as when using CoreCLR or NativeAOT).
+		-->
+		<Error
+			Text="The property 'RunAotCompilation' is set to 'true', which is not supported when not using the Mono runtime (for instance when using CoreCLR). Please remove it from the project file."
+			Condition="'$(UseMonoRuntime)' == 'false' And '$(RunAotCompilation)' == 'true'"
+			/>
+		<Error
+			Text="The property 'AotAssemblies' is set to 'true', which is not supported when not using the Mono runtime (for instance when using CoreCLR). Please remove it from the project file."
+			Condition="'$(UseMonoRuntime)' == 'false' And '$(AotAssemblies)' == 'true'"
+			/>
+		<!-- 'MtouchEnableSGenConc' is a deprecated alias for 'EnableSGenConc' (see Xamarin.Shared.props), so only warn about 'EnableSGenConc' if the value didn't come from 'MtouchEnableSGenConc', to avoid showing two warnings for the same setting. -->
+		<Warning
+			Text="The property 'EnableSGenConc' has no effect when not using the Mono runtime (for instance when using CoreCLR)."
+			Condition="'$(UseMonoRuntime)' == 'false' And '$(EnableSGenConc)' == 'true' And '$(MtouchEnableSGenConc)' != 'true'"
+			/>
+		<Warning
+			Text="The property 'MtouchEnableSGenConc' has no effect when not using the Mono runtime (for instance when using CoreCLR)."
+			Condition="'$(UseMonoRuntime)' == 'false' And '$(MtouchEnableSGenConc)' == 'true'"
+			/>
+		<Warning
+			Text="The property 'UseInterpreter' has no effect when not using the Mono runtime (for instance when using CoreCLR)."
+			Condition="'$(UseMonoRuntime)' == 'false' And '$(UseInterpreter)' == 'true'"
+			/>
+		<!-- 'UseInterpreter' is a shorthand for 'MtouchInterpreter=all' (see Xamarin.Shared.props), so only warn about 'MtouchInterpreter' if the value didn't come from 'UseInterpreter', to avoid showing two warnings for the same setting. -->
+		<Warning
+			Text="The property 'MtouchInterpreter' has no effect when not using the Mono runtime (for instance when using CoreCLR)."
+			Condition="'$(UseMonoRuntime)' == 'false' And '$(MtouchInterpreter)' != '' And '$(UseInterpreter)' != 'true'"
+			/>
+		<Warning
+			Text="The property 'MtouchUseLlvm' has no effect when not using the Mono runtime (for instance when using CoreCLR)."
+			Condition="'$(UseMonoRuntime)' == 'false' And '$(MtouchUseLlvm)' == 'true'"
+			/>
+		<Warning
+			Text="The property 'MtouchFloat32' has no effect when not using the Mono runtime (for instance when using CoreCLR)."
+			Condition="'$(UseMonoRuntime)' == 'false' And '$(MtouchFloat32)' != ''"
+			/>
+		<Warning
+			Text="The property 'MonoUseCompressedInterfaceBitmap' has no effect when not using the Mono runtime (for instance when using CoreCLR)."
+			Condition="'$(UseMonoRuntime)' == 'false' And '$(MonoUseCompressedInterfaceBitmap)' == 'true'"
 			/>
 	</Target>
 
@@ -1287,6 +1516,10 @@
 			<_AOTInputDirectory>$(_IntermediateNativeLibraryDir)aot-input/</_AOTInputDirectory>
 			<_AOTOutputDirectory>$(_IntermediateNativeLibraryDir)aot-output/</_AOTOutputDirectory>
 
+			<!-- A temporary output directory for our linker steps -->
+			<_LinkerCacheDirectory>$([System.IO.Path]::GetFullPath('$(IntermediateOutputPath)linker-cache'))</_LinkerCacheDirectory>
+			<_LinkerCacheDirectory Condition="'$(BuildSessionId)' != ''">$(IntermediateOutputPath)linker-cache</_LinkerCacheDirectory>
+
 			<!-- 
 				Enable dedup optimization when we run AOT compiler and target ARM64 architecture.
 				Target architecture condition is required since when we target x86_64 we utilize MONO_AOT_MODE_INTERP_ONLY mode (AOT + interpreter).
@@ -1322,6 +1555,12 @@
 			<_EmbeddedFrameworksRPath Condition="'$(SdkIsDesktop)' == 'true'">@executable_path/../Frameworks/</_EmbeddedFrameworksRPath>
 
 			<_RuntimeConfigurationFile>runtimeconfig.bin</_RuntimeConfigurationFile>
+
+			<!-- Path to the file where Objective-C type map information is stored -->
+			<_TypeMapFilePath Condition="'$(_TypeMapFilePath)' == ''">$(_LinkerCacheDirectory)/type-map.txt</_TypeMapFilePath>
+
+			<!-- Path to the file where the unmanaged callers only map is stored -->
+			<_UnmanagedCallersOnlyMapPath Condition="'$(_UnmanagedCallersOnlyMapPath)' == ''">$(_LinkerCacheDirectory)/unmanaged_callers_only_map.txt</_UnmanagedCallersOnlyMapPath>
 		</PropertyGroup>
 
 		<!-- Not sure about how to handle nested app extensions here, but if it ever becomes a problem we can look into it (I believe only watch extensions can have embedded extensions at this point, and we don't support watchOS on .NET anyways) -->
@@ -1359,6 +1598,7 @@
 			<_RuntimeConfigReservedProperties Include="NATIVE_DLL_SEARCH_DIRECTORIES" />
 			<_RuntimeConfigReservedProperties Include="RUNTIME_IDENTIFIER" />
 			<_RuntimeConfigReservedProperties Include="APP_CONTEXT_BASE_DIRECTORY" />
+			<_RuntimeConfigReservedProperties Include="SYSTEM_CORELIB_DIRECTORY" />
 			<_RuntimeConfigReservedProperties Include="STARTUP_HOOKS" />
 		</ItemGroup>
 		<RuntimeConfigParserTask
@@ -1407,12 +1647,26 @@
 		</ItemGroup>
 	</Target>
 
-	<!-- https://github.com/dotnet/macios/issues/19037 -->
-	<!-- The trimmer will set the RootMode for the current assembly to 'EntryPoint', but that doesn't work for app extension projects, because those are library projects that don't have entry points.
-		 So here we set RootMode=Library for these cases. -->
-	<Target Name="_FixRootAssemblyForAppExtensions" AfterTargets="PrepareForILLink" Condition="'$(IsAppExtension)' == 'true'">
-		<ItemGroup>
+	<Target Name="_PostPrepareForILLinkFixups" AfterTargets="PrepareForILLink">
+		<ItemGroup Condition="'$(IsAppExtension)' == 'true'">
+			<!-- https://github.com/xamarin/xamarin-macios/issues/19037 -->
+			<!-- The trimmer will set the RootMode for the current assembly to 'EntryPoint', but that doesn't work for app extension projects, because those are library projects that don't have entry points.
+				 So here we set RootMode=Library for these cases. -->
 			<TrimmerRootAssembly Update="@(TrimmerRootAssembly)" Condition=" '%(TrimmerRootAssembly.RootMode)' == 'EntryPoint' " RootMode="Library" />
+		</ItemGroup>
+		<!-- If $(IntermediateAssembly) was modified by the AssemblyPreparer task, then we must update the TrimmerRootAssembly item group to point to the updated version of the intermediate assembly. -->
+		<!-- It turned out a bit complicated, because we want to preserve any existing metadata on the items in the TrimmerRootAssembly item group. -->
+		<ItemGroup>
+			<PreparedIntermediateAssembly Include="@(ResolvedFileToPublish)" Condition="'%(ResolvedFileToPublish.BeforePrepareAssembliesPath)' == '@(IntermediateAssembly)'" />
+		</ItemGroup>
+		<PropertyGroup>
+			<_IntermediateAssemblyProperty>@(IntermediateAssembly)</_IntermediateAssemblyProperty>
+			<_PreparedIntermediateAssemblyProperty>@(PreparedIntermediateAssembly->WithMetadataValue('BeforePrepareAssembliesPath','$(_IntermediateAssemblyProperty)'))</_PreparedIntermediateAssemblyProperty>
+		</PropertyGroup>
+		<ItemGroup Condition="@(PreparedIntermediateAssembly->Count()) &gt; 0">
+			<_PreparedRootedIntermediateAssembly Include="@(TrimmerRootAssembly->'$(_PreparedIntermediateAssemblyProperty)')" Condition="'%(Identity)' == '$(_IntermediateAssemblyProperty)'" />
+			<TrimmerRootAssembly Remove="@(IntermediateAssembly)" />
+			<TrimmerRootAssembly Include="@(_PreparedRootedIntermediateAssembly)" />
 		</ItemGroup>
 	</Target>
 
@@ -1436,6 +1690,35 @@
 		<ItemGroup>
 			<ManagedAssemblyToLink Include="$(_DedupAssembly)" />
 			<TrimmerRootAssembly Include="$(_DedupAssembly)" />
+		</ItemGroup>
+	</Target>
+
+	<!--
+		When the assembly-preparer is used to post-process assemblies (PostProcessAssemblies=true), the set of
+		assemblies that gets AOT-compiled (and which is used to detect AOT generic instantiation deduplication)
+		is computed from ResolvedFileToPublish instead of from the linker's own assembly collection. The dedup
+		assembly (aot-instances.dll) is only added to the linker's assembly collection (via ManagedAssemblyToLink
+		and TrimmerRootAssembly in _CreateAOTDedupAssembly), so it's not part of ResolvedFileToPublish, and as a
+		result deduplication would be disabled in this case. Add the dedup assembly to ResolvedFileToPublish so
+		that it's included in the set of assemblies the assembly-preparer processes, and deduplication is enabled
+		in this case as well.
+	-->
+	<Target Name="_AddDedupAssemblyToResolvedFileToPublish"
+			Condition="'$(_IsDedupEnabled)' == 'true' And '$(PostProcessAssemblies)' == 'true'"
+			DependsOnTargets="_ComputeVariables;_CreateAOTDedupAssembly"
+			BeforeTargets="_PrepareAssembliesForPostProcessing">
+		<ItemGroup>
+			<!-- Find out if the dedup assembly is already part of ResolvedFileToPublish (it will be when
+			     trimming is enabled, because then it goes through ILLink like any other assembly). -->
+			<_DedupAssemblyInResolvedFileToPublish Include="@(ResolvedFileToPublish)" Condition="'%(Filename)%(Extension)' == 'aot-instances.dll'" />
+		</ItemGroup>
+		<ItemGroup Condition="'@(_DedupAssemblyInResolvedFileToPublish)' == ''">
+			<ResolvedFileToPublish Include="$(_DedupAssembly)">
+				<PublishFolderType>Assembly</PublishFolderType>
+				<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+				<RelativePath>$(_AssemblyPublishDir)aot-instances.dll</RelativePath>
+				<OriginalRelativePath>aot-instances.dll</OriginalRelativePath>
+			</ResolvedFileToPublish>
 		</ItemGroup>
 	</Target>
 
@@ -1563,6 +1846,22 @@
 		</ItemGroup>
 	</Target>
 
+	<!--
+		When we skip ILLink (see _SkipILLink), nobody populates the IntermediateLinkDir with the assemblies
+		that ILC compiles (ILLink normally does this). So do it ourselves here: copy the prepared assemblies
+		(and their PDBs) into the IntermediateLinkDir. This must run before the assemblies are fed to ILC.
+	-->
+	<Target Name="_PopulateLinkDirWhenSkippingILLink"
+			Condition="'$(_SkipILLink)' == 'true'"
+			BeforeTargets="_PostprocessAssemblies;_XamarinComputeIlcCompileInputs"
+			DependsOnTargets="_PrepareAssemblies;PrepareForILLink">
+		<Copy SourceFiles="@(ManagedAssemblyToLink);@(_PDBToLink)"
+			  DestinationFiles="@(ManagedAssemblyToLink->'$(IntermediateLinkDir)%(Filename)%(Extension)');@(_PDBToLink->'$(IntermediateLinkDir)%(Filename)%(Extension)')"
+			  SkipUnchangedFiles="true">
+			<Output TaskParameter="CopiedFiles" ItemName="FileWrites" />
+		</Copy>
+	</Target>
+
 	<Target Name="_XamarinComputeIlcCompileInputs">
 		<PropertyGroup>
 			<!-- Ask ILC to produce a static library -->
@@ -1575,7 +1874,9 @@
 		<ItemGroup>
 			<!-- We need to mark all __Internal P/Invokes as direct, so that the native linker doesn't remove them -->
 			<DirectPInvoke Include="__Internal" />
+		</ItemGroup>
 
+		<ItemGroup>
 			<!-- Give ILLink's output to ILC -->
 			<_UpdatedManagedAssemblyToLink Include="@(ManagedAssemblyToLink->'$(IntermediateLinkDir)%(Filename)%(Extension)')" Condition="Exists('$(IntermediateLinkDir)%(Filename)%(Extension)')" />
 			<ManagedAssemblyToLink Remove="@(ManagedAssemblyToLink)" />
@@ -1584,7 +1885,9 @@
 			<IlcCompileInput Include="@(ManagedBinary)" />
 			<IlcReference Include="@(ManagedAssemblyToLink)" Exclude="@(ManagedBinary)" />
 			<IlcReference Include="@(_ManagedAssemblyToLinkFromLinker)" />
+		</ItemGroup>
 
+		<ItemGroup>
 			<!-- Process UnmanagedCallersOnly attributes from every assembly -->
 			<_UnmanagedEntryPointsAssembliesToAdd Include="@(_UpdatedManagedAssemblyToLink->'%(Filename)')" />
 			<_UnmanagedEntryPointsAssembliesToAdd Remove="System.Private.CoreLib" />
@@ -1681,27 +1984,35 @@
 		DependsOnTargets="_LoadLinkerOutput"
 		>
 		<ItemGroup>
-			<_TrimmedAssembly Include="$(IntermediateLinkDir)*.dll" />
+			<!-- Collect the assemblies to scan from the assemblies to publish. This works whether or not the
+			     trimmer ran: when the trimmer is skipped (PrepareAssemblies + PostProcessAssemblies, see
+			     _CanSkipTrimmer) its output directory (IntermediateLinkDir) is empty, and when it did run the
+			     published assemblies are derived from the trimmed output. Either way these are the final
+			     assemblies, and they contain the inlined dlfcn P/Invokes (injected by the assembly-preparer)
+			     that this step needs to collect. -->
+			<_TrimmedAssembly Condition="'%(ResolvedFileToPublish.Extension)' == '.dll' And '%(ResolvedFileToPublish.Culture)' == '' And !$([System.String]::Copy ('%(ResolvedFileToPublish.Filename)').EndsWith ('.resources'))" Include="@(ResolvedFileToPublish)" />
 		</ItemGroup>
 	</Target>
 
 	<Target Name="_ComputePostTrimmingPaths">
 		<PropertyGroup>
 			<_ILTrimSurvivingNativeSymbolsFile>$(DeviceSpecificIntermediateOutputPath)inlined-dlfcn\iltrim-surviving-native-symbols.txt</_ILTrimSurvivingNativeSymbolsFile>
-			<_NativeAOTUnresolvedSymbolsFile>$(DeviceSpecificIntermediateOutputPath)nativeaot-unresolved-symbols.txt</_NativeAOTUnresolvedSymbolsFile>
 			<_NativeAOTSurvivingNativeSymbolsFile>$(DeviceSpecificIntermediateOutputPath)nativeaot-surviving-native-symbols.txt</_NativeAOTSurvivingNativeSymbolsFile>
+			<_ILTrimSurvivingClassesFile>$(DeviceSpecificIntermediateOutputPath)inlined-class-gethandle\iltrim-classes.txt</_ILTrimSurvivingClassesFile>
+			<_NativeAOTSurvivingClassesFile>$(DeviceSpecificIntermediateOutputPath)inlined-class-gethandle\nativeaot-classes.txt</_NativeAOTSurvivingClassesFile>
 		</PropertyGroup>
 	</Target>
 
 	<!-- See docs/code/native-symbols.md for an overview of native symbol handling. -->
 	<Target Name="_CollectPostILTrimInformation"
-		Condition="'$(InlineDlfcnMethods)' != '' And '$(_UseNativeAot)' != 'true'"
+		Condition="('$(InlineDlfcnMethods)' != '' Or '$(InlineClassGetHandle)' != '') And '$(_UseNativeAot)' != 'true'"
 		DependsOnTargets="_ComputeTrimmedAssemblies;_ComputePostTrimmingPaths"
 		Inputs="@(_TrimmedAssembly)"
-		Outputs="$(_ILTrimSurvivingNativeSymbolsFile)"
+		Outputs="$(_ILTrimSurvivingNativeSymbolsFile);$(_ILTrimSurvivingClassesFile)"
 		>
 		<CollectPostILTrimInformation
 			TrimmedAssemblies="@(_TrimmedAssembly)"
+			SurvivingClassesFile="$(_ILTrimSurvivingClassesFile)"
 			SurvivingNativeSymbolsFile="$(_ILTrimSurvivingNativeSymbolsFile)"
 			CacheDirectory="$(DeviceSpecificIntermediateOutputPath)posttrim-info\cache"
 		/>
@@ -1710,6 +2021,7 @@
 		</ReadLinesFromFile>
 		<ItemGroup>
 			<FileWrites Include="$(_ILTrimSurvivingNativeSymbolsFile)" />
+			<FileWrites Include="$(_ILTrimSurvivingClassesFile)" />
 		</ItemGroup>
 	</Target>
 
@@ -1720,12 +2032,17 @@
 		<ItemGroup>
 			<_SurvivingNativeSymbolsFile Include="$(_ILTrimSurvivingNativeSymbolsFile)" Condition="Exists('$(_ILTrimSurvivingNativeSymbolsFile)')" />
 			<_SurvivingNativeSymbolsFile Include="$(_NativeAOTSurvivingNativeSymbolsFile)" Condition="Exists('$(_NativeAOTSurvivingNativeSymbolsFile)')" />
+
+			<_SurvivingClassesFiles Include="$(_ILTrimSurvivingClassesFile)" Condition="Exists('$(_ILTrimSurvivingClassesFile)')" />
+			<_SurvivingClassesFiles Include="$(_NativeAOTSurvivingClassesFile)" Condition="Exists('$(_NativeAOTSurvivingClassesFile)')" />
 		</ItemGroup>
 		<PostTrimmingProcessing
 			Architecture="$(TargetArchitectures)"
 			OutputDirectory="$(DeviceSpecificIntermediateOutputPath)inlined-dlfcn"
 			ReferenceNativeSymbol="@(ReferenceNativeSymbol)"
+			SurvivingClassesFiles="@(_SurvivingClassesFiles)"
 			SurvivingNativeSymbolsFiles="@(_SurvivingNativeSymbolsFile)"
+			TypeMapFilePath="$(_TypeMapFilePath)"
 		>
 			<Output TaskParameter="NativeSourceFiles" ItemName="_PostTrimmingSourceFiles" />
 		</PostTrimmingProcessing>
@@ -1735,8 +2052,15 @@
 			<_PostTrimmingSourceFiles>
 				<OutputFile>$(DeviceSpecificIntermediateOutputPath)posttrim-info-compiled/%(Arch)/%(Filename).o</OutputFile>
 			</_PostTrimmingSourceFiles>
+			<_NativeExecutableObjectFiles Include="@(_PostTrimmingSourceFiles -> '%(OutputFile)')" />
 		</ItemGroup>
+	</Target>
 
+	<Target Name="_CompilePostTrimmingFiles"
+		DependsOnTargets="_PostTrimmingProcessing"
+		Inputs="@(_PostTrimmingSourceFiles)"
+		Outputs="@(_PostTrimmingSourceFiles -> '%(OutputFile)')"
+		>
 		<CompileNativeCode
 			SessionId="$(BuildSessionId)"
 			Condition="'$(IsMacEnabled)' == 'true'"
@@ -1752,9 +2076,7 @@
 		</CompileNativeCode>
 
 		<ItemGroup>
-			<_CompiledPostTrimmingFiles Include="@(_PostTrimmingSourceFiles -> '%(OutputFile)')" />
-			<_NativeExecutableObjectFiles Include="@(_CompiledPostTrimmingFiles)" />
-			<FileWrites Include="@(_CompiledPostTrimmingFiles)" />
+			<FileWrites Include="@(_PostTrimmingSourceFiles -> '%(OutputFile)')" />
 		</ItemGroup>
 	</Target>
 
@@ -1814,7 +2136,7 @@
 			_ReadAppManifest;
 			_WriteAppManifest;
 			_CompileNativeExecutable;
-			_PostTrimmingProcessing;
+			_CompilePostTrimmingFiles;
 			_ReidentifyDynamicLibraries;
 			_AddSwiftLinkerFlags;
 			_ComputeLinkNativeExecutableInputs;
@@ -1827,8 +2149,11 @@
 		Condition="'$(_UseNativeAot)' == 'true'"
 		DependsOnTargets="_ComputePostTrimmingPaths;_CompileNativeExecutable"
 		Inputs="$(NativeObject)"
-		Outputs="$(_NativeAOTSurvivingNativeSymbolsFile)"
+		Outputs="$(_NativeAOTSurvivingNativeSymbolsFile);$(_NativeAOTSurvivingClassesFile)"
 		>
+		<PropertyGroup>
+			<_NativeAOTUnresolvedSymbolsFile>$(DeviceSpecificIntermediateOutputPath)nativeaot-unresolved-symbols.txt</_NativeAOTUnresolvedSymbolsFile>
+		</PropertyGroup>
 		<CollectUnresolvedNativeSymbols
 			SessionId="$(BuildSessionId)"
 			StaticLibrary="$(NativeObject)"
@@ -1836,9 +2161,14 @@
 		/>
 		<ComputeNativeAOTSurvivingNativeSymbols
 			SessionId="$(BuildSessionId)"
-			UnresolvedSymbolsFile="$(_NativeAOTUnresolvedSymbolsFile)"
+			SurvivingClassesFile="$(_NativeAOTSurvivingClassesFile)"
 			SurvivingNativeSymbolsFile="$(_NativeAOTSurvivingNativeSymbolsFile)"
+			UnresolvedSymbolsFile="$(_NativeAOTUnresolvedSymbolsFile)"
 		/>
+		<ItemGroup>
+			<FileWrites Include="$(_NativeAOTSurvivingNativeSymbolsFile)" />
+			<FileWrites Include="$(_NativeAOTSurvivingClassesFile)" />
+		</ItemGroup>
 	</Target>
 
 	<Target Name="_AddSwiftLinkerFlags" DependsOnTargets="_DetectSdkLocations">
@@ -2041,6 +2371,7 @@
 			Condition="'$(IsMacEnabled)' == 'true'"
 			SessionId="$(BuildSessionId)"
 			DynamicLibrary="@(_DynamicLibraryToReidentify)"
+			IntermediateNativeLibraryDir="$(_IntermediateNativeLibraryDir)"
 			SdkDevPath="$(_SdkDevPath)"
 		/>
 	</Target>
@@ -2558,19 +2889,25 @@
 		<Error Text=".NET for $(_PlatformName) does not support server garbage collection. Please don't set the 'ServerGarbageCollection' property." />
 	</Target>
 
+	<Target Name="_ValidatePublishSingleFile"
+		Condition="'$(PublishSingleFile)' == 'true'"
+		BeforeTargets="Build;Publish">
+		<Error Text=".NET for $(_PlatformName) does not support publishing to a single file. Please don't set the 'PublishSingleFile' property." />
+	</Target>
+
 	<Target Name="_ValidateXcodeVersion"
 		AfterTargets="_DetectSdkLocations"
 		Condition="'$(ValidateXcodeVersion)' != 'false' And '$(_CanOutputAppBundle)' == 'true' And '$(IsMacEnabled)' == 'true'">
 		<!-- we only want to validate major.minor, not any revision or build numbers -->
 		<PropertyGroup>
 			<_XcodeVersionMajorMinorOnly>$([System.Version]::Parse('$(_XcodeVersion)').Major).$([System.Version]::Parse('$(_XcodeVersion)').Minor)</_XcodeVersionMajorMinorOnly>
-			<_RecommendedXcodeVersionMajorMinorOnly>$([System.Version]::Parse('$(_RecommendedXcodeVersion)').Major).$([System.Version]::Parse('$(_RecommendedXcodeVersion)').Minor)</_RecommendedXcodeVersionMajorMinorOnly>
+			<_RecommendedXcodeVersionMajorMinorOnly>$([System.Version]::Parse('$(RecommendedXcodeVersion)').Major).$([System.Version]::Parse('$(RecommendedXcodeVersion)').Minor)</_RecommendedXcodeVersionMajorMinorOnly>
 			<_IsMatchingXcode Condition="'$(_RecommendedXcodeVersionMajorMinorOnly)' == '$(_XcodeVersionMajorMinorOnly)'">true</_IsMatchingXcode>
 		</PropertyGroup>
 		<MacDevMessage
 			Error="true"
 			ResourceName="E0191"
-			FormatArguments="$(_PlatformName);$(_ShortPackageVersion);$(_RecommendedXcodeVersion);$(_XcodeVersion)"
+			FormatArguments="$(_PlatformName);$(_ShortPackageVersion);$(RecommendedXcodeVersion);$(_XcodeVersion)"
 			Condition="'$(_IsMatchingXcode)' != 'true'"
 		/>
 	</Target>

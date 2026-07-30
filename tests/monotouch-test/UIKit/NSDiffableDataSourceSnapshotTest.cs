@@ -27,11 +27,11 @@ namespace MonoTouchFixtures.UIKit {
 		public void GHIssue6567Test ()
 		{
 			var type = typeof (UICollectionViewDiffableDataSource<,>);
-			Assert.NotNull (type, $"{nameof (type)} was null;");
+			Assert.That (type, Is.Not.Null, $"{nameof (type)} was null;");
 
 			Class cls = null;
 			Assert.DoesNotThrow (() => cls = new Class (type), "Should not throw");
-			Assert.NotNull (cls, $"{nameof (cls)} was null");
+			Assert.That (cls, Is.Not.Null, $"{nameof (cls)} was null");
 		}
 
 		[Test]

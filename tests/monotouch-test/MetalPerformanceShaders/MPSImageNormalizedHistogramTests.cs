@@ -46,20 +46,20 @@ namespace MonoTouchFixtures.MetalPerformanceShaders {
 				Assert.Fail (ex.Message);
 			}
 #endif
-			Assert.NotNull (obj, "MPSImageNormalizedHistogram obj");
+			Assert.That (obj, Is.Not.Null, "MPSImageNormalizedHistogram obj");
 			var rv = obj.HistogramInfo;
 			Asserts.AreEqual (info, rv, "HistogramInfo");
 
-			Assert.IsTrue (obj.ZeroHistogram, "ZeroHistogram");
-			Assert.AreEqual ((nuint) 3072, obj.GetHistogramSize (MTLPixelFormat.RGBA16Sint), "HistogramSizeForSourceFormat");
+			Assert.That (obj.ZeroHistogram, Is.True, "ZeroHistogram");
+			Assert.That (obj.GetHistogramSize (MTLPixelFormat.RGBA16Sint), Is.EqualTo ((nuint) 3072), "HistogramSizeForSourceFormat");
 
 			var crs = obj.ClipRectSource;
-			Assert.AreEqual ((nint) 0, crs.Origin.X, "ClipRectSource.Origin.X");
-			Assert.AreEqual ((nint) 0, crs.Origin.Y, "ClipRectSource.Origin.Y");
-			Assert.AreEqual ((nint) 0, crs.Origin.Z, "ClipRectSource.Origin.Z");
-			Assert.AreEqual (nuint.MaxValue, (nuint) crs.Size.Depth, "ClipRectSource.Size.Depth");
-			Assert.AreEqual (nuint.MaxValue, (nuint) crs.Size.Height, "ClipRectSource.Size.Height");
-			Assert.AreEqual (nuint.MaxValue, (nuint) crs.Size.Width, "ClipRectSource.Size.Width");
+			Assert.That (crs.Origin.X, Is.EqualTo ((nint) 0), "ClipRectSource.Origin.X");
+			Assert.That (crs.Origin.Y, Is.EqualTo ((nint) 0), "ClipRectSource.Origin.Y");
+			Assert.That (crs.Origin.Z, Is.EqualTo ((nint) 0), "ClipRectSource.Origin.Z");
+			Assert.That ((nuint) crs.Size.Depth, Is.EqualTo (nuint.MaxValue), "ClipRectSource.Size.Depth");
+			Assert.That ((nuint) crs.Size.Height, Is.EqualTo (nuint.MaxValue), "ClipRectSource.Size.Height");
+			Assert.That ((nuint) crs.Size.Width, Is.EqualTo (nuint.MaxValue), "ClipRectSource.Size.Width");
 		}
 	}
 }

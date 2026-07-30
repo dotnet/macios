@@ -1,9 +1,5 @@
 parameters:
 
-- name: provisionatorChannel
-  type: string
-  default: 'latest'
-
 - name: runTests
   type: boolean
   default: true
@@ -125,6 +121,10 @@ parameters:
   type: boolean
   default: false
 
+- name: useACES
+  type: boolean
+  default: false
+
 stages:
 
 - template: ./build/linux-build-verification.yml
@@ -202,6 +202,7 @@ stages:
         - Agent.OS -equals Darwin
         - Agent.OSVersion -gtVersion $(minimumMacOSVersion)
         - macOS.Name -equals ${{ parameters.macOSName }}
+        - macOS.Architecture -equals arm64  # the pinned Xcode package is Apple silicon only
         - XcodeChannel -equals ${{ parameters.xcodeChannel }}
       steps:
       - template: build/build-pkgs.yml
@@ -234,6 +235,7 @@ stages:
     xqaCertPass: $(xqa--certificates--password)
     condition: ${{ parameters.runTests }}
     postPipeline: ${{ not(parameters.buildPackages) }}
+    useACES: ${{ parameters.useACES }}
 
 - template: ./tests/publish-results.yml
   parameters:
@@ -282,6 +284,7 @@ stages:
       gitHubToken: $(Github.Token)
       xqaCertPass: $(xqa--certificates--password)
       pool: $(PRBuildPool)
+      useACES: ${{ parameters.useACES }}
 
 - ${{ each config in parameters.macTestsConfigurations }}:
   - template: ./mac/stage.yml

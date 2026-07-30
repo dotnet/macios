@@ -40,7 +40,8 @@ namespace MonoTouchFixtures.Photos {
 
 			// Actual Test
 			var array = collection.ToArray ();
-			Assert.That (array is not null && array.Count () > 0);
+			Assert.That (array, Is.Not.Null);
+			Assert.That (array.Count (), Is.GreaterThan (0));
 		}
 
 		[Test]
@@ -54,7 +55,7 @@ namespace MonoTouchFixtures.Photos {
 
 			// Actual Test
 			var obj = collection [0];
-			Assert.IsNotNull (obj);
+			Assert.That (obj, Is.Not.Null);
 		}
 
 		[Test]
@@ -68,7 +69,8 @@ namespace MonoTouchFixtures.Photos {
 
 			// Actual Test
 			var obj = collection.ObjectsAt<NSObject> (NSIndexSet.FromNSRange (new NSRange (0, 1)));
-			Assert.That (obj is not null && obj.Count () > 0);
+			Assert.That (obj, Is.Not.Null);
+			Assert.That (obj.Count (), Is.GreaterThan (0));
 		}
 	}
 

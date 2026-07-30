@@ -129,51 +129,15 @@ namespace Introspection {
 				if (Class.GetHandle ("NFCNDEFReaderSession") == IntPtr.Zero)
 					return true;
 				break;
-			case "IOSurface":
-				return TestRuntime.IsSimulatorOrDesktop && !TestRuntime.CheckXcodeVersion (9, 0);
 			}
 
 			switch (constantName) {
-			// grep ImageIO binary shows those symbols are not part of the binary
-			// that match older results (nil) when loading them (see above)
-			case "kCGImagePropertyAPNGLoopCount":
-			case "kCGImagePropertyAPNGDelayTime":
-			case "kCGImagePropertyAPNGUnclampedDelayTime":
-			case "kCGImagePropertyMakerFujiDictionary":
-			case "kCGImagePropertyMakerMinoltaDictionary":
-			case "kCGImagePropertyMakerOlympusDictionary":
-			case "kCGImagePropertyMakerPentaxDictionary":
-			// 
-			case "kCFHTTPAuthenticationSchemeOAuth1":
-				return true;
 			// Apple does not ship a PushKit for every arch on some devices :(
 			case "PKPushTypeVoIP":
 				return TestRuntime.IsDevice;
-			// there's only partial support for metal on the simulator (on iOS9 beta 5) but most other frameworks
-			// that interop with it are not (yet) supported
-			case "kCVMetalTextureCacheMaximumTextureAgeKey":
-			case "kCVMetalTextureUsage":
-			case "MPSRectNoClip":
-			case "MTLCommandBufferErrorDomain":
-			case "MTKTextureLoaderErrorDomain":
-			case "MTKTextureLoaderErrorKey":
-			case "MTKTextureLoaderOptionAllocateMipmaps":
-			case "MTKTextureLoaderOptionSRGB":
-			case "MTKTextureLoaderOptionTextureUsage":
-			case "MTKTextureLoaderOptionTextureCPUCacheMode":
-			case "MTKModelErrorDomain":
-			case "MTKModelErrorKey":
-				return TestRuntime.IsSimulatorOrDesktop;
-			// Xcode 12.2 Beta 1 does not ship this but it is available in Xcode 12.0...
-			case "HKMetadataKeyBarometricPressure":
-				return true;
-			case "kCMSampleAttachmentKey_HDR10PlusPerFrameData":
-				if (TestRuntime.IsSimulator)
-					return !TestRuntime.CheckXcodeVersion (14, 1); // not available in the iOS 16.0 simulator, but it is in the iOS 16.1 simulator
-				goto default;
-			default:
-				return false;
 			}
+
+			return base.Skip (constantName, libraryName);
 		}
 	}
 }

@@ -24,12 +24,12 @@ namespace MonoTouchFixtures.UIKit {
 			try {
 				var zero = Dlfcn.dlsym (uikit, "UIFloatRangeZero");
 				var Zero = Marshal.PtrToStructure<UIFloatRange> (zero);
-				Assert.True (UIFloatRange.Zero.Equals (Zero), "Zero");
+				Assert.That (UIFloatRange.Zero.Equals (Zero), Is.True, "Zero");
 
 				var infinite = Dlfcn.dlsym (uikit, "UIFloatRangeInfinite");
 				var Infinite = Marshal.PtrToStructure<UIFloatRange> (infinite);
-				Assert.True (Infinite.IsInfinite, "IsInfinite");
-				Assert.False (UIFloatRange.Infinite.Equals (Infinite), "Infinite");
+				Assert.That (Infinite.IsInfinite, Is.True, "IsInfinite");
+				Assert.That (UIFloatRange.Infinite.Equals (Infinite), Is.False, "Infinite");
 			} finally {
 				Dlfcn.dlclose (uikit);
 			}
@@ -39,8 +39,8 @@ namespace MonoTouchFixtures.UIKit {
 		public void IsInfinite ()
 		{
 			TestRuntime.AssertXcodeVersion (7, 0);
-			Assert.True (UIFloatRange.Infinite.IsInfinite, "Infinite");
-			Assert.False (UIFloatRange.Zero.IsInfinite, "Zero");
+			Assert.That (UIFloatRange.Infinite.IsInfinite, Is.True, "Infinite");
+			Assert.That (UIFloatRange.Zero.IsInfinite, Is.False, "Zero");
 		}
 
 		[Ignore ("https://github.com/xamarin/maccore/issues/1885")]
@@ -48,15 +48,15 @@ namespace MonoTouchFixtures.UIKit {
 		public void Equals ()
 		{
 			TestRuntime.AssertXcodeVersion (7, 0);
-			Assert.True (UIFloatRange.Zero.Equals (UIFloatRange.Zero), "Zero-Zero");
+			Assert.That (UIFloatRange.Zero.Equals (UIFloatRange.Zero), Is.True, "Zero-Zero");
 			var one = new UIFloatRange (1f, 1f);
-			Assert.False (one.Equals (UIFloatRange.Zero), "one-Zero");
-			Assert.False (UIFloatRange.Zero.Equals ((object) one), "Zero-one");
-			Assert.True (one.Equals (one), "one-one");
+			Assert.That (one.Equals (UIFloatRange.Zero), Is.False, "one-Zero");
+			Assert.That (UIFloatRange.Zero.Equals ((object) one), Is.False, "Zero-one");
+			Assert.That (one.Equals (one), Is.True, "one-one");
 
-			Assert.False (UIFloatRange.Infinite.Equals (UIFloatRange.Infinite), "Infinite-Infinite");
-			Assert.False (UIFloatRange.Infinite.Equals (UIFloatRange.Zero), "Infinite-Zero");
-			Assert.False (UIFloatRange.Zero.Equals (UIFloatRange.Infinite), "Zero-Infinite");
+			Assert.That (UIFloatRange.Infinite.Equals (UIFloatRange.Infinite), Is.False, "Infinite-Infinite");
+			Assert.That (UIFloatRange.Infinite.Equals (UIFloatRange.Zero), Is.False, "Infinite-Zero");
+			Assert.That (UIFloatRange.Zero.Equals (UIFloatRange.Infinite), Is.False, "Zero-Infinite");
 		}
 	}
 }

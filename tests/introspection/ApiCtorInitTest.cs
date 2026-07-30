@@ -150,83 +150,12 @@ namespace Introspection {
 			case "ASAccountAuthenticationModificationController":
 				return true; // started failing in Xcode 16.3 beta 1 for unknown reasons (it works in an Xcode project).
 #if __TVOS__
-			case "MTLAccelerationStructureDescriptor":
-			case "MTLAccelerationStructureGeometryDescriptor":
-			case "MTLAccelerationStructureMotionBoundingBoxGeometryDescriptor":
-			case "MTLAccelerationStructureMotionTriangleGeometryDescriptor":
-			case "MTLAccelerationStructurePassDescriptor":
-			case "MTLAccelerationStructurePassSampleBufferAttachmentDescriptor":
-			case "MTLAccelerationStructurePassSampleBufferAttachmentDescriptorArray":
-			case "MTLAccelerationStructureTriangleGeometryDescriptor":
-			case "MTLMeshRenderPipelineDescriptor":
-			case "MTLMotionKeyframeData":
-			case "MTLRasterizationRateLayerArray":
-			case "MTLRasterizationRateMapDescriptor":
-			case "MTLRasterizationRateSampleArray":
-			case "MTLRenderPipelineFunctionsDescriptor":
-			case "MTLResourceStatePassSampleBufferAttachmentDescriptor":
-			case "MTLResourceStatePassSampleBufferAttachmentDescriptorArray":
-				// The initial tvOS 16.0 simulator doesn't have these classes, but the tvOS 16.1 simulator doess
-				if (TestRuntime.IsSimulator && !TestRuntime.CheckXcodeVersion (14, 1))
-					return true;
-				break;
 			case "CIPersonSegmentation": // removed in Xcode 26?
 			case "CISaliencyMapFilter": // removed in Xcode 26?
 				return TestRuntime.CheckXcodeVersion (26, 0);
 #endif
 			case "PhaseConeDirectivityModelParameters":
 				return !TestRuntime.IsSimulator; // fails on device
-			case "MTL4AccelerationStructureBoundingBoxGeometryDescriptor":
-			case "MTL4AccelerationStructureCurveGeometryDescriptor":
-			case "MTL4AccelerationStructureDescriptor":
-			case "MTL4AccelerationStructureGeometryDescriptor":
-			case "MTL4AccelerationStructureMotionBoundingBoxGeometryDescriptor":
-			case "MTL4AccelerationStructureMotionCurveGeometryDescriptor":
-			case "MTL4AccelerationStructureMotionTriangleGeometryDescriptor":
-			case "MTL4AccelerationStructureTriangleGeometryDescriptor":
-			case "MTL4ArgumentTableDescriptor":
-			case "MTL4BinaryFunctionDescriptor":
-			case "MTL4CommandAllocatorDescriptor":
-			case "MTL4CommandBufferOptions":
-			case "MTL4CommandQueueDescriptor":
-			case "MTL4CommitOptions":
-			case "MTL4CompilerDescriptor":
-			case "MTL4CompilerTaskOptions":
-			case "MTL4ComputePipelineDescriptor":
-			case "MTL4CounterHeapDescriptor":
-			case "MTL4FunctionDescriptor":
-			case "MTL4IndirectInstanceAccelerationStructureDescriptor":
-			case "MTL4InstanceAccelerationStructureDescriptor":
-			case "MTL4LibraryDescriptor":
-			case "MTL4LibraryFunctionDescriptor":
-			case "MTL4MachineLearningPipelineDescriptor":
-			case "MTL4MachineLearningPipelineReflection":
-			case "MTL4MeshRenderPipelineDescriptor":
-			case "MTL4PipelineDataSetSerializerDescriptor":
-			case "MTL4PipelineDescriptor":
-			case "MTL4PipelineOptions":
-			case "MTL4PipelineStageDynamicLinkingDescriptor":
-			case "MTL4PrimitiveAccelerationStructureDescriptor":
-			case "MTL4RenderPassDescriptor":
-			case "MTL4RenderPipelineBinaryFunctionsDescriptor":
-			case "MTL4RenderPipelineColorAttachmentDescriptor":
-			case "MTL4RenderPipelineColorAttachmentDescriptorArray":
-			case "MTL4RenderPipelineDescriptor":
-			case "MTL4RenderPipelineDynamicLinkingDescriptor":
-			case "MTL4SpecializedFunctionDescriptor":
-			case "MTL4StaticLinkingDescriptor":
-			case "MTL4StitchedFunctionDescriptor":
-			case "MTL4TileRenderPipelineDescriptor":
-			case "MTLLogicalToPhysicalColorAttachmentMap":
-			case "MTLResourceViewPoolDescriptor":
-			case "MTLTensorDescriptor":
-			case "MTLTensorReferenceType":
-			case "MTLTextureViewDescriptor":
-			case "MTLFXFrameInterpolatorDescriptor":
-			case "MTLFXTemporalDenoisedScalerDescriptor":
-				if (TestRuntime.IsSimulator)
-					return true;
-				break;
 			}
 
 			switch (type.Namespace) {
@@ -390,7 +319,7 @@ namespace Introspection {
 				}
 				n++;
 			}
-			Assert.AreEqual (0, Errors, "{0} potential errors found in {1} default ctor validated{2}", Errors, n, Errors == 0 ? string.Empty : ":\n" + ErrorData.ToString () + "\n");
+			Assert.That (Errors, Is.EqualTo (0), $"{Errors} potential errors found in {n} default ctor validated:\n{ErrorData}\n");
 		}
 
 		// .NET constructors are not virtual, so we need to re-expose the base class .ctor when a subclass is created.
@@ -442,7 +371,7 @@ namespace Introspection {
 					n++;
 				}
 			}
-			Assert.AreEqual (0, Errors, "{0} potential errors found in {1} designated initializer validated", Errors, n);
+			Assert.That (Errors, Is.EqualTo (0), $"{Errors} potential errors found in {n} designated initializer validated");
 		}
 
 		protected virtual bool Match (ConstructorInfo ctor, Type type)
@@ -710,7 +639,7 @@ namespace Introspection {
 				}
 				n++;
 			}
-			Assert.AreEqual (0, Errors, $"{Errors} potential errors found in {n} BaseType empty ctor validated: \n{ErrorData}\n{(genObjCTestCode ? $"\n\n{objCCode}\n" : string.Empty)}");
+			Assert.That (Errors, Is.EqualTo (0), $"{Errors} potential errors found in {n} BaseType empty ctor validated: \n{ErrorData}\n{(genObjCTestCode ? $"\n\n{objCCode}\n" : string.Empty)}");
 		}
 
 		protected virtual bool SkipCheckShouldNotExposeDefaultCtor (Type type)
@@ -752,7 +681,7 @@ namespace Introspection {
 					ReportError ("{0} should re-expose IARAnchorCopying::.ctor(ARAnchor)", t);
 			}
 
-			Assert.AreEqual (0, Errors, "{0} potential errors found when validating if subclasses of 'ARAnchor' re-expose 'IARAnchorCopying' constructor", Errors);
+			Assert.That (Errors, Is.EqualTo (0), $"{Errors} potential errors found when validating if subclasses of 'ARAnchor' re-expose 'IARAnchorCopying' constructor");
 		}
 #endif
 	}

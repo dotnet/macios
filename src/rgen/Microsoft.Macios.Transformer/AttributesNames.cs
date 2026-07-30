@@ -90,8 +90,7 @@ static class AttributesNames {
 	public const string DisableDefaultCtorAttribute = "DisableDefaultCtorAttribute";
 
 	/// <summary>
-	/// This attribute is applied to string parameters or string properties and instructs the code generator to not
-	/// use the zero-copy string marshaling for this parameter, and instead create a new NSString instance from the C# string
+	/// This attribute is obsolete and has no effect. Zero-copy string marshaling is no longer supported.
 	/// </summary>
 	[BindingFlag (AttributeTargets.Parameter | AttributeTargets.Property)]
 	public const string DisableZeroCopyAttribute = "DisableZeroCopyAttribute";

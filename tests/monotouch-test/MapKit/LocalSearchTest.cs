@@ -30,7 +30,7 @@ namespace MonoTouchFixtures.MapKit {
 				ls.Start ((MKLocalSearchResponse response, NSError error) => {
 					wait = false;
 				});
-				Assert.True (ls.IsSearching, "IsSearching");
+				Assert.That (ls.IsSearching, Is.True, "IsSearching");
 
 				// wait a bit before cancelling the search (so it really starts)
 				// otherwise IsSearching might never complete (on iOS8) and seems very random (in earlier versions)

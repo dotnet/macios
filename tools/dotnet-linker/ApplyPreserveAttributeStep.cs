@@ -1,6 +1,4 @@
 using System.IO;
-using System.Linq;
-using System.Xml.Linq;
 
 using Mono.Cecil;
 using Mono.Linker;
@@ -14,22 +12,8 @@ using Xamarin.Utils;
 namespace Xamarin.Linker.Steps {
 
 	public class ApplyPreserveAttributeStep : AssemblyModifierStep, IApplyPreserveAttribute {
-		sealed class XmlTypeDescription {
-			public XmlTypeDescription (TypeDefinition type)
-			{
-				Type = type;
-			}
-
-			public TypeDefinition Type { get; }
-			public bool PreserveAllMembers { get; set; }
-			public bool PreserveFields { get; set; }
-			public bool PreserveType { get; set; }
-			public Dictionary<string, bool> Fields { get; } = new (StringComparer.Ordinal);
-			public Dictionary<string, bool> Methods { get; } = new (StringComparer.Ordinal);
-		}
-
 		ApplyPreserveAttributeImpl impl;
-		readonly Dictionary<string, Dictionary<string, XmlTypeDescription>> xmlDescriptions = new (StringComparer.Ordinal);
+		readonly XmlDescriptor xmlDescriptor = new ();
 		protected override string Name { get => "Apply Preserve Attribute"; }
 		protected override int ErrorCode { get => 2450; }
 
@@ -45,7 +29,11 @@ namespace Xamarin.Linker.Steps {
 			}
 		}
 
+#if ASSEMBLY_PREPARER
+		public bool UseXmlDescriptionFile { get; set; }
+#else
 		public bool UseXmlDescriptionFile { get; set; } = true;
+#endif
 		public string XmlDescriptionPath { get; set; } = string.Empty;
 
 		public ApplyPreserveAttributeStep ()
@@ -99,7 +87,12 @@ namespace Xamarin.Linker.Steps {
 		bool IApplyPreserveAttribute.PreserveType (TypeDefinition type, bool allMembers)
 		{
 			if (UseXmlDescriptionFile) {
-				AddXmlDescription (type, allMembers);
+				if (allMembers)
+					xmlDescriptor.PreserveTypeWithAllMembers (type);
+				else if (type.IsEnum)
+					xmlDescriptor.PreserveTypeFields (type);
+				else
+					xmlDescriptor.PreserveType (type);
 				return false;
 			}
 
@@ -115,7 +108,7 @@ namespace Xamarin.Linker.Steps {
 		bool IApplyPreserveAttribute.PreserveConditional (TypeDefinition onType, MethodDefinition forMethod)
 		{
 			if (UseXmlDescriptionFile) {
-				AddXmlDescription (onType, forMethod, conditional: true);
+				xmlDescriptor.PreserveMethod (forMethod, required: false);
 				return false;
 			}
 
@@ -176,114 +169,22 @@ namespace Xamarin.Linker.Steps {
 			return Path.Combine (Configuration.CacheDirectory, "apply-preserve-attribute.xml");
 		}
 
-		static string GetXmlSignature (MethodDefinition method)
-		{
-			var marker = method.DeclaringType.FullName + "::";
-			var index = method.FullName.IndexOf (marker, System.StringComparison.Ordinal);
-			if (index < 0)
-				return method.FullName;
-
-			return method.FullName.Substring (0, index) + method.FullName.Substring (index + marker.Length);
-		}
-
-		XmlTypeDescription GetOrCreateXmlDescription (TypeDefinition type)
-		{
-			var assemblyName = type.Module.Assembly.Name.Name;
-			if (!xmlDescriptions.TryGetValue (assemblyName, out var types)) {
-				types = new Dictionary<string, XmlTypeDescription> (System.StringComparer.Ordinal);
-				xmlDescriptions.Add (assemblyName, types);
-			}
-
-			if (!types.TryGetValue (type.FullName, out var description)) {
-				description = new XmlTypeDescription (type);
-				types.Add (type.FullName, description);
-			}
-
-			return description;
-		}
-
-		void AddXmlDescription (TypeDefinition type, bool allMembers)
-		{
-			var description = GetOrCreateXmlDescription (type);
-			description.PreserveType = true;
-			if (allMembers) {
-				description.PreserveAllMembers = true;
-				return;
-			}
-
-			if (type.IsEnum) {
-				description.PreserveFields = true;
-				return;
-			}
-		}
-
-		void AddXmlDescription (TypeDefinition onType, MethodDefinition forMethod, bool conditional)
-		{
-			var description = GetOrCreateXmlDescription (onType);
-			if (!conditional)
-				description.PreserveType = true;
-			description.Methods [GetXmlSignature (forMethod)] = conditional;
-		}
-
 		void AddUnconditionalXmlDescription (IMetadataTokenProvider provider)
 		{
 			switch (provider) {
 			case MethodDefinition method:
-				AddXmlDescription (method.DeclaringType, method, false);
+				xmlDescriptor.PreserveMethod (method);
 				break;
 			case FieldDefinition field:
-				var description = GetOrCreateXmlDescription (field.DeclaringType);
-				description.Fields [field.Name] = false;
-				description.PreserveType = true;
+				xmlDescriptor.PreserveField (field);
 				break;
 			}
-		}
-
-		XElement CreateXmlTypeElement (XmlTypeDescription description)
-		{
-			var type = new XElement ("type", new XAttribute ("fullname", description.Type.FullName));
-
-			if (description.PreserveAllMembers) {
-				type.SetAttributeValue ("preserve", "all");
-				return type;
-			}
-
-			if (description.PreserveFields && description.Fields.Count == 0 && description.Methods.Count == 0) {
-				type.SetAttributeValue ("preserve", "fields");
-				return type;
-			}
-
-			if (!description.PreserveType)
-				type.SetAttributeValue ("required", "false");
-
-			type.SetAttributeValue ("preserve", "nothing");
-
-			foreach (var field in description.Fields.OrderBy (v => v.Key, System.StringComparer.Ordinal))
-				type.Add (new XElement ("field", new XAttribute ("name", field.Key), new XAttribute ("required", field.Value ? "false" : "true")));
-
-			foreach (var method in description.Methods.OrderBy (v => v.Key, System.StringComparer.Ordinal))
-				type.Add (new XElement ("method", new XAttribute ("signature", method.Key), new XAttribute ("required", method.Value ? "false" : "true")));
-
-			return type;
 		}
 
 		void WriteXmlDescription ()
 		{
 			var xmlPath = GetXmlDescriptionFilePath ();
-			var directory = Path.GetDirectoryName (xmlPath);
-			if (!string.IsNullOrEmpty (directory))
-				Directory.CreateDirectory (directory);
-
-			var document = new XDocument (
-				new XElement ("linker",
-					xmlDescriptions
-						.OrderBy (v => v.Key, System.StringComparer.Ordinal)
-						.Select (assembly => new XElement ("assembly",
-							new XAttribute ("fullname", assembly.Key),
-							assembly.Value
-								.OrderBy (v => v.Key, System.StringComparer.Ordinal)
-								.Select (v => CreateXmlTypeElement (v.Value))))));
-			document.Save (xmlPath);
+			xmlDescriptor.Save (xmlPath);
 
 			if (CreateXmlDescriptionFile) {
 				var items = new List<MSBuildItem> ();
@@ -292,6 +193,7 @@ namespace Xamarin.Linker.Steps {
 				Configuration.WriteOutputForMSBuild ("TrimmerRootDescriptor", items);
 			}
 
+#if !ASSEMBLY_PREPARER
 			// The current linker run still needs these roots immediately. Writing the TrimmerRootDescriptor item only
 			// makes the descriptor available to MSBuild after this step has already finished running.
 			var applyXmlStepType = Context.GetType ().Assembly.GetType ("Mono.Linker.Steps.ResolveFromXmlStep");
@@ -302,6 +204,7 @@ namespace Xamarin.Linker.Steps {
 			} else {
 				throw ErrorHelper.CreateError (99, $"Unable to find Mono.Linker.Steps.ResolveFromXmlStep to apply the generated XML description file {xmlPath}");
 			}
+#endif
 		}
 	}
 }

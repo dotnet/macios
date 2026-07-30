@@ -17,7 +17,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 		public void ToStringTest ()
 		{
 			var point = new CGPoint ((nfloat) 1, (nfloat) 2);
-			Assert.AreEqual ("{1, 2}", point.ToString (), "ToString");
+			Assert.That (point.ToString (), Is.EqualTo ("{1, 2}"), "ToString");
 		}
 	}
 }

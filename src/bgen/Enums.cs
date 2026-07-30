@@ -200,6 +200,7 @@ public partial class Generator {
 				}
 			}
 			// the *Extensions has the same version requirement as the enum itself
+			PrintSimulatorAvailabilityAttributes (type);
 			PrintPlatformAttributes (type);
 			PrintExperimentalAttribute (type);
 			print_generated_code ();
@@ -259,6 +260,7 @@ public partial class Generator {
 				var fa = kvp.Value;
 				// the attributes (availability and field) are important for our tests
 				PrintPlatformAttributes (f);
+				PrintSimulatorAvailabilityAttributes (f);
 				string? libPath = null;
 				if (library_name is not null)
 					libraries.TryGetValue (library_name, out libPath);

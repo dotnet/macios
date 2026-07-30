@@ -75,14 +75,6 @@ namespace Introspection {
 				default:
 					return false;
 				}
-			case "CMSampleAttachmentKey": // kCMSampleAttachmentKey_HDR10PlusPerFrameData":
-				switch (property.Name) {
-				case "Hdr10PlusPerFrameDataKey":
-					if (TestRuntime.IsSimulator)
-						return !TestRuntime.CheckXcodeVersion (14, 1); // not available in the iOS 16.0 simulator, but it is in the iOS 16.1 simulator
-					break;
-				}
-				break;
 			}
 			return SkipDueToAttribute (property);
 		}
@@ -208,7 +200,7 @@ namespace Introspection {
 				}
 				n++;
 			}
-			Assert.AreEqual (0, Errors, "{0} errors found in {1} fields validated: {2}", Errors, n, string.Join (", ", failed_fields));
+			Assert.That (Errors, Is.EqualTo (0), $"{Errors} errors found in {n} fields validated: {string.Join (", ", failed_fields)}");
 		}
 
 		[Test]
@@ -233,7 +225,7 @@ namespace Introspection {
 				}
 				n++;
 			}
-			Assert.AreEqual (0, Errors, "{0} errors found in {1} fields validated: {2}", Errors, n, string.Join (", ", failed_fields));
+			Assert.That (Errors, Is.EqualTo (0), $"{Errors} errors found in {n} fields validated: {string.Join (", ", failed_fields)}");
 		}
 
 		[Test]
@@ -272,7 +264,7 @@ namespace Introspection {
 				Dlfcn.dlclose (lib);
 				n++;
 			}
-			Assert.AreEqual (0, Errors, "{0} errors found in {1} fields validated: {2}", Errors, n, string.Join (", ", failed_fields));
+			Assert.That (Errors, Is.EqualTo (0), $"{Errors} errors found in {n} fields validated: {string.Join (", ", failed_fields)}");
 		}
 	}
 }

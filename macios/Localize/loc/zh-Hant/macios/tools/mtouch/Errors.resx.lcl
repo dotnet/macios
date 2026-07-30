@@ -4300,6 +4300,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";MX1504" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Cannot find the product assembly '{0}' in the list of loaded assemblies.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[在載入的組件清單中找不到產品組件 '{0}'。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";MX1600" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Not a Mach-O dynamic library (unknown header '0x{0}'): {1}.]]></Val>
@@ -4497,6 +4506,87 @@
           <Val><![CDATA[Could not optimize the static constructor in the interface {0} because it had an unexpected instruction {1} at offset {2}.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[無法最佳化介面 {0} 中的靜態建構函式，因為它在位移 {2} 有未預期的指令 {1}。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX2254" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unsupported primitive field type '{0}' for symbol '{1}' in method '{2}'. Sub-optimal but functional code will be generated. Please file an issue at https://github.com/dotnet/macios/issues/new]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[方法 '{2}' 中符號 '{1}' 的不支援基本欄位類型 '{0}'。將產生次佳但可運作的程式碼。請前往 https://github.com/dotnet/macios/issues/new 提交問題]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX2255" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unknown or unsupported Dlfcn pattern: '{0}' in method '{1}'. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[未知或不支援的 Dlfcn 模式: 方法 '{1}' 中的 '{0}'。此呼叫不會內嵌。請前往 https://github.com/dotnet/macios/issues/new 提交問題]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX2256" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The field type '{0}' for symbol '{1}' in method '{2}' is not an NSObject subclass. Please file an issue at https://github.com/dotnet/macios/issues/new]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[方法 '{2}' 中符號 '{1}' 的欄位類型 '{0}' 不是 NSObject 子類別。請前往 https://github.com/dotnet/macios/issues/new 提交問題]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX2257" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unknown IL sequence for method with call to Dlfcn.CachePointer: '{0}' in method '{1}'. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[呼叫 Dlfcn.CachePointer 時出現未知的 IL 序列: 方法 '{1}' 中的 '{0}'。此呼叫不會內嵌。請前往 https://github.com/dotnet/macios/issues/new 提交問題]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX2258" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA['{0}' is marked with a malformed simulator availability attribute: {1}. Please file an issue at https://github.com/dotnet/macios/issues/new]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA['{0}' 標示了格式錯誤的模擬器可用性屬性: {1}。請前往 https://github.com/dotnet/macios/issues/new 提交問題]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX2259" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA['{0}' is marked with a simulator availability attribute with an invalid version: {1}. Please file an issue at https://github.com/dotnet/macios/issues/new]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA['{0}' 標示了無效版本的模擬器可用性屬性: {1}。請前往 https://github.com/dotnet/macios/issues/new 提交問題]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX2260" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA['{0}' has conflicting simulator availability attributes for the '{1}' platform (both SupportedSimulator and UnsupportedSimulator). Please file an issue at https://github.com/dotnet/macios/issues/new]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA['{0}' 的 '{1}' 平台有衝突的模擬器可用性屬性 (SupportedSimulator 和 UnsupportedSimulator 兩者皆有)。請前往 https://github.com/dotnet/macios/issues/new 提交問題]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX2261" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA['{0}' has multiple SupportedSimulator attributes for the '{1}' platform. Please file an issue at https://github.com/dotnet/macios/issues/new]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA['{0}' 的 '{1}' 平台有多個 SupportedSimulator 屬性。請前往 https://github.com/dotnet/macios/issues/new 提交問題]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX2262" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The 'InlineClassGetHandle' option is set to 'Strict', but we're using the dynamic registrar. This is not a supported configuration, because 'Strict' mode requires exported Objective-C classes to be available at compile time, but the dynamic registrar will create them at runtime. Please either change the 'InlineClassGetHandle' option to 'Disabled' or 'Compat', or switch to using the static registrar.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA['InlineClassGetHandle' 選項設定為 'Strict'，但我們使用的是動態註冊器。這不是支援的設定，因為 'Strict' 模式要求已匯出的 Objective-C 類別在編譯時可用，但動態註冊器會在執行階段建立它們。請將 'InlineClassGetHandle' 選項變更為 'Disabled' 或 'Compat'，或改用靜態登錄器。]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

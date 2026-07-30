@@ -6,7 +6,7 @@ cd $(dirname $0)
 
 # Detect if we're running on Linux
 if [[ "$(uname -s)" == "Linux" ]]; then
-	IS_LINUX=1
+	NO_XCODE=1
 	# On Linux, ignore all macOS-specific dependencies
 	IGNORE_OSX=1
 	IGNORE_XCODE=1
@@ -20,16 +20,57 @@ if [[ "$(uname -s)" == "Linux" ]]; then
 	IGNORE_YAMLLINT=1
 	IGNORE_PYTHON3=1
 else
-	IS_LINUX=
+	NO_XCODE=
 fi
 
 FAIL=
 PROVISION_DOWNLOAD_DIR=/tmp/x-provisioning
 SUDO=sudo
 VERBOSE=
+XCODE_PACKAGE_DIRECTORY=
 
 OPTIONAL_SIMULATORS=1
 OPTIONAL_OLD_SIMULATORS=1
+
+if test -f configure.inc; then
+	source configure.inc
+
+	if test -n "$NO_XCODE"; then
+		IGNORE_OSX=1
+		IGNORE_XCODE=1
+		IGNORE_SIMULATORS=1
+		IGNORE_OLD_SIMULATORS=1
+		IGNORE_XCODE_COMPONENTS=1
+	fi
+fi
+
+function get_xcode_developer_root ()
+{
+	local suffix="${1:-}"
+
+	# When we're provisioning Xcode ourselves, Make.config is the only source of truth:
+	# install-xcode.sh reads it directly, so honoring an inherited variable or a stale
+	# configure.inc here would make the rest of this script inspect a different Xcode
+	# than the one we just installed and selected.
+	if test -n "$XCODE_PACKAGE_DIRECTORY" || test -n "${PROVISION_XCODE:-}"; then
+		grep "^XCODE${suffix}_DEVELOPER_ROOT[?:]*=" Make.config | sed 's/^[^=]*=//'
+		return
+	fi
+
+	if test -z "$suffix"; then
+		if test -n "${XCODE_DEVELOPER_ROOT:-}"; then
+			echo "$XCODE_DEVELOPER_ROOT"
+			return
+		fi
+
+		if XCODE_DEVELOPER_ROOT_ASSIGNMENT=$(grep "^XCODE_DEVELOPER_ROOT=" configure.inc 2>/dev/null); then
+			echo "${XCODE_DEVELOPER_ROOT_ASSIGNMENT#*=}"
+			return
+		fi
+	fi
+
+	grep "^XCODE${suffix}_DEVELOPER_ROOT[?:]*=" Make.config | sed 's/^[^=]*=//'
+}
 
 # parse command-line arguments
 while ! test -z $1; do
@@ -42,6 +83,16 @@ while ! test -z $1; do
 			PROVISION_XCODE=1
 			unset IGNORE_XCODE
 			shift
+			;;
+		--xcode-package-directory)
+			if [[ $# -lt 2 || -z "$2" ]]; then
+				echo "--xcode-package-directory requires a value."
+				exit 1
+			fi
+			XCODE_PACKAGE_DIRECTORY=$2
+			PROVISION_XCODE=1
+			unset IGNORE_XCODE
+			shift 2
 			;;
 		--provision-xcode-components)
 			PROVISION_XCODE_COMPONENTS=1
@@ -207,6 +258,12 @@ while ! test -z $1; do
 	esac
 done
 
+if test -z "${NO_XCODE:-}"; then
+	XCODE_DEVELOPER_ROOT=$(get_xcode_developer_root)
+	export XCODE_DEVELOPER_ROOT
+	export DEVELOPER_DIR="$XCODE_DEVELOPER_ROOT"
+fi
+
 # reporting functions
 COLOR_RED=$(tput setaf 1 2>/dev/null || true)
 COLOR_ORANGE=$(tput setaf 3 2>/dev/null || true)
@@ -328,6 +385,20 @@ function get_non_universal_simulator_runtimes ()
 	rm -f "$TMPFILE"
 }
 
+function print_non_universal_simulator_runtimes ()
+{
+	local TMPFILE
+	TMPFILE=$(mktemp)
+
+	xcrun simctl runtime list -j --json-output="$TMPFILE"
+
+	# this json query filters the json to simulator runtimes where iOS/tvOS >= 26.0 and where x64 is *not* supported (which we need to run x64 apps in the simulator on arm64)
+	JQ_QUERY='map({platformIdentifier: .platformIdentifier, identifier: .identifier, version: .version, state: .state, supportedArchitectures: .supportedArchitectures | join("|"), majorVersion: .version | split(".")[0] | tonumber }) | map(select(.majorVersion>=26) ) | map(select(.supportedArchitectures | contains("x86_64") | not))'
+	jq "$JQ_QUERY" -r "$TMPFILE"
+
+	rm -f "$TMPFILE"
+}
+
 function xcodebuild_download_selected_platforms ()
 {
 	local XCODE_DEVELOPER_ROOT
@@ -339,7 +410,7 @@ function xcodebuild_download_selected_platforms ()
 	local TVOS_NUGET_OS_VERSION
 	local TVOS_BUILD_VERSION
 
-	XCODE_DEVELOPER_ROOT=$(grep XCODE_DEVELOPER_ROOT= Make.config | sed 's/.*=//')
+	XCODE_DEVELOPER_ROOT=$(get_xcode_developer_root)
 	XCODE_NAME=$(basename "$(dirname "$(dirname "$XCODE_DEVELOPER_ROOT")")")
 	# we use the same logic here as in Make.config to determine whether we're using a stable version of Xcode or not (search for XCODE_IS_STABLE/XCODE_IS_PREVIEW)
 	XCODE_IS_STABLE=$(echo "$XCODE_NAME" | sed -e 's@^Xcode[_0-9.]*[.]app$@YES@')
@@ -385,8 +456,10 @@ function xcodebuild_download_selected_platforms ()
 		log "Looking for iOS/tvOS 26+ simulator runtimes that don't support x64..."
 
 		get_non_universal_simulator_runtimes
-		if [[ "$SIMULATORS_WITHOUT_X64_COUNT" -gt 0 ]]; then
-			log "Found ${SIMULATORS_WITHOUT_X64_COUNT} simulator runtimes that don't support x64, which will now be deleted: ${SIMULATORS_WITHOUT_X64[@]}"
+		if [[ "$SIMULATORS_WITHOUT_X64_COUNT" -gt 0 && "$ACES" == "1" ]]; then
+			log "Found ${SIMULATORS_WITHOUT_X64_COUNT} simulator runtimes that don't support x64, but we're running on ACES, so we can't do anything about that."
+		elif [[ "$SIMULATORS_WITHOUT_X64_COUNT" -gt 0 ]]; then
+			log "Found ${SIMULATORS_WITHOUT_X64_COUNT} simulator runtimes that don't support x64, which will now be deleted: ${SIMULATORS_WITHOUT_X64[*]}"
 			for sim in "${SIMULATORS_WITHOUT_X64[@]}"; do
 				log "Executing 'xcrun simctl runtime delete $sim'"
 				xcrun simctl runtime delete "$sim"
@@ -394,17 +467,24 @@ function xcodebuild_download_selected_platforms ()
 			# sadly simulator deletion is done asynchronously, so we have to wait until they're all gone
 			log "Waiting for the simulators to be deleted..."
 			printf "            "
-			for i in $(seq 1 60); do
+			for i in $(seq 1 300); do
 				sleep 1
 				get_non_universal_simulator_runtimes
 				if [[ "$SIMULATORS_WITHOUT_X64_COUNT" == "0" ]]; then
 					break
 				fi
+				# every 60 seconds print the simulators left to delete
+				if [[ $(( i % 60)) == 0 ]]; then
+					printf "\n"
+					printf "            Simulators left to delete:\n"
+					print_non_universal_simulator_runtimes | sed 's/^/            /'
+					printf "            "
+				fi
 				printf "$SIMULATORS_WITHOUT_X64_COUNT"
 			done
 			printf "\n"
 			if [[ "$SIMULATORS_WITHOUT_X64_COUNT" != "0" ]]; then
-				warn "Waited for 60 seconds, but there are still $SIMULATORS_WITHOUT_X64_COUNT simulators waiting to deleted."
+				warn "Waited for 5 minutes, but there are still $SIMULATORS_WITHOUT_X64_COUNT simulators waiting to deleted."
 			fi
 		else
 			log "All installed iOS/tvOS 26+ simulators support x64"
@@ -491,83 +571,66 @@ function run_xcode_first_launch ()
 }
 
 function install_specific_xcode () {
-	local XCODE_URL=`grep XCODE$1_URL= Make.config | sed 's/.*=//'`
-	local XCODE_VERSION=`grep XCODE$1_VERSION= Make.config | sed 's/.*=//'`
-	local XCODE_DEVELOPER_ROOT="$2"
-	local XCODE_ROOT="$(dirname "$(dirname "$XCODE_DEVELOPER_ROOT")")"
+	local XCODE_URL
+	local XCODE_VERSION
+	local XCODE_NAME
+	local XCODE_ARCHIVE
+	local INSTALLER_ARGS=(install)
 
-	if test -z $XCODE_URL; then
+	XCODE_URL=$(grep "XCODE$1_URL=" Make.config | sed 's/.*=//')
+	XCODE_VERSION=$(grep "XCODE$1_VERSION=" Make.config | sed 's/.*=//')
+
+	if test -z "$SUDO"; then
+		INSTALLER_ARGS+=(--no-sudo)
+	fi
+
+	# CI downloads an immutable Universal Package from Azure Artifacts and hands us the
+	# directory it was expanded into; install-xcode.sh validates it before installing.
+	if test -n "$XCODE_PACKAGE_DIRECTORY"; then
+		INSTALLER_ARGS+=(--package-directory "$XCODE_PACKAGE_DIRECTORY")
+		"$PWD/tools/devops/automation/scripts/bash/install-xcode.sh" "${INSTALLER_ARGS[@]}"
+		return
+	fi
+
+	if test -z "$XCODE_URL"; then
 		fail "No XCODE$1_URL set in Make.config, cannot provision"
 		return
 	fi
 
-	mkdir -p $PROVISION_DOWNLOAD_DIR
+	# CI must never silently fall back to the storage-account URL: that dependency is
+	# exactly what the Universal Package replaced, and there are no credentials for it
+	# here, so it would fail obscurely much later.
+	if test -n "${TF_BUILD:-}"; then
+		fail "Xcode $XCODE_VERSION is not installed and no Xcode Universal Package was supplied. Re-run the 'Download Xcode Universal Package' step."
+		return
+	fi
+
+	mkdir -p "$PROVISION_DOWNLOAD_DIR"
 	log "Downloading Xcode $XCODE_VERSION from $XCODE_URL to $PROVISION_DOWNLOAD_DIR..."
-	local XCODE_NAME=`basename $XCODE_URL`
-	local XCODE_DMG=$PROVISION_DOWNLOAD_DIR/$XCODE_NAME
+	XCODE_NAME=$(basename "$XCODE_URL")
+	XCODE_ARCHIVE="$PROVISION_DOWNLOAD_DIR/$XCODE_NAME"
 
-	# To test this script with new Xcode versions, copy the downloaded file to $XCODE_DMG,
-	# uncomment the following curl line, and run ./system-dependencies.sh --provision-xcode
+	# To test this script with a local archive, place it in ~/Downloads and run
+	# ./system-dependencies.sh --provision-xcode.
 	if test -f "$HOME/Downloads/$XCODE_NAME"; then
-		log "Found $XCODE_NAME in your ~/Downloads folder, copying that version to $XCODE_DMG instead of re-downloading it."
-		cp "$HOME/Downloads/$XCODE_NAME" "$XCODE_DMG"
+		log "Found $XCODE_NAME in your ~/Downloads folder, copying that version to $XCODE_ARCHIVE instead of re-downloading it."
+		cp "$HOME/Downloads/$XCODE_NAME" "$XCODE_ARCHIVE"
 	else
-		curl -L $XCODE_URL > $XCODE_DMG
+		curl --fail --location --retry 5 --retry-all-errors "$XCODE_URL" > "$XCODE_ARCHIVE"
 	fi
 
-	if [[ ${XCODE_DMG: -4} == ".dmg" ]]; then
-		local XCODE_MOUNTPOINT=$PROVISION_DOWNLOAD_DIR/$XCODE_NAME-mount
-		log "Mounting $XCODE_DMG into $XCODE_MOUNTPOINT..."
-		hdiutil attach $XCODE_DMG -mountpoint $XCODE_MOUNTPOINT -quiet -nobrowse
-		log "Removing previous Xcode from $XCODE_ROOT"
-		rm -Rf $XCODE_ROOT
-		log "Installing Xcode $XCODE_VERSION to $XCODE_ROOT..."
-		cp -R $XCODE_MOUNTPOINT/*.app $XCODE_ROOT
-		log "Unmounting $XCODE_DMG..."
-		hdiutil detach $XCODE_MOUNTPOINT -quiet
-	elif [[ ${XCODE_DMG: -4} == ".xip" ]]; then
-		log "Extracting $XCODE_DMG..."
-		pushd . > /dev/null
-		cd $PROVISION_DOWNLOAD_DIR
-		# make sure there's nothing interfering
-		rm -Rf *.app
-		rm -Rf $XCODE_ROOT
-		# extract
-		xip --expand "$XCODE_DMG"
-		log "Installing Xcode $XCODE_VERSION to $XCODE_ROOT..."
-		mv *.app $XCODE_ROOT
-		popd > /dev/null
+	if [[ "$XCODE_ARCHIVE" == *.xip ]]; then
+		INSTALLER_ARGS+=(--archive "$XCODE_ARCHIVE")
+		"$PWD/tools/devops/automation/scripts/bash/install-xcode.sh" "${INSTALLER_ARGS[@]}"
+	elif [[ "$XCODE_ARCHIVE" == *.dmg ]]; then
+		fail "DMG-based Xcode provisioning is no longer supported. Provide an Apple-signed XIP archive."
+		return
 	else
-		fail "Don't know how to install $XCODE_DMG"
-	fi
-	rm -f $XCODE_DMG
-
-	log "Removing any com.apple.quarantine attributes from the installed Xcode"
-	$SUDO xattr -s -d -r com.apple.quarantine $XCODE_ROOT
-
-	if is_at_least_version $XCODE_VERSION 5.0; then
-		log "Accepting Xcode license"
-		$SUDO $XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild -license accept
+		fail "Don't know how to install $XCODE_ARCHIVE"
+		return
 	fi
 
-	if is_at_least_version "$XCODE_VERSION" 9.0; then
-		run_xcode_first_launch "$XCODE_VERSION" "$XCODE_DEVELOPER_ROOT"
-	elif is_at_least_version $XCODE_VERSION 8.0; then
-		PKGS="MobileDevice.pkg MobileDeviceDevelopment.pkg XcodeSystemResources.pkg"
-		for pkg in $PKGS; do
-			if test -f "$XCODE_DEVELOPER_ROOT/../Resources/Packages/$pkg"; then
-				log "Installing $pkg"
-				$SUDO /usr/sbin/installer -dumplog -verbose -pkg "$XCODE_DEVELOPER_ROOT/../Resources/Packages/$pkg" -target /
-				log "Installed $pkg"
-			else
-				log "Not installing $pkg because it doesn't exist."
-			fi
-		done
-	fi
-
-	log "Clearing xcrun cache..."
-	xcrun -k
-
+	rm -f "$XCODE_ARCHIVE"
 	ok "Xcode $XCODE_VERSION provisioned"
 }
 
@@ -580,7 +643,7 @@ function install_coresimulator ()
 	local TARGET_CORESIMULATOR_VERSION
 	local CURRENT_CORESIMULATOR_VERSION
 
-	XCODE_DEVELOPER_ROOT=$(grep XCODE_DEVELOPER_ROOT= Make.config | sed 's/.*=//')
+	XCODE_DEVELOPER_ROOT=$(get_xcode_developer_root)
 	XCODE_ROOT=$(dirname "$(dirname "$XCODE_DEVELOPER_ROOT")")
 	CORESIMULATOR_PKG=$XCODE_ROOT/Contents/Resources/Packages/XcodeSystemResources.pkg
 
@@ -646,51 +709,54 @@ function install_coresimulator ()
 }
 
 function check_specific_xcode () {
-	local XCODE_DEVELOPER_ROOT=`grep XCODE$1_DEVELOPER_ROOT= Make.config | sed 's/.*=//'`
-	local XCODE_VERSION=`grep XCODE$1_VERSION= Make.config | sed 's/.*=//'`
-	local XCODE_ROOT=$(dirname `dirname $XCODE_DEVELOPER_ROOT`)
-	
-	if ! test -d $XCODE_DEVELOPER_ROOT; then
+	local XCODE_DEVELOPER_ROOT
+	local XCODE_VERSION
+	local XCODE_ROOT
+	local INSTALLER="$PWD/tools/devops/automation/scripts/bash/install-xcode.sh"
+	local INSTALLER_ARGS=(verify --quiet)
+
+	XCODE_DEVELOPER_ROOT=$(get_xcode_developer_root "$1")
+	XCODE_VERSION=$(grep "XCODE$1_VERSION=" Make.config | sed 's/.*=//')
+	XCODE_ROOT=$(dirname "$(dirname "$XCODE_DEVELOPER_ROOT")")
+
+	if ! "$INSTALLER" "${INSTALLER_ARGS[@]}"; then
 		if ! test -z $PROVISION_XCODE; then
 			install_specific_xcode "$1" "$XCODE_DEVELOPER_ROOT"
 		else
+			# The probe above is quiet so that the common "not installed yet" case doesn't
+			# look like an error; repeat it verbosely so the actual reason is visible.
+			"$INSTALLER" verify || true
 			fail "You must install Xcode ($XCODE_VERSION) in $XCODE_ROOT. You can download Xcode $XCODE_VERSION here: https://developer.apple.com/downloads/index.action?name=Xcode"
+			return
 		fi
-		return
-	else
-		if is_at_least_version $XCODE_VERSION 5.0; then
-			if ! $XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild -license check >/dev/null 2>&1; then
-				if ! test -z $PROVISION_XCODE; then
-					$SUDO $XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild -license accept
-				else
-					fail "The license for Xcode $XCODE_VERSION has not been accepted. Execute '$SUDO $XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild' to review the license and accept it."
-					return
-				fi
-			fi
-		fi
-
-		run_xcode_first_launch "$XCODE_VERSION" "$XCODE_DEVELOPER_ROOT"
 	fi
 
-	local XCODE_ACTUAL_VERSION=`/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$XCODE_DEVELOPER_ROOT/../version.plist"`
-	# this is a hard match, having 4.5 when requesting 4.4 is not OK (but 4.4.1 is OK)
-	if [[ ! "x$XCODE_ACTUAL_VERSION" =~ "x$XCODE_VERSION" ]]; then
-		fail "You must install Xcode $XCODE_VERSION in $XCODE_ROOT (found $XCODE_ACTUAL_VERSION).  You can download Xcode $XCODE_VERSION here: https://developer.apple.com/downloads/index.action?name=Xcode";
+	if ! test -z $PROVISION_XCODE; then
+		INSTALLER_ARGS=(reconcile)
+		if test -z "$SUDO"; then
+			INSTALLER_ARGS+=(--no-sudo)
+		fi
+		"$INSTALLER" "${INSTALLER_ARGS[@]}"
+	elif ! "$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -license check >/dev/null 2>&1; then
+		fail "The license for Xcode $XCODE_VERSION has not been accepted. Execute '$SUDO $XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild' to review the license and accept it."
 		return
 	fi
 
-	ok "Found Xcode $XCODE_ACTUAL_VERSION in $XCODE_ROOT"
+	run_xcode_first_launch "$XCODE_VERSION" "$XCODE_DEVELOPER_ROOT"
+	ok "Found Xcode $XCODE_VERSION in $XCODE_ROOT"
 }
 
 function check_xcode () {
 	if ! test -z $IGNORE_XCODE; then return; fi
 
 	# must have latest Xcode in /Applications/Xcode<version>.app
-	check_specific_xcode
+	check_specific_xcode ""
 	install_coresimulator
 
 	local IOS_SDK_VERSION MACOS_SDK_VERSION TVOS_SDK_VERSION
-	local XCODE_DEVELOPER_ROOT=`grep ^XCODE_DEVELOPER_ROOT= Make.config | sed 's/.*=//'`
+	local XCODE_DEVELOPER_ROOT
+
+	XCODE_DEVELOPER_ROOT=$(get_xcode_developer_root)
 	IOS_SDK_VERSION=$(grep ^IOS_NUGET_OS_VERSION= Make.versions | sed -e 's/.*=//')
 	MACOS_SDK_VERSION=$(grep ^MACOS_NUGET_OS_VERSION= Make.versions | sed -e 's/.*=//')
 	TVOS_SDK_VERSION=$(grep ^TVOS_NUGET_OS_VERSION= Make.versions | sed -e 's/.*=//')
@@ -848,8 +914,8 @@ function check_osx_version () {
 }
 
 function check_checkout_dir () {
-	# Skip on Linux - this check is macOS-specific
-	if test -n "$IS_LINUX"; then
+	# Skip without Xcode - this check is macOS-specific
+	if test -n "$NO_XCODE"; then
 		return
 	fi
 	
@@ -916,7 +982,7 @@ function check_old_simulators ()
 	local XCODE
 	local XCODE_DEVELOPER_ROOT
 
-	XCODE_DEVELOPER_ROOT=$(grep XCODE$1_DEVELOPER_ROOT= Make.config | sed 's/.*=//')
+	XCODE_DEVELOPER_ROOT=$(get_xcode_developer_root "$1")
 
 	IFS=' ' read -r -a EXTRA_SIMULATORS <<< "$(grep ^EXTRA_SIMULATORS= Make.config | sed 's/.*=//')"
 	XCODE=$(dirname "$(dirname "$XCODE_DEVELOPER_ROOT")")
@@ -964,8 +1030,8 @@ function check_old_simulators ()
 
 echo "Checking system..."
 
-if test -n "$IS_LINUX"; then
-	ok "Running on ${COLOR_BLUE}Linux${COLOR_CLEAR} - skipping macOS-specific checks"
+if test -n "$NO_XCODE"; then
+	ok "No Xcode available - skipping Xcode-specific checks"
 	ok "Only .NET download and managed code builds will be available"
 fi
 
@@ -994,4 +1060,3 @@ else
 	echo "System check failed"
 	exit 1
 fi
-

@@ -123,12 +123,12 @@ namespace MonoTouchFixtures.MetalPerformanceShaders {
 			};
 
 			var valid = new MPSImageLaplacianPyramid (device, 3, 3, validArr);
-			Assert.NotNull (valid, "Valid Arr");
+			Assert.That (valid, Is.Not.Null, "Valid Arr");
 
 			Assert.Throws<ArgumentException> (() => new MPSImageLaplacianPyramid (device, 3, 3, invalidArr), "Invalid Arr");
 
 			var bigvalid = new MPSImageLaplacianPyramid (device, 3, 3, bigvalidArr);
-			Assert.NotNull (valid, "Big valid Arr");
+			Assert.That (valid, Is.Not.Null, "Big valid Arr");
 		}
 	}
 }

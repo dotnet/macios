@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Text.RegularExpressions;
 
 #nullable enable
 
@@ -96,7 +97,7 @@ namespace Xamarin.Tests {
 			Console.WriteLine ($"If this is expected, an updated list of expected warnings in stored in {fn}");
 			File.WriteAllText (fn, sb.ToString ());
 
-			// Rather than doing an Assert.IsEmpty, which produces a horrendous error message, we'll do an Assert.Multiple which generates a 
+			// Rather than doing an Assert.That(..., Is.Empty), which produces a horrendous error message, we'll do an Assert.Multiple which generates a 
 			// nice enumerated output of all the failures.
 			Assert.Multiple (() => {
 				// fail for each of the new warnings
@@ -112,6 +113,35 @@ namespace Xamarin.Tests {
 				foreach (var evt in missingWarnings)
 					Assert.Fail ($"Missing warning: {evt.File}: {evt.Message}");
 			});
+		}
+
+		public static IEnumerable<BuildLogEvent> FilterWarnings (this IEnumerable<BuildLogEvent> actualWarnings, ApplePlatform platform, bool filterSupportediPhoneOrientations = true, bool filterXcodeLocation = true)
+		{
+			return actualWarnings.Where (v => !IsFilteredWarning (v, platform, filterSupportediPhoneOrientations, filterXcodeLocation));
+		}
+
+		public static bool IsFilteredWarning (BuildLogEvent evt, ApplePlatform platform, bool filterSupportediPhoneOrientations = true, bool filterXcodeLocation = true)
+		{
+			var v = evt.Message?.Trim ();
+
+			if (string.IsNullOrEmpty (v))
+				return false;
+
+			if (filterSupportediPhoneOrientations && platform == ApplePlatform.iOS && v == "Supported iPhone orientations have not been set")
+				return true;
+
+			if (filterXcodeLocation) {
+				if (v.Contains ("The environment variable 'MD_APPLE_SDK_ROOT' is deprecated, and will be ignored. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use."))
+					return true;
+				if (v.Contains ("The environment variable 'MD_APPLE_SDK_ROOT' is deprecated, and will be ignored in .NET 11+. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use."))
+					return true;
+				if (Regex.IsMatch (v, @"The settings file '/.*/Library/Preferences/maui/Settings\.plist' is deprecated, and will be ignored\. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use\."))
+					return true;
+				if (Regex.IsMatch (v, @"The settings file '/.*/Library/Preferences/Xamarin/Settings\.plist' is deprecated, and will be ignored\. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use\."))
+					return true;
+			}
+
+			return false;
 		}
 	}
 

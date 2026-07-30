@@ -19,7 +19,7 @@ namespace MonoTouchFixtures.CoreML {
 			TestRuntime.AssertXcodeVersion (15, 0);
 
 			var devices = MLModel.AllComputeDevices;
-			Assert.IsNotNull (devices, "AllComputeDevices");
+			Assert.That (devices, Is.Not.Null, "AllComputeDevices");
 			Assert.That (devices.Length, Is.GreaterThanOrEqualTo (1), "AllComputeDevices/length");
 		}
 	}

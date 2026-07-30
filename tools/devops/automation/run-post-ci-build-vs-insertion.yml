@@ -26,6 +26,14 @@ parameters:
     type: boolean
     default: true
 
+# Tighten the needed network calls to comply with restrictions
+# See https://devdiv.visualstudio.com/DevDiv/_git/Xamarin.yaml-templates/pullrequest/749941
+variables:
+  - name: DOTNET_CLI_WORKLOAD_UPDATE_NOTIFY_DISABLE
+    value: 'true'
+  - name: DOTNET_SDK_VULNERABILITY_CHECK_DISABLE
+    value: 'true'
+
 # we cannot use a template in a pipeline context
 resources:
   pipelines:

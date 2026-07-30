@@ -269,122 +269,7 @@ namespace Xamarin {
 			}
 		}
 
-#if MTOUCH
-		// Removes all architectures from the target file, except for those in 'architectures'.
-		// This method doesn't do anything if the target file is a thin mach-o file.
-		// Also it doesn't do anything if the result is an empty file (i.e. none of the
-		// selected architectures match any of the architectures in the file) - this is
-		// only because I haven't investigated what would be needed elsewhere in the link
-		// process when the entire file is removed. FIXME <--.
-		public static void SelectArchitectures (string filename, ICollection<Abi> abis)
-		{
-			var architectures = GetArchitectures (abis);
-			var tmpfile = filename + ".tmp";
-
-			if (abis.Count == 0)
-				return;
-
-			using (var fsr = new FileStream (filename, FileMode.Open, FileAccess.Read)) {
-				using (var reader = new BinaryReader (fsr)) {
-					var file = ReadFile (filename);
-					if (file is MachOFile) {
-						Driver.Log (2, "Skipping architecture selecting of '{0}', since it only contains 1 architecture.", filename);
-						return;
-					}
-
-					var fatfile = (FatFile) file;
-					bool any_removed = false;
-
-					// remove architectures we don't want
-					for (int i = fatfile.entries!.Count - 1; i >= 0; i--) {
-						var ff = fatfile.entries [i];
-						if (!architectures.Contains (ff.entry!.Architecture)) {
-							any_removed = true;
-							fatfile.entries.RemoveAt (i);
-							fatfile.nfat_arch--;
-							Driver.Log (2, "Removing architecture {0} from {1}", ff.entry.Architecture, filename);
-						}
-					}
-
-					if (!any_removed) {
-						Driver.Log (2, "Architecture selection of '{0}' didn't find any architectures to remove.", filename);
-						return;
-					}
-
-					if (fatfile.nfat_arch == 0) {
-						Driver.Log (2, "Skipping architecture selection of '{0}', none of the selected architectures match any of the architectures in the archive.", filename, architectures [0]);
-						return;
-					}
-
-					if (fatfile.nfat_arch == 1) {
-						// Thin file
-						var entry = fatfile.entries [0];
-						using (var fsw = new FileStream (tmpfile, FileMode.Create, FileAccess.Write)) {
-							using (var writer = new BinaryWriter (fsw)) {
-								entry.WriteFile (writer, reader, entry.offset);
-							}
-						}
-					} else {
-						// Fat file
-						// Re-calculate header data
-						var read_offset = new List<uint> (fatfile.entries.Count);
-						read_offset.Add (fatfile.entries [0].offset);
-						fatfile.entries [0].offset = (uint) (1 << (int) fatfile.entries [0].align);
-						for (int i = 1; i < fatfile.entries.Count; i++) {
-							read_offset.Add (fatfile.entries [i].offset);
-							fatfile.entries [i].offset = fatfile.entries [i - 1].offset + fatfile.entries [i - 1].size;
-							var alignSize = (1 << (int) fatfile.entries [i].align);
-							var align = (int) fatfile.entries [i].offset % alignSize;
-							if (align != 0)
-								fatfile.entries [i].offset += (uint) (alignSize - align);
-						}
-						// Write out the fat file
-						using (var fsw = new FileStream (tmpfile, FileMode.Create, FileAccess.Write)) {
-							using (var writer = new BinaryWriter (fsw)) {
-								// write headers
-								fatfile.WriteHeaders (writer);
-								// write data
-								for (int i = 0; i < fatfile.entries.Count; i++) {
-									fatfile.entries [i].Write (writer, reader, read_offset [i]);
-								}
-							}
-						}
-					}
-				}
-			}
-
-			File.Delete (filename);
-			File.Move (tmpfile, filename);
-		}
-#endif
-
-		static Dictionary<string, IEnumerable<string>> native_dependencies = new Dictionary<string, IEnumerable<string>> ();
-
-		public static IEnumerable<string> GetNativeDependencies (string libraryName)
-		{
-			IEnumerable<string>? result;
-			lock (native_dependencies) {
-				if (native_dependencies.TryGetValue (libraryName, out result))
-					return result;
-			}
-
-			var macho_files = Read (libraryName);
-			var dependencies = new HashSet<string> ();
-			foreach (var macho_file in macho_files) {
-				foreach (var lc in macho_file.load_commands) {
-					var dyld_lc = lc as Xamarin.DylibLoadCommand;
-					if (dyld_lc?.name is not null) {
-						dependencies.Add (dyld_lc.name);
-					}
-				}
-			}
-			result = dependencies;
-			lock (native_dependencies)
-				native_dependencies.Add (libraryName, result);
-			return result;
-		}
-
-		public static List<Abi> GetArchitectures (string file)
+		public static List<Abi> GetArchitectures (IToolLog log, string file)
 		{
 			var result = new List<Abi> ();
 
@@ -424,7 +309,7 @@ namespace Xamarin {
 						result.Add (GetArch (System.Net.IPAddress.NetworkToHostOrder (reader.ReadInt32 ()), System.Net.IPAddress.NetworkToHostOrder (reader.ReadInt32 ())));
 						break;
 					default:
-						Console.WriteLine ("File '{0}' is neither a Universal binary nor a Mach-O binary (magic: 0x{1})", file, magic.ToString ("x"));
+						log.Log ("File '{0}' is neither a Universal binary nor a Mach-O binary (magic: 0x{1})", file, magic.ToString ("x"));
 						break;
 					}
 				}
@@ -663,6 +548,33 @@ namespace Xamarin {
 					var obj = new MachOFile (filename);
 					obj.Read (reader);
 					foreach (var sym in obj.GetUnresolvedSymbols (reader))
+						symbols.Add (sym);
+				} else {
+					throw ErrorHelper.CreateError (1601, Errors.MT1601, System.Text.Encoding.ASCII.GetString (reader.ReadBytes (7), 0, 7));
+				}
+			}
+			return symbols;
+		}
+
+		/// <summary>
+		/// Reads a static library or a Mach-O object file and returns the set of defined (external, non-undefined) symbols.
+		/// </summary>
+		public static HashSet<string> GetDefinedSymbols (string filename)
+		{
+			var symbols = new HashSet<string> ();
+			using (var fs = File.OpenRead (filename))
+			using (var reader = new BinaryReader (fs)) {
+				if (IsStaticLibrary (reader)) {
+					var lib = new StaticLibrary ();
+					lib.Read (filename, reader, fs.Length);
+					foreach (var obj in lib.ObjectFiles) {
+						foreach (var sym in obj.GetDefinedSymbols (reader))
+							symbols.Add (sym);
+					}
+				} else if (MachOFile.IsMachOLibrary (null, reader)) {
+					var obj = new MachOFile (filename);
+					obj.Read (reader);
+					foreach (var sym in obj.GetDefinedSymbols (reader))
 						symbols.Add (sym);
 				} else {
 					throw ErrorHelper.CreateError (1601, Errors.MT1601, System.Text.Encoding.ASCII.GetString (reader.ReadBytes (7), 0, 7));
@@ -987,6 +899,53 @@ namespace Xamarin {
 
 			return symbols;
 		}
+
+		/// <summary>
+		/// Reads defined (external, non-undefined) symbols from this Mach-O file.
+		/// The reader must be the same stream used to read this file.
+		/// </summary>
+		public HashSet<string> GetDefinedSymbols (BinaryReader reader)
+		{
+			var symbols = new HashSet<string> ();
+			var symtab = load_commands.OfType<SymtabLoadCommand> ().FirstOrDefault ();
+			if (symtab is null || symtab.nsyms == 0)
+				return symbols;
+
+			// Read the string table
+			reader.BaseStream.Position = streamBasePosition + symtab.stroff;
+			var stringTable = reader.ReadBytes ((int) symtab.strsize);
+
+			// Read symbol table entries
+			reader.BaseStream.Position = streamBasePosition + symtab.symoff;
+			for (uint i = 0; i < symtab.nsyms; i++) {
+				var n_strx = reader.ReadUInt32 ();
+				var n_type = reader.ReadByte ();
+				var n_sect = reader.ReadByte ();
+				var n_desc = reader.ReadInt16 ();
+				if (is64bitheader)
+					reader.ReadUInt64 (); // n_value (8 bytes)
+				else
+					reader.ReadUInt32 (); // n_value (4 bytes)
+
+				// Filter for defined external symbols (equivalent of nm -g, excluding undefined ones)
+				if ((n_type & N_EXT) == 0)
+					continue;
+				if ((n_type & N_TYPE) == N_UNDF)
+					continue;
+
+				// Read symbol name from string table
+				if (n_strx >= symtab.strsize)
+					continue;
+				var end = (int) n_strx;
+				while (end < stringTable.Length && stringTable [end] != 0)
+					end++;
+				var name = Encoding.UTF8.GetString (stringTable, (int) n_strx, end - (int) n_strx);
+				if (name.Length > 0)
+					symbols.Add (name);
+			}
+
+			return symbols;
+		}
 	}
 
 	public class FatFile {
@@ -1138,10 +1097,10 @@ namespace Xamarin {
 		}
 
 #if DEBUG
-		public virtual void Dump ()
+		public virtual void Dump (IToolLog log)
 		{
-			Console.WriteLine ("    cmd: {0}", cmd);
-			Console.WriteLine ("    cmdsize: {0}", cmdsize);
+			log.Log ("    cmd: {0}", cmd);
+			log.Log ("    cmdsize: {0}", cmdsize);
 		}
 #endif
 	}
@@ -1153,13 +1112,13 @@ namespace Xamarin {
 		public uint compatibility_version;
 
 #if DEBUG
-		public override void Dump ()
+		public override void Dump (IToolLog log)
 		{
-			base.Dump ();
-			Console.WriteLine ("    name: {0}", name);
-			Console.WriteLine ("    timestamp: {0}", timestamp);
-			Console.WriteLine ("    current_version: {0}", current_version);
-			Console.WriteLine ("    compatibility_version: {0}", compatibility_version);
+			base.Dump (log);
+			log.Log ("    name: {0}", name);
+			log.Log ("    timestamp: {0}", timestamp);
+			log.Log ("    current_version: {0}", current_version);
+			log.Log ("    compatibility_version: {0}", compatibility_version);
 		}
 #endif
 	}
@@ -1171,13 +1130,13 @@ namespace Xamarin {
 		public uint compatibility_version;
 
 #if DEBUG
-		public override void Dump ()
+		public override void Dump (IToolLog log)
 		{
-			base.Dump ();
-			Console.WriteLine ("    name: {0}", name);
-			Console.WriteLine ("    timestamp: {0}", timestamp);
-			Console.WriteLine ("    current_version: {0}", current_version);
-			Console.WriteLine ("    compatibility_version: {0}", compatibility_version);
+			base.Dump (log);
+			log.Log ("    name: {0}", name);
+			log.Log ("    timestamp: {0}", timestamp);
+			log.Log ("    current_version: {0}", current_version);
+			log.Log ("    compatibility_version: {0}", compatibility_version);
 		}
 #endif
 	}
@@ -1186,11 +1145,11 @@ namespace Xamarin {
 		public byte []? uuid;
 
 #if DEBUG
-		public override void Dump ()
+		public override void Dump (IToolLog log)
 		{
-			base.Dump ();
-			Console.WriteLine ("    cmd: {0}", cmd);
-			Console.WriteLine ("    uuid: {0}", uuid);
+			base.Dump (log);
+			log.Log ("    cmd: {0}", cmd);
+			log.Log ("    uuid: {0}", uuid);
 		}
 #endif
 	}

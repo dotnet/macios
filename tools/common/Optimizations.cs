@@ -9,13 +9,13 @@ using Xamarin.Utils;
 
 namespace Xamarin.Bundler {
 	public class Optimizations {
-		static string [] opt_names =
+		static readonly string [] opt_names =
 		{
 			"remove-uithread-checks",
 			"dead-code-elimination",
 			"inline-isdirectbinding",
 			"inline-intptr-size", // this optimization has been removed, but leave it here so that we won't break customers trying to enable/disable it
-			"inline-runtime-arch",
+			"inline-runtime-arch", // this optimization has been removed (replaced by a trimmer feature switch), but leave it here so that we won't break customers trying to enable/disable it
 			"blockliteral-setupblock",
 			"register-protocols",
 			"inline-dynamic-registration-supported",
@@ -31,12 +31,12 @@ namespace Xamarin.Bundler {
 			"redirect-class-handles",
 		};
 
-		static ApplePlatform [] [] valid_platforms = new ApplePlatform [] [] {
+		static readonly ApplePlatform [] [] valid_platforms = new ApplePlatform [] [] {
 			/* Opt.RemoveUIThreadChecks               */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 			/* Opt.DeadCodeElimination                */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 			/* Opt.InlineIsDirectBinding              */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 			/* Opt.InlineIntPtrSize                   */ new ApplePlatform [] {                                                                                        },
-			/* Opt.InlineRuntimeArch                  */ new ApplePlatform [] { ApplePlatform.iOS,                       ApplePlatform.TVOS                            },
+			/* Opt.InlineRuntimeArch                  */ new ApplePlatform [] {                                                                                        },
 			/* Opt.BlockLiteralSetupBlock             */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 			/* Opt.RegisterProtocols                  */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 			/* Opt.InlineDynamicRegistrationSupported */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
@@ -172,7 +172,7 @@ namespace Xamarin.Bundler {
 					continue;
 
 				// The remove-dynamic-registrar optimization is required when using NativeAOT
-				if (app.XamarinRuntime == XamarinRuntime.NativeAOT && (Opt) i == Opt.RemoveDynamicRegistrar && values [i] == false) {
+				if (app.XamarinRuntime == XamarinRuntime.NativeAOT && (Opt) i == Opt.RemoveDynamicRegistrar && value == false) {
 					messages.Add (ErrorHelper.CreateWarning (2016, Errors.MX2016 /* Keeping the dynamic registrar (by passing '--optimize=-remove-dynamic-registrar') is not possible, because the dynamic registrar is not supported when using NativeAOT. Support for dynamic registration will still be removed. */));
 					values [i] = true;
 					continue;
@@ -246,11 +246,8 @@ namespace Xamarin.Bundler {
 			// The default behavior for InlineIntPtrSize depends on the assembly being linked,
 			// which means we can't set it to a global constant. It's handled in the OptimizeGeneratedCodeSubStep directly.
 
-			if (app.Platform != ApplePlatform.MacOSX) {
-				// By default we always inline calls to Runtime.Arch
-				if (!InlineRuntimeArch.HasValue)
-					InlineRuntimeArch = true;
-			}
+			// The inline-runtime-arch optimization has been removed (the value is now folded by
+			// the trimmer using the ObjCRuntime.Runtime.Arch.IsSimulator feature switch).
 
 			// We try to optimize calls to BlockLiteral.SetupBlock and certain BlockLiteral constructors if the static registrar is enabled
 			if (!OptimizeBlockLiteralSetupBlock.HasValue) {

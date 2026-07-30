@@ -83,7 +83,7 @@ namespace NaturalLanguage {
 	/// <summary>Enumerates languages for which recognition is supported.</summary>
 	[MacCatalyst (13, 1)]
 	public enum NLLanguage {
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the language has not been evaluated yet.</summary>
 		[DefaultEnumValue]
 		[Field (null)]
 		Unevaluated,
@@ -369,7 +369,11 @@ namespace NaturalLanguage {
 	}
 
 	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+#if XAMCORE_5_0
+	public enum NLContextualEmbeddingKey {
+#else
 	public enum NLContextualEmebeddingKey {
+#endif
 		[Field ("NLContextualEmbeddingKeyLanguages")]
 		Languages,
 		[Field ("NLContextualEmbeddingKeyScripts")]

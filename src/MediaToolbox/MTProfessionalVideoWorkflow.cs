@@ -3,13 +3,11 @@
 #if MONOMAC
 
 namespace MediaToolbox {
-	/// <summary>To be added.</summary>
-	///     <remarks>To be added.</remarks>
+	/// <summary>Provides methods for registering professional video workflow format readers.</summary>
 	[SupportedOSPlatform ("macos")]
 	static public class MTProfessionalVideoWorkflow {
 
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Registers professional video workflow format readers with the system.</summary>
 		[SupportedOSPlatform ("macos")]
 		[DllImport (Constants.MediaToolboxLibrary, EntryPoint = "MTRegisterProfessionalVideoWorkflowFormatReaders")]
 		public static extern void RegisterFormatReaders ();

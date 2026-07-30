@@ -87,6 +87,16 @@ namespace XmlDocumentation {
 		[Export ("tintColor")]
 		[Appearance]
 		UIColor TintColor { get; set; }
+
+		// No xml documentation here: the generated appearance member should get a generated summary.
+		[Export ("backgroundColor")]
+		[Appearance]
+		UIColor BackgroundColor { get; set; }
+
+		// No xml documentation here: the generated appearance member should get a generated summary.
+		[Export ("setValue:")]
+		[Appearance]
+		void SetValue (nint value);
 	}
 #endif // IOS
 
@@ -300,6 +310,12 @@ namespace XmlDocumentation {
 		[Export ("speechSynthesizer:shouldMutter:")]
 		[DelegateName ("TShouldMutterEventArgs"), DefaultValue (true)]
 		bool ShouldMutter (TClass obj, double mutteringVolume);
+
+		// A single-parameter delegate method with no [EventArgs] docs generates a
+		// non-generic EventHandler event, which gets a default generated summary.
+		/// <summary>TClassDelegate.DidFinish</summary>
+		[Export ("speechSynthesizerDidFinish:")]
+		void DidFinish (TClass obj);
 	}
 
 	interface ITClassDelegate { }

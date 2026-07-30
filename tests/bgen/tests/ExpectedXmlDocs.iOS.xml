@@ -633,6 +633,12 @@
         <member name="E:XmlDocumentation.TClass.DidChangeMutteringVolume">
             <summary>TClassDelegate.DidChangeMutteringVolume - EventArgs.</summary>
         </member>
+        <member name="E:XmlDocumentation.TClass.DidChangeUtteringSpeed">
+            <summary>Raised by the object's delegate to signal an event, providing event data in a <see cref="T:XmlDocumentation.TUtteranceEventArgs" /> object.</summary>
+        </member>
+        <member name="E:XmlDocumentation.TClass.DidFinish">
+            <summary>Raised by the object's delegate to signal an event.</summary>
+        </member>
         <member name="T:XmlDocumentation.TMutteranceEventArgs">
             <summary>Provides data for an event based on an Objective-C protocol method.</summary>
         </member>
@@ -674,6 +680,12 @@
         <member name="M:XmlDocumentation.ITClassDelegate._ShouldMutter(XmlDocumentation.ITClassDelegate,XmlDocumentation.TClass,System.Double)">
             <summary>TClassDelegate.ShouldMutter</summary>
         </member>
+        <member name="M:XmlDocumentation.ITClassDelegate.DidFinish(XmlDocumentation.TClass)">
+            <summary>TClassDelegate.DidFinish</summary>
+        </member>
+        <member name="M:XmlDocumentation.ITClassDelegate._DidFinish(XmlDocumentation.ITClassDelegate,XmlDocumentation.TClass)">
+            <summary>TClassDelegate.DidFinish</summary>
+        </member>
         <member name="T:XmlDocumentation.TClassDelegate_Extensions">
             <summary>Extension methods to the <see cref="T:XmlDocumentation.ITClassDelegate" /> interface to support all the methods from the TClassDelegate protocol.</summary>
             <remarks>
@@ -688,6 +700,9 @@
         </member>
         <member name="M:XmlDocumentation.TClassDelegate_Extensions.ShouldMutter(XmlDocumentation.ITClassDelegate,XmlDocumentation.TClass,System.Double)">
             <summary>TClassDelegate.ShouldMutter</summary>
+        </member>
+        <member name="M:XmlDocumentation.TClassDelegate_Extensions.DidFinish(XmlDocumentation.ITClassDelegate,XmlDocumentation.TClass)">
+            <summary>TClassDelegate.DidFinish</summary>
         </member>
         <member name="T:XmlDocumentation.TClassDelegate">
             <summary>TClassDelegate</summary>
@@ -761,6 +776,9 @@
         </member>
         <member name="M:XmlDocumentation.TClassDelegate.DidChangeUtteringSpeed(XmlDocumentation.TClass,System.Double)">
             <summary>TClassDelegate.DidChangeUtteringSpeed</summary>
+        </member>
+        <member name="M:XmlDocumentation.TClassDelegate.DidFinish(XmlDocumentation.TClass)">
+            <summary>TClassDelegate.DidFinish</summary>
         </member>
         <member name="M:XmlDocumentation.TClassDelegate.ShouldMutter(XmlDocumentation.TClass,System.Double)">
             <summary>TClassDelegate.ShouldMutter</summary>
@@ -948,6 +966,16 @@
                 <para>This appearance class is a strongly typed subclass of UIAppearance that is intended to be used with objects of class <see cref="T:XmlDocumentation.TypeWithApparance" />.</para>
                 <para>You can obtain an instance to this class by either accessing the static <see cref="P:XmlDocumentation.TypeWithApparance.Appearance" /> property or by calling <see cref="M:XmlDocumentation.TypeWithApparance.AppearanceWhenContainedIn(System.Type[])" /> to get a UIAppearance that is context sensitive.</para>
             </remarks>
+        </member>
+        <member name="M:XmlDocumentation.TypeWithApparance.TypeWithApparanceAppearance.#ctor(System.IntPtr)">
+            <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>
+            <param name="handle">Pointer (handle) to the unmanaged object.</param>
+        </member>
+        <member name="P:XmlDocumentation.TypeWithApparance.TypeWithApparanceAppearance.BackgroundColor">
+            <summary>Appearance proxy for the <c>BackgroundColor</c> member of <see cref="T:XmlDocumentation.TypeWithApparance" />.</summary>
+        </member>
+        <member name="M:XmlDocumentation.TypeWithApparance.TypeWithApparanceAppearance.SetValue(System.IntPtr)">
+            <summary>Appearance proxy for the <c>SetValue</c> member of <see cref="T:XmlDocumentation.TypeWithApparance" />.</summary>
         </member>
         <member name="P:XmlDocumentation.TypeWithApparance.TypeWithApparanceAppearance.TintColor">
             <summary>

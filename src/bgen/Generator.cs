@@ -7167,8 +7167,10 @@ public partial class Generator : IMemberGatherer {
 				// historical note: unlike many attributes our `DisposeAttribute` has `AllowMultiple=true`
 				var has_dispose_attributes = attrs.Length > 0;
 				if (has_dispose_attributes || (instance_fields_to_clear_on_dispose.Count > 0)) {
-					// if there'a any [Dispose] attribute then they all must opt-in in order for the generated Dispose method to be optimizable
+					// if there are any [Dispose] attributes then they all must opt-in in order for the generated Dispose method to be optimizable
 					bool optimizable = !has_dispose_attributes || IsOptimizable (type);
+					if (BindingTouch.SupportsXmlDocumentation)
+						print ("/// <inheritdoc />");
 					print_generated_code (optimizable: optimizable);
 					print ("protected override void Dispose (bool disposing)");
 					print ("{");

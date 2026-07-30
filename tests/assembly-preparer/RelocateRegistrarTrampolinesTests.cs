@@ -103,6 +103,12 @@ public class RelocateRegistrarTrampolinesTests : BaseClass {
 			{
 				return value;
 			}
+
+			[Export (""computeValue:result:"")]
+			public void ComputeValue (int value, out T result)
+			{
+				result = null;
+			}
 		}
 		";
 
@@ -161,6 +167,17 @@ public class RelocateRegistrarTrampolinesTests : BaseClass {
 		var doSomethingHelper = genericHelpers.Single (v => v.Name.Contains ("DoSomething"));
 		Assert.That (doSomethingHelper.Parameters.Count, Is.GreaterThanOrEqualTo (1), "The generic helper should have at least a 'self' parameter");
 		Assert.That (doSomethingHelper.Parameters [0].Name, Is.EqualTo ("self"), "The generic helper's first parameter should be 'self'");
+
+		// A generic helper for a method with an out/ref parameter represents that parameter as a
+		// plain IntPtr: a pointer can't round-trip through reflection's object[] (it isn't boxable
+		// and MethodInfo.Invoke can't marshal it), so the out/ref (native pointer) parameter is
+		// passed as an IntPtr and the write-back happens through that pointer inside the helper body.
+		var computeHelper = genericHelpers.Single (v => v.Name.Contains ("ComputeValue"));
+		var outParameter = computeHelper.Parameters.Single (v => v.Name == "p1");
+		Assert.That (outParameter.ParameterType.FullName, Is.EqualTo ("System.IntPtr"), "The generic helper's out parameter should be typed IntPtr");
+		// A normal by-value parameter is unaffected: it keeps its native value type.
+		var valueParameter = computeHelper.Parameters.Single (v => v.Name == "p0");
+		Assert.That (valueParameter.ParameterType.FullName, Is.EqualTo ("System.Int32"), "The generic helper's by-value parameter should keep its native value type");
 
 		// The companion must be granted access to the user assembly.
 		var ignoresAccessChecksTo = companionAssembly.CustomAttributes

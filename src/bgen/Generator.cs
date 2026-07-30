@@ -6483,7 +6483,7 @@ public partial class Generator : IMemberGatherer {
 					} else
 						fieldTypeName = TypeManager.FormatType (field_pi.DeclaringType, field_pi.PropertyType);
 
-					bool nullable = false;
+					bool nullable = !field_pi.PropertyType.IsValueType && AttributeManager.IsNullable (field_pi);
 					// Value types we dont cache for now, to avoid Nullable<T>
 					if (!field_pi.PropertyType.IsValueType || smartEnumTypeName is not null) {
 						print_generated_code ();

@@ -48,7 +48,7 @@ public class RemoveUserResourcesSubStepTests : BaseClass {
 
 		var extraConfig = $"HotReloadCompatibleBuild={(hotReloadCompatibleBuild ? "true" : "false")}";
 
-		using var preparer = CreatePreparer (platform, isCoreCLR, p => p.Registrar = RegistrarMode.Dynamic, code, out var testInfo, extraCsproj: extraCsproj, extraConfig: extraConfig, extraFiles: new [] { ("TestResource.bin", content) }, testTrimMode: trimMode);
+		using var preparer = CreatePreparer (platform, isCoreCLR, p => p.Registrar = RegistrarMode.Dynamic, code, out var testInfo, extraCsproj: extraCsproj, extraConfig: extraConfig, extraFiles: new [] { ("TestResource.bin", content) }, testAssemblyTrimMode: trimMode);
 
 		var context = preparer.Configuration.DerivedLinkContext;
 		new LoadAssembliesStep ().Process (context);

@@ -750,6 +750,12 @@
 			<_IsSimulatorFeature Condition="'$(SdkIsMobile)' == 'true' And '$(_SdkIsSimulator)' == 'true'">true</_IsSimulatorFeature>
 			<_IsSimulatorFeature Condition="'$(_IsSimulatorFeature)' == ''">false</_IsSimulatorFeature>
 
+			<!-- Set the ARM64 calling convention value (based on the target architecture). Only set it when we
+			     know the target architecture (i.e. a RuntimeIdentifier is available); otherwise leave it unset so
+			     the trimmer keeps the runtime architecture detection instead of hardcoding a potentially wrong value. -->
+			<_IsARM64CallingConventionFeature Condition="'$(RuntimeIdentifier)' != '' And $(RuntimeIdentifier.EndsWith('-arm64'))">true</_IsARM64CallingConventionFeature>
+			<_IsARM64CallingConventionFeature Condition="'$(RuntimeIdentifier)' != '' And '$(_IsARM64CallingConventionFeature)' == ''">false</_IsARM64CallingConventionFeature>
+
 			<!-- Set managed static registrar value -->
 			<_IsManagedStaticRegistrarFeature Condition="'$(Registrar)' == 'managed-static'">true</_IsManagedStaticRegistrarFeature>
 			<_IsManagedStaticRegistrarFeature Condition="'$(Registrar)' != 'managed-static'">false</_IsManagedStaticRegistrarFeature>
@@ -916,6 +922,7 @@
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.AggressiveAttributeTrimmingMono" Value="true" Trim="true" Condition="'$(MobileAggressiveAttributeTrimming)' == 'true' And '$(_XamarinRuntime)' == 'MonoVM'" />
 			<RuntimeHostConfigurationOption Include="ObjCRUntime.AggressiveAttributeTrimmingOnlyWithStaticRegistrar" value="true" Trim="true" Condition="'$(MobileAggressiveAttributeTrimming)' == 'true' And ('$(Registrar)' == 'static' Or '$(Registrar)' == 'managed-static')" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.Arch.IsSimulator" Value="$(_IsSimulatorFeature)" Trim="true" />
+			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsARM64CallingConvention" Value="$(_IsARM64CallingConventionFeature)" Trim="true" Condition="'$(_IsARM64CallingConventionFeature)' != ''" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsManagedStaticRegistrar" Value="$(_IsManagedStaticRegistrarFeature)" Trim="true" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsTrimmableStaticRegistrar" Value="$(_IsTrimmableStaticRegistrarFeature)" Trim="true" />
 			<!--
@@ -1115,25 +1122,6 @@
 			<Output TaskParameter="FrameworkToPublish" ItemName="_FilteredFrameworkToPublish" />
 		</FilterStaticFrameworks>
 
-		<!--
-
-			We need to use the full path to the framework for frameworks that
-			come from app extensions (since any relative paths from the app
-			extension projects won't be correct once loaded into the
-			containing project), so compute that. However, also do this for
-			app projects, so that we can properly deduplicate frameworks that
-			come from both extensions and the main app project.
-
-		 -->
-		<GetFullPaths
-			Condition="'$(IsMacEnabled)' == 'true'"
-			SessionId="$(BuildSessionId)"
-			Items="@(_FilteredFrameworkToPublish)"
-			Metadata="Identity;SourceDirectory"
-		>
-			<Output TaskParameter="Output" ItemName="_FilteredFrameworkToPublishWithFullPath" />
-		</GetFullPaths>
-
 		<!-- If we're an app extension, store the list of all the frameworks to disk (and don't publish any of them to the appex) -->
 		<!-- Note that app extensions may be nested, so we first check if we have any app extensions with frameworks, read those, then store the full list to disk if we're an app extension, so the containing app project sees everything -->
 		<ReadItemsFromFile File="@(_ResolvedAppExtensionReferences->'%(Identity)\..\native-frameworks.items')" Condition="Exists('%(Identity)\..\native-frameworks.items')">
@@ -1142,7 +1130,7 @@
 
 		<WriteItemsToFile
 			Condition="'$(IsAppExtension)' == 'true'"
-			Items="@(_FilteredFrameworkToPublishWithFullPath);@(_FrameworksFromAppExtensions)"
+			Items="@(_FilteredFrameworkToPublish);@(_FrameworksFromAppExtensions)"
 			ItemName="_FrameworksFromAppExtensions"
 			File="$(DeviceSpecificOutputPath)\native-frameworks.items"
 			IncludeMetadata="true"
@@ -1157,7 +1145,7 @@
 
 		<ItemGroup>
 			<_DirectoriesToPublish Include="@(_FrameworksFromAppExtensions)" Condition="'$(IsAppExtension)' != 'true'" />
-			<_DirectoriesToPublish Include="@(_FilteredFrameworkToPublishWithFullPath)" Condition="'$(IsAppExtension)' != 'true'" />
+			<_DirectoriesToPublish Include="@(_FilteredFrameworkToPublish)" Condition="'$(IsAppExtension)' != 'true'" />
 		</ItemGroup>
 	</Target>
 
@@ -1170,6 +1158,18 @@
 	     This target will compute that stamp file location.
 	-->
 	<Target Name="_CreateStampLocationForCopyDirectoriesToBundle">
+		<PropertyGroup>
+			<_CopyDirectoriesToBundleInputFile>$(DeviceSpecificIntermediateOutputPath)CopyDirectoriesToBundleInputs.cache</_CopyDirectoriesToBundleInputFile>
+		</PropertyGroup>
+		<WriteLinesToFile
+			File="$(_CopyDirectoriesToBundleInputFile)"
+			Lines="StripFrameworkHeaders=$(StripFrameworkHeaders)"
+			Overwrite="true"
+			WriteOnlyWhenDifferent="true"
+		/>
+		<ItemGroup>
+			<FileWrites Include="$(_CopyDirectoriesToBundleInputFile)" />
+		</ItemGroup>
 		<ComputeHashForItems
 			Input="@(_DirectoriesToPublish)"
 			InputMetadata="Identity;TargetDirectory"
@@ -1200,7 +1200,7 @@
 
 	<Target Name="_CopyDirectoriesToBundle"
 		DependsOnTargets="_CollectDecompressedPlugins;_ComputeFrameworkFilesToPublish;_CollectDecompressedXpcServices;_CreateStampLocationForCopyDirectoriesToBundle"
-		Inputs="@(_DirectoriesToPublish);@(_DirectoriesToPublishInfoPlist)"
+		Inputs="@(_DirectoriesToPublish);@(_DirectoriesToPublishInfoPlist);$(_CopyDirectoriesToBundleInputFile)"
 		Outputs="@(_DirectoriesToPublish -> '%(StampLocation)')"
 		>
 

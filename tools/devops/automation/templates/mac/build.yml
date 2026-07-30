@@ -4,10 +4,6 @@ parameters:
   type: string 
   default: '10.16' # default context, since we started dealing with iOS devices. 
 
-- name: clearProvisionatorCache
-  type: boolean
-  default: false
-
 # can depend on the pool, which is annoying, but we should keep it in mind
 - name: keyringPass
   type: string
@@ -104,26 +100,11 @@ steps:
 
   displayName: 'Set VM Vendor'
 
-- template: ../common/provision.yml
-  parameters:
-    provisioning_script: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/provision-brew-packages.csx
-    displayName: 'Provision Brew components'
-    provisionatorChannel: $(PROVISIONATOR_CHANNEL)
-    timeoutInMinutes: 30
-    enabled: false
-
 - bash: |
     sudo rm -Rf $(Build.SourcesDirectory)/package
     sudo rm -Rf $(Build.SourcesDirectory)/artifacts
   displayName: "Remove artifacts"
   condition: always()
-
-# Executed ONLY if we want to clear the provisionator cache.
-- bash: rm -rf "$TOOLS_DIR/provisionator"
-  env:
-    TOOLS_DIR: $(Agent.ToolsDirectory)
-  displayName: 'Remove Provisionator Tool Cache'
-  condition: ${{ parameters.clearProvisionatorCache }}
 
 # Go get the tests!
 - task: DownloadPipelineArtifact@2

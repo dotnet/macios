@@ -90,7 +90,7 @@ namespace Xamarin.MacDev.Tasks {
 			sb.AppendLine ("\";");
 			sb.Append ("const size_t xamarin_trusted_platform_assembly_count = ").Append (assemblyNames.Count ()).AppendLine (";");
 			sb.AppendLine ();
-			sb.AppendLine ("#if defined (SUPPORTS_UNIVERAL_BUILDS)");
+			sb.AppendLine ("#if defined (SUPPORTS_UNIVERSAL_BUILDS)");
 			sb.Append ("const bool xamarin_is_multi_rid_build = ").Append (IsMultiRidBuild ? "true" : "false").AppendLine (";");
 			sb.AppendLine ("#endif");
 			return sb.ToString ();

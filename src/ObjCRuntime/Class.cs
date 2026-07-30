@@ -58,7 +58,7 @@ namespace ObjCRuntime {
 #pragma warning restore CS8618
 
 		[BindingImpl (BindingImplOptions.Optimizable)]
-		internal unsafe static void Initialize (Runtime.InitializationOptions* options)
+		internal unsafe static void InitializeClass (Runtime.InitializationOptions* options)
 		{
 			type_to_class = new Dictionary<Type, IntPtr> (Runtime.TypeEqualityComparer);
 

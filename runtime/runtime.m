@@ -1090,6 +1090,12 @@ xamarin_install_log_callbacks ()
 }
 
 void
+xamarin_initialize_dynamic_registrar ()
+{
+	options.Trampolines = &trampolines;
+}
+
+void
 xamarin_initialize ()
 {
 	GCHandle exception_gchandle = INVALID_GCHANDLE;
@@ -1127,7 +1133,6 @@ xamarin_initialize ()
 #endif
 
 	options.Delegates = &delegates;
-	options.Trampolines = &trampolines;
 	options.MarshalObjectiveCExceptionMode = xamarin_marshal_objectivec_exception_mode;
 	options.MarshalManagedExceptionMode = xamarin_marshal_managed_exception_mode;
 
@@ -2397,13 +2402,17 @@ xamarin_expand_trusted_platform_assemblies (const char *bundle_path)
 char *
 xamarin_compute_trusted_platform_assemblies ()
 {
-	if (&xamarin_trusted_platform_assemblies == NULL)
+	if (&xamarin_trusted_platform_assemblies == NULL ||
+		&xamarin_trusted_platform_assembly_count == NULL ||
+		xamarin_trusted_platform_assemblies == NULL ||
+		xamarin_trusted_platform_assemblies [0] == 0 ||
+		xamarin_trusted_platform_assembly_count == 0)
 		return xamarin_compute_trusted_platform_assemblies_at_runtime ();
 
 	const char *bundle_path = xamarin_get_bundle_path ();
 
-#if defined (SUPPORTS_UNIVERAL_BUILDS)
-	if (xamarin_is_multi_rid_build) {
+#if defined (SUPPORTS_UNIVERSAL_BUILDS)
+	if (&xamarin_is_multi_rid_build != NULL && xamarin_is_multi_rid_build) {
 		NSMutableArray<NSString *> *files = [NSMutableArray array];
 		NSFileManager *manager = [NSFileManager defaultManager];
 		NSString *assembly_names = [NSString stringWithUTF8String: xamarin_trusted_platform_assemblies];

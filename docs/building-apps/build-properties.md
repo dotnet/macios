@@ -105,6 +105,12 @@ The default is: `%LocalAppData%\Xamarin\iOS\Archives`
 
 Only applicable to iOS projects (since only iOS projects can be built remotely from Windows).
 
+## ArchiveDir
+
+An optional path for the archive directory. If set, the archive will be created
+in this directory instead of computing a unique path under
+`~/Library/Developer/Xcode/Archives`.
+
 ## ArchiveOnBuild
 
 If an Xcode archive should be created at the end of the build.
@@ -496,7 +502,25 @@ build warns) when those conditions aren't met.
 
 ## EmbedOnDemandResources
 
-If on-demand resources should be embedded in the app bundle.
+Controls where on-demand resource asset packs are placed when packaging an app
+for distribution. This property does **not** enable on-demand resources (use
+[EnableOnDemandResources](#enableondemandresources) for that) — it only affects
+how already-tagged asset packs are packaged.
+
+This is the property set by the "Embed on-demand resources in the app bundle"
+option in the IDE. It only takes effect for `AdHoc` distribution:
+
+* `true`: the asset packs are embedded in the `.app` bundle inside the IPA and
+  served locally by the app.
+* `false`: the asset packs are packaged separately (outside the app bundle) so
+  they can be streamed/hosted (for example on a web server).
+
+For `AppStore` distribution the asset packs are always placed outside the `.app`
+bundle (to be hosted by the App Store), regardless of this property.
+
+This property is only consulted when packaging an IPA for distribution (when
+`BuildIpa` is `true` and the distribution type is `AppStore` or `AdHoc`); it has
+no effect on a simulator or device debug build.
 
 Default: true
 
@@ -513,6 +537,26 @@ See [CodesignEntitlements](#codesignentitlements).
 ## EnableOnDemandResources
 
 If on-demand resources are enabled.
+
+When enabled, bundle resources that are tagged with `ResourceTags` metadata are
+placed into on-demand resource asset packs instead of being copied directly into
+the app bundle. A resource is tagged like this:
+
+```xml
+<ItemGroup>
+  <BundleResource Update="Resources\MyResource.dat" ResourceTags="MyTag" />
+</ItemGroup>
+```
+
+Use `Update` (not `Include`) when the file is already part of the project's
+default resources (for example anything under the `Resources` folder on iOS,
+which is automatically included as a `BundleResource`), otherwise the resource
+would be added twice and the untagged copy would win. In a .NET MAUI project the
+same `ResourceTags` metadata can be set on the corresponding `MauiAsset` item.
+
+This property only enables on-demand resources; it does not control how the asset
+packs are packaged for distribution — see
+[EmbedOnDemandResources](#embedondemandresources) for that.
 
 Default: false for macOS, true for all other platforms.
 
@@ -589,10 +633,10 @@ A semi-colon delimited property that can be used to extend the
 the platform build has collected `@(ApplicationArtifact)` items and before
 `GetApplicationArtifacts` or `Publish` returns them.
 
-This can be used by SDKs such as .NET MAUI to add shared application metadata
-to platform-produced artifacts. Extension targets should update existing
-`@(ApplicationArtifact)` items to add metadata; they should only add new items
-when introducing additional artifacts.
+Apple platform builds populate the common application metadata documented for
+[ApplicationArtifact](build-items.md#applicationartifact) before targets in
+this property execute. Extension targets can update or override that metadata,
+and should only add new items when introducing additional artifacts.
 
 Example:
 
@@ -609,6 +653,14 @@ Example:
   </ItemGroup>
 </Target>
 ```
+
+## HotReloadCompatibleBuild
+
+A boolean property that indicates whether the build must be compatible with Hot
+Reload. When enabled, the build tasks avoid modifying user (reloadable)
+assemblies, since such modifications would break Hot Reload.
+
+The default value is `true` for debug builds and `false` otherwise.
 
 ## IBToolPath
 
@@ -1150,12 +1202,12 @@ A boolean property that specifies whether .dSYM generation should be disabled.
 Default:
 
 * `true` for iOS and tvOS when building for the simulator.
-* `true` for macOS and Mac Catalyst unless creating an archive (`ArchiveOnBuild=true`)
+* `true` for macOS and Mac Catalyst unless creating an archive (`ArchiveOnBuild=true`) or using Native AOT.
 
 This means the .dSYM archive will be generated in the following cases (by default):
 
 * On iOS and tvOS when building for device.
-* On macOS and Mac Catalyst when creating an archive (`ArchiveOnBuild=true`).
+* On macOS and Mac Catalyst when creating an archive (`ArchiveOnBuild=true`) or using Native AOT.
 
 ## NoSymbolStrip
 
@@ -1548,6 +1600,13 @@ However, the either of the following works:
 ```
 
 Note: this property will always be `false` on macOS and Mac Catalyst.
+
+## StripFrameworkHeaders
+
+A boolean property that specifies whether the `Headers`, `PrivateHeaders`, and
+`Modules` directories are removed from embedded frameworks before code signing.
+
+The default value is `true`. Set it to `false` to preserve these directories.
 
 ## StripPath
 

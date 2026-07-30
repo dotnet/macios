@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System.Xml.Linq;
+
 using Mono.Cecil.Rocks;
 
 namespace AssemblyPreparerTests;
@@ -115,5 +117,66 @@ public class PreserveSmartEnumConversionsTests : BaseClass {
 			AssertHasDynamicDependencies (type.Methods.Single (v => v.Name == "Method3"));
 			AssertHasDynamicDependencies (type.Methods.Single (v => v.Name == "Method4"));
 		});
+	}
+
+	[Test]
+	[TestCase (ApplePlatform.MacCatalyst, false)]
+	[TestCase (ApplePlatform.iOS, false)]
+	[TestCase (ApplePlatform.TVOS, false)]
+	[TestCase (ApplePlatform.MacOSX, true)]
+	public void HotReloadCompatibleBuildTest (ApplePlatform platform, bool isCoreCLR)
+	{
+		// When $(HotReloadCompatibleBuild) is enabled, the step must not modify the referencing
+		// (possibly user/reloadable) assembly - otherwise Hot Reload breaks. Instead it must emit an
+		// ILLink root-descriptor XML that preserves the framework-side conversion methods.
+		var code = @"
+		using System;
+		using CoreAnimation;
+		using Foundation;
+		using ObjCRuntime;
+
+		class MyClass : NSObject {
+			[BindAs (typeof (CAToneMapMode), OriginalType = typeof (NSString))]
+			public CAToneMapMode RWProperty { get; set; }
+
+			[return: BindAs (typeof (CAToneMapMode), OriginalType = typeof (NSString))]
+			public CAToneMapMode Method1 () { return default; }
+
+			public void Method2 ([BindAs (typeof (CAToneMapMode), OriginalType = typeof (NSString))] CAToneMapMode p1) {}
+		}";
+
+		var cacheDirectory = Xamarin.Cache.CreateTemporaryDirectory ();
+		var extraConfig = $"HotReloadCompatibleBuild=true\n\t\tCacheDirectory={cacheDirectory}";
+
+		AssertPrepare (platform, isCoreCLR, code, out var assemblyDefinition, extraConfig);
+
+		var type = assemblyDefinition.MainModule.Types.Single (v => v.Name == "MyClass");
+
+		// No static constructor and no [DynamicDependency] attributes should have been injected into the assembly.
+		var cctor = type.GetStaticConstructor ();
+		Assert.That (cctor, Is.Null, "No static constructor should be needed.");
+
+		var allMethods = type.Methods.Where (v => v.HasCustomAttributes).ToArray ();
+		foreach (var method in allMethods) {
+			var ddas = method.CustomAttributes.Where (v => v.AttributeType.FullName == "System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute").ToArray ();
+			Assert.That (ddas, Is.Empty, $"No DynamicDependency attributes should have been injected into {method.FullName}");
+		}
+
+		// Instead, a root-descriptor XML preserving the framework-side conversion methods must have been emitted.
+		var xmlPath = Path.Combine (cacheDirectory, "preserve-smart-enum-conversions.xml");
+		Assert.That (xmlPath, Does.Exist, "The root-descriptor XML must have been emitted.");
+
+		var document = XDocument.Load (xmlPath);
+		var extensionType = document
+			.Descendants ("type")
+			.SingleOrDefault (v => (string?) v.Attribute ("fullname") == "CoreAnimation.CAToneMapModeExtensions");
+		Assert.That (extensionType, Is.Not.Null, "The extension type must be present in the root-descriptor XML.");
+
+		var signatures = extensionType!
+			.Elements ("method")
+			.Select (v => (string?) v.Attribute ("signature"))
+			.ToArray ();
+		Assert.That (signatures, Does.Contain ("Foundation.NSString GetConstant(CoreAnimation.CAToneMapMode)"), "GetConstant must be preserved.");
+		Assert.That (signatures, Does.Contain ("CoreAnimation.CAToneMapMode GetValue(Foundation.NSString)"), "GetValue must be preserved.");
 	}
 }

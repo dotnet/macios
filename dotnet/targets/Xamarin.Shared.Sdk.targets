@@ -128,6 +128,14 @@
 		<GenerateTrustedPlatformAssemblies Condition="'$(GenerateTrustedPlatformAssemblies)' == '' And '$(_BundlerDebug)' != 'true'">true</GenerateTrustedPlatformAssemblies>
 		<GenerateTrustedPlatformAssemblies Condition="'$(GenerateTrustedPlatformAssemblies)' == ''">false</GenerateTrustedPlatformAssemblies>
 
+		<!--
+			Hot Reload requires that we don't modify user (reloadable) assemblies. It's a debug-only
+			feature, so default $(HotReloadCompatibleBuild) to the debug state: this keeps the current
+			behaviour (and app size) for release builds, where the extra unconditional preservation of
+			smart-enum conversion methods would otherwise cost a bit of app size.
+		-->
+		<HotReloadCompatibleBuild Condition="'$(HotReloadCompatibleBuild)' == ''">$(_BundlerDebug)</HotReloadCompatibleBuild>
+
 		<!-- On the other hand, we want the linker to link away debug support in the actual code unless we're building for Debug -->
 		<DebuggerSupport Condition="'$(DebuggerSupport)' == ''">$(_BundlerDebug)</DebuggerSupport>
 
@@ -278,6 +286,7 @@
 			_ComputeLinkerArguments;
 			_PrepareAssemblies;
 			_SetDynamicRegistrationSupportedFeature;
+			_SetSmartEnumConversionsRootDescriptor;
 			_ComputeFrameworkFilesToPublish;
 			_ComputeDynamicLibrariesToPublish;
 			ComputeFilesToPublish;
@@ -596,6 +605,35 @@
 		</PropertyGroup>
 		<ItemGroup Condition="'$(_DynamicRegistrationSupported)' != ''">
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.DynamicRegistrationSupported" Value="$(_DynamicRegistrationSupported)" Trim="true" />
+		</ItemGroup>
+	</Target>
+
+	<!--
+		Wires the smart-enum conversion root-descriptor XML (emitted by the assembly-preparer's
+		PreserveSmartEnumConversionsStep when $(HotReloadCompatibleBuild) is enabled) into the trimmer.
+		Instead of injecting [DynamicDependency] attributes into user (reloadable) assemblies - which
+		would break Hot Reload - the assembly-preparer writes an ILLink root-descriptor XML that
+		preserves the framework-side conversion methods (GetConstant/GetValue), and reports its path as
+		the 'SmartEnumConversionsRootDescriptor' MSBuild output property in $(_AssemblyPreparerMSBuildOutputFile).
+		This target runs after _PrepareAssemblies and before the trimmer. It's not incremental-gated, so
+		even if _PrepareAssemblies was skipped (because its outputs were up-to-date), the value is still
+		read from the (persisted) file and the descriptor is added to the trimmer inputs.
+	-->
+	<Target Name="_SetSmartEnumConversionsRootDescriptor" Condition="'$(PrepareAssemblies)' == 'true'">
+		<ReadLinesFromFile
+			File="$(_AssemblyPreparerMSBuildOutputFile)"
+			Condition="Exists('$(_AssemblyPreparerMSBuildOutputFile)')">
+			<Output TaskParameter="Lines" ItemName="_SmartEnumConversionsMSBuildOutputProperty" />
+		</ReadLinesFromFile>
+		<ItemGroup>
+			<_SmartEnumConversionsRootDescriptorLine Include="@(_SmartEnumConversionsMSBuildOutputProperty)" Condition="$([System.String]::Copy('%(Identity)').StartsWith('SmartEnumConversionsRootDescriptor='))" />
+		</ItemGroup>
+		<PropertyGroup>
+			<_SmartEnumConversionsRootDescriptorLineText>@(_SmartEnumConversionsRootDescriptorLine)</_SmartEnumConversionsRootDescriptorLineText>
+			<_SmartEnumConversionsRootDescriptor Condition="'$(_SmartEnumConversionsRootDescriptorLineText)' != ''">$(_SmartEnumConversionsRootDescriptorLineText.Replace('SmartEnumConversionsRootDescriptor=', ''))</_SmartEnumConversionsRootDescriptor>
+		</PropertyGroup>
+		<ItemGroup Condition="'$(_SmartEnumConversionsRootDescriptor)' != '' And Exists('$(_SmartEnumConversionsRootDescriptor)')">
+			<TrimmerRootDescriptor Include="$(_SmartEnumConversionsRootDescriptor)" />
 		</ItemGroup>
 	</Target>
 
@@ -1038,25 +1076,6 @@
 			<Output TaskParameter="FrameworkToPublish" ItemName="_FilteredFrameworkToPublish" />
 		</FilterStaticFrameworks>
 
-		<!--
-
-			We need to use the full path to the framework for frameworks that
-			come from app extensions (since any relative paths from the app
-			extension projects won't be correct once loaded into the
-			containing project), so compute that. However, also do this for
-			app projects, so that we can properly deduplicate frameworks that
-			come from both extensions and the main app project.
-
-		 -->
-		<GetFullPaths
-			Condition="'$(IsMacEnabled)' == 'true'"
-			SessionId="$(BuildSessionId)"
-			Items="@(_FilteredFrameworkToPublish)"
-			Metadata="Identity;SourceDirectory"
-		>
-			<Output TaskParameter="Output" ItemName="_FilteredFrameworkToPublishWithFullPath" />
-		</GetFullPaths>
-
 		<!-- If we're an app extension, store the list of all the frameworks to disk (and don't publish any of them to the appex) -->
 		<!-- Note that app extensions may be nested, so we first check if we have any app extensions with frameworks, read those, then store the full list to disk if we're an app extension, so the containing app project sees everything -->
 		<ReadItemsFromFile File="@(_ResolvedAppExtensionReferences->'%(Identity)\..\native-frameworks.items')" Condition="Exists('%(Identity)\..\native-frameworks.items')">
@@ -1065,7 +1084,7 @@
 
 		<WriteItemsToFile
 			Condition="'$(IsAppExtension)' == 'true'"
-			Items="@(_FilteredFrameworkToPublishWithFullPath);@(_FrameworksFromAppExtensions)"
+			Items="@(_FilteredFrameworkToPublish);@(_FrameworksFromAppExtensions)"
 			ItemName="_FrameworksFromAppExtensions"
 			File="$(DeviceSpecificOutputPath)\native-frameworks.items"
 			IncludeMetadata="true"
@@ -1080,7 +1099,7 @@
 
 		<ItemGroup>
 			<_DirectoriesToPublish Include="@(_FrameworksFromAppExtensions)" Condition="'$(IsAppExtension)' != 'true'" />
-			<_DirectoriesToPublish Include="@(_FilteredFrameworkToPublishWithFullPath)" Condition="'$(IsAppExtension)' != 'true'" />
+			<_DirectoriesToPublish Include="@(_FilteredFrameworkToPublish)" Condition="'$(IsAppExtension)' != 'true'" />
 		</ItemGroup>
 	</Target>
 
@@ -1093,6 +1112,18 @@
 	     This target will compute that stamp file location.
 	-->
 	<Target Name="_CreateStampLocationForCopyDirectoriesToBundle">
+		<PropertyGroup>
+			<_CopyDirectoriesToBundleInputFile>$(DeviceSpecificIntermediateOutputPath)CopyDirectoriesToBundleInputs.cache</_CopyDirectoriesToBundleInputFile>
+		</PropertyGroup>
+		<WriteLinesToFile
+			File="$(_CopyDirectoriesToBundleInputFile)"
+			Lines="StripFrameworkHeaders=$(StripFrameworkHeaders)"
+			Overwrite="true"
+			WriteOnlyWhenDifferent="true"
+		/>
+		<ItemGroup>
+			<FileWrites Include="$(_CopyDirectoriesToBundleInputFile)" />
+		</ItemGroup>
 		<ComputeHashForItems
 			Input="@(_DirectoriesToPublish)"
 			InputMetadata="Identity;TargetDirectory"
@@ -1120,7 +1151,7 @@
 
 	<Target Name="_CopyDirectoriesToBundle"
 		DependsOnTargets="_CollectDecompressedPlugins;_ComputeFrameworkFilesToPublish;_CollectDecompressedXpcServices;_CreateStampLocationForCopyDirectoriesToBundle"
-		Inputs="@(_DirectoriesToPublish)"
+		Inputs="@(_DirectoriesToPublish);$(_CopyDirectoriesToBundleInputFile)"
 		Outputs="@(_DirectoriesToPublish -> '%(StampLocation)')"
 		>
 

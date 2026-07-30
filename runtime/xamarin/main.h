@@ -17,7 +17,7 @@
 
 // Universal builds are supported for macOS, Mac Catalyst, and simulator platforms.
 #if TARGET_OS_OSX || TARGET_OS_MACCATALYST || ((TARGET_OS_IOS || TARGET_OS_TV) && TARGET_OS_SIMULATOR)
-#define SUPPORTS_UNIVERAL_BUILDS 1
+#define SUPPORTS_UNIVERSAL_BUILDS 1
 #endif
 
 #ifdef __cplusplus
@@ -134,7 +134,7 @@ extern enum XamarinNativeLinkMode xamarin_libmono_native_link_mode;
 extern const char** xamarin_runtime_libraries;
 extern const char *xamarin_trusted_platform_assemblies __attribute__ ((weak_import));
 extern const size_t xamarin_trusted_platform_assembly_count __attribute__ ((weak_import));
-#if defined (SUPPORTS_UNIVERAL_BUILDS)
+#if defined (SUPPORTS_UNIVERSAL_BUILDS)
 extern const bool xamarin_is_multi_rid_build __attribute__ ((weak_import));
 #endif
 

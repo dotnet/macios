@@ -1169,22 +1169,19 @@ namespace Foundation {
 		}
 
 		[Register ("__NSObject_Disposer")]
-		[Preserve (AllMembers = true)]
 		internal class NSObject_Disposer : NSObject {
 			static readonly List<NSObject> drainList1 = new List<NSObject> ();
 			static readonly List<NSObject> drainList2 = new List<NSObject> ();
 			static List<NSObject> handles = drainList1;
 
 			static readonly IntPtr class_ptr = Class.GetHandle ("__NSObject_Disposer");
-#if MONOMAC
-			static readonly IntPtr drainHandle = Selector.GetHandle ("drain:");
-#endif
 
 			static readonly object lock_obj = new object ();
 
-			private NSObject_Disposer ()
+			NSObject_Disposer ()
 			{
 				// Disable default ctor, there should be no instances of this class.
+				// Can't make the class static, because it has to subclass NSObject.
 			}
 
 			static internal void Add (NSObject handle)

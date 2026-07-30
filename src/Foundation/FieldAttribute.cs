@@ -31,41 +31,32 @@
 
 namespace Foundation {
 	/// <summary>This attribute is present on properties to indicate that they reflect an underlying unmanaged global variable.</summary>
-	///     <remarks>
-	///       When this attribute is present on a property, it indicates that the property actually reflects an underlying unmanaged global variable.
-	///     </remarks>
+	/// <remarks>When this attribute is present on a property, it indicates that the property actually reflects an underlying unmanaged global variable.</remarks>
 	[AttributeUsage (AttributeTargets.Property | AttributeTargets.Field)]
 	public sealed class FieldAttribute : Attribute {
+		/// <summary>Creates a new FieldAttribute instance with the specific symbol to bind.</summary>
 		/// <param name="symbolName">The unmanaged symbol that this field represents.</param>
-		///         <summary>Creates a new FieldAttribute instance with the specific symbol to bind.</summary>
-		///         <remarks>
-		/// 	  Used by Objective-C bindings to bind an unmanaged global variable as a static field.   
-		/// 	</remarks>
-		public FieldAttribute (string symbolName)
+		/// <remarks>Used by Objective-C bindings to bind an unmanaged global variable as a static field.</remarks>
+		public FieldAttribute (string? symbolName)
 		{
 			SymbolName = symbolName;
 		}
+
+		/// <summary>Creates a new FieldAttribute instance with the specific symbol to bind.</summary>
 		/// <param name="symbolName">The unmanaged symbol that this field represents.</param>
-		///         <param name="libraryName">The library name to bind.   Use "__Internal" for referencing symbols on libraries that are statically linked with your application.</param>
-		///         <summary>Creates a new FieldAttribute instance with the specific symbol to bind.</summary>
-		///         <remarks>
-		/// 	  Used by Objective-C bindings to bind an unmanaged global variable as a static field.   
-		/// 	</remarks>
-		public FieldAttribute (string symbolName, string libraryName)
+		/// <param name="libraryName">The library name to bind. Use "__Internal" for referencing symbols on libraries that are statically linked with your application.</param>
+		/// <remarks>Used by Objective-C bindings to bind an unmanaged global variable as a static field.</remarks>
+		public FieldAttribute (string? symbolName, string libraryName)
 		{
 			SymbolName = symbolName;
 			LibraryName = libraryName;
 		}
+
 		/// <summary>The global symbol that this field represents.</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>
-		///         </remarks>
-		public string SymbolName { get; set; }
+		public string? SymbolName { get; set; }
+
 		/// <summary>The library name where the global symbol is looked up from.</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>The special name "__Internal" means that the symbol is looked up on the current executable.</remarks>
+		/// <remarks>The special name "__Internal" means that the symbol is looked up on the current executable.</remarks>
 		public string? LibraryName { get; set; }
 	}
 }

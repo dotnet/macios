@@ -4029,7 +4029,7 @@ public partial class Generator : IMemberGatherer {
 		}
 	}
 
-	void GenerateProperty (Type type, PropertyInfo pi, List<string>? instance_fields_to_clear_on_dispose, bool is_model, bool is_interface_impl = false, bool is_protocol_member = false, bool? is_protocol_member_required = null, bool is_protocol_implementation_method = false)
+	void GenerateProperty (Type type, PropertyInfo pi, List<string>? instance_fields_to_clear_on_dispose, bool is_model, bool is_interface_impl = false, bool is_protocol_member = false, bool? is_protocol_member_required = null, bool is_protocol_implementation_method = false, bool is_appearance = false)
 	{
 		var export = GetExportAttribute (pi, out var wrap);
 		var minfo = new MemberInformation (this, this, pi, type, is_interface_impl);
@@ -4067,7 +4067,8 @@ public partial class Generator : IMemberGatherer {
 		}
 
 		if (wrap is not null) {
-			WriteDocumentation (pi);
+			if (!WriteDocumentation (pi) && is_appearance)
+				WriteAppearanceMemberDocumentation (type, pi.Name);
 			print_generated_code ();
 			PrintPropertyAttributes (pi, minfo);
 			PrintAttributes (pi, preserve: true, advice: true);
@@ -4145,7 +4146,8 @@ public partial class Generator : IMemberGatherer {
 			}
 		}
 
-		WriteDocumentation (pi);
+		if (!WriteDocumentation (pi) && is_appearance)
+			WriteAppearanceMemberDocumentation (type, pi.Name);
 		print_generated_code (optimizable: IsOptimizable (pi));
 		PrintPropertyAttributes (pi, minfo);
 
@@ -4624,8 +4626,9 @@ public partial class Generator : IMemberGatherer {
 			}
 		}
 
+		bool wroteDocs;
 		if (minfo.is_extension_method) {
-			WriteDocumentation ((MemberInfo?) GetProperty (mi) ?? mi);
+			wroteDocs = WriteDocumentation ((MemberInfo?) GetProperty (mi) ?? mi);
 		} else if (minfo.is_category_extension) {
 			// If the method has xml docs, it's unlikely it'll have for the 'This' parameter we add to the method signature.
 			// So in that case, inject docs for the 'This' parameter.
@@ -4651,10 +4654,13 @@ public partial class Generator : IMemberGatherer {
 				node.InsertBefore (thisParamDoc, firstParamDocs);
 				return node;
 			});
-			WriteDocumentation (mi, transformNode: injectParamNode);
+			wroteDocs = WriteDocumentation (mi, transformNode: injectParamNode);
 		} else {
-			WriteDocumentation (mi);
+			wroteDocs = WriteDocumentation (mi);
 		}
+
+		if (!wroteDocs && minfo.is_appearance)
+			WriteAppearanceMemberDocumentation (minfo.type, mi.Name);
 
 		PrintProtocolMemberAttributes (minfo);
 		PrintDelegateProxy (minfo);
@@ -5739,6 +5745,16 @@ public partial class Generator : IMemberGatherer {
 		return DocumentationManager.WriteDocumentation (sw!, indent, info, transformNode);
 	}
 
+	// Emits a generated summary for a member of a strongly-typed appearance class. These members are
+	// proxies for the corresponding members on the enclosing type, and the documentation injected from
+	// Apple's documentation doesn't cover them, so we generate a summary that points back to the type.
+	void WriteAppearanceMemberDocumentation (Type type, string memberName)
+	{
+		if (!BindingTouch.SupportsXmlDocumentation)
+			return;
+		print ($"/// <summary>Appearance proxy for the <c>{memberName}</c> member of <see cref=\"global::{type.FullName}\" />.</summary>");
+	}
+
 	public bool TryComputeLibraryName (string? attributeLibraryName, Type type, [NotNullWhen (true)] out string? library_name, out string? library_path)
 	{
 		library_path = null;
@@ -6467,7 +6483,7 @@ public partial class Generator : IMemberGatherer {
 					} else
 						fieldTypeName = TypeManager.FormatType (field_pi.DeclaringType, field_pi.PropertyType);
 
-					bool nullable = false;
+					bool nullable = !field_pi.PropertyType.IsValueType && AttributeManager.IsNullable (field_pi);
 					// Value types we dont cache for now, to avoid Nullable<T>
 					if (!field_pi.PropertyType.IsValueType || smartEnumTypeName is not null) {
 						print_generated_code ();
@@ -7203,6 +7219,10 @@ public partial class Generator : IMemberGatherer {
 				string appearance_type_name = TypeName + "Appearance";
 				print ("public partial class {0} : {1} {{", appearance_type_name, base_class);
 				indent++;
+				if (BindingTouch.SupportsXmlDocumentation) {
+					print ("/// <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>");
+					print ("/// <param name=\"handle\">Pointer (handle) to the unmanaged object.</param>");
+				}
 				print ("protected internal {0} (IntPtr handle) : base (handle) {{}}", appearance_type_name);
 
 				if (appearance_selectors is not null) {
@@ -7215,7 +7235,7 @@ public partial class Generator : IMemberGatherer {
 									category_extension_type: is_category_class ? base_type : null,
 									is_appearance: true);
 						else if (mi is PropertyInfo pinfo)
-							GenerateProperty (type, pinfo, currently_ignored_fields, false);
+							GenerateProperty (type, pinfo, currently_ignored_fields, false, is_appearance: true);
 					}
 				}
 

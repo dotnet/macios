@@ -130,7 +130,7 @@ jobs:
           core.setOutput('repo_full_name', pr.head.repo.full_name);
 
     - name: Checkout PR branch
-      uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
         ref: ${{ steps.pr-branch.outputs.ref }}
         repository: ${{ steps.pr-branch.outputs.repo_full_name }}
@@ -180,6 +180,9 @@ jobs:
                 # Large files need to be fetched from raw_url
                 raw_url = file_info['raw_url']
                 content = urllib.request.urlopen(raw_url).read().decode('utf-8')
+            # Gist content can be served with CRLF line endings; normalize to LF
+            # so 'git apply' doesn't fail against the repo's LF expected files.
+            content = content.replace('\r\n', '\n').replace('\r', '\n')
             if is_diff:
                 # The diff for '<name>.txt.diff' is only allowed to touch 'tests/dotnet/UnitTests/expected/<name>.txt'.
                 expected_target = 'tests/dotnet/UnitTests/expected/' + filename[:-len('.diff')]

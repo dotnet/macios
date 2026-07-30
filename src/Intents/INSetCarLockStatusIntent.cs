@@ -15,10 +15,9 @@ namespace Intents {
 
 	public partial class INSetCarLockStatusIntent {
 
-		/// <param name="locked">To be added.</param>
-		///         <param name="carName">To be added.</param>
-		///         <summary>Creates a new set car lock status intent for the specified lock state and car name.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Creates a new set car lock status intent for the specified lock state and car name.</summary>
+		/// <param name="locked">Whether the car should be locked.</param>
+		/// <param name="carName">The name of the car.</param>
 		public INSetCarLockStatusIntent (bool? locked, INSpeakableString carName) :
 			this (locked.HasValue ? new NSNumber (locked.Value) : null, carName)
 		{

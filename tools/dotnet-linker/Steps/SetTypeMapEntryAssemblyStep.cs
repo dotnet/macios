@@ -1,6 +1,9 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// This step is only needed on .NET 10, where ILLink doesn't have the '--typemap-entry-assembly' option.
+#if !NET11_0_OR_GREATER
+
 using System.IO;
 
 using Xamarin.Bundler;
@@ -17,8 +20,7 @@ namespace Xamarin.Linker {
 	// type map assemblies the trimmable registrar generates, leaving the app with empty type maps at runtime.
 	//
 	// So tell ILLink about the entry assembly ourselves when ILLink didn't figure it out on its own (in
-	// .NET 11+ we pass '--typemap-entry-assembly' to ILLink instead, which takes precedence over the entry
-	// assembly, so there this step does nothing of consequence).
+	// .NET 11+ we pass '--typemap-entry-assembly' to ILLink instead, so there this step isn't needed at all).
 	public class SetTypeMapEntryAssemblyStep : ConfigurationAwareStep {
 		protected override string Name { get; } = "SetTypeMapEntryAssembly";
 		protected override int ErrorCode { get; } = 2530;
@@ -51,3 +53,5 @@ namespace Xamarin.Linker {
 		}
 	}
 }
+
+#endif // !NET11_0_OR_GREATER

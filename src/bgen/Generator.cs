@@ -4671,6 +4671,7 @@ public partial class Generator : IMemberGatherer {
 		} else if (minfo.is_factory_method) {
 			// The xml documentation is written for the generated factory method instead
 			// of the (internal) backing constructor. See GenerateFactoryMethod.
+			wroteDocs = false;
 		} else {
 			wroteDocs = WriteDocumentation (mi);
 		}

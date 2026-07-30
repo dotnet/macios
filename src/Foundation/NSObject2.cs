@@ -179,7 +179,9 @@ namespace Foundation {
 
 #if !COREBUILD
 	/// <include file="../../docs/api/Foundation/NSObject.xml" path="/Documentation/Docs[@DocId='T:Foundation.NSObject']/*" />
+#pragma warning disable CA1416 // https://github.com/dotnet/runtime/pull/131583
 	[ObjectiveCTrackedType]
+#pragma warning restore CA1416
 #endif
 	[StructLayout (LayoutKind.Sequential)]
 	public partial class NSObject : INativeObject

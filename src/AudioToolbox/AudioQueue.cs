@@ -1998,6 +1998,8 @@ namespace AudioToolbox {
 			aq!.OnBufferCompleted (audioQueueBuffer);
 		}
 
+		/// <summary>Raised when the output audio queue has finished playing a buffer, making it available to be refilled with more audio data and re-enqueued.</summary>
+		/// <remarks>The completed buffer is provided in the event arguments. Handlers typically fill the buffer with the next chunk of audio and enqueue it again with one of the <c>EnqueueBuffer</c> methods to keep playback going.</remarks>
 		public event EventHandler<BufferCompletedEventArgs>? BufferCompleted;
 
 		/// <param name="audioQueueBuffer">To be added.</param>
@@ -2137,6 +2139,8 @@ namespace AudioToolbox {
 			aq!.OnInputCompleted (audioQueueBuffer, *startTime, AudioFile.PacketDescriptionFrom (descriptors, inPacketDesc));
 		}
 
+		/// <summary>Raised when the input audio queue has captured audio into a buffer, making the recorded samples available for processing.</summary>
+		/// <remarks>The filled buffer, capture time stamp, and packet descriptions are provided in the event arguments. Handlers typically consume the recorded audio and re-enqueue the buffer to continue recording.</remarks>
 		public event EventHandler<InputCompletedEventArgs>? InputCompleted;
 		/// <param name="audioQueueBuffer">.</param>
 		///         <param name="timeStamp">To be added.</param>

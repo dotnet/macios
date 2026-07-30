@@ -509,7 +509,10 @@ namespace LinkAll {
 				Assert.Ignore ("This test only applies to the trimmable static registrar.");
 
 			// https://github.com/dotnet/macios/issues/3523
-			Assert.That (typeof (NSObject).Assembly.GetType (NamespacePrefix + "Foundation.NSSet`1"), Is.Null, "NSSet<T> must be linked away, otherwise this test is useless");
+			// Don't use constants here, because the linker can see what we're trying to do and keeps the type we're verifying has been removed.
+			string prefix = NamespacePrefix;
+			string suffix = AssemblyName;
+			Assert.That (Helper.GetType (prefix + "Foundation.NSSet`1, " + suffix), Is.Null, "NSSet<T> must be linked away, otherwise this test is useless");
 		}
 
 		[Protocol (Name = "ProtocolWithGenericsInOptionalMember", WrapperType = typeof (ProtocolWithGenericsInOptionalMemberWrapper))]

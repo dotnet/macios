@@ -1054,7 +1054,7 @@ and return value.
 
 The `[BindAsAttribute]` allows binding `NSNumber`, `NSValue` and `NSString`(enums) into more accurate C# types. The attribute can be used to create better, more accurate, .NET API over the native API.
 
-You can decorate methods (on return value), parameters and properties with `BindAs`. The only restriction is that your member **must not** be inside a `[Protocol]` or [`[Model]`](#ModelAttribute) interface.
+You can decorate methods (on return value), parameters and properties with `BindAs`. In `[Protocol]` and [`[Model]`](#ModelAttribute) interfaces, `BindAs` is supported on parameters, but not on properties or return values.
 
 For example:
 

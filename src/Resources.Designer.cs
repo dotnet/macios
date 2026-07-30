@@ -638,7 +638,7 @@ namespace bgen {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to [BindAs] cannot be used inside Protocol or Model types. Type: {0}.
+        ///   Looks up a localized string similar to [BindAs] cannot be used on properties or return values inside Protocol or Model types. Type: {0}.
         /// </summary>
         internal static string BI1050 {
             get {

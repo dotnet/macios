@@ -421,7 +421,7 @@ namespace Foundation {
 		}
 #endif // !XAMCORE_5_0
 
-		internal static NativeHandle Initialize ()
+		internal static NativeHandle InitializeObject ()
 		{
 			if (!Runtime.IsCoreCLR)
 				data_table = new ConditionalWeakTable<NSObject, NSObjectDataHandle> ();

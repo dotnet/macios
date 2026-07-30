@@ -301,7 +301,6 @@ AVKIT_API_SOURCES = \
 	AVKit/Enums.cs \
 
 AVKIT_SOURCES = \
-	AVKit/AVCaptureEventSound.cs \
 	AVKit/AVPlayerViewController.cs \
 
 # AVRouting

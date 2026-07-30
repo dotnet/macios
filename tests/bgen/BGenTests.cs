@@ -170,6 +170,7 @@ namespace GeneratorTests {
 			Assert.That (create.IsPublic, Is.True, "Create is public");
 			Assert.That (create.ReturnType.FullName, Is.EqualTo (type), "Create return type");
 			Assert.That (create.Parameters.Select (p => p.ParameterType.FullName), Is.EqualTo (new [] { "System.String" }), "Create parameters");
+			Assert.That (FactoryMethodHasBindingImplOption (create), Is.True, "Create has factory method metadata");
 			// A nullable factory method disposes and returns null when the initializer fails.
 			Assert.That (FactoryMethodDisposesOnFailure (create), Is.True, "Create handles nil");
 
@@ -179,6 +180,7 @@ namespace GeneratorTests {
 			Assert.That (createWithCount.IsPublic, Is.True, "CreateWithCount is public");
 			Assert.That (createWithCount.ReturnType.FullName, Is.EqualTo (type), "CreateWithCount return type");
 			Assert.That (createWithCount.Parameters.Select (p => p.ParameterType.FullName), Is.EqualTo (new [] { "System.String", "System.IntPtr" }), "CreateWithCount parameters");
+			Assert.That (FactoryMethodHasBindingImplOption (createWithCount), Is.True, "CreateWithCount has factory method metadata");
 			Assert.That (FactoryMethodDisposesOnFailure (createWithCount), Is.True, "CreateWithCount handles nil");
 
 			// A non-nullable factory method (the initializer isn't failable) just returns
@@ -187,6 +189,7 @@ namespace GeneratorTests {
 			Assert.That (createWithColor.IsStatic, Is.True, "CreateWithColor is static");
 			Assert.That (createWithColor.IsPublic, Is.True, "CreateWithColor is public");
 			Assert.That (createWithColor.ReturnType.FullName, Is.EqualTo (type), "CreateWithColor return type");
+			Assert.That (FactoryMethodHasBindingImplOption (createWithColor), Is.True, "CreateWithColor has factory method metadata");
 			Assert.That (FactoryMethodDisposesOnFailure (createWithColor), Is.False, "CreateWithColor doesn't handle nil");
 
 			// The backing constructors are generated as internal (not public), so the
@@ -203,6 +206,13 @@ namespace GeneratorTests {
 		{
 			return method.Body.Instructions.Any (i =>
 				i.Operand is Mono.Cecil.MethodReference mr && mr.Name == "Dispose");
+		}
+
+		static bool FactoryMethodHasBindingImplOption (Mono.Cecil.MethodDefinition method)
+		{
+			var attribute = method.CustomAttributes.Single (a => a.AttributeType.Name == "BindingImplAttribute");
+			var options = (int) attribute.ConstructorArguments [0].Value;
+			return (options & 4) == 4; // BindingImplOptions.FactoryMethod
 		}
 
 		[Test]
@@ -239,6 +249,7 @@ namespace GeneratorTests {
 			Assert.That (createWithFoo.IsPublic, Is.True, "CreateWithFoo is public");
 			Assert.That (createWithFoo.ReturnType.FullName, Is.EqualTo (type), "CreateWithFoo return type");
 			Assert.That (createWithFoo.Parameters.Select (p => p.ParameterType.FullName), Is.EqualTo (new [] { "System.IntPtr" }), "CreateWithFoo parameters");
+			Assert.That (FactoryMethodHasBindingImplOption (createWithFoo), Is.True, "CreateWithFoo has factory method metadata");
 			Assert.That (FactoryMethodDisposesOnFailure (createWithFoo), Is.True, "CreateWithFoo handles nil");
 
 			var createWithBar = widget.Methods.Single (m => m.Name == "CreateWithBar");
@@ -246,6 +257,7 @@ namespace GeneratorTests {
 			Assert.That (createWithBar.IsPublic, Is.True, "CreateWithBar is public");
 			Assert.That (createWithBar.ReturnType.FullName, Is.EqualTo (type), "CreateWithBar return type");
 			Assert.That (createWithBar.Parameters.Select (p => p.ParameterType.FullName), Is.EqualTo (new [] { "System.IntPtr" }), "CreateWithBar parameters");
+			Assert.That (FactoryMethodHasBindingImplOption (createWithBar), Is.True, "CreateWithBar has factory method metadata");
 			Assert.That (FactoryMethodDisposesOnFailure (createWithBar), Is.True, "CreateWithBar handles nil");
 
 			// A non-failable initializer: non-nullable return, so no nil-check/Dispose.
@@ -254,6 +266,7 @@ namespace GeneratorTests {
 			Assert.That (createWithBaz.IsPublic, Is.True, "CreateWithBaz is public");
 			Assert.That (createWithBaz.ReturnType.FullName, Is.EqualTo (type), "CreateWithBaz return type");
 			Assert.That (createWithBaz.Parameters.Select (p => p.ParameterType.FullName), Is.EqualTo (new [] { "System.IntPtr" }), "CreateWithBaz parameters");
+			Assert.That (FactoryMethodHasBindingImplOption (createWithBaz), Is.True, "CreateWithBaz has factory method metadata");
 			Assert.That (FactoryMethodDisposesOnFailure (createWithBaz), Is.False, "CreateWithBaz doesn't handle nil");
 
 			// The backing 'init' message-send helpers are generated as private instance

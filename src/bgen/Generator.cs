@@ -2322,13 +2322,15 @@ public partial class Generator : IMemberGatherer {
 
 	// this attribute allows the linker to be more clever in removing unused code in bindings - without risking breaking user code
 	// only generate those for monotouch now since we can ensure they will be linked away before reaching the devices
-	public void GeneratedCode (StreamWriter? sw, int tabs, bool optimizable = true)
+	public void GeneratedCode (StreamWriter? sw, int tabs, bool optimizable = true, bool factoryMethod = false)
 	{
 		for (int i = 0; i < tabs; i++)
 			sw!.Write ('\t');
 		sw!.Write ("[BindingImpl (BindingImplOptions.GeneratedCode");
 		if (optimizable)
 			sw.Write (" | BindingImplOptions.Optimizable");
+		if (factoryMethod)
+			sw.Write (" | BindingImplOptions.FactoryMethod");
 		sw.WriteLine (")]");
 	}
 
@@ -2375,9 +2377,9 @@ public partial class Generator : IMemberGatherer {
 		}
 	}
 
-	public void print_generated_code (bool optimizable = true)
+	public void print_generated_code (bool optimizable = true, bool factoryMethod = false)
 	{
-		GeneratedCode (sw, indent, optimizable);
+		GeneratedCode (sw, indent, optimizable, factoryMethod);
 	}
 
 	public void print (string format)
@@ -4837,7 +4839,7 @@ public partial class Generator : IMemberGatherer {
 		WriteDocumentation (mi);
 		PrintMethodAttributes (minfo);
 
-		print_generated_code (optimizable: IsOptimizable (mi));
+		print_generated_code (optimizable: IsOptimizable (mi), factoryMethod: true);
 		print ("{0} {1}{2}",
 			   minfo.GetVisibility (),
 			   minfo.GetModifiers (),

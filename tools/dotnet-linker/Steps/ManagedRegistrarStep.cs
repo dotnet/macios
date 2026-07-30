@@ -724,8 +724,31 @@ namespace Xamarin.Linker {
 
 			// return (<nativeReturnType>) rv;
 			if (!isVoid) {
-				il.Emit (OpCodes.Ldloc, resultVar);
-				il.Emit (OpCodes.Unbox_Any, callback.ReturnType);
+				var returnType = callback.ReturnType;
+				if (returnType.IsValueType) {
+					// InvokeGenericRegistrarTrampoline returns null on failure (the exception is
+					// reported through exception_gchandle). Unbox_Any on a null value type would
+					// throw a NullReferenceException that escapes the UnmanagedCallersOnly boundary,
+					// so return default (<nativeReturnType>) instead when the result is null.
+					var unboxResult = il.Create (OpCodes.Nop);
+					var returnResult = il.Create (OpCodes.Nop);
+					var defaultVar = body.AddVariable (returnType);
+					il.Emit (OpCodes.Ldloc, resultVar);
+					il.Emit (OpCodes.Brtrue, unboxResult);
+					// rv == null: return default (<nativeReturnType>)
+					il.Emit (OpCodes.Ldloca, defaultVar);
+					il.Emit (OpCodes.Initobj, returnType);
+					il.Emit (OpCodes.Ldloc, defaultVar);
+					il.Emit (OpCodes.Br, returnResult);
+					// rv != null: return (<nativeReturnType>) rv
+					il.Append (unboxResult);
+					il.Emit (OpCodes.Ldloc, resultVar);
+					il.Emit (OpCodes.Unbox_Any, returnType);
+					il.Append (returnResult);
+				} else {
+					il.Emit (OpCodes.Ldloc, resultVar);
+					il.Emit (OpCodes.Unbox_Any, returnType);
+				}
 			}
 			il.Emit (OpCodes.Ret);
 

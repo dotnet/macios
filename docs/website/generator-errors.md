@@ -329,6 +329,8 @@ Historically it was used on property setters. However using the attribute on _ot
 
 To fix this warning use the `[NullAllowed]` attribute only on parameters, properties or return values.
 
+### <a name='BI1125'/>BI1125: The [Field] member '\*.\*' sets SymbolAddress, but its type is '\*'; only System.IntPtr is supported.
+
 <!-- 2xxx: reserved -->
 <!-- 3xxx: reserved -->
 <!-- 4xxx: reserved -->

@@ -184,8 +184,6 @@ public class AttributeManager {
 			return typeof (StaticAttribute);
 		case "StrongDictionaryAttribute":
 			return typeof (StrongDictionaryAttribute);
-		case "SymbolAddressAttribute":
-			return typeof (SymbolAddressAttribute);
 		case "System.Boolean":
 			return typeof (System.Boolean);
 		case "System.ComponentModel.EditorBrowsableAttribute":

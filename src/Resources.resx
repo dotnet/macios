@@ -640,4 +640,8 @@
 	<data name="BI1124" xml:space="preserve">
 		<value>Found a [Preserve] attribute on {0}: [Preserve] is deprecated; use [DynamicDependency] instead.</value>
 	</data>
+
+	<data name="BI1125" xml:space="preserve">
+		<value>The [Field] member '{0}.{1}' sets SymbolAddress, but its type is '{2}'; only System.IntPtr is supported.</value>
+	</data>
 </root>

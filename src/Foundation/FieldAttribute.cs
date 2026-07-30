@@ -67,5 +67,10 @@ namespace Foundation {
 		///         </value>
 		///         <remarks>The special name "__Internal" means that the symbol is looked up on the current executable.</remarks>
 		public string? LibraryName { get; set; }
+
+		/// <summary>Gets or sets whether the generated accessor returns the address of the unmanaged symbol.</summary>
+		/// <value><see langword="true" /> to return the symbol's address instead of the pointer stored at that address; otherwise, <see langword="false" />.</value>
+		/// <remarks>This property is only valid when the attributed member has type <see cref="IntPtr" />.</remarks>
+		public bool SymbolAddress { get; set; }
 	}
 }

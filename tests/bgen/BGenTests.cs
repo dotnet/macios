@@ -1641,6 +1641,7 @@ namespace GeneratorTests {
 			var addressFile = Path.Combine (bgen.TmpDirectory!, "NativeFieldGeneration", "SymbolAddresses.g.cs");
 			Assert.That (File.Exists (addressFile), Is.True, "Generated address file exists");
 			var addressContents = File.ReadAllText (addressFile);
+			Assert.That (addressContents, Does.Contain ("[Field (\"CallbackTable\",  \"__Internal\", SymbolAddress = true)]"), "Symbol address attribute");
 			Assert.That (addressContents, Does.Contain ("return Dlfcn.GetIndirect (Libraries.__Internal.Handle, \"CallbackTable\");"), "Symbol address");
 		}
 

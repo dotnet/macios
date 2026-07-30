@@ -234,13 +234,6 @@ public class PartialAttribute : Attribute {
 	public PartialAttribute () { }
 }
 
-/// <summary>Loads the address of a native symbol instead of the pointer stored at that address.</summary>
-[AttributeUsage (AttributeTargets.Property)]
-public class SymbolAddressAttribute : Attribute {
-	/// <summary>Initializes a new instance of the <see cref="SymbolAddressAttribute" /> class.</summary>
-	public SymbolAddressAttribute () { }
-}
-
 // flags the backing field for the property to with .NET's [ThreadStatic] property
 public class IsThreadStaticAttribute : Attribute {
 	public IsThreadStaticAttribute () { }

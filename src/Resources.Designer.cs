@@ -1194,5 +1194,14 @@ namespace bgen {
                 return ResourceManager.GetString("BI1124", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The [Field] member &apos;{0}.{1}&apos; sets SymbolAddress, but its type is &apos;{2}&apos;; only System.IntPtr is supported..
+        /// </summary>
+        internal static string BI1125 {
+            get {
+                return ResourceManager.GetString("BI1125", resourceCulture);
+            }
+        }
     }
 }

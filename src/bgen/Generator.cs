@@ -6470,6 +6470,10 @@ public partial class Generator : IMemberGatherer {
 			if (field_exports.Count != 0) {
 				foreach (var field_pi in field_exports.OrderBy (f => f.Name, StringComparer.Ordinal)) {
 					var fieldAttr = AttributeManager.GetCustomAttribute<FieldAttribute> (field_pi);
+					if (fieldAttr?.SymbolAddress == true && field_pi.PropertyType != TypeCache.System_IntPtr) {
+						exceptions.Add (ErrorHelper.CreateError (1125, type.FullName, field_pi.Name, field_pi.PropertyType.FullName));
+						continue;
+					}
 					if (!TryComputeLibraryName (fieldAttr?.LibraryName, type, out var library_name, out var library_path)) {
 						exceptions.Add (ErrorHelper.CreateError (1042, /* Missing '[Field (LibraryName=value)]' for {0} (e.g."__Internal") */ type.FullName + "." + field_pi.Name));
 						continue;
@@ -6584,7 +6588,7 @@ public partial class Generator : IMemberGatherer {
 					}
 					PrintAttributes (field_pi, preserve: true, advice: true);
 					PrintObsoleteAttributes (field_pi);
-					print ("[Field (\"{0}\",  \"{1}\")]", fieldAttr!.SymbolName, library_path ?? library_name);
+					print ("[Field (\"{0}\",  \"{1}\"{2})]", fieldAttr!.SymbolName, library_path ?? library_name, fieldAttr.SymbolAddress ? ", SymbolAddress = true" : "");
 					PrintPlatformAttributes (field_pi);
 					if (AttributeManager.HasAttribute<AdvancedAttribute> (field_pi)) {
 						print ("[EditorBrowsable (EditorBrowsableState.Advanced)]");
@@ -6644,7 +6648,7 @@ public partial class Generator : IMemberGatherer {
 					} else if (field_pi.PropertyType == TypeCache.System_Float) {
 						print ("return Dlfcn.GetFloat (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
 					} else if (field_pi.PropertyType == TypeCache.System_IntPtr) {
-						if (AttributeManager.HasAttribute<SymbolAddressAttribute> (field_pi))
+						if (fieldAttr.SymbolAddress)
 							print ("return Dlfcn.GetIndirect (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
 						else
 							print ("return Dlfcn.GetIntPtr (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);

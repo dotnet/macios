@@ -23,8 +23,7 @@ namespace NativeFieldGeneration {
 
 	[Partial]
 	interface SymbolAddresses {
-		[Field ("CallbackTable", "__Internal")]
-		[SymbolAddress]
+		[Field ("CallbackTable", "__Internal", SymbolAddress = true)]
 		IntPtr CallbackTable { get; }
 	}
 }

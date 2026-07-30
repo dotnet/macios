@@ -283,7 +283,6 @@ AVFOUNDATION_SOURCES = \
 	AVFoundation/AVSampleCursor.cs \
 	AVFoundation/AVSpeechSynthesizer.cs \
 	AVFoundation/AVSpeechSynthesisMarker.cs \
-	AVFoundation/AVSpeechSynthesisProviderAudioUnit.cs \
 	AVFoundation/AVSpeechUtterance.cs \
 	AVFoundation/AVTextStyleRule.cs \
 	AVFoundation/AVAssetTrack.cs \

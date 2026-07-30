@@ -6,13 +6,12 @@
 
 namespace CoreGraphics {
 
-	[Partial (IsStruct = true, Name = nameof (CGRect))]
+	[Static]
+	[Internal]
 	interface CGRectFields {
-		/// <summary>Gets an invalid, or null, rectangle.</summary>
 		[Field ("CGRectNull", "CoreGraphics")]
 		CGRect Null { get; }
 
-		/// <summary>Gets an infinitely large rectangle.</summary>
 		[Field ("CGRectInfinite", "CoreGraphics")]
 		CGRect Infinite { get; }
 	}

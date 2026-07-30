@@ -5859,8 +5859,7 @@ public partial class Generator : IMemberGatherer {
 			type_needs_thread_checks = tsa is not null && !tsa.Safe;
 		}
 
-		var partialAttribute = AttributeManager.GetCustomAttribute<PartialAttribute> (type);
-		string TypeName = partialAttribute?.Name ?? Nomenclator.GetGeneratedTypeName (type);
+		string TypeName = Nomenclator.GetGeneratedTypeName (type);
 		indent = 0;
 		var instance_fields_to_clear_on_dispose = new List<string> ();
 		var gtype = GeneratedTypes.Lookup (type);
@@ -5870,8 +5869,7 @@ public partial class Generator : IMemberGatherer {
 			this.sw = sw;
 			bool is_category_class = AttributeManager.HasAttribute<CategoryAttribute> (type);
 			bool is_static_class = AttributeManager.HasAttribute<StaticAttribute> (type) || is_category_class;
-			bool is_partial = partialAttribute is not null;
-			bool is_partial_struct = partialAttribute?.IsStruct == true;
+			bool is_partial = AttributeManager.HasAttribute<PartialAttribute> (type);
 			var model = AttributeManager.GetCustomAttribute<ModelAttribute> (type);
 			bool is_model = model is not null;
 			var protocol = AttributeManager.GetCustomAttribute<ProtocolAttribute> (type);
@@ -6092,10 +6090,9 @@ public partial class Generator : IMemberGatherer {
 					where_list += " ";
 			}
 
-			print ("{0} unsafe {1}partial {2} {3} {4} {5}{{",
+			print ("{0} unsafe {1}partial class {2} {3} {4}{{",
 				   class_visibility,
 				   class_mod,
-				   is_partial_struct ? "struct" : "class",
 				   class_name,
 				   implements_list.Count == 0 ? string.Empty : ": " + string.Join (", ", implements_list),
 				   where_list);
@@ -6664,10 +6661,7 @@ public partial class Generator : IMemberGatherer {
 						if (Frameworks.HaveCoreMedia && Frameworks.HaveAVFoundation && (field_pi.PropertyType == TypeCache.CMTime ||
 						   field_pi.PropertyType == TypeCache.AVCaptureWhiteBalanceGains)) {
 							var valueTypeName = TypeManager.FormatType (type, field_pi.PropertyType.Namespace, field_pi.PropertyType.Name);
-							if (AttributeManager.HasAttribute<DefaultValueOnMissingSymbolAttribute> (field_pi))
-								print ("return Dlfcn.GetStruct<{3}> (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name, valueTypeName);
-							else
-								print ("return *(({3} *) Dlfcn.dlsym (Libraries.{2}.Handle, \"{1}\"));", field_pi.Name, fieldAttr.SymbolName, library_name, valueTypeName);
+							print ("return Dlfcn.GetStruct<{3}> (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name, valueTypeName);
 						} else if (field_pi.PropertyType == TypeCache.System_nint) {
 							print ("return Dlfcn.GetNInt (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
 						} else if (field_pi.PropertyType == TypeCache.System_nuint) {
@@ -6709,10 +6703,7 @@ public partial class Generator : IMemberGatherer {
 							}
 						} else if (field_pi.PropertyType.IsValueType) {
 							var valueTypeName = TypeManager.FormatType (type, field_pi.PropertyType.Namespace, field_pi.PropertyType.Name);
-							if (AttributeManager.HasAttribute<DefaultValueOnMissingSymbolAttribute> (field_pi))
-								print ("return Dlfcn.GetStruct<{3}> (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name, valueTypeName);
-							else
-								print ("return *(({3} *) Dlfcn.dlsym (Libraries.{2}.Handle, \"{1}\"));", field_pi.Name, fieldAttr.SymbolName, library_name, valueTypeName);
+							print ("return Dlfcn.GetStruct<{3}> (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name, valueTypeName);
 						} else {
 							if (field_pi.PropertyType == TypeCache.System_String)
 								throw new BindingException (1013, true);
@@ -7511,7 +7502,7 @@ public partial class Generator : IMemberGatherer {
 			}
 
 			indent--;
-			print ("}} /* {0} {1} */", is_partial_struct ? "struct" : "class", TypeName);
+			print ("}} /* class {0} */", TypeName);
 
 			//
 			// Copy delegates from the API files into the output if they were declared there

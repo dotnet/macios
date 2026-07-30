@@ -444,16 +444,16 @@ namespace CoreMedia {
 		}
 
 		/// <summary>Key that can be used in NSDictionary objects returned by CMTime to extract the Value property.</summary>
-		public readonly static NSString? ValueKey = _ValueKey;
+		public readonly static NSString? ValueKey = CMTimeFields.ValueKey;
 
 		/// <summary>Key that can be used in NSDictionary objects returned by CMTime to extract the Scale property.</summary>
-		public readonly static NSString? ScaleKey = _ScaleKey;
+		public readonly static NSString? ScaleKey = CMTimeFields.ScaleKey;
 
 		/// <summary>Key that can be used in NSDictionary objects returned by CMTime to extract the Epoch property.</summary>
-		public readonly static NSString? EpochKey = _EpochKey;
+		public readonly static NSString? EpochKey = CMTimeFields.EpochKey;
 
 		/// <summary>Key that can be used in NSDictionary objects returned by CMTime to extract the Flags property.</summary>
-		public readonly static NSString? FlagsKey = _FlagsKey;
+		public readonly static NSString? FlagsKey = CMTimeFields.FlagsKey;
 
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* CFDictionaryRef */ IntPtr CMTimeCopyAsDictionary (CMTime time, /* CFAllocatorRef */ IntPtr allocator);

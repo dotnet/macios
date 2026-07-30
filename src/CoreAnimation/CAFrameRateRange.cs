@@ -8,7 +8,7 @@ namespace CoreAnimation {
 	[SupportedOSPlatform ("ios15.0")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
-	public partial struct CAFrameRateRange {
+	public struct CAFrameRateRange {
 		public float Minimum;
 
 		public float Maximum;
@@ -23,6 +23,11 @@ namespace CoreAnimation {
 
 		public bool IsEqualTo (CAFrameRateRange other)
 			=> IsEqualTo (this, other) != 0;
+
+#if !COREBUILD
+		/// <summary>Gets the default frame-rate range.</summary>
+		public static CAFrameRateRange Default => CAFrameRateRangeFields.Default;
+#endif
 
 	}
 

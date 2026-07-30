@@ -24,7 +24,7 @@ namespace CoreGraphics {
 	///       </para>
 	///     </remarks>
 	[Serializable]
-	public partial struct CGRect : IEquatable<CGRect> {
+	public struct CGRect : IEquatable<CGRect> {
 		nfloat x;
 		nfloat y;
 		nfloat width;
@@ -41,6 +41,12 @@ namespace CoreGraphics {
 		public static readonly CGRect Empty;
 
 #if !COREBUILD
+		/// <summary>Gets an invalid, or null, rectangle.</summary>
+		public static CGRect Null => CGRectFields.Null;
+
+		/// <summary>Gets an infinitely large rectangle.</summary>
+		public static CGRect Infinite => CGRectFields.Infinite;
+
 		public static bool operator == (CGRect left, CGRect right)
 		{
 			// the following version of Equals cannot be removed by the linker, while == can be

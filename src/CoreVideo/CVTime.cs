@@ -45,7 +45,7 @@ namespace CoreVideo {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public partial struct CVTime {
+	public struct CVTime {
 
 		/// <summary>Determines how many TimeValues are represented by this CVTime.</summary>
 		public /* int64_t */ long TimeValue;
@@ -66,6 +66,14 @@ namespace CoreVideo {
 		/// <summary>Flags for CVTime, if set to IsIndefinite, the CVTime is indefinite and neither the TimeValue and TimeScale are valid.</summary>
 		/// <remarks>Currently only the value IsIndefinited is supported, the CVTime is indefinite.</remarks>
 		public int Flags { get { return (int) TimeFlags; } set { TimeFlags = (CVTimeFlags) value; } }
+
+#if !COREBUILD
+		/// <summary>Represents a zero duration.</summary>
+		public static CVTime ZeroTime => CVTimeFields.ZeroTime;
+
+		/// <summary>Represents an unknown or indefinite time.</summary>
+		public static CVTime IndefiniteTime => CVTimeFields.IndefiniteTime;
+#endif
 
 		/// <summary>Determines whether two CVTime objects are equal.</summary>
 		/// <param name="other">Object to compare with.</param>

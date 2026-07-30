@@ -210,7 +210,7 @@ namespace UIKit {
 	[SupportedOSPlatform ("ios15.0")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
-	public partial struct UIPointerAccessoryPosition {
+	public struct UIPointerAccessoryPosition {
 		/// <summary>The offset of the accessory from its default position.</summary>
 		public nfloat Offset;
 		/// <summary>The angle of the accessory, in radians.</summary>
@@ -224,6 +224,32 @@ namespace UIKit {
 			Offset = offset;
 			Angle = angle;
 		}
+
+#if !COREBUILD
+		/// <summary>The accessory position at the top.</summary>
+		public static UIPointerAccessoryPosition Top => UIPointerAccessoryPositionFields.Top;
+
+		/// <summary>The accessory position at the top-right.</summary>
+		public static UIPointerAccessoryPosition TopRight => UIPointerAccessoryPositionFields.TopRight;
+
+		/// <summary>The accessory position at the right.</summary>
+		public static UIPointerAccessoryPosition Right => UIPointerAccessoryPositionFields.Right;
+
+		/// <summary>The accessory position at the bottom-right.</summary>
+		public static UIPointerAccessoryPosition BottomRight => UIPointerAccessoryPositionFields.BottomRight;
+
+		/// <summary>The accessory position at the bottom.</summary>
+		public static UIPointerAccessoryPosition Bottom => UIPointerAccessoryPositionFields.Bottom;
+
+		/// <summary>The accessory position at the bottom-left.</summary>
+		public static UIPointerAccessoryPosition BottomLeft => UIPointerAccessoryPositionFields.BottomLeft;
+
+		/// <summary>The accessory position at the left.</summary>
+		public static UIPointerAccessoryPosition Left => UIPointerAccessoryPositionFields.Left;
+
+		/// <summary>The accessory position at the top-left.</summary>
+		public static UIPointerAccessoryPosition TopLeft => UIPointerAccessoryPositionFields.TopLeft;
+#endif
 
 	}
 #endif

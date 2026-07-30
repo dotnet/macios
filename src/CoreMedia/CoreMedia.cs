@@ -41,7 +41,7 @@ namespace CoreMedia {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	[StructLayout (LayoutKind.Sequential)]
-	public partial struct CMTimeRange {
+	public struct CMTimeRange {
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
 		public CMTime Start;
@@ -50,17 +50,17 @@ namespace CoreMedia {
 		public CMTime Duration;
 #if !COREBUILD
 		/// <summary>Represents an empty time range starting at time zero.</summary>
-		public static readonly CMTimeRange Zero = _Zero;
+		public static readonly CMTimeRange Zero = CMTimeRangeFields.Zero;
 
 		/// <summary>Represents an invalid time range.</summary>
-		public static readonly CMTimeRange InvalidRange = _InvalidRange;
+		public static readonly CMTimeRange InvalidRange = CMTimeRangeFields.InvalidRange;
 
 		/// <summary>Represents the invalid source range from the native invalid time mapping constant.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-		public static readonly CMTimeRange InvalidMapping = _InvalidMapping;
+		public static readonly CMTimeRange InvalidMapping = CMTimeRangeFields.InvalidMapping;
 
 		/// <summary>Gets the dictionary key for the source time range in a time mapping.</summary>
 		// initialized only once (see tests/cecil-tests/)
@@ -68,7 +68,7 @@ namespace CoreMedia {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-		public static NSString? TimeMappingSourceKey { get; private set; } = _TimeMappingSourceKey;
+		public static NSString? TimeMappingSourceKey { get; private set; } = CMTimeRangeFields.TimeMappingSourceKey;
 
 		/// <summary>Gets the dictionary key for the target time range in a time mapping.</summary>
 		// initialized only once (see tests/cecil-tests/)
@@ -76,7 +76,7 @@ namespace CoreMedia {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
-		public static NSString? TimeMappingTargetKey { get; private set; } = _TimeMappingTargetKey;
+		public static NSString? TimeMappingTargetKey { get; private set; } = CMTimeRangeFields.TimeMappingTargetKey;
 #endif // !COREBUILD
 	}
 

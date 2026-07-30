@@ -1634,9 +1634,8 @@ namespace GeneratorTests {
 			var structFile = Path.Combine (bgen.TmpDirectory!, "NativeFieldGeneration", "NativeStructFields.g.cs");
 			Assert.That (File.Exists (structFile), Is.True, "Generated struct file exists");
 			var structContents = File.ReadAllText (structFile);
-			Assert.That (structContents, Does.Contain ("public unsafe partial struct NativeStruct"), "Partial struct");
-			Assert.That (structContents, Does.Contain ("return *((NativeStruct *) Dlfcn.dlsym (Libraries.__Internal.Handle, \"RequiredStruct\"));"), "Required struct");
-			Assert.That (structContents, Does.Contain ("return Dlfcn.GetStruct<NativeStruct> (Libraries.__Internal.Handle, \"OptionalStruct\");"), "Optional struct");
+			Assert.That (structContents, Does.Contain ("internal unsafe static partial class NativeStructFields"), "Internal field container");
+			Assert.That (structContents, Does.Contain ("return Dlfcn.GetStruct<CGRect> (Libraries.__Internal.Handle, \"RequiredStruct\");"), "Struct");
 			Assert.That (structContents, Does.Contain ("public static NSString? NullableString"), "Nullable field");
 
 			var addressFile = Path.Combine (bgen.TmpDirectory!, "NativeFieldGeneration", "SymbolAddresses.g.cs");

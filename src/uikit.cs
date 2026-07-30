@@ -34277,37 +34277,30 @@ namespace UIKit {
 	}
 
 	[NoTV, NoMac, iOS (15, 0), MacCatalyst (15, 0)]
-	[Partial (IsStruct = true, Name = nameof (UIPointerAccessoryPosition))]
+	[Static]
+	[Internal]
 	interface UIPointerAccessoryPositionFields {
-		/// <summary>The accessory position at the top.</summary>
 		[Field ("UIPointerAccessoryPositionTop")]
 		UIPointerAccessoryPosition Top { get; }
 
-		/// <summary>The accessory position at the top-right.</summary>
 		[Field ("UIPointerAccessoryPositionTopRight")]
 		UIPointerAccessoryPosition TopRight { get; }
 
-		/// <summary>The accessory position at the right.</summary>
 		[Field ("UIPointerAccessoryPositionRight")]
 		UIPointerAccessoryPosition Right { get; }
 
-		/// <summary>The accessory position at the bottom-right.</summary>
 		[Field ("UIPointerAccessoryPositionBottomRight")]
 		UIPointerAccessoryPosition BottomRight { get; }
 
-		/// <summary>The accessory position at the bottom.</summary>
 		[Field ("UIPointerAccessoryPositionBottom")]
 		UIPointerAccessoryPosition Bottom { get; }
 
-		/// <summary>The accessory position at the bottom-left.</summary>
 		[Field ("UIPointerAccessoryPositionBottomLeft")]
 		UIPointerAccessoryPosition BottomLeft { get; }
 
-		/// <summary>The accessory position at the left.</summary>
 		[Field ("UIPointerAccessoryPositionLeft")]
 		UIPointerAccessoryPosition Left { get; }
 
-		/// <summary>The accessory position at the top-left.</summary>
 		[Field ("UIPointerAccessoryPositionTopLeft")]
 		UIPointerAccessoryPosition TopLeft { get; }
 	}

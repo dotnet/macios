@@ -5,22 +5,16 @@
 
 using System;
 
+using CoreGraphics;
 using Foundation;
 
 namespace NativeFieldGeneration {
 
-	public struct NativeStruct {
-		public int Value;
-	}
-
-	[Partial (IsStruct = true, Name = nameof (NativeStruct))]
+	[Static]
+	[Internal]
 	interface NativeStructFields {
 		[Field ("RequiredStruct", "__Internal")]
-		NativeStruct Required { get; }
-
-		[DefaultValueOnMissingSymbol]
-		[Field ("OptionalStruct", "__Internal")]
-		NativeStruct Optional { get; }
+		CGRect Required { get; }
 
 		[Field ("NullableString", "__Internal")]
 		[NullAllowed]

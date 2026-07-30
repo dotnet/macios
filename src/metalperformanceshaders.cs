@@ -1206,7 +1206,6 @@ namespace MetalPerformanceShaders {
 	[DisableDefaultCtor]
 	interface MPSKernel : NSCopying, NSSecureCoding {
 		/// <summary>Gets a region that represents the default clipping rectangle.</summary>
-		[DefaultValueOnMissingSymbol]
 		[Field ("MPSRectNoClip")]
 		MTLRegion RectNoClip { get; }
 

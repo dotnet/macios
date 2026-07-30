@@ -58,9 +58,9 @@ using CGLContext = System.IntPtr;
 
 namespace CoreAnimation {
 
-	[Partial (IsStruct = true, Name = nameof (CAFrameRateRange))]
+	[Static]
+	[Internal]
 	interface CAFrameRateRangeFields {
-		/// <summary>Gets the default frame-rate range.</summary>
 		[Field ("CAFrameRateRangeDefault", "CoreAnimation")]
 		CAFrameRateRange Default { get; }
 	}

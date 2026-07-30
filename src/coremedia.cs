@@ -1070,53 +1070,45 @@ namespace CoreMedia {
 		int LevelIndex { get; set; }
 	}
 
-	[Partial (IsStruct = true, Name = nameof (CMTime))]
+	[Static]
+	[Internal]
 	interface CMTimeFields {
-		[Internal]
 		[Field ("kCMTimeValueKey")]
 		[NullAllowed]
-		NSString _ValueKey { get; }
+		NSString ValueKey { get; }
 
-		[Internal]
 		[Field ("kCMTimeScaleKey")]
 		[NullAllowed]
-		NSString _ScaleKey { get; }
+		NSString ScaleKey { get; }
 
-		[Internal]
 		[Field ("kCMTimeEpochKey")]
 		[NullAllowed]
-		NSString _EpochKey { get; }
+		NSString EpochKey { get; }
 
-		[Internal]
 		[Field ("kCMTimeFlagsKey")]
 		[NullAllowed]
-		NSString _FlagsKey { get; }
+		NSString FlagsKey { get; }
 	}
 
-	[Partial (IsStruct = true, Name = nameof (CMTimeRange))]
+	[Static]
+	[Internal]
 	interface CMTimeRangeFields {
-		[Internal]
 		[Field ("kCMTimeRangeZero")]
-		CMTimeRange _Zero { get; }
+		CMTimeRange Zero { get; }
 
-		[Internal]
 		[Field ("kCMTimeRangeInvalid")]
-		CMTimeRange _InvalidRange { get; }
+		CMTimeRange InvalidRange { get; }
 
-		[Internal]
-		[DefaultValueOnMissingSymbol]
 		[Field ("kCMTimeMappingInvalid")]
-		CMTimeRange _InvalidMapping { get; }
+		CMTimeRange InvalidMapping { get; }
 
-		[Internal]
 		[Field ("kCMTimeMappingSourceKey")]
 		[NullAllowed]
-		NSString _TimeMappingSourceKey { get; }
+		NSString TimeMappingSourceKey { get; }
 
-		[Internal]
 		[Field ("kCMTimeMappingTargetKey")]
 		[NullAllowed]
-		NSString _TimeMappingTargetKey { get; }
+		NSString TimeMappingTargetKey { get; }
 	}
 
 	[Flags]

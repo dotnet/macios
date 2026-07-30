@@ -1616,9 +1616,6 @@ SECURITY_SOURCES = \
 
 # SensitiveContentAnalysis
 
-SENSITIVECONTENTANALYSIS_SOURCES = \
-	SensitiveContentAnalysis/SCVideoStreamAnalyzer.cs \
-
 # SensorKit
 
 SENSORKIT_CORE_SOURCES = \

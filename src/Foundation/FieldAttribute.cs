@@ -35,7 +35,7 @@ namespace Foundation {
 	[AttributeUsage (AttributeTargets.Property | AttributeTargets.Field)]
 	public sealed class FieldAttribute : Attribute {
 		/// <summary>Creates a new FieldAttribute instance with the specific symbol to bind.</summary>
-		/// <param name="symbolName">The unmanaged symbol that this field represents.</param>
+		/// <param name="symbolName">The unmanaged symbol that this field represents. Pass <see langword="null" /> to indicate that the field represents a null constant value.</param>
 		/// <remarks>Used by Objective-C bindings to bind an unmanaged global variable as a static field.</remarks>
 		public FieldAttribute (string? symbolName)
 		{
@@ -43,7 +43,7 @@ namespace Foundation {
 		}
 
 		/// <summary>Creates a new FieldAttribute instance with the specific symbol to bind.</summary>
-		/// <param name="symbolName">The unmanaged symbol that this field represents.</param>
+		/// <param name="symbolName">The unmanaged symbol that this field represents. Pass <see langword="null" /> to indicate that the field represents a null constant value.</param>
 		/// <param name="libraryName">The library name to bind. Use "__Internal" for referencing symbols on libraries that are statically linked with your application.</param>
 		/// <remarks>Used by Objective-C bindings to bind an unmanaged global variable as a static field.</remarks>
 		public FieldAttribute (string? symbolName, string libraryName)
@@ -53,6 +53,7 @@ namespace Foundation {
 		}
 
 		/// <summary>The global symbol that this field represents.</summary>
+		/// <remarks>A <see langword="null" /> value indicates that the field represents a null constant value.</remarks>
 		public string? SymbolName { get; set; }
 
 		/// <summary>The library name where the global symbol is looked up from.</summary>

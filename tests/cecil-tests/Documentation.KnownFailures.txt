@@ -10317,8 +10317,6 @@ M:CoreGraphics.CGContext.ShowTextAtPoint(System.Runtime.InteropServices.NFloat,S
 M:CoreGraphics.CGContext.ShowTextAtPoint(System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat,System.String)
 M:CoreGraphics.CGContext.StrokeRectWithWidth(CoreGraphics.CGRect,System.Runtime.InteropServices.NFloat)
 M:CoreGraphics.CGContext.TranslateCTM(System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat)
-M:CoreGraphics.CGContextPDF.BeginTag(CoreGraphics.CGPdfTagType,CoreGraphics.CGPdfTagProperties)
-M:CoreGraphics.CGContextPDF.BeginTag(CoreGraphics.CGPdfTagType,Foundation.NSDictionary)
 M:CoreGraphics.CGContextPDF.EndTag
 M:CoreGraphics.CGContextPDF.SetIdTree(CoreGraphics.CGPDFDictionary)
 M:CoreGraphics.CGContextPDF.SetPageTagStructureTree(Foundation.NSDictionary)

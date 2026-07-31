@@ -14,9 +14,9 @@ namespace DeviceCheck {
 	[ErrorDomain ("DCErrorDomain")]
 	[Native]
 	public enum DCError : long {
-		/// <summary>Indicates unknown system failure.</summary>
+		/// <summary>An unknown system failure occurred.</summary>
 		UnknownSystemFailure,
-		/// <summary>Indicates feature unsupported.</summary>
+		/// <summary>The DeviceCheck feature is not supported on this device.</summary>
 		FeatureUnsupported,
 		InvalidInput,
 		InvalidKey,

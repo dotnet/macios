@@ -35,9 +35,9 @@ namespace AVFoundation {
 
 		}
 
-		/// <param name="outputFileUrl">The output file url.</param>
-		///         <param name="startRecordingFromConnections">The start recording from connections.</param>
-		///         <param name="finishedRecording">The finished recording.</param>
+		/// <param name="outputFileUrl">The URL of the output file to record to.</param>
+		///         <param name="startRecordingFromConnections">A callback invoked when recording starts, receiving the active connections.</param>
+		///         <param name="finishedRecording">A callback invoked when recording finishes, receiving the connections and any error that occurred.</param>
 		///         <summary>To be added.</summary>
 		public void StartRecordingToOutputFile (NSUrl outputFileUrl, Action<NSObject []> startRecordingFromConnections, Action<NSObject [], NSError?> finishedRecording)
 		{

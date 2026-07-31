@@ -19,8 +19,8 @@ namespace UIKit {
 			RegisterClassForDecorationView (Class.GetHandle (viewType), kind);
 		}
 
-		/// <param name="section">The section.</param>
-		///         <param name="indexPath">The index path.</param>
+		/// <param name="section">The section kind of the supplementary view.</param>
+		///         <param name="indexPath">The index path of the supplementary view.</param>
 		///         <summary>The attributes for the supplementary view at the specified indexPath.</summary>
 		///         <returns>To be added.</returns>
 		public UICollectionViewLayoutAttributes LayoutAttributesForSupplementaryView (UICollectionElementKindSection section, NSIndexPath indexPath)

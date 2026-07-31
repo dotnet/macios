@@ -16,7 +16,7 @@ namespace Foundation {
 			return GetLocalizedString ((NSString) key, (NSString?) value, (NSString?) table);
 		}
 
-		/// <param name="fileExtension">The file extension.</param>
+		/// <param name="fileExtension">The file extension to filter resources by.</param>
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		public string [] PathsForResources (string fileExtension)

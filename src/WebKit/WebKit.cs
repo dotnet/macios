@@ -5,8 +5,8 @@
 namespace WebKit {
 
 	public partial class WebFrame {
-		/// <param name="htmlString">The html string.</param>
-		///         <param name="baseUrl">The base url.</param>
+		/// <param name="htmlString">The HTML content to load.</param>
+		///         <param name="baseUrl">The base URL used to resolve relative URLs in the HTML content.</param>
 		///         <summary>To be added.</summary>
 		public void LoadHtmlString (string htmlString, NSUrl baseUrl)
 		{

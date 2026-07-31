@@ -48,7 +48,7 @@ namespace CoreBluetooth {
 		{
 		}
 
-		/// <param name="dictionary">The dictionary.</param>
+		/// <param name="dictionary">The dictionary containing the advertising options.</param>
 		///         <summary>To be added.</summary>
 		public StartAdvertisingOptions (NSDictionary dictionary)
 			: base (dictionary)

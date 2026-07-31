@@ -45,7 +45,7 @@ namespace AVFoundation {
 		{
 		}
 
-		/// <param name="dictionary">The dictionary.</param>
+		/// <param name="dictionary">The dictionary containing the asset options.</param>
 		///         <summary>To be added.</summary>
 		public AVUrlAssetOptions (NSDictionary dictionary)
 			: base (dictionary)

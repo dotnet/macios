@@ -11,7 +11,6 @@
 
 namespace EventKitUI {
 	/// <summary>To be added.</summary>
-	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	public static class EKUIBundle {
@@ -21,7 +20,6 @@ namespace EventKitUI {
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		public static NSBundle? UIBundle {
 			get {
 				return Runtime.GetNSObject<NSBundle> (EventKitUIBundle ());

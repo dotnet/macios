@@ -7,9 +7,9 @@ using UIKit;
 namespace Intents {
 
 	public partial class INSetProfileInCarIntent {
-		/// <param name="profileNumber">To be added.</param>
-		///         <param name="profileLabel">To be added.</param>
-		///         <param name="defaultProfile">To be added.</param>
+		/// <param name="profileNumber">The profile number.</param>
+		///         <param name="profileLabel">The profile label.</param>
+		///         <param name="defaultProfile">The default profile.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]

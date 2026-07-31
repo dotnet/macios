@@ -11,16 +11,14 @@ namespace Foundation {
 		///         <param name="table">The table in which to look up the keyed value.</param>
 		///         <summary>Gets the localized string for the string that is identified by the provided <paramref name="key" /> into <paramref name="table" />, or <paramref name="value" /> if no string is found.</summary>
 		///         <returns>The localized string for the string that is identified by the provided <paramref name="key" /> into <paramref name="table" />, or <paramref name="value" /> if no string is found.</returns>
-		///         <remarks>To be added.</remarks>
 		public NSString GetLocalizedString (string key, string? value = null, string? table = null)
 		{
 			return GetLocalizedString ((NSString) key, (NSString?) value, (NSString?) table);
 		}
 
-		/// <param name="fileExtension">To be added.</param>
+		/// <param name="fileExtension">The file extension.</param>
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
 		public string [] PathsForResources (string fileExtension)
 		{
 			return PathsForResources (fileExtension, null);

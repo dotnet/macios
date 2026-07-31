@@ -40,11 +40,10 @@ namespace AddressBookUI {
 		[DllImport (Constants.AddressBookUILibrary)]
 		static extern IntPtr /* NSString */ ABCreateStringWithAddressDictionary (IntPtr /* NSDictionary */ address, byte addCountryName);
 
-		/// <param name="address">To be added.</param>
-		///         <param name="addCountryName">To be added.</param>
+		/// <param name="address">The address.</param>
+		///         <param name="addCountryName">The add country name.</param>
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
 		static public string ToString (NSDictionary address, bool addCountryName)
 		{
 			if (address is null)

@@ -1,13 +1,13 @@
-AppBundleSize: 247,975,409 bytes (242,163.5 KB = 236.5 MB)
+AppBundleSize: 247,535,140 bytes (241,733.5 KB = 236.1 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 Contents/Info.plist:
-    718 bytes (0.7 KB = 0.0 MB)
+    753 bytes (0.7 KB = 0.0 MB)
 Contents/MacOS/SizeTestApp:
-    8,028,536 bytes (7,840.4 KB = 7.7 MB)
+    8,029,576 bytes (7,841.4 KB = 7.7 MB)
 Contents/MonoBundle/.xamarin/osx-arm64/Microsoft.CSharp.dll:
     892,712 bytes (871.8 KB = 0.9 MB)
 Contents/MonoBundle/.xamarin/osx-arm64/Microsoft.macOS.dll:
-    36,932,096 bytes (36,066.5 KB = 35.2 MB)
+    36,711,936 bytes (35,851.5 KB = 35.0 MB)
 Contents/MonoBundle/.xamarin/osx-arm64/Microsoft.VisualBasic.Core.dll:
     1,334,568 bytes (1,303.3 KB = 1.3 MB)
 Contents/MonoBundle/.xamarin/osx-arm64/Microsoft.VisualBasic.dll:
@@ -21,7 +21,7 @@ Contents/MonoBundle/.xamarin/osx-arm64/mscorlib.dll:
 Contents/MonoBundle/.xamarin/osx-arm64/netstandard.dll:
     100,688 bytes (98.3 KB = 0.1 MB)
 Contents/MonoBundle/.xamarin/osx-arm64/SizeTestApp.dll:
-    6,656 bytes (6.5 KB = 0.0 MB)
+    6,144 bytes (6.0 KB = 0.0 MB)
 Contents/MonoBundle/.xamarin/osx-arm64/System.AppContext.dll:
     15,144 bytes (14.8 KB = 0.0 MB)
 Contents/MonoBundle/.xamarin/osx-arm64/System.Buffers.dll:
@@ -355,7 +355,7 @@ Contents/MonoBundle/.xamarin/osx-arm64/WindowsBase.dll:
 Contents/MonoBundle/.xamarin/osx-x64/Microsoft.CSharp.dll:
     795,944 bytes (777.3 KB = 0.8 MB)
 Contents/MonoBundle/.xamarin/osx-x64/Microsoft.macOS.dll:
-    36,932,096 bytes (36,066.5 KB = 35.2 MB)
+    36,711,936 bytes (35,851.5 KB = 35.0 MB)
 Contents/MonoBundle/.xamarin/osx-x64/Microsoft.VisualBasic.Core.dll:
     1,166,120 bytes (1,138.8 KB = 1.1 MB)
 Contents/MonoBundle/.xamarin/osx-x64/Microsoft.VisualBasic.dll:
@@ -369,7 +369,7 @@ Contents/MonoBundle/.xamarin/osx-x64/mscorlib.dll:
 Contents/MonoBundle/.xamarin/osx-x64/netstandard.dll:
     100,648 bytes (98.3 KB = 0.1 MB)
 Contents/MonoBundle/.xamarin/osx-x64/SizeTestApp.dll:
-    6,656 bytes (6.5 KB = 0.0 MB)
+    6,144 bytes (6.0 KB = 0.0 MB)
 Contents/MonoBundle/.xamarin/osx-x64/System.AppContext.dll:
     15,144 bytes (14.8 KB = 0.0 MB)
 Contents/MonoBundle/.xamarin/osx-x64/System.Buffers.dll:

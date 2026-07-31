@@ -154,12 +154,8 @@ namespace SecurityInterface {
 		void _SetAuthorizationString (IntPtr authorizationString);
 
 		[Internal]
-		[Export ("setAuthorizationRights:")]
-		void _SetAuthorizationRights (IntPtr authorizationRights);
-
-		[Internal]
 		[Export ("authorizationRights")]
-		IntPtr _AuthorizationRights { get; }
+		IntPtr _AuthorizationRights { get; set; }
 
 		/// <summary>Gets the authorization object associated with this view, or <see langword="null" /> if not yet authorized.</summary>
 		[Export ("authorization")]

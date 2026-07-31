@@ -69,6 +69,32 @@ namespace MonoTouchFixtures.SecurityInterface {
 		}
 
 		[Test]
+		public void Policies ()
+		{
+			using var view = new SFCertificateView (new global::CoreGraphics.CGRect (0, 0, 300, 200));
+			using var basicPolicy = SecPolicy.CreateBasicX509Policy ();
+			using var sslPolicy = SecPolicy.CreateSslPolicy (true, "example.com");
+
+			Assert.Throws<ArgumentException> (() => view.Policies = [], "Empty");
+			view.Policies = [basicPolicy, sslPolicy];
+			var policies = view.Policies;
+			Assert.That (policies, Is.Not.Null, "Set");
+			if (policies is not null) {
+				Assert.That (policies.Length, Is.EqualTo (2), "Set count");
+				foreach (var item in policies)
+					item.Dispose ();
+			}
+			view.Policies = null;
+			policies = view.Policies;
+			Assert.That (policies, Is.Not.Null, "Reset");
+			if (policies is not null) {
+				Assert.That (policies.Length, Is.EqualTo (1), "Reset count");
+				foreach (var item in policies)
+					item.Dispose ();
+			}
+		}
+
+		[Test]
 		public void DisclosureStateDidChangeNotification_Exists ()
 		{
 			var notification = SFCertificateView.DisclosureStateDidChangeNotification;

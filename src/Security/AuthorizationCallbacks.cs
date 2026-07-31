@@ -150,7 +150,10 @@ namespace Security {
 
 		/// <summary>Creates an owned callbacks table from static unmanaged callback pointers.</summary>
 		/// <param name="configuration">The callback pointers used to populate the native table.</param>
-		/// <remarks>The callback pointers should reference static C# methods marked with <see cref="UnmanagedCallersOnlyAttribute" /> and must not throw exceptions.</remarks>
+		/// <remarks>
+		/// The callback pointers should reference static C# methods marked with <see cref="UnmanagedCallersOnlyAttribute" /> and must not throw exceptions.
+		/// This owned table cannot be used with <c>SFAuthorizationPluginView</c>, which requires the borrowed table supplied by the authorization plugin host.
+		/// </remarks>
 		public AuthorizationCallbacks (AuthorizationCallbacksConfiguration configuration)
 			: this (CreateNative (configuration))
 		{

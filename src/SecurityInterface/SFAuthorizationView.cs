@@ -29,7 +29,7 @@ namespace SecurityInterface {
 			}
 			set {
 				ArgumentNullException.ThrowIfNull (value);
-				_SetAuthorizationRights (value.GetCheckedHandle ());
+				_AuthorizationRights = value.GetCheckedHandle ();
 				GC.KeepAlive (value);
 			}
 		}

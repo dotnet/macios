@@ -233,6 +233,23 @@ namespace Xamarin.Linker {
 			}
 		}
 
+		public TypeReference System_Reflection_AssemblyMetadataAttribute {
+			get {
+				return GetTypeReference (CorlibAssembly, "System.Reflection.AssemblyMetadataAttribute", out var _);
+			}
+		}
+
+		public MethodReference AssemblyMetadataAttribute_Constructor_String_String {
+			get {
+				return GetMethodReference (CorlibAssembly, System_Reflection_AssemblyMetadataAttribute, ".ctor", (v) =>
+						v.IsConstructor
+						&& v.HasParameters
+						&& v.Parameters.Count == 2
+						&& v.Parameters [0].ParameterType.Is ("System", "String")
+						&& v.Parameters [1].ParameterType.Is ("System", "String"));
+			}
+		}
+
 		public TypeReference System_Byte {
 			get {
 				return CurrentAssembly.MainModule.ImportReference (CorlibAssembly.MainModule.TypeSystem.Byte);

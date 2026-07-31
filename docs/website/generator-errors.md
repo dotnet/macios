@@ -329,7 +329,35 @@ Historically it was used on property setters. However using the attribute on _ot
 
 To fix this warning use the `[NullAllowed]` attribute only on parameters, properties or return values.
 
-### <a name='BI1125'/>BI1125: The [Field] member '\*.\*' sets SymbolAddress, but its type is '\*'; only System.IntPtr is supported.
+### <a name='BI1125'/>BI1125: The [FactoryMethod] binding method '\*' has an 'out NSError' parameter, but its return value is not nullable. Add [return: NullAllowed] to the binding method so the generated factory method can return null when the native initializer fails.
+
+A binding method annotated with `[FactoryMethod]` that has an `out NSError`
+parameter is a failable initializer: it can fail and return `nil`. The
+generated factory method can only return `null` on failure if its return value
+is nullable.
+
+To fix this warning, add `[return: NullAllowed]` to the binding method.
+
+### <a name='BI1126'/>BI1126: The [FactoryMethod] attribute on '\*' can only be used with an Objective-C 'init' selector (the selector must be 'init' or start with 'init' followed by an uppercase letter), but the selector is '\*'.
+
+The `[FactoryMethod]` attribute generates a static factory method from a
+failable Objective-C initializer, so it can only be applied to a binding member
+whose selector is an `init` selector: either `init`, or a selector that starts
+with `init` followed by an uppercase letter (e.g. `initWithName:`).
+
+To fix this error, either use an `init` selector, or remove the
+`[FactoryMethod]` attribute.
+
+### <a name='BI1127'/>BI1127: The [FactoryMethod] attribute on '\*' can't specify a method name when applied to a method that isn't a constructor. Remove the method name from the [FactoryMethod] attribute; the name of the binding method is used instead.
+
+When `[FactoryMethod]` is applied to a binding method that isn't a constructor,
+the generated factory method is named after the binding method, so specifying an
+explicit name in the attribute is confusing and redundant.
+
+To fix this error, remove the method name from the `[FactoryMethod]` attribute,
+and rename the binding method if a different factory method name is desired.
+
+### <a name='BI1128'/>BI1128: The [Field] member '\*.\*' sets SymbolAddress, but its type is '\*'; only System.IntPtr is supported.
 
 <!-- 2xxx: reserved -->
 <!-- 3xxx: reserved -->

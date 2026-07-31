@@ -1588,10 +1588,14 @@ namespace Xamarin.Linker {
 		{
 			var signatures = new HashSet<string> (StringComparer.Ordinal);
 
-			foreach (var field in type.Fields)
-				signatures.Add (DocumentationComments.GetSignature (field));
-			foreach (var method in type.Methods)
-				signatures.Add (DocumentationComments.GetSignature (method));
+			foreach (var field in type.Fields) {
+				if (!field.HasCustomAttribute ("System.Runtime.CompilerServices", "CompilerGeneratedAttribute"))
+					signatures.Add (DocumentationComments.GetSignature (field));
+			}
+			foreach (var method in type.Methods) {
+				if (!method.HasCustomAttribute ("System.Runtime.CompilerServices", "CompilerGeneratedAttribute"))
+					signatures.Add (DocumentationComments.GetSignature (method));
+			}
 			// Properties and events don't have a documentation comment signature helper, but the trimmer will
 			// match any member with the given name, which is good enough (and it's what we want here anyway).
 			foreach (var property in type.Properties)

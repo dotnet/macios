@@ -9,6 +9,10 @@
       <method signature="System.Boolean get_IsNativeAOT()" body="stub" feature="ObjCRuntime.Runtime.IsNativeAOT" featurevalue="true" value="true" />
       <method signature="System.Boolean get_IsManagedStaticRegistrar()" body="stub" feature="ObjCRuntime.Runtime.IsManagedStaticRegistrar" featurevalue="false" value="false" />
       <method signature="System.Boolean get_IsManagedStaticRegistrar()" body="stub" feature="ObjCRuntime.Runtime.IsManagedStaticRegistrar" featurevalue="true" value="true" />
+      <field name="IsARM64CallingConvention" feature="ObjCRuntime.Runtime.IsARM64CallingConvention" featurevalue="false" value="false" />
+      <field name="IsARM64CallingConvention" feature="ObjCRuntime.Runtime.IsARM64CallingConvention" featurevalue="true" value="true" />
+      <method signature="System.Boolean GetIsARM64CallingConvention()" body="stub" feature="ObjCRuntime.Runtime.IsARM64CallingConvention" featurevalue="false" value="false" />
+      <method signature="System.Boolean GetIsARM64CallingConvention()" body="stub" feature="ObjCRuntime.Runtime.IsARM64CallingConvention" featurevalue="true" value="true" />
       <method signature="System.Boolean get_DynamicRegistrationSupported()" body="stub" feature="ObjCRuntime.Runtime.DynamicRegistrationSupported" featurevalue="false" value="false" />
       <method signature="System.Boolean get_DynamicRegistrationSupported()" body="stub" feature="ObjCRuntime.Runtime.DynamicRegistrationSupported" featurevalue="true" value="true" />
       <method signature="System.Boolean get_CheckForIllegalCrossThreadCalls()" body="stub" feature="ObjCRuntime.Runtime.CheckForIllegalCrossThreadCalls" featurevalue="false" value="false" />

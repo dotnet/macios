@@ -918,11 +918,16 @@ namespace Cecil.Tests {
 			case Code.Ldloc_3:
 				return true;
 			// These load the argument / local / static field identified by the operand.
+			// These load the argument / local identified by the operand.
 			case Code.Ldarg:
 			case Code.Ldarg_S:
 			case Code.Ldloc:
 			case Code.Ldloc_S:
+				return Equals (a.Operand, b.Operand);
+			// A static field load is equivalent if it's the same field.
 			case Code.Ldsfld:
+				if (a.Operand is FieldReference sfa && b.Operand is FieldReference sfb)
+					return sfa.FullName == sfb.FullName;
 				return Equals (a.Operand, b.Operand);
 			// A field load is equivalent if it's the same field loaded from the same object.
 			case Code.Ldfld:

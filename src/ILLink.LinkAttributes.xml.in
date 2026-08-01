@@ -10,6 +10,12 @@
     <type fullname="Foundation.NotImplementedAttribute">
       <attribute internal="RemoveAttributeInstances" />
     </type>
+    <type fullname="Foundation.OptionalMemberAttribute">
+      <attribute internal="RemoveAttributeInstances" />
+    </type>
+    <type fullname="Foundation.RequiredMemberAttribute">
+      <attribute internal="RemoveAttributeInstances" />
+    </type>
 
     <!-- double-check when applied -->
     <type fullname="Foundation.PreserveAttribute">

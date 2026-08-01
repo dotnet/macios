@@ -428,6 +428,8 @@ namespace ObjCRuntime {
 		}
 
 #if MONOMAC
+		/// <summary>Raised when an assembly is about to be registered with the Objective-C runtime, allowing an application to control whether the assembly's types are registered.</summary>
+		/// <remarks>This event is only available on macOS. Set the event argument's <see cref="ObjCRuntime.AssemblyRegistrationEventArgs.Register" /> property to <see langword="false" /> to skip registering the assembly.</remarks>
 		public static event AssemblyRegistrationHandler? AssemblyRegistration;
 
 		static bool OnAssemblyRegistration (AssemblyName assembly_name)
@@ -446,7 +448,11 @@ namespace ObjCRuntime {
 		static MarshalObjectiveCExceptionMode objc_exception_mode;
 		static MarshalManagedExceptionMode managed_exception_mode;
 
+		/// <summary>Raised when an Objective-C exception is about to be marshalled into managed code, allowing the application to choose how the exception is handled.</summary>
+		/// <remarks>Handlers can inspect the native exception and set the marshalling mode on the event arguments to control whether a managed exception is thrown.</remarks>
 		public static event MarshalObjectiveCExceptionHandler? MarshalObjectiveCException;
+		/// <summary>Raised when a managed exception is about to be marshalled into an Objective-C exception, allowing the application to choose how the exception is handled.</summary>
+		/// <remarks>Handlers can inspect the managed exception and set the marshalling mode on the event arguments to control how the exception is surfaced to native code.</remarks>
 		public static event MarshalManagedExceptionHandler? MarshalManagedException;
 
 		static MarshalObjectiveCExceptionMode OnMarshalObjectiveCException (IntPtr exception_handle, sbyte throwManagedAsDefault)
@@ -2622,7 +2628,7 @@ namespace ObjCRuntime {
 
 		// Note that the code in this method doesn't necessarily work with NativeAOT, so assert that never happens by throwing an exception in that case
 		//
-		// IL2070: 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicMethods', 'DynamicallyAccessedMemberTypes.NonPublicMethods' in call to 'System.Type.GetMethods(BindingFlags)'. The parameter 'closed_type' of method 'ObjCRuntime.Runtime.FindClosedMethod(Type, MethodBase)' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
+		// IL2070: 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.All' in call to 'System.Type.GetMemberWithSameMetadataDefinitionAs(MemberInfo)'. The parameter 'closed_type' of method 'ObjCRuntime.Runtime.FindClosedMethod(Type, MethodBase)' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
 		[UnconditionalSuppressMessage ("", "IL2070", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
 		internal static MethodInfo FindClosedMethod (Type closed_type, MethodBase open_method)
 		{
@@ -2645,11 +2651,8 @@ namespace ObjCRuntime {
 			} while (declaring_closed_type is not null);
 
 			// Find the closed method.
-			foreach (var mi in closed_type.GetMethods (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance | BindingFlags.DeclaredOnly)) {
-				if (mi.MetadataToken == open_method.MetadataToken) {
-					return mi;
-				}
-			}
+			if (closed_type.GetMemberWithSameMetadataDefinitionAs (open_method) is MethodInfo mi)
+				return mi;
 
 			throw ErrorHelper.CreateError (8003, $"Failed to find the closed generic method '{open_method.Name}' on the type '{closed_type.FullName}'.");
 		}

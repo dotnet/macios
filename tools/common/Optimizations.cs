@@ -22,7 +22,7 @@ namespace Xamarin.Bundler {
 			"static-block-to-delegate-lookup",
 			"remove-dynamic-registrar",
 			"trim-architectures",
-			"inline-is-arm64-calling-convention",
+			"inline-is-arm64-calling-convention", // this optimization has been replaced by the 'ObjCRuntime.Runtime.IsARM64CallingConvention' feature switch, but leave it here so that we won't break customers trying to enable/disable it
 			"seal-and-devirtualize",
 			"cctor-beforefieldinit",
 			"custom-attributes-removal",
@@ -43,7 +43,7 @@ namespace Xamarin.Bundler {
 			/* Opt.StaticBlockToDelegateLookup        */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 			/* Opt.RemoveDynamicRegistrar             */ new ApplePlatform [] { ApplePlatform.iOS,                       ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 			/* Opt.TrimArchitectures                  */ new ApplePlatform [] {                    ApplePlatform.MacOSX,                                               },
-			/* Opt.InlineIsARM64CallingConvention     */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
+			/* Opt.InlineIsARM64CallingConvention     */ new ApplePlatform [] {                                                                                        },
 			/* Opt.SealAndDevirtualize                */ new ApplePlatform [] { ApplePlatform.iOS,                       ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 			/* Opt.StaticConstructorBeforeFieldInit   */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 			/* Opt.CustomAttributesRemoval            */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
@@ -308,9 +308,8 @@ namespace Xamarin.Bundler {
 				}
 			}
 
-			// By default Runtime.IsARM64CallingConvention inlining is always enabled.
-			if (!InlineIsARM64CallingConvention.HasValue)
-				InlineIsARM64CallingConvention = true;
+			// The InlineIsARM64CallingConvention optimization has been replaced by the
+			// 'ObjCRuntime.Runtime.IsARM64CallingConvention' trimmer feature switch.
 
 			// by default we try to eliminate any .cctor we can
 			if (!StaticConstructorBeforeFieldInit.HasValue)

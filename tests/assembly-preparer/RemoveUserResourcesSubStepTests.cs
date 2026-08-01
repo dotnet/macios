@@ -26,8 +26,9 @@ public class RemoveUserResourcesSubStepTests : BaseClass {
 
 	// Builds a user assembly with an embedded MonoTouch/XamMac content resource, then runs the
 	// RemoveUserResourcesSubStep with the provided value of HotReloadCompatibleBuild and returns the
-	// resource names still present in the (in-memory) assembly after the step ran.
-	List<string> GetResourcesAfterStep (ApplePlatform platform, bool isCoreCLR, bool hotReloadCompatibleBuild)
+	// resource names still present in the (in-memory) assembly after the step ran. The 'trimMode'
+	// controls whether the Test assembly is linked ("link") or copied ("copy", i.e. reloadable).
+	List<string> GetResourcesAfterStep (ApplePlatform platform, bool isCoreCLR, bool hotReloadCompatibleBuild, string trimMode = "link")
 	{
 		var prefix = GetContentPrefix (platform);
 		var resourceName = prefix + "TestResource.bin";
@@ -47,7 +48,7 @@ public class RemoveUserResourcesSubStepTests : BaseClass {
 
 		var extraConfig = $"HotReloadCompatibleBuild={(hotReloadCompatibleBuild ? "true" : "false")}";
 
-		using var preparer = CreatePreparer (platform, isCoreCLR, p => p.Registrar = RegistrarMode.Dynamic, code, out var testInfo, extraCsproj: extraCsproj, extraConfig: extraConfig, extraFiles: new [] { ("TestResource.bin", content) });
+		using var preparer = CreatePreparer (platform, isCoreCLR, p => p.Registrar = RegistrarMode.Dynamic, code, out var testInfo, extraCsproj: extraCsproj, extraConfig: extraConfig, extraFiles: new [] { ("TestResource.bin", content) }, testAssemblyTrimMode: trimMode);
 
 		var context = preparer.Configuration.DerivedLinkContext;
 		new LoadAssembliesStep ().Process (context);
@@ -78,10 +79,25 @@ public class RemoveUserResourcesSubStepTests : BaseClass {
 	{
 		var prefix = GetContentPrefix (platform);
 		var resourceName = prefix + "TestResource.bin";
-		var resources = GetResourcesAfterStep (platform, isCoreCLR, hotReloadCompatibleBuild: true);
+		// A reloadable (non-linked, i.e. copied) assembly must be left untouched: the step must not
+		// remove the resource (which would upgrade the assembly to AssemblyAction.Save and break Hot Reload).
+		var resources = GetResourcesAfterStep (platform, isCoreCLR, hotReloadCompatibleBuild: true, trimMode: "copy");
 
-		// The resource must be left untouched: the step must not remove it (and thus not upgrade the
-		// user assembly to AssemblyAction.Save, which is what would break Hot Reload).
-		Assert.That (resources, Has.Some.EqualTo (resourceName), "The user resource must be kept when HotReloadCompatibleBuild is enabled.");
+		Assert.That (resources, Has.Some.EqualTo (resourceName), "The user resource must be kept for a reloadable assembly when HotReloadCompatibleBuild is enabled.");
+	}
+
+	[Test]
+	[TestCase (ApplePlatform.iOS, false)]
+	[TestCase (ApplePlatform.TVOS, false)]
+	[TestCase (ApplePlatform.MacCatalyst, false)]
+	[TestCase (ApplePlatform.MacOSX, true)]
+	public void ResourceRemovedForLinkedAssemblyInHotReload (ApplePlatform platform, bool isCoreCLR)
+	{
+		var prefix = GetContentPrefix (platform);
+		// A linked assembly is re-serialized regardless (it's not reloadable), so its resources must be
+		// stripped even in a Hot Reload compatible build.
+		var resources = GetResourcesAfterStep (platform, isCoreCLR, hotReloadCompatibleBuild: true, trimMode: "link");
+
+		Assert.That (resources, Has.None.StartsWith (prefix), "The user resource should be stripped from a linked assembly even when HotReloadCompatibleBuild is enabled.");
 	}
 }

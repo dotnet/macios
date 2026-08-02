@@ -23809,11 +23809,21 @@ namespace AVFoundation {
 		[Export ("addContentKeyRecipient:")]
 		void Add (IAVContentKeyRecipient recipient);
 
+		/// <param name="recipient">The content key recipient to add to the session.</param>
+		/// <summary>Adds a content key recipient to the session.</summary>
+		[Wrap ("Add (recipient)")]
+		void AddContentKeyRecipient (AVUrlAsset recipient);
+
 		/// <param name="recipient">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("removeContentKeyRecipient:")]
 		void Remove (IAVContentKeyRecipient recipient);
+
+		/// <param name="recipient">The content key recipient to remove from the session.</param>
+		/// <summary>Removes a content key recipient from the session.</summary>
+		[Wrap ("Remove (recipient)")]
+		void RemoveContentKeyRecipient (AVUrlAsset recipient);
 
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>

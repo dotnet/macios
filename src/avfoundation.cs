@@ -23812,7 +23812,7 @@ namespace AVFoundation {
 		/// <param name="recipient">The content key recipient to add to the session.</param>
 		/// <summary>Adds a content key recipient to the session.</summary>
 		[Wrap ("Add (recipient)")]
-		void AddContentKeyRecipient (AVUrlAsset recipient);
+		void AddContentKeyRecipient (IAVContentKeyRecipient recipient);
 
 		/// <param name="recipient">To be added.</param>
 		/// <summary>To be added.</summary>

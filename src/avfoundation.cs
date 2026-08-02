@@ -23823,7 +23823,7 @@ namespace AVFoundation {
 		/// <param name="recipient">The content key recipient to remove from the session.</param>
 		/// <summary>Removes a content key recipient from the session.</summary>
 		[Wrap ("Remove (recipient)")]
-		void RemoveContentKeyRecipient (AVUrlAsset recipient);
+		void RemoveContentKeyRecipient (IAVContentKeyRecipient recipient);
 
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>

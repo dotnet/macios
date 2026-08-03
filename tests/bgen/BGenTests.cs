@@ -1612,6 +1612,20 @@ namespace GeneratorTests {
 
 		[Test]
 		[TestCase (Profile.iOS)]
+		public void FieldNullability (Profile profile)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
+			var bgen = BuildFile (profile, "field-nullability.cs");
+
+			var generatedFile = Path.Combine (bgen.TmpDirectory!, "FieldNullability", "FieldConstants.g.cs");
+			Assert.That (File.Exists (generatedFile), Is.True, "Generated file exists");
+			var contents = File.ReadAllText (generatedFile);
+			Assert.That (contents, Does.Contain ("public static NSString? NullableString"), "Nullable field");
+			Assert.That (contents, Does.Contain ("public static NSString NonNullableString"), "Non-nullable field");
+		}
+
+		[Test]
+		[TestCase (Profile.iOS)]
 		[TestCase (Profile.tvOS)]
 		[TestCase (Profile.MacCatalyst)]
 		[TestCase (Profile.macOSMobile)]

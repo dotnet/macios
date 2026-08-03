@@ -172,6 +172,8 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 		<OptimizePropertyLists Condition="'$(_PlatformName)' == 'macOS' And '$(OptimizePropertyLists)' == ''">false</OptimizePropertyLists>
 		<OptimizePropertyLists Condition="'$(_PlatformName)' != 'macOS' And '$(OptimizePropertyLists)' == ''">true</OptimizePropertyLists>
 
+		<StripFrameworkHeaders Condition="'$(StripFrameworkHeaders)' == ''">true</StripFrameworkHeaders>
+
 		<!-- EnableOnDemandResources: default to true for Xamarin.iOS and false for Xamarin.Mac -->
 		<EnableOnDemandResources Condition="'$(_PlatformName)' == 'macOS' And '$(EnableOnDemandResources)' == ''">false</EnableOnDemandResources>
 		<EnableOnDemandResources Condition="'$(_PlatformName)' != 'macOS' And '$(EnableOnDemandResources)' == ''">true</EnableOnDemandResources>
@@ -297,4 +299,3 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 	<Import Project="$(MSBuildThisFileDirectory)$(MSBuildThisFileName).After.targets"
 			Condition="Exists('$(MSBuildThisFileDirectory)$(MSBuildThisFileName).After.targets')"/>
 </Project>
-

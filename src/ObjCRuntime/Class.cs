@@ -103,6 +103,8 @@ namespace ObjCRuntime {
 			this.handle = GetHandle (type);
 		}
 
+		/// <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>
+		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
 		public Class (NativeHandle handle)
 		{
 			this.handle = handle;

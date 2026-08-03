@@ -51,11 +51,9 @@ steps:
   displayName: 'Remove security UI-prompt (http://stackoverflow.com/a/40039594/183422)'
   continueOnError: true
 
-# was the current xcode deleted (has happened due to a bug in the clean step)? then set the default so 
-# that we can call make and generated the provisionator config files.
-- bash: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/bash/ensure-xcode-select.sh
-  displayName: 'Ensure Xcode is selected.'
-
+# Note: Xcode is not selected here. The Xcode provisioning template installs and selects
+# the Xcode pinned in Make.config, which also repairs bots where the previous Xcode was
+# deleted by a bug in the clean step.
 - pwsh: |
     # some steps expect this to be set to be able to get the correct nuget name
     Write-Host "##vso[task.setvariable variable=BRANCH_NAME]$Env:BRANCH_NAME"

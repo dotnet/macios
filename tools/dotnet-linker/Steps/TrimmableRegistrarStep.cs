@@ -45,6 +45,22 @@ namespace Xamarin.Linker {
 			Configuration.Application.StaticRegistrar.Register (Configuration.GetNonDeletedAssemblies (this));
 		}
 
+		// Add [assembly: AssemblyMetadata ("IsTrimmable", "True")] to the given assembly.
+		//
+		// The type map assemblies are written to disk and then passed to ILLink as ordinary input assemblies
+		// (this happens when PrepareAssemblies=true, where we generate the type map assemblies before ILLink runs).
+		// ILLink only trims assemblies that are marked as trimmable when TrimMode is 'partial' (which is the
+		// default for our apps) - any other assembly is copied as-is, which also roots everything it references.
+		// The type map assemblies reference every Objective-C type in the app, so if they're not trimmed, nothing
+		// else can be trimmed either.
+		void MarkAssemblyAsTrimmable (AssemblyDefinition assembly)
+		{
+			var attribute = abr.CreateAttribute (abr.AssemblyMetadataAttribute_Constructor_String_String);
+			attribute.ConstructorArguments.Add (new CustomAttributeArgument (abr.System_String, "IsTrimmable"));
+			attribute.ConstructorArguments.Add (new CustomAttributeArgument (abr.System_String, "True"));
+			assembly.CustomAttributes.Add (attribute);
+		}
+
 		AssemblyDefinition CreateTypeMapRootAssembly (ModuleParameters moduleParameters, IEnumerable<AssemblyDefinition> assemblies)
 		{
 			AssemblyDefinition rootTypeMapAssembly;
@@ -73,6 +89,10 @@ namespace Xamarin.Linker {
 			}
 
 			abr.SetCurrentAssembly (rootTypeMapAssembly);
+
+			// Don't mark the entry assembly as trimmable, we only want to do this for the assembly we created ourselves.
+			if (!useEntryAssemblyAsRootTypeMapAssembly)
+				MarkAssemblyAsTrimmable (rootTypeMapAssembly);
 
 			foreach (var assembly in assemblies.OrderBy (v => v.FullName)) {
 				/*
@@ -342,6 +362,8 @@ namespace Xamarin.Linker {
 				accessesAssemblies.Add (assembly);
 
 				abr.SetCurrentAssembly (typeMapAssembly);
+
+				MarkAssemblyAsTrimmable (typeMapAssembly);
 
 				/*
 				 * [assembly: IgnoresAccessChecksTo ("...")]

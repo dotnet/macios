@@ -428,6 +428,11 @@
             Summary for T2.#ctor(String)
             </summary>
         </member>
+        <member name="M:XmlDocumentation.T1.Create(System.String,System.IntPtr)">
+            <summary>
+            Summary for T1.Create
+            </summary><param name="factoryName">Docs for factoryName.</param><param name="dummy">Docs for dummy.</param><returns>A new instance, or null on failure.</returns>
+        </member>
         <member name="M:XmlDocumentation.T1.AsyncMethod(System.Action{System.Int32,System.Int64,Foundation.NSError})">
             <summary>
             Summary for T1.AsyncMethod

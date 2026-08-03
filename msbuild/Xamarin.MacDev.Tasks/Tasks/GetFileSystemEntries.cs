@@ -55,6 +55,12 @@ namespace Xamarin.MacDev.Tasks {
 			var entries = new List<ITaskItem> ();
 			foreach (var item in DirectoryPath) {
 				var path = item.ItemSpec.TrimEnd ('\\', '/');
+
+				if (!Directory.Exists (path)) {
+					Log.LogMessage (MessageImportance.Low, $"Skipping {path} because the directory does not exist.");
+					continue;
+				}
+
 				var entriesFullPath = IncludeDirectories ?
 					Directory.EnumerateFileSystemEntries (path, Pattern, searchOption) :
 					Directory.EnumerateFiles (path, Pattern, searchOption);

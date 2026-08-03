@@ -287,6 +287,17 @@ The following metadata is set:
 * `IsDirectory`: `true` for `.app` and `.xcarchive` outputs; `false` for `.ipa` and `.pkg` outputs.
 * `PlatformName`: The Apple platform name, such as `iOS`, `tvOS`, `macOS`, or `MacCatalyst`.
 * `BundleIdentifier`: The resolved app bundle identifier.
+* `ApplicationId`: The resolved app bundle identifier.
+* `ApplicationTitle`: The final `CFBundleDisplayName` value.
+* `ApplicationName`: The final `CFBundleDisplayName` value, falling back to `CFBundleName` when `CFBundleDisplayName` isn't set.
+* `ApplicationDisplayVersion`: The final `CFBundleShortVersionString` value.
+* `ApplicationVersion`: The final `CFBundleVersion` value.
+
+The shared application metadata is read from the compiled app bundle
+`Info.plist`, so values supplied by a custom manifest take precedence over
+single-project properties. Values that are resolved or localized by Apple at a
+later stage are returned as written in the compiled manifest; the build does
+not choose a locale.
 
 Example:
 

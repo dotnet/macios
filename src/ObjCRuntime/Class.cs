@@ -58,7 +58,7 @@ namespace ObjCRuntime {
 #pragma warning restore CS8618
 
 		[BindingImpl (BindingImplOptions.Optimizable)]
-		internal unsafe static void Initialize (Runtime.InitializationOptions* options)
+		internal unsafe static void InitializeClass (Runtime.InitializationOptions* options)
 		{
 			type_to_class = new Dictionary<Type, IntPtr> (Runtime.TypeEqualityComparer);
 
@@ -103,6 +103,8 @@ namespace ObjCRuntime {
 			this.handle = GetHandle (type);
 		}
 
+		/// <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>
+		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
 		public Class (NativeHandle handle)
 		{
 			this.handle = handle;

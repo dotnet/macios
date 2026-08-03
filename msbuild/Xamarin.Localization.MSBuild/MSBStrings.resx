@@ -1721,4 +1721,8 @@
     <data name="E0192" xml:space="preserve">
         <value>The PrepareAssemblies task failed without reporting a specific error. Please rebuild with increased verbosity for more details.</value>
     </data>
+    <data name="E7184" xml:space="preserve">
+        <value>Codesign failed with 'errSecInternalComponent'. This usually means the keychain is locked, which is common when building over SSH. Unlock the keychain first, for example by running 'security unlock-keychain ~/Library/Keychains/login.keychain-db'.</value>
+        <comment>Shown when codesign fails with the 'errSecInternalComponent' error, which typically indicates a locked keychain.</comment>
+    </data>
 </root>

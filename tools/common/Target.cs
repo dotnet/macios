@@ -331,8 +331,11 @@ namespace Xamarin.Bundler {
 				var overwrite = kvp.Value.Overwrite;
 				sw.WriteLine ("\tsetenv (\"{0}\", \"{1}\", {2});", name.Replace ("\"", "\\\""), value.Replace ("\"", "\\\""), overwrite ? 1 : 0);
 			}
-			if (app.XamarinRuntime != XamarinRuntime.NativeAOT)
+			if (app.XamarinRuntime != XamarinRuntime.NativeAOT) {
+				if (app.DynamicRegistrationSupported)
+					sw.WriteLine ("\txamarin_initialize_dynamic_registrar ();");
 				sw.WriteLine ("\txamarin_supports_dynamic_registration = {0};", app.DynamicRegistrationSupported ? "TRUE" : "FALSE");
+			}
 			sw.WriteLine ("\txamarin_runtime_configuration_name = {0};", string.IsNullOrEmpty (app.RuntimeConfigurationFile) ? "NULL" : $"\"{app.RuntimeConfigurationFile}\"");
 			if (app.Registrar == RegistrarMode.TrimmableStatic)
 				sw.WriteLine ("\txamarin_set_is_trimmable_static_registrar (true);");
@@ -411,32 +414,6 @@ namespace Xamarin.Bundler {
 						return true;
 
 			return false;
-		}
-
-		bool _set_arm64_calling_convention;
-		bool? _is_arm64_calling_convention;
-		public bool? InlineIsArm64CallingConventionForCurrentAbi {
-			get {
-				if (!_set_arm64_calling_convention) {
-					if (Optimizations.InlineIsARM64CallingConvention == true) {
-						// We can usually inline Runtime.InlineIsARM64CallingConvention if the generated code will execute on a single architecture
-						switch (Abi & Abi.ArchMask) {
-						case Abi.x86_64:
-							_is_arm64_calling_convention = false;
-							break;
-						case Abi.ARM64:
-						case Abi.ARM64e:
-							_is_arm64_calling_convention = true;
-							break;
-						default:
-							LinkContext.Exceptions.Add (Xamarin.Bundler.ErrorHelper.CreateWarning (99, Xamarin.Bundler.Errors.MX0099, $"unknown abi: {Abi}"));
-							break;
-						}
-					}
-					_set_arm64_calling_convention = true;
-				}
-				return _is_arm64_calling_convention;
-			}
 		}
 
 #endif // !LEGACY_TOOLS

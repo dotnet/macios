@@ -132,7 +132,7 @@ extern bool xamarin_supports_dynamic_registration;
 extern const char *xamarin_runtime_configuration_name;
 extern enum XamarinNativeLinkMode xamarin_libmono_native_link_mode;
 extern const char** xamarin_runtime_libraries;
-extern const char *xamarin_trusted_platform_assemblies;
+extern const char * const *xamarin_trusted_platform_assembly_names;
 #if defined (SUPPORTS_UNIVERSAL_BUILDS)
 extern bool xamarin_is_multi_rid_build;
 #endif

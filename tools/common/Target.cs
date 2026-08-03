@@ -273,30 +273,28 @@ namespace Xamarin.Bundler {
 			sw.WriteLine ($"\tNULL");
 			sw.WriteLine ("};");
 
+			var trusted_platform_assembly_names = app.TrustedPlatformAssemblies
+				.Distinct (StringComparer.Ordinal)
+				// Any .exe files must be at the end, due to https://github.com/dotnet/runtime/issues/62735
+				.OrderBy (v => Path.GetExtension (v).Equals (".exe", StringComparison.OrdinalIgnoreCase))
+				.ThenBy (v => v, StringComparer.Ordinal)
+				.ToArray ();
+			if (app.GenerateTrustedPlatformAssemblies && trusted_platform_assembly_names.Length > 0) {
+				sw.WriteLine ();
+				sw.WriteLine ("static const char * const xamarin_trusted_platform_assembly_names_array[] = {");
+				foreach (var name in trusted_platform_assembly_names)
+					sw.WriteLine ("\t\"{0}\",", EscapeCString (name));
+				sw.WriteLine ("\tNULL");
+				sw.WriteLine ("};");
+			}
+
 			sw.WriteLine ("void xamarin_setup_impl ()");
 			sw.WriteLine ("{");
 
-			if (app.GenerateTrustedPlatformAssemblies) {
-				var assembly_names = app.TrustedPlatformAssemblies
-					.Distinct (StringComparer.Ordinal)
-					// Any .exe files must be at the end, due to https://github.com/dotnet/runtime/issues/62735
-					.OrderBy (v => Path.GetExtension (v).Equals (".exe", StringComparison.OrdinalIgnoreCase))
-					.ThenBy (v => v, StringComparer.Ordinal)
-					.ToArray ();
-
-				if (assembly_names.Length > 0) {
-					if (app.IsMultiRidBuild) {
-						sw.WriteLine ("\txamarin_trusted_platform_assemblies = \"{0}\";", string.Join (":", assembly_names.Select (EscapeCString)));
-						sw.WriteLine ("\txamarin_is_multi_rid_build = true;");
-					} else {
-						var format = string.Join (":", assembly_names.Select (v => $"%s/{EscapeCString (v).Replace ("%", "%%")}"));
-						sw.WriteLine ("\tconst char *bundle_path = xamarin_get_bundle_path ();");
-						sw.Write ("\txamarin_trusted_platform_assemblies = xamarin_strdup_printf (\"{0}\"", format);
-						foreach (var _ in assembly_names)
-							sw.Write (", bundle_path");
-						sw.WriteLine (");");
-					}
-				}
+			if (app.GenerateTrustedPlatformAssemblies && trusted_platform_assembly_names.Length > 0) {
+				sw.WriteLine ("\txamarin_trusted_platform_assembly_names = xamarin_trusted_platform_assembly_names_array;");
+				if (app.IsMultiRidBuild)
+					sw.WriteLine ("\txamarin_is_multi_rid_build = true;");
 			}
 
 			if (app.UseInterpreter) {

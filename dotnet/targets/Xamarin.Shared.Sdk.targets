@@ -723,6 +723,12 @@
 			<_IsSimulatorFeature Condition="'$(SdkIsMobile)' == 'true' And '$(_SdkIsSimulator)' == 'true'">true</_IsSimulatorFeature>
 			<_IsSimulatorFeature Condition="'$(_IsSimulatorFeature)' == ''">false</_IsSimulatorFeature>
 
+			<!-- Set the ARM64 calling convention value (based on the target architecture). Only set it when we
+			     know the target architecture (i.e. a RuntimeIdentifier is available); otherwise leave it unset so
+			     the trimmer keeps the runtime architecture detection instead of hardcoding a potentially wrong value. -->
+			<_IsARM64CallingConventionFeature Condition="'$(RuntimeIdentifier)' != '' And $(RuntimeIdentifier.EndsWith('-arm64'))">true</_IsARM64CallingConventionFeature>
+			<_IsARM64CallingConventionFeature Condition="'$(RuntimeIdentifier)' != '' And '$(_IsARM64CallingConventionFeature)' == ''">false</_IsARM64CallingConventionFeature>
+
 			<!-- Set managed static registrar value -->
 			<_IsManagedStaticRegistrarFeature Condition="'$(Registrar)' == 'managed-static'">true</_IsManagedStaticRegistrarFeature>
 			<_IsManagedStaticRegistrarFeature Condition="'$(Registrar)' != 'managed-static'">false</_IsManagedStaticRegistrarFeature>
@@ -888,6 +894,7 @@
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.AggressiveAttributeTrimmingMono" Value="true" Trim="true" Condition="'$(MobileAggressiveAttributeTrimming)' == 'true' And '$(_XamarinRuntime)' == 'MonoVM'" />
 			<RuntimeHostConfigurationOption Include="ObjCRUntime.AggressiveAttributeTrimmingOnlyWithStaticRegistrar" value="true" Trim="true" Condition="'$(MobileAggressiveAttributeTrimming)' == 'true' And ('$(Registrar)' == 'static' Or '$(Registrar)' == 'managed-static')" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.Arch.IsSimulator" Value="$(_IsSimulatorFeature)" Trim="true" />
+			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsARM64CallingConvention" Value="$(_IsARM64CallingConventionFeature)" Trim="true" Condition="'$(_IsARM64CallingConventionFeature)' != ''" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsManagedStaticRegistrar" Value="$(_IsManagedStaticRegistrarFeature)" Trim="true" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsTrimmableStaticRegistrar" Value="$(_IsTrimmableStaticRegistrarFeature)" Trim="true" />
 			<!--
@@ -989,6 +996,17 @@
 			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.Linker.ComputeAOTArguments" Condition="'$(PostProcessAssemblies)' != 'true'" />
 			<!-- Must be the last step. -->
 			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.Linker.DoneStep" Condition="'$(PostProcessAssemblies)' != 'true'" />
+		</ItemGroup>
+
+		<ItemGroup Condition="'$(PrepareAssemblies)' == 'true' And '$(Registrar)' == 'trimmable-static' And $([MSBuild]::VersionLessThan($(TargetFrameworkVersion), '11.0'))">
+			<!--
+				This step must run even when all our other custom steps are disabled (which happens when both
+				PrepareAssemblies and PostProcessAssemblies are true), because otherwise ILLink will remove the
+				type map attributes from the type map assemblies the trimmable registrar generated before ILLink ran.
+
+				It's not needed on .NET 11+, because there we pass the typemap-entry-assembly argument to ILLink instead.
+			-->
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.SetTypeMapEntryAssemblyStep" />
 		</ItemGroup>
 
 		<ItemGroup>

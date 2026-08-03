@@ -7909,6 +7909,7 @@ System.Private.CoreLib.dll:System.Number/NumberBuffer.ToString()
 System.Private.CoreLib.dll:System.Number/NumberBufferKind
 System.Private.CoreLib.dll:System.Number/NumberBufferKind System.Number/NumberBuffer::Kind
 System.Private.CoreLib.dll:System.Number/NumberBufferKind System.Number/NumberBufferKind::Decimal
+System.Private.CoreLib.dll:System.Number/NumberBufferKind System.Number/NumberBufferKind::DecimalIeee754
 System.Private.CoreLib.dll:System.Number/NumberBufferKind System.Number/NumberBufferKind::FloatingPoint
 System.Private.CoreLib.dll:System.Number/NumberBufferKind System.Number/NumberBufferKind::Integer
 System.Private.CoreLib.dll:System.Number/NumberBufferKind System.Number/NumberBufferKind::Unknown

@@ -2934,7 +2934,7 @@ namespace UIKit {
 	/// <summary>Provides data for the  event.</summary>
 	[MacCatalyst (13, 1)]
 	interface UIStatusBarOrientationChangeEventArgs {
-		/// <summary>The new orientation of the <see cref="UIKit.UIStatusBar" />.</summary>
+		/// <summary>The new orientation of the status bar.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]

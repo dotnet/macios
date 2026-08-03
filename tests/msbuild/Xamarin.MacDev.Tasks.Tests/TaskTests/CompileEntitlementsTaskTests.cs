@@ -155,6 +155,7 @@ namespace Xamarin.MacDev.Tasks {
 		[TestCase ("Invalid", null, "Unknown type 'Invalid' for the entitlement 'com.xamarin.custom.entitlement' specified in the CustomEntitlements item group. Expected 'Remove', 'Boolean', 'String', or 'StringArray'.")]
 		[TestCase ("Boolean", null, "Invalid value '' for the entitlement 'com.xamarin.custom.entitlement' of type 'Boolean' specified in the CustomEntitlements item group. Expected 'true' or 'false'.")]
 		[TestCase ("Boolean", "invalid", "Invalid value 'invalid' for the entitlement 'com.xamarin.custom.entitlement' of type 'Boolean' specified in the CustomEntitlements item group. Expected 'true' or 'false'.")]
+		[TestCase ("Boolean", " true ", "Invalid value ' true ' for the entitlement 'com.xamarin.custom.entitlement' of type 'Boolean' specified in the CustomEntitlements item group. Expected 'true' or 'false'.")]
 		[TestCase ("Remove", "invalid", "Invalid value 'invalid' for the entitlement 'com.xamarin.custom.entitlement' of type 'Remove' specified in the CustomEntitlements item group. Expected no value at all.")]
 		public void InvalidCustomEntitlements (string type, string? value, string errorMessage)
 		{

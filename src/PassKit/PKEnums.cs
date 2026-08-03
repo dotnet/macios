@@ -302,9 +302,9 @@ namespace PassKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PKAddPassButtonStyle : long {
-		/// <summary>To be added.</summary>
+		/// <summary>A black "Add Pass" button.</summary>
 		Black = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>An outlined "Add Pass" button.</summary>
 		Outline,
 	}
 
@@ -328,9 +328,9 @@ namespace PassKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PKAddPaymentPassStyle : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>A payment pass style.</summary>
 		Payment,
-		/// <summary>To be added.</summary>
+		/// <summary>An access pass style.</summary>
 		Access,
 	}
 

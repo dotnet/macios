@@ -603,18 +603,16 @@ xamarin_check_for_gced_object (MonoObject *obj, SEL sel, id self, MonoMethod *me
 		return;
 	}
 	
-	const char *m = "Failed to marshal the Objective-C object %p (type: %s). "
-	"Could not find an existing managed instance for this object, "
-	"nor was it possible to create a new managed instance "
-	"(because the type '%s' does not have a constructor that takes one NativeHandle argument).\n"
-	"Additional information:\n"
-	"\tSelector: %s\n"
-	"\tMethod: %s\n";
-	
 	char *method_full_name = mono_method_full_name (method, TRUE);
 	char *type_name = xamarin_lookup_managed_type_name ([self class], exception_gchandle);
 	if (*exception_gchandle == INVALID_GCHANDLE) {
-		char *msg = xamarin_strdup_printf (m, self, object_getClassName (self), type_name, sel_getName (sel), method_full_name);
+		char *msg = xamarin_strdup_printf ("Failed to marshal the Objective-C object %p (type: %s). "
+		"Could not find an existing managed instance for this object, "
+		"nor was it possible to create a new managed instance "
+		"(because the type '%s' does not have a constructor that takes one NativeHandle argument).\n"
+		"Additional information:\n"
+		"\tSelector: %s\n"
+		"\tMethod: %s\n", self, object_getClassName (self), type_name, sel_getName (sel), method_full_name);
 		GCHandle ex_handle = xamarin_create_runtime_exception (8027, msg, exception_gchandle);
 		xamarin_free (msg);
 		if (*exception_gchandle == INVALID_GCHANDLE)
@@ -1242,14 +1240,7 @@ xamarin_strdup_printf (const char *msg, ...)
 
 	va_start (args, msg);
 
-// Silence this warning:
-// runtime.m:1313:25: error: format string is not a string literal [-Werror,-Wformat-nonliteral]
-//  1313 |         vasprintf (&formatted, msg, args);
-//       |                                ^~~~~
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wformat-nonliteral"
 	vasprintf (&formatted, msg, args);
-#pragma clang diagnostic pop
 
 	va_end (args);
 

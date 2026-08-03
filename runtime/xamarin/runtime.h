@@ -195,7 +195,7 @@ void			xamarin_throw_nsexception (MonoException *exc);
 void			xamarin_rethrow_managed_exception (GCHandle original_gchandle, GCHandle *exception_gchandle);
 MonoException *	xamarin_create_exception (const char *msg);
 id				xamarin_get_handle (MonoObject *obj, GCHandle *exception_gchandle);
-char *			xamarin_strdup_printf (const char *msg, ...);
+char *			xamarin_strdup_printf (const char *msg, ...) __attribute__((format(printf, 1, 2)));
 void *			xamarin_calloc (size_t size);
 void			xamarin_free (void *ptr);
 MonoMethod *	xamarin_get_reflection_method_method (MonoReflectionMethod *method);

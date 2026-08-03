@@ -4,10 +4,9 @@ using Metal;
 
 namespace MetalPerformanceShaders {
 	public partial class MPSCnnNeuronPReLU {
-		/// <param name="device">To be added.</param>
-		///         <param name="a">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Initializes a new PReLU neuron with the specified device and alpha values.</summary>
+		/// <param name="device">The Metal device to use for computation.</param>
+		/// <param name="a">The per-feature-channel alpha values for the PReLU activation function.</param>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]

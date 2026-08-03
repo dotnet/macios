@@ -77,6 +77,10 @@ const char *xamarin_runtime_configuration_name = NULL;
 
 enum XamarinNativeLinkMode xamarin_libmono_native_link_mode = XamarinNativeLinkModeStaticObject;
 const char **xamarin_runtime_libraries = NULL;
+const char *xamarin_trusted_platform_assemblies = NULL;
+#if defined (SUPPORTS_UNIVERSAL_BUILDS)
+bool xamarin_is_multi_rid_build = false;
+#endif
 
 /* Callbacks */
 
@@ -2367,52 +2371,16 @@ xamarin_compute_trusted_platform_assemblies_at_runtime ()
 	return rv;
 }
 
-static char *
-xamarin_expand_trusted_platform_assemblies (const char *bundle_path)
-{
-	size_t bundle_path_length = strlen (bundle_path);
-	size_t assembly_names_length = strlen (xamarin_trusted_platform_assemblies);
-	size_t length = assembly_names_length + xamarin_trusted_platform_assembly_count * (bundle_path_length + 1) + 1;
-	char *rv = (char *) xamarin_calloc (length);
-	char *output = rv;
-	const char *assembly = xamarin_trusted_platform_assemblies;
-
-	for (size_t i = 0; i < xamarin_trusted_platform_assembly_count; i++) {
-		const char *separator = strchr (assembly, ':');
-		size_t assembly_length = separator == NULL ? strlen (assembly) : (size_t) (separator - assembly);
-
-		memcpy (output, bundle_path, bundle_path_length);
-		output += bundle_path_length;
-		*output++ = '/';
-		memcpy (output, assembly, assembly_length);
-		output += assembly_length;
-
-		if (separator == NULL)
-			break;
-
-		*output++ = ':';
-		assembly = separator + 1;
-	}
-
-	return rv;
-}
-
-// Construct the full paths for the trusted platform assemblies generated at build time.
 // Caller must free the return value using xamarin_free.
 char *
 xamarin_compute_trusted_platform_assemblies ()
 {
-	if (&xamarin_trusted_platform_assemblies == NULL ||
-		&xamarin_trusted_platform_assembly_count == NULL ||
-		xamarin_trusted_platform_assemblies == NULL ||
-		xamarin_trusted_platform_assemblies [0] == 0 ||
-		xamarin_trusted_platform_assembly_count == 0)
+	if (xamarin_trusted_platform_assemblies == NULL || xamarin_trusted_platform_assemblies [0] == 0)
 		return xamarin_compute_trusted_platform_assemblies_at_runtime ();
 
-	const char *bundle_path = xamarin_get_bundle_path ();
-
 #if defined (SUPPORTS_UNIVERSAL_BUILDS)
-	if (&xamarin_is_multi_rid_build != NULL && xamarin_is_multi_rid_build) {
+	if (xamarin_is_multi_rid_build) {
+		const char *bundle_path = xamarin_get_bundle_path ();
 		NSMutableArray<NSString *> *files = [NSMutableArray array];
 		NSFileManager *manager = [NSFileManager defaultManager];
 		NSString *assembly_names = [NSString stringWithUTF8String: xamarin_trusted_platform_assemblies];
@@ -2428,7 +2396,9 @@ xamarin_compute_trusted_platform_assemblies ()
 	}
 #endif
 
-	return xamarin_expand_trusted_platform_assemblies (bundle_path);
+	char *rv = (char *) xamarin_trusted_platform_assemblies;
+	xamarin_trusted_platform_assemblies = NULL;
+	return rv;
 }
 
 // Find the directory that contains System.Private.CoreLib.dll, looking in:

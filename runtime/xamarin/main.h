@@ -132,10 +132,9 @@ extern bool xamarin_supports_dynamic_registration;
 extern const char *xamarin_runtime_configuration_name;
 extern enum XamarinNativeLinkMode xamarin_libmono_native_link_mode;
 extern const char** xamarin_runtime_libraries;
-extern const char *xamarin_trusted_platform_assemblies __attribute__ ((weak_import));
-extern const size_t xamarin_trusted_platform_assembly_count __attribute__ ((weak_import));
+extern const char *xamarin_trusted_platform_assemblies;
 #if defined (SUPPORTS_UNIVERSAL_BUILDS)
-extern const bool xamarin_is_multi_rid_build __attribute__ ((weak_import));
+extern bool xamarin_is_multi_rid_build;
 #endif
 
 typedef void (*xamarin_setup_callback) ();

@@ -22,7 +22,6 @@
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CollectUnresolvedNativeSymbols" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ComputeNativeAOTSurvivingNativeSymbols" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.FindAotCompiler" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.GenerateTrustedPlatformAssemblySource" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.GetFullPaths" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.InstallNameTool" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.LinkNativeCode" AssemblyFile="$(_TaskAssemblyName)" />
@@ -548,6 +547,14 @@
 		<IlcCompileDependsOn>Compile;_ComputeLinkerArguments;_ComputeManagedAssemblyToLink;SetupOSSpecificProps;PrepareForILLink;_XamarinComputeIlcCompileInputs</IlcCompileDependsOn>
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<_PrepareAssembliesForPostProcessingDependsOn>
+			$(_PrepareAssembliesForPostProcessingDependsOn);
+			_ComputeLinkerInputs;
+			_GenerateLinkerDependencyCache;
+		</_PrepareAssembliesForPostProcessingDependsOn>
+	</PropertyGroup>
+
 	<Target Name="SelectRegistrar"
 			DependsOnTargets="_ComputeLinkMode"
 			Condition="'$(_CanOutputAppBundle)' == 'true'"
@@ -753,6 +760,7 @@
 				DynamicRegistrationSupported=$(DynamicRegistrationSupported)
 				@(_CustomLinkFlags -> 'CustomLinkFlags=%(Identity)')
 				EnableSGenConc=$(EnableSGenConc)
+				GenerateTrustedPlatformAssemblies=$(GenerateTrustedPlatformAssemblies)
 				@(_BundlerEnvironmentVariables -> 'EnvironmentVariable=Overwrite=%(Overwrite)|%(Identity)=%(Value)')
 				@(_XamarinFrameworkAssemblies -> 'FrameworkAssembly=%(Filename)')
 				Interpreter=$(MtouchInterpreter)
@@ -765,6 +773,7 @@
 				HotReloadCompatibleBuild=$(HotReloadCompatibleBuild)
 				ItemsDirectory=$(_LinkerItemsDirectory)
 				IsAppExtension=$(IsAppExtension)
+				IsMultiRidBuild=$(_IsMultiRidBuild)
 				IsSimulatorBuild=$(_SdkIsSimulator)
 				LibMonoLinkMode=$(_LibMonoLinkMode)
 				LibXamarinLinkMode=$(_LibXamarinLinkMode)
@@ -1341,7 +1350,7 @@
 	<Target
 		Name="_PostprocessAssembliesAfterIlc"
 		Condition="'$(_PostprocessAssembliesAfterIlc)' == 'true' And '$(RuntimeIdentifiers)' == ''"
-		Inputs="@(_AssembliesToPostProcess);$(NativeObject)"
+		Inputs="@(_AssembliesToPostProcess);$(_LinkerCachePath);$(NativeObject)"
 		Outputs="@(_AssembliesToPostProcess->'$(_PostprocessedAssembliesDirectory)%(Filename)%(Extension)');$(_AssemblyPostProcessorMSBuildOutputFile)"
 		DependsOnTargets="IlcCompile;ComputeFilesToPublish;_PrepareAssembliesForPostProcessing;_ComputeLinkerInputs"
 		>
@@ -1970,31 +1979,9 @@
 		</PropertyGroup>
 	</Target>
 
-	<Target Name="_GenerateTrustedPlatformAssemblySource"
-		Condition="'$(GenerateTrustedPlatformAssemblies)' == 'true'"
-		DependsOnTargets="_LoadLinkerOutput;_ComputePublishLocation"
-		>
-		<GenerateTrustedPlatformAssemblySource
-			Assemblies="@(ResolvedFileToPublish)"
-			AssemblyDirectory="$(_AssemblyPublishDir)"
-			IsMultiRidBuild="$(_IsMultiRidBuild)"
-			MainFiles="@(_MainFile)"
-			OutputDirectory="$(DeviceSpecificIntermediateOutputPath)trusted-platform-assemblies"
-		>
-			<Output TaskParameter="NativeSourceFiles" ItemName="_TrustedPlatformAssemblySource" />
-		</GenerateTrustedPlatformAssemblySource>
-
-		<ItemGroup>
-			<FileWrites Include="@(_TrustedPlatformAssemblySource)" />
-		</ItemGroup>
-	</Target>
-
-	<Target Name="_ComputeNativeExecutableInputs" DependsOnTargets="_ComputeVariables;_GenerateTrustedPlatformAssemblySource">
+	<Target Name="_ComputeNativeExecutableInputs" DependsOnTargets="_ComputeVariables">
 		<ItemGroup>
 			<_CompileNativeExecutableFile Include="@(_MainFile)">
-				<OutputFile>$(_IntermediateNativeLibraryDir)%(Filename).o</OutputFile>
-			</_CompileNativeExecutableFile>
-			<_CompileNativeExecutableFile Include="@(_TrustedPlatformAssemblySource)">
 				<OutputFile>$(_IntermediateNativeLibraryDir)%(Filename).o</OutputFile>
 			</_CompileNativeExecutableFile>
 			<_CompileNativeExecutableFile Include="@(_RegistrarFile)">
@@ -2260,10 +2247,6 @@
 
 			<!-- In some cases ld may crash if -lobjc isn't passed -->
 			<_MainLinkerFlags Include="-lobjc" />
-
-			<_ProcessedReferenceNativeSymbol Include="_xamarin_trusted_platform_assemblies" Condition="'$(GenerateTrustedPlatformAssemblies)' == 'true'" />
-			<_ProcessedReferenceNativeSymbol Include="_xamarin_trusted_platform_assembly_count" Condition="'$(GenerateTrustedPlatformAssemblies)' == 'true'" />
-			<_ProcessedReferenceNativeSymbol Include="_xamarin_is_multi_rid_build" Condition="'$(GenerateTrustedPlatformAssemblies)' == 'true' And ('$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst' Or '$(_SdkIsSimulator)' == 'true')" />
 
 			<_MainLinkerFlags Condition="'$(_ExportSymbolsExplicitly)' == 'true'" Include="-exported_symbols_list" />
 			<_MainLinkerFlags Condition="'$(_ExportSymbolsExplicitly)' == 'true'" Include="$(_ExportedSymbolsFile)" />

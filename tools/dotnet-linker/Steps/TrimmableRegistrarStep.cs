@@ -351,14 +351,14 @@ namespace Xamarin.Linker {
 				var assembly = typesInAssembly.Key;
 				var types = typesInAssembly.ToList ();
 
-				var typeMapAssemblyName = new AssemblyNameDefinition ("_" + assembly.Name.Name + ".TypeMap", new Version (1, 0, 0, 0));
-				var typeMapAssembly = AssemblyDefinition.CreateAssembly (typeMapAssemblyName, typeMapAssemblyName.Name, assemblyParameters);
-				var typeMapAssemblyPath = Path.Combine (App.TypeMapOutputDirectory, typeMapAssembly.Name.Name + ".dll");
-				var existingAction = Annotations.GetAction (assembly);
-				Annotations.SetAction (typeMapAssembly, existingAction);
+				// Get the companion assembly (it may already have been created by ManagedRegistrarStep,
+				// which emits the registrar trampolines into it when HotReloadCompatibleBuild is enabled).
+				var companion = RegistrarCompanionAssembly.GetOrCreate (Configuration, assembly);
+				var typeMapAssembly = companion.Assembly;
+				var typeMapAssemblyPath = companion.Path;
 				addedAssemblies.Add ((typeMapAssemblyPath, typeMapAssembly, assembly.MainModule.FileName));
 
-				var accessesAssemblies = new HashSet<AssemblyDefinition> ();
+				var accessesAssemblies = companion.AccessesAssemblies;
 				accessesAssemblies.Add (assembly);
 
 				abr.SetCurrentAssembly (typeMapAssembly);
@@ -366,17 +366,9 @@ namespace Xamarin.Linker {
 				MarkAssemblyAsTrimmable (typeMapAssembly);
 
 				/*
-				 * [assembly: IgnoresAccessChecksTo ("...")]
+				 * [assembly: IgnoresAccessChecksTo ("...")] (the attribute type is created by RegistrarCompanionAssembly.GetOrCreate)
 				 */
-				var ignoredAccessChecks = new TypeDefinition ("System.Runtime.CompilerServices", "IgnoresAccessChecksToAttribute", TypeAttributes.NotPublic | TypeAttributes.Sealed | TypeAttributes.BeforeFieldInit, abr.System_Attribute);
-				var ignoredAccessChecksCtor = new MethodDefinition (".ctor", MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.SpecialName | MethodAttributes.RTSpecialName, abr.System_Void);
-				ignoredAccessChecksCtor.AddParameter (abr.System_String); // assemblyName
-				il = ignoredAccessChecksCtor.Body.GetILProcessor ();
-				il.Append (il.Create (OpCodes.Ldarg_0));
-				il.Append (il.Create (OpCodes.Call, abr.System_Attribute__ctor));
-				il.Append (il.Create (OpCodes.Ret));
-				ignoredAccessChecks.Methods.Add (ignoredAccessChecksCtor);
-				typeMapAssembly.MainModule.Types.Add (ignoredAccessChecks);
+				var ignoredAccessChecksCtor = companion.IgnoresAccessChecksToCtor;
 
 				// INativeObject subclasses
 				var inativeObjectTypes = StaticRegistrar.GetAllTypes (assembly).Where (t => !t.IsInterface && !t.IsAbstract && t.IsNativeObject ());

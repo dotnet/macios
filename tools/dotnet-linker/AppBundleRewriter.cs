@@ -611,6 +611,18 @@ namespace Xamarin.Linker {
 			}
 		}
 
+		public TypeReference System_Runtime_CompilerServices_RuntimeHelpers {
+			get {
+				return GetTypeReference (CorlibAssembly, "System.Runtime.CompilerServices.RuntimeHelpers", out var _);
+			}
+		}
+
+		public MethodReference RuntimeHelpers_GetUninitializedObject {
+			get {
+				return GetMethodReference (CorlibAssembly, System_Runtime_CompilerServices_RuntimeHelpers, "GetUninitializedObject", isStatic: true, System_Type);
+			}
+		}
+
 		public MethodReference Dictionary2_Add {
 			get {
 				return GetMethodReference (CorlibAssembly, System_Collections_Generic_Dictionary2, "Add", (v) =>

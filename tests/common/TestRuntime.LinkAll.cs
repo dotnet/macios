@@ -15,7 +15,7 @@ partial class TestRuntime {
 	public static bool IsLinkAll {
 		get {
 			if (!link_all.HasValue)
-				link_all = typeof (TestRuntime).Assembly.GetType (typeof (TestRuntime).FullName + "+LinkerSentinel") is null;
+				link_all = typeof (TestRuntime).Assembly.GetType (typeof (TestRuntime).FullName + "+LinkerSentinel" + WorkAroundLinkerHeuristics) is null;
 			return link_all.Value;
 		}
 	}
@@ -35,8 +35,6 @@ partial class TestRuntime {
 				};
 				link_any = false;
 				foreach (var uncommonType in uncommonTypes) {
-					// Append WorkAroundLinkerHeuristics to prevent the linker from resolving the type name
-					// via its typeof(T).Assembly.GetType(string) dataflow analysis (dotnet/runtime#127319).
 					link_any = typeof (int).Assembly.GetType (uncommonType + WorkAroundLinkerHeuristics) is null;
 					if (link_any == true)
 						break;

@@ -39,6 +39,8 @@ namespace ObjCRuntime {
 		NativeHandle handle;
 		string? name;
 
+		/// <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>
+		/// <param name="sel">Pointer (handle) to the unmanaged object.</param>
 		public Selector (NativeHandle sel)
 		{
 			if (sel_isMapped (sel) == 0)

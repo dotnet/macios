@@ -160,7 +160,7 @@ struct AssemblyLocations {
 void xamarin_initialize ();
 void xamarin_initialize_dynamic_registrar ();
 
-void			xamarin_assertion_message (const char *msg, ...) __attribute__((__noreturn__));
+void			xamarin_assertion_message (const char *msg, ...) __attribute__((__noreturn__, format(printf, 1, 2)));
 // Gets the bundle path (where the managed executable is). This is *not* the path of the app bundle (.app/.appex).
 const char *	xamarin_get_bundle_path (); /* Public API */
 // Sets the bundle path (where the managed executable is). By default APP/Contents/MonoBundle.
@@ -298,8 +298,8 @@ bool			xamarin_locate_assembly_resource (const char *assembly_name, const char *
 bool			xamarin_locate_app_resource (const char *resource, char *path, size_t pathlen);
 
 // this functions support NSLog/NSString-style format specifiers.
-void			xamarin_printf (const char *format, ...);
-void			xamarin_vprintf (const char *format, va_list args);
+void			xamarin_printf (const char *format, ...) __attribute__((format(__NSString__, 1, 2)));
+void			xamarin_vprintf (const char *format, va_list args) __attribute__((format(__NSString__, 1, 0)));
 void			xamarin_install_log_callbacks ();
 
 bool			xamarin_is_user_type (Class cls);

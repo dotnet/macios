@@ -983,7 +983,7 @@ xamarin_process_fatal_exception_gchandle (GCHandle gchandle, const char *message
 
 	NSString *fatal_message = [NSString stringWithFormat:@"%s\n%@", message, xamarin_print_all_exceptions (gchandle)];
 	NSLog (@PRODUCT ": %@", fatal_message);
-	xamarin_assertion_message ([fatal_message UTF8String]);
+	xamarin_assertion_message ("%s", [fatal_message UTF8String]);
 }
 
 // Because this function won't always return, it will take ownership of the GCHandle and free it.
@@ -1255,14 +1255,7 @@ xamarin_assertion_message (const char *msg, ...)
 
 	va_start (args, msg);
 
-// Silence this warning:
-// runtime.m:1335:25: error: format string is not a string literal [-Werror,-Wformat-nonliteral]
-//  1335 |         vasprintf (&formatted, msg, args);
-//       |                                ^~~
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wformat-nonliteral"
 	vasprintf (&formatted, msg, args);
-#pragma clang diagnostic pop
 
 	if (formatted) {
 		PRINT ( PRODUCT ": %s", formatted);
@@ -2563,14 +2556,7 @@ xamarin_printf (const char *format, ...)
 void
 xamarin_vprintf (const char *format, va_list args)
 {
-// Silence this warning:
-// runtime.m:2564:56: error: format string is not a string literal [-Werror,-Wformat-nonliteral]
-//  2564 |         NSString *message = [[NSString alloc] initWithFormat: [NSString stringWithUTF8String: format] arguments: args];
-//       |                                                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wformat-nonliteral"
 	NSString *message = [[NSString alloc] initWithFormat: [NSString stringWithUTF8String: format] arguments: args];
-#pragma clang diagnostic pop
 	
 	NSLog (@"%@", message);	
 

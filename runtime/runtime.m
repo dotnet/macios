@@ -2323,7 +2323,7 @@ xamarin_create_product_exception_with_inner_exception (int code, GCHandle inner_
 // - The bundle directory
 // - The runtimeidentifier-specific subdirectory
 // Caller must free the return value using xamarin_free.
-static char *
+char *
 xamarin_compute_trusted_platform_assemblies_at_runtime ()
 {
 	const char *bundle_path = xamarin_get_bundle_path ();

@@ -31,7 +31,9 @@ namespace Xamarin.Linker {
 		// Only use this for generated methods where the parameter names have no value.
 		public static ParameterDefinition AddParameter (this MethodDefinition self, TypeReference parameterType)
 		{
-			return self.AddParameter ("", parameterType);
+			var rv = new ParameterDefinition (parameterType);
+			self.Parameters.Add (rv);
+			return rv;
 		}
 
 		public static MethodDefinition AddMethod (this TypeDefinition self, string name, MethodAttributes attributes, TypeReference returnType)

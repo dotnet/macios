@@ -90,6 +90,8 @@ public class AttributeManager {
 			return typeof (EventArgsAttribute);
 		case "EventNameAttribute":
 			return typeof (EventNameAttribute);
+		case "FactoryMethodAttribute":
+			return typeof (FactoryMethodAttribute);
 		case "ForcedTypeAttribute":
 			return typeof (ForcedTypeAttribute);
 		case "Foundation.AdviceAttribute":

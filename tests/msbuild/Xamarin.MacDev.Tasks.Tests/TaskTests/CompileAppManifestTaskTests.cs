@@ -74,7 +74,6 @@ namespace Xamarin.MacDev.Tasks {
 			task.AppManifestEntries = [
 				new TaskItem ("StringValue", new Dictionary<string, string> { { "Type", "String" }, { "Value", "entry" } }),
 				new TaskItem ("BooleanValue", new Dictionary<string, string> { { "Type", "Boolean" }, { "Value", "TrUe" } }),
-				new TaskItem ("WhitespaceBooleanValue", new Dictionary<string, string> { { "Type", "Boolean" }, { "Value", " true " } }),
 				new TaskItem ("StringArrayValue", new Dictionary<string, string> { { "Type", "StringArray" }, { "Value", "a;b" } }),
 				new TaskItem ("CustomStringArrayValue", new Dictionary<string, string> { { "Type", "StringArray" }, { "Value", "c|d" }, { "ArraySeparator", "|" } }),
 				new TaskItem ("RemoveValue", new Dictionary<string, string> { { "Type", "Remove" } }),
@@ -85,7 +84,6 @@ namespace Xamarin.MacDev.Tasks {
 			var plist = PDictionary.OpenFile (task.CompiledAppManifest!.ItemSpec);
 			Assert.That (plist.GetString ("StringValue").Value, Is.EqualTo ("entry"), "StringValue");
 			Assert.That (plist.Get<PBoolean> ("BooleanValue")?.Value, Is.True, "BooleanValue");
-			Assert.That (plist.Get<PBoolean> ("WhitespaceBooleanValue")?.Value, Is.True, "WhitespaceBooleanValue");
 			Assert.That (plist.GetArray ("StringArrayValue").OfType<PString> ().Select (v => v.Value), Is.EqualTo (new [] { "a", "b" }), "StringArrayValue");
 			Assert.That (plist.GetArray ("CustomStringArrayValue").OfType<PString> ().Select (v => v.Value), Is.EqualTo (new [] { "c", "d" }), "CustomStringArrayValue");
 			Assert.That (plist.ContainsKey ("RemoveValue"), Is.False, "RemoveValue");
@@ -94,6 +92,7 @@ namespace Xamarin.MacDev.Tasks {
 		[Test]
 		[TestCase ("Remove", "unexpected", "Invalid value 'unexpected' for the app manifest entry 'TestEntry' of type 'Remove' specified in the AppManifestEntry item group. Expected no value at all.")]
 		[TestCase ("Boolean", "not-a-boolean", "Invalid value 'not-a-boolean' for the app manifest entry 'TestEntry' of type 'Boolean' specified in the AppManifestEntry item group. Expected 'true' or 'false'.")]
+		[TestCase ("Boolean", " true ", "Invalid value ' true ' for the app manifest entry 'TestEntry' of type 'Boolean' specified in the AppManifestEntry item group. Expected 'true' or 'false'.")]
 		[TestCase ("Unknown", "value", "Unknown type 'Unknown' for the app manifest entry 'TestEntry' specified in the AppManifestEntry item group. Expected 'Remove', 'Boolean', 'String', or 'StringArray'.")]
 		public void InvalidAppManifestEntry (string type, string value, string expectedError)
 		{

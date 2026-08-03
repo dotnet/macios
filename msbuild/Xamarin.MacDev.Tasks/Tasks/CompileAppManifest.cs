@@ -191,7 +191,7 @@ namespace Xamarin.MacDev.Tasks {
 				plist,
 				AppManifestEntries,
 				static (value, _) => value,
-				bool.TryParse,
+				PListItemGroup.TryParseBooleanStrict,
 				MSBStrings.E7184, /* Invalid value '{0}' for the app manifest entry '{1}' of type '{2}' specified in the AppManifestEntry item group. Expected no value at all. */
 				MSBStrings.E7185, /* Invalid value '{0}' for the app manifest entry '{1}' of type '{2}' specified in the AppManifestEntry item group. Expected 'true' or 'false'. */
 				MSBStrings.E7186 /* Unknown type '{0}' for the app manifest entry '{1}' specified in the AppManifestEntry item group. Expected 'Remove', 'Boolean', 'String', or 'StringArray'. */);

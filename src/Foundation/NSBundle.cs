@@ -6,18 +6,18 @@ using System.Collections;
 
 namespace Foundation {
 	public partial class NSBundle : NSObject {
-		/// <param name="key">The key for the string</param>
-		///         <param name="value">The value to use if no string exists at the key.</param>
-		///         <param name="table">The table in which to look up the keyed value.</param>
-		///         <summary>Gets the localized string for the string that is identified by the provided <paramref name="key" /> into <paramref name="table" />, or <paramref name="value" /> if no string is found.</summary>
-		///         <returns>The localized string for the string that is identified by the provided <paramref name="key" /> into <paramref name="table" />, or <paramref name="value" /> if no string is found.</returns>
+		/// <summary>Gets the localized string identified by the specified key and table.</summary>
+		/// <param name="key">The key for the localized string.</param>
+		/// <param name="value">The value to return if no localized string exists for <paramref name="key" />.</param>
+		/// <param name="table">The table in which to look up <paramref name="key" />.</param>
+		/// <returns>The localized string, or <paramref name="value" /> if no localized string is found.</returns>
 		public NSString GetLocalizedString (string key, string? value = null, string? table = null)
 		{
 			return GetLocalizedString ((NSString) key, (NSString?) value, (NSString?) table);
 		}
 
-		/// <param name="fileExtension">The file extension to filter resources by.</param>
 		/// <summary>Returns the paths for all bundle resources with the specified extension.</summary>
+		/// <param name="fileExtension">The file extension to filter resources by.</param>
 		/// <returns>An array of file paths for matching resources.</returns>
 		public string [] PathsForResources (string fileExtension)
 		{

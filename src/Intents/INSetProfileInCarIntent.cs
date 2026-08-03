@@ -7,10 +7,10 @@ using UIKit;
 namespace Intents {
 
 	public partial class INSetProfileInCarIntent {
+		/// <summary>Creates a new intent to set a car profile with the specified parameters.</summary>
 		/// <param name="profileNumber">The number identifying the car profile.</param>
 		/// <param name="profileLabel">The display label for the car profile.</param>
 		/// <param name="defaultProfile">Whether this is the default car profile.</param>
-		/// <summary>Creates a new intent to set a car profile with the specified parameters.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[ObsoletedOSPlatform ("ios12.0", "Use the overload that takes 'INSpeakableString carName'.")]

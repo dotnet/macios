@@ -30,8 +30,7 @@ namespace ObjCRuntime {
 	[AttributeUsage (AttributeTargets.Assembly)]
 	public abstract class DelayedRegistrationAttribute : Attribute {
 		/// <summary>Gets a value indicating whether registration should be delayed.</summary>
-		/// <value>
-		///   <see langword="true" /> if registration should be delayed; otherwise, <see langword="false" />.</value>
+		/// <value><see langword="true" /> if registration should be delayed; otherwise, <see langword="false" />.</value>
 		public abstract bool Delay { get; }
 	}
 }

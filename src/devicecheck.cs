@@ -40,19 +40,18 @@ namespace DeviceCheck {
 		DCDevice CurrentDevice { get; }
 
 		/// <summary>Gets a Boolean value that tells whether the <see cref="DeviceCheck.DCDevice.CurrentDevice" /> supports the DeviceCheck API.</summary>
-		/// <value>
-		///   <see langword="true" /> if the current device supports the DeviceCheck API; otherwise, <see langword="false" />.</value>
+		/// <value><see langword="true" /> if the current device supports the DeviceCheck API; otherwise, <see langword="false" />.</value>
 		[Export ("supported")]
 		bool Supported { [Bind ("isSupported")] get; }
 
 		[Async (XmlDocs = """
-			<summary>Generates an identification token for <see cref="DeviceCheck.DCDevice.CurrentDevice" /> and runs a handlere after the operation is complete.</summary>
+			<summary>Generates an identification token for <see cref="DeviceCheck.DCDevice.CurrentDevice" /> and invokes a handler after the operation completes.</summary>
 			<returns>
-			          <para>A task that represents the asynchronous GenerateToken operation.   The value of the TResult parameter is a DeviceCheck.DCDeviceGenerateTokenCompletionHandler.</para>
-			        </returns>
+			  <para>A task that represents the asynchronous GenerateToken operation. The value of the TResult parameter is a DeviceCheck.DCDeviceGenerateTokenCompletionHandler.</para>
+			</returns>
 			<remarks>
-			          <para copied="true">The GenerateTokenAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
-			        </remarks>
+			  <para copied="true">The GenerateTokenAsync method can be used with C# async by returning control to the caller with a Task that represents the operation.</para>
+			</remarks>
 			""")]
 		[Export ("generateTokenWithCompletionHandler:")]
 		void GenerateToken (DCDeviceGenerateTokenCompletionHandler completion);

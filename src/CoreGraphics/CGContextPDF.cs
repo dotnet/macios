@@ -422,7 +422,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-		public void BeginTag (CGPdfTagType tagType, NSDictionary tagProperties)
+		public void BeginTag (CGPdfTagType tagType, NSDictionary? tagProperties)
 		{
 			CGPDFContextBeginTag (Handle, tagType, tagProperties.GetHandle ());
 			GC.KeepAlive (tagProperties);

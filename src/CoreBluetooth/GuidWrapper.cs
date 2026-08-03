@@ -73,15 +73,13 @@ namespace CoreBluetooth {
 	public partial class CBPeripheral {
 
 		/// <summary>Discovers all available services.</summary>
-		///         <remarks>To be added.</remarks>
 		public void DiscoverServices ()
 		{
 			DiscoverServices ((NSArray?) null);
 		}
 
-		/// <param name="services">To be added.</param>
-		///         <summary>Discovers the specified <paramref name="services" />.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Discovers the specified services.</summary>
+		/// <param name="services">The service UUIDs to discover, or <see langword="null" /> to discover all services.</param>
 		public void DiscoverServices (CBUUID []? services)
 		{
 			if (services is null)
@@ -90,10 +88,9 @@ namespace CoreBluetooth {
 				DiscoverServices (NSArray.FromObjects (services));
 		}
 
-		/// <param name="includedServiceUUIDs">To be added.</param>
-		///         <param name="forService">To be added.</param>
-		///         <summary>Discovers the included services in <paramref name="forService" /> that are of the service types that are identified by the UUIDs in <paramref name="includedServiceUUIDs" />.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Discovers included services of the specified types in a service.</summary>
+		/// <param name="includedServiceUUIDs">The service UUIDs to discover, or <see langword="null" /> to discover all included services.</param>
+		/// <param name="forService">The service whose included services to discover.</param>
 		public void DiscoverIncludedServices (CBUUID []? includedServiceUUIDs, CBService forService)
 		{
 			if (includedServiceUUIDs is null)

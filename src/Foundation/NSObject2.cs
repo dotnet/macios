@@ -179,7 +179,9 @@ namespace Foundation {
 
 #if !COREBUILD
 	/// <include file="../../docs/api/Foundation/NSObject.xml" path="/Documentation/Docs[@DocId='T:Foundation.NSObject']/*" />
+#pragma warning disable CA1416 // https://github.com/dotnet/runtime/pull/131583
 	[ObjectiveCTrackedType]
+#pragma warning restore CA1416
 #endif
 	[StructLayout (LayoutKind.Sequential)]
 	public partial class NSObject : INativeObject
@@ -820,8 +822,15 @@ namespace Foundation {
 			InitializeHandle (handle, initSelector, Class.ThrowOnInitFailure);
 		}
 
+		/// <summary>Initializes the <see cref="Handle" /> property with the result of a native initializer.</summary>
+		/// <param name="handle">The handle returned by the native initializer.</param>
+		/// <param name="initSelector">The selector of the native initializer that produced <paramref name="handle" />. Only used in the exception message when initialization fails.</param>
+		/// <param name="throwOnInitFailure">If <see langword="true" />, an exception is thrown when the native initializer failed (returned nil); if <see langword="false" />, the <see cref="Handle" /> property is set to the (possibly null) handle without throwing.</param>
+		/// <remarks>
+		///   <para>Pass <see langword="false" /> for <paramref name="throwOnInitFailure" /> to implement a factory method for a failable initializer: this makes it possible to detect a nil result (by checking the <see cref="Handle" /> property) and return <see langword="null" /> instead of throwing. This is what the generator does for constructors annotated with <c>[FactoryMethod]</c>.</para>
+		/// </remarks>
 		[EditorBrowsable (EditorBrowsableState.Never)]
-		internal void InitializeHandle (NativeHandle handle, string initSelector, bool throwOnInitFailure)
+		protected internal void InitializeHandle (NativeHandle handle, string initSelector, bool throwOnInitFailure)
 		{
 			if (this.handle == NativeHandle.Zero && throwOnInitFailure) {
 				if (ClassHandle == NativeHandle.Zero)
@@ -1169,22 +1178,19 @@ namespace Foundation {
 		}
 
 		[Register ("__NSObject_Disposer")]
-		[Preserve (AllMembers = true)]
 		internal class NSObject_Disposer : NSObject {
 			static readonly List<NSObject> drainList1 = new List<NSObject> ();
 			static readonly List<NSObject> drainList2 = new List<NSObject> ();
 			static List<NSObject> handles = drainList1;
 
 			static readonly IntPtr class_ptr = Class.GetHandle ("__NSObject_Disposer");
-#if MONOMAC
-			static readonly IntPtr drainHandle = Selector.GetHandle ("drain:");
-#endif
 
 			static readonly object lock_obj = new object ();
 
-			private NSObject_Disposer ()
+			NSObject_Disposer ()
 			{
 				// Disable default ctor, there should be no instances of this class.
+				// Can't make the class static, because it has to subclass NSObject.
 			}
 
 			static internal void Add (NSObject handle)
@@ -1199,6 +1205,7 @@ namespace Foundation {
 				ScheduleDrain ();
 			}
 
+			[DynamicDependency ("Drain")]
 			static void ScheduleDrain ()
 			{
 				Messaging.void_objc_msgSend_NativeHandle_NativeHandle_bool (class_ptr, Selector.GetHandle (Selector.PerformSelectorOnMainThreadWithObjectWaitUntilDone), Selector.GetHandle ("drain:"), NativeHandle.Zero, 0);

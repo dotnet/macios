@@ -81,6 +81,25 @@ namespace Xamarin.Bundler {
 		public List<string>? AotOtherArguments = null;
 		public bool? AotFloat32 = null;
 		public bool PrepareAssemblies; // True if '$(PrepareAssemblies)' == 'true'
+
+		// The set of UnmanagedCallersOnly trampoline symbols (without the leading Mach-O underscore)
+		// that survived the NativeAOT compiler (ILC). This is only set when the native registrar code
+		// is generated after ILC has run, so that we can avoid emitting direct native references to
+		// trampolines ILC trimmed away (we route those through the dlsym fallback instead). A null value
+		// means the information isn't available (e.g. we're not compiling for NativeAOT, or the registrar
+		// runs before ILC), in which case every trampoline is assumed to have survived.
+		public HashSet<string>? SurvivingTrampolineSymbols;
+
+		// Returns true if the native registrar can emit a direct reference to the given UnmanagedCallersOnly
+		// trampoline. When we know which trampolines survived ILC, a trampoline that didn't survive must not
+		// be referenced directly (it would be an undefined symbol at native link time).
+		public bool DidTrampolineSurviveIlc (string ucoEntryPoint)
+		{
+			if (SurvivingTrampolineSymbols is null)
+				return true;
+			return SurvivingTrampolineSymbols.Contains (ucoEntryPoint);
+		}
+
 #if ASSEMBLY_PREPARER
 		public bool InCustomTrimmerStep = false;
 		public bool IsPostProcessingAssemblies;

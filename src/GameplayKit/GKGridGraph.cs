@@ -13,11 +13,9 @@ using Vector2i = global::CoreGraphics.NVector2i;
 
 namespace GameplayKit {
 	public partial class GKGridGraph {
-		/// <typeparam name="NodeType">To be added.</typeparam>
-		/// <param name="position">To be added.</param>
 		/// <summary>Gets the node at the specified <paramref name="position" />.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <typeparam name="NodeType">The type of grid graph node to return.</typeparam>
+		/// <param name="position">The position.</param>
 		public NodeType? GetNodeAt<NodeType> (Vector2i position) where NodeType : GKGridGraphNode
 		{
 			return Runtime.GetNSObject<NodeType> (_GetNodeAt (position));

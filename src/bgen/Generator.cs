@@ -1439,6 +1439,8 @@ public partial class Generator : IMemberGatherer {
 						continue;
 					} else if (attr is FactoryAttribute) {
 						continue;
+					} else if (attr is FactoryMethodAttribute) {
+						continue;
 					} else if (attr is AbstractAttribute) {
 						if (mi.DeclaringType == t)
 							need_abstract [t] = true;
@@ -2328,13 +2330,15 @@ public partial class Generator : IMemberGatherer {
 
 	// this attribute allows the linker to be more clever in removing unused code in bindings - without risking breaking user code
 	// only generate those for monotouch now since we can ensure they will be linked away before reaching the devices
-	public void GeneratedCode (StreamWriter? sw, int tabs, bool optimizable = true)
+	public void GeneratedCode (StreamWriter? sw, int tabs, bool optimizable = true, bool factoryMethod = false)
 	{
 		for (int i = 0; i < tabs; i++)
 			sw!.Write ('\t');
 		sw!.Write ("[BindingImpl (BindingImplOptions.GeneratedCode");
 		if (optimizable)
 			sw.Write (" | BindingImplOptions.Optimizable");
+		if (factoryMethod)
+			sw.Write (" | BindingImplOptions.FactoryMethod");
 		sw.WriteLine (")]");
 	}
 
@@ -2381,9 +2385,9 @@ public partial class Generator : IMemberGatherer {
 		}
 	}
 
-	public void print_generated_code (bool optimizable = true)
+	public void print_generated_code (bool optimizable = true, bool factoryMethod = false)
 	{
-		GeneratedCode (sw, indent, optimizable);
+		GeneratedCode (sw, indent, optimizable, factoryMethod);
 	}
 
 	public void print (string format)
@@ -2796,7 +2800,13 @@ public partial class Generator : IMemberGatherer {
 	{
 		var mi = minfo.Method!;
 		string name;
-		if (minfo.is_ctor) {
+		if (minfo.render_as_factory_method) {
+			name = minfo.factory_method_name!;
+		} else if (minfo.is_factory_method && !minfo.is_ctor) {
+			// The backing instance helper for a named factory method is hidden behind an
+			// underscore-prefixed internal method; the public API is the static factory method.
+			name = "_" + minfo.factory_method_name;
+		} else if (minfo.is_ctor) {
 			if (minfo.is_protocol_member) {
 				var bindAttribute = GetBindAttribute (mi);
 				name = bindAttribute?.Selector ?? "CreateInstance";
@@ -2823,6 +2833,11 @@ public partial class Generator : IMemberGatherer {
 
 		if (minfo.is_ctor && minfo.is_protocol_member) {
 			sb.Append ("T? ");
+		} else if (minfo.render_as_factory_method) {
+			sb.Append (Nomenclator.GetGeneratedTypeName (mi.DeclaringType!));
+			if (minfo.is_factory_method_nullable)
+				sb.Append ('?');
+			sb.Append (' ');
 		} else if (!minfo.is_ctor && !is_async) {
 			var prefix = "";
 			if (!BindThirdPartyLibrary) {
@@ -3173,7 +3188,7 @@ public partial class Generator : IMemberGatherer {
 				GetReturnsWrappers (mi, minfo, mi.DeclaringType, out cast_a, out cast_b, postproc);
 			else if (mi.Name == "Constructor") {
 				cast_a = "InitializeHandle (";
-				cast_b = ", \"" + selector + "\")";
+				cast_b = ", \"" + selector + "\"" + (minfo.is_factory_method && minfo.is_factory_method_nullable ? ", false" : "") + ")";
 			}
 
 			if (minfo.is_static)
@@ -4663,6 +4678,10 @@ public partial class Generator : IMemberGatherer {
 				return node;
 			});
 			wroteDocs = WriteDocumentation (mi, transformNode: injectParamNode);
+		} else if (minfo.is_factory_method) {
+			// The xml documentation is written for the generated factory method instead
+			// of the (internal) backing constructor. See GenerateFactoryMethod.
+			wroteDocs = false;
 		} else {
 			wroteDocs = WriteDocumentation (mi);
 		}
@@ -4679,7 +4698,11 @@ public partial class Generator : IMemberGatherer {
 			return;
 		}
 
-		PrintExport (minfo);
+		// The '_Create...' helper backing a named factory method is a private, non-virtual
+		// method that's only called from the generated static factory method, so it doesn't
+		// need to be exported to the Objective-C runtime.
+		if (!(minfo.is_factory_method && !minfo.is_ctor))
+			PrintExport (minfo);
 
 		if (!minfo.is_interface_impl) {
 			PrintMethodAttributes (minfo);
@@ -4702,6 +4725,12 @@ public partial class Generator : IMemberGatherer {
 		} else {
 			do_not_call_base = false;
 		}
+
+		// The member backing a factory method is hidden; the public API is the generated
+		// static factory method instead. A backing constructor is kept internal so the
+		// factory method can reach it, while a named init helper ('_Create...') is private.
+		if (minfo.is_factory_method)
+			mod = minfo.is_ctor ? "internal" : "";
 
 		print_generated_code (optimizable: IsOptimizable (minfo.mi));
 		print ("{0} {1}{2}{3}",
@@ -4764,6 +4793,9 @@ public partial class Generator : IMemberGatherer {
 			print ("}\n");
 		}
 
+		if (minfo.is_factory_method)
+			GenerateFactoryMethod (minfo);
+
 		if (minfo.generate_is_async_overload) {
 			// We do not want Async methods inside internal wrapper classes, they are useless
 			// internal sealed class FooWrapper : BaseWrapper, IMyFooDelegate
@@ -4779,6 +4811,107 @@ public partial class Generator : IMemberGatherer {
 				GenerateAsyncMethod (minfo, AsyncMethodKind.WithResultOutParameter);
 			}
 		}
+	}
+
+	// Generates a public static factory method for a constructor or a named init method
+	// annotated with [FactoryMethod]. When the initializer's return value is nullable (i.e. the
+	// native initializer is failable), the factory method returns null if the initializer
+	// returned nil; otherwise it just returns the newly created instance.
+	//
+	// For a constructor, the factory method calls the (internal) backing constructor. For a named
+	// init method (not a 'Constructor'), the factory method allocates the instance and calls the
+	// (internal) backing helper method, which does the actual 'init' message send.
+	void GenerateFactoryMethod (MemberInformation minfo)
+	{
+		var mi = minfo.Method!;
+		var typeName = Nomenclator.GetGeneratedTypeName (mi.DeclaringType!);
+
+		// [FactoryMethod] only makes sense on an Objective-C 'init' selector.
+		var selector = minfo.selector ?? string.Empty;
+		if (!IsInitSelector (selector))
+			throw new BindingException (1126, true, mi.DeclaringType, mi.Name, selector);
+
+		// For a named factory method (not a constructor) the factory method name is the
+		// binding method's own name, so specifying an explicit name is confusing/redundant.
+		if (!minfo.is_ctor && AttributeManager.GetCustomAttribute<FactoryMethodAttribute> (mi)?.MethodName is not null)
+			throw new BindingException (1127, true, mi.DeclaringType, mi.Name);
+
+		// A failable initializer typically has an 'out NSError' parameter. If the binding
+		// author added one but didn't mark the return value as nullable, the factory method
+		// won't be able to return null on failure, which is almost certainly a mistake.
+		if (!minfo.is_factory_method_nullable && HasOutNSErrorParameter (mi))
+			ErrorHelper.Warning (1125, mi.DeclaringType, mi.Name);
+
+		minfo.render_as_factory_method = true;
+
+		WriteDocumentation (mi);
+		PrintMethodAttributes (minfo);
+
+		print_generated_code (optimizable: IsOptimizable (mi), factoryMethod: true);
+		print ("{0} {1}{2}",
+			   minfo.GetVisibility (),
+			   minfo.GetModifiers (),
+			   MakeSignature (minfo));
+		print ("{");
+		indent++;
+		if (minfo.is_ctor) {
+			if (minfo.is_factory_method_nullable) {
+				print ("var rv = new {0} ({1});", typeName, RenderArgs (mi.GetParameters ()));
+				print ("if (rv.Handle == global::ObjCRuntime.NativeHandle.Zero) {");
+				indent++;
+				print ("rv.Dispose ();");
+				print ("return null;");
+				indent--;
+				print ("}");
+				print ("return rv;");
+			} else {
+				print ("return new {0} ({1});", typeName, RenderArgs (mi.GetParameters ()));
+			}
+		} else {
+			// The backing helper (named "_<factory>") performs the 'init' message send on the
+			// freshly allocated instance and returns the resulting handle.
+			print ("var rv = new {0} (NSObjectFlag.Empty);", typeName);
+			if (minfo.is_factory_method_nullable)
+				print ("rv.InitializeHandle (rv._{0} ({1}), \"{2}\", false);", minfo.factory_method_name, RenderArgs (mi.GetParameters ()), selector);
+			else
+				print ("rv.InitializeHandle (rv._{0} ({1}), \"{2}\");", minfo.factory_method_name, RenderArgs (mi.GetParameters ()), selector);
+			if (minfo.is_factory_method_nullable) {
+				print ("if (rv.Handle == global::ObjCRuntime.NativeHandle.Zero) {");
+				indent++;
+				print ("rv.Dispose ();");
+				print ("return null;");
+				indent--;
+				print ("}");
+			}
+			print ("return rv;");
+		}
+		indent--;
+		print ("}\n");
+
+		minfo.render_as_factory_method = false;
+	}
+
+	// A [FactoryMethod] can only be applied to an Objective-C 'init' selector: either "init"
+	// itself, or a selector that starts with "init" followed by an uppercase letter.
+	static bool IsInitSelector (string selector)
+	{
+		if (selector == "init")
+			return true;
+		return selector.Length > 4 && selector.StartsWith ("init", StringComparison.Ordinal) && char.IsUpper (selector [4]);
+	}
+
+
+
+	// Returns true if the method has an 'out'/'ref' NSError parameter.
+	static bool HasOutNSErrorParameter (MethodInfo mi)
+	{
+		foreach (var pi in mi.GetParameters ()) {
+			if (!pi.ParameterType.IsByRef)
+				continue;
+			if (pi.ParameterType.GetElementType ()?.Name == "NSError")
+				return true;
+		}
+		return false;
 	}
 
 	static PropertyInfo? GetProperty (MethodInfo method, bool getter = true, bool setter = true)
@@ -7178,8 +7311,10 @@ public partial class Generator : IMemberGatherer {
 				// historical note: unlike many attributes our `DisposeAttribute` has `AllowMultiple=true`
 				var has_dispose_attributes = attrs.Length > 0;
 				if (has_dispose_attributes || (instance_fields_to_clear_on_dispose.Count > 0)) {
-					// if there'a any [Dispose] attribute then they all must opt-in in order for the generated Dispose method to be optimizable
+					// if there are any [Dispose] attributes then they all must opt-in in order for the generated Dispose method to be optimizable
 					bool optimizable = !has_dispose_attributes || IsOptimizable (type);
+					if (BindingTouch.SupportsXmlDocumentation)
+						print ("/// <inheritdoc />");
 					print_generated_code (optimizable: optimizable);
 					print ("protected override void Dispose (bool disposing)");
 					print ("{");

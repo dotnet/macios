@@ -221,7 +221,7 @@ namespace Xamarin.Tests {
 				File.WriteAllText (projectPath, GetTestProjectContent (platformStr, (prefixProperty, prefixes)));
 
 				// Get BundleResource items (need to run the target to expand multi-prefix globs)
-				var bundleResources = GetBundleResourceIdentities (projectPath, "_ExpandMultipleResourcePrefixes");
+				var bundleResources = GetBundleResourceIdentities (projectPath);
 
 				Assert.That (bundleResources, Has.Some.EndsWith ("shared.png"),
 					$"{platform}: shared.png in Resources/ should be included as a BundleResource with multiple prefixes");
@@ -253,7 +253,7 @@ namespace Xamarin.Tests {
 				File.WriteAllText (projectPath, GetTestProjectContent (platformStr, (prefixProperty, prefixes)));
 
 				// Get BundleResource items (need to run the target to expand multi-prefix globs)
-				var bundleResources = GetBundleResourceIdentities (projectPath, "_ExpandMultipleResourcePrefixes");
+				var bundleResources = GetBundleResourceIdentities (projectPath);
 
 				Assert.That (bundleResources, Has.Some.EndsWith ("only-here.png"),
 					$"{platform}: only-here.png in PlatformResources/ should be included as a BundleResource even when first prefix directory doesn't exist");
@@ -287,7 +287,7 @@ namespace Xamarin.Tests {
 				File.WriteAllText (projectPath, GetTestProjectContent (platformStr, (prefixProperty, prefixes)));
 
 				// Get BundleResource items (need to run the target to expand multi-prefix globs)
-				var bundleResources = GetBundleResourceIdentities (projectPath, "_ExpandMultipleResourcePrefixes");
+				var bundleResources = GetBundleResourceIdentities (projectPath);
 
 				Assert.That (bundleResources, Has.Some.EndsWith ("icon.png"),
 					$"{platform}: icon.png in Resources/Images/ should be included as a BundleResource");
@@ -327,7 +327,7 @@ namespace Xamarin.Tests {
 				File.WriteAllText (projectPath, GetTestProjectContent (platformStr, (prefixProperty, prefixes)));
 
 				// Get BundleResource items (need to run the target to expand multi-prefix globs)
-				var bundleResources = GetBundleResourceIdentities (projectPath, "_ExpandMultipleResourcePrefixes");
+				var bundleResources = GetBundleResourceIdentities (projectPath);
 
 				Assert.That (bundleResources, Has.Some.EndsWith ("first.png"),
 					$"{platform}: first.png from first prefix should be included");

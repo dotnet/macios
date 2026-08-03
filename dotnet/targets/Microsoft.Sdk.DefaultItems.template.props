@@ -62,29 +62,65 @@
 		<!-- Include everything in the project's Resources folder (as represented by the _ResourcePrefix property, which is set from the AppBundleResourcePrefix or legacy IPhoneResourcePrefix/XamMacResourcePrefix properties),
 		     except for files that are already in any of the other resource type item groups.
 		     _ResourcePrefix may contain multiple semicolon-separated paths (e.g. "Resources;PlatformResources").
-		     When _ResourcePrefix contains multiple paths, this glob only handles the single-prefix case.
-		     The _ExpandMultipleResourcePrefixes target in Xamarin.Shared.targets handles the multi-prefix case,
-		     because MSBuild glob expansion in Include attributes doesn't work with item transforms or property functions. -->
-		<BundleResource Include="$(_ResourcePrefix)\**\*" Exclude="
+		     We use Split(';')[N] to extract each prefix individually, so that MSBuild expands globs correctly for each one.
+		     _ResourcePrefixPadded has trailing semicolons appended so that Split(';')[N] never throws IndexOutOfRangeException.
+		     Up to 3 semicolon-separated resource prefix paths are supported. -->
+
+		<!-- First prefix (always present when _ResourcePrefix is set) -->
+		<BundleResource Include="$([System.String]::new('$(_ResourcePrefixPadded)').Split(';')[0])\**\*" Exclude="
 			$(DefaultItemExcludes);
 			$(DefaultExcludesInProjectFolder);
-			$(_ResourcePrefix)\**\*.xcassets\**\*.*;
-			$(_ResourcePrefix)\**\*.icon\**\*.*;
-			$(_ResourcePrefix)\**\*.storyboard;**\*.xib;
-			$(_ResourcePrefix)\**\*.atlas\*.png;
-			$(_ResourcePrefix)\**\*.mlmodel;
-			$(_ResourcePrefix)\**\*.metal;
-			$(_ResourcePrefix)\**\*.scnassets\*;
-			$(_ResourcePrefix)\**\*.DS_Store;
+			$([System.String]::new('$(_ResourcePrefixPadded)').Split(';')[0])\**\*.xcassets\**\*.*;
+			$([System.String]::new('$(_ResourcePrefixPadded)').Split(';')[0])\**\*.icon\**\*.*;
+			$([System.String]::new('$(_ResourcePrefixPadded)').Split(';')[0])\**\*.storyboard;**\*.xib;
+			$([System.String]::new('$(_ResourcePrefixPadded)').Split(';')[0])\**\*.atlas\*.png;
+			$([System.String]::new('$(_ResourcePrefixPadded)').Split(';')[0])\**\*.mlmodel;
+			$([System.String]::new('$(_ResourcePrefixPadded)').Split(';')[0])\**\*.metal;
+			$([System.String]::new('$(_ResourcePrefixPadded)').Split(';')[0])\**\*.scnassets\*;
+			$([System.String]::new('$(_ResourcePrefixPadded)').Split(';')[0])\**\*.DS_Store;
 			@(Compile);
 			@(EmbeddedResource);
-			" Condition="'$(_ResourcePrefix)' != '' And !$(_ResourcePrefix.Contains(';'))" >
+			" Condition="'$(_ResourcePrefix)' != ''" >
 			<Link>$([MSBuild]::MakeRelative ('$(MSBuildProjectDirectory)', '%(FullPath)'))</Link>
 			<IsDefaultItem>true</IsDefaultItem>
 		</BundleResource>
 
-		<!-- When _ResourcePrefix contains multiple semicolon-separated paths, split it into an item list
-		     so that the _ExpandMultipleResourcePrefixes target can use batched glob expansion. -->
-		<_ResourcePrefixItem Include="$(_ResourcePrefix)" Condition="'$(_ResourcePrefix)' != '' And $(_ResourcePrefix.Contains(';'))" />
+		<!-- Second prefix (when _ResourcePrefix has 2+ semicolon-separated entries) -->
+		<BundleResource Include="$([System.String]::new('$(_ResourcePrefixPadded)').Split(';')[1])\**\*" Exclude="
+			$(DefaultItemExcludes);
+			$(DefaultExcludesInProjectFolder);
+			$([System.String]::new('$(_ResourcePrefixPadded)').Split(';')[1])\**\*.xcassets\**\*.*;
+			$([System.String]::new('$(_ResourcePrefixPadded)').Split(';')[1])\**\*.icon\**\*.*;
+			$([System.String]::new('$(_ResourcePrefixPadded)').Split(';')[1])\**\*.storyboard;**\*.xib;
+			$([System.String]::new('$(_ResourcePrefixPadded)').Split(';')[1])\**\*.atlas\*.png;
+			$([System.String]::new('$(_ResourcePrefixPadded)').Split(';')[1])\**\*.mlmodel;
+			$([System.String]::new('$(_ResourcePrefixPadded)').Split(';')[1])\**\*.metal;
+			$([System.String]::new('$(_ResourcePrefixPadded)').Split(';')[1])\**\*.scnassets\*;
+			$([System.String]::new('$(_ResourcePrefixPadded)').Split(';')[1])\**\*.DS_Store;
+			@(Compile);
+			@(EmbeddedResource);
+			" Condition="'$(_ResourcePrefixCount)' != '' And $(_ResourcePrefixCount) &gt; 1" >
+			<Link>$([MSBuild]::MakeRelative ('$(MSBuildProjectDirectory)', '%(FullPath)'))</Link>
+			<IsDefaultItem>true</IsDefaultItem>
+		</BundleResource>
+
+		<!-- Third prefix (when _ResourcePrefix has 3 semicolon-separated entries) -->
+		<BundleResource Include="$([System.String]::new('$(_ResourcePrefixPadded)').Split(';')[2])\**\*" Exclude="
+			$(DefaultItemExcludes);
+			$(DefaultExcludesInProjectFolder);
+			$([System.String]::new('$(_ResourcePrefixPadded)').Split(';')[2])\**\*.xcassets\**\*.*;
+			$([System.String]::new('$(_ResourcePrefixPadded)').Split(';')[2])\**\*.icon\**\*.*;
+			$([System.String]::new('$(_ResourcePrefixPadded)').Split(';')[2])\**\*.storyboard;**\*.xib;
+			$([System.String]::new('$(_ResourcePrefixPadded)').Split(';')[2])\**\*.atlas\*.png;
+			$([System.String]::new('$(_ResourcePrefixPadded)').Split(';')[2])\**\*.mlmodel;
+			$([System.String]::new('$(_ResourcePrefixPadded)').Split(';')[2])\**\*.metal;
+			$([System.String]::new('$(_ResourcePrefixPadded)').Split(';')[2])\**\*.scnassets\*;
+			$([System.String]::new('$(_ResourcePrefixPadded)').Split(';')[2])\**\*.DS_Store;
+			@(Compile);
+			@(EmbeddedResource);
+			" Condition="'$(_ResourcePrefixCount)' != '' And $(_ResourcePrefixCount) &gt; 2" >
+			<Link>$([MSBuild]::MakeRelative ('$(MSBuildProjectDirectory)', '%(FullPath)'))</Link>
+			<IsDefaultItem>true</IsDefaultItem>
+		</BundleResource>
 	</ItemGroup>
 </Project>

@@ -36,6 +36,11 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 		
 		<!-- Set _ResourcePrefix from AppBundleResourcePrefix -->
 		<_ResourcePrefix>$(AppBundleResourcePrefix)</_ResourcePrefix>
+		<!-- Pad with semicolons so that Split(';')[N] never throws IndexOutOfRangeException
+		     when used in DefaultItems.props for multi-prefix glob expansion.
+		     We support up to 3 semicolon-separated resource prefix paths. -->
+		<_ResourcePrefixPadded>$(_ResourcePrefix);;;</_ResourcePrefixPadded>
+		<_ResourcePrefixCount>$([System.String]::new('$(_ResourcePrefix)').Split(';').Length)</_ResourcePrefixCount>
 
 		<!-- SdkVersion -->
 		<_SdkVersion Condition="'$(_PlatformName)' == 'macOS'">$(MacOSXSdkVersion)</_SdkVersion>

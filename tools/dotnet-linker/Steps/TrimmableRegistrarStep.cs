@@ -45,6 +45,22 @@ namespace Xamarin.Linker {
 			Configuration.Application.StaticRegistrar.Register (Configuration.GetNonDeletedAssemblies (this));
 		}
 
+		// Add [assembly: AssemblyMetadata ("IsTrimmable", "True")] to the given assembly.
+		//
+		// The type map assemblies are written to disk and then passed to ILLink as ordinary input assemblies
+		// (this happens when PrepareAssemblies=true, where we generate the type map assemblies before ILLink runs).
+		// ILLink only trims assemblies that are marked as trimmable when TrimMode is 'partial' (which is the
+		// default for our apps) - any other assembly is copied as-is, which also roots everything it references.
+		// The type map assemblies reference every Objective-C type in the app, so if they're not trimmed, nothing
+		// else can be trimmed either.
+		void MarkAssemblyAsTrimmable (AssemblyDefinition assembly)
+		{
+			var attribute = abr.CreateAttribute (abr.AssemblyMetadataAttribute_Constructor_String_String);
+			attribute.ConstructorArguments.Add (new CustomAttributeArgument (abr.System_String, "IsTrimmable"));
+			attribute.ConstructorArguments.Add (new CustomAttributeArgument (abr.System_String, "True"));
+			assembly.CustomAttributes.Add (attribute);
+		}
+
 		AssemblyDefinition CreateTypeMapRootAssembly (ModuleParameters moduleParameters, IEnumerable<AssemblyDefinition> assemblies)
 		{
 			AssemblyDefinition rootTypeMapAssembly;
@@ -73,6 +89,10 @@ namespace Xamarin.Linker {
 			}
 
 			abr.SetCurrentAssembly (rootTypeMapAssembly);
+
+			// Don't mark the entry assembly as trimmable, we only want to do this for the assembly we created ourselves.
+			if (!useEntryAssemblyAsRootTypeMapAssembly)
+				MarkAssemblyAsTrimmable (rootTypeMapAssembly);
 
 			foreach (var assembly in assemblies.OrderBy (v => v.FullName)) {
 				/*
@@ -158,6 +178,63 @@ namespace Xamarin.Linker {
 			il.Append (il.Create (OpCodes.Ldstr, $"Cannot construct an instance of the type '{type.FullName}' from Objective-C because the type is generic."));
 			il.Append (il.Create (OpCodes.Call, abr.Runtime_CreateRuntimeException));
 			il.Append (il.Create (OpCodes.Throw));
+		}
+
+		// The types named by our type-map entries are only mentioned in the custom attribute blobs (as
+		// assembly-qualified names), which means the type map assembly ends up without a TypeRef row for them.
+		// That's valid metadata: ECMA-335 II.23.3 only requires the type to be stored as a SerString with its
+		// canonical name, and neither the CustomAttribute (II.22.10) nor the TypeRef (II.22.38) validity rules
+		// require a corresponding TypeRef row. The runtime agrees: it resolves these types by parsing the string,
+		// not by looking at the TypeRef table (and the type map design explicitly says the assembly name in
+		// TypeMapAssemblyTargetAttribute doesn't need a matching AssemblyRef row either).
+		//
+		// crossgen2 nonetheless assumes such a TypeRef row exists: it can't resolve the type back to a module
+		// token, and crashes with a NotImplementedException (in ModuleTokenResolver.GetModuleTokenForType) when it
+		// ReadyToRun-compiles the type map assembly. See https://github.com/dotnet/runtime/issues/131527.
+		//
+		// Work around that by emitting an unused method that loads the token of every externally defined type we
+		// name, which makes Cecil emit the corresponding TypeRef rows. The method is never called, so it's trimmed
+		// away again by ILLink.
+		void EmitTypeReferencesForTypeMaps (AssemblyDefinition typeMapAssembly)
+		{
+			// Only crossgen2 needs this, and the added metadata isn't free, so don't do it for the other runtimes.
+			// We don't narrow this down to ReadyToRun builds, because that would mean different behavior between
+			// .NET versions (ReadyToRun is a .NET 11+ feature), and the cost for the interpreted CoreCLR
+			// configurations is small (~64 KB per runtime identifier in the platform type map assembly).
+			if (App.XamarinRuntime != XamarinRuntime.CoreCLR)
+				return;
+
+			var module = typeMapAssembly.MainModule;
+			var externalTypes = new List<TypeReference> ();
+			var seen = new HashSet<string> (StringComparer.Ordinal);
+
+			foreach (var attribute in typeMapAssembly.CustomAttributes) {
+				foreach (var argument in attribute.ConstructorArguments) {
+					if (argument.Value is not TypeReference type)
+						continue;
+					// Types defined in the type map assembly itself already have a TypeDef row.
+					if (type.Scope == module)
+						continue;
+					// Deduplicate on the scope too: two different assemblies can have types with the same full name.
+					if (seen.Add (type.Scope?.Name + "!" + type.FullName))
+						externalTypes.Add (type);
+				}
+			}
+
+			if (externalTypes.Count == 0)
+				return;
+
+			var holderType = new TypeDefinition ("", "<TypeReferences>", TypeAttributes.NotPublic | TypeAttributes.Abstract | TypeAttributes.Sealed, abr.System_Object);
+			module.Types.Add (holderType);
+
+			var method = holderType.AddMethod ("KeepTypeReferences", MethodAttributes.Private | MethodAttributes.HideBySig | MethodAttributes.Static, abr.System_Void);
+			method.CreateBody (out var il);
+			foreach (var type in externalTypes) {
+				// 'ldtoken' works for open generic types too, unlike a field or parameter of that type.
+				il.Append (il.Create (OpCodes.Ldtoken, type));
+				il.Append (il.Create (OpCodes.Pop));
+			}
+			il.Append (il.Create (OpCodes.Ret));
 		}
 
 		protected override void TryEndProcess (out List<Exception>? exceptions)
@@ -274,30 +351,24 @@ namespace Xamarin.Linker {
 				var assembly = typesInAssembly.Key;
 				var types = typesInAssembly.ToList ();
 
-				var typeMapAssemblyName = new AssemblyNameDefinition ("_" + assembly.Name.Name + ".TypeMap", new Version (1, 0, 0, 0));
-				var typeMapAssembly = AssemblyDefinition.CreateAssembly (typeMapAssemblyName, typeMapAssemblyName.Name, assemblyParameters);
-				var typeMapAssemblyPath = Path.Combine (App.TypeMapOutputDirectory, typeMapAssembly.Name.Name + ".dll");
-				var existingAction = Annotations.GetAction (assembly);
-				Annotations.SetAction (typeMapAssembly, existingAction);
+				// Get the companion assembly (it may already have been created by ManagedRegistrarStep,
+				// which emits the registrar trampolines into it when HotReloadCompatibleBuild is enabled).
+				var companion = RegistrarCompanionAssembly.GetOrCreate (Configuration, assembly);
+				var typeMapAssembly = companion.Assembly;
+				var typeMapAssemblyPath = companion.Path;
 				addedAssemblies.Add ((typeMapAssemblyPath, typeMapAssembly, assembly.MainModule.FileName));
 
-				var accessesAssemblies = new HashSet<AssemblyDefinition> ();
+				var accessesAssemblies = companion.AccessesAssemblies;
 				accessesAssemblies.Add (assembly);
 
 				abr.SetCurrentAssembly (typeMapAssembly);
 
+				MarkAssemblyAsTrimmable (typeMapAssembly);
+
 				/*
-				 * [assembly: IgnoresAccessChecksTo ("...")]
+				 * [assembly: IgnoresAccessChecksTo ("...")] (the attribute type is created by RegistrarCompanionAssembly.GetOrCreate)
 				 */
-				var ignoredAccessChecks = new TypeDefinition ("System.Runtime.CompilerServices", "IgnoresAccessChecksToAttribute", TypeAttributes.NotPublic | TypeAttributes.Sealed | TypeAttributes.BeforeFieldInit, abr.System_Attribute);
-				var ignoredAccessChecksCtor = new MethodDefinition (".ctor", MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.SpecialName | MethodAttributes.RTSpecialName, abr.System_Void);
-				ignoredAccessChecksCtor.AddParameter ("assemblyName", abr.System_String);
-				il = ignoredAccessChecksCtor.Body.GetILProcessor ();
-				il.Append (il.Create (OpCodes.Ldarg_0));
-				il.Append (il.Create (OpCodes.Call, abr.System_Attribute__ctor));
-				il.Append (il.Create (OpCodes.Ret));
-				ignoredAccessChecks.Methods.Add (ignoredAccessChecksCtor);
-				typeMapAssembly.MainModule.Types.Add (ignoredAccessChecks);
+				var ignoredAccessChecksCtor = companion.IgnoresAccessChecksToCtor;
 
 				// INativeObject subclasses
 				var inativeObjectTypes = StaticRegistrar.GetAllTypes (assembly).Where (t => !t.IsInterface && !t.IsAbstract && t.IsNativeObject ());
@@ -641,6 +712,8 @@ namespace Xamarin.Linker {
 						typeMapAssembly.CustomAttributes.Add (attribute);
 					}
 				}
+
+				EmitTypeReferencesForTypeMaps (typeMapAssembly);
 
 				abr.ClearCurrentAssembly ();
 

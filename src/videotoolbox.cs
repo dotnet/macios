@@ -3123,13 +3123,23 @@ namespace VideoToolbox {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface VTLowLatencyFrameInterpolationConfiguration : VTFrameProcessorConfiguration {
-		[Internal]
+		/// <summary>Create a new <see cref="VTLowLatencyFrameInterpolationConfiguration" /> instance, specifying the number of interpolated frames.</summary>
+		/// <param name="frameWidth">The frame width for the new <see cref="VTLowLatencyFrameInterpolationConfiguration" /> instance.</param>
+		/// <param name="frameHeight">The frame height for the new <see cref="VTLowLatencyFrameInterpolationConfiguration" /> instance.</param>
+		/// <param name="numberOfInterpolatedFrames">The number of interpolated frames for the new <see cref="VTLowLatencyFrameInterpolationConfiguration" /> instance.</param>
+		/// <returns>A new <see cref="VTLowLatencyFrameInterpolationConfiguration" /> instance.</returns>
+		[FactoryMethod]
 		[Export ("initWithFrameWidth:frameHeight:numberOfInterpolatedFrames:")]
-		NativeHandle _InitWithFrameWidthAndNumberOfInterpolatedFrames (nint frameWidth, nint frameHeight, nint numberOfInterpolatedFrames);
+		NativeHandle CreateWithNumberOfInterpolatedFrames (nint frameWidth, nint frameHeight, nint numberOfInterpolatedFrames);
 
-		[Internal]
+		/// <summary>Create a new <see cref="VTLowLatencyFrameInterpolationConfiguration" /> instance, specifying the spatial scale factor.</summary>
+		/// <param name="frameWidth">The frame width for the new <see cref="VTLowLatencyFrameInterpolationConfiguration" /> instance.</param>
+		/// <param name="frameHeight">The frame height for the new <see cref="VTLowLatencyFrameInterpolationConfiguration" /> instance.</param>
+		/// <param name="spatialScaleFactor">The spatial scale factor for the new <see cref="VTLowLatencyFrameInterpolationConfiguration" /> instance.</param>
+		/// <returns>A new <see cref="VTLowLatencyFrameInterpolationConfiguration" /> instance.</returns>
+		[FactoryMethod]
 		[Export ("initWithFrameWidth:frameHeight:spatialScaleFactor:")]
-		NativeHandle _InitWithFrameWidthAndSpatialScaleFactor (nint frameWidth, nint frameHeight, nint spatialScaleFactor);
+		NativeHandle CreateWithSpatialScaleFactor (nint frameWidth, nint frameHeight, nint spatialScaleFactor);
 
 		[Export ("frameWidth")]
 		nint FrameWidth { get; }

@@ -841,7 +841,7 @@ mono_object_unbox (MonoObject *obj)
 	void *rv = obj->struct_value;
 
 	if (rv == NULL)
-		xamarin_assertion_message ("%s (%p) => no struct value?\n", __func__);
+		xamarin_assertion_message ("%s (%p) => no struct value?\n", __func__, obj);
 
 	LOG_CORECLR (stderr, "%s (%p) => %p\n", __func__, obj, rv);
 

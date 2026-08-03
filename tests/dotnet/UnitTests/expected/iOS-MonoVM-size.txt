@@ -1,4 +1,4 @@
-AppBundleSize: 9,299,571 bytes (9,081.6 KB = 8.9 MB)
+AppBundleSize: 9,249,547 bytes (9,032.8 KB = 8.8 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 aot-instances.aotdata.arm64:
     827,728 bytes (808.3 KB = 0.8 MB)
@@ -13,7 +13,7 @@ PkgInfo:
 runtimeconfig.bin:
     1,481 bytes (1.4 KB = 0.0 MB)
 SizeTestApp:
-    7,201,648 bytes (7,032.9 KB = 6.9 MB)
+    7,151,624 bytes (6,984.0 KB = 6.8 MB)
 SizeTestApp.aotdata.arm64:
     1,464 bytes (1.4 KB = 0.0 MB)
 SizeTestApp.dll:

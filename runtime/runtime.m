@@ -2396,9 +2396,7 @@ xamarin_compute_trusted_platform_assemblies ()
 	}
 #endif
 
-	char *rv = (char *) xamarin_trusted_platform_assemblies;
-	xamarin_trusted_platform_assemblies = NULL;
-	return rv;
+	return xamarin_strdup_printf ("%s", xamarin_trusted_platform_assemblies);
 }
 
 // Find the directory that contains System.Private.CoreLib.dll, looking in:

@@ -24,18 +24,17 @@ namespace AVKit {
 	// The version of the AVError.h header file in the tvOS SDK is much newer than in the iOS SDKs,
 	// (copyright 2016 vs 2019), so this is reflecting the tvOS SDK.
 	/// <summary>Enumeration of error states that can occur while using AVKit.</summary>
-	/// <remarks>To be added.</remarks>
 	[TV (13, 0)]
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	[Native]
 	[ErrorDomain ("AVKitErrorDomain")]
 	public enum AVKitError : long {
-		/// <summary>To be added.</summary>
+		/// <summary>No error occurred.</summary>
 		None = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>An unknown error occurred.</summary>
 		Unknown = -1000,
-		/// <summary>To be added.</summary>
+		/// <summary>Picture in Picture failed to start.</summary>
 		PictureInPictureStartFailed = -1001,
 		ContentRatingUnknown = -1100,
 		ContentDisallowedByPasscode = -1101,

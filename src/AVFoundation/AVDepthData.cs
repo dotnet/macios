@@ -25,7 +25,7 @@ namespace AVFoundation {
 		}
 
 		/// <summary>Gets the depth data types that are suitable for use with <see cref="AVFoundation.AVDepthData.Create(CGImageAuxiliaryDataInfo, out NSError)" />.</summary>
-		/// <value>The available depth data pixel formats, or <see langword="null" /> if none are available.</value>
+		/// <value>The available depth data pixel formats, an empty array if no formats are available, or <see langword="null" /> if the underlying value is unavailable.</value>
 		public CVPixelFormatType []? AvailableDepthDataTypes {
 			get {
 				var values = WeakAvailableDepthDataTypes;

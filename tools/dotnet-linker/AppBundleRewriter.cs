@@ -1603,8 +1603,19 @@ namespace Xamarin.Linker {
 			foreach (var @event in type.Events)
 				signatures.Add (@event.Name);
 
-			if (signatures.Count == 0)
-				return AddAttributeOnlyOnce (addToMethod, CreateDynamicDependencyAttribute (DynamicallyAccessedMemberTypes.PublicParameterlessConstructor, type));
+			if (signatures.Count == 0) {
+				// The type has no declared members, so add a placeholder member and preserve that,
+				// which will keep the type itself (same pattern as AddDynamicDependencyAttributeToStaticConstructor).
+				var placeholderName = "__linker_preserve__";
+				FieldDefinition? placeholderMember = null;
+				if (type.HasFields)
+					placeholderMember = type.Fields.FirstOrDefault (f => f.Name == placeholderName && f.IsStatic);
+				if (placeholderMember is null) {
+					placeholderMember = new FieldDefinition (placeholderName, FieldAttributes.Private | FieldAttributes.Static, System_Int32);
+					type.Fields.Add (placeholderMember);
+				}
+				signatures.Add (DocumentationComments.GetSignature (placeholderMember));
+			}
 
 			var modified = false;
 			foreach (var signature in signatures.OrderBy (v => v, StringComparer.Ordinal))

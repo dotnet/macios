@@ -282,7 +282,6 @@ namespace Xamarin.MacDev.Tasks {
 				dict,
 				CustomEntitlements,
 				(value, entitlement) => MergeEntitlementString (value, profile, entitlement == ApplicationIdentifierKey, entitlement),
-				PListItemGroup.TryParseBooleanStrict,
 				MSBStrings.E7102, /* Invalid value '{0}' for the entitlement '{1}' of type '{2}' specified in the CustomEntitlements item group. Expected no value at all. */
 				MSBStrings.E7103, /* "Invalid value '{0}' for the entitlement '{1}' of type '{2}' specified in the CustomEntitlements item group. Expected 'true' or 'false'." */
 				MSBStrings.E7104 /* "Unknown type '{0}' for the entitlement '{1}' specified in the CustomEntitlements item group. Expected 'Remove', 'Boolean', 'String', or 'StringArray'." */);

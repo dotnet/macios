@@ -12,15 +12,12 @@ using Microsoft.Build.Utilities;
 using Xamarin.MacDev;
 
 namespace Xamarin.MacDev.Tasks {
-	delegate bool TryParseBoolean (string value, out bool result);
-
 	static class PListItemGroup {
 		public static void Merge (
 			TaskLoggingHelper log,
 			PDictionary dictionary,
 			IEnumerable<ITaskItem>? items,
 			Func<PString, string, PString> transformString,
-			TryParseBoolean tryParseBoolean,
 			string invalidRemoveValueMessage,
 			string invalidBooleanValueMessage,
 			string unknownTypeMessage)
@@ -40,7 +37,7 @@ namespace Xamarin.MacDev.Tasks {
 					dictionary.Remove (key);
 					break;
 				case "boolean":
-					if (!tryParseBoolean (value, out var booleanValue)) {
+					if (!TryParseBooleanStrict (value, out var booleanValue)) {
 						log.LogError (invalidBooleanValueMessage, value, key, type);
 						continue;
 					}

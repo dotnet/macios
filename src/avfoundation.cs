@@ -23803,21 +23803,21 @@ namespace AVFoundation {
 	[Category]
 	[BaseType (typeof (AVContentKeySession))]
 	interface AVContentKeySession_AVContentKeyRecipients {
-		/// <param name="recipient">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Associates the specified recipient with this content key session so that the session can supply it with content keys.</summary>
+		/// <param name="recipient">The recipient to associate with this content key session, for example an <see cref="AVUrlAsset" />.</param>
+		/// <remarks>This method maps to the native <c>addContentKeyRecipient:</c> selector. Add a recipient before starting playback or processing that requires the decryption keys managed by this session.</remarks>
 		[Export ("addContentKeyRecipient:")]
 		void Add (IAVContentKeyRecipient recipient);
 
-		/// <param name="recipient">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Removes the association between the specified recipient and this content key session.</summary>
+		/// <param name="recipient">The recipient to disassociate from this content key session.</param>
+		/// <remarks>This method maps to the native <c>removeContentKeyRecipient:</c> selector. After removal, the session no longer supplies content keys to the recipient.</remarks>
 		[Export ("removeContentKeyRecipient:")]
 		void Remove (IAVContentKeyRecipient recipient);
 
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Gets the recipients that are currently associated with this content key session.</summary>
+		/// <returns>An array of the recipients associated with this session, or an empty array if there are none.</returns>
+		/// <remarks>This method maps to the native <c>contentKeyRecipients</c> property.</remarks>
 		[Export ("contentKeyRecipients")]
 		IAVContentKeyRecipient [] GetContentKeyRecipients ();
 	}

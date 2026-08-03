@@ -10,10 +10,12 @@
       <method signature="System.Boolean get_IsNativeAOT()" body="stub" feature="ObjCRuntime.Runtime.IsNativeAOT" featurevalue="true" value="true" />
       <method signature="System.Int32 GetRuntimeArch()" body="stub" feature="ObjCRuntime.Runtime.Arch.IsSimulator" featurevalue="false" value="0" />
       <method signature="System.Int32 GetRuntimeArch()" body="stub" feature="ObjCRuntime.Runtime.Arch.IsSimulator" featurevalue="true" value="1" />
-      <field name="Arch" feature="ObjCRuntime.Runtime.Arch.IsSimulator" featurevalue="false" value="DEVICE" />
-      <field name="Arch" feature="ObjCRuntime.Runtime.Arch.IsSimulator" featurevalue="true" value="SIMULATOR" />
       <method signature="System.Boolean get_IsManagedStaticRegistrar()" body="stub" feature="ObjCRuntime.Runtime.IsManagedStaticRegistrar" featurevalue="false" value="false" />
       <method signature="System.Boolean get_IsManagedStaticRegistrar()" body="stub" feature="ObjCRuntime.Runtime.IsManagedStaticRegistrar" featurevalue="true" value="true" />
+      <field name="IsARM64CallingConvention" feature="ObjCRuntime.Runtime.IsARM64CallingConvention" featurevalue="false" value="false" />
+      <field name="IsARM64CallingConvention" feature="ObjCRuntime.Runtime.IsARM64CallingConvention" featurevalue="true" value="true" />
+      <method signature="System.Boolean GetIsARM64CallingConvention()" body="stub" feature="ObjCRuntime.Runtime.IsARM64CallingConvention" featurevalue="false" value="false" />
+      <method signature="System.Boolean GetIsARM64CallingConvention()" body="stub" feature="ObjCRuntime.Runtime.IsARM64CallingConvention" featurevalue="true" value="true" />
       <method signature="System.Boolean get_DynamicRegistrationSupported()" body="stub" feature="ObjCRuntime.Runtime.DynamicRegistrationSupported" featurevalue="false" value="false" />
       <method signature="System.Boolean get_DynamicRegistrationSupported()" body="stub" feature="ObjCRuntime.Runtime.DynamicRegistrationSupported" featurevalue="true" value="true" />
       <method signature="System.Boolean get_IsTrimmableStaticRegistrar()" body="stub" feature="ObjCRuntime.Runtime.IsTrimmableStaticRegistrar" featurevalue="false" value="false" />
@@ -22,6 +24,21 @@
       <method signature="System.Boolean get_UseCFNetworkHandler()" body="stub" feature="System.Net.Http.NativeHandler.UseCFNetworkHandler" featurevalue="true" value="true" />
       <method signature="System.Boolean get_UseNSUrlSessionHandler()" body="stub" feature="System.Net.Http.NativeHandler.UseNSUrlSessionHandler" featurevalue="false" value="false" />
       <method signature="System.Boolean get_UseNSUrlSessionHandler()" body="stub" feature="System.Net.Http.NativeHandler.UseNSUrlSessionHandler" featurevalue="true" value="true" />
+    </type>
+    <!--
+      ILLink and ILC disagree about how to specify the substitution value for an enum-typed field:
+      ILLink only accepts the name of the enum value, while ILC only accepts the numerical value
+      (each one reports IL2015 for the other's form). So specify both variants, and select between
+      them using the 'ObjCRuntime.IsILCompiler' feature switch, which we only pass to ILC (see
+      Xamarin.Shared.Sdk.targets). Ref: https://github.com/dotnet/runtime/issues/131601
+    -->
+    <type fullname="ObjCRuntime.Runtime" feature="ObjCRuntime.IsILCompiler" featurevalue="false" featuredefault="true">
+      <field name="Arch" feature="ObjCRuntime.Runtime.Arch.IsSimulator" featurevalue="false" value="DEVICE" />
+      <field name="Arch" feature="ObjCRuntime.Runtime.Arch.IsSimulator" featurevalue="true" value="SIMULATOR" />
+    </type>
+    <type fullname="ObjCRuntime.Runtime" feature="ObjCRuntime.IsILCompiler" featurevalue="true">
+      <field name="Arch" feature="ObjCRuntime.Runtime.Arch.IsSimulator" featurevalue="false" value="0" />
+      <field name="Arch" feature="ObjCRuntime.Runtime.Arch.IsSimulator" featurevalue="true" value="1" />
     </type>
     <type fullname="ObjCRuntime.Runtime">
       <method signature="System.Boolean get_ValidateObjectPointers()" body="stub" feature="ObjCRuntime.Class.ValidateObjectPointers" featurevalue="false" value="false" />

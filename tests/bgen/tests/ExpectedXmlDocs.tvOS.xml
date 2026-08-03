@@ -914,7 +914,7 @@
             <summary>The value of the <c>TEventArgsSomeOtherValueKey</c> key from the underlying <see cref="T:Foundation.NSNotification" />'s user info dictionary.</summary>
         </member>
         <member name="T:XmlDocumentation.TShouldMutterEventArgs">
-            <summary>A delegate that provides data for the corresponding event.</summary>
+            <summary>A delegate that represents the callback for the corresponding Objective-C delegate/protocol method.</summary>
         </member>
     </members>
 </doc>

@@ -4820,7 +4820,7 @@ public partial class Generator : IMemberGatherer {
 				if (mi.DeclaringType!.IsSubclassOf (TypeCache.System_Delegate))
 					wroteDelegateDocs = WriteDocumentation (mi.DeclaringType);
 				if (!wroteDelegateDocs && BindingTouch.SupportsXmlDocumentation && shortName.EndsWith ("EventArgs", StringComparison.Ordinal))
-					print ($"/// <summary>A delegate that provides data for the corresponding event.</summary>");
+					print ("/// <summary>A delegate that represents the callback for the corresponding Objective-C delegate/protocol method.</summary>");
 
 				var del = mi.DeclaringType;
 

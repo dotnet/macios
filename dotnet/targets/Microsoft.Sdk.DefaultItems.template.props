@@ -80,7 +80,7 @@
 			$(_ResourcePrefix_1)\**\*.DS_Store;
 			@(Compile);
 			@(EmbeddedResource);
-			" Condition="'$(_ResourcePrefix)' != ''" >
+			" Condition="'$(_ResourcePrefix_1)' != ''" >
 			<Link>$([MSBuild]::MakeRelative ('$(MSBuildProjectDirectory)', '%(FullPath)'))</Link>
 			<IsDefaultItem>true</IsDefaultItem>
 		</BundleResource>
@@ -99,7 +99,7 @@
 			$(_ResourcePrefix_2)\**\*.DS_Store;
 			@(Compile);
 			@(EmbeddedResource);
-			" Condition="'$(_ResourcePrefixCount)' != '' And $(_ResourcePrefixCount) &gt; 1" >
+			" Condition="'$(_ResourcePrefix_2)' != ''" >
 			<Link>$([MSBuild]::MakeRelative ('$(MSBuildProjectDirectory)', '%(FullPath)'))</Link>
 			<IsDefaultItem>true</IsDefaultItem>
 		</BundleResource>
@@ -118,7 +118,7 @@
 			$(_ResourcePrefix_3)\**\*.DS_Store;
 			@(Compile);
 			@(EmbeddedResource);
-			" Condition="'$(_ResourcePrefixCount)' != '' And $(_ResourcePrefixCount) &gt; 2" >
+			" Condition="'$(_ResourcePrefix_3)' != ''" >
 			<Link>$([MSBuild]::MakeRelative ('$(MSBuildProjectDirectory)', '%(FullPath)'))</Link>
 			<IsDefaultItem>true</IsDefaultItem>
 		</BundleResource>

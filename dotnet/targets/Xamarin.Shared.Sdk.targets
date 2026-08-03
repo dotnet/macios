@@ -984,6 +984,17 @@
 			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.Linker.DoneStep" Condition="'$(PostProcessAssemblies)' != 'true'" />
 		</ItemGroup>
 
+		<ItemGroup Condition="'$(PrepareAssemblies)' == 'true' And '$(Registrar)' == 'trimmable-static' And $([MSBuild]::VersionLessThan($(TargetFrameworkVersion), '11.0'))">
+			<!--
+				This step must run even when all our other custom steps are disabled (which happens when both
+				PrepareAssemblies and PostProcessAssemblies are true), because otherwise ILLink will remove the
+				type map attributes from the type map assemblies the trimmable registrar generated before ILLink ran.
+
+				It's not needed on .NET 11+, because there we pass the typemap-entry-assembly argument to ILLink instead.
+			-->
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.SetTypeMapEntryAssemblyStep" />
+		</ItemGroup>
+
 		<ItemGroup>
 			<!-- _BundlerXmlDefinitions comes from any -xml arguments to mtouch/mmp -->
 			<TrimmerRootDescriptor Include="@(_BundlerXmlDefinitions)" />
@@ -1881,6 +1892,15 @@
 		<ItemGroup>
 			<!-- We need to mark all __Internal P/Invokes as direct, so that the native linker doesn't remove them -->
 			<DirectPInvoke Include="__Internal" />
+		</ItemGroup>
+
+		<ItemGroup>
+			<!--
+				Tell our substitution XML that it's being processed by ILC and not by ILLink, because the two
+				disagree about how to specify the substitution value for an enum-typed field.
+				See src/ILLink.Substitutions.iOS.xml and https://github.com/dotnet/runtime/issues/131601.
+			-->
+			<IlcArg Include="--feature:ObjCRuntime.IsILCompiler=true" />
 		</ItemGroup>
 
 		<ItemGroup>

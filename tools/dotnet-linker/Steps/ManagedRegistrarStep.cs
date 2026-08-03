@@ -784,6 +784,8 @@ namespace Xamarin.Linker {
 				return type;
 			}
 		}
+
+		// Re-imports every type/method/field reference used by the trampoline (its signature, local
 		// variables, instruction operands and exception handlers) into the module the trampoline
 		// belongs to. This is needed when we relocate a trampoline into the companion assembly,
 		// because the emission logic imports some references into the user module.

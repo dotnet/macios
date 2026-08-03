@@ -704,17 +704,16 @@ the [source code](https://github.com/dotnet/macios/blob/main/tools/linker/Remove
 ## Remove Console.WriteLine calls
 
 This optimization removes calls to `System.Console.WriteLine` from application
-code. These calls (and any string formatting logic used to compute their
-arguments) are frequently dead weight in a shipped app, since there's usually
-nobody around to read its standard output, so removing them can help reduce
-app size.
+code. These calls are frequently dead weight in a shipped app, since there's
+usually nobody around to read its standard output, so removing them can help
+reduce app size.
 
 This optimization will change the following type of code:
 
 ```csharp
 void Method (int x)
 {
-    Console.WriteLine ($"Computed value: {x}");
+    Console.WriteLine (Compute (x));
     DoSomething (x);
 }
 ```
@@ -724,13 +723,17 @@ into the following:
 ```csharp
 void Method (int x)
 {
+    Compute (x); // still evaluated, but the result is discarded
     DoSomething (x);
 }
 ```
 
-Only calls to `Console.WriteLine` itself are removed - if any of its arguments
-have side effects (for instance a method call), those side effects are
-preserved, and only the actual write to the console is removed.
+Only the call to `Console.WriteLine` itself is removed. Everything needed to
+evaluate its arguments is left in place (so any side effects - such as a method
+call passed as an argument - are preserved), and only the write to the console
+is removed. In particular, this means that any string literals or string
+formatting logic used to compute the arguments are **not** removed; the size
+reduction comes from removing the `Console.WriteLine` calls themselves.
 
 This optimization only targets `Console.WriteLine`, and not the other
 `Console.Write*` members (such as `Console.Write` or writing directly to

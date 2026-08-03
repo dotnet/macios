@@ -23803,8 +23803,8 @@ namespace AVFoundation {
 	[Category]
 	[BaseType (typeof (AVContentKeySession))]
 	interface AVContentKeySession_AVContentKeyRecipients {
-		/// <summary>Associates the specified recipient with this content key session so that the session can supply it with content keys.</summary>
-		/// <param name="recipient">The recipient to associate with this content key session, for example an <see cref="AVUrlAsset" />.</param>
+		/// <summary>Associates the specified recipient with this content key session so that the session can supply the recipient with content keys.</summary>
+		/// <param name="recipient">The recipient to associate with this content key session, for example, an <see cref="AVUrlAsset" />.</param>
 		/// <remarks>This method maps to the native <c>addContentKeyRecipient:</c> selector. Add a recipient before starting playback or processing that requires the decryption keys managed by this session.</remarks>
 		[Export ("addContentKeyRecipient:")]
 		void Add (IAVContentKeyRecipient recipient);

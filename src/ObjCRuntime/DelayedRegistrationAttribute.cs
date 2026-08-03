@@ -26,11 +26,12 @@
 using System.IO;
 
 namespace ObjCRuntime {
-	/// <summary>To be added.</summary>
+	/// <summary>An attribute that controls whether Objective-C class registration is delayed.</summary>
 	[AttributeUsage (AttributeTargets.Assembly)]
 	public abstract class DelayedRegistrationAttribute : Attribute {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
+		/// <summary>Gets a value indicating whether registration should be delayed.</summary>
+		/// <value>
+		///   <see langword="true" /> if registration should be delayed; otherwise, <see langword="false" />.</value>
 		public abstract bool Delay { get; }
 	}
 }

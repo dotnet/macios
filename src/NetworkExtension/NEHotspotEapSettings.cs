@@ -13,11 +13,11 @@
 
 namespace NetworkExtension {
 
-	/// <summary>To be added.</summary>
+	/// <summary>Provides EAP settings for configuring hotspot networks.</summary>
 	public partial class NEHotspotEapSettings {
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
+		/// <summary>Gets or sets the supported EAP types for hotspot authentication.</summary>
+		/// <value>An array of supported EAP authentication types.</value>
 		public NEHotspotConfigurationEapType [] SupportedEapTypes {
 			get {
 				return NSArray.NonNullEnumsFromHandle<NEHotspotConfigurationEapType> (_SupportedEapTypes);

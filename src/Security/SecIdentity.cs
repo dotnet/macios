@@ -19,8 +19,8 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		unsafe extern static SecStatusCode /* OSStatus */ SecIdentityCopyPrivateKey (IntPtr /* SecIdentityRef */ identity, IntPtr* /* SecKeyRef* */ privatekey);
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
+		/// <summary>Gets the private key associated with this identity.</summary>
+		/// <value>The <see cref="SecKey" /> representing the private key for this identity.</value>
 		public SecKey PrivateKey {
 			get {
 				IntPtr p;

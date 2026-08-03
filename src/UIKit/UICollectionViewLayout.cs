@@ -22,7 +22,7 @@ namespace UIKit {
 		/// <param name="section">The section kind of the supplementary view.</param>
 		///         <param name="indexPath">The index path of the supplementary view.</param>
 		///         <summary>The attributes for the supplementary view at the specified indexPath.</summary>
-		///         <returns>To be added.</returns>
+		/// <returns>The layout attributes for the supplementary view, or <see langword="null" /> if no supplementary view exists at the specified index path.</returns>
 		public UICollectionViewLayoutAttributes LayoutAttributesForSupplementaryView (UICollectionElementKindSection section, NSIndexPath indexPath)
 		{
 			NSString kind;

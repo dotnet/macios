@@ -40,7 +40,8 @@ namespace DeviceCheck {
 		DCDevice CurrentDevice { get; }
 
 		/// <summary>Gets a Boolean value that tells whether the <see cref="DeviceCheck.DCDevice.CurrentDevice" /> supports the DeviceCheck API.</summary>
-		///         <value>To be added.</value>
+		/// <value>
+		///   <see langword="true" /> if the current device supports the DeviceCheck API; otherwise, <see langword="false" />.</value>
 		[Export ("supported")]
 		bool Supported { [Bind ("isSupported")] get; }
 
@@ -51,7 +52,6 @@ namespace DeviceCheck {
 			        </returns>
 			<remarks>
 			          <para copied="true">The GenerateTokenAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
-			          <para copied="true">To be added.</para>
 			        </remarks>
 			""")]
 		[Export ("generateTokenWithCompletionHandler:")]

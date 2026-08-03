@@ -1,8 +1,8 @@
 <Dependencies>
   <ProductDependencies>
-    <Dependency Name="Microsoft.NET.Sdk" Version="10.0.400-preview.0.26360.120">
+    <Dependency Name="Microsoft.NET.Sdk" Version="10.0.400-preview.0.26379.116">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>d88a8f149a8b7a55a2ced403eb58128a0442d05e</Sha>
+      <Sha>70155109d2617339941ca0ff1c33bc375d2d0cea</Sha>
     </Dependency>
     <Dependency Name="Microsoft.NET.ILLink" Version="10.0.3-servicing.26070.104">
       <Uri>https://github.com/dotnet/dotnet</Uri>
@@ -94,43 +94,43 @@
       <Sha>23eb1c2c9465fe76c810c8a69982c1254161f4b0</Sha>
     </Dependency>
     <!-- This is a subscription of the .NET 10/Xcode 27.0 versions of our packages -->
-    <Dependency Name="Microsoft.MacCatalyst.Sdk.net10.0_27.0" Version="27.0.10241-xcode27.0">
+    <Dependency Name="Microsoft.MacCatalyst.Sdk.net10.0_27.0" Version="27.0.10417-xcode27.0">
       <Uri>https://github.com/dotnet/macios</Uri>
-      <Sha>6807aae9f1f542afdcca3552940930793cb9ae7f</Sha>
+      <Sha>512a7cb49ba77a8468275a652184d8b82cbc7f66</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.macOS.Sdk.net10.0_27.0" Version="27.0.10241-xcode27.0">
+    <Dependency Name="Microsoft.macOS.Sdk.net10.0_27.0" Version="27.0.10417-xcode27.0">
       <Uri>https://github.com/dotnet/macios</Uri>
-      <Sha>6807aae9f1f542afdcca3552940930793cb9ae7f</Sha>
+      <Sha>512a7cb49ba77a8468275a652184d8b82cbc7f66</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.iOS.Sdk.net10.0_27.0" Version="27.0.10241-xcode27.0">
+    <Dependency Name="Microsoft.iOS.Sdk.net10.0_27.0" Version="27.0.10417-xcode27.0">
       <Uri>https://github.com/dotnet/macios</Uri>
-      <Sha>6807aae9f1f542afdcca3552940930793cb9ae7f</Sha>
+      <Sha>512a7cb49ba77a8468275a652184d8b82cbc7f66</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.tvOS.Sdk.net10.0_27.0" Version="27.0.10241-xcode27.0">
+    <Dependency Name="Microsoft.tvOS.Sdk.net10.0_27.0" Version="27.0.10417-xcode27.0">
       <Uri>https://github.com/dotnet/macios</Uri>
-      <Sha>6807aae9f1f542afdcca3552940930793cb9ae7f</Sha>
+      <Sha>512a7cb49ba77a8468275a652184d8b82cbc7f66</Sha>
     </Dependency>
   </ProductDependencies>
   <ToolsetDependencies>
-    <Dependency Name="Microsoft.DotNet.Build.Tasks.Feed" Version="10.0.0-beta.26360.120">
+    <Dependency Name="Microsoft.DotNet.Build.Tasks.Feed" Version="10.0.0-beta.26379.116">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>d88a8f149a8b7a55a2ced403eb58128a0442d05e</Sha>
+      <Sha>70155109d2617339941ca0ff1c33bc375d2d0cea</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.SharedFramework.Sdk" Version="10.0.0-beta.26360.120">
+    <Dependency Name="Microsoft.DotNet.SharedFramework.Sdk" Version="10.0.0-beta.26379.116">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>d88a8f149a8b7a55a2ced403eb58128a0442d05e</Sha>
+      <Sha>70155109d2617339941ca0ff1c33bc375d2d0cea</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.TemplateEngine.Authoring.Tasks" Version="10.0.400-preview.26360.120">
+    <Dependency Name="Microsoft.TemplateEngine.Authoring.Tasks" Version="10.0.400">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>d88a8f149a8b7a55a2ced403eb58128a0442d05e</Sha>
+      <Sha>70155109d2617339941ca0ff1c33bc375d2d0cea</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.XHarness.iOS.Shared" Version="11.0.0-prerelease.26366.1">
+    <Dependency Name="Microsoft.DotNet.XHarness.iOS.Shared" Version="11.0.0-prerelease.26370.1">
       <Uri>https://github.com/dotnet/xharness</Uri>
-      <Sha>5972976146cc400e19cca63695409841d2609a37</Sha>
+      <Sha>65e5795252474ebd04e4e872bd4152e86c558209</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="10.0.0-beta.26360.120">
+    <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="10.0.0-beta.26379.116">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>d88a8f149a8b7a55a2ced403eb58128a0442d05e</Sha>
+      <Sha>70155109d2617339941ca0ff1c33bc375d2d0cea</Sha>
       <SourceBuild RepoName="arcade" ManagedOnly="true" />
     </Dependency>
   </ToolsetDependencies>

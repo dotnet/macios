@@ -1054,7 +1054,7 @@ and return value.
 
 The `[BindAsAttribute]` allows binding `NSNumber`, `NSValue` and `NSString`(enums) into more accurate C# types. The attribute can be used to create better, more accurate, .NET API over the native API.
 
-You can decorate methods (on return value), parameters and properties with `BindAs`. The only restriction is that your member **must not** be inside a `[Protocol]` or [`[Model]`](#ModelAttribute) interface.
+You can decorate methods (on return value), parameters and properties with `BindAs`. In `[Protocol]` and [`[Model]`](#ModelAttribute) interfaces, `BindAs` is supported on parameters, but not on properties or return values.
 
 For example:
 
@@ -1363,6 +1363,97 @@ represents the name of the underlying Objective-C method or property that is
 being bound.
 
 #### ExportAttribute.ArgumentSemantic
+
+<a name="FactoryMethodAttribute"></a>
+
+### FactoryMethodAttribute
+
+Apply this attribute to a binding constructor (or a binding init method) to
+generate a static factory method (instead of a public constructor) from a
+failable Objective-C initializer.
+
+This is useful when the native initializer can fail (return `nil`), because a
+C# constructor can't return `null`. Instead of throwing, the generated factory
+method can return `null` to signal failure.
+
+It's also useful when two native initializers have the same managed signature:
+they can't both be bound as constructors (C# doesn't allow two constructors
+with identical parameter types), so they can be bound as named factory methods
+instead.
+
+When this attribute is applied to a constructor, the binding tool will:
+
+1. Emit the constructor as `internal` (hiding it from the public API).
+2. Emit a `public static` factory method (named after the attribute's
+   `MethodName`, which defaults to `Create`) with the same parameters as the
+   constructor.
+
+When this attribute is applied to a binding method that is not a `Constructor`
+(a method that returns `NativeHandle` and is exported to an `init` selector),
+the binding tool will:
+
+1. Emit the binding method as an `internal` helper (prefixed with an
+   underscore) that performs the `init` message send.
+2. Emit a `public static` factory method named after the binding method.
+
+When applied to a method that isn't a `Constructor`, the `[FactoryMethod]`
+attribute must not specify a method name (the binding method's name is used
+instead); doing so produces an error (`BI1127`).
+
+If the initializer's return value is nullable (annotated with
+`[return: NullAllowed]`), the factory method returns a nullable value and
+returns `null` when the native initializer fails. Otherwise the factory method
+returns a non-nullable value.
+
+The selector must be an Objective-C `init` selector: either `init` or a
+selector that starts with `init` followed by an uppercase letter (e.g.
+`initWithName:`). Otherwise the binding tool emits an error (`BI1126`).
+
+Syntax:
+
+```csharp
+[AttributeUsage (AttributeTargets.Method, AllowMultiple = false)]
+public class FactoryMethodAttribute : Attribute {
+    public FactoryMethodAttribute ();
+    public FactoryMethodAttribute (string methodName);
+    public string? MethodName { get; set; }
+}
+```
+
+For example, the following binding:
+
+```csharp
+[Export ("initWithString:")]
+[FactoryMethod ("Create")]
+[return: NullAllowed]
+NativeHandle Constructor (string pattern);
+```
+
+generates a `public static MyType? Create (string pattern)` factory method that
+returns `null` when the native `initWithString:` initializer returns `nil`.
+
+The following binding declares two initializers with the same managed signature
+as named factory methods:
+
+```csharp
+[Export ("initWithFoo:")]
+[FactoryMethod]
+[return: NullAllowed]
+NativeHandle CreateWithFoo (nint foo);
+
+[Export ("initWithBar:")]
+[FactoryMethod]
+[return: NullAllowed]
+NativeHandle CreateWithBar (nint bar);
+```
+
+which generates `public static MyType? CreateWithFoo (nint foo)` and
+`public static MyType? CreateWithBar (nint bar)` factory methods.
+
+> **Note:** If the initializer has an `out NSError` parameter but its return
+> value isn't nullable, the binding tool emits a warning (`BI1125`), because
+> such a factory method can't return `null` on failure. Add
+> `[return: NullAllowed]` to the initializer to fix this.
 
 <a name="FieldAttribute"></a>
 

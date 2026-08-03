@@ -103,7 +103,6 @@ namespace CoreText {
 	}
 
 	/// <summary>Font collections are the standard mechanism used to enumerate fonts descriptors.</summary>
-	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -123,8 +122,15 @@ namespace CoreText {
 		///         <remarks>
 		///         </remarks>
 		public CTFontCollection (CTFontCollectionOptions? options)
-			: base (CTFontCollectionCreateFromAvailableFonts (options.GetHandle ()), true, true)
+			: base (CreateFromAvailableFonts (options), true, true)
 		{
+		}
+
+		static IntPtr CreateFromAvailableFonts (CTFontCollectionOptions? options)
+		{
+			var rv = CTFontCollectionCreateFromAvailableFonts (options.GetHandle ());
+			GC.KeepAlive (options);
+			return rv;
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]
@@ -137,11 +143,9 @@ namespace CoreText {
 			GC.KeepAlive (options);
 			return result;
 		}
+		/// <summary>Creates a CTFontCollection from the specified set of queryDescriptors.</summary>
 		/// <param name="queryDescriptors">An array of font descriptors, can be null.</param>
-		///         <param name="options">To be added.</param>
-		///         <summary>Creates a CTFontCollection from the specified set of queryDescriptors.</summary>
-		///         <remarks>
-		///         </remarks>
+		/// <param name="options">The options for matching font descriptors.</param>
 		public CTFontCollection (CTFontDescriptor []? queryDescriptors, CTFontCollectionOptions? options)
 			: base (Create (queryDescriptors, options), true, true)
 		{
@@ -193,7 +197,6 @@ namespace CoreText {
 		/// <param name="options">The options to match.</param>
 		///         <summary>Returns an array of font descriptors that have the specified options.</summary>
 		///         <returns>An array of font descriptors that have the specified options.</returns>
-		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -201,6 +204,7 @@ namespace CoreText {
 		public CTFontDescriptor [] GetMatchingFontDescriptors (CTFontCollectionOptions? options)
 		{
 			var cfArrayRef = CTFontCollectionCreateMatchingFontDescriptorsWithOptions (Handle, options.GetHandle ());
+			GC.KeepAlive (options);
 			if (cfArrayRef == IntPtr.Zero)
 				return Array.Empty<CTFontDescriptor> ();
 			return CFArray.ArrayFromHandleFunc (cfArrayRef, fd => new CTFontDescriptor (fd, false), true)!;

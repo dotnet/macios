@@ -117,8 +117,11 @@ namespace CoreFoundation {
 			var _values = c <= 256 ? stackalloc IntPtr [c] : new IntPtr [c];
 			for (int i = 0; i < c; ++i)
 				_values [i] = values [i].Handle;
+			IntPtr rv;
 			fixed (IntPtr* pv = _values)
-				return CFArrayCreate (IntPtr.Zero, (IntPtr) pv, c, kCFTypeArrayCallbacks_ptr);
+				rv = CFArrayCreate (IntPtr.Zero, (IntPtr) pv, c, kCFTypeArrayCallbacks_ptr);
+			GC.KeepAlive (values);
+			return rv;
 		}
 
 		/// <summary>Create a <see cref="CFArray" /> from an array of strings.</summary>

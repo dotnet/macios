@@ -194,7 +194,7 @@ namespace Xamarin.Linker {
 				abr.SaveCurrentAssembly ();
 
 			// TODO: Move this to a separate "MakeEverythingWorkWithNativeAOTStep" linker step
-			if (App.XamarinRuntime == XamarinRuntime.NativeAOT && Configuration.Profile.IsProductAssembly (assembly)) {
+			if (App.XamarinRuntime == XamarinRuntime.NativeAOT && Configuration.Profile.IsProductAssembly (assembly) && !App.IsPostProcessingAssemblies) {
 				ImplementNSObjectRegisterToggleRefMethodStub ();
 			}
 
@@ -220,9 +220,9 @@ namespace Xamarin.Linker {
 						var ctor = abr.CurrentAssembly.MainModule.ImportReference (ctorRef);
 
 						// Implement INSObjectFactory._Xamarin_ConstructNSObject
-						abr.ImplementConstructNSObjectFactoryMethod (DerivedLinkContext, type, ctor);
+						modified |= abr.ImplementConstructNSObjectFactoryMethod (DerivedLinkContext, type, ctor);
 						// Implement INativeObject._Xamarin_ConstructINativeObject
-						abr.ImplementConstructINativeObjectFactoryMethod (DerivedLinkContext, type, ctor);
+						modified |= abr.ImplementConstructINativeObjectFactoryMethod (DerivedLinkContext, type, ctor);
 					}
 				} else if (type.IsNativeObject ()) {
 					var ctorRef = AppBundleRewriter.FindINativeObjectConstructor (type);
@@ -230,7 +230,7 @@ namespace Xamarin.Linker {
 						var ctor = abr.CurrentAssembly.MainModule.ImportReference (ctorRef);
 
 						// Implement INativeObject._Xamarin_ConstructINativeObject
-						abr.ImplementConstructINativeObjectFactoryMethod (DerivedLinkContext, type, ctor);
+						modified |= abr.ImplementConstructINativeObjectFactoryMethod (DerivedLinkContext, type, ctor);
 					}
 				}
 			}
@@ -266,13 +266,14 @@ namespace Xamarin.Linker {
 						CollectUnmanagedCallersMethod (method, infos, proxyInterfaces);
 					} else {
 						CreateUnmanagedCallersMethod (method, infos, proxyInterfaces);
+						modified = true;
 					}
 				} catch (Exception e) {
 					AddException (ErrorHelper.CreateError (99, e, "Failed to create an UnmanagedCallersOnly trampoline for {0}: {1}", method.FullName, e.Message));
 				}
 			}
 
-			return true;
+			return modified;
 		}
 
 		void ProcessMethod (MethodDefinition method, HashSet<MethodDefinition> methods_to_wrap)
@@ -789,11 +790,37 @@ namespace Xamarin.Linker {
 
 		BindAsAttribute? GetBindAsAttribute (MethodDefinition method, int parameter)
 		{
-			if (StaticRegistrar.IsPropertyAccessor (method, out var property)) {
-				return StaticRegistrar.GetBindAsAttribute (property);
+			BindAsAttribute? attribute;
+			var isPropertyAccessor = StaticRegistrar.IsPropertyAccessor (method, out var property);
+			if (isPropertyAccessor) {
+				attribute = StaticRegistrar.GetBindAsAttribute (property);
 			} else {
-				return StaticRegistrar.GetBindAsAttribute (method, parameter);
+				attribute = StaticRegistrar.GetBindAsAttribute (method, parameter);
 			}
+
+			if (attribute is not null || parameter < 0 || isPropertyAccessor || method.IsConstructor || method.DeclaringType.IsInterface || StaticRegistrar.GetCategoryAttribute (method.DeclaringType) is not null)
+				return attribute;
+
+			// Parameter attributes aren't inherited from protocol methods, so look up the mapped interface method.
+			var methodMap = StaticRegistrar.PrepareInterfaceMethodMapping (method.DeclaringType);
+			if (methodMap is null || !methodMap.TryGetValue (method, out var interfaceMethods))
+				return null;
+
+			List<MethodDefinition>? bindAsInterfaceMethods = null;
+			foreach (var interfaceMethod in interfaceMethods) {
+				var interfaceAttribute = StaticRegistrar.GetBindAsAttribute (interfaceMethod, parameter);
+				if (interfaceAttribute is null)
+					continue;
+
+				bindAsInterfaceMethods ??= new List<MethodDefinition> ();
+				bindAsInterfaceMethods.Add (interfaceMethod);
+				attribute = interfaceAttribute;
+			}
+
+			if (bindAsInterfaceMethods is not null && interfaceMethods.Count != 1)
+				throw new AggregateException (Shared.GetMT4127 (method, interfaceMethods));
+
+			return attribute;
 		}
 
 		// This emits a conversion between the native and the managed representation of a parameter or return value,
@@ -1245,7 +1272,8 @@ namespace Xamarin.Linker {
 		CustomAttribute CreateUnmanagedCallersAttribute (string entryPoint)
 		{
 			var unmanagedCallersAttribute = new CustomAttribute (abr.UnmanagedCallersOnlyAttribute_Constructor);
-			unmanagedCallersAttribute.Fields.Add (new CustomAttributeNamedArgument ("EntryPoint", new CustomAttributeArgument (abr.System_String, entryPoint)));
+			if (App.XamarinRuntime != XamarinRuntime.CoreCLR)
+				unmanagedCallersAttribute.Fields.Add (new CustomAttributeNamedArgument ("EntryPoint", new CustomAttributeArgument (abr.System_String, entryPoint)));
 			return unmanagedCallersAttribute;
 		}
 

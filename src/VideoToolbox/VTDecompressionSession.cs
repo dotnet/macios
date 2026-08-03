@@ -274,7 +274,10 @@ namespace VideoToolbox {
 			if (options is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (options));
 
-			return VTSessionSetProperties (GetCheckedHandle (), options.Dictionary.Handle);
+			var dictionary = options.Dictionary;
+			var rv = VTSessionSetProperties (GetCheckedHandle (), dictionary.Handle);
+			GC.KeepAlive (dictionary);
+			return rv;
 		}
 
 		[SupportedOSPlatform ("macos")]
@@ -358,6 +361,10 @@ namespace VideoToolbox {
 		}
 
 		[UnmanagedCallersOnly]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[UnsupportedOSPlatform ("tvos")]
 		unsafe static void VTDecompressionMultiImageCapableOutputBlockCallback (BlockLiteral* block, VTStatus status, VTDecodeInfoFlags infoFlags, IntPtr imageBuffer, IntPtr taggedBufferGroup, CMTime presentationTimeStamp, CMTime presentationDuration)
 		{
 			var del = BlockLiteral.GetTarget<VTDecompressionMultiImageCapableOutputHandler> ((IntPtr) block);
@@ -413,6 +420,10 @@ namespace VideoToolbox {
 		}
 
 		[UnmanagedCallersOnly]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[UnsupportedOSPlatform ("tvos")]
 		unsafe static void VTDecompressionOutputMultiImageCallbackBlock (BlockLiteral* block, IntPtr decompressionOutputMultiImageRefCon, IntPtr sourceFrameRefCon, VTStatus status, VTDecodeInfoFlags infoFlags, IntPtr taggedBufferGroup, CMTime presentationTimeStamp, CMTime presentationDuration)
 		{
 			var del = BlockLiteral.GetTarget<VTDecompressionOutputMultiImageCallback> ((IntPtr) block);

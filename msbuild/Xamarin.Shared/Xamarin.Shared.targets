@@ -59,6 +59,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CreateEmbeddedResources" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CreateInstallerPackage" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CreatePkgInfo" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CreateSymbolsPackage" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.DetectDebugNetworkConfiguration" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.DetectSdkLocations" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.DetectSigningIdentity" AssemblyFile="$(_TaskAssemblyName)" />
@@ -95,6 +96,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ScnTool" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.SmartCopy" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.SpotlightIndexer" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.StripFrameworkHeaders" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.SymbolStrip" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.TextureAtlas" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.UnpackLibraryResources" AssemblyFile="$(_TaskAssemblyName)" />
@@ -729,7 +731,9 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			>
 			<Output TaskParameter="CFBundleExecutable" PropertyName="_ExecutableName" />
 			<Output TaskParameter="CFBundleDisplayName" PropertyName="_CFBundleDisplayName" />
+			<Output TaskParameter="CFBundleName" PropertyName="_CFBundleName" />
 			<Output TaskParameter="CFBundleIdentifier" PropertyName="_BundleIdentifier" />
+			<Output TaskParameter="CFBundleShortVersionString" PropertyName="_CFBundleShortVersionString" />
 			<Output TaskParameter="CFBundleVersion" PropertyName="_CFBundleVersion" />
 			<Output TaskParameter="CLKComplicationGroup" PropertyName="_CLKComplicationGroup" />
 			<Output TaskParameter="MinimumOSVersion" PropertyName="_MinimumOSVersion" />
@@ -2436,12 +2440,20 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			$(CodesignDependsOn);
 			_CreateAppBundle;
 			BeforeCodeSign;
+			_StripFrameworkHeaders;
 			CoreCodeSign;
 			AfterCodeSign;
 		</CodesignDependsOn>
 	</PropertyGroup>
 
 	<Target Name="BeforeCodesign" />
+	<Target Name="_StripFrameworkHeaders" Condition="'$(StripFrameworkHeaders)' == 'true'">
+		<StripFrameworkHeaders
+			SessionId="$(BuildSessionId)"
+			Condition="'$(IsMacEnabled)' == 'true'"
+			AppBundleDir="$(AppBundleDir)"
+		/>
+	</Target>
 	<Target Name="CoreCodesign" DependsOnTargets="$(CoreCodesignDependsOn)" />
 	<Target Name="AfterCodesign" />
 
@@ -3093,8 +3105,17 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 				<!-- This is the name of the dSYM that will be created (if that's the case) -->
 				<DSymName>%(Filename)%(Extension).framework.dSYM</DSymName>
 			</_PostProcessingItem>
+			<!-- Compute the app-bundle-relative path for each dynamic native library, so that dsymutil and
+			     symbol stripping target the file's actual location in the app bundle (which may include a
+			     subdirectory). Mirror the logic in the '_ComputeDynamicLibrariesToPublish' target: use the
+			     'RelativePath' metadata when it's set (normalizing directory separators to forward slashes),
+			     otherwise fall back to the default (top-level) bundle location. Ref: https://github.com/dotnet/macios/issues/21553 -->
+			<_DynamicNativeReferenceToPostProcess Include="@(_FileNativeReference)" Condition="'%(_FileNativeReference.Kind)' == 'Dynamic'">
+				<BundleRelativePath Condition="'%(_FileNativeReference.RelativePath)' != ''">$([System.String]::Copy('%(_FileNativeReference.RelativePath)').Replace('\', '/'))</BundleRelativePath>
+				<BundleRelativePath Condition="'%(_FileNativeReference.RelativePath)' == ''">$(_AppContentsRelativePathForPostProcessing)%(Filename)%(Extension)</BundleRelativePath>
+			</_DynamicNativeReferenceToPostProcess>
 			<!-- add dylibs, with the path relative to the app bundle -->
-			<_PostProcessingItem Include="@(_FileNativeReference->'$(_AppBundleName)$(AppBundleExtension)/$(_AppContentsRelativePathForPostProcessing)%(Filename)%(Extension)')" Condition="'%(_FileNativeReference.Kind)' == 'Dynamic'">
+			<_PostProcessingItem Include="@(_DynamicNativeReferenceToPostProcess->'$(_AppBundleName)$(AppBundleExtension)/%(BundleRelativePath)')">
 				<!-- Store where this item came from -->
 				<ItemSourcePath>%(Identity)</ItemSourcePath>
 				<!-- If the item in question came with a .dSYM directory, this would be the path to it: -->
@@ -3198,6 +3219,8 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			_StoreCollectedItemsForPostProcessing;
 			_PreparePostProcessing;
 			_GenerateDSym;
+			_ComputeXCFrameworkDSyms;
+			_CopyXCFrameworkDSyms;
 			_NativeStripFiles;
 			_NotifySpotlight;
 		</_PostProcessAppBundleDependsOn>
@@ -3265,6 +3288,70 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		/>
 
 		<!-- There's no need to touch the stamp file, because it's a file created by dsymutil -->
+	</Target>
+
+	<!--
+		This target copies pre-existing dSYMs from xcframeworks next to the app's dSYM,
+		so that they're included in the archive when the app is archived.
+		The dSYMs directory in an xcframework is at the same level as the framework directory
+		within the architecture-specific directory:
+			MyFramework.xcframework/ios-arm64/dSYMs/MyFramework.framework.dSYM
+			MyFramework.xcframework/ios-arm64/MyFramework.framework/MyFramework
+		Ref: https://github.com/dotnet/macios/issues/23076
+	-->
+	<Target
+		Name="_ComputeXCFrameworkDSyms"
+		DependsOnTargets="_PreparePostProcessing"
+		>
+
+		<ItemGroup>
+			<!-- Compute the potential dSYMs directory for each framework in the post-processing items.
+			     For a framework at path/to/xcframework/ios-arm64/MyFramework.framework/MyFramework,
+			     the dSYMs directory would be at path/to/xcframework/ios-arm64/dSYMs -->
+			<_XCFrameworkDSymCandidate
+				Include="@(_GenerateDSymItems)"
+				Condition="'%(_GenerateDSymItems.ItemSourcePath)' != ''"
+			>
+				<DSymSourceDir>$([System.IO.Path]::GetDirectoryName($([System.IO.Path]::GetDirectoryName('%(_GenerateDSymItems.ItemSourcePath)'))))/dSYMs</DSymSourceDir>
+			</_XCFrameworkDSymCandidate>
+		</ItemGroup>
+
+		<!-- Find which dSYMs actually exist using a task instead of the MSBuild Exists() function.
+		     Exists() evaluates on the build host (Windows for remote builds), but the dSYMs live on
+		     the Mac, so we have to use the remote-capable GetFileSystemEntries task to look for them. -->
+		<GetFileSystemEntries
+			SessionId="$(BuildSessionId)"
+			Condition="'$(IsMacEnabled)' == 'true'"
+			DirectoryPath="@(_XCFrameworkDSymCandidate->'%(DSymSourceDir)')"
+			Pattern="*.dSYM"
+			Recursive="false"
+			IncludeDirectories="true"
+			>
+			<Output TaskParameter="Entries" ItemName="_XCFrameworkDSymToCopy" />
+		</GetFileSystemEntries>
+
+		<ItemGroup>
+			<!-- The dSYM directory is named the same as the DSymName metadata used for the copy destination. -->
+			<_XCFrameworkDSymToCopy>
+				<DSymName>%(Filename)%(Extension)</DSymName>
+			</_XCFrameworkDSymToCopy>
+		</ItemGroup>
+	</Target>
+
+	<Target
+		Name="_CopyXCFrameworkDSyms"
+		Condition="'$(_PostProcess)' == 'true'"
+		DependsOnTargets="_ComputeXCFrameworkDSyms"
+		Inputs="@(_XCFrameworkDSymToCopy->'%(Identity)/Contents/Info.plist')"
+		Outputs="@(_XCFrameworkDSymToCopy->'$(_OutputDsymLocation)%(DSymName)/Contents/Info.plist')"
+		>
+
+		<Ditto
+			SessionId="$(BuildSessionId)"
+			Condition="'$(IsMacEnabled)' == 'true'"
+			Source="%(_XCFrameworkDSymToCopy.Identity)"
+			Destination="$(_OutputDsymLocation)%(_XCFrameworkDSymToCopy.DSymName)"
+		/>
 	</Target>
 
 	<!-- This target will execute strip on items in the _NativeStripItems item group -->
@@ -3348,6 +3435,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			Condition="'$(IsMacEnabled)' == 'true'"
 			AppBundleDir="$(AppBundleDir)"
 			AppExtensionReferences="@(_ResolvedAppExtensionReferences)"
+			ArchiveDir="$(ArchiveDir)"
 			CustomBundleName="$(_CustomBundleName)"
 			InsightsApiKey="$(XamarinInsightsApiKey)"
 			ITunesSourceFiles="@(_ITunesSourceFile)"
@@ -3531,6 +3619,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			_CompileEntitlements;
 			_CoreCreateIpa;
 			_PackageOnDemandResources;
+			_CreateIpaSymbols;
 			_ZipIpa
 		</CreateIpaDependsOn>
 
@@ -3540,7 +3629,42 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 	<Target Name="CreateIpa" Condition="'$(_CanArchive)' == 'true' And '$(SdkIsDesktop)' != 'true'" DependsOnTargets="$(CreateIpaDependsOn)" />
 
-	<Target Name="GetApplicationArtifacts" DependsOnTargets="Build;$(GetApplicationArtifactsDependsOn)" Returns="@(ApplicationArtifact)" />
+	<PropertyGroup>
+		<GetApplicationArtifactsDependsOn>
+			Build;
+			_AddAppleApplicationArtifactMetadata;
+			$(GetApplicationArtifactsDependsOn);
+		</GetApplicationArtifactsDependsOn>
+	</PropertyGroup>
+
+	<Target Name="_AddAppleApplicationArtifactMetadata"
+		Condition="'@(ApplicationArtifact->Count())' != '0' And '$(_AppBundleManifestPath)' != '' And (Exists('$(_AppBundleManifestPath)') Or '$(IsRemoteBuild)' == 'true')">
+		<ReadAppManifest
+			SessionId="$(BuildSessionId)"
+			Condition="'$(IsMacEnabled)' == 'true'"
+			AppManifest="$(_AppBundleManifestPath)"
+			SdkDevPath="$(_SdkDevPath)"
+			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
+			>
+			<Output TaskParameter="CFBundleDisplayName" PropertyName="_ApplicationArtifactCFBundleDisplayName" />
+			<Output TaskParameter="CFBundleName" PropertyName="_ApplicationArtifactCFBundleName" />
+			<Output TaskParameter="CFBundleShortVersionString" PropertyName="_ApplicationArtifactCFBundleShortVersionString" />
+			<Output TaskParameter="CFBundleVersion" PropertyName="_ApplicationArtifactCFBundleVersion" />
+		</ReadAppManifest>
+
+		<ItemGroup>
+			<ApplicationArtifact Update="@(ApplicationArtifact)">
+				<ApplicationId>%(ApplicationArtifact.BundleIdentifier)</ApplicationId>
+				<ApplicationTitle>$(_ApplicationArtifactCFBundleDisplayName)</ApplicationTitle>
+				<ApplicationName Condition="'$(_ApplicationArtifactCFBundleDisplayName)' != ''">$(_ApplicationArtifactCFBundleDisplayName)</ApplicationName>
+				<ApplicationName Condition="'$(_ApplicationArtifactCFBundleDisplayName)' == ''">$(_ApplicationArtifactCFBundleName)</ApplicationName>
+				<ApplicationDisplayVersion>$(_ApplicationArtifactCFBundleShortVersionString)</ApplicationDisplayVersion>
+				<ApplicationVersion>$(_ApplicationArtifactCFBundleVersion)</ApplicationVersion>
+			</ApplicationArtifact>
+		</ItemGroup>
+	</Target>
+
+	<Target Name="GetApplicationArtifacts" DependsOnTargets="$(GetApplicationArtifactsDependsOn)" Returns="@(ApplicationArtifact)" />
 
 	<PropertyGroup>
 		<PrepareAssemblies Condition="'$(PrepareAssemblies)' == ''">false</PrepareAssemblies>
@@ -3612,10 +3736,12 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 	<!--
 		_PostprocessAssemblies must run after the trimmer (ILLink) and before the assemblies are (Native)AOT/R2R-compiled.
+		Exception: when postprocessing runs after ILC instead (the trimmable-static + NativeAOT scenario), the
+		_PostprocessAssembliesAfterIlc target handles it, so skip this target then.
 	-->
 	<Target
 		Name="_PostprocessAssemblies"
-		Condition="'$(PostProcessAssemblies)' == 'true' And '$(RuntimeIdentifiers)' == ''"
+		Condition="'$(PostProcessAssemblies)' == 'true' And '$(RuntimeIdentifiers)' == '' And '$(_PostprocessAssembliesAfterIlc)' != 'true'"
 		Inputs="@(_AssembliesToPostProcess)"
 		Outputs="@(_AssembliesToPostProcess->'$(_PostprocessedAssembliesDirectory)%(Filename)%(Extension)');$(_AssemblyPostProcessorMSBuildOutputFile)"
 		AfterTargets="ILLink"
@@ -3628,6 +3754,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			OptionsFile="$(_CustomLinkerOptionsFile)"
 			OutputDirectory="$(_PostprocessedAssembliesDirectory)"
 			Postprocessing="true"
+			PreTrimAssemblies="@(ManagedAssemblyToLink)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 		>
 			<Output TaskParameter="OutputAssemblies" ItemName="_PostProcessedAssemblies" />

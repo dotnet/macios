@@ -193,7 +193,7 @@ namespace GeneratorTests {
 			bgen.Profile = profile;
 			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "bindas1050modelerror.cs")));
 			bgen.AssertExecuteError ("build");
-			bgen.AssertError (1050, "[BindAs] cannot be used inside Protocol or Model types. Type: MyFooClass");
+			bgen.AssertError (1050, "[BindAs] cannot be used on properties or return values inside Protocol or Model types. Type: MyFooClass");
 		}
 
 		[Test]
@@ -205,7 +205,7 @@ namespace GeneratorTests {
 			bgen.Profile = profile;
 			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "bindas1050protocolerror.cs")));
 			bgen.AssertExecuteError ("build");
-			bgen.AssertError (1050, "[BindAs] cannot be used inside Protocol or Model types. Type: MyFooClass");
+			bgen.AssertError (1050, "[BindAs] cannot be used on properties or return values inside Protocol or Model types. Type: MyFooClass");
 		}
 
 		[Test]
@@ -984,6 +984,32 @@ namespace BI1066Errors
 				bgen.AssertError (1121, msg);
 
 			bgen.AssertErrorCount (errorMessages.Length);
+		}
+
+		[Test]
+		[TestCase (Profile.iOS)]
+		public void BI1126 (Profile profile)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
+			var bgen = new BGenTool ();
+			bgen.Profile = profile;
+			bgen.Defines = BGenTool.GetDefaultDefines (profile);
+			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "factory-method-noninit.cs")));
+			bgen.AssertExecuteError ("build");
+			bgen.AssertError (1126, "The [FactoryMethod] attribute on 'FactoryMethodNonInitTest.BadWidget.CreateWithFoo' can only be used with an Objective-C 'init' selector (the selector must be 'init' or start with 'init' followed by an uppercase letter), but the selector is 'createWithFoo:'.");
+		}
+
+		[Test]
+		[TestCase (Profile.iOS)]
+		public void BI1127 (Profile profile)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
+			var bgen = new BGenTool ();
+			bgen.Profile = profile;
+			bgen.Defines = BGenTool.GetDefaultDefines (profile);
+			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "factory-method-named-error.cs")));
+			bgen.AssertExecuteError ("build");
+			bgen.AssertError (1127, "The [FactoryMethod] attribute on 'FactoryMethodNamedError.BadWidget.CreateWithFoo' can't specify a method name when applied to a method that isn't a constructor. Remove the method name from the [FactoryMethod] attribute; the name of the binding method is used instead.");
 		}
 	}
 }

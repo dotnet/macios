@@ -12,18 +12,14 @@
 namespace GameplayKit {
 	public partial class GKBehavior {
 
-		/// <param name="index">To be added.</param>
 		/// <summary>Retrieves the <see cref="GameplayKit.GKGoal" /> at the specified index. (see <see cref="GameplayKit.GKBehavior.GoalCount" />)</summary>
-		/// <value>To be added.</value>
-		/// <remarks>To be added.</remarks>
+		/// <param name="index">The index.</param>
 		public GKGoal this [nuint index] {
 			get { return ObjectAtIndexedSubscript (index); }
 		}
 
-		/// <param name="goal">To be added.</param>
 		/// <summary>Retrieves the weight for the <paramref name="goal" />.</summary>
-		/// <value>To be added.</value>
-		/// <remarks>To be added.</remarks>
+		/// <param name="goal">The goal.</param>
 		public NSNumber this [GKGoal goal] {
 			// The docs show that ObjectForKeyedSubscript should return 0.0 if the GKGoal is not
 			// available but actually returns null: https://developer.apple.com/documentation/gameplaykit/gkbehavior/1388723-objectforkeyedsubscript?language=objc

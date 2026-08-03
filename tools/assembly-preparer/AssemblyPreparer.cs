@@ -146,6 +146,7 @@ public class AssemblyPreparer : IDisposable {
 			steps.Add (new PreserveSmartEnumConversionsStep ());
 			steps.Add (new PreserveBlockCodeStep ());
 			steps.Add (new OptimizeGeneratedCodeStep ());
+			steps.Add (new RemoveConsoleWriteLineCallsStep ());
 			steps.Add (new ApplyPreserveAttributeStep ());
 			steps.Add (new MarkForStaticRegistrarStep ());
 			steps.Add (new MarkNSObjectsStep ());

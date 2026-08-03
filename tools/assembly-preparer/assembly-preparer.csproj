@@ -165,6 +165,9 @@
 		<Compile Include="../dotnet-linker/PreserveSmartEnumConversionsStep.cs">
 			<Link>external/tools/dotnet-linker/PreserveSmartEnumConversionsStep.cs</Link>
 		</Compile>
+		<Compile Include="../dotnet-linker/RemoveConsoleWriteLineCallsStep.cs">
+			<Link>external/tools/dotnet-linker/RemoveConsoleWriteLineCallsStep.cs</Link>
+		</Compile>
 		<Compile Include="../dotnet-linker/XmlDescriptor.cs">
 			<Link>external/tools/dotnet-linker/XmlDescriptor.cs</Link>
 		</Compile>

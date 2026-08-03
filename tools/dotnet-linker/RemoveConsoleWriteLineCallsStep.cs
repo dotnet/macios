@@ -24,7 +24,7 @@ namespace Xamarin.Linker.Steps {
 	// the app (any console output produced by these calls is removed).
 	public class RemoveConsoleWriteLineCallsStep : AssemblyModifierStep {
 		protected override string Name { get; } = "Remove Console.WriteLine calls";
-		protected override int ErrorCode { get; } = 2480;
+		protected override int ErrorCode { get; } = 2530;
 
 		protected override bool IsActiveFor (AssemblyDefinition assembly)
 		{

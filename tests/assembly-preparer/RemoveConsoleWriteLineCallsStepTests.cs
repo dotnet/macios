@@ -34,6 +34,13 @@ public class RemoveConsoleWriteLineCallsStepTests : BaseClass {
 			Console.WriteLine (SideEffect ());
 		}
 
+		// A multi-argument Console.WriteLine overload: every argument must be popped so the
+		// evaluation stack stays balanced after the call is removed.
+		public void WithMultipleArguments ()
+		{
+			Console.WriteLine (""{0} {1}"", 1, 2);
+		}
+
 		static string SideEffect ()
 		{
 			Counter++;
@@ -82,6 +89,11 @@ public class RemoveConsoleWriteLineCallsStepTests : BaseClass {
 			Assert.That (HasConsoleWriteLineCall (sideEffecting), Is.False, "WithSideEffectingArgument: WriteLine removed");
 			Assert.That (HasCall (sideEffecting, "SideEffect"), Is.True, "WithSideEffectingArgument: side effect preserved");
 			Assert.That (sideEffecting.Body.Instructions.Any (i => i.OpCode.Code == Code.Pop), Is.True, "WithSideEffectingArgument: argument popped");
+
+			// A multi-argument overload must get one 'pop' per argument (here: format string + 2 boxed ints).
+			var multiArg = type.Methods.Single (v => v.Name == "WithMultipleArguments");
+			Assert.That (HasConsoleWriteLineCall (multiArg), Is.False, "WithMultipleArguments: WriteLine removed");
+			Assert.That (multiArg.Body.Instructions.Count (i => i.OpCode.Code == Code.Pop), Is.EqualTo (3), "WithMultipleArguments: one pop per argument");
 		});
 	}
 
@@ -104,6 +116,7 @@ public class RemoveConsoleWriteLineCallsStepTests : BaseClass {
 			Assert.That (HasConsoleWriteLineCall (type.Methods.Single (v => v.Name == "WithConstantArgument")), Is.True, "WithConstantArgument");
 			Assert.That (HasConsoleWriteLineCall (type.Methods.Single (v => v.Name == "WithoutArguments")), Is.True, "WithoutArguments");
 			Assert.That (HasConsoleWriteLineCall (type.Methods.Single (v => v.Name == "WithSideEffectingArgument")), Is.True, "WithSideEffectingArgument");
+			Assert.That (HasConsoleWriteLineCall (type.Methods.Single (v => v.Name == "WithMultipleArguments")), Is.True, "WithMultipleArguments");
 		});
 	}
 }

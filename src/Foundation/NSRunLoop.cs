@@ -45,6 +45,7 @@ namespace Foundation {
 		/// <summary>Gets the native constants for a collection of run loop modes.</summary>
 		/// <param name="self">The run loop modes to convert.</param>
 		/// <returns>The native constants corresponding to the specified run loop modes.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="self" /> is <see langword="null" />.</exception>
 		public static NSString [] GetConstants (this NSRunLoopMode [] self)
 		{
 			if (self is null)

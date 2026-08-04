@@ -22,7 +22,7 @@
 //
 
 namespace MediaLibrary {
-	/// <summary>Specifies the kinds of media provided by a media source.</summary>
+	/// <summary>A bitmask specifying the kinds of media provided by a media source.</summary>
 	[Native]
 	public enum MLMediaSourceType : ulong {
 		/// <summary>The source provides audio media.</summary>

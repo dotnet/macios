@@ -217,13 +217,10 @@ Microsoft.MacCatalyst.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::R
 Microsoft.MacCatalyst.dll:Foundation.NSObject/Flags Foundation.NSObjectData::flags
 Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer
 Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer..cctor()
-Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer..ctor()
-Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer..ctor(System.IntPtr, ObjCRuntime.IManagedRegistrar)
 Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer.Add(Foundation.NSObject)
 Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer.Drain(Foundation.NSObject)
 Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer.ScheduleDrain()
 Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__
-Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_3053_Foundation_NSObject_NSObject_Disposer__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
 Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_3054_Foundation_NSObject_NSObject_Disposer_Drain(System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
 Microsoft.MacCatalyst.dll:Foundation.NSObject/XamarinGCHandleFlags
 Microsoft.MacCatalyst.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::HasManagedRef
@@ -286,7 +283,7 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.__Registrar__.ConstructNSObject(System.Run
 Microsoft.MacCatalyst.dll:ObjCRuntime.__Registrar__.LookupType(System.UInt32)
 Microsoft.MacCatalyst.dll:ObjCRuntime.__Registrar__.LookupTypeId(System.RuntimeTypeHandle)
 Microsoft.MacCatalyst.dll:ObjCRuntime.__Registrar__.LookupUnmanagedFunction_2_2__0_9__(System.String, System.Int32)
-Microsoft.MacCatalyst.dll:ObjCRuntime.__Registrar__.LookupUnmanagedFunction_2_2__10_11__(System.String, System.Int32)
+Microsoft.MacCatalyst.dll:ObjCRuntime.__Registrar__.LookupUnmanagedFunction_2_2__10_10__(System.String, System.Int32)
 Microsoft.MacCatalyst.dll:ObjCRuntime.__Registrar__.LookupUnmanagedFunction(System.String, System.Int32)
 Microsoft.MacCatalyst.dll:ObjCRuntime.__Registrar__.LookupUnmanagedFunctionImpl(System.String, System.Int32)
 Microsoft.MacCatalyst.dll:ObjCRuntime.__Registrar__.RegisterWrapperTypes(System.Collections.Generic.Dictionary`2<System.RuntimeTypeHandle,System.RuntimeTypeHandle>)

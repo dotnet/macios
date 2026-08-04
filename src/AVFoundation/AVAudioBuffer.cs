@@ -20,7 +20,7 @@ namespace AVFoundation {
 				return new AudioBuffers (audioBufferList);
 			}
 		}
-		/// <summary>Gets a mutable version of the underlying <see cref="AudioToolbox.AudioBuffers" />.</summary>
+
 		/// <summary>Gets a mutable version of the underlying <see cref="AudioToolbox.AudioBuffers" />.</summary>
 		/// <value>The mutable audio buffer list.</value>
 		public AudioBuffers MutableAudioBufferList {

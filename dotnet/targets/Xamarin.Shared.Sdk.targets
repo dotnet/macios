@@ -417,10 +417,14 @@
 		<Error Condition="@(_RuntimeIdentifierDistinctPlatforms->Count()) > 1" Text="Building for all the runtime identifiers '$(RuntimeIdentifiers)' at the same time isn't possible, because they represent different platform variations." />
 
 		<PropertyGroup>
+			<_IsUniversalBuild>false</_IsUniversalBuild>
+			<_IsUniversalBuild Condition="@(_RuntimeIdentifiersAsItems->Count()) > 1">true</_IsUniversalBuild>
+
 			<!-- We disable building project references (BuildProjectReferences=false), because project references aren't RID-specific, so we build them (once) before running _RunRidSpecificBuild target, so that we don't have to build them once per RID -->
 			<_RidSpecificProperties>
 				BuildProjectReferences=false;
 				_IsMultiRidBuild=true;
+				_IsUniversalBuild=$(_IsUniversalBuild);
 				RuntimeIdentifiers=;
 				_ProcessedBundleResourcesPath=$(_ProcessedBundleResourcesPath);
 				_ProcessedContentPath=$(_ProcessedContentPath);
@@ -779,7 +783,7 @@
 				HotReloadCompatibleBuild=$(HotReloadCompatibleBuild)
 				ItemsDirectory=$(_LinkerItemsDirectory)
 				IsAppExtension=$(IsAppExtension)
-				IsMultiRidBuild=$(_IsMultiRidBuild)
+				IsMultiRidBuild=$(_IsUniversalBuild)
 				IsSimulatorBuild=$(_SdkIsSimulator)
 				LibMonoLinkMode=$(_LibMonoLinkMode)
 				LibXamarinLinkMode=$(_LibXamarinLinkMode)

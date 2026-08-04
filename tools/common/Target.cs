@@ -293,8 +293,11 @@ namespace Xamarin.Bundler {
 
 			if (app.GenerateTrustedPlatformAssemblies && trusted_platform_assembly_names.Length > 0) {
 				sw.WriteLine ("\txamarin_trusted_platform_assembly_names = xamarin_trusted_platform_assembly_names_array;");
-				if (app.IsMultiRidBuild)
+				if (app.IsMultiRidBuild) {
+					sw.WriteLine ("#if defined (SUPPORTS_UNIVERSAL_BUILDS)");
 					sw.WriteLine ("\txamarin_is_multi_rid_build = true;");
+					sw.WriteLine ("#endif");
+				}
 			}
 
 			if (app.UseInterpreter) {

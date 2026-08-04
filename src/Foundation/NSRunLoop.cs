@@ -42,10 +42,9 @@ namespace Foundation {
 	static public partial class NSRunLoopModeExtensions {
 
 		// this is a less common pattern so it's not automatically generated
-		/// <param name="self">The instance on which this method operates.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the native constants for a collection of run loop modes.</summary>
+		/// <param name="self">The run loop modes to convert.</param>
+		/// <returns>The native constants corresponding to the specified run loop modes.</returns>
 		public static NSString [] GetConstants (this NSRunLoopMode [] self)
 		{
 			if (self is null)

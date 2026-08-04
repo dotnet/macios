@@ -103,7 +103,6 @@ Microsoft.MacCatalyst.dll:Foundation.NSException.get_Name()
 Microsoft.MacCatalyst.dll:Foundation.NSException.get_Reason()
 Microsoft.MacCatalyst.dll:Foundation.NSObject
 Microsoft.MacCatalyst.dll:Foundation.NSObject..cctor()
-Microsoft.MacCatalyst.dll:Foundation.NSObject..ctor()
 Microsoft.MacCatalyst.dll:Foundation.NSObject..ctor(Foundation.NSObjectFlag)
 Microsoft.MacCatalyst.dll:Foundation.NSObject..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.MacCatalyst.dll:Foundation.NSObject..ctor(ObjCRuntime.NativeHandle)
@@ -165,13 +164,10 @@ Microsoft.MacCatalyst.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::R
 Microsoft.MacCatalyst.dll:Foundation.NSObject/Flags Foundation.NSObjectData::flags
 Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer
 Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer..cctor()
-Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer..ctor()
-Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer..ctor(System.IntPtr, ObjCRuntime.IManagedRegistrar)
 Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer.Add(Foundation.NSObject)
 Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer.Drain(Foundation.NSObject)
 Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer.ScheduleDrain()
 Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__
-Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_3053_Foundation_NSObject_NSObject_Disposer__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
 Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_3054_Foundation_NSObject_NSObject_Disposer_Drain(System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
 Microsoft.MacCatalyst.dll:Foundation.NSObject/XamarinGCHandleFlags
 Microsoft.MacCatalyst.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::HasManagedRef

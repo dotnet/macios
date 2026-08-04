@@ -652,4 +652,8 @@
 	<data name="BI1127" xml:space="preserve">
 		<value>The [FactoryMethod] attribute on '{0}.{1}' can't specify a method name when applied to a method that isn't a constructor. Remove the method name from the [FactoryMethod] attribute; the name of the binding method is used instead.</value>
 	</data>
+
+	<data name="BI1128" xml:space="preserve">
+		<value>The [Field] member '{0}.{1}' sets SymbolAddress, but its type is '{2}'; only System.IntPtr is supported.</value>
+	</data>
 </root>

@@ -22,13 +22,14 @@
 //
 
 namespace MediaLibrary {
+	/// <summary>Specifies the kinds of media provided by a media source.</summary>
 	[Native]
 	public enum MLMediaSourceType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The source provides audio media.</summary>
 		Audio = 1 << 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The source provides image media.</summary>
 		Image = 1 << 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The source provides movie media.</summary>
 		Movie = 1 << 2,
 	}
 

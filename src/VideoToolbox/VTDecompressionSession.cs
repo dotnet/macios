@@ -361,6 +361,10 @@ namespace VideoToolbox {
 		}
 
 		[UnmanagedCallersOnly]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[UnsupportedOSPlatform ("tvos")]
 		unsafe static void VTDecompressionMultiImageCapableOutputBlockCallback (BlockLiteral* block, VTStatus status, VTDecodeInfoFlags infoFlags, IntPtr imageBuffer, IntPtr taggedBufferGroup, CMTime presentationTimeStamp, CMTime presentationDuration)
 		{
 			var del = BlockLiteral.GetTarget<VTDecompressionMultiImageCapableOutputHandler> ((IntPtr) block);
@@ -416,6 +420,10 @@ namespace VideoToolbox {
 		}
 
 		[UnmanagedCallersOnly]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[UnsupportedOSPlatform ("tvos")]
 		unsafe static void VTDecompressionOutputMultiImageCallbackBlock (BlockLiteral* block, IntPtr decompressionOutputMultiImageRefCon, IntPtr sourceFrameRefCon, VTStatus status, VTDecodeInfoFlags infoFlags, IntPtr taggedBufferGroup, CMTime presentationTimeStamp, CMTime presentationDuration)
 		{
 			var del = BlockLiteral.GetTarget<VTDecompressionOutputMultiImageCallback> ((IntPtr) block);

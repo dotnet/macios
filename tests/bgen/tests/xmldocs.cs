@@ -18,6 +18,17 @@ namespace XmlDocumentation {
 		IntPtr Constructor (string p);
 
 		/// <summary>
+		/// Summary for T1.Create
+		/// </summary>
+		/// <param name="factoryName">Docs for factoryName.</param>
+		/// <param name="dummy">Docs for dummy.</param>
+		/// <returns>A new instance, or null on failure.</returns>
+		[Export ("initWithFactoryName:dummy:")]
+		[FactoryMethod]
+		[return: NullAllowed]
+		IntPtr Constructor (string factoryName, nint dummy);
+
+		/// <summary>
 		/// Summary for T1.Method
 		/// </summary>
 		[Export ("method")]
@@ -83,6 +94,16 @@ namespace XmlDocumentation {
 		[Export ("tintColor")]
 		[Appearance]
 		UIColor TintColor { get; set; }
+
+		// No xml documentation here: the generated appearance member should get a generated summary.
+		[Export ("backgroundColor")]
+		[Appearance]
+		UIColor BackgroundColor { get; set; }
+
+		// No xml documentation here: the generated appearance member should get a generated summary.
+		[Export ("setValue:")]
+		[Appearance]
+		void SetValue (nint value);
 	}
 #endif // IOS
 

@@ -3,11 +3,6 @@ namespace Cecil.Tests {
 	public partial class HandleSafetyTest {
 		static HashSet<string> knownFailuresHandleSafety = new HashSet<string> {
 			"AddressBook.ABMultiValue`1/<>c.<.ctor>b__2_1`0 (T)",
-			"AddressBook.ABMultiValueEntry`1.get_Identifier ()",
-			"AddressBook.ABMultiValueEntry`1.get_Label ()",
-			"AddressBook.ABMultiValueEntry`1.get_Value`0 ()",
-			"AddressBook.ABMultiValueEntry`1.set_Label (Foundation.NSString)",
-			"AddressBook.ABMultiValueEntry`1.set_Value`0 (T)",
 			"AddressBook.ABPerson/<>c__95`1.<CreateDictionaryMultiValue>b__95_1`0 (T)",
 			"AppKit.NSStringAttributes.Get (Foundation.NSString)",
 			"AudioUnit.AUScheduledAudioFileRegion.GetAudioFileRegion ()",
@@ -78,7 +73,6 @@ namespace Cecil.Tests {
 			"Foundation.NSArray.FromNativeObjectsImpl`1 (T[], System.IntPtr, System.Boolean)",
 			"Foundation.NSArray.FromNSObjects (System.Collections.Generic.IList`1<Foundation.NSObject>)",
 			"Foundation.NSArray`1.FromNSObjects`0 (System.Int32, TKey[])",
-			"Foundation.NSFastEnumerator`1.Fetch ()",
 			"ImageIO.CGImageDestinationOptions.set_DestinationBackgroundColor (CoreGraphics.CGColor)",
 			"NaturalLanguage.NLStrongDictionary.get_Item (Foundation.NSString)",
 			"NaturalLanguage.NLVectorDictionary.get_Item (Foundation.NSString)",

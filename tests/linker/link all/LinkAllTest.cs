@@ -508,6 +508,12 @@ namespace LinkAll {
 			if (!global::XamarinTests.ObjCRuntime.Registrar.IsTrimmableStaticRegistrar)
 				Assert.Ignore ("This test only applies to the trimmable static registrar.");
 
+			// The [ProtocolMember] attributes (which reference NSSet<T>) are only trimmed away when the dynamic
+			// registrar has been removed - it reads these attributes via reflection at runtime, so they're kept
+			// when it's present. Without trimming the attributes, NSSet<T> stays too, so there's nothing to verify.
+			if (global::ObjCRuntime.Runtime.DynamicRegistrationSupported)
+				Assert.Ignore ("This test only applies when the dynamic registrar has been removed.");
+
 			// https://github.com/dotnet/macios/issues/3523
 			// TEMP-IGNORE-25915: temporarily ignored on net11.0 until https://github.com/dotnet/macios/pull/25915 is merged.
 			Assert.Ignore ("Temporarily ignored on net11.0: the trimmable static registrar's TypeMap path preserves the full exported method surface of registered types (e.g. UIResponder.PressesBegan takes an NSSet<UIPress>), which keeps NSSet<T> alive. Fixed by https://github.com/dotnet/macios/pull/25915.");

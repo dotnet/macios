@@ -603,18 +603,16 @@ xamarin_check_for_gced_object (MonoObject *obj, SEL sel, id self, MonoMethod *me
 		return;
 	}
 	
-	const char *m = "Failed to marshal the Objective-C object %p (type: %s). "
-	"Could not find an existing managed instance for this object, "
-	"nor was it possible to create a new managed instance "
-	"(because the type '%s' does not have a constructor that takes one NativeHandle argument).\n"
-	"Additional information:\n"
-	"\tSelector: %s\n"
-	"\tMethod: %s\n";
-	
 	char *method_full_name = mono_method_full_name (method, TRUE);
 	char *type_name = xamarin_lookup_managed_type_name ([self class], exception_gchandle);
 	if (*exception_gchandle == INVALID_GCHANDLE) {
-		char *msg = xamarin_strdup_printf (m, self, object_getClassName (self), type_name, sel_getName (sel), method_full_name);
+		char *msg = xamarin_strdup_printf ("Failed to marshal the Objective-C object %p (type: %s). "
+		"Could not find an existing managed instance for this object, "
+		"nor was it possible to create a new managed instance "
+		"(because the type '%s' does not have a constructor that takes one NativeHandle argument).\n"
+		"Additional information:\n"
+		"\tSelector: %s\n"
+		"\tMethod: %s\n", self, object_getClassName (self), type_name, sel_getName (sel), method_full_name);
 		GCHandle ex_handle = xamarin_create_runtime_exception (8027, msg, exception_gchandle);
 		xamarin_free (msg);
 		if (*exception_gchandle == INVALID_GCHANDLE)
@@ -985,7 +983,7 @@ xamarin_process_fatal_exception_gchandle (GCHandle gchandle, const char *message
 
 	NSString *fatal_message = [NSString stringWithFormat:@"%s\n%@", message, xamarin_print_all_exceptions (gchandle)];
 	NSLog (@PRODUCT ": %@", fatal_message);
-	xamarin_assertion_message ([fatal_message UTF8String]);
+	xamarin_assertion_message ("%s", [fatal_message UTF8String]);
 }
 
 // Because this function won't always return, it will take ownership of the GCHandle and free it.
@@ -1242,14 +1240,7 @@ xamarin_strdup_printf (const char *msg, ...)
 
 	va_start (args, msg);
 
-// Silence this warning:
-// runtime.m:1313:25: error: format string is not a string literal [-Werror,-Wformat-nonliteral]
-//  1313 |         vasprintf (&formatted, msg, args);
-//       |                                ^~~~~
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wformat-nonliteral"
 	vasprintf (&formatted, msg, args);
-#pragma clang diagnostic pop
 
 	va_end (args);
 
@@ -1264,14 +1255,7 @@ xamarin_assertion_message (const char *msg, ...)
 
 	va_start (args, msg);
 
-// Silence this warning:
-// runtime.m:1335:25: error: format string is not a string literal [-Werror,-Wformat-nonliteral]
-//  1335 |         vasprintf (&formatted, msg, args);
-//       |                                ^~~
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wformat-nonliteral"
 	vasprintf (&formatted, msg, args);
-#pragma clang diagnostic pop
 
 	if (formatted) {
 		PRINT ( PRODUCT ": %s", formatted);
@@ -2572,14 +2556,7 @@ xamarin_printf (const char *format, ...)
 void
 xamarin_vprintf (const char *format, va_list args)
 {
-// Silence this warning:
-// runtime.m:2564:56: error: format string is not a string literal [-Werror,-Wformat-nonliteral]
-//  2564 |         NSString *message = [[NSString alloc] initWithFormat: [NSString stringWithUTF8String: format] arguments: args];
-//       |                                                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wformat-nonliteral"
 	NSString *message = [[NSString alloc] initWithFormat: [NSString stringWithUTF8String: format] arguments: args];
-#pragma clang diagnostic pop
 	
 	NSLog (@"%@", message);	
 

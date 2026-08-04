@@ -1614,6 +1614,82 @@ namespace Xamarin.Linker {
 		}
 
 		/// <summary>
+		/// Preserve all the members declared on a type (and the type itself), which is what
+		/// <c>[Preserve (AllMembers = true)]</c> means.
+		/// </summary>
+		/// <remarks>
+		///   <para>
+		///     A DynamicDependency attribute with DynamicallyAccessedMemberTypes can't be used here: the trimmer
+		///     resolves those member types over the entire type hierarchy, so it would also preserve every member
+		///     of every base type (for an NSObject subclass that means all of NSObject, which is quite big).
+		///     Instead add one DynamicDependency attribute per member declared on the type itself, and a single
+		///     DynamicDependency attribute for the interfaces the type implements.
+		///   </para>
+		/// </remarks>
+		/// <param name="addToMethod">The method on which to add the dynamic dependency attributes.</param>
+		/// <param name="type">The type whose members should be preserved.</param>
+		public bool AddPreserveAllMembersDynamicDependencyAttributes (MethodDefinition addToMethod, TypeDefinition type)
+		{
+			var signatures = new HashSet<string> (StringComparer.Ordinal);
+
+			foreach (var field in type.Fields) {
+				if (!field.HasCustomAttribute ("System.Runtime.CompilerServices", "CompilerGeneratedAttribute"))
+					signatures.Add (DocumentationComments.GetSignature (field));
+			}
+			foreach (var method in type.Methods) {
+				if (!method.HasCustomAttribute ("System.Runtime.CompilerServices", "CompilerGeneratedAttribute"))
+					signatures.Add (DocumentationComments.GetSignature (method));
+			}
+			// Properties and events don't have a documentation comment signature helper, but the trimmer will
+			// match any member with the given name, which is good enough (and it's what we want here anyway).
+			foreach (var property in type.Properties)
+				signatures.Add (property.Name);
+			foreach (var @event in type.Events)
+				signatures.Add (@event.Name);
+
+			if (signatures.Count == 0) {
+				// The type has no declared members, so add a placeholder member and preserve that,
+				// which will keep the type itself (same pattern as AddDynamicDependencyAttributeToStaticConstructor).
+				var placeholderName = "__linker_preserve__";
+				FieldDefinition? placeholderMember = null;
+				if (type.HasFields)
+					placeholderMember = type.Fields.FirstOrDefault (f => f.Name == placeholderName && f.IsStatic);
+				if (placeholderMember is null) {
+					placeholderMember = new FieldDefinition (placeholderName, FieldAttributes.Private | FieldAttributes.Static, System_Int32);
+					type.Fields.Add (placeholderMember);
+				}
+				signatures.Add (DocumentationComments.GetSignature (placeholderMember));
+			}
+
+			var modified = false;
+			foreach (var signature in signatures.OrderBy (v => v, StringComparer.Ordinal))
+				modified |= AddAttributeOnlyOnce (addToMethod, CreateDynamicDependencyAttribute (signature, type));
+
+			// The interfaces a type implements must be preserved as well: the static registrar needs the
+			// protocol interfaces (and the custom attributes on them) to find the block proxy types it
+			// references from the generated native code.
+			// Only do this if there are any interfaces to preserve, otherwise the trimmer complains that
+			// no members were resolved for the attribute (IL2037).
+			if (HasAnyInterfaces (type))
+				modified |= AddAttributeOnlyOnce (addToMethod, CreateDynamicDependencyAttribute (DynamicallyAccessedMemberTypes.Interfaces, type));
+
+			return modified;
+		}
+
+		/// <summary>
+		/// Returns true if the type, or any of its base types, implements any interfaces.
+		/// </summary>
+		static bool HasAnyInterfaces (TypeDefinition? type)
+		{
+			while (type is not null) {
+				if (type.HasInterfaces)
+					return true;
+				type = type.BaseType?.Resolve ();
+			}
+			return false;
+		}
+
+		/// <summary>
 		/// Preserve a method conditionally on another type
 		/// </summary>
 		/// <param name="onType">The type on which to add the dynamic dependency attribute.</param>

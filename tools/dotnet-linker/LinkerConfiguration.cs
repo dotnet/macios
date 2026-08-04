@@ -139,6 +139,12 @@ namespace Xamarin.Linker {
 		// This dictionary contains information about the trampolines created for each assembly.
 		public AssemblyTrampolineInfos AssemblyTrampolineInfos = new ();
 
+		// The per-assembly companion TypeMap assemblies (_<Asm>.TypeMap.dll), keyed by the user
+		// assembly they belong to. When HotReloadCompatibleBuild is enabled, ManagedRegistrarStep
+		// creates these early (so it can emit the registrar trampolines into them instead of into
+		// the user assembly) and TrimmableRegistrarStep reuses them.
+		internal Dictionary<AssemblyDefinition, RegistrarCompanionAssembly> RegistrarCompanionAssemblies = new ();
+
 		// ASSEMBLY_PREPARER TODO move pinvoke wrapper generation out of ListExportedFields step (and remove the #pragma warning)
 #pragma warning disable CS0649 // Field is never assigned to, and will always have its default value null
 		internal PInvokeWrapperGenerator? PInvokeWrapperGenerationState;

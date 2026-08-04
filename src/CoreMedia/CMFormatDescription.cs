@@ -816,6 +816,10 @@ namespace CoreMedia {
 		/// <summary>Get any multi-image properties as an array of <see cref="CMTagCollection" /> values.</summary>
 		/// <param name="tagCollections">Upon output, and if successful, the format description's array of <see cref="CMTagCollection" /> values.</param>
 		/// <returns><see cref="CMFormatDescriptionError.None" /> if succcessful, or an error code otherwise.</returns>
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("tvos17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public CMFormatDescriptionError GetTagCollections (out CMTagCollection []? tagCollections)
 		{
 			IntPtr array;
@@ -834,6 +838,10 @@ namespace CoreMedia {
 		}
 
 		/// <summary>Get any multi-image properties as an array of <see cref="CMTagCollection" /> values.</summary>
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("tvos17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public CMTagCollection []? TagCollections {
 			get {
 				GetTagCollections (out var tagCollections);

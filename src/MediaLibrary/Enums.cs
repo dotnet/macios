@@ -33,13 +33,14 @@ namespace MediaLibrary {
 		Movie = 1 << 2,
 	}
 
+	/// <summary>Specifies a kind of media object.</summary>
 	[Native]
 	public enum MLMediaType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Audio media.</summary>
 		Audio = 1 << 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Image media.</summary>
 		Image = 1 << 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Movie media.</summary>
 		Movie = 1 << 2,
 	}
 }

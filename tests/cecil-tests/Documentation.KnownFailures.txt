@@ -24607,7 +24607,6 @@ T:MediaLibrary.MLMediaGroup
 T:MediaLibrary.MLMediaLibrary
 T:MediaLibrary.MLMediaObject
 T:MediaLibrary.MLMediaSource
-T:MediaLibrary.MLMediaSourceType
 T:MediaLibrary.MLMediaType
 T:MediaPlayer.AVMediaSelectionGroup_MPNowPlayingInfoLanguageOptionAdditions
 T:MediaPlayer.AVMediaSelectionOption_MPNowPlayingInfoLanguageOptionAdditions

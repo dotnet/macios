@@ -6,7 +6,7 @@ namespace FinderSync {
 	public enum FIMenuKind : ulong {
 		/// <summary>A contextual menu for selected items.</summary>
 		ContextualMenuForItems = 0,
-		/// <summary>A contextual menu for the monitored folder containing the selected items.</summary>
+		/// <summary>A contextual menu for the background of a monitored folder.</summary>
 		ContextualMenuForContainer = 1,
 		/// <summary>A contextual menu for an item in the Finder sidebar.</summary>
 		ContextualMenuForSidebar = 2,

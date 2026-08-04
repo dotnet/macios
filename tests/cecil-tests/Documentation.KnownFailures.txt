@@ -17188,7 +17188,6 @@ P:CoreAnimation.CAConstraint.Offset
 P:CoreAnimation.CADisplayLink.PreferredFrameRateRange
 P:CoreAnimation.CAEdrMetadata.Available
 P:CoreAnimation.CAEdrMetadata.HlgMetadata
-P:CoreAnimation.CAFrameRateRange.Default
 P:CoreAnimation.CAGradientLayer.WeakLayerType
 P:CoreAnimation.CALayer.ContentsHeadroom
 P:CoreAnimation.CALayer.CornerCurve
@@ -21793,7 +21792,6 @@ P:UIKit.UIIndirectScribbleInteraction.HandlingWriting
 P:UIKit.UILargeContentViewerInteraction.Delegate
 P:UIKit.UILargeContentViewerInteraction.Enabled
 P:UIKit.UIListContentView.ListContentConfiguration
-P:UIKit.UIListSeparatorConfiguration.AutomaticInsets
 P:UIKit.UIMenu.Identifier
 P:UIKit.UIMenu.SelectedElements
 P:UIKit.UIMenuController.MenuVisible
@@ -23460,7 +23458,6 @@ T:CoreAnimation.CACornerCurve
 T:CoreAnimation.CACornerMask
 T:CoreAnimation.CADynamicRange
 T:CoreAnimation.CAEdrMetadata
-T:CoreAnimation.CAFrameRateRange
 T:CoreAnimation.CAGradientLayerType
 T:CoreAnimation.CAMetalDisplayLink
 T:CoreAnimation.CAMetalDisplayLinkUpdate

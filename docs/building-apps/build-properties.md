@@ -670,9 +670,11 @@ Example:
 
 ## HotReloadCompatibleBuild
 
-A boolean property that indicates whether the build must be compatible with Hot
-Reload. When enabled, the build tasks avoid modifying user (reloadable)
-assemblies, since such modifications would break Hot Reload.
+A boolean property that indicates whether the build must remain compatible
+with Hot Reload. When set to `true`, the build avoids modifying user
+assemblies so they stay byte-for-byte unchanged (a requirement for Hot
+Reload). This will disable a few minor optimizations, but will otherwies not
+affect anything.
 
 The default value is `true` for debug builds and `false` otherwise.
 

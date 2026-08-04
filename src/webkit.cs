@@ -8286,6 +8286,7 @@ namespace WebKit {
 		/// <param name="string">The pattern to initialize the new instance with.</param>
 		/// <param name="error">The error object, if an error occurred, otherwise null.</param>
 		/// <returns>A newly created <see cref="WKWebExtensionMatchPattern" /> if successful, otherwise null.</returns>
+		[DesignatedInitializer]
 		[Export ("initWithString:error:")]
 		[FactoryMethod]
 		[return: NullAllowed]
@@ -8297,6 +8298,7 @@ namespace WebKit {
 		/// <param name="path">The path to initialize the new instance with.</param>
 		/// <param name="error">The error object, if an error occurred, otherwise null.</param>
 		/// <returns>A newly created <see cref="WKWebExtensionMatchPattern" /> if successful, otherwise null.</returns>
+		[DesignatedInitializer]
 		[Export ("initWithScheme:host:path:error:")]
 		[FactoryMethod]
 		[return: NullAllowed]

@@ -13,7 +13,6 @@
 
 namespace Intents {
 	/// <summary>Enumerates the minimum and maximum values of a price range.</summary>
-	///     <remarks>To be added.</remarks>
 	public enum INPriceRangeOption {
 		/// <summary>The greatest price.</summary>
 		Maximum,

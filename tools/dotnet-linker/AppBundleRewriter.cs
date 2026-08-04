@@ -1654,9 +1654,25 @@ namespace Xamarin.Linker {
 			// The interfaces a type implements must be preserved as well: the static registrar needs the
 			// protocol interfaces (and the custom attributes on them) to find the block proxy types it
 			// references from the generated native code.
-			modified |= AddAttributeOnlyOnce (addToMethod, CreateDynamicDependencyAttribute (DynamicallyAccessedMemberTypes.Interfaces, type));
+			// Only do this if there are any interfaces to preserve, otherwise the trimmer complains that
+			// no members were resolved for the attribute (IL2037).
+			if (HasAnyInterfaces (type))
+				modified |= AddAttributeOnlyOnce (addToMethod, CreateDynamicDependencyAttribute (DynamicallyAccessedMemberTypes.Interfaces, type));
 
 			return modified;
+		}
+
+		/// <summary>
+		/// Returns true if the type, or any of its base types, implements any interfaces.
+		/// </summary>
+		static bool HasAnyInterfaces (TypeDefinition? type)
+		{
+			while (type is not null) {
+				if (type.HasInterfaces)
+					return true;
+				type = type.BaseType?.Resolve ();
+			}
+			return false;
 		}
 
 		/// <summary>

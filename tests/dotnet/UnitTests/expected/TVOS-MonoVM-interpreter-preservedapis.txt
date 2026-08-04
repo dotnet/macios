@@ -109,7 +109,6 @@ Microsoft.tvOS.dll:Foundation.NSException.get_Name()
 Microsoft.tvOS.dll:Foundation.NSException.get_Reason()
 Microsoft.tvOS.dll:Foundation.NSObject
 Microsoft.tvOS.dll:Foundation.NSObject..cctor()
-Microsoft.tvOS.dll:Foundation.NSObject..ctor()
 Microsoft.tvOS.dll:Foundation.NSObject..ctor(Foundation.NSObjectFlag)
 Microsoft.tvOS.dll:Foundation.NSObject..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.tvOS.dll:Foundation.NSObject..ctor(ObjCRuntime.NativeHandle)
@@ -174,13 +173,10 @@ Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::Register
 Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObjectData::flags
 Microsoft.tvOS.dll:Foundation.NSObject/NSObject_Disposer
 Microsoft.tvOS.dll:Foundation.NSObject/NSObject_Disposer..cctor()
-Microsoft.tvOS.dll:Foundation.NSObject/NSObject_Disposer..ctor()
-Microsoft.tvOS.dll:Foundation.NSObject/NSObject_Disposer..ctor(System.IntPtr, ObjCRuntime.IManagedRegistrar)
 Microsoft.tvOS.dll:Foundation.NSObject/NSObject_Disposer.Add(Foundation.NSObject)
 Microsoft.tvOS.dll:Foundation.NSObject/NSObject_Disposer.Drain(Foundation.NSObject)
 Microsoft.tvOS.dll:Foundation.NSObject/NSObject_Disposer.ScheduleDrain()
 Microsoft.tvOS.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__
-Microsoft.tvOS.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_2670_Foundation_NSObject_NSObject_Disposer__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
 Microsoft.tvOS.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_2671_Foundation_NSObject_NSObject_Disposer_Drain(System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
 Microsoft.tvOS.dll:Foundation.NSObject/XamarinGCHandleFlags
 Microsoft.tvOS.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::HasManagedRef

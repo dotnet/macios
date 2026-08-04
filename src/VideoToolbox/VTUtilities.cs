@@ -33,6 +33,7 @@ namespace VideoToolbox {
 		/// <param name="pixelBuffer">The pixel buffer to convert.</param>
 		/// <param name="image">On success, the created image; otherwise, <see langword="null" />.</param>
 		/// <returns>A status code that indicates whether the conversion succeeded.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="pixelBuffer" /> is <see langword="null" />.</exception>
 		public static VTStatus ToCGImage (this CVPixelBuffer pixelBuffer, out CGImage? image)
 		{
 			if (pixelBuffer is null)

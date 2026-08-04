@@ -1608,7 +1608,8 @@ namespace Xamarin.Linker {
 		///     A DynamicDependency attribute with DynamicallyAccessedMemberTypes can't be used here: the trimmer
 		///     resolves those member types over the entire type hierarchy, so it would also preserve every member
 		///     of every base type (for an NSObject subclass that means all of NSObject, which is quite big).
-		///     Instead add one DynamicDependency attribute per member declared on the type itself.
+		///     Instead add one DynamicDependency attribute per member declared on the type itself, and a single
+		///     DynamicDependency attribute for the interfaces the type implements.
 		///   </para>
 		/// </remarks>
 		/// <param name="addToMethod">The method on which to add the dynamic dependency attributes.</param>
@@ -1649,6 +1650,12 @@ namespace Xamarin.Linker {
 			var modified = false;
 			foreach (var signature in signatures.OrderBy (v => v, StringComparer.Ordinal))
 				modified |= AddAttributeOnlyOnce (addToMethod, CreateDynamicDependencyAttribute (signature, type));
+
+			// The interfaces a type implements must be preserved as well: the static registrar needs the
+			// protocol interfaces (and the custom attributes on them) to find the block proxy types it
+			// references from the generated native code.
+			modified |= AddAttributeOnlyOnce (addToMethod, CreateDynamicDependencyAttribute (DynamicallyAccessedMemberTypes.Interfaces, type));
+
 			return modified;
 		}
 

@@ -29,9 +29,9 @@ namespace Social {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SLComposeViewControllerResult : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The user cancelled composition.</summary>
 		Cancelled,
-		/// <summary>To be added.</summary>
+		/// <summary>The user completed composition.</summary>
 		Done,
 	}
 }

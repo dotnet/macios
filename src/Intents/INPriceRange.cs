@@ -22,11 +22,11 @@ namespace Intents {
 
 	public partial class INPriceRange {
 
-		/// <param name="option">To be added.</param>
-		///         <param name="price">To be added.</param>
-		///         <param name="currencyCode">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Creates a price range with either a minimum or maximum price.</summary>
+		/// <param name="option">Whether <paramref name="price" /> is the minimum or maximum price.</param>
+		/// <param name="price">The price at the selected range boundary.</param>
+		/// <param name="currencyCode">The ISO 4217 currency code for <paramref name="price" />.</param>
+		/// <exception cref="ArgumentOutOfRangeException"><paramref name="option" /> is not a valid value.</exception>
 		public INPriceRange (INPriceRangeOption option, NSDecimalNumber price, string currencyCode)
 			: base (NSObjectFlag.Empty)
 		{

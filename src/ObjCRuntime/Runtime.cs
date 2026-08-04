@@ -2711,7 +2711,17 @@ namespace ObjCRuntime {
 		// Caches the closed generic helper method per (open helper method, closed instance type), so
 		// that the reflection cost (FindClosedTypeInHierarchy + MakeGenericMethod) is only paid once
 		// per instantiation instead of on every call.
-		static readonly ConcurrentDictionary<(RuntimeMethodHandle OpenImplMethod, RuntimeTypeHandle ClosedInstanceType), MethodInfo> closedGenericRegistrarTrampolines = new ();
+		//
+		// The cache lives in a nested type (rather than as a field initializer on Runtime) so its
+		// ConcurrentDictionary instantiation is constructed by the nested type's static constructor
+		// - which only runs the first time InvokeGenericRegistrarTrampoline actually accesses it.
+		// InvokeGenericRegistrarTrampoline is only ever reachable under a Hot-Reload-compatible
+		// build, so in every other configuration (e.g. Release/NativeAOT) the trampoline is trimmed
+		// and this nested type - together with the ConcurrentDictionary instantiation - is trimmed
+		// with it, keeping it out of Runtime's static constructor and out of the app.
+		static class ClosedGenericRegistrarTrampolines {
+			internal static readonly ConcurrentDictionary<(RuntimeMethodHandle OpenImplMethod, RuntimeTypeHandle ClosedInstanceType), MethodInfo> Cache = new ();
+		}
 
 		[UnconditionalSuppressMessage ("", "IL2060", Justification = "This code is only reachable under a Hot-Reload-compatible build, which always runs under the JIT (never NativeAOT), so MakeGenericMethod is safe. The generic helper and its instantiations are kept alive by the companion assembly.")]
 		[UnconditionalSuppressMessage ("", "IL3050", Justification = "This code is only reachable under a Hot-Reload-compatible build, which always runs under the JIT (never NativeAOT), so MakeGenericMethod is safe.")]
@@ -2722,7 +2732,7 @@ namespace ObjCRuntime {
 				var closed_instance_type = instance.GetType ();
 				var cache_key = (open_impl_method_handle, closed_instance_type.TypeHandle);
 				MethodInfo closed_impl;
-				if (closedGenericRegistrarTrampolines.TryGetValue (cache_key, out var cached_impl) && cached_impl is not null) {
+				if (ClosedGenericRegistrarTrampolines.Cache.TryGetValue (cache_key, out var cached_impl) && cached_impl is not null) {
 					closed_impl = cached_impl;
 				} else {
 					var open_user_type = Type.GetTypeFromHandle (open_user_type_handle);
@@ -2734,7 +2744,7 @@ namespace ObjCRuntime {
 					if (MethodBase.GetMethodFromHandle (open_impl_method_handle) is not MethodInfo open_impl)
 						throw new InvalidOperationException ("Could not resolve the generic helper method of a relocated registrar trampoline.");
 					closed_impl = open_impl.MakeGenericMethod (closed_user_type.GetGenericArguments ());
-					closedGenericRegistrarTrampolines.TryAdd (cache_key, closed_impl);
+					ClosedGenericRegistrarTrampolines.Cache.TryAdd (cache_key, closed_impl);
 				}
 
 				// Append the trailing 'out IntPtr exception_gchandle' slot and invoke the closed helper.

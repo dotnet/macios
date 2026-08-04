@@ -2723,10 +2723,17 @@ namespace ObjCRuntime {
 			internal static readonly ConcurrentDictionary<(RuntimeMethodHandle OpenImplMethod, RuntimeTypeHandle ClosedInstanceType), MethodInfo> Cache = new ();
 		}
 
-		[UnconditionalSuppressMessage ("", "IL2060", Justification = "This code is only reachable under a Hot-Reload-compatible build, which always runs under the JIT (never NativeAOT), so MakeGenericMethod is safe. The generic helper and its instantiations are kept alive by the companion assembly.")]
-		[UnconditionalSuppressMessage ("", "IL3050", Justification = "This code is only reachable under a Hot-Reload-compatible build, which always runs under the JIT (never NativeAOT), so MakeGenericMethod is safe.")]
 		internal static object? InvokeGenericRegistrarTrampoline (object instance, RuntimeTypeHandle open_user_type_handle, RuntimeMethodHandle open_impl_method_handle, object? [] args, out IntPtr exception_gchandle)
 		{
+			// This method uses reflection (MakeGenericMethod + MethodInfo.Invoke), which requires
+			// dynamic code and isn't supported by NativeAOT. It's only ever reached under a
+			// Hot-Reload-compatible build, which always runs under the JIT (never NativeAOT). The
+			// IsNativeAOT check is optimizable, so the linker folds it to a constant and removes the
+			// reflection code below as unreachable in a NativeAOT build - which also elides the
+			// IL2060/IL3050 trimmer/AOT warnings that MakeGenericMethod would otherwise produce.
+			if (IsNativeAOT)
+				throw CreateNativeAOTNotSupportedException ();
+
 			exception_gchandle = IntPtr.Zero;
 			try {
 				var closed_instance_type = instance.GetType ();

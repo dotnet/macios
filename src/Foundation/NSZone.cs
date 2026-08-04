@@ -50,7 +50,7 @@ namespace Foundation {
 				}
 			}
 		}
-		// note: Copy(NSZone) and MutableCopy(NSZone) with a nil pointer == default
+
 		// note: Copy(NSZone) and MutableCopy(NSZone) with a nil pointer == default
 		/// <summary>The default memory allocation zone.</summary>
 		public static readonly NSZone Default = new NSZone (NSDefaultMallocZone (), false);

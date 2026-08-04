@@ -372,6 +372,10 @@ namespace CoreMedia {
 		/// <param name="extensions">A dictionary of extension properties.</param>
 		/// <param name="status">An error code in case of failure, 0 in case of success.</param>
 		/// <returns>A <see cref="CMFormatDescription" /> for this tagged buffer group, or null in case of failure.</returns>
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		[SupportedOSPlatform ("tvos26.0")]
 		public CMFormatDescription? CreateFormatDescription (NSDictionary? extensions, out CMTaggedBufferGroupError status)
 		{
 			IntPtr formatDescription;

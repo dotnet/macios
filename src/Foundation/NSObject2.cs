@@ -179,7 +179,9 @@ namespace Foundation {
 
 #if !COREBUILD
 	/// <include file="../../docs/api/Foundation/NSObject.xml" path="/Documentation/Docs[@DocId='T:Foundation.NSObject']/*" />
+#pragma warning disable CA1416 // https://github.com/dotnet/runtime/pull/131583
 	[ObjectiveCTrackedType]
+#pragma warning restore CA1416
 #endif
 	[StructLayout (LayoutKind.Sequential)]
 	public partial class NSObject : INativeObject
@@ -1176,22 +1178,19 @@ namespace Foundation {
 		}
 
 		[Register ("__NSObject_Disposer")]
-		[Preserve (AllMembers = true)]
 		internal class NSObject_Disposer : NSObject {
 			static readonly List<NSObject> drainList1 = new List<NSObject> ();
 			static readonly List<NSObject> drainList2 = new List<NSObject> ();
 			static List<NSObject> handles = drainList1;
 
 			static readonly IntPtr class_ptr = Class.GetHandle ("__NSObject_Disposer");
-#if MONOMAC
-			static readonly IntPtr drainHandle = Selector.GetHandle ("drain:");
-#endif
 
 			static readonly object lock_obj = new object ();
 
-			private NSObject_Disposer ()
+			NSObject_Disposer ()
 			{
 				// Disable default ctor, there should be no instances of this class.
+				// Can't make the class static, because it has to subclass NSObject.
 			}
 
 			static internal void Add (NSObject handle)
@@ -1206,6 +1205,7 @@ namespace Foundation {
 				ScheduleDrain ();
 			}
 
+			[DynamicDependency ("Drain")]
 			static void ScheduleDrain ()
 			{
 				Messaging.void_objc_msgSend_NativeHandle_NativeHandle_bool (class_ptr, Selector.GetHandle (Selector.PerformSelectorOnMainThreadWithObjectWaitUntilDone), Selector.GetHandle ("drain:"), NativeHandle.Zero, 0);

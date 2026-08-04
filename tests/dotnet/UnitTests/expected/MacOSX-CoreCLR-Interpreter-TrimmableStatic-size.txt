@@ -1,9 +1,9 @@
-AppBundleSize: 257,025,766 bytes (251,001.7 KB = 245.1 MB)
+AppBundleSize: 257,029,891 bytes (251,005.8 KB = 245.1 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 Contents/Info.plist:
-    753 bytes (0.7 KB = 0.0 MB)
+    750 bytes (0.7 KB = 0.0 MB)
 Contents/MacOS/SizeTestApp:
-    7,387,640 bytes (7,214.5 KB = 7.0 MB)
+    7,387,672 bytes (7,214.5 KB = 7.0 MB)
 Contents/MonoBundle/.xamarin/osx-arm64/_Microsoft.macOS.TypeMap.dll:
     4,775,936 bytes (4,664.0 KB = 4.6 MB)
 Contents/MonoBundle/.xamarin/osx-arm64/_SizeTestApp.TypeMap.dll:
@@ -11,7 +11,7 @@ Contents/MonoBundle/.xamarin/osx-arm64/_SizeTestApp.TypeMap.dll:
 Contents/MonoBundle/.xamarin/osx-arm64/Microsoft.CSharp.dll:
     892,712 bytes (871.8 KB = 0.9 MB)
 Contents/MonoBundle/.xamarin/osx-arm64/Microsoft.macOS.dll:
-    36,999,168 bytes (36,132.0 KB = 35.3 MB)
+    37,001,216 bytes (36,134.0 KB = 35.3 MB)
 Contents/MonoBundle/.xamarin/osx-arm64/Microsoft.VisualBasic.Core.dll:
     1,334,568 bytes (1,303.3 KB = 1.3 MB)
 Contents/MonoBundle/.xamarin/osx-arm64/Microsoft.VisualBasic.dll:
@@ -363,7 +363,7 @@ Contents/MonoBundle/.xamarin/osx-x64/_SizeTestApp.TypeMap.dll:
 Contents/MonoBundle/.xamarin/osx-x64/Microsoft.CSharp.dll:
     795,944 bytes (777.3 KB = 0.8 MB)
 Contents/MonoBundle/.xamarin/osx-x64/Microsoft.macOS.dll:
-    36,999,168 bytes (36,132.0 KB = 35.3 MB)
+    37,001,216 bytes (36,134.0 KB = 35.3 MB)
 Contents/MonoBundle/.xamarin/osx-x64/Microsoft.VisualBasic.Core.dll:
     1,166,120 bytes (1,138.8 KB = 1.1 MB)
 Contents/MonoBundle/.xamarin/osx-x64/Microsoft.VisualBasic.dll:

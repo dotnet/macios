@@ -1,10 +1,10 @@
-AppBundleSize: 2,689,233 bytes (2,626.2 KB = 2.6 MB)
+AppBundleSize: 2,408,892 bytes (2,352.4 KB = 2.3 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 Info.plist:
-    1,105 bytes (1.1 KB = 0.0 MB)
+    1,132 bytes (1.1 KB = 0.0 MB)
 PkgInfo:
     8 bytes (0.0 KB = 0.0 MB)
 runtimeconfig.bin:
     1,808 bytes (1.8 KB = 0.0 MB)
 SizeTestApp:
-    2,686,312 bytes (2,623.4 KB = 2.6 MB)
+    2,405,944 bytes (2,349.6 KB = 2.3 MB)

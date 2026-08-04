@@ -33,7 +33,7 @@ namespace MediaLibrary {
 		Movie = 1 << 2,
 	}
 
-	/// <summary>Specifies a kind of media object.</summary>
+	/// <summary>A bitmask specifying one or more kinds of media objects.</summary>
 	[Native]
 	public enum MLMediaType : ulong {
 		/// <summary>Audio media.</summary>

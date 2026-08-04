@@ -1249,7 +1249,6 @@ Microsoft.iOS.dll:System.Boolean UIKit.UIApplication::CheckForIllegalCrossThread
 Microsoft.iOS.dll:System.Boolean[] Foundation.ProtocolMemberAttribute::ParameterByRef()
 Microsoft.iOS.dll:System.Byte Registrar.Registrar/ObjCField::Alignment
 Microsoft.iOS.dll:System.Char[] Registrar.Registrar/ObjCType::invalidSelectorCharacters
-Microsoft.iOS.dll:System.Collections.Concurrent.ConcurrentDictionary`2<System.ValueTuple`2<System.RuntimeMethodHandle,System.RuntimeTypeHandle>,System.Reflection.MethodInfo> ObjCRuntime.Runtime::closedGenericRegistrarTrampolines
 Microsoft.iOS.dll:System.Collections.Generic.Dictionary`2<System.IntPtr,Registrar.Registrar/ObjCType> Registrar.DynamicRegistrar::type_map
 Microsoft.iOS.dll:System.Collections.Generic.Dictionary`2<System.IntPtr,System.Boolean> ObjCRuntime.Runtime::usertype_cache
 Microsoft.iOS.dll:System.Collections.Generic.Dictionary`2<System.IntPtr,System.Collections.Generic.Dictionary`2<System.IntPtr,System.Boolean>> ObjCRuntime.Runtime::protocol_cache
@@ -1687,65 +1686,6 @@ SizeTestApp.dll:ObjCRuntime.__Registrar__.LookupUnmanagedFunction(System.String,
 SizeTestApp.dll:ObjCRuntime.__Registrar__.LookupUnmanagedFunctionImpl(System.String, System.Int32)
 SizeTestApp.dll:ObjCRuntime.__Registrar__.RegisterWrapperTypes(System.Collections.Generic.Dictionary`2<System.RuntimeTypeHandle,System.RuntimeTypeHandle>)
 SizeTestApp.dll:UIKit.UIWindow MySimpleApp.AppDelegate::window
-System.Collections.Concurrent.dll:<Module>
-System.Collections.Concurrent.dll:<PrivateImplementationDetails>
-System.Collections.Concurrent.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=288_Align=4
-System.Collections.Concurrent.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=288_Align=4 <PrivateImplementationDetails>::74BCD6ED20AF2231F2BB1CDE814C5F4FF48E54BAC46029EEF90DDF4A208E2B204
-System.Collections.Concurrent.dll:System.Boolean System.Collections.Concurrent.ConcurrentDictionary`2::_comparerIsDefaultForClasses
-System.Collections.Concurrent.dll:System.Boolean System.Collections.Concurrent.ConcurrentDictionary`2::_growLockArray
-System.Collections.Concurrent.dll:System.Collections.Concurrent.CDSCollectionETWBCLProvider
-System.Collections.Concurrent.dll:System.Collections.Concurrent.CDSCollectionETWBCLProvider System.Collections.Concurrent.CDSCollectionETWBCLProvider::Log
-System.Collections.Concurrent.dll:System.Collections.Concurrent.CDSCollectionETWBCLProvider..cctor()
-System.Collections.Concurrent.dll:System.Collections.Concurrent.CDSCollectionETWBCLProvider..ctor()
-System.Collections.Concurrent.dll:System.Collections.Concurrent.ConcurrentDictionary`2
-System.Collections.Concurrent.dll:System.Collections.Concurrent.ConcurrentDictionary`2..ctor()
-System.Collections.Concurrent.dll:System.Collections.Concurrent.ConcurrentDictionary`2..ctor(System.Int32, System.Int32, System.Boolean, System.Collections.Generic.IEqualityComparer`1<TKey>)
-System.Collections.Concurrent.dll:System.Collections.Concurrent.ConcurrentDictionary`2.AcquireAllLocks(System.Int32&)
-System.Collections.Concurrent.dll:System.Collections.Concurrent.ConcurrentDictionary`2.AcquireFirstLock(System.Int32&)
-System.Collections.Concurrent.dll:System.Collections.Concurrent.ConcurrentDictionary`2.AcquirePostFirstLock(System.Collections.Concurrent.ConcurrentDictionary`2/Tables<TKey,TValue>, System.Int32&)
-System.Collections.Concurrent.dll:System.Collections.Concurrent.ConcurrentDictionary`2.CopyToPairs(System.Collections.Generic.KeyValuePair`2<TKey,TValue>[], System.Int32)
-System.Collections.Concurrent.dll:System.Collections.Concurrent.ConcurrentDictionary`2.get_Count()
-System.Collections.Concurrent.dll:System.Collections.Concurrent.ConcurrentDictionary`2.get_DefaultConcurrencyLevel()
-System.Collections.Concurrent.dll:System.Collections.Concurrent.ConcurrentDictionary`2.GetCountNoLocks()
-System.Collections.Concurrent.dll:System.Collections.Concurrent.ConcurrentDictionary`2.GetEnumerator()
-System.Collections.Concurrent.dll:System.Collections.Concurrent.ConcurrentDictionary`2.ReleaseLocks(System.Int32)
-System.Collections.Concurrent.dll:System.Collections.Concurrent.ConcurrentDictionary`2.System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<TKey,TValue>>.CopyTo(System.Collections.Generic.KeyValuePair`2<TKey,TValue>[], System.Int32)
-System.Collections.Concurrent.dll:System.Collections.Concurrent.ConcurrentDictionary`2/Enumerator
-System.Collections.Concurrent.dll:System.Collections.Concurrent.ConcurrentDictionary`2/Enumerator..ctor(System.Collections.Concurrent.ConcurrentDictionary`2<TKey,TValue>)
-System.Collections.Concurrent.dll:System.Collections.Concurrent.ConcurrentDictionary`2/Enumerator.Dispose()
-System.Collections.Concurrent.dll:System.Collections.Concurrent.ConcurrentDictionary`2/Enumerator.get_Current()
-System.Collections.Concurrent.dll:System.Collections.Concurrent.ConcurrentDictionary`2/Enumerator.MoveNext()
-System.Collections.Concurrent.dll:System.Collections.Concurrent.ConcurrentDictionary`2/Enumerator.set_Current(System.Collections.Generic.KeyValuePair`2<TKey,TValue>)
-System.Collections.Concurrent.dll:System.Collections.Concurrent.ConcurrentDictionary`2/Node
-System.Collections.Concurrent.dll:System.Collections.Concurrent.ConcurrentDictionary`2/Node<TKey,TValue> modreq(System.Runtime.CompilerServices.IsVolatile) System.Collections.Concurrent.ConcurrentDictionary`2/Node::_next
-System.Collections.Concurrent.dll:System.Collections.Concurrent.ConcurrentDictionary`2/Node<TKey,TValue> modreq(System.Runtime.CompilerServices.IsVolatile) System.Collections.Concurrent.ConcurrentDictionary`2/VolatileNode::_node
-System.Collections.Concurrent.dll:System.Collections.Concurrent.ConcurrentDictionary`2/Node<TKey,TValue> System.Collections.Concurrent.ConcurrentDictionary`2/Enumerator::_node
-System.Collections.Concurrent.dll:System.Collections.Concurrent.ConcurrentDictionary`2/Tables
-System.Collections.Concurrent.dll:System.Collections.Concurrent.ConcurrentDictionary`2/Tables..ctor(System.Collections.Concurrent.ConcurrentDictionary`2/VolatileNode<TKey,TValue>[], System.Object[], System.Int32[], System.Collections.Generic.IEqualityComparer`1<TKey>)
-System.Collections.Concurrent.dll:System.Collections.Concurrent.ConcurrentDictionary`2/Tables<TKey,TValue> modreq(System.Runtime.CompilerServices.IsVolatile) System.Collections.Concurrent.ConcurrentDictionary`2::_tables
-System.Collections.Concurrent.dll:System.Collections.Concurrent.ConcurrentDictionary`2/VolatileNode
-System.Collections.Concurrent.dll:System.Collections.Concurrent.ConcurrentDictionary`2/VolatileNode<TKey,TValue>[] System.Collections.Concurrent.ConcurrentDictionary`2/Enumerator::_buckets
-System.Collections.Concurrent.dll:System.Collections.Concurrent.ConcurrentDictionary`2/VolatileNode<TKey,TValue>[] System.Collections.Concurrent.ConcurrentDictionary`2/Tables::_buckets
-System.Collections.Concurrent.dll:System.Collections.Concurrent.ConcurrentDictionary`2<TKey,TValue> System.Collections.Concurrent.ConcurrentDictionary`2/Enumerator::_dictionary
-System.Collections.Concurrent.dll:System.Collections.Generic.IEqualityComparer`1<TKey> System.Collections.Concurrent.ConcurrentDictionary`2/Tables::_comparer
-System.Collections.Concurrent.dll:System.Collections.Generic.KeyValuePair`2<TKey,TValue> System.Collections.Concurrent.ConcurrentDictionary`2/Enumerator::<Current>k__BackingField
-System.Collections.Concurrent.dll:System.Collections.Generic.KeyValuePair`2<TKey,TValue> System.Collections.Concurrent.ConcurrentDictionary`2/Enumerator::Current()
-System.Collections.Concurrent.dll:System.Collections.HashHelpers
-System.Collections.Concurrent.dll:System.Collections.HashHelpers.get_Primes()
-System.Collections.Concurrent.dll:System.Collections.HashHelpers.GetFastModMultiplier(System.UInt32)
-System.Collections.Concurrent.dll:System.Collections.HashHelpers.GetPrime(System.Int32)
-System.Collections.Concurrent.dll:System.Collections.HashHelpers.IsPrime(System.Int32)
-System.Collections.Concurrent.dll:System.Int32 System.Collections.Concurrent.ConcurrentDictionary`2::_budget
-System.Collections.Concurrent.dll:System.Int32 System.Collections.Concurrent.ConcurrentDictionary`2::_initialCapacity
-System.Collections.Concurrent.dll:System.Int32 System.Collections.Concurrent.ConcurrentDictionary`2::Count()
-System.Collections.Concurrent.dll:System.Int32 System.Collections.Concurrent.ConcurrentDictionary`2::DefaultConcurrencyLevel()
-System.Collections.Concurrent.dll:System.Int32 System.Collections.Concurrent.ConcurrentDictionary`2/Enumerator::_i
-System.Collections.Concurrent.dll:System.Int32[] System.Collections.Concurrent.ConcurrentDictionary`2/Tables::_countPerLock
-System.Collections.Concurrent.dll:System.Object[] System.Collections.Concurrent.ConcurrentDictionary`2/Tables::_locks
-System.Collections.Concurrent.dll:System.ReadOnlySpan`1<System.Int32> System.Collections.HashHelpers::Primes()
-System.Collections.Concurrent.dll:System.UInt64 System.Collections.Concurrent.ConcurrentDictionary`2/Tables::_fastModBucketsMultiplier
-System.Collections.Concurrent.dll:TKey System.Collections.Concurrent.ConcurrentDictionary`2/Node::_key
-System.Collections.Concurrent.dll:TValue System.Collections.Concurrent.ConcurrentDictionary`2/Node::_value
 System.Private.CoreLib.dll:<>y__InlineArray2`1
 System.Private.CoreLib.dll:<>y__InlineArray3`1
 System.Private.CoreLib.dll:<>y__InlineArray4`1
@@ -4259,9 +4199,6 @@ System.Private.CoreLib.dll:System.Diagnostics.Stopwatch
 System.Private.CoreLib.dll:System.Diagnostics.Stopwatch..cctor()
 System.Private.CoreLib.dll:System.Diagnostics.Stopwatch.GetTimestamp()
 System.Private.CoreLib.dll:System.Diagnostics.Tracing.EventSource
-System.Private.CoreLib.dll:System.Diagnostics.Tracing.EventSource..ctor()
-System.Private.CoreLib.dll:System.Diagnostics.Tracing.EventSource..ctor(System.Diagnostics.Tracing.EventSourceSettings, System.String[])
-System.Private.CoreLib.dll:System.Diagnostics.Tracing.EventSource..ctor(System.Diagnostics.Tracing.EventSourceSettings)
 System.Private.CoreLib.dll:System.Diagnostics.Tracing.EventSource..ctor(System.Guid, System.String, System.Diagnostics.Tracing.EventSourceSettings, System.String[])
 System.Private.CoreLib.dll:System.Diagnostics.Tracing.EventSource..ctor(System.Guid, System.String)
 System.Private.CoreLib.dll:System.Diagnostics.Tracing.EventSource.Dispose()

@@ -26,15 +26,13 @@ namespace Foundation {
 
 	public partial class NSRunLoop {
 
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Stops the receiver's underlying run loop.</summary>
 		public void Stop ()
 		{
 			GetCFRunLoop ().Stop ();
 		}
 
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Wakes the receiver's underlying run loop.</summary>
 		public void WakeUp ()
 		{
 			GetCFRunLoop ().WakeUp ();

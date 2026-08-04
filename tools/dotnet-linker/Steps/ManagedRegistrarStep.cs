@@ -1529,7 +1529,10 @@ namespace Xamarin.Linker {
 					if (toManaged) {
 						var gim = new GenericInstanceMethod (abr.NSArray_ArrayFromHandle_1);
 						if (gp is not null) {
-							var gemericParameter = method.DeclaringType.GenericParameters.Single (x => x.Name == gp.Name);
+							// When emitting the relocated generic companion helper, the generic parameter has
+							// already been remapped to one of the helper method's own generic parameters, and
+							// must be used as-is (a type generic parameter isn't valid in a static method).
+							var gemericParameter = gp.Type == GenericParameterType.Method ? gp : method.DeclaringType.GenericParameters.Single (x => x.Name == gp.Name);
 							gim.GenericArguments.Add (gemericParameter);
 						} else {
 							gim.GenericArguments.Add (elementType);

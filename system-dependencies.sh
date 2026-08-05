@@ -402,8 +402,11 @@ function print_non_universal_simulator_runtimes ()
 # Checks whether a simulator runtime for the given platform is installed and
 # available (this is the same kind of check as in check_old_simulators).
 # $1: the platform (iOS, tvOS, ...)
-# $2: (optional) the exact version to look for; if empty, any version of the
-#     platform qualifies.
+# $2: (optional) the version to look for. A runtime matches if its version is
+#     equal to this value or is a patch release of it (e.g. a "$2" of "26.5"
+#     matches both "26.5" and "26.5.1"), because simctl reports a patch version
+#     for the most recent runtimes. If empty, any version of the platform
+#     qualifies.
 # Returns 0 if a matching, available runtime is installed, non-zero otherwise.
 function is_simulator_runtime_installed ()
 {
@@ -416,7 +419,7 @@ function is_simulator_runtime_installed ()
 
 	local selector=".platform == \"$platform\" and .isAvailable == true and .isInternal == false"
 	if [[ -n "$version" ]]; then
-		selector="$selector and .version == \"$version\""
+		selector="$selector and (.version == \"$version\" or (.version | startswith(\"$version.\")))"
 	fi
 
 	local count
@@ -439,10 +442,11 @@ function is_simulator_runtime_installed ()
 # If not, we retry the download.
 #
 # $1: the platform to download (iOS, tvOS, ...)
-# $2: (optional) the exact build version to download and verify; if empty, the
-#     latest/any version of the platform is downloaded and accepted.
-# $3...: additional arguments to pass to 'xcodebuild -downloadPlatform' (e.g.
-#     '-architectureVariant universal').
+# $2: the expected runtime version, used *only* to verify the install afterwards
+#     (see is_simulator_runtime_installed for how it's matched). If empty, the
+#     download is accepted as long as any runtime for the platform is installed.
+# $3...: the arguments to pass to 'xcodebuild -downloadPlatform' after the
+#     platform (e.g. '-buildVersion 16.0' or '-architectureVariant universal').
 function xcodebuild_download_platform ()
 {
 	local platform="$1"
@@ -452,20 +456,14 @@ function xcodebuild_download_platform ()
 	local XCODE_DEVELOPER_ROOT
 	XCODE_DEVELOPER_ROOT=$(get_xcode_developer_root)
 
-	local xcodebuild_args=("$platform")
-	if [[ -n "$version" ]]; then
-		xcodebuild_args+=(-buildVersion "$version")
-	fi
-	xcodebuild_args+=("$@")
-
 	local attempts=5
 	local attempt=1
 	while true; do
-		log "Executing (attempt $attempt of $attempts) '$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild -downloadPlatform ${xcodebuild_args[*]}'"
+		log "Executing (attempt $attempt of $attempts) '$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild -downloadPlatform $platform $*'"
 		# We intentionally ignore xcodebuild's exit code here (see the comment
 		# above) and check whether the runtime got installed instead.
 		set +e
-		"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform "${xcodebuild_args[@]}" 2>&1 | sed 's/^/        /'
+		"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform "$platform" "$@" 2>&1 | sed 's/^/        /'
 		set -e
 
 		if is_simulator_runtime_installed "$platform" "$version"; then
@@ -506,6 +504,11 @@ function xcodebuild_download_selected_platforms ()
 		IOS_BUILD_VERSION=" -architectureVariant universal"
 		TVOS_BUILD_VERSION=" -architectureVariant universal"
 	fi
+
+	# The expected simulator runtime versions for the current Xcode, so we can
+	# verify the downloads below actually installed the runtimes we need.
+	IOS_NUGET_OS_VERSION=$(grep ^IOS_NUGET_OS_VERSION= Make.versions | sed 's/.*=//')
+	TVOS_NUGET_OS_VERSION=$(grep ^TVOS_NUGET_OS_VERSION= Make.versions | sed 's/.*=//')
 
 	local TMPFILE
 	TMPFILE=$(mktemp)
@@ -575,11 +578,11 @@ function xcodebuild_download_selected_platforms ()
 	fi
 
 	local RC=0
-	if ! xcodebuild_download_platform iOS "" $IOS_BUILD_VERSION; then
+	if ! xcodebuild_download_platform iOS "$IOS_NUGET_OS_VERSION" $IOS_BUILD_VERSION; then
 		RC=1
 	fi
 
-	if ! xcodebuild_download_platform tvOS "" $TVOS_BUILD_VERSION; then
+	if ! xcodebuild_download_platform tvOS "$TVOS_NUGET_OS_VERSION" $TVOS_BUILD_VERSION; then
 		RC=1
 	fi
 
@@ -1108,7 +1111,7 @@ function check_old_simulators ()
 			$action "The $os $version simulator is not installed. Execute ${COLOR_MAGENTA}xcodebuild -downloadPlatform $os -buildVersion $version${COLOR_RESET} to install."
 		else
 			warn "The $os $version simulator is not installed. Now executing ${COLOR_BLUE}"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform $os -buildVersion $version${COLOR_RESET} to install..."
-			if xcodebuild_download_platform "$os" "$version"; then
+			if xcodebuild_download_platform "$os" "$version" -buildVersion "$version"; then
 				warn "Successfully executed ${COLOR_BLUE}"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform $os -buildVersion $version${COLOR_RESET}."
 			else
 				$action "Failed to download the $os $version simulator runtime after several attempts. Execute ${COLOR_MAGENTA}xcodebuild -downloadPlatform $os -buildVersion $version${COLOR_RESET} to install it manually."

@@ -225,7 +225,7 @@ namespace PdfKit {
 		PopupArea = 1 << 7,
 		/// <summary>Indicates that the touch position is over an image.</summary>
 		ImageArea = 1 << 8,
-		/// <summary>Indicates all areas of interest.</summary>
+		/// <summary>Indicates that all areas of interest are included.</summary>
 		[iOS (15, 0), MacCatalyst (15, 0)]
 		AnyArea = Int64.MaxValue,
 	}

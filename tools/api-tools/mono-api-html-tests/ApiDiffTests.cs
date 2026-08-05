@@ -57,8 +57,10 @@ namespace MonoApiHtmlTests {
 				var html = File.ReadAllText (htmlFile);
 				var markdown = File.ReadAllText (markdownFile);
 
-				Assert.That (html, Does.Not.Contain ("THANREPLACEMENT"), "html placeholders");
-				Assert.That (markdown, Does.Not.Contain ("THANREPLACEMENT"), "markdown placeholders");
+				Assert.That (html, Does.Not.Contain ("%LESSERTHANREPLACEMENT%"), "html LesserThan placeholder");
+				Assert.That (html, Does.Not.Contain ("%GREATERTHANREPLACEMENT%"), "html GreaterThan placeholder");
+				Assert.That (markdown, Does.Not.Contain ("%LESSERTHANREPLACEMENT%"), "markdown LesserThan placeholder");
+				Assert.That (markdown, Does.Not.Contain ("%GREATERTHANREPLACEMENT%"), "markdown GreaterThan placeholder");
 
 				Assert.That (html, Does.Contain ("IEnumerable&lt;AuthorizationRight&gt;"), "html generic");
 				Assert.That (markdown, Does.Contain ("IEnumerable<AuthorizationRight>"), "markdown generic");

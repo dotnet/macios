@@ -186,8 +186,7 @@ namespace PdfKit {
 		Art = 4,
 	}
 
-	/// <summary>Enumerated PDF display modes.</summary>
-	/// <remarks>To be added.</remarks>
+	/// <summary>Enumerates PDF display modes.</summary>
 	[Native]
 	[TV (18, 2)]
 	public enum PdfDisplayMode : long {

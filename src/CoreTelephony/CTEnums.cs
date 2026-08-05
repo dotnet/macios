@@ -7,11 +7,11 @@ namespace CoreTelephony {
 	// in header file this is used inside a CTError structure where the domain is a SInt32
 	/// <summary>An enumeration whose values specify an error domain.</summary>
 	public enum CTErrorDomain {
-		/// <summary>To be added.</summary>
+		/// <summary>No error occurred.</summary>
 		NoError = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The error is in the POSIX error domain.</summary>
 		Posix = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The error is in the Mach error domain.</summary>
 		Mach = 2,
 	}
 

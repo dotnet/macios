@@ -237,19 +237,19 @@ namespace Mono.ApiTools {
 		public override void WriteLine (string line)
 		{
 			foreach (var formatter in formatters)
-				formatter.WriteLine (line);
+				formatter.WriteLine (Replace (formatter, line));
 		}
 
 		public override void WriteLine (string format, params object [] arguments)
 		{
 			foreach (var formatter in formatters)
-				formatter.WriteLine (format, arguments);
+				formatter.WriteLine (Replace (formatter, string.Format (format, arguments)));
 		}
 
 		public override void WriteLine (StringBuilder sb)
 		{
 			foreach (var formatter in formatters)
-				formatter.WriteLine (sb);
+				formatter.WriteLine (Replace (formatter, sb.ToString ()));
 		}
 
 		public override void Write (char value)
@@ -261,19 +261,19 @@ namespace Mono.ApiTools {
 		public override void Write (string line)
 		{
 			foreach (var formatter in formatters)
-				formatter.Write (line);
+				formatter.Write (Replace (formatter, line));
 		}
 
 		public override void Write (string format, params object [] arguments)
 		{
 			foreach (var formatter in formatters)
-				formatter.Write (format, arguments);
+				formatter.Write (Replace (formatter, string.Format (format, arguments)));
 		}
 
 		public override void Write (StringBuilder sb)
 		{
 			foreach (var formatter in formatters)
-				formatter.Write (sb);
+				formatter.Write (Replace (formatter, sb.ToString ()));
 		}
 	}
 }

@@ -130,7 +130,6 @@ namespace PdfKit {
 	}
 
 	/// <summary>Enumerates annotation border styles.</summary>
-	/// <remarks>To be added.</remarks>
 	[Native]
 	[TV (18, 2)]
 	public enum PdfBorderStyle : long {

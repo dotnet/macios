@@ -64,7 +64,6 @@ namespace PdfKit {
 	}
 
 	/// <summary>Enumerates annotation widget controls.</summary>
-	/// <remarks>To be added.</remarks>
 	[Native]
 	[TV (18, 2)]
 	public enum PdfWidgetControlType : long {

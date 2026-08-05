@@ -40,6 +40,35 @@
 		-->
 		<_UseNativeAot Condition="'$(PublishAot)' == 'true' And '$(_IsPublishing)' == 'true'">true</_UseNativeAot>
 
+		<!--
+			On .NET 11+, make the trimmable-static registrar the default for NativeAOT (it used to be
+			managed-static). This has to be set here, at evaluation time, and not only in the SelectRegistrar
+			target (which runs later), because the static _SkipILLink / _PostprocessAssembliesAfterIlc gates
+			check the registrar at evaluation time.
+
+			This is deliberately scoped to NativeAOT: the trimmable-static registrar only produces a *smaller*
+			app under NativeAOT (where the TypeMap feature and the post-ILC registrar reorder let us trim the
+			registered binding surface). On Mono/CoreCLR the trimmable-static registrar keeps the whole
+			registered NSObject surface and makes apps 2-3x *larger*, so those runtimes keep managed-static.
+		-->
+		<Registrar Condition="'$(Registrar)' == '' And '$(_UseNativeAot)' == 'true' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '11.0'))">trimmable-static</Registrar>
+
+		<!--
+			Enable the PrepareAssemblies flow by default for NativeAOT on .NET 11+. This runs our custom linker
+			steps in the assembly-preparer, and for the (NativeAOT-default) trimmable-static registrar it also
+			generates the native static registrar code *after* the NativeAOT compiler (ILC) has run (see
+			_PostprocessAssembliesAfterIlc), so the registrar can drop the native code for UnmanagedCallersOnly
+			trampolines ILC trimmed away (an app-size optimization).
+		-->
+		<PrepareAssemblies Condition="'$(PrepareAssemblies)' == '' And '$(_UseNativeAot)' == 'true' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '11.0'))">true</PrepareAssemblies>
+
+		<!--
+			PostProcessAssemblies defaults to $(PrepareAssemblies) (see Xamarin.Shared.targets), but the static
+			_PostprocessAssembliesAfterIlc gate reads it at evaluation time - earlier than that default runs - so
+			apply the same $(PrepareAssemblies) default here too, otherwise the gate wouldn't see it.
+		-->
+		<PostProcessAssemblies Condition="'$(PostProcessAssemblies)' == '' And '$(_UseNativeAot)' == 'true' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '11.0'))">$(PrepareAssemblies)</PostProcessAssemblies>
+
 		<UseMonoRuntime Condition=" '$(UseMonoRuntime)' == '' And '$(_PlatformName)' == 'macOS'">false</UseMonoRuntime>
 		<UseMonoRuntime Condition=" '$(UseMonoRuntime)' == '' And '$(_UseNativeAot)' == 'true'">false</UseMonoRuntime>
 		<UseMonoRuntime Condition=" '$(UseMonoRuntime)' == ''">true</UseMonoRuntime>

@@ -1,4 +1,4 @@
-AppBundleSize: 247,987,572 bytes (242,175.4 KB = 236.5 MB)
+AppBundleSize: 247,543,156 bytes (241,741.4 KB = 236.1 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 Contents/Info.plist:
     753 bytes (0.7 KB = 0.0 MB)
@@ -7,7 +7,7 @@ Contents/MacOS/SizeTestApp:
 Contents/MonoBundle/.xamarin/osx-arm64/Microsoft.CSharp.dll:
     892,712 bytes (871.8 KB = 0.9 MB)
 Contents/MonoBundle/.xamarin/osx-arm64/Microsoft.macOS.dll:
-    36,937,728 bytes (36,072.0 KB = 35.2 MB)
+    36,716,032 bytes (35,855.5 KB = 35.0 MB)
 Contents/MonoBundle/.xamarin/osx-arm64/Microsoft.VisualBasic.Core.dll:
     1,334,568 bytes (1,303.3 KB = 1.3 MB)
 Contents/MonoBundle/.xamarin/osx-arm64/Microsoft.VisualBasic.dll:
@@ -21,7 +21,7 @@ Contents/MonoBundle/.xamarin/osx-arm64/mscorlib.dll:
 Contents/MonoBundle/.xamarin/osx-arm64/netstandard.dll:
     100,688 bytes (98.3 KB = 0.1 MB)
 Contents/MonoBundle/.xamarin/osx-arm64/SizeTestApp.dll:
-    6,656 bytes (6.5 KB = 0.0 MB)
+    6,144 bytes (6.0 KB = 0.0 MB)
 Contents/MonoBundle/.xamarin/osx-arm64/System.AppContext.dll:
     15,144 bytes (14.8 KB = 0.0 MB)
 Contents/MonoBundle/.xamarin/osx-arm64/System.Buffers.dll:
@@ -355,7 +355,7 @@ Contents/MonoBundle/.xamarin/osx-arm64/WindowsBase.dll:
 Contents/MonoBundle/.xamarin/osx-x64/Microsoft.CSharp.dll:
     795,944 bytes (777.3 KB = 0.8 MB)
 Contents/MonoBundle/.xamarin/osx-x64/Microsoft.macOS.dll:
-    36,937,728 bytes (36,072.0 KB = 35.2 MB)
+    36,716,032 bytes (35,855.5 KB = 35.0 MB)
 Contents/MonoBundle/.xamarin/osx-x64/Microsoft.VisualBasic.Core.dll:
     1,166,120 bytes (1,138.8 KB = 1.1 MB)
 Contents/MonoBundle/.xamarin/osx-x64/Microsoft.VisualBasic.dll:
@@ -369,7 +369,7 @@ Contents/MonoBundle/.xamarin/osx-x64/mscorlib.dll:
 Contents/MonoBundle/.xamarin/osx-x64/netstandard.dll:
     100,648 bytes (98.3 KB = 0.1 MB)
 Contents/MonoBundle/.xamarin/osx-x64/SizeTestApp.dll:
-    6,656 bytes (6.5 KB = 0.0 MB)
+    6,144 bytes (6.0 KB = 0.0 MB)
 Contents/MonoBundle/.xamarin/osx-x64/System.AppContext.dll:
     15,144 bytes (14.8 KB = 0.0 MB)
 Contents/MonoBundle/.xamarin/osx-x64/System.Buffers.dll:

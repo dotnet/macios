@@ -237,7 +237,10 @@ namespace Xamarin.Linker {
 			var process = false;
 			var isNSObject = IsNSObject (type);
 
-			if (App.Registrar == RegistrarMode.TrimmableStatic && !type.IsAbstract && !type.IsInterface && App.PrepareAssemblies == false) {
+			// The factory methods must be added before trimming: either in the assembly preparer (when
+			// PrepareAssemblies=true), or inside ILLink itself (when PrepareAssemblies=false). They must not
+			// be added again when post-processing assemblies, since they're already there at that point.
+			if (App.Registrar == RegistrarMode.TrimmableStatic && !type.IsAbstract && !type.IsInterface && !App.IsPostProcessingAssemblies) {
 				if (isNSObject) {
 					var ctorRef = AppBundleRewriter.FindNSObjectConstructor (type);
 					if (ctorRef is not null) {

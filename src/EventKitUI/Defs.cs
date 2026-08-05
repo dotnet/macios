@@ -14,12 +14,11 @@ namespace EventKitUI {
 	// untyped enum -> EKCalendarChooser.h
 	// iOS 9 promoted this to an NSInteger - which breaks compatibility
 	/// <summary>An enumeration whose values specify whether a single or multiple calendars can be chosen by an <see cref="EventKitUI.EKCalendarChooser" /> object.</summary>
-	///     <remarks>To be added.</remarks>
 	[Native]
 	public enum EKCalendarChooserSelectionStyle : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Allows the user to select one calendar.</summary>
 		Single,
-		/// <summary>To be added.</summary>
+		/// <summary>Allows the user to select multiple calendars.</summary>
 		Multiple,
 	}
 

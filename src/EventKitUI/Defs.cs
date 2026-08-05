@@ -36,7 +36,6 @@ namespace EventKitUI {
 	// untyped enum -> EKEventViewController.h
 	// iOS 9 promoted this to an NSInteger - which breaks compatibility
 	/// <summary>Enumerates actions that a user can take to dismiss an event view controller.</summary>
-	///     <remarks>To be added.</remarks>
 	[Native]
 	public enum EKEventViewAction : long {
 		/// <summary>The user tapped "Done".</summary>

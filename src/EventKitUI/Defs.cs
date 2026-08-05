@@ -25,12 +25,11 @@ namespace EventKitUI {
 	// untyped enum -> EKCalendarChooser.h
 	// iOS 9 promoted this to an NSInteger - which breaks compatibility
 	/// <summary>An enumeration whose values specify which calendars are displayed by a <see cref="EventKitUI.EKCalendarChooser" />.</summary>
-	///     <remarks>To be added.</remarks>
 	[Native]
 	public enum EKCalendarChooserDisplayStyle : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Displays all calendars.</summary>
 		AllCalendars,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays only calendars that the user can modify.</summary>
 		WritableCalendarsOnly,
 	}
 

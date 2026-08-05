@@ -200,8 +200,7 @@ namespace PdfKit {
 		TwoUpContinuous = 3,
 	}
 
-	/// <summary>Orable flags that describe areas of interest for a touch position.</summary>
-	/// <remarks>To be added.</remarks>
+	/// <summary>Bitwise flags that describe areas of interest for a touch position.</summary>
 	[Flags]
 	[Native]
 	[TV (18, 2)]
@@ -226,6 +225,7 @@ namespace PdfKit {
 		PopupArea = 1 << 7,
 		/// <summary>Indicates that the touch position is over an image.</summary>
 		ImageArea = 1 << 8,
+		/// <summary>Indicates all areas of interest.</summary>
 		[iOS (15, 0), MacCatalyst (15, 0)]
 		AnyArea = Int64.MaxValue,
 	}

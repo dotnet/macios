@@ -10,24 +10,22 @@ namespace SecurityInterface {
 	public partial class SFAuthorizationPluginView {
 
 		/// <summary>Initializes the view with the authorization callbacks and engine reference provided by the plugin host.</summary>
-		/// <param name="callbacks">The authorization callbacks for communicating with the Security Server.</param>
-		/// <param name="engineRef">The authorization engine reference.</param>
-		/// <remarks>The callbacks must be the borrowed table supplied by the authorization plugin host.</remarks>
-		public SFAuthorizationPluginView (AuthorizationCallbacks callbacks, AuthorizationEngine engineRef)
+		/// <param name="callbacks">A pointer to the authorization callbacks supplied by the authorization plugin host.</param>
+		/// <param name="engineRef">The authorization engine reference supplied by the authorization plugin host.</param>
+		/// <remarks>The callback pointer and engine reference are borrowed and must remain valid for the lifetime of this view.</remarks>
+		public unsafe SFAuthorizationPluginView (AuthorizationCallbacks* callbacks, AuthorizationEngine engineRef)
 			: base (NSObjectFlag.Empty)
 		{
-			ArgumentNullException.ThrowIfNull (callbacks);
+			if (callbacks is null)
+				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (callbacks));
 			ArgumentNullException.ThrowIfNull (engineRef);
-			if (callbacks.Owns)
-				throw new ArgumentException ("The callbacks must be supplied by the authorization plugin host.", nameof (callbacks));
-			var callbacksPointer = callbacks.GetCheckedPointer ();
 			var engineHandle = engineRef.GetCheckedHandle ();
-			InitializeHandle (_InitWithCallbacks (callbacksPointer, engineHandle), "initWithCallbacks:andEngineRef:");
+			InitializeHandle (_InitWithCallbacks ((IntPtr) callbacks, engineHandle), "initWithCallbacks:andEngineRef:");
 			GC.KeepAlive (engineRef);
-			GC.KeepAlive (callbacks);
 		}
 
 		/// <summary>Gets the authorization engine reference for communicating with the Security Server.</summary>
+		/// <remarks>The returned wrapper does not own the native engine reference.</remarks>
 		public AuthorizationEngine EngineRef {
 			get {
 				var engine = AuthorizationEngine.Create (_EngineRef);
@@ -38,6 +36,7 @@ namespace SecurityInterface {
 		}
 
 		/// <summary>Gets the authorization callbacks structure for communicating with the Security Server.</summary>
-		public AuthorizationCallbacks? Callbacks => AuthorizationCallbacks.Create (_Callbacks);
+		/// <remarks>The returned pointer is borrowed and must not be freed or mutated.</remarks>
+		public unsafe AuthorizationCallbacks* Callbacks => (AuthorizationCallbacks*) _Callbacks;
 	}
 }

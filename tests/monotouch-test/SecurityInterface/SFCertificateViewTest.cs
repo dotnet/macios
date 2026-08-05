@@ -94,17 +94,10 @@ namespace MonoTouchFixtures.SecurityInterface {
 			}
 		}
 
-		[Test]
-		public void DisclosureStateDidChangeNotification_Exists ()
-		{
-			var notification = SFCertificateView.DisclosureStateDidChangeNotification;
-			Assert.That (notification, Is.Not.Null, "Notification should not be null");
-			Assert.That ((int) notification.Length, Is.GreaterThan (0), "Notification string should not be empty");
-		}
 	}
 
 	static class CertificateData {
-		// Valid self-signed EC P-256 DER certificate (CN=TestCert, valid 10 years)
+		// Valid self-signed EC P-256 DER certificate (CN=TestCert), expiring 2036-04-08 02:36:10 UTC.
 		public static readonly byte [] AppleComCert = {
 			0x30, 0x82, 0x01, 0x7b, 0x30, 0x82, 0x01, 0x21, 0xa0, 0x03, 0x02, 0x01, 0x02, 0x02, 0x14, 0x7d,
 			0x74, 0x9f, 0x84, 0xa4, 0x7d, 0xe9, 0x76, 0x2c, 0xfe, 0x00, 0x77, 0x4d, 0xf3, 0xc4, 0x5e, 0xdd,

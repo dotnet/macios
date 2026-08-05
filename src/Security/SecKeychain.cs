@@ -61,9 +61,14 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern static unsafe OSStatus SecKeychainOpen (IntPtr pathName, IntPtr* keychain);
 
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos10.10")]
+		[DllImport (Constants.SecurityLibrary)]
+		extern static unsafe OSStatus SecKeychainGetStatus (IntPtr keychainRef, uint* keychainStatus);
+
 		/// <summary>Opens the keychain at the specified file path.</summary>
 		/// <param name="path">The file system path of the keychain to open.</param>
-		/// <param name="status">The status returned by the native operation.</param>
+		/// <param name="status">The status returned when opening the keychain or confirming that it exists.</param>
 		/// <param name="keychain">The opened keychain on success; otherwise, <see langword="null" />.</param>
 		/// <returns><see langword="true" /> if the keychain was opened; otherwise, <see langword="false" />.</returns>
 		[SupportedOSPlatform ("macos")]
@@ -78,6 +83,15 @@ namespace Security {
 				status = SecKeychainOpen (pathStr, &handle);
 			}
 			if (status != 0 || handle == IntPtr.Zero) {
+				keychain = null;
+				return false;
+			}
+			uint keychainStatus = 0;
+			unsafe {
+				status = SecKeychainGetStatus (handle, &keychainStatus);
+			}
+			if (status != 0) {
+				CFObject.CFRelease (handle);
 				keychain = null;
 				return false;
 			}

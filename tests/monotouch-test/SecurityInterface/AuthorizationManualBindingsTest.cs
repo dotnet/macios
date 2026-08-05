@@ -3,9 +3,7 @@
 
 using System;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using NUnit.Framework;
-using LocalAuthentication;
 using ObjCRuntime;
 using Security;
 using SecurityInterface;
@@ -38,33 +36,6 @@ namespace MonoTouchFixtures.SecurityInterface {
 	public unsafe class AuthorizationCallbacksTest {
 		static IntPtr lastEngine;
 		static AuthorizationResult lastResult;
-		static IntPtr contextValue;
-
-		[StructLayout (LayoutKind.Sequential)]
-		struct FakeCallbacksNative {
-			internal uint Version;
-			internal IntPtr SetResult;
-			internal IntPtr RequestInterrupt;
-			internal IntPtr DidDeactivate;
-			internal IntPtr GetContextValue;
-			internal IntPtr SetContextValue;
-			internal IntPtr GetHintValue;
-			internal IntPtr SetHintValue;
-			internal IntPtr GetArguments;
-			internal IntPtr GetSessionId;
-			internal IntPtr GetImmutableHintValue;
-			internal IntPtr GetLAContext;
-			internal IntPtr GetTokenIdentities;
-			internal IntPtr GetTKTokenWatcher;
-			internal IntPtr RemoveHintValue;
-			internal IntPtr RemoveContextValue;
-		}
-
-		[StructLayout (LayoutKind.Sequential)]
-		struct AuthorizationValueLayout {
-			internal nuint Length;
-			internal IntPtr Data;
-		}
 
 		[UnmanagedCallersOnly]
 		static int SetResultStub (IntPtr engine, AuthorizationResult result)
@@ -74,276 +45,71 @@ namespace MonoTouchFixtures.SecurityInterface {
 			return 17;
 		}
 
-		[UnmanagedCallersOnly]
-		static int GetContextValueStub (IntPtr engine, IntPtr key, AuthorizationContextFlags* flags, IntPtr* value)
-		{
-			lastEngine = engine;
-			*flags = AuthorizationContextFlags.Sticky;
-			*value = contextValue;
-			return 0;
-		}
-
-		[UnmanagedCallersOnly]
-		static int EngineOnlyStub (IntPtr engine)
-		{
-			lastEngine = engine;
-			return 21;
-		}
-
-		[UnmanagedCallersOnly]
-		static int SetContextValueStub (IntPtr engine, IntPtr key, AuthorizationContextFlags flags, IntPtr value)
-		{
-			lastEngine = engine;
-			return 22;
-		}
-
-		[UnmanagedCallersOnly]
-		static int GetValueStub (IntPtr engine, IntPtr key, IntPtr* value)
-		{
-			lastEngine = engine;
-			*value = IntPtr.Zero;
-			return 23;
-		}
-
-		[UnmanagedCallersOnly]
-		static int SetValueStub (IntPtr engine, IntPtr key, IntPtr value)
-		{
-			lastEngine = engine;
-			return 24;
-		}
-
-		[UnmanagedCallersOnly]
-		static int GetPointerStub (IntPtr engine, IntPtr* value)
-		{
-			lastEngine = engine;
-			*value = IntPtr.Zero;
-			return 25;
-		}
-
-		[UnmanagedCallersOnly]
-		static int GetTokenIdentitiesStub (IntPtr engine, IntPtr context, IntPtr* value)
-		{
-			lastEngine = engine;
-			*value = IntPtr.Zero;
-			return 26;
-		}
-
-		[UnmanagedCallersOnly]
-		static int RemoveValueStub (IntPtr engine, IntPtr key)
-		{
-			lastEngine = engine;
-			return 27;
-		}
-
-		static AuthorizationCallbacks CreateOwnedCallbacks ()
-		{
-			return new AuthorizationCallbacks (new AuthorizationCallbacksConfiguration {
-				SetResult = &SetResultStub,
-				RequestInterrupt = &EngineOnlyStub,
-				DidDeactivate = &EngineOnlyStub,
-				GetContextValue = &GetContextValueStub,
-				SetContextValue = &SetContextValueStub,
-				GetHintValue = &GetValueStub,
-				SetHintValue = &SetValueStub,
-				GetArguments = &GetPointerStub,
-				GetSessionId = &GetPointerStub,
-				GetImmutableHintValue = &GetValueStub,
-				GetLAContext = &GetPointerStub,
-				GetTokenIdentities = &GetTokenIdentitiesStub,
-				GetTokenWatcher = &GetPointerStub,
-				RemoveHintValue = &RemoveValueStub,
-				RemoveContextValue = &RemoveValueStub,
-			});
-		}
-
 		[Test]
-		public void Create_ZeroReturnsNull ()
+		public void Accessors ()
 		{
-			Assert.That (AuthorizationCallbacks.Create (IntPtr.Zero), Is.Null, "Zero");
-		}
+			var memory = stackalloc byte [sizeof (AuthorizationCallbacks)];
+			new Span<byte> (memory, sizeof (AuthorizationCallbacks)).Clear ();
+			*(uint*) memory = 4;
+			var setResult = (delegate* unmanaged<IntPtr, AuthorizationResult, int>) &SetResultStub;
+			*(IntPtr*) (memory + IntPtr.Size) = (IntPtr) setResult;
+			*(IntPtr*) (memory + 15 * IntPtr.Size) = (IntPtr) 0x5678;
+			var callbacks = (AuthorizationCallbacks*) memory;
 
-		[Test]
-		public void NativeLayout ()
-		{
-			Assert.That (Marshal.SizeOf<FakeCallbacksNative> (), Is.EqualTo (128), "Size");
-			Assert.That (Marshal.OffsetOf<FakeCallbacksNative> (nameof (FakeCallbacksNative.Version)).ToInt32 (), Is.EqualTo (0), "Version");
-			Assert.That (Marshal.OffsetOf<FakeCallbacksNative> (nameof (FakeCallbacksNative.SetResult)).ToInt32 (), Is.EqualTo (8), "SetResult");
-			Assert.That (Marshal.OffsetOf<FakeCallbacksNative> (nameof (FakeCallbacksNative.RemoveContextValue)).ToInt32 (), Is.EqualTo (120), "RemoveContextValue");
-		}
-
-		[Test]
-		public void Version ()
-		{
-			var native = new FakeCallbacksNative { Version = 4 };
-			var pointer = Marshal.AllocHGlobal (Marshal.SizeOf<FakeCallbacksNative> ());
-			try {
-				Marshal.StructureToPtr (native, pointer, false);
-				using var callbacks = AuthorizationCallbacks.Create (pointer);
-				Assert.That (callbacks, Is.Not.Null, "Callbacks");
-				if (callbacks is null)
-					return;
-				Assert.That (callbacks.Version, Is.EqualTo (4u), "Version");
-			} finally {
-				Marshal.FreeHGlobal (pointer);
-			}
-		}
-
-		[Test]
-		public void SetResult ()
-		{
-			var native = new FakeCallbacksNative {
-				Version = 4,
-				SetResult = (IntPtr) (delegate* unmanaged<IntPtr, AuthorizationResult, int>) &SetResultStub,
-			};
-			var pointer = Marshal.AllocHGlobal (Marshal.SizeOf<FakeCallbacksNative> ());
-			try {
-				Marshal.StructureToPtr (native, pointer, false);
-				using var callbacks = AuthorizationCallbacks.Create (pointer);
-				Assert.That (callbacks, Is.Not.Null, "Callbacks");
-				if (callbacks is null)
-					return;
-				using var engine = AuthorizationEngine.Create ((NativeHandle) (IntPtr) 0x1234);
-				Assert.That (engine, Is.Not.Null, "Engine");
-				if (engine is null)
-					return;
-				var status = callbacks.SetResult (engine, AuthorizationResult.Allow);
-				Assert.That (status, Is.EqualTo (17), "Status");
-				Assert.That (lastEngine, Is.EqualTo ((IntPtr) 0x1234), "Engine");
-				Assert.That (lastResult, Is.EqualTo (AuthorizationResult.Allow), "Result");
-			} finally {
-				Marshal.FreeHGlobal (pointer);
-			}
-		}
-
-		[Test]
-		public void GetContextValue_CopiesValue ()
-		{
-			var data = Marshal.AllocHGlobal (3);
-			var valuePointer = Marshal.AllocHGlobal (Marshal.SizeOf<AuthorizationValueLayout> ());
-			contextValue = valuePointer;
-			var callbacksPointer = Marshal.AllocHGlobal (Marshal.SizeOf<FakeCallbacksNative> ());
-			try {
-				Marshal.Copy (new byte [] { 1, 2, 3 }, 0, data, 3);
-				Marshal.StructureToPtr (new AuthorizationValueLayout { Length = 3, Data = data }, contextValue, false);
-				Marshal.StructureToPtr (new FakeCallbacksNative {
-					Version = 4,
-					GetContextValue = (IntPtr) (delegate* unmanaged<IntPtr, IntPtr, AuthorizationContextFlags*, IntPtr*, int>) &GetContextValueStub,
-				}, callbacksPointer, false);
-
-				using var callbacks = AuthorizationCallbacks.Create (callbacksPointer);
-				Assert.That (callbacks, Is.Not.Null, "Callbacks");
-				if (callbacks is null)
-					return;
-				using var engine = AuthorizationEngine.Create ((NativeHandle) (IntPtr) 0x5678);
-				Assert.That (engine, Is.Not.Null, "Engine");
-				if (engine is null)
-					return;
-				var status = callbacks.GetContextValue (engine, "test-key", out var flags, out var value);
-				Assert.That (status, Is.EqualTo (0), "Status");
-				Assert.That (flags, Is.EqualTo (AuthorizationContextFlags.Sticky), "Flags");
-				Assert.That (value, Is.EqualTo (new byte [] { 1, 2, 3 }), "Value");
-			} finally {
-				contextValue = IntPtr.Zero;
-				Marshal.FreeHGlobal (valuePointer);
-				Marshal.FreeHGlobal (callbacksPointer);
-				Marshal.FreeHGlobal (data);
-			}
-		}
-
-		[Test]
-		public void OptionalCallback_VersionGuard ()
-		{
-			var native = new FakeCallbacksNative { Version = 3 };
-			var pointer = Marshal.AllocHGlobal (Marshal.SizeOf<FakeCallbacksNative> ());
-			try {
-				Marshal.StructureToPtr (native, pointer, false);
-				using var callbacks = AuthorizationCallbacks.Create (pointer);
-				Assert.That (callbacks, Is.Not.Null, "Callbacks");
-				if (callbacks is null)
-					return;
-				using var engine = AuthorizationEngine.Create ((NativeHandle) (IntPtr) 0x1234);
-				Assert.That (engine, Is.Not.Null, "Engine");
-				if (engine is null)
-					return;
-				Assert.Throws<NotSupportedException> (() => callbacks.RemoveHintValue (engine, "key"));
-			} finally {
-				Marshal.FreeHGlobal (pointer);
-			}
-		}
-
-		[Test]
-		public void MissingCallback_Throws ()
-		{
-			var native = new FakeCallbacksNative { Version = 4 };
-			var pointer = Marshal.AllocHGlobal (Marshal.SizeOf<FakeCallbacksNative> ());
-			try {
-				Marshal.StructureToPtr (native, pointer, false);
-				using var callbacks = AuthorizationCallbacks.Create (pointer);
-				Assert.That (callbacks, Is.Not.Null, "Callbacks");
-				if (callbacks is null)
-					return;
-				using var engine = AuthorizationEngine.Create ((NativeHandle) (IntPtr) 0x1234);
-				Assert.That (engine, Is.Not.Null, "Engine");
-				if (engine is null)
-					return;
-				Assert.Throws<InvalidOperationException> (() => callbacks.RequestInterrupt (engine));
-			} finally {
-				Marshal.FreeHGlobal (pointer);
-			}
-		}
-
-		[Test]
-		public void AllCallbackSlots_Invoke ()
-		{
-			using var callbacks = CreateOwnedCallbacks ();
-			using var engine = AuthorizationEngine.Create ((NativeHandle) (IntPtr) 0x1234);
-			using var context = new LAContext ();
-			Assert.That (engine, Is.Not.Null, "Engine");
-			if (engine is null)
-				return;
-
-			Assert.That (callbacks.Version, Is.EqualTo (4), "Version");
-			Assert.That (callbacks.SetResult (engine, AuthorizationResult.Allow), Is.EqualTo (17), "SetResult");
-			Assert.That (callbacks.RequestInterrupt (engine), Is.EqualTo (21), "RequestInterrupt");
-			Assert.That (callbacks.DidDeactivate (engine), Is.EqualTo (21), "DidDeactivate");
-			contextValue = IntPtr.Zero;
-			Assert.That (callbacks.GetContextValue (engine, "key", out var flags, out var contextValueResult), Is.EqualTo (0), "GetContextValue");
-			Assert.That (flags, Is.EqualTo (AuthorizationContextFlags.Sticky), "Context flags");
-			Assert.That (contextValueResult, Is.Null, "Context value");
-			Assert.That (callbacks.SetContextValue (engine, "key", AuthorizationContextFlags.None, []), Is.EqualTo (22), "SetContextValue");
-			Assert.That (callbacks.GetHintValue (engine, "key", out _), Is.EqualTo (23), "GetHintValue");
-			Assert.That (callbacks.SetHintValue (engine, "key", []), Is.EqualTo (24), "SetHintValue");
-			Assert.That (callbacks.GetArguments (engine, out _), Is.EqualTo (25), "GetArguments");
-			Assert.That (callbacks.GetSessionId (engine, out _), Is.EqualTo (25), "GetSessionId");
-			Assert.That (callbacks.GetImmutableHintValue (engine, "key", out _), Is.EqualTo (23), "GetImmutableHintValue");
-			Assert.That (callbacks.GetLAContext (engine, out _), Is.EqualTo (25), "GetLAContext");
-			Assert.That (callbacks.GetTokenIdentities (engine, context, out _), Is.EqualTo (26), "GetTokenIdentities");
-			Assert.That (callbacks.GetTokenWatcher (engine, out _), Is.EqualTo (25), "GetTokenWatcher");
-			Assert.That (callbacks.RemoveHintValue (engine, "key"), Is.EqualTo (27), "RemoveHintValue");
-			Assert.That (callbacks.RemoveContextValue (engine, "key"), Is.EqualTo (27), "RemoveContextValue");
+			Assert.That (sizeof (AuthorizationCallbacks), Is.EqualTo (16 * IntPtr.Size), "Size");
+			Assert.That (callbacks->Version, Is.EqualTo (4), "Version");
+			Assert.That ((IntPtr) callbacks->SetResult, Is.EqualTo ((IntPtr) setResult), "SetResult");
+			Assert.That ((IntPtr) callbacks->RemoveContextValue, Is.EqualTo ((IntPtr) 0x5678), "RemoveContextValue");
+			Assert.That (callbacks->SetResult ((IntPtr) 0x1234, AuthorizationResult.Allow), Is.EqualTo (17), "Status");
 			Assert.That (lastEngine, Is.EqualTo ((IntPtr) 0x1234), "Engine");
+			Assert.That (lastResult, Is.EqualTo (AuthorizationResult.Allow), "Result");
 		}
 
 		[Test]
-		public void OwnedCallbacks_DisposeIsIdempotent ()
+		public void VersionedAccessors ()
 		{
-			var callbacks = CreateOwnedCallbacks ();
-			callbacks.Dispose ();
-			Assert.DoesNotThrow (() => callbacks.Dispose (), "Dispose twice");
-			Assert.Throws<ObjectDisposedException> (() => { var _ = callbacks.Version; });
+			var memory = stackalloc byte [sizeof (AuthorizationCallbacks)];
+			new Span<byte> (memory, sizeof (AuthorizationCallbacks)).Clear ();
+			*(IntPtr*) (memory + 8 * IntPtr.Size) = (IntPtr) 0x1001;
+			*(IntPtr*) (memory + 9 * IntPtr.Size) = (IntPtr) 0x1002;
+			*(IntPtr*) (memory + 10 * IntPtr.Size) = (IntPtr) 0x1003;
+			*(IntPtr*) (memory + 11 * IntPtr.Size) = (IntPtr) 0x1004;
+			*(IntPtr*) (memory + 13 * IntPtr.Size) = (IntPtr) 0x1005;
+			*(IntPtr*) (memory + 14 * IntPtr.Size) = (IntPtr) 0x1006;
+			var callbacks = (AuthorizationCallbacks*) memory;
+
+			*(uint*) memory = 0;
+			Assert.That ((IntPtr) callbacks->GetArguments, Is.EqualTo ((IntPtr) 0x1001), "Version 0 arguments");
+			Assert.That ((IntPtr) callbacks->GetSessionId, Is.EqualTo ((IntPtr) 0x1002), "Version 0 session ID");
+			Assert.That ((IntPtr) callbacks->GetImmutableHintValue, Is.EqualTo (IntPtr.Zero), "Version 0 immutable hint");
+			*(uint*) memory = 1;
+			Assert.That ((IntPtr) callbacks->GetImmutableHintValue, Is.EqualTo ((IntPtr) 0x1003), "Version 1 immutable hint");
+			Assert.That ((IntPtr) callbacks->GetLAContext, Is.EqualTo (IntPtr.Zero), "Version 1 LA context");
+			*(uint*) memory = 2;
+			Assert.That ((IntPtr) callbacks->GetLAContext, Is.EqualTo ((IntPtr) 0x1004), "Version 2 LA context");
+			Assert.That ((IntPtr) callbacks->GetTKTokenWatcher, Is.EqualTo (IntPtr.Zero), "Version 2 token watcher");
+			*(uint*) memory = 3;
+			Assert.That ((IntPtr) callbacks->GetTKTokenWatcher, Is.EqualTo ((IntPtr) 0x1005), "Version 3 token watcher");
+			Assert.That ((IntPtr) callbacks->RemoveHintValue, Is.EqualTo (IntPtr.Zero), "Version 3 remove hint");
+			*(uint*) memory = 4;
+			Assert.That ((IntPtr) callbacks->RemoveHintValue, Is.EqualTo ((IntPtr) 0x1006), "Version 4 remove hint");
 		}
 
 		[Test]
-		public void PluginView_RejectsOwnedCallbacks ()
+		public void PluginView_NullCallbacksThrows ()
 		{
-			using var callbacks = CreateOwnedCallbacks ();
 			using var engine = AuthorizationEngine.Create ((NativeHandle) (IntPtr) 0x1234);
 			Assert.That (engine, Is.Not.Null, "Engine");
 			if (engine is null)
 				return;
-			Assert.Throws<ArgumentException> (() => new SFAuthorizationPluginView (callbacks, engine));
+			Assert.Throws<ArgumentNullException> (() => new SFAuthorizationPluginView (null, engine));
 		}
 
+		[Test]
+		public void PluginView_NullEngineThrows ()
+		{
+			Assert.Throws<ArgumentNullException> (() => new SFAuthorizationPluginView ((AuthorizationCallbacks*) 0x1234, null));
+		}
 	}
 }
 #endif // __MACOS__

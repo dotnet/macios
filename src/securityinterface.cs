@@ -216,10 +216,6 @@ namespace SecurityInterface {
 		bool Deauthorize ([NullAllowed] NSObject sender);
 	}
 
-	/// <summary>Interface representing the protocol methods of <see cref="SFCertificatePanelDelegate" />.</summary>
-	[NoiOS, NoTV, NoMacCatalyst]
-	interface ISFCertificatePanelDelegate { }
-
 	/// <summary>Delegate methods for the <see cref="SFCertificatePanel" />.</summary>
 	[NoiOS, NoTV, NoMacCatalyst]
 	[Protocol (IsInformal = true, BackwardsCompatibleCodeGeneration = false), Model]
@@ -388,10 +384,6 @@ namespace SecurityInterface {
 		[Field ("SFCertificateViewDisclosureStateDidChange")]
 		NSString DisclosureStateDidChangeNotification { get; }
 	}
-
-	/// <summary>Interface representing the protocol methods of <see cref="SFChooseIdentityPanelDelegate" />.</summary>
-	[NoiOS, NoTV, NoMacCatalyst]
-	interface ISFChooseIdentityPanelDelegate { }
 
 	/// <summary>Delegate methods for the <see cref="SFChooseIdentityPanel" />.</summary>
 	[NoiOS, NoTV, NoMacCatalyst]

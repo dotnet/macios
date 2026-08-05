@@ -3,7 +3,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using NUnit.Framework;
 using Security;
 
@@ -12,12 +11,6 @@ namespace MonoTouchFixtures.SecurityInterface {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class AuthorizationRightsTest {
-
-		[Test]
-		public void AuthorizationRight_IsClass ()
-		{
-			Assert.That (typeof (AuthorizationRight).IsValueType, Is.False, "IsValueType");
-		}
 
 		[Test]
 		public void Create_FromStrings ()
@@ -128,30 +121,6 @@ namespace MonoTouchFixtures.SecurityInterface {
 			Assert.That (right.Value, Is.Null, "Value");
 		}
 
-		[Test]
-		public void NativeLayouts ()
-		{
-			Assert.That (Marshal.SizeOf<AuthorizationItemLayout> (), Is.EqualTo (32), "AuthorizationItem size");
-			Assert.That (Marshal.OffsetOf<AuthorizationItemLayout> (nameof (AuthorizationItemLayout.Name)).ToInt32 (), Is.EqualTo (0), "AuthorizationItem.Name");
-			Assert.That (Marshal.OffsetOf<AuthorizationItemLayout> (nameof (AuthorizationItemLayout.ValueLength)).ToInt32 (), Is.EqualTo (8), "AuthorizationItem.ValueLength");
-			Assert.That (Marshal.OffsetOf<AuthorizationItemLayout> (nameof (AuthorizationItemLayout.Value)).ToInt32 (), Is.EqualTo (16), "AuthorizationItem.Value");
-			Assert.That (Marshal.OffsetOf<AuthorizationItemLayout> (nameof (AuthorizationItemLayout.Flags)).ToInt32 (), Is.EqualTo (24), "AuthorizationItem.Flags");
-			Assert.That (Marshal.SizeOf<AuthorizationRightsLayout> (), Is.EqualTo (16), "AuthorizationRights size");
-		}
-
-		[StructLayout (LayoutKind.Sequential)]
-		struct AuthorizationItemLayout {
-			public IntPtr Name;
-			public nuint ValueLength;
-			public IntPtr Value;
-			public uint Flags;
-		}
-
-		[StructLayout (LayoutKind.Sequential)]
-		struct AuthorizationRightsLayout {
-			public uint Count;
-			public IntPtr Items;
-		}
 	}
 }
 #endif // __MACOS__

@@ -554,9 +554,8 @@
 					- NativeAOT supported platforms in all configurations
 					- ios/tvos device builds in all configurations
 					- macOS/MacCatalyst builds in release configuration
-				  (On .NET 11+ NativeAOT defaults to 'trimmable-static' instead - that's set earlier, at
-				  evaluation time, in Xamarin.Shared.Sdk.props. The trimmable-static registrar is only smaller
-				  under NativeAOT, so the other runtimes keep managed-static.)
+				  (On .NET 11+ CoreCLR and NativeAOT default to 'trimmable-static' instead - that's set earlier,
+				  at evaluation time, in Xamarin.Shared.Sdk.props. Mono keeps managed-static.)
 				- Set 'partial-static' for:
 					- when no assemblies are trimmed and when MarshalManagedExceptionMode is default (or not set)
 				- Otherwise set 'dynamic' 

@@ -13,8 +13,7 @@ using JavaScriptCore;
 
 namespace SceneKit {
 	/// <summary>Static class that contains a method to export JavaScript modules.</summary>
-	///     <remarks>To be added.</remarks>
-	///     <!-- TODO: Probably https://developer.apple.com/library/prerelease/mac/documentation/SceneKit/Reference/SCNAction_Class/index.html#//apple_ref/occ/clm/SCNAction/javaScriptActionWithScript:duration: -->
+	/// <!-- TODO: Probably https://developer.apple.com/library/prerelease/mac/documentation/SceneKit/Reference/SCNAction_Class/index.html#//apple_ref/occ/clm/SCNAction/javaScriptActionWithScript:duration: -->
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -23,9 +22,8 @@ namespace SceneKit {
 		[DllImport (Constants.SceneKitLibrary)]
 		static extern void SCNExportJavaScriptModule (IntPtr context);
 
-		/// <param name="context">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Exports SceneKit classes into the specified JavaScript context.</summary>
+		/// <param name="context">The JavaScript context to export SceneKit classes into.</param>
 		public static void ExportModule (JSContext context)
 		{
 			if (context is null)

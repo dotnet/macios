@@ -2185,6 +2185,10 @@ public partial class Generator : IMemberGatherer {
 
 				string kn = "k" + (i++);
 				if (use_export_as_string_constant) {
+					if (BindingTouch.SupportsXmlDocumentation) {
+						if (!WriteDocumentation (prop))
+							print ($"/// <summary>The value of the <c>{export.Selector}</c> key from the underlying <see cref=\"NSNotification\" />'s user info dictionary.</summary>");
+					}
 					print ("{0} {1}{2} {3} {{\n\tget {{\n",
 						   is_internal ? "internal" : "public",
 						   propertyType,
@@ -2200,6 +2204,10 @@ public partial class Generator : IMemberGatherer {
 					print ("[Field (\"{0}\", \"{1}\")]", export.Selector, lib);
 					print ("static IntPtr {0};", kn);
 					print ("");
+					if (BindingTouch.SupportsXmlDocumentation) {
+						if (!WriteDocumentation (prop))
+							print ($"/// <summary>The value of the <c>{export.Selector}</c> key from the underlying <see cref=\"NSNotification\" />'s user info dictionary.</summary>");
+					}
 					// linker will remove the attributes (but it's useful for testing)
 					print_generated_code ();
 					print ("{0} {1}{2} {3} {{",
@@ -4941,8 +4949,11 @@ public partial class Generator : IMemberGatherer {
 					continue;
 
 				// we might get "delegates" from DelegateName attributes, and in that case the declaring type doesn't have xml docs for the delegate (the declaring type is the container type for the member with the DelegateName attribute, and its documentation has nothing to do with the delegate type)
+				var wroteDelegateDocs = false;
 				if (mi.DeclaringType!.IsSubclassOf (TypeCache.System_Delegate))
-					WriteDocumentation (mi.DeclaringType);
+					wroteDelegateDocs = WriteDocumentation (mi.DeclaringType);
+				if (!wroteDelegateDocs && BindingTouch.SupportsXmlDocumentation && shortName.EndsWith ("EventArgs", StringComparison.Ordinal))
+					print ("/// <summary>A delegate that represents the callback for the corresponding Objective-C delegate/protocol method.</summary>");
 
 				var del = mi.DeclaringType;
 
@@ -7684,6 +7695,8 @@ public partial class Generator : IMemberGatherer {
 					var bareType = pt.TryIsByRef (out var elementType) ? elementType : pt;
 					var nullable = !pt.IsValueType && AttributeManager.IsNullable (p);
 
+					if (BindingTouch.SupportsXmlDocumentation)
+						print ($"/// <summary>The value of the <c>{GetPublicParameterName (p)}</c> argument to the event.</summary>");
 					print ("public {0}{1} {2} {{ get; set; }}", TypeManager.RenderType (bareType), nullable ? "?" : "", GetPublicParameterName (p));
 				}
 				indent--; print ("}\n");

@@ -588,8 +588,8 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.RegistrarHelper/MapInfo
 Microsoft.MacCatalyst.dll:ObjCRuntime.RegistrarHelper/MapInfo..ctor(ObjCRuntime.IManagedRegistrar)
 Microsoft.MacCatalyst.dll:ObjCRuntime.ReleaseAttribute
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime
-Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.<ConstructINativeObject>g__ConstructINativeObjectViaFactoryMethod|291_0`1(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.<ConstructNSObject>g__ConstructNSObjectViaFactoryMethod|290_0`1(ObjCRuntime.NativeHandle)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.<ConstructINativeObject>g__ConstructINativeObjectViaFactoryMethod|293_0`1(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.<ConstructNSObject>g__ConstructNSObjectViaFactoryMethod|292_0`1(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.AllocGCHandle(System.Object, System.Runtime.InteropServices.GCHandleType)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.AllocGCHandle(System.Object)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.AppendAdditionalInformation(System.Text.StringBuilder, System.IntPtr, System.RuntimeMethodHandle)
@@ -1257,7 +1257,6 @@ Microsoft.MacCatalyst.dll:System.Boolean Registrar.Registrar/ObjCType::IsModel
 Microsoft.MacCatalyst.dll:System.Boolean Registrar.Registrar/ObjCType::IsProtocol
 Microsoft.MacCatalyst.dll:System.Boolean Registrar.Registrar/ObjCType::IsWrapper
 Microsoft.MacCatalyst.dll:System.Boolean UIKit.UIApplication::CheckForEventAndDelegateMismatches
-Microsoft.MacCatalyst.dll:System.Boolean UIKit.UIApplication::CheckForIllegalCrossThreadCalls
 Microsoft.MacCatalyst.dll:System.Boolean[] Foundation.ProtocolMemberAttribute::ParameterByRef()
 Microsoft.MacCatalyst.dll:System.Byte Registrar.Registrar/ObjCField::Alignment
 Microsoft.MacCatalyst.dll:System.Char[] Registrar.Registrar/ObjCType::invalidSelectorCharacters
@@ -1591,6 +1590,7 @@ Microsoft.MacCatalyst.dll:UIKit.UIApplication._Xamarin_ConstructNSObject(ObjCRun
 Microsoft.MacCatalyst.dll:UIKit.UIApplication..cctor()
 Microsoft.MacCatalyst.dll:UIKit.UIApplication..ctor(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:UIKit.UIApplication.Dispose(System.Boolean)
+Microsoft.MacCatalyst.dll:UIKit.UIApplication.EnsureUIThread()
 Microsoft.MacCatalyst.dll:UIKit.UIApplication.get_ClassHandle()
 Microsoft.MacCatalyst.dll:UIKit.UIApplication.InitializeApplication()
 Microsoft.MacCatalyst.dll:UIKit.UIApplication.Main(System.String[], System.Type, System.Type)

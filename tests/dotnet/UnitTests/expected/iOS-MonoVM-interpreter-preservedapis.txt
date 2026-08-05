@@ -584,8 +584,8 @@ Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper/MapInfo..ctor(ObjCRuntime.IManaged
 Microsoft.iOS.dll:ObjCRuntime.ReleaseAttribute
 Microsoft.iOS.dll:ObjCRuntime.Runtime
 Microsoft.iOS.dll:ObjCRuntime.Runtime..cctor()
-Microsoft.iOS.dll:ObjCRuntime.Runtime.<ConstructINativeObject>g__ConstructINativeObjectViaFactoryMethod|291_0`1(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.<ConstructNSObject>g__ConstructNSObjectViaFactoryMethod|290_0`1(ObjCRuntime.NativeHandle)
+Microsoft.iOS.dll:ObjCRuntime.Runtime.<ConstructINativeObject>g__ConstructINativeObjectViaFactoryMethod|293_0`1(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.iOS.dll:ObjCRuntime.Runtime.<ConstructNSObject>g__ConstructNSObjectViaFactoryMethod|292_0`1(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.AllocGCHandle(System.Object, System.Runtime.InteropServices.GCHandleType)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.AllocGCHandle(System.Object)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.AppendAdditionalInformation(System.Text.StringBuilder, System.IntPtr, System.RuntimeMethodHandle)
@@ -1247,7 +1247,6 @@ Microsoft.iOS.dll:System.Boolean Registrar.Registrar/ObjCType::IsModel
 Microsoft.iOS.dll:System.Boolean Registrar.Registrar/ObjCType::IsProtocol
 Microsoft.iOS.dll:System.Boolean Registrar.Registrar/ObjCType::IsWrapper
 Microsoft.iOS.dll:System.Boolean UIKit.UIApplication::CheckForEventAndDelegateMismatches
-Microsoft.iOS.dll:System.Boolean UIKit.UIApplication::CheckForIllegalCrossThreadCalls
 Microsoft.iOS.dll:System.Boolean[] Foundation.ProtocolMemberAttribute::ParameterByRef()
 Microsoft.iOS.dll:System.Byte Registrar.Registrar/ObjCField::Alignment
 Microsoft.iOS.dll:System.Char[] Registrar.Registrar/ObjCType::invalidSelectorCharacters
@@ -1579,6 +1578,7 @@ Microsoft.iOS.dll:UIKit.UIApplication._Xamarin_ConstructNSObject(ObjCRuntime.Nat
 Microsoft.iOS.dll:UIKit.UIApplication..cctor()
 Microsoft.iOS.dll:UIKit.UIApplication..ctor(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:UIKit.UIApplication.Dispose(System.Boolean)
+Microsoft.iOS.dll:UIKit.UIApplication.EnsureUIThread()
 Microsoft.iOS.dll:UIKit.UIApplication.get_ClassHandle()
 Microsoft.iOS.dll:UIKit.UIApplication.InitializeApplication()
 Microsoft.iOS.dll:UIKit.UIApplication.Main(System.String[], System.Type, System.Type)

@@ -755,6 +755,15 @@
 			<!-- Set default ValidateObjectPointers value -->
 			<_ValidateObjectPointers Condition="'$(_ValidateObjectPointers)' == ''">false</_ValidateObjectPointers>
 
+			<!--
+				Set the 'ObjCRuntime.Runtime.CheckForIllegalCrossThreadCalls' feature switch value. When false, ILLink stubs
+				the [NS|UI]Application.EnsureUIThread method body (so the UI thread checks are removed). A user-specified
+				$(CheckForIllegalCrossThreadCalls) always wins; otherwise we keep the checks in debug builds and remove them in
+				release builds (matching the old 'remove-uithread-checks' optimization default).
+			-->
+			<_CheckForIllegalCrossThreadCalls Condition="'$(CheckForIllegalCrossThreadCalls)' != ''">$(CheckForIllegalCrossThreadCalls)</_CheckForIllegalCrossThreadCalls>
+			<_CheckForIllegalCrossThreadCalls Condition="'$(_CheckForIllegalCrossThreadCalls)' == ''">$(_BundlerDebug)</_CheckForIllegalCrossThreadCalls>
+
 			<_CustomLinkerOptions>
 				AreAnyAssembliesTrimmed=$(_AreAnyAssembliesTrimmed)
 				AssemblyName=$(AssemblyName).dll
@@ -904,6 +913,7 @@
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsCoreCLR" Value="true" Trim="true" Condition="'$(UseMonoRuntime)' != 'true'" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsCoreCLR" Value="false" Trim="true" Condition="'$(UseMonoRuntime)' == 'true'" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Class.ValidateObjectPointers" Value="$(_ValidateObjectPointers)" Trim="true" />
+			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.CheckForIllegalCrossThreadCalls" Value="$(_CheckForIllegalCrossThreadCalls)" Trim="true" />
 
 			<!-- Configure System.Net.Http Native Handlers -->
 			<RuntimeHostConfigurationOption Include="System.Net.Http.NativeHandler.UseNSUrlSessionHandler" Value="$(_IsNSUrlSessionHandlerFeature)" Trim="true" />

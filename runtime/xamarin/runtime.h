@@ -160,7 +160,7 @@ struct AssemblyLocations {
 void xamarin_initialize ();
 void xamarin_initialize_dynamic_registrar ();
 
-void			xamarin_assertion_message (const char *msg, ...) __attribute__((__noreturn__));
+void			xamarin_assertion_message (const char *msg, ...) __attribute__((__noreturn__, format(printf, 1, 2)));
 // Gets the bundle path (where the managed executable is). This is *not* the path of the app bundle (.app/.appex).
 const char *	xamarin_get_bundle_path (); /* Public API */
 // Sets the bundle path (where the managed executable is). By default APP/Contents/MonoBundle.
@@ -195,7 +195,7 @@ void			xamarin_throw_nsexception (MonoException *exc);
 void			xamarin_rethrow_managed_exception (GCHandle original_gchandle, GCHandle *exception_gchandle);
 MonoException *	xamarin_create_exception (const char *msg);
 id				xamarin_get_handle (MonoObject *obj, GCHandle *exception_gchandle);
-char *			xamarin_strdup_printf (const char *msg, ...);
+char *			xamarin_strdup_printf (const char *msg, ...) __attribute__((format(printf, 1, 2)));
 void *			xamarin_calloc (size_t size);
 void			xamarin_free (void *ptr);
 MonoMethod *	xamarin_get_reflection_method_method (MonoReflectionMethod *method);
@@ -297,9 +297,9 @@ bool			xamarin_locate_assembly_resource_for_root (const char *root, const char *
 bool			xamarin_locate_assembly_resource (const char *assembly_name, const char *culture, const char *resource, char *path, size_t pathlen);
 bool			xamarin_locate_app_resource (const char *resource, char *path, size_t pathlen);
 
-// this functions support NSLog/NSString-style format specifiers.
-void			xamarin_printf (const char *format, ...);
-void			xamarin_vprintf (const char *format, va_list args);
+// these functions support NSLog/NSString-style format specifiers.
+void			xamarin_printf (const char *format, ...) __attribute__((format(__NSString__, 1, 2)));
+void			xamarin_vprintf (const char *format, va_list args) __attribute__((format(__NSString__, 1, 0)));
 void			xamarin_install_log_callbacks ();
 
 bool			xamarin_is_user_type (Class cls);

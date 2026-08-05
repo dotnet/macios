@@ -392,7 +392,7 @@ void monotouch_configure_debugging ()
 	if (captured_debug_port && *captured_debug_port) {
 		if (monodevelop_port == -1) {
 			monodevelop_port = strtol (captured_debug_port, NULL, 10);
-			LOG (PRODUCT ": Found port %i in environment variables\n", monodevelop_port);
+			LOG (PRODUCT ": Found port %i in environment variables\n", (int) monodevelop_port);
 		}
 	}
 	free (captured_debug_port);
@@ -414,7 +414,7 @@ void monotouch_configure_debugging ()
 	if (captured_debug_connect_timeout && *captured_debug_connect_timeout) {
 		if (sdb_timeout_time == -1) {
 			sdb_timeout_time = strtol (captured_debug_connect_timeout, NULL, 10);
-			LOG (PRODUCT ": Found connect timeout %i in environment variables\n", sdb_timeout_time);
+			LOG (PRODUCT ": Found connect timeout %i in environment variables\n", (int) sdb_timeout_time);
 		}
 	}
 	free (captured_debug_connect_timeout);
@@ -448,7 +448,7 @@ void monotouch_configure_debugging ()
 			if (ptr == NULL || ptr == (void *) -1) {
 				LOG (PRODUCT ": Could not map shared memory: %s\n", strerror (errno));
 			} else {
-				LOG (PRODUCT ": Read %i bytes from shared memory: %p with key %i and id %i\n", shmsize, ptr, shmkey, shmid);
+				LOG (PRODUCT ": Read %i bytes from shared memory: %p with key %i and id %i\n", (int) shmsize, ptr, shmkey, shmid);
 				// Make a local copy of the shared memory, so that it doesn't change while we're parsing it.
 				char *data = strndup ((const char *) ptr, shmsize); // strndup will null-terminate
 				char *line = data;
@@ -468,9 +468,9 @@ void monotouch_configure_debugging ()
 						long shm_monodevelop_port = strtol (line + 23, NULL, 10);
 						if (monodevelop_port == -1) {
 							monodevelop_port = shm_monodevelop_port;
-							LOG (PRODUCT ": Found port %i in shared memory\n", monodevelop_port);
+							LOG (PRODUCT ": Found port %i in shared memory\n", (int) monodevelop_port);
 						} else  {
-							LOG (PRODUCT ": Found port %i in shared memory, but not overriding existing port %i\n", shm_monodevelop_port, monodevelop_port);
+							LOG (PRODUCT ": Found port %i in shared memory, but not overriding existing port %i\n", (int) shm_monodevelop_port, (int) monodevelop_port);
 						}
 					} else {
 						LOG (PRODUCT ": Unknown data found in shared memory: %s\n", line);
@@ -540,9 +540,9 @@ void monotouch_configure_debugging ()
 		}
 
 		if (monodevelop_port <= 0) {
-			LOG (PRODUCT ": Invalid IDE Port: %i\n", monodevelop_port);
+			LOG (PRODUCT ": Invalid IDE Port: %i\n", (int) monodevelop_port);
 		} else {
-			LOG (PRODUCT ": IDE Port: %i Transport: %s Connect Timeout: %i\n", monodevelop_port, debugging_mode == DebuggingModeHttp ? "HTTP" : (debugging_mode == DebuggingModeUsb ? "USB" : "WiFi"), sdb_timeout_time);
+			LOG (PRODUCT ": IDE Port: %i Transport: %s Connect Timeout: %i\n", (int) monodevelop_port, debugging_mode == DebuggingModeHttp ? "HTTP" : (debugging_mode == DebuggingModeUsb ? "USB" : "WiFi"), (int) sdb_timeout_time);
 			if (debugging_mode == DebuggingModeUsb) {
 				monotouch_connect_usb ();
 			} else if (debugging_mode == DebuggingModeWifi) {
@@ -709,7 +709,7 @@ monotouch_connect_wifi (NSMutableArray *ips)
 			}
 			
 			if (rv < 0 && errno != EINPROGRESS) {
-				PRINT (PRODUCT ": Failed to connect to %s on port %d: %s", ip, listen_port, strerror (errno));
+				PRINT (PRODUCT ": Failed to connect to %s on port %d: %s", ip, (int) listen_port, strerror (errno));
 				close (sockets[i]);
 				sockets[i] = -1;
 				continue;
@@ -787,7 +787,7 @@ monotouch_connect_wifi (NSMutableArray *ips)
 				}
 				
 				if (error != 0) {
-					PRINT (PRODUCT ": Socket error while connecting to IDE on %s:%d: %s", [[ips objectAtIndex:i] UTF8String], listen_port, strerror (error));
+					PRINT (PRODUCT ": Socket error while connecting to IDE on %s:%d: %s", [[ips objectAtIndex:i] UTF8String], (int) listen_port, strerror (error));
 					close (sockets[i]);
 					sockets[i] = -1;
 					waiting--;
@@ -927,7 +927,7 @@ monotouch_connect_usb ()
 			// not a fatal failure
 		}
 
-		LOG (PRODUCT ": Successfully received USB connection from the IDE on port %i, fd: %i\n", listen_port, fd);
+		LOG (PRODUCT ": Successfully received USB connection from the IDE on port %i, fd: %i\n", (int) listen_port, fd);
 	} while (monotouch_process_connection (fd));
 
 	LOG (PRODUCT ": Successfully talked to the IDE. Will continue startup now.\n");
@@ -986,7 +986,7 @@ monotouch_load_debugger ()
 
 		char *options;
 		if (sdb_timeout_time != -1) {
-			options = xamarin_strdup_printf ("transport=custom_transport,address=dummy,embedding=1,timeout=%d", sdb_timeout_time);
+			options = xamarin_strdup_printf ("transport=custom_transport,address=dummy,embedding=1,timeout=%d", (int) sdb_timeout_time);
 		} else {
 			options = xamarin_strdup_printf ("transport=custom_transport,address=dummy,embedding=1");
 		}
@@ -1213,7 +1213,7 @@ monotouch_process_connection (int fd)
 				return true;
 		} else if (!strncmp (command, "set heapshot port: ", 19)) {
 			heapshot_port = strtol (command + 19, NULL, 0);
-			LOG (PRODUCT ": HeapShot port is now: %i\n", heapshot_port);
+			LOG (PRODUCT ": HeapShot port is now: %i\n", (int) heapshot_port);
 		} else if (!strcmp (command, "heapshot")) {
 			if (heapshot_fd == -1) {
 				struct sockaddr_in heapshot_addr;

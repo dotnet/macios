@@ -15835,7 +15835,6 @@ M:VideoToolbox.VTSuperResolutionScalerParameters.#ctor(VideoToolbox.VTFrameProce
 M:VideoToolbox.VTSupportedEncoderProperties.#ctor
 M:VideoToolbox.VTTemporalNoiseFilterConfiguration.#ctor(System.IntPtr,System.IntPtr,CoreMedia.CMPixelFormat)
 M:VideoToolbox.VTTemporalNoiseFilterParameters.#ctor(VideoToolbox.VTFrameProcessorFrame,VideoToolbox.VTFrameProcessorFrame[],VideoToolbox.VTFrameProcessorFrame[],VideoToolbox.VTFrameProcessorFrame,System.Single,System.Byte)
-M:VideoToolbox.VTUtilities.RegisterSupplementalVideoDecoder(CoreMedia.CMVideoCodecType)
 M:Vision.VNDetectBarcodesRequest.GetSupportedSymbologies(Foundation.NSError@)
 M:Vision.VNFeaturePrintObservation.ComputeDistance(System.Single[]@,Vision.VNFeaturePrintObservation,Foundation.NSError@)
 M:Vision.VNGenerateOpticalFlowRequest.#ctor(CoreGraphics.CGImage,ImageIO.CGImagePropertyOrientation,Vision.VNImageOptions,Vision.VNRequestCompletionHandler)

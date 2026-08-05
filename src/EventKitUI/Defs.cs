@@ -49,7 +49,6 @@ namespace EventKitUI {
 	// untyped enum -> EKEventEditViewController.h
 	// iOS 9 promoted this to an NSInteger - which breaks compatibility
 	/// <summary>Enumerates possible actions that a user can take when editing a view.</summary>
-	///     <remarks>To be added.</remarks>
 	[Native]
 	public enum EKEventEditViewAction : long {
 		/// <summary>The user canceled the change to the event.</summary>

@@ -110,7 +110,6 @@ namespace PdfKit {
 	}
 
 	/// <summary>Enumerates annotation icon types.</summary>
-	/// <remarks>To be added.</remarks>
 	[Native]
 	[TV (18, 2)]
 	public enum PdfTextAnnotationIconType : long {

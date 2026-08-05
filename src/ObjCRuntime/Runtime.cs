@@ -2690,6 +2690,21 @@ namespace ObjCRuntime {
 			return parameters [parameter].ParameterType.GetElementType ()!; // FIX NAMING
 		}
 
+		// Caches the closed generic helper method per (open helper method, closed instance type), so
+		// that the reflection cost (FindClosedTypeInHierarchy + MakeGenericMethod) is only paid once
+		// per instantiation instead of on every call.
+		//
+		// The cache lives in a nested type (rather than as a field initializer on Runtime) so its
+		// ConcurrentDictionary instantiation is constructed by the nested type's static constructor
+		// - which only runs the first time InvokeGenericRegistrarTrampoline actually accesses it.
+		// InvokeGenericRegistrarTrampoline is only ever reachable under a Hot-Reload-compatible
+		// build, so in every other configuration (e.g. Release/NativeAOT) the trampoline is trimmed
+		// and this nested type - together with the ConcurrentDictionary instantiation - is trimmed
+		// with it, keeping it out of Runtime's static constructor and out of the app.
+		static class ClosedGenericRegistrarTrampolines {
+			internal static readonly ConcurrentDictionary<(RuntimeMethodHandle OpenImplMethod, RuntimeTypeHandle ClosedInstanceType), MethodInfo> Cache = new ();
+		}
+
 		// Invokes a relocated generic registrar trampoline helper.
 		//
 		// When the trimmable static registrar relocates the registrar trampolines into a companion
@@ -2708,21 +2723,6 @@ namespace ObjCRuntime {
 		// the closed helper, and returns its (boxed) native return value. Any failure is caught and
 		// reported through 'exception_gchandle' so no exception escapes the UnmanagedCallersOnly
 		// boundary.
-		// Caches the closed generic helper method per (open helper method, closed instance type), so
-		// that the reflection cost (FindClosedTypeInHierarchy + MakeGenericMethod) is only paid once
-		// per instantiation instead of on every call.
-		//
-		// The cache lives in a nested type (rather than as a field initializer on Runtime) so its
-		// ConcurrentDictionary instantiation is constructed by the nested type's static constructor
-		// - which only runs the first time InvokeGenericRegistrarTrampoline actually accesses it.
-		// InvokeGenericRegistrarTrampoline is only ever reachable under a Hot-Reload-compatible
-		// build, so in every other configuration (e.g. Release/NativeAOT) the trampoline is trimmed
-		// and this nested type - together with the ConcurrentDictionary instantiation - is trimmed
-		// with it, keeping it out of Runtime's static constructor and out of the app.
-		static class ClosedGenericRegistrarTrampolines {
-			internal static readonly ConcurrentDictionary<(RuntimeMethodHandle OpenImplMethod, RuntimeTypeHandle ClosedInstanceType), MethodInfo> Cache = new ();
-		}
-
 		internal static object? InvokeGenericRegistrarTrampoline (object instance, RuntimeTypeHandle open_user_type_handle, RuntimeMethodHandle open_impl_method_handle, object? [] args, out IntPtr exception_gchandle)
 		{
 			// This method uses reflection (MakeGenericMethod + MethodInfo.Invoke), which requires
@@ -2739,7 +2739,7 @@ namespace ObjCRuntime {
 				var closed_instance_type = instance.GetType ();
 				var cache_key = (open_impl_method_handle, closed_instance_type.TypeHandle);
 				MethodInfo closed_impl;
-				if (ClosedGenericRegistrarTrampolines.Cache.TryGetValue (cache_key, out var cached_impl) && cached_impl is not null) {
+				if (ClosedGenericRegistrarTrampolines.Cache.TryGetValue (cache_key, out var cached_impl)) {
 					closed_impl = cached_impl;
 				} else {
 					var open_user_type = Type.GetTypeFromHandle (open_user_type_handle);

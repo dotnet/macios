@@ -33,8 +33,7 @@
 
 namespace PdfKit {
 
-	/// <summary>Enumerates named PDF action names.</summary>
-	/// <remarks>To be added.</remarks>
+	/// <summary>Enumerates named actions that can be performed in a PDF document.</summary>
 	[Native]
 	[TV (18, 2)]
 	public enum PdfActionNamedName : long {

@@ -67,3 +67,10 @@ So we do the following:
 3. The `_PostTrimmingProcessing` MSBuild target takes the surviving symbols
    from either path, generates the corresponding native Objective-C code, and
    adds it to the list of files to compile and link into the final executable.
+
+Note that the generated native code contains a direct reference to each surviving
+Objective-C class, so the native registrar must register any such class, even when
+ILC trimmed away all the trampolines for the corresponding managed type (otherwise
+the reference would turn into a hard link error). This is why the surviving class
+names are also passed to the registrar when the native registrar code is generated
+after ILC (see `Application.ClassesReferencedByInlinedClassGetHandle`).

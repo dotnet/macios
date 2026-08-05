@@ -1557,8 +1557,15 @@ namespace Xamarin.Linker {
 			if (associatedSourceType is not null
 				&& App.XamarinRuntime == XamarinRuntime.NativeAOT
 				&& App.Registrar == RegistrarMode.TrimmableStatic
-				&& App.PrepareAssemblies)
-				unmanagedCallersAttribute.Fields.Add (new CustomAttributeNamedArgument ("AssociatedSourceType", new CustomAttributeArgument (abr.System_Type, associatedSourceType)));
+				&& App.PrepareAssemblies) {
+				// Import the type into the current assembly, otherwise Cecil will serialize the Type argument
+				// without an assembly-qualified name when 'associatedSourceType' is a TypeDefinition from another
+				// assembly (because a TypeDefinition's Scope is its own module), and ILC won't be able to resolve
+				// it (the trampolines are emitted into the companion assembly, while the associated type is in the
+				// user assembly).
+				var importedSourceType = abr.CurrentAssembly.MainModule.ImportReference (associatedSourceType);
+				unmanagedCallersAttribute.Fields.Add (new CustomAttributeNamedArgument ("AssociatedSourceType", new CustomAttributeArgument (abr.System_Type, importedSourceType)));
+			}
 
 			if (App.XamarinRuntime != XamarinRuntime.CoreCLR)
 				unmanagedCallersAttribute.Fields.Add (new CustomAttributeNamedArgument ("EntryPoint", new CustomAttributeArgument (abr.System_String, entryPoint)));

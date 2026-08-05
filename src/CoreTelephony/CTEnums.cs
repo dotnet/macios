@@ -19,11 +19,11 @@ namespace CoreTelephony {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CTCellularDataRestrictedState : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The cellular data restriction state is unknown.</summary>
 		Unknown,
-		/// <summary>To be added.</summary>
+		/// <summary>Cellular data access is restricted.</summary>
 		Restricted,
-		/// <summary>To be added.</summary>
+		/// <summary>Cellular data access is not restricted.</summary>
 		NotRestricted,
 	}
 

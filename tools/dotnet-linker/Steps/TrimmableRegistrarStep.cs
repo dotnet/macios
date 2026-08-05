@@ -528,10 +528,10 @@ namespace Xamarin.Linker {
 						 *         return &funcB;
 						 *     return IntPtr.Zero;
 						 * }
+						 *
+						 * This method is only emitted if there are any UnmanagedCallersOnly methods to look up,
+						 * otherwise the base implementation (which returns IntPtr.Zero) is good enough.
 						 */
-						var lookupUnmanagedFunctionMethod = proxyType.AddMethod ("LookupUnmanagedFunction", MethodAttributes.Public | MethodAttributes.Virtual | MethodAttributes.HideBySig, abr.System_IntPtr);
-						lookupUnmanagedFunctionMethod.AddParameter (abr.System_String); // name
-						il = lookupUnmanagedFunctionMethod.Body.GetILProcessor ();
 
 						// Get all the UnmanagedCallersOnly methods we need to be able to find for the current type, which includes:
 						// - methods from the type itself
@@ -556,30 +556,31 @@ namespace Xamarin.Linker {
 						}
 
 						var ucos = uco.OrderBy (v => v.UnmanagedCallersOnlyEntryPoint).ToList ();
-						var ldcI4 = il.Create (OpCodes.Ldc_I4_0);
-						for (var i = 0; i < ucos.Count; i++) {
-							var info = ucos [i];
-							var isLast = i == ucos.Count - 1;
-							var falseTarget = isLast ? ldcI4 : il.Create (OpCodes.Nop);
-							il.Append (il.Create (OpCodes.Ldarg_1));
-							il.Append (il.Create (OpCodes.Ldstr, info.UnmanagedCallersOnlyEntryPoint));
-							il.Append (il.Create (OpCodes.Call, abr.System_String__op_Equality_String_String));
-							il.Append (il.Create (OpCodes.Brfalse_S, falseTarget));
-							//     return &Method;
-							il.Append (il.Create (OpCodes.Ldftn, abr.CurrentAssembly.MainModule.ImportReference (info.Trampoline)));
+						if (ucos.Count > 0) {
+							var lookupUnmanagedFunctionMethod = proxyType.AddMethod ("LookupUnmanagedFunction", MethodAttributes.Public | MethodAttributes.Virtual | MethodAttributes.HideBySig, abr.System_IntPtr);
+							lookupUnmanagedFunctionMethod.AddParameter (abr.System_String); // name
+							il = lookupUnmanagedFunctionMethod.Body.GetILProcessor ();
+
+							var ldcI4 = il.Create (OpCodes.Ldc_I4_0);
+							for (var i = 0; i < ucos.Count; i++) {
+								var info = ucos [i];
+								var isLast = i == ucos.Count - 1;
+								var falseTarget = isLast ? ldcI4 : il.Create (OpCodes.Nop);
+								il.Append (il.Create (OpCodes.Ldarg_1));
+								il.Append (il.Create (OpCodes.Ldstr, info.UnmanagedCallersOnlyEntryPoint));
+								il.Append (il.Create (OpCodes.Call, abr.System_String__op_Equality_String_String));
+								il.Append (il.Create (OpCodes.Brfalse_S, falseTarget));
+								//     return &Method;
+								il.Append (il.Create (OpCodes.Ldftn, abr.CurrentAssembly.MainModule.ImportReference (info.Trampoline)));
+								il.Append (il.Create (OpCodes.Ret));
+								if (!isLast)
+									il.Append (falseTarget);
+							}
+							// return IntPtr.Zero
+							il.Append (ldcI4);
+							il.Append (il.Create (OpCodes.Conv_I));
 							il.Append (il.Create (OpCodes.Ret));
-							if (!isLast)
-								il.Append (falseTarget);
 						}
-						// CWL
-						// il.Append (il.Create (OpCodes.Ldstr, $"{proxyType.FullName}.LookupUnmanagedFunction ({{0}}): did not find this UCO method, among: {string.Join (", ", uco.Select (v => v.UnmanagedCallersOnlyEntryPoint))}"));
-						// il.Append (il.Create (OpCodes.Ldarg_1));
-						// il.Append (il.Create (OpCodes.Call, abr.System_Console__WriteLine_String_Object));
-						//
-						// return IntPtr.Zero
-						il.Append (ldcI4);
-						il.Append (il.Create (OpCodes.Conv_I));
-						il.Append (il.Create (OpCodes.Ret));
 
 						// We add the proxy type as an attribute to itself
 						attribute = abr.CreateAttribute (ctor);

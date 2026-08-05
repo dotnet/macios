@@ -476,7 +476,7 @@ namespace Xamarin.Linker {
 			if (!relocate)
 				method.CustomAttributes.Add (abr.CreateDynamicDependencyAttribute (callback.Name, callbackType));
 
-			callback.AddParameter ("pobj", abr.System_IntPtr);
+			callback.AddParameter (abr.System_IntPtr); // pobj
 
 			var isGeneric = method.DeclaringType.HasGenericParameters;
 			if (isGeneric && method.IsStatic) {
@@ -628,7 +628,7 @@ namespace Xamarin.Linker {
 			// helper's own generic parameters (e.g. CustomNSObject<T>). This mirrors the 'this' of
 			// the instance implementation, so EmitCallToExportedMethod can push it with 'ldarg.0'.
 			var selfType = ImportTypeReference (module, method.DeclaringType.CreateGenericInstanceType (implMethod.GenericParameters.ToArray ()));
-			implMethod.AddParameter ("self", selfType);
+			implMethod.AddParameter (selfType); // self
 
 			// Emit the body (parameter/return conversions + the call to the exported method). Because
 			// implMethod has its own generic parameters, EmitCallToExportedMethod remaps the user
@@ -641,10 +641,9 @@ namespace Xamarin.Linker {
 			// pointer): [pobj, sel, p0..., IntPtr* exception_gchandle].
 			callback.ReturnType = implMethod.ReturnType;
 			for (var i = 1; i < implMethod.Parameters.Count - 1; i++) {
-				var parameter = implMethod.Parameters [i];
-				callback.AddParameter (parameter.Name, parameter.ParameterType);
+				callback.AddParameter (implMethod.Parameters [i].ParameterType);
 			}
-			callback.AddParameter ("exception_gchandle", new PointerType (abr.System_IntPtr));
+			callback.AddParameter (new PointerType (abr.System_IntPtr)); // exception_gchandle
 
 			EmitGenericReflectionDispatch (method, callback, implMethod);
 
@@ -1098,7 +1097,7 @@ namespace Xamarin.Linker {
 				EmitConversion (method, il, method.DeclaringType, true, -1, out var nativeType, postProcessing);
 			}
 
-			callback.AddParameter ("sel", abr.System_IntPtr);
+			callback.AddParameter (abr.System_IntPtr); // sel
 
 			var managedParameterCount = 0;
 			var nativeParameterOffset = isInstanceCategory ? 1 : 2;
@@ -1108,7 +1107,7 @@ namespace Xamarin.Linker {
 
 			if (method.HasParameters) {
 				for (var p = parameterStart; p < managedParameterCount; p++) {
-					var nativeParameter = callback.AddParameter ($"p{p}", placeholderType);
+					var nativeParameter = callback.AddParameter (placeholderType); // p{p}
 					var nativeParameterIndex = p + nativeParameterOffset;
 					var managedParameterType = RemapType (method.Parameters [p].ParameterType);
 					var baseParameter = baseMethod.Parameters [p];
@@ -1146,9 +1145,9 @@ namespace Xamarin.Linker {
 			// (which reflection handles as a standard output parameter). The runtime helper writes the
 			// resulting GCHandle into the UnmanagedCallersOnly callback's native 'IntPtr*' pointer.
 			if (genericCompanionImpl) {
-				callback.AddParameter ("exception_gchandle", new ByReferenceType (abr.System_IntPtr));
+				callback.AddParameter (new ByReferenceType (abr.System_IntPtr)); // exception_gchandle
 			} else {
-				callback.AddParameter ("exception_gchandle", new PointerType (abr.System_IntPtr));
+				callback.AddParameter (new PointerType (abr.System_IntPtr)); // exception_gchandle
 			}
 
 			if (relocatedCtorObjVar is not null) {
@@ -2006,8 +2005,8 @@ namespace Xamarin.Linker {
 
 			// add a native handle param + a dummy parameter that we know for a fact won't be used anywhere
 			// to make the signature of the new constructor unique
-			var handleParameter = clonedCtor.AddParameter ("nativeHandle", abr.System_IntPtr);
-			var dummyParameter = clonedCtor.AddParameter ("dummy", abr.ObjCRuntime_IManagedRegistrar);
+			var handleParameter = clonedCtor.AddParameter (abr.System_IntPtr); // nativeHandle
+			var dummyParameter = clonedCtor.AddParameter (abr.ObjCRuntime_IManagedRegistrar); // placeholder
 
 			var body = clonedCtor.CreateBody (out var il);
 

@@ -96,6 +96,12 @@ namespace Xharness.Jenkins {
 				yield return new TestData { Variation = "Release (link sdk)", TestVariation = "release|linksdk", Ignored = ignore };
 				yield return new TestData { Variation = "Release (link all)", TestVariation = "release|linkall", Ignored = ignore };
 				yield return new TestData { Variation = $"{test.ProjectConfiguration} (PrepareAssemblies)", TestVariation = "prepare-assemblies", Ignored = ignore };
+				// With PrepareAssemblies the registrar runs in a separate process after the trimmer, so it
+				// can't get any information from the trimmer directly, and has to look up trimmed-away
+				// metadata in the pre-trim assemblies instead. Enable the trimmer (linksdk), because
+				// otherwise nothing is trimmed away and none of this is exercised.
+				if (supports_coreclr)
+					yield return new TestData { Variation = $"{test.ProjectConfiguration} (PrepareAssemblies, Trimmable Static Registrar, link sdk)", TestVariation = "linksdk|prepare-assemblies|trimmable-static-registrar", Ignored = ignore };
 				// Explicitly disable the trimmer (dontlink) and enable InlineDlfcnMethods together with
 				// PrepareAssemblies to exercise the inlined-dlfcn native symbol generation when the trimmer
 				// is skipped. On .NET 11+ this is already covered by the plain 'prepare-assemblies' variation

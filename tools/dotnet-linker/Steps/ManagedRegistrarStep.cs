@@ -675,9 +675,12 @@ namespace Xamarin.Linker {
 			il.Emit (OpCodes.Call, abr.Runtime_GetNSObject__System_IntPtr);
 			il.Emit (OpCodes.Stloc, selfVar);
 
-			// var args = new object [leadingCount];
+			// var args = new object [leadingCount + 1];
+			// The array is allocated with one extra (trailing) slot for the helper's
+			// 'out IntPtr exception_gchandle' parameter, so that the runtime helper can pass the
+			// array straight to MethodInfo.Invoke without having to allocate and copy a larger one.
 			var argsVar = body.AddVariable (new ArrayType (abr.System_Object));
-			il.Emit (OpCodes.Ldc_I4, leadingCount);
+			il.Emit (OpCodes.Ldc_I4, leadingCount + 1);
 			il.Emit (OpCodes.Newarr, abr.System_Object);
 			il.Emit (OpCodes.Stloc, argsVar);
 

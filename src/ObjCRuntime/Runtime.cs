@@ -2718,11 +2718,12 @@ namespace ObjCRuntime {
 		// it. This reflection-based dispatch is only ever used under a Hot-Reload-compatible build,
 		// which always runs under the JIT (never NativeAOT), so MakeGenericMethod is safe.
 		//
-		// 'args' holds the leading arguments of the helper (the instance followed by the native
-		// arguments); this method appends the trailing 'out IntPtr exception_gchandle' slot, invokes
-		// the closed helper, and returns its (boxed) native return value. Any failure is caught and
-		// reported through 'exception_gchandle' so no exception escapes the UnmanagedCallersOnly
-		// boundary.
+		// 'args' holds all the arguments of the helper: the instance, followed by the native
+		// arguments, followed by the trailing 'out IntPtr exception_gchandle' slot. The callback
+		// allocates the array with that extra slot so that no copy is needed here. This method
+		// invokes the closed helper and returns its (boxed) native return value. Any failure is
+		// caught and reported through 'exception_gchandle' so no exception escapes the
+		// UnmanagedCallersOnly boundary.
 		internal static object? InvokeGenericRegistrarTrampoline (object instance, RuntimeTypeHandle open_user_type_handle, RuntimeMethodHandle open_impl_method_handle, object? [] args, out IntPtr exception_gchandle)
 		{
 			// This method uses reflection (MakeGenericMethod + MethodInfo.Invoke), which requires
@@ -2754,14 +2755,13 @@ namespace ObjCRuntime {
 					ClosedGenericRegistrarTrampolines.Cache.TryAdd (cache_key, closed_impl);
 				}
 
-				// Append the trailing 'out IntPtr exception_gchandle' slot and invoke the closed helper.
-				// The slot is pre-initialized to IntPtr.Zero so that the (success) code path, which
-				// leaves the byref output untouched, reports "no exception".
-				var full = new object? [args.Length + 1];
-				Array.Copy (args, full, args.Length);
-				full [args.Length] = IntPtr.Zero;
-				var rv = closed_impl.Invoke (null, full);
-				exception_gchandle = (IntPtr) (full [args.Length] ?? IntPtr.Zero);
+				// The trailing 'out IntPtr exception_gchandle' slot is pre-initialized to IntPtr.Zero so
+				// that the (success) code path, which leaves the byref output untouched, reports "no
+				// exception".
+				var exception_slot = args.Length - 1;
+				args [exception_slot] = IntPtr.Zero;
+				var rv = closed_impl.Invoke (null, args);
+				exception_gchandle = (IntPtr) (args [exception_slot] ?? IntPtr.Zero);
 				return rv;
 			} catch (Exception e) {
 				exception_gchandle = AllocGCHandle (e);

@@ -11,7 +11,7 @@
 namespace SafariServices {
 
 	// NSInteger -> SSReadingList.h
-	/// <summary>An enumeration that specify possible errors associated with adding a URL to the Safari Reading List.</summary>
+	/// <summary>Enumerates errors that can occur when adding a URL to the Safari Reading List.</summary>
 	[NoMac]
 	[MacCatalyst (14, 0)]
 	[Native ("SSReadingListErrorCode")]

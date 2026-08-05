@@ -22,7 +22,7 @@ Download updated expected app size files from Azure DevOps artifacts for the cur
 The app size tests (`tests/dotnet/UnitTests/AppSizeTest.cs`) compare the built app's size and preserved APIs against expected files stored in `tests/dotnet/UnitTests/expected/`. When the test detects a difference and `WRITE_KNOWN_FAILURES` is not set, it writes the updated expected file to `$(Build.ArtifactStagingDirectory)/updated-expected-sizes/`, and a pipeline step publishes this directory as a build artifact.
 
 The artifact name follows the pattern `{uploadPrefix}updated-expected-sizes-{testPrefix}-{attempt}` (e.g., `updated-expected-sizes-dotnettests_ios-1`). Because the expected files can be very big, the test uploads a unified **diff** for each changed expected file rather than the whole file. Inside the artifact, files are named after the test variant with a `.diff` suffix:
-- `{Platform}-{Variant}-size.txt.diff` — e.g., `iOS-MonoVM-size.txt.diff`, `iOS-MonoVM-interpreter-size.txt.diff`, `iOS-NativeAOT-TrimmableStatic-size.txt.diff`, `MacOSX-CoreCLR-Interpreter-size.txt.diff`
+- `{Platform}-{Variant}-size.txt.diff` — e.g., `iOS-MonoVM-size.txt.diff`, `iOS-MonoVM-interpreter-size.txt.diff`, `iOS-NativeAOT-TrimmableStatic-size.txt.diff`, `MacOSX-CoreCLR-Interpreter-ManagedStatic-size.txt.diff`
 - `{Platform}-{Variant}-preservedapis.txt.diff` — e.g., `iOS-MonoVM-preservedapis.txt.diff`, `MacCatalyst-MonoVM-interpreter-preservedapis.txt.diff`
 
 Each diff is a unified diff (relative to the repository root) that can be applied with `git apply -p1` or `patch -p1`. The expected files on disk are at:

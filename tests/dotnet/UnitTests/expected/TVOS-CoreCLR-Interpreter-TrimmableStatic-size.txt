@@ -1,0 +1,78 @@
+AppBundleSize: 17,143,264 bytes (16,741.5 KB = 16.3 MB)
+# The following list of files and their sizes is just informational / for review, and isn't used in the test:
+_Microsoft.tvOS.TypeMap.dll:
+    3,683,328 bytes (3,597.0 KB = 3.5 MB)
+_Microsoft.tvOS.TypeMaps.dll:
+    2,048 bytes (2.0 KB = 0.0 MB)
+_SizeTestApp.TypeMap.dll:
+    3,584 bytes (3.5 KB = 0.0 MB)
+Frameworks/libcoreclr.framework/Info.plist:
+    810 bytes (0.8 KB = 0.0 MB)
+Frameworks/libcoreclr.framework/libcoreclr:
+    4,200,608 bytes (4,102.2 KB = 4.0 MB)
+Frameworks/libSystem.Globalization.Native.framework/Info.plist:
+    852 bytes (0.8 KB = 0.0 MB)
+Frameworks/libSystem.Globalization.Native.framework/libSystem.Globalization.Native:
+    90,576 bytes (88.5 KB = 0.1 MB)
+Frameworks/libSystem.IO.Compression.Native.framework/Info.plist:
+    854 bytes (0.8 KB = 0.0 MB)
+Frameworks/libSystem.IO.Compression.Native.framework/libSystem.IO.Compression.Native:
+    1,393,600 bytes (1,360.9 KB = 1.3 MB)
+Frameworks/libSystem.Native.framework/Info.plist:
+    824 bytes (0.8 KB = 0.0 MB)
+Frameworks/libSystem.Native.framework/libSystem.Native:
+    143,216 bytes (139.9 KB = 0.1 MB)
+Frameworks/libSystem.Security.Cryptography.Native.Apple.framework/Info.plist:
+    880 bytes (0.9 KB = 0.0 MB)
+Frameworks/libSystem.Security.Cryptography.Native.Apple.framework/libSystem.Security.Cryptography.Native.Apple:
+    195,056 bytes (190.5 KB = 0.2 MB)
+Info.plist:
+    1,138 bytes (1.1 KB = 0.0 MB)
+Microsoft.tvOS.dll:
+    3,148,288 bytes (3,074.5 KB = 3.0 MB)
+PkgInfo:
+    8 bytes (0.0 KB = 0.0 MB)
+runtimeconfig.bin:
+    1,562 bytes (1.5 KB = 0.0 MB)
+SizeTestApp:
+    2,175,808 bytes (2,124.8 KB = 2.1 MB)
+SizeTestApp.dll:
+    6,656 bytes (6.5 KB = 0.0 MB)
+System.Collections.Immutable.dll:
+    15,360 bytes (15.0 KB = 0.0 MB)
+System.Collections.NonGeneric.dll:
+    5,632 bytes (5.5 KB = 0.0 MB)
+System.ComponentModel.TypeConverter.dll:
+    4,608 bytes (4.5 KB = 0.0 MB)
+System.Diagnostics.StackTrace.dll:
+    8,192 bytes (8.0 KB = 0.0 MB)
+System.Drawing.dll:
+    4,096 bytes (4.0 KB = 0.0 MB)
+System.Drawing.Primitives.dll:
+    7,168 bytes (7.0 KB = 0.0 MB)
+System.IO.Compression.dll:
+    23,040 bytes (22.5 KB = 0.0 MB)
+System.IO.MemoryMappedFiles.dll:
+    22,016 bytes (21.5 KB = 0.0 MB)
+System.Net.Http.dll:
+    82,432 bytes (80.5 KB = 0.1 MB)
+System.Net.Primitives.dll:
+    7,680 bytes (7.5 KB = 0.0 MB)
+System.Net.Requests.dll:
+    6,144 bytes (6.0 KB = 0.0 MB)
+System.Net.Security.dll:
+    5,120 bytes (5.0 KB = 0.0 MB)
+System.ObjectModel.dll:
+    5,120 bytes (5.0 KB = 0.0 MB)
+System.Private.CoreLib.dll:
+    1,734,656 bytes (1,694.0 KB = 1.7 MB)
+System.Private.Uri.dll:
+    59,904 bytes (58.5 KB = 0.1 MB)
+System.Reflection.Metadata.dll:
+    84,480 bytes (82.5 KB = 0.1 MB)
+System.Runtime.dll:
+    5,120 bytes (5.0 KB = 0.0 MB)
+System.Runtime.InteropServices.dll:
+    4,608 bytes (4.5 KB = 0.0 MB)
+System.Security.Cryptography.dll:
+    8,192 bytes (8.0 KB = 0.0 MB)

@@ -1,0 +1,70 @@
+AppBundleSize: 23,920,449 bytes (23,359.8 KB = 22.8 MB)
+# The following list of files and their sizes is just informational / for review, and isn't used in the test:
+Contents/Info.plist:
+    1,072 bytes (1.0 KB = 0.0 MB)
+Contents/MacOS/SizeTestApp:
+    5,011,704 bytes (4,894.2 KB = 4.8 MB)
+Contents/MonoBundle/_Microsoft.MacCatalyst.TypeMap.dll:
+    5,194,240 bytes (5,072.5 KB = 5.0 MB)
+Contents/MonoBundle/_Microsoft.MacCatalyst.TypeMaps.dll:
+    2,048 bytes (2.0 KB = 0.0 MB)
+Contents/MonoBundle/_SizeTestApp.TypeMap.dll:
+    3,584 bytes (3.5 KB = 0.0 MB)
+Contents/MonoBundle/libcoreclr.dylib:
+    5,482,504 bytes (5,354.0 KB = 5.2 MB)
+Contents/MonoBundle/libSystem.Globalization.Native.dylib:
+    92,776 bytes (90.6 KB = 0.1 MB)
+Contents/MonoBundle/libSystem.IO.Compression.Native.dylib:
+    1,413,320 bytes (1,380.2 KB = 1.3 MB)
+Contents/MonoBundle/libSystem.Native.dylib:
+    130,440 bytes (127.4 KB = 0.1 MB)
+Contents/MonoBundle/libSystem.Net.Security.Native.dylib:
+    53,544 bytes (52.3 KB = 0.1 MB)
+Contents/MonoBundle/libSystem.Security.Cryptography.Native.Apple.dylib:
+    209,928 bytes (205.0 KB = 0.2 MB)
+Contents/MonoBundle/Microsoft.MacCatalyst.dll:
+    4,214,272 bytes (4,115.5 KB = 4.0 MB)
+Contents/MonoBundle/runtimeconfig.bin:
+    1,569 bytes (1.5 KB = 0.0 MB)
+Contents/MonoBundle/SizeTestApp.dll:
+    6,656 bytes (6.5 KB = 0.0 MB)
+Contents/MonoBundle/System.Collections.Immutable.dll:
+    15,360 bytes (15.0 KB = 0.0 MB)
+Contents/MonoBundle/System.Collections.NonGeneric.dll:
+    5,632 bytes (5.5 KB = 0.0 MB)
+Contents/MonoBundle/System.ComponentModel.TypeConverter.dll:
+    4,608 bytes (4.5 KB = 0.0 MB)
+Contents/MonoBundle/System.Diagnostics.StackTrace.dll:
+    8,192 bytes (8.0 KB = 0.0 MB)
+Contents/MonoBundle/System.Drawing.dll:
+    4,096 bytes (4.0 KB = 0.0 MB)
+Contents/MonoBundle/System.Drawing.Primitives.dll:
+    7,168 bytes (7.0 KB = 0.0 MB)
+Contents/MonoBundle/System.IO.Compression.dll:
+    23,040 bytes (22.5 KB = 0.0 MB)
+Contents/MonoBundle/System.IO.MemoryMappedFiles.dll:
+    22,016 bytes (21.5 KB = 0.0 MB)
+Contents/MonoBundle/System.Net.Http.dll:
+    82,432 bytes (80.5 KB = 0.1 MB)
+Contents/MonoBundle/System.Net.Primitives.dll:
+    7,680 bytes (7.5 KB = 0.0 MB)
+Contents/MonoBundle/System.Net.Requests.dll:
+    6,144 bytes (6.0 KB = 0.0 MB)
+Contents/MonoBundle/System.Net.Security.dll:
+    5,120 bytes (5.0 KB = 0.0 MB)
+Contents/MonoBundle/System.ObjectModel.dll:
+    5,120 bytes (5.0 KB = 0.0 MB)
+Contents/MonoBundle/System.Private.CoreLib.dll:
+    1,743,872 bytes (1,703.0 KB = 1.7 MB)
+Contents/MonoBundle/System.Private.Uri.dll:
+    59,904 bytes (58.5 KB = 0.1 MB)
+Contents/MonoBundle/System.Reflection.Metadata.dll:
+    84,480 bytes (82.5 KB = 0.1 MB)
+Contents/MonoBundle/System.Runtime.dll:
+    5,120 bytes (5.0 KB = 0.0 MB)
+Contents/MonoBundle/System.Runtime.InteropServices.dll:
+    4,608 bytes (4.5 KB = 0.0 MB)
+Contents/MonoBundle/System.Security.Cryptography.dll:
+    8,192 bytes (8.0 KB = 0.0 MB)
+Contents/PkgInfo:
+    8 bytes (0.0 KB = 0.0 MB)

@@ -77,8 +77,7 @@ namespace PdfKit {
 		CheckBox = 2,
 	}
 
-	/// <summary>Enumerates line ending styles</summary>
-	/// <remarks>To be added.</remarks>
+	/// <summary>Enumerates line ending styles.</summary>
 	[Native]
 	[TV (18, 2)]
 	public enum PdfLineStyle : long {

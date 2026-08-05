@@ -171,7 +171,6 @@ namespace PdfKit {
 	}
 
 	/// <summary>Enumerates Adobe-specified PDF display box boundaries.</summary>
-	/// <remarks>To be added.</remarks>
 	[Native]
 	[TV (18, 2)]
 	public enum PdfDisplayBox : long {

@@ -2758,7 +2758,6 @@ F:CoreSpotlight.CSUserInteraction.Focus
 F:CoreSpotlight.CSUserInteraction.Select
 F:CoreTelephony.CTCellularPlanCapability.AndVoice
 F:CoreTelephony.CTCellularPlanCapability.Only
-F:CoreTelephony.CTCellularPlanProvisioningAddPlanResult.Cancel
 F:CoreText.CTFontManagerError.AssetNotFound
 F:CoreText.CTFontManagerError.CancelledByUser
 F:CoreText.CTFontManagerError.DuplicatedName
@@ -23903,7 +23902,6 @@ T:CoreTelephony.CTCellularPlanCapability
 T:CoreTelephony.CTCellularPlanProperties
 T:CoreTelephony.CTCellularPlanProvisioning
 T:CoreTelephony.CTCellularPlanProvisioningAddPlanCompletionHandler
-T:CoreTelephony.CTCellularPlanProvisioningAddPlanResult
 T:CoreTelephony.CTCellularPlanProvisioningRequest
 T:CoreTelephony.CTCellularPlanProvisioningUpdateCellularPlanCompletionHandler
 T:CoreTelephony.CTCellularPlanStatus

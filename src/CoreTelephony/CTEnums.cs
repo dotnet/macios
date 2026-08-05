@@ -27,15 +27,17 @@ namespace CoreTelephony {
 		NotRestricted,
 	}
 
+	/// <summary>Enumerates the results of adding a cellular plan.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CTCellularPlanProvisioningAddPlanResult : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The result is unknown.</summary>
 		Unknown,
-		/// <summary>To be added.</summary>
+		/// <summary>The cellular plan could not be added.</summary>
 		Fail,
-		/// <summary>To be added.</summary>
+		/// <summary>The cellular plan was added successfully.</summary>
 		Success,
+		/// <summary>The operation was canceled.</summary>
 		[iOS (17, 0)]
 		Cancel,
 	}

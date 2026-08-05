@@ -17,7 +17,7 @@ namespace SafariServices {
 	[Native ("SSReadingListErrorCode")]
 	[ErrorDomain ("SSReadingListErrorDomain")]
 	public enum SSReadingListError : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The URL scheme is not supported by the Safari Reading List.</summary>
 		UrlSchemeNotAllowed = 1,
 	}
 

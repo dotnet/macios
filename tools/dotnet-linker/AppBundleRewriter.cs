@@ -1549,8 +1549,8 @@ namespace Xamarin.Linker {
 
 		/// <summary>
 		/// Returns the signature to use in a <c>[DynamicDependency]</c> attribute for a method: the
-		/// method name if no other method in the same type has that name, otherwise the full signature
-		/// (including the parameter list).
+		/// method name (and generic arity) if no other method in the same type has that name and
+		/// arity, otherwise the full signature (including the parameter list).
 		/// </summary>
 		/// <remarks>
 		///   <para>
@@ -1559,12 +1559,19 @@ namespace Xamarin.Linker {
 		///     reference (see <see cref="DocumentationComments.GetNameSignature (MethodDefinition)" />),
 		///     so use the name alone whenever it's unambiguous.
 		///   </para>
+		///   <para>
+		///     The trimmer matches a signature without a parameter list on both the name and the generic
+		///     arity, so methods that differ in arity (<c>Foo ()</c> vs <c>Foo&lt;T&gt; ()</c>) don't
+		///     collide and don't need a parameter list either.
+		///   </para>
 		/// </remarks>
 		static string GetDynamicDependencySignature (MethodDefinition method)
 		{
 			var count = 0;
 			foreach (var candidate in method.DeclaringType.Methods) {
 				if (candidate.Name != method.Name)
+					continue;
+				if (candidate.GenericParameters.Count != method.GenericParameters.Count)
 					continue;
 				if (++count > 1)
 					return DocumentationComments.GetSignature (method);

@@ -588,6 +588,7 @@ namespace Cecil.Tests {
 			"Security.SecIdentity..ctor(ObjCRuntime.NativeHandle, System.Boolean)",
 			"Security.SecIdentity2..ctor(ObjCRuntime.NativeHandle, System.Boolean)",
 			"Security.SecKey..ctor(ObjCRuntime.NativeHandle, System.Boolean)",
+			"Security.SecKeychain..ctor(ObjCRuntime.NativeHandle, System.Boolean)",
 			"Security.SecPolicy..ctor(ObjCRuntime.NativeHandle, System.Boolean)",
 			"Security.SecProtocolMetadata..ctor(ObjCRuntime.NativeHandle, System.Boolean)",
 			"Security.SecProtocolOptions..ctor(ObjCRuntime.NativeHandle, System.Boolean)",

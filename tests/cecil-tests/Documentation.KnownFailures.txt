@@ -6354,8 +6354,6 @@ F:ScreenCaptureKit.SCStreamOutputType.Microphone
 F:ScreenCaptureKit.SCStreamOutputType.Screen
 F:ScreenCaptureKit.SCStreamType.Display
 F:ScreenCaptureKit.SCStreamType.Window
-F:Security.AuthorizationFlags.NoData
-F:Security.AuthorizationFlags.SkipInternalAuth
 F:Security.SecAccessControlCreateFlags.Companion
 F:Security.SecAccessControlCreateFlags.Watch
 F:Security.SecAuthenticationType.Any

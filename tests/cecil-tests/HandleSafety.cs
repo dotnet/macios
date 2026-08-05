@@ -53,6 +53,7 @@ namespace Cecil.Tests {
 						failures [methodFullName] = $"Failed to process {m}: {e}";
 					}
 				}
+
 			}
 
 			Helper.AssertFailures (failures, knownFailuresHandleSafety, nameof (knownFailuresHandleSafety), "Members with unsafe handle usage");
@@ -955,4 +956,3 @@ namespace Cecil.Tests {
 		}
 	}
 }
-

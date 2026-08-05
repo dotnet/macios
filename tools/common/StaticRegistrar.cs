@@ -416,13 +416,21 @@ namespace Registrar {
 
 				foreach (var ifaceMethod in impl.Overrides) {
 					var ifaceMethodDef = ifaceMethod.Resolve ();
-					if (!iface_methods.Contains (ifaceMethodDef)) {
-						// The type may implement interfaces which aren't protocol interfaces, so this is OK.
-					} else {
-						iface_methods.Remove (ifaceMethodDef);
-
-						AddMethodMapping (ref rv, impl, ifaceMethodDef);
+					if (ifaceMethodDef is null || !iface_methods.Contains (ifaceMethodDef)) {
+						// 'iface_methods' may contain methods from the pre-trim assemblies, which won't be
+						// reference-equal to the resolved method (and the resolved method may not even exist
+						// anymore if it's been trimmed away), so also try matching by name.
+						ifaceMethodDef = iface_methods.FirstOrDefault (v => v.FullName == ifaceMethod.FullName);
 					}
+
+					if (ifaceMethodDef is null) {
+						// The type may implement interfaces which aren't protocol interfaces, so this is OK.
+						continue;
+					}
+
+					iface_methods.Remove (ifaceMethodDef);
+
+					AddMethodMapping (ref rv, impl, ifaceMethodDef);
 				}
 			}
 

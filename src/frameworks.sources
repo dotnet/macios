@@ -283,7 +283,6 @@ AVFOUNDATION_SOURCES = \
 	AVFoundation/AVSampleCursor.cs \
 	AVFoundation/AVSpeechSynthesizer.cs \
 	AVFoundation/AVSpeechSynthesisMarker.cs \
-	AVFoundation/AVSpeechSynthesisProviderAudioUnit.cs \
 	AVFoundation/AVSpeechUtterance.cs \
 	AVFoundation/AVTextStyleRule.cs \
 	AVFoundation/AVAssetTrack.cs \
@@ -301,7 +300,6 @@ AVKIT_API_SOURCES = \
 	AVKit/Enums.cs \
 
 AVKIT_SOURCES = \
-	AVKit/AVCaptureEventSound.cs \
 	AVKit/AVPlayerViewController.cs \
 
 # AVRouting
@@ -317,7 +315,6 @@ BACKGROUNDTASKS_API_SOURCES = \
 # BackgroundAssets
 
 BACKGROUNDASSETS_SOURCES = \
-	BackgroundAssets/BAAssetPackManifest.cs \
 	BackgroundAssets/BACompat.cs \
 
 # BrowserEngineKit
@@ -1615,9 +1612,6 @@ SECURITY_SOURCES = \
 
 # SensitiveContentAnalysis
 
-SENSITIVECONTENTANALYSIS_SOURCES = \
-	SensitiveContentAnalysis/SCVideoStreamAnalyzer.cs \
-
 # SensorKit
 
 SENSORKIT_CORE_SOURCES = \
@@ -1752,7 +1746,6 @@ UIKIT_SOURCES = \
 	UIKit/UIImagePickerController.cs \
 	UIKit/UIKeyboard.cs \
 	UIKit/UIKitSynchronizationContext.cs \
-	UIKit/UIListSeparatorConfiguration.cs \
 	UIKit/UIMenu.cs \
 	UIKit/UINavigationBar.cs \
 	UIKit/UINavigationController.cs \
@@ -1863,7 +1856,6 @@ WEBKIT_SOURCES = \
 	WebKit/WKContentRuleListStore.cs \
 	WebKit/WKNavigationResponse.cs \
 	WebKit/WKPreferences.cs \
-	WebKit/WKWebExtensionMatchPattern.cs \
 	WebKit/WKWindowFeatures.cs \
 
 #

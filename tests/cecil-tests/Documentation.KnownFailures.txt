@@ -9861,8 +9861,6 @@ M:CoreGraphics.CGContext.ShowTextAtPoint(System.Runtime.InteropServices.NFloat,S
 M:CoreGraphics.CGContext.ShowTextAtPoint(System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat,System.String)
 M:CoreGraphics.CGContext.StrokeRectWithWidth(CoreGraphics.CGRect,System.Runtime.InteropServices.NFloat)
 M:CoreGraphics.CGContext.TranslateCTM(System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat)
-M:CoreGraphics.CGContextPDF.BeginTag(CoreGraphics.CGPdfTagType,CoreGraphics.CGPdfTagProperties)
-M:CoreGraphics.CGContextPDF.BeginTag(CoreGraphics.CGPdfTagType,Foundation.NSDictionary)
 M:CoreGraphics.CGContextPDF.EndTag
 M:CoreGraphics.CGContextPDF.SetIdTree(CoreGraphics.CGPDFDictionary)
 M:CoreGraphics.CGContextPDF.SetPageTagStructureTree(Foundation.NSDictionary)
@@ -15837,7 +15835,6 @@ M:VideoToolbox.VTSuperResolutionScalerParameters.#ctor(VideoToolbox.VTFrameProce
 M:VideoToolbox.VTSupportedEncoderProperties.#ctor
 M:VideoToolbox.VTTemporalNoiseFilterConfiguration.#ctor(System.IntPtr,System.IntPtr,CoreMedia.CMPixelFormat)
 M:VideoToolbox.VTTemporalNoiseFilterParameters.#ctor(VideoToolbox.VTFrameProcessorFrame,VideoToolbox.VTFrameProcessorFrame[],VideoToolbox.VTFrameProcessorFrame[],VideoToolbox.VTFrameProcessorFrame,System.Single,System.Byte)
-M:VideoToolbox.VTUtilities.RegisterSupplementalVideoDecoder(CoreMedia.CMVideoCodecType)
 M:Vision.VNDetectBarcodesRequest.GetSupportedSymbologies(Foundation.NSError@)
 M:Vision.VNFeaturePrintObservation.ComputeDistance(System.Single[]@,Vision.VNFeaturePrintObservation,Foundation.NSError@)
 M:Vision.VNGenerateOpticalFlowRequest.#ctor(CoreGraphics.CGImage,ImageIO.CGImagePropertyOrientation,Vision.VNImageOptions,Vision.VNRequestCompletionHandler)
@@ -17190,7 +17187,6 @@ P:CoreAnimation.CAConstraint.Offset
 P:CoreAnimation.CADisplayLink.PreferredFrameRateRange
 P:CoreAnimation.CAEdrMetadata.Available
 P:CoreAnimation.CAEdrMetadata.HlgMetadata
-P:CoreAnimation.CAFrameRateRange.Default
 P:CoreAnimation.CAGradientLayer.WeakLayerType
 P:CoreAnimation.CALayer.ContentsHeadroom
 P:CoreAnimation.CALayer.CornerCurve
@@ -21795,7 +21791,6 @@ P:UIKit.UIIndirectScribbleInteraction.HandlingWriting
 P:UIKit.UILargeContentViewerInteraction.Delegate
 P:UIKit.UILargeContentViewerInteraction.Enabled
 P:UIKit.UIListContentView.ListContentConfiguration
-P:UIKit.UIListSeparatorConfiguration.AutomaticInsets
 P:UIKit.UIMenu.Identifier
 P:UIKit.UIMenu.SelectedElements
 P:UIKit.UIMenuController.MenuVisible
@@ -23462,7 +23457,6 @@ T:CoreAnimation.CACornerCurve
 T:CoreAnimation.CACornerMask
 T:CoreAnimation.CADynamicRange
 T:CoreAnimation.CAEdrMetadata
-T:CoreAnimation.CAFrameRateRange
 T:CoreAnimation.CAGradientLayerType
 T:CoreAnimation.CAMetalDisplayLink
 T:CoreAnimation.CAMetalDisplayLinkUpdate
@@ -24607,8 +24601,6 @@ T:MediaLibrary.MLMediaGroup
 T:MediaLibrary.MLMediaLibrary
 T:MediaLibrary.MLMediaObject
 T:MediaLibrary.MLMediaSource
-T:MediaLibrary.MLMediaSourceType
-T:MediaLibrary.MLMediaType
 T:MediaPlayer.AVMediaSelectionGroup_MPNowPlayingInfoLanguageOptionAdditions
 T:MediaPlayer.AVMediaSelectionOption_MPNowPlayingInfoLanguageOptionAdditions
 T:MediaPlayer.MPAdTimeRange

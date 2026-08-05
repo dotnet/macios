@@ -26,6 +26,16 @@ namespace Xamarin.Linker {
 			return rv;
 		}
 
+		// Adds a parameter without a name. Cecil only emits a Param row for parameters that have a
+		// name (or attributes / marshal info / a constant value), so this keeps the metadata smaller.
+		// Only use this for generated methods where the parameter names have no value.
+		public static ParameterDefinition AddParameter (this MethodDefinition self, TypeReference parameterType)
+		{
+			var rv = new ParameterDefinition (parameterType);
+			self.Parameters.Add (rv);
+			return rv;
+		}
+
 		public static MethodDefinition AddMethod (this TypeDefinition self, string name, MethodAttributes attributes, TypeReference returnType)
 		{
 			var rv = new MethodDefinition (name, attributes, returnType);

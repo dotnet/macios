@@ -24305,21 +24305,21 @@ namespace AVFoundation {
 	[Category]
 	[BaseType (typeof (AVContentKeySession))]
 	interface AVContentKeySession_AVContentKeyRecipients {
-		/// <param name="recipient">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Associates the specified recipient with this content key session so that the session can supply the recipient with content keys.</summary>
+		/// <param name="recipient">The recipient to associate with this content key session, for example, an <see cref="AVUrlAsset" />.</param>
+		/// <remarks>This method maps to the native <c>addContentKeyRecipient:</c> selector. Add a recipient before starting playback or processing that requires the decryption keys managed by this session.</remarks>
 		[Export ("addContentKeyRecipient:")]
 		void Add (IAVContentKeyRecipient recipient);
 
-		/// <param name="recipient">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Removes the association between the specified recipient and this content key session.</summary>
+		/// <param name="recipient">The recipient to disassociate from this content key session.</param>
+		/// <remarks>This method maps to the native <c>removeContentKeyRecipient:</c> selector. After removal, the session no longer supplies content keys to the recipient.</remarks>
 		[Export ("removeContentKeyRecipient:")]
 		void Remove (IAVContentKeyRecipient recipient);
 
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Gets the recipients that are currently associated with this content key session.</summary>
+		/// <returns>An array of the recipients associated with this session, or an empty array if there are none.</returns>
+		/// <remarks>This method maps to the native <c>contentKeyRecipients</c> property.</remarks>
 		[Export ("contentKeyRecipients")]
 		IAVContentKeyRecipient [] GetContentKeyRecipients ();
 	}
@@ -26452,10 +26452,16 @@ namespace AVFoundation {
 	[DisableDefaultCtor] // introspection: Name: NSInvalidArgumentException Reason: Don't call -[AUAudioUnit init].
 	interface AVSpeechSynthesisProviderAudioUnit {
 		// re-exposed from base class
+		/// <summary>Create a new <see cref="AVSpeechSynthesisProviderAudioUnit" /> instance.</summary>
+		/// <param name="componentDescription">A description of the component to create.</param>
+		/// <param name="options">Any options for the returned audio unit.</param>
+		/// <param name="error">The error if an error occurred, null otherwise.</param>
+		/// <returns>A new <see cref="AVSpeechSynthesisProviderAudioUnit" /> instance if successful, null otherwise.</returns>
 		[Export ("initWithComponentDescription:options:error:")]
 		[DesignatedInitializer]
-		[Internal]
-		NativeHandle _InitWithComponentDescription (AudioComponentDescription componentDescription, AudioComponentInstantiationOptions options, [NullAllowed] out NSError outError);
+		[FactoryMethod]
+		[return: NullAllowed]
+		NativeHandle Constructor (AudioComponentDescription componentDescription, AudioComponentInstantiationOptions options, [NullAllowed] out NSError error);
 
 		[Export ("speechVoices", ArgumentSemantic.Strong)]
 		AVSpeechSynthesisProviderVoice [] SpeechVoices { get; set; }

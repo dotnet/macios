@@ -2917,9 +2917,8 @@ namespace UIKit {
 	/// <summary>Provides data for the  event.</summary>
 	[MacCatalyst (13, 1)]
 	interface UIStatusBarOrientationChangeEventArgs {
-		/// <summary>The new orientation of the <see cref="UIKit.UIStatusBar" />.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The new orientation of the status bar.</summary>
+		/// <value>The <see cref="UIKit.UIInterfaceOrientation" /> that the status bar changed to.</value>
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("UIApplicationStatusBarOrientationUserInfoKey")]
@@ -34288,6 +34287,10 @@ namespace UIKit {
 	[DisableDefaultCtor]
 	interface UIListSeparatorConfiguration : NSCopying, NSSecureCoding {
 
+		/// <summary>Gets the automatic directional edge insets for a list separator.</summary>
+		[Field ("UIListSeparatorAutomaticInsets")]
+		NSDirectionalEdgeInsets AutomaticInsets { get; }
+
 		[Export ("initWithListAppearance:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (UICollectionLayoutListAppearance listAppearance);
@@ -34313,6 +34316,35 @@ namespace UIKit {
 		[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
 		[NullAllowed, Export ("visualEffect", ArgumentSemantic.Copy)]
 		UIVisualEffect VisualEffect { get; set; }
+	}
+
+	[NoTV, NoMac, iOS (15, 0), MacCatalyst (15, 0)]
+	[Static]
+	[Internal]
+	interface UIPointerAccessoryPositionFields {
+		[Field ("UIPointerAccessoryPositionTop")]
+		UIPointerAccessoryPosition Top { get; }
+
+		[Field ("UIPointerAccessoryPositionTopRight")]
+		UIPointerAccessoryPosition TopRight { get; }
+
+		[Field ("UIPointerAccessoryPositionRight")]
+		UIPointerAccessoryPosition Right { get; }
+
+		[Field ("UIPointerAccessoryPositionBottomRight")]
+		UIPointerAccessoryPosition BottomRight { get; }
+
+		[Field ("UIPointerAccessoryPositionBottom")]
+		UIPointerAccessoryPosition Bottom { get; }
+
+		[Field ("UIPointerAccessoryPositionBottomLeft")]
+		UIPointerAccessoryPosition BottomLeft { get; }
+
+		[Field ("UIPointerAccessoryPositionLeft")]
+		UIPointerAccessoryPosition Left { get; }
+
+		[Field ("UIPointerAccessoryPositionTopLeft")]
+		UIPointerAccessoryPosition TopLeft { get; }
 	}
 
 	[NoTV, iOS (14, 5)]

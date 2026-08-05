@@ -2187,6 +2187,10 @@ public partial class Generator : IMemberGatherer {
 
 				string kn = "k" + (i++);
 				if (use_export_as_string_constant) {
+					if (BindingTouch.SupportsXmlDocumentation) {
+						if (!WriteDocumentation (prop))
+							print ($"/// <summary>The value of the <c>{export.Selector}</c> key from the underlying <see cref=\"NSNotification\" />'s user info dictionary.</summary>");
+					}
 					print ("{0} {1}{2} {3} {{\n\tget {{\n",
 						   is_internal ? "internal" : "public",
 						   propertyType,
@@ -2202,6 +2206,10 @@ public partial class Generator : IMemberGatherer {
 					print ("[Field (\"{0}\", \"{1}\")]", export.Selector, lib);
 					print ("static IntPtr {0};", kn);
 					print ("");
+					if (BindingTouch.SupportsXmlDocumentation) {
+						if (!WriteDocumentation (prop))
+							print ($"/// <summary>The value of the <c>{export.Selector}</c> key from the underlying <see cref=\"NSNotification\" />'s user info dictionary.</summary>");
+					}
 					// linker will remove the attributes (but it's useful for testing)
 					print_generated_code ();
 					print ("{0} {1}{2} {3} {{",
@@ -4943,8 +4951,11 @@ public partial class Generator : IMemberGatherer {
 					continue;
 
 				// we might get "delegates" from DelegateName attributes, and in that case the declaring type doesn't have xml docs for the delegate (the declaring type is the container type for the member with the DelegateName attribute, and its documentation has nothing to do with the delegate type)
+				var wroteDelegateDocs = false;
 				if (mi.DeclaringType!.IsSubclassOf (TypeCache.System_Delegate))
-					WriteDocumentation (mi.DeclaringType);
+					wroteDelegateDocs = WriteDocumentation (mi.DeclaringType);
+				if (!wroteDelegateDocs && BindingTouch.SupportsXmlDocumentation && shortName.EndsWith ("EventArgs", StringComparison.Ordinal))
+					print ("/// <summary>A delegate that represents the callback for the corresponding Objective-C delegate/protocol method.</summary>");
 
 				var del = mi.DeclaringType;
 
@@ -6605,6 +6616,10 @@ public partial class Generator : IMemberGatherer {
 			if (field_exports.Count != 0) {
 				foreach (var field_pi in field_exports.OrderBy (f => f.Name, StringComparer.Ordinal)) {
 					var fieldAttr = AttributeManager.GetCustomAttribute<FieldAttribute> (field_pi);
+					if (fieldAttr?.SymbolAddress == true && field_pi.PropertyType != TypeCache.System_IntPtr) {
+						exceptions.Add (ErrorHelper.CreateError (1128, type.FullName, field_pi.Name, field_pi.PropertyType.FullName));
+						continue;
+					}
 					if (!TryComputeLibraryName (fieldAttr?.LibraryName, type, out var library_name, out var library_path)) {
 						exceptions.Add (ErrorHelper.CreateError (1042, /* Missing '[Field (LibraryName=value)]' for {0} (e.g."__Internal") */ type.FullName + "." + field_pi.Name));
 						continue;
@@ -6719,7 +6734,7 @@ public partial class Generator : IMemberGatherer {
 					}
 					PrintAttributes (field_pi, preserve: true, advice: true);
 					PrintObsoleteAttributes (field_pi);
-					print ("[Field (\"{0}\",  \"{1}\")]", fieldAttr!.SymbolName, library_path ?? library_name);
+					print ("[Field (\"{0}\",  \"{1}\"{2})]", fieldAttr!.SymbolName, library_path ?? library_name, fieldAttr.SymbolAddress ? ", SymbolAddress = true" : "");
 					PrintPlatformAttributes (field_pi);
 					if (AttributeManager.HasAttribute<AdvancedAttribute> (field_pi)) {
 						print ("[EditorBrowsable (EditorBrowsableState.Advanced)]");
@@ -6779,7 +6794,10 @@ public partial class Generator : IMemberGatherer {
 					} else if (field_pi.PropertyType == TypeCache.System_Float) {
 						print ("return Dlfcn.GetFloat (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
 					} else if (field_pi.PropertyType == TypeCache.System_IntPtr) {
-						print ("return Dlfcn.GetIntPtr (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
+						if (fieldAttr.SymbolAddress)
+							print ("return Dlfcn.GetIndirect (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
+						else
+							print ("return Dlfcn.GetIntPtr (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
 					} else if (field_pi.PropertyType == TypeCache.System_UIntPtr) {
 						print ("return Dlfcn.GetUIntPtr (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
 					} else if (field_pi.PropertyType == TypeCache.System_Int64) {
@@ -6792,8 +6810,8 @@ public partial class Generator : IMemberGatherer {
 						//
 						if (Frameworks.HaveCoreMedia && Frameworks.HaveAVFoundation && (field_pi.PropertyType == TypeCache.CMTime ||
 						   field_pi.PropertyType == TypeCache.AVCaptureWhiteBalanceGains)) {
-							print ("return *(({3} *) Dlfcn.dlsym (Libraries.{2}.Handle, \"{1}\"));", field_pi.Name, fieldAttr.SymbolName, library_name,
-								TypeManager.FormatType (type, field_pi.PropertyType.Namespace, field_pi.PropertyType.Name));
+							var valueTypeName = TypeManager.FormatType (type, field_pi.PropertyType.Namespace, field_pi.PropertyType.Name);
+							print ("return Dlfcn.GetStruct<{3}> (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name, valueTypeName);
 						} else if (field_pi.PropertyType == TypeCache.System_nint) {
 							print ("return Dlfcn.GetNInt (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
 						} else if (field_pi.PropertyType == TypeCache.System_nuint) {
@@ -6833,6 +6851,9 @@ public partial class Generator : IMemberGatherer {
 								else
 									throw new BindingException (1014, true, fieldTypeName, FormatPropertyInfo (field_pi));
 							}
+						} else if (field_pi.PropertyType.IsValueType) {
+							var valueTypeName = TypeManager.FormatType (type, field_pi.PropertyType.Namespace, field_pi.PropertyType.Name);
+							print ("return Dlfcn.GetStruct<{3}> (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name, valueTypeName);
 						} else {
 							if (field_pi.PropertyType == TypeCache.System_String)
 								throw new BindingException (1013, true);
@@ -7686,6 +7707,8 @@ public partial class Generator : IMemberGatherer {
 					var bareType = pt.TryIsByRef (out var elementType) ? elementType : pt;
 					var nullable = !pt.IsValueType && AttributeManager.IsNullable (p);
 
+					if (BindingTouch.SupportsXmlDocumentation)
+						print ($"/// <summary>The value of the <c>{GetPublicParameterName (p)}</c> argument to the event.</summary>");
 					print ("public {0}{1} {2} {{ get; set; }}", TypeManager.RenderType (bareType), nullable ? "?" : "", GetPublicParameterName (p));
 				}
 				indent--; print ("}\n");

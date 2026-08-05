@@ -61,10 +61,10 @@
 
 		<!--
 			Enable the PrepareAssemblies flow by default for CoreCLR and NativeAOT on .NET 11+. This runs our
-			custom linker steps in the assembly-preparer, and for the (CoreCLR/NativeAOT-default) trimmable-static
-			registrar it also generates the native static registrar code *after* the NativeAOT compiler (ILC) has
-			run (see _PostprocessAssembliesAfterIlc), so the registrar can drop the native code for
-			UnmanagedCallersOnly trampolines ILC trimmed away (an app-size optimization).
+			custom linker steps in the assembly-preparer. For NativeAOT it additionally generates the native
+			static registrar code *after* the NativeAOT compiler (ILC) has run (see
+			_PostprocessAssembliesAfterIlc, which is NativeAOT-only), so the registrar can drop the native code
+			for the UnmanagedCallersOnly trampolines ILC trimmed away (an app-size optimization).
 
 			This is *required* for the trimmable-static registrar to produce a small app: the assembly-preparer
 			writes the generated type map assemblies to disk (marked with [AssemblyMetadata ("IsTrimmable", "True")])
@@ -73,8 +73,9 @@
 			action - which means they're not trimmed, and since they reference every Objective-C type in the app,
 			nothing else can be trimmed either (that made apps ~3x larger).
 
-			The $(Registrar) check means an app that explicitly opts back in to the managed-static registrar
-			doesn't get PrepareAssemblies enabled - that combination makes apps *larger*.
+			The $(Registrar) check means a CoreCLR app that explicitly opts back in to the managed-static
+			registrar doesn't get PrepareAssemblies enabled - that combination makes apps *larger*. NativeAOT
+			always gets PrepareAssemblies regardless of the registrar, which is the pre-existing behavior.
 		-->
 		<PrepareAssemblies Condition="'$(PrepareAssemblies)' == '' And '$(UseMonoRuntime)' != 'true' And ('$(_UseNativeAot)' == 'true' Or '$(Registrar)' == 'trimmable-static') And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '11.0'))">true</PrepareAssemblies>
 

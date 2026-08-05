@@ -390,13 +390,21 @@ namespace Registrar {
 						if (!iface_methods.Contains (imethod))
 							iface_methods.Add (imethod);
 				}
-				if (!iface.HasMethods)
-					continue;
-
-				foreach (var imethod in iface.Methods) {
-					if (!iface_methods.Contains (imethod))
+				if (iface.HasMethods) {
+					foreach (var imethod in iface.Methods) {
+						if (!iface_methods.Contains (imethod))
+							iface_methods.Add (imethod);
+					}
+				}
+#if ASSEMBLY_PREPARER
+				// When post-processing assemblies, the protocol interface methods may have been trimmed
+				// away, and we're not in the same process as the trimmer, so we can't use the methods the
+				// trimmer stored for us. Instead look up any missing methods in the pre-trim assemblies.
+				foreach (var imethod in GetPreTrimMethods (iface)) {
+					if (!iface_methods.Any (v => v.FullName == imethod.FullName))
 						iface_methods.Add (imethod);
 				}
+#endif
 			}
 
 			// We only care about implementators declared in 'type'.
@@ -1533,6 +1541,23 @@ namespace Registrar {
 			}
 			return result;
 		}
+
+#if ASSEMBLY_PREPARER
+		// Returns the methods the given type had before it was trimmed. Returns an empty enumerable if the
+		// pre-trim assemblies aren't available (which is the case unless we're post-processing assemblies).
+		IEnumerable<MethodDefinition> GetPreTrimMethods (TypeDefinition type)
+		{
+			if (!App.IsPostProcessingAssemblies || App.PreTrimAssemblyResolver is null)
+				return [];
+
+			var preTrimAssembly = App.PreTrimAssemblyResolver.Resolve (type.Module.Assembly.Name);
+			var preTrimType = preTrimAssembly?.MainModule.GetType (type.FullName);
+			if (preTrimType is null || !preTrimType.HasMethods)
+				return [];
+
+			return preTrimType.Methods;
+		}
+#endif
 
 		protected override IEnumerable<ProtocolMemberAttribute> GetProtocolMemberAttributes (TypeReference type)
 		{

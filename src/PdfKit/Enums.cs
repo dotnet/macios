@@ -95,8 +95,7 @@ namespace PdfKit {
 		ClosedArrow = 5,
 	}
 
-	/// <summary>Indicates annotation markup types.</summary>
-	/// <remarks>To be added.</remarks>
+	/// <summary>Enumerates annotation markup types.</summary>
 	[Native]
 	[TV (18, 2)]
 	public enum PdfMarkupType : long {
@@ -106,6 +105,7 @@ namespace PdfKit {
 		StrikeOut = 1,
 		/// <summary>Indicates an underline markup.</summary>
 		Underline = 2,
+		/// <summary>Indicates a redaction markup.</summary>
 		Redact = 3,
 	}
 

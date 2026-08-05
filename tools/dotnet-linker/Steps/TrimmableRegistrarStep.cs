@@ -402,8 +402,8 @@ namespace Xamarin.Linker {
 					* }	
 					*/
 					var createObjectMethod = proxyType.AddMethod ("CreateObject", MethodAttributes.Public | MethodAttributes.Virtual | MethodAttributes.HideBySig, abr.ObjCRuntime_INativeObject);
-					createObjectMethod.AddParameter ("handle", abr.System_IntPtr);
-					createObjectMethod.AddParameter ("owns", abr.System_Boolean);
+					createObjectMethod.AddParameter (abr.System_IntPtr); // handle
+					createObjectMethod.AddParameter (abr.System_Boolean); // owns
 					il = createObjectMethod.Body.GetILProcessor ();
 					if (tr.ContainsGenericParameter) {
 						EmitThrowCannotConstructGenericType (il, tr);
@@ -484,7 +484,7 @@ namespace Xamarin.Linker {
 						 * }	
 						 */
 						var createObjectMethod = proxyType.AddMethod ("CreateObject", MethodAttributes.Public | MethodAttributes.Virtual | MethodAttributes.HideBySig, abr.Foundation_NSObject);
-						createObjectMethod.AddParameter ("handle", abr.System_IntPtr);
+						createObjectMethod.AddParameter (abr.System_IntPtr); // handle
 						il = createObjectMethod.Body.GetILProcessor ();
 						if (td.ContainsGenericParameter) {
 							EmitThrowCannotConstructGenericType (il, td);
@@ -509,7 +509,7 @@ namespace Xamarin.Linker {
 						 * }
 						 */
 						var getClassHandleMethod = proxyType.AddMethod ("GetClassHandle", MethodAttributes.Public | MethodAttributes.Virtual | MethodAttributes.HideBySig, abr.System_IntPtr);
-						getClassHandleMethod.AddParameter ("is_custom_type", abr.System_Boolean.MakeByReferenceType ());
+						getClassHandleMethod.AddParameter (abr.System_Boolean.MakeByReferenceType ()); // is_custom_type
 						il = getClassHandleMethod.Body.GetILProcessor ();
 						il.Append (il.Create (OpCodes.Ldarg_1));
 						il.Append (il.Create (isCustomType ? OpCodes.Ldc_I4_1 : OpCodes.Ldc_I4_0));
@@ -530,7 +530,7 @@ namespace Xamarin.Linker {
 						 * }
 						 */
 						var lookupUnmanagedFunctionMethod = proxyType.AddMethod ("LookupUnmanagedFunction", MethodAttributes.Public | MethodAttributes.Virtual | MethodAttributes.HideBySig, abr.System_IntPtr);
-						lookupUnmanagedFunctionMethod.AddParameter ("name", abr.System_String);
+						lookupUnmanagedFunctionMethod.AddParameter (abr.System_String); // name
 						il = lookupUnmanagedFunctionMethod.Body.GetILProcessor ();
 
 						// Get all the UnmanagedCallersOnly methods we need to be able to find for the current type, which includes:
@@ -628,8 +628,8 @@ namespace Xamarin.Linker {
 						 * }	
 						 */
 						var createObjectMethod = proxyType.AddMethod ("CreateObject", MethodAttributes.Public | MethodAttributes.Virtual | MethodAttributes.HideBySig, abr.ObjCRuntime_INativeObject);
-						createObjectMethod.AddParameter ("handle", abr.System_IntPtr);
-						createObjectMethod.AddParameter ("owns", abr.System_Boolean);
+						createObjectMethod.AddParameter (abr.System_IntPtr); // handle
+						createObjectMethod.AddParameter (abr.System_Boolean); // owns
 						createObjectMethod.CreateBody (out il);
 						var protocolWrapperType = objcType.ProtocolWrapperType.Resolve ();
 						if (protocolWrapperType.ContainsGenericParameter) {

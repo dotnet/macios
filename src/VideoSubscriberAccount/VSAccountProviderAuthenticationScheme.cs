@@ -12,7 +12,7 @@ namespace VideoSubscriberAccount {
 
 		/// <summary>Gets the native constants for the specified authentication schemes.</summary>
 		/// <param name="self">The authentication schemes to convert.</param>
-		/// <returns>The native constant for each authentication scheme.</returns>
+		/// <returns>The native constant for each authentication scheme. An element is <see langword="null" /> if the corresponding authentication scheme has no associated native constant on the current platform.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="self" /> is <see langword="null" />.</exception>
 		public static NSString? [] GetConstants (this VSAccountProviderAuthenticationScheme [] self)
 		{
@@ -29,6 +29,7 @@ namespace VideoSubscriberAccount {
 		/// <param name="constants">The native constants to convert.</param>
 		/// <returns>The authentication scheme for each native constant.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="constants" /> is <see langword="null" />.</exception>
+		/// <exception cref="NotSupportedException">An element in <paramref name="constants" /> has no associated authentication scheme on the current platform.</exception>
 		public static VSAccountProviderAuthenticationScheme [] GetValues (NSString [] constants)
 		{
 			if (constants is null)

@@ -68,6 +68,9 @@ namespace Xamarin.Utils {
 		///     signature of a method whose parameters are nested types from another assembly, because
 		///     it only handles nested type definitions, not nested type references.
 		///   </para>
+		///   <para>
+		///     Ref: https://github.com/dotnet/runtime/issues/131892
+		///   </para>
 		/// </remarks>
 		public static string GetNameSignature (MethodDefinition method)
 		{

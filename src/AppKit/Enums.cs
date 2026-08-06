@@ -4038,11 +4038,12 @@ namespace AppKit {
 		Visible = 1 << 1,
 	}
 
+	/// <summary>Describes whether a window is visible to the user.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSWindowOcclusionState : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>At least part of the window is visible.</summary>
 		Visible = 1 << 1,
 	}
 

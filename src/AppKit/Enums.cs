@@ -4029,11 +4029,12 @@ namespace AppKit {
 		AllowUserInteraction = 0x1000,
 	}
 
+	/// <summary>Describes whether an application has visible content.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSApplicationOcclusionState : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>At least part of the application's content is visible.</summary>
 		Visible = 1 << 1,
 	}
 

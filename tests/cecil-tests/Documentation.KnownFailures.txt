@@ -22386,7 +22386,6 @@ T:AppKit.NSApplicationFile
 T:AppKit.NSApplicationFileCommand
 T:AppKit.NSApplicationHandlesKey
 T:AppKit.NSApplicationMenu
-T:AppKit.NSApplicationOcclusionState
 T:AppKit.NSApplicationPredicate
 T:AppKit.NSApplicationPresentationOptions
 T:AppKit.NSApplicationPrint

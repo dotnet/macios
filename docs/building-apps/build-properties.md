@@ -676,7 +676,7 @@ assemblies so they stay byte-for-byte unchanged (a requirement for Hot
 Reload). This will disable a few minor optimizations, but will otherwies not
 affect anything.
 
-The default value is `true` for debug builds and `false` otherwise.
+The default value is `true` for non-NativeAOT debug builds and `false` otherwise.
 
 ## IBToolPath
 

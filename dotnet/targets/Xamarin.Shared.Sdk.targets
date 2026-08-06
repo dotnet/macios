@@ -129,7 +129,8 @@
 			behaviour (and app size) for release builds, where the extra unconditional preservation of
 			smart-enum conversion methods would otherwise cost a bit of app size.
 		-->
-		<HotReloadCompatibleBuild Condition="'$(HotReloadCompatibleBuild)' == ''">$(_BundlerDebug)</HotReloadCompatibleBuild>
+		<HotReloadCompatibleBuild Condition="'$(HotReloadCompatibleBuild)' == '' And '$(_UseNativeAot)' != 'true'">$(_BundlerDebug)</HotReloadCompatibleBuild>
+		<HotReloadCompatibleBuild Condition="'$(HotReloadCompatibleBuild)' == ''">false</HotReloadCompatibleBuild>
 
 		<!-- On the other hand, we want the linker to link away debug support in the actual code unless we're building for Debug -->
 		<DebuggerSupport Condition="'$(DebuggerSupport)' == ''">$(_BundlerDebug)</DebuggerSupport>

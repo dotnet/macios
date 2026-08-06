@@ -75,7 +75,20 @@ namespace Xamarin.MacDev.Tasks {
 			return item;
 		}
 
-		public bool ShouldCopyToBuildServer (ITaskItem item)
+		public bool ShouldCopyToBuildServer (ITaskItem item) => ShouldCopyFileToBuildServer (item);
+
+		public bool ShouldCreateOutputFile (ITaskItem item) => false;
+
+		// The 'File' property is the input we need on the Mac, but it's declared as an
+		// [Output] property, and the remoting infrastructure never copies [Output]
+		// properties to the build server. Report the files here instead, because
+		// GetAdditionalItemsToBeCopied is copied unconditionally.
+		public IEnumerable<ITaskItem> GetAdditionalItemsToBeCopied ()
+		{
+			return File.Where (ShouldCopyFileToBuildServer);
+		}
+
+		static bool ShouldCopyFileToBuildServer (ITaskItem item)
 		{
 			// Some of these files are created on the Mac (by the linker), and in that case
 			// we either don't have the file on Windows at all, or we have a 0-length
@@ -88,9 +101,5 @@ namespace Xamarin.MacDev.Tasks {
 				return false;
 			return true;
 		}
-
-		public bool ShouldCreateOutputFile (ITaskItem item) => false;
-
-		public IEnumerable<ITaskItem> GetAdditionalItemsToBeCopied () => Enumerable.Empty<ITaskItem> ();
 	}
 }

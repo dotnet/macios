@@ -75,7 +75,19 @@ namespace Xamarin.MacDev.Tasks {
 			return item;
 		}
 
-		public bool ShouldCopyToBuildServer (ITaskItem item) => false;
+		public bool ShouldCopyToBuildServer (ITaskItem item)
+		{
+			// Some of these files are created on the Mac (by the linker), and in that case
+			// we either don't have the file on Windows at all, or we have a 0-length
+			// placeholder, and we don't want to overwrite the Mac's version with that.
+			// However, some of these files are created on Windows (by the assembly
+			// preparer, which doesn't run on the Mac), and those have to be copied to the
+			// Mac, otherwise they won't be there when this task executes remotely.
+			var finfo = new FileInfo (item.ItemSpec);
+			if (!finfo.Exists || finfo.Length == 0)
+				return false;
+			return true;
+		}
 
 		public bool ShouldCreateOutputFile (ITaskItem item) => false;
 

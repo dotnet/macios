@@ -4185,11 +4185,12 @@ namespace AppKit {
 		NoHover = 1 << 3,
 	}
 
+	/// <summary>Specifies how to order windows in a window list.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSWindowListOptions : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Orders windows from front to back.</summary>
 		OrderedFrontToBack = (1 << 0),
 	}
 

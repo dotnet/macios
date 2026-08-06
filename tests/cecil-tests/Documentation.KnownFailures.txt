@@ -22835,7 +22835,6 @@ T:AppKit.NSWindowDocumentDrag
 T:AppKit.NSWindowFrame
 T:AppKit.NSWindowFramePredicate
 T:AppKit.NSWindowLevel
-T:AppKit.NSWindowListOptions
 T:AppKit.NSWindowMenu
 T:AppKit.NSWindowNSWindow
 T:AppKit.NSWindowNumberListOptions

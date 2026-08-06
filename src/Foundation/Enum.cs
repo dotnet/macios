@@ -1273,11 +1273,10 @@ namespace Foundation {
 	}
 
 	/// <summary>Allows the application developer to specify that a new file version should be created by moving the source file.</summary>
-	/// <remarks>To be added.</remarks>
 	[Flags]
 	[Native]
 	public enum NSFileVersionAddingOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Moves the source file instead of copying it.</summary>
 		ByMoving = 1 << 0,
 	}
 

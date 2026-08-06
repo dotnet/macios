@@ -25728,7 +25728,6 @@ T:SceneKit.SCNAnimationDidStopHandler
 T:SceneKit.SCNBufferBindingHandler
 T:SceneKit.SCNCameraProjectionDirection
 T:SceneKit.SCNColorMask
-T:SceneKit.SCNErrorCode
 T:SceneKit.SCNFillMode
 T:SceneKit.SCNHitTestSearchMode
 T:SceneKit.SCNInteractionMode

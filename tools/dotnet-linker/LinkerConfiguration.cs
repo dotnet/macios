@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Xml.Linq;
 
 using Mono.Cecil;
@@ -65,6 +66,7 @@ namespace Xamarin.Linker {
 		public string UnmanagedCallersOnlyMapPath { get; private set; } = string.Empty;
 		public int Verbosity => Application.Verbosity;
 		public string XamarinNativeLibraryDirectory { get; private set; } = string.Empty;
+		public Version? XcodeVersion { get; private set; }
 
 		static ConditionalWeakTable<LinkContext, LinkerConfiguration> configurations = new ConditionalWeakTable<LinkContext, LinkerConfiguration> ();
 
@@ -697,6 +699,14 @@ namespace Xamarin.Linker {
 					new LoadValue ((key, value) => XamarinNativeLibraryDirectory = value),
 					new SaveValue ((key, storage) => saveNonEmpty (key, XamarinNativeLibraryDirectory, storage))
 				)},
+				{ "XcodeVersion", (
+					new LoadValue ((key, value) => {
+						if (!Version.TryParse (value, out var xcode_version))
+							throw new InvalidOperationException ($"Unable to parse the {key} value: {value} in {linker_file}");
+						XcodeVersion = xcode_version;
+					}),
+					new SaveValue ((key, storage) => saveNonEmpty (key, XcodeVersion?.ToString (), storage))
+				)},
 			};
 
 			return dict;
@@ -795,7 +805,14 @@ namespace Xamarin.Linker {
 				Application.UnsetInterpreter ();
 			}
 
-			Driver.ValidateXcode (Application, false, false);
+			if (RuntimeInformation.IsOSPlatform (OSPlatform.OSX)) {
+				Driver.ValidateXcode (Application, false, false);
+			} else if (XcodeVersion is not null) {
+				// Xcode only exists on macOS, so when running on any other OS (which happens when
+				// building remotely from Windows) we can't look at the Xcode installation. Use the
+				// Xcode version MSBuild fetched from the Mac instead.
+				Application.XcodeVersion = XcodeVersion;
+			}
 
 			Application.InitializeCommon ();
 			Application.Initialize ();
@@ -919,6 +936,7 @@ namespace Xamarin.Linker {
 				Application.Log ($"    Verbosity: {Verbosity}");
 				Application.Log ($"    XamarinNativeLibraryDirectory: {XamarinNativeLibraryDirectory}");
 				Application.Log ($"    XamarinRuntime: {Application.XamarinRuntime}");
+				Application.Log ($"    XcodeVersion: {XcodeVersion}");
 			}
 		}
 

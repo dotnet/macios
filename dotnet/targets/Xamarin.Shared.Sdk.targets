@@ -865,6 +865,7 @@
 				WarnAsError=$(_BundlerWarnAsError)
 				XamarinNativeLibraryDirectory=$(_XamarinNativeLibraryDirectory)
 				XamarinRuntime=$(_XamarinRuntime)
+				XcodeVersion=$(_XcodeVersion)
 			</_CustomLinkerOptions>
 			<_ExtraTrimmerArgs>$(_ExtraTrimmerArgs) --custom-data "LinkerOptionsFile=$(_CustomLinkerOptionsFile)"</_ExtraTrimmerArgs>
 			<_ExtraTrimmerArgs Condition="'$(TrimMode)' == 'copy' And '$(MarkCopiedAssemblies)' != 'true'">$(_ExtraTrimmerArgs) --custom-data DisableMarkingOfCopyAssemblies=true</_ExtraTrimmerArgs>

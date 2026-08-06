@@ -69,6 +69,11 @@ namespace Xamarin.Bundler {
 
 		public static string GetRealPath (IToolLog log, string path, bool warnIfNoSuchPathExists = true)
 		{
+			// There's no realpath on Windows (and no symlinks to resolve either), so just
+			// return the full path. This matches what PathUtils.ResolveSymbolicLinks does.
+			if (Path.DirectorySeparatorChar == '\\')
+				return Path.GetFullPath (path);
+
 			// For some reason realpath doesn't always like filenames only, and will randomly fail.
 			// Prepend the current directory if there's no directory specified.
 			if (string.IsNullOrEmpty (Path.GetDirectoryName (path)))

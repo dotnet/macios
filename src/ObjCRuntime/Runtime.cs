@@ -10,6 +10,7 @@
 
 #nullable enable
 
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -2755,6 +2756,85 @@ namespace ObjCRuntime {
 			var closedMethod = MethodBase.GetMethodFromHandle (open_method_handle, closed_type.TypeHandle)!;
 			var parameters = closedMethod.GetParameters ();
 			return parameters [parameter].ParameterType.GetElementType ()!; // FIX NAMING
+		}
+
+		// Caches the closed generic helper method per (open helper method, closed instance type), so
+		// that the reflection cost (FindClosedTypeInHierarchy + MakeGenericMethod) is only paid once
+		// per instantiation instead of on every call.
+		//
+		// The cache lives in a nested type (rather than as a field initializer on Runtime) so its
+		// ConcurrentDictionary instantiation is constructed by the nested type's static constructor
+		// - which only runs the first time InvokeGenericRegistrarTrampoline actually accesses it.
+		// InvokeGenericRegistrarTrampoline is only ever reachable under a Hot-Reload-compatible
+		// build, so in every other configuration (e.g. Release/NativeAOT) the trampoline is trimmed
+		// and this nested type - together with the ConcurrentDictionary instantiation - is trimmed
+		// with it, keeping it out of Runtime's static constructor and out of the app.
+		static class ClosedGenericRegistrarTrampolines {
+			internal static readonly ConcurrentDictionary<(RuntimeMethodHandle OpenImplMethod, RuntimeTypeHandle ClosedInstanceType), MethodInfo> Cache = new ();
+		}
+
+		// Invokes a relocated generic registrar trampoline helper.
+		//
+		// When the trimmable static registrar relocates the registrar trampolines into a companion
+		// assembly (for Hot Reload, so the user assembly stays unmodified), the trampoline for a
+		// method declared in a generic type can't be relocated as-is: the static UnmanagedCallersOnly
+		// callback doesn't know the generic parameters of the instance, and we can't add the
+		// virtual-dispatch proxy to the user type (that would modify the user assembly). Instead we
+		// emit a *generic* helper method ('open_impl' below) into the companion assembly whose body
+		// performs the type-parameter-aware conversions, and the static callback dispatches to it
+		// here: we close the generic helper over the instance's actual generic arguments and invoke
+		// it. This reflection-based dispatch is only ever used under a Hot-Reload-compatible build,
+		// which always runs under the JIT (never NativeAOT), so MakeGenericMethod is safe.
+		//
+		// 'args' holds all the arguments of the helper: the instance, followed by the native
+		// arguments, followed by the trailing 'out IntPtr exception_gchandle' slot. The callback
+		// allocates the array with that extra slot so that no copy is needed here. This method
+		// invokes the closed helper and returns its (boxed) native return value. Any failure is
+		// caught and reported through 'exception_gchandle' so no exception escapes the
+		// UnmanagedCallersOnly boundary.
+		internal static object? InvokeGenericRegistrarTrampoline (object instance, RuntimeTypeHandle open_user_type_handle, RuntimeMethodHandle open_impl_method_handle, object? [] args, out IntPtr exception_gchandle)
+		{
+			// This method uses reflection (MakeGenericMethod + MethodInfo.Invoke), which requires
+			// dynamic code and isn't supported by NativeAOT. It's only ever reached under a
+			// Hot-Reload-compatible build, which always runs under the JIT (never NativeAOT). The
+			// IsNativeAOT check is optimizable, so the linker folds it to a constant and removes the
+			// reflection code below as unreachable in a NativeAOT build - which also elides the
+			// IL2060/IL3050 trimmer/AOT warnings that MakeGenericMethod would otherwise produce.
+			if (IsNativeAOT)
+				throw CreateNativeAOTNotSupportedException ();
+
+			exception_gchandle = IntPtr.Zero;
+			try {
+				var closed_instance_type = instance.GetType ();
+				var cache_key = (open_impl_method_handle, closed_instance_type.TypeHandle);
+				MethodInfo closed_impl;
+				if (ClosedGenericRegistrarTrampolines.Cache.TryGetValue (cache_key, out var cached_impl)) {
+					closed_impl = cached_impl;
+				} else {
+					var open_user_type = Type.GetTypeFromHandle (open_user_type_handle);
+					if (open_user_type is null)
+						throw new InvalidOperationException ("Could not resolve the open generic type of a relocated registrar trampoline.");
+					var closed_user_type = FindClosedTypeInHierarchy (open_user_type, closed_instance_type);
+					if (closed_user_type is null)
+						throw new InvalidOperationException ($"Could not find the type '{open_user_type.FullName}' in the type hierarchy of '{closed_instance_type.FullName}'.");
+					if (MethodBase.GetMethodFromHandle (open_impl_method_handle) is not MethodInfo open_impl)
+						throw new InvalidOperationException ("Could not resolve the generic helper method of a relocated registrar trampoline.");
+					closed_impl = open_impl.MakeGenericMethod (closed_user_type.GetGenericArguments ());
+					ClosedGenericRegistrarTrampolines.Cache.TryAdd (cache_key, closed_impl);
+				}
+
+				// The trailing 'out IntPtr exception_gchandle' slot is pre-initialized to IntPtr.Zero so
+				// that the (success) code path, which leaves the byref output untouched, reports "no
+				// exception".
+				var exception_slot = args.Length - 1;
+				args [exception_slot] = IntPtr.Zero;
+				var rv = closed_impl.Invoke (null, args);
+				exception_gchandle = (IntPtr) (args [exception_slot] ?? IntPtr.Zero);
+				return rv;
+			} catch (Exception e) {
+				exception_gchandle = AllocGCHandle (e);
+				return null;
+			}
 		}
 
 		// This method might be called by the generated code from the managed static registrar.

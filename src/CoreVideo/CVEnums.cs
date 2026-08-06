@@ -110,7 +110,7 @@ namespace CoreVideo {
 	[Flags]
 	[MacCatalyst (13, 1)]
 	public enum CVTimeFlags : int {
-		/// <summary>To be added.</summary>
+		/// <summary>The time value is indefinite.</summary>
 		IsIndefinite = 1 << 0,
 	}
 

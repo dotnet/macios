@@ -1719,11 +1719,12 @@ namespace AVFoundation {
 		DolbyVision = 0x4,
 	}
 
+	/// <summary>Specifies options for activating an audio session.</summary>
 	[MacCatalyst (13, 1)]
 	[Flags]
 	[Native]
 	public enum AVAudioSessionActivationOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>No activation options are specified.</summary>
 		None = 0x0,
 	}
 

@@ -23096,7 +23096,6 @@ T:AVFoundation.AVAudioRoutingArbiter
 T:AVFoundation.AVAudioRoutingArbitrationCategory
 T:AVFoundation.AVAudioSequencerInfoDictionary
 T:AVFoundation.AVAudioSequencerUserCallback
-T:AVFoundation.AVAudioSessionActivationOptions
 T:AVFoundation.AVAudioSessionCapability
 T:AVFoundation.AVAudioSessionInterruptionReason
 T:AVFoundation.AVAudioSessionIOType

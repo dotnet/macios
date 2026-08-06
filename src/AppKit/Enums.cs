@@ -2925,11 +2925,12 @@ namespace AppKit {
 		RatingLevel,
 	}
 
+	/// <summary>Specifies options for creating or modifying font collections.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSFontCollectionOptions : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Limits the font collection to the current application.</summary>
 		ApplicationOnlyMask = 1,
 	}
 

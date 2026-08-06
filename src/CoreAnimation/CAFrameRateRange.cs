@@ -24,8 +24,8 @@ namespace CoreAnimation {
 			=> IsEqualTo (this, other) != 0;
 
 #if !COREBUILD
-		[Field ("CAFrameRateRangeDefault", "CoreAnimation")]
-		public static CAFrameRateRange Default => Marshal.PtrToStructure<CAFrameRateRange> (Dlfcn.GetIndirect (Libraries.CoreAnimation.Handle, "CAFrameRateRangeDefault"))!;
+		/// <summary>Gets the default frame-rate range.</summary>
+		public static CAFrameRateRange Default => CAFrameRateRangeFields.Default;
 #endif
 
 	}

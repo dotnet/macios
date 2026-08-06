@@ -541,13 +541,25 @@ namespace BackgroundAssets {
 		[Export ("localizedAssetPacks", ArgumentSemantic.Copy)]
 		NSSet<BAAssetPack> LocalizedAssetPacks { get; }
 
-		[Internal]
+		/// <summary>Create a new <see cref="BAAssetPackManifest" /> for the specified file on disk.</summary>
+		/// <param name="url">The url of the file on disk. The file is expected to be formatted as json.</param>
+		/// <param name="applicationGroupIdentifier">The identifier for the application group where the downloaded assets will be stored.</param>
+		/// <param name="error">The error if an error occurred.</param>
+		/// <returns>A new <see cref="BAAssetPackManifest" /> if the operation succeeded, <see langword="null" /> otherwise.</returns>
+		[FactoryMethod]
 		[Export ("initWithContentsOfURL:applicationGroupIdentifier:error:")]
-		NativeHandle _InitWithContentsOfUrl (NSUrl url, string applicationGroupIdentifier, [NullAllowed] out NSError error);
+		[return: NullAllowed]
+		NativeHandle Constructor (NSUrl url, string applicationGroupIdentifier, [NullAllowed] out NSError error);
 
-		[Internal]
+		/// <summary>Create a new <see cref="BAAssetPackManifest" /> for the specified json data in memory.</summary>
+		/// <param name="data">The json data to use.</param>
+		/// <param name="applicationGroupIdentifier">The identifier for the application group where the downloaded assets will be stored.</param>
+		/// <param name="error">The error if an error occurred.</param>
+		/// <returns>A new <see cref="BAAssetPackManifest" /> if the operation succeeded, <see langword="null" /> otherwise.</returns>
+		[FactoryMethod]
 		[Export ("initFromData:applicationGroupIdentifier:error:")]
-		NativeHandle _InitFromData (NSData data, string applicationGroupIdentifier, [NullAllowed] out NSError error);
+		[return: NullAllowed]
+		NativeHandle Constructor (NSData data, string applicationGroupIdentifier, [NullAllowed] out NSError error);
 
 		/// <summary>Gets the asset pack with the specified identifier.</summary>
 		/// <param name="assetPackIdentifier">The asset-pack identifier.</param>

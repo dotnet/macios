@@ -1566,11 +1566,25 @@ partial class TestRuntime {
 
 	public static uint GetFlags (NSObject obj)
 	{
-		const string name = "flags";
-		var prop = typeof (NSObject).GetProperty (name, BindingFlags.Instance | BindingFlags.NonPublic);
-		if (prop is null)
-			throw new InvalidOperationException ($"Unable to find the property '{name}' in NSObject.");
-		return (uint) prop.GetValue (obj)!;
+		// NSObject stores its flags in native memory, in a struct that looks like this:
+		//     struct NSObjectData {
+		//         NativeHandle handle;
+		//         uint flags;
+		//     }
+		// and the pointer to that struct is stored in the '__data' field in NSObject.
+		// Fetch the field instead of the 'flags' property, because the trimmer may remove
+		// the metadata for the property (while the field is always kept, since it's used).
+		const string name = "__data";
+		var field = typeof (NSObject).GetField (name, BindingFlags.Instance | BindingFlags.NonPublic);
+		if (field is null)
+			throw new InvalidOperationException ($"Unable to find the field '{name}' in NSObject.");
+		_ = obj.Handle; // make sure the native memory has been allocated.
+		var data = (IntPtr) field.GetValue (obj)!;
+		if (data == IntPtr.Zero)
+			throw new InvalidOperationException ($"The field '{name}' in NSObject is null.");
+		var rv = (uint) Marshal.ReadInt32 (data, IntPtr.Size);
+		GC.KeepAlive (obj);
+		return rv;
 	}
 
 	// Determine if linkall was enabled by checking if an unused class in this assembly is still here.

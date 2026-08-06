@@ -4459,11 +4459,12 @@ namespace AppKit {
 		Catalog,
 	}
 
+	/// <summary>Specifies options for requesting downloadable font assets.</summary>
 	[NoMacCatalyst]
 	[Native]
 	[Flags]
 	public enum NSFontAssetRequestOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Displays the standard user interface while downloading fonts.</summary>
 		UsesStandardUI = 1 << 0,
 	}
 

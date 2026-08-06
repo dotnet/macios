@@ -22490,7 +22490,6 @@ T:AppKit.NSEventTrackHandler
 T:AppKit.NSEventType
 T:AppKit.NSFocusRingPlacement
 T:AppKit.NSFocusRingType
-T:AppKit.NSFontAssetRequestOptions
 T:AppKit.NSFontCollectionVisibility
 T:AppKit.NSFontDescriptorSystemDesign
 T:AppKit.NSFontError

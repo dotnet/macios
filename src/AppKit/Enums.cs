@@ -2537,11 +2537,12 @@ namespace AppKit {
 		Unitalic = 0x1000000,
 	}
 
+	/// <summary>Specifies options for writing objects to a pasteboard.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSPasteboardWritingOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The object promises to provide its pasteboard data later.</summary>
 		WritingPromised = 1 << 9,
 	}
 

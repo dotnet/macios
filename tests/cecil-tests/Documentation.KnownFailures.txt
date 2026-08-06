@@ -22594,7 +22594,6 @@ T:AppKit.NSPasteboardReadingOptions
 T:AppKit.NSPasteboardType
 T:AppKit.NSPasteboardTypeFindPanelSearchOptionKey
 T:AppKit.NSPasteboardTypeTextFinderOptionKey
-T:AppKit.NSPasteboardWritingOptions
 T:AppKit.NSPathStyle
 T:AppKit.NSPickerTouchBarItemControlRepresentation
 T:AppKit.NSPickerTouchBarItemSelectionMode

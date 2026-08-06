@@ -182,6 +182,18 @@ namespace Xamarin.MacDev.Tasks {
 					}
 				}
 			}
+
+			// Any files the source files need in order to compile (headers they #include,
+			// for instance) have to be copied to the Mac as well.
+			foreach (var info in CompileInfo) {
+				var dependencies = info.GetMetadata ("AdditionalDependencies");
+				if (string.IsNullOrEmpty (dependencies))
+					continue;
+				foreach (var dependency in dependencies.Split (new char [] { ';' }, StringSplitOptions.RemoveEmptyEntries)) {
+					if (File.Exists (dependency))
+						yield return new TaskItem (dependency);
+				}
+			}
 		}
 
 		public void Cancel ()

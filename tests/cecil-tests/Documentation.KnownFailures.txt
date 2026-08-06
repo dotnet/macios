@@ -22578,7 +22578,6 @@ T:AppKit.NSPageControllerGetViewController
 T:AppKit.NSPageControllerTransitionStyle
 T:AppKit.NSPageLayoutResult
 T:AppKit.NSPasteboardAccessBehavior
-T:AppKit.NSPasteboardContentsOptions
 T:AppKit.NSPasteboardDetectionPattern
 T:AppKit.NSPasteboardDetectMetadataCompletionHandler
 T:AppKit.NSPasteboardDetectMetadataHandler

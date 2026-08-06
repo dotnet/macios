@@ -4321,10 +4321,11 @@ namespace AppKit {
 		Bezel,
 	}
 
+	/// <summary>Specifies options for replacing the contents of a pasteboard.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSPasteboardContentsOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Restricts the pasteboard contents to the current host.</summary>
 		CurrentHostOnly = 1,
 	}
 

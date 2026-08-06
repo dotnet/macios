@@ -1151,11 +1151,10 @@ namespace AVFoundation {
 	}
 
 	/// <summary>Enumerates loop count limits.</summary>
-	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum AVMusicTrackLoopCount : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Loops the music track indefinitely.</summary>
 		Forever = -1,
 	}
 

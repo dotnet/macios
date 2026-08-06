@@ -124,7 +124,7 @@ Microsoft.MacCatalyst.dll:Foundation.NSObject..ctor(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.AllocIfNeeded()
 Microsoft.MacCatalyst.dll:Foundation.NSObject.ClearHandle()
 Microsoft.MacCatalyst.dll:Foundation.NSObject.ConformsToProtocol(ObjCRuntime.NativeHandle)
-Microsoft.MacCatalyst.dll:Foundation.NSObject.CreateManagedRef(System.Boolean)
+Microsoft.MacCatalyst.dll:Foundation.NSObject.CreateManagedRef(System.Boolean, System.Boolean)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.CreateNSObject(System.IntPtr, System.IntPtr, Foundation.NSObject/Flags)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.DangerousAutorelease()
 Microsoft.MacCatalyst.dll:Foundation.NSObject.DangerousAutorelease(ObjCRuntime.NativeHandle)
@@ -135,6 +135,7 @@ Microsoft.MacCatalyst.dll:Foundation.NSObject.DangerousRetain(ObjCRuntime.Native
 Microsoft.MacCatalyst.dll:Foundation.NSObject.Dispose()
 Microsoft.MacCatalyst.dll:Foundation.NSObject.Dispose(System.Boolean)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.DynamicConformsToProtocol(ObjCRuntime.NativeHandle)
+Microsoft.MacCatalyst.dll:Foundation.NSObject.EnsureManagedReference(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.Equals(Foundation.NSObject)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.Equals(System.Object)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.Finalize()
@@ -588,8 +589,8 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.RegistrarHelper/MapInfo
 Microsoft.MacCatalyst.dll:ObjCRuntime.RegistrarHelper/MapInfo..ctor(ObjCRuntime.IManagedRegistrar)
 Microsoft.MacCatalyst.dll:ObjCRuntime.ReleaseAttribute
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime
-Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.<ConstructINativeObject>g__ConstructINativeObjectViaFactoryMethod|291_0`1(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.<ConstructNSObject>g__ConstructNSObjectViaFactoryMethod|290_0`1(ObjCRuntime.NativeHandle)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.<ConstructINativeObject>g__ConstructINativeObjectViaFactoryMethod|296_0`1(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.<ConstructNSObject>g__ConstructNSObjectViaFactoryMethod|295_0`1(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.AllocGCHandle(System.Object, System.Runtime.InteropServices.GCHandleType)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.AllocGCHandle(System.Object)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.AppendAdditionalInformation(System.Text.StringBuilder, System.IntPtr, System.RuntimeMethodHandle)
@@ -634,6 +635,7 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.get_method_for_selector(System.Int
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.get_method_from_token(System.UInt32, System.IntPtr*)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.get_nsobject_with_type(System.IntPtr, System.IntPtr, System.Int32*, System.IntPtr*)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.get_object_type_fullname(System.IntPtr, System.IntPtr*)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.get_RegisterObjectsBeforeInit()
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.get_selector(System.IntPtr, System.IntPtr*)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.GetBlockProxyAttributeMethod(System.Reflection.MethodInfo, System.Int32)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.GetBlockWrapperCreator(System.IntPtr, System.Int32)
@@ -641,6 +643,7 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.GetBlockWrapperCreator(System.Refl
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.GetClass(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.GetExceptionMessage(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.GetExportAttribute(System.Reflection.MethodInfo)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.GetGCHandleForObject(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.GetGCHandleTarget(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.GetHandleForINativeObject(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.GetINativeObject_Dynamic(System.IntPtr, System.SByte, System.IntPtr)
@@ -701,7 +704,7 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.RegisterDelegates(ObjCRuntime.Runt
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.RegisterDelegatesDynamic(ObjCRuntime.Runtime/InitializationOptions*)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.RegisterEntryAssembly(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.RegisterEntryAssembly(System.Reflection.Assembly)
-Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.RegisterNSObject(Foundation.NSObject, System.IntPtr)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.RegisterNSObject(Foundation.NSObject, System.IntPtr, System.Boolean)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.ReleaseBlockOnMainThread(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.ReleaseBlockWhenDelegateIsCollected(System.IntPtr, System.Delegate)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.RemoveFromObjectMap(Foundation.NSObject)
@@ -720,15 +723,19 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.ThrowNSException(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.try_get_or_construct_nsobject(System.IntPtr, System.IntPtr*)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.TryGetIsUserType(System.IntPtr, out System.Boolean&, out System.String&)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.TryGetNSObject(System.IntPtr, System.Boolean)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.TryGetNSObjectFromIvar(System.IntPtr, System.Boolean)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.TryGetNSObjectFromIvar(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.TryGetOrConstructNSObjectWrapped(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.TryReleaseINativeObject(ObjCRuntime.INativeObject)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.TypeGetFullName(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.unregister_nsobject(System.IntPtr, System.IntPtr, System.IntPtr*)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.UnregisterNSObject(System.IntPtr, Foundation.NSObject)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.UnregisterNSObject(System.IntPtr, System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.UnregisterNSObject(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.unwrap_ns_exception(System.IntPtr, System.IntPtr*)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.UnwrapNSException(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.write(System.Int32, System.Byte[], System.IntPtr)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.xamarin_get_gchandle(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.xamarin_is_user_type(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.xamarin_log(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime/ClassHandles
@@ -1222,6 +1229,7 @@ Microsoft.MacCatalyst.dll:System.Boolean ObjCRuntime.DisposableObject::owns
 Microsoft.MacCatalyst.dll:System.Boolean ObjCRuntime.RegistrarHelper/MapInfo::RegisteredWrapperTypes
 Microsoft.MacCatalyst.dll:System.Boolean ObjCRuntime.Runtime::initialized
 Microsoft.MacCatalyst.dll:System.Boolean ObjCRuntime.Runtime::IsARM64CallingConvention
+Microsoft.MacCatalyst.dll:System.Boolean ObjCRuntime.Runtime::RegisterObjectsBeforeInit()
 Microsoft.MacCatalyst.dll:System.Boolean ObjCRuntime.RuntimeException::<Error>k__BackingField
 Microsoft.MacCatalyst.dll:System.Boolean ObjCRuntime.RuntimeException::Error()
 Microsoft.MacCatalyst.dll:System.Boolean Registrar.DynamicRegistrar::computed_class_count
@@ -1257,7 +1265,6 @@ Microsoft.MacCatalyst.dll:System.Boolean Registrar.Registrar/ObjCType::IsModel
 Microsoft.MacCatalyst.dll:System.Boolean Registrar.Registrar/ObjCType::IsProtocol
 Microsoft.MacCatalyst.dll:System.Boolean Registrar.Registrar/ObjCType::IsWrapper
 Microsoft.MacCatalyst.dll:System.Boolean UIKit.UIApplication::CheckForEventAndDelegateMismatches
-Microsoft.MacCatalyst.dll:System.Boolean UIKit.UIApplication::CheckForIllegalCrossThreadCalls
 Microsoft.MacCatalyst.dll:System.Boolean[] Foundation.ProtocolMemberAttribute::ParameterByRef()
 Microsoft.MacCatalyst.dll:System.Byte Registrar.Registrar/ObjCField::Alignment
 Microsoft.MacCatalyst.dll:System.Char[] Registrar.Registrar/ObjCType::invalidSelectorCharacters
@@ -1591,6 +1598,7 @@ Microsoft.MacCatalyst.dll:UIKit.UIApplication._Xamarin_ConstructNSObject(ObjCRun
 Microsoft.MacCatalyst.dll:UIKit.UIApplication..cctor()
 Microsoft.MacCatalyst.dll:UIKit.UIApplication..ctor(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:UIKit.UIApplication.Dispose(System.Boolean)
+Microsoft.MacCatalyst.dll:UIKit.UIApplication.EnsureUIThread()
 Microsoft.MacCatalyst.dll:UIKit.UIApplication.get_ClassHandle()
 Microsoft.MacCatalyst.dll:UIKit.UIApplication.InitializeApplication()
 Microsoft.MacCatalyst.dll:UIKit.UIApplication.Main(System.String[], System.Type, System.Type)

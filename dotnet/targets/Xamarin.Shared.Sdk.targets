@@ -570,9 +570,8 @@
 					- NativeAOT supported platforms in all configurations
 					- ios/tvos device builds in all configurations
 					- macOS/MacCatalyst builds in release configuration
-				  (On .NET 11+ NativeAOT defaults to 'trimmable-static' instead - that's set earlier, at
-				  evaluation time, in Xamarin.Shared.Sdk.props. The trimmable-static registrar is only smaller
-				  under NativeAOT, so the other runtimes keep managed-static.)
+				  (On .NET 11+ CoreCLR and NativeAOT default to 'trimmable-static' instead - that's set earlier,
+				  at evaluation time, in Xamarin.Shared.Sdk.props. Mono keeps managed-static.)
 				- Set 'partial-static' for:
 					- when no assemblies are trimmed and when MarshalManagedExceptionMode is default (or not set)
 				- Otherwise set 'dynamic' 
@@ -772,6 +771,15 @@
 			<!-- Set default ValidateObjectPointers value -->
 			<_ValidateObjectPointers Condition="'$(_ValidateObjectPointers)' == ''">false</_ValidateObjectPointers>
 
+			<!--
+				Set the 'ObjCRuntime.Runtime.CheckForIllegalCrossThreadCalls' feature switch value. When false, ILLink stubs
+				the [NS|UI]Application.EnsureUIThread method body (so the UI thread checks are removed). A user-specified
+				$(CheckForIllegalCrossThreadCalls) always wins; otherwise we keep the checks in debug builds and remove them in
+				release builds (matching the old 'remove-uithread-checks' optimization default).
+			-->
+			<_CheckForIllegalCrossThreadCalls Condition="'$(CheckForIllegalCrossThreadCalls)' != ''">$(CheckForIllegalCrossThreadCalls)</_CheckForIllegalCrossThreadCalls>
+			<_CheckForIllegalCrossThreadCalls Condition="'$(_CheckForIllegalCrossThreadCalls)' == ''">$(_BundlerDebug)</_CheckForIllegalCrossThreadCalls>
+
 			<_CustomLinkerOptions>
 				AreAnyAssembliesTrimmed=$(_AreAnyAssembliesTrimmed)
 				AssemblyName=$(AssemblyName).dll
@@ -923,6 +931,7 @@
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsCoreCLR" Value="true" Trim="true" Condition="'$(UseMonoRuntime)' != 'true'" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsCoreCLR" Value="false" Trim="true" Condition="'$(UseMonoRuntime)' == 'true'" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Class.ValidateObjectPointers" Value="$(_ValidateObjectPointers)" Trim="true" />
+			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.CheckForIllegalCrossThreadCalls" Value="$(_CheckForIllegalCrossThreadCalls)" Trim="true" />
 
 			<!-- Configure System.Net.Http Native Handlers -->
 			<RuntimeHostConfigurationOption Include="System.Net.Http.NativeHandler.UseNSUrlSessionHandler" Value="$(_IsNSUrlSessionHandlerFeature)" Trim="true" />

@@ -24065,7 +24065,6 @@ T:Foundation.NSGrammaticalPartOfSpeech
 T:Foundation.NSGrammaticalPerson
 T:Foundation.NSGrammaticalPronounType
 T:Foundation.NSInlinePresentationIntent
-T:Foundation.NSItemProviderFileOptions
 T:Foundation.NSItemProviderRepresentationVisibility
 T:Foundation.NSItemProviderUTTypeLoadDelegate
 T:Foundation.NSKeyValueSharedObserverRegistration_NSObject

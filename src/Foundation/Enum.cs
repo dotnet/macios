@@ -2263,10 +2263,11 @@ namespace Foundation {
 		OwnProcess = 3,
 	}
 
+	/// <summary>Specifies how an item provider supplies a file.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSItemProviderFileOptions : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Opens the file in place instead of copying it.</summary>
 		OpenInPlace = 1,
 	}
 

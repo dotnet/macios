@@ -1265,11 +1265,10 @@ namespace Foundation {
 	}
 
 	/// <summary>Allows the application developer to specify that the old version of the file should be removed from the version store.</summary>
-	/// <remarks>To be added.</remarks>
 	[Flags]
 	[Native]
 	public enum NSFileVersionReplacingOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Moves the replacement file instead of copying it.</summary>
 		ByMoving = 1 << 0,
 	}
 

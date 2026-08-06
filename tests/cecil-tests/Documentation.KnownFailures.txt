@@ -5811,8 +5811,6 @@ F:PdfKit.PdfAccessPermissions.DocumentChanges
 F:PdfKit.PdfAccessPermissions.FormFieldEntry
 F:PdfKit.PdfAccessPermissions.HighQualityPrinting
 F:PdfKit.PdfAccessPermissions.LowQualityPrinting
-F:PdfKit.PdfAreaOfInterest.AnyArea
-F:PdfKit.PdfMarkupType.Redact
 F:PdfKit.PdfSelectionGranularity.Character
 F:PdfKit.PdfSelectionGranularity.Line
 F:PdfKit.PdfSelectionGranularity.Word

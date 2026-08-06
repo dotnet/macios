@@ -173,7 +173,7 @@ namespace CoreVideo {
 	/// <summary>Defines an option for <see cref="CoreVideo.CVPixelBufferPool.Flush(CoreVideo.CVPixelBufferPoolFlushFlags)" />.</summary>
 	[MacCatalyst (13, 1)]
 	public enum CVPixelBufferPoolFlushFlags : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Releases all unused buffers from the pool.</summary>
 		FlushExcessBuffers = 1,
 	}
 

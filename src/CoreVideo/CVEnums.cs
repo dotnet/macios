@@ -102,7 +102,7 @@ namespace CoreVideo {
 	/// <summary>A flagging enumeration. Currently only contains a <c>None</c> value of 0.</summary>
 	[MacCatalyst (13, 1)]
 	public enum CVOptionFlags : long {
-		/// <summary>To be added.</summary>
+		/// <summary>No options are specified.</summary>
 		None = 0,
 	}
 

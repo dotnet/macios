@@ -520,13 +520,12 @@ namespace AVFoundation {
 	}
 
 	/// <summary>An enumeration whose values define whether, after an audio session deactivates, previously interrupted audio sessions should or should not re-activate.</summary>
-	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Flags]
 	[Native]
 	// NSUInteger - AVAudioSession.h
 	public enum AVAudioSessionSetActiveOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Notifies other audio sessions that they can resume when this session deactivates.</summary>
 		NotifyOthersOnDeactivation = 1,
 	}
 

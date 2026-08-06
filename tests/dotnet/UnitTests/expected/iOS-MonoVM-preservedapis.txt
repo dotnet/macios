@@ -10,11 +10,12 @@ Microsoft.iOS.dll:CoreFoundation.CFArray.ArrayFromHandleFunc`1(ObjCRuntime.Nativ
 Microsoft.iOS.dll:CoreFoundation.CFArray.CFArrayGetValues(System.IntPtr, CoreFoundation.CFRange, System.IntPtr)
 Microsoft.iOS.dll:CoreFoundation.CFArray.DefaultConvert`1(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:CoreFoundation.CFArray.get__CFNullHandle()
+Microsoft.iOS.dll:CoreFoundation.CFArray.get__CFTypeArrayCallbacks()
 Microsoft.iOS.dll:CoreFoundation.CFArray.GetCount(System.IntPtr)
 Microsoft.iOS.dll:CoreFoundation.CFArray.StringArrayFromHandle(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:CoreFoundation.CFArray.StringArrayFromHandle(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:CoreFoundation.CFArray/<>O
-Microsoft.iOS.dll:CoreFoundation.CFArray/<ArrayFromHandle>O__25_0`1
+Microsoft.iOS.dll:CoreFoundation.CFArray/<ArrayFromHandle>O__23_0`1
 Microsoft.iOS.dll:CoreFoundation.CFObject
 Microsoft.iOS.dll:CoreFoundation.CFObject.CFRelease(System.IntPtr)
 Microsoft.iOS.dll:CoreFoundation.CFObject.CFRetain(System.IntPtr)
@@ -95,7 +96,6 @@ Microsoft.iOS.dll:Foundation.NSException.get_Name()
 Microsoft.iOS.dll:Foundation.NSException.get_Reason()
 Microsoft.iOS.dll:Foundation.NSObject
 Microsoft.iOS.dll:Foundation.NSObject..cctor()
-Microsoft.iOS.dll:Foundation.NSObject..ctor()
 Microsoft.iOS.dll:Foundation.NSObject..ctor(Foundation.NSObjectFlag)
 Microsoft.iOS.dll:Foundation.NSObject..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:Foundation.NSObject..ctor(ObjCRuntime.NativeHandle)
@@ -158,13 +158,10 @@ Microsoft.iOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::Registere
 Microsoft.iOS.dll:Foundation.NSObject/Flags Foundation.NSObjectData::flags
 Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer
 Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer..cctor()
-Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer..ctor()
-Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer..ctor(System.IntPtr, ObjCRuntime.IManagedRegistrar)
 Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer.Add(Foundation.NSObject)
 Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer.Drain(Foundation.NSObject)
 Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer.ScheduleDrain()
 Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__
-Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_3088_Foundation_NSObject_NSObject_Disposer__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
 Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_3089_Foundation_NSObject_NSObject_Disposer_Drain(System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
 Microsoft.iOS.dll:Foundation.NSObject/XamarinGCHandleFlags
 Microsoft.iOS.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::HasManagedRef
@@ -270,6 +267,7 @@ Microsoft.iOS.dll:ObjCRuntime.Dlfcn._dlopen(System.IntPtr, ObjCRuntime.Dlfcn/Mod
 Microsoft.iOS.dll:ObjCRuntime.Dlfcn._dlopen(System.String, ObjCRuntime.Dlfcn/Mode)
 Microsoft.iOS.dll:ObjCRuntime.Dlfcn.dlsym(System.IntPtr, System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Dlfcn.dlsym(System.IntPtr, System.String)
+Microsoft.iOS.dll:ObjCRuntime.Dlfcn.GetIndirect(System.IntPtr, System.String)
 Microsoft.iOS.dll:ObjCRuntime.Dlfcn.GetIntPtr(System.IntPtr, System.String)
 Microsoft.iOS.dll:ObjCRuntime.Dlfcn/Mode
 Microsoft.iOS.dll:ObjCRuntime.Dlfcn/Mode ObjCRuntime.Dlfcn/Mode::First
@@ -445,8 +443,8 @@ Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper/MapInfo
 Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper/MapInfo..ctor(ObjCRuntime.IManagedRegistrar)
 Microsoft.iOS.dll:ObjCRuntime.Runtime
 Microsoft.iOS.dll:ObjCRuntime.Runtime..cctor()
-Microsoft.iOS.dll:ObjCRuntime.Runtime.<ConstructINativeObject>g__ConstructINativeObjectViaFactoryMethod|294_0`1(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.<ConstructNSObject>g__ConstructNSObjectViaFactoryMethod|293_0`1(ObjCRuntime.NativeHandle)
+Microsoft.iOS.dll:ObjCRuntime.Runtime.<ConstructINativeObject>g__ConstructINativeObjectViaFactoryMethod|296_0`1(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.iOS.dll:ObjCRuntime.Runtime.<ConstructNSObject>g__ConstructNSObjectViaFactoryMethod|295_0`1(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.AllocGCHandle(System.Object, System.Runtime.InteropServices.GCHandleType)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.AllocGCHandle(System.Object)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.AppendAdditionalInformation(System.Text.StringBuilder, System.IntPtr, System.RuntimeMethodHandle)
@@ -679,7 +677,6 @@ Microsoft.iOS.dll:System.Boolean ObjCRuntime.Runtime::RegisterObjectsBeforeInit(
 Microsoft.iOS.dll:System.Boolean ObjCRuntime.RuntimeException::<Error>k__BackingField
 Microsoft.iOS.dll:System.Boolean ObjCRuntime.RuntimeException::Error()
 Microsoft.iOS.dll:System.Boolean UIKit.UIApplication::CheckForEventAndDelegateMismatches
-Microsoft.iOS.dll:System.Boolean UIKit.UIApplication::CheckForIllegalCrossThreadCalls
 Microsoft.iOS.dll:System.Collections.Generic.Dictionary`2<System.IntPtr,System.Boolean> ObjCRuntime.Runtime::usertype_cache
 Microsoft.iOS.dll:System.Collections.Generic.Dictionary`2<System.IntPtr,System.Runtime.InteropServices.GCHandle> ObjCRuntime.Runtime::object_map
 Microsoft.iOS.dll:System.Collections.Generic.Dictionary`2<System.RuntimeTypeHandle,System.RuntimeTypeHandle> ObjCRuntime.RegistrarHelper::wrapper_types
@@ -697,7 +694,7 @@ Microsoft.iOS.dll:System.Collections.Generic.List`1<System.Object> ObjCRuntime.R
 Microsoft.iOS.dll:System.Exception ObjCRuntime.MarshalManagedExceptionEventArgs::<Exception>k__BackingField
 Microsoft.iOS.dll:System.Exception ObjCRuntime.MarshalManagedExceptionEventArgs::Exception()
 Microsoft.iOS.dll:System.Func`2<ObjCRuntime.NativeHandle,System.String> CoreFoundation.CFArray/<>O::<0>__FromHandle
-Microsoft.iOS.dll:System.Func`2<ObjCRuntime.NativeHandle,T> CoreFoundation.CFArray/<ArrayFromHandle>O__25_0`1::<0>__DefaultConvert
+Microsoft.iOS.dll:System.Func`2<ObjCRuntime.NativeHandle,T> CoreFoundation.CFArray/<ArrayFromHandle>O__23_0`1::<0>__DefaultConvert
 Microsoft.iOS.dll:System.Int32 Foundation.NSDictionary::System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<Foundation.NSObject,Foundation.NSObject>>.Count()
 Microsoft.iOS.dll:System.Int32 Foundation.NSDictionary/<GetEnumerator>d__66::<>1__state
 Microsoft.iOS.dll:System.Int32 Foundation.NSDictionary/<GetEnumerator>d__66::<>7__wrap2
@@ -721,6 +718,8 @@ Microsoft.iOS.dll:System.Int32 ObjCRuntime.RuntimeException::<Code>k__BackingFie
 Microsoft.iOS.dll:System.Int32 ObjCRuntime.RuntimeException::Code()
 Microsoft.iOS.dll:System.Int32 ObjCRuntime.TransientString/Encoding::value__
 Microsoft.iOS.dll:System.IntPtr CoreFoundation.CFArray::_CFNullHandle()
+Microsoft.iOS.dll:System.IntPtr CoreFoundation.CFArray::_CFTypeArrayCallbacks()
+Microsoft.iOS.dll:System.IntPtr CoreFoundation.CFArray::kCFTypeArrayCallbacks_ptr
 Microsoft.iOS.dll:System.IntPtr CoreFoundation.CFRange::len
 Microsoft.iOS.dll:System.IntPtr CoreFoundation.CFRange::loc
 Microsoft.iOS.dll:System.IntPtr Foundation.NSObject::__data
@@ -899,6 +898,7 @@ Microsoft.iOS.dll:UIKit.UIApplication._Xamarin_ConstructNSObject(ObjCRuntime.Nat
 Microsoft.iOS.dll:UIKit.UIApplication..cctor()
 Microsoft.iOS.dll:UIKit.UIApplication..ctor(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:UIKit.UIApplication.Dispose(System.Boolean)
+Microsoft.iOS.dll:UIKit.UIApplication.EnsureUIThread()
 Microsoft.iOS.dll:UIKit.UIApplication.get_ClassHandle()
 Microsoft.iOS.dll:UIKit.UIApplication.InitializeApplication()
 Microsoft.iOS.dll:UIKit.UIApplication.Main(System.String[], System.Type, System.Type)

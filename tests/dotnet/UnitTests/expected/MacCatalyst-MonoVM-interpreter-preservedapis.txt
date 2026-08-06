@@ -23,11 +23,12 @@ Microsoft.MacCatalyst.dll:CoreFoundation.CFArray.ArrayFromHandleFunc`1(ObjCRunti
 Microsoft.MacCatalyst.dll:CoreFoundation.CFArray.CFArrayGetValues(System.IntPtr, CoreFoundation.CFRange, System.IntPtr)
 Microsoft.MacCatalyst.dll:CoreFoundation.CFArray.DefaultConvert`1(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:CoreFoundation.CFArray.get__CFNullHandle()
+Microsoft.MacCatalyst.dll:CoreFoundation.CFArray.get__CFTypeArrayCallbacks()
 Microsoft.MacCatalyst.dll:CoreFoundation.CFArray.GetCount(System.IntPtr)
 Microsoft.MacCatalyst.dll:CoreFoundation.CFArray.StringArrayFromHandle(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.MacCatalyst.dll:CoreFoundation.CFArray.StringArrayFromHandle(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:CoreFoundation.CFArray/<>O
-Microsoft.MacCatalyst.dll:CoreFoundation.CFArray/<ArrayFromHandle>O__25_0`1
+Microsoft.MacCatalyst.dll:CoreFoundation.CFArray/<ArrayFromHandle>O__23_0`1
 Microsoft.MacCatalyst.dll:CoreFoundation.CFObject
 Microsoft.MacCatalyst.dll:CoreFoundation.CFObject.CFRelease(System.IntPtr)
 Microsoft.MacCatalyst.dll:CoreFoundation.CFObject.CFRetain(System.IntPtr)
@@ -117,7 +118,6 @@ Microsoft.MacCatalyst.dll:Foundation.NSException.get_Name()
 Microsoft.MacCatalyst.dll:Foundation.NSException.get_Reason()
 Microsoft.MacCatalyst.dll:Foundation.NSObject
 Microsoft.MacCatalyst.dll:Foundation.NSObject..cctor()
-Microsoft.MacCatalyst.dll:Foundation.NSObject..ctor()
 Microsoft.MacCatalyst.dll:Foundation.NSObject..ctor(Foundation.NSObjectFlag)
 Microsoft.MacCatalyst.dll:Foundation.NSObject..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.MacCatalyst.dll:Foundation.NSObject..ctor(ObjCRuntime.NativeHandle)
@@ -183,13 +183,10 @@ Microsoft.MacCatalyst.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::R
 Microsoft.MacCatalyst.dll:Foundation.NSObject/Flags Foundation.NSObjectData::flags
 Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer
 Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer..cctor()
-Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer..ctor()
-Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer..ctor(System.IntPtr, ObjCRuntime.IManagedRegistrar)
 Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer.Add(Foundation.NSObject)
 Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer.Drain(Foundation.NSObject)
 Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer.ScheduleDrain()
 Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__
-Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_3053_Foundation_NSObject_NSObject_Disposer__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
 Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_3054_Foundation_NSObject_NSObject_Disposer_Drain(System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
 Microsoft.MacCatalyst.dll:Foundation.NSObject/XamarinGCHandleFlags
 Microsoft.MacCatalyst.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::HasManagedRef
@@ -363,6 +360,7 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.Dlfcn._dlopen(System.IntPtr, ObjCRuntime.D
 Microsoft.MacCatalyst.dll:ObjCRuntime.Dlfcn._dlopen(System.String, ObjCRuntime.Dlfcn/Mode)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Dlfcn.dlsym(System.IntPtr, System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Dlfcn.dlsym(System.IntPtr, System.String)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Dlfcn.GetIndirect(System.IntPtr, System.String)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Dlfcn.GetIntPtr(System.IntPtr, System.String)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Dlfcn/Mode
 Microsoft.MacCatalyst.dll:ObjCRuntime.Dlfcn/Mode ObjCRuntime.Dlfcn/Mode::First
@@ -591,8 +589,8 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.RegistrarHelper/MapInfo
 Microsoft.MacCatalyst.dll:ObjCRuntime.RegistrarHelper/MapInfo..ctor(ObjCRuntime.IManagedRegistrar)
 Microsoft.MacCatalyst.dll:ObjCRuntime.ReleaseAttribute
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime
-Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.<ConstructINativeObject>g__ConstructINativeObjectViaFactoryMethod|294_0`1(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.<ConstructNSObject>g__ConstructNSObjectViaFactoryMethod|293_0`1(ObjCRuntime.NativeHandle)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.<ConstructINativeObject>g__ConstructINativeObjectViaFactoryMethod|296_0`1(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.<ConstructNSObject>g__ConstructNSObjectViaFactoryMethod|295_0`1(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.AllocGCHandle(System.Object, System.Runtime.InteropServices.GCHandleType)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.AllocGCHandle(System.Object)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.AppendAdditionalInformation(System.Text.StringBuilder, System.IntPtr, System.RuntimeMethodHandle)
@@ -1267,7 +1265,6 @@ Microsoft.MacCatalyst.dll:System.Boolean Registrar.Registrar/ObjCType::IsModel
 Microsoft.MacCatalyst.dll:System.Boolean Registrar.Registrar/ObjCType::IsProtocol
 Microsoft.MacCatalyst.dll:System.Boolean Registrar.Registrar/ObjCType::IsWrapper
 Microsoft.MacCatalyst.dll:System.Boolean UIKit.UIApplication::CheckForEventAndDelegateMismatches
-Microsoft.MacCatalyst.dll:System.Boolean UIKit.UIApplication::CheckForIllegalCrossThreadCalls
 Microsoft.MacCatalyst.dll:System.Boolean[] Foundation.ProtocolMemberAttribute::ParameterByRef()
 Microsoft.MacCatalyst.dll:System.Byte Registrar.Registrar/ObjCField::Alignment
 Microsoft.MacCatalyst.dll:System.Char[] Registrar.Registrar/ObjCType::invalidSelectorCharacters
@@ -1304,7 +1301,7 @@ Microsoft.MacCatalyst.dll:System.Collections.Generic.List`1<System.Reflection.As
 Microsoft.MacCatalyst.dll:System.Exception ObjCRuntime.MarshalManagedExceptionEventArgs::<Exception>k__BackingField
 Microsoft.MacCatalyst.dll:System.Exception ObjCRuntime.MarshalManagedExceptionEventArgs::Exception()
 Microsoft.MacCatalyst.dll:System.Func`2<ObjCRuntime.NativeHandle,System.String> CoreFoundation.CFArray/<>O::<0>__FromHandle
-Microsoft.MacCatalyst.dll:System.Func`2<ObjCRuntime.NativeHandle,T> CoreFoundation.CFArray/<ArrayFromHandle>O__25_0`1::<0>__DefaultConvert
+Microsoft.MacCatalyst.dll:System.Func`2<ObjCRuntime.NativeHandle,T> CoreFoundation.CFArray/<ArrayFromHandle>O__23_0`1::<0>__DefaultConvert
 Microsoft.MacCatalyst.dll:System.Int32 Foundation.NSDictionary::System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<Foundation.NSObject,Foundation.NSObject>>.Count()
 Microsoft.MacCatalyst.dll:System.Int32 Foundation.NSDictionary/<GetEnumerator>d__66::<>1__state
 Microsoft.MacCatalyst.dll:System.Int32 Foundation.NSDictionary/<GetEnumerator>d__66::<>7__wrap2
@@ -1333,6 +1330,8 @@ Microsoft.MacCatalyst.dll:System.Int32 Registrar.Registrar/ObjCField::Size
 Microsoft.MacCatalyst.dll:System.Int32 Registrar.Trampoline::value__
 Microsoft.MacCatalyst.dll:System.Int64 Foundation.NSComparisonResult::value__
 Microsoft.MacCatalyst.dll:System.IntPtr CoreFoundation.CFArray::_CFNullHandle()
+Microsoft.MacCatalyst.dll:System.IntPtr CoreFoundation.CFArray::_CFTypeArrayCallbacks()
+Microsoft.MacCatalyst.dll:System.IntPtr CoreFoundation.CFArray::kCFTypeArrayCallbacks_ptr
 Microsoft.MacCatalyst.dll:System.IntPtr CoreFoundation.CFRange::len
 Microsoft.MacCatalyst.dll:System.IntPtr CoreFoundation.CFRange::loc
 Microsoft.MacCatalyst.dll:System.IntPtr Foundation.NSObject::__data
@@ -1599,6 +1598,7 @@ Microsoft.MacCatalyst.dll:UIKit.UIApplication._Xamarin_ConstructNSObject(ObjCRun
 Microsoft.MacCatalyst.dll:UIKit.UIApplication..cctor()
 Microsoft.MacCatalyst.dll:UIKit.UIApplication..ctor(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:UIKit.UIApplication.Dispose(System.Boolean)
+Microsoft.MacCatalyst.dll:UIKit.UIApplication.EnsureUIThread()
 Microsoft.MacCatalyst.dll:UIKit.UIApplication.get_ClassHandle()
 Microsoft.MacCatalyst.dll:UIKit.UIApplication.InitializeApplication()
 Microsoft.MacCatalyst.dll:UIKit.UIApplication.Main(System.String[], System.Type, System.Type)

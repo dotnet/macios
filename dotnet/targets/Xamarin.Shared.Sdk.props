@@ -44,9 +44,7 @@
 			These have to be computed here, before the registrar defaults below, because those check
 			$(UseMonoRuntime) at evaluation time.
 		-->
-		<UseMonoRuntime Condition=" '$(UseMonoRuntime)' == '' And '$(_PlatformName)' == 'macOS'">false</UseMonoRuntime>
-		<UseMonoRuntime Condition=" '$(UseMonoRuntime)' == '' And '$(_UseNativeAot)' == 'true'">false</UseMonoRuntime>
-		<UseMonoRuntime Condition=" '$(UseMonoRuntime)' == ''">true</UseMonoRuntime>
+		<UseMonoRuntime Condition=" '$(UseMonoRuntime)' == ''">false</UseMonoRuntime>
 
 		<!--
 			On .NET 11+, make the trimmable-static registrar the default for both CoreCLR and NativeAOT (it used
@@ -85,8 +83,6 @@
 			apply the same $(PrepareAssemblies) default here too, otherwise the gate wouldn't see it.
 		-->
 		<PostProcessAssemblies Condition="'$(PostProcessAssemblies)' == '' And '$(UseMonoRuntime)' != 'true' And ('$(_UseNativeAot)' == 'true' Or '$(Registrar)' == 'trimmable-static') And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '11.0'))">$(PrepareAssemblies)</PostProcessAssemblies>
-
-		<UseMonoRuntime Condition=" '$(UseMonoRuntime)' == ''">false</UseMonoRuntime>
 
 		<AfterMicrosoftNETSdkTargets>$(AfterMicrosoftNETSdkTargets);$(MSBuildThisFileDirectory)Microsoft.$(_PlatformName).Sdk.targets</AfterMicrosoftNETSdkTargets>
 

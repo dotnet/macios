@@ -358,11 +358,12 @@ namespace AudioUnit {
 		PlayThrough = 1886679669, // 'ptru'
 	}
 
+	/// <summary>Identifies an element of an audio object property.</summary>
 	[MacCatalyst (13, 1)]
 	[NoTV]
 	[NoiOS]
 	public enum AudioObjectPropertyElement : uint {
-		/// <summary>To be added.</summary>
+		/// <summary>The main element of the audio object.</summary>
 		Main = 0, // 0
 	}
 

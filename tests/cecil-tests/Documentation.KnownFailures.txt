@@ -22913,7 +22913,6 @@ T:AudioToolbox.AUVoiceIOOtherAudioDuckingLevel
 T:AudioUnit.AU3DMixerRenderingFlags
 T:AudioUnit.AudioAggregateDriftCompensation
 T:AudioUnit.AudioComponentValidationResult
-T:AudioUnit.AudioObjectPropertyElement
 T:AudioUnit.AudioObjectPropertyScope
 T:AudioUnit.AudioObjectPropertySelector
 T:AudioUnit.AudioUnitBusType

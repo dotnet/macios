@@ -1,5 +1,11 @@
-AppBundleSize: 8,037,871 bytes (7,849.5 KB = 7.7 MB)
+AppBundleSize: 8,134,016 bytes (7,943.4 KB = 7.8 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
+_Microsoft.tvOS.TypeMap.dll:
+    39,936 bytes (39.0 KB = 0.0 MB)
+_Microsoft.tvOS.TypeMaps.dll:
+    2,048 bytes (2.0 KB = 0.0 MB)
+_SizeTestApp.TypeMap.dll:
+    3,584 bytes (3.5 KB = 0.0 MB)
 Frameworks/libcoreclr.framework/Info.plist:
     798 bytes (0.8 KB = 0.0 MB)
 Frameworks/libcoreclr.framework/libcoreclr:
@@ -23,15 +29,15 @@ Frameworks/libSystem.Security.Cryptography.Native.Apple.framework/libSystem.Secu
 Info.plist:
     1,126 bytes (1.1 KB = 0.0 MB)
 Microsoft.tvOS.dll:
-    98,816 bytes (96.5 KB = 0.1 MB)
+    107,008 bytes (104.5 KB = 0.1 MB)
 PkgInfo:
     8 bytes (0.0 KB = 0.0 MB)
 runtimeconfig.bin:
-    1,481 bytes (1.4 KB = 0.0 MB)
+    1,562 bytes (1.5 KB = 0.0 MB)
 SizeTestApp:
-    128,488 bytes (125.5 KB = 0.1 MB)
+    162,088 bytes (158.3 KB = 0.2 MB)
 SizeTestApp.dll:
-    7,680 bytes (7.5 KB = 0.0 MB)
+    6,656 bytes (6.5 KB = 0.0 MB)
 System.Collections.Immutable.dll:
     14,848 bytes (14.5 KB = 0.0 MB)
 System.Diagnostics.StackTrace.dll:
@@ -41,7 +47,7 @@ System.IO.Compression.dll:
 System.IO.MemoryMappedFiles.dll:
     22,016 bytes (21.5 KB = 0.0 MB)
 System.Private.CoreLib.dll:
-    1,610,752 bytes (1,573.0 KB = 1.5 MB)
+    1,620,480 bytes (1,582.5 KB = 1.5 MB)
 System.Reflection.Metadata.dll:
     84,480 bytes (82.5 KB = 0.1 MB)
 System.Runtime.dll:

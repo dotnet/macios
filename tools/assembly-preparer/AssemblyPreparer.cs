@@ -200,6 +200,7 @@ public class AssemblyPreparer : IDisposable {
 			new LoadAssembliesStep (), // LoadNonSkippedAssembliesStep
 
 			// post-sweep
+			new RemoveAttributesStep (), // from PostSweepDispatcher.
 			new CollectFieldsStep (), // Must run before ListExportedSymbols to populate ExportedFields annotation
 			new ExtractBindingLibrariesStep (),
 			// The ListExportedSymbols must run after ExtractBindingLibrariesStep, otherwise we won't properly list exported Objective-C classes from binding libraries

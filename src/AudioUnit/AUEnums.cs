@@ -1196,8 +1196,9 @@ namespace AudioUnit {
 		Cycling = 8,
 	}
 
+	/// <summary>Specifies when an audio unit event occurs.</summary>
 	public enum AUEventSampleTime : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Schedules the event to occur immediately.</summary>
 		Immediate = unchecked((long) 0xffffffff00000000),
 	}
 

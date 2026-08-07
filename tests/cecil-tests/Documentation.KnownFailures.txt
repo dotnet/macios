@@ -22919,7 +22919,6 @@ T:AudioUnit.AudioUnitBusType
 T:AudioUnit.AudioUnitEventType
 T:AudioUnit.AudioUnitParameterOptions
 T:AudioUnit.AudioUnitSubType
-T:AudioUnit.AUEventSampleTime
 T:AudioUnit.AUImplementorStringFromValueCallback
 T:AudioUnit.AUInternalRenderBlock
 T:AudioUnit.AUMidiCIProfileChangedCallback

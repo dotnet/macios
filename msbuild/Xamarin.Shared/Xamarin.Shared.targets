@@ -3750,6 +3750,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		>
 		<PrepareAssemblies
 			InputAssemblies="@(_AssembliesToPostProcess)"
+			DynamicRegistrationSupported="$(_DynamicRegistrationSupported)"
 			MakeReproPath="$(_PostprocessAssembliesMakeReproPath)"
 			OptionsFile="$(_CustomLinkerOptionsFile)"
 			OutputDirectory="$(_PostprocessedAssembliesDirectory)"

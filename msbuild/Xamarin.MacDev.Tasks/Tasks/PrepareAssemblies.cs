@@ -30,6 +30,12 @@ namespace Xamarin.MacDev.Tasks {
 
 		public string MakeReproPath { get; set; } = "";
 
+		// The value of the $(_DynamicRegistrationSupported) MSBuild property. During post-processing this is
+		// how the value RegistrarRemovalTrackingStep computed during the preparation pass is passed back to
+		// the assembly-preparer (the native main file is generated during post-processing, and it must agree
+		// with the managed side about whether the dynamic registrar is available).
+		public string DynamicRegistrationSupported { get; set; } = "";
+
 		public string OutputDirectory { get; set; } = "";
 
 		[Required]
@@ -77,6 +83,12 @@ namespace Xamarin.MacDev.Tasks {
 				using var preparer = new AssemblyPreparer (this, infos, OptionsFile?.ItemSpec ?? "");
 				preparer.MakeReproPath = MakeReproPath;
 				preparer.PreTrimAssemblies.AddRange (PreTrimAssemblies.Select (v => v.ItemSpec));
+
+				if (!string.IsNullOrEmpty (DynamicRegistrationSupported)) {
+					var dynamicRegistrationSupported = string.Equals (DynamicRegistrationSupported, "true", StringComparison.OrdinalIgnoreCase);
+					preparer.Configuration.DynamicRegistrationSupported = dynamicRegistrationSupported;
+					preparer.Configuration.Application.Optimizations.RemoveDynamicRegistrar = !dynamicRegistrationSupported;
+				}
 				bool rv;
 				List<ProductException> exceptions;
 

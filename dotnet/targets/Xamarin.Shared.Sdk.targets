@@ -1446,6 +1446,7 @@
 		>
 		<PrepareAssemblies
 			InputAssemblies="@(_AssembliesToPostProcess)"
+			DynamicRegistrationSupported="$(_DynamicRegistrationSupported)"
 			MakeReproPath="$(_PostprocessAssembliesMakeReproPath)"
 			NativeAOTObjectFile="$(NativeObject)"
 			OptionsFile="$(_CustomLinkerOptionsFile)"

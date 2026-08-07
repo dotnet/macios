@@ -136,9 +136,9 @@ public abstract class BaseClass {
 	}
 
 	// returns true if the test assembly was modified
-	public bool AssertPrepareCode (ApplePlatform platform, bool isCoreCLR, Action<AssemblyPreparer>? configure, string code, out string outputPath, bool hotReloadCompatibleBuild = false, string testAssemblyTrimMode = "link", string? inlineDlfcnMethods = null, string? extraConfig = null)
+	public bool AssertPrepareCode (ApplePlatform platform, bool isCoreCLR, Action<AssemblyPreparer>? configure, string code, out string outputPath, bool hotReloadCompatibleBuild = false, string testAssemblyTrimMode = "link", string? inlineDlfcnMethods = null, string? extraConfig = null, string extraCsproj = "")
 	{
-		using var preparer = CreatePreparer (platform, isCoreCLR, configure, code, out var testInfo, hotReloadCompatibleBuild: hotReloadCompatibleBuild, testAssemblyTrimMode: testAssemblyTrimMode, inlineDlfcnMethods: inlineDlfcnMethods, extraConfig: extraConfig ?? "");
+		using var preparer = CreatePreparer (platform, isCoreCLR, configure, code, out var testInfo, hotReloadCompatibleBuild: hotReloadCompatibleBuild, testAssemblyTrimMode: testAssemblyTrimMode, inlineDlfcnMethods: inlineDlfcnMethods, extraConfig: extraConfig ?? "", extraCsproj: extraCsproj);
 		AssertPrepare (preparer);
 
 		outputPath = testInfo.OutputPath;

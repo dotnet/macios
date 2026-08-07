@@ -107,7 +107,7 @@ namespace LinkAll.Attributes {
 			// Initialize and a few other methods are unconditionally preserved
 			var method = klass.GetMethod ("Initialize", BindingFlags.NonPublic | BindingFlags.Static);
 			Assert.That (method, Is.Not.Null, "Initialize");
-			method = klass.GetMethod ("RegisterNSObject", BindingFlags.NonPublic | BindingFlags.Static, null, new Type [] { typeof (NSObject), typeof (IntPtr) }, null);
+			method = klass.GetMethod ("RegisterNSObject", BindingFlags.NonPublic | BindingFlags.Static, null, new Type [] { typeof (NSObject), typeof (IntPtr), typeof (bool) }, null);
 			Assert.That (method, Is.Not.Null, "RegisterNSObject");
 		}
 

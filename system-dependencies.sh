@@ -399,6 +399,87 @@ function print_non_universal_simulator_runtimes ()
 	rm -f "$TMPFILE"
 }
 
+# Checks whether a simulator runtime for the given platform is installed and
+# available (this is the same kind of check as in check_old_simulators).
+# $1: the platform (iOS, tvOS, ...)
+# $2: (optional) the version to look for. A runtime matches if its version is
+#     equal to this value or is a patch release of it (e.g. a "$2" of "26.5"
+#     matches both "26.5" and "26.5.1"), because simctl reports a patch version
+#     for the most recent runtimes. If empty, any version of the platform
+#     qualifies.
+# Returns 0 if a matching, available runtime is installed, non-zero otherwise.
+function is_simulator_runtime_installed ()
+{
+	local platform="$1"
+	local version="$2"
+	local tmpfile
+	tmpfile=$(mktemp)
+
+	xcrun simctl list runtimes --json --json-output "$tmpfile" >/dev/null 2>&1
+
+	local selector=".platform == \"$platform\" and .isAvailable == true and .isInternal == false"
+	if [[ -n "$version" ]]; then
+		selector="$selector and (.version == \"$version\" or (.version | startswith(\"$version.\")))"
+	fi
+
+	local count
+	count=$(jq "[ .runtimes[] | select($selector) ] | length" < "$tmpfile")
+	rm -f "$tmpfile"
+
+	[[ -n "$count" && "$count" -gt 0 ]]
+}
+
+# Downloads a simulator platform using 'xcodebuild -downloadPlatform', retrying a
+# few times in case of transient network failures.
+#
+# When the requested simulator runtime isn't available through the normal
+# mechanism, xcodebuild falls back to downloading it from Apple's downloadable
+# simulator index, and that transport occasionally stalls until curl fails (e.g.
+# 'curl: (56) Recv failure: Operation timed out'). In that fallback case
+# xcodebuild frequently still exits 0 while only printing the failure to stdout,
+# so instead of trusting xcodebuild's exit code (or its output) we check the
+# desired result directly: is the simulator runtime actually installed afterwards?
+# If not, we retry the download.
+#
+# $1: the platform to download (iOS, tvOS, ...)
+# $2: the expected runtime version, used *only* to verify the install afterwards
+#     (see is_simulator_runtime_installed for how it's matched). If empty, the
+#     download is accepted as long as any runtime for the platform is installed.
+# $3...: the arguments to pass to 'xcodebuild -downloadPlatform' after the
+#     platform (e.g. '-buildVersion 16.0' or '-architectureVariant universal').
+function xcodebuild_download_platform ()
+{
+	local platform="$1"
+	local version="$2"
+	shift 2
+
+	local XCODE_DEVELOPER_ROOT
+	XCODE_DEVELOPER_ROOT=$(get_xcode_developer_root)
+
+	local attempts=5
+	local attempt=1
+	while true; do
+		log "Executing (attempt $attempt of $attempts) '$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild -downloadPlatform $platform $*'"
+		# We intentionally ignore xcodebuild's exit code here (see the comment
+		# above) and check whether the runtime got installed instead.
+		set +e
+		"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform "$platform" "$@" 2>&1 | sed 's/^/        /'
+		set -e
+
+		if is_simulator_runtime_installed "$platform" "$version"; then
+			return 0
+		fi
+
+		if [[ $attempt -ge $attempts ]]; then
+			warn "The $platform ${version:+$version }simulator runtime was still not installed after $attempts download attempts."
+			return 1
+		fi
+		warn "The $platform ${version:+$version }simulator runtime was not installed (attempt $attempt of $attempts); retrying in 15 seconds..."
+		sleep 15
+		attempt=$((attempt + 1))
+	done
+}
+
 function xcodebuild_download_selected_platforms ()
 {
 	local XCODE_DEVELOPER_ROOT
@@ -423,6 +504,11 @@ function xcodebuild_download_selected_platforms ()
 		IOS_BUILD_VERSION=" -architectureVariant universal"
 		TVOS_BUILD_VERSION=" -architectureVariant universal"
 	fi
+
+	# The expected simulator runtime versions for the current Xcode, so we can
+	# verify the downloads below actually installed the runtimes we need.
+	IOS_NUGET_OS_VERSION=$(grep ^IOS_NUGET_OS_VERSION= Make.versions | sed 's/.*=//')
+	TVOS_NUGET_OS_VERSION=$(grep ^TVOS_NUGET_OS_VERSION= Make.versions | sed 's/.*=//')
 
 	local TMPFILE
 	TMPFILE=$(mktemp)
@@ -491,13 +577,16 @@ function xcodebuild_download_selected_platforms ()
 		fi
 	fi
 
-	log "Executing '$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild -downloadPlatform iOS$IOS_BUILD_VERSION' $1"
-	"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform iOS $IOS_BUILD_VERSION   2>&1 | sed 's/^/        /'
+	local RC=0
+	if ! xcodebuild_download_platform iOS "$IOS_NUGET_OS_VERSION" $IOS_BUILD_VERSION; then
+		RC=1
+	fi
 
-	log "Executing '$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild -downloadPlatform tvOS$TVOS_BUILD_VERSION' $1"
-	"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform tvOS $TVOS_BUILD_VERSION 2>&1 | sed 's/^/        /'
+	if ! xcodebuild_download_platform tvOS "$TVOS_NUGET_OS_VERSION" $TVOS_BUILD_VERSION; then
+		RC=1
+	fi
 
-	return 0
+	return $RC
 }
 
 function download_xcode_platforms ()
@@ -1022,8 +1111,11 @@ function check_old_simulators ()
 			$action "The $os $version simulator is not installed. Execute ${COLOR_MAGENTA}xcodebuild -downloadPlatform $os -buildVersion $version${COLOR_RESET} to install."
 		else
 			warn "The $os $version simulator is not installed. Now executing ${COLOR_BLUE}"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform $os -buildVersion $version${COLOR_RESET} to install..."
-			"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform "$os" -buildVersion "$version" 2>&1 | sed 's/^/        /'
-			warn "Successfully executed ${COLOR_BLUE}"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform $os -buildVersion $version${COLOR_RESET}."
+			if xcodebuild_download_platform "$os" "$version" -buildVersion "$version"; then
+				warn "Successfully executed ${COLOR_BLUE}"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform $os -buildVersion $version${COLOR_RESET}."
+			else
+				$action "Failed to download the $os $version simulator runtime after several attempts. Execute ${COLOR_MAGENTA}xcodebuild -downloadPlatform $os -buildVersion $version${COLOR_RESET} to install it manually."
+			fi
 		fi
 	done
 }

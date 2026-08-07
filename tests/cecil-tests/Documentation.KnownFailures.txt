@@ -2758,7 +2758,6 @@ F:CoreSpotlight.CSUserInteraction.Focus
 F:CoreSpotlight.CSUserInteraction.Select
 F:CoreTelephony.CTCellularPlanCapability.AndVoice
 F:CoreTelephony.CTCellularPlanCapability.Only
-F:CoreTelephony.CTCellularPlanProvisioningAddPlanResult.Cancel
 F:CoreText.CTFontManagerError.AssetNotFound
 F:CoreText.CTFontManagerError.CancelledByUser
 F:CoreText.CTFontManagerError.DuplicatedName
@@ -5812,8 +5811,6 @@ F:PdfKit.PdfAccessPermissions.DocumentChanges
 F:PdfKit.PdfAccessPermissions.FormFieldEntry
 F:PdfKit.PdfAccessPermissions.HighQualityPrinting
 F:PdfKit.PdfAccessPermissions.LowQualityPrinting
-F:PdfKit.PdfAreaOfInterest.AnyArea
-F:PdfKit.PdfMarkupType.Redact
 F:PdfKit.PdfSelectionGranularity.Character
 F:PdfKit.PdfSelectionGranularity.Line
 F:PdfKit.PdfSelectionGranularity.Word
@@ -23099,7 +23096,6 @@ T:AVFoundation.AVAudioRoutingArbiter
 T:AVFoundation.AVAudioRoutingArbitrationCategory
 T:AVFoundation.AVAudioSequencerInfoDictionary
 T:AVFoundation.AVAudioSequencerUserCallback
-T:AVFoundation.AVAudioSessionActivationOptions
 T:AVFoundation.AVAudioSessionCapability
 T:AVFoundation.AVAudioSessionInterruptionReason
 T:AVFoundation.AVAudioSessionIOType
@@ -23903,7 +23899,6 @@ T:CoreTelephony.CTCellularPlanCapability
 T:CoreTelephony.CTCellularPlanProperties
 T:CoreTelephony.CTCellularPlanProvisioning
 T:CoreTelephony.CTCellularPlanProvisioningAddPlanCompletionHandler
-T:CoreTelephony.CTCellularPlanProvisioningAddPlanResult
 T:CoreTelephony.CTCellularPlanProvisioningRequest
 T:CoreTelephony.CTCellularPlanProvisioningUpdateCellularPlanCompletionHandler
 T:CoreTelephony.CTCellularPlanStatus
@@ -24070,7 +24065,6 @@ T:Foundation.NSGrammaticalPartOfSpeech
 T:Foundation.NSGrammaticalPerson
 T:Foundation.NSGrammaticalPronounType
 T:Foundation.NSInlinePresentationIntent
-T:Foundation.NSItemProviderFileOptions
 T:Foundation.NSItemProviderRepresentationVisibility
 T:Foundation.NSItemProviderUTTypeLoadDelegate
 T:Foundation.NSKeyValueSharedObserverRegistration_NSObject
@@ -25733,7 +25727,6 @@ T:SceneKit.SCNAnimationDidStopHandler
 T:SceneKit.SCNBufferBindingHandler
 T:SceneKit.SCNCameraProjectionDirection
 T:SceneKit.SCNColorMask
-T:SceneKit.SCNErrorCode
 T:SceneKit.SCNFillMode
 T:SceneKit.SCNHitTestSearchMode
 T:SceneKit.SCNInteractionMode

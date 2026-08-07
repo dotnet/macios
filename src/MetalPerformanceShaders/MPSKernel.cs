@@ -51,22 +51,6 @@ namespace MetalPerformanceShaders {
 			return new float [3] { t [0], t [1], t [2] };
 		}
 
-		/// <summary>Gets a region that represents the default clipping rectangle.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[Field ("MPSRectNoClip", "MetalPerformanceShaders")]
-		public unsafe static MTLRegion RectNoClip {
-			get {
-				var p = Dlfcn.dlsym (Libraries.MetalPerformanceShaders.Handle, "MPSRectNoClip");
-				if (p == IntPtr.Zero)
-					return new MTLRegion ();
-				unsafe {
-					nint* ptr = (nint*) p;
-					return MTLRegion.Create3D (ptr [0], ptr [1], ptr [2], ptr [3], ptr [4], ptr [5]);
-				}
-			}
-		}
-
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]

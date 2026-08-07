@@ -44,6 +44,20 @@ partial class TestRuntime {
 		}
 	}
 
+	// When using NativeAOT on .NET 11+, ILLink isn't executed at all (ILC does all the trimming, see
+	// '_SkipILLink' in Xamarin.Shared.Sdk.targets), which means none of the custom trimmer steps that
+	// modify assemblies are applied to the app. In particular the attributes we'd otherwise remove
+	// (such as [Protocol]) are still there at runtime.
+	public static bool IsILLinkSkipped {
+		get {
+#if NATIVEAOT && NET11_0_OR_GREATER
+			return true;
+#else
+			return false;
+#endif
+		}
+	}
+
 	// Returns "" at runtime, but the linker can't constant-fold this, which prevents
 	// its dataflow analysis from resolving type names passed to Assembly.GetType.
 	[MethodImpl (MethodImplOptions.NoInlining)]

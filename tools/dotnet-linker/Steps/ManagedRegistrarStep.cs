@@ -237,7 +237,10 @@ namespace Xamarin.Linker {
 			var process = false;
 			var isNSObject = IsNSObject (type);
 
-			if (App.Registrar == RegistrarMode.TrimmableStatic && !type.IsAbstract && !type.IsInterface && App.PrepareAssemblies == false) {
+			// The factory methods must be added before trimming: either in the assembly preparer (when
+			// PrepareAssemblies=true), or inside ILLink itself (when PrepareAssemblies=false). They must not
+			// be added again when post-processing assemblies, since they're already there at that point.
+			if (App.Registrar == RegistrarMode.TrimmableStatic && !type.IsAbstract && !type.IsInterface && !App.IsPostProcessingAssemblies) {
 				if (isNSObject) {
 					var ctorRef = AppBundleRewriter.FindNSObjectConstructor (type);
 					if (ctorRef is not null) {
@@ -465,7 +468,7 @@ namespace Xamarin.Linker {
 			}
 
 			var callback = callbackType.AddMethod (name, MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.HideBySig, placeholderType);
-			callback.CustomAttributes.Add (CreateUnmanagedCallersAttribute (name));
+			callback.CustomAttributes.Add (CreateUnmanagedCallersAttribute (name, method.DeclaringType));
 			infos.Add (new TrampolineInfo (callback, method, name));
 
 			// If the target method is marked, then we must mark the trampoline as well.
@@ -475,7 +478,7 @@ namespace Xamarin.Linker {
 			if (!relocate)
 				method.CustomAttributes.Add (abr.CreateDynamicDependencyAttribute (callback.Name, callbackType));
 
-			callback.AddParameter ("pobj", abr.System_IntPtr);
+			callback.AddParameter (abr.System_IntPtr); // pobj
 
 			var isGeneric = method.DeclaringType.HasGenericParameters;
 			if (isGeneric && method.IsStatic) {
@@ -874,7 +877,7 @@ namespace Xamarin.Linker {
 				EmitConversion (method, il, method.DeclaringType, true, -1, out var nativeType, postProcessing);
 			}
 
-			callback.AddParameter ("sel", abr.System_IntPtr);
+			callback.AddParameter (abr.System_IntPtr); // sel
 
 			var managedParameterCount = 0;
 			var nativeParameterOffset = isInstanceCategory ? 1 : 2;
@@ -884,7 +887,7 @@ namespace Xamarin.Linker {
 
 			if (method.HasParameters) {
 				for (var p = parameterStart; p < managedParameterCount; p++) {
-					var nativeParameter = callback.AddParameter ($"p{p}", placeholderType);
+					var nativeParameter = callback.AddParameter (placeholderType); // p{p}
 					var nativeParameterIndex = p + nativeParameterOffset;
 					var managedParameterType = method.Parameters [p].ParameterType;
 					var baseParameter = baseMethod.Parameters [p];
@@ -906,7 +909,7 @@ namespace Xamarin.Linker {
 			if (callSuperParameter is not null)
 				callback.Parameters.Add (callSuperParameter);
 
-			callback.AddParameter ("exception_gchandle", new PointerType (abr.System_IntPtr));
+			callback.AddParameter (new PointerType (abr.System_IntPtr)); // exception_gchandle
 
 			if (relocatedCtorObjVar is not null) {
 				// The object was allocated earlier and pushed onto the stack (underneath the
@@ -1532,11 +1535,41 @@ namespace Xamarin.Linker {
 			get { return DerivedLinkContext.StaticRegistrar; }
 		}
 
-		CustomAttribute CreateUnmanagedCallersAttribute (string entryPoint)
+		CustomAttribute CreateUnmanagedCallersAttribute (string entryPoint, TypeReference? associatedSourceType = null)
 		{
 			var unmanagedCallersAttribute = new CustomAttribute (abr.UnmanagedCallersOnlyAttribute_Constructor);
+
+			// The AssociatedSourceType field tells the NativeAOT compiler (ILC) that the trampoline's
+			// native export is only needed if the associated type is kept. This only works safely when
+			// all of these are true:
+			// * We're compiling for NativeAOT (only ILC understands the field; the CoreCLR runtime's
+			//   attribute parser even rejects any UnmanagedCallersOnly named argument it doesn't know).
+			// * We're using the trimmable static registrar, whose native glue references the trampoline
+			//   symbols directly. This means ILC may drop the native export for a trampoline whose
+			//   associated type can't be constructed, while the generated native registrar code still
+			//   references it - which would result in an undefined symbol at native link time.
+			// * We're preparing assemblies (PrepareAssemblies), which is the mode that has a post-ILC
+			//   step (the _PostprocessAssembliesAfterIlc target) that regenerates the native registrar
+			//   code after ILC, routing any trampoline that didn't survive ILC through the dlsym fallback
+			//   instead of a direct native reference. Without that reconciliation step (i.e. in the
+			//   non-prepare mode) we must not let ILC drop any trampoline export, so we don't emit the
+			//   field there.
+			if (associatedSourceType is not null
+				&& App.XamarinRuntime == XamarinRuntime.NativeAOT
+				&& App.Registrar == RegistrarMode.TrimmableStatic
+				&& App.PrepareAssemblies) {
+				// Import the type into the current assembly, otherwise Cecil will serialize the Type argument
+				// without an assembly-qualified name when 'associatedSourceType' is a TypeDefinition from another
+				// assembly (because a TypeDefinition's Scope is its own module), and ILC won't be able to resolve
+				// it (the trampolines are emitted into the companion assembly, while the associated type is in the
+				// user assembly).
+				var importedSourceType = abr.CurrentAssembly.MainModule.ImportReference (associatedSourceType);
+				unmanagedCallersAttribute.Fields.Add (new CustomAttributeNamedArgument ("AssociatedSourceType", new CustomAttributeArgument (abr.System_Type, importedSourceType)));
+			}
+
 			if (App.XamarinRuntime != XamarinRuntime.CoreCLR)
 				unmanagedCallersAttribute.Fields.Add (new CustomAttributeNamedArgument ("EntryPoint", new CustomAttributeArgument (abr.System_String, entryPoint)));
+
 			return unmanagedCallersAttribute;
 		}
 
@@ -1754,8 +1787,8 @@ namespace Xamarin.Linker {
 
 			// add a native handle param + a dummy parameter that we know for a fact won't be used anywhere
 			// to make the signature of the new constructor unique
-			var handleParameter = clonedCtor.AddParameter ("nativeHandle", abr.System_IntPtr);
-			var dummyParameter = clonedCtor.AddParameter ("dummy", abr.ObjCRuntime_IManagedRegistrar);
+			var handleParameter = clonedCtor.AddParameter (abr.System_IntPtr); // nativeHandle
+			var dummyParameter = clonedCtor.AddParameter (abr.ObjCRuntime_IManagedRegistrar); // placeholder
 
 			var body = clonedCtor.CreateBody (out var il);
 

@@ -321,7 +321,13 @@ namespace Xamarin.Bundler {
 				if (!error && GetWarningLevel (log, mte.Code) == WarningLevel.Disable)
 					return false; // This is an ignored warning.
 
-				log.LogError (mte.ToString ());
+				// Report warnings as warnings, otherwise they'd end up failing the build when
+				// the log is an MSBuild task (which is the case for the assembly preparer).
+				if (error) {
+					log.LogError (mte);
+				} else {
+					log.LogWarning (mte);
+				}
 
 				ShowInner (log, e);
 

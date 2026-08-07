@@ -216,6 +216,10 @@ public class AssemblyPreparer : IDisposable {
 			new TrimmableRegistrarStep (),
 			new ManagedRegistrarLookupTablesStep (),
 
+			// Must run after the trimmer (so that we know which assemblies the trimmer removed),
+			// and before SaveAssembliesStep (so that the modification is written to disk).
+			new RemoveStaleTypeMapAssemblyTargetsStep (),
+
 			new SaveAssembliesStep (),
 
 			// PopulateApplicationAssembliesStep must run after SaveAssembliesStep so that

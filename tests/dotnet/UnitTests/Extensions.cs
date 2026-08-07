@@ -131,13 +131,13 @@ namespace Xamarin.Tests {
 				return true;
 
 			if (filterXcodeLocation) {
-				if (v.Contains ("The environment variable 'MD_APPLE_SDK_ROOT' is deprecated, and will be ignored. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use another Xcode than the system's current default version of Xcode."))
+				if (v.Contains ("The environment variable 'MD_APPLE_SDK_ROOT' is deprecated, and will be ignored. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use an Xcode other than the system's current default Xcode."))
 					return true;
-				if (v.Contains ("The environment variable 'MD_APPLE_SDK_ROOT' is deprecated, and will be ignored in .NET 11+. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use another Xcode than the system's current default version of Xcode."))
+				if (v.Contains ("The environment variable 'MD_APPLE_SDK_ROOT' is deprecated, and will be ignored in .NET 11+. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use an Xcode other than the system's current default Xcode."))
 					return true;
-				if (Regex.IsMatch (v, @"The settings file '/.*/Library/Preferences/maui/Settings\.plist' is deprecated, and will be ignored\. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use another Xcode than the system's current default version of Xcode\."))
+				if (Regex.IsMatch (v, @"The settings file '/.*/Library/Preferences/maui/Settings\.plist' is deprecated, and will be ignored\. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use an Xcode other than the system's current default Xcode\."))
 					return true;
-				if (Regex.IsMatch (v, @"The settings file '/.*/Library/Preferences/Xamarin/Settings\.plist' is deprecated, and will be ignored\. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use another Xcode than the system's current default version of Xcode\."))
+				if (Regex.IsMatch (v, @"The settings file '/.*/Library/Preferences/Xamarin/Settings\.plist' is deprecated, and will be ignored\. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use an Xcode other than the system's current default Xcode\."))
 					return true;
 			}
 

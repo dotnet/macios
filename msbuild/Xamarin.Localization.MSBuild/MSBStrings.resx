@@ -1629,19 +1629,19 @@
     </data>
 
     <data name="W7171" xml:space="preserve">
-        <value>The environment variable '{0}' is deprecated, and will be ignored in .NET 11+. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use another Xcode than the system's current default version of Xcode.</value>
+        <value>The environment variable '{0}' is deprecated, and will be ignored in .NET 11+. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use an Xcode other than the system's current default Xcode.</value>
     </data>
 
     <data name="W7172" xml:space="preserve">
-        <value>The environment variable '{0}' is deprecated, and will be ignored. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use another Xcode than the system's current default version of Xcode.</value>
+        <value>The environment variable '{0}' is deprecated, and will be ignored. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use an Xcode other than the system's current default Xcode.</value>
     </data>
 
     <data name="W7173" xml:space="preserve">
-        <value>The settings file '{0}' is deprecated, and will be ignored in .NET 11+. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use another Xcode than the system's current default version of Xcode.</value>
+        <value>The settings file '{0}' is deprecated, and will be ignored in .NET 11+. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use an Xcode other than the system's current default Xcode.</value>
     </data>
 
     <data name="W7174" xml:space="preserve">
-        <value>The settings file '{0}' is deprecated, and will be ignored. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use another Xcode than the system's current default version of Xcode.</value>
+        <value>The settings file '{0}' is deprecated, and will be ignored. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use an Xcode other than the system's current default Xcode.</value>
     </data>
 
     <data name="E7175" xml:space="preserve">

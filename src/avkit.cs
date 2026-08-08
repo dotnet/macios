@@ -1320,9 +1320,14 @@ namespace AVKit {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface AVCaptureEventSound {
+		/// <summary>Create a new <see cref="AVCaptureEventSound" /> instance for the specified <paramref name="url" />.</summary>
+		/// <param name="url">The url for a local file from within the app bundle.</param>
+		/// <param name="error">The error in case of failure.</param>
+		/// <returns>A new <see cref="AVCaptureEventSound" /> instance if successful, otherwise <paramref name="error" /> will be an error for the failure.</returns>
 		[Export ("initWithURL:error:")]
-		[Internal]
-		NativeHandle _InitWithUrl (NSUrl url, [NullAllowed] out NSError error);
+		[FactoryMethod]
+		[return: NullAllowed]
+		NativeHandle Constructor (NSUrl url, [NullAllowed] out NSError error);
 
 		[Static]
 		[Export ("cameraShutterSound")]

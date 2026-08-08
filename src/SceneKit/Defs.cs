@@ -12,11 +12,12 @@
 
 namespace SceneKit {
 
+	/// <summary>Identifies errors reported by SceneKit.</summary>
 	[MacCatalyst (13, 1)]
 	[Native] // untyped enum (SceneKitTypes.h) but described as the value of `code` for `NSError` which is an NSInteger
 	[ErrorDomain ("SCNErrorDomain")]
 	public enum SCNErrorCode : long {
-		/// <summary>To be added.</summary>
+		/// <summary>A shader program failed to compile.</summary>
 		ProgramCompilationError = 1,
 	}
 

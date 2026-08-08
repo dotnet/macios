@@ -69,18 +69,10 @@ namespace CoreVideo {
 
 #if !COREBUILD
 		/// <summary>Represents a zero duration.</summary>
-		public static CVTime ZeroTime {
-			get {
-				return Marshal.PtrToStructure<CVTime> (Dlfcn.GetIndirect (Libraries.CoreVideo.Handle, "kCVZeroTime"))!;
-			}
-		}
+		public static CVTime ZeroTime => CVTimeFields.ZeroTime;
 
-		/// <summary>Unknown or indefinite time.</summary>
-		public static CVTime IndefiniteTime {
-			get {
-				return Marshal.PtrToStructure<CVTime> (Dlfcn.GetIndirect (Libraries.CoreVideo.Handle, "kCVIndefiniteTime"))!;
-			}
-		}
+		/// <summary>Represents an unknown or indefinite time.</summary>
+		public static CVTime IndefiniteTime => CVTimeFields.IndefiniteTime;
 #endif
 
 		/// <summary>Determines whether two CVTime objects are equal.</summary>

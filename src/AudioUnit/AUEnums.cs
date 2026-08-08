@@ -358,11 +358,12 @@ namespace AudioUnit {
 		PlayThrough = 1886679669, // 'ptru'
 	}
 
+	/// <summary>Identifies an element of an audio object property.</summary>
 	[MacCatalyst (13, 1)]
 	[NoTV]
 	[NoiOS]
 	public enum AudioObjectPropertyElement : uint {
-		/// <summary>To be added.</summary>
+		/// <summary>The main element of the audio object.</summary>
 		Main = 0, // 0
 	}
 
@@ -1195,8 +1196,9 @@ namespace AudioUnit {
 		Cycling = 8,
 	}
 
+	/// <summary>Specifies sample times for scheduling audio unit events.</summary>
 	public enum AUEventSampleTime : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Schedules the event to occur immediately.</summary>
 		Immediate = unchecked((long) 0xffffffff00000000),
 	}
 

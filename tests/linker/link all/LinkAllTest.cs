@@ -508,6 +508,12 @@ namespace LinkAll {
 			if (!global::XamarinTests.ObjCRuntime.Registrar.IsTrimmableStaticRegistrar)
 				Assert.Ignore ("This test only applies to the trimmable static registrar.");
 
+			// The [ProtocolMember] attributes (which reference NSSet<T>) are only trimmed away when the dynamic
+			// registrar has been removed - it reads these attributes via reflection at runtime, so they're kept
+			// when it's present. Without trimming the attributes, NSSet<T> stays too, so there's nothing to verify.
+			if (global::ObjCRuntime.Runtime.DynamicRegistrationSupported)
+				Assert.Ignore ("This test only applies when the dynamic registrar has been removed.");
+
 			// https://github.com/dotnet/macios/issues/3523
 			// Don't use constants here, because the linker can see what we're trying to do and keeps the type we're verifying has been removed.
 			string prefix = NamespacePrefix;

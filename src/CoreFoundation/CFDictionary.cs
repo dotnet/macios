@@ -32,9 +32,12 @@
 
 namespace CoreFoundation {
 
-	class CFDictionary : NativeObject {
-		public static IntPtr KeyCallbacks;
-		public static IntPtr ValueCallbacks;
+	partial class CFDictionary : NativeObject {
+		/// <summary>The address of the Core Foundation callback table used for dictionary keys.</summary>
+		public static IntPtr KeyCallbacks = _KeyCallbacks;
+
+		/// <summary>The address of the Core Foundation callback table used for dictionary values.</summary>
+		public static IntPtr ValueCallbacks = _ValueCallbacks;
 
 		[Preserve (Conditional = true)]
 		internal CFDictionary (NativeHandle handle, bool owns)
@@ -44,13 +47,6 @@ namespace CoreFoundation {
 
 		[DllImport (Constants.CoreFoundationLibrary, EntryPoint = "CFDictionaryGetTypeID")]
 		public extern static nint GetTypeID ();
-
-		static CFDictionary ()
-		{
-			var lib = Libraries.CoreFoundation.Handle;
-			KeyCallbacks = Dlfcn.GetIndirect (lib, "kCFTypeDictionaryKeyCallBacks");
-			ValueCallbacks = Dlfcn.GetIndirect (lib, "kCFTypeDictionaryValueCallBacks");
-		}
 
 		public static CFDictionary FromObjectAndKey (INativeObject obj, INativeObject key)
 		{

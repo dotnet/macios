@@ -45,8 +45,9 @@ public class PreserveBlockCodeHandlerTests : BaseClass {
 		Assert.That ((string) attribs [0].ConstructorArguments [1].Value, Is.EqualTo ("ObjCRuntime.Trampolines.SDInnerBlock"), "First attribute's second argument");
 		Assert.That ((string) attribs [0].ConstructorArguments [2].Value, Is.EqualTo ("Test"), "First attribute's third argument");
 
-		// Invoke method: DDA(string memberSignature) - same declaring type, so simpler constructor
+		// Invoke method: DDA(string memberSignature) - same declaring type, so simpler constructor.
+		// The signature doesn't include the parameter list, because there's only one method named 'Invoke'.
 		Assert.That (attribs [1].ConstructorArguments.Count, Is.EqualTo (1), "Second attribute's argument count");
-		Assert.That ((string) attribs [1].ConstructorArguments [0].Value, Is.EqualTo ("Invoke(System.IntPtr,System.Int32)"), "Second attribute's first argument");
+		Assert.That ((string) attribs [1].ConstructorArguments [0].Value, Is.EqualTo ("Invoke"), "Second attribute's first argument");
 	}
 }

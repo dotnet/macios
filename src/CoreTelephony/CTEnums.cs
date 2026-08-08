@@ -7,11 +7,11 @@ namespace CoreTelephony {
 	// in header file this is used inside a CTError structure where the domain is a SInt32
 	/// <summary>An enumeration whose values specify an error domain.</summary>
 	public enum CTErrorDomain {
-		/// <summary>To be added.</summary>
+		/// <summary>No error occurred.</summary>
 		NoError = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The error is in the POSIX error domain.</summary>
 		Posix = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The error is in the Mach error domain.</summary>
 		Mach = 2,
 	}
 
@@ -19,23 +19,25 @@ namespace CoreTelephony {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CTCellularDataRestrictedState : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The cellular data restriction state is unknown.</summary>
 		Unknown,
-		/// <summary>To be added.</summary>
+		/// <summary>Cellular data access is restricted.</summary>
 		Restricted,
-		/// <summary>To be added.</summary>
+		/// <summary>Cellular data access is not restricted.</summary>
 		NotRestricted,
 	}
 
+	/// <summary>Enumerates the results of adding a cellular plan.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CTCellularPlanProvisioningAddPlanResult : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The result is unknown.</summary>
 		Unknown,
-		/// <summary>To be added.</summary>
+		/// <summary>The cellular plan could not be added.</summary>
 		Fail,
-		/// <summary>To be added.</summary>
+		/// <summary>The cellular plan was added successfully.</summary>
 		Success,
+		/// <summary>The operation was canceled.</summary>
 		[iOS (17, 0)]
 		Cancel,
 	}

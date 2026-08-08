@@ -1,9 +1,8 @@
 namespace UIKit {
 	public partial class UIPushBehavior {
-		/// <param name="mode">To be added.</param>
-		///         <param name="items">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Creates a push behavior with the specified mode and dynamic items.</summary>
+		/// <param name="mode">The push behavior mode (continuous or instantaneous).</param>
+		/// <param name="items">The dynamic items to apply the push behavior to.</param>
 		public UIPushBehavior (UIPushBehaviorMode mode, params IUIDynamicItem [] items) : this (items, mode) { }
 	}
 }

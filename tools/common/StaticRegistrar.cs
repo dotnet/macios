@@ -390,13 +390,21 @@ namespace Registrar {
 						if (!iface_methods.Contains (imethod))
 							iface_methods.Add (imethod);
 				}
-				if (!iface.HasMethods)
-					continue;
-
-				foreach (var imethod in iface.Methods) {
-					if (!iface_methods.Contains (imethod))
+				if (iface.HasMethods) {
+					foreach (var imethod in iface.Methods) {
+						if (!iface_methods.Contains (imethod))
+							iface_methods.Add (imethod);
+					}
+				}
+#if ASSEMBLY_PREPARER
+				// When post-processing assemblies, the protocol interface methods may have been trimmed
+				// away, and we're not in the same process as the trimmer, so we can't use the methods the
+				// trimmer stored for us. Instead look up any missing methods in the pre-trim assemblies.
+				foreach (var imethod in GetPreTrimMethods (iface)) {
+					if (!iface_methods.Any (v => v.FullName == imethod.FullName))
 						iface_methods.Add (imethod);
 				}
+#endif
 			}
 
 			// We only care about implementators declared in 'type'.
@@ -408,13 +416,21 @@ namespace Registrar {
 
 				foreach (var ifaceMethod in impl.Overrides) {
 					var ifaceMethodDef = ifaceMethod.Resolve ();
-					if (!iface_methods.Contains (ifaceMethodDef)) {
-						// The type may implement interfaces which aren't protocol interfaces, so this is OK.
-					} else {
-						iface_methods.Remove (ifaceMethodDef);
-
-						AddMethodMapping (ref rv, impl, ifaceMethodDef);
+					if (ifaceMethodDef is null || !iface_methods.Contains (ifaceMethodDef)) {
+						// 'iface_methods' may contain methods from the pre-trim assemblies, which won't be
+						// reference-equal to the resolved method (and the resolved method may not even exist
+						// anymore if it's been trimmed away), so also try matching by name.
+						ifaceMethodDef = iface_methods.FirstOrDefault (v => v.FullName == ifaceMethod.FullName);
 					}
+
+					if (ifaceMethodDef is null) {
+						// The type may implement interfaces which aren't protocol interfaces, so this is OK.
+						continue;
+					}
+
+					iface_methods.Remove (ifaceMethodDef);
+
+					AddMethodMapping (ref rv, impl, ifaceMethodDef);
 				}
 			}
 
@@ -1534,6 +1550,23 @@ namespace Registrar {
 			return result;
 		}
 
+#if ASSEMBLY_PREPARER
+		// Returns the methods the given type had before it was trimmed. Returns an empty enumerable if the
+		// pre-trim assemblies aren't available (which is the case unless we're post-processing assemblies).
+		IEnumerable<MethodDefinition> GetPreTrimMethods (TypeDefinition type)
+		{
+			if (!App.IsPostProcessingAssemblies || App.PreTrimAssemblyResolver is null)
+				return [];
+
+			var preTrimAssembly = App.PreTrimAssemblyResolver.Resolve (type.Module.Assembly.Name);
+			var preTrimType = preTrimAssembly?.MainModule.GetType (type.FullName);
+			if (preTrimType is null || !preTrimType.HasMethods)
+				return [];
+
+			return preTrimType.Methods;
+		}
+#endif
+
 		protected override IEnumerable<ProtocolMemberAttribute> GetProtocolMemberAttributes (TypeReference type)
 		{
 			var td = type.Resolve ();
@@ -2445,6 +2478,8 @@ namespace Registrar {
 				} else if (IsNSObject (td)) {
 					if (!IsPlatformType (td))
 						return "id";
+
+					CheckNamespace (td, exceptions);
 
 					if (HasProtocolAttribute (td)) {
 						return "id<" + GetExportedTypeName (td) + ">";

@@ -533,6 +533,28 @@ namespace Bug57094 {
 
 		[Test]
 		[TestCase (Profile.iOS)]
+		public void BI1128 (Profile profile)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
+			var bgen = new BGenTool ();
+			bgen.Profile = profile;
+			bgen.CreateTemporaryBinding (@"
+using Foundation;
+
+namespace BI1128Tests {
+
+	[Static]
+	interface FieldConstants {
+		[Field (""InvalidSymbolAddress"", ""__Internal"", SymbolAddress = true)]
+		int InvalidSymbolAddress { get; }
+	}
+}");
+			bgen.AssertExecuteError ("build");
+			bgen.AssertError (1128, "The [Field] member 'BI1128Tests.FieldConstants.InvalidSymbolAddress' sets SymbolAddress, but its type is 'System.Int32'; only System.IntPtr is supported.");
+		}
+
+		[Test]
+		[TestCase (Profile.iOS)]
 		public void BI1062_NoAsyncMethodRefHandlerTest (Profile profile)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());

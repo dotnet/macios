@@ -1,0 +1,3 @@
+!missing-selector! +VTLowLatencySuperResolutionScalerConfiguration::maximumDimensionForSpatialScaleFactor: not bound
+!missing-selector! +VTLowLatencySuperResolutionScalerConfiguration::maximumPixelCountForSpatialScaleFactor: not bound
+!missing-selector! +VTLowLatencySuperResolutionScalerConfiguration::supportedScaleFactors not bound

@@ -1,0 +1,3 @@
+!missing-enum! UISheetPresentationControllerPlacement not bound
+!missing-selector! UISheetPresentationController::preferredPlacement not bound
+!missing-selector! UISheetPresentationController::setPreferredPlacement: not bound

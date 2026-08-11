@@ -1,0 +1,3 @@
+!missing-selector! THClient::enableCredentialSharingModeForExtendedPANID:completion: not bound
+!missing-selector! THClient::retrieveActiveCredentialsForNearbyNetworksWithCompletion: not bound
+!unknown-selector! THClient::enableCredentialSharingModeWithExtendedPANId:completion: not found

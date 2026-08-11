@@ -1608,9 +1608,6 @@ namespace AVFoundation {
 
 	[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
 	public enum AVAssetExportSessionResumptionFailureReason {
-		[Field ("AVAssetExportSessionResumptionFailureReasonIncompatiblePreset")]
-		IncompatiblePreset,
-
 		[Field ("AVAssetExportSessionResumptionFailureReasonUnsupportedForPresetOnPlatform")]
 		UnsupportedForPresetOnPlatform,
 

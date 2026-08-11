@@ -1150,7 +1150,6 @@ F:AVFoundation.AVAssetExportSessionPreset.MvHevc1440x1440
 F:AVFoundation.AVAssetExportSessionPreset.MvHevc4320x4320
 F:AVFoundation.AVAssetExportSessionPreset.MvHevc7680x7680
 F:AVFoundation.AVAssetExportSessionPreset.MvHevc960x960
-F:AVFoundation.AVAssetExportSessionResumptionFailureReason.IncompatiblePreset
 F:AVFoundation.AVAssetExportSessionResumptionFailureReason.IncompatibleSessionSettings
 F:AVFoundation.AVAssetExportSessionResumptionFailureReason.IncompatibleTemporaryDirectoryContents
 F:AVFoundation.AVAssetExportSessionResumptionFailureReason.TemporaryDirectoryDoesNotExist
@@ -16469,11 +16468,6 @@ M:DeviceCheck.DCDevice.GenerateToken(DeviceCheck.DCDeviceGenerateTokenCompletion
 M:DeviceDiscoveryExtension.DDDevice.#ctor(System.String,DeviceDiscoveryExtension.DDDeviceCategory,UniformTypeIdentifiers.UTType,System.String)
 M:DeviceDiscoveryExtension.DDDeviceEvent.#ctor(DeviceDiscoveryExtension.DDEventType,DeviceDiscoveryExtension.DDDevice)
 M:DeviceDiscoveryExtension.DDDiscoverySession.ReportEvent(DeviceDiscoveryExtension.DDDeviceEvent)
-M:EnhancedLinkSecurity.IMEnhancedLinkSecurityManager.RequestEnhancedSecurity(Foundation.NSUrl)
-M:EnhancedLinkSecurity.IMEnhancedLinkSecurityManager.RequestEnhancedSecurity(Foundation.NSUrl[])
-M:EnhancedLinkSecurity.IMEnhancedLinkSecurityManager.ShouldUseEnhancedSecurity(Foundation.NSUrl,System.Action{System.Boolean})
-M:EnhancedLinkSecurity.IMEnhancedLinkSecurityManager.ShouldUseEnhancedSecurity(Foundation.NSUrl)
-M:EnhancedLinkSecurity.IMEnhancedLinkSecurityManager.ShouldUseEnhancedSecurityAsync(Foundation.NSUrl)
 M:EventKit.EKAlarm.FromDate(Foundation.NSDate)
 M:EventKit.EKAlarm.FromTimeInterval(System.Double)
 M:EventKit.EKCalendar.Create(EventKit.EKEntityType,EventKit.EKEventStore)
@@ -29516,8 +29510,8 @@ M:WebKit.WKHttpCookieStore.SetCookiePolicy(WebKit.WKCookiePolicy,System.Action)
 M:WebKit.WKHttpCookieStore.SetCookiePolicyAsync(WebKit.WKCookiePolicy)
 M:WebKit.WKHttpCookieStore.SetCookies(Foundation.NSHttpCookie[],System.Action)
 M:WebKit.WKHttpCookieStore.SetCookiesAsync(Foundation.NSHttpCookie[])
-M:WebKit.WKJSHandle.GetWindowProxyFrameInfo(WebKit.WKJSHandleWindowProxyFrameInfoCallback)
-M:WebKit.WKJSHandle.GetWindowProxyFrameInfoAsync
+M:WebKit.WKJSHandle.GetWindowProxyFrame(WebKit.WKJSHandleGetWindowProxyFrameCallback)
+M:WebKit.WKJSHandle.GetWindowProxyFrameAsync
 M:WebKit.WKNavigationDelegate_Extensions.DecidePolicy(WebKit.IWKNavigationDelegate,WebKit.WKWebView,WebKit.WKNavigationAction,WebKit.WKWebpagePreferences,System.Action{WebKit.WKNavigationActionPolicy,WebKit.WKWebpagePreferences})
 M:WebKit.WKNavigationDelegate_Extensions.NavigationActionDidBecomeDownload(WebKit.IWKNavigationDelegate,WebKit.WKWebView,WebKit.WKNavigationAction,WebKit.WKDownload)
 M:WebKit.WKNavigationDelegate_Extensions.NavigationResponseDidBecomeDownload(WebKit.IWKNavigationDelegate,WebKit.WKWebView,WebKit.WKNavigationResponse,WebKit.WKDownload)
@@ -39346,8 +39340,6 @@ P:DeviceDiscoveryExtension.DDDevice.WifiAwareServiceRole
 P:DeviceDiscoveryExtension.DDDevice.WifiAwareVendorName
 P:DeviceDiscoveryExtension.DDDeviceEvent.Device
 P:DeviceDiscoveryExtension.DDDeviceEvent.EventType
-P:EnhancedLinkSecurity.IMEnhancedLinkSecurityManager.HasUrlsRequiringEnhancedSecurity
-P:EnhancedLinkSecurity.IMEnhancedLinkSecurityManager.SharedManager
 P:EventKit.EKAlarm.AbsoluteDate
 P:EventKit.EKAlarm.EmailAddress
 P:EventKit.EKAlarm.Proximity
@@ -46813,7 +46805,7 @@ P:Photos.PHAssetCollectionChangeRequest.Title
 P:Photos.PHAssetCreationRequest.OriginalResourceChoice
 P:Photos.PHAssetExtendedMetadata.Caption
 P:Photos.PHAssetExtendedMetadata.Keywords
-P:Photos.PHAssetExtendedMetadata.OriginalFileName
+P:Photos.PHAssetExtendedMetadata.OriginalFilename
 P:Photos.PHAssetResource.AssetLocalIdentifier
 P:Photos.PHAssetResource.ContentType
 P:Photos.PHAssetResource.DataSize
@@ -53800,13 +53792,13 @@ P:WebKit.WKContentRuleListStore.DefaultStore
 P:WebKit.WKContentWorld.DefaultClient
 P:WebKit.WKContentWorld.Name
 P:WebKit.WKContentWorld.Page
+P:WebKit.WKContentWorldConfiguration.AllowAccessingClosedShadowRoots
 P:WebKit.WKContentWorldConfiguration.AutofillScriptingEnabled
 P:WebKit.WKContentWorldConfiguration.ElementUserInfoEnabled
 P:WebKit.WKContentWorldConfiguration.Inspectable
 P:WebKit.WKContentWorldConfiguration.JSHandleCreationEnabled
 P:WebKit.WKContentWorldConfiguration.LegacyBuiltinOverridesEnabled
-P:WebKit.WKContentWorldConfiguration.NodeSerializationEnabled
-P:WebKit.WKContentWorldConfiguration.OpenClosedShadowRootsEnabled
+P:WebKit.WKContentWorldConfiguration.NodeSnapshotCreationEnabled
 P:WebKit.WKContextMenuElementInfo.LinkUrl
 P:WebKit.WKDownload.Delegate
 P:WebKit.WKDownload.OriginalRequest
@@ -53827,8 +53819,8 @@ P:WebKit.WKFormInfo.TargetFrame
 P:WebKit.WKFrameInfo.Request
 P:WebKit.WKFrameInfo.SecurityOrigin
 P:WebKit.WKFrameInfo.WebView
-P:WebKit.WKJSHandle.Frame
-P:WebKit.WKJSHandle.World
+P:WebKit.WKJSHandle.ContentWorld
+P:WebKit.WKJSHandle.SourceFrame
 P:WebKit.WKNavigation.EffectiveContentMode
 P:WebKit.WKNavigationAction.ButtonNumber
 P:WebKit.WKNavigationAction.IsContentRuleListRedirect
@@ -53991,7 +53983,7 @@ P:WebKit.WKWebExtensionWindowConfiguration.WindowType
 P:WebKit.WKWebpagePreferences.AllowsContentJavaScript
 P:WebKit.WKWebpagePreferences.AllowsJSHandleCreationInPageWorld
 P:WebKit.WKWebpagePreferences.AlternateRequest
-P:WebKit.WKWebpagePreferences.GlobalPrivacyControlStatus
+P:WebKit.WKWebpagePreferences.GlobalPrivacyControlEnabled
 P:WebKit.WKWebpagePreferences.LockdownModeEnabled
 P:WebKit.WKWebpagePreferences.OverrideReferrer
 P:WebKit.WKWebpagePreferences.PreferredContentMode
@@ -56710,7 +56702,6 @@ T:DeviceDiscoveryExtension.DDDiscoverySession
 T:DeviceDiscoveryExtension.DDErrorCode
 T:DeviceDiscoveryExtension.DDEventType
 T:DeviceDiscoveryUI.DDDevicePickerViewController
-T:EnhancedLinkSecurity.IMEnhancedLinkSecurityManager
 T:EventKit.EKAlarmType
 T:EventKit.EKEventStoreRequestAccessCompletionHandler
 T:EventKit.EKParticipantScheduleStatus
@@ -60957,6 +60948,7 @@ T:WebKit.WKContentWorldConfiguration
 T:WebKit.WKContextMenuElementInfo
 T:WebKit.WKCookiePolicy
 T:WebKit.WKDialogResult
+T:WebKit.WKDomNodeSnapshot
 T:WebKit.WKDownload
 T:WebKit.WKDownloadDelegateDecidePlaceholderPolicyCallback
 T:WebKit.WKDownloadPlaceholderPolicy
@@ -60968,8 +60960,7 @@ T:WebKit.WKFullscreenState
 T:WebKit.WKHttpCookieStoreGetCookiesCallback
 T:WebKit.WKInactiveSchedulingPolicy
 T:WebKit.WKJSHandle
-T:WebKit.WKJSHandleWindowProxyFrameInfoCallback
-T:WebKit.WKJSSerializedNode
+T:WebKit.WKJSHandleGetWindowProxyFrameCallback
 T:WebKit.WKMediaCaptureState
 T:WebKit.WKMediaCaptureType
 T:WebKit.WKMediaPlaybackState

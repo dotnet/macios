@@ -7028,8 +7028,8 @@ namespace WebKit {
 		bool AllowsJSHandleCreationInPageWorld { get; set; }
 
 		[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
-		[Export ("globalPrivacyControlStatus")]
-		bool GlobalPrivacyControlStatus { get; set; }
+		[Export ("globalPrivacyControlEnabled")]
+		bool GlobalPrivacyControlEnabled { get; set; }
 	}
 
 	[NoMac]
@@ -7072,50 +7072,50 @@ namespace WebKit {
 	[BaseType (typeof (NSObject))]
 	interface WKContentWorldConfiguration : NSCopying, NSSecureCoding {
 
-		[Export ("openClosedShadowRootsEnabled")]
-		bool OpenClosedShadowRootsEnabled { get; set; }
+		[Export ("allowAccessingClosedShadowRoots")]
+		bool AllowAccessingClosedShadowRoots { get; set; }
 
 		[Export ("autofillScriptingEnabled")]
-		bool AutofillScriptingEnabled { get; set; }
+		bool AutofillScriptingEnabled { [Bind ("isAutofillScriptingEnabled")] get; set; }
 
 		[Export ("elementUserInfoEnabled")]
-		bool ElementUserInfoEnabled { get; set; }
+		bool ElementUserInfoEnabled { [Bind ("isElementUserInfoEnabled")] get; set; }
 
 		[Export ("legacyBuiltinOverridesEnabled")]
-		bool LegacyBuiltinOverridesEnabled { get; set; }
+		bool LegacyBuiltinOverridesEnabled { [Bind ("isLegacyBuiltinOverridesEnabled")] get; set; }
 
-		[Export ("nodeSerializationEnabled")]
-		bool NodeSerializationEnabled { get; set; }
+		[Export ("nodeSnapshotCreationEnabled")]
+		bool NodeSnapshotCreationEnabled { [Bind ("isNodeSnapshotCreationEnabled")] get; set; }
 
 		[Export ("jsHandleCreationEnabled")]
-		bool JSHandleCreationEnabled { get; [Bind ("setJSHandleCreationEnabled:")] set; }
+		bool JSHandleCreationEnabled { [Bind ("isJSHandleCreationEnabled")] get; [Bind ("setJSHandleCreationEnabled:")] set; }
 
 		[Export ("inspectable")]
 		bool Inspectable { [Bind ("isInspectable")] get; set; }
 	}
 
-	delegate void WKJSHandleWindowProxyFrameInfoCallback ([NullAllowed] WKFrameInfo frameInfo);
+	delegate void WKJSHandleGetWindowProxyFrameCallback ([NullAllowed] WKFrameInfo frameInfo);
 
 	[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface WKJSHandle : NSCopying {
 
-		[Export ("frame", ArgumentSemantic.Copy)]
-		WKFrameInfo Frame { get; }
+		[Export ("sourceFrame", ArgumentSemantic.Copy)]
+		WKFrameInfo SourceFrame { get; }
 
-		[NullAllowed, Export ("world", ArgumentSemantic.Weak)]
-		WKContentWorld World { get; }
+		[NullAllowed, Export ("contentWorld", ArgumentSemantic.Weak)]
+		WKContentWorld ContentWorld { get; }
 
 		[Async]
-		[Export ("windowProxyFrameInfo:")]
-		void GetWindowProxyFrameInfo (WKJSHandleWindowProxyFrameInfoCallback completionHandler);
+		[Export ("getWindowProxyFrameWithCompletionHandler:")]
+		void GetWindowProxyFrame (WKJSHandleGetWindowProxyFrameCallback completionHandler);
 	}
 
 	[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
-	[BaseType (typeof (NSObject))]
+	[BaseType (typeof (NSObject), Name = "WKDOMNodeSnapshot")]
 	[DisableDefaultCtor]
-	interface WKJSSerializedNode {
+	interface WKDomNodeSnapshot {
 	}
 
 	[iOS (14, 0)]

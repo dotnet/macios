@@ -1,0 +1,10 @@
+!deprecated-attribute-missing! PHAssetResource::originalFilename missing a [Deprecated] attribute
+!missing-null-allowed! 'Foundation.NSDate Photos.PHAsset::get_AddedDate()' is missing an [NullAllowed] on return type
+!missing-selector! PHAssetResource::filename not bound
+!missing-selector! PHAssetResourceUploadJobOptions::preventsExpensiveNetworkAccess not bound
+!missing-selector! PHAssetResourceUploadJobOptions::setPreventsExpensiveNetworkAccess: not bound
+!missing-selector! PHPhotoLibrary::disableUploadJobExtensionWithError: not bound
+!missing-selector! PHPhotoLibrary::enableUploadJobExtensionWithOptions:error: not bound
+!missing-selector! PHPhotoLibrary::setUploadJobExtensionOptions:error: not bound
+!missing-selector! PHPhotoLibrary::uploadJobExtensionOptions not bound
+!missing-type! PHAssetResourceUploadJobOptions not bound

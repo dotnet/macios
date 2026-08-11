@@ -2022,7 +2022,6 @@ COMMON_FRAMEWORKS =         \
 	Compression             \
 	DataDetection           \
 	DeviceCheck             \
-	EnhancedLinkSecurity    \
 	Foundation              \
 	GameKit                 \
 	LinkSecurity            \

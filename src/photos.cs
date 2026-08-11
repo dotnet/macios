@@ -2029,8 +2029,8 @@ namespace Photos {
 		[NullAllowed, Export ("caption", ArgumentSemantic.Copy)]
 		string Caption { get; }
 
-		[NullAllowed, Export ("originalFileName", ArgumentSemantic.Copy)]
-		string OriginalFileName { get; }
+		[NullAllowed, Export ("originalFilename", ArgumentSemantic.Copy)]
+		string OriginalFilename { get; }
 
 		[Export ("keywords", ArgumentSemantic.Copy)]
 		string [] Keywords { get; }

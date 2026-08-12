@@ -286,6 +286,9 @@ namespace Xamarin.Bundler {
 			}
 			set { package_managed_debug_symbols = value; }
 		}
+		public bool GenerateTrustedPlatformAssemblies;
+		public bool IsMultiRidBuild;
+		public List<string> TrustedPlatformAssemblies = new List<string> ();
 
 		public Version GetMacCatalystiOSVersion (Version macOSVersion)
 		{

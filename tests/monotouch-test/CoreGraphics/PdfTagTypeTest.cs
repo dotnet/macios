@@ -65,5 +65,15 @@ namespace MonoTouchFixtures.CoreGraphics {
 			Assert.That (CGPdfTagType.Formula.GetName (), Is.EqualTo ("/Formula"), "Formula");
 			Assert.That (CGPdfTagType.Form.GetName (), Is.EqualTo ("/Form"), "Form");
 		}
+
+#if !__TVOS__
+		[Test]
+		public void Artifact ()
+		{
+			TestRuntime.AssertXcodeVersion (27, 0);
+			Assert.That ((int) CGPdfTagType.Artifact, Is.EqualTo (900), "Value");
+			Assert.That (CGPdfTagType.Artifact.GetName (), Is.EqualTo ("/Artifact"), "Name");
+		}
+#endif
 	}
 }

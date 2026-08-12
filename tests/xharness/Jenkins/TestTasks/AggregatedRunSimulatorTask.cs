@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.DotNet.XHarness.iOS.Shared;
+using Microsoft.DotNet.XHarness.iOS.Shared.Logging;
 
 #nullable enable
 
@@ -44,8 +45,23 @@ namespace Xharness.Jenkins.TestTasks {
 			// First build everything. This is required for the run simulator
 			// task to properly configure the simulator.
 			buildTimer.Start ();
-			await Task.WhenAll (Tasks.Select ((v) => v.BuildAsync ()).Distinct ());
+			var prepareBuildTasks = Tasks.Select (PrepareBuildAsync).ToArray ();
+			var preparedBuildTasks = await Task.WhenAll (prepareBuildTasks);
+			var tasksToBuild = preparedBuildTasks.Where (v => v.Build == true).Select (v => v.Task).ToArray ();
+			if (tasksToBuild.Length > 0) {
+				using var buildLog = Logs.Create ($"parallel-build-{Xharness.Harness.Helpers.Timestamp}.txt", LogType.BuildLog.ToString ());
+				await MSBuildTask.BuildInParallelAsync (tasksToBuild.Select (v => (MSBuildTask) v.BuildTask).ToArray (), buildLog, Jenkins.MainLog, Jenkins.Harness.DryRun);
+				foreach (var task in tasksToBuild)
+					task.CompleteBuild ();
+			}
 			buildTimer.Stop ();
+
+			if (Jenkins.Harness.DryRun) {
+				foreach (var task in Tasks.Where (v => !v.Ignored && !v.Failed))
+					task.ExecutionResult = TestExecutingResult.BuildSucceeded | TestExecutingResult.Finished;
+				ExecutionResult = TestExecutingResult.Succeeded;
+				return;
+			}
 
 			var executingTasks = Tasks.Where ((v) => !v.Ignored && !v.Failed);
 			if (!executingTasks.Any ()) {
@@ -102,6 +118,18 @@ namespace Xharness.Jenkins.TestTasks {
 				ExecutionResult = TestExecutingResult.Ignored;
 			} else {
 				ExecutionResult = Tasks.Any ((v) => v.Failed) ? TestExecutingResult.Failed : TestExecutingResult.Succeeded;
+			}
+		}
+
+		static async Task<(RunSimulatorTask Task, bool? Build)> PrepareBuildAsync (RunSimulatorTask task)
+		{
+			try {
+				return (task, await task.PrepareBuildAsync ());
+			} catch (Exception e) {
+				task.BuildTask.ExecutionResult = TestExecutingResult.HarnessException | TestExecutingResult.Finished;
+				task.BuildTask.FailureMessage = $"Harness exception while preparing '{task.TestName}' for build: {e}";
+				task.CompleteBuild ();
+				return (task, false);
 			}
 		}
 	}

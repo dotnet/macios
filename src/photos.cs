@@ -1540,7 +1540,13 @@ namespace Photos {
 		[Export ("uploadJobExtensionEnabled")]
 		bool UploadJobExtensionEnabled { [Bind ("isUploadJobExtensionEnabled")] get; }
 
+#if XAMCORE_5_0
 		[NoTV, NoMacCatalyst, NoMac, iOS (26, 1)]
+#else
+		[NoTV, iOS (26, 1)]
+		[Obsoleted (PlatformName.MacOSX, 10, 13, message: "Use 'EnableUploadJobExtension' and 'DisableUploadJobExtension' instead.")]
+		[Obsoleted (PlatformName.MacCatalyst, 13, 1, message: "Use 'EnableUploadJobExtension' and 'DisableUploadJobExtension' instead.")]
+#endif
 		[Deprecated (PlatformName.iOS, 27, 0, message: "Use 'EnableUploadJobExtension' and 'DisableUploadJobExtension' instead.")]
 		[Export ("setUploadJobExtensionEnabled:error:")]
 		bool SetUploadJobExtensionEnabled (bool enable, [NullAllowed] out NSError error);

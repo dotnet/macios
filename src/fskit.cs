@@ -848,7 +848,7 @@ namespace FSKit {
 #endif
 	[Mac (15, 4)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface FSVolumeOperations : FSVolumePathConfOperations {
+	interface FSVolumeCommonOperations {
 		[Abstract]
 		[Export ("supportedVolumeCapabilities")]
 		FSVolumeSupportedCapabilities SupportedVolumeCapabilities { get; }
@@ -856,6 +856,16 @@ namespace FSKit {
 		[Abstract]
 		[Export ("volumeStatistics")]
 		FSStatFSResult VolumeStatistics { get; }
+
+		[Mac (26, 0)]
+		[Export ("enableOpenUnlinkEmulation")]
+		bool EnableOpenUnlinkEmulation { get; }
+
+		/// <summary>Gets the mount options that the file system requests from FSKit.</summary>
+		/// <remarks>FSKit reads this value after the volume replies to the <see cref="M:FSKit.IFSVolumeCommonOperations.Mount(FSKit.FSTaskOptions,FSKit.FSVolumeOperationsMountHandler)" /> call. Changing the returned value during the runtime of the volume has no effect.</remarks>
+		[Mac (26, 4)]
+		[Export ("requestedMountOptions", ArgumentSemantic.Assign)]
+		FSMountOptions RequestedMountOptions { get; }
 
 		[Abstract]
 		[Export ("mountWithOptions:replyHandler:")]
@@ -870,6 +880,17 @@ namespace FSKit {
 		void Synchronize (FSSyncFlags flags, FSVolumeOperationsSynchronizeHandler reply);
 
 		[Abstract]
+		[Export ("reclaimItem:replyHandler:")]
+		void Reclaim (FSItem item, FSVolumeOperationsReclaimHandler reply);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (15, 4)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface FSVolumeOperations : FSVolumeCommonOperations, FSVolumePathConfOperations {
+		[Abstract]
 		[Export ("getAttributes:ofItem:replyHandler:")]
 		void GetAttributes (FSItemGetAttributesRequest desiredAttributes, FSItem item, FSVolumeOperationsAttributesHandler reply);
 
@@ -880,10 +901,6 @@ namespace FSKit {
 		[Abstract]
 		[Export ("lookupItemNamed:inDirectory:replyHandler:")]
 		void LookupItem (FSFileName name, FSItem directory, FSVolumeOperationsLookupItemHandler reply);
-
-		[Abstract]
-		[Export ("reclaimItem:replyHandler:")]
-		void Reclaim (FSItem item, FSVolumeOperationsReclaimHandler reply);
 
 		[Abstract]
 		[Export ("readSymbolicLink:replyHandler:")]
@@ -920,16 +937,6 @@ namespace FSKit {
 		[Abstract]
 		[Export ("deactivateWithOptions:replyHandler:")]
 		void Deactivate (FSDeactivateOptions options, FSVolumeOperationsDeactivateHandler reply);
-
-		[Mac (26, 0)]
-		[Export ("enableOpenUnlinkEmulation")]
-		bool EnableOpenUnlinkEmulation { get; set; }
-
-		/// <summary>Gets or sets the mount options that the file system requests from FSKit.</summary>
-		/// <remarks>FSKit reads this value after the volume replies to the <see cref="M:FSKit.IFSVolumeOperations.Mount(FSKit.FSTaskOptions,FSKit.FSVolumeOperationsMountHandler)" /> call. Changing the returned value during the runtime of the volume has no effect.</remarks>
-		[Mac (26, 0)]
-		[Export ("requestedMountOptions", ArgumentSemantic.Assign)]
-		FSMountOptions RequestedMountOptions { get; set; }
 	}
 
 #if !STABLE_FSKIT
@@ -1283,11 +1290,11 @@ namespace FSKit {
 		DWait = 4,
 	}
 
-	/// <summary>Mount options to be requested from FSKit using the <see cref="IFSVolumeOperations.RequestedMountOptions" /> property.</summary>
+	/// <summary>Mount options to be requested from FSKit using the <see cref="IFSVolumeCommonOperations.RequestedMountOptions" /> property.</summary>
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (26, 0)]
+	[Mac (26, 4)]
 	[Flags]
 	[Native]
 	public enum FSMountOptions : ulong {
@@ -2080,25 +2087,7 @@ namespace FSKit {
 	[Experimental ("APL0002")]
 #endif
 	[Mac (27, 0)]
-	delegate void FSVolumeHandlerMountHandler ([NullAllowed] NSError error);
-
-#if !STABLE_FSKIT
-	[Experimental ("APL0002")]
-#endif
-	[Mac (27, 0)]
-	delegate void FSVolumeHandlerSynchronizeHandler ([NullAllowed] NSError error);
-
-#if !STABLE_FSKIT
-	[Experimental ("APL0002")]
-#endif
-	[Mac (27, 0)]
 	delegate void FSVolumeHandlerLookupItemHandler ([NullAllowed] FSLookupItemResult result, [NullAllowed] NSError error);
-
-#if !STABLE_FSKIT
-	[Experimental ("APL0002")]
-#endif
-	[Mac (27, 0)]
-	delegate void FSVolumeHandlerReclaimHandler ([NullAllowed] NSError error);
 
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
@@ -2159,40 +2148,34 @@ namespace FSKit {
 #endif
 	[Mac (27, 0)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface FSVolumeHandler : FSVolumePathConfOperations {
+	interface FSVolumeHandler : FSVolumeCommonOperations, FSVolumePathConfOperations {
 		[Abstract]
 		[Export ("supportedVolumeCapabilities")]
-		FSVolumeSupportedCapabilities SupportedVolumeCapabilities { get; }
+		new FSVolumeSupportedCapabilities SupportedVolumeCapabilities { get; }
 
 		[Abstract]
 		[Export ("volumeStatistics")]
-		FSStatFSResult VolumeStatistics { get; }
-
-		[Export ("enableOpenUnlinkEmulation")]
-		bool EnableOpenUnlinkEmulation { get; }
-
-		[Export ("requestedMountOptions", ArgumentSemantic.Assign)]
-		FSMountOptions RequestedMountOptions { get; }
+		new FSStatFSResult VolumeStatistics { get; }
 
 		[Abstract]
-		[Export ("activateWithOptions:replyHandler:")]
+		[Export ("activateVolumeWithOptions:replyHandler:")]
 		void Activate (FSTaskOptions options, FSVolumeHandlerActivateHandler reply);
 
 		[Abstract]
-		[Export ("deactivateWithOptions:replyHandler:")]
+		[Export ("deactivateVolumeWithOptions:replyHandler:")]
 		void Deactivate (FSDeactivateOptions options, FSVolumeHandlerDeactivateHandler reply);
 
 		[Abstract]
 		[Export ("mountWithOptions:replyHandler:")]
-		void Mount (FSTaskOptions options, FSVolumeHandlerMountHandler reply);
+		new void Mount (FSTaskOptions options, FSVolumeOperationsMountHandler reply);
 
 		[Abstract]
 		[Export ("unmountWithReplyHandler:")]
-		void Unmount (Action reply);
+		new void Unmount (Action reply);
 
 		[Abstract]
 		[Export ("synchronizeWithFlags:replyHandler:")]
-		void Synchronize (FSSyncFlags flags, FSVolumeHandlerSynchronizeHandler reply);
+		new void Synchronize (FSSyncFlags flags, FSVolumeOperationsSynchronizeHandler reply);
 
 		[Abstract]
 		[Export ("lookupItemNamed:inDirectory:context:replyHandler:")]
@@ -2200,7 +2183,7 @@ namespace FSKit {
 
 		[Abstract]
 		[Export ("reclaimItem:replyHandler:")]
-		void Reclaim (FSItem item, FSVolumeHandlerReclaimHandler reply);
+		new void Reclaim (FSItem item, FSVolumeOperationsReclaimHandler reply);
 
 		[Abstract]
 		[Export ("createItemNamed:type:inDirectory:attributes:context:replyHandler:")]

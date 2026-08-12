@@ -3235,10 +3235,41 @@ namespace VideoToolbox {
 		[Export ("supported")]
 		bool Supported { [Bind ("isSupported")] get; }
 
+		/// <summary>Gets the spatial scale factors supported by the low-latency super-resolution scaler.</summary>
+		[TV (27, 0), MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Static]
+		[Export ("supportedScaleFactors")]
+		[BindAs (typeof (float []))]
+		NSNumber [] SupportedScaleFactors { get; }
+
+		/// <summary>Gets the supported spatial scale factors for the specified source-frame dimensions.</summary>
+		/// <param name="frameWidth">The source-frame width.</param>
+		/// <param name="frameHeight">The source-frame height.</param>
+		/// <returns>The supported spatial scale factors, or an empty array if the dimensions are unsupported.</returns>
 		[Static]
 		[Export ("supportedScaleFactorsForFrameWidth:frameHeight:")]
+#if XAMCORE_5_0
+		[return: BindAs (typeof (float []))]
+#else
 		[return: BindAs (typeof (nint []))]
+#endif
 		NSNumber [] GetSupportedScaleFactors (nint frameWidth, nint frameHeight);
+
+		/// <summary>Gets the maximum source-frame dimension for a spatial scale factor.</summary>
+		/// <param name="spatialScaleFactor">The spatial scale factor to query.</param>
+		/// <returns>The maximum dimension in pixels, or zero if the scale factor or processor is unsupported.</returns>
+		[TV (27, 0), MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Static]
+		[Export ("maximumDimensionForSpatialScaleFactor:")]
+		nint GetMaximumDimension (float spatialScaleFactor);
+
+		/// <summary>Gets the maximum source-frame pixel count for a spatial scale factor.</summary>
+		/// <param name="spatialScaleFactor">The spatial scale factor to query.</param>
+		/// <returns>The maximum pixel count, or zero if the scale factor or processor is unsupported.</returns>
+		[TV (27, 0), MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Static]
+		[Export ("maximumPixelCountForSpatialScaleFactor:")]
+		nint GetMaximumPixelCount (float spatialScaleFactor);
 	}
 
 	[UnsupportedSimulator ("ios")]

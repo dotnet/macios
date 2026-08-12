@@ -441,6 +441,11 @@ namespace UIKit {
 		[NullAllowed, Export ("sourceView", ArgumentSemantic.Strong)]
 		UIView SourceView { get; set; }
 
+		/// <summary>Gets or sets the placement of the sheet within its presenting view.</summary>
+		[NoTV, iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("preferredPlacement", ArgumentSemantic.Assign)]
+		UISheetPresentationControllerPlacement PreferredPlacement { get; set; }
+
 		[Export ("prefersEdgeAttachedInCompactHeight")]
 		bool PrefersEdgeAttachedInCompactHeight { get; set; }
 

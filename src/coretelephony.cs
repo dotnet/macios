@@ -38,6 +38,8 @@ namespace CoreTelephony {
 		Authorized,
 		/// <summary>Cellular plan status checks are unavailable for the phone number.</summary>
 		Restricted,
+		/// <summary>The device doesn't support authorization requests for cellular plan status.</summary>
+		NotSupported,
 	}
 
 	/// <summary>Values that describe a device's quick-switch status.</summary>

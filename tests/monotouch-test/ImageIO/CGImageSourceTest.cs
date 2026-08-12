@@ -1,6 +1,7 @@
 // Copyright 2012-2013 Xamarin Inc. All rights reserved
 
 using System.Drawing;
+using System.Reflection;
 using CoreGraphics;
 using ImageIO;
 
@@ -46,6 +47,29 @@ namespace MonoTouchFixtures.ImageIO {
 			Assert.That (CanDecode (new [] { "public.png" }), Is.True, "Allowed");
 			Assert.That (CanDecode (new [] { "public.jpeg" }), Is.False, "Disallowed");
 			Assert.That (CanDecode ([]), Is.False, "Empty");
+		}
+
+		[Test]
+		public void PrioritizeQuality ()
+		{
+			TestRuntime.AssertXcodeVersion (27, 0);
+			TestRuntime.AssertSystemVersion (TestRuntime.CurrentPlatform, 27, 0);
+
+			var lib = Dlfcn.dlopen (Constants.ImageIOLibrary, 0);
+			try {
+				using var key = Dlfcn.GetStringConstant (lib, "kCGImageSourcePrioritizeQuality");
+				var toDictionary = typeof (CGImageOptions).GetMethod ("ToDictionary", BindingFlags.Instance | BindingFlags.NonPublic);
+				Assert.That (toDictionary, Is.Not.Null, "ToDictionary");
+				using var dictionary = (NSMutableDictionary) toDictionary.Invoke (new CGImageOptions { PrioritizeQuality = true }, null);
+				var value = dictionary [key] as NSNumber;
+				Assert.That (value, Is.Not.Null, "Value");
+				Assert.That (value.BoolValue, Is.True, "BoolValue");
+
+				using var defaultDictionary = (NSMutableDictionary) toDictionary.Invoke (new CGImageOptions (), null);
+				Assert.That (defaultDictionary [key], Is.Null, "Default");
+			} finally {
+				Dlfcn.dlclose (lib);
+			}
 		}
 
 		[Test]

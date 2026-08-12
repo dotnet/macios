@@ -1,2 +1,0 @@
-!missing-selector! ASAuthorizationProviderExtensionLoginConfiguration::includePlatformSSOAuthorizationScopes not bound
-!missing-selector! ASAuthorizationProviderExtensionLoginConfiguration::setIncludePlatformSSOAuthorizationScopes: not bound

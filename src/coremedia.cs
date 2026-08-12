@@ -255,6 +255,7 @@ namespace CoreMedia {
 		Right,
 	}
 
+	/// <summary>Provides keys for Core Media metadata format descriptions.</summary>
 	[Static]
 	interface CMMetadataFormatDescriptionKeys {
 		[Field ("kCMMetadataFormatDescriptionKey_Namespace")]
@@ -283,6 +284,20 @@ namespace CoreMedia {
 
 		[Field ("kCMMetadataFormatDescriptionKey_SetupData")]
 		NSString SetupData { get; }
+
+		/// <summary>Gets the key for a human-readable description of the metadata.</summary>
+		[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[Field ("kCMMetadataFormatDescriptionKey_HumanReadableString")]
+		NSString HumanReadableString { get; }
+	}
+
+	/// <summary>Provides keys for Core Media metadata format description specifications.</summary>
+	[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+	[Static]
+	interface CMMetadataFormatDescriptionMetadataSpecificationKeys {
+		/// <summary>Gets the key for a human-readable description of the metadata specification.</summary>
+		[Field ("kCMMetadataFormatDescriptionMetadataSpecificationKey_HumanReadableString")]
+		NSString HumanReadableString { get; }
 	}
 
 	[StrongDictionary ("CMMetadataFormatDescriptionKeys", Suffix = "")]
@@ -305,6 +320,10 @@ namespace CoreMedia {
 		NSDictionary StructuralDependency { get; }
 
 		NSData SetupData { get; }
+
+		/// <summary>Gets the human-readable description of the metadata.</summary>
+		[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		string HumanReadableString { get; }
 	}
 
 	[Static]

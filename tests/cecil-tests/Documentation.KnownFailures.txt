@@ -15862,6 +15862,7 @@ M:CoreImage.CIPlugIn.LoadNonExecutablePlugIn(Foundation.NSUrl)
 M:CoreImage.CIRawFilter.Create(CoreVideo.CVPixelBuffer,Foundation.NSDictionary)
 M:CoreImage.CIRawFilter.Create(Foundation.NSData,System.String)
 M:CoreImage.CIRawFilter.Create(Foundation.NSUrl)
+M:CoreImage.CIRawFilter.DownloadResourcesAsync(System.Double,Foundation.NSProgress@)
 M:CoreImage.CIRenderDestination.#ctor(System.IntPtr,System.UIntPtr,System.UIntPtr,System.UIntPtr,CoreImage.CIFormat)
 M:CoreImage.CITextImageGeneratorProtocol_Extensions.GetPadding(CoreImage.ICITextImageGeneratorProtocol)
 M:CoreImage.CITextImageGeneratorProtocol_Extensions.SetPadding(CoreImage.ICITextImageGeneratorProtocol,System.Single)
@@ -28684,7 +28685,6 @@ M:VideoToolbox.VTLowLatencyFrameInterpolationConfiguration.GetMaximumDimension(S
 M:VideoToolbox.VTLowLatencyFrameInterpolationConfiguration.GetMaximumPixelCount(System.IntPtr)
 M:VideoToolbox.VTLowLatencyFrameInterpolationParameters.#ctor(VideoToolbox.VTFrameProcessorFrame,VideoToolbox.VTFrameProcessorFrame,System.Single[],VideoToolbox.VTFrameProcessorFrame[])
 M:VideoToolbox.VTLowLatencySuperResolutionScalerConfiguration.#ctor(System.IntPtr,System.IntPtr,System.Single)
-M:VideoToolbox.VTLowLatencySuperResolutionScalerConfiguration.GetSupportedScaleFactors(System.IntPtr,System.IntPtr)
 M:VideoToolbox.VTLowLatencySuperResolutionScalerParameters.#ctor(VideoToolbox.VTFrameProcessorFrame,VideoToolbox.VTFrameProcessorFrame)
 M:VideoToolbox.VTMotionBlurConfiguration.#ctor(System.IntPtr,System.IntPtr,System.Boolean,VideoToolbox.VTMotionBlurConfigurationQualityPrioritization,VideoToolbox.VTMotionBlurConfigurationRevision)
 M:VideoToolbox.VTMotionBlurParameters.#ctor(VideoToolbox.VTFrameProcessorFrame,VideoToolbox.VTFrameProcessorFrame,VideoToolbox.VTFrameProcessorFrame,VideoToolbox.VTFrameProcessorOpticalFlow,VideoToolbox.VTFrameProcessorOpticalFlow,System.IntPtr,VideoToolbox.VTMotionBlurParametersSubmissionMode,VideoToolbox.VTFrameProcessorFrame)
@@ -56398,7 +56398,6 @@ T:CoreMedia.CMFormatDescriptionYCbCrMatrix
 T:CoreMedia.CMHevcTemporalLevelInfoSettings
 T:CoreMedia.CMMetadataBaseDataType
 T:CoreMedia.CMMetadataFormatDescription
-T:CoreMedia.CMMetadataFormatDescriptionKeys
 T:CoreMedia.CMMetadataIdentifier
 T:CoreMedia.CMMPEG2VideoProfile
 T:CoreMedia.CMPackingType

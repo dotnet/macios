@@ -98,6 +98,15 @@ namespace ImageIO {
 		///         <remarks>To be added.</remarks>
 		public bool ShouldAllowFloat { get; set; }
 
+		/// <summary>Gets or sets whether image decoding prioritizes quality over speed.</summary>
+		/// <value><see langword="true" /> to use the highest-quality available decoder; otherwise, <see langword="false" />.</value>
+		/// <remarks>This option currently affects camera RAW images and is ignored for unsupported image formats.</remarks>
+		[SupportedOSPlatform ("ios27.0")]
+		[SupportedOSPlatform ("tvos27.0")]
+		[SupportedOSPlatform ("macos27.0")]
+		[SupportedOSPlatform ("maccatalyst27.0")]
+		public bool PrioritizeQuality { get; set; }
+
 		internal virtual NSMutableDictionary ToDictionary ()
 		{
 			var dict = new NSMutableDictionary ();
@@ -109,6 +118,8 @@ namespace ImageIO {
 				using (var allowableTypes = NSArray.FromStrings (AllowableTypes))
 					dict.LowlevelSetObject (allowableTypes, kAllowableTypes);
 			}
+			if (kPrioritizeQuality != IntPtr.Zero && PrioritizeQuality)
+				dict.LowlevelSetObject (CFBoolean.TrueHandle, kPrioritizeQuality);
 #pragma warning restore CA1416
 			if (!ShouldCache)
 				dict.LowlevelSetObject (CFBoolean.FalseHandle, kShouldCache);

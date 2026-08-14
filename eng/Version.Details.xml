@@ -1,8 +1,8 @@
 <Dependencies>
   <ProductDependencies>
-    <Dependency Name="Microsoft.NET.Sdk" Version="10.0.400-preview.0.26412.112">
+    <Dependency Name="Microsoft.NET.Sdk" Version="10.0.400-servicing.26413.106">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>732e1d04befcd6bfe2a20b47f803a891ba5cbe74</Sha>
+      <Sha>ac1953eb268c2d1a3265e09dc9eab726997a6039</Sha>
     </Dependency>
     <Dependency Name="Microsoft.NET.ILLink" Version="10.0.3-servicing.26070.104">
       <Uri>https://github.com/dotnet/dotnet</Uri>
@@ -112,25 +112,25 @@
     </Dependency>
   </ProductDependencies>
   <ToolsetDependencies>
-    <Dependency Name="Microsoft.DotNet.Build.Tasks.Feed" Version="10.0.0-beta.26412.112">
+    <Dependency Name="Microsoft.DotNet.Build.Tasks.Feed" Version="10.0.0-beta.26413.106">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>732e1d04befcd6bfe2a20b47f803a891ba5cbe74</Sha>
+      <Sha>ac1953eb268c2d1a3265e09dc9eab726997a6039</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.SharedFramework.Sdk" Version="10.0.0-beta.26412.112">
+    <Dependency Name="Microsoft.DotNet.SharedFramework.Sdk" Version="10.0.0-beta.26413.106">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>732e1d04befcd6bfe2a20b47f803a891ba5cbe74</Sha>
+      <Sha>ac1953eb268c2d1a3265e09dc9eab726997a6039</Sha>
     </Dependency>
     <Dependency Name="Microsoft.TemplateEngine.Authoring.Tasks" Version="10.0.400">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>732e1d04befcd6bfe2a20b47f803a891ba5cbe74</Sha>
+      <Sha>ac1953eb268c2d1a3265e09dc9eab726997a6039</Sha>
     </Dependency>
     <Dependency Name="Microsoft.DotNet.XHarness.iOS.Shared" Version="11.0.0-prerelease.26370.1">
       <Uri>https://github.com/dotnet/xharness</Uri>
       <Sha>65e5795252474ebd04e4e872bd4152e86c558209</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="10.0.0-beta.26412.112">
+    <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="10.0.0-beta.26413.106">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>732e1d04befcd6bfe2a20b47f803a891ba5cbe74</Sha>
+      <Sha>ac1953eb268c2d1a3265e09dc9eab726997a6039</Sha>
       <SourceBuild RepoName="arcade" ManagedOnly="true" />
     </Dependency>
   </ToolsetDependencies>

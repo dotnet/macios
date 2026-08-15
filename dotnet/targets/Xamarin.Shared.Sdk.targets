@@ -123,6 +123,10 @@
 		<!-- As a last resort, the default is false for all platforms -->
 		<_BundlerDebug Condition="'$(_BundlerDebug)' == ''">false</_BundlerDebug>
 
+		<!-- Generate the trusted platform assembly list at build time for faster startup in non-debug builds. -->
+		<GenerateTrustedPlatformAssemblies Condition="'$(GenerateTrustedPlatformAssemblies)' == '' And '$(_BundlerDebug)' != 'true'">true</GenerateTrustedPlatformAssemblies>
+		<GenerateTrustedPlatformAssemblies Condition="'$(GenerateTrustedPlatformAssemblies)' == ''">false</GenerateTrustedPlatformAssemblies>
+
 		<!--
 			Hot Reload requires that we don't modify user (reloadable) assemblies. It's a debug-only
 			feature, so default $(HotReloadCompatibleBuild) to the debug state: this keeps the current
@@ -413,10 +417,14 @@
 		<Error Condition="@(_RuntimeIdentifierDistinctPlatforms->Count()) > 1" Text="Building for all the runtime identifiers '$(RuntimeIdentifiers)' at the same time isn't possible, because they represent different platform variations." />
 
 		<PropertyGroup>
+			<_IsUniversalBuild>false</_IsUniversalBuild>
+			<_IsUniversalBuild Condition="@(_RuntimeIdentifiersAsItems->Count()) > 1">true</_IsUniversalBuild>
+
 			<!-- We disable building project references (BuildProjectReferences=false), because project references aren't RID-specific, so we build them (once) before running _RunRidSpecificBuild target, so that we don't have to build them once per RID -->
 			<_RidSpecificProperties>
 				BuildProjectReferences=false;
 				_IsMultiRidBuild=true;
+				_IsUniversalBuild=$(_IsUniversalBuild);
 				RuntimeIdentifiers=;
 				_ProcessedBundleResourcesPath=$(_ProcessedBundleResourcesPath);
 				_ProcessedContentPath=$(_ProcessedContentPath);
@@ -541,6 +549,14 @@
 
 	<PropertyGroup Condition="'$(_UseNativeAot)' == 'true'">
 		<IlcCompileDependsOn>Compile;_ComputeLinkerArguments;_ComputeManagedAssemblyToLink;SetupOSSpecificProps;PrepareForILLink;_XamarinComputeIlcCompileInputs</IlcCompileDependsOn>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<_PrepareAssembliesForPostProcessingDependsOn>
+			$(_PrepareAssembliesForPostProcessingDependsOn);
+			_ComputeLinkerInputs;
+			_GenerateLinkerDependencyCache;
+		</_PrepareAssembliesForPostProcessingDependsOn>
 	</PropertyGroup>
 
 	<Target Name="SelectRegistrar"
@@ -780,6 +796,7 @@
 				DynamicRegistrationSupported=$(DynamicRegistrationSupported)
 				@(_CustomLinkFlags -> 'CustomLinkFlags=%(Identity)')
 				EnableSGenConc=$(EnableSGenConc)
+				GenerateTrustedPlatformAssemblies=$(GenerateTrustedPlatformAssemblies)
 				@(_BundlerEnvironmentVariables -> 'EnvironmentVariable=Overwrite=%(Overwrite)|%(Identity)=%(Value)')
 				@(_XamarinFrameworkAssemblies -> 'FrameworkAssembly=%(Filename)')
 				Interpreter=$(MtouchInterpreter)
@@ -792,6 +809,7 @@
 				HotReloadCompatibleBuild=$(HotReloadCompatibleBuild)
 				ItemsDirectory=$(_LinkerItemsDirectory)
 				IsAppExtension=$(IsAppExtension)
+				IsMultiRidBuild=$(_IsUniversalBuild)
 				IsSimulatorBuild=$(_SdkIsSimulator)
 				LibMonoLinkMode=$(_LibMonoLinkMode)
 				LibXamarinLinkMode=$(_LibXamarinLinkMode)
@@ -1380,7 +1398,7 @@
 	<Target
 		Name="_PostprocessAssembliesAfterIlc"
 		Condition="'$(_PostprocessAssembliesAfterIlc)' == 'true' And '$(RuntimeIdentifiers)' == ''"
-		Inputs="@(_AssembliesToPostProcess);$(NativeObject)"
+		Inputs="@(_AssembliesToPostProcess);$(_LinkerCachePath);$(NativeObject)"
 		Outputs="@(_AssembliesToPostProcess->'$(_PostprocessedAssembliesDirectory)%(Filename)%(Extension)');$(_AssemblyPostProcessorMSBuildOutputFile)"
 		DependsOnTargets="IlcCompile;ComputeFilesToPublish;_PrepareAssembliesForPostProcessing;_ComputeLinkerInputs"
 		>

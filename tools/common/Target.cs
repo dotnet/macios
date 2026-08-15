@@ -273,8 +273,32 @@ namespace Xamarin.Bundler {
 			sw.WriteLine ($"\tNULL");
 			sw.WriteLine ("};");
 
+			var trusted_platform_assembly_names = app.TrustedPlatformAssemblies
+				.Distinct (StringComparer.Ordinal)
+				// Any .exe files must be at the end, due to https://github.com/dotnet/runtime/issues/62735
+				.OrderBy (v => Path.GetExtension (v).Equals (".exe", StringComparison.OrdinalIgnoreCase))
+				.ThenBy (v => v, StringComparer.Ordinal)
+				.ToArray ();
+			if (app.GenerateTrustedPlatformAssemblies && trusted_platform_assembly_names.Length > 0) {
+				sw.WriteLine ();
+				sw.WriteLine ("static const char * const xamarin_trusted_platform_assembly_names_array[] = {");
+				foreach (var name in trusted_platform_assembly_names)
+					sw.WriteLine ("\t\"{0}\",", EscapeCString (name));
+				sw.WriteLine ("\tNULL");
+				sw.WriteLine ("};");
+			}
+
 			sw.WriteLine ("void xamarin_setup_impl ()");
 			sw.WriteLine ("{");
+
+			if (app.GenerateTrustedPlatformAssemblies && trusted_platform_assembly_names.Length > 0) {
+				sw.WriteLine ("\txamarin_trusted_platform_assembly_names = xamarin_trusted_platform_assembly_names_array;");
+				if (app.IsMultiRidBuild) {
+					sw.WriteLine ("#if defined (SUPPORTS_UNIVERSAL_BUILDS)");
+					sw.WriteLine ("\txamarin_is_multi_rid_build = true;");
+					sw.WriteLine ("#endif");
+				}
+			}
 
 			if (app.UseInterpreter) {
 				sw.WriteLine ("\tmono_icall_table_init ();");
@@ -374,6 +398,29 @@ namespace Xamarin.Bundler {
 			sw.WriteLine ("\txamarin_register_assemblies = xamarin_register_assemblies_impl;");
 			sw.WriteLine ("\txamarin_register_modules = xamarin_register_modules_impl;");
 			sw.WriteLine ("}");
+		}
+
+		static string EscapeCString (string value)
+		{
+			var sb = new StringBuilder ();
+			foreach (var b in Encoding.UTF8.GetBytes (value)) {
+				switch (b) {
+				case (byte) '\\':
+					sb.Append ("\\\\");
+					break;
+				case (byte) '"':
+					sb.Append ("\\\"");
+					break;
+				default:
+					if (b >= 0x20 && b <= 0x7e) {
+						sb.Append ((char) b);
+					} else {
+						sb.Append ('\\').Append (Convert.ToString (b, 8).PadLeft (3, '0'));
+					}
+					break;
+				}
+			}
+			return sb.ToString ();
 		}
 
 		static readonly char [] charsToReplaceAot = new [] { '.', '-', '+', '<', '>' };

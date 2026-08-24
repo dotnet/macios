@@ -7,11 +7,9 @@ using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace changelog
-{
+namespace changelog {
 
-	class Program
-	{
+	class Program {
 		static List<string> list = new ();
 		static List<string> filters = new ();
 
@@ -19,7 +17,7 @@ namespace changelog
 		// getting into other repos (pointed by dotnet/installer) can show different results
 		static int level = 2;
 
-		static async Task Main (string[] args)
+		static async Task Main (string [] args)
 		{
 			var pr = args [0];
 			for (int i = 1; i < args.Length; i++)

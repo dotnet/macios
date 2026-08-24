@@ -56,8 +56,10 @@ namespace MonoTouchFixtures.ImageIO {
 			TestRuntime.AssertSystemVersion (TestRuntime.CurrentPlatform, 27, 0);
 
 			var lib = Dlfcn.dlopen (Constants.ImageIOLibrary, 0);
+			Assert.That (lib, Is.Not.EqualTo (IntPtr.Zero), "Library");
 			try {
-				using var key = Dlfcn.GetStringConstant (lib, "kCGImageSourcePrioritizeQuality");
+				var key = Dlfcn.GetStringConstant (lib, "kCGImageSourcePrioritizeQuality");
+				Assert.That (key, Is.Not.Null, "Key");
 				var toDictionary = typeof (CGImageOptions).GetMethod ("ToDictionary", BindingFlags.Instance | BindingFlags.NonPublic);
 				Assert.That (toDictionary, Is.Not.Null, "ToDictionary");
 				using var dictionary = (NSMutableDictionary) toDictionary.Invoke (new CGImageOptions { PrioritizeQuality = true }, null);

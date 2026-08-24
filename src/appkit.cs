@@ -811,6 +811,7 @@ namespace AppKit {
 		NSMenu HelpMenu { get; set; }
 
 		[Export ("applicationIconImage", ArgumentSemantic.Retain)]
+		[NullAllowed]
 		NSImage ApplicationIconImage { get; set; }
 
 		[Export ("activationPolicy"), Protected]
@@ -6590,6 +6591,7 @@ namespace AppKit {
 
 		//Detected properties
 		[Export ("contentView", ArgumentSemantic.Retain)]
+		[NullAllowed]
 		NSView ContentView { get; set; }
 
 		[Export ("showsApplicationBadge")]

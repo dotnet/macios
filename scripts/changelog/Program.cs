@@ -37,7 +37,7 @@ namespace changelog {
 				}
 				list.Add (pr);
 				await Process (writer);
-				writer.WriteLine ("Generated using https://github.com/spouliot/dotnet-tools/tree/master/changelog");
+				writer.WriteLine ("Generated using scripts/changelog");
 			}
 		}
 
@@ -98,23 +98,22 @@ namespace changelog {
 						tl = tl.Trim ();
 						if (tl.StartsWith ("<Uri>", StringComparison.Ordinal)) {
 							uri = tl [5..^6];
+							old_sha = "";
+							new_sha = "";
 						} else if (removal && tl.StartsWith ("<Sha>", StringComparison.Ordinal)) {
 							old_sha = tl [5..^6];
 						} else if (addition && tl.StartsWith ("<Sha>", StringComparison.Ordinal)) {
 							new_sha = tl [5..^6];
-							var diff_url = $"{uri}/compare/{old_sha}..{new_sha}.diff";
 							if (!Include (uri))
 								continue;
-							// skip duplicates (if same revisions are used)
-							if (!list.Contains (diff_url)) {
-								if (string.IsNullOrEmpty (old_sha)) {
-									writer.WriteLine ($"* {uri} [{new_sha [0..7]}]({uri}/commits/{new_sha}) (new dependency)");
-								} else if (string.IsNullOrEmpty (new_sha)) {
-									writer.WriteLine ($"* {uri} [{old_sha [0..7]}]({uri}/commits/{old_sha}) (removed dependency)");
-								} else {
-									writer.WriteLine ($"* {uri} [{old_sha [0..7]}...{new_sha [0..7]}]({uri}/compare/{old_sha}...{new_sha})");
-								}
-								list.Add (diff_url);
+							if (string.IsNullOrEmpty (old_sha)) {
+								writer.WriteLine ($"* {uri} [{new_sha [0..7]}]({uri}/commits/{new_sha}) (new dependency)");
+							} else {
+								var diff_url = $"{uri}/compare/{old_sha}..{new_sha}.diff";
+								writer.WriteLine ($"* {uri} [{old_sha [0..7]}...{new_sha [0..7]}]({uri}/compare/{old_sha}...{new_sha})");
+								// skip duplicates (if same revisions are used)
+								if (!list.Contains (diff_url))
+									list.Add (diff_url);
 							}
 						}
 					}

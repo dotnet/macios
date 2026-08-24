@@ -10,7 +10,7 @@ Markdown changelog.
 ## Usage
 
 ```sh
-dotnet run --project scripts/changelog/changelog.csproj -- https://github.com/dotnet/macios/pull/11175
+dotnet run --project scripts/changelog/changelog.csproj -- https://github.com/dotnet/macios/pull/11175 /tmp/changelog.txt
 ```
 
 Additional arguments filter the dependency repositories included in the output.

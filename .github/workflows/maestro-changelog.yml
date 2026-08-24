@@ -18,6 +18,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      with:
+        persist-credentials: false
     - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
       with:
         dotnet-version: '9'
@@ -25,7 +27,7 @@ jobs:
     - name: 'Compute changelog'
       run: |
         set -exo pipefail
-        dotnet run --project scripts/changelog/changelog.csproj -- https://github.com/$GITHUB_REPOSITORY/pull/${GITHUB_REF_NAME/\/*/} > /tmp/changelog.txt 2>&1
+        dotnet run --project scripts/changelog/changelog.csproj --verbosity quiet -- https://github.com/$GITHUB_REPOSITORY/pull/${GITHUB_REF_NAME/\/*/} /tmp/changelog.txt
 
     - name: 'Add changelog'
       uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0

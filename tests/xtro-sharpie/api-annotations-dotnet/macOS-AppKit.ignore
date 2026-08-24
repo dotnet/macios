@@ -606,7 +606,6 @@
 !missing-null-allowed! 'System.Void AppKit.NSApplication::MiniaturizeAll(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Void AppKit.NSApplication::OrderFrontCharacterPalette(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Void AppKit.NSApplication::OrderFrontColorPanel(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSApplication::set_ApplicationIconImage(AppKit.NSImage)' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Void AppKit.NSApplication::set_MainMenu(AppKit.NSMenu)' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Void AppKit.NSApplication::set_ServicesMenu(AppKit.NSMenu)' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Void AppKit.NSApplication::set_ServicesProvider(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
@@ -683,7 +682,6 @@
 !missing-null-allowed! 'System.Void AppKit.NSDatePickerCell::set_MaxDate(Foundation.NSDate)' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Void AppKit.NSDatePickerCell::set_MinDate(Foundation.NSDate)' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Void AppKit.NSDatePickerCell::set_TimeZone(Foundation.NSTimeZone)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSDockTile::set_ContentView(AppKit.NSView)' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Void AppKit.NSDockTilePlugIn::SetDockTile(AppKit.NSDockTile)' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Void AppKit.NSDocument::BrowseDocumentVersions(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Void AppKit.NSDocument::LockDocument(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0

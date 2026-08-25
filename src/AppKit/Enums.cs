@@ -3251,9 +3251,9 @@ namespace AppKit {
 		Version4_1Core = 0x4100,
 	}
 
+	/// <summary>Identifies which button dismissed an alert.</summary>
 	[NoMacCatalyst]
 	[Native]
-	/// <summary>Identifies which button dismissed an alert.</summary>
 	public enum NSAlertButtonReturn : long {
 		/// <summary>The first alert button.</summary>
 		First = 1000,

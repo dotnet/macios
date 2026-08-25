@@ -132,9 +132,9 @@ namespace AppKit {
 		Later,
 	}
 
+	/// <summary>Specifies the result of an application print request.</summary>
 	[NoMacCatalyst]
 	[Native]
-	/// <summary>Specifies the result of an application print request.</summary>
 	public enum NSApplicationPrintReply : ulong {
 		/// <summary>The print request was canceled.</summary>
 		Cancelled,

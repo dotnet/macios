@@ -1,9 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.Build.Framework;
-using Microsoft.Build.Logging.StructuredLogger;
-
 #nullable enable
 
 namespace Xamarin.Tests {
@@ -75,25 +72,6 @@ namespace Xamarin.Tests {
 
 			var featureSwitch = GetRuntimeHostConfigurationOption (rv.BinLogPath, "ObjCRuntime.Runtime.DynamicRegistrationSupported");
 			Assert.That (featureSwitch, Is.Null, "No DynamicRegistrationSupported feature switch should be set when the platform assembly isn't trimmed.");
-		}
-
-		// Returns the last RuntimeHostConfigurationOption item with the given name (ItemSpec) added during the build.
-		static ITaskItem? GetRuntimeHostConfigurationOption (string binLogPath, string name)
-		{
-			ITaskItem? rv = null;
-			foreach (var args in BinLog.ReadBuildEvents (binLogPath)) {
-				if (args is not TaskParameterEventArgs tpea)
-					continue;
-				if (tpea.Kind != TaskParameterMessageKind.AddItem)
-					continue;
-				if (tpea.ItemType != "RuntimeHostConfigurationOption")
-					continue;
-				foreach (var item in tpea.Items) {
-					if (item is ITaskItem taskItem && taskItem.ItemSpec == name)
-						rv = taskItem;
-				}
-			}
-			return rv;
 		}
 	}
 }

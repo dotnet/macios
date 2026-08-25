@@ -2,6 +2,9 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
+using Microsoft.Build.Framework;
+using Microsoft.Build.Logging.StructuredLogger;
+
 using Mono.Cecil;
 
 using NUnit.Framework;
@@ -746,9 +749,27 @@ namespace Xamarin.Tests {
 				properties ["NoWarn"] = string.Join (";", nowarn);
 		}
 
-		public static bool UsesCompressedBindingResourcePackage (ApplePlatform platform, string mode = "auto")
+		// Returns the last RuntimeHostConfigurationOption item with the given name (ItemSpec) added during the build.
+		protected static ITaskItem? GetRuntimeHostConfigurationOption (string binLogPath, string name)
 		{
-			if (string.Equals (mode, "true", StringComparison.OrdinalIgnoreCase)) {
+			ITaskItem? rv = null;
+			foreach (var args in BinLog.ReadBuildEvents (binLogPath)) {
+				if (args is not TaskParameterEventArgs tpea)
+					continue;
+				if (tpea.Kind != TaskParameterMessageKind.AddItem)
+					continue;
+				if (tpea.ItemType != "RuntimeHostConfigurationOption")
+					continue;
+				foreach (var item in tpea.Items) {
+					if (item is ITaskItem taskItem && taskItem.ItemSpec == name)
+						rv = taskItem;
+				}
+			}
+			return rv;
+		}
+
+		public static bool UsesCompressedBindingResourcePackage (ApplePlatform platform, string mode = "auto")
+		{			if (string.Equals (mode, "true", StringComparison.OrdinalIgnoreCase)) {
 				return true;
 			} else if (string.Equals (mode, "false", StringComparison.OrdinalIgnoreCase)) {
 				return false;

@@ -45,7 +45,9 @@ jobs:
             issue_number: context.issue.number
           }).then ((comments) =>
           {
-            const changelogComment = comments.find(comment => comment.body.includes (".net ChangeLog for") && comment.user.login == 'github-actions[bot]')
+            const changelogComment = comments.find(comment =>
+              (comment.body.includes (".NET Changelog for") || comment.body.includes (".net ChangeLog for")) &&
+              comment.user.login == 'github-actions[bot]')
             if (changelogComment)
               commentId = changelogComment.id
           })

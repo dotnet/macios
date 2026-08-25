@@ -31,14 +31,31 @@ namespace changelog {
 				filters.Add (args [i]);
 
 			using (var writer = new StreamWriter (outputFile)) {
-				writer.WriteLine ($"# .net ChangeLog for {pr}");
-				if (pr.StartsWith ("https://github.com/", StringComparison.Ordinal)) {
-					pr = pr.Replace ("https://github.com/", "https://patch-diff.githubusercontent.com/raw/") + ".diff";
-				}
+				writer.WriteLine ($"# .NET Changelog for {pr}");
+				if (TryGetGitHubPullRequestDiffUrl (pr, out var diffUrl))
+					pr = diffUrl;
 				list.Add (pr);
 				await Process (writer);
 				writer.WriteLine ("Generated using scripts/changelog");
 			}
+		}
+
+		static bool TryGetGitHubPullRequestDiffUrl (string url, out string diffUrl)
+		{
+			diffUrl = url;
+			if (!Uri.TryCreate (url, UriKind.Absolute, out var uri))
+				return false;
+			if (uri.Host != "github.com")
+				return false;
+			if (url.EndsWith (".diff", StringComparison.Ordinal))
+				return false;
+
+			var parts = uri.AbsolutePath.Split ('/', StringSplitOptions.RemoveEmptyEntries);
+			if (parts.Length != 4 || parts [2] != "pull")
+				return false;
+
+			diffUrl = $"https://patch-diff.githubusercontent.com/raw/{string.Join ('/', parts)}.diff";
+			return true;
 		}
 
 		static async Task Process (TextWriter writer)

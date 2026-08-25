@@ -126,7 +126,7 @@ namespace changelog {
 							if (string.IsNullOrEmpty (old_sha)) {
 								writer.WriteLine ($"* {uri} [{new_sha [0..7]}]({uri}/commits/{new_sha}) (new dependency)");
 							} else {
-								var diff_url = $"{uri}/compare/{old_sha}..{new_sha}.diff";
+								var diff_url = $"{uri}/compare/{old_sha}...{new_sha}.diff";
 								writer.WriteLine ($"* {uri} [{old_sha [0..7]}...{new_sha [0..7]}]({uri}/compare/{old_sha}...{new_sha})");
 								// skip duplicates (if same revisions are used)
 								if (!list.Contains (diff_url))

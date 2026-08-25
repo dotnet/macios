@@ -281,26 +281,27 @@ namespace CoreImage {
 			return FromData (bitmapData, bytesPerRow, size, CIImage.CIFormatToInt (pixelFormat), colorSpace);
 		}
 
-		/// <summary>Creates a <see cref="CIImage" /> from an image provider with the specified dimensions, pixel format, and color space.</summary>
-		/// <param name="provider">The image data provider.</param>
-		/// <param name="width">The width of the image in pixels.</param>
-		/// <param name="height">The height of the image in pixels.</param>
-		/// <param name="pixelFormat">The pixel format of the image data.</param>
-		/// <param name="colorSpace">The color space for the resulting image.</param>
-		/// <param name="options">Options that configure the image creation.</param>
-		public static CIImage FromProvider (ICIImageProvider provider, nuint width, nuint height, CIFormat pixelFormat, CGColorSpace colorSpace, CIImageProviderOptions options)
+		/// <summary>Creates a new image that lazily obtains its data from the specified <paramref name="provider" />.</summary>
+		/// <param name="provider">The provider that supplies the image data on demand.</param>
+		/// <param name="width">The width of the image, in pixels.</param>
+		/// <param name="height">The height of the image, in pixels.</param>
+		/// <param name="pixelFormat">The pixel format of the image data supplied by <paramref name="provider" />.</param>
+		/// <param name="colorSpace">The color space of the image.</param>
+		/// <param name="options">Options that control how the image is created, or <see langword="null" /> to use the default options.</param>
+		/// <returns>A new <see cref="CoreImage.CIImage" /> backed by <paramref name="provider" />.</returns>
+		public static CIImage FromProvider (ICIImageProvider provider, nuint width, nuint height, CIFormat pixelFormat, CGColorSpace colorSpace, CIImageProviderOptions? options)
 		{
 			return FromProvider (provider, width, height, CIImage.CIFormatToInt (pixelFormat), colorSpace, options?.Dictionary);
 		}
 
-		/// <summary>Initializes a new <see cref="CIImage" /> from an image provider with the specified dimensions, pixel format, and color space.</summary>
-		/// <param name="provider">The image data provider.</param>
-		/// <param name="width">The width of the image in pixels.</param>
-		/// <param name="height">The height of the image in pixels.</param>
-		/// <param name="pixelFormat">The pixel format of the image data.</param>
-		/// <param name="colorSpace">The color space for the resulting image.</param>
-		/// <param name="options">Options that configure the image creation.</param>
-		public CIImage (ICIImageProvider provider, nuint width, nuint height, CIFormat pixelFormat, CGColorSpace colorSpace, CIImageProviderOptions options)
+		/// <summary>Creates a new image that lazily obtains its data from the specified <paramref name="provider" />.</summary>
+		/// <param name="provider">The provider that supplies the image data on demand.</param>
+		/// <param name="width">The width of the image, in pixels.</param>
+		/// <param name="height">The height of the image, in pixels.</param>
+		/// <param name="pixelFormat">The pixel format of the image data supplied by <paramref name="provider" />.</param>
+		/// <param name="colorSpace">The color space of the image.</param>
+		/// <param name="options">Options that control how the image is created, or <see langword="null" /> to use the default options.</param>
+		public CIImage (ICIImageProvider provider, nuint width, nuint height, CIFormat pixelFormat, CGColorSpace colorSpace, CIImageProviderOptions? options)
 			: this (provider, width, height, CIImage.CIFormatToInt (pixelFormat), colorSpace, options?.Dictionary)
 		{
 		}

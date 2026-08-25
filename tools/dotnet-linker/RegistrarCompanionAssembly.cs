@@ -72,7 +72,7 @@ namespace Xamarin.Linker {
 			 */
 			var ignoredAccessChecks = new TypeDefinition ("System.Runtime.CompilerServices", "IgnoresAccessChecksToAttribute", TypeAttributes.NotPublic | TypeAttributes.Sealed | TypeAttributes.BeforeFieldInit, abr.System_Attribute);
 			var ignoredAccessChecksCtor = new MethodDefinition (".ctor", MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.SpecialName | MethodAttributes.RTSpecialName, abr.System_Void);
-			ignoredAccessChecksCtor.AddParameter ("assemblyName", abr.System_String);
+			ignoredAccessChecksCtor.AddParameter (abr.System_String); // assemblyName
 			var il = ignoredAccessChecksCtor.Body.GetILProcessor ();
 			il.Append (il.Create (OpCodes.Ldarg_0));
 			il.Append (il.Create (OpCodes.Call, abr.System_Attribute__ctor));

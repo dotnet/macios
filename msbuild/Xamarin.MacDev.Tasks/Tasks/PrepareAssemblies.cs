@@ -91,6 +91,12 @@ namespace Xamarin.MacDev.Tasks {
 							survivingSymbols.Add (name);
 						}
 						preparer.Configuration.Application.SurvivingTrampolineSymbols = survivingSymbols;
+
+						// A class whose trampolines were all trimmed away by ILC must still be registered if
+						// managed code that survived ILC looks up its class handle, because the generated
+						// inlined Class.GetHandle native code references the Objective-C class.
+						var referencedClasses = new HashSet<string> (CollectPostILTrimInformation.FilterToClassSymbols (Xamarin.StaticLibrary.GetUnresolvedSymbols (NativeAOTObjectFile)));
+						preparer.Configuration.Application.ClassesReferencedByInlinedClassGetHandle = referencedClasses;
 					}
 					rv = preparer.PostProcess (out exceptions);
 				} else {

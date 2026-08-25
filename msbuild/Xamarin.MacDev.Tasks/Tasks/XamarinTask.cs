@@ -373,7 +373,7 @@ namespace Xamarin.MacDev.Tasks {
 			if (ex is ProductException pe) {
 				LogDiagnostic (pe);
 			} else if (ex is not null) {
-				Log.LogErrorFromException (ex);
+				Log.LogErrorFromException (ex, showStackTrace: true, showDetail: true, file: null);
 			}
 		}
 

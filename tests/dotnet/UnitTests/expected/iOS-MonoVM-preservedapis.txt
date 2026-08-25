@@ -10,11 +10,12 @@ Microsoft.iOS.dll:CoreFoundation.CFArray.ArrayFromHandleFunc`1(ObjCRuntime.Nativ
 Microsoft.iOS.dll:CoreFoundation.CFArray.CFArrayGetValues(System.IntPtr, CoreFoundation.CFRange, System.IntPtr)
 Microsoft.iOS.dll:CoreFoundation.CFArray.DefaultConvert`1(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:CoreFoundation.CFArray.get__CFNullHandle()
+Microsoft.iOS.dll:CoreFoundation.CFArray.get__CFTypeArrayCallbacks()
 Microsoft.iOS.dll:CoreFoundation.CFArray.GetCount(System.IntPtr)
 Microsoft.iOS.dll:CoreFoundation.CFArray.StringArrayFromHandle(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:CoreFoundation.CFArray.StringArrayFromHandle(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:CoreFoundation.CFArray/<>O
-Microsoft.iOS.dll:CoreFoundation.CFArray/<ArrayFromHandle>O__25_0`1
+Microsoft.iOS.dll:CoreFoundation.CFArray/<ArrayFromHandle>O__23_0`1
 Microsoft.iOS.dll:CoreFoundation.CFObject
 Microsoft.iOS.dll:CoreFoundation.CFObject.CFRelease(System.IntPtr)
 Microsoft.iOS.dll:CoreFoundation.CFObject.CFRetain(System.IntPtr)
@@ -275,6 +276,7 @@ Microsoft.iOS.dll:ObjCRuntime.Dlfcn._dlopen(System.IntPtr, ObjCRuntime.Dlfcn/Mod
 Microsoft.iOS.dll:ObjCRuntime.Dlfcn._dlopen(System.String, ObjCRuntime.Dlfcn/Mode)
 Microsoft.iOS.dll:ObjCRuntime.Dlfcn.dlsym(System.IntPtr, System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Dlfcn.dlsym(System.IntPtr, System.String)
+Microsoft.iOS.dll:ObjCRuntime.Dlfcn.GetIndirect(System.IntPtr, System.String)
 Microsoft.iOS.dll:ObjCRuntime.Dlfcn.GetIntPtr(System.IntPtr, System.String)
 Microsoft.iOS.dll:ObjCRuntime.Dlfcn/Mode
 Microsoft.iOS.dll:ObjCRuntime.Dlfcn/Mode ObjCRuntime.Dlfcn/Mode::First
@@ -695,7 +697,7 @@ Microsoft.iOS.dll:System.Collections.Generic.List`1<System.Object> ObjCRuntime.R
 Microsoft.iOS.dll:System.Exception ObjCRuntime.MarshalManagedExceptionEventArgs::<Exception>k__BackingField
 Microsoft.iOS.dll:System.Exception ObjCRuntime.MarshalManagedExceptionEventArgs::Exception()
 Microsoft.iOS.dll:System.Func`2<ObjCRuntime.NativeHandle,System.String> CoreFoundation.CFArray/<>O::<0>__FromHandle
-Microsoft.iOS.dll:System.Func`2<ObjCRuntime.NativeHandle,T> CoreFoundation.CFArray/<ArrayFromHandle>O__25_0`1::<0>__DefaultConvert
+Microsoft.iOS.dll:System.Func`2<ObjCRuntime.NativeHandle,T> CoreFoundation.CFArray/<ArrayFromHandle>O__23_0`1::<0>__DefaultConvert
 Microsoft.iOS.dll:System.Int32 Foundation.NSDictionary::System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<Foundation.NSObject,Foundation.NSObject>>.Count()
 Microsoft.iOS.dll:System.Int32 Foundation.NSDictionary/<GetEnumerator>d__66::<>1__state
 Microsoft.iOS.dll:System.Int32 Foundation.NSDictionary/<GetEnumerator>d__66::<>7__wrap2
@@ -719,6 +721,8 @@ Microsoft.iOS.dll:System.Int32 ObjCRuntime.RuntimeException::<Code>k__BackingFie
 Microsoft.iOS.dll:System.Int32 ObjCRuntime.RuntimeException::Code()
 Microsoft.iOS.dll:System.Int32 ObjCRuntime.TransientString/Encoding::value__
 Microsoft.iOS.dll:System.IntPtr CoreFoundation.CFArray::_CFNullHandle()
+Microsoft.iOS.dll:System.IntPtr CoreFoundation.CFArray::_CFTypeArrayCallbacks()
+Microsoft.iOS.dll:System.IntPtr CoreFoundation.CFArray::kCFTypeArrayCallbacks_ptr
 Microsoft.iOS.dll:System.IntPtr CoreFoundation.CFRange::len
 Microsoft.iOS.dll:System.IntPtr CoreFoundation.CFRange::loc
 Microsoft.iOS.dll:System.IntPtr Foundation.NSObject::__data

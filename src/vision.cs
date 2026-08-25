@@ -27,6 +27,10 @@ namespace Vision {
 	interface VNUtils {
 		[Field ("VNVisionVersionNumber")]
 		double VisionVersionNumber { get; }
+
+		/// <summary>Gets the normalized identity <see cref="CoreGraphics.CGRect" /> [0, 0, 1, 1].</summary>
+		[Field ("VNNormalizedIdentityRect")]
+		CGRect NormalizedIdentityRect { get; }
 	}
 
 	/// <summary>Enumerates errors associated with Vision requests.</summary>

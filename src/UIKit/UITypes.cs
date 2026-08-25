@@ -227,37 +227,30 @@ namespace UIKit {
 
 #if !COREBUILD
 		/// <summary>The accessory position at the top.</summary>
-		[Field ("UIPointerAccessoryPositionTop", "UIKit")]
-		public static UIPointerAccessoryPosition Top => Marshal.PtrToStructure<UIPointerAccessoryPosition> (Dlfcn.GetIndirect (Libraries.UIKit.Handle, "UIPointerAccessoryPositionTop"))!;
+		public static UIPointerAccessoryPosition Top => UIPointerAccessoryPositionFields.Top;
 
 		/// <summary>The accessory position at the top-right.</summary>
-		[Field ("UIPointerAccessoryPositionTopRight", "UIKit")]
-		public static UIPointerAccessoryPosition TopRight => Marshal.PtrToStructure<UIPointerAccessoryPosition> (Dlfcn.GetIndirect (Libraries.UIKit.Handle, "UIPointerAccessoryPositionTopRight"))!;
+		public static UIPointerAccessoryPosition TopRight => UIPointerAccessoryPositionFields.TopRight;
 
 		/// <summary>The accessory position at the right.</summary>
-		[Field ("UIPointerAccessoryPositionRight", "UIKit")]
-		public static UIPointerAccessoryPosition Right => Marshal.PtrToStructure<UIPointerAccessoryPosition> (Dlfcn.GetIndirect (Libraries.UIKit.Handle, "UIPointerAccessoryPositionRight"))!;
+		public static UIPointerAccessoryPosition Right => UIPointerAccessoryPositionFields.Right;
 
 		/// <summary>The accessory position at the bottom-right.</summary>
-		[Field ("UIPointerAccessoryPositionBottomRight", "UIKit")]
-		public static UIPointerAccessoryPosition BottomRight => Marshal.PtrToStructure<UIPointerAccessoryPosition> (Dlfcn.GetIndirect (Libraries.UIKit.Handle, "UIPointerAccessoryPositionBottomRight"))!;
+		public static UIPointerAccessoryPosition BottomRight => UIPointerAccessoryPositionFields.BottomRight;
 
 		/// <summary>The accessory position at the bottom.</summary>
-		[Field ("UIPointerAccessoryPositionBottom", "UIKit")]
-		public static UIPointerAccessoryPosition Bottom => Marshal.PtrToStructure<UIPointerAccessoryPosition> (Dlfcn.GetIndirect (Libraries.UIKit.Handle, "UIPointerAccessoryPositionBottom"))!;
+		public static UIPointerAccessoryPosition Bottom => UIPointerAccessoryPositionFields.Bottom;
 
 		/// <summary>The accessory position at the bottom-left.</summary>
-		[Field ("UIPointerAccessoryPositionBottomLeft", "UIKit")]
-		public static UIPointerAccessoryPosition BottomLeft => Marshal.PtrToStructure<UIPointerAccessoryPosition> (Dlfcn.GetIndirect (Libraries.UIKit.Handle, "UIPointerAccessoryPositionBottomLeft"))!;
+		public static UIPointerAccessoryPosition BottomLeft => UIPointerAccessoryPositionFields.BottomLeft;
 
 		/// <summary>The accessory position at the left.</summary>
-		[Field ("UIPointerAccessoryPositionLeft", "UIKit")]
-		public static UIPointerAccessoryPosition Left => Marshal.PtrToStructure<UIPointerAccessoryPosition> (Dlfcn.GetIndirect (Libraries.UIKit.Handle, "UIPointerAccessoryPositionLeft"))!;
+		public static UIPointerAccessoryPosition Left => UIPointerAccessoryPositionFields.Left;
 
 		/// <summary>The accessory position at the top-left.</summary>
-		[Field ("UIPointerAccessoryPositionTopLeft", "UIKit")]
-		public static UIPointerAccessoryPosition TopLeft => Marshal.PtrToStructure<UIPointerAccessoryPosition> (Dlfcn.GetIndirect (Libraries.UIKit.Handle, "UIPointerAccessoryPositionTopLeft"))!;
+		public static UIPointerAccessoryPosition TopLeft => UIPointerAccessoryPositionFields.TopLeft;
 #endif
+
 	}
 #endif
 

@@ -23,11 +23,12 @@ Microsoft.MacCatalyst.dll:CoreFoundation.CFArray.ArrayFromHandleFunc`1(ObjCRunti
 Microsoft.MacCatalyst.dll:CoreFoundation.CFArray.CFArrayGetValues(System.IntPtr, CoreFoundation.CFRange, System.IntPtr)
 Microsoft.MacCatalyst.dll:CoreFoundation.CFArray.DefaultConvert`1(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:CoreFoundation.CFArray.get__CFNullHandle()
+Microsoft.MacCatalyst.dll:CoreFoundation.CFArray.get__CFTypeArrayCallbacks()
 Microsoft.MacCatalyst.dll:CoreFoundation.CFArray.GetCount(System.IntPtr)
 Microsoft.MacCatalyst.dll:CoreFoundation.CFArray.StringArrayFromHandle(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.MacCatalyst.dll:CoreFoundation.CFArray.StringArrayFromHandle(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:CoreFoundation.CFArray/<>O
-Microsoft.MacCatalyst.dll:CoreFoundation.CFArray/<ArrayFromHandle>O__25_0`1
+Microsoft.MacCatalyst.dll:CoreFoundation.CFArray/<ArrayFromHandle>O__23_0`1
 Microsoft.MacCatalyst.dll:CoreFoundation.CFObject
 Microsoft.MacCatalyst.dll:CoreFoundation.CFObject.CFRelease(System.IntPtr)
 Microsoft.MacCatalyst.dll:CoreFoundation.CFObject.CFRetain(System.IntPtr)
@@ -372,6 +373,7 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.Dlfcn._dlopen(System.IntPtr, ObjCRuntime.D
 Microsoft.MacCatalyst.dll:ObjCRuntime.Dlfcn._dlopen(System.String, ObjCRuntime.Dlfcn/Mode)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Dlfcn.dlsym(System.IntPtr, System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Dlfcn.dlsym(System.IntPtr, System.String)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Dlfcn.GetIndirect(System.IntPtr, System.String)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Dlfcn.GetIntPtr(System.IntPtr, System.String)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Dlfcn/Mode
 Microsoft.MacCatalyst.dll:ObjCRuntime.Dlfcn/Mode ObjCRuntime.Dlfcn/Mode::First
@@ -1306,7 +1308,7 @@ Microsoft.MacCatalyst.dll:System.Collections.Generic.List`1<System.Reflection.As
 Microsoft.MacCatalyst.dll:System.Exception ObjCRuntime.MarshalManagedExceptionEventArgs::<Exception>k__BackingField
 Microsoft.MacCatalyst.dll:System.Exception ObjCRuntime.MarshalManagedExceptionEventArgs::Exception()
 Microsoft.MacCatalyst.dll:System.Func`2<ObjCRuntime.NativeHandle,System.String> CoreFoundation.CFArray/<>O::<0>__FromHandle
-Microsoft.MacCatalyst.dll:System.Func`2<ObjCRuntime.NativeHandle,T> CoreFoundation.CFArray/<ArrayFromHandle>O__25_0`1::<0>__DefaultConvert
+Microsoft.MacCatalyst.dll:System.Func`2<ObjCRuntime.NativeHandle,T> CoreFoundation.CFArray/<ArrayFromHandle>O__23_0`1::<0>__DefaultConvert
 Microsoft.MacCatalyst.dll:System.Int32 Foundation.NSDictionary::System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<Foundation.NSObject,Foundation.NSObject>>.Count()
 Microsoft.MacCatalyst.dll:System.Int32 Foundation.NSDictionary/<GetEnumerator>d__66::<>1__state
 Microsoft.MacCatalyst.dll:System.Int32 Foundation.NSDictionary/<GetEnumerator>d__66::<>7__wrap2
@@ -1335,6 +1337,8 @@ Microsoft.MacCatalyst.dll:System.Int32 Registrar.Registrar/ObjCField::Size
 Microsoft.MacCatalyst.dll:System.Int32 Registrar.Trampoline::value__
 Microsoft.MacCatalyst.dll:System.Int64 Foundation.NSComparisonResult::value__
 Microsoft.MacCatalyst.dll:System.IntPtr CoreFoundation.CFArray::_CFNullHandle()
+Microsoft.MacCatalyst.dll:System.IntPtr CoreFoundation.CFArray::_CFTypeArrayCallbacks()
+Microsoft.MacCatalyst.dll:System.IntPtr CoreFoundation.CFArray::kCFTypeArrayCallbacks_ptr
 Microsoft.MacCatalyst.dll:System.IntPtr CoreFoundation.CFRange::len
 Microsoft.MacCatalyst.dll:System.IntPtr CoreFoundation.CFRange::loc
 Microsoft.MacCatalyst.dll:System.IntPtr Foundation.NSObject::__data

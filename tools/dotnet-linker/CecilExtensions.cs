@@ -4,6 +4,7 @@ using System.Text;
 
 using Mono.Cecil;
 using Mono.Cecil.Cil;
+using Mono.Cecil.Rocks;
 
 using Xamarin.Bundler;
 
@@ -76,8 +77,20 @@ namespace Xamarin.Linker {
 			return body;
 		}
 
-		public static void GenerateILOffsets (this MethodBody body)
+		// Use the macro/short form of instructions whenever possible. This makes the generated IL
+		// smaller, and it also works around a bug in the CoreCLR interpreter, which reads the operand
+		// of the long form of the ldloc/stloc instructions at the wrong offset (the bug was fixed in
+		// https://github.com/dotnet/runtime/pull/131547).
+		public static void OptimizeGeneratedBody (this MethodBody body)
 		{
+			body.OptimizeMacros ();
+		}
+
+		// Call this method once a generated method body is complete.
+		public static void FinalizeGeneratedBody (this MethodBody body)
+		{
+			body.OptimizeGeneratedBody ();
+
 			// This does not compute precise offsets, it just assigns a unique number to each instruction
 			// The trimmer relies on unique offsets to identify instructions
 			int instructionOffset = 0;
@@ -164,7 +177,7 @@ namespace Xamarin.Linker {
 			il.Emit (OpCodes.Ldarg_0);
 			il.Emit (OpCodes.Call, abr.System_Object__ctor);
 			il.Emit (OpCodes.Ret);
-			body.GenerateILOffsets ();
+			body.FinalizeGeneratedBody ();
 			return defaultCtor;
 		}
 

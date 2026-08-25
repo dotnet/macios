@@ -40,12 +40,13 @@ namespace AppKit {
 
 	[NoMacCatalyst]
 	[Native]
+	/// <summary>Specifies options for activating an application.</summary>
 	public enum NSApplicationActivationOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Activates the application using the default behavior.</summary>
 		Default = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Brings all the application's windows forward.</summary>
 		ActivateAllWindows = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Activates the application regardless of which application is currently active.</summary>
 		ActivateIgnoringOtherWindows = 2,
 	}
 

@@ -22376,7 +22376,6 @@ T:AppKit.NSAnimationProgress
 T:AppKit.NSApplication_NSServicesMenu
 T:AppKit.NSApplication_NSStandardAboutPanel
 T:AppKit.NSApplication_NSTouchBarCustomization
-T:AppKit.NSApplicationActivationOptions
 T:AppKit.NSApplicationActivationPolicy
 T:AppKit.NSApplicationContinueUserActivity
 T:AppKit.NSApplicationDelegateReply

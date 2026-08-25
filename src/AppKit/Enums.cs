@@ -52,12 +52,13 @@ namespace AppKit {
 
 	[NoMacCatalyst]
 	[Native]
+	/// <summary>Specifies how an application participates in the user interface.</summary>
 	public enum NSApplicationActivationPolicy : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The application appears in the Dock and can have a menu bar.</summary>
 		Regular,
-		/// <summary>To be added.</summary>
+		/// <summary>The application does not appear in the Dock, but can present a user interface.</summary>
 		Accessory,
-		/// <summary>To be added.</summary>
+		/// <summary>The application does not appear in the Dock and cannot create windows or be activated.</summary>
 		Prohibited,
 	}
 

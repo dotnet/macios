@@ -1498,9 +1498,9 @@ namespace AppKit {
 		Linear,
 	};
 
+	/// <summary>Specifies how an animation runs relative to the application.</summary>
 	[NoMacCatalyst]
 	[Native]
-	/// <summary>Specifies how an animation runs relative to the application.</summary>
 	public enum NSAnimationBlockingMode : ulong {
 		/// <summary>Runs the animation synchronously and blocks user interaction until it completes.</summary>
 		Blocking,

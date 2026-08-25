@@ -1,9 +1,9 @@
-AppBundleSize: 318,780,775 bytes (311,309.4 KB = 304.0 MB)
+AppBundleSize: 318,337,530 bytes (310,876.5 KB = 303.6 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 Contents/Info.plist:
-    756 bytes (0.7 KB = 0.0 MB)
+    759 bytes (0.7 KB = 0.0 MB)
 Contents/MacOS/SizeTestApp:
-    7,992,856 bytes (7,805.5 KB = 7.6 MB)
+    7,993,000 bytes (7,805.7 KB = 7.6 MB)
 Contents/MonoBundle/.xamarin/osx-arm64/Microsoft.CSharp.dll:
     872,960 bytes (852.5 KB = 0.8 MB)
 Contents/MonoBundle/.xamarin/osx-arm64/Microsoft.Extensions.Caching.Abstractions.dll:
@@ -25,13 +25,13 @@ Contents/MonoBundle/.xamarin/osx-arm64/Microsoft.Extensions.Options.dll:
 Contents/MonoBundle/.xamarin/osx-arm64/Microsoft.Extensions.Primitives.dll:
     80,384 bytes (78.5 KB = 0.1 MB)
 Contents/MonoBundle/.xamarin/osx-arm64/Microsoft.macOS.dll:
-    77,186,048 bytes (75,377.0 KB = 73.6 MB)
+    76,963,840 bytes (75,160.0 KB = 73.4 MB)
 Contents/MonoBundle/.xamarin/osx-arm64/Microsoft.VisualBasic.Core.dll:
     1,327,104 bytes (1,296.0 KB = 1.3 MB)
 Contents/MonoBundle/.xamarin/osx-arm64/Microsoft.Win32.Registry.dll:
     23,552 bytes (23.0 KB = 0.0 MB)
 Contents/MonoBundle/.xamarin/osx-arm64/SizeTestApp.dll:
-    10,240 bytes (10.0 KB = 0.0 MB)
+    9,728 bytes (9.5 KB = 0.0 MB)
 Contents/MonoBundle/.xamarin/osx-arm64/System.Collections.Concurrent.dll:
     135,680 bytes (132.5 KB = 0.1 MB)
 Contents/MonoBundle/.xamarin/osx-arm64/System.Collections.dll:
@@ -231,7 +231,7 @@ Contents/MonoBundle/.xamarin/osx-x64/Microsoft.Extensions.Options.dll:
 Contents/MonoBundle/.xamarin/osx-x64/Microsoft.Extensions.Primitives.dll:
     73,216 bytes (71.5 KB = 0.1 MB)
 Contents/MonoBundle/.xamarin/osx-x64/Microsoft.macOS.dll:
-    66,392,064 bytes (64,836.0 KB = 63.3 MB)
+    66,171,392 bytes (64,620.5 KB = 63.1 MB)
 Contents/MonoBundle/.xamarin/osx-x64/Microsoft.VisualBasic.Core.dll:
     1,181,696 bytes (1,154.0 KB = 1.1 MB)
 Contents/MonoBundle/.xamarin/osx-x64/Microsoft.Win32.Registry.dll:

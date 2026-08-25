@@ -22367,7 +22367,6 @@ T:AppKit.NSAccessibilitySubroles
 T:AppKit.NSAccessibilityUnits
 T:AppKit.NSAlertButtonReturn
 T:AppKit.NSAlertPredicate
-T:AppKit.NSAlertStyle
 T:AppKit.NSAnimationBlockingMode
 T:AppKit.NSAnimationCurve
 T:AppKit.NSAnimationEffect

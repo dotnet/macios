@@ -593,12 +593,13 @@ namespace AppKit {
 	#region NSAlert
 	[NoMacCatalyst]
 	[Native]
+	/// <summary>Specifies the visual style of an alert.</summary>
 	public enum NSAlertStyle : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Displays a warning alert.</summary>
 		Warning,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays an informational alert.</summary>
 		Informational,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays an alert for a critical condition.</summary>
 		Critical,
 	}
 

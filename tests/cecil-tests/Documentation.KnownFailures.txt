@@ -22388,7 +22388,6 @@ T:AppKit.NSApplicationPresentationOptions
 T:AppKit.NSApplicationPrint
 T:AppKit.NSApplicationPrintReply
 T:AppKit.NSApplicationReopen
-T:AppKit.NSApplicationTerminateReply
 T:AppKit.NSApplicationTermination
 T:AppKit.NSApplicationUserActivityType
 T:AppKit.NSAttributedString_NSExtendedStringDrawing

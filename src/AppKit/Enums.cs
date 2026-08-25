@@ -121,12 +121,13 @@ namespace AppKit {
 
 	[NoMacCatalyst]
 	[Native]
+	/// <summary>Specifies how an application responds to a termination request.</summary>
 	public enum NSApplicationTerminateReply : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Cancels application termination.</summary>
 		Cancel,
-		/// <summary>To be added.</summary>
+		/// <summary>Terminates the application immediately.</summary>
 		Now,
-		/// <summary>To be added.</summary>
+		/// <summary>Defers the termination decision.</summary>
 		Later,
 	}
 

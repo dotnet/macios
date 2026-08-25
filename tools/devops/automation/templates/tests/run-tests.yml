@@ -34,6 +34,10 @@ parameters:
   type: number
   default: 3
 
+- name: dotnetTestFilter
+  type: string
+  default: ''
+
 steps:
 - bash: |
     set -ex
@@ -122,6 +126,7 @@ steps:
   env:
     TEST_PREFIX: ${{ upper(parameters.testPrefix) }}
     TESTS_EXTRA_ARGUMENTS: ${{ parameters.testsLabels }}
+    DOTNET_TEST_FILTER: ${{ parameters.dotnetTestFilter }}
     USE_TCP_TUNNEL: 'true'
     PARAMETERS_TESTPREFIX: '${{ parameters.testPrefix }}'
     IS_PR: $(parameters.isPr)

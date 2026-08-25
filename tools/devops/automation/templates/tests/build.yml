@@ -55,6 +55,10 @@ parameters:
   type: string
   default: ''
 
+- name: dotnetTestFilter
+  type: string
+  default: ''
+
 - name: conditionVariable
   type: string
   default: ''
@@ -218,6 +222,7 @@ steps:
     testsLabels: ${{ parameters.testsLabels }}
     vsdropsPrefix: ${{ parameters.vsdropsPrefix }}
     testPrefix: ${{ parameters.testPrefix }}
+    dotnetTestFilter: ${{ parameters.dotnetTestFilter }}
 
 # clean the bot after we use it
 - template: ../common/teardown.yml

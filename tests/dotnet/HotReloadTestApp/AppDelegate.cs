@@ -21,11 +21,23 @@ public partial class Program {
 	{
 		GC.KeepAlive (typeof (NSObject)); // prevent linking away the platform assembly
 
+		Print ($"Runtime={RuntimeInformation.FrameworkDescription}");
+		Print ($"RuntimeVersion={Environment.Version}");
+		Print ($"ProcessArchitecture={RuntimeInformation.ProcessArchitecture}");
+		Print ($"OSDescription={RuntimeInformation.OSDescription}");
+		Print ($"BaseDirectory={AppContext.BaseDirectory}");
+		Print ($"CommandLine={Environment.CommandLine}");
+
 		Print (0);
 
-		for (var i = 0; i < 120 && ContinueLooping; i++) {
-			DoSomething (i + 1);
-			Thread.Sleep (TimeSpan.FromSeconds (1));
+		try {
+			for (var i = 0; i < 120 && ContinueLooping; i++) {
+				DoSomething (i + 1);
+				Thread.Sleep (TimeSpan.FromSeconds (1));
+			}
+		} catch (Exception e) {
+			Print ($"Exception={e}");
+			throw;
 		}
 
 		return ContinueLooping ? 1 : 0;
@@ -40,8 +52,10 @@ public partial class Program {
 	static string? LogPath = Environment.GetEnvironmentVariable ("HOTRELOAD_TEST_APP_LOGFILE");
 	static StreamWriter? logStream;
 	static void Print (int number)
+		=> Print ($"{number} Variable={Variable}");
+
+	static void Print (string msg)
 	{
-		var msg = $"{number} Variable={Variable}";
 		if (!string.IsNullOrEmpty (LogPath)) {
 			if (logStream is null) {
 				var fs = new FileStream (LogPath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read);

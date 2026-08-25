@@ -70,6 +70,10 @@ parameters:
   type: boolean
   default: false
 
+- name: dotnetTestFilter
+  type: string
+  default: ''
+
 stages:
 - stage: ${{ parameters.stageName }}
   displayName: ${{ parameters.displayName }}
@@ -138,6 +142,7 @@ stages:
         statusContext: $(STATUS_CONTEXT)
         testPlatform:  $(TEST_PLATFORM)
         vsdropsPrefix: ${{ parameters.vsdropsPrefix }}
+        dotnetTestFilter: ${{ parameters.dotnetTestFilter }}
         keyringPass: ${{ parameters.keyringPass }}
         testPrefix: $(TEST_PREFIX)
         gitHubToken: ${{ parameters.gitHubToken }}

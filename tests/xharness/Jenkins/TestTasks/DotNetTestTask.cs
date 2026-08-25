@@ -35,7 +35,9 @@ namespace Xharness.Jenkins.TestTasks {
 					args.Add ($"--logger:nunit;LogFileName={Path.GetFileName (xml.FullPath)}");
 
 				var filter = TestProject?.Filter;
-				var envTestFilter = global::System.Environment.GetEnvironmentVariable ("TEST_FILTER");
+				var envTestFilter = global::System.Environment.GetEnvironmentVariable ("DOTNET_TEST_FILTER");
+				if (string.IsNullOrEmpty (envTestFilter))
+					envTestFilter = global::System.Environment.GetEnvironmentVariable ("TEST_FILTER");
 				if (!string.IsNullOrEmpty (envTestFilter)) {
 					if (!string.IsNullOrEmpty (filter)) {
 						filter = $"({envTestFilter}) & ({filter})";

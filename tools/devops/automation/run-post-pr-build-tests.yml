@@ -28,3 +28,6 @@ extends:
     isPR: true
     buildPackages: true
     useACES: true  # flip to false to opt PR simulator tests out of ACES; see templates/variables/common.yml
+    runWindowsIntegration: false
+    dotnetTestFilter: >-
+      FullyQualifiedName~Xamarin.Tests.DotNetWatchTest

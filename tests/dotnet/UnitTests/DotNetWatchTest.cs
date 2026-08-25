@@ -68,6 +68,7 @@ namespace Xamarin.Tests {
 			var appOutput = new List<string> ();
 
 			var outputProcessor = new Action<string> (line => {
+				debugLog.WriteLine ($"[{DateTimeOffset.UtcNow:O}] [observed] {line}");
 				if (line.Contains ("Variable has not changed")) {
 					if (appStarted.TrySetResult (true))
 						debugLog.WriteLine ("Got 'Variable has not changed'");
@@ -107,7 +108,7 @@ namespace Xamarin.Tests {
 			pollThread.Start ();
 
 			Action<string> outputCallback = (line) => {
-				debugLog.WriteLine ($"[dotnet watch] {line}");
+				debugLog.WriteLine ($"[{DateTimeOffset.UtcNow:O}] [dotnet watch] {line}");
 				lock (output) {
 					output.Add (line);
 					outputProcessor (line);
@@ -130,6 +131,12 @@ namespace Xamarin.Tests {
 				{ "HOTRELOAD_TEST_APP_LOGFILE", logPath },
 				{ "AdditionalFile", additionalFile },
 			};
+			debugLog.WriteLine ($"Platform={platform}");
+			debugLog.WriteLine ($"Project={projectPath}");
+			debugLog.WriteLine ($"ProjectDirectory={projectDirectory}");
+			debugLog.WriteLine ($"AdditionalFile={additionalFile}");
+			debugLog.WriteLine ($"DotNet={DotNet.Executable}");
+			debugLog.WriteLine ($"Environment={string.Join (", ", env.Select (v => $"{v.Key}={v.Value}"))}");
 
 			var watchTask = Execution.RunWithCallbacksAsync (
 				DotNet.Executable,
@@ -146,12 +153,12 @@ namespace Xamarin.Tests {
 			// Wait for the app to start and show initial output
 			debugLog.WriteLine ("Waiting for app start...");
 			if (!appStarted.Task.Wait (TimeSpan.FromMinutes (1)))
-				Assert.Fail ($"Timed out waiting for the app to start. Output:\n{string.Join ("\n", output)}\nDebug output:\n{string.Join ("\n", File.ReadAllLines (debugLogPath))}");
+				FailWithDiagnostics (debugLogPath, logPath, $"Timed out waiting for the app to start. Output:\n{string.Join ("\n", output)}");
 			debugLog.WriteLine ("App started!");
 
 			debugLog.WriteLine ("Waiting for 'dotnet watch' to be waiting for changes...");
 			if (!waitingForChanges.Task.Wait (TimeSpan.FromMinutes (1)))
-				Assert.Fail ($"Timed out waiting for the 'dotnet watch' to be waiting for changes. Output:\n{string.Join ("\n", output)}\nDebug output:\n{string.Join ("\n", File.ReadAllLines (debugLogPath))}");
+				FailWithDiagnostics (debugLogPath, logPath, $"Timed out waiting for the 'dotnet watch' to be waiting for changes. Output:\n{string.Join ("\n", output)}");
 			debugLog.WriteLine ("Waiting for changes!");
 
 			// Write AdditionalFile.cs to trigger a rebuild via dotnet watch
@@ -160,7 +167,7 @@ namespace Xamarin.Tests {
 			// Wait for dotnet watch to pick up the change and the app to show the updated output
 			debugLog.WriteLine ("Waiting for app restart...");
 			if (!variableChanged.Task.Wait (TimeSpan.FromMinutes (1)))
-				Assert.Fail ($"Timed out waiting for the variable to change. Output:\n{string.Join ("\n", output)}\nDebug output:\n{string.Join ("\n", File.ReadAllLines (debugLogPath))}");
+				FailWithDiagnostics (debugLogPath, logPath, $"Timed out waiting for the variable to change. Output:\n{string.Join ("\n", output)}");
 			debugLog.WriteLine ("App restarted!");
 
 			// Cancel the watch process
@@ -174,6 +181,14 @@ namespace Xamarin.Tests {
 			} catch {
 				// Expected - the process was cancelled
 			}
+		}
+
+		static void FailWithDiagnostics (string debugLogPath, string appLogPath, string message)
+		{
+			TestContext.AddTestAttachment (debugLogPath, "dotnet watch diagnostic log");
+			if (File.Exists (appLogPath))
+				TestContext.AddTestAttachment (appLogPath, "Hot Reload test app output");
+			Assert.Fail ($"{message}\nDebug output:\n{string.Join ("\n", File.ReadAllLines (debugLogPath))}");
 		}
 
 		// Pick any device for the specified project, and compatible with the specified runtime identifier (if provided).

@@ -36,6 +36,11 @@ parameters:
     type: boolean
     default: false
 
+  - name: dotnetTestFilter
+    displayName: Filter .NET tests
+    type: string
+    default: ''
+
 resources:
   repositories:
     - repository: self
@@ -62,3 +67,4 @@ stages:
       runWindowsIntegration: ${{ parameters.runWindowsIntegration }}
       buildPackages: ${{ parameters.buildPackages }}
       useACES: ${{ parameters.useACES }}
+      dotnetTestFilter: ${{ parameters.dotnetTestFilter }}

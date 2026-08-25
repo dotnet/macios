@@ -8,6 +8,10 @@ parameters:
   type: boolean
   default: true
 
+- name: dotnetTestFilter
+  type: string
+  default: ''
+
 - name: isPR
   type: boolean
 
@@ -230,6 +234,7 @@ stages:
     testPool: $(PRBuildPool)
     statusContext: 'VSTS: simulator tests'
     vsdropsPrefix: ${{ variables.vsdropsPrefix }}
+    dotnetTestFilter: ${{ parameters.dotnetTestFilter }}
     keyringPass: $(pass--lab--mac--builder--keychain)
     gitHubToken: $(Github.Token)
     xqaCertPass: $(xqa--certificates--password)

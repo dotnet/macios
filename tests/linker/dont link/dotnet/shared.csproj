@@ -15,6 +15,7 @@
       This only affects us here, because the methods that reference those intrinsics
       (AdvSimd.AddPairwiseWidening) survive only when the trimmer is disabled.
       Remove once https://github.com/dotnet/runtime/issues/132743 has been fixed.
+      Tracked by https://github.com/dotnet/macios/issues/26467.
     -->
     <MtouchUseLlvm>false</MtouchUseLlvm>
 

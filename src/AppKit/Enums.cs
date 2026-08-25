@@ -110,9 +110,9 @@ namespace AppKit {
 		Failure,
 	}
 
+	/// <summary>Specifies the urgency of a request for the user's attention.</summary>
 	[NoMacCatalyst]
 	[Native]
-	/// <summary>Specifies the urgency of a request for the user's attention.</summary>
 	public enum NSRequestUserAttentionType : ulong {
 		/// <summary>Requests the user's attention for a critical event.</summary>
 		CriticalRequest = 0,

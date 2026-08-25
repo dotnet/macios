@@ -22377,7 +22377,6 @@ T:AppKit.NSApplication_NSServicesMenu
 T:AppKit.NSApplication_NSStandardAboutPanel
 T:AppKit.NSApplication_NSTouchBarCustomization
 T:AppKit.NSApplicationContinueUserActivity
-T:AppKit.NSApplicationDelegateReply
 T:AppKit.NSApplicationEnumerateWindowsHandler
 T:AppKit.NSApplicationError
 T:AppKit.NSApplicationFile

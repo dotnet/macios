@@ -100,12 +100,13 @@ namespace AppKit {
 
 	[NoMacCatalyst]
 	[Native]
+	/// <summary>Specifies the result of an application delegate operation.</summary>
 	public enum NSApplicationDelegateReply : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The operation completed successfully.</summary>
 		Success,
-		/// <summary>To be added.</summary>
+		/// <summary>The operation was canceled.</summary>
 		Cancel,
-		/// <summary>To be added.</summary>
+		/// <summary>The operation failed.</summary>
 		Failure,
 	}
 

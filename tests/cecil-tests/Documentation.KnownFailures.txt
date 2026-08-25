@@ -22365,7 +22365,6 @@ T:AppKit.NSAccessibilitySearchKey
 T:AppKit.NSAccessibilitySortDirection
 T:AppKit.NSAccessibilitySubroles
 T:AppKit.NSAccessibilityUnits
-T:AppKit.NSAlertButtonReturn
 T:AppKit.NSAlertPredicate
 T:AppKit.NSAnimationEffect
 T:AppKit.NSAnimationPredicate

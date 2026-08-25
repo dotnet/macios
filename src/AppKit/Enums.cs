@@ -3253,12 +3253,13 @@ namespace AppKit {
 
 	[NoMacCatalyst]
 	[Native]
+	/// <summary>Identifies which button dismissed an alert.</summary>
 	public enum NSAlertButtonReturn : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The first alert button.</summary>
 		First = 1000,
-		/// <summary>To be added.</summary>
+		/// <summary>The second alert button.</summary>
 		Second = 1001,
-		/// <summary>To be added.</summary>
+		/// <summary>The third alert button.</summary>
 		Third = 1002,
 	}
 

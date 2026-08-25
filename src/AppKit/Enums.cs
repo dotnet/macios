@@ -50,9 +50,9 @@ namespace AppKit {
 		ActivateIgnoringOtherWindows = 2,
 	}
 
+	/// <summary>Specifies how an application participates in the user interface.</summary>
 	[NoMacCatalyst]
 	[Native]
-	/// <summary>Specifies how an application participates in the user interface.</summary>
 	public enum NSApplicationActivationPolicy : long {
 		/// <summary>The application appears in the Dock and can have a menu bar.</summary>
 		Regular,

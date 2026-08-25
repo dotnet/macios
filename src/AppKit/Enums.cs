@@ -38,9 +38,9 @@ namespace AppKit {
 		Continues = -1002,
 	}
 
+	/// <summary>Specifies options for activating an application.</summary>
 	[NoMacCatalyst]
 	[Native]
-	/// <summary>Specifies options for activating an application.</summary>
 	public enum NSApplicationActivationOptions : ulong {
 		/// <summary>Activates the application using the default behavior.</summary>
 		Default = 0,

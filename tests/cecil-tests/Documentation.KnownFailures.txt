@@ -22386,7 +22386,6 @@ T:AppKit.NSApplicationMenu
 T:AppKit.NSApplicationPredicate
 T:AppKit.NSApplicationPresentationOptions
 T:AppKit.NSApplicationPrint
-T:AppKit.NSApplicationPrintReply
 T:AppKit.NSApplicationReopen
 T:AppKit.NSApplicationTermination
 T:AppKit.NSApplicationUserActivityType

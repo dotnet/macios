@@ -133,14 +133,15 @@ namespace AppKit {
 
 	[NoMacCatalyst]
 	[Native]
+	/// <summary>Specifies the result of an application print request.</summary>
 	public enum NSApplicationPrintReply : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The print request was canceled.</summary>
 		Cancelled,
-		/// <summary>To be added.</summary>
+		/// <summary>The print request completed successfully.</summary>
 		Success,
-		/// <summary>To be added.</summary>
+		/// <summary>The print request failed.</summary>
 		Failure,
-		/// <summary>To be added.</summary>
+		/// <summary>The application will reply after completing the print request asynchronously.</summary>
 		ReplyLater,
 	}
 

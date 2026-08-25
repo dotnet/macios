@@ -776,6 +776,7 @@ namespace AppKit {
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Wrap ("NextEvent (mask, expiration, runLoopMode.GetConstant ()!, deqFlag)")]
+		[return: NullAllowed]
 		NSEvent NextEvent (NSEventMask mask, NSDate expiration, NSRunLoopMode runLoopMode, bool deqFlag);
 
 		[Export ("discardEventsMatchingMask:beforeEvent:"), Protected]

@@ -98,9 +98,9 @@ namespace AppKit {
 		DisableCursorLocationAssistance = (1 << 12),
 	}
 
+	/// <summary>Specifies the result of an application delegate operation.</summary>
 	[NoMacCatalyst]
 	[Native]
-	/// <summary>Specifies the result of an application delegate operation.</summary>
 	public enum NSApplicationDelegateReply : ulong {
 		/// <summary>The operation completed successfully.</summary>
 		Success,

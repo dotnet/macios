@@ -120,9 +120,9 @@ namespace AppKit {
 		InformationalRequest = 10,
 	}
 
+	/// <summary>Specifies how an application responds to a termination request.</summary>
 	[NoMacCatalyst]
 	[Native]
-	/// <summary>Specifies how an application responds to a termination request.</summary>
 	public enum NSApplicationTerminateReply : ulong {
 		/// <summary>Cancels application termination.</summary>
 		Cancel,

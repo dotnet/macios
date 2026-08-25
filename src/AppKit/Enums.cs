@@ -1500,12 +1500,13 @@ namespace AppKit {
 
 	[NoMacCatalyst]
 	[Native]
+	/// <summary>Specifies how an animation runs relative to the application.</summary>
 	public enum NSAnimationBlockingMode : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Runs the animation synchronously and blocks user interaction until it completes.</summary>
 		Blocking,
-		/// <summary>To be added.</summary>
+		/// <summary>Runs the animation asynchronously on the main thread while allowing user interaction.</summary>
 		Nonblocking,
-		/// <summary>To be added.</summary>
+		/// <summary>Runs the animation asynchronously on a separate thread.</summary>
 		NonblockingThreaded,
 	};
 	#endregion

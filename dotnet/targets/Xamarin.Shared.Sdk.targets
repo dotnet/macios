@@ -124,6 +124,10 @@
 		<!-- As a last resort, the default is false for all platforms -->
 		<_BundlerDebug Condition="'$(_BundlerDebug)' == ''">false</_BundlerDebug>
 
+		<!-- Generate the trusted platform assembly list at build time for faster startup in non-debug builds. -->
+		<GenerateTrustedPlatformAssemblies Condition="'$(GenerateTrustedPlatformAssemblies)' == '' And '$(_BundlerDebug)' != 'true'">true</GenerateTrustedPlatformAssemblies>
+		<GenerateTrustedPlatformAssemblies Condition="'$(GenerateTrustedPlatformAssemblies)' == ''">false</GenerateTrustedPlatformAssemblies>
+
 		<!--
 			Hot Reload requires that we don't modify user (reloadable) assemblies. It's a debug-only
 			feature, so default $(HotReloadCompatibleBuild) to the debug state: this keeps the current
@@ -414,10 +418,14 @@
 		<Error Condition="@(_RuntimeIdentifierDistinctPlatforms->Count()) > 1" Text="Building for all the runtime identifiers '$(RuntimeIdentifiers)' at the same time isn't possible, because they represent different platform variations." />
 
 		<PropertyGroup>
+			<_IsUniversalBuild>false</_IsUniversalBuild>
+			<_IsUniversalBuild Condition="@(_RuntimeIdentifiersAsItems->Count()) > 1">true</_IsUniversalBuild>
+
 			<!-- We disable building project references (BuildProjectReferences=false), because project references aren't RID-specific, so we build them (once) before running _RunRidSpecificBuild target, so that we don't have to build them once per RID -->
 			<_RidSpecificProperties>
 				BuildProjectReferences=false;
 				_IsMultiRidBuild=true;
+				_IsUniversalBuild=$(_IsUniversalBuild);
 				RuntimeIdentifiers=;
 				_ProcessedBundleResourcesPath=$(_ProcessedBundleResourcesPath);
 				_ProcessedContentPath=$(_ProcessedContentPath);
@@ -546,6 +554,14 @@
 		<IlcCompileDependsOn>Compile;_ComputeLinkerArguments;_ComputeManagedAssemblyToLink;SetupOSSpecificProps;PrepareForILLink;_XamarinComputeIlcCompileInputs</IlcCompileDependsOn>
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<_PrepareAssembliesForPostProcessingDependsOn>
+			$(_PrepareAssembliesForPostProcessingDependsOn);
+			_ComputeLinkerInputs;
+			_GenerateLinkerDependencyCache;
+		</_PrepareAssembliesForPostProcessingDependsOn>
+	</PropertyGroup>
+
 	<Target Name="SelectRegistrar"
 			DependsOnTargets="_ComputeLinkMode"
 			Condition="'$(_CanOutputAppBundle)' == 'true'"
@@ -557,6 +573,8 @@
 					- NativeAOT supported platforms in all configurations
 					- ios/tvos device builds in all configurations
 					- macOS/MacCatalyst builds in release configuration
+				  (On .NET 11+ CoreCLR and NativeAOT default to 'trimmable-static' instead - that's set earlier,
+				  at evaluation time, in Xamarin.Shared.Sdk.props. Mono keeps managed-static.)
 				- Set 'partial-static' for:
 					- when no assemblies are trimmed and when MarshalManagedExceptionMode is default (or not set)
 				- Otherwise set 'dynamic' 
@@ -603,6 +621,21 @@
 		</PropertyGroup>
 		<ItemGroup Condition="'$(_DynamicRegistrationSupported)' != ''">
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.DynamicRegistrationSupported" Value="$(_DynamicRegistrationSupported)" Trim="true" />
+		</ItemGroup>
+		<!--
+			When using the trimmable static registrar together with PrepareAssemblies, we can tell the trimmer to
+			remove the [ProtocolMember] attributes. This makes it possible to trim away types that are only
+			referenced from these attributes (such as generic types in optional protocol members).
+			The assembly-preparer's post-processing pass still needs these attributes (it runs the registrar again
+			after the trimmer), so it reads them from the pre-trim (prepared) assemblies instead.
+			Only do this when the dynamic registrar has been removed (DynamicRegistrationSupported == false): the
+			dynamic registrar reads these attributes via reflection at runtime, so they must be kept when it's
+			present (otherwise the trimmer errors out with IL2045). This is computed here, and not in
+			_ComputeLinkerInputs, because _DynamicRegistrationSupported isn't known until this target has run.
+			See src/TrimAttributes.LinkDescription.xml and tools/assembly-preparer/AssemblyPreparer.cs.
+		-->
+		<ItemGroup Condition="'$(Registrar)' == 'trimmable-static' And '$(_DynamicRegistrationSupported)' == 'false'">
+			<RuntimeHostConfigurationOption Include="ObjCRuntime.TrimProtocolMemberAttributes" Value="true" Trim="true" />
 		</ItemGroup>
 	</Target>
 
@@ -714,6 +747,12 @@
 			<_IsSimulatorFeature Condition="'$(SdkIsMobile)' == 'true' And '$(_SdkIsSimulator)' == 'true'">true</_IsSimulatorFeature>
 			<_IsSimulatorFeature Condition="'$(_IsSimulatorFeature)' == ''">false</_IsSimulatorFeature>
 
+			<!-- Set the ARM64 calling convention value (based on the target architecture). Only set it when we
+			     know the target architecture (i.e. a RuntimeIdentifier is available); otherwise leave it unset so
+			     the trimmer keeps the runtime architecture detection instead of hardcoding a potentially wrong value. -->
+			<_IsARM64CallingConventionFeature Condition="'$(RuntimeIdentifier)' != '' And $(RuntimeIdentifier.EndsWith('-arm64'))">true</_IsARM64CallingConventionFeature>
+			<_IsARM64CallingConventionFeature Condition="'$(RuntimeIdentifier)' != '' And '$(_IsARM64CallingConventionFeature)' == ''">false</_IsARM64CallingConventionFeature>
+
 			<!-- Set managed static registrar value -->
 			<_IsManagedStaticRegistrarFeature Condition="'$(Registrar)' == 'managed-static'">true</_IsManagedStaticRegistrarFeature>
 			<_IsManagedStaticRegistrarFeature Condition="'$(Registrar)' != 'managed-static'">false</_IsManagedStaticRegistrarFeature>
@@ -742,6 +781,15 @@
 			<_BundlerRuntimeConfigurationFile Condition="'$(_XamarinRuntime)' == 'MonoVM'">$(_RuntimeConfigurationFile)</_BundlerRuntimeConfigurationFile>
 			<_BundlerRuntimeConfigurationFilePath Condition="'$(_XamarinRuntime)' == 'CoreCLR' And '$(GenerateRuntimeConfigurationFiles)' == 'true'">$(_MergedRuntimeConfigFilePath)</_BundlerRuntimeConfigurationFilePath>
 
+			<!--
+				Set the 'ObjCRuntime.Runtime.CheckForIllegalCrossThreadCalls' feature switch value. When false, ILLink stubs
+				the [NS|UI]Application.EnsureUIThread method body (so the UI thread checks are removed). A user-specified
+				$(CheckForIllegalCrossThreadCalls) always wins; otherwise we keep the checks in debug builds and remove them in
+				release builds (matching the old 'remove-uithread-checks' optimization default).
+			-->
+			<_CheckForIllegalCrossThreadCalls Condition="'$(CheckForIllegalCrossThreadCalls)' != ''">$(CheckForIllegalCrossThreadCalls)</_CheckForIllegalCrossThreadCalls>
+			<_CheckForIllegalCrossThreadCalls Condition="'$(_CheckForIllegalCrossThreadCalls)' == ''">$(_BundlerDebug)</_CheckForIllegalCrossThreadCalls>
+
 			<_CustomLinkerOptions>
 				AreAnyAssembliesTrimmed=$(_AreAnyAssembliesTrimmed)
 				AssemblyName=$(AssemblyName).dll
@@ -758,6 +806,7 @@
 				DynamicRegistrationSupported=$(DynamicRegistrationSupported)
 				@(_CustomLinkFlags -> 'CustomLinkFlags=%(Identity)')
 				EnableSGenConc=$(EnableSGenConc)
+				GenerateTrustedPlatformAssemblies=$(GenerateTrustedPlatformAssemblies)
 				@(_BundlerEnvironmentVariables -> 'EnvironmentVariable=Overwrite=%(Overwrite)|%(Identity)=%(Value)')
 				@(_XamarinFrameworkAssemblies -> 'FrameworkAssembly=%(Filename)')
 				Interpreter=$(MtouchInterpreter)
@@ -770,6 +819,7 @@
 				HotReloadCompatibleBuild=$(HotReloadCompatibleBuild)
 				ItemsDirectory=$(_LinkerItemsDirectory)
 				IsAppExtension=$(IsAppExtension)
+				IsMultiRidBuild=$(_IsUniversalBuild)
 				IsSimulatorBuild=$(_SdkIsSimulator)
 				LibMonoLinkMode=$(_LibMonoLinkMode)
 				LibXamarinLinkMode=$(_LibXamarinLinkMode)
@@ -885,21 +935,14 @@
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.AggressiveAttributeTrimmingMono" Value="true" Trim="true" Condition="'$(MobileAggressiveAttributeTrimming)' == 'true' And '$(_XamarinRuntime)' == 'MonoVM'" />
 			<RuntimeHostConfigurationOption Include="ObjCRUntime.AggressiveAttributeTrimmingOnlyWithStaticRegistrar" value="true" Trim="true" Condition="'$(MobileAggressiveAttributeTrimming)' == 'true' And ('$(Registrar)' == 'static' Or '$(Registrar)' == 'managed-static')" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.Arch.IsSimulator" Value="$(_IsSimulatorFeature)" Trim="true" />
+			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsARM64CallingConvention" Value="$(_IsARM64CallingConventionFeature)" Trim="true" Condition="'$(_IsARM64CallingConventionFeature)' != ''" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsManagedStaticRegistrar" Value="$(_IsManagedStaticRegistrarFeature)" Trim="true" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsTrimmableStaticRegistrar" Value="$(_IsTrimmableStaticRegistrarFeature)" Trim="true" />
-			<!--
-				When using the trimmable static registrar together with PrepareAssemblies, we can tell the trimmer to
-				remove the [ProtocolMember] attributes. This makes it possible to trim away types that are only
-				referenced from these attributes (such as generic types in optional protocol members).
-				The assembly-preparer's post-processing pass still needs these attributes (it runs the registrar again
-				after the trimmer), so it reads them from the pre-trim (prepared) assemblies instead.
-				See src/TrimAttributes.LinkDescription.xml and tools/assembly-preparer/AssemblyPreparer.cs.
-			-->
-			<RuntimeHostConfigurationOption Include="ObjCRuntime.TrimProtocolMemberAttributes" Value="true" Trim="true" Condition="'$(Registrar)' == 'trimmable-static' And '$(PrepareAssemblies)' == 'true'" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsNativeAOT" Value="$(_IsNativeAOTFeature)" Trim="true" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsCoreCLR" Value="true" Trim="true" Condition="'$(UseMonoRuntime)' != 'true'" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsCoreCLR" Value="false" Trim="true" Condition="'$(UseMonoRuntime)' == 'true'" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Class.ValidateObjectPointers" Value="$(_ValidateObjectPointers)" Trim="true" />
+			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.CheckForIllegalCrossThreadCalls" Value="$(_CheckForIllegalCrossThreadCalls)" Trim="true" />
 
 			<!-- Configure System.Net.Http Native Handlers -->
 			<RuntimeHostConfigurationOption Include="System.Net.Http.NativeHandler.UseNSUrlSessionHandler" Value="$(_IsNSUrlSessionHandlerFeature)" Trim="true" />
@@ -986,6 +1029,17 @@
 			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.Linker.ComputeAOTArguments" Condition="'$(PostProcessAssemblies)' != 'true'" />
 			<!-- Must be the last step. -->
 			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.Linker.DoneStep" Condition="'$(PostProcessAssemblies)' != 'true'" />
+		</ItemGroup>
+
+		<ItemGroup Condition="'$(PrepareAssemblies)' == 'true' And '$(Registrar)' == 'trimmable-static' And $([MSBuild]::VersionLessThan($(TargetFrameworkVersion), '11.0'))">
+			<!--
+				This step must run even when all our other custom steps are disabled (which happens when both
+				PrepareAssemblies and PostProcessAssemblies are true), because otherwise ILLink will remove the
+				type map attributes from the type map assemblies the trimmable registrar generated before ILLink ran.
+
+				It's not needed on .NET 11+, because there we pass the typemap-entry-assembly argument to ILLink instead.
+			-->
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.SetTypeMapEntryAssemblyStep" />
 		</ItemGroup>
 
 		<ItemGroup>
@@ -1082,25 +1136,6 @@
 			<Output TaskParameter="FrameworkToPublish" ItemName="_FilteredFrameworkToPublish" />
 		</FilterStaticFrameworks>
 
-		<!--
-
-			We need to use the full path to the framework for frameworks that
-			come from app extensions (since any relative paths from the app
-			extension projects won't be correct once loaded into the
-			containing project), so compute that. However, also do this for
-			app projects, so that we can properly deduplicate frameworks that
-			come from both extensions and the main app project.
-
-		 -->
-		<GetFullPaths
-			Condition="'$(IsMacEnabled)' == 'true'"
-			SessionId="$(BuildSessionId)"
-			Items="@(_FilteredFrameworkToPublish)"
-			Metadata="Identity;SourceDirectory"
-		>
-			<Output TaskParameter="Output" ItemName="_FilteredFrameworkToPublishWithFullPath" />
-		</GetFullPaths>
-
 		<!-- If we're an app extension, store the list of all the frameworks to disk (and don't publish any of them to the appex) -->
 		<!-- Note that app extensions may be nested, so we first check if we have any app extensions with frameworks, read those, then store the full list to disk if we're an app extension, so the containing app project sees everything -->
 		<ReadItemsFromFile File="@(_ResolvedAppExtensionReferences->'%(Identity)\..\native-frameworks.items')" Condition="Exists('%(Identity)\..\native-frameworks.items')">
@@ -1109,7 +1144,7 @@
 
 		<WriteItemsToFile
 			Condition="'$(IsAppExtension)' == 'true'"
-			Items="@(_FilteredFrameworkToPublishWithFullPath);@(_FrameworksFromAppExtensions)"
+			Items="@(_FilteredFrameworkToPublish);@(_FrameworksFromAppExtensions)"
 			ItemName="_FrameworksFromAppExtensions"
 			File="$(DeviceSpecificOutputPath)\native-frameworks.items"
 			IncludeMetadata="true"
@@ -1124,7 +1159,7 @@
 
 		<ItemGroup>
 			<_DirectoriesToPublish Include="@(_FrameworksFromAppExtensions)" Condition="'$(IsAppExtension)' != 'true'" />
-			<_DirectoriesToPublish Include="@(_FilteredFrameworkToPublishWithFullPath)" Condition="'$(IsAppExtension)' != 'true'" />
+			<_DirectoriesToPublish Include="@(_FilteredFrameworkToPublish)" Condition="'$(IsAppExtension)' != 'true'" />
 		</ItemGroup>
 	</Target>
 
@@ -1137,6 +1172,18 @@
 	     This target will compute that stamp file location.
 	-->
 	<Target Name="_CreateStampLocationForCopyDirectoriesToBundle">
+		<PropertyGroup>
+			<_CopyDirectoriesToBundleInputFile>$(DeviceSpecificIntermediateOutputPath)CopyDirectoriesToBundleInputs.cache</_CopyDirectoriesToBundleInputFile>
+		</PropertyGroup>
+		<WriteLinesToFile
+			File="$(_CopyDirectoriesToBundleInputFile)"
+			Lines="StripFrameworkHeaders=$(StripFrameworkHeaders)"
+			Overwrite="true"
+			WriteOnlyWhenDifferent="true"
+		/>
+		<ItemGroup>
+			<FileWrites Include="$(_CopyDirectoriesToBundleInputFile)" />
+		</ItemGroup>
 		<ComputeHashForItems
 			Input="@(_DirectoriesToPublish)"
 			InputMetadata="Identity;TargetDirectory"
@@ -1164,7 +1211,7 @@
 
 	<Target Name="_CopyDirectoriesToBundle"
 		DependsOnTargets="_CollectDecompressedPlugins;_ComputeFrameworkFilesToPublish;_CollectDecompressedXpcServices;_CreateStampLocationForCopyDirectoriesToBundle"
-		Inputs="@(_DirectoriesToPublish)"
+		Inputs="@(_DirectoriesToPublish);$(_CopyDirectoriesToBundleInputFile)"
 		Outputs="@(_DirectoriesToPublish -> '%(StampLocation)')"
 		>
 
@@ -1230,6 +1277,14 @@
 		<ItemGroup>
 			<_AssembliesToBeStripped Include="@(ResolvedFileToPublish)" Condition="'%(Extension)' == '.dll' And '%(ResolvedFileToPublish.Culture)' == ''">
 				<OutputPath>$(_StrippedAssemblyDirectory)\%(ResolvedFileToPublish.OriginalRelativePath)</OutputPath>
+			</_AssembliesToBeStripped>
+
+			<!-- Some assemblies added to ResolvedFileToPublish don't have OriginalRelativePath set (e.g. the
+			     TypeMap assemblies the trimmable-static registrar generates). Without it the OutputPath above
+			     collapses to the bare stripped directory, and ILStrip fails trying to write to a directory
+			     ("Access to the path '.../stripped/' is denied"). Fall back to the file name in that case. -->
+			<_AssembliesToBeStripped Condition="'%(_AssembliesToBeStripped.OriginalRelativePath)' == ''">
+				<OutputPath>$(_StrippedAssemblyDirectory)\%(Filename)%(Extension)</OutputPath>
 			</_AssembliesToBeStripped>
 
 			<!-- Use forward slashes in OutputPath, otherwise ILStrip will create filenames that resemble the part of
@@ -1354,7 +1409,7 @@
 	<Target
 		Name="_PostprocessAssembliesAfterIlc"
 		Condition="'$(_PostprocessAssembliesAfterIlc)' == 'true' And '$(RuntimeIdentifiers)' == ''"
-		Inputs="@(_AssembliesToPostProcess);$(NativeObject)"
+		Inputs="@(_AssembliesToPostProcess);$(_LinkerCachePath);$(NativeObject)"
 		Outputs="@(_AssembliesToPostProcess->'$(_PostprocessedAssembliesDirectory)%(Filename)%(Extension)');$(_AssemblyPostProcessorMSBuildOutputFile)"
 		DependsOnTargets="IlcCompile;ComputeFilesToPublish;_PrepareAssembliesForPostProcessing;_ComputeLinkerInputs"
 		>
@@ -1911,6 +1966,15 @@
 		<ItemGroup>
 			<!-- We need to mark all __Internal P/Invokes as direct, so that the native linker doesn't remove them -->
 			<DirectPInvoke Include="__Internal" />
+		</ItemGroup>
+
+		<ItemGroup>
+			<!--
+				Tell our substitution XML that it's being processed by ILC and not by ILLink, because the two
+				disagree about how to specify the substitution value for an enum-typed field.
+				See src/ILLink.Substitutions.iOS.xml and https://github.com/dotnet/runtime/issues/131601.
+			-->
+			<IlcArg Include="--feature:ObjCRuntime.IsILCompiler=true" />
 		</ItemGroup>
 
 		<ItemGroup>

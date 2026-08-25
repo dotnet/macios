@@ -301,7 +301,7 @@ namespace Xamarin.Tests {
 			AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, "bindings-framework-test", runtimeIdentifiers, forceSingleRid: platform != ApplePlatform.MacCatalyst || !isReleaseBuild, includeDebugFiles: includeDebugFiles);
 			AddExpectedFrameworkFiles (platform, expectedFiles, "XTest", isSigned);
 
-			AddExpectedFrameworkFiles (platform, expectedFiles, "FrameworkWithLongFileNames", isSigned, longHeader: true);
+			AddExpectedFrameworkFiles (platform, expectedFiles, "FrameworkWithLongFileNames", isSigned, longFile: true);
 
 			// various directories
 			expectedFiles.Add (frameworksDirectory);
@@ -543,11 +543,11 @@ namespace Xamarin.Tests {
 			}
 		}
 
-		static void AddExpectedFrameworkFiles (ApplePlatform platform, List<string> expectedFiles, string frameworkName, CodeSignature signature, string subdirectory = "", bool longHeader = false)
+		static void AddExpectedFrameworkFiles (ApplePlatform platform, List<string> expectedFiles, string frameworkName, CodeSignature signature, string subdirectory = "", bool longFile = false)
 		{
 			var isSigned = signature != CodeSignature.None;
 			var frameworksDirectory = "Frameworks";
-			var headersDirectoryInFramework = "Headers";
+			var longFileInFramework = Path.Combine ("Resources", "full-paths-exceeding-two-hundred-and-sixty-characters", "often-cause-trouble-on-windows", "where-the-maximum-is-by-default-two-hundred-and-sixty-characters", "because-frameworks-and-by-extension-xcframeworks", "very-often-have-paths-longer-than-this-limit", "especially-when-contained-in-other-directories.txt");
 			switch (platform) {
 			case ApplePlatform.iOS:
 			case ApplePlatform.TVOS:
@@ -555,15 +555,11 @@ namespace Xamarin.Tests {
 			case ApplePlatform.MacCatalyst:
 			case ApplePlatform.MacOSX:
 				frameworksDirectory = Path.Combine ("Contents", "Frameworks");
-				headersDirectoryInFramework = Path.Combine ("Versions", "A", "Headers");
+				longFileInFramework = Path.Combine ("Versions", "A", longFileInFramework);
 				break;
 			default:
 				throw new NotImplementedException ($"Unknown platform: {platform}");
 			}
-
-			var headers = new List<string> ();
-			if (longHeader)
-				headers.Add (Path.Combine (headersDirectoryInFramework, "full-paths-exceeding-two-hundred-and-sixty-characters", "often-cause-trouble-on-windows", "where-the-maximum-is-by-default-two-hundred-and-sixty-characters", "because-frameworks-and-by-extension-xcframeworks", "very-often-have-paths-longer-than-this-limit", "especially-when-contained-in-other-directories.h"));
 
 			expectedFiles.Add (Path.Combine (frameworksDirectory, $"{frameworkName}.framework"));
 			expectedFiles.Add (Path.Combine (frameworksDirectory, $"{frameworkName}.framework", frameworkName));
@@ -571,6 +567,8 @@ namespace Xamarin.Tests {
 			case ApplePlatform.iOS:
 			case ApplePlatform.TVOS:
 				expectedFiles.Add (Path.Combine (frameworksDirectory, $"{frameworkName}.framework", "Info.plist"));
+				if (longFile)
+					expectedFiles.Add (Path.Combine (frameworksDirectory, $"{frameworkName}.framework", "Resources"));
 				break;
 			case ApplePlatform.MacCatalyst:
 			case ApplePlatform.MacOSX:
@@ -582,19 +580,17 @@ namespace Xamarin.Tests {
 				expectedFiles.Add (Path.Combine (frameworksDirectory, $"{frameworkName}.framework", "Versions", "A", frameworkName));
 				expectedFiles.Add (Path.Combine (frameworksDirectory, $"{frameworkName}.framework", "Versions", "Current"));
 
-				if (headers.Any ())
-					expectedFiles.Add (Path.Combine (frameworksDirectory, $"{frameworkName}.framework", "Headers"));
 				break;
 			default:
 				throw new NotImplementedException ($"Unknown platform: {platform}");
 			}
 
-			foreach (var header in headers) {
+			if (longFile) {
 				var path = Path.Combine (frameworksDirectory, $"{frameworkName}.framework");
-				var headerComponents = header.Split ('\\', '/');
-				for (var i = 0; i < headerComponents.Length; i++) {
-					path = Path.Combine (path, headerComponents [i]);
-					expectedFiles.Add (path);
+				foreach (var component in longFileInFramework.Split ('\\', '/')) {
+					path = Path.Combine (path, component);
+					if (!expectedFiles.Contains (path))
+						expectedFiles.Add (path);
 				}
 			}
 
@@ -620,6 +616,40 @@ namespace Xamarin.Tests {
 			None,
 			Frameworks,
 			All,
+		}
+
+		[Test]
+		public void PreserveFrameworkHeaders ()
+		{
+			var platform = ApplePlatform.iOS;
+			var runtimeIdentifier = "iossimulator-arm64";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifier);
+
+			var projectPath = GetProjectPath ("BundleStructure", runtimeIdentifiers: runtimeIdentifier, platform: platform, out var appPath);
+			Clean (projectPath);
+
+			var properties = GetDefaultProperties (runtimeIdentifier);
+			properties ["EnableCodeSigning"] = "false";
+			DotNet.AssertBuild (projectPath, properties);
+
+			var header = Path.Combine (appPath, "Frameworks", "FrameworkWithLongFileNames.framework", "Headers", "test.h");
+			Assert.That (header, Does.Not.Exist);
+
+			properties ["StripFrameworkHeaders"] = "false";
+			DotNet.AssertBuild (projectPath, properties);
+
+			Assert.That (header, Does.Exist);
+
+			properties ["StripFrameworkHeaders"] = "true";
+			DotNet.AssertBuild (projectPath, properties);
+
+			Assert.That (header, Does.Not.Exist);
+
+			properties ["StripFrameworkHeaders"] = "false";
+			DotNet.AssertBuild (projectPath, properties);
+
+			Assert.That (header, Does.Exist);
 		}
 
 		[Test]

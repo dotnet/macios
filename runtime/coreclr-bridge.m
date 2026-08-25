@@ -428,7 +428,7 @@ xamarin_bridge_vm_initialize (int propertyCount, const char **propertyKeys, cons
 	LOG_CORECLR (stderr, "xamarin_vm_initialize (%i, %p, %p): rv: %i domainId: %i handle: %p\n", combinedPropertyCount, combinedPropertyKeys, combinedPropertyValues, rv, coreclr_domainId, coreclr_handle);
 
 	if (rv != 0) {
-		LOG (PRODUCT ": The call to 'coreclr_initialize' failed: %i (%p)\n", rv, rv);
+		LOG (PRODUCT ": The call to 'coreclr_initialize' failed: %i (%p)\n", rv, (void *) (intptr_t) rv);
 	}
 
 	return rv == 0;
@@ -761,7 +761,7 @@ mono_object_unbox (MonoObject *obj)
 	void *rv = obj->struct_value;
 
 	if (rv == NULL)
-		xamarin_assertion_message ("%s (%p) => no struct value?\n", __func__);
+		xamarin_assertion_message ("%s (%p) => no struct value?\n", __func__, obj);
 
 	LOG_CORECLR (stderr, "%s (%p) => %p\n", __func__, obj, rv);
 

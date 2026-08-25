@@ -10,6 +10,7 @@
 
 #nullable enable
 
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -290,6 +291,34 @@ namespace ObjCRuntime {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		internal static bool UseCFNetworkHandler => AppContext.TryGetSwitch ("System.Net.Http.NativeHandler.UseCFNetworkHandler", out bool isDefault) ? isDefault : false;
 
+		// Issue #25861: when false (the default), NSObjects created via alloc/init are
+		// added to the object_map only after 'init' has completed. This way a native
+		// 'init' that frees the alloc'd handle (and returns a different one) can't leave
+		// a stale pointer to freed memory in the map, which could later be clobbered when
+		// the memory is reused by another object. Set this AppContext switch to true to
+		// restore the previous behavior (register the object right after 'alloc').
+		internal static bool RegisterObjectsBeforeInit => AppContext.TryGetSwitch ("ObjCRuntime.Runtime.RegisterObjectsBeforeInit", out var value) && value;
+
+		// The linker may turn calls to this property into a constant
+		/// <summary>Determines whether the debug builds will enforce that calls done to AppKit/UIKit APIs are only issued from the UI thread.</summary>
+		/// <remarks>
+		///   <para>
+		///     On debug builds, the runtime will enforce that calls made to
+		///     AppKit/UIKit APIs are only done from the main thread. This is
+		///     useful to spot code that could inadvertently use AppKit/UIKit from
+		///     a non-UI thread which can corrupt state and could lead to
+		///     very hard to debug problems.
+		///   </para>
+		///   <para>
+		///     But sometimes it might be useful to disable this check,
+		///     either because you can ensure that AppKit/UIKit is not in use at
+		///     this point or because the APIs in question might have later been
+		///     relaxed or made thread safe by Apple.
+		///   </para>
+		/// </remarks>
+		[BindingImpl (BindingImplOptions.Optimizable)]
+		internal static bool CheckForIllegalCrossThreadCalls => AppContext.TryGetSwitch ("ObjCRuntime.Runtime.CheckForIllegalCrossThreadCalls", out bool enabled) ? enabled : true;
+
 		internal static bool Initialized {
 			get { return initialized; }
 		}
@@ -428,6 +457,8 @@ namespace ObjCRuntime {
 		}
 
 #if MONOMAC
+		/// <summary>Raised when an assembly is about to be registered with the Objective-C runtime, allowing an application to control whether the assembly's types are registered.</summary>
+		/// <remarks>This event is only available on macOS. Set the event argument's <see cref="ObjCRuntime.AssemblyRegistrationEventArgs.Register" /> property to <see langword="false" /> to skip registering the assembly.</remarks>
 		public static event AssemblyRegistrationHandler? AssemblyRegistration;
 
 		static bool OnAssemblyRegistration (AssemblyName assembly_name)
@@ -446,7 +477,11 @@ namespace ObjCRuntime {
 		static MarshalObjectiveCExceptionMode objc_exception_mode;
 		static MarshalManagedExceptionMode managed_exception_mode;
 
+		/// <summary>Raised when an Objective-C exception is about to be marshalled into managed code, allowing the application to choose how the exception is handled.</summary>
+		/// <remarks>Handlers can inspect the native exception and set the marshalling mode on the event arguments to control whether a managed exception is thrown.</remarks>
 		public static event MarshalObjectiveCExceptionHandler? MarshalObjectiveCException;
+		/// <summary>Raised when a managed exception is about to be marshalled into an Objective-C exception, allowing the application to choose how the exception is handled.</summary>
+		/// <remarks>Handlers can inspect the managed exception and set the marshalling mode on the event arguments to control how the exception is surfaced to native code.</remarks>
 		public static event MarshalManagedExceptionHandler? MarshalManagedException;
 
 		static MarshalObjectiveCExceptionMode OnMarshalObjectiveCException (IntPtr exception_handle, sbyte throwManagedAsDefault)
@@ -1178,6 +1213,21 @@ namespace ObjCRuntime {
 			}
 		}
 
+		// Ownership-aware variant of UnregisterNSObject: only removes the entry if it
+		// still refers to `managed` (or is dead). This avoids clobbering an entry that
+		// another object created after reusing a freed native pointer (issue #25861).
+		internal static void UnregisterNSObject (IntPtr ptr, NSObject managed)
+		{
+			lock (lock_obj) {
+				if (object_map.TryGetValue (ptr, out var value)) {
+					if (value.Target is null || object.ReferenceEquals (value.Target, managed)) {
+						object_map.Remove (ptr);
+						value.Free ();
+					}
+				}
+			}
+		}
+
 		internal static void NativeObjectHasDied (IntPtr ptr, NSObject? managed_obj)
 		{
 			lock (lock_obj) {
@@ -1198,7 +1248,12 @@ namespace ObjCRuntime {
 			}
 		}
 
-		internal static void RegisterNSObject (NSObject obj, IntPtr ptr)
+		// Completes deferred object_map registration (issue #25861): when 'onlyIfNeeded' is
+		// true, registers the object only if the pointer isn't already present, and leaves
+		// any existing entry untouched. This avoids redundantly re-registering objects that
+		// were registered eagerly (e.g. direct bindings), and avoids clobbering a concurrent
+		// registration (e.g. another object reusing a freed native pointer).
+		internal static void RegisterNSObject (NSObject obj, IntPtr ptr, bool onlyIfNeeded = false)
 		{
 			GCHandle handle;
 			if (Runtime.IsCoreCLR) {
@@ -1208,8 +1263,17 @@ namespace ObjCRuntime {
 			}
 
 			lock (lock_obj) {
-				if (object_map.Remove (ptr, out var existing))
-					existing.Free ();
+				if (onlyIfNeeded) {
+					if (object_map.ContainsKey (ptr)) {
+						// Already registered; don't touch the existing entry, just free the
+						// handle we speculatively allocated.
+						handle.Free ();
+						return;
+					}
+				} else {
+					if (object_map.Remove (ptr, out var existing))
+						existing.Free ();
+				}
 				object_map [ptr] = handle;
 #pragma warning disable RBI0014
 				obj.Handle = ptr;
@@ -1839,6 +1903,12 @@ namespace ObjCRuntime {
 
 			var o = TryGetNSObject (ptr, evenInFinalizerQueue);
 
+			// Fallback for issue #25861: a user type still executing its own 'init' isn't in
+			// the object_map yet (deferred until 'init' completes), but carries its gchandle
+			// in a native ivar. Safe here because GetNSObject is only called for Objective-C
+			// objects. See TryGetNSObjectFromIvar for why this can't live in TryGetNSObject.
+			o ??= TryGetNSObjectFromIvar (ptr, evenInFinalizerQueue);
+
 			if (o is not null) {
 				if (owns)
 					o.DangerousRelease ();
@@ -1894,6 +1964,11 @@ namespace ObjCRuntime {
 				return null;
 
 			var obj = TryGetNSObject (ptr, evenInFinalizerQueue: evenInFinalizerQueue);
+
+			// Fallback for issue #25861: resolve a user type still executing its own 'init'
+			// (not yet in the object_map) via its native gchandle ivar. See the non-generic
+			// GetNSObject for why this is safe here.
+			obj ??= TryGetNSObjectFromIvar (ptr, evenInFinalizerQueue);
 
 			// First check if we got an object of the expected type
 			if (obj is T o)
@@ -2622,7 +2697,7 @@ namespace ObjCRuntime {
 
 		// Note that the code in this method doesn't necessarily work with NativeAOT, so assert that never happens by throwing an exception in that case
 		//
-		// IL2070: 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicMethods', 'DynamicallyAccessedMemberTypes.NonPublicMethods' in call to 'System.Type.GetMethods(BindingFlags)'. The parameter 'closed_type' of method 'ObjCRuntime.Runtime.FindClosedMethod(Type, MethodBase)' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
+		// IL2070: 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.All' in call to 'System.Type.GetMemberWithSameMetadataDefinitionAs(MemberInfo)'. The parameter 'closed_type' of method 'ObjCRuntime.Runtime.FindClosedMethod(Type, MethodBase)' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
 		[UnconditionalSuppressMessage ("", "IL2070", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
 		internal static MethodInfo FindClosedMethod (Type closed_type, MethodBase open_method)
 		{
@@ -2645,11 +2720,8 @@ namespace ObjCRuntime {
 			} while (declaring_closed_type is not null);
 
 			// Find the closed method.
-			foreach (var mi in closed_type.GetMethods (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance | BindingFlags.DeclaredOnly)) {
-				if (mi.MetadataToken == open_method.MetadataToken) {
-					return mi;
-				}
-			}
+			if (closed_type.GetMemberWithSameMetadataDefinitionAs (open_method) is MethodInfo mi)
+				return mi;
 
 			throw ErrorHelper.CreateError (8003, $"Failed to find the closed generic method '{open_method.Name}' on the type '{closed_type.FullName}'.");
 		}
@@ -2684,6 +2756,85 @@ namespace ObjCRuntime {
 			var closedMethod = MethodBase.GetMethodFromHandle (open_method_handle, closed_type.TypeHandle)!;
 			var parameters = closedMethod.GetParameters ();
 			return parameters [parameter].ParameterType.GetElementType ()!; // FIX NAMING
+		}
+
+		// Caches the closed generic helper method per (open helper method, closed instance type), so
+		// that the reflection cost (FindClosedTypeInHierarchy + MakeGenericMethod) is only paid once
+		// per instantiation instead of on every call.
+		//
+		// The cache lives in a nested type (rather than as a field initializer on Runtime) so its
+		// ConcurrentDictionary instantiation is constructed by the nested type's static constructor
+		// - which only runs the first time InvokeGenericRegistrarTrampoline actually accesses it.
+		// InvokeGenericRegistrarTrampoline is only ever reachable under a Hot-Reload-compatible
+		// build, so in every other configuration (e.g. Release/NativeAOT) the trampoline is trimmed
+		// and this nested type - together with the ConcurrentDictionary instantiation - is trimmed
+		// with it, keeping it out of Runtime's static constructor and out of the app.
+		static class ClosedGenericRegistrarTrampolines {
+			internal static readonly ConcurrentDictionary<(RuntimeMethodHandle OpenImplMethod, RuntimeTypeHandle ClosedInstanceType), MethodInfo> Cache = new ();
+		}
+
+		// Invokes a relocated generic registrar trampoline helper.
+		//
+		// When the trimmable static registrar relocates the registrar trampolines into a companion
+		// assembly (for Hot Reload, so the user assembly stays unmodified), the trampoline for a
+		// method declared in a generic type can't be relocated as-is: the static UnmanagedCallersOnly
+		// callback doesn't know the generic parameters of the instance, and we can't add the
+		// virtual-dispatch proxy to the user type (that would modify the user assembly). Instead we
+		// emit a *generic* helper method ('open_impl' below) into the companion assembly whose body
+		// performs the type-parameter-aware conversions, and the static callback dispatches to it
+		// here: we close the generic helper over the instance's actual generic arguments and invoke
+		// it. This reflection-based dispatch is only ever used under a Hot-Reload-compatible build,
+		// which always runs under the JIT (never NativeAOT), so MakeGenericMethod is safe.
+		//
+		// 'args' holds all the arguments of the helper: the instance, followed by the native
+		// arguments, followed by the trailing 'out IntPtr exception_gchandle' slot. The callback
+		// allocates the array with that extra slot so that no copy is needed here. This method
+		// invokes the closed helper and returns its (boxed) native return value. Any failure is
+		// caught and reported through 'exception_gchandle' so no exception escapes the
+		// UnmanagedCallersOnly boundary.
+		internal static object? InvokeGenericRegistrarTrampoline (object instance, RuntimeTypeHandle open_user_type_handle, RuntimeMethodHandle open_impl_method_handle, object? [] args, out IntPtr exception_gchandle)
+		{
+			// This method uses reflection (MakeGenericMethod + MethodInfo.Invoke), which requires
+			// dynamic code and isn't supported by NativeAOT. It's only ever reached under a
+			// Hot-Reload-compatible build, which always runs under the JIT (never NativeAOT). The
+			// IsNativeAOT check is optimizable, so the linker folds it to a constant and removes the
+			// reflection code below as unreachable in a NativeAOT build - which also elides the
+			// IL2060/IL3050 trimmer/AOT warnings that MakeGenericMethod would otherwise produce.
+			if (IsNativeAOT)
+				throw CreateNativeAOTNotSupportedException ();
+
+			exception_gchandle = IntPtr.Zero;
+			try {
+				var closed_instance_type = instance.GetType ();
+				var cache_key = (open_impl_method_handle, closed_instance_type.TypeHandle);
+				MethodInfo closed_impl;
+				if (ClosedGenericRegistrarTrampolines.Cache.TryGetValue (cache_key, out var cached_impl)) {
+					closed_impl = cached_impl;
+				} else {
+					var open_user_type = Type.GetTypeFromHandle (open_user_type_handle);
+					if (open_user_type is null)
+						throw new InvalidOperationException ("Could not resolve the open generic type of a relocated registrar trampoline.");
+					var closed_user_type = FindClosedTypeInHierarchy (open_user_type, closed_instance_type);
+					if (closed_user_type is null)
+						throw new InvalidOperationException ($"Could not find the type '{open_user_type.FullName}' in the type hierarchy of '{closed_instance_type.FullName}'.");
+					if (MethodBase.GetMethodFromHandle (open_impl_method_handle) is not MethodInfo open_impl)
+						throw new InvalidOperationException ("Could not resolve the generic helper method of a relocated registrar trampoline.");
+					closed_impl = open_impl.MakeGenericMethod (closed_user_type.GetGenericArguments ());
+					ClosedGenericRegistrarTrampolines.Cache.TryAdd (cache_key, closed_impl);
+				}
+
+				// The trailing 'out IntPtr exception_gchandle' slot is pre-initialized to IntPtr.Zero so
+				// that the (success) code path, which leaves the byref output untouched, reports "no
+				// exception".
+				var exception_slot = args.Length - 1;
+				args [exception_slot] = IntPtr.Zero;
+				var rv = closed_impl.Invoke (null, args);
+				exception_gchandle = (IntPtr) (args [exception_slot] ?? IntPtr.Zero);
+				return rv;
+			} catch (Exception e) {
+				exception_gchandle = AllocGCHandle (e);
+				return null;
+			}
 		}
 
 		// This method might be called by the generated code from the managed static registrar.
@@ -2769,6 +2920,44 @@ namespace ObjCRuntime {
 			if (ptr == IntPtr.Zero)
 				return null;
 			return GCHandle.FromIntPtr (ptr).Target;
+		}
+
+		// Returns the gchandle stored in the native object's gchandle ivar (user types
+		// only; INVALID_GCHANDLE/zero otherwise).
+		[DllImport ("__Internal")]
+		static extern IntPtr xamarin_get_gchandle (IntPtr obj);
+
+		internal static IntPtr GetGCHandleForObject (IntPtr ptr)
+		{
+			return xamarin_get_gchandle (ptr);
+		}
+
+		// Fallback lookup for issue #25861: a user-type object that hasn't been added to
+		// the object_map yet (e.g. it's still executing its own 'init') can still be
+		// resolved via the gchandle stored in its native ivar. Returns null for direct
+		// bindings (which have no ivar) and for objects without a managed reference.
+		internal static NSObject? TryGetNSObjectFromIvar (IntPtr ptr)
+		{
+			var gchandle = xamarin_get_gchandle (ptr);
+			if (gchandle == IntPtr.Zero)
+				return null;
+			return GetGCHandleTarget (gchandle) as NSObject;
+		}
+
+		// Guarded ivar fallback for issue #25861: resolve a user type that's still executing
+		// its own 'init' (and so isn't in the object_map yet) via its native gchandle ivar,
+		// only returning it if it still owns 'ptr' and isn't queued for finalization (unless
+		// asked otherwise). MUST only be called with an Objective-C object pointer: it sends
+		// the xamarinGetGCHandle message, which crashes on non-Objective-C native handles.
+		// That's why this isn't folded into the general TryGetNSObject (which can be called
+		// with arbitrary native handles, e.g. from GetINativeObject); it's only safe from
+		// GetNSObject/GetNSObject<T>, which are only ever called for Objective-C objects.
+		static NSObject? TryGetNSObjectFromIvar (IntPtr ptr, bool evenInFinalizerQueue)
+		{
+			var fromIvar = TryGetNSObjectFromIvar (ptr);
+			if (fromIvar is not null && fromIvar.Handle == ptr && (evenInFinalizerQueue || !fromIvar.InFinalizerQueue))
+				return fromIvar;
+			return null;
 		}
 
 		// Allocate a GCHandle and return the IntPtr to it.

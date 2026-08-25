@@ -1265,20 +1265,18 @@ namespace Foundation {
 	}
 
 	/// <summary>Allows the application developer to specify that the old version of the file should be removed from the version store.</summary>
-	/// <remarks>To be added.</remarks>
 	[Flags]
 	[Native]
 	public enum NSFileVersionReplacingOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Moves the replacement file instead of copying it.</summary>
 		ByMoving = 1 << 0,
 	}
 
 	/// <summary>Allows the application developer to specify that a new file version should be created by moving the source file.</summary>
-	/// <remarks>To be added.</remarks>
 	[Flags]
 	[Native]
 	public enum NSFileVersionAddingOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Moves the source file instead of copying it.</summary>
 		ByMoving = 1 << 0,
 	}
 
@@ -2265,10 +2263,11 @@ namespace Foundation {
 		OwnProcess = 3,
 	}
 
+	/// <summary>Specifies how an item provider supplies a file.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSItemProviderFileOptions : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Opens the file in place instead of copying it.</summary>
 		OpenInPlace = 1,
 	}
 

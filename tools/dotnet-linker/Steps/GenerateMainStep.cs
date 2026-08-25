@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.Json;
 
@@ -43,6 +44,13 @@ namespace Xamarin {
 			// startup. MonoVM and NativeAOT are unaffected (they don't use xamarin_bridge_compute_properties).
 			if (app.XamarinRuntime == XamarinRuntime.CoreCLR)
 				app.RuntimeConfigProperties = LoadRuntimeConfigProperties ();
+
+			if (app.GenerateTrustedPlatformAssemblies) {
+				app.TrustedPlatformAssemblies.AddRange (app.Assemblies.Select (v => v.FileName));
+#if ASSEMBLY_PREPARER
+				app.TrustedPlatformAssemblies.AddRange (Configuration.AddedAssemblies.Select (v => Path.GetFileName (v.Path)));
+#endif
+			}
 
 			// We want this called before any other initialization methods.
 			registration_methods.Insert (0, "xamarin_initialize_dotnet");

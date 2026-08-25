@@ -74,9 +74,15 @@ namespace SensitiveContentAnalysis {
 		[NullAllowed]
 		SCVideoStreamAnalysisChangeHandler AnalysisChangedHandler { get; set; }
 
+		/// <summary>Creates a new <see cref="SCVideoStreamAnalyzer" /> instance with the specified participant and stream direction.</summary>
+		/// <param name="participantUuid">The unique identifier for a participant in the conference call.</param>
+		/// <param name="streamDirection">Specifies whether the stream comes from the local camera or a remote location.</param>
+		/// <param name="error">The error object if an error occurs.</param>
+		/// <returns>A new <see cref="SCVideoStreamAnalyzer" /> instance with the specified participant and stream direction if successful; otherwise, <see langword="null" />.</returns>
 		[Export ("initWithParticipantUUID:streamDirection:error:")]
-		[Internal]
-		NativeHandle _InitWithParticipantUuid (string participantUuid, SCVideoStreamAnalyzerStreamDirection streamDirection, [NullAllowed] out NSError error);
+		[FactoryMethod]
+		[return: NullAllowed]
+		NativeHandle Constructor (string participantUuid, SCVideoStreamAnalyzerStreamDirection streamDirection, [NullAllowed] out NSError error);
 
 		[Export ("analyzePixelBuffer:")]
 		void AnalyzePixelBuffer (CVPixelBuffer pixelBuffer);

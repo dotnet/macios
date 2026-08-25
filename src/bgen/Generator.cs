@@ -1439,6 +1439,8 @@ public partial class Generator : IMemberGatherer {
 						continue;
 					} else if (attr is FactoryAttribute) {
 						continue;
+					} else if (attr is FactoryMethodAttribute) {
+						continue;
 					} else if (attr is AbstractAttribute) {
 						if (mi.DeclaringType == t)
 							need_abstract [t] = true;
@@ -2183,6 +2185,10 @@ public partial class Generator : IMemberGatherer {
 
 				string kn = "k" + (i++);
 				if (use_export_as_string_constant) {
+					if (BindingTouch.SupportsXmlDocumentation) {
+						if (!WriteDocumentation (prop))
+							print ($"/// <summary>The value of the <c>{export.Selector}</c> key from the underlying <see cref=\"NSNotification\" />'s user info dictionary.</summary>");
+					}
 					print ("{0} {1}{2} {3} {{\n\tget {{\n",
 						   is_internal ? "internal" : "public",
 						   propertyType,
@@ -2198,6 +2204,10 @@ public partial class Generator : IMemberGatherer {
 					print ("[Field (\"{0}\", \"{1}\")]", export.Selector, lib);
 					print ("static IntPtr {0};", kn);
 					print ("");
+					if (BindingTouch.SupportsXmlDocumentation) {
+						if (!WriteDocumentation (prop))
+							print ($"/// <summary>The value of the <c>{export.Selector}</c> key from the underlying <see cref=\"NSNotification\" />'s user info dictionary.</summary>");
+					}
 					// linker will remove the attributes (but it's useful for testing)
 					print_generated_code ();
 					print ("{0} {1}{2} {3} {{",
@@ -2320,13 +2330,15 @@ public partial class Generator : IMemberGatherer {
 
 	// this attribute allows the linker to be more clever in removing unused code in bindings - without risking breaking user code
 	// only generate those for monotouch now since we can ensure they will be linked away before reaching the devices
-	public void GeneratedCode (StreamWriter? sw, int tabs, bool optimizable = true)
+	public void GeneratedCode (StreamWriter? sw, int tabs, bool optimizable = true, bool factoryMethod = false)
 	{
 		for (int i = 0; i < tabs; i++)
 			sw!.Write ('\t');
 		sw!.Write ("[BindingImpl (BindingImplOptions.GeneratedCode");
 		if (optimizable)
 			sw.Write (" | BindingImplOptions.Optimizable");
+		if (factoryMethod)
+			sw.Write (" | BindingImplOptions.FactoryMethod");
 		sw.WriteLine (")]");
 	}
 
@@ -2373,9 +2385,9 @@ public partial class Generator : IMemberGatherer {
 		}
 	}
 
-	public void print_generated_code (bool optimizable = true)
+	public void print_generated_code (bool optimizable = true, bool factoryMethod = false)
 	{
-		GeneratedCode (sw, indent, optimizable);
+		GeneratedCode (sw, indent, optimizable, factoryMethod);
 	}
 
 	public void print (string format)
@@ -2788,7 +2800,13 @@ public partial class Generator : IMemberGatherer {
 	{
 		var mi = minfo.Method!;
 		string name;
-		if (minfo.is_ctor) {
+		if (minfo.render_as_factory_method) {
+			name = minfo.factory_method_name!;
+		} else if (minfo.is_factory_method && !minfo.is_ctor) {
+			// The backing instance helper for a named factory method is hidden behind an
+			// underscore-prefixed internal method; the public API is the static factory method.
+			name = "_" + minfo.factory_method_name;
+		} else if (minfo.is_ctor) {
 			if (minfo.is_protocol_member) {
 				var bindAttribute = GetBindAttribute (mi);
 				name = bindAttribute?.Selector ?? "CreateInstance";
@@ -2815,6 +2833,11 @@ public partial class Generator : IMemberGatherer {
 
 		if (minfo.is_ctor && minfo.is_protocol_member) {
 			sb.Append ("T? ");
+		} else if (minfo.render_as_factory_method) {
+			sb.Append (Nomenclator.GetGeneratedTypeName (mi.DeclaringType!));
+			if (minfo.is_factory_method_nullable)
+				sb.Append ('?');
+			sb.Append (' ');
 		} else if (!minfo.is_ctor && !is_async) {
 			var prefix = "";
 			if (!BindThirdPartyLibrary) {
@@ -3165,7 +3188,7 @@ public partial class Generator : IMemberGatherer {
 				GetReturnsWrappers (mi, minfo, mi.DeclaringType, out cast_a, out cast_b, postproc);
 			else if (mi.Name == "Constructor") {
 				cast_a = "InitializeHandle (";
-				cast_b = ", \"" + selector + "\")";
+				cast_b = ", \"" + selector + "\"" + (minfo.is_factory_method && minfo.is_factory_method_nullable ? ", false" : "") + ")";
 			}
 
 			if (minfo.is_static)
@@ -4029,7 +4052,7 @@ public partial class Generator : IMemberGatherer {
 		}
 	}
 
-	void GenerateProperty (Type type, PropertyInfo pi, List<string>? instance_fields_to_clear_on_dispose, bool is_model, bool is_interface_impl = false, bool is_protocol_member = false, bool? is_protocol_member_required = null, bool is_protocol_implementation_method = false)
+	void GenerateProperty (Type type, PropertyInfo pi, List<string>? instance_fields_to_clear_on_dispose, bool is_model, bool is_interface_impl = false, bool is_protocol_member = false, bool? is_protocol_member_required = null, bool is_protocol_implementation_method = false, bool is_appearance = false)
 	{
 		var export = GetExportAttribute (pi, out var wrap);
 		var minfo = new MemberInformation (this, this, pi, type, is_interface_impl);
@@ -4067,7 +4090,8 @@ public partial class Generator : IMemberGatherer {
 		}
 
 		if (wrap is not null) {
-			WriteDocumentation (pi);
+			if (!WriteDocumentation (pi) && is_appearance)
+				WriteAppearanceMemberDocumentation (type, pi.Name);
 			print_generated_code ();
 			PrintPropertyAttributes (pi, minfo);
 			PrintAttributes (pi, preserve: true, advice: true);
@@ -4145,7 +4169,8 @@ public partial class Generator : IMemberGatherer {
 			}
 		}
 
-		WriteDocumentation (pi);
+		if (!WriteDocumentation (pi) && is_appearance)
+			WriteAppearanceMemberDocumentation (type, pi.Name);
 		print_generated_code (optimizable: IsOptimizable (pi));
 		PrintPropertyAttributes (pi, minfo);
 
@@ -4624,8 +4649,9 @@ public partial class Generator : IMemberGatherer {
 			}
 		}
 
+		bool wroteDocs;
 		if (minfo.is_extension_method) {
-			WriteDocumentation ((MemberInfo?) GetProperty (mi) ?? mi);
+			wroteDocs = WriteDocumentation ((MemberInfo?) GetProperty (mi) ?? mi);
 		} else if (minfo.is_category_extension) {
 			// If the method has xml docs, it's unlikely it'll have for the 'This' parameter we add to the method signature.
 			// So in that case, inject docs for the 'This' parameter.
@@ -4651,10 +4677,17 @@ public partial class Generator : IMemberGatherer {
 				node.InsertBefore (thisParamDoc, firstParamDocs);
 				return node;
 			});
-			WriteDocumentation (mi, transformNode: injectParamNode);
+			wroteDocs = WriteDocumentation (mi, transformNode: injectParamNode);
+		} else if (minfo.is_factory_method) {
+			// The xml documentation is written for the generated factory method instead
+			// of the (internal) backing constructor. See GenerateFactoryMethod.
+			wroteDocs = false;
 		} else {
-			WriteDocumentation (mi);
+			wroteDocs = WriteDocumentation (mi);
 		}
+
+		if (!wroteDocs && minfo.is_appearance)
+			WriteAppearanceMemberDocumentation (minfo.type, mi.Name);
 
 		PrintProtocolMemberAttributes (minfo);
 		PrintDelegateProxy (minfo);
@@ -4665,7 +4698,11 @@ public partial class Generator : IMemberGatherer {
 			return;
 		}
 
-		PrintExport (minfo);
+		// The '_Create...' helper backing a named factory method is a private, non-virtual
+		// method that's only called from the generated static factory method, so it doesn't
+		// need to be exported to the Objective-C runtime.
+		if (!(minfo.is_factory_method && !minfo.is_ctor))
+			PrintExport (minfo);
 
 		if (!minfo.is_interface_impl) {
 			PrintMethodAttributes (minfo);
@@ -4688,6 +4725,12 @@ public partial class Generator : IMemberGatherer {
 		} else {
 			do_not_call_base = false;
 		}
+
+		// The member backing a factory method is hidden; the public API is the generated
+		// static factory method instead. A backing constructor is kept internal so the
+		// factory method can reach it, while a named init helper ('_Create...') is private.
+		if (minfo.is_factory_method)
+			mod = minfo.is_ctor ? "internal" : "";
 
 		print_generated_code (optimizable: IsOptimizable (minfo.mi));
 		print ("{0} {1}{2}{3}",
@@ -4750,6 +4793,9 @@ public partial class Generator : IMemberGatherer {
 			print ("}\n");
 		}
 
+		if (minfo.is_factory_method)
+			GenerateFactoryMethod (minfo);
+
 		if (minfo.generate_is_async_overload) {
 			// We do not want Async methods inside internal wrapper classes, they are useless
 			// internal sealed class FooWrapper : BaseWrapper, IMyFooDelegate
@@ -4765,6 +4811,107 @@ public partial class Generator : IMemberGatherer {
 				GenerateAsyncMethod (minfo, AsyncMethodKind.WithResultOutParameter);
 			}
 		}
+	}
+
+	// Generates a public static factory method for a constructor or a named init method
+	// annotated with [FactoryMethod]. When the initializer's return value is nullable (i.e. the
+	// native initializer is failable), the factory method returns null if the initializer
+	// returned nil; otherwise it just returns the newly created instance.
+	//
+	// For a constructor, the factory method calls the (internal) backing constructor. For a named
+	// init method (not a 'Constructor'), the factory method allocates the instance and calls the
+	// (internal) backing helper method, which does the actual 'init' message send.
+	void GenerateFactoryMethod (MemberInformation minfo)
+	{
+		var mi = minfo.Method!;
+		var typeName = Nomenclator.GetGeneratedTypeName (mi.DeclaringType!);
+
+		// [FactoryMethod] only makes sense on an Objective-C 'init' selector.
+		var selector = minfo.selector ?? string.Empty;
+		if (!IsInitSelector (selector))
+			throw new BindingException (1126, true, mi.DeclaringType, mi.Name, selector);
+
+		// For a named factory method (not a constructor) the factory method name is the
+		// binding method's own name, so specifying an explicit name is confusing/redundant.
+		if (!minfo.is_ctor && AttributeManager.GetCustomAttribute<FactoryMethodAttribute> (mi)?.MethodName is not null)
+			throw new BindingException (1127, true, mi.DeclaringType, mi.Name);
+
+		// A failable initializer typically has an 'out NSError' parameter. If the binding
+		// author added one but didn't mark the return value as nullable, the factory method
+		// won't be able to return null on failure, which is almost certainly a mistake.
+		if (!minfo.is_factory_method_nullable && HasOutNSErrorParameter (mi))
+			ErrorHelper.Warning (1125, mi.DeclaringType, mi.Name);
+
+		minfo.render_as_factory_method = true;
+
+		WriteDocumentation (mi);
+		PrintMethodAttributes (minfo);
+
+		print_generated_code (optimizable: IsOptimizable (mi), factoryMethod: true);
+		print ("{0} {1}{2}",
+			   minfo.GetVisibility (),
+			   minfo.GetModifiers (),
+			   MakeSignature (minfo));
+		print ("{");
+		indent++;
+		if (minfo.is_ctor) {
+			if (minfo.is_factory_method_nullable) {
+				print ("var rv = new {0} ({1});", typeName, RenderArgs (mi.GetParameters ()));
+				print ("if (rv.Handle == global::ObjCRuntime.NativeHandle.Zero) {");
+				indent++;
+				print ("rv.Dispose ();");
+				print ("return null;");
+				indent--;
+				print ("}");
+				print ("return rv;");
+			} else {
+				print ("return new {0} ({1});", typeName, RenderArgs (mi.GetParameters ()));
+			}
+		} else {
+			// The backing helper (named "_<factory>") performs the 'init' message send on the
+			// freshly allocated instance and returns the resulting handle.
+			print ("var rv = new {0} (NSObjectFlag.Empty);", typeName);
+			if (minfo.is_factory_method_nullable)
+				print ("rv.InitializeHandle (rv._{0} ({1}), \"{2}\", false);", minfo.factory_method_name, RenderArgs (mi.GetParameters ()), selector);
+			else
+				print ("rv.InitializeHandle (rv._{0} ({1}), \"{2}\");", minfo.factory_method_name, RenderArgs (mi.GetParameters ()), selector);
+			if (minfo.is_factory_method_nullable) {
+				print ("if (rv.Handle == global::ObjCRuntime.NativeHandle.Zero) {");
+				indent++;
+				print ("rv.Dispose ();");
+				print ("return null;");
+				indent--;
+				print ("}");
+			}
+			print ("return rv;");
+		}
+		indent--;
+		print ("}\n");
+
+		minfo.render_as_factory_method = false;
+	}
+
+	// A [FactoryMethod] can only be applied to an Objective-C 'init' selector: either "init"
+	// itself, or a selector that starts with "init" followed by an uppercase letter.
+	static bool IsInitSelector (string selector)
+	{
+		if (selector == "init")
+			return true;
+		return selector.Length > 4 && selector.StartsWith ("init", StringComparison.Ordinal) && char.IsUpper (selector [4]);
+	}
+
+
+
+	// Returns true if the method has an 'out'/'ref' NSError parameter.
+	static bool HasOutNSErrorParameter (MethodInfo mi)
+	{
+		foreach (var pi in mi.GetParameters ()) {
+			if (!pi.ParameterType.IsByRef)
+				continue;
+			if (pi.ParameterType.GetElementType ()?.Name == "NSError")
+				return true;
+		}
+		return false;
 	}
 
 	static PropertyInfo? GetProperty (MethodInfo method, bool getter = true, bool setter = true)
@@ -4802,8 +4949,11 @@ public partial class Generator : IMemberGatherer {
 					continue;
 
 				// we might get "delegates" from DelegateName attributes, and in that case the declaring type doesn't have xml docs for the delegate (the declaring type is the container type for the member with the DelegateName attribute, and its documentation has nothing to do with the delegate type)
+				var wroteDelegateDocs = false;
 				if (mi.DeclaringType!.IsSubclassOf (TypeCache.System_Delegate))
-					WriteDocumentation (mi.DeclaringType);
+					wroteDelegateDocs = WriteDocumentation (mi.DeclaringType);
+				if (!wroteDelegateDocs && BindingTouch.SupportsXmlDocumentation && shortName.EndsWith ("EventArgs", StringComparison.Ordinal))
+					print ("/// <summary>A delegate that represents the callback for the corresponding Objective-C delegate/protocol method.</summary>");
 
 				var del = mi.DeclaringType;
 
@@ -5739,6 +5889,16 @@ public partial class Generator : IMemberGatherer {
 		return DocumentationManager.WriteDocumentation (sw!, indent, info, transformNode);
 	}
 
+	// Emits a generated summary for a member of a strongly-typed appearance class. These members are
+	// proxies for the corresponding members on the enclosing type, and the documentation injected from
+	// Apple's documentation doesn't cover them, so we generate a summary that points back to the type.
+	void WriteAppearanceMemberDocumentation (Type type, string memberName)
+	{
+		if (!BindingTouch.SupportsXmlDocumentation)
+			return;
+		print ($"/// <summary>Appearance proxy for the <c>{memberName}</c> member of <see cref=\"global::{type.FullName}\" />.</summary>");
+	}
+
 	public bool TryComputeLibraryName (string? attributeLibraryName, Type type, [NotNullWhen (true)] out string? library_name, out string? library_path)
 	{
 		library_path = null;
@@ -6454,6 +6614,10 @@ public partial class Generator : IMemberGatherer {
 			if (field_exports.Count != 0) {
 				foreach (var field_pi in field_exports.OrderBy (f => f.Name, StringComparer.Ordinal)) {
 					var fieldAttr = AttributeManager.GetCustomAttribute<FieldAttribute> (field_pi);
+					if (fieldAttr?.SymbolAddress == true && field_pi.PropertyType != TypeCache.System_IntPtr) {
+						exceptions.Add (ErrorHelper.CreateError (1128, type.FullName, field_pi.Name, field_pi.PropertyType.FullName));
+						continue;
+					}
 					if (!TryComputeLibraryName (fieldAttr?.LibraryName, type, out var library_name, out var library_path)) {
 						exceptions.Add (ErrorHelper.CreateError (1042, /* Missing '[Field (LibraryName=value)]' for {0} (e.g."__Internal") */ type.FullName + "." + field_pi.Name));
 						continue;
@@ -6467,7 +6631,7 @@ public partial class Generator : IMemberGatherer {
 					} else
 						fieldTypeName = TypeManager.FormatType (field_pi.DeclaringType, field_pi.PropertyType);
 
-					bool nullable = false;
+					bool nullable = !field_pi.PropertyType.IsValueType && AttributeManager.IsNullable (field_pi);
 					// Value types we dont cache for now, to avoid Nullable<T>
 					if (!field_pi.PropertyType.IsValueType || smartEnumTypeName is not null) {
 						print_generated_code ();
@@ -6568,7 +6732,7 @@ public partial class Generator : IMemberGatherer {
 					}
 					PrintAttributes (field_pi, preserve: true, advice: true);
 					PrintObsoleteAttributes (field_pi);
-					print ("[Field (\"{0}\",  \"{1}\")]", fieldAttr!.SymbolName, library_path ?? library_name);
+					print ("[Field (\"{0}\",  \"{1}\"{2})]", fieldAttr!.SymbolName, library_path ?? library_name, fieldAttr.SymbolAddress ? ", SymbolAddress = true" : "");
 					PrintPlatformAttributes (field_pi);
 					if (AttributeManager.HasAttribute<AdvancedAttribute> (field_pi)) {
 						print ("[EditorBrowsable (EditorBrowsableState.Advanced)]");
@@ -6628,7 +6792,10 @@ public partial class Generator : IMemberGatherer {
 					} else if (field_pi.PropertyType == TypeCache.System_Float) {
 						print ("return Dlfcn.GetFloat (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
 					} else if (field_pi.PropertyType == TypeCache.System_IntPtr) {
-						print ("return Dlfcn.GetIntPtr (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
+						if (fieldAttr.SymbolAddress)
+							print ("return Dlfcn.GetIndirect (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
+						else
+							print ("return Dlfcn.GetIntPtr (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
 					} else if (field_pi.PropertyType == TypeCache.System_UIntPtr) {
 						print ("return Dlfcn.GetUIntPtr (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
 					} else if (field_pi.PropertyType == TypeCache.System_Int64) {
@@ -6641,8 +6808,8 @@ public partial class Generator : IMemberGatherer {
 						//
 						if (Frameworks.HaveCoreMedia && Frameworks.HaveAVFoundation && (field_pi.PropertyType == TypeCache.CMTime ||
 						   field_pi.PropertyType == TypeCache.AVCaptureWhiteBalanceGains)) {
-							print ("return *(({3} *) Dlfcn.dlsym (Libraries.{2}.Handle, \"{1}\"));", field_pi.Name, fieldAttr.SymbolName, library_name,
-								TypeManager.FormatType (type, field_pi.PropertyType.Namespace, field_pi.PropertyType.Name));
+							var valueTypeName = TypeManager.FormatType (type, field_pi.PropertyType.Namespace, field_pi.PropertyType.Name);
+							print ("return Dlfcn.GetStruct<{3}> (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name, valueTypeName);
 						} else if (field_pi.PropertyType == TypeCache.System_nint) {
 							print ("return Dlfcn.GetNInt (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
 						} else if (field_pi.PropertyType == TypeCache.System_nuint) {
@@ -6682,6 +6849,9 @@ public partial class Generator : IMemberGatherer {
 								else
 									throw new BindingException (1014, true, fieldTypeName, FormatPropertyInfo (field_pi));
 							}
+						} else if (field_pi.PropertyType.IsValueType) {
+							var valueTypeName = TypeManager.FormatType (type, field_pi.PropertyType.Namespace, field_pi.PropertyType.Name);
+							print ("return Dlfcn.GetStruct<{3}> (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name, valueTypeName);
 						} else {
 							if (field_pi.PropertyType == TypeCache.System_String)
 								throw new BindingException (1013, true);
@@ -7151,8 +7321,10 @@ public partial class Generator : IMemberGatherer {
 				// historical note: unlike many attributes our `DisposeAttribute` has `AllowMultiple=true`
 				var has_dispose_attributes = attrs.Length > 0;
 				if (has_dispose_attributes || (instance_fields_to_clear_on_dispose.Count > 0)) {
-					// if there'a any [Dispose] attribute then they all must opt-in in order for the generated Dispose method to be optimizable
+					// if there are any [Dispose] attributes then they all must opt-in in order for the generated Dispose method to be optimizable
 					bool optimizable = !has_dispose_attributes || IsOptimizable (type);
+					if (BindingTouch.SupportsXmlDocumentation)
+						print ("/// <inheritdoc />");
 					print_generated_code (optimizable: optimizable);
 					print ("protected override void Dispose (bool disposing)");
 					print ("{");
@@ -7203,6 +7375,10 @@ public partial class Generator : IMemberGatherer {
 				string appearance_type_name = TypeName + "Appearance";
 				print ("public partial class {0} : {1} {{", appearance_type_name, base_class);
 				indent++;
+				if (BindingTouch.SupportsXmlDocumentation) {
+					print ("/// <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>");
+					print ("/// <param name=\"handle\">Pointer (handle) to the unmanaged object.</param>");
+				}
 				print ("protected internal {0} (IntPtr handle) : base (handle) {{}}", appearance_type_name);
 
 				if (appearance_selectors is not null) {
@@ -7215,7 +7391,7 @@ public partial class Generator : IMemberGatherer {
 									category_extension_type: is_category_class ? base_type : null,
 									is_appearance: true);
 						else if (mi is PropertyInfo pinfo)
-							GenerateProperty (type, pinfo, currently_ignored_fields, false);
+							GenerateProperty (type, pinfo, currently_ignored_fields, false, is_appearance: true);
 					}
 				}
 
@@ -7529,6 +7705,8 @@ public partial class Generator : IMemberGatherer {
 					var bareType = pt.TryIsByRef (out var elementType) ? elementType : pt;
 					var nullable = !pt.IsValueType && AttributeManager.IsNullable (p);
 
+					if (BindingTouch.SupportsXmlDocumentation)
+						print ($"/// <summary>The value of the <c>{GetPublicParameterName (p)}</c> argument to the event.</summary>");
 					print ("public {0}{1} {2} {{ get; set; }}", TypeManager.RenderType (bareType), nullable ? "?" : "", GetPublicParameterName (p));
 				}
 				indent--; print ("}\n");

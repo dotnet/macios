@@ -197,6 +197,27 @@ The default value of this property `false` in .NET 9, and `true` in .NET 10+.
 > [!NOTE]
 > File an issue if you find that you need to disable this feature, as it's possible that the option to disable it will be removed in future.
 
+## CheckForIllegalCrossThreadCalls
+
+Controls whether the UI thread checks (the `[NS|UI]Application.EnsureUIThread`
+calls the generated bindings emit for UI code) are performed.
+
+When set to `true`, the checks are enabled: accessing UI API off the UI thread
+throws an exception. When set to `false`, the checks are disabled.
+
+This property is emitted as the `ObjCRuntime.Runtime.CheckForIllegalCrossThreadCalls`
+runtime feature switch, so it takes effect even when trimming is disabled: the
+`[NS|UI]Application.CheckForIllegalCrossThreadCalls` field reflects the property
+value at runtime, and the checks are enabled or disabled accordingly.
+
+When trimming is enabled and the checks are disabled, ILLink additionally stubs
+the `[NS|UI]Application.EnsureUIThread` method body and trims away the
+`CheckForIllegalCrossThreadCalls` field, making the app slightly smaller and
+faster.
+
+If this value is not specified, the checks are kept in debug builds and removed
+in release builds.
+
 ## CodesignAllocate
 
 The path to the `codesign_allocate` tool.
@@ -617,6 +638,13 @@ Default: true
 
 Where the generated source from the generator are saved.
 
+## GenerateTrustedPlatformAssemblies
+
+A boolean property that specifies whether the trusted platform assembly list is
+generated at build time instead of discovered when the app launches.
+
+The default value is `false` for debug builds and `true` for other builds.
+
 ## GetApplicationArtifactsDependsOn
 
 A semi-colon delimited property that can be used to extend the
@@ -649,9 +677,11 @@ Example:
 
 ## HotReloadCompatibleBuild
 
-A boolean property that indicates whether the build must be compatible with Hot
-Reload. When enabled, the build tasks avoid modifying user (reloadable)
-assemblies, since such modifications would break Hot Reload.
+A boolean property that indicates whether the build must remain compatible
+with Hot Reload. When set to `true`, the build avoids modifying user
+assemblies so they stay byte-for-byte unchanged (a requirement for Hot
+Reload). This will disable a few minor optimizations, but will otherwies not
+affect anything.
 
 The default value is `true` for debug builds and `false` otherwise.
 
@@ -1593,6 +1623,13 @@ However, the either of the following works:
 ```
 
 Note: this property will always be `false` on macOS and Mac Catalyst.
+
+## StripFrameworkHeaders
+
+A boolean property that specifies whether the `Headers`, `PrivateHeaders`, and
+`Modules` directories are removed from embedded frameworks before code signing.
+
+The default value is `true`. Set it to `false` to preserve these directories.
 
 ## StripPath
 

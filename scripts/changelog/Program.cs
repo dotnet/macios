@@ -10,8 +10,8 @@ using System.Threading.Tasks;
 namespace changelog {
 
 	class Program {
-		static List<string> list = new ();
-		static List<string> filters = new ();
+		static readonly List<string> list = new ();
+		static readonly List<string> filters = new ();
 
 		// current repo (1) points to dotnet/installer (2)
 		// getting into other repos (pointed by dotnet/installer) can show different results

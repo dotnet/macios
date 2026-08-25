@@ -670,11 +670,11 @@ namespace AppKit {
 		NSWindow WindowWithWindowNumber (nint windowNum);
 
 		[Export ("mainWindow")]
-		[return: NullAllowed]
+		[NullAllowed]
 		NSWindow MainWindow { get; }
 
 		[Export ("keyWindow")]
-		[return: NullAllowed]
+		[NullAllowed]
 		NSWindow KeyWindow { get; }
 
 		/// <summary>To be added.</summary>
@@ -730,7 +730,7 @@ namespace AppKit {
 		void AbortModal ();
 
 		[Export ("modalWindow")]
-		[return: NullAllowed]
+		[NullAllowed]
 		NSWindow ModalWindow { get; }
 
 		[Export ("beginModalSessionForWindow:")]
@@ -787,7 +787,7 @@ namespace AppKit {
 		void PostEvent (NSEvent theEvent, bool atStart);
 
 		[Export ("currentEvent")]
-		[return: NullAllowed]
+		[NullAllowed]
 		NSEvent CurrentEvent { get; }
 
 		[Export ("sendEvent:")]

@@ -112,10 +112,11 @@ namespace AppKit {
 
 	[NoMacCatalyst]
 	[Native]
+	/// <summary>Specifies the urgency of a request for the user's attention.</summary>
 	public enum NSRequestUserAttentionType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Requests the user's attention for a critical event.</summary>
 		CriticalRequest = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Requests the user's attention for an informational event.</summary>
 		InformationalRequest = 10,
 	}
 

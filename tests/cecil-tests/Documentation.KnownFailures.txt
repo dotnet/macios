@@ -22605,7 +22605,6 @@ T:AppKit.NSProgressIndicatorThickness
 T:AppKit.NSRectAlignment
 T:AppKit.NSRectEdge
 T:AppKit.NSRemoteNotificationType
-T:AppKit.NSRequestUserAttentionType
 T:AppKit.NSResponder_NSTouchBarProvider
 T:AppKit.NSResponder_NSWritingToolsSupport
 T:AppKit.NSRuleEditorNestingMode

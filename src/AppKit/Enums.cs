@@ -1484,9 +1484,9 @@ namespace AppKit {
 	#endregion
 	#region NSAnimation
 
+	/// <summary>Specifies the timing curve of an animation.</summary>
 	[NoMacCatalyst]
 	[Native]
-	/// <summary>Specifies the timing curve of an animation.</summary>
 	public enum NSAnimationCurve : ulong {
 		/// <summary>The animation accelerates at the beginning and decelerates at the end.</summary>
 		EaseInOut,

@@ -7,6 +7,7 @@
 // Copyright 2014 Xamarin Inc
 //
 using System.Collections.Generic;
+using System.ComponentModel;
 
 using AVFoundation;
 using CoreGraphics;
@@ -3235,10 +3236,65 @@ namespace VideoToolbox {
 		[Export ("supported")]
 		bool Supported { [Bind ("isSupported")] get; }
 
+		/// <summary>Gets the spatial scale factors supported by the low-latency super-resolution scaler.</summary>
+		[TV (27, 0), MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Static]
+		[Export ("supportedScaleFactors")]
+		[BindAs (typeof (float []))]
+		NSNumber [] SupportedScaleFactors { get; }
+
+#if XAMCORE_5_0
+		/// <summary>Gets the supported spatial scale factors for the specified source-frame dimensions.</summary>
+		/// <param name="frameWidth">The source-frame width.</param>
+		/// <param name="frameHeight">The source-frame height.</param>
+		/// <returns>The supported spatial scale factors, or an empty array if the dimensions are unsupported.</returns>
 		[Static]
 		[Export ("supportedScaleFactorsForFrameWidth:frameHeight:")]
-		[return: BindAs (typeof (nint []))]
+		[return: BindAs (typeof (float []))]
 		NSNumber [] GetSupportedScaleFactors (nint frameWidth, nint frameHeight);
+#else
+		/// <summary>Gets the supported spatial scale factors as native number objects for the specified source-frame dimensions.</summary>
+		/// <param name="frameWidth">The source-frame width.</param>
+		/// <param name="frameHeight">The source-frame height.</param>
+		/// <returns>The supported spatial scale factors as native number objects, or an empty array if the dimensions are unsupported.</returns>
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Advanced)]
+		[Export ("supportedScaleFactorsForFrameWidth:frameHeight:")]
+		NSNumber [] GetWeakSupportedScaleFactors (nint frameWidth, nint frameHeight);
+
+		/// <summary>Gets the supported spatial scale factors for the specified source-frame dimensions.</summary>
+		/// <param name="frameWidth">The source-frame width.</param>
+		/// <param name="frameHeight">The source-frame height.</param>
+		/// <returns>The supported spatial scale factors with fractional values truncated, or an empty array if the dimensions are unsupported.</returns>
+		[Static]
+		[Advice ("Fractional scale factors are truncated; use 'GetSupportedFloatScaleFactors' instead.")]
+		[Wrap ("Array.ConvertAll (GetWeakSupportedScaleFactors (frameWidth, frameHeight), v => v.NIntValue)")]
+		nint [] GetSupportedScaleFactors (nint frameWidth, nint frameHeight);
+
+		/// <summary>Gets the supported spatial scale factors without truncating fractional values.</summary>
+		/// <param name="frameWidth">The source-frame width.</param>
+		/// <param name="frameHeight">The source-frame height.</param>
+		/// <returns>The supported spatial scale factors, or an empty array if the dimensions are unsupported.</returns>
+		[Static]
+		[Wrap ("Array.ConvertAll (GetWeakSupportedScaleFactors (frameWidth, frameHeight), v => v.FloatValue)")]
+		float [] GetSupportedFloatScaleFactors (nint frameWidth, nint frameHeight);
+#endif
+
+		/// <summary>Gets the maximum source-frame dimension for a spatial scale factor.</summary>
+		/// <param name="spatialScaleFactor">The spatial scale factor to query.</param>
+		/// <returns>The maximum dimension in pixels, or zero if the scale factor or processor is unsupported.</returns>
+		[TV (27, 0), MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Static]
+		[Export ("maximumDimensionForSpatialScaleFactor:")]
+		nint GetMaximumDimension (float spatialScaleFactor);
+
+		/// <summary>Gets the maximum source-frame pixel count for a spatial scale factor.</summary>
+		/// <param name="spatialScaleFactor">The spatial scale factor to query.</param>
+		/// <returns>The maximum pixel count, or zero if the scale factor or processor is unsupported.</returns>
+		[TV (27, 0), MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Static]
+		[Export ("maximumPixelCountForSpatialScaleFactor:")]
+		nint GetMaximumPixelCount (float spatialScaleFactor);
 	}
 
 	[UnsupportedSimulator ("ios")]
@@ -3293,10 +3349,29 @@ namespace VideoToolbox {
 		[Export ("supported")]
 		bool Supported { [Bind ("isSupported")] get; }
 
+#if XAMCORE_5_0
+		/// <summary>Gets the spatial scale factors supported by the super-resolution scaler.</summary>
 		[Static]
 		[Export ("supportedScaleFactors")]
-		[BindAs (typeof (float []))]
+		[BindAs (typeof (nint []))]
 		NSNumber [] SupportedScaleFactors { get; }
+#else
+		/// <summary>Gets the spatial scale factors supported by the super-resolution scaler as native number objects.</summary>
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Advanced)]
+		[Export ("supportedScaleFactors")]
+		NSNumber [] WeakSupportedScaleFactors { get; }
+
+		/// <summary>Gets the integral spatial scale factors as floating-point values for binary compatibility.</summary>
+		[Static]
+		[Wrap ("Array.ConvertAll (WeakSupportedScaleFactors, v => v.FloatValue)")]
+		float [] SupportedScaleFactors { get; }
+
+		/// <summary>Gets the spatial scale factors using the native integer type from the platform declaration.</summary>
+		[Static]
+		[Wrap ("Array.ConvertAll (WeakSupportedScaleFactors, v => v.NIntValue)")]
+		nint [] SupportedIntegerScaleFactors { get; }
+#endif
 	}
 
 	delegate void VTSuperResolutionScalerConfigurationDownloadConfigurationModelCallback ([NullAllowed] NSError error);

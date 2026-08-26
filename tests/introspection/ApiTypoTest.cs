@@ -279,6 +279,7 @@ namespace Introspection {
 			{ "Eftpos", All & ~ApplePlatform.TVOS }, // Electronic funds transfer at point of sale
 			{ "Eisu", ApplePlatform.MacOSX }, // Japanese input mode
 			{ "Elative", All }, // linguistic case
+			{ "Elcard", All & ~ApplePlatform.TVOS }, // Kyrgyz payment network
 			{ "Elu", All }, // activation function
 			{ "Emagic", All }, // audio software brand
 			{ "Embd", All }, // embedded abbreviation
@@ -465,6 +466,7 @@ namespace Introspection {
 			{ "Lzfse", All }, // acronym
 			{ "Lzma", All }, // acronym
 			{ "Lzw", ApplePlatform.MacOSX }, // Lempel-Ziv-Welch
+			{ "Maal", All & ~ApplePlatform.TVOS }, // Maldivian payment network
 			{ "Mada", All & ~ApplePlatform.TVOS }, // payment system
 			{ "Mcp", All }, // metacarpophalangeal (hand)
 			{ "Mebibits", All }, // IEC unit name
@@ -564,6 +566,7 @@ namespace Introspection {
 			{ "ove", All }, // word fragment from spell checker
 			{ "Overline", All & ~ApplePlatform.TVOS }, // typography term
 			{ "Paeth", All }, // PNG filter
+			{ "Pak", All & ~ApplePlatform.TVOS }, // PayPak, Pakistani payment network
 			{ "Palettize", All }, // graphics term
 			{ "Parms", All }, // parameters abbreviation
 			{ "Pausable", All }, // valid English derivative

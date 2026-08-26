@@ -1394,6 +1394,10 @@ namespace CoreImage {
 		Version6Dng = 6,
 	}
 
+	/// <summary>Handler invoked when Core Image finishes downloading resources for a RAW filter.</summary>
+	/// <param name="error">The error if the download failed or timed out; otherwise, <see langword="null" />.</param>
+	delegate void CIRawFilterDownloadResourcesCompletionHandler ([NullAllowed] NSError error);
+
 	[iOS (15, 0), MacCatalyst (15, 0), TV (15, 0)]
 	[BaseType (typeof (CIFilter), Name = "CIRAWFilter")]
 	interface CIRawFilter : CIFilterProtocol {
@@ -1408,6 +1412,18 @@ namespace CoreImage {
 		[Static]
 		[Export ("supportedCameraModelsWithVersion:")]
 		string [] GetSupportedCameraModels ([BindAs (typeof (CIRawDecoderVersion))] NSString version);
+
+		/// <summary>Downloads on-demand resources required to decode the filter's image.</summary>
+		/// <param name="timeout">The maximum time, in seconds, to wait for the download.</param>
+		/// <param name="completionHandler">The handler to invoke when the download finishes.</param>
+		/// <returns>An object that tracks and can cancel the download.</returns>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Async (XmlDocs = """
+			<summary>Asynchronously downloads on-demand resources required to decode the filter's image.</summary>
+			<returns>A task that represents the asynchronous download operation.</returns>
+			""")]
+		[Export ("downloadResourcesWithTimeout:completionHandler:")]
+		NSProgress DownloadResources (double timeout, CIRawFilterDownloadResourcesCompletionHandler completionHandler);
 
 		[Export ("supportedDecoderVersions")]
 		string [] SupportedDecoderVersions { get; }

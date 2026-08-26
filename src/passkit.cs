@@ -2097,6 +2097,21 @@ namespace PassKit {
 		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), NoTV]
 		[Field ("PKPaymentNetworkUzCard")]
 		NSString UzCard { get; }
+
+		/// <summary>Gets the PayPak payment network.</summary>
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), NoTV]
+		[Field ("PKPaymentNetworkPayPak")]
+		NSString PayPak { get; }
+
+		/// <summary>Gets the Maal payment network.</summary>
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), NoTV]
+		[Field ("PKPaymentNetworkMaal")]
+		NSString Maal { get; }
+
+		/// <summary>Gets the Elcard payment network.</summary>
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), NoTV]
+		[Field ("PKPaymentNetworkElcard")]
+		NSString Elcard { get; }
 	}
 
 	/// <summary>A button used to activate an Apple Pay payment. Available styles and types are defined by <see cref="PassKit.PKPaymentButtonStyle" /> and <see cref="PassKit.PKPaymentButtonType" />.</summary>

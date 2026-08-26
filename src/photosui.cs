@@ -12,6 +12,7 @@ using UIImage = AppKit.NSImage;
 using UIColor = AppKit.NSColor;
 using UIGestureRecognizer = Foundation.NSObject;
 using PHLivePhotoBadgeOptions = Foundation.NSObject;
+using UIPhotoSearchSuggestion = Foundation.NSObject;
 using UIViewController = AppKit.NSViewController;
 using XView = AppKit.NSView;
 #endif
@@ -692,6 +693,12 @@ namespace PhotosUI {
 	interface PHPickerSearchText : NSCopying {
 		[Export ("initWithString:")]
 		NativeHandle Constructor (string text);
+
+		/// <summary>Creates search text from a photo search suggestion.</summary>
+		/// <param name="suggestion">The photo search suggestion.</param>
+		[NoTV, NoMacCatalyst, NoMac, iOS (27, 0)]
+		[Export ("initWithPhotoSearchSuggestion:")]
+		NativeHandle Constructor (UIPhotoSearchSuggestion suggestion);
 	}
 
 	[NoTV, iOS (14, 0)]

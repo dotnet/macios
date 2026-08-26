@@ -4736,6 +4736,26 @@ namespace UIKit {
 		Large,
 	}
 
+	/// <summary>Specifies where a sheet is placed within its presenting view.</summary>
+	[TV (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[Native]
+	public enum UISheetPresentationControllerPlacement : long {
+		/// <summary>The system determines the sheet placement.</summary>
+		Automatic,
+
+		/// <summary>Places the sheet on the leading edge.</summary>
+		[NoTV]
+		Leading,
+
+		/// <summary>Centers the sheet within the presenting view.</summary>
+		[NoTV]
+		Center,
+
+		/// <summary>Places the sheet on the trailing edge.</summary>
+		[NoTV]
+		Trailing,
+	}
+
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[Native]
 	public enum UIWindowScenePresentationStyle : ulong {

@@ -2118,6 +2118,11 @@ namespace AuthenticationServices {
 		[NullAllowed, Export ("additionalAuthorizationScopes")]
 		string AdditionalAuthorizationScopes { get; set; }
 
+		/// <summary>Gets or sets whether requests include the Platform SSO authorization scopes.</summary>
+		[Mac (27, 0)]
+		[Export ("includePlatformSSOAuthorizationScopes")]
+		bool IncludePlatformSsoAuthorizationScopes { get; set; }
+
 		[NullAllowed]
 		[Export ("federationRequestURN")]
 		string FederationRequestUrn { get; set; }

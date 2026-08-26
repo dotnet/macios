@@ -87,6 +87,10 @@ namespace ReplayKit {
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ReplayKit/Reference/RPScreenRecorder_Ref/index.html">Apple documentation for <c>RPScreenRecorder</c></related>
 	[MacCatalyst (13, 1)]
+	[Deprecated (PlatformName.iOS, 27, 0, message: "Use ScreenCaptureKit instead.")]
+	[Deprecated (PlatformName.TvOS, 27, 0, message: "Use ScreenCaptureKit instead.")]
+	[Deprecated (PlatformName.MacOSX, 27, 0, message: "Use ScreenCaptureKit instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Use ScreenCaptureKit instead.")]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	[Sealed]

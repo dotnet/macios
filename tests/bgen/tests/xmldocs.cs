@@ -80,6 +80,10 @@ namespace XmlDocumentation {
 		/// <summary>TEventArgs.SomeValue</summary>
 		[Export ("TEventArgsSomeValueKey")]
 		nint SomeValue { get; }
+
+		// no xml comment, should get a default value
+		[Export ("TEventArgsSomeOtherValueKey")]
+		nint SomeOtherValue { get; }
 	}
 
 #if IOS
@@ -312,6 +316,11 @@ namespace XmlDocumentation {
 			<summary>TClassDelegate.DidChangeMutteringVolume - EventArgs.</summary>
 			""")]
 		void DidChangeMutteringVolume (TClass obj, double mutteringVolume);
+
+		/// <summary>TClassDelegate.ShouldMutter</summary>
+		[Export ("speechSynthesizer:shouldMutter:")]
+		[DelegateName ("TShouldMutterEventArgs"), DefaultValue (true)]
+		bool ShouldMutter (TClass obj, double mutteringVolume);
 
 		// A single-parameter delegate method with no [EventArgs] docs generates a
 		// non-generic EventHandler event, which gets a default generated summary.

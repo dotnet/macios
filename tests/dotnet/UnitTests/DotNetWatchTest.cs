@@ -13,8 +13,8 @@ namespace Xamarin.Tests {
 	[TestFixture]
 	public class DotNetWatchTest : TestBaseClass {
 		[Test]
-		// [TestCase (ApplePlatform.MacOSX, false, false)] // https://github.com/dotnet/macios/issues/26470
-		[TestCase (ApplePlatform.MacCatalyst, false, false)]
+		[TestCase (ApplePlatform.MacOSX, false, false)]
+		// [TestCase (ApplePlatform.MacCatalyst, false, false)] // https://github.com/dotnet/macios/issues/26470
 		// [TestCase (ApplePlatform.iOS, false, false)] // https://github.com/dotnet/macios/issues/26470
 		[TestCase (ApplePlatform.MacCatalyst, true, false)]
 		[TestCase (ApplePlatform.iOS, true, false)]

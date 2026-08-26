@@ -403,8 +403,8 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 		}
 		il.Append (il.Create (OpCodes.Ret));
 
-		// See the comment on CecilExtensions.OptimizeGeneratedBody for why this is needed.
-		body.OptimizeGeneratedBody ();
+		// See the comment in CecilExtensions.FinalizeGeneratedBody for why this is needed.
+		body.FinalizeGeneratedBody ();
 
 		return rv;
 	}
@@ -507,8 +507,8 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 		}
 		il.Append (il.Create (OpCodes.Ret));
 
-		// See the comment on CecilExtensions.OptimizeGeneratedBody for why this is needed.
-		body.OptimizeGeneratedBody ();
+		// See the comment in CecilExtensions.FinalizeGeneratedBody for why this is needed.
+		body.FinalizeGeneratedBody ();
 
 		return rv;
 	}
@@ -564,8 +564,8 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 		il.Append (il.Create (OpCodes.Stind_I));
 		il.Append (il.Create (OpCodes.Ret));
 
-		// See the comment on CecilExtensions.OptimizeGeneratedBody for why this is needed.
-		body.OptimizeGeneratedBody ();
+		// See the comment in CecilExtensions.FinalizeGeneratedBody for why this is needed.
+		body.FinalizeGeneratedBody ();
 
 		return rv;
 	}
@@ -918,8 +918,8 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 					il.Append (il.Create (OpCodes.Ldind_I));
 					il.Append (il.Create (OpCodes.Ret));
 
-					// See the comment on CecilExtensions.OptimizeGeneratedBody for why this is needed.
-					method.Body.OptimizeGeneratedBody ();
+					// See the comment in CecilExtensions.FinalizeGeneratedBody for why this is needed.
+					method.Body.FinalizeGeneratedBody ();
 
 					modified = true;
 					return modified; // we replace the whole method body, so no need to continue processing the method

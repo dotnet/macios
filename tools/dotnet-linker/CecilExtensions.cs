@@ -77,19 +77,14 @@ namespace Xamarin.Linker {
 			return body;
 		}
 
-		// Use the macro/short form of instructions whenever possible. This makes the generated IL
-		// smaller, and it also works around a bug in the CoreCLR interpreter, which reads the operand
-		// of the long form of the ldloc/stloc instructions at the wrong offset (the bug was fixed in
-		// https://github.com/dotnet/runtime/pull/131547).
-		public static void OptimizeGeneratedBody (this MethodBody body)
-		{
-			body.OptimizeMacros ();
-		}
-
 		// Call this method once a generated method body is complete.
 		public static void FinalizeGeneratedBody (this MethodBody body)
 		{
-			body.OptimizeGeneratedBody ();
+			// Use the macro/short form of instructions whenever possible. This makes the generated IL
+			// smaller, and it also works around a bug in the CoreCLR interpreter, which reads the operand
+			// of the long form of the ldloc/stloc instructions at the wrong offset (the bug was fixed in
+			// https://github.com/dotnet/runtime/pull/131547).
+			body.OptimizeMacros ();
 
 			// This does not compute precise offsets, it just assigns a unique number to each instruction
 			// The trimmer relies on unique offsets to identify instructions

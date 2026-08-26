@@ -1,3 +1,0 @@
-!deprecated-attribute-missing! PHAssetResource::originalFilename missing a [Deprecated] attribute
-!missing-null-allowed! 'Foundation.NSDate Photos.PHAsset::get_AddedDate()' is missing an [NullAllowed] on return type
-!missing-selector! PHAssetResource::filename not bound

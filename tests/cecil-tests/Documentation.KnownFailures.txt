@@ -23892,6 +23892,8 @@ M:Photos.PHPersistentChangeFetchResult.EnumerateChanges(Photos.PHPersistentChang
 M:Photos.PHPhotoLibrary_CloudIdentifiers.GetCloudIdentifierMappings(Photos.PHPhotoLibrary,System.String[])
 M:Photos.PHPhotoLibrary_CloudIdentifiers.GetLocalIdentifierMappings(Photos.PHPhotoLibrary,Photos.PHCloudIdentifier[])
 M:Photos.PHPhotoLibrary_CloudIdentifiers.GetLocalIdentifierMappingsForSyncedCloudIdentifiers(Photos.PHPhotoLibrary,Photos.PHCloudIdentifier[])
+M:Photos.PHPhotoLibrary.DisableUploadJobExtension(Foundation.NSError@)
+M:Photos.PHPhotoLibrary.EnableUploadJobExtension(Photos.PHAssetResourceUploadJobOptions,Foundation.NSError@)
 M:Photos.PHPhotoLibrary.FetchPersistentChanges(Photos.PHPersistentChangeToken,Foundation.NSError@)
 M:Photos.PHPhotoLibrary.GetAuthorizationStatus(Photos.PHAccessLevel)
 M:Photos.PHPhotoLibrary.PerformChanges(System.Action,System.Action{System.Boolean,Foundation.NSError})
@@ -23903,6 +23905,7 @@ M:Photos.PHPhotoLibrary.RequestAuthorization(Photos.PHAccessLevel,System.Action{
 M:Photos.PHPhotoLibrary.RequestAuthorization(System.Action{Photos.PHAuthorizationStatus})
 M:Photos.PHPhotoLibrary.RequestAuthorizationAsync(Photos.PHAccessLevel)
 M:Photos.PHPhotoLibrary.SetUploadJobExtensionEnabled(System.Boolean,Foundation.NSError@)
+M:Photos.PHPhotoLibrary.SetUploadJobExtensionOptions(Photos.PHAssetResourceUploadJobOptions,Foundation.NSError@)
 M:Photos.PHPhotoLibrary.Unregister(Photos.IPHPhotoLibraryAvailabilityObserver)
 M:Photos.PHPhotoLibrary.UnregisterChangeObserver(Photos.IPHPhotoLibraryChangeObserver)
 M:Photos.PHPhotoLibrary.UnregisterPersistentChangesObserver(Photos.IPHPhotoLibraryPersistentChangesObserver)
@@ -46819,6 +46822,7 @@ P:Photos.PHAssetExtendedMetadata.OriginalFilename
 P:Photos.PHAssetResource.AssetLocalIdentifier
 P:Photos.PHAssetResource.ContentType
 P:Photos.PHAssetResource.DataSize
+P:Photos.PHAssetResource.Filename
 P:Photos.PHAssetResource.OriginalFilename
 P:Photos.PHAssetResource.PixelHeight
 P:Photos.PHAssetResource.PixelWidth
@@ -46836,6 +46840,7 @@ P:Photos.PHAssetResourceUploadJob.JobLimit
 P:Photos.PHAssetResourceUploadJob.Resource
 P:Photos.PHAssetResourceUploadJob.State
 P:Photos.PHAssetResourceUploadJob.Type
+P:Photos.PHAssetResourceUploadJobOptions.PreventsExpensiveNetworkAccess
 P:Photos.PHCachingImageManager.AllowsCachingHighQualityImages
 P:Photos.PHCloudIdentifier.ArchivalStringValue
 P:Photos.PHCloudIdentifier.NotFoundIdentifier
@@ -46932,6 +46937,7 @@ P:Photos.PHPhotoLibrary.CurrentChangeToken
 P:Photos.PHPhotoLibrary.SharedPhotoLibrary
 P:Photos.PHPhotoLibrary.UnavailabilityReason
 P:Photos.PHPhotoLibrary.UploadJobExtensionEnabled
+P:Photos.PHPhotoLibrary.UploadJobExtensionOptions
 P:Photos.PHProject.HasProjectPreview
 P:Photos.PHProject.ProjectExtensionData
 P:Photos.PHProjectChangeRequest.ProjectExtensionData
@@ -59294,6 +59300,7 @@ T:Photos.PHAssetRating
 T:Photos.PHAssetResourceUploadJob
 T:Photos.PHAssetResourceUploadJobAction
 T:Photos.PHAssetResourceUploadJobChangeRequest
+T:Photos.PHAssetResourceUploadJobOptions
 T:Photos.PHAssetResourceUploadJobState
 T:Photos.PHChangeRequest
 T:Photos.PHCloudIdentifier

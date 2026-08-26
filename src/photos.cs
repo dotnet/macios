@@ -188,7 +188,7 @@ namespace Photos {
 		UTType ContentType { get; }
 
 		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
-		[Export ("addedDate", ArgumentSemantic.Strong)]
+		[NullAllowed, Export ("addedDate", ArgumentSemantic.Strong)]
 		NSDate AddedDate { get; }
 
 		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
@@ -347,8 +347,16 @@ namespace Photos {
 		[Export ("uniformTypeIdentifier")]
 		string UniformTypeIdentifier { get; }
 
+		[Deprecated (PlatformName.iOS, 27, 0, message: "Use 'Filename' instead.")]
+		[Deprecated (PlatformName.MacOSX, 27, 0, message: "Use 'Filename' instead.")]
+		[Deprecated (PlatformName.TvOS, 27, 0, message: "Use 'Filename' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Use 'Filename' instead.")]
 		[Export ("originalFilename")]
 		string OriginalFilename { get; }
+
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[NullAllowed, Export ("filename", ArgumentSemantic.Copy)]
+		string Filename { get; }
 
 		[Static]
 		[Export ("assetResourcesForAsset:")]
@@ -1532,9 +1540,28 @@ namespace Photos {
 		[Export ("uploadJobExtensionEnabled")]
 		bool UploadJobExtensionEnabled { [Bind ("isUploadJobExtensionEnabled")] get; }
 
-		[NoTV, Mac (27, 0), iOS (26, 1), MacCatalyst (27, 0)]
+		// iOS-only per PHPhotoLibrary.h. Xcode 27 beta 4 briefly declared macOS and Mac Catalyst availability;
+		// beta 5 reverted to the Xcode 26 shape, so do not add [Mac] or [MacCatalyst].
+		[NoTV, NoMacCatalyst, NoMac, iOS (26, 1)]
+		[Deprecated (PlatformName.iOS, 27, 0, message: "Use 'EnableUploadJobExtension' and 'DisableUploadJobExtension' instead.")]
 		[Export ("setUploadJobExtensionEnabled:error:")]
 		bool SetUploadJobExtensionEnabled (bool enable, [NullAllowed] out NSError error);
+
+		[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("enableUploadJobExtensionWithOptions:error:")]
+		bool EnableUploadJobExtension ([NullAllowed] PHAssetResourceUploadJobOptions options, [NullAllowed] out NSError error);
+
+		[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("disableUploadJobExtensionWithError:")]
+		bool DisableUploadJobExtension ([NullAllowed] out NSError error);
+
+		[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[NullAllowed, Export ("uploadJobExtensionOptions")]
+		PHAssetResourceUploadJobOptions UploadJobExtensionOptions { get; }
+
+		[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("setUploadJobExtensionOptions:error:")]
+		bool SetUploadJobExtensionOptions (PHAssetResourceUploadJobOptions options, [NullAllowed] out NSError error);
 	}
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
@@ -2034,6 +2061,13 @@ namespace Photos {
 
 		[Export ("keywords", ArgumentSemantic.Copy)]
 		string [] Keywords { get; }
+	}
+
+	[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	interface PHAssetResourceUploadJobOptions : NSCopying {
+		[Export ("preventsExpensiveNetworkAccess")]
+		bool PreventsExpensiveNetworkAccess { get; set; }
 	}
 
 	[NoTV, Mac (27, 0), iOS (26, 1), MacCatalyst (27, 0)]

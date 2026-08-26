@@ -1965,6 +1965,20 @@ namespace Xamarin.Tests {
 			BuildProjectsWithExtensionsImpl (platform, runtimeIdentifier, isNativeAot, AddRemoteProperties ());
 		}
 
+		// App extensions must be embedded in the container app even when the project reference
+		// says ReferenceOutputAssembly=false. Ref: https://github.com/dotnet/macios/issues/26453
+		[TestCase (ApplePlatform.iOS, "iossimulator-x64")]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-x64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-x64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
+		public void BuildProjectsWithExtensionsWithoutReferenceOutputAssembly (ApplePlatform platform, string runtimeIdentifier)
+		{
+			var properties = new Dictionary<string, string> {
+				{ "TestReferenceOutputAssembly", "false" },
+			};
+			BuildProjectsWithExtensionsImpl (platform, runtimeIdentifier, isNativeAot: false, properties);
+		}
+
 		void BuildProjectsWithExtensionsImpl (ApplePlatform platform, string runtimeIdentifier, bool isNativeAot, Dictionary<string, string>? properties = null)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);

@@ -200,6 +200,10 @@ namespace AutomaticAssessmentConfiguration {
 		bool AllowsStructuralInput { get; set; }
 
 		[NoiOS, MacCatalyst (27, 0), Mac (27, 0)]
+		[Export ("allowsForceQuit")]
+		bool AllowsForceQuit { get; set; }
+
+		[NoiOS, MacCatalyst (27, 0), Mac (27, 0)]
 		[NullAllowed, Export ("allowedDirectoriesAndFiles", ArgumentSemantic.Copy)]
 		NSSet<NSUrl> AllowedDirectoriesAndFiles { get; set; }
 
@@ -230,6 +234,10 @@ namespace AutomaticAssessmentConfiguration {
 		[NoiOS, MacCatalyst (27, 0), Mac (27, 0)]
 		[Export ("allowPrivateRelay")]
 		bool AllowPrivateRelay { get; set; }
+
+		[NoiOS, MacCatalyst (27, 0), Mac (27, 0)]
+		[Export ("allowVirtualMachine")]
+		bool AllowVirtualMachine { get; set; }
 
 		[NoiOS, MacCatalyst (27, 0), Mac (27, 0)]
 		[Export ("requiresManagedDevice")]
@@ -296,6 +304,18 @@ namespace AutomaticAssessmentConfiguration {
 		[iOS (17, 5), MacCatalyst (15, 0)]
 		[Export ("setConfiguration:forApplication:")]
 		void SetConfiguration (AEAssessmentParticipantConfiguration configuration, AEAssessmentApplication application);
+
+		[NoiOS, MacCatalyst (27, 0), Mac (27, 0)]
+		[Export ("configurationsByBinaryExecutable", ArgumentSemantic.Copy)]
+		NSDictionary<AEAssessmentBinaryExecutable, AEAssessmentBinaryExecutableConfiguration> ConfigurationsByBinaryExecutable { get; }
+
+		[NoiOS, MacCatalyst (27, 0), Mac (27, 0)]
+		[Export ("removeBinaryExecutable:")]
+		void Remove (AEAssessmentBinaryExecutable binaryExecutable);
+
+		[NoiOS, MacCatalyst (27, 0), Mac (27, 0)]
+		[Export ("setConfiguration:forBinaryExecutable:")]
+		void SetConfiguration (AEAssessmentBinaryExecutableConfiguration configuration, AEAssessmentBinaryExecutable binaryExecutable);
 
 		[NoiOS, MacCatalyst (26, 1), Mac (26, 1)]
 		[Export ("allowsScreenshots")]
@@ -391,7 +411,7 @@ namespace AutomaticAssessmentConfiguration {
 		[Export ("initWithBundleIdentifier:")]
 		NativeHandle Constructor (string bundleIdentifier);
 
-		[NoiOS]
+		[iOS (27, 0)]
 		[NoMacCatalyst] // header says it's available in Mac Catalyst, Apple's documentation + xtro says it's not, so don't add it for now.
 		[Export ("initWithBundleIdentifier:teamIdentifier:")]
 		NativeHandle Constructor (string bundleIdentifier, [NullAllowed] string TeamIdentifier);
@@ -399,11 +419,46 @@ namespace AutomaticAssessmentConfiguration {
 		[Export ("bundleIdentifier")]
 		string BundleIdentifier { get; }
 
+		[iOS (27, 0)]
 		[NullAllowed, Export ("teamIdentifier")]
 		string TeamIdentifier { get; }
 
 		[Export ("requiresSignatureValidation")]
 		bool RequiresSignatureValidation { get; set; }
+	}
+
+	[NoiOS, MacCatalyst (27, 0), Mac (27, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface AEAssessmentBinaryExecutable : NSCopying {
+		[Export ("initWithBinaryExecutableURL:")]
+		NativeHandle Constructor (NSUrl binaryExecutableUrl);
+
+		[Export ("initWithBinaryExecutableURL:teamIdentifier:")]
+		NativeHandle Constructor (NSUrl binaryExecutableUrl, [NullAllowed] string teamIdentifier);
+
+		[Export ("binaryExecutableURL", ArgumentSemantic.Copy)]
+		NSUrl BinaryExecutableUrl { get; }
+
+		[NullAllowed, Export ("teamIdentifier")]
+		string TeamIdentifier { get; }
+
+		[Export ("requiresSignatureValidation")]
+		bool RequiresSignatureValidation { get; set; }
+	}
+
+	[NoiOS, MacCatalyst (27, 0), Mac (27, 0)]
+	[BaseType (typeof (NSObject))]
+	interface AEAssessmentBinaryExecutableConfiguration : NSCopying {
+		[Export ("allowsNetworkAccess")]
+		bool AllowsNetworkAccess { get; set; }
+
+		[Export ("required")]
+		bool Required {
+			[Bind ("isRequired")]
+			get;
+			set;
+		}
 	}
 
 	[iOS (17, 5), MacCatalyst (15, 0)]

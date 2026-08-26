@@ -542,12 +542,14 @@ COREGRAPHICS_SOURCES = \
 	CoreGraphics/CGPDFArray.cs \
 	CoreGraphics/CGPDFContentStream.cs \
 	CoreGraphics/CGPDFDictionary.cs \
+	CoreGraphics/CGPDFMarkedContentItem.cs \
 	CoreGraphics/CGPDFObject.cs \
 	CoreGraphics/CGPDFOperatorTable.cs \
 	CoreGraphics/CGPDFPage.cs \
 	CoreGraphics/CGPDFScanner.cs \
 	CoreGraphics/CGPDFStream.cs \
 	CoreGraphics/CGPDFString.cs \
+	CoreGraphics/CGPDFStructureElement.cs \
 	CoreGraphics/CGPdfTagType.cs \
 	CoreGraphics/CGRenderingBufferProvider.cs \
 	CoreGraphics/CGSession.cs \

@@ -1,13 +1,13 @@
-AppBundleSize: 17,434,413 bytes (17,025.8 KB = 16.6 MB)
+AppBundleSize: 17,600,525 bytes (17,188.0 KB = 16.8 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 Contents/Info.plist:
-    1,060 bytes (1.0 KB = 0.0 MB)
+    1,092 bytes (1.1 KB = 0.0 MB)
 Contents/MacOS/SizeTestApp:
-    14,724,936 bytes (14,379.8 KB = 14.0 MB)
+    14,866,056 bytes (14,517.6 KB = 14.2 MB)
 Contents/MonoBundle/aot-instances.aotdata.arm64:
-    1,127,176 bytes (1,100.8 KB = 1.1 MB)
+    1,144,448 bytes (1,117.6 KB = 1.1 MB)
 Contents/MonoBundle/Microsoft.MacCatalyst.aotdata.arm64:
-    36,824 bytes (36.0 KB = 0.0 MB)
+    36,720 bytes (35.9 KB = 0.0 MB)
 Contents/MonoBundle/Microsoft.MacCatalyst.dll:
     51,200 bytes (50.0 KB = 0.0 MB)
 Contents/MonoBundle/runtimeconfig.bin:
@@ -15,11 +15,11 @@ Contents/MonoBundle/runtimeconfig.bin:
 Contents/MonoBundle/SizeTestApp.aotdata.arm64:
     1,552 bytes (1.5 KB = 0.0 MB)
 Contents/MonoBundle/SizeTestApp.dll:
-    7,680 bytes (7.5 KB = 0.0 MB)
+    7,168 bytes (7.0 KB = 0.0 MB)
 Contents/MonoBundle/System.Private.CoreLib.aotdata.arm64:
-    904,512 bytes (883.3 KB = 0.9 MB)
+    909,744 bytes (888.4 KB = 0.9 MB)
 Contents/MonoBundle/System.Private.CoreLib.dll:
-    567,296 bytes (554.0 KB = 0.5 MB)
+    570,368 bytes (557.0 KB = 0.5 MB)
 Contents/MonoBundle/System.Runtime.aotdata.arm64:
     472 bytes (0.5 KB = 0.0 MB)
 Contents/MonoBundle/System.Runtime.dll:

@@ -14,11 +14,11 @@ namespace Xamarin.Tests {
 	public class DotNetWatchTest : TestBaseClass {
 		[Test]
 		[TestCase (ApplePlatform.MacOSX, false, false)]
-		[TestCase (ApplePlatform.MacCatalyst, false, false)]
-		[TestCase (ApplePlatform.iOS, false, false)]
+		// [TestCase (ApplePlatform.MacCatalyst, false, false)] // https://github.com/dotnet/macios/issues/26470
+		// [TestCase (ApplePlatform.iOS, false, false)] // https://github.com/dotnet/macios/issues/26470
 		[TestCase (ApplePlatform.MacCatalyst, true, false)]
 		[TestCase (ApplePlatform.iOS, true, false)]
-		[TestCase (ApplePlatform.MacCatalyst, false, true)]
+		// [TestCase (ApplePlatform.MacCatalyst, false, true)] // https://github.com/dotnet/macios/issues/26470
 		[TestCase (ApplePlatform.MacOSX, false, true)]
 		public void DotNetWatch (ApplePlatform platform, bool useMonoRuntime, bool enableSandbox)
 		{

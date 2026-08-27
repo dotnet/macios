@@ -55,6 +55,30 @@ namespace Xamarin.Tests {
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 
+			// Hot Reload with CoreCLR is currently broken on the mobile platforms: the app crashes with
+			// "System.BadImageFormatException: Bad IL range" right after the update has been applied.
+			// Desktop macOS is not affected.
+			//
+			// That error comes from CoreCLR's PEAssembly::GetIL, which means the runtime looked up the
+			// updated method's IL in the *baseline* PE image using the RVA from the metadata delta - and
+			// that RVA is delta-relative, so it's out of range in the baseline image. In other words the
+			// runtime didn't pick up the delta IL when compiling the updated method.
+			//
+			// This is fallout from https://github.com/dotnet/runtime/pull/130159 ("Use CodeVersioning for
+			// EnC"), which made the delta IL be stored as an ILCodeVersion: only
+			// VersionedPrepareCodeConfig::GetILHeader returns it, while the plain
+			// PrepareCodeConfig::GetILHeader falls back to MethodDesc::GetILHeader (= the baseline RVA
+			// lookup that ends up throwing). Something on the mobile-only code path prepares the updated
+			// method with a non-versioned config. The mobile difference isn't code versioning as such
+			// (that's enabled everywhere, since FEATURE_METADATA_UPDATER turns on FEATURE_CODE_VERSIONING),
+			// but rather that FEATURE_DYNAMIC_CODE_COMPILED is off for Apple mobile, so there's no JIT and
+			// these apps run the CoreCLR interpreter instead.
+			//
+			// Tracked upstream here: https://github.com/dotnet/runtime/issues/132804
+			// Re-enable these test cases once the fix has flowed into our runtime.
+			if (!useMonoRuntime && platform != ApplePlatform.MacOSX)
+				Assert.Ignore ("Hot Reload with CoreCLR is currently broken on this platform: https://github.com/dotnet/macios/issues/26470");
+
 			var projectPath = GetProjectPath ("HotReloadTestApp", platform: platform);
 			var projectDirectory = Path.GetDirectoryName (projectPath)!;
 

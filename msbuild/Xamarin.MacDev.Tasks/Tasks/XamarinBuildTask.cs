@@ -33,10 +33,6 @@ namespace Xamarin.MacDev.Tasks {
 <Project Sdk=""Microsoft.NET.Sdk"">
 	<PropertyGroup>
 		<TargetFramework>net{TargetFramework.Version}-{PlatformName}</TargetFramework>
-
-		<!-- Setting TargetsCurrent=true is necessary until we get https://github.com/dotnet/sdk/pull/52031 -->
-		<!-- Ref: https://github.com/dotnet/macios/issues/24418 -->
-		<TargetsCurrent>true</TargetsCurrent>
 	</PropertyGroup>
 	{computeValueTarget}
 </Project>

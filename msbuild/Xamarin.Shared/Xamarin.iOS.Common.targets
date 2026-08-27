@@ -75,6 +75,48 @@ Copyright (C) 2013-2016 Xamarin. All rights reserved.
 		/>
 	</Target>
 
+	<!--
+		On-demand resources are not hosted anywhere when building for the simulator (there's no App Store nor a
+		local hosting server), so the asset packs have to be embedded inside the app bundle for the ODR APIs to
+		find them at runtime (this is the equivalent of Xcode's "Embed Asset Packs In Product Bundle" setting).
+		Otherwise NSBundleResourceRequest fails at runtime with "No manifest found for bundleID".
+	-->
+	<Target Name="_EmbedOnDemandResources"
+		DependsOnTargets="_DetectSdkLocations;_CreateAssetPackManifest"
+		Condition="'$(EnableOnDemandResources)' == 'true' And '$(_SdkIsSimulator)' == 'true' And '$(BuildIpa)' != 'true'">
+		<PropertyGroup>
+			<_EmbeddedOnDemandResourcesAppBundleDir>$([MSBuild]::EnsureTrailingSlash('$(AppBundleDir)'))</_EmbeddedOnDemandResourcesAppBundleDir>
+			<_EmbeddedOnDemandResourcesDir>$(_EmbeddedOnDemandResourcesAppBundleDir)OnDemandResources</_EmbeddedOnDemandResourcesDir>
+			<_EmbeddedAssetPackManifestTemplate>$(_EmbeddedOnDemandResourcesAppBundleDir)AssetPackManifestTemplate.plist</_EmbeddedAssetPackManifestTemplate>
+			<_EmbeddedAssetPackManifest>$(_EmbeddedOnDemandResourcesAppBundleDir)AssetPackManifest.plist</_EmbeddedAssetPackManifest>
+		</PropertyGroup>
+
+		<!-- Copy the compiled asset packs into the app bundle -->
+		<Ditto
+			SessionId="$(BuildSessionId)"
+			Condition="'$(IsMacEnabled)' == 'true' And Exists('$(DeviceSpecificOutputPath)OnDemandResources')"
+			DittoPath="$(DittoPath)"
+			Source="$(DeviceSpecificOutputPath)OnDemandResources"
+			Destination="$(_EmbeddedOnDemandResourcesDir)"
+			/>
+
+		<!-- Rewrite the manifest to point at the embedded (non-streamable) asset packs, and remove the streaming template -->
+		<WriteAssetPackManifest
+			SessionId="$(BuildSessionId)"
+			Condition="'$(IsMacEnabled)' == 'true' And Exists('$(_EmbeddedAssetPackManifestTemplate)')"
+			TemplatePath="$(_EmbeddedAssetPackManifestTemplate)"
+			OutputFile="$(_EmbeddedAssetPackManifest)"
+			OnDemandResourceUrl="OnDemandResources"
+			IsStreamable="false"
+			/>
+
+		<Delete
+			SessionId="$(BuildSessionId)"
+			Condition="'$(IsMacEnabled)' == 'true' And Exists('$(_EmbeddedAssetPackManifestTemplate)')"
+			Files="$(_EmbeddedAssetPackManifestTemplate)"
+			/>
+	</Target>
+
 	<Target Name="_GetWatchAppBundlePath" DependsOnTargets="_GenerateBundleName;$(_GetWatchAppBundlePathDependsOn)">
 		<PropertyGroup>
 			<!-- needed for GetTargetPath/Build/Rebuild task outputs -->

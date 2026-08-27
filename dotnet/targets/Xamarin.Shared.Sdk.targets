@@ -328,7 +328,7 @@
 		/>
 	</Target>
 
-	<Target Name="_CreateAssetPackManifestMobile" Condition="'$(_PlatformName)' != 'macOS'" DependsOnTargets="_CreateAssetPackManifest" />
+	<Target Name="_CreateAssetPackManifestMobile" Condition="'$(_PlatformName)' != 'macOS'" DependsOnTargets="_CreateAssetPackManifest;_EmbedOnDemandResources" />
 
 	<!-- PublishTrimmed must be calculated as part of a target because IsMacEnabled on Windows will be set after connecting to the Mac -->
 	<Target Name="_ComputePublishTrimmed">

@@ -666,6 +666,14 @@
 		<PropertyGroup>
 			<_UseDynamicDependenciesInsteadOfMarking Condition="'$(_UseDynamicDependenciesInsteadOfMarking)' == ''">true</_UseDynamicDependenciesInsteadOfMarking>
 			<_UseDynamicDependenciesForProtocolPreservation Condition="'$(_UseDynamicDependenciesForProtocolPreservation)' == ''">$(_UseDynamicDependenciesInsteadOfMarking)</_UseDynamicDependenciesForProtocolPreservation>
+			<!--
+				PreserveSmartEnumConversionsStep injects [DynamicDependency] attributes into the assembly that
+				references the smart enum, and that assembly may be reloadable (i.e. not trimmed), which would
+				break Hot Reload. So use the mark handler instead (it doesn't modify any assemblies) when we're
+				doing a Hot Reload compatible build (this doesn't apply when the assembly-preparer is used,
+				because it emits a root descriptor xml file instead - see PreserveSmartEnumConversionsStep).
+			-->
+			<_UseDynamicDependenciesForSmartEnumPreservation Condition="'$(_UseDynamicDependenciesForSmartEnumPreservation)' == '' And '$(HotReloadCompatibleBuild)' == 'true' And '$(PrepareAssemblies)' != 'true'">false</_UseDynamicDependenciesForSmartEnumPreservation>
 			<_UseDynamicDependenciesForSmartEnumPreservation Condition="'$(_UseDynamicDependenciesForSmartEnumPreservation)' == ''">$(_UseDynamicDependenciesInsteadOfMarking)</_UseDynamicDependenciesForSmartEnumPreservation>
 			<_UseDynamicDependenciesForBlockCodePreservation Condition="'$(_UseDynamicDependenciesForBlockCodePreservation)' == ''">$(_UseDynamicDependenciesInsteadOfMarking)</_UseDynamicDependenciesForBlockCodePreservation>
 			<_UseDynamicDependenciesForGeneratedCodeOptimizations Condition="'$(_UseDynamicDependenciesForGeneratedCodeOptimizations)' == ''">$(_UseDynamicDependenciesInsteadOfMarking)</_UseDynamicDependenciesForGeneratedCodeOptimizations>

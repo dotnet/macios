@@ -8,6 +8,7 @@
 //
 
 using System.ComponentModel;
+using System.Runtime.InteropServices;
 
 #nullable enable
 
@@ -39,7 +40,17 @@ namespace UIKit {
 
 		internal static IUITraitChangeRegistration _RegisterForTraitChanges (IUITraitChangeObservable This, Type [] traits, Action<IUITraitEnvironment, UITraitCollection> handler)
 		{
-			return _RegisterForTraitChanges (This, ToClasses (traits), handler);
+			return new UITraitChangeRegistrationToken (This, _RegisterForTraitChanges (This, ToClasses (traits), handler));
+		}
+
+		internal static void UnregisterForTraitChangesInternal (IUITraitChangeObservable This, IUITraitChangeRegistration registration)
+		{
+			if (registration is UITraitChangeRegistrationToken token) {
+				token.Dispose ();
+				return;
+			}
+
+			_UnregisterForTraitChanges (This, registration);
 		}
 
 		/// <summary>
@@ -56,7 +67,7 @@ namespace UIKit {
 		internal static IUITraitChangeRegistration _RegisterForTraitChanges (IUITraitChangeObservable This, Action<IUITraitEnvironment, UITraitCollection> handler, params Type [] traits)
 		{
 			// Add an override with 'params', unfortunately this means reordering the parameters.
-			return _RegisterForTraitChanges (This, ToClasses (traits), handler);
+			return new UITraitChangeRegistrationToken (This, _RegisterForTraitChanges (This, ToClasses (traits), handler));
 		}
 
 		/// <summary>
@@ -74,7 +85,7 @@ namespace UIKit {
 		internal static IUITraitChangeRegistration _RegisterForTraitChanges<T> (IUITraitChangeObservable This, Action<IUITraitEnvironment, UITraitCollection> handler)
 			where T : IUITraitDefinition
 		{
-			return _RegisterForTraitChanges (This, ToClasses (typeof (T)), handler);
+			return new UITraitChangeRegistrationToken (This, _RegisterForTraitChanges (This, ToClasses (typeof (T)), handler));
 		}
 
 		/// <summary>
@@ -95,7 +106,7 @@ namespace UIKit {
 			where T1 : IUITraitDefinition
 			where T2 : IUITraitDefinition
 		{
-			return _RegisterForTraitChanges (This, ToClasses (typeof (T1), typeof (T2)), handler);
+			return new UITraitChangeRegistrationToken (This, _RegisterForTraitChanges (This, ToClasses (typeof (T1), typeof (T2)), handler));
 		}
 
 		/// <summary>
@@ -119,7 +130,7 @@ namespace UIKit {
 			where T2 : IUITraitDefinition
 			where T3 : IUITraitDefinition
 		{
-			return _RegisterForTraitChanges (This, ToClasses (typeof (T1), typeof (T2), typeof (T3)), handler);
+			return new UITraitChangeRegistrationToken (This, _RegisterForTraitChanges (This, ToClasses (typeof (T1), typeof (T2), typeof (T3)), handler));
 		}
 
 		/// <summary>
@@ -146,7 +157,7 @@ namespace UIKit {
 			where T3 : IUITraitDefinition
 			where T4 : IUITraitDefinition
 		{
-			return _RegisterForTraitChanges (This, ToClasses (typeof (T1), typeof (T2), typeof (T3), typeof (T4)), handler);
+			return new UITraitChangeRegistrationToken (This, _RegisterForTraitChanges (This, ToClasses (typeof (T1), typeof (T2), typeof (T3), typeof (T4)), handler));
 		}
 
 		/// <summary>
@@ -163,7 +174,7 @@ namespace UIKit {
 
 		internal static IUITraitChangeRegistration _RegisterForTraitChanges (IUITraitChangeObservable This, Type [] traits, NSObject target, Selector action)
 		{
-			return _RegisterForTraitChanges (This, ToClasses (traits), target, action);
+			return new UITraitChangeRegistrationToken (This, _RegisterForTraitChanges (This, ToClasses (traits), target, action));
 		}
 
 		/// <summary>
@@ -179,7 +190,45 @@ namespace UIKit {
 
 		internal static IUITraitChangeRegistration _RegisterForTraitChanges (IUITraitChangeObservable This, Type [] traits, Selector action)
 		{
-			return _RegisterForTraitChanges (This, ToClasses (traits), action);
+			return new UITraitChangeRegistrationToken (This, _RegisterForTraitChanges (This, ToClasses (traits), action));
+		}
+
+		sealed class UITraitChangeRegistrationToken : IUITraitChangeRegistration, IDisposable {
+			GCHandle observable;
+			IUITraitChangeRegistration? registration;
+
+			public NativeHandle Handle => registration?.Handle ?? NativeHandle.Zero;
+
+			public UITraitChangeRegistrationToken (IUITraitChangeObservable observable, IUITraitChangeRegistration registration)
+			{
+				this.observable = GCHandle.Alloc (observable);
+				this.registration = registration;
+			}
+
+			~UITraitChangeRegistrationToken ()
+			{
+				Runtime.NSLog ("Warning: trait change registration object was not disposed manually with Dispose()");
+				Dispose (false);
+			}
+
+			public void Dispose ()
+			{
+				Dispose (true);
+				GC.SuppressFinalize (this);
+			}
+
+			void Dispose (bool disposing)
+			{
+				if (registration is null)
+					return;
+
+				var observable = this.observable.Target as IUITraitChangeObservable;
+				if (observable is null)
+					throw new InvalidOperationException ("The trait change observable has been collected.");
+				IUITraitChangeObservable.UnregisterForTraitChangesInternal (observable, registration);
+				registration = null;
+				this.observable.Free ();
+			}
 		}
 
 #if XAMCORE_5_0
@@ -202,21 +251,21 @@ namespace UIKit {
 		[Obsolete ("Use the 'UITraitChangeObservable.RegisterForTraitChanges (Class[], Action<IUITraitEnvironment, UITraitCollection>)' method instead.")]
 		public IUITraitChangeRegistration RegisterForTraitChanges (IUITraitDefinition [] traits, Action<IUITraitEnvironment, UITraitCollection> handler)
 		{
-			return RegisterForTraitChanges (ToClasses (traits), handler);
+			return new UITraitChangeRegistrationToken (this, RegisterForTraitChanges (ToClasses (traits), handler));
 		}
 
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Obsolete ("Use the 'UITraitChangeObservable.RegisterForTraitChanges (Class[], NSObject, Selector)' method instead.")]
 		public IUITraitChangeRegistration RegisterForTraitChanges (IUITraitDefinition [] traits, NSObject target, Selector action)
 		{
-			return RegisterForTraitChanges (ToClasses (traits), target, action);
+			return new UITraitChangeRegistrationToken (this, RegisterForTraitChanges (ToClasses (traits), target, action));
 		}
 
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Obsolete ("Use the 'UITraitChangeObservable.RegisterForTraitChanges (Class[], Selector)' method instead.")]
 		public IUITraitChangeRegistration RegisterForTraitChanges (IUITraitDefinition [] traits, Selector action)
 		{
-			return RegisterForTraitChanges (ToClasses (traits), action);
+			return new UITraitChangeRegistrationToken (this, RegisterForTraitChanges (ToClasses (traits), action));
 		}
 #endif // !XACMORE_5_0
 

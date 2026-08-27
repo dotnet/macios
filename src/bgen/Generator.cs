@@ -3620,6 +3620,16 @@ public partial class Generator : IMemberGatherer {
 		Inject<PrologueSnippetAttribute> (mi);
 
 		GenerateArgumentChecks (mi, false, propInfo, out bool needsGCKeepAlives);
+		if (mi.Name == "UnregisterForTraitChanges" &&
+			mi.GetParameters ().Length == 1 &&
+			mi.GetParameters () [0].ParameterType.FullName == "UIKit.IUITraitChangeRegistration" &&
+			!mi.IsStatic &&
+			!minfo.is_static &&
+			!minfo.is_protocol_member) {
+			print ("global::UIKit.IUITraitChangeObservable.UnregisterForTraitChangesInternal (this, registration);");
+			indent--;
+			return;
+		}
 
 		GenerateTypeLowering (mi, null_allowed_override, out var args, out var convs, out var disposes, out var by_ref_processing, out var by_ref_init, out var post_return, propInfo);
 
@@ -3795,6 +3805,11 @@ public partial class Generator : IMemberGatherer {
 
 		if (AttributeManager.HasAttribute<FactoryAttribute> (mi))
 			print ("ret.Release (); // Release implicit ref taken by GetNSObject");
+		if (mi.Name.StartsWith ("RegisterForTraitChanges", StringComparison.Ordinal) &&
+			mi.ReturnType.FullName == "UIKit.IUITraitChangeRegistration") {
+			var observable = minfo.is_extension_method || minfo.is_protocol_implementation_method ? "This" : "this";
+			print ("ret = global::UIKit.IUITraitChangeObservable.WrapTraitChangeRegistration ({0}, ret);", observable);
+		}
 		if (by_ref_processing.Length > 0)
 			print (sw, by_ref_processing.ToString ());
 		if (use_temp_return) {

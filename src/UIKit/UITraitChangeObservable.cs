@@ -40,7 +40,12 @@ namespace UIKit {
 
 		internal static IUITraitChangeRegistration _RegisterForTraitChanges (IUITraitChangeObservable This, Type [] traits, Action<IUITraitEnvironment, UITraitCollection> handler)
 		{
-			return new UITraitChangeRegistrationToken (This, _RegisterForTraitChanges (This, ToClasses (traits), handler));
+			return WrapTraitChangeRegistration (This, _RegisterForTraitChanges (This, ToClasses (traits), handler));
+		}
+
+		internal static IUITraitChangeRegistration WrapTraitChangeRegistration (IUITraitChangeObservable This, IUITraitChangeRegistration registration)
+		{
+			return registration is UITraitChangeRegistrationToken ? registration : new UITraitChangeRegistrationToken (This, registration);
 		}
 
 		internal static void UnregisterForTraitChangesInternal (IUITraitChangeObservable This, IUITraitChangeRegistration registration)
@@ -67,7 +72,7 @@ namespace UIKit {
 		internal static IUITraitChangeRegistration _RegisterForTraitChanges (IUITraitChangeObservable This, Action<IUITraitEnvironment, UITraitCollection> handler, params Type [] traits)
 		{
 			// Add an override with 'params', unfortunately this means reordering the parameters.
-			return new UITraitChangeRegistrationToken (This, _RegisterForTraitChanges (This, ToClasses (traits), handler));
+			return WrapTraitChangeRegistration (This, _RegisterForTraitChanges (This, ToClasses (traits), handler));
 		}
 
 		/// <summary>
@@ -85,7 +90,7 @@ namespace UIKit {
 		internal static IUITraitChangeRegistration _RegisterForTraitChanges<T> (IUITraitChangeObservable This, Action<IUITraitEnvironment, UITraitCollection> handler)
 			where T : IUITraitDefinition
 		{
-			return new UITraitChangeRegistrationToken (This, _RegisterForTraitChanges (This, ToClasses (typeof (T)), handler));
+			return WrapTraitChangeRegistration (This, _RegisterForTraitChanges (This, ToClasses (typeof (T)), handler));
 		}
 
 		/// <summary>
@@ -106,7 +111,7 @@ namespace UIKit {
 			where T1 : IUITraitDefinition
 			where T2 : IUITraitDefinition
 		{
-			return new UITraitChangeRegistrationToken (This, _RegisterForTraitChanges (This, ToClasses (typeof (T1), typeof (T2)), handler));
+			return WrapTraitChangeRegistration (This, _RegisterForTraitChanges (This, ToClasses (typeof (T1), typeof (T2)), handler));
 		}
 
 		/// <summary>
@@ -130,7 +135,7 @@ namespace UIKit {
 			where T2 : IUITraitDefinition
 			where T3 : IUITraitDefinition
 		{
-			return new UITraitChangeRegistrationToken (This, _RegisterForTraitChanges (This, ToClasses (typeof (T1), typeof (T2), typeof (T3)), handler));
+			return WrapTraitChangeRegistration (This, _RegisterForTraitChanges (This, ToClasses (typeof (T1), typeof (T2), typeof (T3)), handler));
 		}
 
 		/// <summary>
@@ -157,7 +162,7 @@ namespace UIKit {
 			where T3 : IUITraitDefinition
 			where T4 : IUITraitDefinition
 		{
-			return new UITraitChangeRegistrationToken (This, _RegisterForTraitChanges (This, ToClasses (typeof (T1), typeof (T2), typeof (T3), typeof (T4)), handler));
+			return WrapTraitChangeRegistration (This, _RegisterForTraitChanges (This, ToClasses (typeof (T1), typeof (T2), typeof (T3), typeof (T4)), handler));
 		}
 
 		/// <summary>
@@ -174,7 +179,7 @@ namespace UIKit {
 
 		internal static IUITraitChangeRegistration _RegisterForTraitChanges (IUITraitChangeObservable This, Type [] traits, NSObject target, Selector action)
 		{
-			return new UITraitChangeRegistrationToken (This, _RegisterForTraitChanges (This, ToClasses (traits), target, action));
+			return WrapTraitChangeRegistration (This, _RegisterForTraitChanges (This, ToClasses (traits), target, action));
 		}
 
 		/// <summary>
@@ -190,7 +195,7 @@ namespace UIKit {
 
 		internal static IUITraitChangeRegistration _RegisterForTraitChanges (IUITraitChangeObservable This, Type [] traits, Selector action)
 		{
-			return new UITraitChangeRegistrationToken (This, _RegisterForTraitChanges (This, ToClasses (traits), action));
+			return WrapTraitChangeRegistration (This, _RegisterForTraitChanges (This, ToClasses (traits), action));
 		}
 
 		sealed class UITraitChangeRegistrationToken : IUITraitChangeRegistration, IDisposable {

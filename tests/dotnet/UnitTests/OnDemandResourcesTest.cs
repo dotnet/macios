@@ -37,21 +37,19 @@ namespace Xamarin.Tests {
 			Assert.That (odrPlistPath, Does.Exist, "OnDemandResources.plist must exist in the app bundle.");
 
 			var odrPlist = PDictionary.OpenFile (odrPlistPath);
-			Assert.That (odrPlist, Is.Not.Null, "Failed to load OnDemandResources.plist.");
+			var odr = AssertNotNull (odrPlist, "Failed to load OnDemandResources.plist.");
 
-			var assetPacks = odrPlist!.Get<PDictionary> ("NSBundleResourceRequestAssetPacks");
-			Assert.That (assetPacks, Is.Not.Null.And.Not.Empty, "NSBundleResourceRequestAssetPacks");
+			var assetPacks = AssertNotNull (odr.Get<PDictionary> ("NSBundleResourceRequestAssetPacks"), "NSBundleResourceRequestAssetPacks");
+			Assert.That (assetPacks, Is.Not.Empty, "NSBundleResourceRequestAssetPacks");
 
-			var requestTags = odrPlist.Get<PDictionary> ("NSBundleResourceRequestTags");
-			Assert.That (requestTags, Is.Not.Null, "NSBundleResourceRequestTags");
-			var tag = requestTags!.Get<PDictionary> ("MusicTag");
-			Assert.That (tag, Is.Not.Null, "The 'MusicTag' tag must be listed in NSBundleResourceRequestTags.");
+			var requestTags = AssertNotNull (odr.Get<PDictionary> ("NSBundleResourceRequestTags"), "NSBundleResourceRequestTags");
+			var tag = AssertNotNull (requestTags.Get<PDictionary> ("MusicTag"), "The 'MusicTag' tag must be listed in NSBundleResourceRequestTags.");
 
 			// The tag must reference an asset pack that's actually present in the manifest.
-			var tagAssetPacks = tag!.GetArray ("NSAssetPacks");
-			Assert.That (tagAssetPacks, Is.Not.Null.And.Not.Empty, "The 'MusicTag' tag must reference at least one asset pack.");
-			foreach (var packId in tagAssetPacks!.OfType<PString> ())
-				Assert.That (assetPacks!.ContainsKey (packId.Value), Is.True, $"The asset pack '{packId.Value}' referenced by the tag must be listed in NSBundleResourceRequestAssetPacks.");
+			var tagAssetPacks = AssertNotNull (tag.GetArray ("NSAssetPacks"), "The 'MusicTag' tag must reference at least one asset pack.");
+			Assert.That (tagAssetPacks, Is.Not.Empty, "The 'MusicTag' tag must reference at least one asset pack.");
+			foreach (var packId in tagAssetPacks.OfType<PString> ())
+				Assert.That (assetPacks.ContainsKey (packId.Value), Is.True, $"The asset pack '{packId.Value}' referenced by the tag must be listed in NSBundleResourceRequestAssetPacks.");
 
 			// The streaming manifest template points at http://127.0.0.1 URLs, which don't work on the simulator.
 			// It must be replaced by an AssetPackManifest.plist that points at the embedded asset packs.
@@ -59,15 +57,21 @@ namespace Xamarin.Tests {
 			Assert.That (manifestPath, Does.Exist, "AssetPackManifest.plist must exist in the app bundle.");
 			Assert.That (Path.Combine (appPath, "AssetPackManifestTemplate.plist"), Does.Not.Exist, "The streaming AssetPackManifestTemplate.plist must not be present in the app bundle.");
 
-			var manifest = PDictionary.OpenFile (manifestPath);
-			var resources = manifest!.GetArray ("resources");
-			Assert.That (resources, Is.Not.Null.And.Not.Empty, "AssetPackManifest.plist must contain resources.");
-			foreach (var resource in resources!.OfType<PDictionary> ()) {
+			var manifest = AssertNotNull (PDictionary.OpenFile (manifestPath), "Failed to load AssetPackManifest.plist.");
+			var resources = AssertNotNull (manifest.GetArray ("resources"), "AssetPackManifest.plist must contain resources.");
+			Assert.That (resources, Is.Not.Empty, "AssetPackManifest.plist must contain resources.");
+			foreach (var resource in resources.OfType<PDictionary> ()) {
 				var url = resource.Get<PString> ("URL")?.Value;
 				Assert.That (url, Does.StartWith ("OnDemandResources/"), "The asset pack URL must be a relative path to the embedded asset pack.");
 				var isStreamable = resource.Get<PNumber> ("isStreamable");
 				Assert.That (isStreamable?.Value, Is.EqualTo (0), "Embedded asset packs must not be streamable.");
 			}
+		}
+
+		static T AssertNotNull<T> (T? value, string message) where T : class
+		{
+			Assert.That (value, Is.Not.Null, message);
+			return value ?? throw new InvalidOperationException (message);
 		}
 	}
 }

@@ -52,7 +52,8 @@ namespace AppWithOnDemandResources {
 			var path = NSBundle.MainBundle.PathForResource (ResourceName, ResourceExtension);
 			if (string.IsNullOrEmpty (path))
 				return false;
-			return NSData.FromFile (path) is not null;
+			using var data = NSData.FromFile (path);
+			return data is not null;
 		}
 
 		void SetColor (UIColor color)

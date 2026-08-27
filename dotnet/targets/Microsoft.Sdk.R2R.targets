@@ -5,11 +5,6 @@
 
 	<!-- Workaround for https://github.com/dotnet/runtime/issues/79902 -->
 	<Target Name="_FixR2ROutputPaths" AfterTargets="_PrepareForReadyToRunCompilation">
-		<ItemGroup>
-			<_ReadyToRunFilesToPublishFixed Include="@(_ReadyToRunFilesToPublish->'$(_ReadyToRunOutputPath)/%(Filename)%(Extension)')" />
-			<_ReadyToRunFilesToPublish Remove="@(_ReadyToRunFilesToPublish)" />
-			<_ReadyToRunFilesToPublish Include="@(_ReadyToRunFilesToPublishFixed)" />
-		</ItemGroup>
 		<ItemGroup Condition="'$(PublishReadyToRunComposite)' != 'true'">
 			<_ReadyToRunCompileListFixed Include="@(_ReadyToRunCompileList)" OutputR2RImage="$(_ReadyToRunOutputPath)/%(Filename)%(Extension)" />
 			<_ReadyToRunCompileList Remove="@(_ReadyToRunCompileList)" />

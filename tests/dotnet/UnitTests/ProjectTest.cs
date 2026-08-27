@@ -633,28 +633,25 @@ namespace Xamarin.Tests {
 			Assert.That (uniqueErrors [0], Is.EqualTo (expectedError), "Error message");
 		}
 
+		// A '*.csproj.user' file is imported after we've computed '_SdkIsSimulator' from the default
+		// (simulator) RuntimeIdentifier, so a device RuntimeIdentifier in such a file makes the build
+		// inconsistent. The test project has a checked-in '*.csproj.user' file that does exactly that.
+		// Note that the RuntimeIdentifier can't be passed as a property here, because a global property
+		// takes precedence over anything the '*.csproj.user' file does.
 		[Test]
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
 		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
 		public void RuntimeIdentifierChangedTooLate (ApplePlatform platform, string deviceRuntimeIdentifier)
 		{
-			var project = "MySimpleApp";
+			var project = "RuntimeIdentifierInUserFile";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 
 			var project_path = GetProjectPath (project, platform: platform);
 			Clean (project_path);
 
-			// A '*.csproj.user' file is imported after we've computed '_SdkIsSimulator' from the
-			// default (simulator) RuntimeIdentifier, so this makes the build inconsistent.
-			var userFile = project_path + ".user";
-			File.WriteAllText (userFile, $"<Project><PropertyGroup><RuntimeIdentifier>{deviceRuntimeIdentifier}</RuntimeIdentifier></PropertyGroup></Project>");
-			try {
-				var rv = DotNet.AssertBuildFailure (project_path, GetDefaultProperties ());
-				var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray ();
-				AssertErrorMessages (errors, $"The RuntimeIdentifier was changed too late in the build (it's currently '{deviceRuntimeIdentifier}', but the build was already configured with SdkIsSimulator=true). A common reason is a '*.csproj.user' file changing it; if you're building outside of the IDE, delete this file.");
-			} finally {
-				File.Delete (userFile);
-			}
+			var rv = DotNet.AssertBuildFailure (project_path, GetDefaultProperties ());
+			var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray ();
+			AssertErrorMessages (errors, $"The RuntimeIdentifier was changed too late in the build (it's currently '{deviceRuntimeIdentifier}', but the build was already configured with SdkIsSimulator=true). A common reason is a '*.csproj.user' file changing it; if you're building outside of the IDE, delete this file.");
 		}
 
 		[Test]

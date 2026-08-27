@@ -478,6 +478,10 @@ namespace Foundation {
 					var configuration = session.Configuration;
 					configuration.ConnectionProxyDictionary = proxyDictionary;
 					session = NSUrlSession.FromConfiguration (configuration, (INSUrlSessionDelegate) new NSUrlSessionHandlerDelegate (this), null);
+					// A session keeps a strong reference to its delegate until it's invalidated, so
+					// invalidate the old session to release its delegate (which references this handler).
+					// No requests have been sent on the old session yet, so there's nothing to cancel.
+					oldSession.InvalidateAndCancel ();
 					oldSession.Dispose ();
 				}
 

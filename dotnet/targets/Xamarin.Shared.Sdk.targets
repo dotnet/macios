@@ -2979,13 +2979,9 @@
 			     rather confusing ways much later in the build. So detect the mismatch here instead. -->
 			<_RuntimeIdentifierIsSimulator Condition="$(RuntimeIdentifier.Contains('simulator'))">true</_RuntimeIdentifierIsSimulator>
 			<_RuntimeIdentifierIsSimulator Condition="'$(_RuntimeIdentifierIsSimulator)' == ''">false</_RuntimeIdentifierIsSimulator>
-			<!-- '_SdkIsSimulator' is also computed from 'RuntimeIdentifiers', so it may legitimately
-			     disagree with 'RuntimeIdentifier' if 'RuntimeIdentifiers' contains a simulator runtime
-			     identifier. Don't validate in that case. -->
-			<_SkipSdkIsSimulatorValidation Condition="'$(RuntimeIdentifiers)' != '' And $(RuntimeIdentifiers.Contains('simulator'))">true</_SkipSdkIsSimulatorValidation>
 		</PropertyGroup>
 		<Error Condition="'$(_IsValidRuntimeIdentifier)' != 'true'" Text="The RuntimeIdentifier '$(RuntimeIdentifier)' is invalid." />
-		<Error Condition="'$(_SkipSdkIsSimulatorValidation)' != 'true' And '$(_RuntimeIdentifierIsSimulator)' != '$(_SdkIsSimulator)'" Text="The RuntimeIdentifier was changed too late in the build (it's currently '$(RuntimeIdentifier)', but the build was already configured with SdkIsSimulator=$(_SdkIsSimulator)). A common reason is a '*.csproj.user' file changing it; if you're building outside of the IDE, delete this file." />
+		<Error Condition="'$(_RuntimeIdentifierIsSimulator)' != '$(_SdkIsSimulator)'" Text="The RuntimeIdentifier was changed too late in the build (it's currently '$(RuntimeIdentifier)', but the build was already configured with SdkIsSimulator=$(_SdkIsSimulator)). A common reason is a '*.csproj.user' file changing it; if you're building outside of the IDE, delete this file." />
 	</Target>
 
 	<Target Name="_ValidateGarbageCollector"

@@ -1,31 +1,31 @@
-AppBundleSize: 11,066,915 bytes (10,807.5 KB = 10.6 MB)
+AppBundleSize: 11,729,264 bytes (11,454.4 KB = 11.2 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 Frameworks/libcoreclr.framework/Info.plist:
-    808 bytes (0.8 KB = 0.0 MB)
+    811 bytes (0.8 KB = 0.0 MB)
 Frameworks/libcoreclr.framework/libcoreclr:
-    4,200,608 bytes (4,102.2 KB = 4.0 MB)
+    4,324,144 bytes (4,222.8 KB = 4.1 MB)
 Frameworks/libSystem.Globalization.Native.framework/Info.plist:
-    850 bytes (0.8 KB = 0.0 MB)
+    853 bytes (0.8 KB = 0.0 MB)
 Frameworks/libSystem.Globalization.Native.framework/libSystem.Globalization.Native:
-    90,576 bytes (88.5 KB = 0.1 MB)
+    124,608 bytes (121.7 KB = 0.1 MB)
 Frameworks/libSystem.IO.Compression.Native.framework/Info.plist:
-    852 bytes (0.8 KB = 0.0 MB)
+    855 bytes (0.8 KB = 0.0 MB)
 Frameworks/libSystem.IO.Compression.Native.framework/libSystem.IO.Compression.Native:
-    1,393,600 bytes (1,360.9 KB = 1.3 MB)
+    1,438,032 bytes (1,404.3 KB = 1.4 MB)
 Frameworks/libSystem.Native.framework/Info.plist:
-    822 bytes (0.8 KB = 0.0 MB)
+    825 bytes (0.8 KB = 0.0 MB)
 Frameworks/libSystem.Native.framework/libSystem.Native:
-    143,216 bytes (139.9 KB = 0.1 MB)
+    177,552 bytes (173.4 KB = 0.2 MB)
 Frameworks/libSystem.Security.Cryptography.Native.Apple.framework/Info.plist:
-    878 bytes (0.9 KB = 0.0 MB)
+    881 bytes (0.9 KB = 0.0 MB)
 Frameworks/libSystem.Security.Cryptography.Native.Apple.framework/libSystem.Security.Cryptography.Native.Apple:
-    195,056 bytes (190.5 KB = 0.2 MB)
+    248,672 bytes (242.8 KB = 0.2 MB)
 Frameworks/SizeTestApp.r2r.framework/Info.plist:
-    820 bytes (0.8 KB = 0.0 MB)
+    823 bytes (0.8 KB = 0.0 MB)
 Frameworks/SizeTestApp.r2r.framework/SizeTestApp.r2r:
-    3,511,968 bytes (3,429.7 KB = 3.3 MB)
+    3,775,800 bytes (3,687.3 KB = 3.6 MB)
 Info.plist:
-    1,136 bytes (1.1 KB = 0.0 MB)
+    1,139 bytes (1.1 KB = 0.0 MB)
 Microsoft.tvOS.dll:
     64,000 bytes (62.5 KB = 0.1 MB)
 PkgInfo:
@@ -45,7 +45,7 @@ System.IO.Compression.dll:
 System.IO.MemoryMappedFiles.dll:
     16,896 bytes (16.5 KB = 0.0 MB)
 System.Private.CoreLib.dll:
-    1,207,296 bytes (1,179.0 KB = 1.2 MB)
+    1,315,840 bytes (1,285.0 KB = 1.3 MB)
 System.Reflection.Metadata.dll:
     56,832 bytes (55.5 KB = 0.1 MB)
 System.Runtime.dll:

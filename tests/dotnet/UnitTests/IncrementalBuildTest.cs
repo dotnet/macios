@@ -234,8 +234,6 @@ class MainClass {
 		[TestCase (ApplePlatform.iOS, "iossimulator-arm64")]
 		public void CodeChangeSkipsTargets_CoreCLR (ApplePlatform platform, string runtimeIdentifiers)
 		{
-			// With CoreCLR, C# changes don't affect native linking (R2R output is a separate
-			// framework, not an input to _LinkNativeExecutable), so the target is always skipped.
 			CodeChangeSkipsTargetsImpl (platform, runtimeIdentifiers, useMonoRuntime: false, interpreterEnabled: false);
 		}
 
@@ -367,13 +365,20 @@ kernel void myKernel (texture2d<half, access::read> inTexture [[texture(0)]],
 
 			// Verify these targets did NOT execute on incremental build after C# change
 			AssertTargetNotExecuted (allTargets, "_CreatePkgInfo", "B");
-			AssertTargetNotExecuted (allTargets, "_CompileNativeExecutable", "B");
-			if (interpreterEnabled || !useMonoRuntime) {
-				// With interpreter enabled, or with CoreCLR (where C# changes don't affect
-				// native linking), _LinkNativeExecutable should be skipped.
+			if (useMonoRuntime) {
+				AssertTargetNotExecuted (allTargets, "_CompileNativeExecutable", "B");
+			} else {
+				// With CoreCLR we use the trimmable static registrar, and the generated native registrar
+				// code contains the MVID of every assembly in the app. The MVID of the app's own assembly
+				// changes every time it's recompiled, so the native registrar code has to be recompiled too.
+				AssertTargetExecuted (allTargets, "_CompileNativeExecutable", "B");
+			}
+			if (interpreterEnabled) {
+				// With interpreter enabled, _LinkNativeExecutable should be skipped.
 				AssertTargetNotExecuted (allTargets, "_LinkNativeExecutable", "B");
 			} else {
 				// Without interpreter on MonoVM: AOT output changes, forcing a native re-link.
+				// With CoreCLR: the recompiled native registrar code forces a native re-link.
 				AssertTargetExecuted (allTargets, "_LinkNativeExecutable", "B");
 			}
 		}

@@ -352,7 +352,7 @@ public record struct StepExecution (string Name, TimeSpan Duration, bool Modifie
 
 public class AssemblyPreparerInfo {
 	internal AssemblyDefinition? Assembly { get; set; }
-	internal bool IsCILAssembly { get; set; }
+	public bool IsCILAssembly { get; internal set; }
 
 	public string InputPath { get; private set; }
 	public string? OriginalInputPath { get; private set; }

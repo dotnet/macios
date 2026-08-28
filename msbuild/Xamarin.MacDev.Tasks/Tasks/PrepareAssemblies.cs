@@ -143,7 +143,9 @@ namespace Xamarin.MacDev.Tasks {
 					rv.SetMetadata ("PostprocessAssembly", "true");
 					rv.SetMetadata ("RelativePath", preparer.Configuration.AssemblyPublishDir + Path.GetFileName (v.Path));
 					if (v.OriginatingAssembly is not null) {
-						var originatingItem = map.SingleOrDefault (kvp => Path.GetFileName (kvp.Key.InputPath) == Path.GetFileName (v.OriginatingAssembly)).Value;
+						var originatingAssembly = preparer.Assemblies.SingleOrDefault (assembly => assembly.InputPath == v.OriginatingAssembly);
+						originatingAssembly ??= preparer.Assemblies.SingleOrDefault (assembly => assembly.IsCILAssembly && Path.GetFileName (assembly.InputPath) == Path.GetFileName (v.OriginatingAssembly));
+						var originatingItem = originatingAssembly is null ? null : map [originatingAssembly];
 						if (originatingItem is null) {
 							Log.LogMessage (MessageImportance.Low, $"Could not find originating assembly for {v.Path} with originating assembly name {v.OriginatingAssembly}");
 						} else {

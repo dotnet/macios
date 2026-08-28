@@ -1,14 +1,14 @@
-AppBundleSize: 225,485,739 bytes (220,200.9 KB = 215.0 MB)
+AppBundleSize: 220,625,179 bytes (215,454.3 KB = 210.4 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 Contents/Info.plist:
     750 bytes (0.7 KB = 0.0 MB)
 Contents/MacOS/SizeTestApp:
-    7,350,936 bytes (7,178.6 KB = 7.0 MB)
-Contents/MonoBundle/.xamarin/osx-arm64/_Microsoft.macOS.TypeMap.dll:
+    7,351,304 bytes (7,179.0 KB = 7.0 MB)
+Contents/MonoBundle/_Microsoft.macOS.TypeMap.dll:
     4,710,400 bytes (4,600.0 KB = 4.5 MB)
-Contents/MonoBundle/.xamarin/osx-arm64/_Microsoft.macOS.TypeMaps.dll:
+Contents/MonoBundle/_Microsoft.macOS.TypeMaps.dll:
     2,560 bytes (2.5 KB = 0.0 MB)
-Contents/MonoBundle/.xamarin/osx-arm64/_SizeTestApp.TypeMap.dll:
+Contents/MonoBundle/_SizeTestApp.TypeMap.dll:
     3,584 bytes (3.5 KB = 0.0 MB)
 Contents/MonoBundle/.xamarin/osx-arm64/Microsoft.CSharp.dll:
     882,984 bytes (862.3 KB = 0.8 MB)
@@ -374,12 +374,6 @@ Contents/MonoBundle/.xamarin/osx-arm64/System.Xml.XPath.XDocument.dll:
     17,232 bytes (16.8 KB = 0.0 MB)
 Contents/MonoBundle/.xamarin/osx-arm64/WindowsBase.dll:
     16,168 bytes (15.8 KB = 0.0 MB)
-Contents/MonoBundle/.xamarin/osx-x64/_Microsoft.macOS.TypeMap.dll:
-    4,710,400 bytes (4,600.0 KB = 4.5 MB)
-Contents/MonoBundle/.xamarin/osx-x64/_Microsoft.macOS.TypeMaps.dll:
-    2,560 bytes (2.5 KB = 0.0 MB)
-Contents/MonoBundle/.xamarin/osx-x64/_SizeTestApp.TypeMap.dll:
-    3,584 bytes (3.5 KB = 0.0 MB)
 Contents/MonoBundle/.xamarin/osx-x64/Microsoft.CSharp.dll:
     801,576 bytes (782.8 KB = 0.8 MB)
 Contents/MonoBundle/.xamarin/osx-x64/Microsoft.Extensions.Caching.Abstractions.dll:
@@ -771,7 +765,7 @@ Contents/MonoBundle/libSystem.Net.Security.Native.dylib:
 Contents/MonoBundle/libSystem.Security.Cryptography.Native.Apple.dylib:
     510,064 bytes (498.1 KB = 0.5 MB)
 Contents/MonoBundle/Microsoft.macOS.dll:
-    36,645,888 bytes (35,787.0 KB = 34.9 MB)
+    36,501,504 bytes (35,646.0 KB = 34.8 MB)
 Contents/MonoBundle/runtimeconfig.bin:
     1,445 bytes (1.4 KB = 0.0 MB)
 Contents/PkgInfo:

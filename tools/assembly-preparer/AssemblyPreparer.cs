@@ -195,7 +195,15 @@ public class AssemblyPreparer : IDisposable {
 
 		LoadPreTrimAssemblies ();
 
-		var steps = new ConfigurationAwareStep [] {
+		// For NativeAOT, postprocessing runs after the NativeAOT compiler (ILC) has already compiled the
+		// assemblies, which means that modifying an assembly at this point is pointless (the modification
+		// would be silently lost, and we'd show an MT0099 warning about it). So skip the step that removes
+		// attributes in that case; the static registrar will find the attributes on the assemblies instead
+		// (since they're not removed).
+		var isPostILC = configuration.Application.XamarinRuntime == XamarinRuntime.NativeAOT;
+		ConfigurationAwareStep [] removeAttributesStep = isPostILC ? [] : [new RemoveAttributesStep ()];
+
+		ConfigurationAwareStep [] steps = [
 			// All the same steps as the custom trimmer steps that are run after sweeping in Xamarin.Shared.Sdk.targets (and in the same order).
 			new LoadAssembliesStep (), // LoadNonSkippedAssembliesStep
 
@@ -206,7 +214,7 @@ public class AssemblyPreparer : IDisposable {
 			new PopulateApplicationAssembliesStep (),
 
 			// post-sweep
-			new RemoveAttributesStep (), // from PostSweepDispatcher.
+			.. removeAttributesStep, // from PostSweepDispatcher.
 			new CollectFieldsStep (), // Must run before ListExportedSymbols to populate ExportedFields annotation
 			new ExtractBindingLibrariesStep (),
 			// The ListExportedSymbols must run after ExtractBindingLibrariesStep, otherwise we won't properly list exported Objective-C classes from binding libraries
@@ -240,7 +248,7 @@ public class AssemblyPreparer : IDisposable {
 
 			// Must be the last step.
 			new DoneStep (),
-		};
+		];
 
 		var rv = RunSteps (steps, out exceptions);
 

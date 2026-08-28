@@ -2462,9 +2462,9 @@ namespace Xamarin.Tests {
 				properties ["CodesignDisallowResourcesSubdirectoryInAppBundle"] = "false";
 				buildFailure = DotNet.AssertBuildFailure (project_path, properties);
 				errors = BinLog.GetBuildLogErrors (buildFailure.BinLogPath).ToArray ();
-				// codesign only prints 'replacing existing signature' if the app bundle was already signed,
-				// which may or may not be the case here (depending on whether the previously failing build
-				// got far enough to sign the app bundle), so accept both variations.
+				// codesign doesn't consistently print 'replacing existing signature' before reporting the
+				// malformed bundle. The app is signed by the initial successful build above, but this line
+				// was present locally and absent in CI, so accept both variations.
 				var replacingSignature = $"{appPath}: replacing existing signature\n";
 				var notSigned = $"{appPath}: code object is not signed at all\n";
 				// Each error message may show up in either of the listed variations.

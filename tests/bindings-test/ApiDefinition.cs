@@ -251,6 +251,15 @@ namespace Bindings.Test {
 		[Export ("getNSObjectArrayMethod")]
 		NSObject [] GetNSObjectArrayMethod ();
 
+		[Export ("nscodingSessionOptions")]
+		NSDictionary<NSString, NSCoding> GetNSCodingSessionOptions ();
+
+		[Export ("setNscodingSessionOptions:")]
+		void SetNSCodingSessionOptions (NSDictionary<NSString, NSCoding> value);
+
+		[Export ("nscodingSessionDictionary")]
+		NSDictionary<NSString, NSCoding> NSCodingSessionDictionary { get; set; }
+
 		[NullAllowed]
 		[Export ("INSCodingArrayProperty")]
 		INSCoding [] INSCodingArrayProperty { get; set; }

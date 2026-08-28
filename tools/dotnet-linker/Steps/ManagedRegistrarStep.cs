@@ -755,7 +755,7 @@ namespace Xamarin.Linker {
 			}
 			il.Emit (OpCodes.Ret);
 
-			body.GenerateILOffsets ();
+			body.FinalizeGeneratedBody ();
 		}
 
 		// Recursively substitutes generic parameters in a type reference according to the given map.
@@ -929,7 +929,7 @@ namespace Xamarin.Linker {
 			il.Emit (OpCodes.Callvirt, proxyInterfaceMethod);
 			il.Emit (OpCodes.Ret);
 
-			body.GenerateILOffsets ();
+			body.FinalizeGeneratedBody ();
 		}
 
 		public void EmitCallToExportedMethod (MethodDefinition method, MethodDefinition callback)
@@ -1243,7 +1243,7 @@ namespace Xamarin.Linker {
 				instr.Operand = leaveTryInstructionOperand;
 			eh.HandlerEnd = (Instruction) leaveEHInstruction.Operand;
 
-			body.GenerateILOffsets ();
+			body.FinalizeGeneratedBody ();
 		}
 
 		void AddExceptionHandler (ILProcessor il, VariableDefinition? returnVariable, Instruction placeholderNextInstruction, out ExceptionHandler eh, out Instruction leaveEHInstruction)
@@ -2039,7 +2039,7 @@ namespace Xamarin.Linker {
 			il.Emit (OpCodes.Call, ctor);
 			il.Emit (OpCodes.Ret);
 
-			body.GenerateILOffsets ();
+			body.FinalizeGeneratedBody ();
 
 			return clonedCtor;
 		}
@@ -2059,7 +2059,7 @@ namespace Xamarin.Linker {
 
 				var body = registerToggleRef!.CreateBody (out var il);
 				il.Emit (OpCodes.Ret);
-				body.GenerateILOffsets ();
+				body.FinalizeGeneratedBody ();
 			}
 		}
 	}

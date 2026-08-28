@@ -123,15 +123,6 @@
 		<!-- As a last resort, the default is false for all platforms -->
 		<_BundlerDebug Condition="'$(_BundlerDebug)' == ''">false</_BundlerDebug>
 
-		<!--
-			Hot Reload requires that we don't modify user (reloadable) assemblies. It's a debug-only
-			feature, so default $(HotReloadCompatibleBuild) to the debug state: this keeps the current
-			behaviour (and app size) for release builds, where the extra unconditional preservation of
-			smart-enum conversion methods would otherwise cost a bit of app size.
-		-->
-		<HotReloadCompatibleBuild Condition="'$(HotReloadCompatibleBuild)' == '' And '$(_UseNativeAot)' != 'true'">$(_BundlerDebug)</HotReloadCompatibleBuild>
-		<HotReloadCompatibleBuild Condition="'$(HotReloadCompatibleBuild)' == ''">false</HotReloadCompatibleBuild>
-
 		<!-- On the other hand, we want the linker to link away debug support in the actual code unless we're building for Debug -->
 		<DebuggerSupport Condition="'$(DebuggerSupport)' == ''">$(_BundlerDebug)</DebuggerSupport>
 
@@ -652,7 +643,21 @@
 
 	<Target Name="_ComputeLinkerArguments" DependsOnTargets="$(_ComputeLinkerArgumentsDependsOn)" />
 
-	<Target Name="_ComputeLinkerInputs">
+	<Target Name="_ComputeHotReloadCompatibleBuild" DependsOnTargets="SelectRegistrar">
+		<PropertyGroup>
+			<!--
+				Hot Reload requires that we don't modify user (reloadable) assemblies. It's a debug-only
+				feature, so default $(HotReloadCompatibleBuild) to the debug state: this keeps the current
+				behaviour (and app size) for release builds, where the extra unconditional preservation of
+				smart-enum conversion methods would otherwise cost a bit of app size.
+			-->
+			<HotReloadCompatibleBuild Condition="'$(HotReloadCompatibleBuild)' == '' And '$(Registrar)' == 'managed-static'">false</HotReloadCompatibleBuild>
+			<HotReloadCompatibleBuild Condition="'$(HotReloadCompatibleBuild)' == '' And '$(_UseNativeAot)' != 'true'">$(_BundlerDebug)</HotReloadCompatibleBuild>
+			<HotReloadCompatibleBuild Condition="'$(HotReloadCompatibleBuild)' == ''">false</HotReloadCompatibleBuild>
+		</PropertyGroup>
+	</Target>
+
+	<Target Name="_ComputeLinkerInputs" DependsOnTargets="_ComputeHotReloadCompatibleBuild">
 		<!-- Validate the linker mode -->
 		<Error Text="Invalid link mode: '$(_LinkMode)'. Valid link modes are: 'None', 'SdkOnly' and 'Full'" Condition="'$(_LinkMode)' != 'None' And '$(_LinkMode)' != 'SdkOnly' And '$(_LinkMode)' != 'Full' And '$(_LinkMode)' != 'TrimMode'" />
 

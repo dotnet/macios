@@ -676,7 +676,9 @@ assemblies so they stay byte-for-byte unchanged (a requirement for Hot
 Reload). This will disable a few minor optimizations, but will otherwies not
 affect anything.
 
-The default value is `true` for non-NativeAOT debug builds and `false` otherwise.
+The default value is `true` for non-NativeAOT debug builds that don't use the
+managed static registrar, and `false` otherwise (the managed static registrar
+modifies user assemblies, which is incompatible with Hot Reload).
 
 ## IBToolPath
 

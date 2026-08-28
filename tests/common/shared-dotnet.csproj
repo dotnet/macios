@@ -132,10 +132,23 @@
 		happen in a target (and not in a plain PropertyGroup), because $(HotReloadCompatibleBuild)
 		is computed in the platform SDK targets, which are imported after this file.
 	-->
-	<Target Name="_AddHotReloadCompatibleBuildDefine" BeforeTargets="CoreCompile" Condition="'$(HotReloadCompatibleBuild)' == 'true'">
-		<PropertyGroup>
+	<Target Name="_AddHotReloadCompatibleBuildDefine" BeforeTargets="CoreCompile" DependsOnTargets="_ComputeHotReloadCompatibleBuild">
+		<PropertyGroup Condition="'$(HotReloadCompatibleBuild)' == 'true'">
 			<DefineConstants>$(DefineConstants);HOTRELOAD_COMPATIBLE_BUILD</DefineConstants>
 		</PropertyGroup>
+	</Target>
+
+	<!--
+		Whether the build is hot-reload-compatible is an app-level decision (it depends on the
+		registrar, which is only selected for projects that produce an app bundle), but it affects
+		the library projects the app references as well (their assemblies are the ones that must be
+		left unmodified). So pass the app's value on to every referenced project, to make sure they
+		all agree (in particular when defining HOTRELOAD_COMPATIBLE_BUILD above).
+	-->
+	<Target Name="_PassHotReloadCompatibleBuildToProjectReferences" BeforeTargets="AssignProjectConfiguration" DependsOnTargets="_ComputeHotReloadCompatibleBuild" Condition="'$(_CanOutputAppBundle)' == 'true'">
+		<ItemGroup>
+			<ProjectReference Update="@(ProjectReference)" AdditionalProperties="%(ProjectReference.AdditionalProperties);HotReloadCompatibleBuild=$(HotReloadCompatibleBuild)" />
+		</ItemGroup>
 	</Target>
 
 	<Import Project="$(MSBuildThisFileDirectory)/../ComputeRegistrarConstant.targets" />

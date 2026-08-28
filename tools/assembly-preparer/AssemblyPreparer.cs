@@ -199,6 +199,12 @@ public class AssemblyPreparer : IDisposable {
 			// All the same steps as the custom trimmer steps that are run after sweeping in Xamarin.Shared.Sdk.targets (and in the same order).
 			new LoadAssembliesStep (), // LoadNonSkippedAssembliesStep
 
+			// Populate Application.Assemblies with the loaded assemblies. This must happen before
+			// ExtractBindingLibrariesStep (which iterates over Application.Assemblies to find the native
+			// libraries and frameworks embedded in binding assemblies), just like in the ILLink flow,
+			// where LoadNonSkippedAssembliesStep runs before ExtractBindingLibrariesStep.
+			new PopulateApplicationAssembliesStep (),
+
 			// post-sweep
 			new RemoveAttributesStep (), // from PostSweepDispatcher.
 			new CollectFieldsStep (), // Must run before ListExportedSymbols to populate ExportedFields annotation
@@ -221,10 +227,6 @@ public class AssemblyPreparer : IDisposable {
 			new RemoveStaleTypeMapAssemblyTargetsStep (),
 
 			new SaveAssembliesStep (),
-
-			// PopulateApplicationAssembliesStep must run after SaveAssembliesStep so that
-			// OutputPath is set correctly (used by ComputeAOTArguments and GatherFrameworksStep).
-			new PopulateApplicationAssembliesStep (),
 
 			// post-output
 

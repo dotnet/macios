@@ -2462,19 +2462,28 @@ namespace Xamarin.Tests {
 				properties ["CodesignDisallowResourcesSubdirectoryInAppBundle"] = "false";
 				buildFailure = DotNet.AssertBuildFailure (project_path, properties);
 				errors = BinLog.GetBuildLogErrors (buildFailure.BinLogPath).ToArray ();
-				var errorMessagePrefixes = new string []
+				// codesign only prints 'replacing existing signature' if the app bundle was already signed,
+				// which may or may not be the case here (depending on whether the previously failing build
+				// got far enough to sign the app bundle), so accept both variations.
+				var replacingSignature = $"{appPath}: replacing existing signature\n";
+				var notSigned = $"{appPath}: code object is not signed at all\n";
+				// Each error message may show up in either of the listed variations.
+				var errorMessagePrefixes = new string [] []
 				{
-					$"/usr/bin/codesign exited with code 1:\n" +
-					$"{appPath}: replacing existing signature\n" +
-					$"{appPath}: code object is not signed at all\n",
+					new string [] {
+						$"/usr/bin/codesign exited with code 1:\n{replacingSignature}{notSigned}",
+						$"/usr/bin/codesign exited with code 1:\n{notSigned}",
+					},
 
-					$"Failed to codesign '{appPath}': {appPath}: replacing existing signature\n" +
-					$"{appPath}: code object is not signed at all\n",
+					new string [] {
+						$"Failed to codesign '{appPath}': {replacingSignature}{notSigned}",
+						$"Failed to codesign '{appPath}': {notSigned}",
+					},
 				};
 
 				AssertErrorMessages (errors,
-					errorMessagePrefixes.Select (prefix => new Func<string, bool> ((msg) => msg.StartsWith (prefix))).ToArray (),
-					errorMessagePrefixes.Select (prefix => new Func<string> (() => prefix)).ToArray ()
+					errorMessagePrefixes.Select (prefixes => new Func<string, bool> ((msg) => prefixes.Any (prefix => msg.StartsWith (prefix)))).ToArray (),
+					errorMessagePrefixes.Select (prefixes => new Func<string> (() => prefixes [0])).ToArray ()
 				);
 
 				// Remove the dir, and now the build should succeed again.

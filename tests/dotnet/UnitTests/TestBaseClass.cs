@@ -678,9 +678,27 @@ namespace Xamarin.Tests {
 
 		public void AssertThatLinkerExecuted (ExecutionResult result)
 		{
+			var targets = BinLog.GetAllTargets (result.BinLogPath);
+			if (AreAssembliesPreparedAndPostProcessed (targets)) {
+				// The assembly preparer and post-processor did the work our custom trimmer steps
+				// would otherwise have done, in which case the trimmer might not even run (that's
+				// the case when we're not trimming anything).
+				return;
+			}
+
 			var output = BinLog.PrintToString (result.BinLogPath);
 			Assert.That (output, Does.Contain ("Building target \"_RunILLink\" completely."), "Linker did not executed as expected.");
 			Assert.That (output, Does.Contain ("LinkerConfiguration:"), "Custom steps did not run as expected.");
+		}
+
+		// Our custom trimmer steps aren't executed when the assembly preparer prepares the assemblies
+		// before the trimmer runs, and post-processes them afterwards, because then those two passes
+		// do all the work instead.
+		static bool AreAssembliesPreparedAndPostProcessed (IEnumerable<TargetExecutionResult> targets)
+		{
+			var prepared = targets.Any (v => v.TargetName == "_PrepareAssemblies" && !v.Skipped);
+			var postProcessed = targets.Any (v => (v.TargetName == "_PostprocessAssemblies" || v.TargetName == "_PostprocessAssembliesAfterIlc") && !v.Skipped);
+			return prepared && postProcessed;
 		}
 
 		public void AssertThatLinkerDidNotExecute (ExecutionResult result)

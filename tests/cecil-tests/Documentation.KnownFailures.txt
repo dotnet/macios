@@ -22386,7 +22386,6 @@ T:AppKit.NSApplicationFile
 T:AppKit.NSApplicationFileCommand
 T:AppKit.NSApplicationHandlesKey
 T:AppKit.NSApplicationMenu
-T:AppKit.NSApplicationOcclusionState
 T:AppKit.NSApplicationPredicate
 T:AppKit.NSApplicationPresentationOptions
 T:AppKit.NSApplicationPrint
@@ -22491,8 +22490,6 @@ T:AppKit.NSEventTrackHandler
 T:AppKit.NSEventType
 T:AppKit.NSFocusRingPlacement
 T:AppKit.NSFocusRingType
-T:AppKit.NSFontAssetRequestOptions
-T:AppKit.NSFontCollectionOptions
 T:AppKit.NSFontCollectionVisibility
 T:AppKit.NSFontDescriptorSystemDesign
 T:AppKit.NSFontError
@@ -22580,7 +22577,6 @@ T:AppKit.NSPageControllerGetViewController
 T:AppKit.NSPageControllerTransitionStyle
 T:AppKit.NSPageLayoutResult
 T:AppKit.NSPasteboardAccessBehavior
-T:AppKit.NSPasteboardContentsOptions
 T:AppKit.NSPasteboardDetectionPattern
 T:AppKit.NSPasteboardDetectMetadataCompletionHandler
 T:AppKit.NSPasteboardDetectMetadataHandler
@@ -22594,7 +22590,6 @@ T:AppKit.NSPasteboardReadingOptions
 T:AppKit.NSPasteboardType
 T:AppKit.NSPasteboardTypeFindPanelSearchOptionKey
 T:AppKit.NSPasteboardTypeTextFinderOptionKey
-T:AppKit.NSPasteboardWritingOptions
 T:AppKit.NSPathStyle
 T:AppKit.NSPickerTouchBarItemControlRepresentation
 T:AppKit.NSPickerTouchBarItemSelectionMode
@@ -22838,11 +22833,9 @@ T:AppKit.NSWindowDocumentDrag
 T:AppKit.NSWindowFrame
 T:AppKit.NSWindowFramePredicate
 T:AppKit.NSWindowLevel
-T:AppKit.NSWindowListOptions
 T:AppKit.NSWindowMenu
 T:AppKit.NSWindowNSWindow
 T:AppKit.NSWindowNumberListOptions
-T:AppKit.NSWindowOcclusionState
 T:AppKit.NSWindowOrderingMode
 T:AppKit.NSWindowResize
 T:AppKit.NSWindowSharingType
@@ -22920,14 +22913,12 @@ T:AudioToolbox.AUVoiceIOOtherAudioDuckingLevel
 T:AudioUnit.AU3DMixerRenderingFlags
 T:AudioUnit.AudioAggregateDriftCompensation
 T:AudioUnit.AudioComponentValidationResult
-T:AudioUnit.AudioObjectPropertyElement
 T:AudioUnit.AudioObjectPropertyScope
 T:AudioUnit.AudioObjectPropertySelector
 T:AudioUnit.AudioUnitBusType
 T:AudioUnit.AudioUnitEventType
 T:AudioUnit.AudioUnitParameterOptions
 T:AudioUnit.AudioUnitSubType
-T:AudioUnit.AUEventSampleTime
 T:AudioUnit.AUImplementorStringFromValueCallback
 T:AudioUnit.AUInternalRenderBlock
 T:AudioUnit.AUMidiCIProfileChangedCallback

@@ -367,6 +367,10 @@ namespace Xamarin.Linker {
 					new LoadValue ((key, value) => FrameworkAssemblies.Add (value)),
 					new SaveValue ((key, storage) => storage.AddRange (FrameworkAssemblies.OrderBy (v => v).Select (v => $"{key}={v}")))
 				)},
+				{ "GenerateTrustedPlatformAssemblies", (
+					new LoadValue ((key, value) => loadBool (key, value, out Application.GenerateTrustedPlatformAssemblies)),
+					new SaveValue ((key, storage) => saveOptionalDefaultFalseBool (key, Application.GenerateTrustedPlatformAssemblies, storage))
+				)},
 				{ "HotReloadCompatibleBuild", (
 					new LoadValue ((key, value) => HotReloadCompatibleBuild = string.Equals ("true", value, StringComparison.OrdinalIgnoreCase)),
 					new SaveValue ((key, storage) => saveOptionalDefaultFalseBool (key, HotReloadCompatibleBuild, storage))
@@ -415,6 +419,10 @@ namespace Xamarin.Linker {
 				{ "IsAppExtension", (
 					new LoadValue ((key, value) => Application.IsExtension = string.Equals ("true", value, StringComparison.OrdinalIgnoreCase)),
 					new SaveValue ((key, storage) => storage.Add ($"{key}={(Application.IsExtension ? "true" : "false")}"))
+				)},
+				{ "IsMultiRidBuild", (
+					new LoadValue ((key, value) => loadBool (key, value, out Application.IsMultiRidBuild)),
+					new SaveValue ((key, storage) => saveOptionalDefaultFalseBool (key, Application.IsMultiRidBuild, storage))
 				)},
 				{ "ItemsDirectory", (
 					new LoadValue ((key, value) => ItemsDirectory = value),

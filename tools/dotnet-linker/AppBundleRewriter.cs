@@ -2004,7 +2004,7 @@ namespace Xamarin.Linker {
 			il.Emit (OpCodes.Newobj, ctor);
 			il.Emit (OpCodes.Ret);
 
-			body.GenerateILOffsets ();
+			body.FinalizeGeneratedBody ();
 
 			// make sure the trimmer doesn't trim it away if the type is kept
 			if (context.App.Registrar == RegistrarMode.TrimmableStatic) {
@@ -2088,7 +2088,7 @@ namespace Xamarin.Linker {
 				throw new UnreachableException ();
 			}
 
-			body.GenerateILOffsets ();
+			body.FinalizeGeneratedBody ();
 
 			// make sure the trimmer doesn't trim it away if the type is kept
 			if (context.App.Registrar == RegistrarMode.TrimmableStatic) {

@@ -403,6 +403,9 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 		}
 		il.Append (il.Create (OpCodes.Ret));
 
+		// See the comment in CecilExtensions.FinalizeGeneratedBody for why this is needed.
+		body.FinalizeGeneratedBody ();
+
 		return rv;
 	}
 
@@ -504,6 +507,9 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 		}
 		il.Append (il.Create (OpCodes.Ret));
 
+		// See the comment in CecilExtensions.FinalizeGeneratedBody for why this is needed.
+		body.FinalizeGeneratedBody ();
+
 		return rv;
 	}
 
@@ -557,6 +563,9 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 		il.Append (il.Create (OpCodes.Call, abr.NativeObject_op_Implicit_IntPtr));
 		il.Append (il.Create (OpCodes.Stind_I));
 		il.Append (il.Create (OpCodes.Ret));
+
+		// See the comment in CecilExtensions.FinalizeGeneratedBody for why this is needed.
+		body.FinalizeGeneratedBody ();
 
 		return rv;
 	}
@@ -908,6 +917,9 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 					il.Append (loadPointerInstructionStart); // il.Create (OpCodes.Ldloc, ptrVariable)
 					il.Append (il.Create (OpCodes.Ldind_I));
 					il.Append (il.Create (OpCodes.Ret));
+
+					// See the comment in CecilExtensions.FinalizeGeneratedBody for why this is needed.
+					method.Body.FinalizeGeneratedBody ();
 
 					modified = true;
 					return modified; // we replace the whole method body, so no need to continue processing the method

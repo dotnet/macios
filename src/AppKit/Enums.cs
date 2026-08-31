@@ -2538,11 +2538,12 @@ namespace AppKit {
 		Unitalic = 0x1000000,
 	}
 
+	/// <summary>Specifies options for writing objects to a pasteboard.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSPasteboardWritingOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The object promises to provide its pasteboard data later.</summary>
 		WritingPromised = 1 << 9,
 	}
 
@@ -2924,11 +2925,12 @@ namespace AppKit {
 		RatingLevel,
 	}
 
+	/// <summary>Specifies options for creating or modifying font collections.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSFontCollectionOptions : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Limits the font collection to the current application.</summary>
 		ApplicationOnlyMask = 1,
 	}
 
@@ -4027,19 +4029,21 @@ namespace AppKit {
 		AllowUserInteraction = 0x1000,
 	}
 
+	/// <summary>Describes whether an application has visible content.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSApplicationOcclusionState : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>At least part of the application's content is visible.</summary>
 		Visible = 1 << 1,
 	}
 
+	/// <summary>Describes whether a window is visible to the user.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSWindowOcclusionState : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>At least part of the window is visible.</summary>
 		Visible = 1 << 1,
 	}
 
@@ -4181,11 +4185,12 @@ namespace AppKit {
 		NoHover = 1 << 3,
 	}
 
+	/// <summary>Specifies how to order windows in a window list.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSWindowListOptions : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Orders windows from front to back.</summary>
 		OrderedFrontToBack = (1 << 0),
 	}
 
@@ -4316,10 +4321,11 @@ namespace AppKit {
 		Bezel,
 	}
 
+	/// <summary>Specifies options for replacing the contents of a pasteboard.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSPasteboardContentsOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Restricts the pasteboard contents to the current host.</summary>
 		CurrentHostOnly = 1,
 	}
 
@@ -4453,11 +4459,12 @@ namespace AppKit {
 		Catalog,
 	}
 
+	/// <summary>Specifies options for requesting downloadable font assets.</summary>
 	[NoMacCatalyst]
 	[Native]
 	[Flags]
 	public enum NSFontAssetRequestOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Displays the standard user interface while downloading fonts.</summary>
 		UsesStandardUI = 1 << 0,
 	}
 

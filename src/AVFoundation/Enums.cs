@@ -525,13 +525,12 @@ namespace AVFoundation {
 	}
 
 	/// <summary>An enumeration whose values define whether, after an audio session deactivates, previously interrupted audio sessions should or should not re-activate.</summary>
-	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Flags]
 	[Native]
 	// NSUInteger - AVAudioSession.h
 	public enum AVAudioSessionSetActiveOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Notifies other audio sessions that they can resume when this session deactivates.</summary>
 		NotifyOthersOnDeactivation = 1,
 	}
 
@@ -1156,11 +1155,10 @@ namespace AVFoundation {
 	}
 
 	/// <summary>Enumerates loop count limits.</summary>
-	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum AVMusicTrackLoopCount : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Loops the music track indefinitely.</summary>
 		Forever = -1,
 	}
 
@@ -1751,11 +1749,12 @@ namespace AVFoundation {
 		DolbyVision = 0x4,
 	}
 
+	/// <summary>Specifies options for activating an audio session.</summary>
 	[MacCatalyst (13, 1)]
 	[Flags]
 	[Native]
 	public enum AVAudioSessionActivationOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>No activation options are specified.</summary>
 		None = 0x0,
 	}
 

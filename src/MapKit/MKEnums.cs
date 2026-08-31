@@ -37,7 +37,6 @@ namespace MapKit {
 
 	// NSUInteger -> MKTypes.h
 	/// <summary>The type of map.</summary>
-	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MKMapType : ulong {
@@ -51,7 +50,7 @@ namespace MapKit {
 		SatelliteFlyover,
 		/// <summary>A flyover that combines satellite and cartographic imagery.</summary>
 		HybridFlyover,
-		/// <summary>A muted map that emphasized developer data.</summary>
+		/// <summary>A muted map that emphasizes developer data.</summary>
 		[MacCatalyst (13, 1)]
 		MutedStandard,
 	}

@@ -394,6 +394,11 @@ function xcodebuild_download_selected_platforms ()
 		TVOS_BUILD_VERSION=" -architectureVariant arm64"
 	fi
 
+	# The expected simulator runtime versions for the current Xcode, so we can
+	# verify the downloads below actually installed the runtimes we need.
+	IOS_NUGET_OS_VERSION=$(grep ^IOS_NUGET_OS_VERSION= Make.versions | sed 's/.*=//')
+	TVOS_NUGET_OS_VERSION=$(grep ^TVOS_NUGET_OS_VERSION= Make.versions | sed 's/.*=//')
+
 	local TMPFILE
 	TMPFILE=$(mktemp)
 	log "Checking if there are any simulator runtimes that aren't ready..."
@@ -415,10 +420,11 @@ function xcodebuild_download_selected_platforms ()
 	log "Executing '$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild -downloadPlatform iOS$IOS_BUILD_VERSION' $1"
 	"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform iOS $IOS_BUILD_VERSION   2>&1 | sed 's/^/        /'
 
-	log "Executing '$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild -downloadPlatform tvOS$TVOS_BUILD_VERSION' $1"
-	"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform tvOS $TVOS_BUILD_VERSION 2>&1 | sed 's/^/        /'
+	if ! xcodebuild_download_platform tvOS "$TVOS_NUGET_OS_VERSION" $TVOS_BUILD_VERSION; then
+		RC=1
+	fi
 
-	return 0
+	return $RC
 }
 
 function download_xcode_platforms ()

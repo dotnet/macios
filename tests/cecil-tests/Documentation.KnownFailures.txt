@@ -2891,7 +2891,6 @@ F:CoreSpotlight.CSUserInteraction.Focus
 F:CoreSpotlight.CSUserInteraction.Select
 F:CoreTelephony.CTCellularPlanCapability.AndVoice
 F:CoreTelephony.CTCellularPlanCapability.Only
-F:CoreTelephony.CTCellularPlanProvisioningAddPlanResult.Cancel
 F:CoreText.CTFontManagerError.AssetNotFound
 F:CoreText.CTFontManagerError.CancelledByUser
 F:CoreText.CTFontManagerError.DuplicatedName
@@ -5993,8 +5992,6 @@ F:PdfKit.PdfAccessPermissions.DocumentChanges
 F:PdfKit.PdfAccessPermissions.FormFieldEntry
 F:PdfKit.PdfAccessPermissions.HighQualityPrinting
 F:PdfKit.PdfAccessPermissions.LowQualityPrinting
-F:PdfKit.PdfAreaOfInterest.AnyArea
-F:PdfKit.PdfMarkupType.Redact
 F:PdfKit.PdfSelectionGranularity.Character
 F:PdfKit.PdfSelectionGranularity.Line
 F:PdfKit.PdfSelectionGranularity.Word
@@ -54216,7 +54213,6 @@ T:AppKit.NSApplicationFile
 T:AppKit.NSApplicationFileCommand
 T:AppKit.NSApplicationHandlesKey
 T:AppKit.NSApplicationMenu
-T:AppKit.NSApplicationOcclusionState
 T:AppKit.NSApplicationPredicate
 T:AppKit.NSApplicationPresentationOptions
 T:AppKit.NSApplicationPrint
@@ -54398,9 +54394,7 @@ T:AppKit.NSFocusRingPlacement
 T:AppKit.NSFocusRingType
 T:AppKit.NSFont
 T:AppKit.NSFontAssetRequest
-T:AppKit.NSFontAssetRequestOptions
 T:AppKit.NSFontCollection
-T:AppKit.NSFontCollectionOptions
 T:AppKit.NSFontCollectionVisibility
 T:AppKit.NSFontDescriptor
 T:AppKit.NSFontDescriptorSystemDesign
@@ -54542,7 +54536,6 @@ T:AppKit.NSPanel
 T:AppKit.NSPanGestureRecognizer
 T:AppKit.NSPasteboard
 T:AppKit.NSPasteboardAccessBehavior
-T:AppKit.NSPasteboardContentsOptions
 T:AppKit.NSPasteboardDetectionPattern
 T:AppKit.NSPasteboardDetectMetadataCompletionHandler
 T:AppKit.NSPasteboardDetectMetadataHandler
@@ -54557,7 +54550,6 @@ T:AppKit.NSPasteboardReadingOptions
 T:AppKit.NSPasteboardType
 T:AppKit.NSPasteboardTypeFindPanelSearchOptionKey
 T:AppKit.NSPasteboardTypeTextFinderOptionKey
-T:AppKit.NSPasteboardWritingOptions
 T:AppKit.NSPathCell
 T:AppKit.NSPathComponentCell
 T:AppKit.NSPathControl
@@ -54954,11 +54946,9 @@ T:AppKit.NSWindowDocumentDrag
 T:AppKit.NSWindowFrame
 T:AppKit.NSWindowFramePredicate
 T:AppKit.NSWindowLevel
-T:AppKit.NSWindowListOptions
 T:AppKit.NSWindowMenu
 T:AppKit.NSWindowNSWindow
 T:AppKit.NSWindowNumberListOptions
-T:AppKit.NSWindowOcclusionState
 T:AppKit.NSWindowOrderingMode
 T:AppKit.NSWindowResize
 T:AppKit.NSWindowSharingType
@@ -55073,14 +55063,12 @@ T:AudioToolbox.AUVoiceIOOtherAudioDuckingLevel
 T:AudioUnit.AU3DMixerRenderingFlags
 T:AudioUnit.AudioAggregateDriftCompensation
 T:AudioUnit.AudioComponentValidationResult
-T:AudioUnit.AudioObjectPropertyElement
 T:AudioUnit.AudioObjectPropertyScope
 T:AudioUnit.AudioObjectPropertySelector
 T:AudioUnit.AudioUnitBusType
 T:AudioUnit.AudioUnitEventType
 T:AudioUnit.AudioUnitParameterOptions
 T:AudioUnit.AudioUnitSubType
-T:AudioUnit.AUEventSampleTime
 T:AudioUnit.AUImplementorStringFromValueCallback
 T:AudioUnit.AUInternalRenderBlock
 T:AudioUnit.AUMidiCIProfileChangedCallback
@@ -55308,7 +55296,6 @@ T:AVFoundation.AVAudioRoutingArbiter
 T:AVFoundation.AVAudioRoutingArbitrationCategory
 T:AVFoundation.AVAudioSequencerInfoDictionary
 T:AVFoundation.AVAudioSequencerUserCallback
-T:AVFoundation.AVAudioSessionActivationOptions
 T:AVFoundation.AVAudioSessionCapability
 T:AVFoundation.AVAudioSessionDeactivationOptions
 T:AVFoundation.AVAudioSessionDeactivationSource
@@ -56602,7 +56589,6 @@ T:CoreTelephony.CTCellularPlanCapability
 T:CoreTelephony.CTCellularPlanProperties
 T:CoreTelephony.CTCellularPlanProvisioning
 T:CoreTelephony.CTCellularPlanProvisioningAddPlanCompletionHandler
-T:CoreTelephony.CTCellularPlanProvisioningAddPlanResult
 T:CoreTelephony.CTCellularPlanProvisioningRequest
 T:CoreTelephony.CTCellularPlanProvisioningUpdateCellularPlanCompletionHandler
 T:CoreTelephony.CTCellularPlanStatus
@@ -56890,7 +56876,6 @@ T:Foundation.NSInputStream
 T:Foundation.NSInvocation
 T:Foundation.NSIso8601DateFormatter
 T:Foundation.NSItemProvider
-T:Foundation.NSItemProviderFileOptions
 T:Foundation.NSItemProviderRepresentationVisibility
 T:Foundation.NSItemProviderUTTypeLoadDelegate
 T:Foundation.NSJsonSerialization
@@ -59459,7 +59444,6 @@ T:SceneKit.SCNCameraController
 T:SceneKit.SCNCameraProjectionDirection
 T:SceneKit.SCNColorMask
 T:SceneKit.SCNDistanceConstraint
-T:SceneKit.SCNErrorCode
 T:SceneKit.SCNFillMode
 T:SceneKit.SCNGeometryTessellator
 T:SceneKit.SCNHitTestSearchMode

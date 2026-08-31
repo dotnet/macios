@@ -68,7 +68,8 @@ namespace Xamarin.MacDev.Tasks {
 			var isTrimmableString = item.GetMetadata ("IsTrimmable");
 			var isTrimmable = string.IsNullOrEmpty (isTrimmableString) ? (bool?) null : string.Equals (isTrimmableString, "true", StringComparison.OrdinalIgnoreCase);
 			var trimMode = item.GetMetadata ("TrimMode");
-			var rv = new AssemblyPreparerInfo (inputPath, outputPath, isTrimmable, trimMode);
+			var originalInputPath = item.GetMetadata ("OriginalItemSpec");
+			var rv = new AssemblyPreparerInfo (inputPath, outputPath, originalInputPath, isTrimmable, trimMode);
 			map [rv] = item;
 			return rv;
 		}

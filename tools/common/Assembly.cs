@@ -153,15 +153,25 @@ namespace Xamarin.Bundler {
 			if (!assembly.HasCustomAttributes)
 				return;
 
-			string resourceBundlePath = Path.ChangeExtension (FullPath, ".resources");
-			if (Directory.Exists (resourceBundlePath)) {
-				App.Log (3, $"Found a binding resource package for the assembly '{FullPath}' in {resourceBundlePath}, so not looking for any libraries embedded in the assembly.");
-				return;
-			}
-			var zipPath = resourceBundlePath + ".zip";
-			if (File.Exists (zipPath)) {
-				App.Log (3, $"Found a binding resource package for the assembly '{FullPath}' in {zipPath}, so not looking for any libraries embedded in the assembly.");
-				return;
+			var assemblyPaths = new List<string> () {
+				FullPath,
+			};
+#if ASSEMBLY_PREPARER
+			var api = App.Configuration.AssemblyInfos.Single (v => v.Assembly == assembly);
+			if (!StringUtils.IsNullOrEmpty (api.OriginalInputPath))
+				assemblyPaths.Add (api.OriginalInputPath);
+#endif
+			foreach (var asmPath in assemblyPaths) {
+				string resourceBundlePath = Path.ChangeExtension (asmPath, ".resources");
+				if (Directory.Exists (resourceBundlePath)) {
+					App.Log (3, $"Found a binding resource package for the assembly '{asmPath}' in {resourceBundlePath}, so not looking for any libraries embedded in the assembly.");
+					return;
+				}
+				var zipPath = resourceBundlePath + ".zip";
+				if (File.Exists (zipPath)) {
+					App.Log (3, $"Found a binding resource package for the assembly '{asmPath}' in {zipPath}, so not looking for any libraries embedded in the assembly.");
+					return;
+				}
 			}
 
 			ProcessLinkWithAttributes (assembly);

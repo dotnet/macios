@@ -22,6 +22,7 @@ namespace Xamarin.Build;
 
 public class AssemblyPreparer : IDisposable {
 	AggregateLog log = new AggregateLog ();
+	readonly IToolLog toolLog;
 
 	LinkerConfiguration configuration;
 
@@ -67,7 +68,8 @@ public class AssemblyPreparer : IDisposable {
 					var isTrimmableString = split[2];
 					var isTrimmable = string.IsNullOrEmpty (isTrimmableString) ? (bool?) null : string.Equals (isTrimmableString, "true", StringComparison.OrdinalIgnoreCase);
 					var trimMode = split[3];
-					var apinfo = assemblyPreparerInfoFactory is not null ? assemblyPreparerInfoFactory (input, output) : new AssemblyPreparerInfo (input, output, isTrimmable, trimMode);
+					var originalInput = split.Length > 4 ? split[4] : null;
+					var apinfo = assemblyPreparerInfoFactory is not null ? assemblyPreparerInfoFactory (input, output) : new AssemblyPreparerInfo (input, output, originalInput, isTrimmable, trimMode);
 					Assemblies.Add (apinfo);
 				}),
 				new LinkerConfiguration.SaveValue ((key, storage) => SaveAssemblies (key, storage, reproPath, Assemblies))
@@ -76,21 +78,46 @@ public class AssemblyPreparer : IDisposable {
 		return dict;
 	}
 
-	static void SaveAssemblies (string key, List<string> storage, string? reproPath, IList<AssemblyPreparerInfo> assemblies)
+	void SaveAssemblies (string key, List<string> storage, string? reproPath, IList<AssemblyPreparerInfo> assemblies)
 	{
 		foreach (var assembly in assemblies) {
 			var input = assembly.InputPath;
 			var output = assembly.OutputPath;
+			var originalInput = assembly.OriginalInputPath;
 			if (!string.IsNullOrEmpty (reproPath)) {
 				output = Path.Combine (reproPath, Path.GetFileName (output));
 				File.Copy (input, output);
+				if (!StringUtils.IsNullOrEmpty (originalInput) && CopyBindingResourcePackage (originalInput, output))
+					originalInput = output;
 			}
-			storage.Add ($"{key}={input}|{output}|{(assembly.IsTrimmable.HasValue ? (assembly.IsTrimmable.Value ? "true" : "false") : "")}|{assembly.TrimMode}");
+			storage.Add ($"{key}={input}|{output}|{(assembly.IsTrimmable.HasValue ? (assembly.IsTrimmable.Value ? "true" : "false") : "")}|{assembly.TrimMode}|{originalInput}");
 		}
+	}
+
+	bool CopyBindingResourcePackage (string originalAssemblyPath, string destinationAssemblyPath)
+	{
+		var copied = false;
+		var sourceDirectory = Path.ChangeExtension (originalAssemblyPath, ".resources");
+		if (Directory.Exists (sourceDirectory)) {
+			var destinationDirectory = Path.ChangeExtension (destinationAssemblyPath, ".resources");
+			var destinationParentDirectory = Path.GetDirectoryName (destinationDirectory);
+			if (destinationParentDirectory is null)
+				throw new InvalidOperationException ($"Could not get the directory name for '{destinationDirectory}'.");
+			FileCopier.UpdateDirectory (toolLog, sourceDirectory, destinationParentDirectory);
+			copied = true;
+		}
+
+		var sourceZip = sourceDirectory + ".zip";
+		if (File.Exists (sourceZip)) {
+			File.Copy (sourceZip, Path.ChangeExtension (destinationAssemblyPath, ".resources.zip"), true);
+			copied = true;
+		}
+		return copied;
 	}
 
 	public AssemblyPreparer (IToolLog log, AssemblyPreparerInfo [] assemblies, string linker_file)
 	{
+		toolLog = log;
 		var lines = File.ReadAllLines (linker_file).ToList ();
 		SaveAssemblies ("AssemblyPreparer", lines, null, assemblies);
 		configuration = new LinkerConfiguration (log, lines, linker_file, GetConfigurator (null, assemblies.Length == 0 ? null : (input, output) => assemblies.Single (a => a.InputPath == input && a.OutputPath == output))) {
@@ -328,9 +355,19 @@ public class AssemblyPreparerInfo {
 	internal bool IsCILAssembly { get; set; }
 
 	public string InputPath { get; private set; }
+	public string? OriginalInputPath { get; private set; }
 	public bool? IsTrimmable { get; set; }
 	public string TrimMode { get; set; }
 	public string OutputPath { get; set; }
+
+	public AssemblyPreparerInfo (string inputPath, string outputPath, string? originalInputPath, bool? isTrimmable, string trimMode)
+	{
+		InputPath = inputPath;
+		OutputPath = outputPath;
+		OriginalInputPath = originalInputPath;
+		IsTrimmable = isTrimmable;
+		TrimMode = trimMode;
+	}
 
 	public AssemblyPreparerInfo (string inputPath, string outputPath, bool? isTrimmable, string trimMode)
 	{

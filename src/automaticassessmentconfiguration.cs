@@ -200,8 +200,8 @@ namespace AutomaticAssessmentConfiguration {
 		bool AllowsStructuralInput { get; set; }
 
 		[NoiOS, MacCatalyst (27, 0), Mac (27, 0)]
-		[Export ("allowsForceQuit")]
-		bool AllowsForceQuit { get; set; }
+		[Export ("allowsForceQuitKeyboardShortcuts")]
+		bool AllowsForceQuitKeyboardShortcuts { get; set; }
 
 		[NoiOS, MacCatalyst (27, 0), Mac (27, 0)]
 		[NullAllowed, Export ("allowedDirectoriesAndFiles", ArgumentSemantic.Copy)]
@@ -224,24 +224,28 @@ namespace AutomaticAssessmentConfiguration {
 		NSSet<NSString> AllowedMenuBarItems { get; set; }
 
 		[NoiOS, MacCatalyst (27, 0), Mac (27, 0)]
-		[Export ("allowOnlyParticipantsToRun")]
-		bool AllowOnlyParticipantsToRun { get; set; }
+		[Export ("allowsOnlyParticipantsToRun")]
+		bool AllowsOnlyParticipantsToRun { get; set; }
 
 		[NoiOS, MacCatalyst (27, 0), Mac (27, 0)]
-		[Export ("allowLockdownMode")]
-		bool AllowLockdownMode { get; set; }
+		[Export ("allowsLockdownMode")]
+		bool AllowsLockdownMode { get; set; }
 
 		[NoiOS, MacCatalyst (27, 0), Mac (27, 0)]
-		[Export ("allowPrivateRelay")]
-		bool AllowPrivateRelay { get; set; }
+		[Export ("allowsPrivateRelay")]
+		bool AllowsPrivateRelay { get; set; }
 
 		[NoiOS, MacCatalyst (27, 0), Mac (27, 0)]
-		[Export ("allowVirtualMachine")]
-		bool AllowVirtualMachine { get; set; }
+		[Export ("allowsVirtualMachine")]
+		bool AllowsVirtualMachine { get; set; }
 
 		[NoiOS, MacCatalyst (27, 0), Mac (27, 0)]
 		[Export ("requiresManagedDevice")]
 		bool RequiresManagedDevice { get; set; }
+
+		[NoiOS, MacCatalyst (27, 0), Mac (27, 0)]
+		[Export ("requiresReleaseOS")]
+		bool RequiresReleaseOS { get; set; }
 
 		[NoiOS, MacCatalyst (27, 0), Mac (27, 0)]
 		[Export ("requiresSIP")]

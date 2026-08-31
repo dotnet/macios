@@ -2368,11 +2368,18 @@
 			<!-- The frameworks we need to link with (both weakly and normally) -->
 			<_NativeExecutableFrameworks Include="@(_LinkerFrameworks)" />
 
+			<!-- libxamarin requires Foundation for a number of things -->
+			<_NativeExecutableFrameworks Include="Foundation" />
+
 			<!-- CFNetwork is required by xamarin_start_wwan -->
 			<_NativeExecutableFrameworks Include="CFNetwork" Condition="'$(_PlatformName)' == 'iOS'" />
 
 			<!-- libSystem.Security.Cryptography.Native.Apple.a requires the Security framework -->
 			<_NativeExecutableFrameworks Include="Security" />
+
+			<!-- We need AppKit/UIKit for NS/UIApplicationDidFinishLaunchingNotification, which we use when building with the debug version of libxamarin -->
+			<_NativeExecutableFrameworks Include="AppKit" Condition="'$(_BundlerDebug)' == 'true' And '$(_PlatformName)' == 'macOS'" />
+			<_NativeExecutableFrameworks Include="UIKit" Condition="'$(_BundlerDebug)' == 'true' And '$(_PlatformName)' != 'macOS'" />
 
 			<!-- Most apps do not use BrowserEngineKit, and linking with it when an app is not supposed to will prevent it from getting approved in the App Store.
 			     However, we'll automatically detect that we need to link with BrowserEngineKit if an app isn't trimmed, so let's just remove BrowserEngineKit

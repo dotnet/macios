@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Xml;
 using Mono.Cecil;
 using Mono.Tuner;
@@ -360,12 +362,37 @@ namespace Xamarin.Bundler {
 				if (!Directory.Exists (path))
 					Directory.CreateDirectory (path);
 
-				if (Driver.RunCommand (App, "/usr/bin/unzip", "-u", "-o", "-d", path, zipPath) != 0)
+				if (RuntimeInformation.IsOSPlatform (OSPlatform.Windows)) {
+					ExtractZipArchive (zipPath, path);
+				} else if (Driver.RunCommand (App, "/usr/bin/unzip", "-u", "-o", "-d", path, zipPath) != 0) {
 					throw ErrorHelper.CreateError (1303, Errors.MT1303, metadata.LibraryName, zipPath);
+				}
 			}
 
 			framework = path;
 			return true;
+		}
+
+		static void ExtractZipArchive (string zipPath, string destinationDirectory)
+		{
+			var destinationDirectoryPath = Path.GetFullPath (destinationDirectory + Path.DirectorySeparatorChar);
+
+			using var archive = ZipFile.OpenRead (zipPath);
+			foreach (var entry in archive.Entries) {
+				var destinationPath = Path.GetFullPath (Path.Combine (destinationDirectory, entry.FullName));
+				if (!destinationPath.StartsWith (destinationDirectoryPath, StringComparison.OrdinalIgnoreCase))
+					throw new InvalidDataException ($"The archive entry '{entry.FullName}' is outside the destination directory.");
+
+				if (string.IsNullOrEmpty (entry.Name)) {
+					Directory.CreateDirectory (destinationPath);
+					continue;
+				}
+
+				var directory = Path.GetDirectoryName (destinationPath);
+				if (directory is not null)
+					Directory.CreateDirectory (directory);
+				entry.ExtractToFile (destinationPath, true);
+			}
 		}
 
 		void LogNativeReference (NativeReferenceMetadata metadata)

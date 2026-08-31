@@ -57,7 +57,12 @@ namespace Xamarin.MacDev.Tasks {
 
 		public bool ShouldCreateOutputFile (ITaskItem item) => false;
 
-		public IEnumerable<ITaskItem> GetAdditionalItemsToBeCopied () => Enumerable.Empty<ITaskItem> ();
+		public IEnumerable<ITaskItem> GetAdditionalItemsToBeCopied ()
+		{
+			return ITaskItem [] {
+				AppBundleManifest,
+			};
+		}
 
 		public void Cancel ()
 		{

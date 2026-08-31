@@ -59,8 +59,8 @@ namespace Xamarin.MacDev.Tasks {
 
 		public IEnumerable<ITaskItem> GetAdditionalItemsToBeCopied ()
 		{
-			return ITaskItem [] {
-				AppBundleManifest,
+			return new ITaskItem [] {
+				AppBundleManifest!
 			};
 		}
 

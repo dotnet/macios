@@ -1604,7 +1604,10 @@ namespace Xamarin.Linker {
 
 			var attribute = CreateAttribute (DynamicDependencyAttribute_ctor__String_Type);
 			attribute.ConstructorArguments.Add (new CustomAttributeArgument (System_String, memberSignature));
-			attribute.ConstructorArguments.Add (new CustomAttributeArgument (System_Type, type));
+			// Import the type into the current assembly, otherwise Cecil will serialize the Type argument
+			// without an assembly-qualified name when 'type' is a TypeDefinition from another assembly (because
+			// a TypeDefinition's Scope is its own module), and the trimmer won't be able to resolve it (IL2036).
+			attribute.ConstructorArguments.Add (new CustomAttributeArgument (System_Type, CurrentAssembly.MainModule.ImportReference (type)));
 			return attribute;
 		}
 
@@ -2004,7 +2007,7 @@ namespace Xamarin.Linker {
 			il.Emit (OpCodes.Newobj, ctor);
 			il.Emit (OpCodes.Ret);
 
-			body.GenerateILOffsets ();
+			body.FinalizeGeneratedBody ();
 
 			// make sure the trimmer doesn't trim it away if the type is kept
 			if (context.App.Registrar == RegistrarMode.TrimmableStatic) {
@@ -2088,7 +2091,7 @@ namespace Xamarin.Linker {
 				throw new UnreachableException ();
 			}
 
-			body.GenerateILOffsets ();
+			body.FinalizeGeneratedBody ();
 
 			// make sure the trimmer doesn't trim it away if the type is kept
 			if (context.App.Registrar == RegistrarMode.TrimmableStatic) {

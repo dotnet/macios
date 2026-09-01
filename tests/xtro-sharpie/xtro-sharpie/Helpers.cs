@@ -303,8 +303,8 @@ namespace Extrospection {
 						// [Protocol]'s native name is usually set through the 'Name' property, not a constructor argument
 						if (ca.HasProperties) {
 							foreach (var prop in ca.Properties) {
-								if (prop.Name == "Name")
-									return prop.Argument.Value as string;
+								if (prop.Name == "Name" && prop.Argument.Value is string name && !string.IsNullOrEmpty (name))
+									return name;
 							}
 						}
 						return self.Name;

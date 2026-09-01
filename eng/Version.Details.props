@@ -19,16 +19,16 @@ This file should be imported by eng/Versions.props
     <!-- dotnet-macios dependencies -->
     <MicrosoftiOSSdknet100_260PackageVersion>26.0.11017</MicrosoftiOSSdknet100_260PackageVersion>
     <MicrosoftiOSSdknet100_265PackageVersion>26.5.10318</MicrosoftiOSSdknet100_265PackageVersion>
-    <MicrosoftiOSSdknet100_270PackageVersion>27.0.10241-xcode27.0</MicrosoftiOSSdknet100_270PackageVersion>
+    <MicrosoftiOSSdknet100_270PackageVersion>27.0.10539-xcode27.0</MicrosoftiOSSdknet100_270PackageVersion>
     <MicrosoftMacCatalystSdknet100_260PackageVersion>26.0.11017</MicrosoftMacCatalystSdknet100_260PackageVersion>
     <MicrosoftMacCatalystSdknet100_265PackageVersion>26.5.10318</MicrosoftMacCatalystSdknet100_265PackageVersion>
-    <MicrosoftMacCatalystSdknet100_270PackageVersion>27.0.10241-xcode27.0</MicrosoftMacCatalystSdknet100_270PackageVersion>
+    <MicrosoftMacCatalystSdknet100_270PackageVersion>27.0.10539-xcode27.0</MicrosoftMacCatalystSdknet100_270PackageVersion>
     <MicrosoftmacOSSdknet100_260PackageVersion>26.0.11017</MicrosoftmacOSSdknet100_260PackageVersion>
     <MicrosoftmacOSSdknet100_265PackageVersion>26.5.10318</MicrosoftmacOSSdknet100_265PackageVersion>
-    <MicrosoftmacOSSdknet100_270PackageVersion>27.0.10241-xcode27.0</MicrosoftmacOSSdknet100_270PackageVersion>
+    <MicrosoftmacOSSdknet100_270PackageVersion>27.0.10539-xcode27.0</MicrosoftmacOSSdknet100_270PackageVersion>
     <MicrosofttvOSSdknet100_260PackageVersion>26.0.11017</MicrosofttvOSSdknet100_260PackageVersion>
     <MicrosofttvOSSdknet100_265PackageVersion>26.5.10318</MicrosofttvOSSdknet100_265PackageVersion>
-    <MicrosofttvOSSdknet100_270PackageVersion>27.0.10241-xcode27.0</MicrosofttvOSSdknet100_270PackageVersion>
+    <MicrosofttvOSSdknet100_270PackageVersion>27.0.10539-xcode27.0</MicrosofttvOSSdknet100_270PackageVersion>
     <!-- dotnet-xharness dependencies -->
     <MicrosoftDotNetXHarnessiOSSharedPackageVersion>11.0.0-prerelease.26431.4</MicrosoftDotNetXHarnessiOSSharedPackageVersion>
   </PropertyGroup>

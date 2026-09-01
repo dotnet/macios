@@ -2481,19 +2481,28 @@ namespace Xamarin.Tests {
 				properties ["CodesignDisallowResourcesSubdirectoryInAppBundle"] = "false";
 				buildFailure = DotNet.AssertBuildFailure (project_path, properties);
 				errors = BinLog.GetBuildLogErrors (buildFailure.BinLogPath).ToArray ();
-				var errorMessagePrefixes = new string []
+				// codesign doesn't consistently print 'replacing existing signature' before reporting the
+				// malformed bundle. The app is signed by the initial successful build above, but this line
+				// was present locally and absent in CI, so accept both variations.
+				var replacingSignature = $"{appPath}: replacing existing signature\n";
+				var notSigned = $"{appPath}: code object is not signed at all\n";
+				// Each error message may show up in either of the listed variations.
+				var errorMessagePrefixes = new string [] []
 				{
-					$"/usr/bin/codesign exited with code 1:\n" +
-					$"{appPath}: replacing existing signature\n" +
-					$"{appPath}: code object is not signed at all\n",
+					new string [] {
+						$"/usr/bin/codesign exited with code 1:\n{replacingSignature}{notSigned}",
+						$"/usr/bin/codesign exited with code 1:\n{notSigned}",
+					},
 
-					$"Failed to codesign '{appPath}': {appPath}: replacing existing signature\n" +
-					$"{appPath}: code object is not signed at all\n",
+					new string [] {
+						$"Failed to codesign '{appPath}': {replacingSignature}{notSigned}",
+						$"Failed to codesign '{appPath}': {notSigned}",
+					},
 				};
 
 				AssertErrorMessages (errors,
-					errorMessagePrefixes.Select (prefix => new Func<string, bool> ((msg) => msg.StartsWith (prefix))).ToArray (),
-					errorMessagePrefixes.Select (prefix => new Func<string> (() => prefix)).ToArray ()
+					errorMessagePrefixes.Select (prefixes => new Func<string, bool> ((msg) => prefixes.Any (prefix => msg.StartsWith (prefix)))).ToArray (),
+					errorMessagePrefixes.Select (prefixes => new Func<string> (() => prefixes [0])).ToArray ()
 				);
 
 				// Remove the dir, and now the build should succeed again.
@@ -4082,9 +4091,20 @@ namespace Xamarin.Tests {
 			.. coreclrFrameworks_iOS,
 			.. expectedFrameworks_iOS_None,
 		];
+		// The trimmable static registrar (the default registrar for CoreCLR) keeps protocol interfaces
+		// (and their corresponding *Wrapper types) alive in order to be able to register the protocol
+		// conformances of the types that survive trimming, which means that we end up linking with the
+		// frameworks those protocols come from (CloudKit.ICKRecordValue and CoreData.INSFetchRequestResult
+		// are implemented by Foundation types such as NSNumber and NSString).
+		static string [] trimmableStaticRegistrarFrameworks = [
+			"/System/Library/Frameworks/CloudKit.framework/CloudKit",
+			"/System/Library/Frameworks/CoreData.framework/CoreData",
+		];
+
 		static string [] expectedFrameworks_iOS_Full_CoreCLR = [
 			.. coreclrFrameworks_iOS,
 			.. expectedFrameworks_iOS_Full,
+			.. trimmableStaticRegistrarFrameworks,
 		];
 		static string [] expectedFrameworks_tvOS_None_CoreCLR = [
 			.. coreclrFrameworks_tvOS,
@@ -4093,14 +4113,16 @@ namespace Xamarin.Tests {
 		static string [] expectedFrameworks_tvOS_Full_CoreCLR = [
 			.. coreclrFrameworks_tvOS,
 			.. expectedFrameworks_tvOS_Full,
+			.. trimmableStaticRegistrarFrameworks,
 		];
 		static string [] expectedFrameworks_MacCatalyst_None_CoreCLR = [
 			.. coreclrFrameworks_MacCatalyst,
 			.. expectedFrameworks_MacCatalyst_None,
 		];
+		// CoreGraphics and QuartzCore are trimmed away for CoreCLR (but not for Mono).
 		static string [] expectedFrameworks_MacCatalyst_Full_CoreCLR = [
 			.. coreclrFrameworks_MacCatalyst,
-			.. expectedFrameworks_MacCatalyst_Full,
+			.. expectedFrameworks_MacCatalyst_Full.Where (v => !v.Contains ("/CoreGraphics.framework/") && !v.Contains ("/QuartzCore.framework/")),
 		];
 
 		static IEnumerable<TestCaseData> GetLinkedWithNativeLibrariesTestCases_Mono ()

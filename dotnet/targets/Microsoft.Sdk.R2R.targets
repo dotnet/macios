@@ -7,7 +7,7 @@
 	     avoiding the need for post-link symbol aliasing. -->
 	<Target Name="_SetR2RHeaderSymbolNames"
 			Condition="'$(PublishReadyToRunComposite)' == 'true' And '$(PublishReadyToRunContainerFormat)' == 'macho'"
-			AfterTargets="_FixR2ROutputPaths">
+			AfterTargets="_PrepareForReadyToRunCompilation">
 		<ItemGroup>
 			<_ReadyToRunCompileList>
 				<R2RHeaderSymbolName>RTR_HEADER_$([System.Text.RegularExpressions.Regex]::Replace ($([System.IO.Path]::GetFileName ('%(_ReadyToRunCompileList.OutputR2RImage)')), '[^a-zA-Z0-9_]', '_'))</R2RHeaderSymbolName>

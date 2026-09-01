@@ -136,9 +136,9 @@ public abstract class BaseClass {
 	}
 
 	// returns true if the test assembly was modified
-	public bool AssertPrepareCode (ApplePlatform platform, bool isCoreCLR, Action<AssemblyPreparer>? configure, string code, out string outputPath, bool hotReloadCompatibleBuild = false, string testAssemblyTrimMode = "link", string? inlineDlfcnMethods = null, string? extraConfig = null)
+	public bool AssertPrepareCode (ApplePlatform platform, bool isCoreCLR, Action<AssemblyPreparer>? configure, string code, out string outputPath, bool hotReloadCompatibleBuild = false, string testAssemblyTrimMode = "link", string? inlineDlfcnMethods = null, string? extraConfig = null, string extraCsproj = "")
 	{
-		using var preparer = CreatePreparer (platform, isCoreCLR, configure, code, out var testInfo, hotReloadCompatibleBuild: hotReloadCompatibleBuild, testAssemblyTrimMode: testAssemblyTrimMode, inlineDlfcnMethods: inlineDlfcnMethods, extraConfig: extraConfig ?? "");
+		using var preparer = CreatePreparer (platform, isCoreCLR, configure, code, out var testInfo, hotReloadCompatibleBuild: hotReloadCompatibleBuild, testAssemblyTrimMode: testAssemblyTrimMode, inlineDlfcnMethods: inlineDlfcnMethods, extraConfig: extraConfig ?? "", extraCsproj: extraCsproj);
 		AssertPrepare (preparer);
 
 		outputPath = testInfo.OutputPath;
@@ -148,7 +148,7 @@ public abstract class BaseClass {
 
 	// Builds the provided code into a Test.dll and returns an AssemblyPreparer configured for it, without
 	// running any preparation steps. Use this when a test needs to run a custom set of steps.
-	public AssemblyPreparer CreatePreparer (ApplePlatform platform, bool isCoreCLR, Action<AssemblyPreparer>? configure, string code, out AssemblyPreparerInfo testInfo, string extraCsproj = "", string extraConfig = "", IEnumerable<(string FileName, byte [] Content)>? extraFiles = null, bool hotReloadCompatibleBuild = false, string testAssemblyTrimMode = "link", string? inlineDlfcnMethods = null)
+	public AssemblyPreparer CreatePreparer (ApplePlatform platform, bool isCoreCLR, Action<AssemblyPreparer>? configure, string code, out AssemblyPreparerInfo testInfo, string extraCsproj = "", string extraConfig = "", IEnumerable<(string FileName, byte [] Content)>? extraFiles = null, bool hotReloadCompatibleBuild = false, string testAssemblyTrimMode = "link", string? inlineDlfcnMethods = null, bool testAssemblyHasOriginalInputPath = false)
 	{
 		Configuration.IgnoreIfIgnoredPlatform (platform);
 
@@ -199,8 +199,18 @@ public abstract class BaseClass {
 		assemblies.Add (Path.Combine (assemblyDir, "Test.dll"));
 		var infos = assemblies.Select (v => {
 			// The test assembly can be built as a reloadable (Copy) assembly to exercise the Hot Reload code paths.
-			var trimMode = Path.GetFileNameWithoutExtension (v) == "Test" ? testAssemblyTrimMode : "link";
-			return new AssemblyPreparerInfo (v, Path.Combine (assemblyDir, "out", Path.GetFileName (v)), true, trimMode);
+			var isTestAssembly = Path.GetFileNameWithoutExtension (v) == "Test";
+			var trimMode = isTestAssembly ? testAssemblyTrimMode : "link";
+			string? originalInputPath = null;
+			if (isTestAssembly && testAssemblyHasOriginalInputPath) {
+				originalInputPath = Path.Combine (assemblyDir, "original", Path.GetFileName (v));
+				var originalInputDirectory = Path.GetDirectoryName (originalInputPath);
+				if (originalInputDirectory is null)
+					throw new InvalidOperationException ($"Could not get the directory name for '{originalInputPath}'.");
+				Directory.CreateDirectory (originalInputDirectory);
+				File.Copy (v, originalInputPath);
+			}
+			return new AssemblyPreparerInfo (v, Path.Combine (assemblyDir, "out", Path.GetFileName (v)), originalInputPath, true, trimMode);
 		}).ToArray ();
 		var logger = new TestLogger () { Platform = platform };
 		var preparer = new AssemblyPreparer (logger, infos, configpath);

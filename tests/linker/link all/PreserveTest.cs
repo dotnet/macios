@@ -107,7 +107,7 @@ namespace LinkAll.Attributes {
 			// Initialize and a few other methods are unconditionally preserved
 			var method = klass.GetMethod ("Initialize", BindingFlags.NonPublic | BindingFlags.Static);
 			Assert.That (method, Is.Not.Null, "Initialize");
-			method = klass.GetMethod ("RegisterNSObject", BindingFlags.NonPublic | BindingFlags.Static, null, new Type [] { typeof (NSObject), typeof (IntPtr) }, null);
+			method = klass.GetMethod ("RegisterNSObject", BindingFlags.NonPublic | BindingFlags.Static, null, new Type [] { typeof (NSObject), typeof (IntPtr), typeof (bool) }, null);
 			Assert.That (method, Is.Not.Null, "RegisterNSObject");
 		}
 
@@ -137,19 +137,9 @@ namespace LinkAll.Attributes {
 			Assert.That (smartExtensions.GetMethod ("GetConstant"), Is.Not.Null, "GetConstant");
 			Assert.That (smartExtensions.GetMethod ("GetValue"), Is.Not.Null, "GetValue");
 
-#if HOTRELOAD_COMPATIBLE_BUILD && PREPARE_ASSEMBLIES
-			// In a hot-reload-compatible build (the assembly-preparer runs with
-			// HotReloadCompatibleBuild=true, which is the default for Debug builds),
-			// smart enum conversions are preserved unconditionally via a root-descriptor
-			// XML instead of by modifying user assemblies. Root descriptors can't express
-			// conditional preservation, so unused smart enums are intentionally kept.
-			Assert.That (typeof (NSObject).Assembly.GetType ("AVFoundation.AVMediaTypes" + WorkAroundLinkerHeuristics), Is.Not.Null, "AVMediaTypes");
-			Assert.That (typeof (NSObject).Assembly.GetType ("AVFoundation.AVMediaTypesExtensions" + WorkAroundLinkerHeuristics), Is.Not.Null, "AVMediaTypesExtensions");
-#else
 			// Unused smart enums and their extensions should be linked away
 			Assert.That (typeof (NSObject).Assembly.GetType ("AVFoundation.AVMediaTypes" + WorkAroundLinkerHeuristics), Is.Null, "AVMediaTypes");
 			Assert.That (typeof (NSObject).Assembly.GetType ("AVFoundation.AVMediaTypesExtensions" + WorkAroundLinkerHeuristics), Is.Null, "AVMediaTypesExtensions");
-#endif
 		}
 
 		[Test]

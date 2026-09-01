@@ -331,8 +331,16 @@ namespace Xamarin.Bundler {
 
 				ShowInner (log, e);
 
-				if (log.Verbosity > 2 && !string.IsNullOrEmpty (e.StackTrace))
-					log.LogError (e.StackTrace);
+				if (log.Verbosity > 2 && !string.IsNullOrEmpty (e.StackTrace)) {
+					// Report the stack trace as an error or a message depending on
+					// whether we're showing an error or a warning, otherwise warnings
+					// would end up failing the build when the log is an MSBuild task.
+					if (error) {
+						log.LogError (e.StackTrace);
+					} else {
+						log.Log (e.StackTrace);
+					}
+				}
 			} else {
 				log.LogError ("error " + GetPrefix (log) + "0000: Unexpected error - Please file a bug report at https://github.com/dotnet/macios/issues/new");
 				log.LogError (e.ToString ());

@@ -30,6 +30,12 @@ namespace Xamarin.MacDev.Tasks {
 
 		public string MakeReproPath { get; set; } = "";
 
+		// The value of the $(_DynamicRegistrationSupported) MSBuild property. During post-processing this is
+		// how the value RegistrarRemovalTrackingStep computed during the preparation pass is passed back to
+		// the assembly-preparer (the native main file is generated during post-processing, and it must agree
+		// with the managed side about whether the dynamic registrar is available).
+		public string DynamicRegistrationSupported { get; set; } = "";
+
 		public string OutputDirectory { get; set; } = "";
 
 		[Required]
@@ -62,7 +68,8 @@ namespace Xamarin.MacDev.Tasks {
 			var isTrimmableString = item.GetMetadata ("IsTrimmable");
 			var isTrimmable = string.IsNullOrEmpty (isTrimmableString) ? (bool?) null : string.Equals (isTrimmableString, "true", StringComparison.OrdinalIgnoreCase);
 			var trimMode = item.GetMetadata ("TrimMode");
-			var rv = new AssemblyPreparerInfo (inputPath, outputPath, isTrimmable, trimMode);
+			var originalInputPath = item.GetMetadata ("OriginalItemSpec");
+			var rv = new AssemblyPreparerInfo (inputPath, outputPath, originalInputPath, isTrimmable, trimMode);
 			map [rv] = item;
 			return rv;
 		}
@@ -77,6 +84,12 @@ namespace Xamarin.MacDev.Tasks {
 				using var preparer = new AssemblyPreparer (this, infos, OptionsFile?.ItemSpec ?? "");
 				preparer.MakeReproPath = MakeReproPath;
 				preparer.PreTrimAssemblies.AddRange (PreTrimAssemblies.Select (v => v.ItemSpec));
+
+				if (!string.IsNullOrEmpty (DynamicRegistrationSupported)) {
+					var dynamicRegistrationSupported = string.Equals (DynamicRegistrationSupported, "true", StringComparison.OrdinalIgnoreCase);
+					preparer.Configuration.DynamicRegistrationSupported = dynamicRegistrationSupported;
+					preparer.Configuration.Application.Optimizations.RemoveDynamicRegistrar = !dynamicRegistrationSupported;
+				}
 				bool rv;
 				List<ProductException> exceptions;
 
@@ -130,7 +143,9 @@ namespace Xamarin.MacDev.Tasks {
 					rv.SetMetadata ("PostprocessAssembly", "true");
 					rv.SetMetadata ("RelativePath", preparer.Configuration.AssemblyPublishDir + Path.GetFileName (v.Path));
 					if (v.OriginatingAssembly is not null) {
-						var originatingItem = map.SingleOrDefault (kvp => Path.GetFileName (kvp.Key.InputPath) == Path.GetFileName (v.OriginatingAssembly)).Value;
+						var originatingAssembly = preparer.Assemblies.SingleOrDefault (assembly => assembly.InputPath == v.OriginatingAssembly);
+						originatingAssembly ??= preparer.Assemblies.SingleOrDefault (assembly => assembly.IsCILAssembly && Path.GetFileName (assembly.InputPath) == Path.GetFileName (v.OriginatingAssembly));
+						var originatingItem = originatingAssembly is null ? null : map [originatingAssembly];
 						if (originatingItem is null) {
 							Log.LogMessage (MessageImportance.Low, $"Could not find originating assembly for {v.Path} with originating assembly name {v.OriginatingAssembly}");
 						} else {

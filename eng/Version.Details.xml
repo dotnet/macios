@@ -90,9 +90,9 @@
       <Uri>https://github.com/dotnet/dotnet</Uri>
       <Sha>89234f1cec03c854aff3e426e8d5489a3b68eb64</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.XHarness.iOS.Shared" Version="11.0.0-prerelease.26217.1">
+    <Dependency Name="Microsoft.DotNet.XHarness.iOS.Shared" Version="11.0.0-prerelease.26427.1">
       <Uri>https://github.com/dotnet/xharness</Uri>
-      <Sha>866707736d49c2323628744716cda2475b3af9ee</Sha>
+      <Sha>31fee41307f51d5108eba7a4c60e469ce06d620f</Sha>
     </Dependency>
     <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="11.0.0-beta.26426.105">
       <Uri>https://github.com/dotnet/dotnet</Uri>

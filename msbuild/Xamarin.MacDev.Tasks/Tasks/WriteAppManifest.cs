@@ -25,8 +25,13 @@ namespace Xamarin.MacDev.Tasks {
 
 		public override bool Execute ()
 		{
-			if (ShouldExecuteRemotely ())
-				return ExecuteRemotely ();
+			if (ShouldExecuteRemotely ()) {
+				if (ExecuteRemotely (out var taskRunner)) {
+					CopyFilesToWindowsAsync (taskRunner, AppBundleManifest!).Wait ();
+					return true;
+				}
+				return false;
+			}
 
 			PDictionary plist;
 
@@ -57,12 +62,7 @@ namespace Xamarin.MacDev.Tasks {
 
 		public bool ShouldCreateOutputFile (ITaskItem item) => false;
 
-		public IEnumerable<ITaskItem> GetAdditionalItemsToBeCopied ()
-		{
-			return new ITaskItem [] {
-				AppBundleManifest!
-			};
-		}
+		public IEnumerable<ITaskItem> GetAdditionalItemsToBeCopied () => Enumerable.Empty<ITaskItem> ();
 
 		public void Cancel ()
 		{

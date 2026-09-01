@@ -33,7 +33,9 @@ namespace Xamarin.Linker {
 		public Version? DeploymentTarget { get; private set; }
 		// The user-provided value of the $(DynamicRegistrationSupported) MSBuild property (null if not set).
 		// When set, RegistrarRemovalTrackingStep doesn't need to run in the assembly-preparer.
-		public bool? DynamicRegistrationSupported { get; private set; }
+		// This is also how the value RegistrarRemovalTrackingStep computed during the preparation pass is
+		// passed to the post-processing pass (which needs it to generate the native main file).
+		public bool? DynamicRegistrationSupported { get; set; }
 		public HashSet<string> FrameworkAssemblies { get; private set; } = new HashSet<string> ();
 		public string IntermediateLinkDir { get; private set; } = string.Empty;
 		public bool InvariantGlobalization { get; private set; }
@@ -365,6 +367,10 @@ namespace Xamarin.Linker {
 					new LoadValue ((key, value) => FrameworkAssemblies.Add (value)),
 					new SaveValue ((key, storage) => storage.AddRange (FrameworkAssemblies.OrderBy (v => v).Select (v => $"{key}={v}")))
 				)},
+				{ "GenerateTrustedPlatformAssemblies", (
+					new LoadValue ((key, value) => loadBool (key, value, out Application.GenerateTrustedPlatformAssemblies)),
+					new SaveValue ((key, storage) => saveOptionalDefaultFalseBool (key, Application.GenerateTrustedPlatformAssemblies, storage))
+				)},
 				{ "HotReloadCompatibleBuild", (
 					new LoadValue ((key, value) => HotReloadCompatibleBuild = string.Equals ("true", value, StringComparison.OrdinalIgnoreCase)),
 					new SaveValue ((key, storage) => saveOptionalDefaultFalseBool (key, HotReloadCompatibleBuild, storage))
@@ -413,6 +419,10 @@ namespace Xamarin.Linker {
 				{ "IsAppExtension", (
 					new LoadValue ((key, value) => Application.IsExtension = string.Equals ("true", value, StringComparison.OrdinalIgnoreCase)),
 					new SaveValue ((key, storage) => storage.Add ($"{key}={(Application.IsExtension ? "true" : "false")}"))
+				)},
+				{ "IsMultiRidBuild", (
+					new LoadValue ((key, value) => loadBool (key, value, out Application.IsMultiRidBuild)),
+					new SaveValue ((key, storage) => saveOptionalDefaultFalseBool (key, Application.IsMultiRidBuild, storage))
 				)},
 				{ "ItemsDirectory", (
 					new LoadValue ((key, value) => ItemsDirectory = value),

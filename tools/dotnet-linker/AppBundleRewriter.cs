@@ -1133,6 +1133,20 @@ namespace Xamarin.Linker {
 			}
 		}
 
+		public MethodReference Runtime_InvokeGenericRegistrarTrampoline {
+			get {
+				return GetMethodReference (PlatformAssembly,
+						ObjCRuntime_Runtime, "InvokeGenericRegistrarTrampoline",
+						nameof (Runtime_InvokeGenericRegistrarTrampoline),
+						isStatic: true,
+						System_Object,
+						System_RuntimeTypeHandle,
+						System_RuntimeMethodHandle,
+						new ArrayType (System_Object),
+						new ByReferenceType (System_IntPtr));
+			}
+		}
+
 		public MethodReference BlockLiteral_CreateBlockForDelegate {
 			get {
 				return GetMethodReference (PlatformAssembly,
@@ -1533,19 +1547,52 @@ namespace Xamarin.Linker {
 			return action == AssemblyAction.Link;
 		}
 
+		/// <summary>
+		/// Returns the signature to use in a <c>[DynamicDependency]</c> attribute for a method: the
+		/// method name (and generic arity) if no other method in the same type has that name and
+		/// arity, otherwise the full signature (including the parameter list).
+		/// </summary>
+		/// <remarks>
+		///   <para>
+		///     The trimmer only compares the parameter lists when the signature has one, and computing
+		///     the signature of a parameter crashes the trimmer if the parameter's type is a nested type
+		///     reference (see <see cref="DocumentationComments.GetNameSignature (MethodDefinition)" />),
+		///     so use the name alone whenever it's unambiguous.
+		///   </para>
+		///   <para>
+		///     The trimmer matches a signature without a parameter list on both the name and the generic
+		///     arity, so methods that differ in arity (<c>Foo ()</c> vs <c>Foo&lt;T&gt; ()</c>) don't
+		///     collide and don't need a parameter list either.
+		///   </para>
+		/// </remarks>
+		static string GetDynamicDependencySignature (MethodDefinition method)
+		{
+			var count = 0;
+			foreach (var candidate in method.DeclaringType.Methods) {
+				if (candidate.Name != method.Name)
+					continue;
+				if (candidate.GenericParameters.Count != method.GenericParameters.Count)
+					continue;
+				if (++count > 1)
+					return DocumentationComments.GetSignature (method);
+			}
+			return DocumentationComments.GetNameSignature (method);
+		}
+
 		public bool AddDynamicDependencyAttribute (MethodDefinition addToMethod, MethodDefinition dependsOn)
 		{
 			if (!IsAssemblyTrimmed (dependsOn))
 				return false;
 
+			var signature = GetDynamicDependencySignature (dependsOn);
 			if (addToMethod.DeclaringType == dependsOn.DeclaringType) {
-				var attribute = CreateDynamicDependencyAttribute (DocumentationComments.GetSignature (dependsOn));
+				var attribute = CreateDynamicDependencyAttribute (signature);
 				return AddAttributeOnlyOnce (addToMethod, attribute);
 			} else if (addToMethod.DeclaringType.Module == dependsOn.DeclaringType.Module) {
-				var attribute = CreateDynamicDependencyAttribute (DocumentationComments.GetSignature (dependsOn), dependsOn.DeclaringType);
+				var attribute = CreateDynamicDependencyAttribute (signature, dependsOn.DeclaringType);
 				return AddAttributeOnlyOnce (addToMethod, attribute);
 			} else {
-				var attribute = CreateDynamicDependencyAttribute (DocumentationComments.GetSignature (dependsOn), dependsOn.DeclaringType, dependsOn.DeclaringType.Module.Assembly);
+				var attribute = CreateDynamicDependencyAttribute (signature, dependsOn.DeclaringType, dependsOn.DeclaringType.Module.Assembly);
 				return AddAttributeOnlyOnce (addToMethod, attribute);
 			}
 		}
@@ -1611,6 +1658,11 @@ namespace Xamarin.Linker {
 		///     Instead add one DynamicDependency attribute per member declared on the type itself, and a single
 		///     DynamicDependency attribute for the interfaces the type implements.
 		///   </para>
+		///   <para>
+		///     Methods are preserved by name (without the parameter list), which preserves every overload -
+		///     which is what we want here anyway (and it avoids a trimmer crash, see
+		///     <see cref="DocumentationComments.GetNameSignature (MethodDefinition)" />).
+		///   </para>
 		/// </remarks>
 		/// <param name="addToMethod">The method on which to add the dynamic dependency attributes.</param>
 		/// <param name="type">The type whose members should be preserved.</param>
@@ -1624,7 +1676,7 @@ namespace Xamarin.Linker {
 			}
 			foreach (var method in type.Methods) {
 				if (!method.HasCustomAttribute ("System.Runtime.CompilerServices", "CompilerGeneratedAttribute"))
-					signatures.Add (DocumentationComments.GetSignature (method));
+					signatures.Add (DocumentationComments.GetNameSignature (method));
 			}
 			// Properties and events don't have a documentation comment signature helper, but the trimmer will
 			// match any member with the given name, which is good enough (and it's what we want here anyway).
@@ -1683,13 +1735,14 @@ namespace Xamarin.Linker {
 		public bool AddDynamicDependencyAttributeToStaticConstructor (TypeDefinition onType, MethodDefinition forMethod)
 		{
 			CustomAttribute attrib;
+			var signature = GetDynamicDependencySignature (forMethod);
 
 			if (onType == forMethod.DeclaringType) {
-				attrib = CreateDynamicDependencyAttribute (DocumentationComments.GetSignature (forMethod));
+				attrib = CreateDynamicDependencyAttribute (signature);
 			} else if (onType.Module == forMethod.DeclaringType.Module) {
-				attrib = CreateDynamicDependencyAttribute (DocumentationComments.GetSignature (forMethod), forMethod.DeclaringType);
+				attrib = CreateDynamicDependencyAttribute (signature, forMethod.DeclaringType);
 			} else {
-				attrib = CreateDynamicDependencyAttribute (DocumentationComments.GetSignature (forMethod), forMethod.DeclaringType, forMethod.Module.Assembly);
+				attrib = CreateDynamicDependencyAttribute (signature, forMethod.DeclaringType, forMethod.Module.Assembly);
 			}
 
 			return AddAttributeToStaticConstructor (onType, attrib);
@@ -1951,7 +2004,7 @@ namespace Xamarin.Linker {
 			il.Emit (OpCodes.Newobj, ctor);
 			il.Emit (OpCodes.Ret);
 
-			body.GenerateILOffsets ();
+			body.FinalizeGeneratedBody ();
 
 			// make sure the trimmer doesn't trim it away if the type is kept
 			if (context.App.Registrar == RegistrarMode.TrimmableStatic) {
@@ -2035,7 +2088,7 @@ namespace Xamarin.Linker {
 				throw new UnreachableException ();
 			}
 
-			body.GenerateILOffsets ();
+			body.FinalizeGeneratedBody ();
 
 			// make sure the trimmer doesn't trim it away if the type is kept
 			if (context.App.Registrar == RegistrarMode.TrimmableStatic) {

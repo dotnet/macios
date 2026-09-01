@@ -2480,6 +2480,8 @@ namespace Registrar {
 					if (!IsPlatformType (td))
 						return "id";
 
+					CheckNamespace (td, exceptions);
+
 					if (HasProtocolAttribute (td)) {
 						return "id<" + GetExportedTypeName (td) + ">";
 					} else {

@@ -16,8 +16,15 @@ Xamarin.iOS and Xamarin.Mac apps.
 
 ## Remove UIApplication.EnsureUIThread / NSApplication.EnsureUIThread
 
-Removes calls to [UIApplication.EnsureUIThread][1] (for Xamarin.iOS) or
-`NSApplication.EnsureUIThread` (for Xamarin.Mac).
+> [!NOTE]
+> This optimization has been replaced by the `CheckForIllegalCrossThreadCalls`
+> MSBuild property, which sets the
+> `ObjCRuntime.Runtime.CheckForIllegalCrossThreadCalls` trimmer feature switch.
+> The `--optimize=[+|-]remove-uithread-checks` flag is no longer applied and has
+> no effect.
+
+Removes calls to [UIApplication.EnsureUIThread][1] (for .NET for iOS) or
+`NSApplication.EnsureUIThread` (for .NET for macOS).
 
 This optimization will change the following type of code:
 
@@ -43,7 +50,7 @@ methods with the `[BindingImpl (BindingImplOptions.Optimizable)]` attribute.
 
 By default it's enabled for release builds.
 
-The default behavior can be overridden by passing `--optimize=[+|-]remove-uithread-checks` to mtouch/mmp.
+Set the `CheckForIllegalCrossThreadCalls` MSBuild property to override the default behavior.
 
 [1]: /dotnet/api/UIKit.UIApplication.EnsureUIThread
 

@@ -9,6 +9,11 @@ namespace Xamarin.BindingTests {
 	public class ProtocolTest {
 		bool HasProtocolAttributes {
 			get {
+				// The [Protocol] attributes are removed by a custom trimmer step (RemoveAttributesStep),
+				// which doesn't run at all when ILLink is skipped, so the attributes are still around.
+				if (TestRuntime.IsILLinkSkipped)
+					return true;
+
 				if (TestRuntime.IsLinkAll) {
 #if OPTIMIZEALL
 					var registeredProtocols = true;

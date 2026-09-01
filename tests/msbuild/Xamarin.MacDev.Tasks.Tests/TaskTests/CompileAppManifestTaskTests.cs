@@ -141,11 +141,7 @@ namespace Xamarin.MacDev.Tasks {
 		public void SupportedOSPlatformVersionWithWhitespace ()
 		{
 			var task = CreateTask ();
-			task.SupportedOSPlatformVersion = "\n13.0";
-
-			ExecuteTask (task, expectedErrorCount: 1);
-			Assert.That (Engine.Logger.ErrorEvents [0].Message, Is.EqualTo ("The value '\n13.0' for the property 'SupportedOSPlatformVersion' is not a valid version number, because it contains whitespace."));
-		}
+			Assert.That (Engine.Logger.ErrorEvents [0].Message, Is.EqualTo ("The value '\\n13.0' for the property 'SupportedOSPlatformVersion' is not a valid version number, because it contains whitespace."));
 
 		[Test]
 		public void MacCatalystVersionCheck ()

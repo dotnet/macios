@@ -307,7 +307,8 @@ namespace Xamarin.MacDev.Tasks {
 				return true;
 
 			if (value.Any (char.IsWhiteSpace)) {
-				Log.LogError (MSBStrings.E7187 /* The value '{0}' for the property '{1}' is not a valid version number, because it contains whitespace. */, value, propertyName);
+				var printableValue = value.Replace ("\r", "\\r").Replace ("\n", "\\n").Replace ("\t", "\\t");
+				Log.LogError (MSBStrings.E7187 /* The value '{0}' for the property '{1}' is not a valid version number, because it contains whitespace. */, printableValue, propertyName);
 				return false;
 			}
 

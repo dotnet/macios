@@ -2875,7 +2875,9 @@ namespace Registrar {
 					// A class is skipped only if it had trampolines and none survived ILC. Every other class is
 					// emitted, so we must keep its entire base class chain (their @implementation is needed as
 					// superclasses), even if a base class itself had all its trampolines trimmed away.
-					if (!hadTrampolines || survived) {
+					// A class whose class handle is still looked up from managed code that survived ILC must
+					// also be kept, even if all its trampolines were trimmed away.
+					if (!hadTrampolines || survived || App.IsClassReferencedByInlinedClassGetHandle (type.ExportedName)) {
 						var keep = type;
 						while (keep is not null && classesToKeep.Add (keep))
 							keep = keep.SuperType;

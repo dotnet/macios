@@ -1772,8 +1772,8 @@ namespace CoreMidi {
 		}
 
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
 		public ushort UmpActiveGroupBitmap {
 			get {
@@ -1785,8 +1785,8 @@ namespace CoreMidi {
 		}
 
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
 		public bool UmpCanTransmitGroupless {
 			get {
@@ -2006,7 +2006,7 @@ namespace CoreMidi {
 #endif // !XAMCORE_5_0 || __MACOS__
 
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public string? NameConfigurationDictionary {
 			get {
@@ -2969,8 +2969,8 @@ namespace CoreMidi {
 		}
 
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
 		public ushort UmpActiveGroupBitmap {
 			get {
@@ -2982,8 +2982,8 @@ namespace CoreMidi {
 		}
 
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
 		public bool UmpCanTransmitGroupless {
 			get {

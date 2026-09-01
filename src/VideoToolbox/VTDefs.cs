@@ -140,10 +140,10 @@ namespace VideoToolbox {
 	}
 
 	// uint32_t -> VTCompressionSession.h
-	/// <summary>Flags to control encoder in multi pass compression sessions</summary>
+	/// <summary>Specifies options for controlling an encoder in multipass compression sessions.</summary>
 	[Flags]
 	public enum VTCompressionSessionOptionFlags : uint {
-		/// <summary>To be added.</summary>
+		/// <summary>Begins the final pass of a multipass compression session.</summary>
 		BeginFinalPass = 1 << 0,
 	}
 

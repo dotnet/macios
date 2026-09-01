@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 using Xamarin.Bundler;
@@ -21,6 +22,13 @@ namespace Xamarin {
 			var items = new List<MSBuildItem> ();
 
 			var app = Configuration.Application;
+
+			if (app.GenerateTrustedPlatformAssemblies) {
+				app.TrustedPlatformAssemblies.AddRange (app.Assemblies.Select (v => v.FileName));
+#if ASSEMBLY_PREPARER
+				app.TrustedPlatformAssemblies.AddRange (Configuration.AddedAssemblies.Select (v => Path.GetFileName (v.Path)));
+#endif
+			}
 
 			// We want this called before any other initialization methods.
 			registration_methods.Insert (0, "xamarin_initialize_dotnet");

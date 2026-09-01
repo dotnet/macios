@@ -12,10 +12,10 @@ using Xamarin.Linker;
 
 namespace MonoTouch.Tuner {
 	// Populate Application.Assemblies with the loaded assemblies.
-	// This is needed so that steps like ComputeAOTArguments and GatherFrameworksStep
-	// can find the assemblies they need to process.
-	// This is equivalent to LoadNonSkippedAssembliesStep in the ILLink path.
-	// This step must run after SaveAssembliesStep, so that OutputPath is set correctly.
+	// This is needed so that steps like ExtractBindingLibrariesStep, ComputeAOTArguments and
+	// GatherFrameworksStep can find the assemblies they need to process.
+	// This is equivalent to LoadNonSkippedAssembliesStep in the ILLink path (and runs at the
+	// same point in the sequence of steps).
 	public class PopulateApplicationAssembliesStep : ConfigurationAwareStep {
 		protected override string Name { get; } = "PopulateApplicationAssemblies";
 		protected override int ErrorCode { get; } = 2520;

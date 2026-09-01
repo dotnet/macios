@@ -357,6 +357,8 @@ explicit name in the attribute is confusing and redundant.
 To fix this error, remove the method name from the `[FactoryMethod]` attribute,
 and rename the binding method if a different factory method name is desired.
 
+### <a name='BI1128'/>BI1128: The [Field] member '\*.\*' sets SymbolAddress, but its type is '\*'; only System.IntPtr is supported.
+
 <!-- 2xxx: reserved -->
 <!-- 3xxx: reserved -->
 <!-- 4xxx: reserved -->

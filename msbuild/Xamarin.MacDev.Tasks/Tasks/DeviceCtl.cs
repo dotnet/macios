@@ -92,7 +92,7 @@ namespace Xamarin.MacDev.Tasks {
 				// Fall through to the error below.
 			}
 
-			Log.LogError (MSBStrings.E7184 /* Could not determine the on-device destination path after copying '{0}' to the device. The 'xcrun devicectl' JSON output was: {1} */, CopySource, json);
+			Log.LogError (MSBStrings.E7185 /* Could not determine the on-device destination path after copying '{0}' to the device. The 'xcrun devicectl' JSON output was: {1} */, CopySource, json);
 			return "";
 		}
 	}

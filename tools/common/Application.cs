@@ -102,6 +102,23 @@ namespace Xamarin.Bundler {
 			return SurvivingTrampolineSymbols.Contains (ucoEntryPoint);
 		}
 
+		// The set of Objective-C class names whose inlined Class.GetHandle native function is still
+		// referenced by the NativeAOT compiler's (ILC) output. These classes must be registered in the
+		// native registrar code even if all their trampolines were trimmed away, because managed code
+		// still looks up their class handle (and the generated native code references the Objective-C
+		// class, which wouldn't exist otherwise). This is set alongside SurvivingTrampolineSymbols.
+		// See docs/code/class-handles.md.
+		public HashSet<string>? ClassesReferencedByInlinedClassGetHandle;
+
+		// Returns true if managed code that survived ILC looks up the class handle for the given
+		// Objective-C class name using the inlined Class.GetHandle optimization.
+		public bool IsClassReferencedByInlinedClassGetHandle (string exportedName)
+		{
+			if (ClassesReferencedByInlinedClassGetHandle is null)
+				return false;
+			return ClassesReferencedByInlinedClassGetHandle.Contains (exportedName);
+		}
+
 #if ASSEMBLY_PREPARER
 		public bool InCustomTrimmerStep = false;
 		public bool IsPostProcessingAssemblies;
@@ -289,6 +306,9 @@ namespace Xamarin.Bundler {
 			}
 			set { package_managed_debug_symbols = value; }
 		}
+		public bool GenerateTrustedPlatformAssemblies;
+		public bool IsMultiRidBuild;
+		public List<string> TrustedPlatformAssemblies = new List<string> ();
 
 		public Version GetMacCatalystiOSVersion (Version macOSVersion)
 		{

@@ -515,8 +515,6 @@ namespace LinkAll {
 				Assert.Ignore ("This test only applies when the dynamic registrar has been removed.");
 
 			// https://github.com/dotnet/macios/issues/3523
-			// TEMP-IGNORE-25915: temporarily ignored on net11.0 until https://github.com/dotnet/macios/pull/25915 is merged.
-			Assert.Ignore ("Temporarily ignored on net11.0: the trimmable static registrar's TypeMap path preserves the full exported method surface of registered types (e.g. UIResponder.PressesBegan takes an NSSet<UIPress>), which keeps NSSet<T> alive. Fixed by https://github.com/dotnet/macios/pull/25915.");
 			// Don't use constants here, because the linker can see what we're trying to do and keeps the type we're verifying has been removed.
 			string prefix = NamespacePrefix;
 			string suffix = AssemblyName;

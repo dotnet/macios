@@ -2758,7 +2758,6 @@ F:CoreSpotlight.CSUserInteraction.Focus
 F:CoreSpotlight.CSUserInteraction.Select
 F:CoreTelephony.CTCellularPlanCapability.AndVoice
 F:CoreTelephony.CTCellularPlanCapability.Only
-F:CoreTelephony.CTCellularPlanProvisioningAddPlanResult.Cancel
 F:CoreText.CTFontManagerError.AssetNotFound
 F:CoreText.CTFontManagerError.CancelledByUser
 F:CoreText.CTFontManagerError.DuplicatedName
@@ -5812,8 +5811,6 @@ F:PdfKit.PdfAccessPermissions.DocumentChanges
 F:PdfKit.PdfAccessPermissions.FormFieldEntry
 F:PdfKit.PdfAccessPermissions.HighQualityPrinting
 F:PdfKit.PdfAccessPermissions.LowQualityPrinting
-F:PdfKit.PdfAreaOfInterest.AnyArea
-F:PdfKit.PdfMarkupType.Redact
 F:PdfKit.PdfSelectionGranularity.Character
 F:PdfKit.PdfSelectionGranularity.Line
 F:PdfKit.PdfSelectionGranularity.Word
@@ -9861,8 +9858,6 @@ M:CoreGraphics.CGContext.ShowTextAtPoint(System.Runtime.InteropServices.NFloat,S
 M:CoreGraphics.CGContext.ShowTextAtPoint(System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat,System.String)
 M:CoreGraphics.CGContext.StrokeRectWithWidth(CoreGraphics.CGRect,System.Runtime.InteropServices.NFloat)
 M:CoreGraphics.CGContext.TranslateCTM(System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat)
-M:CoreGraphics.CGContextPDF.BeginTag(CoreGraphics.CGPdfTagType,CoreGraphics.CGPdfTagProperties)
-M:CoreGraphics.CGContextPDF.BeginTag(CoreGraphics.CGPdfTagType,Foundation.NSDictionary)
 M:CoreGraphics.CGContextPDF.EndTag
 M:CoreGraphics.CGContextPDF.SetIdTree(CoreGraphics.CGPDFDictionary)
 M:CoreGraphics.CGContextPDF.SetPageTagStructureTree(Foundation.NSDictionary)
@@ -15837,7 +15832,6 @@ M:VideoToolbox.VTSuperResolutionScalerParameters.#ctor(VideoToolbox.VTFrameProce
 M:VideoToolbox.VTSupportedEncoderProperties.#ctor
 M:VideoToolbox.VTTemporalNoiseFilterConfiguration.#ctor(System.IntPtr,System.IntPtr,CoreMedia.CMPixelFormat)
 M:VideoToolbox.VTTemporalNoiseFilterParameters.#ctor(VideoToolbox.VTFrameProcessorFrame,VideoToolbox.VTFrameProcessorFrame[],VideoToolbox.VTFrameProcessorFrame[],VideoToolbox.VTFrameProcessorFrame,System.Single,System.Byte)
-M:VideoToolbox.VTUtilities.RegisterSupplementalVideoDecoder(CoreMedia.CMVideoCodecType)
 M:Vision.VNDetectBarcodesRequest.GetSupportedSymbologies(Foundation.NSError@)
 M:Vision.VNFeaturePrintObservation.ComputeDistance(System.Single[]@,Vision.VNFeaturePrintObservation,Foundation.NSError@)
 M:Vision.VNGenerateOpticalFlowRequest.#ctor(CoreGraphics.CGImage,ImageIO.CGImagePropertyOrientation,Vision.VNImageOptions,Vision.VNRequestCompletionHandler)
@@ -17190,7 +17184,6 @@ P:CoreAnimation.CAConstraint.Offset
 P:CoreAnimation.CADisplayLink.PreferredFrameRateRange
 P:CoreAnimation.CAEdrMetadata.Available
 P:CoreAnimation.CAEdrMetadata.HlgMetadata
-P:CoreAnimation.CAFrameRateRange.Default
 P:CoreAnimation.CAGradientLayer.WeakLayerType
 P:CoreAnimation.CALayer.ContentsHeadroom
 P:CoreAnimation.CALayer.CornerCurve
@@ -21795,7 +21788,6 @@ P:UIKit.UIIndirectScribbleInteraction.HandlingWriting
 P:UIKit.UILargeContentViewerInteraction.Delegate
 P:UIKit.UILargeContentViewerInteraction.Enabled
 P:UIKit.UIListContentView.ListContentConfiguration
-P:UIKit.UIListSeparatorConfiguration.AutomaticInsets
 P:UIKit.UIMenu.Identifier
 P:UIKit.UIMenu.SelectedElements
 P:UIKit.UIMenuController.MenuVisible
@@ -22394,7 +22386,6 @@ T:AppKit.NSApplicationFile
 T:AppKit.NSApplicationFileCommand
 T:AppKit.NSApplicationHandlesKey
 T:AppKit.NSApplicationMenu
-T:AppKit.NSApplicationOcclusionState
 T:AppKit.NSApplicationPredicate
 T:AppKit.NSApplicationPresentationOptions
 T:AppKit.NSApplicationPrint
@@ -22499,8 +22490,6 @@ T:AppKit.NSEventTrackHandler
 T:AppKit.NSEventType
 T:AppKit.NSFocusRingPlacement
 T:AppKit.NSFocusRingType
-T:AppKit.NSFontAssetRequestOptions
-T:AppKit.NSFontCollectionOptions
 T:AppKit.NSFontCollectionVisibility
 T:AppKit.NSFontDescriptorSystemDesign
 T:AppKit.NSFontError
@@ -22588,7 +22577,6 @@ T:AppKit.NSPageControllerGetViewController
 T:AppKit.NSPageControllerTransitionStyle
 T:AppKit.NSPageLayoutResult
 T:AppKit.NSPasteboardAccessBehavior
-T:AppKit.NSPasteboardContentsOptions
 T:AppKit.NSPasteboardDetectionPattern
 T:AppKit.NSPasteboardDetectMetadataCompletionHandler
 T:AppKit.NSPasteboardDetectMetadataHandler
@@ -22602,7 +22590,6 @@ T:AppKit.NSPasteboardReadingOptions
 T:AppKit.NSPasteboardType
 T:AppKit.NSPasteboardTypeFindPanelSearchOptionKey
 T:AppKit.NSPasteboardTypeTextFinderOptionKey
-T:AppKit.NSPasteboardWritingOptions
 T:AppKit.NSPathStyle
 T:AppKit.NSPickerTouchBarItemControlRepresentation
 T:AppKit.NSPickerTouchBarItemSelectionMode
@@ -22846,11 +22833,9 @@ T:AppKit.NSWindowDocumentDrag
 T:AppKit.NSWindowFrame
 T:AppKit.NSWindowFramePredicate
 T:AppKit.NSWindowLevel
-T:AppKit.NSWindowListOptions
 T:AppKit.NSWindowMenu
 T:AppKit.NSWindowNSWindow
 T:AppKit.NSWindowNumberListOptions
-T:AppKit.NSWindowOcclusionState
 T:AppKit.NSWindowOrderingMode
 T:AppKit.NSWindowResize
 T:AppKit.NSWindowSharingType
@@ -22928,14 +22913,12 @@ T:AudioToolbox.AUVoiceIOOtherAudioDuckingLevel
 T:AudioUnit.AU3DMixerRenderingFlags
 T:AudioUnit.AudioAggregateDriftCompensation
 T:AudioUnit.AudioComponentValidationResult
-T:AudioUnit.AudioObjectPropertyElement
 T:AudioUnit.AudioObjectPropertyScope
 T:AudioUnit.AudioObjectPropertySelector
 T:AudioUnit.AudioUnitBusType
 T:AudioUnit.AudioUnitEventType
 T:AudioUnit.AudioUnitParameterOptions
 T:AudioUnit.AudioUnitSubType
-T:AudioUnit.AUEventSampleTime
 T:AudioUnit.AUImplementorStringFromValueCallback
 T:AudioUnit.AUInternalRenderBlock
 T:AudioUnit.AUMidiCIProfileChangedCallback
@@ -23104,7 +23087,6 @@ T:AVFoundation.AVAudioRoutingArbiter
 T:AVFoundation.AVAudioRoutingArbitrationCategory
 T:AVFoundation.AVAudioSequencerInfoDictionary
 T:AVFoundation.AVAudioSequencerUserCallback
-T:AVFoundation.AVAudioSessionActivationOptions
 T:AVFoundation.AVAudioSessionCapability
 T:AVFoundation.AVAudioSessionInterruptionReason
 T:AVFoundation.AVAudioSessionIOType
@@ -23462,7 +23444,6 @@ T:CoreAnimation.CACornerCurve
 T:CoreAnimation.CACornerMask
 T:CoreAnimation.CADynamicRange
 T:CoreAnimation.CAEdrMetadata
-T:CoreAnimation.CAFrameRateRange
 T:CoreAnimation.CAGradientLayerType
 T:CoreAnimation.CAMetalDisplayLink
 T:CoreAnimation.CAMetalDisplayLinkUpdate
@@ -23909,7 +23890,6 @@ T:CoreTelephony.CTCellularPlanCapability
 T:CoreTelephony.CTCellularPlanProperties
 T:CoreTelephony.CTCellularPlanProvisioning
 T:CoreTelephony.CTCellularPlanProvisioningAddPlanCompletionHandler
-T:CoreTelephony.CTCellularPlanProvisioningAddPlanResult
 T:CoreTelephony.CTCellularPlanProvisioningRequest
 T:CoreTelephony.CTCellularPlanProvisioningUpdateCellularPlanCompletionHandler
 T:CoreTelephony.CTCellularPlanStatus
@@ -24076,7 +24056,6 @@ T:Foundation.NSGrammaticalPartOfSpeech
 T:Foundation.NSGrammaticalPerson
 T:Foundation.NSGrammaticalPronounType
 T:Foundation.NSInlinePresentationIntent
-T:Foundation.NSItemProviderFileOptions
 T:Foundation.NSItemProviderRepresentationVisibility
 T:Foundation.NSItemProviderUTTypeLoadDelegate
 T:Foundation.NSKeyValueSharedObserverRegistration_NSObject
@@ -24607,8 +24586,6 @@ T:MediaLibrary.MLMediaGroup
 T:MediaLibrary.MLMediaLibrary
 T:MediaLibrary.MLMediaObject
 T:MediaLibrary.MLMediaSource
-T:MediaLibrary.MLMediaSourceType
-T:MediaLibrary.MLMediaType
 T:MediaPlayer.AVMediaSelectionGroup_MPNowPlayingInfoLanguageOptionAdditions
 T:MediaPlayer.AVMediaSelectionOption_MPNowPlayingInfoLanguageOptionAdditions
 T:MediaPlayer.MPAdTimeRange
@@ -25741,7 +25718,6 @@ T:SceneKit.SCNAnimationDidStopHandler
 T:SceneKit.SCNBufferBindingHandler
 T:SceneKit.SCNCameraProjectionDirection
 T:SceneKit.SCNColorMask
-T:SceneKit.SCNErrorCode
 T:SceneKit.SCNFillMode
 T:SceneKit.SCNHitTestSearchMode
 T:SceneKit.SCNInteractionMode

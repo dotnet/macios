@@ -1,43 +1,49 @@
-AppBundleSize: 8,126,405 bytes (7,935.9 KB = 7.7 MB)
+AppBundleSize: 8,640,737 bytes (8,438.2 KB = 8.2 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
+_Microsoft.iOS.TypeMap.dll:
+    44,544 bytes (43.5 KB = 0.0 MB)
+_Microsoft.iOS.TypeMaps.dll:
+    2,048 bytes (2.0 KB = 0.0 MB)
+_SizeTestApp.TypeMap.dll:
+    3,584 bytes (3.5 KB = 0.0 MB)
 Frameworks/libcoreclr.framework/Info.plist:
-    822 bytes (0.8 KB = 0.0 MB)
+    834 bytes (0.8 KB = 0.0 MB)
 Frameworks/libcoreclr.framework/libcoreclr:
-    4,218,112 bytes (4,119.2 KB = 4.0 MB)
+    4,325,328 bytes (4,224.0 KB = 4.1 MB)
 Frameworks/libSystem.Globalization.Native.framework/Info.plist:
-    864 bytes (0.8 KB = 0.0 MB)
+    876 bytes (0.9 KB = 0.0 MB)
 Frameworks/libSystem.Globalization.Native.framework/libSystem.Globalization.Native:
-    90,576 bytes (88.5 KB = 0.1 MB)
+    124,608 bytes (121.7 KB = 0.1 MB)
 Frameworks/libSystem.IO.Compression.Native.framework/Info.plist:
-    866 bytes (0.8 KB = 0.0 MB)
+    878 bytes (0.9 KB = 0.0 MB)
 Frameworks/libSystem.IO.Compression.Native.framework/libSystem.IO.Compression.Native:
-    1,393,600 bytes (1,360.9 KB = 1.3 MB)
+    1,438,032 bytes (1,404.3 KB = 1.4 MB)
 Frameworks/libSystem.Native.framework/Info.plist:
-    836 bytes (0.8 KB = 0.0 MB)
+    848 bytes (0.8 KB = 0.0 MB)
 Frameworks/libSystem.Native.framework/libSystem.Native:
-    143,840 bytes (140.5 KB = 0.1 MB)
+    178,176 bytes (174.0 KB = 0.2 MB)
 Frameworks/libSystem.Net.Security.Native.framework/Info.plist:
-    862 bytes (0.8 KB = 0.0 MB)
+    874 bytes (0.9 KB = 0.0 MB)
 Frameworks/libSystem.Net.Security.Native.framework/libSystem.Net.Security.Native:
-    69,328 bytes (67.7 KB = 0.1 MB)
+    103,072 bytes (100.7 KB = 0.1 MB)
 Frameworks/libSystem.Security.Cryptography.Native.Apple.framework/Info.plist:
-    892 bytes (0.9 KB = 0.0 MB)
+    904 bytes (0.9 KB = 0.0 MB)
 Frameworks/libSystem.Security.Cryptography.Native.Apple.framework/libSystem.Security.Cryptography.Native.Apple:
-    195,104 bytes (190.5 KB = 0.2 MB)
+    249,184 bytes (243.3 KB = 0.2 MB)
 Info.plist:
-    1,150 bytes (1.1 KB = 0.0 MB)
+    1,162 bytes (1.1 KB = 0.0 MB)
 Microsoft.iOS.dll:
-    98,816 bytes (96.5 KB = 0.1 MB)
+    108,544 bytes (106.0 KB = 0.1 MB)
 PkgInfo:
     8 bytes (0.0 KB = 0.0 MB)
 runtimeconfig.bin:
-    1,481 bytes (1.4 KB = 0.0 MB)
+    1,561 bytes (1.5 KB = 0.0 MB)
 SizeTestApp:
-    128,512 bytes (125.5 KB = 0.1 MB)
+    128,504 bytes (125.5 KB = 0.1 MB)
 SizeTestApp.dll:
-    7,680 bytes (7.5 KB = 0.0 MB)
+    6,656 bytes (6.5 KB = 0.0 MB)
 System.Collections.Immutable.dll:
-    14,848 bytes (14.5 KB = 0.0 MB)
+    14,336 bytes (14.0 KB = 0.0 MB)
 System.Diagnostics.StackTrace.dll:
     8,192 bytes (8.0 KB = 0.0 MB)
 System.IO.Compression.dll:
@@ -45,7 +51,7 @@ System.IO.Compression.dll:
 System.IO.MemoryMappedFiles.dll:
     22,016 bytes (21.5 KB = 0.0 MB)
 System.Private.CoreLib.dll:
-    1,610,752 bytes (1,573.0 KB = 1.5 MB)
+    1,758,720 bytes (1,717.5 KB = 1.7 MB)
 System.Reflection.Metadata.dll:
     84,480 bytes (82.5 KB = 0.1 MB)
 System.Runtime.dll:

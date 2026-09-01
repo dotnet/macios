@@ -2462,19 +2462,28 @@ namespace Xamarin.Tests {
 				properties ["CodesignDisallowResourcesSubdirectoryInAppBundle"] = "false";
 				buildFailure = DotNet.AssertBuildFailure (project_path, properties);
 				errors = BinLog.GetBuildLogErrors (buildFailure.BinLogPath).ToArray ();
-				var errorMessagePrefixes = new string []
+				// codesign doesn't consistently print 'replacing existing signature' before reporting the
+				// malformed bundle. The app is signed by the initial successful build above, but this line
+				// was present locally and absent in CI, so accept both variations.
+				var replacingSignature = $"{appPath}: replacing existing signature\n";
+				var notSigned = $"{appPath}: code object is not signed at all\n";
+				// Each error message may show up in either of the listed variations.
+				var errorMessagePrefixes = new string [] []
 				{
-					$"/usr/bin/codesign exited with code 1:\n" +
-					$"{appPath}: replacing existing signature\n" +
-					$"{appPath}: code object is not signed at all\n",
+					new string [] {
+						$"/usr/bin/codesign exited with code 1:\n{replacingSignature}{notSigned}",
+						$"/usr/bin/codesign exited with code 1:\n{notSigned}",
+					},
 
-					$"Failed to codesign '{appPath}': {appPath}: replacing existing signature\n" +
-					$"{appPath}: code object is not signed at all\n",
+					new string [] {
+						$"Failed to codesign '{appPath}': {replacingSignature}{notSigned}",
+						$"Failed to codesign '{appPath}': {notSigned}",
+					},
 				};
 
 				AssertErrorMessages (errors,
-					errorMessagePrefixes.Select (prefix => new Func<string, bool> ((msg) => msg.StartsWith (prefix))).ToArray (),
-					errorMessagePrefixes.Select (prefix => new Func<string> (() => prefix)).ToArray ()
+					errorMessagePrefixes.Select (prefixes => new Func<string, bool> ((msg) => prefixes.Any (prefix => msg.StartsWith (prefix)))).ToArray (),
+					errorMessagePrefixes.Select (prefixes => new Func<string> (() => prefixes [0])).ToArray ()
 				);
 
 				// Remove the dir, and now the build should succeed again.
@@ -2807,10 +2816,11 @@ namespace Xamarin.Tests {
 			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath)
 								.FilterWarnings (platform);
 			var expectedWarnings = new ExpectedBuildMessage [] {
-				new ExpectedBuildMessage ($"ILLINK", $"It's not safe to remove the dynamic registrar, because monotouchtest references 'ObjCRuntime.Runtime.ConnectMethod (System.Reflection.MethodInfo, ObjCRuntime.Selector)'."),
-				new ExpectedBuildMessage ($"ILLINK", $"It's not safe to remove the dynamic registrar, because monotouchtest references 'ObjCRuntime.Runtime.ConnectMethod (System.Type, System.Reflection.MethodInfo, Foundation.ExportAttribute)'."),
-				new ExpectedBuildMessage ($"ILLINK", $"It's not safe to remove the dynamic registrar, because monotouchtest references 'ObjCRuntime.Runtime.ConnectMethod (System.Type, System.Reflection.MethodInfo, ObjCRuntime.Selector)'."),
-				new ExpectedBuildMessage ($"ILLINK", $"It's not safe to remove the dynamic registrar, because monotouchtest references 'ObjCRuntime.Runtime.RegisterAssembly (System.Reflection.Assembly)'."),
+				new ExpectedBuildMessage ($"ILC", $"MonoTouchFixtures.ObjCRuntime.ClassTest.GetHandle(): Using member 'System.Type.MakeArrayType()' which has 'RequiresDynamicCodeAttribute' can break functionality when AOT compiling. The code for an array of the specified type might not be available."),
+				new ExpectedBuildMessage ($"MSBuild", $"It's not safe to remove the dynamic registrar, because monotouchtest references 'ObjCRuntime.Runtime.ConnectMethod (System.Reflection.MethodInfo, ObjCRuntime.Selector)'."),
+				new ExpectedBuildMessage ($"MSBuild", $"It's not safe to remove the dynamic registrar, because monotouchtest references 'ObjCRuntime.Runtime.ConnectMethod (System.Type, System.Reflection.MethodInfo, Foundation.ExportAttribute)'."),
+				new ExpectedBuildMessage ($"MSBuild", $"It's not safe to remove the dynamic registrar, because monotouchtest references 'ObjCRuntime.Runtime.ConnectMethod (System.Type, System.Reflection.MethodInfo, ObjCRuntime.Selector)'."),
+				new ExpectedBuildMessage ($"MSBuild", $"It's not safe to remove the dynamic registrar, because monotouchtest references 'ObjCRuntime.Runtime.RegisterAssembly (System.Reflection.Assembly)'."),
 				new ExpectedBuildMessage ($"tests/bindings-test/RegistrarBindingTest.cs", $"Unable to locate the block to delegate conversion method for the method System.Void Xamarin.BindingTests.RegistrarBindingTest/FakePropertyBlock::set_MyOptionalProperty(Bindings.Test.SimpleCallback)'s parameter #1."),
 				new ExpectedBuildMessage ($"tests/bindings-test/RegistrarBindingTest.cs", $"Unable to locate the block to delegate conversion method for the method System.Void Xamarin.BindingTests.RegistrarBindingTest/FakePropertyBlock::set_MyOptionalStaticProperty(Bindings.Test.SimpleCallback)'s parameter #1."),
 				new ExpectedBuildMessage ($"tests/bindings-test/RegistrarBindingTest.cs", $"Unable to locate the block to delegate conversion method for the method System.Void Xamarin.BindingTests.RegistrarBindingTest/FakePropertyBlock::set_MyRequiredProperty(Bindings.Test.SimpleCallback)'s parameter #1."),
@@ -2820,7 +2830,6 @@ namespace Xamarin.Tests {
 				new ExpectedBuildMessage ($"tests/bindings-test/RegistrarBindingTest.cs", $"Unable to locate the delegate to block conversion type for the return value of the method Bindings.Test.SimpleCallback Xamarin.BindingTests.RegistrarBindingTest/FakePropertyBlock::get_MyRequiredProperty()."),
 				new ExpectedBuildMessage ($"tests/bindings-test/RegistrarBindingTest.cs", $"Unable to locate the delegate to block conversion type for the return value of the method Bindings.Test.SimpleCallback Xamarin.BindingTests.RegistrarBindingTest/FakePropertyBlock::get_MyRequiredStaticProperty()."),
 				new ExpectedBuildMessage ($"tests/monotouch-test/dotnet/{platform.AsString ()}/obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}linked/nunit.framework.dll", $"Assembly 'nunit.framework' produced AOT analysis warnings."),
-				new ExpectedBuildMessage ($"tests/monotouch-test/ObjCRuntime/ClassTest.cs", $"MonoTouchFixtures.ObjCRuntime.ClassTest.GetHandle(): Using member 'System.Type.MakeArrayType()' which has 'RequiresDynamicCodeAttribute' can break functionality when AOT compiling. The code for an array of the specified type might not be available."),
 				new ExpectedBuildMessage ($"tests/monotouch-test/ObjCRuntime/RegistrarTest.cs", $"Unable to locate the block to delegate conversion method for the method System.Void MonoTouchFixtures.ObjCRuntime.GHIssue7733::DoWork(System.String,MonoTouchFixtures.ObjCRuntime.ACompletionHandler)'s parameter #2."),
 				new ExpectedBuildMessage ($"tests/monotouch-test/ObjCRuntime/RegistrarTest.cs", $"Unable to locate the block to delegate conversion method for the method System.Void MonoTouchFixtures.ObjCRuntime.RegistrarTest/ClosedGenericParameter::Foo(System.Action`1<System.String>)'s parameter #1."),
 				new ExpectedBuildMessage ($"tests/monotouch-test/ObjCRuntime/RegistrarTest.cs", $"Unable to locate the block to delegate conversion method for the method System.Void MonoTouchFixtures.ObjCRuntime.RegistrarTest/RegistrarTestClass::TestNSAction(System.Action)'s parameter #1."),
@@ -4063,9 +4072,20 @@ namespace Xamarin.Tests {
 			.. coreclrFrameworks_iOS,
 			.. expectedFrameworks_iOS_None,
 		];
+		// The trimmable static registrar (the default registrar for CoreCLR) keeps protocol interfaces
+		// (and their corresponding *Wrapper types) alive in order to be able to register the protocol
+		// conformances of the types that survive trimming, which means that we end up linking with the
+		// frameworks those protocols come from (CloudKit.ICKRecordValue and CoreData.INSFetchRequestResult
+		// are implemented by Foundation types such as NSNumber and NSString).
+		static string [] trimmableStaticRegistrarFrameworks = [
+			"/System/Library/Frameworks/CloudKit.framework/CloudKit",
+			"/System/Library/Frameworks/CoreData.framework/CoreData",
+		];
+
 		static string [] expectedFrameworks_iOS_Full_CoreCLR = [
 			.. coreclrFrameworks_iOS,
 			.. expectedFrameworks_iOS_Full,
+			.. trimmableStaticRegistrarFrameworks,
 		];
 		static string [] expectedFrameworks_tvOS_None_CoreCLR = [
 			.. coreclrFrameworks_tvOS,
@@ -4074,14 +4094,16 @@ namespace Xamarin.Tests {
 		static string [] expectedFrameworks_tvOS_Full_CoreCLR = [
 			.. coreclrFrameworks_tvOS,
 			.. expectedFrameworks_tvOS_Full,
+			.. trimmableStaticRegistrarFrameworks,
 		];
 		static string [] expectedFrameworks_MacCatalyst_None_CoreCLR = [
 			.. coreclrFrameworks_MacCatalyst,
 			.. expectedFrameworks_MacCatalyst_None,
 		];
+		// CoreGraphics and QuartzCore are trimmed away for CoreCLR (but not for Mono).
 		static string [] expectedFrameworks_MacCatalyst_Full_CoreCLR = [
 			.. coreclrFrameworks_MacCatalyst,
-			.. expectedFrameworks_MacCatalyst_Full,
+			.. expectedFrameworks_MacCatalyst_Full.Where (v => !v.Contains ("/CoreGraphics.framework/") && !v.Contains ("/QuartzCore.framework/")),
 		];
 
 		static IEnumerable<TestCaseData> GetLinkedWithNativeLibrariesTestCases_Mono ()

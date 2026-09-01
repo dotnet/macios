@@ -1133,6 +1133,20 @@ namespace Xamarin.Linker {
 			}
 		}
 
+		public MethodReference Runtime_InvokeGenericRegistrarTrampoline {
+			get {
+				return GetMethodReference (PlatformAssembly,
+						ObjCRuntime_Runtime, "InvokeGenericRegistrarTrampoline",
+						nameof (Runtime_InvokeGenericRegistrarTrampoline),
+						isStatic: true,
+						System_Object,
+						System_RuntimeTypeHandle,
+						System_RuntimeMethodHandle,
+						new ArrayType (System_Object),
+						new ByReferenceType (System_IntPtr));
+			}
+		}
+
 		public MethodReference BlockLiteral_CreateBlockForDelegate {
 			get {
 				return GetMethodReference (PlatformAssembly,
@@ -1533,19 +1547,52 @@ namespace Xamarin.Linker {
 			return action == AssemblyAction.Link;
 		}
 
+		/// <summary>
+		/// Returns the signature to use in a <c>[DynamicDependency]</c> attribute for a method: the
+		/// method name (and generic arity) if no other method in the same type has that name and
+		/// arity, otherwise the full signature (including the parameter list).
+		/// </summary>
+		/// <remarks>
+		///   <para>
+		///     The trimmer only compares the parameter lists when the signature has one, and computing
+		///     the signature of a parameter crashes the trimmer if the parameter's type is a nested type
+		///     reference (see <see cref="DocumentationComments.GetNameSignature (MethodDefinition)" />),
+		///     so use the name alone whenever it's unambiguous.
+		///   </para>
+		///   <para>
+		///     The trimmer matches a signature without a parameter list on both the name and the generic
+		///     arity, so methods that differ in arity (<c>Foo ()</c> vs <c>Foo&lt;T&gt; ()</c>) don't
+		///     collide and don't need a parameter list either.
+		///   </para>
+		/// </remarks>
+		static string GetDynamicDependencySignature (MethodDefinition method)
+		{
+			var count = 0;
+			foreach (var candidate in method.DeclaringType.Methods) {
+				if (candidate.Name != method.Name)
+					continue;
+				if (candidate.GenericParameters.Count != method.GenericParameters.Count)
+					continue;
+				if (++count > 1)
+					return DocumentationComments.GetSignature (method);
+			}
+			return DocumentationComments.GetNameSignature (method);
+		}
+
 		public bool AddDynamicDependencyAttribute (MethodDefinition addToMethod, MethodDefinition dependsOn)
 		{
 			if (!IsAssemblyTrimmed (dependsOn))
 				return false;
 
+			var signature = GetDynamicDependencySignature (dependsOn);
 			if (addToMethod.DeclaringType == dependsOn.DeclaringType) {
-				var attribute = CreateDynamicDependencyAttribute (DocumentationComments.GetSignature (dependsOn));
+				var attribute = CreateDynamicDependencyAttribute (signature);
 				return AddAttributeOnlyOnce (addToMethod, attribute);
 			} else if (addToMethod.DeclaringType.Module == dependsOn.DeclaringType.Module) {
-				var attribute = CreateDynamicDependencyAttribute (DocumentationComments.GetSignature (dependsOn), dependsOn.DeclaringType);
+				var attribute = CreateDynamicDependencyAttribute (signature, dependsOn.DeclaringType);
 				return AddAttributeOnlyOnce (addToMethod, attribute);
 			} else {
-				var attribute = CreateDynamicDependencyAttribute (DocumentationComments.GetSignature (dependsOn), dependsOn.DeclaringType, dependsOn.DeclaringType.Module.Assembly);
+				var attribute = CreateDynamicDependencyAttribute (signature, dependsOn.DeclaringType, dependsOn.DeclaringType.Module.Assembly);
 				return AddAttributeOnlyOnce (addToMethod, attribute);
 			}
 		}
@@ -1557,7 +1604,10 @@ namespace Xamarin.Linker {
 
 			var attribute = CreateAttribute (DynamicDependencyAttribute_ctor__String_Type);
 			attribute.ConstructorArguments.Add (new CustomAttributeArgument (System_String, memberSignature));
-			attribute.ConstructorArguments.Add (new CustomAttributeArgument (System_Type, type));
+			// Import the type into the current assembly, otherwise Cecil will serialize the Type argument
+			// without an assembly-qualified name when 'type' is a TypeDefinition from another assembly (because
+			// a TypeDefinition's Scope is its own module), and the trimmer won't be able to resolve it (IL2036).
+			attribute.ConstructorArguments.Add (new CustomAttributeArgument (System_Type, CurrentAssembly.MainModule.ImportReference (type)));
 			return attribute;
 		}
 
@@ -1600,6 +1650,87 @@ namespace Xamarin.Linker {
 		}
 
 		/// <summary>
+		/// Preserve all the members declared on a type (and the type itself), which is what
+		/// <c>[Preserve (AllMembers = true)]</c> means.
+		/// </summary>
+		/// <remarks>
+		///   <para>
+		///     A DynamicDependency attribute with DynamicallyAccessedMemberTypes can't be used here: the trimmer
+		///     resolves those member types over the entire type hierarchy, so it would also preserve every member
+		///     of every base type (for an NSObject subclass that means all of NSObject, which is quite big).
+		///     Instead add one DynamicDependency attribute per member declared on the type itself, and a single
+		///     DynamicDependency attribute for the interfaces the type implements.
+		///   </para>
+		///   <para>
+		///     Methods are preserved by name (without the parameter list), which preserves every overload -
+		///     which is what we want here anyway (and it avoids a trimmer crash, see
+		///     <see cref="DocumentationComments.GetNameSignature (MethodDefinition)" />).
+		///   </para>
+		/// </remarks>
+		/// <param name="addToMethod">The method on which to add the dynamic dependency attributes.</param>
+		/// <param name="type">The type whose members should be preserved.</param>
+		public bool AddPreserveAllMembersDynamicDependencyAttributes (MethodDefinition addToMethod, TypeDefinition type)
+		{
+			var signatures = new HashSet<string> (StringComparer.Ordinal);
+
+			foreach (var field in type.Fields) {
+				if (!field.HasCustomAttribute ("System.Runtime.CompilerServices", "CompilerGeneratedAttribute"))
+					signatures.Add (DocumentationComments.GetSignature (field));
+			}
+			foreach (var method in type.Methods) {
+				if (!method.HasCustomAttribute ("System.Runtime.CompilerServices", "CompilerGeneratedAttribute"))
+					signatures.Add (DocumentationComments.GetNameSignature (method));
+			}
+			// Properties and events don't have a documentation comment signature helper, but the trimmer will
+			// match any member with the given name, which is good enough (and it's what we want here anyway).
+			foreach (var property in type.Properties)
+				signatures.Add (property.Name);
+			foreach (var @event in type.Events)
+				signatures.Add (@event.Name);
+
+			if (signatures.Count == 0) {
+				// The type has no declared members, so add a placeholder member and preserve that,
+				// which will keep the type itself (same pattern as AddDynamicDependencyAttributeToStaticConstructor).
+				var placeholderName = "__linker_preserve__";
+				FieldDefinition? placeholderMember = null;
+				if (type.HasFields)
+					placeholderMember = type.Fields.FirstOrDefault (f => f.Name == placeholderName && f.IsStatic);
+				if (placeholderMember is null) {
+					placeholderMember = new FieldDefinition (placeholderName, FieldAttributes.Private | FieldAttributes.Static, System_Int32);
+					type.Fields.Add (placeholderMember);
+				}
+				signatures.Add (DocumentationComments.GetSignature (placeholderMember));
+			}
+
+			var modified = false;
+			foreach (var signature in signatures.OrderBy (v => v, StringComparer.Ordinal))
+				modified |= AddAttributeOnlyOnce (addToMethod, CreateDynamicDependencyAttribute (signature, type));
+
+			// The interfaces a type implements must be preserved as well: the static registrar needs the
+			// protocol interfaces (and the custom attributes on them) to find the block proxy types it
+			// references from the generated native code.
+			// Only do this if there are any interfaces to preserve, otherwise the trimmer complains that
+			// no members were resolved for the attribute (IL2037).
+			if (HasAnyInterfaces (type))
+				modified |= AddAttributeOnlyOnce (addToMethod, CreateDynamicDependencyAttribute (DynamicallyAccessedMemberTypes.Interfaces, type));
+
+			return modified;
+		}
+
+		/// <summary>
+		/// Returns true if the type, or any of its base types, implements any interfaces.
+		/// </summary>
+		static bool HasAnyInterfaces (TypeDefinition? type)
+		{
+			while (type is not null) {
+				if (type.HasInterfaces)
+					return true;
+				type = type.BaseType?.Resolve ();
+			}
+			return false;
+		}
+
+		/// <summary>
 		/// Preserve a method conditionally on another type
 		/// </summary>
 		/// <param name="onType">The type on which to add the dynamic dependency attribute.</param>
@@ -1607,13 +1738,14 @@ namespace Xamarin.Linker {
 		public bool AddDynamicDependencyAttributeToStaticConstructor (TypeDefinition onType, MethodDefinition forMethod)
 		{
 			CustomAttribute attrib;
+			var signature = GetDynamicDependencySignature (forMethod);
 
 			if (onType == forMethod.DeclaringType) {
-				attrib = CreateDynamicDependencyAttribute (DocumentationComments.GetSignature (forMethod));
+				attrib = CreateDynamicDependencyAttribute (signature);
 			} else if (onType.Module == forMethod.DeclaringType.Module) {
-				attrib = CreateDynamicDependencyAttribute (DocumentationComments.GetSignature (forMethod), forMethod.DeclaringType);
+				attrib = CreateDynamicDependencyAttribute (signature, forMethod.DeclaringType);
 			} else {
-				attrib = CreateDynamicDependencyAttribute (DocumentationComments.GetSignature (forMethod), forMethod.DeclaringType, forMethod.Module.Assembly);
+				attrib = CreateDynamicDependencyAttribute (signature, forMethod.DeclaringType, forMethod.Module.Assembly);
 			}
 
 			return AddAttributeToStaticConstructor (onType, attrib);
@@ -1858,7 +1990,7 @@ namespace Xamarin.Linker {
 			AddTypeInterfaceImplementation (abr, context, type, abr.Foundation_INSObjectFactory);
 
 			var createInstanceMethod = type.AddMethod ("_Xamarin_ConstructNSObject", MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.NewSlot | MethodAttributes.HideBySig, abr.Foundation_NSObject);
-			var nativeHandleParameter = createInstanceMethod.AddParameter ("nativeHandle", abr.ObjCRuntime_NativeHandle);
+			var nativeHandleParameter = createInstanceMethod.AddParameter (abr.ObjCRuntime_NativeHandle); // nativeHandle
 			abr.Foundation_INSObjectFactory.Resolve ().IsPublic = true;
 			createInstanceMethod.Overrides.Add (abr.INSObjectFactory__Xamarin_ConstructNSObject);
 			var body = createInstanceMethod.CreateBody (out var il);
@@ -1875,7 +2007,7 @@ namespace Xamarin.Linker {
 			il.Emit (OpCodes.Newobj, ctor);
 			il.Emit (OpCodes.Ret);
 
-			body.GenerateILOffsets ();
+			body.FinalizeGeneratedBody ();
 
 			// make sure the trimmer doesn't trim it away if the type is kept
 			if (context.App.Registrar == RegistrarMode.TrimmableStatic) {
@@ -1905,8 +2037,8 @@ namespace Xamarin.Linker {
 			AddTypeInterfaceImplementation (abr, context, type, abr.ObjCRuntime_INativeObject);
 
 			var createInstanceMethod = type.AddMethod ("_Xamarin_ConstructINativeObject", MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.NewSlot | MethodAttributes.HideBySig, abr.ObjCRuntime_INativeObject);
-			var nativeHandleParameter = createInstanceMethod.AddParameter ("nativeHandle", abr.ObjCRuntime_NativeHandle);
-			var ownsParameter = createInstanceMethod.AddParameter ("owns", abr.System_Boolean);
+			var nativeHandleParameter = createInstanceMethod.AddParameter (abr.ObjCRuntime_NativeHandle); // nativeHandle
+			var ownsParameter = createInstanceMethod.AddParameter (abr.System_Boolean); // owns
 			abr.INativeObject__Xamarin_ConstructINativeObject.Resolve ().IsPublic = true;
 			createInstanceMethod.Overrides.Add (abr.INativeObject__Xamarin_ConstructINativeObject);
 			var body = createInstanceMethod.CreateBody (out var il);
@@ -1959,7 +2091,7 @@ namespace Xamarin.Linker {
 				throw new UnreachableException ();
 			}
 
-			body.GenerateILOffsets ();
+			body.FinalizeGeneratedBody ();
 
 			// make sure the trimmer doesn't trim it away if the type is kept
 			if (context.App.Registrar == RegistrarMode.TrimmableStatic) {

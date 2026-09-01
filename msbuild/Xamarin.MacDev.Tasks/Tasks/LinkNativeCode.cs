@@ -297,9 +297,18 @@ namespace Xamarin.MacDev.Tasks {
 			return plist.Count != 0;
 		}
 
-		// We should avoid copying files from the output path because those already exist on the Mac
-		// and the ones on Windows are empty, so we will break the build
-		public bool ShouldCopyToBuildServer (ITaskItem item) => !PathUtils.ConvertToMacPath (item.ItemSpec).StartsWith (outputPath);
+		public bool ShouldCopyToBuildServer (ITaskItem item)
+		{
+			// Some files are already on the mac, and in that case we don't
+			// want to overwrite them with an empty file.
+			var finfo = new FileInfo (item.ItemSpec);
+			if (!finfo.Exists || finfo.Length == 0)
+				return false;
+
+			// We should avoid copying files from the output path because those already exist on the Mac
+			// and the ones on Windows are empty, so we will break the build
+			return !PathUtils.ConvertToMacPath (item.ItemSpec).StartsWith (outputPath);
+		}
 
 		public bool ShouldCreateOutputFile (ITaskItem item) => true;
 

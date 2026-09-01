@@ -6,7 +6,7 @@ using Metal;
 
 namespace MetalFX {
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[iOS (16, 0), MacCatalyst (16, 0)]
 	[TV (18, 4)]
 	[Native]
 	public enum MTLFXSpatialScalerColorProcessingMode : long {
@@ -17,7 +17,7 @@ namespace MetalFX {
 
 	interface IMTLFXSpatialScaler { }
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[iOS (16, 0), MacCatalyst (16, 0)]
 	[TV (18, 4)]
 	[Protocol]
 	interface MTLFXSpatialScaler : MTLFXSpatialScalerBase {
@@ -28,7 +28,7 @@ namespace MetalFX {
 
 	interface IMTLFXTemporalScaler { }
 
-	[Mac (13, 0), iOS (16, 0)]
+	[iOS (16, 0)]
 	[TV (18, 4)]
 	[Protocol]
 	interface MTLFXTemporalScaler : MTLFXTemporalScalerBase {
@@ -37,7 +37,7 @@ namespace MetalFX {
 		void Encode (IMTLCommandBuffer commandBuffer);
 	}
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[iOS (16, 0), MacCatalyst (16, 0)]
 	[TV (18, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -82,7 +82,7 @@ namespace MetalFX {
 		bool SupportsMetal4FX (IMTLDevice device);
 	}
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[iOS (16, 0), MacCatalyst (16, 0)]
 	[TV (18, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -145,12 +145,12 @@ namespace MetalFX {
 		[return: Release]
 		IMTL4FXTemporalScaler Create (IMTLDevice device, IMTL4Compiler compiler);
 
-		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), MacCatalyst (17, 0)]
 		[Static]
 		[Export ("supportedInputContentMinScaleForDevice:")]
 		float GetSupportedInputContentMinScale (IMTLDevice device);
 
-		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), MacCatalyst (17, 0)]
 		[Static]
 		[Export ("supportedInputContentMaxScaleForDevice:")]
 		float GetSupportedInputContentMaxScale (IMTLDevice device);

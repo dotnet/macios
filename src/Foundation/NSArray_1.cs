@@ -127,15 +127,15 @@ namespace Foundation {
 
 #if false // https://github.com/dotnet/macios/issues/15577
 
-		[SupportedOSPlatform ("ios13.0"), SupportedOSPlatform ("tvos13.0"), SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios"), SupportedOSPlatform ("tvos"), SupportedOSPlatform ("macos")]
 		public NSOrderedCollectionDifference<TKey>? GetDifference (TKey[] other, NSOrderedCollectionDifferenceCalculationOptions options)
 			=> Runtime.GetNSObject <NSOrderedCollectionDifference<TKey>> (_GetDifference (NSArray.FromNSObjects (other), options));
 
-		[SupportedOSPlatform ("ios13.0"), SupportedOSPlatform ("tvos13.0"), SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios"), SupportedOSPlatform ("tvos"), SupportedOSPlatform ("macos")]
 		public NSOrderedCollectionDifference<TKey>? GetDifference (TKey[] other)
 			=> Runtime.GetNSObject <NSOrderedCollectionDifference<TKey>> (_GetDifference (NSArray.FromNSObjects (other)));
 
-		[SupportedOSPlatform ("ios13.0"), SupportedOSPlatform ("tvos13.0"), SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios"), SupportedOSPlatform ("tvos"), SupportedOSPlatform ("macos")]
 		public TKey[]? GetArrayByApplyingDifference (NSOrderedCollectionDifference difference)
 			=> NSArray.ArrayFromHandle<TKey> (_GetArrayByApplyingDifference (difference));
 		static readonly NSOrderedCollectionDifferenceEquivalenceTestProxy static_DiffEqualityGeneric = DiffEqualityHandlerGeneric;
@@ -152,7 +152,7 @@ namespace Foundation {
 			return false;
 		}
 
-		[SupportedOSPlatform ("ios13.0"), SupportedOSPlatform ("tvos13.0"), SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios"), SupportedOSPlatform ("tvos"), SupportedOSPlatform ("macos")]
 		public NSOrderedCollectionDifference<TKey>? GetDifferenceFromArray (NSArray<TKey> other, NSOrderedCollectionDifferenceCalculationOptions options, NSOrderedCollectionDifferenceEquivalenceTest<TKey> equivalenceTest) 
 		{
 			if (equivalenceTest is null)

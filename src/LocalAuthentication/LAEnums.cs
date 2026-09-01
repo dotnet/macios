@@ -128,7 +128,7 @@ namespace LocalAuthentication {
 		UseKeyKeyExchange,
 	}
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[Native]
 	public enum LARightState : long {
 		Unknown = 0,

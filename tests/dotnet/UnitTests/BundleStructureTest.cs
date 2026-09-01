@@ -118,6 +118,14 @@ namespace Xamarin.Tests {
 				if (fn.StartsWith ("libSystem.", StringComparison.Ordinal) && fn.EndsWith (".dylib", StringComparison.Ordinal))
 					return isCoreCLR;
 
+				// The trimmable-static registrar generates a root type map assembly (_Microsoft.<Platform>.TypeMaps.dll)
+				// and a companion type map assembly for each user assembly (_<Assembly>.TypeMap.dll).
+				if (fn.StartsWith ("_", StringComparison.Ordinal) && (fn.EndsWith (".dll", StringComparison.Ordinal) || fn.EndsWith (".pdb", StringComparison.Ordinal))) {
+					var name = Path.GetFileNameWithoutExtension (fn);
+					if (name.EndsWith (".TypeMap", StringComparison.Ordinal) || name.EndsWith (".TypeMaps", StringComparison.Ordinal))
+						return true;
+				}
+
 				if (isCoreCLR) {
 					// R2R compiled dylib (macOS/MacCatalyst)
 					if (fn.EndsWith (".r2r.dylib", StringComparison.Ordinal))

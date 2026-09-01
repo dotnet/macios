@@ -329,6 +329,11 @@ namespace Foundation {
 		{
 			bool alloced = AllocIfNeeded ();
 			InitializeObject (alloced);
+			// This constructor doesn't send 'init', so the handle is final. Complete any
+			// deferred registration for user types (see #25861); no-op if already registered
+			// (e.g. direct bindings, which InitializeObject registers eagerly).
+			if (alloced && !Runtime.RegisterObjectsBeforeInit)
+				Runtime.RegisterNSObject (this, handle, onlyIfNeeded: true);
 		}
 
 		// This is just here as a constructor chain that can will
@@ -509,20 +514,35 @@ namespace Foundation {
 			// and any subclasses in the platform assembly which is not a direct binding have
 			// to set the correct value in their constructors.
 			IsDirectBinding = (this.GetType ().Assembly == PlatformAssembly);
-			Runtime.RegisterNSObject (this, handle);
 
 			bool native_ref = (flags & Flags.NativeRef) == Flags.NativeRef;
-			CreateManagedRef (!alloced || native_ref);
+
+			if (!Runtime.TryGetIsUserType (handle, out var isUserType, out var error_message))
+				throw new InvalidOperationException ($"Unable to create a managed reference for the pointer {handle} whose managed type is {GetType ().FullName} because it wasn't possible to get the class of the pointer: {error_message}");
+
+			// Issue #25861: when we've just alloc'd a user type, defer adding it to the
+			// object_map until 'init' has completed. A native 'init' may free this handle
+			// and return a different one; we don't want a pointer to freed memory lingering
+			// in the map. User types carry their gchandle in a native ivar (set by
+			// CreateManagedRef below), which serves as a fallback lookup during 'init', so
+			// deferring their object_map registration is safe. The final handle is registered
+			// later (via InitializeHandle for the generated alloc+init constructors, or right
+			// after this call for the parameterless NSObject constructor which doesn't send
+			// 'init'). Direct bindings have no ivar, so they must remain registered throughout
+			// 'init' (e.g. so a native 'init' that surfaces 'self' to managed code resolves to
+			// the wrapper being constructed) and are registered eagerly here.
+			if (!alloced || !isUserType || Runtime.RegisterObjectsBeforeInit)
+				Runtime.RegisterNSObject (this, handle);
+
+			CreateManagedRef (isUserType, !alloced || native_ref);
 		}
 
 		[DllImport ("__Internal")]
 		static extern byte xamarin_set_gchandle_with_flags_safe (IntPtr handle, IntPtr gchandle, XamarinGCHandleFlags gchandle_flags, IntPtr data);
 
-		void CreateManagedRef (bool retain)
+		void CreateManagedRef (bool isUserType, bool retain)
 		{
 			HasManagedRef = true;
-			if (!Runtime.TryGetIsUserType (handle, out var isUserType, out var error_message))
-				throw new InvalidOperationException ($"Unable to create a managed reference for the pointer {handle} whose managed type is {GetType ().FullName} because it wasn't possible to get the class of the pointer: {error_message}");
 
 			if (isUserType) {
 				var gchandle_flags = XamarinGCHandleFlags.HasManagedRef | XamarinGCHandleFlags.InitialSet;
@@ -541,6 +561,37 @@ namespace Foundation {
 
 			if (retain)
 				DangerousRetain ();
+		}
+
+		// Issue #25861: if 'init' returned a different handle than 'alloc' for a user type,
+		// the gchandle ivar was set on the (now typically freed) alloc'd handle. Make sure
+		// the final handle also has a gchandle ivar pointing back at this managed object, so
+		// it can be resolved native->managed. Does nothing for direct bindings (no ivar) or
+		// if the ivar is already set.
+		void EnsureManagedReference (NativeHandle newHandle)
+		{
+			if (!Runtime.TryGetIsUserType (newHandle, out var isUserType, out var _) || !isUserType)
+				return;
+			if (Runtime.GetGCHandleForObject (newHandle) != IntPtr.Zero)
+				return;
+			HasManagedRef = true;
+			var gchandle_flags = XamarinGCHandleFlags.HasManagedRef | XamarinGCHandleFlags.InitialSet;
+			var gchandle = GCHandle.Alloc (this, GCHandleType.WeakTrackResurrection);
+			var h = GCHandle.ToIntPtr (gchandle);
+			byte rv;
+			unsafe {
+				rv = xamarin_set_gchandle_with_flags_safe (newHandle, h, gchandle_flags, (IntPtr) GetData ());
+			}
+			if (rv == 0) {
+				// The ivar slot was already claimed (e.g. another managed wrapper won a race
+				// to represent this native object). Free the gchandle we allocated. We keep
+				// HasManagedRef set (it was already set by CreateManagedRef): this object
+				// still owns the +1 that 'init' transferred to 'newHandle', and that +1 must
+				// still be released via ReleaseManagedRef on disposal. This mirrors the same
+				// case in CreateManagedRef.
+				Runtime.NSLog ($"Tried to create a managed reference from an object that already has a managed reference (type: {GetType ()})");
+				gchandle.Free ();
+			}
 		}
 
 		void ReleaseManagedRef ()
@@ -800,8 +851,15 @@ namespace Foundation {
 				if (handle == value)
 					return;
 
-				if (handle != IntPtr.Zero)
-					Runtime.UnregisterNSObject (handle);
+				if (handle != IntPtr.Zero) {
+					// Issue #25861: use the ownership-aware unregister so we don't remove an
+					// object_map entry that another object created after reusing this (freed)
+					// address. The legacy switch restores the previous unconditional removal.
+					if (Runtime.RegisterObjectsBeforeInit)
+						Runtime.UnregisterNSObject (handle);
+					else
+						Runtime.UnregisterNSObject (handle, this);
+				}
 
 				handle = value;
 
@@ -843,7 +901,24 @@ namespace Foundation {
 				throw new Exception ($"Could not initialize an instance of the type '{GetType ().FullName}': the native '{initSelector}' method returned nil.\n{Constants.SetThrowOnInitFailureToFalse}.");
 			}
 
+			// Transition to the final (post-'init') handle. The Handle setter (ownership-aware)
+			// unregisters the previous handle if needed and registers the new one.
+			var previousHandle = this.handle;
 			this.Handle = handle;
+
+			// Issue #25861: registration for user types was deferred in InitializeObject.
+			if (!Runtime.RegisterObjectsBeforeInit && handle != NativeHandle.Zero) {
+				if (handle == previousHandle) {
+					// 'init' returned the same handle, so the setter above was a no-op.
+					// Complete the deferred registration now (no-op if already registered).
+					Runtime.RegisterNSObject (this, handle, onlyIfNeeded: true);
+				} else {
+					// 'init' returned a different handle; the gchandle ivar was set on the
+					// previous (now typically freed) handle, so re-establish it on the final
+					// handle for user types.
+					EnsureManagedReference (handle);
+				}
+			}
 		}
 
 		private bool AllocIfNeeded ()

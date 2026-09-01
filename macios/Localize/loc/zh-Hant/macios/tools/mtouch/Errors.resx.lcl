@@ -4655,7 +4655,7 @@
         <Str Cat="Text">
           <Val><![CDATA[The native linker failed to execute: {0}. Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A; 		]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[無法執行原生連結器: {0}。請前往 https://github.com/dotnet/macios/issues/new]D; 提交錯誤 (Bug) 報告]A; 		]]></Val>
+            <Val><![CDATA[無法執行原生連結器: {0}。請前往 https://github.com/dotnet/macios/issues/new 提交錯誤 (Bug) 報告]D;]A; 		]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

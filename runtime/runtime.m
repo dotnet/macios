@@ -83,6 +83,10 @@ enum XamarinNativeLinkMode xamarin_libmono_native_link_mode = XamarinNativeLinkM
 const char **xamarin_runtime_libraries = NULL;
 struct xamarin_r2r_module *xamarin_r2r_modules = NULL;
 int xamarin_r2r_module_count = 0;
+const char * const *xamarin_trusted_platform_assembly_names = NULL;
+#if defined (SUPPORTS_UNIVERSAL_BUILDS)
+bool xamarin_is_multi_rid_build = false;
+#endif
 
 /* Callbacks */
 
@@ -2310,7 +2314,7 @@ xamarin_create_product_exception_with_inner_exception (int code, GCHandle inner_
 // - The runtimeidentifier-specific subdirectory
 // Caller must free the return value using xamarin_free.
 char *
-xamarin_compute_trusted_platform_assemblies ()
+xamarin_compute_trusted_platform_assemblies_at_runtime ()
 {
 	const char *bundle_path = xamarin_get_bundle_path ();
 
@@ -2355,6 +2359,32 @@ xamarin_compute_trusted_platform_assemblies ()
 	NSString *joined = [files componentsJoinedByString: @":"];
 	char *rv = xamarin_strdup_printf ("%s", [joined UTF8String]);
 	return rv;
+}
+
+// Caller must free the return value using xamarin_free.
+char *
+xamarin_compute_trusted_platform_assemblies ()
+{
+	if (xamarin_trusted_platform_assembly_names == NULL || xamarin_trusted_platform_assembly_names [0] == NULL)
+		return xamarin_compute_trusted_platform_assemblies_at_runtime ();
+
+	const char *bundle_path = xamarin_get_bundle_path ();
+	NSMutableArray<NSString *> *files = [NSMutableArray array];
+#if defined (SUPPORTS_UNIVERSAL_BUILDS)
+	NSFileManager *manager = xamarin_is_multi_rid_build ? [NSFileManager defaultManager] : nil;
+#endif
+
+	for (const char * const *assembly = xamarin_trusted_platform_assembly_names; *assembly != NULL; assembly++) {
+		NSString *path = [NSString stringWithFormat: @"%s/%s", bundle_path, *assembly];
+#if defined (SUPPORTS_UNIVERSAL_BUILDS)
+		if (xamarin_is_multi_rid_build && ![manager fileExistsAtPath: path])
+			path = [NSString stringWithFormat: @"%s/.xamarin/%s/%s", bundle_path, RUNTIMEIDENTIFIER, *assembly];
+#endif
+		[files addObject: path];
+	}
+
+	NSString *joined = [files componentsJoinedByString: @":"];
+	return xamarin_strdup_printf ("%s", [joined UTF8String]);
 }
 
 // Find the directory that contains System.Private.CoreLib.dll, looking in:

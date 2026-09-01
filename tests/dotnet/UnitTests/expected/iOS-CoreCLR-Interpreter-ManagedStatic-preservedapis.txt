@@ -1,330 +1,5 @@
-_Microsoft.iOS.TypeMap.dll:<Module>
-_Microsoft.iOS.TypeMap.dll:CloudKit.CKRecordValueWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:CloudKit.CKRecordValueWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:CloudKit.CKRecordValueWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:CloudKit.ICKRecordValue_Proxy
-_Microsoft.iOS.TypeMap.dll:CloudKit.ICKRecordValue_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:CloudKit.ICKRecordValue_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:CoreAnimation.CALayerDelegateWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:CoreAnimation.CALayerDelegateWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:CoreAnimation.CALayerDelegateWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:CoreAnimation.ICALayerDelegate_Proxy
-_Microsoft.iOS.TypeMap.dll:CoreAnimation.ICALayerDelegate_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:CoreAnimation.ICALayerDelegate_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:CoreData.INSFetchRequestResult_Proxy
-_Microsoft.iOS.TypeMap.dll:CoreData.INSFetchRequestResult_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:CoreData.INSFetchRequestResult_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:CoreData.NSFetchRequestResultWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:CoreData.NSFetchRequestResultWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:CoreData.NSFetchRequestResultWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:CoreFoundation.CFArray_Proxy
-_Microsoft.iOS.TypeMap.dll:CoreFoundation.CFArray_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:CoreFoundation.CFArray_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:CoreFoundation.CFString_Proxy
-_Microsoft.iOS.TypeMap.dll:CoreFoundation.CFString_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:CoreFoundation.CFString_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:Foundation__NSObject.NSObject_Disposer_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation__NSObject.NSObject_Disposer_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation__NSObject.NSObject_Disposer_Proxy.CreateObject(System.IntPtr)
-_Microsoft.iOS.TypeMap.dll:Foundation__NSObject.NSObject_Disposer_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.iOS.TypeMap.dll:Foundation__NSObject.NSObject_Disposer_Proxy.LookupUnmanagedFunction(System.String)
-_Microsoft.iOS.TypeMap.dll:Foundation.INSCoding_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.INSCoding_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.INSCoding_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:Foundation.INSCopying_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.INSCopying_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.INSCopying_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:Foundation.INSExtensionRequestHandling_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.INSExtensionRequestHandling_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.INSExtensionRequestHandling_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:Foundation.INSItemProviderReading_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.INSItemProviderReading_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.INSItemProviderReading_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:Foundation.INSItemProviderWriting_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.INSItemProviderWriting_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.INSItemProviderWriting_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:Foundation.INSMutableCopying_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.INSMutableCopying_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.INSMutableCopying_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:Foundation.INSObjectProtocol_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.INSObjectProtocol_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.INSObjectProtocol_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:Foundation.INSSecureCoding_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.INSSecureCoding_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.INSSecureCoding_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSAsyncDispatcher_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.NSAsyncDispatcher_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.NSAsyncDispatcher_Proxy.CreateObject(System.IntPtr)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSAsyncDispatcher_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSAsyncDispatcher_Proxy.LookupUnmanagedFunction(System.String)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSAsyncSynchronizationContextDispatcher_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.NSAsyncSynchronizationContextDispatcher_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.NSAsyncSynchronizationContextDispatcher_Proxy.CreateObject(System.IntPtr)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSAsyncSynchronizationContextDispatcher_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSAsyncSynchronizationContextDispatcher_Proxy.LookupUnmanagedFunction(System.String)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSAutoreleasePool_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.NSAutoreleasePool_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.NSAutoreleasePool_Proxy.CreateObject(System.IntPtr)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSAutoreleasePool_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSCodingWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.NSCodingWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.NSCodingWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSCopyingWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.NSCopyingWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.NSCopyingWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSDictionary_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.NSDictionary_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.NSDictionary_Proxy.CreateObject(System.IntPtr)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSDictionary_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSDispatcher_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.NSDispatcher_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.NSDispatcher_Proxy.CreateObject(System.IntPtr)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSDispatcher_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSDispatcher_Proxy.LookupUnmanagedFunction(System.String)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSException_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.NSException_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.NSException_Proxy.CreateObject(System.IntPtr)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSException_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSExtensionRequestHandlingWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.NSExtensionRequestHandlingWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.NSExtensionRequestHandlingWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSItemProviderReadingWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.NSItemProviderReadingWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.NSItemProviderReadingWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSItemProviderWritingWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.NSItemProviderWritingWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.NSItemProviderWritingWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSMutableCopyingWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.NSMutableCopyingWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.NSMutableCopyingWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSNumber_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.NSNumber_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.NSNumber_Proxy.CreateObject(System.IntPtr)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSNumber_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSObject_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.NSObject_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.NSObject_Proxy.CreateObject(System.IntPtr)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSObject_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSObjectProtocolWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.NSObjectProtocolWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.NSObjectProtocolWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSRunLoop_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.NSRunLoop_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.NSRunLoop_Proxy.CreateObject(System.IntPtr)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSRunLoop_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSSecureCodingWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.NSSecureCodingWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.NSSecureCodingWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSString_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.NSString_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.NSString_Proxy.CreateObject(System.IntPtr)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSString_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSSynchronizationContextDispatcher_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.NSSynchronizationContextDispatcher_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.NSSynchronizationContextDispatcher_Proxy.CreateObject(System.IntPtr)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSSynchronizationContextDispatcher_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSSynchronizationContextDispatcher_Proxy.LookupUnmanagedFunction(System.String)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSValue_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.NSValue_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.NSValue_Proxy.CreateObject(System.IntPtr)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSValue_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.iOS.TypeMap.dll:ObjCRuntime.Class_Proxy
-_Microsoft.iOS.TypeMap.dll:ObjCRuntime.Class_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:ObjCRuntime.Class_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:ObjCRuntime.Selector_Proxy
-_Microsoft.iOS.TypeMap.dll:ObjCRuntime.Selector_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:ObjCRuntime.Selector_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:System.Runtime.CompilerServices.IgnoresAccessChecksToAttribute
-_Microsoft.iOS.TypeMap.dll:System.Runtime.CompilerServices.IgnoresAccessChecksToAttribute..ctor(System.String)
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIAccessibilityContentSizeCategoryImageAdjusting_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIAccessibilityContentSizeCategoryImageAdjusting_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIAccessibilityContentSizeCategoryImageAdjusting_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIAccessibilityIdentification_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIAccessibilityIdentification_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIAccessibilityIdentification_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIActivityItemsConfigurationProviding_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIActivityItemsConfigurationProviding_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIActivityItemsConfigurationProviding_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIAppearance_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIAppearance_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIAppearance_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIAppearanceContainer_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIAppearanceContainer_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIAppearanceContainer_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIApplicationDelegate_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIApplicationDelegate_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIApplicationDelegate_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIContentContainer_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIContentContainer_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIContentContainer_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIContextMenuInteractionDelegate_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIContextMenuInteractionDelegate_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIContextMenuInteractionDelegate_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.IUICoordinateSpace_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.IUICoordinateSpace_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.IUICoordinateSpace_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIDynamicItem_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIDynamicItem_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIDynamicItem_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIFocusEnvironment_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIFocusEnvironment_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIFocusEnvironment_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIFocusItem_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIFocusItem_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIFocusItem_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIFocusItemContainer_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIFocusItemContainer_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIFocusItemContainer_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.IUILargeContentViewerItem_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.IUILargeContentViewerItem_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.IUILargeContentViewerItem_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIPasteConfigurationSupporting_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIPasteConfigurationSupporting_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIPasteConfigurationSupporting_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIPopoverPresentationControllerSourceItem_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIPopoverPresentationControllerSourceItem_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIPopoverPresentationControllerSourceItem_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIResponderStandardEditActions_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIResponderStandardEditActions_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIResponderStandardEditActions_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.IUISpringLoadedInteractionSupporting_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.IUISpringLoadedInteractionSupporting_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.IUISpringLoadedInteractionSupporting_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.IUITraitChangeObservable_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.IUITraitChangeObservable_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.IUITraitChangeObservable_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.IUITraitEnvironment_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.IUITraitEnvironment_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.IUITraitEnvironment_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIUserActivityRestoring_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIUserActivityRestoring_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIUserActivityRestoring_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIAccessibilityContentSizeCategoryImageAdjustingWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UIAccessibilityContentSizeCategoryImageAdjustingWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UIAccessibilityContentSizeCategoryImageAdjustingWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIAccessibilityIdentificationWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UIAccessibilityIdentificationWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UIAccessibilityIdentificationWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIActivityItemsConfigurationProvidingWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UIActivityItemsConfigurationProvidingWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UIActivityItemsConfigurationProvidingWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIAppearanceContainerWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UIAppearanceContainerWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UIAppearanceContainerWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIAppearanceWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UIAppearanceWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UIAppearanceWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIApplication_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UIApplication_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UIApplication_Proxy.CreateObject(System.IntPtr)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIApplication_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIApplicationDelegate_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UIApplicationDelegate_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UIApplicationDelegate_Proxy.CreateObject(System.IntPtr)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIApplicationDelegate_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIApplicationDelegate_Proxy.LookupUnmanagedFunction(System.String)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIApplicationDelegateWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UIApplicationDelegateWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UIApplicationDelegateWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIButton_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UIButton_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UIButton_Proxy.CreateObject(System.IntPtr)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIButton_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIContentContainerWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UIContentContainerWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UIContentContainerWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIContextMenuInteractionDelegateWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UIContextMenuInteractionDelegateWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UIContextMenuInteractionDelegateWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIControl_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UIControl_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UIControl_Proxy.CreateObject(System.IntPtr)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIControl_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.iOS.TypeMap.dll:UIKit.UICoordinateSpaceWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UICoordinateSpaceWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UICoordinateSpaceWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIDynamicItemWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UIDynamicItemWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UIDynamicItemWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIFocusEnvironmentWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UIFocusEnvironmentWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UIFocusEnvironmentWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIFocusItemContainerWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UIFocusItemContainerWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UIFocusItemContainerWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIFocusItemWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UIFocusItemWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UIFocusItemWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.UILargeContentViewerItemWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UILargeContentViewerItemWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UILargeContentViewerItemWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIPasteConfigurationSupportingWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UIPasteConfigurationSupportingWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UIPasteConfigurationSupportingWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIPopoverPresentationControllerSourceItemWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UIPopoverPresentationControllerSourceItemWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UIPopoverPresentationControllerSourceItemWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIResponder_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UIResponder_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UIResponder_Proxy.CreateObject(System.IntPtr)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIResponder_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIResponderStandardEditActionsWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UIResponderStandardEditActionsWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UIResponderStandardEditActionsWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIScreen_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UIScreen_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UIScreen_Proxy.CreateObject(System.IntPtr)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIScreen_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.iOS.TypeMap.dll:UIKit.UISpringLoadedInteractionSupportingWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UISpringLoadedInteractionSupportingWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UISpringLoadedInteractionSupportingWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.UITraitChangeObservableWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UITraitChangeObservableWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UITraitChangeObservableWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.UITraitEnvironmentWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UITraitEnvironmentWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UITraitEnvironmentWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIUserActivityRestoringWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UIUserActivityRestoringWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UIUserActivityRestoringWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIView_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UIView_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UIView_Proxy.CreateObject(System.IntPtr)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIView_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIViewController_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UIViewController_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UIViewController_Proxy.CreateObject(System.IntPtr)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIViewController_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIWindow_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UIWindow_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UIWindow_Proxy.CreateObject(System.IntPtr)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIWindow_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.iOS.TypeMaps.dll:<Module>
-_SizeTestApp.TypeMap.dll:<Module>
-_SizeTestApp.TypeMap.dll:MySimpleApp.AppDelegate_Proxy
-_SizeTestApp.TypeMap.dll:MySimpleApp.AppDelegate_Proxy..ctor()
-_SizeTestApp.TypeMap.dll:MySimpleApp.AppDelegate_Proxy.CreateObject(System.IntPtr)
-_SizeTestApp.TypeMap.dll:MySimpleApp.AppDelegate_Proxy.GetClassHandle(System.Boolean&)
-_SizeTestApp.TypeMap.dll:MySimpleApp.AppDelegate_Proxy.LookupUnmanagedFunction(System.String)
-_SizeTestApp.TypeMap.dll:System.Runtime.CompilerServices.IgnoresAccessChecksToAttribute
-_SizeTestApp.TypeMap.dll:System.Runtime.CompilerServices.IgnoresAccessChecksToAttribute..ctor(System.String)
 Microsoft.iOS.dll:<Module>
 Microsoft.iOS.dll:<Module>..cctor()
-Microsoft.iOS.dll:CloudKit.CKRecordValueWrapper
-Microsoft.iOS.dll:CloudKit.CKRecordValueWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:CloudKit.CKRecordValueWrapper..cctor()
-Microsoft.iOS.dll:CloudKit.CKRecordValueWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:CloudKit.ICKRecordValue
-Microsoft.iOS.dll:CoreAnimation.CALayerDelegateWrapper
-Microsoft.iOS.dll:CoreAnimation.CALayerDelegateWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:CoreAnimation.CALayerDelegateWrapper..cctor()
-Microsoft.iOS.dll:CoreAnimation.CALayerDelegateWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:CoreAnimation.ICALayerDelegate
-Microsoft.iOS.dll:CoreData.INSFetchRequestResult
-Microsoft.iOS.dll:CoreData.NSFetchRequestResultWrapper
-Microsoft.iOS.dll:CoreData.NSFetchRequestResultWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:CoreData.NSFetchRequestResultWrapper..cctor()
-Microsoft.iOS.dll:CoreData.NSFetchRequestResultWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:CoreFoundation.CFArray
 Microsoft.iOS.dll:CoreFoundation.CFArray._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:CoreFoundation.CFArray..cctor()
@@ -349,7 +24,6 @@ Microsoft.iOS.dll:CoreFoundation.CFRange..ctor(System.Int32, System.Int32)
 Microsoft.iOS.dll:CoreFoundation.CFRange.ToString()
 Microsoft.iOS.dll:CoreFoundation.CFString
 Microsoft.iOS.dll:CoreFoundation.CFString._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:CoreFoundation.CFString..cctor()
 Microsoft.iOS.dll:CoreFoundation.CFString..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:CoreFoundation.CFString.CFStringCreateWithCharacters(System.IntPtr, System.IntPtr, System.IntPtr)
 Microsoft.iOS.dll:CoreFoundation.CFString.CFStringGetCharacters(System.IntPtr, CoreFoundation.CFRange, System.Char*)
@@ -377,27 +51,17 @@ Microsoft.iOS.dll:CoreGraphics.CGRect.ToString()
 Microsoft.iOS.dll:Foundation.ExportAttribute
 Microsoft.iOS.dll:Foundation.ExportAttribute..ctor(System.String, ObjCRuntime.ArgumentSemantic)
 Microsoft.iOS.dll:Foundation.ExportAttribute..ctor(System.String)
-Microsoft.iOS.dll:Foundation.INSCoding
-Microsoft.iOS.dll:Foundation.INSCopying
-Microsoft.iOS.dll:Foundation.INSExtensionRequestHandling
-Microsoft.iOS.dll:Foundation.INSItemProviderReading
-Microsoft.iOS.dll:Foundation.INSItemProviderWriting
-Microsoft.iOS.dll:Foundation.INSMutableCopying
 Microsoft.iOS.dll:Foundation.INSObjectFactory
 Microsoft.iOS.dll:Foundation.INSObjectFactory._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:Foundation.INSObjectProtocol
-Microsoft.iOS.dll:Foundation.INSSecureCoding
 Microsoft.iOS.dll:Foundation.ModelAttribute
 Microsoft.iOS.dll:Foundation.ModelAttribute..ctor()
 Microsoft.iOS.dll:Foundation.NSAsyncDispatcher
-Microsoft.iOS.dll:Foundation.NSAsyncDispatcher..cctor()
 Microsoft.iOS.dll:Foundation.NSAsyncDispatcher..ctor()
 Microsoft.iOS.dll:Foundation.NSAsyncDispatcher.Apply()
 Microsoft.iOS.dll:Foundation.NSAsyncDispatcher/__Registrar_Callbacks__
 Microsoft.iOS.dll:Foundation.NSAsyncDispatcher/__Registrar_Callbacks__.callback_3060_Foundation_NSAsyncDispatcher__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
 Microsoft.iOS.dll:Foundation.NSAsyncDispatcher/__Registrar_Callbacks__.callback_3061_Foundation_NSAsyncDispatcher_Apply(System.IntPtr, System.IntPtr, System.IntPtr*)
 Microsoft.iOS.dll:Foundation.NSAsyncSynchronizationContextDispatcher
-Microsoft.iOS.dll:Foundation.NSAsyncSynchronizationContextDispatcher..cctor()
 Microsoft.iOS.dll:Foundation.NSAsyncSynchronizationContextDispatcher..ctor(System.Threading.SendOrPostCallback, System.Object)
 Microsoft.iOS.dll:Foundation.NSAsyncSynchronizationContextDispatcher.Apply()
 Microsoft.iOS.dll:Foundation.NSAsyncSynchronizationContextDispatcher/__Registrar_Callbacks__
@@ -409,24 +73,17 @@ Microsoft.iOS.dll:Foundation.NSAutoreleasePool..cctor()
 Microsoft.iOS.dll:Foundation.NSAutoreleasePool..ctor()
 Microsoft.iOS.dll:Foundation.NSAutoreleasePool..ctor(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:Foundation.NSAutoreleasePool.get_ClassHandle()
-Microsoft.iOS.dll:Foundation.NSCodingWrapper
-Microsoft.iOS.dll:Foundation.NSCodingWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:Foundation.NSCodingWrapper..cctor()
-Microsoft.iOS.dll:Foundation.NSCodingWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:Foundation.NSComparisonResult
 Microsoft.iOS.dll:Foundation.NSComparisonResult Foundation.NSComparisonResult::Ascending
 Microsoft.iOS.dll:Foundation.NSComparisonResult Foundation.NSComparisonResult::Descending
 Microsoft.iOS.dll:Foundation.NSComparisonResult Foundation.NSComparisonResult::Same
-Microsoft.iOS.dll:Foundation.NSCopyingWrapper
-Microsoft.iOS.dll:Foundation.NSCopyingWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:Foundation.NSCopyingWrapper..cctor()
-Microsoft.iOS.dll:Foundation.NSCopyingWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:Foundation.NSDictionary
 Microsoft.iOS.dll:Foundation.NSDictionary Foundation.NSDictionary/<GetEnumerator>d__66::<>4__this
 Microsoft.iOS.dll:Foundation.NSDictionary._ObjectForKey(System.IntPtr)
 Microsoft.iOS.dll:Foundation.NSDictionary._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:Foundation.NSDictionary._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:Foundation.NSDictionary..cctor()
+Microsoft.iOS.dll:Foundation.NSDictionary..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:Foundation.NSDictionary..ctor(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:Foundation.NSDictionary.ContainsKeyValuePair(System.Collections.Generic.KeyValuePair`2<Foundation.NSObject,Foundation.NSObject>)
 Microsoft.iOS.dll:Foundation.NSDictionary.get_ClassHandle()
@@ -450,7 +107,6 @@ Microsoft.iOS.dll:Foundation.NSDictionary/<GetEnumerator>d__66.MoveNext()
 Microsoft.iOS.dll:Foundation.NSDictionary/<GetEnumerator>d__66.System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<Foundation.NSObject,Foundation.NSObject>>.get_Current()
 Microsoft.iOS.dll:Foundation.NSDictionary/<GetEnumerator>d__66.System.IDisposable.Dispose()
 Microsoft.iOS.dll:Foundation.NSDispatcher
-Microsoft.iOS.dll:Foundation.NSDispatcher..cctor()
 Microsoft.iOS.dll:Foundation.NSDispatcher..ctor()
 Microsoft.iOS.dll:Foundation.NSDispatcher.Apply()
 Microsoft.iOS.dll:Foundation.NSDispatcher/__Registrar_Callbacks__
@@ -469,22 +125,6 @@ Microsoft.iOS.dll:Foundation.NSException.get_CallStackSymbols()
 Microsoft.iOS.dll:Foundation.NSException.get_ClassHandle()
 Microsoft.iOS.dll:Foundation.NSException.get_Name()
 Microsoft.iOS.dll:Foundation.NSException.get_Reason()
-Microsoft.iOS.dll:Foundation.NSExtensionRequestHandlingWrapper
-Microsoft.iOS.dll:Foundation.NSExtensionRequestHandlingWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:Foundation.NSExtensionRequestHandlingWrapper..cctor()
-Microsoft.iOS.dll:Foundation.NSExtensionRequestHandlingWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:Foundation.NSItemProviderReadingWrapper
-Microsoft.iOS.dll:Foundation.NSItemProviderReadingWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:Foundation.NSItemProviderReadingWrapper..cctor()
-Microsoft.iOS.dll:Foundation.NSItemProviderReadingWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:Foundation.NSItemProviderWritingWrapper
-Microsoft.iOS.dll:Foundation.NSItemProviderWritingWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:Foundation.NSItemProviderWritingWrapper..cctor()
-Microsoft.iOS.dll:Foundation.NSItemProviderWritingWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:Foundation.NSMutableCopyingWrapper
-Microsoft.iOS.dll:Foundation.NSMutableCopyingWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:Foundation.NSMutableCopyingWrapper..cctor()
-Microsoft.iOS.dll:Foundation.NSMutableCopyingWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:Foundation.NSNumber
 Microsoft.iOS.dll:Foundation.NSNumber._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:Foundation.NSNumber._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
@@ -571,13 +211,10 @@ Microsoft.iOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::Registere
 Microsoft.iOS.dll:Foundation.NSObject/Flags Foundation.NSObjectData::flags
 Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer
 Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer..cctor()
-Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer..ctor()
-Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer..ctor(System.IntPtr, ObjCRuntime.IManagedRegistrar)
 Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer.Add(Foundation.NSObject)
 Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer.Drain(Foundation.NSObject)
 Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer.ScheduleDrain()
 Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__
-Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_3088_Foundation_NSObject_NSObject_Disposer__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
 Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_3089_Foundation_NSObject_NSObject_Disposer_Drain(System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
 Microsoft.iOS.dll:Foundation.NSObject/XamarinGCHandleFlags
 Microsoft.iOS.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::HasManagedRef
@@ -586,10 +223,6 @@ Microsoft.iOS.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/X
 Microsoft.iOS.dll:Foundation.NSObjectData
 Microsoft.iOS.dll:Foundation.NSObjectFlag
 Microsoft.iOS.dll:Foundation.NSObjectFlag Foundation.NSObjectFlag::Empty
-Microsoft.iOS.dll:Foundation.NSObjectProtocolWrapper
-Microsoft.iOS.dll:Foundation.NSObjectProtocolWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:Foundation.NSObjectProtocolWrapper..cctor()
-Microsoft.iOS.dll:Foundation.NSObjectProtocolWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:Foundation.NSRunLoop
 Microsoft.iOS.dll:Foundation.NSRunLoop Foundation.NSRunLoop::Main()
 Microsoft.iOS.dll:Foundation.NSRunLoop._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
@@ -598,15 +231,12 @@ Microsoft.iOS.dll:Foundation.NSRunLoop..cctor()
 Microsoft.iOS.dll:Foundation.NSRunLoop..ctor(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:Foundation.NSRunLoop.get_ClassHandle()
 Microsoft.iOS.dll:Foundation.NSRunLoop.get_Main()
-Microsoft.iOS.dll:Foundation.NSSecureCodingWrapper
-Microsoft.iOS.dll:Foundation.NSSecureCodingWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:Foundation.NSSecureCodingWrapper..cctor()
-Microsoft.iOS.dll:Foundation.NSSecureCodingWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:Foundation.NSString
 Microsoft.iOS.dll:Foundation.NSString Foundation.NSString::Empty
 Microsoft.iOS.dll:Foundation.NSString._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:Foundation.NSString._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:Foundation.NSString..cctor()
+Microsoft.iOS.dll:Foundation.NSString..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:Foundation.NSString..ctor(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:Foundation.NSString..ctor(System.String)
 Microsoft.iOS.dll:Foundation.NSString.Compare(Foundation.NSString)
@@ -620,7 +250,6 @@ Microsoft.iOS.dll:Foundation.NSString.GetHashCode()
 Microsoft.iOS.dll:Foundation.NSString.IsEqualTo(System.IntPtr)
 Microsoft.iOS.dll:Foundation.NSString.ToString()
 Microsoft.iOS.dll:Foundation.NSSynchronizationContextDispatcher
-Microsoft.iOS.dll:Foundation.NSSynchronizationContextDispatcher..cctor()
 Microsoft.iOS.dll:Foundation.NSSynchronizationContextDispatcher..ctor(System.Threading.SendOrPostCallback, System.Object)
 Microsoft.iOS.dll:Foundation.NSSynchronizationContextDispatcher.Apply()
 Microsoft.iOS.dll:Foundation.NSSynchronizationContextDispatcher/__Registrar_Callbacks__
@@ -634,9 +263,6 @@ Microsoft.iOS.dll:Foundation.NSValue.get_ClassHandle()
 Microsoft.iOS.dll:Foundation.ProtocolAttribute
 Microsoft.iOS.dll:Foundation.ProtocolAttribute..ctor()
 Microsoft.iOS.dll:Foundation.ProtocolAttribute.get_WrapperType()
-Microsoft.iOS.dll:Foundation.ProtocolAttribute.set_FormalSince(System.String)
-Microsoft.iOS.dll:Foundation.ProtocolAttribute.set_Name(System.String)
-Microsoft.iOS.dll:Foundation.ProtocolAttribute.set_WrapperType(System.Type)
 Microsoft.iOS.dll:Foundation.RegisterAttribute
 Microsoft.iOS.dll:Foundation.RegisterAttribute..ctor(System.String, System.Boolean)
 Microsoft.iOS.dll:Foundation.RegisterAttribute..ctor(System.String)
@@ -644,6 +270,15 @@ Microsoft.iOS.dll:Foundation.RegisterAttribute.get_IsWrapper()
 Microsoft.iOS.dll:Foundation.TrackedMemory
 Microsoft.iOS.dll:Foundation.You_Should_Not_Call_base_In_This_Method
 Microsoft.iOS.dll:Foundation.You_Should_Not_Call_base_In_This_Method..ctor()
+Microsoft.iOS.dll:ObjCRuntime.__Registrar__
+Microsoft.iOS.dll:ObjCRuntime.__Registrar__..ctor()
+Microsoft.iOS.dll:ObjCRuntime.__Registrar__.ConstructINativeObject(System.RuntimeTypeHandle, ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.iOS.dll:ObjCRuntime.__Registrar__.ConstructNSObject(System.RuntimeTypeHandle, ObjCRuntime.NativeHandle)
+Microsoft.iOS.dll:ObjCRuntime.__Registrar__.LookupType(System.UInt32)
+Microsoft.iOS.dll:ObjCRuntime.__Registrar__.LookupTypeId(System.RuntimeTypeHandle)
+Microsoft.iOS.dll:ObjCRuntime.__Registrar__.LookupUnmanagedFunction(System.String, System.Int32)
+Microsoft.iOS.dll:ObjCRuntime.__Registrar__.LookupUnmanagedFunctionImpl(System.String, System.Int32)
+Microsoft.iOS.dll:ObjCRuntime.__Registrar__.RegisterWrapperTypes(System.Collections.Generic.Dictionary`2<System.RuntimeTypeHandle,System.RuntimeTypeHandle>)
 Microsoft.iOS.dll:ObjCRuntime.Arch
 Microsoft.iOS.dll:ObjCRuntime.Arch ObjCRuntime.Arch::DEVICE
 Microsoft.iOS.dll:ObjCRuntime.Arch ObjCRuntime.Arch::SIMULATOR
@@ -657,10 +292,6 @@ Microsoft.iOS.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSemantic::Ret
 Microsoft.iOS.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSemantic::Strong
 Microsoft.iOS.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSemantic::UnsafeUnretained
 Microsoft.iOS.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSemantic::Weak
-Microsoft.iOS.dll:ObjCRuntime.BaseWrapper
-Microsoft.iOS.dll:ObjCRuntime.BaseWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:ObjCRuntime.BaseWrapper.Release()
-Microsoft.iOS.dll:ObjCRuntime.BaseWrapper.Retain()
 Microsoft.iOS.dll:ObjCRuntime.BlockCollector
 Microsoft.iOS.dll:ObjCRuntime.BlockCollector..ctor(System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.BlockCollector.Add(System.IntPtr)
@@ -673,26 +304,23 @@ Microsoft.iOS.dll:ObjCRuntime.Class..ctor(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:ObjCRuntime.Class..ctor(System.Type)
 Microsoft.iOS.dll:ObjCRuntime.Class.class_getName(System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Class.class_getSuperclass(System.IntPtr)
+Microsoft.iOS.dll:ObjCRuntime.Class.CompareTokenReference(System.String, System.Int32, System.Int32, System.UInt32)
 Microsoft.iOS.dll:ObjCRuntime.Class.Equals(ObjCRuntime.Class)
 Microsoft.iOS.dll:ObjCRuntime.Class.Equals(System.Object)
 Microsoft.iOS.dll:ObjCRuntime.Class.FindClass(System.Type, out System.Boolean&)
 Microsoft.iOS.dll:ObjCRuntime.Class.FindMapIndex(ObjCRuntime.Runtime/MTClassMap*, System.Int32, System.Int32, System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Class.FindType(ObjCRuntime.NativeHandle, out System.Boolean&)
-Microsoft.iOS.dll:ObjCRuntime.Class.FindTypeInTrimmableMap(ObjCRuntime.NativeHandle, out System.Boolean&)
 Microsoft.iOS.dll:ObjCRuntime.Class.get_Handle()
 Microsoft.iOS.dll:ObjCRuntime.Class.get_Name()
 Microsoft.iOS.dll:ObjCRuntime.Class.GetAssemblyName(System.Reflection.Assembly)
 Microsoft.iOS.dll:ObjCRuntime.Class.GetClassForObject(System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Class.GetClassHandle(System.Type, System.Boolean, out System.Boolean&)
 Microsoft.iOS.dll:ObjCRuntime.Class.GetClassName(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Class.GetHandle(System.String)
 Microsoft.iOS.dll:ObjCRuntime.Class.GetHandle(System.Type)
 Microsoft.iOS.dll:ObjCRuntime.Class.GetHashCode()
 Microsoft.iOS.dll:ObjCRuntime.Class.InitializeClass(ObjCRuntime.Runtime/InitializationOptions*)
 Microsoft.iOS.dll:ObjCRuntime.Class.Lookup(System.IntPtr, System.Boolean)
 Microsoft.iOS.dll:ObjCRuntime.Class.Lookup(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Class.objc_getClass(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Class.objc_getClass(System.String)
 Microsoft.iOS.dll:ObjCRuntime.Class.object_getClass(System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Class.ResolveAssembly(System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Class.ResolveFullTokenReference(System.UInt32)
@@ -753,13 +381,15 @@ Microsoft.iOS.dll:ObjCRuntime.Extensions
 Microsoft.iOS.dll:ObjCRuntime.Extensions.AsByte(System.Boolean)
 Microsoft.iOS.dll:ObjCRuntime.IManagedRegistrar
 Microsoft.iOS.dll:ObjCRuntime.IManagedRegistrar ObjCRuntime.RegistrarHelper/MapInfo::Registrar
+Microsoft.iOS.dll:ObjCRuntime.IManagedRegistrar.ConstructINativeObject(System.RuntimeTypeHandle, ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.iOS.dll:ObjCRuntime.IManagedRegistrar.ConstructNSObject(System.RuntimeTypeHandle, ObjCRuntime.NativeHandle)
+Microsoft.iOS.dll:ObjCRuntime.IManagedRegistrar.LookupType(System.UInt32)
+Microsoft.iOS.dll:ObjCRuntime.IManagedRegistrar.LookupTypeId(System.RuntimeTypeHandle)
 Microsoft.iOS.dll:ObjCRuntime.IManagedRegistrar.LookupUnmanagedFunction(System.String, System.Int32)
+Microsoft.iOS.dll:ObjCRuntime.IManagedRegistrar.RegisterWrapperTypes(System.Collections.Generic.Dictionary`2<System.RuntimeTypeHandle,System.RuntimeTypeHandle>)
 Microsoft.iOS.dll:ObjCRuntime.INativeObject
 Microsoft.iOS.dll:ObjCRuntime.INativeObject._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:ObjCRuntime.INativeObject.get_Handle()
-Microsoft.iOS.dll:ObjCRuntime.INativeObjectProxyAttribute
-Microsoft.iOS.dll:ObjCRuntime.INativeObjectProxyAttribute..ctor()
-Microsoft.iOS.dll:ObjCRuntime.INativeObjectProxyAttribute.CreateObject(System.IntPtr, System.Boolean)
 Microsoft.iOS.dll:ObjCRuntime.IntPtrEqualityComparer
 Microsoft.iOS.dll:ObjCRuntime.IntPtrEqualityComparer ObjCRuntime.Runtime::IntPtrEqualityComparer
 Microsoft.iOS.dll:ObjCRuntime.IntPtrEqualityComparer..ctor()
@@ -891,11 +521,6 @@ Microsoft.iOS.dll:ObjCRuntime.NativeHandle.ToString()
 Microsoft.iOS.dll:ObjCRuntime.NativeObjectExtensions
 Microsoft.iOS.dll:ObjCRuntime.NativeObjectExtensions.GetHandle(ObjCRuntime.INativeObject)
 Microsoft.iOS.dll:ObjCRuntime.NativeObjectExtensions.GetNonNullHandle(ObjCRuntime.INativeObject, System.String)
-Microsoft.iOS.dll:ObjCRuntime.NSObjectProxyAttribute
-Microsoft.iOS.dll:ObjCRuntime.NSObjectProxyAttribute..ctor()
-Microsoft.iOS.dll:ObjCRuntime.NSObjectProxyAttribute.CreateObject(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.NSObjectProxyAttribute.GetClassHandle(out System.Boolean&)
-Microsoft.iOS.dll:ObjCRuntime.NSObjectProxyAttribute.LookupUnmanagedFunction(System.String)
 Microsoft.iOS.dll:ObjCRuntime.ObjCException
 Microsoft.iOS.dll:ObjCRuntime.ObjCException..ctor(Foundation.NSException)
 Microsoft.iOS.dll:ObjCRuntime.ObjCException.AppendNativeStackTrace(System.Text.StringBuilder)
@@ -906,18 +531,22 @@ Microsoft.iOS.dll:ObjCRuntime.ObjCException.get_Reason()
 Microsoft.iOS.dll:ObjCRuntime.ObjCException.ToString()
 Microsoft.iOS.dll:ObjCRuntime.ObjCSuper
 Microsoft.iOS.dll:ObjCRuntime.ObjCSuper..ctor(Foundation.NSObject)
-Microsoft.iOS.dll:ObjCRuntime.ProtocolProxyAttribute
-Microsoft.iOS.dll:ObjCRuntime.ProtocolProxyAttribute..ctor()
-Microsoft.iOS.dll:ObjCRuntime.ProtocolProxyAttribute.CreateObject(System.IntPtr, System.Boolean)
 Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper
+Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper.ConstructINativeObject`1(System.Type, ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper.ConstructNSObject`1(System.Type, ObjCRuntime.NativeHandle)
+Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper.FindProtocolWrapperType(System.Type)
 Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper.GetMapEntry(System.IntPtr)
+Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper.GetMapEntry(System.Reflection.Assembly)
 Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper.GetMapEntry(System.String)
 Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper.Initialize()
+Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper.LookupRegisteredType(System.Reflection.Assembly, System.UInt32)
+Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper.LookupRegisteredTypeId(System.Type)
 Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper.LookupUnmanagedFunction(System.IntPtr, System.String, System.Int32, System.String)
 Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper.LookupUnmanagedFunctionInAssembly(System.IntPtr, System.String, System.Int32)
-Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper.LookupUnmanagedFunctionInType(System.String, System.String)
+Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper.Register(ObjCRuntime.IManagedRegistrar)
 Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper.TryGetMapEntry(System.String, out ObjCRuntime.RegistrarHelper/MapInfo&)
 Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper/MapInfo
+Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper/MapInfo..ctor(ObjCRuntime.IManagedRegistrar)
 Microsoft.iOS.dll:ObjCRuntime.Runtime
 Microsoft.iOS.dll:ObjCRuntime.Runtime..cctor()
 Microsoft.iOS.dll:ObjCRuntime.Runtime.<ConstructINativeObject>g__ConstructINativeObjectViaFactoryMethod|296_0`1(ObjCRuntime.NativeHandle, System.Boolean)
@@ -1236,12 +865,10 @@ Microsoft.iOS.dll:ObjCRuntime.RuntimeTypeHandleEqualityComparer..ctor()
 Microsoft.iOS.dll:ObjCRuntime.RuntimeTypeHandleEqualityComparer.Equals(System.RuntimeTypeHandle, System.RuntimeTypeHandle)
 Microsoft.iOS.dll:ObjCRuntime.RuntimeTypeHandleEqualityComparer.GetHashCode(System.RuntimeTypeHandle)
 Microsoft.iOS.dll:ObjCRuntime.Selector
-Microsoft.iOS.dll:ObjCRuntime.Selector Foundation.NSDispatcher::Selector
 Microsoft.iOS.dll:ObjCRuntime.Selector._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:ObjCRuntime.Selector..cctor()
 Microsoft.iOS.dll:ObjCRuntime.Selector..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:ObjCRuntime.Selector..ctor(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:ObjCRuntime.Selector..ctor(System.String)
 Microsoft.iOS.dll:ObjCRuntime.Selector.Equals(ObjCRuntime.Selector)
 Microsoft.iOS.dll:ObjCRuntime.Selector.Equals(System.Object)
 Microsoft.iOS.dll:ObjCRuntime.Selector.get_Handle()
@@ -1251,7 +878,6 @@ Microsoft.iOS.dll:ObjCRuntime.Selector.GetName(System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Selector.sel_getName(System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Selector.sel_isMapped(System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Selector.sel_registerName(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.SkippedObjectiveCTypeUniverse
 Microsoft.iOS.dll:ObjCRuntime.StringEqualityComparer
 Microsoft.iOS.dll:ObjCRuntime.StringEqualityComparer ObjCRuntime.RegistrarHelper::StringEqualityComparer
 Microsoft.iOS.dll:ObjCRuntime.StringEqualityComparer..ctor()
@@ -1284,13 +910,6 @@ Microsoft.iOS.dll:ObjCRuntime.TypeEqualityComparer ObjCRuntime.Runtime::TypeEqua
 Microsoft.iOS.dll:ObjCRuntime.TypeEqualityComparer..ctor()
 Microsoft.iOS.dll:ObjCRuntime.TypeEqualityComparer.Equals(System.Type, System.Type)
 Microsoft.iOS.dll:ObjCRuntime.TypeEqualityComparer.GetHashCode(System.Type)
-Microsoft.iOS.dll:ObjCRuntime.TypeMaps
-Microsoft.iOS.dll:ObjCRuntime.TypeMaps.Initialize()
-Microsoft.iOS.dll:ObjCRuntime.TypeMaps.IsSkippedType(System.Type, out System.Type&)
-Microsoft.iOS.dll:ObjCRuntime.TypeMaps.TryCreateInstanceUsingProxyTypeAttribute`1(System.Type, System.IntPtr, System.Boolean, out T&)
-Microsoft.iOS.dll:ObjCRuntime.TypeMaps.TryGetNSObjectProxyAttribute(System.String, out ObjCRuntime.NSObjectProxyAttribute&, out System.Type&)
-Microsoft.iOS.dll:ObjCRuntime.TypeMaps.TryGetNSObjectProxyAttribute(System.Type, out ObjCRuntime.NSObjectProxyAttribute&)
-Microsoft.iOS.dll:ObjCRuntime.TypeMaps.TryGetProtocolProxyAttribute(System.Type, out ObjCRuntime.ProtocolProxyAttribute&)
 Microsoft.iOS.dll:ObjCRuntime.UInt64EqualityComparer
 Microsoft.iOS.dll:ObjCRuntime.UInt64EqualityComparer ObjCRuntime.Runtime::UInt64EqualityComparer
 Microsoft.iOS.dll:ObjCRuntime.UInt64EqualityComparer..ctor()
@@ -1309,6 +928,7 @@ Microsoft.iOS.dll:System.Boolean Foundation.RegisterAttribute::is_wrapper
 Microsoft.iOS.dll:System.Boolean Foundation.RegisterAttribute::IsWrapper()
 Microsoft.iOS.dll:System.Boolean ObjCRuntime.Class::ThrowOnInitFailure
 Microsoft.iOS.dll:System.Boolean ObjCRuntime.DisposableObject::owns
+Microsoft.iOS.dll:System.Boolean ObjCRuntime.RegistrarHelper/MapInfo::RegisteredWrapperTypes
 Microsoft.iOS.dll:System.Boolean ObjCRuntime.Runtime::initialized
 Microsoft.iOS.dll:System.Boolean ObjCRuntime.Runtime::IsARM64CallingConvention
 Microsoft.iOS.dll:System.Boolean ObjCRuntime.Runtime::RegisterObjectsBeforeInit()
@@ -1324,12 +944,6 @@ Microsoft.iOS.dll:System.Collections.Generic.Dictionary`2<System.Type,System.Int
 Microsoft.iOS.dll:System.Collections.Generic.Dictionary`2<System.Type,System.Reflection.ConstructorInfo> ObjCRuntime.Runtime::intptr_bool_ctor_cache
 Microsoft.iOS.dll:System.Collections.Generic.Dictionary`2<System.Type,System.Reflection.ConstructorInfo> ObjCRuntime.Runtime::intptr_ctor_cache
 Microsoft.iOS.dll:System.Collections.Generic.Dictionary`2<System.UInt64,System.Reflection.MemberInfo> ObjCRuntime.Class::token_to_member
-Microsoft.iOS.dll:System.Collections.Generic.IReadOnlyDictionary`2<System.String,System.Type> ObjCRuntime.TypeMaps::NSObjectTypes
-Microsoft.iOS.dll:System.Collections.Generic.IReadOnlyDictionary`2<System.Type,System.Type> ObjCRuntime.TypeMaps::INativeObjectProxyTypes
-Microsoft.iOS.dll:System.Collections.Generic.IReadOnlyDictionary`2<System.Type,System.Type> ObjCRuntime.TypeMaps::NSObjectProxyTypes
-Microsoft.iOS.dll:System.Collections.Generic.IReadOnlyDictionary`2<System.Type,System.Type> ObjCRuntime.TypeMaps::ProtocolProxyTypes
-Microsoft.iOS.dll:System.Collections.Generic.IReadOnlyDictionary`2<System.Type,System.Type> ObjCRuntime.TypeMaps::ProtocolWrapperTypes
-Microsoft.iOS.dll:System.Collections.Generic.IReadOnlyDictionary`2<System.Type,System.Type> ObjCRuntime.TypeMaps::SkippedProxyTypes
 Microsoft.iOS.dll:System.Collections.Generic.KeyValuePair`2<Foundation.NSObject,Foundation.NSObject> Foundation.NSDictionary/<GetEnumerator>d__66::<>2__current
 Microsoft.iOS.dll:System.Collections.Generic.KeyValuePair`2<Foundation.NSObject,Foundation.NSObject> Foundation.NSDictionary/<GetEnumerator>d__66::System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<Foundation.NSObject,Foundation.NSObject>>.Current()
 Microsoft.iOS.dll:System.Collections.Generic.List`1<Foundation.NSObject> Foundation.NSObject/NSObject_Disposer::drainList1
@@ -1506,16 +1120,6 @@ Microsoft.iOS.dll:System.Object Foundation.NSAsyncSynchronizationContextDispatch
 Microsoft.iOS.dll:System.Object Foundation.NSObject/NSObject_Disposer::lock_obj
 Microsoft.iOS.dll:System.Object Foundation.NSSynchronizationContextDispatcher::state
 Microsoft.iOS.dll:System.Object ObjCRuntime.Runtime::lock_obj
-Microsoft.iOS.dll:System.Object UIKit.UIApplication::__mt_WeakDelegate_var
-Microsoft.iOS.dll:System.Object UIKit.UIScreen::__mt_FocusedItem_var
-Microsoft.iOS.dll:System.Object UIKit.UIScreen::__mt_FocusedView_var
-Microsoft.iOS.dll:System.Object UIKit.UIView::__mt_ParentFocusEnvironment_var
-Microsoft.iOS.dll:System.Object UIKit.UIView::__mt_PreferredFocusedView_var
-Microsoft.iOS.dll:System.Object UIKit.UIViewController::__mt_ParentFocusEnvironment_var
-Microsoft.iOS.dll:System.Object UIKit.UIViewController::__mt_PreferredFocusedView_var
-Microsoft.iOS.dll:System.Object UIKit.UIViewController::__mt_Tab_var
-Microsoft.iOS.dll:System.Object UIKit.UIViewController::__mt_WeakTransitioningDelegate_var
-Microsoft.iOS.dll:System.Object UIKit.UIWindow::__mt_WindowScene_var
 Microsoft.iOS.dll:System.Reflection.Assembly Foundation.NSObject::PlatformAssembly
 Microsoft.iOS.dll:System.Runtime.CompilerServices.ConditionalWeakTable`2<Foundation.NSObject,Foundation.TrackedMemory> Foundation.NSObject::super_map
 Microsoft.iOS.dll:System.Runtime.CompilerServices.ConditionalWeakTable`2<System.Delegate,ObjCRuntime.BlockCollector> ObjCRuntime.Runtime::block_lifetime_table
@@ -1532,16 +1136,11 @@ Microsoft.iOS.dll:System.String Foundation.NSException::Name()
 Microsoft.iOS.dll:System.String Foundation.NSException::Reason()
 Microsoft.iOS.dll:System.String Foundation.NSNumber::StringValue()
 Microsoft.iOS.dll:System.String Foundation.NSObject::Description()
-Microsoft.iOS.dll:System.String Foundation.ProtocolAttribute::<Name>k__BackingField
-Microsoft.iOS.dll:System.String Foundation.ProtocolAttribute::FormalSince()
-Microsoft.iOS.dll:System.String Foundation.ProtocolAttribute::informal_until
-Microsoft.iOS.dll:System.String Foundation.ProtocolAttribute::Name()
 Microsoft.iOS.dll:System.String Foundation.RegisterAttribute::name
 Microsoft.iOS.dll:System.String ObjCRuntime.Class::Name()
 Microsoft.iOS.dll:System.String ObjCRuntime.ObjCException::Message()
 Microsoft.iOS.dll:System.String ObjCRuntime.ObjCException::Name()
 Microsoft.iOS.dll:System.String ObjCRuntime.ObjCException::Reason()
-Microsoft.iOS.dll:System.String ObjCRuntime.Selector::name
 Microsoft.iOS.dll:System.String[] Foundation.NSException::CallStackSymbols()
 Microsoft.iOS.dll:System.Threading.SendOrPostCallback Foundation.NSAsyncSynchronizationContextDispatcher::d
 Microsoft.iOS.dll:System.Threading.SendOrPostCallback Foundation.NSSynchronizationContextDispatcher::d
@@ -1563,47 +1162,6 @@ Microsoft.iOS.dll:System.UInt32 ObjCRuntime.Runtime/MTTypeFlags::value__
 Microsoft.iOS.dll:System.UInt32* ObjCRuntime.Runtime/MTProtocolMap::protocol_tokens
 Microsoft.iOS.dll:System.UInt64 UIKit.UIControlState::value__
 Microsoft.iOS.dll:System.UIntPtr Foundation.NSDictionary::Count()
-Microsoft.iOS.dll:UIKit.IUIAccessibilityContentSizeCategoryImageAdjusting
-Microsoft.iOS.dll:UIKit.IUIAccessibilityIdentification
-Microsoft.iOS.dll:UIKit.IUIActivityItemsConfigurationProviding
-Microsoft.iOS.dll:UIKit.IUIAppearance
-Microsoft.iOS.dll:UIKit.IUIAppearanceContainer
-Microsoft.iOS.dll:UIKit.IUIApplicationDelegate
-Microsoft.iOS.dll:UIKit.IUIContentContainer
-Microsoft.iOS.dll:UIKit.IUIContextMenuInteractionDelegate
-Microsoft.iOS.dll:UIKit.IUICoordinateSpace
-Microsoft.iOS.dll:UIKit.IUIDynamicItem
-Microsoft.iOS.dll:UIKit.IUIFocusEnvironment
-Microsoft.iOS.dll:UIKit.IUIFocusItem
-Microsoft.iOS.dll:UIKit.IUIFocusItemContainer
-Microsoft.iOS.dll:UIKit.IUILargeContentViewerItem
-Microsoft.iOS.dll:UIKit.IUIPasteConfigurationSupporting
-Microsoft.iOS.dll:UIKit.IUIPopoverPresentationControllerSourceItem
-Microsoft.iOS.dll:UIKit.IUIResponderStandardEditActions
-Microsoft.iOS.dll:UIKit.IUISpringLoadedInteractionSupporting
-Microsoft.iOS.dll:UIKit.IUITraitChangeObservable
-Microsoft.iOS.dll:UIKit.IUITraitEnvironment
-Microsoft.iOS.dll:UIKit.IUIUserActivityRestoring
-Microsoft.iOS.dll:UIKit.UIAccessibilityContentSizeCategoryImageAdjustingWrapper
-Microsoft.iOS.dll:UIKit.UIAccessibilityContentSizeCategoryImageAdjustingWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIAccessibilityContentSizeCategoryImageAdjustingWrapper..cctor()
-Microsoft.iOS.dll:UIKit.UIAccessibilityContentSizeCategoryImageAdjustingWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIAccessibilityIdentificationWrapper
-Microsoft.iOS.dll:UIKit.UIAccessibilityIdentificationWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIAccessibilityIdentificationWrapper..cctor()
-Microsoft.iOS.dll:UIKit.UIAccessibilityIdentificationWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIActivityItemsConfigurationProvidingWrapper
-Microsoft.iOS.dll:UIKit.UIActivityItemsConfigurationProvidingWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIActivityItemsConfigurationProvidingWrapper..cctor()
-Microsoft.iOS.dll:UIKit.UIActivityItemsConfigurationProvidingWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIAppearanceContainerWrapper
-Microsoft.iOS.dll:UIKit.UIAppearanceContainerWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIAppearanceContainerWrapper..cctor()
-Microsoft.iOS.dll:UIKit.UIAppearanceContainerWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIAppearanceWrapper
-Microsoft.iOS.dll:UIKit.UIAppearanceWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIAppearanceWrapper..cctor()
-Microsoft.iOS.dll:UIKit.UIAppearanceWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:UIKit.UIApplication
 Microsoft.iOS.dll:UIKit.UIApplication._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:UIKit.UIApplication._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
@@ -1626,10 +1184,6 @@ Microsoft.iOS.dll:UIKit.UIApplicationDelegate..ctor(System.IntPtr, ObjCRuntime.I
 Microsoft.iOS.dll:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)
 Microsoft.iOS.dll:UIKit.UIApplicationDelegate/__Registrar_Callbacks__
 Microsoft.iOS.dll:UIKit.UIApplicationDelegate/__Registrar_Callbacks__.callback_593_UIKit_UIApplicationDelegate__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
-Microsoft.iOS.dll:UIKit.UIApplicationDelegateWrapper
-Microsoft.iOS.dll:UIKit.UIApplicationDelegateWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIApplicationDelegateWrapper..cctor()
-Microsoft.iOS.dll:UIKit.UIApplicationDelegateWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:UIKit.UIButton
 Microsoft.iOS.dll:UIKit.UIButton._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:UIKit.UIButton._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
@@ -1638,14 +1192,6 @@ Microsoft.iOS.dll:UIKit.UIButton..ctor(CoreGraphics.CGRect)
 Microsoft.iOS.dll:UIKit.UIButton..ctor(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:UIKit.UIButton.get_ClassHandle()
 Microsoft.iOS.dll:UIKit.UIButton.SetTitle(System.String, UIKit.UIControlState)
-Microsoft.iOS.dll:UIKit.UIContentContainerWrapper
-Microsoft.iOS.dll:UIKit.UIContentContainerWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIContentContainerWrapper..cctor()
-Microsoft.iOS.dll:UIKit.UIContentContainerWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIContextMenuInteractionDelegateWrapper
-Microsoft.iOS.dll:UIKit.UIContextMenuInteractionDelegateWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIContextMenuInteractionDelegateWrapper..cctor()
-Microsoft.iOS.dll:UIKit.UIContextMenuInteractionDelegateWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:UIKit.UIControl
 Microsoft.iOS.dll:UIKit.UIControl._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:UIKit.UIControl._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
@@ -1661,42 +1207,10 @@ Microsoft.iOS.dll:UIKit.UIControlState UIKit.UIControlState::Highlighted
 Microsoft.iOS.dll:UIKit.UIControlState UIKit.UIControlState::Normal
 Microsoft.iOS.dll:UIKit.UIControlState UIKit.UIControlState::Reserved
 Microsoft.iOS.dll:UIKit.UIControlState UIKit.UIControlState::Selected
-Microsoft.iOS.dll:UIKit.UICoordinateSpaceWrapper
-Microsoft.iOS.dll:UIKit.UICoordinateSpaceWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UICoordinateSpaceWrapper..cctor()
-Microsoft.iOS.dll:UIKit.UICoordinateSpaceWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIDynamicItemWrapper
-Microsoft.iOS.dll:UIKit.UIDynamicItemWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIDynamicItemWrapper..cctor()
-Microsoft.iOS.dll:UIKit.UIDynamicItemWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIFocusEnvironmentWrapper
-Microsoft.iOS.dll:UIKit.UIFocusEnvironmentWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIFocusEnvironmentWrapper..cctor()
-Microsoft.iOS.dll:UIKit.UIFocusEnvironmentWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIFocusItemContainerWrapper
-Microsoft.iOS.dll:UIKit.UIFocusItemContainerWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIFocusItemContainerWrapper..cctor()
-Microsoft.iOS.dll:UIKit.UIFocusItemContainerWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIFocusItemWrapper
-Microsoft.iOS.dll:UIKit.UIFocusItemWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIFocusItemWrapper..cctor()
-Microsoft.iOS.dll:UIKit.UIFocusItemWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:UIKit.UIKitSynchronizationContext
 Microsoft.iOS.dll:UIKit.UIKitSynchronizationContext..ctor()
 Microsoft.iOS.dll:UIKit.UIKitSynchronizationContext.Post(System.Threading.SendOrPostCallback, System.Object)
 Microsoft.iOS.dll:UIKit.UIKitSynchronizationContext.Send(System.Threading.SendOrPostCallback, System.Object)
-Microsoft.iOS.dll:UIKit.UILargeContentViewerItemWrapper
-Microsoft.iOS.dll:UIKit.UILargeContentViewerItemWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UILargeContentViewerItemWrapper..cctor()
-Microsoft.iOS.dll:UIKit.UILargeContentViewerItemWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIPasteConfigurationSupportingWrapper
-Microsoft.iOS.dll:UIKit.UIPasteConfigurationSupportingWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIPasteConfigurationSupportingWrapper..cctor()
-Microsoft.iOS.dll:UIKit.UIPasteConfigurationSupportingWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIPopoverPresentationControllerSourceItemWrapper
-Microsoft.iOS.dll:UIKit.UIPopoverPresentationControllerSourceItemWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIPopoverPresentationControllerSourceItemWrapper..cctor()
-Microsoft.iOS.dll:UIKit.UIPopoverPresentationControllerSourceItemWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:UIKit.UIResponder
 Microsoft.iOS.dll:UIKit.UIResponder._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:UIKit.UIResponder._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
@@ -1704,10 +1218,6 @@ Microsoft.iOS.dll:UIKit.UIResponder..cctor()
 Microsoft.iOS.dll:UIKit.UIResponder..ctor(Foundation.NSObjectFlag)
 Microsoft.iOS.dll:UIKit.UIResponder..ctor(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:UIKit.UIResponder.get_ClassHandle()
-Microsoft.iOS.dll:UIKit.UIResponderStandardEditActionsWrapper
-Microsoft.iOS.dll:UIKit.UIResponderStandardEditActionsWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIResponderStandardEditActionsWrapper..cctor()
-Microsoft.iOS.dll:UIKit.UIResponderStandardEditActionsWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:UIKit.UIScreen
 Microsoft.iOS.dll:UIKit.UIScreen UIKit.UIScreen::MainScreen()
 Microsoft.iOS.dll:UIKit.UIScreen._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
@@ -1718,22 +1228,6 @@ Microsoft.iOS.dll:UIKit.UIScreen.Dispose(System.Boolean)
 Microsoft.iOS.dll:UIKit.UIScreen.get_Bounds()
 Microsoft.iOS.dll:UIKit.UIScreen.get_ClassHandle()
 Microsoft.iOS.dll:UIKit.UIScreen.get_MainScreen()
-Microsoft.iOS.dll:UIKit.UISpringLoadedInteractionSupportingWrapper
-Microsoft.iOS.dll:UIKit.UISpringLoadedInteractionSupportingWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UISpringLoadedInteractionSupportingWrapper..cctor()
-Microsoft.iOS.dll:UIKit.UISpringLoadedInteractionSupportingWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UITraitChangeObservableWrapper
-Microsoft.iOS.dll:UIKit.UITraitChangeObservableWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UITraitChangeObservableWrapper..cctor()
-Microsoft.iOS.dll:UIKit.UITraitChangeObservableWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UITraitEnvironmentWrapper
-Microsoft.iOS.dll:UIKit.UITraitEnvironmentWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UITraitEnvironmentWrapper..cctor()
-Microsoft.iOS.dll:UIKit.UITraitEnvironmentWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIUserActivityRestoringWrapper
-Microsoft.iOS.dll:UIKit.UIUserActivityRestoringWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIUserActivityRestoringWrapper..cctor()
-Microsoft.iOS.dll:UIKit.UIUserActivityRestoringWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:UIKit.UIView
 Microsoft.iOS.dll:UIKit.UIView UIKit.UIViewController::View()
 Microsoft.iOS.dll:UIKit.UIView._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
@@ -1767,6 +1261,7 @@ Microsoft.iOS.dll:UIKit.UIWindow.get_ClassHandle()
 Microsoft.iOS.dll:UIKit.UIWindow.MakeKeyAndVisible()
 Microsoft.iOS.dll:UIKit.UIWindow.set_RootViewController(UIKit.UIViewController)
 SizeTestApp.dll:<Module>
+SizeTestApp.dll:<Module>..cctor()
 SizeTestApp.dll:MySimpleApp.AppDelegate
 SizeTestApp.dll:MySimpleApp.AppDelegate..ctor()
 SizeTestApp.dll:MySimpleApp.AppDelegate..ctor(System.IntPtr, ObjCRuntime.IManagedRegistrar)
@@ -1777,6 +1272,15 @@ SizeTestApp.dll:MySimpleApp.AppDelegate/__Registrar_Callbacks__.callback_1_MySim
 SizeTestApp.dll:MySimpleApp.Program
 SizeTestApp.dll:MySimpleApp.Program..ctor()
 SizeTestApp.dll:MySimpleApp.Program.Main(System.String[])
+SizeTestApp.dll:ObjCRuntime.__Registrar__
+SizeTestApp.dll:ObjCRuntime.__Registrar__..ctor()
+SizeTestApp.dll:ObjCRuntime.__Registrar__.ConstructINativeObject(System.RuntimeTypeHandle, ObjCRuntime.NativeHandle, System.Boolean)
+SizeTestApp.dll:ObjCRuntime.__Registrar__.ConstructNSObject(System.RuntimeTypeHandle, ObjCRuntime.NativeHandle)
+SizeTestApp.dll:ObjCRuntime.__Registrar__.LookupType(System.UInt32)
+SizeTestApp.dll:ObjCRuntime.__Registrar__.LookupTypeId(System.RuntimeTypeHandle)
+SizeTestApp.dll:ObjCRuntime.__Registrar__.LookupUnmanagedFunction(System.String, System.Int32)
+SizeTestApp.dll:ObjCRuntime.__Registrar__.LookupUnmanagedFunctionImpl(System.String, System.Int32)
+SizeTestApp.dll:ObjCRuntime.__Registrar__.RegisterWrapperTypes(System.Collections.Generic.Dictionary`2<System.RuntimeTypeHandle,System.RuntimeTypeHandle>)
 SizeTestApp.dll:UIKit.UIWindow MySimpleApp.AppDelegate::window
 System.Collections.Immutable.dll:<Module>
 System.Collections.Immutable.dll:System.Array System.Collections.Immutable.IImmutableArray::Array()
@@ -2560,20 +2064,6 @@ System.Private.CoreLib.dll:Internal.Runtime.CompilerHelpers.ThrowHelpers.ThrowVe
 System.Private.CoreLib.dll:Internal.Runtime.InteropServices.ComponentActivator
 System.Private.CoreLib.dll:Internal.Runtime.InteropServices.ComponentActivator.GetFunctionPointer(System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr)
 System.Private.CoreLib.dll:Internal.Runtime.InteropServices.ComponentActivator.OnDisabledGetFunctionPointerCall(System.IntPtr, System.IntPtr)
-System.Private.CoreLib.dll:Internal.VersionResilientHashCode
-System.Private.CoreLib.dll:Internal.VersionResilientHashCode.ArrayTypeHashCode(System.Int32, System.Int32)
-System.Private.CoreLib.dll:Internal.VersionResilientHashCode.ByrefTypeHashCode(System.Int32)
-System.Private.CoreLib.dll:Internal.VersionResilientHashCode.GenericInstanceHashCode(System.Int32, System.ReadOnlySpan`1<System.Reflection.Metadata.TypeName>)
-System.Private.CoreLib.dll:Internal.VersionResilientHashCode.NameHashCode(System.Int32, System.Int32)
-System.Private.CoreLib.dll:Internal.VersionResilientHashCode.NameHashCode(System.ReadOnlySpan`1<System.Byte>, System.ReadOnlySpan`1<System.Byte>)
-System.Private.CoreLib.dll:Internal.VersionResilientHashCode.NameHashCode(System.ReadOnlySpan`1<System.Byte>)
-System.Private.CoreLib.dll:Internal.VersionResilientHashCode.NameHashCode(System.String, System.String)
-System.Private.CoreLib.dll:Internal.VersionResilientHashCode.NestedTypeHashCode(System.Int32, System.Int32)
-System.Private.CoreLib.dll:Internal.VersionResilientHashCode.PointerTypeHashCode(System.Int32)
-System.Private.CoreLib.dll:Internal.VersionResilientHashCode.RotateLeft(System.Int32, System.Int32)
-System.Private.CoreLib.dll:Internal.VersionResilientHashCode.TypeHashCode(System.Reflection.Metadata.TypeName)
-System.Private.CoreLib.dll:Internal.VersionResilientHashCode.TypeHashCode(System.Runtime.CompilerServices.QCallTypeHandle)
-System.Private.CoreLib.dll:Internal.VersionResilientHashCode.TypeHashCode(System.RuntimeType)
 System.Private.CoreLib.dll:Interop
 System.Private.CoreLib.dll:Interop.<GetExceptionForIoErrno>g__ParentDirectoryExists|19_0(System.String)
 System.Private.CoreLib.dll:Interop.CallStringMethod`3(System.Buffers.SpanFunc`5<System.Char,TArg1,TArg2,TArg3,Interop/Globalization/ResultCode>, TArg1, TArg2, TArg3, out System.String&)
@@ -3284,8 +2774,6 @@ System.Private.CoreLib.dll:System.Attribute.AreFieldValuesEqual(System.Object, S
 System.Private.CoreLib.dll:System.Attribute.CopyToAttributeList(System.Collections.Generic.List`1<System.Attribute>, System.Attribute[], System.Collections.Generic.Dictionary`2<System.Type,System.AttributeUsageAttribute>)
 System.Private.CoreLib.dll:System.Attribute.CreateAttributeArrayHelper(System.Type, System.Int32)
 System.Private.CoreLib.dll:System.Attribute.Equals(System.Object)
-System.Private.CoreLib.dll:System.Attribute.GetCustomAttribute(System.Reflection.MemberInfo, System.Type, System.Boolean)
-System.Private.CoreLib.dll:System.Attribute.GetCustomAttribute(System.Reflection.MemberInfo, System.Type)
 System.Private.CoreLib.dll:System.Attribute.GetCustomAttributes(System.Reflection.MemberInfo, System.Type, System.Boolean)
 System.Private.CoreLib.dll:System.Attribute.GetHashCode()
 System.Private.CoreLib.dll:System.Attribute.GetIndexParameterTypes(System.Reflection.PropertyInfo)
@@ -4564,7 +4052,6 @@ System.Private.CoreLib.dll:System.Char[] System.Globalization.SymbolFilteringBuf
 System.Private.CoreLib.dll:System.Char[] System.IO.Enumeration.FileSystemEnumerator`1::_pathBuffer
 System.Private.CoreLib.dll:System.Char[] System.IO.Path::InvalidPathChars
 System.Private.CoreLib.dll:System.Char[] System.Runtime.CompilerServices.DefaultInterpolatedStringHandler::_arrayToReturnToPool
-System.Private.CoreLib.dll:System.Char[] System.Runtime.InteropServices.TypeMapLazyDictionary/Utf16SharedBuffer::_backingArray
 System.Private.CoreLib.dll:System.Char[] System.Text.StringBuilder::m_ChunkChars
 System.Private.CoreLib.dll:System.Char[] System.Text.ValueStringBuilder::_arrayToReturnToPool
 System.Private.CoreLib.dll:System.Char* System.Reflection.NativeAssemblyNameParts::_pCultureName
@@ -4758,7 +4245,6 @@ System.Private.CoreLib.dll:System.Collections.Generic.Dictionary`2/Enumerator..c
 System.Private.CoreLib.dll:System.Collections.Generic.Dictionary`2/Enumerator.Dispose()
 System.Private.CoreLib.dll:System.Collections.Generic.Dictionary`2/Enumerator.get_Current()
 System.Private.CoreLib.dll:System.Collections.Generic.Dictionary`2/Enumerator.MoveNext()
-System.Private.CoreLib.dll:System.Collections.Generic.Dictionary`2<System.Int32,System.Runtime.InteropServices.TypeMapLazyDictionary/LazyProxyTypeDictionary/DelayedTypeCollection> System.Runtime.InteropServices.TypeMapLazyDictionary/LazyProxyTypeDictionary::_lazyData
 System.Private.CoreLib.dll:System.Collections.Generic.Dictionary`2<System.Int64,System.WeakReference`1<System.Runtime.Loader.AssemblyLoadContext>> System.Runtime.Loader.AssemblyLoadContext::AllContexts()
 System.Private.CoreLib.dll:System.Collections.Generic.Dictionary`2<System.Int64,System.WeakReference`1<System.Runtime.Loader.AssemblyLoadContext>> System.Runtime.Loader.AssemblyLoadContext::s_allContexts
 System.Private.CoreLib.dll:System.Collections.Generic.Dictionary`2<System.String,System.Boolean> System.AppContext::s_switches
@@ -4767,7 +4253,6 @@ System.Private.CoreLib.dll:System.Collections.Generic.Dictionary`2<System.String
 System.Private.CoreLib.dll:System.Collections.Generic.Dictionary`2<System.String,System.Globalization.CultureInfo> System.Globalization.CultureInfo::s_cachedCulturesByName
 System.Private.CoreLib.dll:System.Collections.Generic.Dictionary`2<System.String,System.Object> System.AppContext::s_dataStore
 System.Private.CoreLib.dll:System.Collections.Generic.Dictionary`2<System.String,System.Reflection.Assembly> System.Reflection.Assembly::s_loadfile
-System.Private.CoreLib.dll:System.Collections.Generic.Dictionary`2<System.String,System.Runtime.InteropServices.TypeMapLazyDictionary/DelayedType> System.Runtime.InteropServices.TypeMapLazyDictionary/LazyExternalTypeDictionary::_lazyData
 System.Private.CoreLib.dll:System.Collections.Generic.Dictionary`2<System.String,System.Threading.WaitSubsystem/WaitableObject> System.Threading.WaitSubsystem/WaitableObject::s_namedObjects
 System.Private.CoreLib.dll:System.Collections.Generic.Dictionary`2<TKey,TValue> System.Collections.Generic.Dictionary`2/Enumerator::_dictionary
 System.Private.CoreLib.dll:System.Collections.Generic.EnumComparer`1
@@ -4888,7 +4373,6 @@ System.Private.CoreLib.dll:System.Collections.Generic.InsertionBehavior System.C
 System.Private.CoreLib.dll:System.Collections.Generic.IReadOnlyCollection`1
 System.Private.CoreLib.dll:System.Collections.Generic.IReadOnlyCollection`1.get_Count()
 System.Private.CoreLib.dll:System.Collections.Generic.IReadOnlyDictionary`2
-System.Private.CoreLib.dll:System.Collections.Generic.IReadOnlyDictionary`2.TryGetValue(TKey, out TValue&)
 System.Private.CoreLib.dll:System.Collections.Generic.IReadOnlyList`1
 System.Private.CoreLib.dll:System.Collections.Generic.IReadOnlyList`1.get_Item(System.Int32)
 System.Private.CoreLib.dll:System.Collections.Generic.IReadOnlyList`1<System.Memory`1<System.Byte>> Microsoft.Win32.SafeHandles.SafeFileHandle/ThreadPoolValueTaskSource::_readScatterBuffers
@@ -4955,10 +4439,7 @@ System.Private.CoreLib.dll:System.Collections.Generic.List`1/Enumerator.get_Curr
 System.Private.CoreLib.dll:System.Collections.Generic.List`1/Enumerator.MoveNext()
 System.Private.CoreLib.dll:System.Collections.Generic.List`1<System.Int32> System.Reflection.Emit.TypeNameBuilder::_stack
 System.Private.CoreLib.dll:System.Collections.Generic.List`1<System.Reflection.Metadata.TypeName> System.Reflection.Metadata.TypeName::_genericArguments
-System.Private.CoreLib.dll:System.Collections.Generic.List`1<System.Reflection.RuntimeModule> System.Runtime.InteropServices.TypeMapLazyDictionary/LazyTypeLoadDictionary`1::_preCachedModules
 System.Private.CoreLib.dll:System.Collections.Generic.List`1<System.Runtime.ExceptionServices.ExceptionDispatchInfo> modreq(System.Runtime.CompilerServices.IsVolatile) System.Threading.Tasks.TaskExceptionHolder::m_faultExceptions
-System.Private.CoreLib.dll:System.Collections.Generic.List`1<System.Runtime.InteropServices.TypeMapLazyDictionary/LazyProxyTypeDictionary/SourceProxyPair> System.Runtime.InteropServices.TypeMapLazyDictionary/LazyProxyTypeDictionary/DelayedTypeCollection::<Others>k__BackingField
-System.Private.CoreLib.dll:System.Collections.Generic.List`1<System.Runtime.InteropServices.TypeMapLazyDictionary/LazyProxyTypeDictionary/SourceProxyPair> System.Runtime.InteropServices.TypeMapLazyDictionary/LazyProxyTypeDictionary/DelayedTypeCollection::Others()
 System.Private.CoreLib.dll:System.Collections.Generic.List`1<System.String> System.Globalization.CalendarData/IcuEnumCalendarsData::Results
 System.Private.CoreLib.dll:System.Collections.Generic.List`1<System.String> System.Globalization.DateTimeFormatInfoScanner::m_dateWords
 System.Private.CoreLib.dll:System.Collections.Generic.List`1<System.String> System.Reflection.Assembly::s_loadFromAssemblyList
@@ -6068,8 +5549,43 @@ System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.ConstantExpectedAttri
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.ConstantExpectedAttribute.set_Min(System.Object)
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DisallowNullAttribute
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DisallowNullAttribute..ctor()
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::All
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::AllConstructors
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::AllEvents
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::AllFields
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::AllMethods
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::AllNestedTypes
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::AllProperties
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::Interfaces
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::None
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::NonPublicConstructors
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::NonPublicConstructorsWithInherited
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::NonPublicEvents
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::NonPublicEventsWithInherited
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::NonPublicFields
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::NonPublicFieldsWithInherited
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::NonPublicMethods
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::NonPublicMethodsWithInherited
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::NonPublicNestedTypes
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::NonPublicNestedTypesWithInherited
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::NonPublicProperties
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::NonPublicPropertiesWithInherited
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::PublicConstructors
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::PublicConstructorsWithInherited
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::PublicEvents
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::PublicFields
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::PublicMethods
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::PublicNestedTypes
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::PublicNestedTypesWithInherited
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::PublicParameterlessConstructor
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::PublicProperties
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute::<MemberTypes>k__BackingField
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute..ctor(System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes, System.Type)
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute..ctor(System.String, System.String, System.String)
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute..ctor(System.String, System.Type)
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute..ctor(System.String)
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.MaybeNullAttribute
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.MaybeNullAttribute..ctor()
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribute
@@ -8934,6 +8450,7 @@ System.Private.CoreLib.dll:System.Int32 System.DefaultBinder/Primitives::value__
 System.Private.CoreLib.dll:System.Int32 System.Delegate/BindToMethodDetails::selfReferentialTarget
 System.Private.CoreLib.dll:System.Int32 System.Delegate/InvocationListEnumerator`1::_index
 System.Private.CoreLib.dll:System.Int32 System.DelegateBindingFlags::value__
+System.Private.CoreLib.dll:System.Int32 System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::value__
 System.Private.CoreLib.dll:System.Int32 System.Diagnostics.Contracts.ContractFailureKind::value__
 System.Private.CoreLib.dll:System.Int32 System.Diagnostics.DebuggableAttribute/DebuggingModes::value__
 System.Private.CoreLib.dll:System.Int32 System.Diagnostics.StackFrame::_columnNumber
@@ -9405,11 +8922,6 @@ System.Private.CoreLib.dll:System.Int32 System.Runtime.InteropServices.Marshalli
 System.Private.CoreLib.dll:System.Int32 System.Runtime.InteropServices.Marshalling.ReadOnlySpanMarshaller`2/ManagedToUnmanagedIn::BufferSize()
 System.Private.CoreLib.dll:System.Int32 System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal/MessageSendFunction::value__
 System.Private.CoreLib.dll:System.Int32 System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal/ObjcTrackingInformation::TAGGED_MEMORY_SIZE_IN_POINTERS
-System.Private.CoreLib.dll:System.Int32 System.Runtime.InteropServices.TypeMapLazyDictionary/LazyTypeLoadDictionary`1::Count()
-System.Private.CoreLib.dll:System.Int32 System.Runtime.InteropServices.TypeMapLazyDictionary/ProcessAttributesCallbackArg::StringLen1
-System.Private.CoreLib.dll:System.Int32 System.Runtime.InteropServices.TypeMapLazyDictionary/ProcessAttributesCallbackArg::StringLen2
-System.Private.CoreLib.dll:System.Int32 System.Runtime.InteropServices.TypeMapLazyDictionary/TypeNameUtf8::<Utf8TypeNameLen>k__BackingField
-System.Private.CoreLib.dll:System.Int32 System.Runtime.InteropServices.TypeMapLazyDictionary/TypeNameUtf8::Utf8TypeNameLen()
 System.Private.CoreLib.dll:System.Int32 System.Runtime.InteropServices.UnmanagedType::value__
 System.Private.CoreLib.dll:System.Int32 System.Runtime.InteropServices.VarEnum::value__
 System.Private.CoreLib.dll:System.Int32 System.Runtime.Intrinsics.ISimdVector`2::Alignment()
@@ -12419,8 +11931,6 @@ System.Private.CoreLib.dll:System.ReadOnlySpan`1<System.Char> System.IO.Enumerat
 System.Private.CoreLib.dll:System.ReadOnlySpan`1<System.Char> System.Reflection.AssemblyNameParser::_input
 System.Private.CoreLib.dll:System.ReadOnlySpan`1<System.Char> System.Reflection.Metadata.TypeNameParser::_inputString
 System.Private.CoreLib.dll:System.ReadOnlySpan`1<System.Char> System.Runtime.CompilerServices.DefaultInterpolatedStringHandler::Text()
-System.Private.CoreLib.dll:System.ReadOnlySpan`1<System.Char> System.Runtime.InteropServices.TypeMapLazyDictionary/Utf16SharedBuffer::<Buffer>k__BackingField
-System.Private.CoreLib.dll:System.ReadOnlySpan`1<System.Char> System.Runtime.InteropServices.TypeMapLazyDictionary/Utf16SharedBuffer::Buffer()
 System.Private.CoreLib.dll:System.ReadOnlySpan`1<System.Char>* System.Buffers.ProbabilisticMapState::_slowContainsValuesPtr
 System.Private.CoreLib.dll:System.ReadOnlySpan`1<System.DateTimeParse/DS> System.DateTimeParse::DateParsingStates()
 System.Private.CoreLib.dll:System.ReadOnlySpan`1<System.DefaultBinder/Primitives> System.DefaultBinder::PrimitiveConversions()
@@ -12498,7 +12008,6 @@ System.Private.CoreLib.dll:System.Reflection.Assembly.GetName()
 System.Private.CoreLib.dll:System.Reflection.Assembly.GetName(System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.Assembly.GetType(System.String, System.Boolean, System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.Assembly.GetType(System.String, System.Boolean)
-System.Private.CoreLib.dll:System.Reflection.Assembly.Load(System.String)
 System.Private.CoreLib.dll:System.Reflection.Assembly.LoadFrom(System.String)
 System.Private.CoreLib.dll:System.Reflection.Assembly.LoadFromResolveHandler(System.Object, System.ResolveEventArgs)
 System.Private.CoreLib.dll:System.Reflection.Assembly.op_Equality(System.Reflection.Assembly, System.Reflection.Assembly)
@@ -12851,9 +12360,6 @@ System.Private.CoreLib.dll:System.Reflection.CustomAttributeEncoding System.Refl
 System.Private.CoreLib.dll:System.Reflection.CustomAttributeEncoding System.Reflection.CustomAttributeType::EncodedArrayType()
 System.Private.CoreLib.dll:System.Reflection.CustomAttributeEncoding System.Reflection.CustomAttributeType::EncodedEnumType()
 System.Private.CoreLib.dll:System.Reflection.CustomAttributeEncoding System.Reflection.CustomAttributeType::EncodedType()
-System.Private.CoreLib.dll:System.Reflection.CustomAttributeExtensions
-System.Private.CoreLib.dll:System.Reflection.CustomAttributeExtensions.GetCustomAttribute(System.Reflection.MemberInfo, System.Type)
-System.Private.CoreLib.dll:System.Reflection.CustomAttributeExtensions.GetCustomAttribute`1(System.Reflection.MemberInfo)
 System.Private.CoreLib.dll:System.Reflection.CustomAttributeFormatException
 System.Private.CoreLib.dll:System.Reflection.CustomAttributeFormatException..ctor()
 System.Private.CoreLib.dll:System.Reflection.CustomAttributeFormatException..ctor(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
@@ -13370,7 +12876,6 @@ System.Private.CoreLib.dll:System.Reflection.Metadata.TypeName.get_IsPointer()
 System.Private.CoreLib.dll:System.Reflection.Metadata.TypeName.get_IsSimple()
 System.Private.CoreLib.dll:System.Reflection.Metadata.TypeName.get_IsSZArray()
 System.Private.CoreLib.dll:System.Reflection.Metadata.TypeName.get_Name()
-System.Private.CoreLib.dll:System.Reflection.Metadata.TypeName.get_Namespace()
 System.Private.CoreLib.dll:System.Reflection.Metadata.TypeName.GetArrayRank()
 System.Private.CoreLib.dll:System.Reflection.Metadata.TypeName.GetElementType()
 System.Private.CoreLib.dll:System.Reflection.Metadata.TypeName.GetGenericArguments()
@@ -13404,7 +12909,6 @@ System.Private.CoreLib.dll:System.Reflection.Metadata.TypeNameParserHelpers.IsMa
 System.Private.CoreLib.dll:System.Reflection.Metadata.TypeNameParserHelpers.ThrowArgumentException_InvalidTypeName(System.Int32)
 System.Private.CoreLib.dll:System.Reflection.Metadata.TypeNameParserHelpers.ThrowArgumentNullException(System.String)
 System.Private.CoreLib.dll:System.Reflection.Metadata.TypeNameParserHelpers.ThrowInvalidOperation_HasToBeArrayClass()
-System.Private.CoreLib.dll:System.Reflection.Metadata.TypeNameParserHelpers.ThrowInvalidOperation_NestedTypeNamespace()
 System.Private.CoreLib.dll:System.Reflection.Metadata.TypeNameParserHelpers.ThrowInvalidOperation_NoElement()
 System.Private.CoreLib.dll:System.Reflection.Metadata.TypeNameParserHelpers.ThrowInvalidOperation_NotGenericType()
 System.Private.CoreLib.dll:System.Reflection.Metadata.TypeNameParserHelpers.ThrowInvalidOperation_NotNestedType()
@@ -13883,8 +13387,6 @@ System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly
 System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly System.Reflection.Emit.RuntimeAssemblyBuilder::InternalAssembly()
 System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly System.Reflection.RuntimeModule::m_runtimeAssembly
 System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly System.Runtime.InteropServices.TypeMapLazyDictionary/CallbackContext::_currAssembly
-System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly System.Runtime.InteropServices.TypeMapLazyDictionary/CallbackContext::CurrentAssembly()
-System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly System.Runtime.InteropServices.TypeMapLazyDictionary/DelayedType::_fallbackAssembly
 System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly..ctor()
 System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.<GetCodeBase>g____PInvoke|14_0(System.Runtime.CompilerServices.QCallAssembly, System.Runtime.CompilerServices.StringHandleOnStack)
 System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.<GetManifestModule>g__GetManifestModuleWorker|93_0(System.Reflection.RuntimeAssembly)
@@ -13932,7 +13434,6 @@ System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.GetVersion()
 System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.GetVersion(System.Runtime.CompilerServices.QCallAssembly, out System.Int32&, out System.Int32&, out System.Int32&, out System.Int32&)
 System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.InternalLoad(System.Reflection.AssemblyName, System.Threading.StackCrawlMark&, System.Runtime.Loader.AssemblyLoadContext, System.Reflection.RuntimeAssembly, System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.InternalLoad(System.Reflection.NativeAssemblyNameParts*, System.Runtime.CompilerServices.ObjectHandleOnStack, System.Runtime.CompilerServices.StackCrawlMarkHandle, System.Boolean, System.Runtime.CompilerServices.ObjectHandleOnStack, System.Runtime.CompilerServices.ObjectHandleOnStack)
-System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.InternalLoad(System.String, System.Threading.StackCrawlMark&, System.Runtime.Loader.AssemblyLoadContext)
 System.Private.CoreLib.dll:System.Reflection.RuntimeConstructorInfo
 System.Private.CoreLib.dll:System.Reflection.RuntimeConstructorInfo..ctor(System.RuntimeMethodHandleInternal, System.RuntimeType, System.RuntimeType/RuntimeTypeCache, System.Reflection.MethodAttributes, System.Reflection.BindingFlags)
 System.Private.CoreLib.dll:System.Reflection.RuntimeConstructorInfo.<get_Signature>g__LazyCreateSignature|19_0()
@@ -15099,8 +14600,6 @@ System.Private.CoreLib.dll:System.Runtime.CompilerServices.RawArrayData
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.RawData
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.RefSafetyRulesAttribute
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.RefSafetyRulesAttribute..ctor(System.Int32)
-System.Private.CoreLib.dll:System.Runtime.CompilerServices.RequiredMemberAttribute
-System.Private.CoreLib.dll:System.Runtime.CompilerServices.RequiredMemberAttribute..ctor()
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.RequiresLocationAttribute
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.RequiresLocationAttribute..ctor()
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.ResumeInfo
@@ -15442,7 +14941,6 @@ System.Private.CoreLib.dll:System.Runtime.ExceptionIDs System.Runtime.ExceptionI
 System.Private.CoreLib.dll:System.Runtime.ExceptionIDs System.Runtime.ExceptionIDs::PrivilegedInstruction
 System.Private.CoreLib.dll:System.Runtime.ExceptionServices.ExceptionDispatchInfo
 System.Private.CoreLib.dll:System.Runtime.ExceptionServices.ExceptionDispatchInfo System.Runtime.InteropServices.TypeMapLazyDictionary/CallbackContext::_creationException
-System.Private.CoreLib.dll:System.Runtime.ExceptionServices.ExceptionDispatchInfo System.Runtime.InteropServices.TypeMapLazyDictionary/CallbackContext::CreationException()
 System.Private.CoreLib.dll:System.Runtime.ExceptionServices.ExceptionDispatchInfo System.Threading.Tasks.Sources.ManualResetValueTaskSourceCore`1::_error
 System.Private.CoreLib.dll:System.Runtime.ExceptionServices.ExceptionDispatchInfo System.Threading.Tasks.TaskExceptionHolder::m_cancellationException
 System.Private.CoreLib.dll:System.Runtime.ExceptionServices.ExceptionDispatchInfo..ctor(System.Exception)
@@ -16066,93 +15564,13 @@ System.Private.CoreLib.dll:System.Runtime.InteropServices.Swift.SwiftError
 System.Private.CoreLib.dll:System.Runtime.InteropServices.Swift.SwiftIndirectResult
 System.Private.CoreLib.dll:System.Runtime.InteropServices.Swift.SwiftSelf
 System.Private.CoreLib.dll:System.Runtime.InteropServices.Swift.SwiftSelf`1
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapAssemblyTargetAttribute`1
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapAssemblyTargetAttribute`1..ctor(System.String)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapAssociationAttribute`1
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapAssociationAttribute`1..ctor(System.Type, System.Type)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapAttribute`1
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapAttribute`1..ctor(System.String, System.Type, System.Type)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary.<FindPrecachedExternalTypeMapEntry>g____PInvoke|3_0(System.Runtime.CompilerServices.QCallModule, System.Runtime.CompilerServices.QCallTypeHandle, System.Byte*)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary.ConvertUtf8ToUtf16(System.ReadOnlySpan`1<System.Byte>, out System.Runtime.InteropServices.TypeMapLazyDictionary/Utf16SharedBuffer&)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary.CreateExternalTypeMap(System.RuntimeType)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary.CreateMaps(System.RuntimeType, method Interop/BOOL *(System.Runtime.InteropServices.TypeMapLazyDictionary/CallbackContext*,System.Runtime.InteropServices.TypeMapLazyDictionary/ProcessAttributesCallbackArg*), method Interop/BOOL *(System.Runtime.InteropServices.TypeMapLazyDictionary/CallbackContext*,System.Runtime.InteropServices.TypeMapLazyDictionary/ProcessAttributesCallbackArg*))
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary.CreateProxyTypeMap(System.RuntimeType)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary.FindPrecachedExternalTypeMapEntry(System.Runtime.CompilerServices.QCallModule, System.Runtime.CompilerServices.QCallTypeHandle, System.String)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary.FindPrecachedProxyTypeMapEntry(System.Runtime.CompilerServices.QCallModule, System.Runtime.CompilerServices.QCallTypeHandle, System.Runtime.CompilerServices.QCallTypeHandle)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary.NewExternalTypeEntry(System.Runtime.InteropServices.TypeMapLazyDictionary/CallbackContext*, System.Runtime.InteropServices.TypeMapLazyDictionary/ProcessAttributesCallbackArg*)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary.NewPrecachedExternalTypeMap(System.Runtime.InteropServices.TypeMapLazyDictionary/CallbackContext*)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary.NewPrecachedProxyTypeMap(System.Runtime.InteropServices.TypeMapLazyDictionary/CallbackContext*)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary.NewProxyTypeEntry(System.Runtime.InteropServices.TypeMapLazyDictionary/CallbackContext*, System.Runtime.InteropServices.TypeMapLazyDictionary/ProcessAttributesCallbackArg*)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary.ProcessAttributes(System.Runtime.CompilerServices.QCallAssembly, System.Runtime.CompilerServices.QCallTypeHandle, method Interop/BOOL *(System.Runtime.InteropServices.TypeMapLazyDictionary/CallbackContext*,System.Runtime.InteropServices.TypeMapLazyDictionary/ProcessAttributesCallbackArg*), method Interop/BOOL *(System.Runtime.InteropServices.TypeMapLazyDictionary/CallbackContext*,System.Runtime.InteropServices.TypeMapLazyDictionary/ProcessAttributesCallbackArg*), method Interop/BOOL *(System.Runtime.InteropServices.TypeMapLazyDictionary/CallbackContext*), method Interop/BOOL *(System.Runtime.InteropServices.TypeMapLazyDictionary/CallbackContext*), System.Runtime.InteropServices.TypeMapLazyDictionary/CallbackContext*)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/CallbackContext
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/CallbackContext..ctor(System.RuntimeType)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/CallbackContext.get_CreationException()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/CallbackContext.get_CurrentAssembly()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/CallbackContext.get_ExternalTypeMap()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/CallbackContext.get_ProxyTypeMap()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/CallbackContext.set_CreationException(System.Runtime.ExceptionServices.ExceptionDispatchInfo)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/DelayedType
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/DelayedType System.Runtime.InteropServices.TypeMapLazyDictionary/LazyProxyTypeDictionary/SourceProxyPair::<Proxy>k__BackingField
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/DelayedType System.Runtime.InteropServices.TypeMapLazyDictionary/LazyProxyTypeDictionary/SourceProxyPair::<Source>k__BackingField
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/DelayedType System.Runtime.InteropServices.TypeMapLazyDictionary/LazyProxyTypeDictionary/SourceProxyPair::Proxy()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/DelayedType System.Runtime.InteropServices.TypeMapLazyDictionary/LazyProxyTypeDictionary/SourceProxyPair::Source()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/DelayedType..ctor(System.Runtime.InteropServices.TypeMapLazyDictionary/TypeNameUtf8, System.Reflection.RuntimeAssembly)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/DelayedType.GetOrLoadType()
 System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyExternalTypeDictionary
 System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyExternalTypeDictionary System.Runtime.InteropServices.TypeMapLazyDictionary/CallbackContext::_externalTypeMap
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyExternalTypeDictionary System.Runtime.InteropServices.TypeMapLazyDictionary/CallbackContext::ExternalTypeMap()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyExternalTypeDictionary..ctor(System.RuntimeType)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyExternalTypeDictionary.Add(System.String, System.Runtime.InteropServices.TypeMapLazyDictionary/TypeNameUtf8, System.Reflection.RuntimeAssembly)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyExternalTypeDictionary.TryGetOrLoadType(System.String, out System.Type&)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyExternalTypeDictionary.TryGetOrLoadTypeFromPreCachedDictionary(System.Reflection.RuntimeModule, System.String, out System.Type&)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyProxyTypeDictionary
 System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyProxyTypeDictionary System.Runtime.InteropServices.TypeMapLazyDictionary/CallbackContext::_proxyTypeMap
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyProxyTypeDictionary System.Runtime.InteropServices.TypeMapLazyDictionary/CallbackContext::ProxyTypeMap()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyProxyTypeDictionary..ctor(System.RuntimeType)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyProxyTypeDictionary.Add(System.Reflection.Metadata.TypeName, System.Runtime.InteropServices.TypeMapLazyDictionary/TypeNameUtf8, System.Runtime.InteropServices.TypeMapLazyDictionary/TypeNameUtf8, System.Reflection.RuntimeAssembly)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyProxyTypeDictionary.ComputeHashCode(System.Reflection.Metadata.TypeName)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyProxyTypeDictionary.ComputeHashCode(System.RuntimeType)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyProxyTypeDictionary.TryGetOrLoadType(System.Type, out System.Type&)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyProxyTypeDictionary.TryGetOrLoadTypeFromPreCachedDictionary(System.Reflection.RuntimeModule, System.Type, out System.Type&)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyProxyTypeDictionary/DelayedTypeCollection
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyProxyTypeDictionary/DelayedTypeCollection..ctor()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyProxyTypeDictionary/DelayedTypeCollection.Add(System.Runtime.InteropServices.TypeMapLazyDictionary/LazyProxyTypeDictionary/SourceProxyPair)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyProxyTypeDictionary/DelayedTypeCollection.get_First()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyProxyTypeDictionary/DelayedTypeCollection.get_Others()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyProxyTypeDictionary/DelayedTypeCollection.set_First(System.Runtime.InteropServices.TypeMapLazyDictionary/LazyProxyTypeDictionary/SourceProxyPair)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyProxyTypeDictionary/DelayedTypeCollection.set_Others(System.Collections.Generic.List`1<System.Runtime.InteropServices.TypeMapLazyDictionary/LazyProxyTypeDictionary/SourceProxyPair>)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyProxyTypeDictionary/SourceProxyPair
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyProxyTypeDictionary/SourceProxyPair System.Runtime.InteropServices.TypeMapLazyDictionary/LazyProxyTypeDictionary/DelayedTypeCollection::<First>k__BackingField
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyProxyTypeDictionary/SourceProxyPair System.Runtime.InteropServices.TypeMapLazyDictionary/LazyProxyTypeDictionary/DelayedTypeCollection::First()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyProxyTypeDictionary/SourceProxyPair.get_Proxy()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyProxyTypeDictionary/SourceProxyPair.get_Source()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyProxyTypeDictionary/SourceProxyPair.set_Proxy(System.Runtime.InteropServices.TypeMapLazyDictionary/DelayedType)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyProxyTypeDictionary/SourceProxyPair.set_Source(System.Runtime.InteropServices.TypeMapLazyDictionary/DelayedType)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyTypeLoadDictionary`1
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyTypeLoadDictionary`1..ctor(System.RuntimeType)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyTypeLoadDictionary`1.AddPreCachedModule(System.Reflection.RuntimeModule)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyTypeLoadDictionary`1.get_Count()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyTypeLoadDictionary`1.GetEnumerator()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyTypeLoadDictionary`1.TryGetOrLoadType(TKey, out System.Type&)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyTypeLoadDictionary`1.TryGetOrLoadTypeFromPreCachedDictionary(System.Reflection.RuntimeModule, TKey, out System.Type&)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyTypeLoadDictionary`1.TryGetValue(TKey, out System.Type&)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/ProcessAttributesCallbackArg
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/TypeNameUtf8
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/TypeNameUtf8 System.Runtime.InteropServices.TypeMapLazyDictionary/DelayedType::_typeNameUtf8
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/TypeNameUtf8.get_Utf8TypeName()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/TypeNameUtf8.get_Utf8TypeNameLen()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/TypeNameUtf8.set_Utf8TypeName(System.Void*)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/TypeNameUtf8.set_Utf8TypeNameLen(System.Int32)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/Utf16SharedBuffer
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/Utf16SharedBuffer..ctor()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/Utf16SharedBuffer..ctor(System.Char[], System.Int32)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/Utf16SharedBuffer.Dispose()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/Utf16SharedBuffer.get_Buffer()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/Utf16SharedBuffer.set_Buffer(System.ReadOnlySpan`1<System.Char>)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapping
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapping.GetOrCreateExternalTypeMapping`1()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapping.GetOrCreateProxyTypeMapping`1()
 System.Private.CoreLib.dll:System.Runtime.InteropServices.UnmanagedCallConvAttribute
 System.Private.CoreLib.dll:System.Runtime.InteropServices.UnmanagedCallConvAttribute..ctor()
 System.Private.CoreLib.dll:System.Runtime.InteropServices.UnmanagedCallersOnlyAttribute
@@ -17043,7 +16461,6 @@ System.Private.CoreLib.dll:System.RuntimeType System.Reflection.RuntimePropertyI
 System.Private.CoreLib.dll:System.RuntimeType System.Runtime.CompilerServices.MethodTableAuxiliaryData::ExposedClassObject()
 System.Private.CoreLib.dll:System.RuntimeType System.Runtime.CompilerServices.TypeDesc::ExposedClassObject()
 System.Private.CoreLib.dll:System.RuntimeType System.Runtime.InteropServices.TypeMapLazyDictionary/CallbackContext::_groupType
-System.Private.CoreLib.dll:System.RuntimeType System.Runtime.InteropServices.TypeMapLazyDictionary/LazyTypeLoadDictionary`1::_groupType
 System.Private.CoreLib.dll:System.RuntimeType System.RuntimeType::ObjectType
 System.Private.CoreLib.dll:System.RuntimeType System.RuntimeType::StringType
 System.Private.CoreLib.dll:System.RuntimeType System.RuntimeType::ValueType
@@ -17902,7 +17319,9 @@ System.Private.CoreLib.dll:System.String System.Boolean::TrueString
 System.Private.CoreLib.dll:System.String System.Byte::System.IBinaryIntegerParseAndFormatInfo<System.Byte>.OverflowMessage()
 System.Private.CoreLib.dll:System.String System.Char::System.IBinaryIntegerParseAndFormatInfo<System.Char>.OverflowMessage()
 System.Private.CoreLib.dll:System.String System.CharEnumerator::_str
+System.Private.CoreLib.dll:System.String System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute::<AssemblyName>k__BackingField
 System.Private.CoreLib.dll:System.String System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute::<MemberSignature>k__BackingField
+System.Private.CoreLib.dll:System.String System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute::<TypeName>k__BackingField
 System.Private.CoreLib.dll:System.String System.Diagnostics.Contracts.ContractException::_condition
 System.Private.CoreLib.dll:System.String System.Diagnostics.Contracts.ContractException::_userMessage
 System.Private.CoreLib.dll:System.String System.Diagnostics.StackFrame::_fileName
@@ -18141,10 +17560,8 @@ System.Private.CoreLib.dll:System.String System.Reflection.Metadata.AssemblyName
 System.Private.CoreLib.dll:System.String System.Reflection.Metadata.AssemblyNameInfo::Name()
 System.Private.CoreLib.dll:System.String System.Reflection.Metadata.TypeName::_fullName
 System.Private.CoreLib.dll:System.String System.Reflection.Metadata.TypeName::_name
-System.Private.CoreLib.dll:System.String System.Reflection.Metadata.TypeName::_namespace
 System.Private.CoreLib.dll:System.String System.Reflection.Metadata.TypeName::FullName()
 System.Private.CoreLib.dll:System.String System.Reflection.Metadata.TypeName::Name()
-System.Private.CoreLib.dll:System.String System.Reflection.Metadata.TypeName::Namespace()
 System.Private.CoreLib.dll:System.String System.Reflection.Module::ScopeName()
 System.Private.CoreLib.dll:System.String System.Reflection.ParameterInfo::Name()
 System.Private.CoreLib.dll:System.String System.Reflection.ParameterInfo::NameImpl
@@ -20984,7 +20401,6 @@ System.Private.CoreLib.dll:System.ThreadStaticAttribute..ctor()
 System.Private.CoreLib.dll:System.ThrowHelper
 System.Private.CoreLib.dll:System.ThrowHelper.CreateEndOfFileException()
 System.Private.CoreLib.dll:System.ThrowHelper.GetAddingDuplicateWithKeyArgumentException(System.Object)
-System.Private.CoreLib.dll:System.ThrowHelper.GetAmbiguousMatchException(System.Attribute)
 System.Private.CoreLib.dll:System.ThrowHelper.GetAmbiguousMatchException(System.Reflection.MemberInfo)
 System.Private.CoreLib.dll:System.ThrowHelper.GetArgumentException(System.ExceptionResource, System.ExceptionArgument)
 System.Private.CoreLib.dll:System.ThrowHelper.GetArgumentException(System.ExceptionResource)
@@ -21457,7 +20873,6 @@ System.Private.CoreLib.dll:System.Type System.Runtime.CompilerServices.TypeForwa
 System.Private.CoreLib.dll:System.Type System.Runtime.CompilerServices.TypeForwardedToAttribute::Destination()
 System.Private.CoreLib.dll:System.Type System.Runtime.InteropServices.MarshalAsAttribute::MarshalTypeRef
 System.Private.CoreLib.dll:System.Type System.Runtime.InteropServices.MarshalAsAttribute::SafeArrayUserDefinedSubType
-System.Private.CoreLib.dll:System.Type System.Runtime.InteropServices.TypeMapLazyDictionary/DelayedType::_type
 System.Private.CoreLib.dll:System.Type System.RuntimeType::BaseType()
 System.Private.CoreLib.dll:System.Type System.RuntimeType::DeclaringType()
 System.Private.CoreLib.dll:System.Type System.RuntimeType::ReflectedType()
@@ -22146,6 +21561,7 @@ System.Private.CoreLib.dll:System.UInt32.System.Numerics.IUnaryNegationOperators
 System.Private.CoreLib.dll:System.UInt32.ToString()
 System.Private.CoreLib.dll:System.UInt32.ToString(System.IFormatProvider)
 System.Private.CoreLib.dll:System.UInt32.ToString(System.String, System.IFormatProvider)
+System.Private.CoreLib.dll:System.UInt32.ToString(System.String)
 System.Private.CoreLib.dll:System.UInt32.TrailingZeroCount(System.UInt32)
 System.Private.CoreLib.dll:System.UInt32.TryConvertFromChecked`1(TOther, out System.UInt32&)
 System.Private.CoreLib.dll:System.UInt32.TryConvertFromSaturating`1(TOther, out System.UInt32&)
@@ -22496,7 +21912,6 @@ System.Private.CoreLib.dll:System.Version..ctor(System.Int32, System.Int32, Syst
 System.Private.CoreLib.dll:System.Version..ctor(System.Int32, System.Int32, System.Int32)
 System.Private.CoreLib.dll:System.Version..ctor(System.Int32, System.Int32)
 System.Private.CoreLib.dll:System.Version.<TryFormatCore>g__ThrowArgumentException|35_0`1(System.String)
-System.Private.CoreLib.dll:System.Version.<TryParseComponent>g__ThrowFailure|49_0`1(System.Number/ParsingStatus, System.Int32, System.String, System.ReadOnlySpan`1<TChar>)
 System.Private.CoreLib.dll:System.Version.CompareTo(System.Object)
 System.Private.CoreLib.dll:System.Version.CompareTo(System.Version)
 System.Private.CoreLib.dll:System.Version.Equals(System.Object)
@@ -22509,15 +21924,12 @@ System.Private.CoreLib.dll:System.Version.get_Revision()
 System.Private.CoreLib.dll:System.Version.GetHashCode()
 System.Private.CoreLib.dll:System.Version.op_Equality(System.Version, System.Version)
 System.Private.CoreLib.dll:System.Version.op_Inequality(System.Version, System.Version)
-System.Private.CoreLib.dll:System.Version.Parse(System.String)
-System.Private.CoreLib.dll:System.Version.ParseVersion`1(System.ReadOnlySpan`1<TChar>, System.Boolean)
 System.Private.CoreLib.dll:System.Version.System.IFormattable.ToString(System.String, System.IFormatProvider)
 System.Private.CoreLib.dll:System.Version.System.ISpanFormattable.TryFormat(System.Span`1<System.Char>, out System.Int32&, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider)
 System.Private.CoreLib.dll:System.Version.ToString()
 System.Private.CoreLib.dll:System.Version.ToString(System.Int32)
 System.Private.CoreLib.dll:System.Version.TryFormat(System.Span`1<System.Char>, System.Int32, out System.Int32&)
 System.Private.CoreLib.dll:System.Version.TryFormatCore`1(System.Span`1<TChar>, System.Int32, out System.Int32&)
-System.Private.CoreLib.dll:System.Version.TryParseComponent`1(System.ReadOnlySpan`1<TChar>, System.String, System.Boolean, System.ReadOnlySpan`1<TChar>, out System.Int32&)
 System.Private.CoreLib.dll:System.Void
 System.Private.CoreLib.dll:System.Void* System.Buffers.MemoryHandle::_pointer
 System.Private.CoreLib.dll:System.Void* System.Buffers.MemoryHandle::Pointer()
@@ -22539,10 +21951,6 @@ System.Private.CoreLib.dll:System.Void* System.Runtime.EH/RhEHClause::_pTargetTy
 System.Private.CoreLib.dll:System.Void* System.Runtime.InteropServices.Swift.SwiftError::<Value>k__BackingField
 System.Private.CoreLib.dll:System.Void* System.Runtime.InteropServices.Swift.SwiftIndirectResult::<Value>k__BackingField
 System.Private.CoreLib.dll:System.Void* System.Runtime.InteropServices.Swift.SwiftSelf::<Value>k__BackingField
-System.Private.CoreLib.dll:System.Void* System.Runtime.InteropServices.TypeMapLazyDictionary/ProcessAttributesCallbackArg::Utf8String1
-System.Private.CoreLib.dll:System.Void* System.Runtime.InteropServices.TypeMapLazyDictionary/ProcessAttributesCallbackArg::Utf8String2
-System.Private.CoreLib.dll:System.Void* System.Runtime.InteropServices.TypeMapLazyDictionary/TypeNameUtf8::<Utf8TypeName>k__BackingField
-System.Private.CoreLib.dll:System.Void* System.Runtime.InteropServices.TypeMapLazyDictionary/TypeNameUtf8::Utf8TypeName()
 System.Private.CoreLib.dll:System.Void* System.Runtime.StackFrameIterator::RegisterSet()
 System.Private.CoreLib.dll:System.Void* System.RuntimeType/ActivatorCache::_allocatorFirstArg
 System.Private.CoreLib.dll:System.Void* System.RuntimeType/BoxCache::_allocatorFirstArg

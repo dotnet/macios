@@ -50,13 +50,13 @@ namespace ShazamKit {
 		MatchOffset,
 		[Field ("SHMediaItemFrequencySkew")]
 		FrequencySkew,
-		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Field ("SHMediaItemTimeRanges")]
 		TimeRanges,
-		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Field ("SHMediaItemFrequencySkewRanges")]
 		FrequencySkewRanges,
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Field ("SHMediaItemCreationDate")]
 		CreationDate,
 		[TV (18, 4), Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4)]
@@ -199,15 +199,15 @@ namespace ShazamKit {
 		[Export ("objectForKeyedSubscript:")]
 		NSObject GetObject (string key);
 
-		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("timeRanges", ArgumentSemantic.Strong)]
 		SHRange [] TimeRanges { get; }
 
-		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("frequencySkewRanges", ArgumentSemantic.Strong)]
 		SHRange [] FrequencySkewRanges { get; }
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[NullAllowed, Export ("creationDate", ArgumentSemantic.Strong)]
 		NSDate CreationDate { get; }
 	}
@@ -282,7 +282,7 @@ namespace ShazamKit {
 		SHSignature Signature { get; }
 
 		[Static, Async]
-		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("generateSignatureFromAsset:completionHandler:")]
 		void GenerateSignature (AVAsset asset, Action<SHSignature, NSError> completionHandler);
 	}
@@ -300,7 +300,7 @@ namespace ShazamKit {
 		void DidNotFindMatch (SHSession session, SHSignature signature, [NullAllowed] NSError error);
 	}
 
-	[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SHRange : NSSecureCoding, NSCopying {

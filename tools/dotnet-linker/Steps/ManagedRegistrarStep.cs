@@ -247,8 +247,10 @@ namespace Xamarin.Linker {
 					if (ctorRef is not null) {
 						var ctor = abr.CurrentAssembly.MainModule.ImportReference (ctorRef);
 
-						// Implement INSObjectFactory._Xamarin_ConstructNSObject
-						modified |= abr.ImplementConstructNSObjectFactoryMethod (DerivedLinkContext, type, ctor);
+						// Generic types can't be instantiated by the type map, because the concrete generic
+						// arguments aren't known there, so they must provide their own factory method.
+						if (type.HasGenericParameters)
+							modified |= abr.ImplementConstructNSObjectFactoryMethod (DerivedLinkContext, type, ctor);
 						// Implement INativeObject._Xamarin_ConstructINativeObject
 						modified |= abr.ImplementConstructINativeObjectFactoryMethod (DerivedLinkContext, type, ctor);
 					}

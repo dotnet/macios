@@ -342,6 +342,8 @@ public class AssemblyPreparer : IDisposable {
 	{
 		foreach (var assembly in Assemblies)
 			assembly.Assembly?.Dispose ();
+		configuration.Application.PreTrimAssemblyResolver?.Dispose ();
+		configuration.Application.PreTrimAssemblyResolver = null;
 		configuration.AssemblyResolver.ResolverCache.Clear ();
 		configuration.DerivedLinkContext.Assemblies.Clear ();
 	}

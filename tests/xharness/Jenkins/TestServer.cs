@@ -50,7 +50,7 @@ namespace Xharness.Jenkins {
 				var newPort = port != 0 ? port : r.Next (49152, 65535); // The suggested range for dynamic ports is 49152-65535 (IANA)
 				server = new HttpListener ();
 				server.Prefixes.Clear ();
-				server.Prefixes.Add ("http://127.0.0.1:" + newPort + "/");
+				server.Prefixes.Add ("http://localhost:" + newPort + "/");
 				try {
 					server.Start ();
 					port = newPort;

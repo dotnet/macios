@@ -1891,14 +1891,15 @@ namespace AppKit {
 		Square,
 	}
 
+	/// <summary>Specifies the shape used to join connected path segments.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSLineJoinStyle : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Joins segments by extending their outer edges until they meet.</summary>
 		Miter,
-		/// <summary>To be added.</summary>
+		/// <summary>Joins segments with a rounded corner.</summary>
 		Round,
-		/// <summary>To be added.</summary>
+		/// <summary>Joins segments with a beveled corner.</summary>
 		Bevel,
 	}
 

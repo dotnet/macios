@@ -22527,7 +22527,6 @@ T:AppKit.NSLevelIndicatorPlaceholderVisibility
 T:AppKit.NSLevelIndicatorStyle
 T:AppKit.NSLineBreakMode
 T:AppKit.NSLineBreakStrategy
-T:AppKit.NSLineJoinStyle
 T:AppKit.NSLineMovementDirection
 T:AppKit.NSLineSweepDirection
 T:AppKit.NSMatrixMode

@@ -2187,16 +2187,17 @@ namespace AppKit {
 	}
 	#endregion
 
+	/// <summary>Specifies the direction in which text layout sweeps across a line.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSLineSweepDirection : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Sweeps toward the left.</summary>
 		NSLineSweepLeft,
-		/// <summary>To be added.</summary>
+		/// <summary>Sweeps toward the right.</summary>
 		NSLineSweepRight,
-		/// <summary>To be added.</summary>
+		/// <summary>Sweeps downward.</summary>
 		NSLineSweepDown,
-		/// <summary>To be added.</summary>
+		/// <summary>Sweeps upward.</summary>
 		NSLineSweepUp,
 	}
 

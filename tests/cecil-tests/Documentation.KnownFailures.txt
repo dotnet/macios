@@ -22528,7 +22528,6 @@ T:AppKit.NSLevelIndicatorStyle
 T:AppKit.NSLineBreakMode
 T:AppKit.NSLineBreakStrategy
 T:AppKit.NSLineMovementDirection
-T:AppKit.NSLineSweepDirection
 T:AppKit.NSMatrixMode
 T:AppKit.NSMenuItemBadgeType
 T:AppKit.NSMenuPresentationStyle

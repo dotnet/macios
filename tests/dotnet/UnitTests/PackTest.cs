@@ -164,6 +164,7 @@ namespace Xamarin.Tests {
 
 		[Test]
 		[Category ("Multiplatform")]
+		[TestCase (ApplePlatform.iOS, true, true, true)]
 		[TestCase (ApplePlatform.iOS, true, true, false)]
 		[TestCase (ApplePlatform.iOS, true, false, true)]
 		[TestCase (ApplePlatform.iOS, true, false, false)]

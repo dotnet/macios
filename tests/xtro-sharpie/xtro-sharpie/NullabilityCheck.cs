@@ -344,15 +344,15 @@ namespace Extrospection {
 			if (type is Mono.Cecil.ArrayType array)
 				return 1 + CountNullablePositions (array.ElementType);
 
+			if (type.IsValueType)
+				return 0;
+
 			if (type is GenericInstanceType git) {
 				int count = 1; // the type itself
 				foreach (var arg in git.GenericArguments)
 					count += CountNullablePositions (arg);
 				return count;
 			}
-
-			if (type.IsValueType)
-				return 0;
 
 			return 1;
 		}

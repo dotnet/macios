@@ -2297,12 +2297,13 @@ namespace AppKit {
 		BigEndian32Bit = 1 << 11,
 	}
 
+	/// <summary>Specifies the orientation of printed pages.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSPrintingOrientation : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Prints pages in portrait orientation.</summary>
 		Portrait,
-		/// <summary>To be added.</summary>
+		/// <summary>Prints pages in landscape orientation.</summary>
 		Landscape,
 	}
 

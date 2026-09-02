@@ -22576,7 +22576,6 @@ T:AppKit.NSPopoverBehavior
 T:AppKit.NSPopUpArrowPosition
 T:AppKit.NSPressureBehavior
 T:AppKit.NSPrinterTableStatus
-T:AppKit.NSPrintingOrientation
 T:AppKit.NSPrintingPageOrder
 T:AppKit.NSPrintingPaginationMode
 T:AppKit.NSPrintPanelOptions

@@ -104,24 +104,28 @@ namespace Xamarin.Tests {
 			new TemplateInfo (ApplePlatform.iOS, "iosbinding", TemplateLanguage.CSharp),
 			new TemplateInfo (ApplePlatform.iOS, "ios-notification-content-extension", TemplateLanguage.CSharp),
 			new TemplateInfo (ApplePlatform.iOS, "ios-notification-service-extension", TemplateLanguage.CSharp),
+			new TemplateInfo (ApplePlatform.iOS, "iostest", TemplateLanguage.CSharp),
 
 			new TemplateInfo (ApplePlatform.TVOS, "tvos", TemplateLanguage.CSharp),
 			new TemplateInfo (ApplePlatform.TVOS, "tvos", TemplateLanguage.VisualBasic),
 			new TemplateInfo (ApplePlatform.TVOS, "tvoslib", TemplateLanguage.CSharp),
 			new TemplateInfo (ApplePlatform.TVOS, "tvoslib", TemplateLanguage.VisualBasic),
 			new TemplateInfo (ApplePlatform.TVOS, "tvosbinding", TemplateLanguage.CSharp),
+			new TemplateInfo (ApplePlatform.TVOS, "tvostest", TemplateLanguage.CSharp),
 
 			new TemplateInfo (ApplePlatform.MacCatalyst, "maccatalyst", TemplateLanguage.CSharp, execute: true),
 			new TemplateInfo (ApplePlatform.MacCatalyst, "maccatalyst", TemplateLanguage.VisualBasic, execute: true),
 			new TemplateInfo (ApplePlatform.MacCatalyst, "maccatalystlib", TemplateLanguage.CSharp),
 			new TemplateInfo (ApplePlatform.MacCatalyst, "maccatalystlib", TemplateLanguage.VisualBasic),
 			new TemplateInfo (ApplePlatform.MacCatalyst, "maccatalystbinding", TemplateLanguage.CSharp),
+			new TemplateInfo (ApplePlatform.MacCatalyst, "maccatalysttest", TemplateLanguage.CSharp),
 
 			new TemplateInfo (ApplePlatform.MacOSX, "macos", TemplateLanguage.CSharp, execute: true),
 			new TemplateInfo (ApplePlatform.MacOSX, "macos", TemplateLanguage.VisualBasic, execute: true),
 			new TemplateInfo (ApplePlatform.MacOSX, "macoslib", TemplateLanguage.CSharp),
 			new TemplateInfo (ApplePlatform.MacOSX, "macoslib", TemplateLanguage.VisualBasic),
 			new TemplateInfo (ApplePlatform.MacOSX, "macosbinding", TemplateLanguage.CSharp),
+			new TemplateInfo (ApplePlatform.MacOSX, "macostest", TemplateLanguage.CSharp),
 
 			/* item templates */
 			new TemplateInfo (ApplePlatform.iOS, "ios-controller"),

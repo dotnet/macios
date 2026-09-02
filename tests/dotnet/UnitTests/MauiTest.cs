@@ -8,6 +8,7 @@ using Mono.Cecil;
 namespace Xamarin.Tests {
 	[TestFixture]
 	public class MauiTest : TestBaseClass {
+		[Ignore ("MAUI doesn't load in .NET 11 projects yet (https://github.com/dotnet/macios/issues/24416)")]
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
 		public void BuildMauiApp (ApplePlatform platform, string runtimeIdentifiers)
@@ -67,6 +68,7 @@ namespace Xamarin.Tests {
 			Assert.That (mtouchLinkValue, Is.EqualTo ("None"), "MtouchLink");
 		}
 
+		[Ignore ("MAUI doesn't load in .NET 11 projects yet (https://github.com/dotnet/macios/issues/24416)")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
 		// [Category ("RemoteWindows")]
 		public void BuildMauiAppWithDeviceSpecificBuilds (ApplePlatform platform, string runtimeIdentifiers)

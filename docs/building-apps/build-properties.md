@@ -1320,7 +1320,11 @@ A string property that specifies the resource url for on-demand resources.
 
 ## OptimizePNGs
 
-A boolean property that specifies whether png images should be optimized.
+A boolean property that specifies whether PNG bundle resources should be optimized using Apple's `pngcrush` tool.
+
+In .NET 11 and later, this defaults to `true` for release builds on iOS, tvOS, and Mac Catalyst. It defaults to `false` for debug builds, macOS builds, and projects targeting earlier .NET versions. Set this property explicitly to opt in or out.
+
+The `Optimize` metadata on individual `BundleResource` items overrides this property.
 
 ## OptimizePngImagesDependsOn
 
@@ -1341,7 +1345,11 @@ Example:
 
 ## OptimizePropertyLists
 
-A boolean property that specifies whether property lists (plists) should be optimized.
+A boolean property that specifies whether property list (`.plist`) and localization (`.strings`) bundle resources should be converted to binary property lists.
+
+In .NET 11 and later, this defaults to `true` for release builds on iOS, tvOS, and Mac Catalyst. It defaults to `false` for debug builds, macOS builds, and projects targeting earlier .NET versions. Set this property explicitly to opt in or out.
+
+The `Optimize` metadata on individual `BundleResource` items overrides this property.
 
 ## OptimizePropertyListsDependsOn
 

@@ -61,6 +61,8 @@ include $(TOP)/mk/colors.mk
 
 unexport MSBUILD_EXE_PATH
 
+SPAWNER?=$(TOP)/tools/spawner/spawner
+
 BINLOG_TIMESTAMP:=$(shell date +%Y-%m-%d-%H%M%S)
 
 ifeq ($(TESTNAME),)
@@ -174,7 +176,7 @@ run: prepare
 	$(Q) $(DOTNET) build "/bl:$(abspath $@-$(BINLOG_TIMESTAMP).binlog)" *.?sproj $(DOTNET_BUILD_VERBOSITY) $(BUILD_ARGUMENTS) $(CONFIG_ARGUMENT) $(UNIVERSAL_ARGUMENT) $(NATIVEAOT_ARGUMENTS) $(TEST_VARIATION_ARGUMENT) -t:Run $(RUN_ARGUMENTS) -tl:off
 
 run-bare:
-	$(Q) $(EXECUTABLE) --autostart --autoexit $(RUN_ARGUMENTS)
+	$(Q) $(SPAWNER) $(EXECUTABLE) --autostart --autoexit $(RUN_ARGUMENTS)
 
 # Get the list of applicable simulators, and pick the first in the list.
 # Make sure to have a matching simulator runtime installed, otherwise this won't work.

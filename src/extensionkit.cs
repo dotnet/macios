@@ -13,7 +13,7 @@ using UIKit;
 #endif
 
 namespace ExtensionKit {
-	[Mac (13, 0), iOS (26, 0), MacCatalyst (26, 0), NoTV]
+	[iOS (26, 0), MacCatalyst (26, 0), NoTV]
 	[BaseType (typeof (UIViewController))]
 	interface EXAppExtensionBrowserViewController {
 		[DesignatedInitializer]
@@ -23,7 +23,7 @@ namespace ExtensionKit {
 
 	interface IEXHostViewControllerDelegate { }
 
-	[Mac (13, 0), iOS (26, 0), MacCatalyst (26, 0), NoTV]
+	[iOS (26, 0), MacCatalyst (26, 0), NoTV]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface EXHostViewControllerDelegate {
@@ -42,7 +42,7 @@ namespace ExtensionKit {
 	}
 
 	// @interface EXHostViewController : NSViewController
-	[Mac (13, 0), iOS (26, 0), MacCatalyst (26, 0), NoTV]
+	[iOS (26, 0), MacCatalyst (26, 0), NoTV]
 	[BaseType (typeof (UIViewController))]
 	interface EXHostViewController {
 		[DesignatedInitializer]

@@ -120,12 +120,12 @@ namespace UniformTypeIdentifiers {
 		// extension methods used in ShazamKit
 
 		[Static]
-		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("SHCustomCatalogContentType", ArgumentSemantic.Strong)]
 		UTType SHCustomCatalogContentType { get; }
 
 		[Static]
-		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("SHSignatureContentType", ArgumentSemantic.Strong)]
 		UTType SHSignatureContentType { get; }
 	}
@@ -560,7 +560,7 @@ namespace UniformTypeIdentifiers {
 		[Field ("UTTypeLog")]
 		UTType Log { get; }
 
-		[TV (17, 0), MacCatalyst (17, 0), Mac (14, 0), iOS (17, 0)]
+		[TV (17, 0), MacCatalyst (17, 0), iOS (17, 0)]
 		[Field ("UTTypeAHAP")]
 		UTType Ahap { get; }
 

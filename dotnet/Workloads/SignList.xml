@@ -143,6 +143,8 @@
     <!-- Xamarin.Messaging -->
     <FirstParty Include="Merq.dll" />
     <FirstParty Include="Merq.Core.dll" />
+    <FirstParty Include="Microsoft.Extensions.DependencyInjection.Abstractions.dll" />
+    <FirstParty Include="Microsoft.Extensions.Logging.Abstractions.dll" />
     <!-- Broker.zip -->
     <FirstParty Include="Broker.exe" />
     <FirstParty Include="Broker.resources.dll" />

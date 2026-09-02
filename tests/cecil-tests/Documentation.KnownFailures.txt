@@ -22616,7 +22616,6 @@ T:AppKit.NSSegmentDistribution
 T:AppKit.NSSegmentStyle
 T:AppKit.NSSegmentSwitchTracking
 T:AppKit.NSSelectionDirection
-T:AppKit.NSSelectionGranularity
 T:AppKit.NSSharingCollaborationMode
 T:AppKit.NSSharingContentScope
 T:AppKit.NSSharingServiceAnchoringViewForSharingService

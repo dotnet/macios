@@ -2147,14 +2147,15 @@ namespace AppKit {
 		Downstream,
 	}
 
+	/// <summary>Specifies the unit used when modifying a text selection.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSSelectionGranularity : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Selects text by character.</summary>
 		Character,
-		/// <summary>To be added.</summary>
+		/// <summary>Selects text by word.</summary>
 		Word,
-		/// <summary>To be added.</summary>
+		/// <summary>Selects text by paragraph.</summary>
 		Paragraph,
 	}
 

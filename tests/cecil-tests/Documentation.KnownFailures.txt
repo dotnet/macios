@@ -22523,7 +22523,6 @@ T:AppKit.NSLevelIndicatorPlaceholderVisibility
 T:AppKit.NSLevelIndicatorStyle
 T:AppKit.NSLineBreakMode
 T:AppKit.NSLineBreakStrategy
-T:AppKit.NSMatrixMode
 T:AppKit.NSMenuItemBadgeType
 T:AppKit.NSMenuPresentationStyle
 T:AppKit.NSMenuProperty

@@ -1755,16 +1755,17 @@ namespace AppKit {
 	#endregion
 
 	#region NSMatrix
+	/// <summary>Specifies how a matrix tracks and selects its cells.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSMatrixMode : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Allows a single cell to be selected at a time.</summary>
 		Radio,
-		/// <summary>To be added.</summary>
+		/// <summary>Highlights cells during interaction.</summary>
 		Highlight,
-		/// <summary>To be added.</summary>
+		/// <summary>Provides list-style cell selection.</summary>
 		List,
-		/// <summary>To be added.</summary>
+		/// <summary>Tracks interaction within individual cells.</summary>
 		Track,
 	}
 	#endregion

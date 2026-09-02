@@ -30,16 +30,16 @@ namespace Xamarin.Mac.Tests {
 		void TestDelegates (NSComboBox b)
 		{
 			NSTextField f = (NSTextField) b;
-			Assert.IsNotNull (b.Delegate, "NSComboBox delegate null");
-			Assert.IsNotNull (f.Delegate, "NSTextField delegate null");
-			Assert.AreEqual (b.Delegate.GetHashCode (), f.Delegate.GetHashCode (), "Delegates are not equal");
+			Assert.That (b.Delegate, Is.Not.Null, "NSComboBox delegate null");
+			Assert.That (f.Delegate, Is.Not.Null, "NSTextField delegate null");
+			Assert.That (f.Delegate.GetHashCode (), Is.EqualTo (b.Delegate.GetHashCode ()), "Delegates are not equal");
 		}
 
 		[Test]
 		public void DerivedEvents_OverwriteThrows ()
 		{
 #if RELEASE
-			var checkTrimmedAway = TestRuntime.IsLinkAll;
+			var checkTrimmedAway = TestRuntime.IsLinkAny;
 #else
 			var checkTrimmedAway = false;
 #endif
@@ -72,7 +72,7 @@ namespace Xamarin.Mac.Tests {
 				didThrow = true;
 			}
 			if (shouldThrow != didThrow)
-				Assert.Fail ("TestOverrideThrow ({0}, {1}) did not have expected thrown status", eventFirst, shouldThrow);
+				Assert.Fail ($"TestOverrideThrow ({eventFirst}, {shouldThrow}) did not have expected thrown status");
 		}
 	}
 }

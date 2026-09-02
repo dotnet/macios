@@ -50,7 +50,6 @@ public override UICollectionViewCell GetCell (UICollectionView collectionView, F
       </example>
     </remarks>
     
-    <related type="article" href="https://docs.xamarin.com/ios/Guides/User_Interface/Introduction_to_Collection_Views">Introduction to Collection Views</related>
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UICollectionViewCell_class/index.html">Apple documentation for <c>UICollectionViewCell</c></related>
   </Docs>
 </Documentation>

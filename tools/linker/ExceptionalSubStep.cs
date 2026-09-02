@@ -7,10 +7,8 @@ using Xamarin.Bundler;
 
 using Xamarin.Tuner;
 
-#if NET
 using Mono.Linker;
 using Mono.Linker.Steps;
-#endif
 
 namespace Xamarin.Linker {
 
@@ -18,15 +16,10 @@ namespace Xamarin.Linker {
 
 		protected DerivedLinkContext LinkContext {
 			get {
-#if NET && !LEGACY_TOOLS
 				return Configuration.DerivedLinkContext;
-#else
-				return (DerivedLinkContext) base.context;
-#endif
 			}
 		}
 
-#if NET && !LEGACY_TOOLS
 		protected LinkContext context {
 			get { return Context; }
 		}
@@ -40,7 +33,6 @@ namespace Xamarin.Linker {
 				return Configuration.Profile;
 			}
 		}
-#endif
 
 		public override sealed void ProcessAssembly (AssemblyDefinition assembly)
 		{

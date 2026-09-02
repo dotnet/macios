@@ -9,20 +9,10 @@
 
 namespace UIKit {
 	/// <summary>Provides data for the <see cref="UIKit.UIScrollView.DraggingEnded" /> event.</summary>
-	///     <remarks>
-	///     </remarks>
 	public partial class DraggingEventArgs : EventArgs {
-		/// <summary>Decelerating.</summary>
-		///         <remarks>To be added.</remarks>
-		public readonly static DraggingEventArgs True;
-		/// <summary>Not decelerating.</summary>
-		///         <remarks>To be added.</remarks>
-		public readonly static DraggingEventArgs False;
-
-		static DraggingEventArgs ()
-		{
-			True = new DraggingEventArgs (true);
-			False = new DraggingEventArgs (false);
-		}
+		/// <summary>Shared event data indicating that scrolling continues to decelerate after dragging ends.</summary>
+		public readonly static DraggingEventArgs True = new DraggingEventArgs (true);
+		/// <summary>Shared event data indicating that scrolling stops when dragging ends.</summary>
+		public readonly static DraggingEventArgs False = new DraggingEventArgs (false);
 	}
 }

@@ -2,8 +2,9 @@ TOP=../..
 
 include $(TOP)/Make.config
 include $(TOP)/mk/rules.mk
+include ../common/Make.common
 
-BUILD_DIR=bin/Debug/$(DOTNET_TFM)
+BUILD_DIR=bin/Debug
 
 DOTNET_TARGETS += \
 	$(BUILD_DIR)/dotnet-linker.dll \
@@ -14,8 +15,8 @@ DOTNET_DIRECTORIES += \
 	$(foreach platform,$(DOTNET_PLATFORMS),$(DOTNET_DESTDIR)/$($(platform)_NUGET_SDK_NAME)/tools/dotnet-linker) \
 
 # dotnet-linker.csproj.inc contains the dotnet_linker_dependencies variable used to determine if mtouch needs to be rebuilt or not.
-dotnet-linker.csproj.inc: export BUILD_EXECUTABLE=$(DOTNET) build
 dotnet-linker.csproj.inc: export BUILD_VERBOSITY=$(DOTNET_BUILD_VERBOSITY)
+dotnet-linker.csproj.inc: export DOTNET:=$(DOTNET)
 dotnet-linker.csproj.inc: dotnet-linker.csproj
 -include dotnet-linker.csproj.inc
 

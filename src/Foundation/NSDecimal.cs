@@ -240,7 +240,10 @@ namespace Foundation {
 		{
 			unsafe {
 				fixed (NSDecimal* self = &this) {
-					return new NSString (NSDecimalString (self, NSLocale.CurrentLocale.Handle));
+					var currentLocale = NSLocale.CurrentLocale;
+					var rv = new NSString (NSDecimalString (self, currentLocale.Handle));
+					GC.KeepAlive (currentLocale);
+					return rv;
 				}
 			}
 		}

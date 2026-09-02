@@ -32,8 +32,7 @@ namespace Xamarin.Tests {
 				Assert.That (expectedXcodeFxOutput, Does.Exist, $"Expected xcframework output '{expectedXcodeFxOutput}' did not exist.");
 			} else {
 				var resourcesZip = Path.Combine (testDir, "bin", config, platform.ToFramework (), $"{TestName}.resources.zip");
-				Assert.Contains ($"{xcodeProjName}{platform.AsString ()}.xcframework/Info.plist", ZipHelpers.List (resourcesZip),
-					$"Expected xcframework output was not found in '{resourcesZip}'.");
+				Assert.That (ZipHelpers.List (resourcesZip), Does.Contain ($"{xcodeProjName}{platform.AsString ()}.xcframework/Info.plist"), $"Expected xcframework output was not found in '{resourcesZip}'.");
 			}
 		}
 
@@ -59,16 +58,14 @@ namespace Xamarin.Tests {
 					{ "SchemeName", xcodeProjName },
 				});
 
-			var projProps = new Dictionary<string, string> {
-				{ "Configuration", projConfig },
-				{ "RuntimeIdentifier", rid },
-			};
+			var projProps = GetDefaultProperties (runtimeIdentifiers: rid);
+			projProps ["Configuration"] = projConfig;
 			DotNet.AssertBuild (proj, properties: projProps);
 			var appDir = Path.Combine (testDir, "bin", projConfig, platform.ToFramework (), rid, $"{TestName}.app");
 			Assert.That (appDir, Does.Exist, $"Expected app dir '{appDir}' did not exist.");
 			var appContent = Directory.GetFiles (appDir, "*", SearchOption.AllDirectories);
 			var expectedAppOutput = Path.Combine (testDir, "bin", projConfig, platform.ToFramework (), rid, $"{TestName}.app", "Frameworks", $"{xcodeProjName}.framework", "Info.plist");
-			Assert.Contains (expectedAppOutput, appContent, $"Expected framework output '{expectedAppOutput}' did not exist.");
+			Assert.That (appContent, Does.Contain (expectedAppOutput), $"Expected framework output '{expectedAppOutput}' did not exist.");
 
 		}
 
@@ -96,9 +93,8 @@ namespace Xamarin.Tests {
 					{ "SchemeName", xcodeProjName },
 				});
 
-			var projProps = new Dictionary<string, string> {
-				{ "Configuration", projConfig },
-			};
+			var projProps = GetDefaultProperties ();
+			projProps ["Configuration"] = projConfig;
 			DotNet.AssertBuild (proj, properties: projProps);
 			string expectedXcodeFxOutput;
 			if (UsesCompressedBindingResourcePackage (platform)) {
@@ -151,8 +147,9 @@ public class Binding
 ";
 			File.WriteAllText (Path.Combine (testDir, "Binding.cs"), classContent);
 
-			var rv = DotNet.AssertBuild (proj);
-			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).Select (v => v.Message);
+			var properties = GetDefaultProperties ();
+			var rv = DotNet.AssertBuild (proj, properties);
+			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).FilterWarnings (platform).Select (v => v.Message);
 			Assert.That (warnings, Is.Empty, $"Build warnings:\n\t{string.Join ("\n\t", warnings)}");
 			AssertXcFrameworkOutput (platform, testDir, xcodeProjName);
 		}
@@ -179,7 +176,8 @@ public class Binding
 					{ "SchemeName", xcodeProjName },
 				});
 
-			DotNet.AssertPack (proj);
+			var properties = GetDefaultProperties ();
+			DotNet.AssertPack (proj, properties);
 			var expectedNupkgOutput = Path.Combine (testDir, "bin", "Release", $"{TestName}.1.0.0.nupkg");
 			Assert.That (expectedNupkgOutput, Does.Exist, $"Expected pack output '{expectedNupkgOutput}' did not exist.");
 
@@ -190,7 +188,7 @@ public class Binding
 				zipContent = ZipHelpers.ListInnerZip (expectedNupkgOutput, $"lib/{tfm}/{TestName}.resources.zip");
 				expectedFxPath = $"{xcodeProjName}{platform.AsString ()}.xcframework/Info.plist";
 			}
-			Assert.Contains (expectedFxPath, zipContent, $"Expected xcframework output was not found in '{expectedNupkgOutput}'.");
+			Assert.That (zipContent, Does.Contain (expectedFxPath), $"Expected xcframework output was not found in '{expectedNupkgOutput}'.");
 		}
 
 		[Test]
@@ -217,7 +215,8 @@ public class Binding
 				});
 
 			// Build the first time
-			var rv = DotNet.AssertBuild (proj);
+			var properties = GetDefaultProperties ();
+			var rv = DotNet.AssertBuild (proj, properties);
 			var allTargets = BinLog.GetAllTargets (rv.BinLogPath);
 			AssertTargetExecuted (allTargets, "_BuildXcodeProjects", "First _BuildXcodeProjects");
 			var expectedXcodeFxOutput = Path.Combine (testDir, "bin", "Debug", platform.ToFramework (), $"{TestName}.resources", $"{xcodeProjName}{platform.AsString ().ToLower ()}.xcframework");
@@ -227,7 +226,7 @@ public class Binding
 			var outputFxFirstWriteTime = File.GetLastWriteTime (expectedXcodeFxOutput);
 
 			// Build again, _BuildXcodeProjects should be skipped and outputs should not be updated
-			rv = DotNet.AssertBuild (proj);
+			rv = DotNet.AssertBuild (proj, properties);
 			allTargets = BinLog.GetAllTargets (rv.BinLogPath);
 			AssertTargetNotExecuted (allTargets, "_BuildXcodeProjects", "Second _BuildXcodeProjects");
 			Assert.That (expectedXcodeFxOutput, Does.Exist, $"Expected xcframework output '{expectedXcodeFxOutput}' did not exist.");
@@ -236,12 +235,12 @@ public class Binding
 
 			// Update xcode project, _BuildXcodeProjects should run and outputs should be updated
 			File.SetLastWriteTime (Path.Combine (xcodeProjPath, "project.pbxproj"), DateTime.Now);
-			rv = DotNet.AssertBuild (proj);
+			rv = DotNet.AssertBuild (proj, properties);
 			allTargets = BinLog.GetAllTargets (rv.BinLogPath);
 			AssertTargetExecuted (allTargets, "_BuildXcodeProjects", "Third _BuildXcodeProjects");
 			Assert.That (expectedXcodeFxOutput, Does.Exist, $"Expected xcframework output '{expectedXcodeFxOutput}' did not exist.");
 			var outputFxThirdWriteTime = File.GetLastWriteTime (expectedXcodeFxOutput);
-			Assert.IsTrue (outputFxThirdWriteTime > outputFxFirstWriteTime, $"Expected '{outputFxThirdWriteTime}' write time of '{outputFxThirdWriteTime}' to be greater than first write '{outputFxFirstWriteTime}'");
+			Assert.That (outputFxThirdWriteTime, Is.GreaterThan (outputFxFirstWriteTime), $"Expected '{expectedXcodeFxOutput}' third write time '{outputFxThirdWriteTime}' to be greater than first write '{outputFxFirstWriteTime}'");
 		}
 
 		[Test]
@@ -269,7 +268,8 @@ public class Binding
 					{ "SchemeName", secondSchemeName },
 				});
 
-			DotNet.AssertBuild (proj);
+			var properties = GetDefaultProperties ();
+			DotNet.AssertBuild (proj, properties);
 			AssertXcFrameworkOutput (platform, testDir, xcodeProjName);
 			AssertXcFrameworkOutput (platform, testDir, secondSchemeName);
 		}
@@ -302,7 +302,8 @@ public class Binding
 					{ "SchemeName", xcodeProjName2 },
 				});
 
-			DotNet.AssertBuild (proj);
+			var properties = GetDefaultProperties ();
+			DotNet.AssertBuild (proj, properties);
 			AssertXcFrameworkOutput (platform, testDir, xcodeProjName);
 			AssertXcFrameworkOutput (platform, testDir, xcodeProjName2);
 		}
@@ -321,7 +322,7 @@ public class Binding
 			var existingProjContent = File.ReadAllText (proj);
 			var newProjContent = existingProjContent.Replace ($"<TargetFramework>{templatePlatform.ToFramework ()}</TargetFramework>", tfxs);
 			File.WriteAllText (proj, newProjContent);
-			StringAssert.Contains (tfxs, File.ReadAllText (proj));
+			Assert.That (File.ReadAllText (proj), Does.Contain (tfxs));
 
 			var xcodeProjName = "TemplateFx";
 			var xcodeProjDirSrc = Path.Combine (XCodeTestProjectDir, xcodeProjName);
@@ -332,7 +333,8 @@ public class Binding
 					{ "SchemeName", xcodeProjName },
 				});
 
-			DotNet.AssertBuild (proj);
+			var properties = GetDefaultProperties ();
+			DotNet.AssertBuild (proj, properties);
 			foreach (var platform in enabledPlatforms) {
 				AssertXcFrameworkOutput (platform, testDir, xcodeProjName);
 			}
@@ -355,7 +357,8 @@ public class Binding
 					{ "SchemeName", xcodeProjName },
 				});
 
-			var rv = DotNet.AssertBuildFailure (proj);
+			var properties = GetDefaultProperties ();
+			var rv = DotNet.AssertBuildFailure (proj, properties);
 			var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray ();
 			var expectedError = $"The Xcode project item: '{invalidXcodeProjPath}' could not be found. Please update the 'Include' value to a path containing a valid '.xcodeproj' file.";
 			AssertErrorMessages (errors, expectedError);
@@ -382,17 +385,12 @@ public class Binding
 					{ "SchemeName", invaldSchemeName },
 				});
 
-			var rv = DotNet.AssertBuildFailure (proj);
+			var properties = GetDefaultProperties ();
+			var rv = DotNet.AssertBuildFailure (proj, properties);
 			var expectedErrorContent = $"xcodebuild: error: The project named \"{xcodeProjName}\" does not contain a scheme named \"{invaldSchemeName}\".";
-			var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray ();
-			AssertErrorMessages (errors,
-				new Func<string, bool> [] {
-					(msg) => msg?.Contains (expectedErrorContent) == true
-				},
-				new Func<string> [] {
-					() => expectedErrorContent
-				}
-			);
+			var errors = BinLog.GetBuildMessages (rv.BinLogPath).ToArray ();
+			var anyExpectedError = errors.Where (v => v.Message?.Contains (expectedErrorContent) == true);
+			Assert.That (anyExpectedError.Any (), Is.True, "Expected error");
 		}
 
 	}

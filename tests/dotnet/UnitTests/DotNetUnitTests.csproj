@@ -3,14 +3,12 @@
 		<TargetFramework>net$(BundledNETCoreAppTargetFrameworkVersion)</TargetFramework>
 		<IsPackable>false</IsPackable>
 		<DefineConstants>$(DefineConstants);NET;TESTS</DefineConstants>
-		<Nullable>enable</Nullable>
-		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="nunit" Version="3.12.0" />
-		<PackageReference Include="NUnit3TestAdapter" Version="3.15.1" />
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
+		<PackageReference Include="NUnit" Version="$(NUnitPackageVersion)" />
+		<PackageReference Include="NUnit3TestAdapter" Version="$(NUnit3TestAdapterPackageVersion)" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="$(MicrosoftNETTestSdkPackageVersion)" />
 		<PackageReference Include="Mono.Cecil" Version="$(MonoCecilPackageVersion)" />
 		<PackageReference Include="MSBuild.StructuredLogger" Version="$(MSBuildStructuredLoggerPackageVersion)" />
 		<PackageReference Include="NUnitXml.TestLogger" Version="$(NUnitXmlTestLoggerPackageVersion)" />
@@ -47,14 +45,14 @@
 		<Compile Include="..\..\mtouch\Cache.cs">
 			<Link>external\Cache.cs</Link>
 		</Compile>
+		<Compile Include="..\..\..\tools\common\IToolLog.cs">
+			<Link>external\IToolLog.cs</Link>
+		</Compile>
 		<Compile Include="..\..\..\tools\common\TargetFramework.cs">
 			<Link>external\TargetFramework.cs</Link>
 		</Compile>
 		<Compile Include="..\..\common\BinLog.cs">
 			<Link>external\BinLog.cs</Link>
-		</Compile>
-		<Compile Include="..\..\..\external\Xamarin.MacDev\Xamarin.MacDev\PListObject.cs">
-			<Link>external\PListObject.cs</Link>
 		</Compile>
 		<Compile Include="..\..\..\tools\common\SdkVersions.cs">
 			<Link>external\SdkVersions.cs</Link>
@@ -83,6 +81,9 @@
 	</ItemGroup>
 	<ItemGroup>
 		<Folder Include="external\" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\external\Xamarin.MacDev\Xamarin.MacDev\Xamarin.MacDev.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Remove="System.Text.Json" />

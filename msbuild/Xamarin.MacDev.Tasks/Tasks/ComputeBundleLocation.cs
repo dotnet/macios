@@ -211,7 +211,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			if (path.EndsWith (".framework", StringComparison.OrdinalIgnoreCase)) {
 				// We might be inside a .xcframework, so check for that first
-				if (TryGetFrameworkDirectory (Path.GetDirectoryName (path), out var xcframeworkDirectory) && xcframeworkDirectory!.EndsWith (".xcframework", StringComparison.OrdinalIgnoreCase)) {
+				if (TryGetFrameworkDirectory (Path.GetDirectoryName (path)!, out var xcframeworkDirectory) && xcframeworkDirectory!.EndsWith (".xcframework", StringComparison.OrdinalIgnoreCase)) {
 					frameworkDirectory = xcframeworkDirectory;
 					return true;
 				}
@@ -220,7 +220,7 @@ namespace Xamarin.MacDev.Tasks {
 				return true;
 			}
 
-			return TryGetFrameworkDirectory (Path.GetDirectoryName (path), out frameworkDirectory);
+			return TryGetFrameworkDirectory (Path.GetDirectoryName (path)!, out frameworkDirectory);
 		}
 
 		// Check if the input, or any of it's parent directories is a *.resources directory or a *.resources.zip file next to a *.dll.
@@ -240,7 +240,7 @@ namespace Xamarin.MacDev.Tasks {
 				return true;
 			}
 
-			return IsBindingResourcePackage (Path.GetDirectoryName (path), out type);
+			return IsBindingResourcePackage (Path.GetDirectoryName (path)!, out type);
 		}
 
 		static string GetVirtualAppBundlePath (ITaskItem item)
@@ -294,7 +294,7 @@ namespace Xamarin.MacDev.Tasks {
 			var filename = item.ItemSpec;
 			var targetPath = item.GetMetadata ("TargetPath");
 			if (!string.IsNullOrEmpty (targetPath))
-				filename = Path.Combine (Path.GetDirectoryName (filename), Path.GetFileName (targetPath));
+				filename = Path.Combine (Path.GetDirectoryName (filename)!, Path.GetFileName (targetPath));
 
 			// Check if the item came from @(BundleResource), @(Content) or @(EmbeddedResource)
 			if (resourceFilesSet.Contains (Path.GetFullPath (item.ItemSpec)))

@@ -16,6 +16,7 @@ namespace MonoTouchFixtures.UIKit {
 
 		[Test]
 		[Retry (10)]
+		[Ignore ("Fails randomly on the 'b - length' assert, even after retrying 10 times (the clipboard sometimes has just one image for some reason)")]
 		public void ImagesTest ()
 		{
 			string file = Path.Combine (NSBundle.MainBundle.ResourcePath, "basn3p08.png");
@@ -24,14 +25,14 @@ namespace MonoTouchFixtures.UIKit {
 					using (var img = new UIImage (cgimg)) {
 						UIPasteboard.General.Images = new UIImage [] { img };
 						if (TestRuntime.CheckXcodeVersion (8, 0))
-							Assert.True (UIPasteboard.General.HasImages, "HasImages");
+							Assert.That (UIPasteboard.General.HasImages, Is.True, "HasImages");
 
-						Assert.AreEqual (1, UIPasteboard.General.Images.Length, "a - length");
+						Assert.That (UIPasteboard.General.Images.Length, Is.EqualTo (1), "a - length");
 
 						UIPasteboard.General.Images = new UIImage [] { img, img };
-						Assert.AreEqual (2, UIPasteboard.General.Images.Length, "b - length");
-						Assert.IsNotNull (UIPasteboard.General.Images [0], "b - nonnull[0]");
-						Assert.IsNotNull (UIPasteboard.General.Images [1], "b - nonnull[0]");
+						Assert.That (UIPasteboard.General.Images.Length, Is.EqualTo (2), "b - length");
+						Assert.That (UIPasteboard.General.Images [0], Is.Not.Null, "b - nonnull[0]");
+						Assert.That (UIPasteboard.General.Images [1], Is.Not.Null, "b - nonnull[0]");
 					}
 				}
 			}

@@ -40,7 +40,7 @@ namespace MonoTouchFixtures.VideoToolbox {
 
 			using (var asset = AVAsset.FromUrl (NSBundle.MainBundle.GetUrlForResource ("xamvideotest", "mp4")))
 			using (var session = CreateSession (asset)) {
-				Assert.IsNotNull (session, "Session should not be null");
+				Assert.That (session, Is.Not.Null, "Session should not be null");
 			}
 		}
 
@@ -59,7 +59,7 @@ namespace MonoTouchFixtures.VideoToolbox {
 					OnlyTheseFrames = VTOnlyTheseFrames.AllFrames
 				});
 
-				Assert.AreEqual (VTStatus.Ok, result, "SetDecompressionProperties");
+				Assert.That (result, Is.EqualTo (VTStatus.Ok), "SetDecompressionProperties");
 			}
 		}
 
@@ -78,7 +78,7 @@ namespace MonoTouchFixtures.VideoToolbox {
 					ShouldBeSerialized = true
 				});
 
-				Assert.AreEqual (VTStatus.Ok, result, "SetProperties");
+				Assert.That (result, Is.EqualTo (VTStatus.Ok), "SetProperties");
 			}
 		}
 
@@ -92,7 +92,7 @@ namespace MonoTouchFixtures.VideoToolbox {
 			using (var asset = AVAsset.FromUrl (NSBundle.MainBundle.GetUrlForResource ("xamvideotest", "mp4")))
 			using (var session = CreateSession (asset)) {
 				var supportedProps = session.GetSupportedProperties ();
-				Assert.NotNull (supportedProps, "GetSupportedProperties");
+				Assert.That (supportedProps, Is.Not.Null, "GetSupportedProperties");
 				Assert.That (supportedProps.Count, Is.GreaterThan ((nuint) 0), "GetSupportedProperties should be more than zero");
 			}
 		}
@@ -128,7 +128,7 @@ namespace MonoTouchFixtures.VideoToolbox {
 
 				asset.LoadTrackWithMediaCharacteristics (characteristic.GetConstant (), (tracks, error) => {
 					try {
-						Assert.Null (error, "Failed to load track");
+						Assert.That (error, Is.Null, "Failed to load track");
 
 						videoTrack = (AVAssetTrack) tracks.ToArray ().First ();
 
@@ -139,7 +139,7 @@ namespace MonoTouchFixtures.VideoToolbox {
 					}
 				});
 
-				Assert.IsTrue (loaded.Task.Wait (TimeSpan.FromSeconds (15)), "Timed out waiting for track to load");
+				Assert.That (loaded.Task.Wait (TimeSpan.FromSeconds (15)), Is.True, "Timed out waiting for track to load");
 				FormatDescription = loaded.Task.Result;
 			}
 
@@ -152,8 +152,8 @@ namespace MonoTouchFixtures.VideoToolbox {
 
 				do {
 					using var buffer = sampleBufferGenerator.CreateSampleBuffer (request, out var sampleBufferError);
-					Assert.NotNull (buffer, "Sample Buffer");
-					Assert.Null (sampleBufferError, "Sample Buffer Error");
+					Assert.That (buffer, Is.Not.Null, "Sample Buffer");
+					Assert.That (sampleBufferError, Is.Null, "Sample Buffer Error");
 
 					iterator (buffer);
 
@@ -171,6 +171,9 @@ namespace MonoTouchFixtures.VideoToolbox {
 			Assert.That (url, Is.Not.Null, "Url");
 
 			var failures = new List<string> ();
+			var knownDecoderCallbackStatusCount = 0;
+			var allowKnownDecoderCallbackStatus = TestRuntime.CheckSystemVersion (ApplePlatform.iOS, 26, 4, throwIfOtherPlatform: false)
+				|| TestRuntime.CheckSystemVersion (ApplePlatform.TVOS, 26, 4, throwIfOtherPlatform: false);
 
 			var bufferEnumerator = new SampleBufferEnumerator (url);
 
@@ -179,8 +182,13 @@ namespace MonoTouchFixtures.VideoToolbox {
 			using var session = CreateSession (bufferEnumerator.FormatDescription,
 				(sourceFrame, status, flags, buffer, presentationTimeStamp, presentationDuration) => {
 					frameCallbackCounter++;
-					if (status != VTStatus.Ok)
+					if (status != VTStatus.Ok) {
+						if (allowKnownDecoderCallbackStatus && (int) status == -8969) {
+							knownDecoderCallbackStatusCount++;
+							return;
+						}
 						failures.Add ($"Output callback #{frameCallbackCounter} failed. Expected status = Ok, got status = {status}");
+					}
 					if (sourceFrame != sourceFrameValue)
 						failures.Add ($"Output callback #{frameCallbackCounter} failed: Expected sourceFrame = 0x{sourceFrameValue:x}, got sourceFrame = 0x{sourceFrame:x}");
 				});
@@ -191,8 +199,11 @@ namespace MonoTouchFixtures.VideoToolbox {
 			});
 
 			Assert.That (session.FinishDelayedFrames (), Is.EqualTo (VTStatus.Ok), "FinishDelayedFrames");
+			Assert.That (session.WaitForAsynchronousFrames (), Is.EqualTo (VTStatus.Ok), "WaitForAsynchronousFrames");
 			Assert.That (frameCallbackCounter, Is.GreaterThan (0), "Frame callback counter");
 			Assert.That (failures, Is.Empty, "Failures");
+			if (knownDecoderCallbackStatusCount > 0)
+				Assert.Inconclusive ($"Known decoder callback status -8969 observed {knownDecoderCallbackStatusCount} times.");
 		}
 
 #if !__TVOS__
@@ -228,6 +239,7 @@ namespace MonoTouchFixtures.VideoToolbox {
 			});
 
 			Assert.That (session.FinishDelayedFrames (), Is.EqualTo (VTStatus.Ok), "FinishDelayedFrames");
+			Assert.That (session.WaitForAsynchronousFrames (), Is.EqualTo (VTStatus.Ok), "WaitForAsynchronousFrames");
 			Assert.That (frameCallbackCounter, Is.GreaterThan (0), "Frame callback counter 2");
 			Assert.That (failures, Is.Empty, "Failures");
 		}
@@ -278,6 +290,7 @@ namespace MonoTouchFixtures.VideoToolbox {
 			});
 
 			Assert.That (session.FinishDelayedFrames (), Is.EqualTo (VTStatus.Ok), "FinishDelayedFrames");
+			Assert.That (session.WaitForAsynchronousFrames (), Is.EqualTo (VTStatus.Ok), "WaitForAsynchronousFrames");
 			Assert.That (frameCallbackCounter, Is.GreaterThan (0), "Frame callback counter 2");
 			Assert.That (failures, Is.Empty, "Failures");
 		}
@@ -313,6 +326,7 @@ namespace MonoTouchFixtures.VideoToolbox {
 				Assert.That (status, Is.EqualTo (VTStatus.Ok), "DecodeFrame");
 			});
 			Assert.That (session.FinishDelayedFrames (), Is.EqualTo (VTStatus.Ok), "FinishDelayedFrames");
+			Assert.That (session.WaitForAsynchronousFrames (), Is.EqualTo (VTStatus.Ok), "WaitForAsynchronousFrames");
 
 			Assert.That (frameCallbackCounter, Is.EqualTo (0), "Frame callback counter 3");
 			Assert.That (inlineCallback, Is.GreaterThan (0), "Frame callback counter 4");

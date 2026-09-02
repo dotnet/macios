@@ -46,7 +46,7 @@ namespace MonoTouch.NUnit.UI {
 
 	public class TouchOptions {
 
-		static TouchOptions current;
+		static TouchOptions? current;
 		static public TouchOptions Current {
 			get {
 				if (current is null)
@@ -68,7 +68,9 @@ namespace MonoTouch.NUnit.UI {
 			HostName = defaults.StringForKey ("network.host.name");
 			HostPort = (int) defaults.IntForKey ("network.host.port");
 			UseTcpTunnel = defaults.BoolForKey ("execution.usetcptunnel");
-			Transport = defaults.StringForKey ("network.transport");
+			var transport = defaults.StringForKey ("network.transport");
+			if (!string.IsNullOrEmpty (transport))
+				Transport = transport;
 			SortNames = defaults.BoolForKey ("display.sort");
 			LogFile = defaults.StringForKey ("log.file");
 			TestName = defaults.StringForKey ("test.name");
@@ -89,8 +91,9 @@ namespace MonoTouch.NUnit.UI {
 				HostPort = i;
 			if (bool.TryParse (Environment.GetEnvironmentVariable ("NUNIT_SORTNAMES"), out b))
 				SortNames = b;
-			if (!string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("NUNIT_TRANSPORT")))
-				Transport = Environment.GetEnvironmentVariable ("NUNIT_TRANSPORT");
+			var envTransport = Environment.GetEnvironmentVariable ("NUNIT_TRANSPORT");
+			if (!string.IsNullOrEmpty (envTransport))
+				Transport = envTransport;
 			if (bool.TryParse (Environment.GetEnvironmentVariable ("NUNIT_ENABLE_XML_OUTPUT"), out b))
 				EnableXml = b;
 			var xml_mode = Environment.GetEnvironmentVariable ("NUNIT_ENABLE_XML_MODE");
@@ -110,7 +113,7 @@ namespace MonoTouch.NUnit.UI {
 				{ "hostport=", "HTTP/TCP port to connect to.", v => HostPort = int.Parse (v) },
 				{ "use-tcp-tunnel", "Use a TCP tunnel to connect to the host.", v => UseTcpTunnel = true },
 				{ "enablenetwork", "Enable the network reporter.", v => EnableNetwork = true },
-				{ "transport=", "Select transport method. Either TCP (default), HTTP or FILE.", v => Transport = v },
+				{ "transport=", "Select transport method. Either TCP (default), HTTP or FILE.", v => { if (v is not null) Transport = v; } },
 				{ "enablexml:", "Enable the xml reported.", v => EnableXml = string.IsNullOrEmpty (v) ? true : bool.Parse (v) },
 				{ "xmlmode=", "The xml mode.", v => XmlMode = (XmlMode) Enum.Parse (typeof (XmlMode), v, true) },
 				{ "xmlversion=", "The xml version.", v => XmlVersion = (XmlVersion) Enum.Parse (typeof (XmlVersion), v, true) },
@@ -138,7 +141,7 @@ namespace MonoTouch.NUnit.UI {
 
 		public bool EnableXml { get; set; }
 
-		public string HostName { get; private set; }
+		public string? HostName { get; private set; }
 
 		public int HostPort { get; private set; }
 
@@ -150,7 +153,7 @@ namespace MonoTouch.NUnit.UI {
 
 		public string Transport { get; set; } = "TCP";
 
-		public string LogFile { get; set; }
+		public string? LogFile { get; set; }
 
 		public bool ShowUseNetworkLogger {
 			get { return (EnableNetwork && !String.IsNullOrWhiteSpace (HostName) && (HostPort > 0)) || Transport == "FILE"; }
@@ -158,7 +161,7 @@ namespace MonoTouch.NUnit.UI {
 
 		public bool SortNames { get; set; }
 
-		public string TestName { get; set; }
+		public string? TestName { get; set; }
 
 #if !__MACOS__
 		public UIViewController GetViewController ()

@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Clang;
-using Clang.Ast;
-using Mono.Cecil;
+using System.Diagnostics.CodeAnalysis;
+using Sharpie.Bind;
 
 namespace Extrospection {
 	public static class AttributeHelpers {
@@ -15,7 +11,7 @@ namespace Extrospection {
 		}
 
 		// These both return out Version and bool as you can have an an attribute with no version (null) which is different no matching attribute at all
-		public static bool FindDeprecated (ICustomAttributeProvider item, out Version version)
+		public static bool FindDeprecated (ICustomAttributeProvider item, [NotNullWhen (true)] out Version? version)
 		{
 			version = null;
 
@@ -28,7 +24,7 @@ namespace Extrospection {
 			return false;
 		}
 
-		public static bool FindObsolete (ICustomAttributeProvider item, out Version version)
+		public static bool FindObsolete (ICustomAttributeProvider item, [NotNullWhen (true)] out Version? version)
 		{
 			version = null;
 
@@ -75,7 +71,7 @@ namespace Extrospection {
 			return attribute.Constructor.DeclaringType.Name == "ObsoleteAttribute";
 		}
 
-		static bool GetPlatformVersion (CustomAttribute attribute, out Version version)
+		static bool GetPlatformVersion (CustomAttribute attribute, out Version? version)
 		{
 			// Three different Attribute flavors
 			// (PlatformName platform, PlatformArchitecture architecture = PlatformArchitecture.None, string message = null)
@@ -98,9 +94,9 @@ namespace Extrospection {
 
 		public static bool FindObjcDeprecated (IEnumerable<Attr> attrs, out VersionTuple version)
 		{
-			AvailabilityAttr attr = attrs.OfType<AvailabilityAttr> ().FirstOrDefault (x => !x.Deprecated.IsEmpty && x.Platform.Name == Helpers.ClangPlatformName);
+			var attr = attrs.GetAvailabilityAttributes ().FirstOrDefault (x => x.AvailabilityAttributeDeprecated.HasValue && !x.AvailabilityAttributeDeprecated.Value.IsEmptyVersionTuple && x.AvailabilityAttributePlatformIdentifierName == Helpers.ClangPlatformName);
 			if (attr is not null) {
-				version = attr.Deprecated;
+				version = attr.AvailabilityAttributeDeprecated!.Value;
 				return true;
 			} else {
 				version = VersionTuple.Empty;
@@ -116,37 +112,49 @@ namespace Extrospection {
 			// Properties are a special case  as it is generated on the property itself and not the individual get_ \ set_ methods
 			// Cecil does not have a link between the MethodDefinition we have and the hosting PropertyDefinition, so we have to dig to find the match
 			if (item is MethodDefinition method) {
-				PropertyDefinition property = method.DeclaringType.Properties.FirstOrDefault (p => p.GetMethod == method || p.SetMethod == method);
+				var property = method.DeclaringType.Properties.FirstOrDefault (p => p.GetMethod == method || p.SetMethod == method);
 				if (property is not null && HasAnyDeprecationForCurrentPlatform (property)) {
 					return true;
 				}
 			}
 
-			// This allows us to accept [Deprecated (iOS)] for tv, which many of our bindings currently have
-			// If we want to force separate tv attributes remove GetRelatedPlatforms and just check Helpers.Platform
-			if (Helpers.IsDotNet) {
-				foreach (var attribute in item.CustomAttributes) {
-					if (AttributeHelpers.HasObsolete (attribute, Helpers.Platform))
-						return true;
+			foreach (var attribute in item.CustomAttributes) {
+				if (AttributeHelpers.HasObsolete (attribute, Helpers.Platform))
+					return true;
 
-					// Consider 'HasObsoletedOSPlatform' (Deprecated) and 'UnsupportedOSPlatform' (Obsoleted/Unavailable)
-					if (AttributeHelpers.HasObsoletedOSPlatform (attribute, Helpers.Platform) ||
-						AttributeHelpers.HasUnsupportedOSPlatform (attribute, Helpers.Platform))
-						return true;
+				// Consider 'HasObsoletedOSPlatform' (Deprecated) and 'UnsupportedOSPlatform' (Obsoleted/Unavailable)
+				if (AttributeHelpers.HasObsoletedOSPlatform (attribute, Helpers.Platform) ||
+					AttributeHelpers.HasUnsupportedOSPlatform (attribute, Helpers.Platform))
+					return true;
 
-					// The only related platforms for .NET is iOS for Mac Catalyst
-					if (Helpers.Platform == Platforms.MacCatalyst &&
-							(AttributeHelpers.HasObsoletedOSPlatform (attribute, Platforms.iOS) ||
-							 AttributeHelpers.HasUnsupportedOSPlatform (attribute, Platforms.iOS)))
-						return true;
-				}
-			} else {
-				Platforms [] platforms = GetRelatedPlatforms ();
-				foreach (var attribute in item.CustomAttributes) {
-					if (platforms.Any (x => AttributeHelpers.HasDeprecated (attribute, x)) || platforms.Any (x => AttributeHelpers.HasObsoleted (attribute, x)))
-						return true;
+				// The only related platforms for .NET is iOS for Mac Catalyst
+				if (Helpers.Platform == Platforms.MacCatalyst &&
+						(AttributeHelpers.HasObsoletedOSPlatform (attribute, Platforms.iOS) ||
+							AttributeHelpers.HasUnsupportedOSPlatform (attribute, Platforms.iOS)))
+					return true;
+			}
+			return false;
+		}
+
+		public static bool HasUnsupportedOSPlatform (ICustomAttributeProvider item)
+		{
+			if (Skip (item))
+				return false;
+
+			// Properties are a special case  as it is generated on the property itself and not the individual get_ \ set_ methods
+			// Cecil does not have a link between the MethodDefinition we have and the hosting PropertyDefinition, so we have to dig to find the match
+			if (item is MethodDefinition method) {
+				var property = method.DeclaringType.Properties.FirstOrDefault (p => p.GetMethod == method || p.SetMethod == method);
+				if (property is not null && HasUnsupportedOSPlatform (property)) {
+					return true;
 				}
 			}
+
+			foreach (var attribute in item.CustomAttributes) {
+				if (AttributeHelpers.HasUnsupportedOSPlatform (attribute, Helpers.Platform))
+					return true;
+			}
+
 			return false;
 		}
 
@@ -163,23 +171,6 @@ namespace Extrospection {
 			return false;
 		}
 
-		static Platforms [] GetRelatedPlatforms ()
-		{
-			// TV also implictly accept iOS
-			switch (Helpers.Platform) {
-			case Platforms.macOS:
-				return new Platforms [] { Platforms.macOS };
-			case Platforms.iOS:
-				return new Platforms [] { Platforms.iOS };
-			case Platforms.tvOS:
-				return new Platforms [] { Platforms.iOS, Platforms.tvOS };
-			case Platforms.MacCatalyst:
-				return new Platforms [] { Platforms.iOS, Platforms.MacCatalyst };
-			default:
-				throw new InvalidOperationException ($"Unknown {Helpers.Platform} in GetPlatforms");
-			}
-		}
-
 		public static bool HasAnyAdvice (ICustomAttributeProvider item)
 		{
 			if (Skip (item))
@@ -191,7 +182,7 @@ namespace Extrospection {
 			// Properties are a special case for [Advice], as it is generated on the property itself and not the individual get_ \ set_ methods
 			// Cecil does not have a link between the MethodDefinition we have and the hosting PropertyDefinition, so we have to dig to find the match
 			if (item is MethodDefinition method) {
-				PropertyDefinition property = method.DeclaringType.Properties.FirstOrDefault (p => p.GetMethod == method || p.SetMethod == method);
+				var property = method.DeclaringType.Properties.FirstOrDefault (p => p.GetMethod == method || p.SetMethod == method);
 				if (property is not null && HasAdviced (property.CustomAttributes))
 					return true;
 			}

@@ -1,11 +1,6 @@
-# The headers are quite clear that these enums aren't available on tvOS; so not adding them to tvOS for now
-!missing-enum! VTFrameRateConversionConfigurationQualityPrioritization not bound
-!missing-enum! VTFrameRateConversionConfigurationRevision not bound
-!missing-enum! VTFrameRateConversionParametersSubmissionMode not bound
-!missing-enum! VTMotionBlurConfigurationQualityPrioritization not bound
-!missing-enum! VTMotionBlurConfigurationRevision not bound
-!missing-enum! VTMotionBlurParametersSubmissionMode not bound
-!missing-enum! VTOpticalFlowConfigurationQualityPrioritization not bound
-!missing-enum! VTOpticalFlowConfigurationRevision not bound
-!missing-enum! VTOpticalFlowParametersSubmissionMode not bound
-
+# These enums are unavailable on tvOS natively (API_UNAVAILABLE on the typedef), but the managed enums are bound and used by bound API.
+!unknown-native-enum! VTSuperResolutionScalerConfigurationInputType bound
+!unknown-native-enum! VTSuperResolutionScalerConfigurationModelStatus bound
+!unknown-native-enum! VTSuperResolutionScalerConfigurationQualityPrioritization bound
+!unknown-native-enum! VTSuperResolutionScalerConfigurationRevision bound
+!unknown-native-enum! VTSuperResolutionScalerParametersSubmissionMode bound

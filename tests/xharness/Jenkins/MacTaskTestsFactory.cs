@@ -12,9 +12,9 @@ using Xharness.Jenkins.TestTasks;
 
 namespace Xharness.Jenkins {
 	class MacTestTasksFactory : TaskFactory {
-		readonly ICrashSnapshotReporterFactory crashReportSnapshotFactory;
+		readonly CrashSnapshotReporterFactory crashReportSnapshotFactory;
 
-		public MacTestTasksFactory (Jenkins jenkins, IMlaunchProcessManager processManager, TestVariationsFactory testVariationsFactory, ICrashSnapshotReporterFactory crashReportSnapshotFactory)
+		public MacTestTasksFactory (Jenkins jenkins, IMlaunchProcessManager processManager, TestVariationsFactory testVariationsFactory, CrashSnapshotReporterFactory crashReportSnapshotFactory)
 		: base (jenkins, processManager, testVariationsFactory)
 		{
 			this.crashReportSnapshotFactory = crashReportSnapshotFactory;

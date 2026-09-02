@@ -3,11 +3,14 @@
 // if they have any attributes that tells us the native name is different than the managed name.
 //
 
-using Mono.Cecil;
-
 namespace Extrospection {
 
 	public class MapNamesVisitor : BaseVisitor {
+		public MapNamesVisitor (BindingResult bindingResult)
+			: base (bindingResult)
+		{
+		}
+
 		public override void VisitManagedType (TypeDefinition type)
 		{
 			var nativeName = type.GetName ();

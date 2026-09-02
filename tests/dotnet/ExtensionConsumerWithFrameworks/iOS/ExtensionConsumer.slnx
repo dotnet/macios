@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="../../ExtensionProject/iOS/ExtensionProject.csproj" />
+  <Project Path="MySimpleApp.csproj" />
+</Solution>

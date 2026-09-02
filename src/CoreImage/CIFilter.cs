@@ -118,7 +118,6 @@ using UIKit;
 namespace CoreImage {
 	public partial class CIFilter {
 		/// <summary>Creates a new CIFilter with default values.</summary>
-		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -132,19 +131,15 @@ namespace CoreImage {
 		{
 		}
 
-		/// <param name="categories">To be added.</param>
-		///         <summary>Returns an array of strings that specifies the filters taht the system provides for the specified <paramref name="categories" />.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
-		public static string [] FilterNamesInCategories (params string [] categories)
+		/// <summary>Returns an array of strings that specifies the filters that the system provides for the specified <paramref name="categories" />.</summary>
+		/// <param name="categories">The categories.</param>
+		public static string [] FilterNamesInCategories (params string []? categories)
 		{
 			return _FilterNamesInCategories (categories);
 		}
 
-		/// <param name="key">To be added.</param>
 		/// <summary>Gets the value that is identified by <paramref name="key" />.</summary>
-		/// <value>To be added.</value>
-		/// <remarks>To be added.</remarks>
+		/// <param name="key">The key.</param>
 		public NSObject? this [NSString key] {
 			get {
 				NSObject? result = ValueForKey (key.GetHandle ());
@@ -270,8 +265,12 @@ namespace CoreImage {
 				Messaging.void_objc_msgSend_IntPtr_IntPtr (
 					this.Handle, Selector.GetHandle ("setValue:forKey:"), handle, nsname);
 			} else {
-				Messaging.void_objc_msgSendSuper_IntPtr_IntPtr (
-					this.SuperHandle, Selector.GetHandle ("setValue:forKey:"), handle, nsname);
+				unsafe {
+					var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this);
+					Messaging.void_objc_msgSendSuper_IntPtr_IntPtr (
+						&__objc_super__, Selector.GetHandle ("setValue:forKey:"), handle, nsname);
+					GC.KeepAlive (this);
+				}
 			}
 			CFString.ReleaseNative (nsname);
 		}
@@ -283,8 +282,13 @@ namespace CoreImage {
 
 			if (IsDirectBinding)
 				ret = Messaging.IntPtr_objc_msgSend_IntPtr (Handle, Selector.GetHandle ("valueForKey:"), nsname);
-			else
-				ret = Messaging.IntPtr_objc_msgSendSuper_IntPtr (SuperHandle, Selector.GetHandle ("valueForKey:"), nsname);
+			else {
+				unsafe {
+					var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this);
+					ret = Messaging.IntPtr_objc_msgSendSuper_IntPtr (&__objc_super__, Selector.GetHandle ("valueForKey:"), nsname);
+					GC.KeepAlive (this);
+				}
+			}
 
 			CFString.ReleaseNative (nsname);
 			return ret;

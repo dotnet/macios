@@ -8,17 +8,17 @@ using Microsoft.DotNet.XHarness.iOS.Shared.Execution;
 using Microsoft.DotNet.XHarness.iOS.Shared.Logging;
 
 namespace Xharness.Jenkins.TestTasks {
-	internal abstract class RunTestTask : AppleTestTask, IRunTestTask {
+	public abstract class RunTestTask : AppleTestTask {
 		protected RunTest runTest;
 		public IMlaunchProcessManager ProcessManager => runTest.ProcessManager;
-		public IBuildToolTask BuildTask => runTest.BuildTask;
+		public BuildToolTask BuildTask => runTest.BuildTask;
 
 		public double TimeoutMultiplier {
 			get => runTest.TimeoutMultiplier;
 			set => runTest.TimeoutMultiplier = value;
 		}
 
-		public string WorkingDirectory {
+		public string? WorkingDirectory {
 			get => runTest.WorkingDirectory;
 			set => runTest.WorkingDirectory = value;
 		}
@@ -28,7 +28,7 @@ namespace Xharness.Jenkins.TestTasks {
 			set => runTest.Timeout = value;
 		}
 
-		public RunTestTask (Jenkins jenkins, IBuildToolTask build_task, IMlaunchProcessManager processManager) : base (jenkins)
+		public RunTestTask (Jenkins jenkins, BuildToolTask build_task, IMlaunchProcessManager processManager) : base (jenkins)
 		{
 			runTest = new RunTest (
 				testTask: this,
@@ -98,7 +98,7 @@ namespace Xharness.Jenkins.TestTasks {
 			return ExecuteProcessAsync (null, filename, arguments);
 		}
 
-		protected Task ExecuteProcessAsync (ILog log, string filename, List<string> arguments)
+		protected Task ExecuteProcessAsync (ILog? log, string filename, List<string> arguments)
 		{
 			if (log is null)
 				log = Logs.Create ($"execute-{Timestamp}.txt", LogType.ExecutionLog.ToString ());

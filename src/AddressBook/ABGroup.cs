@@ -38,27 +38,6 @@ using System.Collections.Generic;
 using CoreFoundation;
 
 namespace AddressBook {
-	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
-	[SupportedOSPlatform ("maccatalyst")]
-	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
-	[UnsupportedOSPlatform ("macos")]
-	[UnsupportedOSPlatform ("tvos")]
-	static class ABGroupProperty {
-
-		public static int Name { get; private set; }
-
-		static ABGroupProperty ()
-		{
-			InitConstants.Init ();
-		}
-
-		internal static void Init ()
-		{
-			Name = Dlfcn.GetInt32 (Libraries.AddressBook.Handle, "kABGroupNameProperty");
-		}
-	}
-
 	/// <summary>
 	///       A grouping of <see cref="AddressBook.ABPerson" /> and
 	///       other <see cref="AddressBook.ABGroup" /> records.
@@ -104,7 +83,6 @@ namespace AddressBook {
 		public ABGroup ()
 			: base (ABGroupCreate (), true)
 		{
-			InitConstants.Init ();
 		}
 
 		[DllImport (Constants.AddressBookLibrary)]
@@ -219,11 +197,8 @@ namespace AddressBook {
 		public IEnumerator<ABRecord> GetEnumerator ()
 		{
 			var cfArrayRef = ABGroupCopyArrayOfAllMembers (Handle);
-			IEnumerable<ABRecord>? e = null;
-			if (cfArrayRef == IntPtr.Zero)
-				e = new ABRecord [0];
-			else
-				e = NSArray.ArrayFromHandle (cfArrayRef, h => ABRecord.FromHandle (h, AddressBook));
+			IEnumerable<ABRecord> e;
+			e = NSArray.NonNullArrayFromHandleDropNullElements (cfArrayRef, h => ABRecord.FromHandle (h, AddressBook), releaseHandle: true);
 			return e.GetEnumerator ();
 		}
 
@@ -248,9 +223,7 @@ namespace AddressBook {
 		public ABRecord [] GetMembers (ABPersonSortBy sortOrdering)
 		{
 			var cfArrayRef = ABGroupCopyArrayOfAllMembersWithSortOrdering (Handle, sortOrdering);
-			if (cfArrayRef == IntPtr.Zero)
-				return new ABRecord [0];
-			return NSArray.ArrayFromHandle (cfArrayRef, h => ABRecord.FromHandle (h, AddressBook));
+			return NSArray.NonNullArrayFromHandleDropNullElements (cfArrayRef, h => ABRecord.FromHandle (h, AddressBook), releaseHandle: true);
 		}
 
 		[DllImport (Constants.AddressBookLibrary)]

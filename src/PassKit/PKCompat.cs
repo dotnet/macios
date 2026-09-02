@@ -30,6 +30,8 @@ namespace PassKit {
 			throw new InvalidOperationException (Constants.RemovedFromPassKit);
 		}
 
+		/// <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>
+		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
 		protected internal PKDisbursementVoucher (NativeHandle handle) : base (handle)
 		{
 			throw new InvalidOperationException (Constants.RemovedFromPassKit);
@@ -69,6 +71,8 @@ namespace PassKit {
 			throw new InvalidOperationException (Constants.RemovedFromPassKit);
 		}
 
+		/// <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>
+		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
 		protected internal PKDisbursementAuthorizationController (NativeHandle handle) : base (handle)
 		{
 			throw new InvalidOperationException (Constants.RemovedFromPassKit);
@@ -127,9 +131,7 @@ namespace PassKit {
 			}
 		}
 
-		/// <param name="disposing">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			throw new InvalidOperationException (Constants.RemovedFromPassKit);
@@ -182,6 +184,8 @@ namespace PassKit {
 			throw new InvalidOperationException (Constants.RemovedFromPassKit);
 		}
 
+		/// <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>
+		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
 		protected internal PKDisbursementAuthorizationControllerDelegate (NativeHandle handle) : base (handle)
 		{
 			throw new InvalidOperationException (Constants.RemovedFromPassKit);

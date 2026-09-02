@@ -1,11 +1,7 @@
 #if IOS
-using System.Drawing;
 using System.Runtime.CompilerServices;
-using System.Diagnostics;
-using System.ComponentModel;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace UIKit {
 	public partial class UIPasteboard {
@@ -18,16 +14,14 @@ namespace UIKit {
 				var ret = new UIImage [array.Count];
 				for (uint i = 0; i < ret.Length; i++) {
 					var obj = Runtime.GetNSObject (array.ValueAt (i));
-					var data = obj as NSData;
-					UIImage img;
 
-					if (data is not null) {
-						img = new UIImage (data);
-					} else {
-						img = (UIImage) obj;
+					if (obj is NSData data) {
+						ret [i] = new UIImage (data);
+					} else if (obj is UIImage img) {
+						ret [i] = img;
+					} else if (obj is not null) {
+						throw new System.InvalidOperationException ("Unexpected object type in UIPasteboard images array: " + obj.GetType ().FullName);
 					}
-
-					ret [i] = img;
 				}
 
 				return ret;
@@ -40,6 +34,7 @@ namespace UIKit {
 		// the NSData objects whenever required, so that we can keep our existing
 		// API and not make users change their code.
 
+		/// <summary>Gets or sets the images on the pasteboard.</summary>
 		[CompilerGenerated]
 		public virtual UIImage [] Images {
 			[Export ("images", ArgumentSemantic.Copy)]
@@ -49,7 +44,11 @@ namespace UIKit {
 				if (IsDirectBinding) {
 					ret = GetImageArray (ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, Selector.GetHandle (selImages)));
 				} else {
-					ret = GetImageArray (ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper (this.SuperHandle, Selector.GetHandle (selImages)));
+					unsafe {
+						var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this);
+						ret = GetImageArray (ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper (&__objc_super__, Selector.GetHandle (selImages)));
+						GC.KeepAlive (this);
+					}
 				}
 				return ret;
 			}
@@ -63,7 +62,11 @@ namespace UIKit {
 				if (IsDirectBinding) {
 					ObjCRuntime.Messaging.void_objc_msgSend_IntPtr (this.Handle, Selector.GetHandle (selSetImages_), nsa_valueHandle);
 				} else {
-					ObjCRuntime.Messaging.void_objc_msgSendSuper_IntPtr (this.SuperHandle, Selector.GetHandle (selSetImages_), nsa_valueHandle);
+					unsafe {
+						var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this);
+						ObjCRuntime.Messaging.void_objc_msgSendSuper_IntPtr (&__objc_super__, Selector.GetHandle (selSetImages_), nsa_valueHandle);
+						GC.KeepAlive (this);
+					}
 				}
 
 				nsa_value.Dispose ();

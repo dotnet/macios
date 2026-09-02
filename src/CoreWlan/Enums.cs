@@ -2,6 +2,7 @@
 // Copyright 2019 Microsoft Corporation
 
 using CoreFoundation;
+using System.ComponentModel;
 
 namespace CoreWlan {
 
@@ -95,6 +96,9 @@ namespace CoreWlan {
 		/// <summary>To be added.</summary>
 		AC = 5,
 		AX = 6,
+		/// <summary>802.11be (Wi-Fi 7).</summary>
+		[Mac (26, 4)]
+		BE = 7,
 	}
 
 	[NoMacCatalyst]
@@ -138,9 +142,7 @@ namespace CoreWlan {
 		Wpa3Personal = 11,
 		Wpa3Enterprise = 12,
 		Wpa3Transition = 13,
-		[Mac (13, 0)]
 		Owe = 14,
-		[Mac (13, 0)]
 		OweTransition = 15,
 		/// <summary>To be added.</summary>
 		Unknown = long.MaxValue,
@@ -166,7 +168,12 @@ namespace CoreWlan {
 		/// <summary>To be added.</summary>
 		TwentyMHz = 1,
 		/// <summary>To be added.</summary>
-		FourtyMHz = 2,
+		FortyMHz = 2,
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'FortyMHz' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		FourtyMHz = FortyMHz,
+#endif
 		/// <summary>To be added.</summary>
 		EightyMHz = 3,
 		/// <summary>To be added.</summary>

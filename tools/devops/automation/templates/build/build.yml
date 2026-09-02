@@ -50,6 +50,14 @@ parameters:
   - name: XcodeChannel
     type: string
 
+  - name: requiredDiskSpace
+    type: number
+    default: 20
+
+  - name: statusContext
+    type: string
+    default: "Unknown context"
+
 steps:
 
   - template: ../common/checkout.yml
@@ -62,6 +70,8 @@ steps:
     parameters:
       disableCodeQL: ${{ parameters.disableCodeQL }}
       keyringPass: ${{ parameters.keyringPass }}
+      requiredDiskSpace: ${{ parameters.requiredDiskSpace }}
+      statusContext: ${{ parameters.statusContext }}
 
   - template: install-certificates.yml@yaml-templates
     parameters:
@@ -71,30 +81,11 @@ steps:
       MacDeveloper: $(mac-developer)
       HostedMacKeychainPassword: ${{ parameters.keyringPass }}
 
-  - bash: |
-      make -C $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops provisioning
-    displayName: 'Generate provisionator files.'
-
-  - task: xamops.azdevex.provisionator-task.provisionator@2
-    displayName: 'Provision Products & Frameworks'
-    inputs:
-      provisioning_script: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/build-provisioning.csx
-      provisioning_extra_args: '-vvvv'
-      github_token: ${{ parameters.gitHubToken }}
-    timeoutInMinutes: 250
-    retryCountOnTaskFailure: ${{ parameters.retryCount }}  # mono does give issues sometimes to download, we will retry
-
-  - bash: |
-      set -x
-      set -e
-      ARGS=()
-      ARGS+=(--ignore-all)
-      ARGS+=(--provision-xcode-components)
-      $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/system-dependencies.sh "${ARGS[@]}"
-    displayName: 'Provision dependencies'
-    timeoutInMinutes: 250
-    env:
-      XCODE_CHANNEL: ${{ parameters.xcodeChannel }}
+  - template: ../common/provision-xcode.yml
+    parameters:
+      repositoryPath: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)
+      xcodeChannel: ${{ parameters.XcodeChannel }}
+      retryCount: ${{ parameters.retryCount }}
 
   # Use the env variables that were set by the label parsing in the configure step
   # print some useful logging to allow to know what is going on AND allow make some
@@ -127,21 +118,23 @@ steps:
         displayName: "Configure install extra args"
         timeoutInMinutes: 5
 
-  - bash: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/bash/configure-build.sh
+  - bash: |
+      set -eo pipefail
+      set -x
+
+      ARGS=()
+      XCODE_PATH=$(xcode-select -p 2>/dev/null || true)
+      if [[ -n "$XCODE_PATH" && -d "$XCODE_PATH" ]]; then
+        ARGS+=("--xcode=$XCODE_PATH")
+      fi
+
+      ./configure "${ARGS[@]}"
     env:
       ${{ if eq(parameters.isPR, true) }}:
         IsPR: 'True'
       ${{ else }}:
         IsPR: 'False'
     displayName: "Configure build"
-    workingDirectory: "$(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)"
-    timeoutInMinutes: 5
-
-  - bash: |
-      set -x
-      set -e
-      cat configure.inc
-    displayName: "Print configuration"
     workingDirectory: "$(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)"
     timeoutInMinutes: 5
 
@@ -209,16 +202,18 @@ steps:
   - pwsh: |
       Import-Module $Env:SYSTEM_DEFAULTWORKINGDIRECTORY\$Env:BUILD_REPOSITORY_TITLE\tools\devops\automation\scripts\MaciosCI.psd1
       $githubComments = New-GitHubCommentsObjectFromUrl -Url "$(Build.Repository.Uri)" -Token $(GitHub.Token) -Hash $Env:COMMENT_HASH
-      $commentMessage = [System.Text.StringBuilder]::new()
+      # Only report failures, not successes. However, if the build succeeded, we
+      # still hide any previous "Build failed" comment for this job (which may
+      # have been posted by an earlier failing run of the same commit).
       if (("$Env:AGENT_JOBSTATUS" -eq "Succeeded") -or ("$Env:AGENT_JOBSTATUS" -eq "SucceededWithIssues")) {
-        $commentTitle = "Build passed ($(System.JobDisplayName))"
-        $commentIcon = ":white_check_mark:"
-        $commentMessage.AppendLine("")
-      } else {
-        $commentTitle = "Build failed ($(System.JobDisplayName))"
-        $commentIcon = ":fire:"
-        $commentMessage.AppendLine("Build failed for the job '$(System.JobDisplayName)' (with job status '$Env:AGENT_JOBSTATUS')")
+        Write-Host "Build passed, hiding any previous build failure comment instead of posting a new comment."
+        $githubComments.HandlePreviousCommentHiding("build $(System.JobDisplayName)")
+        return
       }
+      $commentMessage = [System.Text.StringBuilder]::new()
+      $commentTitle = "Build failed ($(System.JobDisplayName))"
+      $commentIcon = ":fire:"
+      $commentMessage.AppendLine("Build failed for the job '$(System.JobDisplayName)' (with job status '$Env:AGENT_JOBSTATUS')")
       $githubComments.NewCommentFromMessage($commentTitle, $commentIcon, $commentMessage.ToString(), "build $(System.JobDisplayName)")
     condition: always()
     displayName: 'Report build result'

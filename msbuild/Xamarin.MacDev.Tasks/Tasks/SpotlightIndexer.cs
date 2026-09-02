@@ -33,7 +33,7 @@ namespace Xamarin.MacDev.Tasks {
 			};
 			var executable = GetExecutable (args, "mdimport", MdimportPath);
 			cancellationTokenSource = new CancellationTokenSource ();
-			ExecuteAsync (Log, executable, args, cancellationToken: cancellationTokenSource.Token).Wait ();
+			ExecuteAsync (executable, args, cancellationToken: cancellationTokenSource.Token).Wait ();
 			return !Log.HasLoggedErrors;
 		}
 

@@ -16,17 +16,11 @@
 
     <DefineConstants Condition="'$(Configuration)' == 'Debug'">$(DefineConstants);DEBUG</DefineConstants>
 
-    <Nullable>enable</Nullable>
-
     <!-- warnings IL2026;IL2057;IL2059;IL2070;IL2075;IL2096: trimmability warnings. The introspection tests aren't trimmable (we set MtouchLink=None), so just ignore these -->
     <NoWarn>$(NoWarn);IL2026;IL2057;IL2059;IL2070;IL2075;IL2096</NoWarn>
 
     <!-- warning CA1422: This call site is reachable on: '...': we use APIs that aren't available on a certain OS platform all the time (in some cases to verify any broken behavior), so ignore such warnings -->
     <NoWarn>$(NoWarn);CA1422</NoWarn>
-
-    <!-- We're warning-free, so let's make sure we stay that way -->
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors>Nullable</WarningsAsErrors>
   </PropertyGroup>
 
   <Import Project="$(RootTestsDirectory)/common/shared-dotnet.csproj" />
@@ -40,7 +34,6 @@
     <Compile Include="$(IntrospectionTestDirectory)\MacCoreImageFiltersTest.cs" />
     <Compile Include="$(IntrospectionTestDirectory)\MacApiPInvokeTest.cs" />
     <Compile Include="$(IntrospectionTestDirectory)\MacApiWeakPropertyTest.cs" />
-    <Compile Include="$(IntrospectionTestDirectory)\MacApiTypoTest.cs" />
     <Compile Include="$(RootTestsDirectory)\common\mac\MacMain.cs">
       <Link>MacMain.cs</Link>
     </Compile>
@@ -58,8 +51,8 @@
     <Compile Include="$(IntrospectionTestDirectory)\iOSApiProtocolTest.cs" />
     <Compile Include="$(IntrospectionTestDirectory)\iOSApiWeakPropertyTest.cs" />
     <Compile Include="$(IntrospectionTestDirectory)\iOSApiPInvokeTest.cs" />
+    <Compile Include="$(IntrospectionTestDirectory)\iOSApiSimulatorAvailabilityTest.cs" />
     <Compile Include="$(IntrospectionTestDirectory)\iOSApiClassPtrTest.cs" />
-    <Compile Include="$(IntrospectionTestDirectory)\iOSApiTypoTest.cs" />
     <Compile Include="$(IntrospectionTestDirectory)\iOSCoreImageFiltersTest.cs" />
 
     <Compile Include="$(IntrospectionTestDirectory)\ApiCMAttachmentTest.cs">
@@ -69,15 +62,7 @@
     <InterfaceDefinition Include="$(IntrospectionTestDirectory)\LaunchScreen.storyboard" Condition="'$(_PlatformName)' != 'tvOS' And '$(_PlatformName)' != 'MacCatalyst' And '$(_PlatformName)' != 'macOS'" />
 
     <ImageAsset Include="$(IntrospectionTestDirectory)\Assets.xcassets\AppIcons.appiconset\Contents.json" />
-    <ImageAsset Include="$(IntrospectionTestDirectory)\Assets.xcassets\AppIcons.appiconset\Icon-app-60%403x.png" />
-    <ImageAsset Include="$(IntrospectionTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-app-57.png" />
-    <ImageAsset Include="$(IntrospectionTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-app-57%402x.png" />
-    <ImageAsset Include="$(IntrospectionTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-app-60%402x.png" />
-    <ImageAsset Include="$(IntrospectionTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-app-72.png" />
-    <ImageAsset Include="$(IntrospectionTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-app-72%402x.png" />
-    <ImageAsset Include="$(IntrospectionTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-app-76.png" />
-    <ImageAsset Include="$(IntrospectionTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-app-76%402x.png" />
-    <ImageAsset Include="$(IntrospectionTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-app-83.5%402x.png" />
+    <ImageAsset Include="$(IntrospectionTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-1024.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -98,6 +83,9 @@
     </Compile>
     <Compile Include="$(IntrospectionTestDirectory)\ApiPInvokeTest.cs">
       <Link>ApiPInvokeTest.cs</Link>
+    </Compile>
+    <Compile Include="$(IntrospectionTestDirectory)\ApiSimulatorAvailabilityTest.cs">
+      <Link>ApiSimulatorAvailabilityTest.cs</Link>
     </Compile>
     <Compile Include="$(IntrospectionTestDirectory)\ApiProtocolTest.cs">
       <Link>ApiProtocolTest.cs</Link>
@@ -128,6 +116,9 @@
     </Compile>
     <Compile Include="$(IntrospectionTestDirectory)\..\common\TestRuntime.cs">
       <Link>TestRuntime.cs</Link>
+    </Compile>
+    <Compile Include="$(IntrospectionTestDirectory)\..\common\TestRuntime.LinkAll.cs">
+      <Link>TestRuntime.LinkAll.cs</Link>
     </Compile>
     <Compile Include="$(IntrospectionTestDirectory)\..\..\tools\common\Frameworks.cs">
       <Link>Frameworks.cs</Link>

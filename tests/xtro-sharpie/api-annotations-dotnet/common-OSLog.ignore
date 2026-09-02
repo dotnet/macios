@@ -1,0 +1,2 @@
+# updated sharpie results
+!missing-protocol-conformance! OSLogEntry should conform to NSSecureCoding (defined in '' category)

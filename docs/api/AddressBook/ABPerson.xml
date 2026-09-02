@@ -229,8 +229,5 @@
       </list>
     </remarks>
     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/MonoCatalog-MonoDevelop/">monocatalog</related>
-    <related type="recipe" href="https://developer.xamarin.com/ios/Recipes/Shared_Resources/Contacts/Choose_a_Contact">Choose a Contact</related>
-    <related type="recipe" href="https://developer.xamarin.com/ios/Recipes/Shared_Resources/Contacts/Create_a_new_Contact">Create a New Contact</related>
-    <related type="recipe" href="https://developer.xamarin.com/ios/Recipes/Shared_Resources/Contacts/Find_a_Contact">Find a Contact</related>
   </Docs>
 </Documentation>

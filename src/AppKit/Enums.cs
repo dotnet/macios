@@ -488,7 +488,12 @@ namespace AppKit {
 		/// <summary>To be added.</summary>
 		EditableTextArea = 2,
 		/// <summary>To be added.</summary>
-		TrackableArae = 4,
+		TrackableArea = 4,
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'TrackableArea' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		TrackableArae = TrackableArea,
+#endif
 	}
 
 	[NoMacCatalyst]
@@ -1718,7 +1723,12 @@ namespace AppKit {
 	[Native]
 	public enum NSAnimationEffect : ulong {
 		/// <summary>To be added.</summary>
-		DissapearingItemDefault = 0,
+		DisappearingItemDefault = 0,
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'DisappearingItemDefault' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		DissapearingItemDefault = DisappearingItemDefault,
+#endif
 		/// <summary>To be added.</summary>
 		EffectPoof = 10,
 	}
@@ -1897,7 +1907,6 @@ namespace AppKit {
 		CurveTo,
 		/// <summary>To be added.</summary>
 		ClosePath,
-		[Mac (14, 0)]
 		QuadraticCurveTo,
 	}
 	#endregion
@@ -2527,11 +2536,12 @@ namespace AppKit {
 		Unitalic = 0x1000000,
 	}
 
+	/// <summary>Specifies options for writing objects to a pasteboard.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSPasteboardWritingOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The object promises to provide its pasteboard data later.</summary>
 		WritingPromised = 1 << 9,
 	}
 
@@ -2716,7 +2726,6 @@ namespace AppKit {
 		Sidebar,
 		/// <summary>To be added.</summary>
 		ContentList,
-		[Mac (14, 0)]
 		Inspector,
 	}
 
@@ -2914,11 +2923,12 @@ namespace AppKit {
 		RatingLevel,
 	}
 
+	/// <summary>Specifies options for creating or modifying font collections.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSFontCollectionOptions : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Limits the font collection to the current application.</summary>
 		ApplicationOnlyMask = 1,
 	}
 
@@ -4017,19 +4027,21 @@ namespace AppKit {
 		AllowUserInteraction = 0x1000,
 	}
 
+	/// <summary>Describes whether an application has visible content.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSApplicationOcclusionState : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>At least part of the application's content is visible.</summary>
 		Visible = 1 << 1,
 	}
 
+	/// <summary>Describes whether a window is visible to the user.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSWindowOcclusionState : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>At least part of the window is visible.</summary>
 		Visible = 1 << 1,
 	}
 
@@ -4171,11 +4183,12 @@ namespace AppKit {
 		NoHover = 1 << 3,
 	}
 
+	/// <summary>Specifies how to order windows in a window list.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSWindowListOptions : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Orders windows from front to back.</summary>
 		OrderedFrontToBack = (1 << 0),
 	}
 
@@ -4306,10 +4319,11 @@ namespace AppKit {
 		Bezel,
 	}
 
+	/// <summary>Specifies options for replacing the contents of a pasteboard.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSPasteboardContentsOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Restricts the pasteboard contents to the current host.</summary>
 		CurrentHostOnly = 1,
 	}
 
@@ -4443,11 +4457,12 @@ namespace AppKit {
 		Catalog,
 	}
 
+	/// <summary>Specifies options for requesting downloadable font assets.</summary>
 	[NoMacCatalyst]
 	[Native]
 	[Flags]
 	public enum NSFontAssetRequestOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Displays the standard user interface while downloading fonts.</summary>
 		UsesStandardUI = 1 << 0,
 	}
 
@@ -4579,7 +4594,7 @@ namespace AppKit {
 		Large = 3,
 	}
 
-	[NoMacCatalyst, Mac (13, 0)]
+	[NoMacCatalyst]
 	[Native]
 	public enum NSColorWellStyle : long {
 		Default = 0,
@@ -4587,14 +4602,14 @@ namespace AppKit {
 		Expanded,
 	}
 
-	[NoMacCatalyst, Mac (13, 0)]
+	[NoMacCatalyst]
 	[Native]
 	public enum NSComboButtonStyle : long {
 		Split = 0,
 		Unified = 1,
 	}
 
-	[NoMacCatalyst, Mac (14, 0)]
+	[NoMacCatalyst]
 	[Native]
 	public enum NSImageDynamicRange : long {
 		Unspecified = -1,
@@ -4603,7 +4618,7 @@ namespace AppKit {
 		High = 2,
 	}
 
-	[NoMacCatalyst, Mac (14, 0)]
+	[NoMacCatalyst]
 	[Native]
 	public enum NSMenuItemBadgeType : long {
 		None = 0,
@@ -4612,14 +4627,14 @@ namespace AppKit {
 		Alerts,
 	}
 
-	[NoMacCatalyst, Mac (14, 0)]
+	[NoMacCatalyst]
 	[Native]
 	public enum NSMenuPresentationStyle : long {
 		Regular = 0,
 		Palette = 1,
 	}
 
-	[NoMacCatalyst, Mac (14, 0)]
+	[NoMacCatalyst]
 	[Native]
 	public enum NSMenuSelectionMode : long {
 		Automatic = 0,
@@ -4627,21 +4642,21 @@ namespace AppKit {
 		SelectAny = 2,
 	}
 
-	[NoMacCatalyst, Mac (14, 0)]
+	[NoMacCatalyst]
 	[Native]
 	public enum NSPageLayoutResult : long {
 		Cancelled = 0,
 		Changed,
 	}
 
-	[NoMacCatalyst, Mac (14, 0)]
+	[NoMacCatalyst]
 	[Native]
 	public enum NSPrintPanelResult : long {
 		Cancelled = 0,
 		Printed,
 	}
 
-	[NoMacCatalyst, Mac (14, 0)]
+	[NoMacCatalyst]
 	[Native]
 	public enum NSTextCursorAccessoryPlacement : long {
 		Unspecified,
@@ -4655,7 +4670,7 @@ namespace AppKit {
 		OffscreenBottom,
 	}
 
-	[NoMacCatalyst, Mac (14, 0)]
+	[NoMacCatalyst]
 	[Native]
 	[Flags]
 	public enum NSTextInsertionIndicatorAutomaticModeOptions : long {
@@ -4663,7 +4678,7 @@ namespace AppKit {
 		WhileTracking = 1L << 1,
 	}
 
-	[NoMacCatalyst, Mac (14, 0)]
+	[NoMacCatalyst]
 	[Native]
 	public enum NSTextInsertionIndicatorDisplayMode : long {
 		Automatic = 0,

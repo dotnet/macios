@@ -178,18 +178,6 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";E0032" ItemType="0;.resx" PsrId="211" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Could not locate SDK bin directory]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[SDK bölme dizini bulunamadı]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Could not locate SDK bin directory]D;]A;        ]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
       <Item ItemId=";E0044" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Could not find a valid Xcode app bundle at '{0}'. Please update your Apple SDK location in Visual Studio's preferences {1}.]]></Val>
@@ -475,18 +463,6 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";E0085" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Could not locate the {0} '{1}' SDK usr path at '{2}']]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['{0}' konumunda {1} '{2}' SDK kullanıcı yolu bulunamadı]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Could not locate the {0} '{1}' SDK usr path at '{2}']D;]A;        ]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
       <Item ItemId=";E0086" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Could not find a valid Xcode developer path]]></Val>
@@ -707,7 +683,7 @@
         <Str Cat="Text">
           <Val><![CDATA[{0} exited with code {1}:]D;]A;{2}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{0} {1}:]D; koduyla çıktı]A;{2}]]></Val>
+            <Val><![CDATA[{0} {1} koduyla çıktı:]D;]A;{2}]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -2740,6 +2716,51 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";E7164" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The task '{0}' is trying to call an external process, but a path to Xcode has not been provided. Please file an issue at https://github.com/dotnet/macios/issues/new/choose.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA['{0}' görevi bir dış işlemi çağırmaya çalışıyor, ancak Xcode yolu belirtilmemiş. Lütfen sorunu https://github.com/dotnet/macios/issues/new/choose adresinden bildirin.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E7169" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The task '{0}' requires the property '{1}' to be set. Please file an issue at https://github.com/dotnet/macios/issues/new/choose.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA['{0}' görevinde '{1}' özelliğinin belirtilmesi gerekiyor. Lütfen sorunu https://github.com/dotnet/macios/issues/new/choose adresinden bildirin.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E7175" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The {0} simulator runtime is not installed. This is required by Apple's development tools (even when building for physical devices). Install it by running 'xcodebuild -downloadPlatform {0}' from the command line, or from Xcode (Settings > Components).]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[{0} simülatör çalışma zamanı yüklü değil. Bu, Apple'ın geliştirme araçları için gereklidir (fiziksel cihazlar için derleme yaparken bile). Komut satırından veya Xcode'dan 'xcodebuild -downloadPlatform {0}' komutunu çalıştırarak yükleyin (Ayarlar > Bileşenleri).]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E7177" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The installed {0} simulator runtime is not compatible with the current Xcode version. Update the simulator runtime by running 'xcodebuild -downloadPlatform {0}' from the command line, or from Xcode (Settings > Components).]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Yüklü {0} simülatör çalışma zamanı geçerli Xcode sürümüyle uyumlu değil. Komut satırından 'xcodebuild -downloadPlatform {0}' komutunu çalıştırarak ya da Xcode içinden (Ayarlar > Bileşenler) simülatör çalışma zamanını güncelleştirin.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E7178" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Console.StandardOutput or Console.StandardError was accessed during a build task. This should not happen, use the MSBuild logging infrastructure instead. Stack trace: {0}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Derleme görevi sırasında Console.StandardOutput veya Console.StandardError değerine erişildi. Bu olmamalıydı, bunun yerine MSBuild günlük altyapısını kullanın. Yığın izleme: {0}]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";InvalidFramework" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Invalid framework: {0}]]></Val>
@@ -3627,6 +3648,51 @@
           <Val><![CDATA[Not creating a compressed binding resource package, because all the native references are already compressed.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Tüm yerel referanslar zaten sıkıştırılmış olduğundan, sıkıştırılmış bir bağlama kaynak paketi oluşturulmaz.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7171" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The environment variable '{0}' is deprecated, and will be ignored in .NET 11+. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[‘{0}’ ortam değişkeni kullanım dışı ve .NET 11+ sürümünde yoksayılacak. Hangi Xcode’un kullanılacağını seçmek için lütfen 'DEVELOPER_DIR' ortam değişkenini veya 'XcodeLocation' MSBuild özelliğini kullanın.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7172" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The environment variable '{0}' is deprecated, and will be ignored. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[‘{0}’ ortam değişkeni kullanım dışı ve yoksayılacak. Hangi Xcode’un kullanılacağını seçmek için lütfen 'DEVELOPER_DIR' ortam değişkenini veya 'XcodeLocation' MSBuild özelliğini kullanın.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7173" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The settings file '{0}' is deprecated, and will be ignored in .NET 11+. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[‘{0}’ ayarlar dosyası kullanım dışı ve .NET 11+ sürümünde yoksayılacak. Hangi Xcode’un kullanılacağını seçmek için lütfen 'DEVELOPER_DIR' ortam değişkenini veya 'XcodeLocation' MSBuild özelliğini kullanın.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7174" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The settings file '{0}' is deprecated, and will be ignored. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[‘{0}’ ayarlar dosyası kullanım dışı ve yoksayılacak. Hangi Xcode’un kullanılacağını seçmek için lütfen 'DEVELOPER_DIR' ortam değişkenini veya 'XcodeLocation' MSBuild özelliğini kullanın.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7176" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unable to determine if the {0} simulator runtime is installed. If the build fails or hangs, install the {0} simulator runtime by running 'xcodebuild -downloadPlatform {0}' from the command line.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[{0} simülatör çalışma zamanının yüklü olup olmadığı belirlenemiyor. Derleme başarısız olursa veya askıda kalırsa komut satırından 'xcodebuild -downloadPlatform {0}' komutunu çalıştırarak {0}simülatör çalışma zamanını yükleyin.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

@@ -16,10 +16,6 @@
     <!-- if this one becomes a problem we can easily fix it with a search&replace -->
     <NoWarn>$(NoWarn);CS8981</NoWarn>
 
-    <!-- We're warning-free, so let's make sure we stay that way -->
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors>Nullable</WarningsAsErrors>
-
     <DefineConstants>$(DefineConstants);BINDINGS_TEST</DefineConstants>
   </PropertyGroup>
 
@@ -27,7 +23,7 @@
 
   <ItemGroup>
     <ObjcBindingApiDefinition Include="$(BindingsTestDirectory)\ApiDefinition.cs" />
-    <ObjcBindingApiDefinition Include="$(RootTestsDirectory)\generator\tests\ref-out-parameters.cs" />
+    <ObjcBindingApiDefinition Include="$(RootTestsDirectory)\bgen\tests\ref-out-parameters.cs" />
     <ObjcBindingApiDefinition Include="$(BindingsTestDirectory)\ApiDefinition.generated.cs" />
     <ObjcBindingApiDefinition Include="$(BindingsTestDirectory)\ApiProtocol.cs" />
   </ItemGroup>
@@ -62,6 +58,9 @@
     <Compile Include="$(BindingsTestDirectory)\RegistrarBindingTest.cs" />
     <Compile Include="$(RootTestsDirectory)\common\TestRuntime.cs">
       <Link>TestRuntime.cs</Link>
+    </Compile>
+    <Compile Include="$(RootTestsDirectory)\common\TestRuntime.LinkAll.cs">
+      <Link>TestRuntime.LinkAll.cs</Link>
     </Compile>
     <Compile Include="$(RootTestsDirectory)\common\TestRuntime.RunAsync.cs">
       <Link>TestRuntime.RunAsync.cs</Link>

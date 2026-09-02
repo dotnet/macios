@@ -379,3 +379,6 @@
 # only for iOS and tvOS (not watchOS) and macOS uses OpenGL
 ## we use OpenTK for bindings
 !missing-pinvoke! glProgramParameteriEXT is not bound
+
+# updated sharpie results
+!missing-enum! CGLCPContextPriorityRequest not bound

@@ -29,16 +29,20 @@ SHARED_HEADERS += shared.h product.h delegates.h runtime-internal.h $(SHARED_INC
 
 SHARED_FILES = $(SHARED_SOURCES) $(SHARED_HEADERS) $(SHARED_X64_SOURCES) $(SHARED_ARM64_SOURCES)
 
-EXTRA_DEPENDENCIES = $(SHARED_HEADERS) $(TOP)/Make.config $(TOP)/mk/mono.mk
+EXTRA_DEPENDENCIES = $(SHARED_HEADERS) $(TOP)/Make.config
 
 IOS_SIMULATOR_ARCHITECTURES+=x86_64
 IOS_DEVICE_ARCHITECTURES+=arm64
 
 coreclrhost.h: Makefile
-	$(Q_CURL) curl -L --retry 3 --retry-all-errors --fail --output "$@.tmp" https://raw.githubusercontent.com/dotnet/runtime/f1b8d5a4448d072c9d390744777a87921e45bf2f/src/coreclr/hosts/inc/coreclrhost.h
+	$(Q_CURL) curl -L --retry 3 --retry-all-errors --fail --output "$@.tmp" https://raw.githubusercontent.com/dotnet/runtime/61fac3bf280af337390a34c3d54157a96051e831/src/coreclr/hosts/inc/coreclrhost.h
 	$(Q) mv "$@.tmp" "$@"
 
-coreclr-bridge.m: coreclrhost.h
+host_runtime_contract.h: Makefile
+	$(Q_CURL) curl -L --retry 3 --retry-all-errors --fail --output "$@.tmp" https://raw.githubusercontent.com/dotnet/runtime/61fac3bf280af337390a34c3d54157a96051e831/src/native/corehost/host_runtime_contract.h
+	$(Q) mv "$@.tmp" "$@"
+
+coreclr-bridge.m: coreclrhost.h host_runtime_contract.h
 
 xamarin/mono-runtime.h: mono-runtime.h.t4 exports.t4
 	$(Q_GEN) $(TT) $< -o $@
@@ -89,10 +93,10 @@ MONOTOUCH_ARM64_SOURCE_STEMS = $(patsubst %.s,%,$(patsubst %.m,%,$(SHARED_ARM64_
 # .NET
 #
 
-DOTNET_iOS_LIBRARIES = libextension-dotnet.a
-DOTNET_tvOS_LIBRARIES = libextension-dotnet.a libtvextension-dotnet.a
+DOTNET_iOS_LIBRARIES = libextension-dotnet.a libextension-dotnet-coreclr.a
+DOTNET_tvOS_LIBRARIES = libextension-dotnet.a libtvextension-dotnet.a libextension-dotnet-coreclr.a libtvextension-dotnet-coreclr.a
 DOTNET_macOS_LIBRARIES = libextension-dotnet-coreclr.a
-DOTNET_MacCatalyst_LIBRARIES =
+DOTNET_MacCatalyst_LIBRARIES = libextension-dotnet.a libextension-dotnet-coreclr.a
 
 define DotNetLibTemplate
 DOTNET_TARGETS += \
@@ -192,9 +196,9 @@ $(foreach platform,$(DOTNET_PLATFORMS),$(foreach rid,$(DOTNET_$(platform)_RUNTIM
 define DotNetLibXamarinTemplate
 
 DOTNET$(6)_$(2)_LIBDIR ?= $$(TOP)/packages/microsoft.netcore.app.runtime$(7).$(2)/$(BUNDLED_NETCORE_PLATFORMS_PACKAGE_VERSION)/runtimes/$(2)/native
-DOTNET$(6)_$(2)_DYLIB_FLAGS = $(DOTNET_$(1)$(6)_DYLIB_FLAGS) -Wl,-install_name,libxamarin$(5).dylib -framework Foundation -framework CFNetwork -lz -L$(abspath $(DOTNET$(6)_$(2)_LIBDIR))
+DOTNET$(6)_$(2)_DYLIB_FLAGS = $(DOTNET_$(1)$(6)_DYLIB_FLAGS) -Wl,-install_name,libxamarin$(5).dylib -framework Foundation -framework CFNetwork -framework Security -lz -L$(abspath $(DOTNET$(6)_$(2)_LIBDIR))
 
-DOTNET_$(2)_$(4)_OBJECTS   = $$(patsubst %,.libs/$(2)/%$(5).o,   $(MONOTOUCH_SOURCE_STEMS)) $$(patsubst %,.libs/$(2)/%$(5).o,   $(MONOTOUCH_$(shell echo $(2) | sed 's/.*-//' | tr a-z A-Z)_SOURCE_STEMS))
+DOTNET_$(2)_$(4)_OBJECTS   = $$(patsubst %,.libs/$(2)/%$(5).o,   $(MONOTOUCH_SOURCE_STEMS)) $$(patsubst %,.libs/$(2)/%$(5).o,   $(MONOTOUCH_$(call uppercase,$(lastword $(subst -, ,$(2))))_SOURCE_STEMS))
 
 
 .libs/$(2)/libxamarin$(5).a: $$(DOTNET_$(2)_$(4)_OBJECTS)

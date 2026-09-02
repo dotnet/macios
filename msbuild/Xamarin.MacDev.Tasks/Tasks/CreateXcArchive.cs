@@ -57,17 +57,17 @@ namespace Xamarin.MacDev.Tasks {
 
 			if (!string.IsNullOrEmpty (OutputPath)) {
 				args.Add ("-archivePath");
-				args.Add (OutputPath);
+				args.Add (Path.GetFullPath (OutputPath));
 			}
 
 			if (!string.IsNullOrEmpty (DerivedDataPath)) {
 				args.Add ("-derivedDataPath");
-				args.Add (DerivedDataPath);
+				args.Add (Path.GetFullPath (DerivedDataPath));
 			}
 
 			if (!string.IsNullOrEmpty (PackageCachePath)) {
 				args.Add ("-packageCachePath");
-				args.Add (PackageCachePath);
+				args.Add (Path.GetFullPath (PackageCachePath));
 			}
 
 			args.AddRange (archive_args);

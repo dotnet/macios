@@ -1,1 +1,4 @@
 !missing-field! kQLPreviewPropertyTextEncodingNameKey not bound
+
+# updated sharpie results
+!missing-enum! QLPreviewPDFStyle not bound

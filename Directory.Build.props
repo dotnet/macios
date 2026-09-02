@@ -2,17 +2,35 @@
 	<PropertyGroup>
 		<!-- Disables the transitive restore of packages like Microsoft.AspNetCore.App.Ref, Microsoft.WindowsDesktop.App.Ref -->
 		<DisableTransitiveFrameworkReferenceDownloads>true</DisableTransitiveFrameworkReferenceDownloads>
-		<MonoCecilPackageVersion>0.11.5</MonoCecilPackageVersion>
-		<MSBuildStructuredLoggerPackageVersion>2.2.158</MSBuildStructuredLoggerPackageVersion>
+		<MSBuildStructuredLoggerPackageVersion>2.2.243</MSBuildStructuredLoggerPackageVersion>
 		<MicrosoftBuildPackageVersion>17.13.26</MicrosoftBuildPackageVersion>
 		<MicrosoftBuildFrameworkPackageVersion>$(MicrosoftBuildPackageVersion)</MicrosoftBuildFrameworkPackageVersion>
 		<MicrosoftBuildTasksCorePackageVersion>$(MicrosoftBuildPackageVersion)</MicrosoftBuildTasksCorePackageVersion>
 		<MicrosoftBuildUtilitiesCorePackageVersion>$(MicrosoftBuildPackageVersion)</MicrosoftBuildUtilitiesCorePackageVersion>
-		<NUnitXmlTestLoggerPackageVersion>3.1.15</NUnitXmlTestLoggerPackageVersion>
+		<NUnitConsoleRunnerPackageVersion>3.22.0</NUnitConsoleRunnerPackageVersion>
+		<NUnitXmlTestLoggerPackageVersion>8.0.0</NUnitXmlTestLoggerPackageVersion>
 		<!-- Fix transient dependency issue found by component governance 4.7.0 -> 4.7.2 brought by Microsoft.Build package -->
 		<SystemDrawingCommonPackageVersion>4.7.2</SystemDrawingCommonPackageVersion>
 		<!-- Fix transient dependency issue found by component governance 4.7.0 -> 4.7.1 brought by Microsoft.Build.Tasks.Core package -->
-		<SystemSecurityCryptographyXmlPackageVersion>8.0.0</SystemSecurityCryptographyXmlPackageVersion>
+		<SystemSecurityCryptographyXmlPackageVersion>8.0.4</SystemSecurityCryptographyXmlPackageVersion>
+
+		<ClangSharpPackageVersion>21.1.8.3</ClangSharpPackageVersion>
+		<ICSharpCodeNRefactoryPackageVersion>5.5.1</ICSharpCodeNRefactoryPackageVersion>
+		<libclangPackageVersion>21.1.8</libclangPackageVersion>
+		<MicrosoftNETTestSdkPackageVersion>18.0.1</MicrosoftNETTestSdkPackageVersion>
+		<MonoCecilPackageVersion>0.11.6</MonoCecilPackageVersion>
+		<NUnit3TestAdapterPackageVersion>6.2.0</NUnit3TestAdapterPackageVersion>
+		<NUnitAnalyzersPackageVersion>4.13.0</NUnitAnalyzersPackageVersion>
+		<NUnitPackageVersion>4.6.1</NUnitPackageVersion>
+		<NUnitLitePackageVersion>$(NUnitPackageVersion)</NUnitLitePackageVersion>
+		<NUnitV2ResultWriterPackageVersion>3.8.0</NUnitV2ResultWriterPackageVersion>
+
+		<!-- Use the latest C# version by default -->
+		<LangVersion Condition="'$(LangVersion)' == ''">latest</LangVersion>
+		<!-- Always enable nullability -->
+		<Nullable>enable</Nullable>
+		<!-- We're warning-free, so let's make sure we stay that way. This includes nullability warnings. -->
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 	</PropertyGroup>
 	<Import Project="Build.props" Condition="Exists('Build.props')" />
 </Project>

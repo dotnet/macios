@@ -87,9 +87,7 @@
   <!-- E0029: not used anymore -->
   <!-- E0030: not used anymore -->
   <!-- E0031: not used anymore -->
-  <data name="E0032" xml:space="preserve">
-        <value>Could not locate SDK bin directory</value>
-    </data>
+  <!-- E0032: not used anymore -->
   <!-- E0033: not used anymore -->
   <!-- E0034: not used anymore -->
   <!-- E0035: not used anymore -->
@@ -225,13 +223,7 @@
   <data name="E0084" xml:space="preserve">
         <value>Could not locate the {0} '{1}' SDK at path '{}'</value>
     </data>
-  <data name="E0085" xml:space="preserve">
-        <value>Could not locate the {0} '{1}' SDK usr path at '{2}'</value>
-        <comment>The provided SDK path is missing a 'usr' directory. The following are literal names and should not be translated: SDK, usr
-{0} - The platform name, such as 'iOS'.
-{1} - The version number of the SDK.
-{2} - The file path of the SDK.</comment>
-    </data>
+  <!-- E0085: not used anymore -->
   <data name="E0086" xml:space="preserve">
         <value>Could not find a valid Xcode developer path</value>
     </data>
@@ -1285,5 +1277,43 @@
     </data>
   <data name="E7163" xml:space="preserve">
         <value>Unable to copy the inputs to this task to the remote build server for unknown reasons. The build log may have more information.</value>
+    </data>
+  <data name="E7164" xml:space="preserve">
+        <value>The task '{0}' is trying to call an external process, but a path to Xcode has not been provided. Please file an issue at https://github.com/dotnet/macios/issues/new/choose.</value>
+    </data>
+  <data name="E7169" xml:space="preserve">
+        <value>The task '{0}' requires the property '{1}' to be set. Please file an issue at https://github.com/dotnet/macios/issues/new/choose.</value>
+    </data>
+  <data name="W7171" xml:space="preserve">
+        <value>The environment variable '{0}' is deprecated, and will be ignored in .NET 11+. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.</value>
+    </data>
+  <data name="W7172" xml:space="preserve">
+        <value>The environment variable '{0}' is deprecated, and will be ignored. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.</value>
+    </data>
+  <data name="W7173" xml:space="preserve">
+        <value>The settings file '{0}' is deprecated, and will be ignored in .NET 11+. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.</value>
+    </data>
+  <data name="W7174" xml:space="preserve">
+        <value>The settings file '{0}' is deprecated, and will be ignored. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.</value>
+    </data>
+  <data name="E7175" xml:space="preserve">
+        <value>The {0} simulator runtime is not installed. This is required by Apple's development tools (even when building for physical devices). Install it by running 'xcodebuild -downloadPlatform {0}' from the command line, or from Xcode (Settings &gt; Components).</value>
+        <comment>Shown when the required simulator runtime is not installed.
+{0} - The platform name (e.g. "iOS" or "tvOS").</comment>
+    </data>
+  <data name="W7176" xml:space="preserve">
+        <value>Unable to determine if the {0} simulator runtime is installed. If the build fails or hangs, install the {0} simulator runtime by running 'xcodebuild -downloadPlatform {0}' from the command line.</value>
+        <comment>Shown when we're unable to check for simulator runtime availability.
+{0} - The platform name (e.g. "iOS" or "tvOS").</comment>
+    </data>
+  <data name="E7177" xml:space="preserve">
+        <value>The installed {0} simulator runtime is not compatible with the current Xcode version. Update the simulator runtime by running 'xcodebuild -downloadPlatform {0}' from the command line, or from Xcode (Settings &gt; Components).</value>
+        <comment>Shown when the tool reports a simulator runtime version mismatch.
+{0} - The platform name (e.g. "iOS" or "tvOS").</comment>
+    </data>
+  <data name="E7178" xml:space="preserve">
+        <value>Console.StandardOutput or Console.StandardError was accessed during a build task. This should not happen, use the MSBuild logging infrastructure instead. Stack trace: {0}</value>
+        <comment>Shown when an MSBuild task writes to the console instead of using MSBuild logging.
+{0} - The stack trace of the offending call.</comment>
     </data>
 </root>

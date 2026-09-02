@@ -27,7 +27,7 @@ namespace Xamarin.MacDev.Tasks {
 				return ExecuteRemotely ();
 
 			if (!File.Exists (OutputPath.ItemSpec)) {
-				Directory.CreateDirectory (Path.GetDirectoryName (OutputPath.ItemSpec));
+				Directory.CreateDirectory (Path.GetDirectoryName (OutputPath.ItemSpec)!);
 
 				using (var stream = File.OpenWrite (OutputPath.ItemSpec)) {
 					stream.Write (PkgInfoData, 0, PkgInfoData.Length);

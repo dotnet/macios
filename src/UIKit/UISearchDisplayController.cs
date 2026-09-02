@@ -1,26 +1,13 @@
 #if !TVOS && !__MACCATALYST__ // __TVOS_PROHIBITED
-using System.Drawing;
-using CoreFoundation;
-using CoreAnimation;
-using CoreLocation;
-using MapKit;
-using UIKit;
-using CoreGraphics;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace UIKit {
 	public partial class UISearchDisplayController {
-		/// <summary>The UITableViewSource holding the search results.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		public UITableViewSource SearchResultsSource {
+		/// <summary>Gets or sets the <see cref="UITableViewSource" /> holding the search results.</summary>
+		public UITableViewSource? SearchResultsSource {
 			get {
-				var d = SearchResultsWeakDelegate as UITableViewSource;
-				if (d is not null)
-					return d;
-				return null;
+				return SearchResultsWeakDelegate as UITableViewSource;
 			}
 
 			set {

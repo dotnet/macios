@@ -88,7 +88,7 @@ namespace MetalPerformanceShaders {
 		[UnmanagedCallersOnly]
 		static unsafe nint InvokeIterator (IntPtr block, IntPtr image, nuint index)
 		{
-			var del = (MPSImageBatchIterator) BlockLiteral.GetTarget<MPSImageBatchIterator> (block);
+			var del = BlockLiteral.GetTarget<MPSImageBatchIterator> (block);
 			if (del is not null) {
 				using var img = Runtime.GetNSObject<MPSImage> (image)!;
 				return del (img, index);

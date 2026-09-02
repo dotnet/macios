@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 using Mono.Cecil;
@@ -8,6 +9,8 @@ using Mono.Tuner;
 using ObjCRuntime;
 using Xamarin.Bundler;
 using Xamarin.Tuner;
+
+#nullable enable
 
 namespace Xamarin.Linker {
 
@@ -20,10 +23,10 @@ namespace Xamarin.Linker {
 				return member.DeclaringType.FullName + "." + member.Name;
 			if (provider is MethodReturnType returnType)
 				return AsString ((ICustomAttributeProvider) returnType.Method);
-			return provider.ToString ();
+			return provider.ToString () ?? "";
 		}
 
-		public static bool HasCustomAttribute (this ICustomAttributeProvider provider, DerivedLinkContext context, string @namespace, string name, out ICustomAttribute attrib)
+		public static bool HasCustomAttribute (this ICustomAttributeProvider? provider, DerivedLinkContext? context, string @namespace, string name, [NotNullWhen (true)] out ICustomAttribute? attrib)
 		{
 			attrib = null;
 			if (provider?.HasCustomAttribute (@namespace, name, out attrib) == true)
@@ -36,20 +39,20 @@ namespace Xamarin.Linker {
 		}
 
 		// This method will look in any stored attributes in the link context as well as the provider itself.
-		public static bool HasCustomAttribute (this ICustomAttributeProvider provider, DerivedLinkContext context, string @namespace, string name)
+		public static bool HasCustomAttribute (this ICustomAttributeProvider? provider, DerivedLinkContext? context, string @namespace, string name)
 		{
 			if (provider?.HasCustomAttribute (@namespace, name) == true)
 				return true;
 
-			return context?.GetCustomAttributes (provider, @namespace, name)?.Count > 0;
+			return context?.GetCustomAttributes (provider, @namespace, name)?.Any () == true;
 		}
 
-		public static bool HasCustomAttribute (this ICustomAttributeProvider provider, string @namespace, string name)
+		public static bool HasCustomAttribute (this ICustomAttributeProvider? provider, string @namespace, string name)
 		{
 			return HasCustomAttribute (provider, @namespace, name, out _);
 		}
 
-		public static bool HasCustomAttribute (this ICustomAttributeProvider provider, string @namespace, string name, out ICustomAttribute attrib)
+		public static bool HasCustomAttribute (this ICustomAttributeProvider? provider, string @namespace, string name, [NotNullWhen (true)] out ICustomAttribute? attrib)
 		{
 			attrib = null;
 
@@ -66,14 +69,14 @@ namespace Xamarin.Linker {
 			return false;
 		}
 
-		static bool HasGeneratedCodeAttribute (ICustomAttributeProvider provider, DerivedLinkContext context)
+		static bool HasGeneratedCodeAttribute (ICustomAttributeProvider? provider, DerivedLinkContext? context)
 		{
 			return provider.HasCustomAttribute (context, "System.Runtime.CompilerServices", "CompilerGeneratedAttribute");
 		}
 
 		// The 'provider' parameter is only used in error messages to explain where the broken attribute comes from
 		// (in particular it's not used to get the custom attributes themselves, since those may not come from this provider instance)
-		static BindingImplOptions? GetBindingImplAttribute (ICustomAttributeProvider provider, IEnumerable<ICustomAttribute> attributes)
+		static BindingImplOptions? GetBindingImplAttribute (ICustomAttributeProvider provider, IEnumerable<ICustomAttribute>? attributes)
 		{
 			if (attributes is null)
 				return null;
@@ -102,7 +105,7 @@ namespace Xamarin.Linker {
 			return null;
 		}
 
-		static BindingImplOptions? GetBindingImplAttribute (ICustomAttributeProvider provider, DerivedLinkContext context)
+		static BindingImplOptions? GetBindingImplAttribute (ICustomAttributeProvider? provider, DerivedLinkContext? context)
 		{
 			if (provider is not null && provider.HasCustomAttributes) {
 				var rv = GetBindingImplAttribute (provider, provider.CustomAttributes);
@@ -110,10 +113,13 @@ namespace Xamarin.Linker {
 					return rv;
 			}
 
+			if (provider is null)
+				return null;
+
 			return GetBindingImplAttribute (provider, context?.GetCustomAttributes (provider, Namespaces.ObjCRuntime, "BindingImplAttribute"));
 		}
 
-		public static PropertyDefinition GetPropertyByAccessor (this MethodDefinition method)
+		public static PropertyDefinition? GetPropertyByAccessor (this MethodDefinition method)
 		{
 			foreach (PropertyDefinition property in method.DeclaringType.Properties) {
 				if (property.GetMethod == method || property.SetMethod == method)
@@ -122,7 +128,7 @@ namespace Xamarin.Linker {
 			return null;
 		}
 
-		public static bool IsGeneratedCode (this MethodDefinition self, DerivedLinkContext link_context)
+		public static bool IsGeneratedCode (this MethodDefinition self, DerivedLinkContext? link_context)
 		{
 			// check the property too
 			if (self.IsGetter || self.IsSetter) {
@@ -132,7 +138,7 @@ namespace Xamarin.Linker {
 			return HasGeneratedCodeAttribute (self, link_context);
 		}
 
-		public static bool IsBindingImplOptimizableCode (this MethodDefinition self, DerivedLinkContext link_context)
+		public static bool IsBindingImplOptimizableCode (this MethodDefinition self, DerivedLinkContext? link_context)
 		{
 			var attrib = GetBindingImplAttribute (self, link_context);
 			if ((attrib & BindingImplOptions.Optimizable) == BindingImplOptions.Optimizable)
@@ -148,7 +154,7 @@ namespace Xamarin.Linker {
 			return false;
 		}
 
-		public static bool IsOptimizableCode (this MethodDefinition self, DerivedLinkContext link_context)
+		public static bool IsOptimizableCode (this MethodDefinition self, DerivedLinkContext? link_context)
 		{
 			if (IsBindingImplOptimizableCode (self, link_context))
 				return true;

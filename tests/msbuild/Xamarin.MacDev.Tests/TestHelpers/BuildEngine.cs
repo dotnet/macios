@@ -30,26 +30,15 @@ namespace Xamarin.Tests {
 
 		ExecutionResult? executionResult;
 
-		public ExecutionResult RunTarget (ApplePlatform platform, ExecutionMode mode, string project, string target, Dictionary<string, string>? properties = null)
+		public ExecutionResult RunTarget (ApplePlatform platform, string project, string target, Dictionary<string, string>? properties = null)
 		{
-			ExecutionResult rv;
-
 			var props = new Dictionary<string, string> (Properties);
 			if (properties is not null) {
 				foreach (var kvp in properties)
 					props [kvp.Key] = kvp.Value;
 			}
 
-			switch (mode) {
-			case ExecutionMode.MSBuild:
-				rv = MSBuild (platform, project, target, props);
-				break;
-			case ExecutionMode.DotNet:
-				rv = Dotnet (project, "Build", target, props);
-				break;
-			default:
-				throw new InvalidOperationException ($"Unknown execution mode: {mode}");
-			}
+			var rv = Dotnet (project, "Build", target, props);
 
 			executionResult = rv;
 

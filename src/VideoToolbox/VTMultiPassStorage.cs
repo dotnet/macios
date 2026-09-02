@@ -29,7 +29,7 @@ namespace VideoToolbox {
 		{
 		}
 
-		/// <include file="../../docs/api/VideoToolbox/VTMultiPassStorage.xml" path="/Documentation/Docs[@DocId='M:VideoToolbox.VTMultiPassStorage.Dispose(System.Boolean)']/*" />
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			if (Handle != IntPtr.Zero)

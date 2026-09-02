@@ -1,0 +1,28 @@
+<Solution>
+  <Configurations>
+    <BuildType Name="Debug" />
+    <BuildType Name="net_3_5_Debug" />
+    <BuildType Name="net_3_5_Release" />
+    <BuildType Name="net_4_0_Debug" />
+    <BuildType Name="net_4_0_Release" />
+    <BuildType Name="pcl_Debug" />
+    <BuildType Name="pcl_Release" />
+    <BuildType Name="Release" />
+  </Configurations>
+  <Project Path="../../tools/mtouch/mtouch.csproj">
+    <BuildType Solution="net_3_5_Debug|*" Project="Debug" />
+    <BuildType Solution="net_3_5_Release|*" Project="Debug" />
+    <BuildType Solution="net_4_0_Debug|*" Project="Debug" />
+    <BuildType Solution="net_4_0_Release|*" Project="Debug" />
+    <BuildType Solution="pcl_Debug|*" Project="Debug" />
+    <BuildType Solution="pcl_Release|*" Project="Debug" />
+  </Project>
+  <Project Path="mtouchtests.csproj">
+    <BuildType Solution="net_3_5_Debug|*" Project="Debug" />
+    <BuildType Solution="net_3_5_Release|*" Project="Debug" />
+    <BuildType Solution="net_4_0_Debug|*" Project="Debug" />
+    <BuildType Solution="net_4_0_Release|*" Project="Debug" />
+    <BuildType Solution="pcl_Debug|*" Project="Debug" />
+    <BuildType Solution="pcl_Release|*" Project="Debug" />
+  </Project>
+</Solution>

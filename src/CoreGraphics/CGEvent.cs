@@ -294,7 +294,7 @@ namespace CoreGraphics {
 		///         <remarks>To be added.</remarks>
 		public NSData? ToData ()
 		{
-			return Runtime.GetNSObject<NSData> (CGEventCreateData (IntPtr.Zero, Handle));
+			return Runtime.GetNSObject<NSData> (CGEventCreateData (IntPtr.Zero, Handle), true);
 		}
 
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]

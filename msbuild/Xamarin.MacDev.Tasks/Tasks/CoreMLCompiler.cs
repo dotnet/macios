@@ -30,11 +30,6 @@ namespace Xamarin.MacDev.Tasks {
 		[Required]
 		public string ResourcePrefix { get; set; } = "";
 
-		string sdkDevPath = "";
-		public string SdkDevPath {
-			get { return string.IsNullOrEmpty (sdkDevPath) ? "/" : sdkDevPath; }
-			set { sdkDevPath = value; }
-		}
 		#endregion
 
 		#region Outputs
@@ -60,16 +55,16 @@ namespace Xamarin.MacDev.Tasks {
 			args.Add (partialPlist);
 
 			var executable = GetExecutable (args, ToolName, CoreMlcPath);
-			var rv = ExecuteAsync (executable, args, sdkDevPath, mergeOutput: false).Result;
+			var rv = ExecuteAsync (executable, args).Result;
 			var exitCode = rv.ExitCode;
-			var output = rv.StandardOutput!.ToString ();
+			var output = rv.Output.StandardOutput;
 			File.WriteAllText (log, output);
 
 			if (exitCode != 0) {
 				// Note: coremlc exited with an error. Dump everything we can to help the user
 				// diagnose the issue and then delete the log file so that rebuilding tries
 				// again.
-				var errors = rv.StandardError!.ToString ();
+				var errors = rv.Output.StandardError;
 				if (errors.Length > 0)
 					Log.LogError (null, null, null, item.ItemSpec, 0, 0, 0, 0, "{0}", errors);
 
@@ -115,7 +110,7 @@ namespace Xamarin.MacDev.Tasks {
 					}
 				}
 
-				if (metadata is null)
+				if (metadata is null || rpath is null)
 					continue;
 
 				var compiled = new TaskItem (path, metadata);
@@ -150,7 +145,7 @@ namespace Xamarin.MacDev.Tasks {
 					var logicalName = model.GetMetadata ("LogicalName");
 					var bundleName = GetPathWithoutExtension (logicalName) + ".mlmodelc";
 					var outputPath = Path.Combine (coremlcOutputDir, bundleName);
-					var outputDir = Path.GetDirectoryName (outputPath);
+					var outputDir = Path.GetDirectoryName (outputPath)!;
 					var partialPlist = GetPathWithoutExtension (outputPath) + "-partial.plist";
 					var log = GetPathWithoutExtension (outputPath) + ".log";
 					var resourceTags = model.GetMetadata ("ResourceTags");

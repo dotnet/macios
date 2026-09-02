@@ -11,7 +11,7 @@ using Xamarin.Messaging.Build.Client;
 #nullable enable
 
 namespace Xamarin.MacDev.Tasks {
-	public class TextureAtlas : XcodeToolTaskBase, ICancelableTask {
+	public class TextureAtlas : XcodeToolTaskBase {
 		readonly Dictionary<string, (ITaskItem Item, List<ITaskItem> Items)> atlases = new ();
 
 		#region Inputs
@@ -20,18 +20,14 @@ namespace Xamarin.MacDev.Tasks {
 
 		#endregion
 
-		protected override string DefaultBinDir {
-			get { return DeveloperRootBinDir; }
-		}
-
 		protected override string ToolName {
 			get { return "TextureAtlas"; }
 		}
 
-		protected override void AppendCommandLineArguments (IDictionary<string, string?> environment, List<string> args, ITaskItem input, ITaskItem output)
+		protected override void AppendCommandLineArguments (List<string> args, ITaskItem input, ITaskItem output)
 		{
 			args.Add (input.GetMetadata ("FullPath"));
-			args.Add (Path.GetDirectoryName (output.GetMetadata ("FullPath")));
+			args.Add (Path.GetDirectoryName (output.GetMetadata ("FullPath"))!);
 		}
 
 		protected override string GetBundleRelativeOutputPath (ITaskItem input)
@@ -92,7 +88,7 @@ namespace Xamarin.MacDev.Tasks {
 			// group the atlas textures by their parent .atlas directories
 			foreach (var item in atlasTextures) {
 				var logicalName = item.GetMetadata ("LogicalName");
-				var atlasName = Path.GetDirectoryName (logicalName);
+				var atlasName = Path.GetDirectoryName (logicalName)!;
 
 				if (!atlases.TryGetValue (atlasName, out var atlas)) {
 					var atlasItem = new TaskItem (atlasName);
@@ -116,12 +112,6 @@ namespace Xamarin.MacDev.Tasks {
 				return ExecuteRemotely ();
 
 			return base.Execute ();
-		}
-
-		public void Cancel ()
-		{
-			if (ShouldExecuteRemotely ())
-				BuildConnection.CancelAsync (BuildEngine4).Wait ();
 		}
 	}
 }

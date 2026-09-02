@@ -16,7 +16,7 @@ namespace Xharness.Jenkins.TestTasks {
 							IErrorKnowledgeBase errorKnowledgeBase)
 			: base (msbuildPath, processManager, resourceManager, eventLogger, envManager, errorKnowledgeBase) { }
 
-		public override List<string> GetToolArguments (string projectPlatform, string projectConfiguration, string projectFile, IFileBackedLog buildLog)
+		public override List<string> GetToolArguments (string? projectPlatform, string? projectConfiguration, string projectFile, IFileBackedLog buildLog)
 		{
 			var args = base.GetToolArguments (projectPlatform, projectConfiguration, projectFile, buildLog);
 			args.Remove ("--");

@@ -18,25 +18,19 @@ using Mono.Tuner;
 using Xamarin.Linker;
 using Xamarin.Tuner;
 
+#nullable enable
+
 namespace MonoTouch.Tuner {
 
 	// This class is shared between Xamarin.Mac and Xamarin.iOS
-	public class CoreTypeMapStep :
-#if NET && !LEGACY_TOOLS
-		ConfigurationAwareStep
-#else
-		TypeMapStep
-#endif
-	{
-
-#if NET && !LEGACY_TOOLS
+	public class CoreTypeMapStep : ConfigurationAwareStep {
 		protected override string Name { get; } = "CoreTypeMap";
 		protected override int ErrorCode { get; } = 2390;
 
 		Profile Profile => new Profile (Configuration);
 
 		// Get the reverse mapping from assemblies to assemblies which reference them directly.
-		Dictionary<AssemblyDefinition, HashSet<AssemblyDefinition>> _reversedReferences;
+		Dictionary<AssemblyDefinition, HashSet<AssemblyDefinition>>? _reversedReferences;
 		Dictionary<AssemblyDefinition, HashSet<AssemblyDefinition>> GetReversedReferences ()
 		{
 			if (_reversedReferences is not null)
@@ -63,7 +57,7 @@ namespace MonoTouch.Tuner {
 			return _reversedReferences;
 		}
 
-		Dictionary<AssemblyDefinition, bool> _transitivelyReferencesProduct;
+		Dictionary<AssemblyDefinition, bool>? _transitivelyReferencesProduct;
 		bool TransitivelyReferencesProduct (AssemblyDefinition assembly)
 		{
 			if (_transitivelyReferencesProduct is not null) {
@@ -134,40 +128,18 @@ namespace MonoTouch.Tuner {
 		}
 
 		DerivedLinkContext LinkContext => Configuration.DerivedLinkContext;
-#else
-		DerivedLinkContext LinkContext {
-			get {
-				return (DerivedLinkContext) base.Context;
-			}
-		}
-#endif
 
 		HashSet<TypeDefinition> cached_isnsobject = new HashSet<TypeDefinition> ();
 		Dictionary<TypeDefinition, bool?> isdirectbinding_value = new Dictionary<TypeDefinition, bool?> ();
 
-#if NET && !LEGACY_TOOLS
 		protected override void TryEndProcess ()
 		{
-#else
-		protected override void EndProcess ()
-		{
-			base.EndProcess ();
-#endif
-
 			LinkContext.CachedIsNSObject = cached_isnsobject;
 			LinkContext.IsDirectBindingValue = isdirectbinding_value;
 		}
 
-		protected
-#if !NET || LEGACY_TOOLS
-		override
-#endif
-		void MapType (TypeDefinition type)
+		protected void MapType (TypeDefinition type)
 		{
-#if !NET || LEGACY_TOOLS
-			base.MapType (type);
-#endif
-
 			// additional checks for NSObject to check if the type is a *generated* bindings
 			// bonus: we cache, for every type, whether or not it inherits from NSObject (very useful later)
 			if (!IsNSObject (type))
@@ -195,15 +167,15 @@ namespace MonoTouch.Tuner {
 
 		// Cache the results of the IsCIFilter check in a dictionary. It makes this method slightly faster
 		// (total time spent in IsCIFilter when linking monotouch-test went from 11 ms to 3ms).
-		static Dictionary<TypeReference, bool> ci_filter_types = new Dictionary<TypeReference, bool> ();
-		bool IsCIFilter (TypeReference type)
+		Dictionary<TypeReference, bool> ci_filter_types = new Dictionary<TypeReference, bool> ();
+		bool IsCIFilter (TypeReference? type)
 		{
 			if (type is null)
 				return false;
 
 			bool rv;
 			if (!ci_filter_types.TryGetValue (type, out rv)) {
-				rv = type.Is (Namespaces.CoreImage, "CIFilter") || IsCIFilter (Context.Resolve (type).BaseType);
+				rv = type.Is (Namespaces.CoreImage, "CIFilter") || IsCIFilter (Context.Resolve (type)?.BaseType);
 				ci_filter_types [type] = rv;
 			}
 			return rv;
@@ -226,7 +198,7 @@ namespace MonoTouch.Tuner {
 				var base_type = Context.Resolve (type.BaseType);
 				while (base_type is not null && IsNSObject (base_type)) {
 					isdirectbinding_value [base_type] = null;
-					base_type = Context.Resolve (base_type.BaseType);
+					base_type = LinkContext.Resolve (base_type.BaseType);
 				}
 				return;
 			}

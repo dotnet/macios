@@ -76,7 +76,7 @@ namespace CoreGraphics {
 			CGPDFScannerRelease (GetCheckedHandle ());
 		}
 
-		/// <include file="../../docs/api/CoreGraphics/CGPDFScanner.xml" path="/Documentation/Docs[@DocId='M:CoreGraphics.CGPDFScanner.Dispose(System.Boolean)']/*" />
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			if (gch.IsAllocated)
@@ -258,15 +258,15 @@ namespace CoreGraphics {
 		}
 
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
-		[SupportedOSPlatform ("macos13.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos16.0")]
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGPDFScannerStop (/* CGPDFScannerRef */ IntPtr scanner);
 
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
-		[SupportedOSPlatform ("macos13.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos16.0")]
 		public void Stop ()
 		{

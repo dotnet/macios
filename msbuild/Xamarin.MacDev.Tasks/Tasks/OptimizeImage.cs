@@ -29,9 +29,6 @@ namespace Xamarin.MacDev.Tasks {
 
 		public string PngCrushPath { get; set; } = string.Empty;
 
-		[Required]
-		public string SdkDevPath { get; set; } = string.Empty;
-
 		#endregion
 
 		static List<string> GenerateCommandLineCommands (string inputImage, string outputImage)
@@ -82,7 +79,7 @@ namespace Xamarin.MacDev.Tasks {
 				var inputImage = this.InputImages [index].ItemSpec;
 				var outputImage = this.OutputImages [index].ItemSpec;
 
-				Directory.CreateDirectory (Path.GetDirectoryName (outputImage));
+				Directory.CreateDirectory (Path.GetDirectoryName (outputImage)!);
 
 				var args = GenerateCommandLineCommands (inputImage, outputImage);
 				listOfArguments.Add ((args, inputImage));
@@ -92,13 +89,13 @@ namespace Xamarin.MacDev.Tasks {
 			ForEach (listOfArguments, (arg) => {
 				var args = arg.Arguments;
 				var executable = GetExecutable (args, "pngcrush", PngCrushPath);
-				ExecuteAsync (Log, executable, args, sdkDevPath: SdkDevPath, mergeOutput: true, showErrorIfFailure: false /* we show our own error below */, cancellationToken: cancellationTokenSource.Token)
+				ExecuteAsync (executable, args, showErrorIfFailure: false /* we show our own error below */, cancellationToken: cancellationTokenSource.Token)
 					.ContinueWith ((v) => {
 						Execution execution = v.Result;
 						if (execution.ExitCode != 0)
 							Log.LogError (MSBStrings.E7134 /* Failed to optimize the image {0}, pngcrush exited with code {1}. */, Path.GetFileName (arg.Input), execution.ExitCode);
 
-						var output = execution.StandardOutput?.ToString () ?? string.Empty;
+						var output = execution.Output.MergedOutput;
 						foreach (var line in output.Split ('\n')) {
 							LogEventsFromTextOutput (line, arg.Input, MessageImportance.Normal);
 						}

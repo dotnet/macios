@@ -32,7 +32,7 @@ namespace MonoTouchFixtures.Metal {
 		[Test]
 		public void GetSetCommandTypesTest ()
 		{
-			Assert.AreEqual (queue, listener.DispatchQueue);
+			Assert.That (listener.DispatchQueue, Is.EqualTo (queue));
 		}
 	}
 }

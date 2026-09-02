@@ -1,11 +1,8 @@
 #nullable enable
 
+using System.Drawing;
 using System.Globalization;
 using System.Runtime.CompilerServices;
-
-#if !NO_SYSTEM_DRAWING
-using System.Drawing;
-#endif
 
 using CoreFoundation;
 
@@ -45,20 +42,10 @@ namespace CoreGraphics {
 
 #if !COREBUILD
 		/// <summary>Gets an invalid, or null, rectangle.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[Field ("CGRectNull", "CoreGraphics")] // unused but helps xtro
-		public static CGRect Null {
-			get { return Dlfcn.GetCGRect (Libraries.CoreGraphics.Handle, "CGRectNull"); }
-		}
+		public static CGRect Null => CGRectFields.Null;
 
 		/// <summary>Gets an infinitely large rectangle.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[Field ("CGRectInfinite", "CoreGraphics")] // unused but helps xtro
-		public static CGRect Infinite {
-			get { return Dlfcn.GetCGRect (Libraries.CoreGraphics.Handle, "CGRectInfinite"); }
-		}
+		public static CGRect Infinite => CGRectFields.Infinite;
 
 		public static bool operator == (CGRect left, CGRect right)
 		{
@@ -75,7 +62,6 @@ namespace CoreGraphics {
 				left.Height != right.Height;
 		}
 
-#if !NO_SYSTEM_DRAWING
 		public static implicit operator CGRect (RectangleF rect)
 		{
 			return new CGRect (rect.X, rect.Y, rect.Width, rect.Height);
@@ -95,7 +81,6 @@ namespace CoreGraphics {
 		{
 			return new Rectangle ((int) rect.X, (int) rect.Y, (int) rect.Width, (int) rect.Height);
 		}
-#endif
 
 		/// <param name="a">
 		///           <attribution license="cc4" from="Microsoft" modified="false" />A rectangle to intersect. </param>

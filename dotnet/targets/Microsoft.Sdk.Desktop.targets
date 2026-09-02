@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<Target
+		Name="_PrepareRunDesktop"
+		BeforeTargets="ComputeRunArguments"
+		DependsOnTargets="_ValidateHotReloadConfiguration;_GenerateBundleName"
+		Condition="'$(SdkIsDesktop)' == 'true'">
+
+		<!--
+			If we're running under 'dotnet watch', change a few defaults to:
+			* Open in a new instance: enabled
+			* Wait for exit: enabled
+			* stdout/stderr: send to the current terminal
+		-->
+		<ItemGroup>
+			<_DotNetWatchVariable Include="@(RuntimeEnvironmentVariable)" Condition="'%(Identity)' == 'DOTNET_WATCH' And '%(Value)' == '1'" />
+		</ItemGroup>
+		<!-- The new WaitForExit property takes precedence over OpenWaitForExit -->
+		<PropertyGroup Condition="'$(WaitForExit)' != ''">
+			<OpenWaitForExit>$(WaitForExit)</OpenWaitForExit>
+		</PropertyGroup>
+		<PropertyGroup Condition="'$(RunWithOpen)' != 'false' And '@(_DotNetWatchVariable->Count())' == '1'">
+			<_IsDotNetWatch>true</_IsDotNetWatch>
+			<OpenNewInstance Condition="'$(OpenNewInstance)' == ''">true</OpenNewInstance>
+			<OpenWaitForExit Condition="'$(OpenWaitForExit)' == ''">true</OpenWaitForExit>
+		</PropertyGroup>
+
+		<!-- Read the bundle identifier from the Info.plist -->
+		<ReadAppManifest
+			Condition="'$(IsMacEnabled)' == 'true' And '@(_DotNetWatchVariable)' != '' And '$(_BundleIdentifier)' == ''"
+			AppManifest="$(_AppBundleManifestPath)"
+			DisableMinimumOSVersion="true"
+			>
+			<Output TaskParameter="CFBundleIdentifier" PropertyName="_BundleIdentifier" />
+		</ReadAppManifest>
+
+		<Error Message="Could not find the CFBundleIdentifier value in the app's Info.plist." Condition="'$(IsMacEnabled)' == 'true' And '@(_DotNetWatchVariable)' != '' And '$(_BundleIdentifier)' == ''" />
+
+		<!--
+			'dotnet watch' sets DOTNET_STARTUP_HOOKS to a path outside the app's sandbox,
+			which sandboxed apps can't access. Copy the startup hook into the app's sandbox
+			container directory so the app can load it.
+		-->
+		<ItemGroup Condition="'@(_DotNetWatchVariable)' != ''">
+			<_StartupHooksVariable Include="@(RuntimeEnvironmentVariable)" Condition="'%(Identity)' == 'DOTNET_STARTUP_HOOKS'" />
+		</ItemGroup>
+		<PropertyGroup Condition="'@(_StartupHooksVariable)' != ''">
+			<_StartupHooksPath>@(_StartupHooksVariable->'%(Value)')</_StartupHooksPath>
+			<_StartupHooksFilename>$([System.IO.Path]::GetFileName('$(_StartupHooksPath)'))</_StartupHooksFilename>
+			<_StartupHooksContainerDir>$(HOME)/Library/Containers/$(_BundleIdentifier)/Data/tmp/</_StartupHooksContainerDir>
+		</PropertyGroup>
+		<MakeDir Directories="$(_StartupHooksContainerDir)" Condition="'$(_StartupHooksContainerDir)' != ''" />
+		<Copy
+			SourceFiles="$(_StartupHooksPath)"
+			DestinationFolder="$(_StartupHooksContainerDir)"
+			Condition="'$(_StartupHooksContainerDir)' != ''"
+		/>
+		<ItemGroup Condition="'$(_StartupHooksContainerDir)' != ''">
+			<RuntimeEnvironmentVariable Remove="DOTNET_STARTUP_HOOKS" />
+			<RuntimeEnvironmentVariable Include="DOTNET_STARTUP_HOOKS">
+				<Value>$(_StartupHooksContainerDir)$(_StartupHooksFilename)</Value>
+			</RuntimeEnvironmentVariable>
+		</ItemGroup>
+		<Exec
+			Command="tty"
+			Condition="'$(StandardOutputPath)' == '' Or '$(StandardErrorPath)' == ''"
+			ConsoleToMSBuild="true"
+			IgnoreStandardErrorWarningFormat="true"
+			IgnoreExitCode="true"
+			>
+			<Output TaskParameter="ConsoleOutput" ItemName="_TtyOutput" />
+		</Exec>
+		<PropertyGroup Condition="'$(_IsDotNetWatch)' == 'true'">
+			<_TtyPath>@(_TtyOutput)</_TtyPath>
+			<StandardOutputPath Condition="'$(StandardOutputPath)' == '' And Exists('$(_TtyPath)')">$(_TtyPath)</StandardOutputPath>
+			<StandardErrorPath Condition="'$(StandardErrorPath)' == '' And Exists('$(_TtyPath)')">$(_TtyPath)</StandardErrorPath>
+		</PropertyGroup>
+
+		<PropertyGroup Condition="'$(RunWithOpen)' != 'false'">
+			<_OpenArguments Condition="'$(XamarinDebugMode)' != ''">$(_OpenArguments) --env __XAMARIN_DEBUG_MODE__=$(XamarinDebugMode)</_OpenArguments>
+			<_OpenArguments Condition="'$(XamarinDebugPort)' != ''">$(_OpenArguments) --env __XAMARIN_DEBUG_PORT__=$(XamarinDebugPort)</_OpenArguments>
+			<_OpenArguments Condition="'$(XamarinDebugHosts)' != ''">$(_OpenArguments) --env "__XAMARIN_DEBUG_HOSTS__=$(XamarinDebugHosts)"</_OpenArguments>
+			<_OpenArguments Condition="'$(XamarinDebugConnectTimeout)' != ''">$(_OpenArguments) --env __XAMARIN_DEBUG_CONNECT_TIMEOUT__=$(XamarinDebugConnectTimeout)</_OpenArguments>
+			<_OpenArguments Condition="'$(StandardOutputPath)' != ''">$(_OpenArguments) --stdout "$(StandardOutputPath)"</_OpenArguments>
+			<_OpenArguments Condition="'$(StandardErrorPath)' != ''">$(_OpenArguments) --stderr "$(StandardErrorPath)"</_OpenArguments>
+			<_OpenArguments Condition="'$(StandardInputPath)' != ''">$(_OpenArguments) --stdin "$(StandardInputPath)"</_OpenArguments>
+			<_OpenArgumentsPre Condition="'$(OpenNewInstance)' == 'true'">-n </_OpenArgumentsPre>
+			<_OpenArgumentsPre Condition="'$(OpenWaitForExit)' == 'true'">$(_OpenArgumentsPre) -W </_OpenArgumentsPre>
+			<_OpenRunEnvironment>$(RunEnvironment)</_OpenRunEnvironment>
+			<_OpenRunEnvironment>$(_OpenRunEnvironment) @(RuntimeEnvironmentVariable->'--env "%(Identity)=%(Value)"', ' ')</_OpenRunEnvironment>
+			<_OpenArguments>$(_OpenArguments) $(_OpenRunEnvironment)</_OpenArguments>
+			<RunCommand>open</RunCommand>
+			<RunArguments>$(_OpenArgumentsPre) -a "$(TargetDir)/$(_AppBundleName).app" $(OpenArguments) $(_OpenArguments) --args</RunArguments>
+		</PropertyGroup>
+
+		<PropertyGroup Condition="'$(RunWithOpen)' == 'false'">
+			<RunCommand>$(TargetDir)/$(_AppBundleName).app/Contents/MacOS/$(_NativeExecutableName)</RunCommand>
+			<RunArguments />
+		</PropertyGroup>
+	</Target>
+</Project>

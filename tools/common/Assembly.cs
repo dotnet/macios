@@ -1,25 +1,29 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Xml;
 using Mono.Cecil;
 using Mono.Tuner;
-using MonoTouch.Tuner;
 using ObjCRuntime;
 using Xamarin;
 using Xamarin.Utils;
+
+#nullable enable
 
 namespace Xamarin.Bundler {
 
 	struct NativeReferenceMetadata {
 		public bool ForceLoad;
-		public string Frameworks;
-		public string WeakFrameworks;
-		public string LibraryName;
-		public string LinkerFlags;
+		public string? Frameworks;
+		public string? WeakFrameworks;
+		public string? LibraryName;
+		public string? LinkerFlags;
 		public LinkTarget LinkTarget;
 		public bool NeedsGccExceptionHandling;
 		public bool IsCxx;
@@ -48,30 +52,27 @@ namespace Xamarin.Bundler {
 	}
 
 	public partial class Assembly {
-		public AssemblyBuildTarget BuildTarget;
-		public string BuildTargetName;
-		public bool IsCodeShared;
-		public List<string> Satellites;
-		public Application App { get { return Target.App; } }
+		public Application App;
 
 		string full_path;
 		bool? is_framework_assembly;
 
 		public AssemblyDefinition AssemblyDefinition;
-		public Target Target;
 		public bool? IsFrameworkAssembly { get { return is_framework_assembly; } }
+
 		public string FullPath {
 			get {
 				return full_path;
 			}
+			[MemberNotNull (nameof (full_path))]
 			set {
 				full_path = value;
 				if (!is_framework_assembly.HasValue && !string.IsNullOrEmpty (full_path)) {
-#if NET && !LEGACY_TOOLS
-					is_framework_assembly = Target.App.Configuration.FrameworkAssemblies.Contains (GetIdentity (full_path));
+#if !LEGACY_TOOLS
+					is_framework_assembly = App.Configuration.FrameworkAssemblies.Contains (GetIdentity (full_path));
 #else
-					var real_full_path = Target.GetRealPath (full_path);
-					is_framework_assembly = real_full_path.StartsWith (Path.GetDirectoryName (Path.GetDirectoryName (Target.Resolver.FrameworkDirectory)), StringComparison.Ordinal);
+					var real_full_path = Application.GetRealPath (App, full_path);
+					is_framework_assembly = real_full_path.StartsWith (Path.GetDirectoryName (Path.GetDirectoryName (App.Resolver.FrameworkDirectory))!, StringComparison.Ordinal);
 #endif
 				}
 			}
@@ -99,22 +100,16 @@ namespace Xamarin.Bundler {
 		public HashSet<string> WeakFrameworks = new HashSet<string> ();
 		public List<string> LinkerFlags = new List<string> (); // list of extra linker flags
 		public List<string> LinkWith = new List<string> (); // list of paths to native libraries to link with, from LinkWith attributes
-		public HashSet<ModuleReference> UnresolvedModuleReferences;
+		public HashSet<ModuleReference>? UnresolvedModuleReferences;
 		public bool HasLinkWithAttributes { get; private set; }
 
 		bool? symbols_loaded;
 
-		List<string> link_with_resources; // a list of resources that must be removed from the app
+		List<string>? link_with_resources; // a list of resources that must be removed from the app
 
-		public Assembly (Target target, string path)
+		public Assembly (Application app, AssemblyDefinition definition)
 		{
-			this.Target = target;
-			this.FullPath = path;
-		}
-
-		public Assembly (Target target, AssemblyDefinition definition)
-		{
-			this.Target = target;
+			this.App = app;
 			this.AssemblyDefinition = definition;
 			this.FullPath = definition.MainModule.FileName;
 		}
@@ -133,13 +128,13 @@ namespace Xamarin.Bundler {
 			symbols_loaded = false;
 			try {
 				var pdb = Path.ChangeExtension (FullPath, ".pdb");
-				if (File.Exists (pdb) || File.Exists (FullPath + ".mdb")) {
+				if (File.Exists (pdb) && !string.IsNullOrEmpty (AssemblyDefinition.MainModule.FileName)) {
 					AssemblyDefinition.MainModule.ReadSymbols ();
 					symbols_loaded = true;
 				}
 			} catch {
 				// do not let stale file crash us
-				Driver.Log (3, "Invalid debugging symbols for {0} ignored", FullPath);
+				App.Log (3, "Invalid debugging symbols for {0} ignored", FullPath);
 			}
 		}
 
@@ -160,15 +155,25 @@ namespace Xamarin.Bundler {
 			if (!assembly.HasCustomAttributes)
 				return;
 
-			string resourceBundlePath = Path.ChangeExtension (FullPath, ".resources");
-			if (Directory.Exists (resourceBundlePath)) {
-				Driver.Log (3, $"Found a binding resource package for the assembly '{FullPath}' in {resourceBundlePath}, so not looking for any libraries embedded in the assembly.");
-				return;
-			}
-			var zipPath = resourceBundlePath + ".zip";
-			if (File.Exists (zipPath)) {
-				Driver.Log (3, $"Found a binding resource package for the assembly '{FullPath}' in {zipPath}, so not looking for any libraries embedded in the assembly.");
-				return;
+			var assemblyPaths = new List<string> () {
+				FullPath,
+			};
+#if ASSEMBLY_PREPARER
+			var api = App.Configuration.AssemblyInfos.Single (v => v.Assembly == assembly);
+			if (!StringUtils.IsNullOrEmpty (api.OriginalInputPath))
+				assemblyPaths.Add (api.OriginalInputPath);
+#endif
+			foreach (var asmPath in assemblyPaths) {
+				string resourceBundlePath = Path.ChangeExtension (asmPath, ".resources");
+				if (Directory.Exists (resourceBundlePath)) {
+					App.Log (3, $"Found a binding resource package for the assembly '{asmPath}' in {resourceBundlePath}, so not looking for any libraries embedded in the assembly.");
+					return;
+				}
+				var zipPath = resourceBundlePath + ".zip";
+				if (File.Exists (zipPath)) {
+					App.Log (3, $"Found a binding resource package for the assembly '{asmPath}' in {zipPath}, so not looking for any libraries embedded in the assembly.");
+					return;
+				}
 			}
 
 			ProcessLinkWithAttributes (assembly);
@@ -183,40 +188,7 @@ namespace Xamarin.Bundler {
 					LinkerFlags = new List<string> ();
 				LinkerFlags.Add ("-lgcc_eh");
 			}
-
 		}
-
-		IEnumerable<NativeReferenceMetadata> ReadManifest (string manifestPath)
-		{
-			XmlDocument document = new XmlDocument ();
-			document.LoadWithoutNetworkAccess (manifestPath);
-
-			foreach (XmlNode referenceNode in document.GetElementsByTagName ("NativeReference")) {
-
-				NativeReferenceMetadata metadata = new NativeReferenceMetadata ();
-				metadata.LibraryName = Path.Combine (Path.GetDirectoryName (manifestPath), referenceNode.Attributes ["Name"].Value);
-
-				var attributes = new Dictionary<string, string> ();
-				foreach (XmlNode attribute in referenceNode.ChildNodes)
-					attributes [attribute.Name] = attribute.InnerText;
-
-				metadata.ForceLoad = ParseAttributeWithDefault (attributes ["ForceLoad"], false);
-				metadata.Frameworks = attributes ["Frameworks"];
-				metadata.WeakFrameworks = attributes ["WeakFrameworks"];
-				metadata.LinkerFlags = attributes ["LinkerFlags"];
-				metadata.NeedsGccExceptionHandling = ParseAttributeWithDefault (attributes ["NeedsGccExceptionHandling"], false);
-				metadata.IsCxx = ParseAttributeWithDefault (attributes ["IsCxx"], false);
-				metadata.LinkWithSwiftSystemLibraries = ParseAttributeWithDefault (attributes ["LinkWithSwiftSystemLibraries"], false);
-				metadata.SmartLink = ParseAttributeWithDefault (attributes ["SmartLink"], true);
-
-				// TODO - The project attributes do not contain these bits, is that OK?
-				//metadata.LinkTarget = (LinkTarget) Enum.Parse (typeof (LinkTarget), attributes ["LinkTarget"]);
-				//metadata.Dlsym = (DlsymOption)Enum.Parse (typeof (DlsymOption), attributes ["Dlsym"]);
-				yield return metadata;
-			}
-		}
-
-		static bool ParseAttributeWithDefault (string attribute, bool defaultValue) => string.IsNullOrEmpty (attribute) ? defaultValue : bool.Parse (attribute);
 
 		void ProcessLinkWithAttributes (AssemblyDefinition assembly)
 		{
@@ -242,23 +214,22 @@ namespace Xamarin.Bundler {
 				// Let the linker remove it the attribute from the assembly
 				HasLinkWithAttributes = true;
 
-				LinkWithAttribute linkWith = GetLinkWithAttribute (attr);
-				NativeReferenceMetadata metadata = new NativeReferenceMetadata (linkWith);
+				var linkWith = GetLinkWithAttribute (attr);
+				var metadata = new NativeReferenceMetadata (linkWith);
 
 				// If we've already processed this native library, skip it
 				if (LinkWith.Any (x => Path.GetFileName (x) == metadata.LibraryName) || Frameworks.Any (x => Path.GetFileName (x) == metadata.LibraryName))
 					continue;
 
 				// Remove the resource from the assembly at a later stage.
-				if (!string.IsNullOrEmpty (metadata.LibraryName))
+				if (!StringUtils.IsNullOrEmpty (metadata.LibraryName))
 					AddResourceToBeRemoved (metadata.LibraryName);
 
 				ProcessNativeReferenceOptions (metadata);
 
-				if (!string.IsNullOrEmpty (linkWith.LibraryName)) {
+				if (!StringUtils.IsNullOrEmpty (linkWith.LibraryName)) {
 					switch (Path.GetExtension (linkWith.LibraryName).ToLowerInvariant ()) {
 					case ".framework": {
-						AssertiOSVersionSupportsUserFrameworks (linkWith.LibraryName);
 						// TryExtractFramework prints a error/warning if something goes wrong, so no need for us to have an error handling path.
 						if (TryExtractFramework (assembly, metadata, out var framework))
 							Frameworks.Add (framework);
@@ -279,35 +250,27 @@ namespace Xamarin.Bundler {
 			}
 		}
 
-		void AssertiOSVersionSupportsUserFrameworks (string path)
-		{
-			if (App.Platform == ApplePlatform.iOS && App.DeploymentTarget.Major < 8) {
-				throw ErrorHelper.CreateError (1305, Errors.MT1305,
-					FileName, Path.GetFileName (path), App.DeploymentTarget);
-			}
-		}
-
 		void ProcessNativeReferenceOptions (NativeReferenceMetadata metadata)
 		{
 			// We can't add -dead_strip if there are any LinkWith attributes where smart linking is disabled.
 			if (!metadata.SmartLink) {
-				Driver.Log (3, $"The library '{metadata.LibraryName}', shipped with the assembly '{FullPath}', sets SmartLink=false, which will disable passing -dead_strip to the native linker (and make the app bigger).");
+				App.Log (3, $"The library '{metadata.LibraryName}', shipped with the assembly '{FullPath}', sets SmartLink=false, which will disable passing -dead_strip to the native linker (and make the app bigger).");
 				App.DeadStrip = false;
 			}
 
 			// Don't add -force_load if the binding's SmartLink value is set and the static registrar is being used.
-			if (metadata.ForceLoad && !(metadata.SmartLink && (App.Registrar == RegistrarMode.Static || App.Registrar == RegistrarMode.ManagedStatic)))
+			if (metadata.ForceLoad && !(metadata.SmartLink && (App.Registrar == RegistrarMode.Static || App.Registrar == RegistrarMode.ManagedStatic || App.Registrar == RegistrarMode.TrimmableStatic)))
 				ForceLoad = true;
 
-			if (!string.IsNullOrEmpty (metadata.LinkerFlags)) {
+			if (!StringUtils.IsNullOrEmpty (metadata.LinkerFlags)) {
 				if (LinkerFlags is null)
 					LinkerFlags = new List<string> ();
-				if (!StringUtils.TryParseArguments (metadata.LinkerFlags, out string [] args, out var ex))
+				if (!StringUtils.TryParseArguments (metadata.LinkerFlags, out var args, out var ex))
 					throw ErrorHelper.CreateError (148, ex, Errors.MX0148, metadata.LinkerFlags, metadata.LibraryName, FileName, ex.Message);
 				LinkerFlags.AddRange (args);
 			}
 
-			if (!string.IsNullOrEmpty (metadata.Frameworks)) {
+			if (!StringUtils.IsNullOrEmpty (metadata.Frameworks)) {
 				foreach (var f in metadata.Frameworks.Split (new char [] { ' ' })) {
 					if (Frameworks is null)
 						Frameworks = new HashSet<string> ();
@@ -315,7 +278,7 @@ namespace Xamarin.Bundler {
 				}
 			}
 
-			if (!string.IsNullOrEmpty (metadata.WeakFrameworks)) {
+			if (!StringUtils.IsNullOrEmpty (metadata.WeakFrameworks)) {
 				foreach (var f in metadata.WeakFrameworks.Split (new char [] { ' ' })) {
 					if (WeakFrameworks is null)
 						WeakFrameworks = new HashSet<string> ();
@@ -333,85 +296,118 @@ namespace Xamarin.Bundler {
 				LinkWithSwiftSystemLibraries = true;
 		}
 
-		bool TryExtractNativeLibrary (AssemblyDefinition assembly, NativeReferenceMetadata metadata, out string library)
+		bool TryExtractNativeLibrary (AssemblyDefinition assembly, NativeReferenceMetadata metadata, [NotNullWhen (true)] out string? library)
 		{
-			string path = Path.Combine (App.Cache.Location, metadata.LibraryName);
+			if (metadata.LibraryName is null || App.Cache is null) {
+				library = null;
+				return false;
+			}
+			var path = Path.Combine (App.Cache.GetLocation (App), metadata.LibraryName);
 
 			library = null;
 
-			if (!Application.IsUptodate (FullPath, path)) {
+			if (!Application.IsUptodate (App, FullPath, path)) {
 				if (!Application.ExtractResource (assembly.MainModule, metadata.LibraryName, path, false)) {
-					ErrorHelper.Warning (1308, Errors.MX1308 /* Could not extract the native library '{0}' from the assembly '{1}', because it doesn't contain the resource '{2}'. */, metadata.LibraryName, FullPath, metadata.LibraryName);
+					ErrorHelper.Warning (App, 1308, Errors.MX1308 /* Could not extract the native library '{0}' from the assembly '{1}', because it doesn't contain the resource '{2}'. */, metadata.LibraryName, FullPath, metadata.LibraryName);
 					return false;
 				}
-				Driver.Log (3, "Extracted third-party binding '{0}' from '{1}' to '{2}'", metadata.LibraryName, FullPath, path);
+				App.Log (3, "Extracted third-party binding '{0}' from '{1}' to '{2}'", metadata.LibraryName, FullPath, path);
 				LogNativeReference (metadata);
 			} else {
-				Driver.Log (3, "Target '{0}' is up-to-date.", path);
+				App.Log (3, "Target '{0}' is up-to-date.", path);
 			}
 
 			if (!File.Exists (path))
-				ErrorHelper.Warning (1302, Errors.MT1302, metadata.LibraryName, path);
+				ErrorHelper.Warning (App, 1302, Errors.MT1302, metadata.LibraryName, path);
 
 			library = path;
 			return true;
 		}
 
-		bool TryExtractFramework (AssemblyDefinition assembly, NativeReferenceMetadata metadata, out string framework)
+		bool TryExtractFramework (AssemblyDefinition assembly, NativeReferenceMetadata metadata, [NotNullWhen (true)] out string? framework)
 		{
-			string path = Path.Combine (App.Cache.Location, metadata.LibraryName);
+			if (metadata.LibraryName is null || App.Cache is null) {
+				framework = null;
+				return false;
+			}
+			var path = Path.Combine (App.Cache.GetLocation (App), metadata.LibraryName);
 
 			var zipPath = path + ".zip";
 
 			framework = null;
 
-			if (!Application.IsUptodate (FullPath, zipPath)) {
+			if (!Application.IsUptodate (App, FullPath, zipPath)) {
 				if (!Application.ExtractResource (assembly.MainModule, metadata.LibraryName, zipPath, false)) {
-					ErrorHelper.Warning (1307, Errors.MX1307 /* Could not extract the native framework '{0}' from the assembly '{1}', because it doesn't contain the resource '{2}'. */, metadata.LibraryName, FullPath, metadata.LibraryName);
+					ErrorHelper.Warning (App, 1307, Errors.MX1307 /* Could not extract the native framework '{0}' from the assembly '{1}', because it doesn't contain the resource '{2}'. */, metadata.LibraryName, FullPath, metadata.LibraryName);
 					return false;
 				}
 
-				Driver.Log (3, "Extracted third-party framework '{0}' from '{1}' to '{2}'", metadata.LibraryName, FullPath, zipPath);
+				App.Log (3, "Extracted third-party framework '{0}' from '{1}' to '{2}'", metadata.LibraryName, FullPath, zipPath);
 				LogNativeReference (metadata);
 			} else {
-				Driver.Log (3, "Target '{0}' is up-to-date.", path);
+				App.Log (3, "Target '{0}' is up-to-date.", path);
 			}
 
 			if (!File.Exists (zipPath)) {
-				ErrorHelper.Warning (1302, Errors.MT1302, metadata.LibraryName, FullPath);
+				ErrorHelper.Warning (App, 1302, Errors.MT1302, metadata.LibraryName, FullPath);
 				if (assembly.MainModule.HasResources) {
-					Driver.Log (3, $"The assembly {FullPath} has {assembly.MainModule.Resources.Count} resources:");
+					App.Log (3, $"The assembly {FullPath} has {assembly.MainModule.Resources.Count} resources:");
 					foreach (var res in assembly.MainModule.Resources) {
-						Driver.Log (3, $"    {res.ResourceType}: {res.Name}");
+						App.Log (3, $"    {res.ResourceType}: {res.Name}");
 					}
 				} else {
-					Driver.Log (3, $"The assembly {FullPath} does not have any resources.");
+					App.Log (3, $"The assembly {FullPath} does not have any resources.");
 				}
 			} else {
 				if (!Directory.Exists (path))
 					Directory.CreateDirectory (path);
 
-				if (Driver.RunCommand ("/usr/bin/unzip", "-u", "-o", "-d", path, zipPath) != 0)
+				if (RuntimeInformation.IsOSPlatform (OSPlatform.Windows)) {
+					ExtractZipArchive (zipPath, path);
+				} else if (Driver.RunCommand (App, "/usr/bin/unzip", "-u", "-o", "-d", path, zipPath) != 0) {
 					throw ErrorHelper.CreateError (1303, Errors.MT1303, metadata.LibraryName, zipPath);
+				}
 			}
 
 			framework = path;
 			return true;
 		}
 
-		static void LogNativeReference (NativeReferenceMetadata metadata)
+		static void ExtractZipArchive (string zipPath, string destinationDirectory)
 		{
-			Driver.Log (3, "    LibraryName: {0}", metadata.LibraryName);
-			Driver.Log (3, "    From: {0}", metadata.Attribute is not null ? "LinkWith" : "Binding Manifest");
-			Driver.Log (3, "    ForceLoad: {0}", metadata.ForceLoad);
-			Driver.Log (3, "    Frameworks: {0}", metadata.Frameworks);
-			Driver.Log (3, "    IsCxx: {0}", metadata.IsCxx);
-			Driver.Log (3, "    LinkWithSwiftSystemLibraries: {0}", metadata.LinkWithSwiftSystemLibraries);
-			Driver.Log (3, "    LinkerFlags: {0}", metadata.LinkerFlags);
-			Driver.Log (3, "    LinkTarget: {0}", metadata.LinkTarget);
-			Driver.Log (3, "    NeedsGccExceptionHandling: {0}", metadata.NeedsGccExceptionHandling);
-			Driver.Log (3, "    SmartLink: {0}", metadata.SmartLink);
-			Driver.Log (3, "    WeakFrameworks: {0}", metadata.WeakFrameworks);
+			var destinationDirectoryPath = Path.GetFullPath (destinationDirectory + Path.DirectorySeparatorChar);
+
+			using var archive = ZipFile.OpenRead (zipPath);
+			foreach (var entry in archive.Entries) {
+				var destinationPath = Path.GetFullPath (Path.Combine (destinationDirectory, entry.FullName));
+				if (!destinationPath.StartsWith (destinationDirectoryPath, StringComparison.OrdinalIgnoreCase))
+					throw new InvalidDataException ($"The archive entry '{entry.FullName}' is outside the destination directory.");
+
+				if (string.IsNullOrEmpty (entry.Name)) {
+					Directory.CreateDirectory (destinationPath);
+					continue;
+				}
+
+				var directory = Path.GetDirectoryName (destinationPath);
+				if (directory is not null)
+					Directory.CreateDirectory (directory);
+				entry.ExtractToFile (destinationPath, true);
+			}
+		}
+
+		void LogNativeReference (NativeReferenceMetadata metadata)
+		{
+			App.Log (3, "    LibraryName: {0}", metadata.LibraryName);
+			App.Log (3, "    From: {0}", metadata.Attribute is not null ? "LinkWith" : "Binding Manifest");
+			App.Log (3, "    ForceLoad: {0}", metadata.ForceLoad);
+			App.Log (3, "    Frameworks: {0}", metadata.Frameworks);
+			App.Log (3, "    IsCxx: {0}", metadata.IsCxx);
+			App.Log (3, "    LinkWithSwiftSystemLibraries: {0}", metadata.LinkWithSwiftSystemLibraries);
+			App.Log (3, "    LinkerFlags: {0}", metadata.LinkerFlags);
+			App.Log (3, "    LinkTarget: {0}", metadata.LinkTarget);
+			App.Log (3, "    NeedsGccExceptionHandling: {0}", metadata.NeedsGccExceptionHandling);
+			App.Log (3, "    SmartLink: {0}", metadata.SmartLink);
+			App.Log (3, "    WeakFrameworks: {0}", metadata.WeakFrameworks);
 		}
 
 		public static LinkWithAttribute GetLinkWithAttribute (CustomAttribute attr)
@@ -478,13 +474,13 @@ namespace Xamarin.Bundler {
 		void AddFramework (string file)
 		{
 			if (Driver.GetFrameworks (App).TryGetValue (file, out var framework)) {
-				if (framework.Unavailable) {
-					ErrorHelper.Warning (182, Errors.MX0182 /* Not linking with the framework {0} (referenced by a module reference in {1}) because it's not available on the current platform ({2}). */, framework.Name, FileName, App.PlatformName);
+				if (framework.IsFrameworkUnavailable (App)) {
+					ErrorHelper.Warning (App, 182, Errors.MX0182 /* Not linking with the framework {0} (referenced by a module reference in {1}) because it's not available on the current platform ({2}). */, framework.Name, FileName, App.PlatformName);
 					return;
 				}
 
 				if (framework.Version > App.SdkVersion) {
-					ErrorHelper.Warning (135, Errors.MX0135, file, FileName, App.PlatformName, framework.Version, App.SdkVersion);
+					ErrorHelper.Warning (App, 135, Errors.MX0135, file, FileName, App.PlatformName, framework.Version, App.SdkVersion);
 					return;
 				}
 			}
@@ -492,10 +488,10 @@ namespace Xamarin.Bundler {
 			var strong = (framework is null) || (App.DeploymentTarget >= (App.IsSimulatorBuild ? framework.VersionAvailableInSimulator ?? framework.Version : framework.Version));
 			if (strong) {
 				if (Frameworks.Add (file))
-					Driver.Log (3, "Linking with the framework {0} because it's referenced by a module reference in {1}", file, FileName);
+					App.Log (3, "Linking with the framework {0} because it's referenced by a module reference in {1}", file, FileName);
 			} else {
 				if (WeakFrameworks.Add (file))
-					Driver.Log (3, "Linking (weakly) with the framework {0} because it's referenced by a module reference in {1}", file, FileName);
+					App.Log (3, "Linking (weakly) with the framework {0} because it's referenced by a module reference in {1}", file, FileName);
 			}
 		}
 
@@ -531,8 +527,8 @@ namespace Xamarin.Bundler {
 
 					string file = Path.GetFileNameWithoutExtension (name);
 
-					if (App.IsSimulatorBuild && !App.IsFrameworkAvailableInSimulator (file)) {
-						Driver.Log (3, "Not linking with {0} (referenced by a module reference in {1}) because it's not available in the simulator.", file, FileName);
+					if (App.IsFrameworkUnavailable (file)) {
+						App.Log (3, "Not linking with {0} (referenced by a module reference in {1}) because it's not available in the current SDK.", file, FileName);
 						continue;
 					}
 
@@ -551,12 +547,12 @@ namespace Xamarin.Bundler {
 						break;
 					case "sqlite3":
 						LinkerFlags.Add ("-lsqlite3");
-						Driver.Log (3, "Linking with {0} because it's referenced by a module reference in {1}", file, FileName);
+						App.Log (3, "Linking with {0} because it's referenced by a module reference in {1}", file, FileName);
 						break;
 					case "libsqlite3":
 						// remove lib prefix
 						LinkerFlags.Add ("-l" + file.Substring (3));
-						Driver.Log (3, "Linking with {0} because it's referenced by a module reference in {1}", file, FileName);
+						App.Log (3, "Linking with {0} because it's referenced by a module reference in {1}", file, FileName);
 						break;
 					case "libcompression":
 						LinkerFlags.Add (GetCompressionLinkingFlag ());
@@ -565,42 +561,42 @@ namespace Xamarin.Bundler {
 					case "libGLESv2":
 						// special case for OpenGLES.framework
 						if (Frameworks.Add ("OpenGLES"))
-							Driver.Log (3, "Linking with the framework OpenGLES because {0} is referenced by a module reference in {1}", file, FileName);
+							App.Log (3, "Linking with the framework OpenGLES because {0} is referenced by a module reference in {1}", file, FileName);
 						break;
 					case "vImage":
 					case "vecLib":
 						// sub-frameworks
 						if (Frameworks.Add ("Accelerate"))
-							Driver.Log (3, "Linking with the framework Accelerate because {0} is referenced by a module reference in {1}", file, FileName);
+							App.Log (3, "Linking with the framework Accelerate because {0} is referenced by a module reference in {1}", file, FileName);
 						break;
 					case "openal32":
 						if (Frameworks.Add ("OpenAL"))
-							Driver.Log (3, "Linking with the framework OpenAL because {0} is referenced by a module reference in {1}", file, FileName);
+							App.Log (3, "Linking with the framework OpenAL because {0} is referenced by a module reference in {1}", file, FileName);
 						break;
-#if NET && !LEGACY_TOOLS
+#if !LEGACY_TOOLS
 					case "Carbon":
 						if (App.Platform != ApplePlatform.MacOSX) {
-							Driver.Log (3, $"Not linking with the framework {file} (referenced by a module reference in {FileName}) because it doesn't exist on the target platform.");
+							App.Log (3, $"Not linking with the framework {file} (referenced by a module reference in {FileName}) because it doesn't exist on the target platform.");
 							break;
 						}
 						break;
 #endif
 					default:
 						if (App.Platform == ApplePlatform.MacOSX) {
-							string path = Path.GetDirectoryName (name);
-							if (!path.StartsWith ("/System/Library/Frameworks", StringComparison.Ordinal))
+							var path = Path.GetDirectoryName (name);
+							if (path?.StartsWith ("/System/Library/Frameworks", StringComparison.Ordinal) != true)
 								continue;
 
 							// CoreServices has multiple sub-frameworks that can be used by customer code
 							if (path.StartsWith ("/System/Library/Frameworks/CoreServices.framework/", StringComparison.Ordinal)) {
 								if (Frameworks.Add ("CoreServices"))
-									Driver.Log (3, "Linking with the framework CoreServices because {0} is referenced by a module reference in {1}", file, FileName);
+									App.Log (3, "Linking with the framework CoreServices because {0} is referenced by a module reference in {1}", file, FileName);
 								break;
 							}
 							// ApplicationServices has multiple sub-frameworks that can be used by customer code
 							if (path.StartsWith ("/System/Library/Frameworks/ApplicationServices.framework/", StringComparison.Ordinal)) {
 								if (Frameworks.Add ("ApplicationServices"))
-									Driver.Log (3, "Linking with the framework ApplicationServices because {0} is referenced by a module reference in {1}", file, FileName);
+									App.Log (3, "Linking with the framework ApplicationServices because {0} is referenced by a module reference in {1}", file, FileName);
 								break;
 							}
 						}
@@ -613,7 +609,7 @@ namespace Xamarin.Bundler {
 							if (UnresolvedModuleReferences is null)
 								UnresolvedModuleReferences = new HashSet<ModuleReference> ();
 							UnresolvedModuleReferences.Add (mr);
-							Driver.Log (3, "Could not resolve the module reference {0} in {1}", file, FileName);
+							App.Log (3, "Could not resolve the module reference {0} in {1}", file, FileName);
 						}
 						break;
 					}
@@ -624,94 +620,6 @@ namespace Xamarin.Bundler {
 		public override string ToString ()
 		{
 			return FileName;
-		}
-
-		// This returns the path to all related files:
-		// * The assembly itself
-		// * Any debug files (mdb/pdb)
-		// * Any config files
-		// * Any satellite assemblies
-		public IEnumerable<string> GetRelatedFiles ()
-		{
-			yield return FullPath;
-			var mdb = FullPath + ".mdb";
-			if (File.Exists (mdb))
-				yield return mdb;
-			var pdb = Path.ChangeExtension (FullPath, ".pdb");
-			if (File.Exists (pdb))
-				yield return pdb;
-			var config = FullPath + ".config";
-			if (File.Exists (config))
-				yield return config;
-			if (Satellites is not null) {
-				foreach (var satellite in Satellites)
-					yield return satellite;
-			}
-		}
-
-		public void ComputeSatellites ()
-		{
-			var satellite_name = Path.GetFileNameWithoutExtension (FullPath) + ".resources.dll";
-			var path = Path.GetDirectoryName (FullPath);
-			// first look if satellites are located in subdirectories of the current location of the assembly
-			ComputeSatellites (satellite_name, path);
-			if (Satellites is null) {
-				// 2nd chance: satellite assemblies can come from different nugets (as dependencies)
-				// they will be copied (at build time) into the destination directory (making them work at runtime)
-				// but they won't be side-by-side the original assembly (which breaks our build time assumptions)
-				path = Path.GetDirectoryName (App.RootAssemblies [0]);
-				if (string.IsNullOrEmpty (path))
-					path = Environment.CurrentDirectory;
-				ComputeSatellites (satellite_name, path);
-			}
-		}
-
-		void ComputeSatellites (string satellite_name, string path)
-		{
-			foreach (var subdir in Directory.GetDirectories (path)) {
-				var culture_name = Path.GetFileName (subdir);
-				CultureInfo ci;
-
-				if (culture_name.IndexOf ('.') >= 0)
-					continue; // cultures can't have dots. This way we don't check every *.app directory
-
-				// well-known subdirectories (that are not cultures) to avoid (slow) exceptions handling
-				switch (culture_name) {
-				case "Facades":
-				case "repl":
-				case "device-builds":
-				case "Design": // XF
-					continue;
-				}
-
-				try {
-					ci = CultureInfo.GetCultureInfo (culture_name);
-				} catch {
-					// nope, not a resource language
-					continue;
-				}
-
-				if (ci is null)
-					continue;
-
-				var satellite = Path.Combine (subdir, satellite_name);
-				if (File.Exists (satellite)) {
-					if (Satellites is null)
-						Satellites = new List<string> ();
-					Satellites.Add (satellite);
-				}
-			}
-		}
-
-		public delegate bool StripAssembly (string path);
-
-		public void CopyConfigToDirectory (string directory)
-		{
-			string config_src = FullPath + ".config";
-			if (File.Exists (config_src)) {
-				string config_target = Path.Combine (directory, FileName + ".config");
-				Application.UpdateFile (config_src, config_target, true);
-			}
 		}
 
 		public bool IsDedupAssembly { get; set; } = false;
@@ -729,40 +637,12 @@ namespace Xamarin.Bundler {
 		}
 	}
 
-	public sealed class NormalizedStringComparer : IEqualityComparer<string> {
-		public static readonly NormalizedStringComparer OrdinalIgnoreCase = new NormalizedStringComparer (StringComparer.OrdinalIgnoreCase);
-
-		StringComparer comparer;
-
-		public NormalizedStringComparer (StringComparer comparer)
-		{
-			this.comparer = comparer;
-		}
-
-		public bool Equals (string x, string y)
-		{
-			// From what I gather it doesn't matter which normalization form
-			// is used, but I chose Form D because HFS normalizes to Form D.
-			if (x is not null)
-				x = x.Normalize (System.Text.NormalizationForm.FormD);
-			if (y is not null)
-				y = y.Normalize (System.Text.NormalizationForm.FormD);
-			return comparer.Equals (x, y);
-		}
-
-		public int GetHashCode (string obj)
-		{
-			return comparer.GetHashCode (obj?.Normalize (System.Text.NormalizationForm.FormD));
-		}
-	}
-
 	public class AssemblyCollection : IEnumerable<Assembly> {
 		Dictionary<string, Assembly> HashedAssemblies = new Dictionary<string, Assembly> (NormalizedStringComparer.OrdinalIgnoreCase);
 
 		public void Add (Assembly assembly)
 		{
-			Assembly other;
-			if (HashedAssemblies.TryGetValue (assembly.Identity, out other))
+			if (HashedAssemblies.TryGetValue (assembly.Identity, out var other))
 				throw ErrorHelper.CreateError (2018, Errors.MT2018, assembly.Identity, other.FullPath, assembly.FullPath);
 			HashedAssemblies.Add (assembly.Identity, assembly);
 		}
@@ -783,12 +663,12 @@ namespace Xamarin.Bundler {
 			get { return HashedAssemblies; }
 		}
 
-		public bool TryGetValue (string identity, out Assembly assembly)
+		public bool TryGetValue (string identity, [NotNullWhen (true)] out Assembly? assembly)
 		{
 			return HashedAssemblies.TryGetValue (identity, out assembly);
 		}
 
-		public bool TryGetValue (AssemblyDefinition asm, out Assembly assembly)
+		public bool TryGetValue (AssemblyDefinition asm, [NotNullWhen (true)] out Assembly? assembly)
 		{
 			return HashedAssemblies.TryGetValue (Assembly.GetIdentity (asm), out assembly);
 		}
@@ -818,7 +698,7 @@ namespace Xamarin.Bundler {
 			set { HashedAssemblies [key] = value; }
 		}
 
-		public void Update (Target target, IEnumerable<AssemblyDefinition> assemblies)
+		public void Update (Application app, IEnumerable<AssemblyDefinition> assemblies)
 		{
 			// This function will remove any assemblies not in 'assemblies', and add any new assemblies.
 			var current = new HashSet<string> (HashedAssemblies.Keys, HashedAssemblies.Comparer);
@@ -826,16 +706,16 @@ namespace Xamarin.Bundler {
 				var identity = Assembly.GetIdentity (assembly);
 				if (!current.Remove (identity)) {
 					// new assembly
-					var asm = new Assembly (target, assembly);
+					var asm = new Assembly (app, assembly);
 					Add (asm);
-					Driver.Log (1, "The linker added the assembly '{0}' to '{1}' to satisfy a reference.", asm.Identity, target.App.Name);
+					app.Log (1, "The linker added the assembly '{0}' to '{1}' to satisfy a reference.", asm.Identity, app.Name);
 				} else {
 					this [identity].AssemblyDefinition = assembly;
 				}
 			}
 
 			foreach (var removed in current) {
-				Driver.Log (1, "The linker removed the assembly '{0}' from '{1}' since there is no more reference to it.", this [removed].Identity, target.App.Name);
+				app.Log (1, "The linker removed the assembly '{0}' from '{1}' since there is no more reference to it.", this [removed].Identity, app.Name);
 				Remove (removed);
 			}
 		}

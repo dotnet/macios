@@ -23,35 +23,41 @@ namespace Xamarin.Linker {
 				break;
 			case RegistrarMode.PartialStatic:
 				// The method name is created in StaticRegistrar.Specialize.
-				var method = Configuration.Target.StaticRegistrar.GetInitializationMethodName (Configuration.PlatformAssembly);
+				var method = Configuration.Application.StaticRegistrar.GetInitializationMethodName (Configuration.PlatformAssembly);
 				Configuration.RegistrationMethods.Add (method);
 				Configuration.CompilerFlags.AddLinkWith (Configuration.PartialStaticRegistrarLibrary);
 				break;
 			case RegistrarMode.Static:
-				Configuration.Target.StaticRegistrar.Register (Configuration.GetNonDeletedAssemblies (this));
+				Configuration.Application.StaticRegistrar.Register (Configuration.GetNonDeletedAssemblies (this));
 				goto case RegistrarMode.ManagedStatic;
+			case RegistrarMode.TrimmableStatic:
 			case RegistrarMode.ManagedStatic:
 				var dir = Configuration.CacheDirectory;
 				var header = Path.Combine (dir, "registrar.h");
 				var code = Path.Combine (dir, "registrar.mm");
-				if (app.Registrar == RegistrarMode.ManagedStatic) {
+#if !ASSEMBLY_PREPARER
+				if (app.Registrar == RegistrarMode.ManagedStatic || app.Registrar == RegistrarMode.TrimmableStatic) {
 					// Every api has been registered if we're using the managed registrar
 					// (since we registered types before the trimmer did anything),
 					// so we need to remove those that were later trimmed away by the trimmer.
-					Configuration.Target.StaticRegistrar.FilterTrimmedApi (Annotations);
+					Configuration.Application.StaticRegistrar.FilterTrimmedApi (Annotations);
 				}
-				Configuration.Target.StaticRegistrar.Generate (header, code, out var initialization_method);
+#endif
+				Configuration.Application.StaticRegistrar.Generate (header, code, out var initialization_method);
 
 				var items = new List<MSBuildItem> ();
-				foreach (var abi in Configuration.Abis) {
-					items.Add (new MSBuildItem (
-						code,
-						new Dictionary<string, string> {
-							{ "Arch", abi.AsArchString () },
-							{ "Arguments", "-std=c++14" },
-						}
-					));
-				}
+				var abi = Configuration.Abi;
+				items.Add (new MSBuildItem (
+					code,
+					new Dictionary<string, string> {
+						{ "Arch", abi.AsArchString () },
+						{ "Arguments", "-std=c++14" },
+						// The generated code #includes the generated header, so the header
+						// has to be next to the code when it's compiled. Declare it here, so
+						// that it's copied to the Mac when building remotely from Windows.
+						{ "AdditionalDependencies", header },
+					}
+				));
 
 				Configuration.WriteOutputForMSBuild ("_RegistrarFile", items);
 				Configuration.RegistrationMethods.Add (initialization_method);

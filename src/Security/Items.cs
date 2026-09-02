@@ -325,8 +325,11 @@ namespace Security {
 				copy.LowlevelSetObject (CFBoolean.TrueHandle, SecItem.ReturnAttributes);
 				copy.LowlevelSetObject (CFBoolean.TrueHandle, SecItem.ReturnData);
 				result = SecItem.SecItemCopyMatching (copy.Handle, out var ptr);
-				if (result == SecStatusCode.Success)
-					return new SecRecord (new NSMutableDictionary (ptr, true));
+				if (result == SecStatusCode.Success) {
+					var dict = Runtime.GetNSObject<NSMutableDictionary> (ptr, true);
+					if (dict is not null)
+						return new SecRecord (dict);
+				}
 				return null;
 			}
 		}
@@ -401,7 +404,10 @@ namespace Security {
 		{
 			if (record is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (record));
-			return SecItem.SecItemAdd (record.queryDict.Handle, IntPtr.Zero);
+			var queryDict = record.queryDict;
+			var rv = SecItem.SecItemAdd (queryDict.Handle, IntPtr.Zero);
+			GC.KeepAlive (queryDict);
+			return rv;
 
 		}
 
@@ -413,7 +419,10 @@ namespace Security {
 		{
 			if (record is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (record));
-			return SecItem.SecItemDelete (record.queryDict.Handle);
+			var queryDict = record.queryDict;
+			var rv = SecItem.SecItemDelete (queryDict.Handle);
+			GC.KeepAlive (queryDict);
+			return rv;
 		}
 
 		/// <param name="query">The query to use to update the records on the keychain.</param>
@@ -435,7 +444,12 @@ namespace Security {
 			if (newAttributes is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (newAttributes));
 
-			return SecItem.SecItemUpdate (query.queryDict.Handle, newAttributes.queryDict.Handle);
+			var queryDict = query.queryDict;
+			var newAttributesDict = newAttributes.queryDict;
+			var rv = SecItem.SecItemUpdate (queryDict.Handle, newAttributesDict.Handle);
+			GC.KeepAlive (queryDict);
+			GC.KeepAlive (newAttributesDict);
+			return rv;
 
 		}
 #if MONOMAC
@@ -1846,8 +1860,8 @@ namespace Security {
 			}
 		}
 
-		[SupportedOSPlatform ("ios13.0")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public bool UseDataProtectionKeychain {

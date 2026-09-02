@@ -21,7 +21,7 @@ note: make sure to pull from all of them to get the latest fixes
 
 2. Launch Xamarin Studio (4.0 or later)
 
-3. Open the "Touch.Unit.sln" solution
+3. Open the "Touch.Unit.slnx" solution
 
 4. Run / Debug / Add Tests / Enjoy
 

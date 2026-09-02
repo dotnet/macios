@@ -9,14 +9,6 @@ namespace Xamarin.Mac.Tests {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class SCNNodeTests {
-		[SetUp]
-		public void SetUp ()
-		{
-			Asserts.EnsureMavericks ();
-			if (Asserts.IsAtLeastElCapitan)
-				Asserts.Ensure64Bit ();
-		}
-
 		[Test]
 		public void SCNNode_AddAnimation ()
 		{
@@ -25,18 +17,16 @@ namespace Xamarin.Mac.Tests {
 			NSString key = new NSString ("MyKey");
 			c.AddAnimation (a, key);
 			CAPropertyAnimation cur = (CAPropertyAnimation) c.GetAnimation (key);
-			Assert.IsNotNull (cur);
-			Assert.AreEqual (cur.KeyPath, "hidden");
+			Assert.That (cur, Is.Not.Null);
+			Assert.That (cur.KeyPath, Is.EqualTo ("hidden"));
 			c.RemoveAnimation (key);
 			cur = (CAPropertyAnimation) c.GetAnimation (key);
-			Assert.IsNull (cur);
+			Assert.That (cur, Is.Null);
 		}
 
 		[Test]
 		public void SCNNode_SetPhysicsBodyTest ()
 		{
-			Asserts.EnsureYosemite ();
-
 			if (IntPtr.Size == 8) {
 				// Create a new empty scene
 				var Scene = new SCNScene ();

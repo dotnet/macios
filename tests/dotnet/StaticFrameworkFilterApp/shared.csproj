@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+
+		<ApplicationTitle>StaticFrameworkFilterApp</ApplicationTitle>
+		<ApplicationId>com.xamarin.staticframeworkfilter</ApplicationId>
+		<ApplicationVersion>1.0</ApplicationVersion>
+		<!-- Use the interpreter to speed up the test (avoids AOT compilation) -->
+		<UseInterpreter>true</UseInterpreter>
+	</PropertyGroup>
+
+	<Import Project="../../common/shared-dotnet.csproj" />
+
+	<ItemGroup>
+		<NativeReference Include="..\..\..\test-libraries\.libs\$(NativeLibName)\XTest.framework" Kind="Framework" />
+		<!-- This is a static library, but we do not set CopyToAppBundle="false" so FilterStaticFrameworks must handle it -->
+		<NativeReference Include="..\..\..\test-libraries\.libs\$(NativeLibName)\XStaticArTest.framework" Kind="Framework" SmartLink="true" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Include="../*.cs" />
+	</ItemGroup>
+</Project>

@@ -57,11 +57,28 @@ namespace Xamarin.Linker {
 				return;
 
 			abr.SetCurrentAssembly (assembly);
-
-			CreateRegistrarType (info);
-
-			abr.SaveCurrentAssembly ();
+			if (App.IsPostProcessingAssemblies) {
+				// We need to load what the PrepareAssemblies task did/produced
+				CollectRegistrarType (info, assembly);
+			} else {
+				CreateRegistrarType (info);
+				abr.SaveCurrentAssembly ();
+			}
 			abr.ClearCurrentAssembly ();
+		}
+
+		void CollectRegistrarType (AssemblyTrampolineInfo info, AssemblyDefinition currentAssembly)
+		{
+			var registrarType = currentAssembly.MainModule.Types.SingleOrDefault (v => v.Is ("ObjCRuntime", "__Registrar__"));
+			if (registrarType is null)
+				throw ErrorHelper.CreateError (99, $"No __Registrar__ was found in the assembly {currentAssembly.Name.Name} after the PrepareAssemblies step, but none was found. This might be a sign that the PrepareAssemblies step didn't run, or didn't run correctly.");
+
+			info.RegistrarType = registrarType;
+
+			// We don't care about getting the types, but we need the mapping to happen.
+			// None of the types in the generated table should be trimmed away by the trimmer, so sorting
+			// them when the table is generated, and then again after trimming (aka here), should result in the same order and thus the same mapping.
+			GetAndMapTypesToRegister (registrarType, info);
 		}
 
 		void CreateRegistrarType (AssemblyTrampolineInfo info)
@@ -119,7 +136,7 @@ namespace Xamarin.Linker {
 			AddLoadTypeToModuleConstructor (registrarType);
 
 			// Compute the list of types that we need to register
-			var types = GetTypesToRegister (registrarType, info);
+			var types = GetAndMapTypesToRegister (registrarType, info);
 
 			GenerateLookupUnmanagedFunction (registrarType, sorted);
 			GenerateLookupType (info, registrarType, types);
@@ -164,7 +181,7 @@ namespace Xamarin.Linker {
 			Annotations.Mark (moduleConstructor);
 		}
 
-		List<TypeData> GetTypesToRegister (TypeDefinition registrarType, AssemblyTrampolineInfo info)
+		List<TypeData> GetAndMapTypesToRegister (TypeDefinition registrarType, AssemblyTrampolineInfo info)
 		{
 			// Compute the list of types that we need to register
 			var types = new List<TypeData> ();
@@ -201,6 +218,9 @@ namespace Xamarin.Linker {
 				types.Add (new (wrapperType, wrapperType.Resolve ()));
 			}
 
+			// Sort the types by their full name to make sure the generated code is deterministic.
+			types.Sort ((x, y) => string.Compare (x.Definition.FullName, y.Definition.FullName, StringComparison.Ordinal));
+
 			// Now create a mapping from type to index
 			for (var i = 0; i < types.Count; i++)
 				info.RegisterType (types [i].Definition, (uint) i);
@@ -228,13 +248,17 @@ namespace Xamarin.Linker {
 
 		bool IsTrimmed (MemberReference type)
 		{
+#if ASSEMBLY_PREPARER
+			return false;
+#else
 			return StaticRegistrar.IsTrimmed (type, Annotations);
+#endif
 		}
 
 		void GenerateLookupTypeId (AssemblyTrampolineInfo infos, TypeDefinition registrarType, List<TypeData> types)
 		{
 			var lookupTypeMethod = registrarType.AddMethod ("LookupTypeId", MethodAttributes.Private | MethodAttributes.Final | MethodAttributes.Virtual | MethodAttributes.NewSlot | MethodAttributes.HideBySig, abr.System_UInt32);
-			var handleParameter = lookupTypeMethod.AddParameter ("handle", abr.System_RuntimeTypeHandle);
+			var handleParameter = lookupTypeMethod.AddParameter (abr.System_RuntimeTypeHandle); // handle
 			lookupTypeMethod.Overrides.Add (abr.IManagedRegistrar_LookupTypeId);
 			var body = lookupTypeMethod.CreateBody (out var il);
 
@@ -265,13 +289,13 @@ namespace Xamarin.Linker {
 			il.Emit (OpCodes.Ldc_I4_M1);
 			il.Emit (OpCodes.Ret);
 
-			body.GenerateILOffsets ();
+			body.FinalizeGeneratedBody ();
 		}
 
 		void GenerateLookupType (AssemblyTrampolineInfo infos, TypeDefinition registrarType, List<TypeData> types)
 		{
 			var lookupTypeMethod = registrarType.AddMethod ("LookupType", MethodAttributes.Private | MethodAttributes.Final | MethodAttributes.Virtual | MethodAttributes.NewSlot | MethodAttributes.HideBySig, abr.System_RuntimeTypeHandle);
-			lookupTypeMethod.AddParameter ("id", abr.System_UInt32);
+			lookupTypeMethod.AddParameter (abr.System_UInt32); // id
 			lookupTypeMethod.Overrides.Add (abr.IManagedRegistrar_LookupType);
 			var body = lookupTypeMethod.CreateBody (out var il);
 
@@ -307,14 +331,14 @@ namespace Xamarin.Linker {
 			il.Emit (OpCodes.Ldloc, temporary);
 			il.Emit (OpCodes.Ret);
 
-			body.GenerateILOffsets ();
+			body.FinalizeGeneratedBody ();
 		}
 
 		void GenerateConstructNSObject (TypeDefinition registrarType)
 		{
 			var createInstanceMethod = registrarType.AddMethod ("ConstructNSObject", MethodAttributes.Private | MethodAttributes.Final | MethodAttributes.Virtual | MethodAttributes.NewSlot | MethodAttributes.HideBySig, abr.ObjCRuntime_INativeObject);
-			var typeHandleParameter = createInstanceMethod.AddParameter ("typeHandle", abr.System_RuntimeTypeHandle);
-			var nativeHandleParameter = createInstanceMethod.AddParameter ("nativeHandle", abr.ObjCRuntime_NativeHandle);
+			var typeHandleParameter = createInstanceMethod.AddParameter (abr.System_RuntimeTypeHandle); // typeHandle
+			var nativeHandleParameter = createInstanceMethod.AddParameter (abr.ObjCRuntime_NativeHandle); // nativeHandle
 			createInstanceMethod.Overrides.Add (abr.IManagedRegistrar_ConstructNSObject);
 			var body = createInstanceMethod.CreateBody (out var il);
 
@@ -328,15 +352,14 @@ namespace Xamarin.Linker {
 			var types = GetRelevantTypes (type => type.IsNSObject (DerivedLinkContext) && !type.IsAbstract && !type.IsInterface);
 
 			foreach (var type in types) {
-				var ctorRef = FindNSObjectConstructor (type);
+				var ctorRef = AppBundleRewriter.FindNSObjectConstructor (type);
 				if (ctorRef is null) {
-					Driver.Log (9, $"Cannot include {type.FullName} in ConstructNSObject because it doesn't have a suitable constructor");
+					App.Log (9, $"Cannot include {type.FullName} in ConstructNSObject because it doesn't have a suitable constructor");
 					continue;
 				}
 
 				var ctor = abr.CurrentAssembly.MainModule.ImportReference (ctorRef);
-				if (IsTrimmed (ctor))
-					Annotations.Mark (ctor.Resolve ());
+				MarkConstructorIfTrimmed (ctor);
 
 				// We can only add a type to the table if it's not an open type.
 				if (!ManagedRegistrarStep.IsOpenType (type)) {
@@ -358,22 +381,22 @@ namespace Xamarin.Linker {
 				}
 
 				// In addition to the big lookup method, implement the static factory method on the type:
-				ImplementConstructNSObjectFactoryMethod (type, ctor);
+				abr.ImplementConstructNSObjectFactoryMethod (DerivedLinkContext, type, ctor);
 			}
 
 			// return default (NSObject);
 			il.Emit (OpCodes.Ldnull);
 			il.Emit (OpCodes.Ret);
 
-			body.GenerateILOffsets ();
+			body.FinalizeGeneratedBody ();
 		}
 
 		void GenerateConstructINativeObject (TypeDefinition registrarType)
 		{
 			var createInstanceMethod = registrarType.AddMethod ("ConstructINativeObject", MethodAttributes.Private | MethodAttributes.Final | MethodAttributes.Virtual | MethodAttributes.NewSlot | MethodAttributes.HideBySig, abr.ObjCRuntime_INativeObject);
-			var typeHandleParameter = createInstanceMethod.AddParameter ("typeHandle", abr.System_RuntimeTypeHandle);
-			var nativeHandleParameter = createInstanceMethod.AddParameter ("nativeHandle", abr.ObjCRuntime_NativeHandle);
-			var ownsParameter = createInstanceMethod.AddParameter ("owns", abr.System_Boolean);
+			var typeHandleParameter = createInstanceMethod.AddParameter (abr.System_RuntimeTypeHandle); // typeHandle
+			var nativeHandleParameter = createInstanceMethod.AddParameter (abr.ObjCRuntime_NativeHandle); // nativeHandle
+			var ownsParameter = createInstanceMethod.AddParameter (abr.System_Boolean); // owns
 			createInstanceMethod.Overrides.Add (abr.IManagedRegistrar_ConstructINativeObject);
 			var body = createInstanceMethod.CreateBody (out var il);
 
@@ -387,20 +410,13 @@ namespace Xamarin.Linker {
 			var types = GetRelevantTypes (type => type.IsNativeObject () && !type.IsAbstract && !type.IsInterface);
 
 			foreach (var type in types) {
-				var ctorRef = FindINativeObjectConstructor (type);
+				var ctorRef = AppBundleRewriter.FindINativeObjectConstructor (type);
 
 				if (ctorRef is not null) {
 					var ctor = abr.CurrentAssembly.MainModule.ImportReference (ctorRef);
 
 					// we need to preserve the constructor because it might not be used anywhere else
-					if (IsTrimmed (ctor)) {
-						var ctorDefinition = ctor.Resolve ();
-						Annotations.Mark (ctorDefinition);
-						foreach (var instr in ctorDefinition.Body.Instructions) {
-							if (instr.Operand is MethodReference mr)
-								Annotations.Mark (mr.Resolve ());
-						}
-					}
+					MarkConstructorIfTrimmed (ctor);
 
 					if (!ManagedRegistrarStep.IsOpenType (type)) {
 						EnsureVisible (createInstanceMethod, ctor);
@@ -423,168 +439,39 @@ namespace Xamarin.Linker {
 				}
 
 				// In addition to the big lookup method, implement the static factory method on the type:
-				ImplementConstructINativeObjectFactoryMethod (type, ctorRef);
+				abr.ImplementConstructINativeObjectFactoryMethod (DerivedLinkContext, type, ctorRef);
 			}
 
 			// return default (NSObject)
 			il.Emit (OpCodes.Ldnull);
 			il.Emit (OpCodes.Ret);
 
-			body.GenerateILOffsets ();
+			body.FinalizeGeneratedBody ();
 		}
 
-		void AddTypeInterfaceImplementation (TypeDefinition type, TypeReference iface)
+		// We need to preserve the constructor because it might not be used anywhere else.
+		// We also need to preserve all method and field references from the constructor body,
+		// because the mark step has already completed and won't transitively mark them.
+		// Ref: https://github.com/dotnet/macios/issues/24663
+		void MarkConstructorIfTrimmed (MethodReference ctor)
 		{
-			if (type.HasInterfaces && type.Interfaces.Any (v => v.InterfaceType == iface))
+			if (!IsTrimmed (ctor))
 				return;
 
-			var ifaceImplementation = new InterfaceImplementation (iface);
-			type.Interfaces.Add (ifaceImplementation);
-			Annotations.Mark (ifaceImplementation);
-			Annotations.Mark (ifaceImplementation.InterfaceType);
-			Annotations.Mark (ifaceImplementation.InterfaceType.Resolve ());
-		}
-
-		void ImplementConstructNSObjectFactoryMethod (TypeDefinition type, MethodReference ctor)
-		{
-			// skip creating the factory for NSObject itself
-			if (type.Is ("Foundation", "NSObject"))
-				return;
-
-			// Make sure the type implements INSObjectFactory, otherwise we can't override the _Xamarin_ConstructNSObject method from it.
-			AddTypeInterfaceImplementation (type, abr.Foundation_INSObjectFactory);
-
-			var createInstanceMethod = type.AddMethod ("_Xamarin_ConstructNSObject", MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.NewSlot | MethodAttributes.HideBySig, abr.Foundation_NSObject);
-			var nativeHandleParameter = createInstanceMethod.AddParameter ("nativeHandle", abr.ObjCRuntime_NativeHandle);
-			abr.Foundation_INSObjectFactory.Resolve ().IsPublic = true;
-			createInstanceMethod.Overrides.Add (abr.INSObjectFactory__Xamarin_ConstructNSObject);
-			var body = createInstanceMethod.CreateBody (out var il);
-
-			if (type.HasGenericParameters) {
-				ctor = type.CreateMethodReferenceOnGenericType (ctor, type.GenericParameters.ToArray ());
+			var ctorDefinition = ctor.Resolve ();
+			Annotations.Mark (ctorDefinition);
+			foreach (var instr in ctorDefinition.Body.Instructions) {
+				if (instr.Operand is MethodReference mr)
+					Annotations.Mark (mr.Resolve ());
+				else if (instr.Operand is FieldReference fr)
+					Annotations.Mark (fr.Resolve ());
 			}
-
-			// return new TypeA (nativeHandle); // for NativeHandle ctor
-			// return new TypeA ((IntPtr) nativeHandle); // for IntPtr ctor
-			il.Emit (OpCodes.Ldarg, nativeHandleParameter);
-			if (ctor.Parameters [0].ParameterType.Is ("System", "IntPtr"))
-				il.Emit (OpCodes.Call, abr.NativeObject_op_Implicit_IntPtr);
-			il.Emit (OpCodes.Newobj, ctor);
-			il.Emit (OpCodes.Ret);
-
-			body.GenerateILOffsets ();
-
-			Annotations.Mark (createInstanceMethod);
-		}
-
-		void ImplementConstructINativeObjectFactoryMethod (TypeDefinition type, MethodReference? ctor)
-		{
-			// skip creating the factory for NSObject itself
-			if (type.Is ("Foundation", "NSObject"))
-				return;
-
-			// If the type is a subclass of NSObject, we prefer the NSObject "IntPtr" constructor
-			var nsobjectConstructor = type.IsNSObject (DerivedLinkContext) ? FindNSObjectConstructor (type) : null;
-			if (nsobjectConstructor is null && ctor is null)
-				return;
-
-			// Make sure the type implements INativeObject, otherwise we can't override the _Xamarin_ConstructINativeObject method from it.
-			AddTypeInterfaceImplementation (type, abr.ObjCRuntime_INativeObject);
-
-			var createInstanceMethod = type.AddMethod ("_Xamarin_ConstructINativeObject", MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.NewSlot | MethodAttributes.HideBySig, abr.ObjCRuntime_INativeObject);
-			var nativeHandleParameter = createInstanceMethod.AddParameter ("nativeHandle", abr.ObjCRuntime_NativeHandle);
-			var ownsParameter = createInstanceMethod.AddParameter ("owns", abr.System_Boolean);
-			abr.INativeObject__Xamarin_ConstructINativeObject.Resolve ().IsPublic = true;
-			createInstanceMethod.Overrides.Add (abr.INativeObject__Xamarin_ConstructINativeObject);
-			var body = createInstanceMethod.CreateBody (out var il);
-
-			if (nsobjectConstructor is not null) {
-				// var instance = new TypeA (nativeHandle);
-				// // alternatively with a cast: new TypeA ((IntPtr) nativeHandle);
-				// if (instance is not null && owns)
-				//     Runtime.TryReleaseINativeObject (instance);
-				// return instance;
-
-				if (type.HasGenericParameters) {
-					nsobjectConstructor = type.CreateMethodReferenceOnGenericType (nsobjectConstructor, type.GenericParameters.ToArray ());
-				}
-
-				il.Emit (OpCodes.Ldarg, nativeHandleParameter);
-				if (nsobjectConstructor.Parameters [0].ParameterType.Is ("System", "IntPtr"))
-					il.Emit (OpCodes.Call, abr.NativeObject_op_Implicit_IntPtr);
-				il.Emit (OpCodes.Newobj, nsobjectConstructor);
-
-				var falseTarget = il.Create (OpCodes.Nop);
-				il.Emit (OpCodes.Dup);
-				il.Emit (OpCodes.Ldnull);
-				il.Emit (OpCodes.Cgt_Un);
-				il.Emit (OpCodes.Ldarg, ownsParameter);
-				il.Emit (OpCodes.And);
-				il.Emit (OpCodes.Brfalse_S, falseTarget);
-
-				il.Emit (OpCodes.Dup);
-				il.Emit (OpCodes.Call, abr.Runtime_TryReleaseINativeObject);
-
-				il.Append (falseTarget);
-
-				il.Emit (OpCodes.Ret);
-			} else if (ctor is not null) {
-				// return new TypeA (nativeHandle, owns); // for NativeHandle ctor
-				// return new TypeA ((IntPtr) nativeHandle, owns); // IntPtr ctor
-
-				if (type.HasGenericParameters) {
-					ctor = type.CreateMethodReferenceOnGenericType (ctor, type.GenericParameters.ToArray ());
-				}
-
-				il.Emit (OpCodes.Ldarg, nativeHandleParameter);
-				if (ctor.Parameters [0].ParameterType.Is ("System", "IntPtr"))
-					il.Emit (OpCodes.Call, abr.NativeObject_op_Implicit_IntPtr);
-				il.Emit (OpCodes.Ldarg, ownsParameter);
-				il.Emit (OpCodes.Newobj, ctor);
-				il.Emit (OpCodes.Ret);
-			} else {
-				throw new UnreachableException ();
-			}
-
-			body.GenerateILOffsets ();
-
-			Annotations.Mark (createInstanceMethod);
-		}
-
-		static MethodReference? FindNSObjectConstructor (TypeDefinition type)
-		{
-			return FindConstructorWithOneParameter ("ObjCRuntime", "NativeHandle")
-				?? FindConstructorWithOneParameter ("System", "IntPtr");
-
-			MethodReference? FindConstructorWithOneParameter (string ns, string cls)
-				=> type.Methods.SingleOrDefault (method =>
-					method.IsConstructor
-						&& !method.IsStatic
-						&& method.HasParameters
-						&& method.Parameters.Count == 1
-						&& method.Parameters [0].ParameterType.Is (ns, cls));
-		}
-
-
-		static MethodReference? FindINativeObjectConstructor (TypeDefinition type)
-		{
-			return FindConstructorWithTwoParameters ("ObjCRuntime", "NativeHandle", "System", "Boolean")
-				?? FindConstructorWithTwoParameters ("System", "IntPtr", "System", "Boolean");
-
-			MethodReference? FindConstructorWithTwoParameters (string ns1, string cls1, string ns2, string cls2)
-				=> type.Methods.SingleOrDefault (method =>
-					method.IsConstructor
-						&& !method.IsStatic
-						&& method.HasParameters
-						&& method.Parameters.Count == 2
-						&& method.Parameters [0].ParameterType.Is (ns1, cls1)
-						&& method.Parameters [1].ParameterType.Is (ns2, cls2));
 		}
 
 		void GenerateRegisterWrapperTypes (TypeDefinition type)
 		{
 			var method = type.AddMethod ("RegisterWrapperTypes", MethodAttributes.Private | MethodAttributes.Final | MethodAttributes.Virtual | MethodAttributes.NewSlot | MethodAttributes.HideBySig, abr.System_Void);
-			method.AddParameter ("type", abr.System_Collections_Generic_Dictionary2.CreateGenericInstanceType (abr.System_RuntimeTypeHandle, abr.System_RuntimeTypeHandle));
+			method.AddParameter (abr.System_Collections_Generic_Dictionary2.CreateGenericInstanceType (abr.System_RuntimeTypeHandle, abr.System_RuntimeTypeHandle)); // type
 			method.Overrides.Add (abr.IManagedRegistrar_RegisterWrapperTypes);
 			var body = method.CreateBody (out var il);
 
@@ -615,7 +502,7 @@ namespace Xamarin.Linker {
 
 			il.Emit (OpCodes.Ret);
 
-			body.GenerateILOffsets ();
+			body.FinalizeGeneratedBody ();
 		}
 
 		void GenerateLookupUnmanagedFunction (TypeDefinition registrar_type, IList<TrampolineInfo> trampolineInfos)
@@ -623,7 +510,7 @@ namespace Xamarin.Linker {
 			MethodDefinition? lookupMethods = null;
 			if (App.IsAOTCompiled (abr.CurrentAssembly.Name.Name)) {
 				// Don't generate lookup code, because native code will call the EntryPoint for the UnmanagedCallerOnly methods directly.
-				Driver.Log (9, $"Not generating method lookup code for {abr.CurrentAssembly.Name.Name}, because it's AOT compiled");
+				App.Log (9, $"Not generating method lookup code for {abr.CurrentAssembly.Name.Name}, because it's AOT compiled");
 			} else if (trampolineInfos.Count > 0) {
 				// All the methods in a given assembly will have consecutive IDs (but might not start at 0).
 				if (trampolineInfos.First ().Id + trampolineInfos.Count - 1 != trampolineInfos.Last ().Id)
@@ -636,8 +523,8 @@ namespace Xamarin.Linker {
 			}
 
 			var method = registrar_type.AddMethod ("LookupUnmanagedFunction", MethodAttributes.Private | MethodAttributes.Final | MethodAttributes.Virtual | MethodAttributes.NewSlot | MethodAttributes.HideBySig, abr.System_IntPtr);
-			method.AddParameter ("symbol", abr.System_String);
-			method.AddParameter ("id", abr.System_Int32);
+			method.AddParameter (abr.System_String); // symbol
+			method.AddParameter (abr.System_Int32); // id
 			method.Overrides.Add (abr.IManagedRegistrar_LookupUnmanagedFunction);
 			var body = method.CreateBody (out var il);
 			if (lookupMethods is null) {
@@ -649,7 +536,7 @@ namespace Xamarin.Linker {
 				il.Emit (OpCodes.Call, lookupMethods);
 			}
 			il.Emit (OpCodes.Ret);
-			body.GenerateILOffsets ();
+			body.FinalizeGeneratedBody ();
 		}
 
 		// If WrappedLook is true we'll wrap the ldftn instruction in a separate method, which can be useful for debugging,
@@ -672,8 +559,8 @@ namespace Xamarin.Linker {
 			var startId = trampolineInfos [startIndex].Id;
 			var name = level == 1 ? "LookupUnmanagedFunctionImpl" : $"LookupUnmanagedFunction_{level}_{levels}__{startIndex}_{endIndex}__";
 			method = type.AddMethod (name, MethodAttributes.Private | MethodAttributes.HideBySig | MethodAttributes.Static, abr.System_IntPtr);
-			method.AddParameter ("symbol", abr.System_String);
-			method.AddParameter ("id", abr.System_Int32);
+			method.AddParameter (abr.System_String); // symbol
+			method.AddParameter (abr.System_Int32); // id
 			var body = method.CreateBody (out var il);
 
 			if (level == levels) {
@@ -697,7 +584,7 @@ namespace Xamarin.Linker {
 						var wrappedBody = wrappedLookup.CreateBody (out var wrappedIl);
 						wrappedIl.Emit (OpCodes.Ldftn, mr);
 						wrappedIl.Emit (OpCodes.Ret);
-						wrappedBody.GenerateILOffsets ();
+						wrappedBody.FinalizeGeneratedBody ();
 
 						targets [i] = Instruction.Create (OpCodes.Call, wrappedLookup);
 					} else {
@@ -769,7 +656,7 @@ namespace Xamarin.Linker {
 			il.Emit (OpCodes.Conv_I);
 			il.Emit (OpCodes.Ret);
 
-			body.GenerateILOffsets ();
+			body.FinalizeGeneratedBody ();
 
 			return method;
 		}

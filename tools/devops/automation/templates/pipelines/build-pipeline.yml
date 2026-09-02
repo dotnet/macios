@@ -3,15 +3,10 @@
 
 parameters:
 
-- name: provisionatorChannel
-  displayName: Provisionator channel to use 
-  type: string
-  default: 'latest'
-
 - name: macOSName # comes from the build agent demand named macOS.Name
   displayName: Name of the version of macOS to use
   type: string
-  default: 'Sequoia'
+  default: 'Tahoe'
 
 - name: pool
   type: string
@@ -61,11 +56,6 @@ resources:
     name: xamarin.yaml-templates
     ref: refs/heads/main
 
-  - repository: macios-adr
-    type: git
-    name: macios-adr
-    ref: refs/heads/main
-
 variables:
 - ${{ if eq(parameters.isPR, false) }}:
   - ${{ if contains(variables['Build.DefinitionName'], 'private') }}:
@@ -92,7 +82,6 @@ stages:
     xcodeChannel: $(xcodeChannel)
     macOSName: ${{ parameters.macOSName }}
     isPR: ${{ parameters.isPR }}
-    provisionatorChannel: ${{ parameters.provisionatorChannel }}
     pool: ${{ parameters.pool }}
     runGovernanceTests: ${{ parameters.runGovernanceTests }}
     enableAPIDiff: ${{ parameters.enableAPIDiff }}

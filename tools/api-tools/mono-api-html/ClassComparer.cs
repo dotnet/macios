@@ -43,7 +43,7 @@ namespace Mono.ApiTools {
 		PropertyComparer pcomparer;
 		EventComparer ecomparer;
 		MethodComparer mcomparer;
-		ClassComparer kcomparer;
+		ClassComparer? kcomparer;
 
 		public ClassComparer (State state)
 			: base (state)
@@ -66,8 +66,8 @@ namespace Mono.ApiTools {
 
 		public override void SetContext (XElement current)
 		{
-			State.Type = current.GetAttribute ("name");
-			State.BaseType = current.GetAttribute ("base");
+			State.Type = current.GetAttribute ("name") ?? "";
+			State.BaseType = current.GetAttribute ("base") ?? "";
 		}
 
 		public void Compare (XElement source, XElement target)
@@ -76,7 +76,7 @@ namespace Mono.ApiTools {
 			var t = target.Element ("classes");
 			if (XNode.DeepEquals (s, t))
 				return;
-			Compare (s.Elements ("class"), t.Elements ("class"));
+			Compare (s!.Elements ("class"), t!.Elements ("class"));
 		}
 
 		public override void Added (XElement target, bool wasParentAdded)
@@ -92,7 +92,7 @@ namespace Mono.ApiTools {
 			if (target.IsTrue ("serializable"))
 				Indent ().WriteLine ("[Serializable]");
 
-			var type = target.Attribute ("type").Value;
+			var type = target.Attribute ("type")!.Value;
 
 			WriteAttributes (target);
 
@@ -112,7 +112,7 @@ namespace Mono.ApiTools {
 			Output.Write (' ');
 			Output.Write (type);
 			Output.Write (' ');
-			Output.Write (target.GetAttribute ("name"));
+			Output.Write (target.GetAttribute ("name") ?? "");
 
 			var baseclass = target.GetAttribute ("base");
 			if ((type != "enum") && (type != "struct")) {
@@ -206,7 +206,7 @@ namespace Mono.ApiTools {
 				foreach (var @assembly in assemblies.Elements ("assembly")) {
 					foreach (var e in assembly.Elements ("namespaces")) {
 						foreach (var nsElement in e.Elements ("namespace")) {
-							var ns = nsElement.GetAttribute ("name");
+							var ns = nsElement.GetAttribute ("name") ?? "";
 							foreach (var classesElement in nsElement.Elements ("classes")) {
 								MapClasses (rv, ns, string.Empty, classesElement);
 							}
@@ -219,8 +219,8 @@ namespace Mono.ApiTools {
 			static void MapClasses (Dictionary<string, string> dictionary, string @namespace, string declaringType, XElement classes)
 			{
 				foreach (var classElement in classes.Elements ("class")) {
-					var className = classElement.GetAttribute ("name");
-					var baseType = classElement.GetAttribute ("base");
+					var className = classElement.GetAttribute ("name") ?? "";
+					var baseType = classElement.GetAttribute ("base") ?? "";
 					string fullname;
 					if (string.IsNullOrEmpty (@namespace)) {
 						// nested type
@@ -255,7 +255,7 @@ namespace Mono.ApiTools {
 			State.LogDebugMessage ($"Possible -r value: {rm}");
 			if (sb != tb) {
 				Formatter.BeginMemberModification ("Modified base type");
-				var apichange = new ApiChange ($"{State.Namespace}.{State.Type}", State).AppendModified (sb, tb);
+				var apichange = new ApiChange ($"{State.Namespace}.{State.Type}", State).AppendModified (sb ?? "", tb ?? "");
 				Formatter.Diff (apichange);
 				Formatter.EndMemberModification ();
 			}
@@ -272,7 +272,7 @@ namespace Mono.ApiTools {
 				var ti = target.Element ("classes");
 				kcomparer = new NestedClassComparer (State);
 				State.Parent = State.Type;
-				kcomparer.Compare (si.Elements ("class"), ti is null ? null : ti.Elements ("class"));
+				kcomparer.Compare (si.Elements ("class"), ti?.Elements ("class"));
 				State.Type = State.Parent;
 			}
 
@@ -293,7 +293,7 @@ namespace Mono.ApiTools {
 			Formatter.EndTypeRemoval ();
 		}
 
-		public virtual string GetTypeName (XElement type)
+		public virtual string? GetTypeName (XElement type)
 		{
 			return type.GetAttribute ("name");
 		}
@@ -308,11 +308,11 @@ namespace Mono.ApiTools {
 
 		public override void SetContext (XElement current)
 		{
-			State.Type = State.Parent + "." + current.GetAttribute ("name");
-			State.BaseType = current.GetAttribute ("base");
+			State.Type = State.Parent + "." + (current.GetAttribute ("name") ?? "");
+			State.BaseType = current.GetAttribute ("base") ?? "";
 		}
 
-		public override string GetTypeName (XElement type)
+		public override string? GetTypeName (XElement type)
 		{
 			return State.Parent + "." + base.GetTypeName (type);
 		}

@@ -18,12 +18,12 @@
 		<CreateAppBundleDependsOn>$(CreateAppBundleDependsOn);CopyCustomFiles;</CreateAppBundleDependsOn>
 	</PropertyGroup>
 	<Target Name="CopyCustomFiles">
-		<PropertyGroup Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'">
+		<PropertyGroup Condition="'$(SdkIsDesktop)' == 'true'">
 			<SharedSupportDir>Contents/SharedSupport</SharedSupportDir>
 			<AppExecutableDir>Contents/MacOS</AppExecutableDir>
 			<DylibDir>Contents/MonoBundle</DylibDir>
 		</PropertyGroup>
-		<PropertyGroup Condition="!('$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst')">
+		<PropertyGroup Condition="'$(SdkIsDesktop)' != 'true'">
 			<SharedSupportDir>SharedSupport</SharedSupportDir>
 			<AppExecutableDir></AppExecutableDir>
 			<DylibDir></DylibDir>

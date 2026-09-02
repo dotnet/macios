@@ -119,3 +119,6 @@
 !missing-pinvoke! PMWorkflowCopyItems is not bound
 !missing-pinvoke! PMWorkflowSubmitPDFWithOptions is not bound
 !missing-pinvoke! PMWorkflowSubmitPDFWithSettings is not bound
+
+# updated sharpie results
+!missing-enum! PMPageToPaperMappingType not bound

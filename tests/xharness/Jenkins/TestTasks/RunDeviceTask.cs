@@ -8,11 +8,11 @@ using Microsoft.DotNet.XHarness.iOS.Shared.Hardware;
 using Microsoft.DotNet.XHarness.iOS.Shared.Listeners;
 
 namespace Xharness.Jenkins.TestTasks {
-	class RunDeviceTask : RunXITask<IHardwareDevice>, IRunDeviceTask {
+	public class RunDeviceTask : RunXITask<IHardwareDevice> {
 		public ITunnelBore TunnelBore { get; private set; }
 
 		RunDevice runDevice;
-		public override string ProgressMessage {
+		public override string? ProgressMessage {
 			get {
 				var log = runDevice.InstallLog;
 				if (log is null)

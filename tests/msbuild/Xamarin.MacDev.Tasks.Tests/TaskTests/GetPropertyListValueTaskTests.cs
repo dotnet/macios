@@ -9,7 +9,7 @@ namespace Xamarin.MacDev.Tasks {
 	[TestFixture]
 	public class GetPropertyListValueTaskTests : TestBase {
 
-		void TestExecuteTask (string property, string expected)
+		void TestExecuteTask (string property, string? expected)
 		{
 			var path = Path.Combine (Path.GetDirectoryName (GetType ().Assembly.Location)!, "Resources", "PropertyList.plist");
 			var task = CreateTask<GetPropertyListValue> ();
@@ -17,13 +17,13 @@ namespace Xamarin.MacDev.Tasks {
 			task.Property = property;
 
 			if (expected is null) {
-				Assert.IsFalse (task.Execute (), "Task was expected to fail.");
+				ExecuteTask (task, 1);
 				return;
 			}
 
-			Assert.IsTrue (task.Execute (), "Task was expected to execute successfully.");
+			ExecuteTask (task);
 
-			Assert.AreEqual (expected, task.Value, "Task produced the incorrect plist output.");
+			Assert.That (task.Value, Is.EqualTo (expected), "Task produced the incorrect plist output.");
 		}
 
 		[Test]

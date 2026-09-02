@@ -10,8 +10,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Foundation {
 	internal class NSFastEnumerator {
@@ -53,6 +52,7 @@ namespace Foundation {
 		{
 			unsafe {
 				count = NSFastEnumerator.objc_msgSend (collection.Handle, Selector.GetHandle ("countByEnumeratingWithState:objects:count:"), state, &state->array1, (nuint) NSFastEnumerationState.ArrayLength);
+				GC.KeepAlive (collection);
 				if (!started) {
 					started = true;
 					mutationValue = *state->mutationsPtr;
@@ -114,7 +114,7 @@ namespace Foundation {
 				unsafe {
 					ptr = state->itemsPtr [(int) current];
 				}
-				return Runtime.GetINativeObject<T> (ptr, false);
+				return Runtime.GetINativeObject<T> (ptr, false)!;
 			}
 		}
 		#endregion

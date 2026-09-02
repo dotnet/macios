@@ -6,33 +6,34 @@ using System.Text;
 
 using Xamarin.Bundler;
 
+#nullable enable
+
 namespace Xamarin.Utils {
 	public class CompilerFlags {
-		public Application Application { get { return Target.App; } }
-		public Target Target;
+		public Application Application;
 
-		public HashSet<string> Frameworks; // if a file, "-F /path/to/X --framework X" and added to Inputs, otherwise "--framework X".
-		public HashSet<string> WeakFrameworks;
-		public HashSet<string> LinkWithLibraries; // X, added to Inputs
-		public HashSet<string> ForceLoadLibraries; // -force_load X, added to Inputs
-		public HashSet<string []> OtherFlags; // X
-		public List<string> InitialOtherFlags; // same as OtherFlags, only that they're the first argument(s) to clang (because order matters!). This is a list to preserve order (fifo).
+		public HashSet<string>? Frameworks; // if a file, "-F /path/to/X --framework X" and added to Inputs, otherwise "--framework X".
+		public HashSet<string>? WeakFrameworks;
+		public HashSet<string>? LinkWithLibraries; // X, added to Inputs
+		public HashSet<string>? ForceLoadLibraries; // -force_load X, added to Inputs
+		public HashSet<string []>? OtherFlags; // X
+		public List<string>? InitialOtherFlags; // same as OtherFlags, only that they're the first argument(s) to clang (because order matters!). This is a list to preserve order (fifo).
 
-		public HashSet<string> Defines; // -DX
-		public HashSet<string> UnresolvedSymbols; // -u X
-		public HashSet<string> SourceFiles; // X, added to Inputs
+		public HashSet<string>? Defines; // -DX
+		public HashSet<string>? UnresolvedSymbols; // -u X
+		public HashSet<string>? SourceFiles; // X, added to Inputs
 
 		// Here we store a list of all the file-system based inputs
 		// to the compiler. This is used when determining if the
 		// compiler needs to be called in the first place (dependency
 		// tracking).
-		public List<string> Inputs;
+		public List<string>? Inputs;
 
-		public CompilerFlags (Target target)
+		public CompilerFlags (Application app)
 		{
-			if (target is null)
-				throw new ArgumentNullException (nameof (target));
-			this.Target = target;
+			if (app is null)
+				throw new ArgumentNullException (nameof (app));
+			this.Application = app;
 		}
 
 		public HashSet<string> AllLibraries {
@@ -54,7 +55,7 @@ namespace Xamarin.Utils {
 			foreach (var symbol in symbols) {
 				if (symbol.ValidAbis.HasValue && (symbol.ValidAbis.Value & abi) == 0)
 					continue;
-				UnresolvedSymbols.Add (symbol.Prefix + symbol.Name);
+				UnresolvedSymbols.Add (Symbol.Prefix + symbol.Name);
 			}
 		}
 
@@ -97,8 +98,6 @@ namespace Xamarin.Utils {
 
 		public void AddStandardCppLibrary ()
 		{
-			if (Driver.XcodeVersion.Major < 10)
-				return;
 			// Xcode 10 doesn't ship with libstdc++, so use libc++ instead.
 			AddOtherFlag ("-stdlib=libc++");
 		}
@@ -124,44 +123,6 @@ namespace Xamarin.Utils {
 			if (OtherFlags is null)
 				OtherFlags = new HashSet<string []> ();
 			OtherFlags.Add (flags);
-		}
-
-		public void LinkWithMono ()
-		{
-			var mode = Target.App.LibMonoLinkMode;
-			switch (mode) {
-			case AssemblyBuildTarget.DynamicLibrary:
-			case AssemblyBuildTarget.StaticObject:
-				AddLinkWith (Application.GetLibMono (mode));
-				break;
-			case AssemblyBuildTarget.Framework:
-				AddFramework (Application.GetLibMono (mode));
-				break;
-			default:
-				throw ErrorHelper.CreateError (100, Errors.MT0100, mode);
-			}
-			AddOtherFlag ("-lz");
-			AddOtherFlag ("-liconv");
-		}
-
-		public void LinkWithXamarin ()
-		{
-			var mode = Target.App.LibXamarinLinkMode;
-			switch (mode) {
-			case AssemblyBuildTarget.DynamicLibrary:
-			case AssemblyBuildTarget.StaticObject:
-				AddLinkWith (Application.GetLibXamarin (mode));
-				break;
-			case AssemblyBuildTarget.Framework:
-				AddFramework (Application.GetLibXamarin (mode));
-				break;
-			default:
-				throw ErrorHelper.CreateError (100, Errors.MT0100, mode);
-			}
-			AddFramework ("Foundation");
-			AddOtherFlag ("-lz");
-			if (Application.Platform != ApplePlatform.TVOS)
-				AddFramework ("CFNetwork"); // required by xamarin_start_wwan
 		}
 
 		public void AddFramework (string framework)
@@ -215,7 +176,7 @@ namespace Xamarin.Utils {
 
 			// force_load libraries take precedence, so remove the libraries
 			// we need to force load from the list of libraries we just load.
-			if (LinkWithLibraries is not null)
+			if (LinkWithLibraries is not null && ForceLoadLibraries is not null)
 				LinkWithLibraries.ExceptWith (ForceLoadLibraries);
 		}
 
@@ -237,13 +198,6 @@ namespace Xamarin.Utils {
 					args.Insert (idx, flag);
 					idx++;
 				}
-			}
-
-			// There are known bugs in the classic linker with Xcode 15, so keep use the classic linker in that case
-			//  In Xcode 16 we don't know of any problems for now, so enable the new linker by default
-			if (Driver.XcodeVersion.Major >= 15 && Driver.XcodeVersion.Major < 16 && !Application.DisableAutomaticLinkerSelection) {
-				args.Insert (0, "-Xlinker");
-				args.Insert (1, "-ld_classic");
 			}
 
 			ProcessFrameworksForArguments (args);
@@ -352,7 +306,7 @@ namespace Xamarin.Utils {
 				any_user_framework = true;
 				AddInput (Path.Combine (fw, name));
 				args.Add ("-F");
-				args.Add (Path.GetDirectoryName (fw));
+				args.Add (Path.GetDirectoryName (fw)!);
 			}
 			args.Add (is_weak ? "-weak_framework" : "-framework");
 			args.Add (name);

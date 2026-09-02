@@ -618,10 +618,15 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <summary>Raised when the stream finishes opening and is ready for use.</summary>
 		public event EventHandler<StreamEventArgs>? OpenCompletedEvent;
+		/// <summary>Raised when the stream has bytes available to be read.</summary>
 		public event EventHandler<StreamEventArgs>? HasBytesAvailableEvent;
+		/// <summary>Raised when the stream can accept bytes to be written without blocking.</summary>
 		public event EventHandler<StreamEventArgs>? CanAcceptBytesEvent;
+		/// <summary>Raised when an error occurs on the stream.</summary>
 		public event EventHandler<StreamEventArgs>? ErrorEvent;
+		/// <summary>Raised when the end of the stream is reached and it has been closed.</summary>
 		public event EventHandler<StreamEventArgs>? ClosedEvent;
 
 		/// <param name="args">To be added.</param>
@@ -789,7 +794,7 @@ namespace CoreFoundation {
 		{
 		}
 
-		/// <include file="../../docs/api/CoreFoundation/CFStream.xml" path="/Documentation/Docs[@DocId='M:CoreFoundation.CFStream.Dispose(System.Boolean)']/*" />
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			if (disposing) {

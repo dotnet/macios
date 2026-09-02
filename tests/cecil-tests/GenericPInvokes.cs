@@ -30,13 +30,14 @@ namespace Cecil.Tests {
 		{
 			var assembly = info.Assembly;
 			var pinvokes = AllPInvokes (assembly).Where (IsPInvokeOK);
-			Assert.IsTrue (pinvokes.Count () > 0);
+			Assert.That (pinvokes.Count, Is.GreaterThan (0));
 
 			var failures = pinvokes.Where (ContainsGenerics).ToList ();
 			var failingMethods = ListOfFailingMethods (failures);
 
-			Assert.IsTrue (failures.Count () == 0,
-				$"There are {failures.Count ()} pinvoke methods that contain generics. This will not work in .NET 7 and above (see https://github.com/dotnet/macios/issues/11771 ):{failingMethods}");
+			Assert.That (failures.Count,
+				Is.EqualTo (0),
+				$"There are {failures.Count} pinvoke methods that contain generics. This will not work in .NET 7 and above (see https://github.com/dotnet/macios/issues/11771 ):{failingMethods}");
 		}
 
 		string ListOfFailingMethods (IEnumerable<MethodDefinition> methods)

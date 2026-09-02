@@ -137,7 +137,7 @@ namespace AVFoundation {
 	/// <summary>An audio player that can play audio from memory or the local file system.</summary>
 	///     <remarks>To be added.</remarks>
 	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/AVTouchSample/">avTouch</related>
-	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioPlayerClassReference/index.html">Apple documentation for <c>AVAudioPlayer</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudioplayer">Apple documentation for <c>AVAudioPlayer</c></related>
 	public partial class AVAudioPlayer {
 		InternalAVAudioPlayerDelegate EnsureEventDelegate ()
 		{
@@ -149,6 +149,8 @@ namespace AVFoundation {
 			return del;
 		}
 
+		/// <summary>Raised when the player finishes playing the audio to the end.</summary>
+		/// <remarks>The event argument's <see cref="AVFoundation.AVStatusEventArgs.Status" /> is <see langword="true" /> if playback completed successfully, or <see langword="false" /> if it stopped because a decoding error occurred. This event is not raised when playback is stopped explicitly.</remarks>
 		public event EventHandler<AVStatusEventArgs> FinishedPlaying {
 			add {
 				EnsureEventDelegate ().cbFinishedPlaying += value;
@@ -160,6 +162,8 @@ namespace AVFoundation {
 			}
 		}
 
+		/// <summary>Raised when decoding an audio buffer fails while the sound is playing.</summary>
+		/// <remarks>The event argument's <see cref="AVFoundation.AVErrorEventArgs.Error" /> describes the decoding error that occurred.</remarks>
 		public event EventHandler<AVErrorEventArgs> DecoderError {
 			add {
 				EnsureEventDelegate ().cbDecoderError += value;
@@ -171,6 +175,7 @@ namespace AVFoundation {
 			}
 		}
 
+		/// <summary>Raised when an audio session interruption begins, typically because another app or the system has taken over audio playback (for example, an incoming phone call). Playback is paused for the duration of the interruption.</summary>
 		public event EventHandler BeginInterruption {
 			add {
 				EnsureEventDelegate ().cbBeginInterruption += value;
@@ -182,6 +187,7 @@ namespace AVFoundation {
 			}
 		}
 
+		/// <summary>Raised when a prior audio session interruption ends, indicating that the app may resume audio playback.</summary>
 		public event EventHandler EndInterruption {
 			add {
 				EnsureEventDelegate ().cbEndInterruption += value;
@@ -446,6 +452,7 @@ namespace AVFoundation {
 			return del;
 		}
 
+		/// <summary>Raised when an audio session interruption begins, typically because another app or the system has taken over the audio session (for example, an incoming phone call). Audio is paused for the duration of the interruption.</summary>
 		[UnsupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -462,6 +469,7 @@ namespace AVFoundation {
 			}
 		}
 
+		/// <summary>Raised when a prior audio session interruption ends, indicating that the app may reactivate its audio session and resume audio.</summary>
 		[UnsupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -474,10 +482,12 @@ namespace AVFoundation {
 			}
 			remove {
 				if (value is not null)
-					EnsureEventDelegate ().cbBeginInterruption -= value;
+					EnsureEventDelegate ().cbEndInterruption -= value;
 			}
 		}
 
+		/// <summary>Raised when the audio session category changes, altering how the app's audio interacts with other audio on the device.</summary>
+		/// <remarks>The event argument's <see cref="AVFoundation.AVCategoryEventArgs.Category" /> reports the new category.</remarks>
 		[UnsupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -494,6 +504,8 @@ namespace AVFoundation {
 			}
 		}
 
+		/// <summary>Raised when the availability of audio input on the current route changes, for example when a headset with a microphone is connected or disconnected.</summary>
+		/// <remarks>The event argument's <see cref="AVFoundation.AVStatusEventArgs.Status" /> is <see langword="true" /> when input became available.</remarks>
 		[UnsupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -510,6 +522,8 @@ namespace AVFoundation {
 			}
 		}
 
+		/// <summary>Raised when the hardware sample rate used by the audio session changes, for example after an audio route change.</summary>
+		/// <remarks>The event argument's <see cref="AVFoundation.AVSampleRateEventArgs.SampleRate" /> reports the new sample rate, in hertz.</remarks>
 		[UnsupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -527,6 +541,8 @@ namespace AVFoundation {
 			}
 		}
 
+		/// <summary>Raised when the number of audio input channels available to the audio session changes, for example after an audio route change.</summary>
+		/// <remarks>The event argument's <see cref="AVFoundation.AVChannelsEventArgs.NumberOfChannels" /> reports the new input channel count.</remarks>
 		[UnsupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -540,10 +556,12 @@ namespace AVFoundation {
 
 			remove {
 				if (value is not null)
-					EnsureEventDelegate ().cbInputChanged += value;
+					EnsureEventDelegate ().cbInputChanged -= value;
 			}
 		}
 
+		/// <summary>Raised when the number of audio output channels available to the audio session changes, for example after an audio route change.</summary>
+		/// <remarks>The event argument's <see cref="AVFoundation.AVChannelsEventArgs.NumberOfChannels" /> reports the new output channel count.</remarks>
 		[UnsupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]

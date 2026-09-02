@@ -74,15 +74,15 @@ namespace Xamarin.MacDev.Tasks {
 			Tasks [key] = obj;
 		}
 
-		object IBuildEngine4.GetRegisteredTaskObject (object key, RegisteredTaskObjectLifetime lifetime)
+		object? IBuildEngine4.GetRegisteredTaskObject (object key, RegisteredTaskObjectLifetime lifetime)
 		{
-			Tasks.TryGetValue (key, out object value);
+			Tasks.TryGetValue (key, out object? value);
 			return value;
 		}
 
-		object IBuildEngine4.UnregisterTaskObject (object key, RegisteredTaskObjectLifetime lifetime)
+		object? IBuildEngine4.UnregisterTaskObject (object key, RegisteredTaskObjectLifetime lifetime)
 		{
-			if (Tasks.TryGetValue (key, out object value)) {
+			if (Tasks.TryGetValue (key, out object? value)) {
 				Tasks.Remove (key);
 			}
 			return value;

@@ -24,9 +24,9 @@ namespace Xamarin.Linker {
 				// static initializers.
 				// but to do that, we have to register the
 				// assemblies.
-				Configuration.Target.StaticRegistrar.Register (Configuration.GetNonDeletedAssemblies (this));
+				Configuration.Application.StaticRegistrar.Register (Configuration.GetNonDeletedAssemblies (this));
 				// Rewrite will do nothing if the optimization is off
-				Configuration.Target.StaticRegistrar.Rewrite ();
+				Configuration.Application.StaticRegistrar.Rewrite ();
 			}
 		}
 	}

@@ -44,12 +44,13 @@ namespace Xamarin.MacDev.Tasks {
 		public override bool Execute ()
 		{
 			if (ShouldExecuteRemotely ()) {
-				var rv = ExecuteRemotely (out var taskRunner);
+				if (ExecuteRemotely (out var taskRunner)) {
+					if (CopyToWindows)
+						CopyFilesToWindowsAsync (taskRunner, TouchedFiles).Wait ();
+					return true;
+				}
 
-				if (rv && CopyToWindows)
-					CopyFilesToWindowsAsync (taskRunner, TouchedFiles).Wait ();
-
-				return rv;
+				return false;
 			}
 
 			return ExecuteLocally ();
@@ -79,7 +80,7 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			var createdFiles = new List<string> ();
 			cancellationTokenSource = new CancellationTokenSource ();
-			if (!CompressionHelper.TryDecompress (Log, ZipFilePath!.ItemSpec, Resource, ExtractionPath, createdFiles, cancellationTokenSource.Token, out var _))
+			if (!CompressionHelper.TryDecompress (this, ZipFilePath!.ItemSpec, Resource, ExtractionPath, createdFiles, cancellationTokenSource.Token, out var _))
 				return false;
 
 			TouchedFiles = createdFiles.Select (v => new TaskItem (v)).ToArray ();

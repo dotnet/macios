@@ -32,13 +32,11 @@
 #nullable enable
 
 using System.ComponentModel;
+using System.Drawing;
 #if !COREBUILD
 using CoreFoundation;
 using CoreGraphics;
 using CoreMedia;
-#endif
-#if !NO_SYSTEM_DRAWING
-using System.Drawing;
 #endif
 
 namespace ObjCRuntime {
@@ -51,14 +49,6 @@ namespace ObjCRuntime {
 		}
 		static public class LibC {
 			static public readonly IntPtr Handle = Dlfcn._dlopen (Constants.libcLibrary, 0);
-		}
-#if HAS_OPENGLES
-		static public class OpenGLES {
-			static public readonly IntPtr Handle = Dlfcn._dlopen (Constants.OpenGLESLibrary, 0);
-		}
-#endif
-		static public class AudioToolbox {
-			static public readonly IntPtr Handle = Dlfcn._dlopen (Constants.AudioToolboxLibrary, 0);
 		}
 #endif
 	}

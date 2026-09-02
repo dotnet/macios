@@ -7,6 +7,7 @@ using Mono.Cecil;
 
 using Xamarin.Bundler;
 using Xamarin.Linker;
+using Xamarin.Utils;
 
 #nullable enable
 
@@ -29,8 +30,8 @@ namespace Xamarin {
 				break;
 			case SymbolMode.Code:
 				var reference_m = Path.Combine (Configuration.CacheDirectory, "reference.m");
-				reference_m = Configuration.Target.GenerateReferencingSource (reference_m, required_symbols);
-				if (!string.IsNullOrEmpty (reference_m)) {
+				reference_m = Configuration.Application.GenerateReferencingSource (reference_m, required_symbols);
+				if (!StringUtils.IsNullOrEmpty (reference_m)) {
 					var item = new MSBuildItem (reference_m);
 					items.Add (item);
 				}
@@ -38,7 +39,7 @@ namespace Xamarin {
 				break;
 			case SymbolMode.Linker:
 				foreach (var symbol in required_symbols) {
-					var item = new MSBuildItem (symbol.Prefix + symbol.Name);
+					var item = new MSBuildItem (Symbol.Prefix + symbol.Name);
 					item.Metadata ["SymbolType"] = symbol.Type.ToString ();
 					items.Add (item);
 				}

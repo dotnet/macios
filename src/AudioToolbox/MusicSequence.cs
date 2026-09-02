@@ -78,7 +78,7 @@ namespace AudioToolbox {
 				sequenceMap [Handle] = new WeakReference (this);
 		}
 
-		/// <include file="../../docs/api/AudioToolbox/MusicSequence.xml" path="/Documentation/Docs[@DocId='M:AudioToolbox.MusicSequence.Dispose(System.Boolean)']/*" />
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			if (Handle != IntPtr.Zero && Owns) {

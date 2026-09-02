@@ -41,6 +41,8 @@ namespace ObjCRuntime {
 			this.handle = Runtime.GetProtocolForType (type);
 		}
 
+		/// <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>
+		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
 		public Protocol (NativeHandle handle)
 		{
 			this.handle = handle;
@@ -89,7 +91,7 @@ namespace ObjCRuntime {
 
 		internal static IntPtr objc_getProtocol (string? name)
 		{
-			var namePtr = new TransientString (name);
+			using var namePtr = new TransientString (name);
 			return objc_getProtocol (namePtr);
 		}
 

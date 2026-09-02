@@ -8,6 +8,7 @@ namespace Xamarin.Linker.Steps {
 		public MarkDispatcher ()
 			: base (new BaseSubStep [] {
 				new ApplyPreserveAttribute (),
+				new MarkForStaticRegistrar (),
 				new MarkNSObjects ()
 			})
 		{

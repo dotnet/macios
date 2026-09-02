@@ -35,17 +35,14 @@ namespace Foundation {
 				InitializeHandle (_Init (host, port, protocol, realm, authenticationMethod), "initWithHost:port:protocol:realm:authenticationMethod:");
 		}
 
-		// Disable until we get around to enable + fix any issues.
-#nullable disable
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		public SecTrust ServerSecTrust {
+		/// <summary>Gets the server trust information for this protection space.</summary>
+		/// <value>A <see cref="SecTrust" /> object representing the server trust information, or <see langword="null" /> if no server trust is available.</value>
+		/// <remarks>This property is used when the authentication method is <see cref="AuthenticationMethodServerTrust" />.</remarks>
+		public SecTrust? ServerSecTrust {
 			get {
 				IntPtr handle = ServerTrust;
 				return (handle == IntPtr.Zero) ? null : new SecTrust (handle, false);
 			}
 		}
-#nullable restore
 	}
 }

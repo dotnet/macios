@@ -9,11 +9,13 @@
 
 #nullable enable
 
-using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.IO;
+#if !COREBUILD
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using CoreGraphics;
+#endif
 using CoreFoundation;
 using PMObject = System.IntPtr;
 
@@ -59,11 +61,12 @@ namespace PrintCore {
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	public class PMPrintSession : PMPrintCoreBase {
-		[DllImport (Constants.PrintCoreLibrary)]
-		unsafe extern static PMStatusCode PMCreateSession (IntPtr* session);
-
 		[Preserve (Conditional = true)]
 		internal PMPrintSession (NativeHandle handle, bool owns) : base (handle, owns) { }
+
+#if !COREBUILD
+		[DllImport (Constants.PrintCoreLibrary)]
+		unsafe extern static PMStatusCode PMCreateSession (IntPtr* session);
 
 		static IntPtr Create ()
 		{
@@ -209,20 +212,22 @@ namespace PrintCore {
 			changed = c != 0;
 			return code;
 		}
+#endif
 	}
 
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	public class PMPrintSettings : PMPrintCoreBase {
-		[DllImport (Constants.PrintCoreLibrary)]
-		unsafe extern static PMStatusCode PMCreatePrintSettings (IntPtr* session);
-
 		[Preserve (Conditional = true)]
 		internal PMPrintSettings (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{
 		}
+
+#if !COREBUILD
+		[DllImport (Constants.PrintCoreLibrary)]
+		unsafe extern static PMStatusCode PMCreatePrintSettings (IntPtr* session);
 
 		static IntPtr Create ()
 		{
@@ -448,19 +453,21 @@ namespace PrintCore {
 			}
 		}
 
+#endif
 	}
 
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	public class PMPageFormat : PMPrintCoreBase {
+		[Preserve (Conditional = true)]
+		internal PMPageFormat (NativeHandle handle, bool owns) : base (handle, owns) { }
+
+#if !COREBUILD
 		[DllImport (Constants.PrintCoreLibrary)]
 		unsafe extern static PMStatusCode PMCreatePageFormat (IntPtr* handle);
 		[DllImport (Constants.PrintCoreLibrary)]
 		unsafe extern static PMStatusCode PMCreatePageFormatWithPMPaper (IntPtr* handle, IntPtr paper);
-
-		[Preserve (Conditional = true)]
-		internal PMPageFormat (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 		static IntPtr Create (PMPaper? paper = null)
 		{
@@ -576,6 +583,7 @@ namespace PrintCore {
 				return new PMRect (0, 0, 0, 0);
 			}
 		}
+#endif
 	}
 
 	/// <summary>To be added.</summary>
@@ -584,6 +592,7 @@ namespace PrintCore {
 	public class PMPaper : PMPrintCoreBase {
 		[Preserve (Conditional = true)]
 		internal PMPaper (NativeHandle handle, bool owns) : base (handle, owns) { }
+#if !COREBUILD
 		[DllImport (Constants.PrintCoreLibrary)]
 		unsafe extern static PMStatusCode PMPaperGetID (IntPtr handle, IntPtr* str);
 		[DllImport (Constants.PrintCoreLibrary)]
@@ -678,20 +687,22 @@ namespace PrintCore {
 			return CFString.FromHandle (name, true);
 		}
 
+#endif
 	}
 
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	public class PMPrinter : PMPrintCoreBase {
+		[Preserve (Conditional = true)]
+		internal PMPrinter (NativeHandle handle, bool owns) : base (handle, owns) { }
+
+#if !COREBUILD
 		[DllImport (Constants.PrintCoreLibrary)]
 		unsafe extern static PMStatusCode PMCreateGenericPrinter (IntPtr* session);
 
 		[DllImport (Constants.PrintCoreLibrary)]
 		extern static IntPtr PMPrinterCreateFromPrinterID (IntPtr id);
-
-		[Preserve (Conditional = true)]
-		internal PMPrinter (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 		static IntPtr Create ()
 		{
@@ -1090,6 +1101,7 @@ namespace PrintCore {
 				return CFString.FromHandle (hostName, true);
 			}
 		}
+#endif
 	}
 
 	/// <summary>To be added.</summary>
@@ -1102,6 +1114,7 @@ namespace PrintCore {
 		{
 		}
 
+#if !COREBUILD
 		[DllImport (Constants.PrintCoreLibrary)]
 		extern static PMStatusCode PMServerLaunchPrinterBrowser (IntPtr server, IntPtr dictFutureUse);
 
@@ -1133,5 +1146,6 @@ namespace PrintCore {
 			printerList = CFArray.ArrayFromHandleFunc<PMPrinter> (arr, (handle) => new PMPrinter (handle, false), true);
 			return PMStatusCode.Ok;
 		}
+#endif
 	}
 }

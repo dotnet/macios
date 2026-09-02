@@ -43,6 +43,6 @@ AddSubview(rightHandView);
       <para>The preceding diagram illustrates the objects directly involved in the two-column layout. The <see cref="NSTextStorage" /> is the responsibility of some external model class and the two-column user-interface is specified by a custom <see cref="View" /> (<c>TwoColumnView</c>). </para>
       <para>A <see cref="NSTextContainer" /> contains an array of zero or more <see cref="BezierPath" /> objects in its <see cref="NSTextContainer.ExclusionPaths" /> property. Text will not be placed within these paths.</para>
     </remarks>
-    <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/NSTextContainer_Class_TextKit/index.html">Apple documentation for <c>NSTextContainer</c></related>
+    <related type="externalDocumentation" href="https://developer.apple.com/documentation/uikit/nstextcontainer">Apple documentation for <c>NSTextContainer</c></related>
   </Docs>
 </Documentation>

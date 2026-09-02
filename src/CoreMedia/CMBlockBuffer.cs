@@ -260,7 +260,7 @@ namespace CoreMedia {
 
 		public static CMBlockBuffer? FromMemoryBlock (IntPtr memoryBlock, nuint blockLength, CMCustomBlockAllocator? customBlockSource, nuint offsetToData, nuint dataLength, CMBlockBufferFlags flags, out CMBlockBufferError error)
 		{
-			var blockAllocator = memoryBlock == IntPtr.Zero ? NativeHandle.Zero : CFAllocator.Null.Handle;
+			var blockAllocator = memoryBlock == IntPtr.Zero ? NativeHandle.Zero : (NativeHandle) CFAllocator.null_ptr;
 			IntPtr buffer;
 			unsafe {
 				if (customBlockSource is null) {
@@ -339,7 +339,7 @@ namespace CoreMedia {
 
 		public CMBlockBufferError AppendMemoryBlock (IntPtr memoryBlock, nuint blockLength, CMCustomBlockAllocator customBlockSource, nuint offsetToData, nuint dataLength, CMBlockBufferFlags flags)
 		{
-			var blockAllocator = memoryBlock == IntPtr.Zero ? NativeHandle.Zero : CFAllocator.Null.Handle;
+			var blockAllocator = memoryBlock == IntPtr.Zero ? NativeHandle.Zero : (NativeHandle) CFAllocator.null_ptr;
 			unsafe {
 				if (customBlockSource is null) {
 					return CMBlockBufferAppendMemoryBlock (GetCheckedHandle (), memoryBlock, blockLength, blockAllocator, null, offsetToData, dataLength, flags);

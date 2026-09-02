@@ -1,0 +1,2 @@
+# Causes segfault so clearly not allowed
+!missing-null-allowed! 'System.Void AVKit.AVLegibleMediaOptionsMenuController::.ctor(AVFoundation.AVPlayer)' is missing an [NullAllowed] on parameter #0

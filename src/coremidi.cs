@@ -143,7 +143,7 @@ namespace CoreMidi {
 		SystemReset = 255,
 	}
 
-	[iOS (16, 0), Mac (13, 0), MacCatalyst (16, 0), TV (15, 0)]
+	[iOS (16, 0), MacCatalyst (16, 0), TV (15, 0)]
 	[NativeName ("MIDINoteAttribute")]
 	public enum MidiNoteAttribute : byte {
 		None = 0,
@@ -152,7 +152,7 @@ namespace CoreMidi {
 		Pitch = 3,
 	}
 
-	[iOS (16, 0), Mac (13, 0), MacCatalyst (16, 0), TV (15, 0)]
+	[iOS (16, 0), MacCatalyst (16, 0), TV (15, 0)]
 	[NativeName ("MIDIPerNoteManagementOptions")]
 	[Flags]
 	public enum MidiPerNoteManagementOptions : byte {
@@ -160,14 +160,14 @@ namespace CoreMidi {
 		Detach = 1 << 1,
 	}
 
-	[iOS (16, 0), Mac (13, 0), MacCatalyst (16, 0), TV (15, 0)]
+	[iOS (16, 0), MacCatalyst (16, 0), TV (15, 0)]
 	[NativeName ("MIDIProgramChangeOptions")]
 	[Flags]
 	public enum MidiProgramChangeOptions : byte {
 		BankValid = 1 << 0,
 	}
 
-	[iOS (16, 0), Mac (13, 0), MacCatalyst (16, 0), TV (15, 0)]
+	[iOS (16, 0), MacCatalyst (16, 0), TV (15, 0)]
 	[NativeName ("MIDIUtilityStatus")]
 	public enum MidiUtilityStatus : uint {
 		Noop = 0,
@@ -885,6 +885,13 @@ namespace CoreMidi {
 	}
 
 	[Internal]
+	[NoTV, NoiOS, NoMacCatalyst]
+	enum MidiDriverProperty {
+		[Field ("kMIDIDriverPropertyUsesSerial")]
+		UsesSerial,
+	}
+
+	[Internal]
 	enum MidiProperty {
 		[NoTV]
 		[Field ("kMIDIPropertyName")]
@@ -1078,11 +1085,11 @@ namespace CoreMidi {
 		[Field ("kMIDIPropertyProtocolID")]
 		ProtocolId,
 
-		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0), NoTV]
+		[iOS (17, 0), MacCatalyst (17, 0), NoTV]
 		[Field ("kMIDIPropertyUMPActiveGroupBitmap")]
 		UmpActiveGroupBitmap,
 
-		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0), NoTV]
+		[iOS (17, 0), MacCatalyst (17, 0), NoTV]
 		[Field ("kMIDIPropertyUMPCanTransmitGroupless")]
 		UmpCanTransmitGroupless,
 

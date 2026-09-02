@@ -14,17 +14,13 @@ parameters:
 - name: macOSName  # comes from the build agent demand named macOS.Name
   displayName: Name of the version of macOS to use
   type: string
-  default: 'Sequoia'
+  default: 'Tahoe'
 
 resources:
   repositories:
   - repository: yaml-templates
     type: git
     name: xamarin.yaml-templates
-    ref: refs/heads/main
-  - repository: macios-adr
-    type: git
-    name: macios-adr
     ref: refs/heads/main
 
 variables:
@@ -45,6 +41,7 @@ stages:
       - Agent.OS -equals Darwin
       - Agent.OSVersion -gtVersion $(minimumMacOSVersion)
       - macOS.Name -equals ${{ parameters.macOSName }}
+      - macOS.Architecture -equals arm64  # the pinned Xcode package is Apple silicon only
       - XcodeChannel -equals $(xcodeChannel)
     workspace:
       clean: all
@@ -63,6 +60,7 @@ stages:
         use1ES: false
         disableCodeQL: false
         xcodeChannel: $(xcodeChannel)
+        statusContext: "Nightly CodeQL"
         buildSteps:
         - bash: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/bash/build-nugets.sh
           displayName: 'Build Nugets'

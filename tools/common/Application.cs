@@ -18,22 +18,19 @@ using Xamarin.Utils;
 
 using ObjCRuntime;
 
-#if !LEGACY_TOOLS
+using Registrar;
+
+#if !LEGACY_TOOLS && !ASSEMBLY_PREPARER
 using ClassRedirector;
 #endif
 
-#if MTOUCH
+#if LEGACY_TOOLS
 using PlatformResolver = MonoTouch.Tuner.MonoTouchResolver;
-#elif MMP
-using PlatformResolver = Xamarin.Bundler.MonoMacResolver;
-#elif NET && !LEGACY_TOOLS
-using PlatformResolver = Xamarin.Linker.DotNetResolver;
 #else
-#error Invalid defines
+using PlatformResolver = Xamarin.Linker.DotNetResolver;
 #endif
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 #if LEGACY_TOOLS
 namespace Mono.Linker {
@@ -54,27 +51,14 @@ namespace Xamarin.Bundler {
 		Device,
 	}
 
-	public enum MonoNativeMode {
-		None,
-		Unified,
-	}
-
 	[Flags]
 	public enum RegistrarOptions {
 		Default = 0,
 		Trace = 1,
 	}
 
-	public enum RegistrarMode {
-		Default,
-		Dynamic,
-		PartialStatic,
-		Static,
-		ManagedStatic,
-	}
-
-	public partial class Application {
-		public Cache Cache;
+	public partial class Application : IToolLog {
+		public Cache? Cache;
 		public string AppDirectory = ".";
 		public bool DeadStrip = true;
 		public bool EnableDebug;
@@ -83,45 +67,93 @@ namespace Xamarin.Bundler {
 		public bool UseInterpreter; // Only applicable to mobile platforms.
 		public List<string> DebugAssemblies = new List<string> ();
 		public Optimizations Optimizations = new Optimizations ();
+#if LEGACY_TOOLS
+		public readonly RegistrarMode Registrar = RegistrarMode.Static;
+#else
 		public RegistrarMode Registrar = RegistrarMode.Default;
+#endif
 		public RegistrarOptions RegistrarOptions = RegistrarOptions.Default;
 		public SymbolMode SymbolMode;
 		public HashSet<string> IgnoredSymbols = new HashSet<string> ();
+		public bool? PublishReadyToRun;
+		public string PublishReadyToRunContainerFormat = "";
 
 		// The AOT arguments are currently not used for macOS, but they could eventually be used there as well (there's no mmp option to set these yet).
 		public List<string> AotArguments = new List<string> ();
-		public List<string> AotOtherArguments = null;
+		public List<string>? AotOtherArguments = null;
 		public bool? AotFloat32 = null;
+		public bool PrepareAssemblies; // True if '$(PrepareAssemblies)' == 'true'
 
-#if !MMP && !MTOUCH
+		// The set of UnmanagedCallersOnly trampoline symbols (without the leading Mach-O underscore)
+		// that survived the NativeAOT compiler (ILC). This is only set when the native registrar code
+		// is generated after ILC has run, so that we can avoid emitting direct native references to
+		// trampolines ILC trimmed away (we route those through the dlsym fallback instead). A null value
+		// means the information isn't available (e.g. we're not compiling for NativeAOT, or the registrar
+		// runs before ILC), in which case every trampoline is assumed to have survived.
+		public HashSet<string>? SurvivingTrampolineSymbols;
+
+		// Returns true if the native registrar can emit a direct reference to the given UnmanagedCallersOnly
+		// trampoline. When we know which trampolines survived ILC, a trampoline that didn't survive must not
+		// be referenced directly (it would be an undefined symbol at native link time).
+		public bool DidTrampolineSurviveIlc (string ucoEntryPoint)
+		{
+			if (SurvivingTrampolineSymbols is null)
+				return true;
+			return SurvivingTrampolineSymbols.Contains (ucoEntryPoint);
+		}
+
+		// The set of Objective-C class names whose inlined Class.GetHandle native function is still
+		// referenced by the NativeAOT compiler's (ILC) output. These classes must be registered in the
+		// native registrar code even if all their trampolines were trimmed away, because managed code
+		// still looks up their class handle (and the generated native code references the Objective-C
+		// class, which wouldn't exist otherwise). This is set alongside SurvivingTrampolineSymbols.
+		// See docs/code/class-handles.md.
+		public HashSet<string>? ClassesReferencedByInlinedClassGetHandle;
+
+		// Returns true if managed code that survived ILC looks up the class handle for the given
+		// Objective-C class name using the inlined Class.GetHandle optimization.
+		public bool IsClassReferencedByInlinedClassGetHandle (string exportedName)
+		{
+			if (ClassesReferencedByInlinedClassGetHandle is null)
+				return false;
+			return ClassesReferencedByInlinedClassGetHandle.Contains (exportedName);
+		}
+
+#if ASSEMBLY_PREPARER
+		public bool InCustomTrimmerStep = false;
+		public bool IsPostProcessingAssemblies;
+		// When post-processing assemblies with the trimmable static registrar, the [ProtocolMember] attributes
+		// have been removed by the trimmer, so the registrar reads them from the pre-trim (untrimmed) assemblies
+		// instead. This resolver provides access to the pre-trim assemblies (a separate metadata universe from
+		// the post-trim assemblies), and is null when not applicable.
+		public Mono.Cecil.IAssemblyResolver? PreTrimAssemblyResolver;
+#else
+		public bool InCustomTrimmerStep = true;
+		public bool IsPostProcessingAssemblies => PrepareAssemblies && InCustomTrimmerStep;
+#endif
+
+#if !LEGACY_TOOLS
 		public DlsymOptions DlsymOptions;
-		public List<Tuple<string, bool>> DlsymAssemblies;
-#endif // !MMP && !MTOUCH
-		public List<string> CustomLinkFlags;
-
-		public string CompilerPath;
-
-		public Application ContainerApp; // For extensions, this is the containing app
-		public bool IsCodeShared { get; private set; }
+		public List<Tuple<string, bool>>? DlsymAssemblies;
+#endif // !LEGACY_TOOLS
+		public List<string>? CustomLinkFlags;
 
 		public HashSet<string> Frameworks = new HashSet<string> ();
 		public HashSet<string> WeakFrameworks = new HashSet<string> ();
 
 		public bool IsExtension;
-		public ApplePlatform Platform { get { return Driver.TargetFramework.Platform; } }
+		public TargetFramework TargetFramework { get; set; }
+		public ApplePlatform Platform { get { return TargetFramework.Platform; } }
 
+		public List<string> DylibsToConvertToFrameworks = new List<string> ();
 		public List<string> MonoLibraries = new List<string> ();
 		public List<string> InterpretedAssemblies = new List<string> ();
 
-		// EnableMSym: only implemented for Xamarin.iOS
-		bool? enable_msym;
-		public bool EnableMSym {
-			get { return enable_msym.Value; }
-			set { enable_msym = value; }
-		}
+		public string TypeMapAssemblyName = "";
+		public string TypeMapOutputDirectory = "";
 
 		// Linker config
-#if !NET || LEGACY_TOOLS
+#if LEGACY_TOOLS
 		public LinkMode LinkMode = LinkMode.Full;
 #endif
 		bool? are_any_assemblies_trimmed;
@@ -129,7 +161,7 @@ namespace Xamarin.Bundler {
 			get {
 				if (are_any_assemblies_trimmed.HasValue)
 					return are_any_assemblies_trimmed.Value;
-#if NET && !LEGACY_TOOLS
+#if !LEGACY_TOOLS
 				// This shouldn't happen, we should always set AreAnyAssembliesTrimmed to some value for .NET.
 				throw ErrorHelper.CreateError (99, "A custom LinkMode value is not supported for .NET");
 #else
@@ -140,16 +172,11 @@ namespace Xamarin.Bundler {
 				are_any_assemblies_trimmed = value;
 			}
 		}
-		public List<string> LinkSkipped = new List<string> ();
-		public List<string> Definitions = new List<string> ();
-#if !NET && !LEGACY_TOOLS
-		public I18nAssemblies I18n;
-#endif
-		public List<string> WarnOnTypeRef = new List<string> ();
-
 		public bool EnableSGenConc;
-		public bool EnableDiagnostics;
-		public bool? DebugTrack;
+
+		public bool IsAnyStaticRegistrar {
+			get => Registrar == RegistrarMode.Static || Registrar == RegistrarMode.ManagedStatic || Registrar == RegistrarMode.TrimmableStatic;
+		}
 
 		public Dictionary<string, (string Value, bool Overwrite)> EnvironmentVariables = new Dictionary<string, (string Value, bool Overwrite)> ();
 
@@ -163,98 +190,24 @@ namespace Xamarin.Bundler {
 		}
 		public List<string> RootAssemblies = new List<string> ();
 		public List<string> References = new List<string> ();
-		public List<Application> SharedCodeApps = new List<Application> (); // List of appexes we're sharing code with.
-		public string RegistrarOutputLibrary;
+		public string? RegistrarOutputLibrary;
 
 		public BuildTarget BuildTarget;
 
-		public bool? DisableLldbAttach = null; // Only applicable to Xamarin.Mac
-		public bool? DisableOmitFramePointer = null; // Only applicable to Xamarin.Mac
-		public string CustomBundleName = "MonoBundle"; // Only applicable to Xamarin.Mac and Mac Catalyst
-
 		public XamarinRuntime XamarinRuntime;
-		public string RuntimeIdentifier; // Only used for build-time --run-registrar support
+		public string? RuntimeIdentifier; // Only used for build-time --run-registrar support
 
 		public bool SkipMarkingNSObjectsInUserAssemblies { get; set; }
 
-		public bool DisableAutomaticLinkerSelection { get; set; }
-
-		// assembly_build_targets describes what kind of native code each assembly should be compiled into for mobile targets (iOS, tvOS).
-		// An assembly can be compiled into: static object (.o), dynamic library (.dylib) or a framework (.framework).
-		// In the case of a framework, each framework may contain the native code for multiple assemblies.
-		// This variable does not apply to macOS (if assemblies are AOT-compiled, the AOT compiler will output a .dylib next to the assembly and there's nothing extra for us)
-		Dictionary<string, Tuple<AssemblyBuildTarget, string>> assembly_build_targets = new Dictionary<string, Tuple<AssemblyBuildTarget, string>> ();
-
-		public string ContentDirectory {
-			get {
-				switch (Platform) {
-				case ApplePlatform.iOS:
-				case ApplePlatform.TVOS:
-					return AppDirectory;
-				case ApplePlatform.MacOSX:
-				case ApplePlatform.MacCatalyst:
-					return Path.Combine (AppDirectory, "Contents", CustomBundleName);
-				default:
-					throw ErrorHelper.CreateError (71, Errors.MX0071, Platform, ProductName);
-				}
-			}
-		}
-
-		public string FrameworksDirectory {
-			get {
-				return Path.Combine (AppDirectory, RelativeFrameworksPath);
-			}
-		}
-
-		public string RelativeFrameworksPath {
-			get {
-				switch (Platform) {
-				case ApplePlatform.iOS:
-				case ApplePlatform.TVOS:
-					return "Frameworks";
-				case ApplePlatform.MacOSX:
-				case ApplePlatform.MacCatalyst:
-					return Path.Combine ("Contents", "Frameworks");
-				default:
-					throw ErrorHelper.CreateError (71, Errors.MX0071, Platform, ProductName);
-				}
-			}
-		}
-
-		public string RelativeDylibPublishPath {
-			get {
-				switch (Platform) {
-				case ApplePlatform.iOS:
-				case ApplePlatform.TVOS:
-					return string.Empty;
-				case ApplePlatform.MacOSX:
-				case ApplePlatform.MacCatalyst:
-					return Path.Combine ("Contents", CustomBundleName);
-				default:
-					throw ErrorHelper.CreateError (71, Errors.MX0071, Platform, ProductName);
-				}
-			}
-		}
-
 		// How Mono should be embedded into the app.
+#if !LEGACY_TOOLS
 		AssemblyBuildTarget? libmono_link_mode;
+		public bool HasLibMonoLinkMode => libmono_link_mode.HasValue;
 		public AssemblyBuildTarget LibMonoLinkMode {
 			get {
-				if (libmono_link_mode.HasValue)
-					return libmono_link_mode.Value;
-
-				if (Platform == ApplePlatform.MacOSX) {
-					// This property was implemented for iOS, but might be re-used for macOS if desired after testing to verify it works as expected.
-					throw ErrorHelper.CreateError (99, Errors.MX0099, "LibMonoLinkMode isn't a valid operation for macOS apps.");
-				}
-
-				if (HasFrameworks) {
-					return AssemblyBuildTarget.Framework;
-				} else if (HasDynamicLibraries) {
-					return AssemblyBuildTarget.DynamicLibrary;
-				} else {
-					return AssemblyBuildTarget.StaticObject;
-				}
+				if (!libmono_link_mode.HasValue)
+					throw new InvalidOperationException ("LibMonoLinkMode has not been set.");
+				return libmono_link_mode.Value;
 			}
 			set {
 				libmono_link_mode = value;
@@ -263,85 +216,28 @@ namespace Xamarin.Bundler {
 
 		// How libxamarin should be embedded into the app.
 		AssemblyBuildTarget? libxamarin_link_mode;
+		public bool HasLibXamarinLinkMode => libxamarin_link_mode.HasValue;
 		public AssemblyBuildTarget LibXamarinLinkMode {
 			get {
-				if (libxamarin_link_mode.HasValue)
-					return libxamarin_link_mode.Value;
-
-				if (Platform == ApplePlatform.MacOSX) {
-					// This property was implemented for iOS, but might be re-used for macOS if desired after testing to verify it works as expected.
-					throw ErrorHelper.CreateError (99, Errors.MX0099, "LibXamarinLinkMode isn't a valid operation for macOS apps.");
-				}
-
-				if (HasFrameworks) {
-					return AssemblyBuildTarget.Framework;
-				} else if (HasDynamicLibraries) {
-					return AssemblyBuildTarget.DynamicLibrary;
-				} else {
-					return AssemblyBuildTarget.StaticObject;
-				}
+				if (!libxamarin_link_mode.HasValue)
+					throw new InvalidOperationException ("LibXamarinLinkMode has not been set.");
+				return libxamarin_link_mode.Value;
 			}
 			set {
 				libxamarin_link_mode = value;
 			}
 		}
 
-		// How the generated libpinvoke library should be linked into the app.
-		public AssemblyBuildTarget LibPInvokesLinkMode => LibXamarinLinkMode;
-		// How the profiler library should be linked into the app.
-		public AssemblyBuildTarget LibProfilerLinkMode => OnlyStaticLibraries ? AssemblyBuildTarget.StaticObject : AssemblyBuildTarget.DynamicLibrary;
-
 		// How the libmononative library should be linked into the app.
 		public AssemblyBuildTarget LibMonoNativeLinkMode {
 			get {
 				// if there's a specific way libmono is being linked, use the same way.
-				if (libmono_link_mode.HasValue)
-					return libmono_link_mode.Value;
-				return HasDynamicLibraries ? AssemblyBuildTarget.DynamicLibrary : AssemblyBuildTarget.StaticObject;
+				if (!libmono_link_mode.HasValue)
+					throw new InvalidOperationException ("LibMonoNativeLinkMode has not been set.");
+				return libmono_link_mode.Value;
 			}
 		}
-
-		// If all assemblies are compiled into static libraries.
-		public bool OnlyStaticLibraries {
-			get {
-				if (Platform == ApplePlatform.MacOSX)
-					throw ErrorHelper.CreateError (99, Errors.MX0099, "Using assembly_build_targets isn't a valid operation for macOS apps.");
-
-				return assembly_build_targets.All ((abt) => abt.Value.Item1 == AssemblyBuildTarget.StaticObject);
-			}
-		}
-
-		// If any assembly in the app is compiled into a dynamic library.
-		public bool HasDynamicLibraries {
-			get {
-				if (Platform == ApplePlatform.MacOSX)
-					throw ErrorHelper.CreateError (99, Errors.MX0099, "Using assembly_build_targets isn't a valid operation for macOS apps.");
-
-				return assembly_build_targets.Any ((abt) => abt.Value.Item1 == AssemblyBuildTarget.DynamicLibrary);
-			}
-		}
-
-		// If any assembly in the app is compiled into a framework.
-		public bool HasFrameworks {
-			get {
-				if (Platform == ApplePlatform.MacOSX)
-					throw ErrorHelper.CreateError (99, Errors.MX0099, "Using assembly_build_targets isn't a valid operation for macOS apps.");
-
-				return assembly_build_targets.Any ((abt) => abt.Value.Item1 == AssemblyBuildTarget.Framework);
-			}
-		}
-
-		// If this application has a Frameworks directory (or if any frameworks should be put in a containing app's Framework directory).
-		// This is used to know where to place embedded .frameworks (for app extensions they should go into the containing app's Frameworks directory).
-		// This logic works on all platforms.
-		public bool HasFrameworksDirectory {
-			get {
-				if (!IsExtension)
-					return true;
-
-				return false;
-			}
-		}
+#endif // !LEGACY_TOOLS
 
 		bool RequiresXcodeHeaders {
 			get {
@@ -351,31 +247,10 @@ namespace Xamarin.Bundler {
 				case ApplePlatform.MacCatalyst:
 					return !AreAnyAssembliesTrimmed;
 				case ApplePlatform.MacOSX:
-					return (Registrar == RegistrarMode.Static || Registrar == RegistrarMode.ManagedStatic) && !AreAnyAssembliesTrimmed;
+					return (Registrar == RegistrarMode.Static || Registrar == RegistrarMode.ManagedStatic || Registrar == RegistrarMode.TrimmableStatic) && !AreAnyAssembliesTrimmed;
 				default:
 					throw ErrorHelper.CreateError (71, Errors.MX0071, Platform, ProductName);
 				}
-			}
-		}
-
-		public string LocalBuildDir {
-			get {
-				switch (Platform) {
-				case ApplePlatform.iOS:
-				case ApplePlatform.TVOS:
-				case ApplePlatform.MacCatalyst:
-					return "_ios-build";
-				case ApplePlatform.MacOSX:
-					return "_mac-build";
-				default:
-					throw ErrorHelper.CreateError (71, Errors.MX0071, Platform, ProductName);
-				}
-			}
-		}
-
-		public string FrameworkLocationVariable {
-			get {
-				throw new NotImplementedException ();
 			}
 		}
 
@@ -399,7 +274,7 @@ namespace Xamarin.Bundler {
 
 		public bool IsSimulatorBuild {
 			get {
-				if (!string.IsNullOrEmpty (RuntimeIdentifier))
+				if (!StringUtils.IsNullOrEmpty (RuntimeIdentifier))
 					return RuntimeIdentifier.IndexOf ("simulator", StringComparison.OrdinalIgnoreCase) >= 0;
 
 				switch (Platform) {
@@ -415,81 +290,63 @@ namespace Xamarin.Bundler {
 			}
 		}
 
-#if !NET && !LEGACY_TOOLS
-		public static int Concurrency => Driver.Concurrency;
-#endif
-		public Version DeploymentTarget;
-		public Version SdkVersion; // for Mac Catalyst this is the iOS version
-		public Version NativeSdkVersion; // this is the same as SdkVersion, except that for Mac Catalyst it's the macOS SDK version.
+		public Version? DeploymentTarget;
+		public Version? SdkVersion; // for Mac Catalyst this is the iOS version
+		public Version? NativeSdkVersion; // this is the same as SdkVersion, except that for Mac Catalyst it's the macOS SDK version.
 
-		public MonoNativeMode MonoNativeMode { get; set; }
-		List<Abi> abis;
+		Abi abi;
 		public bool IsLLVM { get { return IsArchEnabled (Abi.LLVM); } }
-
-		public List<Target> Targets = new List<Target> ();
 
 		bool? package_managed_debug_symbols;
 		public bool PackageManagedDebugSymbols {
-			get { return package_managed_debug_symbols.Value; }
+			get {
+				if (!package_managed_debug_symbols.HasValue)
+					throw new InvalidOperationException ("PackageManagedDebugSymbols has not been set.");
+				return package_managed_debug_symbols.Value;
+			}
 			set { package_managed_debug_symbols = value; }
 		}
-
-		public string TlsProvider;
-		public string HttpMessageHandler;
-		// If we're targetting a 32 bit arch.
-		bool? is32bits;
-		public bool Is32Build {
-			get {
-				if (!is32bits.HasValue)
-					is32bits = IsArchEnabled (Abi.Arch32Mask);
-				return is32bits.Value;
-			}
-		}
-
-		public Version GetMacCatalystmacOSVersion (Version iOSVersion)
-		{
-			if (!MacCatalystSupport.TryGetMacOSVersion (Driver.GetFrameworkDirectory (this), iOSVersion, out var value, out var knowniOSVersions))
-				throw ErrorHelper.CreateError (183, Errors.MX0183 /* Could not map the Mac Catalyst version {0} to a corresponding macOS version. Valid Mac Catalyst versions are: {1} */, iOSVersion.ToString (), string.Join (", ", knowniOSVersions.OrderBy (v => v)));
-
-			return value;
-		}
+		public bool GenerateTrustedPlatformAssemblies;
+		public bool IsMultiRidBuild;
+		public List<string> TrustedPlatformAssemblies = new List<string> ();
 
 		public Version GetMacCatalystiOSVersion (Version macOSVersion)
 		{
+#if LEGACY_TOOLS
+			if (macOSVersion.Major >= 26 && SdkRoot is null) {
+				// this shouldn't happen for normal builds, nor for customers, so just show an internal 99 warning.
+				ErrorHelper.Warning (this, 99, Errors.MX0099, $"No Xcode configured, assuming the macOS version {macOSVersion} is identical to the Mac Catalyst/iOS version.");
+				return macOSVersion;
+			}
+#endif
+
 			if (!MacCatalystSupport.TryGetiOSVersion (Driver.GetFrameworkDirectory (this), macOSVersion, out var value, out var knownMacOSVersions))
 				throw ErrorHelper.CreateError (184, Errors.MX0184 /* Could not map the macOS version {0} to a corresponding Mac Catalyst version. Valid macOS versions are: {1} */, macOSVersion.ToString (), string.Join (", ", knownMacOSVersions.OrderBy (v => v)));
 
 			return value;
 		}
 
-		public string GetProductName ()
-		{
-			return ProductName;
-		}
-
-		// If we're targetting a 64 bit arch.
-		bool? is64bits;
-		public bool Is64Build {
-			get {
-				if (!is64bits.HasValue)
-					is64bits = IsArchEnabled (Abi.Arch64Mask);
-				return is64bits.Value;
-			}
-		}
-
+#if !LEGACY_TOOLS
+		public Application (LinkerConfiguration configuration)
+#else
 		public Application ()
+#endif
 		{
+#if !LEGACY_TOOLS
+			this.configuration = configuration;
+			this.LinkContext = new Tuner.DerivedLinkContext (configuration, this);
+#endif
+			this.StaticRegistrar = new StaticRegistrar (this);
+			this.Resolver = new PlatformResolver (this);
+			SetDefaultHiddenWarnings ();
 		}
 
-		public Application (string [] arguments)
-		{
-			CreateCache (arguments);
-		}
-
+#if !LEGACY_TOOLS
 		public void CreateCache (string [] arguments)
 		{
 			Cache = new Cache (arguments);
 		}
+#endif // !LEGACY_TOOLS
 
 		public bool DynamicRegistrationSupported {
 			get {
@@ -497,6 +354,7 @@ namespace Xamarin.Bundler {
 			}
 		}
 
+#if !LEGACY_TOOLS
 		public void ParseCustomLinkFlags (string value, string value_name)
 		{
 			if (!StringUtils.TryParseArguments (value, out var lf, out var ex))
@@ -518,28 +376,9 @@ namespace Xamarin.Bundler {
 			UseInterpreter = false;
 			InterpretedAssemblies.Clear ();
 		}
+#endif // !LEGACY_TOOLS
 
-#if !NET && !LEGACY_TOOLS
-		public void ParseI18nAssemblies (string i18n)
-		{
-			var assemblies = I18nAssemblies.None;
-
-			foreach (var part in i18n.Split (',')) {
-				var assembly = part.Trim ();
-				if (string.IsNullOrEmpty (assembly))
-					continue;
-
-				try {
-					assemblies |= (I18nAssemblies) Enum.Parse (typeof (I18nAssemblies), assembly, true);
-				} catch {
-					throw new FormatException ("Unknown value for i18n: " + assembly);
-				}
-			}
-
-			I18n = assemblies;
-		}
-#endif
-
+#if !LEGACY_TOOLS
 		public bool IsTodayExtension {
 			get {
 				return ExtensionIdentifier == "com.apple.widget-extension";
@@ -552,12 +391,14 @@ namespace Xamarin.Bundler {
 			}
 		}
 
-		public string ExtensionIdentifier {
+		public string? ExtensionIdentifier {
 			get {
 				if (!IsExtension)
 					return null;
 
 				var plist = Driver.FromPList (InfoPListPath);
+				if (plist is null)
+					return null;
 				var dict = plist.Get<PDictionary> ("NSExtension");
 				if (dict is null)
 					return null;
@@ -565,7 +406,7 @@ namespace Xamarin.Bundler {
 			}
 		}
 
-		string info_plistpath;
+		string? info_plistpath;
 		public string InfoPListPath {
 			get {
 				if (info_plistpath is not null)
@@ -586,39 +427,29 @@ namespace Xamarin.Bundler {
 				info_plistpath = value;
 			}
 		}
+#endif // !LEGACY_TOOLS
 
 		// This is just a name for this app to show in log/error messages, etc.
 		public string Name {
 			get { return Path.GetFileNameWithoutExtension (AppDirectory); }
 		}
 
+#if !LEGACY_TOOLS
 		bool? requires_pinvoke_wrappers;
 		public bool RequiresPInvokeWrappers {
 			get {
 				if (requires_pinvoke_wrappers.HasValue)
 					return requires_pinvoke_wrappers.Value;
 
-				// By default this is disabled for .NET
-				if (Driver.IsDotNet)
-					return false;
-
-				if (Platform == ApplePlatform.MacOSX)
-					return false;
-
-				if (IsSimulatorBuild)
-					return false;
-
-				if (Platform == ApplePlatform.MacCatalyst)
-					return false;
-
-				return MarshalObjectiveCExceptions == MarshalObjectiveCExceptionMode.ThrowManagedException || MarshalObjectiveCExceptions == MarshalObjectiveCExceptionMode.Abort;
+				return false;
 			}
 			set {
 				requires_pinvoke_wrappers = value;
 			}
 		}
+#endif // !LEGACY_TOOLS
 
-#if NET && !LEGACY_TOOLS
+#if !LEGACY_TOOLS
 		public bool RequireLinkWithAttributeForObjectiveCClassSearch;
 #else
 		public bool RequireLinkWithAttributeForObjectiveCClassSearch = true;
@@ -641,15 +472,15 @@ namespace Xamarin.Bundler {
 			}
 		}
 
-		public static bool IsUptodate (string source, string target, bool check_contents = false, bool check_stamp = true)
+		public static bool IsUptodate (IToolLog log, string source, string target, bool check_contents = false, bool check_stamp = true)
 		{
-			return FileCopier.IsUptodate (source, target, check_contents, check_stamp);
+			return FileCopier.IsUptodate (log, source, target, check_contents, check_stamp);
 		}
 
 		public static void RemoveResource (ModuleDefinition module, string name)
 		{
 			for (int i = 0; i < module.Resources.Count; i++) {
-				EmbeddedResource embedded = module.Resources [i] as EmbeddedResource;
+				var embedded = module.Resources [i] as EmbeddedResource;
 
 				if (embedded is null || embedded.Name != name)
 					continue;
@@ -659,7 +490,7 @@ namespace Xamarin.Bundler {
 			}
 		}
 
-#if !MMP && !MTOUCH
+#if !LEGACY_TOOLS
 		public static void SaveAssembly (AssemblyDefinition assembly, string destination)
 		{
 			var main = assembly.MainModule;
@@ -679,26 +510,23 @@ namespace Xamarin.Bundler {
 
 			if (!symbols) {
 				// if we're not saving the symbols then we must not leave stale/old files to be used by other tools
-				string dest_mdb = destination + ".mdb";
-				if (File.Exists (dest_mdb))
-					File.Delete (dest_mdb);
 				string dest_pdb = Path.ChangeExtension (destination, ".pdb");
 				if (File.Exists (dest_pdb))
 					File.Delete (dest_pdb);
 			}
 		}
-#endif // !MMP && !MTOUCH
+#endif // !LEGACY_TOOLS
 
 		public static bool ExtractResource (ModuleDefinition module, string name, string path, bool remove)
 		{
 			for (int i = 0; i < module.Resources.Count; i++) {
-				EmbeddedResource embedded = module.Resources [i] as EmbeddedResource;
+				var embedded = module.Resources [i] as EmbeddedResource;
 
 				if (embedded is null || embedded.Name != name)
 					continue;
 
-				string dirname = Path.GetDirectoryName (path);
-				if (!Directory.Exists (dirname))
+				var dirname = Path.GetDirectoryName (path);
+				if (!string.IsNullOrEmpty (dirname) && !Directory.Exists (dirname))
 					Directory.CreateDirectory (dirname);
 
 				using (Stream ostream = File.OpenWrite (path)) {
@@ -714,93 +542,29 @@ namespace Xamarin.Bundler {
 			return false;
 		}
 
-		// Returns true if the source file was copied to the target or false if it was already up to date.
-		public static bool UpdateFile (string source, string target, bool check_contents = false)
-		{
-			if (!Application.IsUptodate (source, target, check_contents)) {
-				CopyFile (source, target);
-				return true;
-			} else {
-				Driver.Log (3, "Target '{0}' is up-to-date", target);
-				return false;
-			}
-		}
-
 		// Checks if any of the source files have a time stamp later than any of the target files.
 		//
 		// If check_stamp is true, the function will use the timestamp of a "target".stamp file
 		// if it's later than the timestamp of the "target" file itself.
-		public static bool IsUptodate (IEnumerable<string> sources, IEnumerable<string> targets, bool check_stamp = true)
+		public static bool IsUptodate (IToolLog log, IEnumerable<string> sources, IEnumerable<string> targets, bool check_stamp = true)
 		{
-			return FileCopier.IsUptodate (sources, targets, check_stamp);
+			return FileCopier.IsUptodate (log, sources, targets, check_stamp);
 		}
 
-		public static void UpdateDirectory (string source, string target)
+		public static void UpdateDirectory (IToolLog log, string source, string target)
 		{
-			FileCopier.UpdateDirectory (source, target);
-		}
-
-		static string [] NonEssentialDirectoriesInsideFrameworks = { "CVS", ".svn", ".git", ".hg", "Headers", "PrivateHeaders", "Modules" };
-
-		// Duplicate xcode's `builtin-copy` exclusions
-		public static void ExcludeNonEssentialFrameworkFiles (string framework)
-		{
-			// builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -exclude Headers -exclude PrivateHeaders -exclude Modules -exclude \*.tbd
-			File.Delete (Path.Combine (framework, ".DS_Store"));
-			File.Delete (Path.Combine (framework, "*.tbd"));
-			foreach (var dir in NonEssentialDirectoriesInsideFrameworks)
-				DeleteDir (Path.Combine (framework, dir));
-		}
-
-		static void DeleteDir (string dir)
-		{
-			// Xcode generates symlinks inside macOS frameworks
-			var realdir = Target.GetRealPath (dir, warnIfNoSuchPathExists: false);
-			// unlike File.Delete this would throw if the directory does not exists
-			if (Directory.Exists (realdir)) {
-				Directory.Delete (realdir, true);
-				if (realdir != dir)
-					File.Delete (dir); // because a symlink is a file :)
-			}
-		}
-
-		[DllImport (Constants.libSystemLibrary)]
-		static extern int readlink (string path, IntPtr buf, int len);
-
-		// A file copy that will replace symlinks with the source file
-		// File.Copy will copy the source to the target of the symlink instead
-		// of replacing the symlink.
-		public static void CopyFile (string source, string target)
-		{
-			if (readlink (target, IntPtr.Zero, 0) != -1) {
-				// Target is a symlink, delete it.
-				File.Delete (target);
-			} else if (File.Exists (target)) {
-				// Also delete the target file if it already exists,
-				// since it may not have write permissions.
-				File.Delete (target);
-			}
-
-			var dir = Path.GetDirectoryName (target);
-			if (!Directory.Exists (dir))
-				Directory.CreateDirectory (dir);
-
-			File.Copy (source, target, true);
-			// Make sure the target file is r/w.
-			var attrs = File.GetAttributes (target);
-			if ((attrs & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
-				File.SetAttributes (target, attrs & ~FileAttributes.ReadOnly);
-			Driver.Log (1, "Copied {0} to {1}", source, target);
+			FileCopier.UpdateDirectory (log, source, target);
 		}
 
 		public void InitializeCommon ()
 		{
 			InitializeDeploymentTarget ();
-			SelectMonoNative ();
 
 			if (Platform == ApplePlatform.MacCatalyst) {
 				// Our input SdkVersion is the macOS SDK version, but the rest of our code expects the supporting iOS version, so convert here.
 				// The macOS SDK version is still stored in NativeSdkVersion for when we need it.
+				if (NativeSdkVersion is null)
+					throw ErrorHelper.CreateError (183, Errors.MX0183 /* NativeSdkVersion is required for Mac Catalyst builds. */);
 				SdkVersion = GetMacCatalystiOSVersion (NativeSdkVersion);
 			}
 
@@ -825,33 +589,22 @@ namespace Xamarin.Bundler {
 				SymbolMode = SymbolMode.Linker;
 			}
 
-			if (!DebugTrack.HasValue) {
-				DebugTrack = false;
-			} else if (DebugTrack.Value && !EnableDebug) {
-				ErrorHelper.Warning (32, Errors.MT0032);
-			}
-
 			if (!package_managed_debug_symbols.HasValue) {
 				package_managed_debug_symbols = EnableDebug;
 			} else if (package_managed_debug_symbols.Value && IsLLVM) {
-				ErrorHelper.Warning (3007, Errors.MX3007);
+				ErrorHelper.Warning (this, 3007, Errors.MX3007);
 			}
 
 			Optimizations.Initialize (this, out var messages);
-			ErrorHelper.Show (messages);
-			if (Driver.Verbosity > 3)
-				Driver.Log (4, $"Enabled optimizations: {Optimizations}");
+			ErrorHelper.Show (this, messages);
+			if (this.Verbosity > 3)
+				this.Log (4, $"Enabled optimizations: {Optimizations}");
 		}
 
 		void InitializeDeploymentTarget ()
 		{
 			if (DeploymentTarget is null)
 				DeploymentTarget = SdkVersions.GetVersion (this);
-
-			if (Platform == ApplePlatform.iOS && (HasDynamicLibraries || HasFrameworks) && DeploymentTarget.Major < 8) {
-				ErrorHelper.Warning (78, Errors.MT0078, DeploymentTarget);
-				DeploymentTarget = new Version (8, 0);
-			}
 
 			if (DeploymentTarget is not null) {
 				if (DeploymentTarget < SdkVersions.GetMinVersion (this))
@@ -861,33 +614,7 @@ namespace Xamarin.Bundler {
 			}
 		}
 
-		void SelectMonoNative ()
-		{
-			switch (Platform) {
-			case ApplePlatform.iOS:
-			case ApplePlatform.TVOS:
-			case ApplePlatform.MacOSX:
-			case ApplePlatform.MacCatalyst:
-				MonoNativeMode = MonoNativeMode.Unified;
-				break;
-			default:
-				throw ErrorHelper.CreateError (71, Errors.MX0071, Platform, ProductName);
-			}
-		}
-
-		public string GetLibNativeName ()
-		{
-			switch (MonoNativeMode) {
-			case MonoNativeMode.Unified:
-				if (Platform == ApplePlatform.MacCatalyst)
-					return "libmono-native";
-
-				return "libmono-native-unified";
-			default:
-				throw ErrorHelper.CreateError (99, Errors.MX0099, $"Invalid mono native type: '{MonoNativeMode}'");
-			}
-		}
-
+#if !ASSEMBLY_PREPARER
 		public void RunRegistrar ()
 		{
 			// The static registrar.
@@ -898,20 +625,19 @@ namespace Xamarin.Bundler {
 				throw ErrorHelper.CreateError (130, Errors.MX0130);
 
 			var registrar_m = RegistrarOutputLibrary;
+			if (registrar_m is null)
+				throw ErrorHelper.CreateError (99, "RegistrarOutputLibrary must be specified.");
 			var RootAssembly = RootAssemblies [0];
 			var resolvedAssemblies = new Dictionary<string, AssemblyDefinition> ();
-			var resolver = new PlatformResolver () {
+			var resolver = new PlatformResolver (this) {
 				RootDirectory = Path.GetDirectoryName (RootAssembly),
-#if MMP
-				CommandLineAssemblies = RootAssemblies,
-#endif
 			};
 			resolver.Configure ();
 
 			var ps = new ReaderParameters ();
 			ps.AssemblyResolver = resolver;
 			foreach (var reference in References) {
-				var r = resolver.Load (reference);
+				var r = resolver.Load (this, reference);
 				if (r is null)
 					throw ErrorHelper.CreateError (2002, Errors.MT2002, reference);
 			}
@@ -926,21 +652,21 @@ namespace Xamarin.Bundler {
 				try {
 					AssemblyDefinition lastAssembly = ps.AssemblyResolver.Resolve (AssemblyNameReference.Parse (rootName), new ReaderParameters ());
 					if (lastAssembly is null) {
-						ErrorHelper.Warning (7, Errors.MX0007, rootName);
+						ErrorHelper.Warning (this, 7, Errors.MX0007, rootName);
 						continue;
 					}
 
 					if (resolvedAssemblies.TryGetValue (rootName, out var previousAssembly)) {
 						if (lastAssembly.MainModule.RuntimeVersion != previousAssembly.MainModule.RuntimeVersion) {
-							Driver.Log (2, "Attemping to load an assembly another time {0} (previous {1})", lastAssembly.FullName, previousAssembly.FullName);
+							this.Log (2, "Attemping to load an assembly another time {0} (previous {1})", lastAssembly.FullName, previousAssembly.FullName);
 						}
 						continue;
 					}
 
 					resolvedAssemblies.Add (rootName, lastAssembly);
-					Driver.Log (3, "Loaded {0}", lastAssembly.MainModule.FileName);
+					this.Log (3, "Loaded {0}", lastAssembly.MainModule.FileName);
 				} catch (Exception ex) {
-					ErrorHelper.Warning (9, ex, Errors.MX0009, $"{rootName}: {ex.Message}");
+					ErrorHelper.Warning (this, 9, ex, Errors.MX0009, $"{rootName}: {ex.Message}");
 					continue;
 				}
 			}
@@ -955,43 +681,29 @@ namespace Xamarin.Bundler {
 				registrar.Generate (resolver, resolvedAssemblies.Values, Path.ChangeExtension (registrar_m, "h"), registrar_m, out var _);
 			}
 		}
+#endif // !ASSEMBLY_PREPARER
 
-		public IEnumerable<Abi> Abis {
-			get { return abis; }
-			set { abis = new List<Abi> (value); }
+		public Abi Abi {
+			get { return abi; }
+			set { abi = value; }
 		}
 
 		public bool IsArchEnabled (Abi arch)
 		{
-			return IsArchEnabled (abis, arch);
+			return IsArchEnabled (abi, arch);
 		}
 
-		public static bool IsArchEnabled (IEnumerable<Abi> abis, Abi arch)
+		public static bool IsArchEnabled (Abi abi, Abi arch)
 		{
-			foreach (var abi in abis) {
-				if ((abi & arch) != 0)
-					return true;
-			}
-			return false;
+			return (abi & arch) != 0;
 		}
 
+#if !LEGACY_TOOLS
 		public void ValidateAbi ()
 		{
 			var validAbis = new List<Abi> ();
 			switch (Platform) {
 			case ApplePlatform.iOS:
-				if (IsDeviceBuild) {
-					validAbis.Add (Abi.ARMv7);
-					validAbis.Add (Abi.ARMv7 | Abi.Thumb);
-					validAbis.Add (Abi.ARMv7 | Abi.LLVM);
-					validAbis.Add (Abi.ARMv7 | Abi.LLVM | Abi.Thumb);
-					validAbis.Add (Abi.ARMv7s);
-					validAbis.Add (Abi.ARMv7s | Abi.Thumb);
-					validAbis.Add (Abi.ARMv7s | Abi.LLVM);
-					validAbis.Add (Abi.ARMv7s | Abi.LLVM | Abi.Thumb);
-				} else {
-					validAbis.Add (Abi.i386);
-				}
 				if (IsDeviceBuild) {
 					validAbis.Add (Abi.ARM64);
 					validAbis.Add (Abi.ARM64 | Abi.LLVM);
@@ -1016,101 +728,46 @@ namespace Xamarin.Bundler {
 				throw ErrorHelper.CreateError (71, Errors.MX0071, Platform, ProductName);
 			}
 
-#if MMP
-			// This is technically not needed, because we'll fail the validation just below, but this handles
-			// a common case (existing 32-bit projects) and shows a better error message.
-			if (abis.Count == 1 && abis [0] == Abi.i386)
-				throw ErrorHelper.CreateError (144, Errors.MM0144);
-#endif
-
-			foreach (var abi in abis) {
-				if (!validAbis.Contains (abi))
-					throw ErrorHelper.CreateError (75, Errors.MT0075, abi, Platform, string.Join (", ", validAbis.Select ((v) => v.AsString ()).ToArray ()));
-			}
+			if (!validAbis.Contains (abi))
+				throw ErrorHelper.CreateError (75, Errors.MT0075, abi, Platform, string.Join (", ", validAbis.Select ((v) => v.AsString ()).ToArray ()));
 		}
 
 		public void ClearAbi ()
 		{
-			abis = null;
+			abi = default;
 		}
+#endif // !LEGACY_TOOLS
 
 		public void ParseAbi (string abi)
 		{
-			var res = new List<Abi> ();
-			foreach (var str in abi.Split (new char [] { ',' }, StringSplitOptions.RemoveEmptyEntries)) {
-				Abi value;
-				switch (str) {
-				case "i386":
-					value = Abi.i386;
-					break;
-				case "x86_64":
-					value = Abi.x86_64;
-					break;
-				case "armv7":
-					value = Abi.ARMv7;
-					break;
-				case "armv7+llvm":
-					value = Abi.ARMv7 | Abi.LLVM;
-					break;
-				case "armv7+llvm+thumb2":
-					value = Abi.ARMv7 | Abi.LLVM | Abi.Thumb;
-					break;
-				case "armv7s":
-					value = Abi.ARMv7s;
-					break;
-				case "armv7s+llvm":
-					value = Abi.ARMv7s | Abi.LLVM;
-					break;
-				case "armv7s+llvm+thumb2":
-					value = Abi.ARMv7s | Abi.LLVM | Abi.Thumb;
-					break;
-				case "arm64":
-					value = Abi.ARM64;
-					break;
-				case "arm64+llvm":
-					value = Abi.ARM64 | Abi.LLVM;
-					break;
-				case "arm64_32":
-					value = Abi.ARM64_32;
-					break;
-				case "arm64_32+llvm":
-					value = Abi.ARM64_32 | Abi.LLVM;
-					break;
-				case "armv7k":
-					value = Abi.ARMv7k;
-					break;
-				case "armv7k+llvm":
-					value = Abi.ARMv7k | Abi.LLVM;
-					break;
-				default:
-					throw ErrorHelper.CreateError (15, Errors.MT0015, str);
-				}
-
-				// merge this value with any existing ARMv? already specified.
-				// this is so that things like '--armv7 --thumb' work correctly.
-				if (abis is not null) {
-					for (int i = 0; i < abis.Count; i++) {
-						if ((abis [i] & Abi.ArchMask) == (value & Abi.ArchMask)) {
-							value |= abis [i];
-							break;
-						}
-					}
-				}
-
-				res.Add (value);
+			Abi value;
+			switch (abi) {
+			case "x86_64":
+				value = Abi.x86_64;
+				break;
+			case "arm64":
+				value = Abi.ARM64;
+				break;
+			case "arm64+llvm":
+				value = Abi.ARM64 | Abi.LLVM;
+				break;
+			default:
+				throw ErrorHelper.CreateError (15, Errors.MT0015, abi);
 			}
 
-			// We replace any existing abis, to keep the old behavior where '--armv6 --armv7' would 
-			// enable only the last abi specified and disable the rest.
-			abis = res;
+			this.abi = value;
 		}
 
-		public void ParseRegistrar (string v)
+#if !LEGACY_TOOLS
+		public void ParseRegistrar (string? v)
 		{
+			if (StringUtils.IsNullOrEmpty (v))
+				return;
+
 			var split = v.Split ('=');
 			var name = split [0];
 			var value = split.Length > 1 ? split [1] : string.Empty;
-			switch (name) {
+			switch (name.ToLowerInvariant ()) {
 			case "static":
 				Registrar = RegistrarMode.Static;
 				break;
@@ -1120,23 +777,21 @@ namespace Xamarin.Bundler {
 			case "default":
 				Registrar = RegistrarMode.Default;
 				break;
-#if !MTOUCH
 			case "partial":
 			case "partial-static":
+			case "partialstatic":
 				Registrar = RegistrarMode.PartialStatic;
 				break;
-#endif
-#if NET && !LEGACY_TOOLS
 			case "managed-static":
+			case "managedstatic":
 				Registrar = RegistrarMode.ManagedStatic;
 				break;
-#endif
+			case "trimmable-static":
+			case "trimmablestatic":
+				Registrar = RegistrarMode.TrimmableStatic;
+				break;
 			default:
-#if NET && !LEGACY_TOOLS
-				throw ErrorHelper.CreateError (20, Errors.MX0020, "--registrar", "managed-static, static, dynamic or default");
-#else
-				throw ErrorHelper.CreateError (20, Errors.MX0020, "--registrar", "static, dynamic or default");
-#endif
+				throw ErrorHelper.CreateError (20, Errors.MX0020, "--registrar", "managed-static, trimmable-static, static, dynamic or default");
 			}
 
 			switch (value) {
@@ -1151,17 +806,9 @@ namespace Xamarin.Bundler {
 				throw ErrorHelper.CreateError (20, Errors.MX0020, "--registrar", "static, dynamic or default");
 			}
 		}
+#endif // !LEGACY_TOOLS
 
-		public static string GetArchitectures (IEnumerable<Abi> abis)
-		{
-			var res = new List<string> ();
-
-			foreach (var abi in abis)
-				res.Add (abi.AsArchString ());
-
-			return string.Join (", ", res.ToArray ());
-		}
-
+#if !LEGACY_TOOLS
 		public string MonoGCParams {
 			get {
 				switch (Platform) {
@@ -1188,23 +835,17 @@ namespace Xamarin.Bundler {
 				}
 			}
 		}
+#endif // !LEGACY_TOOLS
 
-		// This is to load the symbols for all assemblies, so that we can give better error messages
-		// (with file name / line number information).
-		public void LoadSymbols ()
+		public bool IsFrameworkUnavailable (string @namespace)
 		{
-			foreach (var t in Targets)
-				t.LoadSymbols ();
+			if (!Driver.GetFrameworks (this).TryGetValue (@namespace, out var fw))
+				return false; // Unknown framework, assume it's valid
+
+			return fw.IsFrameworkUnavailable (this);
 		}
 
-		public bool IsFrameworkAvailableInSimulator (string framework)
-		{
-			if (!Driver.GetFrameworks (this).TryGetValue (framework, out var fw))
-				return true; // Unknown framework, assume it's valid for the simulator
-
-			return fw.IsFrameworkAvailableInSimulator (this);
-		}
-
+#if !LEGACY_TOOLS
 		public static bool TryParseManagedExceptionMode (string value, out MarshalManagedExceptionMode mode)
 		{
 			mode = MarshalManagedExceptionMode.Default;
@@ -1260,27 +901,13 @@ namespace Xamarin.Bundler {
 			}
 			return true;
 		}
+#endif // !LEGACY_TOOLS
 
 		public void SetManagedExceptionMode ()
 		{
 			switch (MarshalManagedExceptions) {
 			case MarshalManagedExceptionMode.Default:
-				if (Driver.IsDotNet) {
-					MarshalManagedExceptions = MarshalManagedExceptionMode.ThrowObjectiveCException;
-				} else {
-					switch (Platform) {
-					case ApplePlatform.iOS:
-					case ApplePlatform.TVOS:
-						MarshalManagedExceptions = EnableDebug && IsSimulatorBuild ? MarshalManagedExceptionMode.UnwindNativeCode : MarshalManagedExceptionMode.Disable;
-						break;
-					case ApplePlatform.MacOSX:
-					case ApplePlatform.MacCatalyst:
-						MarshalManagedExceptions = EnableDebug ? MarshalManagedExceptionMode.UnwindNativeCode : MarshalManagedExceptionMode.Disable;
-						break;
-					default:
-						throw ErrorHelper.CreateError (71, Errors.MX0071 /* Unknown platform: {0}. This usually indicates a bug in {1}; please file a bug report at https://github.com/dotnet/macios/issues/new with a test case. */, Platform, ProductName);
-					}
-				}
+				MarshalManagedExceptions = MarshalManagedExceptionMode.ThrowObjectiveCException;
 				IsDefaultMarshalManagedExceptionMode = true;
 				break;
 			case MarshalManagedExceptionMode.UnwindNativeCode:
@@ -1295,22 +922,7 @@ namespace Xamarin.Bundler {
 		{
 			switch (MarshalObjectiveCExceptions) {
 			case MarshalObjectiveCExceptionMode.Default:
-				if (Driver.IsDotNet) {
-					MarshalObjectiveCExceptions = MarshalObjectiveCExceptionMode.ThrowManagedException;
-				} else {
-					switch (Platform) {
-					case ApplePlatform.iOS:
-					case ApplePlatform.TVOS:
-						MarshalObjectiveCExceptions = EnableDebug && IsSimulatorBuild ? MarshalObjectiveCExceptionMode.UnwindManagedCode : MarshalObjectiveCExceptionMode.Disable;
-						break;
-					case ApplePlatform.MacOSX:
-					case ApplePlatform.MacCatalyst:
-						MarshalObjectiveCExceptions = EnableDebug ? MarshalObjectiveCExceptionMode.ThrowManagedException : MarshalObjectiveCExceptionMode.Disable;
-						break;
-					default:
-						throw ErrorHelper.CreateError (71, Errors.MX0071 /* Unknown platform: {0}. This usually indicates a bug in {1}; please file a bug report at https://github.com/dotnet/macios/issues/new with a test case. */, Platform, ProductName);
-					}
-				}
+				MarshalObjectiveCExceptions = MarshalObjectiveCExceptionMode.ThrowManagedException;
 				break;
 			case MarshalObjectiveCExceptionMode.UnwindManagedCode:
 			case MarshalObjectiveCExceptionMode.Disable:
@@ -1327,7 +939,7 @@ namespace Xamarin.Bundler {
 			if (Platform == ApplePlatform.MacOSX)
 				throw ErrorHelper.CreateError (99, Errors.MX0099, "IsInterpreted isn't a valid operation for macOS apps.");
 
-#if !NET || LEGACY_TOOLS
+#if LEGACY_TOOLS
 			if (IsSimulatorBuild)
 				return false;
 #endif
@@ -1380,7 +992,7 @@ namespace Xamarin.Bundler {
 			return !IsInterpreted (assembly);
 		}
 
-#if !MMP && !MTOUCH
+#if !LEGACY_TOOLS
 		public IList<string> GetAotArguments (string filename, Abi abi, string outputDir, string outputFile, string llvmOutputFile, string dataFile)
 		{
 			GetAotArguments (filename, abi, outputDir, outputFile, llvmOutputFile, dataFile, null, out var processArguments, out var aotArguments);
@@ -1389,7 +1001,7 @@ namespace Xamarin.Bundler {
 			return processArguments;
 		}
 
-		public void GetAotArguments (string filename, Abi abi, string outputDir, string outputFile, string llvmOutputFile, string dataFile, bool? isDedupAssembly, out List<string> processArguments, out List<string> aotArguments, string llvm_path = null)
+		public void GetAotArguments (string filename, Abi abi, string outputDir, string outputFile, string llvmOutputFile, string dataFile, bool? isDedupAssembly, out List<string> processArguments, out List<string> aotArguments, string? llvm_path = null)
 		{
 			string fname = Path.GetFileName (filename);
 			processArguments = new List<string> ();
@@ -1400,7 +1012,6 @@ namespace Xamarin.Bundler {
 			bool enable_debug_symbols = app.PackageManagedDebugSymbols;
 			bool interp = app.IsInterpreted (Assembly.GetIdentity (filename)) && !(isDedupAssembly.HasValue && isDedupAssembly.Value);
 			bool interp_full = !interp && app.UseInterpreter;
-			bool is32bit = (abi & Abi.Arch32Mask) > 0;
 			string arch = abi.AsArchString ();
 
 			processArguments.Add ("--debug");
@@ -1435,7 +1046,7 @@ namespace Xamarin.Bundler {
 					aotArguments.Add ($"dedup-skip");
 				}
 			}
-			if (app.LibMonoLinkMode == AssemblyBuildTarget.StaticObject || !Driver.IsDotNet)
+			if (app.LibMonoLinkMode == AssemblyBuildTarget.StaticObject)
 				aotArguments.Add ("direct-icalls");
 			aotArguments.AddRange (app.AotArguments);
 			if (interp) {
@@ -1473,16 +1084,11 @@ namespace Xamarin.Bundler {
 			if (!app.UseDlsym (filename))
 				aotArguments.Add ("direct-pinvoke");
 
-			if (app.EnableMSym) {
-				var msymdir = Path.Combine (outputDir, "Msym");
-				aotArguments.Add ($"msym-dir={msymdir}");
-			}
-
 			if (enable_llvm) {
 				if (!string.IsNullOrEmpty (llvm_path)) {
 					aotArguments.Add ($"llvm-path={llvm_path}");
 				} else {
-					aotArguments.Add ($"llvm-path={Driver.GetFrameworkCurrentDirectory (app)}/LLVM/bin/");
+					aotArguments.Add ($"llvm-path={app.FrameworkCurrentDirectory}/LLVM/bin/");
 				}
 			}
 
@@ -1490,7 +1096,6 @@ namespace Xamarin.Bundler {
 			if (enable_llvm)
 				aotArguments.Add ($"llvm-outfile={llvmOutputFile}");
 
-#if NET && !LEGACY_TOOLS
 			// If the interpreter is enabled, and we're building for x86_64, we're AOT-compiling but we
 			// don't have access to infinite trampolines. So we're bumping the trampoline count (unless
 			// the developer has already set a value) to something higher than the default.
@@ -1517,9 +1122,8 @@ namespace Xamarin.Bundler {
 						aotArguments.Add (nameWithEq + (tramp.Default * 4).ToString (CultureInfo.InvariantCulture));
 				}
 			}
-#endif
 		}
-#endif // !MMP && !MTOUCH
+#endif // !LEGACY_TOOLS
 
 		public string AssemblyName {
 			get {
@@ -1544,7 +1148,7 @@ namespace Xamarin.Bundler {
 			}
 		}
 
-#if !MMP && !MTOUCH
+#if !LEGACY_TOOLS
 		public void SetDlsymOption (string asm, bool dlsym)
 		{
 			if (DlsymAssemblies is null)
@@ -1629,8 +1233,9 @@ namespace Xamarin.Bundler {
 				throw ErrorHelper.CreateError (71, Errors.MX0071, Platform, ProductName);
 			}
 		}
-#endif // !MMP && !MTOUCH
+#endif // !LEGACY_TOOLS
 
+#if !LEGACY_TOOLS
 		public bool VerifyDynamicFramework (string framework_path)
 		{
 			var framework_filename = Path.Combine (framework_path, Path.GetFileNameWithoutExtension (framework_path));
@@ -1643,22 +1248,98 @@ namespace Xamarin.Bundler {
 			}
 
 			if (!dynamic)
-				Driver.Log (1, "The framework {0} is a framework of static libraries, and will not be copied to the app.", framework_path);
+				this.Log (1, "The framework {0} is a framework of static libraries, and will not be copied to the app.", framework_path);
 
 			return dynamic;
 		}
+#endif // !LEGACY_TOOLS
 
-		static Application ()
-		{
-			SetDefaultHiddenWarnings ();
-		}
-
-		public static void SetDefaultHiddenWarnings ()
+		public void SetDefaultHiddenWarnings ()
 		{
 			// People don't like these warnings (#20670), and they also complicate our tests, so ignore them.
-			ErrorHelper.ParseWarningLevel (ErrorHelper.WarningLevel.Disable, "4178"); // The class '{0}' will not be registered because the {1} framework has been removed from the {2} SDK.
-			ErrorHelper.ParseWarningLevel (ErrorHelper.WarningLevel.Disable, "4189"); // The class '{0}' will not be registered because it has been removed from the {1} SDK.
-			ErrorHelper.ParseWarningLevel (ErrorHelper.WarningLevel.Disable, "4190"); // The class '{0}' will not be registered because the {1} framework has been deprecated from the {2} SDK.
+			ErrorHelper.ParseWarningLevel (this, ErrorHelper.WarningLevel.Disable, "4178"); // The class '{0}' will not be registered because the {1} framework has been removed from the {2} SDK.
+			ErrorHelper.ParseWarningLevel (this, ErrorHelper.WarningLevel.Disable, "4189"); // The class '{0}' will not be registered because it has been removed from the {1} SDK.
+			ErrorHelper.ParseWarningLevel (this, ErrorHelper.WarningLevel.Disable, "4190"); // The class '{0}' will not be registered because the {1} framework has been deprecated from the {2} SDK.
 		}
+
+		IToolLog GetLog ()
+		{
+#if LEGACY_TOOLS
+			return ConsoleLog.Instance;
+#else
+			return Configuration.Logger ?? ConsoleLog.Instance;
+#endif
+		}
+
+		public void Log (string message)
+		{
+			GetLog ().Log (message);
+		}
+
+		public void LogError (string message)
+		{
+			GetLog ().LogError (message);
+		}
+
+		public void LogError (ProductException exception)
+		{
+			GetLog ().LogError (exception);
+		}
+
+		public void LogWarning (ProductException exception)
+		{
+			GetLog ().LogWarning (exception);
+		}
+
+		public void LogException (Exception exception)
+		{
+			GetLog ().LogException (exception);
+		}
+
+		int verbosity = Driver.GetDefaultVerbosity (Driver.NAME);
+		public int Verbosity {
+			get => verbosity;
+			set => verbosity = value;
+		}
+
+		public string? SdkRoot { get; set; }
+		public string? DeveloperDirectory { get; set; }
+
+		string? framework_dir;
+		public string FrameworkCurrentDirectory {
+			get {
+				if (framework_dir is null)
+					throw new InvalidOperationException ($"Teh current framework directory hasn't been set.");
+				return framework_dir;
+			}
+			set {
+				framework_dir = value;
+			}
+		}
+
+		/// <summary>
+		/// This returns the /Applications/Xcode*.app/Contents/Developer/Platforms directory
+		/// </summary>
+		public string PlatformsDirectory {
+			get {
+				if (DeveloperDirectory is null)
+					throw new InvalidOperationException ("DeveloperDirectory is not set");
+				return Path.Combine (DeveloperDirectory, "Platforms");
+			}
+		}
+
+		Version? xcode_version;
+		public Version XcodeVersion {
+			get {
+				if (xcode_version is null)
+					throw ErrorHelper.CreateError (99, Errors.MX0099, "The Xcode version has not been configured. Pass --xcode-version or configure an Xcode installation.");
+				return xcode_version;
+			}
+			set {
+				xcode_version = value;
+			}
+		}
+
+		public string? XcodeProductVersion { get; set; }
 	}
 }

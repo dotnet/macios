@@ -625,10 +625,13 @@ namespace AudioUnit {
 		///         <remarks>To be added.</remarks>
 		public AudioUnitStatus SetClassInfo (ClassInfoDictionary preset, AudioUnitScopeType scope = AudioUnitScopeType.Global, uint audioUnitElement = 0)
 		{
-			var ptr = preset.Dictionary.Handle;
+			var dictionary = preset.Dictionary;
+			var ptr = dictionary.Handle;
 			unsafe {
-				return AudioUnitSetProperty (Handle, AudioUnitPropertyIDType.ClassInfo, scope, audioUnitElement,
+				var rv = AudioUnitSetProperty (Handle, AudioUnitPropertyIDType.ClassInfo, scope, audioUnitElement,
 					&ptr, IntPtr.Size);
+				GC.KeepAlive (dictionary);
+				return rv;
 			}
 		}
 
@@ -1093,7 +1096,7 @@ namespace AudioUnit {
 		[DllImport (Constants.AudioUnitLibrary)]
 		static extern int AudioComponentInstanceDispose (IntPtr inInstance);
 
-		/// <include file="../../docs/api/AudioUnit/AudioUnit.xml" path="/Documentation/Docs[@DocId='M:AudioUnit.AudioUnit.Dispose(System.Boolean)']/*" />
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			if (Handle != IntPtr.Zero && Owns) {
@@ -1348,6 +1351,8 @@ namespace AudioUnit {
 		///         <remarks>To be added.</remarks>
 		public bool IsAtEnd { get { return current is null; } }
 
+		/// <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>
+		/// <param name="ptr">Pointer (handle) to the unmanaged object.</param>
 		public AURenderEventEnumerator (NativeHandle ptr)
 			: this (ptr, false)
 		{
@@ -1625,11 +1630,11 @@ namespace AudioUnit {
 	[SupportedOSPlatform ("tvos")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AURecordedParameterEvent {
-		/// <summary>The host time at which the change occured.</summary>
+		/// <summary>The host time at which the change occurred.</summary>
 		///         <remarks>To be added.</remarks>
 		public ulong HostTime;
 
-		/// <summary>The numeric identfier of the parameter.</summary>
+		/// <summary>The numeric identifier of the parameter.</summary>
 		///         <remarks>To be added.</remarks>
 		public ulong Address;
 

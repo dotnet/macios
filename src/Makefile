@@ -8,6 +8,7 @@ PROJECT_DIR=.
 
 include $(TOP)/src/frameworks.sources
 include $(TOP)/mk/rules.mk
+include $(TOP)/mk/xamarin.mk
 
 MACOS_DOTNET_BUILD_DIR=$(DOTNET_BUILD_DIR)/macos
 IOS_DOTNET_BUILD_DIR=$(DOTNET_BUILD_DIR)/ios
@@ -66,6 +67,8 @@ endif
 DOTNET_GENERATOR_FLAGS=$(GENERATOR_FLAGS) --lib=$(DOTNET_BCL_DIR) -attributelib:$(DOTNET_BINDING_ATTRIBUTES) $(DOTNET_REFERENCES)
 DOTNET_GENERATOR=$(DOTNET_BUILD_DIR)/bgen/bgen
 DOTNET_BINDING_ATTRIBUTES=$(DOTNET_BUILD_DIR)/Xamarin.Apple.BindingAttributes.dll
+APPLE_DOC_READER=$(TOP)/packages/appledocreader.$(ADR_RUNTIME_IDENTIFIER)/$(ADR_NUGET_VERSION)/tools/any/$(ADR_RUNTIME_IDENTIFIER)/AppleDocReader
+APPLE_DOC_READER_LOCK=$(BUILD_DIR)/.appledocreader.lock
 
 #
 # Specific warnings that we want reported as errors by generator
@@ -172,7 +175,7 @@ endef
 # pseudo-code:
 #     foreach (var platform in DOTNET_PLATFORMS)
 #        BuildDotNetIntermediateAssembly (platform, platform.ToUpper (), platform.ToLower ())
-$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call DotNetVariables,$(platform),$(shell echo $(platform) | tr '[:lower:]' '[:upper:]'),$(shell echo $(platform) | tr '[:upper:]' '[:lower:]'))))
+$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call DotNetVariables,$(platform),$(call uppercase,$(platform)),$(call lowercase,$(platform)))))
 
 #
 # iOS
@@ -337,34 +340,30 @@ $($(2)_DOTNET_BUILD_DIR)/embed-files.rsp: $($(2)_DOTNET_BUILD_DIR)/$(3)-generate
 	$$(Q) mv $$@.tmp $$@
 
 $($(2)_DOTNET_BUILD_DIR)/ILLink.Substitutions.xml: $(TOP)/src/ILLink.Substitutions.$(1).xml | $($(2)_DOTNET_BUILD_DIR)
-	$(Q) $(CP) $$< $$@
+	$$(Q) $(CP) $$< $$@
 
 $(DOTNET_DESTDIR)/$($(2)_NUGET_REF_NAME)/ref/$(DOTNET_TFM)/Microsoft.$(1).dll: $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).dll | $(DOTNET_DESTDIR)/$($(2)_NUGET_REF_NAME)/ref/$(DOTNET_TFM)
-	$(Q) $(CP) $$< $$@
+	$$(Q) $(CP) $$< $$@
 
 $(DOTNET_DESTDIR)/$($(2)_NUGET_REF_NAME)/ref/$(DOTNET_TFM)/Microsoft.$(1).xml: $($(2)_DOTNET_BUILD_DIR)/doc/Microsoft.$(1).xml | $(DOTNET_DESTDIR)/$($(2)_NUGET_REF_NAME)/ref/$(DOTNET_TFM)
-	$(Q) $(CP) $$< $$@
+	$$(Q) $(CP) $$< $$@
 
+ifndef NO_XCODE
+# AppleDocReader backs up a shared Xcode SQLite database, so serialize invocations.
 $($(2)_DOTNET_BUILD_DIR)/doc/Microsoft.$(1).xml: $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).xml $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).dll build/.build-adr-stamp | $($(2)_DOTNET_BUILD_DIR)/doc
-ifdef ENABLE_XAMARIN
-ifdef ENABLE_ADR
-	$(Q) $(MAKE) run -C $(ADR_PATH) ASSEMBLY="$(abspath $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).dll)" INPUT="$(abspath $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).xml)" OUTPUT="$(abspath $$@)"
+	$$(Q_GEN) /usr/bin/lockf "$(APPLE_DOC_READER_LOCK)" "$(APPLE_DOC_READER)" inject docs --assembly="$(abspath $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).dll)" --input="$(abspath $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).xml)" --output="$(abspath $$@)" --xcode="$(DEVELOPER_DIR)/../.." --runtimeDll="$(DOTNET_BCL_DIR)/System.Runtime.dll" -f
 else
-	$$(Q) $$(CP) $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).xml $$@
-endif
-else
-	$$(Q) $$(CP) $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).xml $$@
+# Without Xcode, skip AppleDocReader and just copy the XML
+$($(2)_DOTNET_BUILD_DIR)/doc/Microsoft.$(1).xml: $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).xml | $($(2)_DOTNET_BUILD_DIR)/doc
+	$(Q) $(CP) $$< $$@
 endif
 endef
 
+ifndef NO_XCODE
 build/.build-adr-stamp:
-ifdef ENABLE_XAMARIN
-ifdef ENABLE_ADR
-	$(Q) $(MAKE) build -C $(ADR_PATH)
-	$(Q) $(MAKE) create -C $(ADR_PATH)
-endif
-endif
+	$(MAKE) -C $(TOP)/tools/adr
 	$(Q) touch $@
+endif
 
 # Template variables:
 # 1: Platform (correct case)
@@ -373,7 +372,7 @@ endif
 # pseudo-code:
 #     foreach (var platform in DOTNET_PLATFORMS)
 #        BuildDotNetIntermediateAssembly (platform, platform.ToUpper (), platform.ToLower ())
-$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call BuildDotNetIntermediateAssembly,$(platform),$(shell echo $(platform) | tr '[:lower:]' '[:upper:]'),$(shell echo $(platform) | tr '[:upper:]' '[:lower:]'))))
+$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call BuildDotNetIntermediateAssembly,$(platform),$(call uppercase,$(platform)),$(call lowercase,$(platform)))))
 
 define BuildDotNetPlatformAssembly
 $(2)_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES = \
@@ -439,6 +438,15 @@ $($(2)_DOTNET_BUILD_DIR)/Microsoft.$(1).rsp: Makefile frameworks.sources $(RSP_D
 $($(2)_DOTNET_BUILD_DIR)/$(4)/Microsoft.$(1)%dll $($(2)_DOTNET_BUILD_DIR)/$(4)/Microsoft.$(1)%pdb $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1)%dll $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1)%xml: $$($(2)_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES) $$(ROSLYN_GENERATOR) $$(ROSLYN_ANALYZER) | $$($(2)_DOTNET_PLATFORM_ASSEMBLY_DIR_DEPENDENCIES)
 	$$(call Q_PROF_CSC,dotnet) $(DOTNET_CSC) @$($(2)_DOTNET_BUILD_DIR)/Microsoft.$(1).rsp
 
+ifdef SERIALIZE_CSC
+# This is to serialize the csc commands for the platform assembly. The platform assembly takes a while to compile (maxing out the CPU), and csc is already multi-threaded, which
+# means that if we're running multiple long csc tasks simultaneously, the CPU of the machine will get absolutely thrashed. csc (aka Roslyn) isn't exactly a cheapskate with memory either...
+# It looks a bit weird, but the idea is that in this template, every platform assembly depends on the assembly from the previous template expansion.
+# It's opt-in, because it slows down the build a bit.
+$($(2)_DOTNET_BUILD_DIR)/$(4)/Microsoft.$(1).dll: $(LAST_DLL)
+LAST_DLL=$($(2)_DOTNET_BUILD_DIR)/$(4)/Microsoft.$(1).dll
+endif
+
 dotnet-$(3):: $($(2)_DOTNET_BUILD_DIR)/$(4)/Microsoft.$(1).dll
 
 DOTNET_TARGETS_$(3) += \
@@ -472,7 +480,7 @@ endef
 # pseudo-code:
 #     foreach (var platform in DOTNET_PLATFORMS)
 #        BuildDotNetPlatformAssembly (platform, platform.ToUpper (), platform.ToLower (), 64)
-$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call BuildDotNetPlatformAssembly,$(platform),$(shell echo $(platform) | tr '[:lower:]' '[:upper:]'),$(shell echo $(platform) | tr '[:upper:]' '[:lower:]'),64)))
+$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call BuildDotNetPlatformAssembly,$(platform),$(call uppercase,$(platform)),$(call lowercase,$(platform)),64)))
 
 define DefineTargets
 $(1)_NUGET_TARGETS = \
@@ -504,7 +512,7 @@ $(DOTNET_BUILD_DIR)/%/Constants.generated.cs: Makefile $(GENERATE_FRAMEWORKS_CON
 
 # This target builds all the generated project files. It's not really useful by itself,
 # except to validate that the csproj files actually work.
-build-csproj: $(CSPROJECTS) $(foreach platform,$(DOTNET_PLATFORMS),$($(shell echo $(platform) | tr '[:lower:]' '[:upper:]')_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES))
+build-csproj: $(CSPROJECTS) $(foreach platform,$(DOTNET_PLATFORMS),$($(call uppercase,$(platform))_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES))
 	$(Q) set -e; \
 	for csproj in $(CSPROJECTS); do \
 		echo "Building $$csproj..."; \
@@ -513,7 +521,7 @@ build-csproj: $(CSPROJECTS) $(foreach platform,$(DOTNET_PLATFORMS),$($(shell ech
 	done
 
 # This targets runs 'dotnet format' on the generated project files.
-format-csproj: $(CSPROJECTS) $(foreach platform,$(DOTNET_PLATFORMS),$($(shell echo $(platform) | tr '[:lower:]' '[:upper:]')_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES))
+format-csproj: $(CSPROJECTS) $(foreach platform,$(DOTNET_PLATFORMS),$($(call uppercase,$(platform))_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES))
 	$(Q) set -e; \
 	for csproj in $(CSPROJECTS); do \
 		echo "Formatting $$csproj..."; \
@@ -523,7 +531,7 @@ format-csproj: $(CSPROJECTS) $(foreach platform,$(DOTNET_PLATFORMS),$($(shell ec
 
 # This builds the project files, enabling C# analyzers
 analyze:
-	$(Q) $(MAKE) -j $(CSPROJECTS) $(foreach platform,$(DOTNET_PLATFORMS),$($(shell echo $(platform) | tr '[:lower:]' '[:upper:]')_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES))
+	$(Q) $(MAKE) -j $(CSPROJECTS) $(foreach platform,$(DOTNET_PLATFORMS),$($(call uppercase,$(platform))_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES))
 	$(Q) set -e; \
 	for csproj in $(CSPROJECTS); do \
 		echo "Analyzing $$csproj..."; \
@@ -533,7 +541,7 @@ analyze:
 	done
 
 # This target builds the generated project files with StyleCop enabled.
-stylecop-csproj: $(CSPROJECTS) $(foreach platform,$(DOTNET_PLATFORMS),$($(shell echo $(platform) | tr '[:lower:]' '[:upper:]')_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES))
+stylecop-csproj: $(CSPROJECTS) $(foreach platform,$(DOTNET_PLATFORMS),$($(call uppercase,$(platform))_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES))
 	$(Q) set -e; \
 	for csproj in $(CSPROJECTS); do \
 		echo "Building $$csproj with StyleCop enabled..."; \

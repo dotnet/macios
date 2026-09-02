@@ -10,18 +10,14 @@
 //			just be undocumented (or not in the headers)
 //
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Mono.Cecil;
-
-using Clang.Ast;
-
 namespace Extrospection {
 
 	// track all [DllImport]
 	class DllImportCheck : BaseVisitor {
+		public DllImportCheck (BindingResult bindingResult)
+			: base (bindingResult)
+		{
+		}
 
 		// dupes :|
 		Dictionary<string, MethodDefinition> dllimports = new Dictionary<string, MethodDefinition> ();
@@ -43,10 +39,8 @@ namespace Extrospection {
 				dllimports.Add (name, method);
 		}
 
-		public override void VisitFunctionDecl (FunctionDecl decl, VisitKind visitKind)
+		public override void VisitFunctionDecl (FunctionDecl decl)
 		{
-			if (visitKind != VisitKind.Enter)
-				return;
 			// skip macros : we generally implement them but their name is lost (so no matching is possible)
 			if (!decl.IsExternC)
 				return;
@@ -75,7 +69,7 @@ namespace Extrospection {
 			found.Add (name);
 		}
 
-		public override void End ()
+		public override void EndVisit ()
 		{
 			// at this stage anything else we have is not something we could find in Apple's headers
 			// e.g. a typo in the name

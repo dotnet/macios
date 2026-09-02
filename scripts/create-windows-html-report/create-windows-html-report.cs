@@ -12,6 +12,8 @@ using System.IO;
 using System.Text;
 using System.Xml;
 
+using Xamarin.Utils;
+
 public class Program {
 	static string GetOutcomeColor (string outcome)
 	{
@@ -83,6 +85,10 @@ public class Program {
 
 		var indexContents = new StringBuilder ();
 		var summaryContents = new StringBuilder ();
+		var allFailedTests = new List<(string TrxName, TrxParser.TrxTestResult Test)> ();
+		var failedTrxNames = new List<string> ();
+		var passedTrxCount = 0;
+		var failedTrxCount = 0;
 
 		indexContents.AppendLine ($"<!DOCTYPE html>");
 		indexContents.AppendLine ($"<html>");
@@ -120,50 +126,51 @@ public class Program {
 		foreach (var trx in trxFiles) {
 			var name = trx.Name;
 			var path = trx.TestResults;
-			string? outcome;
 			var messageLines = new List<string> ();
+			var trxSucceeded = true;
+
+			if (TrxParser.TryParseTrxFile (path, out var failedTests, out var outcome, out trxSucceeded, out var ex)) {
+				if (failedTests?.Any () == true) {
+					foreach (var ft in failedTests)
+						allFailedTests.Add ((name, ft));
+					messageLines.Add ("        <ul>");
+					foreach (var ft in failedTests) {
+						var testName = ft.Name;
+						var testOutcome = ft.Outcome;
+						var testMessage = ft.Message;
+
+						if (string.IsNullOrEmpty (testMessage)) {
+							messageLines.Add ($"        <li>{testName} (<span style='color: {GetOutcomeColor (testOutcome)}'>{testOutcome}</span>)</li>");
+						} else if (testMessage.Split ('\n').Length == 1) {
+							messageLines.Add ($"        <li>{testName} (<span style='color: {GetOutcomeColor (testOutcome)}'>{testOutcome}</span>): {FormatHtml (testMessage)}</li>");
+						} else {
+							messageLines.Add ($"        <li>{testName} (<span style='color: {GetOutcomeColor (testOutcome)}'>{testOutcome}</span>)");
+							messageLines.Add ($"            <div class='pdiv' style='margin-left: 20px;'>");
+							messageLines.Add (FormatHtml (testMessage));
+							messageLines.Add ($"            </div>");
+							messageLines.Add ($"        </li>");
+						}
+					}
+					messageLines.Add ("        </ul>");
+				} else if (outcome != "Completed" && outcome != "Passed") {
+					messageLines.Add ($"    Failed to find any test failures in the trx file {path}");
+				}
+			} else {
+				outcome = "Failed to parse test results";
+				if (ex is not null)
+					messageLines.Add ($"<div>{FormatHtml (ex.ToString ())}</div>");
+				trxSucceeded = false;
+			}
+
+			if (!trxSucceeded) {
+				allTestsSucceeded = false;
+				failedTrxNames.Add (name);
+				failedTrxCount++;
+			} else {
+				passedTrxCount++;
+			}
 
 			try {
-				var xml = new XmlDocument ();
-				xml.Load (path);
-				outcome = xml.SelectSingleNode ("/*[local-name() = 'TestRun']/*[local-name() = 'ResultSummary']")?.Attributes? ["outcome"]?.Value;
-				if (outcome is null) {
-					outcome = $"Could not find outcome in trx file {path}";
-				} else {
-					var failedTests = xml.SelectNodes ("/*[local-name() = 'TestRun']/*[local-name() = 'Results']/*[local-name() = 'UnitTestResult'][@outcome != 'Passed']")?.Cast<XmlNode> ();
-					if (failedTests?.Any () == true) {
-						messageLines.Add ("        <ul>");
-						foreach (var node in failedTests) {
-							var testName = node.Attributes? ["testName"]?.Value ?? "<unknown test name>";
-							var testOutcome = node.Attributes? ["outcome"]?.Value ?? "<unknown test outcome>";
-							var testMessage = node.SelectSingleNode ("*[local-name() = 'Output']/*[local-name() = 'ErrorInfo']/*[local-name() = 'Message']")?.InnerText;
-
-							var testId = node.Attributes? ["testId"]?.Value;
-							if (!string.IsNullOrEmpty (testId)) {
-								var testMethod = xml.SelectSingleNode ($"/*[local-name() = 'TestRun']/*[local-name() = 'TestDefinitions']/*[local-name() = 'UnitTest'][@id='{testId}']/*[local-name() = 'TestMethod']");
-								var className = testMethod?.Attributes? ["className"]?.Value ?? string.Empty;
-								if (!string.IsNullOrEmpty (className))
-									testName = className + "." + testName;
-							}
-
-							if (string.IsNullOrEmpty (testMessage)) {
-								messageLines.Add ($"        <li>{testName} (<span style='color: {GetOutcomeColor (testOutcome)}'>{testOutcome}</span>)</li>");
-							} else if (testMessage.Split ('\n').Length == 1) {
-								messageLines.Add ($"        <li>{testName} (<span style='color: {GetOutcomeColor (testOutcome)}'>{testOutcome}</span>): {FormatHtml (testMessage)}</li>");
-							} else {
-								messageLines.Add ($"        <li>{testName} (<span style='color: {GetOutcomeColor (testOutcome)}'>{testOutcome}</span>)");
-								messageLines.Add ($"            <div class='pdiv' style='margin-left: 20px;'>");
-								messageLines.Add (FormatHtml (testMessage));
-								messageLines.Add ($"            </div>");
-								messageLines.Add ($"        </li>");
-							}
-						}
-						messageLines.Add ("        </ul>");
-						allTestsSucceeded = false;
-					} else if (outcome != "Completed" && outcome != "Passed") {
-						messageLines.Add ($"    Failed to find any test failures in the trx file {path}");
-					}
-				}
 				var htmlPath = Path.ChangeExtension (path, "html");
 				if (File.Exists (htmlPath)) {
 					var relativeHtmlPath = Path.GetRelativePath (outputDirectory, htmlPath);
@@ -202,7 +209,23 @@ public class Program {
 		if (allTestsSucceeded) {
 			summaryContents.AppendLine ($"# :tada: All {trxFiles.Length} tests passed :tada:");
 		} else {
-			summaryContents.AppendLine ($"# :tada: All {trxFiles.Length} tests passed :tada:");
+			summaryContents.AppendLine ("# Test results");
+			summaryContents.AppendLine ("<details>");
+			summaryContents.AppendLine ($"<summary>{failedTrxCount} tests failed, {passedTrxCount} tests passed.</summary>");
+			summaryContents.AppendLine ();
+			summaryContents.AppendLine ("## Failed tests");
+			summaryContents.AppendLine ();
+			if (allFailedTests.Any ()) {
+				foreach (var (trxName, test) in allFailedTests) {
+					var msg = string.IsNullOrEmpty (test.Message) ? "" : $": {test.Message.Split ('\n') [0]}";
+					summaryContents.AppendLine ($" * {trxName}/{test.Name}: {test.Outcome}{msg}");
+				}
+			} else {
+				foreach (var trxName in failedTrxNames) {
+					summaryContents.AppendLine ($" * {trxName}: Failed");
+				}
+			}
+			summaryContents.AppendLine ("</details>");
 		}
 
 		Directory.CreateDirectory (outputDirectory);

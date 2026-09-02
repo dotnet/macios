@@ -19,3 +19,6 @@
 
 # variadic, maximum number of arguments is 2^31... there's a different overload that is conceptually the same, so there's no need for this particular selector.
 !missing-selector! +MPSNDArrayDescriptor::descriptorWithDataType:dimensionSizes: not bound
+
+# updated sharpie results
+!missing-enum! MPSDeviceCapsValues not bound

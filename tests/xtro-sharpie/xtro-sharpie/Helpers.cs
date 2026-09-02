@@ -1,11 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-
-using Mono.Cecil;
-
-using Clang.Ast;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Extrospection {
 
@@ -55,7 +48,6 @@ namespace Extrospection {
 		}
 
 		public static Platforms Platform { get; set; }
-		public static bool IsDotNet { get; set; }
 
 		public static int GetPlatformManagedValue (Platforms platform)
 		{
@@ -161,20 +153,19 @@ namespace Extrospection {
 			bool? result = null;
 			foreach (var attr in decl.Attrs) {
 				// NS_UNAVAILABLE
-				if (attr is UnavailableAttr)
+				if (attr.Kind == CX_AttrKind.CX_AttrKind_Unavailable)
 					return false;
-				var avail = (attr as AvailabilityAttr);
-				if (avail is null)
+				if (attr.Kind != CX_AttrKind.CX_AttrKind_Availability)
 					continue;
-				var availName = avail.Platform.Name.ToLowerInvariant ();
+				var availName = attr.AvailabilityAttributePlatformIdentifierName.ToLowerInvariant ();
 				// if the headers says it's not available then we won't report it as missing
-				if (avail.Unavailable && (availName == platform))
+				if (attr.AvailabilityAttributeUnavailable && (availName == platform))
 					return false;
 				// for iOS we won't report missing members that were deprecated before 5.0
-				if (!avail.Deprecated.IsEmpty && availName == "ios" && avail.Deprecated.Major < 5)
+				if (!attr.Deprecated.IsEmptyVersionTuple && availName == "ios" && attr.Deprecated.Major < 5)
 					return false;
 				// can't return true right away as it can be deprecated too
-				if (!avail.Introduced.IsEmpty && (availName == platform))
+				if (!attr.Introduced.IsEmptyVersionTuple && availName == platform)
 					result = true;
 			}
 			return result;
@@ -211,25 +202,20 @@ namespace Extrospection {
 		{
 			var platform = platform_value.ToString ().ToLowerInvariant ();
 			// First check if there are any deprecations
-			foreach (var attr in decl.Attrs) {
-				var avail = attr as AvailabilityAttr;
-				if (avail is null)
-					continue;
-				var availName = avail.Platform.Name.ToLowerInvariant ();
+			var availabilityAttrs = decl.Attrs.GetAvailabilityAttributes ().ToList ();
+			foreach (var attr in availabilityAttrs) {
+				var availName = attr.AvailabilityAttributePlatformIdentifierName.ToLowerInvariant ();
 				if (availName != platform)
 					continue;
-				if (!avail.Deprecated.IsEmpty)
+				if (!attr.Deprecated.IsEmptyVersionTuple)
 					return true;
 			}
 			// then check for introduced - there may be both, so we must check *all* attributes for deprecation before checking for introduced
-			foreach (var attr in decl.Attrs) {
-				var avail = attr as AvailabilityAttr;
-				if (avail is null)
-					continue;
-				var availName = avail.Platform.Name.ToLowerInvariant ();
+			foreach (var attr in availabilityAttrs) {
+				var availName = attr.AvailabilityAttributePlatformIdentifierName.ToLowerInvariant ();
 				if (availName != platform)
 					continue;
-				if (!avail.Introduced.IsEmpty)
+				if (!attr.Introduced.IsEmptyVersionTuple)
 					return false;
 			}
 
@@ -268,7 +254,9 @@ namespace Extrospection {
 			return (self.IsSealed && self.IsAbstract);
 		}
 
-		public static string GetName (this ObjCMethodDecl self)
+
+		[return: NotNullIfNotNull (nameof (self))]
+		public static string? GetName (this ObjCMethodDecl? self)
 		{
 			if (self is null)
 				return null;
@@ -279,7 +267,7 @@ namespace Extrospection {
 			if (self.DeclContext is ObjCCategoryDecl category) {
 				sb.Append (category.ClassInterface.Name);
 			} else {
-				sb.Append ((self.DeclContext as NamedDecl).Name);
+				sb.Append (((NamedDecl) self.DeclContext!).Name);
 			}
 			sb.Append ("::");
 			var sel = self.Selector.ToString ();
@@ -287,7 +275,7 @@ namespace Extrospection {
 			return sb.ToString ();
 		}
 
-		public static string GetName (this TypeDefinition self)
+		public static string? GetName (this TypeDefinition? self)
 		{
 			if ((self is null) || !self.HasCustomAttributes)
 				return null;
@@ -325,13 +313,13 @@ namespace Extrospection {
 			return null;
 		}
 
-		public static string GetName (this MethodDefinition self)
+		public static string? GetName (this MethodDefinition? self)
 		{
 			if (self is null)
 				return null;
 
 			var type = self.DeclaringType;
-			string tname = self.DeclaringType.GetName ();
+			string? tname = self.DeclaringType.GetName ();
 			// a static type is not used for static selectors
 			bool is_static = !type.IsStatic () && self.IsStatic;
 
@@ -356,7 +344,7 @@ namespace Extrospection {
 			return sb.ToString ();
 		}
 
-		public static string GetSelector (this MethodDefinition self)
+		public static string? GetSelector (this MethodDefinition self)
 		{
 			if ((self is null) || !self.HasCustomAttributes)
 				return null;
@@ -391,9 +379,12 @@ namespace Extrospection {
 			return false;
 		}
 
-		public static PropertyDefinition FindProperty (this MethodReference method)
+		public static PropertyDefinition? FindProperty (this MethodReference? method)
 		{
-			var def = method?.Resolve ();
+			if (method is null)
+				return null;
+
+			var def = method.Resolve ();
 			if (def is null)
 				return null;
 
@@ -425,7 +416,7 @@ namespace Extrospection {
 
 		public static string GetFramework (MethodDefinition method)
 		{
-			string framework = null;
+			string? framework = null;
 			if (method.HasPInvokeInfo)
 				framework = Path.GetFileNameWithoutExtension (method.PInvokeInfo.Module.Name);
 			else
@@ -439,7 +430,7 @@ namespace Extrospection {
 			return MapFramework (framework);
 		}
 
-		public static string GetFramework (Decl decl)
+		public static string? GetFramework (Decl decl)
 		{
 			var header_file = decl.PresumedLoc?.FileName;
 			if (header_file is null)
@@ -485,7 +476,7 @@ namespace Extrospection {
 			}
 		}
 
-		public static (T, T) Sort<T> (T o1, T o2)
+		public static (T, T) Sort<T> (T o1, T o2) where T : notnull
 		{
 			if (StringComparer.Ordinal.Compare (o1.ToString (), o2.ToString ()) < 0)
 				return (o2, o1);

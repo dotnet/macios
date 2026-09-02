@@ -31,25 +31,6 @@ var tconstraint1 = NSLayoutConstraint.Create (toolbar, NSLayoutAttribute.Width, 
     </remarks>
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AppKit/Reference/NSLayoutConstraint_Class/index.html">Apple documentation for <c>NSLayoutConstraint</c></related>
   </Docs>
-  <Docs DocId="M:UIKit.NSLayoutConstraint.FromVisualFormat(System.String,UIKit.NSLayoutFormatOptions,System.Object[])">
-    <param name="format">Visual format to use to create the constraints.</param>
-    <param name="formatOptions">options.</param>
-    <param name="viewsAndMetrics">
-      <para>Pairs of names and values.   The names should be strings (or NSStrings) and the values should be either UIViews, numbers (any C# number or NSNumber) or <see cref="ObjCRuntime.INativeObject" /> instances that are suitable to be passed to the underlying engine. </para>
-      <para>
-      </para>
-      <para> This binds the provided name with the view or binds the name with the number as a metric.</para>
-    </param>
-    <summary>Factory method for creating a constraint using Visual Format Language.</summary>
-    <returns>An array of layout constraints that are suitable to be added to a <see cref="View" /> using <see cref="View.AddConstraints(NSLayoutConstraint[])" /> method.</returns>
-    <remarks>
-      <example>
-        <code lang="csharp lang-csharp"><![CDATA[
-NSLayoutConstraint.FromVisualFormat ("|-8-[messageView]-8-|", NSLayoutOptions.None, "messageView", MakeMessageView ());
-	    ]]></code>
-      </example>
-    </remarks>
-  </Docs>
   <Docs DocId="M:UIKit.NSLayoutConstraint.ActivateConstraints(UIKit.NSLayoutConstraint[])">
     <param name="constraints">Constraints to activate.</param>
     <summary>Activates all of the constraints passed.</summary>
@@ -93,32 +74,6 @@ NSLayoutConstraint.ActivateConstraints(blueConstraints);
       <para>It is easier to use the <see cref="NSLayoutConstraint.FromVisualFormat(System.String,NSLayoutFormatOptions,System.Object[])" /> overload as it combines support for both metrics and views in a single call.</para>
     </remarks>
   </Docs>
-  <Docs DocId="M:UIKit.NSLayoutConstraint.Create(Foundation.NSObject,UIKit.NSLayoutAttribute,UIKit.NSLayoutRelation,Foundation.NSObject,UIKit.NSLayoutAttribute,System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat)">
-        <param name="view1">First view in the constraint.</param>
-        <param name="attribute1">Attribute for the first view.</param>
-        <param name="relation">Relationships between the <paramref name="view1" /> and the <paramref name="view2" />.</param>
-        <param name="view2">
-          <para>Second view in the constraint.</para>
-          <para>This parameter can be <see langword="null" />.</para>
-          <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
-        </param>
-        <param name="attribute2">Attribute for the second view.</param>
-        <param name="multiplier">Multiplier applied to the second attribute.</param>
-        <param name="constant">Constants to add.</param>
-        <summary>Factory method for creating a constraint.</summary>
-        <returns>
-          <para>New constraint with the specified parameters.</para>
-          <para>
-          </para>
-        </returns>
-        <remarks>
-          <para>Creates a constraint relationship between the <paramref name="view1" /> and the <paramref name="view2" /> that satisfies the following linear equation:</para>
-          <para>
-          </para>
-          <para>
-            <paramref name="attribute1" /> = <paramref name="multiplier" /> x <paramref name="attribute2" /> + <paramref name="constant" /></para>
-        </remarks>
-      </Docs>
   <Docs DocId="M:UIKit.NSLayoutConstraint.Create(ObjCRuntime.INativeObject,UIKit.NSLayoutAttribute,UIKit.NSLayoutRelation,ObjCRuntime.INativeObject,UIKit.NSLayoutAttribute,System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat)">
         <param name="view1">First view in the constraint.</param>
         <param name="attribute1">Attribute for the first view.</param>

@@ -37,7 +37,7 @@ namespace Xamarin.MacDev.Tasks {
 
 				var contentFiles = ImageAssets
 					.Where (asset => Path.GetFileName (asset.ItemSpec) == "Contents.json" &&
-						Path.GetDirectoryName (asset.ItemSpec).EndsWith (".dataset"))
+						Path.GetDirectoryName (asset.ItemSpec)!.EndsWith (".dataset"))
 					.Select (x => x.ItemSpec);
 
 				foreach (var filePath in contentFiles) {
@@ -55,9 +55,10 @@ namespace Xamarin.MacDev.Tasks {
 					}
 
 					var dataItemsToComplete = dataset
-						.DataItems
-						.Where (item => string.IsNullOrEmpty (item.UniversalTypeIdentifier) &&
-							!string.IsNullOrEmpty (item.Filename)).ToList ();
+						?.DataItems
+						?.Where (item => string.IsNullOrEmpty (item.UniversalTypeIdentifier) &&
+							!string.IsNullOrEmpty (item.Filename)).ToList ()
+						?? [];
 
 					foreach (var data in dataItemsToComplete) {
 						var file = ImageAssets.FirstOrDefault (x => Path.GetFileName (x.ItemSpec) == data.Filename);

@@ -6,9 +6,8 @@ using System.Diagnostics.CodeAnalysis;
 #nullable enable
 
 namespace CloudKit {
-	/// <summary>A <see cref="CloudKit.CKOperation" /> that ret../../summary_set.sh CKFetchNotificationChangesOperation A</summary>
+	/// <summary>A <see cref="CloudKit.CKOperation" /> that retrieves notification changes.</summary>
 	///     <remarks>To be added.</remarks>
-	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CloudKit/Reference/CKFetchNotificationChangesOperation_class/index.html">Apple documentation for <c>CKFetchNotificationChangesOperation</c></related>
 	[Register ("CKFetchNotificationChangesOperation", SkipRegistration = true)]
 	[UnsupportedOSPlatform ("ios", "Use 'CKDatabaseSubscription', 'CKFetchDatabaseChangesOperation' and 'CKFetchRecordZoneChangesOperation' instead.")]
 	[UnsupportedOSPlatform ("macos", "Use 'CKDatabaseSubscription', 'CKFetchDatabaseChangesOperation' and 'CKFetchRecordZoneChangesOperation' instead.")]
@@ -27,6 +26,8 @@ namespace CloudKit {
 			throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms);
 		}
 
+		/// <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>
+		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
 		protected internal CKFetchNotificationChangesOperation (NativeHandle handle) : base (handle)
 		{
 			throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms);

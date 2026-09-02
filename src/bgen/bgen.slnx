@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="../../tests/bgen/bgen-tests.csproj" />
+  <Project Path="bgen.csproj" />
+</Solution>

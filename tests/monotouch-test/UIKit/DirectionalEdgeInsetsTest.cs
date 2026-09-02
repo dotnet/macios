@@ -46,10 +46,10 @@ namespace MonoTouchFixtures.UIKit {
 			var i2 = new NSDirectionalEdgeInsets (10, 10, 10, 10);
 
 #pragma warning disable CS1718 // warning CS1718: Comparison made to same variable; did you mean to compare something else?
-			Assert.True (i1 == i1, "i1 == i1");
-			Assert.True (i2 == i2, "i1 == i1");
-			Assert.True (i1 != i2, "i1 != i2");
-			Assert.True (i2 != i1, "i2 != i1");
+			Assert.That (i1 == i1, Is.True, "i1 == i1");
+			Assert.That (i2 == i2, Is.True, "i1 == i1");
+			Assert.That (i1 != i2, Is.True, "i1 != i2");
+			Assert.That (i2 != i1, Is.True, "i2 != i1");
 #pragma warning restore
 		}
 	}

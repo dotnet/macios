@@ -21,8 +21,7 @@
 
 using System.Reflection;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Introspection {
 
@@ -47,10 +46,6 @@ namespace Introspection {
 			}
 
 			switch (type.Namespace) {
-			case "SafetyKit":
-				if (TestRuntime.IsSimulator)
-					return !TestRuntime.CheckXcodeVersion (15, 0); // doesn't seem to be available in the iOS simulator until iOS 17+
-				break;
 			case "SensorKit": // SensorKit doesn't exist on iPads
 				if (TestRuntime.IsDevice && TestRuntime.IsiPad)
 					return true;
@@ -211,9 +206,6 @@ namespace Introspection {
 				break;
 #if !MONOMAC
 			case "MTLCaptureManager":
-			case "NEHotspotEapSettings": // Wireless Accessory Configuration is not supported in the simulator.
-			case "NEHotspotConfigurationManager":
-			case "NEHotspotHS20Settings":
 				if (TestRuntime.IsSimulatorOrDesktop)
 					return true;
 				break;
@@ -248,15 +240,6 @@ namespace Introspection {
 					return true;
 				case "textInteractionEnabled": // xcode 13 renamed this to `isTextInteractionEnabled` but does not respond to the old one
 					return true;
-				}
-				break;
-			case "CIFilterGenerator":
-				switch (selectorName) {
-				case "filterGenerator":
-				case "filterGeneratorWithContentsOfURL:":
-					if (TestRuntime.IsSimulatorOrDesktop)
-						return true;
-					break;
 				}
 				break;
 			}
@@ -1304,8 +1287,6 @@ namespace Introspection {
 				}
 				break;
 			}
-
-			// old binding mistake
 			return (selectorName == "initWithCoder:");
 		}
 
@@ -1342,7 +1323,7 @@ namespace Introspection {
 			return false;
 		}
 
-		static bool IsMethodImplemented (Type iface, Type type, MethodBase method, bool isExtensionMethod)
+		static bool IsMethodImplemented (Type iface, Type? type, MethodBase method, bool isExtensionMethod)
 		{
 			if (type is null)
 				return false;
@@ -1408,7 +1389,7 @@ namespace Introspection {
 					}
 				}
 			}
-			Assert.AreEqual (0, Errors, "{0} errors found in {1} protocol selectors validated", Errors, n);
+			Assert.That (Errors, Is.EqualTo (0), $"{Errors} errors found in {n} protocol selectors validated");
 		}
 
 		void ProcessProtocolMember (Type t, MethodBase m, ref int n)
@@ -1417,11 +1398,11 @@ namespace Introspection {
 				return;
 
 			foreach (object ca in m.GetCustomAttributes (true)) {
-				ExportAttribute export = (ca as ExportAttribute);
+				var export = (ca as ExportAttribute);
 				if (export is null)
 					continue;
 
-				string name = export.Selector;
+				string name = export.Selector!;
 				if (Skip (t, name))
 					continue;
 
@@ -1443,7 +1424,7 @@ namespace Introspection {
 				return false;
 			}
 
-			cls = (NativeHandle) fi.GetValue (null);
+			cls = (NativeHandle) fi.GetValue (null)!;
 			return true;
 		}
 
@@ -1475,7 +1456,7 @@ namespace Introspection {
 					Process (class_ptr, t, m, ref n);
 				}
 			}
-			Assert.AreEqual (0, Errors, "{0} errors found in {1} instance selector validated{2}", Errors, n, Errors == 0 ? string.Empty : ":\n" + ErrorData.ToString () + "\n");
+			Assert.That (Errors, Is.EqualTo (0), $"{Errors} errors found in {n} instance selector validated:\n{ErrorData}\n");
 		}
 
 		void Process (IntPtr class_ptr, Type t, MethodBase m, ref int n)
@@ -1484,11 +1465,11 @@ namespace Introspection {
 				return;
 
 			foreach (object ca in m.GetCustomAttributes (true)) {
-				ExportAttribute export = (ca as ExportAttribute);
+				var export = (ca as ExportAttribute);
 				if (export is null)
 					continue;
 
-				string name = export.Selector;
+				string name = export.Selector!;
 				if (Skip (t, name))
 					continue;
 
@@ -1532,7 +1513,7 @@ namespace Introspection {
 		}
 
 		// funny, this is how I envisioned the instance version... before hitting run :|
-		protected virtual bool CheckStaticResponse (bool value, Type actualType, Type declaredType, MethodBase method, ref string name)
+		protected virtual bool CheckStaticResponse (bool value, Type actualType, Type? declaredType, MethodBase method, ref string name)
 		{
 			if (value)
 				return true;
@@ -1568,8 +1549,8 @@ namespace Introspection {
 						continue;
 
 					foreach (object ca in m.GetCustomAttributes (true)) {
-						if (ca is ExportAttribute) {
-							string name = (ca as ExportAttribute).Selector;
+						if (ca is ExportAttribute ea) {
+							var name = ea.Selector!;
 
 							if (Skip (t, name))
 								continue;
@@ -1583,7 +1564,7 @@ namespace Introspection {
 					}
 				}
 			}
-			Assert.AreEqual (0, Errors, "{0} errors found in {1} static selector validated{2}", Errors, n, Errors == 0 ? string.Empty : ":\n" + ErrorData.ToString () + "\n");
+			Assert.That (Errors, Is.EqualTo (0), $"{Errors} errors found in {n} static selector validated:\n{ErrorData}\n");
 		}
 	}
 }

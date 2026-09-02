@@ -37,7 +37,7 @@ namespace ObjCRuntime {
 
 	/* This enum must always match the identical enum in runtime/xamarin/main.h */
 
-	/// <summary>This enum is used to specify what to do when an managed exception is thrown, and that exception reaches native code.</summary>
+	/// <summary>This enum is used to specify what to do when a managed exception is thrown, and that exception reaches native code.</summary>
 	/// <seealso href="https://learn.microsoft.com/dotnet/ios/platform/exception-marshaling">Exception marshaling</seealso>
 	public enum MarshalManagedExceptionMode {
 		/// <summary>The default mode. This is currently the same as <see cref="ThrowObjectiveCException" />.</summary>
@@ -52,7 +52,7 @@ namespace ObjCRuntime {
 		///   </para>
 		///   <para>
 		///       This option is not recommended, because it leads to undefined behavior (the app may crash, leak memory, deadlock, etc.)
-		///       if managed exceptions reaches native code (the MonoVM runtime does not know how to unwind native frames, so anything can
+		///       if managed exceptions reach native code (the MonoVM runtime does not know how to unwind native frames, so anything can
 		///       happen). The recommended option is <see cref="ThrowObjectiveCException" />.
 		///   </para>
 		/// </summary>
@@ -61,7 +61,7 @@ namespace ObjCRuntime {
 		/// <summary>Convert the managed exception to an Objective-C exception. This is the recommended option (and also the default behavior).</summary>
 		ThrowObjectiveCException = 2,
 
-		/// <summary>Abort when a managed exception reaches native code. This may be useful during debugging to easily detect when managed exceptions reaches native code.</summary>
+		/// <summary>Abort when a managed exception reaches native code. This may be useful during debugging to easily detect when managed exceptions reach native code.</summary>
 		Abort = 3,
 
 		/// <summary>Disable marshalling managed exceptions. This is effectively the same as <see cref="UnwindNativeCode" />, except that no events will be raised.</summary>

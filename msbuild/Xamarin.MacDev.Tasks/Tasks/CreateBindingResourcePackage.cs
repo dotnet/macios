@@ -36,13 +36,12 @@ namespace Xamarin.MacDev.Tasks {
 		public override bool Execute ()
 		{
 			if (ShouldExecuteRemotely ()) {
-				var success = ExecuteRemotely (out var taskRunner);
-
-				if (success) {
+				if (ExecuteRemotely (out var taskRunner)) {
 					TransferBindingResourcePackagesToWindowsAsync (taskRunner).Wait ();
+					return true;
 				}
 
-				return success;
+				return false;
 			}
 
 			if (NativeReferences.Length == 0) {
@@ -88,7 +87,7 @@ namespace Xamarin.MacDev.Tasks {
 				Log.LogMessage (MSBStrings.M0121, zipFile);
 				if (File.Exists (zipFile))
 					File.Delete (zipFile);
-				Directory.CreateDirectory (Path.GetDirectoryName (zipFile));
+				Directory.CreateDirectory (Path.GetDirectoryName (zipFile)!);
 
 				var filesToZip = NativeReferences
 									// Canonicalize directory separators to the current platform
@@ -100,7 +99,7 @@ namespace Xamarin.MacDev.Tasks {
 					var workingDirectory = Path.GetDirectoryName (nativeRef);
 					if (string.IsNullOrEmpty (workingDirectory))
 						workingDirectory = Directory.GetCurrentDirectory ();
-					CompressionHelper.TryCompress (Log, zipFile, new string [] { nativeRef }, false, workingDirectory, true);
+					CompressionHelper.TryCompress (this, zipFile, new string [] { nativeRef }, false, workingDirectory, true);
 				}
 				packagedFiles.Add (zipFile);
 			} else {
@@ -108,7 +107,7 @@ namespace Xamarin.MacDev.Tasks {
 				Log.LogMessage (MSBStrings.M0121, bindingResourcePath);
 				Directory.CreateDirectory (bindingResourcePath);
 				foreach (var nativeRef in NativeReferences) {
-					Xamarin.Bundler.FileCopier.UpdateDirectory (nativeRef.ItemSpec, bindingResourcePath, FileCopierReportErrorCallback, FileCopierLogCallback);
+					Xamarin.Bundler.FileCopier.UpdateDirectory (this, nativeRef.ItemSpec, bindingResourcePath);
 
 					var bindingOutputPath = Path.Combine (bindingResourcePath, Path.GetFileName (nativeRef.ItemSpec));
 					if (Directory.Exists (bindingOutputPath)) {

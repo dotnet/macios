@@ -44,7 +44,8 @@ namespace Xharness {
 		Generator = 1 << 11,
 		[Label ("interdependent-binding-projects")]
 		InterdependentBindingProjects = 1 << 12,
-		// 1 << 13 is unused
+		[Label ("assembly-processing")]
+		AssemblyProcessing = 1 << 13,
 		[Label ("introspection")]
 		Introspection = 1 << 14,
 		[Label ("linker")]
@@ -72,6 +73,8 @@ namespace Xharness {
 		PackagedMacOS = 1 << 28,
 		[Label ("windows")]
 		Windows = 1 << 29,
+		[Label ("sharpie")]
+		Sharpie = 1 << 30,
 		[Label ("all")]
 		All = Int64.MaxValue,
 	}

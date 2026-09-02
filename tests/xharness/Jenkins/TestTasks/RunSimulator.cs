@@ -15,8 +15,8 @@ namespace Xharness.Jenkins.TestTasks {
 
 		readonly ILog mainLog;
 		readonly ILog simulatorLoadLog;
-		readonly ISimulatorLoader simulators;
-		readonly IRunSimulatorTask testTask;
+		readonly SimulatorLoader simulators;
+		readonly RunSimulatorTask testTask;
 		readonly IErrorKnowledgeBase errorKnowledgeBase;
 
 		public IEnumerable<ISimulatorDevice> Simulators {
@@ -29,9 +29,9 @@ namespace Xharness.Jenkins.TestTasks {
 			}
 		}
 
-		public RunSimulator (IRunSimulatorTask testTask,
-							 ISimulatorLoader simulators,
-							 IErrorKnowledgeBase errorKnowledgeBase,
+		public RunSimulator (RunSimulatorTask testTask,
+							 SimulatorLoader simulators,
+							 ErrorKnowledgeBase errorKnowledgeBase,
 							 ILog mainLog,
 							 ILog simulatorLoadLog)
 		{
@@ -95,7 +95,7 @@ namespace Xharness.Jenkins.TestTasks {
 				new TestReporterFactory (testTask.ProcessManager),
 				testTask.AppRunnerTarget,
 				testTask.Harness,
-				mainLog: testTask.Logs.Create ($"run-{testTask.Device.UDID}-{Harness.Helpers.Timestamp}.log", "Run log"),
+				mainLog: testTask.Logs.Create ($"run-{testTask.Device!.UDID}-{Harness.Helpers.Timestamp}.log", "Run log"),
 				logs: testTask.Logs,
 				projectFilePath: testTask.ProjectFile,
 				ensureCleanSimulatorState: clean_state,
@@ -120,7 +120,7 @@ namespace Xharness.Jenkins.TestTasks {
 			using (var resource = await testTask.NotifyBlockingWaitAsync (testTask.AcquireResourceAsync ())) {
 				if (testTask.Runner is null)
 					await SelectSimulatorAsync ();
-				await testTask.Runner.RunAsync ();
+				await testTask.Runner!.RunAsync ();
 			}
 			testTask.ExecutionResult = testTask.Runner.Result;
 

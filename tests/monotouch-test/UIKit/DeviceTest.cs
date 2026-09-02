@@ -22,7 +22,7 @@ namespace MonoTouchFixtures.UIKit {
 		public void Battery ()
 		{
 			UIDevice device = UIDevice.CurrentDevice;
-			Assert.False (device.BatteryMonitoringEnabled, "false");
+			Assert.That (device.BatteryMonitoringEnabled, Is.False, "false");
 			Assert.That (device.BatteryState, Is.EqualTo (UIDeviceBatteryState.Unknown), "false/Unknown");
 			Assert.That (device.BatteryLevel, Is.EqualTo (-1), "false/-1");
 

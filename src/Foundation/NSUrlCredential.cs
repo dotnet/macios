@@ -2,26 +2,23 @@
 
 using System.Reflection;
 using System.Collections;
+using System.ComponentModel;
 
 using Security;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Foundation {
 
 	public partial class NSUrlCredential {
-		/// <param name="identity">Identity to use for the credential.</param>
-		///         <param name="certificates">Certificates.</param>
-		///         <param name="persistence">Specifies how long the credential should be kept.</param>
-		///         <summary>Creates an NSUrlCredential from an identity (digital certificate + private key) and a list of certificates. </summary>
-		///         <remarks>
-		///         </remarks>
+		/// <summary>Creates a new <see cref="NSUrlCredential" /> from an identity (digital certificate + private key) and a list of certificates.</summary>
+		/// <param name="identity">The identity to use for the credential.</param>
+		/// <param name="certificates">The certificates to use for the credential.</param>
+		/// <param name="persistence">Specifies how long the credential should be kept.</param>
 		public NSUrlCredential (SecIdentity identity, SecCertificate [] certificates, NSUrlCredentialPersistence persistence)
 			: base (NSObjectFlag.Empty)
 		{
-			if (identity is null)
-				throw new ArgumentNullException ("identity");
+			ArgumentNullException.ThrowIfNull (identity);
 
 			using (var certs = NSArray.FromNativeObjects (certificates)) {
 				InitializeHandle (_InitWithIdentity (identity.Handle, certs.Handle, persistence));
@@ -29,20 +26,15 @@ namespace Foundation {
 			}
 		}
 
-		/// <param name="identity">Identity to use for the credential.</param>
-		///         <param name="certificates">Certificates for the credential.</param>
-		///         <param name="persistence">Specifies how long the credential should be kept.</param>
-		///         <summary>Creates an NSUrlCredential from an identity (digital certificate + private key) and a list of certificates. </summary>
-		///         <returns>
-		///         </returns>
-		///         <remarks>
-		///         </remarks>
-		public static NSUrlCredential FromIdentityCertificatesPersistance (SecIdentity identity, SecCertificate [] certificates, NSUrlCredentialPersistence persistence)
+		/// <summary>Creates a new <see cref="NSUrlCredential" /> from an identity (digital certificate + private key) and a list of certificates.</summary>
+		/// <param name="identity">The identity to use for the credential.</param>
+		/// <param name="certificates">The certificates to use for the credential.</param>
+		/// <param name="persistence">Specifies how long the credential should be kept.</param>
+		/// <returns>A new <see cref="NSUrlCredential" /> instance.</returns>
+		public static NSUrlCredential Create (SecIdentity identity, SecCertificate [] certificates, NSUrlCredentialPersistence persistence)
 		{
-			if (identity is null)
-				throw new ArgumentNullException ("identity");
-			if (certificates is null)
-				throw new ArgumentNullException ("certificates");
+			ArgumentNullException.ThrowIfNull (identity);
+			ArgumentNullException.ThrowIfNull (certificates);
 
 			using (var certs = NSArray.FromNativeObjects (certificates)) {
 				NSUrlCredential result = FromIdentityCertificatesPersistanceInternal (identity.Handle, certs.Handle, persistence);
@@ -51,24 +43,27 @@ namespace Foundation {
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		public SecIdentity SecIdentity {
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'Create' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		public static NSUrlCredential FromIdentityCertificatesPersistance (SecIdentity identity, SecCertificate [] certificates, NSUrlCredentialPersistence persistence) => Create (identity, certificates, persistence);
+#endif
+
+		/// <summary>Gets the identity (digital certificate + private key) associated with this credential.</summary>
+		/// <value>A <see cref="SecIdentity" /> object representing the identity, or <see langword="null" /> if no identity is available.</value>
+		public SecIdentity? SecIdentity {
 			get {
 				IntPtr handle = Identity;
 				return (handle == IntPtr.Zero) ? null : new SecIdentity (handle, false);
 			}
 		}
 
-		/// <param name="trust">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Creates a new <see cref="NSUrlCredential" /> from a server trust.</summary>
+		/// <param name="trust">The server trust to use for the credential.</param>
+		/// <returns>A new <see cref="NSUrlCredential" /> instance.</returns>
 		public static NSUrlCredential FromTrust (SecTrust trust)
 		{
-			if (trust is null)
-				throw new ArgumentNullException ("trust");
+			ArgumentNullException.ThrowIfNull (trust);
 
 			NSUrlCredential result = FromTrust (trust.Handle);
 			GC.KeepAlive (trust);

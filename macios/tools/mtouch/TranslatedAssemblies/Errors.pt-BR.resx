@@ -643,6 +643,9 @@
   <data name="MX1503" xml:space="preserve">
 		<value>One or more reference(s) to type '{0}' still exists inside '{1}' after linking</value>
 	</data>
+  <data name="MX1504" xml:space="preserve">
+		<value>Cannot find the product assembly '{0}' in the list of loaded assemblies.</value>
+	</data>
   <data name="MX1600" xml:space="preserve">
 		<value>Not a Mach-O dynamic library (unknown header '0x{0}'): {1}.</value>
 	</data>
@@ -789,8 +792,11 @@
   <data name="MM2106_D" xml:space="preserve">
 		<value>Could not optimize the call to BlockLiteral.SetupBlock in {0} at offset {1}: {2}.</value>
 	</data>
-  <data name="MX2106_E" xml:space="preserve">
-		<value>Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because the more than one method named '{3}' was found in the type '{4}.</value>
+  <data name="MX2106_E1" xml:space="preserve">
+		<value>Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because no method named '{3}' was found in the type '{4}'.</value>
+	</data>
+  <data name="MX2106_E2" xml:space="preserve">
+		<value>Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because more than one method named '{3}' was found in the type '{4}'.</value>
 	</data>
   <data name="MX2106_F" xml:space="preserve">
 		<value>Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because the method '{3}' must have at least one parameter.</value>
@@ -829,6 +835,34 @@
   <!-- 222x: RemoveRejectedTypesStep -->
   <!-- 223x: CollectUnmarkedMembersSubStep -->
   <!-- 224x: PreserveBlockCodeSubStep -->
+  <!-- 225x: InlineDlfcnMethodsStep -->
+  <data name="MX2254" xml:space="preserve">
+		<value>Unsupported primitive field type '{0}' for symbol '{1}' in method '{2}'. Sub-optimal but functional code will be generated. Please file an issue at https://github.com/dotnet/macios/issues/new</value>
+	</data>
+  <data name="MX2255" xml:space="preserve">
+		<value>Unknown or unsupported Dlfcn pattern: '{0}' in method '{1}'. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new</value>
+	</data>
+  <data name="MX2256" xml:space="preserve">
+		<value>The field type '{0}' for symbol '{1}' in method '{2}' is not an NSObject subclass. Please file an issue at https://github.com/dotnet/macios/issues/new</value>
+	</data>
+  <data name="MX2257" xml:space="preserve">
+		<value>Unknown IL sequence for method with call to Dlfcn.CachePointer: '{0}' in method '{1}'. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new</value>
+	</data>
+  <data name="MX2258" xml:space="preserve">
+		<value>'{0}' is marked with a malformed simulator availability attribute: {1}. Please file an issue at https://github.com/dotnet/macios/issues/new</value>
+	</data>
+  <data name="MX2259" xml:space="preserve">
+		<value>'{0}' is marked with a simulator availability attribute with an invalid version: {1}. Please file an issue at https://github.com/dotnet/macios/issues/new</value>
+	</data>
+  <data name="MX2260" xml:space="preserve">
+		<value>'{0}' has conflicting simulator availability attributes for the '{1}' platform (both SupportedSimulator and UnsupportedSimulator). Please file an issue at https://github.com/dotnet/macios/issues/new</value>
+	</data>
+  <data name="MX2261" xml:space="preserve">
+		<value>'{0}' has multiple SupportedSimulator attributes for the '{1}' platform. Please file an issue at https://github.com/dotnet/macios/issues/new</value>
+	</data>
+  <data name="MX2262" xml:space="preserve">
+		<value>The 'InlineClassGetHandle' option is set to 'Strict', but we're using the dynamic registrar. This is not a supported configuration, because 'Strict' mode requires exported Objective-C classes to be available at compile time, but the dynamic registrar will create them at runtime. Please either change the 'InlineClassGetHandle' option to 'Disabled' or 'Compat', or switch to using the static registrar.</value>
+	</data>
   <!-- 2300 -> 2399 is used by/reserved for ConfigurationAwareStep subclasses in the linker -->
   <data name="MX_ConfigurationAwareStep" xml:space="preserve">
 		<value>The linker step '{0}' failed during processing: {1}</value>
@@ -1213,6 +1247,9 @@
   <data name="MT4190" xml:space="preserve">
 		<value>The class '{0}' will not be registered because the {1} framework has been deprecated from the {2} SDK.</value>
 	</data>
+  <data name="MX4191" xml:space="preserve">
+		<value>Could not find the trampoline for the category method {0}.</value>
+	</data>
   <data name="MT5101" xml:space="preserve">
 		<value>Missing '{0}' compiler. Please install Xcode 'Command-Line Tools' component</value>
 	</data>
@@ -1452,5 +1489,14 @@
   <data name="MX8059" xml:space="preserve">
 		<value>Unable to find a delegate to invoke for the block {0} (delegate type: {1}).</value>
 		<comment>{0} - The block address. {1} - The delegate type.</comment>
+	</data>
+  <data name="MX8060" xml:space="preserve">
+		<value>Invalid DelegateProxyAttribute for the return value for the method {0}.{1}: No 'Invoke' method found. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).</value>
+	</data>
+  <data name="MX8061" xml:space="preserve">
+		<value>Unable to find the managed function with id {0} ({1}, {2}). Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).</value>
+	</data>
+  <data name="MX8062" xml:space="preserve">
+		<value>Type '{0}' is expected to have a ProtocolProxyAttribute. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).</value>
 	</data>
 </root>

@@ -23,7 +23,8 @@ elif [[ "${LABELS_RUN_PACKAGED_MACOS_TESTS:-}" == "True" ]]; then
 elif [[ "${LABELS_SKIP_ALL_TESTS:-}" == "True" ]]; then
 	# All tests have been skipped
 	RUN_MAC_TESTS=false
-elif [[ "${CONFIGURE_PLATFORMS_INCLUDE_DOTNET_MACOS:-}" != "" ]]; then
+elif [[ "${CONFIGURE_PLATFORMS_INCLUDE_DOTNET_MACOS:-}" != "" ]] ||
+	[[ "${CONFIGURE_PLATFORMS_INCLUDE_DOTNET_MACCATALYST:-}" != "" ]]; then
 	# Run mac tests if a .NET desktop platform is enabled
 	RUN_MAC_TESTS=true
 else
@@ -41,6 +42,9 @@ elif [[ "${LABELS_RUN_WINDOWS_TESTS:-}" == "True" ]]; then
 	RUN_WINDOWS_TESTS=true
 elif [[ "${LABELS_SKIP_ALL_TESTS:-}" == "True" ]]; then
 	# All tests have been skipped
+	RUN_WINDOWS_TESTS=false
+elif [[ "${CONFIGURE_PLATFORMS_DOTNET_PLATFORMS:-}" == "" ]]; then
+	# No platforms enabled, don't run windows tests
 	RUN_WINDOWS_TESTS=false
 else
 	# Otherwise run windows tests (we want to run windows tests if any platform is enabled)

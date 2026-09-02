@@ -14,7 +14,7 @@ using OS_nw_endpoint = ObjCRuntime.NativeHandle;
 
 namespace AVRouting {
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[Native]
 	public enum AVCustomRoutingEventReason : long {
 		Activate = 0,
@@ -105,6 +105,9 @@ namespace AVKit {
 	[NoTV, NoMac, iOS (16, 0), MacCatalyst (16, 0)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
+#if !XAMCORE_5_0
+	[ObjectiveCFramework ("AVRouting")]
+#endif
 	interface AVCustomRoutingControllerDelegate {
 		[Abstract]
 		[Export ("customRoutingController:handleEvent:completionHandler:")]

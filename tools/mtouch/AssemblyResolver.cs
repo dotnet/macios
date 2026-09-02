@@ -19,15 +19,13 @@ using Mono.Tuner;
 
 using Xamarin.Bundler;
 
+#nullable enable
+
 namespace MonoTouch.Tuner {
-
-	public partial class MonoTouchManifestResolver : MonoTouchResolver {
-	}
-
 	// recent cecil removed some overloads - https://github.com/mono/cecil/commit/42db79cc16f1cbe8dbab558904e188352dba2b41
 	public static class AssemblyResolverRocks {
 
-		static ReaderParameters defaults = new ReaderParameters ();
+		static readonly ReaderParameters defaults = new ReaderParameters ();
 
 		public static AssemblyDefinition Resolve (this IAssemblyResolver self, string fullName)
 		{
@@ -39,6 +37,12 @@ namespace MonoTouch.Tuner {
 	}
 
 	public class MonoTouchResolver : CoreResolver {
+		Application app;
+
+		public MonoTouchResolver (Application app)
+		{
+			this.app = app;
+		}
 
 		public IEnumerable<AssemblyDefinition> GetAssemblies ()
 		{
@@ -50,38 +54,43 @@ namespace MonoTouch.Tuner {
 			cache [Path.GetFileNameWithoutExtension (assembly.MainModule.FileName)] = assembly;
 		}
 
-		public override AssemblyDefinition Resolve (AssemblyNameReference name, ReaderParameters parameters)
+#pragma warning disable CS8764 // Nullability of return type doesn't match overridden member (possibly because of nullability attributes).
+		public override AssemblyDefinition? Resolve (AssemblyNameReference name, ReaderParameters parameters)
+#pragma warning restore CS8764
 		{
 			var aname = name.Name;
 
-			AssemblyDefinition assembly;
-			if (cache.TryGetValue (aname, out assembly))
+			if (cache.TryGetValue (aname, out var assembly))
 				return assembly;
 
 			if (FrameworkDirectory is not null) {
 				var facadeDir = Path.Combine (FrameworkDirectory, "Facades");
-				assembly = SearchDirectory (aname, facadeDir);
+				assembly = SearchDirectory (app, aname, facadeDir);
 				if (assembly is not null)
 					return assembly;
 			}
 
 			if (ArchDirectory is not null) {
-				assembly = SearchDirectory (aname, ArchDirectory);
+				assembly = SearchDirectory (app, aname, ArchDirectory);
 				if (assembly is not null)
 					return assembly;
 			}
 
-			assembly = SearchDirectory (aname, FrameworkDirectory);
-			if (assembly is not null)
-				return assembly;
+			if (FrameworkDirectory is not null) {
+				assembly = SearchDirectory (app, aname, FrameworkDirectory);
+				if (assembly is not null)
+					return assembly;
+			}
 
-			assembly = SearchDirectory (aname, RootDirectory);
-			if (assembly is not null)
-				return assembly;
+			if (RootDirectory is not null) {
+				assembly = SearchDirectory (app, aname, RootDirectory);
+				if (assembly is not null)
+					return assembly;
 
-			assembly = SearchDirectory (aname, RootDirectory, ".exe");
-			if (assembly is not null)
-				return assembly;
+				assembly = SearchDirectory (app, aname, RootDirectory, ".exe");
+				if (assembly is not null)
+					return assembly;
+			}
 
 			return null;
 		}

@@ -4,7 +4,7 @@ include $(TOP)/Make.config
 unexport MSBUILD_EXE_PATH
 
 NAME=$(shell basename "$(CURDIR)")
-LOWERCASED_NAME:=$(shell echo $(NAME) | tr 'A-Z' 'a-z')
+LOWERCASED_NAME:=$(call lowercase,$(NAME))
 
 .libs:
 	$(Q) mkdir -p $@

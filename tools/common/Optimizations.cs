@@ -5,22 +5,24 @@ using System.Text;
 
 using Xamarin.Utils;
 
+#nullable enable
+
 namespace Xamarin.Bundler {
 	public class Optimizations {
-		static string [] opt_names =
+		static readonly string [] opt_names =
 		{
-			"remove-uithread-checks",
+			"remove-uithread-checks", // this optimization has been replaced by the 'CheckForIllegalCrossThreadCalls' MSBuild property (the 'ObjCRuntime.Runtime.CheckForIllegalCrossThreadCalls' feature switch), but leave it here so that we won't break customers trying to enable/disable it
 			"dead-code-elimination",
 			"inline-isdirectbinding",
-			"inline-intptr-size",
-			"inline-runtime-arch",
+			"inline-intptr-size", // this optimization has been removed, but leave it here so that we won't break customers trying to enable/disable it
+			"inline-runtime-arch", // this optimization has been removed (replaced by a trimmer feature switch), but leave it here so that we won't break customers trying to enable/disable it
 			"blockliteral-setupblock",
 			"register-protocols",
 			"inline-dynamic-registration-supported",
 			"static-block-to-delegate-lookup",
 			"remove-dynamic-registrar",
 			"trim-architectures",
-			"inline-is-arm64-calling-convention",
+			"inline-is-arm64-calling-convention", // this optimization has been replaced by the 'ObjCRuntime.Runtime.IsARM64CallingConvention' feature switch, but leave it here so that we won't break customers trying to enable/disable it
 			"seal-and-devirtualize",
 			"cctor-beforefieldinit",
 			"custom-attributes-removal",
@@ -29,19 +31,19 @@ namespace Xamarin.Bundler {
 			"redirect-class-handles",
 		};
 
-		static ApplePlatform [] [] valid_platforms = new ApplePlatform [] [] {
-			/* Opt.RemoveUIThreadChecks               */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
+		static readonly ApplePlatform [] [] valid_platforms = new ApplePlatform [] [] {
+			/* Opt.RemoveUIThreadChecks               */ new ApplePlatform [] {                                                                                        },
 			/* Opt.DeadCodeElimination                */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 			/* Opt.InlineIsDirectBinding              */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
-			/* Opt.InlineIntPtrSize                   */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
-			/* Opt.InlineRuntimeArch                  */ new ApplePlatform [] { ApplePlatform.iOS,                       ApplePlatform.TVOS                            },
+			/* Opt.InlineIntPtrSize                   */ new ApplePlatform [] {                                                                                        },
+			/* Opt.InlineRuntimeArch                  */ new ApplePlatform [] {                                                                                        },
 			/* Opt.BlockLiteralSetupBlock             */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 			/* Opt.RegisterProtocols                  */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 			/* Opt.InlineDynamicRegistrationSupported */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 			/* Opt.StaticBlockToDelegateLookup        */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 			/* Opt.RemoveDynamicRegistrar             */ new ApplePlatform [] { ApplePlatform.iOS,                       ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 			/* Opt.TrimArchitectures                  */ new ApplePlatform [] {                    ApplePlatform.MacOSX,                                               },
-			/* Opt.InlineIsARM64CallingConvention     */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
+			/* Opt.InlineIsARM64CallingConvention     */ new ApplePlatform [] {                                                                                        },
 			/* Opt.SealAndDevirtualize                */ new ApplePlatform [] { ApplePlatform.iOS,                       ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 			/* Opt.StaticConstructorBeforeFieldInit   */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 			/* Opt.CustomAttributesRemoval            */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
@@ -165,11 +167,12 @@ namespace Xamarin.Bundler {
 			messages = new List<ProductException> ();
 			// warn if the user asked to optimize something when the optimization can't be applied
 			for (int i = 0; i < values.Length; i++) {
-				if (!values [i].HasValue)
+				var value = values [i];
+				if (value is null)
 					continue;
 
 				// The remove-dynamic-registrar optimization is required when using NativeAOT
-				if (app.XamarinRuntime == XamarinRuntime.NativeAOT && (Opt) i == Opt.RemoveDynamicRegistrar && values [i] == false) {
+				if (app.XamarinRuntime == XamarinRuntime.NativeAOT && (Opt) i == Opt.RemoveDynamicRegistrar && value == false) {
 					messages.Add (ErrorHelper.CreateWarning (2016, Errors.MX2016 /* Keeping the dynamic registrar (by passing '--optimize=-remove-dynamic-registrar') is not possible, because the dynamic registrar is not supported when using NativeAOT. Support for dynamic registration will still be removed. */));
 					values [i] = true;
 					continue;
@@ -193,8 +196,8 @@ namespace Xamarin.Bundler {
 
 				switch ((Opt) i) {
 				case Opt.StaticBlockToDelegateLookup:
-					if (app.Registrar != RegistrarMode.Static && app.Registrar != RegistrarMode.ManagedStatic) {
-						messages.Add (ErrorHelper.CreateWarning (2003, Errors.MT2003, (values [i].Value ? "" : "-"), opt_names [i]));
+					if (!app.IsAnyStaticRegistrar) {
+						messages.Add (ErrorHelper.CreateWarning (2003, Errors.MT2003, (value.Value ? "" : "-"), opt_names [i]));
 						values [i] = false;
 						continue;
 					}
@@ -204,25 +207,20 @@ namespace Xamarin.Bundler {
 				case Opt.RegisterProtocols:
 				case Opt.RemoveDynamicRegistrar:
 				case Opt.RedirectClassHandles:
-					if (app.Registrar != RegistrarMode.Static && app.Registrar != RegistrarMode.ManagedStatic) {
-						messages.Add (ErrorHelper.CreateWarning (2003, Errors.MT2003, (values [i].Value ? "" : "-"), opt_names [i]));
+					if (!app.IsAnyStaticRegistrar) {
+						messages.Add (ErrorHelper.CreateWarning (2003, Errors.MT2003, (value.Value ? "" : "-"), opt_names [i]));
 						values [i] = false;
 						continue;
 					}
 					goto default; // also requires the linker
 				default:
 					if (!app.AreAnyAssembliesTrimmed) {
-						messages.Add (ErrorHelper.CreateWarning (2003, Errors.MT2003_B, (values [i].Value ? "" : "-"), opt_names [i]));
+						messages.Add (ErrorHelper.CreateWarning (2003, Errors.MT2003_B, (value.Value ? "" : "-"), opt_names [i]));
 						values [i] = false;
 					}
 					break;
 				}
 			}
-
-			// by default we keep the code to ensure we're executing on the UI thread (for UI code) for debug builds
-			// but this can be overridden to either (a) remove it from debug builds or (b) keep it in release builds
-			if (!RemoveUIThreadChecks.HasValue)
-				RemoveUIThreadChecks = !app.EnableDebug;
 
 			// By default we always eliminate dead code.
 			if (!DeadCodeElimination.HasValue)
@@ -243,25 +241,22 @@ namespace Xamarin.Bundler {
 			// The default behavior for InlineIntPtrSize depends on the assembly being linked,
 			// which means we can't set it to a global constant. It's handled in the OptimizeGeneratedCodeSubStep directly.
 
-			if (app.Platform != ApplePlatform.MacOSX) {
-				// By default we always inline calls to Runtime.Arch
-				if (!InlineRuntimeArch.HasValue)
-					InlineRuntimeArch = true;
-			}
+			// The inline-runtime-arch optimization has been removed (the value is now folded by
+			// the trimmer using the ObjCRuntime.Runtime.Arch.IsSimulator feature switch).
 
 			// We try to optimize calls to BlockLiteral.SetupBlock and certain BlockLiteral constructors if the static registrar is enabled
 			if (!OptimizeBlockLiteralSetupBlock.HasValue) {
-				OptimizeBlockLiteralSetupBlock = app.Registrar == RegistrarMode.Static || app.Registrar == RegistrarMode.ManagedStatic;
+				OptimizeBlockLiteralSetupBlock = app.IsAnyStaticRegistrar;
 			}
 
 			// We will register protocols if the static registrar is enabled
 			if (!RegisterProtocols.HasValue) {
 				if (app.Platform != ApplePlatform.MacOSX || app.XamarinRuntime == XamarinRuntime.NativeAOT) {
-					RegisterProtocols = (app.Registrar == RegistrarMode.Static || app.Registrar == RegistrarMode.ManagedStatic);
+					RegisterProtocols = app.IsAnyStaticRegistrar;
 				} else {
 					RegisterProtocols = false;
 				}
-			} else if (app.Registrar != RegistrarMode.Static && app.Registrar != RegistrarMode.ManagedStatic && RegisterProtocols == true) {
+			} else if (!app.IsAnyStaticRegistrar && RegisterProtocols == true) {
 				RegisterProtocols = false; // we've already shown a warning for this.
 			}
 
@@ -282,21 +277,16 @@ namespace Xamarin.Bundler {
 				} else if (StaticBlockToDelegateLookup != true) {
 					// Can't remove the dynamic registrar unless also generating static lookup of block-to-delegates in the static registrar.
 					RemoveDynamicRegistrar = false;
-				} else if ((app.Registrar != RegistrarMode.Static && app.Registrar != RegistrarMode.ManagedStatic) || !app.AreAnyAssembliesTrimmed) {
+				} else if (!app.IsAnyStaticRegistrar || !app.AreAnyAssembliesTrimmed) {
 					// Both the linker and the static registrar are also required
 					RemoveDynamicRegistrar = false;
 				} else {
-					if (app.Platform != ApplePlatform.MacOSX) {
-						// we can't predict is unknown (at build time) code will require registration (at runtime)
-						if (app.UseInterpreter) {
-							RemoveDynamicRegistrar = false;
-						}
-						// We don't have enough information yet to determine if we can remove the dynamic
-						// registrar or not, so let the value stay unset until we do know (when running the linker).
-					} else {
-						// By default disabled for XM apps
+					// we can't predict is unknown (at build time) code will require registration (at runtime)
+					if (app.UseInterpreter) {
 						RemoveDynamicRegistrar = false;
 					}
+					// We don't have enough information yet to determine if we can remove the dynamic
+					// registrar or not, so let the value stay unset until we do know (when running the linker).
 				}
 			}
 
@@ -313,9 +303,8 @@ namespace Xamarin.Bundler {
 				}
 			}
 
-			// By default Runtime.IsARM64CallingConvention inlining is always enabled.
-			if (!InlineIsARM64CallingConvention.HasValue)
-				InlineIsARM64CallingConvention = true;
+			// The InlineIsARM64CallingConvention optimization has been replaced by the
+			// 'ObjCRuntime.Runtime.IsARM64CallingConvention' trimmer feature switch.
 
 			// by default we try to eliminate any .cctor we can
 			if (!StaticConstructorBeforeFieldInit.HasValue)
@@ -385,11 +374,12 @@ namespace Xamarin.Bundler {
 		{
 			var sb = new StringBuilder ();
 			for (var i = 0; i < values.Length; i++) {
-				if (values [i] is null)
+				var value = values [i];
+				if (value is null)
 					continue;
 				if (sb.Length > 0)
 					sb.Append (' ');
-				sb.Append (values [i].Value ? "+" : "-");
+				sb.Append (value.Value ? "+" : "-");
 				sb.Append (opt_names [i]);
 			}
 			if (sb.Length == 0)

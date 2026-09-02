@@ -59,6 +59,14 @@ static char *profiler_description = NULL;
 // old variables
 static char *debug_host = NULL;
 
+// port forwarding variables
+struct PortReplacementEnvVar {
+	char *name;
+	char *value; // may contain %FORWARD_PORT% which will be replaced with the actual port
+};
+static PortReplacementEnvVar *port_replacement_env_vars = NULL;
+static int port_replacement_env_var_count = 0;
+
 enum DebuggingMode
 {
 	DebuggingModeNone,
@@ -71,10 +79,12 @@ static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 static pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
 static bool debugging_configured = false;
 static bool profiler_configured = false;
+static bool port_forwarding_configured = false;
 static bool config_timedout = false;
 static bool connection_failed = false;
 static DebuggingMode debugging_mode = DebuggingModeWifi;
 static const char *connection_mode = "default"; // this is set from the cmd line, can be either 'usb', 'wifi', 'http' or 'none'
+static int connection_timeout = 2; // seconds to wait for the debugging/hot-reload connection; tunable via __XAMARIN_DEBUG_CONNECTION_TIMEOUT__
 
 extern "C" {
 void monotouch_connect_usb ();
@@ -156,6 +166,36 @@ monotouch_start_debugging ()
 		}
 #endif // !defined (CORECLR_RUNTIME)
 	}
+}
+
+// When 'dotnet watch' launches an app on a device, mlaunch sets up port forwarding by
+// connecting to the app and sending a 'forward port:' command, which (among other things)
+// changes environment variables such as the hot reload websocket endpoint. This happens on
+// a separate thread (monotouch_configure_debugging), so we must wait for it to complete
+// before CoreCLR reads or caches the environment - otherwise the startup hooks (in
+// particular the hot reload delta applier) would read the original values. mlaunch only does
+// this for 'dotnet watch' launches, so only wait when DOTNET_WATCH is set (to avoid delaying
+// any other launch), and time out so we don't hang if mlaunch never connects.
+void
+monotouch_wait_for_port_forwarding ()
+{
+	if (getenv ("DOTNET_WATCH") == NULL)
+		return;
+
+	struct timeval now;
+	struct timespec timeout;
+	gettimeofday (&now, NULL);
+	timeout.tv_sec = now.tv_sec + 5; // wait at most 5 seconds
+	timeout.tv_nsec = now.tv_usec * 1000;
+
+	pthread_mutex_lock (&mutex);
+	while (!port_forwarding_configured) {
+		if (pthread_cond_timedwait (&cond, &mutex, &timeout) == ETIMEDOUT) {
+			LOG (PRODUCT ": Timed out waiting for port forwarding to be configured.\n");
+			break;
+		}
+	}
+	pthread_mutex_unlock (&mutex);
 }
 
 void
@@ -243,6 +283,48 @@ xamarin_track_finished_launching ()
 			}];
 }
 
+// These hold the values of the environment variables captured in
+// xamarin_capture_debugging_settings, so that monotouch_configure_debugging can read
+// them without having to access the environment from a separate thread.
+static char *captured_debug_mode = NULL;
+static char *captured_debug_port = NULL;
+static char *captured_debug_hosts = NULL;
+static char *captured_debug_connect_timeout = NULL;
+
+void xamarin_capture_debugging_settings ()
+{
+	// Read (and unset) the environment variables monotouch_configure_debugging needs here,
+	// on the main thread, before the debugging thread has been started. This avoids a race
+	// condition: monotouch_configure_debugging runs on the debugging thread, so if it both read
+	// and unset these environment variables there, it could race with code reading the
+	// environment on the main thread (such as managed code in the app's Main method).
+	char *evar;
+
+	evar = getenv ("__XAMARIN_DEBUG_MODE__");
+	if (evar != NULL) {
+		captured_debug_mode = strdup (evar);
+		unsetenv ("__XAMARIN_DEBUG_MODE__");
+	}
+
+	evar = getenv ("__XAMARIN_DEBUG_PORT__");
+	if (evar != NULL) {
+		captured_debug_port = strdup (evar);
+		unsetenv ("__XAMARIN_DEBUG_PORT__");
+	}
+
+	evar = getenv ("__XAMARIN_DEBUG_HOSTS__");
+	if (evar != NULL) {
+		captured_debug_hosts = strdup (evar);
+		unsetenv ("__XAMARIN_DEBUG_HOSTS__");
+	}
+
+	evar = getenv ("__XAMARIN_DEBUG_CONNECT_TIMEOUT__");
+	if (evar != NULL) {
+		captured_debug_connect_timeout = strdup (evar);
+		unsetenv ("__XAMARIN_DEBUG_CONNECT_TIMEOUT__");
+	}
+}
+
 void monotouch_configure_debugging ()
 {
 	xamarin_track_finished_launching ();
@@ -259,16 +341,26 @@ void monotouch_configure_debugging ()
 	NSString *monodevelop_host;
 
 	if (!strcmp (connection_mode, "default")) {
-		char *evar = getenv ("__XAMARIN_DEBUG_MODE__");
-		if (evar && *evar) {
-			connection_mode = evar;
+		if (captured_debug_mode && *captured_debug_mode) {
+			// Transfer ownership of the captured string to connection_mode, which lives
+			// for the rest of the process' lifetime.
+			connection_mode = captured_debug_mode;
+			captured_debug_mode = NULL;
 			LOG (PRODUCT ": Found debug mode %s in environment variables\n", connection_mode);
-			unsetenv ("__XAMARIN_DEBUG_MODE__");
 		}
 	}
-	
+	// Free the captured debug mode if it wasn't consumed above.
+	free (captured_debug_mode);
+	captured_debug_mode = NULL;
+
 	if (!strcmp (connection_mode, "none")) {
-		// nothing to do
+		// nothing to do, but free the captured values first to avoid leaking them.
+		free (captured_debug_port);
+		captured_debug_port = NULL;
+		free (captured_debug_hosts);
+		captured_debug_hosts = NULL;
+		free (captured_debug_connect_timeout);
+		captured_debug_connect_timeout = NULL;
 		return;
 	}
  
@@ -297,18 +389,17 @@ void monotouch_configure_debugging ()
 		LOG (PRODUCT ": Added host from settings to look for the IDE: %s\n", [monodevelop_host UTF8String]);
 	}
 
-	char *evar = getenv ("__XAMARIN_DEBUG_PORT__");
-	if (evar && *evar) {
+	if (captured_debug_port && *captured_debug_port) {
 		if (monodevelop_port == -1) {
-			monodevelop_port = strtol (evar, NULL, 10);
-			LOG (PRODUCT ": Found port %i in environment variables\n", monodevelop_port);
+			monodevelop_port = strtol (captured_debug_port, NULL, 10);
+			LOG (PRODUCT ": Found port %i in environment variables\n", (int) monodevelop_port);
 		}
-		unsetenv ("__XAMARIN_DEBUG_PORT__");
 	}
+	free (captured_debug_port);
+	captured_debug_port = NULL;
 
-	evar = getenv ("__XAMARIN_DEBUG_HOSTS__");
-	if (evar && *evar) {
-		NSArray *ips = [[NSString stringWithUTF8String:evar] componentsSeparatedByString:@";"];
+	if (captured_debug_hosts && *captured_debug_hosts) {
+		NSArray *ips = [[NSString stringWithUTF8String:captured_debug_hosts] componentsSeparatedByString:@";"];
 		for (unsigned int i = 0; i < [ips count]; i++) {
 			NSString *ip = [ips objectAtIndex:i];
 			if (![hosts containsObject:ip]) {
@@ -316,16 +407,27 @@ void monotouch_configure_debugging ()
 				LOG (PRODUCT ": Found host %s in environment variables\n", [ip UTF8String]);
 			}
 		}
-		unsetenv ("__XAMARIN_DEBUG_HOSTS__");
 	}
+	free (captured_debug_hosts);
+	captured_debug_hosts = NULL;
 
-	evar = getenv ("__XAMARIN_DEBUG_CONNECT_TIMEOUT__");
-	if (evar && *evar) {
+	if (captured_debug_connect_timeout && *captured_debug_connect_timeout) {
 		if (sdb_timeout_time == -1) {
-			sdb_timeout_time = strtol (evar, NULL, 10);
-			LOG (PRODUCT ": Found connect timeout %i in environment variables\n", sdb_timeout_time);
+			sdb_timeout_time = strtol (captured_debug_connect_timeout, NULL, 10);
+			LOG (PRODUCT ": Found connect timeout %i in environment variables\n", (int) sdb_timeout_time);
 		}
-		unsetenv ("__XAMARIN_DEBUG_CONNECT_TIMEOUT__");
+	}
+	free (captured_debug_connect_timeout);
+	captured_debug_connect_timeout = NULL;
+
+	const char *evar = getenv ("__XAMARIN_DEBUG_CONNECTION_TIMEOUT__");
+	if (evar && *evar) {
+		int timeout = (int) strtol (evar, NULL, 10);
+		if (timeout > 0) {
+			connection_timeout = timeout;
+			LOG (PRODUCT ": Found connection timeout %i in environment variables\n", connection_timeout);
+		}
+		unsetenv ("__XAMARIN_DEBUG_CONNECTION_TIMEOUT__");
 	}
 
 #if MONOTOUCH && defined (__x86_64__)
@@ -346,7 +448,7 @@ void monotouch_configure_debugging ()
 			if (ptr == NULL || ptr == (void *) -1) {
 				LOG (PRODUCT ": Could not map shared memory: %s\n", strerror (errno));
 			} else {
-				LOG (PRODUCT ": Read %i bytes from shared memory: %p with key %i and id %i\n", shmsize, ptr, shmkey, shmid);
+				LOG (PRODUCT ": Read %i bytes from shared memory: %p with key %i and id %i\n", (int) shmsize, ptr, shmkey, shmid);
 				// Make a local copy of the shared memory, so that it doesn't change while we're parsing it.
 				char *data = strndup ((const char *) ptr, shmsize); // strndup will null-terminate
 				char *line = data;
@@ -366,9 +468,9 @@ void monotouch_configure_debugging ()
 						long shm_monodevelop_port = strtol (line + 23, NULL, 10);
 						if (monodevelop_port == -1) {
 							monodevelop_port = shm_monodevelop_port;
-							LOG (PRODUCT ": Found port %i in shared memory\n", monodevelop_port);
+							LOG (PRODUCT ": Found port %i in shared memory\n", (int) monodevelop_port);
 						} else  {
-							LOG (PRODUCT ": Found port %i in shared memory, but not overriding existing port %i\n", shm_monodevelop_port, monodevelop_port);
+							LOG (PRODUCT ": Found port %i in shared memory, but not overriding existing port %i\n", (int) shm_monodevelop_port, (int) monodevelop_port);
 						}
 					} else {
 						LOG (PRODUCT ": Unknown data found in shared memory: %s\n", line);
@@ -438,9 +540,9 @@ void monotouch_configure_debugging ()
 		}
 
 		if (monodevelop_port <= 0) {
-			LOG (PRODUCT ": Invalid IDE Port: %i\n", monodevelop_port);
+			LOG (PRODUCT ": Invalid IDE Port: %i\n", (int) monodevelop_port);
 		} else {
-			LOG (PRODUCT ": IDE Port: %i Transport: %s Connect Timeout: %i\n", monodevelop_port, debugging_mode == DebuggingModeHttp ? "HTTP" : (debugging_mode == DebuggingModeUsb ? "USB" : "WiFi"), sdb_timeout_time);
+			LOG (PRODUCT ": IDE Port: %i Transport: %s Connect Timeout: %i\n", (int) monodevelop_port, debugging_mode == DebuggingModeHttp ? "HTTP" : (debugging_mode == DebuggingModeUsb ? "USB" : "WiFi"), (int) sdb_timeout_time);
 			if (debugging_mode == DebuggingModeUsb) {
 				monotouch_connect_usb ();
 			} else if (debugging_mode == DebuggingModeWifi) {
@@ -607,7 +709,7 @@ monotouch_connect_wifi (NSMutableArray *ips)
 			}
 			
 			if (rv < 0 && errno != EINPROGRESS) {
-				PRINT (PRODUCT ": Failed to connect to %s on port %d: %s", ip, listen_port, strerror (errno));
+				PRINT (PRODUCT ": Failed to connect to %s on port %d: %s", ip, (int) listen_port, strerror (errno));
 				close (sockets[i]);
 				sockets[i] = -1;
 				continue;
@@ -625,7 +727,7 @@ monotouch_connect_wifi (NSMutableArray *ips)
 			int max_fd = -1;
 			int error;
 			
-			tv.tv_sec = 2;
+			tv.tv_sec = connection_timeout;
 			tv.tv_usec = 0;
 			
 			FD_ZERO (&rset);
@@ -685,7 +787,7 @@ monotouch_connect_wifi (NSMutableArray *ips)
 				}
 				
 				if (error != 0) {
-					PRINT (PRODUCT ": Socket error while connecting to IDE on %s:%d: %s", [[ips objectAtIndex:i] UTF8String], listen_port, strerror (error));
+					PRINT (PRODUCT ": Socket error while connecting to IDE on %s:%d: %s", [[ips objectAtIndex:i] UTF8String], (int) listen_port, strerror (error));
 					close (sockets[i]);
 					sockets[i] = -1;
 					waiting--;
@@ -779,17 +881,17 @@ monotouch_connect_usb ()
 		FD_SET (listen_socket, &rset);
 
 		do {
-			// Calculate how long we can wait if we can only work for 2s since we started
+			// Calculate how long we can wait if we can only work for connection_timeout seconds since we started
 			gettimeofday (&now, NULL);
 			if (start.tv_sec == 0) {
 				start.tv_sec = now.tv_sec;
 				start.tv_usec = now.tv_usec;
-				tv.tv_sec = 2;
+				tv.tv_sec = connection_timeout;
 				tv.tv_usec = 0;
-			} else if ((start.tv_sec + 2 == now.tv_sec && start.tv_usec < now.tv_usec) || start.tv_sec + 2 < now.tv_sec) {
+			} else if ((start.tv_sec + connection_timeout == now.tv_sec && start.tv_usec < now.tv_usec) || start.tv_sec + connection_timeout < now.tv_sec) {
 				// timeout
 			} else {
-				tv.tv_sec = start.tv_sec + 2 - now.tv_sec;
+				tv.tv_sec = start.tv_sec + connection_timeout - now.tv_sec;
 				if (start.tv_usec > now.tv_usec) {
 					tv.tv_usec = start.tv_usec - now.tv_usec;
 				} else {
@@ -802,7 +904,7 @@ monotouch_connect_usb ()
 
 			if ((rv = select (listen_socket + 1, &rset, NULL, NULL, &tv)) == 0) {
 				// timeout hit, no connections available.
-				LOG (PRODUCT ": Listened for connections from the IDE for 2 seconds, nobody connected.\n");
+				LOG (PRODUCT ": Listened for connections from the IDE for %i seconds, nobody connected.\n", connection_timeout);
 				goto cleanup;
 			}
 		} while (rv == -1 && errno == EINTR);
@@ -825,7 +927,7 @@ monotouch_connect_usb ()
 			// not a fatal failure
 		}
 
-		LOG (PRODUCT ": Successfully received USB connection from the IDE on port %i, fd: %i\n", listen_port, fd);
+		LOG (PRODUCT ": Successfully received USB connection from the IDE on port %i, fd: %i\n", (int) listen_port, fd);
 	} while (monotouch_process_connection (fd));
 
 	LOG (PRODUCT ": Successfully talked to the IDE. Will continue startup now.\n");
@@ -884,7 +986,7 @@ monotouch_load_debugger ()
 
 		char *options;
 		if (sdb_timeout_time != -1) {
-			options = xamarin_strdup_printf ("transport=custom_transport,address=dummy,embedding=1,timeout=%d", sdb_timeout_time);
+			options = xamarin_strdup_printf ("transport=custom_transport,address=dummy,embedding=1,timeout=%d", (int) sdb_timeout_time);
 		} else {
 			options = xamarin_strdup_printf ("transport=custom_transport,address=dummy,embedding=1");
 		}
@@ -918,6 +1020,107 @@ monotouch_load_profiler ()
 	} else {
 		LOG (PRODUCT ": Profiler not loaded (disabled)\n");
 	}
+}
+
+struct PortForwardData {
+	int listen_fd; // the local listening socket
+	int dst_fd; // the connection to forward the data to (which relays it onwards)
+};
+
+static void *
+port_forward_thread (void *arg)
+{
+	PortForwardData *data = (PortForwardData *) arg;
+	int listen_fd = data->listen_fd;
+	int dst_fd = data->dst_fd;
+	free (data);
+
+	LOG (PRODUCT ": Port forwarding thread started (listen_fd=%d, dst_fd=%d)\n", listen_fd, dst_fd);
+
+	// Keep accepting incoming connections until the destination (dst_fd) disconnects: once it's
+	// gone we can never forward again, so there's no point in accepting more source connections.
+	bool keep_listening = true;
+	while (keep_listening) {
+		// Accept an incoming connection
+		struct sockaddr_in src_addr;
+		socklen_t src_len = sizeof (src_addr);
+		int src_fd = accept (listen_fd, (struct sockaddr *) &src_addr, &src_len);
+		if (src_fd == -1) {
+			LOG (PRODUCT ": Port forwarding: failed to accept connection: %s\n", strerror (errno));
+			break;
+		}
+
+		LOG (PRODUCT ": Port forwarding: accepted connection (src_fd=%d)\n", src_fd);
+
+		int flags = 1;
+		setsockopt (src_fd, IPPROTO_TCP, TCP_NODELAY, (char *) &flags, sizeof (flags));
+
+		// Forward data bidirectionally between the incoming connection and the destination.
+		// Use select to multiplex between the two sockets.
+		while (true) {
+			fd_set rset;
+			int rv;
+			// select/recv/send can be interrupted by a signal (EINTR); retry instead of
+			// tearing down the connection. Rebuild the fd_set on each select attempt, since
+			// select modifies it (and leaves it unspecified on EINTR).
+			do {
+				FD_ZERO (&rset);
+				FD_SET (src_fd, &rset);
+				FD_SET (dst_fd, &rset);
+				int maxfd = (src_fd > dst_fd ? src_fd : dst_fd) + 1;
+				rv = select (maxfd, &rset, NULL, NULL, NULL);
+			} while (rv == -1 && errno == EINTR);
+			if (rv < 0) {
+				LOG (PRODUCT ": Port forwarding: select failed: %s\n", strerror (errno));
+				keep_listening = false;
+				break;
+			}
+
+			char buf [4096];
+			if (FD_ISSET (src_fd, &rset)) {
+				ssize_t n;
+				do {
+					n = recv (src_fd, buf, sizeof (buf), 0);
+				} while (n == -1 && errno == EINTR);
+				if (n <= 0) {
+					// The source disconnected; keep the listener open for the next connection.
+					LOG (PRODUCT ": Port forwarding: source disconnected (n=%zd, errno=%s)\n", n, strerror (errno));
+					break;
+				}
+				if (!send_uninterrupted (dst_fd, buf, (size_t) n)) {
+					// The destination is gone; stop the thread.
+					LOG (PRODUCT ": Port forwarding: failed to send to the destination: %s\n", strerror (errno));
+					keep_listening = false;
+					break;
+				}
+			}
+			if (FD_ISSET (dst_fd, &rset)) {
+				ssize_t n;
+				do {
+					n = recv (dst_fd, buf, sizeof (buf), 0);
+				} while (n == -1 && errno == EINTR);
+				if (n <= 0) {
+					// The destination disconnected; stop the thread.
+					LOG (PRODUCT ": Port forwarding: destination disconnected (n=%zd, errno=%s)\n", n, strerror (errno));
+					keep_listening = false;
+					break;
+				}
+				if (!send_uninterrupted (src_fd, buf, (size_t) n)) {
+					// The source is gone; keep the listener open for the next connection.
+					LOG (PRODUCT ": Port forwarding: failed to send to the source: %s\n", strerror (errno));
+					break;
+				}
+			}
+		}
+
+		close (src_fd);
+		if (keep_listening)
+			LOG (PRODUCT ": Port forwarding: connection closed, waiting for next connection.\n");
+	}
+
+	close (listen_fd);
+	close (dst_fd);
+	return NULL;
 }
 
 // returns true if it's necessary to create more
@@ -998,7 +1201,6 @@ monotouch_process_connection (int fd)
 				use_fd = true;
 				profiler_description = xamarin_strdup_printf ("%s,output=#%i", prof, fd);
 #endif
-				xamarin_set_gc_pump_enabled (false);
 			} else {
 				LOG (PRODUCT ": Unknown profiler, expect unexpected behavior (%s)\n", prof);
 				profiler_description = strdup (prof);
@@ -1011,7 +1213,7 @@ monotouch_process_connection (int fd)
 				return true;
 		} else if (!strncmp (command, "set heapshot port: ", 19)) {
 			heapshot_port = strtol (command + 19, NULL, 0);
-			LOG (PRODUCT ": HeapShot port is now: %i\n", heapshot_port);
+			LOG (PRODUCT ": HeapShot port is now: %i\n", (int) heapshot_port);
 		} else if (!strcmp (command, "heapshot")) {
 			if (heapshot_fd == -1) {
 				struct sockaddr_in heapshot_addr;
@@ -1035,6 +1237,107 @@ monotouch_process_connection (int fd)
 			if (heapshot_fd != -1) {
 				if (!send_uninterrupted (heapshot_fd, "heapshot\n", 9))
 					LOG (PRODUCT ": Failed to request heapshot: %s\n", strerror (errno));
+			}
+		} else if (!strncmp (command, "set environment variable with port replacement: ", 48)) {
+			// Store an environment variable that will be set when the 'forward port' command is processed.
+			// The value may contain %FORWARD_PORT% which will be replaced with the actual listening port.
+			const char *name_value = command + 48;
+			const char *eq = strchr (name_value, '=');
+			if (eq == NULL) {
+				LOG (PRODUCT ": Invalid environment variable format (expected NAME=VALUE): '%s'\n", name_value);
+			} else {
+				port_replacement_env_var_count++;
+				port_replacement_env_vars = (PortReplacementEnvVar *) realloc (port_replacement_env_vars, (size_t) port_replacement_env_var_count * sizeof (PortReplacementEnvVar));
+				PortReplacementEnvVar *entry = &port_replacement_env_vars [port_replacement_env_var_count - 1];
+				entry->name = strndup (name_value, (size_t) (eq - name_value));
+				entry->value = strdup (eq + 1);
+				LOG (PRODUCT ": Stored environment variable for port replacement: %s=%s\n", entry->name, entry->value);
+			}
+		} else if (!strcmp (command, "forward port")) {
+			// Start a local listening socket on a randomly assigned port (to avoid conflicts with
+			// ports already in use), set the stored environment variables (replacing %FORWARD_PORT%
+			// with the actual port), and forward data between incoming connections and this
+			// connection (which relays the data onwards).
+			LOG (PRODUCT ": Setting up port forwarding\n");
+
+			// Create a listening socket on a randomly assigned port
+			int listen_fd = socket (AF_INET, SOCK_STREAM, IPPROTO_TCP);
+			if (listen_fd == -1) {
+				LOG (PRODUCT ": Port forwarding: failed to create listen socket: %s\n", strerror (errno));
+			} else {
+				int flags = 1;
+				setsockopt (listen_fd, SOL_SOCKET, SO_REUSEADDR, &flags, sizeof (flags));
+
+				struct sockaddr_in listen_addr;
+				memset (&listen_addr, 0, sizeof (listen_addr));
+				listen_addr.sin_family = AF_INET;
+				listen_addr.sin_port = htons (0); // let the OS assign a free port
+				listen_addr.sin_addr.s_addr = htonl (INADDR_LOOPBACK);
+
+				struct sockaddr_in bound_addr;
+				socklen_t bound_len = sizeof (bound_addr);
+
+				if (bind (listen_fd, (struct sockaddr *) &listen_addr, sizeof (listen_addr)) == -1) {
+					LOG (PRODUCT ": Port forwarding: failed to bind listen socket: %s\n", strerror (errno));
+					close (listen_fd);
+				} else if (listen (listen_fd, 5) == -1) {
+					LOG (PRODUCT ": Port forwarding: failed to listen: %s\n", strerror (errno));
+					close (listen_fd);
+				} else if (getsockname (listen_fd, (struct sockaddr *) &bound_addr, &bound_len) == -1) {
+					LOG (PRODUCT ": Port forwarding: failed to get the assigned port: %s\n", strerror (errno));
+					close (listen_fd);
+				} else {
+					long forward_port = ntohs (bound_addr.sin_port);
+					LOG (PRODUCT ": Port forwarding: listening on port %ld\n", forward_port);
+
+					// Set environment variables, replacing %FORWARD_PORT% with the port
+					char port_str [16];
+					snprintf (port_str, sizeof (port_str), "%ld", forward_port);
+					for (int i = 0; i < port_replacement_env_var_count; i++) {
+						char *value = port_replacement_env_vars [i].value;
+						char *replacement = strstr (value, "%FORWARD_PORT%");
+						if (replacement != NULL) {
+							// Build the new value with the port substituted
+							size_t prefix_len = (size_t) (replacement - value);
+							size_t suffix_len = strlen (replacement + 14); // 14 = strlen("%FORWARD_PORT%")
+							char *new_value = (char *) malloc (prefix_len + strlen (port_str) + suffix_len + 1);
+							memcpy (new_value, value, prefix_len);
+							memcpy (new_value + prefix_len, port_str, strlen (port_str));
+							memcpy (new_value + prefix_len + strlen (port_str), replacement + 14, suffix_len + 1);
+							setenv (port_replacement_env_vars [i].name, new_value, 1);
+							LOG (PRODUCT ": Port forwarding: set env %s=%s\n", port_replacement_env_vars [i].name, new_value);
+							free (new_value);
+						} else {
+							setenv (port_replacement_env_vars [i].name, value, 1);
+							LOG (PRODUCT ": Port forwarding: set env %s=%s\n", port_replacement_env_vars [i].name, value);
+						}
+					}
+
+					// Start the forwarding thread
+					PortForwardData *fwd_data = (PortForwardData *) malloc (sizeof (PortForwardData));
+					fwd_data->listen_fd = listen_fd;
+					fwd_data->dst_fd = fd;
+
+					pthread_t fwd_thread;
+					pthread_create (&fwd_thread, NULL, port_forward_thread, fwd_data);
+					pthread_detach (fwd_thread);
+
+					// Signal that debugging is configured so the app startup continues
+					debugging_configured = true;
+					profiler_configured = true;
+					// Signal that port forwarding has been configured (and the
+					// environment variables have been set). The app startup may be
+					// waiting for this in monotouch_wait_for_port_forwarding ().
+					// Set the predicate while holding the mutex (the waiter reads it under
+					// the mutex), to avoid a data race and a possible missed wakeup.
+					pthread_mutex_lock (&mutex);
+					port_forwarding_configured = true;
+					pthread_cond_signal (&cond);
+					pthread_mutex_unlock (&mutex);
+
+					// Keep this fd alive (used by the forwarding thread), don't process more commands on it
+					return true;
+				}
 			}
 		} else {
 			LOG (PRODUCT ": Unknown command received from the IDE: '%s'\n", command);

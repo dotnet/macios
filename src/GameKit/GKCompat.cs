@@ -84,11 +84,13 @@ namespace GameKit {
 		}
 
 		/// <include file="../../docs/api/GameKit/GKPeerPickerControllerDelegate.xml" path="/Documentation/Docs[@DocId='M:GameKit.GKPeerPickerControllerDelegate.#ctor(Foundation.NSObjectFlag)']/*" />
-	protected GKPeerPickerControllerDelegate (NSObjectFlag t) : base (t)
+		protected GKPeerPickerControllerDelegate (NSObjectFlag t) : base (t)
 		{
 			throw new PlatformNotSupportedException (Constants.TypeUnavailable);
 		}
 
+		/// <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>
+		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
 		protected internal GKPeerPickerControllerDelegate (NativeHandle handle) : base (handle)
 		{
 			throw new PlatformNotSupportedException (Constants.TypeUnavailable);
@@ -156,11 +158,13 @@ namespace GameKit {
 		}
 
 		/// <include file="../../docs/api/GameKit/GKPeerPickerController.xml" path="/Documentation/Docs[@DocId='M:GameKit.GKPeerPickerController.#ctor(Foundation.NSObjectFlag)']/*" />
-	protected GKPeerPickerController (NSObjectFlag t) : base (t)
+		protected GKPeerPickerController (NSObjectFlag t) : base (t)
 		{
 			throw new PlatformNotSupportedException (Constants.TypeUnavailable);
 		}
 
+		/// <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>
+		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
 		protected internal GKPeerPickerController (NativeHandle handle) : base (handle)
 		{
 			throw new PlatformNotSupportedException (Constants.TypeUnavailable);
@@ -233,8 +237,8 @@ namespace GameKit {
 			}
 		}
 
-		/// <include file="../../docs/api/GameKit/GKPeerPickerController.xml" path="/Documentation/Docs[@DocId='M:GameKit.GKPeerPickerController.Dispose(System.Boolean)']/*" />
-	protected override void Dispose (bool disposing)
+		/// <inheritdoc />
+		protected override void Dispose (bool disposing)
 		{
 			throw new PlatformNotSupportedException (Constants.TypeUnavailable);
 		}

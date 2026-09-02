@@ -33,7 +33,7 @@ namespace Linker.Shared {
 			var action = new Action (() => counter++);
 			Custom (action);
 			CustomWithAttribute (action);
-			Assert.AreEqual (2, counter, "Counter");
+			Assert.That (counter, Is.EqualTo (2), "Counter");
 		}
 
 		delegate void CustomDelegate (IntPtr block);
@@ -91,7 +91,7 @@ namespace Linker.Shared {
 				for (var i = 0; i < iterations; i++)
 					SetupBlockUnoptimized (unoptimizedAction);
 				unoptimizedWatch.Stop ();
-				Assert.AreEqual (iterations, unoptimizedCounter, "Unoptimized Counter");
+				Assert.That (unoptimizedCounter, Is.EqualTo (iterations), "Unoptimized Counter");
 
 				// Run optimized
 				var optimizedWatch = System.Diagnostics.Stopwatch.StartNew ();
@@ -99,7 +99,7 @@ namespace Linker.Shared {
 				for (var i = 0; i < iterations; i++)
 					SetupBlockOptimized (optimizedAction);
 				optimizedWatch.Stop ();
-				Assert.AreEqual (iterations, optimizedCounter, "Optimized Counter");
+				Assert.That (optimizedCounter, Is.EqualTo (iterations), "Optimized Counter");
 
 				//Console.WriteLine ("Optimized: {0} ms", optimizedWatch.ElapsedMilliseconds);
 				//Console.WriteLine ("Unoptimized: {0} ms", unoptimizedWatch.ElapsedMilliseconds);
@@ -145,7 +145,7 @@ namespace Linker.Shared {
 			SetupBlockOptimized_LoadLocalVariable4 (action);
 			SetupBlockOptimized_LoadLocalVariable (action);
 
-			Assert.AreEqual (19, counter, "Counter");
+			Assert.That (counter, Is.EqualTo (19), "Counter");
 		}
 
 		public delegate void Action_IntPtr (IntPtr param);
@@ -158,7 +158,7 @@ namespace Linker.Shared {
 		unsafe static void BlockCallback (IntPtr block)
 		{
 			var descriptor = (BlockLiteral*) block;
-			var del = (Action) (descriptor->Target);
+			var del = (Action) (descriptor->Target)!;
 			del ();
 		}
 
@@ -285,17 +285,17 @@ namespace Linker.Shared {
 			int dummy208 = 0, int dummy218 = 0, int dummy228 = 0, int dummy238 = 0, int dummy248 = 0, int dummy258 = 0, int dummy268 = 0, int dummy278 = 0, int dummy288 = 0, int dummy298 = 0,
 			int dummy209 = 0, int dummy219 = 0, int dummy229 = 0, int dummy239 = 0, int dummy249 = 0, int dummy259 = 0, int dummy269 = 0, int dummy279 = 0, int dummy289 = 0, int dummy299 = 0,
 
-			Action_IntPtr block_callback = null
+			Action_IntPtr? block_callback = null
 		)
 		{
 			// ldarg
 			BlockLiteral block = new BlockLiteral ();
-			block.SetupBlock (block_callback, callback);
+			block.SetupBlock (block_callback!, callback);
 			Bindings.Test.CFunctions.x_call_block (ref block);
 			block.CleanupBlock ();
 		}
 
-		Action_IntPtr block_callback_instance_field;
+		Action_IntPtr? block_callback_instance_field;
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		void SetupBlockOptimized_LoadField (Action callback)
 		{
@@ -509,30 +509,48 @@ namespace Linker.Shared {
 		{
 			IgnoreIfNotLinkAll ();
 
+			// Runtime.IsARM64CallingConvention is controlled by the
+			// 'ObjCRuntime.Runtime.IsARM64CallingConvention' trimmer feature switch: the trimmer
+			// stubs the private Runtime.GetIsARM64CallingConvention method to return a constant,
+			// and it evaluates the field as a constant when removing branches that depend on it
+			// (which is how the generated code uses the field). A plain read of the field is not
+			// rewritten - the field still holds the correct value at runtime.
 #if DEBUG // Release builds will strip IL, so any IL checking has to be done in debug builds.
 			MethodInfo method;
 			IEnumerable<ILInstruction> instructions;
-			IEnumerable<ILInstruction> call_instructions;
 
-			method = typeof (BaseOptimizeGeneratedCodeTest).GetMethod (nameof (GetIsARM64CallingConventionOptimized), BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public | BindingFlags.Static);
+			// The trimmer stubs Runtime.GetIsARM64CallingConvention to return a constant value.
+			method = typeof (Runtime).GetMethod ("GetIsARM64CallingConvention", BindingFlags.Static | BindingFlags.NonPublic)!;
 			instructions = new ILReader (method);
-			call_instructions = instructions.Where ((v) => v.OpCode.Name == "ldsfld");
-			Assert.AreEqual (0, call_instructions.Count (), "optimized: no ldsfld instruction");
+			Assert.That (instructions.Count (), Is.EqualTo (2), "IL Count");
+			// The method body should be either:
+			// - ldc.i4.X; ret (optimized to a constant by the trimmer feature switch), or
+			// - ldnull; throw (the linker stubbed the body after the value was inlined at all call sites)
+			Assert.That (instructions.Skip (0).First ().OpCode,
+				Is.EqualTo (OpCodes.Ldc_I4_0).Or.EqualTo (OpCodes.Ldc_I4_1).Or.EqualTo (OpCodes.Ldnull), "IL 1");
+			if (instructions.Skip (0).First ().OpCode == OpCodes.Ldnull)
+				Assert.That (instructions.Skip (1).First ().OpCode, Is.EqualTo (OpCodes.Throw), "IL 2 (linker-stubbed)");
+			else
+				Assert.That (instructions.Skip (1).First ().OpCode, Is.EqualTo (OpCodes.Ret), "IL 2");
 
-			method = typeof (BaseOptimizeGeneratedCodeTest).GetMethod (nameof (GetIsARM64CallingConventionNotOptimized), BindingFlags.NonPublic | BindingFlags.Instance);
+			// The trimmer knows the value of Runtime.IsARM64CallingConvention (from the feature
+			// switch), so it removes the dead branch in a method that branches on the field.
+			// BranchOnIsARM64CallingConvention returns 1 (ldc.i4.1) if the field is true, and
+			// 2 (ldc.i4.2) if it's false, so verify that only the instruction loading the
+			// applicable return value is left. Note that the trimmer may leave a conditional
+			// branch instruction behind (branching to the next instruction, which is a no-op),
+			// so don't check for those.
+			method = typeof (BaseOptimizeGeneratedCodeTest).GetMethod (nameof (BranchOnIsARM64CallingConvention), BindingFlags.NonPublic | BindingFlags.Static)!;
 			instructions = new ILReader (method);
-			call_instructions = instructions.Where ((v) => v.OpCode.Name == "ldsfld");
-			Assert.AreEqual (1, call_instructions.Count (), "not optimized: 1 ldsfld instruction");
-			
-			method = typeof (Runtime).GetMethod ("GetIsARM64CallingConvention", BindingFlags.Static | BindingFlags.NonPublic);
-			instructions = new ILReader (method);
-			Assert.AreEqual (2, instructions.Count (), "IL Count");
-			Assert.That (instructions.Skip (0).First ().OpCode, Is.EqualTo (OpCodes.Ldc_I4_0).Or.EqualTo (OpCodes.Ldc_I4_1), "IL 1");
-			Assert.That (instructions.Skip (1).First ().OpCode, Is.EqualTo (OpCodes.Ret), "IL 2");
+			var dead_opcode = Runtime.IsARM64CallingConvention ? OpCodes.Ldc_I4_2 : OpCodes.Ldc_I4_1;
+			var live_opcode = Runtime.IsARM64CallingConvention ? OpCodes.Ldc_I4_1 : OpCodes.Ldc_I4_2;
+			Assert.That (instructions.Count ((v) => v.OpCode == dead_opcode), Is.EqualTo (0), "dead branch removed");
+			Assert.That (instructions.Count ((v) => v.OpCode == live_opcode), Is.EqualTo (1), "live branch kept");
 #endif
 
-			Assert.AreEqual (Runtime.IsARM64CallingConvention, GetIsARM64CallingConventionOptimized (), "Value optimized");
-			Assert.AreEqual (Runtime.IsARM64CallingConvention, GetIsARM64CallingConventionNotOptimized (), "Value unoptimized");
+			Assert.That (GetIsARM64CallingConventionOptimized (), Is.EqualTo (Runtime.IsARM64CallingConvention), "Value optimized");
+			Assert.That (GetIsARM64CallingConventionNotOptimized (), Is.EqualTo (Runtime.IsARM64CallingConvention), "Value unoptimized");
+			Assert.That (BranchOnIsARM64CallingConvention (), Is.EqualTo (Runtime.IsARM64CallingConvention ? 1 : 2), "Value branch");
 		}
 
 		[BindingImplAttribute (BindingImplOptions.Optimizable)]
@@ -544,6 +562,14 @@ namespace Linker.Shared {
 		bool GetIsARM64CallingConventionNotOptimized ()
 		{
 			return Runtime.IsARM64CallingConvention;
+		}
+
+		[BindingImplAttribute (BindingImplOptions.Optimizable)]
+		static int BranchOnIsARM64CallingConvention ()
+		{
+			if (Runtime.IsARM64CallingConvention)
+				return 1;
+			return 2;
 		}
 	}
 }

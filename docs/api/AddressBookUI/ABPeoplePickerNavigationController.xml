@@ -272,9 +272,6 @@ public class CompatibleEmailPickerViewController : UIViewController
     }
 }]]></code>
       </example>.</remarks>
-    <related type="recipe" href="https://developer.xamarin.com/ios/Recipes/Shared_Resources/Contacts/Choose_a_Contact">Choose a Contact</related>
-    <related type="recipe" href="https://developer.xamarin.com/ios/Recipes/Shared_Resources/Contacts/Create_a_new_Contact">Create a New Contact</related>
-    <related type="recipe" href="https://developer.xamarin.com/ios/Recipes/Shared_Resources/Contacts/Find_a_Contact">Find a Contact</related>
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AddressBookUI/Reference/ABPeoplePickerNavigationController_Class/index.html">Apple documentation for <c>ABPeoplePickerNavigationController</c></related>
   </Docs>
 </Documentation>

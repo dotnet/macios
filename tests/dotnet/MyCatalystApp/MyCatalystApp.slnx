@@ -1,0 +1,8 @@
+<Solution>
+  <Configurations>
+    <Platform Name="MacCatalyst" />
+  </Configurations>
+  <Project Path="MyCatalystApp.csproj">
+    <Platform Project="MacCatalyst" />
+  </Project>
+</Solution>

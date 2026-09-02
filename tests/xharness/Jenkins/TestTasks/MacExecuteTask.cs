@@ -14,12 +14,12 @@ using Microsoft.DotNet.XHarness.iOS.Shared.Utilities;
 
 namespace Xharness.Jenkins.TestTasks {
 	class MacExecuteTask : MacTask {
-		protected ICrashSnapshotReporterFactory CrashReportSnapshotFactory { get; }
+		protected CrashSnapshotReporterFactory CrashReportSnapshotFactory { get; }
 
-		public string Path;
+		public string? Path;
 		public bool IsUnitTest;
 
-		public MacExecuteTask (Jenkins jenkins, BuildToolTask build_task, IMlaunchProcessManager processManager, ICrashSnapshotReporterFactory crashReportSnapshotFactory)
+		public MacExecuteTask (Jenkins jenkins, BuildToolTask build_task, IMlaunchProcessManager processManager, CrashSnapshotReporterFactory crashReportSnapshotFactory)
 			: base (jenkins, build_task, processManager)
 		{
 			this.CrashReportSnapshotFactory = crashReportSnapshotFactory ?? throw new ArgumentNullException (nameof (crashReportSnapshotFactory));
@@ -44,21 +44,23 @@ namespace Xharness.Jenkins.TestTasks {
 			if (string.Equals ("mac", name, StringComparison.OrdinalIgnoreCase))
 				name = System.IO.Path.GetFileName (System.IO.Path.GetDirectoryName (projectDir));
 			var suffix = string.Empty;
-			if (ProjectFile.EndsWith (".sln", StringComparison.Ordinal)) {
-				Path = System.IO.Path.Combine (System.IO.Path.GetDirectoryName (ProjectFile), "bin", BuildTask.ProjectPlatform, BuildTask.ProjectConfiguration + suffix, name + ".app", "Contents", "MacOS", name);
+			if (ProjectFile.EndsWith (".slnx", StringComparison.Ordinal)) {
+				Path = System.IO.Path.Combine (System.IO.Path.GetDirectoryName (ProjectFile)!, "bin", BuildTask.ProjectPlatform!, BuildTask.ProjectConfiguration + suffix, name + ".app", "Contents", "MacOS", name!);
 			} else {
 				var project = new XmlDocument ();
 				project.LoadWithoutNetworkAccess (ProjectFile);
-				var outputPath = await Harness.AppBundleLocator.LocateAppBundle (project, ProjectFile, TestTarget.None, BuildTask.ProjectConfiguration);
+				var outputPath = await Harness.AppBundleLocator.LocateAppBundle (project, ProjectFile, TestTarget.None, BuildTask.ProjectConfiguration!);
 				var assemblyName = project.GetAssemblyName ();
-				Path = System.IO.Path.Combine (System.IO.Path.GetDirectoryName (ProjectFile), outputPath, assemblyName + ".app", "Contents", "MacOS", assemblyName);
+				Path = System.IO.Path.Combine (System.IO.Path.GetDirectoryName (ProjectFile)!, outputPath!, assemblyName + ".app", "Contents", "MacOS", assemblyName);
 			}
+			var appBundlePath = System.IO.Path.GetFullPath (System.IO.Path.Combine (System.IO.Path.GetDirectoryName (Path)!, "..", ".."));
+			var appInformation = new AppBundleInformation (name!, "N/A", appBundlePath, appBundlePath, true, null, System.IO.Path.GetFileName (Path));
 
 			using (var resource = await NotifyAndAcquireDesktopResourceAsync ()) {
 				using (var proc = new Process ()) {
 					proc.StartInfo.FileName = Path;
 					var arguments = new List<string> ();
-					IFileBackedLog xmlLog = null;
+					IFileBackedLog? xmlLog = null;
 					var useXmlOutput = Harness.InCI || true;
 					if (IsUnitTest) {
 						var extension = useXmlOutput ? "xml" : "log";
@@ -91,14 +93,14 @@ namespace Xharness.Jenkins.TestTasks {
 
 					Jenkins.MainLog.WriteLine ("Executing {0} ({1})", TestName, Mode);
 					var log = Logs.Create ($"execute-{Platform}-{Timestamp}.txt", LogType.ExecutionLog.ToString ());
-					ICrashSnapshotReporter snapshot = null;
+					ICrashSnapshotReporter? snapshot = null;
 					if (!Jenkins.Harness.DryRun) {
 						ExecutionResult = TestExecutingResult.Running;
 
-						snapshot = CrashReportSnapshotFactory.Create (log, Logs, isDevice: false, deviceName: null);
+						snapshot = CrashReportSnapshotFactory.Create (log, Logs, isDevice: false, deviceName: null, appInformation);
 						await snapshot.StartCaptureAsync ();
 
-						ProcessExecutionResult result = null;
+						ProcessExecutionResult? result = null;
 						try {
 							var timeout = TimeSpan.FromMinutes (20);
 
@@ -122,8 +124,8 @@ namespace Xharness.Jenkins.TestTasks {
 
 					if (IsUnitTest) {
 						var reporterFactory = new TestReporterFactory (ProcessManager);
-						var listener = new Microsoft.DotNet.XHarness.iOS.Shared.Listeners.SimpleFileListener (xmlLog.FullPath, log, xmlLog, useXmlOutput);
-						var reporter = reporterFactory.Create (Harness.HarnessLog, log, Logs, snapshot, listener, Harness.ResultParser, new AppBundleInformation ("N/A", "N/A", "N/A", "N/A", true, null), RunMode.MacOS, Harness.XmlJargon, "no device here", TimeSpan.Zero);
+						var listener = new Microsoft.DotNet.XHarness.iOS.Shared.Listeners.SimpleFileListener (xmlLog!.FullPath, log, xmlLog, useXmlOutput);
+						var reporter = reporterFactory.Create (Harness.HarnessLog!, log, Logs, snapshot!, listener, Harness.ResultParser, appInformation, RunMode.MacOS, Harness.XmlJargon, "no device here", TimeSpan.Zero);
 						var rv = await reporter.ParseResult ();
 
 						if (ExecutionResult == TestExecutingResult.Succeeded) {

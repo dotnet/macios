@@ -1,3 +1,5 @@
 ## https://github.com/dotnet/macios/issues/8931
 !missing-field! WGWidgetUserInfoKeyFamily not bound
 !missing-field! WGWidgetUserInfoKeyKind not bound
+!missing-field! NSUserActivityTypeLiveActivity not bound
+!missing-field! WGWidgetUserInfoKeyActivityID not bound

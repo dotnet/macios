@@ -27,10 +27,10 @@ namespace MonoTouchFixtures.Phase {
 		{
 			var endPoint = new Vector2d (1, 2);
 			using (var segment = new PhaseEnvelopeSegment (endPoint, PhaseCurveType.Cubed)) {
-				Assert.AreEqual (endPoint, segment.EndPoint);
+				Assert.That (segment.EndPoint, Is.EqualTo (endPoint));
 				var newEndPoint = new Vector2d (2, 1);
 				segment.EndPoint = newEndPoint;
-				Assert.AreEqual (newEndPoint, segment.EndPoint);
+				Assert.That (segment.EndPoint, Is.EqualTo (newEndPoint));
 			}
 		}
 

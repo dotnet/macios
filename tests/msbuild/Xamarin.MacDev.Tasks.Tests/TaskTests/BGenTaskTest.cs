@@ -35,7 +35,9 @@ namespace Xamarin.MacDev.Tasks {
 			task.ProjectDir = "~/"; // not important, but required (so can't be null)
 			task.ResponseFilePath = Path.Combine (Cache.CreateTemporaryDirectory (), "response-file.txt");
 
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
 			task.OutputAssembly = null; // default, but important for the bug (in case that default changes)
+#pragma warning restore CS8625
 			task.ExtraArgs = "-invalid";
 			var args = task.GenerateCommandLineArguments ();
 			args.AddRange (File.ReadAllLines (task.ResponseFilePath));

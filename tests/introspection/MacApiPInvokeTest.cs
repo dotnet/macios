@@ -7,7 +7,7 @@ namespace Introspection {
 
 	[TestFixture]
 	public class MacApiPInvokeTest : ApiPInvokeTest {
-		protected override bool SkipLibrary (string libraryName)
+		protected override bool SkipLibrary (string? libraryName)
 		{
 			switch (libraryName) {
 			case "/System/Library/Frameworks/OpenGL.framework/OpenGL":

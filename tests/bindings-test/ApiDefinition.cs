@@ -601,6 +601,18 @@ namespace Bindings.Test {
 		C,
 	}
 
+	interface IBindAsProtocol { }
+
+	[BaseType (typeof (NSObject)), Model]
+	[Protocol]
+	interface BindAsProtocol {
+		[Export ("setStrongEnum:")]
+		void SetStrongEnum ([BindAs (typeof (StrongEnum))] NSString value);
+
+		[Export ("setStrongEnum:other:")]
+		void SetStrongEnums ([BindAs (typeof (StrongEnum))] NSString value, [BindAs (typeof (StrongEnum))] NSString other);
+	}
+
 	enum NormalEnum {
 		X,
 		Y,
@@ -844,4 +856,68 @@ namespace Bindings.Test {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface ClassWithNoDefaultCtor { }
+
+	interface IHitchhikerDelegate { }
+
+	[BaseType (typeof (NSObject)), Model]
+	[Protocol]
+	interface HitchhikerDelegate {
+		[EventArgs ("")]
+		[Export ("buildIntergalacticHighway:")]
+		void BuildIntergalacticHighway (Hitchhiker sender);
+
+		[EventArgs ("")]
+		[Export ("byeByeDolphins:")]
+		void ByeByeDolphins (Hitchhiker sender);
+
+		[EventArgs ("")]
+		[Export ("hitchhikeWithVogons:")]
+		void HitchhikeWithVogons (Hitchhiker sender);
+	}
+
+	[BaseType (typeof (NSObject), Delegates = new string [] { "Delegate" }, Events = new Type [] { typeof (HitchhikerDelegate) })]
+	interface Hitchhiker {
+		[Export ("delegate", ArgumentSemantic.Retain)]
+		IHitchhikerDelegate Delegate { get; set; }
+
+		[Export ("destroyEarth")]
+		void DestroyEarth ();
+
+		[Export ("buildHighway")]
+		void BuildHighway ();
+	}
+
+	// Helper for the issue #25861 design work: its native 'init' calls a method that
+	// can be overridden in managed code, to verify the overridden managed method is
+	// invoked (on the correct instance) while 'init' is still executing.
+	[BaseType (typeof (NSObject))]
+	interface InitCallsVirtualMethod {
+		[Export ("virtualMethodCalledDuringInit:")]
+		void VirtualMethodCalledDuringInit (int value);
+	}
+
+	// Helper for the issue #25861 design work: a directly-bound native class whose
+	// native 'init' synchronously surfaces 'self' to managed code via a C callback.
+	[BaseType (typeof (NSObject))]
+	interface InitSurfacesSelfToManaged {
+	}
+
+	// Helpers for a deterministic reproduction of the alloc/init handle-reuse race in
+	// issue #25861 (and #9478): ReuseSlotClassA's 'init' frees its own instance and forces
+	// the next allocation to reuse that exact address, so a ReuseSlotClassB allocated from
+	// managed code during that 'init' deterministically lands on the address freed by the
+	// ReuseSlotClassA instance.
+	[BaseType (typeof (NSObject))]
+	interface ReuseSlotClassA {
+	}
+
+	[BaseType (typeof (NSObject))]
+	interface ReuseSlotClassB {
+	}
+
+	// Helper for issue #23679: a native class whose 'init' fails (releases self and
+	// returns nil), so constructing the managed wrapper throws.
+	[BaseType (typeof (NSObject))]
+	interface InitReturnsNilClass {
+	}
 }

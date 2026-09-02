@@ -991,7 +991,6 @@ public class BlueLayer : CALayer
       </list>
       <para>In addition to <see cref="UIKit.UIView.CanBecomeFocused" /> returning <see langword="true" />, for a <see cref="UIKit.UIView" /> to be focused, it must have a <see cref="UIKit.UIView.Hidden" /> value of <see langword="false" />, a <see cref="UIKit.UIView.UserInteractionEnabled" /> value of <see langword="true" />, a <see cref="UIKit.UIView.Alpha" /> value greater than 0, and it must not be obscured by another <see cref="UIKit.UIView" />. </para>
     </remarks>
-    <related type="recipe" href="https://developer.xamarin.com/ios/Recipes/Animation/CoreAnimation/Animate_a_UIView_using_UIKit">Animate a UIView using UIKit</related>
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIView_Class/index.html">Apple documentation for <c>UIView</c></related>
   </Docs>
   <Docs DocId="M:UIKit.UIView.BeginAnimations(System.String)">
@@ -1018,7 +1017,6 @@ UIView.CommitAnimations ();
       </example>
     </remarks>
     <altmember cref="UIKit.UIView.CommitAnimations" />
-    <related type="recipe" href="https://developer.xamarin.com/ios/Recipes/Animation/CoreAnimation/Animate_a_UIView_using_UIKit" />
     <!-- TODO: Switch to UUID-based URL -->
   </Docs>
   <Docs DocId="M:UIKit.UIView.AnimateNotify(System.Double,System.Double,System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat,UIKit.UIViewAnimationOptions,System.Action,UIKit.UICompletionHandler)">

@@ -2,7 +2,7 @@
 
 #nullable enable
 
-#if MTOUCH || MMP || MMP_TEST || MTOUCH_TESTS
+#if LEGACY_TOOLS
 #define BUNDLER
 #endif
 

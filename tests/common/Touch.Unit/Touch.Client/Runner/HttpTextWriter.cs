@@ -16,7 +16,7 @@ using Foundation;
 
 namespace MonoTouch.NUnit {
 	class HttpTextWriter : TextWriter {
-		public string HostName;
+		public string? HostName;
 		public int Port;
 
 		TaskCompletionSource<bool> finished = new TaskCompletionSource<bool> ();
@@ -52,7 +52,7 @@ namespace MonoTouch.NUnit {
 			var tcs = new TaskCompletionSource<bool> ();
 			var request = new NSMutableUrlRequest (url);
 			request.HttpMethod = "POST";
-			var rv = NSUrlSession.SharedSession.CreateUploadTask (request, NSData.FromString (uploadData), (NSData data, NSUrlResponse response, NSError error) => {
+			var rv = NSUrlSession.SharedSession.CreateUploadTask (request, NSData.FromString (uploadData), (NSData? data, NSUrlResponse? response, NSError? error) => {
 				if (error is not null) {
 					Console.WriteLine ("Failed to send data to {0}: {1}", url.AbsoluteString, error);
 					tcs.SetResult (false);
@@ -67,7 +67,12 @@ namespace MonoTouch.NUnit {
 
 		async Task SendData (string action, string uploadData)
 		{
+			if (string.IsNullOrEmpty (HostName))
+				throw new InvalidOperationException ("No host name specified.");
+
 			var url = NSUrl.FromString ("http://" + HostName + ":" + Port + "/" + action);
+			if (url is null)
+				throw new InvalidOperationException ("Failed to create the reporting url.");
 
 			int attempts_left = 10;
 			while (!await SendData (url, uploadData)) {
@@ -105,13 +110,14 @@ namespace MonoTouch.NUnit {
 			log.Append (value);
 		}
 
-		public override void Write (char [] buffer)
+		public override void Write (char []? buffer)
 		{
 			Console.Out.Write (buffer);
-			log.Append (buffer);
+			if (buffer is not null)
+				log.Append (buffer);
 		}
 
-		public override void WriteLine (string value)
+		public override void WriteLine (string? value)
 		{
 			Console.Out.WriteLine (value);
 			log.AppendLine (value);

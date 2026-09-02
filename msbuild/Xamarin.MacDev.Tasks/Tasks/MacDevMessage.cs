@@ -30,7 +30,7 @@ namespace Xamarin.MacDev.Tasks {
 
 		public override bool Execute ()
 		{
-			var msg = MSBStrings.ResourceManager.GetString (ResourceName, MSBStrings.Culture);
+			var msg = MSBStrings.ResourceManager.GetString (ResourceName, MSBStrings.Culture) ?? $"Could not find the resource '{ResourceName}'.";
 			var args = FormatArguments.Select (v => v.ItemSpec).ToArray ();
 			var message = string.Format (msg, args);
 			if (Error) {

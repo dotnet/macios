@@ -111,11 +111,7 @@
     <!-- E0029: not used anymore -->
     <!-- E0030: not used anymore -->
     <!-- E0031: not used anymore -->
-    
-    <data name="E0032" xml:space="preserve">
-        <value>Could not locate SDK bin directory</value>
-    </data>
-    
+    <!-- E0032: not used anymore -->
     <!-- E0033: not used anymore -->
     <!-- E0034: not used anymore -->
     <!-- E0035: not used anymore -->
@@ -294,13 +290,7 @@
         <value>Could not locate the {0} '{1}' SDK at path '{}'</value>
     </data>
     
-    <data name="E0085" xml:space="preserve">
-        <value>Could not locate the {0} '{1}' SDK usr path at '{2}'</value>
-        <comment>The provided SDK path is missing a 'usr' directory. The following are literal names and should not be translated: SDK, usr
-{0} - The platform name, such as 'iOS'.
-{1} - The version number of the SDK.
-{2} - The file path of the SDK.</comment>
-    </data>
+    <!-- E0085: not used anymore -->
         
     <data name="E0086" xml:space="preserve">
         <value>Could not find a valid Xcode developer path</value>
@@ -1628,5 +1618,120 @@
 
     <data name="E7163" xml:space="preserve">
         <value>Unable to copy the inputs to this task to the remote build server for unknown reasons. The build log may have more information.</value>
+    </data>
+
+    <data name="E7164" xml:space="preserve">
+        <value>The task '{0}' is trying to call an external process, but a path to Xcode has not been provided. Please file an issue at https://github.com/dotnet/macios/issues/new/choose.</value>
+    </data>
+
+    <data name="E7165" xml:space="preserve">
+        <value>Invalid DotNetRuntime value: '{0}'</value>
+    </data>
+
+    <data name="E7166" xml:space="preserve">
+        <value>Unexpected RuntimeLibLinkMode value for 'NativeAOT': '{0}'</value>
+    </data>
+
+    <data name="E7169" xml:space="preserve">
+        <value>The task '{0}' requires the property '{1}' to be set. Please file an issue at https://github.com/dotnet/macios/issues/new/choose.</value>
+    </data>
+
+    <data name="E7170" xml:space="preserve">
+        <value>Invalid RuntimeLibLinkMode value: '{0}'</value>
+    </data>
+
+    <data name="W7171" xml:space="preserve">
+        <value>The environment variable '{0}' is deprecated, and will be ignored in .NET 11+. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use an Xcode other than the system's current default Xcode.</value>
+    </data>
+
+    <data name="W7172" xml:space="preserve">
+        <value>The environment variable '{0}' is deprecated, and will be ignored. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use an Xcode other than the system's current default Xcode.</value>
+    </data>
+
+    <data name="W7173" xml:space="preserve">
+        <value>The settings file '{0}' is deprecated, and will be ignored in .NET 11+. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use an Xcode other than the system's current default Xcode.</value>
+    </data>
+
+    <data name="W7174" xml:space="preserve">
+        <value>The settings file '{0}' is deprecated, and will be ignored. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use an Xcode other than the system's current default Xcode.</value>
+    </data>
+
+    <data name="E7175" xml:space="preserve">
+        <value>The {0} simulator runtime is not installed. This is required by Apple's development tools (even when building for physical devices). Install it by running 'xcodebuild -downloadPlatform {0}' from the command line, or from Xcode (Settings &gt; Components).</value>
+        <comment>Shown when the required simulator runtime is not installed.
+{0} - The platform name (e.g. "iOS" or "tvOS").</comment>
+    </data>
+
+    <data name="W7176" xml:space="preserve">
+        <value>Unable to determine if the {0} simulator runtime is installed. If the build fails or hangs, install the {0} simulator runtime by running 'xcodebuild -downloadPlatform {0}' from the command line.</value>
+        <comment>Shown when we're unable to check for simulator runtime availability.
+{0} - The platform name (e.g. "iOS" or "tvOS").</comment>
+    </data>
+
+    <data name="E7177" xml:space="preserve">
+        <value>The installed {0} simulator runtime is not compatible with the current Xcode version. Update the simulator runtime by running 'xcodebuild -downloadPlatform {0}' from the command line, or from Xcode (Settings &gt; Components).</value>
+        <comment>Shown when the tool reports a simulator runtime version mismatch.
+{0} - The platform name (e.g. "iOS" or "tvOS").</comment>
+    </data>
+    <data name="E7178" xml:space="preserve">
+        <value>Console.StandardOutput or Console.StandardError was accessed during a build task. This should not happen, use the MSBuild logging infrastructure instead. Stack trace: {0}</value>
+        <comment>Shown when an MSBuild task writes to the console instead of using MSBuild logging.
+{0} - The stack trace of the offending call.</comment>
+    </data>
+    <data name="W7179" xml:space="preserve">
+        <value>Ignoring the metadata '{0}' for the native reference '{1}' in the binding resource package '{2}': this metadata is computed by the build and can't be set in a binding resource package manifest.</value>
+        <comment>Shown when a binding resource package's manifest contains build-controlled path/layout/identity metadata that isn't allowed to be set from a manifest.
+{0} - The name of the metadata (e.g. "RelativePath").
+{1} - The name of the native reference (e.g. "libfoo.dylib").
+{2} - The path to the binding resource package.</comment>
+    </data>
+    <data name="E7180" xml:space="preserve">
+        <value>The native reference '{0}' in the binding resource package '{1}' is invalid: the name must be a relative path without '..' segments.</value>
+        <comment>Shown when a binding resource package's manifest contains a native reference whose name is an absolute path or contains '..' traversal segments.
+{0} - The invalid native reference name.
+{1} - The path to the binding resource package.</comment>
+    </data>
+    <data name="E7181" xml:space="preserve">
+        <value>The native library can't be reidentified to '{0}' because that path is outside the intended output directory '{1}'.</value>
+        <comment>Shown when the computed reidentified path for a native library would write outside the intended intermediate output directory.
+{0} - The computed (out-of-bounds) reidentified path.
+{1} - The intended output directory.</comment>
+    </data>
+    <data name="W7182" xml:space="preserve">
+        <value>Ignoring a native reference with no name in the binding resource package '{0}'.</value>
+        <comment>Shown when a binding resource package's manifest contains a native reference whose 'Name' attribute is missing or empty.
+{0} - The path to the binding resource package.</comment>
+    </data>
+    <data name="E7183" xml:space="preserve">
+        <value>The resource '{0}' in assembly '{1}' would extract to '{2}' which is outside of the target directory '{3}'.</value>
+        <comment>Shown when an embedded resource would be extracted to a path outside the intended output directory.
+{0} - The resource name.
+{1} - The assembly path.
+{2} - The computed extraction path.
+{3} - The intended output directory.</comment>
+    </data>
+    <data name="E7185" xml:space="preserve">
+        <value>Could not determine the on-device destination path after copying '{0}' to the device. The 'xcrun devicectl' JSON output was: {1}</value>
+        <comment>Shown when the DeviceCtl task copied a file to a device, but the on-device destination path could not be extracted from devicectl's JSON output.
+{0} - The path of the file that was copied to the device.
+{1} - The JSON output from 'xcrun devicectl'.</comment>
+    </data>
+    <data name="E0192" xml:space="preserve">
+        <value>The PrepareAssemblies task failed without reporting a specific error. Please rebuild with increased verbosity for more details.</value>
+    </data>
+    <data name="E7184" xml:space="preserve">
+        <value>Codesign failed with 'errSecInternalComponent'. This usually means the keychain is locked, which is common when building over SSH. Unlock the keychain first, for example by running 'security unlock-keychain ~/Library/Keychains/login.keychain-db'.</value>
+        <comment>Shown when codesign fails with the 'errSecInternalComponent' error, which typically indicates a locked keychain.</comment>
+    </data>
+    <data name="E7185" xml:space="preserve">
+        <value>The runtime configuration file '{0}' is not a valid JSON object.</value>
+        <comment>Shown when the main runtime configuration file (*.runtimeconfig.json) does not contain a valid JSON object at its root.
+{0} - The path to the runtime configuration file.</comment>
+    </data>
+    <data name="E7186" xml:space="preserve">
+        <value>Could not read the runtime configuration file '{0}': {1}</value>
+        <comment>Shown when a runtime configuration file (*.runtimeconfig.json or *.runtimeconfig.dev.json) can't be read or parsed.
+{0} - The path to the runtime configuration file.
+{1} - The error message.</comment>
     </data>
 </root>

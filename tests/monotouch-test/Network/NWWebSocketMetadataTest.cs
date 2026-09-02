@@ -45,7 +45,7 @@ namespace MonoTouchFixtures.Network {
 		public void TestServerResponse ()
 		{
 			var resposne = metadata.ServerResponse;
-			Assert.IsNull (resposne); // did not make a request, null is expected
+			Assert.That (resposne, Is.Null); // did not make a request, null is expected
 		}
 	}
 }

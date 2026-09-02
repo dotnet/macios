@@ -12,56 +12,85 @@ else
 DOTNET_ARCH=x64
 endif
 
+ifeq ($(OS),Windows_NT)
+DOTNET_INSTALL_SCRIPT=dotnet-install.ps1
+else
+DOTNET_INSTALL_SCRIPT=dotnet-install.sh
+endif
+
 include $(TOP)/mk/colors.mk
 
 DOTNET_FILENAME=$(DOTNET_VERSION).tar.gz
 DOTNET_CACHE_FILENAME=$(HOME)/Library/Caches/xamarin-macios/$(DOTNET_FILENAME)
 
-downloads/$(DOTNET_INSTALL_NAME): dotnet-install.sh
+downloads/$(DOTNET_INSTALL_NAME): $(DOTNET_INSTALL_SCRIPT)
 	$(Q) echo "Downloading and installing .NET $(DOTNET_VERSION) ($(DOTNET_ARCH)) into $@..."
+ifeq ($(OS),Windows_NT)
+	rm -Rf "$@"
+	pwsh -ExecutionPolicy ByPass -NoProfile -Command '& ./$(DOTNET_INSTALL_SCRIPT) -Version "$(DOTNET_VERSION)" -InstallDir "$@.tmp" -ZipPath "downloads/$(DOTNET_FILENAME)" -Verbose'
+	mv "$@.tmp" "$@"
+else
 	$(Q) if test -f $(DOTNET_CACHE_FILENAME); then \
 			echo "Found a cached version of .NET $(DOTNET_VERSION) in $(DOTNET_CACHE_FILENAME)."; \
 			mkdir -p "$@.tmp"; \
 			tar -xzf $(DOTNET_CACHE_FILENAME) -C "$@.tmp"; \
 		else \
-			./dotnet-install.sh --install-dir "$@.tmp" --version "$(DOTNET_VERSION)" --architecture $(DOTNET_ARCH) --no-path --keep-zip --zip-path "downloads/$(DOTNET_FILENAME)" $$DOTNET_INSTALL_EXTRA_ARGS; \
-			cp -c downloads/$(DOTNET_FILENAME) $(DOTNET_CACHE_FILENAME); \
+			./$(DOTNET_INSTALL_SCRIPT) --install-dir "$@.tmp" --version "$(DOTNET_VERSION)" --architecture $(DOTNET_ARCH) --no-path --keep-zip --zip-path "downloads/$(DOTNET_FILENAME)" $$DOTNET_INSTALL_EXTRA_ARGS; \
+			mkdir -p $$(dirname $(DOTNET_CACHE_FILENAME)); \
+			$(CP) downloads/$(DOTNET_FILENAME) $(DOTNET_CACHE_FILENAME); \
 			echo "Cached the download of $(DOTNET_FILENAME) in ~/Library/Caches/xamarin-macios"; \
 		fi
 	$(Q) rm -Rf "$@"
 	$(Q) mv "$@.tmp" "$@"
+endif
 	$(Q) echo "Downloaded and installed .NET $(DOTNET_VERSION) into $@."
+	@# Workaround for https://github.com/dotnet/runtime/issues/91987
+	@# Create the NuGet migration marker file directly to avoid the race condition
+	@# where multiple parallel dotnet processes attempt to acquire the "NuGet-Migrations"
+	@# mutex simultaneously. If the marker file exists, NuGet skips the mutex entirely.
+	@# The migration (Migration1) only cleans up old NuGet directories, which is a no-op
+	@# on a fresh SDK install. Only needed in CI.
+	$(Q) if test -n "$$ACES"; then \
+		NUGET_MIGRATIONS_DIR="$$HOME/.local/share/NuGet/Migrations"; \
+		mkdir -p "$$NUGET_MIGRATIONS_DIR"; \
+		touch "$$NUGET_MIGRATIONS_DIR/1"; \
+		echo "Created NuGet migrations marker file to avoid race condition (dotnet/runtime#91987)"; \
+	fi
 
 # Create a symlink with a persistent (non-version-dependent) name
 # The dependency on the stamp file is to ensure the symlink is re-created
 # when the .NET version changes.
 all-local:: downloads/dotnet
 dotnet:: downloads/dotnet
+
+ifeq ($(OS),Windows_NT)
+# On Windows, for simplicity just copy the entire directory (creating symbolic links on Windows requires admin rights).
+downloads/dotnet: downloads/$(DOTNET_INSTALL_NAME)
+	$(Q) rm -f $@
+	$(Q) $(CP) -r downloads/$(DOTNET_INSTALL_NAME) $@
+else
 downloads/dotnet: .stamp-dotnet-symlink-$(DOTNET_VERSION)
 	$(Q) mkdir -p downloads
 	$(Q) rm -f $@
 	$(Q) ln -s $(abspath downloads/$(DOTNET_INSTALL_NAME)) $@
+endif
 
 .stamp-dotnet-symlink-$(DOTNET_VERSION): Makefile
 	$(Q) touch $@
 
 # This is just a helpful target to print the url to the .pkg to download and install the current .NET version into the system.
-print-dotnet-pkg-urls: dotnet-install.sh
+print-dotnet-pkg-urls: $(DOTNET_INSTALL_SCRIPT)
 	$(Q) rm -f $@-found-it.stamp
-	$(Q) for url in $$(./dotnet-install.sh --version "$(DOTNET_VERSION)" --architecture $(DOTNET_ARCH) --no-path $$DOTNET_INSTALL_EXTRA_ARGS --dry-run | grep URL.*primary: | sed 's/.*primary: //'); do \
+	$(Q) for url in $$(./$(DOTNET_INSTALL_SCRIPT) --version "$(DOTNET_VERSION)" --architecture $(DOTNET_ARCH) --no-path $$DOTNET_INSTALL_EXTRA_ARGS --dry-run | grep URL.*primary: | sed 's/.*primary: //'); do \
 		pkg=$${url/tar.gz/pkg}; \
 		if $(CURL) -I "$$pkg" >/dev/null 2>&1; then echo "$$pkg"; touch $@-found-it.stamp; break; fi; \
 	done
 	$(Q) if ! test -f $@-found-it.stamp; then echo "No working urls were found."; exit 1; fi
 	$(Q) rm -f $@-found-it.stamp
 
-# We need https://github.com/dotnet/install-scripts/pull/555, which hasn't been released yet.
-# Revert to using https://builds.dotnet.microsoft.com/dotnet/scripts/v1/dotnet-install.sh whenever https://builds.dotnet.microsoft.com/dotnet/scripts/v1/dotnet-install.sh has been updated.
-# DOTNET_DOWNLOAD_URL?=https://raw.githubusercontent.com/dotnet/install-scripts/d48e000adad7243861d799ec86c0bf7210a8fc7a/src/dotnet-install.sh
+DOTNET_DOWNLOAD_URL?=https://builds.dotnet.microsoft.com/dotnet/scripts/v1/$(DOTNET_INSTALL_SCRIPT)
 
-DOTNET_DOWNLOAD_URL?=https://builds.dotnet.microsoft.com/dotnet/scripts/v1/dotnet-install.sh
-
-dotnet-install.sh: Makefile
+$(DOTNET_INSTALL_SCRIPT): Makefile
 	$(Q) $(CURL_RETRY) $(DOTNET_DOWNLOAD_URL) --output $@.tmp
 	$(Q) chmod +x $@.tmp
 	$(Q) mv $@.tmp $@
@@ -70,7 +99,7 @@ ifdef CUSTOM_DOTNET
 DOWNLOAD_DOTNET_VERSION=$(CUSTOM_DOTNET_VERSION)
 ALL_NUGET_FEEDS:=$(shell grep '^[[:space:]]*<add.*value="https.*' $(TOP)/NuGet.config | sed -e 's/.*value="//' -e 's/".*//')
 CUSTOM_DOTNET_NUGET_FEED=\
-	--source $(DOTNET_RUNTIME_PATH)/artifacts/packages/Debug/Shipping \
+	--source $(DOTNET_RUNTIME_PATH)/artifacts/packages/Release/Shipping \
 	$(foreach feed,$(ALL_NUGET_FEEDS), --source $(feed))
 else
 ifneq ($(BUNDLED_NETCORE_PLATFORMS_PACKAGE_VERSION),)
@@ -112,6 +141,7 @@ DOTNET_DOWNLOADS = \
 	.stamp-download-dotnet-packages \
 	.stamp-install-t4 \
 
+download: downloads/dotnet
 dotnet:: $(DOTNET_DOWNLOADS)
 all-local:: $(DOTNET_DOWNLOADS)
 
@@ -144,7 +174,7 @@ $(DOTNET_DESTDIR)/$($(1)_NUGET_SDK_NAME)/tools/buildinfo: $(TOP)/Make.config.inc
 	$$(Q) echo "Build date: $$(shell date '+%Y-%m-%d %H:%M:%S%z')" >> $$@.tmp
 	$$(Q) mv $$@.tmp $$@
 endef
-$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call BuildInfo,$(platform),$(shell echo $(platform) | tr a-z A-Z))))
+$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call BuildInfo,$(platform),$(call uppercase,$(platform)))))
 
 $(DOTNET_COMMON_DIRECTORIES):
 	$(Q) mkdir -p $@

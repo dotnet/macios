@@ -12,16 +12,17 @@ Copyright (C) 2011-2013 Xamarin. All rights reserved.
 ***********************************************************************************************
 -->
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">	
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.FindILLink" AssemblyFile="$(CoreiOSSdkDirectory)$(_TaskAssemblyFileName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.Unzip" AssemblyFile="$(CoreiOSSdkDirectory)$(_TaskAssemblyFileName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.WriteItemsToFile" AssemblyFile="$(CoreiOSSdkDirectory)$(_TaskAssemblyFileName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.Zip" AssemblyFile="$(CoreiOSSdkDirectory)$(_TaskAssemblyFileName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.CopyArchiveFiles" AssemblyFile="$(CoreiOSSdkDirectory)$(_TaskAssemblyFileName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.ILLink" AssemblyFile="$(CoreiOSSdkDirectory)$(_TaskAssemblyFileName)" />
-	<UsingTask TaskName="Xamarin.iOS.Tasks.Windows.CreateArchiveDirectory" AssemblyFile="$(_TaskAssemblyFileNameWindows)" />
-	<UsingTask TaskName="Xamarin.iOS.Tasks.Windows.ResolveUniversalTypeIdentifiers" AssemblyFile="$(_TaskAssemblyFileNameWindows)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.FindILLink" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.Unzip" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.WriteItemsToFile" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.Zip" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CollectMonotouchReferences" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CopyArchiveFiles" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ILLink" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.iOS.Tasks.Windows.CreateArchiveDirectory" AssemblyFile="$(_TaskAssemblyFileNameWindows)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.iOS.Tasks.Windows.ResolveUniversalTypeIdentifiers" AssemblyFile="$(_TaskAssemblyFileNameWindows)" />
 
-	<Import Project="$(MSBuildThisFileDirectory)Xamarin.Messaging.Build.targets" Condition="Exists('$(MSBuildThisFileDirectory)Xamarin.Messaging.Build.targets') And '$(MessagingBuildTargetsImported)' != 'true'" />
+	<Import Project="$(MSBuildThisFileDirectory)Xamarin.Messaging.targets" Condition="'$(MessagingBuildTargetsImported)' != 'true'" />
 	<Import Project="$(MSBuildThisFileDirectory)Xamarin.iOS.Windows.After.targets" Condition="Exists('$(MSBuildThisFileDirectory)Xamarin.iOS.Windows.After.targets')" />
 
 	<PropertyGroup>
@@ -102,7 +103,7 @@ Copyright (C) 2011-2013 Xamarin. All rights reserved.
 		<Delete Condition="'$(MtouchTargetsEnabled)' And '$(IsMacEnabled)' == 'true' And Exists('$(DeviceSpecificOutputPath)AppBundle\$(_AppBundleName).zip')" SessionId="$(BuildSessionId)" Files="$(DeviceSpecificOutputPath)AppBundle\$(_AppBundleName).zip" />
 	</Target>
 	
-	<Target Name="CopyIpaFromMac" Condition="'$(OutputType)' == 'Exe' And '$(ComputedPlatform)' == 'iPhone' And '$(BuildIpa)' == 'true'">
+	<Target Name="CopyIpaFromMac" Condition="'$(OutputType)' == 'Exe' And '$(SdkIsDevice)' == 'true' And '$(BuildIpa)' == 'true'">
 		<CopyFileFromBuildServer Condition="'$(IsAppDistribution)' == 'True'" SessionId="$(BuildSessionId)" File="$(IpaPackagePath)" TargetFile="$(DistributionPath)" />
 		<CopyFileFromBuildServer Condition="'$(IsAppDistribution)' != 'True'" SessionId="$(BuildSessionId)" File="$(IpaPackagePath)" />
 		<CopyFileFromBuildServer Condition="('$(_DistributionType)' == 'AppStore' Or '$(_DistributionType)' == 'AdHoc') And '$(EmbedOnDemandResources)' == 'false'" SessionId="$(BuildSessionId)" File="$(IpaPackageDir)\OnDemandResources\%(_AssetPack.DirectoryName)" />
@@ -177,7 +178,7 @@ Copyright (C) 2011-2013 Xamarin. All rights reserved.
 		</CopyLongPaths>
 	</Target>
 	
-	<Target Name="CopyDSYMFromMac" DependsOnTargets="_SayHello" Condition="'$(IsMacEnabled)' == 'true' And '$(IsAppExtension)' == 'false' And '$(ComputedPlatform)' == 'iPhone' And '$(CopyDSYM)' == 'true' And ('$(BuildIpa)' == 'true' Or '$(CopyAppBundle)' == 'true')" BeforeTargets="BeforeDisconnect">
+	<Target Name="CopyDSYMFromMac" DependsOnTargets="_SayHello" Condition="'$(IsMacEnabled)' == 'true' And '$(IsAppExtension)' == 'false' And '$(SdkIsDevice)' == 'true' And '$(CopyDSYM)' == 'true' And ('$(BuildIpa)' == 'true' Or '$(CopyAppBundle)' == 'true')" BeforeTargets="BeforeDisconnect">
 		<!--Copy watchOS Dsym folders from Mac-->
 		<MSBuild Projects="@(_WatchAppReferenceWithConfigurationExistent)" Targets="CopyDSYMFromMac" Properties="%(_WatchAppReferenceWithConfigurationExistent.SetConfiguration);      %(_WatchAppReferenceWithConfigurationExistent.SetPlatform);      BuildIpa=true" Condition="'$(IsWatchApp)' == 'false' And '@(_WatchAppReferenceWithConfigurationExistent)' != '' And '$(_BuildReferencedExtensionProjects)' != 'true'"></MSBuild>
 		<!--Look for all *.dsym folders int the output path of the main app -->
@@ -374,6 +375,8 @@ Copyright (C) 2011-2013 Xamarin. All rights reserved.
 			<TrimmerDefaultAction Condition="'$(TrimmerDefaultAction)' == ''">$(_TrimmerDefaultAction)</TrimmerDefaultAction>
 
 			<_RemoteExtraTrimmerArgs Condition="'$(_ExtraTrimmerArgs)' != ''">$(_ExtraTrimmerArgs.Replace('$(NetCoreRoot)', '$(_DotNetRootRemoteDirectory)'))</_RemoteExtraTrimmerArgs>
+
+			<_CopyLinkerOutputToWindows Condition="'$(UseMonoRuntime)' == 'false' Or $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '11.0'))">true</_CopyLinkerOutputToWindows>
 		</PropertyGroup>
 
 		<!-- Include Debug symbols as input so those are copied to the server -->
@@ -386,6 +389,8 @@ Copyright (C) 2011-2013 Xamarin. All rights reserved.
 		<Delete SessionId="$(BuildSessionId)" Files="@(_LinkedResolvedFileToPublishCandidate)" />
 		<Xamarin.MacDev.Tasks.ILLink
 				SessionId="$(BuildSessionId)"
+				CopyToWindows="$(_CopyLinkerOutputToWindows)"
+
 				AssemblyPaths="@(ManagedAssemblyToLink)"
 				ReferenceAssemblyPaths="@(ReferencePath)"
 				RootAssemblyNames="@(TrimmerRootAssembly)"

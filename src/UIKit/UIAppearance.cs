@@ -7,10 +7,7 @@
 // Copyright 2011, 2015 Xamarin Inc
 //
 
-using System.Reflection;
-
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace UIKit {
 #if __TVOS__
@@ -21,27 +18,29 @@ namespace UIKit {
 	/// <include file="../../docs/api/UIKit/UIAppearance.xml" path="/Documentation/Docs[@DocId='T:UIKit.UIAppearance']/*" />
 #endif
 	public partial class UIAppearance {
-		/// <param name="other">To be added.</param>
-		///         <summary>Whether this is equivalent to <paramref name="other" />.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
-		public override bool Equals (object other)
+		/// <summary>Determines whether the specified object is equal to the current <see cref="UIAppearance" />.</summary>
+		/// <param name="other">The object to compare with the current instance.</param>
+		/// <returns><see langword="true" /> if <paramref name="other" /> is a <see cref="UIAppearance" /> and has the same <see cref="Foundation.NSObject.Handle" />; otherwise, <see langword="false" />.</returns>
+		public override bool Equals (object? other)
 		{
-			UIAppearance ao = other as UIAppearance;
+			var ao = other as UIAppearance;
 			if (ao is null)
 				return false;
 			return ao.Handle == Handle;
 		}
 
 		/// <summary>Generates a hash code for the current instance.</summary>
-		///         <returns>A int containing the hash code for this instance.</returns>
-		///         <remarks>The algorithm used to generate the hash code is unspecified.</remarks>
+		/// <returns>A hash code for the current instance.</returns>
 		public override int GetHashCode ()
 		{
 			return Handle.GetHashCode ();
 		}
 
-		public static bool operator == (UIAppearance a, UIAppearance b)
+		/// <summary>Determines whether two <see cref="UIAppearance" /> instances have the same native handle.</summary>
+		/// <param name="a">The first instance to compare.</param>
+		/// <param name="b">The second instance to compare.</param>
+		/// <returns><see langword="true" /> if both instances are <see langword="null" /> or have the same <see cref="Foundation.NSObject.Handle" />; otherwise, <see langword="false" />.</returns>
+		public static bool operator == (UIAppearance? a, UIAppearance? b)
 		{
 			if (ReferenceEquals (a, null))
 				return ReferenceEquals (b, null);
@@ -50,7 +49,11 @@ namespace UIKit {
 			return a.Handle == b.Handle;
 		}
 
-		public static bool operator != (UIAppearance a, UIAppearance b)
+		/// <summary>Determines whether two <see cref="UIAppearance" /> instances have different native handles.</summary>
+		/// <param name="a">The first instance to compare.</param>
+		/// <param name="b">The second instance to compare.</param>
+		/// <returns><see langword="true" /> if the instances have different native handles or exactly one is <see langword="null" />; otherwise, <see langword="false" />.</returns>
+		public static bool operator != (UIAppearance? a, UIAppearance? b)
 		{
 			return !(a == b);
 		}
@@ -74,10 +77,12 @@ namespace UIKit {
 		}
 
 #if TVOS
-		// new in iOS9 but the only option for tvOS
 		const string selAppearanceWhenContainedInInstancesOfClasses = "appearanceWhenContainedInInstancesOfClasses:";
 
-		// +(instancetype _Nonnull)appearanceWhenContainedInInstancesOfClasses:(NSArray<Class<UIAppearanceContainer>> * _Nonnull)containerTypes
+		/// <summary>Gets the appearance proxy for a class in the specified containment hierarchy.</summary>
+		/// <param name="class_ptr">The Objective-C class pointer for the type to get the appearance proxy for.</param>
+		/// <param name="whenFoundIn">The types representing the containment hierarchy in which the appearance should be applied.</param>
+		/// <returns>The appearance proxy for the specified class when found in the specified containment hierarchy.</returns>
 		public static IntPtr GetAppearance (IntPtr class_ptr, params Type [] whenFoundIn)
 		{
 			using (var array = NSArray.FromIntPtrs (TypesToPointers (whenFoundIn))) {
@@ -88,11 +93,14 @@ namespace UIKit {
 
 		const string selAppearanceForTraitCollectionWhenContainedInInstancesOfClasses = "appearanceForTraitCollection:whenContainedInInstancesOfClasses:";
 
-		// new in iOS9 but the only option for tvOS
+		/// <summary>Gets the appearance proxy for a class with the specified trait collection in the specified containment hierarchy.</summary>
+		/// <param name="class_ptr">The Objective-C class pointer for the type to get the appearance proxy for.</param>
+		/// <param name="traits">The <see cref="UITraitCollection" /> for which to return the appearance proxy.</param>
+		/// <param name="whenFoundIn">The types representing the containment hierarchy in which the appearance should be applied.</param>
+		/// <returns>The appearance proxy for the specified class and traits when found in the specified containment hierarchy.</returns>
 		public static IntPtr GetAppearance (IntPtr class_ptr, UITraitCollection traits, params Type [] whenFoundIn)
 		{
-			if (traits is null)
-				throw new ArgumentNullException ("traits");
+			ArgumentNullException.ThrowIfNull (traits);
 
 			using (var array = NSArray.FromIntPtrs (TypesToPointers (whenFoundIn))) {
 				IntPtr result = Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr (class_ptr,
@@ -106,11 +114,10 @@ namespace UIKit {
 		const string selAppearanceWhenContainedIn = "appearanceWhenContainedIn:";
 		const string selAppearanceForTraitCollectionWhenContainedIn = "appearanceForTraitCollection:whenContainedIn:";
 
-		/// <param name="class_ptr">To be added.</param>
-		///         <param name="whenFoundIn">To be added.</param>
-		///         <summary>This object's appearance proxy in the specified containment hierarchy.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the appearance proxy for a class in the specified containment hierarchy.</summary>
+		/// <param name="class_ptr">The Objective-C class pointer for the type to get the appearance proxy for.</param>
+		/// <param name="whenFoundIn">The types representing the containment hierarchy in which the appearance should be applied.</param>
+		/// <returns>The appearance proxy for the specified class when found in the specified containment hierarchy.</returns>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public static IntPtr GetAppearance (IntPtr class_ptr, params Type [] whenFoundIn)
 		{
@@ -127,17 +134,15 @@ namespace UIKit {
 				ptrs);
 		}
 
-		/// <param name="class_ptr">To be added.</param>
-		///         <param name="traits">To be added.</param>
-		///         <param name="whenFoundIn">To be added.</param>
-		///         <summary>Returns an appearance proxy for the specified <paramref name="traits" /> when found in the <paramref name="whenFoundIn" /> containment hierarchy.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the appearance proxy for a class with the specified trait collection in the specified containment hierarchy.</summary>
+		/// <param name="class_ptr">The Objective-C class pointer for the type to get the appearance proxy for.</param>
+		/// <param name="traits">The <see cref="UITraitCollection" /> for which to return the appearance proxy.</param>
+		/// <param name="whenFoundIn">The types representing the containment hierarchy in which the appearance should be applied.</param>
+		/// <returns>The appearance proxy for the specified class and traits when found in the specified containment hierarchy.</returns>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public static IntPtr GetAppearance (IntPtr class_ptr, UITraitCollection traits, params Type [] whenFoundIn)
 		{
-			if (traits is null)
-				throw new ArgumentNullException ("traits");
+			ArgumentNullException.ThrowIfNull (traits);
 
 			var ptrs = TypesToPointers (whenFoundIn);
 
@@ -154,22 +159,17 @@ namespace UIKit {
 			GC.KeepAlive (traits);
 			return result;
 		}
-
-		[DllImport (Messaging.LIBOBJC_DYLIB, EntryPoint = "objc_msgSend")]
-		extern static IntPtr IntPtr_objc_msgSend_IntPtr_IntPtr_IntPtr_IntPtr_IntPtr_IntPtr_IntPtr_IntPtr_IntPtr_IntPtr_IntPtr (IntPtr receiver, IntPtr selector, IntPtr arg1, IntPtr arg2, IntPtr arg3, IntPtr arg4, System.IntPtr arg5, System.IntPtr arg6, System.IntPtr arg7, System.IntPtr arg8, System.IntPtr arg9, System.IntPtr arg10, System.IntPtr arg11);
 #endif
 
 		const string selAppearanceForTraitCollection = "appearanceForTraitCollection:";
 
-		/// <param name="class_ptr">To be added.</param>
-		///         <param name="traits">To be added.</param>
-		///         <summary>Returns an appearance proxy for the specified <paramref name="traits" />.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the appearance proxy for a class with the specified trait collection.</summary>
+		/// <param name="class_ptr">The Objective-C class pointer for the type to get the appearance proxy for.</param>
+		/// <param name="traits">The <see cref="UITraitCollection" /> for which to return the appearance proxy.</param>
+		/// <returns>The appearance proxy for the specified class and traits.</returns>
 		public static IntPtr GetAppearance (IntPtr class_ptr, UITraitCollection traits)
 		{
-			if (traits is null)
-				throw new ArgumentNullException ("traits");
+			ArgumentNullException.ThrowIfNull (traits);
 
 			IntPtr result = Messaging.IntPtr_objc_msgSend_IntPtr (class_ptr, Selector.GetHandle (UIAppearance.selAppearanceForTraitCollection), traits.Handle);
 			GC.KeepAlive (traits);

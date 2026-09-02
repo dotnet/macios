@@ -83,7 +83,7 @@ namespace Social {
 	}
 
 	/// <summary>Enumeration with the various kinds of social services that can be used.</summary>
-	/// <remarks>This enumeration is used to map into the underlying set of services offered by the social framework.   It is intended to assist code completion while developing and take the gueswork out of using the framework in some entry points that take an NSString as a parameter.</remarks>
+	/// <remarks>This enumeration is used to map into the underlying set of services offered by the social framework. It is intended to assist code completion while developing and take the guesswork out of using the framework in some entry points that take an NSString as a parameter.</remarks>
 	enum SLServiceKind {
 		/// <summary>Facebook services</summary>
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use Facebook SDK instead.")]

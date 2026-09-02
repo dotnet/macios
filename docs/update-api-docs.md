@@ -24,7 +24,7 @@ The steps are:
     * Copy our platform assemblies and their xml files into their corresponding directory.
     * Create a new commit and push it to origin.
 
-4. Go here: [Continuous Integration](https://ops.microsoft.com/#/repos/85f784f4-01e7-ffb8-ed06-a012f7d649c0?tabName=ci) (might need VPN enabled, otherwise sometimes you'll get a 403 error page) and then:
+4. Go here: [OPS dotnet/macios-api-docs / Continuous Integration](https://ops.microsoft.com/#/repos/85f784f4-01e7-ffb8-ed06-a012f7d649c0?tabName=ci) (if you have to go through the authentication workflow you'll end up on the OPS homepage, in which case just click the link again) and then:
 
 	* Expand the '.NET macios API docs' job, and then:
 	* Change `Target Repo` -> `Target Branch` to `netX.Y-xcodeZ.W` (same branch as created above).
@@ -47,7 +47,9 @@ The steps are:
 
     Once this pull request has been merged, an automated publishing job will get any changes in the `main` branch into the `live` branch, which will then show up on https://learn.microsoft.com.
 
-7. The last step is to create a pull request in the [binaries](https://apidrop.visualstudio.com/_git/binaries) repository for the `netX.Y-xcodeZ.W` we created with the new assemblies (into the `master` branch).
+7. Create a pull request in the [binaries](https://apidrop.visualstudio.com/_git/binaries) repository for the `netX.Y-xcodeZ.W` we created with the new assemblies (into the `master` branch).
+
+8. The final step is to flip the monikers from prerelease to live monikers (another ticket has to be created for this). Sample ticket: [#540739](https://dev.azure.com/msft-skilling/Content/_workitems/edit/540739).
 
 ## How to create new monikers
 
@@ -67,12 +69,14 @@ So for the initial .NET 10 release, when we shipped APIs for iOS 26.0, tvOS 26.0
 We can't create monikers ourselves, we have to request their creation:
 
 1. Go here: [Learn Request Central](https://microsoft.sharepoint.com/teams/Partnerships/SitePages/Learn%20Request%20Central.aspx) (you might have to request access the first time you go here)
-	a. Under "GitHub Publishing Services" click [Submit your request](https://forms.office.com/Pages/ResponsePage.aspx?id=v4j5cvGGr0GRqy180BHbRxxUz-ZV53lLrgTaBjGRmtBUNlkzT01CSzNBSE1SRU8yRzU5UTZFNjQyOC4u)
-	b. Fill in the form with:
+	1. Under "GitHub Publishing Services" click [Submit your request](https://forms.office.com/Pages/ResponsePage.aspx?id=v4j5cvGGr0GRqy180BHbRxxUz-ZV53lLrgTaBjGRmtBUNlkzT01CSzNBSE1SRU8yRzU5UTZFNjQyOC4u)
+	2. Fill in the form with:
 		1. I am working on publishing a new content set.
 		2. I need help with updating information architecture (IA) or navigation.
 		3. Request monikers.
 		This will lead you to a template to fill an issue. Here's a sample of how I filled it out once: [#480959](https://dev.azure.com/msft-skilling/Content/_workitems/edit/480959).
+
+Note: monikers are typically created as prerelease monikers. Another request has to be created to flip them to live monikers once everything else is in place.
 
 It can be helpful to view info about all monikers here: [All monikers](https://ops.microsoft.com#/monikers)
 

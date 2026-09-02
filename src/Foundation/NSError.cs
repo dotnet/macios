@@ -24,73 +24,67 @@
 //
 // Simple class for passing NSErrors as EventArgs
 //
+using System.ComponentModel;
 using System.Diagnostics;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Foundation {
-	/// <include file="../../docs/api/Foundation/NSErrorEventArgs.xml" path="/Documentation/Docs[@DocId='T:Foundation.NSErrorEventArgs']/*" />
-	[SupportedOSPlatform ("ios")]
-	[SupportedOSPlatform ("maccatalyst")]
-	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("tvos")]
+	/// <summary>Provides data for the numerous events in various frameworks.</summary>
+	/// <remarks>
+	/// <para>Use this class when you want to create event handlers that get an <see cref="NSError" />.</para>
+	/// <example>
+	/// <code lang="csharp lang-csharp"><![CDATA[
+	/// public class Sample {
+	///     public event EventHandler<NSErrorEventArgs> Failed;
+	/// }
+	/// ]]></code>
+	/// </example>
+	/// </remarks>
 	public class NSErrorEventArgs : EventArgs {
+		/// <summary>Initializes a new instance of the <see cref="NSErrorEventArgs" /> class.</summary>
 		/// <param name="error">The underlying error.</param>
-		///         <summary>Initializes a new instance of the NSErrorEventArgs class.</summary>
-		///         <remarks>
-		///         </remarks>
-		public NSErrorEventArgs (NSError error)
+		public NSErrorEventArgs (NSError? error)
 		{
 			Error = error;
 		}
 
-		/// <summary>Retrieves the NSError value.</summary>
-		///         <value />
-		///         <remarks>To be added.</remarks>
-		public NSError Error { get; private set; }
+		/// <summary>Gets the <see cref="NSError" /> value.</summary>
+		/// <value>The error that occurred, or <see langword="null" /> if no error occurred.</value>
+		public NSError? Error { get; private set; }
 	}
 
 	public partial class NSError : NSObject {
 #if !COREBUILD
-		/// <summary>Do not use the Default Constructor unless you are dealing with a low-level API that will initialize the object for you.</summary>
-		///         <remarks>
-		///
-		/// 	  The default constructor for NSError leaves the object in a
-		/// 	  partial state that can only be initialized by a handful of
-		/// 	  low-level Objective-C APIs.  In general, you should not use
-		/// 	  this constructor, you should instead use the constructor
-		/// 	  that takes an NSString error domain argument.
-		///
-		///         </remarks>
-		[Advice ("Always specify a domain and error code when creating an NSError instance")]
+#if !XAMCORE_5_0
+		/// <summary>Do not use the default constructor unless you are dealing with a low-level API that will initialize the object for you.</summary>
+		/// <remarks>
+		/// <para>The default constructor for <see cref="NSError" /> leaves the object in a partial state that can only be initialized by a handful of low-level Objective-C APIs. In general, you should not use this constructor, you should instead use the constructor that takes an <see cref="NSString" /> error domain argument.</para>
+		/// </remarks>
+		[Obsolete ("Use the other constructor or factory method instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		public NSError () : this (new NSString ("Invalid .ctor used"), 0, null)
 		{
-			Debug.WriteLine ("Warning: you created an NSError without specifying a domain");
 		}
+#endif // XAMCORE_5_0
 
-		/// <param name="domain">To be added.</param>
-		/// <param name="code">To be added.</param>
-		/// <summary>Creates an NSError instance from a given domain and code.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Creates an <see cref="NSError" /> instance from a given domain and code.</summary>
+		/// <param name="domain">The error domain.</param>
+		/// <param name="code">The error code.</param>
+		/// <returns>A new <see cref="NSError" /> instance.</returns>
 		public static NSError FromDomain (NSString domain, nint code)
 		{
 			return FromDomain (domain, code, null);
 		}
 
-		/// <param name="domain">Error domain</param>
-		/// <param name="code">Error code.</param>
-		/// <summary>A constructor that initializes the object with a specified domain and an error code.</summary>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Initializes a new instance of the <see cref="NSError" /> class with a specified domain and error code.</summary>
+		/// <param name="domain">The error domain.</param>
+		/// <param name="code">The error code.</param>
 		public NSError (NSString domain, nint code) : this (domain, code, null)
 		{
 		}
 		/// <summary>Returns a string representation of the value of the current instance.</summary>
-		///         <returns>
-		///         </returns>
-		///         <remarks>
-		///         </remarks>
+		/// <returns>The localized description of the error.</returns>
 		public override string ToString ()
 		{
 			return LocalizedDescription;

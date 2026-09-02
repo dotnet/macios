@@ -324,7 +324,7 @@ namespace AudioToolbox {
 		public EventHandler<PropertyFoundEventArgs>? PropertyFound;
 		/// <param name="propertyID">The property that has been found.</param>
 		///         <param name="ioFlags" />
-		///         <summary>Invoked when a propety is found.</summary>
+		///         <summary>Invoked when a property is found.</summary>
 		///         <remarks>The default implementation merely raises the PropetyFound event.</remarks>
 		protected virtual void OnPropertyFound (AudioFileStreamProperty propertyID, ref AudioFileStreamPropertyFlag ioFlags)
 		{
@@ -418,7 +418,7 @@ namespace AudioToolbox {
 		}
 
 		/// <param name="bytes">Buffer containing the data.</param>
-		///         <param name="offset">First byte withing the array that contains the data to decode.</param>
+		///         <param name="offset">First byte within the array that contains the data to decode.</param>
 		///         <param name="count">Number of bytes to parse.</param>
 		///         <param name="discontinuity">True if this invocation to ParseBytes is contiguous to the previous one, false otherwise.</param>
 		///         <summary>Parses and decode a portion of the array of bytes provided.</summary>

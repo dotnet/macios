@@ -133,9 +133,9 @@ namespace AudioToolbox {
 		EnhancedAC3 = 0x65632d33, // 'ec-3'
 		/// <summary>To be added.</summary>
 		Flac = 0x666c6163, // 'flac'
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		LatmInLoas = 0x6c6f6173, // 'loas'
 		/// <summary>To be added.</summary>
@@ -281,7 +281,7 @@ namespace AudioToolbox {
 		const int AudioUnitSampleFractionBits = 24;
 		const AudioFormatFlags AudioFormatFlagIsBigEndian = 0;
 
-		/// <summary>Developers should not use this deprecated field. Canonical is no longer encouraged, since fixed-point no longer provides a performance advantage over floating point. 'AudioFormatFlagsNativeFloatPacked' is preffered instead.</summary>
+		/// <summary>Developers should not use this deprecated field. Canonical is no longer encouraged, since fixed-point no longer provides a performance advantage over floating point. 'AudioFormatFlagsNativeFloatPacked' is preferred instead.</summary>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -1333,34 +1333,34 @@ namespace AudioToolbox {
 
 
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		Ogg_3_0 = AC3_3_0,
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		Ogg_4_0 = Wave_4_0_B,
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		Ogg_5_0 = (212U << 16) | 5,
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		Ogg_5_1 = (213U << 16) | 6,
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		Ogg_6_1 = (214U << 16) | 7,
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		Ogg_7_1 = (215U << 16) | 8,
 
 		[SupportedOSPlatform ("ios18.0")]
@@ -1834,7 +1834,7 @@ namespace AudioToolbox {
 		Hvxc = 9,
 	}
 
-	/// <summary>SMPTE-based time representation.   SMPTE times are used to synchronize an point in the audio stream with some external event.</summary>
+	/// <summary>SMPTE-based time representation. SMPTE times are used to synchronize a point in the audio stream with some external event.</summary>
 	///     <remarks>SMPTE stands for "Society of Motion Picture and Television Engineers"</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]

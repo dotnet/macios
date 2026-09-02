@@ -29,8 +29,8 @@ namespace Mono.ApiTools {
 		public static int Main (string [] args)
 		{
 			bool showHelp = false;
-			string output = null;
-			List<string> asms = null;
+			string? output = null;
+			List<string>? asms = null;
 			ApiInfoConfig config = new ApiInfoConfig ();
 
 			var options = new Mono.Options.OptionSet {
@@ -82,7 +82,7 @@ namespace Mono.ApiTools {
 				return showHelp ? 0 : 1;
 			}
 
-			TextWriter outputStream = null;
+			TextWriter? outputStream = null;
 			try {
 				if (!string.IsNullOrEmpty (output))
 					outputStream = new StreamWriter (output);
@@ -116,7 +116,7 @@ namespace Mono.ApiTools {
 
 		public List<Stream> ResolveStreams { get; } = new List<Stream> ();
 
-		public TypeHelper TypeHelper { get; private set; }
+		public TypeHelper TypeHelper { get; private set; } = null!;
 
 		public void ResolveTypes ()
 		{
@@ -156,7 +156,7 @@ namespace Mono.ApiTools {
 	}
 
 	public static class ApiInfo {
-		public static void Generate (string assemblyPath, TextWriter outStream, ApiInfoConfig config = null)
+		public static void Generate (string assemblyPath, TextWriter outStream, ApiInfoConfig? config = null)
 		{
 			if (assemblyPath is null)
 				throw new ArgumentNullException (nameof (assemblyPath));
@@ -164,7 +164,7 @@ namespace Mono.ApiTools {
 			Generate (new [] { assemblyPath }, null, outStream, config);
 		}
 
-		public static void Generate (Stream assemblyStream, TextWriter outStream, ApiInfoConfig config = null)
+		public static void Generate (Stream assemblyStream, TextWriter outStream, ApiInfoConfig? config = null)
 		{
 			if (assemblyStream is null)
 				throw new ArgumentNullException (nameof (assemblyStream));
@@ -172,17 +172,17 @@ namespace Mono.ApiTools {
 			Generate (null, new [] { assemblyStream }, outStream, config);
 		}
 
-		public static void Generate (IEnumerable<string> assemblyPaths, TextWriter outStream, ApiInfoConfig config = null)
+		public static void Generate (IEnumerable<string> assemblyPaths, TextWriter outStream, ApiInfoConfig? config = null)
 		{
 			Generate (assemblyPaths, null, outStream, config);
 		}
 
-		public static void Generate (IEnumerable<Stream> assemblyStreams, TextWriter outStream, ApiInfoConfig config = null)
+		public static void Generate (IEnumerable<Stream> assemblyStreams, TextWriter outStream, ApiInfoConfig? config = null)
 		{
 			Generate (null, assemblyStreams, outStream, config);
 		}
 
-		public static void Generate (IEnumerable<string> assemblyPaths, IEnumerable<Stream> assemblyStreams, TextWriter outStream, ApiInfoConfig config = null)
+		public static void Generate (IEnumerable<string>? assemblyPaths, IEnumerable<Stream>? assemblyStreams, TextWriter outStream, ApiInfoConfig? config = null)
 		{
 			if (outStream is null)
 				throw new ArgumentNullException (nameof (outStream));
@@ -204,7 +204,7 @@ namespace Mono.ApiTools {
 			Generate (assemblyPaths, assemblyStreams, outStream, state);
 		}
 
-		internal static void Generate (IEnumerable<string> assemblyFiles, IEnumerable<Stream> assemblyStreams, TextWriter outStream, State state = null)
+		internal static void Generate (IEnumerable<string>? assemblyFiles, IEnumerable<Stream>? assemblyStreams, TextWriter outStream, State? state = null)
 		{
 			if (outStream is null)
 				throw new ArgumentNullException (nameof (outStream));
@@ -295,7 +295,7 @@ namespace Mono.ApiTools {
 	}
 
 	class AssemblyCollection {
-		XmlWriter writer;
+		XmlWriter writer = null!;
 		List<AssemblyDefinition> assemblies = new List<AssemblyDefinition> ();
 		State state;
 
@@ -384,7 +384,7 @@ namespace Mono.ApiTools {
 					continue;
 
 				writer.WriteStartElement ("attribute");
-				AddAttribute ("name", typeof (TypeForwardedToAttribute).FullName);
+				AddAttribute ("name", typeof (TypeForwardedToAttribute).FullName!);
 				writer.WriteStartElement ("properties");
 				writer.WriteStartElement ("property");
 				AddAttribute ("name", "Destination");
@@ -497,7 +497,7 @@ namespace Mono.ApiTools {
 			this.members = members;
 		}
 
-		protected virtual ICustomAttributeProvider GetAdditionalCustomAttributeProvider (MemberReference member)
+		protected virtual ICustomAttributeProvider? GetAdditionalCustomAttributeProvider (MemberReference member)
 		{
 			return null;
 		}
@@ -510,10 +510,14 @@ namespace Mono.ApiTools {
 				writer.WriteStartElement (Tag);
 				AddAttribute ("name", GetName (member));
 				if (!NoMemberAttributes)
-					AddAttribute ("attrib", GetMemberAttributes (member));
+					AddAttribute ("attrib", GetMemberAttributes (member) ?? "");
 				AddExtraAttributes (member);
 
-				AttributeData.OutputAttributes (writer, state, (ICustomAttributeProvider) member, GetAdditionalCustomAttributeProvider (member));
+				var additionalProvider = GetAdditionalCustomAttributeProvider (member);
+				if (additionalProvider is not null)
+					AttributeData.OutputAttributes (writer, state, (ICustomAttributeProvider) member, additionalProvider);
+				else
+					AttributeData.OutputAttributes (writer, state, (ICustomAttributeProvider) member);
 
 				AddExtraData (member);
 				writer.WriteEndElement (); // Tag
@@ -535,7 +539,7 @@ namespace Mono.ApiTools {
 			return "NoNAME";
 		}
 
-		protected virtual string GetMemberAttributes (MemberReference memberDefenition)
+		protected virtual string? GetMemberAttributes (MemberReference memberDefenition)
 		{
 			return null;
 		}
@@ -596,7 +600,7 @@ namespace Mono.ApiTools {
 		TypeDefinition type;
 
 		public TypeData (XmlWriter writer, TypeDefinition type, State state)
-			: base (writer, null, state)
+			: base (writer, [], state)
 		{
 			this.type = type;
 		}
@@ -625,7 +629,7 @@ namespace Mono.ApiTools {
 			string charSet = GetCharSet (type);
 			AddAttribute ("charset", charSet);
 
-			string layout = GetLayout (type);
+			string? layout = GetLayout (type);
 			if (layout is not null)
 				AddAttribute ("layout", layout);
 
@@ -732,7 +736,7 @@ namespace Mono.ApiTools {
 			writer.WriteEndElement (); // class
 		}
 
-		static FieldReference GetEnumValueField (TypeDefinition type)
+		static FieldReference? GetEnumValueField (TypeDefinition type)
 		{
 			foreach (FieldDefinition field in type.Fields)
 				if (field.IsSpecialName && field.Name == "value__")
@@ -793,7 +797,7 @@ namespace Mono.ApiTools {
 			return CharSet.None.ToString ();
 		}
 
-		static string GetLayout (TypeDefinition type)
+		static string? GetLayout (TypeDefinition type)
 		{
 			TypeAttributes maskedLayout = type.Attributes & TypeAttributes.LayoutMask;
 			if (maskedLayout == TypeAttributes.AutoLayout)
@@ -926,8 +930,10 @@ namespace Mono.ApiTools {
 		}
 
 		sealed class ParameterComparer : IEqualityComparer<ParameterDefinition> {
-			public bool Equals (ParameterDefinition x, ParameterDefinition y)
+			public bool Equals (ParameterDefinition? x, ParameterDefinition? y)
 			{
+				if (x is null || y is null)
+					return x is null && y is null;
 				return x.ParameterType.Name == y.ParameterType.Name;
 			}
 
@@ -1008,11 +1014,12 @@ namespace Mono.ApiTools {
 			base.AddExtraAttributes (memberDefinition);
 
 			FieldDefinition field = (FieldDefinition) memberDefinition;
-			AddAttribute ("fieldtype", Utils.CleanupTypeName (field.FieldType));
+			var fieldTypeName = NullabilityHelper.FormatTypeNameWithFullNullability (field.FieldType, field, field.DeclaringType);
+			AddAttribute ("fieldtype", fieldTypeName);
 
 			if (field.IsLiteral) {
 				object value = field.Constant;//object value = field.GetValue (null);
-				string stringValue = null;
+				string? stringValue = null;
 				//if (value is Enum) {
 				//    // FIXME: when Mono bug #60090 has been
 				//    // fixed, we should just be able to use
@@ -1049,21 +1056,21 @@ namespace Mono.ApiTools {
 			return prop.Name;
 		}
 
-		MethodDefinition [] GetMethods (PropertyDefinition prop, out bool haveParameters)
+		MethodDefinition []? GetMethods (PropertyDefinition prop, out bool haveParameters)
 		{
 			MethodDefinition _get = prop.GetMethod;
 			MethodDefinition _set = prop.SetMethod;
 			bool haveGet = (_get is not null && TypeData.MustDocumentMethod (_get));
 			bool haveSet = (_set is not null && TypeData.MustDocumentMethod (_set));
-			haveParameters = haveGet || (haveSet && _set.Parameters.Count > 1);
+			haveParameters = haveGet || (haveSet && _set!.Parameters.Count > 1);
 			MethodDefinition [] methods;
 
 			if (haveGet && haveSet) {
-				methods = new MethodDefinition [] { _get, _set };
+				methods = new MethodDefinition [] { _get!, _set! };
 			} else if (haveGet) {
-				methods = new MethodDefinition [] { _get };
+				methods = new MethodDefinition [] { _get! };
 			} else if (haveSet) {
-				methods = new MethodDefinition [] { _set };
+				methods = new MethodDefinition [] { _set! };
 			} else {
 				//odd
 				return null;
@@ -1077,10 +1084,11 @@ namespace Mono.ApiTools {
 			base.AddExtraAttributes (memberDefinition);
 
 			PropertyDefinition prop = (PropertyDefinition) memberDefinition;
-			AddAttribute ("ptype", Utils.CleanupTypeName (prop.PropertyType));
+			var ptypeName = NullabilityHelper.FormatTypeNameWithFullNullability (prop.PropertyType, prop, prop.DeclaringType);
+			AddAttribute ("ptype", ptypeName);
 
 			bool haveParameters;
-			MethodDefinition [] methods = GetMethods ((PropertyDefinition) memberDefinition, out haveParameters);
+			MethodDefinition []? methods = GetMethods ((PropertyDefinition) memberDefinition, out haveParameters);
 
 			if (methods is not null && haveParameters) {
 				string parms = Parameters.GetSignature (methods [0].Parameters);
@@ -1095,7 +1103,7 @@ namespace Mono.ApiTools {
 			base.AddExtraData (memberDefenition);
 
 			bool haveParameters;
-			MethodDefinition [] methods = GetMethods ((PropertyDefinition) memberDefenition, out haveParameters);
+			MethodDefinition []? methods = GetMethods ((PropertyDefinition) memberDefenition, out haveParameters);
 
 			if (methods is null)
 				return;
@@ -1143,7 +1151,8 @@ namespace Mono.ApiTools {
 			base.AddExtraAttributes (memberDefinition);
 
 			EventDefinition evt = (EventDefinition) memberDefinition;
-			AddAttribute ("eventtype", Utils.CleanupTypeName (evt.EventType));
+			var evtTypeName = NullabilityHelper.FormatTypeNameWithFullNullability (evt.EventType, evt, evt.DeclaringType);
+			AddAttribute ("eventtype", evtTypeName);
 		}
 
 		public override string ParentTag {
@@ -1210,9 +1219,10 @@ namespace Mono.ApiTools {
 				// base method can come from another assembly.
 				AddAttribute ("is-override", "true");
 			}
-			string rettype = Utils.CleanupTypeName (mbase.MethodReturnType.ReturnType);
-			if (rettype != "System.Void" || !mbase.IsConstructor)
-				AddAttribute ("returntype", (rettype));
+			string rettype = NullabilityHelper.FormatTypeNameWithFullNullability (mbase.MethodReturnType.ReturnType, mbase.MethodReturnType, mbase);
+			if (rettype != "System.Void" || !mbase.IsConstructor) {
+				AddAttribute ("returntype", rettype);
+			}
 			//
 			//			if (mbase.MethodReturnType.HasCustomAttributes)
 			//				AttributeData.OutputAttributes (writer, mbase.MethodReturnType);
@@ -1296,12 +1306,12 @@ namespace Mono.ApiTools {
 					pt = brt.ElementType;
 				}
 
-				AddAttribute ("type", Utils.CleanupTypeName (pt));
+				AddAttribute ("type", NullabilityHelper.FormatTypeNameWithFullNullability (pt, parameter, parameter.Method as ICustomAttributeProvider));
 
 				if (parameter.IsOptional) {
 					AddAttribute ("optional", "true");
 					if (parameter.HasConstant)
-						AddAttribute ("defaultValue", parameter.Constant is null ? "NULL" : parameter.Constant.ToString ());
+						AddAttribute ("defaultValue", parameter.Constant is null ? "NULL" : parameter.Constant.ToString () ?? "");
 				}
 
 				if (direction != "in")
@@ -1399,6 +1409,10 @@ namespace Mono.ApiTools {
 			switch (attribute.AttributeType.FullName) {
 			case "System.Runtime.CompilerServices.NativeIntegerAttribute":
 				return false;
+			case "System.Runtime.CompilerServices.NullableAttribute":
+			case "System.Runtime.CompilerServices.NullableContextAttribute":
+				// Nullability is already rendered via '?' annotations on type names.
+				return true;
 			}
 
 			if (!state.TypeHelper.IsPublic (attribute))
@@ -1450,11 +1464,204 @@ namespace Mono.ApiTools {
 
 	}
 
+	static class NullabilityHelper {
+		const string NullableAttributeName = "System.Runtime.CompilerServices.NullableAttribute";
+		const string NullableContextAttributeName = "System.Runtime.CompilerServices.NullableContextAttribute";
+
+		// Gets the NullableContextAttribute flag from a method or type
+		public static byte? GetNullableContextFlag (ICustomAttributeProvider provider)
+		{
+			if (provider is null)
+				return null;
+
+			if (!provider.HasCustomAttributes)
+				return GetNullableContextFromParent (provider);
+
+			foreach (var attr in provider.CustomAttributes) {
+				if (attr.AttributeType.FullName != NullableContextAttributeName)
+					continue;
+				if (attr.ConstructorArguments.Count == 1 && attr.ConstructorArguments [0].Value is byte b)
+					return b;
+			}
+
+			return GetNullableContextFromParent (provider);
+		}
+
+		static byte? GetNullableContextFromParent (ICustomAttributeProvider? provider)
+		{
+			if (provider is MethodDefinition method)
+				return GetNullableContextFlag (method.DeclaringType);
+			if (provider is PropertyDefinition prop)
+				return GetNullableContextFlag (prop.DeclaringType);
+			if (provider is FieldDefinition field)
+				return GetNullableContextFlag (field.DeclaringType);
+			if (provider is EventDefinition evt)
+				return GetNullableContextFlag (evt.DeclaringType);
+			if (provider is TypeDefinition type) {
+				if (type.DeclaringType is not null)
+					return GetNullableContextFlag (type.DeclaringType);
+				// Fall back to module-level NullableContextAttribute
+				return GetNullableContextFlagFromAttributes (type.Module);
+			}
+			return null;
+		}
+
+		static byte? GetNullableContextFlagFromAttributes (ICustomAttributeProvider? provider)
+		{
+			if (provider is null || !provider.HasCustomAttributes)
+				return null;
+
+			foreach (var attr in provider.CustomAttributes) {
+				if (attr.AttributeType.FullName != NullableContextAttributeName)
+					continue;
+				if (attr.ConstructorArguments.Count == 1 && attr.ConstructorArguments [0].Value is byte b)
+					return b;
+			}
+			return null;
+		}
+
+		// Gets the full NullableAttribute byte array from a provider.
+		// Returns null if no NullableAttribute is present.
+		static byte []? GetNullabilityBytesFromProvider (ICustomAttributeProvider provider)
+		{
+			if (!provider.HasCustomAttributes)
+				return null;
+
+			foreach (var attr in provider.CustomAttributes) {
+				if (attr.AttributeType.FullName != NullableAttributeName)
+					continue;
+				if (attr.ConstructorArguments.Count != 1)
+					continue;
+
+				var arg = attr.ConstructorArguments [0];
+				if (arg.Value is byte b)
+					return new byte [] { b };
+				if (arg.Value is CustomAttributeArgument [] arr) {
+					var result = new byte [arr.Length];
+					for (int i = 0; i < arr.Length; i++) {
+						if (arr [i].Value is byte val) {
+							result [i] = val;
+						}
+					}
+					return result;
+				}
+			}
+
+			return null;
+		}
+
+		// Gets the full nullability byte array for a provider, falling back to NullableContext.
+		static byte []? GetFullNullabilityBytes (ICustomAttributeProvider provider, ICustomAttributeProvider? context)
+		{
+			var bytes = GetNullabilityBytesFromProvider (provider);
+			if (bytes is not null)
+				return bytes;
+
+			if (context is not null) {
+				var contextFlag = GetNullableContextFlag (context);
+				if (contextFlag.HasValue)
+					return new byte [] { contextFlag.Value };
+			}
+
+			return null;
+		}
+
+		// Formats a type name with full nullability annotations, including generic type arguments.
+		// This reads the NullableAttribute byte array and applies '?' at every position in
+		// the type tree (depth-first), not just the top-level type.
+		public static string FormatTypeNameWithFullNullability (TypeReference type, ICustomAttributeProvider provider, ICustomAttributeProvider? context)
+		{
+			var bytes = GetFullNullabilityBytes (provider, context);
+			if (bytes is null)
+				return Utils.CleanupTypeName (type);
+
+			int index = 0;
+			return FormatTypeWithNullabilityBytes (type, bytes, ref index);
+		}
+
+		// Recursively formats a type name, consuming nullability bytes in depth-first order.
+		// Value types don't consume bytes. Reference types consume one byte each.
+		// A single-byte array means uniform nullability for all positions.
+		static string FormatTypeWithNullabilityBytes (TypeReference type, byte [] bytes, ref int index)
+		{
+			// Void is never nullable
+			if (type.FullName == "System.Void")
+				return "System.Void";
+
+			// Value types don't consume bytes from the NullableAttribute array.
+			// Their nullability is structural (Nullable<T>).
+			if (type.IsValueType) {
+				if (type is GenericInstanceType valueGenType) {
+					// Handle Nullable<T>
+					if (valueGenType.ElementType.FullName == "System.Nullable`1") {
+						return FormatTypeWithNullabilityBytes (valueGenType.GenericArguments [0], bytes, ref index) + "?";
+					}
+					// Other generic value types: recurse into args
+					var sb = new StringBuilder ();
+					sb.Append (CleanForNullability (valueGenType.ElementType.FullName));
+					sb.Append ('[');
+					for (int i = 0; i < valueGenType.GenericArguments.Count; i++) {
+						if (i > 0)
+							sb.Append (", ");
+						sb.Append (FormatTypeWithNullabilityBytes (valueGenType.GenericArguments [i], bytes, ref index));
+					}
+					sb.Append (']');
+					return sb.ToString ();
+				}
+				return Utils.CleanupTypeName (type);
+			}
+
+			// Reference types consume one byte
+			byte currentByte;
+			if (bytes.Length == 1) {
+				// Single byte: uniform nullability for all positions
+				currentByte = bytes [0];
+			} else {
+				currentByte = index < bytes.Length ? bytes [index] : (byte) 0;
+				index++;
+			}
+			bool isNullable = currentByte == 2;
+
+			if (type is ArrayType arrType) {
+				string ranks = new string (',', arrType.Rank - 1);
+				return FormatTypeWithNullabilityBytes (arrType.ElementType, bytes, ref index) + "[" + ranks + "]" + (isNullable ? "?" : "");
+			}
+
+			if (type is GenericInstanceType genType) {
+				var sb = new StringBuilder ();
+				sb.Append (CleanForNullability (genType.ElementType.FullName));
+				sb.Append ('[');
+				for (int i = 0; i < genType.GenericArguments.Count; i++) {
+					if (i > 0)
+						sb.Append (", ");
+					sb.Append (FormatTypeWithNullabilityBytes (genType.GenericArguments [i], bytes, ref index));
+				}
+				sb.Append (']');
+				if (isNullable)
+					sb.Append ('?');
+				return sb.ToString ();
+			}
+
+			return Utils.CleanupTypeName (type) + (isNullable ? "?" : "");
+		}
+
+		// Converts / to + for nested types (same as CleanupTypeName but without <> replacement,
+		// since we build the generic argument list ourselves with nullability annotations).
+		// The generic arity suffix (e.g., `2) is preserved because mono-api-html uses it to detect generics.
+		static string CleanForNullability (string name)
+		{
+			return name.Replace ('/', '+');
+		}
+	}
+
 	class TypeReferenceComparer : IComparer<TypeReference> {
 		public static TypeReferenceComparer Default = new TypeReferenceComparer ();
 
-		public int Compare (TypeReference a, TypeReference b)
+		public int Compare (TypeReference? a, TypeReference? b)
 		{
+			if (a is null && b is null) return 0;
+			if (a is null) return -1;
+			if (b is null) return 1;
 			int result = String.Compare (a.Namespace, b.Namespace, StringComparison.Ordinal);
 			if (result != 0)
 				return result;
@@ -1466,8 +1673,11 @@ namespace Mono.ApiTools {
 	class MemberReferenceComparer : IComparer {
 		public static MemberReferenceComparer Default = new MemberReferenceComparer ();
 
-		public int Compare (object a, object b)
+		public int Compare (object? a, object? b)
 		{
+			if (a is null && b is null) return 0;
+			if (a is null) return -1;
+			if (b is null) return 1;
 			MemberReference ma = (MemberReference) a;
 			MemberReference mb = (MemberReference) b;
 			return String.Compare (ma.Name, mb.Name, StringComparison.Ordinal);
@@ -1477,8 +1687,11 @@ namespace Mono.ApiTools {
 	class PropertyDefinitionComparer : IComparer<PropertyDefinition> {
 		public static PropertyDefinitionComparer Default = new PropertyDefinitionComparer ();
 
-		public int Compare (PropertyDefinition ma, PropertyDefinition mb)
+		public int Compare (PropertyDefinition? ma, PropertyDefinition? mb)
 		{
+			if (ma is null && mb is null) return 0;
+			if (ma is null) return -1;
+			if (mb is null) return 1;
 			int res = String.Compare (ma.Name, mb.Name, StringComparison.Ordinal);
 			if (res != 0)
 				return res;
@@ -1499,8 +1712,11 @@ namespace Mono.ApiTools {
 	class MethodDefinitionComparer : IComparer {
 		public static MethodDefinitionComparer Default = new MethodDefinitionComparer ();
 
-		public int Compare (object a, object b)
+		public int Compare (object? a, object? b)
 		{
+			if (a is null && b is null) return 0;
+			if (a is null) return -1;
+			if (b is null) return 1;
 			MethodDefinition ma = (MethodDefinition) a;
 			MethodDefinition mb = (MethodDefinition) b;
 			int res = String.Compare (ma.Name, mb.Name, StringComparison.Ordinal);

@@ -12,9 +12,8 @@
     <TestLibrariesDirectory>$(RootTestsDirectory)\test-libraries</TestLibrariesDirectory>
     <MonoTouchTestDirectory>$(RootTestsDirectory)\monotouch-test</MonoTouchTestDirectory>
 
-    <LinkMode>None</LinkMode>
     <!-- Don't remove native symbols, because it makes debugging native crashes harder -->
-    <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
+    <NoSymbolStrip>true</NoSymbolStrip>
 
     <DefineConstants Condition="'$(Configuration)' == 'Debug'">$(DefineConstants);DEBUG</DefineConstants>
 
@@ -40,58 +39,28 @@
 
     <!-- warning CS8002: Referenced assembly 'Touch.Client, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null' does not have a strong name. -->
     <NoWarn>$(NoWarn);CS8002</NoWarn>
-
-    <!-- We're warning-free, so let's make sure we stay that way -->
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors>Nullable</WarningsAsErrors>
   </PropertyGroup>
 
   <ItemGroup>
-    <CustomEntitlements Include="com.apple.security.network.client" Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'" Type="boolean" Value="true" />
-    <CustomEntitlements Include="com.apple.security.network.server" Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'" Type="boolean" Value="true" />
+    <CustomEntitlements Include="com.apple.security.network.client" Condition="'$(SdkIsDesktop)' == 'true'" Type="boolean" Value="true" />
+    <CustomEntitlements Include="com.apple.security.network.server" Condition="'$(SdkIsDesktop)' == 'true'" Type="boolean" Value="true" />
     <CustomEntitlements Include="com.apple.developer.networking.multicast" Condition="'$(_PlatformName)' == 'iOS' And '$(SdkIsSimulator)' == 'true'" Type="boolean" Value="true" />
-    <CustomEntitlements Include="com.apple.developer.ubiquity-kvstore-identifier" Condition="('$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS') And '$(SdkIsSimulator)' == 'true'" Type="string" Value="%24(TeamIdentifierPrefix)com.xamarin.monotouch-test" />
-    <CustomEntitlements Include="keychain-access-groups" Condition="('$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS') And '$(SdkIsSimulator)' == 'true'" Type="stringarray" Value="%24(AppIdentifierPrefix)com.xamarin.monotouch-test" />
-    <CustomEntitlements Include="com.apple.developer.pass-type-identifiers" Condition="('$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS') And '$(SdkIsSimulator)' == 'true'" Type="stringarray" Value=" A93A5CM278.tests/monotouch-test/Entitlements.plist" />
+    <CustomEntitlements Include="com.apple.developer.ubiquity-kvstore-identifier" Condition="'$(SdkIsMobile)' == 'true' And '$(SdkIsSimulator)' == 'true'" Type="string" Value="%24(TeamIdentifierPrefix)com.xamarin.monotouch-test" />
+    <CustomEntitlements Include="keychain-access-groups" Condition="'$(SdkIsMobile)' == 'true' And '$(SdkIsSimulator)' == 'true'" Type="stringarray" Value="%24(AppIdentifierPrefix)com.xamarin.monotouch-test" />
+    <CustomEntitlements Include="com.apple.developer.pass-type-identifiers" Condition="'$(SdkIsMobile)' == 'true' And '$(SdkIsSimulator)' == 'true'" Type="stringarray" Value=" A93A5CM278.tests/monotouch-test/Entitlements.plist" />
   </ItemGroup>
 
   <ItemGroup>
     <ReferenceNativeSymbol Include="Inexistent" SymbolType="ObjectiveCClass" SymbolMode="Ignore" />
+    <ReferenceNativeSymbol Include="inexistent_symbol" SymbolType="Field" SymbolMode="Ignore" />
     <ReferenceNativeSymbol Include="x_native_field" SymbolType="Field" />
+    <!-- The following three classes are managed classes with [Protocol]+[BaseType], in which case we don't create a corresponding Objective-C class, so there's no native Objective-C symbol to link with -->
+    <ReferenceNativeSymbol Include="P2" SymbolType="ObjectiveCClass" SymbolMode="Ignore" />
+    <ReferenceNativeSymbol Include="ProtocolWithBlockProperties" SymbolType="ObjectiveCClass" SymbolMode="Ignore" />
+    <ReferenceNativeSymbol Include="TestProtocolRegister" SymbolType="ObjectiveCClass" SymbolMode="Ignore" />
   </ItemGroup>
 
   <Import Project="$(RootTestsDirectory)/common/shared-dotnet.csproj" />
-
-  <!-- Any additional variations must be added after importing shared-dotnet.csproj -->
-  <ItemGroup>
-    <TestVariations Include="static-registrar-all-optimizations" Description="Static registrar + all optimizations" />
-    <TestVariations Include="static-registrar-all-optimizations-linkall" Description="Static registrar + all optimizations + Link all" />
-    <TestVariations Include="static-registrar-optimizations-except-uithread-checks-linkall" Description="Static registrar + all optimizations + Link all" />
-    <TestVariations Include="managed-static-registrar-all-optimizations-linkall" Description="Managed static registrar + all optimizations" />
-  </ItemGroup>
-  <PropertyGroup Condition="$(_TestVariationForComparison.Contains('|static-registrar-all-optimizations|'))">
-    <AppBundleExtraOptions>$(AppBundleExtraOptions) --optimize:all</AppBundleExtraOptions>
-    <Registrar>static</Registrar>
-    <DefineConstants>$(DefineConstants);OPTIMIZEALL</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="$(_TestVariationForComparison.Contains('|static-registrar-all-optimizations|'))">
-    <AppBundleExtraOptions>$(AppBundleExtraOptions) --optimize:all</AppBundleExtraOptions>
-    <Registrar>static</Registrar>
-    <LinkMode>Full</LinkMode>
-    <DefineConstants>$(DefineConstants);OPTIMIZEALL</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="$(_TestVariationForComparison.Contains('|static-registrar-optimizations-except|'))">
-    <AppBundleExtraOptions>$(AppBundleExtraOptions) --optimize:all,-remove-uithread-checks</AppBundleExtraOptions>
-    <Registrar>static</Registrar>
-    <LinkMode>Full</LinkMode>
-    <DefineConstants>$(DefineConstants);OPTIMIZEALL</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="$(_TestVariationForComparison.Contains('|managed-static-registrar-all-optimizations|'))">
-    <AppBundleExtraOptions>$(AppBundleExtraOptions) --optimize:all</AppBundleExtraOptions>
-    <Registrar>managed-static</Registrar>
-    <LinkMode>Full</LinkMode>
-    <DefineConstants>$(DefineConstants);OPTIMIZEALL</DefineConstants>
-  </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="$(RootTestsDirectory)\EmbeddedResources\dotnet\$(_PlatformName)\EmbeddedResources.csproj" />
@@ -118,6 +87,9 @@
     <Compile Include="$(TestLibrariesDirectory)\RegistrarTest.generated.cs" />
     <Compile Include="$(RootTestsDirectory)\common\TestRuntime.cs">
       <Link>TestRuntime.cs</Link>
+    </Compile>
+    <Compile Include="$(RootTestsDirectory)\common\TestRuntime.LinkAll.cs">
+      <Link>TestRuntime.LinkAll.cs</Link>
     </Compile>
     <Compile Include="$(RootTestsDirectory)\common\TestRuntime.RunAsync.cs">
       <Link>TestRuntime.RunAsync.cs</Link>
@@ -270,11 +242,11 @@
 
   <Target Name="ComputeMetalOutputPath" DependsOnTargets="_GenerateBundleName;_DetectSdkLocations">
     <PropertyGroup>
-      <MetalBundleSubDirectory Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'">Contents/Resources/</MetalBundleSubDirectory>
+      <MetalBundleSubDirectory Condition="'$(SdkIsDesktop)' == 'true'">Contents/Resources/</MetalBundleSubDirectory>
     </PropertyGroup>
   </Target>
 
-  <Target Name="CustomMetalSmelting" Inputs="@(CustomMetalSmeltingInput)" Outputs="$(_AppBundlePath)\fragmentShader.metallib" Condition="'$(_SdkIsSimulator)' != 'true' Or '$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'" DependsOnTargets="_GenerateBundleName;_DetectSdkLocations;ComputeMetalOutputPath" BeforeTargets="BeforeBuild">
+  <Target Name="CustomMetalSmelting" Inputs="@(CustomMetalSmeltingInput)" Outputs="$(_AppBundlePath)\fragmentShader.metallib" Condition="'$(_SdkIsSimulator)' != 'true' Or '$(SdkIsDesktop)' == 'true'" DependsOnTargets="_GenerateBundleName;_DetectSdkLocations;ComputeMetalOutputPath" BeforeTargets="BeforeBuild">
     <PropertyGroup>
       <_SmeltingSdk Condition="'$(_PlatformName)' == 'iOS'">iphoneos</_SmeltingSdk>
       <_SmeltingSdk Condition="'$(_PlatformName)' == 'tvOS'">appletvos</_SmeltingSdk>
@@ -299,7 +271,7 @@
 
   <Target Name="ComputeDefineConstants" BeforeTargets="BeforeBuild">
     <PropertyGroup>
-      <DefineConstants Condition="'$(ComputedPlatform)' == 'iPhone'">$(DefineConstants);AOT</DefineConstants>
+      <DefineConstants Condition="'$(SdkIsDevice)' == 'true'">$(DefineConstants);AOT</DefineConstants>
       <DefineConstants Condition="'$(RuntimeIdentifier)' == 'iossimulator-arm64'">$(DefineConstants);AOT</DefineConstants>
       <DefineConstants Condition="'$(RuntimeIdentifier)' == 'tvossimulator-arm64'">$(DefineConstants);AOT</DefineConstants>
     </PropertyGroup>

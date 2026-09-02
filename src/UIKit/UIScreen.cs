@@ -8,29 +8,23 @@
 // Copyright 2014 Xamarin Inc.
 //
 
-using System.Collections;
-using CoreGraphics;
-
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace UIKit {
 	public partial class UIScreen {
 
+		/// <summary>Registers a method to be invoked whenever the display screen needs to be updated.</summary>
 		/// <param name="action">Delegate method to invoke when the screen needs to be updated.</param>
-		///         <summary>Registers a method to be invoked whenever the display screen needs to be updated.</summary>
-		///         <returns>The active display link that can be configured, read from and scheduled to deliver events.</returns>
-		///         <remarks>To be added.</remarks>
-		public CoreAnimation.CADisplayLink CreateDisplayLink (Action action)
+		/// <returns>The active <see cref="CoreAnimation.CADisplayLink" /> that can be configured, read from, and scheduled to deliver events, or <see langword="null" /> if the display link could not be created.</returns>
+		public CoreAnimation.CADisplayLink? CreateDisplayLink (Action action)
 		{
-			if (action is null)
-				throw new ArgumentNullException ("action");
+			ArgumentNullException.ThrowIfNull (action);
 			var d = new NSActionDispatcher (action);
 			return CreateDisplayLink (d, NSActionDispatcher.Selector);
 		}
 
 		/// <summary>Captures a screenshot of the entire screen.</summary>
-		/// <returns>A screenshot as a <see cref="UIKit.UIImage" />.</returns>
+		/// <returns>A screenshot as a <see cref="UIImage" />.</returns>
 		/// <remarks>
 		///   <para>
 		///   This API will only capture UIKit and Quartz drawing,
@@ -44,6 +38,8 @@ namespace UIKit {
 			// This is from https://developer.apple.com/library/content/qa/qa1817/_index.html
 			// Updated to use UIGraphicsImageRenderer to avoid deprecated UIGraphicsBeginImageContextWithOptions
 			var view = UIApplication.SharedApplication.KeyWindow;
+			if (view is null)
+				throw new InvalidOperationException ("No key window is available to capture.");
 			using var renderer = new UIGraphicsImageRenderer (view.Bounds.Size);
 			return renderer.CreateImage ((context) => {
 				view.DrawViewHierarchy (view.Bounds, true);

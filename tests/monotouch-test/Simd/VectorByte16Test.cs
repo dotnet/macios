@@ -17,7 +17,7 @@ namespace MonoTouchFixtures.Simd {
 		{
 			var vector = new VectorByte16 ();
 			for (int i = 0; i < 16; i++) {
-				Assert.AreEqual (0, vector [i], $"default constructor element {i}");
+				Assert.That (vector [i], Is.EqualTo (0), $"default constructor element {i}");
 			}
 		}
 
@@ -27,7 +27,7 @@ namespace MonoTouchFixtures.Simd {
 			var expected = GetTestByteArray ();
 			var actual = new VectorByte16 (expected);
 			for (int i = 0; i < 16; i++) {
-				Assert.AreEqual (expected [i], actual [i], $"array ctor element {i}");
+				Assert.That (actual [i], Is.EqualTo (expected [i]), $"array ctor element {i}");
 			}
 		}
 
@@ -36,7 +36,7 @@ namespace MonoTouchFixtures.Simd {
 		{
 			var actual = new VectorByte16 (null);
 			for (int i = 0; i < 16; i++) {
-				Assert.AreEqual (0, actual [i], $"null array ctor element {i}");
+				Assert.That (actual [i], Is.EqualTo (0), $"null array ctor element {i}");
 			}
 		}
 
@@ -46,10 +46,10 @@ namespace MonoTouchFixtures.Simd {
 			var partialArray = new byte [] { 1, 2, 3, 4, 5 };
 			var actual = new VectorByte16 (partialArray);
 			for (int i = 0; i < 5; i++) {
-				Assert.AreEqual (partialArray [i], actual [i], $"partial array ctor element {i}");
+				Assert.That (actual [i], Is.EqualTo (partialArray [i]), $"partial array ctor element {i}");
 			}
 			for (int i = 5; i < 16; i++) {
-				Assert.AreEqual (0, actual [i], $"partial array ctor uninitialized element {i}");
+				Assert.That (actual [i], Is.EqualTo (0), $"partial array ctor uninitialized element {i}");
 			}
 		}
 
@@ -62,7 +62,7 @@ namespace MonoTouchFixtures.Simd {
 			}
 			var actual = new VectorByte16 (largeArray);
 			for (int i = 0; i < 16; i++) {
-				Assert.AreEqual (largeArray [i], actual [i], $"large array ctor element {i}");
+				Assert.That (actual [i], Is.EqualTo (largeArray [i]), $"large array ctor element {i}");
 			}
 		}
 
@@ -72,7 +72,7 @@ namespace MonoTouchFixtures.Simd {
 			var expected = GetTestByteArray ();
 			var vector = new VectorByte16 (expected);
 			for (int i = 0; i < 16; i++) {
-				Assert.AreEqual (expected [i], vector [i], $"indexer get element {i}");
+				Assert.That (vector [i], Is.EqualTo (expected [i]), $"indexer get element {i}");
 			}
 		}
 
@@ -85,7 +85,7 @@ namespace MonoTouchFixtures.Simd {
 				vector [i] = expected [i];
 			}
 			for (int i = 0; i < 16; i++) {
-				Assert.AreEqual (expected [i], vector [i], $"indexer set element {i}");
+				Assert.That (vector [i], Is.EqualTo (expected [i]), $"indexer set element {i}");
 			}
 		}
 
@@ -112,11 +112,11 @@ namespace MonoTouchFixtures.Simd {
 			var inputR = GetTestVector ();
 
 			// vectors are different
-			Assert.IsFalse (inputL == inputR, "inequality");
+			Assert.That (inputL == inputR, Is.False, "inequality");
 
 			inputL = inputR;
 			// vectors are identical
-			Assert.IsTrue (inputL == inputR, "equality");
+			Assert.That (inputL == inputR, Is.True, "equality");
 		}
 
 		[Test]
@@ -126,18 +126,18 @@ namespace MonoTouchFixtures.Simd {
 			var inputR = GetTestVector ();
 
 			// vectors are different
-			Assert.IsTrue (inputL != inputR, "inequality");
+			Assert.That (inputL != inputR, Is.True, "inequality");
 
 			inputL = inputR;
 			// vectors are identical
-			Assert.IsFalse (inputL != inputR, "equality");
+			Assert.That (inputL != inputR, Is.False, "equality");
 		}
 
 		[Test]
 		public void ToStringTest ()
 		{
 			var vector = new VectorByte16 (new byte [] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 });
-			Assert.AreEqual ("(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)", vector.ToString (), "toString");
+			Assert.That (vector.ToString (), Is.EqualTo ("(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)"), "toString");
 		}
 
 		[Test]
@@ -146,10 +146,10 @@ namespace MonoTouchFixtures.Simd {
 			var expectedA = GetTestVector ();
 			var expectedB = GetTestVector ();
 
-			Assert.IsTrue (expectedA.Equals ((object) expectedA), "self");
-			Assert.IsFalse (expectedA.Equals ((object) expectedB), "other");
-			Assert.IsFalse (expectedA.Equals (null), "null");
-			Assert.IsFalse (expectedA.Equals ("string"), "wrong type");
+			Assert.That (expectedA.Equals ((object) expectedA), Is.True, "self");
+			Assert.That (expectedA.Equals ((object) expectedB), Is.False, "other");
+			Assert.That (expectedA.Equals (null), Is.False, "null");
+			Assert.That (expectedA.Equals ("string"), Is.False, "wrong type");
 		}
 
 		[Test]
@@ -158,8 +158,8 @@ namespace MonoTouchFixtures.Simd {
 			var expectedA = GetTestVector ();
 			var expectedB = GetTestVector ();
 
-			Assert.IsTrue (expectedA.Equals (expectedA), "self");
-			Assert.IsFalse (expectedA.Equals (expectedB), "other");
+			Assert.That (expectedA.Equals (expectedA), Is.True, "self");
+			Assert.That (expectedA.Equals (expectedB), Is.False, "other");
 		}
 
 		[Test]
@@ -169,9 +169,9 @@ namespace MonoTouchFixtures.Simd {
 			var vector = new VectorByte16 (expected);
 			var span = vector.AsSpan ();
 
-			Assert.AreEqual (16, span.Length, "span length");
+			Assert.That (span.Length, Is.EqualTo (16), "span length");
 			for (int i = 0; i < 16; i++) {
-				Assert.AreEqual (expected [i], span [i], $"span element {i}");
+				Assert.That (span [i], Is.EqualTo (expected [i]), $"span element {i}");
 			}
 		}
 
@@ -182,7 +182,7 @@ namespace MonoTouchFixtures.Simd {
 			var vector1 = new VectorByte16 (byteArray);
 			var vector2 = new VectorByte16 (byteArray);
 
-			Assert.AreEqual (vector1.GetHashCode (), vector2.GetHashCode (), "same vectors should have same hash code");
+			Assert.That (vector2.GetHashCode (), Is.EqualTo (vector1.GetHashCode ()), "same vectors should have same hash code");
 		}
 
 		[Test]
@@ -191,7 +191,7 @@ namespace MonoTouchFixtures.Simd {
 			var vector1 = GetTestVector ();
 			var vector2 = GetTestVector ();
 
-			Assert.AreNotEqual (vector1.GetHashCode (), vector2.GetHashCode (), "different vectors should have different hash codes");
+			Assert.That (vector2.GetHashCode (), Is.Not.EqualTo (vector1.GetHashCode ()), "different vectors should have different hash codes");
 		}
 
 		[Test]
@@ -199,7 +199,7 @@ namespace MonoTouchFixtures.Simd {
 		{
 			var zero = VectorByte16.Zero;
 			for (int i = 0; i < 16; i++) {
-				Assert.AreEqual (0, zero [i], $"Zero property element {i}");
+				Assert.That (zero [i], Is.EqualTo (0), $"Zero property element {i}");
 			}
 		}
 

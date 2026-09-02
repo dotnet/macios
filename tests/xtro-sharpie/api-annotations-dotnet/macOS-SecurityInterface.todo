@@ -111,3 +111,8 @@
 !missing-type! SFChooseIdentityTableCellView not bound
 !missing-type! SFKeychainSavePanel not bound
 !missing-type! SFKeychainSettingsPanel not bound
+
+# updated sharpie results
+!missing-enum! SFAuthorizationViewState not bound
+!missing-enum! SFButtonType not bound
+!missing-enum! SFViewType not bound

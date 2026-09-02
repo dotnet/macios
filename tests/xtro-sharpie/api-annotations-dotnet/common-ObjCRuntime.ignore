@@ -40,3 +40,6 @@
 !unknown-pinvoke! os_log_create bound
 !unknown-pinvoke! os_release bound
 !unknown-pinvoke! os_retain bound
+
+# updated sharpie results
+!deprecated-attribute-missing! NXGetLocalArchInfo missing a [Deprecated] attribute

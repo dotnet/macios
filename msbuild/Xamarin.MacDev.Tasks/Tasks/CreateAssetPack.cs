@@ -80,7 +80,7 @@ namespace Xamarin.MacDev.Tasks {
 			var args = GenerateCommandLineCommands ();
 			var executable = GetExecutable (args, "zip", ZipPath);
 			cancellationTokenSource = new CancellationTokenSource ();
-			ExecuteAsync (Log, executable, args, workingDirectory: GetWorkingDirectory (), cancellationToken: cancellationTokenSource.Token).Wait ();
+			ExecuteAsync (executable, args, workingDirectory: GetWorkingDirectory (), cancellationToken: cancellationTokenSource.Token).Wait ();
 			return !Log.HasLoggedErrors;
 		}
 

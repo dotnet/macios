@@ -1,8 +1,8 @@
-pch-info.proj
+api
 *.results
-*.pch*
 *.unclassified
 *.raw
 *.g.cs
 *.html
 report/
+*.rsp

@@ -63,8 +63,8 @@ namespace CoreText {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		public NSCharacterSet ColumnTerminators {
-			get { return (NSCharacterSet) Dictionary [CTTextTabOptionKey.ColumnTerminators]; }
+		public NSCharacterSet? ColumnTerminators {
+			get { return (NSCharacterSet?) Dictionary [CTTextTabOptionKey.ColumnTerminators]!; }
 			set { Adapter.SetValue (Dictionary, CTTextTabOptionKey.ColumnTerminators, value); }
 		}
 	}
@@ -111,6 +111,7 @@ namespace CoreText {
 		public CTTextTab (CTTextAlignment alignment, double location, CTTextTabOptions? options)
 			: base (CTTextTabCreate (alignment, location, options.GetHandle ()), true, true)
 		{
+			GC.KeepAlive (options);
 		}
 		#endregion
 

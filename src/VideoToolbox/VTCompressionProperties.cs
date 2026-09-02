@@ -332,8 +332,8 @@ namespace VideoToolbox {
 					var list = new List<VTDataRateLimit> ();
 					for (nuint i = 0; i < (nuint) arr.Count; i += 2) {
 						var rateLimit = new VTDataRateLimit (
-							arr.GetItem<NSNumber> (i).UInt32Value,
-							arr.GetItem<NSNumber> (i + 1).DoubleValue
+							arr.GetItem<NSNumber> (i)!.UInt32Value,
+							arr.GetItem<NSNumber> (i + 1)!.DoubleValue
 						);
 						list.Add (rateLimit);
 					}
@@ -517,8 +517,8 @@ namespace VideoToolbox {
 		}
 
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public VTAlphaChannelMode AlphaChannelMode {
 			get => VTAlphaChannelModeExtensions.GetValue (GetNSStringValue (VTCompressionPropertyKey.AlphaChannelMode)!);

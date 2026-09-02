@@ -1,0 +1,193 @@
+using System.IO;
+using System.Net;
+using System.Text;
+
+try {
+	var expectedArgumentCount = 2;
+	if (args.Length != expectedArgumentCount) {
+		Console.WriteLine ($"Need {expectedArgumentCount} arguments, got {args.Length} arguments");
+		return 1;
+	}
+
+	var input = args [0];
+	var output = args [1];
+
+	var diff = ParseDiff (File.ReadAllText (input));
+	diff = @"
+<html>
+<head>
+<style>
+/* diff view */
+
+.diff_view_line_number
+{
+    background-color: #ececec;
+    text-align: right;
+    border-style: inset;
+    border-width: 0px;
+    border-left-width: 0px;
+    border-top-width: 0px;
+    border-bottom-width: 0px;
+    border-right-width: 1px;
+    border-right-color: #777777;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.diff_view_normal_line
+{
+    background-color: white;
+    width: 100%;
+}
+
+.diff_view_removed_line
+{
+    background-color: #ffd0d0;
+    width: 100%;
+}
+
+.diff_view_added_line
+{
+    background-color: #d0ffd0;
+    width: 100%;
+}
+
+td.diff_view_header_td
+{
+    background-color: #ececff;
+    border-style: inset;
+    border-left-width: 0px;
+    border-top-width: 0px;
+    border-bottom-width: 1px;
+    border-right-width: 0px;
+    border-right-color: #777777;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+td.diff_view_td
+{
+    border-width: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+td.diff_view_at_td
+{
+    background-color: #f0f0f0;
+    border-width: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+td.diff_view_index_td
+{
+    background-color: #f0f0f0;
+    border-width: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+pre.diff_view_pre
+{
+    border-width: 0px;
+    margin: 0px;
+    padding: 0px;
+}
+
+table.diff_view_table
+{
+    border-spacing: 0px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    width: 100%;
+    border-width: 1px;
+    border-style: outset;
+    border-color: #808080;
+    border-collapse: separate;
+}
+
+</style>
+</head>
+<a href='generator.diff'>Raw diff</a><br />
+" + diff + @"
+</html>
+";
+	File.WriteAllText (output, diff);
+
+	return 0;
+} catch (Exception e) {
+	Console.WriteLine ("Failed: {0}", e);
+	return 1;
+}
+
+static string ParseDiff (string diff)
+{
+	StringBuilder result = new StringBuilder (diff.Length);
+	string? line;
+	int old_ln = 0, new_ln = 0;
+	int old_d = 0, new_d = 0;
+	bool started = false;
+	result.Append ("<div>");
+	using (StringReader reader = new StringReader (diff)) {
+		while ((line = reader.ReadLine ()) is not null) {
+			if (line.StartsWith ("diff --git")) {
+				// New file
+				if (started)
+					result.AppendLine ("</table>");
+				started = true;
+				result.AppendLine ("<table class='diff_view_table'>");
+				var fn = line.Substring (10).Trim ().Split (' ') [0];
+				var fn_split = fn.Split ('/').ToList ();
+				fn_split.RemoveAt (0);
+				fn_split.RemoveAt (0);
+				fn = string.Join ("/", fn_split);
+
+				result.AppendFormat ("<tr><td class='diff_view_header_td' colspan='3'>{0}</td></tr>\n", fn);
+			} else if (line.StartsWith ("index")) {
+				// Not sure what this is
+				result.AppendFormat ("<tr><td class='diff_view_line_number'><pre class='diff_view_pre'>&nbsp;</pre></td><td class='diff_view_line_number'><pre class='diff_view_pre'>&nbsp;</pre></td><td class='diff_view_index_td'><pre class='diff_view_pre'>{0}</pre></td></tr>\n", line);
+			} else if (line.StartsWith ("---") || line.StartsWith ("+++")) {
+				// Ignore this for now
+			} else if (line.StartsWith ("@@")) {
+				// line numbers
+				string [] nl = line.Replace ("@@", "").Trim ().Split (' ');
+				var oldc = nl [0].IndexOf (',');
+				var newc = nl [1].IndexOf (',');
+				old_ln = int.Parse (nl [0].Substring (1, oldc > 0 ? oldc - 1 : nl [0].Length - 1));
+				new_ln = int.Parse (nl [1].Substring (1, newc > 0 ? newc - 1 : nl [1].Length - 1));
+				result.AppendFormat ("<tr><td class='diff_view_line_number'><pre class='diff_view_pre'>&nbsp;</pre></td><td class='diff_view_line_number'><pre class='diff_view_pre'>&nbsp;</pre></td><td class='diff_view_at_td'><pre class='diff_view_pre'>{0}</pre></td></tr>\n", line);
+			} else {
+				string cl;
+				if (line.StartsWith ("-")) {
+					cl = "diff_view_removed_line";
+					old_d = 1;
+					new_d = 0;
+				} else if (line.StartsWith ("+")) {
+					cl = "diff_view_added_line";
+					old_d = 0;
+					new_d = 1;
+				} else {
+					cl = "diff_view_normal_line";
+					old_d = 1;
+					new_d = 1;
+				}
+				result.AppendFormat ("<tr><td class='diff_view_line_number'><pre class='diff_view_pre'>{2}</pre></td><td class='diff_view_line_number'><pre class='diff_view_pre'>{3}</pre></td><td class='{1}'><pre class='diff_view_pre'>{0}</pre></td></tr>\n",
+					WebUtility.HtmlEncode (line), cl, old_d == 0 ? string.Empty : old_ln.ToString (), new_d == 0 ? string.Empty : new_ln.ToString ());
+				old_ln += old_d;
+				new_ln += new_d;
+			}
+		}
+	}
+	result.AppendLine ("</table>");
+	result.AppendLine ("</div>");
+	return result.ToString ();
+}

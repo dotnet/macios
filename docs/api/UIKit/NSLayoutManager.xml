@@ -10,7 +10,7 @@
         <see cref="XTextView" /> objects, which actually display the text.
       </para>
     </remarks>
-    <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/NSLayoutManager_Class_TextKit/index.html">Apple documentation for <c>NSLayoutManager</c></related>
+    <related type="externalDocumentation" href="https://developer.apple.com/documentation/uikit/nslayoutmanager">Apple documentation for <c>NSLayoutManager</c></related>
   </Docs>
   <Docs DocId="P:UIKit.NSLayoutManager.AllowsNonContiguousLayout">
     <summary>Whether layout can be done for a portion of the document without laying-out being recalculated from the beginning.</summary>

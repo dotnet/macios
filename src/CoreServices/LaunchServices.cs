@@ -59,7 +59,7 @@ namespace CoreServices {
 	public enum LSResult {
 		/// <summary>To be added.</summary>
 		Success = 0,
-		[SupportedOSPlatform ("macos13.0")]
+		[SupportedOSPlatform ("macos")]
 		MalformedLocErr = -10400,
 		/// <summary>To be added.</summary>
 		AppInTrash = -10660,
@@ -167,8 +167,7 @@ namespace CoreServices {
 				return Runtime.GetNSObject<NSUrl> (
 					LSCopyDefaultApplicationURLForContentType (contentTypeHandle, roles, IntPtr.Zero)
 				);
-			}
-			finally {
+			} finally {
 				CFString.ReleaseNative (contentTypeHandle);
 			}
 		}
@@ -190,8 +189,9 @@ namespace CoreServices {
 			if (url is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
 
-			var result = NSArray.ArrayFromHandle<NSUrl> (
-				LSCopyApplicationURLsForURL (url.Handle, roles)
+			var result = NSArray.NonNullArrayFromHandleDropNullElements<NSUrl> (
+				LSCopyApplicationURLsForURL (url.Handle, roles),
+				releaseHandle: true
 			);
 			GC.KeepAlive (url);
 			return result;
@@ -260,11 +260,11 @@ namespace CoreServices {
 
 			var bundleIdentifierHandle = CFString.CreateNative (bundleIdentifier);
 			try {
-				return NSArray.ArrayFromHandle<NSUrl> (
-					LSCopyApplicationURLsForBundleIdentifier (bundleIdentifierHandle, IntPtr.Zero)
+				return NSArray.NonNullArrayFromHandleDropNullElements<NSUrl> (
+					LSCopyApplicationURLsForBundleIdentifier (bundleIdentifierHandle, IntPtr.Zero),
+					releaseHandle: true
 				);
-			}
-			finally {
+			} finally {
 				CFString.ReleaseNative (bundleIdentifierHandle);
 			}
 		}
@@ -355,8 +355,7 @@ namespace CoreServices {
 				return CFArray.StringArrayFromHandle (
 					LSCopyAllRoleHandlersForContentType (contentTypeHandle, roles)
 				);
-			}
-			finally {
+			} finally {
 				CFString.ReleaseNative (contentTypeHandle);
 			}
 		}
@@ -383,8 +382,7 @@ namespace CoreServices {
 				return Runtime.GetNSObject<NSString> (
 					LSCopyDefaultRoleHandlerForContentType (contentTypeHandle, roles)
 				);
-			}
-			finally {
+			} finally {
 				CFString.ReleaseNative (contentTypeHandle);
 			}
 		}
@@ -420,8 +418,7 @@ namespace CoreServices {
 					roles,
 					handlerBundleIdHandle
 				);
-			}
-			finally {
+			} finally {
 				CFString.ReleaseNative (contentTypeHandle);
 				CFString.ReleaseNative (handlerBundleIdHandle);
 			}
@@ -448,8 +445,7 @@ namespace CoreServices {
 				return CFArray.StringArrayFromHandle (
 					LSCopyAllHandlersForURLScheme (urlSchemeHandle)
 				);
-			}
-			finally {
+			} finally {
 				CFString.ReleaseNative (urlSchemeHandle);
 			}
 		}
@@ -475,8 +471,7 @@ namespace CoreServices {
 				return Runtime.GetNSObject<NSString> (
 					LSCopyDefaultHandlerForURLScheme (urlSchemeHandle)
 				);
-			}
-			finally {
+			} finally {
 				CFString.ReleaseNative (urlSchemeHandle);
 			}
 		}
@@ -507,8 +502,7 @@ namespace CoreServices {
 					urlSchemeHandle,
 					handlerBundleIdHandle
 				);
-			}
-			finally {
+			} finally {
 				CFString.ReleaseNative (urlSchemeHandle);
 				CFString.ReleaseNative (handlerBundleIdHandle);
 			}

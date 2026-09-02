@@ -66,7 +66,7 @@ namespace Xamarin.Utils {
 					// File is up-to-date
 					return false;
 				} else {
-					Directory.CreateDirectory (Path.GetDirectoryName (targetFile));
+					Directory.CreateDirectory (Path.GetDirectoryName (targetFile)!);
 					File.Copy (tmpFile, targetFile, true);
 					return true;
 				}
@@ -74,6 +74,20 @@ namespace Xamarin.Utils {
 				File.Delete (tmpFile);
 			}
 
+		}
+
+		public static void WriteIfDifferent (string path, string contents, Action<string> log)
+		{
+			if (!File.Exists (path)) {
+				log ($"File '{path}' contents are not up-to-date, because the file doesn't exist.");
+				File.WriteAllText (path, contents);
+			} else if (string.Equals (contents, File.ReadAllText (path), StringComparison.Ordinal)) {
+				log ($"File '{path}' contents are up-to-date.");
+				return;
+			} else {
+				log ($"File '{path}' contents are not up-to-date.");
+				File.WriteAllText (path, contents);
+			}
 		}
 	}
 }

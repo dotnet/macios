@@ -19,7 +19,6 @@ namespace Xamarin.MacDev.Tasks {
 		public void BundleIdentifierInPartialAppManifest ()
 		{
 			Configuration.IgnoreIfIgnoredPlatform (ApplePlatform.MacOSX);
-			Configuration.AssertDotNetAvailable ();
 
 			// https://github.com/dotnet/macios/issues/12051
 			var csproj = $@"<?xml version=""1.0"" encoding=""utf-8""?>
@@ -59,8 +58,8 @@ namespace Xamarin.MacDev.Tasks {
 			var properties = new Dictionary<string, string> {
 				{ "_CanOutputAppBundle", "true" },
 			};
-			var rv = engine.RunTarget (ApplePlatform.MacOSX, ExecutionMode.DotNet, csprojPath, target: "_DetectSigningIdentity", properties: properties);
-			Assert.AreEqual (0, rv.ExitCode, "Exit code");
+			var rv = engine.RunTarget (ApplePlatform.MacOSX, csprojPath, target: "_DetectSigningIdentity", properties: properties);
+			Assert.That (rv.ExitCode, Is.EqualTo (0), "Exit code");
 
 			// Find the BundleIdentifier parameter to the DetectSigningIdentity task.
 			var recordArgs = BinLog.ReadBuildEvents (rv.BinLogPath).ToList ();
@@ -69,15 +68,15 @@ namespace Xamarin.MacDev.Tasks {
 			var taskParameterIndex = recordArgs.FindIndex (taskIndex + 1, v => {
 				if (!(v is BuildMessageEventArgs bmea))
 					return false;
-				if (bmea.Message.StartsWith ("Task Parameter:BundleIdentifier="))
+				if (bmea.Message?.StartsWith ("Task Parameter:BundleIdentifier=") == true)
 					return true;
-				if (bmea.Message.StartsWith ("TaskInput: BundleIdentifier"))
+				if (bmea.Message?.StartsWith ("TaskInput: BundleIdentifier") == true)
 					return true;
 				return false;
 			});
 			Assert.That (taskParameterIndex, Is.GreaterThan (0), "Parameter index");
 			var taskParameter = (BuildMessageEventArgs) recordArgs [taskParameterIndex];
-			var taskMessage = taskParameter.Message;
+			var taskMessage = taskParameter.Message ?? "";
 			string bundleIdentifier;
 			if (taskMessage.StartsWith ("Task Parameter:BundleIdentifier=")) {
 				bundleIdentifier = taskMessage.Substring ("Task Parameter:BundleIdentifier=".Length);
@@ -86,7 +85,7 @@ namespace Xamarin.MacDev.Tasks {
 			} else {
 				bundleIdentifier = "Unhandled task message format.";
 			}
-			Assert.AreEqual ("com.xamarin.detectsigningidentitytest", bundleIdentifier, "Bundle identifier");
+			Assert.That (bundleIdentifier, Is.EqualTo ("com.xamarin.detectsigningidentitytest"), "Bundle identifier");
 		}
 	}
 }

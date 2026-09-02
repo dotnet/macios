@@ -6,20 +6,25 @@ using Mono.Linker;
 using Mono.Collections.Generic;
 
 using Registrar;
+
 using Mono.Tuner;
 using Xamarin.Bundler;
+using Xamarin.Linker;
+using Xamarin.Utils;
 
-#if NET && !LEGACY_TOOLS
+#if !LEGACY_TOOLS && !ASSEMBLY_PREPARER
 using LinkContext = Xamarin.Bundler.DotNetLinkContext;
 #endif
 
+#nullable enable
+
 namespace Xamarin.Tuner {
 	public class DerivedLinkContext : LinkContext {
-#if !MMP && !MTOUCH
-		internal StaticRegistrar StaticRegistrar => Target.StaticRegistrar;
-		internal Target Target;
+#if !LEGACY_TOOLS
+		internal StaticRegistrar StaticRegistrar => App.StaticRegistrar;
 #endif
-		Symbols required_symbols;
+		internal Application App;
+		Symbols? required_symbols;
 
 		// Any errors or warnings during the link process that won't prevent linking from continuing can be stored here.
 		// This is typically used to show as many problems as possible per build (so that the user doesn't have to fix one thing, rebuild, fix another, rebuild, fix another, etc).
@@ -31,11 +36,14 @@ namespace Xamarin.Tuner {
 		List<ICustomAttributeProvider> srs_data_contract = new List<ICustomAttributeProvider> ();
 		List<ICustomAttributeProvider> xml_serialization = new List<ICustomAttributeProvider> ();
 
-		HashSet<TypeDefinition> cached_isnsobject;
+		HashSet<TypeDefinition>? cached_isnsobject;
 		// Tristate:
 		//   null = don't know, must check at runtime (can't inline)
 		//   true/false = corresponding constant value
-		Dictionary<TypeDefinition, bool?> isdirectbinding_value;
+		Dictionary<TypeDefinition, bool?>? isdirectbinding_value;
+
+		// A map from Objective-C class name to C# type
+		Dictionary<string, (TypeDefinition type, string Framework, string Version)>? objectiveCTypeInfo;
 
 		// Store interfaces the linker has linked away so that the static registrar can access them.
 		public Dictionary<TypeDefinition, List<TypeDefinition>> ProtocolImplementations { get; private set; } = new Dictionary<TypeDefinition, List<TypeDefinition>> ();
@@ -45,23 +53,24 @@ namespace Xamarin.Tuner {
 		// so we need a second dictionary
 		Dictionary<TypeDefinition, LinkedAwayTypeReference> LinkedAwayTypeMap = new Dictionary<TypeDefinition, LinkedAwayTypeReference> ();
 
-#if NET && !LEGACY_TOOLS
-		public DerivedLinkContext (Xamarin.Linker.LinkerConfiguration configuration, Target target)
+		public bool DidRunApplyPreserveAttributeStep { get; set; }
+		public bool DidRunMarkForStaticRegistrarStep { get; set; }
+		public bool DidRunMarkNSObjectsStep { get; set; }
+
+		public DerivedLinkContext (LinkerConfiguration configuration, Application app)
+#if !LEGACY_TOOLS
 			: base (configuration)
-		{
-			this.Target = target;
-		}
 #endif
-
-#if !MMP && !MTOUCH
-		public Application App {
-			get {
-				return Target.App;
-			}
+		{
+			this.App = app;
 		}
-#endif // !MMP && !MTOUCH
 
-		AssemblyDefinition corlib;
+		AssemblyDefinition? corlib;
+
+#if !LEGACY_TOOLS
+		public RegistrarMode Registrar => App.Registrar;
+#endif // !LEGACY_TOOLS
+
 		public AssemblyDefinition Corlib {
 			get {
 				if (corlib is null) {
@@ -73,14 +82,20 @@ namespace Xamarin.Tuner {
 				return corlib;
 			}
 		}
-		public HashSet<TypeDefinition> CachedIsNSObject {
+
+		public HashSet<TypeDefinition>? CachedIsNSObject {
 			get { return cached_isnsobject; }
 			set { cached_isnsobject = value; }
 		}
 
-		public Dictionary<TypeDefinition, bool?> IsDirectBindingValue {
+		public Dictionary<TypeDefinition, bool?>? IsDirectBindingValue {
 			get { return isdirectbinding_value; }
 			set { isdirectbinding_value = value; }
+		}
+
+		public Dictionary<string, (TypeDefinition type, string Framework, string Version)>? ObjectiveCTypeInfo {
+			get { return objectiveCTypeInfo; }
+			set { objectiveCTypeInfo = value; }
 		}
 
 		public IList<ICustomAttributeProvider> DataContract {
@@ -107,7 +122,7 @@ namespace Xamarin.Tuner {
 			get; set;
 		}
 
-		public Dictionary<IMetadataTokenProvider, object> GetAllCustomAttributes (string storage_name)
+		public Dictionary<IMetadataTokenProvider, object>? GetAllCustomAttributes (string storage_name)
 		{
 #if LEGACY_TOOLS
 			throw new NotImplementedException ();
@@ -116,16 +131,19 @@ namespace Xamarin.Tuner {
 #endif
 		}
 
-		public List<ICustomAttribute> GetCustomAttributes (ICustomAttributeProvider provider, string storage_name)
+		public List<ICustomAttribute>? GetCustomAttributes (ICustomAttributeProvider? provider, string storage_name)
 		{
 #if LEGACY_TOOLS
 			throw new NotImplementedException ();
 #else
-			var annotations = Annotations?.GetCustomAnnotations (storage_name);
-			object storage = null;
-			if (annotations?.TryGetValue (provider, out storage) != true)
+			if (provider is null)
 				return null;
-			return (List<ICustomAttribute>) storage;
+			var annotations = Annotations?.GetCustomAnnotations (storage_name);
+			if (annotations is null)
+				return null;
+			if (annotations.TryGetValue (provider, out var storage))
+				return (List<ICustomAttribute>) storage;
+			return null;
 #endif
 		}
 
@@ -138,8 +156,7 @@ namespace Xamarin.Tuner {
 #else
 			var dict = Annotations.GetCustomAnnotations (storage_name);
 			List<ICustomAttribute> attribs;
-			object attribObjects;
-			if (!dict.TryGetValue (provider, out attribObjects)) {
+			if (!dict.TryGetValue (provider, out var attribObjects)) {
 				attribs = new List<ICustomAttribute> ();
 				dict [provider] = attribs;
 			} else {
@@ -151,11 +168,11 @@ namespace Xamarin.Tuner {
 			// We also need to store the constructor's DeclaringType separately, because it may
 			// be nulled out from the constructor by the linker if the attribute type itself is linked away.
 			var dummy = attribute.HasConstructorArguments;
-			attribs.Add (new AttributeStorage { Attribute = attribute, AttributeType = attribute.Constructor.DeclaringType });
+			attribs.Add (new AttributeStorage (attribute, attribute.Constructor.DeclaringType));
 #endif
 		}
 
-		public List<ICustomAttribute> GetCustomAttributes (ICustomAttributeProvider provider, string @namespace, string name)
+		public List<ICustomAttribute>? GetCustomAttributes (ICustomAttributeProvider? provider, string @namespace, string name)
 		{
 			// The equivalent StoreCustomAttribute method below ignores the namespace (it's not needed so far since all attribute names we care about are unique),
 			// so we need to retrieve the attributes the same way (using the name only).
@@ -173,20 +190,18 @@ namespace Xamarin.Tuner {
 			throw new NotImplementedException ();
 #else
 			var attribs = Annotations.GetCustomAnnotations ("ProtocolMethods");
-			object value;
-			if (!attribs.TryGetValue (type, out value))
+			if (!attribs.TryGetValue (type, out var value))
 				attribs [type] = type.Methods.ToArray (); // Make a copy of the collection, since the linker may remove methods from it.
 #endif
 		}
 
-		public IList<MethodDefinition> GetProtocolMethods (TypeDefinition type)
+		public IList<MethodDefinition>? GetProtocolMethods (TypeDefinition type)
 		{
 #if LEGACY_TOOLS
 			throw new NotImplementedException ();
 #else
 			var attribs = Annotations.GetCustomAnnotations ("ProtocolMethods");
-			object value;
-			if (attribs.TryGetValue (type, out value))
+			if (attribs.TryGetValue (type, out var value))
 				return (MethodDefinition []) value;
 			return null;
 #endif // !LEGACY_TOOLS
@@ -203,7 +218,7 @@ namespace Xamarin.Tuner {
 		// The Module property is null for the returned TypeDefinition (unfortunately TypeDefinition is
 		// sealed, so I can't provide a custom TypeDefinition subclass), so we need to return
 		// the module as an out parameter instead.
-		public TypeDefinition GetLinkedAwayType (TypeReference tr, out ModuleDefinition module)
+		public TypeDefinition? GetLinkedAwayType (TypeReference tr, out ModuleDefinition? module)
 		{
 			module = null;
 
@@ -237,9 +252,119 @@ namespace Xamarin.Tuner {
 		}
 
 #if !LEGACY_TOOLS
+		public bool HasAvailabilityAttributesShowingUnavailableInSimulator (ICustomAttributeProvider? provider, MethodDefinition? methodForErrorReporting = null)
+		{
+			if (provider is null)
+				return false;
+
+			if (!App.IsSimulatorBuild) {
+				LinkerConfiguration.Report (LinkerConfiguration.Context, ErrorHelper.CreateError (99, "HasAvailabilityAttributesShowingUnavailableInSimulator should not be called when not building for the simulator. Please file an issue at https://github.com/dotnet/macios/issues."));
+				return false;
+			}
+
+			if (!provider.HasCustomAttributes)
+				return false; // no attributes to say otherwise, so available
+
+			string platformName;
+
+			switch (App.Platform) {
+			case ApplePlatform.iOS:
+				platformName = "ios";
+				break;
+			case ApplePlatform.TVOS:
+				platformName = "tvos";
+				break;
+			default:
+				LinkerConfiguration.Report (LinkerConfiguration.Context, ErrorHelper.CreateWarning (App, 99, methodForErrorReporting, "Unexpected platform '{0}'. Please file an issue at https://github.com/dotnet/macios/issues.", App.Platform));
+				return false;
+			}
+
+			// Pass 1: check for any matching UnsupportedSimulator attribute — if found, it's unavailable.
+			var hasUnsupported = false;
+			foreach (var attrib in provider.CustomAttributes) {
+				if (!attrib.AttributeType.Is ("ObjCRuntime", "UnsupportedSimulatorAttribute"))
+					continue;
+				if (attrib.ConstructorArguments.Count == 1 && attrib.ConstructorArguments [0].Value is string unsupportedPlatform) {
+					if (string.Equals (unsupportedPlatform, platformName, StringComparison.OrdinalIgnoreCase))
+						hasUnsupported = true;
+				} else {
+					LinkerConfiguration.Report (LinkerConfiguration.Context, ErrorHelper.CreateWarning (App, 2258, methodForErrorReporting, Errors.MX2258, provider.AsString (), attrib.RenderAttribute ()));
+				}
+			}
+
+			// Pass 2: check for any matching SupportedSimulator attributes — evaluate as OR across versions.
+			var hasSupported = false;
+			var supportedCount = 0;
+			var isAvailable = false;
+			foreach (var attrib in provider.CustomAttributes) {
+				if (!attrib.AttributeType.Is ("ObjCRuntime", "SupportedSimulatorAttribute"))
+					continue;
+				if (attrib.ConstructorArguments.Count == 1 && attrib.ConstructorArguments [0].Value is string supportedPlatform) {
+					if (!supportedPlatform.StartsWith (platformName, StringComparison.OrdinalIgnoreCase))
+						continue;
+
+					hasSupported = true;
+					supportedCount++;
+					var osVersion = supportedPlatform.Substring (platformName.Length);
+					if (string.IsNullOrEmpty (osVersion)) {
+						// no version constraint: available in the simulator
+						isAvailable = true;
+					} else if (Version.TryParse (osVersion, out var version)) {
+						var simulatorVersion = App.DeploymentTarget;
+						if (simulatorVersion is null) {
+							LinkerConfiguration.Report (LinkerConfiguration.Context, ErrorHelper.CreateWarning (App, 99, methodForErrorReporting, "No deployment target available. Please file an issue at https://github.com/dotnet/macios/issues."));
+							continue;
+						}
+						if (simulatorVersion >= version)
+							isAvailable = true;
+					} else {
+						LinkerConfiguration.Report (LinkerConfiguration.Context, ErrorHelper.CreateWarning (App, 2259, methodForErrorReporting, Errors.MX2259, provider.AsString (), attrib.RenderAttribute ()));
+					}
+				} else {
+					LinkerConfiguration.Report (LinkerConfiguration.Context, ErrorHelper.CreateWarning (App, 2258, methodForErrorReporting, Errors.MX2258, provider.AsString (), attrib.RenderAttribute ()));
+				}
+			}
+
+			// Conflicting attributes: both Supported and Unsupported for the same platform
+			if (hasUnsupported && hasSupported) {
+				LinkerConfiguration.Report (LinkerConfiguration.Context, ErrorHelper.CreateError (App, 2260, methodForErrorReporting, Errors.MX2260, provider.AsString (), platformName));
+				return true; // treat as unavailable
+			}
+
+			// Multiple SupportedSimulator attributes for the same platform
+			if (supportedCount > 1) {
+				LinkerConfiguration.Report (LinkerConfiguration.Context, ErrorHelper.CreateError (App, 2261, methodForErrorReporting, Errors.MX2261, provider.AsString (), platformName));
+				return true; // treat as unavailable
+			}
+
+			if (hasUnsupported)
+				return true;
+
+			if (hasSupported)
+				return !isAvailable;
+
+			// No matching attributes: assume available
+			return false;
+		}
+
+		public AssemblyDefinition GetProductAssembly ()
+		{
+			var productAssemblyName = Driver.GetProductAssembly (App);
+			var rv = this.GetAssembly (productAssemblyName);
+			if (rv is null)
+				throw ErrorHelper.CreateError (1504, Errors.MX1504 /* Can not find the product assembly '{0}' in the list of loaded assemblies. */, productAssemblyName);
+			return rv;
+		}
+
 		class AttributeStorage : ICustomAttribute {
-			public CustomAttribute Attribute;
+			public CustomAttribute Attribute { get; }
 			public TypeReference AttributeType { get; set; }
+
+			public AttributeStorage (CustomAttribute attribute, TypeReference attributeType)
+			{
+				Attribute = attribute;
+				AttributeType = attributeType;
+			}
 
 			public bool HasFields => Attribute.HasFields;
 			public bool HasProperties => Attribute.HasProperties;

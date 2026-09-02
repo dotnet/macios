@@ -6,15 +6,10 @@ parameters:
     type: boolean
     default: false
 
-  - name: provisionatorChannel
-    displayName: Provisionator channel to use 
-    type: string
-    default: 'latest'
-
   - name: macOSName # comes from the build agent demand named macOS.Name
     displayName: Name of the version of macOS to use
     type: string
-    default: 'Sequoia'
+    default: 'Tahoe'
 
   - name: runTests
     displayName: Run Simulator Tests
@@ -31,6 +26,16 @@ parameters:
     type: boolean
     default: true
 
+  - name: buildPackages
+    displayName: Build packages as part of this pipeline (instead of downloading from a pipeline resource)
+    type: boolean
+    default: false
+
+  - name: useACES
+    displayName: Use ACES shared pool for simulator tests
+    type: boolean
+    default: false
+
 resources:
   repositories:
     - repository: self
@@ -40,11 +45,6 @@ resources:
     - repository: yaml-templates
       type: git
       name: xamarin.yaml-templates
-      ref: refs/heads/main
-      
-    - repository: macios-adr
-      type: git
-      name: macios-adr
       ref: refs/heads/main
 
 variables:
@@ -58,6 +58,7 @@ stages:
       xcodeChannel: $(xcodeChannel)
       macOSName: ${{ parameters.macOSName }}
       isPR: ${{ parameters.isPR }}
-      provisionatorChannel: ${{ parameters.provisionatorChannel }}
       runTests: ${{ parameters.runTests }}
       runWindowsIntegration: ${{ parameters.runWindowsIntegration }}
+      buildPackages: ${{ parameters.buildPackages }}
+      useACES: ${{ parameters.useACES }}

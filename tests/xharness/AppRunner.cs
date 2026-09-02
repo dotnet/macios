@@ -25,24 +25,24 @@ namespace Xharness {
 		readonly ISimulatorLoaderFactory simulatorsLoaderFactory;
 		readonly ISimpleListenerFactory listenerFactory;
 		readonly IDeviceLoaderFactory devicesLoaderFactory;
-		readonly ICrashSnapshotReporterFactory snapshotReporterFactory;
+		readonly CrashSnapshotReporterFactory snapshotReporterFactory;
 		readonly ICaptureLogFactory captureLogFactory;
-		readonly IDeviceLogCapturerFactory deviceLogCapturerFactory;
+		readonly DeviceLogCapturerFactory deviceLogCapturerFactory;
 		readonly ITestReporterFactory testReporterFactory;
 		readonly IAppBundleInformationParser appBundleInformationParser;
 
 		readonly RunMode runMode;
 		readonly bool isSimulator;
 		readonly TestTarget target;
-		readonly IHarness harness;
+		readonly Harness harness;
 		readonly double timeoutMultiplier;
-		readonly IBuildToolTask buildTask;
-		readonly string variation;
+		readonly BuildToolTask? buildTask;
+		readonly string? variation;
 		readonly string projectFilePath;
-		readonly string buildConfiguration;
+		readonly string? buildConfiguration;
 
-		string deviceName;
-		ISimulatorDevice simulator;
+		string? deviceName;
+		ISimulatorDevice? simulator;
 
 		bool ensureCleanSimulatorState = true;
 		bool EnsureCleanSimulatorState {
@@ -50,13 +50,16 @@ namespace Xharness {
 			set => ensureCleanSimulatorState = value;
 		}
 
-		public AppBundleInformation AppInformation { get; private set; }
+		AppBundleInformation? appInformation;
+		public AppBundleInformation AppInformation {
+			get => appInformation!;
+		}
 
-		bool IsExtension => AppInformation.Extension.HasValue;
+		bool IsExtension => AppInformation?.Extension.HasValue ?? false;
 
 		public TestExecutingResult Result { get; private set; }
 
-		public string FailureMessage { get; private set; }
+		public string? FailureMessage { get; private set; }
 
 		public IFileBackedLog MainLog { get; set; }
 
@@ -67,22 +70,22 @@ namespace Xharness {
 						  ISimulatorLoaderFactory simulatorsFactory,
 						  ISimpleListenerFactory simpleListenerFactory,
 						  IDeviceLoaderFactory devicesFactory,
-						  ICrashSnapshotReporterFactory snapshotReporterFactory,
+						  CrashSnapshotReporterFactory snapshotReporterFactory,
 						  ICaptureLogFactory captureLogFactory,
-						  IDeviceLogCapturerFactory deviceLogCapturerFactory,
+						  DeviceLogCapturerFactory deviceLogCapturerFactory,
 						  ITestReporterFactory reporterFactory,
 						  TestTarget target,
-						  IHarness harness,
+						  Harness harness,
 						  IFileBackedLog mainLog,
 						  ILogs logs,
 						  string projectFilePath,
-						  string buildConfiguration,
-						  ISimulatorDevice simulator = null,
-						  string deviceName = null,
+						  string? buildConfiguration,
+						  ISimulatorDevice? simulator = null,
+						  string? deviceName = null,
 						  bool ensureCleanSimulatorState = false,
 						  double timeoutMultiplier = 1,
-						  string variation = null,
-						  IBuildToolTask buildTask = null)
+						  string? variation = null,
+						  BuildToolTask? buildTask = null)
 		{
 			this.processManager = processManager ?? throw new ArgumentNullException (nameof (processManager));
 			this.simulatorsLoaderFactory = simulatorsFactory ?? throw new ArgumentNullException (nameof (simulatorsFactory));
@@ -112,7 +115,7 @@ namespace Xharness {
 
 		public async Task InitializeAsync ()
 		{
-			AppInformation = await appBundleInformationParser.ParseFromProject2 (harness.AppBundleLocator, projectFilePath, target, buildConfiguration);
+			appInformation = await appBundleInformationParser.ParseFromProject2 (harness.AppBundleLocator, projectFilePath, target, buildConfiguration!);
 			AppInformation.Variation = variation;
 		}
 
@@ -222,6 +225,13 @@ namespace Xharness {
 			if (harness.InCI) {
 				// We use the 'BUILD_REVISION' variable to detect whether we're running CI or not.
 				args.Add (new SetEnvVariableArgument ("BUILD_REVISION", Environment.GetEnvironmentVariable ("BUILD_REVISION")));
+
+				// Forward VM_VENDOR (set by the pipeline when running on a VM-backed
+				// pool such as ACES) so TestRuntime.AssertNotVirtualMachine works
+				// inside the iOS/tvOS simulator process.
+				var vmVendor = Environment.GetEnvironmentVariable ("VM_VENDOR");
+				if (!string.IsNullOrEmpty (vmVendor))
+					args.Add (new SetEnvVariableArgument ("VM_VENDOR", vmVendor));
 			}
 
 			if (!harness.GetIncludeSystemPermissionTests (TestPlatform.iOS, !isSimulator))
@@ -264,7 +274,7 @@ namespace Xharness {
 			listener.StartAsync ();
 
 			// object that will take care of capturing and parsing the results
-			ICrashSnapshotReporter crashReporter = snapshotReporterFactory.Create (MainLog, Logs, isDevice: !isSimulator, deviceName);
+			ICrashSnapshotReporter crashReporter = snapshotReporterFactory.Create (MainLog, Logs, isDevice: !isSimulator, deviceName, AppInformation);
 
 			var testReporterTimeout = TimeSpan.FromMinutes (harness.Timeout * timeoutMultiplier);
 			var testReporter = testReporterFactory.Create (MainLog,
@@ -278,8 +288,7 @@ namespace Xharness {
 				harness.XmlJargon,
 				deviceName,
 				testReporterTimeout,
-				buildTask?.Logs?.Directory,
-				(level, message) => harness.Log (level, message));
+				buildTask?.Logs?.Directory);
 
 			listener.ConnectedTask
 				.TimeoutAfter (TimeSpan.FromMinutes (harness.LaunchTimeout))
@@ -307,7 +316,7 @@ namespace Xharness {
 				args.Add (new SetStdoutArgument (stdout_log));
 				args.Add (new SetStderrArgument (stderr_log));
 
-				var simulators = new [] { simulator };
+				var simulators = new [] { simulator! };
 				var systemLogs = new List<ICaptureLog> ();
 				foreach (var sim in simulators) {
 					// Upload the system log
@@ -344,7 +353,7 @@ namespace Xharness {
 				}
 				MainLog.WriteLine ("Enabled verbose logging");
 
-				args.Add (new SimulatorUDIDArgument (simulator.UDID));
+				args.Add (new SimulatorUDIDArgument (simulator!.UDID));
 
 				await crashReporter.StartCaptureAsync ();
 
@@ -373,7 +382,7 @@ namespace Xharness {
 				args.Add (new DeviceNameArgument (deviceName));
 
 				var deviceSystemLog = Logs.Create ($"device-{deviceName}-{Harness.Helpers.Timestamp}.log", "Device log");
-				var deviceLogCapturer = deviceLogCapturerFactory.Create (harness.HarnessLog, deviceSystemLog, deviceName);
+				var deviceLogCapturer = deviceLogCapturerFactory.Create (harness.HarnessLog!, deviceSystemLog, deviceName);
 				deviceLogCapturer.StartCapture ();
 
 				try {
@@ -423,7 +432,30 @@ namespace Xharness {
 			// check the final status, copy all the required data
 			(Result, FailureMessage) = await testReporter.ParseResult ();
 
-			return testReporter.Success.Value ? 0 : 1;
+			// If the result is "Crashed" but the log shows a launch failure, report it as such
+			if (Result == TestExecutingResult.Crashed && IsLaunchFailure (MainLog)) {
+				Result = TestExecutingResult.LaunchFailure;
+				FailureMessage = "Test app failed to launch.";
+			}
+
+			return testReporter?.Success == true ? 0 : 1;
+		}
+
+		static bool IsLaunchFailure (IFileBackedLog log)
+		{
+			try {
+				using var reader = log.GetReader ();
+				string? line;
+				while ((line = reader.ReadLine ()) is not null) {
+					if (line.Contains ("Could not launch the app", StringComparison.Ordinal))
+						return true;
+					if (line.Contains ("error HE0042", StringComparison.Ordinal))
+						return true;
+				}
+			} catch {
+				// Ignore any errors reading the log
+			}
+			return false;
 		}
 	}
 }

@@ -15,21 +15,21 @@ namespace LinkAll.Serialization.Xml {
 
 	[Serializable]
 	[XmlRoot ("rsp", IsNullable = false)]
-	public class XmlResult<T> {
+	public class XmlResult<T> where T : class {
 		[XmlAttribute ("stat")]
 		public int StatusCode { get; set; }
 
 		[XmlElement ("photos")]
 		[XmlElement ("photosets")]
-		public T Result { get; set; }
+		public T? Result { get; set; }
 	}
 
 	[Serializable]
 	[XmlRoot ("rsp")]
-	public class XmlField<T> {
+	public class XmlField<T> where T : class {
 		[XmlElement ("photos")]
 		[XmlElement ("photosets")]
-		public T Result;
+		public T? Result;
 	}
 
 	[Ignore ("https://github.com/dotnet/runtime/issues/41389")]
@@ -52,7 +52,7 @@ namespace LinkAll.Serialization.Xml {
 				r.StatusCode = -1;
 
 				ms.Position = 0;
-				XmlResult<string> back = (XmlResult<string>) serializer.Deserialize (ms);
+				var back = (XmlResult<string>) serializer.Deserialize (ms)!;
 
 				Assert.That (back.Result, Is.EqualTo ("5543"), "Result");
 				Assert.That (back.StatusCode, Is.EqualTo (10), "StatusCode");

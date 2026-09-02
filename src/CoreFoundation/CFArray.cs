@@ -29,6 +29,8 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using System.Collections.Generic;
+
 using CFIndex = System.IntPtr;
 using CFArrayRef = System.IntPtr;
 using CFAllocatorRef = System.IntPtr;
@@ -52,16 +54,7 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary, EntryPoint = "CFArrayGetTypeID")]
 		internal extern static /* CFTypeID */ nint GetTypeID ();
 
-		// pointer to a const struct (REALLY APPLE?)
-		static IntPtr kCFTypeArrayCallbacks_ptr_value;
-		static IntPtr kCFTypeArrayCallbacks_ptr {
-			get {
-				// FIXME: right now we can't use [Fields] for GetIndirect
-				if (kCFTypeArrayCallbacks_ptr_value == IntPtr.Zero)
-					kCFTypeArrayCallbacks_ptr_value = Dlfcn.GetIndirect (Libraries.CoreFoundation.Handle, "kCFTypeArrayCallBacks");
-				return kCFTypeArrayCallbacks_ptr_value;
-			}
-		}
+		static IntPtr kCFTypeArrayCallbacks_ptr = _CFTypeArrayCallbacks;
 
 		internal static CFArray FromIntPtrs (params NativeHandle [] values)
 		{
@@ -115,15 +108,37 @@ namespace CoreFoundation {
 			var _values = c <= 256 ? stackalloc IntPtr [c] : new IntPtr [c];
 			for (int i = 0; i < c; ++i)
 				_values [i] = values [i].Handle;
+			IntPtr rv;
 			fixed (IntPtr* pv = _values)
-				return CFArrayCreate (IntPtr.Zero, (IntPtr) pv, c, kCFTypeArrayCallbacks_ptr);
+				rv = CFArrayCreate (IntPtr.Zero, (IntPtr) pv, c, kCFTypeArrayCallbacks_ptr);
+			GC.KeepAlive (values);
+			return rv;
 		}
 
-		public static unsafe NativeHandle Create (params string [] values)
+		/// <summary>Create a <see cref="CFArray" /> from an array of strings.</summary>
+		/// <param name="values">The array of strings.</param>
+		/// <returns>An unmanaged handle to the new <see cref="CFArray" />.</returns>
+		/// <remarks>
+		///   <para>If any string in <paramref name="values" /> is null, a <see cref="NSNull" /> entry will be created for that element.</para>
+		///   <para>The caller must release the returned handle.</para>
+		/// </remarks>
+		public static unsafe NativeHandle Create (params string? [] values)
+		{
+			return Create ((IReadOnlyList<string?>) values);
+		}
+
+		/// <summary>Create a <see cref="CFArray" /> from a list of strings.</summary>
+		/// <param name="values">The list of strings.</param>
+		/// <returns>An unmanaged handle to the new <see cref="CFArray" />.</returns>
+		/// <remarks>
+		///   <para>If any string in <paramref name="values" /> is null, a <see cref="NSNull" /> entry will be created for that element.</para>
+		///   <para>The caller must release the returned handle.</para>
+		/// </remarks>
+		public static unsafe NativeHandle Create (IReadOnlyList<string?> values)
 		{
 			if (values is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (values));
-			var c = values.Length;
+			var c = values.Count;
 			var _values = c <= 256 ? stackalloc IntPtr [c] : new IntPtr [c];
 			for (var i = 0; i < c; ++i)
 				_values [i] = values [i] is null ? CFNullHandle : CFString.CreateNative (values [i]);
@@ -131,7 +146,11 @@ namespace CoreFoundation {
 				return CFArrayCreate (IntPtr.Zero, (IntPtr) pv, c, kCFTypeArrayCallbacks_ptr);
 		}
 
-		static public CFArray FromStrings (params string [] items)
+		/// <summary>Create a <see cref="CFArray" /> from an array of strings.</summary>
+		/// <param name="items">The array of strings.</param>
+		/// <returns>A new <see cref="CFArray" /> containing the strings.</returns>
+		/// <remarks>If any string in <paramref name="items" /> is null, a <see cref="NSNull" /> entry will be created for that element.</remarks>
+		public static CFArray FromStrings (params string? [] items)
 		{
 			return new CFArray (Create (items), true);
 		}

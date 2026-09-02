@@ -16,7 +16,6 @@ namespace Xamarin.MacDev.Tasks {
 		public void PartialAppManifest ()
 		{
 			Configuration.IgnoreIfIgnoredPlatform (ApplePlatform.MacOSX);
-			Configuration.AssertDotNetAvailable ();
 
 			var csproj = $@"<?xml version=""1.0"" encoding=""utf-8""?>
 <Project Sdk=""Microsoft.NET.Sdk"">
@@ -65,15 +64,15 @@ namespace Xamarin.MacDev.Tasks {
 			var properties = new Dictionary<string, string> {
 				{ "_CreateAppManifest", "true" },
 			};
-			var rv = engine.RunTarget (ApplePlatform.MacOSX, ExecutionMode.DotNet, csprojPath, target: "_WriteAppManifest", properties: properties);
-			Assert.AreEqual (0, rv.ExitCode, "Exit code");
+			var rv = engine.RunTarget (ApplePlatform.MacOSX, csprojPath, target: "_WriteAppManifest", properties: properties);
+			Assert.That (rv.ExitCode, Is.EqualTo (0), "Exit code");
 
 			var appManifestPath = Path.Combine (tmpdir, "bin", "Debug", Configuration.DotNetTfm + "-macos", "osx-x64", "PartialAppManifest.app", "Contents", "Info.plist");
 			Assert.That (appManifestPath, Does.Exist, "App manifest existence");
 
-			var plist = PDictionary.FromFile (appManifestPath);
-			Assert.AreEqual ("PartialAppManifestDisplayName", plist.GetCFBundleDisplayName (), "Bundle display name");
-			Assert.AreEqual ("com.xamarin.partialappmanifest", plist.GetCFBundleIdentifier (), "Bundle identifier");
+			var plist = PDictionary.OpenFile (appManifestPath);
+			Assert.That (plist.GetCFBundleDisplayName (), Is.EqualTo ("PartialAppManifestDisplayName"), "Bundle display name");
+			Assert.That (plist.GetCFBundleIdentifier (), Is.EqualTo ("com.xamarin.partialappmanifest"), "Bundle identifier");
 		}
 	}
 }

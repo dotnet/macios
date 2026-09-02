@@ -34,12 +34,12 @@ namespace MonoTouchFixtures.GamePlayKit {
 			};
 			var foo = new NSString ("Foo");
 			using (var quadTree = new GKQuadTree (quad, 1)) {
-				Assert.NotNull (quadTree, "quadTree is null");
+				Assert.That (quadTree, Is.Not.Null, "quadTree is null");
 				var node = quadTree.AddElement (foo, quad);
-				Assert.AreEqual (expectedQuad, node.Quad, $"quads are different");
+				Assert.That (node.Quad, Is.EqualTo (expectedQuad), $"quads are different");
 				var strs = quadTree.GetElements (quad);
 				Assert.That (strs.Length, Is.GreaterThan (0), "Must have elements");
-				Assert.AreSame (foo, strs [0], "must be the same object");
+				Assert.That (strs [0], Is.SameAs (foo), "must be the same object");
 			}
 		}
 	}

@@ -450,6 +450,9 @@ namespace Introspection {
 				case "CPMessageGridItemConfiguration": // Conformance not in headers
 				case "PKAddIdentityDocumentMetadata": // Conformance not in headers
 					return true;
+				// Xcode 26.2
+				case "SFSafariExtensionState": // Conformance not in headers
+					return true;
 				}
 				break;
 			case "NSSecureCoding":
@@ -660,6 +663,9 @@ namespace Introspection {
 				case "CPListImageRowItemRowElement": // Conformance not in headers
 				case "CPMessageGridItemConfiguration": // Conformance not in headers
 				case "PKAddIdentityDocumentMetadata": // Conformance not in headers
+					return true;
+				// Xcode 26.2
+				case "SFSafariExtensionState": // Conformance not in headers
 					return true;
 				}
 				break;

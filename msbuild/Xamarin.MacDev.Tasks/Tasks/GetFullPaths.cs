@@ -65,7 +65,16 @@ namespace Xamarin.MacDev.Tasks {
 			return !Log.HasLoggedErrors;
 		}
 
-		public bool ShouldCopyToBuildServer (ITaskItem item) => true;
+		public bool ShouldCopyToBuildServer (ITaskItem item)
+		{
+			var finfo = new FileInfo (item.ItemSpec);
+			if (finfo.Exists && finfo.Length == 0) {
+				// an empty file is most likely an output file from the Mac, so don't overwrite the corresponding file on the Mac with the empty output file from Windows
+				Log.LogMessage (MessageImportance.Low, "Not copying {0} to the Mac, it's an empty file.", item.ItemSpec);
+				return false;
+			}
+			return true;
+		}
 
 		public bool ShouldCreateOutputFile (ITaskItem item) => false;
 

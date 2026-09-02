@@ -6,15 +6,10 @@ using Mono.Linker;
 
 using Xamarin.Bundler;
 using Xamarin.Linker;
-#if !NET || LEGACY_TOOLS
-using Mono.Linker.Steps;
-using Mono.Tuner;
-using Xamarin.Tuner;
-#endif
+
+#nullable enable
 
 namespace MonoTouch.Tuner {
-
-#if NET && !LEGACY_TOOLS
 	public class RegistrarRemovalTrackingStep : ConfigurationAwareStep {
 
 		protected override string Name { get; } = "RegistrarRemovalTracking";
@@ -32,22 +27,10 @@ namespace MonoTouch.Tuner {
 		{
 			Process (assembly);
 		}
-#else
-	public class RegistrarRemovalTrackingStep : BaseStep {
 
-		Optimizations Optimizations => ((DerivedLinkContext) Context).App.Optimizations;
-
-		string PlatformAssemblyName => ((MobileProfile) Profile.Current).ProductAssembly;
-
-		int WarnCode => 2107; // for compatibility
-
-		protected override void ProcessAssembly (AssemblyDefinition assembly)
-		{
-			Process (assembly);
-			base.ProcessAssembly (assembly);
-		}
+#if !ASSEMBLY_PREPARER
+		AssemblyDefinition? PlatformAssembly;
 #endif
-		AssemblyDefinition PlatformAssembly;
 
 		bool dynamic_registration_support_required;
 
@@ -68,7 +51,9 @@ namespace MonoTouch.Tuner {
 			if (Profile.IsProductAssembly (assembly)) {
 				if (Annotations.GetAction (assembly) != AssemblyAction.Link)
 					return false;
+#if !ASSEMBLY_PREPARER
 				PlatformAssembly = assembly;
+#endif
 			}
 
 			// Can't touch the forbidden fruit in the product assembly unless there's a reference to it
@@ -145,12 +130,8 @@ namespace MonoTouch.Tuner {
 							requires = true;
 							break;
 						case ".ctor":
-							var md = mr.Resolve () as MethodDefinition;
-#if NET && !LEGACY_TOOLS
-							requires |= Xamarin.Linker.OptimizeGeneratedCodeHandler.IsBlockLiteralCtor_Type_String (md);
-#else
-							requires |= Xamarin.Linker.OptimizeGeneratedCodeSubStep.IsBlockLiteralCtor_Type_String (md);
-#endif
+							if (mr.Resolve () is MethodDefinition md)
+								requires |= Xamarin.Linker.OptimizeGeneratedCode.IsBlockLiteralCtor_Type_String (md);
 							if (requires && warnIfRequired)
 								Warn (assembly, mr);
 							break;
@@ -176,47 +157,38 @@ namespace MonoTouch.Tuner {
 
 		void Warn (AssemblyDefinition assembly, MemberReference mr)
 		{
-			ErrorHelper.Warning (WarnCode, Errors.MM2107, assembly.Name.Name, mr.DeclaringType.FullName, mr.Name, string.Join (", ", ((MethodReference) mr).Parameters.Select ((v) => v.ParameterType.FullName)));
+			ErrorHelper.Warning (App, WarnCode, Errors.MM2107, assembly.Name.Name, mr.DeclaringType.FullName, mr.Name, string.Join (", ", ((MethodReference) mr).Parameters.Select ((v) => v.ParameterType.FullName)));
 		}
 
-#if NET && !LEGACY_TOOLS
 		protected override void TryEndProcess ()
 		{
-#else
-		protected override void EndProcess ()
-		{
-			base.EndProcess ();
-#endif
 			if (!Optimizations.RemoveDynamicRegistrar.HasValue) {
 				// If dynamic registration is not required, and removal of the dynamic registrar hasn't already
 				// been disabled, then we can remove it!
 				Optimizations.RemoveDynamicRegistrar = !dynamic_registration_support_required;
 			}
 
-			Driver.Log (4, "Optimization dynamic registrar removal: {0}", Optimizations.RemoveDynamicRegistrar.Value ? "enabled" : "disabled");
+			App.Log (4, "Optimization dynamic registrar removal: {0}", Optimizations.RemoveDynamicRegistrar.Value ? "enabled" : "disabled");
 
-			if (Optimizations.RemoveDynamicRegistrar.Value) {
+#if ASSEMBLY_PREPARER
+			// In the assembly-preparer we don't rewrite the platform assembly. Instead we surface the computed
+			// value to MSBuild (as the DynamicRegistrationSupported output property), which enables the
+			// 'ObjCRuntime.Runtime.DynamicRegistrationSupported' trimmer feature switch so that ILLink hardcodes
+			// Runtime.DynamicRegistrationSupported. This way the assembly-preparer doesn't have to modify (and
+			// thus re-save) any assembly.
+			Configuration.SetOutputForMSBuild ("DynamicRegistrationSupported", App.DynamicRegistrationSupported ? "true" : "false");
+#else
+			if (Optimizations.RemoveDynamicRegistrar.Value && PlatformAssembly is not null) {
 				// ILLink will optimize `Runtime.Initialize` based on `DynamicRegistrationSupported` returning a constant (`true`)
 				// and this will runs before we have the chance to set it to `false` in `CoreOptimizedGeneratedCode` so we instead
 				// do the change here so the linker can do this without further ado
 				// note: it does not matter for _legacy_ so we apply the change (to earlier) to minimize the difference between them
-				if (PlatformAssembly is not null) {
-					var method = PlatformAssembly.MainModule.GetType ("ObjCRuntime.Runtime").Methods.First ((n) => n.Name == "get_DynamicRegistrationSupported");
-					// Rewrite to return 'false'
-					var instr = method.Body.Instructions;
-					instr.Clear ();
-					instr.Add (Instruction.Create (OpCodes.Ldc_I4_0));
-					instr.Add (Instruction.Create (OpCodes.Ret));
-				}
-			}
-#if MTOUCH
-			var app = (Context as DerivedLinkContext).App;
-			if (app.IsCodeShared) {
-				foreach (var appex in app.AppExtensions) {
-					if (!appex.IsCodeShared)
-						continue;
-					appex.Optimizations.RemoveDynamicRegistrar = app.Optimizations.RemoveDynamicRegistrar;
-				}
+				var method = PlatformAssembly.MainModule.GetType ("ObjCRuntime.Runtime").Methods.First ((n) => n.Name == "get_DynamicRegistrationSupported");
+				// Rewrite to return 'false'
+				var instr = method.Body.Instructions;
+				instr.Clear ();
+				instr.Add (Instruction.Create (OpCodes.Ldc_I4_0));
+				instr.Add (Instruction.Create (OpCodes.Ret));
 			}
 #endif
 		}

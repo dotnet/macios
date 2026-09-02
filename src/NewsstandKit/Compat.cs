@@ -7,7 +7,6 @@ using System.ComponentModel;
 namespace NewsstandKit {
 	/// <summary>An asset is a downloadable component (text, media, an entire compressed issue, etc.) of a Newsstand application.</summary>
 	///     <remarks>To be added.</remarks>
-	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/StoreKit/Reference/NKAssetDownload_Class/index.html">Apple documentation for <c>NKAssetDownload</c></related>
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	[Obsolete ("The NewsstandKit framework has been removed from iOS.")]
 	public unsafe partial class NKAssetDownload : NSObject {
@@ -22,6 +21,8 @@ namespace NewsstandKit {
 			throw new InvalidOperationException (Constants.NewsstandKitRemoved);
 		}
 
+		/// <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>
+		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
 		protected internal NKAssetDownload (NativeHandle handle) : base (handle)
 		{
 			throw new InvalidOperationException (Constants.NewsstandKitRemoved);
@@ -75,7 +76,7 @@ namespace NewsstandKit {
 			}
 		}
 
-		/// <include file="../../docs/api/NewsstandKit/NKAssetDownload.xml" path="/Documentation/Docs[@DocId='M:NewsstandKit.NKAssetDownload.Dispose(System.Boolean)']/*" />
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			throw new InvalidOperationException (Constants.NewsstandKitRemoved);
@@ -84,7 +85,6 @@ namespace NewsstandKit {
 
 	/// <summary>A named and dated Newsstand product (e.g., an issue of a particular magazine).</summary>
 	///     <remarks>To be added.</remarks>
-	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/StoreKit/Reference/NKIssue_Class/index.html">Apple documentation for <c>NKIssue</c></related>
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	[Obsolete ("The NewsstandKit framework has been removed from iOS.")]
 	public unsafe partial class NKIssue : NSObject {
@@ -99,6 +99,8 @@ namespace NewsstandKit {
 			throw new InvalidOperationException (Constants.NewsstandKitRemoved);
 		}
 
+		/// <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>
+		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
 		protected internal NKIssue (NativeHandle handle) : base (handle)
 		{
 			throw new InvalidOperationException (Constants.NewsstandKitRemoved);
@@ -202,7 +204,6 @@ namespace NewsstandKit {
 
 	/// <summary>A collection of <see cref="NewsstandKit.NKIssue" />s.</summary>
 	///     <remarks>To be added.</remarks>
-	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/StoreKit/Reference/NKLibrary_Class/index.html">Apple documentation for <c>NKLibrary</c></related>
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	[Obsolete ("The NewsstandKit framework has been removed from iOS.")]
 	public unsafe partial class NKLibrary : NSObject {
@@ -217,6 +218,8 @@ namespace NewsstandKit {
 			throw new InvalidOperationException (Constants.NewsstandKitRemoved);
 		}
 
+		/// <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>
+		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
 		protected internal NKLibrary (NativeHandle handle) : base (handle)
 		{
 			throw new InvalidOperationException (Constants.NewsstandKitRemoved);

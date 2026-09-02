@@ -46,9 +46,6 @@ namespace Xamarin.MacDev.Tasks {
 		[Required]
 		public string OutputAppBundle { get; set; } = "";
 
-		[Required]
-		public string SdkDevPath { get; set; } = "";
-
 		#endregion
 
 		enum FileType {
@@ -112,7 +109,7 @@ namespace Xamarin.MacDev.Tasks {
 						return false;
 
 					// if the name of the immediate subdirectory isn't a valid culture, then it's not a dependent assembly of ours
-					var immediateSubDir = Path.GetFileName (Path.GetDirectoryName (v.RelativePath));
+					var immediateSubDir = Path.GetFileName (Path.GetDirectoryName (v.RelativePath)!);
 					var cultureInfo = CultureInfo.GetCultureInfo (immediateSubDir);
 					if (cultureInfo is null)
 						return false;
@@ -189,25 +186,22 @@ namespace Xamarin.MacDev.Tasks {
 				return true;
 			}
 
-			public void CopyTo (string outputDirectory, string? subDirectory = null)
+			public void CopyTo (string outputDirectory, string? subDirectory = null, Entry? dependentOn = null)
 			{
 				string outputFile;
 
 				if (subDirectory is null) {
 					outputFile = Path.Combine (outputDirectory, RelativePath);
 				} else {
-					var relativeAppDir = Path.GetDirectoryName (RelativePath);
-					if (string.IsNullOrEmpty (relativeAppDir)) {
-						outputFile = Path.Combine (outputDirectory, subDirectory, RelativePath);
-					} else {
-						outputFile = Path.Combine (outputDirectory, relativeAppDir, subDirectory, Path.GetFileName (RelativePath));
-					}
+					var outputRelativePath = Path.GetDirectoryName (dependentOn?.RelativePath ?? RelativePath) ?? "";
+					var outputRelativeName = RelativePath.Substring (outputRelativePath.Length).TrimStart ('/');
+					outputFile = Path.Combine (outputDirectory, outputRelativePath, subDirectory, outputRelativeName);
 				}
 
 				if (Type == FileType.Directory) {
 					Directory.CreateDirectory (outputFile);
 				} else if (Type == FileType.Symlink) {
-					Directory.CreateDirectory (Path.GetDirectoryName (outputFile));
+					Directory.CreateDirectory (Path.GetDirectoryName (outputFile)!);
 					var symlinkTarget = PathUtils.GetSymlinkTarget (FullPath);
 					if (File.Exists (outputFile) && PathUtils.IsSymlink (outputFile) && PathUtils.GetSymlinkTarget (outputFile) == symlinkTarget) {
 						File.SetLastWriteTimeUtc (outputFile, DateTime.UtcNow); // update the timestamp, because the file the symlink points to might have changed.
@@ -217,14 +211,14 @@ namespace Xamarin.MacDev.Tasks {
 						PathUtils.Symlink (symlinkTarget, outputFile);
 					}
 				} else {
-					Directory.CreateDirectory (Path.GetDirectoryName (outputFile));
-					if (!FileCopier.IsUptodate (FullPath, outputFile, Task.FileCopierReportErrorCallback, Task.FileCopierLogCallback))
+					Directory.CreateDirectory (Path.GetDirectoryName (outputFile)!);
+					if (!FileCopier.IsUptodate (Task, FullPath, outputFile))
 						File.Copy (FullPath, outputFile, true);
 				}
 
 				if (DependentFiles is not null) {
 					foreach (var file in DependentFiles)
-						file.CopyTo (outputDirectory, subDirectory);
+						file.CopyTo (outputDirectory, subDirectory, this);
 				}
 			}
 		}
@@ -249,7 +243,7 @@ namespace Xamarin.MacDev.Tasks {
 					sourceDirectory += Path.DirectorySeparatorChar;
 
 				Log.LogMessage (MessageImportance.Low, $"Copying the single input directory {sourceDirectory} to {targetDirectory}");
-				FileCopier.UpdateDirectory (sourceDirectory, targetDirectory, FileCopierReportErrorCallback, FileCopierLogCallback);
+				FileCopier.UpdateDirectory (this, sourceDirectory, targetDirectory);
 				return !Log.HasLoggedErrors;
 			}
 
@@ -431,7 +425,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			var sourceFiles = input.Select (v => v.FullPath).ToArray ();
 
-			if (FileCopier.IsUptodate (sourceFiles, new string [] { output }, FileCopierReportErrorCallback, FileCopierLogCallback))
+			if (FileCopier.IsUptodate (this, sourceFiles, new string [] { output }))
 				return;
 
 			Log.LogMessage (MessageImportance.Low, $"Lipoing '{input [0].RelativePath}' for the merged app bundle from the following sources:\n\t{string.Join ("\n\t", input.Select (v => v.FullPath))}");
@@ -441,7 +435,7 @@ namespace Xamarin.MacDev.Tasks {
 			arguments.Add ("-output");
 			arguments.Add (output);
 			arguments.AddRange (sourceFiles);
-			ExecuteAsync ("lipo", arguments, sdkDevPath: SdkDevPath).Wait ();
+			ExecuteAsync ("lipo", arguments).Wait ();
 		}
 
 		FileType GetFileType (string path)

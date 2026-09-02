@@ -2,27 +2,18 @@ TOP=..
 
 include $(TOP)/Make.config
 
+ifndef NO_XCODE
+SUBDIRS += sharpie
+endif
+
 SUBDIRS += devops
 
-ifdef INCLUDE_MAC
-SUBDIRS+=mmp
-endif
-
-ifdef INCLUDE_IOS
-INCLUDE_MTOUCH=1
-endif
-ifdef INCLUDE_TVOS
-INCLUDE_MTOUCH=1
-endif
-ifdef INCLUDE_MACCATALYST
-INCLUDE_MTOUCH=1
-endif
-
-ifdef INCLUDE_MTOUCH
 SUBDIRS += mtouch
-endif
 
 SUBDIRS+=mlaunch
 
 SUBDIRS += dotnet-linker
+
 SUBDIRS += spawner
+
+SUBDIRS += assembly-preparer

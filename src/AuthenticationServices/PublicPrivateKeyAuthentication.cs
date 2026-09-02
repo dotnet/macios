@@ -10,7 +10,6 @@
 #if !TVOS
 
 using CoreGraphics;
-using System.Linq;
 
 #nullable enable
 
@@ -25,14 +24,14 @@ namespace AuthenticationServices {
 
 		public static ASAuthorizationSecurityKeyPublicKeyCredentialDescriptorTransport []? GetAllSupportedPublicKeyCredentialDescriptorTransports ()
 		{
-			NSString []? nsStringArray = NSArray.ArrayFromHandle<NSString> (ASAuthorizationAllSupportedPublicKeyCredentialDescriptorTransports ());
+			var nsStringArray = NSArray.StringArrayFromHandle (ASAuthorizationAllSupportedPublicKeyCredentialDescriptorTransports ());
 
 			if (nsStringArray is null)
 				return null;
 
-			ASAuthorizationSecurityKeyPublicKeyCredentialDescriptorTransport [] asArray = new ASAuthorizationSecurityKeyPublicKeyCredentialDescriptorTransport [nsStringArray.Count ()];
-			for (var i = 0; i < nsStringArray.Count (); i++) {
-				switch (nsStringArray [i].Description) {
+			var asArray = new ASAuthorizationSecurityKeyPublicKeyCredentialDescriptorTransport [nsStringArray.Length];
+			for (var i = 0; i < nsStringArray.Length; i++) {
+				switch (nsStringArray [i]) {
 				case "usb":
 					asArray [i] = ASAuthorizationSecurityKeyPublicKeyCredentialDescriptorTransport.Usb;
 					break;

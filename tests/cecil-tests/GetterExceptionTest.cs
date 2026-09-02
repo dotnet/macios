@@ -68,8 +68,9 @@ namespace Cecil.Tests {
 
 			}
 
-			Assert.AreEqual (0,
+			Assert.That (
 				propertiesWithGetterExceptions.Count (),
+				Is.EqualTo (0),
 				$"Exceptions found in Getters: {string.Join (Environment.NewLine, propertiesWithGetterExceptions)}");
 		}
 	}

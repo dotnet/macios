@@ -5,12 +5,12 @@ using Microsoft.DotNet.XHarness.Common.Execution;
 using Microsoft.DotNet.XHarness.Common.Logging;
 
 namespace Xharness.Jenkins.TestTasks {
-	abstract class BuildToolTask : AppleTestTask, IBuildToolTask {
+	public abstract class BuildToolTask : AppleTestTask {
 		protected BuildTool buildToolTask;
 
 		public IProcessManager ProcessManager { get; }
 
-		public IFileBackedLog BuildLog {
+		public IFileBackedLog? BuildLog {
 			get => buildToolTask.BuildLog;
 			set => buildToolTask.BuildLog = value;
 		}
@@ -37,7 +37,7 @@ namespace Xharness.Jenkins.TestTasks {
 			get => buildToolTask.Constants;
 		}
 
-		public override TestProject TestProject {
+		public override TestProject? TestProject {
 			get => base.TestProject;
 			set {
 				base.TestProject = value;
@@ -50,7 +50,7 @@ namespace Xharness.Jenkins.TestTasks {
 			base.TestProject = testProject;
 			ProcessManager = processManager ?? throw new ArgumentNullException (nameof (processManager));
 			InitializeTool ();
-			buildToolTask.TestProject = testProject;
+			buildToolTask!.TestProject = testProject;
 		}
 
 		public override TestPlatform Platform {
@@ -61,7 +61,7 @@ namespace Xharness.Jenkins.TestTasks {
 			}
 		}
 
-		public override string Mode {
+		public override string? Mode {
 			get => buildToolTask.Mode;
 			set => buildToolTask.Mode = value;
 		}

@@ -41,9 +41,7 @@ namespace AudioToolbox {
 		readonly bool owns;
 
 		/// <param name="address">Pointer to an existing C-based AudioBufferList.</param>
-		///         <summary>Creates and AudioBuffers object that can be used to query and manipulate a native AudioBuffersList structure.</summary>
-		///         <remarks>
-		///         </remarks>
+		///         <summary>Creates an AudioBuffers object that can be used to query and manipulate a native AudioBuffersList structure.</summary>
 		public AudioBuffers (IntPtr address)
 			: this (address, false)
 		{
@@ -51,8 +49,7 @@ namespace AudioToolbox {
 
 		/// <param name="address">Pointer to an existing C-based AudioBufferList.</param>
 		///         <param name="owns">Determines whether the user code owns the buffer pointed to by address, in that case, calling Dispose will release the buffer.</param>
-		///         <summary>Creates and AudioBuffers object that can be used to query and manipulate a native AudioBuffersList structure.</summary>
-		///         <summary>Creates and AudioBuffers object that can be used to query and manipulate a native AudioBuffersList structure.</summary>
+		///         <summary>Creates an AudioBuffers object that can be used to query and manipulate a native AudioBuffersList structure.</summary>
 		///         <remarks>
 		/// 	  If you set owns to true, the structure pointed to by
 		/// 	  "address" will be released when you call <see cref="AudioToolbox.AudioBuffers.Dispose(System.Boolean)" />.

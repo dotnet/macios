@@ -16,7 +16,7 @@ using CoreVideo;
 namespace VideoToolbox {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios16.0")]
-	[SupportedOSPlatform ("maccatalyst16.0")]
+	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("tvos16.0")]
 	public class VTPixelTransferSession : VTSession {
 
@@ -32,6 +32,7 @@ namespace VideoToolbox {
 		[DllImport (Constants.VideoToolboxLibrary)]
 		extern static void VTPixelTransferSessionInvalidate (/* VTPixelTransferSessionRef */ IntPtr session);
 
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			if (Handle != IntPtr.Zero)
@@ -87,7 +88,10 @@ namespace VideoToolbox {
 			if (options is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (options));
 
-			return VTSessionSetProperties (Handle, options.Dictionary.Handle);
+			var dictionary = options.Dictionary;
+			var rv = VTSessionSetProperties (Handle, dictionary.Handle);
+			GC.KeepAlive (dictionary);
+			return rv;
 		}
 	}
 }

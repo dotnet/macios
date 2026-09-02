@@ -10,6 +10,7 @@ using Mono.Linker.Steps;
 
 using Xamarin.Bundler;
 using Xamarin.Linker;
+using Xamarin.Tuner;
 using Xamarin.Utils;
 
 #nullable enable
@@ -19,11 +20,6 @@ namespace Xamarin.Bundler {
 		LinkerConfiguration? configuration;
 		public LinkerConfiguration Configuration { get => configuration!; }
 		public string? RuntimeConfigurationFile { get; set; }
-
-		public Application (LinkerConfiguration configuration)
-		{
-			this.configuration = configuration;
-		}
 
 		public string ProductName {
 			get {
@@ -44,8 +40,6 @@ namespace Xamarin.Bundler {
 
 		public void Initialize ()
 		{
-			// mSYM support is not implemented in the runtime on .NET 6 afaik
-			EnableMSym = false;
 		}
 
 		public bool HasAnyDynamicLibraries {
@@ -106,7 +100,7 @@ namespace Xamarin.Bundler {
 			}
 		}
 
-		public AssemblyDefinition GetAssembly (string name)
+		public AssemblyDefinition? GetAssembly (string name)
 		{
 			return LinkerConfiguration.Context.GetLoadedAssembly (name);
 		}
@@ -149,6 +143,23 @@ namespace Xamarin.Linker {
 		public bool IsProductAssembly (AssemblyDefinition assembly)
 		{
 			return assembly.Name.Name == Configuration.PlatformAssembly;
+		}
+
+		public bool ReferencesProductAssembly (AssemblyDefinition assembly)
+		{
+			if (!assembly.MainModule.HasAssemblyReferences)
+				return false;
+
+			foreach (var reference in assembly.MainModule.AssemblyReferences) {
+				if (reference.Name == Configuration.PlatformAssembly)
+					return true;
+			}
+			return false;
+		}
+
+		public bool IsOrReferencesProductAssembly (AssemblyDefinition assembly)
+		{
+			return IsProductAssembly (assembly) || ReferencesProductAssembly (assembly);
 		}
 
 		public bool IsSdkAssembly (AssemblyDefinition assembly)

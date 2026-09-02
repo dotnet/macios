@@ -14,12 +14,12 @@ namespace MonoTouchFixtures.Foundation {
 			// NSDateComponentUndefined." 
 			// we simply test that the values are undefined
 			var components = new NSDateComponents ();
-			Assert.AreEqual (NSDateComponents.Undefined, components.Year, $"Year");
-			Assert.AreEqual (NSDateComponents.Undefined, components.Month, "Month");
-			Assert.AreEqual (NSDateComponents.Undefined, components.Day, "Day");
-			Assert.AreEqual (NSDateComponents.Undefined, components.Hour, "Hour");
-			Assert.AreEqual (NSDateComponents.Undefined, components.Minute, "Minute");
-			Assert.AreEqual (NSDateComponents.Undefined, components.Second, "Second");
+			Assert.That (components.Year, Is.EqualTo (NSDateComponents.Undefined), $"Year");
+			Assert.That (components.Month, Is.EqualTo (NSDateComponents.Undefined), "Month");
+			Assert.That (components.Day, Is.EqualTo (NSDateComponents.Undefined), "Day");
+			Assert.That (components.Hour, Is.EqualTo (NSDateComponents.Undefined), "Hour");
+			Assert.That (components.Minute, Is.EqualTo (NSDateComponents.Undefined), "Minute");
+			Assert.That (components.Second, Is.EqualTo (NSDateComponents.Undefined), "Second");
 		}
 	}
 }

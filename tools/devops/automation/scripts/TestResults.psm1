@@ -23,6 +23,8 @@ class TestConfiguration {
     [string] $Platform
     [string] $Context
     [string] $TestStage
+    [string] $DisplayName
+    [bool] $IsMacTest
 
     TestConfiguration (
         [TestSuite] $suite,
@@ -37,6 +39,8 @@ class TestConfiguration {
         $this.Platform = $platform
         $this.Context = $context
         $this.TestStage = $testStage
+        $this.DisplayName = ""
+        $this.IsMacTest = $false
     }
     
     [string]
@@ -55,6 +59,9 @@ class TestResult {
     [string] $Platform
     [string] $Context
     [string] $TestStage
+    [string] $DisplayName
+    [bool] $IsMacTest
+    [bool] $VSDropsPublishFailed
     hidden [int] $Passed
     hidden [int] $Failed
     hidden [string[]] $NotTestSummaryLabels = @()
@@ -76,6 +83,8 @@ class TestResult {
         $this.Platform = $testConfiguration.Platform
         $this.Context = $testConfiguration.Context
         $this.TestStage = $testConfiguration.TestStage
+        $this.DisplayName = $testConfiguration.DisplayName
+        $this.IsMacTest = $testConfiguration.IsMacTest
         Write-Host "TestsResult::new($path, $status, $testConfiguration, $attempt) Label: $($this.Label) Platform: $($this.Platform) Title: $($this.Title) Context: $($this.Context)"
     }
 
@@ -110,7 +119,8 @@ class TestResult {
     }
 
     [string] GetLabelWithSuffix([string] $infix) {
-        return $this.Label + $infix + $this.GetLabelSuffix()
+        $name = if ($this.DisplayName) { $this.DisplayName } else { $this.Label }
+        return $name + $infix + $this.GetLabelSuffix()
     }
 
     [void] WriteComment($stringBuilder) {
@@ -256,6 +266,8 @@ class ParallelTestsResults {
     [string] $Context
     [string] $VSDropsIndex
     [TestResult[]] $Results
+    [string] $LinuxBuildStatus
+    [string] $BuildMacTestsStatus
 
     ParallelTestsResults (
         [TestResult[]] $results,
@@ -297,6 +309,9 @@ class ParallelTestsResults {
         if (-not [string]::IsNullOrEmpty($this.BuildFailureMessage)) {
             return $false
         }
+        if (-not [string]::IsNullOrEmpty($this.LinuxBuildStatus) -and $this.LinuxBuildStatus -ne "Succeeded") {
+            return $false
+        }
         $failingTests = $this.GetFailingTests()
         return $failingTests.Count -eq 0
     }
@@ -326,9 +341,13 @@ class ParallelTestsResults {
     }
 
     [string] GetDownloadLinks($testResult) {
-        $dropsIndex = "$($this.VSDropsIndex)/$($testResult.TestStage)$($testResult.Title)-$($testResult.Attempt)/;/tests/vsdrops_index.html"
         $artifactUrl = "$Env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI$Env:SYSTEM_TEAMPROJECT/_apis/build/builds/$Env:BUILD_BUILDID/artifacts?artifactName=HtmlReport-$($testResult.TestStage)$($testResult.Title)-$($testResult.Attempt)&api-version=6.0&`$format=zip"
-        $downloadInfo = "[Html Report (VSDrops)]($dropsIndex) [Download]($artifactUrl)"
+        if ($testResult.VSDropsPublishFailed) {
+            $downloadInfo = "(:warning: Html Report Publish failed :warning:) [Download]($artifactUrl)"
+        } else {
+            $dropsIndex = "$($this.VSDropsIndex)/$($testResult.TestStage)$($testResult.Title)-$($testResult.Attempt)/;/tests/vsdrops_index.html"
+            $downloadInfo = "[Html Report (VSDrops)]($dropsIndex) [Download]($artifactUrl)"
+        }
         return $downloadInfo
     }
 
@@ -346,13 +365,21 @@ class ParallelTestsResults {
     [void] WriteComment($stringBuilder) {
         if (-not [string]::IsNullOrEmpty($this.BuildFailureMessage)) {
             $pipelineLink = "$Env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI$Env:SYSTEM_TEAMPROJECT/_build/index?buildId=$Env:BUILD_BUILDID"
+            $stringBuilder.AppendLine("[comment]: <> (This is a test result report added by Azure DevOps)")
+            $stringBuilder.AppendLine()
             $stringBuilder.AppendLine("# :x: Build failure :x:")
             $stringBuilder.AppendLine()
             $stringBuilder.AppendLine("Build result: [$($this.BuildFailureMessage)]($($pipelineLink))")
-            $stringBuilder.AppendLine()
-            $stringBuilder.AppendLine("[comment]: <> (This is a test result report added by Azure DevOps)")
             return
         }
+
+        $stringBuilder.AppendLine("[comment]: <> (This is a test result report added by Azure DevOps)")
+        $stringBuilder.AppendLine()
+
+        # Split results into regular tests and macOS tests
+        $regularResults = @($this.Results | Where-Object { -not $_.IsMacTest })
+        # Sort macOS tests by the version number extracted from the TestStage (e.g. mac_12_m1 => 12)
+        $macResults = @($this.Results | Where-Object { $_.IsMacTest } | Sort-Object { if ($_.TestStage -match '_(\d+)_') { [int]$matches[1] } else { 0 } })
 
         $stringBuilder.AppendLine("# Test results")
         # We need to add a small summary at the top. We check if it was a success, if that is
@@ -366,9 +393,17 @@ class ParallelTestsResults {
             # enumerate the tests context and its tests, since it is nice to know
             $stringBuilder.AppendLine("")
             $stringBuilder.AppendLine("## Tests counts")
-            foreach($r in $this.Results)
+            foreach($r in $regularResults)
             {
                 $this.PrintSuccessMessage($r, $stringBuilder)
+            }
+            if ($macResults.Count -gt 0) {
+                $stringBuilder.AppendLine("")
+                $stringBuilder.AppendLine("## macOS tests")
+                $stringBuilder.AppendLine("")
+                foreach ($r in $macResults) {
+                    $this.PrintSuccessMessage($r, $stringBuilder)
+                }
             }
         } else {
             $stringBuilder.AppendLine(":x: Tests failed on $($this.Context)")
@@ -377,8 +412,12 @@ class ParallelTestsResults {
             $stringBuilder.AppendLine("")
             $stringBuilder.AppendLine("## Failures")
             $stringBuilder.AppendLine("")
+            # Show non-mac failures first, then mac failures sorted by version
+            $regularFailures = @($failingTests | Where-Object { -not $_.IsMacTest })
+            $macFailures = @($failingTests | Where-Object { $_.IsMacTest } | Sort-Object { if ($_.TestStage -match '_(\d+)_') { [int]$matches[1] } else { 0 } })
+            $sortedFailures = @($regularFailures) + @($macFailures)
             # loop over all results and add the content
-            foreach ($r in $failingTests)
+            foreach ($r in $sortedFailures)
             {
                 $attemptText = $r.GetAttemptText()
                 $stringBuilder.AppendLine("### :x: $($r.GetLabelWithSuffix(`" tests`"))$attemptText")
@@ -387,46 +426,102 @@ class ParallelTestsResults {
                 # get the result, if -1, we had a crash, else we print the result
                 $result = $r.GetPassedTests()
                 if ($result.Passed -eq -2 -or $result.Failed -eq -2) {
-                    $stringBuilder.AppendLine(":fire: Failed catastrophically on $($r.Context) (no summary found).")
+                    if ($r.IsMacTest -and -not [string]::IsNullOrEmpty($this.BuildMacTestsStatus) -and $this.BuildMacTestsStatus -ne "Succeeded") {
+                        $pipelineLink = "$Env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI$Env:SYSTEM_TEAMPROJECT/_build/results?buildId=$Env:BUILD_BUILDID"
+                        $stringBuilder.AppendLine(":warning: Tests did not run because the [Build macOS tests]($pipelineLink) job failed.")
+                    } else {
+                        $stringBuilder.AppendLine(":fire: Failed catastrophically on $($r.Context) (no summary found).")
+                    }
                     $stringBuilder.AppendLine("")
                     $stringBuilder.AppendLine($this.GetDownloadLinks($r))
                     $stringBuilder.AppendLine("")
                 } else {
-                    # create a detail per test result with the name of the test and will contain the exact summary
-                    $stringBuilder.AppendLine("<summary>$($result.Failed) tests failed, $($result.Passed) tests passed.</summary>")
-                    $stringBuilder.AppendLine("<details>")
+                    $addSummary = $true
+                    $addDetails = $true
+                    $startLine = -1
                     if (Test-Path -Path $r.ResultsPath -PathType Leaf) {
-                        $stringBuilder.AppendLine("")
-                        $foundTests = $false
-                        foreach ($line in Get-Content -Path $r.ResultsPath)
-                        {
-                            if (-not $foundTests) {
-                                $foundTests = $line.Contains("## Failed tests")
-                            } else {
-                                if (-not [string]::IsNullOrEmpty($line)) {
-                                    $stringBuilder.AppendLine("$line") # the extra space is needed for the multiline list item
+                        $resultLines = @(Get-Content -Path $r.ResultsPath)
+                        for ($i = 0; $i -lt $resultLines.Length; $i++) {
+                            $line = $resultLines[$i]
+                            if ($line.Contains("<details>")) {
+                                if ($startLine -eq -1) {
+                                    $startLine = $i
                                 }
+                                $addDetails = $false
+                            } elseif ($line.Contains("<summary>")) {
+                                if ($startLine -eq -1) {
+                                    $startLine = $i
+                                }
+                                $addSummary = $false
+                            } elseif ($line.Contains("## Failed tests")) {
+                                $startLine = $i + 1
+                                break
+                            }
+                            if (($addDetails -eq $false) -and ($addSummary -eq $false)) {
+                                break
                             }
                         }
                     } else {
-                        $stringBuilder.AppendLine(" Test has no summary file.")
+                        $resultLines = @("Test has no summary file.")
                     }
-                    $stringBuilder.AppendLine("</details>")
+
+                    if ($addDetails) {
+                        $stringBuilder.AppendLine("<details>")
+                    }
+                    if ($addSummary) {
+                        $stringBuilder.AppendLine("<summary>$($result.Failed) tests failed, $($result.Passed) tests passed.</summary>")
+                    }
+                    if ($startLine -eq -1) {
+                        # No <details>, <summary>, or ## Failed tests found in the file.
+                        # The file likely has the success format (e.g. "# :tada: All N tests passed :tada:"),
+                        # which would be misleading in a failure section. Show a job failure message instead.
+                        $stringBuilder.AppendLine("Test results reported success, but the tests job failed.")
+                    } else {
+                        for ($i = $startLine; $i -lt $resultLines.Length; $i++) {
+                            $stringBuilder.AppendLine($resultLines[$i])
+                        }
+                    }
+                    if ($addDetails) {
+                        $stringBuilder.AppendLine("</details>")
+                    }
+
                     $stringBuilder.AppendLine("")
                     $stringBuilder.AppendLine($this.GetDownloadLinks($r))
                     $stringBuilder.AppendLine("")
                 }
             }
-            $successfulTests = $this.GetSuccessfulTests()
+            $successfulTests = @($this.GetSuccessfulTests() | Where-Object { -not $_.IsMacTest })
             $stringBuilder.AppendLine("## Successes")
             $stringBuilder.AppendLine("")
             foreach ($r in $successfulTests) {
                 $this.PrintSuccessMessage($r, $stringBuilder)
             }
+            if ($macResults.Count -gt 0) {
+                $macSuccesses = @($this.GetSuccessfulTests() | Where-Object { $_.IsMacTest } | Sort-Object { if ($_.TestStage -match '_(\d+)_') { [int]$matches[1] } else { 0 } })
+                $stringBuilder.AppendLine("")
+                $stringBuilder.AppendLine("## macOS tests")
+                $stringBuilder.AppendLine("")
+                foreach ($r in $macSuccesses) {
+                    $this.PrintSuccessMessage($r, $stringBuilder)
+                }
+                # macOS failures are already included in the Failures section above
+            }
+        }
+
+        # Add Linux build verification status
+        if (-not [string]::IsNullOrEmpty($this.LinuxBuildStatus)) {
+            $pipelineLink = "$Env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI$Env:SYSTEM_TEAMPROJECT/_build/results?buildId=$Env:BUILD_BUILDID"
+            $stringBuilder.AppendLine("")
+            $stringBuilder.AppendLine("## Linux Build Verification")
+            $stringBuilder.AppendLine("")
+            if ($this.LinuxBuildStatus -eq "Succeeded") {
+                $stringBuilder.AppendLine(":white_check_mark: [Linux build succeeded]($pipelineLink)")
+            } else {
+                $stringBuilder.AppendLine(":x: [Linux build $($this.LinuxBuildStatus.ToLower())]($pipelineLink)")
+            }
         }
 
         $stringBuilder.AppendLine()
-        $stringBuilder.AppendLine("[comment]: <> (This is a test result report added by Azure DevOps)")
     }
 
     static [ParallelTestsResults] Create(
@@ -466,6 +561,12 @@ class ParallelTestsResults {
                 $suites[$label] = $suite
             }
             $testConfig = [TestConfiguration]::new($suite, $title, $platform, "$Context - $title", $testStage)
+            if ($entry.ContainsKey("DISPLAY_NAME")) {
+                $testConfig.DisplayName = $entry["DISPLAY_NAME"]
+            }
+            if ($entry.ContainsKey("IS_MAC_TEST") -and $entry["IS_MAC_TEST"] -eq "true") {
+                $testConfig.IsMacTest = $true
+            }
             $suite.TestConfigurations += $testConfig
             Write-Host "Added test config: $( $testConfig.Title )"
             Write-Host "To suite: $( $suite.Label )"
@@ -501,6 +602,7 @@ class ParallelTestsResults {
                         $platformKey = $outputs.Keys | Where-Object { $_.EndsWith(".TESTS_PLATFORM") }
                         $attemptKey = $outputs.Keys | Where-Object { $_.EndsWith(".TESTS_ATTEMPT") }
                         $titleKey = $outputs.Keys | Where-Object { $_.EndsWith(".TESTS_TITLE") }
+                        $vsdropsPublishedKey = $outputs.Keys | Where-Object { $_.EndsWith(".VSDROPS_PUBLISHED") } | Sort-Object | Select-Object -Last 1
                     } else {
                         # matrix job
                         $jobName = $name.Substring(0, $name.IndexOf('.'))
@@ -509,6 +611,7 @@ class ParallelTestsResults {
                         $platformKey = $outputs.Keys | Where-Object { $_.StartsWith($jobName + ".") -and $_.EndsWith(".TESTS_PLATFORM") }
                         $attemptKey = $outputs.Keys | Where-Object { $_.StartsWith($jobName + ".") -and $_.EndsWith(".TESTS_ATTEMPT") }
                         $titleKey = $outputs.Keys | Where-Object { $_.StartsWith($jobName + ".") -and $_.EndsWith(".TESTS_TITLE") }
+                        $vsdropsPublishedKey = $outputs.Keys | Where-Object { $_.StartsWith($jobName + ".") -and $_.EndsWith(".VSDROPS_PUBLISHED") } | Sort-Object | Select-Object -Last 1
                     }
 
                     Write-Host "Keys for Label='$label' and JobName='$jobName' (dotCount=$dotCount): TitleKey='$titleKey'  StatusKey=$statusKey BotKey=$botKey PlatformKey=$platformKey AttemptKey=$attemptKey"
@@ -523,6 +626,7 @@ class ParallelTestsResults {
                     $platform = if ($platformKey -eq $null) { "NotFound" } else { $outputs[$platformKey] }
                     $attempt = if ($attemptKey -eq $null) { -2 } else { [int]$outputs[$attemptKey] }
                     $title = if ($titleKey -eq $null) { "NotFound" } else { $outputs[$titleKey] }
+                    $vsdropsPublished = if ($vsdropsPublishedKey -eq $null) { $null } else { $outputs[$vsdropsPublishedKey] }
                     $testResult = [PSCustomObject]@{
                         Label = $label
                         Title = $title
@@ -531,6 +635,7 @@ class ParallelTestsResults {
                         Platform = $platform
                         Attempt = $attempt
                         TestStage = $testStage
+                        VSDropsPublished = $vsdropsPublished
                     }
                     if ($tests.Contains($label)) {
                         $testInfo = $tests[$label]
@@ -587,13 +692,40 @@ class ParallelTestsResults {
                     }
 
                     $result = [TestResult]::new($testSummaryPath, $status, $testConfig, $testAttempt)
+                    $result.VSDropsPublishFailed = ($testResult.VSDropsPublished -eq "Failed")
                 }
 
                 $testResults += $result
             }
         }
 
-        return [ParallelTestsResults]::new($testResults, $Context, $VSDropsIndex)
+        $result = [ParallelTestsResults]::new($testResults, $Context, $VSDropsIndex)
+
+        # Extract the Linux build verification status from stage dependencies
+        if ($stageDep.ContainsKey("linux_build_verification")) {
+            $linuxStage = $stageDep["linux_build_verification"]
+            if ($linuxStage.ContainsKey("linux_build")) {
+                $linuxJob = $linuxStage["linux_build"]
+                if ($linuxJob.ContainsKey("result")) {
+                    $result.LinuxBuildStatus = $linuxJob["result"]
+                    Write-Host "Linux build verification status: $($result.LinuxBuildStatus)"
+                }
+            }
+        }
+
+        # Extract the Build macOS tests status from stage dependencies
+        if ($stageDep.ContainsKey("build_macos_tests")) {
+            $buildMacStage = $stageDep["build_macos_tests"]
+            if ($buildMacStage.ContainsKey("build_macos_tests_job")) {
+                $buildMacJob = $buildMacStage["build_macos_tests_job"]
+                if ($buildMacJob.ContainsKey("result")) {
+                    $result.BuildMacTestsStatus = $buildMacJob["result"]
+                    Write-Host "Build macOS tests status: $($result.BuildMacTestsStatus)"
+                }
+            }
+        }
+
+        return $result
     }
 }
 

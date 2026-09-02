@@ -31,28 +31,12 @@ namespace Introspection {
 		protected override bool Skip (Type type)
 		{
 			switch (type.Namespace) {
-			// all default ctor did not work and were replaced with [Obsolete("",true)] placeholders
-			// reflecting on those would create invalid instances (no handle) that crash the app
-			case "CoreBluetooth":
-			case "MonoTouch.CoreBluetooth":
-				return true;
-
-			case "CoreAudioKit":
-			case "MonoTouch.CoreAudioKit":
-			case "Metal":
-			case "MonoTouch.Metal":
-				// they works with iOS9 beta 4 (but won't work on older simulators)
-				if (TestRuntime.IsSimulatorOrDesktop && !TestRuntime.CheckXcodeVersion (7, 0))
-					return true;
-				break;
 			case "MetalKit":
-			case "MonoTouch.MetalKit":
 			case "MetalPerformanceShaders":
-			case "MonoTouch.MetalPerformanceShaders":
-				if (TestRuntime.IsSimulatorOrDesktop)
-					return true;
 				// some devices don't support metal and that crash some API that does not check that, e.g. #33153
-				if (!TestRuntime.CheckXcodeVersion (7, 0) || (MTLDevice.SystemDefault is null))
+				if (MTLDevice.SystemDefault is null)
+					return true;
+				if (TestRuntime.IsSimulatorOrDesktop)
 					return true;
 				break;
 #if __TVOS__
@@ -156,10 +140,6 @@ namespace Introspection {
 			case "NSPersistentStoreCoordinator":
 				return true;
 
-			// Metal is not available on the (iOS8) simulator
-			case "CAMetalLayer":
-				return TestRuntime.IsSimulatorOrDesktop && !TestRuntime.CheckXcodeVersion (11, 0);
-
 			// in 8.2 beta 1 this crash the app (simulator) without giving any details in the logs
 			case "WKUserNotificationInterfaceController":
 				return true;
@@ -175,10 +155,6 @@ namespace Introspection {
 				// NSInvalidArgumentException Reason: image must be non-nil
 				return true;
 
-			// these work only on devices, so we skip the simulator
-			case "MTLHeapDescriptor":
-			case "MTLSharedEventListener":
-				return TestRuntime.IsSimulatorOrDesktop;
 			// iOS 11 Beta 1
 			case "UICollectionViewFocusUpdateContext": // [Assert] -init is not a useful initializer for this class. Use one of the designated initializers instead
 			case "UIFocusUpdateContext": // [Assert] -init is not a useful initializer for this class. Use one of the designated initializers instead
@@ -190,21 +166,11 @@ namespace Introspection {
 				return true;
 			case "IOSurface": // Only works on device before Xcode 11
 				return !TestRuntime.CheckXcodeVersion (11, 0);
-			case "NEHotspotEapSettings": // Wireless Accessory Configuration is not supported in the simulator.
-			case "NEHotspotConfigurationManager":
-			case "NEHotspotHS20Settings":
-				return TestRuntime.IsSimulatorOrDesktop;
 			// iOS 12
 			case "INGetAvailableRestaurantReservationBookingDefaultsIntentResponse": // Objective-C exception thrown.  Name: NSInternalInconsistencyException Reason: Unable to initialize 'INGetAvailableRestaurantReservationBookingDefaultsIntentResponse'. Please make sure that your intent definition file is valid.
 			case "INGetAvailableRestaurantReservationBookingsIntentResponse": // Objective-C exception thrown.  Name: NSInternalInconsistencyException Reason: Unable to initialize 'INGetAvailableRestaurantReservationBookingsIntentResponse'. Please make sure that your intent definition file is valid.
 			case "INGetRestaurantGuestIntentResponse": // Objective-C exception thrown.  Name: NSInternalInconsistencyException Reason: Unable to initialize 'INGetRestaurantGuestIntentResponse'. Please make sure that your intent definition file is valid.
 				return TestRuntime.CheckXcodeVersion (10, 0);
-			case "CMMovementDisorderManager": // Not available in simulator, added info to radar://41110708 
-				return TestRuntime.IsSimulatorOrDesktop;
-			case "RPSystemBroadcastPickerView": // Symbol not available in simulator
-				return TestRuntime.IsSimulatorOrDesktop;
-			case "ICNotificationManagerConfiguration": // This works on device but not on simulator, and docs explicitly says it is user creatable
-				return TestRuntime.IsSimulatorOrDesktop;
 			case "VNDocumentCameraViewController": // Name: NSGenericException Reason: Document camera is not available on simulator
 				return TestRuntime.IsSimulatorOrDesktop;
 			case "AVAudioRecorder": // Stopped working with Xcode 11.2 beta 2

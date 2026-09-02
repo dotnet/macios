@@ -55,8 +55,6 @@ namespace Xamarin.MacDev.Tasks {
 
 		public string ExtraArgs { get; set; } = string.Empty;
 
-		public int Verbosity { get; set; }
-
 		public string GeneratedSourcesDir { get; set; } = string.Empty;
 
 		public string GeneratedSourcesFileList { get; set; } = string.Empty;
@@ -215,7 +213,7 @@ namespace Xamarin.MacDev.Tasks {
 				};
 				// OutputAssembly is optional so it can be null
 				if (!string.IsNullOrEmpty (target)) {
-					var d = Path.GetDirectoryName (target);
+					var d = Path.GetDirectoryName (target)!;
 					var n = Path.GetFileName (target);
 					customTags.Add ("targetpath", Path.Combine (d, n));
 					customTags.Add ("targetdir", d);
@@ -229,7 +227,7 @@ namespace Xamarin.MacDev.Tasks {
 				}
 			}
 
-			cmd.AddRange (VerbosityUtils.Merge (ExtraArgs, (LoggerVerbosity) Verbosity));
+			VerbosityUtils.RenderVerbosity (cmd, Verbosity);
 
 			return CommandLineArgumentBuilder.CreateResponseFile (this, ResponseFilePath, cmd, null);
 		}
@@ -243,12 +241,12 @@ namespace Xamarin.MacDev.Tasks {
 
 					TaskItemFixer.FixItemSpecs (Log, item => OutputPath, References.Where (x => !x.IsFrameworkItem ()).ToArray ());
 
-					var success = ExecuteRemotely (out var taskRunner);
-
-					if (success)
+					if (ExecuteRemotely (out var taskRunner)) {
 						GetGeneratedSourcesAsync (taskRunner).Wait ();
+						return true;
+					}
 
-					return success;
+					return false;
 				} catch (Exception ex) {
 					Log.LogErrorFromException (ex);
 
@@ -286,7 +284,7 @@ namespace Xamarin.MacDev.Tasks {
 				return false;
 
 			cancellationTokenSource = new CancellationTokenSource ();
-			ExecuteAsync (Log, executable, args, environment: env, cancellationToken: cancellationTokenSource.Token).Wait ();
+			ExecuteAsync (executable, args, environment: env, cancellationToken: cancellationTokenSource.Token).Wait ();
 			return !Log.HasLoggedErrors;
 		}
 

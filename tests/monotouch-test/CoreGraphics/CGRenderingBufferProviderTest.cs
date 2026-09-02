@@ -32,27 +32,26 @@ namespace MonoTouchFixtures.CoreGraphics {
 			var calledOnLockPointer = false;
 			var calledOnUnlockPointer = false;
 			var calledOnReleaseInfo = false;
-			var provider = CGRenderingBufferProvider.Create ((nint) 0x0ee1f00d, (nuint) size,
-				lockPointer: (info) => {
-					calledOnLockPointer = true;
-					var rv = Marshal.AllocHGlobal (size);
-					// Console.WriteLine ($"CreateAdaptive () OnLockPointer#4 ({info}) => {rv}");
-					return rv;
-				},
-				unlockPointer: (info, pointer) => {
-					// Console.WriteLine ($"CreateAdaptive () OnUnlockPointer#4 ({info}, {pointer})");
-					calledOnUnlockPointer = true;
-					Marshal.FreeHGlobal (pointer);
-				},
-				releaseInfo: (info) => {
-					// Console.WriteLine ($"CreateAdaptive () OnReleaseInfo#4 ({info})");
-					calledOnReleaseInfo = true;
-				});
-			Assert.That (provider, Is.Not.Null, "provider");
-			Assert.That (provider.Size, Is.EqualTo ((nuint) size), "size");
+			using (var pool = new NSAutoreleasePool ()) {
+				using var provider = CGRenderingBufferProvider.Create ((nint) 0x0ee1f00d, (nuint) size,
+					lockPointer: (info) => {
+						calledOnLockPointer = true;
+						var rv = Marshal.AllocHGlobal (size);
+						return rv;
+					},
+					unlockPointer: (info, pointer) => {
+						calledOnUnlockPointer = true;
+						Marshal.FreeHGlobal (pointer);
+					},
+					releaseInfo: (info) => {
+						calledOnReleaseInfo = true;
+					});
+				Assert.That (provider, Is.Not.Null, "provider");
+				Assert.That (provider.Size, Is.EqualTo ((nuint) size), "size");
+			}
 			Assert.That (calledOnLockPointer, Is.EqualTo (false), "calledOnLockPointer");
 			Assert.That (calledOnUnlockPointer, Is.EqualTo (false), "calledOnUnlockPointer");
-			Assert.That (calledOnReleaseInfo, Is.EqualTo (false), "calledOnReleaseInfo");
+			Assert.That (calledOnReleaseInfo, Is.EqualTo (true), "calledOnReleaseInfo");
 		}
 
 		[Test]

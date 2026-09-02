@@ -4,18 +4,15 @@
 
 using CoreGraphics;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace UIKit {
 
 	public partial class UIPopoverPresentationController {
 
 		// cute helper to avoid using `Class` in the public API
-		/// <summary>Gets or sets the type that is used to display background content for the popover.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		public virtual Type PopoverBackgroundViewType {
+		/// <summary>Gets or sets the type used to display background content for the popover.</summary>
+		public virtual Type? PopoverBackgroundViewType {
 			get {
 				IntPtr p = PopoverBackgroundViewClass;
 				if (p == IntPtr.Zero)
@@ -23,8 +20,7 @@ namespace UIKit {
 				return Class.Lookup (p);
 			}
 			set {
-				PopoverBackgroundViewClass = (value is null) ? IntPtr.Zero :
-					Class.GetHandle (value);
+				PopoverBackgroundViewClass = Class.GetHandle (value);
 			}
 		}
 	}

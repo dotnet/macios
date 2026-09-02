@@ -84,6 +84,7 @@ namespace CoreFoundation {
 			}
 		}
 
+		// Internal only: to get the null handle, use 'CFAllocator.null_ptr' instead.
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>

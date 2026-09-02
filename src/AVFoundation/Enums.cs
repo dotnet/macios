@@ -313,7 +313,7 @@ namespace AVFoundation {
 		OperationInterrupted = -11847,
 		/// <summary>Indicates that the media format is not supported by the device.</summary>
 		IncompatibleAsset = -11848,
-		/// <summary>Indicates taht the media data could not be loaded due to missing required data.</summary>
+		/// <summary>Indicates that the media data could not be loaded due to missing required data.</summary>
 		FailedToLoadMediaData = -11849,
 		/// <summary>Indicates that the media server is not correctly configured.</summary>
 		ServerIncorrectlyConfigured = -11850,
@@ -520,13 +520,12 @@ namespace AVFoundation {
 	}
 
 	/// <summary>An enumeration whose values define whether, after an audio session deactivates, previously interrupted audio sessions should or should not re-activate.</summary>
-	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Flags]
 	[Native]
 	// NSUInteger - AVAudioSession.h
 	public enum AVAudioSessionSetActiveOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Notifies other audio sessions that they can resume when this session deactivates.</summary>
 		NotifyOthersOnDeactivation = 1,
 	}
 
@@ -609,6 +608,8 @@ namespace AVFoundation {
 		OverrideMutedMicrophoneInterruption = 128,
 		[iOS (26, 0), NoTV, NoMacCatalyst, NoMac]
 		BluetoothHighQualityRecording = 1uL << 19,
+		[iOS (26, 2), NoTV, MacCatalyst (26, 2), NoMac]
+		FarFieldInput = 1uL << 18,
 	}
 
 	/// <summary>An enumeration whose values specify the beginning and ending of an audio interruption.</summary>
@@ -761,8 +762,6 @@ namespace AVFoundation {
 		StereoPassThrough = 5,
 		[MacCatalyst (13, 1)]
 		HrtfHQ = 6,
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		Auto = 7,
 	}
@@ -957,7 +956,6 @@ namespace AVFoundation {
 		Standard = 1,
 		/// <summary>The "cinematic stabilization" algorithm should be used.</summary>
 		Cinematic = 2,
-		[iOS (13, 0)]
 		[MacCatalyst (14, 0)]
 		CinematicExtended = 3,
 		[iOS (17, 0), MacCatalyst (17, 0), TV (17, 0), NoMac]
@@ -1015,7 +1013,7 @@ namespace AVFoundation {
 		Default = 1,
 		/// <summary>To be added.</summary>
 		Enhanced = 2,
-		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0), Mac (13, 0)]
+		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 		Premium = 3,
 	}
 
@@ -1071,7 +1069,6 @@ namespace AVFoundation {
 	}
 
 	[NoTV]
-	[iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Flags]
 	[Native]
@@ -1150,11 +1147,10 @@ namespace AVFoundation {
 	}
 
 	/// <summary>Enumerates loop count limits.</summary>
-	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum AVMusicTrackLoopCount : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Loops the music track indefinitely.</summary>
 		Forever = -1,
 	}
 
@@ -1262,8 +1258,6 @@ namespace AVFoundation {
 		[Obsolete ("Use 'AVContentKeySystem.SystemClearKey' instead.")]
 		AVContentKeySystemClearKey = ClearKey,
 
-		[TV (13, 0)]
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("AVContentKeySystemAuthorizationToken")]
 		AuthorizationToken = 2,
@@ -1345,31 +1339,28 @@ namespace AVFoundation {
 		[Field ("AVAssetExportPresetAppleProRes4444LPCM")]
 		AppleProRes4444Lpcm,
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetExportPresetHEVC1920x1080WithAlpha")]
 		Hevc1920x1080WithAlpha,
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetExportPresetHEVC3840x2160WithAlpha")]
 		Hevc3840x2160WithAlpha,
 
-		[NoTV, iOS (26, 0), Mac (12, 1)]
+		[NoTV, iOS (26, 0)]
 		[MacCatalyst (26, 0)]
 		[Field ("AVAssetExportPresetHEVC7680x4320")]
 		Hevc7680x4320,
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("AVAssetExportPresetHEVCHighestQualityWithAlpha")]
 		HevcHighestQualityWithAlpha,
 
-		[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
 		[Field ("AVAssetExportPresetMVHEVC960x960")]
 		MvHevc960x960,
 
-		[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
 		[Field ("AVAssetExportPresetMVHEVC1440x1440")]
 		MvHevc1440x1440,
 
@@ -1413,30 +1404,25 @@ namespace AVFoundation {
 		[Field ("AVOutputSettingsPresetHEVC3840x2160")]
 		PresetHevc3840x2160 = 12, // we added the wrong value in the export enum, we use the same so that they can be swap
 
-		[TV (13, 0)]
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("AVOutputSettingsPresetHEVC1920x1080WithAlpha")]
 		PresetHevc1920x1080WithAlpha = 13,
 
-		[TV (13, 0)]
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("AVOutputSettingsPresetHEVC3840x2160WithAlpha")]
 		PresetHevc3840x2160WithAlpha = 14,
 
 		[NoTV]
-		[Mac (12, 1)]
 		[iOS (26, 0)]
 		[MacCatalyst (26, 0)]
 		[Field ("AVOutputSettingsPresetHEVC7680x4320")]
 		PresetHevc7680x4320 = 15,
 
-		[TV (17, 0), MacCatalyst (17, 0), Mac (14, 0), iOS (17, 0)]
+		[TV (17, 0), MacCatalyst (17, 0), iOS (17, 0)]
 		[Field ("AVOutputSettingsPresetMVHEVC960x960")]
 		PresetMvHevc960x960 = 16,
 
-		[TV (17, 0), MacCatalyst (17, 0), Mac (14, 0), iOS (17, 0)]
+		[TV (17, 0), MacCatalyst (17, 0), iOS (17, 0)]
 		[Field ("AVOutputSettingsPresetMVHEVC1440x1440")]
 		PresetMvHevc1440x1440 = 17,
 
@@ -1506,7 +1492,6 @@ namespace AVFoundation {
 		LongFormAudio = 1,
 		/// <summary>To be added.</summary>
 		Independent = 2,
-		[iOS (13, 0)]
 		[NoTV]
 		[NoMac]
 		[MacCatalyst (14, 0)]
@@ -1635,26 +1620,18 @@ namespace AVFoundation {
 		[Field ("AVVideoCodecTypeHEVC")]
 		Hevc = 5,
 
-		[TV (13, 0)]
-		[iOS (13, 0)]
 		[MacCatalyst (15, 0)]
 		[Field ("AVVideoCodecTypeAppleProRes422HQ")]
 		AppleProRes422HQ = 6,
 
-		[TV (13, 0)]
-		[iOS (13, 0)]
 		[MacCatalyst (15, 0)]
 		[Field ("AVVideoCodecTypeAppleProRes422LT")]
 		AppleProRes422LT = 7,
 
-		[TV (13, 0)]
-		[iOS (13, 0)]
 		[MacCatalyst (15, 0)]
 		[Field ("AVVideoCodecTypeAppleProRes422Proxy")]
 		AppleProRes422Proxy = 8,
 
-		[TV (13, 0)]
-		[iOS (13, 0)]
 		[MacCatalyst (15, 0)]
 		[Field ("AVVideoCodecTypeHEVCWithAlpha")]
 		HevcWithAlpha = 9,
@@ -1719,11 +1696,12 @@ namespace AVFoundation {
 		DolbyVision = 0x4,
 	}
 
+	/// <summary>Specifies options for activating an audio session.</summary>
 	[MacCatalyst (13, 1)]
 	[Flags]
 	[Native]
 	public enum AVAudioSessionActivationOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>No activation options are specified.</summary>
 		None = 0x0,
 	}
 
@@ -1737,8 +1715,6 @@ namespace AVFoundation {
 		Normal = 0x6e726d6c, //1852992876 - 'nrml'
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum AVSpeechSynthesisVoiceGender : long {
@@ -1748,8 +1724,6 @@ namespace AVFoundation {
 	}
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[TV (17, 0)]
-	[Mac (13, 0)]
-	[iOS (13, 0)]
 	[Native]
 	public enum AVCapturePhotoQualityPrioritization : long {
 		Speed = 1,
@@ -1757,8 +1731,6 @@ namespace AVFoundation {
 		Quality = 3,
 	}
 
-	[TV (13, 0)]
-	[iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum AVAudioEnvironmentOutputType : long {
@@ -1768,8 +1740,6 @@ namespace AVFoundation {
 		ExternalSpeakers = 3,
 	}
 
-	[TV (13, 0)]
-	[iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum AVAudio3DMixingSourceMode : long {
@@ -1779,8 +1749,6 @@ namespace AVFoundation {
 		AmbienceBed = 3,
 	}
 
-	[TV (13, 0)]
-	[iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum AVAudio3DMixingPointSourceInHeadMode : long {
@@ -1846,8 +1814,6 @@ namespace AVFoundation {
 	[MacCatalyst (13, 1)]
 	public enum AVContentKeyResponseDataType {
 		FairPlayStreamingKeyResponseData,
-		[TV (13, 0)]
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		AuthorizationTokenData,
 	}
@@ -2072,7 +2038,7 @@ namespace AVFoundation {
 		DolbyAtmos = 5,
 	}
 
-	[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[Native]
 	[NativeName ("AVMIDIControlChangeMessageType")]
 	public enum AVMidiControlChangeMessageType : long {
@@ -2113,7 +2079,7 @@ namespace AVFoundation {
 		MonoModeOff = 127,
 	}
 
-	[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[Native]
 	[NativeName ("AVMIDIMetaEventType")]
 	public enum AVMidiMetaEventType : long {
@@ -2135,14 +2101,14 @@ namespace AVFoundation {
 		ProprietaryEvent = 127,
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum AVAudioVoiceProcessingSpeechActivityEvent : long {
 		Started = 0,
 		Ended = 1,
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum AVSpeechSynthesisPersonalVoiceAuthorizationStatus : ulong {
 		NotDetermined,
@@ -2151,14 +2117,14 @@ namespace AVFoundation {
 		Authorized,
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum AVSpeechSynthesisVoiceTraits : ulong {
 		None = 0x0,
 		IsNoveltyVoice = 1uL << 0,
 		IsPersonalVoice = 1uL << 1,
 	}
-	[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[Native, Flags]
 	public enum AVAssetTrackGroupOutputHandling : ulong {
 		None = 0x0,
@@ -2166,7 +2132,7 @@ namespace AVFoundation {
 		DefaultPolicy = None,
 	}
 
-	[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[Native]
 	public enum AVSpeechSynthesisMarkerMark : long {
 		Phoneme,
@@ -2176,7 +2142,7 @@ namespace AVFoundation {
 		Bookmark,
 	}
 
-	[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum AVAudioVoiceProcessingOtherAudioDuckingLevel : long {
 		Default = 0,
@@ -2185,7 +2151,7 @@ namespace AVFoundation {
 		Max = 30,
 	}
 
-	[TV (17, 0), MacCatalyst (17, 0), Mac (14, 0), iOS (17, 0)]
+	[TV (17, 0), MacCatalyst (17, 0), iOS (17, 0)]
 	[Native]
 	public enum AVCapturePhotoOutputCaptureReadiness : long {
 		SessionNotRunning = 0,
@@ -2195,7 +2161,7 @@ namespace AVFoundation {
 		NotReadyWaitingForProcessing = 4,
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum AVPlayerLooperItemOrdering : long {
 		PrecedeExistingItems = 0,
@@ -2210,7 +2176,7 @@ namespace AVFoundation {
 		Insufficient = 2,
 	}
 
-	[TV (16, 4), Mac (13, 3), iOS (16, 4), MacCatalyst (16, 4)]
+	[TV (16, 4), iOS (16, 4), MacCatalyst (16, 4)]
 	[Native]
 	public enum AVPlayerInterstitialEventAssetListResponseStatus : long {
 		Available = 0,
@@ -2218,7 +2184,7 @@ namespace AVFoundation {
 		Unavailable = 2,
 	}
 
-	[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	enum AVAssetPlaybackConfigurationOption {
 		[Field ("AVAssetPlaybackConfigurationOptionStereoVideo")]
 		StereoVideo,
@@ -2239,7 +2205,7 @@ namespace AVFoundation {
 		AppleImmersiveVideo,
 	}
 
-	[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	enum AVPlayerInterstitialEventCue {
 		[Field ("AVPlayerInterstitialEventNoCue")]
 		NoCue,

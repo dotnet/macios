@@ -11,7 +11,7 @@ using Xamarin.Messaging.Build.Client;
 using Xamarin.Utils;
 
 namespace Xamarin.MacDev.Tasks {
-	public class IBTool : XcodeCompilerToolTask, ICancelableTask {
+	public class IBTool : XcodeCompilerToolTask {
 		static readonly string [] WatchAppExtensions = { "-glance.plist", "-notification.plist" };
 
 		#region Inputs
@@ -29,10 +29,6 @@ namespace Xamarin.MacDev.Tasks {
 		public string SdkRoot { get; set; } = string.Empty;
 
 		#endregion
-
-		protected override string DefaultBinDir {
-			get { return DeveloperRootBinDir; }
-		}
 
 		protected override string ToolName {
 			get { return "ibtool"; }
@@ -117,9 +113,7 @@ namespace Xamarin.MacDev.Tasks {
 						continue;
 					}
 
-					IDictionary metadata;
-
-					if (!mapping.TryGetValue (path, out metadata))
+					if (!mapping.TryGetValue (path, out var metadata))
 						continue;
 
 					var compiled = new TaskItem (path, metadata);
@@ -127,7 +121,7 @@ namespace Xamarin.MacDev.Tasks {
 					// adjust the LogicalName since the LogicalName metadata is based on the generic output name
 					// (e.g. it does not include things like ~ipad or ~iphone)
 					var logicalName = compiled.GetMetadata ("LogicalName");
-					var logicalDir = Path.GetDirectoryName (logicalName);
+					var logicalDir = Path.GetDirectoryName (logicalName)!;
 					var fileName = Path.GetFileName (path);
 
 					compiled.SetMetadata ("LogicalName", Path.Combine (logicalDir, fileName));
@@ -163,13 +157,11 @@ namespace Xamarin.MacDev.Tasks {
 			if (!File.Exists (path))
 				return false;
 
-			try {
-				PDictionary.FromFile (path);
+			if (PDictionary.TryOpenFile (path, out _))
 				return true;
-			} catch {
-				File.Delete (path);
-				return false;
-			}
+
+			File.Delete (path);
+			return false;
 		}
 
 		static bool InterfaceDefinitionChanged (ITaskItem interfaceDefinition, ITaskItem log)
@@ -188,8 +180,7 @@ namespace Xamarin.MacDev.Tasks {
 			foreach (var item in interfaceDefinitions) {
 				var bundleName = item.GetMetadata ("LogicalName");
 				var manifest = new TaskItem (Path.Combine (baseManifestDir, bundleName));
-				var manifestDir = Path.GetDirectoryName (manifest.ItemSpec);
-				ITaskItem duplicate;
+				var manifestDir = Path.GetDirectoryName (manifest.ItemSpec)!;
 				string output;
 
 				if (!File.Exists (item.ItemSpec)) {
@@ -197,7 +188,7 @@ namespace Xamarin.MacDev.Tasks {
 					continue;
 				}
 
-				if (unique.TryGetValue (bundleName, out duplicate)) {
+				if (unique.TryGetValue (bundleName, out var duplicate)) {
 					Log.LogError (null, null, null, item.ItemSpec, 0, 0, 0, 0, MSBStrings.E0159, item.ItemSpec, duplicate.ItemSpec);
 					continue;
 				}
@@ -206,7 +197,7 @@ namespace Xamarin.MacDev.Tasks {
 
 				var resourceTags = item.GetMetadata ("ResourceTags");
 				var path = Path.Combine (baseOutputDir, bundleName);
-				var outputDir = Path.GetDirectoryName (path);
+				var outputDir = Path.GetDirectoryName (path)!;
 				var name = GetPathWithoutExtension (path);
 				var extension = Path.GetExtension (path);
 				var expected = new TaskItem (path);
@@ -218,7 +209,7 @@ namespace Xamarin.MacDev.Tasks {
 				if (EnableOnDemandResources && !string.IsNullOrEmpty (resourceTags))
 					expected.SetMetadata ("ResourceTags", resourceTags);
 
-				output = Path.GetDirectoryName (path);
+				output = Path.GetDirectoryName (path)!;
 
 				if (InterfaceDefinitionChanged (item, manifest)) {
 					Directory.CreateDirectory (manifestDir);
@@ -233,7 +224,7 @@ namespace Xamarin.MacDev.Tasks {
 				}
 
 				try {
-					var dict = PDictionary.FromFile (manifest.ItemSpec)!;
+					var dict = PDictionary.OpenFile (manifest.ItemSpec);
 
 					LogWarningsAndErrors (dict, item);
 				} catch (Exception ex) {
@@ -461,12 +452,6 @@ namespace Xamarin.MacDev.Tasks {
 			Log.LogTaskProperty ("OutputManifests Output", OutputManifests);
 
 			return !Log.HasLoggedErrors;
-		}
-
-		public void Cancel ()
-		{
-			if (ShouldExecuteRemotely ())
-				BuildConnection.CancelAsync (BuildEngine4).Wait ();
 		}
 	}
 }

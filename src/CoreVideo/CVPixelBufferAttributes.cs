@@ -42,15 +42,13 @@ namespace CoreVideo {
 	public class CVPixelBufferAttributes : DictionaryContainer {
 #if !COREBUILD
 		/// <summary>Creates an empty set of attributes.</summary>
-		///         <remarks>To be added.</remarks>
 		public CVPixelBufferAttributes ()
 			: base (new NSMutableDictionary ())
 		{
 		}
 
-		/// <param name="dictionary">To be added.</param>
-		///         <summary>Initializes the strongly typed <see cref="CoreVideo.CVPixelBufferAttributes" /> from the provided dictionary.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Initializes the strongly typed <see cref="CoreVideo.CVPixelBufferAttributes" /> from the provided dictionary.</summary>
+		/// <param name="dictionary">The dictionary containing pixel buffer attributes.</param>
 		public CVPixelBufferAttributes (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -88,7 +86,7 @@ namespace CoreVideo {
 				} else if (obj is NSNumber number) {
 					return new CVPixelFormatType [] { (CVPixelFormatType) number.UInt32Value };
 				} else if (obj is NSArray array) {
-					return Array.ConvertAll (array.ToArray (), (v) => (CVPixelFormatType) ((NSNumber) v).UInt32Value);
+					return Array.ConvertAll<NSObject?, CVPixelFormatType> (array.ToArray (), (v) => (CVPixelFormatType) (((NSNumber?) v)?.UInt32Value ?? default));
 				} else {
 					throw new InvalidOperationException ($"Unable to convert object of type {obj.GetType ()} into an array of CVPixelFormatType.");
 				}
@@ -259,12 +257,7 @@ namespace CoreVideo {
 			}
 		}
 
-		// TODO: kCVPixelBufferIOSurfacePropertiesKey
-#if !MONOMAC
-		// The presence of the IOSurfacePropertiesKey mandates the allocation via IOSurfaceProperty
-		/// <summary>If this key is set, this instructs CoreVideo to allocate the video buffers using the IOSurface.    This is required for some uses of pixel buffers.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>If this key is set, this instructs CoreVideo to allocate the video buffers using the <see cref="IOSurface.IOSurface" />. This is required for some uses of pixel buffers.</summary>
 		public bool? AllocateWithIOSurface {
 			set {
 				if (value.HasValue && value.Value)
@@ -277,11 +270,9 @@ namespace CoreVideo {
 			}
 		}
 
-#if !__MACCATALYST__
+#if !__MACCATALYST__ && !__MACOS__
 		/// <summary>Indicates whether the pixel buffer is compatible with OpenGL for Embedded Systems contexts.</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>The property uses constant kCVPixelBufferOpenGLESCompatibilityKey value to access the underlying dictionary.</remarks>
+		/// <remarks>The property uses the <c>kCVPixelBufferOpenGLESCompatibilityKey</c> constant to access the underlying dictionary.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("macos")]
@@ -297,12 +288,6 @@ namespace CoreVideo {
 #endif
 
 		/// <summary>Indicates whether the pixel buffer is compatible with Metal.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
-		[UnsupportedOSPlatform ("macos")]
 		public bool? MetalCompatibility {
 			set {
 				SetBooleanValue (CVPixelBuffer.MetalCompatibilityKey, value);
@@ -311,7 +296,6 @@ namespace CoreVideo {
 				return GetBoolValue (CVPixelBuffer.MetalCompatibilityKey);
 			}
 		}
-#endif
-#endif
+#endif // !COREBUILD
 	}
 }

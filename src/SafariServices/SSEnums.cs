@@ -11,13 +11,13 @@
 namespace SafariServices {
 
 	// NSInteger -> SSReadingList.h
-	/// <summary>An enumeration that specify possible errors associated with adding a URL to the Safari Reading List.</summary>
+	/// <summary>Enumerates errors that can occur when adding a URL to the Safari Reading List.</summary>
 	[NoMac]
 	[MacCatalyst (14, 0)]
 	[Native ("SSReadingListErrorCode")]
 	[ErrorDomain ("SSReadingListErrorDomain")]
 	public enum SSReadingListError : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The URL scheme is not supported by the Safari Reading List.</summary>
 		UrlSchemeNotAllowed = 1,
 	}
 
@@ -55,6 +55,8 @@ namespace SafariServices {
 		InternalError = 4,
 		/// <summary>The app is missing an entitlement.</summary>
 		MissingEntitlement = 5,
+		/// <summary>The maximum number of allowed attempts to load the extension has been exceeded.</summary>
+		MaximumAttemptsExceeded = 6,
 	}
 
 	[NoMac]

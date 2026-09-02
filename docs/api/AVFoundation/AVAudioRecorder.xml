@@ -22,8 +22,6 @@ recorder.Record ();
 ]]></code>
       </example>
     </remarks>
-    <related type="recipe" href="https://developer.xamarin.com/ios/Recipes/Media/Sound/Play_Sound">Play Sound</related>
-    <related type="recipe" href="https://developer.xamarin.com/ios/Recipes/Media/Sound/Record_Sound">Record Sound</related>
-    <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioRecorder_ClassReference/index.html">Apple documentation for <c>AVAudioRecorder</c></related>
+    <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudiorecorder">Apple documentation for <c>AVAudioRecorder</c></related>
   </Docs>
 </Documentation>

@@ -143,8 +143,8 @@ namespace MediaToolbox {
 				handles [handle] = this;
 		}
 
-		/// <include file="../../docs/api/MediaToolbox/MTAudioProcessingTap.xml" path="/Documentation/Docs[@DocId='M:MediaToolbox.MTAudioProcessingTap.Dispose(System.Boolean)']/*" />
-	protected override void Dispose (bool disposing)
+		/// <inheritdoc />
+		protected override void Dispose (bool disposing)
 		{
 			if (Handle != IntPtr.Zero) {
 				lock (handles)

@@ -1,12 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;net$(BundledNETCoreAppTargetFrameworkVersion)</TargetFrameworks>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>../../product.snk</AssemblyOriginatorKeyFile>
-    <Nullable>enable</Nullable>
-    <LangVersion>latest</LangVersion>
-    <WarningsAsErrors>Nullable</WarningsAsErrors>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <PropertyGroup>
@@ -18,7 +15,7 @@
       <Type>Resx</Type>
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MSBStrings.Designer.cs</LastGenOutput>
-      <StronglyTypedFileName>MSBStrings.Designer.cs</StronglyTypedFileName>
+      <StronglyTypedFileName>$(IntermediateOutputPath)MSBStrings.Designer.cs</StronglyTypedFileName>
       <StronglyTypedLanguage>CSharp</StronglyTypedLanguage>
       <StronglyTypedNamespace>Xamarin.Localization.MSBuild</StronglyTypedNamespace>
       <StronglyTypedClassName>MSBStrings</StronglyTypedClassName>

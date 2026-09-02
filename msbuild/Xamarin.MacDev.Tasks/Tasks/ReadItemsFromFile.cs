@@ -45,11 +45,12 @@ namespace Xamarin.MacDev.Tasks {
 				var document = XDocument.Load (stream);
 
 				var items = document.Root
-					.Elements (ItemGroupElementName)
-					.SelectMany (element => element.Elements ())
-					.Select (element => this.CreateItemFromElement (element, file.ItemSpec))
-					.ToList ();
-				result.AddRange (items);
+					?.Elements (ItemGroupElementName)
+					?.SelectMany (element => element.Elements ())
+					?.Select (element => this.CreateItemFromElement (element, file.ItemSpec))
+					?.ToList ();
+				if (items is not null)
+					result.AddRange (items);
 			}
 
 			if (Items is not null)
@@ -62,7 +63,7 @@ namespace Xamarin.MacDev.Tasks {
 
 		ITaskItem CreateItemFromElement (XElement element, string sourceFile)
 		{
-			var item = new TaskItem (element.Attribute (IncludeAttributeName).Value);
+			var item = new TaskItem (element.Attribute (IncludeAttributeName)!.Value);
 
 			foreach (var metadata in element.Elements ()) {
 				item.SetMetadata (metadata.Name.LocalName, metadata.Value);
@@ -74,10 +75,31 @@ namespace Xamarin.MacDev.Tasks {
 			return item;
 		}
 
-		public bool ShouldCopyToBuildServer (ITaskItem item) => false;
+		public bool ShouldCopyToBuildServer (ITaskItem item) => ShouldCopyFileToBuildServer (item);
 
 		public bool ShouldCreateOutputFile (ITaskItem item) => false;
 
-		public IEnumerable<ITaskItem> GetAdditionalItemsToBeCopied () => Enumerable.Empty<ITaskItem> ();
+		// The 'File' property is the input we need on the Mac, but it's declared as an
+		// [Output] property, and the remoting infrastructure never copies [Output]
+		// properties to the build server. Report the files here instead, because
+		// GetAdditionalItemsToBeCopied is copied unconditionally.
+		public IEnumerable<ITaskItem> GetAdditionalItemsToBeCopied ()
+		{
+			return File.Where (ShouldCopyFileToBuildServer);
+		}
+
+		static bool ShouldCopyFileToBuildServer (ITaskItem item)
+		{
+			// Some of these files are created on the Mac (by the linker), and in that case
+			// we either don't have the file on Windows at all, or we have a 0-length
+			// placeholder, and we don't want to overwrite the Mac's version with that.
+			// However, some of these files are created on Windows (by the assembly
+			// preparer, which doesn't run on the Mac), and those have to be copied to the
+			// Mac, otherwise they won't be there when this task executes remotely.
+			var finfo = new FileInfo (item.ItemSpec);
+			if (!finfo.Exists || finfo.Length == 0)
+				return false;
+			return true;
+		}
 	}
 }

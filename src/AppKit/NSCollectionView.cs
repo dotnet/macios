@@ -10,7 +10,7 @@ namespace AppKit {
 		///         <remarks>To be added.</remarks>
 		public void RegisterClassForItem (Type itemClass, string identifier)
 		{
-			_RegisterClassForItem (itemClass is null ? IntPtr.Zero : Class.GetHandle (itemClass), identifier);
+			_RegisterClassForItem (Class.GetHandle (itemClass), identifier);
 		}
 
 		/// <param name="viewClass">To be added.</param>
@@ -20,7 +20,7 @@ namespace AppKit {
 		///         <remarks>To be added.</remarks>
 		public void RegisterClassForSupplementaryView (Type viewClass, NSString kind, string identifier)
 		{
-			_RegisterClassForSupplementaryView (viewClass is null ? IntPtr.Zero : Class.GetHandle (viewClass), kind, identifier);
+			_RegisterClassForSupplementaryView (Class.GetHandle (viewClass), kind, identifier);
 		}
 	}
 }

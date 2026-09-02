@@ -9,7 +9,7 @@ using Xamarin.Tests;
 
 namespace Xamarin.MacDev.Tasks {
 	public abstract class TestBase {
-		TestEngine engine;
+		TestEngine? engine;
 		public TestEngine Engine {
 			get {
 				if (engine is null)
@@ -18,7 +18,7 @@ namespace Xamarin.MacDev.Tasks {
 			}
 		}
 
-		ProjectPaths paths;
+		ProjectPaths? paths;
 		ProjectPaths MonoTouchProject {
 			get {
 				if (paths is null) {
@@ -53,6 +53,8 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			var t = new T ();
 			t.BuildEngine = Engine;
+			if (t is XamarinTask xt)
+				xt.SdkDevPath = Configuration.XcodeLocation;
 			return t;
 		}
 
@@ -62,7 +64,7 @@ namespace Xamarin.MacDev.Tasks {
 		/// This is the prefered way to run tasks as we want error messages to show up in the test results.</remarks>
 		/// <param name="task">An msbuild task.</param>
 		/// <param name="expectedErrorCount">Expected error count. 0 by default.</param>
-		public void ExecuteTask (Task task, int expectedErrorCount = 0)
+		public void ExecuteTask (Task task, int expectedErrorCount = 0, string message = "")
 		{
 			var rv = task.Execute ();
 			string messages = string.Empty;
@@ -71,9 +73,9 @@ namespace Xamarin.MacDev.Tasks {
 				messages = "\n\t" + string.Join ("\n\t", allEvents.Select ((v) => v.AsString ()).ToArray ());
 			}
 			if (expectedErrorCount != Engine.Logger.ErrorEvents.Count) {
-				Assert.AreEqual (expectedErrorCount, Engine.Logger.ErrorEvents.Count, "#RunTask-ErrorCount" + messages);
+				Assert.That (Engine.Logger.ErrorEvents.Count, Is.EqualTo (expectedErrorCount), $"#RunTask-ErrorCount{(string.IsNullOrEmpty (message) ? "" : $" ({message})")}" + messages);
 			}
-			Assert.AreEqual (expectedErrorCount == 0, rv, "Failure" + messages);
+			Assert.That (rv, Is.EqualTo (expectedErrorCount == 0), $"Failure{(string.IsNullOrEmpty (message) ? "" : $" ({message})")}" + messages);
 		}
 
 		protected string CreateTempFile (string path)
@@ -85,8 +87,8 @@ namespace Xamarin.MacDev.Tasks {
 	}
 
 	class ProjectPaths {
-		public string ProjectPath { get; set; }
-		public string ProjectObjPath { get; set; }
-		public string AppBundlePath { get; set; }
+		public string ProjectPath { get; set; } = null!;
+		public string ProjectObjPath { get; set; } = null!;
+		public string AppBundlePath { get; set; } = null!;
 	}
 }

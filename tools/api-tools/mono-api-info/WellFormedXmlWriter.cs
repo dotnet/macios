@@ -77,8 +77,12 @@ namespace Mono.ApiTools {
 		{
 		}
 
-		public override void WriteString (string text)
+		public override void WriteString (string? text)
 		{
+			if (text is null) {
+				Writer.WriteString (text);
+				return;
+			}
 			int i = IndexOfInvalid (text, true);
 			if (i >= 0) {
 				char [] arr = text.ToCharArray ();
@@ -131,7 +135,7 @@ namespace Mono.ApiTools {
 			writer.Flush ();
 		}
 
-		public override string LookupPrefix (string ns)
+		public override string? LookupPrefix (string ns)
 		{
 			return writer.LookupPrefix (ns);
 		}
@@ -146,7 +150,7 @@ namespace Mono.ApiTools {
 			writer.WriteBinHex (buffer, index, count);
 		}
 
-		public override void WriteCData (string text)
+		public override void WriteCData (string? text)
 		{
 			writer.WriteCData (text);
 		}
@@ -161,12 +165,12 @@ namespace Mono.ApiTools {
 			writer.WriteChars (buffer, index, count);
 		}
 
-		public override void WriteComment (string text)
+		public override void WriteComment (string? text)
 		{
 			writer.WriteComment (text);
 		}
 
-		public override void WriteDocType (string name, string pubid, string sysid, string subset)
+		public override void WriteDocType (string name, string? pubid, string? sysid, string? subset)
 		{
 			writer.WriteDocType (name, pubid, sysid, subset);
 		}
@@ -211,12 +215,12 @@ namespace Mono.ApiTools {
 			writer.WriteNode (reader, defattr);
 		}
 
-		public override void WriteProcessingInstruction (string name, string text)
+		public override void WriteProcessingInstruction (string name, string? text)
 		{
 			writer.WriteProcessingInstruction (name, text);
 		}
 
-		public override void WriteQualifiedName (string localName, string ns)
+		public override void WriteQualifiedName (string localName, string? ns)
 		{
 			writer.WriteQualifiedName (localName, ns);
 		}
@@ -231,7 +235,7 @@ namespace Mono.ApiTools {
 			writer.WriteRaw (buffer, index, count);
 		}
 
-		public override void WriteStartAttribute (string prefix, string localName, string ns)
+		public override void WriteStartAttribute (string? prefix, string localName, string? ns)
 		{
 			writer.WriteStartAttribute (prefix, localName, ns);
 		}
@@ -246,12 +250,12 @@ namespace Mono.ApiTools {
 			writer.WriteStartDocument ();
 		}
 
-		public override void WriteStartElement (string prefix, string localName, string ns)
+		public override void WriteStartElement (string? prefix, string localName, string? ns)
 		{
 			writer.WriteStartElement (prefix, localName, ns);
 		}
 
-		public override void WriteString (string text)
+		public override void WriteString (string? text)
 		{
 			writer.WriteString (text);
 		}
@@ -261,7 +265,7 @@ namespace Mono.ApiTools {
 			writer.WriteSurrogateCharEntity (lowChar, highChar);
 		}
 
-		public override void WriteWhitespace (string ws)
+		public override void WriteWhitespace (string? ws)
 		{
 			writer.WriteWhitespace (ws);
 		}
@@ -272,7 +276,7 @@ namespace Mono.ApiTools {
 			}
 		}
 
-		public override string XmlLang {
+		public override string? XmlLang {
 			get {
 				return writer.XmlLang;
 			}

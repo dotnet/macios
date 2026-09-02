@@ -85,10 +85,9 @@ namespace AddressBook {
 		{
 		}
 
-		/// <param name="handle">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Creates an <see cref="ABRecord" /> from the specified native handle.</summary>
+		/// <param name="handle">The native handle of the address book record.</param>
+		/// <returns>An <see cref="ABRecord" /> instance, or <see langword="null" /> if the handle is invalid.</returns>
 		public static ABRecord? FromHandle (IntPtr handle)
 		{
 			return FromHandle (handle, false);
@@ -128,7 +127,7 @@ namespace AddressBook {
 			return rec;
 		}
 
-		/// <include file="../../docs/api/AddressBook/ABRecord.xml" path="/Documentation/Docs[@DocId='M:AddressBook.ABRecord.Dispose(System.Boolean)']/*" />
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			AddressBook = null;
@@ -182,7 +181,7 @@ namespace AddressBook {
 		///         </remarks>
 		public override string? ToString ()
 		{
-			return CFString.FromHandle (ABRecordCopyCompositeName (Handle));
+			return CFString.FromHandle (ABRecordCopyCompositeName (Handle), true);
 		}
 
 		// TODO: Should SetValue/CopyValue/RemoveValue be public?
@@ -238,12 +237,12 @@ namespace AddressBook {
 			where T : NSObject
 		{
 			IntPtr value = CopyValue (id);
-			return (T?) Runtime.GetNSObject (value);
+			return (T?) Runtime.GetNSObject (value, true);
 		}
 
 		internal string? PropertyToString (int id)
 		{
-			return CFString.FromHandle (CopyValue (id));
+			return CFString.FromHandle (CopyValue (id), true);
 		}
 	}
 }

@@ -8,9 +8,11 @@ using Mono.Cecil;
 using Xamarin.Bundler;
 using Registrar;
 
+#nullable enable
+
 namespace Xamarin.Bundler {
 	class PInvokeWrapperGenerator {
-		public Application App;
+		public required Application App { get; set; }
 		public Dictionary<string, string> signatures = new Dictionary<string, string> ();
 		public List<Exception> exceptions = new List<Exception> ();
 		public StringBuilder signature = new StringBuilder ();
@@ -22,9 +24,9 @@ namespace Xamarin.Bundler {
 		AutoIndentStringBuilder mthds = new AutoIndentStringBuilder ();
 		AutoIndentStringBuilder ifaces = new AutoIndentStringBuilder ();
 
-		public StaticRegistrar Registrar;
-		public string HeaderPath;
-		public string SourcePath;
+		public required StaticRegistrar Registrar { get; set; }
+		public required string HeaderPath { get; set; }
+		public required string SourcePath { get; set; }
 
 		bool first;
 
@@ -68,8 +70,8 @@ namespace Xamarin.Bundler {
 
 			Registrar.GeneratePInvokeWrappersEnd ();
 
-			Driver.WriteIfDifferent (HeaderPath, hdr.ToString () + "\n" + decls.ToString () + "\n" + ifaces.ToString () + "\n", true);
-			Driver.WriteIfDifferent (SourcePath, mthds.ToString () + "\n" + sb.ToString () + "\n", true);
+			Driver.WriteIfDifferent (App, HeaderPath, hdr.ToString () + "\n" + decls.ToString () + "\n" + ifaces.ToString () + "\n", true);
+			Driver.WriteIfDifferent (App, SourcePath, mthds.ToString () + "\n" + sb.ToString () + "\n", true);
 		}
 
 		public void ProcessMethod (MethodDefinition method)

@@ -231,7 +231,7 @@ namespace CoreFoundation {
 			dispatch_source_cancel (GetCheckedHandle ());
 		}
 
-		/// <include file="../../docs/api/CoreFoundation/DispatchSource.xml" path="/Documentation/Docs[@DocId='M:CoreFoundation.DispatchSource.Dispose(System.Boolean)']/*" />
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			// Do not call the Cancel method here
@@ -873,9 +873,7 @@ namespace CoreFoundation {
 					InitializeHandle (handle);
 			}
 
-			/// <param name="disposing">To be added.</param>
-			///         <summary>To be added.</summary>
-			///         <remarks>To be added.</remarks>
+			/// <inheritdoc />
 			protected override void Dispose (bool disposing)
 			{
 				if (fd != -1) {

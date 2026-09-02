@@ -22,9 +22,6 @@ namespace Xamarin.MacDev.Tasks {
 		public string EntitlementsInExecutable { get; set; } = string.Empty;
 
 		[Required]
-		public string SdkDevPath { get; set; } = string.Empty;
-
-		[Required]
 		public bool SdkIsSimulator { get; set; }
 
 		[Required]
@@ -57,7 +54,7 @@ namespace Xamarin.MacDev.Tasks {
 		public override bool Execute ()
 		{
 			if (ShouldExecuteRemotely ()) {
-				outputPath = PathUtils.ConvertToMacPath (Path.GetDirectoryName (OutputFile.ItemSpec));
+				outputPath = PathUtils.ConvertToMacPath (Path.GetDirectoryName (OutputFile.ItemSpec)!);
 
 				return ExecuteRemotely ();
 			}
@@ -94,14 +91,14 @@ namespace Xamarin.MacDev.Tasks {
 				foreach (var framework in linkerArguments.Frameworks) {
 					var fullPath = Path.GetFullPath (framework);
 					arguments.Add ("-F");
-					arguments.Add (Path.GetDirectoryName (fullPath));
+					arguments.Add (Path.GetDirectoryName (fullPath)!);
 					arguments.Add ("-framework");
 					arguments.Add (Path.GetFileNameWithoutExtension (fullPath));
 				}
 				foreach (var framework in linkerArguments.WeakFrameworks) {
 					var fullPath = Path.GetFullPath (framework);
 					arguments.Add ("-F");
-					arguments.Add (Path.GetDirectoryName (fullPath));
+					arguments.Add (Path.GetDirectoryName (fullPath)!);
 					arguments.Add ("-weak_framework");
 					arguments.Add (Path.GetFileNameWithoutExtension (fullPath));
 				}
@@ -185,7 +182,7 @@ namespace Xamarin.MacDev.Tasks {
 					if (framework.EndsWith (".framework", StringComparison.Ordinal)) {
 						// user framework, we need to pass -F to the linker so that the linker finds the user framework.
 						arguments.Add ("-F");
-						arguments.Add (Path.GetDirectoryName (Path.GetFullPath (framework)));
+						arguments.Add (Path.GetDirectoryName (Path.GetFullPath (framework))!);
 						framework = Path.GetFileNameWithoutExtension (framework);
 						hasEmbeddedFrameworks = true;
 					}
@@ -213,9 +210,9 @@ namespace Xamarin.MacDev.Tasks {
 					arguments.Add (flag.ItemSpec);
 			}
 
-			var rv = ExecuteAsync ("xcrun", arguments, sdkDevPath: SdkDevPath, showErrorIfFailure: false).Result;
+			var rv = ExecuteAsync ("xcrun", arguments, showErrorIfFailure: false).Result;
 			if (rv.ExitCode != 0) {
-				var stderr = rv.StandardError?.ToString ()?.Trim ();
+				var stderr = rv.Output.MergedOutput;
 #if NET
 				if (string.IsNullOrEmpty (stderr)) {
 #else
@@ -284,28 +281,34 @@ namespace Xamarin.MacDev.Tasks {
 				"-o", derEntitlements,
 				"--raw",
 			};
-			ExecuteAsync ("xcrun", arguments, sdkDevPath: SdkDevPath).Wait ();
+			ExecuteAsync ("xcrun", arguments).Wait ();
 			return derEntitlements;
 		}
 
 		static bool EntitlementsRequireLinkerFlags (string path)
 		{
-			try {
-				var plist = PDictionary.FromFile (path)!;
-
-				// FIXME: most keys do not require linking in the entitlements file, so we
-				// could probably add some smarter logic here to iterate over all of the
-				// keys in order to determine whether or not we really need to link with
-				// the entitlements or not.
-				return plist.Count != 0;
-			} catch {
+			if (!PDictionary.TryOpenFile (path, out var plist))
 				return false;
-			}
+
+			// FIXME: most keys do not require linking in the entitlements file, so we
+			// could probably add some smarter logic here to iterate over all of the
+			// keys in order to determine whether or not we really need to link with
+			// the entitlements or not.
+			return plist.Count != 0;
 		}
 
-		// We should avoid copying files from the output path because those already exist on the Mac
-		// and the ones on Windows are empty, so we will break the build
-		public bool ShouldCopyToBuildServer (ITaskItem item) => !PathUtils.ConvertToMacPath (item.ItemSpec).StartsWith (outputPath);
+		public bool ShouldCopyToBuildServer (ITaskItem item)
+		{
+			// Some files are already on the mac, and in that case we don't
+			// want to overwrite them with an empty file.
+			var finfo = new FileInfo (item.ItemSpec);
+			if (!finfo.Exists || finfo.Length == 0)
+				return false;
+
+			// We should avoid copying files from the output path because those already exist on the Mac
+			// and the ones on Windows are empty, so we will break the build
+			return !PathUtils.ConvertToMacPath (item.ItemSpec).StartsWith (outputPath);
+		}
 
 		public bool ShouldCreateOutputFile (ITaskItem item) => true;
 

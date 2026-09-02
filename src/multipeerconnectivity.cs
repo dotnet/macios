@@ -441,7 +441,7 @@ namespace MultipeerConnectivity {
 		[Export ("initWithPeer:serviceType:")]
 		NativeHandle Constructor (MCPeerID myPeerID, string serviceType);
 
-		/// <summary>Starts browing for local peers advertising for the <see cref="MultipeerConnectivity.MCNearbyServiceBrowser.ServiceType" />.</summary>
+		/// <summary>Starts browsing for local peers advertising for the <see cref="MultipeerConnectivity.MCNearbyServiceBrowser.ServiceType" />.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("startBrowsingForPeers")]
 		void StartBrowsingForPeers ();

@@ -34,8 +34,7 @@ IFS=$'\n'
 	done
 )
 
-# Go one directory up, to avoid any global.json in dotnet/macios
-cd ..
+make -C builds dotnet
 
 if test -z "${DOTNET:-}"; then
 	DOTNET=dotnet
@@ -46,8 +45,14 @@ $DOTNET --info
 
 function af_whitespace ()
 {
-	echo "Processing $1..."
+	echo "Processing whitespace in $1..."
 	$DOTNET format whitespace "$1"
+}
+
+function af ()
+{
+	echo "Formatting $i"
+	$DOTNET format "$1"
 }
 
 # Start formatting!
@@ -66,9 +71,8 @@ af_whitespace "$SRC_DIR/src/rgen/Microsoft.Macios.Generator.Sample/Microsoft.Mac
 af_whitespace "$SRC_DIR/src/rgen/Microsoft.Macios.Generator/Microsoft.Macios.Generator.csproj"
 af_whitespace "$SRC_DIR/src/rgen/Microsoft.Macios.Transformer/Microsoft.Macios.Transformer.csproj"
 af_whitespace "$SRC_DIR/tools/dotnet-linker/dotnet-linker.csproj"
-af_whitespace "$SRC_DIR/tools/mmp/mmp.csproj"
 af_whitespace "$SRC_DIR/tools/mtouch/mtouch.csproj"
-af_whitespace "$SRC_DIR/tests/xharness/xharness.sln"
+af_whitespace "$SRC_DIR/tests/xharness/xharness.slnx"
 af_whitespace "$SRC_DIR/tests/introspection/dotnet/iOS/introspection.csproj"
 af_whitespace "$SRC_DIR/tests/introspection/dotnet/MacCatalyst/introspection.csproj"
 af_whitespace "$SRC_DIR/tests/introspection/dotnet/macOS/introspection.csproj"
@@ -92,12 +96,27 @@ af_whitespace "$SRC_DIR/tests/common/Touch.Unit/Touch.Client/dotnet/Touch.Client
 af_whitespace "$SRC_DIR/tests/common/Touch.Unit/Touch.Client/dotnet/Touch.Client.macOS.csproj"
 af_whitespace "$SRC_DIR/tests/common/Touch.Unit/Touch.Client/dotnet/Touch.Client.tvOS.csproj"
 
+af "$SRC_DIR/tools/sharpie/sharpie.slnx"
+
 echo "Processing $SRC_DIR..."
 $DOTNET format whitespace --folder "$SRC_DIR"
 
 for file in "$SRC_DIR"/dotnet/Templates/Microsoft.*.Templates/*/*/.template.config/localize/*.json "$SRC_DIR"/dotnet/Templates/Microsoft.*.Templates/*/.template.config/localize/*.json; do
 	tr -d $'\r' < "$file" > "$file".tmp
 	mv "$file".tmp "$file"
+done
+
+make -C src csproj -j8
+
+FILE=$(pwd)/tmp.txt
+make print-variable-value-to-file FILE="$FILE" VARIABLE=DOTNET_PLATFORMS -C tools/devops
+DOTNET_PLATFORMS=$(cat "$FILE" | sed 's/.*=//' | xargs)
+rm -f "$FILE"
+
+for platform in $(echo "$DOTNET_PLATFORMS" | sed 's/ /\n/g'); do
+	af_whitespace src/build/dotnet/$platform/csproj/core/Core.$platform.csproj
+	af_whitespace src/build/dotnet/$platform/csproj/api/ApiDefinition.$platform.csproj
+	af_whitespace src/build/dotnet/$platform/csproj/platform/Microsoft.$platform.csproj
 done
 
 # dotnet format "$SRC_DIR/[...]"

@@ -52,7 +52,7 @@ namespace Security {
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-		public SecPolicy [] GetPolicies ()
+		public SecPolicy []? GetPolicies ()
 		{
 			IntPtr p = IntPtr.Zero;
 			SecStatusCode result;
@@ -61,7 +61,7 @@ namespace Security {
 			}
 			if (result != SecStatusCode.Success)
 				throw new InvalidOperationException (result.ToString ());
-			return NSArray.ArrayFromHandle<SecPolicy> (p);
+			return NSArray.ArrayFromHandleDropNullElements<SecPolicy> (p, releaseHandle: true);
 		}
 
 		[DllImport (Constants.SecurityLibrary)]
@@ -164,7 +164,7 @@ namespace Security {
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-		public SecCertificate [] GetCustomAnchorCertificates ()
+		public SecCertificate []? GetCustomAnchorCertificates ()
 		{
 			IntPtr p;
 			SecStatusCode result;
@@ -173,7 +173,7 @@ namespace Security {
 			}
 			if (result != SecStatusCode.Success)
 				throw new InvalidOperationException (result.ToString ());
-			return NSArray.ArrayFromHandle<SecCertificate> (p);
+			return NSArray.ArrayFromHandleDropNullElements<SecCertificate> (p, releaseHandle: true);
 		}
 
 		[SupportedOSPlatform ("ios")]
@@ -223,9 +223,9 @@ namespace Security {
 			}
 		}
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.SecurityLibrary)]
 		unsafe static extern SecStatusCode SecTrustEvaluateAsyncWithError (IntPtr /* SecTrustRef */ trust, IntPtr /* dispatch_queue_t */ queue, BlockLiteral* block);
@@ -241,9 +241,9 @@ namespace Security {
 			}
 		}
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public SecStatusCode Evaluate (DispatchQueue queue, SecTrustWithErrorCallback handler)

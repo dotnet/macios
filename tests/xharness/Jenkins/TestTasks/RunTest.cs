@@ -14,10 +14,10 @@ using Microsoft.DotNet.XHarness.iOS.Shared.XmlResults;
 namespace Xharness.Jenkins.TestTasks {
 	public class RunTest {
 		public IMlaunchProcessManager ProcessManager { get; private set; }
-		public IBuildToolTask BuildTask { get; private set; }
+		public BuildToolTask BuildTask { get; private set; }
 		IResultParser ResultParser { get; } = new XmlResultParser ();
 
-		readonly IRunTestTask testTask;
+		readonly RunTestTask testTask;
 		readonly IEnvManager envManager;
 		readonly ILog mainLog;
 		readonly bool generateXmlFailures;
@@ -26,10 +26,10 @@ namespace Xharness.Jenkins.TestTasks {
 
 		public TimeSpan Timeout { get; set; } = TimeSpan.FromMinutes (10);
 		public double TimeoutMultiplier { get; set; } = 1;
-		public string WorkingDirectory;
+		public string? WorkingDirectory;
 
-		public RunTest (IRunTestTask testTask,
-						IBuildToolTask buildTask,
+		public RunTest (RunTestTask testTask,
+						BuildToolTask buildTask,
 						IMlaunchProcessManager processManager,
 						IEnvManager envManager,
 						ILog mainLog,

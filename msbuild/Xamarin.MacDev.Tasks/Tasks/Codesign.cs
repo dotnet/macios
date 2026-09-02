@@ -22,6 +22,9 @@ namespace Xamarin.MacDev.Tasks {
 		const string CodeSignatureDirName = "_CodeSignature";
 		string? toolExe;
 
+		// Set to 1 (using Interlocked) the first time we log the errSecInternalComponent hint, so we only log it once per task invocation.
+		int loggedInternalComponentHint;
+
 		#region Inputs
 
 		// Whether we'll check for and show an error if the app bundle we're trying to sign contains a 'Resources' subdirectory.
@@ -341,7 +344,7 @@ namespace Xamarin.MacDev.Tasks {
 			// on macOS apps {item.ItemSpec} can be a symlink to `Versions/Current/{item.ItemSpec}`
 			// and `Current` also a symlink to `A`... and `_CodeSignature` will be found there
 			var path = item.ItemSpec;
-			var parent = Path.GetDirectoryName (path);
+			var parent = Path.GetDirectoryName (path)!;
 
 			// so do not don't sign `A.framework/A`, sign `A.framework` which will always sign the *bundle*
 			if ((Path.GetExtension (parent) == ".framework") && (Path.GetFileName (path) == Path.GetFileNameWithoutExtension (parent)))
@@ -362,19 +365,21 @@ namespace Xamarin.MacDev.Tasks {
 			var environment = new Dictionary<string, string?> () {
 				{ "CODESIGN_ALLOCATE", GetCodesignAllocate (item) },
 			};
-			var rv = ExecuteAsync (fileName, arguments, null, environment, mergeOutput: false).Result;
+			var rv = ExecuteAsync (fileName, arguments, environment).Result;
 			var exitCode = rv.ExitCode;
-			var messages = rv.StandardOutput?.ToString () ?? string.Empty;
+			var messages = rv.Output.StandardOutput;
 
 			if (messages.Length > 0)
 				Log.LogMessage (MessageImportance.Normal, "{0}", messages.ToString ());
 
 			if (exitCode != 0) {
-				var errors = rv.StandardError?.ToString () ?? string.Empty;
+				var errors = rv.Output.StandardError;
 				if (errors.Length > 0)
 					Log.LogError (MSBStrings.E0004, item.ItemSpec, errors);
 				else
 					Log.LogError (MSBStrings.E0005, item.ItemSpec);
+				if (errors.IndexOf ("errSecInternalComponent", StringComparison.Ordinal) >= 0 && System.Threading.Interlocked.CompareExchange (ref loggedInternalComponentHint, 1, 0) == 0)
+					Log.LogError (MSBStrings.E7184 /* Codesign failed with 'errSecInternalComponent'. This usually means the keychain is locked, which is common when building over SSH. Unlock the keychain first, for example by running 'security unlock-keychain ~/Library/Keychains/login.keychain-db'. */);
 			} else {
 				var stampFile = GetCodesignStampFile (item);
 				if (string.IsNullOrEmpty (stampFile)) {
@@ -464,7 +469,7 @@ namespace Xamarin.MacDev.Tasks {
 			// while also not codesigning directories before files inside them.
 			foreach (var res in resourcesToSign) {
 				var path = res.ItemSpec;
-				var parent = Path.GetDirectoryName (path);
+				var parent = Path.GetDirectoryName (path)!;
 
 				// so do not don't sign `A.framework/A`, sign `A.framework` which will always sign the *bundle*
 				if (Path.GetExtension (parent) == ".framework" && Path.GetFileName (path) == Path.GetFileNameWithoutExtension (parent))
@@ -619,7 +624,7 @@ namespace Xamarin.MacDev.Tasks {
 					var manifestPath = Path.Combine (item.ItemSpec, "Info.plist");
 
 					if (File.Exists (manifestPath)) {
-						var bundleExecutable = PDictionary.FromFile (manifestPath).GetCFBundleExecutable ();
+						var bundleExecutable = PDictionary.OpenFile (manifestPath).GetCFBundleExecutable ();
 
 						if (!string.IsNullOrEmpty (bundleExecutable))
 							executableName = bundleExecutable;

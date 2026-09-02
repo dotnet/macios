@@ -76,30 +76,22 @@ namespace PdfKit {
 			set { Type = value.GetConstant ()!; }
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the points defining the quadrilateral bounds of the annotation.</summary>
+		/// <value>An array of <see cref="CGPoint" /> values representing the quadrilateral vertices, or <see langword="null" />.</value>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos18.2")]
-		public CGPoint [] QuadrilateralPoints {
+		public CGPoint []? QuadrilateralPoints {
 			get {
-				return NSArray.ArrayFromHandleFunc<CGPoint> (_QuadrilateralPoints, (v) => {
+				return NSArray.ArrayFromHandle<CGPoint> (_QuadrilateralPoints, (v) => {
 					using (var value = new NSValue (v))
 						return value.CGPointValue;
 				});
 			}
 			set {
-				if (value is null) {
-					_QuadrilateralPoints = IntPtr.Zero;
-				} else {
-					using (var arr = new NSMutableArray ()) {
-						for (int i = 0; i < value.Length; i++)
-							arr.Add (NSValue.FromCGPoint (value [i]));
-						_QuadrilateralPoints = arr.Handle;
-					}
-				}
+				using var arr = NSArray.FromNSObjects<CGPoint> ((element) => NSValue.FromCGPoint (element), value);
+				_QuadrilateralPoints = arr.GetHandle ();
 			}
 		}
 	}

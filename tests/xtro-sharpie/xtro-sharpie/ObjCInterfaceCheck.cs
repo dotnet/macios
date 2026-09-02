@@ -1,10 +1,3 @@
-using System;
-using System.Collections.Generic;
-
-using Mono.Cecil;
-
-using Clang.Ast;
-
 namespace Extrospection {
 
 	public class ObjCInterfaceCheck : BaseVisitor {
@@ -12,12 +5,17 @@ namespace Extrospection {
 		Dictionary<string, TypeDefinition> type_map = new Dictionary<string, TypeDefinition> ();
 		Dictionary<string, TypeDefinition> type_map_copy = new Dictionary<string, TypeDefinition> ();
 
+		public ObjCInterfaceCheck (BindingResult bindingResult)
+			: base (bindingResult)
+		{
+		}
+
 		public override void VisitManagedType (TypeDefinition type)
 		{
 			if (!type.HasCustomAttributes)
 				return;
 
-			string rname = null;
+			string? rname = null;
 			bool wrapper = true;
 			bool skip = false;
 
@@ -26,7 +24,7 @@ namespace Extrospection {
 				case "RegisterAttribute":
 					rname = type.Name;
 					if (ca.HasConstructorArguments) {
-						rname = (ca.ConstructorArguments [0].Value as string);
+						rname = (string?) ca.ConstructorArguments [0].Value;
 						if (ca.ConstructorArguments.Count > 1)
 							wrapper = (bool) ca.ConstructorArguments [1].Value;
 					}
@@ -49,8 +47,7 @@ namespace Extrospection {
 				}
 			}
 			if (!skip && wrapper && !String.IsNullOrEmpty (rname)) {
-				TypeDefinition td;
-				if (!type_map.TryGetValue (rname, out td)) {
+				if (!type_map.TryGetValue (rname, out var td)) {
 					type_map.Add (rname, type);
 					type_map_copy.Add (rname, type);
 				} else {
@@ -62,11 +59,8 @@ namespace Extrospection {
 			}
 		}
 
-		public override void VisitObjCCategoryDecl (ObjCCategoryDecl decl, VisitKind visitKind)
+		public override void VisitObjCCategoryDecl (ObjCCategoryDecl decl)
 		{
-			if (visitKind != VisitKind.Enter)
-				return;
-
 			var categoryName = decl.Name;
 			if (categoryName is null)
 				return;
@@ -93,11 +87,9 @@ namespace Extrospection {
 			}
 		}
 
-		public override void VisitObjCInterfaceDecl (ObjCInterfaceDecl decl, VisitKind visitKind)
+		public override void VisitObjCInterfaceDecl (ObjCInterfaceDecl decl)
 		{
-			if (visitKind != VisitKind.Enter)
-				return;
-			if (!decl.IsDefinition)
+			if (!decl.IsThisDeclarationADefinition)
 				return;
 
 			var name = decl.Name;
@@ -139,7 +131,7 @@ namespace Extrospection {
 			type_map.Remove (name);
 		}
 
-		public override void End ()
+		public override void EndVisit ()
 		{
 			// at this stage anything else we have is not something we could find in Apple's headers
 			foreach (var kvp in type_map) {
@@ -150,28 +142,30 @@ namespace Extrospection {
 				// internal inner classes are not mapped to native ones
 				if (type.IsNestedAssembly)
 					continue;
+				if (AttributeHelpers.HasUnsupportedOSPlatform (type))
+					continue;
 				var framework = Helpers.MapFramework (type.Namespace);
 				Log.On (framework).Add ($"!unknown-type! {extra} bound");
 			}
 		}
 
 		// - version check
-		bool ImplementProtocol (string protocol, TypeDefinition td)
+		bool ImplementProtocol (string protocol, TypeDefinition? td)
 		{
 			if (td is null)
 				return false;
 			if (td.HasInterfaces) {
 				foreach (var intf in td.Interfaces) {
 					TypeReference ifaceType;
-					ifaceType = intf?.InterfaceType;
-					if (protocol == GetProtocolName (ifaceType?.Resolve ()))
+					ifaceType = intf.InterfaceType;
+					if (protocol == GetProtocolName (ifaceType.Resolve ()))
 						return true;
 				}
 			}
 			return ImplementProtocol (protocol, td.BaseType?.Resolve ());
 		}
 
-		public static string GetProtocolName (TypeDefinition td)
+		public static string? GetProtocolName (TypeDefinition td)
 		{
 			if (!td.HasCustomAttributes)
 				return null;

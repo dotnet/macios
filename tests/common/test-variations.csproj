@@ -1,16 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- This file contains various test variations valid for all test projects + some supporting logic -->
+<!-- Test variations can also be added to a project's shared.csproj, but if a test variation also needs settings to apply to referenced projects, the variation has to be added to this file -->
 <Project>
 	<ItemGroup>
 		<TestVariations Include="debug" Description="Debug ('Configuration=Debug')" />
 		<TestVariations Include="release" Description="Release ('Configuration=Release')" />
 		<TestVariations Include="interpreter" Description="Run with the interpreter ('UseInterpreter=true')" />
+		<TestVariations Include="llvm" Description="Enable llvm ('MtouchUseLlvm=true')" />
 		<TestVariations Include="bundle-original-resources" Description="Bundle original resources ('BundleOriginalResources=true')" />
 		<TestVariations Include="do-not-bundle-original-resources" Description="Do not bundle original resources ('BundleOriginalResources=false')" />
-		<TestVariations Include="nativeaot" Description="Run with NativeAOT ('PublishAot=true' and '_IsPublishing=true')" />
+		<TestVariations Include="nativeaot" Description="Run with NativeAOT ('PublishAot=true', '_IsPublishing=true' and 'TrimMode=full')" />
+		<TestVariations Include="nativeaot-net11-defaults" Description="Run with NativeAOT using defaults for .NET 11" />
 		<TestVariations Include="linksdk" Description="Run with trimmer (MtouchLink/LinkMode) set to 'SdkOnly'" />
 		<TestVariations Include="linkall" Description="Run with trimmer (MtouchLink/LinkMode) set to 'Full'" />
 		<TestVariations Include="coreclr" Description="Use CoreCLR ('UseMonoRuntime=false')" />
+		<TestVariations Include="monovm" Description="Use MonoVM ('UseMonoRuntime=true')" />
+		<TestVariations Include="dynamic-registrar" Description="Dynamic registrar" />
+		<TestVariations Include="static-registrar" Description="Static registrar" />
+		<TestVariations Include="static-registrar-all-optimizations" Description="Static registrar + all optimizations" />
+		<TestVariations Include="static-registrar-all-optimizations-linkall" Description="Static registrar + all optimizations + Link all" />
+		<TestVariations Include="static-registrar-optimizations-except-uithread-checks-linkall" Description="Static registrar + all optimizations + Link all" />
+		<TestVariations Include="managed-static-registrar" Description="Managed static registrar" />
+		<TestVariations Include="managed-static-registrar-all-optimizations-linkall" Description="Managed static registrar + all optimizations" />
+		<TestVariations Include="trimmable-static-registrar" Description="Trimmable static registrar" />
+		<TestVariations Include="trimmable-static-registrar-all-optimizations-linkall" Description="Trimmable static registrar + all optimizations" />
+		<TestVariations Include="inline-dlfcn-methods-compat" Description="Enables 'InlineDlfcnMethods' in compatibility mode." />
+		<TestVariations Include="inline-dlfcn-methods-strict" Description="Enables 'InlineDlfcnMethods' in strict mode." />
+		<TestVariations Include="inline-class-gethandle-compat" Description="Enables 'InlineClassGetHandle' in compatibility mode." />
+		<TestVariations Include="inline-class-gethandle-strict" Description="Enables 'InlineClassGetHandle' in strict mode." />
+		<TestVariations Include="prepare-assemblies" Description="Enables 'PrepareAssemblies'." />
+		<TestVariations Include="dontlink" Description="Disables the trimmer (MtouchLink/LinkMode set to 'None')." />
 	</ItemGroup>
 
 	<PropertyGroup>
@@ -19,46 +38,172 @@
 
 	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|debug|'))">
 		<Configuration>Debug</Configuration>
+		<_TestVariationApplied>true</_TestVariationApplied>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|release|'))">
 		<Configuration>Release</Configuration>
+		<_TestVariationApplied>true</_TestVariationApplied>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|interpreter|'))">
 		<UseInterpreter>true</UseInterpreter>
+		<_TestVariationApplied>true</_TestVariationApplied>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|nativeaot|'))">
-		<PublishAot>true</PublishAot>
-		<_IsPublishing>true</_IsPublishing>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|linksdk|'))">
-		<MtouchLink>SdkOnly</MtouchLink>
-		<LinkMode>$(MtouchLink)</LinkMode>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|linkall|'))">
-		<MtouchLink>Full</MtouchLink>
-		<LinkMode>$(MtouchLink)</LinkMode>
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|llvm|'))">
+		<MtouchUseLlvm>true</MtouchUseLlvm>
+		<_TestVariationApplied>true</_TestVariationApplied>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|bundle-original-resources|'))">
 		<BundleOriginalResources>true</BundleOriginalResources>
+		<_TestVariationApplied>true</_TestVariationApplied>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|do-not-bundle-original-resources|'))">
 		<BundleOriginalResources>false</BundleOriginalResources>
+		<_TestVariationApplied>true</_TestVariationApplied>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|nativeaot|'))">
 		<PublishAot>true</PublishAot>
 		<_IsPublishing>true</_IsPublishing>
+		<TrimMode>full</TrimMode>
+		<_TestVariationApplied>true</_TestVariationApplied>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|nativeaot-net11-defaults|'))">
+		<!-- nativeaot -->
+		<PublishAot>true</PublishAot>
+		<_IsPublishing>true</_IsPublishing>
+		<TrimMode>full</TrimMode>
+		<!-- inline-dlfcn-methods-strict -->
+		<InlineDlfcnMethods>strict</InlineDlfcnMethods>
+		<DefineConstants>$(DefineConstants);STATIC_NATIVE_SYMBOL_LOOKUP</DefineConstants>
+		<!-- inline-class-gethandle-strict -->
+		<InlineClassGetHandle>strict</InlineClassGetHandle>
+		<Registrar>managed-static</Registrar>
+
+		<_TestVariationApplied>true</_TestVariationApplied>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|linksdk|'))">
+		<TrimMode>partial</TrimMode>
+		<_TestVariationApplied>true</_TestVariationApplied>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|linkall|'))">
+		<TrimMode>full</TrimMode>
+		<_TestVariationApplied>true</_TestVariationApplied>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|coreclr|'))">
 		<UseMonoRuntime>false</UseMonoRuntime>
+		<_TestVariationApplied>true</_TestVariationApplied>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|monovm|'))">
+		<UseMonoRuntime>true</UseMonoRuntime>
+		<!-- Opt out of the NETSDK1242 check for the MonoVM variations. -->
+		<_DisableCheckForUnsupportedMonoMobileRuntime>true</_DisableCheckForUnsupportedMonoMobileRuntime>
+		<_TestVariationApplied>true</_TestVariationApplied>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|dynamic-registrar|'))">
+		<Registrar>dynamic</Registrar>
+		<_TestVariationApplied>true</_TestVariationApplied>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|static-registrar|'))">
+		<Registrar>static</Registrar>
+		<_TestVariationApplied>true</_TestVariationApplied>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|trimmable-static-registrar|'))">
+		<Registrar>trimmable-static</Registrar>
+		<UseMonoRuntime>false</UseMonoRuntime> <!-- doesn't work with Mono -->
+		<_TestVariationApplied>true</_TestVariationApplied>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|static-registrar-all-optimizations|'))">
+		<AppBundleExtraOptions>$(AppBundleExtraOptions) --optimize:all</AppBundleExtraOptions>
+		<Registrar>static</Registrar>
+		<DefineConstants>$(DefineConstants);OPTIMIZEALL</DefineConstants>
+		<_TestVariationApplied>true</_TestVariationApplied>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|static-registrar-all-optimizations-linkall|'))">
+		<AppBundleExtraOptions>$(AppBundleExtraOptions) --optimize:all</AppBundleExtraOptions>
+		<Registrar>static</Registrar>
+		<TrimMode>full</TrimMode>
+		<DefineConstants>$(DefineConstants);OPTIMIZEALL</DefineConstants>
+		<_TestVariationApplied>true</_TestVariationApplied>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|static-registrar-optimizations-except-uithread-checks-linkall|'))">
+		<AppBundleExtraOptions>$(AppBundleExtraOptions) --optimize:all,-remove-uithread-checks</AppBundleExtraOptions>
+		<Registrar>static</Registrar>
+		<TrimMode>full</TrimMode>
+		<DefineConstants>$(DefineConstants);OPTIMIZEALL</DefineConstants>
+		<_TestVariationApplied>true</_TestVariationApplied>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|managed-static-registrar|'))">
+		<Registrar>managed-static</Registrar>
+		<_TestVariationApplied>true</_TestVariationApplied>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|managed-static-registrar-all-optimizations-linkall|'))">
+		<AppBundleExtraOptions>$(AppBundleExtraOptions) --optimize:all</AppBundleExtraOptions>
+		<Registrar>managed-static</Registrar>
+		<TrimMode>full</TrimMode>
+		<DefineConstants>$(DefineConstants);OPTIMIZEALL</DefineConstants>
+		<_TestVariationApplied>true</_TestVariationApplied>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|trimmable-static-registrar-all-optimizations-linkall|'))">
+		<AppBundleExtraOptions>$(AppBundleExtraOptions) --optimize:all</AppBundleExtraOptions>
+		<Registrar>trimmable-static</Registrar>
+		<TrimMode>full</TrimMode>
+		<DefineConstants>$(DefineConstants);OPTIMIZEALL</DefineConstants>
+		<UseMonoRuntime>false</UseMonoRuntime> <!-- doesn't work with Mono -->
+		<_TestVariationApplied>true</_TestVariationApplied>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|inline-dlfcn-methods-compat|'))">
+		<InlineDlfcnMethods>compatibility</InlineDlfcnMethods>
+		<_TestVariationApplied>true</_TestVariationApplied>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|inline-dlfcn-methods-strict|'))">
+		<InlineDlfcnMethods>strict</InlineDlfcnMethods>
+		<_TestVariationApplied>true</_TestVariationApplied>
+
+		<DefineConstants>$(DefineConstants);STATIC_NATIVE_SYMBOL_LOOKUP</DefineConstants>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|inline-class-gethandle-compat|'))">
+		<InlineClassGetHandle>compatibility</InlineClassGetHandle>
+		<_TestVariationApplied>true</_TestVariationApplied>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|inline-class-gethandle-strict|'))">
+		<InlineClassGetHandle>strict</InlineClassGetHandle>
+		<Registrar>managed-static</Registrar>
+		<_TestVariationApplied>true</_TestVariationApplied>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|prepare-assemblies|'))">
+		<PrepareAssemblies>true</PrepareAssemblies>
+		<DefineConstants>$(DefineConstants);PREPARE_ASSEMBLIES</DefineConstants>
+		<_TestVariationApplied>true</_TestVariationApplied>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|dontlink|'))">
+		<MtouchLink>None</MtouchLink>
+		<LinkMode>None</LinkMode>
+		<_TestVariationApplied>true</_TestVariationApplied>
 	</PropertyGroup>
 
 	<Target Name="ValidateTestVariation" Condition="'$(TestVariation)' != '' And '$(OutputType)' == 'exe'" BeforeTargets="Build">
@@ -66,5 +211,6 @@
 			<_InvalidTestVariations Include="$(TestVariation.Split('|'))" Exclude="@(TestVariations)" />
 		</ItemGroup>
 		<Error Text="Invalid test variation(s): '@(_InvalidTestVariations,', ')'. Please run 'make list-variations' to list all the valid variations." Condition="@(_InvalidTestVariations->Count()) != '0'" />
+		<Error Text="Test variation '$(TestVariation)' didn't find any test variations - this is a bug in a condition when applying test variations in this file." Condition="'$(_TestVariationApplied)' == ''" />
 	</Target>
 </Project>

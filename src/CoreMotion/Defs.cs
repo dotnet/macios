@@ -168,7 +168,6 @@ namespace CoreMotion {
 
 	// untyped enum -> CMDeviceMotion.h
 	/// <summary>An enumeration whose values specify the quality of the magnetometer calibration.</summary>
-	///     <remarks>To be added.</remarks>
 	public enum CMMagneticFieldCalibrationAccuracy {
 		/// <summary>Magnetic calibration has not occurred.</summary>
 		Uncalibrated = -1,

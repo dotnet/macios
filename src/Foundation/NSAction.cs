@@ -64,9 +64,9 @@ namespace Foundation {
 	[Register ("__MonoMac_NSSynchronizationContextDispatcher")]
 	internal sealed class NSSynchronizationContextDispatcher : NSDispatcher {
 		readonly SendOrPostCallback d;
-		readonly object state;
+		readonly object? state;
 
-		public NSSynchronizationContextDispatcher (SendOrPostCallback d, object state)
+		public NSSynchronizationContextDispatcher (SendOrPostCallback d, object? state)
 		{
 			if (d is null)
 				throw new ArgumentNullException (nameof (d));
@@ -149,7 +149,7 @@ namespace Foundation {
 		SendOrPostCallback? d;
 		object? state;
 
-		public NSAsyncSynchronizationContextDispatcher (SendOrPostCallback d, object state)
+		public NSAsyncSynchronizationContextDispatcher (SendOrPostCallback d, object? state)
 		{
 			if (d is null)
 				throw new ArgumentNullException (nameof (d));

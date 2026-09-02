@@ -23,14 +23,13 @@ namespace UIKit {
 		/// <param name="image">The image saved.</param>
 		///     <param name="error">Errors, if any.</param>
 		///     <summary>A delegate signature for getting a notification when the file has been saved.</summary>
-		///     <remarks>To be added.</remarks>
 		public delegate void SaveStatus (UIImage image, NSError error);
 
 		[DllImport (Constants.UIKitLibrary)]
 		extern static void UIImageWriteToSavedPhotosAlbum (/* UIImage */ IntPtr image, /* id */ IntPtr obj, /* SEL */ IntPtr selector, /*vcoid* */ IntPtr ctx);
 
 		/// <include file="../../docs/api/UIKit/UIImage.xml" path="/Documentation/Docs[@DocId='M:UIKit.UIImage.SaveToPhotosAlbum(UIKit.UIImage.SaveStatus)']/*" />
-	public void SaveToPhotosAlbum (SaveStatus status)
+		public void SaveToPhotosAlbum (SaveStatus status)
 		{
 			UIImageStatusDispatcher? dis = null;
 			UIApplication.EnsureUIThread ();
@@ -92,7 +91,7 @@ namespace UIKit {
 		/// <summary>Scales the image up or down.</summary>
 		/// <param name="newSize">The desired size for the scaled image.</param>
 		/// <param name="scaleFactor">Scale factor to apply to the scaled image. If the value specified is zero, the device's scale factor is used.</param>
-		/// <returns>The scaled image.</returns>
+		/// <returns>The scaled image, or <see langword="null" /> in case of failure.</returns>
 		/// <remarks>
 		///   <para tool="threads">This can be used from a background thread.</para>
 		/// </remarks>
@@ -102,7 +101,7 @@ namespace UIKit {
 		[UnsupportedOSPlatform ("ios17.0")]
 		[UnsupportedOSPlatform ("tvos17.0")]
 		[UnsupportedOSPlatform ("maccatalyst17.0")]
-		public UIImage Scale (CGSize newSize, nfloat scaleFactor)
+		public UIImage? Scale (CGSize newSize, nfloat scaleFactor)
 		{
 			UIGraphics.BeginImageContextWithOptions (newSize, false, scaleFactor);
 
@@ -116,7 +115,7 @@ namespace UIKit {
 
 		/// <summary>Scales the image up or down.</summary>
 		/// <param name="newSize">The desired size for the scaled image.</param>
-		/// <returns>The scaled image.</returns>
+		/// <returns>The scaled image, or <see langword="null" /> in case of failure.</returns>
 		/// <remarks>
 		///   <para tool="threads">This can be used from a background thread.</para>
 		/// </remarks>
@@ -126,7 +125,7 @@ namespace UIKit {
 		[UnsupportedOSPlatform ("ios17.0")]
 		[UnsupportedOSPlatform ("tvos17.0")]
 		[UnsupportedOSPlatform ("maccatalyst17.0")]
-		public UIImage Scale (CGSize newSize)
+		public UIImage? Scale (CGSize newSize)
 		{
 			UIGraphics.BeginImageContext (newSize);
 
@@ -170,13 +169,13 @@ namespace UIKit {
 
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.UIKitLibrary)]
 		static extern /* NSData */ IntPtr UIImageHEICRepresentation (/* UIImage */ IntPtr image);
 
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public NSData? HeicRepresentation
 			=> Runtime.GetNSObject<NSData> (UIImageHEICRepresentation (Handle));
 

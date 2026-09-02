@@ -54,13 +54,13 @@
 		<!-- There's unsafe code in shared test code, which means pretty much all test suites need unsafe code -->
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 
-		<!-- Always use the latest C# version everywhere -->
-		<LangVersion>latest</LangVersion>
-
 		<!-- Don't show warnings about platform availability -->
 		<NoWarn Condition="'$(IncludeCS1416Warnigs)' != 'true'">CA1416;$(NoWarn)</NoWarn>
 
 		<CustomBeforeMicrosoftCommonTargets>$(CustomBeforeMicrosoftCommonTargets);$(MSBuildThisFileDirectory)SupportedOSPlatformVersions.targets</CustomBeforeMicrosoftCommonTargets>
+
+		<!-- We must set 'UseFloatingTargetPlatformVersion=true' for our test projects, to avoid building them with other workloads than the current workload. -->
+		<UseFloatingTargetPlatformVersion Condition="'$(UseFloatingTargetPlatformVersion)' == ''">true</UseFloatingTargetPlatformVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -80,6 +80,14 @@
 		<DefineConstants>$(DefineConstants);NATIVEAOT</DefineConstants>
 		<!-- We're enabling warnaserror by default, but we're not warning-free for ILC (especially for NUnit), so disable warnaserror for ILC - https://github.com/dotnet/macios/issues/19911 -->
 		<IlcTreatWarningsAsErrors>false</IlcTreatWarningsAsErrors>
+		<!-- NUnit 4.x's EquatablesComparer calls Type.GetInterfaceMap() which requires complete type metadata.
+		     Without this, any Assert.That(x, Is.EqualTo(y)) where x implements IEquatable<T> will throw
+		     NotSupportedException on NativeAOT. See https://github.com/nunit/nunit/issues/3970
+		     Only enable this when NUnit is actually referenced: it makes every reflectable type keep
+		     complete metadata (and every method reflectable), which significantly increases the app size
+		     of any app that uses NUnit. We must not impose that cost on apps that don't reference NUnit. -->
+		<IlcGenerateCompleteTypeMetadata Condition="'$(ExcludeNUnitLiteReference)' != 'true'">true</IlcGenerateCompleteTypeMetadata>
+		<IlcTrimMetadata Condition="'$(ExcludeNUnitLiteReference)' != 'true'">false</IlcTrimMetadata>
 	</PropertyGroup>
 
 	<!-- Trimmer options -->
@@ -101,19 +109,46 @@
 			<ManagedAssemblyToLink Condition="'%(Filename)' == 'nunit.framework'">
 				<TrimmerSingleWarn>true</TrimmerSingleWarn>
 			</ManagedAssemblyToLink>
+			<ManagedAssemblyToLink Condition="'%(Filename)' == 'nunit.framework.legacy'">
+				<TrimmerSingleWarn>true</TrimmerSingleWarn>
+			</ManagedAssemblyToLink>
 			<!-- The above ItemGroup doesn't work for NativeAOT, so pass the argument manually to ILC: https://github.com/dotnet/runtime/issues/94255 -->
 			<IlcArg Include="--singlewarnassembly:nunit.framework" />
+			<IlcArg Include="--singlewarnassembly:nunit.framework.legacy" />
 		</ItemGroup>
 	</Target>
 
 	<ItemGroup>
-		<PackageReference Include="NUnitLite" Version="3.12.0" Condition="'$(ExcludeNUnitLiteReference)' != 'true'" />
+		<PackageReference Include="NUnitLite" Version="$(NUnitLitePackageVersion)" Condition="'$(ExcludeNUnitLiteReference)' != 'true'" />
 		<ProjectReference Include="$(MSBuildThisFileDirectory)\Touch.Unit\Touch.Client\dotnet\Touch.Client.$(_PlatformName).csproj" Condition="'$(ExcludeTouchUnitReference)' != 'true'" />
 	</ItemGroup>
 	<PropertyGroup>
 		<DefineConstants Condition="'$(ExcludeNUnitLiteReference)' == 'true'">$(DefineConstants);EXCLUDE_NUNITLITE_REFERENCE</DefineConstants>
 		<DefineConstants Condition="'$(ExcludeTouchUnitReference)' == 'true'">$(DefineConstants);EXCLUDE_TOUCH_UNIT_REFERENCE</DefineConstants>
 	</PropertyGroup>
+
+	<!--
+		Define HOTRELOAD_COMPATIBLE_BUILD when building a hot-reload-compatible build. This has to
+		happen in a target (and not in a plain PropertyGroup), because $(HotReloadCompatibleBuild)
+		is computed in the platform SDK targets, which are imported after this file.
+	-->
+	<Target Name="_AddHotReloadCompatibleBuildDefine" BeforeTargets="CoreCompile" Condition="'$(HotReloadCompatibleBuild)' == 'true'">
+		<PropertyGroup>
+			<DefineConstants>$(DefineConstants);HOTRELOAD_COMPATIBLE_BUILD</DefineConstants>
+		</PropertyGroup>
+	</Target>
+
+	<!--
+		Define PREPARE_ASSEMBLIES when the assembly-preparer is used. Just like
+		$(HotReloadCompatibleBuild), $(PrepareAssemblies) may be computed in the platform SDK
+		targets/props (it's enabled by default in some configurations), so this has to happen in a
+		target, and not in a plain PropertyGroup.
+	-->
+	<Target Name="_AddPrepareAssembliesDefine" BeforeTargets="CoreCompile" Condition="'$(PrepareAssemblies)' == 'true' And !$(DefineConstants.Contains('PREPARE_ASSEMBLIES'))">
+		<PropertyGroup>
+			<DefineConstants>$(DefineConstants);PREPARE_ASSEMBLIES</DefineConstants>
+		</PropertyGroup>
+	</Target>
 
 	<Import Project="$(MSBuildThisFileDirectory)/../ComputeRegistrarConstant.targets" />
 	<Import Project="$(MSBuildThisFileDirectory)/../nunit.framework.targets" Condition="'$(ExcludeNUnitLiteReference)' != 'true'" />
@@ -126,6 +161,14 @@
 		<DefineConstants>$(DefineConstants);NATIVEAOT</DefineConstants>
 		<!-- We're enabling warnaserror by default, but we're not warning-free for ILC (especially for NUnit), so disable warnaserror for ILC - https://github.com/dotnet/macios/issues/19911 -->
 		<IlcTreatWarningsAsErrors>false</IlcTreatWarningsAsErrors>
+		<!-- NUnit 4.x's EquatablesComparer calls Type.GetInterfaceMap() which requires complete type metadata.
+		     Without this, any Assert.That(x, Is.EqualTo(y)) where x implements IEquatable<T> will throw
+		     NotSupportedException on NativeAOT. See https://github.com/nunit/nunit/issues/3970
+		     Only enable this when NUnit is actually referenced: it makes every reflectable type keep
+		     complete metadata (and every method reflectable), which significantly increases the app size
+		     of any app that uses NUnit. We must not impose that cost on apps that don't reference NUnit. -->
+		<IlcGenerateCompleteTypeMetadata Condition="'$(ExcludeNUnitLiteReference)' != 'true'">true</IlcGenerateCompleteTypeMetadata>
+		<IlcTrimMetadata Condition="'$(ExcludeNUnitLiteReference)' != 'true'">false</IlcTrimMetadata>
 	</PropertyGroup>
 
 	<!--

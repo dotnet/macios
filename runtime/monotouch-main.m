@@ -151,31 +151,35 @@ xamarin_assembly_preload_hook (MonoAssemblyName *aname, char **assemblies_path, 
 }
 #endif // !defined (CORECLR_RUNTIME)
 
-#ifdef DEBUG_LAUNCH_TIME
-uint64_t startDate = 0;
-uint64_t date = 0;
-void debug_launch_time_print (const char *msg)
+static uint64_t xamarin_launch_startDate = 0;
+static uint64_t xamarin_launch_date = 0;
+static int xamarin_launch_time_enabled = -1;
+
+void xamarin_launch_time_print (const char *msg)
 {
+	if (xamarin_launch_time_enabled == -1) {
+		const char *env = getenv ("DEBUG_LAUNCH_TIME");
+		xamarin_launch_time_enabled = (env != NULL && env[0] == '1') ? 1 : 0;
+	}
+
+	if (!xamarin_launch_time_enabled)
+		return;
+
 	uint64_t unow;
 	struct timeval now;
 
 	gettimeofday (&now, NULL);
-	unow = now.tv_sec * 1000000ULL + now.tv_usec;
+	unow = (uint64_t) now.tv_sec * 1000000ULL + (uint64_t) now.tv_usec;
 
-	if (startDate == 0) {
-		startDate = unow;
-		date = startDate;
+	if (xamarin_launch_startDate == 0) {
+		xamarin_launch_startDate = unow;
+		xamarin_launch_date = xamarin_launch_startDate;
 	}
 
-	PRINT ("%s: %llu us Total: %llu us", msg, unow - date, unow - startDate);
+	PRINT ("%s: %llu us Total: %llu us", msg, unow - xamarin_launch_date, unow - xamarin_launch_startDate);
 
-	date = unow;
+	xamarin_launch_date = unow;
 }
-#else
-inline void debug_launch_time_print (const char *msg)
-{
-}
-#endif
 
 /*
  * This class will listen for memory warnings and when received, force
@@ -256,10 +260,10 @@ xamarin_main (int argc, char *argv[], enum XamarinLaunchMode launch_mode)
 	managed_argv [managed_argc++] = "monotouch";
 #endif
 
-	DEBUG_LAUNCH_TIME_PRINT ("Main entered");
+	XAMARIN_LAUNCH_TIME_PRINT ("Main entered");
 
 	xamarin_setup ();
-	DEBUG_LAUNCH_TIME_PRINT ("MonoTouch setup time");
+	XAMARIN_LAUNCH_TIME_PRINT ("MonoTouch setup time");
 
 	MonoAssembly *assembly;
 	GCHandle exception_gchandle = NULL;
@@ -278,14 +282,11 @@ xamarin_main (int argc, char *argv[], enum XamarinLaunchMode launch_mode)
 
 	xamarin_bridge_setup ();
 
-	DEBUG_LAUNCH_TIME_PRINT ("Spin-up time");
+	XAMARIN_LAUNCH_TIME_PRINT ("Spin-up time");
 
 	{
 		/*
 		 * Command line arguments for mobile targets (iOS / tvOS / macOS / Mac Catalyst):
-		 * -debugtrack: [Simulator only]
-		 *         If we should track zombie NSObjects and aggressively poke the GC to collect
-		 *         every second.
 		 * -monodevelop-port=<port>
 		 *         The port MonoDevelop is listening on (or we should listen on).
 		 *         Overrides whatever any configuration file says.
@@ -350,9 +351,7 @@ xamarin_main (int argc, char *argv[], enum XamarinLaunchMode launch_mode)
 				value = NULL;
 
 #ifdef DEBUG
-			if (!strcmp (name, "debugtrack")) {
-				xamarin_gc_pump = true;
-			} else if (!strcmp (name, "monodevelop-port")) {
+			if (!strcmp (name, "monodevelop-port")) {
 				if (!value && argc > i + 1)
 					value = argv [++i];
 				if (value) {
@@ -404,6 +403,7 @@ xamarin_main (int argc, char *argv[], enum XamarinLaunchMode launch_mode)
 	}
 
 #ifdef DEBUG
+	xamarin_capture_debugging_settings ();
 	xamarin_initialize_cocoa_threads (monotouch_configure_debugging);
 #else
 	xamarin_initialize_cocoa_threads (NULL);
@@ -413,7 +413,7 @@ xamarin_main (int argc, char *argv[], enum XamarinLaunchMode launch_mode)
 	xamarin_bridge_initialize ();
 
 	xamarin_initialize ();
-	DEBUG_LAUNCH_TIME_PRINT ("\tmonotouch init time");
+	XAMARIN_LAUNCH_TIME_PRINT ("\tmonotouch init time");
 
 	if (xamarin_register_assemblies != NULL)
 		xamarin_register_assemblies ();
@@ -443,13 +443,13 @@ xamarin_main (int argc, char *argv[], enum XamarinLaunchMode launch_mode)
 	(void)exception_gchandle;
 #endif // !defined (NATIVEAOT)
 
-	DEBUG_LAUNCH_TIME_PRINT ("\tAssembly register time");
+	XAMARIN_LAUNCH_TIME_PRINT ("\tAssembly register time");
 
 	[[[XamarinGCSupport alloc] init] autorelease];
 
-	DEBUG_LAUNCH_TIME_PRINT ("\tGC defer time");
+	XAMARIN_LAUNCH_TIME_PRINT ("\tGC defer time");
 
-	DEBUG_LAUNCH_TIME_PRINT ("Total initialization time");
+	XAMARIN_LAUNCH_TIME_PRINT ("Total initialization time");
 
 	int rv = 0;
 	switch (launch_mode) {
@@ -458,9 +458,6 @@ xamarin_main (int argc, char *argv[], enum XamarinLaunchMode launch_mode)
 		break;
 	case XamarinLaunchModeApp:
 		rv = mono_jit_exec (mono_domain_get (), assembly, managed_argc, managed_argv);
-		break;
-	case XamarinLaunchModeEmbedded:
-		// do nothing
 		break;
 	default:
 		xamarin_assertion_message ("Invalid launch mode: %i.", launch_mode);

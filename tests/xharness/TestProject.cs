@@ -22,12 +22,13 @@ namespace Xharness {
 		public TestPlatform TestPlatform;
 		public TestLabel Label;
 		public string Path;
-		public string? Name;
+		public string Name = "";
 		public bool IsExecutableProject;
 		public string []? Configurations;
 		public string? FailureMessage;
 		public TimeSpan Timeout = TimeSpan.FromMinutes (10);
 		public bool? Ignore;
+		public string? Filter;
 
 		public IEnumerable<TestProject> ProjectReferences = Array.Empty<TestProject> ();
 
@@ -79,13 +80,13 @@ namespace Xharness {
 			return rv;
 		}
 
-		public Task CreateCopyAsync (ILog log, IProcessManager processManager, ITestTask test, string rootDirectory)
+		public Task CreateCopyAsync (ILog log, IProcessManager processManager, TestTask test, string rootDirectory)
 		{
 			var pr = new Dictionary<string, TestProject> ();
 			return CreateCopyAsync (log, processManager, test, rootDirectory, pr);
 		}
 
-		async Task CreateCopyAsync (ILog log, IProcessManager processManager, ITestTask test, string rootDirectory, Dictionary<string, TestProject> allProjectReferences)
+		async Task CreateCopyAsync (ILog log, IProcessManager processManager, TestTask test, string rootDirectory, Dictionary<string, TestProject> allProjectReferences)
 		{
 			var directory = Cache.CreateTemporaryDirectory (test.TestName ?? System.IO.Path.GetFileNameWithoutExtension (Path));
 			Directory.CreateDirectory (directory);
@@ -219,7 +220,7 @@ namespace Xharness {
 				}
 				node.ParentNode!.RemoveChild (node);
 
-				variableSubstitution ["_PlatformName"] = TestPlatform.ToPlatformName ();
+				variableSubstitution ["_PlatformName"] = TestPlatform.ToPlatformName () ?? "?";
 				variableSubstitution = doc.CollectAndEvaluateTopLevelProperties (variableSubstitution);
 			}
 		}

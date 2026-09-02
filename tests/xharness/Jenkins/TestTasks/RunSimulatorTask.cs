@@ -4,14 +4,14 @@ using Microsoft.DotNet.XHarness.iOS.Shared.Execution;
 using Microsoft.DotNet.XHarness.iOS.Shared.Hardware;
 
 namespace Xharness.Jenkins.TestTasks {
-	class RunSimulatorTask : RunXITask<ISimulatorDevice>, IRunSimulatorTask {
+	public class RunSimulatorTask : RunXITask<ISimulatorDevice> {
 		readonly RunSimulator runSimulator;
-		public IAcquiredResource AcquiredResource;
+		public IAcquiredResource? AcquiredResource;
 
 		public IEnumerable<ISimulatorDevice> Simulators => runSimulator.Simulators;
 
-		public RunSimulatorTask (Jenkins jenkins, ISimulatorLoader simulators, MSBuildTask buildTask, IMlaunchProcessManager processManager, IEnumerable<ISimulatorDevice> candidates = null)
-			: base (jenkins, buildTask, processManager, candidates) => runSimulator = new RunSimulator (
+		public RunSimulatorTask (Jenkins jenkins, SimulatorLoader simulators, MSBuildTask buildTask, IMlaunchProcessManager processManager, IEnumerable<ISimulatorDevice>? candidates = null)
+			: base (jenkins, buildTask, processManager, candidates ?? []) => runSimulator = new RunSimulator (
 				testTask: this,
 				simulators: simulators,
 				errorKnowledgeBase: Jenkins.ErrorKnowledgeBase,
@@ -41,11 +41,11 @@ namespace Xharness.Jenkins.TestTasks {
 		}
 
 		class NondisposedResource : IAcquiredResource {
-			public IAcquiredResource Wrapped;
+			public IAcquiredResource? Wrapped;
 
 			public Resource Resource {
 				get {
-					return Wrapped.Resource;
+					return Wrapped!.Resource;
 				}
 			}
 

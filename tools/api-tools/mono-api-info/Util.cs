@@ -90,7 +90,7 @@ namespace Mono.ApiTools {
 			return ifaces.Values;
 		}
 
-		internal TypeDefinition GetBaseType (TypeDefinition child)
+		internal TypeDefinition? GetBaseType (TypeDefinition child)
 		{
 			if (child.BaseType is null)
 				return null;
@@ -102,7 +102,7 @@ namespace Mono.ApiTools {
 			}
 		}
 
-		internal MethodDefinition GetMethod (MethodReference method)
+		internal MethodDefinition? GetMethod (MethodReference method)
 		{
 			if (method is null)
 				throw new ArgumentNullException (nameof (method));
@@ -134,14 +134,14 @@ namespace Mono.ApiTools {
 			return method.IsVirtual && !method.IsNewSlot;
 		}
 
-		public MethodDefinition GetBaseMethodInTypeHierarchy (MethodDefinition method)
+		public MethodDefinition? GetBaseMethodInTypeHierarchy (MethodDefinition method)
 		{
 			if (!IsOverride (method))
 				return method;
 
 			var @base = GetBaseType (method.DeclaringType);
 			while (@base is not null) {
-				MethodDefinition base_method = TryMatchMethod (@base.Resolve (), method);
+				MethodDefinition? base_method = TryMatchMethod (@base.Resolve (), method);
 				if (base_method is not null)
 					return GetBaseMethodInTypeHierarchy (base_method) ?? base_method;
 
@@ -151,7 +151,7 @@ namespace Mono.ApiTools {
 			return method;
 		}
 
-		MethodDefinition TryMatchMethod (TypeDefinition type, MethodDefinition method)
+		MethodDefinition? TryMatchMethod (TypeDefinition type, MethodDefinition method)
 		{
 			if (!type.HasMethods)
 				return null;

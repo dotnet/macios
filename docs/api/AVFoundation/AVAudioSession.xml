@@ -62,7 +62,7 @@ void Setup ()
 ]]></code>
       </example>
     </remarks>
-    <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioSession_ClassReference/index.html">Apple documentation for <c>AVAudioSession</c></related>
+    <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudiosession">Apple documentation for <c>AVAudioSession</c></related>
   </Docs>
   <Docs DocId="M:AVFoundation.AVAudioSession.SetCategory(Foundation.NSString,Foundation.NSError@)">
     <param name="theCategory">One of 

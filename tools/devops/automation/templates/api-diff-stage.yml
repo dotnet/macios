@@ -1,9 +1,5 @@
 parameters:
 
-- name: provisionatorChannel
-  type: string
-  default: 'latest'
-
 - name: pool
   type: string
 
@@ -24,6 +20,9 @@ parameters:
 - name: macOSName
   type: string
 
+- name: useACES
+  type: boolean
+  default: false
 
 
 stages:
@@ -55,6 +54,7 @@ stages:
 - stage: generate_api_diff
   displayName: 'API diff'
   dependsOn: [ configure_build ]
+  condition: and(succeeded(), ne(dependencies.configure_build.outputs['configure.configure_platforms.DOTNET_PLATFORMS'], ''))
   jobs:
   - template: ./build/api-diff-stage.yml
     parameters:
@@ -68,3 +68,4 @@ stages:
       gitHubToken: $(Github.Token)
       xqaCertPass: $(xqa--certificates--password)
       pool: ${{ parameters.pool }}
+      useACES: ${{ parameters.useACES }}

@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="../bindings-test/dotnet/macOS/bindings-test.csproj" />
+  <Project Path="dotnet/perftest.csproj" />
+</Solution>

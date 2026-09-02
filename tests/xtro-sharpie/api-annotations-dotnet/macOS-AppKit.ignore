@@ -1,9 +1,6 @@
 ## https://bugzilla.xamarin.com/show_bug.cgi?id=30717
 !duplicate-register! _NSDatePickerCellDelegate exists as both AppKit.NSDatePickerCell/_NSDatePickerCellDelegate and AppKit.NSDatePicker/_NSDatePickerCellDelegate
 
-## Proxy class for NSGraphicsContext internal to AppKit
-!unknown-type! NSPrintPreviewGraphicsContext bound
-
 ## In header as old style unnamaed enum
 !unknown-native-enum! NSModalResponse bound
 !unknown-native-enum! NSWindowLevel bound
@@ -151,20 +148,6 @@
 !missing-selector! NSTextStorage::setWords: not bound
 !missing-selector! NSTextStorage::words not bound
 !missing-selector! NSWindow::anchorAttributeForOrientation: not bound
-!unknown-field! MenuItem bound
-!unknown-field! NSAlternativeString bound
-!unknown-field! NSFieldEditor bound
-!unknown-field! NSMenuItemIndex bound
-!unknown-field! NSNewColumn bound
-!unknown-field! NSNewNotifyingTextView bound
-!unknown-field! NSObject bound
-!unknown-field! NSOldColumn bound
-!unknown-field! NSOldNotifyingTextView bound
-!unknown-field! NSOldSelectedCharacterRange bound
-!unknown-field! NSOldWidth bound
-!unknown-field! NSOperationNumber bound
-!unknown-field! NSTableColumn bound
-!unknown-field! NSTextMovement bound
 !unknown-native-enum! NSAlertButtonReturn bound
 !unknown-native-enum! NSBackingStore bound
 !unknown-native-enum! NSCellHit bound
@@ -291,7 +274,6 @@
 !missing-null-allowed! 'AppKit.NSImage AppKit.NSSharingServiceDelegate::TransitionImageForShareItem(AppKit.NSSharingService,AppKit.INSPasteboardWriting,CoreGraphics.CGRect)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSImage AppKit.NSTableView::GetIndicatorImage(AppKit.NSTableColumn)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSImage AppKit.NSWorkspace::IconForFiles(System.String[])' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'AppKit.NSImage Foundation.NSBundle::ImageForResource(System.String)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSImageRep AppKit.NSImage::BestRepresentation(CoreGraphics.CGRect,AppKit.NSGraphicsContext,Foundation.NSDictionary)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSImageRep AppKit.NSImageRep::ImageRepFromFile(System.String)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSImageRep AppKit.NSImageRep::ImageRepFromPasteboard(AppKit.NSPasteboard)' is missing an [NullAllowed] on return type
@@ -415,7 +397,6 @@
 !missing-null-allowed! 'Foundation.NSArray AppKit.NSWindow::WindowNumbersWithOptions(AppKit.NSWindowNumberListOptions)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSArray[] AppKit.NSFontManager::AvailableMembersOfFontFamily(System.String)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSAttributedString AppKit.NSHelpManager::Context(Foundation.NSObject)' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'Foundation.NSAttributedString Foundation.NSBundle::GetContextHelp(System.String)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSBundle AppKit.NSViewController::get_NibBundle()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSData AppKit.NSColorSpace::get_ICCProfileData()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSData AppKit.NSDocument::GetAsData(System.String,Foundation.NSError&)' is missing an [NullAllowed] on return type
@@ -513,7 +494,6 @@
 !missing-null-allowed! 'Foundation.NSUrl AppKit.NSWorkspace::DesktopImageUrl(AppKit.NSScreen)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSUrl AppKit.NSWorkspace::UrlForApplication(Foundation.NSUrl)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSUrl AppKit.NSWorkspace::UrlForApplication(System.String)' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'Foundation.NSUrl Foundation.NSBundle::GetUrlForImageResource(System.String)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSUrl[] AppKit.NSDocumentController::UrlsFromRunningOpenPanel()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSUrl[] AppKit.NSSharingService::get_AttachmentFileUrls()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'ObjCRuntime.Class AppKit.NSDocumentController::DocumentClassForType(System.String)' is missing an [NullAllowed] on return type
@@ -609,8 +589,6 @@
 !missing-null-allowed! 'System.String AppKit.NSViewController::get_NibName()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'System.String AppKit.NSWindowController::get_WindowNibName()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'System.String AppKit.NSWindowController::get_WindowNibPath()' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'System.String Foundation.NSBundle::PathForImageResource(System.String)' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'System.String Foundation.NSBundle::PathForSoundResource(System.String)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'System.String[] AppKit.NSFontManager::AvailableFontNamesWithTraits(AppKit.NSFontTraitMask)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'System.String[] AppKit.NSPasteboard::get_Types()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'System.String[] AppKit.NSSpellChecker::CompletionsForPartialWordRange(Foundation.NSRange,System.String,System.String,System.IntPtr)' is missing an [NullAllowed] on return type
@@ -1534,3 +1512,41 @@
 
 # Likely a mistake '_' denotes internal selector
 !missing-selector! +NSCell::_bulletStringForString:bulletCharacter: not bound
+
+# updated sharpie results
+!missing-protocol-conformance! NSImage should conform to NSItemProviderReading (defined in '' category)
+!missing-protocol-conformance! NSImage should conform to NSItemProviderWriting (defined in '' category)
+!missing-protocol-conformance! NSLayoutConstraint should conform to NSAnimatablePropertyContainer (defined in '' category)
+
+# results from initial block parameter nullability analysis
+!missing-null-allowed! 'System.Void AppKit.NSColorSampler::ShowSampler(System.Action`1<AppKit.NSColor>)' is missing a '?' on parameter 'selectionHandler' block parameter #0
+!missing-null-allowed! 'System.Void AppKit.NSDocument::AccommodatePresentedItemDeletion(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void AppKit.NSDocument::SavePresentedItemChanges(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void AppKit.NSTextContentManager::SynchronizeTextLayoutManagers(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!extra-null-allowed! 'System.Void AppKit.NSFilePromiseReceiver::ReceivePromisedFiles(Foundation.NSUrl,Foundation.NSDictionary,Foundation.NSOperationQueue,System.Action`2<Foundation.NSUrl,Foundation.NSError>)' has an extraneous '?' on parameter 'reader' block parameter #0
+
+## bound selectors with no native declaration reachable from the class in the current SDK headers:
+## private/SPI selectors, protocol/category members Apple inlines without declaring the conformance on
+## the class, managed callback infrastructure, or API Apple removed/privatized - kept for compatibility
+## (baseline for https://github.com/dotnet/macios/issues/26053)
+!unknown-selector! +NSCollectionLayoutGroup::horizontalGroupWithLayoutSize:repeatingSubitem:count: not found
+!unknown-selector! +NSCollectionLayoutGroup::verticalGroupWithLayoutSize:repeatingSubitem:count: not found
+!unknown-selector! +NSMenu::accessibilityElementWithRole:frame:label:parent: not found
+!unknown-selector! +NSMenuItem::accessibilityElementWithRole:frame:label:parent: not found
+!unknown-selector! +NSViewAnimation::defaultAnimationForKey: not found
+!unknown-selector! NSDiffableDataSourceSnapshot::reconfiguredItemIdentifiers not found
+!unknown-selector! NSDiffableDataSourceSnapshot::reconfigureItemsWithIdentifiers: not found
+!unknown-selector! NSDiffableDataSourceSnapshot::reloadedItemIdentifiers not found
+!unknown-selector! NSDiffableDataSourceSnapshot::reloadedSectionIdentifiers not found
+!unknown-selector! NSMenu::accessibilityAddChildElement: not found
+!unknown-selector! NSMenu::accessibilityFrameInParentSpace not found
+!unknown-selector! NSMenu::setAccessibilityFrameInParentSpace: not found
+!unknown-selector! NSMenuItem::accessibilityAddChildElement: not found
+!unknown-selector! NSMenuItem::accessibilityFrameInParentSpace not found
+!unknown-selector! NSMenuItem::setAccessibilityFrameInParentSpace: not found
+!unknown-selector! NSSharingCollaborationModeRestriction::setAlertRecoverySuggestionButtonLaunchURL: not found
+!unknown-selector! NSTextField::automaticTextCompletionEnabled: not found
+!unknown-selector! NSViewAnimation::animationForKey: not found
+!unknown-selector! NSViewAnimation::animations not found
+!unknown-selector! NSViewAnimation::animator not found
+!unknown-selector! NSViewAnimation::setAnimations: not found

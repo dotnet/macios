@@ -35,13 +35,7 @@ namespace VideoToolbox {
 					return null;
 			}
 
-			var dicts = NSArray.ArrayFromHandle<NSDictionary> (array);
-			var ret = new VTVideoEncoder [dicts.Length];
-			int i = 0;
-			foreach (var dict in dicts)
-				ret [i++] = new VTVideoEncoder (dict);
-			CFObject.CFRelease (array);
-			return ret;
+			return NSArray.DictionaryArrayFromHandleDropNullElements<VTVideoEncoder> (array, dict => new VTVideoEncoder (dict), releaseHandle: true);
 		}
 
 		/// <summary>To be added.</summary>
@@ -66,38 +60,38 @@ namespace VideoToolbox {
 		public string? EncoderName { get; private set; }
 
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public ulong? GpuRegistryId { get; private set; } // optional, same type as `[MTLDevice registryID]`
 
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public NSDictionary? SupportedSelectionProperties { get; private set; }
 
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public NSNumber? PerformanceRating { get; private set; }
 
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public NSNumber? QualityRating { get; private set; }
 
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public bool? InstanceLimit { get; private set; }
 
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public bool? IsHardwareAccelerated { get; private set; }
 
@@ -136,7 +130,7 @@ namespace VideoToolbox {
 
 				constant = VTVideoEncoderList.SupportedSelectionProperties;
 				if (constant is not null) {
-					if (dict.TryGetValue (constant, out NSDictionary d)) // optional
+					if (dict.TryGetValue<NSDictionary> (constant, out var d)) // optional
 						SupportedSelectionProperties = d;
 				}
 

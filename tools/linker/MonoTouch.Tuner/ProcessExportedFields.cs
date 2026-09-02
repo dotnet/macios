@@ -7,6 +7,8 @@ using Mono.Linker.Steps;
 using Mono.Tuner;
 using Xamarin.Linker;
 
+#nullable enable
+
 namespace MonoTouch.Tuner {
 
 	//
@@ -20,6 +22,8 @@ namespace MonoTouch.Tuner {
 	//
 	// Then at the end of the linker process (ListExportedSymbols step)
 	// we lookup that annotation.
+	//
+	// See docs/code/native-symbols.md for an overview of native symbol handling.
 	//
 
 	public class ProcessExportedFields : BaseStep {
@@ -53,6 +57,15 @@ namespace MonoTouch.Tuner {
 			if (!property.HasCustomAttributes)
 				return;
 
+			var config = LinkerConfiguration.GetInstance (Context);
+
+			// Collect all [Field] symbol names for InlineDlfcnMethodsStep's compatibility mode.
+			if (config.InlineDlfcnMethodsEnabled) {
+				var allSymbol = GetFieldSymbolName (property);
+				if (allSymbol is not null)
+					config.FieldSymbols.Add (allSymbol);
+			}
+
 			var symbol = GetFieldSymbol (property);
 			if (symbol is null)
 				return;
@@ -60,12 +73,34 @@ namespace MonoTouch.Tuner {
 			Annotations.GetCustomAnnotations ("ExportedFields").Add (property, symbol);
 		}
 
-		internal static string GetFieldSymbol (PropertyDefinition property)
+		// Returns the symbol name from a [Field] attribute, regardless of library.
+		internal static string? GetFieldSymbolName (PropertyDefinition property)
 		{
 			if (!property.HasCustomAttributes)
 				return null;
 
-			foreach (CustomAttribute attrib in property.CustomAttributes) {
+			foreach (var attrib in property.CustomAttributes) {
+				var declaringType = attrib.Constructor.DeclaringType.Resolve ();
+
+				if (!declaringType.Is (Namespaces.Foundation, "FieldAttribute"))
+					continue;
+
+				if (attrib.ConstructorArguments.Count < 1)
+					continue;
+
+				return (string) attrib.ConstructorArguments [0].Value;
+			}
+
+			return null;
+		}
+
+		// Returns the symbol name only for __Internal fields.
+		internal static string? GetFieldSymbol (PropertyDefinition property)
+		{
+			if (!property.HasCustomAttributes)
+				return null;
+
+			foreach (var attrib in property.CustomAttributes) {
 				var declaringType = attrib.Constructor.DeclaringType.Resolve ();
 
 				if (!declaringType.Is (Namespaces.Foundation, "FieldAttribute"))

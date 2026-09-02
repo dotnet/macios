@@ -9,8 +9,6 @@ using CoreGraphics;
 using Foundation;
 using CoreAnimation;
 
-using MonoTouch.Dialog.Utilities;
-
 namespace MonoTouch.Dialog {
 	public enum RefreshViewStatus {
 		ReleaseToReload,
@@ -21,7 +19,7 @@ namespace MonoTouch.Dialog {
 	// This cute method will be added to UIImage.FromResource, but for old installs 
 	// make a copy here
 	internal static class Util {
-		public static UIImage FromResource (Assembly assembly, string name)
+		public static UIImage? FromResource (Assembly assembly, string name)
 		{
 			if (name is null)
 				throw new ArgumentNullException ("name");
@@ -31,20 +29,14 @@ namespace MonoTouch.Dialog {
 				return null;
 
 			try {
-				using (var data = NSData.FromStream (stream))
+				using (var data = NSData.FromStream (stream)) {
+					if (data is null)
+						return null;
 					return UIImage.LoadFromData (data);
+				}
 			} finally {
 				stream.Dispose ();
 			}
 		}
-
-	}
-
-	public class SearchChangedEventArgs : EventArgs {
-		public SearchChangedEventArgs (string text)
-		{
-			Text = text;
-		}
-		public string Text { get; set; }
 	}
 }

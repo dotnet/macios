@@ -33,24 +33,23 @@ using System.Net;
 using System.Net.Sockets;
 using CFNetwork;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Foundation {
-	/// <summary>The security protocol to use for an NSStream.</summary>
-	///     <remarks>
-	///       <para>
-	/// 	This value controls which security
-	/// 	protocol an NSStream  uses to transfer the data on the stream, from
-	/// 	nothing, to a specific version of SSL or TLS, or best
-	/// 	possible.
-	///       </para>
-	///       <para>
-	/// 	Transport Layer Security (TLS) and its predecessor, Secure
-	/// 	Sockets Layer (SSL), are cryptographic protocols designed to
-	/// 	provide communication security over streams.
-	///       </para>
-	///     </remarks>
+	/// <summary>The security protocol to use for an <see cref="NSStream" />.</summary>
+	/// <remarks>
+	///   <para>
+	///     This value controls which security
+	///     protocol an <see cref="NSStream" /> uses to transfer the data on the stream, from
+	///     nothing, to a specific version of SSL or TLS, or best
+	///     possible.
+	///   </para>
+	///   <para>
+	///     Transport Layer Security (TLS) and its predecessor, Secure
+	///     Sockets Layer (SSL), are cryptographic protocols designed to
+	///     provide communication security over streams.
+	///   </para>
+	/// </remarks>
 	public enum NSStreamSocketSecurityLevel {
 		/// <summary>Do not use any security protocol.</summary>
 		None,
@@ -66,20 +65,20 @@ namespace Foundation {
 		Unknown,
 	}
 
-	/// <summary>Possible values for the service type for an NSStream.</summary>
-	///     <remarks>
-	///       <para>
-	/// 	The service type of an NSStream determine which kind of
-	/// 	service a stream is providing.  The Background and Video and
-	/// 	VoIP affect the audio routing and can control whether an application is suspended or not.
-	///       </para>
-	///     </remarks>
+	/// <summary>Possible values for the service type for an <see cref="NSStream" />.</summary>
+	/// <remarks>
+	///   <para>
+	///     The service type of an <see cref="NSStream" /> determine which kind of
+	///     service a stream is providing. The Background and Video and
+	///     VoIP affect the audio routing and can control whether an application is suspended or not.
+	///   </para>
+	/// </remarks>
 	public enum NSStreamServiceType {
 		/// <summary>Default: the stream does not support a background, video or voice operation.</summary>
 		Default,
 		/// <summary>This stream is used to provide VoIP traffic.</summary>
 		VoIP,
-		/// <summary>This stream is used to provide video..</summary>
+		/// <summary>This stream is used to provide video.</summary>
 		Video,
 		/// <summary>This stream is providing a background service</summary>
 		Background,
@@ -88,38 +87,81 @@ namespace Foundation {
 	}
 
 	/// <summary>Configuration options for SOCKS proxy servers.</summary>
-	///     <remarks>
-	///     </remarks>
-	[SupportedOSPlatform ("ios")]
-	[SupportedOSPlatform ("maccatalyst")]
-	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("tvos")]
 	public class NSStreamSocksOptions {
 		/// <summary>SOCKS proxy hostname.</summary>
-		///         <remarks>
-		///         </remarks>
-		public string HostName;
+		public string? HostName;
 		/// <summary>SOCKS proxy port.</summary>
-		///         <remarks>
-		///         </remarks>
 		public int HostPort;
 		/// <summary>SOCKS proxy version (4 or 5).</summary>
-		///         <remarks>
-		/// 	  Currently only the values 4 (for SOCKS4) and five (for SOCKS5) are supported.
-		/// 	</remarks>
+		/// <remarks>Currently only the values 4 (for SOCKS4) and 5 (for SOCKS5) are supported.</remarks>
 		public int Version;
-		/// <summary>Username for the SOCKS proxy user</summary>
-		///         <remarks>
-		///         </remarks>
-		public string Username;
+		/// <summary>Username for the SOCKS proxy user.</summary>
+		public string? Username;
 		/// <summary>Password for the SOCKS proxy user.</summary>
-		///         <remarks>To be added.</remarks>
-		public string Password;
+		public string? Password;
 	}
 
 	public partial class NSStream {
-		/// <include file="../../docs/api/Foundation.NSStream/Item(Foundation.xml" path="/Documentation/Docs[@DocId='P:Foundation.NSStream.Item(Foundation.NSString)']/*" />
-		public NSObject this [NSString key] {
+		/// <summary>Sets a configuration key on the <see cref="NSStream" />.</summary>
+		/// <param name="key">The property to set on the <see cref="NSStream" />.</param>
+		/// <value>The value associated with the specified key, or <see langword="null" /> if no value is set.</value>
+		/// <remarks>
+		///   <para>The following is a list of possible keys that you can use, and the possible values to use:</para>
+		///   <list type="table">
+		///     <listheader>
+		///       <term>Key</term>
+		///       <description>Possible Values</description>
+		///     </listheader>
+		///     <item>
+		///       <term><see cref="SocketSecurityLevelKey" /></term>
+		///       <description>
+		///       <para>The security level used by the SSL/TLS stack. It should be one of:</para>
+		///       <list type="bullet">
+		///         <item><term><see cref="SocketSecurityLevelNone" />: No security level set for the stream.</term></item>
+		///         <item><term><see cref="SocketSecurityLevelSslV2" />: Use SSLv2 on the stream.</term></item>
+		///         <item><term><see cref="SocketSecurityLevelSslV3" />: Use SSLv3 on the stream.</term></item>
+		///         <item><term><see cref="SocketSecurityLevelTlsV1" />: Use TLSv1 on the stream.</term></item>
+		///         <item><term><see cref="SocketSecurityLevelNegotiatedSsl" />: Use the highest possible security protocol that can be negotiated on the stream.</term></item>
+		///       </list>
+		///       </description>
+		///     </item>
+		///     <item>
+		///       <term><see cref="SocksProxyConfigurationKey" /></term>
+		///       <description>
+		///       <para>Set to a dictionary of configuration information for a SOCKS proxy.</para>
+		///       <para>The list of possible values in this dictionary include:</para>
+		///       <list type="bullet">
+		///         <item><term><see cref="SocksProxyHostKey" />: <see cref="NSString" /> containing the SOCKS proxy host name.</term></item>
+		///         <item><term><see cref="SocksProxyPortKey" />: <see cref="NSNumber" /> containing the SOCKS proxy host port.</term></item>
+		///         <item><term><see cref="SocksProxyVersionKey" />: The SOCKS proxy server version, use <see cref="SocksProxyVersion4" /> or <see cref="SocksProxyVersion5" />.</term></item>
+		///         <item><term><see cref="SocksProxyUserKey" />: <see cref="NSString" /> containing the SOCKS proxy user name.</term></item>
+		///         <item><term><see cref="SocksProxyPasswordKey" />: <see cref="NSString" /> containing the SOCKS proxy password.</term></item>
+		///       </list>
+		///       </description>
+		///     </item>
+		///     <item>
+		///       <term><see cref="DataWrittenToMemoryStreamKey" /></term>
+		///       <description>Value is the <see cref="NSData" /> that is collecting data on the stream (get only).</description>
+		///     </item>
+		///     <item>
+		///       <term><see cref="FileCurrentOffsetKey" /></term>
+		///       <description><see cref="NSNumber" /> containing the position on the stream.</description>
+		///     </item>
+		///     <item>
+		///       <term><see cref="NetworkServiceType" /></term>
+		///       <description>
+		///       <para>Type of service that the stream is providing, one of:</para>
+		///       <list type="bullet">
+		///         <item><term><see cref="NetworkServiceTypeBackground" />: Background data.</term></item>
+		///         <item><term><see cref="NetworkServiceTypeVideo" />: Video data.</term></item>
+		///         <item><term><see cref="NetworkServiceTypeVoice" />: Voice service.</term></item>
+		///         <item><term><see cref="NetworkServiceTypeVoIP" />: Voice Over IP.</term></item>
+		///       </list>
+		///       </description>
+		///     </item>
+		///   </list>
+		/// </remarks>
+		public NSObject? this [NSString key] {
 			get {
 				return GetProperty (key);
 			}
@@ -128,22 +170,22 @@ namespace Foundation {
 			}
 		}
 
-		/// <summary>Settings for using a SOCKS proxy server.</summary>
-		///         <value>.</value>
-		///         <remarks>
-		///           <example>
-		///             <code lang="csharp lang-csharp"><![CDATA[
+		/// <summary>Gets or sets the settings for using a SOCKS proxy server.</summary>
+		/// <value>An <see cref="NSStreamSocksOptions" /> object containing the SOCKS proxy configuration, or <see langword="null" /> if no SOCKS proxy is configured.</value>
+		/// <remarks>
+		/// <example>
+		/// <code lang="csharp lang-csharp"><![CDATA[
 		/// myStream.SocksOptions = new NSStreamSocksOptions () {
 		///     HostName = "socks.xamarin.com",
 		///     HostPort = 12765,
 		///     Username = settings.User,
-		///     Passowrd = settings.Password,
+		///     Password = settings.Password,
 		///     Version  = 5 /* SOCKS5 */
 		/// };
 		/// ]]></code>
-		///           </example>
-		///         </remarks>
-		public NSStreamSocksOptions SocksOptions {
+		/// </example>
+		/// </remarks>
+		public NSStreamSocksOptions? SocksOptions {
 			get {
 				var d = this [SocksProxyConfigurationKey] as NSDictionary;
 				if (d is null)
@@ -188,23 +230,23 @@ namespace Foundation {
 			}
 		}
 
-		/// <summary>Controls the security protocol is used for the connection (none, SSL, TLS, negotiated).</summary>
-		///         <value>The default does not use any security protocols.</value>
-		///         <remarks>
-		///           <para>
-		/// 	    This setting allows developers to configure which security
-		/// 	    protocol is used to transfer the data on the stream, from
-		/// 	    nothing, to a specific version of Transport Layer Security
-		/// 	    (TLS) to its predecessor Secure Socket Layer (SSL) or the
-		/// 	    best possible.
-		/// 	  </para>
-		///           <para>
-		/// 	    The recommended value is
-		/// 	    NSStreamSocketSecurityLevel.NegotiatedSsl which will pick
-		/// 	    the best available protocol between the client and the
-		/// 	    server.
-		/// 	  </para>
-		///         </remarks>
+		/// <summary>Gets or sets the security protocol used for the connection (none, SSL, TLS, negotiated).</summary>
+		/// <value>The default does not use any security protocols.</value>
+		/// <remarks>
+		///   <para>
+		///     This setting allows developers to configure which security
+		///     protocol is used to transfer the data on the stream, from
+		///     nothing, to a specific version of Transport Layer Security
+		///     (TLS) to its predecessor Secure Socket Layer (SSL) or the
+		///     best possible.
+		///   </para>
+		///   <para>
+		///     The recommended value is
+		///     <see cref="NSStreamSocketSecurityLevel.NegotiatedSsl" /> which will pick
+		///     the best available protocol between the client and the
+		///     server.
+		///   </para>
+		/// </remarks>
 		public NSStreamSocketSecurityLevel SocketSecurityLevel {
 			get {
 				var k = this [SocketSecurityLevelKey] as NSString;
@@ -221,7 +263,7 @@ namespace Foundation {
 				return NSStreamSocketSecurityLevel.Unknown;
 			}
 			set {
-				NSString v = null;
+				NSString? v = null;
 				switch (value) {
 				case NSStreamSocketSecurityLevel.None:
 					v = SocketSecurityLevelNone;
@@ -244,38 +286,31 @@ namespace Foundation {
 			}
 		}
 
-		/// <summary>NSData containing the stream data that you have written so far.</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>
-		///         </remarks>
-		public NSData DataWrittenToMemoryStream {
+		/// <summary>Gets the <see cref="NSData" /> containing the stream data that you have written so far.</summary>
+		/// <value>An <see cref="NSData" /> object containing the data written to the memory stream, or <see langword="null" /> if no data has been written.</value>
+		public NSData? DataWrittenToMemoryStream {
 			get {
 				return this [DataWrittenToMemoryStreamKey] as NSData;
 			}
 		}
 
-		/// <summary>Absolute offset of the stream.</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>
-		///         </remarks>
-		public NSNumber FileCurrentOffset {
+		/// <summary>Gets the absolute offset of the stream.</summary>
+		/// <value>An <see cref="NSNumber" /> representing the current position in the stream, or <see langword="null" /> if the position is not available.</value>
+		public NSNumber? FileCurrentOffset {
 			get {
 				return this [FileCurrentOffsetKey] as NSNumber;
 			}
 		}
 
-		/// <summary>The service type that the stream is providing.</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>
-		///           <para>
-		/// 	    The service type of an NSStream determine which kind of
-		/// 	    service a stream is providing.  The Background and Video and
-		/// 	    VoIP affect the audio routing and can control whether an application is suspended or not.
-		/// 	  </para>
-		///         </remarks>
+		/// <summary>Gets or sets the service type that the stream is providing.</summary>
+		/// <value>An <see cref="NSStreamServiceType" /> value indicating the service type.</value>
+		/// <remarks>
+		///   <para>
+		///     The service type of an <see cref="NSStream" /> determines which kind of
+		///     service a stream is providing. The Background, Video and
+		///     VoIP types affect the audio routing and can control whether an application is suspended or not.
+		///   </para>
+		/// </remarks>
 		public NSStreamServiceType ServiceType {
 			get {
 				var v = this [NetworkServiceType] as NSString;
@@ -290,7 +325,7 @@ namespace Foundation {
 				return NSStreamServiceType.Default;
 			}
 			set {
-				NSString v = null;
+				NSString? v = null;
 				switch (value) {
 				case NSStreamServiceType.Background:
 					v = NetworkServiceTypeBackground;
@@ -312,17 +347,16 @@ namespace Foundation {
 		}
 
 		static void AssignStreams (IntPtr read, IntPtr write,
-					out NSInputStream readStream, out NSOutputStream writeStream)
+					out NSInputStream? readStream, out NSOutputStream? writeStream)
 		{
 			readStream = Runtime.GetNSObject<NSInputStream> (read);
 			writeStream = Runtime.GetNSObject<NSOutputStream> (write);
 		}
 
-		/// <param name="socket">To be added.</param>
-		///         <param name="readStream">To be added.</param>
-		///         <param name="writeStream">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Creates a pair of <see cref="NSInputStream" /> and <see cref="NSOutputStream" /> connected to the specified socket.</summary>
+		/// <param name="socket">The <see cref="CFSocket" /> to connect the streams to.</param>
+		/// <param name="readStream">When this method returns, contains the created <see cref="NSInputStream" />.</param>
+		/// <param name="writeStream">When this method returns, contains the created <see cref="NSOutputStream" />.</param>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -332,11 +366,10 @@ namespace Foundation {
 		[ObsoletedOSPlatform ("macos", Constants.UseNetworkInstead)]
 		[ObsoletedOSPlatform ("ios15.0", Constants.UseNetworkInstead)]
 		public static void CreatePairWithSocket (CFSocket socket,
-							 out NSInputStream readStream,
-												 out NSOutputStream writeStream)
+							 out NSInputStream? readStream,
+												 out NSOutputStream? writeStream)
 		{
-			if (socket is null)
-				throw new ArgumentNullException ("socket");
+			ArgumentNullException.ThrowIfNull (socket);
 
 			IntPtr read, write;
 			unsafe {
@@ -345,14 +378,13 @@ namespace Foundation {
 			AssignStreams (read, write, out readStream, out writeStream);
 		}
 
-		/// <param name="family">To be added.</param>
-		///         <param name="type">To be added.</param>
-		///         <param name="proto">To be added.</param>
-		///         <param name="endpoint">To be added.</param>
-		///         <param name="readStream">To be added.</param>
-		///         <param name="writeStream">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Creates a pair of <see cref="NSInputStream" /> and <see cref="NSOutputStream" /> connected to a peer socket with the specified signature.</summary>
+		/// <param name="family">The address family to use.</param>
+		/// <param name="type">The socket type to use.</param>
+		/// <param name="proto">The protocol type to use.</param>
+		/// <param name="endpoint">The IP endpoint to connect to.</param>
+		/// <param name="readStream">When this method returns, contains the created <see cref="NSInputStream" />.</param>
+		/// <param name="writeStream">When this method returns, contains the created <see cref="NSOutputStream" />.</param>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -363,8 +395,8 @@ namespace Foundation {
 		[ObsoletedOSPlatform ("ios15.0", Constants.UseNetworkInstead)]
 		public static void CreatePairWithPeerSocketSignature (AddressFamily family, SocketType type,
 															  ProtocolType proto, IPEndPoint endpoint,
-															  out NSInputStream readStream,
-															  out NSOutputStream writeStream)
+															  out NSInputStream? readStream,
+															  out NSOutputStream? writeStream)
 		{
 			using (var address = new CFSocketAddress (endpoint)) {
 				var sig = new CFSocketSignature (family, type, proto, address);
@@ -376,11 +408,10 @@ namespace Foundation {
 			}
 		}
 
-		/// <param name="endpoint">To be added.</param>
-		///         <param name="readStream">To be added.</param>
-		///         <param name="writeStream">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Creates a pair of <see cref="NSInputStream" /> and <see cref="NSOutputStream" /> connected to the specified host endpoint.</summary>
+		/// <param name="endpoint">The IP endpoint to connect to.</param>
+		/// <param name="readStream">When this method returns, contains the created <see cref="NSInputStream" />.</param>
+		/// <param name="writeStream">When this method returns, contains the created <see cref="NSOutputStream" />.</param>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -390,8 +421,8 @@ namespace Foundation {
 		[ObsoletedOSPlatform ("macos", Constants.UseNetworkInstead)]
 		[ObsoletedOSPlatform ("ios15.0", Constants.UseNetworkInstead)]
 		public static void CreatePairWithSocketToHost (IPEndPoint endpoint,
-													   out NSInputStream readStream,
-													   out NSOutputStream writeStream)
+													   out NSInputStream? readStream,
+													   out NSOutputStream? writeStream)
 		{
 			using (var host = CFHost.Create (endpoint)) {
 				IntPtr read, write;
@@ -403,12 +434,11 @@ namespace Foundation {
 			}
 		}
 
-		/// <param name="readStream">To be added.</param>
-		/// <param name="writeStream">To be added.</param>
-		/// <param name="bufferSize">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <remarks>To be added.</remarks>
-		public static void CreateBoundPair (out NSInputStream readStream, out NSOutputStream writeStream, nint bufferSize)
+		/// <summary>Creates a pair of bound <see cref="NSInputStream" /> and <see cref="NSOutputStream" /> with the specified buffer size.</summary>
+		/// <param name="readStream">When this method returns, contains the created <see cref="NSInputStream" />.</param>
+		/// <param name="writeStream">When this method returns, contains the created <see cref="NSOutputStream" />.</param>
+		/// <param name="bufferSize">The size of the buffer to use for the streams.</param>
+		public static void CreateBoundPair (out NSInputStream? readStream, out NSOutputStream? writeStream, nint bufferSize)
 		{
 			IntPtr read, write;
 			unsafe {

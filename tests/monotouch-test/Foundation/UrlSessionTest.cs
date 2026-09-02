@@ -23,19 +23,12 @@ namespace MonoTouchFixtures.Foundation {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class UrlSessionTest {
-		void AssertTrueOrIgnoreInCI (Task task, string message)
+		void AssertCompleted (Task task, string message)
 		{
 			var value = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), task, out var ex);
 
-			if (value) {
-				TestRuntime.IgnoreInCIIfBadNetwork (ex);
-				Assert.IsNull (ex, message + " Exception");
-				return;
-			}
-
-			TestRuntime.IgnoreInCI ($"This test times out randomly in CI due to bad network: {message}");
-			Assert.IsNull (ex, $"Exception - {message}");
-			Assert.Fail (message);
+			Assert.That (value, Is.True, $"Request timed out: {message}");
+			Assert.That (ex, Is.Null, message + " Exception");
 		}
 
 		[Test]
@@ -54,16 +47,16 @@ namespace MonoTouchFixtures.Foundation {
 			uploadRequest.HttpMethod = "POST";
 
 			/* CreateDataTask */
-			AssertTrueOrIgnoreInCI (session.CreateDataTaskAsync (request), "CreateDataTask a");
-			AssertTrueOrIgnoreInCI (session.CreateDataTaskAsync (url), "CreateDataTask b");
+			AssertCompleted (session.CreateDataTaskAsync (request), "CreateDataTask a");
+			AssertCompleted (session.CreateDataTaskAsync (url), "CreateDataTask b");
 
 			/* CreateDownloadTask */
-			AssertTrueOrIgnoreInCI (session.CreateDownloadTaskAsync (request), "CreateDownloadTask a");
-			AssertTrueOrIgnoreInCI (session.CreateDownloadTaskAsync (url), "CreateDownloadTask b");
+			AssertCompleted (session.CreateDownloadTaskAsync (request), "CreateDownloadTask a");
+			AssertCompleted (session.CreateDownloadTaskAsync (url), "CreateDownloadTask b");
 
 			/* CreateUploadTask */
-			AssertTrueOrIgnoreInCI (session.CreateUploadTaskAsync (uploadRequest, file_url), "CreateUploadTask a");
-			AssertTrueOrIgnoreInCI (session.CreateUploadTaskAsync (uploadRequest, file_data), "CreateUploadTask b");
+			AssertCompleted (session.CreateUploadTaskAsync (uploadRequest, file_url), "CreateUploadTask a");
+			AssertCompleted (session.CreateUploadTaskAsync (uploadRequest, file_data), "CreateUploadTask b");
 		}
 
 		[Test]
@@ -91,8 +84,8 @@ namespace MonoTouchFixtures.Foundation {
 			}, out var ex);
 
 			TestRuntime.IgnoreInCIIfBadNetwork (ex);
-			Assert.IsNull (ex, "Exception");
-			Assert.AreEqual (-1, failed_iteration, "Failed");
+			Assert.That (ex, Is.Null, "Exception");
+			Assert.That (failed_iteration, Is.EqualTo (-1), "Failed");
 		}
 
 		[Test]
@@ -104,9 +97,9 @@ namespace MonoTouchFixtures.Foundation {
 			// in iOS9 those selectors do not respond - but they do work (forwarded to __NSURLSessionLocal type ?)
 			// * delegateQueue, sessionDescription, setSessionDescription:, delegate
 			var session = NSUrlSession.SharedSession;
-			Assert.Null (session.Delegate, "delegate");
-			Assert.NotNull (session.DelegateQueue, "delegateQueue");
-			Assert.Null (session.SessionDescription, "sessionDescription");
+			Assert.That (session.Delegate, Is.Null, "delegate");
+			Assert.That (session.DelegateQueue, Is.Not.Null, "delegateQueue");
+			Assert.That (session.SessionDescription, Is.Null, "sessionDescription");
 			session.SessionDescription = "descriptive label";
 			Assert.That ((string) session.SessionDescription, Is.EqualTo ("descriptive label"), "setSessionDescription:");
 			session.SessionDescription = null; // the session instance is global, so revert value to to make sure the test can be re-run successfully.

@@ -8,12 +8,6 @@
 	<dict>
 		<key>macOS</key>
 		<array>
-			<string>12.0</string>
-			<string>12.1</string>
-			<string>12.3</string>
-			<string>13.0</string>
-			<string>13.1</string>
-			<string>13.3</string>
 			<string>14.0</string>
 			<string>14.2</string>
 			<string>14.4</string>
@@ -26,6 +20,9 @@
 			<string>15.5</string>
 			<string>26.0</string>
 			<string>26.1</string>
+			<string>26.2</string>
+			<string>26.4</string>
+			<string>26.5</string>
 		</array>
 	</dict>
 	<key>SupportedTargetPlatformVersions</key>
@@ -60,6 +57,9 @@
 			<string>15.5</string>
 			<string>26.0</string>
 			<string>26.1</string>
+			<string>26.2</string>
+			<string>26.4</string>
+			<string>26.5</string>
 		</array>
 	</dict>
 	<key>RecommendedXcodeVersion</key>
@@ -92,10 +92,6 @@
 	<key>Optimizations</key>
 	<dict>
 		<!-- The key is the value to be passed to mmp. The string is a very short description. Any IDE UI should also point to the documentation for the optimizations. -->
-		<key>inline-intptr-size</key>
-		<string>Inline IntPtr.Size</string>
-		<key>inline-runtime-arch</key>
-		<string>Inline Runtime.Arch</string>
 		<key>inline-isdirectbinding</key>
 		<string>Inline NSObject.IsDirectBinding</string>
 		<key>dead-code-elimination</key>

@@ -1,0 +1,61 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net$(BundledNETCoreAppTargetFrameworkVersion)</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <OutputType>Exe</OutputType>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+
+    <!-- packing options -->
+    <!-- there's no x64 version of libClang, so only arm64 is fully functional -->
+    <!-- an x64 shim is included that prints a helpful error message -->
+    <RuntimeIdentifier>osx-arm64</RuntimeIdentifier>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>sharpie</ToolCommandName>
+    <IncludeSymbols>true</IncludeSymbols>
+
+    <!-- https://github.com/dotnet/ClangSharp/issues/118 -->
+    <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == '' AND '$(PackAsTool)' != 'true'">$(NETCoreSdkRuntimeIdentifier)</RuntimeIdentifier>
+
+    <PublishAot>true</PublishAot>
+    <RollForward>major</RollForward>
+
+    <RepositoryUrl>https://github.com/dotnet/macios</RepositoryUrl>
+    <RepositoryBranch>$(CurrentBranch)</RepositoryBranch>
+    <RepositoryCommit>$(CurrentHash)</RepositoryCommit>
+
+    <Authors>Microsoft</Authors>
+    <Owners>microsoft,dotnetframework</Owners>
+    <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageIcon>Icon.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/dotnet/macios</PackageProjectUrl>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+
+    <!-- NU5123: the file 'tools/any/osx-arm64/Sharpie.Bind.Tool.dSYM/Contents/Resources/Relocations/aarch64/Sharpie.Bind.Tool.yml' path, name, or both are too long. Your package might not work without long file path support. Please shorten the file path or file name. -->
+    <NoWarn>NU5123;$(NoWarn)</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Sharpie.Bind\Sharpie.Bind.csproj" />
+
+    <LinkerArg Include="-rpath" />
+    <LinkerArg Include="@executable_path/" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="../clang/include/**/*" Pack="true" PackagePath="content/clang/include" Link="clang/include" />
+    <None Include="../../../dotnet/package/Icon.png" Pack="true" PackagePath="/" />
+
+    <None Include="README.md" Pack="true" PackagePath="/"/>
+    <None Include="../../../LICENSE" Pack="true" PackagePath="/"/>
+    <None Include="../../../NOTICE.txt" Pack="true" PackagePath="/"/>
+  </ItemGroup>
+
+  <!-- Include the x64 shim in the nupkg so that x64 users get a helpful error message -->
+  <ItemGroup Condition="'$(PackAsTool)' == 'true'">
+    <None Include="sharpie-x64-shim" Pack="true" PackagePath="tools/any/osx-x64/" />
+    <None Include="DotnetToolSettings.osx-x64.xml" Pack="true" PackagePath="tools/any/osx-x64/DotnetToolSettings.xml" />
+  </ItemGroup>
+</Project>

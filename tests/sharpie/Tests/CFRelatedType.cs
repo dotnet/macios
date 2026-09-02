@@ -1,0 +1,3 @@
+// @interface NSParagraphStyle
+interface NSParagraphStyle {
+}

@@ -26,7 +26,7 @@ namespace Xamarin.MacDev.Tasks {
 			var currentDir = Environment.CurrentDirectory;
 			try {
 				Environment.CurrentDirectory = tmpdir;
-				Assert.IsTrue (task.Execute (), "Execute");
+				ExecuteTask (task);
 			} finally {
 				Environment.CurrentDirectory = currentDir;
 			}
@@ -94,9 +94,8 @@ namespace Xamarin.MacDev.Tasks {
 			unzipArguments.Add ("-d");
 			unzipArguments.Add (targetDirectory);
 			unzipArguments.Add (zipArchive);
-			var output = new StringBuilder ();
-			var rv = Execution.RunWithStringBuildersAsync ("unzip", unzipArguments, standardOutput: output, standardError: output).Result;
-			Assert.AreEqual (0, rv.ExitCode, "ExitCode\n" + output.ToString ());
+			var rv = Execution.RunAsync ("unzip", unzipArguments).Result;
+			Assert.That (rv.ExitCode, Is.EqualTo (0), "ExitCode\n" + rv.Output.MergedOutput);
 		}
 
 		void AssertResourceDirectory (string directory, bool symlinks)
@@ -105,22 +104,22 @@ namespace Xamarin.MacDev.Tasks {
 			foreach (var file in allFiles)
 				Console.WriteLine (file);
 			if (symlinks) {
-				Assert.AreEqual (7, allFiles.Length, "Length");
+				Assert.That (allFiles.Length, Is.EqualTo (7), "Length");
 			} else {
-				Assert.AreEqual (5, allFiles.Length, "Length");
+				Assert.That (allFiles.Length, Is.EqualTo (5), "Length");
 			}
-			Assert.AreEqual ("ABCDEFGHIJKLMAAA", File.ReadAllText (Path.Combine (directory, "A.txt")), "A.txt");
-			Assert.AreEqual ("ABCDEFGHIJKLMBBB", File.ReadAllText (Path.Combine (directory, "B.txt")), "B.txt");
-			Assert.AreEqual ("ABCDEFGHIJKLMCCC", File.ReadAllText (Path.Combine (directory, "C.framework/C.txt")), "C.txt");
+			Assert.That (File.ReadAllText (Path.Combine (directory, "A.txt")), Is.EqualTo ("ABCDEFGHIJKLMAAA"), "A.txt");
+			Assert.That (File.ReadAllText (Path.Combine (directory, "B.txt")), Is.EqualTo ("ABCDEFGHIJKLMBBB"), "B.txt");
+			Assert.That (File.ReadAllText (Path.Combine (directory, "C.framework/C.txt")), Is.EqualTo ("ABCDEFGHIJKLMCCC"), "C.txt");
 			if (symlinks) {
 				var linkToCPath = Path.Combine (directory, "C.framework/LinkToC.txt");
-				Assert.AreEqual ("ABCDEFGHIJKLMCCC", File.ReadAllText (linkToCPath), "LinkToC.txt");
-				Assert.IsTrue (PathUtils.IsSymlink (linkToCPath), "LinkToC.txt - IsSymlink");
-				Assert.AreEqual ("C.txt", PathUtils.GetSymlinkTarget (linkToCPath), "LinkToC.txt - IsSymlink target");
+				Assert.That (File.ReadAllText (linkToCPath), Is.EqualTo ("ABCDEFGHIJKLMCCC"), "LinkToC.txt");
+				Assert.That (PathUtils.IsSymlink (linkToCPath), Is.True, "LinkToC.txt - IsSymlink");
+				Assert.That (PathUtils.GetSymlinkTarget (linkToCPath), Is.EqualTo ("C.txt"), "LinkToC.txt - IsSymlink target");
 
 				var linkToNowherePath = Path.Combine (directory, "C.framework/LinkToNowhere.txt");
 				Assert.Throws<FileNotFoundException> (() => File.ReadAllText (linkToNowherePath), "LinkToNowhere.txt");
-				Assert.AreEqual ("Nowhere.txt", PathUtils.GetSymlinkTarget (linkToNowherePath), "LinkToNowhere.txt - IsSymlink target");
+				Assert.That (PathUtils.GetSymlinkTarget (linkToNowherePath), Is.EqualTo ("Nowhere.txt"), "LinkToNowhere.txt - IsSymlink target");
 			}
 
 			var manifest = @"<BindingAssembly>
@@ -158,7 +157,7 @@ namespace Xamarin.MacDev.Tasks {
 		<WeakFrameworks></WeakFrameworks>
 	</NativeReference>
 </BindingAssembly>";
-			Assert.AreEqual (manifest, File.ReadAllText (Path.Combine (directory, "manifest")), "Manifest");
+			Assert.That (File.ReadAllText (Path.Combine (directory, "manifest")), Is.EqualTo (manifest), "Manifest");
 		}
 
 		ITaskItem [] CreateNativeReferences (string tmpdir, bool symlinks)

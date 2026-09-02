@@ -5,14 +5,9 @@ using CoreGraphics;
 
 namespace CoreAnimation {
 	public partial class CAKeyFrameAnimation {
-		/// <typeparam name="T">Generic type to get teh values as.</typeparam>
-		///         <summary>Returns the elements of the key frame animation as an
-		/// 	array of strongly typed values of NSObject or CoreGraphics objects.</summary>
-		///         <returns>
-		///         </returns>
-		///         <remarks>
-		///         </remarks>
-		public T [] GetValuesAs<T> () where T : class, INativeObject
+		/// <summary>Returns the elements of the key frame animation as an array of strongly typed values of <see cref="NSObject" /> or CoreGraphics objects.</summary>
+		/// <typeparam name="T">Generic type to get the values as.</typeparam>
+		public T []? GetValuesAs<T> () where T : class, INativeObject
 		{
 			return NSArray.FromArrayNative<T> (_Values);
 		}
@@ -37,9 +32,8 @@ namespace CoreAnimation {
 		// or some other trickery. Our NSString -> C# string -> NSString conversions
 		// were breaking this on the Mac. We look up the equivilant NSString and pass that
 		// along to "fix" this
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the calculation mode used to interpolate key frame values.</summary>
+		/// <value>The calculation mode string.</value>
 		public virtual string CalculationMode {
 			get {
 				return _CalculationMode;

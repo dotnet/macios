@@ -50,6 +50,8 @@ steps:
     makeParallelism: '4'
     xcodeChannel: ${{ parameters.xcodeChannel }}
     use1ES: false
+    requiredDiskSpace: 50
+    statusContext: "API diff"
 
 # detect changes
 - bash: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/bash/compare.sh

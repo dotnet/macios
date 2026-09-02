@@ -534,7 +534,6 @@ namespace Security {
 				throw new ArgumentException (nameof (password));
 			using (var pwstring = new NSString (password))
 			using (var options = NSMutableDictionary.FromObjectAndKey (pwstring, SecImportExport.Passphrase)) {
-				NSDictionary [] array;
 #if __MACOS__
 				/* There are unfortunate platform differences for SecPKCS12Import:
 				 *
@@ -609,11 +608,11 @@ namespace Security {
 				if (OperatingSystem.IsMacOSVersionAtLeast (15, 0))
 					options.Add (SecImportExport.ToMemoryOnly, NSNumber.FromBoolean (true));
 #endif
-				SecStatusCode result = SecImportExport.ImportPkcs12 (data, options, out array);
+				SecStatusCode result = SecImportExport.ImportPkcs12 (data, options, out var array);
 				if (result != SecStatusCode.Success)
 					throw new InvalidOperationException (result.ToString ());
 
-				return new SecIdentity (array [0].LowlevelObjectForKey (SecImportExport.Identity.Handle), false);
+				return new SecIdentity (array! [0].LowlevelObjectForKey (SecImportExport.Identity.Handle), false);
 			}
 		}
 
@@ -1363,7 +1362,10 @@ namespace Security {
 		[SupportedOSPlatform ("maccatalyst")]
 		public bool IsAlgorithmSupported (SecKeyOperationType operation, SecKeyAlgorithm algorithm)
 		{
-			return SecKeyIsAlgorithmSupported (Handle, (int) operation, algorithm.GetConstant ().GetHandle ()) != 0;
+			var constant = algorithm.GetConstant ();
+			var rv = SecKeyIsAlgorithmSupported (Handle, (int) operation, constant.GetHandle ()) != 0;
+			GC.KeepAlive (constant);
+			return rv;
 		}
 
 		[SupportedOSPlatform ("tvos")]
@@ -1391,7 +1393,9 @@ namespace Security {
 			IntPtr data;
 			IntPtr err;
 			unsafe {
-				data = SecKeyCreateSignature (Handle, algorithm.GetConstant ().GetHandle (), dataToSign.Handle, &err);
+				var constant = algorithm.GetConstant ();
+				data = SecKeyCreateSignature (Handle, constant.GetHandle (), dataToSign.Handle, &err);
+				GC.KeepAlive (constant);
 				GC.KeepAlive (dataToSign);
 			}
 			error = Runtime.GetNSObject<NSError> (err);
@@ -1426,7 +1430,9 @@ namespace Security {
 			bool result;
 			IntPtr err;
 			unsafe {
-				result = SecKeyVerifySignature (Handle, algorithm.GetConstant ().GetHandle (), signedData.Handle, signature.Handle, &err) != 0;
+				var constant = algorithm.GetConstant ();
+				result = SecKeyVerifySignature (Handle, constant.GetHandle (), signedData.Handle, signature.Handle, &err) != 0;
+				GC.KeepAlive (constant);
 				GC.KeepAlive (signedData);
 				GC.KeepAlive (signature);
 			}
@@ -1459,7 +1465,9 @@ namespace Security {
 			IntPtr data;
 			IntPtr err;
 			unsafe {
-				data = SecKeyCreateEncryptedData (Handle, algorithm.GetConstant ().GetHandle (), plaintext.Handle, &err);
+				var constant = algorithm.GetConstant ();
+				data = SecKeyCreateEncryptedData (Handle, constant.GetHandle (), plaintext.Handle, &err);
+				GC.KeepAlive (constant);
 				GC.KeepAlive (plaintext);
 			}
 			error = Runtime.GetNSObject<NSError> (err);
@@ -1491,7 +1499,9 @@ namespace Security {
 			IntPtr data;
 			IntPtr err;
 			unsafe {
-				data = SecKeyCreateDecryptedData (Handle, algorithm.GetConstant ().GetHandle (), ciphertext.Handle, &err);
+				var constant = algorithm.GetConstant ();
+				data = SecKeyCreateDecryptedData (Handle, constant.GetHandle (), ciphertext.Handle, &err);
+				GC.KeepAlive (constant);
 				GC.KeepAlive (ciphertext);
 			}
 			error = Runtime.GetNSObject<NSError> (err);
@@ -1526,7 +1536,9 @@ namespace Security {
 			IntPtr data;
 			IntPtr err;
 			unsafe {
-				data = SecKeyCopyKeyExchangeResult (Handle, algorithm.GetConstant ().GetHandle (), publicKey.Handle, parameters.Handle, &err);
+				var constant = algorithm.GetConstant ();
+				data = SecKeyCopyKeyExchangeResult (Handle, constant.GetHandle (), publicKey.Handle, parameters.Handle, &err);
+				GC.KeepAlive (constant);
 				GC.KeepAlive (publicKey);
 				GC.KeepAlive (parameters);
 			}

@@ -1,7 +1,6 @@
 using System.Reflection;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Introspection {
 
@@ -17,7 +16,7 @@ namespace Introspection {
 
 		protected override bool Skip (PropertyInfo property)
 		{
-			switch (property.DeclaringType.Name) {
+			switch (property.DeclaringType?.Name) {
 			// WeakVideoGravity is an NSString that we could/should provide a better binding (e.g. enum)
 			case "AVPlayerViewController":
 				return property.Name == "WeakVideoGravity";

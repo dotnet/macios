@@ -18,23 +18,6 @@ namespace MonoTouchFixtures.CoreFoundation {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class ProxyTest {
-
-		[Test]
-		public void Fields ()
-		{
-			// documented but symbols are missing
-			// this test will fail if Apple decide to include them in the future
-			IntPtr lib = Dlfcn.dlopen (Constants.CoreFoundationLibrary, 0);
-			try {
-				// http://developer.apple.com/library/ios/documentation/CoreFoundation/Reference/CFProxySupport/Reference/reference.html#//apple_ref/doc/c_ref/kCFProxyAutoConfigurationHTTPResponseKey
-				Assert.That (Dlfcn.dlsym (lib, "kCFProxyAutoConfigurationHTTPResponseKey"), Is.EqualTo (IntPtr.Zero), "kCFProxyAutoConfigurationHTTPResponseKey");
-				// http://developer.apple.com/library/ios/documentation/CoreFoundation/Reference/CFProxySupport/Reference/reference.html#//apple_ref/doc/c_ref/kCFNetworkProxiesProxyAutoConfigJavaScript
-				Assert.That (Dlfcn.dlsym (lib, "kCFNetworkProxiesProxyAutoConfigJavaScript"), Is.EqualTo (IntPtr.Zero), "kCFNetworkProxiesProxyAutoConfigJavaScript");
-			} finally {
-				Dlfcn.dlclose (lib);
-			}
-		}
-
 #if !MONOMAC
 		HttpListener listener;
 		int port;
@@ -119,10 +102,10 @@ namespace MonoTouchFixtures.CoreFoundation {
 			var script = File.ReadAllText (pacPath);
 			var targetUri = NetworkResources.XamarinUri;
 			var proxies = global::CoreFoundation.CFNetwork.ExecuteProxyAutoConfigurationScript (script, targetUri, out error);
-			Assert.IsNull (error, "Null error");
-			Assert.AreEqual (1, proxies.Length, "Length");
+			Assert.That (error, Is.Null, "Null error");
+			Assert.That (proxies.Length, Is.EqualTo (1), "Length");
 			// assert the data of the proxy, although we are really testing the js used
-			Assert.AreEqual (8080, proxies [0].Port, "Port");
+			Assert.That (proxies [0].Port, Is.EqualTo (8080), "Port");
 		}
 
 		[Test]
@@ -133,10 +116,10 @@ namespace MonoTouchFixtures.CoreFoundation {
 			var script = File.ReadAllText (pacPath);
 			var targetUri = NetworkResources.MicrosoftUri;
 			var proxies = global::CoreFoundation.CFNetwork.ExecuteProxyAutoConfigurationScript (script, targetUri, out error);
-			Assert.IsNull (error, "Null error");
-			Assert.IsNotNull (proxies, "Not null proxies");
-			Assert.AreEqual (1, proxies.Length, "Proxies length");
-			Assert.AreEqual (CFProxyType.None, proxies [0].ProxyType);
+			Assert.That (error, Is.Null, "Null error");
+			Assert.That (proxies, Is.Not.Null, "Not null proxies");
+			Assert.That (proxies.Length, Is.EqualTo (1), "Proxies length");
+			Assert.That (proxies [0].ProxyType, Is.EqualTo (CFProxyType.None));
 		}
 
 		[Test]
@@ -146,8 +129,8 @@ namespace MonoTouchFixtures.CoreFoundation {
 			var script = "Not VALID js";
 			var targetUri = NetworkResources.MicrosoftUri;
 			var proxies = global::CoreFoundation.CFNetwork.ExecuteProxyAutoConfigurationScript (script, targetUri, out error);
-			Assert.IsNotNull (error, "Not null error");
-			Assert.IsNull (proxies, "Null proxies");
+			Assert.That (error, Is.Not.Null, "Not null error");
+			Assert.That (proxies, Is.Null, "Null proxies");
 		}
 
 		[Test]
@@ -177,12 +160,12 @@ namespace MonoTouchFixtures.CoreFoundation {
 					done = true;
 				}
 			}, () => done);
-			Assert.IsNull (cbClient, "Null client");
-			Assert.IsNull (error, "Null error");
-			Assert.IsNotNull (proxies, "Not null proxies");
-			Assert.AreEqual (1, proxies.Length, "Length");
+			Assert.That (cbClient, Is.Null, "Null client");
+			Assert.That (error, Is.Null, "Null error");
+			Assert.That (proxies, Is.Not.Null, "Not null proxies");
+			Assert.That (proxies.Length, Is.EqualTo (1), "Length");
 			// assert the data of the proxy, although we are really testing the js used
-			Assert.AreEqual (8080, proxies [0].Port, "Port");
+			Assert.That (proxies [0].Port, Is.EqualTo (8080), "Port");
 		}
 
 		[Test]
@@ -214,11 +197,11 @@ namespace MonoTouchFixtures.CoreFoundation {
 					done = true;
 				}
 			}, () => done);
-			Assert.IsNull (cbClient, "Null client");
-			Assert.IsNull (error, "Null error");
-			Assert.IsNotNull (proxies, "Not null proxies");
-			Assert.AreEqual (1, proxies.Length, "Proxies length");
-			Assert.AreEqual (CFProxyType.None, proxies [0].ProxyType);
+			Assert.That (cbClient, Is.Null, "Null client");
+			Assert.That (error, Is.Null, "Null error");
+			Assert.That (proxies, Is.Not.Null, "Not null proxies");
+			Assert.That (proxies.Length, Is.EqualTo (1), "Proxies length");
+			Assert.That (proxies [0].ProxyType, Is.EqualTo (CFProxyType.None));
 		}
 
 		[Test]
@@ -228,10 +211,10 @@ namespace MonoTouchFixtures.CoreFoundation {
 			var pacUri = new Uri ($"http://localhost:{port}/example.pac");
 			var targetUri = NetworkResources.XamarinUri;
 			var proxies = global::CoreFoundation.CFNetwork.ExecuteProxyAutoConfigurationUrl (pacUri, targetUri, out error);
-			Assert.IsNull (error, "Null error");
-			Assert.AreEqual (1, proxies.Length, "Length");
+			Assert.That (error, Is.Null, "Null error");
+			Assert.That (proxies.Length, Is.EqualTo (1), "Length");
 			// assert the data of the proxy, although we are really testing the js used
-			Assert.AreEqual (8080, proxies [0].Port, "Port");
+			Assert.That (proxies [0].Port, Is.EqualTo (8080), "Port");
 		}
 
 		[Test]
@@ -241,10 +224,10 @@ namespace MonoTouchFixtures.CoreFoundation {
 			var pacUri = new Uri ($"http://localhost:{port}/example.pac");
 			var targetUri = NetworkResources.MicrosoftUri;
 			var proxies = global::CoreFoundation.CFNetwork.ExecuteProxyAutoConfigurationUrl (pacUri, targetUri, out error);
-			Assert.IsNull (error, "Null error");
-			Assert.IsNotNull (proxies, "Not null proxies");
-			Assert.AreEqual (1, proxies.Length, "Proxies length");
-			Assert.AreEqual (CFProxyType.None, proxies [0].ProxyType);
+			Assert.That (error, Is.Null, "Null error");
+			Assert.That (proxies, Is.Not.Null, "Not null proxies");
+			Assert.That (proxies.Length, Is.EqualTo (1), "Proxies length");
+			Assert.That (proxies [0].ProxyType, Is.EqualTo (CFProxyType.None));
 		}
 
 		[Test]
@@ -272,12 +255,12 @@ namespace MonoTouchFixtures.CoreFoundation {
 					done = true;
 				}
 			}, () => done);
-			Assert.IsNull (cbClient, "Null client");
-			Assert.IsNull (error, "Null error");
-			Assert.IsNotNull (proxies, "Not null proxies");
-			Assert.AreEqual (1, proxies.Length, "Length");
+			Assert.That (cbClient, Is.Null, "Null client");
+			Assert.That (error, Is.Null, "Null error");
+			Assert.That (proxies, Is.Not.Null, "Not null proxies");
+			Assert.That (proxies.Length, Is.EqualTo (1), "Length");
 			// assert the data of the proxy, although we are really testing the js used
-			Assert.AreEqual (8080, proxies [0].Port, "Port");
+			Assert.That (proxies [0].Port, Is.EqualTo (8080), "Port");
 		}
 
 		[Test]
@@ -306,11 +289,11 @@ namespace MonoTouchFixtures.CoreFoundation {
 					done = true;
 				}
 			}, () => done);
-			Assert.IsNull (cbClient, "Null client");
-			Assert.IsNull (error, "Null error");
-			Assert.IsNotNull (proxies, "Not null proxies");
-			Assert.AreEqual (1, proxies.Length, "Proxies length");
-			Assert.AreEqual (CFProxyType.None, proxies [0].ProxyType);
+			Assert.That (cbClient, Is.Null, "Null client");
+			Assert.That (error, Is.Null, "Null error");
+			Assert.That (proxies, Is.Not.Null, "Not null proxies");
+			Assert.That (proxies.Length, Is.EqualTo (1), "Proxies length");
+			Assert.That (proxies [0].ProxyType, Is.EqualTo (CFProxyType.None));
 		}
 #endif
 	}

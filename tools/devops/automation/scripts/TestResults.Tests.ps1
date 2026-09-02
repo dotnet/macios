@@ -167,6 +167,95 @@ Describe "TestResults tests" {
 }
 "@
 
+        $stageDependenciesWithMoreFailingTests = @"
+{    
+  "build_macos_tests": {
+    "build_macos_tests_job": {
+      "result": "Succeeded"
+    }
+  },
+  "configure_build": {
+    "configure": {
+      "outputs": {
+        "test_matrix.TEST_MATRIX": "$($matrix.Replace("`n", "\n").Replace("`"", "\`""))"
+      }
+    }
+  },
+    "simulator_tests": {
+        "tests": {
+            "outputs": {
+                "dotnettests_tvos.runTests.TESTS_JOBSTATUS": "Succeeded",
+                "dotnettests_tvos.fix_commit.GIT_HASH": "fa3d1deb4e2d0ac358f2e0ac80e3d305ca541848",
+                "dotnettests_tvos.DownloadPipelineArtifact1.BuildNumber": "8894907",
+                "dotnettests_tvos.Bash23.TESTS_ATTEMPT": "1",
+                "dotnettests_tvos.Bash23.TESTS_BOT": "XAMMINI-012.Ventura",
+                "dotnettests_tvos.Bash23.TESTS_JOBSTATUS": "Failed",
+                "dotnettests_tvos.Bash23.TESTS_LABEL": "dotnettests",
+                "dotnettests_tvos.Bash23.TESTS_PLATFORM": "",
+                "dotnettests_tvos.Bash23.TESTS_TITLE": "dotnettests_tvos",
+                "dotnettests_tvos.DownloadPipelineArtifact2.BuildNumber": "8894907",
+                "dotnettests_maccatalyst.fix_commit.GIT_HASH": "fa3d1deb4e2d0ac358f2e0ac80e3d305ca541848",
+                "dotnettests_maccatalyst.DownloadPipelineArtifact1.BuildNumber": "8894907",
+                "dotnettests_maccatalyst.Bash23.TESTS_ATTEMPT": "1",
+                "dotnettests_maccatalyst.Bash23.TESTS_BOT": "XAMBOT-1023.Ventura",
+                "dotnettests_maccatalyst.Bash23.TESTS_JOBSTATUS": "Failed",
+                "dotnettests_maccatalyst.Bash23.TESTS_LABEL": "dotnettests",
+                "dotnettests_maccatalyst.Bash23.TESTS_PLATFORM": "",
+                "dotnettests_maccatalyst.Bash23.TESTS_TITLE": "dotnettests_maccatalyst",
+                "dotnettests_maccatalyst.DownloadPipelineArtifact2.BuildNumber": "8894907",
+                "dotnettests_macos.fix_commit.GIT_HASH": "fa3d1deb4e2d0ac358f2e0ac80e3d305ca541848",
+                "dotnettests_macos.DownloadPipelineArtifact1.BuildNumber": "8894907",
+                "dotnettests_macos.Bash23.TESTS_ATTEMPT": "1",
+                "dotnettests_macos.Bash23.TESTS_BOT": "XAMMINI-015.Ventura",
+                "dotnettests_macos.Bash23.TESTS_JOBSTATUS": "Failed",
+                "dotnettests_macos.Bash23.TESTS_LABEL": "dotnettests",
+                "dotnettests_macos.Bash23.TESTS_PLATFORM": "",
+                "dotnettests_macos.Bash23.TESTS_TITLE": "dotnettests_macos",
+                "dotnettests_macos.DownloadPipelineArtifact2.BuildNumber": "8894907",
+                "dotnettests_macos.runTests.TESTS_JOBSTATUS": "Failed",
+                "dotnettests_ios.fix_commit.GIT_HASH": "fa3d1deb4e2d0ac358f2e0ac80e3d305ca541848",
+                "dotnettests_ios.DownloadPipelineArtifact1.BuildNumber": "8894907",
+                "dotnettests_ios.Bash23.TESTS_ATTEMPT": "1",
+                "dotnettests_ios.Bash23.TESTS_BOT": "XAMMINI-014.Ventura",
+                "dotnettests_ios.Bash23.TESTS_JOBSTATUS": "Failed",
+                "dotnettests_ios.Bash23.TESTS_LABEL": "dotnettests",
+                "dotnettests_ios.Bash23.TESTS_PLATFORM": "",
+                "dotnettests_ios.Bash23.TESTS_TITLE": "dotnettests_ios",
+                "dotnettests_ios.DownloadPipelineArtifact2.BuildNumber": "8894907",
+                "dotnettests_ios.runTests.TESTS_JOBSTATUS": "Succeeded",
+                "dotnettests_multiple.fix_commit.GIT_HASH": "fa3d1deb4e2d0ac358f2e0ac80e3d305ca541848",
+                "dotnettests_multiple.DownloadPipelineArtifact1.BuildNumber": "8894907",
+                "dotnettests_multiple.Bash23.TESTS_ATTEMPT": "1",
+                "dotnettests_multiple.Bash23.TESTS_BOT": "XAMMINI-010.Ventura",
+                "dotnettests_multiple.Bash23.TESTS_JOBSTATUS": "Failed",
+                "dotnettests_multiple.Bash23.TESTS_LABEL": "dotnettests",
+                "dotnettests_multiple.Bash23.TESTS_PLATFORM": "",
+                "dotnettests_multiple.Bash23.TESTS_TITLE": "dotnettests_multiple",
+                "dotnettests_multiple.DownloadPipelineArtifact2.BuildNumber": "8894907",
+                "dotnettests_multiple.runTests.TESTS_JOBSTATUS": "Succeeded",
+                "cecil.fix_commit.GIT_HASH": "fa3d1deb4e2d0ac358f2e0ac80e3d305ca541848",
+                "cecil.DownloadPipelineArtifact1.BuildNumber": "8894907",
+                "cecil.Bash23.TESTS_ATTEMPT": "1",
+                "cecil.Bash23.TESTS_BOT": "XAMMINI-013.Ventura",
+                "cecil.Bash23.TESTS_JOBSTATUS": "Failed",
+                "cecil.Bash23.TESTS_LABEL": "cecil",
+                "cecil.Bash23.TESTS_PLATFORM": "",
+                "cecil.Bash23.TESTS_TITLE": "cecil",
+                "cecil.DownloadPipelineArtifact2.BuildNumber": "8894907",
+                "cecil.runTests.TESTS_JOBSTATUS": "Succeeded"
+            },
+            "identifier": null,
+            "name": "tests",
+            "attempt": 1,
+            "startTime": null,
+            "finishTime": null,
+            "state": "NotStarted",
+            "result": "Failed"
+        }
+    }
+}
+"@
+
         $stageDependenciesWithMissingResults = @"
 {
   "build_macos_tests": {
@@ -810,7 +899,9 @@ Describe "TestResults tests" {
 
             Write-Host $content
 
-            $content | Should -Be "# Test results
+            $content | Should -Be "[comment]: <> (This is a test result report added by Azure DevOps)
+
+# Test results
 :x: Tests failed on context
 
 0 tests crashed, 5 tests failed, 27 tests passed.
@@ -819,8 +910,8 @@ Describe "TestResults tests" {
 
 ### :x: dotnettests tests (MacCatalyst)
 
-<summary>5 tests failed, 6 tests passed.</summary>
 <details>
+<summary>5 tests failed, 6 tests passed.</summary>
 
 </details>
 
@@ -834,7 +925,6 @@ Describe "TestResults tests" {
 :white_check_mark: dotnettests (iOS): All 3 tests passed. [Html Report (VSDrops)](vsdropsIndex/simulator_testsdotnettests_iOS-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-simulator_testsdotnettests_iOS-1&api-version=6.0&`$format=zip)
 :white_check_mark: dotnettests (Multiple platforms): All 7 tests passed. [Html Report (VSDrops)](vsdropsIndex/simulator_testsdotnettests_Multiple-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-simulator_testsdotnettests_Multiple-1&api-version=6.0&`$format=zip)
 
-[comment]: <> (This is a test result report added by Azure DevOps)
 "
         }
     }
@@ -863,7 +953,9 @@ Describe "TestResults tests" {
 
             Write-Host $content
 
-            $content | Should -Be "# Test results
+            $content | Should -Be "[comment]: <> (This is a test result report added by Azure DevOps)
+
+# Test results
 :white_check_mark: All tests passed on context.
 
 :tada: All 3 tests passed :tada:
@@ -872,7 +964,6 @@ Describe "TestResults tests" {
 :white_check_mark: cecil: All 1 tests passed. [Html Report (VSDrops)](vsdropsIndex/simulator_testscecil-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-simulator_testscecil-1&api-version=6.0&`$format=zip)
 :white_check_mark: windows: All 2 tests passed. [Html Report (VSDrops)](vsdropsIndex/windows_integrationwindows-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-windows_integrationwindows-1&api-version=6.0&`$format=zip)
 
-[comment]: <> (This is a test result report added by Azure DevOps)
 "
         }
 
@@ -904,7 +995,9 @@ Describe "TestResults tests" {
 
             Write-Host $content.Replace("&$", "&``$")
 
-            $content | Should -Be "# Test results
+            $content | Should -Be "[comment]: <> (This is a test result report added by Azure DevOps)
+
+# Test results
 :x: Tests failed on context
 
 0 tests crashed, 1 tests failed, 21 tests passed.
@@ -913,9 +1006,9 @@ Describe "TestResults tests" {
 
 ### :x: dotnettests tests (MacCatalyst)
 
-<summary>1 tests failed, 0 tests passed.</summary>
 <details>
-
+<summary>1 tests failed, 0 tests passed.</summary>
+Test results reported success, but the tests job failed.
 </details>
 
 [Html Report (VSDrops)](vsdropsIndex/testStagedotnettests_maccatalyst-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-testStagedotnettests_maccatalyst-1&api-version=6.0&`$format=zip)
@@ -928,7 +1021,6 @@ Describe "TestResults tests" {
 :white_check_mark: dotnettests (Multiple platforms): All 7 tests passed. [Html Report (VSDrops)](vsdropsIndex/testStagedotnettests_multiple-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-testStagedotnettests_multiple-1&api-version=6.0&`$format=zip)
 :white_check_mark: dotnettests (tvOS): All 4 tests passed. [Html Report (VSDrops)](vsdropsIndex/testStagedotnettests_tvos-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-testStagedotnettests_tvos-1&api-version=6.0&`$format=zip)
 
-[comment]: <> (This is a test result report added by Azure DevOps)
 "
         }
 
@@ -942,10 +1034,18 @@ Describe "TestResults tests" {
             New-Item -Path "$testDirectory/TestSummary-simulator_testsdotnettests_ios-1" -Name "TestSummary.md" -Value "# :tada: All 3 tests passed :tada:" -Force
             New-Item -Path "$testDirectory/TestSummary-simulator_testsdotnettests_tvos-1" -Name "TestSummary.md" -Value "# :tada: All 4 tests passed :tada:" -Force
             New-Item -Path "$testDirectory/TestSummary-simulator_testsdotnettests_maccatalyst-1" -Name "TestSummary.md" -Value "<summary>5 tests failed, 6 tests passed.</summary>" -Force
-            New-Item -Path "$testDirectory/TestSummary-simulator_testsdotnettests_macos-1" -Name "TestSummary.md" -Value "# :tada: All 6 tests passed :tada:" -Force
+            New-Item -Path "$testDirectory/TestSummary-simulator_testsdotnettests_macos-1" -Name "TestSummary.md" -Value "# Test results
+
+<details>
+<summary>1 tests failed, 4 tests passed.</summary>
+
+## Failed tests
+
+ * Roslyn Transformer tests: TimedOut (Execution timed out after 30 minutes.)
+</details>" -Force
             New-Item -Path "$testDirectory/TestSummary-simulator_testsdotnettests_multiple-1" -Name "TestSummary.md" -Value "# :tada: All 7 tests passed :tada:" -Force
 
-            $parallelResults = New-ParallelTestsResults -Path "$testDirectory" -StageDependencies "$stageDependencies" -Context "context" -VSDropsIndex "vsdropsIndex"
+            $parallelResults = New-ParallelTestsResults -Path "$testDirectory" -StageDependencies "$stageDependenciesWithMoreFailingTests" -Context "context" -VSDropsIndex "vsdropsIndex"
 
             Write-Host "New-ParallelTestsResults return value:"
             Write-Host $parallelResults
@@ -961,32 +1061,372 @@ Describe "TestResults tests" {
 
             Write-Host $content.Replace("&$", "&``$")
 
-            $content | Should -Be "# Test results
+            $content | Should -Be "[comment]: <> (This is a test result report added by Azure DevOps)
+
+# Test results
 :x: Tests failed on context
 
-0 tests crashed, 5 tests failed, 27 tests passed.
+0 tests crashed, 6 tests failed, 25 tests passed.
 
 ## Failures
 
 ### :x: dotnettests tests (MacCatalyst)
 
-<summary>5 tests failed, 6 tests passed.</summary>
 <details>
-
+<summary>5 tests failed, 6 tests passed.</summary>
 </details>
 
 [Html Report (VSDrops)](vsdropsIndex/testStagedotnettests_maccatalyst-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-testStagedotnettests_maccatalyst-1&api-version=6.0&`$format=zip)
+
+### :x: dotnettests tests (macOS)
+
+<details>
+<summary>1 tests failed, 4 tests passed.</summary>
+
+## Failed tests
+
+ * Roslyn Transformer tests: TimedOut (Execution timed out after 30 minutes.)
+</details>
+
+[Html Report (VSDrops)](vsdropsIndex/testStagedotnettests_macos-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-testStagedotnettests_macos-1&api-version=6.0&`$format=zip)
 
 ## Successes
 
 :white_check_mark: cecil: All 1 tests passed. [Html Report (VSDrops)](vsdropsIndex/testStagececil-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-testStagececil-1&api-version=6.0&`$format=zip)
 :white_check_mark: dotnettests (iOS): All 3 tests passed. [Html Report (VSDrops)](vsdropsIndex/testStagedotnettests_ios-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-testStagedotnettests_ios-1&api-version=6.0&`$format=zip)
-:white_check_mark: dotnettests (macOS): All 6 tests passed. [Html Report (VSDrops)](vsdropsIndex/testStagedotnettests_macos-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-testStagedotnettests_macos-1&api-version=6.0&`$format=zip)
 :white_check_mark: dotnettests (Multiple platforms): All 7 tests passed. [Html Report (VSDrops)](vsdropsIndex/testStagedotnettests_multiple-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-testStagedotnettests_multiple-1&api-version=6.0&`$format=zip)
 :white_check_mark: dotnettests (tvOS): All 4 tests passed. [Html Report (VSDrops)](vsdropsIndex/testStagedotnettests_tvos-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-testStagedotnettests_tvos-1&api-version=6.0&`$format=zip)
 
-[comment]: <> (This is a test result report added by Azure DevOps)
 "
+        }
+    }
+
+    Context "macOS bot test results" {
+        It "includes macOS test results in the unified comment" {
+            $VerbosePreference = "Continue"
+            $DebugPreference = "Continue"
+
+            $macMatrix = @"
+{
+    "cecil": {
+        "LABEL": "cecil",
+        "TESTS_LABELS": "--label=skip-all-tests,run-cecil-tests",
+        "TEST_STAGE": "simulator_tests",
+        "LABEL_WITH_PLATFORM": "cecil",
+        "STATUS_CONTEXT": "VSTS: simulator tests - cecil",
+        "TEST_PREFIX": "simulator_testscecil",
+        "TEST_PLATFORM": ""
+    },
+    "mac_monterey": {
+        "LABEL": "mac_monterey",
+        "TESTS_LABELS": "--label=skip-all-tests,run-mac_monterey-tests",
+        "TEST_STAGE": "mac_12_m1",
+        "LABEL_WITH_PLATFORM": "mac_monterey",
+        "STATUS_CONTEXT": " - mac_monterey",
+        "TEST_PREFIX": "mac_12_m1mac_monterey",
+        "TEST_PLATFORM": "",
+        "DISPLAY_NAME": "Tests on macOS Monterey (12)",
+        "IS_MAC_TEST": "true"
+    }
+}
+"@
+            $macStageDeps = @"
+{
+  "configure_build": {
+    "configure": {
+      "outputs": {
+        "test_matrix.TEST_MATRIX": "$($macMatrix.Replace("`n", "\n").Replace("`"", "\`""))"
+      }
+    }
+  },
+  "simulator_tests": {
+    "tests": {
+      "outputs": {
+        "cecil.PowerShell15.TESTS_ATTEMPT": "1",
+        "cecil.PowerShell15.TESTS_BOT": "XAMMINI-013.Ventura",
+        "cecil.PowerShell15.TESTS_LABEL": "cecil",
+        "cecil.PowerShell15.TESTS_PLATFORM": "",
+        "cecil.PowerShell15.TESTS_TITLE": "cecil",
+        "cecil.runTests.TESTS_JOBSTATUS": "Succeeded"
+      },
+      "identifier": null,
+      "name": "tests",
+      "attempt": 1,
+      "startTime": null,
+      "finishTime": null,
+      "state": "NotStarted",
+      "result": "Succeeded"
+    }
+  },
+  "mac_12_m1": {
+    "tests": {
+      "outputs": {
+        "PowerShell1.TESTS_ATTEMPT": "1",
+        "PowerShell1.TESTS_BOT": "XAMMINI-020.Monterey",
+        "PowerShell1.TESTS_LABEL": "mac_monterey",
+        "PowerShell1.TESTS_PLATFORM": "",
+        "PowerShell1.TESTS_TITLE": "mac_monterey",
+        "runTests.TESTS_JOBSTATUS": "Succeeded"
+      },
+      "identifier": null,
+      "name": "tests",
+      "attempt": 1,
+      "startTime": null,
+      "finishTime": null,
+      "state": "NotStarted",
+      "result": "Succeeded"
+    }
+  }
+}
+"@
+            $testDirectory = Join-Path "." "subdir"
+            New-Item -Path "$testDirectory" -ItemType "directory" -Force
+            New-Item -Path "$testDirectory/TestSummary-simulator_testscecil-1" -Name "TestSummary.md" -Value "# :tada: All 1 tests passed :tada:" -Force
+            New-Item -Path "$testDirectory/TestSummary-mac_12_m1mac_monterey-1" -Name "TestSummary.md" -Value "# :tada: All 5 tests passed :tada:" -Force
+
+            $parallelResults = New-ParallelTestsResults -Path "$testDirectory" -StageDependencies "$macStageDeps" -Context "context" -VSDropsIndex "vsdropsIndex"
+
+            $parallelResults.IsSuccess() | Should -Be $true
+
+            $sb = [System.Text.StringBuilder]::new()
+            $parallelResults.WriteComment($sb)
+
+            Remove-Item -Path $testDirectory -Recurse
+
+            $content = $sb.ToString()
+
+            Write-Host $content
+
+            $content | Should -Be "[comment]: <> (This is a test result report added by Azure DevOps)
+
+# Test results
+:white_check_mark: All tests passed on context.
+
+:tada: All 6 tests passed :tada:
+
+## Tests counts
+:white_check_mark: cecil: All 1 tests passed. [Html Report (VSDrops)](vsdropsIndex/simulator_testscecil-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-simulator_testscecil-1&api-version=6.0&`$format=zip)
+
+## macOS tests
+
+:white_check_mark: Tests on macOS Monterey (12): All 5 tests passed. [Html Report (VSDrops)](vsdropsIndex/mac_12_m1mac_monterey-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-mac_12_m1mac_monterey-1&api-version=6.0&`$format=zip)
+
+"
+        }
+
+        It "sorts macOS test results by version number" {
+            $VerbosePreference = "Continue"
+            $DebugPreference = "Continue"
+
+            $sortMatrix = @"
+{
+    "mac_ventura": {
+        "LABEL": "mac_ventura",
+        "TESTS_LABELS": "--label=skip-all-tests,run-mac_ventura-tests",
+        "TEST_STAGE": "mac_13_m1",
+        "LABEL_WITH_PLATFORM": "mac_ventura",
+        "STATUS_CONTEXT": " - mac_ventura",
+        "TEST_PREFIX": "mac_13_m1mac_ventura",
+        "TEST_PLATFORM": "",
+        "DISPLAY_NAME": "Tests on macOS Ventura (13)",
+        "IS_MAC_TEST": "true"
+    },
+    "mac_monterey": {
+        "LABEL": "mac_monterey",
+        "TESTS_LABELS": "--label=skip-all-tests,run-mac_monterey-tests",
+        "TEST_STAGE": "mac_12_m1",
+        "LABEL_WITH_PLATFORM": "mac_monterey",
+        "STATUS_CONTEXT": " - mac_monterey",
+        "TEST_PREFIX": "mac_12_m1mac_monterey",
+        "TEST_PLATFORM": "",
+        "DISPLAY_NAME": "Tests on macOS Monterey (12)",
+        "IS_MAC_TEST": "true"
+    },
+    "mac_sequoia": {
+        "LABEL": "mac_sequoia",
+        "TESTS_LABELS": "--label=skip-all-tests,run-mac_sequoia-tests",
+        "TEST_STAGE": "mac_15_arm64",
+        "LABEL_WITH_PLATFORM": "mac_sequoia",
+        "STATUS_CONTEXT": " - mac_sequoia",
+        "TEST_PREFIX": "mac_15_arm64mac_sequoia",
+        "TEST_PLATFORM": "",
+        "DISPLAY_NAME": "Tests on macOS Sequoia (15)",
+        "IS_MAC_TEST": "true"
+    },
+    "mac_sonoma": {
+        "LABEL": "mac_sonoma",
+        "TESTS_LABELS": "--label=skip-all-tests,run-mac_sonoma-tests",
+        "TEST_STAGE": "mac_14_x64",
+        "LABEL_WITH_PLATFORM": "mac_sonoma",
+        "STATUS_CONTEXT": " - mac_sonoma",
+        "TEST_PREFIX": "mac_14_x64mac_sonoma",
+        "TEST_PLATFORM": "",
+        "DISPLAY_NAME": "Tests on macOS Sonoma (14)",
+        "IS_MAC_TEST": "true"
+    }
+}
+"@
+            $sortStageDeps = @"
+{
+  "configure_build": {
+    "configure": {
+      "outputs": {
+        "test_matrix.TEST_MATRIX": "$($sortMatrix.Replace("`n", "\n").Replace("`"", "\`""))"
+      }
+    }
+  },
+  "mac_13_m1": {
+    "tests": {
+      "outputs": {
+        "PowerShell1.TESTS_ATTEMPT": "1",
+        "PowerShell1.TESTS_BOT": "BOT-013",
+        "PowerShell1.TESTS_LABEL": "mac_ventura",
+        "PowerShell1.TESTS_PLATFORM": "",
+        "PowerShell1.TESTS_TITLE": "mac_ventura",
+        "runTests.TESTS_JOBSTATUS": "Succeeded"
+      },
+      "identifier": null, "name": "tests", "attempt": 1, "startTime": null, "finishTime": null, "state": "NotStarted", "result": "Succeeded"
+    }
+  },
+  "mac_12_m1": {
+    "tests": {
+      "outputs": {
+        "PowerShell1.TESTS_ATTEMPT": "1",
+        "PowerShell1.TESTS_BOT": "BOT-012",
+        "PowerShell1.TESTS_LABEL": "mac_monterey",
+        "PowerShell1.TESTS_PLATFORM": "",
+        "PowerShell1.TESTS_TITLE": "mac_monterey",
+        "runTests.TESTS_JOBSTATUS": "Succeeded"
+      },
+      "identifier": null, "name": "tests", "attempt": 1, "startTime": null, "finishTime": null, "state": "NotStarted", "result": "Succeeded"
+    }
+  },
+  "mac_15_arm64": {
+    "tests": {
+      "outputs": {
+        "PowerShell1.TESTS_ATTEMPT": "1",
+        "PowerShell1.TESTS_BOT": "BOT-015",
+        "PowerShell1.TESTS_LABEL": "mac_sequoia",
+        "PowerShell1.TESTS_PLATFORM": "",
+        "PowerShell1.TESTS_TITLE": "mac_sequoia",
+        "runTests.TESTS_JOBSTATUS": "Succeeded"
+      },
+      "identifier": null, "name": "tests", "attempt": 1, "startTime": null, "finishTime": null, "state": "NotStarted", "result": "Succeeded"
+    }
+  },
+  "mac_14_x64": {
+    "tests": {
+      "outputs": {
+        "PowerShell1.TESTS_ATTEMPT": "1",
+        "PowerShell1.TESTS_BOT": "BOT-014",
+        "PowerShell1.TESTS_LABEL": "mac_sonoma",
+        "PowerShell1.TESTS_PLATFORM": "",
+        "PowerShell1.TESTS_TITLE": "mac_sonoma",
+        "runTests.TESTS_JOBSTATUS": "Succeeded"
+      },
+      "identifier": null, "name": "tests", "attempt": 1, "startTime": null, "finishTime": null, "state": "NotStarted", "result": "Succeeded"
+    }
+  }
+}
+"@
+            $testDirectory = Join-Path "." "subdir_sort"
+            New-Item -Path "$testDirectory" -ItemType "directory" -Force
+            New-Item -Path "$testDirectory/TestSummary-mac_12_m1mac_monterey-1" -Name "TestSummary.md" -Value "# :tada: All 5 tests passed :tada:" -Force
+            New-Item -Path "$testDirectory/TestSummary-mac_13_m1mac_ventura-1" -Name "TestSummary.md" -Value "# :tada: All 5 tests passed :tada:" -Force
+            New-Item -Path "$testDirectory/TestSummary-mac_14_x64mac_sonoma-1" -Name "TestSummary.md" -Value "# :tada: All 5 tests passed :tada:" -Force
+            New-Item -Path "$testDirectory/TestSummary-mac_15_arm64mac_sequoia-1" -Name "TestSummary.md" -Value "# :tada: All 5 tests passed :tada:" -Force
+
+            $parallelResults = New-ParallelTestsResults -Path "$testDirectory" -StageDependencies "$sortStageDeps" -Context "context" -VSDropsIndex "vsdropsIndex"
+
+            $sb = [System.Text.StringBuilder]::new()
+            $parallelResults.WriteComment($sb)
+
+            Remove-Item -Path $testDirectory -Recurse
+
+            $content = $sb.ToString()
+            Write-Host $content
+
+            # Verify the order is by version: Monterey(12), Ventura(13), Sonoma(14), Sequoia(15)
+            $montereyIdx = $content.IndexOf("Tests on macOS Monterey (12)")
+            $venturaIdx = $content.IndexOf("Tests on macOS Ventura (13)")
+            $sonomaIdx = $content.IndexOf("Tests on macOS Sonoma (14)")
+            $sequoiaIdx = $content.IndexOf("Tests on macOS Sequoia (15)")
+
+            $montereyIdx | Should -BeLessThan $venturaIdx
+            $venturaIdx | Should -BeLessThan $sonomaIdx
+            $sonomaIdx | Should -BeLessThan $sequoiaIdx
+        }
+    }
+
+    Context "VSDrops publish failed" {
+        It "shows publish failed text instead of VSDrops link" {
+            $VerbosePreference = "Continue"
+            $DebugPreference = "Continue"
+
+            $vsdropsMatrix = @"
+{
+    "cecil": {
+        "LABEL": "cecil",
+        "TESTS_LABELS": "--label=skip-all-tests,run-cecil-tests",
+        "TEST_STAGE": "simulator_tests",
+        "LABEL_WITH_PLATFORM": "cecil",
+        "STATUS_CONTEXT": "VSTS: simulator tests - cecil",
+        "TEST_PREFIX": "simulator_testscecil",
+        "TEST_PLATFORM": ""
+    }
+}
+"@
+            $vsdropsFailedStageDeps = @"
+{
+  "configure_build": {
+    "configure": {
+      "outputs": {
+        "test_matrix.TEST_MATRIX": "$($vsdropsMatrix.Replace("`n", "\n").Replace("`"", "\`""))"
+      }
+    }
+  },
+  "simulator_tests": {
+    "tests": {
+      "outputs": {
+        "cecil.PowerShell15.TESTS_ATTEMPT": "1",
+        "cecil.PowerShell15.TESTS_BOT": "XAMMINI-013.Ventura",
+        "cecil.PowerShell15.TESTS_LABEL": "cecil",
+        "cecil.PowerShell15.TESTS_PLATFORM": "",
+        "cecil.PowerShell15.TESTS_TITLE": "cecil",
+        "cecil.runTests.TESTS_JOBSTATUS": "Succeeded",
+        "cecil.setVSDropsPublishResult.VSDROPS_PUBLISHED": "Failed"
+      },
+      "identifier": null,
+      "name": "tests",
+      "attempt": 1,
+      "startTime": null,
+      "finishTime": null,
+      "state": "NotStarted",
+      "result": "Succeeded"
+    }
+  }
+}
+"@
+            $testDirectory = Join-Path "." "subdir"
+            New-Item -Path "$testDirectory" -ItemType "directory" -Force
+            New-Item -Path "$testDirectory/TestSummary-simulator_testscecil-1" -Name "TestSummary.md" -Value "# :tada: All 1 tests passed :tada:" -Force
+
+            $parallelResults = New-ParallelTestsResults -Path "$testDirectory" -StageDependencies "$vsdropsFailedStageDeps" -Context "context" -VSDropsIndex "vsdropsIndex"
+
+            $parallelResults.IsSuccess() | Should -Be $true
+
+            $sb = [System.Text.StringBuilder]::new()
+            $parallelResults.WriteComment($sb)
+
+            Remove-Item -Path $testDirectory -Recurse
+
+            $content = $sb.ToString()
+
+            Write-Host $content
+
+            $content | Should -Not -BeLike "*[Html Report (VSDrops)]*"
+            $content | Should -BeLike "*(:warning: Html Report Publish failed :warning:)*"
+            $content | Should -BeLike "*[Download]*"
         }
     }
 }

@@ -3,13 +3,13 @@ namespace Foundation {
 	public partial class NSUrlRequest {
 		/// <param name="key">HTTP Header Name.</param>
 		/// <summary>Gets the value of the specified HTTP header.</summary>
-		/// <value>To be added.</value>
+		/// <value>The value of the specified HTTP header, or <see langword="null" /> if the header is not set.</value>
 		/// <remarks>
 		///           <example>
 		///             <code lang="csharp lang-csharp"><![CDATA[
 		/// void DumpLenght (NSUrlRequest request)
 		/// {
-		///     Console.WriteLine ("The content lenght is: {0}", request ["Content-Length"]);
+		///     Console.WriteLine ("The content length is: {0}", request ["Content-Length"]);
 		/// }
 		/// 	    ]]></code>
 		///           </example>

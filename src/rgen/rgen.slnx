@@ -1,0 +1,14 @@
+<Solution>
+  <Project Path="../../tests/rgen/Microsoft.Macios.Bindings.Analyzer.Tests/Microsoft.Macios.Bindings.Analyzer.Tests.csproj" />
+  <Project Path="../../tests/rgen/Microsoft.Macios.Bindings.CodeFixers.Tests/Microsoft.Macios.Bindings.CodeFixers.Tests.csproj" />
+  <Project Path="../../tests/rgen/Microsoft.Macios.Generator.Tests/Microsoft.Macios.Generator.Tests.csproj" />
+  <Project Path="../../tests/rgen/Microsoft.Macios.Transformer.Tests/Microsoft.Macios.Transformer.Tests.csproj" />
+  <Project Path="Microsoft.Macios.Binding.Common/Microsoft.Macios.Binding.Common.csproj" />
+  <Project Path="Microsoft.Macios.Bindings.Analyzer.Sample/Microsoft.Macios.Bindings.Analyzer.Sample.csproj" />
+  <Project Path="Microsoft.Macios.Bindings.Analyzer/Microsoft.Macios.Bindings.Analyzer.csproj" />
+  <Project Path="Microsoft.Macios.Bindings.CodeFixers/Microsoft.Macios.Bindings.CodeFixers.csproj" />
+  <Project Path="Microsoft.Macios.Generator.Sample/Microsoft.Macios.Generator.Sample.csproj" />
+  <Project Path="Microsoft.Macios.Generator/Microsoft.Macios.Generator.csproj" />
+  <Project Path="Microsoft.Macios.Transformer.Generator/Microsoft.Macios.Transformer.Generator/Microsoft.Macios.Transformer.Generator.csproj" />
+  <Project Path="Microsoft.Macios.Transformer/Microsoft.Macios.Transformer.csproj" />
+</Solution>

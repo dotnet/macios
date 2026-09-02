@@ -315,7 +315,7 @@ namespace CoreText {
 		///         <remarks>
 		///         </remarks>
 		public NSCharacterSet? CharacterSet {
-			get { return (NSCharacterSet) Dictionary [CTFontDescriptorAttributeKey.CharacterSet]; }
+			get { return (NSCharacterSet) Dictionary [CTFontDescriptorAttributeKey.CharacterSet]!; }
 			set { Adapter.SetValue (Dictionary, CTFontDescriptorAttributeKey.CharacterSet!, value); }
 		}
 
@@ -327,6 +327,16 @@ namespace CoreText {
 		public IEnumerable<string>? Languages {
 			get { return Adapter.GetStringArray (Dictionary, CTFontDescriptorAttributeKey.Languages); }
 			set { Adapter.SetValue (Dictionary, CTFontDescriptorAttributeKey.Languages!, value); }
+		}
+
+		/// <summary>The language of the font descriptor.</summary>
+		[SupportedOSPlatform ("ios26.4")]
+		[SupportedOSPlatform ("maccatalyst26.4")]
+		[SupportedOSPlatform ("macos26.4")]
+		[SupportedOSPlatform ("tvos26.4")]
+		public string? Language {
+			get { return Adapter.GetStringValue (Dictionary, CTFontDescriptorAttributeKey.Language); }
+			set { Adapter.SetValue (Dictionary, CTFontDescriptorAttributeKey.Language!, value); }
 		}
 
 		// float represented as a CFNumber
@@ -515,7 +525,7 @@ namespace CoreText {
 		///         </remarks>
 		public bool Enabled {
 			get {
-				var value = (NSNumber) Dictionary [CTFontDescriptorAttributeKey.Enabled];
+				var value = (NSNumber?) Dictionary [CTFontDescriptorAttributeKey.Enabled];
 				if (value is null)
 					return false;
 				return value.Int32Value != 0;
@@ -527,7 +537,7 @@ namespace CoreText {
 #endif // !XAMCORE_5_0
 
 #if __IOS__ || __MACCATALYST__
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("macos")]

@@ -70,7 +70,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			foreach (var dir in Directory.EnumerateDirectories (onDemandResourcesDir)) {
 				var path = Path.Combine (dir, "Info.plist");
-				PDictionary info;
+				PDictionary? info;
 
 				if (!File.Exists (path))
 					continue;
@@ -80,11 +80,8 @@ namespace Xamarin.MacDev.Tasks {
 				updateOnDemandResources = updateOnDemandResources || mtime > onDemandResourcesStamp;
 				updateManifest = updateManifest || mtime > manifestStamp;
 
-				try {
-					info = PDictionary.FromFile (path)!;
-				} catch {
+				if (!PDictionary.TryOpenFile (path, out info))
 					continue;
-				}
 
 				var bundleIdentifier = info.GetCFBundleIdentifier ();
 				var primaryContentHash = new PDictionary ();
@@ -137,7 +134,7 @@ namespace Xamarin.MacDev.Tasks {
 				}
 
 				// update AssetPackManifestTemplate.plist
-				resource.Add ("URL", new PString ("http://127.0.0.1" + Uri.EscapeUriString (Path.GetFullPath (dir))));
+				resource.Add ("URL", new PString (new Uri ("http://127.0.0.1" + Path.GetFullPath (dir), UriKind.Absolute).AbsoluteUri));
 				resource.Add ("bundleKey", new PString (bundleIdentifier));
 
 				if (!double.IsNaN (priority))

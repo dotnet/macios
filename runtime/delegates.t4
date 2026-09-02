@@ -674,7 +674,8 @@
 		new XDelegate ("void *", "IntPtr", "xamarin_lookup_unmanaged_function",
 			"const char *", "IntPtr", "assembly",
 			"const char *", "IntPtr", "symbol",
-			"int32_t", "int", "id"
+			"int32_t", "int", "id",
+			"const char *", "IntPtr", "objcClassName"
 		) {
 			WrappedManagedFunction = "LookupUnmanagedFunction",
 		},

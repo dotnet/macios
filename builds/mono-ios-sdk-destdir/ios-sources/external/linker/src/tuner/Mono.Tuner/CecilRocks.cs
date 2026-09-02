@@ -33,6 +33,8 @@ using System.Linq;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 
+#nullable enable
+
 namespace Mono.Tuner {
 
 	public static class MethodBodyRocks {
@@ -63,7 +65,7 @@ namespace Mono.Tuner {
 			return self.Methods.Where (m => m.IsConstructor);
 		}
 
-		public static MethodDefinition GetTypeConstructor (this TypeDefinition self)
+		public static MethodDefinition? GetTypeConstructor (this TypeDefinition self)
 		{
 			return self.GetConstructors ().FirstOrDefault (c => c.IsStatic);
 		}
@@ -211,7 +213,7 @@ namespace Mono.Tuner {
 			}
 		}
 
-		static void ExpandMacro (Instruction instruction, OpCode opcode, object operand)
+		static void ExpandMacro (Instruction instruction, OpCode opcode, object? operand)
 		{
 			instruction.OpCode = opcode;
 			instruction.Operand = operand;
@@ -435,7 +437,7 @@ namespace Mono.Tuner {
 			}
 		}
 
-		public static ParameterDefinition GetParameter (this MethodBody self, int index)
+		public static ParameterDefinition? GetParameter (this MethodBody self, int index)
 		{
 			var method = self.Method;
 
@@ -472,7 +474,7 @@ namespace Mono.Tuner {
 			return Implements (type, interfaceName, (interfaceName.IndexOf ('`') >= 0));
 		}
 
-		public static bool Implements (TypeDefinition type, string interfaceName, bool generic)
+		public static bool Implements (TypeDefinition? type, string interfaceName, bool generic)
 		{
 			while (type is not null) {
 				// does the type implements it itself
@@ -487,7 +489,7 @@ namespace Mono.Tuner {
 					}
 				}
 
-				type = type.BaseType is not null ? type.BaseType.Resolve () : null;
+				type = type.BaseType?.Resolve ();
 			}
 			return false;
 		}

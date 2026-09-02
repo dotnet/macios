@@ -1,9 +1,11 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 using Mono.Cecil;
 
 using Xamarin.Linker;
+using Xamarin.Utils;
 
 #nullable enable
 
@@ -20,18 +22,15 @@ namespace Xamarin {
 		{
 			base.TryProcessAssembly (assembly);
 
-			if (Configuration.PlatformAssembly != assembly.Name.Name)
-				return;
-
-			global::Frameworks.Gather (Configuration.Application, assembly, Frameworks, WeakFrameworks);
+			global::Frameworks.Gather (Configuration.Application, [assembly], Frameworks, WeakFrameworks);
 		}
 
 		protected override void TryEndProcess ()
 		{
 
-			Configuration.Target.ComputeLinkerFlags ();
+			Configuration.Application.ComputeLinkerFlags ();
 
-			foreach (var asm in Configuration.Target.Assemblies) {
+			foreach (var asm in Configuration.Application.Assemblies) {
 				Frameworks.UnionWith (asm.Frameworks);
 				WeakFrameworks.UnionWith (asm.WeakFrameworks);
 			}
@@ -43,7 +42,7 @@ namespace Xamarin {
 			var items = new List<MSBuildItem> ();
 			foreach (var fw in Frameworks.OrderBy (v => v)) {
 				items.Add (new MSBuildItem (
-					fw,
+					GetRelativePathIfFullPath (fw),
 					new Dictionary<string, string> {
 						{ "IsWeak", "false" },
 					}
@@ -51,7 +50,7 @@ namespace Xamarin {
 			}
 			foreach (var fw in WeakFrameworks.OrderBy (v => v)) {
 				items.Add (new MSBuildItem (
-					fw,
+					GetRelativePathIfFullPath (fw),
 					new Dictionary<string, string> {
 						{ "IsWeak", "true" },
 					}
@@ -59,6 +58,13 @@ namespace Xamarin {
 			}
 
 			Configuration.WriteOutputForMSBuild ("_LinkerFrameworks", items);
+		}
+
+		string GetRelativePathIfFullPath (string path)
+		{
+			if (!Path.IsPathRooted (path))
+				return path;
+			return PathUtils.AbsoluteToRelative (Environment.CurrentDirectory, path);
 		}
 	}
 }

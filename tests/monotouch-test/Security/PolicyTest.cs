@@ -105,7 +105,6 @@ namespace MonoTouchFixtures.Security {
 		public void RevocationPolicy ()
 		{
 			TestRuntime.AssertXcodeVersion (5, 0);
-			TestRuntime.AssertSystemVersion (ApplePlatform.MacOSX, 10, 9, throwIfOtherPlatform: false);
 
 			using (var policy = SecPolicy.CreateRevocationPolicy (SecRevocation.UseAnyAvailableMethod | SecRevocation.RequirePositiveResponse)) {
 				Assert.That (policy.Handle, Is.Not.EqualTo (IntPtr.Zero), "Handle");
@@ -114,12 +113,7 @@ namespace MonoTouchFixtures.Security {
 				using (var properties = policy.GetProperties ()) {
 					Assert.That (properties.Handle, Is.Not.EqualTo (IntPtr.Zero), "Properties.Handle");
 					Assert.That (CFGetRetainCount (properties.Handle), Is.EqualTo ((nint) 1), "Properties.RetainCount");
-					var expectedCount = (nuint) 1;
-#if __MACOS__
-					if (TestRuntime.CheckSystemVersion (ApplePlatform.MacOSX, 10, 11) && !TestRuntime.CheckSystemVersion (ApplePlatform.MacOSX, 10, 12))
-						expectedCount = 2;
-#endif
-					Assert.That (properties.Count, Is.EqualTo (expectedCount), "Count");
+					Assert.That (properties.Count, Is.EqualTo ((nuint) 1), "Count");
 					Assert.That (properties [SecPolicyPropertyKey.Oid].ToString (), Is.EqualTo ("1.2.840.113635.100.1.21"), "SecPolicyOid");
 				}
 			}
@@ -138,7 +132,6 @@ namespace MonoTouchFixtures.Security {
 		public void CreateWellKnownPolicies ()
 		{
 			TestRuntime.AssertXcodeVersion (5, 0);
-			TestRuntime.AssertSystemVersion (ApplePlatform.MacOSX, 10, 9, throwIfOtherPlatform: false);
 
 			CreatePolicy (SecPolicyIdentifier.AppleX509Basic);
 			CreatePolicy (SecPolicyIdentifier.AppleSSL);
@@ -152,10 +145,6 @@ namespace MonoTouchFixtures.Security {
 			// invalid handle ? not yet supported ?!?
 			// CreatePolicy (SecPolicyIdentifier.AppleTimeStamping);
 			oid = null;
-#if __MACOS__
-			if (TestRuntime.CheckSystemVersion (ApplePlatform.MacOSX, 10, 11) && !TestRuntime.CheckSystemVersion (ApplePlatform.MacOSX, 10, 12))
-				oid = "3";
-#endif
 			CreatePolicy (SecPolicyIdentifier.AppleRevocation, (NSString) oid);
 		}
 
@@ -163,7 +152,6 @@ namespace MonoTouchFixtures.Security {
 		public void CreateUnknownPolicy ()
 		{
 			TestRuntime.AssertXcodeVersion (5, 0);
-			TestRuntime.AssertSystemVersion (ApplePlatform.MacOSX, 10, 9, throwIfOtherPlatform: false);
 
 			using (var oid = new NSString ("1.2.3.4")) {
 				Assert.Throws<ArgumentException> (delegate

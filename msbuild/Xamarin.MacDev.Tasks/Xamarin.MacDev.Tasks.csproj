@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks Condition="'$(DesignTimeBuild)' != 'true'">net$(BundledNETCoreAppTargetFrameworkVersion);netstandard2.0</TargetFrameworks>
+    <TargetFramework Condition="'$(DesignTimeBuild)' == 'true'">net$(BundledNETCoreAppTargetFrameworkVersion)</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <IncludeMSBuildAssets Condition="'$(IncludeMSBuildAssets)' == ''">compile</IncludeMSBuildAssets>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>../../product.snk</AssemblyOriginatorKeyFile>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <LangVersion>latest</LangVersion>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DefineConstants>$(DefineConstants);MSBUILD_TASKS</DefineConstants>
     <NoWarn>$(NoWarn);NU1603</NoWarn> <!-- Xamarin.Messaging.Build.Common 1.6.24 depends on Merq (>= 1.1.0) but Merq 1.1.0 was not found. An approximate best match of Merq 1.1.4 was resolved. -->
     <NoWarn>$(NoWarn);NU1701</NoWarn> <!-- Package 'Microsoft.Build 16.10.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework '.NETStandard,Version=v2.0'. This package may not be fully compatible with your project. -->
     <NoWarn>$(NoWarn);MSB3277</NoWarn> <!-- warning MSB3277: Found conflicts between different versions of "System.Reflection.Metadata" that could not be resolved. -->
     <NoWarn>$(NoWarn);8002</NoWarn> <!-- Referenced projects aren't signed: this doesn't matter, because we use ILMerge to merge into a single assembly which we sign -->
-    <Nullable>enable</Nullable>
+    <NoWarn>$(NoWarn);CS0618</NoWarn> <!-- AppleSdkSettings is [Obsolete] in favor of XcodeLocator; suppress until migration is complete -->
+    <CopyLocalLockFileAssemblies Condition="'$(TargetFramework)' == 'net$(BundledNETCoreAppTargetFrameworkVersion)'">true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
   <Import Project="..\..\eng\Versions.props" />
@@ -38,6 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\external\Xamarin.MacDev\Xamarin.MacDev\Xamarin.MacDev.csproj" />
+    <ProjectReference Include="..\..\tools\assembly-preparer\assembly-preparer.csproj" />
     <ProjectReference Include="..\Xamarin.Localization.MSBuild\Xamarin.Localization.MSBuild.csproj">
       <ReferenceSourceTarget>ProjectReference</ReferenceSourceTarget>
     </ProjectReference>
@@ -51,7 +52,7 @@
     </Reference>
   </ItemGroup>
 
-  <Import Project="$(MSBuildThisFileDirectory)..\ILMerge.targets" />
+  <Import Project="$(MSBuildThisFileDirectory)..\ILMerge.targets" Condition="'$(TargetFramework)' != 'net$(BundledNETCoreAppTargetFrameworkVersion)'" />
 
   <Target Name="CopyRuntimeAssemblies" BeforeTargets="ILRepack">
     <ItemGroup>
@@ -70,35 +71,14 @@
   </Target>
 
   <ItemGroup>
-    <Compile Include="..\..\tools\common\ApplePlatform.cs">
-      <Link>ApplePlatform.cs</Link>
+    <Compile Include="..\..\tools\common\JsonExtensions.cs">
+      <Link>external\JsonExtensions.cs</Link>
     </Compile>
     <Compile Include="..\..\tools\common\StringUtils.cs">
       <Link>StringUtils.cs</Link>
     </Compile>
-    <Compile Include="..\..\tools\common\FileCopier.cs">
-        <Link>FileCopier.cs</Link>
-    </Compile>
-    <Compile Include="..\..\tools\common\TargetFramework.cs">
-      <Link>TargetFramework.cs</Link>
-    </Compile>
-    <Compile Include="..\..\tools\common\Execution.cs">
-      <Link>Execution.cs</Link>
-    </Compile>
-    <Compile Include="..\..\tools\common\PathUtils.cs">
-      <Link>PathUtils.cs</Link>
-    </Compile>
     <Compile Include="..\..\tools\common\PListExtensions.cs">
       <Link>PListExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\..\tools\common\MachO.cs">
-      <Link>MachO.cs</Link>
-    </Compile>
-    <Compile Include="..\..\tools\common\error.cs">
-      <Link>error.cs</Link>
-    </Compile>
-    <Compile Include="..\..\src\ObjCRuntime\ErrorHelper.cs">
-      <Link>ErrorHelper.cs</Link>
     </Compile>
     <Compile Include="..\..\src\ObjCRuntime\RuntimeException.cs">
       <Link>external\RuntimeException.cs</Link>
@@ -109,7 +89,7 @@
     <Compile Include="..\..\tools\common\NullableAttributes.cs">
       <Link>external\NullableAttributes.cs</Link>
     </Compile>
-    <Compile Remove="Errors.designer.cs" /> <!-- The 'CoreResGen' target will add it again from the EmbeddedResource item, this avoids a warning about the file being compiled twice -->
+    <Compile Remove="Errors.designer.cs" /> <!-- The 'CoreResGen' target will add the generated file again from the EmbeddedResource item -->
     <Compile Include="..\..\tools\common\SdkVersions.cs">
       <Link>external\SdkVersions.cs</Link>
     </Compile>
@@ -120,7 +100,7 @@
 
     <!--
 
-      The Xamarin.MacDev.Tasks.sln solution is build with dotnet, while other
+      The Xamarin.MacDev.Tasks.sln solution is built with dotnet, while other
       projects are still built with msbuild. This becomes a problem when
       generating Errors.designer.cs, because depending on the runtime the
       output is different.
@@ -130,73 +110,75 @@
       modified in git. This is quite annoying, but it also breaks the api
       comparison, which depends on the build not leaving modified files
       behind. So for now, we generate Errors.designer.cs separately
-      for Xamarin.MacDev.Tasks.sln to not conflict with the mtouch version.
+      for Xamarin.MacDev.Tasks.sln to not conflict with the mtouch version,
+      and in each target framework's intermediate output directory so that
+      parallel builds don't write to the same file.
 
     -->
 
       <Type>Resx</Type>
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Errors.designer.cs</LastGenOutput>
-      <CustomToolNamespace>Xamarin.Bundler</CustomToolNamespace>
-      <ManifestResourceName>Xamarin.Bundler.Errors</ManifestResourceName>
-      <StronglyTypedFileName>Errors.designer.cs</StronglyTypedFileName>
+      <CustomToolNamespace>Xamarin.Localization.MSBuild</CustomToolNamespace>
+      <ManifestResourceName>Xamarin.Localization.MSBuild.Errors</ManifestResourceName>
+      <StronglyTypedFileName>$(IntermediateOutputPath)Errors.designer.cs</StronglyTypedFileName>
       <StronglyTypedLanguage>CSharp</StronglyTypedLanguage>
-      <StronglyTypedNamespace>Xamarin.Bundler</StronglyTypedNamespace>
+      <StronglyTypedNamespace>Xamarin.Localization.MSBuild</StronglyTypedNamespace>
       <StronglyTypedClassName>Errors</StronglyTypedClassName>
       <GenerateResource>true</GenerateResource>
       <PublicClass>true</PublicClass>
     </EmbeddedResource>
     <EmbeddedResource Include="../../tools/mtouch/TranslatedAssemblies\Errors.cs.resx">
       <Link>Errors.cs.resx</Link>
-      <ManifestResourceName>Xamarin.Bundler.Errors.cs</ManifestResourceName>
+      <ManifestResourceName>Xamarin.Localization.MSBuild.Errors.cs</ManifestResourceName>
     </EmbeddedResource>
     <EmbeddedResource Include="../../tools/mtouch/TranslatedAssemblies\Errors.de.resx">
       <Link>Errors.de.resx</Link>
-      <ManifestResourceName>Xamarin.Bundler.Errors.de</ManifestResourceName>
+      <ManifestResourceName>Xamarin.Localization.MSBuild.Errors.de</ManifestResourceName>
     </EmbeddedResource>
     <EmbeddedResource Include="../../tools/mtouch/TranslatedAssemblies\Errors.es.resx">
       <Link>Errors.es.resx</Link>
-      <ManifestResourceName>Xamarin.Bundler.Errors.es</ManifestResourceName>
+      <ManifestResourceName>Xamarin.Localization.MSBuild.Errors.es</ManifestResourceName>
     </EmbeddedResource>
     <EmbeddedResource Include="../../tools/mtouch/TranslatedAssemblies\Errors.fr.resx">
       <Link>Errors.fr.resx</Link>
-      <ManifestResourceName>Xamarin.Bundler.Errors.fr</ManifestResourceName>
+      <ManifestResourceName>Xamarin.Localization.MSBuild.Errors.fr</ManifestResourceName>
     </EmbeddedResource>
     <EmbeddedResource Include="../../tools/mtouch/TranslatedAssemblies\Errors.it.resx">
       <Link>Errors.it.resx</Link>
-      <ManifestResourceName>Xamarin.Bundler.Errors.it</ManifestResourceName>
+      <ManifestResourceName>Xamarin.Localization.MSBuild.Errors.it</ManifestResourceName>
     </EmbeddedResource>
     <EmbeddedResource Include="../../tools/mtouch/TranslatedAssemblies\Errors.ja.resx">
       <Link>Errors.ja.resx</Link>
-      <ManifestResourceName>Xamarin.Bundler.Errors.ja</ManifestResourceName>
+      <ManifestResourceName>Xamarin.Localization.MSBuild.Errors.ja</ManifestResourceName>
     </EmbeddedResource>
     <EmbeddedResource Include="../../tools/mtouch/TranslatedAssemblies\Errors.ko.resx">
       <Link>Errors.ko.resx</Link>
-      <ManifestResourceName>Xamarin.Bundler.Errors.ko</ManifestResourceName>
+      <ManifestResourceName>Xamarin.Localization.MSBuild.Errors.ko</ManifestResourceName>
     </EmbeddedResource>
     <EmbeddedResource Include="../../tools/mtouch/TranslatedAssemblies\Errors.pl.resx">
       <Link>Errors.pl.resx</Link>
-      <ManifestResourceName>Xamarin.Bundler.Errors.pl</ManifestResourceName>
+      <ManifestResourceName>Xamarin.Localization.MSBuild.Errors.pl</ManifestResourceName>
     </EmbeddedResource>
     <EmbeddedResource Include="../../tools/mtouch/TranslatedAssemblies\Errors.pt-BR.resx">
       <Link>Errors.pt-BR.resx</Link>
-      <ManifestResourceName>Xamarin.Bundler.Errors.pt-BR</ManifestResourceName>
+      <ManifestResourceName>Xamarin.Localization.MSBuild.Errors.pt-BR</ManifestResourceName>
     </EmbeddedResource>
     <EmbeddedResource Include="../../tools/mtouch/TranslatedAssemblies\Errors.ru.resx">
       <Link>Errors.ru.resx</Link>
-      <ManifestResourceName>Xamarin.Bundler.Errors.ru</ManifestResourceName>
+      <ManifestResourceName>Xamarin.Localization.MSBuild.Errors.ru</ManifestResourceName>
     </EmbeddedResource>
     <EmbeddedResource Include="../../tools/mtouch/TranslatedAssemblies\Errors.tr.resx">
       <Link>Errors.tr.resx</Link>
-      <ManifestResourceName>Xamarin.Bundler.Errors.tr</ManifestResourceName>
+      <ManifestResourceName>Xamarin.Localization.MSBuild.Errors.tr</ManifestResourceName>
     </EmbeddedResource>
     <EmbeddedResource Include="../../tools/mtouch/TranslatedAssemblies\Errors.zh-Hans.resx">
       <Link>Errors.zh-Hans.resx</Link>
-      <ManifestResourceName>Xamarin.Bundler.Errors.zh-Hans</ManifestResourceName>
+      <ManifestResourceName>Xamarin.Localization.MSBuild.Errors.zh-Hans</ManifestResourceName>
     </EmbeddedResource>
     <EmbeddedResource Include="../../tools/mtouch/TranslatedAssemblies\Errors.zh-Hant.resx">
       <Link>Errors.zh-Hant.resx</Link>
-      <ManifestResourceName>Xamarin.Bundler.Errors.zh-Hant</ManifestResourceName>
+      <ManifestResourceName>Xamarin.Localization.MSBuild.Errors.zh-Hant</ManifestResourceName>
     </EmbeddedResource>
   </ItemGroup>
 </Project>

@@ -43,7 +43,7 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			try {
-				value = dict = PDictionary.FromFile (PropertyListFile);
+				value = dict = PDictionary.OpenFile (PropertyListFile);
 			} catch (Exception ex) {
 				Log.LogError (MSBStrings.E0010, PropertyListFile, ex.Message);
 				return false;
@@ -86,7 +86,11 @@ namespace Xamarin.MacDev.Tasks {
 				return false;
 			}
 
-			Value = value is IPValueObject pvalue ? pvalue.Value.ToString () : value.ToString ();
+			if (value is IPValueObject pvalue) {
+				Value = pvalue.Value.ToString () ?? string.Empty;
+			} else {
+				Value = value.ToString () ?? string.Empty;
+			}
 
 			return !Log.HasLoggedErrors;
 		}

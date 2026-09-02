@@ -56,7 +56,7 @@ namespace MonoTouchFixtures.Metal {
 			TestRuntime.AssertXcodeVersion (9, 0);
 
 			hd.CpuCacheMode = MTLCpuCacheMode.WriteCombined;
-			Assert.AreEqual (MTLCpuCacheMode.WriteCombined, hd.CpuCacheMode);
+			Assert.That (hd.CpuCacheMode, Is.EqualTo (MTLCpuCacheMode.WriteCombined));
 		}
 
 		[Test]
@@ -65,7 +65,7 @@ namespace MonoTouchFixtures.Metal {
 			TestRuntime.AssertXcodeVersion (9, 0);
 
 			hd.Size = 2;
-			Assert.AreEqual ((nuint) 2, hd.Size);
+			Assert.That (hd.Size, Is.EqualTo ((nuint) 2));
 		}
 
 		[Test]
@@ -74,7 +74,7 @@ namespace MonoTouchFixtures.Metal {
 			TestRuntime.AssertXcodeVersion (9, 0);
 
 			hd.StorageMode = MTLStorageMode.Private;
-			Assert.AreEqual (MTLStorageMode.Private, hd.StorageMode);
+			Assert.That (hd.StorageMode, Is.EqualTo (MTLStorageMode.Private));
 		}
 
 		[Test]

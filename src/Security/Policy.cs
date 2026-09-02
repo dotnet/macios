@@ -35,7 +35,6 @@ using CoreFoundation;
 namespace Security {
 
 	/// <summary>Encapsulates a security policy. A policy comprises a set of rules that specify how to evaluate a certificate for a certain level of trust.</summary>
-	///     <remarks>To be added.</remarks>
 	public partial class SecPolicy : NativeObject {
 		[Preserve (Conditional = true)]
 		internal SecPolicy (NativeHandle handle, bool owns)
@@ -46,13 +45,11 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern static IntPtr /* SecPolicyRef */ SecPolicyCreateSSL (byte server, IntPtr /* CFStringRef */ hostname);
 
+		/// <summary>Create a policy instance that represents the SSL/TLS profile.</summary>
 		/// <param name="server">Indicate if the policy is for a server (true) or client (false) certificate.</param>
-		///         <param name="hostName">The server host name on which the policy will be applied.</param>
-		///         <summary>Create a policy instance that represent the SSL/TLS profile.</summary>
-		///         <returns>A SecPolicy instance that can be used to validate a SecCertificate using SecTrust.</returns>
-		///         <remarks>
-		///         </remarks>
-		static public SecPolicy CreateSslPolicy (bool server, string hostName)
+		/// <param name="hostName">The server host name on which the policy will be applied, or <see langword="null" /> to create a policy without a specific host name (disables host name validation).</param>
+		/// <returns>A SecPolicy instance that can be used to validate a SecCertificate using SecTrust.</returns>
+		static public SecPolicy CreateSslPolicy (bool server, string? hostName)
 		{
 			var handle = CFString.CreateNative (hostName);
 			try {
@@ -75,7 +72,7 @@ namespace Security {
 		}
 
 		/// <summary>Type identifier for the Security.SecPolicy type.</summary>
-		///         <returns>To be added.</returns>
+		///         <returns>The Core Foundation type identifier for <see cref="SecPolicy" />.</returns>
 		///         <remarks>
 		///           <para>The returned token is the CoreFoundation type identifier (CFType) that has been assigned to this class.</para>
 		///           <para>This can be used to determine type identity between different CoreFoundation objects.</para>

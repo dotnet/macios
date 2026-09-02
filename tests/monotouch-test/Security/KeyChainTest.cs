@@ -75,14 +75,14 @@ namespace MonoTouchFixtures.Security {
 					Assert.Inconclusive ("Test randomly fails (race condition between addtion/commit/query?");
 
 				Assert.That (code, Is.EqualTo (SecStatusCode.Success), "QueryAsRecord-2");
-				Assert.NotNull (match, "match-2");
+				Assert.That (match, Is.Not.Null, "match-2");
 
 				code = SecKeyChain.Remove (rec);
 				Assert.That (code, Is.EqualTo (SecStatusCode.Success), "Remove");
 
 				match = SecKeyChain.QueryAsConcreteType (rec, out code);
 				Assert.That (code, Is.EqualTo (SecStatusCode.ItemNotFound), "QueryAsRecord-3");
-				Assert.Null (match, "match-3");
+				Assert.That (match, Is.Null, "match-3");
 			}
 		}
 
@@ -102,10 +102,6 @@ namespace MonoTouchFixtures.Security {
 				data.LowlevelSetObject (id.Handle, valueref.Handle);
 				SecStatusCode code = SecItemAdd (data.Handle, IntPtr.Zero);
 				var expected = Is.EqualTo (SecStatusCode.DuplicateItem).Or.EqualTo (SecStatusCode.Success);
-#if __MACOS__
-				if (!TestRuntime.CheckSystemVersion (ApplePlatform.MacOSX, 10, 9))
-					expected = Is.EqualTo (SecStatusCode.Param);
-#endif
 				Assert.That (code, expected);
 			}
 		}
@@ -164,7 +160,7 @@ namespace MonoTouchFixtures.Security {
 			);
 			var data = SecKeyChain.QueryAsData (queryRec, true, out code);
 			if (code == SecStatusCode.Success && queryRec is not null) {
-				Assert.NotNull (data.Bytes);
+				Assert.That (data.Bytes, Is.Not.Null);
 			}
 		}
 
@@ -178,7 +174,7 @@ namespace MonoTouchFixtures.Security {
 			);
 			var data = SecKeyChain.QueryAsData (queryRec, true, 1, out code);
 			if (code == SecStatusCode.Success && queryRec is not null) {
-				Assert.NotNull (data [0].Bytes);
+				Assert.That (data [0].Bytes, Is.Not.Null);
 			}
 		}
 

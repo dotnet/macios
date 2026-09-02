@@ -14,14 +14,14 @@ export LANG
 # Compute commit distances
 for platform in $ALL_DOTNET_PLATFORMS; do
 	PLATFORM=$(echo "$platform" | tr '[:lower:]' '[:upper:]')
-	COMMIT=$(git blame -- ./Make.versions HEAD | grep "${PLATFORM}_NUGET_OS_VERSION=" | sed 's/ .*//')
-	COMMIT_DISTANCE=$(git log "$COMMIT..HEAD" --oneline | wc -l | sed -e 's/ //g')
+	COMMIT=$(git blame -- ./Make.versions HEAD | grep "${PLATFORM}_NUGET_OS_VERSION=" | sed 's/ .*//' | sed 's/^\^//')
+	COMMIT_DISTANCE=$(git rev-list --count "$COMMIT..HEAD")
 	TOTAL_DISTANCE=$((NUGET_VERSION_COMMIT_DISTANCE_START+COMMIT_DISTANCE))
 	printf "${PLATFORM}_NUGET_COMMIT_DISTANCE:=$TOTAL_DISTANCE\\n" >> "$OUTPUT_FILE"
 done
 
-STABLE_COMMIT=$(git blame -L '/^[#[:blank:]]*NUGET_RELEASE_BRANCH=/,+1' -- ./Make.config HEAD | sed 's/ .*//')
-STABLE_COMMIT_DISTANCE=$(git log "$STABLE_COMMIT..HEAD" --oneline | wc -l | sed -e 's/ //g')
+STABLE_COMMIT=$(git blame -L '/^[#[:blank:]]*NUGET_RELEASE_BRANCH=/,+1' -- ./Make.config HEAD | sed 's/ .*//' | sed 's/^\^//')
+STABLE_COMMIT_DISTANCE=$(git rev-list --count "$STABLE_COMMIT..HEAD")
 STABLE_TOTAL_DISTANCE=$((STABLE_COMMIT_DISTANCE+NUGET_VERSION_STABLE_COMMIT_DISTANCE_START))
 
 printf "NUGET_STABLE_COMMIT_DISTANCE:=$STABLE_TOTAL_DISTANCE\\n" >> "$OUTPUT_FILE"
@@ -31,12 +31,6 @@ if which ccache > /dev/null 2>&1; then
 	printf "ENABLE_CCACHE=1\n" >> "$OUTPUT_FILE"
 	printf "export CCACHE_BASEDIR=$(cd .. && pwd)\n" >> "$OUTPUT_FILE"
 	echo "Found ccache on the system, enabling it"
-fi
-
-# Detect ADR
-if test -d ../macios-adr; then
-	printf "ENABLE_XAMARIN=1\n" >> "$OUTPUT_FILE"
-	echo "Detected the macios-adr repository, automatically enabled the Xamarin build"
 fi
 
 mv "$OUTPUT_FILE" "$OUTPUT"

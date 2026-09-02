@@ -7,15 +7,10 @@
 
 parameters:
 
-- name: provisionatorChannel
-  displayName: Provisionator channel to use 
-  type: string
-  default: 'latest'
-
 - name: macOSName # comes from the build agent demand named macOS.Name
   displayName: Name of the version of macOS to use
   type: string
-  default: 'Sequoia'
+  default: 'Tahoe'
 
 - name: runGovernanceTests
   displayName: Run Governance Checks
@@ -38,11 +33,6 @@ resources:
     name: xamarin.yaml-templates
     ref: refs/heads/main
 
-  - repository: macios-adr
-    type: git
-    name: macios-adr
-    ref: refs/heads/main
-
   - repository: CustomPipelineTemplates
     type: git
     name: 1ESPipelineTemplates/MicroBuildTemplate
@@ -53,18 +43,7 @@ variables:
 - name: Packaging.EnableSBOMSigning
   value: false
 
-
-# only allow triggers from specific branches
-trigger:
-  branches:
-    include:
-    - refs/heads/dev/*
-    - refs/heads/darc-*
-    - refs/heads/backport-pr-*
-    - refs/heads/lego/*
-    - refs/heads/locfiles/*
-    - refs/heads/copilot/*
-    - refs/heads/dependabot/*
+trigger: none
 
 pr:
   autoCancel: true
@@ -117,16 +96,15 @@ extends:
         - repository: self
         exclude:
         - repository: yaml-templates
-        - repository: macios-adr # macios-adr has it's own build pipeline and should not be included in the source analysis
     stages:
     - template: templates/main-stage.yml
       parameters:
         xcodeChannel: $(xcodeChannel)
         macOSName: ${{ parameters.macOSName }}
         isPR: true
-        provisionatorChannel: ${{ parameters.provisionatorChannel }}
         pool: $(PRBuildPool)
         runGovernanceTests: ${{ parameters.runGovernanceTests }}
         forceInsertion: ${{ parameters.forceInsertion }}
         pushNugets: false
         pushNugetsToMaestro: false
+        useACES: true  # flip to false to opt PR out of ACES; see templates/variables/common.yml

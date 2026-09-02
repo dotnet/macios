@@ -39,7 +39,7 @@ namespace Mono.ApiTools {
 			return (self.GetAttribute (name) == "true");
 		}
 
-		public static string GetAttribute (this XElement self, string name)
+		public static string? GetAttribute (this XElement self, string name)
 		{
 			var n = self.Attribute (name);
 			if (n is null)
@@ -47,7 +47,7 @@ namespace Mono.ApiTools {
 			return n.Value;
 		}
 
-		public static IEnumerable<XElement> EnumerateAttributes (this XElement self, string attributeName = null)
+		public static IEnumerable<XElement> EnumerateAttributes (this XElement self, string? attributeName = null)
 		{
 			if (self is null)
 				yield break;
@@ -63,7 +63,7 @@ namespace Mono.ApiTools {
 			}
 		}
 
-		static bool TryGetAttributeProperty (this XElement self, string attributeName, bool recursive, out string firstArgument)
+		static bool TryGetAttributeProperty (this XElement? self, string attributeName, bool recursive, out string? firstArgument)
 		{
 			firstArgument = null;
 
@@ -89,16 +89,16 @@ namespace Mono.ApiTools {
 		}
 
 		// null == no obsolete, String.Empty == no description
-		public static string GetObsoleteMessage (this XElement self)
+		public static string? GetObsoleteMessage (this XElement self)
 		{
-			if (TryGetAttributeProperty (self, "System.ObsoleteAttribute", false, out string message))
+			if (TryGetAttributeProperty (self, "System.ObsoleteAttribute", false, out string? message))
 				return message ?? String.Empty;
 			return null;
 		}
 
-		public static IEnumerable<XElement> Descendants (this XElement self, params string [] names)
+		public static IEnumerable<XElement>? Descendants (this XElement self, params string [] names)
 		{
-			XElement el = self;
+			XElement? el = self;
 			if (el is null)
 				return null;
 
@@ -110,7 +110,7 @@ namespace Mono.ApiTools {
 			return el.Elements (names [names.Length - 1]);
 		}
 
-		public static List<XElement> DescendantList (this XElement self, params string [] names)
+		public static List<XElement>? DescendantList (this XElement self, params string [] names)
 		{
 			var descendants = self.Descendants (names);
 			if (descendants is null)
@@ -119,19 +119,26 @@ namespace Mono.ApiTools {
 		}
 
 		// make it beautiful (.NET -> C#)
-		public static string GetTypeName (this XElement self, string name, State state)
+		public static string? GetTypeName (this XElement self, string name, State state)
 		{
-			string type = self.GetAttribute (name);
+			string? type = self.GetAttribute (name);
 			if (type is null)
 				return null;
 
-			StringBuilder sb = null;
+			StringBuilder sb = null!;
 			bool is_nullable = false;
+			bool is_nullable_ref = false;
 			if (type.StartsWith ("System.Nullable`1[", StringComparison.Ordinal)) {
 				is_nullable = true;
 				sb = new StringBuilder (type, 18, type.Length - 19, 1024);
 			} else {
 				sb = new StringBuilder (type);
+			}
+
+			// Handle nullable reference type annotation (trailing '?' added by mono-api-info)
+			if (!is_nullable && sb.Length > 0 && sb [sb.Length - 1] == '?') {
+				is_nullable_ref = true;
+				sb.Remove (sb.Length - 1, 1);
 			}
 
 			bool is_ref = (sb [sb.Length - 1] == '&');
@@ -158,6 +165,8 @@ namespace Mono.ApiTools {
 			while (array-- > 0)
 				sb.Append ("[]");
 			if (is_nullable)
+				sb.Append ('?');
+			if (is_nullable_ref)
 				sb.Append ('?');
 			if (is_pointer)
 				sb.Append ('*');
@@ -244,6 +253,34 @@ namespace Mono.ApiTools {
 		{
 			var srcAttribs = element.Attribute ("attrib");
 			return (FieldAttributes) (srcAttribs is not null ? Int32.Parse (srcAttribs.Value) : 0);
+		}
+
+		// Strips trailing '?' nullability annotations from a type name for comparison purposes.
+		// Handles both top-level (System.String?) and nested generics (List`1[System.String?]).
+		public static string? StripNullability (string? type)
+		{
+			if (type is null)
+				return null;
+			// Remove all '?' that appear before ']', at end of string, before ',',
+			// before '>' or '&' (HTML entities like &gt;), before ' ' (before param name),
+			// or before '%' (placeholder boundaries like %GREATERTHANREPLACEMENT%)
+			var sb = new StringBuilder (type.Length);
+			for (int i = 0; i < type.Length; i++) {
+				if (type [i] == '?') {
+					if (i + 1 >= type.Length || type [i + 1] == ']' || type [i + 1] == ',' || type [i + 1] == '>' || type [i + 1] == '&' || type [i + 1] == ' ' || type [i + 1] == '%')
+						continue;
+				}
+				sb.Append (type [i]);
+			}
+			return sb.ToString ();
+		}
+
+		// Returns true if two type names differ only in nullability annotations.
+		public static bool DiffersOnlyByNullability (string? source, string? target)
+		{
+			if (source == target)
+				return false;
+			return StripNullability (source) == StripNullability (target);
 		}
 	}
 }

@@ -15,8 +15,13 @@ mkdir -p ../package/
 rm -rf ../symbols/
 mkdir -p ../symbols/
 cp -c "$DOTNET_NUPKG_DIR"/*.nupkg ../package/
-cp -c dotnet/nupkgs/*.symbols.nupkg ../symbols/
-cp -c "$DOTNET_NUPKG_DIR"/vs-workload.props ../package/
+mv ../package/*.symbols.nupkg ../symbols/
+if compgen -G 'dotnet/nupkgs/*.symbols.nupkg' > /dev/null; then
+    cp -c dotnet/nupkgs/*.symbols.nupkg ../symbols/
+fi
+if test -f "$DOTNET_NUPKG_DIR"/vs-workload.props; then
+    cp -c "$DOTNET_NUPKG_DIR"/vs-workload.props ../package/
+fi
 cp -c dotnet/Workloads/SignList.xml ../package/
 cp -c dotnet/Workloads/SignList.targets ../package/
 cp -c dotnet/Workloads/SignVerifyIgnore.txt ../package/

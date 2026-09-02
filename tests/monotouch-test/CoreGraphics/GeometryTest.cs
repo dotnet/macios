@@ -17,9 +17,8 @@ namespace MonoTouchFixtures.CoreGraphics {
 
 		static public readonly IntPtr Handle = Dlfcn.dlopen (Constants.CoreGraphicsLibrary, 0);
 
-		public static CGRect GetRect (string symbol)
+		public static CGRect GetRect (IntPtr indirect)
 		{
-			var indirect = Dlfcn.dlsym (Handle, symbol);
 			if (indirect == IntPtr.Zero)
 				return CGRect.Empty;
 			unsafe {
@@ -31,28 +30,28 @@ namespace MonoTouchFixtures.CoreGraphics {
 		[Test]
 		public void Infinite ()
 		{
-			var r = GetRect ("CGRectInfinite");
-			Assert.False (r.IsEmpty, "IsEmpty");
-			Assert.False (r.IsNull (), "IsNull");
-			Assert.True (r.IsInfinite (), "IsInfinite");
+			var r = GetRect (Dlfcn.dlsym (Handle, "CGRectInfinite"));
+			Assert.That (r.IsEmpty, Is.False, "IsEmpty");
+			Assert.That (r.IsNull (), Is.False, "IsNull");
+			Assert.That (r.IsInfinite (), Is.True, "IsInfinite");
 		}
 
 		[Test]
 		public void Null ()
 		{
-			var r = GetRect ("CGRectNull");
-			Assert.True (r.IsEmpty, "IsEmpty");
-			Assert.True (r.IsNull (), "IsNull");
-			Assert.False (r.IsInfinite (), "IsInfinite");
+			var r = GetRect (Dlfcn.dlsym (Handle, "CGRectNull"));
+			Assert.That (r.IsEmpty, Is.True, "IsEmpty");
+			Assert.That (r.IsNull (), Is.True, "IsNull");
+			Assert.That (r.IsInfinite (), Is.False, "IsInfinite");
 		}
 
 		[Test]
 		public void Zero ()
 		{
-			var r = GetRect ("CGRectZero");
-			Assert.True (r.IsEmpty, "IsEmpty");
-			Assert.False (r.IsNull (), "IsNull");
-			Assert.False (r.IsInfinite (), "IsInfinite");
+			var r = GetRect (Dlfcn.dlsym (Handle, "CGRectZero"));
+			Assert.That (r.IsEmpty, Is.True, "IsEmpty");
+			Assert.That (r.IsNull (), Is.False, "IsNull");
+			Assert.That (r.IsInfinite (), Is.False, "IsInfinite");
 		}
 	}
 }

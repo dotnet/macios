@@ -3,9 +3,11 @@ using Mono.Cecil;
 using System.Collections.Generic;
 using System.Linq;
 
+#nullable enable
+
 namespace Mono.Linker {
 	public static class TypeReferenceExtensions {
-		public static TypeReference GetInflatedBaseType (this TypeReference type)
+		public static TypeReference? GetInflatedBaseType (this TypeReference type)
 		{
 			if (type is null)
 				return null;
@@ -30,7 +32,7 @@ namespace Mono.Linker {
 				var baseType = type.Resolve ()?.BaseType;
 				var baseTypeGenericInstance = baseType as GenericInstanceType;
 
-				if (baseTypeGenericInstance is not null)
+				if (baseTypeGenericInstance is not null && baseType is not null)
 					return InflateGenericType (genericInstance, baseType);
 
 				return baseType;

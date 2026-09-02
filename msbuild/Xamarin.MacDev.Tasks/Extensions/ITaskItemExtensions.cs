@@ -25,7 +25,7 @@ namespace Microsoft.Build.Framework {
 			var custom = item.CloneCustomMetadata ();
 			var rv = new Dictionary<string, string> (custom.Count, StringComparer.OrdinalIgnoreCase);
 			foreach (DictionaryEntry entry in custom)
-				rv [(string) entry.Key] = (string) entry.Value;
+				rv [(string) entry.Key] = (string) entry.Value!;
 			return rv;
 		}
 	}

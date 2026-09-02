@@ -26,9 +26,10 @@ namespace MySimpleApp {
 				Console.WriteLine ($"GCH: {gchandle}");
 				if (gchandle != IntPtr.Zero) {
 					var gch = GCHandle.FromIntPtr (gchandle);
-					var exc = (Exception) gch.Target;
+					var exc = gch.Target as Exception;
 					gch.Free ();
-					throw exc;
+					if (exc is not null)
+						throw exc;
 				}
 				return 1; // We're not supposed to get here
 			} catch (Exception e) {

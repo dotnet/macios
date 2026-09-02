@@ -1,5 +1,4 @@
 using System.Text.Json;
-using System.Xml.Linq;
 
 #nullable enable
 
@@ -238,14 +237,13 @@ namespace Xamarin.Tests {
 				InsertCodeToExitAppAfterLaunch (language, outputDir);
 
 				// Build the sample
-				SetRuntimeIdentifiers (properties, runtimeIdentifiers);
 				rv = DotNet.AssertBuild (proj, properties);
 
 				// There should still not be any warnings
 				warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).FilterWarnings (info.Platform).Select (v => v.Message);
 				Assert.That (warnings, Is.Empty, $"Build warnings (2):\n\t{string.Join ("\n\t", warnings)}");
 
-				var appPath = GetTemplateAppPath (proj, runtimeIdentifiers);
+				var appPath = GetAppPath (proj, platform, runtimeIdentifiers);
 				var appExecutable = GetNativeExecutable (platform, appPath);
 				ExecuteWithMagicWordAndAssert (appExecutable);
 			}
@@ -298,23 +296,16 @@ namespace Xamarin.Tests {
 				InsertCodeToExitAppAfterLaunch (language, outputDir);
 
 				// Build the sample
-				SetRuntimeIdentifiers (properties, runtimeIdentifiers);
 				rv = DotNet.AssertBuild (proj, properties);
 
 				// There should still not be any warnings
 				warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).FilterWarnings (platform).Select (v => v.Message);
 				Assert.That (warnings, Is.Empty, $"Build warnings (2):\n\t{string.Join ("\n\t", warnings)}");
 
-				var appPath = GetTemplateAppPath (proj, runtimeIdentifiers);
+				var appPath = GetAppPath (proj, platform, runtimeIdentifiers);
 				var appExecutable = GetNativeExecutable (platform, appPath);
 				ExecuteWithMagicWordAndAssert (appExecutable);
 			}
-		}
-
-		static string GetTemplateAppPath (string projectPath, string runtimeIdentifier)
-		{
-			var targetFramework = XDocument.Load (projectPath).Descendants ("TargetFramework").Single ().Value;
-			return Path.Combine (Path.GetDirectoryName (projectPath)!, "bin", "Debug", targetFramework, runtimeIdentifier, Path.GetFileNameWithoutExtension (projectPath) + ".app");
 		}
 
 		static void InsertCodeToExitAppAfterLaunch (TemplateLanguage language, string outputDir)

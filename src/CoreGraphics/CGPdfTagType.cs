@@ -12,8 +12,8 @@
 namespace CoreGraphics {
 
 	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("ios13.0")]
-	[SupportedOSPlatform ("tvos13.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	public static class CGPdfTagType_Extensions {
 

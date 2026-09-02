@@ -38,25 +38,27 @@ namespace AppKit {
 		Continues = -1002,
 	}
 
+	/// <summary>Specifies options for activating an application.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSApplicationActivationOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Activates the application using the default behavior.</summary>
 		Default = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Brings all the application's windows forward.</summary>
 		ActivateAllWindows = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Activates the application regardless of which application is currently active.</summary>
 		ActivateIgnoringOtherWindows = 2,
 	}
 
+	/// <summary>Specifies how an application participates in the user interface.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSApplicationActivationPolicy : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The application appears in the Dock and can have a menu bar.</summary>
 		Regular,
-		/// <summary>To be added.</summary>
+		/// <summary>The application does not appear in the Dock, but can present a user interface.</summary>
 		Accessory,
-		/// <summary>To be added.</summary>
+		/// <summary>The application does not appear in the Dock and cannot create windows or be activated.</summary>
 		Prohibited,
 	}
 
@@ -96,47 +98,51 @@ namespace AppKit {
 		DisableCursorLocationAssistance = (1 << 12),
 	}
 
+	/// <summary>Specifies the result of an application delegate operation.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSApplicationDelegateReply : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The operation completed successfully.</summary>
 		Success,
-		/// <summary>To be added.</summary>
+		/// <summary>The operation was canceled.</summary>
 		Cancel,
-		/// <summary>To be added.</summary>
+		/// <summary>The operation failed.</summary>
 		Failure,
 	}
 
+	/// <summary>Specifies the urgency of a request for the user's attention.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSRequestUserAttentionType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Requests the user's attention for a critical event.</summary>
 		CriticalRequest = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Requests the user's attention for an informational event.</summary>
 		InformationalRequest = 10,
 	}
 
+	/// <summary>Specifies how an application responds to a termination request.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSApplicationTerminateReply : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Cancels application termination.</summary>
 		Cancel,
-		/// <summary>To be added.</summary>
+		/// <summary>Terminates the application immediately.</summary>
 		Now,
-		/// <summary>To be added.</summary>
+		/// <summary>Defers the termination decision.</summary>
 		Later,
 	}
 
+	/// <summary>Specifies the result of an application print request.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSApplicationPrintReply : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The print request was canceled.</summary>
 		Cancelled,
-		/// <summary>To be added.</summary>
+		/// <summary>The print request completed successfully.</summary>
 		Success,
-		/// <summary>To be added.</summary>
+		/// <summary>The print request failed.</summary>
 		Failure,
-		/// <summary>To be added.</summary>
+		/// <summary>The application will reply after completing the print request asynchronously.</summary>
 		ReplyLater,
 	}
 
@@ -585,14 +591,15 @@ namespace AppKit {
 	#endregion
 
 	#region NSAlert
+	/// <summary>Specifies the visual style of an alert.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSAlertStyle : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Displays a warning alert.</summary>
 		Warning,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays an informational alert.</summary>
 		Informational,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays an alert for a critical condition.</summary>
 		Critical,
 	}
 
@@ -1477,27 +1484,29 @@ namespace AppKit {
 	#endregion
 	#region NSAnimation
 
+	/// <summary>Specifies the timing curve of an animation.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSAnimationCurve : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The animation accelerates at the beginning and decelerates at the end.</summary>
 		EaseInOut,
-		/// <summary>To be added.</summary>
+		/// <summary>The animation accelerates from a slow start.</summary>
 		EaseIn,
-		/// <summary>To be added.</summary>
+		/// <summary>The animation decelerates toward the end.</summary>
 		EaseOut,
-		/// <summary>To be added.</summary>
+		/// <summary>The animation proceeds at a constant rate.</summary>
 		Linear,
 	};
 
+	/// <summary>Specifies how an animation runs relative to the application.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSAnimationBlockingMode : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Runs the animation synchronously and blocks user interaction until it completes.</summary>
 		Blocking,
-		/// <summary>To be added.</summary>
+		/// <summary>Runs the animation asynchronously on the main thread while allowing user interaction.</summary>
 		Nonblocking,
-		/// <summary>To be added.</summary>
+		/// <summary>Runs the animation asynchronously on a separate thread.</summary>
 		NonblockingThreaded,
 	};
 	#endregion
@@ -1907,7 +1916,6 @@ namespace AppKit {
 		CurveTo,
 		/// <summary>To be added.</summary>
 		ClosePath,
-		[Mac (14, 0)]
 		QuadraticCurveTo,
 	}
 	#endregion
@@ -2727,7 +2735,6 @@ namespace AppKit {
 		Sidebar,
 		/// <summary>To be added.</summary>
 		ContentList,
-		[Mac (14, 0)]
 		Inspector,
 	}
 
@@ -3242,14 +3249,15 @@ namespace AppKit {
 		Version4_1Core = 0x4100,
 	}
 
+	/// <summary>Identifies which button dismissed an alert.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSAlertButtonReturn : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The first alert button.</summary>
 		First = 1000,
-		/// <summary>To be added.</summary>
+		/// <summary>The second alert button.</summary>
 		Second = 1001,
-		/// <summary>To be added.</summary>
+		/// <summary>The third alert button.</summary>
 		Third = 1002,
 	}
 
@@ -4596,7 +4604,7 @@ namespace AppKit {
 		Large = 3,
 	}
 
-	[NoMacCatalyst, Mac (13, 0)]
+	[NoMacCatalyst]
 	[Native]
 	public enum NSColorWellStyle : long {
 		Default = 0,
@@ -4604,14 +4612,14 @@ namespace AppKit {
 		Expanded,
 	}
 
-	[NoMacCatalyst, Mac (13, 0)]
+	[NoMacCatalyst]
 	[Native]
 	public enum NSComboButtonStyle : long {
 		Split = 0,
 		Unified = 1,
 	}
 
-	[NoMacCatalyst, Mac (14, 0)]
+	[NoMacCatalyst]
 	[Native]
 	public enum NSImageDynamicRange : long {
 		Unspecified = -1,
@@ -4620,7 +4628,7 @@ namespace AppKit {
 		High = 2,
 	}
 
-	[NoMacCatalyst, Mac (14, 0)]
+	[NoMacCatalyst]
 	[Native]
 	public enum NSMenuItemBadgeType : long {
 		None = 0,
@@ -4629,14 +4637,14 @@ namespace AppKit {
 		Alerts,
 	}
 
-	[NoMacCatalyst, Mac (14, 0)]
+	[NoMacCatalyst]
 	[Native]
 	public enum NSMenuPresentationStyle : long {
 		Regular = 0,
 		Palette = 1,
 	}
 
-	[NoMacCatalyst, Mac (14, 0)]
+	[NoMacCatalyst]
 	[Native]
 	public enum NSMenuSelectionMode : long {
 		Automatic = 0,
@@ -4644,21 +4652,21 @@ namespace AppKit {
 		SelectAny = 2,
 	}
 
-	[NoMacCatalyst, Mac (14, 0)]
+	[NoMacCatalyst]
 	[Native]
 	public enum NSPageLayoutResult : long {
 		Cancelled = 0,
 		Changed,
 	}
 
-	[NoMacCatalyst, Mac (14, 0)]
+	[NoMacCatalyst]
 	[Native]
 	public enum NSPrintPanelResult : long {
 		Cancelled = 0,
 		Printed,
 	}
 
-	[NoMacCatalyst, Mac (14, 0)]
+	[NoMacCatalyst]
 	[Native]
 	public enum NSTextCursorAccessoryPlacement : long {
 		Unspecified,
@@ -4672,7 +4680,7 @@ namespace AppKit {
 		OffscreenBottom,
 	}
 
-	[NoMacCatalyst, Mac (14, 0)]
+	[NoMacCatalyst]
 	[Native]
 	[Flags]
 	public enum NSTextInsertionIndicatorAutomaticModeOptions : long {
@@ -4680,7 +4688,7 @@ namespace AppKit {
 		WhileTracking = 1L << 1,
 	}
 
-	[NoMacCatalyst, Mac (14, 0)]
+	[NoMacCatalyst]
 	[Native]
 	public enum NSTextInsertionIndicatorDisplayMode : long {
 		Automatic = 0,

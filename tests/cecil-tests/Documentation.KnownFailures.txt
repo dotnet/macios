@@ -22350,7 +22350,6 @@ T:AppKit.LocalEventHandler
 T:AppKit.NSAboutPanelOption
 T:AppKit.NSAccessibilityActions
 T:AppKit.NSAccessibilityAnnotationAttributeKey
-T:AppKit.NSAccessibilityAnnotationPosition
 T:AppKit.NSAccessibilityAttributes
 T:AppKit.NSAccessibilityCustomRotorSearchDirection
 T:AppKit.NSAccessibilityCustomRotorType

@@ -4388,14 +4388,15 @@ namespace AppKit {
 		ErrorMaximum = 66335,
 	}
 
+	/// <summary>Specifies the position of an accessibility annotation within a range.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSAccessibilityAnnotationPosition : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The annotation applies to the entire range.</summary>
 		FullRange,
-		/// <summary>To be added.</summary>
+		/// <summary>The annotation applies to the start of the range.</summary>
 		Start,
-		/// <summary>To be added.</summary>
+		/// <summary>The annotation applies to the end of the range.</summary>
 		End,
 	}
 

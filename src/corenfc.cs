@@ -902,7 +902,7 @@ namespace CoreNFC {
 
 		[Abstract]
 		[Export ("readNDEFWithCompletionHandler:")]
-		void ReadNdef (Action<NFCNdefMessage, NSError?> completionHandler);
+		void ReadNdef (Action<NFCNdefMessage?, NSError?> completionHandler);
 
 		[Abstract]
 		[Export ("writeNDEF:completionHandler:")]

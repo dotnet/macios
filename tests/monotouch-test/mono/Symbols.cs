@@ -16,6 +16,7 @@ namespace MonoTouchFixtures {
 			bool nativeaot = symbols [1].Contains ("MonoTouchFixtures_Symbols__Collect");
 			bool llvmonly = symbols [1].Contains ("mono_llvmonly_runtime_invoke"); // LLVM inlines the Collect function, so 'Collect' doesn't show up in the stack trace :/
 			bool interp = false;
+			bool coreclr = false;
 
 			if (!aot) {
 				for (int i = 0; i < 5 && !interp; i++) {
@@ -23,10 +24,12 @@ namespace MonoTouchFixtures {
 					 * MONO_NEVER_INLINE, so they should show up in the backtrace
 					 * reliably */
 					interp |= symbols [i].Contains ("ves_pinvoke_method") || symbols [i].Contains ("do_icall");
+
+					coreclr |= symbols [i].Contains ("ExecuteInterpretedMethod");
 				}
 			}
 
-			Assert.IsTrue (aot || interp || llvmonly || nativeaot, $"#1\n\t{string.Join ("\n\t", symbols)}");
+			Assert.That (aot || interp || llvmonly || nativeaot || coreclr, Is.True, $"#1\n\t{string.Join ("\n\t", symbols)}");
 		}
 
 		void Collect ()

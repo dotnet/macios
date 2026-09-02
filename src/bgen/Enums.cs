@@ -260,6 +260,7 @@ public partial class Generator {
 				var fa = kvp.Value;
 				// the attributes (availability and field) are important for our tests
 				PrintPlatformAttributes (f);
+				PrintSimulatorAvailabilityAttributes (f);
 				string? libPath = null;
 				if (library_name is not null)
 					libraries.TryGetValue (library_name, out libPath);

@@ -25,7 +25,7 @@ namespace MonoTouchFixtures.UIKit {
 			TestRuntime.AssertSystemVersion (ApplePlatform.iOS, 8, 0, throwIfOtherPlatform: false);
 
 			UIAlertController ctrl = new UIAlertController (null, null);
-			Assert.NotNull (ctrl, "UIAlertController ctor(String, NSBundle)");
+			Assert.That (ctrl, Is.Not.Null, "UIAlertController ctor(String, NSBundle)");
 
 			ctrl.AddAction (new UIAlertAction ());
 			ctrl.AddAction (new UIAlertAction ());

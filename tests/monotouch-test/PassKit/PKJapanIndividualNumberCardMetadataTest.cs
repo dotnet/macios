@@ -24,8 +24,8 @@ namespace MonoTouchFixtures.PassKit {
 			using var img = new CGImage (0.0f, (int) frame.Width, (int) frame.Height, 8, 32, 4 * (int) frame.Width, colorSpace, CGBitmapFlags.ByteOrderDefault | CGBitmapFlags.Last, provider, null, false, CGColorRenderingIntent.Default);
 			using var preview = new PKAddPassMetadataPreview (img, "description");
 			using var obj = new PKJapanIndividualNumberCardMetadata ("credentialIdentifier", "sharingInstanceIdentifier", "cardTemplateIdentifier", preview, PKJapanIndividualNumberCardMetadataConstructorOption.CardTemplateIdentifier);
-			Assert.IsNull (obj.AuthenticationPassword, "AuthenticationPassword");
-			Assert.IsNull (obj.SigningPassword, "SigningPassword");
+			Assert.That (obj.AuthenticationPassword, Is.Null, "AuthenticationPassword");
+			Assert.That (obj.SigningPassword, Is.Null, "SigningPassword");
 			// There doesn't seem to be an easy way to verify that the ctor actually worked
 		}
 
@@ -39,8 +39,8 @@ namespace MonoTouchFixtures.PassKit {
 			using var img = new CGImage (0.0f, (int) frame.Width, (int) frame.Height, 8, 32, 4 * (int) frame.Width, colorSpace, CGBitmapFlags.ByteOrderDefault | CGBitmapFlags.Last, provider, null, false, CGColorRenderingIntent.Default);
 			using var preview = new PKAddPassMetadataPreview (img, "description");
 			using var obj = new PKJapanIndividualNumberCardMetadata ("credentialIdentifier", "sharingInstanceIdentifier", "cardConfigurationIdentifier", preview, PKJapanIndividualNumberCardMetadataConstructorOption.CardConfigurationIdentifier);
-			Assert.IsNull (obj.AuthenticationPassword, "AuthenticationPassword");
-			Assert.IsNull (obj.SigningPassword, "SigningPassword");
+			Assert.That (obj.AuthenticationPassword, Is.Null, "AuthenticationPassword");
+			Assert.That (obj.SigningPassword, Is.Null, "SigningPassword");
 			// There doesn't seem to be an easy way to verify that the ctor actually worked
 		}
 	}

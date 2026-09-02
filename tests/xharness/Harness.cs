@@ -44,7 +44,6 @@ namespace Xharness {
 		public string? SdkRoot { get; set; }
 		public TestTarget Target { get; set; }
 		public double TimeoutInMinutes { get; set; } = 15;
-		public bool UseSystemXamarinIOSMac { get; set; }
 		public int Verbosity { get; set; }
 		public XmlResultJargon XmlJargon { get; set; } = XmlResultJargon.NUnitV3;
 
@@ -198,12 +197,11 @@ namespace Xharness {
 
 		public List<TestProject> TestProjects { get; } = new ();
 
-		readonly bool useSystemXamarinIOSMac; // if the system XI/XM should be used, or the locally build XI/XM.
-
 		public bool INCLUDE_IOS { get; }
 		public bool INCLUDE_TVOS { get; }
 		public bool INCLUDE_MAC { get; }
 		public bool INCLUDE_MACCATALYST { get; }
+		public bool DOTNET_MONOVM_SUPPORTED { get; }
 		public string JENKINS_RESULTS_DIRECTORY { get; } // Use same name as in Makefiles, so that a grep finds it.
 		public string DOTNET_DIR { get; set; }
 		public string DOTNET_TFM { get; set; }
@@ -251,9 +249,6 @@ namespace Xharness {
 			PeriodicCommandInterval = configuration.PeriodicCommandInterval;
 			target = configuration.Target;
 			Timeout = configuration.TimeoutInMinutes;
-			useSystemXamarinIOSMac = configuration.UseSystemXamarinIOSMac;
-			if (!string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("TESTS_USE_SYSTEM")))
-				useSystemXamarinIOSMac = true;
 			Verbosity = configuration.Verbosity;
 			XmlJargon = configuration.XmlJargon;
 
@@ -273,6 +268,7 @@ namespace Xharness {
 			JENKINS_RESULTS_DIRECTORY = GetVariable (nameof (JENKINS_RESULTS_DIRECTORY)) ?? throw new Exception ($"Could not get the Jenkins results directory from the environment variable {nameof (JENKINS_RESULTS_DIRECTORY)}");
 			INCLUDE_MAC = IsVariableSet (nameof (INCLUDE_MAC));
 			INCLUDE_MACCATALYST = IsVariableSet (nameof (INCLUDE_MACCATALYST));
+			DOTNET_MONOVM_SUPPORTED = IsVariableSet (nameof (DOTNET_MONOVM_SUPPORTED));
 			DOTNET_DIR = GetVariable (nameof (DOTNET_DIR)) ?? throw new Exception ($"Could not get the .NET directory from the environment variable {nameof (DOTNET_DIR)}");
 			DOTNET_TFM = GetVariable (nameof (DOTNET_TFM)) ?? throw new Exception ($"Could not get the .NET TFM from the environment variable {nameof (DOTNET_TFM)}");
 
@@ -353,6 +349,13 @@ namespace Xharness {
 					ProjectPath = Path.GetFullPath (Path.Combine (HarnessConfiguration.RootDirectory, "cecil-tests", "cecil-tests.csproj")),
 					Name = "Cecil-based tests",
 					Timeout = (TimeSpan?) TimeSpan.FromMinutes (10),
+					Filter = "",
+				},
+				new {
+					Label = TestLabel.AssemblyProcessing,
+					ProjectPath = Path.GetFullPath (Path.Combine (HarnessConfiguration.RootDirectory, "assembly-preparer", "assembly-preparer-tests.csproj")),
+					Name = "Assembly processing tests",
+					Timeout = (TimeSpan?) TimeSpan.FromMinutes (30),
 					Filter = "",
 				},
 				new {
@@ -575,7 +578,7 @@ namespace Xharness {
 
 		IEnumerable<string> GetConfigFiles ()
 		{
-			return FindConfigFiles (useSystemXamarinIOSMac ? "test-system.config" : "test.config")
+			return FindConfigFiles ("test.config")
 				.Concat (FindConfigFiles ("configure.inc"))
 				.Concat (FindConfigFiles ("Make.config"))
 				.Concat (FindConfigFiles ("Make.config.local"))

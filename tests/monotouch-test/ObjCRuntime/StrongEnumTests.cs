@@ -34,14 +34,16 @@ namespace MonoTouchFixtures.ObjCRuntime {
 						continue;
 
 					foreach (var enumValue in Enum.GetValuesAsUnderlyingType (type)) {
-						var obj = getConstant.Invoke (null, new object [] { enumValue });
+						if (!TryInvoke (getConstant, enumValue, out var obj))
+							break;
 
 						if (valuesToSkip.Remove ((type, enumValue)))
 							continue;
 
 						if (obj is not null) {
-							var rtrip = getValue.Invoke (null, new object [] { obj });
-							Assert.AreEqual (Enum.ToObject (type, enumValue), rtrip, $"{type.FullName}.{enumValue}: Round trip failed: {enumValue}.GetConstant () -> {obj} but GetValue ({obj}) -> {rtrip}");
+							if (!TryInvoke (getValue, obj, out var rtrip))
+								break;
+							Assert.That (rtrip, Is.EqualTo (Enum.ToObject (type, enumValue)), $"{type.FullName}.{enumValue}: Round trip failed: {enumValue}.GetConstant () -> {obj} but GetValue ({obj}) -> {rtrip}");
 						}
 					}
 				}
@@ -50,6 +52,26 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				if (!TestRuntime.IsLinkAny)
 					Assert.That (valuesToSkip, Is.Empty, "All values to be skipped were actually skipped");
 			});
+		}
+
+		// Invokes a static method with a single argument. Returns false if there's no code for the method.
+		static bool TryInvoke (MethodInfo method, object argument, out object? result)
+		{
+#if NATIVEAOT
+			// ILC doesn't generate code for methods that aren't used, but monotouch-test keeps the metadata
+			// for every method ($(IlcTrimMetadata)=false, which NUnit requires), so reflection can find
+			// methods that can't be invoked. There's nothing to verify for those, so skip them.
+			try {
+				result = method.Invoke (null, new object [] { argument });
+				return true;
+			} catch (NotSupportedException) {
+				result = null;
+				return false;
+			}
+#else
+			result = method.Invoke (null, new object [] { argument });
+			return true;
+#endif
 		}
 
 		(Type EnumType, object UnderlyingValue) [] GetSkippedEnumValues ()

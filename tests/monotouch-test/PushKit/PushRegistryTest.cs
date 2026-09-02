@@ -22,13 +22,13 @@ namespace MonoTouchFixtures.PushKit {
 
 			using (var dq = new DispatchQueue ("pk-test-queue"))
 			using (var pr = new PKPushRegistry (dq)) {
-				Assert.Null (pr.Delegate, "Delegate");
-				Assert.Null (pr.DesiredPushTypes, "DesiredPushTypes");
-				Assert.Null (pr.WeakDelegate, "WeakDelegate");
+				Assert.That (pr.Delegate, Is.Null, "Delegate");
+				Assert.That (pr.DesiredPushTypes, Is.Null, "DesiredPushTypes");
+				Assert.That (pr.WeakDelegate, Is.Null, "WeakDelegate");
 
 				// it's nullable (setting a value needs more app setup or ObjC exceptions will occurs later)
 				pr.DesiredPushTypes = null;
-				Assert.Null (pr.DesiredPushTypes, "DesiredPushTypes-2");
+				Assert.That (pr.DesiredPushTypes, Is.Null, "DesiredPushTypes-2");
 			}
 		}
 	}

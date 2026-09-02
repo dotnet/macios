@@ -42,7 +42,7 @@ namespace MonoTouchFixtures.ImageIO {
 				Assert.That (tag.Prefix.ToString (), Is.EqualTo ("exif"), "Prefix");
 				Assert.That (tag.Type, Is.EqualTo (CGImageMetadataType.String), "Type");
 				Assert.That (tag.Value.ToString (), Is.EqualTo ("value"), "Value");
-				Assert.Null (tag.GetQualifiers (), "GetQualifiers");
+				Assert.That (tag.GetQualifiers (), Is.Null, "GetQualifiers");
 			}
 		}
 
@@ -58,7 +58,7 @@ namespace MonoTouchFixtures.ImageIO {
 				Assert.That (tag.Prefix.ToString (), Is.EqualTo ("exif"), "Prefix");
 				Assert.That (tag.Type, Is.EqualTo (CGImageMetadataType.String), "Type");
 				Assert.That (tag.Value.ToString (), Is.EqualTo ("255"), "Value");
-				Assert.Null (tag.GetQualifiers (), "GetQualifiers");
+				Assert.That (tag.GetQualifiers (), Is.Null, "GetQualifiers");
 			}
 		}
 
@@ -75,7 +75,7 @@ namespace MonoTouchFixtures.ImageIO {
 				Assert.That (tag.Type, Is.EqualTo (CGImageMetadataType.ArrayOrdered), "Type");
 				// an NSArray before iOS 10, NSMutableArray then
 				Assert.That (tag.Value, Is.InstanceOf<NSArray> (), "Value");
-				Assert.Null (tag.GetQualifiers (), "GetQualifiers");
+				Assert.That (tag.GetQualifiers (), Is.Null, "GetQualifiers");
 			}
 		}
 
@@ -95,7 +95,7 @@ namespace MonoTouchFixtures.ImageIO {
 				} else {
 					Assert.That (tag.Value, Is.TypeOf<NSMutableDictionary> (), "Value");
 				}
-				Assert.Null (tag.GetQualifiers (), "GetQualifiers");
+				Assert.That (tag.GetQualifiers (), Is.Null, "GetQualifiers");
 			}
 		}
 
@@ -112,7 +112,7 @@ namespace MonoTouchFixtures.ImageIO {
 				Assert.That (tag.Prefix.ToString (), Is.EqualTo ("exif"), "Prefix");
 				Assert.That (tag.Type, Is.EqualTo (CGImageMetadataType.String), "Type");
 				Assert.That (tag.Value.ToString (), Is.EqualTo ("True"), "Value");
-				Assert.Null (tag.GetQualifiers (), "GetQualifiers");
+				Assert.That (tag.GetQualifiers (), Is.Null, "GetQualifiers");
 			}
 		}
 
@@ -130,7 +130,7 @@ namespace MonoTouchFixtures.ImageIO {
 				Assert.That (tag.Prefix.ToString (), Is.EqualTo ("exif"), "Prefix");
 				Assert.That (tag.Type, Is.EqualTo (CGImageMetadataType.String), "Type");
 				Assert.That (tag.Value.ToString (), Is.EqualTo ("False"), "Value");
-				Assert.Null (tag.GetQualifiers (), "GetQualifiers");
+				Assert.That (tag.GetQualifiers (), Is.Null, "GetQualifiers");
 			}
 		}
 	}

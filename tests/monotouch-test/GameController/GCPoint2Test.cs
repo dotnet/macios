@@ -48,8 +48,8 @@ namespace MonoTouchFixtures.GameController {
 				Assert.That (x, Is.EqualTo ((nfloat) 3), "X#5");
 				Assert.That (y, Is.EqualTo ((nfloat) 4), "Y#5");
 
-				Assert.AreEqual (pnt.ToString (), "{3, 4}", "ToString A");
-				Assert.AreEqual (GCPoint2.Zero.ToString (), "{0, 0}", "ToString B");
+				Assert.That (pnt.ToString (), Is.EqualTo ("{3, 4}"), "ToString A");
+				Assert.That (GCPoint2.Zero.ToString (), Is.EqualTo ("{0, 0}"), "ToString B");
 			});
 		}
 	}

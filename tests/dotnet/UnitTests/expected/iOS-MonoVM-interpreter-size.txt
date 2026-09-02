@@ -1,14 +1,22 @@
-AppBundleSize: 3,602,372 bytes (3,517.9 KB = 3.4 MB)
+AppBundleSize: 3,658,978 bytes (3,573.2 KB = 3.5 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
-_CodeSignature/CodeResources: 3,997 bytes (3.9 KB = 0.0 MB)
-archived-expanded-entitlements.xcent: 384 bytes (0.4 KB = 0.0 MB)
-Info.plist: 1,154 bytes (1.1 KB = 0.0 MB)
-Microsoft.iOS.dll: 154,112 bytes (150.5 KB = 0.1 MB)
-PkgInfo: 8 bytes (0.0 KB = 0.0 MB)
-runtimeconfig.bin: 1,405 bytes (1.4 KB = 0.0 MB)
-SizeTestApp: 2,390,848 bytes (2,334.8 KB = 2.3 MB)
-SizeTestApp.dll: 7,680 bytes (7.5 KB = 0.0 MB)
-System.Private.CoreLib.aotdata.arm64: 41,312 bytes (40.3 KB = 0.0 MB)
-System.Private.CoreLib.dll: 988,160 bytes (965.0 KB = 0.9 MB)
-System.Runtime.dll: 5,120 bytes (5.0 KB = 0.0 MB)
-System.Runtime.InteropServices.dll: 8,192 bytes (8.0 KB = 0.0 MB)
+Info.plist:
+    1,189 bytes (1.2 KB = 0.0 MB)
+Microsoft.iOS.dll:
+    153,600 bytes (150.0 KB = 0.1 MB)
+PkgInfo:
+    8 bytes (0.0 KB = 0.0 MB)
+runtimeconfig.bin:
+    1,405 bytes (1.4 KB = 0.0 MB)
+SizeTestApp:
+    2,369,336 bytes (2,313.8 KB = 2.3 MB)
+SizeTestApp.dll:
+    7,168 bytes (7.0 KB = 0.0 MB)
+System.Private.CoreLib.aotdata.arm64:
+    41,856 bytes (40.9 KB = 0.0 MB)
+System.Private.CoreLib.dll:
+    1,074,688 bytes (1,049.5 KB = 1.0 MB)
+System.Runtime.dll:
+    5,120 bytes (5.0 KB = 0.0 MB)
+System.Runtime.InteropServices.dll:
+    4,608 bytes (4.5 KB = 0.0 MB)

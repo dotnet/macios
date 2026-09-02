@@ -10,15 +10,15 @@ namespace Xamarin.Mac.Tests {
 		{
 			const string TestLabel = "NSToolbarItemTests.Label";
 			NSToolbarItem item = new NSToolbarItem ();
-			Assert.IsNotNull (item.Handle, "NSToolbarItem has handle");
+			Assert.That (item.Handle, Is.Not.Null, "NSToolbarItem has handle");
 			item.Label = TestLabel;
-			Assert.AreEqual (item.Label, TestLabel, "NSToolbarItem has non null Label");
+			Assert.That (TestLabel, Is.EqualTo (item.Label), "NSToolbarItem has non null Label");
 
 			NSToolbarItemGroup group = new NSToolbarItemGroup ();
-			Assert.IsNotNull (group.Handle, "NSToolbarItemGroup has handle");
-			Assert.AreEqual (group.Subitems.Length, 0, "NSToolbarItemGroup has zero items");
+			Assert.That (group.Handle, Is.Not.Null, "NSToolbarItemGroup has handle");
+			Assert.That (group.Subitems.Length, Is.EqualTo (0), "NSToolbarItemGroup has zero items");
 			group.Label = TestLabel;
-			Assert.AreEqual (group.Label, TestLabel, "NSToolbarItemGroup has non null Label");
+			Assert.That (TestLabel, Is.EqualTo (group.Label), "NSToolbarItemGroup has non null Label");
 		}
 	}
 }

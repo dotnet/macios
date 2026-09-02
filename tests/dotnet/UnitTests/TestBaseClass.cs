@@ -133,6 +133,9 @@ namespace Xamarin.Tests {
 
 		protected static string GetProjectPath (string project, string? subdir = null, ApplePlatform? platform = null)
 		{
+			if (TryGetTestProjectPath (project, platform ?? ApplePlatform.None, out var testProjectPath))
+				return testProjectPath;
+
 			var project_dir = Path.Combine (Configuration.SourceRoot, "tests", "dotnet", project);
 			if (!string.IsNullOrEmpty (subdir))
 				project_dir = Path.Combine (project_dir, subdir);
@@ -152,6 +155,18 @@ namespace Xamarin.Tests {
 				throw new FileNotFoundException ($"Could not find the project or solution {project} - {project_path} does not exist.");
 
 			return project_path;
+		}
+
+		static bool TryGetTestProjectPath (string project, ApplePlatform platform, [NotNullWhen (true)] out string? projectPath)
+		{
+			projectPath = null;
+
+			switch (project) {
+			case "monotouch-test":
+				projectPath = Path.Combine (Configuration.SourceRoot, "tests", project, "dotnet", platform.AsString (), project + ".csproj");
+				return true;
+			}
+			return false;
 		}
 
 		protected string GetPlugInsRelativePath (ApplePlatform platform)
@@ -281,8 +296,16 @@ namespace Xamarin.Tests {
 			foreach (var assembly in assemblies) {
 				ModuleDefinition definition = ModuleDefinition.ReadModule (assembly, new ReaderParameters { ReadingMode = ReadingMode.Deferred });
 
+				// ReadyToRun images (produced by crossgen2) are marked as an IL library instead of IL-only,
+				// and the IL bodies of their R2R-compiled methods may have been removed (the .NET SDK enables
+				// PublishReadyToRunStripILBodies by default for iOS-like RIDs in release builds). Such methods
+				// still contain code (as native code) and weren't emptied by our own IL stripper, but their
+				// (removed) IL bodies can't be inspected with Mono.Cecil, so don't try - treat any method with
+				// a body as non-empty.
+				var isReadyToRunImage = (definition.Attributes & ModuleAttributes.ILOnly) == 0;
+
 				var nonEmptyMethods = definition.Assembly.MainModule.Types.SelectMany (t =>
-					t.Methods.Where (m => m.HasBody && m.Body.Instructions.Count > 1)).ToArray ();
+					t.Methods.Where (m => m.HasBody && (isReadyToRunImage || m.Body.Instructions.Count > 1))).ToArray ();
 				var onlyHasEmptyMethods = !nonEmptyMethods.Any ();
 				if (onlyHasEmptyMethods) {
 					assembliesWithOnlyEmptyMethods.Add (assembly);
@@ -465,6 +488,8 @@ namespace Xamarin.Tests {
 			if (!File.Exists (executable))
 				throw new FileNotFoundException ($"The executable '{executable}' does not exists.");
 
+			DeleteSavedState (executable);
+
 			magicWord = Guid.NewGuid ().ToString ();
 			var env = new Dictionary<string, string?> {
 				{ "MAGIC_WORD", magicWord },
@@ -477,7 +502,53 @@ namespace Xamarin.Tests {
 
 			var rv = Execution.RunAsync (executable, Array.Empty<string> (), environment: env, timeout: TimeSpan.FromSeconds (30)).Result;
 			output = rv.Output.MergedOutput;
+
+			DeleteSavedState (executable);
+
 			return rv;
+		}
+
+		// Delete the saved application state for the app being launched, to prevent
+		// the "Do you want to try to reopen its windows again?" dialog from showing
+		// if the app crashed during a previous test run. See https://github.com/dotnet/macios/issues/25922
+		static void DeleteSavedState (string executable)
+		{
+			// Find the .app bundle directory from the executable path
+			var dir = Path.GetDirectoryName (executable);
+			while (!string.IsNullOrEmpty (dir) && !dir.EndsWith (".app", StringComparison.OrdinalIgnoreCase))
+				dir = Path.GetDirectoryName (dir);
+
+			if (string.IsNullOrEmpty (dir))
+				return;
+
+			// Read the bundle identifier from Info.plist
+			string? bundleIdentifier = null;
+			var infoPlistPath = Path.Combine (dir, "Contents", "Info.plist");
+			if (!File.Exists (infoPlistPath))
+				infoPlistPath = Path.Combine (dir, "Info.plist");
+			if (!File.Exists (infoPlistPath))
+				return;
+
+			try {
+				var infoPlist = PDictionary.OpenFile (infoPlistPath);
+				bundleIdentifier = infoPlist.GetString ("CFBundleIdentifier")?.Value;
+			} catch (Exception e) {
+				Console.WriteLine ($"Could not read bundle identifier from '{infoPlistPath}': {e.Message}");
+				return;
+			}
+
+			if (string.IsNullOrEmpty (bundleIdentifier))
+				return;
+
+			var savedStateDir = Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.UserProfile), "Library", "Saved Application State", $"{bundleIdentifier}.savedState");
+			try {
+				if (Directory.Exists (savedStateDir)) {
+					Directory.Delete (savedStateDir, true);
+					Console.WriteLine ($"Deleted saved application state: {savedStateDir}");
+				}
+			} catch (Exception e) {
+				Console.WriteLine ($"Could not delete saved application state '{savedStateDir}': {e.Message}");
+			}
 		}
 
 		public static StringBuilder AssertExecute (string executable, params string [] arguments)
@@ -492,7 +563,7 @@ namespace Xamarin.Tests {
 				Console.WriteLine ($"'{executable} {StringUtils.FormatArguments (arguments)}' exited with exit code {rv}:");
 				Console.WriteLine ("\t" + output.ToString ().Replace ("\n", "\n\t").TrimEnd (new char [] { '\n', '\t' }));
 			}
-			Assert.AreEqual (0, rv, $"Unable to execute '{executable} {StringUtils.FormatArguments (arguments)}': exit code {rv}");
+			Assert.That (rv, Is.EqualTo (0), $"Unable to execute '{executable} {StringUtils.FormatArguments (arguments)}': exit code {rv}");
 			return output;
 		}
 
@@ -528,9 +599,9 @@ namespace Xamarin.Tests {
 				nativeExecutable
 			};
 			var rv = ExecutionHelper.Execute ("codesign", args, out var codesignOutput, TimeSpan.FromSeconds (15));
-			Assert.AreEqual (0, rv, $"'codesign {string.Join (" ", args)}' failed:\n{codesignOutput}");
+			Assert.That (rv, Is.EqualTo (0), $"'codesign {string.Join (" ", args)}' failed:\n{codesignOutput}");
 			if (File.Exists (entitlementsPath)) {
-				entitlements = PDictionary.FromFile (entitlementsPath);
+				entitlements = PDictionary.OpenFile (entitlementsPath);
 				return entitlements is not null;
 			}
 			entitlements = null;
@@ -607,9 +678,27 @@ namespace Xamarin.Tests {
 
 		public void AssertThatLinkerExecuted (ExecutionResult result)
 		{
+			var targets = BinLog.GetAllTargets (result.BinLogPath);
+			if (AreAssembliesPreparedAndPostProcessed (targets)) {
+				// The assembly preparer and post-processor did the work our custom trimmer steps
+				// would otherwise have done, in which case the trimmer might not even run (that's
+				// the case when we're not trimming anything).
+				return;
+			}
+
 			var output = BinLog.PrintToString (result.BinLogPath);
 			Assert.That (output, Does.Contain ("Building target \"_RunILLink\" completely."), "Linker did not executed as expected.");
 			Assert.That (output, Does.Contain ("LinkerConfiguration:"), "Custom steps did not run as expected.");
+		}
+
+		// Our custom trimmer steps aren't executed when the assembly preparer prepares the assemblies
+		// before the trimmer runs, and post-processes them afterwards, because then those two passes
+		// do all the work instead.
+		static bool AreAssembliesPreparedAndPostProcessed (IEnumerable<TargetExecutionResult> targets)
+		{
+			var prepared = targets.Any (v => v.TargetName == "_PrepareAssemblies" && !v.Skipped);
+			var postProcessed = targets.Any (v => (v.TargetName == "_PostprocessAssemblies" || v.TargetName == "_PostprocessAssembliesAfterIlc") && !v.Skipped);
+			return prepared && postProcessed;
 		}
 
 		public void AssertThatLinkerDidNotExecute (ExecutionResult result)

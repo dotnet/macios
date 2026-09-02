@@ -43,15 +43,15 @@ namespace MonoTouchFixtures.Network {
 			message.SetObject ("test", storedValue);
 
 			var result = message.GetObject<NSNumber> ("test");
-			Assert.IsNotNull (result, "Null");
-			Assert.AreEqual (storedValue, result, "Equal");
+			Assert.That (result, Is.Not.Null, "Null");
+			Assert.That (result, Is.EqualTo (storedValue), "Equal");
 		}
 
 		[Test]
 		public void TestGetObjectMissingKey ()
 		{
 			var result = message.GetObject<NSNumber> ("test");
-			Assert.IsNull (result, "Null");
+			Assert.That (result, Is.Null, "Null");
 		}
 
 		[Test]
@@ -64,9 +64,9 @@ namespace MonoTouchFixtures.Network {
 			ReadOnlySpan<byte> outData;
 			var found = message.GetData ("test", data.Length, out outData);
 
-			Assert.IsTrue (found, "Found");
-			Assert.AreEqual (data.Length, outData.Length, "Legth");
-			Assert.AreEqual (dataString, Encoding.UTF8.GetString (outData), "Equal");
+			Assert.That (found, Is.True, "Found");
+			Assert.That (outData.Length, Is.EqualTo (data.Length), "Legth");
+			Assert.That (Encoding.UTF8.GetString (outData), Is.EqualTo (dataString), "Equal");
 		}
 
 		[Test]
@@ -74,8 +74,8 @@ namespace MonoTouchFixtures.Network {
 		{
 			ReadOnlySpan<byte> outData;
 			var found = message.GetData ("test", 23, out outData);
-			Assert.IsFalse (found, "Found");
-			Assert.AreEqual (0, outData.Length, "Length");
+			Assert.That (found, Is.False, "Found");
+			Assert.That (outData.Length, Is.EqualTo (0), "Length");
 		}
 	}
 }

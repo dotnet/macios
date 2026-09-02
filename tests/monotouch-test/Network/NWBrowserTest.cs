@@ -37,9 +37,9 @@ namespace MonoTouchFixtures.Network {
 		public void TestConstructorNullParameters ()
 		{
 			using (var otherBrowser = new NWBrowser (descriptor)) {
-				Assert.IsNotNull (otherBrowser.Descriptor, "Descriptor");
+				Assert.That (otherBrowser.Descriptor, Is.Not.Null, "Descriptor");
 				// we expect the default parameters
-				Assert.IsNotNull (otherBrowser.Parameters, "Parameters");
+				Assert.That (otherBrowser.Parameters, Is.Not.Null, "Parameters");
 			}
 		}
 
@@ -49,11 +49,11 @@ namespace MonoTouchFixtures.Network {
 		[Test]
 		public void TestStart ()
 		{
-			Assert.IsFalse (browser.IsActive, "Idle");
+			Assert.That (browser.IsActive, Is.False, "Idle");
 			browser.Start ();
-			Assert.IsTrue (browser.IsActive, "Active");
+			Assert.That (browser.IsActive, Is.True, "Active");
 			browser.Cancel ();
-			Assert.IsFalse (browser.IsActive, "Cancel");
+			Assert.That (browser.IsActive, Is.False, "Cancel");
 		}
 
 		[Test]
@@ -153,7 +153,7 @@ namespace MonoTouchFixtures.Network {
 							log ($"listener.SetStateChangedHandler ({s}, {e} (ErrorCode = {e?.ErrorCode}, ErrorDomain = {e?.ErrorDomain}, CFError: {e?.CFError}, CFError.FailureReason: {e?.CFError?.FailureReason}))");
 						});
 						listener.Start ();
-						Assert.IsTrue (changesEvent.Wait (30000), $"changesEvent.Wait (){printLog ()}");
+						Assert.That (changesEvent.Wait (30000), Is.True, $"changesEvent.Wait (){printLog ()}");
 						listener.Cancel ();
 						listeningDone = true;
 						finalEvent.Set ();
@@ -169,17 +169,17 @@ namespace MonoTouchFixtures.Network {
 				Assert.Ignore ("This test requires access to the local network, and this has not been granted.");
 			}
 
-			Assert.IsNull (browserErrorState, "Ready Error");
+			Assert.That (browserErrorState, Is.Null, "Ready Error");
 			Assert.That (state, Is.EqualTo (NWBrowserState.Ready), "NWBrowserState");
 
 			Assert.That (finishedBeforeTimeout, Is.True, $"RunAsync timeout{printLog ()}");
 			Assert.That (finalEvent.WaitOne (30000), Is.True, $"Final event{printLog ()}");
-			Assert.IsNull (browserErrorState?.CFError, $"Error.CFError{printLog ()}");
-			Assert.IsNull (browserErrorState, $"Error{printLog ()}");
-			Assert.IsTrue (listeningDone, $"listeningDone{printLog ()}");
-			Assert.IsNull (ex, $"Exception{printLog ()}");
-			Assert.IsTrue (didRun, $"didRan{printLog ()}");
-			Assert.IsTrue (receivedNotNullChange, $"receivedNotNullChange{printLog ()}");
+			Assert.That (browserErrorState?.CFError, Is.Null, $"Error.CFError{printLog ()}");
+			Assert.That (browserErrorState, Is.Null, $"Error{printLog ()}");
+			Assert.That (listeningDone, Is.True, $"listeningDone{printLog ()}");
+			Assert.That (ex, Is.Null, $"Exception{printLog ()}");
+			Assert.That (didRun, Is.True, $"didRan{printLog ()}");
+			Assert.That (receivedNotNullChange, Is.True, $"receivedNotNullChange{printLog ()}");
 			log ($"about to cancel...");
 			browser.Cancel ();
 			log ($"cancelled...");

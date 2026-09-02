@@ -23,10 +23,10 @@ namespace MonoTouchFixtures.Network {
 		public void TearDown () => manager?.Dispose ();
 
 		[Test]
-		public void TestEndpointProperty () => Assert.IsNotNull (connection.Endpoint);
+		public void TestEndpointProperty () => Assert.That (connection.Endpoint, Is.Not.Null);
 
 		[Test]
-		public void TestParametersProperty () => Assert.IsNotNull (connection.Parameters);
+		public void TestParametersProperty () => Assert.That (connection.Parameters, Is.Not.Null);
 
 		[Test]
 		public void TestSetQPropertyNull () => Assert.Throws<ArgumentNullException> (() => connection.SetQueue (null));
@@ -44,10 +44,10 @@ namespace MonoTouchFixtures.Network {
 				}
 			});
 			connection.Cancel ();
-			Assert.IsTrue (cancelled.WaitOne (3000), "Cancelled");
+			Assert.That (cancelled.WaitOne (3000), Is.True, "Cancelled");
 			connection.Cancel ();
 			// lib should ignore the second call
-			Assert.IsFalse (cancelled.WaitOne (3000));
+			Assert.That (cancelled.WaitOne (3000), Is.False);
 		}
 
 		[Test]
@@ -64,10 +64,10 @@ namespace MonoTouchFixtures.Network {
 				}
 			});
 			connection.ForceCancel ();
-			Assert.IsTrue (cancelled.WaitOne (3000), "Cancelled");
+			Assert.That (cancelled.WaitOne (3000), Is.True, "Cancelled");
 			connection.ForceCancel ();
 			// lib should ignore the second call
-			Assert.IsFalse (cancelled.WaitOne (3000));
+			Assert.That (cancelled.WaitOne (3000), Is.False);
 		}
 	}
 
@@ -138,7 +138,7 @@ namespace MonoTouchFixtures.Network {
 					}
 				});
 				connection.Start ();
-				Assert.True (connectedEvent.WaitOne (20000), "Connection timed out.");
+				Assert.That (connectedEvent.WaitOne (20000), Is.True, "Connection timed out.");
 				Assert.That (e, Is.Null, "No exception");
 				return connection;
 			}

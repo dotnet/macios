@@ -3,7 +3,7 @@
 	<Target
 		Name="_PrepareRunDesktop"
 		BeforeTargets="ComputeRunArguments"
-		DependsOnTargets="_ValidateHotReloadConfiguration"
+		DependsOnTargets="_ValidateHotReloadConfiguration;_GenerateBundleName"
 		Condition="'$(SdkIsDesktop)' == 'true'">
 
 		<!--
@@ -15,11 +15,52 @@
 		<ItemGroup>
 			<_DotNetWatchVariable Include="@(RuntimeEnvironmentVariable)" Condition="'%(Identity)' == 'DOTNET_WATCH' And '%(Value)' == '1'" />
 		</ItemGroup>
+		<!-- The new WaitForExit property takes precedence over OpenWaitForExit -->
+		<PropertyGroup Condition="'$(WaitForExit)' != ''">
+			<OpenWaitForExit>$(WaitForExit)</OpenWaitForExit>
+		</PropertyGroup>
 		<PropertyGroup Condition="'$(RunWithOpen)' != 'false' And '@(_DotNetWatchVariable->Count())' == '1'">
 			<_IsDotNetWatch>true</_IsDotNetWatch>
 			<OpenNewInstance Condition="'$(OpenNewInstance)' == ''">true</OpenNewInstance>
 			<OpenWaitForExit Condition="'$(OpenWaitForExit)' == ''">true</OpenWaitForExit>
 		</PropertyGroup>
+
+		<!-- Read the bundle identifier from the Info.plist -->
+		<ReadAppManifest
+			Condition="'$(IsMacEnabled)' == 'true' And '@(_DotNetWatchVariable)' != '' And '$(_BundleIdentifier)' == ''"
+			AppManifest="$(_AppBundleManifestPath)"
+			DisableMinimumOSVersion="true"
+			>
+			<Output TaskParameter="CFBundleIdentifier" PropertyName="_BundleIdentifier" />
+		</ReadAppManifest>
+
+		<Error Message="Could not find the CFBundleIdentifier value in the app's Info.plist." Condition="'$(IsMacEnabled)' == 'true' And '@(_DotNetWatchVariable)' != '' And '$(_BundleIdentifier)' == ''" />
+
+		<!--
+			'dotnet watch' sets DOTNET_STARTUP_HOOKS to a path outside the app's sandbox,
+			which sandboxed apps can't access. Copy the startup hook into the app's sandbox
+			container directory so the app can load it.
+		-->
+		<ItemGroup Condition="'@(_DotNetWatchVariable)' != ''">
+			<_StartupHooksVariable Include="@(RuntimeEnvironmentVariable)" Condition="'%(Identity)' == 'DOTNET_STARTUP_HOOKS'" />
+		</ItemGroup>
+		<PropertyGroup Condition="'@(_StartupHooksVariable)' != ''">
+			<_StartupHooksPath>@(_StartupHooksVariable->'%(Value)')</_StartupHooksPath>
+			<_StartupHooksFilename>$([System.IO.Path]::GetFileName('$(_StartupHooksPath)'))</_StartupHooksFilename>
+			<_StartupHooksContainerDir>$(HOME)/Library/Containers/$(_BundleIdentifier)/Data/tmp/</_StartupHooksContainerDir>
+		</PropertyGroup>
+		<MakeDir Directories="$(_StartupHooksContainerDir)" Condition="'$(_StartupHooksContainerDir)' != ''" />
+		<Copy
+			SourceFiles="$(_StartupHooksPath)"
+			DestinationFolder="$(_StartupHooksContainerDir)"
+			Condition="'$(_StartupHooksContainerDir)' != ''"
+		/>
+		<ItemGroup Condition="'$(_StartupHooksContainerDir)' != ''">
+			<RuntimeEnvironmentVariable Remove="DOTNET_STARTUP_HOOKS" />
+			<RuntimeEnvironmentVariable Include="DOTNET_STARTUP_HOOKS">
+				<Value>$(_StartupHooksContainerDir)$(_StartupHooksFilename)</Value>
+			</RuntimeEnvironmentVariable>
+		</ItemGroup>
 		<Exec
 			Command="tty"
 			Condition="'$(StandardOutputPath)' == '' Or '$(StandardErrorPath)' == ''"

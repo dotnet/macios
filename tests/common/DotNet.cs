@@ -27,25 +27,27 @@ namespace Xamarin.Tests {
 
 		public static ExecutionResult AssertPack (string project, Dictionary<string, string>? properties = null, bool? msbuildParallelism = null)
 		{
+			IgnoreIfUnsupportedMonoRuntime (properties);
 			return Execute ("pack", project, properties, true, msbuildParallelism: msbuildParallelism);
 		}
 
 		public static ExecutionResult AssertPackFailure (string project, Dictionary<string, string>? properties = null, bool? msbuildParallelism = null)
 		{
 			var rv = Execute ("pack", project, properties, false, msbuildParallelism: msbuildParallelism);
-			Assert.AreNotEqual (0, rv.ExitCode, "Unexpected success");
+			Assert.That (rv.ExitCode, Is.Not.EqualTo (0), "Unexpected success");
 			return rv;
 		}
 
 		public static ExecutionResult AssertPublish (string project, Dictionary<string, string>? properties = null)
 		{
+			IgnoreIfUnsupportedMonoRuntime (properties);
 			return Execute ("publish", project, properties, true);
 		}
 
 		public static ExecutionResult AssertPublishFailure (string project, Dictionary<string, string>? properties = null)
 		{
 			var rv = Execute ("publish", project, properties, false);
-			Assert.AreNotEqual (0, rv.ExitCode, "Unexpected success");
+			Assert.That (rv.ExitCode, Is.Not.EqualTo (0), "Unexpected success");
 			return rv;
 		}
 
@@ -61,7 +63,29 @@ namespace Xamarin.Tests {
 
 		public static ExecutionResult AssertBuild (string project, Dictionary<string, string>? properties = null, string? target = null, TimeSpan? timeout = null)
 		{
+			IgnoreIfUnsupportedMonoRuntime (properties);
 			return Execute ("build", project, properties, true, target: target, timeout: timeout);
+		}
+
+		static void IgnoreIfUnsupportedMonoRuntime (Dictionary<string, string>? properties)
+		{
+			if (properties is null)
+				return;
+			if (!properties.TryGetValue ("UseMonoRuntime", out var useMonoRuntime))
+				return;
+			var usingMonoRuntime = string.Equals (useMonoRuntime, "true", StringComparison.OrdinalIgnoreCase);
+			IgnoreIfUnsupportedMonoRuntime (usingMonoRuntime);
+			if (usingMonoRuntime)
+				properties ["_DisableCheckForUnsupportedMonoMobileRuntime"] = "true";
+		}
+
+		public static void IgnoreIfUnsupportedMonoRuntime (bool useMonoRuntime)
+		{
+			if (!useMonoRuntime)
+				return;
+			if (Configuration.dotnet_monovm_supported)
+				return;
+			Assert.Ignore ("Mono is not supported");
 		}
 
 		public static ExecutionResult AssertRun (string project, Dictionary<string, string>? properties = null, TimeSpan? timeout = null, Dictionary<string, string>? environmentVariables = null)
@@ -73,7 +97,7 @@ namespace Xamarin.Tests {
 		public static ExecutionResult AssertBuildFailure (string project, Dictionary<string, string>? properties = null)
 		{
 			var rv = Execute ("build", project, properties, false);
-			Assert.AreNotEqual (0, rv.ExitCode, "Unexpected success");
+			Assert.That (rv.ExitCode, Is.Not.EqualTo (0), "Unexpected success");
 			return rv;
 		}
 
@@ -107,9 +131,9 @@ namespace Xamarin.Tests {
 			if (rv.ExitCode != 0) {
 				Console.WriteLine ($"'{Executable} {StringUtils.FormatArguments (args)}' failed with exit code {rv.ExitCode}.");
 				Console.WriteLine (output);
-				Assert.AreEqual (0, rv.ExitCode, $"Exit code: {Executable} {StringUtils.FormatArguments (args)}");
+				Assert.That (rv.ExitCode, Is.EqualTo (0), $"Exit code: {Executable} {StringUtils.FormatArguments (args)}");
 			}
-			return new ExecutionResult (output, output, rv.ExitCode);
+			return new ExecutionResult (output, output, rv.ExitCode, rv.Duration);
 		}
 
 		public static ExecutionResult InstallWorkload (params string [] workloads)
@@ -136,7 +160,7 @@ namespace Xamarin.Tests {
 				Console.WriteLine (msg);
 				Assert.Fail (msg.ToString ());
 			}
-			return new ExecutionResult (output, output, rv.ExitCode);
+			return new ExecutionResult (output, output, rv.ExitCode, rv.Duration);
 		}
 
 		public static ExecutionResult InstallTool (string tool, string path)
@@ -199,14 +223,36 @@ namespace Xamarin.Tests {
 			var rv = Execution.RunAsync (exe, args, env, Console.Out, workingDirectory: Configuration.SourceRoot, timeout: TimeSpan.FromMinutes (10)).Result;
 			var output = rv.Output.MergedOutput;
 			if (rv.ExitCode != 0) {
+				// Write the complete output to the console. This ends up in a separate
+				// log file, so it's fine if it's big.
+				Console.WriteLine ($"'{exe}' failed with exit code {rv.ExitCode}");
+				Console.WriteLine ($"Full command: {exe} {StringUtils.FormatArguments (args)}");
+				Console.WriteLine (output);
+
+				// Only include the last few lines of the output in the failure message.
+				// The failure message ends up embedded in the test results (and thus in
+				// the HTML report), so including the entire output can make those files
+				// enormous (hundreds of MBs) when the command was executed with diagnostic
+				// verbosity.
 				var msg = new StringBuilder ();
 				msg.AppendLine ($"'{exe}' failed with exit code {rv.ExitCode}");
 				msg.AppendLine ($"Full command: {exe} {StringUtils.FormatArguments (args)}");
-				msg.AppendLine (output.ToString ());
-				Console.WriteLine (msg);
+				msg.AppendLine (GetLastLines (rv.Output.MergedOutputLines, 100));
 				Assert.Fail (msg.ToString ());
 			}
-			return new ExecutionResult (output, output, rv.ExitCode);
+			return new ExecutionResult (output, output, rv.ExitCode, rv.Duration);
+		}
+
+		// Returns the last 'count' lines of the given output, prefixed with a note if any
+		// lines were omitted.
+		static string GetLastLines (IList<string> lines, int count)
+		{
+			if (lines.Count <= count)
+				return string.Join ("\n", lines);
+
+			var lastLines = lines.Skip (lines.Count - count);
+			return $"[Output truncated to the last {count} lines (of {lines.Count} lines); see the full log for the complete output]{Environment.NewLine}" +
+				string.Join ("\n", lastLines);
 		}
 
 		public static ExecutionResult Execute (string verb, string project, Dictionary<string, string>? properties, bool assert_success = true, string? target = null, bool? msbuildParallelism = null, TimeSpan? timeout = null, params string [] extraArguments)
@@ -222,6 +268,7 @@ namespace Xamarin.Tests {
 			case "publish":
 			case "restore":
 			case "run":
+			case "test":
 				var args = new List<string> ();
 				args.Add (verb);
 				args.Add (project);
@@ -288,11 +335,15 @@ namespace Xamarin.Tests {
 				Console.WriteLine ($"Binlog: {binlogPath}");
 
 				// Work around https://github.com/dotnet/msbuild/issues/8845
-				args.Add ("/v:diag");
-				args.Add ("/consoleloggerparameters:Verbosity=Quiet");
-				// vb does not have preview lang, so we force it to latest
-				if (project.EndsWith (".vbproj", StringComparison.OrdinalIgnoreCase))
-					args.Add ("/p:LangVersion=latest");
+				// Skip these for 'dotnet test' because they leak through '-- ' in
+				// RunArguments and get passed to the test runner as app arguments.
+				if (verb != "test") {
+					args.Add ("/v:diag");
+					args.Add ("/consoleloggerparameters:Verbosity=Quiet");
+					// vb does not have preview lang, so we force it to latest
+					if (project.EndsWith (".vbproj", StringComparison.OrdinalIgnoreCase))
+						args.Add ("/p:LangVersion=latest");
+				}
 				// End workaround
 
 				if (msbuildParallelism.HasValue) {
@@ -336,9 +387,9 @@ namespace Xamarin.Tests {
 #endif
 						Assert.Fail (msg.ToString ());
 					}
-					Assert.AreEqual (0, rv.ExitCode, $"Exit code: {Executable} {StringUtils.FormatArguments (args)}");
+					Assert.That (rv.ExitCode, Is.EqualTo (0), $"Exit code: {Executable} {StringUtils.FormatArguments (args)}");
 				}
-				return new ExecutionResult (output, output, rv.ExitCode) {
+				return new ExecutionResult (output, output, rv.ExitCode, rv.Duration) {
 					BinLogPath = binlogPath,
 				};
 			default:
@@ -500,13 +551,15 @@ namespace Xamarin.Tests {
 		public int ExitCode;
 		public bool TimedOut;
 		public string BinLogPath;
+		public TimeSpan Duration;
 
-		public ExecutionResult (string stdout, string stderr, int exitCode)
+		public ExecutionResult (string stdout, string stderr, int exitCode, TimeSpan duration)
 		{
 			StandardOutput = stdout;
 			StandardError = stderr;
 			ExitCode = exitCode;
 			BinLogPath = string.Empty;
+			Duration = duration;
 		}
 	}
 }

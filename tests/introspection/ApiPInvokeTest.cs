@@ -176,7 +176,7 @@ namespace Introspection {
 				Dlfcn.dlclose (lib);
 				n++;
 			}
-			Assert.AreEqual (0, Errors, "{0} errors found in {1} functions validated: {2}", Errors, n, string.Join (", ", failed_api));
+			Assert.That (Errors, Is.EqualTo (0), $"{Errors} errors found in {n} functions validated: {string.Join (", ", failed_api)}");
 		}
 
 		bool SkipDueToDeviceCapabilities (Type type)
@@ -254,6 +254,9 @@ namespace Introspection {
 					case "System.Net.Security.Native":
 						path = null;
 						break;
+					case "QCall":
+						// These symbols are inside libcoreclr.dylib, but they're private, so dlsym won't see them.
+						continue;
 					}
 
 					var lib = Dlfcn.dlopen (path, 0);
@@ -282,7 +285,7 @@ namespace Introspection {
 					n++;
 				}
 			}
-			Assert.AreEqual (0, Errors, "{0} errors found in {1} symbol lookups{2}", Errors, n, Errors == 0 ? string.Empty : ":\n" + ErrorData.ToString () + "\n");
+			Assert.That (Errors, Is.EqualTo (0), $"{Errors} errors found in {n} symbol lookups:\n{ErrorData}\n");
 		}
 
 		protected string ResolveLibrarySymlinks (string path)

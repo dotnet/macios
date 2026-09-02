@@ -38,25 +38,27 @@ namespace AppKit {
 		Continues = -1002,
 	}
 
+	/// <summary>Specifies options for activating an application.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSApplicationActivationOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Activates the application using the default behavior.</summary>
 		Default = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Brings all the application's windows forward.</summary>
 		ActivateAllWindows = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Activates the application regardless of which application is currently active.</summary>
 		ActivateIgnoringOtherWindows = 2,
 	}
 
+	/// <summary>Specifies how an application participates in the user interface.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSApplicationActivationPolicy : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The application appears in the Dock and can have a menu bar.</summary>
 		Regular,
-		/// <summary>To be added.</summary>
+		/// <summary>The application does not appear in the Dock, but can present a user interface.</summary>
 		Accessory,
-		/// <summary>To be added.</summary>
+		/// <summary>The application does not appear in the Dock and cannot create windows or be activated.</summary>
 		Prohibited,
 	}
 
@@ -96,47 +98,51 @@ namespace AppKit {
 		DisableCursorLocationAssistance = (1 << 12),
 	}
 
+	/// <summary>Specifies the result of an application delegate operation.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSApplicationDelegateReply : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The operation completed successfully.</summary>
 		Success,
-		/// <summary>To be added.</summary>
+		/// <summary>The operation was canceled.</summary>
 		Cancel,
-		/// <summary>To be added.</summary>
+		/// <summary>The operation failed.</summary>
 		Failure,
 	}
 
+	/// <summary>Specifies the urgency of a request for the user's attention.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSRequestUserAttentionType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Requests the user's attention for a critical event.</summary>
 		CriticalRequest = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Requests the user's attention for an informational event.</summary>
 		InformationalRequest = 10,
 	}
 
+	/// <summary>Specifies how an application responds to a termination request.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSApplicationTerminateReply : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Cancels application termination.</summary>
 		Cancel,
-		/// <summary>To be added.</summary>
+		/// <summary>Terminates the application immediately.</summary>
 		Now,
-		/// <summary>To be added.</summary>
+		/// <summary>Defers the termination decision.</summary>
 		Later,
 	}
 
+	/// <summary>Specifies the result of an application print request.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSApplicationPrintReply : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The print request was canceled.</summary>
 		Cancelled,
-		/// <summary>To be added.</summary>
+		/// <summary>The print request completed successfully.</summary>
 		Success,
-		/// <summary>To be added.</summary>
+		/// <summary>The print request failed.</summary>
 		Failure,
-		/// <summary>To be added.</summary>
+		/// <summary>The application will reply after completing the print request asynchronously.</summary>
 		ReplyLater,
 	}
 
@@ -364,14 +370,15 @@ namespace AppKit {
 
 	#region NSCell Defines 
 
+	/// <summary>Specifies the type of content displayed by a cell.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSCellType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The cell has no content type.</summary>
 		Null,
-		/// <summary>To be added.</summary>
+		/// <summary>The cell displays text.</summary>
 		Text,
-		/// <summary>To be added.</summary>
+		/// <summary>The cell displays an image.</summary>
 		Image,
 	}
 
@@ -488,7 +495,12 @@ namespace AppKit {
 		/// <summary>To be added.</summary>
 		EditableTextArea = 2,
 		/// <summary>To be added.</summary>
-		TrackableArae = 4,
+		TrackableArea = 4,
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'TrackableArea' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		TrackableArae = TrackableArea,
+#endif
 	}
 
 	[NoMacCatalyst]
@@ -580,14 +592,15 @@ namespace AppKit {
 	#endregion
 
 	#region NSAlert
+	/// <summary>Specifies the visual style of an alert.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSAlertStyle : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Displays a warning alert.</summary>
 		Warning,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays an informational alert.</summary>
 		Informational,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays an alert for a critical condition.</summary>
 		Critical,
 	}
 
@@ -1249,16 +1262,17 @@ namespace AppKit {
 		MaxYMargin = 32,
 	}
 
+	/// <summary>Specifies the style of border drawn around a view.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSBorderType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>No border is drawn.</summary>
 		NoBorder,
-		/// <summary>To be added.</summary>
+		/// <summary>A line border is drawn.</summary>
 		LineBorder,
-		/// <summary>To be added.</summary>
+		/// <summary>A bezel border is drawn.</summary>
 		BezelBorder,
-		/// <summary>To be added.</summary>
+		/// <summary>A groove border is drawn.</summary>
 		GrooveBorder,
 	}
 
@@ -1472,27 +1486,29 @@ namespace AppKit {
 	#endregion
 	#region NSAnimation
 
+	/// <summary>Specifies the timing curve of an animation.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSAnimationCurve : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The animation accelerates at the beginning and decelerates at the end.</summary>
 		EaseInOut,
-		/// <summary>To be added.</summary>
+		/// <summary>The animation accelerates from a slow start.</summary>
 		EaseIn,
-		/// <summary>To be added.</summary>
+		/// <summary>The animation decelerates toward the end.</summary>
 		EaseOut,
-		/// <summary>To be added.</summary>
+		/// <summary>The animation proceeds at a constant rate.</summary>
 		Linear,
 	};
 
+	/// <summary>Specifies how an animation runs relative to the application.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSAnimationBlockingMode : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Runs the animation synchronously and blocks user interaction until it completes.</summary>
 		Blocking,
-		/// <summary>To be added.</summary>
+		/// <summary>Runs the animation asynchronously on the main thread while allowing user interaction.</summary>
 		Nonblocking,
-		/// <summary>To be added.</summary>
+		/// <summary>Runs the animation asynchronously on a separate thread.</summary>
 		NonblockingThreaded,
 	};
 	#endregion
@@ -1714,12 +1730,19 @@ namespace AppKit {
 		Luminosity,
 	}
 
+	/// <summary>Specifies an animation effect to display at a screen location.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSAnimationEffect : ulong {
-		/// <summary>To be added.</summary>
-		DissapearingItemDefault = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The default effect for a disappearing item.</summary>
+		DisappearingItemDefault = 0,
+#if !XAMCORE_5_0
+		/// <summary>The obsolete, misspelled name for <see cref="DisappearingItemDefault" />.</summary>
+		[Obsolete ("Use 'DisappearingItemDefault' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		DissapearingItemDefault = DisappearingItemDefault,
+#endif
+		/// <summary>A poof animation effect.</summary>
 		EffectPoof = 10,
 	}
 	#endregion
@@ -1751,12 +1774,13 @@ namespace AppKit {
 		User,
 	}
 
+	/// <summary>Specifies where a browser accepts a drag-and-drop operation.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSBrowserDropOperation : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The drop occurs on an item.</summary>
 		On,
-		/// <summary>To be added.</summary>
+		/// <summary>The drop occurs above an item.</summary>
 		Above,
 	}
 	#endregion
@@ -1897,7 +1921,6 @@ namespace AppKit {
 		CurveTo,
 		/// <summary>To be added.</summary>
 		ClosePath,
-		[Mac (14, 0)]
 		QuadraticCurveTo,
 	}
 	#endregion
@@ -2527,11 +2550,12 @@ namespace AppKit {
 		Unitalic = 0x1000000,
 	}
 
+	/// <summary>Specifies options for writing objects to a pasteboard.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSPasteboardWritingOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The object promises to provide its pasteboard data later.</summary>
 		WritingPromised = 1 << 9,
 	}
 
@@ -2716,7 +2740,6 @@ namespace AppKit {
 		Sidebar,
 		/// <summary>To be added.</summary>
 		ContentList,
-		[Mac (14, 0)]
 		Inspector,
 	}
 
@@ -2914,11 +2937,12 @@ namespace AppKit {
 		RatingLevel,
 	}
 
+	/// <summary>Specifies options for creating or modifying font collections.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSFontCollectionOptions : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Limits the font collection to the current application.</summary>
 		ApplicationOnlyMask = 1,
 	}
 
@@ -2996,40 +3020,43 @@ namespace AppKit {
 		NearestVerticalEdge = 1 << 8,
 	}
 
+	/// <summary>Specifies the category of an element in a collection view layout.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSCollectionElementCategory : long {
-		/// <summary>To be added.</summary>
+		/// <summary>A collection view item.</summary>
 		Item,
-		/// <summary>To be added.</summary>
+		/// <summary>A supplementary view.</summary>
 		SupplementaryView,
-		/// <summary>To be added.</summary>
+		/// <summary>A decoration view.</summary>
 		DecorationView,
-		/// <summary>To be added.</summary>
+		/// <summary>An inter-item gap.</summary>
 		InterItemGap,
 	}
 
+	/// <summary>Specifies an update applied to a collection view.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSCollectionUpdateAction : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Inserts an item.</summary>
 		Insert,
-		/// <summary>To be added.</summary>
+		/// <summary>Deletes an item.</summary>
 		Delete,
-		/// <summary>To be added.</summary>
+		/// <summary>Reloads an item.</summary>
 		Reload,
-		/// <summary>To be added.</summary>
+		/// <summary>Moves an item.</summary>
 		Move,
-		/// <summary>To be added.</summary>
+		/// <summary>No update action.</summary>
 		None,
 	}
 
+	/// <summary>Specifies the scrolling direction of a collection view layout.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSCollectionViewScrollDirection : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The collection view scrolls vertically.</summary>
 		Vertical,
-		/// <summary>To be added.</summary>
+		/// <summary>The collection view scrolls horizontally.</summary>
 		Horizontal,
 	}
 
@@ -3230,14 +3257,15 @@ namespace AppKit {
 		Version4_1Core = 0x4100,
 	}
 
+	/// <summary>Identifies which button dismissed an alert.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSAlertButtonReturn : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The first alert button.</summary>
 		First = 1000,
-		/// <summary>To be added.</summary>
+		/// <summary>The second alert button.</summary>
 		Second = 1001,
-		/// <summary>To be added.</summary>
+		/// <summary>The third alert button.</summary>
 		Third = 1002,
 	}
 
@@ -4017,19 +4045,21 @@ namespace AppKit {
 		AllowUserInteraction = 0x1000,
 	}
 
+	/// <summary>Describes whether an application has visible content.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSApplicationOcclusionState : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>At least part of the application's content is visible.</summary>
 		Visible = 1 << 1,
 	}
 
+	/// <summary>Describes whether a window is visible to the user.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSWindowOcclusionState : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>At least part of the window is visible.</summary>
 		Visible = 1 << 1,
 	}
 
@@ -4171,11 +4201,12 @@ namespace AppKit {
 		NoHover = 1 << 3,
 	}
 
+	/// <summary>Specifies how to order windows in a window list.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSWindowListOptions : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Orders windows from front to back.</summary>
 		OrderedFrontToBack = (1 << 0),
 	}
 
@@ -4306,10 +4337,11 @@ namespace AppKit {
 		Bezel,
 	}
 
+	/// <summary>Specifies options for replacing the contents of a pasteboard.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSPasteboardContentsOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Restricts the pasteboard contents to the current host.</summary>
 		CurrentHostOnly = 1,
 	}
 
@@ -4364,23 +4396,25 @@ namespace AppKit {
 		ErrorMaximum = 66335,
 	}
 
+	/// <summary>Specifies the position of an accessibility annotation within a range.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSAccessibilityAnnotationPosition : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The annotation applies to the entire range.</summary>
 		FullRange,
-		/// <summary>To be added.</summary>
+		/// <summary>The annotation applies to the start of the range.</summary>
 		Start,
-		/// <summary>To be added.</summary>
+		/// <summary>The annotation applies to the end of the range.</summary>
 		End,
 	}
 
+	/// <summary>Specifies the direction in which an accessibility custom rotor searches.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSAccessibilityCustomRotorSearchDirection : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Searches for the previous item.</summary>
 		Previous,
-		/// <summary>To be added.</summary>
+		/// <summary>Searches for the next item.</summary>
 		Next,
 	}
 
@@ -4432,22 +4466,24 @@ namespace AppKit {
 		Audiograph,
 	}
 
+	/// <summary>Specifies how a color represents its color data.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSColorType : long {
-		/// <summary>To be added.</summary>
+		/// <summary>A color defined by components in a color space.</summary>
 		ComponentBased,
-		/// <summary>To be added.</summary>
+		/// <summary>A color defined by a repeating image pattern.</summary>
 		Pattern,
-		/// <summary>To be added.</summary>
+		/// <summary>A color obtained from a named color catalog.</summary>
 		Catalog,
 	}
 
+	/// <summary>Specifies options for requesting downloadable font assets.</summary>
 	[NoMacCatalyst]
 	[Native]
 	[Flags]
 	public enum NSFontAssetRequestOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Displays the standard user interface while downloading fonts.</summary>
 		UsesStandardUI = 1 << 0,
 	}
 
@@ -4579,7 +4615,7 @@ namespace AppKit {
 		Large = 3,
 	}
 
-	[NoMacCatalyst, Mac (13, 0)]
+	[NoMacCatalyst]
 	[Native]
 	public enum NSColorWellStyle : long {
 		Default = 0,
@@ -4587,14 +4623,14 @@ namespace AppKit {
 		Expanded,
 	}
 
-	[NoMacCatalyst, Mac (13, 0)]
+	[NoMacCatalyst]
 	[Native]
 	public enum NSComboButtonStyle : long {
 		Split = 0,
 		Unified = 1,
 	}
 
-	[NoMacCatalyst, Mac (14, 0)]
+	[NoMacCatalyst]
 	[Native]
 	public enum NSImageDynamicRange : long {
 		Unspecified = -1,
@@ -4603,7 +4639,7 @@ namespace AppKit {
 		High = 2,
 	}
 
-	[NoMacCatalyst, Mac (14, 0)]
+	[NoMacCatalyst]
 	[Native]
 	public enum NSMenuItemBadgeType : long {
 		None = 0,
@@ -4612,14 +4648,14 @@ namespace AppKit {
 		Alerts,
 	}
 
-	[NoMacCatalyst, Mac (14, 0)]
+	[NoMacCatalyst]
 	[Native]
 	public enum NSMenuPresentationStyle : long {
 		Regular = 0,
 		Palette = 1,
 	}
 
-	[NoMacCatalyst, Mac (14, 0)]
+	[NoMacCatalyst]
 	[Native]
 	public enum NSMenuSelectionMode : long {
 		Automatic = 0,
@@ -4627,21 +4663,21 @@ namespace AppKit {
 		SelectAny = 2,
 	}
 
-	[NoMacCatalyst, Mac (14, 0)]
+	[NoMacCatalyst]
 	[Native]
 	public enum NSPageLayoutResult : long {
 		Cancelled = 0,
 		Changed,
 	}
 
-	[NoMacCatalyst, Mac (14, 0)]
+	[NoMacCatalyst]
 	[Native]
 	public enum NSPrintPanelResult : long {
 		Cancelled = 0,
 		Printed,
 	}
 
-	[NoMacCatalyst, Mac (14, 0)]
+	[NoMacCatalyst]
 	[Native]
 	public enum NSTextCursorAccessoryPlacement : long {
 		Unspecified,
@@ -4655,7 +4691,7 @@ namespace AppKit {
 		OffscreenBottom,
 	}
 
-	[NoMacCatalyst, Mac (14, 0)]
+	[NoMacCatalyst]
 	[Native]
 	[Flags]
 	public enum NSTextInsertionIndicatorAutomaticModeOptions : long {
@@ -4663,7 +4699,7 @@ namespace AppKit {
 		WhileTracking = 1L << 1,
 	}
 
-	[NoMacCatalyst, Mac (14, 0)]
+	[NoMacCatalyst]
 	[Native]
 	public enum NSTextInsertionIndicatorDisplayMode : long {
 		Automatic = 0,

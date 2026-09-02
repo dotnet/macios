@@ -3,6 +3,8 @@
 
 #if __MACOS__
 
+using System.Linq;
+
 using AVFoundation;
 using CoreMedia;
 using CoreVideo;
@@ -33,10 +35,10 @@ namespace MonoTouchFixtures.VideoToolbox {
 				Assert.That (VTOpticalFlowConfiguration.ProcessorSupported, Is.True, "ProcessorSupported");
 
 				Assert.That (VTOpticalFlowConfiguration.SupportedRevisions, Is.Not.Null, "SupportedRevisions");
-				Assert.That (VTOpticalFlowConfiguration.SupportedRevisions, Does.Contain (VTOpticalFlowConfigurationRevision.Revision1), "SupportedRevisions.Contains");
+				Assert.That (VTOpticalFlowConfiguration.SupportedRevisions.Contains (VTOpticalFlowConfigurationRevision.Revision1), "SupportedRevisions.Contains");
 				Assert.That (VTOpticalFlowConfiguration.WeakSupportedRevisions, Is.Not.Null, "WeakSupportedRevisions");
-				Assert.That (VTOpticalFlowConfiguration.WeakSupportedRevisions, Does.Contain ((nuint) 1), "WeakSupportedRevisions.Contains");
-				Assert.That (Enum.GetValues<VTOpticalFlowConfigurationRevision> (), Does.Contain (VTOpticalFlowConfiguration.DefaultRevision), "DefaultRevision");
+				Assert.That (VTOpticalFlowConfiguration.WeakSupportedRevisions.Contains ((nuint) 1), "WeakSupportedRevisions.Contains");
+				Assert.That (Enum.GetValues<VTOpticalFlowConfigurationRevision> ().Contains (VTOpticalFlowConfiguration.DefaultRevision), "DefaultRevision");
 			});
 		}
 	}

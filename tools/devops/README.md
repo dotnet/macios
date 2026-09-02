@@ -47,7 +47,6 @@ The primary CI pipeline that triggers on commits to main and release branches.
 **Parameters:**
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `provisionatorChannel` | string | `latest` | Provisionator channel for dependencies |
 | `macOSName` | string | `Sequoia` | macOS version for build agents |
 | `runGovernanceTests` | boolean | `true` | Run security/compliance checks |
 | `forceInsertion` | boolean | `false` | Force VS insertion even on non-release branches |
@@ -301,7 +300,7 @@ testConfigurations:
   - label: framework      # Framework tests
   - label: generator      # Binding generator tests
   - label: introspection  # Runtime introspection tests
-  - label: linker         # Linker tests
+  - label: linker         # Linker tests (split by platform)
   - label: monotouch      # MonoTouch tests (split by platform)
   - label: msbuild        # MSBuild tests
   - label: sharpie        # Sharpie tests
@@ -613,8 +612,11 @@ build-pull-request.yml (Entry Point - PR)
                             │
                             ├─► install-certificates.yml@yaml-templates
                             │
-                            ├─► provisionator@2 task
-                            │   └─► build-provisioning.csx
+                            ├─► templates/common/provision-xcode.yml
+                            │   ├─► scripts/bash/resolve-xcode-package.sh
+                            │   ├─► UniversalPackages@0
+                            │   └─► system-dependencies.sh
+                            │       └─► scripts/bash/install-xcode.sh
                             │
                             ├─► scripts/parse_pr_labels.ps1
                             │

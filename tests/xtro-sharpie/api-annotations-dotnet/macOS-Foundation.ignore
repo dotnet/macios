@@ -556,3 +556,18 @@
 ## these are implemented in a way that xtro doesn't see
 !missing-selector! NSAppleEventDescriptor::initListDescriptor not bound
 !missing-selector! NSAppleEventDescriptor::initRecordDescriptor not bound
+
+!missing-null-allowed! 'System.Void Foundation.NSFileManager::GetFileProviderServices(Foundation.NSUrl,System.Action`2<Foundation.NSDictionary`2<Foundation.NSString,Foundation.NSFileProviderService>,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Foundation.NSFileManager::GetFileProviderServices(Foundation.NSUrl,System.Action`2<Foundation.NSDictionary`2<Foundation.NSString,Foundation.NSFileProviderService>,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1
+!missing-null-allowed! 'System.Void Foundation.NSFileManager::UnmountVolume(Foundation.NSUrl,Foundation.NSFileManagerUnmountOptions,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Foundation.NSFilePresenter::AccommodatePresentedItemEviction(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Foundation.NSFileProviderService::GetFileProviderConnection(System.Action`2<Foundation.NSXpcConnection,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Foundation.NSFileProviderService::GetFileProviderConnection(System.Action`2<Foundation.NSXpcConnection,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1
+
+## bound selectors with no native declaration reachable from the class in the current SDK headers:
+## private/SPI selectors, protocol/category members Apple inlines without declaring the conformance on
+## the class, managed callback infrastructure, or API Apple removed/privatized - kept for compatibility
+## (baseline for https://github.com/dotnet/macios/issues/26053)
+!unknown-selector! NSInputStream::_setCFClientFlags:callback:context: not found
+!unknown-selector! NSProgress::acknowledgeWithSuccess: not found
+!unknown-selector! NSProgress::setAcknowledgementHandler:forAppBundleIdentifier: not found

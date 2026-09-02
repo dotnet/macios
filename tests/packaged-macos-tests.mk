@@ -15,12 +15,13 @@ endif
 
 CONFIG?=Debug
 LAUNCH_ARGUMENTS=--autostart --autoexit
+DOTNET_X64_LAUNCH_TIMEOUT_ENV=
+
+ifeq ($(IS_APPLE_SILICON),1)
+DOTNET_X64_LAUNCH_TIMEOUT_ENV=env LAUNCH_TIMEOUT_SECONDS=30
+endif
 
 include $(TOP)/scripts/run-with-timeout/fragment.mk
-include $(TOP)/scripts/mac-test-report-generator/fragment.mk
-
-build-mac-test-report-generator: $(MAC_TEST_REPORT_GENERATOR)
-	@echo "mac-test-report-generator built: $(MAC_TEST_REPORT_GENERATOR)"
 
 # Time test runs out after 5 minutes (300 seconds)
 LAUNCH_WITH_TIMEOUT=$(RUN_WITH_TIMEOUT_EXEC) 300
@@ -58,7 +59,7 @@ build-mac-dotnet-x64-$(1): .stamp-dotnet-dependency-macOS
 
 exec-mac-dotnet-x64-$(1): $(RUN_WITH_TIMEOUT)
 	@echo "ℹ️  Executing the '$(1)' test for macOS/.NET (x64) ℹ️"
-	$$(Q) $(LAUNCH_WITH_TIMEOUT$(3)) "./$(1)/dotnet/macOS/bin/$(CONFIG)/$(DOTNET_TFM)-macos/osx-x64/$(2).app/Contents/MacOS/$(2)"
+	$$(Q) $(DOTNET_X64_LAUNCH_TIMEOUT_ENV) $(LAUNCH_WITH_TIMEOUT$(3)) "./$(1)/dotnet/macOS/bin/$(CONFIG)/$(DOTNET_TFM)-macos/osx-x64/$(2).app/Contents/MacOS/$(2)"
 
 # macOS/.NET/arm64
 build-mac-dotnet-arm64-$(1): .stamp-dotnet-dependency-macOS
@@ -78,7 +79,7 @@ build-maccatalyst-dotnet-x64-$(1): .stamp-dotnet-dependency-MacCatalyst
 
 exec-maccatalyst-dotnet-x64-$(1): $(RUN_WITH_TIMEOUT)
 	@echo "ℹ️  Executing the '$(1)' test for Mac Catalyst/.NET (x64) ℹ️"
-	$$(Q) $(LAUNCH_WITH_TIMEOUT$(3)) "./$(1)/dotnet/MacCatalyst/bin/$(CONFIG)/$(DOTNET_TFM)-maccatalyst/maccatalyst-x64/$(2).app/Contents/MacOS/$(2)" $(LAUNCH_ARGUMENTS)
+	$$(Q) $(DOTNET_X64_LAUNCH_TIMEOUT_ENV) $(LAUNCH_WITH_TIMEOUT$(3)) "./$(1)/dotnet/MacCatalyst/bin/$(CONFIG)/$(DOTNET_TFM)-maccatalyst/maccatalyst-x64/$(2).app/Contents/MacOS/$(2)" $(LAUNCH_ARGUMENTS)
 
 # MacCatalyst/.NET/arm64
 build-maccatalyst-dotnet-arm64-$(1):.stamp-dotnet-dependency-MacCatalyst
@@ -129,7 +130,7 @@ build-mac-dotnet-x64-$(1): .stamp-dotnet-dependency-macOS
 
 exec-mac-dotnet-x64-$(1): $(RUN_WITH_TIMEOUT)
 	@echo "ℹ️  Executing the '$(2)' test for macOS/.NET (x64) ℹ️"
-	$$(Q) $(LAUNCH_WITH_TIMEOUT) "./linker/$(2)/dotnet/macOS/bin/$(CONFIG)/$(DOTNET_TFM)-macos/osx-x64/$(2).app/Contents/MacOS/$(2)"
+	$$(Q) $(DOTNET_X64_LAUNCH_TIMEOUT_ENV) $(LAUNCH_WITH_TIMEOUT) "./linker/$(2)/dotnet/macOS/bin/$(CONFIG)/$(DOTNET_TFM)-macos/osx-x64/$(2).app/Contents/MacOS/$(2)"
 
 # macOS/.NET/arm64
 build-mac-dotnet-arm64-$(1): .stamp-dotnet-dependency-macOS
@@ -149,7 +150,7 @@ build-maccatalyst-dotnet-x64-$(1): .stamp-dotnet-dependency-MacCatalyst
 
 exec-maccatalyst-dotnet-x64-$(1): $(RUN_WITH_TIMEOUT)
 	@echo "ℹ️  Executing the '$(2)' test for Mac Catalyst/.NET (x64) ℹ️"
-	$$(Q) $(LAUNCH_WITH_TIMEOUT) "./linker/$(2)/dotnet/MacCatalyst/bin/$(CONFIG)/$(DOTNET_TFM)-maccatalyst/maccatalyst-x64/$(2).app/Contents/MacOS/$(2)" $(LAUNCH_ARGUMENTS)
+	$$(Q) $(DOTNET_X64_LAUNCH_TIMEOUT_ENV) $(LAUNCH_WITH_TIMEOUT) "./linker/$(2)/dotnet/MacCatalyst/bin/$(CONFIG)/$(DOTNET_TFM)-maccatalyst/maccatalyst-x64/$(2).app/Contents/MacOS/$(2)" $(LAUNCH_ARGUMENTS)
 
 # MacCatalyst/.NET/arm64
 build-maccatalyst-dotnet-arm64-$(1): .stamp-dotnet-dependency-MacCatalyst

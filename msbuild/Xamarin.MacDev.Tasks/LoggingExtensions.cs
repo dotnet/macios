@@ -81,6 +81,19 @@ namespace Xamarin.MacDev.Tasks {
 		/// <param name="errorCode">In the 7xxx range for MSBuild error.</param>
 		/// <param name="message">The error's message to be displayed in the error pad.</param>
 		/// <param name="fileName">Path to the known guilty file or null.</param>
+		/// <param name="lineNumber">Line number in the file where the error was found, or 0 if unknown.</param>
+		public static void LogError (this TaskLoggingHelper log, int errorCode, string? fileName, int lineNumber, string message, params object? [] args)
+		{
+			log.LogError (null, $"{ErrorPrefix}{errorCode}", null, fileName ?? "MSBuild", lineNumber, 0, 0, 0, message, args);
+		}
+
+		/// <summary>
+		/// Creates an MSBuild error following our MTErrors convention.</summary>
+		/// <remarks>
+		/// For every new error we need to update "docs/website/mtouch-errors.md" and "tools/mtouch/error.cs".</remarks>
+		/// <param name="errorCode">In the 7xxx range for MSBuild error.</param>
+		/// <param name="message">The error's message to be displayed in the error pad.</param>
+		/// <param name="fileName">Path to the known guilty file or null.</param>
 		public static void LogError (this TaskLoggingHelper log, int errorCode, string? fileName, string message, params object? [] args)
 		{
 			log.LogError (null, $"{ErrorPrefix}{errorCode}", null, fileName ?? "MSBuild", 0, 0, 0, 0, message, args);
@@ -89,6 +102,16 @@ namespace Xamarin.MacDev.Tasks {
 		public static void LogWarning (this TaskLoggingHelper log, int errorCode, string? fileName, string message, params object? [] args)
 		{
 			log.LogWarning (null, $"{ErrorPrefix}{errorCode}", null, fileName ?? "MSBuild", 0, 0, 0, 0, message, args);
+		}
+
+		public static void LogWarning (this TaskLoggingHelper log, int errorCode, string? fileName, int lineNumber, string message, params object? [] args)
+		{
+			log.LogWarning (null, $"{ErrorPrefix}{errorCode}", null, fileName ?? "MSBuild", lineNumber, 0, 0, 0, message, args);
+		}
+
+		public static void LogMessage (this TaskLoggingHelper log, MessageImportance importance, int errorCode, string? fileName, int lineNumber, string message, params object? [] args)
+		{
+			log.LogMessage (null, $"{ErrorPrefix}{errorCode}", null, fileName ?? "MSBuild", lineNumber, 0, 0, 0, importance, message, args);
 		}
 
 		public static bool LogErrorsFromException (this TaskLoggingHelper log, Exception exception, bool showStackTrace = true, bool showDetail = true)

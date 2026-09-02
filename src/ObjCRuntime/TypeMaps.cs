@@ -19,7 +19,10 @@ abstract class NSObjectProxyAttribute : Attribute {
 
 	public abstract NSObject? CreateObject (IntPtr handle);
 	public abstract IntPtr GetClassHandle (out bool is_custom_type);
-	public abstract IntPtr LookupUnmanagedFunction (string? name);
+
+	// Most types don't have any UnmanagedCallersOnly methods, and the trimmable static registrar
+	// doesn't override this method for those types (which keeps the type map assemblies smaller).
+	public virtual IntPtr LookupUnmanagedFunction (string? name) => IntPtr.Zero;
 }
 
 // The trimmable static registrar makes this type public when needed.
@@ -268,6 +271,9 @@ static class TypeMaps {
 		}
 
 		// workaround for https://github.com/dotnet/runtime/issues/127004
+		// The fix is only available in .NET 11+, so we still need the workaround for .NET 10.
+		// Tracking issue: https://github.com/dotnet/macios/issues/25276
+#if !NET11_0_OR_GREATER
 		proxyAttribute = protocol.GetCustomAttribute<ProtocolProxyAttribute> (false);
 		if (proxyAttribute is not null) {
 #if LOG_TRIMMABLE_TYPEMAP
@@ -275,6 +281,7 @@ static class TypeMaps {
 #endif
 			return true;
 		}
+#endif // !NET11_0_OR_GREATER
 
 #if LOG_TRIMMABLE_TYPEMAP
 		Runtime.NSLog ($"TryGetProtocolProxyAttribute ({protocol}) did not find proxy attribute anywhere");
@@ -338,6 +345,9 @@ static class TypeMaps {
 		proxyAttribute = null;
 
 		// workaround for https://github.com/dotnet/runtime/issues/127004
+		// The fix is only available in .NET 11+, so we still need the workaround for .NET 10.
+		// Tracking issue: https://github.com/dotnet/macios/issues/25276
+#if !NET11_0_OR_GREATER
 		proxyAttribute = managedType.GetCustomAttribute<NSObjectProxyAttribute> (false);
 		if (proxyAttribute is not null) {
 #if LOG_TRIMMABLE_TYPEMAP
@@ -348,6 +358,7 @@ static class TypeMaps {
 #if LOG_TRIMMABLE_TYPEMAP
 		Runtime.NSLog ($"TryGetNSObjectProxyAttribute ({managedType}): did not find proxy attribute on the type itself");
 #endif
+#endif // !NET11_0_OR_GREATER
 		// end workaround for https://github.com/dotnet/runtime/issues/127004
 
 		if (!NSObjectProxyTypes.TryGetValue (managedType, out var proxyType)) {

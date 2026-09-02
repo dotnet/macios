@@ -13,7 +13,7 @@ namespace MonoTouchFixtures.PassKit {
 		public void GetLocalizedValueNull ()
 		{
 			using var pass = new PKPass ();
-			Assert.IsNull (pass.GetLocalizedValue (new NSString ()), "'PKPass.GetLocalizedValue' is not returning a null value");
+			Assert.That (pass.GetLocalizedValue (new NSString ()), Is.Null, "'PKPass.GetLocalizedValue' is not returning a null value");
 		}
 	}
 }

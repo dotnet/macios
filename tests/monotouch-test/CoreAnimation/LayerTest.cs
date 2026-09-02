@@ -30,11 +30,11 @@ namespace MonoTouchFixtures.CoreAnimation {
 		{
 			Log ("start");
 			using (CALayer layer = new CALayer ()) {
-				Assert.Null (layer.Mask, "Mask/default");
+				Assert.That (layer.Mask, Is.Null, "Mask/default");
 				layer.Mask = new CALayer ();
-				Assert.NotNull (layer.Mask, "Mask/assigned");
+				Assert.That (layer.Mask, Is.Not.Null, "Mask/assigned");
 				layer.Mask = null;
-				Assert.Null (layer.Mask, "Mask/nullable");
+				Assert.That (layer.Mask, Is.Null, "Mask/nullable");
 			}
 			Log ("done");
 		}
@@ -45,9 +45,9 @@ namespace MonoTouchFixtures.CoreAnimation {
 			Log ("start");
 			// bug 2441
 			CAActionTestClass obj = new CAActionTestClass ();
-			Assert.IsNull (obj.ActionForKey ("animation"), "a");
-			Assert.IsNull (obj.Actions, "b");
-			Assert.IsNull (CAActionTestClass.DefaultActionForKey ("animation"), "c");
+			Assert.That (obj.ActionForKey ("animation"), Is.Null, "a");
+			Assert.That (obj.Actions, Is.Null, "b");
+			Assert.That (CAActionTestClass.DefaultActionForKey ("animation"), Is.Null, "c");
 
 			var animationKey = new NSString ("animation");
 			var basicAnimationKey = new NSString ("basicAnimation");
@@ -60,8 +60,8 @@ namespace MonoTouchFixtures.CoreAnimation {
 
 			Assert.That (obj.ActionForKey ("animation") == dict [animationKey], "e");
 			Assert.That (obj.ActionForKey ("basicAnimation") == dict [basicAnimationKey], "f");
-			Assert.IsNull (CAActionTestClass.DefaultActionForKey ("animation"), "g");
-			Assert.IsNull (CALayer.DefaultActionForKey ("animation"), "h");
+			Assert.That (CAActionTestClass.DefaultActionForKey ("animation"), Is.Null, "g");
+			Assert.That (CALayer.DefaultActionForKey ("animation"), Is.Null, "h");
 			Log ("done");
 		}
 
@@ -74,8 +74,8 @@ namespace MonoTouchFixtures.CoreAnimation {
 		{
 			Log ("start");
 			using (CALayer layer = new CALayer ()) {
-				Assert.True (layer.ConvertPointFromLayer (CGPoint.Empty, null).IsEmpty, "From/Empty/null");
-				Assert.True (layer.ConvertPointToLayer (CGPoint.Empty, null).IsEmpty, "To/Empty/null");
+				Assert.That (layer.ConvertPointFromLayer (CGPoint.Empty, null).IsEmpty, Is.True, "From/Empty/null");
+				Assert.That (layer.ConvertPointToLayer (CGPoint.Empty, null).IsEmpty, Is.True, "To/Empty/null");
 			}
 			Log ("done");
 		}
@@ -85,8 +85,8 @@ namespace MonoTouchFixtures.CoreAnimation {
 		{
 			Log ("start");
 			using (CALayer layer = new CALayer ()) {
-				Assert.True (layer.ConvertRectFromLayer (CGRect.Empty, null).IsEmpty, "From/Empty/null");
-				Assert.True (layer.ConvertRectToLayer (CGRect.Empty, null).IsEmpty, "To/Empty/null");
+				Assert.That (layer.ConvertRectFromLayer (CGRect.Empty, null).IsEmpty, Is.True, "From/Empty/null");
+				Assert.That (layer.ConvertRectToLayer (CGRect.Empty, null).IsEmpty, Is.True, "To/Empty/null");
 			}
 			Log ("done");
 		}
@@ -108,9 +108,9 @@ namespace MonoTouchFixtures.CoreAnimation {
 			Log ("start");
 			using (var layer = new CALayer ()) {
 				var animation = new CABasicAnimation ();
-				Assert.IsNull (layer.AnimationForKey ("key"), "#key A");
+				Assert.That (layer.AnimationForKey ("key"), Is.Null, "#key A");
 				layer.AddAnimation (animation, "key");
-				Assert.IsNotNull (layer.AnimationForKey ("key"), "#key B");
+				Assert.That (layer.AnimationForKey ("key"), Is.Not.Null, "#key B");
 			}
 			Log ("done");
 		}
@@ -144,7 +144,7 @@ namespace MonoTouchFixtures.CoreAnimation {
 						Log ("GC.Collect on background thread completed");
 
 						foreach (var slayer in layer.Sublayers.OfType<TextCALayer> ()) {
-							Assert.AreEqual ("42", slayer.Secret);
+							Assert.That (slayer.Secret, Is.EqualTo ("42"));
 						}
 
 						Log ("removing sublayers");
@@ -157,9 +157,11 @@ namespace MonoTouchFixtures.CoreAnimation {
 					Log ($"background thread exception: {e}");
 					ex = e;
 				}
-			});
+			}) {
+				IsBackground = true,
+			};
 			thread.Start ();
-			thread.Join ();
+			Assert.That (thread.Join (TimeSpan.FromSeconds (10)), Is.True, "Thread.Join timed out");
 
 			Log ("background thread joined, starting GC loop");
 			var watch = new Stopwatch ();
@@ -173,7 +175,7 @@ namespace MonoTouchFixtures.CoreAnimation {
 			}
 			Log ($"GC loop done after {gcCount} iterations, TextLayersDisposed={TextLayersDisposed}");
 
-			Assert.IsNull (ex, "Exceptions");
+			Assert.That (ex, Is.Null, "Exceptions");
 			Assert.That (TextLayersDisposed, Is.AtLeast (layerCount / 2), "disposed text layers");
 			Log ("done");
 		}
@@ -216,7 +218,7 @@ namespace MonoTouchFixtures.CoreAnimation {
 				IsBackground = true,
 			};
 			t.Start ();
-			t.Join ();
+			Assert.That (t.Join (TimeSpan.FromSeconds (5)), Is.True, "Thread.Join timed out");
 			Log ("background thread joined, calling GC.Collect #1");
 			GC.Collect ();
 			Log ("GC.Collect #1 done, running runloop");

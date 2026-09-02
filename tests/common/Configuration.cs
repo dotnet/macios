@@ -10,30 +10,23 @@ using Xamarin.Utils;
 
 namespace Xamarin.Tests {
 	static partial class Configuration {
-		public const string XI_ProductName = "MonoTouch";
-		public const string XM_ProductName = "Xamarin.Mac";
-
 		public static string DotNetBclDir = "";
 		public static string DotNetCscCommand = "";
 		public static string DotNetExecutable;
 		public static string DotNetTfm;
-		public static string? mt_src_root;
-		public static string sdk_version;
+		public static string ios_sdk_version;
 		public static string tvos_sdk_version;
 		public static string macos_sdk_version;
-		public static string xcode_root;
+		public static string maccatalyst_sdk_version;
+		static string xcode_root;
 		public static string? XcodeVersionString;
-		public static string xcode83_root;
-		public static string xcode94_root;
-#if MONOMAC
-		public static string mac_xcode_root;
-#endif
-		public static Dictionary<string, string> make_config = new Dictionary<string, string> ();
+		static Dictionary<string, string> make_config = new Dictionary<string, string> ();
 
 		public static bool include_ios;
 		public static bool include_mac;
 		public static bool include_tvos;
 		public static bool include_maccatalyst;
+		public static bool dotnet_monovm_supported;
 		public static bool XcodeIsStable;
 		public static string DOTNET_DIR;
 
@@ -49,32 +42,6 @@ namespace Xamarin.Tests {
 
 		public static Version DotNetVersion {
 			get => Version.Parse (DotNetTfm.Replace ("net", ""));
-		}
-
-		static bool? use_system; // if the system-installed XI/XM should be used instead of the local one.
-
-		public static bool UseSystem {
-			get {
-				if (!use_system.HasValue)
-					use_system = !string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("TESTS_USE_SYSTEM"));
-				return use_system.Value;
-			}
-			set {
-				use_system = value;
-			}
-		}
-
-		static bool? is_vsts; // if the system-installed XI/XM should be used instead of the local one.
-
-		public static bool IsVsts {
-			get {
-				if (!is_vsts.HasValue)
-					is_vsts = !string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("BUILD_BUILDID"));
-				return is_vsts.Value;
-			}
-			set {
-				is_vsts = value;
-			}
 		}
 
 		public static string XcodeLocation {
@@ -149,7 +116,7 @@ namespace Xamarin.Tests {
 
 		static void ParseConfigFiles ()
 		{
-			var test_config = FindConfigFiles (UseSystem ? "test-system.config" : "test.config");
+			var test_config = FindConfigFiles ("test.config");
 			if (!test_config.Any () && Environment.OSVersion.Platform != PlatformID.Win32NT) {
 				// Run 'make test.config' in the tests/ directory
 				// First find the tests/ directory
@@ -286,16 +253,16 @@ namespace Xamarin.Tests {
 		{
 			ParseConfigFiles ();
 
-			sdk_version = GetVariable ("IOS_SDK_VERSION", "8.0");
+			ios_sdk_version = GetVariable ("IOS_SDK_VERSION", "8.0");
 			tvos_sdk_version = GetVariable ("TVOS_SDK_VERSION", "9.0");
 			macos_sdk_version = GetVariable ("MACOS_SDK_VERSION", "10.12");
+			maccatalyst_sdk_version = GetVariable ("MACCATALYST_SDK_VERSION", "14.0");
 			xcode_root = GetVariable ("XCODE_DEVELOPER_ROOT", "/Applications/Xcode.app/Contents/Developer");
-			xcode83_root = GetVariable ("XCODE83_DEVELOPER_ROOT", "/Applications/Xcode83.app/Contents/Developer");
-			xcode94_root = GetVariable ("XCODE94_DEVELOPER_ROOT", "/Applications/Xcode94.app/Contents/Developer");
 			include_ios = !string.IsNullOrEmpty (GetVariable ("INCLUDE_IOS", ""));
 			include_mac = !string.IsNullOrEmpty (GetVariable ("INCLUDE_MAC", ""));
 			include_tvos = !string.IsNullOrEmpty (GetVariable ("INCLUDE_TVOS", ""));
 			include_maccatalyst = !string.IsNullOrEmpty (GetVariable ("INCLUDE_MACCATALYST", ""));
+			dotnet_monovm_supported = !string.IsNullOrEmpty (GetVariable ("DOTNET_MONOVM_SUPPORTED", ""));
 			DotNetBclDir = GetVariable ("DOTNET_BCL_DIR", "");
 			DotNetCscCommand = GetVariable ("DOTNET_CSC_COMMAND", "").Trim ('\'');
 			DotNetExecutable = GetVariable ("DOTNET", "");
@@ -305,16 +272,10 @@ namespace Xamarin.Tests {
 			DOTNET_DIR = GetVariable ("DOTNET_DIR", "");
 
 			XcodeVersionString = GetVariable ("XCODE_VERSION", GetXcodeVersion (xcode_root));
-#if MONOMAC
-			mac_xcode_root = xcode_root;
-#endif
 
 			Console.WriteLine ("Test configuration:");
-			Console.WriteLine ("  SDK_VERSION={0}", sdk_version);
 			Console.WriteLine ("  XCODE_ROOT={0}", xcode_root);
-#if MONOMAC
-			Console.WriteLine ("  MAC_XCODE_ROOT={0}", mac_xcode_root);
-#endif
+			Console.WriteLine ("  XCODE_VERSION={0}", XcodeVersionString);
 			Console.WriteLine ("  INCLUDE_IOS={0}", include_ios);
 			Console.WriteLine ("  INCLUDE_MAC={0}", include_mac);
 			Console.WriteLine ("  INCLUDE_TVOS={0}", include_tvos);
@@ -371,13 +332,7 @@ namespace Xamarin.Tests {
 			}
 		}
 
-		public static string SourceRoot {
-			get {
-				if (mt_src_root is null)
-					mt_src_root = RootPath;
-				return mt_src_root;
-			}
-		}
+		public static string SourceRoot => RootPath;
 
 		public static string TestProjectsDirectory {
 			get {
@@ -429,18 +384,13 @@ namespace Xamarin.Tests {
 
 		public static string GetDotNetRoot ()
 		{
-			if (IsVsts) {
-				return Path.Combine (DOTNET_DIR, "packs");
-			} else {
-				return Path.Combine (SourceRoot, "_build");
-			}
+			return Path.Combine (DOTNET_DIR, "packs");
 		}
 
 		public static string GetRefDirectory (ApplePlatform platform)
 		{
 			var rv = Path.Combine (GetDotNetRoot (), GetRefNuGetName (platform));
-			if (UseSystem)
-				rv = Path.Combine (rv, GetNuGetVersionNoMetadata (platform));
+			rv = Path.Combine (rv, GetNuGetVersionNoMetadata (platform));
 			rv = Path.Combine (rv, "ref", DotNetTfm);
 			return rv;
 		}
@@ -468,8 +418,7 @@ namespace Xamarin.Tests {
 		public static string GetRuntimeDirectory (ApplePlatform platform, string runtimeIdentifier, bool isManagedRuntimePack = false)
 		{
 			var rv = Path.Combine (GetDotNetRoot (), isManagedRuntimePack ? GetManagedRuntimeNuGetName (platform) : GetRuntimeNuGetName (platform, runtimeIdentifier));
-			if (UseSystem)
-				rv = Path.Combine (rv, GetNuGetVersionNoMetadata (platform));
+			rv = Path.Combine (rv, GetNuGetVersionNoMetadata (platform));
 			return Path.Combine (rv, "runtimes", runtimeIdentifier);
 		}
 
@@ -482,8 +431,7 @@ namespace Xamarin.Tests {
 		public static string GetSdkRoot (ApplePlatform platform)
 		{
 			var rv = Path.Combine (GetDotNetRoot (), GetSdkNuGetName (platform));
-			if (UseSystem)
-				rv = Path.Combine (rv, GetNuGetVersionNoMetadata (platform));
+			rv = Path.Combine (rv, GetNuGetVersionNoMetadata (platform));
 			return Path.Combine (rv, "tools");
 		}
 
@@ -492,7 +440,6 @@ namespace Xamarin.Tests {
 			return Path.Combine (GetSdkRoot (targetFramework), "lib", "Xamarin.Apple.BindingAttributes.dll");
 		}
 
-#if !XAMMAC_TESTS
 		public static string GetBaseLibrary (ApplePlatform platform)
 		{
 			return Path.Combine (GetRefDirectory (platform), GetBaseLibraryName (platform));
@@ -598,7 +545,63 @@ namespace Xamarin.Tests {
 		{
 			return GetBaseLibrary (platform);
 		}
-#endif // !XAMMAC_TESTS
+
+		public static List<string> GetBCLAssemblies (ApplePlatform platform, bool isCoreCLR)
+		{
+			var assemblies = new List<string> ();
+			string rid;
+			string packageName;
+			switch (platform) {
+			case ApplePlatform.MacCatalyst:
+				rid = "maccatalyst-arm64";
+				packageName = isCoreCLR ? $"microsoft.netcore.app.runtime.maccatalyst-arm64" : $"microsoft.netcore.app.runtime.mono.maccatalyst-arm64";
+				break;
+			case ApplePlatform.iOS:
+				rid = "ios-arm64";
+				packageName = isCoreCLR ? $"microsoft.netcore.app.runtime.ios-arm64" : $"microsoft.netcore.app.runtime.mono.ios-arm64";
+				break;
+			case ApplePlatform.TVOS:
+				rid = "tvos-arm64";
+				packageName = isCoreCLR ? $"microsoft.netcore.app.runtime.tvOS-arm64" : $"microsoft.netcore.app.runtime.mono.tvOS-arm64";
+				break;
+			case ApplePlatform.MacOSX:
+				rid = "osx-arm64";
+				packageName = "microsoft.netcore.app.runtime.osx-arm64";
+				if (!isCoreCLR)
+					throw new InvalidOperationException ($"Mono doesn't support macOS, but was asked for the BCL assemblies for macOS");
+				break;
+			default:
+				throw new NotSupportedException ($"Unsupported platform: {platform}");
+			}
+			var microsoftNetCoreAppRefPackageVersion = File.ReadAllLines (Path.Combine (RootPath, "dotnet.config")).Single (v => v.StartsWith ("BUNDLED_NETCORE_PLATFORMS_PACKAGE_VERSION=", StringComparison.Ordinal)).Replace ("BUNDLED_NETCORE_PLATFORMS_PACKAGE_VERSION=", "");
+			var bclDir = Path.Combine (RootPath, "packages", packageName, microsoftNetCoreAppRefPackageVersion, "runtimes", rid, "lib", DotNetTfm);
+			var nativeDir = Path.Combine (RootPath, "packages", packageName, microsoftNetCoreAppRefPackageVersion, "runtimes", rid, "native");
+
+			assemblies.AddRange (Directory.GetFiles (bclDir, "*.dll"));
+			assemblies.AddRange (Directory.GetFiles (nativeDir, "*.dll"));
+
+			return assemblies;
+		}
+
+		public static List<string> GetReferenceAssemblies (ApplePlatform platform, bool isCoreCLR)
+		{
+			var assemblies = new List<string> ();
+
+			assemblies.AddRange (GetBCLAssemblies (platform, isCoreCLR));
+			assemblies.AddRange (GetRefLibrary (platform));
+
+			return assemblies;
+		}
+
+		public static List<string> GetImplementationAssemblies (ApplePlatform platform, bool isCoreCLR)
+		{
+			var assemblies = new List<string> ();
+
+			assemblies.AddRange (GetBCLAssemblies (platform, isCoreCLR));
+			assemblies.AddRange (GetBaseLibraryImplementations (platform).First ());
+
+			return assemblies;
+		}
 
 		public static IEnumerable<ApplePlatform> GetIncludedPlatforms ()
 		{
@@ -694,7 +697,7 @@ namespace Xamarin.Tests {
 			if (environment is null)
 				environment = new Dictionary<string, string?> ();
 
-			environment ["MD_APPLE_SDK_ROOT"] = Path.GetDirectoryName (Path.GetDirectoryName (xcode_root)!)!;
+			environment ["DEVELOPER_DIR"] = Path.GetDirectoryName (Path.GetDirectoryName (XcodeLocation)!)!;
 
 			// This is set by `dotnet test` and can cause building legacy projects to fail to build with:
 			// Microsoft.NET.Build.Extensions.ConflictResolution.targets(30,5):
@@ -730,6 +733,22 @@ namespace Xamarin.Tests {
 			}
 
 			return Path.Combine (SourceRoot, "tests", "test-libraries", ".libs", dir);
+		}
+
+		public static string GetSdkVersion (ApplePlatform platform)
+		{
+			switch (platform) {
+			case ApplePlatform.iOS:
+				return ios_sdk_version;
+			case ApplePlatform.MacOSX:
+				return macos_sdk_version;
+			case ApplePlatform.TVOS:
+				return tvos_sdk_version;
+			case ApplePlatform.MacCatalyst:
+				return maccatalyst_sdk_version;
+			default:
+				throw new NotImplementedException ($"Unknown platform: {platform}");
+			}
 		}
 
 		// This implementation of Touch is to update a timestamp (not to make sure a certain file exists).

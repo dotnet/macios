@@ -16,7 +16,7 @@ namespace MonoTouchFixtures.SpriteKit {
 			TestRuntime.AssertXcodeVersion (8, 0);
 
 			var grid = new SKWarpGeometryGrid (1, 1, points, points);
-			Assert.NotNull (grid, "new SKWarpGeometryGrid () should not return null");
+			Assert.That (grid, Is.Not.Null, "new SKWarpGeometryGrid () should not return null");
 		}
 
 		[Test]
@@ -25,7 +25,7 @@ namespace MonoTouchFixtures.SpriteKit {
 			TestRuntime.AssertXcodeVersion (8, 0);
 
 			var grid = SKWarpGeometryGrid.Create (1, 1, points, points);
-			Assert.NotNull (grid, "SKWarpGeometryGrid.Create should not return null");
+			Assert.That (grid, Is.Not.Null, "SKWarpGeometryGrid.Create should not return null");
 		}
 
 		[Test]
@@ -35,7 +35,7 @@ namespace MonoTouchFixtures.SpriteKit {
 
 			using (var grid = SKWarpGeometryGrid.GetGrid ()) {
 				var r = grid.GetGridByReplacingSourcePositions (points);
-				Assert.NotNull (r, "GetGridByReplacingSourcePositions should not return null");
+				Assert.That (r, Is.Not.Null, "GetGridByReplacingSourcePositions should not return null");
 			}
 		}
 
@@ -46,7 +46,7 @@ namespace MonoTouchFixtures.SpriteKit {
 
 			using (var grid = SKWarpGeometryGrid.GetGrid ()) {
 				var r = grid.GetGridByReplacingDestPositions (points);
-				Assert.NotNull (r, "GetGridByReplacingDestPositions should not return null");
+				Assert.That (r, Is.Not.Null, "GetGridByReplacingDestPositions should not return null");
 			}
 		}
 	}

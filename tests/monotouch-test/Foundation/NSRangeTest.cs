@@ -18,10 +18,10 @@ namespace MonoTouchFixtures.Foundation {
 			var left = new NSRange (start1, len1);
 			var right = new NSRange (start2, len2);
 
-			Assert.AreEqual (expected, left.Equals (right));
+			Assert.That (left.Equals (right), Is.EqualTo (expected));
 
 			if (expected) {
-				Assert.AreEqual (left.GetHashCode (), right.GetHashCode ());
+				Assert.That (right.GetHashCode (), Is.EqualTo (left.GetHashCode ()));
 			}
 		}
 

@@ -25,7 +25,7 @@ namespace MonoTouchFixtures.UIKit {
 		public void BackgroundImage ()
 		{
 			using (UIToolbar tb = new UIToolbar ()) {
-				Assert.Null (tb.GetBackgroundImage (UIToolbarPosition.Any, UIBarMetrics.Default), "Get");
+				Assert.That (tb.GetBackgroundImage (UIToolbarPosition.Any, UIBarMetrics.Default), Is.Null, "Get");
 				tb.SetBackgroundImage (null, UIToolbarPosition.Any, UIBarMetrics.Default);
 			}
 		}

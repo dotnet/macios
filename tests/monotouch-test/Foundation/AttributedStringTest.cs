@@ -28,11 +28,11 @@ namespace MonoTouchFixtures.Foundation {
 			var j = new NSMutableAttributedString ("Hello", new CTStringAttributes () { ForegroundColor = red });
 			j.Append (new NSMutableAttributedString ("12345", new CTStringAttributes () { ForegroundColor = yellow }));
 			j.EnumerateAttributes (new NSRange (0, 10), NSAttributedStringEnumeration.None, cb);
-			Assert.True (t1);
-			Assert.True (t2);
-			Assert.False (failEnum);
-			Assert.True (tFont1);
-			Assert.True (tFont2);
+			Assert.That (t1, Is.True);
+			Assert.That (t2, Is.True);
+			Assert.That (failEnum, Is.False);
+			Assert.That (tFont1, Is.True);
+			Assert.That (tFont2, Is.True);
 		}
 
 		void cb (NSDictionary attrs, NSRange range, ref bool stop)
@@ -110,14 +110,14 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			{
 				using var obj = NSAttributedString.Create (new NSUrl (""), new NSAttributedStringDocumentAttributes (), out var rda, out var e);
-				Assert.IsNull (obj, "IsNull");
-				Assert.IsNotNull (e, "Error");
+				Assert.That (obj, Is.Null, "IsNull");
+				Assert.That (e, Is.Not.Null, "Error");
 			}
 
 			{
 				using var obj = NSAttributedString.Create (new NSUrl (""), new NSAttributedStringDocumentAttributes (), out var e);
-				Assert.IsNull (obj, "IsNull 2");
-				Assert.IsNotNull (e, "Error 2");
+				Assert.That (obj, Is.Null, "IsNull 2");
+				Assert.That (e, Is.Not.Null, "Error 2");
 			}
 		}
 
@@ -126,8 +126,8 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			using var markdownOptions = new NSAttributedStringMarkdownParsingOptions ();
 			using var obj = NSAttributedString.Create (new NSUrl (""), markdownOptions, null, out var e);
-			Assert.IsNull (obj, "IsNull");
-			Assert.IsNotNull (e, "Error");
+			Assert.That (obj, Is.Null, "IsNull");
+			Assert.That (e, Is.Not.Null, "Error");
 		}
 
 
@@ -138,13 +138,13 @@ namespace MonoTouchFixtures.Foundation {
 			var textUrl = NSUrl.CreateFileUrl (textFile);
 			{
 				using var obj = NSAttributedString.Create (textUrl, new NSAttributedStringDocumentAttributes (), out var rda, out var e);
-				Assert.IsNull (e, "Error");
-				Assert.IsNotNull (obj, "IsNull");
+				Assert.That (e, Is.Null, "Error");
+				Assert.That (obj, Is.Not.Null, "IsNull");
 			}
 			{
 				using var obj = NSAttributedString.Create (textUrl, new NSAttributedStringDocumentAttributes (), out var e);
-				Assert.IsNull (e, "Error 2");
-				Assert.IsNotNull (obj, "IsNull 2");
+				Assert.That (e, Is.Null, "Error 2");
+				Assert.That (obj, Is.Not.Null, "IsNull 2");
 			}
 		}
 
@@ -155,8 +155,8 @@ namespace MonoTouchFixtures.Foundation {
 			var textUrl = NSUrl.CreateFileUrl (textFile);
 			using var markdownOptions = new NSAttributedStringMarkdownParsingOptions ();
 			using var obj = NSAttributedString.Create (textUrl, markdownOptions, null, out var e);
-			Assert.IsNull (e, "Error");
-			Assert.IsNotNull (obj, "IsNull");
+			Assert.That (e, Is.Null, "Error");
+			Assert.That (obj, Is.Not.Null, "IsNull");
 		}
 
 		[Test]
@@ -166,13 +166,13 @@ namespace MonoTouchFixtures.Foundation {
 			attributes.DocumentType = NSDocumentType.RTF;
 			{
 				using var obj = NSAttributedString.Create (NSData.FromArray (new byte [42]), attributes, out var rda, out var e);
-				Assert.IsNull (obj, "IsNull");
-				Assert.IsNotNull (e, "Error");
+				Assert.That (obj, Is.Null, "IsNull");
+				Assert.That (e, Is.Not.Null, "Error");
 			}
 			{
 				using var obj = NSAttributedString.Create (NSData.FromArray (new byte [42]), attributes, out var e);
-				Assert.IsNull (obj, "IsNull 2");
-				Assert.IsNotNull (e, "Error 2");
+				Assert.That (obj, Is.Null, "IsNull 2");
+				Assert.That (e, Is.Not.Null, "Error 2");
 			}
 		}
 
@@ -181,8 +181,8 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			using var markdownOptions = new NSAttributedStringMarkdownParsingOptions ();
 			using var obj = NSAttributedString.Create (NSData.FromArray (new byte [] { (byte) '[', (byte) '!', (byte) '"', (byte) '$', (byte) '%', (byte) '&', (byte) '/', (byte) '(', (byte) ')', (byte) '=', (byte) '?', (byte) '¿', (byte) '^', (byte) '*', (byte) '¨', (byte) '´', (byte) '}', (byte) '\\' }), markdownOptions, null, out var e);
-			Assert.IsNull (obj, "IsNull");
-			Assert.IsNotNull (e, "Error");
+			Assert.That (obj, Is.Null, "IsNull");
+			Assert.That (e, Is.Not.Null, "Error");
 		}
 
 		[Test]
@@ -190,13 +190,13 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			{
 				using var obj = NSAttributedString.Create (new NSData (), new NSAttributedStringDocumentAttributes (), out var rda, out var e);
-				Assert.IsNotNull (obj, "IsNull");
-				Assert.IsNull (e, "Error");
+				Assert.That (obj, Is.Not.Null, "IsNull");
+				Assert.That (e, Is.Null, "Error");
 			}
 			{
 				using var obj = NSAttributedString.Create (new NSData (), new NSAttributedStringDocumentAttributes (), out var e);
-				Assert.IsNotNull (obj, "IsNull 2");
-				Assert.IsNull (e, "Error 2");
+				Assert.That (obj, Is.Not.Null, "IsNull 2");
+				Assert.That (e, Is.Null, "Error 2");
 			}
 		}
 
@@ -205,8 +205,8 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			using var markdownOptions = new NSAttributedStringMarkdownParsingOptions ();
 			using var obj = NSAttributedString.Create (new NSData (), markdownOptions, null, out var e);
-			Assert.IsNotNull (obj, "IsNull");
-			Assert.IsNull (e, "Error");
+			Assert.That (obj, Is.Not.Null, "IsNull");
+			Assert.That (e, Is.Null, "Error");
 		}
 
 
@@ -215,8 +215,8 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			using var markdownOptions = new NSAttributedStringMarkdownParsingOptions ();
 			using var obj = NSAttributedString.Create ("#markdown", markdownOptions, null, out var e);
-			Assert.IsNotNull (obj, "IsNull");
-			Assert.IsNull (e, "Error");
+			Assert.That (obj, Is.Not.Null, "IsNull");
+			Assert.That (e, Is.Null, "Error");
 		}
 
 		[Test]
@@ -289,14 +289,14 @@ namespace MonoTouchFixtures.Foundation {
 			Assert.Multiple (() => {
 				// I wasn't able to figure out any string that would make 'CreateWithHTML' fail :/
 				// var invalidHtml = NSData.FromArray ([(int) '?']);
-				Assert.IsNull (NSAttributedString.CreateWithRTF (NSData.FromArray ([0]), out var _), "CreateWithRTF");
-				Assert.IsNull (NSAttributedString.CreateWithRTFD (NSData.FromArray ([0]), out var _), "CreateWithRTFD");
-				// Assert.IsNull (NSAttributedString.CreateWithHTML (invalidHtml, out var _), "CreateWithHTML");
-				// Assert.IsNull (NSAttributedString.CreateWithHTML (invalidHtml, NSUrl.CreateFileUrl ("/tmp"), out var _), "CreateWithHTML/NSUrl");
-				// Assert.IsNull (NSAttributedString.CreateWithHTML (invalidHtml, new NSDictionary (), out var _), "CreateWithHTML/NSDictionary");
-				// Assert.IsNull (NSAttributedString.CreateWithHTML (invalidHtml, new NSAttributedStringDocumentAttributes (), out var _), "CreateWithHTML/NSAttributedStringDocumentAttributes");
-				Assert.IsNull (NSAttributedString.CreateWithDocFormat (NSData.FromArray ([0]), out var _), "CreateWithDocFormat");
-				Assert.IsNull (NSAttributedString.Create (new NSFileWrapper (NSData.FromArray ([0])), out var _), "Create/NSFileWrapper");
+				Assert.That (NSAttributedString.CreateWithRTF (NSData.FromArray ([0]), out var _), Is.Null, "CreateWithRTF");
+				Assert.That (NSAttributedString.CreateWithRTFD (NSData.FromArray ([0]), out var _), Is.Null, "CreateWithRTFD");
+				// Assert.That (NSAttributedString.CreateWithHTML (invalidHtml, out var _), Is.Null, "CreateWithHTML");
+				// Assert.That (NSAttributedString.CreateWithHTML (invalidHtml, NSUrl.CreateFileUrl ("/tmp"), out var _), Is.Null, "CreateWithHTML/NSUrl");
+				// Assert.That (NSAttributedString.CreateWithHTML (invalidHtml, new NSDictionary (), out var _), Is.Null, "CreateWithHTML/NSDictionary");
+				// Assert.That (NSAttributedString.CreateWithHTML (invalidHtml, new NSAttributedStringDocumentAttributes (), out var _), Is.Null, "CreateWithHTML/NSAttributedStringDocumentAttributes");
+				Assert.That (NSAttributedString.CreateWithDocFormat (NSData.FromArray ([0]), out var _), Is.Null, "CreateWithDocFormat");
+				Assert.That (NSAttributedString.Create (new NSFileWrapper (NSData.FromArray ([0])), out var _), Is.Null, "Create/NSFileWrapper");
 			});
 		}
 #endif

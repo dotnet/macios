@@ -77,7 +77,11 @@ namespace Foundation {
 	///     	if (IsDirectBinding) {
 	///     		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
 	///     	} else {
-	///     		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
+	///     		unsafe {
+	///     			var __objc_super__ = new ObjCRuntime.ObjCSuper (this);
+	///     			Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (&__objc_super__, initWithFrame, frame);
+	///     		}
+	///     		GC.KeepAlive (this);
 	///     	}
 	///     }
 	///     ]]></code>
@@ -115,12 +119,9 @@ namespace Foundation {
 
 #if !COREBUILD
 	// Allocated in native memory, so that it can be accessed from native code without having to deal with the GC.
-	// Also put objc_super here, because it simplifies code.
 	// This is mirrored in runtime.h and the definition needs to be in sync.
-	struct NSObjectData {
-		// the layout here is important, the two first fields have to match the objc_super struct.
+	internal struct NSObjectData {
 		public NativeHandle handle;
-		public NativeHandle classHandle;
 		public NSObject.Flags flags;
 	}
 
@@ -133,34 +134,42 @@ namespace Foundation {
 	// * https://github.com/AustinWise/runtime/blob/2bd10ad43df967950657ae0ade1f899dc1b18a41/src/coreclr/nativeaot/System.Private.CoreLib/src/System/Runtime/InteropServices/ObjectiveCMarshal.NativeAot.cs#L15
 	// * https://github.com/AustinWise/runtime/blob/2bd10ad43df967950657ae0ade1f899dc1b18a41/src/coreclr/nativeaot/System.Private.CoreLib/src/System/Runtime/InteropServices/ObjectiveCMarshal.NativeAot.cs#L59-L71
 	// * https://github.com/AustinWise/runtime/blob/2bd10ad43df967950657ae0ade1f899dc1b18a41/src/coreclr/nativeaot/System.Private.CoreLib/src/System/Runtime/InteropServices/ObjectiveCMarshal.NativeAot.cs#L181-L185
-	unsafe class NSObjectDataHandle {
-		NSObjectData* data;
+	unsafe class NSObjectDataHandle : TrackedMemory {
+		public NSObjectData* Data { get => (NSObjectData*) Value; }
+
+		public NSObjectDataHandle () : base ((nuint) sizeof (NSObjectData))
+		{
+		}
+	}
+
+	class TrackedMemory {
 		GCHandle handle;
 
-		public NSObjectData* Data { get => data; }
+		public IntPtr Value { get; private set; }
 
-		public NSObjectDataHandle ()
+		public unsafe TrackedMemory (nuint size)
 		{
-			data = Runtime.AllocZeroed<NSObjectData> ();
+			Value = (IntPtr) NativeMemory.AllocZeroed (size);
 		}
 
-		public void CreateHandle (NSObject obj)
+		public unsafe void CreateHandle (NSObject trackedObject)
 		{
-			handle = GCHandle.Alloc (obj, GCHandleType.WeakTrackResurrection);
+			handle = GCHandle.Alloc (trackedObject, GCHandleType.WeakTrackResurrection);
 		}
 
-		~NSObjectDataHandle ()
+		~TrackedMemory ()
 		{
 			var handleAllocated = handle.IsAllocated;
-
 			if (handleAllocated && handle.Target is not null) {
 				// The NSObject instance isn't gone yet, we have to try again later.
 				GC.ReRegisterForFinalize (this);
 				return;
 			}
 
-			NativeMemory.Free (data);
-			data = null;
+			unsafe {
+				NativeMemory.Free ((void*) Value);
+			}
+			Value = IntPtr.Zero;
 
 			if (handleAllocated)
 				handle.Free ();
@@ -170,7 +179,9 @@ namespace Foundation {
 
 #if !COREBUILD
 	/// <include file="../../docs/api/Foundation/NSObject.xml" path="/Documentation/Docs[@DocId='T:Foundation.NSObject']/*" />
+#pragma warning disable CA1416 // https://github.com/dotnet/runtime/pull/131583
 	[ObjectiveCTrackedType]
+#pragma warning restore CA1416
 #endif
 	[StructLayout (LayoutKind.Sequential)]
 	public partial class NSObject : INativeObject
@@ -204,6 +215,10 @@ namespace Foundation {
 		// having to attach those threads to to the managed runtime.
 		IntPtr /* unsafe NSObjectData* */ __data; // Read directly from several places in the runtime
 
+#pragma warning disable CS8618 // "Non-nullable field '...' must contain a non-null value when exiting constructor.": this field is always non-null, because NSObject.Initialize is called before anything else is done.
+		static ConditionalWeakTable<NSObject, TrackedMemory> super_map;
+#pragma warning restore CS8618
+
 		unsafe NativeHandle handle {
 			get => GetData ()->handle;
 			set => GetData ()->handle = value;
@@ -215,18 +230,24 @@ namespace Foundation {
 			if (data != IntPtr.Zero)
 				return (NSObjectData*) data;
 
-			var data_handle = new NSObjectDataHandle ();
-			var existing_data = Interlocked.CompareExchange (ref __data, (IntPtr) data_handle.Data, IntPtr.Zero);
-			if (existing_data != IntPtr.Zero) {
-				// return the existing data, the GC will collect the other one we just created
-				return (NSObjectData*) existing_data;
+			if (Runtime.IsCoreCLR) {
+				data = (IntPtr) Runtime.GetTaggedMemory (this);
+				__data = data; // Runtime.GetTaggedMemory will always return the same pointer for the same object, so no synchronization is needed here (redundant writes are benign).
+				return (NSObjectData*) data;
+			} else {
+				var data_handle = new NSObjectDataHandle ();
+				var existing_data = Interlocked.CompareExchange (ref __data, (IntPtr) data_handle.Data, IntPtr.Zero);
+				if (existing_data != IntPtr.Zero) {
+					// return the existing data, the GC will collect the other one we just created
+					return (NSObjectData*) existing_data;
+				}
+				// tell the data handle we just created to track us
+				data_handle.CreateHandle (this);
+				// make sure the data isn't freed before this NSObject is collected, but also
+				// that it is freed after this NSObject is collected.
+				data_table.Add (this, data_handle);
+				return data_handle.Data;
 			}
-			// tell the data handle we just created to track us
-			data_handle.CreateHandle (this);
-			// make sure the data isn't freed before this NSObject is collected, but also
-			// that it is freed after this NSObject is collected.
-			data_table.Add (this, data_handle);
-			return data_handle.Data;
 		}
 
 		unsafe Flags flags {
@@ -308,6 +329,11 @@ namespace Foundation {
 		{
 			bool alloced = AllocIfNeeded ();
 			InitializeObject (alloced);
+			// This constructor doesn't send 'init', so the handle is final. Complete any
+			// deferred registration for user types (see #25861); no-op if already registered
+			// (e.g. direct bindings, which InitializeObject registers eagerly).
+			if (alloced && !Runtime.RegisterObjectsBeforeInit)
+				Runtime.RegisterNSObject (this, handle, onlyIfNeeded: true);
 		}
 
 		// This is just here as a constructor chain that can will
@@ -384,17 +410,29 @@ namespace Foundation {
 			}
 		}
 
+#if !XAMCORE_5_0
 		unsafe NativeHandle GetSuper ()
 		{
-			var data = GetData ();
-			if (data->classHandle == NativeHandle.Zero)
-				data->classHandle = ClassHandle;
-			return (IntPtr) (&data->handle);
+			var memory = super_map.GetValue (this, (obj) => {
+				unsafe {
+					var memory = new TrackedMemory ((nuint) sizeof (objc_super));
+					memory.CreateHandle (obj);
+					return memory;
+				}
+			});
+			objc_super* sup = (objc_super*) memory.Value;
+			if (sup->ClassHandle == NativeHandle.Zero)
+				sup->ClassHandle = ClassHandle;
+			sup->Handle = handle;
+			return memory.Value;
 		}
+#endif // !XAMCORE_5_0
 
-		internal static NativeHandle Initialize ()
+		internal static NativeHandle InitializeObject ()
 		{
-			data_table = new ConditionalWeakTable<NSObject, NSObjectDataHandle> ();
+			if (!Runtime.IsCoreCLR)
+				data_table = new ConditionalWeakTable<NSObject, NSObjectDataHandle> ();
+			super_map = new ConditionalWeakTable<NSObject, TrackedMemory> ();
 			return class_ptr;
 		}
 
@@ -476,20 +514,35 @@ namespace Foundation {
 			// and any subclasses in the platform assembly which is not a direct binding have
 			// to set the correct value in their constructors.
 			IsDirectBinding = (this.GetType ().Assembly == PlatformAssembly);
-			Runtime.RegisterNSObject (this, handle);
 
 			bool native_ref = (flags & Flags.NativeRef) == Flags.NativeRef;
-			CreateManagedRef (!alloced || native_ref);
+
+			if (!Runtime.TryGetIsUserType (handle, out var isUserType, out var error_message))
+				throw new InvalidOperationException ($"Unable to create a managed reference for the pointer {handle} whose managed type is {GetType ().FullName} because it wasn't possible to get the class of the pointer: {error_message}");
+
+			// Issue #25861: when we've just alloc'd a user type, defer adding it to the
+			// object_map until 'init' has completed. A native 'init' may free this handle
+			// and return a different one; we don't want a pointer to freed memory lingering
+			// in the map. User types carry their gchandle in a native ivar (set by
+			// CreateManagedRef below), which serves as a fallback lookup during 'init', so
+			// deferring their object_map registration is safe. The final handle is registered
+			// later (via InitializeHandle for the generated alloc+init constructors, or right
+			// after this call for the parameterless NSObject constructor which doesn't send
+			// 'init'). Direct bindings have no ivar, so they must remain registered throughout
+			// 'init' (e.g. so a native 'init' that surfaces 'self' to managed code resolves to
+			// the wrapper being constructed) and are registered eagerly here.
+			if (!alloced || !isUserType || Runtime.RegisterObjectsBeforeInit)
+				Runtime.RegisterNSObject (this, handle);
+
+			CreateManagedRef (isUserType, !alloced || native_ref);
 		}
 
 		[DllImport ("__Internal")]
 		static extern byte xamarin_set_gchandle_with_flags_safe (IntPtr handle, IntPtr gchandle, XamarinGCHandleFlags gchandle_flags, IntPtr data);
 
-		void CreateManagedRef (bool retain)
+		void CreateManagedRef (bool isUserType, bool retain)
 		{
 			HasManagedRef = true;
-			if (!Runtime.TryGetIsUserType (handle, out var isUserType, out var error_message))
-				throw new InvalidOperationException ($"Unable to create a managed reference for the pointer {handle} whose managed type is {GetType ().FullName} because it wasn't possible to get the class of the pointer: {error_message}");
 
 			if (isUserType) {
 				var gchandle_flags = XamarinGCHandleFlags.HasManagedRef | XamarinGCHandleFlags.InitialSet;
@@ -508,6 +561,37 @@ namespace Foundation {
 
 			if (retain)
 				DangerousRetain ();
+		}
+
+		// Issue #25861: if 'init' returned a different handle than 'alloc' for a user type,
+		// the gchandle ivar was set on the (now typically freed) alloc'd handle. Make sure
+		// the final handle also has a gchandle ivar pointing back at this managed object, so
+		// it can be resolved native->managed. Does nothing for direct bindings (no ivar) or
+		// if the ivar is already set.
+		void EnsureManagedReference (NativeHandle newHandle)
+		{
+			if (!Runtime.TryGetIsUserType (newHandle, out var isUserType, out var _) || !isUserType)
+				return;
+			if (Runtime.GetGCHandleForObject (newHandle) != IntPtr.Zero)
+				return;
+			HasManagedRef = true;
+			var gchandle_flags = XamarinGCHandleFlags.HasManagedRef | XamarinGCHandleFlags.InitialSet;
+			var gchandle = GCHandle.Alloc (this, GCHandleType.WeakTrackResurrection);
+			var h = GCHandle.ToIntPtr (gchandle);
+			byte rv;
+			unsafe {
+				rv = xamarin_set_gchandle_with_flags_safe (newHandle, h, gchandle_flags, (IntPtr) GetData ());
+			}
+			if (rv == 0) {
+				// The ivar slot was already claimed (e.g. another managed wrapper won a race
+				// to represent this native object). Free the gchandle we allocated. We keep
+				// HasManagedRef set (it was already set by CreateManagedRef): this object
+				// still owns the +1 that 'init' transferred to 'newHandle', and that +1 must
+				// still be released via ReleaseManagedRef on disposal. This mirrors the same
+				// case in CreateManagedRef.
+				Runtime.NSLog ($"Tried to create a managed reference from an object that already has a managed reference (type: {GetType ()})");
+				gchandle.Free ();
+			}
 		}
 
 		void ReleaseManagedRef ()
@@ -586,13 +670,19 @@ namespace Foundation {
 			if (is_wrapper) {
 				does = Messaging.bool_objc_msgSend_IntPtr (this.Handle, selConformsToProtocolHandle, protocol) != 0;
 			} else {
-				does = Messaging.bool_objc_msgSendSuper_IntPtr (this.SuperHandle, selConformsToProtocolHandle, protocol) != 0;
+				unsafe {
+					var __objc_super__ = new ObjCRuntime.ObjCSuper (this);
+					does = Messaging.bool_objc_msgSendSuper_IntPtr (&__objc_super__, selConformsToProtocolHandle, protocol) != 0;
+				}
 			}
 #else
 			if (is_wrapper) {
 				does = Messaging.bool_objc_msgSend_IntPtr (this.Handle, Selector.GetHandle (selConformsToProtocol), protocol) != 0;
 			} else {
-				does = Messaging.bool_objc_msgSendSuper_IntPtr (this.SuperHandle, Selector.GetHandle (selConformsToProtocol), protocol) != 0;
+				unsafe {
+					var __objc_super__ = new ObjCRuntime.ObjCSuper (this);
+					does = Messaging.bool_objc_msgSendSuper_IntPtr (&__objc_super__, Selector.GetHandle (selConformsToProtocol), protocol) != 0;
+				}
 			}
 #endif
 
@@ -712,16 +802,35 @@ namespace Foundation {
 			return this;
 		}
 
+#if !XAMCORE_5_0
 		/// <summary>Handle used to represent the methods in the base class for this <see cref="NSObject" />.</summary>
 		/// <value>An opaque pointer, represents an Objective-C objc_super object pointing to our base class.</value>
 		/// <remarks>
-		///   This property is used to access members of a base class.
-		///   This is typically used when you call any of the Messaging
-		///   methods to invoke methods that were implemented in your base
-		///   class, instead of invoking the implementation in the current
-		///   class.
+		///   <para>
+		///     This property is used to access members of a base class.
+		///     This is typically used when you call any of the Messaging
+		///     methods to invoke methods that were implemented in your base
+		///     class, instead of invoking the implementation in the current
+		///     class.
+		///   </para>
+		///   <para>
+		///     This property is obsolete; use the <see cref="ObjCSuper" /> struct instead:
+		///   </para>
+		///   <example>
+		///     <code lang="csharp lang-csharp"><![CDATA[
+		/// [DllImport ("/usr/lib/libobjc.dylib")]
+		/// unsafe static extern void objc_msgSendSuper (ObjCSuper* super, IntPtr sel);
+		///
+		/// var obj = new MyNSObject ();
+		/// var super = new ObjCSuper (obj);
+		/// objc_msgSendSuper (&super, Selector.GetHandle ("description"));
+		/// ]]></code>
+		///   </example>
 		/// </remarks>
 		[EditorBrowsable (EditorBrowsableState.Never)]
+#if NET11_0_OR_GREATER
+		[Obsolete ("Use 'ObjCSuper' instead.")]
+#endif
 		public NativeHandle SuperHandle {
 			get {
 				if (handle == IntPtr.Zero)
@@ -730,6 +839,7 @@ namespace Foundation {
 				return GetSuper ();
 			}
 		}
+#endif // !XAMCORE_5_0
 
 		/// <summary>Handle (pointer) to the unmanaged object representation.</summary>
 		/// <value>A pointer.</value>
@@ -741,8 +851,15 @@ namespace Foundation {
 				if (handle == value)
 					return;
 
-				if (handle != IntPtr.Zero)
-					Runtime.UnregisterNSObject (handle);
+				if (handle != IntPtr.Zero) {
+					// Issue #25861: use the ownership-aware unregister so we don't remove an
+					// object_map entry that another object created after reusing this (freed)
+					// address. The legacy switch restores the previous unconditional removal.
+					if (Runtime.RegisterObjectsBeforeInit)
+						Runtime.UnregisterNSObject (handle);
+					else
+						Runtime.UnregisterNSObject (handle, this);
+				}
 
 				handle = value;
 
@@ -763,8 +880,15 @@ namespace Foundation {
 			InitializeHandle (handle, initSelector, Class.ThrowOnInitFailure);
 		}
 
+		/// <summary>Initializes the <see cref="Handle" /> property with the result of a native initializer.</summary>
+		/// <param name="handle">The handle returned by the native initializer.</param>
+		/// <param name="initSelector">The selector of the native initializer that produced <paramref name="handle" />. Only used in the exception message when initialization fails.</param>
+		/// <param name="throwOnInitFailure">If <see langword="true" />, an exception is thrown when the native initializer failed (returned nil); if <see langword="false" />, the <see cref="Handle" /> property is set to the (possibly null) handle without throwing.</param>
+		/// <remarks>
+		///   <para>Pass <see langword="false" /> for <paramref name="throwOnInitFailure" /> to implement a factory method for a failable initializer: this makes it possible to detect a nil result (by checking the <see cref="Handle" /> property) and return <see langword="null" /> instead of throwing. This is what the generator does for constructors annotated with <c>[FactoryMethod]</c>.</para>
+		/// </remarks>
 		[EditorBrowsable (EditorBrowsableState.Never)]
-		internal void InitializeHandle (NativeHandle handle, string initSelector, bool throwOnInitFailure)
+		protected internal void InitializeHandle (NativeHandle handle, string initSelector, bool throwOnInitFailure)
 		{
 			if (this.handle == NativeHandle.Zero && throwOnInitFailure) {
 				if (ClassHandle == NativeHandle.Zero)
@@ -777,7 +901,24 @@ namespace Foundation {
 				throw new Exception ($"Could not initialize an instance of the type '{GetType ().FullName}': the native '{initSelector}' method returned nil.\n{Constants.SetThrowOnInitFailureToFalse}.");
 			}
 
+			// Transition to the final (post-'init') handle. The Handle setter (ownership-aware)
+			// unregisters the previous handle if needed and registers the new one.
+			var previousHandle = this.handle;
 			this.Handle = handle;
+
+			// Issue #25861: registration for user types was deferred in InitializeObject.
+			if (!Runtime.RegisterObjectsBeforeInit && handle != NativeHandle.Zero) {
+				if (handle == previousHandle) {
+					// 'init' returned the same handle, so the setter above was a no-op.
+					// Complete the deferred registration now (no-op if already registered).
+					Runtime.RegisterNSObject (this, handle, onlyIfNeeded: true);
+				} else {
+					// 'init' returned a different handle; the gchandle ivar was set on the
+					// previous (now typically freed) handle, so re-establish it on the final
+					// handle for user types.
+					EnsureManagedReference (handle);
+				}
+			}
 		}
 
 		private bool AllocIfNeeded ()
@@ -993,8 +1134,12 @@ namespace Foundation {
 				ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle_NativeHandle (this.Handle, Selector.GetHandle ("setValue:forKeyPath:"), handle, keyPath.Handle);
 				GC.KeepAlive (keyPath);
 			} else {
-				ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle_NativeHandle (this.SuperHandle, Selector.GetHandle ("setValue:forKeyPath:"), handle, keyPath.Handle);
-				GC.KeepAlive (keyPath);
+				unsafe {
+					var __objc_super__ = new ObjCRuntime.ObjCSuper (this);
+					ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle_NativeHandle (&__objc_super__, Selector.GetHandle ("setValue:forKeyPath:"), handle, keyPath.Handle);
+					GC.KeepAlive (this);
+					GC.KeepAlive (keyPath);
+				}
 			}
 		}
 
@@ -1108,22 +1253,19 @@ namespace Foundation {
 		}
 
 		[Register ("__NSObject_Disposer")]
-		[Preserve (AllMembers = true)]
 		internal class NSObject_Disposer : NSObject {
 			static readonly List<NSObject> drainList1 = new List<NSObject> ();
 			static readonly List<NSObject> drainList2 = new List<NSObject> ();
 			static List<NSObject> handles = drainList1;
 
 			static readonly IntPtr class_ptr = Class.GetHandle ("__NSObject_Disposer");
-#if MONOMAC
-			static readonly IntPtr drainHandle = Selector.GetHandle ("drain:");
-#endif
 
 			static readonly object lock_obj = new object ();
 
-			private NSObject_Disposer ()
+			NSObject_Disposer ()
 			{
 				// Disable default ctor, there should be no instances of this class.
+				// Can't make the class static, because it has to subclass NSObject.
 			}
 
 			static internal void Add (NSObject handle)
@@ -1138,6 +1280,7 @@ namespace Foundation {
 				ScheduleDrain ();
 			}
 
+			[DynamicDependency ("Drain")]
 			static void ScheduleDrain ()
 			{
 				Messaging.void_objc_msgSend_NativeHandle_NativeHandle_bool (class_ptr, Selector.GetHandle (Selector.PerformSelectorOnMainThreadWithObjectWaitUntilDone), Selector.GetHandle ("drain:"), NativeHandle.Zero, 0);

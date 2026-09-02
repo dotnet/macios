@@ -158,8 +158,9 @@ struct AssemblyLocations {
 };
 
 void xamarin_initialize ();
+void xamarin_initialize_dynamic_registrar ();
 
-void			xamarin_assertion_message (const char *msg, ...) __attribute__((__noreturn__));
+void			xamarin_assertion_message (const char *msg, ...) __attribute__((__noreturn__, format(printf, 1, 2)));
 // Gets the bundle path (where the managed executable is). This is *not* the path of the app bundle (.app/.appex).
 const char *	xamarin_get_bundle_path (); /* Public API */
 // Sets the bundle path (where the managed executable is). By default APP/Contents/MonoBundle.
@@ -194,7 +195,7 @@ void			xamarin_throw_nsexception (MonoException *exc);
 void			xamarin_rethrow_managed_exception (GCHandle original_gchandle, GCHandle *exception_gchandle);
 MonoException *	xamarin_create_exception (const char *msg);
 id				xamarin_get_handle (MonoObject *obj, GCHandle *exception_gchandle);
-char *			xamarin_strdup_printf (const char *msg, ...);
+char *			xamarin_strdup_printf (const char *msg, ...) __attribute__((format(printf, 1, 2)));
 void *			xamarin_calloc (size_t size);
 void			xamarin_free (void *ptr);
 MonoMethod *	xamarin_get_reflection_method_method (MonoReflectionMethod *method);
@@ -219,7 +220,7 @@ MonoAssembly*	xamarin_assembly_preload_hook (MonoAssemblyName *aname, char **ass
 void			xamarin_handle_bridge_exception (GCHandle gchandle, const char *method);
 void			xamarin_vm_initialize ();
 bool			xamarin_bridge_vm_initialize (int propertyCount, const char **propertyKeys, const char **propertyValues);
-void*			xamarin_pinvoke_override (const char *libraryName, const char *entrypointName);
+const void*		xamarin_pinvoke_override (const char *libraryName, const char *entrypointName);
 void			xamarin_bridge_call_runtime_initialize (struct InitializationOptions* options, GCHandle* exception_gchandle);
 void			xamarin_bridge_register_product_assembly (GCHandle* exception_gchandle);
 MonoMethod *	xamarin_bridge_get_mono_method (MonoReflectionMethod *method);
@@ -296,9 +297,9 @@ bool			xamarin_locate_assembly_resource_for_root (const char *root, const char *
 bool			xamarin_locate_assembly_resource (const char *assembly_name, const char *culture, const char *resource, char *path, size_t pathlen);
 bool			xamarin_locate_app_resource (const char *resource, char *path, size_t pathlen);
 
-// this functions support NSLog/NSString-style format specifiers.
-void			xamarin_printf (const char *format, ...);
-void			xamarin_vprintf (const char *format, va_list args);
+// these functions support NSLog/NSString-style format specifiers.
+void			xamarin_printf (const char *format, ...) __attribute__((format(__NSString__, 1, 2)));
+void			xamarin_vprintf (const char *format, va_list args) __attribute__((format(__NSString__, 1, 0)));
 void			xamarin_install_log_callbacks ();
 
 bool			xamarin_is_user_type (Class cls);
@@ -367,10 +368,9 @@ extern xamarin_register_assemblies_callback xamarin_register_assemblies;
 // This has a managed equivalent in NSObject.cs
 struct NSObjectData {
 	id handle;
-	struct objc_super* super;
 	uint32_t /* NSObjectFlags */ flags;
 	// if this structure ever changes, the encoding for this method will likely have to be updated in Registrar.RegistrarTypeUnsafe, currently it's:
-	//    Signature = "^{NSObjectData=@^{objc_super}I}:",
+	//    Signature = "^{NSObjectData=@I}:",
 };
 
 #ifdef __cplusplus

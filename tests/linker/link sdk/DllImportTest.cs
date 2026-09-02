@@ -34,7 +34,7 @@ namespace LinkSdk {
 		public void ScanForStrip_17327 ()
 		{
 			// note: must be tested on a release (strip'ed) build
-			Assert.NotNull (NestedFirstLevel.NestedSecondLevel.xamarin_get_locale_country_code ());
+			Assert.That (NestedFirstLevel.NestedSecondLevel.xamarin_get_locale_country_code (), Is.Not.Null);
 		}
 
 		[Test]
@@ -89,7 +89,7 @@ namespace LinkSdk {
 			};
 			var timeout = TimeSpan.FromSeconds (10);
 			var tasks = hosts.Select (host => (new Ping ()).SendPingAsync (host, timeout)).ToArray ();
-			Assert.IsTrue (Task.WaitAll (tasks, timeout.Add (TimeSpan.FromSeconds (10))), "One or more of the ping requests timed out.");
+			Assert.That (Task.WaitAll (tasks, timeout.Add (TimeSpan.FromSeconds (10))), Is.True, "One or more of the ping requests timed out.");
 			var results = tasks.Select (task => task.Result.Status).ToArray ();
 			Assert.That (results, Has.Some.EqualTo (IPStatus.Success), "Pong any host");
 		}

@@ -23,7 +23,6 @@ namespace UIKit {
 		/// <param name="image">The image saved.</param>
 		///     <param name="error">Errors, if any.</param>
 		///     <summary>A delegate signature for getting a notification when the file has been saved.</summary>
-		///     <remarks>To be added.</remarks>
 		public delegate void SaveStatus (UIImage image, NSError error);
 
 		[DllImport (Constants.UIKitLibrary)]
@@ -170,13 +169,13 @@ namespace UIKit {
 
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.UIKitLibrary)]
 		static extern /* NSData */ IntPtr UIImageHEICRepresentation (/* UIImage */ IntPtr image);
 
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public NSData? HeicRepresentation
 			=> Runtime.GetNSObject<NSData> (UIImageHEICRepresentation (Handle));
 

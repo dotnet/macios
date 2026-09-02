@@ -32,8 +32,8 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			// note: iOS 6 beta 3 fails with: +[_UIDictionaryWrapper _availableDictionaryAssets] returned failed - retrying. Error: Error Domain=ASError Code=4 "The operation couldn’t be completed. (ASError error 4 - Unable to copy asset information)" UserInfo=0x16ac81a0 {NSDescription=Unable to copy asset information}
 			// beta 3 always return true, beta 4 false ...
-			Assert.True (UIReferenceLibraryViewController.DictionaryHasDefinitionForTerm ("Mono"), "Mono");
-			Assert.False (UIReferenceLibraryViewController.DictionaryHasDefinitionForTerm ("zozo"), "zozo");
+			Assert.That (UIReferenceLibraryViewController.DictionaryHasDefinitionForTerm ("Mono"), Is.True, "Mono");
+			Assert.That (UIReferenceLibraryViewController.DictionaryHasDefinitionForTerm ("zozo"), Is.False, "zozo");
 		}
 	}
 }

@@ -54,9 +54,9 @@ namespace MonoTouchFixtures.Metal {
 			var horizontal = new float [] { 1, 2, 3 };
 			var vertical = new float [] { 5, 6, 7, 8 };
 			using var obj = MTLRasterizationRateLayerDescriptor.Create (new MTLSize (horizontal.Length, vertical.Length, 42), horizontal, vertical);
-			Assert.AreEqual ((nint) horizontal.Length, obj.SampleCount.Width, "Width");
-			Assert.AreEqual ((nint) vertical.Length, obj.SampleCount.Height, "Height");
-			Assert.AreEqual ((nint) 0, obj.SampleCount.Depth, "Depth");
+			Assert.That (obj.SampleCount.Width, Is.EqualTo ((nint) horizontal.Length), "Width");
+			Assert.That (obj.SampleCount.Height, Is.EqualTo ((nint) vertical.Length), "Height");
+			Assert.That (obj.SampleCount.Depth, Is.EqualTo ((nint) 0), "Depth");
 			Assert.That (obj.HorizontalSampleStorage, Is.EqualTo (horizontal), "HorizontalSampleStorage");
 			Assert.That (obj.VerticalSampleStorage, Is.EqualTo (vertical), "VerticalSampleStorage");
 
@@ -72,9 +72,9 @@ namespace MonoTouchFixtures.Metal {
 			var horizontal = new float [] { 1, 2, 3 };
 			var vertical = new float [] { 5, 6, 7, 8 };
 			using var obj = MTLRasterizationRateLayerDescriptor.Create (horizontal, vertical);
-			Assert.AreEqual ((nint) horizontal.Length, obj.SampleCount.Width, "Width");
-			Assert.AreEqual ((nint) vertical.Length, obj.SampleCount.Height, "Height");
-			Assert.AreEqual ((nint) 0, obj.SampleCount.Depth, "Depth");
+			Assert.That (obj.SampleCount.Width, Is.EqualTo ((nint) horizontal.Length), "Width");
+			Assert.That (obj.SampleCount.Height, Is.EqualTo ((nint) vertical.Length), "Height");
+			Assert.That (obj.SampleCount.Depth, Is.EqualTo ((nint) 0), "Depth");
 			Assert.That (obj.HorizontalSampleStorage, Is.EqualTo (horizontal), "HorizontalSampleStorage");
 			Assert.That (obj.VerticalSampleStorage, Is.EqualTo (vertical), "VerticalSampleStorage");
 
@@ -88,9 +88,9 @@ namespace MonoTouchFixtures.Metal {
 			var horizontal = new float [3];
 			var vertical = new float [4];
 			using var obj = new MTLRasterizationRateLayerDescriptor (new MTLSize (horizontal.Length, vertical.Length, 0));
-			Assert.AreEqual ((nint) horizontal.Length, obj.SampleCount.Width, "Width");
-			Assert.AreEqual ((nint) vertical.Length, obj.SampleCount.Height, "Height");
-			Assert.AreEqual ((nint) 0, obj.SampleCount.Depth, "Depth");
+			Assert.That (obj.SampleCount.Width, Is.EqualTo ((nint) horizontal.Length), "Width");
+			Assert.That (obj.SampleCount.Height, Is.EqualTo ((nint) vertical.Length), "Height");
+			Assert.That (obj.SampleCount.Depth, Is.EqualTo ((nint) 0), "Depth");
 			Assert.That (obj.HorizontalSampleStorage, Is.EqualTo (horizontal), "HorizontalSampleStorage");
 			Assert.That (obj.VerticalSampleStorage, Is.EqualTo (vertical), "VerticalSampleStorage");
 		}

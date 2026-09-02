@@ -27,7 +27,7 @@ namespace MonoTouchFixtures.Metal {
 		public void GetSetCommandTypesTest ()
 		{
 			descriptor.CommandTypes = MTLIndirectCommandType.Draw;
-			Assert.AreEqual (MTLIndirectCommandType.Draw, descriptor.CommandTypes);
+			Assert.That (descriptor.CommandTypes, Is.EqualTo (MTLIndirectCommandType.Draw));
 		}
 
 #if MONOMAC
@@ -35,7 +35,7 @@ namespace MonoTouchFixtures.Metal {
 		public void GetSetInheritPipelineStateTest ()
 		{
 			descriptor.InheritPipelineState = true;
-			Assert.AreEqual (true, descriptor.InheritPipelineState);
+			Assert.That (descriptor.InheritPipelineState, Is.EqualTo (true));
 		}
 #endif
 
@@ -43,21 +43,21 @@ namespace MonoTouchFixtures.Metal {
 		public void GetSetInheritBuffersTest ()
 		{
 			descriptor.InheritBuffers = true;
-			Assert.AreEqual (true, descriptor.InheritBuffers);
+			Assert.That (descriptor.InheritBuffers, Is.EqualTo (true));
 		}
 
 		[Test]
 		public void GetSetMaxVertexBufferBindCountTest ()
 		{
 			descriptor.MaxVertexBufferBindCount = 1;
-			Assert.AreEqual ((nuint) 1, descriptor.MaxVertexBufferBindCount);
+			Assert.That (descriptor.MaxVertexBufferBindCount, Is.EqualTo ((nuint) 1));
 		}
 
 		[Test]
 		public void GetSetMaxFragmentBufferBindCountTest ()
 		{
 			descriptor.MaxFragmentBufferBindCount = 1;
-			Assert.AreEqual ((nuint) 1, descriptor.MaxFragmentBufferBindCount);
+			Assert.That (descriptor.MaxFragmentBufferBindCount, Is.EqualTo ((nuint) 1));
 		}
 	}
 }

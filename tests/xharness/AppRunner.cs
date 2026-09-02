@@ -225,6 +225,13 @@ namespace Xharness {
 			if (harness.InCI) {
 				// We use the 'BUILD_REVISION' variable to detect whether we're running CI or not.
 				args.Add (new SetEnvVariableArgument ("BUILD_REVISION", Environment.GetEnvironmentVariable ("BUILD_REVISION")));
+
+				// Forward VM_VENDOR (set by the pipeline when running on a VM-backed
+				// pool such as ACES) so TestRuntime.AssertNotVirtualMachine works
+				// inside the iOS/tvOS simulator process.
+				var vmVendor = Environment.GetEnvironmentVariable ("VM_VENDOR");
+				if (!string.IsNullOrEmpty (vmVendor))
+					args.Add (new SetEnvVariableArgument ("VM_VENDOR", vmVendor));
 			}
 
 			if (!harness.GetIncludeSystemPermissionTests (TestPlatform.iOS, !isSimulator))
@@ -267,7 +274,7 @@ namespace Xharness {
 			listener.StartAsync ();
 
 			// object that will take care of capturing and parsing the results
-			ICrashSnapshotReporter crashReporter = snapshotReporterFactory.Create (MainLog, Logs, isDevice: !isSimulator, deviceName);
+			ICrashSnapshotReporter crashReporter = snapshotReporterFactory.Create (MainLog, Logs, isDevice: !isSimulator, deviceName, AppInformation);
 
 			var testReporterTimeout = TimeSpan.FromMinutes (harness.Timeout * timeoutMultiplier);
 			var testReporter = testReporterFactory.Create (MainLog,
@@ -281,8 +288,7 @@ namespace Xharness {
 				harness.XmlJargon,
 				deviceName,
 				testReporterTimeout,
-				buildTask?.Logs?.Directory,
-				(level, message) => harness.Log (level, message));
+				buildTask?.Logs?.Directory);
 
 			listener.ConnectedTask
 				.TimeoutAfter (TimeSpan.FromMinutes (harness.LaunchTimeout))

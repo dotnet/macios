@@ -11,6 +11,9 @@
 #include <sys/stat.h>
 #include <dlfcn.h>
 #include <mach/mach.h>
+#include <mach-o/dyld.h>
+#include <mach-o/loader.h>
+#include <Security/Security.h>
 
 #include "product.h"
 #include "shared.h"
@@ -22,6 +25,7 @@
 #include "xamarin/monovm-bridge.h"
 #else
 #include "xamarin/coreclr-bridge.h"
+#include "host_runtime_contract.h"
 #endif
 
 #if defined (DEBUG)
@@ -77,6 +81,12 @@ const char *xamarin_runtime_configuration_name = NULL;
 
 enum XamarinNativeLinkMode xamarin_libmono_native_link_mode = XamarinNativeLinkModeStaticObject;
 const char **xamarin_runtime_libraries = NULL;
+struct xamarin_r2r_module *xamarin_r2r_modules = NULL;
+int xamarin_r2r_module_count = 0;
+const char * const *xamarin_trusted_platform_assembly_names = NULL;
+#if defined (SUPPORTS_UNIVERSAL_BUILDS)
+bool xamarin_is_multi_rid_build = false;
+#endif
 
 /* Callbacks */
 
@@ -603,18 +613,16 @@ xamarin_check_for_gced_object (MonoObject *obj, SEL sel, id self, MonoMethod *me
 		return;
 	}
 	
-	const char *m = "Failed to marshal the Objective-C object %p (type: %s). "
-	"Could not find an existing managed instance for this object, "
-	"nor was it possible to create a new managed instance "
-	"(because the type '%s' does not have a constructor that takes one NativeHandle argument).\n"
-	"Additional information:\n"
-	"\tSelector: %s\n"
-	"\tMethod: %s\n";
-	
 	char *method_full_name = mono_method_full_name (method, TRUE);
 	char *type_name = xamarin_lookup_managed_type_name ([self class], exception_gchandle);
 	if (*exception_gchandle == INVALID_GCHANDLE) {
-		char *msg = xamarin_strdup_printf (m, self, object_getClassName (self), type_name, sel_getName (sel), method_full_name);
+		char *msg = xamarin_strdup_printf ("Failed to marshal the Objective-C object %p (type: %s). "
+		"Could not find an existing managed instance for this object, "
+		"nor was it possible to create a new managed instance "
+		"(because the type '%s' does not have a constructor that takes one NativeHandle argument).\n"
+		"Additional information:\n"
+		"\tSelector: %s\n"
+		"\tMethod: %s\n", self, object_getClassName (self), type_name, sel_getName (sel), method_full_name);
 		GCHandle ex_handle = xamarin_create_runtime_exception (8027, msg, exception_gchandle);
 		xamarin_free (msg);
 		if (*exception_gchandle == INVALID_GCHANDLE)
@@ -985,7 +993,7 @@ xamarin_process_fatal_exception_gchandle (GCHandle gchandle, const char *message
 
 	NSString *fatal_message = [NSString stringWithFormat:@"%s\n%@", message, xamarin_print_all_exceptions (gchandle)];
 	NSLog (@PRODUCT ": %@", fatal_message);
-	xamarin_assertion_message ([fatal_message UTF8String]);
+	xamarin_assertion_message ("%s", [fatal_message UTF8String]);
 }
 
 // Because this function won't always return, it will take ownership of the GCHandle and free it.
@@ -1090,6 +1098,12 @@ xamarin_install_log_callbacks ()
 }
 
 void
+xamarin_initialize_dynamic_registrar ()
+{
+	options.Trampolines = &trampolines;
+}
+
+void
 xamarin_initialize ()
 {
 	GCHandle exception_gchandle = INVALID_GCHANDLE;
@@ -1127,7 +1141,6 @@ xamarin_initialize ()
 #endif
 
 	options.Delegates = &delegates;
-	options.Trampolines = &trampolines;
 	options.MarshalObjectiveCExceptionMode = xamarin_marshal_objectivec_exception_mode;
 	options.MarshalManagedExceptionMode = xamarin_marshal_managed_exception_mode;
 
@@ -1237,14 +1250,7 @@ xamarin_strdup_printf (const char *msg, ...)
 
 	va_start (args, msg);
 
-// Silence this warning:
-// runtime.m:1313:25: error: format string is not a string literal [-Werror,-Wformat-nonliteral]
-//  1313 |         vasprintf (&formatted, msg, args);
-//       |                                ^~~~~
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wformat-nonliteral"
 	vasprintf (&formatted, msg, args);
-#pragma clang diagnostic pop
 
 	va_end (args);
 
@@ -1259,14 +1265,7 @@ xamarin_assertion_message (const char *msg, ...)
 
 	va_start (args, msg);
 
-// Silence this warning:
-// runtime.m:1335:25: error: format string is not a string literal [-Werror,-Wformat-nonliteral]
-//  1335 |         vasprintf (&formatted, msg, args);
-//       |                                ^~~
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wformat-nonliteral"
 	vasprintf (&formatted, msg, args);
-#pragma clang diagnostic pop
 
 	if (formatted) {
 		PRINT ( PRODUCT ": %s", formatted);
@@ -1752,7 +1751,7 @@ xamarin_release_managed_ref (id self, bool user_type)
 	if (user_type) {
 		/* clear MANAGED_REF_BIT */
 		set_gchandle_flags_safe (self, (enum XamarinGCHandleFlags) (get_flags_safe (self) & ~XamarinGCHandleFlags_HasManagedRef));
-	}
+	} else {
 
 	//
 	// This waypoint (lock+unlock) is needed so that we can safely call retainCount in the
@@ -1822,6 +1821,7 @@ xamarin_release_managed_ref (id self, bool user_type)
 	//
 	// See also comment in xamarin_marshal_return_value_impl
 	xamarin_framework_peer_waypoint_safe ();
+	}
 
 	xamarin_handle_to_be_released = self;
 
@@ -2315,7 +2315,7 @@ xamarin_create_product_exception_with_inner_exception (int code, GCHandle inner_
 // - The runtimeidentifier-specific subdirectory
 // Caller must free the return value using xamarin_free.
 char *
-xamarin_compute_trusted_platform_assemblies ()
+xamarin_compute_trusted_platform_assemblies_at_runtime ()
 {
 	const char *bundle_path = xamarin_get_bundle_path ();
 
@@ -2362,6 +2362,57 @@ xamarin_compute_trusted_platform_assemblies ()
 	return rv;
 }
 
+// Caller must free the return value using xamarin_free.
+char *
+xamarin_compute_trusted_platform_assemblies ()
+{
+	if (xamarin_trusted_platform_assembly_names == NULL || xamarin_trusted_platform_assembly_names [0] == NULL)
+		return xamarin_compute_trusted_platform_assemblies_at_runtime ();
+
+	const char *bundle_path = xamarin_get_bundle_path ();
+	NSMutableArray<NSString *> *files = [NSMutableArray array];
+#if defined (SUPPORTS_UNIVERSAL_BUILDS)
+	NSFileManager *manager = xamarin_is_multi_rid_build ? [NSFileManager defaultManager] : nil;
+#endif
+
+	for (const char * const *assembly = xamarin_trusted_platform_assembly_names; *assembly != NULL; assembly++) {
+		NSString *path = [NSString stringWithFormat: @"%s/%s", bundle_path, *assembly];
+#if defined (SUPPORTS_UNIVERSAL_BUILDS)
+		if (xamarin_is_multi_rid_build && ![manager fileExistsAtPath: path])
+			path = [NSString stringWithFormat: @"%s/.xamarin/%s/%s", bundle_path, RUNTIMEIDENTIFIER, *assembly];
+#endif
+		[files addObject: path];
+	}
+
+	NSString *joined = [files componentsJoinedByString: @":"];
+	return xamarin_strdup_printf ("%s", [joined UTF8String]);
+}
+
+// Find the directory that contains System.Private.CoreLib.dll, looking in:
+// - The bundle directory
+// - The runtimeidentifier-specific subdirectory
+// Returns an empty string if the file can't be found in any of those directories
+// (an empty value is treated by the runtime as if the property wasn't set).
+// Caller must free the return value using xamarin_free.
+char *
+xamarin_compute_system_corelib_directory ()
+{
+	const char *bundle_path = xamarin_get_bundle_path ();
+
+	NSMutableArray<NSString *> *directories = [NSMutableArray array];
+	[directories addObject: [NSString stringWithUTF8String: bundle_path]];
+	[directories addObject: [NSString stringWithFormat: @"%s/.xamarin/%s", bundle_path, RUNTIMEIDENTIFIER]];
+
+	NSFileManager *manager = [NSFileManager defaultManager];
+	for (NSString *dir in directories) {
+		NSString *corelib = [dir stringByAppendingPathComponent: @"System.Private.CoreLib.dll"];
+		if ([manager fileExistsAtPath: corelib])
+			return xamarin_strdup_printf ("%s", [dir UTF8String]);
+	}
+
+	return xamarin_strdup_printf ("%s", "");
+}
+
 char *
 xamarin_compute_native_dll_search_directories ()
 {
@@ -2398,12 +2449,215 @@ xamarin_compute_native_dll_search_directories ()
 	return rv;
 }
 
+#if defined (CORECLR_RUNTIME)
+size_t
+xamarin_get_dyld_image_size (void* base_address)
+{
+	if (base_address == NULL)
+		return 0;
+
+	const struct mach_header_64* header = (const struct mach_header_64 *) base_address;
+
+	// Only support 64-bit Mach-O images.
+	if (header->magic != MH_MAGIC_64 && header->magic != MH_CIGAM_64) {
+		// Not a 64-bit Mach-O image. Return 0 or handle as appropriate.
+		return 0;
+	}
+	const struct load_command* cmd = (const struct load_command*) ((const char *) header + sizeof (struct mach_header_64));
+
+	size_t image_size = 0;
+	for (uint32_t j = 0; j < header->ncmds; ++j) {
+		if (cmd->cmd == LC_SEGMENT_64) {
+			const struct segment_command_64* seg = (const struct segment_command_64 *) cmd;
+			size_t end_addr = (size_t) (seg->vmaddr + seg->vmsize);
+			if (end_addr > image_size)
+				image_size = end_addr;
+		}
+
+		cmd = (const struct load_command *) ((const char *) cmd + cmd->cmdsize);
+	}
+
+	return image_size;
+}
+
+bool
+xamarin_get_native_code_data (const struct host_runtime_contract_native_code_context* context, struct host_runtime_contract_native_code_data* data)
+{
+	if (!context || !data || !context->assembly_path || !context->owner_composite_name)
+		return false;
+
+	void* r2r_header = NULL;
+
+	for (int i = 0; i < xamarin_r2r_module_count; i++) {
+		if (strcmp (xamarin_r2r_modules [i].name, context->owner_composite_name) == 0) {
+			r2r_header = xamarin_r2r_modules [i].header;
+			break;
+		}
+	}
+
+	if (r2r_header == NULL)
+		return false;
+
+	Dl_info info;
+	if (dladdr (r2r_header, &info) == 0)
+		xamarin_assertion_message ("Failed to get dladdr info for the RTR_HEADER symbol.");
+
+	data->size = sizeof (struct host_runtime_contract_native_code_data);
+	data->r2r_header_ptr = r2r_header;
+	data->image_size = xamarin_get_dyld_image_size (info.dli_fbase);
+	data->image_base = info.dli_fbase;
+
+	return true;
+}
+
+// dotnet/runtime#128278 (.NET 11 preview 5) gates the BindToSystem CoreLib fallback on
+// Bundle::AppIsBundle () && Bundle::AppBundle->HasExtractedFiles (). Register a no-op
+// bundle_probe so AppBundle is non-null, and answer BUNDLE_EXTRACTION_PATH with the
+// directory containing System.Private.CoreLib.dll so the fallback finds it.
+static bool xamarin_coreclr_bundle_probe (const char *path, int64_t *offset, int64_t *size, int64_t *compressed_size)
+{
+	return false;
+}
+
+static const char *xamarin_compute_corelib_directory (void)
+{
+	static char *cached = NULL;
+
+	if (cached)
+		return cached;
+
+	const char *bundle_path = xamarin_get_bundle_path ();
+	NSFileManager *manager = [NSFileManager defaultManager];
+	NSString *candidates [] = {
+		[NSString stringWithUTF8String: bundle_path],
+		[NSString stringWithFormat: @"%s/.xamarin/%s", bundle_path, RUNTIMEIDENTIFIER],
+	};
+	for (size_t i = 0; i < sizeof (candidates) / sizeof (candidates [0]); i++) {
+		NSString *probe = [candidates [i] stringByAppendingPathComponent: @"System.Private.CoreLib.dll"];
+		if ([manager fileExistsAtPath: probe]) {
+			cached = strdup ([candidates [i] UTF8String]);
+			break;
+		}
+	}
+
+	return cached;
+}
+
+static size_t xamarin_coreclr_get_runtime_property (const char *key, char *value_buffer, size_t value_buffer_size, void *contract_context)
+{
+	if (strcmp (key, HOST_PROPERTY_BUNDLE_EXTRACTION_PATH) != 0)
+		return (size_t) -1;
+
+	const char *dir = xamarin_compute_corelib_directory ();
+	if (dir == NULL)
+		return (size_t) -1;
+
+	size_t len = strlen (dir);
+	size_t required = len + 1; // include null terminator
+	if (value_buffer != NULL && value_buffer_size >= required)
+		memcpy (value_buffer, dir, required);
+	return required;
+}
+#endif // defined (CORECLR_RUNTIME)
+
+static bool
+xamarin_is_sandboxed ()
+{
+#if TARGET_OS_OSX || TARGET_OS_MACCATALYST
+	SecTaskRef task = SecTaskCreateFromSelf (NULL);
+	if (task == NULL)
+		return false;
+
+	CFTypeRef entitlement = SecTaskCopyValueForEntitlement (task, CFSTR ("com.apple.security.app-sandbox"), NULL);
+	bool is_sandboxed = false;
+	if (entitlement != NULL && CFGetTypeID (entitlement) == CFBooleanGetTypeID ())
+		is_sandboxed = CFBooleanGetValue ((CFBooleanRef) entitlement);
+
+	if (entitlement != NULL)
+		CFRelease (entitlement);
+	CFRelease (task);
+
+	return is_sandboxed;
+#elif TARGET_OS_IOS || TARGET_OS_TV
+	// TARGET_OS_IOS is set for Mac Catalyst too, so we check for TARGET_OS_MACCATALYST first.
+	return true;
+#else
+	#error Unknown platform
+#endif
+}
+
+static void
+xamarin_initialize_crash_report_directory ()
+{
+	// Set DOTNET_CrashReportRootPath before loading CoreCLR so that crash reports
+	// are written to a known, writable location that isn't backed up by iCloud.
+	// We use NSCachesDirectory for this purpose.
+	// Ref: https://github.com/dotnet/runtime/pull/128738
+
+	// Only do this if crash reports are enabled (DOTNET_EnableCrashReport=1),
+	// otherwise there's no point in setting the crash report directory.
+	const char *enableCrashReport = getenv ("DOTNET_EnableCrashReport");
+	if (enableCrashReport == NULL || strcmp (enableCrashReport, "1") != 0)
+		return;
+
+	// If DOTNET_CrashReportRootPath is already set, respect it and don't override it
+	// (nor create any directory), since the caller is then responsible for the location.
+	if (getenv ("DOTNET_CrashReportRootPath") != NULL)
+		return;
+
+	NSArray *paths = NSSearchPathForDirectoriesInDomains (NSCachesDirectory, NSUserDomainMask, YES);
+	if (paths == nil || [paths count] == 0) {
+		LOG (PRODUCT ": Could not find the caches directory for crash reports.\n");
+		return;
+	}
+
+	NSString *cachesDir = paths [0];
+
+	// For non-sandboxed desktop apps, NSCachesDirectory is shared between all apps,
+	// so we need to use a subdirectory specific to this app (using the bundle identifier).
+	// Sandboxed apps already get an app-specific directory.
+	if (!xamarin_is_sandboxed ()) {
+		NSString *bundleId = [[NSBundle mainBundle] bundleIdentifier];
+		if (bundleId != nil) {
+			cachesDir = [cachesDir stringByAppendingPathComponent: bundleId];
+		}
+	}
+
+	// The .NET runtime's in-process crash reporter won't write any crash report files
+	// unless DOTNET_CrashReportRootPath points to an already-existing directory, so make
+	// sure the directory exists before setting the environment variable.
+	NSError *error = nil;
+	if (![[NSFileManager defaultManager] createDirectoryAtPath: cachesDir withIntermediateDirectories: YES attributes: nil error: &error]) {
+		LOG (PRODUCT ": Could not create the crash report directory '%s': %s\n", [cachesDir UTF8String], [[error description] UTF8String]);
+		return;
+	}
+
+	setenv ("DOTNET_CrashReportRootPath", [cachesDir UTF8String], 0 /* don't overwrite */);
+}
+
 void
 xamarin_vm_initialize ()
 {
+	xamarin_initialize_crash_report_directory ();
+
+#if defined (CORECLR_RUNTIME)
+	struct host_runtime_contract host_contract = {
+		.size = sizeof (struct host_runtime_contract),
+		.get_runtime_property = &xamarin_coreclr_get_runtime_property,
+		.bundle_probe = &xamarin_coreclr_bundle_probe,
+		.pinvoke_override = &xamarin_pinvoke_override,
+		.get_native_code_data = &xamarin_get_native_code_data
+	};
+
+	char contract_str [19]; // 0x + 16 hex digits + '\0'
+	snprintf (contract_str, sizeof (contract_str), "0x%zx", (size_t) (&host_contract));
+#else
 	char *pinvokeOverride = xamarin_strdup_printf ("%p", &xamarin_pinvoke_override);
+#endif
+
 	char *trusted_platform_assemblies = xamarin_compute_trusted_platform_assemblies ();
 	char *native_dll_search_directories = xamarin_compute_native_dll_search_directories ();
+	char *system_corelib_directory = xamarin_compute_system_corelib_directory ();
 	const char *startupHooks = getenv ("DOTNET_STARTUP_HOOKS");
 
 	// All the properties we pass here must also be listed in the _RuntimeConfigReservedProperties item group
@@ -2411,19 +2665,29 @@ xamarin_vm_initialize ()
 	const char *propertyKeys[] = {
 		"APP_CONTEXT_BASE_DIRECTORY", // path to where the managed assemblies are (usually at least - RID-specific assemblies will be in subfolders)
 		"APP_PATHS",
+#if defined (CORECLR_RUNTIME)
+		"HOST_RUNTIME_CONTRACT",
+#else
 		"PINVOKE_OVERRIDE",
+#endif
 		"TRUSTED_PLATFORM_ASSEMBLIES",
 		"NATIVE_DLL_SEARCH_DIRECTORIES",
 		"RUNTIME_IDENTIFIER",
+		"SYSTEM_CORELIB_DIRECTORY", // the directory that contains System.Private.CoreLib.dll (must come before STARTUP_HOOKS, because we might not pass STARTUP_HOOKS)
 		"STARTUP_HOOKS", // must be last entry (because we just decrement propertyCount to not pass it if it's not set)
 	};
 	const char *propertyValues[] = {
 		xamarin_get_bundle_path (),
 		xamarin_get_bundle_path (),
+#if defined (CORECLR_RUNTIME)
+		contract_str,
+#else
 		pinvokeOverride,
+#endif
 		trusted_platform_assemblies,
 		native_dll_search_directories,
 		RUNTIMEIDENTIFIER,
+		system_corelib_directory,
 		startupHooks,
 	};
 	static_assert (sizeof (propertyKeys) == sizeof (propertyValues), "The number of keys and values must be the same.");
@@ -2434,9 +2698,12 @@ xamarin_vm_initialize ()
 
 	bool rv = xamarin_bridge_vm_initialize (propertyCount, propertyKeys, propertyValues);
 
+#if !defined (CORECLR_RUNTIME)
 	xamarin_free (pinvokeOverride);
+#endif
 	xamarin_free (trusted_platform_assemblies);
 	xamarin_free (native_dll_search_directories);
+	xamarin_free (system_corelib_directory);
 
 	if (!rv)
 		xamarin_assertion_message ("Failed to initialize the VM");
@@ -2470,7 +2737,7 @@ xamarin_is_native_library (const char *libraryName)
 	return rv;
 }
 
-void*
+const void*
 xamarin_pinvoke_override (const char *libraryName, const char *entrypointName)
 {
 
@@ -2538,14 +2805,7 @@ xamarin_printf (const char *format, ...)
 void
 xamarin_vprintf (const char *format, va_list args)
 {
-// Silence this warning:
-// runtime.m:2564:56: error: format string is not a string literal [-Werror,-Wformat-nonliteral]
-//  2564 |         NSString *message = [[NSString alloc] initWithFormat: [NSString stringWithUTF8String: format] arguments: args];
-//       |                                                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wformat-nonliteral"
 	NSString *message = [[NSString alloc] initWithFormat: [NSString stringWithUTF8String: format] arguments: args];
-#pragma clang diagnostic pop
 	
 	NSLog (@"%@", message);	
 

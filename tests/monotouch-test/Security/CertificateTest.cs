@@ -284,25 +284,25 @@ namespace MonoTouchFixtures.Security {
 				Assert.That (cert.GetSerialNumber ().ToStableString (), Is.EqualTo ("<72cd64e0 1fb60945 1085a390 91b53128>"), "GetSerialNumber");
 
 				var emailAddresses = cert.GetEmailAddresses ();
-				Assert.IsTrue (emailAddresses is null || emailAddresses.Length == 0, "GetEmailAddresses");
+				Assert.That (emailAddresses is null || emailAddresses.Length == 0, Is.True, "GetEmailAddresses");
 
-				Assert.NotNull (cert.GetNormalizedIssuerSequence (), "GetNormalizedIssuerSequence");
-				Assert.NotNull (cert.GetNormalizedSubjectSequence (), "GetNormalizedSubjectSequence");
+				Assert.That (cert.GetNormalizedIssuerSequence (), Is.Not.Null, "GetNormalizedIssuerSequence");
+				Assert.That (cert.GetNormalizedSubjectSequence (), Is.Not.Null, "GetNormalizedSubjectSequence");
 #if !__MACCATALYST__
-				Assert.NotNull (cert.GetPublicKey (), "GetPublicKey");
+				Assert.That (cert.GetPublicKey (), Is.Not.Null, "GetPublicKey");
 #endif
 			}
 			if (TestRuntime.CheckXcodeVersion (9, 0)) {
 				NSError err;
 				Assert.That (cert.GetSerialNumber (out err).ToStableString (), Is.EqualTo ("<72cd64e0 1fb60945 1085a390 91b53128>"), "GetSerialNumber/NSError");
-				Assert.Null (err, "err");
+				Assert.That (err, Is.Null, "err");
 			}
 			if (TestRuntime.CheckXcodeVersion (10, 0)) {
-				Assert.NotNull (cert.GetKey (), "GetKey");
+				Assert.That (cert.GetKey (), Is.Not.Null, "GetKey");
 			}
 			if (TestRuntime.CheckXcodeVersion (16, 0)) {
-				Assert.NotNull (cert.NotValidBeforeDate, "NotValidBeforeDate");
-				Assert.NotNull (cert.NotValidAfterDate, "NotValidAfterDate");
+				Assert.That (cert.NotValidBeforeDate, Is.Not.Null, "NotValidBeforeDate");
+				Assert.That (cert.NotValidAfterDate, Is.Not.Null, "NotValidAfterDate");
 			}
 		}
 

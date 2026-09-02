@@ -22,16 +22,16 @@ namespace MonoTouchFixtures.UIKit {
 		public void Ctor_Defaults ()
 		{
 			using (UITabBarItem tbi = new UITabBarItem ()) {
-				Assert.Null (tbi.BadgeValue, "BadgeValue");
-				Assert.True (tbi.Enabled, "Enabled");
+				Assert.That (tbi.BadgeValue, Is.Null, "BadgeValue");
+				Assert.That (tbi.Enabled, Is.True, "Enabled");
 #if !__TVOS__
-				Assert.Null (tbi.FinishedSelectedImage, "FinishedSelectedImage");
-				Assert.Null (tbi.FinishedUnselectedImage, "FinishedUnselectedImage");
+				Assert.That (tbi.FinishedSelectedImage, Is.Null, "FinishedSelectedImage");
+				Assert.That (tbi.FinishedUnselectedImage, Is.Null, "FinishedUnselectedImage");
 #endif
-				Assert.Null (tbi.Image, "Image");
+				Assert.That (tbi.Image, Is.Null, "Image");
 				Assert.That (tbi.ImageInsets, Is.EqualTo (UIEdgeInsets.Zero), "ImageInsets");
 				Assert.That (tbi.Tag, Is.EqualTo ((nint) 0), "Tag");
-				Assert.Null (tbi.Title, "Title");
+				Assert.That (tbi.Title, Is.Null, "Title");
 				Assert.That (tbi.TitlePositionAdjustment.Horizontal, Is.EqualTo ((nfloat) 0f), "TitlePositionAdjustment.Horizontal");
 				Assert.That (tbi.TitlePositionAdjustment.Vertical, Is.EqualTo ((nfloat) 0f), "TitlePositionAdjustment.Vertical");
 			}
@@ -42,16 +42,16 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			Assert.Multiple (() => {
 				using (UITabBarItem tbi = new UITabBarItem (UITabBarSystemItem.Bookmarks, nint.MaxValue)) {
-					Assert.Null (tbi.BadgeValue, "BadgeValue");
-					Assert.True (tbi.Enabled, "Enabled");
+					Assert.That (tbi.BadgeValue, Is.Null, "BadgeValue");
+					Assert.That (tbi.Enabled, Is.True, "Enabled");
 #if !__TVOS__
-					Assert.Null (tbi.FinishedSelectedImage, "FinishedSelectedImage");
-					Assert.Null (tbi.FinishedUnselectedImage, "FinishedUnselectedImage");
+					Assert.That (tbi.FinishedSelectedImage, Is.Null, "FinishedSelectedImage");
+					Assert.That (tbi.FinishedUnselectedImage, Is.Null, "FinishedUnselectedImage");
 #endif
 					if (TestRuntime.CheckXcodeVersion (16, 0)) {
-						Assert.NotNull (tbi.Image, "Image");
+						Assert.That (tbi.Image, Is.Not.Null, "Image");
 					} else {
-						Assert.Null (tbi.Image, "Image");
+						Assert.That (tbi.Image, Is.Null, "Image");
 					}
 					Assert.That (tbi.ImageInsets, Is.EqualTo (UIEdgeInsets.Zero), "ImageInsets");
 					Assert.That (tbi.Tag, Is.EqualTo (nint.MaxValue), "Tag");
@@ -67,13 +67,13 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			using (UIImage img = new UIImage ())
 			using (UITabBarItem tbi = new UITabBarItem ("title", img, nint.MinValue)) {
-				Assert.Null (tbi.BadgeValue, "BadgeValue");
-				Assert.True (tbi.Enabled, "Enabled");
+				Assert.That (tbi.BadgeValue, Is.Null, "BadgeValue");
+				Assert.That (tbi.Enabled, Is.True, "Enabled");
 #if !__TVOS__
-				Assert.Null (tbi.FinishedSelectedImage, "FinishedSelectedImage");
-				Assert.Null (tbi.FinishedUnselectedImage, "FinishedUnselectedImage");
+				Assert.That (tbi.FinishedSelectedImage, Is.Null, "FinishedSelectedImage");
+				Assert.That (tbi.FinishedUnselectedImage, Is.Null, "FinishedUnselectedImage");
 #endif
-				Assert.AreSame (tbi.Image, img, "Image");
+				Assert.That (img, Is.SameAs (tbi.Image), "Image");
 				Assert.That (tbi.ImageInsets, Is.EqualTo (UIEdgeInsets.Zero), "ImageInsets");
 				Assert.That (tbi.Tag, Is.EqualTo (nint.MinValue), "Tag");
 				Assert.That (tbi.Title, Is.EqualTo ("title"), "Title");
@@ -87,28 +87,28 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			using (UIImage img = new UIImage ()) {
 				using (UITabBarItem tbi1 = new UITabBarItem (null, img, nint.MinValue)) {
-					Assert.Null (tbi1.Title, "Title-1a");
-					Assert.AreSame (tbi1.Image, img, "Image-1a");
+					Assert.That (tbi1.Title, Is.Null, "Title-1a");
+					Assert.That (img, Is.SameAs (tbi1.Image), "Image-1a");
 					tbi1.Title = "title";
 					tbi1.Image = null;
 					Assert.That (tbi1.Title, Is.EqualTo ("title"), "Title-1b");
-					Assert.IsNull (tbi1.Image, "Image-1b");
+					Assert.That (tbi1.Image, Is.Null, "Image-1b");
 				}
 				using (UITabBarItem tbi2 = new UITabBarItem ("title", null, nint.MaxValue)) {
 					Assert.That (tbi2.Title, Is.EqualTo ("title"), "Title-2a");
-					Assert.Null (tbi2.Image, "Image-2a");
+					Assert.That (tbi2.Image, Is.Null, "Image-2a");
 					tbi2.Title = null;
 					tbi2.Image = img;
-					Assert.Null (tbi2.Title, "Title-2b");
-					Assert.AreSame (tbi2.Image, img, "Image-2b");
+					Assert.That (tbi2.Title, Is.Null, "Title-2b");
+					Assert.That (img, Is.SameAs (tbi2.Image), "Image-2b");
 				}
 				using (UITabBarItem tbi3 = new UITabBarItem (null, null, 0)) {
-					Assert.Null (tbi3.Title, "Title-3a");
-					Assert.Null (tbi3.Image, "Image-3a");
+					Assert.That (tbi3.Title, Is.Null, "Title-3a");
+					Assert.That (tbi3.Image, Is.Null, "Image-3a");
 					tbi3.Title = "title";
 					tbi3.Image = img;
 					Assert.That (tbi3.Title, Is.EqualTo ("title"), "Title-3b");
-					Assert.AreSame (tbi3.Image, img, "Image-3b");
+					Assert.That (img, Is.SameAs (tbi3.Image), "Image-3b");
 				}
 			}
 		}
@@ -120,19 +120,19 @@ namespace MonoTouchFixtures.UIKit {
 
 			using (UIImage img = new UIImage ()) {
 				using (UITabBarItem tbi1 = new UITabBarItem (null, null, null)) {
-					Assert.Null (tbi1.Title, "Title-1a");
-					Assert.Null (tbi1.Image, "Image-1a");
-					Assert.Null (tbi1.SelectedImage, "SelectedImage-1a");
+					Assert.That (tbi1.Title, Is.Null, "Title-1a");
+					Assert.That (tbi1.Image, Is.Null, "Image-1a");
+					Assert.That (tbi1.SelectedImage, Is.Null, "SelectedImage-1a");
 				}
 				using (UITabBarItem tbi2 = new UITabBarItem ("title", img, null)) {
 					Assert.That (tbi2.Title, Is.EqualTo ("title"), "Title-2a");
-					Assert.AreSame (tbi2.Image, img, "Image-2a");
+					Assert.That (img, Is.SameAs (tbi2.Image), "Image-2a");
 					// if not supplied Image is reused
-					Assert.AreSame (tbi2.SelectedImage, img, "SelectedImage-2a");
+					Assert.That (img, Is.SameAs (tbi2.SelectedImage), "SelectedImage-2a");
 				}
 				using (UITabBarItem tbi3 = new UITabBarItem (null, null, img)) {
-					Assert.Null (tbi3.Title, "Title-3a");
-					Assert.Null (tbi3.Image, "Image-3a");
+					Assert.That (tbi3.Title, Is.Null, "Title-3a");
+					Assert.That (tbi3.Image, Is.Null, "Image-3a");
 					// looks like a select-only image is not something allowed on 7.1
 
 					var hasSelectedImage = true;
@@ -141,9 +141,9 @@ namespace MonoTouchFixtures.UIKit {
 						hasSelectedImage = false;
 #endif
 					if (hasSelectedImage)
-						Assert.Null (tbi3.SelectedImage, "SelectedImage-3a");
+						Assert.That (tbi3.SelectedImage, Is.Null, "SelectedImage-3a");
 					else
-						Assert.AreSame (tbi3.SelectedImage, img, "SelectedImage-3a");
+						Assert.That (img, Is.SameAs (tbi3.SelectedImage), "SelectedImage-3a");
 				}
 			}
 		}
@@ -155,15 +155,15 @@ namespace MonoTouchFixtures.UIKit {
 
 			using (UIImage i1 = new UIImage ())
 			using (UITabBarItem tbi = new UITabBarItem ("title", i1, null)) {
-				Assert.AreSame (i1, tbi.Image, "Image");
-				Assert.AreSame (i1, tbi.SelectedImage, "SelectedImage");
+				Assert.That (tbi.Image, Is.SameAs (i1), "Image");
+				Assert.That (tbi.SelectedImage, Is.SameAs (i1), "SelectedImage");
 #if !__TVOS__
-				Assert.Null (tbi.FinishedSelectedImage, "FinishedSelectedImage");
-				Assert.Null (tbi.FinishedUnselectedImage, "FinishedSelectedImage");
+				Assert.That (tbi.FinishedSelectedImage, Is.Null, "FinishedSelectedImage");
+				Assert.That (tbi.FinishedUnselectedImage, Is.Null, "FinishedSelectedImage");
 #endif
 				// null does a reset, in this case i1 can be reused
 				tbi.SelectedImage = null;
-				Assert.AreSame (i1, tbi.SelectedImage, "SelectedImage2");
+				Assert.That (tbi.SelectedImage, Is.SameAs (i1), "SelectedImage2");
 			}
 		}
 
@@ -175,15 +175,15 @@ namespace MonoTouchFixtures.UIKit {
 			using (UIImage i1 = new UIImage ())
 			using (UIImage i2 = new UIImage ())
 			using (UITabBarItem tbi = new UITabBarItem ("title", i1, i2)) {
-				Assert.AreSame (i1, tbi.Image, "Image");
-				Assert.AreSame (i2, tbi.SelectedImage, "SelectedImage");
+				Assert.That (tbi.Image, Is.SameAs (i1), "Image");
+				Assert.That (tbi.SelectedImage, Is.SameAs (i2), "SelectedImage");
 #if !__TVOS__
-				Assert.Null (tbi.FinishedSelectedImage, "FinishedSelectedImage");
-				Assert.Null (tbi.FinishedUnselectedImage, "FinishedSelectedImage");
+				Assert.That (tbi.FinishedSelectedImage, Is.Null, "FinishedSelectedImage");
+				Assert.That (tbi.FinishedUnselectedImage, Is.Null, "FinishedSelectedImage");
 #endif
 				tbi.SelectedImage = null;
 				// null does a reset, in this case i2 is removed and i1 gets used
-				Assert.AreSame (i1, tbi.SelectedImage, "SelectedImage2");
+				Assert.That (tbi.SelectedImage, Is.SameAs (i1), "SelectedImage2");
 			}
 		}
 	}

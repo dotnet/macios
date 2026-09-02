@@ -54,7 +54,12 @@ namespace CoreAnimation {
 				Messaging.IntPtr_objc_msgSend_IntPtr (Handle, Selector.GetHandle (selInitWithLayer), other.Handle);
 				GC.KeepAlive (other);
 			} else {
-				Messaging.IntPtr_objc_msgSendSuper_IntPtr (SuperHandle, Selector.GetHandle (selInitWithLayer), other.Handle);
+				unsafe {
+					var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this);
+					Messaging.IntPtr_objc_msgSendSuper_IntPtr (&__objc_super__, Selector.GetHandle (selInitWithLayer), other.Handle);
+					GC.KeepAlive (this);
+					GC.KeepAlive (other);
+				}
 				Clone (other);
 			}
 			MarkDirtyIfDerived ();
@@ -138,8 +143,7 @@ namespace CoreAnimation {
 		}
 
 		/// <summary>Gets the contents format for the layer.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <value>The format used for the layer's contents.</value>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]

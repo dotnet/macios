@@ -36,6 +36,7 @@ using OpenGLES;
 #if !__TVOS__
 using WebKit;
 #endif
+using Linker.Shared;
 using MonoTests.System.Net.Http;
 using Xamarin.Utils;
 
@@ -69,7 +70,7 @@ namespace LinkSdk {
 		public void Bug234_Interlocked ()
 		{
 			string? str = null;
-			Assert.Null (Interlocked.Exchange (ref str, "one"), "Exchange");
+			Assert.That (Interlocked.Exchange (ref str, "one"), Is.Null, "Exchange");
 			// the above should not crash with System.ExecutionEngineException
 			Assert.That (str, Is.EqualTo ("one"), "one");
 		}
@@ -82,7 +83,7 @@ namespace LinkSdk {
 			Dictionary<string, DateTime> queued = new Dictionary<string, DateTime> ();
 			KeyValuePair<string, DateTime> valuePair = queued.FirstOrDefault ();
 			// above should not crash with System.ExecutionEngineException
-			Assert.NotNull (valuePair);
+			Assert.That (valuePair, Is.Not.Null);
 		}
 
 		[Test]
@@ -103,7 +104,7 @@ namespace LinkSdk {
 			var tmp = Class.ThrowOnInitFailure;
 			Class.ThrowOnInitFailure = false;
 			try {
-				Assert.NotNull (new MKMapViewDelegate ());
+				Assert.That (new MKMapViewDelegate (), Is.Not.Null);
 				// the above should not throw an Exception
 			} finally {
 				Class.ThrowOnInitFailure = tmp;
@@ -120,12 +121,12 @@ namespace LinkSdk {
 				Assert.Ignore ("NSUrl was fixed with Xcode 15.0");
 
 #pragma warning disable CS8625 // Intentional null test case
-			Assert.False (UIApplication.SharedApplication.CanOpenUrl (null), "null");
+			Assert.That (UIApplication.SharedApplication.CanOpenUrl (null), Is.False, "null");
 #pragma warning restore CS8625
 			// the above should not throw an ArgumentNullException
 			// and that's important because NSUrl.FromString and NSUrl.ctor(string) differs
 			const string bad_tel = "tel://1800 023 009";
-			Assert.Null (NSUrl.FromString (bad_tel), "bad url");
+			Assert.That (NSUrl.FromString (bad_tel), Is.Null, "bad url");
 			// we now throw if `init*` fails
 			Assert.Throws<Exception> (() => new NSUrl (bad_tel), "ctor, bad url");
 		}
@@ -150,9 +151,9 @@ namespace LinkSdk {
 			using (ABPeoplePickerNavigationController picker = new ABPeoplePickerNavigationController ()) {
 				// no NRE should occur
 				if (UIDevice.CurrentDevice.CheckSystemVersion (8, 0))
-					Assert.Null (picker.AddressBook);
+					Assert.That (picker.AddressBook, Is.Null);
 				else
-					Assert.NotNull (picker.AddressBook);
+					Assert.That (picker.AddressBook, Is.Not.Null);
 			}
 		}
 
@@ -168,7 +169,7 @@ namespace LinkSdk {
 			}
 #endif // !__MACOS__
 			TestRuntime.AssertSystemVersion (ApplePlatform.MacCatalyst, 14, 0, throwIfOtherPlatform: false); // The AddressBook framework was introduced in Mac Catalyst 14.0
-			Assert.IsNotNull (ABPersonAddressKey.City, "ABPersonAddressKey");
+			Assert.That (ABPersonAddressKey.City, Is.Not.Null, "ABPersonAddressKey");
 		}
 #endif // HAS_ADDRESSBOOKUI
 
@@ -178,7 +179,7 @@ namespace LinkSdk {
 		public void Bug1387_UIEdgeInsets_ToString ()
 		{
 			var insets = new UIEdgeInsets (1, 2, 3, 4);
-			Assert.False (insets.ToString ().Contains ("UIEdgeInsets"));
+			Assert.That (insets.ToString ().Contains ("UIEdgeInsets"), Is.False);
 		}
 #endif // !__MACOS__
 
@@ -193,8 +194,8 @@ namespace LinkSdk {
 			}
 			// to be valid both getter and setter must be present if [DataMember]
 			if (data_member) {
-				Assert.NotNull (pi.GetGetMethod (true), "get_" + pi.Name);
-				Assert.NotNull (pi.GetSetMethod (true), "set_" + pi.Name);
+				Assert.That (pi.GetGetMethod (true), Is.Not.Null, "get_" + pi.Name);
+				Assert.That (pi.GetSetMethod (true), Is.Not.Null, "set_" + pi.Name);
 			} else {
 				// check well-known [DataMember]
 				switch (pi.Name) {
@@ -203,7 +204,7 @@ namespace LinkSdk {
 				case "Message":
 				case "StackTrace":
 				case "Type":
-					Assert.Fail ("{0} is missing it's [DataMember] attribute", pi.Name);
+					Assert.Fail ($"{pi.Name} is missing its [DataMember] attribute");
 					break;
 				}
 			}
@@ -242,7 +243,7 @@ namespace LinkSdk {
 			// the simulator has complete file access but the device won't have - i.e. we can't depend on it
 			var hasFileAccess = TestRuntime.IsSimulatorOrDesktop;
 			Assert.That (File.Exists ("/etc/localtime"), Is.EqualTo (hasFileAccess), "/etc/localtime");
-			Assert.NotNull (TimeZoneInfo.Local, "Local");
+			Assert.That (TimeZoneInfo.Local, Is.Not.Null, "Local");
 			// should not throw a TimeZoneNotFoundException on devices
 		}
 
@@ -295,7 +296,7 @@ namespace LinkSdk {
 				NSError error;
 				var c = new NSPersistentStoreCoordinator (model);
 				c.AddPersistentStore (NSPersistentStoreCoordinator.SQLiteStoreType, null, url, null, out error);
-				Assert.IsNull (error, "error");
+				Assert.That (error, Is.Null, "error");
 			} finally {
 				File.Delete (sqlitePath);
 			}
@@ -459,7 +460,7 @@ namespace LinkSdk {
 		// could not be duplicated on iPad2 (rolf), iPad1 (spouliot), iPodTouch4 (spouliot)
 		public void Hardware_SO ()
 		{
-			Assert.NotNull (DeviceHardware.Version, "Hardware");
+			Assert.That (DeviceHardware.Version, Is.Not.Null, "Hardware");
 		}
 
 		public class Location { }
@@ -478,7 +479,7 @@ namespace LinkSdk {
 		public void Synchronized_3904 ()
 		{
 			// crash with LLVM
-			Assert.NotNull (getInstance (), "Location");
+			Assert.That (getInstance (), Is.Not.Null, "Location");
 		}
 
 		[Test]
@@ -492,7 +493,7 @@ namespace LinkSdk {
 		[Test]
 		public void NetworkInterface_4631 ()
 		{
-			Assert.NotNull (NetworkInterface.GetAllNetworkInterfaces ());
+			Assert.That (NetworkInterface.GetAllNetworkInterfaces (), Is.Not.Null);
 		}
 
 		[Test]
@@ -504,7 +505,7 @@ namespace LinkSdk {
 				try {
 					// note: needs to be executed under Instrument to verify it does not leak
 					string s = wc.DownloadString (url);
-					Assert.NotNull (s);
+					Assert.That (s, Is.Not.Null);
 					return; // one url succeeded, that's enough
 				} catch (Exception e) {
 					var msg = $"Url '{url}' failed: {e.ToString ()}";
@@ -520,7 +521,7 @@ namespace LinkSdk {
 		public void WebProxy_Leak ()
 		{
 			// note: needs to be executed under Instrument to verify it does not leak
-			Assert.NotNull (global::CoreFoundation.CFNetwork.GetSystemProxySettings (), "should not leak");
+			Assert.That (global::CoreFoundation.CFNetwork.GetSystemProxySettings (), Is.Not.Null, "should not leak");
 		}
 #endif // !__TVOS__ && !__MACOS__
 
@@ -552,7 +553,7 @@ namespace LinkSdk {
 		public void Pointer_5200 ()
 		{
 			// ensure the linker did not remove the type, which is used by the runtime
-			Assert.NotNull (GetTypeHelper ("System.Reflection.Pointer, " + typeof (int).Assembly.GetName ().Name));
+			Assert.That (GetTypeHelper ("System.Reflection.Pointer, " + typeof (int).Assembly.GetName ().Name), Is.Not.Null);
 		}
 
 		[Test]
@@ -599,13 +600,13 @@ namespace LinkSdk {
 			var typeName = o.FullName;
 			if (string.IsNullOrEmpty (assemblyName) || string.IsNullOrEmpty (typeName))
 				throw new InvalidOperationException ("Unable to create an ObjectHandle.");
-			Assert.NotNull (Activator.CreateInstance (assemblyName, typeName), "ObjectHandle");
+			Assert.That (Activator.CreateInstance (assemblyName, typeName), Is.Not.Null, "ObjectHandle");
 		}
 
 		[Test]
 		public void AttributeUsageAttribute_Persistance ()
 		{
-			Assert.IsFalse (Attribute.IsDefined (GetType (), typeof (SerializableAttribute)));
+			Assert.That (Attribute.IsDefined (GetType (), typeof (SerializableAttribute)), Is.False);
 		}
 
 		[Test]
@@ -644,7 +645,7 @@ namespace LinkSdk {
 		{
 			var arr = new AnEnum [16];
 			var c = new ReadOnlyCollection<AnEnum> (arr);
-			Assert.False (c.Contains (AnEnum.First));
+			Assert.That (c.Contains (AnEnum.First), Is.False);
 		}
 
 		enum MyEnum {
@@ -657,7 +658,7 @@ namespace LinkSdk {
 		{
 			IList<MyEnum> _myValues = new List<MyEnum> { MyEnum.AValue };
 			bool pleaseDontCrash = _myValues.Contains (MyEnum.AnotherValue);
-			Assert.False (pleaseDontCrash);
+			Assert.That (pleaseDontCrash, Is.False);
 		}
 
 		[Test]
@@ -673,7 +674,7 @@ namespace LinkSdk {
 #endif // __MACOS__ || __MACCATALYST__
 		}
 
-		string TestFolder (Environment.SpecialFolder folder, bool supported = true, bool? exists = true, bool readOnly = false)
+		string TestFolder (Environment.SpecialFolder folder, bool supported = true, bool? exists = true, bool? readOnly = false)
 		{
 			var path = Environment.GetFolderPath (folder);
 			Assert.That (path.Length > 0, Is.EqualTo (supported), $"SpecialFolder: {folder.ToString ()} Path: {path} Supported: {supported}");
@@ -685,15 +686,24 @@ namespace LinkSdk {
 				Assert.That (dirExists, Is.EqualTo (exists), path);
 			if (!dirExists)
 				return path;
+			// Access to macOS privacy-protected folders depends on the host's TCC state.
+			if (!readOnly.HasValue)
+				return path;
 
-			string file = Path.Combine (path, "temp.txt");
+			string file = Path.Combine (path, Path.GetRandomFileName ());
 			try {
 				File.WriteAllText (file, "mine");
-				Assert.False (readOnly, "!readOnly " + folder);
+				Assert.That (readOnly.Value, Is.False, "!readOnly " + folder);
 			} catch {
-				Assert.True (readOnly, "readOnly " + folder);
+				Assert.That (readOnly.Value, Is.True, "readOnly " + folder);
 			} finally {
-				File.Delete (file);
+				try {
+					File.Delete (file);
+				} catch (IOException e) {
+					Console.WriteLine ($"Could not delete '{file}': {e}");
+				} catch (UnauthorizedAccessException e) {
+					Console.WriteLine ($"Could not delete '{file}': {e}");
+				}
 			}
 			return path;
 		}
@@ -772,7 +782,7 @@ namespace LinkSdk {
 			// some stuff we return a value - but the directory does not exists 
 
 #if __MACOS__
-			var path = TestFolder (Environment.SpecialFolder.Desktop, exists: true);
+			var path = TestFolder (Environment.SpecialFolder.Desktop, exists: true, readOnly: null);
 #else
 			var path = TestFolder (Environment.SpecialFolder.Desktop, exists: false);
 #endif
@@ -789,11 +799,11 @@ namespace LinkSdk {
 #else
 			var myExists = false;
 #endif
-			path = TestFolder (Environment.SpecialFolder.MyMusic, exists: myExists);
+			path = TestFolderIfAvailableInCI (Environment.SpecialFolder.MyMusic, myExists);
 
-			path = TestFolder (Environment.SpecialFolder.MyVideos, exists: myExists);
+			path = TestFolderIfAvailableInCI (Environment.SpecialFolder.MyVideos, myExists);
 
-			path = TestFolder (Environment.SpecialFolder.DesktopDirectory, exists: myExists);
+			path = TestFolderIfAvailableInCI (Environment.SpecialFolder.DesktopDirectory, myExists);
 
 #if __TVOS__
 			path = TestFolder (Environment.SpecialFolder.Fonts, exists: null, supported: true);
@@ -811,7 +821,7 @@ namespace LinkSdk {
 			path = TestFolder (Environment.SpecialFolder.Templates, exists: false);
 #endif
 
-			path = TestFolder (Environment.SpecialFolder.MyPictures, exists: myExists);
+			path = TestFolderIfAvailableInCI (Environment.SpecialFolder.MyPictures, myExists);
 
 #if __MACOS__
 			path = TestFolder (Environment.SpecialFolder.CommonTemplates, supported: false);
@@ -864,9 +874,12 @@ namespace LinkSdk {
 			if (string.IsNullOrEmpty (path) && TestRuntime.IsInCI) {
 				// ignore this
 			} else {
-				path = TestFolder (Environment.SpecialFolder.MyDocuments);
+				path = TestFolder (Environment.SpecialFolder.MyDocuments, readOnly: null);
 				Assert.That (path, Is.EqualTo (docs), "path - MyDocuments");
 			}
+#elif __MACCATALYST__
+			path = TestFolder (Environment.SpecialFolder.MyDocuments, readOnly: null);
+			Assert.That (path, Is.EqualTo (docs), "path - MyDocuments");
 #else
 			// and some stuff is read/write
 			path = TestFolder (Environment.SpecialFolder.MyDocuments);
@@ -895,8 +908,21 @@ namespace LinkSdk {
 			path = TestFolder (Environment.SpecialFolder.Resources, supported: false);
 #else
 			path = TestFolder (Environment.SpecialFolder.Resources, readOnly: tvos && device);
-			Assert.True (path.EndsWith ("/Library", StringComparison.Ordinal), "Resources");
+			Assert.That (path.EndsWith ("/Library", StringComparison.Ordinal), Is.True, "Resources");
 #endif
+			// Some macOS CI VM images don't initialize all standard user directories, so tolerate
+			// missing paths only there. Access to these macOS folders depends on the host's TCC state.
+			string TestFolderIfAvailableInCI (Environment.SpecialFolder folder, bool exists)
+			{
+#if __MACOS__
+				var path = Environment.GetFolderPath (folder);
+				if (string.IsNullOrEmpty (path) && TestRuntime.IsInCI && TestRuntime.IsVM)
+					return path;
+				return TestFolder (folder, exists: exists, readOnly: null);
+#else
+				return TestFolder (folder, exists: exists);
+#endif
+			}
 		}
 
 #if !__MACOS__
@@ -904,29 +930,29 @@ namespace LinkSdk {
 		public void Events ()
 		{
 			using (var tv = new UITextView ()) {
-				Assert.Null (tv.WeakDelegate, "none");
+				Assert.That (tv.WeakDelegate, Is.Null, "none");
 				// event on UITextView itself
 				tv.Ended += (object? sender, EventArgs e) => { };
 
 				var weakDelegate = tv.WeakDelegate;
-				Assert.NotNull (weakDelegate, "textview delegate");
+				Assert.That (weakDelegate, Is.Not.Null, "textview delegate");
 				if (weakDelegate is null)
 					throw new InvalidOperationException ("The text view delegate was not created.");
 				var t = weakDelegate.GetType ();
 				Assert.That (t.Name, Is.EqualTo ("_UITextViewDelegate"), "textview");
 
 				var fi = t.GetField ("editingEnded", BindingFlags.NonPublic | BindingFlags.Instance);
-				Assert.NotNull (fi, "editingEnded");
+				Assert.That (fi, Is.Not.Null, "editingEnded");
 				if (fi is null)
 					throw new InvalidOperationException ("The editingEnded field was not found.");
 				var value = fi.GetValue (weakDelegate);
-				Assert.NotNull (value, "value");
+				Assert.That (value, Is.Not.Null, "value");
 
 				// and on the UIScrollView defined one
 				tv.Scrolled += (object? sender, EventArgs e) => { };
 				// and the existing (initial field) is still set
 				fi = t.GetField ("editingEnded", BindingFlags.NonPublic | BindingFlags.Instance);
-				Assert.NotNull (fi, "editingEnded/scrollview");
+				Assert.That (fi, Is.Not.Null, "editingEnded/scrollview");
 				if (fi is null)
 					throw new InvalidOperationException ("The editingEnded field was not found after scroll hookup.");
 			}
@@ -951,18 +977,26 @@ namespace LinkSdk {
 			// ILLink does not remove the method, but it can "stub" (empty) it
 			if (m is null)
 				throw new InvalidOperationException ("Method not found (null)");
-			var mb = m.GetMethodBody ();
-			if (mb is null)
-				throw new InvalidOperationException ("GetMethodBody");
-			var il = mb.GetILAsByteArray ();
-			if (il is null)
-				throw new InvalidOperationException ("GetILAsByteArray");
+
+			// crossgen2 strips the IL bodies of R2R-compiled methods (the .NET SDK enables
+			// PublishReadyToRunStripILBodies by default for iOS-like RIDs in release builds), replacing them
+			// with a 2-byte "illegal" sentinel (0xFE 0x24). That's an even more stripped body than what we're
+			// checking for, so accept it - the ILReader can't parse this (invalid) IL.
+			var ilBytes = m.GetMethodBody ()?.GetILAsByteArray ();
+			if (ilBytes is not null && ilBytes.Length == 2 && ilBytes [0] == 0xFE && ilBytes [1] == 0x24)
+				return;
+
+			var reader = new ILReader (m);
+			var il = reader.ToArray ();
+			var actualIL = string.Join ("\n", il.Select (v => v.ToString ().Trim ()));
+			var releaseRet = "IL_0000 ret"; // only release
 #if DEBUG
 			// means some stuff in addition to the `ret` instruction
-			Assert.That (il.Length, Is.GreaterThan (1), "il > 1");
+			Assert.That (actualIL, Is.Not.EqualTo (releaseRet), $"debug il");
 #else
 			// empty means a `ret` instruction (and that's true even if IL is stripped)
-			Assert.That (il.Length, Is.EqualTo (1), "il == 1");
+			var trimmedBody = "IL_0000 ldnull\nIL_0001 throw"; // this can happen for both release and debug
+			Assert.That (actualIL, Is.EqualTo (releaseRet).Or.EqualTo (trimmedBody), $"release il");
 #endif
 		}
 
@@ -998,14 +1032,14 @@ namespace LinkSdk {
 		[Test]
 		public void MonoRuntime34671 ()
 		{
-			Assert.Null (GetTypeHelper ("Mono.Runtime"), "Mono.Runtime");
+			Assert.That (GetTypeHelper ("Mono.Runtime"), Is.Null, "Mono.Runtime");
 		}
 
 		[Test]
 		public void TraceListeners36255 ()
 		{
 			Trace.Close (); // here too
-			Assert.NotNull (Trace.Listeners, "C6 had a SecurityPermission call");
+			Assert.That (Trace.Listeners, Is.Not.Null, "C6 had a SecurityPermission call");
 		}
 
 #if !__MACOS__
@@ -1022,10 +1056,10 @@ namespace LinkSdk {
 					throw new InvalidOperationException ("No assembly qualified name for UISearchController.");
 				var n = a.Replace ("UIKit.UISearchController", "UIKit.UISearchController+__Xamarin_UISearchResultsUpdating");
 				var t = Type.GetType (n);
-				Assert.NotNull (t, "private inner type");
+				Assert.That (t, Is.Not.Null, "private inner type");
 				if (t is null)
 					throw new InvalidOperationException ("The private inner type was not found.");
-				Assert.IsNotNull (t.GetMethod ("UpdateSearchResultsForSearchController"), "preserved");
+				Assert.That (t.GetMethod ("UpdateSearchResultsForSearchController"), Is.Not.Null, "preserved");
 			}
 		}
 #endif // !__MACOS__
@@ -1035,7 +1069,7 @@ namespace LinkSdk {
 		{
 			// make test work for classic (monotouch) and unified (iOS, tvOS)
 			var fqn = GetReplacedNSObjectAssemblyQualifiedName ("Security.Tls.OldTlsProvider");
-			Assert.Null (GetTypeHelper (fqn), "Should not be included");
+			Assert.That (GetTypeHelper (fqn), Is.Null, "Should not be included");
 		}
 
 		[Test]
@@ -1043,7 +1077,7 @@ namespace LinkSdk {
 		{
 			// make test work for classic (monotouch) and unified (iOS, tvOS)
 			var fqn = GetReplacedNSObjectAssemblyQualifiedName ("Security.Tls.AppleTlsProvider");
-			Assert.Null (GetTypeHelper (fqn), "Should be included");
+			Assert.That (GetTypeHelper (fqn), Is.Null, "Should be included");
 		}
 
 #if !__TVOS__ // WebKit isn't available in tvOS
@@ -1053,9 +1087,9 @@ namespace LinkSdk {
 		{
 			// a reference to WKWebView will bring the internal NSProxy type
 			var t = typeof (WKWebView);
-			Assert.NotNull (t, "avoid compiler optimization of unused variable");
+			Assert.That (t, Is.Not.Null, "avoid compiler optimization of unused variable");
 			var fqn = GetReplacedNSObjectAssemblyQualifiedName ("Foundation.NSProxy");
-			Assert.NotNull (GetTypeHelper (fqn), fqn);
+			Assert.That (GetTypeHelper (fqn), Is.Not.Null, fqn);
 		}
 #endif // !__TVOS__
 
@@ -1085,7 +1119,7 @@ namespace LinkSdk {
 			// linker will keep the MTAudioProcessingTap type
 			var mta = typeof (MediaToolbox.MTAudioProcessingTap);
 			// and we check that it still implement INativeObject
-			Assert.IsNotNull (mta.GetInterface ("ObjCRuntime.INativeObject"), "INativeObject");
+			Assert.That (mta.GetInterface ("ObjCRuntime.INativeObject"), Is.Not.Null, "INativeObject");
 		}
 
 		[Test]
@@ -1093,7 +1127,7 @@ namespace LinkSdk {
 		public void AsQueryable_Enumerable ()
 		{
 			var list = new List<string> { "hello hello" };
-			Assert.NotNull (list.AsQueryable ().GroupBy (x => x).FirstOrDefault ()?.FirstOrDefault (), "Enumerable");
+			Assert.That (list.AsQueryable ().GroupBy (x => x).FirstOrDefault ()?.FirstOrDefault (), Is.Not.Null, "Enumerable");
 		}
 
 		public class CustomIdentity : IIdentity {
@@ -1113,7 +1147,7 @@ namespace LinkSdk {
 		{
 			Thread.CurrentPrincipal = new CustomPrincipal ();
 			var identity = Thread.CurrentPrincipal?.Identity;
-			Assert.NotNull (identity, "Identity");
+			Assert.That (identity, Is.Not.Null, "Identity");
 			if (identity is null)
 				throw new InvalidOperationException ("No current principal identity.");
 			Assert.That (identity.Name, Is.EqualTo ("abc"), "Name");

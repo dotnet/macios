@@ -58,7 +58,7 @@ namespace ObjCRuntime {
 #pragma warning restore CS8618
 
 		[BindingImpl (BindingImplOptions.Optimizable)]
-		internal unsafe static void Initialize (Runtime.InitializationOptions* options)
+		internal unsafe static void InitializeClass (Runtime.InitializationOptions* options)
 		{
 			type_to_class = new Dictionary<Type, IntPtr> (Runtime.TypeEqualityComparer);
 
@@ -103,6 +103,8 @@ namespace ObjCRuntime {
 			this.handle = GetHandle (type);
 		}
 
+		/// <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>
+		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
 		public Class (NativeHandle handle)
 		{
 			this.handle = handle;
@@ -316,6 +318,11 @@ namespace ObjCRuntime {
 		unsafe static IntPtr FindClass (Type type, out bool is_custom_type)
 		{
 			if (Runtime.IsTrimmableStaticRegistrar) {
+				// Generic types are registered using their generic type definition (the type maps are
+				// keyed by the open generic type), so look for that instead of the closed generic type.
+				if (type.IsGenericType)
+					type = type.GetGenericTypeDefinition ();
+
 				if (TypeMaps.TryGetNSObjectProxyAttribute (type, out var proxyAttribute)) {
 					var rv = proxyAttribute.GetClassHandle (out is_custom_type);
 #if LOG_TRIMMABLE_TYPEMAP

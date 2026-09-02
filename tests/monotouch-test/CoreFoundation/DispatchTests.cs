@@ -72,9 +72,9 @@ namespace MonoTouchFixtures.CoreFoundation {
 			while (hit == false) {
 				NSRunLoop.Current.RunUntil (NSDate.FromTimeIntervalSinceNow (0.5));
 			}
-			Assert.IsNotNull (ex, "main ex");
+			Assert.That (ex, Is.Not.Null, "main ex");
 			Assert.That (ex.GetType (), Is.SameAs (typeof (NullReferenceException)), "no thread check hit");
-			Assert.IsNotNull (queue_ex, "queue ex");
+			Assert.That (queue_ex, Is.Not.Null, "queue ex");
 			Assert.That (queue_ex.GetType (), Is.SameAs (typeof (UIKitThreadAccessException)), "thread check hit");
 			Assert.That (uiThread, Is.EqualTo (mainQthread), "mainq thread is equal to uithread");
 			Assert.That (queueThread, Is.Not.EqualTo (mainQthread), "queueThread is not the same as the UI thread");
@@ -129,9 +129,9 @@ namespace MonoTouchFixtures.CoreFoundation {
 			while (hit == false) {
 				NSRunLoop.Current.RunUntil (NSDate.FromTimeIntervalSinceNow (0.5));
 			}
-			Assert.IsNotNull (ex, "main ex");
+			Assert.That (ex, Is.Not.Null, "main ex");
 			Assert.That (ex.GetType (), Is.SameAs (typeof (NullReferenceException)), "no thread check hit");
-			Assert.IsNotNull (queue_ex, "queue ex");
+			Assert.That (queue_ex, Is.Not.Null, "queue ex");
 			Assert.That (queue_ex.GetType (), Is.SameAs (typeof (UIKitThreadAccessException)), "thread check hit");
 			Assert.That (uiThread, Is.EqualTo (mainQthread), "mainq thread is equal to uithread");
 			Assert.That (queueThread, Is.Not.EqualTo (mainQthread), "queueThread is not the same as the UI thread");
@@ -206,9 +206,9 @@ namespace MonoTouchFixtures.CoreFoundation {
 		public void GetGlobalQueue_Priority ()
 		{
 			// values changes in OS versions (and even in arch) but we only want to make sure we get a valid string so the prefix is enough
-			Assert.True (DispatchQueue.GetGlobalQueue (DispatchQueuePriority.Default).Label.StartsWith ("com.apple.root."), "Default");
-			Assert.True (DispatchQueue.GetGlobalQueue (DispatchQueuePriority.Low).Label.StartsWith ("com.apple.root."), "Low");
-			Assert.True (DispatchQueue.GetGlobalQueue (DispatchQueuePriority.High).Label.StartsWith ("com.apple.root."), "High");
+			Assert.That (DispatchQueue.GetGlobalQueue (DispatchQueuePriority.Default).Label.StartsWith ("com.apple.root."), Is.True, "Default");
+			Assert.That (DispatchQueue.GetGlobalQueue (DispatchQueuePriority.Low).Label.StartsWith ("com.apple.root."), Is.True, "Low");
+			Assert.That (DispatchQueue.GetGlobalQueue (DispatchQueuePriority.High).Label.StartsWith ("com.apple.root."), Is.True, "High");
 		}
 
 		[Test]
@@ -217,9 +217,9 @@ namespace MonoTouchFixtures.CoreFoundation {
 			TestRuntime.AssertSystemVersion (ApplePlatform.MacOSX, 10, 10, throwIfOtherPlatform: false);
 
 			// values changes in OS versions (and even in arch) but we only want to make sure we get a valid string so the prefix is enough
-			Assert.True (DispatchQueue.GetGlobalQueue (DispatchQualityOfService.Default).Label.StartsWith ("com.apple.root."), "Default");
-			Assert.True (DispatchQueue.GetGlobalQueue (DispatchQualityOfService.Utility).Label.StartsWith ("com.apple.root."), "Low");
-			Assert.True (DispatchQueue.GetGlobalQueue (DispatchQualityOfService.UserInitiated).Label.StartsWith ("com.apple.root."), "High");
+			Assert.That (DispatchQueue.GetGlobalQueue (DispatchQualityOfService.Default).Label.StartsWith ("com.apple.root."), Is.True, "Default");
+			Assert.That (DispatchQueue.GetGlobalQueue (DispatchQualityOfService.Utility).Label.StartsWith ("com.apple.root."), Is.True, "Low");
+			Assert.That (DispatchQueue.GetGlobalQueue (DispatchQualityOfService.UserInitiated).Label.StartsWith ("com.apple.root."), Is.True, "High");
 		}
 
 		[Test]
@@ -287,9 +287,9 @@ namespace MonoTouchFixtures.CoreFoundation {
 			while (hit == false) {
 				NSRunLoop.Current.RunUntil (NSDate.FromTimeIntervalSinceNow (0.5));
 			}
-			Assert.IsNotNull (ex, "main ex");
+			Assert.That (ex, Is.Not.Null, "main ex");
 			Assert.That (ex.GetType (), Is.SameAs (typeof (NullReferenceException)), "no thread check hit");
-			Assert.IsNotNull (queue_ex, "queue ex");
+			Assert.That (queue_ex, Is.Not.Null, "queue ex");
 			Assert.That (queue_ex.GetType (), Is.SameAs (typeof (UIKitThreadAccessException)), "thread check hit");
 			Assert.That (uiThread, Is.EqualTo (mainQthread), "mainq thread is equal to uithread");
 			Assert.That (queueThread, Is.Not.EqualTo (mainQthread), "queueThread is not the same as the UI thread");
@@ -343,9 +343,9 @@ namespace MonoTouchFixtures.CoreFoundation {
 			while (hit == false) {
 				NSRunLoop.Current.RunUntil (NSDate.FromTimeIntervalSinceNow (0.5));
 			}
-			Assert.IsNotNull (ex, "main ex");
+			Assert.That (ex, Is.Not.Null, "main ex");
 			Assert.That (ex.GetType (), Is.SameAs (typeof (NullReferenceException)), "no thread check hit");
-			Assert.IsNotNull (queue_ex, "queue ex");
+			Assert.That (queue_ex, Is.Not.Null, "queue ex");
 			Assert.That (queue_ex.GetType (), Is.SameAs (typeof (UIKitThreadAccessException)), "thread check hit");
 			Assert.That (uiThread, Is.EqualTo (mainQthread), "mainq thread is equal to uithread");
 			Assert.That (queueThread, Is.Not.EqualTo (mainQthread), "queueThread is not the same as the UI thread");

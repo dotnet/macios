@@ -134,6 +134,15 @@ namespace Foundation {
 			// Double.MaxValue does not work, so default to 24 hours
 			config.TimeoutIntervalForRequest = 24 * 60 * 60;
 			config.TimeoutIntervalForResource = 24 * 60 * 60;
+
+			// Disable shared credential storage so credentials we pass with UseCredential in DidReceiveChallenge dont get saved in
+			// the SharedCredentialStorage so (native) NSUrlSession can't try to authenticate later requests by itself using old credentials
+			// incluiding redirects, and then our managed DidReceiveChallenge delegate may not get called at all. We already manage 
+			// the credential flow in DidReceiveChallenge and the Credentials property. The switch is just a compat in case we
+			// someone needs to go back to the old behaviour.
+			var useSharedCredentialStorage = AppContext.TryGetSwitch ("Foundation.NSUrlSessionHandler.UseSharedCredentialStorage", out var useSharedStorage) && useSharedStorage;
+			if (!useSharedCredentialStorage)
+				config.URLCredentialStorage = null;
 			return config;
 		}
 
@@ -201,7 +210,13 @@ namespace Foundation {
 				task.Dispose ();
 			}
 
-			session.InvalidateAndCancel ();
+			// Take the proxy configuration lock so we don't race with ConfigureSessionProxy: either we
+			// invalidate the session it created (if it ran first), or it observes 'disposed' and doesn't
+			// create a new session that would never be invalidated (if we ran first).
+			lock (proxyConfigurationLock) {
+				disposed = true;
+				session.InvalidateAndCancel ();
+			}
 			base.Dispose (disposing);
 		}
 
@@ -440,6 +455,106 @@ namespace Foundation {
 			return nsrequest;
 		}
 
+		readonly object proxyConfigurationLock = new object ();
+		bool proxyConfigured;
+		bool disposed;
+
+		// NSUrlSession applies proxy settings per-session (via the configuration's connection proxy dictionary),
+		// not per-request, so we compute the proxy configuration once (using the first request's destination) and
+		// recreate the session with it before the first request is sent.
+		void ConfigureSessionProxy (HttpRequestMessage request)
+		{
+			lock (proxyConfigurationLock) {
+				if (proxyConfigured)
+					return;
+
+				// The handler has been disposed (and the session already invalidated); don't create a new
+				// session, since it would never be invalidated.
+				if (disposed)
+					return;
+
+				if (TryGetProxyDictionary (request.RequestUri, out var proxyDictionary)) {
+					var oldSession = session;
+					var configuration = session.Configuration;
+					configuration.ConnectionProxyDictionary = proxyDictionary;
+					session = NSUrlSession.FromConfiguration (configuration, (INSUrlSessionDelegate) new NSUrlSessionHandlerDelegate (this), null);
+					// A session keeps a strong reference to its delegate until it's invalidated, so
+					// invalidate the old session to release its delegate (which references this handler).
+					// No requests have been sent on the old session yet, so there's nothing to cancel.
+					oldSession.InvalidateAndCancel ();
+					oldSession.Dispose ();
+				}
+
+				// Only mark the proxy as configured once we've successfully computed and applied the
+				// configuration, so that a failure (e.g. a throwing IWebProxy) doesn't permanently leave the
+				// session unconfigured while pretending otherwise (the next request will try again).
+				proxyConfigured = true;
+			}
+		}
+
+		// Computes the connection proxy dictionary to apply to the session.
+		// Returns false (and a null dictionary) when the session's default proxy behavior (use the OS-configured proxies) should be used.
+		bool TryGetProxyDictionary (Uri? destination, out NSDictionary? proxyDictionary)
+		{
+			proxyDictionary = null;
+
+			// The developer explicitly asked us to not use any proxy: apply an empty dictionary to
+			// override any proxy configured in the OS.
+			if (!useProxy) {
+				proxyDictionary = new NSDictionary ();
+				return true;
+			}
+
+			// No custom proxy: let NSUrlSession use the OS-configured proxies (the default behavior).
+			if (proxy is null || destination is null)
+				return false;
+
+			// The proxy says this destination should not be proxied: override any OS-configured proxy.
+			if (proxy.IsBypassed (destination)) {
+				proxyDictionary = new NSDictionary ();
+				return true;
+			}
+
+			var proxyUri = proxy.GetProxy (destination);
+			// A null proxy uri (or one that points back at the destination) means "no proxy for this destination".
+			if (proxyUri is null || proxyUri == destination) {
+				proxyDictionary = new NSDictionary ();
+				return true;
+			}
+
+			// The proxy uri's scheme indicates how to connect to the proxy itself (not which requests to
+			// proxy). NSUrlSession's connection proxy dictionary can only describe a plain-HTTP connection
+			// to the proxy (the HTTP/HTTPS proxy keys select the destination scheme, not the protocol used
+			// to reach the proxy, and there's no key to connect to the proxy over TLS or via SOCKS). Rather
+			// than silently connecting over plain HTTP and doing the wrong thing for a secure ("https") or
+			// SOCKS proxy, fail loudly for any scheme we can't honor.
+			if (!string.Equals (proxyUri.Scheme, Uri.UriSchemeHttp, StringComparison.OrdinalIgnoreCase))
+				throw new NotSupportedException ($"The proxy scheme '{proxyUri.Scheme}' is not supported. Only 'http' proxies are supported.");
+
+			var strongProxy = new ProxyConfigurationDictionary {
+				HttpEnable = true,
+				HttpProxyHost = proxyUri.DnsSafeHost,
+				HttpProxyPort = proxyUri.Port,
+				HttpsProxyHost = proxyUri.DnsSafeHost,
+				HttpsProxyPort = proxyUri.Port,
+#if MONOMAC
+				HttpsEnable = true,
+#endif
+			};
+			proxyDictionary = strongProxy.GetDictionary ();
+#if !MONOMAC
+			// The strongly-typed HttpsEnable property (kCFNetworkProxiesHTTPSEnable) is only exposed on
+			// macOS, but CFNetwork honors the same "HTTPSEnable" key on the other platforms too, and it's
+			// required for HTTPS proxying (CONNECT tunneling) to work. Add it via the literal key.
+			if (proxyDictionary is not null) {
+				var mutableProxyDictionary = new NSMutableDictionary (proxyDictionary);
+				mutableProxyDictionary ["HTTPSEnable"] = NSNumber.FromBoolean (true);
+				proxyDictionary = mutableProxyDictionary;
+			}
+#endif
+			return true;
+		}
+
 		/// <param name="request">To be added.</param>
 		///         <param name="cancellationToken">To be added.</param>
 		///         <summary>To be added.</summary>
@@ -447,7 +562,12 @@ namespace Foundation {
 		///         <remarks>To be added.</remarks>
 		protected override async Task<HttpResponseMessage> SendAsync (HttpRequestMessage request, CancellationToken cancellationToken)
 		{
+			// Mark the handler as non-modifiable before any per-first-request initialization (such as
+			// configuring the session proxy), so other threads can't mutate handler properties once the
+			// first request has started being processed.
 			Volatile.Write (ref sentRequest, true);
+
+			ConfigureSessionProxy (request);
 
 			var nsrequest = await CreateRequest (request).ConfigureAwait (false);
 			var dataTask = session.CreateDataTask (nsrequest);
@@ -549,14 +669,23 @@ namespace Foundation {
 
 		public ClientCertificateOption ClientCertificateOptions { get; set; }
 
-		// We're ignoring this property, just like Xamarin.Android does:
-		// https://github.com/xamarin/xamarin-android/blob/09e8cb5c07ea6c39383185a3f90e53186749b802/src/Mono.Android/Xamarin.Android.Net/AndroidMessageHandler.cs#L152
-		[UnsupportedOSPlatform ("ios")]
-		[UnsupportedOSPlatform ("maccatalyst")]
-		[UnsupportedOSPlatform ("tvos")]
-		[UnsupportedOSPlatform ("macos")]
-		[EditorBrowsable (EditorBrowsableState.Never)]
-		public ICredentials? DefaultProxyCredentials { get; set; }
+		ICredentials? defaultProxyCredentials;
+
+		/// <summary>The credentials to submit to the proxy server for authentication.</summary>
+		/// <value>The credentials to use to authenticate with the proxy, or <see langword="null" /> to not provide any proxy credentials.</value>
+		/// <remarks>
+		///   <para>These credentials are only used when the proxy itself (<see cref="Proxy" />) doesn't provide its own credentials.</para>
+		///   <para>Proxy authentication is only supported for HTTPS destinations (which are proxied using a CONNECT tunnel). For plain HTTP destinations NSUrlSession doesn't deliver a proxy authentication challenge, so these credentials aren't applied and an authenticating proxy will return an HTTP 407 response instead.</para>
+		/// </remarks>
+		public ICredentials? DefaultProxyCredentials {
+			get {
+				return defaultProxyCredentials;
+			}
+			set {
+				EnsureModifiability ();
+				defaultProxyCredentials = value;
+			}
+		}
 
 		public int MaxAutomaticRedirections {
 			get => int.MaxValue;
@@ -605,18 +734,27 @@ namespace Foundation {
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public IDictionary<string, object>? Properties { get { return null; } }
 
-		// We dont support any custom proxies, and don't let anybody wonder why their proxy isn't
-		// being used if they try to assign one (in any case we also return false from 'SupportsProxy').
-		[UnsupportedOSPlatform ("ios")]
-		[UnsupportedOSPlatform ("maccatalyst")]
-		[UnsupportedOSPlatform ("tvos")]
-		[UnsupportedOSPlatform ("macos")]
-		[EditorBrowsable (EditorBrowsableState.Never)]
+		IWebProxy? proxy;
+
+		/// <summary>The proxy to use for requests.</summary>
+		/// <value>The custom proxy to use, or <see langword="null" /> to use the proxies configured in the operating system.</value>
+		/// <remarks>
+		///   <para>Setting this property only has an effect if <see cref="UseProxy" /> is <see langword="true" /> (which is the default value).</para>
+		///   <para>NSUrlSession applies proxy settings per-session, not per-request, so the proxy is evaluated only once, using the destination of the first request sent by this handler, and the result is applied to every subsequent request made by this handler.</para>
+		///   <para>
+		///     This has important consequences when a single handler is reused for requests to multiple destinations: the proxy's per-destination decisions (<see cref="IWebProxy.IsBypassed(System.Uri)" /> and the proxy returned by <see cref="IWebProxy.GetProxy(System.Uri)" />) are computed from the first request's destination only.
+		///     As a result a proxy's bypass list and any destination-dependent proxy selection are not honored for later requests to other destinations: requests that should have been proxied might be sent directly (or through the wrong proxy), and requests that should have bypassed the proxy might be sent through it.
+		///   </para>
+		///   <para>If per-destination proxy behavior is required, use a separate <see cref="NSUrlSessionHandler" /> (and thus a separate <see cref="System.Net.Http.HttpClient" />) for each destination or proxy configuration.</para>
+		///   <para>Proxy authentication (using <see cref="Proxy" />'s own credentials or <see cref="DefaultProxyCredentials" />) is only supported for HTTPS destinations (which are proxied using a CONNECT tunnel). For plain HTTP destinations NSUrlSession doesn't deliver a proxy authentication challenge, so proxy credentials aren't applied and an authenticating proxy will return an HTTP 407 response instead.</para>
+		/// </remarks>
 		public IWebProxy? Proxy {
-			get => null;
+			get {
+				return proxy;
+			}
 			set {
-				if (value is not null)
-					throw new PlatformNotSupportedException ();
+				EnsureModifiability ();
+				proxy = value;
 			}
 		}
 
@@ -734,9 +872,10 @@ namespace Foundation {
 			get => true;
 		}
 
-		// We don't support using custom proxies, but NSUrlSession will automatically use any proxies configured in the OS.
+		// We support custom proxies (applied per-session via the connection proxy dictionary), and
+		// NSUrlSession will also automatically use any proxies configured in the OS.
 		public bool SupportsProxy {
-			get => false;
+			get => true;
 		}
 
 		// We support the AllowAutoRedirect property, but we don't support changing the MaxAutomaticRedirections value,
@@ -745,13 +884,15 @@ namespace Foundation {
 			get => false;
 		}
 
-		// NSUrlSession will automatically use any proxies configured in the OS (so always return true in the getter).
-		// There doesn't seem to be a way to turn this off, so throw if someone attempts to disable this.
+		bool useProxy = true;
+
+		// When true (the default), NSUrlSession uses either the custom 'Proxy' (if set) or the proxies configured in the OS.
+		// When false, no proxy is used (this overrides any proxy configured in the OS).
 		public bool UseProxy {
-			get => true;
+			get => useProxy;
 			set {
-				if (!value)
-					ObjCRuntime.ThrowHelper.ThrowArgumentOutOfRangeException (nameof (value), value, "It's not possible to disable the use of system proxies."); ;
+				EnsureModifiability ();
+				useProxy = value;
 			}
 		}
 
@@ -1027,9 +1168,32 @@ namespace Foundation {
 			}
 
 			[Preserve (Conditional = true)]
-			public override void WillPerformHttpRedirection (NSUrlSession session, NSUrlSessionTask task, NSHttpUrlResponse response, NSUrlRequest newRequest, Action<NSUrlRequest> completionHandler)
+			public override void WillPerformHttpRedirection (NSUrlSession session, NSUrlSessionTask task, NSHttpUrlResponse response, NSUrlRequest newRequest, Action<NSUrlRequest?> completionHandler)
 			{
-				completionHandler (sessionHandler.AllowAutoRedirect ? newRequest : null!);
+				if (!sessionHandler.AllowAutoRedirect) {
+					completionHandler (null);
+					return;
+				}
+
+				var inflight = GetInflightData (task);
+
+				if (inflight is null) {
+					completionHandler (null);
+					return;
+				}
+
+				inflight.HasRedirected = true;
+
+				if (newRequest.Url?.AbsoluteString is string redirectUrl) {
+					inflight.CurrentRequestUrl = redirectUrl;
+
+					if (Uri.TryCreate (redirectUrl, UriKind.Absolute, out var redirectUri))
+						inflight.HasCrossOriginRedirect |= IsCrossOriginRedirect (inflight.RequestUrl, redirectUri);
+					else
+						inflight.HasCrossOriginRedirect = true;
+				}
+
+				completionHandler (newRequest);
 			}
 
 			[Preserve (Conditional = true)]
@@ -1118,8 +1282,10 @@ namespace Foundation {
 				// but we are hiding such a situation from our users, we can nevertheless know if the header was added and deal with it. The idea is as follows,
 				// check if we are in the first attempt, if we are (PreviousFailureCount == 0), we check the headers of the request and if we do have the Auth 
 				// header, it means that we do not have the correct credentials, in any other case just do what it is expected.
+				// This only applies to server authentication challenges: a proxy authentication challenge is unrelated to
+				// the request's (server-targeted) Authorization header, so it's handled separately below.
 
-				if (challenge.PreviousFailureCount == 0) {
+				if (challenge.PreviousFailureCount == 0 && !challenge.ProtectionSpace.IsProxy) {
 					var authHeader = inflight.Request.Headers?.Authorization;
 					if (!(string.IsNullOrEmpty (authHeader?.Scheme) && string.IsNullOrEmpty (authHeader?.Parameter))) {
 						completionHandler (NSUrlSessionAuthChallengeDisposition.RejectProtectionSpace, null!);
@@ -1127,7 +1293,51 @@ namespace Foundation {
 					}
 				}
 
-				if (sessionHandler.Credentials is not null && TryGetAuthenticationType (challenge.ProtectionSpace, out var authType)) {
+				// Detect redirect from the task as a fallback in case
+				// WillPerformHttpRedirection has not updated infligth state yet
+				if (!inflight.HasRedirected) {
+					var originalUrl = task.OriginalRequest?.Url?.AbsoluteString;
+					var currentUrl = task.CurrentRequest?.Url?.AbsoluteString;
+					if (originalUrl is not null && currentUrl is not null
+						&& !string.Equals (originalUrl, currentUrl, StringComparison.Ordinal)) {
+						inflight.HasRedirected = true;
+						inflight.CurrentRequestUrl = currentUrl;
+						if (Uri.TryCreate (currentUrl, UriKind.Absolute, out var redirectUri))
+							inflight.HasCrossOriginRedirect |= IsCrossOriginRedirect (inflight.RequestUrl, redirectUri);
+						else
+							inflight.HasCrossOriginRedirect = true;
+					}
+				}
+
+				// Proxy authentication challenges are handled separately from server authentication challenges:
+				// the credentials come from the proxy configuration (the proxy's own credentials or the
+				// DefaultProxyCredentials) rather than from the handler's Credentials property.
+				if (challenge.ProtectionSpace.IsProxy) {
+					var proxy = sessionHandler.Proxy;
+					var proxyCredentials = proxy?.Credentials ?? sessionHandler.DefaultProxyCredentials;
+					// Only provide the credentials for the first challenge; if they were rejected we let the request
+					// fail instead of retrying the same (bad) credentials indefinitely.
+					if (proxyCredentials is not null && challenge.PreviousFailureCount == 0) {
+						var proxyUri = GetProxyLookupUri (challenge.ProtectionSpace);
+						// Look up the credentials using the proxy's authentication method (Basic/Digest/NTLM), so
+						// that a CredentialCache keyed by a specific scheme resolves correctly. Fall back to "basic"
+						// for any authentication method we don't recognize: a plain NetworkCredential ignores the
+						// authentication type anyway, so this preserves the behavior for the common case.
+						if (!TryGetAuthenticationType (challenge.ProtectionSpace, out var proxyAuthType) || proxyAuthType == RejectProtectionSpaceAuthType)
+							proxyAuthType = "basic";
+						var proxyCredential = proxyCredentials.GetCredential (proxyUri, proxyAuthType);
+						if (proxyCredential is not null) {
+							var proxyNSCredential = new NSUrlCredential (proxyCredential.UserName, proxyCredential.Password, NSUrlCredentialPersistence.ForSession);
+							completionHandler (NSUrlSessionAuthChallengeDisposition.UseCredential, proxyNSCredential);
+							return;
+						}
+					}
+					completionHandler (NSUrlSessionAuthChallengeDisposition.PerformDefaultHandling, challenge.ProposedCredential);
+					return;
+				}
+
+				var challengeCredentials = sessionHandler.Credentials;
+				if (challengeCredentials is not null && TryGetAuthenticationType (challenge.ProtectionSpace, out var authType)) {
 					NetworkCredential? credentialsToUse = null;
 					if (authType != RejectProtectionSpaceAuthType) {
 						// interesting situation, when we use a credential that we created that is empty, we are not getting the RejectProtectionSpaceAuthType,
@@ -1147,8 +1357,9 @@ namespace Foundation {
 						var nsurlRespose = challenge.FailureResponse as NSHttpUrlResponse;
 						var responseIsUnauthorized = (nsurlRespose is null) ? false : nsurlRespose.StatusCode == (int) HttpStatusCode.Unauthorized && challenge.PreviousFailureCount > 0;
 						if (!responseIsUnauthorized) {
-							var uri = inflight.Request.RequestUri!;
-							credentialsToUse = sessionHandler.Credentials.GetCredential (uri, authType);
+							var uri = GetCredentialLookupUri (task, inflight);
+							if (ShouldLookupCredentials (challengeCredentials, inflight))
+								credentialsToUse = challengeCredentials.GetCredential (uri, authType);
 						}
 					}
 
@@ -1165,6 +1376,54 @@ namespace Foundation {
 				}
 			}
 
+			static Uri GetProxyLookupUri (NSUrlProtectionSpace protectionSpace)
+			{
+				// Derive the scheme from the proxy type (HTTP vs HTTPS proxy), not from ReceivesCredentialSecurely
+				// (which describes whether the authentication method protects the credentials, not the proxy protocol).
+				var scheme = protectionSpace.ProxyType == (string) NSUrlProtectionSpace.HTTPSProxy ? "https" : "http";
+				var builder = new UriBuilder (scheme, protectionSpace.Host, (int) protectionSpace.Port);
+				return builder.Uri;
+			}
+
+			static Uri GetCredentialLookupUri (NSUrlSessionTask task, InflightData inflight)
+			{
+				var currentRequestUrl = task.CurrentRequest?.Url?.AbsoluteString;
+				if (currentRequestUrl is not null && Uri.TryCreate (currentRequestUrl, UriKind.Absolute, out var currentRequestUri))
+					return currentRequestUri;
+
+				if (Uri.TryCreate (inflight.CurrentRequestUrl, UriKind.Absolute, out var inflightCurrentRequestUri))
+					return inflightCurrentRequestUri;
+
+				return inflight.Request.RequestUri!;
+			}
+
+			static bool ShouldLookupCredentials (ICredentials credentials, InflightData inflight)
+			{
+				if (credentials is CredentialCache)
+					return true;
+
+				if (!inflight.HasRedirected)
+					return true;
+
+				// We are now matching .NET handlers (SocketsHttpHandler and WinHttpHandler) redirect behavior by dropping non CredentialCache credentials after a redirect
+				// Ref:
+				//	https://github.com/dotnet/runtime/blob/eb5503a1f0dc40ee7b73eb79a039eb143ee25038/src/libraries/System.Net.Http/src/System/Net/Http/SocketsHttpHandler/SocketsHttpHandler.cs#L541-L547
+				//	https://github.com/dotnet/runtime/blob/eb5503a1f0dc40ee7b73eb79a039eb143ee25038/src/libraries/System.Net.Http/src/System/Net/Http/SocketsHttpHandler/RedirectHandler.cs#L52-L87
+				// Provide a way for customers to opt into the old behavior for same origin redirects.
+				var allowSameOriginRedirectCredentials = AppContext.TryGetSwitch ("Foundation.NSUrlSessionHandler.AllowSameOriginRedirectCredentials", out var allowRedirectCred) && allowRedirectCred;
+				return allowSameOriginRedirectCredentials && !inflight.HasCrossOriginRedirect;
+			}
+
+			static bool IsCrossOriginRedirect (string originalRequestUrl, Uri currentRequestUri)
+			{
+				if (!Uri.TryCreate (originalRequestUrl, UriKind.Absolute, out var originalRequestUri))
+					return true;
+
+				return !string.Equals (originalRequestUri.Scheme, currentRequestUri.Scheme, StringComparison.OrdinalIgnoreCase)
+					|| !string.Equals (originalRequestUri.IdnHost, currentRequestUri.IdnHost, StringComparison.OrdinalIgnoreCase)
+					|| originalRequestUri.Port != currentRequestUri.Port;
+			}
+
 			static readonly string RejectProtectionSpaceAuthType = "reject";
 
 			static bool TryGetAuthenticationType (NSUrlProtectionSpace protectionSpace, [NotNullWhen (true)] out string? authenticationType)
@@ -1175,15 +1434,19 @@ namespace Foundation {
 					authenticationType = "basic";
 				} else if (protectionSpace.AuthenticationMethod == NSUrlProtectionSpace.AuthenticationMethodHTTPDigest) {
 					authenticationType = "digest";
-				} else if (protectionSpace.AuthenticationMethod == NSUrlProtectionSpace.AuthenticationMethodNegotiate ||
-					protectionSpace.AuthenticationMethod == NSUrlProtectionSpace.AuthenticationMethodHTMLForm) {
-					// Want to reject this authentication type to allow the next authentication method in the request to
-					// be used.
-					authenticationType = RejectProtectionSpaceAuthType;
-				} else {
-					// ServerTrust, ClientCertificate or Default.
+				} else if (protectionSpace.AuthenticationMethod == NSUrlProtectionSpace.AuthenticationMethodServerTrust ||
+					protectionSpace.AuthenticationMethod == NSUrlProtectionSpace.AuthenticationMethodClientCertificate) {
+					// ServerTrust and ClientCertificate are handled earlier in DidReceiveChallengeImpl,
+					// so we should not reach here for these types. Return false just in case.
 					authenticationType = null;
 					return false;
+				} else {
+					// For any other authentication method (Negotiate, HTMLForm, Bearer, etc.),
+					// reject this protection space to allow the next authentication method in the
+					// request to be tried. This is important when the server advertises multiple
+					// WWW-Authenticate challenges (e.g. Bearer before Basic) - rejecting unsupported
+					// methods allows fallback to one we can handle.
+					authenticationType = RejectProtectionSpaceAuthType;
 				}
 				return true;
 			}
@@ -1192,6 +1455,9 @@ namespace Foundation {
 		class InflightData {
 			public readonly object Lock = new object ();
 			public string RequestUrl { get; set; }
+			public string CurrentRequestUrl { get; set; }
+			public bool HasRedirected { get; set; }
+			public bool HasCrossOriginRedirect { get; set; }
 
 			public TaskCompletionSource<HttpResponseMessage> CompletionSource { get; } = new TaskCompletionSource<HttpResponseMessage> (TaskCreationOptions.RunContinuationsAsynchronously);
 			public CancellationToken CancellationToken { get; set; }
@@ -1210,6 +1476,7 @@ namespace Foundation {
 			public InflightData (string requestUrl, CancellationToken cancellationToken, HttpRequestMessage request)
 			{
 				RequestUrl = requestUrl;
+				CurrentRequestUrl = requestUrl;
 				CancellationToken = cancellationToken;
 				Request = request;
 			}
@@ -1394,13 +1661,7 @@ namespace Foundation {
 						}
 					}
 
-					try {
-						await Task.Delay (50, cancellationToken).ConfigureAwait (false);
-					} catch (TaskCanceledException ex) {
-						// add a nicer exception for the user to catch, add the cancelation exception
-						// to have a decent stack
-						throw new TimeoutException ("The request timed out.", ex);
-					}
+					await Task.Delay (50, cancellationToken).ConfigureAwait (false);
 				}
 
 				// try to throw again before read

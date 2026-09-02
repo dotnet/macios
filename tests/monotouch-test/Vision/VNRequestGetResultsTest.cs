@@ -21,7 +21,7 @@ namespace MonoTouchFixtures.Vision {
 
 			using var request = new VNDetectFaceRectanglesRequest ((request, error) => { });
 			var results = request.GetResults<VNFaceObservation> ();
-			Assert.IsNull (results, "GetResults/before-perform");
+			Assert.That (results, Is.Null, "GetResults/before-perform");
 		}
 
 		[Test]
@@ -42,7 +42,7 @@ namespace MonoTouchFixtures.Vision {
 
 			// Results may be empty but should not be null after performing
 			var results = request.GetResults<VNRectangleObservation> ();
-			Assert.IsNotNull (results, "GetResults/after-perform");
+			Assert.That (results, Is.Not.Null, "GetResults/after-perform");
 		}
 	}
 }

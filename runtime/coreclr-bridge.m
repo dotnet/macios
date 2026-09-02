@@ -18,6 +18,7 @@
 #include "slinked-list.h"
 #include "xamarin/xamarin.h"
 #include "xamarin/coreclr-bridge.h"
+#include "monotouch-debug.h"
 
 #include "coreclrhost.h"
 
@@ -213,10 +214,6 @@ monoobject_dict_free_value (CFAllocatorRef allocator, const void *value)
  * Ref: https://github.com/dotnet/designs/blob/1bb5844c165195e2f633cb1dbe042c4b92aefc4d/accepted/2021/objectivec-interop.md
  */
 
-struct TrackedObjectInfo {
-	struct NSObjectData* data;
-};
-
 void
 xamarin_bridge_setup ()
 {
@@ -296,10 +293,10 @@ xamarin_coreclr_reference_tracking_is_referenced_callback (void* ptr)
 	// But we can access the native memory given to us when the object was toggled
 	// (and which is passed as the 'ptr' argument), so let's get the data we need from there.
 	int rv = 0;
-	struct TrackedObjectInfo *info = (struct TrackedObjectInfo *) ptr;
-	enum NSObjectFlags flags = (enum NSObjectFlags) info->data->flags;
+	struct NSObjectData *data = (struct NSObjectData *) ptr;
+	enum NSObjectFlags flags = (enum NSObjectFlags) data->flags;
 	bool isRegisteredToggleRef = (flags & NSObjectFlagsRegisteredToggleRef) == NSObjectFlagsRegisteredToggleRef;
-	id handle = info->data->handle;
+	id handle = data->handle;
 	MonoToggleRefStatus res = (MonoToggleRefStatus) 0;
 
 	if (isRegisteredToggleRef) {
@@ -337,9 +334,9 @@ xamarin_coreclr_reference_tracking_is_referenced_callback (void* ptr)
 void
 xamarin_coreclr_reference_tracking_tracked_object_entered_finalization (void* ptr)
 {
-	struct TrackedObjectInfo *info = (struct TrackedObjectInfo *) ptr;
-	info->data->flags = (enum NSObjectFlags) (info->data->flags | NSObjectFlagsInFinalizerQueue);
-	LOG_CORECLR (stderr, "%s (%p) flags: %i\n", __func__, ptr, (int) info->flags);
+	struct NSObjectData *data = (struct NSObjectData *) ptr;
+	data->flags = (enum NSObjectFlags) (data->flags | NSObjectFlagsInFinalizerQueue);
+	LOG_CORECLR (stderr, "%s (%p) flags: %i\n", __func__, ptr, (int) data->flags);
 }
 
 void
@@ -485,6 +482,13 @@ xamarin_bridge_vm_initialize (int propertyCount, const char **propertyKeys, cons
 {
 	int rv;
 
+#if defined (DEBUG) && !TARGET_OS_SIMULATOR && !TARGET_OS_MACCATALYST && !TARGET_OS_OSX
+	// If mlaunch is going to set up port forwarding (and change environment variables such
+	// as the hot reload websocket endpoint), wait for that to complete before we initialize
+	// CoreCLR - otherwise CoreCLR (and the startup hooks) may read/cache the old values.
+	monotouch_wait_for_port_forwarding ();
+#endif
+
 	int combinedPropertyCount = 0;
 	const char **combinedPropertyKeys = NULL;
 	const char **combinedPropertyValues = NULL;
@@ -510,6 +514,10 @@ xamarin_bridge_vm_initialize (int propertyCount, const char **propertyKeys, cons
 	free ((void *) combinedPropertyValues);
 
 	LOG_CORECLR (stderr, "xamarin_vm_initialize (%i, %p, %p): rv: %i domainId: %i handle: %p\n", combinedPropertyCount, combinedPropertyKeys, combinedPropertyValues, rv, coreclr_domainId, coreclr_handle);
+
+	if (rv != 0) {
+		LOG (PRODUCT ": The call to 'coreclr_initialize' failed: %i (%p)\n", rv, (void *) (intptr_t) rv);
+	}
 
 	return rv == 0;
 }
@@ -841,7 +849,7 @@ mono_object_unbox (MonoObject *obj)
 	void *rv = obj->struct_value;
 
 	if (rv == NULL)
-		xamarin_assertion_message ("%s (%p) => no struct value?\n", __func__);
+		xamarin_assertion_message ("%s (%p) => no struct value?\n", __func__, obj);
 
 	LOG_CORECLR (stderr, "%s (%p) => %p\n", __func__, obj, rv);
 

@@ -26,7 +26,7 @@ namespace MonoTouchFixtures.VideoToolbox {
 			TestRuntime.AssertSystemVersion (ApplePlatform.TVOS, 10, 2, throwIfOtherPlatform: false);
 
 			using (var silo = VTFrameSilo.Create ()) {
-				Assert.IsNotNull (silo, "Silo should not be null");
+				Assert.That (silo, Is.Not.Null, "Silo should not be null");
 			}
 		}
 
@@ -39,7 +39,7 @@ namespace MonoTouchFixtures.VideoToolbox {
 
 			using (var silo = VTFrameSilo.Create ()) {
 				var result = silo.SetTimeRangesForNextPass (new CMTimeRange [0]);
-				Assert.IsTrue (result == VTStatus.FrameSiloInvalidTimeRange, "SetTimeRangesForNextPass");
+				Assert.That (result == VTStatus.FrameSiloInvalidTimeRange, Is.True, "SetTimeRangesForNextPass");
 			}
 		}
 
@@ -55,17 +55,17 @@ namespace MonoTouchFixtures.VideoToolbox {
 				var result = silo.ForEach ((arg) => {
 					return VTStatus.Ok;
 				});
-				Assert.IsTrue (result == VTStatus.Ok, "VTFrameSilo ForEach");
+				Assert.That (result == VTStatus.Ok, Is.True, "VTFrameSilo ForEach");
 
 				result = silo.ForEach ((arg) => {
 					return VTStatus.Ok;
 				});
-				Assert.IsTrue (result == VTStatus.Ok, "VTFrameSilo ForEach");
+				Assert.That (result == VTStatus.Ok, Is.True, "VTFrameSilo ForEach");
 
 				result = silo.ForEach ((arg) => {
 					return VTStatus.Ok;
 				});
-				Assert.IsTrue (result == VTStatus.Ok, "VTFrameSilo ForEach");
+				Assert.That (result == VTStatus.Ok, Is.True, "VTFrameSilo ForEach");
 			}
 		}
 	}

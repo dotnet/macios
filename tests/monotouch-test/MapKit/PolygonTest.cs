@@ -36,16 +36,16 @@ namespace MonoTouchFixtures.MapKit {
 			// MKAnnotation
 			Assert.That (pg.Coordinate.Longitude, Is.NaN, "Coordinate.Longitude");
 			Assert.That (pg.Coordinate.Latitude, Is.NaN, "Coordinate.Latitude");
-			Assert.Null (pg.Title, "Title");
-			Assert.Null (pg.Subtitle, "Subtitle");
+			Assert.That (pg.Title, Is.Null, "Title");
+			Assert.That (pg.Subtitle, Is.Null, "Subtitle");
 			// MKOverlay
-			Assert.True (Double.IsPositiveInfinity (pg.BoundingMapRect.Origin.X), "BoundingMapRect.Origin.X");
-			Assert.True (Double.IsPositiveInfinity (pg.BoundingMapRect.Origin.Y), "BoundingMapRect.Origin.Y");
-			Assert.True (Double.IsNegativeInfinity (pg.BoundingMapRect.Size.Height), "BoundingMapRect.Size.Height");
-			Assert.True (Double.IsNegativeInfinity (pg.BoundingMapRect.Size.Width), "BoundingMapRect.Size.Width");
-			Assert.False (pg.Intersects (pg.BoundingMapRect), "Intersect/Self");
+			Assert.That (Double.IsPositiveInfinity (pg.BoundingMapRect.Origin.X), Is.True, "BoundingMapRect.Origin.X");
+			Assert.That (Double.IsPositiveInfinity (pg.BoundingMapRect.Origin.Y), Is.True, "BoundingMapRect.Origin.Y");
+			Assert.That (Double.IsNegativeInfinity (pg.BoundingMapRect.Size.Height), Is.True, "BoundingMapRect.Size.Height");
+			Assert.That (Double.IsNegativeInfinity (pg.BoundingMapRect.Size.Width), Is.True, "BoundingMapRect.Size.Width");
+			Assert.That (pg.Intersects (pg.BoundingMapRect), Is.False, "Intersect/Self");
 			MKMapRect rect = new MKMapRect (0, 0, 0, 0);
-			Assert.False (pg.Intersects (rect), "Intersect/Empty");
+			Assert.That (pg.Intersects (rect), Is.False, "Intersect/Empty");
 
 			ShapeTest.CheckShape (pg);
 		}
@@ -103,7 +103,7 @@ namespace MonoTouchFixtures.MapKit {
 				pg.Coordinate = new CLLocationCoordinate2D (10, 20);
 			}
 			catch (ObjCException mte) {
-				Assert.True (mte.Message.Contains ("unrecognized selector sent to instance"));
+				Assert.That (mte.Message.Contains ("unrecognized selector sent to instance"), Is.True);
 			}
 			catch {
 				Assert.Fail ("API could be working/implemented");

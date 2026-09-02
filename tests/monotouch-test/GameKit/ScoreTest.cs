@@ -36,13 +36,13 @@ namespace MonoTouchFixtures.GameKit {
 				Assert.That (s.Category, Is.EqualTo ("category-or-identifier"), "Category");
 #endif
 				Assert.That (s.Context, Is.EqualTo (0), "Context");
-				Assert.NotNull (s.Date, "Date");
-				Assert.Null (s.FormattedValue, "FormattedValue");
+				Assert.That (s.Date, Is.Not.Null, "Date");
+				Assert.That (s.FormattedValue, Is.Null, "FormattedValue");
 
 				// this is a new API in iOS8 (it was private before that) and returned an empty instance like:
 				// "<<GKPlayer: 0x81254e60>(playerID:(null) alias:(null) name:(null) status:(null))>"
 				if (TestRuntime.CheckSystemVersion (ApplePlatform.iOS, 8, 0, throwIfOtherPlatform: false)) {
-					Assert.Null (s.Player, "Player");
+					Assert.That (s.Player, Is.Null, "Player");
 				}
 
 				if (TestRuntime.CheckSystemVersion (ApplePlatform.iOS, 7, 0, throwIfOtherPlatform: false)) {

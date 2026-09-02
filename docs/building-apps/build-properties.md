@@ -105,9 +105,17 @@ The default is: `%LocalAppData%\Xamarin\iOS\Archives`
 
 Only applicable to iOS projects (since only iOS projects can be built remotely from Windows).
 
+## ArchiveDir
+
+An optional path for the archive directory. If set, the archive will be created
+in this directory instead of computing a unique path under
+`~/Library/Developer/Xcode/Archives`.
+
 ## ArchiveOnBuild
 
 If an Xcode archive should be created at the end of the build.
+
+Created archives are exposed in the [ApplicationArtifact](build-items.md#applicationartifact) item group.
 
 ## BGenEmitDebugInformation
 
@@ -138,6 +146,8 @@ If a package (.ipa) should be created for the app bundle at the end of the build
 Only applicable to iOS and tvOS projects.
 
 See [CreatePackage](#createpackage) for macOS and Mac Catalyst projects.
+
+Created IPA packages are exposed in the [ApplicationArtifact](build-items.md#applicationartifact) item group.
 
 ## BundleCreateDump
 
@@ -186,6 +196,27 @@ The default value of this property `false` in .NET 9, and `true` in .NET 10+.
 
 > [!NOTE]
 > File an issue if you find that you need to disable this feature, as it's possible that the option to disable it will be removed in future.
+
+## CheckForIllegalCrossThreadCalls
+
+Controls whether the UI thread checks (the `[NS|UI]Application.EnsureUIThread`
+calls the generated bindings emit for UI code) are performed.
+
+When set to `true`, the checks are enabled: accessing UI API off the UI thread
+throws an exception. When set to `false`, the checks are disabled.
+
+This property is emitted as the `ObjCRuntime.Runtime.CheckForIllegalCrossThreadCalls`
+runtime feature switch, so it takes effect even when trimming is disabled: the
+`[NS|UI]Application.CheckForIllegalCrossThreadCalls` field reflects the property
+value at runtime, and the checks are enabled or disabled accordingly.
+
+When trimming is enabled and the checks are disabled, ILLink additionally stubs
+the `[NS|UI]Application.EnsureUIThread` method body and trims away the
+`CheckForIllegalCrossThreadCalls` field, making the app slightly smaller and
+faster.
+
+If this value is not specified, the checks are kept in debug builds and removed
+in release builds.
 
 ## CodesignAllocate
 
@@ -275,6 +306,27 @@ By default we require a provisioning profile if:
 
 Setting this property to `true` or `false` will override the default logic.
 
+## ComputeInstructionSetForReadyToRun
+
+Controls whether to automatically compute and pass the instruction set to the ReadyToRun (R2R) compiler based on the deployment target.
+
+When `PublishReadyToRun` is `true`, the build system automatically computes the minimum CPU instruction set required based on:
+* The `SupportedOSPlatformVersion` (minimum OS version the app supports)
+* The `RuntimeIdentifier` (target architecture and platform)
+
+This computed instruction set is then passed to crossgen2 via the `--instruction-set` argument, enabling the R2R compiler to generate optimized native code using appropriate CPU instructions.
+
+Set this property to `false` to disable automatic instruction set computation and use crossgen2's default behavior.
+
+Default: `true`
+
+Example:
+```xml
+<PropertyGroup>
+  <ComputeInstructionSetForReadyToRun>false</ComputeInstructionSetForReadyToRun>
+</PropertyGroup>
+```
+
 ## CompressBindingResourcePackage
 
 The native references in a binding projects are copied to the output directory during the build process, next to the binding assembly (into something we call a "binding resource package").
@@ -295,6 +347,17 @@ This also applies to how native references are stored inside NuGets.
 
 > [!NOTE]
 > In some cases it can be beneficial to force a zip file on iOS as well, especially when there's a framework with files that have long names, because the zip file can sometimes work around MAX_PATH issues on Windows.
+
+## CopyDSYMToPublishDirectory
+
+A boolean property that specifies whether any generated `*.dSYM` directories should be
+copied to the publish directory when publishing (`dotnet publish`).
+
+The `*.dSYM` directories are generated next to the app bundle (see [NoDSymUtil](#nodsymutil)),
+and when this property is `true` they'll also be copied to the publish directory (next to the
+generated `.ipa`/`.pkg`).
+
+The default value is `true`.
 
 ## CopySceneKitAssetsPath
 
@@ -349,6 +412,8 @@ If a package (.pkg) should be created for the app bundle at the end of the build
 Only applicable to macOS and Mac Catalyst projects.
 
 See [BuildIpa](#buildipa) for iOS and tvOS projects.
+
+Created PKG packages are exposed in the [ApplicationArtifact](build-items.md#applicationartifact) item group.
 
 ## Device
 
@@ -460,9 +525,44 @@ The full path to the `ditto` executable.
 
 The default behavior is to use `/usr/bin/ditto`.
 
+## DynamicRegistrationSupported
+
+Controls whether the dynamic registrar is available at runtime (as reported by
+`ObjCRuntime.Runtime.DynamicRegistrationSupported`).
+
+If this value is not specified, the build will compute a default value based
+on whether the app needs the dynamic registrar, and enables the
+`ObjCRuntime.Runtime.DynamicRegistrationSupported` trimmer feature switch
+accordingly (so the trimmer can remove the dynamic registrar when it's not
+needed, making the app smaller).
+
+Set this property to `true` or `false` to override the computed default.
+
+Removing the dynamic registrar requires a static registrar (`Registrar=static` or
+`Registrar=managed-static`) and trimming, so setting this property has no effect (and the
+build warns) when those conditions aren't met.
+
 ## EmbedOnDemandResources
 
-If on-demand resources should be embedded in the app bundle.
+Controls where on-demand resource asset packs are placed when packaging an app
+for distribution. This property does **not** enable on-demand resources (use
+[EnableOnDemandResources](#enableondemandresources) for that) — it only affects
+how already-tagged asset packs are packaged.
+
+This is the property set by the "Embed on-demand resources in the app bundle"
+option in the IDE. It only takes effect for `AdHoc` distribution:
+
+* `true`: the asset packs are embedded in the `.app` bundle inside the IPA and
+  served locally by the app.
+* `false`: the asset packs are packaged separately (outside the app bundle) so
+  they can be streamed/hosted (for example on a web server).
+
+For `AppStore` distribution the asset packs are always placed outside the `.app`
+bundle (to be hosted by the App Store), regardless of this property.
+
+This property is only consulted when packaging an IPA for distribution (when
+`BuildIpa` is `true` and the distribution type is `AppStore` or `AdHoc`); it has
+no effect on a simulator or device debug build.
 
 Default: true
 
@@ -472,6 +572,28 @@ If code signing is enabled.
 
 Code signing is enabled by default for all platforms; this can be overridden with this property.
 
+## EnableCrashReport
+
+Enables crash reports for the app. When enabled, the `DOTNET_EnableCrashReport`
+environment variable is set to `1` at startup, which makes the .NET runtime's
+in-process crash reporter write a JSON crash report when the app crashes.
+
+This setting is disabled by default, but it can be enabled like this:
+
+```xml
+<PropertyGroup>
+    <EnableCrashReport>true</EnableCrashReport>
+</PropertyGroup>
+```
+
+The crash reports are written to a subdirectory of the app's caches directory.
+
+See also: [Collect crash dumps](https://learn.microsoft.com/en-us/dotnet/core/diagnostics/collect-dumps-crash).
+
+The in-process crash reporter is only available in the mobile CoreCLR runtime
+(iOS, tvOS and Mac Catalyst); the desktop macOS runtime relies on the
+[`createdump`](#bundlecreatedump) tool instead.
+
 ## EnableDefaultCodesignEntitlements
 
 See [CodesignEntitlements](#codesignentitlements).
@@ -479,6 +601,26 @@ See [CodesignEntitlements](#codesignentitlements).
 ## EnableOnDemandResources
 
 If on-demand resources are enabled.
+
+When enabled, bundle resources that are tagged with `ResourceTags` metadata are
+placed into on-demand resource asset packs instead of being copied directly into
+the app bundle. A resource is tagged like this:
+
+```xml
+<ItemGroup>
+  <BundleResource Update="Resources\MyResource.dat" ResourceTags="MyTag" />
+</ItemGroup>
+```
+
+Use `Update` (not `Include`) when the file is already part of the project's
+default resources (for example anything under the `Resources` folder on iOS,
+which is automatically included as a `BundleResource`), otherwise the resource
+would be added twice and the untagged copy would win. In a .NET MAUI project the
+same `ResourceTags` metadata can be set on the corresponding `MauiAsset` item.
+
+This property only enables on-demand resources; it does not control how the asset
+packs are packaged for distribution — see
+[EmbedOnDemandResources](#embedondemandresources) for that.
 
 Default: false for macOS, true for all other platforms.
 
@@ -513,6 +655,10 @@ Enables the concurrent mode for the SGen garbage collector.
 
 Only applicable to iOS, tvOS and Mac Catalyst (when not using NativeAOT).
 
+This property only has an effect when using the Mono runtime, and a warning
+will be shown if it's set when not using the Mono runtime (for instance when
+using CoreCLR).
+
 ## EventSourceSupport
 
 When set to `false`, disables .NET's [EventSource][eventsource] support from
@@ -534,6 +680,53 @@ Default: true
 ## GeneratedSourcesDir
 
 Where the generated source from the generator are saved.
+
+## GenerateTrustedPlatformAssemblies
+
+A boolean property that specifies whether the trusted platform assembly list is
+generated at build time instead of discovered when the app launches.
+
+The default value is `false` for debug builds and `true` for other builds.
+
+## GetApplicationArtifactsDependsOn
+
+A semi-colon delimited property that can be used to extend the
+[GetApplicationArtifacts](build-targets.md#getapplicationartifacts) and
+`Publish` targets. `Build` is a mandatory dependency of
+`GetApplicationArtifacts`; MSBuild targets added to this property execute after
+the platform build has collected `@(ApplicationArtifact)` items and before
+`GetApplicationArtifacts` or `Publish` returns them.
+
+Apple platform builds populate the common application metadata documented for
+[ApplicationArtifact](build-items.md#applicationartifact) before targets in
+this property execute. Extension targets can update or override that metadata,
+and should only add new items when introducing additional artifacts.
+
+Example:
+
+```xml
+<PropertyGroup>
+  <GetApplicationArtifactsDependsOn>$(GetApplicationArtifactsDependsOn);AddApplicationArtifactMetadata</GetApplicationArtifactsDependsOn>
+</PropertyGroup>
+
+<Target Name="AddApplicationArtifactMetadata">
+  <ItemGroup>
+    <ApplicationArtifact Update="@(ApplicationArtifact)">
+      <ApplicationTitle>$(ApplicationTitle)</ApplicationTitle>
+    </ApplicationArtifact>
+  </ItemGroup>
+</Target>
+```
+
+## HotReloadCompatibleBuild
+
+A boolean property that indicates whether the build must remain compatible
+with Hot Reload. When set to `true`, the build avoids modifying user
+assemblies so they stay byte-for-byte unchanged (a requirement for Hot
+Reload). This will disable a few minor optimizations, but will otherwies not
+affect anything.
+
+The default value is `true` for debug builds and `false` otherwise.
 
 ## IBToolPath
 
@@ -559,6 +752,42 @@ See also:
 * The [AlternateAppIcon](build-items.md#alternateappicon) item group.
 * The [AppIcon](#appicon) property.
 
+## InlineClassGetHandle
+
+Controls whether the build system replaces runtime calls to `Class.GetHandle` /
+`Class.GetHandleIntrinsic` with direct native references to Objective-C classes
+at build time.
+
+See [docs/code/class-handles.md](../code/class-handles.md) for an overview.
+
+The valid options are:
+
+* `compatibility`: Inlines `Class.GetHandle` calls only for types whose declaring
+  type matches the requested Objective-C class name.
+* `strict`: Inlines all `Class.GetHandle` calls unconditionally. Requires using
+  the static registrar (not the dynamic registrar).
+* (empty): Disables inlining of `Class.GetHandle` calls.
+
+Default value:
+* .NET 11+: `strict` when using NativeAOT (`PublishAot=true`), `compatibility` otherwise.
+* .NET 10 and earlier: not set (disabled).
+
+Example:
+
+```xml
+<PropertyGroup>
+    <InlineClassGetHandle>compatibility</InlineClassGetHandle>
+</PropertyGroup>
+```
+
+Custom behavior for specific Objective-C classes can be set using the [ReferenceNativeSymbol](build-items.md#referencenativesymbol) item group:
+
+```xml
+<ItemGroup>
+    <ReferenceNativeSymbol SymbolMode="Ignore" SymbolType="ObjectiveCClass" Include="SomeClassName" />
+</ItemGroup>
+```
+
 ## InlineDlfcnMethods
 
 Controls whether the build system replaces runtime calls to `ObjCRuntime.Dlfcn` methods with direct native symbol lookups at build time, eliminating the overhead of `dlsym` at runtime.
@@ -581,7 +810,7 @@ Example:
 </PropertyGroup>
 ```
 
-Custom behavior for specific symbols can be set using the [ReferenceNativeSymbol](build-items.md#referencenativesymbols) item group:
+Custom behavior for specific symbols can be set using the [ReferenceNativeSymbol](build-items.md#referencenativesymbol) item group:
 
 ```xml
 <ItemGroup>
@@ -611,6 +840,21 @@ If artwork should be included in the IPA.
 
 Only applicable to iOS and tvOS projects.
 
+## IpaIncludeSymbols
+
+If the app's symbols should be included in the IPA, in the `Symbols`
+directory Apple expects. This makes App Store Connect (and Xcode's Organizer)
+symbolicate crash reports for the app automatically.
+
+The symbols are the Apple `*.symbols` files generated from the build's dSYM
+directories using `xcrun symbols` (the dSYM directories themselves are not
+embedded in the IPA).
+
+The default value is `true`. Set it to `false` to opt out. This property has
+no effect unless an IPA is being created (see [BuildIpa](#buildipa)).
+
+Only applicable to iOS and tvOS projects.
+
 ## IpaPackageName
 
 Specifies the name of the resulting .ipa file (without the path) when creating
@@ -632,6 +876,8 @@ Only applicable to iOS and tvOS projects.
 Specifies the path to the resulting .ipa file when creating an IPA package (see [BuildIpa](#buildipa)).
 
 Only applicable to iOS and tvOS projects.
+
+The resulting IPA is exposed in the [ApplicationArtifact](build-items.md#applicationartifact) item group.
 
 ## IsAppExtension
 
@@ -900,7 +1146,8 @@ will decrease the amount of memory used at runtime:
 
 The downside is that type checks (`obj is SomeInterface`) will be slower.
 
-Only applicable when using the Mono runtime.
+Only applicable when using the Mono runtime. A warning will be shown if it's
+set when not using the Mono runtime (for instance when using CoreCLR).
 
 ## MtouchDebug
 
@@ -917,6 +1164,10 @@ Enables the concurrent mode for the SGen garbage collector.
 Only applicable to iOS, tvOS and Mac Catalyst when not using NativeAOT.
 
 This property is deprecated, use [EnableSGenConc](#enablesgenconc) instead.
+
+This property only has an effect when using the Mono runtime, and a warning
+will be shown if it's set when not using the Mono runtime (for instance when
+using CoreCLR).
 
 ## MtouchExtraArgs
 
@@ -961,6 +1212,10 @@ The default behavior is to not enable the interpreter.
 > [!NOTE]
 > MAUI changes the default by setting `UseInterpreter=true` for the `"Debug"` configuration.
 
+This property only has an effect when using the Mono runtime, and a warning
+will be shown if it's set when not using the Mono runtime (for instance when
+using CoreCLR).
+
 ## MtouchLink
 
 Specifies the link mode for the project (`None`, `SdkOnly`, `Full`).
@@ -989,7 +1244,14 @@ Default:
 * On iOS and tvOS: enabled for Release builds (where `Configuration="Release"`).
 * On Mac Catalyst: never enabled by default.
 
+This property only has an effect when using the Mono runtime, and a warning
+will be shown if it's set when not using the Mono runtime (for instance when
+using CoreCLR).
+
 ## NoBindingEmbedding
+
+> [!WARNING]
+> Setting this property to `false` is currently deprecated and will produce a build error in .NET 12+.
 
 A boolean property that specifies whether native libraries in binding projects should be embedded
 in the managed assembly, or put into a `.resources` directory next to the managed assembly.
@@ -1006,12 +1268,12 @@ A boolean property that specifies whether .dSYM generation should be disabled.
 Default:
 
 * `true` for iOS and tvOS when building for the simulator.
-* `true` for macOS and Mac Catalyst unless creating an archive (`ArchiveOnBuild=true`)
+* `true` for macOS and Mac Catalyst unless creating an archive (`ArchiveOnBuild=true`) or using Native AOT.
 
 This means the .dSYM archive will be generated in the following cases (by default):
 
 * On iOS and tvOS when building for device.
-* On macOS and Mac Catalyst when creating an archive (`ArchiveOnBuild=true`).
+* On macOS and Mac Catalyst when creating an archive (`ArchiveOnBuild=true`) or using Native AOT.
 
 ## NoSymbolStrip
 
@@ -1044,7 +1306,11 @@ A string property that specifies the resource url for on-demand resources.
 
 ## OptimizePNGs
 
-A boolean property that specifies whether png images should be optimized.
+A boolean property that specifies whether PNG bundle resources should be optimized using Apple's `pngcrush` tool.
+
+In .NET 11 and later, this defaults to `true` for release builds on iOS, tvOS, and Mac Catalyst. It defaults to `false` for debug builds, macOS builds, and projects targeting earlier .NET versions. Set this property explicitly to opt in or out.
+
+The `Optimize` metadata on individual `BundleResource` items overrides this property.
 
 ## OptimizePngImagesDependsOn
 
@@ -1065,7 +1331,11 @@ Example:
 
 ## OptimizePropertyLists
 
-A boolean property that specifies whether property lists (plists) should be optimized.
+A boolean property that specifies whether property list (`.plist`) and localization (`.strings`) bundle resources should be converted to binary property lists.
+
+In .NET 11 and later, this defaults to `true` for release builds on iOS, tvOS, and Mac Catalyst. It defaults to `false` for debug builds, macOS builds, and projects targeting earlier .NET versions. Set this property explicitly to opt in or out.
+
+The `Optimize` metadata on individual `BundleResource` items overrides this property.
 
 ## OptimizePropertyListsDependsOn
 
@@ -1103,6 +1373,8 @@ Specifies the path to the resulting .pkg file when creating a package (see [Crea
 
 Only applicable to macOS and Mac Catalyst apps.
 
+The resulting PKG is exposed in the [ApplicationArtifact](build-items.md#applicationartifact) item group.
+
 ## PlutilPath
 
 The full path to the `plutil` command-line tool.
@@ -1131,6 +1403,23 @@ The product definition template (`.plist`) to be used when creating the product 
 
 Only applicable to macOS and Mac Catalyst apps.
 
+## RecommendedXcodeVersion
+
+The version of Xcode recommended for use with this version of .NET for iOS, tvOS, macOS and Mac Catalyst.
+
+This is the Xcode version the build validates against (see [ValidateXcodeVersion](#validatexcodeversion)); using a different version is likely to produce problems later on in the build process.
+
+This property is read-only: it's computed by the SDK and shouldn't be set in project files.
+
+You can get the recommended Xcode version for a project by running:
+
+```shell
+$ dotnet build -getProperty:RecommendedXcodeVersion myProject.csproj
+26.6
+```
+
+Note: the version number may contain more than 2 components ("26.6.1" for instance). Only the first two components (major and minor) are taken into account when validating the installed Xcode version.
+
 ## ReferenceNativeSymbol
 
 See [ReferenceNativeSymbol](build-items.md#referencenativesymbol)
@@ -1156,6 +1445,35 @@ only scan libraries with the `[LinkWith]` attribute for Objective-C classes:
 ```xml
 <PropertyGroup>
   <RequireLinkWithAttributeForObjectiveCClassSearch>true</RequireLinkWithAttributeForObjectiveCClassSearch>
+</PropertyGroup>
+```
+
+## ResolveResourceItemsRelativeToProject
+
+This property determines whether Content and BundleResource items have their
+logical names computed relative to the project file or relative to the file
+that declared them.
+
+When set to `true`, item paths are always computed relative to the project
+file. This fixes issues where SDKs (such as the Razor SDK) add Content items
+from a directory far from the project, producing incorrect paths that get
+rejected at build time.
+
+When set to `false` (the default for versions before .NET 12), the legacy behavior
+is preserved: paths are computed relative to the file that declared the item.
+
+Starting with .NET 13, this property is permanently enabled and setting it to
+`false` will produce a build error.
+
+| .NET version | Default                       |
+|--------------|-------------------------------|
+| < .NET 12    | `false` (opt-in)              |
+| .NET 12      | `true` (opt-out)              |
+| .NET 13+     | `true` (permanently enabled)  |
+
+```xml
+<PropertyGroup>
+  <ResolveResourceItemsRelativeToProject>true</ResolveResourceItemsRelativeToProject>
 </PropertyGroup>
 ```
 
@@ -1190,6 +1508,8 @@ If 'dotnet run' should wait for the app to exit (defaults to `false`).
 
 This will pass `-W` to `open` if set to `true`.
 
+Note: the [WaitForExit](#waitforexit) property takes precedence over this property.
+
 Example:
 
 ```shell
@@ -1218,6 +1538,8 @@ Run `man open` to see a list of all the options `open` accepts.
 
 This property can be used to redirect the stdout output from the app to a file.
 
+This applies to all platforms (macOS, Mac Catalyst, iOS, and tvOS).
+
 Example writing to a file:
 
 ```shell
@@ -1231,11 +1553,13 @@ $ dotnet run -p:StandardOutputPath=$(tty)
 [... Console.WriteLine output from app ...]
 ```
 
-Note: this can also be accomplished by passing `--stdout ...` using the [OpenArguments](#openarguments) property.
+Note: for macOS and Mac Catalyst apps using the `open` command, this can also be accomplished by passing `--stdout ...` using the [OpenArguments](#openarguments) property.
 
 ### StandardErrorPath
 
 This property can be used to redirect the stderr output from the app to a file.
+
+This applies to all platforms (macOS, Mac Catalyst, iOS, and tvOS).
 
 Example writing to a file:
 
@@ -1250,7 +1574,7 @@ $ dotnet run -p:StandardErrorPath=$(tty)
 [... Console.Error.WriteLine output from app ...]
 ```
 
-Note: this can also be accomplished by passing `--stderr ...` using the [OpenArguments](#openarguments) property.
+Note: for macOS and Mac Catalyst apps using the `open` command, this can also be accomplished by passing `--stderr ...` using the [OpenArguments](#openarguments) property.
 
 ### StandardInputPath
 
@@ -1263,6 +1587,22 @@ $ dotnet run -p:StandardInputPath=stdin.txt
 ```
 
 Note: this can also be accomplished by passing `--stdin ...` using the [OpenArguments](#openarguments) property.
+
+## WaitForExit
+
+If 'dotnet run' should wait for the app to exit before returning (defaults to
+`true` for iOS and tvOS apps, and `false` for macOS and Mac Catalyst apps).
+
+This applies to all platforms (macOS, Mac Catalyst, iOS, and tvOS).
+
+For macOS and Mac Catalyst apps, this property takes precedence over the
+[OpenWaitForExit](#openwaitforexit) property.
+
+Example:
+
+```shell
+$ dotnet run -p:WaitForExit=true
+```
 
 ## SdkIsDesktop
 
@@ -1335,6 +1675,13 @@ However, the either of the following works:
 
 Note: this property will always be `false` on macOS and Mac Catalyst.
 
+## StripFrameworkHeaders
+
+A boolean property that specifies whether the `Headers`, `PrivateHeaders`, and
+`Modules` directories are removed from embedded frameworks before code signing.
+
+The default value is `true`. Set it to `false` to preserve these directories.
+
 ## StripPath
 
 The full path to the `strip` command-line tool.
@@ -1377,6 +1724,12 @@ See [TrimMode](/dotnet/core/deploying/trimming/trimming-options) for a bit more 
 > [PublishTrimmed](/dotnet/core/deploying/trimming/trimming-options?#enable-trimming)
 > to `false` - to disable trimming, set `TrimMode=copy` instead (a build error
 > will be raised if `PublishTrimmed` is set to `false`).
+
+> [!NOTE]
+> Due to [a known issue](https://github.com/dotnet/runtime/issues/108269), setting `PublishTrimmed`
+> to `true` may cause confusing problems, so the build will report an error if this
+> is detected (the solution is to not set `PublishTrimmed` at all).
+
 
 The `TrimMode` property is equivalent to the existing
 [MtouchLink](#mtouchlink) (for iOS, tvOS and Mac Catalyst) and
@@ -1466,6 +1819,10 @@ The default behavior is to not enable the interpreter.
 
 See [MtouchInterpreter](#mtouchinterpreter) for more information.
 
+This property only has an effect when using the Mono runtime, and a warning
+will be shown if it's set when not using the Mono runtime (for instance when
+using CoreCLR).
+
 ## UseNativeHttpHandler
 
 Whether the native http handler should be the default http handler or not.
@@ -1504,6 +1861,21 @@ Applicable to macOS projects.
 Consider using the unified [AppBundleResourcePrefix](#appbundleresourceprefix) property instead.
 
 See also [IPhoneResourcePrefix](#iphoneresourceprefix) and [MonoMacResourcePrefix](#monomacresourceprefix).
+
+## XcodeLocation
+
+Specifies the location of Xcode.
+
+When the build searches for Xcode, it's done in this order:
+
+1. If the `XcodeLocation` property is set, use that. Note that since all environment variables are automatically MSBuild properties as well, it's also possible to set the `XcodeLocation` environment variable for the same effect.
+2. If the `MD_APPLE_SDK_ROOT` environment variable is set, use that.
+3. If either of the files `~/Library/Preferences/maui/Settings.plist` or `~/Library/Preferences/Xamarin/Settings.plist` exist, and has the property list value `AppleSdkRoot`, use that.
+4. Use the system version of Xcode (as determined by executing `xcode-select --print-path`).
+
+> [!WARNING]
+> Support for the `MD_APPLE_SDK_ROOT` environment variable, and the `~/Library/Preferences/maui/Settings.plist` and `~/Library/Preferences/Xamarin/Settings.plist` files, is deprecated and will be removed in the future.
+> Going forward, choose which Xcode to use by either making it the system's version of Xcode (either using `xcode-select --switch ...` on the command line, or in Xcode's settings), or by setting the `XcodeLocation` MSBuild property / environment variable.
 
 ## ZipPath
 

@@ -1,9 +1,5 @@
 parameters:
 
-- name: provisionatorChannel
-  type: string
-  default: 'latest'
-
 - name: runTests
   type: boolean
   default: true
@@ -33,36 +29,6 @@ parameters:
   displayName: macOS test configurations to run
   type: object
   default: [
-    {
-      stageName: 'mac_12_m1',
-      displayName: 'M1 - Mac Monterey (12)',
-      label: 'mac_monterey',
-      macPool: 'VSEng-VSMac-Xamarin-Shared',
-      useImage: false,
-      statusContext: 'M1 - Mac Monterey (12)',
-      demands: [
-        "Agent.OS -equals Darwin",
-        "macOS.Name -equals Monterey",
-        "macOS.Architecture -equals arm64",
-        "Agent.HasDevices -equals False",
-        "Agent.IsPaired -equals False"
-      ]
-    },
-    {
-      stageName: 'mac_13_m1',
-      displayName: 'M1 - Mac Ventura (13)',
-      label: 'mac_ventura',
-      macPool: 'VSEng-VSMac-Xamarin-Shared',
-      useImage: false,
-      statusContext: 'M1 - Mac Ventura (13)',
-      demands: [
-        "Agent.OS -equals Darwin",
-        "macOS.Name -equals Ventura",
-        "macOS.Architecture -equals arm64",
-        "Agent.HasDevices -equals False",
-        "Agent.IsPaired -equals False"
-      ]
-    },
     {
       stageName: 'mac_14_x64',
       displayName: 'X64 - Mac Sonoma (14)',
@@ -122,6 +88,10 @@ parameters:
   default: ''
 
 - name: buildPackages
+  type: boolean
+  default: false
+
+- name: useACES
   type: boolean
   default: false
 
@@ -202,6 +172,7 @@ stages:
         - Agent.OS -equals Darwin
         - Agent.OSVersion -gtVersion $(minimumMacOSVersion)
         - macOS.Name -equals ${{ parameters.macOSName }}
+        - macOS.Architecture -equals arm64  # the pinned Xcode package is Apple silicon only
         - XcodeChannel -equals ${{ parameters.xcodeChannel }}
       steps:
       - template: build/build-pkgs.yml
@@ -234,6 +205,7 @@ stages:
     xqaCertPass: $(xqa--certificates--password)
     condition: ${{ parameters.runTests }}
     postPipeline: ${{ not(parameters.buildPackages) }}
+    useACES: ${{ parameters.useACES }}
 
 - template: ./tests/publish-results.yml
   parameters:
@@ -282,6 +254,7 @@ stages:
       gitHubToken: $(Github.Token)
       xqaCertPass: $(xqa--certificates--password)
       pool: $(PRBuildPool)
+      useACES: ${{ parameters.useACES }}
 
 - ${{ each config in parameters.macTestsConfigurations }}:
   - template: ./mac/stage.yml

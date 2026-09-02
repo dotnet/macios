@@ -35,7 +35,7 @@ namespace MonoTouchFixtures.MetalPerformanceShaders {
 		public void CreateTest ()
 		{
 			var resList = MPSStateResourceList.Create ();
-			Assert.NotNull (resList, "Create");
+			Assert.That (resList, Is.Not.Null, "Create");
 		}
 
 		[Test]
@@ -46,7 +46,7 @@ namespace MonoTouchFixtures.MetalPerformanceShaders {
 				arr [i] = MTLTextureDescriptor.CreateTexture2DDescriptor (MTLPixelFormat.Depth32Float, 50 + i, 50 + i, false);
 
 			var resList = MPSStateResourceList.Create (arr [0], arr [1], arr [2], arr [3], arr [4], arr [5], arr [6], arr [7], arr [8], arr [9]);
-			Assert.NotNull (resList, "resList");
+			Assert.That (resList, Is.Not.Null, "resList");
 
 			var state = new MPSState (device, resList);
 			Assert.That (state.ResourceCount, Is.EqualTo ((nuint) 10), "ResourceCount");
@@ -56,7 +56,7 @@ namespace MonoTouchFixtures.MetalPerformanceShaders {
 		public void SizesCreateTest ()
 		{
 			var resList = MPSStateResourceList.Create (1, 2, 3, 4, 5, 241);
-			Assert.NotNull (resList, "resList");
+			Assert.That (resList, Is.Not.Null, "resList");
 
 			var state = new MPSState (device, resList);
 			Assert.That (state.ResourceCount, Is.EqualTo ((nuint) 6), "ResourceCount");

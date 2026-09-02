@@ -21,12 +21,12 @@ namespace MonoTouchFixtures.CoreAnimation {
 			using (var ec = new CAEmitterCell ()) {
 				// ICAMediaTiming
 				Assert.That (ec.BeginTime, Is.EqualTo (0.0d), "BeginTime");
-				Assert.True (Double.IsInfinity (ec.Duration), "Duration");
+				Assert.That (Double.IsInfinity (ec.Duration), Is.True, "Duration");
 				Assert.That (ec.Speed, Is.EqualTo (1.0f), "Speed");
 				Assert.That (ec.TimeOffset, Is.EqualTo (0.0d), "TimeOffset");
 				Assert.That (ec.RepeatCount, Is.EqualTo (0.0f), "RepeatCount");
 				Assert.That (ec.RepeatDuration, Is.EqualTo (0.0d), "RepeatDuration");
-				Assert.False (ec.AutoReverses, "AutoReverses");
+				Assert.That (ec.AutoReverses, Is.False, "AutoReverses");
 				Assert.That (ec.FillMode, Is.EqualTo ("removed"), "FillMode");
 			}
 		}

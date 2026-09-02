@@ -670,12 +670,19 @@ namespace CoreMidi {
 			return new MidiPort (this, name, false);
 		}
 
+		/// <summary>Raised when the MIDI system's configuration changes, for example when devices are added, removed, or their properties change. The notification is coalesced and sent once after a series of changes.</summary>
 		public event EventHandler? SetupChanged;
+		/// <summary>Raised when an object (such as a device, entity, or endpoint) is added to the MIDI system.</summary>
 		public event EventHandler<ObjectAddedOrRemovedEventArgs>? ObjectAdded;
+		/// <summary>Raised when an object (such as a device, entity, or endpoint) is removed from the MIDI system.</summary>
 		public event EventHandler<ObjectAddedOrRemovedEventArgs>? ObjectRemoved;
+		/// <summary>Raised when a property of an object in the MIDI system changes.</summary>
 		public event EventHandler<ObjectPropertyChangedEventArgs>? PropertyChanged;
+		/// <summary>Raised when a MIDI thru connection in the system is created or destroyed.</summary>
 		public event EventHandler? ThruConnectionsChanged;
+		/// <summary>Raised when the owner of a serial port changes.</summary>
 		public event EventHandler? SerialPortOwnerChanged;
+		/// <summary>Raised when an I/O error occurs on a MIDI driver, for example when a device is disconnected.</summary>
 		public event EventHandler<IOErrorEventArgs>? IOError;
 
 		[UnmanagedCallersOnly]
@@ -1113,6 +1120,8 @@ namespace CoreMidi {
 			base.Dispose (disposing);
 		}
 
+		/// <summary>Raised when MIDI messages are received on this input port from a connected source endpoint.</summary>
+		/// <remarks>The received packets are provided in the event arguments. This event is only raised for input ports that have been connected to a source with <see cref="CoreMidi.MidiPort.ConnectSource(CoreMidi.MidiEndpoint)" />.</remarks>
 		public event EventHandler<MidiPacketsEventArgs>? MessageReceived;
 
 		[UnmanagedCallersOnly]
@@ -1763,8 +1772,8 @@ namespace CoreMidi {
 		}
 
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
 		public ushort UmpActiveGroupBitmap {
 			get {
@@ -1776,8 +1785,8 @@ namespace CoreMidi {
 		}
 
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
 		public bool UmpCanTransmitGroupless {
 			get {
@@ -1839,7 +1848,9 @@ namespace CoreMidi {
 		public int Add (string name, bool embedded, nuint numSourceEndpoints, nuint numDestinationEndpoints, MidiEntity newEntity)
 		{
 			using (NSString nsName = new NSString (name)) {
-				return MIDIDeviceAddEntity (GetCheckedHandle (), nsName.Handle, embedded ? (byte) 1 : (byte) 0, numSourceEndpoints, numDestinationEndpoints, newEntity.Handle);
+				var rv = MIDIDeviceAddEntity (GetCheckedHandle (), nsName.Handle, embedded ? (byte) 1 : (byte) 0, numSourceEndpoints, numDestinationEndpoints, newEntity.Handle);
+				GC.KeepAlive (newEntity);
+				return rv;
 			}
 		}
 
@@ -1995,7 +2006,7 @@ namespace CoreMidi {
 #endif // !XAMCORE_5_0 || __MACOS__
 
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public string? NameConfigurationDictionary {
 			get {
@@ -2542,7 +2553,9 @@ namespace CoreMidi {
 		///         <remarks>To be added.</remarks>
 		public int Add (MidiDevice device)
 		{
-			return MIDIDeviceListAddDevice (GetCheckedHandle (), device.Handle);
+			var rv = MIDIDeviceListAddDevice (GetCheckedHandle (), device.Handle);
+			GC.KeepAlive (device);
+			return rv;
 		}
 
 		internal override void DisposeHandle ()
@@ -2664,6 +2677,8 @@ namespace CoreMidi {
 			base.Dispose (disposing);
 		}
 
+		/// <summary>Raised when MIDI messages are received on this virtual destination endpoint.</summary>
+		/// <remarks>The received packets are provided in the event arguments. This event is raised for endpoints created as virtual destinations that other clients send MIDI to.</remarks>
 		public event EventHandler<MidiPacketsEventArgs>? MessageReceived;
 
 		[UnmanagedCallersOnly]
@@ -2954,8 +2969,8 @@ namespace CoreMidi {
 		}
 
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
 		public ushort UmpActiveGroupBitmap {
 			get {
@@ -2967,8 +2982,8 @@ namespace CoreMidi {
 		}
 
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
 		public bool UmpCanTransmitGroupless {
 			get {

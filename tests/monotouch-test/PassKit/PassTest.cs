@@ -30,18 +30,18 @@ namespace MonoTouchFixtures.PassKit {
 			TestRuntime.AssertXcodeVersion (4, 5);
 
 			using (PKPass pass = new PKPass ()) {
-				Assert.Null (pass.AuthenticationToken, "AuthenticationToken");
+				Assert.That (pass.AuthenticationToken, Is.Null, "AuthenticationToken");
 #if !__MACCATALYST__ // PKPass.Icon doesn't work: https://github.com/xamarin/maccore/issues/2347
-				Assert.NotNull (pass.Icon, "Icon");
+				Assert.That (pass.Icon, Is.Not.Null, "Icon");
 #endif
-				Assert.Null (pass.LocalizedDescription, "LocalizedDescription");
+				Assert.That (pass.LocalizedDescription, Is.Null, "LocalizedDescription");
 				Assert.That (string.IsNullOrEmpty (pass.LocalizedName), Is.False, "LocalizedName");
-				Assert.Null (pass.OrganizationName, "OrganizationName");
-				Assert.Null (pass.PassTypeIdentifier, "PassTypeIdentifier");
-				Assert.Null (pass.PassUrl, "PassUrl");
-				Assert.Null (pass.RelevantDate, "RelevantDate");
-				Assert.Null (pass.SerialNumber, "SerialNumber");
-				Assert.Null (pass.WebServiceUrl, "WebServiceUrl");
+				Assert.That (pass.OrganizationName, Is.Null, "OrganizationName");
+				Assert.That (pass.PassTypeIdentifier, Is.Null, "PassTypeIdentifier");
+				Assert.That (pass.PassUrl, Is.Null, "PassUrl");
+				Assert.That (pass.RelevantDate, Is.Null, "RelevantDate");
+				Assert.That (pass.SerialNumber, Is.Null, "SerialNumber");
+				Assert.That (pass.WebServiceUrl, Is.Null, "WebServiceUrl");
 			}
 		}
 
@@ -51,7 +51,7 @@ namespace MonoTouchFixtures.PassKit {
 			using (NSData data = NSData.FromUrl (url)) {
 				NSError error;
 				PKPass pass = new PKPass (data, out error);
-				Assert.Null (error, "error");
+				Assert.That (error, Is.Null, "error");
 				return pass;
 			}
 		}
@@ -64,7 +64,7 @@ namespace MonoTouchFixtures.PassKit {
 			using (var pass = GetBoardingPass ()) {
 				Assert.That (pass.AuthenticationToken, Is.EqualTo ("vxwxd7J8AlNNFPS8k0a0FfUFtq0ewzFdc"), "AuthenticationToken");
 #if !__MACCATALYST__ // PKPass.Icon doesn't work: https://github.com/xamarin/maccore/issues/2347
-				Assert.NotNull (pass.Icon, "Icon");
+				Assert.That (pass.Icon, Is.Not.Null, "Icon");
 #endif
 
 				Assert.That (pass.LocalizedDescription, Is.Not.Null, "LocalizedDescription is not null");
@@ -76,7 +76,7 @@ namespace MonoTouchFixtures.PassKit {
 				if (TestRuntime.CheckXcodeVersion (5, 0))
 					Assert.That (pass.PassUrl.AbsoluteString, Is.EqualTo ("shoebox://card/1UuiGnfwxHgd0G0bIuPYPNpeRX8="), "PassUrl");
 				else
-					Assert.Null (pass.PassUrl, "PassUrl");
+					Assert.That (pass.PassUrl, Is.Null, "PassUrl");
 				Assert.That (pass.RelevantDate.SecondsSinceReferenceDate, Is.EqualTo (364688700), "RelevantDate");
 				Assert.That (pass.SerialNumber, Is.EqualTo ("gT6zrHkaW"), "SerialNumber");
 				Assert.That (pass.WebServiceUrl.AbsoluteString, Is.EqualTo ("https://example.com/passes/"), "WebServiceUrl");

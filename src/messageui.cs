@@ -250,7 +250,7 @@ namespace MessageUI {
 		[Export ("addAttachmentData:typeIdentifier:filename:")]
 		bool AddAttachment (NSData attachmentData, string uti, string filename);
 
-		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
+		[iOS (16, 0), MacCatalyst (16, 0), NoTV]
 		[Export ("insertCollaborationItemProvider:")]
 		bool InsertCollaboration (NSItemProvider itemProvider);
 

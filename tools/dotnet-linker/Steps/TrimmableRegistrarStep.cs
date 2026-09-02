@@ -136,9 +136,21 @@ namespace Xamarin.Linker {
 			// We write the assembly here even if it hasn't changed, because otherwise we'll just end up re-creating
 			// it again during the next incremental build.
 			if (!useEntryAssemblyAsRootTypeMapAssembly) {
-				rootTypeMapAssembly.Write (createdRootTypeMapAssemblyPath);
+				WriteDeterministically (rootTypeMapAssembly, createdRootTypeMapAssemblyPath);
 			}
 			return rootTypeMapAssembly;
+		}
+
+		// Writes the assembly to disk with a deterministic module version id (MVID) and timestamp.
+		// The MVIDs of the typemap assemblies end up in the generated registrar code, so if we let Cecil
+		// compute a new random MVID every time, the registrar code would change on every build, and we'd
+		// have to recompile (and relink) it every time.
+		static void WriteDeterministically (AssemblyDefinition assembly, string path)
+		{
+			assembly.Write (path, new WriterParameters {
+				DeterministicMvid = true,
+				Timestamp = 0,
+			});
 		}
 
 		MethodReference CreateMethodReference (MethodReference methodReference, params TypeReference [] declaringTypeGenericArguments)
@@ -720,7 +732,7 @@ namespace Xamarin.Linker {
 
 				// We write the assembly here even if it hasn't changed, because otherwise we'll just end up re-creating
 				// it again during the next incremental build.
-				typeMapAssembly.Write (typeMapAssemblyPath);
+				WriteDeterministically (typeMapAssembly, typeMapAssemblyPath);
 			}
 
 			foreach (var kvp in postActionsByAssembly) {

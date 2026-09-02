@@ -577,7 +577,7 @@ namespace CoreImage {
 
 #if !XAMCORE_5_0
 		[Obsolete ("Use 'CIContextOptions.MemoryLimit' instead.")]
-		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Field ("kCIContextMemoryLimit")]
 		NSString MemoryLimit { get; }
 #endif // !XAMCORE_5_0
@@ -620,25 +620,21 @@ namespace CoreImage {
 		[Export ("workingFormat")]
 		CIFormat WorkingFormat { get; }
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("contextWithMTLCommandQueue:")]
 		CIContext Create (IMTLCommandQueue commandQueue);
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("contextWithMTLCommandQueue:options:")]
 		CIContext Create (IMTLCommandQueue commandQueue, [NullAllowed] NSDictionary<NSString, NSObject> options);
 
-		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Export ("writeOpenEXRRepresentationOfImage:toURL:options:error:")]
 		bool WriteOpenExrRepresentation (CIImage image, NSUrl url, NSDictionary<NSString, NSObject> options, [NullAllowed] out NSError errorPtr);
 
-		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Export ("OpenEXRRepresentationOfImage:options:error:")]
 		[return: NullAllowed]
 		NSData GetOpenEXRRepresentation (CIImage image, NSDictionary<NSString, NSObject> options, [NullAllowed] out NSError errorPtr);
@@ -702,8 +698,6 @@ namespace CoreImage {
 		[Field ("kCIContextPriorityRequestLow", "+CoreImage")]
 		NSString PriorityRequestLow { get; }
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("kCIContextAllowLowPower")]
 		NSString AllowLowPower { get; }
@@ -714,7 +708,7 @@ namespace CoreImage {
 		[Field ("kCIContextName")]
 		NSString Name { get; }
 
-		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Field ("kCIContextMemoryLimit")]
 		NSString MemoryLimit { get; }
 
@@ -770,13 +764,13 @@ namespace CoreImage {
 		/// <summary>Gets or sets whether to request low priority from the GPU.</summary>
 		bool PriorityRequestLow { get; set; }
 
-		[iOS (13, 0), TV (13, 0), MacCatalyst (13, 1)]
+		[MacCatalyst (13, 1)]
 		bool AllowLowPower { get; set; }
 
 		[iOS (14, 0), TV (14, 0), MacCatalyst (14, 0)]
 		string Name { get; set; }
 
-		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Field ("kCIContextMemoryLimit")]
 		NSString MemoryLimit { get; }
 
@@ -1053,8 +1047,6 @@ namespace CoreImage {
 		[return: NullAllowed]
 		CIFilter GetDepthBlurEffectFilter (CIImage image, CIImage disparityImage, [NullAllowed] CIImage portraitEffectsMatte, CGImagePropertyOrientation orientation, [NullAllowed] NSDictionary options);
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("depthBlurEffectFilterForImage:disparityImage:portraitEffectsMatte:hairSemanticSegmentation:orientation:options:")]
 		[return: NullAllowed]
@@ -1347,22 +1339,22 @@ namespace CoreImage {
 		[Wrap ("CreateRawFilter (pixelBuffer, properties, options.GetDictionary ()!)")]
 		CIFilter CreateRawFilter (CVPixelBuffer pixelBuffer, NSDictionary properties, CIRawFilterOptions options);
 
-		[iOS (17, 0), Mac (14, 0), MacCatalyst (17, 0), TV (17, 0)]
+		[iOS (17, 0), MacCatalyst (17, 0), TV (17, 0)]
 		[Static]
 		[Export ("blurredRectangleGeneratorFilter")]
 		CIBlurredRectangleGenerator BlurredRectangleGeneratorFilter { get; }
 
-		[iOS (17, 0), Mac (14, 0), MacCatalyst (17, 0), TV (17, 0)]
+		[iOS (17, 0), MacCatalyst (17, 0), TV (17, 0)]
 		[Static]
 		[Export ("cannyEdgeDetectorFilter")]
 		CICannyEdgeDetector CannyEdgeDetectorFilter { get; }
 
-		[iOS (17, 0), Mac (14, 0), MacCatalyst (17, 0), TV (17, 0)]
+		[iOS (17, 0), MacCatalyst (17, 0), TV (17, 0)]
 		[Static]
 		[Export ("roundedRectangleStrokeGeneratorFilter")]
 		CIRoundedRectangleStrokeGenerator RoundedRectangleStrokeGeneratorFilter { get; }
 
-		[iOS (17, 0), Mac (14, 0), MacCatalyst (17, 0), TV (17, 0)]
+		[iOS (17, 0), MacCatalyst (17, 0), TV (17, 0)]
 		[Static]
 		[Export ("sobelGradientsFilter")]
 		CISobelGradients SobelGradientsFilter { get; }
@@ -1671,8 +1663,6 @@ namespace CoreImage {
 		[Field ("kCIInputLinearSpaceFilter")]
 		NSString LinearSpaceFilterKey { get; }
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("kCIInputEnableEDRModeKey")]
 		NSString EnableEdrModeKey { get; }
@@ -2876,18 +2866,12 @@ namespace CoreImage {
 		[MacCatalyst (13, 1)]
 		bool AuxiliaryPortraitEffectsMatte { get; set; }
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		bool AuxiliarySemanticSegmentationSkinMatte { get; set; }
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		bool AuxiliarySemanticSegmentationHairMatte { get; set; }
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		bool AuxiliarySemanticSegmentationTeethMatte { get; set; }
 
@@ -2904,10 +2888,10 @@ namespace CoreImage {
 		[MacCatalyst (14, 1)]
 		bool ToneMapHdrToSdr { get; set; }
 
-		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		bool CacheImmediately { get; }
 
-		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		bool ExpandToHdr { get; }
 
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
@@ -2949,20 +2933,14 @@ namespace CoreImage {
 		[Field ("kCIImageAuxiliaryPortraitEffectsMatte")]
 		NSString AuxiliaryPortraitEffectsMatteKey { get; }
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("kCIImageAuxiliarySemanticSegmentationSkinMatte")]
 		NSString AuxiliarySemanticSegmentationSkinMatteKey { get; }
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("kCIImageAuxiliarySemanticSegmentationHairMatte")]
 		NSString AuxiliarySemanticSegmentationHairMatteKey { get; }
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("kCIImageAuxiliarySemanticSegmentationTeethMatte")]
 		NSString AuxiliarySemanticSegmentationTeethMatteKey { get; }
@@ -2988,11 +2966,11 @@ namespace CoreImage {
 		[Field ("kCIImageToneMapHDRtoSDR")]
 		NSString ToneMapHdrToSdrKey { get; }
 
-		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Field ("kCIImageCacheImmediately")]
 		NSString CacheImmediatelyKey { get; }
 
-		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Field ("kCIImageExpandToHDR")]
 		NSString ExpandToHdrKey { get; }
 
@@ -3043,16 +3021,12 @@ namespace CoreImage {
 		[Wrap ("FromCGImage (image, options.GetDictionary ())")]
 		CIImage FromCGImage (CGImage image, [NullAllowed] CIImageInitializationOptionsWithMetadata options);
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Static]
 		[Export ("imageWithCGImageSource:index:options:")]
 		CIImage FromCGImageSource (CGImageSource source, nuint index, [NullAllowed] NSDictionary options);
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("FromCGImageSource (source, index, options.GetDictionary ())")]
@@ -3327,15 +3301,11 @@ namespace CoreImage {
 		[Wrap ("this (image, options.GetDictionary ())")]
 		NativeHandle Constructor (CGImage image, [NullAllowed] CIImageInitializationOptionsWithMetadata options);
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Export ("initWithCGImageSource:index:options:")]
 		NativeHandle Constructor (CGImageSource source, nuint index, [NullAllowed] NSDictionary options);
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Wrap ("this (source, index, options.GetDictionary ())")]
 		NativeHandle Constructor (CGImageSource source, nuint index, CIImageInitializationOptionsWithMetadata options);
@@ -3586,8 +3556,6 @@ namespace CoreImage {
 		[Export ("imageByApplyingTransform:")]
 		CIImage ImageByApplyingTransform (CGAffineTransform matrix);
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("imageByApplyingTransform:highQualityDownsample:")]
 		CIImage ImageByApplyingTransform (CGAffineTransform matrix, bool highQualityDownsample);
@@ -3846,22 +3814,22 @@ namespace CoreImage {
 		[Obsolete ("Use 'CIFormat.LAf.GetConstant ()' instead.")]
 		int FormatLAf { get; }
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Field ("kCIFormatRGB10")]
 		[Obsolete ("Use 'CIFormat.Rgb10.GetConstant ()' instead.")]
 		int FormatRgb10 { get; }
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Field ("kCIFormatRGBX16")]
 		[Obsolete ("Use 'CIFormat.RgbX16.GetConstant ()' instead.")]
 		int FormatRgbX16 { get; }
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Field ("kCIFormatRGBXf")]
 		[Obsolete ("Use 'CIFormat.RgbXf.GetConstant ()' instead.")]
 		int FormatRgbXf { get; }
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Field ("kCIFormatRGBXh")]
 		[Obsolete ("Use 'CIFormat.RgbXh.GetConstant ()' instead.")]
 		int FormatRgbXh { get; }
@@ -4231,29 +4199,24 @@ namespace CoreImage {
 
 		// CIImage_AVSemanticSegmentationMatte
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("semanticSegmentationMatte")]
 		AVSemanticSegmentationMatte SemanticSegmentationMatte { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("initWithSemanticSegmentationMatte:options:")]
 		NativeHandle Constructor (AVSemanticSegmentationMatte matte, [NullAllowed] NSDictionary options);
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("initWithSemanticSegmentationMatte:")]
 		NativeHandle Constructor (AVSemanticSegmentationMatte matte);
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("imageWithSemanticSegmentationMatte:options:")]
 		[return: NullAllowed]
 		CIImage FromSemanticSegmentationMatte (AVSemanticSegmentationMatte matte, [NullAllowed] NSDictionary options);
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("imageWithSemanticSegmentationMatte:")]
@@ -4300,81 +4263,61 @@ namespace CoreImage {
 
 		// colors
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("blackImage", ArgumentSemantic.Strong)]
 		CIImage BlackImage { get; }
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("whiteImage", ArgumentSemantic.Strong)]
 		CIImage WhiteImage { get; }
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("grayImage", ArgumentSemantic.Strong)]
 		CIImage GrayImage { get; }
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("redImage", ArgumentSemantic.Strong)]
 		CIImage RedImage { get; }
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("greenImage", ArgumentSemantic.Strong)]
 		CIImage GreenImage { get; }
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("blueImage", ArgumentSemantic.Strong)]
 		CIImage BlueImage { get; }
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("cyanImage", ArgumentSemantic.Strong)]
 		CIImage CyanImage { get; }
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("magentaImage", ArgumentSemantic.Strong)]
 		CIImage MagentaImage { get; }
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("yellowImage", ArgumentSemantic.Strong)]
 		CIImage YellowImage { get; }
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("clearImage", ArgumentSemantic.Strong)]
 		CIImage ClearImage { get; }
 
-		[iOS (16, 0), TV (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Export ("imageByConvertingWorkingSpaceToLab")]
 		CIImage ConvertWorkingSpaceToLab ();
 
-		[iOS (16, 0), TV (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Export ("imageByConvertingLabToWorkingSpace")]
 		CIImage ConvertLabToWorkingSpace ();
 
@@ -4567,22 +4510,22 @@ namespace CoreImage {
 		LAf = 30,
 
 		/// <summary>Represents the value associated with the constant kCIFormatRGB10.</summary>
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Field ("kCIFormatRGB10")]
 		Rgb10 = 31,
 
 		/// <summary>Represents the value associated with the constant kCIFormatRGBX16.</summary>
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Field ("kCIFormatRGBX16")]
 		RgbX16 = 32,
 
 		/// <summary>Represents the value associated with the constant kCIFormatRGBXf.</summary>
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Field ("kCIFormatRGBXf")]
 		RgbXf = 33,
 
 		/// <summary>Represents the value associated with the constant kCIFormatRGBXh.</summary>
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Field ("kCIFormatRGBXh")]
 		RgbXh = 34,
 
@@ -4647,21 +4590,21 @@ namespace CoreImage {
 #if XAMCORE_5_0
 		[Abstract]
 #endif
-		[iOS (16, 0), TV (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Export ("digest")]
 		ulong Digest { get; }
 
 #if XAMCORE_5_0
 		[Abstract]
 #endif
-		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Export ("roiTileCount")]
 		nuint RoiTileCount { get; }
 
 #if XAMCORE_5_0
 		[Abstract]
 #endif
-		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Export ("roiTileIndex")]
 		nuint RoiTileIndex { get; }
 	}
@@ -4729,7 +4672,7 @@ namespace CoreImage {
 #if XAMCORE_5_0
 		[Abstract]
 #endif
-		[iOS (16, 0), TV (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Export ("digest")]
 		ulong Digest { get; }
 	}
@@ -5828,7 +5771,7 @@ namespace CoreImage {
 		[Export ("outputIsOpaque")]
 		bool OutputIsOpaque { get; }
 
-		[iOS (17, 0), MacCatalyst (17, 0), TV (17, 0), Mac (14, 0)]
+		[iOS (17, 0), MacCatalyst (17, 0), TV (17, 0)]
 		[Static]
 		[Export ("roiTileArrayForInput:arguments:outputRect:")]
 		CIVector [] GetRoiTileArray (int input, [NullAllowed] NSDictionary<NSString, NSObject> arguments, CGRect outputRect);
@@ -8557,8 +8500,6 @@ namespace CoreImage {
 		[return: NullAllowed]
 		CIImage Apply (CIImage foreground, CIImage background);
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("applyWithForeground:background:colorSpace:")]
 		[return: NullAllowed]
@@ -8996,7 +8937,7 @@ namespace CoreImage {
 		[Export ("pixelsProcessed")]
 		nint PixelsProcessed { get; }
 
-		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Export ("kernelCompileTime")]
 		double KernelCompileTime { get; }
 	}
@@ -9102,26 +9043,18 @@ namespace CoreImage {
 		[Field ("kCIImageRepresentationPortraitEffectsMatteImage")]
 		NSString PortraitEffectsMatteImageKey { get; }
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("kCIImageRepresentationAVSemanticSegmentationMattes")]
 		NSString SemanticSegmentationMattesKey { get; }
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("kCIImageRepresentationSemanticSegmentationSkinMatteImage")]
 		NSString SemanticSegmentationSkinMatteImageKey { get; }
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("kCIImageRepresentationSemanticSegmentationHairMatteImage")]
 		NSString SemanticSegmentationHairMatteImageKey { get; }
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("kCIImageRepresentationSemanticSegmentationTeethMatteImage")]
 		NSString SemanticSegmentationTeethMatteImageKey { get; }
@@ -9174,23 +9107,15 @@ namespace CoreImage {
 		[MacCatalyst (13, 1)]
 		AVPortraitEffectsMatte AVPortraitEffectsMatte { get; set; }
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		AVSemanticSegmentationMatte [] SemanticSegmentationMattes { get; set; }
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		CIImage SemanticSegmentationSkinMatteImage { get; set; }
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		CIImage SemanticSegmentationHairMatteImage { get; set; }
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		CIImage SemanticSegmentationTeethMatteImage { get; set; }
 
@@ -9342,8 +9267,6 @@ namespace CoreImage {
 	}
 
 	[CoreImageFilter]
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFilter))]
 	interface CIDocumentEnhancer : CIDocumentEnhancerProtocol {
@@ -9373,16 +9296,12 @@ namespace CoreImage {
 	}
 
 	[CoreImageFilter]
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIReductionFilter))]
 	interface CIKMeans : CIKMeansProtocol {
 	}
 
 	[CoreImageFilter]
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFilter))]
 	[Abstract]
@@ -9395,40 +9314,30 @@ namespace CoreImage {
 	}
 
 	[CoreImageFilter]
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIMorphologyRectangle))]
 	interface CIMorphologyRectangleMaximum : CIMorphologyRectangleMaximumProtocol {
 	}
 
 	[CoreImageFilter]
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIMorphologyRectangle))]
 	interface CIMorphologyRectangleMinimum : CIMorphologyRectangleMinimumProtocol {
 	}
 
 	[CoreImageFilter]
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFilter))]
 	interface CIPaletteCentroid : CIPaletteCentroidProtocol {
 	}
 
 	[CoreImageFilter]
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFilter))]
 	interface CIPalettize : CIPalettizeProtocol {
 	}
 
 	[CoreImageFilter]
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFilter))]
 	[Abstract]
@@ -9451,8 +9360,6 @@ namespace CoreImage {
 	}
 
 	[CoreImageFilter]
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIKeystoneCorrection))]
 	interface CIKeystoneCorrectionCombined : CIKeystoneCorrectionCombinedProtocol {
@@ -9463,8 +9370,6 @@ namespace CoreImage {
 	}
 
 	[CoreImageFilter]
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIKeystoneCorrection))]
 	interface CIKeystoneCorrectionHorizontal : CIKeystoneCorrectionHorizontalProtocol {
@@ -9475,8 +9380,6 @@ namespace CoreImage {
 	}
 
 	[CoreImageFilter]
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIKeystoneCorrection))]
 	interface CIKeystoneCorrectionVertical : CIKeystoneCorrectionVerticalProtocol {
@@ -9487,8 +9390,6 @@ namespace CoreImage {
 	}
 
 	[CoreImageFilter]
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFilter))]
 	interface CIPerspectiveRotate : CIPerspectiveRotateProtocol {
@@ -9499,16 +9400,12 @@ namespace CoreImage {
 	}
 
 	[CoreImageFilter]
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFilter))]
 	interface CIGaborGradients : CIGaborGradientsProtocol {
 	}
 
 	[CoreImageFilter]
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFilter))]
 	interface CIRoundedRectangleGenerator : CIRoundedRectangleGeneratorProtocol {
@@ -9516,8 +9413,6 @@ namespace CoreImage {
 
 	#region Protocols
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIFilter")]
 	// CIFilter already exists so we're using the Swift name
@@ -9533,8 +9428,6 @@ namespace CoreImage {
 		NSDictionary<NSString, NSObject> CustomAttributes { get; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CITransitionFilter")]
 	interface CITransitionFilterProtocol : CIFilterProtocol {
@@ -9559,8 +9452,6 @@ namespace CoreImage {
 		float Time { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIAccordionFoldTransition")]
 	interface CIAccordionFoldTransitionProtocol : CITransitionFilterProtocol {
@@ -9586,8 +9477,6 @@ namespace CoreImage {
 		float FoldShadowAmount { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIAffineClamp")]
 	interface CIAffineClampProtocol : CIFilterProtocol {
@@ -9602,8 +9491,6 @@ namespace CoreImage {
 		CGAffineTransform Transform { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIAffineTile")]
 	interface CIAffineTileProtocol : CIFilterProtocol {
@@ -9618,8 +9505,6 @@ namespace CoreImage {
 		CGAffineTransform Transform { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIAttributedTextImageGenerator")]
 	interface CIAttributedTextImageGeneratorProtocol : CIFilterProtocol {
@@ -9635,13 +9520,11 @@ namespace CoreImage {
 #if XAMCORE_5_0
 		[Abstract]
 #endif
-		[iOS (16, 0), TV (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Export ("padding")]
 		float Padding { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIAztecCodeGenerator")]
 	interface CIAztecCodeGeneratorProtocol : CIFilterProtocol {
@@ -9668,8 +9551,6 @@ namespace CoreImage {
 		float InputCompactStyle { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIBarcodeGenerator")]
 	interface CIBarcodeGeneratorProtocol : CIFilterProtocol {
@@ -9679,8 +9560,6 @@ namespace CoreImage {
 		CIBarcodeDescriptor BarcodeDescriptor { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIBarsSwipeTransition")]
 	interface CIBarsSwipeTransitionProtocol : CITransitionFilterProtocol {
@@ -9698,8 +9577,6 @@ namespace CoreImage {
 		float BarOffset { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIBicubicScaleTransform")]
 	interface CIBicubicScaleTransformProtocol : CIFilterProtocol {
@@ -9728,8 +9605,6 @@ namespace CoreImage {
 		float ParameterC { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIBlendWithMask")]
 	interface CIBlendWithMaskProtocol : CIFilterProtocol {
@@ -9749,8 +9624,6 @@ namespace CoreImage {
 		CIImage MaskImage { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIBloom")]
 	interface CIBloomProtocol : CIFilterProtocol {
@@ -9775,8 +9648,6 @@ namespace CoreImage {
 		float Intensity { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIBokehBlur")]
 	interface CIBokehBlurProtocol : CIFilterProtocol {
@@ -9803,8 +9674,6 @@ namespace CoreImage {
 		float Softness { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIBoxBlur")]
 	interface CIBoxBlurProtocol : CIFilterProtocol {
@@ -9822,8 +9691,6 @@ namespace CoreImage {
 		float Radius { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CICheckerboardGenerator")]
 	interface CICheckerboardGeneratorProtocol : CIFilterProtocol {
@@ -9862,8 +9729,6 @@ namespace CoreImage {
 		float Sharpness { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CICircularScreen")]
 	interface CICircularScreenProtocol : CIFilterProtocol {
@@ -9886,8 +9751,6 @@ namespace CoreImage {
 		float Sharpness { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CICMYKHalftone")]
 	interface CICmykHalftoneProtocol : CIFilterProtocol {
@@ -9924,8 +9787,6 @@ namespace CoreImage {
 		float UnderColorRemoval { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CICode128BarcodeGenerator")]
 	interface CICode128BarcodeGeneratorProtocol : CIFilterProtocol {
@@ -9944,16 +9805,12 @@ namespace CoreImage {
 		// The availability attributes here look redundant because they're already on the type,
 		// but it makes a difference when this member is inlined into another type, in which case
 		// these attributes are copied as well (while the type's attributes aren't).
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("barcodeHeight")]
 		float BarcodeHeight { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIColorClamp")]
 	interface CIColorClampProtocol : CIFilterProtocol {
@@ -9974,8 +9831,6 @@ namespace CoreImage {
 		CIVector MaxComponents { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIColorControls")]
 	interface CIColorControlsProtocol : CIFilterProtocol {
@@ -10007,8 +9862,6 @@ namespace CoreImage {
 		float Contrast { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIColorCrossPolynomial")]
 	interface CIColorCrossPolynomialProtocol : CIFilterProtocol {
@@ -10040,8 +9893,6 @@ namespace CoreImage {
 		CIVector BlueCoefficients { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIColorCube")]
 	interface CIColorCubeProtocol : CIFilterProtocol {
@@ -10068,13 +9919,11 @@ namespace CoreImage {
 #if XAMCORE_5_0
 		[Abstract]
 #endif
-		[iOS (16, 0), TV (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Export ("extrapolate")]
 		bool Extrapolate { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIColorCubesMixedWithMask")]
 	interface CIColorCubesMixedWithMaskProtocol : CIFilterProtocol {
@@ -10107,13 +9956,11 @@ namespace CoreImage {
 #if XAMCORE_5_0
 		[Abstract]
 #endif
-		[iOS (16, 0), TV (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Export ("extrapolate")]
 		bool Extrapolate { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIColorCubeWithColorSpace")]
 	interface CIColorCubeWithColorSpaceProtocol : CIFilterProtocol {
@@ -10141,13 +9988,11 @@ namespace CoreImage {
 #if XAMCORE_5_0
 		[Abstract]
 #endif
-		[iOS (16, 0), TV (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Export ("extrapolate")]
 		bool Extrapolate { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIColorCurves")]
 	interface CIColorCurvesProtocol : CIFilterProtocol {
@@ -10170,8 +10015,6 @@ namespace CoreImage {
 		CGColorSpace ColorSpace { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIColorInvert")]
 	interface CIColorInvertProtocol : CIFilterProtocol {
@@ -10182,8 +10025,6 @@ namespace CoreImage {
 		CIImage InputImage { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIColorMap")]
 	interface CIColorMapProtocol : CIFilterProtocol {
@@ -10201,8 +10042,6 @@ namespace CoreImage {
 		CIImage GradientImage { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIColorMatrix")]
 	interface CIColorMatrixProtocol : CIFilterProtocol {
@@ -10248,8 +10087,6 @@ namespace CoreImage {
 		CIVector BiasVector { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIColorMonochrome")]
 	interface CIColorMonochromeProtocol : CIFilterProtocol {
@@ -10274,8 +10111,6 @@ namespace CoreImage {
 		float Intensity { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIColorPolynomial")]
 	interface CIColorPolynomialProtocol : CIFilterProtocol {
@@ -10305,8 +10140,6 @@ namespace CoreImage {
 		CIVector AlphaCoefficients { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIColorPosterize")]
 	interface CIColorPosterizeProtocol : CIFilterProtocol {
@@ -10324,8 +10157,6 @@ namespace CoreImage {
 		float Levels { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIComicEffect")]
 	interface CIComicEffectProtocol : CIFilterProtocol {
@@ -10336,8 +10167,6 @@ namespace CoreImage {
 		CIImage InputImage { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CICompositeOperation")]
 	interface CICompositeOperationProtocol : CIFilterProtocol {
@@ -10352,8 +10181,6 @@ namespace CoreImage {
 		CIImage BackgroundImage { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIConvolution")]
 	interface CIConvolutionProtocol : CIFilterProtocol {
@@ -10372,8 +10199,6 @@ namespace CoreImage {
 		float Bias { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CICopyMachineTransition")]
 	interface CICopyMachineTransitionProtocol : CIFilterProtocol {
@@ -10399,8 +10224,6 @@ namespace CoreImage {
 		float Opacity { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CICoreMLModel")]
 	interface CICoreMLModelProtocol : CIFilterProtocol {
@@ -10423,8 +10246,6 @@ namespace CoreImage {
 		bool SoftmaxNormalization { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CICrystallize")]
 	interface CICrystallizeProtocol : CIFilterProtocol {
@@ -10447,8 +10268,6 @@ namespace CoreImage {
 		CGPoint InputCenter { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIDepthOfField")]
 	interface CIDepthOfFieldProtocol : CIFilterProtocol {
@@ -10497,8 +10316,6 @@ namespace CoreImage {
 		float Radius { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIDepthToDisparity")]
 	interface CIDepthToDisparityProtocol : CIFilterProtocol {
@@ -10509,8 +10326,6 @@ namespace CoreImage {
 		CIImage InputImage { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIDiscBlur")]
 	interface CIDiscBlurProtocol : CIFilterProtocol {
@@ -10528,8 +10343,6 @@ namespace CoreImage {
 		float Radius { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIDisintegrateWithMaskTransition")]
 	interface CIDisintegrateWithMaskTransitionProtocol : CIFilterProtocol {
@@ -10559,8 +10372,6 @@ namespace CoreImage {
 		CGPoint InputShadowOffset { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIDisparityToDepth")]
 	interface CIDisparityToDepthProtocol : CIFilterProtocol {
@@ -10571,15 +10382,11 @@ namespace CoreImage {
 		CIImage InputImage { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIDissolveTransition")]
 	interface CIDissolveTransitionProtocol : CIFilterProtocol {
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIDither")]
 	interface CIDitherProtocol : CIFilterProtocol {
@@ -10594,8 +10401,6 @@ namespace CoreImage {
 		float Intensity { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIDocumentEnhancer")]
 	interface CIDocumentEnhancerProtocol : CIFilterProtocol {
@@ -10610,8 +10415,6 @@ namespace CoreImage {
 		float Amount { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIDotScreen")]
 	interface CIDotScreenProtocol : CIFilterProtocol {
@@ -10641,8 +10444,6 @@ namespace CoreImage {
 		float Sharpness { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIEdgePreserveUpsample")]
 	interface CIEdgePreserveUpsampleProtocol : CIFilterProtocol {
@@ -10665,8 +10466,6 @@ namespace CoreImage {
 		float LumaSigma { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIEdges")]
 	interface CIEdgesProtocol : CIFilterProtocol {
@@ -10684,8 +10483,6 @@ namespace CoreImage {
 		float Intensity { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIEdgeWork")]
 	interface CIEdgeWorkProtocol : CIFilterProtocol {
@@ -10703,8 +10500,6 @@ namespace CoreImage {
 		float Radius { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIEightfoldReflectedTile")]
 	interface CIEightfoldReflectedTileProtocol : CIFilterProtocol {
@@ -10727,8 +10522,6 @@ namespace CoreImage {
 		float Width { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIExposureAdjust")]
 	interface CIExposureAdjustProtocol : CIFilterProtocol {
@@ -10746,8 +10539,6 @@ namespace CoreImage {
 		float EV { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIFalseColor")]
 	interface CIFalseColorProtocol : CIFilterProtocol {
@@ -10772,8 +10563,6 @@ namespace CoreImage {
 		CIColor Color1 { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIFlashTransition")]
 	interface CIFlashTransitionProtocol : CITransitionFilterProtocol {
@@ -10820,8 +10609,6 @@ namespace CoreImage {
 		float FadeThreshold { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIFourCoordinateGeometryFilter")]
 	interface CIFourCoordinateGeometryFilterProtocol : CIFilterProtocol {
@@ -10848,8 +10635,6 @@ namespace CoreImage {
 		CGPoint InputBottomLeft { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIFourfoldReflectedTile")]
 	interface CIFourfoldReflectedTileProtocol : CIFilterProtocol {
@@ -10879,8 +10664,6 @@ namespace CoreImage {
 		float AcuteAngle { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIFourfoldRotatedTile")]
 	interface CIFourfoldRotatedTileProtocol : CIFilterProtocol {
@@ -10903,8 +10686,6 @@ namespace CoreImage {
 		float Width { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIFourfoldTranslatedTile")]
 	interface CIFourfoldTranslatedTileProtocol : CIFilterProtocol {
@@ -10934,8 +10715,6 @@ namespace CoreImage {
 		float AcuteAngle { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIGaborGradients")]
 	interface CIGaborGradientsProtocol : CIFilterProtocol {
@@ -10946,8 +10725,6 @@ namespace CoreImage {
 		CIImage InputImage { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIGammaAdjust")]
 	interface CIGammaAdjustProtocol : CIFilterProtocol {
@@ -10965,8 +10742,6 @@ namespace CoreImage {
 		float Power { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIGaussianBlur")]
 	interface CIGaussianBlurProtocol : CIFilterProtocol {
@@ -10984,8 +10759,6 @@ namespace CoreImage {
 		float Radius { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIGaussianGradient")]
 	interface CIGaussianGradientProtocol : CIFilterProtocol {
@@ -11017,8 +10790,6 @@ namespace CoreImage {
 		float Radius { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIGlideReflectedTile")]
 	interface CIGlideReflectedTileProtocol : CIFilterProtocol {
@@ -11041,8 +10812,6 @@ namespace CoreImage {
 		float Width { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIGloom")]
 	interface CIGloomProtocol : CIFilterProtocol {
@@ -11067,8 +10836,6 @@ namespace CoreImage {
 		float Intensity { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIHatchedScreen")]
 	interface CIHatchedScreenProtocol : CIFilterProtocol {
@@ -11098,8 +10865,6 @@ namespace CoreImage {
 		float Sharpness { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIHeightFieldFromMask")]
 	interface CIHeightFieldFromMaskProtocol : CIFilterProtocol {
@@ -11117,8 +10882,6 @@ namespace CoreImage {
 		float Radius { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIHexagonalPixellate")]
 	interface CIHexagonalPixellateProtocol : CIFilterProtocol {
@@ -11141,8 +10904,6 @@ namespace CoreImage {
 		float Scale { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIHighlightShadowAdjust")]
 	interface CIHighlightShadowAdjustProtocol : CIFilterProtocol {
@@ -11174,8 +10935,6 @@ namespace CoreImage {
 		float HighlightAmount { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIHueAdjust")]
 	interface CIHueAdjustProtocol : CIFilterProtocol {
@@ -11193,8 +10952,6 @@ namespace CoreImage {
 		float Angle { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIHueSaturationValueGradient")]
 	interface CIHueSaturationValueGradientProtocol : CIFilterProtocol {
@@ -11223,8 +10980,6 @@ namespace CoreImage {
 		CGColorSpace ColorSpace { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIKaleidoscope")]
 	interface CIKaleidoscopeProtocol : CIFilterProtocol {
@@ -11252,8 +11007,6 @@ namespace CoreImage {
 		float Angle { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIKeystoneCorrectionCombined")]
 	interface CIKeystoneCorrectionCombinedProtocol : CIFourCoordinateGeometryFilterProtocol {
@@ -11263,8 +11016,6 @@ namespace CoreImage {
 		float FocalLength { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIKeystoneCorrectionHorizontal")]
 	interface CIKeystoneCorrectionHorizontalProtocol : CIFourCoordinateGeometryFilterProtocol {
@@ -11274,8 +11025,6 @@ namespace CoreImage {
 		float FocalLength { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIKeystoneCorrectionVertical")]
 	interface CIKeystoneCorrectionVerticalProtocol : CIFourCoordinateGeometryFilterProtocol {
@@ -11285,8 +11034,6 @@ namespace CoreImage {
 		float FocalLength { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CILabDeltaE")]
 	interface CILabDeltaEProtocol : CIFilterProtocol {
@@ -11301,8 +11048,6 @@ namespace CoreImage {
 		CIImage Image2 { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CILanczosScaleTransform")]
 	interface CILanczosScaleTransformProtocol : CIFilterProtocol {
@@ -11327,8 +11072,6 @@ namespace CoreImage {
 		float AspectRatio { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CILenticularHaloGenerator")]
 	interface CILenticularHaloGeneratorProtocol : CIFilterProtocol {
@@ -11388,8 +11131,6 @@ namespace CoreImage {
 		float Time { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CILinearGradient")]
 	interface CILinearGradientProtocol : CIFilterProtocol {
@@ -11419,8 +11160,6 @@ namespace CoreImage {
 		CIColor Color1 { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CILinearToSRGBToneCurve")]
 	interface CILinearToSrgbToneCurveProtocol : CIFilterProtocol {
@@ -11431,8 +11170,6 @@ namespace CoreImage {
 		CIImage InputImage { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CILineOverlay")]
 	interface CILineOverlayProtocol : CIFilterProtocol {
@@ -11478,8 +11215,6 @@ namespace CoreImage {
 		float Contrast { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CILineScreen")]
 	interface CILineScreenProtocol : CIFilterProtocol {
@@ -11509,8 +11244,6 @@ namespace CoreImage {
 		float Sharpness { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIMaskedVariableBlur")]
 	interface CIMaskedVariableBlurProtocol : CIFilterProtocol {
@@ -11532,8 +11265,6 @@ namespace CoreImage {
 		float Radius { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIMaskToAlpha")]
 	interface CIMaskToAlphaProtocol : CIFilterProtocol {
@@ -11544,8 +11275,6 @@ namespace CoreImage {
 		CIImage InputImage { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIMaximumComponent")]
 	interface CIMaximumComponentProtocol : CIFilterProtocol {
@@ -11556,8 +11285,6 @@ namespace CoreImage {
 		CIImage InputImage { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIMedian")]
 	interface CIMedianProtocol : CIFilterProtocol {
@@ -11568,8 +11295,6 @@ namespace CoreImage {
 		CIImage InputImage { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIMeshGenerator")]
 	interface CIMeshGeneratorProtocol : CIFilterProtocol {
@@ -11587,8 +11312,6 @@ namespace CoreImage {
 		CIVector [] Mesh { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIMinimumComponent")]
 	interface CIMinimumComponentProtocol : CIFilterProtocol {
@@ -11599,8 +11322,6 @@ namespace CoreImage {
 		CIImage InputImage { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIMix")]
 	interface CIMixProtocol : CIFilterProtocol {
@@ -11619,8 +11340,6 @@ namespace CoreImage {
 		float Amount { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIModTransition")]
 	interface CIModTransitionProtocol : CITransitionFilterProtocol {
@@ -11652,8 +11371,6 @@ namespace CoreImage {
 		float Compression { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIMorphologyGradient")]
 	interface CIMorphologyGradientProtocol : CIFilterProtocol {
@@ -11668,8 +11385,6 @@ namespace CoreImage {
 		float Radius { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIMorphologyMaximum")]
 	interface CIMorphologyMaximumProtocol : CIFilterProtocol {
@@ -11684,8 +11399,6 @@ namespace CoreImage {
 		float Radius { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIMorphologyMinimum")]
 	interface CIMorphologyMinimumProtocol : CIFilterProtocol {
@@ -11700,8 +11413,6 @@ namespace CoreImage {
 		float Radius { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIMorphologyRectangleMaximum")]
 	interface CIMorphologyRectangleMaximumProtocol : CIFilterProtocol {
@@ -11720,8 +11431,6 @@ namespace CoreImage {
 		float InputHeight { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIMorphologyRectangleMinimum")]
 	interface CIMorphologyRectangleMinimumProtocol : CIFilterProtocol {
@@ -11740,8 +11449,6 @@ namespace CoreImage {
 		float InputHeight { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIMotionBlur")]
 	interface CIMotionBlurProtocol : CIFilterProtocol {
@@ -11763,8 +11470,6 @@ namespace CoreImage {
 		float Angle { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CINoiseReduction")]
 	interface CINoiseReductionProtocol : CIFilterProtocol {
@@ -11789,8 +11494,6 @@ namespace CoreImage {
 		float Sharpness { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIOpTile")]
 	interface CIOpTileProtocol : CIFilterProtocol {
@@ -11820,8 +11523,6 @@ namespace CoreImage {
 		float Width { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIPageCurlTransition")]
 	interface CIPageCurlTransitionProtocol : CITransitionFilterProtocol {
@@ -11860,8 +11561,6 @@ namespace CoreImage {
 		float Radius { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIPageCurlWithShadowTransition")]
 	interface CIPageCurlWithShadowTransitionProtocol : CITransitionFilterProtocol {
@@ -11912,8 +11611,6 @@ namespace CoreImage {
 		CGRect InputShadowExtent { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIPaletteCentroid")]
 	interface CIPaletteCentroidProtocol : CIFilterProtocol {
@@ -11932,8 +11629,6 @@ namespace CoreImage {
 		bool Perceptual { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIPalettize")]
 	interface CIPalettizeProtocol : CIFilterProtocol {
@@ -11952,8 +11647,6 @@ namespace CoreImage {
 		bool Perceptual { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIParallelogramTile")]
 	interface CIParallelogramTileProtocol : CIFilterProtocol {
@@ -11983,8 +11676,6 @@ namespace CoreImage {
 		float Width { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIPDF417BarcodeGenerator")]
 	interface CIPdf417BarcodeGeneratorProtocol : CIFilterProtocol {
@@ -12063,22 +11754,16 @@ namespace CoreImage {
 		float InputAlwaysSpecifyCompaction { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIPerspectiveCorrection")]
 	interface CIPerspectiveCorrectionProtocol : CIFourCoordinateGeometryFilterProtocol {
 
 		[Abstract]
 		[Export ("crop")]
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		bool Crop { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIPerspectiveRotate")]
 	interface CIPerspectiveRotateProtocol : CIFilterProtocol {
@@ -12105,8 +11790,6 @@ namespace CoreImage {
 		float Roll { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIPerspectiveTile")]
 	interface CIPerspectiveTileProtocol : CIFilterProtocol {
@@ -12137,15 +11820,11 @@ namespace CoreImage {
 		CGPoint InputBottomLeft { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIPerspectiveTransform")]
 	interface CIPerspectiveTransformProtocol : CIFourCoordinateGeometryFilterProtocol {
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIPerspectiveTransformWithExtent")]
 	interface CIPerspectiveTransformWithExtentProtocol : CIFourCoordinateGeometryFilterProtocol {
@@ -12156,8 +11835,6 @@ namespace CoreImage {
 		CGRect InputExtent { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIPhotoEffect")]
 	interface CIPhotoEffectProtocol : CIFilterProtocol {
@@ -12170,13 +11847,11 @@ namespace CoreImage {
 #if XAMCORE_5_0
 		[Abstract]
 #endif
-		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Export ("extrapolate")]
 		bool Extrapolate { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIPixellate")]
 	interface CIPixellateProtocol : CIFilterProtocol {
@@ -12199,8 +11874,6 @@ namespace CoreImage {
 		float Scale { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIPointillize")]
 	interface CIPointillizeProtocol : CIFilterProtocol {
@@ -12223,8 +11896,6 @@ namespace CoreImage {
 		CGPoint InputCenter { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIQRCodeGenerator")]
 	interface CIQRCodeGeneratorProtocol : CIFilterProtocol {
@@ -12241,8 +11912,6 @@ namespace CoreImage {
 		string CorrectionLevel { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIRadialGradient")]
 	interface CIRadialGradientProtocol : CIFilterProtocol {
@@ -12281,15 +11950,11 @@ namespace CoreImage {
 		CIColor Color1 { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIRandomGenerator")]
 	interface CIRandomGeneratorProtocol : CIFilterProtocol {
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIRippleTransition")]
 	interface CIRippleTransitionProtocol : CITransitionFilterProtocol {
@@ -12326,8 +11991,6 @@ namespace CoreImage {
 		float Scale { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIRoundedRectangleGenerator")]
 	interface CIRoundedRectangleGeneratorProtocol : CIFilterProtocol {
@@ -12350,8 +12013,6 @@ namespace CoreImage {
 		float Smoothness { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CISaliencyMap")]
 	interface CISaliencyMapProtocol : CIFilterProtocol {
@@ -12363,8 +12024,6 @@ namespace CoreImage {
 		CIImage InputImage { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CISepiaTone")]
 	interface CISepiaToneProtocol : CIFilterProtocol {
@@ -12382,8 +12041,6 @@ namespace CoreImage {
 		float Intensity { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIShadedMaterial")]
 	interface CIShadedMaterialProtocol : CIFilterProtocol {
@@ -12408,8 +12065,6 @@ namespace CoreImage {
 		float Scale { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CISharpenLuminance")]
 	interface CISharpenLuminanceProtocol : CIFilterProtocol {
@@ -12428,14 +12083,10 @@ namespace CoreImage {
 
 		[Abstract]
 		[Export ("radius")]
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		float Radius { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CISixfoldReflectedTile")]
 	interface CISixfoldReflectedTileProtocol : CIFilterProtocol {
@@ -12458,8 +12109,6 @@ namespace CoreImage {
 		float Width { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CISixfoldRotatedTile")]
 	interface CISixfoldRotatedTileProtocol : CIFilterProtocol {
@@ -12482,8 +12131,6 @@ namespace CoreImage {
 		float Width { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CISmoothLinearGradient")]
 	interface CISmoothLinearGradientProtocol : CIFilterProtocol {
@@ -12512,8 +12159,6 @@ namespace CoreImage {
 		CIColor Color1 { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CISpotColor")]
 	interface CISpotColorProtocol : CIFilterProtocol {
@@ -12608,8 +12253,6 @@ namespace CoreImage {
 		float Contrast3 { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CISpotLight")]
 	interface CISpotLightProtocol : CIFilterProtocol {
@@ -12655,8 +12298,6 @@ namespace CoreImage {
 		CIColor Color { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CISRGBToneCurveToLinear")]
 	interface CISrgbToneCurveToLinearProtocol : CIFilterProtocol {
@@ -12667,8 +12308,6 @@ namespace CoreImage {
 		CIImage InputImage { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIStarShineGenerator")]
 	interface CIStarShineGeneratorProtocol : CIFilterProtocol {
@@ -12728,8 +12367,6 @@ namespace CoreImage {
 		float Epsilon { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIStraighten")]
 	interface CIStraightenProtocol : CIFilterProtocol {
@@ -12747,8 +12384,6 @@ namespace CoreImage {
 		float Angle { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIStripesGenerator")]
 	interface CIStripesGeneratorProtocol : CIFilterProtocol {
@@ -12787,8 +12422,6 @@ namespace CoreImage {
 		float Sharpness { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CISunbeamsGenerator")]
 	interface CISunbeamsGeneratorProtocol : CIFilterProtocol {
@@ -12841,8 +12474,6 @@ namespace CoreImage {
 		float Time { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CISwipeTransition")]
 	interface CISwipeTransitionProtocol : CITransitionFilterProtocol {
@@ -12868,8 +12499,6 @@ namespace CoreImage {
 		float Opacity { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CITemperatureAndTint")]
 	interface CITemperatureAndTintProtocol : CIFilterProtocol {
@@ -12894,8 +12523,6 @@ namespace CoreImage {
 		CIVector TargetNeutral { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CITextImageGenerator")]
 	interface CITextImageGeneratorProtocol : CIFilterProtocol {
@@ -12919,13 +12546,11 @@ namespace CoreImage {
 #if XAMCORE_5_0
 		[Abstract]
 #endif
-		[iOS (16, 0), TV (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Export ("padding")]
 		float Padding { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIThermal")]
 	interface CIThermalProtocol : CIFilterProtocol {
@@ -12936,8 +12561,6 @@ namespace CoreImage {
 		CIImage InputImage { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIToneCurve")]
 	interface CIToneCurveProtocol : CIFilterProtocol {
@@ -12978,8 +12601,6 @@ namespace CoreImage {
 		bool Extrapolate { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CITriangleKaleidoscope")]
 	interface CITriangleKaleidoscopeProtocol : CIFilterProtocol {
@@ -13016,8 +12637,6 @@ namespace CoreImage {
 		float Decay { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CITriangleTile")]
 	interface CITriangleTileProtocol : CIFilterProtocol {
@@ -13040,8 +12659,6 @@ namespace CoreImage {
 		float Width { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CITwelvefoldReflectedTile")]
 	interface CITwelvefoldReflectedTileProtocol : CIFilterProtocol {
@@ -13064,8 +12681,6 @@ namespace CoreImage {
 		float Width { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIUnsharpMask")]
 	interface CIUnsharpMaskProtocol : CIFilterProtocol {
@@ -13090,8 +12705,6 @@ namespace CoreImage {
 		float Intensity { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIVibrance")]
 	interface CIVibranceProtocol : CIFilterProtocol {
@@ -13109,8 +12722,6 @@ namespace CoreImage {
 		float Amount { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIVignette")]
 	interface CIVignetteProtocol : CIFilterProtocol {
@@ -13135,8 +12746,6 @@ namespace CoreImage {
 		float Radius { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIVignetteEffect")]
 	interface CIVignetteEffectProtocol : CIFilterProtocol {
@@ -13173,8 +12782,6 @@ namespace CoreImage {
 		float Falloff { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIWhitePointAdjust")]
 	interface CIWhitePointAdjustProtocol : CIFilterProtocol {
@@ -13192,8 +12799,6 @@ namespace CoreImage {
 		CIColor Color { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIXRay")]
 	interface CIXRayProtocol : CIFilterProtocol {
@@ -13204,8 +12809,6 @@ namespace CoreImage {
 		CIImage InputImage { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "CIZoomBlur")]
 	interface CIZoomBlurProtocol : CIFilterProtocol {
@@ -13438,7 +13041,7 @@ namespace CoreImage {
 		CIImage InputImage { get; set; }
 	}
 
-	[iOS (16, 0), TV (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
+	[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 	[Protocol (Name = "CIAreaLogarithmicHistogram")]
 	interface CIAreaLogarithmicHistogramProtocol : CIAreaReductionFilterProtocol {
 		[Abstract]
@@ -13459,12 +13062,12 @@ namespace CoreImage {
 	}
 
 	[CoreImageFilter]
-	[iOS (16, 0), TV (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
+	[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (CIFilter))]
 	interface CIAreaLogarithmicHistogram : CIAreaLogarithmicHistogramProtocol {
 	}
 
-	[iOS (16, 0), TV (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
+	[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 	[Protocol (Name = "CIConvertLab")]
 	interface CIConvertLabProtocol : CIFilterProtocol {
 		/// <summary>Gets or sets an image to filter.</summary>
@@ -13478,12 +13081,12 @@ namespace CoreImage {
 	}
 
 	[CoreImageFilter]
-	[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
+	[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (CIFilter))]
 	interface CIBlurredRectangleGenerator : CIBlurredRectangleGeneratorProtocol {
 	}
 
-	[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
+	[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 	[Protocol (Name = "CIBlurredRectangleGenerator")]
 	interface CIBlurredRectangleGeneratorProtocol : CIFilterProtocol {
 		[Abstract]
@@ -13500,12 +13103,12 @@ namespace CoreImage {
 	}
 
 	[CoreImageFilter]
-	[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
+	[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (CIFilter))]
 	interface CICannyEdgeDetector : CICannyEdgeDetectorProtocol {
 	}
 
-	[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
+	[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 	[Protocol (Name = "CICannyEdgeDetector")]
 	interface CICannyEdgeDetectorProtocol : CIFilterProtocol {
 		/// <summary>Gets or sets an image to filter.</summary>
@@ -13535,12 +13138,12 @@ namespace CoreImage {
 	}
 
 	[CoreImageFilter]
-	[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
+	[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (CIFilter))]
 	interface CIRoundedRectangleStrokeGenerator : CIRoundedRectangleStrokeGeneratorProtocol {
 	}
 
-	[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
+	[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 	[Protocol (Name = "CIRoundedRectangleStrokeGenerator")]
 	interface CIRoundedRectangleStrokeGeneratorProtocol : CIFilterProtocol {
 		[Abstract]
@@ -13566,12 +13169,12 @@ namespace CoreImage {
 	}
 
 	[CoreImageFilter]
-	[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
+	[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (CIFilter))]
 	interface CISobelGradients : CISobelGradientsProtocol {
 	}
 
-	[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
+	[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 	[Protocol (Name = "CISobelGradients")]
 	interface CISobelGradientsProtocol : CIFilterProtocol {
 
@@ -13586,7 +13189,7 @@ namespace CoreImage {
 	// https://github.com/dotnet/macios/issues/15662
 #if false
 	[CoreImageFilter]
-	[iOS (16,0), TV (16,0), Mac (13,0), MacCatalyst (16,0)]
+	[iOS (16,0), TV (16,0), MacCatalyst (16,0)]
 	[BaseType (typeof (CIFilter), Name = "CIConvertLab")]
 	interface LabToRGBFilter : CIConvertLabProtocol
 	{
@@ -13594,7 +13197,7 @@ namespace CoreImage {
 	}
 
 	[CoreImageFilter]
-	[iOS (16,0), TV (16,0), Mac (13,0), MacCatalyst (16,0)]
+	[iOS (16,0), TV (16,0), MacCatalyst (16,0)]
 	[BaseType (typeof (CIFilter), Name = "CIConvertLab")]
 	interface RGBtoLabFilter : CIConvertLabProtocol
 	{

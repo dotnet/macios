@@ -24,7 +24,6 @@ namespace AVKit {
 	// The version of the AVError.h header file in the tvOS SDK is much newer than in the iOS SDKs,
 	// (copyright 2016 vs 2019), so this is reflecting the tvOS SDK.
 	/// <summary>Enumeration of error states that can occur while using AVKit.</summary>
-	[TV (13, 0)]
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -44,7 +43,6 @@ namespace AVKit {
 
 	[NoTV]
 	[NoMac]
-	[iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum AVAudioSessionRouteSelection : long {

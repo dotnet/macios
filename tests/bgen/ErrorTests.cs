@@ -232,6 +232,18 @@ namespace GeneratorTests {
 			bgen.AssertWarning (1060, "The Bug42855Tests.MyFooClass protocol is decorated with [Model], but not [BaseType]. Please verify that [Model] is relevant for this protocol; if so, add [BaseType] as well, otherwise remove [Model].");
 		}
 
+		// https://github.com/dotnet/macios/issues/10015
+		[Test]
+		[TestCase (Profile.iOS)]
+		public void Issue10015 (Profile profile)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
+			var bgen = new BGenTool ();
+			bgen.Profile = profile;
+			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "issue10015.cs")));
+			bgen.AssertExecute ("build");
+		}
+
 		[Test]
 		[TestCase (Profile.iOS)]
 		public void BI1077 (Profile profile)

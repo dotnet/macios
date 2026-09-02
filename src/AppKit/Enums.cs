@@ -1929,12 +1929,13 @@ namespace AppKit {
 	#endregion
 
 	#region NSRulerView
+	/// <summary>Specifies the orientation of a ruler view.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSRulerOrientation : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>A horizontal ruler.</summary>
 		Horizontal,
-		/// <summary>To be added.</summary>
+		/// <summary>A vertical ruler.</summary>
 		Vertical,
 	}
 	#endregion

@@ -22598,7 +22598,6 @@ T:AppKit.NSRulerEditorChildCriterion
 T:AppKit.NSRulerEditorDisplayValue
 T:AppKit.NSRulerEditorPredicateParts
 T:AppKit.NSRulerMarkerClientViewDelegation
-T:AppKit.NSRulerOrientation
 T:AppKit.NSRulerViewUnits
 T:AppKit.NSRunResponse
 T:AppKit.NSSaveOperationType

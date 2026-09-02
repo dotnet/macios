@@ -22615,7 +22615,6 @@ T:AppKit.NSSegmentBackgroundStyle_NSSegmentedCell
 T:AppKit.NSSegmentDistribution
 T:AppKit.NSSegmentStyle
 T:AppKit.NSSegmentSwitchTracking
-T:AppKit.NSSelectionAffinity
 T:AppKit.NSSelectionDirection
 T:AppKit.NSSelectionGranularity
 T:AppKit.NSSharingCollaborationMode

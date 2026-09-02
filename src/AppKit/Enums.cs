@@ -2137,12 +2137,13 @@ namespace AppKit {
 		DashDotDot = 0x0400,
 	}
 
+	/// <summary>Specifies the direction associated with a selection at a line boundary.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSSelectionAffinity : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The selection is associated with the preceding line.</summary>
 		Upstream,
-		/// <summary>To be added.</summary>
+		/// <summary>The selection is associated with the following line.</summary>
 		Downstream,
 	}
 

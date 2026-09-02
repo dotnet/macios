@@ -374,9 +374,6 @@ Microsoft.iOS.dll:CoreGraphics.CGRect.Equals(System.Object)
 Microsoft.iOS.dll:CoreGraphics.CGRect.GetHashCode()
 Microsoft.iOS.dll:CoreGraphics.CGRect.NSStringFromCGRect(CoreGraphics.CGRect)
 Microsoft.iOS.dll:CoreGraphics.CGRect.ToString()
-Microsoft.iOS.dll:Foundation.ExportAttribute
-Microsoft.iOS.dll:Foundation.ExportAttribute..ctor(System.String, ObjCRuntime.ArgumentSemantic)
-Microsoft.iOS.dll:Foundation.ExportAttribute..ctor(System.String)
 Microsoft.iOS.dll:Foundation.INSCoding
 Microsoft.iOS.dll:Foundation.INSCopying
 Microsoft.iOS.dll:Foundation.INSExtensionRequestHandling
@@ -648,15 +645,6 @@ Microsoft.iOS.dll:ObjCRuntime.Arch
 Microsoft.iOS.dll:ObjCRuntime.Arch ObjCRuntime.Arch::DEVICE
 Microsoft.iOS.dll:ObjCRuntime.Arch ObjCRuntime.Arch::SIMULATOR
 Microsoft.iOS.dll:ObjCRuntime.Arch ObjCRuntime.Runtime::Arch
-Microsoft.iOS.dll:ObjCRuntime.ArgumentSemantic
-Microsoft.iOS.dll:ObjCRuntime.ArgumentSemantic Foundation.ExportAttribute::semantic
-Microsoft.iOS.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSemantic::Assign
-Microsoft.iOS.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSemantic::Copy
-Microsoft.iOS.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSemantic::None
-Microsoft.iOS.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSemantic::Retain
-Microsoft.iOS.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSemantic::Strong
-Microsoft.iOS.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSemantic::UnsafeUnretained
-Microsoft.iOS.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSemantic::Weak
 Microsoft.iOS.dll:ObjCRuntime.BaseWrapper
 Microsoft.iOS.dll:ObjCRuntime.BaseWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:ObjCRuntime.BaseWrapper.Release()
@@ -1346,7 +1334,6 @@ Microsoft.iOS.dll:System.Int32 Foundation.NSDictionary/<GetEnumerator>d__66::<>1
 Microsoft.iOS.dll:System.Int32 Foundation.NSDictionary/<GetEnumerator>d__66::<>7__wrap2
 Microsoft.iOS.dll:System.Int32 Foundation.NSObjectFlag::value__
 Microsoft.iOS.dll:System.Int32 ObjCRuntime.Arch::value__
-Microsoft.iOS.dll:System.Int32 ObjCRuntime.ArgumentSemantic::value__
 Microsoft.iOS.dll:System.Int32 ObjCRuntime.BlockCollector::count
 Microsoft.iOS.dll:System.Int32 ObjCRuntime.Dlfcn/Mode::value__
 Microsoft.iOS.dll:System.Int32 ObjCRuntime.MarshalManagedExceptionMode::value__
@@ -1527,7 +1514,6 @@ Microsoft.iOS.dll:System.Runtime.InteropServices.NFloat CoreGraphics.CGRect::x
 Microsoft.iOS.dll:System.Runtime.InteropServices.NFloat CoreGraphics.CGRect::y
 Microsoft.iOS.dll:System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal/UnhandledExceptionPropagationHandler ObjCRuntime.Runtime/<>O::<0>__UnhandledExceptionPropagationHandler
 Microsoft.iOS.dll:System.String CoreFoundation.CFString::str
-Microsoft.iOS.dll:System.String Foundation.ExportAttribute::selector
 Microsoft.iOS.dll:System.String Foundation.NSException::Name()
 Microsoft.iOS.dll:System.String Foundation.NSException::Reason()
 Microsoft.iOS.dll:System.String Foundation.NSNumber::StringValue()

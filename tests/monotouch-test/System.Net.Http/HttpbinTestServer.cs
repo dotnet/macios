@@ -60,7 +60,7 @@ namespace MonoTests.System.Net.Http {
 								try {
 									context.Response.StatusCode = 500;
 									var body = Encoding.UTF8.GetBytes (ex.ToString ());
-									context.Response.OutputStream.Write (body, 0, body.Length);
+									context.Response.OutputStream.Write (body, 0, body.Length); // CodeQL [SM00430] This is a test server that only listens on localhost.
 								} catch {
 									// nothing we can do
 								}

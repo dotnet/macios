@@ -1624,8 +1624,20 @@
         <value>The task '{0}' is trying to call an external process, but a path to Xcode has not been provided. Please file an issue at https://github.com/dotnet/macios/issues/new/choose.</value>
     </data>
 
+    <data name="E7165" xml:space="preserve">
+        <value>Invalid DotNetRuntime value: '{0}'</value>
+    </data>
+
+    <data name="E7166" xml:space="preserve">
+        <value>Unexpected RuntimeLibLinkMode value for 'NativeAOT': '{0}'</value>
+    </data>
+
     <data name="E7169" xml:space="preserve">
         <value>The task '{0}' requires the property '{1}' to be set. Please file an issue at https://github.com/dotnet/macios/issues/new/choose.</value>
+    </data>
+
+    <data name="E7170" xml:space="preserve">
+        <value>Invalid RuntimeLibLinkMode value: '{0}'</value>
     </data>
 
     <data name="W7171" xml:space="preserve">
@@ -1697,6 +1709,12 @@
 {1} - The assembly path.
 {2} - The computed extraction path.
 {3} - The intended output directory.</comment>
+    </data>
+    <data name="E7185" xml:space="preserve">
+        <value>Could not determine the on-device destination path after copying '{0}' to the device. The 'xcrun devicectl' JSON output was: {1}</value>
+        <comment>Shown when the DeviceCtl task copied a file to a device, but the on-device destination path could not be extracted from devicectl's JSON output.
+{0} - The path of the file that was copied to the device.
+{1} - The JSON output from 'xcrun devicectl'.</comment>
     </data>
     <data name="E0192" xml:space="preserve">
         <value>The PrepareAssemblies task failed without reporting a specific error. Please rebuild with increased verbosity for more details.</value>

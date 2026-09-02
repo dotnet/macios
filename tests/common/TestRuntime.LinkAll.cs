@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 
 // This is a small, dependency-free part of TestRuntime that can be compiled on its own (e.g. into the
 // BundledResources assembly, where compiling the full TestRuntime.cs isn't possible because it would
@@ -18,10 +19,6 @@ partial class TestRuntime {
 			return link_all.Value;
 		}
 	}
-	// This is used to work around the trimmer's dataflow analysis, which can otherwise constant-fold the
-	// type name passed to GetType and preserve the LinkerSentinel type (making IsLinkAll incorrectly report
-	// false in link-all builds). This property returns "" at runtime, but the trimmer can't constant-fold it.
-	static string WorkAroundLinkerHeuristics { get { return ""; } }
 	class LinkerSentinel { }
 
 	// Determine if any assemblies were linked by checking if a few uncommon classes in corlib are still here.
@@ -46,4 +43,24 @@ partial class TestRuntime {
 			return link_any.Value;
 		}
 	}
+
+	// When using NativeAOT on .NET 11+, ILLink isn't executed at all (ILC does all the trimming, see
+	// '_SkipILLink' in Xamarin.Shared.Sdk.targets), which means none of the custom trimmer steps that
+	// modify assemblies are applied to the app. In particular the attributes we'd otherwise remove
+	// (such as [Protocol]) are still there at runtime.
+	public static bool IsILLinkSkipped {
+		get {
+#if NATIVEAOT && NET11_0_OR_GREATER
+			return true;
+#else
+			return false;
+#endif
+		}
+	}
+
+	// Returns "" at runtime, but the linker can't constant-fold this, which prevents
+	// its dataflow analysis from resolving type names passed to Assembly.GetType.
+	[MethodImpl (MethodImplOptions.NoInlining)]
+	static string GetEmptyString () => string.Intern ("");
+	static string WorkAroundLinkerHeuristics => GetEmptyString ();
 }

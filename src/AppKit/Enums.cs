@@ -2396,16 +2396,17 @@ namespace AppKit {
 		DecrementArrow,
 	}
 
+	/// <summary>Specifies the order in which pages are printed.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSPrintingPageOrder : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Prints pages in descending order.</summary>
 		Descending = -1,
-		/// <summary>To be added.</summary>
+		/// <summary>Prints pages using an application-defined order.</summary>
 		Special,
-		/// <summary>To be added.</summary>
+		/// <summary>Prints pages in ascending order.</summary>
 		Ascending,
-		/// <summary>To be added.</summary>
+		/// <summary>The page order is unknown.</summary>
 		Unknown,
 	}
 

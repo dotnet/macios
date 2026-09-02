@@ -350,6 +350,10 @@ namespace Extrospection {
 					count += CountNullablePositions (arg);
 				return count;
 			}
+
+			if (type.IsValueType)
+				return 0;
+
 			return 1;
 		}
 	}

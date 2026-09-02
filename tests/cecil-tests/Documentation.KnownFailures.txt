@@ -22527,10 +22527,6 @@ T:AppKit.NSLevelIndicatorPlaceholderVisibility
 T:AppKit.NSLevelIndicatorStyle
 T:AppKit.NSLineBreakMode
 T:AppKit.NSLineBreakStrategy
-T:AppKit.NSLineCapStyle
-T:AppKit.NSLineJoinStyle
-T:AppKit.NSLineMovementDirection
-T:AppKit.NSLineSweepDirection
 T:AppKit.NSMatrixMode
 T:AppKit.NSMenuItemBadgeType
 T:AppKit.NSMenuPresentationStyle
@@ -22580,9 +22576,7 @@ T:AppKit.NSPopoverBehavior
 T:AppKit.NSPopUpArrowPosition
 T:AppKit.NSPressureBehavior
 T:AppKit.NSPrinterTableStatus
-T:AppKit.NSPrintingOrientation
 T:AppKit.NSPrintingPageOrder
-T:AppKit.NSPrintingPaginationMode
 T:AppKit.NSPrintPanelOptions
 T:AppKit.NSPrintPanelResult
 T:AppKit.NSPrintRenderingQuality
@@ -22600,7 +22594,6 @@ T:AppKit.NSRulerEditorChildCriterion
 T:AppKit.NSRulerEditorDisplayValue
 T:AppKit.NSRulerEditorPredicateParts
 T:AppKit.NSRulerMarkerClientViewDelegation
-T:AppKit.NSRulerOrientation
 T:AppKit.NSRulerViewUnits
 T:AppKit.NSRunResponse
 T:AppKit.NSSaveOperationType
@@ -22618,9 +22611,7 @@ T:AppKit.NSSegmentBackgroundStyle_NSSegmentedCell
 T:AppKit.NSSegmentDistribution
 T:AppKit.NSSegmentStyle
 T:AppKit.NSSegmentSwitchTracking
-T:AppKit.NSSelectionAffinity
 T:AppKit.NSSelectionDirection
-T:AppKit.NSSelectionGranularity
 T:AppKit.NSSharingCollaborationMode
 T:AppKit.NSSharingContentScope
 T:AppKit.NSSharingServiceAnchoringViewForSharingService
@@ -22800,7 +22791,6 @@ T:AppKit.NSViewResizingMask
 T:AppKit.NSVisualEffectBlendingMode
 T:AppKit.NSVisualEffectMaterial
 T:AppKit.NSVisualEffectState
-T:AppKit.NSWindingRule
 T:AppKit.NSWindowAnimationBehavior
 T:AppKit.NSWindowApplicationPresentationOptions
 T:AppKit.NSWindowBackingLocation

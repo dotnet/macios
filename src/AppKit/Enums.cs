@@ -1879,34 +1879,37 @@ namespace AppKit {
 
 	#region NSBezelPath
 
+	/// <summary>Specifies the shape of the endpoints of an open path.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSLineCapStyle : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Ends the path at the endpoint.</summary>
 		Butt,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses a semicircular cap centered on the endpoint.</summary>
 		Round,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses a square cap that extends beyond the endpoint.</summary>
 		Square,
 	}
 
+	/// <summary>Specifies the shape used to join connected path segments.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSLineJoinStyle : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Joins segments by extending their outer edges until they meet.</summary>
 		Miter,
-		/// <summary>To be added.</summary>
+		/// <summary>Joins segments with a rounded corner.</summary>
 		Round,
-		/// <summary>To be added.</summary>
+		/// <summary>Joins segments with a beveled corner.</summary>
 		Bevel,
 	}
 
+	/// <summary>Specifies the rule used to determine which areas of a path are filled.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSWindingRule : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Fills areas using the nonzero winding rule.</summary>
 		NonZero,
-		/// <summary>To be added.</summary>
+		/// <summary>Fills areas using the even-odd winding rule.</summary>
 		EvenOdd,
 	}
 
@@ -1926,12 +1929,13 @@ namespace AppKit {
 	#endregion
 
 	#region NSRulerView
+	/// <summary>Specifies the orientation of a ruler view.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSRulerOrientation : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>A horizontal ruler.</summary>
 		Horizontal,
-		/// <summary>To be added.</summary>
+		/// <summary>A vertical ruler.</summary>
 		Vertical,
 	}
 	#endregion
@@ -2133,23 +2137,25 @@ namespace AppKit {
 		DashDotDot = 0x0400,
 	}
 
+	/// <summary>Specifies the direction associated with a selection at a line boundary.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSSelectionAffinity : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The selection is associated with the preceding line.</summary>
 		Upstream,
-		/// <summary>To be added.</summary>
+		/// <summary>The selection is associated with the following line.</summary>
 		Downstream,
 	}
 
+	/// <summary>Specifies the unit used when modifying a text selection.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSSelectionGranularity : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Selects text by character.</summary>
 		Character,
-		/// <summary>To be added.</summary>
+		/// <summary>Selects text by word.</summary>
 		Word,
-		/// <summary>To be added.</summary>
+		/// <summary>Selects text by paragraph.</summary>
 		Paragraph,
 	}
 
@@ -2181,31 +2187,33 @@ namespace AppKit {
 	}
 	#endregion
 
+	/// <summary>Specifies the direction in which text layout sweeps across a line.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSLineSweepDirection : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Sweeps toward the left.</summary>
 		NSLineSweepLeft,
-		/// <summary>To be added.</summary>
+		/// <summary>Sweeps toward the right.</summary>
 		NSLineSweepRight,
-		/// <summary>To be added.</summary>
+		/// <summary>Sweeps downward.</summary>
 		NSLineSweepDown,
-		/// <summary>To be added.</summary>
+		/// <summary>Sweeps upward.</summary>
 		NSLineSweepUp,
 	}
 
+	/// <summary>Specifies the direction in which text layout moves between lines.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSLineMovementDirection : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Does not move between lines.</summary>
 		None,
-		/// <summary>To be added.</summary>
+		/// <summary>Moves to the left.</summary>
 		Left,
-		/// <summary>To be added.</summary>
+		/// <summary>Moves to the right.</summary>
 		Right,
-		/// <summary>To be added.</summary>
+		/// <summary>Moves downward.</summary>
 		Down,
-		/// <summary>To be added.</summary>
+		/// <summary>Moves upward.</summary>
 		Up,
 	}
 
@@ -2289,23 +2297,25 @@ namespace AppKit {
 		BigEndian32Bit = 1 << 11,
 	}
 
+	/// <summary>Specifies the orientation of printed pages.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSPrintingOrientation : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Prints pages in portrait orientation.</summary>
 		Portrait,
-		/// <summary>To be added.</summary>
+		/// <summary>Prints pages in landscape orientation.</summary>
 		Landscape,
 	}
 
+	/// <summary>Specifies how printed content is paginated along one axis.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSPrintingPaginationMode : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Divides the content into equal-sized page rectangles.</summary>
 		Auto,
-		/// <summary>To be added.</summary>
+		/// <summary>Scales the content to produce one row or column of pages.</summary>
 		Fit,
-		/// <summary>To be added.</summary>
+		/// <summary>Clips the content to produce one row or column of pages.</summary>
 		Clip,
 	}
 

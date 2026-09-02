@@ -266,7 +266,7 @@ namespace Foundation {
 			HasManagedRef = 32,
 			// 64, // Used by SoM
 			IsCustomType = 128,
-			KnowsIfIsUserType = 256,
+			IsUserTypeKnown = 256,
 			IsUserType = 512,
 		}
 
@@ -314,21 +314,21 @@ namespace Foundation {
 			get { return ((flags & Flags.InFinalizerQueue) == Flags.InFinalizerQueue); }
 		}
 
-		bool TryGetIsUserType (NativeHandle handle, out bool isUserType, [NotNullWhen (false)] out string? errorMessage)
+		bool TryGetIsUserType (NativeHandle handle, out bool isUserType, [NotNullWhen (false)] out string? error_message)
 		{
 			var currentFlags = flags;
-			if ((currentFlags & Flags.KnowsIfIsUserType) == Flags.KnowsIfIsUserType) {
+			if ((currentFlags & Flags.IsUserTypeKnown) == Flags.IsUserTypeKnown) {
 				isUserType = (currentFlags & Flags.IsUserType) == Flags.IsUserType;
-				errorMessage = null;
+				error_message = null;
 				return true;
 			}
 
-			if (!Runtime.TryGetIsUserType (handle, out isUserType, out errorMessage))
+			if (!Runtime.TryGetIsUserType (handle, out isUserType, out error_message))
 				return false;
 
 			flags = isUserType
-				? flags | Flags.KnowsIfIsUserType | Flags.IsUserType
-				: (flags | Flags.KnowsIfIsUserType) & ~Flags.IsUserType;
+				? flags | Flags.IsUserTypeKnown | Flags.IsUserType
+				: (flags | Flags.IsUserTypeKnown) & ~Flags.IsUserType;
 			return true;
 		}
 
@@ -563,6 +563,7 @@ namespace Foundation {
 		void CreateManagedRef (bool isUserType, bool retain)
 		{
 			HasManagedRef = true;
+
 			if (isUserType) {
 				var gchandle_flags = XamarinGCHandleFlags.HasManagedRef | XamarinGCHandleFlags.InitialSet;
 				var gchandle = GCHandle.Alloc (this, GCHandleType.WeakTrackResurrection);
@@ -880,7 +881,7 @@ namespace Foundation {
 						Runtime.UnregisterNSObject (handle, this);
 				}
 
-				flags &= ~(Flags.KnowsIfIsUserType | Flags.IsUserType);
+				flags &= ~(Flags.IsUserTypeKnown | Flags.IsUserType);
 				handle = value;
 
 				if (handle != IntPtr.Zero)

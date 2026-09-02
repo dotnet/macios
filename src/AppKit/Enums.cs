@@ -1879,14 +1879,15 @@ namespace AppKit {
 
 	#region NSBezelPath
 
+	/// <summary>Specifies the shape of the endpoints of an open path.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSLineCapStyle : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Ends the path at the endpoint.</summary>
 		Butt,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses a semicircular cap centered on the endpoint.</summary>
 		Round,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses a square cap that extends beyond the endpoint.</summary>
 		Square,
 	}
 

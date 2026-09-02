@@ -2307,14 +2307,15 @@ namespace AppKit {
 		Landscape,
 	}
 
+	/// <summary>Specifies how content is adjusted when it exceeds a printed page.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSPrintingPaginationMode : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Automatically determines how to paginate the content.</summary>
 		Auto,
-		/// <summary>To be added.</summary>
+		/// <summary>Scales the content to fit the page.</summary>
 		Fit,
-		/// <summary>To be added.</summary>
+		/// <summary>Clips content that extends beyond the page.</summary>
 		Clip,
 	}
 

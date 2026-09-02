@@ -75,6 +75,8 @@ namespace Xamarin.Bundler {
 		public RegistrarOptions RegistrarOptions = RegistrarOptions.Default;
 		public SymbolMode SymbolMode;
 		public HashSet<string> IgnoredSymbols = new HashSet<string> ();
+		public bool? PublishReadyToRun;
+		public string PublishReadyToRunContainerFormat = "";
 
 		// The AOT arguments are currently not used for macOS, but they could eventually be used there as well (there's no mmp option to set these yet).
 		public List<string> AotArguments = new List<string> ();
@@ -98,6 +100,23 @@ namespace Xamarin.Bundler {
 			if (SurvivingTrampolineSymbols is null)
 				return true;
 			return SurvivingTrampolineSymbols.Contains (ucoEntryPoint);
+		}
+
+		// The set of Objective-C class names whose inlined Class.GetHandle native function is still
+		// referenced by the NativeAOT compiler's (ILC) output. These classes must be registered in the
+		// native registrar code even if all their trampolines were trimmed away, because managed code
+		// still looks up their class handle (and the generated native code references the Objective-C
+		// class, which wouldn't exist otherwise). This is set alongside SurvivingTrampolineSymbols.
+		// See docs/code/class-handles.md.
+		public HashSet<string>? ClassesReferencedByInlinedClassGetHandle;
+
+		// Returns true if managed code that survived ILC looks up the class handle for the given
+		// Objective-C class name using the inlined Class.GetHandle optimization.
+		public bool IsClassReferencedByInlinedClassGetHandle (string exportedName)
+		{
+			if (ClassesReferencedByInlinedClassGetHandle is null)
+				return false;
+			return ClassesReferencedByInlinedClassGetHandle.Contains (exportedName);
 		}
 
 #if ASSEMBLY_PREPARER
@@ -126,6 +145,7 @@ namespace Xamarin.Bundler {
 		public TargetFramework TargetFramework { get; set; }
 		public ApplePlatform Platform { get { return TargetFramework.Platform; } }
 
+		public List<string> DylibsToConvertToFrameworks = new List<string> ();
 		public List<string> MonoLibraries = new List<string> ();
 		public List<string> InterpretedAssemblies = new List<string> ();
 

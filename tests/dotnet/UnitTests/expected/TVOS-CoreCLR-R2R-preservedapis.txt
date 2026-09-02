@@ -1,22 +1,4 @@
 _Microsoft.tvOS.TypeMap.dll:<Module>
-_Microsoft.tvOS.TypeMap.dll:CloudKit.CKRecordValueWrapper_Proxy
-_Microsoft.tvOS.TypeMap.dll:CloudKit.CKRecordValueWrapper_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:CloudKit.CKRecordValueWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.tvOS.TypeMap.dll:CloudKit.ICKRecordValue_Proxy
-_Microsoft.tvOS.TypeMap.dll:CloudKit.ICKRecordValue_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:CloudKit.ICKRecordValue_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.tvOS.TypeMap.dll:CoreAnimation.CALayerDelegateWrapper_Proxy
-_Microsoft.tvOS.TypeMap.dll:CoreAnimation.CALayerDelegateWrapper_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:CoreAnimation.CALayerDelegateWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.tvOS.TypeMap.dll:CoreAnimation.ICALayerDelegate_Proxy
-_Microsoft.tvOS.TypeMap.dll:CoreAnimation.ICALayerDelegate_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:CoreAnimation.ICALayerDelegate_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.tvOS.TypeMap.dll:CoreData.INSFetchRequestResult_Proxy
-_Microsoft.tvOS.TypeMap.dll:CoreData.INSFetchRequestResult_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:CoreData.INSFetchRequestResult_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.tvOS.TypeMap.dll:CoreData.NSFetchRequestResultWrapper_Proxy
-_Microsoft.tvOS.TypeMap.dll:CoreData.NSFetchRequestResultWrapper_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:CoreData.NSFetchRequestResultWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
 _Microsoft.tvOS.TypeMap.dll:CoreFoundation.CFArray_Proxy
 _Microsoft.tvOS.TypeMap.dll:CoreFoundation.CFArray_Proxy..ctor()
 _Microsoft.tvOS.TypeMap.dll:CoreFoundation.CFArray_Proxy.CreateObject(System.IntPtr, System.Boolean)
@@ -28,30 +10,6 @@ _Microsoft.tvOS.TypeMap.dll:Foundation__NSObject.NSObject_Disposer_Proxy..ctor()
 _Microsoft.tvOS.TypeMap.dll:Foundation__NSObject.NSObject_Disposer_Proxy.CreateObject(System.IntPtr)
 _Microsoft.tvOS.TypeMap.dll:Foundation__NSObject.NSObject_Disposer_Proxy.GetClassHandle(System.Boolean&)
 _Microsoft.tvOS.TypeMap.dll:Foundation__NSObject.NSObject_Disposer_Proxy.LookupUnmanagedFunction(System.String)
-_Microsoft.tvOS.TypeMap.dll:Foundation.INSCoding_Proxy
-_Microsoft.tvOS.TypeMap.dll:Foundation.INSCoding_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:Foundation.INSCoding_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.tvOS.TypeMap.dll:Foundation.INSCopying_Proxy
-_Microsoft.tvOS.TypeMap.dll:Foundation.INSCopying_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:Foundation.INSCopying_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.tvOS.TypeMap.dll:Foundation.INSExtensionRequestHandling_Proxy
-_Microsoft.tvOS.TypeMap.dll:Foundation.INSExtensionRequestHandling_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:Foundation.INSExtensionRequestHandling_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.tvOS.TypeMap.dll:Foundation.INSItemProviderReading_Proxy
-_Microsoft.tvOS.TypeMap.dll:Foundation.INSItemProviderReading_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:Foundation.INSItemProviderReading_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.tvOS.TypeMap.dll:Foundation.INSItemProviderWriting_Proxy
-_Microsoft.tvOS.TypeMap.dll:Foundation.INSItemProviderWriting_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:Foundation.INSItemProviderWriting_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.tvOS.TypeMap.dll:Foundation.INSMutableCopying_Proxy
-_Microsoft.tvOS.TypeMap.dll:Foundation.INSMutableCopying_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:Foundation.INSMutableCopying_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.tvOS.TypeMap.dll:Foundation.INSObjectProtocol_Proxy
-_Microsoft.tvOS.TypeMap.dll:Foundation.INSObjectProtocol_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:Foundation.INSObjectProtocol_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.tvOS.TypeMap.dll:Foundation.INSSecureCoding_Proxy
-_Microsoft.tvOS.TypeMap.dll:Foundation.INSSecureCoding_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:Foundation.INSSecureCoding_Proxy.CreateObject(System.IntPtr, System.Boolean)
 _Microsoft.tvOS.TypeMap.dll:Foundation.NSAsyncDispatcher_Proxy
 _Microsoft.tvOS.TypeMap.dll:Foundation.NSAsyncDispatcher_Proxy..ctor()
 _Microsoft.tvOS.TypeMap.dll:Foundation.NSAsyncDispatcher_Proxy.CreateObject(System.IntPtr)
@@ -66,12 +24,6 @@ _Microsoft.tvOS.TypeMap.dll:Foundation.NSAutoreleasePool_Proxy
 _Microsoft.tvOS.TypeMap.dll:Foundation.NSAutoreleasePool_Proxy..ctor()
 _Microsoft.tvOS.TypeMap.dll:Foundation.NSAutoreleasePool_Proxy.CreateObject(System.IntPtr)
 _Microsoft.tvOS.TypeMap.dll:Foundation.NSAutoreleasePool_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.tvOS.TypeMap.dll:Foundation.NSCodingWrapper_Proxy
-_Microsoft.tvOS.TypeMap.dll:Foundation.NSCodingWrapper_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:Foundation.NSCodingWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.tvOS.TypeMap.dll:Foundation.NSCopyingWrapper_Proxy
-_Microsoft.tvOS.TypeMap.dll:Foundation.NSCopyingWrapper_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:Foundation.NSCopyingWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
 _Microsoft.tvOS.TypeMap.dll:Foundation.NSDictionary_Proxy
 _Microsoft.tvOS.TypeMap.dll:Foundation.NSDictionary_Proxy..ctor()
 _Microsoft.tvOS.TypeMap.dll:Foundation.NSDictionary_Proxy.CreateObject(System.IntPtr)
@@ -85,18 +37,6 @@ _Microsoft.tvOS.TypeMap.dll:Foundation.NSException_Proxy
 _Microsoft.tvOS.TypeMap.dll:Foundation.NSException_Proxy..ctor()
 _Microsoft.tvOS.TypeMap.dll:Foundation.NSException_Proxy.CreateObject(System.IntPtr)
 _Microsoft.tvOS.TypeMap.dll:Foundation.NSException_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.tvOS.TypeMap.dll:Foundation.NSExtensionRequestHandlingWrapper_Proxy
-_Microsoft.tvOS.TypeMap.dll:Foundation.NSExtensionRequestHandlingWrapper_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:Foundation.NSExtensionRequestHandlingWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.tvOS.TypeMap.dll:Foundation.NSItemProviderReadingWrapper_Proxy
-_Microsoft.tvOS.TypeMap.dll:Foundation.NSItemProviderReadingWrapper_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:Foundation.NSItemProviderReadingWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.tvOS.TypeMap.dll:Foundation.NSItemProviderWritingWrapper_Proxy
-_Microsoft.tvOS.TypeMap.dll:Foundation.NSItemProviderWritingWrapper_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:Foundation.NSItemProviderWritingWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.tvOS.TypeMap.dll:Foundation.NSMutableCopyingWrapper_Proxy
-_Microsoft.tvOS.TypeMap.dll:Foundation.NSMutableCopyingWrapper_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:Foundation.NSMutableCopyingWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
 _Microsoft.tvOS.TypeMap.dll:Foundation.NSNumber_Proxy
 _Microsoft.tvOS.TypeMap.dll:Foundation.NSNumber_Proxy..ctor()
 _Microsoft.tvOS.TypeMap.dll:Foundation.NSNumber_Proxy.CreateObject(System.IntPtr)
@@ -105,16 +45,10 @@ _Microsoft.tvOS.TypeMap.dll:Foundation.NSObject_Proxy
 _Microsoft.tvOS.TypeMap.dll:Foundation.NSObject_Proxy..ctor()
 _Microsoft.tvOS.TypeMap.dll:Foundation.NSObject_Proxy.CreateObject(System.IntPtr)
 _Microsoft.tvOS.TypeMap.dll:Foundation.NSObject_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.tvOS.TypeMap.dll:Foundation.NSObjectProtocolWrapper_Proxy
-_Microsoft.tvOS.TypeMap.dll:Foundation.NSObjectProtocolWrapper_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:Foundation.NSObjectProtocolWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
 _Microsoft.tvOS.TypeMap.dll:Foundation.NSRunLoop_Proxy
 _Microsoft.tvOS.TypeMap.dll:Foundation.NSRunLoop_Proxy..ctor()
 _Microsoft.tvOS.TypeMap.dll:Foundation.NSRunLoop_Proxy.CreateObject(System.IntPtr)
 _Microsoft.tvOS.TypeMap.dll:Foundation.NSRunLoop_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.tvOS.TypeMap.dll:Foundation.NSSecureCodingWrapper_Proxy
-_Microsoft.tvOS.TypeMap.dll:Foundation.NSSecureCodingWrapper_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:Foundation.NSSecureCodingWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
 _Microsoft.tvOS.TypeMap.dll:Foundation.NSString_Proxy
 _Microsoft.tvOS.TypeMap.dll:Foundation.NSString_Proxy..ctor()
 _Microsoft.tvOS.TypeMap.dll:Foundation.NSString_Proxy.CreateObject(System.IntPtr)
@@ -136,66 +70,6 @@ _Microsoft.tvOS.TypeMap.dll:ObjCRuntime.Selector_Proxy..ctor()
 _Microsoft.tvOS.TypeMap.dll:ObjCRuntime.Selector_Proxy.CreateObject(System.IntPtr, System.Boolean)
 _Microsoft.tvOS.TypeMap.dll:System.Runtime.CompilerServices.IgnoresAccessChecksToAttribute
 _Microsoft.tvOS.TypeMap.dll:System.Runtime.CompilerServices.IgnoresAccessChecksToAttribute..ctor(System.String)
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUIAccessibilityContentSizeCategoryImageAdjusting_Proxy
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUIAccessibilityContentSizeCategoryImageAdjusting_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUIAccessibilityContentSizeCategoryImageAdjusting_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUIAccessibilityIdentification_Proxy
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUIAccessibilityIdentification_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUIAccessibilityIdentification_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUIAppearance_Proxy
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUIAppearance_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUIAppearance_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUIAppearanceContainer_Proxy
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUIAppearanceContainer_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUIAppearanceContainer_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUIApplicationDelegate_Proxy
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUIApplicationDelegate_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUIApplicationDelegate_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUIContentContainer_Proxy
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUIContentContainer_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUIContentContainer_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUIContextMenuInteractionDelegate_Proxy
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUIContextMenuInteractionDelegate_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUIContextMenuInteractionDelegate_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUICoordinateSpace_Proxy
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUICoordinateSpace_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUICoordinateSpace_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUIDynamicItem_Proxy
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUIDynamicItem_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUIDynamicItem_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUIFocusEnvironment_Proxy
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUIFocusEnvironment_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUIFocusEnvironment_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUIFocusItem_Proxy
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUIFocusItem_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUIFocusItem_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUIFocusItemContainer_Proxy
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUIFocusItemContainer_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUIFocusItemContainer_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUIResponderStandardEditActions_Proxy
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUIResponderStandardEditActions_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUIResponderStandardEditActions_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUITraitChangeObservable_Proxy
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUITraitChangeObservable_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUITraitChangeObservable_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUITraitEnvironment_Proxy
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUITraitEnvironment_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUITraitEnvironment_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUIUserActivityRestoring_Proxy
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUIUserActivityRestoring_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:UIKit.IUIUserActivityRestoring_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.tvOS.TypeMap.dll:UIKit.UIAccessibilityContentSizeCategoryImageAdjustingWrapper_Proxy
-_Microsoft.tvOS.TypeMap.dll:UIKit.UIAccessibilityContentSizeCategoryImageAdjustingWrapper_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:UIKit.UIAccessibilityContentSizeCategoryImageAdjustingWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.tvOS.TypeMap.dll:UIKit.UIAccessibilityIdentificationWrapper_Proxy
-_Microsoft.tvOS.TypeMap.dll:UIKit.UIAccessibilityIdentificationWrapper_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:UIKit.UIAccessibilityIdentificationWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.tvOS.TypeMap.dll:UIKit.UIAppearanceContainerWrapper_Proxy
-_Microsoft.tvOS.TypeMap.dll:UIKit.UIAppearanceContainerWrapper_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:UIKit.UIAppearanceContainerWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.tvOS.TypeMap.dll:UIKit.UIAppearanceWrapper_Proxy
-_Microsoft.tvOS.TypeMap.dll:UIKit.UIAppearanceWrapper_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:UIKit.UIAppearanceWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
 _Microsoft.tvOS.TypeMap.dll:UIKit.UIApplication_Proxy
 _Microsoft.tvOS.TypeMap.dll:UIKit.UIApplication_Proxy..ctor()
 _Microsoft.tvOS.TypeMap.dll:UIKit.UIApplication_Proxy.CreateObject(System.IntPtr)
@@ -205,58 +79,22 @@ _Microsoft.tvOS.TypeMap.dll:UIKit.UIApplicationDelegate_Proxy..ctor()
 _Microsoft.tvOS.TypeMap.dll:UIKit.UIApplicationDelegate_Proxy.CreateObject(System.IntPtr)
 _Microsoft.tvOS.TypeMap.dll:UIKit.UIApplicationDelegate_Proxy.GetClassHandle(System.Boolean&)
 _Microsoft.tvOS.TypeMap.dll:UIKit.UIApplicationDelegate_Proxy.LookupUnmanagedFunction(System.String)
-_Microsoft.tvOS.TypeMap.dll:UIKit.UIApplicationDelegateWrapper_Proxy
-_Microsoft.tvOS.TypeMap.dll:UIKit.UIApplicationDelegateWrapper_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:UIKit.UIApplicationDelegateWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
 _Microsoft.tvOS.TypeMap.dll:UIKit.UIButton_Proxy
 _Microsoft.tvOS.TypeMap.dll:UIKit.UIButton_Proxy..ctor()
 _Microsoft.tvOS.TypeMap.dll:UIKit.UIButton_Proxy.CreateObject(System.IntPtr)
 _Microsoft.tvOS.TypeMap.dll:UIKit.UIButton_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.tvOS.TypeMap.dll:UIKit.UIContentContainerWrapper_Proxy
-_Microsoft.tvOS.TypeMap.dll:UIKit.UIContentContainerWrapper_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:UIKit.UIContentContainerWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.tvOS.TypeMap.dll:UIKit.UIContextMenuInteractionDelegateWrapper_Proxy
-_Microsoft.tvOS.TypeMap.dll:UIKit.UIContextMenuInteractionDelegateWrapper_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:UIKit.UIContextMenuInteractionDelegateWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
 _Microsoft.tvOS.TypeMap.dll:UIKit.UIControl_Proxy
 _Microsoft.tvOS.TypeMap.dll:UIKit.UIControl_Proxy..ctor()
 _Microsoft.tvOS.TypeMap.dll:UIKit.UIControl_Proxy.CreateObject(System.IntPtr)
 _Microsoft.tvOS.TypeMap.dll:UIKit.UIControl_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.tvOS.TypeMap.dll:UIKit.UICoordinateSpaceWrapper_Proxy
-_Microsoft.tvOS.TypeMap.dll:UIKit.UICoordinateSpaceWrapper_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:UIKit.UICoordinateSpaceWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.tvOS.TypeMap.dll:UIKit.UIDynamicItemWrapper_Proxy
-_Microsoft.tvOS.TypeMap.dll:UIKit.UIDynamicItemWrapper_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:UIKit.UIDynamicItemWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.tvOS.TypeMap.dll:UIKit.UIFocusEnvironmentWrapper_Proxy
-_Microsoft.tvOS.TypeMap.dll:UIKit.UIFocusEnvironmentWrapper_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:UIKit.UIFocusEnvironmentWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.tvOS.TypeMap.dll:UIKit.UIFocusItemContainerWrapper_Proxy
-_Microsoft.tvOS.TypeMap.dll:UIKit.UIFocusItemContainerWrapper_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:UIKit.UIFocusItemContainerWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.tvOS.TypeMap.dll:UIKit.UIFocusItemWrapper_Proxy
-_Microsoft.tvOS.TypeMap.dll:UIKit.UIFocusItemWrapper_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:UIKit.UIFocusItemWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
 _Microsoft.tvOS.TypeMap.dll:UIKit.UIResponder_Proxy
 _Microsoft.tvOS.TypeMap.dll:UIKit.UIResponder_Proxy..ctor()
 _Microsoft.tvOS.TypeMap.dll:UIKit.UIResponder_Proxy.CreateObject(System.IntPtr)
 _Microsoft.tvOS.TypeMap.dll:UIKit.UIResponder_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.tvOS.TypeMap.dll:UIKit.UIResponderStandardEditActionsWrapper_Proxy
-_Microsoft.tvOS.TypeMap.dll:UIKit.UIResponderStandardEditActionsWrapper_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:UIKit.UIResponderStandardEditActionsWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
 _Microsoft.tvOS.TypeMap.dll:UIKit.UIScreen_Proxy
 _Microsoft.tvOS.TypeMap.dll:UIKit.UIScreen_Proxy..ctor()
 _Microsoft.tvOS.TypeMap.dll:UIKit.UIScreen_Proxy.CreateObject(System.IntPtr)
 _Microsoft.tvOS.TypeMap.dll:UIKit.UIScreen_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.tvOS.TypeMap.dll:UIKit.UITraitChangeObservableWrapper_Proxy
-_Microsoft.tvOS.TypeMap.dll:UIKit.UITraitChangeObservableWrapper_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:UIKit.UITraitChangeObservableWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.tvOS.TypeMap.dll:UIKit.UITraitEnvironmentWrapper_Proxy
-_Microsoft.tvOS.TypeMap.dll:UIKit.UITraitEnvironmentWrapper_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:UIKit.UITraitEnvironmentWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.tvOS.TypeMap.dll:UIKit.UIUserActivityRestoringWrapper_Proxy
-_Microsoft.tvOS.TypeMap.dll:UIKit.UIUserActivityRestoringWrapper_Proxy..ctor()
-_Microsoft.tvOS.TypeMap.dll:UIKit.UIUserActivityRestoringWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
 _Microsoft.tvOS.TypeMap.dll:UIKit.UIView_Proxy
 _Microsoft.tvOS.TypeMap.dll:UIKit.UIView_Proxy..ctor()
 _Microsoft.tvOS.TypeMap.dll:UIKit.UIView_Proxy.CreateObject(System.IntPtr)
@@ -280,21 +118,6 @@ _SizeTestApp.TypeMap.dll:System.Runtime.CompilerServices.IgnoresAccessChecksToAt
 _SizeTestApp.TypeMap.dll:System.Runtime.CompilerServices.IgnoresAccessChecksToAttribute..ctor(System.String)
 Microsoft.tvOS.dll:<Module>
 Microsoft.tvOS.dll:<Module>..cctor()
-Microsoft.tvOS.dll:CloudKit.CKRecordValueWrapper
-Microsoft.tvOS.dll:CloudKit.CKRecordValueWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:CloudKit.CKRecordValueWrapper..cctor()
-Microsoft.tvOS.dll:CloudKit.CKRecordValueWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:CloudKit.ICKRecordValue
-Microsoft.tvOS.dll:CoreAnimation.CALayerDelegateWrapper
-Microsoft.tvOS.dll:CoreAnimation.CALayerDelegateWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:CoreAnimation.CALayerDelegateWrapper..cctor()
-Microsoft.tvOS.dll:CoreAnimation.CALayerDelegateWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:CoreAnimation.ICALayerDelegate
-Microsoft.tvOS.dll:CoreData.INSFetchRequestResult
-Microsoft.tvOS.dll:CoreData.NSFetchRequestResultWrapper
-Microsoft.tvOS.dll:CoreData.NSFetchRequestResultWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:CoreData.NSFetchRequestResultWrapper..cctor()
-Microsoft.tvOS.dll:CoreData.NSFetchRequestResultWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.tvOS.dll:CoreFoundation.CFArray
 Microsoft.tvOS.dll:CoreFoundation.CFArray._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.tvOS.dll:CoreFoundation.CFArray..cctor()
@@ -347,16 +170,8 @@ Microsoft.tvOS.dll:CoreGraphics.CGRect.ToString()
 Microsoft.tvOS.dll:Foundation.ExportAttribute
 Microsoft.tvOS.dll:Foundation.ExportAttribute..ctor(System.String, ObjCRuntime.ArgumentSemantic)
 Microsoft.tvOS.dll:Foundation.ExportAttribute..ctor(System.String)
-Microsoft.tvOS.dll:Foundation.INSCoding
-Microsoft.tvOS.dll:Foundation.INSCopying
-Microsoft.tvOS.dll:Foundation.INSExtensionRequestHandling
-Microsoft.tvOS.dll:Foundation.INSItemProviderReading
-Microsoft.tvOS.dll:Foundation.INSItemProviderWriting
-Microsoft.tvOS.dll:Foundation.INSMutableCopying
 Microsoft.tvOS.dll:Foundation.INSObjectFactory
 Microsoft.tvOS.dll:Foundation.INSObjectFactory._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
-Microsoft.tvOS.dll:Foundation.INSObjectProtocol
-Microsoft.tvOS.dll:Foundation.INSSecureCoding
 Microsoft.tvOS.dll:Foundation.ModelAttribute
 Microsoft.tvOS.dll:Foundation.ModelAttribute..ctor()
 Microsoft.tvOS.dll:Foundation.NSAsyncDispatcher
@@ -374,28 +189,18 @@ Microsoft.tvOS.dll:Foundation.NSAsyncSynchronizationContextDispatcher/__Registra
 Microsoft.tvOS.dll:Foundation.NSAsyncSynchronizationContextDispatcher/__Registrar_Callbacks__.callback_2645_Foundation_NSAsyncSynchronizationContextDispatcher_Apply(System.IntPtr, System.IntPtr, System.IntPtr*)
 Microsoft.tvOS.dll:Foundation.NSAutoreleasePool
 Microsoft.tvOS.dll:Foundation.NSAutoreleasePool._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:Foundation.NSAutoreleasePool._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:Foundation.NSAutoreleasePool..cctor()
 Microsoft.tvOS.dll:Foundation.NSAutoreleasePool..ctor()
 Microsoft.tvOS.dll:Foundation.NSAutoreleasePool..ctor(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:Foundation.NSAutoreleasePool.get_ClassHandle()
-Microsoft.tvOS.dll:Foundation.NSCodingWrapper
-Microsoft.tvOS.dll:Foundation.NSCodingWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:Foundation.NSCodingWrapper..cctor()
-Microsoft.tvOS.dll:Foundation.NSCodingWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.tvOS.dll:Foundation.NSComparisonResult
 Microsoft.tvOS.dll:Foundation.NSComparisonResult Foundation.NSComparisonResult::Ascending
 Microsoft.tvOS.dll:Foundation.NSComparisonResult Foundation.NSComparisonResult::Descending
 Microsoft.tvOS.dll:Foundation.NSComparisonResult Foundation.NSComparisonResult::Same
-Microsoft.tvOS.dll:Foundation.NSCopyingWrapper
-Microsoft.tvOS.dll:Foundation.NSCopyingWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:Foundation.NSCopyingWrapper..cctor()
-Microsoft.tvOS.dll:Foundation.NSCopyingWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.tvOS.dll:Foundation.NSDictionary
 Microsoft.tvOS.dll:Foundation.NSDictionary Foundation.NSDictionary/<GetEnumerator>d__66::<>4__this
 Microsoft.tvOS.dll:Foundation.NSDictionary._ObjectForKey(System.IntPtr)
 Microsoft.tvOS.dll:Foundation.NSDictionary._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:Foundation.NSDictionary._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:Foundation.NSDictionary..cctor()
 Microsoft.tvOS.dll:Foundation.NSDictionary..ctor(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:Foundation.NSDictionary.ContainsKeyValuePair(System.Collections.Generic.KeyValuePair`2<Foundation.NSObject,Foundation.NSObject>)
@@ -432,32 +237,14 @@ Microsoft.tvOS.dll:Foundation.NSException ObjCRuntime.MarshalObjectiveCException
 Microsoft.tvOS.dll:Foundation.NSException ObjCRuntime.ObjCException::native_exc
 Microsoft.tvOS.dll:Foundation.NSException ObjCRuntime.ObjCException::NSException()
 Microsoft.tvOS.dll:Foundation.NSException._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:Foundation.NSException._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:Foundation.NSException..cctor()
 Microsoft.tvOS.dll:Foundation.NSException..ctor(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:Foundation.NSException.get_CallStackSymbols()
 Microsoft.tvOS.dll:Foundation.NSException.get_ClassHandle()
 Microsoft.tvOS.dll:Foundation.NSException.get_Name()
 Microsoft.tvOS.dll:Foundation.NSException.get_Reason()
-Microsoft.tvOS.dll:Foundation.NSExtensionRequestHandlingWrapper
-Microsoft.tvOS.dll:Foundation.NSExtensionRequestHandlingWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:Foundation.NSExtensionRequestHandlingWrapper..cctor()
-Microsoft.tvOS.dll:Foundation.NSExtensionRequestHandlingWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:Foundation.NSItemProviderReadingWrapper
-Microsoft.tvOS.dll:Foundation.NSItemProviderReadingWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:Foundation.NSItemProviderReadingWrapper..cctor()
-Microsoft.tvOS.dll:Foundation.NSItemProviderReadingWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:Foundation.NSItemProviderWritingWrapper
-Microsoft.tvOS.dll:Foundation.NSItemProviderWritingWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:Foundation.NSItemProviderWritingWrapper..cctor()
-Microsoft.tvOS.dll:Foundation.NSItemProviderWritingWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:Foundation.NSMutableCopyingWrapper
-Microsoft.tvOS.dll:Foundation.NSMutableCopyingWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:Foundation.NSMutableCopyingWrapper..cctor()
-Microsoft.tvOS.dll:Foundation.NSMutableCopyingWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.tvOS.dll:Foundation.NSNumber
 Microsoft.tvOS.dll:Foundation.NSNumber._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:Foundation.NSNumber._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:Foundation.NSNumber..cctor()
 Microsoft.tvOS.dll:Foundation.NSNumber..ctor(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:Foundation.NSNumber.Compare(Foundation.NSNumber)
@@ -556,26 +343,16 @@ Microsoft.tvOS.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/
 Microsoft.tvOS.dll:Foundation.NSObjectData
 Microsoft.tvOS.dll:Foundation.NSObjectFlag
 Microsoft.tvOS.dll:Foundation.NSObjectFlag Foundation.NSObjectFlag::Empty
-Microsoft.tvOS.dll:Foundation.NSObjectProtocolWrapper
-Microsoft.tvOS.dll:Foundation.NSObjectProtocolWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:Foundation.NSObjectProtocolWrapper..cctor()
-Microsoft.tvOS.dll:Foundation.NSObjectProtocolWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.tvOS.dll:Foundation.NSRunLoop
 Microsoft.tvOS.dll:Foundation.NSRunLoop Foundation.NSRunLoop::Main()
 Microsoft.tvOS.dll:Foundation.NSRunLoop._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:Foundation.NSRunLoop._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:Foundation.NSRunLoop..cctor()
 Microsoft.tvOS.dll:Foundation.NSRunLoop..ctor(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:Foundation.NSRunLoop.get_ClassHandle()
 Microsoft.tvOS.dll:Foundation.NSRunLoop.get_Main()
-Microsoft.tvOS.dll:Foundation.NSSecureCodingWrapper
-Microsoft.tvOS.dll:Foundation.NSSecureCodingWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:Foundation.NSSecureCodingWrapper..cctor()
-Microsoft.tvOS.dll:Foundation.NSSecureCodingWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.tvOS.dll:Foundation.NSString
 Microsoft.tvOS.dll:Foundation.NSString Foundation.NSString::Empty
 Microsoft.tvOS.dll:Foundation.NSString._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:Foundation.NSString._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:Foundation.NSString..cctor()
 Microsoft.tvOS.dll:Foundation.NSString..ctor(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:Foundation.NSString..ctor(System.String)
@@ -597,16 +374,12 @@ Microsoft.tvOS.dll:Foundation.NSSynchronizationContextDispatcher/__Registrar_Cal
 Microsoft.tvOS.dll:Foundation.NSSynchronizationContextDispatcher/__Registrar_Callbacks__.callback_2640_Foundation_NSSynchronizationContextDispatcher_Apply(System.IntPtr, System.IntPtr, System.IntPtr*)
 Microsoft.tvOS.dll:Foundation.NSValue
 Microsoft.tvOS.dll:Foundation.NSValue._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:Foundation.NSValue._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:Foundation.NSValue..cctor()
 Microsoft.tvOS.dll:Foundation.NSValue..ctor(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:Foundation.NSValue.get_ClassHandle()
 Microsoft.tvOS.dll:Foundation.ProtocolAttribute
 Microsoft.tvOS.dll:Foundation.ProtocolAttribute..ctor()
 Microsoft.tvOS.dll:Foundation.ProtocolAttribute.get_WrapperType()
-Microsoft.tvOS.dll:Foundation.ProtocolAttribute.set_FormalSince(System.String)
-Microsoft.tvOS.dll:Foundation.ProtocolAttribute.set_Name(System.String)
-Microsoft.tvOS.dll:Foundation.ProtocolAttribute.set_WrapperType(System.Type)
 Microsoft.tvOS.dll:Foundation.RegisterAttribute
 Microsoft.tvOS.dll:Foundation.RegisterAttribute..ctor(System.String, System.Boolean)
 Microsoft.tvOS.dll:Foundation.RegisterAttribute..ctor(System.String)
@@ -627,10 +400,6 @@ Microsoft.tvOS.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSemantic::Re
 Microsoft.tvOS.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSemantic::Strong
 Microsoft.tvOS.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSemantic::UnsafeUnretained
 Microsoft.tvOS.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSemantic::Weak
-Microsoft.tvOS.dll:ObjCRuntime.BaseWrapper
-Microsoft.tvOS.dll:ObjCRuntime.BaseWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:ObjCRuntime.BaseWrapper.Release()
-Microsoft.tvOS.dll:ObjCRuntime.BaseWrapper.Retain()
 Microsoft.tvOS.dll:ObjCRuntime.BlockCollector
 Microsoft.tvOS.dll:ObjCRuntime.BlockCollector..ctor(System.IntPtr)
 Microsoft.tvOS.dll:ObjCRuntime.BlockCollector.Add(System.IntPtr)
@@ -877,7 +646,6 @@ Microsoft.tvOS.dll:ObjCRuntime.ObjCException.ToString()
 Microsoft.tvOS.dll:ObjCRuntime.ObjCSuper
 Microsoft.tvOS.dll:ObjCRuntime.ObjCSuper..ctor(Foundation.NSObject)
 Microsoft.tvOS.dll:ObjCRuntime.ProtocolProxyAttribute
-Microsoft.tvOS.dll:ObjCRuntime.ProtocolProxyAttribute..ctor()
 Microsoft.tvOS.dll:ObjCRuntime.ProtocolProxyAttribute.CreateObject(System.IntPtr, System.Boolean)
 Microsoft.tvOS.dll:ObjCRuntime.RegistrarHelper
 Microsoft.tvOS.dll:ObjCRuntime.RegistrarHelper.GetMapEntry(System.IntPtr)
@@ -1502,10 +1270,6 @@ Microsoft.tvOS.dll:System.String Foundation.NSException::Name()
 Microsoft.tvOS.dll:System.String Foundation.NSException::Reason()
 Microsoft.tvOS.dll:System.String Foundation.NSNumber::StringValue()
 Microsoft.tvOS.dll:System.String Foundation.NSObject::Description()
-Microsoft.tvOS.dll:System.String Foundation.ProtocolAttribute::<Name>k__BackingField
-Microsoft.tvOS.dll:System.String Foundation.ProtocolAttribute::FormalSince()
-Microsoft.tvOS.dll:System.String Foundation.ProtocolAttribute::informal_until
-Microsoft.tvOS.dll:System.String Foundation.ProtocolAttribute::Name()
 Microsoft.tvOS.dll:System.String Foundation.RegisterAttribute::name
 Microsoft.tvOS.dll:System.String ObjCRuntime.Class::Name()
 Microsoft.tvOS.dll:System.String ObjCRuntime.ObjCException::Message()
@@ -1533,41 +1297,8 @@ Microsoft.tvOS.dll:System.UInt32 ObjCRuntime.Runtime/MTTypeFlags::value__
 Microsoft.tvOS.dll:System.UInt32* ObjCRuntime.Runtime/MTProtocolMap::protocol_tokens
 Microsoft.tvOS.dll:System.UInt64 UIKit.UIControlState::value__
 Microsoft.tvOS.dll:System.UIntPtr Foundation.NSDictionary::Count()
-Microsoft.tvOS.dll:UIKit.IUIAccessibilityContentSizeCategoryImageAdjusting
-Microsoft.tvOS.dll:UIKit.IUIAccessibilityIdentification
-Microsoft.tvOS.dll:UIKit.IUIAppearance
-Microsoft.tvOS.dll:UIKit.IUIAppearanceContainer
-Microsoft.tvOS.dll:UIKit.IUIApplicationDelegate
-Microsoft.tvOS.dll:UIKit.IUIContentContainer
-Microsoft.tvOS.dll:UIKit.IUIContextMenuInteractionDelegate
-Microsoft.tvOS.dll:UIKit.IUICoordinateSpace
-Microsoft.tvOS.dll:UIKit.IUIDynamicItem
-Microsoft.tvOS.dll:UIKit.IUIFocusEnvironment
-Microsoft.tvOS.dll:UIKit.IUIFocusItem
-Microsoft.tvOS.dll:UIKit.IUIFocusItemContainer
-Microsoft.tvOS.dll:UIKit.IUIResponderStandardEditActions
-Microsoft.tvOS.dll:UIKit.IUITraitChangeObservable
-Microsoft.tvOS.dll:UIKit.IUITraitEnvironment
-Microsoft.tvOS.dll:UIKit.IUIUserActivityRestoring
-Microsoft.tvOS.dll:UIKit.UIAccessibilityContentSizeCategoryImageAdjustingWrapper
-Microsoft.tvOS.dll:UIKit.UIAccessibilityContentSizeCategoryImageAdjustingWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:UIKit.UIAccessibilityContentSizeCategoryImageAdjustingWrapper..cctor()
-Microsoft.tvOS.dll:UIKit.UIAccessibilityContentSizeCategoryImageAdjustingWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:UIKit.UIAccessibilityIdentificationWrapper
-Microsoft.tvOS.dll:UIKit.UIAccessibilityIdentificationWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:UIKit.UIAccessibilityIdentificationWrapper..cctor()
-Microsoft.tvOS.dll:UIKit.UIAccessibilityIdentificationWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:UIKit.UIAppearanceContainerWrapper
-Microsoft.tvOS.dll:UIKit.UIAppearanceContainerWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:UIKit.UIAppearanceContainerWrapper..cctor()
-Microsoft.tvOS.dll:UIKit.UIAppearanceContainerWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:UIKit.UIAppearanceWrapper
-Microsoft.tvOS.dll:UIKit.UIAppearanceWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:UIKit.UIAppearanceWrapper..cctor()
-Microsoft.tvOS.dll:UIKit.UIAppearanceWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.tvOS.dll:UIKit.UIApplication
 Microsoft.tvOS.dll:UIKit.UIApplication._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:UIKit.UIApplication._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:UIKit.UIApplication..cctor()
 Microsoft.tvOS.dll:UIKit.UIApplication..ctor(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:UIKit.UIApplication.Dispose(System.Boolean)
@@ -1579,7 +1310,6 @@ Microsoft.tvOS.dll:UIKit.UIApplication.UIApplicationMain(System.Int32, System.St
 Microsoft.tvOS.dll:UIKit.UIApplication.xamarin_UIApplicationMain(System.Int32, System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
 Microsoft.tvOS.dll:UIKit.UIApplicationDelegate
 Microsoft.tvOS.dll:UIKit.UIApplicationDelegate._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:UIKit.UIApplicationDelegate._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:UIKit.UIApplicationDelegate..cctor()
 Microsoft.tvOS.dll:UIKit.UIApplicationDelegate..ctor()
 Microsoft.tvOS.dll:UIKit.UIApplicationDelegate..ctor(ObjCRuntime.NativeHandle)
@@ -1587,29 +1317,15 @@ Microsoft.tvOS.dll:UIKit.UIApplicationDelegate..ctor(System.IntPtr, ObjCRuntime.
 Microsoft.tvOS.dll:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)
 Microsoft.tvOS.dll:UIKit.UIApplicationDelegate/__Registrar_Callbacks__
 Microsoft.tvOS.dll:UIKit.UIApplicationDelegate/__Registrar_Callbacks__.callback_361_UIKit_UIApplicationDelegate__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
-Microsoft.tvOS.dll:UIKit.UIApplicationDelegateWrapper
-Microsoft.tvOS.dll:UIKit.UIApplicationDelegateWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:UIKit.UIApplicationDelegateWrapper..cctor()
-Microsoft.tvOS.dll:UIKit.UIApplicationDelegateWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.tvOS.dll:UIKit.UIButton
 Microsoft.tvOS.dll:UIKit.UIButton._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:UIKit.UIButton._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:UIKit.UIButton..cctor()
 Microsoft.tvOS.dll:UIKit.UIButton..ctor(CoreGraphics.CGRect)
 Microsoft.tvOS.dll:UIKit.UIButton..ctor(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:UIKit.UIButton.get_ClassHandle()
 Microsoft.tvOS.dll:UIKit.UIButton.SetTitle(System.String, UIKit.UIControlState)
-Microsoft.tvOS.dll:UIKit.UIContentContainerWrapper
-Microsoft.tvOS.dll:UIKit.UIContentContainerWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:UIKit.UIContentContainerWrapper..cctor()
-Microsoft.tvOS.dll:UIKit.UIContentContainerWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:UIKit.UIContextMenuInteractionDelegateWrapper
-Microsoft.tvOS.dll:UIKit.UIContextMenuInteractionDelegateWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:UIKit.UIContextMenuInteractionDelegateWrapper..cctor()
-Microsoft.tvOS.dll:UIKit.UIContextMenuInteractionDelegateWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.tvOS.dll:UIKit.UIControl
 Microsoft.tvOS.dll:UIKit.UIControl._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:UIKit.UIControl._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:UIKit.UIControl..cctor()
 Microsoft.tvOS.dll:UIKit.UIControl..ctor(Foundation.NSObjectFlag)
 Microsoft.tvOS.dll:UIKit.UIControl..ctor(ObjCRuntime.NativeHandle)
@@ -1622,67 +1338,28 @@ Microsoft.tvOS.dll:UIKit.UIControlState UIKit.UIControlState::Highlighted
 Microsoft.tvOS.dll:UIKit.UIControlState UIKit.UIControlState::Normal
 Microsoft.tvOS.dll:UIKit.UIControlState UIKit.UIControlState::Reserved
 Microsoft.tvOS.dll:UIKit.UIControlState UIKit.UIControlState::Selected
-Microsoft.tvOS.dll:UIKit.UICoordinateSpaceWrapper
-Microsoft.tvOS.dll:UIKit.UICoordinateSpaceWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:UIKit.UICoordinateSpaceWrapper..cctor()
-Microsoft.tvOS.dll:UIKit.UICoordinateSpaceWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:UIKit.UIDynamicItemWrapper
-Microsoft.tvOS.dll:UIKit.UIDynamicItemWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:UIKit.UIDynamicItemWrapper..cctor()
-Microsoft.tvOS.dll:UIKit.UIDynamicItemWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:UIKit.UIFocusEnvironmentWrapper
-Microsoft.tvOS.dll:UIKit.UIFocusEnvironmentWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:UIKit.UIFocusEnvironmentWrapper..cctor()
-Microsoft.tvOS.dll:UIKit.UIFocusEnvironmentWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:UIKit.UIFocusItemContainerWrapper
-Microsoft.tvOS.dll:UIKit.UIFocusItemContainerWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:UIKit.UIFocusItemContainerWrapper..cctor()
-Microsoft.tvOS.dll:UIKit.UIFocusItemContainerWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:UIKit.UIFocusItemWrapper
-Microsoft.tvOS.dll:UIKit.UIFocusItemWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:UIKit.UIFocusItemWrapper..cctor()
-Microsoft.tvOS.dll:UIKit.UIFocusItemWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.tvOS.dll:UIKit.UIKitSynchronizationContext
 Microsoft.tvOS.dll:UIKit.UIKitSynchronizationContext..ctor()
 Microsoft.tvOS.dll:UIKit.UIKitSynchronizationContext.Post(System.Threading.SendOrPostCallback, System.Object)
 Microsoft.tvOS.dll:UIKit.UIKitSynchronizationContext.Send(System.Threading.SendOrPostCallback, System.Object)
 Microsoft.tvOS.dll:UIKit.UIResponder
 Microsoft.tvOS.dll:UIKit.UIResponder._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:UIKit.UIResponder._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:UIKit.UIResponder..cctor()
 Microsoft.tvOS.dll:UIKit.UIResponder..ctor(Foundation.NSObjectFlag)
 Microsoft.tvOS.dll:UIKit.UIResponder..ctor(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:UIKit.UIResponder.get_ClassHandle()
-Microsoft.tvOS.dll:UIKit.UIResponderStandardEditActionsWrapper
-Microsoft.tvOS.dll:UIKit.UIResponderStandardEditActionsWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:UIKit.UIResponderStandardEditActionsWrapper..cctor()
-Microsoft.tvOS.dll:UIKit.UIResponderStandardEditActionsWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.tvOS.dll:UIKit.UIScreen
 Microsoft.tvOS.dll:UIKit.UIScreen UIKit.UIScreen::MainScreen()
 Microsoft.tvOS.dll:UIKit.UIScreen._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:UIKit.UIScreen._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:UIKit.UIScreen..cctor()
 Microsoft.tvOS.dll:UIKit.UIScreen..ctor(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:UIKit.UIScreen.Dispose(System.Boolean)
 Microsoft.tvOS.dll:UIKit.UIScreen.get_Bounds()
 Microsoft.tvOS.dll:UIKit.UIScreen.get_ClassHandle()
 Microsoft.tvOS.dll:UIKit.UIScreen.get_MainScreen()
-Microsoft.tvOS.dll:UIKit.UITraitChangeObservableWrapper
-Microsoft.tvOS.dll:UIKit.UITraitChangeObservableWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:UIKit.UITraitChangeObservableWrapper..cctor()
-Microsoft.tvOS.dll:UIKit.UITraitChangeObservableWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:UIKit.UITraitEnvironmentWrapper
-Microsoft.tvOS.dll:UIKit.UITraitEnvironmentWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:UIKit.UITraitEnvironmentWrapper..cctor()
-Microsoft.tvOS.dll:UIKit.UITraitEnvironmentWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:UIKit.UIUserActivityRestoringWrapper
-Microsoft.tvOS.dll:UIKit.UIUserActivityRestoringWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:UIKit.UIUserActivityRestoringWrapper..cctor()
-Microsoft.tvOS.dll:UIKit.UIUserActivityRestoringWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.tvOS.dll:UIKit.UIView
 Microsoft.tvOS.dll:UIKit.UIView UIKit.UIViewController::View()
 Microsoft.tvOS.dll:UIKit.UIView._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:UIKit.UIView._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:UIKit.UIView..cctor()
 Microsoft.tvOS.dll:UIKit.UIView..ctor(Foundation.NSObjectFlag)
 Microsoft.tvOS.dll:UIKit.UIView..ctor(ObjCRuntime.NativeHandle)
@@ -1693,7 +1370,6 @@ Microsoft.tvOS.dll:UIKit.UIView.get_ClassHandle()
 Microsoft.tvOS.dll:UIKit.UIViewController
 Microsoft.tvOS.dll:UIKit.UIViewController UIKit.UIWindow::RootViewController()
 Microsoft.tvOS.dll:UIKit.UIViewController._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:UIKit.UIViewController._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:UIKit.UIViewController..cctor()
 Microsoft.tvOS.dll:UIKit.UIViewController..ctor()
 Microsoft.tvOS.dll:UIKit.UIViewController..ctor(ObjCRuntime.NativeHandle)
@@ -1703,7 +1379,6 @@ Microsoft.tvOS.dll:UIKit.UIViewController.get_ClassHandle()
 Microsoft.tvOS.dll:UIKit.UIViewController.get_View()
 Microsoft.tvOS.dll:UIKit.UIWindow
 Microsoft.tvOS.dll:UIKit.UIWindow._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:UIKit.UIWindow._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:UIKit.UIWindow..cctor()
 Microsoft.tvOS.dll:UIKit.UIWindow..ctor(CoreGraphics.CGRect)
 Microsoft.tvOS.dll:UIKit.UIWindow..ctor(ObjCRuntime.NativeHandle)
@@ -22441,7 +22116,6 @@ System.Private.CoreLib.dll:System.Version..ctor(System.Int32, System.Int32, Syst
 System.Private.CoreLib.dll:System.Version..ctor(System.Int32, System.Int32, System.Int32)
 System.Private.CoreLib.dll:System.Version..ctor(System.Int32, System.Int32)
 System.Private.CoreLib.dll:System.Version.<TryFormatCore>g__ThrowArgumentException|35_0`1(System.String)
-System.Private.CoreLib.dll:System.Version.<TryParseComponent>g__ThrowFailure|49_0`1(System.Number/ParsingStatus, System.Int32, System.String, System.ReadOnlySpan`1<TChar>)
 System.Private.CoreLib.dll:System.Version.CompareTo(System.Object)
 System.Private.CoreLib.dll:System.Version.CompareTo(System.Version)
 System.Private.CoreLib.dll:System.Version.Equals(System.Object)
@@ -22454,15 +22128,12 @@ System.Private.CoreLib.dll:System.Version.get_Revision()
 System.Private.CoreLib.dll:System.Version.GetHashCode()
 System.Private.CoreLib.dll:System.Version.op_Equality(System.Version, System.Version)
 System.Private.CoreLib.dll:System.Version.op_Inequality(System.Version, System.Version)
-System.Private.CoreLib.dll:System.Version.Parse(System.String)
-System.Private.CoreLib.dll:System.Version.ParseVersion`1(System.ReadOnlySpan`1<TChar>, System.Boolean)
 System.Private.CoreLib.dll:System.Version.System.IFormattable.ToString(System.String, System.IFormatProvider)
 System.Private.CoreLib.dll:System.Version.System.ISpanFormattable.TryFormat(System.Span`1<System.Char>, out System.Int32&, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider)
 System.Private.CoreLib.dll:System.Version.ToString()
 System.Private.CoreLib.dll:System.Version.ToString(System.Int32)
 System.Private.CoreLib.dll:System.Version.TryFormat(System.Span`1<System.Char>, System.Int32, out System.Int32&)
 System.Private.CoreLib.dll:System.Version.TryFormatCore`1(System.Span`1<TChar>, System.Int32, out System.Int32&)
-System.Private.CoreLib.dll:System.Version.TryParseComponent`1(System.ReadOnlySpan`1<TChar>, System.String, System.Boolean, System.ReadOnlySpan`1<TChar>, out System.Int32&)
 System.Private.CoreLib.dll:System.Void
 System.Private.CoreLib.dll:System.Void* System.Buffers.MemoryHandle::_pointer
 System.Private.CoreLib.dll:System.Void* System.Buffers.MemoryHandle::Pointer()

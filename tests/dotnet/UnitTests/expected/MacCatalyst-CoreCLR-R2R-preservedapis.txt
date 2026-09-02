@@ -4,30 +4,6 @@ _Microsoft.MacCatalyst.TypeMap.dll:AppKit.ActionDispatcher_Proxy..ctor()
 _Microsoft.MacCatalyst.TypeMap.dll:AppKit.ActionDispatcher_Proxy.CreateObject(System.IntPtr)
 _Microsoft.MacCatalyst.TypeMap.dll:AppKit.ActionDispatcher_Proxy.GetClassHandle(System.Boolean&)
 _Microsoft.MacCatalyst.TypeMap.dll:AppKit.ActionDispatcher_Proxy.LookupUnmanagedFunction(System.String)
-_Microsoft.MacCatalyst.TypeMap.dll:AppKit.INSTouchBarProvider_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:AppKit.INSTouchBarProvider_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:AppKit.INSTouchBarProvider_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:AppKit.NSTouchBarProviderWrapper_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:AppKit.NSTouchBarProviderWrapper_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:AppKit.NSTouchBarProviderWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:CloudKit.CKRecordValueWrapper_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:CloudKit.CKRecordValueWrapper_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:CloudKit.CKRecordValueWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:CloudKit.ICKRecordValue_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:CloudKit.ICKRecordValue_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:CloudKit.ICKRecordValue_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:CoreAnimation.CALayerDelegateWrapper_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:CoreAnimation.CALayerDelegateWrapper_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:CoreAnimation.CALayerDelegateWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:CoreAnimation.ICALayerDelegate_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:CoreAnimation.ICALayerDelegate_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:CoreAnimation.ICALayerDelegate_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:CoreData.INSFetchRequestResult_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:CoreData.INSFetchRequestResult_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:CoreData.INSFetchRequestResult_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:CoreData.NSFetchRequestResultWrapper_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:CoreData.NSFetchRequestResultWrapper_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:CoreData.NSFetchRequestResultWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
 _Microsoft.MacCatalyst.TypeMap.dll:CoreFoundation.CFArray_Proxy
 _Microsoft.MacCatalyst.TypeMap.dll:CoreFoundation.CFArray_Proxy..ctor()
 _Microsoft.MacCatalyst.TypeMap.dll:CoreFoundation.CFArray_Proxy.CreateObject(System.IntPtr, System.Boolean)
@@ -39,30 +15,6 @@ _Microsoft.MacCatalyst.TypeMap.dll:Foundation__NSObject.NSObject_Disposer_Proxy.
 _Microsoft.MacCatalyst.TypeMap.dll:Foundation__NSObject.NSObject_Disposer_Proxy.CreateObject(System.IntPtr)
 _Microsoft.MacCatalyst.TypeMap.dll:Foundation__NSObject.NSObject_Disposer_Proxy.GetClassHandle(System.Boolean&)
 _Microsoft.MacCatalyst.TypeMap.dll:Foundation__NSObject.NSObject_Disposer_Proxy.LookupUnmanagedFunction(System.String)
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.INSCoding_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.INSCoding_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.INSCoding_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.INSCopying_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.INSCopying_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.INSCopying_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.INSExtensionRequestHandling_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.INSExtensionRequestHandling_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.INSExtensionRequestHandling_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.INSItemProviderReading_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.INSItemProviderReading_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.INSItemProviderReading_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.INSItemProviderWriting_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.INSItemProviderWriting_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.INSItemProviderWriting_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.INSMutableCopying_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.INSMutableCopying_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.INSMutableCopying_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.INSObjectProtocol_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.INSObjectProtocol_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.INSObjectProtocol_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.INSSecureCoding_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.INSSecureCoding_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.INSSecureCoding_Proxy.CreateObject(System.IntPtr, System.Boolean)
 _Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSAsyncDispatcher_Proxy
 _Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSAsyncDispatcher_Proxy..ctor()
 _Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSAsyncDispatcher_Proxy.CreateObject(System.IntPtr)
@@ -77,12 +29,6 @@ _Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSAutoreleasePool_Proxy
 _Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSAutoreleasePool_Proxy..ctor()
 _Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSAutoreleasePool_Proxy.CreateObject(System.IntPtr)
 _Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSAutoreleasePool_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSCodingWrapper_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSCodingWrapper_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSCodingWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSCopyingWrapper_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSCopyingWrapper_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSCopyingWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
 _Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSDictionary_Proxy
 _Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSDictionary_Proxy..ctor()
 _Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSDictionary_Proxy.CreateObject(System.IntPtr)
@@ -96,18 +42,6 @@ _Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSException_Proxy
 _Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSException_Proxy..ctor()
 _Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSException_Proxy.CreateObject(System.IntPtr)
 _Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSException_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSExtensionRequestHandlingWrapper_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSExtensionRequestHandlingWrapper_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSExtensionRequestHandlingWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSItemProviderReadingWrapper_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSItemProviderReadingWrapper_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSItemProviderReadingWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSItemProviderWritingWrapper_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSItemProviderWritingWrapper_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSItemProviderWritingWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSMutableCopyingWrapper_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSMutableCopyingWrapper_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSMutableCopyingWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
 _Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSNumber_Proxy
 _Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSNumber_Proxy..ctor()
 _Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSNumber_Proxy.CreateObject(System.IntPtr)
@@ -116,16 +50,10 @@ _Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSObject_Proxy
 _Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSObject_Proxy..ctor()
 _Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSObject_Proxy.CreateObject(System.IntPtr)
 _Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSObject_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSObjectProtocolWrapper_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSObjectProtocolWrapper_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSObjectProtocolWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
 _Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSRunLoop_Proxy
 _Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSRunLoop_Proxy..ctor()
 _Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSRunLoop_Proxy.CreateObject(System.IntPtr)
 _Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSRunLoop_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSSecureCodingWrapper_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSSecureCodingWrapper_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSSecureCodingWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
 _Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSString_Proxy
 _Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSString_Proxy..ctor()
 _Microsoft.MacCatalyst.TypeMap.dll:Foundation.NSString_Proxy.CreateObject(System.IntPtr)
@@ -147,84 +75,6 @@ _Microsoft.MacCatalyst.TypeMap.dll:ObjCRuntime.Selector_Proxy..ctor()
 _Microsoft.MacCatalyst.TypeMap.dll:ObjCRuntime.Selector_Proxy.CreateObject(System.IntPtr, System.Boolean)
 _Microsoft.MacCatalyst.TypeMap.dll:System.Runtime.CompilerServices.IgnoresAccessChecksToAttribute
 _Microsoft.MacCatalyst.TypeMap.dll:System.Runtime.CompilerServices.IgnoresAccessChecksToAttribute..ctor(System.String)
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIAccessibilityContentSizeCategoryImageAdjusting_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIAccessibilityContentSizeCategoryImageAdjusting_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIAccessibilityContentSizeCategoryImageAdjusting_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIAccessibilityIdentification_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIAccessibilityIdentification_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIAccessibilityIdentification_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIActivityItemsConfigurationProviding_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIActivityItemsConfigurationProviding_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIActivityItemsConfigurationProviding_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIAppearance_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIAppearance_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIAppearance_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIAppearanceContainer_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIAppearanceContainer_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIAppearanceContainer_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIApplicationDelegate_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIApplicationDelegate_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIApplicationDelegate_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIContentContainer_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIContentContainer_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIContentContainer_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIContextMenuInteractionDelegate_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIContextMenuInteractionDelegate_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIContextMenuInteractionDelegate_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUICoordinateSpace_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUICoordinateSpace_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUICoordinateSpace_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIDynamicItem_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIDynamicItem_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIDynamicItem_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIFocusEnvironment_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIFocusEnvironment_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIFocusEnvironment_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIFocusItem_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIFocusItem_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIFocusItem_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIFocusItemContainer_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIFocusItemContainer_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIFocusItemContainer_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUILargeContentViewerItem_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUILargeContentViewerItem_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUILargeContentViewerItem_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIPasteConfigurationSupporting_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIPasteConfigurationSupporting_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIPasteConfigurationSupporting_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIPopoverPresentationControllerSourceItem_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIPopoverPresentationControllerSourceItem_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIPopoverPresentationControllerSourceItem_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIResponderStandardEditActions_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIResponderStandardEditActions_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIResponderStandardEditActions_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUISpringLoadedInteractionSupporting_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUISpringLoadedInteractionSupporting_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUISpringLoadedInteractionSupporting_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUITraitChangeObservable_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUITraitChangeObservable_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUITraitChangeObservable_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUITraitEnvironment_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUITraitEnvironment_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUITraitEnvironment_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIUserActivityRestoring_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIUserActivityRestoring_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.IUIUserActivityRestoring_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIAccessibilityContentSizeCategoryImageAdjustingWrapper_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIAccessibilityContentSizeCategoryImageAdjustingWrapper_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIAccessibilityContentSizeCategoryImageAdjustingWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIAccessibilityIdentificationWrapper_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIAccessibilityIdentificationWrapper_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIAccessibilityIdentificationWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIActivityItemsConfigurationProvidingWrapper_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIActivityItemsConfigurationProvidingWrapper_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIActivityItemsConfigurationProvidingWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIAppearanceContainerWrapper_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIAppearanceContainerWrapper_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIAppearanceContainerWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIAppearanceWrapper_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIAppearanceWrapper_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIAppearanceWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
 _Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIApplication_Proxy
 _Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIApplication_Proxy..ctor()
 _Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIApplication_Proxy.CreateObject(System.IntPtr)
@@ -234,70 +84,22 @@ _Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIApplicationDelegate_Proxy..ctor()
 _Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIApplicationDelegate_Proxy.CreateObject(System.IntPtr)
 _Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIApplicationDelegate_Proxy.GetClassHandle(System.Boolean&)
 _Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIApplicationDelegate_Proxy.LookupUnmanagedFunction(System.String)
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIApplicationDelegateWrapper_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIApplicationDelegateWrapper_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIApplicationDelegateWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
 _Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIButton_Proxy
 _Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIButton_Proxy..ctor()
 _Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIButton_Proxy.CreateObject(System.IntPtr)
 _Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIButton_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIContentContainerWrapper_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIContentContainerWrapper_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIContentContainerWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIContextMenuInteractionDelegateWrapper_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIContextMenuInteractionDelegateWrapper_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIContextMenuInteractionDelegateWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
 _Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIControl_Proxy
 _Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIControl_Proxy..ctor()
 _Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIControl_Proxy.CreateObject(System.IntPtr)
 _Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIControl_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UICoordinateSpaceWrapper_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UICoordinateSpaceWrapper_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UICoordinateSpaceWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIDynamicItemWrapper_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIDynamicItemWrapper_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIDynamicItemWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIFocusEnvironmentWrapper_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIFocusEnvironmentWrapper_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIFocusEnvironmentWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIFocusItemContainerWrapper_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIFocusItemContainerWrapper_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIFocusItemContainerWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIFocusItemWrapper_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIFocusItemWrapper_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIFocusItemWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UILargeContentViewerItemWrapper_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UILargeContentViewerItemWrapper_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UILargeContentViewerItemWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIPasteConfigurationSupportingWrapper_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIPasteConfigurationSupportingWrapper_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIPasteConfigurationSupportingWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIPopoverPresentationControllerSourceItemWrapper_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIPopoverPresentationControllerSourceItemWrapper_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIPopoverPresentationControllerSourceItemWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
 _Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIResponder_Proxy
 _Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIResponder_Proxy..ctor()
 _Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIResponder_Proxy.CreateObject(System.IntPtr)
 _Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIResponder_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIResponderStandardEditActionsWrapper_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIResponderStandardEditActionsWrapper_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIResponderStandardEditActionsWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
 _Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIScreen_Proxy
 _Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIScreen_Proxy..ctor()
 _Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIScreen_Proxy.CreateObject(System.IntPtr)
 _Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIScreen_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UISpringLoadedInteractionSupportingWrapper_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UISpringLoadedInteractionSupportingWrapper_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UISpringLoadedInteractionSupportingWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UITraitChangeObservableWrapper_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UITraitChangeObservableWrapper_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UITraitChangeObservableWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UITraitEnvironmentWrapper_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UITraitEnvironmentWrapper_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UITraitEnvironmentWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIUserActivityRestoringWrapper_Proxy
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIUserActivityRestoringWrapper_Proxy..ctor()
-_Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIUserActivityRestoringWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
 _Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIView_Proxy
 _Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIView_Proxy..ctor()
 _Microsoft.MacCatalyst.TypeMap.dll:UIKit.UIView_Proxy.CreateObject(System.IntPtr)
@@ -332,26 +134,6 @@ Microsoft.MacCatalyst.dll:AppKit.ActionDispatcher/__Registrar_Callbacks__.callba
 Microsoft.MacCatalyst.dll:AppKit.ActionDispatcher/__Registrar_Callbacks__.callback_3135_AppKit_ActionDispatcher_OnActivated2(System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
 Microsoft.MacCatalyst.dll:AppKit.ActionDispatcher/__Registrar_Callbacks__.callback_3136_AppKit_ActionDispatcher__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
 Microsoft.MacCatalyst.dll:AppKit.ActionDispatcher/__Registrar_Callbacks__.callback_3137_AppKit_ActionDispatcher_get_WorksWhenModal(System.IntPtr, System.IntPtr, System.IntPtr*)
-Microsoft.MacCatalyst.dll:AppKit.INSTouchBarProvider
-Microsoft.MacCatalyst.dll:AppKit.NSTouchBarProviderWrapper
-Microsoft.MacCatalyst.dll:AppKit.NSTouchBarProviderWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:AppKit.NSTouchBarProviderWrapper..cctor()
-Microsoft.MacCatalyst.dll:AppKit.NSTouchBarProviderWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:CloudKit.CKRecordValueWrapper
-Microsoft.MacCatalyst.dll:CloudKit.CKRecordValueWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:CloudKit.CKRecordValueWrapper..cctor()
-Microsoft.MacCatalyst.dll:CloudKit.CKRecordValueWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:CloudKit.ICKRecordValue
-Microsoft.MacCatalyst.dll:CoreAnimation.CALayerDelegateWrapper
-Microsoft.MacCatalyst.dll:CoreAnimation.CALayerDelegateWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:CoreAnimation.CALayerDelegateWrapper..cctor()
-Microsoft.MacCatalyst.dll:CoreAnimation.CALayerDelegateWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:CoreAnimation.ICALayerDelegate
-Microsoft.MacCatalyst.dll:CoreData.INSFetchRequestResult
-Microsoft.MacCatalyst.dll:CoreData.NSFetchRequestResultWrapper
-Microsoft.MacCatalyst.dll:CoreData.NSFetchRequestResultWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:CoreData.NSFetchRequestResultWrapper..cctor()
-Microsoft.MacCatalyst.dll:CoreData.NSFetchRequestResultWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.MacCatalyst.dll:CoreFoundation.CFArray
 Microsoft.MacCatalyst.dll:CoreFoundation.CFArray._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.MacCatalyst.dll:CoreFoundation.CFArray..cctor()
@@ -404,16 +186,8 @@ Microsoft.MacCatalyst.dll:CoreGraphics.CGRect.ToString()
 Microsoft.MacCatalyst.dll:Foundation.ExportAttribute
 Microsoft.MacCatalyst.dll:Foundation.ExportAttribute..ctor(System.String, ObjCRuntime.ArgumentSemantic)
 Microsoft.MacCatalyst.dll:Foundation.ExportAttribute..ctor(System.String)
-Microsoft.MacCatalyst.dll:Foundation.INSCoding
-Microsoft.MacCatalyst.dll:Foundation.INSCopying
-Microsoft.MacCatalyst.dll:Foundation.INSExtensionRequestHandling
-Microsoft.MacCatalyst.dll:Foundation.INSItemProviderReading
-Microsoft.MacCatalyst.dll:Foundation.INSItemProviderWriting
-Microsoft.MacCatalyst.dll:Foundation.INSMutableCopying
 Microsoft.MacCatalyst.dll:Foundation.INSObjectFactory
 Microsoft.MacCatalyst.dll:Foundation.INSObjectFactory._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
-Microsoft.MacCatalyst.dll:Foundation.INSObjectProtocol
-Microsoft.MacCatalyst.dll:Foundation.INSSecureCoding
 Microsoft.MacCatalyst.dll:Foundation.ModelAttribute
 Microsoft.MacCatalyst.dll:Foundation.ModelAttribute..ctor()
 Microsoft.MacCatalyst.dll:Foundation.NSAsyncDispatcher
@@ -431,28 +205,18 @@ Microsoft.MacCatalyst.dll:Foundation.NSAsyncSynchronizationContextDispatcher/__R
 Microsoft.MacCatalyst.dll:Foundation.NSAsyncSynchronizationContextDispatcher/__Registrar_Callbacks__.callback_3028_Foundation_NSAsyncSynchronizationContextDispatcher_Apply(System.IntPtr, System.IntPtr, System.IntPtr*)
 Microsoft.MacCatalyst.dll:Foundation.NSAutoreleasePool
 Microsoft.MacCatalyst.dll:Foundation.NSAutoreleasePool._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:Foundation.NSAutoreleasePool._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:Foundation.NSAutoreleasePool..cctor()
 Microsoft.MacCatalyst.dll:Foundation.NSAutoreleasePool..ctor()
 Microsoft.MacCatalyst.dll:Foundation.NSAutoreleasePool..ctor(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:Foundation.NSAutoreleasePool.get_ClassHandle()
-Microsoft.MacCatalyst.dll:Foundation.NSCodingWrapper
-Microsoft.MacCatalyst.dll:Foundation.NSCodingWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:Foundation.NSCodingWrapper..cctor()
-Microsoft.MacCatalyst.dll:Foundation.NSCodingWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.MacCatalyst.dll:Foundation.NSComparisonResult
 Microsoft.MacCatalyst.dll:Foundation.NSComparisonResult Foundation.NSComparisonResult::Ascending
 Microsoft.MacCatalyst.dll:Foundation.NSComparisonResult Foundation.NSComparisonResult::Descending
 Microsoft.MacCatalyst.dll:Foundation.NSComparisonResult Foundation.NSComparisonResult::Same
-Microsoft.MacCatalyst.dll:Foundation.NSCopyingWrapper
-Microsoft.MacCatalyst.dll:Foundation.NSCopyingWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:Foundation.NSCopyingWrapper..cctor()
-Microsoft.MacCatalyst.dll:Foundation.NSCopyingWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.MacCatalyst.dll:Foundation.NSDictionary
 Microsoft.MacCatalyst.dll:Foundation.NSDictionary Foundation.NSDictionary/<GetEnumerator>d__66::<>4__this
 Microsoft.MacCatalyst.dll:Foundation.NSDictionary._ObjectForKey(System.IntPtr)
 Microsoft.MacCatalyst.dll:Foundation.NSDictionary._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:Foundation.NSDictionary._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:Foundation.NSDictionary..cctor()
 Microsoft.MacCatalyst.dll:Foundation.NSDictionary..ctor(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:Foundation.NSDictionary.ContainsKeyValuePair(System.Collections.Generic.KeyValuePair`2<Foundation.NSObject,Foundation.NSObject>)
@@ -489,32 +253,14 @@ Microsoft.MacCatalyst.dll:Foundation.NSException ObjCRuntime.MarshalObjectiveCEx
 Microsoft.MacCatalyst.dll:Foundation.NSException ObjCRuntime.ObjCException::native_exc
 Microsoft.MacCatalyst.dll:Foundation.NSException ObjCRuntime.ObjCException::NSException()
 Microsoft.MacCatalyst.dll:Foundation.NSException._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:Foundation.NSException._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:Foundation.NSException..cctor()
 Microsoft.MacCatalyst.dll:Foundation.NSException..ctor(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:Foundation.NSException.get_CallStackSymbols()
 Microsoft.MacCatalyst.dll:Foundation.NSException.get_ClassHandle()
 Microsoft.MacCatalyst.dll:Foundation.NSException.get_Name()
 Microsoft.MacCatalyst.dll:Foundation.NSException.get_Reason()
-Microsoft.MacCatalyst.dll:Foundation.NSExtensionRequestHandlingWrapper
-Microsoft.MacCatalyst.dll:Foundation.NSExtensionRequestHandlingWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:Foundation.NSExtensionRequestHandlingWrapper..cctor()
-Microsoft.MacCatalyst.dll:Foundation.NSExtensionRequestHandlingWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:Foundation.NSItemProviderReadingWrapper
-Microsoft.MacCatalyst.dll:Foundation.NSItemProviderReadingWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:Foundation.NSItemProviderReadingWrapper..cctor()
-Microsoft.MacCatalyst.dll:Foundation.NSItemProviderReadingWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:Foundation.NSItemProviderWritingWrapper
-Microsoft.MacCatalyst.dll:Foundation.NSItemProviderWritingWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:Foundation.NSItemProviderWritingWrapper..cctor()
-Microsoft.MacCatalyst.dll:Foundation.NSItemProviderWritingWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:Foundation.NSMutableCopyingWrapper
-Microsoft.MacCatalyst.dll:Foundation.NSMutableCopyingWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:Foundation.NSMutableCopyingWrapper..cctor()
-Microsoft.MacCatalyst.dll:Foundation.NSMutableCopyingWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.MacCatalyst.dll:Foundation.NSNumber
 Microsoft.MacCatalyst.dll:Foundation.NSNumber._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:Foundation.NSNumber._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:Foundation.NSNumber..cctor()
 Microsoft.MacCatalyst.dll:Foundation.NSNumber..ctor(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:Foundation.NSNumber.Compare(Foundation.NSNumber)
@@ -613,26 +359,16 @@ Microsoft.MacCatalyst.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NS
 Microsoft.MacCatalyst.dll:Foundation.NSObjectData
 Microsoft.MacCatalyst.dll:Foundation.NSObjectFlag
 Microsoft.MacCatalyst.dll:Foundation.NSObjectFlag Foundation.NSObjectFlag::Empty
-Microsoft.MacCatalyst.dll:Foundation.NSObjectProtocolWrapper
-Microsoft.MacCatalyst.dll:Foundation.NSObjectProtocolWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:Foundation.NSObjectProtocolWrapper..cctor()
-Microsoft.MacCatalyst.dll:Foundation.NSObjectProtocolWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.MacCatalyst.dll:Foundation.NSRunLoop
 Microsoft.MacCatalyst.dll:Foundation.NSRunLoop Foundation.NSRunLoop::Main()
 Microsoft.MacCatalyst.dll:Foundation.NSRunLoop._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:Foundation.NSRunLoop._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:Foundation.NSRunLoop..cctor()
 Microsoft.MacCatalyst.dll:Foundation.NSRunLoop..ctor(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:Foundation.NSRunLoop.get_ClassHandle()
 Microsoft.MacCatalyst.dll:Foundation.NSRunLoop.get_Main()
-Microsoft.MacCatalyst.dll:Foundation.NSSecureCodingWrapper
-Microsoft.MacCatalyst.dll:Foundation.NSSecureCodingWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:Foundation.NSSecureCodingWrapper..cctor()
-Microsoft.MacCatalyst.dll:Foundation.NSSecureCodingWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.MacCatalyst.dll:Foundation.NSString
 Microsoft.MacCatalyst.dll:Foundation.NSString Foundation.NSString::Empty
 Microsoft.MacCatalyst.dll:Foundation.NSString._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:Foundation.NSString._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:Foundation.NSString..cctor()
 Microsoft.MacCatalyst.dll:Foundation.NSString..ctor(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:Foundation.NSString..ctor(System.String)
@@ -654,16 +390,12 @@ Microsoft.MacCatalyst.dll:Foundation.NSSynchronizationContextDispatcher/__Regist
 Microsoft.MacCatalyst.dll:Foundation.NSSynchronizationContextDispatcher/__Registrar_Callbacks__.callback_3023_Foundation_NSSynchronizationContextDispatcher_Apply(System.IntPtr, System.IntPtr, System.IntPtr*)
 Microsoft.MacCatalyst.dll:Foundation.NSValue
 Microsoft.MacCatalyst.dll:Foundation.NSValue._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:Foundation.NSValue._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:Foundation.NSValue..cctor()
 Microsoft.MacCatalyst.dll:Foundation.NSValue..ctor(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:Foundation.NSValue.get_ClassHandle()
 Microsoft.MacCatalyst.dll:Foundation.ProtocolAttribute
 Microsoft.MacCatalyst.dll:Foundation.ProtocolAttribute..ctor()
 Microsoft.MacCatalyst.dll:Foundation.ProtocolAttribute.get_WrapperType()
-Microsoft.MacCatalyst.dll:Foundation.ProtocolAttribute.set_FormalSince(System.String)
-Microsoft.MacCatalyst.dll:Foundation.ProtocolAttribute.set_Name(System.String)
-Microsoft.MacCatalyst.dll:Foundation.ProtocolAttribute.set_WrapperType(System.Type)
 Microsoft.MacCatalyst.dll:Foundation.RegisterAttribute
 Microsoft.MacCatalyst.dll:Foundation.RegisterAttribute..ctor(System.String, System.Boolean)
 Microsoft.MacCatalyst.dll:Foundation.RegisterAttribute..ctor(System.String)
@@ -680,10 +412,6 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSeman
 Microsoft.MacCatalyst.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSemantic::Strong
 Microsoft.MacCatalyst.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSemantic::UnsafeUnretained
 Microsoft.MacCatalyst.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSemantic::Weak
-Microsoft.MacCatalyst.dll:ObjCRuntime.BaseWrapper
-Microsoft.MacCatalyst.dll:ObjCRuntime.BaseWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:ObjCRuntime.BaseWrapper.Release()
-Microsoft.MacCatalyst.dll:ObjCRuntime.BaseWrapper.Retain()
 Microsoft.MacCatalyst.dll:ObjCRuntime.BlockCollector
 Microsoft.MacCatalyst.dll:ObjCRuntime.BlockCollector..ctor(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.BlockCollector.Add(System.IntPtr)
@@ -931,7 +659,6 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.ObjCException.ToString()
 Microsoft.MacCatalyst.dll:ObjCRuntime.ObjCSuper
 Microsoft.MacCatalyst.dll:ObjCRuntime.ObjCSuper..ctor(Foundation.NSObject)
 Microsoft.MacCatalyst.dll:ObjCRuntime.ProtocolProxyAttribute
-Microsoft.MacCatalyst.dll:ObjCRuntime.ProtocolProxyAttribute..ctor()
 Microsoft.MacCatalyst.dll:ObjCRuntime.ProtocolProxyAttribute.CreateObject(System.IntPtr, System.Boolean)
 Microsoft.MacCatalyst.dll:ObjCRuntime.RegistrarHelper
 Microsoft.MacCatalyst.dll:ObjCRuntime.RegistrarHelper.GetMapEntry(System.IntPtr)
@@ -1560,10 +1287,6 @@ Microsoft.MacCatalyst.dll:System.String Foundation.NSException::Name()
 Microsoft.MacCatalyst.dll:System.String Foundation.NSException::Reason()
 Microsoft.MacCatalyst.dll:System.String Foundation.NSNumber::StringValue()
 Microsoft.MacCatalyst.dll:System.String Foundation.NSObject::Description()
-Microsoft.MacCatalyst.dll:System.String Foundation.ProtocolAttribute::<Name>k__BackingField
-Microsoft.MacCatalyst.dll:System.String Foundation.ProtocolAttribute::FormalSince()
-Microsoft.MacCatalyst.dll:System.String Foundation.ProtocolAttribute::informal_until
-Microsoft.MacCatalyst.dll:System.String Foundation.ProtocolAttribute::Name()
 Microsoft.MacCatalyst.dll:System.String Foundation.RegisterAttribute::name
 Microsoft.MacCatalyst.dll:System.String ObjCRuntime.Class::Name()
 Microsoft.MacCatalyst.dll:System.String ObjCRuntime.ObjCException::Message()
@@ -1591,50 +1314,8 @@ Microsoft.MacCatalyst.dll:System.UInt32 ObjCRuntime.Runtime/MTTypeFlags::value__
 Microsoft.MacCatalyst.dll:System.UInt32* ObjCRuntime.Runtime/MTProtocolMap::protocol_tokens
 Microsoft.MacCatalyst.dll:System.UInt64 UIKit.UIControlState::value__
 Microsoft.MacCatalyst.dll:System.UIntPtr Foundation.NSDictionary::Count()
-Microsoft.MacCatalyst.dll:UIKit.IUIAccessibilityContentSizeCategoryImageAdjusting
-Microsoft.MacCatalyst.dll:UIKit.IUIAccessibilityIdentification
-Microsoft.MacCatalyst.dll:UIKit.IUIActivityItemsConfigurationProviding
-Microsoft.MacCatalyst.dll:UIKit.IUIAppearance
-Microsoft.MacCatalyst.dll:UIKit.IUIAppearanceContainer
-Microsoft.MacCatalyst.dll:UIKit.IUIApplicationDelegate
-Microsoft.MacCatalyst.dll:UIKit.IUIContentContainer
-Microsoft.MacCatalyst.dll:UIKit.IUIContextMenuInteractionDelegate
-Microsoft.MacCatalyst.dll:UIKit.IUICoordinateSpace
-Microsoft.MacCatalyst.dll:UIKit.IUIDynamicItem
-Microsoft.MacCatalyst.dll:UIKit.IUIFocusEnvironment
-Microsoft.MacCatalyst.dll:UIKit.IUIFocusItem
-Microsoft.MacCatalyst.dll:UIKit.IUIFocusItemContainer
-Microsoft.MacCatalyst.dll:UIKit.IUILargeContentViewerItem
-Microsoft.MacCatalyst.dll:UIKit.IUIPasteConfigurationSupporting
-Microsoft.MacCatalyst.dll:UIKit.IUIPopoverPresentationControllerSourceItem
-Microsoft.MacCatalyst.dll:UIKit.IUIResponderStandardEditActions
-Microsoft.MacCatalyst.dll:UIKit.IUISpringLoadedInteractionSupporting
-Microsoft.MacCatalyst.dll:UIKit.IUITraitChangeObservable
-Microsoft.MacCatalyst.dll:UIKit.IUITraitEnvironment
-Microsoft.MacCatalyst.dll:UIKit.IUIUserActivityRestoring
-Microsoft.MacCatalyst.dll:UIKit.UIAccessibilityContentSizeCategoryImageAdjustingWrapper
-Microsoft.MacCatalyst.dll:UIKit.UIAccessibilityContentSizeCategoryImageAdjustingWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UIAccessibilityContentSizeCategoryImageAdjustingWrapper..cctor()
-Microsoft.MacCatalyst.dll:UIKit.UIAccessibilityContentSizeCategoryImageAdjustingWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UIAccessibilityIdentificationWrapper
-Microsoft.MacCatalyst.dll:UIKit.UIAccessibilityIdentificationWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UIAccessibilityIdentificationWrapper..cctor()
-Microsoft.MacCatalyst.dll:UIKit.UIAccessibilityIdentificationWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UIActivityItemsConfigurationProvidingWrapper
-Microsoft.MacCatalyst.dll:UIKit.UIActivityItemsConfigurationProvidingWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UIActivityItemsConfigurationProvidingWrapper..cctor()
-Microsoft.MacCatalyst.dll:UIKit.UIActivityItemsConfigurationProvidingWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UIAppearanceContainerWrapper
-Microsoft.MacCatalyst.dll:UIKit.UIAppearanceContainerWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UIAppearanceContainerWrapper..cctor()
-Microsoft.MacCatalyst.dll:UIKit.UIAppearanceContainerWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UIAppearanceWrapper
-Microsoft.MacCatalyst.dll:UIKit.UIAppearanceWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UIAppearanceWrapper..cctor()
-Microsoft.MacCatalyst.dll:UIKit.UIAppearanceWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.MacCatalyst.dll:UIKit.UIApplication
 Microsoft.MacCatalyst.dll:UIKit.UIApplication._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UIApplication._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:UIKit.UIApplication..cctor()
 Microsoft.MacCatalyst.dll:UIKit.UIApplication..ctor(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:UIKit.UIApplication.Dispose(System.Boolean)
@@ -1646,7 +1327,6 @@ Microsoft.MacCatalyst.dll:UIKit.UIApplication.UIApplicationMain(System.Int32, Sy
 Microsoft.MacCatalyst.dll:UIKit.UIApplication.xamarin_UIApplicationMain(System.Int32, System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
 Microsoft.MacCatalyst.dll:UIKit.UIApplicationDelegate
 Microsoft.MacCatalyst.dll:UIKit.UIApplicationDelegate._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UIApplicationDelegate._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:UIKit.UIApplicationDelegate..cctor()
 Microsoft.MacCatalyst.dll:UIKit.UIApplicationDelegate..ctor()
 Microsoft.MacCatalyst.dll:UIKit.UIApplicationDelegate..ctor(ObjCRuntime.NativeHandle)
@@ -1654,29 +1334,15 @@ Microsoft.MacCatalyst.dll:UIKit.UIApplicationDelegate..ctor(System.IntPtr, ObjCR
 Microsoft.MacCatalyst.dll:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)
 Microsoft.MacCatalyst.dll:UIKit.UIApplicationDelegate/__Registrar_Callbacks__
 Microsoft.MacCatalyst.dll:UIKit.UIApplicationDelegate/__Registrar_Callbacks__.callback_566_UIKit_UIApplicationDelegate__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
-Microsoft.MacCatalyst.dll:UIKit.UIApplicationDelegateWrapper
-Microsoft.MacCatalyst.dll:UIKit.UIApplicationDelegateWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UIApplicationDelegateWrapper..cctor()
-Microsoft.MacCatalyst.dll:UIKit.UIApplicationDelegateWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.MacCatalyst.dll:UIKit.UIButton
 Microsoft.MacCatalyst.dll:UIKit.UIButton._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UIButton._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:UIKit.UIButton..cctor()
 Microsoft.MacCatalyst.dll:UIKit.UIButton..ctor(CoreGraphics.CGRect)
 Microsoft.MacCatalyst.dll:UIKit.UIButton..ctor(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:UIKit.UIButton.get_ClassHandle()
 Microsoft.MacCatalyst.dll:UIKit.UIButton.SetTitle(System.String, UIKit.UIControlState)
-Microsoft.MacCatalyst.dll:UIKit.UIContentContainerWrapper
-Microsoft.MacCatalyst.dll:UIKit.UIContentContainerWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UIContentContainerWrapper..cctor()
-Microsoft.MacCatalyst.dll:UIKit.UIContentContainerWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UIContextMenuInteractionDelegateWrapper
-Microsoft.MacCatalyst.dll:UIKit.UIContextMenuInteractionDelegateWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UIContextMenuInteractionDelegateWrapper..cctor()
-Microsoft.MacCatalyst.dll:UIKit.UIContextMenuInteractionDelegateWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.MacCatalyst.dll:UIKit.UIControl
 Microsoft.MacCatalyst.dll:UIKit.UIControl._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UIControl._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:UIKit.UIControl..cctor()
 Microsoft.MacCatalyst.dll:UIKit.UIControl..ctor(Foundation.NSObjectFlag)
 Microsoft.MacCatalyst.dll:UIKit.UIControl..ctor(ObjCRuntime.NativeHandle)
@@ -1689,83 +1355,28 @@ Microsoft.MacCatalyst.dll:UIKit.UIControlState UIKit.UIControlState::Highlighted
 Microsoft.MacCatalyst.dll:UIKit.UIControlState UIKit.UIControlState::Normal
 Microsoft.MacCatalyst.dll:UIKit.UIControlState UIKit.UIControlState::Reserved
 Microsoft.MacCatalyst.dll:UIKit.UIControlState UIKit.UIControlState::Selected
-Microsoft.MacCatalyst.dll:UIKit.UICoordinateSpaceWrapper
-Microsoft.MacCatalyst.dll:UIKit.UICoordinateSpaceWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UICoordinateSpaceWrapper..cctor()
-Microsoft.MacCatalyst.dll:UIKit.UICoordinateSpaceWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UIDynamicItemWrapper
-Microsoft.MacCatalyst.dll:UIKit.UIDynamicItemWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UIDynamicItemWrapper..cctor()
-Microsoft.MacCatalyst.dll:UIKit.UIDynamicItemWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UIFocusEnvironmentWrapper
-Microsoft.MacCatalyst.dll:UIKit.UIFocusEnvironmentWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UIFocusEnvironmentWrapper..cctor()
-Microsoft.MacCatalyst.dll:UIKit.UIFocusEnvironmentWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UIFocusItemContainerWrapper
-Microsoft.MacCatalyst.dll:UIKit.UIFocusItemContainerWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UIFocusItemContainerWrapper..cctor()
-Microsoft.MacCatalyst.dll:UIKit.UIFocusItemContainerWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UIFocusItemWrapper
-Microsoft.MacCatalyst.dll:UIKit.UIFocusItemWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UIFocusItemWrapper..cctor()
-Microsoft.MacCatalyst.dll:UIKit.UIFocusItemWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.MacCatalyst.dll:UIKit.UIKitSynchronizationContext
 Microsoft.MacCatalyst.dll:UIKit.UIKitSynchronizationContext..ctor()
 Microsoft.MacCatalyst.dll:UIKit.UIKitSynchronizationContext.Post(System.Threading.SendOrPostCallback, System.Object)
 Microsoft.MacCatalyst.dll:UIKit.UIKitSynchronizationContext.Send(System.Threading.SendOrPostCallback, System.Object)
-Microsoft.MacCatalyst.dll:UIKit.UILargeContentViewerItemWrapper
-Microsoft.MacCatalyst.dll:UIKit.UILargeContentViewerItemWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UILargeContentViewerItemWrapper..cctor()
-Microsoft.MacCatalyst.dll:UIKit.UILargeContentViewerItemWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UIPasteConfigurationSupportingWrapper
-Microsoft.MacCatalyst.dll:UIKit.UIPasteConfigurationSupportingWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UIPasteConfigurationSupportingWrapper..cctor()
-Microsoft.MacCatalyst.dll:UIKit.UIPasteConfigurationSupportingWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UIPopoverPresentationControllerSourceItemWrapper
-Microsoft.MacCatalyst.dll:UIKit.UIPopoverPresentationControllerSourceItemWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UIPopoverPresentationControllerSourceItemWrapper..cctor()
-Microsoft.MacCatalyst.dll:UIKit.UIPopoverPresentationControllerSourceItemWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.MacCatalyst.dll:UIKit.UIResponder
 Microsoft.MacCatalyst.dll:UIKit.UIResponder._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UIResponder._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:UIKit.UIResponder..cctor()
 Microsoft.MacCatalyst.dll:UIKit.UIResponder..ctor(Foundation.NSObjectFlag)
 Microsoft.MacCatalyst.dll:UIKit.UIResponder..ctor(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:UIKit.UIResponder.get_ClassHandle()
-Microsoft.MacCatalyst.dll:UIKit.UIResponderStandardEditActionsWrapper
-Microsoft.MacCatalyst.dll:UIKit.UIResponderStandardEditActionsWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UIResponderStandardEditActionsWrapper..cctor()
-Microsoft.MacCatalyst.dll:UIKit.UIResponderStandardEditActionsWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.MacCatalyst.dll:UIKit.UIScreen
 Microsoft.MacCatalyst.dll:UIKit.UIScreen UIKit.UIScreen::MainScreen()
 Microsoft.MacCatalyst.dll:UIKit.UIScreen._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UIScreen._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:UIKit.UIScreen..cctor()
 Microsoft.MacCatalyst.dll:UIKit.UIScreen..ctor(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:UIKit.UIScreen.Dispose(System.Boolean)
 Microsoft.MacCatalyst.dll:UIKit.UIScreen.get_Bounds()
 Microsoft.MacCatalyst.dll:UIKit.UIScreen.get_ClassHandle()
 Microsoft.MacCatalyst.dll:UIKit.UIScreen.get_MainScreen()
-Microsoft.MacCatalyst.dll:UIKit.UISpringLoadedInteractionSupportingWrapper
-Microsoft.MacCatalyst.dll:UIKit.UISpringLoadedInteractionSupportingWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UISpringLoadedInteractionSupportingWrapper..cctor()
-Microsoft.MacCatalyst.dll:UIKit.UISpringLoadedInteractionSupportingWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UITraitChangeObservableWrapper
-Microsoft.MacCatalyst.dll:UIKit.UITraitChangeObservableWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UITraitChangeObservableWrapper..cctor()
-Microsoft.MacCatalyst.dll:UIKit.UITraitChangeObservableWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UITraitEnvironmentWrapper
-Microsoft.MacCatalyst.dll:UIKit.UITraitEnvironmentWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UITraitEnvironmentWrapper..cctor()
-Microsoft.MacCatalyst.dll:UIKit.UITraitEnvironmentWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UIUserActivityRestoringWrapper
-Microsoft.MacCatalyst.dll:UIKit.UIUserActivityRestoringWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UIUserActivityRestoringWrapper..cctor()
-Microsoft.MacCatalyst.dll:UIKit.UIUserActivityRestoringWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.MacCatalyst.dll:UIKit.UIView
 Microsoft.MacCatalyst.dll:UIKit.UIView UIKit.UIViewController::View()
 Microsoft.MacCatalyst.dll:UIKit.UIView._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UIView._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:UIKit.UIView..cctor()
 Microsoft.MacCatalyst.dll:UIKit.UIView..ctor(Foundation.NSObjectFlag)
 Microsoft.MacCatalyst.dll:UIKit.UIView..ctor(ObjCRuntime.NativeHandle)
@@ -1776,7 +1387,6 @@ Microsoft.MacCatalyst.dll:UIKit.UIView.get_ClassHandle()
 Microsoft.MacCatalyst.dll:UIKit.UIViewController
 Microsoft.MacCatalyst.dll:UIKit.UIViewController UIKit.UIWindow::RootViewController()
 Microsoft.MacCatalyst.dll:UIKit.UIViewController._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UIViewController._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:UIKit.UIViewController..cctor()
 Microsoft.MacCatalyst.dll:UIKit.UIViewController..ctor()
 Microsoft.MacCatalyst.dll:UIKit.UIViewController..ctor(ObjCRuntime.NativeHandle)
@@ -1786,7 +1396,6 @@ Microsoft.MacCatalyst.dll:UIKit.UIViewController.get_ClassHandle()
 Microsoft.MacCatalyst.dll:UIKit.UIViewController.get_View()
 Microsoft.MacCatalyst.dll:UIKit.UIWindow
 Microsoft.MacCatalyst.dll:UIKit.UIWindow._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:UIKit.UIWindow._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:UIKit.UIWindow..cctor()
 Microsoft.MacCatalyst.dll:UIKit.UIWindow..ctor(CoreGraphics.CGRect)
 Microsoft.MacCatalyst.dll:UIKit.UIWindow..ctor(ObjCRuntime.NativeHandle)
@@ -22591,7 +22200,6 @@ System.Private.CoreLib.dll:System.Version..ctor(System.Int32, System.Int32, Syst
 System.Private.CoreLib.dll:System.Version..ctor(System.Int32, System.Int32, System.Int32)
 System.Private.CoreLib.dll:System.Version..ctor(System.Int32, System.Int32)
 System.Private.CoreLib.dll:System.Version.<TryFormatCore>g__ThrowArgumentException|35_0`1(System.String)
-System.Private.CoreLib.dll:System.Version.<TryParseComponent>g__ThrowFailure|49_0`1(System.Number/ParsingStatus, System.Int32, System.String, System.ReadOnlySpan`1<TChar>)
 System.Private.CoreLib.dll:System.Version.CompareTo(System.Object)
 System.Private.CoreLib.dll:System.Version.CompareTo(System.Version)
 System.Private.CoreLib.dll:System.Version.Equals(System.Object)
@@ -22604,15 +22212,12 @@ System.Private.CoreLib.dll:System.Version.get_Revision()
 System.Private.CoreLib.dll:System.Version.GetHashCode()
 System.Private.CoreLib.dll:System.Version.op_Equality(System.Version, System.Version)
 System.Private.CoreLib.dll:System.Version.op_Inequality(System.Version, System.Version)
-System.Private.CoreLib.dll:System.Version.Parse(System.String)
-System.Private.CoreLib.dll:System.Version.ParseVersion`1(System.ReadOnlySpan`1<TChar>, System.Boolean)
 System.Private.CoreLib.dll:System.Version.System.IFormattable.ToString(System.String, System.IFormatProvider)
 System.Private.CoreLib.dll:System.Version.System.ISpanFormattable.TryFormat(System.Span`1<System.Char>, out System.Int32&, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider)
 System.Private.CoreLib.dll:System.Version.ToString()
 System.Private.CoreLib.dll:System.Version.ToString(System.Int32)
 System.Private.CoreLib.dll:System.Version.TryFormat(System.Span`1<System.Char>, System.Int32, out System.Int32&)
 System.Private.CoreLib.dll:System.Version.TryFormatCore`1(System.Span`1<TChar>, System.Int32, out System.Int32&)
-System.Private.CoreLib.dll:System.Version.TryParseComponent`1(System.ReadOnlySpan`1<TChar>, System.String, System.Boolean, System.ReadOnlySpan`1<TChar>, out System.Int32&)
 System.Private.CoreLib.dll:System.Void
 System.Private.CoreLib.dll:System.Void* System.Buffers.MemoryHandle::_pointer
 System.Private.CoreLib.dll:System.Void* System.Buffers.MemoryHandle::Pointer()

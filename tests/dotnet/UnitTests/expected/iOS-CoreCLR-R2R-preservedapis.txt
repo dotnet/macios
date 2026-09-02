@@ -1,22 +1,4 @@
 _Microsoft.iOS.TypeMap.dll:<Module>
-_Microsoft.iOS.TypeMap.dll:CloudKit.CKRecordValueWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:CloudKit.CKRecordValueWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:CloudKit.CKRecordValueWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:CloudKit.ICKRecordValue_Proxy
-_Microsoft.iOS.TypeMap.dll:CloudKit.ICKRecordValue_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:CloudKit.ICKRecordValue_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:CoreAnimation.CALayerDelegateWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:CoreAnimation.CALayerDelegateWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:CoreAnimation.CALayerDelegateWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:CoreAnimation.ICALayerDelegate_Proxy
-_Microsoft.iOS.TypeMap.dll:CoreAnimation.ICALayerDelegate_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:CoreAnimation.ICALayerDelegate_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:CoreData.INSFetchRequestResult_Proxy
-_Microsoft.iOS.TypeMap.dll:CoreData.INSFetchRequestResult_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:CoreData.INSFetchRequestResult_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:CoreData.NSFetchRequestResultWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:CoreData.NSFetchRequestResultWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:CoreData.NSFetchRequestResultWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
 _Microsoft.iOS.TypeMap.dll:CoreFoundation.CFArray_Proxy
 _Microsoft.iOS.TypeMap.dll:CoreFoundation.CFArray_Proxy..ctor()
 _Microsoft.iOS.TypeMap.dll:CoreFoundation.CFArray_Proxy.CreateObject(System.IntPtr, System.Boolean)
@@ -28,30 +10,6 @@ _Microsoft.iOS.TypeMap.dll:Foundation__NSObject.NSObject_Disposer_Proxy..ctor()
 _Microsoft.iOS.TypeMap.dll:Foundation__NSObject.NSObject_Disposer_Proxy.CreateObject(System.IntPtr)
 _Microsoft.iOS.TypeMap.dll:Foundation__NSObject.NSObject_Disposer_Proxy.GetClassHandle(System.Boolean&)
 _Microsoft.iOS.TypeMap.dll:Foundation__NSObject.NSObject_Disposer_Proxy.LookupUnmanagedFunction(System.String)
-_Microsoft.iOS.TypeMap.dll:Foundation.INSCoding_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.INSCoding_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.INSCoding_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:Foundation.INSCopying_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.INSCopying_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.INSCopying_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:Foundation.INSExtensionRequestHandling_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.INSExtensionRequestHandling_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.INSExtensionRequestHandling_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:Foundation.INSItemProviderReading_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.INSItemProviderReading_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.INSItemProviderReading_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:Foundation.INSItemProviderWriting_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.INSItemProviderWriting_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.INSItemProviderWriting_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:Foundation.INSMutableCopying_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.INSMutableCopying_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.INSMutableCopying_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:Foundation.INSObjectProtocol_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.INSObjectProtocol_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.INSObjectProtocol_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:Foundation.INSSecureCoding_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.INSSecureCoding_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.INSSecureCoding_Proxy.CreateObject(System.IntPtr, System.Boolean)
 _Microsoft.iOS.TypeMap.dll:Foundation.NSAsyncDispatcher_Proxy
 _Microsoft.iOS.TypeMap.dll:Foundation.NSAsyncDispatcher_Proxy..ctor()
 _Microsoft.iOS.TypeMap.dll:Foundation.NSAsyncDispatcher_Proxy.CreateObject(System.IntPtr)
@@ -66,12 +24,6 @@ _Microsoft.iOS.TypeMap.dll:Foundation.NSAutoreleasePool_Proxy
 _Microsoft.iOS.TypeMap.dll:Foundation.NSAutoreleasePool_Proxy..ctor()
 _Microsoft.iOS.TypeMap.dll:Foundation.NSAutoreleasePool_Proxy.CreateObject(System.IntPtr)
 _Microsoft.iOS.TypeMap.dll:Foundation.NSAutoreleasePool_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSCodingWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.NSCodingWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.NSCodingWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSCopyingWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.NSCopyingWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.NSCopyingWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
 _Microsoft.iOS.TypeMap.dll:Foundation.NSDictionary_Proxy
 _Microsoft.iOS.TypeMap.dll:Foundation.NSDictionary_Proxy..ctor()
 _Microsoft.iOS.TypeMap.dll:Foundation.NSDictionary_Proxy.CreateObject(System.IntPtr)
@@ -85,18 +37,6 @@ _Microsoft.iOS.TypeMap.dll:Foundation.NSException_Proxy
 _Microsoft.iOS.TypeMap.dll:Foundation.NSException_Proxy..ctor()
 _Microsoft.iOS.TypeMap.dll:Foundation.NSException_Proxy.CreateObject(System.IntPtr)
 _Microsoft.iOS.TypeMap.dll:Foundation.NSException_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSExtensionRequestHandlingWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.NSExtensionRequestHandlingWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.NSExtensionRequestHandlingWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSItemProviderReadingWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.NSItemProviderReadingWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.NSItemProviderReadingWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSItemProviderWritingWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.NSItemProviderWritingWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.NSItemProviderWritingWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSMutableCopyingWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.NSMutableCopyingWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.NSMutableCopyingWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
 _Microsoft.iOS.TypeMap.dll:Foundation.NSNumber_Proxy
 _Microsoft.iOS.TypeMap.dll:Foundation.NSNumber_Proxy..ctor()
 _Microsoft.iOS.TypeMap.dll:Foundation.NSNumber_Proxy.CreateObject(System.IntPtr)
@@ -105,16 +45,10 @@ _Microsoft.iOS.TypeMap.dll:Foundation.NSObject_Proxy
 _Microsoft.iOS.TypeMap.dll:Foundation.NSObject_Proxy..ctor()
 _Microsoft.iOS.TypeMap.dll:Foundation.NSObject_Proxy.CreateObject(System.IntPtr)
 _Microsoft.iOS.TypeMap.dll:Foundation.NSObject_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSObjectProtocolWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.NSObjectProtocolWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.NSObjectProtocolWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
 _Microsoft.iOS.TypeMap.dll:Foundation.NSRunLoop_Proxy
 _Microsoft.iOS.TypeMap.dll:Foundation.NSRunLoop_Proxy..ctor()
 _Microsoft.iOS.TypeMap.dll:Foundation.NSRunLoop_Proxy.CreateObject(System.IntPtr)
 _Microsoft.iOS.TypeMap.dll:Foundation.NSRunLoop_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.iOS.TypeMap.dll:Foundation.NSSecureCodingWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:Foundation.NSSecureCodingWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:Foundation.NSSecureCodingWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
 _Microsoft.iOS.TypeMap.dll:Foundation.NSString_Proxy
 _Microsoft.iOS.TypeMap.dll:Foundation.NSString_Proxy..ctor()
 _Microsoft.iOS.TypeMap.dll:Foundation.NSString_Proxy.CreateObject(System.IntPtr)
@@ -136,84 +70,6 @@ _Microsoft.iOS.TypeMap.dll:ObjCRuntime.Selector_Proxy..ctor()
 _Microsoft.iOS.TypeMap.dll:ObjCRuntime.Selector_Proxy.CreateObject(System.IntPtr, System.Boolean)
 _Microsoft.iOS.TypeMap.dll:System.Runtime.CompilerServices.IgnoresAccessChecksToAttribute
 _Microsoft.iOS.TypeMap.dll:System.Runtime.CompilerServices.IgnoresAccessChecksToAttribute..ctor(System.String)
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIAccessibilityContentSizeCategoryImageAdjusting_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIAccessibilityContentSizeCategoryImageAdjusting_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIAccessibilityContentSizeCategoryImageAdjusting_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIAccessibilityIdentification_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIAccessibilityIdentification_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIAccessibilityIdentification_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIActivityItemsConfigurationProviding_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIActivityItemsConfigurationProviding_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIActivityItemsConfigurationProviding_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIAppearance_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIAppearance_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIAppearance_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIAppearanceContainer_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIAppearanceContainer_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIAppearanceContainer_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIApplicationDelegate_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIApplicationDelegate_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIApplicationDelegate_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIContentContainer_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIContentContainer_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIContentContainer_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIContextMenuInteractionDelegate_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIContextMenuInteractionDelegate_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIContextMenuInteractionDelegate_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.IUICoordinateSpace_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.IUICoordinateSpace_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.IUICoordinateSpace_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIDynamicItem_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIDynamicItem_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIDynamicItem_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIFocusEnvironment_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIFocusEnvironment_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIFocusEnvironment_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIFocusItem_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIFocusItem_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIFocusItem_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIFocusItemContainer_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIFocusItemContainer_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIFocusItemContainer_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.IUILargeContentViewerItem_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.IUILargeContentViewerItem_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.IUILargeContentViewerItem_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIPasteConfigurationSupporting_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIPasteConfigurationSupporting_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIPasteConfigurationSupporting_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIPopoverPresentationControllerSourceItem_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIPopoverPresentationControllerSourceItem_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIPopoverPresentationControllerSourceItem_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIResponderStandardEditActions_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIResponderStandardEditActions_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIResponderStandardEditActions_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.IUISpringLoadedInteractionSupporting_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.IUISpringLoadedInteractionSupporting_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.IUISpringLoadedInteractionSupporting_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.IUITraitChangeObservable_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.IUITraitChangeObservable_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.IUITraitChangeObservable_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.IUITraitEnvironment_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.IUITraitEnvironment_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.IUITraitEnvironment_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIUserActivityRestoring_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIUserActivityRestoring_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.IUIUserActivityRestoring_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIAccessibilityContentSizeCategoryImageAdjustingWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UIAccessibilityContentSizeCategoryImageAdjustingWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UIAccessibilityContentSizeCategoryImageAdjustingWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIAccessibilityIdentificationWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UIAccessibilityIdentificationWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UIAccessibilityIdentificationWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIActivityItemsConfigurationProvidingWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UIActivityItemsConfigurationProvidingWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UIActivityItemsConfigurationProvidingWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIAppearanceContainerWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UIAppearanceContainerWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UIAppearanceContainerWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIAppearanceWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UIAppearanceWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UIAppearanceWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
 _Microsoft.iOS.TypeMap.dll:UIKit.UIApplication_Proxy
 _Microsoft.iOS.TypeMap.dll:UIKit.UIApplication_Proxy..ctor()
 _Microsoft.iOS.TypeMap.dll:UIKit.UIApplication_Proxy.CreateObject(System.IntPtr)
@@ -223,70 +79,22 @@ _Microsoft.iOS.TypeMap.dll:UIKit.UIApplicationDelegate_Proxy..ctor()
 _Microsoft.iOS.TypeMap.dll:UIKit.UIApplicationDelegate_Proxy.CreateObject(System.IntPtr)
 _Microsoft.iOS.TypeMap.dll:UIKit.UIApplicationDelegate_Proxy.GetClassHandle(System.Boolean&)
 _Microsoft.iOS.TypeMap.dll:UIKit.UIApplicationDelegate_Proxy.LookupUnmanagedFunction(System.String)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIApplicationDelegateWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UIApplicationDelegateWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UIApplicationDelegateWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
 _Microsoft.iOS.TypeMap.dll:UIKit.UIButton_Proxy
 _Microsoft.iOS.TypeMap.dll:UIKit.UIButton_Proxy..ctor()
 _Microsoft.iOS.TypeMap.dll:UIKit.UIButton_Proxy.CreateObject(System.IntPtr)
 _Microsoft.iOS.TypeMap.dll:UIKit.UIButton_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIContentContainerWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UIContentContainerWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UIContentContainerWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIContextMenuInteractionDelegateWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UIContextMenuInteractionDelegateWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UIContextMenuInteractionDelegateWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
 _Microsoft.iOS.TypeMap.dll:UIKit.UIControl_Proxy
 _Microsoft.iOS.TypeMap.dll:UIKit.UIControl_Proxy..ctor()
 _Microsoft.iOS.TypeMap.dll:UIKit.UIControl_Proxy.CreateObject(System.IntPtr)
 _Microsoft.iOS.TypeMap.dll:UIKit.UIControl_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.iOS.TypeMap.dll:UIKit.UICoordinateSpaceWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UICoordinateSpaceWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UICoordinateSpaceWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIDynamicItemWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UIDynamicItemWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UIDynamicItemWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIFocusEnvironmentWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UIFocusEnvironmentWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UIFocusEnvironmentWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIFocusItemContainerWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UIFocusItemContainerWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UIFocusItemContainerWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIFocusItemWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UIFocusItemWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UIFocusItemWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.UILargeContentViewerItemWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UILargeContentViewerItemWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UILargeContentViewerItemWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIPasteConfigurationSupportingWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UIPasteConfigurationSupportingWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UIPasteConfigurationSupportingWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIPopoverPresentationControllerSourceItemWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UIPopoverPresentationControllerSourceItemWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UIPopoverPresentationControllerSourceItemWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
 _Microsoft.iOS.TypeMap.dll:UIKit.UIResponder_Proxy
 _Microsoft.iOS.TypeMap.dll:UIKit.UIResponder_Proxy..ctor()
 _Microsoft.iOS.TypeMap.dll:UIKit.UIResponder_Proxy.CreateObject(System.IntPtr)
 _Microsoft.iOS.TypeMap.dll:UIKit.UIResponder_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIResponderStandardEditActionsWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UIResponderStandardEditActionsWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UIResponderStandardEditActionsWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
 _Microsoft.iOS.TypeMap.dll:UIKit.UIScreen_Proxy
 _Microsoft.iOS.TypeMap.dll:UIKit.UIScreen_Proxy..ctor()
 _Microsoft.iOS.TypeMap.dll:UIKit.UIScreen_Proxy.CreateObject(System.IntPtr)
 _Microsoft.iOS.TypeMap.dll:UIKit.UIScreen_Proxy.GetClassHandle(System.Boolean&)
-_Microsoft.iOS.TypeMap.dll:UIKit.UISpringLoadedInteractionSupportingWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UISpringLoadedInteractionSupportingWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UISpringLoadedInteractionSupportingWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.UITraitChangeObservableWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UITraitChangeObservableWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UITraitChangeObservableWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.UITraitEnvironmentWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UITraitEnvironmentWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UITraitEnvironmentWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
-_Microsoft.iOS.TypeMap.dll:UIKit.UIUserActivityRestoringWrapper_Proxy
-_Microsoft.iOS.TypeMap.dll:UIKit.UIUserActivityRestoringWrapper_Proxy..ctor()
-_Microsoft.iOS.TypeMap.dll:UIKit.UIUserActivityRestoringWrapper_Proxy.CreateObject(System.IntPtr, System.Boolean)
 _Microsoft.iOS.TypeMap.dll:UIKit.UIView_Proxy
 _Microsoft.iOS.TypeMap.dll:UIKit.UIView_Proxy..ctor()
 _Microsoft.iOS.TypeMap.dll:UIKit.UIView_Proxy.CreateObject(System.IntPtr)
@@ -310,21 +118,6 @@ _SizeTestApp.TypeMap.dll:System.Runtime.CompilerServices.IgnoresAccessChecksToAt
 _SizeTestApp.TypeMap.dll:System.Runtime.CompilerServices.IgnoresAccessChecksToAttribute..ctor(System.String)
 Microsoft.iOS.dll:<Module>
 Microsoft.iOS.dll:<Module>..cctor()
-Microsoft.iOS.dll:CloudKit.CKRecordValueWrapper
-Microsoft.iOS.dll:CloudKit.CKRecordValueWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:CloudKit.CKRecordValueWrapper..cctor()
-Microsoft.iOS.dll:CloudKit.CKRecordValueWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:CloudKit.ICKRecordValue
-Microsoft.iOS.dll:CoreAnimation.CALayerDelegateWrapper
-Microsoft.iOS.dll:CoreAnimation.CALayerDelegateWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:CoreAnimation.CALayerDelegateWrapper..cctor()
-Microsoft.iOS.dll:CoreAnimation.CALayerDelegateWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:CoreAnimation.ICALayerDelegate
-Microsoft.iOS.dll:CoreData.INSFetchRequestResult
-Microsoft.iOS.dll:CoreData.NSFetchRequestResultWrapper
-Microsoft.iOS.dll:CoreData.NSFetchRequestResultWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:CoreData.NSFetchRequestResultWrapper..cctor()
-Microsoft.iOS.dll:CoreData.NSFetchRequestResultWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:CoreFoundation.CFArray
 Microsoft.iOS.dll:CoreFoundation.CFArray._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:CoreFoundation.CFArray..cctor()
@@ -377,16 +170,8 @@ Microsoft.iOS.dll:CoreGraphics.CGRect.ToString()
 Microsoft.iOS.dll:Foundation.ExportAttribute
 Microsoft.iOS.dll:Foundation.ExportAttribute..ctor(System.String, ObjCRuntime.ArgumentSemantic)
 Microsoft.iOS.dll:Foundation.ExportAttribute..ctor(System.String)
-Microsoft.iOS.dll:Foundation.INSCoding
-Microsoft.iOS.dll:Foundation.INSCopying
-Microsoft.iOS.dll:Foundation.INSExtensionRequestHandling
-Microsoft.iOS.dll:Foundation.INSItemProviderReading
-Microsoft.iOS.dll:Foundation.INSItemProviderWriting
-Microsoft.iOS.dll:Foundation.INSMutableCopying
 Microsoft.iOS.dll:Foundation.INSObjectFactory
 Microsoft.iOS.dll:Foundation.INSObjectFactory._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:Foundation.INSObjectProtocol
-Microsoft.iOS.dll:Foundation.INSSecureCoding
 Microsoft.iOS.dll:Foundation.ModelAttribute
 Microsoft.iOS.dll:Foundation.ModelAttribute..ctor()
 Microsoft.iOS.dll:Foundation.NSAsyncDispatcher
@@ -404,28 +189,18 @@ Microsoft.iOS.dll:Foundation.NSAsyncSynchronizationContextDispatcher/__Registrar
 Microsoft.iOS.dll:Foundation.NSAsyncSynchronizationContextDispatcher/__Registrar_Callbacks__.callback_3063_Foundation_NSAsyncSynchronizationContextDispatcher_Apply(System.IntPtr, System.IntPtr, System.IntPtr*)
 Microsoft.iOS.dll:Foundation.NSAutoreleasePool
 Microsoft.iOS.dll:Foundation.NSAutoreleasePool._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:Foundation.NSAutoreleasePool._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:Foundation.NSAutoreleasePool..cctor()
 Microsoft.iOS.dll:Foundation.NSAutoreleasePool..ctor()
 Microsoft.iOS.dll:Foundation.NSAutoreleasePool..ctor(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:Foundation.NSAutoreleasePool.get_ClassHandle()
-Microsoft.iOS.dll:Foundation.NSCodingWrapper
-Microsoft.iOS.dll:Foundation.NSCodingWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:Foundation.NSCodingWrapper..cctor()
-Microsoft.iOS.dll:Foundation.NSCodingWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:Foundation.NSComparisonResult
 Microsoft.iOS.dll:Foundation.NSComparisonResult Foundation.NSComparisonResult::Ascending
 Microsoft.iOS.dll:Foundation.NSComparisonResult Foundation.NSComparisonResult::Descending
 Microsoft.iOS.dll:Foundation.NSComparisonResult Foundation.NSComparisonResult::Same
-Microsoft.iOS.dll:Foundation.NSCopyingWrapper
-Microsoft.iOS.dll:Foundation.NSCopyingWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:Foundation.NSCopyingWrapper..cctor()
-Microsoft.iOS.dll:Foundation.NSCopyingWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:Foundation.NSDictionary
 Microsoft.iOS.dll:Foundation.NSDictionary Foundation.NSDictionary/<GetEnumerator>d__66::<>4__this
 Microsoft.iOS.dll:Foundation.NSDictionary._ObjectForKey(System.IntPtr)
 Microsoft.iOS.dll:Foundation.NSDictionary._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:Foundation.NSDictionary._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:Foundation.NSDictionary..cctor()
 Microsoft.iOS.dll:Foundation.NSDictionary..ctor(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:Foundation.NSDictionary.ContainsKeyValuePair(System.Collections.Generic.KeyValuePair`2<Foundation.NSObject,Foundation.NSObject>)
@@ -462,32 +237,14 @@ Microsoft.iOS.dll:Foundation.NSException ObjCRuntime.MarshalObjectiveCExceptionE
 Microsoft.iOS.dll:Foundation.NSException ObjCRuntime.ObjCException::native_exc
 Microsoft.iOS.dll:Foundation.NSException ObjCRuntime.ObjCException::NSException()
 Microsoft.iOS.dll:Foundation.NSException._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:Foundation.NSException._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:Foundation.NSException..cctor()
 Microsoft.iOS.dll:Foundation.NSException..ctor(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:Foundation.NSException.get_CallStackSymbols()
 Microsoft.iOS.dll:Foundation.NSException.get_ClassHandle()
 Microsoft.iOS.dll:Foundation.NSException.get_Name()
 Microsoft.iOS.dll:Foundation.NSException.get_Reason()
-Microsoft.iOS.dll:Foundation.NSExtensionRequestHandlingWrapper
-Microsoft.iOS.dll:Foundation.NSExtensionRequestHandlingWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:Foundation.NSExtensionRequestHandlingWrapper..cctor()
-Microsoft.iOS.dll:Foundation.NSExtensionRequestHandlingWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:Foundation.NSItemProviderReadingWrapper
-Microsoft.iOS.dll:Foundation.NSItemProviderReadingWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:Foundation.NSItemProviderReadingWrapper..cctor()
-Microsoft.iOS.dll:Foundation.NSItemProviderReadingWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:Foundation.NSItemProviderWritingWrapper
-Microsoft.iOS.dll:Foundation.NSItemProviderWritingWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:Foundation.NSItemProviderWritingWrapper..cctor()
-Microsoft.iOS.dll:Foundation.NSItemProviderWritingWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:Foundation.NSMutableCopyingWrapper
-Microsoft.iOS.dll:Foundation.NSMutableCopyingWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:Foundation.NSMutableCopyingWrapper..cctor()
-Microsoft.iOS.dll:Foundation.NSMutableCopyingWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:Foundation.NSNumber
 Microsoft.iOS.dll:Foundation.NSNumber._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:Foundation.NSNumber._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:Foundation.NSNumber..cctor()
 Microsoft.iOS.dll:Foundation.NSNumber..ctor(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:Foundation.NSNumber.Compare(Foundation.NSNumber)
@@ -586,26 +343,16 @@ Microsoft.iOS.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/X
 Microsoft.iOS.dll:Foundation.NSObjectData
 Microsoft.iOS.dll:Foundation.NSObjectFlag
 Microsoft.iOS.dll:Foundation.NSObjectFlag Foundation.NSObjectFlag::Empty
-Microsoft.iOS.dll:Foundation.NSObjectProtocolWrapper
-Microsoft.iOS.dll:Foundation.NSObjectProtocolWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:Foundation.NSObjectProtocolWrapper..cctor()
-Microsoft.iOS.dll:Foundation.NSObjectProtocolWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:Foundation.NSRunLoop
 Microsoft.iOS.dll:Foundation.NSRunLoop Foundation.NSRunLoop::Main()
 Microsoft.iOS.dll:Foundation.NSRunLoop._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:Foundation.NSRunLoop._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:Foundation.NSRunLoop..cctor()
 Microsoft.iOS.dll:Foundation.NSRunLoop..ctor(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:Foundation.NSRunLoop.get_ClassHandle()
 Microsoft.iOS.dll:Foundation.NSRunLoop.get_Main()
-Microsoft.iOS.dll:Foundation.NSSecureCodingWrapper
-Microsoft.iOS.dll:Foundation.NSSecureCodingWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:Foundation.NSSecureCodingWrapper..cctor()
-Microsoft.iOS.dll:Foundation.NSSecureCodingWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:Foundation.NSString
 Microsoft.iOS.dll:Foundation.NSString Foundation.NSString::Empty
 Microsoft.iOS.dll:Foundation.NSString._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:Foundation.NSString._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:Foundation.NSString..cctor()
 Microsoft.iOS.dll:Foundation.NSString..ctor(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:Foundation.NSString..ctor(System.String)
@@ -627,16 +374,12 @@ Microsoft.iOS.dll:Foundation.NSSynchronizationContextDispatcher/__Registrar_Call
 Microsoft.iOS.dll:Foundation.NSSynchronizationContextDispatcher/__Registrar_Callbacks__.callback_3058_Foundation_NSSynchronizationContextDispatcher_Apply(System.IntPtr, System.IntPtr, System.IntPtr*)
 Microsoft.iOS.dll:Foundation.NSValue
 Microsoft.iOS.dll:Foundation.NSValue._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:Foundation.NSValue._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:Foundation.NSValue..cctor()
 Microsoft.iOS.dll:Foundation.NSValue..ctor(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:Foundation.NSValue.get_ClassHandle()
 Microsoft.iOS.dll:Foundation.ProtocolAttribute
 Microsoft.iOS.dll:Foundation.ProtocolAttribute..ctor()
 Microsoft.iOS.dll:Foundation.ProtocolAttribute.get_WrapperType()
-Microsoft.iOS.dll:Foundation.ProtocolAttribute.set_FormalSince(System.String)
-Microsoft.iOS.dll:Foundation.ProtocolAttribute.set_Name(System.String)
-Microsoft.iOS.dll:Foundation.ProtocolAttribute.set_WrapperType(System.Type)
 Microsoft.iOS.dll:Foundation.RegisterAttribute
 Microsoft.iOS.dll:Foundation.RegisterAttribute..ctor(System.String, System.Boolean)
 Microsoft.iOS.dll:Foundation.RegisterAttribute..ctor(System.String)
@@ -657,10 +400,6 @@ Microsoft.iOS.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSemantic::Ret
 Microsoft.iOS.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSemantic::Strong
 Microsoft.iOS.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSemantic::UnsafeUnretained
 Microsoft.iOS.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSemantic::Weak
-Microsoft.iOS.dll:ObjCRuntime.BaseWrapper
-Microsoft.iOS.dll:ObjCRuntime.BaseWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:ObjCRuntime.BaseWrapper.Release()
-Microsoft.iOS.dll:ObjCRuntime.BaseWrapper.Retain()
 Microsoft.iOS.dll:ObjCRuntime.BlockCollector
 Microsoft.iOS.dll:ObjCRuntime.BlockCollector..ctor(System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.BlockCollector.Add(System.IntPtr)
@@ -907,7 +646,6 @@ Microsoft.iOS.dll:ObjCRuntime.ObjCException.ToString()
 Microsoft.iOS.dll:ObjCRuntime.ObjCSuper
 Microsoft.iOS.dll:ObjCRuntime.ObjCSuper..ctor(Foundation.NSObject)
 Microsoft.iOS.dll:ObjCRuntime.ProtocolProxyAttribute
-Microsoft.iOS.dll:ObjCRuntime.ProtocolProxyAttribute..ctor()
 Microsoft.iOS.dll:ObjCRuntime.ProtocolProxyAttribute.CreateObject(System.IntPtr, System.Boolean)
 Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper
 Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper.GetMapEntry(System.IntPtr)
@@ -1532,10 +1270,6 @@ Microsoft.iOS.dll:System.String Foundation.NSException::Name()
 Microsoft.iOS.dll:System.String Foundation.NSException::Reason()
 Microsoft.iOS.dll:System.String Foundation.NSNumber::StringValue()
 Microsoft.iOS.dll:System.String Foundation.NSObject::Description()
-Microsoft.iOS.dll:System.String Foundation.ProtocolAttribute::<Name>k__BackingField
-Microsoft.iOS.dll:System.String Foundation.ProtocolAttribute::FormalSince()
-Microsoft.iOS.dll:System.String Foundation.ProtocolAttribute::informal_until
-Microsoft.iOS.dll:System.String Foundation.ProtocolAttribute::Name()
 Microsoft.iOS.dll:System.String Foundation.RegisterAttribute::name
 Microsoft.iOS.dll:System.String ObjCRuntime.Class::Name()
 Microsoft.iOS.dll:System.String ObjCRuntime.ObjCException::Message()
@@ -1563,50 +1297,8 @@ Microsoft.iOS.dll:System.UInt32 ObjCRuntime.Runtime/MTTypeFlags::value__
 Microsoft.iOS.dll:System.UInt32* ObjCRuntime.Runtime/MTProtocolMap::protocol_tokens
 Microsoft.iOS.dll:System.UInt64 UIKit.UIControlState::value__
 Microsoft.iOS.dll:System.UIntPtr Foundation.NSDictionary::Count()
-Microsoft.iOS.dll:UIKit.IUIAccessibilityContentSizeCategoryImageAdjusting
-Microsoft.iOS.dll:UIKit.IUIAccessibilityIdentification
-Microsoft.iOS.dll:UIKit.IUIActivityItemsConfigurationProviding
-Microsoft.iOS.dll:UIKit.IUIAppearance
-Microsoft.iOS.dll:UIKit.IUIAppearanceContainer
-Microsoft.iOS.dll:UIKit.IUIApplicationDelegate
-Microsoft.iOS.dll:UIKit.IUIContentContainer
-Microsoft.iOS.dll:UIKit.IUIContextMenuInteractionDelegate
-Microsoft.iOS.dll:UIKit.IUICoordinateSpace
-Microsoft.iOS.dll:UIKit.IUIDynamicItem
-Microsoft.iOS.dll:UIKit.IUIFocusEnvironment
-Microsoft.iOS.dll:UIKit.IUIFocusItem
-Microsoft.iOS.dll:UIKit.IUIFocusItemContainer
-Microsoft.iOS.dll:UIKit.IUILargeContentViewerItem
-Microsoft.iOS.dll:UIKit.IUIPasteConfigurationSupporting
-Microsoft.iOS.dll:UIKit.IUIPopoverPresentationControllerSourceItem
-Microsoft.iOS.dll:UIKit.IUIResponderStandardEditActions
-Microsoft.iOS.dll:UIKit.IUISpringLoadedInteractionSupporting
-Microsoft.iOS.dll:UIKit.IUITraitChangeObservable
-Microsoft.iOS.dll:UIKit.IUITraitEnvironment
-Microsoft.iOS.dll:UIKit.IUIUserActivityRestoring
-Microsoft.iOS.dll:UIKit.UIAccessibilityContentSizeCategoryImageAdjustingWrapper
-Microsoft.iOS.dll:UIKit.UIAccessibilityContentSizeCategoryImageAdjustingWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIAccessibilityContentSizeCategoryImageAdjustingWrapper..cctor()
-Microsoft.iOS.dll:UIKit.UIAccessibilityContentSizeCategoryImageAdjustingWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIAccessibilityIdentificationWrapper
-Microsoft.iOS.dll:UIKit.UIAccessibilityIdentificationWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIAccessibilityIdentificationWrapper..cctor()
-Microsoft.iOS.dll:UIKit.UIAccessibilityIdentificationWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIActivityItemsConfigurationProvidingWrapper
-Microsoft.iOS.dll:UIKit.UIActivityItemsConfigurationProvidingWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIActivityItemsConfigurationProvidingWrapper..cctor()
-Microsoft.iOS.dll:UIKit.UIActivityItemsConfigurationProvidingWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIAppearanceContainerWrapper
-Microsoft.iOS.dll:UIKit.UIAppearanceContainerWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIAppearanceContainerWrapper..cctor()
-Microsoft.iOS.dll:UIKit.UIAppearanceContainerWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIAppearanceWrapper
-Microsoft.iOS.dll:UIKit.UIAppearanceWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIAppearanceWrapper..cctor()
-Microsoft.iOS.dll:UIKit.UIAppearanceWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:UIKit.UIApplication
 Microsoft.iOS.dll:UIKit.UIApplication._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIApplication._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:UIKit.UIApplication..cctor()
 Microsoft.iOS.dll:UIKit.UIApplication..ctor(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:UIKit.UIApplication.Dispose(System.Boolean)
@@ -1618,7 +1310,6 @@ Microsoft.iOS.dll:UIKit.UIApplication.UIApplicationMain(System.Int32, System.Str
 Microsoft.iOS.dll:UIKit.UIApplication.xamarin_UIApplicationMain(System.Int32, System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
 Microsoft.iOS.dll:UIKit.UIApplicationDelegate
 Microsoft.iOS.dll:UIKit.UIApplicationDelegate._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIApplicationDelegate._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:UIKit.UIApplicationDelegate..cctor()
 Microsoft.iOS.dll:UIKit.UIApplicationDelegate..ctor()
 Microsoft.iOS.dll:UIKit.UIApplicationDelegate..ctor(ObjCRuntime.NativeHandle)
@@ -1626,29 +1317,15 @@ Microsoft.iOS.dll:UIKit.UIApplicationDelegate..ctor(System.IntPtr, ObjCRuntime.I
 Microsoft.iOS.dll:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)
 Microsoft.iOS.dll:UIKit.UIApplicationDelegate/__Registrar_Callbacks__
 Microsoft.iOS.dll:UIKit.UIApplicationDelegate/__Registrar_Callbacks__.callback_593_UIKit_UIApplicationDelegate__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
-Microsoft.iOS.dll:UIKit.UIApplicationDelegateWrapper
-Microsoft.iOS.dll:UIKit.UIApplicationDelegateWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIApplicationDelegateWrapper..cctor()
-Microsoft.iOS.dll:UIKit.UIApplicationDelegateWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:UIKit.UIButton
 Microsoft.iOS.dll:UIKit.UIButton._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIButton._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:UIKit.UIButton..cctor()
 Microsoft.iOS.dll:UIKit.UIButton..ctor(CoreGraphics.CGRect)
 Microsoft.iOS.dll:UIKit.UIButton..ctor(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:UIKit.UIButton.get_ClassHandle()
 Microsoft.iOS.dll:UIKit.UIButton.SetTitle(System.String, UIKit.UIControlState)
-Microsoft.iOS.dll:UIKit.UIContentContainerWrapper
-Microsoft.iOS.dll:UIKit.UIContentContainerWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIContentContainerWrapper..cctor()
-Microsoft.iOS.dll:UIKit.UIContentContainerWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIContextMenuInteractionDelegateWrapper
-Microsoft.iOS.dll:UIKit.UIContextMenuInteractionDelegateWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIContextMenuInteractionDelegateWrapper..cctor()
-Microsoft.iOS.dll:UIKit.UIContextMenuInteractionDelegateWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:UIKit.UIControl
 Microsoft.iOS.dll:UIKit.UIControl._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIControl._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:UIKit.UIControl..cctor()
 Microsoft.iOS.dll:UIKit.UIControl..ctor(Foundation.NSObjectFlag)
 Microsoft.iOS.dll:UIKit.UIControl..ctor(ObjCRuntime.NativeHandle)
@@ -1661,83 +1338,28 @@ Microsoft.iOS.dll:UIKit.UIControlState UIKit.UIControlState::Highlighted
 Microsoft.iOS.dll:UIKit.UIControlState UIKit.UIControlState::Normal
 Microsoft.iOS.dll:UIKit.UIControlState UIKit.UIControlState::Reserved
 Microsoft.iOS.dll:UIKit.UIControlState UIKit.UIControlState::Selected
-Microsoft.iOS.dll:UIKit.UICoordinateSpaceWrapper
-Microsoft.iOS.dll:UIKit.UICoordinateSpaceWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UICoordinateSpaceWrapper..cctor()
-Microsoft.iOS.dll:UIKit.UICoordinateSpaceWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIDynamicItemWrapper
-Microsoft.iOS.dll:UIKit.UIDynamicItemWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIDynamicItemWrapper..cctor()
-Microsoft.iOS.dll:UIKit.UIDynamicItemWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIFocusEnvironmentWrapper
-Microsoft.iOS.dll:UIKit.UIFocusEnvironmentWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIFocusEnvironmentWrapper..cctor()
-Microsoft.iOS.dll:UIKit.UIFocusEnvironmentWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIFocusItemContainerWrapper
-Microsoft.iOS.dll:UIKit.UIFocusItemContainerWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIFocusItemContainerWrapper..cctor()
-Microsoft.iOS.dll:UIKit.UIFocusItemContainerWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIFocusItemWrapper
-Microsoft.iOS.dll:UIKit.UIFocusItemWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIFocusItemWrapper..cctor()
-Microsoft.iOS.dll:UIKit.UIFocusItemWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:UIKit.UIKitSynchronizationContext
 Microsoft.iOS.dll:UIKit.UIKitSynchronizationContext..ctor()
 Microsoft.iOS.dll:UIKit.UIKitSynchronizationContext.Post(System.Threading.SendOrPostCallback, System.Object)
 Microsoft.iOS.dll:UIKit.UIKitSynchronizationContext.Send(System.Threading.SendOrPostCallback, System.Object)
-Microsoft.iOS.dll:UIKit.UILargeContentViewerItemWrapper
-Microsoft.iOS.dll:UIKit.UILargeContentViewerItemWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UILargeContentViewerItemWrapper..cctor()
-Microsoft.iOS.dll:UIKit.UILargeContentViewerItemWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIPasteConfigurationSupportingWrapper
-Microsoft.iOS.dll:UIKit.UIPasteConfigurationSupportingWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIPasteConfigurationSupportingWrapper..cctor()
-Microsoft.iOS.dll:UIKit.UIPasteConfigurationSupportingWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIPopoverPresentationControllerSourceItemWrapper
-Microsoft.iOS.dll:UIKit.UIPopoverPresentationControllerSourceItemWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIPopoverPresentationControllerSourceItemWrapper..cctor()
-Microsoft.iOS.dll:UIKit.UIPopoverPresentationControllerSourceItemWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:UIKit.UIResponder
 Microsoft.iOS.dll:UIKit.UIResponder._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIResponder._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:UIKit.UIResponder..cctor()
 Microsoft.iOS.dll:UIKit.UIResponder..ctor(Foundation.NSObjectFlag)
 Microsoft.iOS.dll:UIKit.UIResponder..ctor(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:UIKit.UIResponder.get_ClassHandle()
-Microsoft.iOS.dll:UIKit.UIResponderStandardEditActionsWrapper
-Microsoft.iOS.dll:UIKit.UIResponderStandardEditActionsWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIResponderStandardEditActionsWrapper..cctor()
-Microsoft.iOS.dll:UIKit.UIResponderStandardEditActionsWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:UIKit.UIScreen
 Microsoft.iOS.dll:UIKit.UIScreen UIKit.UIScreen::MainScreen()
 Microsoft.iOS.dll:UIKit.UIScreen._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIScreen._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:UIKit.UIScreen..cctor()
 Microsoft.iOS.dll:UIKit.UIScreen..ctor(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:UIKit.UIScreen.Dispose(System.Boolean)
 Microsoft.iOS.dll:UIKit.UIScreen.get_Bounds()
 Microsoft.iOS.dll:UIKit.UIScreen.get_ClassHandle()
 Microsoft.iOS.dll:UIKit.UIScreen.get_MainScreen()
-Microsoft.iOS.dll:UIKit.UISpringLoadedInteractionSupportingWrapper
-Microsoft.iOS.dll:UIKit.UISpringLoadedInteractionSupportingWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UISpringLoadedInteractionSupportingWrapper..cctor()
-Microsoft.iOS.dll:UIKit.UISpringLoadedInteractionSupportingWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UITraitChangeObservableWrapper
-Microsoft.iOS.dll:UIKit.UITraitChangeObservableWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UITraitChangeObservableWrapper..cctor()
-Microsoft.iOS.dll:UIKit.UITraitChangeObservableWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UITraitEnvironmentWrapper
-Microsoft.iOS.dll:UIKit.UITraitEnvironmentWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UITraitEnvironmentWrapper..cctor()
-Microsoft.iOS.dll:UIKit.UITraitEnvironmentWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIUserActivityRestoringWrapper
-Microsoft.iOS.dll:UIKit.UIUserActivityRestoringWrapper._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIUserActivityRestoringWrapper..cctor()
-Microsoft.iOS.dll:UIKit.UIUserActivityRestoringWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:UIKit.UIView
 Microsoft.iOS.dll:UIKit.UIView UIKit.UIViewController::View()
 Microsoft.iOS.dll:UIKit.UIView._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIView._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:UIKit.UIView..cctor()
 Microsoft.iOS.dll:UIKit.UIView..ctor(Foundation.NSObjectFlag)
 Microsoft.iOS.dll:UIKit.UIView..ctor(ObjCRuntime.NativeHandle)
@@ -1748,7 +1370,6 @@ Microsoft.iOS.dll:UIKit.UIView.get_ClassHandle()
 Microsoft.iOS.dll:UIKit.UIViewController
 Microsoft.iOS.dll:UIKit.UIViewController UIKit.UIWindow::RootViewController()
 Microsoft.iOS.dll:UIKit.UIViewController._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIViewController._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:UIKit.UIViewController..cctor()
 Microsoft.iOS.dll:UIKit.UIViewController..ctor()
 Microsoft.iOS.dll:UIKit.UIViewController..ctor(ObjCRuntime.NativeHandle)
@@ -1758,7 +1379,6 @@ Microsoft.iOS.dll:UIKit.UIViewController.get_ClassHandle()
 Microsoft.iOS.dll:UIKit.UIViewController.get_View()
 Microsoft.iOS.dll:UIKit.UIWindow
 Microsoft.iOS.dll:UIKit.UIWindow._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIWindow._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:UIKit.UIWindow..cctor()
 Microsoft.iOS.dll:UIKit.UIWindow..ctor(CoreGraphics.CGRect)
 Microsoft.iOS.dll:UIKit.UIWindow..ctor(ObjCRuntime.NativeHandle)
@@ -22496,7 +22116,6 @@ System.Private.CoreLib.dll:System.Version..ctor(System.Int32, System.Int32, Syst
 System.Private.CoreLib.dll:System.Version..ctor(System.Int32, System.Int32, System.Int32)
 System.Private.CoreLib.dll:System.Version..ctor(System.Int32, System.Int32)
 System.Private.CoreLib.dll:System.Version.<TryFormatCore>g__ThrowArgumentException|35_0`1(System.String)
-System.Private.CoreLib.dll:System.Version.<TryParseComponent>g__ThrowFailure|49_0`1(System.Number/ParsingStatus, System.Int32, System.String, System.ReadOnlySpan`1<TChar>)
 System.Private.CoreLib.dll:System.Version.CompareTo(System.Object)
 System.Private.CoreLib.dll:System.Version.CompareTo(System.Version)
 System.Private.CoreLib.dll:System.Version.Equals(System.Object)
@@ -22509,15 +22128,12 @@ System.Private.CoreLib.dll:System.Version.get_Revision()
 System.Private.CoreLib.dll:System.Version.GetHashCode()
 System.Private.CoreLib.dll:System.Version.op_Equality(System.Version, System.Version)
 System.Private.CoreLib.dll:System.Version.op_Inequality(System.Version, System.Version)
-System.Private.CoreLib.dll:System.Version.Parse(System.String)
-System.Private.CoreLib.dll:System.Version.ParseVersion`1(System.ReadOnlySpan`1<TChar>, System.Boolean)
 System.Private.CoreLib.dll:System.Version.System.IFormattable.ToString(System.String, System.IFormatProvider)
 System.Private.CoreLib.dll:System.Version.System.ISpanFormattable.TryFormat(System.Span`1<System.Char>, out System.Int32&, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider)
 System.Private.CoreLib.dll:System.Version.ToString()
 System.Private.CoreLib.dll:System.Version.ToString(System.Int32)
 System.Private.CoreLib.dll:System.Version.TryFormat(System.Span`1<System.Char>, System.Int32, out System.Int32&)
 System.Private.CoreLib.dll:System.Version.TryFormatCore`1(System.Span`1<TChar>, System.Int32, out System.Int32&)
-System.Private.CoreLib.dll:System.Version.TryParseComponent`1(System.ReadOnlySpan`1<TChar>, System.String, System.Boolean, System.ReadOnlySpan`1<TChar>, out System.Int32&)
 System.Private.CoreLib.dll:System.Void
 System.Private.CoreLib.dll:System.Void* System.Buffers.MemoryHandle::_pointer
 System.Private.CoreLib.dll:System.Void* System.Buffers.MemoryHandle::Pointer()

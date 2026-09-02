@@ -128,7 +128,7 @@ namespace Foundation {
 		public TKey [] Keys {
 			get {
 				using (var pool = new NSAutoreleasePool ())
-					return NSArray.ArrayFromHandle<TKey> (_AllKeys ());
+					return NSArray.NonNullArrayFromHandleDropNullElements<TKey> (_AllKeys (), NSNullBehavior.DropIfIncompatible);
 			}
 		}
 
@@ -142,7 +142,7 @@ namespace Foundation {
 			ArgumentNullException.ThrowIfNull (obj);
 
 			using (var pool = new NSAutoreleasePool ()) {
-				var result = NSArray.ArrayFromHandle<TKey> (_AllKeysForObject (obj.Handle));
+				var result = NSArray.NonNullArrayFromHandleDropNullElements<TKey> (_AllKeysForObject (obj.Handle), NSNullBehavior.DropIfIncompatible);
 				GC.KeepAlive (obj);
 				return result;
 			}
@@ -155,7 +155,7 @@ namespace Foundation {
 		public TValue [] Values {
 			get {
 				using (var pool = new NSAutoreleasePool ())
-					return NSArray.ArrayFromHandle<TValue> (_AllValues ());
+					return NSArray.NonNullArrayFromHandleDropNullElements<TValue> (_AllValues (), NSNullBehavior.DropIfIncompatible);
 			}
 		}
 
@@ -174,7 +174,7 @@ namespace Foundation {
 				return [];
 
 			var keysArray = NSArray.FromNativeObjects<TKey> (keys);
-			var result = NSArray.ArrayFromHandle<TValue> (_ObjectsForKeys (keysArray.Handle, marker.Handle));
+			var result = NSArray.NonNullArrayFromHandleDropNullElements<TValue> (_ObjectsForKeys (keysArray.Handle, marker.Handle), NSNullBehavior.DropIfIncompatible);
 			GC.KeepAlive (keysArray);
 			GC.KeepAlive (marker);
 			return result;

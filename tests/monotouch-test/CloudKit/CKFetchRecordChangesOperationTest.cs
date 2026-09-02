@@ -28,21 +28,21 @@ namespace MonoTouchFixtures.CloudKit {
 		public void TestRecordChangedSetter ()
 		{
 			op.RecordChanged = (record) => { Console.WriteLine ("Changed"); };
-			Assert.NotNull (op.RecordChanged);
+			Assert.That (op.RecordChanged, Is.Not.Null);
 		}
 
 		[Test]
 		public void TestRecordDeletedSetter ()
 		{
 			op.RecordDeleted = (record) => { Console.WriteLine ("Deleted"); };
-			Assert.NotNull (op.RecordDeleted);
+			Assert.That (op.RecordDeleted, Is.Not.Null);
 		}
 
 		[Test]
 		public void TestAllChangesReported ()
 		{
 			op.AllChangesReported = (s, c, e) => { Console.WriteLine ("Completed"); };
-			Assert.NotNull (op.AllChangesReported);
+			Assert.That (op.AllChangesReported, Is.Not.Null);
 		}
 	}
 }

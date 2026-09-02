@@ -45,6 +45,9 @@ namespace SensorKit {
 	[MacCatalyst (26, 0)]
 	[Native]
 	public enum SRAcousticSettingsAccessibilityHeadphoneAccommodationsMediaEnhanceTuning : long {
+		/// <summary>No tuning is applied to the Custom Audio Setup tone.</summary>
+		[iOS (26, 4), MacCatalyst (26, 4)]
+		None = 0,
 		BalancedTone = 1,
 		VocalRange,
 		Brightness,
@@ -54,6 +57,9 @@ namespace SensorKit {
 	[MacCatalyst (26, 0)]
 	[Native]
 	public enum SRAcousticSettingsAccessibilityHeadphoneAccommodationsMediaEnhanceBoosting : long {
+		/// <summary>No boosting is applied to soft sounds.</summary>
+		[iOS (26, 4), MacCatalyst (26, 4)]
+		None = 0,
 		Slight = 1,
 		Moderate,
 		Strong,

@@ -35,6 +35,7 @@ ALL_SOURCES:= \
 
 CONFIG      = Debug
 TARGETFRAMEWORK = netstandard2.0
+NETTARGETFRAMEWORK = $(DOTNET_TFM)
 WINDOWSRUNTIMEIDENTIFIER = win
 
 LOCALIZATION_LANGUAGES=cs de es fr it ja ko pl pt-BR ru tr zh-Hans zh-Hant
@@ -48,8 +49,8 @@ LOCALIZATION_ASSEMBLIES = Xamarin.Localization.MSBuild
 IOS_WINDOWS_TARGETS =                                                      \
 	$(wildcard Xamarin.iOS.Tasks.Windows/Xamarin.*.props)       \
 	$(wildcard Xamarin.iOS.Tasks.Windows/Xamarin.*.targets)       \
-	$(wildcard Xamarin.iOS.Tasks.Windows/bin/$(CONFIG)/$(TARGETFRAMEWORK)/$(WINDOWSRUNTIMEIDENTIFIER)/Xamarin.*.props)       \
-	$(wildcard Xamarin.iOS.Tasks.Windows/bin/$(CONFIG)/$(TARGETFRAMEWORK)/$(WINDOWSRUNTIMEIDENTIFIER)/Xamarin.*.targets)       \
+	$(wildcard Xamarin.iOS.Tasks.Windows/bin/$(CONFIG)/$(NETTARGETFRAMEWORK)/$(WINDOWSRUNTIMEIDENTIFIER)/Xamarin.*.props)       \
+	$(wildcard Xamarin.iOS.Tasks.Windows/bin/$(CONFIG)/$(NETTARGETFRAMEWORK)/$(WINDOWSRUNTIMEIDENTIFIER)/Xamarin.*.targets)       \
 
 TASK_ASSEMBLIES = Xamarin.MacDev.Tasks $(LOCALIZATION_ASSEMBLIES)
 IOS_WINDOWS_TASK_ASSEMBLIES = Xamarin.iOS.Tasks.Windows
@@ -65,33 +66,40 @@ MSBUILD_TASK_ASSEMBLIES += $(TASK_ASSEMBLIES)
 ## .NET targets ##
 ##
 
-DOTNET_SHARED_FILES = \
-	$(PROPS_AND_TARGETS) \
+DOTNET_SHARED_ASSEMBLIES = \
 	$(foreach dll,$(MSBUILD_TASK_ASSEMBLIES),$(dll).dll $(dll).pdb)
 
 define InstallFiles
 
 DOTNET_TARGETS += \
-	$(foreach target,$(DOTNET_SHARED_FILES),$(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild/$(notdir $(target))) \
-	$(foreach dll,$(TRANSLATED_ASSEMBLIES),$(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild/$(dll).resources.dll) \
+	$(foreach target,$(PROPS_AND_TARGETS),$(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild/$(notdir $(target))) \
+	$(foreach target,$(DOTNET_SHARED_ASSEMBLIES),$(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild/$(TARGETFRAMEWORK)/$(notdir $(target))) \
+	$(foreach dll,$(TRANSLATED_ASSEMBLIES),$(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild/$(TARGETFRAMEWORK)/$(dll).resources.dll) \
+	.copy-stamp-$(1) \
 
 DOTNET_DIRECTORIES_$(1) += \
 	$(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild \
-	$(foreach locale,$(LOCALIZATION_LANGUAGES),$(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild/$(locale)) \
+	$(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild/$(TARGETFRAMEWORK) \
+	$(foreach locale,$(LOCALIZATION_LANGUAGES),$(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild/$(TARGETFRAMEWORK)/$(locale)) \
 
 DOTNET_DIRECTORIES += $$(DOTNET_DIRECTORIES_$(1))
 
 $(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild/%: Xamarin.Shared/% | $(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild
 	$$(Q) install -m 644 $$< $$@
 
-$(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild/%: Xamarin.MacDev.Tasks/bin/$(CONFIG)/$(TARGETFRAMEWORK)/% | $$(DOTNET_DIRECTORIES_$(1))
+$(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild/$(TARGETFRAMEWORK)/%: Xamarin.MacDev.Tasks/bin/$(CONFIG)/$(TARGETFRAMEWORK)/% | $$(DOTNET_DIRECTORIES_$(1))
 	$$(Q) install -m 644 $$< $$@
 
-$(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild/%: Xamarin.Localization.MSBuild/bin/$(CONFIG)/$(TARGETFRAMEWORK)/% | $$(DOTNET_DIRECTORIES_$(1))
+$(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild/$(TARGETFRAMEWORK)/%: Xamarin.Localization.MSBuild/bin/$(CONFIG)/$(TARGETFRAMEWORK)/% | $$(DOTNET_DIRECTORIES_$(1))
 	$$(Q) install -m 644 $$< $$@
+
+.copy-stamp-$(1): $$(wildcard Xamarin.MacDev.Tasks/bin/$(CONFIG)/$(NETTARGETFRAMEWORK)/*) $$(wildcard Xamarin.MacDev.Tasks/bin/$(CONFIG)/$(NETTARGETFRAMEWORK)/*/*) .build-stamp | $(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild
+	$$(Q) rm -rf $(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild/$(NETTARGETFRAMEWORK)/
+	$$(Q) $(CP) -r Xamarin.MacDev.Tasks/bin/$(CONFIG)/$(NETTARGETFRAMEWORK) $(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild/$(NETTARGETFRAMEWORK)
+	$$(Q) touch $$@
 endef
 
-$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call InstallFiles,$(platform),$(shell echo $(platform) | tr 'a-z' 'A-Z'))))
+$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call InstallFiles,$(platform),$(call uppercase,$(platform)))))
 
 MSBUILD_DIRECTORIES += $(DOTNET_DIRECTORIES)
 
@@ -111,7 +119,7 @@ DOTNET_IOS_WINDOWS_FILES += Messaging/Xamarin.Messaging.Build/obj/$(CONFIG)/Buil
 
 .dotnet-windows: .build-stamp .copy-windows-files
 
-ifndef IS_LINUX
+ifndef NO_XCODE
 all-local:: .dotnet-windows
 dotnet:: .dotnet-windows
 endif
@@ -122,15 +130,14 @@ endif
 
 # we must install locally during 'make all', because the F# build depends on the msbuild targets/assemblies.
 all-local:: $(MSBUILD_PRODUCTS)
-ifndef IS_LINUX
+ifndef NO_XCODE
 all-local:: .stamp-test-xml
 endif
 
 # I haven't found a way to execute ilrepack.exe on .NET (it will probably have to be built for .NET), so run it using Mono.
 
-.build-stamp: export SYSTEM_MONO:=$(SYSTEM_MONO)
 .build-stamp: $(ALL_SOURCES)
-	$(Q) $(DOTNET) build "/bl:$@.binlog" $(XBUILD_VERBOSITY)
+	$(Q) $(DOTNET) build "/bl:$@.binlog" $(XBUILD_VERBOSITY) /p:NuGetPackageRoot=$(abspath $(TOP)/packages)/
 	$(Q) touch $@
 
 # make all the target assemblies build when any of the sources have changed
@@ -158,9 +165,9 @@ clean-local::
 
 Versions.g.cs: Makefile $(TOP)/Make.config.inc
 	$(Q) printf "public static class VersionConstants {\\n" > $@.tmp
-	$(Q) printf "\\tpublic const string NuGetVersion = \"$($(shell echo $(firstword $(DOTNET_PLATFORMS)) | tr 'a-z' 'A-Z')_NUGET_VERSION)\";\\n" >> $@.tmp
-	$(Q) echo $(foreach platform,$(ALL_DOTNET_PLATFORMS),"\\tpublic const string Microsoft_$(platform)_Version = \"$($(shell echo $(platform) | tr 'a-z' 'A-Z')_NUGET_VERSION_FULL)\";\\n") >> $@.tmp
-	$(Q) echo $(foreach platform,$(ALL_DOTNET_PLATFORMS),"\\tpublic const string Microsoft_$(platform)_Standard_Version = \"$($(shell echo $(platform) | tr 'a-z' 'A-Z')_NUGET_VERSION_MAJOR).$($(shell echo $(platform) | tr 'a-z' 'A-Z')_NUGET_VERSION_MINOR).0.$($(shell echo $(platform) | tr 'a-z' 'A-Z')_NUGET_VERSION_PATCH)\";\\n") >> $@.tmp
+	$(Q) printf "\\tpublic const string NuGetVersion = \"$($(call uppercase,$(firstword $(DOTNET_PLATFORMS)))_NUGET_VERSION)\";\\n" >> $@.tmp
+	$(Q) echo $(foreach platform,$(ALL_DOTNET_PLATFORMS),"\\tpublic const string Microsoft_$(platform)_Version = \"$($(call uppercase,$(platform))_NUGET_VERSION_FULL)\";\\n") >> $@.tmp
+	$(Q) echo $(foreach platform,$(ALL_DOTNET_PLATFORMS),"\\tpublic const string Microsoft_$(platform)_Standard_Version = \"$($(call uppercase,$(platform))_NUGET_VERSION_MAJOR).$($(call uppercase,$(platform))_NUGET_VERSION_MINOR).0.$($(call uppercase,$(platform))_NUGET_VERSION_PATCH)\";\\n") >> $@.tmp
 	$(Q) printf "\\tpublic const string NuGetPrereleaseIdentifier = \"$(NUGET_PRERELEASE_IDENTIFIER)\";\\n" >> $@.tmp
 	$(Q) printf "\\tpublic const string NuGetBuildMetadata = \"$(NUGET_BUILD_METADATA)\";\\n" >> $@.tmp
 	$(Q) printf "\\tpublic const string Branch = \"$(CURRENT_BRANCH)\";\\n" >> $@.tmp

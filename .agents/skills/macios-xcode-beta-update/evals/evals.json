@@ -1,0 +1,23 @@
+{
+  "skill_name": "macios-xcode-beta-update",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Update macios from Xcode current to Xcode vNext beta/rc. Ignore tests for now and validate with make world.",
+      "expected_output": "Updates non-test version files, installs missing Xcode components if needed, and reports successful make world run.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Now bring in XTRO changes for the Xcode vNext beta bump and ensure AUTO_SANITIZE run succeeds.",
+      "expected_output": "Runs xtro-sharpie, applies unclassified2todo when needed, reruns successfully, and reports resulting test file diffs.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Validate introspection tests for iOS, tvOS, macOS, and Mac Catalyst after this Xcode beta update.",
+      "expected_output": "Runs build+run introspection commands for all platforms and reports per-platform pass status.",
+      "files": []
+    }
+  ]
+}

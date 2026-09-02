@@ -35,6 +35,12 @@ namespace MyRunApp {
 				File.WriteAllText (filename, sb.ToString ());
 
 				return 0;
+			case 2:
+				foreach (var kvp in Environment.GetEnvironmentVariables ().Cast<DictionaryEntry> ().OrderBy (v => v.Key)) {
+					Console.WriteLine ($"{kvp.Key}={kvp.Value}");
+				}
+
+				return 0;
 			}
 
 			return 1;

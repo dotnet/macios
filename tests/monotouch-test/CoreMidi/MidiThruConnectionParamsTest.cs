@@ -60,13 +60,13 @@ namespace MonoTouchFixtures.CoreMidi {
 		public void ParamsTest ()
 		{
 			var p = new MidiThruConnectionParams ();
-			Assert.IsNull (p.Sources, "Sources");
-			Assert.IsNull (p.Destinations, "Destinations");
+			Assert.That (p.Sources, Is.Null, "Sources");
+			Assert.That (p.Destinations, Is.Null, "Destinations");
 			AreEqual (DefaultChannelMap, p.ChannelMap, "ChannelMap");
-			Assert.AreEqual (0, p.LowVelocity, "LowVelocity");
-			Assert.AreEqual (0, p.HighVelocity, "HighVelocity");
-			Assert.AreEqual (0, p.LowNote, "LowNote");
-			Assert.AreEqual (127, p.HighNote, "HighNote");
+			Assert.That (p.LowVelocity, Is.EqualTo (0), "LowVelocity");
+			Assert.That (p.HighVelocity, Is.EqualTo (0), "HighVelocity");
+			Assert.That (p.LowNote, Is.EqualTo (0), "LowNote");
+			Assert.That (p.HighNote, Is.EqualTo (127), "HighNote");
 			var defaultMidiTransform = default (MidiTransform);
 			AreEqual (defaultMidiTransform, p.NoteNumber, "NoteNumber");
 			AreEqual (defaultMidiTransform, p.Velocity, "Velocity");
@@ -74,13 +74,13 @@ namespace MonoTouchFixtures.CoreMidi {
 			AreEqual (defaultMidiTransform, p.ChannelPressure, "ChannelPressure");
 			AreEqual (defaultMidiTransform, p.ProgramChange, "ProgramChange");
 			AreEqual (defaultMidiTransform, p.PitchBend, "PitchBend");
-			Assert.AreEqual (false, p.FilterOutSysEx, "FilterOutSysEx");
-			Assert.AreEqual (false, p.FilterOutMtc, "FilterOutMtc");
-			Assert.AreEqual (false, p.FilterOutBeatClock, "FilterOutBeatClock");
-			Assert.AreEqual (false, p.FilterOutTuneRequest, "FilterOutTuneRequest");
-			Assert.AreEqual (false, p.FilterOutAllControls, "FilterOutAllControls");
-			Assert.IsNull (p.Controls, "Controls");
-			Assert.IsNull (p.Maps, "Maps");
+			Assert.That (p.FilterOutSysEx, Is.EqualTo (false), "FilterOutSysEx");
+			Assert.That (p.FilterOutMtc, Is.EqualTo (false), "FilterOutMtc");
+			Assert.That (p.FilterOutBeatClock, Is.EqualTo (false), "FilterOutBeatClock");
+			Assert.That (p.FilterOutTuneRequest, Is.EqualTo (false), "FilterOutTuneRequest");
+			Assert.That (p.FilterOutAllControls, Is.EqualTo (false), "FilterOutAllControls");
+			Assert.That (p.Controls, Is.Null, "Controls");
+			Assert.That (p.Maps, Is.Null, "Maps");
 
 			var bytes = GetData (p);
 			AreEqual (DefaultStruct, bytes, "Bytes");
@@ -90,12 +90,12 @@ namespace MonoTouchFixtures.CoreMidi {
 		public void PropertiesTest_Sources ()
 		{
 			var p = new MidiThruConnectionParams ();
-			Assert.IsNull (p.Sources, "Sources 1");
+			Assert.That (p.Sources, Is.Null, "Sources 1");
 
 			// Set to some array
 			var array = new MidiThruConnectionEndpoint [] { new MidiThruConnectionEndpoint (0, 0), new MidiThruConnectionEndpoint (3, 4) };
 			p.Sources = array;
-			CollectionAssert.AreEqual (array, p.Sources, "Sources 2");
+			Assert.That (p.Sources, Is.EqualTo (array), "Sources 2");
 			var expectedStruct2b = DefaultStruct;
 			expectedStruct2b [4] = 2;
 			expectedStruct2b [16] = 3;
@@ -104,8 +104,8 @@ namespace MonoTouchFixtures.CoreMidi {
 
 			// Set back to default value
 			p.Sources = null;
-			Assert.IsNull (p.Sources, "Sources 3");
-			CollectionAssert.AreEqual (DefaultStruct, GetData (p), "Sources 3b");
+			Assert.That (p.Sources, Is.Null, "Sources 3");
+			Assert.That (GetData (p), Is.EqualTo (DefaultStruct), "Sources 3b");
 
 			// Set to more than 8 sources
 			var ex = Assert.Throws<ArgumentOutOfRangeException> (() => { p.Sources = new MidiThruConnectionEndpoint [9]; }, "Sources 4");
@@ -116,12 +116,12 @@ namespace MonoTouchFixtures.CoreMidi {
 		public void PropertiesTest_Destinations ()
 		{
 			var p = new MidiThruConnectionParams ();
-			Assert.IsNull (p.Destinations, "Destinations 1");
+			Assert.That (p.Destinations, Is.Null, "Destinations 1");
 
 			// Set to some array
 			var array = new MidiThruConnectionEndpoint [] { new MidiThruConnectionEndpoint (0, 0), new MidiThruConnectionEndpoint (3, 4) };
 			p.Destinations = array;
-			CollectionAssert.AreEqual (array, p.Destinations, "Destinations 2");
+			Assert.That (p.Destinations, Is.EqualTo (array), "Destinations 2");
 			var expectedStruct2b = DefaultStruct;
 			expectedStruct2b [72] = 2;
 			expectedStruct2b [84] = 3;
@@ -130,8 +130,8 @@ namespace MonoTouchFixtures.CoreMidi {
 
 			// Set back to default value
 			p.Destinations = null;
-			Assert.IsNull (p.Destinations, "Destinations 3");
-			CollectionAssert.AreEqual (DefaultStruct, GetData (p), "Destinations 3b");
+			Assert.That (p.Destinations, Is.Null, "Destinations 3");
+			Assert.That (GetData (p), Is.EqualTo (DefaultStruct), "Destinations 3b");
 
 			// Set to more than 8 destinations
 			var ex = Assert.Throws<ArgumentOutOfRangeException> (() => { p.Destinations = new MidiThruConnectionEndpoint [9]; }, "Sources 4");
@@ -203,83 +203,83 @@ namespace MonoTouchFixtures.CoreMidi {
 		public void PropertiesTest_LowVelocity ()
 		{
 			var p = new MidiThruConnectionParams ();
-			Assert.AreEqual (0, p.LowVelocity, "LowVelocity 1");
+			Assert.That (p.LowVelocity, Is.EqualTo (0), "LowVelocity 1");
 
 			// Set to some value
 			p.LowVelocity = 42;
-			Assert.AreEqual (42, p.LowVelocity, "LowVelocity 2");
+			Assert.That (p.LowVelocity, Is.EqualTo (42), "LowVelocity 2");
 			var expectedStruct2b = DefaultStruct;
 			expectedStruct2b [156] = 42;
 			AreEqual (expectedStruct2b, GetData (p), "LowVelocity 2b");
 
 			// Set back to default value
 			p.LowVelocity = 0;
-			Assert.AreEqual (0, p.LowVelocity, "LowVelocity 3");
-			CollectionAssert.AreEqual (DefaultStruct, GetData (p), "LowVelocity 3b");
+			Assert.That (p.LowVelocity, Is.EqualTo (0), "LowVelocity 3");
+			Assert.That (GetData (p), Is.EqualTo (DefaultStruct), "LowVelocity 3b");
 		}
 
 		[Test]
 		public void PropertiesTest_HighVelocity ()
 		{
 			var p = new MidiThruConnectionParams ();
-			Assert.AreEqual (0, p.HighVelocity, "HighVelocity 1");
+			Assert.That (p.HighVelocity, Is.EqualTo (0), "HighVelocity 1");
 
 			// Set to some value
 			p.HighVelocity = 42;
-			Assert.AreEqual (42, p.HighVelocity, "HighVelocity 2");
+			Assert.That (p.HighVelocity, Is.EqualTo (42), "HighVelocity 2");
 			var expectedStruct2b = DefaultStruct;
 			expectedStruct2b [157] = 42;
 			AreEqual (expectedStruct2b, GetData (p), "HighVelocity 2b");
 
 			// Set back to default value
 			p.HighVelocity = 0;
-			Assert.AreEqual (0, p.HighVelocity, "HighVelocity 3");
-			CollectionAssert.AreEqual (DefaultStruct, GetData (p), "HighVelocity 3b");
+			Assert.That (p.HighVelocity, Is.EqualTo (0), "HighVelocity 3");
+			Assert.That (GetData (p), Is.EqualTo (DefaultStruct), "HighVelocity 3b");
 		}
 
 		[Test]
 		public void PropertiesTest_LowNote ()
 		{
 			var p = new MidiThruConnectionParams ();
-			Assert.AreEqual (0, p.LowNote, "LowNote 1");
+			Assert.That (p.LowNote, Is.EqualTo (0), "LowNote 1");
 
 			// Set to some value
 			p.LowNote = 42;
-			Assert.AreEqual (42, p.LowNote, "LowNote 2");
+			Assert.That (p.LowNote, Is.EqualTo (42), "LowNote 2");
 			var expectedStruct2b = DefaultStruct;
 			expectedStruct2b [158] = 42;
 			AreEqual (expectedStruct2b, GetData (p), "LowNote 2b");
 
 			// Set back to default value
 			p.LowNote = 0;
-			Assert.AreEqual (0, p.LowNote, "LowNote 3");
-			CollectionAssert.AreEqual (DefaultStruct, GetData (p), "LowNote 3b");
+			Assert.That (p.LowNote, Is.EqualTo (0), "LowNote 3");
+			Assert.That (GetData (p), Is.EqualTo (DefaultStruct), "LowNote 3b");
 		}
 
 		[Test]
 		public void PropertiesTest_HighNote ()
 		{
 			var p = new MidiThruConnectionParams ();
-			Assert.AreEqual (127, p.HighNote, "HighNote 1");
+			Assert.That (p.HighNote, Is.EqualTo (127), "HighNote 1");
 
 			// Set to some value
 			p.HighNote = 42;
-			Assert.AreEqual (42, p.HighNote, "HighNote 2");
+			Assert.That (p.HighNote, Is.EqualTo (42), "HighNote 2");
 			var expectedStruct2b = DefaultStruct;
 			expectedStruct2b [159] = 42;
 			AreEqual (expectedStruct2b, GetData (p), "HighNote 2b");
 
 			// Set back to default value
 			p.HighNote = 127;
-			Assert.AreEqual (127, p.HighNote, "HighNote 3");
-			CollectionAssert.AreEqual (DefaultStruct, GetData (p), "HighNote 3b");
+			Assert.That (p.HighNote, Is.EqualTo (127), "HighNote 3");
+			Assert.That (GetData (p), Is.EqualTo (DefaultStruct), "HighNote 3b");
 		}
 
 		[Test]
 		public void PropertiesTest_NoteNumber ()
 		{
 			var p = new MidiThruConnectionParams ();
-			Assert.AreEqual (default (MidiTransform), p.NoteNumber, "NoteNumber 1");
+			Assert.That (p.NoteNumber, Is.EqualTo (default (MidiTransform)), "NoteNumber 1");
 
 			// Set to some value
 			var someMidiTransformType = new MidiTransform (MidiTransformType.FilterOut /* 1 */, 2);
@@ -293,14 +293,14 @@ namespace MonoTouchFixtures.CoreMidi {
 			// Set back to default value
 			p.NoteNumber = default (MidiTransform);
 			AreEqual (default (MidiTransform), p.NoteNumber, "NoteNumber 3");
-			CollectionAssert.AreEqual (DefaultStruct, GetData (p), "NoteNumber 3b");
+			Assert.That (GetData (p), Is.EqualTo (DefaultStruct), "NoteNumber 3b");
 		}
 
 		[Test]
 		public void PropertiesTest_Velocity ()
 		{
 			var p = new MidiThruConnectionParams ();
-			Assert.AreEqual (default (MidiTransform), p.Velocity, "Velocity 1");
+			Assert.That (p.Velocity, Is.EqualTo (default (MidiTransform)), "Velocity 1");
 
 			// Set to some value
 			var someMidiTransformType = new MidiTransform (MidiTransformType.FilterOut /* 1 */, 2);
@@ -314,14 +314,14 @@ namespace MonoTouchFixtures.CoreMidi {
 			// Set back to default value
 			p.Velocity = default (MidiTransform);
 			AreEqual (default (MidiTransform), p.Velocity, "Velocity 3");
-			CollectionAssert.AreEqual (DefaultStruct, GetData (p), "Velocity 3b");
+			Assert.That (GetData (p), Is.EqualTo (DefaultStruct), "Velocity 3b");
 		}
 
 		[Test]
 		public void PropertiesTest_KeyPressure ()
 		{
 			var p = new MidiThruConnectionParams ();
-			Assert.AreEqual (default (MidiTransform), p.KeyPressure, "KeyPressure 1");
+			Assert.That (p.KeyPressure, Is.EqualTo (default (MidiTransform)), "KeyPressure 1");
 
 			// Set to some value
 			var someMidiTransformType = new MidiTransform (MidiTransformType.FilterOut /* 1 */, 2);
@@ -335,14 +335,14 @@ namespace MonoTouchFixtures.CoreMidi {
 			// Set back to default value
 			p.KeyPressure = default (MidiTransform);
 			AreEqual (default (MidiTransform), p.KeyPressure, "KeyPressure 3");
-			CollectionAssert.AreEqual (DefaultStruct, GetData (p), "KeyPressure 3b");
+			Assert.That (GetData (p), Is.EqualTo (DefaultStruct), "KeyPressure 3b");
 		}
 
 		[Test]
 		public void PropertiesTest_ChannelPressure ()
 		{
 			var p = new MidiThruConnectionParams ();
-			Assert.AreEqual (default (MidiTransform), p.ChannelPressure, "ChannelPressure 1");
+			Assert.That (p.ChannelPressure, Is.EqualTo (default (MidiTransform)), "ChannelPressure 1");
 
 			// Set to some value
 			var someMidiTransformType = new MidiTransform (MidiTransformType.FilterOut /* 1 */, 2);
@@ -356,14 +356,14 @@ namespace MonoTouchFixtures.CoreMidi {
 			// Set back to default value
 			p.ChannelPressure = default (MidiTransform);
 			AreEqual (default (MidiTransform), p.ChannelPressure, "ChannelPressure 3");
-			CollectionAssert.AreEqual (DefaultStruct, GetData (p), "ChannelPressure 3b");
+			Assert.That (GetData (p), Is.EqualTo (DefaultStruct), "ChannelPressure 3b");
 		}
 
 		[Test]
 		public void PropertiesTest_ProgramChange ()
 		{
 			var p = new MidiThruConnectionParams ();
-			Assert.AreEqual (default (MidiTransform), p.ProgramChange, "ProgramChange 1");
+			Assert.That (p.ProgramChange, Is.EqualTo (default (MidiTransform)), "ProgramChange 1");
 
 			// Set to some value
 			var someMidiTransformType = new MidiTransform (MidiTransformType.FilterOut /* 1 */, 2);
@@ -377,14 +377,14 @@ namespace MonoTouchFixtures.CoreMidi {
 			// Set back to default value
 			p.ProgramChange = default (MidiTransform);
 			AreEqual (default (MidiTransform), p.ProgramChange, "ProgramChange 3");
-			CollectionAssert.AreEqual (DefaultStruct, GetData (p), "ProgramChange 3b");
+			Assert.That (GetData (p), Is.EqualTo (DefaultStruct), "ProgramChange 3b");
 		}
 
 		[Test]
 		public void PropertiesTest_PitchBend ()
 		{
 			var p = new MidiThruConnectionParams ();
-			Assert.AreEqual (default (MidiTransform), p.PitchBend, "PitchBend 1");
+			Assert.That (p.PitchBend, Is.EqualTo (default (MidiTransform)), "PitchBend 1");
 
 			// Set to some value
 			var someMidiTransformType = new MidiTransform (MidiTransformType.FilterOut /* 1 */, 2);
@@ -398,116 +398,116 @@ namespace MonoTouchFixtures.CoreMidi {
 			// Set back to default value
 			p.PitchBend = default (MidiTransform);
 			AreEqual (default (MidiTransform), p.PitchBend, "PitchBend 3");
-			CollectionAssert.AreEqual (DefaultStruct, GetData (p), "PitchBend 3b");
+			Assert.That (GetData (p), Is.EqualTo (DefaultStruct), "PitchBend 3b");
 		}
 
 		[Test]
 		public void PropertiesTest_FilterOutSysEx ()
 		{
 			var p = new MidiThruConnectionParams ();
-			Assert.AreEqual (false, p.FilterOutSysEx, "FilterOutSysEx 1");
+			Assert.That (p.FilterOutSysEx, Is.EqualTo (false), "FilterOutSysEx 1");
 
 			// Set to some value
 			p.FilterOutSysEx = true;
-			Assert.AreEqual (true, p.FilterOutSysEx, "FilterOutSysEx 2");
+			Assert.That (p.FilterOutSysEx, Is.EqualTo (true), "FilterOutSysEx 2");
 			var expectedStruct2b = DefaultStruct;
 			expectedStruct2b [184] = 0x01;
 			AreEqual (expectedStruct2b, GetData (p), "FilterOutSysEx 2b");
 
 			// Set back to default value
 			p.FilterOutSysEx = false;
-			Assert.AreEqual (false, p.FilterOutSysEx, "FilterOutSysEx 3");
-			CollectionAssert.AreEqual (DefaultStruct, GetData (p), "FilterOutSysEx 3b");
+			Assert.That (p.FilterOutSysEx, Is.EqualTo (false), "FilterOutSysEx 3");
+			Assert.That (GetData (p), Is.EqualTo (DefaultStruct), "FilterOutSysEx 3b");
 		}
 
 		[Test]
 		public void PropertiesTest_FilterOutMtc ()
 		{
 			var p = new MidiThruConnectionParams ();
-			Assert.AreEqual (false, p.FilterOutMtc, "FilterOutMtc 1");
+			Assert.That (p.FilterOutMtc, Is.EqualTo (false), "FilterOutMtc 1");
 
 			// Set to some value
 			p.FilterOutMtc = true;
-			Assert.AreEqual (true, p.FilterOutMtc, "FilterOutMtc 2");
+			Assert.That (p.FilterOutMtc, Is.EqualTo (true), "FilterOutMtc 2");
 			var expectedStruct2b = DefaultStruct;
 			expectedStruct2b [185] = 0x01;
 			AreEqual (expectedStruct2b, GetData (p), "FilterOutMtc 2b");
 
 			// Set back to default value
 			p.FilterOutMtc = false;
-			Assert.AreEqual (false, p.FilterOutMtc, "FilterOutMtc 3");
-			CollectionAssert.AreEqual (DefaultStruct, GetData (p), "FilterOutMtc 3b");
+			Assert.That (p.FilterOutMtc, Is.EqualTo (false), "FilterOutMtc 3");
+			Assert.That (GetData (p), Is.EqualTo (DefaultStruct), "FilterOutMtc 3b");
 		}
 
 		[Test]
 		public void PropertiesTest_FilterOutBeatClock ()
 		{
 			var p = new MidiThruConnectionParams ();
-			Assert.AreEqual (false, p.FilterOutBeatClock, "FilterOutBeatClock 1");
+			Assert.That (p.FilterOutBeatClock, Is.EqualTo (false), "FilterOutBeatClock 1");
 
 			// Set to some value
 			p.FilterOutBeatClock = true;
-			Assert.AreEqual (true, p.FilterOutBeatClock, "FilterOutBeatClock 2");
+			Assert.That (p.FilterOutBeatClock, Is.EqualTo (true), "FilterOutBeatClock 2");
 			var expectedStruct2b = DefaultStruct;
 			expectedStruct2b [186] = 0x01;
 			AreEqual (expectedStruct2b, GetData (p), "FilterOutBeatClock 2b");
 
 			// Set back to default value
 			p.FilterOutBeatClock = false;
-			Assert.AreEqual (false, p.FilterOutBeatClock, "FilterOutBeatClock 3");
-			CollectionAssert.AreEqual (DefaultStruct, GetData (p), "FilterOutBeatClock 3b");
+			Assert.That (p.FilterOutBeatClock, Is.EqualTo (false), "FilterOutBeatClock 3");
+			Assert.That (GetData (p), Is.EqualTo (DefaultStruct), "FilterOutBeatClock 3b");
 		}
 
 		[Test]
 		public void PropertiesTest_FilterOutTuneRequest ()
 		{
 			var p = new MidiThruConnectionParams ();
-			Assert.AreEqual (false, p.FilterOutTuneRequest, "FilterOutTuneRequest 1");
+			Assert.That (p.FilterOutTuneRequest, Is.EqualTo (false), "FilterOutTuneRequest 1");
 
 			// Set to some value
 			p.FilterOutTuneRequest = true;
-			Assert.AreEqual (true, p.FilterOutTuneRequest, "FilterOutTuneRequest 2");
+			Assert.That (p.FilterOutTuneRequest, Is.EqualTo (true), "FilterOutTuneRequest 2");
 			var expectedStruct2b = DefaultStruct;
 			expectedStruct2b [187] = 0x01;
 			AreEqual (expectedStruct2b, GetData (p), "FilterOutTuneRequest 2b");
 
 			// Set back to default value
 			p.FilterOutTuneRequest = false;
-			Assert.AreEqual (false, p.FilterOutTuneRequest, "FilterOutTuneRequest 3");
-			CollectionAssert.AreEqual (DefaultStruct, GetData (p), "FilterOutTuneRequest 3b");
+			Assert.That (p.FilterOutTuneRequest, Is.EqualTo (false), "FilterOutTuneRequest 3");
+			Assert.That (GetData (p), Is.EqualTo (DefaultStruct), "FilterOutTuneRequest 3b");
 		}
 
 		[Test]
 		public void PropertiesTest_FilterOutAllControls ()
 		{
 			var p = new MidiThruConnectionParams ();
-			Assert.AreEqual (false, p.FilterOutAllControls, "FilterOutAllControls 1");
+			Assert.That (p.FilterOutAllControls, Is.EqualTo (false), "FilterOutAllControls 1");
 
 			// Set to some value
 			p.FilterOutAllControls = true;
-			Assert.AreEqual (true, p.FilterOutAllControls, "FilterOutAllControls 2");
+			Assert.That (p.FilterOutAllControls, Is.EqualTo (true), "FilterOutAllControls 2");
 			var expectedStruct2b = DefaultStruct;
 			expectedStruct2b [191] = 0x01;
 			AreEqual (expectedStruct2b, GetData (p), "FilterOutAllControls 2b");
 
 			// Set back to default value
 			p.FilterOutAllControls = false;
-			Assert.AreEqual (false, p.FilterOutAllControls, "FilterOutAllControls 3");
-			CollectionAssert.AreEqual (DefaultStruct, GetData (p), "FilterOutAllControls 3b");
+			Assert.That (p.FilterOutAllControls, Is.EqualTo (false), "FilterOutAllControls 3");
+			Assert.That (GetData (p), Is.EqualTo (DefaultStruct), "FilterOutAllControls 3b");
 		}
 
 		[Test]
 		public void PropertiesTest_Controls ()
 		{
 			var p = new MidiThruConnectionParams ();
-			Assert.IsNull (p.Controls, "Controls 1");
+			Assert.That (p.Controls, Is.Null, "Controls 1");
 
 			// Set to some array
 			var transform1 = new MidiControlTransform (MidiTransformControlType.FourteenBit /* 1 */, MidiTransformControlType.FourteenBitRpn /* 3 */, 4242, MidiTransformType.MinValue /* 10 */, short.MaxValue);
 			var transform2 = new MidiControlTransform (MidiTransformControlType.SevenBitRpn /* 2 */, MidiTransformControlType.SevenBitNRpn /* 4 */, ushort.MaxValue, MidiTransformType.MaxValue /* 11 */, 136);
 			var array = new MidiControlTransform [] { transform1, transform2 };
 			p.Controls = array;
-			CollectionAssert.AreEqual (array, p.Controls, "Controls 2");
+			Assert.That (p.Controls, Is.EqualTo (array), "Controls 2");
 			var expectedStruct2b = DefaultStruct;
 			expectedStruct2b [192] = 0x02;
 			Array.Resize (ref expectedStruct2b, 220);
@@ -525,8 +525,8 @@ namespace MonoTouchFixtures.CoreMidi {
 
 			// Set back to default value
 			p.Controls = null;
-			Assert.IsNull (p.Controls, "Controls 3");
-			CollectionAssert.AreEqual (DefaultStruct, GetData (p), "Controls 3b");
+			Assert.That (p.Controls, Is.Null, "Controls 3");
+			Assert.That (GetData (p), Is.EqualTo (DefaultStruct), "Controls 3b");
 
 			// Set to a big array; the field with the number of controls is a UInt16, so overflow by one
 			var toobigArray = new MidiControlTransform [1 + (int) ushort.MaxValue];
@@ -536,7 +536,7 @@ namespace MonoTouchFixtures.CoreMidi {
 			// Set to the maximum sized array; the field with the number of maps is a UInt16, so create exactly that
 			var bigArray = new MidiControlTransform [ushort.MaxValue];
 			p.Controls = bigArray;
-			CollectionAssert.AreEqual (bigArray, p.Controls, "Controls 5");
+			Assert.That (p.Controls, Is.EqualTo (bigArray), "Controls 5");
 			var expectedStruct5b = DefaultStruct;
 			expectedStruct5b [192] = 0xFF; expectedStruct5b [193] = 0xFF; // ushort.MaxValue
 			Array.Resize (ref expectedStruct5b, 524484);
@@ -547,7 +547,7 @@ namespace MonoTouchFixtures.CoreMidi {
 		public void PropertiesTest_Maps ()
 		{
 			var p = new MidiThruConnectionParams ();
-			Assert.IsNull (p.Maps, "Maps 1");
+			Assert.That (p.Maps, Is.Null, "Maps 1");
 
 			// Set to some array
 			var valueMap1 = new byte [128];
@@ -556,7 +556,7 @@ namespace MonoTouchFixtures.CoreMidi {
 			valueMap2 [124] = 136;
 			var array = new MidiValueMap [] { new MidiValueMap { Value = valueMap1 }, new MidiValueMap { Value = valueMap2 } };
 			p.Maps = array;
-			CollectionAssert.AreEqual (array, p.Maps, "Maps 2");
+			Assert.That (p.Maps, Is.EqualTo (array), "Maps 2");
 			var expectedStruct2b = DefaultStruct;
 			expectedStruct2b [194] = 2;
 			Array.Resize (ref expectedStruct2b, 460);
@@ -566,8 +566,8 @@ namespace MonoTouchFixtures.CoreMidi {
 
 			// Set back to default value
 			p.Maps = null;
-			Assert.IsNull (p.Maps, "Maps 3");
-			CollectionAssert.AreEqual (DefaultStruct, GetData (p), "Maps 3b");
+			Assert.That (p.Maps, Is.Null, "Maps 3");
+			Assert.That (GetData (p), Is.EqualTo (DefaultStruct), "Maps 3b");
 
 			// Set to a too big array; the field with the number of maps is a UInt16, so overflow by one
 			var toobigArray = new MidiValueMap [1 + (int) ushort.MaxValue];
@@ -577,7 +577,7 @@ namespace MonoTouchFixtures.CoreMidi {
 			// Set to the maximum sized array; the field with the number of maps is a UInt16, so create exactly that
 			var bigArray = new MidiValueMap [ushort.MaxValue];
 			p.Maps = bigArray;
-			CollectionAssert.AreEqual (bigArray, p.Maps, "Maps 5");
+			Assert.That (p.Maps, Is.EqualTo (bigArray), "Maps 5");
 			var expectedStruct5b = DefaultStruct;
 			expectedStruct5b [194] = 0xff; expectedStruct5b [195] = 0xff; // ushort.MaxValue
 			Array.Resize (ref expectedStruct5b, 8388684);
@@ -588,7 +588,7 @@ namespace MonoTouchFixtures.CoreMidi {
 		public void ReadStructTest_Default ()
 		{
 			var p = SetData (DefaultStruct);
-			Assert.AreEqual (DefaultStruct, GetData (p), "Default");
+			Assert.That (GetData (p), Is.EqualTo (DefaultStruct), "Default");
 		}
 
 		[Test]
@@ -660,7 +660,7 @@ namespace MonoTouchFixtures.CoreMidi {
 			expectedStruct2b [156] = 42;
 			var p = SetData (expectedStruct2b);
 
-			Assert.AreEqual (42, p.LowVelocity, "ReadStruct LowVelocity 2");
+			Assert.That (p.LowVelocity, Is.EqualTo (42), "ReadStruct LowVelocity 2");
 			AreEqual (expectedStruct2b, GetData (p), "ReadStruct LowVelocity 2b");
 		}
 
@@ -672,7 +672,7 @@ namespace MonoTouchFixtures.CoreMidi {
 			expectedStruct2b [157] = 42;
 			var p = SetData (expectedStruct2b);
 
-			Assert.AreEqual (42, p.HighVelocity, "ReadStruct HighVelocity 2");
+			Assert.That (p.HighVelocity, Is.EqualTo (42), "ReadStruct HighVelocity 2");
 			AreEqual (expectedStruct2b, GetData (p), "ReadStruct HighVelocity 2b");
 		}
 
@@ -684,7 +684,7 @@ namespace MonoTouchFixtures.CoreMidi {
 			expectedStruct2b [158] = 42;
 			var p = SetData (expectedStruct2b);
 
-			Assert.AreEqual (42, p.LowNote, "ReadStruct LowNote 2");
+			Assert.That (p.LowNote, Is.EqualTo (42), "ReadStruct LowNote 2");
 			AreEqual (expectedStruct2b, GetData (p), "ReadStruct LowNote 2b");
 		}
 
@@ -696,7 +696,7 @@ namespace MonoTouchFixtures.CoreMidi {
 			expectedStruct2b [159] = 42;
 			var p = SetData (expectedStruct2b);
 
-			Assert.AreEqual (42, p.HighNote, "ReadStruct HighNote 2");
+			Assert.That (p.HighNote, Is.EqualTo (42), "ReadStruct HighNote 2");
 			AreEqual (expectedStruct2b, GetData (p), "ReadStruct HighNote 2b");
 		}
 
@@ -792,7 +792,7 @@ namespace MonoTouchFixtures.CoreMidi {
 			expectedStruct2b [184] = 0x01;
 			var p = SetData (expectedStruct2b);
 
-			Assert.AreEqual (true, p.FilterOutSysEx, "ReadStruct FilterOutSysEx 2");
+			Assert.That (p.FilterOutSysEx, Is.EqualTo (true), "ReadStruct FilterOutSysEx 2");
 			AreEqual (expectedStruct2b, GetData (p), "ReadStruct FilterOutSysEx 2b");
 		}
 
@@ -804,7 +804,7 @@ namespace MonoTouchFixtures.CoreMidi {
 			expectedStruct2b [185] = 0x01;
 			var p = SetData (expectedStruct2b);
 
-			Assert.AreEqual (true, p.FilterOutMtc, "ReadStruct FilterOutMtc 2");
+			Assert.That (p.FilterOutMtc, Is.EqualTo (true), "ReadStruct FilterOutMtc 2");
 			AreEqual (expectedStruct2b, GetData (p), "ReadStruct FilterOutMtc 2b");
 		}
 
@@ -816,7 +816,7 @@ namespace MonoTouchFixtures.CoreMidi {
 			expectedStruct2b [186] = 0x01;
 			var p = SetData (expectedStruct2b);
 
-			Assert.AreEqual (true, p.FilterOutBeatClock, "ReadStruct FilterOutBeatClock 2");
+			Assert.That (p.FilterOutBeatClock, Is.EqualTo (true), "ReadStruct FilterOutBeatClock 2");
 			AreEqual (expectedStruct2b, GetData (p), "ReadStruct FilterOutBeatClock 2b");
 		}
 
@@ -828,7 +828,7 @@ namespace MonoTouchFixtures.CoreMidi {
 			expectedStruct2b [187] = 0x01;
 			var p = SetData (expectedStruct2b);
 
-			Assert.AreEqual (true, p.FilterOutTuneRequest, "ReadStruct FilterOutTuneRequest 2");
+			Assert.That (p.FilterOutTuneRequest, Is.EqualTo (true), "ReadStruct FilterOutTuneRequest 2");
 			AreEqual (expectedStruct2b, GetData (p), "ReadStruct FilterOutTuneRequest 2b");
 		}
 
@@ -840,7 +840,7 @@ namespace MonoTouchFixtures.CoreMidi {
 			expectedStruct2b [191] = 0x01;
 			var p = SetData (expectedStruct2b);
 
-			Assert.AreEqual (true, p.FilterOutAllControls, "ReadStruct FilterOutAllControls 2");
+			Assert.That (p.FilterOutAllControls, Is.EqualTo (true), "ReadStruct FilterOutAllControls 2");
 			AreEqual (expectedStruct2b, GetData (p), "ReadStruct FilterOutAllControls 2b");
 		}
 
@@ -867,7 +867,7 @@ namespace MonoTouchFixtures.CoreMidi {
 			var transform1 = new MidiControlTransform (MidiTransformControlType.FourteenBit /* 1 */, MidiTransformControlType.FourteenBitRpn /* 3 */, 4242, MidiTransformType.MinValue /* 10 */, short.MaxValue);
 			var transform2 = new MidiControlTransform (MidiTransformControlType.SevenBitRpn /* 2 */, MidiTransformControlType.SevenBitNRpn /* 4 */, ushort.MaxValue, MidiTransformType.MaxValue /* 11 */, 136);
 			var array = new MidiControlTransform [] { transform1, transform2 };
-			CollectionAssert.AreEqual (array, p.Controls, "ReadStruct Controls 2");
+			Assert.That (p.Controls, Is.EqualTo (array), "ReadStruct Controls 2");
 
 			AreEqual (expectedStruct2b, GetData (p), "ReadStruct Controls 2b");
 
@@ -879,7 +879,7 @@ namespace MonoTouchFixtures.CoreMidi {
 			p = SetData (expectedStruct5b);
 
 			var bigArray = new MidiControlTransform [ushort.MaxValue];
-			CollectionAssert.AreEqual (bigArray, p.Controls, "ReadStruct Controls 5");
+			Assert.That (p.Controls, Is.EqualTo (bigArray), "ReadStruct Controls 5");
 			AreEqual (expectedStruct5b, GetData (p), "ReadStruct Controls 5b");
 		}
 
@@ -918,7 +918,7 @@ namespace MonoTouchFixtures.CoreMidi {
 		{
 			if (expected is null && actual is null)
 				return;
-			Assert.AreEqual (expected.Length, actual.Length, $"Length: {message}");
+			Assert.That (actual.Length, Is.EqualTo (expected.Length), $"Length: {message}");
 			for (var i = 0; i < expected.Length; i++) {
 				AreEqual (expected [i], actual [i], $"Item[{i}]: {message}");
 			}
@@ -946,7 +946,7 @@ namespace MonoTouchFixtures.CoreMidi {
 		{
 			if (expected is null && actual is null)
 				return;
-			Assert.AreEqual (expected.Length, actual.Length, $"Length: {message}");
+			Assert.That (actual.Length, Is.EqualTo (expected.Length), $"Length: {message}");
 			for (var i = 0; i < expected.Length; i++) {
 				AreEqual (expected [i].Value, actual [i].Value, $"Item[{i}]: {message}");
 			}
@@ -1022,7 +1022,7 @@ namespace MonoTouchFixtures.CoreMidi {
 		public void MidiValueMapTest ()
 		{
 			var map = default (MidiValueMap);
-			CollectionAssert.AreEqual (new byte [128], map.Value, "Default");
+			Assert.That (map.Value, Is.EqualTo (new byte [128]), "Default");
 
 			var bytes = new byte [42];
 			var ex = Assert.Throws<ArgumentOutOfRangeException> (() => { map.Value = bytes; }, "Invalid byte array");
@@ -1031,7 +1031,7 @@ namespace MonoTouchFixtures.CoreMidi {
 			bytes = new byte [128];
 			bytes [42] = 36;
 			map.Value = bytes;
-			CollectionAssert.AreEqual (bytes, map.Value, "Bytes");
+			Assert.That (map.Value, Is.EqualTo (bytes), "Bytes");
 		}
 	}
 }

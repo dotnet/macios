@@ -14,6 +14,8 @@ using SystemConfiguration;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Net.Sockets;
+using MonoTests.System.Net.Http;
 
 namespace MonoTouchFixtures.SystemConfiguration {
 
@@ -26,7 +28,7 @@ namespace MonoTouchFixtures.SystemConfiguration {
 			using (var nr = new NetworkReachability ("apple.com")) {
 				NetworkReachabilityFlags flags;
 
-				Assert.IsTrue (nr.TryGetFlags (out flags));
+				Assert.That (nr.TryGetFlags (out flags), Is.True);
 				flags &= ~NetworkReachabilityFlags.TransientConnection; // Remove the TransientConnection flag if it's set
 				Assert.That (flags, Is.EqualTo (NetworkReachabilityFlags.Reachable), "Reachable");
 			}
@@ -38,27 +40,27 @@ namespace MonoTouchFixtures.SystemConfiguration {
 			using (var nr = new NetworkReachability (IPAddress.Loopback)) {
 				NetworkReachabilityFlags flags;
 
-				Assert.IsTrue (nr.TryGetFlags (out flags), "#1");
+				Assert.That (nr.TryGetFlags (out flags), Is.True, "#1");
 
 				// inconsistent results across different iOS versions
 				// < 9.0 -> Reachable | IsLocalAddress
 				// 9.x -> Reachable | IsLocalAddress | IsDirect
 				// 10.0 -> Reachable
 				// so we're only checking the (most important) Reachable flag
-				Assert.True ((flags & NetworkReachabilityFlags.Reachable) != 0, "Reachable");
+				Assert.That ((flags & NetworkReachabilityFlags.Reachable) != 0, Is.True, "Reachable");
 			}
 
 			using (var nr = new NetworkReachability (new IPAddress (new byte [] { 10, 99, 99, 99 }))) {
 				NetworkReachabilityFlags flags;
 
-				Assert.IsTrue (nr.TryGetFlags (out flags), "#2");
+				Assert.That (nr.TryGetFlags (out flags), Is.True, "#2");
 				//Assert.That (flags, Is.EqualTo (NetworkReachabilityFlags.Reachable), "#2 Reachable");
 			}
 
 			using (var nr = new NetworkReachability (IPAddress.IPv6Loopback)) {
 				NetworkReachabilityFlags flags;
 
-				Assert.IsTrue (nr.TryGetFlags (out flags), "#3");
+				Assert.That (nr.TryGetFlags (out flags), Is.True, "#3");
 				//Assert.That (flags, Is.EqualTo (
 				//	NetworkReachabilityFlags.TransientConnection | NetworkReachabilityFlags.Reachable | NetworkReachabilityFlags.ConnectionRequired), "#3 Reachable");
 			}
@@ -66,7 +68,7 @@ namespace MonoTouchFixtures.SystemConfiguration {
 			using (var nr = new NetworkReachability (IPAddress.Parse ("2001:4860:4860::8844"))) {
 				NetworkReachabilityFlags flags;
 
-				Assert.IsTrue (nr.TryGetFlags (out flags), "#4");
+				Assert.That (nr.TryGetFlags (out flags), Is.True, "#4");
 
 				// TODO: Will probably change when IPv6 is enabled locally
 				//Assert.That (flags, Is.EqualTo (
@@ -78,26 +80,43 @@ namespace MonoTouchFixtures.SystemConfiguration {
 		[Test]
 		public void CtorIPAddressPair ()
 		{
-			var address = Dns.GetHostAddresses ("apple.com") [0];
+			IPAddress address;
+			try {
+				var addresses = Dns.GetHostAddresses (NetworkResources.AppleHost);
+				address = null;
+				foreach (var candidate in addresses) {
+					if (candidate.AddressFamily == AddressFamily.InterNetwork) {
+						address = candidate;
+						break;
+					}
+				}
+				if (address is null)
+					throw new InvalidOperationException ("No IPv4 address found.");
+			} catch (Exception e) {
+				TestRuntime.IgnoreInCIIfBadNetwork (e);
+				throw;
+			}
+
 			using (var nr = new NetworkReachability (IPAddress.Loopback, address)) {
 				NetworkReachabilityFlags flags;
 
-				Assert.IsTrue (nr.TryGetFlags (out flags), "#1");
+				Assert.That (nr.TryGetFlags (out flags), Is.True, "#1");
 				CheckLoopbackFlags (flags, "1", true);
 			}
 
 			using (var nr = new NetworkReachability (null, address)) {
 				NetworkReachabilityFlags flags;
 
-				Assert.IsTrue (nr.TryGetFlags (out flags), "#2");
-				flags &= ~NetworkReachabilityFlags.TransientConnection; // Remove the TransientConnection flag if it's set
-				Assert.That (flags, Is.EqualTo (NetworkReachabilityFlags.Reachable), "#2 Reachable");
+				Assert.That (nr.TryGetFlags (out flags), Is.True, "#2");
+				// Different OS versions report different flags, so just
+				// check that Reachable is set and no unexpected flags appear.
+				CheckRemoteFlags (flags, "2");
 			}
 
 			using (var nr = new NetworkReachability (IPAddress.Loopback, null)) {
 				NetworkReachabilityFlags flags;
 
-				Assert.IsTrue (nr.TryGetFlags (out flags), "#3");
+				Assert.That (nr.TryGetFlags (out flags), Is.True, "#3");
 				CheckLoopbackFlags (flags, "3", false);
 			}
 		}
@@ -111,7 +130,18 @@ namespace MonoTouchFixtures.SystemConfiguration {
 			// figure out which OS versions have which flags set turned out to
 			// be a never-ending game of whack-a-mole, so just don't assert
 			// that any specific flags are set.
-			Assert.AreEqual (noFlags, otherFlags, $"#{number} No other flags: {flags.ToString ()}");
+			Assert.That (otherFlags, Is.EqualTo (noFlags), $"#{number} No other flags: {flags.ToString ()}");
+		}
+
+		void CheckRemoteFlags (NetworkReachabilityFlags flags, string number)
+		{
+			var noFlags = (NetworkReachabilityFlags) 0;
+			var otherFlags = (flags & ~(NetworkReachabilityFlags.Reachable | NetworkReachabilityFlags.TransientConnection | NetworkReachabilityFlags.ConnectionRequired));
+
+			// Different versions of OSes report different flags, so just
+			// verify Reachable is set and no unexpected flags appear.
+			Assert.That (flags & NetworkReachabilityFlags.Reachable, Is.Not.EqualTo (noFlags), $"#{number} Reachable: {flags.ToString ()}");
+			Assert.That (otherFlags, Is.EqualTo (noFlags), $"#{number} No other flags: {flags.ToString ()}");
 		}
 
 		[Test]
@@ -141,8 +171,8 @@ namespace MonoTouchFixtures.SystemConfiguration {
 		{
 			var ip = new IPAddress (0);
 			using var defaultRouteReachability = new NetworkReachability (ip);
-			Assert.IsTrue (defaultRouteReachability.Schedule (CFRunLoop.Main, CFRunLoop.ModeDefault), "Schedule");
-			Assert.IsTrue (defaultRouteReachability.Unschedule (CFRunLoop.Main, CFRunLoop.ModeDefault), "Unschedule");
+			Assert.That (defaultRouteReachability.Schedule (CFRunLoop.Main, CFRunLoop.ModeDefault), Is.True, "Schedule");
+			Assert.That (defaultRouteReachability.Unschedule (CFRunLoop.Main, CFRunLoop.ModeDefault), Is.True, "Unschedule");
 		}
 
 		[Test]
@@ -154,16 +184,16 @@ namespace MonoTouchFixtures.SystemConfiguration {
 			// Test setting a notification
 			var statusCode = reachability.SetNotification ((flags) => {
 			});
-			Assert.AreEqual (StatusCode.OK, statusCode, "SetNotification should succeed");
+			Assert.That (statusCode, Is.EqualTo (StatusCode.OK), "SetNotification should succeed");
 
 			// Test clearing the notification (this should free the GCHandle)
 			statusCode = reachability.SetNotification (null);
-			Assert.AreEqual (StatusCode.OK, statusCode, "SetNotification(null) should succeed");
+			Assert.That (statusCode, Is.EqualTo (StatusCode.OK), "SetNotification(null) should succeed");
 
 			// Test setting notification again after clearing
 			statusCode = reachability.SetNotification ((flags) => {
 			});
-			Assert.AreEqual (StatusCode.OK, statusCode, "SetNotification should succeed again");
+			Assert.That (statusCode, Is.EqualTo (StatusCode.OK), "SetNotification should succeed again");
 
 			// Test that disposing also works (should free the GCHandle in Dispose)
 		}
@@ -190,10 +220,12 @@ namespace MonoTouchFixtures.SystemConfiguration {
 					// Dispose to ensure GCHandle is freed
 					reachability.Dispose ();
 				}
-			});
+			}) {
+				IsBackground = true,
+			};
 
 			thread.Start ();
-			thread.Join ();
+			Assert.That (thread.Join (TimeSpan.FromSeconds (5)), Is.True, "Thread.Join timed out");
 
 			// Force garbage collection
 			GC.Collect ();
@@ -208,7 +240,7 @@ namespace MonoTouchFixtures.SystemConfiguration {
 				}
 			}
 
-			Assert.IsTrue (collectedCount > 0, $"Expected at least one NetworkReachability instance to be collected, but {collectedCount} were collected");
+			Assert.That (collectedCount > 0, Is.True, $"Expected at least one NetworkReachability instance to be collected, but {collectedCount} were collected");
 		}
 
 		[Test]
@@ -233,10 +265,12 @@ namespace MonoTouchFixtures.SystemConfiguration {
 					// Store weak reference to track if object is collected
 					weakRefs [i] = new WeakReference (reachability);
 				}
-			});
+			}) {
+				IsBackground = true,
+			};
 
 			thread.Start ();
-			thread.Join ();
+			Assert.That (thread.Join (TimeSpan.FromSeconds (5)), Is.True, "Thread.Join timed out");
 
 			// Force garbage collection
 			GC.Collect ();
@@ -251,7 +285,7 @@ namespace MonoTouchFixtures.SystemConfiguration {
 				}
 			}
 
-			Assert.IsTrue (collectedCount > 0, $"Expected at least one NetworkReachability instance to be collected, but {collectedCount} were collected");
+			Assert.That (collectedCount > 0, Is.True, $"Expected at least one NetworkReachability instance to be collected, but {collectedCount} were collected");
 		}
 	}
 }

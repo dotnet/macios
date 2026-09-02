@@ -12,7 +12,7 @@ namespace Sharpie.Bind.Massagers;
 [RegisterBefore (typeof (GenerateUsingStatementsMassager))]
 public sealed class PlatformTypeMappingMassager : Massager<PlatformTypeMappingMassager> {
 	readonly Dictionary<string, (string FullName, string Namespace, string Name)> typeMap = new ();
-	readonly Dictionary<string, (string FullName, string Namespace, string Name)> protocolMap = new ();
+	readonly HashSet<string> protocolEntries = new ();
 	readonly Stack<bool> ignoreType = new Stack<bool> ();
 
 	public PlatformTypeMappingMassager (ObjectiveCBinder binder)
@@ -23,6 +23,7 @@ public sealed class PlatformTypeMappingMassager : Massager<PlatformTypeMappingMa
 	public override bool Initialize ()
 	{
 		typeMap.Clear ();
+		protocolEntries.Clear ();
 
 		var path = base.Binder.PlatformAssembly;
 		var decoder = new TypelessDecoder ();
@@ -73,12 +74,30 @@ public sealed class PlatformTypeMappingMassager : Massager<PlatformTypeMappingMa
 			var etName = mr.GetString (et.Name);
 			nativeName ??= etName;
 
-			var map = typeMap;
-			if (map.Remove (nativeName)) {
-				// there would be a collision, so skip adding again
-				continue;
+			var entry = (etNamespace + "." + etName, etNamespace, etName);
+			if (typeMap.ContainsKey (nativeName)) {
+				// When two types map to the same native name, prefer the
+				// standard protocol interface (named "I" + nativeName, e.g.
+				// INSCopying for "NSCopying") over a [Model] class or a
+				// non-standard protocol. If neither or both follow the
+				// convention, drop both (genuine ambiguity).
+				bool newIsStandardProtocol = isProtocolAttribute && etName == "I" + nativeName;
+				bool existingIsStandardProtocol = protocolEntries.Contains (nativeName);
+				if (newIsStandardProtocol && !existingIsStandardProtocol) {
+					typeMap [nativeName] = entry;
+					protocolEntries.Add (nativeName);
+				} else if (!newIsStandardProtocol && existingIsStandardProtocol) {
+					// existing is the standard protocol, keep it
+				} else {
+					// genuine collision, drop both
+					typeMap.Remove (nativeName);
+					protocolEntries.Remove (nativeName);
+				}
+			} else {
+				typeMap.Add (nativeName, entry);
+				if (isProtocolAttribute && etName == "I" + nativeName)
+					protocolEntries.Add (nativeName);
 			}
-			map.Add (nativeName, (etNamespace + "." + etName, etNamespace, etName));
 		}
 
 		return typeMap.Count > 0;
@@ -207,11 +226,15 @@ public sealed class PlatformTypeMappingMassager : Massager<PlatformTypeMappingMa
 
 	public override void VisitMemberType (MemberType memberType)
 	{
+		// Visit children first so that type arguments (e.g. inside Action<NSData, NSURLResponse>)
+		// are mapped before the parent type is processed.
+		base.VisitMemberType (memberType);
 		VisitType (memberType, memberType.MemberName);
 	}
 
 	public override void VisitSimpleType (SimpleType simpleType)
 	{
+		base.VisitSimpleType (simpleType);
 		VisitType (simpleType, simpleType.Identifier);
 	}
 

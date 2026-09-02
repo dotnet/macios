@@ -54,7 +54,7 @@ namespace AVFoundation {
 
 	/// <summary>Describes a data source of an <see cref="AVFoundation.AVAudioSession" /> object.</summary>
 	///     <remarks>To be added.</remarks>
-	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioSessionDataSourceDescription_class/index.html">Apple documentation for <c>AVAudioSessionDataSourceDescription</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudiosessiondatasourcedescription">Apple documentation for <c>AVAudioSessionDataSourceDescription</c></related>
 	public partial class AVAudioSessionDataSourceDescription {
 		static internal AVAudioDataSourceLocation ToLocation (NSString? l)
 		{

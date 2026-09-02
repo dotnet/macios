@@ -18,9 +18,9 @@ namespace MonoTouchFixtures.CoreData {
 		public void GetSetName ()
 		{
 			using (var pd = new NSPropertyDescription ()) {
-				Assert.IsNull (pd.Name, "An unset Name should be null");
+				Assert.That (pd.Name, Is.Null, "An unset Name should be null");
 				pd.Name = "Name";
-				Assert.AreEqual ("Name", pd.Name, "Name was not corretly set.");
+				Assert.That (pd.Name, Is.EqualTo ("Name"), "Name was not corretly set.");
 			}
 		}
 
@@ -28,9 +28,9 @@ namespace MonoTouchFixtures.CoreData {
 		public void GetSetOpcional ()
 		{
 			using (var pd = new NSPropertyDescription ()) {
-				Assert.IsTrue (pd.Optional, "A property should be Optional as default.");
+				Assert.That (pd.Optional, Is.True, "A property should be Optional as default.");
 				pd.Optional = false;
-				Assert.IsFalse (pd.Optional, "Optional was not correctly set.");
+				Assert.That (pd.Optional, Is.False, "Optional was not correctly set.");
 			}
 		}
 
@@ -38,9 +38,9 @@ namespace MonoTouchFixtures.CoreData {
 		public void GetSetTransient ()
 		{
 			using (var pd = new NSPropertyDescription ()) {
-				Assert.IsFalse (pd.Transient, "A property should not be Transient by default.");
+				Assert.That (pd.Transient, Is.False, "A property should not be Transient by default.");
 				pd.Transient = true;
-				Assert.IsTrue (pd.Transient, "Transient was not correctly set.");
+				Assert.That (pd.Transient, Is.True, "Transient was not correctly set.");
 			}
 		}
 
@@ -48,11 +48,9 @@ namespace MonoTouchFixtures.CoreData {
 		public void GetSetRenamingIdentifier ()
 		{
 			using (var pd = new NSPropertyDescription ()) {
-				Assert.IsNull (pd.RenamingIdentifier,
-							   "A property by default should have the RenamingIndentifier set to null");
+				Assert.That (pd.RenamingIdentifier, Is.Null, "A property by default should have the RenamingIndentifier set to null");
 				pd.RenamingIdentifier = "Foo";
-				Assert.AreEqual ("Foo", pd.RenamingIdentifier,
-								 "RenamingIdentifier was not correctly set.");
+				Assert.That (pd.RenamingIdentifier, Is.EqualTo ("Foo"), "RenamingIdentifier was not correctly set.");
 			}
 		}
 	}

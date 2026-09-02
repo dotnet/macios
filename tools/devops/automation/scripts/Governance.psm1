@@ -44,7 +44,7 @@ function Get-APIScanConfiguration {
         $EnabledPlatforms
     )
 
-    $arrEnabledPlatforms = -split $EnabledPlatforms
+    $arrEnabledPlatforms = @(-split $EnabledPlatforms | Where-Object { $_ })
     $config = [APIScanConfiguration]::new($arrEnabledPlatforms)
     return $config.Create()
 }

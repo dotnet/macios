@@ -20,5 +20,14 @@ namespace Foundation {
 				return _null;
 			}
 		}
+
+		static IntPtr nullHandle;
+		internal static IntPtr NullHandle {
+			get {
+				if (nullHandle == IntPtr.Zero)
+					nullHandle = _NullHandle;
+				return nullHandle;
+			}
+		}
 	}
 }

@@ -80,7 +80,6 @@ namespace NetworkExtension {
 		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		AES256GCM = 6,
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		ChaCha20Poly1305 = 7,
 	}
@@ -168,10 +167,9 @@ namespace NetworkExtension {
 		Group20 = 20,
 		/// <summary>To be added.</summary>
 		Group21 = 21,
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		Group31 = 31,
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		Group32 = 32,
 	}
 
@@ -233,10 +231,9 @@ namespace NetworkExtension {
 		/// <summary>To be added.</summary>
 		ECDSA521 = 4,
 		[NoTV]
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		Ed25519 = 5,
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		Rsapss = 6,
 	}
 
@@ -333,7 +330,7 @@ namespace NetworkExtension {
 		IdleTimeout = 8,
 		/// <summary>The network configuration was disabled.</summary>
 		ConfigurationDisabled = 9,
-		/// <summary>The netowrk configuration was removed.</summary>
+		/// <summary>The network configuration was removed.</summary>
 		ConfigurationRemoved = 10,
 		/// <summary>The configuration was superseded by another.</summary>
 		Superseded = 11,
@@ -343,10 +340,8 @@ namespace NetworkExtension {
 		UserSwitch = 13,
 		/// <summary>The network connection failed.</summary>
 		ConnectionFailed = 14,
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		Sleep = 15,
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		AppUpdate = 16,
 		[iOS (18, 1), MacCatalyst (18, 1), TV (18, 1), Mac (15, 1)]
@@ -523,7 +518,7 @@ namespace NetworkExtension {
 		CannotBeRemoved = 4,
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum NERelayManagerError : long {
 		Invalid = 1,

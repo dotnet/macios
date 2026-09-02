@@ -7,11 +7,11 @@ using Microsoft.DotNet.XHarness.Common.Logging;
 namespace Xharness.Jenkins.TestTasks {
 
 	public class BuildTool {
-		public string TestName { get; set; }
+		public string TestName { get; set; } = "";
 		public IProcessManager ProcessManager { get; }
 		public TestPlatform Platform { get; set; }
-		public TestProject TestProject { get; set; }
-		public IFileBackedLog BuildLog { get; set; }
+		public TestProject? TestProject { get; set; }
+		public IFileBackedLog? BuildLog { get; set; }
 
 		public bool SpecifyPlatform { get; set; } = true;
 		public bool SpecifyConfiguration { get; set; } = true;
@@ -27,7 +27,7 @@ namespace Xharness.Jenkins.TestTasks {
 			Platform = platform;
 		}
 
-		public virtual string Mode {
+		public virtual string? Mode {
 			get { return Platform.ToString (); }
 			set { throw new NotSupportedException (); }
 		}

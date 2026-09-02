@@ -11,8 +11,7 @@ using System.Reflection;
 
 using UIKit;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Introspection {
 
@@ -114,7 +113,7 @@ namespace Introspection {
 				// documented (web and header file) as NSInteger
 				// UIImageView 'instance Void set_AnimationRepeatCount(Int32)' selector: setAnimationRepeatCount: == v12@0:4f8
 				case "System.Int32":
-					return CurrentType.FullName == "MonoTouch.UIKit.UIImageView";
+					return CurrentType?.FullName == "MonoTouch.UIKit.UIImageView";
 				}
 				break;
 			case 'i':
@@ -197,7 +196,7 @@ namespace Introspection {
 			switch (m.Name) {
 			// Called by the OS, i.e. meant to be overridden (not called) by user code.
 			case "DidReceiveNotification":
-				return m.DeclaringType.Name == "WKUserNotificationInterfaceController";
+				return m.DeclaringType?.Name == "WKUserNotificationInterfaceController";
 			case "AddCompletion":
 				return true;
 			// comes from NSFilePresenter protocol, where we cannot put [Async] today
@@ -205,9 +204,9 @@ namespace Introspection {
 			case "AccommodatePresentedItemDeletion":
 			case "AccommodatePresentedSubitemDeletion":
 			case "SavePresentedItemChanges":
-				return m.DeclaringType.Name == "UIDocument";
+				return m.DeclaringType?.Name == "UIDocument";
 			case "PostNotification": // completion handler is not always called
-				return m.DeclaringType.Name == "ICNotificationManager";
+				return m.DeclaringType?.Name == "ICNotificationManager";
 			}
 			return base.IgnoreAsync (m);
 		}

@@ -41,6 +41,51 @@ function Invoke-Request {
     } while ($true)
 }
 
+function Get-GitCommitParents {
+    param (
+        [ValidateNotNullOrEmpty ()]
+        [string]
+        $Commit
+    )
+
+    $output = & git rev-list --parents -n 1 $Commit 2>$null
+    $exitCode = $LASTEXITCODE
+    # Reset $LASTEXITCODE so the native git exit code doesn't leak out and fail the enclosing task.
+    $global:LASTEXITCODE = 0
+    if ($exitCode -ne 0 -or [string]::IsNullOrWhiteSpace($output)) {
+        throw [System.InvalidOperationException]::new("Failed to get parent commits for '$Commit'.")
+    }
+
+    $commits = $output.Trim() -split '\s+'
+    if ($commits.Length -le 1) {
+        return @()
+    }
+
+    return @($commits[1..($commits.Length - 1)])
+}
+
+function Test-GitIsAncestor {
+    param (
+        [ValidateNotNullOrEmpty ()]
+        [string]
+        $Commit,
+
+        [ValidateNotNullOrEmpty ()]
+        [string]
+        $Branch
+    )
+
+    & git merge-base --is-ancestor -- $Commit $Branch 2>$null
+    $exitCode = $LASTEXITCODE
+    # Reset $LASTEXITCODE so the native git exit code doesn't leak out and fail the enclosing task.
+    $global:LASTEXITCODE = 0
+    switch ($exitCode) {
+        0 { return $true }
+        1 { return $false }
+        default { throw [System.InvalidOperationException]::new("Failed to determine whether '$Commit' is an ancestor of '$Branch'.") }
+    }
+}
+
 class GitHubStatus {
     [ValidateNotNullOrEmpty ()] [string] $Status
     [ValidateNotNullOrEmpty ()] [string] $Description
@@ -228,6 +273,8 @@ class GitHubComments {
     [ValidateNotNullOrEmpty ()][string] $Token
     [string] $Hash
     [string[]] $PRIds
+    [bool] $CurrentCommitIsLatestInPR
+    [bool] $CurrentCommitIsLatestInPRCalculated
     hidden static [string] $GitHubGraphQLEndpoint = "https://api.github.com/graphql"
 
     GitHubComments (
@@ -240,6 +287,8 @@ class GitHubComments {
         $this.Token = $githubToken
         $this.Hash = $null
         $this.PRIds = [string[]]@()
+        $this.CurrentCommitIsLatestInPR = $false
+        $this.CurrentCommitIsLatestInPRCalculated = $false
     }
 
     GitHubComments (
@@ -253,6 +302,8 @@ class GitHubComments {
         $this.Token = $githubToken
         $this.Hash = $hash
         $this.PRIds = Get-GitHubPRsForHash -Org $githubOrg -Repo $githubRepo -Token $githubToken -Hash $hash
+        $this.CurrentCommitIsLatestInPR = $false
+        $this.CurrentCommitIsLatestInPRCalculated = $false
     }
 
     [bool] IsPR() {
@@ -261,20 +312,19 @@ class GitHubComments {
             return $true
         } else {
             # we might have gotten here because of the trigger type. This means that we are in a PR BUT
-            # we did not get the PR ids, but those can be found in the diff evirtoment vars
+            # we did not get the PR ids, but those can be found in the diff environment vars
             if ($Env:BUILD_REASON -eq "PullRequest") {
                 # set the PR ids to the PR we have in the VSTS env vars
                 $this.PRIds = @($Env:SYSTEM_PULLREQUEST_PULLREQUESTNUMBER)
                 return $true;
             }
 
-            if (($Env:BUILD_REASON -eq "ResourceTrigger")) {
-                $sourceBranch = $Env:BUILD_SOURCEBRANCH
-                if ($sourceBranch.StartsWith("refs/pull/") -and $sourceBranch.EndsWith("/merge")) {
-                    # Set the PRs parsing the source branch
-                    $this.PRIds = @($sourceBranch.Replace("refs/pull/", "").Replace("/merge", ""))
-                    return $true
-                }
+            $sourceBranch = $Env:BUILD_SOURCEBRANCH
+            if ($sourceBranch -and $sourceBranch.StartsWith("refs/pull/") -and $sourceBranch.EndsWith("/merge")) {
+                # Some builds (such as pipeline-completion/manual follow-up jobs) still use PR merge refs
+                # even when BUILD_REASON is not "PullRequest".
+                $this.PRIds = @($sourceBranch.Replace("refs/pull/", "").Replace("/merge", ""))
+                return $true
             }
 
             return $false
@@ -301,6 +351,15 @@ class GitHubComments {
         $stringBuilder.AppendLine()
     }
 
+    [void] WriteCommentIdentifier(
+        [object] $stringBuilder,
+        [string] $commentId
+    ) {
+        $ciComment = $this.GetCommentIdentifier($commentId)
+        $stringBuilder.AppendLine($ciComment)
+        $stringBuilder.AppendLine("")
+    }
+
     [void] WriteCommentFooter(
         [object] $stringBuilder,
         [string] $commentId
@@ -318,10 +377,7 @@ class GitHubComments {
             $hashUrl= "https://github.com/$($this.Org)/$($this.Repo)/commit/$($this.Hash)"
             $hashSource = " [CI build]"
         }
-        $ciComment = $this.GetCommentIdentifier($commentId)
         $stringBuilder.AppendLine("Hash: [$($this.Hash)]($hashUrl) $hashSource")
-        $stringBuilder.AppendLine("")
-        $stringBuilder.AppendLine($ciComment)
     }
 
     [string] GetCommentIdentifier([string] $commentId)
@@ -429,6 +485,9 @@ class GitHubComments {
         # build the message, which will be sent to github, users can use markdown
         $msg = [System.Text.StringBuilder]::new()
 
+        # comment identifier (at the top so it's never truncated away)
+        $this.WriteCommentIdentifier($msg, $commentId)
+
         # header
         $this.WriteCommentHeader($msg, $commentTitle, $commentEmoji)
 
@@ -453,6 +512,9 @@ class GitHubComments {
 
         # build the message, which will be sent to github, users can use markdown
         $msg = [System.Text.StringBuilder]::new()
+
+        # comment identifier (at the top so it's never truncated away)
+        $this.WriteCommentIdentifier($msg, $commentId)
 
         # header
         $this.WriteCommentHeader($msg, $commentTitle, $commentEmoji)
@@ -484,6 +546,9 @@ class GitHubComments {
         $this.HandlePreviousCommentHiding($commentId)
 
         $msg = [System.Text.StringBuilder]::new()
+
+        # comment identifier (at the top so it's never truncated away)
+        $this.WriteCommentIdentifier($msg, $commentId)
 
         # header
         $this.WriteCommentHeader($msg, $commentTitle, $commentEmoji)
@@ -725,13 +790,21 @@ mutation {
                Also returns true if not in a PR context or if hash comparison cannot be performed.
     #>
     [bool] IsCurrentCommitLatestInPR() {
+        if ($this.CurrentCommitIsLatestInPRCalculated) {
+            return $this.CurrentCommitIsLatestInPR
+        }
+
         # If we're not in a PR context, we can't determine this
         if (-not $this.IsPR()) {
+            $this.CurrentCommitIsLatestInPR = $true
+            $this.CurrentCommitIsLatestInPRCalculated = $true
             return $true
         }
 
         # If we don't have a hash to compare, assume it's latest
         if (-not $this.Hash) {
+            $this.CurrentCommitIsLatestInPR = $true
+            $this.CurrentCommitIsLatestInPRCalculated = $true
             return $true
         }
 
@@ -747,14 +820,65 @@ mutation {
             
             $prInfo = Invoke-Request -Request { Invoke-RestMethod -Uri $url -Headers $headers -Method "GET" -ContentType 'application/json' }
             $latestCommit = $prInfo.head.sha
-            
+
             Write-Host "Current commit: $($this.Hash)"
             Write-Host "Latest commit in PR #${prId}: $latestCommit"
-            
-            return $this.Hash -eq $latestCommit
+
+            $hashesToCompare = [System.Collections.Generic.List[string]]::new()
+            $hashesToCompare.Add($this.Hash)
+            if ($Env:SYSTEM_PULLREQUEST_SOURCECOMMITID) {
+                $hashesToCompare.Add($Env:SYSTEM_PULLREQUEST_SOURCECOMMITID)
+            }
+            if ($Env:BUILD_SOURCEVERSION) {
+                $hashesToCompare.Add($Env:BUILD_SOURCEVERSION)
+            }
+
+            foreach ($hash in ($hashesToCompare | Select-Object -Unique)) {
+                if ($hash -eq $latestCommit) {
+                    Write-Host "Detected latest PR commit via hash comparison: $hash"
+                    $this.CurrentCommitIsLatestInPR = $true
+                    $this.CurrentCommitIsLatestInPRCalculated = $true
+                    return $true
+                }
+            }
+
+            # PR validation builds typically use a synthetic merge commit. If that's the hash we were
+            # given, accept it when one of its local git parents is the current PR head commit.
+            # However, skip this check if the commit is already in the base or PR branch - a commit
+            # that's in either branch is not a synthetic merge commit, and checking its parents could
+            # produce a false positive (e.g. a merge from the base branch into the PR branch).
+            $baseBranch = $prInfo.base.ref
+            $isInKnownBranch = $false
+
+            if ($baseBranch -and (Test-GitIsAncestor -Commit $this.Hash -Branch "origin/$baseBranch")) {
+                Write-Host "Commit $($this.Hash) is in the base branch ($baseBranch), skipping synthetic merge check."
+                $isInKnownBranch = $true
+            }
+
+            if (-not $isInKnownBranch -and (Test-GitIsAncestor -Commit $this.Hash -Branch $latestCommit)) {
+                Write-Host "Commit $($this.Hash) is in the PR branch, skipping synthetic merge check."
+                $isInKnownBranch = $true
+            }
+
+            if (-not $isInKnownBranch) {
+                foreach ($parent in (Get-GitCommitParents -Commit $this.Hash)) {
+                    if ($parent -eq $latestCommit) {
+                        Write-Host "Detected latest PR commit via merge parent: $parent"
+                        $this.CurrentCommitIsLatestInPR = $true
+                        $this.CurrentCommitIsLatestInPRCalculated = $true
+                        return $true
+                    }
+                }
+            }
+
+            $this.CurrentCommitIsLatestInPR = $false
+            $this.CurrentCommitIsLatestInPRCalculated = $true
+            return $false
         } catch {
             Write-Host "Error checking if current commit is latest in PR: $_"
             # On error, assume it's the latest to avoid hiding valid comments
+            $this.CurrentCommitIsLatestInPR = $true
+            $this.CurrentCommitIsLatestInPRCalculated = $true
             return $true
         }
     }
@@ -1015,6 +1139,13 @@ function Get-GitHubPRsForHash {
     Write-Host "Getting related PR ids for commit $Hash"
 
     $prs = [System.Collections.ArrayList]@()
+
+    if ($Env:SYSTEM_PULLREQUEST_PULLREQUESTNUMBER) {
+        Write-Host "Found PR in environment: $Env:SYSTEM_PULLREQUEST_PULLREQUESTNUMBER"
+        $prs.Add($Env:SYSTEM_PULLREQUEST_PULLREQUESTNUMBER) > $null
+        return $prs
+    }
+
     if ($Env:IS_PR -eq "false") {
         Write-Host "This isn't a PR, IS_PR=false"
         return $prs

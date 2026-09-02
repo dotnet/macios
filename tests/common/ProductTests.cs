@@ -18,7 +18,7 @@ namespace Xamarin.Tests {
 			// Verify that the mono version is in the Versions.plist, and that it's a parsable version number.
 			var settings = new XmlReaderSettings () {
 				XmlResolver = null,
-				DtdProcessing = DtdProcessing.Parse
+				DtdProcessing = DtdProcessing.Ignore
 			};
 
 			var plist = Path.Combine (Configuration.SdkRoot, "Versions.plist");
@@ -71,7 +71,7 @@ namespace Xamarin.Tests {
 						Version lc_min_version;
 						var mincmd = lc as MinCommand;
 						if (mincmd is not null) {
-							Assert.AreEqual (load_command, mincmd.Command, "Unexpected min load command");
+							Assert.That (mincmd.Command, Is.EqualTo (load_command), "Unexpected min load command");
 							lc_min_version = mincmd.Version;
 						} else {
 							// starting from iOS SDK 12 the LC_BUILD_VERSION is used instead
@@ -159,7 +159,7 @@ namespace Xamarin.Tests {
 						failed.Add ($"No minOS version found in {machoFile}.");
 				}
 			}
-			CollectionAssert.IsEmpty (failed, "Failures");
+			Assert.That (failed, Is.Empty, "Failures");
 		}
 	}
 

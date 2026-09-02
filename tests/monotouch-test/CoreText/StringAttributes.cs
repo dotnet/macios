@@ -31,9 +31,9 @@ namespace MonoTouchFixtures.CoreText {
 			sa.UnderlineColor = UIColor.Blue.CGColor;
 			sa.UnderlineStyleModifiers = CTUnderlineStyleModifiers.PatternDashDotDot;
 
-			Assert.IsNull (sa.BaselineClass, "#0");
+			Assert.That (sa.BaselineClass, Is.Null, "#0");
 			sa.BaselineClass = CTBaselineClass.IdeographicHigh;
-			Assert.AreEqual (CTBaselineClass.IdeographicHigh, sa.BaselineClass, "#1");
+			Assert.That (sa.BaselineClass, Is.EqualTo (CTBaselineClass.IdeographicHigh), "#1");
 
 			sa.SetBaselineInfo (CTBaselineClass.Roman, 13);
 			sa.SetBaselineInfo (CTBaselineClass.IdeographicHigh, 3);
@@ -45,7 +45,7 @@ namespace MonoTouchFixtures.CoreText {
 			AdaptiveImageProvider? provider = null;
 			if (TestRuntime.CheckXcodeVersion (16, 0)) {
 				sa.AdaptiveImageProvider = provider = new AdaptiveImageProvider ();
-				Assert.AreSame (provider, sa.AdaptiveImageProvider, "AdaptiveImageProvider");
+				Assert.That (sa.AdaptiveImageProvider, Is.SameAs (provider), "AdaptiveImageProvider");
 			}
 		}
 
@@ -59,9 +59,9 @@ namespace MonoTouchFixtures.CoreText {
 			sa.UnderlineColor = UIColor.Blue.CGColor;
 			sa.UnderlineStyleModifiers = CTUnderlineStyleModifiers.PatternDashDotDot;
 
-			Assert.IsNull (sa.BaselineClass, "#0");
+			Assert.That (sa.BaselineClass, Is.Null, "#0");
 			sa.BaselineClass = CTBaselineClass.IdeographicHigh;
-			Assert.AreEqual (CTBaselineClass.IdeographicHigh, sa.BaselineClass, "#1");
+			Assert.That (sa.BaselineClass, Is.EqualTo (CTBaselineClass.IdeographicHigh), "#1");
 
 			// Calling sa.SetBaselineInfo makes the CTLine ctor crash (https://github.com/xamarin/maccore/issues/2947)
 			// so don't do that here.
@@ -101,7 +101,7 @@ namespace MonoTouchFixtures.CoreText {
 			}
 
 			if (TestRuntime.CheckXcodeVersion (16, 0))
-				Assert.AreEqual (1, provider!.Count, "AdaptiveImageProvider #0");
+				Assert.That (provider!.Count, Is.EqualTo (1), "AdaptiveImageProvider #0");
 
 			attributedString = new NSAttributedString ("🙈`", sa);
 			using (var textLine = new CTLine (attributedString)) {
@@ -109,7 +109,7 @@ namespace MonoTouchFixtures.CoreText {
 			}
 
 			if (TestRuntime.CheckXcodeVersion (16, 0))
-				Assert.AreEqual (2, provider!.Count, "AdaptiveImageProvider #1");
+				Assert.That (provider!.Count, Is.EqualTo (2), "AdaptiveImageProvider #1");
 
 #if MONOMAC
 			img.UnlockFocus ();

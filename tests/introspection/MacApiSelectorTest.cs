@@ -1186,7 +1186,7 @@ namespace Introspection {
 			return base.CheckResponse (value, actualType, method, ref name);
 		}
 
-		protected override bool CheckStaticResponse (bool value, Type actualType, Type declaredType, MethodBase method, ref string name)
+		protected override bool CheckStaticResponse (bool value, Type actualType, Type? declaredType, MethodBase method, ref string name)
 		{
 			switch (name) {
 			// 10.7 exceptions

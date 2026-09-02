@@ -22,7 +22,7 @@ namespace LinkAll.InernalCalls {
 		[Test]
 		public void RegionInfo_CountryCode ()
 		{
-			Assert.IsNotNull (xamarin_get_locale_country_code (), "xamarin_get_locale_country_code");
+			Assert.That (xamarin_get_locale_country_code (), Is.Not.Null, "xamarin_get_locale_country_code");
 		}
 
 		[DllImport ("__Internal", CharSet = CharSet.Unicode)]
@@ -46,15 +46,15 @@ namespace LinkAll.InernalCalls {
 			Assert.That (count, Is.GreaterThan (400), "count");
 			for (int i = 0, offset = 0; i < count; i++, offset += IntPtr.Size) {
 				IntPtr p = Marshal.ReadIntPtr (array, offset);
-				string s = Marshal.PtrToStringAnsi (p);
-				Assert.NotNull (s, i.ToString ());
+				string s = Marshal.PtrToStringAnsi (p)!;
+				Assert.That (s, Is.Not.Null, i.ToString ());
 				Marshal.FreeHGlobal (p);
 			}
 			Marshal.FreeHGlobal (array);
 		}
 
 		[DllImport ("__Internal")]
-		extern static IntPtr xamarin_timezone_get_data (string name, ref uint size);
+		extern static IntPtr xamarin_timezone_get_data (string? name, ref uint size);
 
 		[Test]
 		public void TimeZone_Data ()

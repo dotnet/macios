@@ -52,11 +52,6 @@ steps:
     TESTS_PLATFORM: ${{ parameters.testPlatform }}
     LABEL_WITH_PLATFORM: ${{ parameters.labelWithPlatform }}
 
-- pwsh: |
-    Write-Host "##vso[task.setvariable variable=TESTS_USE_SYSTEM]true"
-  displayName: Set SDK destination dirs 
-
-
 # remove any old processes that might have been left behind.
 - pwsh: |
     Import-Module $Env:SYSTEM_DEFAULTWORKINGDIRECTORY/$Env:BUILD_REPOSITORY_TITLE/tools/devops/automation/scripts/MaciosCI.psd1
@@ -172,6 +167,41 @@ steps:
   continueOnError: true
   condition: succeededOrFailed()
 
+# Upload updated expected app size files if the app size tests produced any.
+- bash: |
+    if [ -d "$(Build.ArtifactStagingDirectory)/updated-expected-sizes" ]; then
+      echo "##vso[task.setvariable variable=HAS_UPDATED_EXPECTED_SIZES]true"
+    fi
+  displayName: 'Check for updated expected app size files'
+  condition: succeededOrFailed()
+
+- bash: |
+    if [ -d "$(Build.ArtifactStagingDirectory)/failed-app-size-bundles" ]; then
+      echo "##vso[task.setvariable variable=HAS_FAILED_APP_SIZE_BUNDLES]true"
+    fi
+  displayName: 'Check for app bundles'
+  condition: succeededOrFailed()
+
+- task: PublishPipelineArtifact@1
+  displayName: 'Publish Artifact: Updated expected app size files'
+  inputs:
+    targetPath: '$(Build.ArtifactStagingDirectory)/updated-expected-sizes'
+    artifactName: '${{ parameters.uploadPrefix }}updated-expected-sizes-${{ parameters.testPrefix }}-$(System.JobAttempt)'
+  continueOnError: true
+  condition: and(succeededOrFailed(), eq(variables['HAS_UPDATED_EXPECTED_SIZES'], 'true'))
+
+# Note: the updated expected app size files from all the test jobs are aggregated into a
+# single gist + PR comment in the 'publish_test_results' job (see publish-html.yml), so that
+# a maintainer only has to apply one gist to update the expected files for all platforms.
+
+- task: PublishPipelineArtifact@1
+  displayName: 'Publish Artifact: Updated app bundles'
+  inputs:
+    targetPath: '$(Build.ArtifactStagingDirectory)/failed-app-size-bundles'
+    artifactName: '${{ parameters.uploadPrefix }}failed-app-size-bundles-${{ parameters.testPrefix }}-$(System.JobAttempt)'
+  continueOnError: true
+  condition: and(succeededOrFailed(), eq(variables['HAS_FAILED_APP_SIZE_BUNDLES'], 'true'))
+
 - pwsh: |
     $summaryName = "TestSummary-${{ parameters.testPrefix }}.md"
     $summaryPath = "$Env:SYSTEM_DEFAULTWORKINGDIRECTORY/$(BUILD_REPOSITORY_TITLE)/tests/TestSummary.md"
@@ -182,8 +212,15 @@ steps:
   continueOnError: true
   condition: succeededOrFailed()
 
+- bash: |
+    echo "##vso[task.setvariable variable=JOB_STATUS_BEFORE_VSDROPS]$AGENT_JOBSTATUS"
+  displayName: 'Capture job status before VSDrops publish'
+  condition: succeededOrFailed()
+  continueOnError: true
+
 - task: artifactDropTask@1
   displayName: 'Publish to Artifact Services Drop'
+  name: publishVSDrops
   inputs:
     dropServiceURI: 'https://devdiv.artifacts.visualstudio.com/DefaultCollection'
     dropMetadataContainerName: '${{ parameters.uploadPrefix }}DropMetadata-${{ parameters.testPrefix }}${{ parameters.labelWithPlatform }}-$(System.JobAttempt)'
@@ -191,6 +228,20 @@ steps:
     sourcePath: '$(BUILD_REPOSITORY_TITLE)/jenkins-results'
     detailedLog: true
     usePat: true
+  timeoutInMinutes: 30
+  continueOnError: true
+  condition: succeededOrFailed()
+
+# Azure DevOps doesn't support checking individual step results in step conditions
+# (failed('stepName') only works for jobs/stages). Comparing AGENT_JOBSTATUS before
+# and after the publish step is the best available approach to detect publish failures.
+- bash: |
+    if [ "$JOB_STATUS_BEFORE_VSDROPS" != "$AGENT_JOBSTATUS" ]; then
+      echo "VSDrops publish changed job status from '$JOB_STATUS_BEFORE_VSDROPS' to '$AGENT_JOBSTATUS'"
+      echo "##vso[task.setvariable variable=VSDROPS_PUBLISHED;isOutput=true]Failed"
+    fi
+  name: setVSDropsPublishResult
+  displayName: 'Set VSDrops publish result'
   continueOnError: true
   condition: succeededOrFailed()
 
@@ -216,26 +267,10 @@ steps:
   continueOnError: true
   condition: and(ne(variables['VSTS_XML_FILES'], 0), succeededOrFailed())
 
-# Archive files for the Html Report so that the report can be easily uploaded as artifacts of the build.
-- task: ArchiveFiles@1
-  displayName: 'Archive HtmlReport'
-  inputs:
+- template: ../common/archive-html-report.yml
+  parameters:
     rootFolder: '$(BUILD_REPOSITORY_TITLE)/jenkins-results'
-    includeRootFolder: false
-    archiveFile: '$(Build.ArtifactStagingDirectory)/HtmlReport.zip'
-  continueOnError: true
-  condition: succeededOrFailed()
-
-# Create HtmlReport artifact. This serves two purposes:
-# 1. It is the way we are going to share the HtmlReport with the publish_html job that is executed on a Windows machine.
-# 2. Users can download this if they want.
-- task: PublishPipelineArtifact@1
-  displayName: 'Publish Artifact: HtmlReport'
-  inputs:
-    targetPath: '$(Build.ArtifactStagingDirectory)/HtmlReport.zip'
     artifactName: '${{ parameters.uploadPrefix }}HtmlReport-${{ parameters.testPrefix }}-$(System.JobAttempt)'
-  continueOnError: true
-  condition: succeededOrFailed()
 
 # Upload all the binlogs
 # Copy all the binlogs to a separate directory, keeping directory structure.

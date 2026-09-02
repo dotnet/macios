@@ -42,8 +42,8 @@ namespace Xamarin.MacDev.Tasks {
 				task.ITunesArtwork = new TaskItem [] { new TaskItem (Assembly.GetExecutingAssembly ().Location) };
 
 				ExecuteTask (task, 1);
-				bool isTranslated = Engine.Logger.ErrorEvents [0].Message.Contains (errorMessage);
-				Assert.IsTrue (isTranslated, $"Should contain \"{errorMessage}\", but instead has value: \"{Engine.Logger.ErrorEvents [0].Message}\"");
+				bool isTranslated = Engine.Logger.ErrorEvents [0].Message?.Contains (errorMessage) == true;
+				Assert.That (isTranslated, Is.True, $"Should contain \"{errorMessage}\", but instead has value: \"{Engine.Logger.ErrorEvents [0].Message}\"");
 			} finally {
 				Thread.CurrentThread.CurrentUICulture = originalUICulture;
 				Thread.CurrentThread.CurrentCulture = originalCulture;
@@ -71,11 +71,11 @@ namespace Xamarin.MacDev.Tasks {
 			CultureInfo originalCulture = Thread.CurrentThread.CurrentCulture;
 
 			try {
-				Assert.IsFalse (string.IsNullOrEmpty (errorCode), "Error code is null or empty");
-				string englishError = TranslateError ("en-US", errorCode);
-				string newCultureError = TranslateError (culture, errorCode);
+				Assert.That (string.IsNullOrEmpty (errorCode), Is.False, "Error code is null or empty");
+				string? englishError = TranslateError ("en-US", errorCode);
+				string? newCultureError = TranslateError (culture, errorCode);
 
-				Assert.AreNotEqual (englishError, newCultureError, $"\"{errorCode}\" is not translated in {culture}.");
+				Assert.That (newCultureError, Is.Not.EqualTo (englishError), $"\"{errorCode}\" is not translated in {culture}.");
 			} catch (NullReferenceException) {
 				Assert.Fail ($"Error code \"{errorCode}\" was not found");
 			} finally {
@@ -84,12 +84,12 @@ namespace Xamarin.MacDev.Tasks {
 			}
 		}
 
-		private string TranslateError (string culture, string errorCode)
+		private string? TranslateError (string culture, string errorCode)
 		{
 			CultureInfo cultureInfo = new CultureInfo (culture);
 			Thread.CurrentThread.CurrentUICulture = cultureInfo;
-			PropertyInfo propertyInfo = typeof (MSBStrings).GetProperty (errorCode);
-			return (string) propertyInfo.GetValue (null, null);
+			PropertyInfo? propertyInfo = typeof (MSBStrings).GetProperty (errorCode);
+			return (string?) propertyInfo?.GetValue (null, null);
 		}
 
 		readonly string [] ignoreList = {
@@ -102,7 +102,7 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			var resxPath = Path.Combine (Configuration.RootPath, "msbuild", "Xamarin.Localization.MSBuild", "MSBStrings.resx");
 			var xml = XDocument.Load (resxPath);
-			var resxNames = xml.Root.Descendants ().Where (n => n.Name == "data").Select (n => n.Attribute ("name").Value);
+			var resxNames = xml.Root?.Descendants ().Where (n => n.Name == "data").Select (n => n.Attribute ("name")?.Value ?? "") ?? Enumerable.Empty<string> ();
 			var resxHashSet = new HashSet<string> (resxNames);
 			var resourceNames = typeof (MSBStrings).GetProperties ().Select (s => s.Name);
 			var resourceHashSet = new HashSet<string> (resourceNames);
@@ -110,8 +110,8 @@ namespace Xamarin.MacDev.Tasks {
 			var errorsNotInResources = string.Join (" ", resxHashSet.Where (n => !resourceHashSet.Contains (n) && !ignoreList.Contains (n)));
 			var errorsNotInResx = string.Join (" ", resourceHashSet.Where (n => !resxHashSet.Contains (n) && !ignoreList.Contains (n)));
 
-			Assert.IsEmpty (errorsNotInResources, $"The following error(s) were found in MSBStrings.resx but not through the MSBStrings resource. Try to recompile the msbuild project and then the test project\n{errorsNotInResources}");
-			Assert.IsEmpty (errorsNotInResx, $"The following error(s) were found in the MSBStrings resource but not in MSBStrings.resx. Try to recompile the msbuild project and then the test project\n{errorsNotInResx}");
+			Assert.That (errorsNotInResources, Is.Empty, $"The following error(s) were found in MSBStrings.resx but not through the MSBStrings resource. Try to recompile the msbuild project and then the test project\n{errorsNotInResources}");
+			Assert.That (errorsNotInResx, Is.Empty, $"The following error(s) were found in the MSBStrings resource but not in MSBStrings.resx. Try to recompile the msbuild project and then the test project\n{errorsNotInResx}");
 		}
 	}
 }

@@ -473,4 +473,15 @@
   <data name="RBI0041Title" xml:space="preserve">
         <value>Protocol constructor overlap:</value>
     </data>
+  <!-- RBI0042 -->
+  <data name="RBI0042Description" xml:space="preserve">
+        <value>Transient types (TransientString, TransientCFString, TransientCFObject) allocate native memory and must be disposed. Use the 'using' keyword to ensure proper cleanup.</value>
+    </data>
+  <data name="RBI0042MessageFormat" xml:space="preserve">
+        <value>Variable '{0}' of type '{1}' must be declared with the 'using' keyword to ensure proper disposal of native resources</value>
+        <comment>{0} is the name of the variable, {1} is the type name.</comment>
+    </data>
+  <data name="RBI0042Title" xml:space="preserve">
+        <value>Transient disposable type not declared with 'using'</value>
+    </data>
 </root>

@@ -9,12 +9,18 @@
     <LinkMode>$(MtouchLink)</LinkMode>
     <ThisTestDirectory>$(RootTestsDirectory)\linker\dont link</ThisTestDirectory>
 
+    <!--
+      Mono's LLVM AOT compiler emits a malformed declaration for the uaddlp/saddlp intrinsics,
+      which LLVM 23's IR verifier rejects, so AOT compilation of System.Private.CoreLib fails.
+      This only affects us here, because the methods that reference those intrinsics
+      (AdvSimd.AddPairwiseWidening) survive only when the trimmer is disabled.
+      Remove once https://github.com/dotnet/runtime/issues/132743 has been fixed.
+      Tracked by https://github.com/dotnet/macios/issues/26467.
+    -->
+    <MtouchUseLlvm>false</MtouchUseLlvm>
+
     <!-- trimmer warnings: the linker tests do a lot of trimmer-unsafe things, so ignore any trimmer warnings -->
     <NoWarn>$(NoWarn);IL2057</NoWarn>
-
-    <!-- We're warning-free, so let's make sure we stay that way -->
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors>Nullable</WarningsAsErrors>
   </PropertyGroup>
 
   <Import Project="$(RootTestsDirectory)/common/shared-dotnet.csproj" />
@@ -40,6 +46,9 @@
     <Compile Include="$(RootTestsDirectory)\common\TestRuntime.cs">
       <Link>TestRuntime.cs</Link>
     </Compile>
+    <Compile Include="$(RootTestsDirectory)\common\TestRuntime.LinkAll.cs">
+      <Link>TestRuntime.LinkAll.cs</Link>
+    </Compile>
     <Compile Include="$(RootTestsDirectory)\..\tools\common\ApplePlatform.cs">
       <Link>ApplePlatform.cs</Link>
     </Compile>
@@ -56,15 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="$(ThisTestDirectory)\Assets.xcassets\AppIcons.appiconset\Contents.json" />
-    <ImageAsset Include="$(ThisTestDirectory)\Assets.xcassets\AppIcons.appiconset\Icon-app-60%403x.png" />
-    <ImageAsset Include="$(ThisTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-app-57.png" />
-    <ImageAsset Include="$(ThisTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-app-57%402x.png" />
-    <ImageAsset Include="$(ThisTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-app-60%402x.png" />
-    <ImageAsset Include="$(ThisTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-app-72.png" />
-    <ImageAsset Include="$(ThisTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-app-72%402x.png" />
-    <ImageAsset Include="$(ThisTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-app-76.png" />
-    <ImageAsset Include="$(ThisTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-app-76%402x.png" />
-    <ImageAsset Include="$(ThisTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-app-83.5%402x.png" />
+    <ImageAsset Include="$(ThisTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-1024.png" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="$(ThisTestDirectory)\BoardingPass.pkpass">

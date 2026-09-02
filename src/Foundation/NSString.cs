@@ -51,7 +51,7 @@ namespace Foundation {
 	 {
 #if !COREBUILD
 		/// <summary>An <see cref="NSString" /> instance for an empty (zero-length) string.</summary>
-		public static readonly NSString Empty = new NSString (String.Empty);
+		public static readonly NSString Empty = new NSString (String.Empty) { RemoveFromObjectMap = true };
 
 		internal NSString (NativeHandle handle, bool owns) : base (handle, owns)
 		{

@@ -11,26 +11,26 @@ namespace MonoTouchFixtures.CoreFoundation {
 
 		void VerifyArray (CFArray? a)
 		{
-			Assert.IsNotNull (a, "NotNull");
-			Assert.AreEqual ((nint) 3, a.Count, "Count");
+			Assert.That (a, Is.Not.Null, "NotNull");
+			Assert.That (a.Count, Is.EqualTo ((nint) 3), "Count");
 			for (var i = 0; i < a.Count; i++)
-				Assert.AreEqual (TestArray [i], (string) CFString.FromHandle (a.GetValue (i), false), i.ToString ());
+				Assert.That ((string) CFString.FromHandle (a.GetValue (i), false), Is.EqualTo (TestArray [i]), i.ToString ());
 		}
 
 		void VerifyArray (NSString []? a)
 		{
-			Assert.IsNotNull (a, "NotNull");
-			Assert.AreEqual (3, a.Length, "Count");
+			Assert.That (a, Is.Not.Null, "NotNull");
+			Assert.That (a.Length, Is.EqualTo (3), "Count");
 			for (var i = 0; i < a.Length; i++)
-				Assert.AreEqual (TestArray [i], (string) a [i], i.ToString ());
+				Assert.That ((string) a [i], Is.EqualTo (TestArray [i]), i.ToString ());
 		}
 
 		void VerifyArray (string []? a)
 		{
-			Assert.IsNotNull (a, "NotNull");
-			Assert.AreEqual (3, a.Length, "Count");
+			Assert.That (a, Is.Not.Null, "NotNull");
+			Assert.That (a.Length, Is.EqualTo (3), "Count");
 			for (var i = 0; i < a.Length; i++)
-				Assert.AreEqual (TestArray [i], (string) a [i], i.ToString ());
+				Assert.That ((string) a [i], Is.EqualTo (TestArray [i]), i.ToString ());
 		}
 
 		[Test]
@@ -39,7 +39,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 			var handle = CFArray.Create (TestArray);
 			using var a = Runtime.GetINativeObject<CFArray> (handle, true);
 			VerifyArray (a);
-			Assert.AreEqual ((nint) 1, CFGetRetainCount (handle), "RC");
+			Assert.That (CFGetRetainCount (handle), Is.EqualTo ((nint) 1), "RC");
 		}
 
 		[Test]
@@ -47,7 +47,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 		{
 			using var a = CFArray.FromStrings (TestArray);
 			VerifyArray (a);
-			Assert.AreEqual ((nint) 1, CFGetRetainCount (a.Handle), "RC");
+			Assert.That (CFGetRetainCount (a.Handle), Is.EqualTo ((nint) 1), "RC");
 		}
 
 		[Test]
@@ -55,23 +55,23 @@ namespace MonoTouchFixtures.CoreFoundation {
 		{
 			var handle = CFArray.Create (new string? [] { "a", null, "b" });
 			using var a = Runtime.GetINativeObject<CFArray> (handle, true);
-			Assert.IsNotNull (a, "NotNull");
-			Assert.AreEqual ((nint) 3, a!.Count, "Count");
-			Assert.AreEqual ("a", CFString.FromHandle (a.GetValue (0), false), "0");
-			Assert.AreEqual (NSNull.Null.Handle, a.GetValue (1), "1 - null item is CFNull");
-			Assert.AreEqual ("b", CFString.FromHandle (a.GetValue (2), false), "2");
-			Assert.AreEqual ((nint) 1, CFGetRetainCount (handle), "RC");
+			Assert.That (a, Is.Not.Null, "NotNull");
+			Assert.That (a!.Count, Is.EqualTo ((nint) 3), "Count");
+			Assert.That (CFString.FromHandle (a.GetValue (0), false), Is.EqualTo ("a"), "0");
+			Assert.That (a.GetValue (1), Is.EqualTo (NSNull.Null.Handle), "1 - null item is CFNull");
+			Assert.That (CFString.FromHandle (a.GetValue (2), false), Is.EqualTo ("b"), "2");
+			Assert.That (CFGetRetainCount (handle), Is.EqualTo ((nint) 1), "RC");
 		}
 
 		[Test]
 		public void FromStringsWithNullItemsTest ()
 		{
 			using var a = CFArray.FromStrings (new string? [] { "x", null, "y" });
-			Assert.IsNotNull (a, "NotNull");
-			Assert.AreEqual ((nint) 3, a.Count, "Count");
-			Assert.AreEqual ("x", CFString.FromHandle (a.GetValue (0), false), "0");
-			Assert.AreEqual (NSNull.Null.Handle, a.GetValue (1), "1 - null item is CFNull");
-			Assert.AreEqual ("y", CFString.FromHandle (a.GetValue (2), false), "2");
+			Assert.That (a, Is.Not.Null, "NotNull");
+			Assert.That (a.Count, Is.EqualTo ((nint) 3), "Count");
+			Assert.That (CFString.FromHandle (a.GetValue (0), false), Is.EqualTo ("x"), "0");
+			Assert.That (a.GetValue (1), Is.EqualTo (NSNull.Null.Handle), "1 - null item is CFNull");
+			Assert.That (CFString.FromHandle (a.GetValue (2), false), Is.EqualTo ("y"), "2");
 		}
 
 		[Test]
@@ -80,11 +80,11 @@ namespace MonoTouchFixtures.CoreFoundation {
 			IReadOnlyList<string?> list = new List<string?> { "p", null, "q" };
 			var handle = CFArray.Create (list);
 			using var a = Runtime.GetINativeObject<CFArray> (handle, true);
-			Assert.IsNotNull (a, "NotNull");
-			Assert.AreEqual ((nint) 3, a!.Count, "Count");
-			Assert.AreEqual ("p", CFString.FromHandle (a.GetValue (0), false), "0");
-			Assert.AreEqual (NSNull.Null.Handle, a.GetValue (1), "1 - null item is CFNull");
-			Assert.AreEqual ("q", CFString.FromHandle (a.GetValue (2), false), "2");
+			Assert.That (a, Is.Not.Null, "NotNull");
+			Assert.That (a!.Count, Is.EqualTo ((nint) 3), "Count");
+			Assert.That (CFString.FromHandle (a.GetValue (0), false), Is.EqualTo ("p"), "0");
+			Assert.That (a.GetValue (1), Is.EqualTo (NSNull.Null.Handle), "1 - null item is CFNull");
+			Assert.That (CFString.FromHandle (a.GetValue (2), false), Is.EqualTo ("q"), "2");
 		}
 
 		[Test]
@@ -93,7 +93,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 			var handle = CFArray.Create (TestArray);
 			var a = CFArray.ArrayFromHandle<NSString> (handle);
 			VerifyArray (a);
-			Assert.AreEqual ((nint) 1, CFGetRetainCount (handle), "RC");
+			Assert.That (CFGetRetainCount (handle), Is.EqualTo ((nint) 1), "RC");
 			CFRelease (handle);
 		}
 
@@ -104,7 +104,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 			CFRetain (handle);
 			var a = CFArray.ArrayFromHandle<NSString> (handle, true);
 			VerifyArray (a);
-			Assert.AreEqual ((nint) 1, CFGetRetainCount (handle), "RC");
+			Assert.That (CFGetRetainCount (handle), Is.EqualTo ((nint) 1), "RC");
 			CFRelease (handle);
 		}
 
@@ -114,7 +114,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 			var handle = CFArray.Create (TestArray);
 			var a = CFArray.ArrayFromHandle<NSString> (handle, false);
 			VerifyArray (a);
-			Assert.AreEqual ((nint) 1, CFGetRetainCount (handle), "RC");
+			Assert.That (CFGetRetainCount (handle), Is.EqualTo ((nint) 1), "RC");
 			CFRelease (handle);
 		}
 
@@ -124,7 +124,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 			var handle = CFArray.Create (TestArray);
 			var a = CFArray.ArrayFromHandleFunc<string> (handle, (v) => CFString.FromHandle (v));
 			VerifyArray (a);
-			Assert.AreEqual ((nint) 1, CFGetRetainCount (handle), "RC");
+			Assert.That (CFGetRetainCount (handle), Is.EqualTo ((nint) 1), "RC");
 			CFRelease (handle);
 		}
 
@@ -135,7 +135,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 			CFRetain (handle);
 			var a = CFArray.ArrayFromHandleFunc<string> (handle, (v) => CFString.FromHandle (v), true);
 			VerifyArray (a);
-			Assert.AreEqual ((nint) 1, CFGetRetainCount (handle), "RC");
+			Assert.That (CFGetRetainCount (handle), Is.EqualTo ((nint) 1), "RC");
 			CFRelease (handle);
 		}
 
@@ -145,7 +145,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 			var handle = CFArray.Create (TestArray);
 			var a = CFArray.ArrayFromHandleFunc<string> (handle, (v) => CFString.FromHandle (v), false);
 			VerifyArray (a);
-			Assert.AreEqual ((nint) 1, CFGetRetainCount (handle), "RC");
+			Assert.That (CFGetRetainCount (handle), Is.EqualTo ((nint) 1), "RC");
 			CFRelease (handle);
 		}
 

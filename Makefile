@@ -3,14 +3,20 @@ SUBDIRS=builds
 include $(TOP)/Make.config
 include $(TOP)/mk/versions.mk
 
-# On Linux, skip directories that require native compilation or macOS platform
-ifndef IS_LINUX
+# Without Xcode, skip directories that require native compilation or macOS platform
+ifndef NO_XCODE
 SUBDIRS += runtime
 endif
 
-SUBDIRS += src msbuild tools
+SUBDIRS += src
 
-ifndef IS_LINUX
+ifndef ONLY_SHARPIE
+SUBDIRS += msbuild
+endif
+
+SUBDIRS += tools
+
+ifeq ($(UNAME_S),Darwin)
 SUBDIRS += dotnet
 endif
 
@@ -26,6 +32,8 @@ world: check-system
 	@$(MAKE) reset-versions
 	@$(MAKE) all -j8
 	@$(MAKE) install -j8
+	@echo "Build is done, the following workloads were built:"
+	@$(DOTNET) workload list
 
 .PHONY: check-system
 check-system:
@@ -35,7 +43,8 @@ check-system:
 show-versions:
 	@echo "Building:"
 	@echo "    The .NET NuGet(s):"
-	@$(foreach platform,$(DOTNET_PLATFORMS),echo "        Microsoft.$(platform) $($(shell echo $(platform) | tr 'a-z' 'A-Z')_NUGET_VERSION_FULL)";)
+	@$(foreach platform,$(DOTNET_PLATFORMS),echo "        Microsoft.$(platform) $($(call uppercase,$(platform))_NUGET_VERSION_FULL)";)
+	@$(MAKE) -C tools/sharpie show-version
 
 all-local:: global.json
 
@@ -60,22 +69,6 @@ install-hook::
 		echo "Error: global.json has changed: please commit the changes."; \
 		exit 1; \
 	fi
-
-all-hook install-hook::
-	$(Q) $(MAKE) -C dotnet shutdown-build-server
-
-.PHONY: package release
-package release:
-	$(Q) $(MAKE) -C $(TOP)/release release
-	# copy .pkg, .zip and *updateinfo to the packages directory to be uploaded to storage
-	$(Q) mkdir -p ../package
-	$(Q) echo "Output from 'make release':"
-	$(Q) ls -la $(TOP)/release | sed 's/^/    /'
-	$(Q) if test -n "$$(shopt -s nullglob; echo $(TOP)/release/*.pkg)"; then $(CP) $(TOP)/release/*.pkg ../package; fi
-	$(Q) if test -n "$$(shopt -s nullglob; echo $(TOP)/release/*.zip)"; then $(CP) $(TOP)/release/*.zip ../package; fi
-	$(Q) if test -n "$$(shopt -s nullglob; echo $(TOP)/release/*updateinfo)"; then $(CP) $(TOP)/release/*updateinfo ../package; fi
-	$(Q) echo "Packages:"
-	$(Q) ls -la ../package | sed 's/^/    /'
 
 dotnet-install-system:
 	$(Q) $(MAKE) -C dotnet install-system
@@ -105,4 +98,3 @@ git-clean-all:
 	@echo "Done"
 
 SUBDIRS += tests
-

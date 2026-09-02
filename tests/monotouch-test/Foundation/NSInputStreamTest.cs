@@ -57,32 +57,32 @@ namespace MonoTouchFixtures.Foundation {
 				using (var s = NSInputStream.FromData (data)) {
 					byte [] arr = new byte [10];
 					s.Open ();
-					Assert.IsTrue (s.HasBytesAvailable ());
-					Assert.AreEqual ((nint) 2, s.Read (arr, 2), "#a 1");
-					Assert.AreEqual (0, arr [0], "#a[0]");
-					Assert.AreEqual (1, arr [1], "#a[1]");
+					Assert.That (s.HasBytesAvailable (), Is.True);
+					Assert.That (s.Read (arr, 2), Is.EqualTo ((nint) 2), "#a 1");
+					Assert.That (arr [0], Is.EqualTo (0), "#a[0]");
+					Assert.That (arr [1], Is.EqualTo (1), "#a[1]");
 				}
 
 				using (var s = new NSInputStream (data)) {
 					byte [] arr = new byte [10];
 					s.Open ();
-					Assert.IsTrue (s.HasBytesAvailable ());
-					Assert.AreEqual ((nint) 2, s.Read (arr, 1, 2), "#b 1");
-					Assert.AreEqual (0, arr [0], "#b[0]");
-					Assert.AreEqual (0, arr [1], "#b[1]");
-					Assert.AreEqual (1, arr [2], "#b[2]");
+					Assert.That (s.HasBytesAvailable (), Is.True);
+					Assert.That (s.Read (arr, 1, 2), Is.EqualTo ((nint) 2), "#b 1");
+					Assert.That (arr [0], Is.EqualTo (0), "#b[0]");
+					Assert.That (arr [1], Is.EqualTo (0), "#b[1]");
+					Assert.That (arr [2], Is.EqualTo (1), "#b[2]");
 				}
 
 				using (var s = new NSInputStream (data)) {
 					byte [] arr = new byte [10];
 					s.Open ();
-					Assert.IsTrue (s.HasBytesAvailable ());
+					Assert.That (s.HasBytesAvailable (), Is.True);
 					fixed (byte* ptr = &arr [2])
-						Assert.AreEqual ((nint) 2, s.Read ((IntPtr) ptr, 2), "#c 1");
-					Assert.AreEqual (0, arr [0], "#c[0]");
-					Assert.AreEqual (0, arr [1], "#c[1]");
-					Assert.AreEqual (0, arr [2], "#c[2]");
-					Assert.AreEqual (1, arr [3], "#c[3]");
+						Assert.That (s.Read ((IntPtr) ptr, 2), Is.EqualTo ((nint) 2), "#c 1");
+					Assert.That (arr [0], Is.EqualTo (0), "#c[0]");
+					Assert.That (arr [1], Is.EqualTo (0), "#c[1]");
+					Assert.That (arr [2], Is.EqualTo (0), "#c[2]");
+					Assert.That (arr [3], Is.EqualTo (1), "#c[3]");
 				}
 			}
 		}

@@ -44,7 +44,7 @@ namespace WatchConnectivity {
 		/// <summary>Indicates that the receiver did not have enough storage to receive the payload.</summary>
 		InsufficientSpace = 7015,
 		// iOS 9.3 / watchOS 2.2
-		/// <summary>Indicates taht the session was not active.</summary>
+		/// <summary>Indicates that the session was not active.</summary>
 		SessionInactive = 7016,
 		/// <summary>Indicates that the transfer timed out.</summary>
 		TransferTimedOut = 7017,

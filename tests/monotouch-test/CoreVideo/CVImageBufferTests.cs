@@ -22,19 +22,19 @@ namespace MonoTouchFixtures.CoreVideo {
 
 			var codepoint = CVImageBuffer.GetCodePoint (CVImageBufferYCbCrMatrix.ItuR2020);
 			var matrixOption = CVImageBuffer.GetYCbCrMatrixOption (codepoint);
-			Assert.AreEqual (CVImageBufferYCbCrMatrix.ItuR2020, matrixOption, "ItuR2020");
+			Assert.That (matrixOption, Is.EqualTo (CVImageBufferYCbCrMatrix.ItuR2020), "ItuR2020");
 
 			codepoint = CVImageBuffer.GetCodePoint (CVImageBufferYCbCrMatrix.ItuR601_4);
 			matrixOption = CVImageBuffer.GetYCbCrMatrixOption (codepoint);
-			Assert.AreEqual (CVImageBufferYCbCrMatrix.ItuR601_4, matrixOption, "ItuR601_4");
+			Assert.That (matrixOption, Is.EqualTo (CVImageBufferYCbCrMatrix.ItuR601_4), "ItuR601_4");
 
 			codepoint = CVImageBuffer.GetCodePoint (CVImageBufferYCbCrMatrix.ItuR709_2);
 			matrixOption = CVImageBuffer.GetYCbCrMatrixOption (codepoint);
-			Assert.AreEqual (CVImageBufferYCbCrMatrix.ItuR709_2, matrixOption, "ItuR709_2");
+			Assert.That (matrixOption, Is.EqualTo (CVImageBufferYCbCrMatrix.ItuR709_2), "ItuR709_2");
 
 			codepoint = CVImageBuffer.GetCodePoint (CVImageBufferYCbCrMatrix.Smpte240M1995);
 			matrixOption = CVImageBuffer.GetYCbCrMatrixOption (codepoint);
-			Assert.AreEqual (CVImageBufferYCbCrMatrix.Smpte240M1995, matrixOption, "Smpte240M1995");
+			Assert.That (matrixOption, Is.EqualTo (CVImageBufferYCbCrMatrix.Smpte240M1995), "Smpte240M1995");
 		}
 
 		[Test]
@@ -44,23 +44,23 @@ namespace MonoTouchFixtures.CoreVideo {
 
 			var codepoint = CVImageBuffer.GetCodePoint (CVImageBufferColorPrimaries.ItuR2020);
 			var matrixOption = CVImageBuffer.GetColorPrimariesOption (codepoint);
-			Assert.AreEqual (CVImageBufferColorPrimaries.ItuR2020, matrixOption, "ItuR2020");
+			Assert.That (matrixOption, Is.EqualTo (CVImageBufferColorPrimaries.ItuR2020), "ItuR2020");
 
 			codepoint = CVImageBuffer.GetCodePoint (CVImageBufferColorPrimaries.Ebu3213);
 			matrixOption = CVImageBuffer.GetColorPrimariesOption (codepoint);
-			Assert.AreEqual (CVImageBufferColorPrimaries.Ebu3213, matrixOption, "Ebu3213");
+			Assert.That (matrixOption, Is.EqualTo (CVImageBufferColorPrimaries.Ebu3213), "Ebu3213");
 
 			codepoint = CVImageBuffer.GetCodePoint (CVImageBufferColorPrimaries.ItuR709_2);
 			matrixOption = CVImageBuffer.GetColorPrimariesOption (codepoint);
-			Assert.AreEqual (CVImageBufferColorPrimaries.ItuR709_2, matrixOption, "ItuR709_2");
+			Assert.That (matrixOption, Is.EqualTo (CVImageBufferColorPrimaries.ItuR709_2), "ItuR709_2");
 
 			codepoint = CVImageBuffer.GetCodePoint (CVImageBufferColorPrimaries.P22);
 			matrixOption = CVImageBuffer.GetColorPrimariesOption (codepoint);
-			Assert.AreEqual (CVImageBufferColorPrimaries.P22, matrixOption, "P22");
+			Assert.That (matrixOption, Is.EqualTo (CVImageBufferColorPrimaries.P22), "P22");
 
 			codepoint = CVImageBuffer.GetCodePoint (CVImageBufferColorPrimaries.SmpteC);
 			matrixOption = CVImageBuffer.GetColorPrimariesOption (codepoint);
-			Assert.AreEqual (CVImageBufferColorPrimaries.SmpteC, matrixOption, "SmpteC");
+			Assert.That (matrixOption, Is.EqualTo (CVImageBufferColorPrimaries.SmpteC), "SmpteC");
 		}
 
 		[Test]
@@ -70,23 +70,23 @@ namespace MonoTouchFixtures.CoreVideo {
 
 			var codepoint = CVImageBuffer.GetCodePoint (CVImageBufferTransferFunction.ItuR2100Hlg);
 			var matrixOption = CVImageBuffer.GetTransferFunctionOption (codepoint);
-			Assert.AreEqual (CVImageBufferTransferFunction.ItuR2100Hlg, matrixOption, "ItuR2100Hlg");
+			Assert.That (matrixOption, Is.EqualTo (CVImageBufferTransferFunction.ItuR2100Hlg), "ItuR2100Hlg");
 
 			codepoint = CVImageBuffer.GetCodePoint (CVImageBufferTransferFunction.ItuR709_2);
 			matrixOption = CVImageBuffer.GetTransferFunctionOption (codepoint);
-			Assert.AreEqual (CVImageBufferTransferFunction.ItuR709_2, matrixOption, "ItuR709_2");
+			Assert.That (matrixOption, Is.EqualTo (CVImageBufferTransferFunction.ItuR709_2), "ItuR709_2");
 
 			codepoint = CVImageBuffer.GetCodePoint (CVImageBufferTransferFunction.Smpte240M1995);
 			matrixOption = CVImageBuffer.GetTransferFunctionOption (codepoint);
-			Assert.AreEqual (CVImageBufferTransferFunction.Smpte240M1995, matrixOption, "Smpte240M1995");
+			Assert.That (matrixOption, Is.EqualTo (CVImageBufferTransferFunction.Smpte240M1995), "Smpte240M1995");
 
 			codepoint = CVImageBuffer.GetCodePoint (CVImageBufferTransferFunction.SmpteST2084PQ);
 			matrixOption = CVImageBuffer.GetTransferFunctionOption (codepoint);
-			Assert.AreEqual (CVImageBufferTransferFunction.SmpteST2084PQ, matrixOption, "SmpteST2084PQ");
+			Assert.That (matrixOption, Is.EqualTo (CVImageBufferTransferFunction.SmpteST2084PQ), "SmpteST2084PQ");
 
 			codepoint = CVImageBuffer.GetCodePoint (CVImageBufferTransferFunction.SmpteST428_1);
 			matrixOption = CVImageBuffer.GetTransferFunctionOption (codepoint);
-			Assert.AreEqual (CVImageBufferTransferFunction.SmpteST428_1, matrixOption, "SmpteST428_1");
+			Assert.That (matrixOption, Is.EqualTo (CVImageBufferTransferFunction.SmpteST428_1), "SmpteST428_1");
 		}
 	}
 }

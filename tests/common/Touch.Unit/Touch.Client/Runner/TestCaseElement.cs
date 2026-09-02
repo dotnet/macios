@@ -51,13 +51,16 @@ namespace MonoTouch.NUnit.UI {
 #if NUNITLITE_NUGET
 				Run ();
 #else
-				var suite = (testCase.Parent as TestSuite);
-				var context = TestExecutionContext.CurrentContext;
-				context.TestObject = Reflect.Construct (testCase.Method.ReflectedType, null);
+				if (testCase.Parent is TestSuite suite) {
+					var context = TestExecutionContext.CurrentContext;
+					context.TestObject = Reflect.Construct (testCase.Method.ReflectedType, null);
 
-				suite.GetOneTimeSetUpCommand ().Execute (context);
-				Run ();
-				suite.GetOneTimeTearDownCommand ().Execute (context);
+					suite.GetOneTimeSetUpCommand ().Execute (context);
+					Run ();
+					suite.GetOneTimeTearDownCommand ().Execute (context);
+				} else {
+					Run ();
+				}
 #endif
 
 				Runner.CloseWriter ();
@@ -66,7 +69,7 @@ namespace MonoTouch.NUnit.UI {
 		}
 
 		public TestMethod TestCase {
-			get { return Test as TestMethod; }
+			get { return (TestMethod) Test; }
 		}
 
 		public void Run ()
@@ -108,7 +111,8 @@ namespace MonoTouch.NUnit.UI {
 				// we still need to update our current element
 				if (GetContainerTableView () is not null) {
 					var root = GetImmediateRootElement ();
-					root.Reload (this, UITableViewRowAnimation.Fade);
+					if (root is not null)
+						root.Reload (this, UITableViewRowAnimation.Fade);
 				}
 				tapped = false;
 			}

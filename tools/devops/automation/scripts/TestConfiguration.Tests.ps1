@@ -217,8 +217,31 @@ Describe 'Get-TestConfiguration' {
   It 'succeeds when no dotnet platforms enabled' {
     $EnabledPlatforms = ""
 
+    $TestConfigurationsWithSharpie = @"
+[
+  {
+    "label": "cecil",
+    "splitByPlatforms": "false",
+    "testPrefix": "test-prefix_",
+    "testStage": "simulator",
+  },
+  {
+    "label": "sharpie",
+    "splitByPlatforms": "false",
+    "supportsNoPlatforms": "true",
+    "testPrefix": "simulator_tests",
+  },
+  {
+    "label": "dotnettests",
+    "splitByPlatforms": "true",
+    "needsMultiplePlatforms": "true",
+    "testPrefix": "test-prefix_",
+  }
+]
+"@
+
     $config = Get-TestConfiguration `
-      -TestConfigurations $TestConfigurations `
+      -TestConfigurations $TestConfigurationsWithSharpie `
       -SupportedPlatforms $SupportedPlatforms `
       -EnabledPlatforms $EnabledPlatforms `
       -TestsLabels "extra-test-labels" `
@@ -226,13 +249,13 @@ Describe 'Get-TestConfiguration' {
     Write-Host $config
     $config | Should -Be @"
 {
-  "cecil": {
-    "LABEL": "cecil",
-    "TESTS_LABELS": "extra-test-labels,run-cecil-tests",
-    "TEST_STAGE": "simulator",
-    "LABEL_WITH_PLATFORM": "cecil",
-    "STATUS_CONTEXT": "status-context - cecil",
-    "TEST_PREFIX": "test-prefix_cecil",
+  "sharpie": {
+    "LABEL": "sharpie",
+    "TESTS_LABELS": "extra-test-labels,run-sharpie-tests",
+    "TEST_STAGE": "simulator_tests",
+    "LABEL_WITH_PLATFORM": "sharpie",
+    "STATUS_CONTEXT": "status-context - sharpie",
+    "TEST_PREFIX": "simulator_testssharpie",
     "TEST_PLATFORM": ""
   }
 }
@@ -333,6 +356,77 @@ Describe 'Get-TestConfiguration' {
   }
 }
 "@
+  }
+
+  Context 'macOS tests excluded when platforms disabled' {
+    It "excludes mac tests when neither macOS nor MacCatalyst is enabled" {
+      $macTestConfigs = @"
+[
+  {
+    "label": "cecil",
+    "splitByPlatforms": "false",
+    "testPrefix": "simulator_tests"
+  },
+  {
+    "label": "mac_monterey",
+    "displayName": "Tests on macOS Monterey (12)",
+    "splitByPlatforms": "false",
+    "testPrefix": "mac_12_m1",
+    "testStage": "mac_12_m1",
+    "isMacTest": true
+  }
+]
+"@
+      $supportedPlatforms = @"
+[
+  { "platform": "iOS" },
+  { "platform": "tvOS" }
+]
+"@
+      # Only tvOS enabled — no macOS or MacCatalyst
+      $result = Get-TestConfiguration `
+        -TestConfigurations $macTestConfigs `
+        -SupportedPlatforms $supportedPlatforms `
+        -EnabledPlatforms "tvOS" `
+        -TestsLabels "test-labels" `
+        -StatusContext "ctx" `
+        -StageFilter ""
+
+      $parsed = $result | ConvertFrom-Json
+      # cecil should be present, mac_monterey should not
+      $parsed.cecil | Should -Not -BeNullOrEmpty
+      $parsed.PSObject.Properties.Name | Should -Not -Contain "mac_monterey"
+    }
+
+    It "includes mac tests when macOS is enabled" {
+      $macTestConfigs = @"
+[
+  {
+    "label": "mac_monterey",
+    "displayName": "Tests on macOS Monterey (12)",
+    "splitByPlatforms": "false",
+    "testPrefix": "mac_12_m1",
+    "testStage": "mac_12_m1",
+    "isMacTest": true
+  }
+]
+"@
+      $supportedPlatforms = @"
+[
+  { "platform": "macOS" }
+]
+"@
+      $result = Get-TestConfiguration `
+        -TestConfigurations $macTestConfigs `
+        -SupportedPlatforms $supportedPlatforms `
+        -EnabledPlatforms "macOS" `
+        -TestsLabels "test-labels" `
+        -StatusContext "ctx" `
+        -StageFilter ""
+
+      $parsed = $result | ConvertFrom-Json
+      $parsed.mac_monterey | Should -Not -BeNullOrEmpty
+    }
   }
 
 }

@@ -13,11 +13,11 @@ namespace MonoTouchFixtures.CoreMidi {
 		public void Standard ()
 		{
 			var value = default (MidiCIProfileId);
-			Assert.AreEqual (0, value.Standard.ProfileIdByte1, "ProfileIdByte1 A");
-			Assert.AreEqual (0, value.Standard.ProfileBank, "ProfileBank A");
-			Assert.AreEqual (0, value.Standard.ProfileNumber, "ProfileNumber A");
-			Assert.AreEqual (0, value.Standard.ProfileVersion, "ProfileVersion A");
-			Assert.AreEqual (0, value.Standard.ProfileLevel, "ProfileLevel A");
+			Assert.That (value.Standard.ProfileIdByte1, Is.EqualTo (0), "ProfileIdByte1 A");
+			Assert.That (value.Standard.ProfileBank, Is.EqualTo (0), "ProfileBank A");
+			Assert.That (value.Standard.ProfileNumber, Is.EqualTo (0), "ProfileNumber A");
+			Assert.That (value.Standard.ProfileVersion, Is.EqualTo (0), "ProfileVersion A");
+			Assert.That (value.Standard.ProfileLevel, Is.EqualTo (0), "ProfileLevel A");
 
 			value.Standard = new MidiCIProfileIdStandard () {
 				ProfileIdByte1 = 1,
@@ -27,22 +27,22 @@ namespace MonoTouchFixtures.CoreMidi {
 				ProfileLevel = 5,
 			};
 
-			Assert.AreEqual (1, value.Standard.ProfileIdByte1, "ProfileIdByte1 B");
-			Assert.AreEqual (2, value.Standard.ProfileBank, "ProfileBank B");
-			Assert.AreEqual (3, value.Standard.ProfileNumber, "ProfileNumber B");
-			Assert.AreEqual (4, value.Standard.ProfileVersion, "ProfileVersion B");
-			Assert.AreEqual (5, value.Standard.ProfileLevel, "ProfileLevel B");
+			Assert.That (value.Standard.ProfileIdByte1, Is.EqualTo (1), "ProfileIdByte1 B");
+			Assert.That (value.Standard.ProfileBank, Is.EqualTo (2), "ProfileBank B");
+			Assert.That (value.Standard.ProfileNumber, Is.EqualTo (3), "ProfileNumber B");
+			Assert.That (value.Standard.ProfileVersion, Is.EqualTo (4), "ProfileVersion B");
+			Assert.That (value.Standard.ProfileLevel, Is.EqualTo (5), "ProfileLevel B");
 		}
 
 		[Test]
 		public void ManufacturerSpecific ()
 		{
 			var value = default (MidiCIProfileId);
-			Assert.AreEqual (0, value.ManufacturerSpecific.SysExId1, "SysExId1 A");
-			Assert.AreEqual (0, value.ManufacturerSpecific.SysExId2, "SysExId2 A");
-			Assert.AreEqual (0, value.ManufacturerSpecific.SysExId3, "SysExId3 A");
-			Assert.AreEqual (0, value.ManufacturerSpecific.Info1, "Info1 A");
-			Assert.AreEqual (0, value.ManufacturerSpecific.Info2, "Info2 A");
+			Assert.That (value.ManufacturerSpecific.SysExId1, Is.EqualTo (0), "SysExId1 A");
+			Assert.That (value.ManufacturerSpecific.SysExId2, Is.EqualTo (0), "SysExId2 A");
+			Assert.That (value.ManufacturerSpecific.SysExId3, Is.EqualTo (0), "SysExId3 A");
+			Assert.That (value.ManufacturerSpecific.Info1, Is.EqualTo (0), "Info1 A");
+			Assert.That (value.ManufacturerSpecific.Info2, Is.EqualTo (0), "Info2 A");
 
 			value.ManufacturerSpecific = new MidiCIProfileIdManufacturerSpecific () {
 				SysExId1 = 1,
@@ -52,11 +52,11 @@ namespace MonoTouchFixtures.CoreMidi {
 				Info2 = 5,
 			};
 
-			Assert.AreEqual (1, value.ManufacturerSpecific.SysExId1, "SysExId1 B");
-			Assert.AreEqual (2, value.ManufacturerSpecific.SysExId2, "SysExId2 B");
-			Assert.AreEqual (3, value.ManufacturerSpecific.SysExId3, "SysExId3 B");
-			Assert.AreEqual (4, value.ManufacturerSpecific.Info1, "Info1 B");
-			Assert.AreEqual (5, value.ManufacturerSpecific.Info2, "Info2 B");
+			Assert.That (value.ManufacturerSpecific.SysExId1, Is.EqualTo (1), "SysExId1 B");
+			Assert.That (value.ManufacturerSpecific.SysExId2, Is.EqualTo (2), "SysExId2 B");
+			Assert.That (value.ManufacturerSpecific.SysExId3, Is.EqualTo (3), "SysExId3 B");
+			Assert.That (value.ManufacturerSpecific.Info1, Is.EqualTo (4), "Info1 B");
+			Assert.That (value.ManufacturerSpecific.Info2, Is.EqualTo (5), "Info2 B");
 		}
 	}
 }

@@ -6,8 +6,8 @@ using CoreFoundation;
 
 namespace Metal {
 	[SupportedOSPlatform ("ios16.0")]
-	[SupportedOSPlatform ("maccatalyst16.0")]
-	[SupportedOSPlatform ("macos13.0")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos16.0")]
 	public class MTLIOCompressionContext : DisposableObject {
 
@@ -15,6 +15,8 @@ namespace Metal {
 		MTLIOCompressionContext (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 		[DllImport (Constants.MetalLibrary)]
+		[UnsupportedSimulator ("ios")]
+		[UnsupportedSimulator ("tvos")]
 		static extern unsafe void MTLIOCompressionContextAppendData (IntPtr context, void* data, nuint size);
 
 		unsafe void AppendData (void* data, nuint size)
@@ -47,6 +49,8 @@ namespace Metal {
 		}
 
 		[DllImport (Constants.MetalLibrary)]
+		[UnsupportedSimulator ("ios")]
+		[UnsupportedSimulator ("tvos")]
 		// [return: NullAllowed]
 		static extern IntPtr MTLIOCreateCompressionContext (IntPtr path, long type, long chunkSize);
 
@@ -63,6 +67,7 @@ namespace Metal {
 			return new MTLIOCompressionContext (handle, owns: true);
 		}
 
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			// only call the parent if the user did not call FlushAndDestroy
@@ -73,6 +78,8 @@ namespace Metal {
 		}
 
 		[DllImport (Constants.MetalLibrary)]
+		[UnsupportedSimulator ("ios")]
+		[UnsupportedSimulator ("tvos")]
 		static extern long MTLIOFlushAndDestroyCompressionContext (IntPtr context);
 
 		public MTLIOCompressionStatus FlushAndDestroy ()
@@ -85,6 +92,8 @@ namespace Metal {
 		}
 
 		[DllImport (Constants.MetalLibrary)]
+		[UnsupportedSimulator ("ios")]
+		[UnsupportedSimulator ("tvos")]
 		static extern nint MTLIOCompressionContextDefaultChunkSize ();
 
 		public static nint DefaultChunkSize => MTLIOCompressionContextDefaultChunkSize ();

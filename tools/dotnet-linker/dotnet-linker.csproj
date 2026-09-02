@@ -4,9 +4,9 @@
     <RootNamespace>dotnet_linker</RootNamespace>
     <DefineConstants>$(DefineConstants);BUNDLER</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <WarningsAsErrors>nullable</WarningsAsErrors>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591</NoWarn> <!-- Missing XML comment for publicly visible type or member: don't care, the APIs aren't for public consumption -->
   </PropertyGroup>
 
   <Import Project="..\..\eng\Versions.props" />
@@ -71,8 +71,14 @@
     <Compile Include="..\common\FileUtils.cs">
       <Link>external/tools/common/FileUtils.cs</Link>
     </Compile>
+    <Compile Include="..\common\IToolLog.cs">
+      <Link>external/tools/common/IToolLog.cs</Link>
+    </Compile>
     <Compile Include="..\common\LinkMode.cs">
       <Link>external/tools/common/LinkMode.cs</Link>
+    </Compile>
+    <Compile Include="..\common\NormalizedStringComparer.cs">
+      <Link>tools\common\NormalizedStringComparer.cs</Link>
     </Compile>
     <Compile Include="..\common\SdkVersions.cs">
       <Link>external/tools/common/SdkVersions.cs</Link>
@@ -107,6 +113,9 @@
     <Compile Include="..\common\CSToObjCMap.cs">
       <Link>external/tools/common/CSToObjCMap.cs</Link>
     </Compile>
+    <Compile Include="..\common\RegistrarMode.cs">
+      <Link>tools\common\RegistrarMode.cs</Link>
+    </Compile>
     <Compile Include="..\common\Rewriter.cs">
       <Link>external/tools/common/Rewriter.cs</Link>
     </Compile>
@@ -130,6 +139,9 @@
     </Compile>
     <Compile Include="..\linker\CoreTypeMapStep.cs">
       <Link>external/tools/linker/CoreTypeMapStep.cs</Link>
+    </Compile>
+    <Compile Include="..\linker\OptimizeGeneratedCode.cs">
+      <Link>external/tools/linker/OptimizeGeneratedCode.cs</Link>
     </Compile>
     <Compile Include="..\..\src\ObjCRuntime\Registrar.cs">
       <Link>external/src/ObjCRuntime/Registrar.cs</Link>
@@ -160,9 +172,6 @@
     </Compile>
     <Compile Include="..\..\src\ObjCRuntime\NativeNameAttribute.cs">
       <Link>external/src/ObjCRuntime/NativeNameAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\linker\ApplyPreserveAttribute.cs">
-      <Link>external/tools/linker/ApplyPreserveAttribute.cs</Link>
     </Compile>
     <Compile Include="..\linker\ExceptionalSubStep.cs">
       <Link>external/tools/linker/ExceptionalSubStep.cs</Link>

@@ -16,6 +16,7 @@ The harder way is to copy an existing script directory, and:
 
   ```make
   $(eval $(call TemplateScript,MY_SCRIPT,my-script))
+  ```
 
 To use the new script:
 

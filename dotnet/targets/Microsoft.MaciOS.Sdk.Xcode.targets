@@ -9,8 +9,8 @@ This file contains MSBuild targets that support building Xcode framework project
 
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-  <UsingTask TaskName="Xamarin.MacDev.Tasks.CreateXcArchive"        AssemblyFile="$(_XamarinTaskAssembly)"/>
-  <UsingTask TaskName="Xamarin.MacDev.Tasks.CreateXcFramework"      AssemblyFile="$(_XamarinTaskAssembly)"/>
+  <UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CreateXcArchive"        AssemblyFile="$(_TaskAssemblyName)"/>
+  <UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CreateXcFramework"      AssemblyFile="$(_TaskAssemblyName)"/>
 
   <PropertyGroup>
     <_XcodeProjectDefaultOutputPathRoot>$(IntermediateOutputPath)xcode/</_XcodeProjectDefaultOutputPathRoot>

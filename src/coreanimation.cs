@@ -58,6 +58,13 @@ using CGLContext = System.IntPtr;
 
 namespace CoreAnimation {
 
+	[Static]
+	[Internal]
+	interface CAFrameRateRangeFields {
+		[Field ("CAFrameRateRangeDefault", "CoreAnimation")]
+		CAFrameRateRange Default { get; }
+	}
+
 	/// <summary>Provides a hierarchical timing system, with support for repetition and sequencing.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GraphicsImaging/Reference/CAMediaTiming_protocol/index.html">Apple documentation for <c>CAMediaTiming</c></related>
@@ -214,13 +221,12 @@ namespace CoreAnimation {
 	}
 
 	/// <include file="../docs/api/CoreAnimation/CADisplayLink.xml" path="/Documentation/Docs[@DocId='T:CoreAnimation.CADisplayLink']/*" />
-	[Mac (14, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface CADisplayLink {
 		/// <param name="target">Target object to invoke the selector on.</param>
 		///         <param name="sel">Selector to invoke.</param>
-		///         <summary>Objective-C style registeration of the method to be invoked every time the display is about to be updated.</summary>
+		///         <summary>Objective-C style registration of the method to be invoked every time the display is about to be updated.</summary>
 		///         <returns>The DisplayLink object that will invoke the specified method on each screen update.</returns>
 		///         <remarks>
 		///           <para>
@@ -1259,14 +1265,10 @@ namespace CoreAnimation {
 		CACornerMask MaskedCorners { get; set; }
 
 		[BindAs (typeof (CACornerCurve))]
-		[TV (13, 0)]
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("cornerCurve")]
 		NSString CornerCurve { get; set; }
 
-		[TV (13, 0)]
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("cornerCurveExpansionFactor:")]
@@ -1278,7 +1280,6 @@ namespace CoreAnimation {
 		[NoTV]
 		[iOS (17, 0)]
 		[MacCatalyst (17, 0)]
-		[Mac (14, 0)]
 		[Export ("wantsExtendedDynamicRangeContent")]
 		bool WantsExtendedDynamicRangeContent { get; set; }
 
@@ -1310,8 +1311,6 @@ namespace CoreAnimation {
 		CALayer GetLayerWithRemoteClientId (uint client_id);
 	}
 
-	[TV (13, 0)]
-	[iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	enum CACornerCurve {
 		[DefaultEnumValue]
@@ -1423,14 +1422,10 @@ namespace CoreAnimation {
 		[Export ("maximumDrawableCount")]
 		nuint MaximumDrawableCount { get; set; }
 
-		[TV (13, 0)]
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("colorspace", ArgumentSemantic.Assign)]
 		CGColorSpace ColorSpace { get; set; }
 
-		[TV (13, 0)]
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("preferredDevice")]
 		IMTLDevice PreferredDevice { get; }
@@ -1450,7 +1445,6 @@ namespace CoreAnimation {
 		[TV (16, 0)]
 		[iOS (16, 0)]
 		[MacCatalyst (16, 0)]
-		[Mac (13, 0)]
 		[Export ("developerHUDProperties", ArgumentSemantic.Copy)]
 		[NullAllowed]
 		// There's no documentation about which values are valid in this dictionary, so we can't create any strong bindings for it.
@@ -1628,7 +1622,7 @@ namespace CoreAnimation {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GraphicsImaging/Reference/CAScrollLayer_class/index.html">Apple documentation for <c>CAScrollLayer</c></related>
 	[BaseType (typeof (CALayer))]
 	interface CAScrollLayer {
-		/// <summary>Creates a new sroll layer with default values.</summary>
+		/// <summary>Creates a new scroll layer with default values.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Export ("layer"), New, Static]
@@ -2028,7 +2022,7 @@ namespace CoreAnimation {
 
 	/// <summary>Delegate class for the CALayer.</summary>
 	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreAnimation/CALayerDelegate">Apple documentation for <c>CALayerDelegate</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/quartzcore/calayerdelegate">Apple documentation for <c>CALayerDelegate</c></related>
 	[BaseType (typeof (NSObject))]
 	[Model]
 #if IOS || TVOS
@@ -2529,7 +2523,7 @@ namespace CoreAnimation {
 
 	/// <summary>A spring animation with stiffness, mass, and damping.</summary>
 	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreAnimation/CASpringAnimation">Apple documentation for <c>CASpringAnimation</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/quartzcore/caspringanimation">Apple documentation for <c>CASpringAnimation</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CABasicAnimation))]
 	interface CASpringAnimation {
@@ -2573,19 +2567,19 @@ namespace CoreAnimation {
 		[Export ("settlingDuration")]
 		double /* CFTimeInterval */ SettlingDuration { get; }
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Export ("allowsOverdamping")]
 		bool AllowsOverdamping { get; set; }
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Export ("initWithPerceptualDuration:bounce:")]
 		NativeHandle Constructor (double /* CFTimeInterval */ perceptualDuration, nfloat bounce);
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Export ("perceptualDuration")]
 		double /* CFTimeInterval */ PerceptualDuration { get; }
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Export ("bounce")]
 		nfloat Bounce { get; }
 	}
@@ -3272,7 +3266,7 @@ namespace CoreAnimation {
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
-		/// <summary>Gets or sets the frequeny, in Hz, at which particles are emitted.</summary>
+		/// <summary>Gets or sets the frequency, in Hz, at which particles are emitted.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("birthRate")]
@@ -3870,20 +3864,19 @@ namespace CoreAnimation {
 		[Export ("HLGMetadata", ArgumentSemantic.Retain)]
 		CAEdrMetadata HlgMetadata { get; }
 
-		[Mac (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("available")]
 		bool Available { [Bind ("isAvailable")] get; }
 
 		[Static]
-		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("HLGMetadataWithAmbientViewingEnvironment:")]
 		CAEdrMetadata GetHlgMetadata (NSData ambientViewingEnvironmentData);
 	}
 
 	[BaseType (typeof (NSObject))]
-	[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
+	[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 	[DisableDefaultCtor]
 	interface CAMetalDisplayLinkUpdate {
 		[Export ("drawable")]
@@ -3898,7 +3891,7 @@ namespace CoreAnimation {
 
 	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
 	[BaseType (typeof (NSObject))]
-	[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
+	[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 	interface CAMetalDisplayLinkDelegate {
 		[Abstract]
 		[Export ("metalDisplayLink:needsUpdate:")]
@@ -3908,7 +3901,7 @@ namespace CoreAnimation {
 	interface ICAMetalDisplayLinkDelegate { }
 
 	[BaseType (typeof (NSObject))]
-	[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
+	[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 	[DisableDefaultCtor]
 	interface CAMetalDisplayLink {
 		[Export ("initWithMetalLayer:")]

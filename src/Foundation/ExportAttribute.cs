@@ -36,6 +36,7 @@ using Registrar;
 
 namespace Foundation {
 
+#if !BUNDLER
 	/// <summary>Exports a method or property to the Objective-C world.</summary>
 	///     <remarks>
 	///       <para>
@@ -52,6 +53,7 @@ namespace Foundation {
 	///   ]]></code>
 	///       </example>
 	///     </remarks>
+#endif
 	[AttributeUsage (AttributeTargets.Method | AttributeTargets.Constructor | AttributeTargets.Property)]
 	public class ExportAttribute : Attribute {
 		string? selector;

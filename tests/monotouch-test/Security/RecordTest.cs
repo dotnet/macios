@@ -113,7 +113,7 @@ namespace MonoTouchFixtures.Security {
 				if (hasIdnt)
 					Assert.That (dict ["class"].ToString (), Is.EqualTo ("idnt"), "idnt");
 				else
-					Assert.Null (dict ["class"], "idnt");
+					Assert.That (dict ["class"], Is.Null, "idnt");
 			}
 		}
 
@@ -145,13 +145,13 @@ namespace MonoTouchFixtures.Security {
 			var rec = CreateSecRecord (SecKind.GenericPassword,
 				account: "Username"
 			);
-			Assert.Null (rec.MatchIssuers, "MatchIssuers");
+			Assert.That (rec.MatchIssuers, Is.Null, "MatchIssuers");
 			// we do not have a way (except the getter) to craete SecKeyChain instances
-			Assert.Null (rec.MatchItemList, "MatchItemList");
+			Assert.That (rec.MatchItemList, Is.Null, "MatchItemList");
 
 			using (var data = new NSData ()) {
 				rec.MatchIssuers = new NSData [] { data };
-				Assert.AreSame (rec.MatchIssuers [0], data, "MatchIssuers [0]");
+				Assert.That (data, Is.SameAs (rec.MatchIssuers [0]), "MatchIssuers [0]");
 			}
 
 			if (!TestRuntime.CheckXcodeVersion (7, 0))
@@ -308,89 +308,119 @@ namespace MonoTouchFixtures.Security {
 #endif
 		public void DeskCase_83099_InmutableDictionary ()
 		{
+#if __MACOS__
+			// macOS 11.* hangs on keychain operations in CI
+			if (TestRuntime.CheckXcodeVersion (12, 2) && !TestRuntime.CheckXcodeVersion (13, 0))
+				TestRuntime.IgnoreInCI ("Skip on macOS 11.* because it hangs");
+#endif
+			// Use a unique server name per process to avoid cross-process keychain
+			// conflicts on shared CI agents (the account + server pair is the identity).
+			var testServer = $"Test1-{Environment.ProcessId}";
 			var testUsername = "testusername";
 
-			//TEST 1: Save a keychain value
-			var test1 = SaveUserPassword (testUsername, "testValue1", out var queryCode, out var addCode, out var updateCode);
-			Assert.IsTrue (test1, $"Password could not be saved to keychain. queryCode: {queryCode} addCode: {addCode} updateCode: {updateCode}");
+			// Clean up any stale keychain entries from previous test runs.
+			var cleanupCode = ForceRemoveKeychainEntry (testServer, testUsername);
+			TestContext.Out.WriteLine ($"Initial cleanup: {cleanupCode}");
+			// Also clean up entries from the old hardcoded "Test1" server name.
+			ForceRemoveKeychainEntry ("Test1", testUsername);
 
-			//TEST 2: Get the saved keychain value
-			var test2 = GetUserPassword (testUsername);
-			Assert.IsTrue (StringUtil.StringsEqual (test2, "testValue1", false));
+			try {
+				//TEST 1: Save a keychain value
+				var test1 = SaveKeychainEntry (testServer, testUsername, "testValue1", out var queryCode, out var addCode, out var updateCode);
+				Assert.That (test1, Is.True, $"Password could not be saved to keychain. queryCode: {queryCode} addCode: {addCode} updateCode: {updateCode}");
 
-			//TEST 3: Update the keychain value
-			var test3 = SaveUserPassword (testUsername, "testValue2", out queryCode, out addCode, out updateCode);
-			Assert.IsTrue (test3, "Password could not be saved to keychain. queryCode: {queryCode} addCode: {addCode} updateCode: {updateCode}");
+				//TEST 2: Get the saved keychain value
+				var test2 = GetKeychainEntry (testServer, testUsername);
+				Assert.That (test2, Is.EqualTo ("testValue1"));
 
-			//TEST 4: Get the updated keychain value
-			var test4 = GetUserPassword (testUsername);
-			Assert.IsTrue (StringUtil.StringsEqual (test4, "testValue2", false));
+				//TEST 3: Update the keychain value
+				var test3 = SaveKeychainEntry (testServer, testUsername, "testValue2", out queryCode, out addCode, out updateCode);
+				Assert.That (test3, Is.True, $"Password could not be saved to keychain. queryCode: {queryCode} addCode: {addCode} updateCode: {updateCode}");
 
-			//TEST 5: Clear the keychain values
-			var test5 = ClearUserPassword (testUsername);
-			Assert.IsTrue (test5, "Password could not be cleared from keychain");
+				//TEST 4: Get the updated keychain value
+				var test4 = GetKeychainEntry (testServer, testUsername);
+				Assert.That (test4, Is.EqualTo ("testValue2"));
 
-			//TEST 6: Verify no keychain value
-			var test6 = GetUserPassword (testUsername);
-			Assert.IsNull (test6, "No password should exist here");
+				//TEST 5: Clear the keychain values
+				var test5 = ClearKeychainEntry (testServer, testUsername, out queryCode, out var removeCode);
+				Assert.That (test5, Is.True, $"Password could not be cleared from keychain. queryCode: {queryCode} removeCode: {removeCode}");
+
+				//TEST 6: Verify no keychain value
+				var test6 = GetKeychainEntry (testServer, testUsername);
+				Assert.That (test6, Is.Null, "No password should exist here");
+			} finally {
+				// Always clean up to avoid leaving stale entries for subsequent runs
+				ForceRemoveKeychainEntry (testServer, testUsername);
+			}
 		}
 
-		public static string GetUserPassword (string username)
+		// Create a minimal SecRecord for keychain queries and deletes (no LAContext).
+		// Using LAContext with InteractionNotAllowed on search records can cause
+		// intermittent InvalidRecord errors on some macOS keychain states.
+		static SecRecord CreateKeychainSearchRecord (string server, string username)
+		{
+			return new SecRecord (SecKind.InternetPassword) {
+				Server = server,
+				Account = username.ToLower (),
+			};
+		}
+
+		public static string GetKeychainEntry (string server, string username)
 		{
 			string password = null;
-			var searchRecord = CreateSecRecord (SecKind.InternetPassword,
-				server: "Test1",
-				account: username.ToLower ()
-			);
-			SecStatusCode code;
-			var record = SecKeyChain.QueryAsRecord (searchRecord, out code);
+			var searchRecord = CreateKeychainSearchRecord (server, username);
+			var record = SecKeyChain.QueryAsRecord (searchRecord, out var code);
 			if (code == SecStatusCode.Success && record is not null)
 				password = NSString.FromData (record.ValueData, NSStringEncoding.UTF8);
 			return password;
 		}
 
-		public static bool SaveUserPassword (string username, string password, out SecStatusCode queryCode, out SecStatusCode addCode, out SecStatusCode updateCode)
+		public static bool SaveKeychainEntry (string server, string username, string password, out SecStatusCode queryCode, out SecStatusCode addCode, out SecStatusCode updateCode)
 		{
-			addCode = (SecStatusCode) (-1); // pick a value that doesn't already exist in SecStatusCode
-			updateCode = (SecStatusCode) (-1); // pick a value that doesn't already exist in SecStatusCode
-			var success = false;
-			var searchRecord = CreateSecRecord (SecKind.InternetPassword,
-				server: "Test1",
-				account: username.ToLower ()
-			);
+			addCode = (SecStatusCode) (-1);
+			updateCode = (SecStatusCode) (-1);
+			var searchRecord = CreateKeychainSearchRecord (server, username);
 			var record = SecKeyChain.QueryAsRecord (searchRecord, out queryCode);
-			if (queryCode == SecStatusCode.ItemNotFound) {
-				record = CreateSecRecord (SecKind.InternetPassword,
-					server: "Test1",
-					account: username.ToLower (),
-					valueData: NSData.FromString (password)
-				);
-				addCode = SecKeyChain.Add (record);
-				success = (addCode == SecStatusCode.Success);
-			}
 			if (queryCode == SecStatusCode.Success && record is not null) {
+				// Record exists, update it.
 				record.ValueData = NSData.FromString (password);
 				updateCode = SecKeyChain.Update (searchRecord, record);
-				success = (updateCode == SecStatusCode.Success);
+				return updateCode == SecStatusCode.Success;
 			}
-			return success;
+			// Record doesn't exist, or query returned an unexpected error
+			// (e.g. InvalidRecord). Force-remove to handle inconsistent keychain
+			// state, then add.
+			SecKeyChain.Remove (searchRecord);
+			record = new SecRecord (SecKind.InternetPassword) {
+				Server = server,
+				Account = username.ToLower (),
+				ValueData = NSData.FromString (password),
+			};
+			addCode = SecKeyChain.Add (record);
+			if (addCode == SecStatusCode.DuplicateItem) {
+				SecKeyChain.Remove (searchRecord);
+				addCode = SecKeyChain.Add (record);
+			}
+			return addCode == SecStatusCode.Success;
 		}
 
-		public static bool ClearUserPassword (string username)
+		public static SecStatusCode ForceRemoveKeychainEntry (string server, string username)
 		{
-			var success = false;
-			var searchRecord = CreateSecRecord (SecKind.InternetPassword,
-				server: "Test1",
-				account: username.ToLower ()
-			);
-			SecStatusCode queryCode;
+			var searchRecord = CreateKeychainSearchRecord (server, username);
+			return SecKeyChain.Remove (searchRecord);
+		}
+
+		public static bool ClearKeychainEntry (string server, string username, out SecStatusCode queryCode, out SecStatusCode? removeCode)
+		{
+			var searchRecord = CreateKeychainSearchRecord (server, username);
 			var record = SecKeyChain.QueryAsRecord (searchRecord, out queryCode);
 
 			if (queryCode == SecStatusCode.Success && record is not null) {
-				var removeCode = SecKeyChain.Remove (searchRecord);
-				success = (removeCode == SecStatusCode.Success);
+				removeCode = SecKeyChain.Remove (searchRecord);
+				return removeCode == SecStatusCode.Success;
 			}
-			return success;
+			removeCode = null;
+			return false;
 		}
 
 		[Test]
@@ -407,10 +437,10 @@ namespace MonoTouchFixtures.Security {
 			using (var identity = IdentityTest.GetIdentity ())
 			using (var rec = CreateSecRecord (identity)) {
 				SecStatusCode code = SecKeyChain.Add (rec);
-				Assert.True (code == SecStatusCode.DuplicateItem || code == SecStatusCode.Success, "Identity added");
+				Assert.That (code == SecStatusCode.DuplicateItem || code == SecStatusCode.Success, Is.True, "Identity added");
 
 				var ret = rec.GetIdentity ();
-				Assert.NotNull (ret, "ret is null");
+				Assert.That (ret, Is.Not.Null, "ret is null");
 				Assert.That (identity.Handle, Is.EqualTo (ret.Handle), "Same Handle");
 
 				Assert.Throws<InvalidOperationException> (() => rec.GetKey (), "GetKey should throw");
@@ -425,7 +455,7 @@ namespace MonoTouchFixtures.Security {
 			using (var cert = X509CertificateLoader.LoadCertificate (CertificateTest.mail_google_com))
 			using (var sc = new SecCertificate (cert))
 			using (var rec = CreateSecRecord (sc)) {
-				Assert.NotNull (rec, "rec is null");
+				Assert.That (rec, Is.Not.Null, "rec is null");
 
 				var ret = rec.GetCertificate ();
 				Assert.That (ret.Handle, Is.Not.EqualTo (IntPtr.Zero), "Handle");
@@ -445,7 +475,7 @@ namespace MonoTouchFixtures.Security {
 				trust.Evaluate ();
 				using (SecKey pubkey = trust.GetPublicKey ())
 				using (var rec = CreateSecRecord (pubkey)) {
-					Assert.NotNull (rec, "rec is null");
+					Assert.That (rec, Is.Not.Null, "rec is null");
 
 					var ret = rec.GetKey ();
 					Assert.That (ret.Handle, Is.Not.EqualTo (IntPtr.Zero), "Handle");

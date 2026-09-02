@@ -554,7 +554,7 @@ namespace AudioUnit {
 			CAShow (GetCheckedHandle ());
 		}
 
-		/// <include file="../../docs/api/AudioUnit/AUGraph.xml" path="/Documentation/Docs[@DocId='M:AudioUnit.AUGraph.Dispose(System.Boolean)']/*" />
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			if (Handle != IntPtr.Zero && Owns) {

@@ -48,14 +48,14 @@ namespace MonoTouch.NUnit.UI {
 				DetailColor = Orange;
 				var skip = test.Properties ["_SKIPREASON"];
 				if (skip.Count > 0)
-					Value = skip [0].ToString ();
+					Value = skip [0]?.ToString () ?? "No test was found inside this suite";
 				else
 					Value = "No test was found inside this suite";
 			}
 		}
 
 		public TestSuite Suite {
-			get { return Test as TestSuite; }
+			get { return (TestSuite) Test; }
 		}
 
 		public void Run ()
@@ -91,7 +91,8 @@ namespace MonoTouch.NUnit.UI {
 
 			if (GetContainerTableView () is not null) {
 				var root = GetImmediateRootElement ();
-				root.Reload (this, UITableViewRowAnimation.Fade);
+				if (root is not null)
+					root.Reload (this, UITableViewRowAnimation.Fade);
 			}
 		}
 	}

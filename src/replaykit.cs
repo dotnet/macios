@@ -417,7 +417,7 @@ namespace ReplayKit {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface RPBroadcastControllerDelegate {
-		/// <param name="broadcastController">The controller for the broadcast that finsihed.</param>
+		/// <param name="broadcastController">The controller for the broadcast that finished.</param>
 		/// <param name="error">
 		///           <para>The error, if any, that ended the broadcast.</para>
 		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
@@ -530,7 +530,7 @@ namespace ReplayKit {
 		void FinishedProcessingMP4Clip ([NullAllowed] RPBroadcastConfiguration broadcastConfiguration, [NullAllowed] NSError error);
 	}
 
-	/// <summary>Processes ReplayKit buffer obects as they arrive.</summary>
+	/// <summary>Processes ReplayKit buffer objects as they arrive.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/ReplayKit/RPBroadcastSampleHandler">Apple documentation for <c>RPBroadcastSampleHandler</c></related>
 	[MacCatalyst (13, 1)]
@@ -587,7 +587,7 @@ namespace ReplayKit {
 		/// <summary>Initializes the RPSystemBroadcastPickerView with the specified frame.</summary>
 		/// <remarks>
 		///           <para>This constructor is used to programmatically create a new instance of RPSystemBroadcastPickerView with the specified dimension in the frame.   The object will only be displayed once it has been added to a view hierarchy by calling AddSubview in a containing view.</para>
-		///           <para>This constructor is not invoked when deserializing objects from storyboards or XIB filesinstead the constructor that takes an NSCoder parameter is invoked.</para>
+		///           <para>This constructor is not invoked when deserializing objects from storyboards or XIB files; instead, the constructor that takes an NSCoder parameter is invoked.</para>
 		///         </remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frame);

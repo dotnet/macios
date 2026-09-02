@@ -184,13 +184,17 @@ namespace AddressBook {
 		public T Value {
 			get {
 				AssertValid ();
-				return self.toManaged (ABMultiValue.CopyValueAtIndex (self.Handle, index));
+				var rv = self.toManaged (ABMultiValue.CopyValueAtIndex (self.Handle, index));
+				GC.KeepAlive (self);
+				return rv;
 			}
 			set {
 				if (IsReadOnly)
 					throw CreateNotSupportedException ();
 				AssertValid ();
-				if (ABMultiValue.ReplaceValueAtIndex (self.Handle, ToIntPtr (value), index) == 0)
+				var rv = ABMultiValue.ReplaceValueAtIndex (self.Handle, ToIntPtr (value), index);
+				GC.KeepAlive (self);
+				if (rv == 0)
 					throw new ArgumentException ("Value cannot be set");
 			}
 		}
@@ -212,7 +216,9 @@ namespace AddressBook {
 		public NSString? Label {
 			get {
 				AssertValid ();
-				return Runtime.GetNSObject<NSString> (ABMultiValue.CopyLabelAtIndex (self.Handle, index));
+				var rv = Runtime.GetNSObject<NSString> (ABMultiValue.CopyLabelAtIndex (self.Handle, index), true);
+				GC.KeepAlive (self);
+				return rv;
 			}
 			set {
 				if (IsReadOnly)
@@ -220,6 +226,7 @@ namespace AddressBook {
 				AssertValid ();
 				ABMultiValue.ReplaceLabelAtIndex (self.Handle, value.GetHandle (), index);
 				GC.KeepAlive (value);
+				GC.KeepAlive (self);
 			}
 		}
 
@@ -243,7 +250,9 @@ namespace AddressBook {
 		public int Identifier {
 			get {
 				AssertValid ();
-				return ABMultiValue.GetIdentifierAtIndex (self.Handle, index);
+				var rv = ABMultiValue.GetIdentifierAtIndex (self.Handle, index);
+				GC.KeepAlive (self);
+				return rv;
 			}
 		}
 	}
@@ -319,8 +328,7 @@ namespace AddressBook {
 		///         </remarks>
 		public T [] GetValues ()
 		{
-			return NSArray.ArrayFromHandle (ABMultiValue.CopyArrayOfAllValues (Handle), toManaged)
-				?? Array.Empty<T> ();
+			return NSArray.NonNullArrayFromHandleDropNullElements (ABMultiValue.CopyArrayOfAllValues (Handle), toManaged, releaseHandle: true);
 		}
 
 		/// <summary>

@@ -31,15 +31,15 @@ namespace MonoTouchFixtures.GamePlayKit {
 			using (var noise = new GKNoise (GKCylindersNoiseSource.Create (1)))
 			using (var baseMap = new GKNoiseMap (noise))
 			using (var map = new GKNoiseMap (noise, size, origin, sample, false)) {
-				Assert.NotNull (baseMap, "baseMap is null");
-				Assert.NotNull (map, "baseMap is null");
+				Assert.That (baseMap, Is.Not.Null, "baseMap is null");
+				Assert.That (map, Is.Not.Null, "baseMap is null");
 
-				Assert.AreEqual (size, map.Size, "map size is different");
-				Assert.AreEqual (size, baseMap.Size, "baseMap size is different");
-				Assert.AreEqual (origin, map.Origin, "map origin is different");
-				Assert.AreEqual (origin, baseMap.Origin, "baseMap origin is different");
-				Assert.AreEqual (sample, map.SampleCount, "map sample is different");
-				Assert.AreEqual (sample, baseMap.SampleCount, "baseMap sample is different");
+				Assert.That (map.Size, Is.EqualTo (size), "map size is different");
+				Assert.That (baseMap.Size, Is.EqualTo (size), "baseMap size is different");
+				Assert.That (map.Origin, Is.EqualTo (origin), "map origin is different");
+				Assert.That (baseMap.Origin, Is.EqualTo (origin), "baseMap origin is different");
+				Assert.That (map.SampleCount, Is.EqualTo (sample), "map sample is different");
+				Assert.That (baseMap.SampleCount, Is.EqualTo (sample), "baseMap sample is different");
 			}
 		}
 	}

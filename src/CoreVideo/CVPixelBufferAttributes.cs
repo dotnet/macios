@@ -42,15 +42,13 @@ namespace CoreVideo {
 	public class CVPixelBufferAttributes : DictionaryContainer {
 #if !COREBUILD
 		/// <summary>Creates an empty set of attributes.</summary>
-		///         <remarks>To be added.</remarks>
 		public CVPixelBufferAttributes ()
 			: base (new NSMutableDictionary ())
 		{
 		}
 
-		/// <param name="dictionary">To be added.</param>
-		///         <summary>Initializes the strongly typed <see cref="CoreVideo.CVPixelBufferAttributes" /> from the provided dictionary.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Initializes the strongly typed <see cref="CoreVideo.CVPixelBufferAttributes" /> from the provided dictionary.</summary>
+		/// <param name="dictionary">The dictionary containing pixel buffer attributes.</param>
 		public CVPixelBufferAttributes (NSDictionary dictionary)
 			: base (dictionary)
 		{
@@ -88,7 +86,7 @@ namespace CoreVideo {
 				} else if (obj is NSNumber number) {
 					return new CVPixelFormatType [] { (CVPixelFormatType) number.UInt32Value };
 				} else if (obj is NSArray array) {
-					return Array.ConvertAll (array.ToArray (), (v) => (CVPixelFormatType) ((NSNumber) v).UInt32Value);
+					return Array.ConvertAll<NSObject?, CVPixelFormatType> (array.ToArray (), (v) => (CVPixelFormatType) (((NSNumber?) v)?.UInt32Value ?? default));
 				} else {
 					throw new InvalidOperationException ($"Unable to convert object of type {obj.GetType ()} into an array of CVPixelFormatType.");
 				}

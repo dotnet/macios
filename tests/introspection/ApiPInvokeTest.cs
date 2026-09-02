@@ -13,8 +13,7 @@ using System.Linq;
 using System.Reflection;
 using Xamarin.Tests;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Introspection {
 	[Preserve (AllMembers = true)]
@@ -96,12 +95,12 @@ namespace Introspection {
 			// `ref` is fine but it can hide the droids we're looking for
 			var pt = pi.ParameterType;
 			if (pt.IsByRef)
-				pt = pt.GetElementType ();
+				pt = pt.GetElementType ()!;
 			// we don't want generics in p/invokes except for delegates like Func<> and Action<> which we know how to deal with
 			// ref: https://bugzilla.xamarin.com/show_bug.cgi?id=42699
 			if (pt.IsGenericType && !pt.IsSubclassOf (typeof (Delegate))) {
 				AddErrorLine ("[FAIL] {0}.{1} has a generic parameter in its signature: {2} {3}",
-					mi.DeclaringType.FullName, mi.Name, pt, pi.Name);
+					mi.DeclaringType?.FullName, mi.Name, pt, pi.Name);
 				result = false;
 			}
 			result &= CheckForEnumParameter (mi, pi);
@@ -112,7 +111,7 @@ namespace Introspection {
 		{
 			if (pi.ParameterType.IsEnum && pi.ParameterType.GetCustomAttribute<NativeAttribute> () is not null) {
 				AddErrorLine ("[FAIL] {0}.{1} has a [Native] enum parameter in its signature: {2} {3}",
-					mi.DeclaringType.FullName, mi.Name, pi.ParameterType, pi.Name);
+					mi.DeclaringType?.FullName, mi.Name, pi.ParameterType, pi.Name);
 				return false;
 			}
 
@@ -131,7 +130,7 @@ namespace Introspection {
 			return false;
 		}
 
-		protected virtual bool SkipLibrary (string libraryName)
+		protected virtual bool SkipLibrary (string? libraryName)
 		{
 			return false;
 		}
@@ -147,9 +146,9 @@ namespace Introspection {
 				if (LogProgress)
 					Console.WriteLine ("{0}. {1}", c++, mi);
 
-				var dllimport = mi.GetCustomAttribute<DllImportAttribute> ();
+				var dllimport = mi.GetCustomAttribute<DllImportAttribute> ()!;
 
-				string libname = dllimport.Value;
+				var libname = dllimport.Value;
 				switch (libname) {
 				case "__Internal":
 					continue;
@@ -163,7 +162,7 @@ namespace Introspection {
 				if (SkipLibrary (libname))
 					continue;
 
-				string path = FindLibrary (libname, requiresFullPath: true);
+				string path = FindLibrary (libname!, requiresFullPath: true);
 
 				string name = dllimport.EntryPoint ?? mi.Name;
 				if (Skip (name))
@@ -171,13 +170,13 @@ namespace Introspection {
 
 				IntPtr lib = Dlfcn.dlopen (path, 0);
 				if (Dlfcn.GetIndirect (lib, name) == IntPtr.Zero && !failed_api.Contains (name)) {
-					ReportError ("Could not find the field '{0}' in {1}", name, path);
+					ReportError ("Could not find the symbol '{0}' in {1}", name, path);
 					failed_api.Add (name);
 				}
 				Dlfcn.dlclose (lib);
 				n++;
 			}
-			Assert.AreEqual (0, Errors, "{0} errors found in {1} functions validated: {2}", Errors, n, string.Join (", ", failed_api));
+			Assert.That (Errors, Is.EqualTo (0), $"{Errors} errors found in {n} functions validated: {string.Join (", ", failed_api)}");
 		}
 
 		bool SkipDueToDeviceCapabilities (Type type)
@@ -206,7 +205,7 @@ namespace Introspection {
 					if ((m.Attributes & MethodAttributes.PinvokeImpl) == 0)
 						continue;
 
-					var dllimport = m.GetCustomAttribute<DllImportAttribute> ();
+					var dllimport = m.GetCustomAttribute<DllImportAttribute> ()!;
 
 					string name = dllimport.EntryPoint ?? m.Name;
 					switch (name) {
@@ -217,7 +216,7 @@ namespace Introspection {
 						continue;
 					}
 
-					string path = dllimport.Value;
+					string? path = dllimport.Value;
 					switch (path) {
 					case "__Internal":
 						// load from executable
@@ -255,6 +254,9 @@ namespace Introspection {
 					case "System.Net.Security.Native":
 						path = null;
 						break;
+					case "QCall":
+						// These symbols are inside libcoreclr.dylib, but they're private, so dlsym won't see them.
+						continue;
 					}
 
 					var lib = Dlfcn.dlopen (path, 0);
@@ -263,12 +265,12 @@ namespace Introspection {
 						ReportError ("Could not find the symbol '{0}' in {1} for the P/Invoke {2}.{3} in {4}", name, path, t.FullName, m.Name, a.GetName ().Name);
 					} else if (path is not null) {
 						// Verify that the P/Invoke points to the right library.
-						Dl_info info = default (Dl_info);
+						var info = default (Dl_info);
 						var found = dladdr (h, out info);
 						if (found != 0) {
 							// Resolve symlinks in both cases
 							var dllImportPath = ResolveLibrarySymlinks (path);
-							var foundLibrary = ResolveLibrarySymlinks (Marshal.PtrToStringAuto (info.dli_fname));
+							var foundLibrary = ResolveLibrarySymlinks (Marshal.PtrToStringAuto (info.dli_fname) ?? "");
 							if (Skip (name, ref dllImportPath, ref foundLibrary)) {
 								// Skipped
 							} else if (foundLibrary != dllImportPath) {
@@ -283,7 +285,7 @@ namespace Introspection {
 					n++;
 				}
 			}
-			Assert.AreEqual (0, Errors, "{0} errors found in {1} symbol lookups{2}", Errors, n, Errors == 0 ? string.Empty : ":\n" + ErrorData.ToString () + "\n");
+			Assert.That (Errors, Is.EqualTo (0), $"{Errors} errors found in {n} symbol lookups:\n{ErrorData}\n");
 		}
 
 		protected string ResolveLibrarySymlinks (string path)

@@ -20,8 +20,8 @@ sequence of events would be:
 3. `dotnet/macios` branches `release/10.0.1xx-preview42` from `net10.0`:
 
 	```shell
-	$ dotnet checkout net10.0
-	$ dotnet checkout -b release/10.0.1xx-preview42
+	$ git checkout net10.0
+	$ git checkout -b release/10.0.1xx-preview42
 	```
 
 	Note that release candidates will use values such as `rc.1`, `rc.2`, etc.

@@ -50,6 +50,9 @@ namespace Xamarin.Linker {
 		protected sealed override void ProcessAssembly (AssemblyDefinition assembly)
 		{
 			try {
+				if (!IsActiveFor (assembly))
+					return;
+
 				TryProcessAssembly (assembly);
 			} catch (Exception e) {
 				Report (Fail (assembly, e));
@@ -83,6 +86,11 @@ namespace Xamarin.Linker {
 		{
 			exceptions = null;
 			TryEndProcess ();
+		}
+
+		protected virtual bool IsActiveFor (AssemblyDefinition assembly)
+		{
+			return true;
 		}
 
 		// failure overrides, with defaults
@@ -128,7 +136,7 @@ namespace Xamarin.Linker {
 			// If we're only reporting warnings, then don't add the step-specific exception at all.
 			if (CollectProductExceptions (e, out var productExceptions)) {
 				// don't add inner exception
-				if (productExceptions.Any (v => v.Error)) {
+				if (productExceptions.Any (v => v.IsError (App))) {
 					var ex = createException ();
 					// instead return an aggregate exception with the original exception and all the ProductExceptions we're reporting.
 					productExceptions.Add (ex);

@@ -1,0 +1,12 @@
+## bound selectors with no native declaration reachable from the class in the current SDK headers:
+## private/SPI selectors, protocol/category members Apple inlines without declaring the conformance on
+## the class, managed callback infrastructure, or API Apple removed/privatized - kept for compatibility
+## (baseline for https://github.com/dotnet/macios/issues/26053)
+!unknown-selector! MTLLinkedFunctions::instanceDescriptorType not found
+!unknown-selector! MTLLinkedFunctions::motionTransformBuffer not found
+!unknown-selector! MTLLinkedFunctions::motionTransformBufferOffset not found
+!unknown-selector! MTLLinkedFunctions::motionTransformCount not found
+!unknown-selector! MTLLinkedFunctions::setInstanceDescriptorType: not found
+!unknown-selector! MTLLinkedFunctions::setMotionTransformBuffer: not found
+!unknown-selector! MTLLinkedFunctions::setMotionTransformBufferOffset: not found
+!unknown-selector! MTLLinkedFunctions::setMotionTransformCount: not found

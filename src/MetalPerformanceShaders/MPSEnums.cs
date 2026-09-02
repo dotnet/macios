@@ -75,6 +75,8 @@ namespace MetalPerformanceShaders {
 		ComplexFloat32 = FloatBit | ComplexBit | 64,
 		[iOS (16, 2), MacCatalyst (16, 2), TV (16, 2)]
 		ComplexFloat16 = FloatBit | ComplexBit | 32,
+		[iOS (26, 4), MacCatalyst (26, 4), TV (26, 4)]
+		ComplexBFloat16 = AlternateEncodingBit | FloatBit | ComplexBit | 32,
 
 		/// <summary>To be added.</summary>
 		SignedBit = 0x20000000,
@@ -111,7 +113,7 @@ namespace MetalPerformanceShaders {
 		AlternateEncodingBit = 0x80000000,
 		[iOS (15, 0), MacCatalyst (15, 0), TV (15, 0)]
 		Bool = AlternateEncodingBit | 8,
-		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0), Mac (14, 0)]
+		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 		BFloat16 = AlternateEncodingBit | Float16,
 
 		/// <summary>To be added.</summary>
@@ -127,7 +129,6 @@ namespace MetalPerformanceShaders {
 
 	[Flags]
 	[Native]
-	[iOS (13, 0), TV (13, 0)]
 	[Introduced (PlatformName.MacCatalyst, 13, 0)]
 	public enum MPSAliasingStrategy : ulong {
 		Default = 0x0,
@@ -153,7 +154,6 @@ namespace MetalPerformanceShaders {
 		Float16 = 3,
 		/// <summary>Indicates a single-precision floating point format.</summary>
 		Float32 = 4,
-		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		Reserved0 = 5,
 
@@ -173,7 +173,6 @@ namespace MetalPerformanceShaders {
 		NonPositiveDefinite = -3,
 	}
 
-	[iOS (13, 0), TV (13, 0)]
 	[Introduced (PlatformName.MacCatalyst, 13, 0)]
 	[Flags]
 	[Native]
@@ -243,7 +242,6 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		Logarithm,
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		GeLU,
 	}
@@ -355,7 +353,6 @@ namespace MetalPerformanceShaders {
 		Default = 0,
 		/// <summary>To be added.</summary>
 		AxisAligned = 1,
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		Fast = 2,
 	}
@@ -381,7 +378,6 @@ namespace MetalPerformanceShaders {
 		OriginMinDistanceDirectionMaxDistance = 1,
 		/// <summary>To be added.</summary>
 		OriginMaskDirectionMaxDistance = 2,
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		PackedOriginDirection = 3,
 	}
@@ -432,10 +428,8 @@ namespace MetalPerformanceShaders {
 		Refit = 1,
 		/// <summary>To be added.</summary>
 		FrequentRebuild = 2,
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		PreferGpuBuild = 4,
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		PreferCpuBuild = 8,
 	}

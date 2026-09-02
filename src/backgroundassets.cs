@@ -10,7 +10,7 @@
 using CoreFoundation;
 
 namespace BackgroundAssets {
-	[TV (18, 4), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (18, 4), iOS (16, 0), MacCatalyst (16, 0)]
 	[Native]
 	public enum BADownloadState : long {
 		Failed = -1,
@@ -20,7 +20,7 @@ namespace BackgroundAssets {
 		Finished,
 	}
 
-	[TV (18, 4), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (18, 4), iOS (16, 0), MacCatalyst (16, 0)]
 	[Native]
 	public enum BAContentRequest : long {
 		Install = 1,
@@ -28,7 +28,7 @@ namespace BackgroundAssets {
 		Periodic,
 	}
 
-	[TV (18, 4), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (18, 4), iOS (17, 0), MacCatalyst (17, 0)]
 	[ErrorDomain ("BAErrorDomain")]
 	[Native]
 	public enum BAErrorCode : long {
@@ -72,7 +72,7 @@ namespace BackgroundAssets {
 		FileNotFound,
 	}
 
-	[TV (18, 4), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (18, 4), iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface BADownload : NSCoding, NSSecureCoding, NSCopying {
@@ -88,33 +88,33 @@ namespace BackgroundAssets {
 		[Export ("priority")]
 		nint Priority { get; }
 
-		[Mac (13, 3), iOS (16, 4), MacCatalyst (16, 4)]
+		[iOS (16, 4), MacCatalyst (16, 4)]
 		[Export ("isEssential")]
 		bool IsEssential { get; }
 
-		[Mac (13, 3), iOS (16, 4), MacCatalyst (16, 4)]
+		[iOS (16, 4), MacCatalyst (16, 4)]
 		[return: Release]
 		[Export ("copyAsNonEssential")]
 		BADownload CopyAsNonEssential ();
 	}
 
-	[TV (18, 4), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (18, 4), iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface BAAppExtensionInfo : NSSecureCoding {
 
-		[Mac (13, 0), iOS (16, 1), MacCatalyst (16, 1)]
+		[iOS (16, 1), MacCatalyst (16, 1)]
 		[NullAllowed]
 		[Export ("restrictedDownloadSizeRemaining", ArgumentSemantic.Strong)]
 		NSNumber RestrictedDownloadSizeRemaining { get; }
 
-		[Mac (13, 3), iOS (16, 4), MacCatalyst (16, 4)]
+		[iOS (16, 4), MacCatalyst (16, 4)]
 		[NullAllowed]
 		[Export ("restrictedEssentialDownloadSizeRemaining", ArgumentSemantic.Strong)]
 		NSNumber RestrictedEssentialDownloadSizeRemaining { get; }
 	}
 
-	[TV (18, 4), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (18, 4), iOS (16, 0), MacCatalyst (16, 0)]
 	[Protocol]
 	interface BADownloaderExtension {
 
@@ -140,7 +140,7 @@ namespace BackgroundAssets {
 
 	interface IBADownloadManagerDelegate { }
 
-	[TV (18, 4), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (18, 4), iOS (16, 0), MacCatalyst (16, 0)]
 	[Protocol]
 	[Model]
 	[BaseType (typeof (NSObject))]
@@ -164,7 +164,7 @@ namespace BackgroundAssets {
 		void Finished (BADownload download, NSUrl fileUrl);
 	}
 
-	[TV (18, 4), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (18, 4), iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface BADownloadManager {
@@ -179,7 +179,7 @@ namespace BackgroundAssets {
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		NSObject WeakDelegate { get; set; }
 
-		[Mac (13, 3), iOS (16, 4), MacCatalyst (16, 4)]
+		[iOS (16, 4), MacCatalyst (16, 4)]
 		[Export ("fetchCurrentDownloads:")]
 		[return: NullAllowed]
 		BADownload [] FetchCurrentDownloads ([NullAllowed] out NSError error);
@@ -205,7 +205,7 @@ namespace BackgroundAssets {
 		void PerformWithExclusiveControlBeforeDate (NSDate date, Action<bool, NSError> performHandler);
 	}
 
-	[TV (18, 4), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (18, 4), iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (BADownload), Name = "BAURLDownload")]
 	[DisableDefaultCtor]
 	interface BAUrlDownload {
@@ -233,11 +233,11 @@ namespace BackgroundAssets {
 		[Export ("initWithIdentifier:request:applicationGroupIdentifier:priority:")]
 		NativeHandle Constructor (string identifier, NSUrlRequest request, string applicationGroupIdentifier, nint priority);
 
-		[Mac (13, 3), iOS (16, 4), MacCatalyst (16, 4)]
+		[iOS (16, 4), MacCatalyst (16, 4)]
 		[Export ("initWithIdentifier:request:fileSize:applicationGroupIdentifier:")]
 		NativeHandle Constructor (string identifier, NSUrlRequest request, nuint fileSize, string applicationGroupIdentifier);
 
-		[Mac (13, 3), iOS (16, 4), MacCatalyst (16, 4)]
+		[iOS (16, 4), MacCatalyst (16, 4)]
 		[Export ("initWithIdentifier:request:essential:fileSize:applicationGroupIdentifier:priority:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (string identifier, NSUrlRequest request, bool essential, nuint fileSize, string applicationGroupIdentifier, nint priority);
@@ -302,6 +302,9 @@ namespace BackgroundAssets {
 	delegate void BAAssetPackManagerGetAllAssetPacksCompletionHandler ([NullAllowed] NSSet<BAAssetPack> assetPacks, [NullAllowed] NSError error);
 	delegate void BAAssetPackManagerGetAssetPackCompletionHandler ([NullAllowed] BAAssetPack assetPack, [NullAllowed] NSError error);
 	delegate void BAAssetPackManagerGetStatusCompletionHandler ([NullAllowed] BAAssetPackStatus status, [NullAllowed] NSError error);
+	/// <summary>Completion handler invoked with the local status of an asset pack.</summary>
+	/// <param name="status">The <see cref="BAAssetPackStatus" /> of the asset pack on the local device.</param>
+	delegate void BAAssetPackManagerGetLocalStatusCompletionHandler (BAAssetPackStatus status);
 	delegate void BAAssetPackManagerEnsureLocalAvailabilityCompletionHandler ([NullAllowed] NSError error);
 	delegate void BAAssetPackManagerCheckForUpdatesCompletionHandler ([NullAllowed] NSSet<NSString> updatingIdentifiers, [NullAllowed] NSSet<NSString> removedIdentifiers, [NullAllowed] NSError error);
 	delegate void BAAssetPackManagerRemoveAssetPackCompletionHandler ([NullAllowed] NSError error);
@@ -329,6 +332,10 @@ namespace BackgroundAssets {
 		[Async]
 		void GetAssetPack (string assetPackIdentifier, BAAssetPackManagerGetAssetPackCompletionHandler completionHandler);
 
+		[Deprecated (PlatformName.iOS, 26, 4, message: "Use 'GetRelativeStatus' or 'GetLocalStatus' instead.")]
+		[Deprecated (PlatformName.MacOSX, 26, 4, message: "Use 'GetRelativeStatus' or 'GetLocalStatus' instead.")]
+		[Deprecated (PlatformName.TvOS, 26, 4, message: "Use 'GetRelativeStatus' or 'GetLocalStatus' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 4, message: "Use 'GetRelativeStatus' or 'GetLocalStatus' instead.")]
 		[Export ("getStatusOfAssetPackWithIdentifier:completionHandler:")]
 		[Async]
 		void GetStatus (string assetPackIdentifier, BAAssetPackManagerGetStatusCompletionHandler completionHandler);
@@ -355,6 +362,38 @@ namespace BackgroundAssets {
 		[Export ("removeAssetPackWithIdentifier:completionHandler:")]
 		[Async]
 		void RemoveAssetPack (string assetPackIdentifier, [NullAllowed] BAAssetPackManagerRemoveAssetPackCompletionHandler completionHandler);
+
+		/// <summary>Gets the status of an asset pack relative to the server.</summary>
+		/// <param name="assetPack">The <see cref="BAAssetPack" /> to query.</param>
+		/// <param name="completionHandler">A completion handler called with the <see cref="BAAssetPackStatus" /> and an optional error.</param>
+		[TV (26, 4), Mac (26, 4), iOS (26, 4), MacCatalyst (26, 4)]
+		[Export ("getStatusRelativeToAssetPack:completionHandler:")]
+		[Async]
+		void GetRelativeStatus (BAAssetPack assetPack, BAAssetPackManagerGetStatusCompletionHandler completionHandler);
+
+		/// <summary>Gets the local status of an asset pack.</summary>
+		/// <param name="assetPackIdentifier">The identifier of the asset pack to query.</param>
+		/// <param name="completionHandler">A completion handler called with the <see cref="BAAssetPackStatus" /> of the asset pack on the local device.</param>
+		[TV (26, 4), Mac (26, 4), iOS (26, 4), MacCatalyst (26, 4)]
+		[Export ("getLocalStatusOfAssetPackWithIdentifier:completionHandler:")]
+		[Async]
+		void GetLocalStatus (string assetPackIdentifier, BAAssetPackManagerGetLocalStatusCompletionHandler completionHandler);
+
+		/// <summary>Synchronously checks whether an asset pack is available on the local device.</summary>
+		/// <param name="assetPackIdentifier">The identifier of the asset pack to check.</param>
+		/// <returns><see langword="true" /> if the asset pack is available locally; otherwise, <see langword="false" />.</returns>
+		[TV (26, 4), Mac (26, 4), iOS (26, 4), MacCatalyst (26, 4)]
+		[Export ("assetPackIsAvailableLocallyWithIdentifier:")]
+		bool IsAssetPackAvailableLocally (string assetPackIdentifier);
+
+		/// <summary>Ensures that an asset pack is available locally, optionally requiring the latest version.</summary>
+		/// <param name="assetPack">The <see cref="BAAssetPack" /> to make available.</param>
+		/// <param name="requireLatestVersion">If <see langword="true" />, checks for updates before making the asset pack available.</param>
+		/// <param name="completionHandler">A completion handler called with an optional error when the operation completes.</param>
+		[TV (26, 4), Mac (26, 4), iOS (26, 4), MacCatalyst (26, 4)]
+		[Export ("ensureLocalAvailabilityOfAssetPack:requireLatestVersion:completionHandler:")]
+		[Async]
+		void EnsureLocalAvailability (BAAssetPack assetPack, bool requireLatestVersion, BAAssetPackManagerEnsureLocalAvailabilityCompletionHandler completionHandler);
 	}
 
 	[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
@@ -364,13 +403,25 @@ namespace BackgroundAssets {
 		[Export ("assetPacks", ArgumentSemantic.Copy)]
 		NSSet<BAAssetPack> AssetPacks { get; }
 
-		[Internal]
+		/// <summary>Create a new <see cref="BAAssetPackManifest" /> for the specified file on disk.</summary>
+		/// <param name="url">The url of the file on disk. The file is expected to be formatted as json.</param>
+		/// <param name="applicationGroupIdentifier">The identifier for the application group where the downloaded assets will be stored.</param>
+		/// <param name="error">The error if an error occurred.</param>
+		/// <returns>A new <see cref="BAAssetPackManifest" /> if the operation succeeded, <see langword="null" /> otherwise.</returns>
+		[FactoryMethod]
 		[Export ("initWithContentsOfURL:applicationGroupIdentifier:error:")]
-		NativeHandle _InitWithContentsOfUrl (NSUrl url, string applicationGroupIdentifier, [NullAllowed] out NSError error);
+		[return: NullAllowed]
+		NativeHandle Constructor (NSUrl url, string applicationGroupIdentifier, [NullAllowed] out NSError error);
 
-		[Internal]
+		/// <summary>Create a new <see cref="BAAssetPackManifest" /> for the specified json data in memory.</summary>
+		/// <param name="data">The json data to use.</param>
+		/// <param name="applicationGroupIdentifier">The identifier for the application group where the downloaded assets will be stored.</param>
+		/// <param name="error">The error if an error occurred.</param>
+		/// <returns>A new <see cref="BAAssetPackManifest" /> if the operation succeeded, <see langword="null" /> otherwise.</returns>
+		[FactoryMethod]
 		[Export ("initFromData:applicationGroupIdentifier:error:")]
-		NativeHandle _InitFromData (NSData data, string applicationGroupIdentifier, [NullAllowed] out NSError error);
+		[return: NullAllowed]
+		NativeHandle Constructor (NSData data, string applicationGroupIdentifier, [NullAllowed] out NSError error);
 
 		[Export ("allDownloads")]
 		NSSet<BADownload> GetAllDownloads ();

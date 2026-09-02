@@ -1150,6 +1150,33 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";RBI0042Description" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Transient types (TransientString, TransientCFString, TransientCFObject) allocate native memory and must be disposed. Use the 'using' keyword to ensure proper cleanup.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Les types transitoires (TransientString, TransientCFString, TransientCFObject) allouent de la mémoire native et doivent être libérés. Utilisez le mot-clé « using » pour garantir un nettoyage approprié.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";RBI0042MessageFormat" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Variable '{0}' of type '{1}' must be declared with the 'using' keyword to ensure proper disposal of native resources]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[La variable « {0} » de type « {1} » doit être déclarée avec le mot-clé « using » pour garantir la bonne libération des ressources natives]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";RBI0042Title" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Transient disposable type not declared with 'using']]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Type supprimable transitoire non déclaré avec « using »]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
     </Item>
   </Item>
 </LCX>

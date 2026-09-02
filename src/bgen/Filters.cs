@@ -23,7 +23,11 @@ public partial class Generator {
 	{
 		var is_abstract = AttributeManager.HasAttribute<AbstractAttribute> (type);
 		var filter = AttributeManager.GetCustomAttribute<CoreImageFilterAttribute> (type);
+		if (filter is null)
+			throw new BindingException (1072, true, type.Name); // FIXME: proper error message
 		var base_type = AttributeManager.GetCustomAttribute<BaseTypeAttribute> (type);
+		if (base_type is null)
+			throw new BindingException (1073, true, type.Name); // FIXME: proper error message
 		var type_name = type.Name;
 		var native_name = base_type.Name ?? type_name;
 		var base_name = base_type.BaseType.Name;
@@ -115,7 +119,13 @@ public partial class Generator {
 		indent--;
 		print ("} else {");
 		indent++;
-		print ("h = global::ObjCRuntime.Messaging.{0}_objc_msgSendSuper_{0} (this.SuperHandle, Selector.GetHandle (\"initWithCoder:\"), coder.Handle);", NativeHandleType);
+		print ("unsafe {");
+		indent++;
+		print ("var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this);");
+		print ("h = global::ObjCRuntime.Messaging.{0}_objc_msgSendSuper_{0} (&__objc_super__, Selector.GetHandle (\"initWithCoder:\"), coder.Handle);", NativeHandleType);
+		print ("GC.KeepAlive (this);");
+		indent--;
+		print ("}");
 		indent--;
 		print ("}");
 		print ("InitializeHandle (h, \"initWithCoder:\");");
@@ -176,7 +186,7 @@ public partial class Generator {
 		}
 	}
 
-	void GenerateProperties (Type type, Type? originalType = null, bool fromProtocol = false)
+	void GenerateProperties (Type type, Type originalType, bool fromProtocol = false)
 	{
 		foreach (var p in type.GetProperties (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)) {
 			if (p.IsUnavailable (this))

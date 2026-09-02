@@ -38,7 +38,6 @@ namespace Security {
 		All = 6,
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	// CF_ENUM(uint16_t, tls_protocol_version_t)
 	[NativeName ("tls_protocol_version_t")]
@@ -51,7 +50,6 @@ namespace Security {
 		Dtls12 = 65277,
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	// CF_ENUM(uint16_t, tls_ciphersuite_t)
 	[NativeName ("tls_ciphersuite_t")]
@@ -96,7 +94,6 @@ namespace Security {
 		Chacha20Poly1305Sha256 = 4867,
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	// CF_ENUM(uint16_t, tls_ciphersuite_group_t)
 	[NativeName ("tls_ciphersuite_group_t")]
@@ -106,6 +103,9 @@ namespace Security {
 		Legacy,
 		Ats,
 		AtsCompatibility,
+		/// <summary>The ciphersuite group that conforms to the App Transport Security Forward Compatibility Profile version 2.1.</summary>
+		[iOS (26, 5), TV (26, 5), Mac (26, 5), MacCatalyst (26, 5)]
+		AtsFcpV21,
 	}
 
 	// subset of OSStatus (int)
@@ -416,5 +416,8 @@ namespace Security {
 		Ats,
 		/// <summary>To be added.</summary>
 		AtsCompatibility,
+		/// <summary>The ciphersuite group that conforms to the App Transport Security Forward Compatibility Profile version 2.1.</summary>
+		[iOS (26, 5), TV (26, 5), Mac (26, 5), MacCatalyst (26, 5)]
+		AtsFcpV21,
 	}
 }

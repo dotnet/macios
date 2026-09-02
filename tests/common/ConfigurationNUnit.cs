@@ -6,7 +6,7 @@ using System.Threading;
 
 using Xamarin.Utils;
 
-#nullable disable // until we get around to fixing this file
+#nullable enable
 
 namespace Xamarin.Tests {
 	static partial class Configuration {
@@ -17,7 +17,6 @@ namespace Xamarin.Tests {
 			}
 		}
 
-#if !XAMMAC_TESTS
 		public static void AssertRuntimeIdentifierAvailable (ApplePlatform platform, string runtimeIdentifier)
 		{
 			if (string.IsNullOrEmpty (runtimeIdentifier))
@@ -42,7 +41,6 @@ namespace Xamarin.Tests {
 		{
 			Assert.Ignore ($"32-bit iOS support is not available in the current build.");
 		}
-#endif // !XAMMAC_TESTS
 
 		public static void AssertLegacyXamarinAvailable ()
 		{

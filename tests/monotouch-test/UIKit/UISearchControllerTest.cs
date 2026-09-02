@@ -25,10 +25,10 @@ namespace MonoTouchFixtures.UIKit {
 			TestRuntime.AssertSystemVersion (ApplePlatform.iOS, 8, 0, throwIfOtherPlatform: false);
 
 			UISearchController ctrl = new UISearchController (null, null);
-			Assert.NotNull (ctrl, "UISearchController ctor(String, NSBundle)");
+			Assert.That (ctrl, Is.Not.Null, "UISearchController ctor(String, NSBundle)");
 
 			ctrl.Delegate = new UISearchControllerDelegate ();
-			Assert.NotNull (ctrl.Delegate, "UISearchController instance is not usable ");
+			Assert.That (ctrl.Delegate, Is.Not.Null, "UISearchController instance is not usable ");
 		}
 	}
 }

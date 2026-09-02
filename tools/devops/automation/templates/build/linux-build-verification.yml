@@ -1,0 +1,52 @@
+# Stage to verify the project builds successfully on Linux.
+
+parameters:
+
+- name: isPR
+  type: boolean
+
+- name: repositoryAlias
+  type: string
+  default: self
+
+- name: commit
+  type: string
+  default: HEAD
+
+- name: pool
+  type: object
+  default:
+    vmImage: ubuntu-latest
+
+- name: stageDisplayNamePrefix
+  type: string
+  default: ''
+
+stages:
+
+- stage: linux_build_verification
+  displayName: '${{ parameters.stageDisplayNamePrefix }}Linux Build Verification'
+  dependsOn: []
+  jobs:
+  - job: linux_build
+    displayName: 'Build on Linux'
+    pool: ${{ parameters.pool }}
+    timeoutInMinutes: 60
+    steps:
+    - template: ../common/checkout.yml
+      parameters:
+        isPR: ${{ parameters.isPR }}
+        repositoryAlias: ${{ parameters.repositoryAlias }}
+        commit: ${{ parameters.commit }}
+
+    - bash: |
+        set -ex
+        ./system-dependencies.sh
+      displayName: 'Check system dependencies'
+      workingDirectory: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)
+
+    - bash: |
+        set -ex
+        make -j$(nproc)
+      displayName: 'Build on Linux'
+      workingDirectory: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)

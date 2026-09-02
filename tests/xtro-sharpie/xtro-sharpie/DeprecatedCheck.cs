@@ -45,7 +45,7 @@ namespace Extrospection {
 
 		void ProcessObjcEntry (string objcClassName, VersionTuple objcVersion)
 		{
-			TypeDefinition managedType = ManagedTypes.FirstOrDefault (x => Helpers.GetName (x) == objcClassName && x.IsPublic);
+			var managedType = ManagedTypes.FirstOrDefault (x => Helpers.GetName (x) == objcClassName && x.IsPublic);
 			if (managedType is not null) {
 				var framework = Helpers.GetFramework (managedType);
 				if (framework is not null)
@@ -60,7 +60,7 @@ namespace Extrospection {
 			string objcClassName = fullname.Substring (class_method ? 1 : 0, n);
 			string selector = fullname.Substring (n + 2);
 
-			TypeDefinition managedType = ManagedTypes.FirstOrDefault (x => Helpers.GetName (x) == objcClassName);
+			var managedType = ManagedTypes.FirstOrDefault (x => Helpers.GetName (x) == objcClassName);
 			if (managedType is not null) {
 				var framework = Helpers.GetFramework (managedType);
 				if (framework is null)
@@ -92,7 +92,7 @@ namespace Extrospection {
 			}
 		}
 
-		public void ProcessItem (ICustomAttributeProvider item, string itemName, VersionTuple objcVersion, string framework)
+		public void ProcessItem (ICustomAttributeProvider item, string? itemName, VersionTuple objcVersion, string framework)
 		{
 			// Our bindings do not need have [Deprecated] for ancient versions we don't support anymore
 			if (VersionHelpers.VersionTooOldToCare (objcVersion))
@@ -114,8 +114,7 @@ namespace Extrospection {
 			}
 
 			// Some APIs have both a [Deprecated] and [Obsoleted]. Bias towards [Obsoleted].
-			Version managedVersion;
-			bool foundObsoleted = AttributeHelpers.FindObsolete (item, out managedVersion);
+			bool foundObsoleted = AttributeHelpers.FindObsolete (item, out var managedVersion);
 			if (foundObsoleted) {
 				if (managedVersion is not null && !ManagedBeforeOrEqualToObjcVersion (objcVersion, managedVersion))
 					Log.On (framework).Add ($"!deprecated-attribute-wrong! {itemName} has {managedVersion} not {objcVersion} on [Obsoleted] attribute");

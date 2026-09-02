@@ -78,3 +78,4 @@
 !missing-field! ITLibPlaylistPropertyParentPersistentID not bound
 !missing-field! ITLibPlaylistPropertyVisible not bound
 !missing-field! ITLibPlaylistPropertyPrimary not bound
+!missing-field! ITLibraryDidChangeNotification not bound

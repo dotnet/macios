@@ -9,4 +9,5 @@
 @interface WebFetcher : NSObject <NSURLConnectionDelegate>
 @property (nonatomic, readonly, copy) NSURL *url;
 -(NSURLResponse *)getResponseForUrl:(NSURL *)url withCredential:(NSURLCredential *)credential;
+-(void)loadDataWithUrl:(NSURL *)url completionHandler:(void (^)(NSData *, NSURLResponse *))handler;
 @end

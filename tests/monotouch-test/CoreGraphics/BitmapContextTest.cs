@@ -91,7 +91,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 			// OTOH a null colorspace is possible with the valid parameters, e.g. bug #25600, so we can't throw a ANE blindly
 			using (var context = new CGBitmapContext (null, 16, 32, 8, 0, null, CGImageAlphaInfo.Only)) {
 				Assert.That (context.Handle, Is.Not.EqualTo (IntPtr.Zero), "Handle");
-				Assert.Null (context.ColorSpace, "ColorSpace");
+				Assert.That (context.ColorSpace, Is.Null, "ColorSpace");
 			}
 		}
 
@@ -102,9 +102,9 @@ namespace MonoTouchFixtures.CoreGraphics {
 			using (CGColorSpace space = CGColorSpace.CreateDeviceRGB ()) {
 				CGBitmapContext c = new CGBitmapContext (data, 10, 10, 8, 40, space, CGImageAlphaInfo.PremultipliedLast);
 				using (var img = c.ToImage ())
-					Assert.NotNull (img, "ToImage");
+					Assert.That (img, Is.Not.Null, "ToImage");
 				c.Dispose (); // Handle is now 0x0
-				Assert.Null (c.ToImage (), "ToImage/Disposed");
+				Assert.That (c.ToImage (), Is.Null, "ToImage/Disposed");
 			}
 		}
 
@@ -118,7 +118,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 
 			using (var pool = new NSAutoreleasePool ()) {
 				using var context = CGBitmapContext.Create (width, height, (NSDictionary?) null, null, null, null, null);
-				Assert.NotNull (context, "Context#1");
+				Assert.That (context, Is.Not.Null, "Context#1");
 			}
 		}
 
@@ -133,12 +133,11 @@ namespace MonoTouchFixtures.CoreGraphics {
 			var calledOnLockPointer = false;
 			var calledOnUnlockPointer = false;
 			var calledOnReleaseInfo = false;
-			const int renderingBufferProviderSize = 512;
-
 			var calledOnResolve = false;
 			var calledOnAllocate = false;
 			var calledOnFree = false;
 			var calledOnError = false;
+			CGRenderingBufferProvider? bufferProviderRef = null;
 
 			using (var pool = new NSAutoreleasePool ()) {
 				using var context = CGBitmapContext.Create (width, height, (CGAdaptiveOptions?) null,
@@ -150,10 +149,11 @@ namespace MonoTouchFixtures.CoreGraphics {
 					(ref CGContentInfo info, ref CGBitmapParameters parameters) => {
 						// TestRuntime.NSLog ($"CreateAdaptive () OnAllocate#2 info={info} parameters={parameters}");
 						calledOnAllocate = true;
+						var renderingBufferProviderSize = checked(parameters.AlignedBytesPerRow * parameters.Height);
 						var renderingBufferProvider = CGRenderingBufferProvider.Create (IntPtr.Zero, renderingBufferProviderSize,
 							lockPointer: (info) => {
 								calledOnLockPointer = true;
-								var rv = Marshal.AllocHGlobal (renderingBufferProviderSize);
+								var rv = Marshal.AllocHGlobal (checked((nint) renderingBufferProviderSize));
 								// TestRuntime.NSLog ($"CreateAdaptive3 () OnLockPointer#2 (0x{info:x}) => 0x{rv:x}");
 								return rv;
 							},
@@ -167,6 +167,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 								calledOnReleaseInfo = true;
 							}
 						);
+						bufferProviderRef = renderingBufferProvider;
 						return renderingBufferProvider;
 					},
 					(CGRenderingBufferProvider renderingBufferProvider, ref CGContentInfo contentInfo, ref CGBitmapParameters bitmapParameters) => {
@@ -178,10 +179,10 @@ namespace MonoTouchFixtures.CoreGraphics {
 						calledOnError = true;
 					});
 
-				Assert.NotNull (context, "Context#2");
+				Assert.That (context, Is.Not.Null, "Context#2");
 
 				using var img = context.ToImage ();
-				Assert.NotNull (img, "ToImage");
+				Assert.That (img, Is.Not.Null, "ToImage");
 			}
 
 			Assert.That (calledOnResolve, Is.True, "calledOnResolve#2");
@@ -192,6 +193,9 @@ namespace MonoTouchFixtures.CoreGraphics {
 			Assert.That (calledOnLockPointer, Is.True, "calledOnLockPointer#2");
 			Assert.That (calledOnUnlockPointer, Is.True, "calledOnUnlockPointer#2");
 			Assert.That (calledOnReleaseInfo, Is.False, "calledOnReleaseInfo#2");
+
+			// prevent the GC from collecting the buffer provider (and calling releaseInfo via the finalizer) before the assertions above
+			GC.KeepAlive (bufferProviderRef);
 		}
 
 		[Test]
@@ -205,7 +209,6 @@ namespace MonoTouchFixtures.CoreGraphics {
 			var calledOnLockPointer = false;
 			var calledOnUnlockPointer = false;
 			var calledOnReleaseInfo = false;
-			const int renderingBufferProviderSize = 512;
 
 			var calledOnResolve = false;
 			var calledOnAllocate = false;
@@ -214,6 +217,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 			var options = new CGAdaptiveOptions () {
 				MaximumBitDepth = CGComponent.Float16Bit,
 			};
+			CGRenderingBufferProvider? bufferProviderRef = null;
 
 			using (var pool = new NSAutoreleasePool ()) {
 				using var context = CGBitmapContext.Create (width, height, options,
@@ -225,10 +229,11 @@ namespace MonoTouchFixtures.CoreGraphics {
 					(ref CGContentInfo info, ref CGBitmapParameters parameters) => {
 						// TestRuntime.NSLog ($"CreateAdaptive () OnAllocate#3 info={info} parameters={parameters}");
 						calledOnAllocate = true;
+						var renderingBufferProviderSize = checked(parameters.AlignedBytesPerRow * parameters.Height);
 						var renderingBufferProvider = CGRenderingBufferProvider.Create (IntPtr.Zero, renderingBufferProviderSize,
 							lockPointer: (info) => {
 								calledOnLockPointer = true;
-								var rv = Marshal.AllocHGlobal (renderingBufferProviderSize);
+								var rv = Marshal.AllocHGlobal (checked((nint) renderingBufferProviderSize));
 								// TestRuntime.NSLog ($"CreateAdaptive3 () OnLockPointer#3 (0x{info:x}) => 0x{rv:x}");
 								return rv;
 							},
@@ -242,6 +247,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 								calledOnReleaseInfo = true;
 							}
 						);
+						bufferProviderRef = renderingBufferProvider;
 						return renderingBufferProvider;
 					},
 					(CGRenderingBufferProvider renderingBufferProvider, ref CGContentInfo contentInfo, ref CGBitmapParameters bitmapParameters) => {
@@ -253,10 +259,10 @@ namespace MonoTouchFixtures.CoreGraphics {
 						calledOnError = true;
 					});
 
-				Assert.NotNull (context, "Context#3");
+				Assert.That (context, Is.Not.Null, "Context#3");
 
 				using var img = context.ToImage ();
-				Assert.NotNull (img, "ToImage");
+				Assert.That (img, Is.Not.Null, "ToImage");
 			}
 
 			Assert.That (calledOnResolve, Is.True, "calledOnResolve#3");
@@ -267,6 +273,9 @@ namespace MonoTouchFixtures.CoreGraphics {
 			Assert.That (calledOnLockPointer, Is.True, "calledOnLockPointer#3");
 			Assert.That (calledOnUnlockPointer, Is.True, "calledOnUnlockPointer#3");
 			Assert.That (calledOnReleaseInfo, Is.False, "calledOnReleaseInfo#3");
+
+			// prevent the GC from collecting the buffer provider (and calling releaseInfo via the finalizer) before the assertions above
+			GC.KeepAlive (bufferProviderRef);
 		}
 
 		[Test]
@@ -280,68 +289,69 @@ namespace MonoTouchFixtures.CoreGraphics {
 			var calledOnLockPointer = false;
 			var calledOnUnlockPointer = false;
 			var calledOnReleaseInfo = false;
-			const int renderingBufferProviderSize = 512;
+			CGRenderingBufferProvider? externalBufferProvider = null;
 
 			using (var pool = new NSAutoreleasePool ()) {
-				using (var renderingBufferProvider = CGRenderingBufferProvider.Create (IntPtr.Zero, renderingBufferProviderSize,
-					lockPointer: (info) => {
-						calledOnLockPointer = true;
-						var rv = Marshal.AllocHGlobal (renderingBufferProviderSize);
-						// TestRuntime.NSLog ($"CreateAdaptive () OnLockPointer#4 (0x{info:x}) => 0x{rv:x}");
-						return rv;
+				var calledOnResolve = false;
+				var calledOnAllocate = false;
+				var calledOnFree = false;
+				var calledOnError = false;
+				var options = new CGAdaptiveOptions () {
+					MaximumBitDepth = CGComponent.Float16Bit,
+				};
+
+				using (var context = CGBitmapContext.Create (width, height, options,
+					(ref CGContentInfo info, ref CGBitmapParameters parameters) => {
+						// TestRuntime.NSLog ($"CreateAdaptive () OnResolve#4 info={info} parameters={parameters}");
+						calledOnResolve = true;
+						return true;
 					},
-					unlockPointer: (info, pointer) => {
-						// TestRuntime.NSLog ($"CreateAdaptive () OnUnlockPointer#4 (0x{info:x}, 0x{pointer:x})");
-						calledOnUnlockPointer = true;
-						Marshal.FreeHGlobal (pointer);
+					(ref CGContentInfo info, ref CGBitmapParameters parameters) => {
+						// TestRuntime.NSLog ($"CreateAdaptive () OnAllocate#4 info={info} parameters={parameters}");
+						calledOnAllocate = true;
+						var renderingBufferProviderSize = checked(parameters.AlignedBytesPerRow * parameters.Height);
+						externalBufferProvider = CGRenderingBufferProvider.Create (IntPtr.Zero, renderingBufferProviderSize,
+							lockPointer: (info) => {
+								calledOnLockPointer = true;
+								var rv = Marshal.AllocHGlobal (checked((nint) renderingBufferProviderSize));
+								// TestRuntime.NSLog ($"CreateAdaptive () OnLockPointer#4 (0x{info:x}) => 0x{rv:x}");
+								return rv;
+							},
+							unlockPointer: (info, pointer) => {
+								// TestRuntime.NSLog ($"CreateAdaptive () OnUnlockPointer#4 (0x{info:x}, 0x{pointer:x})");
+								calledOnUnlockPointer = true;
+								Marshal.FreeHGlobal (pointer);
+							},
+							releaseInfo: (info) => {
+								// TestRuntime.NSLog ($"CreateAdaptive () OnReleaseInfo#4 (0x{info:x})");
+								calledOnReleaseInfo = true;
+							}
+						);
+						return externalBufferProvider;
 					},
-					releaseInfo: (info) => {
-						// TestRuntime.NSLog ($"CreateAdaptive () OnReleaseInfo#4 (0x{info:x})");
-						calledOnReleaseInfo = true;
-					}
-				)) {
-					Assert.That (renderingBufferProvider, Is.Not.Null, "RenderingBufferProvider");
+					(CGRenderingBufferProvider renderingBufferProvider, ref CGContentInfo contentInfo, ref CGBitmapParameters bitmapParameters) => {
+						// TestRuntime.NSLog ($"CreateAdaptive () OnFree#4 renderingBufferProvider={renderingBufferProvider} contentInfo={contentInfo} bitmapParameters={bitmapParameters}");
+						calledOnFree = true;
+					},
+					(NSError error, ref CGContentInfo contentInfo, ref CGBitmapParameters bitmapParameters) => {
+						// TestRuntime.NSLog ($"CreateAdaptive () OnError#4 error={error} contentInfo={contentInfo} bitmapParameters={bitmapParameters}");
+						calledOnError = true;
+					})) {
 
-					var calledOnResolve = false;
-					var calledOnAllocate = false;
-					var calledOnFree = false;
-					var calledOnError = false;
-					var options = new CGAdaptiveOptions () {
-						MaximumBitDepth = CGComponent.Float16Bit,
-					};
+					Assert.That (context, Is.Not.Null, "Context#4");
 
-					using (var context = CGBitmapContext.Create (width, height, options,
-						(ref CGContentInfo info, ref CGBitmapParameters parameters) => {
-							// TestRuntime.NSLog ($"CreateAdaptive () OnResolve#4 info={info} parameters={parameters}");
-							calledOnResolve = true;
-							return true;
-						},
-						(ref CGContentInfo info, ref CGBitmapParameters parameters) => {
-							// TestRuntime.NSLog ($"CreateAdaptive () OnAllocate#4 info={info} parameters={parameters}");
-							calledOnAllocate = true;
-							return renderingBufferProvider;
-						},
-						(CGRenderingBufferProvider renderingBufferProvider, ref CGContentInfo contentInfo, ref CGBitmapParameters bitmapParameters) => {
-							// TestRuntime.NSLog ($"CreateAdaptive () OnFree#4 renderingBufferProvider={renderingBufferProvider} contentInfo={contentInfo} bitmapParameters={bitmapParameters}");
-							calledOnFree = true;
-						},
-						(NSError error, ref CGContentInfo contentInfo, ref CGBitmapParameters bitmapParameters) => {
-							// TestRuntime.NSLog ($"CreateAdaptive () OnError#4 error={error} contentInfo={contentInfo} bitmapParameters={bitmapParameters}");
-							calledOnError = true;
-						})) {
-
-						Assert.NotNull (context, "Context#4");
-
-						using var img = context.ToImage ();
-						Assert.NotNull (img, "ToImage");
-					}
-
-					Assert.That (calledOnResolve, Is.True, "calledOnResolve#4");
-					Assert.That (calledOnAllocate, Is.True, "calledOnAllocate#4");
-					Assert.That (calledOnFree, Is.True, "calledOnFree#4");
-					Assert.That (calledOnError, Is.False, "calledOnError#4");
+					using var img = context.ToImage ();
+					Assert.That (img, Is.Not.Null, "ToImage");
 				}
+
+				Assert.That (calledOnResolve, Is.True, "calledOnResolve#4");
+				Assert.That (calledOnAllocate, Is.True, "calledOnAllocate#4");
+				Assert.That (calledOnFree, Is.True, "calledOnFree#4");
+				Assert.That (calledOnError, Is.False, "calledOnError#4");
 			}
+
+			// Explicitly dispose the buffer provider to verify releaseInfo is called.
+			externalBufferProvider?.Dispose ();
 
 			Assert.That (calledOnLockPointer, Is.True, "calledOnLockPointer#4");
 			Assert.That (calledOnUnlockPointer, Is.True, "calledOnUnlockPointer#4");

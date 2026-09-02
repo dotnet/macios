@@ -20,7 +20,6 @@ namespace SystemConfiguration {
 
 	// SCNetworkReachabilityFlags -> uint32_t -> SCNetworkReachability.h
 	/// <summary>The reachability status.</summary>
-	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum NetworkReachabilityFlags {
 		/// <summary>The host is reachable using a transient connection (PPP for example).</summary>
@@ -370,13 +369,15 @@ namespace SystemConfiguration {
 		[ObsoletedOSPlatform ("maccatalyst17.4", "Use 'NSUrlSession' or 'NWConnection' instead.")]
 		[ObsoletedOSPlatform ("tvos17.4", "Use 'NSUrlSession' or 'NWConnection' instead.")]
 		[ObsoletedOSPlatform ("macos14.4", "Use 'NSUrlSession' or 'NWConnection' instead.")]
-		static IntPtr Create (IPAddress localAddress, IPAddress remoteAddress)
+		static IntPtr Create (IPAddress? localAddress, IPAddress? remoteAddress)
 		{
 			if (localAddress is null && remoteAddress is null)
 				throw new ArgumentException ("At least one address is required");
 
 			IntPtr handle;
 			if (localAddress is null) {
+				if (remoteAddress is null)
+					throw new ArgumentException ("At least one address is required");
 				var remote = new sockaddr_in (remoteAddress);
 
 				unsafe {
@@ -411,7 +412,7 @@ namespace SystemConfiguration {
 		[ObsoletedOSPlatform ("maccatalyst17.4", "Use 'NSUrlSession' or 'NWConnection' instead.")]
 		[ObsoletedOSPlatform ("tvos17.4", "Use 'NSUrlSession' or 'NWConnection' instead.")]
 		[ObsoletedOSPlatform ("macos14.4", "Use 'NSUrlSession' or 'NWConnection' instead.")]
-		public NetworkReachability (IPAddress localAddress, IPAddress remoteAddress)
+		public NetworkReachability (IPAddress? localAddress, IPAddress? remoteAddress)
 			: base (Create (localAddress, remoteAddress), true)
 		{
 		}
@@ -685,6 +686,7 @@ namespace SystemConfiguration {
 			return result;
 		}
 
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			if (gch.IsAllocated)

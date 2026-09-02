@@ -1,21 +1,35 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 public class AttributeManager {
 
 	readonly Dictionary<System.Type, Type> typeLookup = new ();
 
-	readonly HashSet<string> ignoredAttributes = new () {
+	readonly HashSet<string?> ignoredAttributes = new () {
 		"Microsoft.CodeAnalysis.EmbeddedAttribute",
 		"System.Runtime.CompilerServices.NullableAttribute",
 		"System.Runtime.CompilerServices.NullableContextAttribute",
 		"System.Runtime.CompilerServices.NativeIntegerAttribute",
+		"System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute",
 	};
+
+	// Cache raw GetCustomAttributesData() results per provider to avoid repeated reflection allocations.
+	readonly Dictionary<ICustomAttributeProvider, IList<CustomAttributeData>> rawAttributeCache = new ();
+
+	// Cache attribute query results per (provider, attribute type) to avoid
+	// repeated reflection and attribute conversion work.
+	readonly Dictionary<(ICustomAttributeProvider, System.Type), object> attributeCache = new ();
+
+	// Cache HasAttribute<T> results to avoid repeated GetCustomAttributesData() calls.
+	readonly Dictionary<(ICustomAttributeProvider, System.Type), bool> hasAttributeCache = new ();
+
+	// Cache ConstructorInfo lookups per (attribute type, constructor arg types) to avoid repeated reflection.
+	internal readonly Dictionary<(Type, Type []), ConstructorInfo> constructorCache = new ();
 
 	TypeCache TypeCache { get; }
 
@@ -24,7 +38,7 @@ public class AttributeManager {
 		TypeCache = typeCache;
 	}
 
-	Type LookupReflectionType (string fullname, ICustomAttributeProvider provider)
+	Type? LookupReflectionType (string? fullname, ICustomAttributeProvider? provider)
 	{
 		switch (fullname) {
 		case "AbstractAttribute":
@@ -76,6 +90,8 @@ public class AttributeManager {
 			return typeof (EventArgsAttribute);
 		case "EventNameAttribute":
 			return typeof (EventNameAttribute);
+		case "FactoryMethodAttribute":
+			return typeof (FactoryMethodAttribute);
 		case "ForcedTypeAttribute":
 			return typeof (ForcedTypeAttribute);
 		case "Foundation.AdviceAttribute":
@@ -140,6 +156,12 @@ public class AttributeManager {
 			return typeof (PlatformName);
 		case "ObjCRuntime.RequiresSuperAttribute":
 			return typeof (ObjCRuntime.RequiresSuperAttribute);
+		case "ObjCRuntime.ObjectiveCFrameworkAttribute":
+			return typeof (ObjCRuntime.ObjectiveCFrameworkAttribute);
+		case "ObjCRuntime.SupportedSimulatorAttribute":
+			return typeof (ObjCRuntime.SupportedSimulatorAttribute);
+		case "ObjCRuntime.UnsupportedSimulatorAttribute":
+			return typeof (ObjCRuntime.UnsupportedSimulatorAttribute);
 		case "UnavailableAttribute":
 			return typeof (UnavailableAttribute);
 		case "OptionalImplementationAttribute":
@@ -198,6 +220,8 @@ public class AttributeManager {
 			return typeof (WrapAttribute);
 		case "System.Diagnostics.CodeAnalysis.ExperimentalAttribute":
 			return typeof (System.Diagnostics.CodeAnalysis.ExperimentalAttribute);
+		case "System.Runtime.CompilerServices.OverloadResolutionPriorityAttribute":
+			return typeof (System.Runtime.CompilerServices.OverloadResolutionPriorityAttribute);
 		case "System.Runtime.Versioning.SupportedOSPlatformAttribute":
 			return typeof (System.Runtime.Versioning.SupportedOSPlatformAttribute);
 		case "System.Runtime.Versioning.UnsupportedOSPlatformAttribute":
@@ -223,7 +247,7 @@ public class AttributeManager {
 	}
 
 	// This method gets the System.Type for a IKVM.Reflection.Type to a System.Type.
-	System.Type ConvertTypeFromMeta (Type type, ICustomAttributeProvider provider)
+	System.Type ConvertTypeFromMeta (Type type, ICustomAttributeProvider? provider)
 	{
 		var rv = LookupReflectionType (type.FullName, provider);
 		if (rv is null)
@@ -258,14 +282,14 @@ public class AttributeManager {
 				}
 				rv = lookup;
 			}
+			if (rv is null)
+				throw ErrorHelper.CreateError (1055, type.AssemblyQualifiedName);
 			typeLookup [type] = rv;
 		}
-		if (rv is null)
-			throw ErrorHelper.CreateError (1055, type.AssemblyQualifiedName);
 		return rv;
 	}
 
-	static IEnumerable<System.Attribute> ConvertOldAttributes (CustomAttributeData attribute)
+	IEnumerable<System.Attribute> ConvertOldAttributes (CustomAttributeData attribute)
 	{
 		switch (attribute.GetAttributeType ().Namespace) {
 		case null: // Root namespace such as PlatformAvailabilityShadow.cs
@@ -280,49 +304,49 @@ public class AttributeManager {
 		switch (attribute.GetAttributeType ().Name) {
 		case "SinceAttribute":
 		case "iOSAttribute":
-			return AttributeConversionManager.ConvertPlatformAttribute (attribute, PlatformName.iOS).Yield ();
+			return AttributeConversionManager.ConvertPlatformAttribute (this, attribute, PlatformName.iOS).Yield ();
 		case "MacAttribute":
-			return AttributeConversionManager.ConvertPlatformAttribute (attribute, PlatformName.MacOSX).Yield ();
+			return AttributeConversionManager.ConvertPlatformAttribute (this, attribute, PlatformName.MacOSX).Yield ();
 		case "WatchAttribute":
-			return AttributeConversionManager.ConvertPlatformAttribute (attribute, PlatformName.WatchOS).Yield ();
+			return AttributeConversionManager.ConvertPlatformAttribute (this, attribute, PlatformName.WatchOS).Yield ();
 		case "TVAttribute":
-			return AttributeConversionManager.ConvertPlatformAttribute (attribute, PlatformName.TvOS).Yield ();
+			return AttributeConversionManager.ConvertPlatformAttribute (this, attribute, PlatformName.TvOS).Yield ();
 		case "MacCatalystAttribute":
-			return AttributeConversionManager.ConvertPlatformAttribute (attribute, PlatformName.MacCatalyst).Yield ();
+			return AttributeConversionManager.ConvertPlatformAttribute (this, attribute, PlatformName.MacCatalyst).Yield ();
 		case "LionAttribute":
-			return AttributeFactory.CreateNewAttribute<IntroducedAttribute> (PlatformName.MacOSX, 10, 7).Yield ();
+			return AttributeFactory.CreateNewAttribute<IntroducedAttribute> (this, PlatformName.MacOSX, 10, 7).Yield ();
 		case "MountainLionAttribute":
-			return AttributeFactory.CreateNewAttribute<IntroducedAttribute> (PlatformName.MacOSX, 10, 8).Yield ();
+			return AttributeFactory.CreateNewAttribute<IntroducedAttribute> (this, PlatformName.MacOSX, 10, 8).Yield ();
 		case "MavericksAttribute":
-			return AttributeFactory.CreateNewAttribute<IntroducedAttribute> (PlatformName.MacOSX, 10, 9).Yield ();
+			return AttributeFactory.CreateNewAttribute<IntroducedAttribute> (this, PlatformName.MacOSX, 10, 9).Yield ();
 		case "NoMacAttribute":
-			return AttributeFactory.CreateNewAttribute<UnavailableAttribute> (PlatformName.MacOSX).Yield ();
+			return AttributeFactory.CreateNewAttribute<UnavailableAttribute> (this, PlatformName.MacOSX).Yield ();
 		case "NoiOSAttribute":
-			return AttributeFactory.CreateNewAttribute<UnavailableAttribute> (PlatformName.iOS).Yield ();
+			return AttributeFactory.CreateNewAttribute<UnavailableAttribute> (this, PlatformName.iOS).Yield ();
 		case "NoWatchAttribute":
-			return AttributeFactory.CreateNewAttribute<UnavailableAttribute> (PlatformName.WatchOS).Yield ();
+			return AttributeFactory.CreateNewAttribute<UnavailableAttribute> (this, PlatformName.WatchOS).Yield ();
 		case "NoTVAttribute":
-			return AttributeFactory.CreateNewAttribute<UnavailableAttribute> (PlatformName.TvOS).Yield ();
+			return AttributeFactory.CreateNewAttribute<UnavailableAttribute> (this, PlatformName.TvOS).Yield ();
 		case "NoMacCatalystAttribute":
-			return AttributeFactory.CreateNewAttribute<UnavailableAttribute> (PlatformName.MacCatalyst).Yield ();
+			return AttributeFactory.CreateNewAttribute<UnavailableAttribute> (this, PlatformName.MacCatalyst).Yield ();
 		case "AvailabilityAttribute":
-			return AttributeConversionManager.ConvertAvailability (attribute);
+			return AttributeConversionManager.ConvertAvailability (this, attribute);
 		case "ExperimentalAttribute":
-			var earg = attribute.ConstructorArguments [0].Value as string;
+			var earg = attribute.ConstructorArguments [0].Value as string ?? "";
 			return new System.Diagnostics.CodeAnalysis.ExperimentalAttribute (earg).Yield ();
 		case "SupportedOSPlatformAttribute":
-			var sarg = attribute.ConstructorArguments [0].Value as string;
+			var sarg = attribute.ConstructorArguments [0].Value as string ?? "";
 			(var sp, var sv) = ParseOSPlatformAttribute (sarg);
 			if (sv is null)
-				return AttributeFactory.CreateNewAttribute<IntroducedAttribute> (sp).Yield ();
+				return AttributeFactory.CreateNewAttribute<IntroducedAttribute> (this, sp).Yield ();
 			else
-				return AttributeFactory.CreateNewAttribute<IntroducedAttribute> (sp, sv.Major, sv.Minor).Yield ();
+				return AttributeFactory.CreateNewAttribute<IntroducedAttribute> (this, sp, sv.Major, sv.Minor).Yield ();
 		case "UnsupportedOSPlatformAttribute":
-			var uarg = attribute.ConstructorArguments [0].Value as string;
+			var uarg = attribute.ConstructorArguments [0].Value as string ?? "";
 			(var up, var uv) = ParseOSPlatformAttribute (uarg);
 			// might have been available for a while...
 			if (uv is null)
-				return AttributeFactory.CreateNewAttribute<UnavailableAttribute> (up).Yield ();
+				return AttributeFactory.CreateNewAttribute<UnavailableAttribute> (this, up).Yield ();
 			else
 				return Enumerable.Empty<System.Attribute> ();
 		case "ObsoletedOSPlatformAttribute":
@@ -330,15 +354,15 @@ public class AttributeManager {
 			(var op, var ov) = ParseOSPlatformAttribute (oarg);
 			// might have been available for a while...
 			if (ov is null)
-				return AttributeFactory.CreateNewAttribute<ObsoletedAttribute> (op).Yield ();
+				return AttributeFactory.CreateNewAttribute<ObsoletedAttribute> (this, op).Yield ();
 			else
-				return AttributeFactory.CreateNewAttribute<ObsoletedAttribute> (op, ov.Major, ov.Minor).Yield ();
+				return AttributeFactory.CreateNewAttribute<ObsoletedAttribute> (this, op, ov.Major, ov.Minor).Yield ();
 		default:
 			return Enumerable.Empty<System.Attribute> ();
 		}
 	}
 
-	static (PlatformName, Version) ParseOSPlatformAttribute (string arg)
+	static (PlatformName, Version?) ParseOSPlatformAttribute (string? arg)
 	{
 		PlatformName name;
 		int len;
@@ -367,7 +391,7 @@ public class AttributeManager {
 			throw new BindingException (1047, arg);
 		}
 
-		Version version = null;
+		Version? version = null;
 		if (arg.Length > len) {
 			if (!Version.TryParse (arg [len..], out version))
 				throw new BindingException (1047, arg);
@@ -375,7 +399,7 @@ public class AttributeManager {
 		return (name, version);
 	}
 
-	IEnumerable<T> CreateAttributeInstance<T> (CustomAttributeData attribute, ICustomAttributeProvider provider) where T : System.Attribute
+	IEnumerable<T> CreateAttributeInstance<T> (CustomAttributeData attribute, ICustomAttributeProvider? provider) where T : System.Attribute
 	{
 		var convertedAttributes = ConvertOldAttributes (attribute);
 		if (convertedAttributes.Any ())
@@ -389,7 +413,7 @@ public class AttributeManager {
 
 		System.Type attribType = ConvertTypeFromMeta (attributeType, provider);
 
-		var constructorArguments = new object [attribute.ConstructorArguments.Count];
+		var constructorArguments = new object? [attribute.ConstructorArguments.Count];
 
 		for (int i = 0; i < constructorArguments.Length; i++) {
 			var value = attribute.ConstructorArguments [i].Value;
@@ -399,7 +423,7 @@ public class AttributeManager {
 					if (attribType.Assembly == typeof (TypeCache).Assembly) {
 						constructorArguments [i] = value;
 					} else {
-						constructorArguments [i] = System.Type.GetType (((Type) value).FullName);
+						constructorArguments [i] = Type.GetType (((Type) value).FullName!);
 					}
 					if (constructorArguments [i] is null)
 						throw ErrorHelper.CreateError (1056, attribType.FullName, i + 1);
@@ -439,36 +463,36 @@ public class AttributeManager {
 			var arg = attribute.NamedArguments [i];
 			var value = arg.TypedValue.Value;
 			if (arg.TypedValue.ArgumentType == TypeCache.System_String_Array) {
-				var typed_values = ((IEnumerable<CustomAttributeTypedArgument>) arg.TypedValue.Value).ToArray ();
-				var arr = new string [typed_values.Length];
+				var typed_values = ((IEnumerable<CustomAttributeTypedArgument>) arg.TypedValue.Value!).ToArray ();
+				var arr = new string? [typed_values.Length];
 				for (int a = 0; a < arr.Length; a++)
-					arr [a] = (string) typed_values [a].Value;
+					arr [a] = (string?) typed_values [a].Value;
 				value = arr;
 			} else if (arg.TypedValue.ArgumentType.FullName == "System.Type[]") {
-				var typed_values = ((IEnumerable<CustomAttributeTypedArgument>) arg.TypedValue.Value).ToArray ();
-				var arr = new Type [typed_values.Length];
+				var typed_values = ((IEnumerable<CustomAttributeTypedArgument>) arg.TypedValue.Value!).ToArray ();
+				var arr = new Type? [typed_values.Length];
 				for (int a = 0; a < arr.Length; a++)
-					arr [a] = (Type) typed_values [a].Value;
+					arr [a] = (Type?) typed_values [a].Value;
 				value = arr;
 			} else if (arg.TypedValue.ArgumentType.IsArray) {
 				throw ErrorHelper.CreateError (1073, attribType.FullName, i + 1, arg.MemberName);
 			}
 			if (arg.IsField) {
-				attribType.GetField (arg.MemberName).SetValue (instance, value);
+				attribType.GetField (arg.MemberName)!.SetValue (instance, value);
 			} else {
-				attribType.GetProperty (arg.MemberName).SetValue (instance, value, new object [0]);
+				attribType.GetProperty (arg.MemberName)!.SetValue (instance, value, new object [0]);
 			}
 		}
 
 		return ((T) instance).Yield ();
 	}
 
-	T [] FilterAttributes<T> (IList<CustomAttributeData> attributes, ICustomAttributeProvider provider) where T : System.Attribute
+	T [] FilterAttributes<T> (IList<CustomAttributeData>? attributes, ICustomAttributeProvider? provider) where T : System.Attribute
 	{
 		if (attributes is null || attributes.Count == 0)
 			return Array.Empty<T> ();
 
-		List<T> list = null;
+		List<T>? list = null;
 		for (int i = 0; i < attributes.Count; i++) {
 
 			// special compiler attribtues not usable from C#
@@ -488,14 +512,30 @@ public class AttributeManager {
 		return Array.Empty<T> ();
 	}
 
-	public virtual T [] GetCustomAttributes<T> (ICustomAttributeProvider provider) where T : System.Attribute
+	public virtual T [] GetCustomAttributes<T> (ICustomAttributeProvider? provider) where T : System.Attribute
 	{
-		return FilterAttributes<T> (GetAttributes (provider), provider);
+		if (provider is null)
+			return Array.Empty<T> ();
+
+		var key = (provider, typeof (T));
+		if (attributeCache.TryGetValue (key, out var cached))
+			return (T []) cached;
+
+		var result = FilterAttributes<T> (GetAttributes (provider), provider);
+		attributeCache [key] = result;
+		return result;
 	}
 
-	static IList<CustomAttributeData> GetAttributes (ICustomAttributeProvider provider)
-		=> provider switch {
-			null => null,
+	[return: NotNullIfNotNull (nameof (provider))]
+	IList<CustomAttributeData>? GetAttributes (ICustomAttributeProvider? provider)
+	{
+		if (provider is null)
+			return null;
+
+		if (rawAttributeCache.TryGetValue (provider, out var cached))
+			return cached;
+
+		IList<CustomAttributeData> result = provider switch {
 			MemberInfo member => member.GetCustomAttributesData (),
 			Assembly assembly => assembly.GetCustomAttributesData (),
 			ParameterInfo pinfo => pinfo.GetCustomAttributesData (),
@@ -503,7 +543,11 @@ public class AttributeManager {
 			_ => throw new BindingException (1051, true, provider.GetType ().FullName)
 		};
 
-	public static bool HasAttribute (ICustomAttributeProvider provider, string type_name)
+		rawAttributeCache [provider] = result;
+		return result;
+	}
+
+	public bool HasAttribute (ICustomAttributeProvider provider, string type_name)
 	{
 		var attribs = GetAttributes (provider);
 		for (int i = 0; i < attribs.Count; i++)
@@ -512,27 +556,41 @@ public class AttributeManager {
 		return false;
 	}
 
-	public virtual bool HasAttribute<T> (ICustomAttributeProvider provider) where T : Attribute
+	public virtual bool HasAttribute<T> (ICustomAttributeProvider? provider) where T : Attribute
 	{
+		if (provider is null)
+			return false;
+
+		var key = (provider, typeof (T));
+		if (hasAttributeCache.TryGetValue (key, out var cached))
+			return cached;
+
 		var attributeType = ConvertTypeToMeta (typeof (T));
 		var attribs = GetAttributes (provider);
-		if (attribs is null || attribs.Count == 0)
+		if (attribs is null || attribs.Count == 0) {
+			hasAttributeCache [key] = false;
 			return false;
+		}
 
 		for (int i = 0; i < attribs.Count; i++) {
 			var attrib = attribs [i];
 			// == when comparing types uses reference equality, which is what we want here.
 			var currentType = ConvertTypeToMeta (attrib.GetAttributeType ());
-			if (currentType == attributeType)
+			if (currentType == attributeType) {
+				hasAttributeCache [key] = true;
 				return true;
-			if (currentType.IsSubclassOf (attributeType))
+			}
+			if (currentType.IsSubclassOf (attributeType)) {
+				hasAttributeCache [key] = true;
 				return true;
+			}
 		}
 
+		hasAttributeCache [key] = false;
 		return false;
 	}
 
-	public virtual T GetCustomAttribute<T> (ICustomAttributeProvider provider) where T : System.Attribute
+	public virtual T? GetCustomAttribute<T> (ICustomAttributeProvider? provider) where T : System.Attribute
 	{
 		if (provider is null)
 			return null;
@@ -546,49 +604,61 @@ public class AttributeManager {
 		throw GetTooManyAttributeFoundException<T> (provider, rv.Length);
 	}
 
-	Exception GetTooManyAttributeFoundException<T> (ICustomAttributeProvider provider, int count)
+	public T GetOneCustomAttribute<T> (ICustomAttributeProvider provider) where T : System.Attribute
+	{
+		if (provider is null)
+			throw new ArgumentNullException (nameof (provider));
+		var rv = GetCustomAttributes<T> (provider);
+		if (rv is null || rv.Length == 0)
+			throw ErrorHelper.CreateError (9999, "/* TODO: proper error */");
+		if (rv.Length == 1)
+			return rv [0];
+		throw GetTooManyAttributeFoundException<T> (provider, rv.Length);
+	}
+
+	Exception GetTooManyAttributeFoundException<T> (ICustomAttributeProvider? provider, int count)
 	{
 		int code;
-		object [] args;
+		object? [] args;
 		// each type of provider has its own error. This is because each exception has its own message that 
 		// must be correctly translated.
 		switch (provider) {
 		case ParameterInfo pi:
 			code = 1083;
-			args = new object [] {
-				count, typeof (T).FullName, $"{pi.Member.DeclaringType.FullName}.{pi.Member.Name}", pi.Position, pi.Name
+			args = new object? [] {
+				count, typeof (T).FullName, $"{pi.Member.DeclaringType?.FullName}.{pi.Member.Name}", pi.Position, pi.Name
 			};
 			break;
 		case Type type:
 			code = 1084;
-			args = new object [] { count, typeof (T).FullName, type.FullName };
+			args = new object? [] { count, typeof (T).FullName, type.FullName };
 			break;
 		case MemberInfo mi:
 			code = 1059;
-			args = new object [] { count, typeof (T).FullName, $"{mi.DeclaringType?.FullName}.{mi.Name}" };
+			args = new object? [] { count, typeof (T).FullName, $"{mi.DeclaringType?.FullName}.{mi.Name}" };
 			break;
 		case Assembly assm:
 			code = 1085;
-			args = new object [] { count, typeof (T).FullName, $"{assm.FullName}" };
+			args = new object? [] { count, typeof (T).FullName, $"{assm.FullName}" };
 			break;
 		case Module mod:
 			code = 1086;
-			args = new object [] { count, typeof (T).FullName, $"{mod.FullyQualifiedName}" };
+			args = new object? [] { count, typeof (T).FullName, $"{mod.FullyQualifiedName}" };
 			break;
 		default:
 			code = 1059;
-			args = new object [] { count, typeof (T).FullName, provider.ToString () };
+			args = new object? [] { count, typeof (T).FullName, provider?.ToString () };
 			break;
 		}
 		return ErrorHelper.CreateError (code, args);
 	}
 
-	public virtual T GetCustomAttribute<T> (ICustomAttributeProvider provider, Attribute [] attributes) where T : System.Attribute
+	public virtual T? GetCustomAttribute<T> (ICustomAttributeProvider? provider, Attribute []? attributes) where T : System.Attribute
 	{
 		if (attributes is null)
 			return GetCustomAttribute<T> (provider);
 
-		T attrib = null;
+		T? attrib = null;
 		foreach (var a in attributes) {
 			if (a is T t) {
 				if (attrib is not null)
@@ -600,7 +670,7 @@ public class AttributeManager {
 		return attrib;
 	}
 
-	public virtual bool HasNativeAttribute (ICustomAttributeProvider provider)
+	public virtual bool HasNativeAttribute (ICustomAttributeProvider? provider)
 	{
 		if (provider is null)
 			return false;
@@ -608,7 +678,7 @@ public class AttributeManager {
 		return HasAttribute (provider, "NativeIntegerAttribute");
 	}
 
-	public virtual bool HasAttribute<T> (ICustomAttributeProvider i, Attribute [] attributes) where T : Attribute
+	public virtual bool HasAttribute<T> (ICustomAttributeProvider? i, Attribute []? attributes) where T : Attribute
 	{
 		if (attributes is null)
 			return HasAttribute<T> (i);
@@ -619,7 +689,7 @@ public class AttributeManager {
 		return false;
 	}
 
-	public bool IsStatic (ICustomAttributeProvider provider)
+	public bool IsStatic (ICustomAttributeProvider? provider)
 	{
 		if (HasAttribute<StaticAttribute> (provider))
 			return true;
@@ -632,7 +702,7 @@ public class AttributeManager {
 		return false;
 	}
 
-	public bool IsNullable (ICustomAttributeProvider provider)
+	public bool IsNullable (ICustomAttributeProvider? provider)
 	{
 		var attributes = GetAttributes (provider);
 		if (attributes is null)
@@ -653,18 +723,58 @@ public class AttributeManager {
 				if (attrib.ConstructorArguments.Count == 1) {
 					var argType = attrib.ConstructorArguments [0].ArgumentType;
 					if (argType.Namespace == "System" && argType.Name == "Byte")
-						return ((byte) attrib.ConstructorArguments [0].Value) == 2;
-					if (argType.IsArray && argType.GetElementType ().Namespace == "System" && argType.GetElementType ().Name == "Byte") {
-						var valueCollection = (ReadOnlyCollection<CustomAttributeTypedArgument>) attrib.ConstructorArguments [0].Value;
+						return ((byte) attrib.ConstructorArguments [0].Value!) == 2;
+					if (argType.IsArray && argType.GetElementType ()?.Namespace == "System" && argType.GetElementType ()?.Name == "Byte") {
+						var valueCollection = (ReadOnlyCollection<CustomAttributeTypedArgument>) attrib.ConstructorArguments [0].Value!;
 						// Getting complex nullability right means we'll have to completely rework how we render types.
 						// So don't do that for now, just look at the outermost type (the first number in the array),
 						// and return nullability depending on that value.
-						return ((byte) valueCollection [0].Value) == 2;
+						return ((byte) valueCollection [0].Value!) == 2;
 					}
 				}
 			}
 		}
 
 		return false;
+	}
+
+	// Returns the full nullability byte array from a [NullableAttribute], or null if not present.
+	// The byte array encodes nullability for the type and all its generic type arguments in
+	// depth-first traversal order:
+	//   0 = oblivious, 1 = not nullable, 2 = nullable
+	// For example, Action<NSObject?, NSError?> would have bytes [1, 2, 2].
+	public byte []? GetNullabilityBytes (ICustomAttributeProvider? provider)
+	{
+		var attributes = GetAttributes (provider);
+		if (attributes is null) {
+			return null;
+		}
+
+		foreach (var attrib in attributes) {
+			var attribType = attrib.GetAttributeType ();
+			if (attribType.Name == "NullableAttribute") {
+				if (attrib.ConstructorArguments.Count == 1) {
+					var argType = attrib.ConstructorArguments [0].ArgumentType;
+					if (argType.Namespace == "System" && argType.Name == "Byte") {
+						if (attrib.ConstructorArguments [0].Value is byte b) {
+							return new [] { b };
+						}
+					}
+					if (argType.IsArray && argType.GetElementType ()?.Namespace == "System" && argType.GetElementType ()?.Name == "Byte") {
+						if (attrib.ConstructorArguments [0].Value is ReadOnlyCollection<CustomAttributeTypedArgument> valueCollection) {
+							var result = new byte [valueCollection.Count];
+							for (int i = 0; i < valueCollection.Count; i++) {
+								if (valueCollection [i].Value is byte val) {
+									result [i] = val;
+								}
+							}
+							return result;
+						}
+					}
+				}
+			}
+		}
+
+		return null;
 	}
 }

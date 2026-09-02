@@ -11,7 +11,7 @@ using Xamarin.Utils;
 
 namespace Xamarin.Tests {
 	public abstract class TestBase {
-		public string Platform;
+		public string? Platform;
 		public string Config = "Debug";
 
 		public TestBase ()
@@ -64,23 +64,23 @@ namespace Xamarin.Tests {
 
 		public BuildEngine Engine {
 			get; private set;
-		}
+		} = null!;
 
 		public ProjectPaths LibraryProject {
 			get; private set;
-		}
+		} = null!;
 
 		public ProjectPaths MonoTouchProject {
 			get; protected set;
-		}
+		} = null!;
 
 		public MSBuildProject MonoTouchProjectInstance {
 			get; private set;
-		}
+		} = null!;
 
 		public MSBuildProject LibraryProjectInstance {
 			get; private set;
-		}
+		} = null!;
 
 		public string LibraryProjectBinPath => LibraryProject.ProjectBinPath;
 		public string LibraryProjectObjPath => LibraryProject.ProjectObjPath;
@@ -102,7 +102,7 @@ namespace Xamarin.Tests {
 
 		public ApplePlatform ApplePlatform {
 			get {
-				return new TargetFramework (TargetFrameworkIdentifier, null).Platform;
+				return new TargetFramework (TargetFrameworkIdentifier, new Version ()).Platform;
 			}
 		}
 
@@ -119,13 +119,13 @@ namespace Xamarin.Tests {
 		public void TestFilesDoNotExist (string baseDir, IEnumerable<string> files)
 		{
 			foreach (var v in files.Select (s => Path.Combine (baseDir, s)))
-				Assert.IsFalse (File.Exists (v) || Directory.Exists (v), "Unexpected file: {0} exists", v);
+				Assert.That (File.Exists (v) || Directory.Exists (v), Is.False, $"Unexpected file: {v} exists");
 		}
 
 		public void TestFilesExists (string baseDir, string [] files)
 		{
 			foreach (var v in files.Select (s => Path.Combine (baseDir, s)))
-				Assert.IsTrue (File.Exists (v) || Directory.Exists (v), "Expected file: {0} does not exist", v);
+				Assert.That (File.Exists (v) || Directory.Exists (v), Is.True, $"Expected file: {v} does not exist");
 		}
 
 		public void TestFilesExists (string [] baseDirs, string [] files)
@@ -134,23 +134,29 @@ namespace Xamarin.Tests {
 				TestFilesExists (baseDirs [0], files);
 			} else {
 				foreach (var file in files)
-					Assert.IsTrue (baseDirs.Select (s => File.Exists (Path.Combine (s, file))).Any (v => v), $"Expected file: {file} does not exist in any of the directories: {string.Join (", ", baseDirs)}");
+					Assert.That (baseDirs.Select (s => File.Exists (Path.Combine (s, file))).Any (v => v), Is.True, $"Expected file: {file} does not exist in any of the directories: {string.Join (", ", baseDirs)}");
 			}
 		}
 
 		public void TestStoryboardC (string path)
 		{
-			Assert.IsTrue (Directory.Exists (path), "Storyboard {0} does not exist", path);
-			Assert.IsTrue (File.Exists (Path.Combine (path, "Info.plist")));
+			Assert.That (Directory.Exists (path), Is.True, $"Storyboard {path} does not exist");
+			Assert.That (File.Exists (Path.Combine (path, "Info.plist")), Is.True);
 			TestPList (path, new string [] { "CFBundleVersion", "CFBundleExecutable" });
 		}
 
 		public void TestPList (string path, string [] keys)
 		{
-			var plist = PDictionary.FromFile (Path.Combine (path, "Info.plist"));
+			if (!PDictionary.TryOpenFile (Path.Combine (path, "Info.plist"), out var plist)) {
+				Assert.Fail ($"Could not load Info.plist from {path}");
+				return;
+			}
 			foreach (var x in keys) {
-				Assert.IsTrue (plist.ContainsKey (x), "Key {0} is not present in {1} Info.plist", x, path);
-				Assert.IsNotEmpty (((PString) plist [x]).Value, "Key {0} is empty in {1} Info.plist", x, path);
+				Assert.That (plist.ContainsKey (x), Is.True, $"Key {x} is not present in {path} Info.plist");
+				if (plist [x] is PString pstring)
+					Assert.That (pstring.Value, Is.Not.Empty, $"Key {x} is empty in {path} Info.plist");
+				else
+					Assert.Fail ($"Key {x} is not a PString in {path} Info.plist");
 			}
 		}
 
@@ -168,7 +174,7 @@ namespace Xamarin.Tests {
 				file = Path.Combine (file, "runtime.nib");
 
 			if (!File.Exists (file))
-				Assert.Fail ("Expected file '{0}' did not exist", file);
+				Assert.Fail ($"Expected file '{file}' did not exist");
 
 			return File.GetLastWriteTimeUtc (file);
 		}
@@ -176,7 +182,7 @@ namespace Xamarin.Tests {
 		protected void Touch (string file)
 		{
 			if (!File.Exists (file))
-				Assert.Fail ("Expected file '{0}' did not exist", file);
+				Assert.Fail ($"Expected file '{file}' did not exist");
 			EnsureFilestampChange ();
 			File.SetLastWriteTimeUtc (file, DateTime.UtcNow);
 			EnsureFilestampChange ();
@@ -190,7 +196,7 @@ namespace Xamarin.Tests {
 						is_apfs = false;
 					} else {
 						var exit_code = ExecutionHelper.Execute ("/bin/df", new string [] { "-t", "apfs", "/" }, out var output, TimeSpan.FromSeconds (10));
-						is_apfs = exit_code == 0 && output.Trim ().Split ('\n').Length >= 2;
+						is_apfs = exit_code == 0 && output?.Trim ()?.Split ('\n')?.Length >= 2;
 					}
 				}
 				return is_apfs.Value;
@@ -204,18 +210,18 @@ namespace Xamarin.Tests {
 			Thread.Sleep (1000);
 		}
 
-		public void RunTarget (ProjectPaths paths, string target, int expectedErrorCount = 0, Dictionary<string, string> properties = null)
+		public void RunTarget (ProjectPaths paths, string target, int expectedErrorCount = 0, Dictionary<string, string>? properties = null)
 		{
 			var rv = Engine.RunTarget (ApplePlatform, paths.ProjectCSProjPath, target, properties);
 			if (expectedErrorCount != Engine.ErrorEvents.Count) {
 				foreach (var e in Engine.ErrorEvents)
 					Console.WriteLine (e.ToString ());
-				Assert.AreEqual (expectedErrorCount, Engine.ErrorEvents.Count, $"Unexpected number of errors when executing target '{target}'");
+				Assert.That (Engine.ErrorEvents.Count, Is.EqualTo (expectedErrorCount), $"Unexpected number of errors when executing target '{target}'");
 			}
 			if (expectedErrorCount > 0) {
-				Assert.AreEqual (1, rv.ExitCode, "ExitCode (failure)");
+				Assert.That (rv.ExitCode, Is.EqualTo (1), "ExitCode (failure)");
 			} else {
-				Assert.AreEqual (0, rv.ExitCode, "ExitCode (success)");
+				Assert.That (rv.ExitCode, Is.EqualTo (0), "ExitCode (success)");
 			}
 		}
 
@@ -235,7 +241,7 @@ namespace Xamarin.Tests {
 		/// </summary>
 		public bool IsTargetSkipped (string target)
 		{
-			foreach (var line in Engine.Logger.MessageEvents.Select (m => m.Message)) {
+			foreach (var line in Engine.Logger.MessageEvents.Select (m => m.Message).OfType<string> ()) {
 				if (line.Contains ($"Building target \"{target}\" completely")
 					|| line.Contains ($"Done building target \"{target}\""))
 					return false;
@@ -252,10 +258,10 @@ namespace Xamarin.Tests {
 	}
 
 	public class ProjectPaths {
-		public string ProjectPath { get; set; }
-		public string ProjectBinPath { get; set; }
-		public string ProjectObjPath { get; set; }
-		public string ProjectCSProjPath { get; set; }
-		public string AppBundlePath { get; set; }
+		public string ProjectPath { get; set; } = "";
+		public string ProjectBinPath { get; set; } = "";
+		public string ProjectObjPath { get; set; } = "";
+		public string ProjectCSProjPath { get; set; } = "";
+		public string AppBundlePath { get; set; } = "";
 	}
 }

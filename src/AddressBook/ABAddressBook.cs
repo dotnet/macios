@@ -102,77 +102,21 @@ namespace AddressBook {
 		public NSDictionary? Info { get; private set; }
 	}
 
-	// Quoth the docs: 
-	//    http://developer.apple.com/iphone/library/documentation/AddressBook/Reference/ABPersonRef_iPhoneOS/Reference/reference.html#//apple_ref/c/func/ABPersonGetSortOrdering
-	//
-	//   "The value of these constants is undefined until one of the following has
-	//    been called: ABAddressBookCreate, ABPersonCreate, ABGroupCreate."
-	//
-	// Meaning we can't rely on static constructors, as they could be invoked
-	// before those functions have been invoked. :-/
-	//
-	// Note that the above comment was removed from iOS 6.0+ documentation (and were not part of OSX docs AFAIK).
-	// It make sense since it's not possible to call those functions, from 6.0+ they will return NULL on devices,
-	// unless the application has been authorized to access the address book.
-	[SupportedOSPlatform ("ios")]
+	/// <summary>Provides access to the legacy Address Book database.</summary>
 	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
-	[SupportedOSPlatform ("maccatalyst")]
 	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
-	[UnsupportedOSPlatform ("macos")]
-	[UnsupportedOSPlatform ("tvos")]
-	static class InitConstants {
-		public static void Init () { }
+	public partial class ABAddressBook : NativeObject, IEnumerable<ABRecord> {
 
-		static InitConstants ()
-		{
-#if __MACCATALYST__
-			// avoid TypeLoadException if used before macOS 11.x
-			if (!SystemVersion.CheckiOS (14, 0))
-				return;
+#if !XAMCORE_5_0
+		/// <summary>Identifies the error domain under which Address Book errors are grouped.</summary>
+		/// <remarks>
+		///   <para>
+		///     When an <see cref="CoreFoundation.CFException" /> is thrown from an <see cref="ABAddressBook" /> method,
+		///     its <see cref="CoreFoundation.CFException.Domain" /> is equal to this value.
+		///   </para>
+		/// </remarks>
+		public static readonly NSString ErrorDomain = _ErrorDomain;
 #endif
-			// ensure we can init. This is needed before iOS6 (as per doc).
-			IntPtr p = ABAddressBook.ABAddressBookCreate ();
-
-			ABGroupProperty.Init ();
-			ABLabel.Init ();
-			ABPersonAddressKey.Init ();
-			ABPersonDateLabel.Init ();
-			ABPersonInstantMessageKey.Init ();
-			ABPersonInstantMessageService.Init ();
-			ABPersonKindId.Init ();
-			ABPersonPhoneLabel.Init ();
-			ABPersonPropertyId.Init ();
-			ABPersonRelatedNamesLabel.Init ();
-			ABPersonUrlLabel.Init ();
-			ABSourcePropertyId.Init ();
-
-			// From iOS 6.0+ this might return NULL, e.g. if the application is not authorized to access the
-			// address book, and we would crash if we tried to release a null pointer
-			if (p != IntPtr.Zero)
-				CFObject.CFRelease (p);
-		}
-	}
-
-	/// <include file="../../docs/api/AddressBook/ABAddressBook.xml" path="/Documentation/Docs[@DocId='T:AddressBook.ABAddressBook']/*" />
-	[SupportedOSPlatform ("ios")]
-	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
-	[SupportedOSPlatform ("maccatalyst")]
-	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
-	[UnsupportedOSPlatform ("macos")]
-	[UnsupportedOSPlatform ("tvos")]
-	public class ABAddressBook : NativeObject, IEnumerable<ABRecord> {
-
-		/// <summary>
-		///           Identifies the error domain under which address book errors are grouped.
-		///         </summary>
-		///         <remarks>
-		///           When an <see cref="CoreFoundation.CFException" /> is
-		///           thrown from a <see cref="AddressBook.ABAddressBook" />
-		///           method, the
-		///           <see cref="CoreFoundation.CFException.Domain" /> property
-		///           will be equal to <c>ErrorDomain</c>.
-		///         </remarks>
-		public static readonly NSString ErrorDomain;
 
 		GCHandle sender;
 
@@ -225,15 +169,9 @@ namespace AddressBook {
 		internal ABAddressBook (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{
-			InitConstants.Init ();
 		}
 
-		static ABAddressBook ()
-		{
-			ErrorDomain = Dlfcn.GetStringConstant (Libraries.AddressBook.Handle, "ABAddressBookErrorDomain")!;
-		}
-
-		/// <include file="../../docs/api/AddressBook/ABAddressBook.xml" path="/Documentation/Docs[@DocId='M:AddressBook.ABAddressBook.Dispose(System.Boolean)']/*" />
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			if (sender.IsAllocated)
@@ -422,7 +360,7 @@ namespace AddressBook {
 		public ABPerson [] GetPeople ()
 		{
 			var cfArrayRef = ABAddressBookCopyArrayOfAllPeople (GetCheckedHandle ());
-			return NSArray.ArrayFromHandle (cfArrayRef, h => new ABPerson (h, this));
+			return NSArray.NonNullArrayFromHandleDropNullElements (cfArrayRef, h => new ABPerson (h, this), releaseHandle: true);
 		}
 
 		[DllImport (Constants.AddressBookLibrary)]
@@ -438,7 +376,7 @@ namespace AddressBook {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (source));
 			var cfArrayRef = ABAddressBookCopyArrayOfAllPeopleInSource (GetCheckedHandle (), source.Handle);
 			GC.KeepAlive (source);
-			return NSArray.ArrayFromHandle (cfArrayRef, l => new ABPerson (l, this));
+			return NSArray.NonNullArrayFromHandleDropNullElements (cfArrayRef, l => new ABPerson (l, this), releaseHandle: true);
 		}
 
 		[DllImport (Constants.AddressBookLibrary)]
@@ -455,7 +393,7 @@ namespace AddressBook {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (source));
 			var cfArrayRef = ABAddressBookCopyArrayOfAllPeopleInSourceWithSortOrdering (GetCheckedHandle (), source.Handle, sortOrdering);
 			GC.KeepAlive (source);
-			return NSArray.ArrayFromHandle (cfArrayRef, l => new ABPerson (l, this));
+			return NSArray.NonNullArrayFromHandleDropNullElements (cfArrayRef, l => new ABPerson (l, this), releaseHandle: true);
 		}
 
 		[DllImport (Constants.AddressBookLibrary)]
@@ -490,7 +428,7 @@ namespace AddressBook {
 		public ABGroup [] GetGroups ()
 		{
 			var cfArrayRef = ABAddressBookCopyArrayOfAllGroups (GetCheckedHandle ());
-			return NSArray.ArrayFromHandle (cfArrayRef, h => new ABGroup (h, this));
+			return NSArray.NonNullArrayFromHandleDropNullElements (cfArrayRef, h => new ABGroup (h, this), releaseHandle: true);
 		}
 
 		[DllImport (Constants.AddressBookLibrary)]
@@ -507,7 +445,7 @@ namespace AddressBook {
 
 			var cfArrayRef = ABAddressBookCopyArrayOfAllGroupsInSource (GetCheckedHandle (), source.Handle);
 			GC.KeepAlive (source);
-			return NSArray.ArrayFromHandle (cfArrayRef, l => new ABGroup (l, this));
+			return NSArray.NonNullArrayFromHandleDropNullElements (cfArrayRef, l => new ABGroup (l, this), releaseHandle: true);
 		}
 
 		[DllImport (Constants.AddressBookLibrary)]
@@ -535,7 +473,7 @@ namespace AddressBook {
 			if (label is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (label));
 
-			string? result = CFString.FromHandle (ABAddressBookCopyLocalizedLabel (label.Handle));
+			string? result = CFString.FromHandle (ABAddressBookCopyLocalizedLabel (label.Handle), true);
 			GC.KeepAlive (label);
 			return result;
 		}
@@ -588,6 +526,8 @@ namespace AddressBook {
 				h (this, e);
 		}
 
+		/// <summary>Raised when the address book database is modified by another address book instance, either in the same process or in a different process.</summary>
+		/// <remarks>Subscribing registers an external-change callback with the underlying <c>ABAddressBook</c>. When the notification fires, the local instance may be out of date; call <see cref="AddressBook.ABAddressBook.Revert" /> to reload the latest data.</remarks>
 		public event EventHandler<ExternalChangeEventArgs> ExternalChange {
 			add {
 				lock (eventLock) {
@@ -720,7 +660,7 @@ namespace AddressBook {
 			var nameHandle = CFString.CreateNative (name);
 			try {
 				var cfArrayRef = ABAddressBookCopyPeopleWithName (Handle, nameHandle);
-				return NSArray.ArrayFromHandle (cfArrayRef, h => new ABPerson (h, this));
+				return NSArray.NonNullArrayFromHandleDropNullElements (cfArrayRef, h => new ABPerson (h, this), releaseHandle: true);
 			} finally {
 				CFString.ReleaseNative (nameHandle);
 			}
@@ -739,7 +679,7 @@ namespace AddressBook {
 		public ABSource []? GetAllSources ()
 		{
 			var cfArrayRef = ABAddressBookCopyArrayOfAllSources (GetCheckedHandle ());
-			return NSArray.ArrayFromHandle (cfArrayRef, h => new ABSource (h, this));
+			return NSArray.NonNullArrayFromHandleDropNullElements (cfArrayRef, h => new ABSource (h, this), releaseHandle: true);
 		}
 
 		[DllImport (Constants.AddressBookLibrary)]
@@ -754,7 +694,7 @@ namespace AddressBook {
 			var h = ABAddressBookCopyDefaultSource (GetCheckedHandle ());
 			if (h == IntPtr.Zero)
 				return null;
-			return new ABSource (h, this);
+			return new ABSource (h, true) { AddressBook = this };
 		}
 
 		[DllImport (Constants.AddressBookLibrary)]

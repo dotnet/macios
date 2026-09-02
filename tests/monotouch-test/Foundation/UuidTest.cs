@@ -46,7 +46,7 @@ namespace MonoTouchFixtures.Foundation {
 			} catch (ArgumentNullException) {
 				// good
 			} catch (Exception e) {
-				Assert.Fail ("Unexpected exception {0}", e);
+				Assert.Fail ($"Unexpected exception {e}");
 			}
 
 			try {
@@ -55,7 +55,7 @@ namespace MonoTouchFixtures.Foundation {
 			} catch (ArgumentException) {
 				// ok
 			} catch (Exception e) {
-				Assert.Fail ("Expected an ArgumentException {0}", e);
+				Assert.Fail ($"Expected an ArgumentException {e}");
 			}
 		}
 	}

@@ -1024,10 +1024,8 @@ namespace Foundation {
 		SkipsPackageDescendants = 1 << 1,
 		/// <summary>To be added.</summary>
 		SkipsHiddenFiles = 1 << 2,
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		IncludesDirectoriesPostOrder = 1 << 3,
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		ProducesRelativePathUrls = 1 << 4,
 	}
@@ -1077,7 +1075,7 @@ namespace Foundation {
 		CachesDirectory = 13,
 		/// <summary>Application support directory (Library/Application Support)</summary>
 		ApplicationSupportDirectory = 14,
-		/// <summary>Downloads directory (only avaialble when the domain specified includes the User value)</summary>
+		/// <summary>Downloads directory (only available when the domain specified includes the User value)</summary>
 		DownloadsDirectory = 15,
 		/// <summary>Input methods directory (Library/Input Methods)</summary>
 		InputMethodsDirectory = 16,
@@ -1265,20 +1263,18 @@ namespace Foundation {
 	}
 
 	/// <summary>Allows the application developer to specify that the old version of the file should be removed from the version store.</summary>
-	/// <remarks>To be added.</remarks>
 	[Flags]
 	[Native]
 	public enum NSFileVersionReplacingOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Moves the replacement file instead of copying it.</summary>
 		ByMoving = 1 << 0,
 	}
 
 	/// <summary>Allows the application developer to specify that a new file version should be created by moving the source file.</summary>
-	/// <remarks>To be added.</remarks>
 	[Flags]
 	[Native]
 	public enum NSFileVersionAddingOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Moves the source file instead of copying it.</summary>
 		ByMoving = 1 << 0,
 	}
 
@@ -1373,10 +1369,8 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		SortedKeys = (1 << 1),
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		FragmentsAllowed = (1 << 2),
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		WithoutEscapingSlashes = (1 << 3),
 	}
@@ -1682,10 +1676,8 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		ResponsiveData = 6,
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		AVStreaming = 8,
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		ResponsiveAV = 9,
 		/// <summary>To be added.</summary>
@@ -2265,10 +2257,11 @@ namespace Foundation {
 		OwnProcess = 3,
 	}
 
+	/// <summary>Specifies how an item provider supplies a file.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSItemProviderFileOptions : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Opens the file in place instead of copying it.</summary>
 		OpenInPlace = 1,
 	}
 

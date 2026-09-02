@@ -307,12 +307,12 @@ namespace Photos {
 		[Export ("assetResourcesForLivePhoto:")]
 		PHAssetResource [] GetAssetResources (PHLivePhoto livePhoto);
 
-		[TV (16, 0), Mac (13, 0), iOS (16, 0)]
+		[TV (16, 0), iOS (16, 0)]
 		[MacCatalyst (16, 0)]
 		[Export ("pixelWidth")]
 		nint PixelWidth { get; }
 
-		[TV (16, 0), Mac (13, 0), iOS (16, 0)]
+		[TV (16, 0), iOS (16, 0)]
 		[MacCatalyst (16, 0)]
 		[Export ("pixelHeight")]
 		nint PixelHeight { get; }
@@ -557,14 +557,13 @@ namespace Photos {
 	}
 
 	// supports iOS (8,0) and iOS (13,0) only supports 64 bits, not 32 bits
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	// include the availability attributes to any new member (and don't trust the type-level ones)
 	interface PHChangeRequest { }
 
-	/// <summary>Enumerates differences between snapshots of the objec at the specified indices.</summary>
+	/// <summary>Enumerates differences between snapshots of the object at the specified indices.</summary>
 	[MacCatalyst (13, 1)]
 	delegate void PHChangeDetailEnumerator (nuint fromIndex, nuint toIndex);
 
@@ -947,15 +946,15 @@ namespace Photos {
 		[Export ("renderedContentURL", ArgumentSemantic.Copy)]
 		NSUrl RenderedContentUrl { get; }
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[NullAllowed, Export ("defaultRenderedContentType", ArgumentSemantic.Copy)]
 		UTType DefaultRenderedContentType { get; }
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("supportedRenderedContentTypes", ArgumentSemantic.Copy)]
 		UTType [] SupportedRenderedContentTypes { get; }
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("renderedContentURLForType:error:")]
 		[return: NullAllowed]
 		NSUrl GetRenderedContentUrl (UTType type, [NullAllowed] out NSError error);
@@ -1101,7 +1100,7 @@ namespace Photos {
 		[NullAllowed]
 		PHAssetImageProgressHandler ProgressHandler { get; set; }
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("allowSecondaryDegradedImage")]
 		bool AllowSecondaryDegradedImage { get; set; }
 	}
@@ -1242,7 +1241,6 @@ namespace Photos {
 		[Export ("requestLivePhotoForAsset:targetSize:contentMode:options:resultHandler:")]
 		int /* PHImageRequestID = int32_t */ RequestLivePhoto (PHAsset asset, CGSize targetSize, PHImageContentMode contentMode, [NullAllowed] PHLivePhotoRequestOptions options, PHImageManagerRequestLivePhoto resultHandler);
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("requestImageDataAndOrientationForAsset:options:resultHandler:")]
 		int RequestImageDataAndOrientation (PHAsset asset, [NullAllowed] PHImageRequestOptions options, PHImageManagerRequestImageDataHandler resultHandler);
@@ -1323,7 +1321,6 @@ namespace Photos {
 
 	interface IPHPhotoLibraryAvailabilityObserver { }
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface PHPhotoLibraryAvailabilityObserver {
@@ -1396,17 +1393,14 @@ namespace Photos {
 		[Export ("unregisterChangeObserver:")]
 		void UnregisterChangeObserver (IPHPhotoLibraryChangeObserver observer);
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("unavailabilityReason", ArgumentSemantic.Strong)]
 		NSError UnavailabilityReason { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("registerAvailabilityObserver:")]
 		void Register (IPHPhotoLibraryAvailabilityObserver observer);
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("unregisterAvailabilityObserver:")]
 		void Unregister (IPHPhotoLibraryAvailabilityObserver observer);
@@ -1415,13 +1409,13 @@ namespace Photos {
 		[Field ("PHLocalIdentifiersErrorKey")]
 		NSString LocalIdentifiersErrorKey { get; }
 
-		[TV (16, 0), Mac (13, 0), iOS (16, 0)]
+		[TV (16, 0), iOS (16, 0)]
 		[MacCatalyst (16, 0)]
 		[Export ("fetchPersistentChangesSinceToken:error:")]
 		[return: NullAllowed]
 		PHPersistentChangeFetchResult FetchPersistentChanges (PHPersistentChangeToken since, [NullAllowed] out NSError error);
 
-		[TV (16, 0), Mac (13, 0), iOS (16, 0)]
+		[TV (16, 0), iOS (16, 0)]
 		[MacCatalyst (16, 0)]
 		[Export ("currentChangeToken")]
 		PHPersistentChangeToken CurrentChangeToken { get; }
@@ -1845,7 +1839,7 @@ namespace Photos {
 		NSError Error { get; }
 	}
 
-	[TV (16, 0), Mac (13, 0), iOS (16, 0)]
+	[TV (16, 0), iOS (16, 0)]
 	[MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -1861,7 +1855,7 @@ namespace Photos {
 	delegate void PHPersistentChangeFetchResultEnumerator (PHPersistentChange change, ref bool stop);
 
 
-	[TV (16, 0), Mac (13, 0), iOS (16, 0)]
+	[TV (16, 0), iOS (16, 0)]
 	[MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -1870,14 +1864,14 @@ namespace Photos {
 		void EnumerateChanges (PHPersistentChangeFetchResultEnumerator block);
 	}
 
-	[TV (16, 0), Mac (13, 0), iOS (16, 0)]
+	[TV (16, 0), iOS (16, 0)]
 	[MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface PHPersistentChangeToken : NSCopying, NSSecureCoding {
 	}
 
-	[TV (16, 0), Mac (13, 0), iOS (16, 0)]
+	[TV (16, 0), iOS (16, 0)]
 	[MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -1912,6 +1906,21 @@ namespace Photos {
 		[Export ("state")]
 		PHAssetResourceUploadJobState State { get; }
 
+		[iOS (26, 4)]
+		[Export ("type")]
+		PHAssetResourceUploadJobType Type { get; }
+
+		[iOS (26, 4)]
+		[Export ("error")]
+		[NullAllowed]
+		NSError Error { get; }
+
+		/// <summary>Gets the response header fields returned from the upload destination.</summary>
+		[iOS (26, 4)]
+		[Export ("responseHeaderFields", ArgumentSemantic.Copy)]
+		[NullAllowed]
+		NSDictionary<NSString, NSString> ResponseHeaderFields { get; }
+
 		[Static]
 		[Export ("fetchJobsWithAction:options:")]
 		PHFetchResult FetchJobs (PHAssetResourceUploadJobAction action, [NullAllowed] PHFetchOptions options);
@@ -1935,6 +1944,32 @@ namespace Photos {
 
 		[Export ("retryWithDestination:")]
 		void Retry ([NullAllowed] NSUrlRequest destination);
+
+		/// <summary>Creates a change request for an upload job with the specified destination and asset resource.</summary>
+		/// <param name="destination">The URL request that specifies the upload destination.</param>
+		/// <param name="resource">The asset resource to upload.</param>
+		/// <returns>A new change request for the upload job.</returns>
+		[iOS (26, 4)]
+		[Static]
+		[Export ("creationRequestForJobWithDestination:resource:")]
+		PHAssetResourceUploadJobChangeRequest CreateJobRequest (NSUrlRequest destination, PHAssetResource resource);
+
+		/// <summary>Creates a change request for a download-only job for the specified asset resource.</summary>
+		/// <param name="resource">The asset resource to download.</param>
+		/// <returns>A new change request for the download-only job.</returns>
+		[iOS (26, 4)]
+		[Static]
+		[Export ("creationRequestForDownloadJobWithResource:")]
+		PHAssetResourceUploadJobChangeRequest CreateDownloadJobRequest (PHAssetResource resource);
+
+		/// <summary>Gets a placeholder object for the upload job that will be created by this change request.</summary>
+		[NullAllowed]
+		[Export ("placeholderForCreatedAssetResourceUploadJob", ArgumentSemantic.Strong)]
+		PHObjectPlaceholder PlaceholderForCreatedAssetResourceUploadJob { get; }
+
+		[iOS (26, 4)]
+		[Export ("cancel")]
+		void Cancel ();
 	}
 
 	[NoTV, NoMacCatalyst, NoMac, iOS (26, 1)]
@@ -1944,12 +1979,29 @@ namespace Photos {
 		Pending = 2,
 		Failed = 3,
 		Succeeded = 4,
+		/// <summary>The upload job has been cancelled.</summary>
+		[iOS (26, 4)]
+		Cancelled = 5,
 	}
 
 	[NoTV, NoMacCatalyst, NoMac, iOS (26, 1)]
 	[Native]
 	public enum PHAssetResourceUploadJobAction : long {
+		/// <summary>Acknowledges an upload job.</summary>
 		Acknowledge = 1,
+		/// <summary>Retries an upload job.</summary>
 		Retry = 2,
+		/// <summary>Processes an upload job.</summary>
+		[iOS (26, 5)]
+		Process = 3,
+	}
+
+	/// <summary>Enumerates the types of <see cref="PHAssetResourceUploadJob" />.</summary>
+	[NoTV, NoMacCatalyst, NoMac, iOS (26, 4)]
+	public enum PHAssetResourceUploadJobType : short {
+		/// <summary>A standard upload job that uploads an asset resource to a destination.</summary>
+		Upload = 0,
+		/// <summary>A download-only job that downloads an asset resource without uploading.</summary>
+		DownloadOnly = 1,
 	}
 }

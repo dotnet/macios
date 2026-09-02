@@ -44,6 +44,10 @@ namespace Cecil.Tests {
 
 		bool FilterMember (ICustomAttributeProvider provider)
 		{
+			// We don't care about APIs that aren't public
+			if (provider is MemberReference mr && !mr.IsPubliclyVisible ())
+				return false;
+
 			// If an API isn't obsolete, it's not under scrutiny from this test.
 			if (!provider.IsObsolete ())
 				return false;

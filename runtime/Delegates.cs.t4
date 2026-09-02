@@ -72,7 +72,7 @@ namespace ObjCRuntime {
 		Write ("\t\t\tif (IsCoreCLR) {\n\t");
 	}
 	if (d.SkipManagedStaticRegistrar) {
-		Write ("\t\t\tif (!Runtime.IsManagedStaticRegistrar) {\n\t");
+		Write ("\t\t\tif (!Runtime.IsManagedStaticRegistrar && !Runtime.IsTrimmableStaticRegistrar) {\n\t");
 	}
 #>
 			options->Delegates-><#= d.SimpleEntryPoint #> = (IntPtr) (void *) <#= d.UnmanagedDelegateCast #> &<#= d.SimpleEntryPoint #>;

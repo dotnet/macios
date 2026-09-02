@@ -7,8 +7,6 @@
     <DefineConstants>DEBUG;BGENERATOR;NET_4_0;NO_AUTHENTICODE;STATIC;NO_SYMBOL_WRITER;NET</DefineConstants>
     <!-- help macios developers debug the generator during a build -->
     <DefineConstants Condition="'$(XAMMACIOS_DEBUGGER)' != ''">$(DefineConstants);XAMMACIOS_DEBUGGER</DefineConstants>
-    <WarningsAsErrors>Nullable</WarningsAsErrors>
-    <Nullable>enable</Nullable>
     <NoWarn>APL0003</NoWarn>
   </PropertyGroup>
 
@@ -36,9 +34,9 @@
     <None Include="$(RepositoryPath)\docs\website\generator-errors.md">
       <Link>generator-errors.md</Link>
     </None>
-    <Compile Include="$(RepositoryPath)\src\error.cs" />
     <Compile Include="$(RepositoryPath)\src\ObjCRuntime\Stret.cs" />
     <Compile Include="$(RepositoryPath)\tools\common\ApplePlatform.cs" />
+    <Compile Include="$(RepositoryPath)\tools\common\IToolLog.cs" />
     <Compile Include="$(RepositoryPath)\tools\common\TargetFramework.cs" />
     <Compile Include="$(RepositoryPath)\tools\common\StringUtils.cs" />
     <Compile Include="$(DotNetBuildDir)\generator-frameworks.g.cs" />
@@ -59,6 +57,8 @@
     <Compile Include="$(RepositoryPath)\src\ObjCRuntime\LinkWithAttribute.cs" />
     <Compile Include="$(RepositoryPath)\src\ObjCRuntime\NativeAttribute.cs" />
     <Compile Include="$(RepositoryPath)\src\ObjCRuntime\NativeNameAttribute.cs" />
+    <Compile Include="$(RepositoryPath)\src\ObjCRuntime\ObjectiveCFrameworkAttribute.cs" />
+    <Compile Include="$(RepositoryPath)\src\ObjCRuntime\SupportedSimulatorAttribute.cs" />
     <Compile Include="$(RepositoryPath)\src\ObjCRuntime\Registrar.core.cs" />
     <Compile Include="$(RepositoryPath)\src\ObjCRuntime\RequiresSuperAttribute.cs" />
     <Compile Include="$(RepositoryPath)\tools\common\Execution.cs">

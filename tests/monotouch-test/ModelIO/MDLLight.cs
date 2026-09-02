@@ -36,12 +36,12 @@ namespace MonoTouchFixtures.ModelIO {
 		{
 			using (var obj = new MDLLight ()) {
 				var color = obj.GetIrradiance (new Vector3 (1, 2, 3));
-				Assert.IsNotNull (color, "color 1");
+				Assert.That (color, Is.Not.Null, "color 1");
 			}
 
 			using (var obj = new MDLLight ()) {
 				var color = obj.GetIrradiance (new Vector3 (1, 2, 3), CGColorSpace.CreateGenericRgb ());
-				Assert.IsNotNull (color, "color 2");
+				Assert.That (color, Is.Not.Null, "color 2");
 			}
 		}
 	}

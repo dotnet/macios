@@ -87,8 +87,8 @@ namespace Security {
 		DestroyRights = 1 << 3,
 		/// <summary>To be added.</summary>
 		PreAuthorize = 1 << 4,
-		[SupportedOSPlatform ("maccatalyst17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		SkipInternalAuth = 1 << 9,
 		NoData = 1 << 20,
 	}
@@ -201,6 +201,7 @@ namespace Security {
 			return retval;
 		}
 
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			Dispose (0, disposing);

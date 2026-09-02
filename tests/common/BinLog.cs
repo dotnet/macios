@@ -210,6 +210,9 @@ namespace Xamarin.Tests {
 				.Where (v => v.Type == BuildLogEventType.Warning)
 				// We're often referencing earlier .NET projects (Touch.Unit/MonoTouch.Dialog), so ignore any out-of-support warnings.
 				.Where (v => v.Message?.Contains ("is out of support and will not receive security updates in the future") != true)
+				// Ignore any messages about the settings files, we get *a lot* of those
+				.Where (v => !(v.Message?.Contains ("The settings file '/Users/") == true && v.Message?.Contains ("/Library/Preferences/maui/Settings.plist' is deprecated, and will be ignored in .NET 11+. ") == true))
+				.Where (v => !(v.Message?.Contains ("The settings file '/Users/") == true && v.Message?.Contains ("/Library/Preferences/Xamarin/Settings.plist' is deprecated, and will be ignored in .NET 11+. ") == true))
 				;
 		}
 

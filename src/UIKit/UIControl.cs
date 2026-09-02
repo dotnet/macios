@@ -38,6 +38,7 @@ namespace UIKit {
 				eh (source, EventArgs.Empty);
 		}
 
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			eh = null;

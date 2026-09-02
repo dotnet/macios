@@ -67,7 +67,7 @@ namespace MonoTouch.NUnit.UI {
 
 			await runner.RunAsync ();
 
-			return !runner.Result.IsFailure ();
+			return runner.Result is not null && !runner.Result.IsFailure ();
 		}
 
 		protected override void WriteDeviceInformation (TextWriter writer)

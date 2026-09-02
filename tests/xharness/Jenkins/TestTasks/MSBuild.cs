@@ -17,7 +17,7 @@ namespace Xharness.Jenkins.TestTasks {
 		readonly IErrorKnowledgeBase errorKnowledgeBase;
 		readonly Func<string> msbuildPath;
 
-		public virtual List<string> GetToolArguments (string projectPlatform, string projectConfiguration, string projectFile, IFileBackedLog buildLog)
+		public virtual List<string> GetToolArguments (string? projectPlatform, string? projectConfiguration, string projectFile, IFileBackedLog buildLog)
 		{
 			var binlogPath = buildLog.FullPath.Replace (".txt", ".binlog");
 
@@ -49,7 +49,7 @@ namespace Xharness.Jenkins.TestTasks {
 			this.errorKnowledgeBase = errorKnowledgeBase ?? throw new ArgumentNullException (nameof (errorKnowledgeBase));
 		}
 
-		public async Task<(TestExecutingResult ExecutionResult, KnownIssue KnownFailure)> ExecuteAsync (
+		public async Task<(TestExecutingResult ExecutionResult, KnownIssue? KnownFailure)> ExecuteAsync (
 			string projectPlatform,
 			string projectConfiguration,
 			string projectFile,
@@ -59,7 +59,7 @@ namespace Xharness.Jenkins.TestTasks {
 			ILog mainLog)
 		{
 			BuildLog = buildLog;
-			(TestExecutingResult ExecutionResult, KnownIssue KnownFailure) result = (TestExecutingResult.NotStarted, (KnownIssue) null);
+			(TestExecutingResult ExecutionResult, KnownIssue? KnownFailure) result = default;
 
 			using (var xbuild = new Process ()) {
 				xbuild.StartInfo.FileName = msbuildPath ();
@@ -87,7 +87,7 @@ namespace Xharness.Jenkins.TestTasks {
 			return result;
 		}
 
-		async Task CleanProjectAsync (string project_file, string project_platform, string project_configuration, ILog log, ILog mainLog)
+		async Task CleanProjectAsync (string project_file, string? project_platform, string? project_configuration, ILog log, ILog mainLog)
 		{
 			// Don't require the desktop resource here, this shouldn't be that resource sensitive
 			using (var xbuild = new Process ()) {

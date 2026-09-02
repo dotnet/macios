@@ -1,3 +1,27 @@
+:root {
+    color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #1e1e1e;
+        color: #d4d4d4;
+    }
+
+    a {
+        color: #6db3f2;
+    }
+
+    a:visited {
+        color: #b48ead;
+    }
+
+    #nav ul {
+        background: #2d2d2d;
+        border-color: #555;
+    }
+}
+
 .pdiv {
     display: table;
     padding-top: 10px;
@@ -43,7 +67,7 @@
 }
 
 #nav ul {
-    background: #ffffff;
+    background: Canvas;
     list-style: none;
     position: absolute;
     left: -9999px;

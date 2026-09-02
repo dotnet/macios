@@ -29,12 +29,12 @@ namespace MonoTouchFixtures.CoreWlan {
 		public void TryFindWiFiEAPIdentityMissingTest ()
 		{
 			RunOnBackgroundThread (() => {
-				Assert.False (CWKeychain.TryFindWiFiEAPIdentity (domain, ssid, out var secIdentity), "A");
-				Assert.IsNull (secIdentity, "A Identity");
+				Assert.That (CWKeychain.TryFindWiFiEAPIdentity (domain, ssid, out var secIdentity), Is.False, "A");
+				Assert.That (secIdentity, Is.Null, "A Identity");
 
-				Assert.False (CWKeychain.TryFindWiFiEAPIdentity (domain, ssid, out secIdentity, out var status), "B");
-				Assert.IsNull (secIdentity, "B Identity");
-				Assert.AreEqual (SecStatusCode.ItemNotFound, (SecStatusCode) status, "Status B");
+				Assert.That (CWKeychain.TryFindWiFiEAPIdentity (domain, ssid, out secIdentity, out var status), Is.False, "B");
+				Assert.That (secIdentity, Is.Null, "B Identity");
+				Assert.That ((SecStatusCode) status, Is.EqualTo (SecStatusCode.ItemNotFound), "Status B");
 			});
 		}
 
@@ -42,10 +42,10 @@ namespace MonoTouchFixtures.CoreWlan {
 		public void TryDeleteWiFiEAPUsernameAndPasswordMissingTest ()
 		{
 			RunOnBackgroundThread (() => {
-				Assert.False (CWKeychain.TryDeleteWiFiEAPUsernameAndPassword (domain, ssid), "A");
+				Assert.That (CWKeychain.TryDeleteWiFiEAPUsernameAndPassword (domain, ssid), Is.False, "A");
 
-				Assert.False (CWKeychain.TryDeleteWiFiEAPUsernameAndPassword (domain, ssid, out var status));
-				Assert.AreEqual (SecStatusCode.ItemNotFound, (SecStatusCode) status, "Status B");
+				Assert.That (CWKeychain.TryDeleteWiFiEAPUsernameAndPassword (domain, ssid, out var status), Is.False);
+				Assert.That ((SecStatusCode) status, Is.EqualTo (SecStatusCode.ItemNotFound), "Status B");
 			});
 		}
 
@@ -53,10 +53,10 @@ namespace MonoTouchFixtures.CoreWlan {
 		public void TryDeleteWiFiPasswordMissingTest ()
 		{
 			RunOnBackgroundThread (() => {
-				Assert.False (CWKeychain.TryDeleteWiFiPassword (domain, ssid), "A");
+				Assert.That (CWKeychain.TryDeleteWiFiPassword (domain, ssid), Is.False, "A");
 
-				Assert.False (CWKeychain.TryDeleteWiFiPassword (domain, ssid, out var status), "B");
-				Assert.AreEqual (SecStatusCode.Param, (SecStatusCode) status, "Status B");
+				Assert.That (CWKeychain.TryDeleteWiFiPassword (domain, ssid, out var status), Is.False, "B");
+				Assert.That ((SecStatusCode) status, Is.EqualTo (SecStatusCode.Param), "Status B");
 			});
 		}
 
@@ -64,14 +64,14 @@ namespace MonoTouchFixtures.CoreWlan {
 		public void TryFindWiFiEAPUsernameAndPasswordMissingTest ()
 		{
 			RunOnBackgroundThread (() => {
-				Assert.False (CWKeychain.TryFindWiFiEAPUsernameAndPassword (domain, ssid, out string username, out string password), "A");
-				Assert.IsNull (username, "A username");
-				Assert.IsNull (password, "A password");
+				Assert.That (CWKeychain.TryFindWiFiEAPUsernameAndPassword (domain, ssid, out string username, out string password), Is.False, "A");
+				Assert.That (username, Is.Null, "A username");
+				Assert.That (password, Is.Null, "A password");
 
-				Assert.False (CWKeychain.TryFindWiFiEAPUsernameAndPassword (domain, ssid, out username, out password, out var status), "B");
-				Assert.IsNull (username, "B username");
-				Assert.IsNull (password, "B password");
-				Assert.AreEqual (SecStatusCode.ItemNotFound, (SecStatusCode) status, "Status B");
+				Assert.That (CWKeychain.TryFindWiFiEAPUsernameAndPassword (domain, ssid, out username, out password, out var status), Is.False, "B");
+				Assert.That (username, Is.Null, "B username");
+				Assert.That (password, Is.Null, "B password");
+				Assert.That ((SecStatusCode) status, Is.EqualTo (SecStatusCode.ItemNotFound), "Status B");
 			});
 		}
 
@@ -79,12 +79,12 @@ namespace MonoTouchFixtures.CoreWlan {
 		public void TryFindWiFiPasswordMissingTest ()
 		{
 			RunOnBackgroundThread (() => {
-				Assert.False (CWKeychain.TryFindWiFiPassword (domain, ssid, out string password), "A");
-				Assert.IsNull (password, "A password");
+				Assert.That (CWKeychain.TryFindWiFiPassword (domain, ssid, out string password), Is.False, "A");
+				Assert.That (password, Is.Null, "A password");
 
-				Assert.False (CWKeychain.TryFindWiFiPassword (domain, ssid, out password, out var status), "B");
-				Assert.IsNull (password, "B password");
-				Assert.AreEqual (SecStatusCode.Param, (SecStatusCode) status, "Status B");
+				Assert.That (CWKeychain.TryFindWiFiPassword (domain, ssid, out password, out var status), Is.False, "B");
+				Assert.That (password, Is.Null, "B password");
+				Assert.That ((SecStatusCode) status, Is.EqualTo (SecStatusCode.Param), "Status B");
 			});
 		}
 
@@ -100,10 +100,10 @@ namespace MonoTouchFixtures.CoreWlan {
 				Assert.That ((SecStatusCode) status, Is.EqualTo (SecStatusCode.Success).Or.EqualTo (SecStatusCode.Allocate), "Status B");
 
 				// remove it to clean behind
-				Assert.False (CWKeychain.TryDeleteWiFiEAPUsernameAndPassword (domain, ssid), "C");
+				Assert.That (CWKeychain.TryDeleteWiFiEAPUsernameAndPassword (domain, ssid), Is.False, "C");
 
-				Assert.False (CWKeychain.TryDeleteWiFiEAPUsernameAndPassword (domain, ssid, out status), "D");
-				Assert.AreEqual (SecStatusCode.ItemNotFound, (SecStatusCode) status, "Status D");
+				Assert.That (CWKeychain.TryDeleteWiFiEAPUsernameAndPassword (domain, ssid, out status), Is.False, "D");
+				Assert.That ((SecStatusCode) status, Is.EqualTo (SecStatusCode.ItemNotFound), "Status D");
 			});
 		}
 
@@ -111,17 +111,17 @@ namespace MonoTouchFixtures.CoreWlan {
 		public void TrySetWiFiEAPUsernameAndPasswordTest ()
 		{
 			RunOnBackgroundThread (() => {
-				Assert.True (CWKeychain.TrySetWiFiEAPUsernameAndPassword (domain, ssid, "mandel", "test"), "Both present A");
-				Assert.True (CWKeychain.TrySetWiFiEAPUsernameAndPassword (domain, ssid, "mandel", "test", out var status), "Both present B");
-				Assert.AreEqual (SecStatusCode.Success, (SecStatusCode) status, "Both present B Status");
+				Assert.That (CWKeychain.TrySetWiFiEAPUsernameAndPassword (domain, ssid, "mandel", "test"), Is.True, "Both present A");
+				Assert.That (CWKeychain.TrySetWiFiEAPUsernameAndPassword (domain, ssid, "mandel", "test", out var status), Is.True, "Both present B");
+				Assert.That ((SecStatusCode) status, Is.EqualTo (SecStatusCode.Success), "Both present B Status");
 
-				Assert.True (CWKeychain.TrySetWiFiEAPUsernameAndPassword (domain, ssid, "mandel", null), "Null pwd A");
-				Assert.True (CWKeychain.TrySetWiFiEAPUsernameAndPassword (domain, ssid, "mandel", null, out status), "Null pwd B");
-				Assert.AreEqual (SecStatusCode.Success, (SecStatusCode) status, "Null pwd B Status");
+				Assert.That (CWKeychain.TrySetWiFiEAPUsernameAndPassword (domain, ssid, "mandel", null), Is.True, "Null pwd A");
+				Assert.That (CWKeychain.TrySetWiFiEAPUsernameAndPassword (domain, ssid, "mandel", null, out status), Is.True, "Null pwd B");
+				Assert.That ((SecStatusCode) status, Is.EqualTo (SecStatusCode.Success), "Null pwd B Status");
 
-				Assert.False (CWKeychain.TrySetWiFiEAPUsernameAndPassword (domain, ssid, null, "test"), "Null user A");
-				Assert.False (CWKeychain.TrySetWiFiEAPUsernameAndPassword (domain, ssid, null, "test", out status), "Null user B");
-				Assert.AreEqual (SecStatusCode.Param, (SecStatusCode) status, "Null user B Status");
+				Assert.That (CWKeychain.TrySetWiFiEAPUsernameAndPassword (domain, ssid, null, "test"), Is.False, "Null user A");
+				Assert.That (CWKeychain.TrySetWiFiEAPUsernameAndPassword (domain, ssid, null, "test", out status), Is.False, "Null user B");
+				Assert.That ((SecStatusCode) status, Is.EqualTo (SecStatusCode.Param), "Null user B Status");
 			});
 		}
 
@@ -129,10 +129,10 @@ namespace MonoTouchFixtures.CoreWlan {
 		public void TrySetWiFiPasswordTest ()
 		{
 			RunOnBackgroundThread (() => {
-				Assert.False (CWKeychain.TrySetWiFiPassword (domain, ssid, "password"), "A");
+				Assert.That (CWKeychain.TrySetWiFiPassword (domain, ssid, "password"), Is.False, "A");
 
-				Assert.False (CWKeychain.TrySetWiFiPassword (domain, ssid, "password", out var status), "B");
-				Assert.AreEqual (SecStatusCode.Param, (SecStatusCode) status, "Status B");
+				Assert.That (CWKeychain.TrySetWiFiPassword (domain, ssid, "password", out var status), Is.False, "B");
+				Assert.That ((SecStatusCode) status, Is.EqualTo (SecStatusCode.Param), "Status B");
 			});
 		}
 
@@ -151,7 +151,7 @@ namespace MonoTouchFixtures.CoreWlan {
 			thread.Start ();
 			if (!thread.Join (TimeSpan.FromSeconds (10)))
 				Assert.Fail ("Test timed out");
-			Assert.IsNull (ex, "No exception");
+			Assert.That (ex, Is.Null, "No exception");
 		}
 	}
 }

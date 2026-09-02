@@ -30,9 +30,8 @@ namespace AppKit {
 	public partial class NSSound {
 
 		// note: if needed override the protected Get|Set methods
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the name of the sound.</summary>
+		/// <value>The name identifying this sound.</value>
 		public string Name {
 			get { return GetName (); }
 			// ignore return value (bool)

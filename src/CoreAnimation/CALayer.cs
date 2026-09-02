@@ -54,7 +54,12 @@ namespace CoreAnimation {
 				Messaging.IntPtr_objc_msgSend_IntPtr (Handle, Selector.GetHandle (selInitWithLayer), other.Handle);
 				GC.KeepAlive (other);
 			} else {
-				Messaging.IntPtr_objc_msgSendSuper_IntPtr (SuperHandle, Selector.GetHandle (selInitWithLayer), other.Handle);
+				unsafe {
+					var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this);
+					Messaging.IntPtr_objc_msgSendSuper_IntPtr (&__objc_super__, Selector.GetHandle (selInitWithLayer), other.Handle);
+					GC.KeepAlive (this);
+					GC.KeepAlive (other);
+				}
 				Clone (other);
 			}
 			MarkDirtyIfDerived ();
@@ -67,8 +72,8 @@ namespace CoreAnimation {
 			MarkDirty (true);
 		}
 
-		/// <param name="other">The other layer to copy infromation from.</param>
-		///         <summary>This method should be overwritten to provide cloning capabilities for the layer.</summary>
+		/// <param name="other">The other layer to copy information from.</param>
+		///         <summary>This method should be overridden to provide cloning capabilities for the layer.</summary>
 		///         <remarks>You can either override this method and clone the information that you need from the original layer, or perform the copy in your initWithLayer: constructor (see the class description for details and a sample). </remarks>
 		public virtual void Clone (CALayer other)
 		{
@@ -138,8 +143,7 @@ namespace CoreAnimation {
 		}
 
 		/// <summary>Gets the contents format for the layer.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <value>The format used for the layer's contents.</value>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]

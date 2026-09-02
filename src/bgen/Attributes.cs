@@ -2,8 +2,7 @@ using System.ComponentModel;
 using System.Reflection;
 using System.Text;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 //
 // All the attributes in this file are compiled into two binaries:
@@ -108,7 +107,7 @@ public class RetainAttribute : Attribute {
 	{
 		WrapName = wrap;
 	}
-	public string WrapName { get; set; }
+	public string? WrapName { get; set; }
 }
 
 [AttributeUsage (AttributeTargets.ReturnValue, AllowMultiple = false)]
@@ -131,9 +130,9 @@ public class BaseTypeAttribute : Attribute {
 		BaseType = t;
 	}
 	public Type BaseType { get; set; }
-	public string Name { get; set; }
-	public Type [] Events { get; set; }
-	public string [] Delegates { get; set; }
+	public string? Name { get; set; }
+	public Type []? Events { get; set; }
+	public string []? Delegates { get; set; }
 	public bool Singleton { get; set; }
 
 	// If set, the code will keep a reference in the EnsureXXX method for
@@ -142,7 +141,7 @@ public class BaseTypeAttribute : Attribute {
 	// is not really designed as a workaround for systems that create
 	// too many objects, but two cases in particular that users keep
 	// trampling on: UIAlertView and UIActionSheet
-	public string KeepRefUntil { get; set; }
+	public string? KeepRefUntil { get; set; }
 
 	public bool IsStubClass { get; set; }
 }
@@ -397,8 +396,8 @@ public class NotificationAttribute : Attribute {
 	public NotificationAttribute (string notificationCenter) { NotificationCenter = notificationCenter; }
 	public NotificationAttribute () { }
 
-	public Type Type { get; set; }
-	public string NotificationCenter { get; set; }
+	public Type? Type { get; set; }
+	public string? NotificationCenter { get; set; }
 }
 
 //
@@ -432,7 +431,7 @@ public class EventArgsAttribute : Attribute {
 	public string ArgName { get; set; }
 	public bool SkipGeneration { get; set; }
 	public bool FullName { get; set; }
-	public string XmlDocs { get; set; }
+	public string? XmlDocs { get; set; }
 }
 
 //
@@ -491,11 +490,11 @@ public class EventNameAttribute : Attribute {
 }
 
 public class DefaultValueAttribute : Attribute {
-	public DefaultValueAttribute (object o)
+	public DefaultValueAttribute (object? o)
 	{
 		Default = o;
 	}
-	public object Default { get; set; }
+	public object? Default { get; set; }
 }
 
 public class DefaultValueFromArgumentAttribute : Attribute {
@@ -518,20 +517,14 @@ public class NoDefaultValueAttribute : Attribute {
 public class IgnoredInDelegateAttribute : Attribute {
 }
 
-// Apply to strings parameters that are merely retained or assigned,
-// not copied this is an exception as it is advised in the coding
-// standard for Objective-C to avoid this, but a few properties do use
-// this.  Use this attribtue for properties flagged with `retain' or
-// `assign', which look like this:
-//
-// @property (retain) NSString foo;
-// @property (assign) NSString assigned;
-//
-// This forced the generator to create an NSString before calling the
-// API instead of using the fast string marshalling code.
+#if !XAMCORE_5_0
+// This attribute is obsolete and has no effect. Zero-copy string marshaling is no longer supported.
+[Obsolete ("Zero-copy string marshaling is no longer supported. This attribute has no effect.")]
+[AttributeUsage (AttributeTargets.Property | AttributeTargets.Parameter, AllowMultiple = true)]
 public class DisableZeroCopyAttribute : Attribute {
 	public DisableZeroCopyAttribute () { }
 }
+#endif
 
 // Apply this attribute to methods that need a custom binding method.
 //
@@ -557,34 +550,18 @@ public class DisableZeroCopyAttribute : Attribute {
 //
 [AttributeUsage (AttributeTargets.Method)]
 public class MarshalDirectiveAttribute : Attribute {
-	public string NativePrefix { get; set; }
-	public string NativeSuffix { get; set; }
-	public string Library { get; set; }
+	public string? NativePrefix { get; set; }
+	public string? NativeSuffix { get; set; }
+	public string? Library { get; set; }
 }
 
-//
-// By default, the generator will not do Zero Copying of strings, as most
-// third party libraries do not follow Apple's design guidelines of making
-// string properties and parameters copy parameters, instead many libraries
-// "retain" as a broken optimization [1].
-//
-// The consumer of the generator can force this by passing
-// --use-zero-copy or setting the [assembly:ZeroCopyStrings] attribute.
-// When these are set, the generator assumes the library perform
-// copies over any NSStrings it keeps instead of retains/assigns and
-// that any property that happens to be a retain/assign has the
-// [DisableZeroCopyAttribute] attribute applied.
-//
-// [1] It is broken because consumer code can pass an NSMutableString, the
-// library retains the value, but does not have a way of noticing changes
-// that might happen to the mutable string behind its back.
-//
-// In the ZeroCopy case it is a problem because we pass handles to stack-allocated
-// strings that stop existing after the invocation is over.
-//
+#if !XAMCORE_5_0
+// This attribute is obsolete and has no effect. Zero-copy string marshaling is no longer supported.
+[Obsolete ("Zero-copy string marshaling is no longer supported. This attribute has no effect.")]
 [AttributeUsage (AttributeTargets.Assembly | AttributeTargets.Method | AttributeTargets.Interface, AllowMultiple = true)]
 public class ZeroCopyStringsAttribute : Attribute {
 }
+#endif
 
 [AttributeUsage (AttributeTargets.Method | AttributeTargets.Property, AllowMultiple = true)]
 public class SnippetAttribute : Attribute {
@@ -672,6 +649,66 @@ public class DesignatedInitializerAttribute : Attribute {
 }
 #endif // !XAMCORE_5_0
 
+/// <summary>Apply this attribute to a binding constructor (or a binding init method) to
+/// generate a static factory method (instead of a public constructor) from a failable
+/// Objective-C initializer.</summary>
+/// <remarks>
+///   <para>When this attribute is applied to a binding constructor, the generator will:</para>
+///   <list type="number">
+///     <item><description>Emit the constructor as <c>internal</c> (hiding it from the public API).</description></item>
+///     <item><description>Emit a <c>public static</c> factory method (named <see cref="MethodName" />) with the same parameters as the constructor.</description></item>
+///   </list>
+///   <para>The attribute can also be applied to a binding init method that is not a
+///   <c>Constructor</c> (a method that returns <see cref="ObjCRuntime.NativeHandle" /> and is exported to an
+///   <c>init</c> selector). This is useful when a native class has two failable initializers with
+///   the same managed signature, which can't both be bound as constructors (C# doesn't allow two
+///   constructors with identical parameter types). In that case the generator emits an internal
+///   backing helper (prefixed with an underscore) and a <c>public static</c> factory method named after
+///   the binding method. When applied to a named init method, the <see cref="MethodName" /> property
+///   must not be set (the binding method's own name is used instead); doing so is an error.</para>
+///   <para>If the initializer's return value is nullable (annotated with <c>[return: NullAllowed]</c>), the factory method returns a nullable value and returns <see langword="null" /> when the native initializer fails (returns nil). Otherwise the factory method returns a non-nullable value.</para>
+///   <para>The selector must be an Objective-C <c>init</c> selector: either <c>init</c> or a selector that starts with <c>init</c> followed by an uppercase letter (e.g. <c>initWithName:</c>).</para>
+///   <example>
+///   <code language="csharp"><![CDATA[
+///   // As a constructor (default factory name "Create"):
+///   [Export ("initWithUUID:qualifierData:")]
+///   [FactoryMethod ("Create")]
+///   [return: NullAllowed]
+///   NativeHandle Constructor (NSUuid uuid, NSData qualifierData);
+///
+///   // As named methods, for two initializers with the same managed signature:
+///   [Export ("initWithFoo:")]
+///   [FactoryMethod]
+///   [return: NullAllowed]
+///   NativeHandle CreateWithFoo (nint foo);
+///
+///   [Export ("initWithBar:")]
+///   [FactoryMethod]
+///   [return: NullAllowed]
+///   NativeHandle CreateWithBar (nint bar);
+///   ]]></code>
+///   </example>
+/// </remarks>
+[AttributeUsage (AttributeTargets.Method, AllowMultiple = false)]
+public class FactoryMethodAttribute : Attribute {
+	/// <summary>The name of the generated factory method. When not specified, it defaults to
+	/// <c>Create</c> for a constructor, or to the name of the binding method for a named init method.</summary>
+	public string? MethodName { get; set; }
+
+	/// <summary>Create a new <see cref="FactoryMethodAttribute" />. The factory method name defaults to
+	/// <c>Create</c> for a constructor, or to the name of the binding method for a named init method.</summary>
+	public FactoryMethodAttribute ()
+	{
+	}
+
+	/// <summary>Create a new <see cref="FactoryMethodAttribute" /> whose factory method has the specified name.</summary>
+	/// <param name="methodName">The name of the generated factory method.</param>
+	public FactoryMethodAttribute (string methodName)
+	{
+		MethodName = methodName;
+	}
+}
+
 //
 // Apple this attribute to ObjC types where the default `init` selector 
 // is decorated with `NS_DESIGNATED_INITIALIZER`
@@ -720,12 +757,12 @@ public class AsyncAttribute : Attribute {
 		MethodName = methodName;
 	}
 
-	public Type ResultType { get; set; }
-	public string MethodName { get; set; }
-	public string ResultTypeName { get; set; }
-	public string PostNonResultSnippet { get; set; }
-	public string XmlDocs { get; set; }
-	public string XmlDocsWithOutParameter { get; set; }
+	public Type? ResultType { get; set; }
+	public string? MethodName { get; set; }
+	public string? ResultTypeName { get; set; }
+	public string? PostNonResultSnippet { get; set; }
+	public string? XmlDocs { get; set; }
+	public string? XmlDocsWithOutParameter { get; set; }
 }
 
 //
@@ -773,8 +810,8 @@ public class StrongDictionaryAttribute : Attribute {
 		TypeWithKeys = typeWithKeys;
 		Suffix = "Key";
 	}
-	public string TypeWithKeys;
-	public string Suffix;
+	public string? TypeWithKeys;
+	public string? Suffix;
 }
 
 //
@@ -846,7 +883,7 @@ public class ErrorDomainAttribute : Attribute {
 	}
 
 	public string ErrorDomain { get; set; }
-	public string LibraryName { get; set; }
+	public string? LibraryName { get; set; }
 }
 
 [AttributeUsage (AttributeTargets.Field)]
@@ -857,7 +894,6 @@ public class DefaultEnumValueAttribute : Attribute {
 	}
 }
 
-#nullable enable
 /// <summary>This attribute is used to specify the type of the backing field for strongly typed enums.</summary>
 [AttributeUsage (AttributeTargets.Enum)]
 public class BackingFieldTypeAttribute : Attribute {
@@ -873,7 +909,6 @@ public class BackingFieldTypeAttribute : Attribute {
 	public string? GetConstantMethodName { get; set; }
 #endif
 }
-#nullable disable
 
 //
 // This prevents the generator from generating the managed proxy to
@@ -932,14 +967,14 @@ public abstract class AvailabilityBaseAttribute : Attribute {
 
 	/// <summary>The version when the API was introduced, deprecated, obsoleted or became unavailable.</summary>
 	/// <value>The version when the API was introduced, deprecated, obsoleted or became unavailable.</value>
-	public Version Version { get; private set; }
+	public Version? Version { get; private set; }
 
 	/// <summary>Additional information related to the availability information.</summary>
 	/// <value>Additional information related to the availability information.</value>
 	/// <remarks>
 	///     <para>This is typically used to recommend other API when something is deprecated or obsoleted.</para>
 	/// </remarks>
-	public string Message { get; private set; }
+	public string? Message { get; private set; }
 
 	internal AvailabilityBaseAttribute ()
 	{
@@ -948,33 +983,13 @@ public abstract class AvailabilityBaseAttribute : Attribute {
 	internal AvailabilityBaseAttribute (
 		AvailabilityKind availabilityKind,
 		PlatformName platform,
-		Version version,
-		string message)
+		Version? version,
+		string? message)
 	{
 		AvailabilityKind = availabilityKind;
 		Platform = platform;
 		Version = version;
 		Message = message;
-	}
-
-	void GeneratePlatformDefine (StringBuilder builder)
-	{
-		switch (Platform) {
-		case PlatformName.iOS:
-			builder.AppendLine ("#if __IOS__");
-			break;
-		case PlatformName.TvOS:
-			builder.AppendLine ("#if __TVOS__");
-			break;
-		case PlatformName.MacOSX:
-			builder.AppendLine ("#if __MACOS__");
-			break;
-		case PlatformName.MacCatalyst:
-			builder.AppendLine ("#if __MACCATALYST__ && !__IOS__");
-			break;
-		default:
-			throw new NotSupportedException ($"Unknown platform: {Platform}");
-		}
 	}
 
 	void GenerateUnsupported (StringBuilder builder)
@@ -1000,19 +1015,12 @@ public abstract class AvailabilityBaseAttribute : Attribute {
 
 	void GenerateSupported (StringBuilder builder)
 	{
-#if BGENERATOR
-		// If the version is less than or equal to the min version for the platform in question,
-		// the version is redundant, so just skip it.
-		if (Version is not null && Version <= Xamarin.SdkVersions.GetMinVersion (Platform.AsApplePlatform ()))
-			Version = null;
-#endif
-
 		builder.Append ("[SupportedOSPlatform (\"");
-		GeneratePlatformNameAndVersion (builder);
+		GeneratePlatformNameAndVersion (builder, skipMinVersion: true);
 		builder.AppendLine ("\")]");
 	}
 
-	void GeneratePlatformNameAndVersion (StringBuilder builder)
+	void GeneratePlatformNameAndVersion (StringBuilder builder, bool skipMinVersion = false)
 	{
 		switch (Platform) {
 		case PlatformName.iOS:
@@ -1034,8 +1042,17 @@ public abstract class AvailabilityBaseAttribute : Attribute {
 			throw new NotSupportedException ($"Unknown platform: {Platform}");
 		}
 
-		if (Version is not null)
-			builder.Append (Version.ToString (Version.Build >= 0 ? 3 : 2));
+		if (Version is null)
+			return;
+
+#if BGENERATOR
+		// If the version is less than or equal to the min version for the platform in question,
+		// the version is redundant, so just skip it.
+		if (skipMinVersion && Version <= Xamarin.SdkVersions.GetMinVersion (Platform.AsApplePlatform ()))
+			return;
+#endif
+
+		builder.Append (Version.ToString (Version.Build >= 0 ? 3 : 2));
 	}
 
 	/// <summary>Returns a human readable version of the availability attribute.</summary>
@@ -1066,7 +1083,7 @@ public class IntroducedAttribute : AvailabilityBaseAttribute {
 	/// <summary>Initializes a new availability attribute specifying that the API exists on the specified platform.</summary>
 	/// <param name="platform">The platform this availability attribute applies to.</param>
 	/// <param name="message">Additional information related to the availability information.</param>
-	public IntroducedAttribute (PlatformName platform, string message = null)
+	public IntroducedAttribute (PlatformName platform, string? message = null)
 		: base (AvailabilityKind.Introduced, platform, null, message)
 	{
 	}
@@ -1076,7 +1093,7 @@ public class IntroducedAttribute : AvailabilityBaseAttribute {
 	/// <param name="majorVersion">The major version.</param>
 	/// <param name="minorVersion">The minor version.</param>
 	/// <param name="message">Additional information related to the availability information.</param>
-	public IntroducedAttribute (PlatformName platform, int majorVersion, int minorVersion, string message = null)
+	public IntroducedAttribute (PlatformName platform, int majorVersion, int minorVersion, string? message = null)
 		: base (AvailabilityKind.Introduced, platform, new Version (majorVersion, minorVersion), message)
 	{
 	}
@@ -1087,7 +1104,7 @@ public class IntroducedAttribute : AvailabilityBaseAttribute {
 	/// <param name="minorVersion">The minor version.</param>
 	/// <param name="subminorVersion">The subminor version.</param>
 	/// <param name="message">Additional information related to the availability information.</param>
-	public IntroducedAttribute (PlatformName platform, int majorVersion, int minorVersion, int subminorVersion, string message = null)
+	public IntroducedAttribute (PlatformName platform, int majorVersion, int minorVersion, int subminorVersion, string? message = null)
 		: base (AvailabilityKind.Introduced, platform, new Version (majorVersion, minorVersion, subminorVersion), message)
 	{
 	}
@@ -1098,7 +1115,7 @@ public sealed class DeprecatedAttribute : AvailabilityBaseAttribute {
 	/// <summary>Initializes a new availability attribute specifying that an API is deprecated on the specified platform.</summary>
 	/// <param name="platform">The platform this availability attribute applies to.</param>
 	/// <param name="message">Additional information related to the availability information.</param>
-	public DeprecatedAttribute (PlatformName platform, string message = null)
+	public DeprecatedAttribute (PlatformName platform, string? message = null)
 		: base (AvailabilityKind.Deprecated, platform, null, message)
 	{
 	}
@@ -1108,7 +1125,7 @@ public sealed class DeprecatedAttribute : AvailabilityBaseAttribute {
 	/// <param name="majorVersion">The major version.</param>
 	/// <param name="minorVersion">The minor version.</param>
 	/// <param name="message">Additional information related to the availability information.</param>
-	public DeprecatedAttribute (PlatformName platform, int majorVersion, int minorVersion, string message = null)
+	public DeprecatedAttribute (PlatformName platform, int majorVersion, int minorVersion, string? message = null)
 		: base (AvailabilityKind.Deprecated, platform, new Version (majorVersion, minorVersion), message)
 	{
 	}
@@ -1119,7 +1136,7 @@ public sealed class DeprecatedAttribute : AvailabilityBaseAttribute {
 	/// <param name="minorVersion">The minor version.</param>
 	/// <param name="subminorVersion">The subminor version.</param>
 	/// <param name="message">Additional information related to the availability information.</param>
-	public DeprecatedAttribute (PlatformName platform, int majorVersion, int minorVersion, int subminorVersion, string message = null)
+	public DeprecatedAttribute (PlatformName platform, int majorVersion, int minorVersion, int subminorVersion, string? message = null)
 		: base (AvailabilityKind.Deprecated, platform, new Version (majorVersion, minorVersion, subminorVersion), message)
 	{
 	}
@@ -1130,7 +1147,7 @@ public sealed class ObsoletedAttribute : AvailabilityBaseAttribute {
 	/// <summary>Initializes a new availability attribute specifying that an API is obsolete on the specified platform.</summary>
 	/// <param name="platform">The platform this availability attribute applies to.</param>
 	/// <param name="message">Additional information related to the availability information.</param>
-	public ObsoletedAttribute (PlatformName platform, string message = null)
+	public ObsoletedAttribute (PlatformName platform, string? message = null)
 		: base (AvailabilityKind.Obsoleted, platform, null, message)
 	{
 	}
@@ -1140,7 +1157,7 @@ public sealed class ObsoletedAttribute : AvailabilityBaseAttribute {
 	/// <param name="majorVersion">The major version.</param>
 	/// <param name="minorVersion">The minor version.</param>
 	/// <param name="message">Additional information related to the availability information.</param>
-	public ObsoletedAttribute (PlatformName platform, int majorVersion, int minorVersion, string message = null)
+	public ObsoletedAttribute (PlatformName platform, int majorVersion, int minorVersion, string? message = null)
 		: base (AvailabilityKind.Obsoleted, platform, new Version (majorVersion, minorVersion), message)
 	{
 	}
@@ -1151,7 +1168,7 @@ public sealed class ObsoletedAttribute : AvailabilityBaseAttribute {
 	/// <param name="minorVersion">The minor version.</param>
 	/// <param name="subminorVersion">The subminor version.</param>
 	/// <param name="message">Additional information related to the availability information.</param>
-	public ObsoletedAttribute (PlatformName platform, int majorVersion, int minorVersion, int subminorVersion, string message = null)
+	public ObsoletedAttribute (PlatformName platform, int majorVersion, int minorVersion, int subminorVersion, string? message = null)
 		: base (AvailabilityKind.Obsoleted, platform, new Version (majorVersion, minorVersion, subminorVersion), message)
 	{
 	}
@@ -1162,7 +1179,7 @@ public class UnavailableAttribute : AvailabilityBaseAttribute {
 	/// <summary>Initializes a new availability attribute specifying that an API no longer exists on the specified platform.</summary>
 	/// <param name="platform">The platform this availability attribute applies to.</param>
 	/// <param name="message">Additional information related to the availability information.</param>
-	public UnavailableAttribute (PlatformName platform, string message = null)
+	public UnavailableAttribute (PlatformName platform, string? message = null)
 		: base (AvailabilityKind.Unavailable, platform, null, message)
 	{
 	}

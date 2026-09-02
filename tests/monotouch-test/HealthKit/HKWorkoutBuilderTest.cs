@@ -32,7 +32,7 @@ namespace MonoTouchFixtures.HealthKit {
 			var store = new HKHealthStore ();
 			var seriesBuilder = new HKWorkoutBuilder (new HKHealthStore (), new HKWorkoutConfiguration (), HKDevice.LocalDevice);
 			var ret = seriesBuilder.GetSeriesBuilder (HKSeriesType.HeartbeatSeriesType);
-			Assert.IsNull (ret, "GetSeriesBuilder should return a null value without proper configuration.");
+			Assert.That (ret, Is.Null, "GetSeriesBuilder should return a null value without proper configuration.");
 		}
 	}
 }

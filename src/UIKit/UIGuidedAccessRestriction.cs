@@ -50,8 +50,7 @@ namespace UIKit {
 			[UnmanagedCallersOnlyAttribute]
 			internal static unsafe void Invoke (IntPtr block, byte success, IntPtr error)
 			{
-				var descriptor = (BlockLiteral*) block;
-				var del = (UIGuidedAccessConfigureAccessibilityFeaturesCompletionHandler) (descriptor->Target);
+				var del = BlockLiteral.GetTarget<UIGuidedAccessConfigureAccessibilityFeaturesCompletionHandler> (block);
 				if (del is not null)
 					del (success != 0, Runtime.GetNSObject<NSError> (error));
 			}

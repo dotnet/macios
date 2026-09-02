@@ -2734,6 +2734,33 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";E7175" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The {0} simulator runtime is not installed. This is required by Apple's development tools (even when building for physical devices). Install it by running 'xcodebuild -downloadPlatform {0}' from the command line, or from Xcode (Settings > Components).]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Modul runtime simulátoru {0} není nainstalován. Vyžadují ho vývojové nástroje společnosti Apple (i při sestavování pro fyzická zařízení). Nainstalujte ho spuštěním příkazu xcodebuild -downloadPlatform {0} z příkazového řádku nebo v Xcode (Nastavení > Komponenty).]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E7177" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The installed {0} simulator runtime is not compatible with the current Xcode version. Update the simulator runtime by running 'xcodebuild -downloadPlatform {0}' from the command line, or from Xcode (Settings > Components).]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Nainstalovaný modul runtime simulátoru {0} není kompatibilní s aktuální verzí Xcode. Aktualizujte modul runtime simulátoru spuštěním příkazu xcodebuild -downloadPlatform {0} z příkazového řádku nebo v Xcode (Nastavení > Komponenty).]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E7178" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Console.StandardOutput or Console.StandardError was accessed during a build task. This should not happen, use the MSBuild logging infrastructure instead. Stack trace: {0}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Během úlohy sestavení se přistupovalo k Console.StandardOutput nebo Console.StandardError. Nemělo by k tomu dojít, použijte místo toho infrastrukturu protokolování MSBuild. Trasování zásobníku: {0}]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";InvalidFramework" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Invalid framework: {0}]]></Val>
@@ -3621,6 +3648,51 @@
           <Val><![CDATA[Not creating a compressed binding resource package, because all the native references are already compressed.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Nevytváří se komprimovaný balíček prostředků vazby, protože všechny nativní odkazy jsou už komprimované.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7171" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The environment variable '{0}' is deprecated, and will be ignored in .NET 11+. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Proměnná prostředí {0} je zastaralá a v .NET 11+ se bude ignorovat. Pomocí proměnné prostředí DEVELOPER_DIR nebo vlastnosti MSBuild XcodeLocation vyberte instalaci/verzi Xcode, která se má použít.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7172" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The environment variable '{0}' is deprecated, and will be ignored. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Proměnná prostředí {0} je zastaralá a bude ignorována. Pomocí proměnné prostředí DEVELOPER_DIR nebo vlastnosti MSBuild XcodeLocation vyberte instalaci/verzi Xcode, která se má použít.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7173" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The settings file '{0}' is deprecated, and will be ignored in .NET 11+. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Soubor nastavení {0} je zastaralý a v .NET 11+ bude ignorován. Pomocí proměnné prostředí DEVELOPER_DIR nebo vlastnosti MSBuild XcodeLocation vyberte instalaci/verzi Xcode, která se má použít.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7174" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The settings file '{0}' is deprecated, and will be ignored. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Soubor nastavení {0} je zastaralý a bude ignorován. Pomocí proměnné prostředí DEVELOPER_DIR nebo vlastnosti MSBuild XcodeLocation vyberte instalaci/verzi Xcode, která se má použít.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7176" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unable to determine if the {0} simulator runtime is installed. If the build fails or hangs, install the {0} simulator runtime by running 'xcodebuild -downloadPlatform {0}' from the command line.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Nelze určit, zda je nainstalován modul runtime simulátoru {0}. Pokud sestavení selže nebo přestane reagovat, nainstalujte modul runtime simulátoru {0} spuštěním příkazu xcodebuild -downloadPlatform {0} z příkazového řádku.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

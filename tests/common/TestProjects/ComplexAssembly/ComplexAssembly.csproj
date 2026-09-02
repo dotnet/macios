@@ -2,7 +2,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net$(BundledNETCoreAppTargetFrameworkVersion)</TargetFramework>
-    <LangVersion>latest</LangVersion>
     <OutputType>Library</OutputType>
 
     <!-- create a pdb file -->

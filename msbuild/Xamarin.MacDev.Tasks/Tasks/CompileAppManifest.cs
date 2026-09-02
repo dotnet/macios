@@ -51,6 +51,8 @@ namespace Xamarin.MacDev.Tasks {
 		[Required]
 		public bool IsAppExtension { get; set; }
 
+		public bool IsFramework { get; set; }
+
 		[Required]
 		public string MinSupportedOSPlatformVersion { get; set; } = string.Empty;
 
@@ -102,7 +104,7 @@ namespace Xamarin.MacDev.Tasks {
 				plist = new PDictionary ();
 			} else if (File.Exists (appManifest)) {
 				try {
-					plist = PDictionary.FromFile (appManifest)!;
+					plist = PDictionary.OpenFile (appManifest);
 				} catch (Exception ex) {
 					LogAppManifestError (MSBStrings.E0010, appManifest, ex.Message);
 					return false;
@@ -120,7 +122,7 @@ namespace Xamarin.MacDev.Tasks {
 			if (GenerateApplicationManifest && !string.IsNullOrEmpty (ApplicationId))
 				plist.SetIfNotPresent (ManifestKeys.CFBundleIdentifier, ApplicationId);
 			plist.SetIfNotPresent (ManifestKeys.CFBundleInfoDictionaryVersion, "6.0");
-			plist.SetIfNotPresent (ManifestKeys.CFBundlePackageType, IsAppExtension ? "XPC!" : "APPL");
+			plist.SetIfNotPresent (ManifestKeys.CFBundlePackageType, IsFramework ? "FMWK" : (IsAppExtension ? "XPC!" : "APPL"));
 			plist.SetIfNotPresent (ManifestKeys.CFBundleSignature, "????");
 			plist.SetIfNotPresent (ManifestKeys.CFBundleExecutable, BundleExecutable);
 			plist.SetIfNotPresent (ManifestKeys.CFBundleName, AppBundleName);
@@ -236,7 +238,7 @@ namespace Xamarin.MacDev.Tasks {
 			if (Platform == ApplePlatform.MacCatalyst && !string.IsNullOrEmpty (SupportedOSPlatformVersion)) {
 				// SupportedOSPlatformVersion is the iOS version for Mac Catalyst.
 				// But we need to store the macOS version in the app manifest, so convert it to the macOS version here.
-				if (!MacCatalystSupport.TryGetMacOSVersion (Sdks.GetAppleSdk (Platform).GetSdkPath (SdkVersion), SupportedOSPlatformVersion, out var convertedVersion, out var knowniOSVersions)) {
+				if (!MacCatalystSupport.TryGetMacOSVersion (CurrentSdk.GetSdkPath (SdkVersion), SupportedOSPlatformVersion, out var convertedVersion, out var knowniOSVersions)) {
 					Log.LogError (MSBStrings.E0188, SupportedOSPlatformVersion, string.Join (", ", knowniOSVersions.OrderBy (v => v)));
 					return false;
 				}
@@ -250,7 +252,7 @@ namespace Xamarin.MacDev.Tasks {
 				var minimumiOSVersionInManifest = plist.Get<PString> (ManifestKeys.MinimumOSVersion)?.Value;
 				if (!string.IsNullOrEmpty (minimumiOSVersionInManifest)) {
 					// Convert to the macOS version
-					if (!MacCatalystSupport.TryGetMacOSVersion (Sdks.GetAppleSdk (Platform).GetSdkPath (SdkVersion), minimumiOSVersionInManifest!, out var convertedVersion, out var knowniOSVersions)) {
+					if (!MacCatalystSupport.TryGetMacOSVersion (CurrentSdk.GetSdkPath (SdkVersion), minimumiOSVersionInManifest!, out var convertedVersion, out var knowniOSVersions)) {
 						Log.LogError (MSBStrings.E0188, minimumiOSVersionInManifest, string.Join (", ", knowniOSVersions.OrderBy (v => v)));
 						return false;
 					}
@@ -258,11 +260,7 @@ namespace Xamarin.MacDev.Tasks {
 				}
 			}
 
-#if NET
-			if (string.IsNullOrEmpty (minimumOSVersionInManifest)) {
-#else
-			if (string.IsNullOrEmpty (minimumOSVersionInManifest) || minimumOSVersionInManifest is null) {
-#endif
+			if (StringUtils.IsNullOrEmpty (minimumOSVersionInManifest)) {
 				// Nothing is specified in the Info.plist - use SupportedOSPlatformVersion, and if that's not set, then use the sdkVersion
 				if (!string.IsNullOrEmpty (convertedSupportedOSPlatformVersion)) {
 					minimumOSVersion = convertedSupportedOSPlatformVersion;
@@ -313,14 +311,12 @@ namespace Xamarin.MacDev.Tasks {
 					return false;
 				}
 
-				var currentSDK = Sdks.GetAppleSdk (Platform);
-
 				sdkVersion = AppleSdkVersion.Parse (DefaultSdkVersion);
-				if (!currentSDK.SdkIsInstalled (sdkVersion, SdkIsSimulator)) {
+				if (!CurrentSdk.SdkIsInstalled (sdkVersion, SdkIsSimulator)) {
 					Log.LogError (null, null, null, null, 0, 0, 0, 0, MSBStrings.E0013, Platform, sdkVersion);
 					return false;
 				}
-				SetXcodeValues (plist, currentSDK);
+				SetXcodeValues (plist, CurrentSdk);
 			}
 
 			switch (Platform) {
@@ -397,7 +393,7 @@ namespace Xamarin.MacDev.Tasks {
 				var overwrite = !string.Equals (template.GetMetadata ("Overwrite"), "false", StringComparison.OrdinalIgnoreCase);
 
 				try {
-					partial = PDictionary.FromFile (template.ItemSpec)!;
+					partial = PDictionary.OpenFile (template.ItemSpec);
 				} catch (Exception ex) {
 					task.Log.LogError (MSBStrings.E0107, template.ItemSpec, ex.Message);
 					continue;
@@ -428,7 +424,7 @@ namespace Xamarin.MacDev.Tasks {
 				GetMinimumOSVersion (plist, out var minimumOSVersion);
 				if (minimumOSVersion < new Version (11, 0)) {
 					string miniOSVersion = "?";
-					if (MacCatalystSupport.TryGetiOSVersion (Sdks.GetAppleSdk (Platform).GetSdkPath (SdkVersion), minimumOSVersion, out var iOSVersion, out var _))
+					if (MacCatalystSupport.TryGetiOSVersion (CurrentSdk.GetSdkPath (SdkVersion), minimumOSVersion, out var iOSVersion, out var _))
 						miniOSVersion = iOSVersion?.ToString () ?? "?";
 					LogAppManifestError (MSBStrings.E7099 /* The UIDeviceFamily value '6' requires macOS 11.0. Please set the 'SupportedOSPlatformVersion' in the project file to at least 14.0 (the Mac Catalyst version equivalent of macOS 11.0). The current value is {0} (equivalent to macOS {1}). */, miniOSVersion, minimumOSVersion);
 				}
@@ -514,7 +510,7 @@ namespace Xamarin.MacDev.Tasks {
 			SetValueIfNotNull (plist, "DTPlatformName", PlatformUtils.GetTargetPlatform (SdkPlatform, false));
 			SetValueIfNotNull (plist, "DTPlatformVersion", dtSettings.DTPlatformVersion);
 			SetValueIfNotNull (plist, "DTSDKName", sdkSettings.CanonicalName);
-			SetValueIfNotNull (plist, "DTXcode", AppleSdkSettings.DTXcode);
+			SetValueIfNotNull (plist, "DTXcode", GetXcodeLocator ().DTXcode);
 			SetValueIfNotNull (plist, "DTXcodeBuild", dtSettings.DTXcodeBuild);
 		}
 
@@ -527,7 +523,27 @@ namespace Xamarin.MacDev.Tasks {
 
 		void SetRequiredArchitectures (PDictionary plist)
 		{
+			// UIRequiredDeviceCapabilities is neither required nor evaluated for Mac Catalyst: the
+			// macOS App Store ignores hardware capability values (such as 'arm64'). Injecting an
+			// architecture-specific value would also make the Info.plist differ between the x64 and
+			// arm64 slices of a universal ('maccatalyst-x64;maccatalyst-arm64') build, which breaks
+			// merging the per-RID app bundles (in particular nested app extensions, whose Info.plist
+			// isn't recomputed when merging). So leave any user-authored value untouched, and don't
+			// add our own, for Mac Catalyst.
+			if (Platform == ApplePlatform.MacCatalyst)
+				return;
+
 			PObject? capabilities;
+
+			if (IsFramework) {
+				// When building universal apps, we might get called here once for each architecture.
+				// This will lead to different app manifests in each architecture-specific app bundle,
+				// and then merging them into a universal bundle will fail.
+				// Typically this is not a problem for normal apps, because we compile the app manifest
+				// once for the universal app bundle, but for frameworks we do it once for each architecture,
+				// so just skip setting UIRequiredDeviceCapabilities in that case.
+				return;
+			}
 
 			if (plist.TryGetValue (ManifestKeys.UIRequiredDeviceCapabilities, out capabilities)) {
 				if (capabilities is PArray) {

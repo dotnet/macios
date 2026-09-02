@@ -35,7 +35,7 @@ namespace MonoTouchFixtures.HealthKit {
 		{
 			var store = new HKHealthStore ();
 			var ret = store.GetBiologicalSex (out _);
-			Assert.IsNull (ret, "GetBiologicalSex should return a null value if biological sex is not set.");
+			Assert.That (ret, Is.Null, "GetBiologicalSex should return a null value if biological sex is not set.");
 		}
 
 		[Test]
@@ -43,7 +43,7 @@ namespace MonoTouchFixtures.HealthKit {
 		{
 			var store = new HKHealthStore ();
 			var ret = store.GetBloodType (out _);
-			Assert.IsNull (ret, "GetBloodType should return a null value if blood type is not set.");
+			Assert.That (ret, Is.Null, "GetBloodType should return a null value if blood type is not set.");
 		}
 	}
 }

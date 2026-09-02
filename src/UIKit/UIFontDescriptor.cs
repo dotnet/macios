@@ -532,9 +532,7 @@ namespace UIKit {
 		public UIFontDescriptor [] CascadeList {
 			get {
 				var o = GetObject (UIFontDescriptor.CascadeListAttribute) as NSArray;
-				if (o is null)
-					return new UIFontDescriptor [0];
-				return NSArray.FromArray<UIFontDescriptor> (o);
+				return NSArray.ToNonNullArrayDropNullElements<UIFontDescriptor> (o);
 			}
 		}
 

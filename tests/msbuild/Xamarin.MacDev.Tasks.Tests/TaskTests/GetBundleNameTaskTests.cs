@@ -21,7 +21,7 @@ namespace Xamarin.MacDev.Tasks {
 			task.ProjectName = "!@£///Hello_World%£";
 
 			ExecuteTask (task);
-			Assert.AreEqual ("Hello_World", task.BundleName, "#2");
+			Assert.That (task.BundleName, Is.EqualTo ("Hello_World"), "#2");
 		}
 	}
 }

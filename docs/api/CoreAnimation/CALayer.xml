@@ -191,12 +191,6 @@ public class MyLayer : CALayer {
 	]]></code>
       </example>
     </remarks>
-    <related type="recipe" href="https://developer.xamarin.com/ios/Recipes/Animation/CoreAnimation/Animate_a_UIView_using_UIKit">Animate a UIView using UIKit</related>
-    <related type="recipe" href="https://developer.xamarin.com/ios/Recipes/Animation/CoreAnimation/Animate_Using_Blocks">Animate Using Blocks</related>
-    <related type="recipe" href="https://developer.xamarin.com/ios/Recipes/Animation/CoreAnimation/Create_a_Keyframe_Animation">Create a Keyframe Animation</related>
-    <related type="recipe" href="https://developer.xamarin.com/ios/Recipes/Animation/CoreAnimation/Create_an_Animation_Block">Create an Animation Block</related>
-    <related type="recipe" href="https://developer.xamarin.com/ios/Recipes/Animation/CoreAnimation/Create_An_Explicit_Animation">Create An Explicit Animation</related>
-    <related type="recipe" href="https://developer.xamarin.com/ios/Recipes/Animation/CoreAnimation/Create_an_Implicit_Animation">Create an Implicit Animation</related>
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GraphicsImaging/Reference/CALayer_class/index.html">Apple documentation for <c>CALayer</c></related>
   </Docs>
   <Docs DocId="T:CoreAnimation.CALayer" Platforms="macOS">
@@ -405,12 +399,6 @@ public class MyLayer : CALayer {
 
       </para>
     </remarks>
-    <related type="recipe" href="https://developer.xamarin.com/ios/Recipes/Animation/CoreAnimation/Animate_a_UIView_using_UIKit">Animate a UIView using UIKit</related>
-    <related type="recipe" href="https://developer.xamarin.com/ios/Recipes/Animation/CoreAnimation/Animate_Using_Blocks">Animate Using Blocks</related>
-    <related type="recipe" href="https://developer.xamarin.com/ios/Recipes/Animation/CoreAnimation/Create_a_Keyframe_Animation">Create a Keyframe Animation</related>
-    <related type="recipe" href="https://developer.xamarin.com/ios/Recipes/Animation/CoreAnimation/Create_an_Animation_Block">Create an Animation Block</related>
-    <related type="recipe" href="https://developer.xamarin.com/ios/Recipes/Animation/CoreAnimation/Create_An_Explicit_Animation">Create An Explicit Animation</related>
-    <related type="recipe" href="https://developer.xamarin.com/ios/Recipes/Animation/CoreAnimation/Create_an_Implicit_Animation">Create an Implicit Animation</related>
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GraphicsImaging/Reference/CALayer_class/index.html">Apple documentation for <c>CALayer</c></related>
   </Docs>
 </Documentation>

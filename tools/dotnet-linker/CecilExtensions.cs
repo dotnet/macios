@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 using Mono.Cecil;
 using Mono.Cecil.Cil;
+using Mono.Cecil.Rocks;
 
 using Xamarin.Bundler;
 
@@ -25,6 +27,16 @@ namespace Xamarin.Linker {
 			return rv;
 		}
 
+		// Adds a parameter without a name. Cecil only emits a Param row for parameters that have a
+		// name (or attributes / marshal info / a constant value), so this keeps the metadata smaller.
+		// Only use this for generated methods where the parameter names have no value.
+		public static ParameterDefinition AddParameter (this MethodDefinition self, TypeReference parameterType)
+		{
+			var rv = new ParameterDefinition (parameterType);
+			self.Parameters.Add (rv);
+			return rv;
+		}
+
 		public static MethodDefinition AddMethod (this TypeDefinition self, string name, MethodAttributes attributes, TypeReference returnType)
 		{
 			var rv = new MethodDefinition (name, attributes, returnType);
@@ -41,6 +53,21 @@ namespace Xamarin.Linker {
 			return rv;
 		}
 
+		public static bool TryFindSingle<T> (this Mono.Collections.Generic.Collection<T> self, Func<T, bool> predicate, out T? result) where T : class
+		{
+			result = null;
+			foreach (var item in self) {
+				if (predicate (item)) {
+					if (result is not null) {
+						result = null;
+						return false;
+					}
+					result = item;
+				}
+			}
+			return result is not null;
+		}
+
 		public static MethodBody CreateBody (this MethodDefinition self, out ILProcessor il)
 		{
 			var body = new MethodBody (self);
@@ -50,8 +77,15 @@ namespace Xamarin.Linker {
 			return body;
 		}
 
-		public static void GenerateILOffsets (this MethodBody body)
+		// Call this method once a generated method body is complete.
+		public static void FinalizeGeneratedBody (this MethodBody body)
 		{
+			// Use the macro/short form of instructions whenever possible. This makes the generated IL
+			// smaller, and it also works around a bug in the CoreCLR interpreter, which reads the operand
+			// of the long form of the ldloc/stloc instructions at the wrong offset (the bug was fixed in
+			// https://github.com/dotnet/runtime/pull/131547).
+			body.OptimizeMacros ();
+
 			// This does not compute precise offsets, it just assigns a unique number to each instruction
 			// The trimmer relies on unique offsets to identify instructions
 			int instructionOffset = 0;
@@ -138,7 +172,7 @@ namespace Xamarin.Linker {
 			il.Emit (OpCodes.Ldarg_0);
 			il.Emit (OpCodes.Call, abr.System_Object__ctor);
 			il.Emit (OpCodes.Ret);
-			body.GenerateILOffsets ();
+			body.FinalizeGeneratedBody ();
 			return defaultCtor;
 		}
 
@@ -161,5 +195,49 @@ namespace Xamarin.Linker {
 			return moduleType;
 		}
 
+		public static string RenderAttribute (this CustomAttribute ca)
+		{
+			var render = new Func<object, string> (v => {
+				if (v is string s)
+					return $"\"{s}\"";
+				else if (v is TypeReference tr)
+					return $"typeof ({tr.FullName})";
+				else
+					return v?.ToString () ?? "null";
+			});
+
+			var sb = new StringBuilder ();
+			sb.Append ("[");
+			sb.Append (ca.AttributeType.Name.EndsWith ("Attribute") ? ca.AttributeType.Name.Substring (0, ca.AttributeType.Name.Length - "Attribute".Length) : ca.AttributeType.Name);
+			if (ca.HasFields || ca.HasConstructorArguments || ca.HasProperties) {
+				sb.Append ("(");
+				var first = true;
+				foreach (var arg in ca.ConstructorArguments) {
+					if (!first)
+						sb.Append (", ");
+					first = false;
+					sb.Append (render (arg.Value));
+				}
+				foreach (var prop in ca.Properties) {
+					if (!first)
+						sb.Append (", ");
+					first = false;
+					sb.Append (prop.Name);
+					sb.Append (" = ");
+					sb.Append (render (prop.Argument.Value));
+				}
+				foreach (var field in ca.Fields) {
+					if (!first)
+						sb.Append (", ");
+					first = false;
+					sb.Append (field.Name);
+					sb.Append (" = ");
+					sb.Append (render (field.Argument.Value));
+				}
+				sb.Append (")");
+			}
+			sb.Append ("]");
+			return sb.ToString ();
+		}
 	}
 }

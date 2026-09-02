@@ -68,7 +68,7 @@ namespace SafariServices {
 		///           <para>To be added.</para>
 		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
 		///         </param>
-		///         <summary>Relaods the specified content blocker and runs a completion handler when the operation completes.</summary>
+		///         <summary>Reloads the specified content blocker and runs a completion handler when the operation completes.</summary>
 		///         <remarks>To be added.</remarks>
 		[Async (XmlDocs = """
 			<param name="identifier">To be added.</param>
@@ -150,7 +150,7 @@ namespace SafariServices {
 
 	/// <summary>User interface for web browsing.</summary>
 	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Miscellaneous/Reference/SFSafariViewController_Ref/index.html">Apple documentation for <c>SFSafariViewController</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/safariservices/sfsafariviewcontroller">Apple documentation for <c>SFSafariViewController</c></related>
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UIViewController))]
@@ -809,7 +809,7 @@ namespace SafariServices {
 		[Field ("SFExtensionMessageKey")]
 		NSString MessageKey { get; }
 
-		[iOS (17, 0), Mac (14, 0), MacCatalyst (17, 1)]
+		[iOS (17, 0), MacCatalyst (17, 1)]
 		[Field ("SFExtensionProfileKey")]
 		NSString ProfileKey { get; }
 	}

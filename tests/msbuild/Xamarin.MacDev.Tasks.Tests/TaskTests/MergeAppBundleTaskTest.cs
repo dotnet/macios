@@ -17,7 +17,7 @@ namespace Xamarin.MacDev.Tasks {
 		[OneTimeSetUp]
 		public void SetUp ()
 		{
-			var env = new Dictionary<string, string> {
+			var env = new Dictionary<string, string?> {
 				{ "MSBUILD_EXE_PATH", null }, // Comes from VSMac (when running tests from inside the IDE), and it confuses 'dotnet build', so remove it.
 				{ "MSBuildSDKsPath", null }, // Comes from MSBuild, and confuses 'dotnet build'
 			};
@@ -25,7 +25,7 @@ namespace Xamarin.MacDev.Tasks {
 			RunMake (Path.Combine (Configuration.RootPath, "tests", "common", "TestProjects", "ComplexAssembly"), environment: env);
 		}
 
-		static void RunMake (string directory, Dictionary<string, string> environment = null)
+		static void RunMake (string directory, Dictionary<string, string?>? environment = null)
 		{
 			var arguments = new List<string> {
 				"-C",
@@ -39,7 +39,7 @@ namespace Xamarin.MacDev.Tasks {
 				timeout: TimeSpan.FromSeconds (120),
 				environment_variables: environment);
 			if (rv != 0) {
-				var failure = $"'make {StringUtils.FormatArguments (StringUtils.QuoteForProcess (arguments))}' exited with exit code {rv}:";
+				var failure = $"'make {StringUtils.FormatArguments (StringUtils.QuoteForProcess (arguments) ?? [])}' exited with exit code {rv}:";
 				var indented = "\t" + string.Join ("\n\t", output.ToString ().Split ('\n'));
 				Console.WriteLine (failure);
 				Console.WriteLine (indented);
@@ -60,12 +60,12 @@ namespace Xamarin.MacDev.Tasks {
 			var task = CreateTask<MergeAppBundles> ();
 			task.InputAppBundles = inputItems.ToArray ();
 			task.OutputAppBundle = outputBundle;
-			task.SdkDevPath = Configuration.xcode_root;
+			task.SdkDevPath = Configuration.XcodeLocation;
 			return task;
 		}
 
 		// Create two app bundles, one with fileA, and one with fileB, in the root directory
-		string [] CreateAppBundles (string fileA, string fileB, string fileName = null)
+		string [] CreateAppBundles (string fileA, string fileB, string? fileName = null)
 		{
 			var appBundleA = Path.Combine (Cache.CreateTemporaryDirectory (), "MergeMe.app");
 			var appBundleB = Path.Combine (Cache.CreateTemporaryDirectory (), "MergeMe.app");
@@ -83,7 +83,7 @@ namespace Xamarin.MacDev.Tasks {
 			foreach (var file in files) {
 				var inputPath = Path.Combine (directory, file);
 				var outputPath = Path.Combine (appBundle, file);
-				Directory.CreateDirectory (Path.GetDirectoryName (outputPath));
+				Directory.CreateDirectory (Path.GetDirectoryName (outputPath) ?? "");
 				File.Copy (inputPath, outputPath, true);
 			}
 			return appBundle;
@@ -102,13 +102,13 @@ namespace Xamarin.MacDev.Tasks {
 			ExecuteTask (task);
 
 			// The bundle should only contain a single file.
-			Assert.AreEqual (1, Directory.GetFileSystemEntries (outputBundle).Length, "Files in bundle");
+			Assert.That (Directory.GetFileSystemEntries (outputBundle).Length, Is.EqualTo (1), "Files in bundle");
 
 			// The resulting dylib should contain 2 architectures.
 			var fatLibrary = Path.Combine (outputBundle, "libframework.dylib");
 			Assert.That (fatLibrary, Does.Exist, "Existence");
 			var machO = MachO.Read (fatLibrary).ToArray ();
-			Assert.AreEqual (2, machO.Length, "Architecture Count");
+			Assert.That (machO.Length, Is.EqualTo (2), "Architecture Count");
 		}
 
 		[Test]
@@ -132,11 +132,53 @@ namespace Xamarin.MacDev.Tasks {
 			ExecuteTask (task);
 
 			// The bundle should have all the files
-			Assert.AreEqual (complexFiles.Length, Directory.GetFileSystemEntries (outputBundle).Length, "Files in bundle");
+			Assert.That (Directory.GetFileSystemEntries (outputBundle).Length, Is.EqualTo (complexFiles.Length), "Files in bundle");
 
 			// with the same structure
 			foreach (var file in complexFiles)
 				Assert.That (Path.Combine (outputBundle, file), Does.Exist, $"File existence");
+		}
+
+		[Test]
+		public void TestArchitectureSpecificSatelliteAssemblies ()
+		{
+			var assemblyFiles = new string [] {
+				Path.Combine ("Contents", "MonoBundle", "ComplexAssembly.pdb"),
+				Path.Combine ("Contents", "MonoBundle", "ComplexAssembly.dll.config"),
+				Path.Combine ("Contents", "MonoBundle", "de", "ComplexAssembly.resources.dll"),
+				Path.Combine ("Contents", "MonoBundle", "en-AU", "ComplexAssembly.resources.dll"),
+			};
+			var sourceRoot = Cache.CreateTemporaryDirectory ();
+			var sourceA = Path.Combine (sourceRoot, "A");
+			var sourceB = Path.Combine (sourceRoot, "B");
+			Directory.CreateDirectory (sourceA);
+			Directory.CreateDirectory (sourceB);
+
+			foreach (var source in new [] { sourceA, sourceB }) {
+				foreach (var file in assemblyFiles) {
+					var fullPath = Path.Combine (source, file);
+					Directory.CreateDirectory (Path.GetDirectoryName (fullPath)!);
+					File.WriteAllText (fullPath, file);
+				}
+			}
+
+			File.WriteAllText (Path.Combine (sourceA, "Contents", "MonoBundle", "ComplexAssembly.dll"), "A");
+			File.WriteAllText (Path.Combine (sourceB, "Contents", "MonoBundle", "ComplexAssembly.dll"), "B");
+
+			var mainAssembly = Path.Combine ("Contents", "MonoBundle", "ComplexAssembly.dll");
+			var appA = CreateAppBundle (sourceA, mainAssembly, assemblyFiles [0], assemblyFiles [1], assemblyFiles [2], assemblyFiles [3]);
+			var appB = CreateAppBundle (sourceB, mainAssembly, assemblyFiles [0], assemblyFiles [1], assemblyFiles [2], assemblyFiles [3]);
+
+			var outputBundle = Path.Combine (Cache.CreateTemporaryDirectory (), "Merged.app");
+			var task = CreateTask (outputBundle, appA, appB);
+			ExecuteTask (task);
+
+			Assert.That (Path.Combine (outputBundle, "Contents", "MonoBundle", "SubDir1", "ComplexAssembly.dll"), Does.Exist, "SubDir1 assembly");
+			Assert.That (Path.Combine (outputBundle, "Contents", "MonoBundle", "SubDir2", "ComplexAssembly.dll"), Does.Exist, "SubDir2 assembly");
+			Assert.That (Path.Combine (outputBundle, "Contents", "MonoBundle", "SubDir1", "de", "ComplexAssembly.resources.dll"), Does.Exist, "SubDir1 de satellite");
+			Assert.That (Path.Combine (outputBundle, "Contents", "MonoBundle", "SubDir2", "en-AU", "ComplexAssembly.resources.dll"), Does.Exist, "SubDir2 en-AU satellite");
+			Assert.That (Path.Combine (outputBundle, "Contents", "MonoBundle", "de", "SubDir1", "ComplexAssembly.resources.dll"), Does.Not.Exist, "Incorrect de satellite path");
+			Assert.That (Path.Combine (outputBundle, "Contents", "MonoBundle", "en-AU", "SubDir2", "ComplexAssembly.resources.dll"), Does.Not.Exist, "Incorrect en-AU satellite path");
 		}
 
 		[Test]
@@ -152,7 +194,7 @@ namespace Xamarin.MacDev.Tasks {
 			var outputBundle = Path.Combine (Cache.CreateTemporaryDirectory (), "Merged.app");
 			var task = CreateTask (outputBundle, bundles);
 			ExecuteTask (task, 3);
-			Assert.AreEqual ("Unable to merge the file 'Something.txt', it's different between the input app bundles.", Engine.Logger.ErrorEvents [0].Message, "Error message");
+			Assert.That (Engine.Logger.ErrorEvents [0].Message, Is.EqualTo ("Unable to merge the file 'Something.txt', it's different between the input app bundles."), "Error message");
 			Assert.That (Engine.Logger.ErrorEvents [1].Message, Does.Match ("App bundle file #1: .*/MergeMe.app/Something.txt"), "Error message 2");
 			Assert.That (Engine.Logger.ErrorEvents [2].Message, Does.Match ("App bundle file #2: .*/MergeMe.app/Something.txt"), "Error message 3");
 		}
@@ -164,20 +206,20 @@ namespace Xamarin.MacDev.Tasks {
 			var bundleB = Path.Combine (Cache.CreateTemporaryDirectory (), "MergeMe.app");
 			var fileA = Path.Combine (bundleA, "A.txt");
 			var fileB = Path.Combine (bundleB, "A.txt");
-			Directory.CreateDirectory (Path.GetDirectoryName (fileA));
+			Directory.CreateDirectory (Path.GetDirectoryName (fileA) ?? "");
 			File.WriteAllText (fileA, "A");
-			Directory.CreateDirectory (Path.GetDirectoryName (fileB));
+			Directory.CreateDirectory (Path.GetDirectoryName (fileB) ?? "");
 			File.WriteAllText (fileB, "A");
 			var linkA = Path.Combine (bundleA, "B.txt");
 			var linkB = Path.Combine (bundleB, "B.txt");
-			Assert.IsTrue (PathUtils.Symlink ("A.txt", linkA), "Link A");
-			Assert.IsTrue (PathUtils.Symlink ("A.txt", linkB), "Link B");
+			Assert.That (PathUtils.Symlink ("A.txt", linkA), Is.True, "Link A");
+			Assert.That (PathUtils.Symlink ("A.txt", linkB), Is.True, "Link B");
 
 
 			var outputBundle = Path.Combine (Cache.CreateTemporaryDirectory (), "Merged.app");
 			var task = CreateTask (outputBundle, bundleA, bundleB);
 			ExecuteTask (task);
-			Assert.IsTrue (PathUtils.IsSymlink (Path.Combine (outputBundle, "B.txt")), "IsSymlink");
+			Assert.That (PathUtils.IsSymlink (Path.Combine (outputBundle, "B.txt")), Is.True, "IsSymlink");
 		}
 
 		[Test]
@@ -189,23 +231,23 @@ namespace Xamarin.MacDev.Tasks {
 			var fileB = Path.Combine (bundleB, "A.txt");
 			var fileAC = Path.Combine (bundleA, "C.txt");
 			var fileBC = Path.Combine (bundleB, "C.txt");
-			Directory.CreateDirectory (Path.GetDirectoryName (fileA));
+			Directory.CreateDirectory (Path.GetDirectoryName (fileA) ?? "");
 			File.WriteAllText (fileA, "A");
 			File.WriteAllText (fileAC, "C");
-			Directory.CreateDirectory (Path.GetDirectoryName (fileB));
+			Directory.CreateDirectory (Path.GetDirectoryName (fileB) ?? "");
 			File.WriteAllText (fileB, "A");
 			File.WriteAllText (fileBC, "C");
 			// There's a symlink in both apps, but they have different targets.
 			var linkA = Path.Combine (bundleA, "B.txt");
 			var linkB = Path.Combine (bundleB, "B.txt");
-			Assert.IsTrue (PathUtils.Symlink ("A.txt", linkA), "Link A");
-			Assert.IsTrue (PathUtils.Symlink ("C.txt", linkB), "Link B");
+			Assert.That (PathUtils.Symlink ("A.txt", linkA), Is.True, "Link A");
+			Assert.That (PathUtils.Symlink ("C.txt", linkB), Is.True, "Link B");
 
 
 			var outputBundle = Path.Combine (Cache.CreateTemporaryDirectory (), "Merged.app");
 			var task = CreateTask (outputBundle, bundleA, bundleB);
 			ExecuteTask (task, 3);
-			Assert.AreEqual ("Can't merge the symlink 'B.txt', it has different targets.", Engine.Logger.ErrorEvents [0].Message, "Error message");
+			Assert.That (Engine.Logger.ErrorEvents [0].Message, Is.EqualTo ("Can't merge the symlink 'B.txt', it has different targets."), "Error message");
 			Assert.That (Engine.Logger.ErrorEvents [1].Message, Does.Match ("App bundle file #1: .*/MergeMe.app/B.txt"), "Error message 2");
 			Assert.That (Engine.Logger.ErrorEvents [2].Message, Does.Match ("App bundle file #2: .*/MergeMe.app/B.txt"), "Error message 3");
 		}
@@ -248,7 +290,7 @@ namespace Xamarin.MacDev.Tasks {
 			Assert.That (Path.Combine (outputBundle, nestedSharedOnlyB), Does.Exist, "nestedSharedOnlyB");
 
 			// Verify that there aren't any other directories
-			Assert.AreEqual (7, Directory.GetFileSystemEntries (outputBundle).Length, "Directories in bundle");
+			Assert.That (Directory.GetFileSystemEntries (outputBundle).Length, Is.EqualTo (7), "Directories in bundle");
 		}
 
 		[Test]
@@ -256,19 +298,19 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			Configuration.IgnoreIfIgnoredPlatform (ApplePlatform.MacOSX);
 			var fileA = Path.Combine (Configuration.RootPath, "tests", "test-libraries", ".libs", "osx-arm64", "libframework.dylib");
-			var bundle = CreateAppBundle (Path.GetDirectoryName (fileA), Path.GetFileName (fileA));
+			var bundle = CreateAppBundle (Path.GetDirectoryName (fileA) ?? "", Path.GetFileName (fileA));
 			var outputBundle = Path.Combine (Cache.CreateTemporaryDirectory (), "Merged.app");
 			var task = CreateTask (outputBundle, bundle);
 			ExecuteTask (task);
 
 			// The bundle should only contain a single file.
-			Assert.AreEqual (1, Directory.GetFileSystemEntries (outputBundle).Length, "Files in bundle");
+			Assert.That (Directory.GetFileSystemEntries (outputBundle).Length, Is.EqualTo (1), "Files in bundle");
 
 			// The resulting dylib should contain 1 architecture.
 			var nonFatBinary = Path.Combine (outputBundle, "libframework.dylib");
 			Assert.That (nonFatBinary, Does.Exist, "Existence");
 			var machO = MachO.Read (nonFatBinary).ToArray ();
-			Assert.AreEqual (1, machO.Length, "Architecture Count");
+			Assert.That (machO.Length, Is.EqualTo (1), "Architecture Count");
 
 			// and the file size should be the same as the input
 			Assert.That (new FileInfo (fileA).Length, Is.EqualTo (new FileInfo (nonFatBinary).Length), "File length");
@@ -281,21 +323,21 @@ namespace Xamarin.MacDev.Tasks {
 			var bundleB = Path.Combine (Cache.CreateTemporaryDirectory (), "MergeMe.app");
 			var fileA = Path.Combine (bundleA, "A", "A.txt");
 			var fileB = Path.Combine (bundleB, "A.txt");
-			Directory.CreateDirectory (Path.GetDirectoryName (fileA));
+			Directory.CreateDirectory (Path.GetDirectoryName (fileA) ?? "");
 			File.WriteAllText (fileA, "A");
-			Directory.CreateDirectory (Path.GetDirectoryName (fileB));
+			Directory.CreateDirectory (Path.GetDirectoryName (fileB) ?? "");
 			File.WriteAllText (fileB, "A");
 			var linkA = Path.Combine (bundleA, "B");
 			var linkB = Path.Combine (bundleB, "B");
-			Assert.IsTrue (PathUtils.Symlink ("A", linkA), "Link A");
-			Assert.IsTrue (PathUtils.Symlink ("A", linkB), "Link B");
+			Assert.That (PathUtils.Symlink ("A", linkA), Is.True, "Link A");
+			Assert.That (PathUtils.Symlink ("A", linkB), Is.True, "Link B");
 
 			var outputBundle = Path.Combine (Cache.CreateTemporaryDirectory (), "Merged.app");
 			var task = CreateTask (outputBundle, bundleA, bundleB);
 			ExecuteTask (task);
-			Assert.IsTrue (PathUtils.IsSymlink (Path.Combine (outputBundle, "B")), "IsSymlink");
-			Assert.IsFalse (PathUtils.IsSymlink (Path.Combine (outputBundle, "A", "A.txt")), "IsSymlink");
-			Assert.IsFalse (PathUtils.IsSymlink (Path.Combine (outputBundle, "B", "A.txt")), "IsSymlink");
+			Assert.That (PathUtils.IsSymlink (Path.Combine (outputBundle, "B")), Is.True, "IsSymlink");
+			Assert.That (PathUtils.IsSymlink (Path.Combine (outputBundle, "A", "A.txt")), Is.False, "IsSymlink");
+			Assert.That (PathUtils.IsSymlink (Path.Combine (outputBundle, "B", "A.txt")), Is.False, "IsSymlink");
 		}
 	}
 }

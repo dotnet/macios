@@ -5,13 +5,13 @@ using System.Xml;
 namespace Xharness {
 	public static class XmlDocumentExtensions {
 
-		public static void Save (this XmlDocument doc, string path, IHarness harness) =>
+		public static void Save (this XmlDocument doc, string path, Harness harness) =>
 			doc.Save (path, (level, message) => harness.Log (level, message));
 
 		public static void Save (this XmlDocument doc, string path, Action<int, string> log)
 		{
 			if (!File.Exists (path)) {
-				Directory.CreateDirectory (Path.GetDirectoryName (path));
+				Directory.CreateDirectory (Path.GetDirectoryName (path)!);
 				doc.Save (path);
 				log?.Invoke (1, $"Created {path}");
 			} else {

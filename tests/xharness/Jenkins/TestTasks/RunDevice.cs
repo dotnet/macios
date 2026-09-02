@@ -11,7 +11,7 @@ using Microsoft.DotNet.XHarness.iOS.Shared.XmlResults;
 
 namespace Xharness.Jenkins.TestTasks {
 	public class RunDevice {
-		readonly IRunDeviceTask testTask;
+		readonly RunDeviceTask testTask;
 		readonly IHardwareDeviceLoader devices;
 		readonly IResultParser resultParser = new XmlResultParser ();
 		readonly IResourceManager resourceManager;
@@ -26,9 +26,9 @@ namespace Xharness.Jenkins.TestTasks {
 		readonly XmlResultJargon xmlResultJargon;
 		readonly IErrorKnowledgeBase errorKnowledgeBase;
 
-		public AppInstallMonitorLog InstallLog { get; private set; }
+		public AppInstallMonitorLog? InstallLog { get; private set; }
 
-		public RunDevice (IRunDeviceTask testTask,
+		public RunDevice (RunDeviceTask testTask,
 						  IHardwareDeviceLoader devices,
 						  IResourceManager resourceManager,
 						  ILog mainLog,
@@ -77,7 +77,7 @@ namespace Xharness.Jenkins.TestTasks {
 					testTask.Device = testTask.Candidates.First ((d) => d.UDID == device_resource.Resource.Name);
 					mainLog.WriteLine ("Acquired device '{0}' for '{1}'", testTask.Device.Name, testTask.ProjectFile);
 
-					ITunnelBore tunnelBore = null;
+					ITunnelBore? tunnelBore = null;
 					if (useTcpTunnel && testTask.Device.DevicePlatform != DevicePlatform.iOS &&
 						testTask.Device.DevicePlatform != DevicePlatform.tvOS) {
 						mainLog.WriteLine ("Ignoring request to use a tunnel because it is not supported by the specified platform");
@@ -163,7 +163,7 @@ namespace Xharness.Jenkins.TestTasks {
 				} finally {
 					// Uninstall again, so that we don't leave junk behind and fill up the device.
 					if (uninstallTestApp) {
-						testTask.Runner.MainLog = uninstall_log;
+						testTask.Runner!.MainLog = uninstall_log;
 						var uninstall_result = await testTask.Runner.UninstallAsync ();
 						if (!uninstall_result.Succeeded)
 							mainLog.WriteLine ($"Post-run uninstall failed, exit code: {uninstall_result.ExitCode} (this won't affect the test result)");

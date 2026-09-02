@@ -12,7 +12,7 @@ namespace Xamarin.Mac.Tests {
 		{
 			using var cgevent = new CGEvent (null, (ushort) 1, true);
 			using var nsevent = NSEvent.Create (cgevent);
-			Assert.AreEqual ((int) cgevent.EventType, (int) nsevent.Type, "[Event]Type");
+			Assert.That ((int) nsevent.Type, Is.EqualTo ((int) cgevent.EventType), "[Event]Type");
 		}
 	}
 }

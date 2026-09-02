@@ -55,7 +55,7 @@ namespace Xamarin.Utils {
 			foreach (var symbol in symbols) {
 				if (symbol.ValidAbis.HasValue && (symbol.ValidAbis.Value & abi) == 0)
 					continue;
-				UnresolvedSymbols.Add (symbol.Prefix + symbol.Name);
+				UnresolvedSymbols.Add (Symbol.Prefix + symbol.Name);
 			}
 		}
 

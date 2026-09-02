@@ -25,6 +25,6 @@
 
       </para>
     </remarks>
-    <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/NSTextStorage_Class_TextKit/index.html">Apple documentation for <c>NSTextStorage</c></related>
+    <related type="externalDocumentation" href="https://developer.apple.com/documentation/uikit/nstextstorage">Apple documentation for <c>NSTextStorage</c></related>
   </Docs>
 </Documentation>

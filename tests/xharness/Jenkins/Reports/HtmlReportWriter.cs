@@ -6,11 +6,13 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 
+using Microsoft.DotNet.XHarness.Common;
 using Microsoft.DotNet.XHarness.Common.Logging;
 using Microsoft.DotNet.XHarness.iOS.Shared;
 using Microsoft.DotNet.XHarness.iOS.Shared.Hardware;
 using Microsoft.DotNet.XHarness.iOS.Shared.Logging;
 using Microsoft.DotNet.XHarness.iOS.Shared.Utilities;
+using Xamarin.Utils;
 using Xharness.Jenkins.TestTasks;
 
 #nullable enable
@@ -27,7 +29,7 @@ namespace Xharness.Jenkins.Reports {
 		string? previous_test_runs;
 
 		// convenient
-		IHarness Harness => jenkins.Harness;
+		Harness Harness => jenkins.Harness;
 
 		public HtmlReportWriter (Jenkins jenkins, IResourceManager resourceManager, IResultParser resultParser, string? linksPrefix = null, bool embeddedResources = false)
 		{
@@ -80,7 +82,7 @@ namespace Xharness.Jenkins.Reports {
 				writer.WriteLine ("<link rel='stylesheet' href='xharness.css'>");
 			}
 		}
-		public void Write (IList<ITestTask> allTasks, StreamWriter writer)
+		public void Write (IList<TestTask> allTasks, StreamWriter writer)
 		{
 			var id_counter = 0;
 
@@ -122,7 +124,7 @@ namespace Xharness.Jenkins.Reports {
 				writer.WriteLine ("<a href='{0}' type='text/plain;charset=UTF-8'>{1}</a><br />", GetLinkFullPath (log.FullPath.Substring (jenkins.LogDirectory.Length + 1)), log.Description);
 			writer.WriteLine ("</span>");
 
-			var headerColor = "black";
+			var headerColor = "currentcolor";
 			if (unfinishedTests.Any ()) {
 				; // default
 			} else if (failedTests.Any ()) {
@@ -341,7 +343,7 @@ namespace Xharness.Jenkins.Reports {
 						state = test.ExecutionResult.ToString ();
 						var log_id = id_counter++;
 						var logs = test.AggregatedLogs.ToList ();
-						string title;
+						string? title;
 						if (multipleModes) {
 							title = test.Variation ?? "Default";
 						} else if (singleTask) {
@@ -427,7 +429,9 @@ namespace Xharness.Jenkins.Reports {
 							var query = logs.
 								OfType<IFileBackedLog> ().
 								OrderBy (v => v.Description).
-								ThenBy (v => v.FullPath);
+								ThenBy (v => v.FullPath).
+								ToList ();
+							var hasStructuredTestResults = query.Any (v => HasStructuredTestReport (v.FullPath, v.Description));
 							var hasListedErrors = false;
 							foreach (var fileLog in query) {
 								var log = fileLog;
@@ -497,7 +501,7 @@ namespace Xharness.Jenkins.Reports {
 												fails = data_tuple.Item2;
 											}
 										}
-										if (!hasListedErrors && fails.Count > 0) {
+										if (!hasStructuredTestResults && !hasListedErrors && fails.Count > 0) {
 											writer.WriteLine ("<div style='padding-left: 15px;'>");
 											foreach (var fail in fails)
 												writer.WriteLine ("{0} <br />", fail.AsHtml ());
@@ -548,9 +552,12 @@ namespace Xharness.Jenkins.Reports {
 								} else if (log.Description == LogType.NUnitResult.ToString () || log.Description == LogType.XmlLog.ToString ()) {
 									try {
 										if (!hasListedErrors && File.Exists (fileLog.FullPath) && new FileInfo (fileLog.FullPath).Length > 0) {
-											if (resultParser.IsValidXml (fileLog.FullPath, out var jargon)) {
-												resultParser.GenerateTestReport (writer, fileLog.FullPath, jargon);
+											if (TryWriteStructuredTestReport (writer, fileLog.FullPath, log.Description)) {
 												hasListedErrors = true;
+											} else if (resultParser.IsValidXml (fileLog.FullPath, out var jargon)) {
+												// Some test runs produce multiple XML files. Keep looking until we actually
+												// render a failure summary, otherwise a wrapper XML can hide the useful one.
+												hasListedErrors = TryWriteGeneratedTestReport (writer, fileLog.FullPath, jargon);
 											}
 										}
 									} catch (Exception ex) {
@@ -558,9 +565,10 @@ namespace Xharness.Jenkins.Reports {
 									}
 								} else if (log.Description == LogType.TrxLog.ToString ()) {
 									try {
-										if (!hasListedErrors && resultParser.IsValidXml (fileLog.FullPath, out var jargon)) {
-											resultParser.GenerateTestReport (writer, fileLog.FullPath, jargon);
+										if (!hasListedErrors && TryWriteStructuredTestReport (writer, fileLog.FullPath, log.Description)) {
 											hasListedErrors = true;
+										} else if (!hasListedErrors && resultParser.IsValidXml (fileLog.FullPath, out var jargon)) {
+											hasListedErrors = TryWriteGeneratedTestReport (writer, fileLog.FullPath, jargon);
 										}
 									} catch (Exception ex) {
 										writer.WriteLine ($"<span style='padding-left: 15px;'>Could not parse {log.Description}: {ex.Message?.AsHtml ()}</span><br />");
@@ -645,16 +653,48 @@ namespace Xharness.Jenkins.Reports {
 			return "application/octet-stream";
 		}
 
+		internal static bool TryWriteStructuredTestReport (StreamWriter writer, string filePath, string? logDescription)
+		{
+			IList<TrxParser.TrxTestResult>? failedTests;
+			bool parsed;
+
+			if (logDescription == LogType.TrxLog.ToString ()) {
+				parsed = TrxParser.TryParseTrxFile (filePath, out failedTests, out _, out _, out _);
+			} else if (logDescription == LogType.NUnitResult.ToString () || logDescription == LogType.XmlLog.ToString ()) {
+				parsed = TrxParser.TryParseNUnitXmlFile (filePath, out failedTests, out _, out _, out _);
+			} else {
+				return false;
+			}
+
+			if (!parsed || failedTests?.Count is not > 0)
+				return false;
+
+			writer.WriteLine ("<div style='padding-left: 15px;'>");
+			writer.WriteLine ("<ul>");
+			foreach (var failedTest in failedTests) {
+				writer.WriteLine ("<li>");
+				if (string.IsNullOrEmpty (failedTest.Message)) {
+					writer.WriteLine ("{0}<br />", failedTest.Name.AsHtml ());
+				} else {
+					writer.WriteLine ("{0}: {1}<br />", failedTest.Name.AsHtml (), failedTest.Message.Cap (1024).AsHtml ());
+				}
+				writer.WriteLine ("</li>");
+			}
+			writer.WriteLine ("</ul>");
+			writer.WriteLine ("</div>");
+			return true;
+		}
+
 		static string LinkEncode (string path)
 		{
 			return System.Web.HttpUtility.UrlEncode (path).Replace ("%2f", "/").Replace ("+", "%20");
 		}
 
-		string RenderTextStates (IEnumerable<ITestTask> tests)
+		string RenderTextStates (IEnumerable<TestTask> tests)
 		{
 			// Create a collection of all non-ignored tests in the group (unless all tests were ignored).
 			var allIgnored = tests.All ((v) => v.ExecutionResult == TestExecutingResult.Ignored);
-			IEnumerable<ITestTask> relevantGroup;
+			IEnumerable<TestTask> relevantGroup;
 			if (allIgnored) {
 				relevantGroup = tests;
 			} else {
@@ -670,6 +710,40 @@ namespace Xharness.Jenkins.Reports {
 				.Select ((v) => $"<span style='color: {v.GetTestColor ()}'>{v.ExecutionResult.ToString ()}</span>")
 				.ToArray ();
 			return " (" + string.Join ("; ", results) + ")";
+		}
+
+		bool TryWriteGeneratedTestReport (StreamWriter writer, string path, XmlResultJargon jargon)
+		{
+			using var ms = new MemoryStream ();
+			using (var capturedWriter = new StreamWriter (ms, new UTF8Encoding (encoderShouldEmitUTF8Identifier: false), 1024, leaveOpen: true)) {
+				resultParser.GenerateTestReport (capturedWriter, path, jargon);
+			}
+
+			if (ms.Length == 0)
+				return false;
+
+			ms.Position = 0;
+			using var reader = new StreamReader (ms);
+			var report = reader.ReadToEnd ();
+			if (string.IsNullOrWhiteSpace (report))
+				return false;
+
+			writer.Write (report);
+			return true;
+		}
+
+		bool HasStructuredTestReport (string path, string? logDescription)
+		{
+			if ((logDescription != LogType.NUnitResult.ToString () && logDescription != LogType.XmlLog.ToString () && logDescription != LogType.TrxLog.ToString ()) || !File.Exists (path) || new FileInfo (path).Length == 0)
+				return false;
+
+			using var ms = new MemoryStream ();
+			using var writer = new StreamWriter (ms, new UTF8Encoding (encoderShouldEmitUTF8Identifier: false), 1024, leaveOpen: true);
+
+			if (TryWriteStructuredTestReport (writer, path, logDescription))
+				return true;
+
+			return resultParser.IsValidXml (path, out var jargon) && TryWriteGeneratedTestReport (writer, path, jargon);
 		}
 	}
 }

@@ -84,6 +84,13 @@ public class MarshalTypeList : List<MarshalType> {
 		Add (typeCache.NWEndpoint);
 		Add (typeCache.NWInterface);
 		Add (typeCache.NWParameters);
+		if (frameworks.HavePrintCore) {
+			Add (typeCache.PMPageFormat);
+			Add (typeCache.PMPaper);
+			Add (typeCache.PMPrinter);
+			Add (typeCache.PMPrintSession);
+			Add (typeCache.PMPrintSettings);
+		}
 	}
 
 	void Add (Type? type)

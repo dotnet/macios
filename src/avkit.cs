@@ -31,6 +31,7 @@ using UIView = AppKit.NSView;
 using UIViewController = Foundation.NSObject;
 using UIWindow = Foundation.NSObject;
 using UIAction = Foundation.NSObject;
+using UIMenu = Foundation.NSObject;
 using UIMenuElement = Foundation.NSObject;
 #endif // !MONOMAC
 
@@ -38,12 +39,13 @@ using UIMenuElement = Foundation.NSObject;
 using AVCustomRoutingController = Foundation.NSObject;
 using AVCustomRoutingEvent = Foundation.NSObject;
 using AVCustomRoutingActionItem = Foundation.NSObject;
+using AVLegibleMediaOptionsMenuState = Foundation.NSObject;
 #else
 using AVRouting;
 #endif
 
 namespace AVKit {
-	[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	enum AVVideoFrameAnalysisType : ulong {
 		AVVideoFrameAnalysisTypeNone = 0,
@@ -118,13 +120,11 @@ namespace AVKit {
 		[Export ("pictureInPictureSuspended")]
 		bool PictureInPictureSuspended { [Bind ("isPictureInPictureSuspended")] get; }
 
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("pictureInPictureButtonStartImage")]
 		UIImage PictureInPictureButtonStartImage { get; }
 
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("pictureInPictureButtonStopImage")]
@@ -364,12 +364,11 @@ namespace AVKit {
 		[Export ("appliesPreferredDisplayCriteriaAutomatically")]
 		bool AppliesPreferredDisplayCriteriaAutomatically { get; set; }
 
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("pixelBufferAttributes", ArgumentSemantic.Copy)]
 		NSDictionary<NSString, NSObject> PixelBufferAttributes { get; set; }
 
-		[NoiOS, TV (13, 0)]
+		[NoiOS]
 		[NoMacCatalyst]
 		[NullAllowed, Export ("customOverlayViewController", ArgumentSemantic.Strong)]
 		UIViewController CustomOverlayViewController { get; set; }
@@ -592,32 +591,32 @@ namespace AVKit {
 		[Export ("playerViewController:willTransitionToVisibilityOfTransportBar:withAnimationCoordinator:")]
 		void WillTransitionToVisibilityOfTransportBar (AVPlayerViewController playerViewController, bool visible, IAVPlayerViewControllerAnimationCoordinator coordinator);
 
-		[iOS (13, 0), NoTV, NoMac]
+		[NoTV, NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("playerViewController:willBeginFullScreenPresentationWithAnimationCoordinator:"), EventArgs ("AVPlayerViewFullScreenPresentationWillBegin")]
 		void WillBeginFullScreenPresentation (AVPlayerViewController playerViewController, IUIViewControllerTransitionCoordinator coordinator);
 
-		[iOS (13, 0), NoTV, NoMac]
+		[NoTV, NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("playerViewController:willEndFullScreenPresentationWithAnimationCoordinator:"), EventArgs ("AVPlayerViewFullScreenPresentationWillEnd")]
 		void WillEndFullScreenPresentation (AVPlayerViewController playerViewController, IUIViewControllerTransitionCoordinator coordinator);
 
-		[TV (13, 0), NoiOS, NoMac]
+		[NoiOS, NoMac]
 		[NoMacCatalyst]
 		[Export ("nextChannelInterstitialViewControllerForPlayerViewController:")]
 		UIViewController GetNextChannelInterstitialViewController (AVPlayerViewController playerViewController);
 
-		[TV (13, 0), NoiOS, NoMac]
+		[NoiOS, NoMac]
 		[NoMacCatalyst]
 		[Export ("playerViewController:skipToNextChannel:"), EventArgs ("AVPlayerViewSkipToNextChannel")]
 		void SkipToNextChannel (AVPlayerViewController playerViewController, Action<bool> completion);
 
-		[TV (13, 0), NoiOS, NoMac]
+		[NoiOS, NoMac]
 		[NoMacCatalyst]
 		[Export ("playerViewController:skipToPreviousChannel:"), EventArgs ("AVPlayerViewSkipToPreviousChannel")]
 		void SkipToPreviousChannel (AVPlayerViewController playerViewController, Action<bool> completion);
 
-		[TV (13, 0), NoiOS, NoMac]
+		[NoiOS, NoMac]
 		[NoMacCatalyst]
 		[Export ("previousChannelInterstitialViewControllerForPlayerViewController:")]
 		UIViewController GetPreviousChannelInterstitialViewController (AVPlayerViewController playerViewController);
@@ -627,7 +626,7 @@ namespace AVKit {
 		void RestoreUserInterfaceForFullScreenExit (AVPlayerViewController playerViewController, Action<bool> completionHandler);
 	}
 
-	[NoTV, NoMac, iOS (13, 0)]
+	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[Category]
 	[BaseType (typeof (AVAudioSession))]
@@ -743,35 +742,34 @@ namespace AVKit {
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		NSObject WeakDelegate { get; set; }
 
-		[Mac (13, 0), NoiOS, NoMacCatalyst, NoTV]
+		[NoiOS, NoMacCatalyst, NoTV]
 		[Export ("speeds", ArgumentSemantic.Copy)]
 		AVPlaybackSpeed [] Speeds { get; set; }
 
-		[Mac (13, 0), NoiOS, NoMacCatalyst, NoTV]
+		[NoiOS, NoMacCatalyst, NoTV]
 		[NullAllowed, Export ("selectedSpeed")]
 		AVPlaybackSpeed SelectedSpeed { get; }
 
-		[Mac (13, 0), NoiOS, NoMacCatalyst, NoTV]
+		[NoiOS, NoMacCatalyst, NoTV]
 		[Export ("selectSpeed:")]
 		void SelectSpeed (AVPlaybackSpeed speed);
 
-		[NoTV, NoMacCatalyst, NoiOS, Mac (13, 0)]
+		[NoTV, NoMacCatalyst, NoiOS]
 		[Export ("allowsVideoFrameAnalysis")]
 		bool AllowsVideoFrameAnalysis { get; set; }
 
-		[Mac (13, 0), NoiOS, NoMacCatalyst, NoTV]
+		[NoiOS, NoMacCatalyst, NoTV]
 		[Export ("allowsMagnification")]
 		bool AllowsMagnification { get; set; }
 
-		[Mac (13, 0), NoiOS, NoMacCatalyst, NoTV]
+		[NoiOS, NoMacCatalyst, NoTV]
 		[Export ("magnification")]
 		nfloat Magnification { get; set; }
 
-		[Mac (13, 0), NoiOS, NoMacCatalyst, NoTV]
+		[NoiOS, NoMacCatalyst, NoTV]
 		[Export ("setMagnification:centeredAtPoint:")]
 		void SetMagnification (nfloat magnification, CGPoint centeredAtPoint);
 
-		[Mac (14, 0)]
 		[Export ("videoFrameAnalysisTypes")]
 		AVVideoFrameAnalysisType VideoFrameAnalysisTypes { get; set; }
 
@@ -963,7 +961,7 @@ namespace AVKit {
 		/// <summary>Initializes the AVRoutePickerView with the specified frame.</summary>
 		/// <remarks>
 		///           <para>This constructor is used to programmatically create a new instance of AVRoutePickerView with the specified dimension in the frame.   The object will only be displayed once it has been added to a view hierarchy by calling AddSubview in a containing view.</para>
-		///           <para>This constructor is not invoked when deserializing objects from storyboards or XIB filesinstead the constructor that takes an NSCoder parameter is invoked.</para>
+		///           <para>This constructor is not invoked when deserializing objects from storyboards or XIB files; instead, the constructor that takes an NSCoder parameter is invoked.</para>
 		///         </remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frame);
@@ -992,7 +990,6 @@ namespace AVKit {
 		AVRoutePickerViewButtonStyle RoutePickerButtonStyle { get; set; }
 
 		[NoMac]
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("prioritizesVideoDevices")]
 		bool PrioritizesVideoDevices { get; set; }
@@ -1217,7 +1214,7 @@ namespace AVKit {
 		CancelButton,
 	}
 
-	[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface AVPlaybackSpeed {
@@ -1318,9 +1315,14 @@ namespace AVKit {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface AVCaptureEventSound {
+		/// <summary>Create a new <see cref="AVCaptureEventSound" /> instance for the specified <paramref name="url" />.</summary>
+		/// <param name="url">The url for a local file from within the app bundle.</param>
+		/// <param name="error">The error in case of failure.</param>
+		/// <returns>A new <see cref="AVCaptureEventSound" /> instance if successful, otherwise <paramref name="error" /> will be an error for the failure.</returns>
 		[Export ("initWithURL:error:")]
-		[Internal]
-		NativeHandle _InitWithUrl (NSUrl url, [NullAllowed] out NSError error);
+		[FactoryMethod]
+		[return: NullAllowed]
+		NativeHandle Constructor (NSUrl url, [NullAllowed] out NSError error);
 
 		[Static]
 		[Export ("cameraShutterSound")]
@@ -1387,5 +1389,47 @@ namespace AVKit {
 		Standard = 1,
 		ConstrainedHigh = 2,
 		High = 3,
+	}
+
+	interface IAVLegibleMediaOptionsMenuControllerDelegate { }
+
+	[NoTV, Mac (26, 4), iOS (26, 4), MacCatalyst (26, 4)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface AVLegibleMediaOptionsMenuController {
+		[Export ("initWithPlayer:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor (AVPlayer player);
+
+		[Export ("menuWithContents:")]
+		[return: NullAllowed]
+		UIMenu BuildMenu (AVLegibleMediaOptionsMenuContents contents);
+
+		[Export ("player", ArgumentSemantic.Assign)]
+		AVPlayer Player { get; set; }
+
+		[Wrap ("WeakDelegate")]
+		[NullAllowed]
+		IAVLegibleMediaOptionsMenuControllerDelegate Delegate { get; set; }
+
+		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
+		NSObject WeakDelegate { get; set; }
+
+		[Export ("menuState")]
+		AVLegibleMediaOptionsMenuState MenuState { get; }
+	}
+
+	[NoTV, Mac (26, 4), iOS (26, 4), MacCatalyst (26, 4)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
+	[BaseType (typeof (NSObject))]
+	interface AVLegibleMediaOptionsMenuControllerDelegate {
+		[Export ("legibleMenuController:didChangeMenuState:")]
+		void DidChangeMenuState (AVLegibleMediaOptionsMenuController menuController, AVLegibleMediaOptionsMenuState state);
+
+		[Export ("legibleMenuController:didRequestCaptionPreviewForProfileID:")]
+		void DidRequestCaptionPreviewForProfileId (AVLegibleMediaOptionsMenuController menuController, string profileId);
+
+		[Export ("legibleMenuControllerDidRequestStoppingSubtitleCaptionPreview:")]
+		void DidRequestStoppingSubtitleCaptionPreview (AVLegibleMediaOptionsMenuController menuController);
 	}
 }

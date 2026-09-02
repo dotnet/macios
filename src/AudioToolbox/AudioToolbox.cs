@@ -129,21 +129,14 @@ namespace AudioToolbox {
 			if (url is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
 
-			InstrumentInfo []? result = null;
 			IntPtr array = IntPtr.Zero;
-			OSStatus error;
 			unsafe {
-				error = CopyInstrumentInfoFromSoundBank (url.Handle, &array);
+				var error = CopyInstrumentInfoFromSoundBank (url.Handle, &array);
 				GC.KeepAlive (url);
+				if (error != 0)
+					return null;
 			}
-			if (array != IntPtr.Zero) {
-				var dicts = NSArray.ArrayFromHandle<NSDictionary> (array);
-				result = new InstrumentInfo [dicts.Length];
-				for (int i = 0; i < dicts.Length; i++)
-					result [i] = new InstrumentInfo (dicts [i]);
-				CFObject.CFRelease (array);
-			}
-			return (error != 0) ? null : result;
+			return NSArray.DictionaryArrayFromHandleDropNullElements<InstrumentInfo> (array, dict => new InstrumentInfo (dict), releaseHandle: true);
 		}
 	}
 }

@@ -19,9 +19,11 @@ namespace AppWithXCAssets {
 		UIColor blue = UIColor.FromRGB (31, 174, 206);
 		UIColor green = UIColor.FromRGB (119, 187, 65);
 
-		public override bool FinishedLaunching (UIApplication app, NSDictionary options)
+		public override bool FinishedLaunching (UIApplication app, NSDictionary? options)
 		{
+#pragma warning disable CA1422 // Validate platform compatibility
 			window = new UIWindow (UIScreen.MainScreen.Bounds);
+#pragma warning restore CA1422
 
 			var dvc = new UIViewController ();
 			var bounds = window.Bounds;

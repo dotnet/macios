@@ -7,19 +7,19 @@ namespace Xamarin.MacDev.Tasks {
 	public class Logger : ILogger {
 		public List<CustomBuildEventArgs> CustomEvents {
 			get; set;
-		}
+		} = null!;
 
 		public List<BuildErrorEventArgs> ErrorEvents {
 			get; set;
-		}
+		} = null!;
 
 		public List<BuildMessageEventArgs> MessageEvents {
 			get; set;
-		}
+		} = null!;
 
 		public List<BuildWarningEventArgs> WarningsEvents {
 			get; set;
-		}
+		} = null!;
 
 		public void Initialize (IEventSource eventSource)
 		{
@@ -34,7 +34,7 @@ namespace Xamarin.MacDev.Tasks {
 			Clear ();
 		}
 
-		public string Parameters {
+		public string? Parameters {
 			get; set;
 		}
 
@@ -72,9 +72,9 @@ namespace Xamarin.MacDev.Tasks {
 			} else if (ea is BuildWarningEventArgs bwea) {
 				return $"{bwea.Code}: warning: {bwea.Message}";
 			} else if (ea is CustomBuildEventArgs cbea) {
-				return cbea.Message;
+				return cbea.Message ?? string.Empty;
 			} else {
-				return ea.Message;
+				return ea.Message ?? string.Empty;
 			}
 		}
 	}

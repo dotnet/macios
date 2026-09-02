@@ -352,7 +352,8 @@ namespace CoreServices {
 				context.Release = &FreeGCHandle;
 			}
 
-			var allocator = options.Allocator.GetHandle ();
+			var allocatorObject = options.Allocator;
+			var allocator = allocatorObject.GetHandle ();
 			var sinceWhenId = options.SinceWhenId ?? FSEvent.SinceNowId;
 			var latency = options.Latency.TotalSeconds;
 			var flags = options.Flags |= (FSEventStreamCreateFlags) 0x1 /* UseCFTypes */;
@@ -366,6 +367,7 @@ namespace CoreServices {
 						&context,
 						options.DeviceToWatch.Value,
 						pathsToWatch.Handle, sinceWhenId, latency, flags);
+					GC.KeepAlive (allocatorObject);
 					GC.KeepAlive (pathsToWatch);
 				} else {
 					handle = FSEventStreamCreate (
@@ -373,6 +375,7 @@ namespace CoreServices {
 						&EventsCallback,
 						&context,
 						pathsToWatch.Handle, sinceWhenId, latency, flags);
+					GC.KeepAlive (allocatorObject);
 					GC.KeepAlive (pathsToWatch);
 				}
 			}
@@ -474,6 +477,8 @@ namespace CoreServices {
 			instance?.OnEvents (events);
 		}
 
+		/// <summary>Raised when the file system events stream reports one or more changes to the watched paths.</summary>
+		/// <remarks>The event argument provides the batch of <see cref="CoreServices.FSEvent" /> instances that describe the changes. Events are only delivered while the stream is scheduled on a run loop or dispatch queue and has been started.</remarks>
 		public event FSEventStreamEventsHandler? Events;
 
 		/// <param name="events">To be added.</param>
@@ -542,6 +547,8 @@ namespace CoreServices {
 			FSEventStreamStop (GetCheckedHandle ());
 		}
 
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos13.0", "Use 'SetDispatchQueue' instead.")]
 		[DllImport (Constants.CoreServicesLibrary)]
 		static extern void FSEventStreamScheduleWithRunLoop (IntPtr handle,
 			IntPtr runLoop, IntPtr runLoopMode);
@@ -584,6 +591,8 @@ namespace CoreServices {
 			ScheduleWithRunLoop (runLoop.GetCFRunLoop (), CFRunLoop.ModeDefault);
 		}
 
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos13.0", "Use 'SetDispatchQueue' instead.")]
 		[DllImport (Constants.CoreServicesLibrary)]
 		static extern void FSEventStreamUnscheduleFromRunLoop (IntPtr handle,
 			IntPtr runLoop, IntPtr runLoopMode);
@@ -592,7 +601,7 @@ namespace CoreServices {
 		[ObsoletedOSPlatform ("macos13.0", "Use 'SetDispatchQueue' instead.")]
 		public void UnscheduleFromRunLoop (CFRunLoop runLoop, NSString runLoopMode)
 		{
-			FSEventStreamScheduleWithRunLoop (GetCheckedHandle (), runLoop.Handle, runLoopMode.Handle);
+			FSEventStreamUnscheduleFromRunLoop (GetCheckedHandle (), runLoop.Handle, runLoopMode.Handle);
 			GC.KeepAlive (runLoop);
 			GC.KeepAlive (runLoopMode);
 		}

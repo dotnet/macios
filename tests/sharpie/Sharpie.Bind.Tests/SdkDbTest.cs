@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using Xamarin;
+using Xamarin.Tests;
 
 namespace Sharpie.Bind.Tests;
 
@@ -18,7 +19,6 @@ public class SdkDbTest {
 			};
 
 			var macOSExclude = new string [] {
-				"AccessorySetupKit", // not available on macOS
 				"DriverKit", // must be compiled as C++?
 				"Tk", // depends on X11 headers, which don't exist anymore
 			};
@@ -70,6 +70,7 @@ public class SdkDbTest {
 		binder.Sdk = sdk;
 		binder.OutputDirectory = tmpdir;
 		binder.PlatformAssembly = Extensions.GetPlatformAssemblyPath (binder.Platform);
+		Configuration.IgnoreIfIgnoredPlatform (binder.Platform);
 		binder.ClangResourceDirectory = Extensions.GetClangResourceDirectory ();
 		var rv = binder.BindInOrOut ();
 		rv.AssertSuccess (null);

@@ -17,8 +17,8 @@ using Xharness.Jenkins.Reports;
 using Xharness.Jenkins.TestTasks;
 
 namespace Xharness.Jenkins {
-	class Jenkins {
-		public readonly ISimulatorLoader Simulators;
+	public class Jenkins {
+		public readonly SimulatorLoader Simulators;
 		public readonly IHardwareDeviceLoader Devices;
 		readonly IMlaunchProcessManager processManager;
 		public ITunnelBore TunnelBore { get; private set; }
@@ -31,22 +31,30 @@ namespace Xharness.Jenkins {
 
 		// report writers, do need to be a class instance because the have state.
 		readonly HtmlReportWriter xamarinStorageHtmlReportWriter;
-		readonly HtmlReportWriter vsdropsHtmlReportWriter;
+		readonly HtmlReportWriter? vsdropsHtmlReportWriter;
 		readonly MarkdownReportWriter markdownReportWriter;
 
 		public bool Populating { get; private set; } = true;
 
-		public IHarness Harness { get; }
+		public Harness Harness { get; }
 		public bool ForceExtensionBuildOnly;
 
 		public bool CleanSuccessfulTestRuns = true;
 		public bool UninstallTestApp = true;
 
-		public IFileBackedLog MainLog;
+		IFileBackedLog? mainLog;
+		public IFileBackedLog MainLog {
+			get {
+				return mainLog!;
+			}
+			set {
+				mainLog = value;
+			}
+		}
 		public ILog SimulatorLoadLog => DeviceLoader.SimulatorLoadLog;
 		public ILog DeviceLoadLog => DeviceLoader.DeviceLoadLog;
 
-		string log_directory;
+		string? log_directory;
 		public string LogDirectory {
 			get {
 				if (string.IsNullOrEmpty (log_directory)) {
@@ -58,19 +66,19 @@ namespace Xharness.Jenkins {
 			}
 		}
 
-		ILogs logs;
+		ILogs? logs;
 		public ILogs Logs {
 			get {
 				return logs ?? (logs = new Logs (LogDirectory));
 			}
 		}
 
-		public List<ITestTask> Tasks { get; private set; } = new List<ITestTask> ();
+		public List<TestTask> Tasks { get; private set; } = new List<TestTask> ();
 
-		public IErrorKnowledgeBase ErrorKnowledgeBase => new ErrorKnowledgeBase ();
+		public ErrorKnowledgeBase ErrorKnowledgeBase => new ErrorKnowledgeBase ();
 		public IResourceManager ResourceManager => resourceManager;
 
-		public Jenkins (IHarness harness, IMlaunchProcessManager processManager, IResultParser resultParser, ITunnelBore tunnelBore)
+		public Jenkins (Harness harness, IMlaunchProcessManager processManager, IResultParser resultParser, ITunnelBore tunnelBore)
 		{
 			this.processManager = processManager ?? throw new ArgumentNullException (nameof (processManager));
 			this.TunnelBore = tunnelBore ?? throw new ArgumentNullException (nameof (tunnelBore));
@@ -105,7 +113,7 @@ namespace Xharness.Jenkins {
 			return rv;
 		}
 
-		public bool IsBetaXcode => Harness.XcodeRoot.IndexOf ("beta", StringComparison.OrdinalIgnoreCase) >= 0;
+		public bool IsBetaXcode => Harness.XcodeRoot?.IndexOf ("beta", StringComparison.OrdinalIgnoreCase) >= 0;
 
 		async Task PopulateTasksAsync ()
 		{
@@ -255,7 +263,7 @@ namespace Xharness.Jenkins {
 						command: Harness.PeriodicCommand,
 						processManager: processManager,
 						interval: Harness.PeriodicCommandInterval,
-						logs: logs,
+						logs: Logs,
 						arguments: string.IsNullOrEmpty (Harness.PeriodicCommandArguments) ? null : Harness.PeriodicCommandArguments);
 					periodicCommand.Execute ().DoNotAwait ();
 				}
@@ -305,7 +313,7 @@ namespace Xharness.Jenkins {
 		void CollectCrashReports ()
 		{
 			try {
-				var dir = Path.Combine (Environment.GetEnvironmentVariable ("HOME"), "Library", "Logs", "DiagnosticReports");
+				var dir = Path.Combine (Environment.GetEnvironmentVariable ("HOME")!, "Library", "Logs", "DiagnosticReports");
 				var reports = Directory.GetFiles (dir).Select (v => {
 					(string Path, DateTime LastWriteTimeUtc) rv = (v, File.GetLastWriteTimeUtc (v));
 					return rv;
@@ -392,7 +400,7 @@ namespace Xharness.Jenkins {
 						throw new NotImplementedException ();
 					}
 
-					var allTasks = new List<ITestTask> ();
+					var allTasks = new List<TestTask> ();
 					if (!Populating) {
 						allTasks.AddRange (allExecuteTasks);
 						allTasks.AddRange (allSimulatorTasks);
@@ -437,7 +445,7 @@ namespace Xharness.Jenkins {
 						File.Move (tmpmarkdown, Harness.MarkdownSummaryPath);
 					}
 
-					var dependentFileLocation = Path.GetDirectoryName (System.Reflection.Assembly.GetExecutingAssembly ().Location);
+					var dependentFileLocation = Path.GetDirectoryName (System.Reflection.Assembly.GetExecutingAssembly ().Location)!;
 					foreach (var file in new string [] { "xharness.js", "xharness.css" }) {
 						File.Copy (Path.Combine (dependentFileLocation, file), Path.Combine (LogDirectory, file), true);
 					}

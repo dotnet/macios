@@ -50,9 +50,9 @@ namespace Xharness.Jenkins.TestTasks {
 					args.Add (filter);
 				}
 
-				WorkingDirectory = Path.GetDirectoryName (ProjectFile);
+				WorkingDirectory = Path.GetDirectoryName (ProjectFile)!;
 
-				await ExecuteProcessAsync (Jenkins.Harness.GetDotNetExecutable (Path.GetDirectoryName (ProjectFile)), args);
+				await ExecuteProcessAsync (Jenkins.Harness.GetDotNetExecutable (Path.GetDirectoryName (ProjectFile)!), args);
 
 				try {
 					var xmlDoc = new XmlDocument ();

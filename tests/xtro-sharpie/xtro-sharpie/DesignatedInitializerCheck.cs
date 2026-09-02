@@ -24,13 +24,13 @@ namespace Extrospection {
 		static Dictionary<string, TypeDefinition> types = new Dictionary<string, TypeDefinition> ();
 		static Dictionary<string, MethodDefinition> methods = new Dictionary<string, MethodDefinition> ();
 
-		static TypeDefinition GetType (ObjCInterfaceDecl decl)
+		static TypeDefinition? GetType (ObjCInterfaceDecl decl)
 		{
 			types.TryGetValue (decl.Name, out var td);
 			return td;
 		}
 
-		static MethodDefinition GetMethod (ObjCMethodDecl decl)
+		static MethodDefinition? GetMethod (ObjCMethodDecl decl)
 		{
 			methods.TryGetValue (decl.GetName (), out var md);
 			return md;
@@ -51,7 +51,7 @@ namespace Extrospection {
 		public override void VisitObjCMethodDecl (ObjCMethodDecl decl)
 		{
 			// don't process methods (or types) that are unavailable for the current platform
-			if (!decl.IsAvailable () || !(decl.DeclContext as Decl).IsAvailable ())
+			if (!decl.IsAvailable () || !(((Decl) decl.DeclContext!).IsAvailable ()))
 				return;
 
 			var method = GetMethod (decl);

@@ -64,9 +64,10 @@ namespace UIKit {
 		[UnmanagedCallersOnly]
 		static unsafe nuint Invoke (IntPtr block, IntPtr accessories)
 		{
-			var descriptor = (BlockLiteral*) block;
-			var del = (UICellAccessoryPosition) (descriptor->Target);
-			nuint retval = del (NSArray.ArrayFromHandle<UICellAccessory> (accessories));
+			var del = BlockLiteral.GetTarget<UICellAccessoryPosition> (block);
+			if (del is null)
+				return default;
+			nuint retval = del (NSArray.NonNullArrayFromHandleDropNullElements<UICellAccessory> (accessories));
 			return retval;
 		}
 	} /* class SDUICellAccessoryPosition */
@@ -89,7 +90,7 @@ namespace UIKit {
 		{
 			if (block == IntPtr.Zero)
 				return null;
-			var del = (UICellAccessoryPosition) GetExistingManagedDelegate (block);
+			var del = (UICellAccessoryPosition?) GetExistingManagedDelegate (block);
 			return del ?? new NIDUICellAccessoryPosition ((BlockLiteral*) block).Invoke;
 		}
 

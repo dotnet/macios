@@ -652,9 +652,7 @@ namespace Compression {
 			}
 		}
 
-		/// <param name="disposing">To be added.</param>
-		///         <summary>Releases the unmanaged resources used by the CompressionStream and optionally releases the managed resources.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			try {

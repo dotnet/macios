@@ -25,17 +25,6 @@ Copyright (C) 2013-2014 Xamarin. All rights reserved.
 
 	<Import Project="$(MSBuildThisFileDirectory)$(MSBuildThisFileName).Before.targets" 
 			Condition="Exists('$(MSBuildThisFileDirectory)$(MSBuildThisFileName).Before.targets')"/>
-  
-	<!-- Override GetTargetPath, Build, and Rebuild -->
-	<Target Name="GetBundleTargetPath" DependsOnTargets="_GenerateBundleName;$(GetTargetPathDependsOn)" Outputs="@(_AppExtensionBundlePath)" />
-	<Target Name="Build"   Condition="'$(_InvalidConfigurationWarning)' != 'true'" DependsOnTargets="_EnabledLocalSigning;_GenerateBundleName;$(BuildDependsOn)" Outputs="$(_AppExtensionBundlePath)" />
-	<Target Name="Rebuild" Condition="'$(_InvalidConfigurationWarning)' != 'true'" DependsOnTargets="_EnabledLocalSigning;_GenerateBundleName;$(RebuildDependsOn)" Outputs="$(_AppExtensionBundlePath)" />
-
-	<Target Name="_EnabledLocalSigning" DependsOnTargets="_DetectSigningIdentity">
-		<PropertyGroup>
-			<CodesignEntitlements Condition="'$(CodesignEntitlements)' == ''">Entitlements.plist</CodesignEntitlements>
-		</PropertyGroup>
-	</Target>
 
 	<Target Name="CreateIpa"/>
 

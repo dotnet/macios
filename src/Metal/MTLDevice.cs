@@ -63,12 +63,10 @@ namespace Metal {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("tvos18.0")]
-		public static IMTLDevice [] GetAllDevices ()
+		public static IMTLDevice []? GetAllDevices ()
 		{
 			var rv = MTLCopyAllDevices ();
-			var devices = NSArray.ArrayFromHandle<IMTLDevice> (rv);
-			NSObject.DangerousRelease (rv);
-			return devices;
+			return NSArray.ArrayFromHandleDropNullElements<IMTLDevice> (rv, releaseHandle: true);
 		}
 
 #if MONOMAC
@@ -96,13 +94,10 @@ namespace Metal {
 				rv = MTLCopyAllDevicesWithObserver (&observer_handle, &block);
 			}
 
-			var obj = NSArray.ArrayFromHandle<IMTLDevice> (rv);
-			NSObject.DangerousRelease (rv);
+			// owns: Apple's documentation says "The observer out parameter is returned with a +1 retain count [...]."
+			observer = Runtime.GetNSObject (observer_handle, owns: true);
 
-			observer = Runtime.GetNSObject (observer_handle);
-			NSObject.DangerousRelease (observer_handle); // Apple's documentation says "The observer out parameter is returned with a +1 retain count [...]."
-
-			return obj;
+			return NSArray.NonNullArrayFromHandleDropNullElements<IMTLDevice> (rv, releaseHandle: true);
 		}
 
 		/// <param name="block">To be added.</param>
@@ -113,8 +108,7 @@ namespace Metal {
 		[UnmanagedCallersOnly]
 		public static unsafe void TrampolineNotificationHandler (IntPtr block, IntPtr device, IntPtr notifyName)
 		{
-			var descriptor = (BlockLiteral*) block;
-			var del = (MTLDeviceNotificationHandler) (descriptor->Target);
+			var del = BlockLiteral.GetTarget<MTLDeviceNotificationHandler> (block);
 			if (del is not null)
 				del ((IMTLDevice) Runtime.GetNSObject (device)!, (Foundation.NSString) Runtime.GetNSObject (notifyName)!);
 		}
@@ -187,7 +181,7 @@ namespace Metal {
 		}
 #if IOS
 
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
@@ -210,7 +204,7 @@ namespace Metal {
 			}
 		}
 
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]

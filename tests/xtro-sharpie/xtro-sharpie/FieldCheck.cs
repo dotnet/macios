@@ -57,10 +57,10 @@ namespace Extrospection {
 					&& ca.Constructor.DeclaringType.Name != "FieldAttribute`1")
 					continue;
 
-				var name = ca.ConstructorArguments [0].Value as string;
+				var name = (string) ca.ConstructorArguments [0].Value!;
 
 				if (!fields.TryGetValue (name, out var mr))
-					fields.Add (name, p as MemberReference);
+					fields.Add (name, (MemberReference) p);
 				else {
 					// not critical and quite noisy with current API profile
 					// Console.WriteLine ("!duplicate-field-name! {0} [Field] exists as both {1} and {2}", name, memberName, mr.FullName);

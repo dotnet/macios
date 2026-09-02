@@ -15,7 +15,6 @@ using CoreVideo;
 
 namespace VideoToolbox {
 	/// <summary>Extensions class for <see cref="CoreVideo.CVPixelBuffer" />.</summary>
-	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
@@ -30,11 +29,11 @@ namespace VideoToolbox {
 		// intentionally not exposing the (NSDictionary options) argument
 		// since header docs indicate that there are no options available
 		// as of 9.0/10.11 and to always pass NULL
-		/// <param name="pixelBuffer">To be added.</param>
-		///         <param name="image">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Creates a Core Graphics image from a pixel buffer.</summary>
+		/// <param name="pixelBuffer">The pixel buffer to convert.</param>
+		/// <param name="image">On success, the created image; otherwise, <see langword="null" />.</param>
+		/// <returns>A status code that indicates whether the conversion succeeded.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="pixelBuffer" /> is <see langword="null" />.</exception>
 		public static VTStatus ToCGImage (this CVPixelBuffer pixelBuffer, out CGImage? image)
 		{
 			if (pixelBuffer is null)
@@ -54,22 +53,21 @@ namespace VideoToolbox {
 			return ret;
 		}
 
-#if MONOMAC
-
 		[SupportedOSPlatform ("macos")]
-		[UnsupportedOSPlatform ("maccatalyst")]
-		[UnsupportedOSPlatform ("tvos")]
-		[UnsupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("ios26.4")]
+		[SupportedOSPlatform ("tvos26.4")]
+		[SupportedOSPlatform ("maccatalyst26.4")]
 		[DllImport (Constants.VideoToolboxLibrary)]
 		static extern void VTRegisterSupplementalVideoDecoderIfAvailable (uint codecType);
 
+		/// <summary>Registers the supplemental video decoder for a codec if one is available.</summary>
+		/// <param name="codecType">The video codec for which to register a supplemental decoder.</param>
 		[SupportedOSPlatform ("macos")]
-		[UnsupportedOSPlatform ("maccatalyst")]
-		[UnsupportedOSPlatform ("tvos")]
-		[UnsupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("ios26.4")]
+		[SupportedOSPlatform ("tvos26.4")]
+		[SupportedOSPlatform ("maccatalyst26.4")]
 		public static void RegisterSupplementalVideoDecoder (CMVideoCodecType codecType)
 			=> VTRegisterSupplementalVideoDecoderIfAvailable ((uint) codecType);
-#endif
 
 #if __MACOS__
 		[UnsupportedOSPlatform ("ios")]

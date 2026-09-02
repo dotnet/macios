@@ -110,7 +110,7 @@ namespace MobileCoreServices {
 			var a = CFString.CreateNative (tagClass);
 			var b = CFString.CreateNative (tag);
 			var c = CFString.CreateNative (conformingToUti);
-			var ret = CFString.FromHandle (UTTypeCreatePreferredIdentifierForTag (a, b, c));
+			var ret = CFString.FromHandle (UTTypeCreatePreferredIdentifierForTag (a, b, c), true);
 			CFString.ReleaseNative (a);
 			CFString.ReleaseNative (b);
 			CFString.ReleaseNative (c);
@@ -136,7 +136,7 @@ namespace MobileCoreServices {
 			var a = CFString.CreateNative (tagClass);
 			var b = CFString.CreateNative (tag);
 			var c = CFString.CreateNative (conformingToUti);
-			var ret = CFArray.StringArrayFromHandle (UTTypeCreateAllIdentifiersForTag (a, b, c));
+			var ret = CFArray.StringArrayFromHandle (UTTypeCreateAllIdentifiersForTag (a, b, c), true);
 			CFString.ReleaseNative (a);
 			CFString.ReleaseNative (b);
 			CFString.ReleaseNative (c);
@@ -174,7 +174,7 @@ namespace MobileCoreServices {
 
 			var a = CFString.CreateNative (uti);
 			var b = CFString.CreateNative (tagClass);
-			var ret = CFArray.StringArrayFromHandle (UTTypeCopyAllTagsWithClass (a, b));
+			var ret = CFArray.StringArrayFromHandle (UTTypeCopyAllTagsWithClass (a, b), true);
 			CFString.ReleaseNative (a);
 			CFString.ReleaseNative (b);
 			return ret;
@@ -216,7 +216,7 @@ namespace MobileCoreServices {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (uti));
 
 			var a = CFString.CreateNative (uti);
-			var ret = CFString.FromHandle (UTTypeCopyDescription (a));
+			var ret = CFString.FromHandle (UTTypeCopyDescription (a), true);
 			CFString.ReleaseNative (a);
 			return ret;
 		}
@@ -238,7 +238,7 @@ namespace MobileCoreServices {
 
 			var a = CFString.CreateNative (uti);
 			var b = CFString.CreateNative (tagClass);
-			var ret = CFString.FromHandle (UTTypeCopyPreferredTagWithClass (a, b));
+			var ret = CFString.FromHandle (UTTypeCopyPreferredTagWithClass (a, b), true);
 			CFString.ReleaseNative (a);
 			CFString.ReleaseNative (b);
 			return ret;
@@ -257,7 +257,7 @@ namespace MobileCoreServices {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (uti));
 
 			var a = CFString.CreateNative (uti);
-			var ret = Runtime.GetNSObject<NSDictionary> (UTTypeCopyDeclaration (a));
+			var ret = Runtime.GetNSObject<NSDictionary> (UTTypeCopyDeclaration (a), true);
 			CFString.ReleaseNative (a);
 			return ret;
 		}
@@ -271,7 +271,7 @@ namespace MobileCoreServices {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (uti));
 
 			var a = CFString.CreateNative (uti);
-			var ret = Runtime.GetNSObject<NSUrl> (UTTypeCopyDeclaringBundleURL (a));
+			var ret = Runtime.GetNSObject<NSUrl> (UTTypeCopyDeclaringBundleURL (a), true);
 			CFString.ReleaseNative (a);
 			return ret;
 		}

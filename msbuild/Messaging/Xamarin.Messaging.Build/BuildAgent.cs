@@ -5,14 +5,13 @@ using System.Threading.Tasks;
 using Xamarin.Messaging.Build.Contracts;
 using Xamarin.Messaging.Client;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.Messaging.Build {
 	public class BuildAgent : Agent {
 		readonly AgentInfo buildAgentInfo;
 
-		public BuildAgent (ITopicGenerator topicGenerator, string version = null, string versionInfo = null) : base (topicGenerator)
+		public BuildAgent (ITopicGenerator topicGenerator, string? version = null, string? versionInfo = null) : base (topicGenerator)
 		{
 			Version = string.IsNullOrEmpty (version) ? GetVersion () : version;
 			VersionInfo = string.IsNullOrEmpty (versionInfo) ? GetInformationalVersion () : versionInfo;
@@ -68,7 +67,7 @@ namespace Xamarin.Messaging.Build {
 			Environment.SetEnvironmentVariable ("VSIDE", "true");
 
 			var assemblyLocation = this.GetType ().Assembly.Location;
-			var path = Path.GetDirectoryName (assemblyLocation);
+			var path = Path.GetDirectoryName (assemblyLocation)!;
 
 			AddValueToEnvVariable ("MONO_GAC_PREFIX", path);
 			AddValueToEnvVariable ("PATH", path);

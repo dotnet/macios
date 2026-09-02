@@ -76,7 +76,7 @@ namespace AudioToolbox {
 		M4A = 0x6d346166, // m4af
 		/// <summary>MPEG-4 Audio Layer with metadata for bookmarks, chapter markers, images and hyperlinks.</summary>
 		M4B = 0x6d346266, // m4bf
-		/// <summary>Apple Core Audio Format.   CAF files are containers that can contain multiple audio formats, metadata tracks.   Uses 64-bit offsetes, so it is not limited to 4GB.</summary>
+		/// <summary>Apple Core Audio Format. CAF files are containers that can contain multiple audio formats and metadata tracks. Uses 64-bit offsets, so the format is not limited to 4GB.</summary>
 		CAF = 0x63616666, // caff
 		/// <summary>3GP (3GPP file format) is a multimedia container format defined by the Third Generation Partnership Project (3GPP) for 3G UMTS multimedia services. It is used on 3G mobile phones but can also be played on some 2G and 4G phones.</summary>
 		ThreeGP = 0x33677070, // 3gpp
@@ -90,9 +90,9 @@ namespace AudioToolbox {
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		FLAC = 0x666c6163, // flac
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		LatmInLoas = 0x6c6f6173, // loas
 	}
@@ -357,9 +357,9 @@ namespace AudioToolbox {
 		}
 	}
 
-	[SupportedOSPlatform ("ios13.0")]
+	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("tvos13.0")]
+	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioPacketRangeByteCountTranslation {
@@ -368,9 +368,9 @@ namespace AudioToolbox {
 		public long ByteCountUpperBound;
 	}
 
-	[SupportedOSPlatform ("ios13.0")]
+	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("tvos13.0")]
+	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioPacketRollDistanceTranslation {
@@ -378,9 +378,9 @@ namespace AudioToolbox {
 		public long RollDistance;
 	}
 
-	[SupportedOSPlatform ("ios13.0")]
+	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("tvos13.0")]
+	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioIndependentPacketTranslation {
@@ -388,9 +388,9 @@ namespace AudioToolbox {
 		public long IndependentlyDecodablePacket;
 	}
 
-	[SupportedOSPlatform ("ios13.0")]
+	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("tvos13.0")]
+	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioPacketDependencyInfoTranslation {
@@ -1699,8 +1699,8 @@ namespace AudioToolbox {
 
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe extern static OSStatus AudioFileGetUserDataSize64 (AudioFileID audioFile, uint userDataID, int index, ulong* userDataSize);
 
@@ -1711,8 +1711,8 @@ namespace AudioToolbox {
 		/// <returns>Returns <see cref="AudioFileError.Success" /> on success, otherwise an <see cref="AudioFileError" /> error code.</returns>
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		public AudioFileError GetUserDataSize (uint userDataId, int index, out ulong size)
 		{
 			size = 0;
@@ -1729,8 +1729,8 @@ namespace AudioToolbox {
 		/// <returns>Returns <see cref="AudioFileError.Success" /> on success, otherwise an <see cref="AudioFileError" /> error code.</returns>
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		public AudioFileError GetUserDataSize (AudioFileChunkType chunkType, int index, out ulong size)
 		{
 			return GetUserDataSize ((uint) chunkType, index, out size);
@@ -1770,8 +1770,8 @@ namespace AudioToolbox {
 
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe extern static OSStatus AudioFileGetUserDataAtOffset (AudioFileID audioFile, uint userDataID, int index, long inOffset, int* userDataSize, IntPtr userData);
 
@@ -1784,8 +1784,8 @@ namespace AudioToolbox {
 		/// <returns>Returns <see cref="AudioFileError.Success" /> on success, otherwise an <see cref="AudioFileError" /> error code.</returns>
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		public AudioFileError GetUserData (uint userDataId, int index, long offset, ref int size, IntPtr userData)
 		{
 			unsafe {
@@ -1803,8 +1803,8 @@ namespace AudioToolbox {
 		/// <returns>Returns <see cref="AudioFileError.Success" /> on success, otherwise an <see cref="AudioFileError" /> error code.</returns>
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		public AudioFileError GetUserData (AudioFileChunkType chunkType, int index, long offset, ref int size, IntPtr userData)
 		{
 			return GetUserData ((uint) chunkType, index, offset, ref size, userData);
@@ -1819,8 +1819,8 @@ namespace AudioToolbox {
 		/// <returns>Returns <see cref="AudioFileError.Success" /> on success, otherwise an <see cref="AudioFileError" /> error code.</returns>
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		public AudioFileError GetUserData (uint userDataId, int index, long offset, byte [] data, out int size)
 		{
 			size = data.Length;
@@ -1839,8 +1839,8 @@ namespace AudioToolbox {
 		/// <returns>Returns <see cref="AudioFileError.Success" /> on success, otherwise an <see cref="AudioFileError" /> error code.</returns>
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		public AudioFileError GetUserData (AudioFileChunkType chunkType, int index, long offset, byte [] data, out int size)
 		{
 			return GetUserData ((uint) chunkType, index, offset, data, out size);
@@ -2717,8 +2717,7 @@ namespace AudioToolbox {
 		/// <remarks>If the <see cref="AudioSource" /> is created in reading mode, this method should return the size of the audio data. If the <see cref="AudioSource" /> is created to write data, this method is invoked to set the audio file size.</remarks>
 		public abstract long Size { get; set; }
 
-		/// <summary>Releases the resources used by the <see cref="AudioSource" /> object.</summary>
-		/// <param name="disposing">If set to <see langword="true" />, the method is invoked directly and will dispose managed and unmanaged resources; If set to <see langword="false" /> the method is being called by the garbage collector finalizer and should only release unmanaged resources.</param>
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			base.Dispose (disposing);
@@ -2804,4 +2803,3 @@ namespace AudioToolbox {
 		}
 	}
 }
-

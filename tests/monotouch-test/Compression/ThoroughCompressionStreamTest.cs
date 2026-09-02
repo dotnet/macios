@@ -63,8 +63,8 @@ namespace MonoTouchFixtures.Compression {
 			output.Seek (0, SeekOrigin.Begin);
 			StreamReader reader = new StreamReader (output);
 			output.Seek (0, SeekOrigin.Begin);
-			Assert.AreNotEqual (0, output.Length, "Stream length should not be 0,");
-			Assert.IsTrue (compare_buffers (File.ReadAllBytes (uncompressedFile), output.GetBuffer (), (int) output.Length), "Streams are not equal.");
+			Assert.That (output.Length, Is.Not.EqualTo (0), "Stream length should not be 0,");
+			Assert.That (compare_buffers (File.ReadAllBytes (uncompressedFile), output.GetBuffer (), (int) output.Length), Is.True, "Streams are not equal.");
 			decompressing.Close ();
 			output.Close ();
 		}

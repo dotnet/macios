@@ -936,7 +936,7 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 	}
 
-	/// <summary>Finds the mininum value in a region, offset by a corresponding value in a mask.</summary>
+	/// <summary>Finds the minimum value in a region, offset by a corresponding value in a mask.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MetalPerformanceShaders/Reference/MPSImageErode_ClassReference/index.html">Apple documentation for <c>MPSImageErode</c></related>
 	[MacCatalyst (13, 1)]
@@ -1205,6 +1205,10 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MPSKernel : NSCopying, NSSecureCoding {
+		/// <summary>Gets a region that represents the default clipping rectangle.</summary>
+		[Field ("MPSRectNoClip")]
+		MTLRegion RectNoClip { get; }
+
 		/// <param name="aDecoder">The unarchiver object.</param>
 		/// <param name="device">To be added.</param>
 		/// <summary>A constructor that initializes the object from the data stored in the unarchiver object.</summary>
@@ -1598,11 +1602,11 @@ namespace MetalPerformanceShaders {
 		[Export ("dilationRateY")]
 		nuint DilationRateY { get; }
 
-		[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+		[MacCatalyst (13, 0)]
 		[Export ("encodingStorageSizeForSourceImage:sourceStates:destinationImage:")]
 		nuint GetEncodingStorageSize (MPSImage sourceImage, [NullAllowed] MPSState [] sourceStates, [NullAllowed] MPSImage destinationImage);
 
-		[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+		[MacCatalyst (13, 0)]
 		[Export ("batchEncodingStorageSizeForSourceImage:sourceStates:destinationImage:")]
 		nuint GetBatchEncodingStorageSize (MPSImage [] sourceImage, [NullAllowed] NSArray<MPSState> [] sourceStates, [NullAllowed] MPSImage [] destinationImage);
 	}
@@ -3117,7 +3121,6 @@ namespace MetalPerformanceShaders {
 		[Export ("usage")]
 		MTLTextureUsage Usage { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("featureChannelFormat")]
 		MPSImageFeatureChannelFormat FeatureChannelFormat { get; }
@@ -3219,7 +3222,6 @@ namespace MetalPerformanceShaders {
 		[Export ("writeBytes:dataLayout:bytesPerRow:region:featureChannelInfo:imageIndex:")]
 		void WriteBytes (IntPtr /* void* */ dataBytes, MPSDataLayout dataLayout, nuint bytesPerRow, MTLRegion region, MPSImageReadWriteParams featureChannelInfo, nuint imageIndex);
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("writeBytes:dataLayout:bytesPerColumn:bytesPerRow:bytesPerImage:region:featureChannelInfo:imageIndex:")]
 		void WriteBytes (IntPtr /* void* */ dataBytes, MPSDataLayout dataLayout, nuint bytesPerColumn, nuint bytesPerRow, nuint bytesPerImage, MTLRegion region, MPSImageReadWriteParams featureChannelInfo, nuint imageIndex);
@@ -3319,7 +3321,6 @@ namespace MetalPerformanceShaders {
 		nuint ReadCount { get; set; }
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MPSPredicate {
@@ -3356,7 +3357,6 @@ namespace MetalPerformanceShaders {
 		void RetireHeap (IMTLHeap heap, double seconds);
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -3450,7 +3450,7 @@ namespace MetalPerformanceShaders {
 		[Export ("rows")]
 		nuint Rows { get; set; }
 
-		/// <summary>Gets the nubmer of columns that are in the matrix.</summary>
+		/// <summary>Gets the number of columns that are in the matrix.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("columns")]
@@ -3555,7 +3555,7 @@ namespace MetalPerformanceShaders {
 		[Export ("rows")]
 		nuint Rows { get; }
 
-		/// <summary>Gets the nubmer of columns that are in the matrix.</summary>
+		/// <summary>Gets the number of columns that are in the matrix.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("columns")]
@@ -3586,7 +3586,6 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithBuffer:descriptor:")]
 		NativeHandle Constructor (IMTLBuffer buffer, MPSMatrixDescriptor descriptor);
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("initWithBuffer:offset:descriptor:")]
 		NativeHandle Constructor (IMTLBuffer buffer, nuint offset, MPSMatrixDescriptor descriptor);
@@ -3627,7 +3626,7 @@ namespace MetalPerformanceShaders {
 		[Export ("matrixBytes")]
 		nuint MatrixBytes { get; }
 
-		[TV (13, 0), iOS (13, 1)]
+		[iOS (13, 1)]
 		[MacCatalyst (13, 1)]
 		[Export ("offset")]
 		nuint Offset { get; }
@@ -3723,7 +3722,7 @@ namespace MetalPerformanceShaders {
 		nuint BatchSize { get; set; }
 	}
 
-	[TV (13, 0), Mac (10, 15), iOS (13, 0), MacCatalyst (13, 0)]
+	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSNDArrayMultiaryKernel))]
 	[DisableDefaultCtor]
 	interface MPSNDArrayMatrixMultiplication {
@@ -3993,7 +3992,6 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithBuffer:descriptor:")]
 		NativeHandle Constructor (IMTLBuffer buffer, MPSVectorDescriptor descriptor);
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("initWithBuffer:offset:descriptor:")]
 		NativeHandle Constructor (IMTLBuffer buffer, nuint offset, MPSVectorDescriptor descriptor);
@@ -4020,7 +4018,7 @@ namespace MetalPerformanceShaders {
 		[Export ("resourceSize")]
 		nuint ResourceSize { get; }
 
-		[TV (13, 0), iOS (13, 1)]
+		[iOS (13, 1)]
 		[MacCatalyst (13, 1)]
 		[Export ("offset")]
 		nuint Offset { get; }
@@ -4598,7 +4596,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MPSMatrixRandomDistributionDescriptor : NSCopying {
@@ -4637,7 +4634,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	[DisableDefaultCtor]
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSKernel))]
 	interface MPSMatrixRandom {
@@ -4661,7 +4657,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	[DisableDefaultCtor]
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSMatrixRandom), Name = "MPSMatrixRandomMTGP32")]
 	interface MPSMatrixRandomMtgp32 {
@@ -4684,7 +4679,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	[DisableDefaultCtor]
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSMatrixRandom))]
 	interface MPSMatrixRandomPhilox {
@@ -5443,11 +5437,11 @@ namespace MetalPerformanceShaders {
 		[Export ("destinationImageDescriptorForSourceImages:sourceStates:")]
 		MPSImageDescriptor GetDestinationImageDescriptor (NSArray<MPSImage> sourceImages, [NullAllowed] NSArray<MPSState> sourceStates);
 
-		[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+		[MacCatalyst (13, 0)]
 		[Export ("encodingStorageSizeForPrimaryImage:secondaryImage:sourceStates:destinationImage:")]
 		nuint GetEncodingStorageSize (MPSImage primaryImage, MPSImage secondaryImage, [NullAllowed] MPSState [] sourceStates, [NullAllowed] MPSImage destinationImage);
 
-		[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+		[MacCatalyst (13, 0)]
 		[Export ("batchEncodingStorageSizeForPrimaryImage:secondaryImage:sourceStates:destinationImage:")]
 		nuint GetBatchEncodingStorageSize (MPSImage [] primaryImage, MPSImage [] secondaryImage, [NullAllowed] NSArray<MPSState> [] sourceStates, [NullAllowed] MPSImage [] destinationImage);
 	}
@@ -5873,7 +5867,7 @@ namespace MetalPerformanceShaders {
 		[Wrap ("WeakDataSource")]
 		IMPSCnnConvolutionDataSource DataSource { get; }
 
-		[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+		[MacCatalyst (13, 0)]
 		[Export ("dataSource", ArgumentSemantic.Retain)]
 		NSObject WeakDataSource { get; }
 
@@ -5893,23 +5887,23 @@ namespace MetalPerformanceShaders {
 		[return: NullAllowed]
 		MPSCnnConvolutionTransposeGradientState [] GetTemporaryResultStateBatch (IMTLCommandBuffer commandBuffer, MPSImage [] sourceImage, [NullAllowed] NSArray<MPSCnnConvolutionGradientState> [] sourceStates, MPSImage [] destinationImage);
 
-		[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+		[MacCatalyst (13, 0)]
 		[Export ("reloadWeightsAndBiasesFromDataSource")]
 		void ReloadWeightsAndBiasesFromDataSource ();
 
-		[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+		[MacCatalyst (13, 0)]
 		[Export ("reloadWeightsAndBiasesWithCommandBuffer:state:")]
 		void ReloadWeightsAndBiases (IMTLCommandBuffer commandBuffer, MPSCnnConvolutionWeightsAndBiasesState state);
 
-		[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+		[MacCatalyst (13, 0)]
 		[Export ("exportWeightsAndBiasesWithCommandBuffer:resultStateCanBeTemporary:")]
 		MPSCnnConvolutionWeightsAndBiasesState ExportWeightsAndBiases (IMTLCommandBuffer commandBuffer, bool resultStateCanBeTemporary);
 
-		[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+		[MacCatalyst (13, 0)]
 		[Export ("encodeToCommandBuffer:sourceImage:convolutionGradientState:destinationState:destinationStateIsTemporary:")]
 		MPSImage Encode (IMTLCommandBuffer commandBuffer, MPSImage sourceImage, [NullAllowed] MPSCnnConvolutionGradientState convolutionGradientState, [NullAllowed] out MPSCnnConvolutionTransposeGradientState outState, bool isTemporary);
 
-		[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+		[MacCatalyst (13, 0)]
 		[Export ("encodeBatchToCommandBuffer:sourceImages:convolutionGradientStates:destinationStates:destinationStateIsTemporary:")]
 		MPSImage [] EncodeBatch (IMTLCommandBuffer commandBuffer, MPSImage [] sourceImages, [NullAllowed] MPSCnnConvolutionGradientState [] convolutionGradientStates, [NullAllowed] out MPSCnnConvolutionTransposeGradientState [] outStates, bool isTemporary);
 	}
@@ -10024,7 +10018,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	[DisableDefaultCtor]
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNFilterNode))]
 	interface MPSNNForwardLossNode {
@@ -10091,7 +10084,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	[DisableDefaultCtor]
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNGradientFilterNode))]
 	interface MPSNNLossGradientNode {
@@ -10149,7 +10141,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	[DisableDefaultCtor]
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNFilterNode))]
 	interface MPSNNInitialGradientNode {
@@ -10200,13 +10191,12 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithDevice:resultImage:")]
 		NativeHandle Constructor (IMTLDevice device, MPSNNImageNode resultImage);
 
-		[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+		[MacCatalyst (13, 0)]
 		[Export ("initWithDevice:resultImages:resultsAreNeeded:")]
 		// [DesignatedInitializer]
 		[Internal]
 		NativeHandle _InitWithDevice (IMTLDevice device, MPSNNImageNode [] resultImages, IntPtr areResultsNeeded);
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("graphWithDevice:resultImages:resultsAreNeeded:")]
@@ -10515,7 +10505,7 @@ namespace MetalPerformanceShaders {
 		[return: Release]
 		IMPSCnnConvolutionDataSource Copy ([NullAllowed] NSZone zone, [NullAllowed] IMTLDevice device);
 
-		[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+		[MacCatalyst (13, 0)]
 		[Export ("weightsLayout")]
 		MPSCnnConvolutionWeightsLayout WeightsLayout { get; }
 
@@ -11654,7 +11644,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSData data, IMTLDevice device, [NullAllowed] out NSError error);
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -11726,7 +11715,6 @@ namespace MetalPerformanceShaders {
 		MPSNDArray AllocateArray (IMTLCommandBuffer cmdBuf, MPSNDArrayDescriptor descriptor, MPSKernel kernel);
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -11821,7 +11809,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	[DisableDefaultCtor]
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNDArray))]
 	interface MPSTemporaryNDArray {
@@ -13248,7 +13235,7 @@ namespace MetalPerformanceShaders {
 		[Export ("convolution", ArgumentSemantic.Retain)]
 		MPSCnnConvolution Convolution { get; }
 
-		[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+		[MacCatalyst (13, 0)]
 		[Export ("gradientForWeightsLayout")]
 		MPSCnnConvolutionWeightsLayout GradientForWeightsLayout { get; }
 	}
@@ -13299,7 +13286,7 @@ namespace MetalPerformanceShaders {
 		[Export ("biasesOffset")]
 		nuint BiasesOffset { get; }
 
-		[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+		[MacCatalyst (13, 0)]
 		[Export ("initWithWeights:weightsOffset:biases:biasesOffset:cnnConvolutionDescriptor:")]
 		NativeHandle Constructor (IMTLBuffer weights, nuint weightsOffset, [NullAllowed] IMTLBuffer biases, nuint biasesOffset, MPSCnnConvolutionDescriptor descriptor);
 	}
@@ -13636,11 +13623,11 @@ namespace MetalPerformanceShaders {
 		[return: Release]
 		IMPSCnnInstanceNormalizationDataSource Copy ([NullAllowed] NSZone zone, [NullAllowed] IMTLDevice device);
 
-		[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+		[MacCatalyst (13, 0)]
 		[Export ("load")]
 		bool Load ();
 
-		[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+		[MacCatalyst (13, 0)]
 		[Export ("purge")]
 		void Purge ();
 	}
@@ -13900,7 +13887,7 @@ namespace MetalPerformanceShaders {
 		[Export ("weightsImage")]
 		MPSImage WeightsImage { get; }
 
-		[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+		[MacCatalyst (13, 0)]
 		[Export ("initWithDevice:lossImageSize:labelsImage:weightsImage:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (IMTLDevice device, MTLSize lossImageSize, MPSImage labelsImage, [NullAllowed] MPSImage weightsImage);
@@ -15348,7 +15335,7 @@ namespace MetalPerformanceShaders {
 		[Export ("encodeToCommandBuffer:batchNormalizationGradientState:batchNormalizationSourceState:inputMomentumVectors:resultState:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSCnnBatchNormalizationState batchNormalizationGradientState, MPSCnnBatchNormalizationState batchNormalizationSourceState, [NullAllowed] NSArray<MPSVector> inputMomentumVectors, MPSCnnNormalizationGammaAndBetaState resultState);
 
-		[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+		[MacCatalyst (13, 0)]
 		[Export ("encodeToCommandBuffer:inputGradientMatrix:inputValuesMatrix:inputMomentumMatrix:resultValuesMatrix:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSMatrix inputGradientMatrix, MPSMatrix inputValuesMatrix, [NullAllowed] MPSMatrix inputMomentumMatrix, MPSMatrix resultValuesMatrix);
 	}
@@ -15425,7 +15412,7 @@ namespace MetalPerformanceShaders {
 		[Export ("encodeToCommandBuffer:batchNormalizationGradientState:batchNormalizationSourceState:inputSumOfSquaresVectors:resultState:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSCnnBatchNormalizationState batchNormalizationGradientState, MPSCnnBatchNormalizationState batchNormalizationSourceState, [NullAllowed] NSArray<MPSVector> inputSumOfSquaresVectors, MPSCnnNormalizationGammaAndBetaState resultState);
 
-		[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+		[MacCatalyst (13, 0)]
 		[Export ("encodeToCommandBuffer:inputGradientMatrix:inputValuesMatrix:inputSumOfSquaresMatrix:resultValuesMatrix:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSMatrix inputGradientMatrix, MPSMatrix inputValuesMatrix, MPSMatrix inputSumOfSquaresMatrix, MPSMatrix resultValuesMatrix);
 	}
@@ -15520,27 +15507,27 @@ namespace MetalPerformanceShaders {
 		[Export ("encodeToCommandBuffer:batchNormalizationGradientState:batchNormalizationSourceState:inputMomentumVectors:inputVelocityVectors:resultState:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSCnnBatchNormalizationState batchNormalizationGradientState, MPSCnnBatchNormalizationState batchNormalizationSourceState, [NullAllowed] NSArray<MPSVector> inputMomentumVectors, [NullAllowed] NSArray<MPSVector> inputVelocityVectors, MPSCnnNormalizationGammaAndBetaState resultState);
 
-		[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+		[MacCatalyst (13, 0)]
 		[Export ("encodeToCommandBuffer:inputGradientMatrix:inputValuesMatrix:inputMomentumMatrix:inputVelocityMatrix:resultValuesMatrix:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSMatrix inputGradientMatrix, MPSMatrix inputValuesMatrix, MPSMatrix inputMomentumMatrix, MPSMatrix inputVelocityMatrix, MPSMatrix resultValuesMatrix);
 
-		[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+		[MacCatalyst (13, 0)]
 		[Export ("encodeToCommandBuffer:inputGradientVector:inputValuesVector:inputMomentumVector:inputVelocityVector:maximumVelocityVector:resultValuesVector:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSVector inputGradientVector, MPSVector inputValuesVector, MPSVector inputMomentumVector, MPSVector inputVelocityVector, [NullAllowed] MPSVector maximumVelocityVector, MPSVector resultValuesVector);
 
-		[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+		[MacCatalyst (13, 0)]
 		[Export ("encodeToCommandBuffer:inputGradientMatrix:inputValuesMatrix:inputMomentumMatrix:inputVelocityMatrix:maximumVelocityMatrix:resultValuesMatrix:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSMatrix inputGradientMatrix, MPSMatrix inputValuesMatrix, MPSMatrix inputMomentumMatrix, MPSMatrix inputVelocityMatrix, [NullAllowed] MPSMatrix maximumVelocityMatrix, MPSMatrix resultValuesMatrix);
 
-		[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+		[MacCatalyst (13, 0)]
 		[Export ("encodeToCommandBuffer:convolutionGradientState:convolutionSourceState:inputMomentumVectors:inputVelocityVectors:maximumVelocityVectors:resultState:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSCnnConvolutionGradientState convolutionGradientState, MPSCnnConvolutionWeightsAndBiasesState convolutionSourceState, MPSVector [] inputMomentumVectors, MPSVector [] inputVelocityVectors, [NullAllowed] MPSVector [] maximumVelocityVectors, MPSCnnConvolutionWeightsAndBiasesState resultState);
 
-		[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+		[MacCatalyst (13, 0)]
 		[Export ("encodeToCommandBuffer:batchNormalizationState:inputMomentumVectors:inputVelocityVectors:maximumVelocityVectors:resultState:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSCnnBatchNormalizationState batchNormalizationState, MPSVector [] inputMomentumVectors, MPSVector [] inputVelocityVectors, [NullAllowed] MPSVector [] maximumVelocityVectors, MPSCnnNormalizationGammaAndBetaState resultState);
 
-		[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+		[MacCatalyst (13, 0)]
 		[Export ("encodeToCommandBuffer:batchNormalizationGradientState:batchNormalizationSourceState:inputMomentumVectors:inputVelocityVectors:maximumVelocityVectors:resultState:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSCnnBatchNormalizationState batchNormalizationGradientState, MPSCnnBatchNormalizationState batchNormalizationSourceState, MPSVector [] inputMomentumVectors, MPSVector [] inputVelocityVectors, [NullAllowed] MPSVector [] maximumVelocityVectors, MPSCnnNormalizationGammaAndBetaState resultState);
 	}
@@ -16337,7 +16324,7 @@ namespace MetalPerformanceShaders {
 		MPSRnnMatrixTrainingLayer Copy ([NullAllowed] NSZone zone, [NullAllowed] IMTLDevice device);
 	}
 
-	[TV (13, 0), Mac (10, 15), iOS (13, 0), MacCatalyst (13, 0)]
+	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSKernel))]
 	[DisableDefaultCtor]
 	interface MPSNDArrayMultiaryBase {
@@ -16402,7 +16389,7 @@ namespace MetalPerformanceShaders {
 		MPSNDArrayDescriptor GetDestinationArray (MPSNDArray [] sources, [NullAllowed] MPSState state);
 	}
 
-	[TV (13, 0), Mac (10, 15), iOS (13, 0), MacCatalyst (13, 0)]
+	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSNDArrayMultiaryBase))]
 	[DisableDefaultCtor]
 	interface MPSNDArrayMultiaryKernel {
@@ -16431,7 +16418,7 @@ namespace MetalPerformanceShaders {
 		MPSNDArray EncodeToCommandEncoder ([NullAllowed] IMTLComputeCommandEncoder encoder, IMTLCommandBuffer commandBuffer, MPSNDArray [] sourceArrays, MPSNDArray destinationArray);
 	}
 
-	[TV (13, 0), Mac (10, 15), iOS (13, 0), MacCatalyst (13, 0)]
+	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSNDArrayMultiaryKernel))]
 	[DisableDefaultCtor]
 	interface MPSNDArrayUnaryKernel {
@@ -16601,13 +16588,13 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (IMTLDevice device, MPSNDArrayAffineQuantizationDescriptor quantizationDescriptor);
 	}
 
-	[iOS (13, 0), TV (13, 0), MacCatalyst (13, 1)]
+	[MacCatalyst (13, 1)]
 	[NativeName ("MPSCNNConvolutionWeightsLayout")]
 	public enum MPSCnnConvolutionWeightsLayout : uint {
 		Ohwi = 0,
 	}
 
-	[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+	[MacCatalyst (13, 0)]
 	[Native]
 	public enum MPSTemporalWeighting : ulong {
 		Average = 0,
@@ -16616,7 +16603,7 @@ namespace MetalPerformanceShaders {
 
 	interface IMPSCnnGroupNormalizationDataSource { }
 
-	[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+	[MacCatalyst (13, 0)]
 	[Protocol (Name = "MPSCNNGroupNormalizationDataSource", BackwardsCompatibleCodeGeneration = false)]
 	interface MPSCnnGroupNormalizationDataSource : NSCopying {
 		[Abstract]
@@ -16679,7 +16666,7 @@ namespace MetalPerformanceShaders {
 
 	interface IMPSSvgfTextureAllocator { }
 
-	[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+	[MacCatalyst (13, 0)]
 	[Protocol (Name = "MPSSVGFTextureAllocator", BackwardsCompatibleCodeGeneration = false)]
 	interface MPSSvgfTextureAllocator {
 		[Abstract]
@@ -16704,7 +16691,7 @@ namespace MetalPerformanceShaders {
 		MantissaShift = 10,
 	}
 
-	[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSCnnGradientKernel), Name = "MPSCNNConvolutionTransposeGradient")]
 	[DisableDefaultCtor]
 	interface MPSCnnConvolutionTransposeGradient {
@@ -16741,7 +16728,7 @@ namespace MetalPerformanceShaders {
 		void ReloadWeightsAndBiasesWithCommandBuffer (IMTLCommandBuffer commandBuffer, MPSCnnConvolutionWeightsAndBiasesState state);
 	}
 
-	[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSCnnConvolutionGradientNode), Name = "MPSCNNConvolutionTransposeGradientNode")]
 	[DisableDefaultCtor]
 	interface MPSCNNConvolutionTransposeGradientNode {
@@ -16753,7 +16740,7 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode sourceGradient, MPSNNImageNode sourceImage, MPSCnnConvolutionTransposeGradientStateNode gradientState, [NullAllowed] IMPSCnnConvolutionDataSource weights);
 	}
 
-	[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSCnnConvolutionGradientState), Name = "MPSCNNConvolutionTransposeGradientState")]
 	[DisableDefaultCtor]
 	interface MPSCnnConvolutionTransposeGradientState {
@@ -16761,14 +16748,14 @@ namespace MetalPerformanceShaders {
 		MPSCnnConvolutionTranspose ConvolutionTranspose { get; }
 	}
 
-	[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSCnnConvolutionGradientStateNode), Name = "MPSCNNConvolutionTransposeGradientStateNode")]
 	[DisableDefaultCtor]
 	interface MPSCnnConvolutionTransposeGradientStateNode {
 	}
 
 
-	[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSCnnConvolutionGradientNode), Name = "MPSCNNFullyConnectedGradientNode")]
 	[DisableDefaultCtor]
 	interface MPSCnnFullyConnectedGradientNode {
@@ -16780,7 +16767,7 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode sourceGradient, MPSNNImageNode sourceImage, MPSCnnConvolutionGradientStateNode gradientState, [NullAllowed] IMPSCnnConvolutionDataSource weights);
 	}
 
-	[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSCnnKernel), Name = "MPSCNNGroupNormalization")]
 	[DisableDefaultCtor]
 	interface MPSCnnGroupNormalization {
@@ -16816,13 +16803,13 @@ namespace MetalPerformanceShaders {
 		MPSCnnGroupNormalizationGradientState GetTemporaryResultState (IMTLCommandBuffer commandBuffer, MPSImage sourceImage, [NullAllowed] MPSState [] sourceStates, MPSImage destinationImage);
 	}
 
-	[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSCnnGradientKernel), Name = "MPSCNNGroupNormalizationGradient")]
 	[DisableDefaultCtor]
 	interface MPSCnnGroupNormalizationGradient {
 	}
 
-	[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSNNGradientFilterNode), Name = "MPSCNNGroupNormalizationGradientNode")]
 	[DisableDefaultCtor]
 	interface MPSCnnGroupNormalizationGradientNode : MPSNNTrainableNode {
@@ -16834,7 +16821,7 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode sourceGradient, MPSNNImageNode sourceImage, MPSNNGradientStateNode gradientState);
 	}
 
-	[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSNNGradientState), Name = "MPSCNNGroupNormalizationGradientState")]
 	[DisableDefaultCtor]
 	interface MPSCnnGroupNormalizationGradientState {
@@ -16854,7 +16841,7 @@ namespace MetalPerformanceShaders {
 		IMTLBuffer GradientForBeta { get; }
 	}
 
-	[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSNNFilterNode), Name = "MPSCNNGroupNormalizationNode")]
 	[DisableDefaultCtor]
 	interface MPSCnnGroupNormalizationNode : MPSNNTrainableNode {
@@ -16866,7 +16853,7 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode source, IMPSCnnGroupNormalizationDataSource dataSource);
 	}
 
-	[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSKernel), Name = "MPSCNNMultiaryKernel")]
 	[DisableDefaultCtor]
 	interface MPSCnnMultiaryKernel {
@@ -17003,7 +16990,7 @@ namespace MetalPerformanceShaders {
 		MPSImageDescriptor GetDestinationImageDescriptor (MPSImage [] sourceImages, [NullAllowed] MPSState [] sourceStates);
 	}
 
-	[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSCnnNeuronNode), Name = "MPSCNNNeuronGeLUNode")]
 	[DisableDefaultCtor]
 	interface MPSCnnNeuronGeLUNode {
@@ -17089,7 +17076,7 @@ namespace MetalPerformanceShaders {
 		float MergeLocalityThreshold { get; set; }
 	}
 
-	[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSNDArrayMultiaryKernel))]
 	[DisableDefaultCtor]
 	interface MPSNDArrayBinaryKernel {
@@ -17184,7 +17171,7 @@ namespace MetalPerformanceShaders {
 		void Encode (IMTLCommandBuffer cmdBuf, MPSNDArray primarySourceArray, MPSNDArray secondarySourceArray, [NullAllowed] MPSState outGradientState, MPSNDArray destination);
 	}
 
-	[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSNDArrayMultiaryGradientKernel))]
 	[DisableDefaultCtor]
 	interface MPSNDArrayBinaryPrimaryGradientKernel {
@@ -17203,7 +17190,7 @@ namespace MetalPerformanceShaders {
 		void Encode (IMTLCommandBuffer cmdBuf, MPSNDArray primarySourceArray, MPSNDArray secondarySourceArray, MPSNDArray gradient, MPSState state, MPSNDArray destination);
 	}
 
-	[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSNDArrayMultiaryGradientKernel))]
 	[DisableDefaultCtor]
 	interface MPSNDArrayBinarySecondaryGradientKernel {
@@ -17222,7 +17209,7 @@ namespace MetalPerformanceShaders {
 		void Encode (IMTLCommandBuffer cmdBuf, MPSNDArray primarySourceArray, MPSNDArray secondarySourceArray, MPSNDArray gradient, MPSState state, MPSNDArray destination);
 	}
 
-	[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSNDArrayBinaryKernel))]
 	[DisableDefaultCtor]
 	interface MPSNDArrayGather {
@@ -17230,25 +17217,25 @@ namespace MetalPerformanceShaders {
 		nuint Axis { get; set; }
 	}
 
-	[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSNDArrayBinaryPrimaryGradientKernel))]
 	[DisableDefaultCtor]
 	interface MPSNDArrayGatherGradient {
 	}
 
-	[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSNDArrayGradientState))]
 	[DisableDefaultCtor]
 	interface MPSNDArrayGatherGradientState {
 	}
 
-	[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSState))]
 	[DisableDefaultCtor]
 	interface MPSNDArrayGradientState {
 	}
 
-	[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSNDArrayMultiaryBase))]
 	[DisableDefaultCtor]
 	interface MPSNDArrayMultiaryGradientKernel {
@@ -17267,7 +17254,7 @@ namespace MetalPerformanceShaders {
 		void Encode (IMTLCommandBuffer cmdBuf, MPSNDArray [] sources, MPSNDArray gradient, MPSState state, MPSNDArray destination);
 	}
 
-	[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSNDArrayUnaryKernel))]
 	[DisableDefaultCtor]
 	interface MPSNDArrayStridedSlice {
@@ -17275,13 +17262,13 @@ namespace MetalPerformanceShaders {
 		MPSNDArrayOffsets Strides { get; set; }
 	}
 
-	[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSNDArrayUnaryGradientKernel))]
 	[DisableDefaultCtor]
 	interface MPSNDArrayStridedSliceGradient {
 	}
 
-	[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSNDArrayMultiaryGradientKernel))]
 	[DisableDefaultCtor]
 	interface MPSNDArrayUnaryGradientKernel {
@@ -17300,7 +17287,7 @@ namespace MetalPerformanceShaders {
 		void Encode (IMTLCommandBuffer cmdBuf, MPSNDArray sourceArray, MPSNDArray gradient, MPSState state, MPSNDArray destination);
 	}
 
-	[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSCnnKernel), Name = "MPSNNForwardLoss")]
 	[DisableDefaultCtor]
 	interface MPSnnForwardLoss {
@@ -17344,7 +17331,7 @@ namespace MetalPerformanceShaders {
 		MPSImage [] Encode (IMTLCommandBuffer commandBuffer, MPSImage [] sourceImages, MPSImage [] labels, [NullAllowed] MPSImage [] weights, [NullAllowed] out MPSState [] outStates, bool isTemporary);
 	}
 
-	[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSNNFilterNode), Name = "MPSNNGramMatrixCalculationNode")]
 	[DisableDefaultCtor]
 	interface MPSnnGramMatrixCalculationNode {
@@ -17369,7 +17356,7 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode sourceNode, float alpha);
 	}
 
-	[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSCnnKernel), Name = "MPSNNGramMatrixCalculation")]
 	[DisableDefaultCtor]
 	interface MPSnnGramMatrixCalculation {
@@ -17388,7 +17375,7 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (IMTLDevice device);
 	}
 
-	[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSCnnGradientKernel), Name = "MPSNNGramMatrixCalculationGradient")]
 	[DisableDefaultCtor]
 	interface MPSNNGramMatrixCalculationGradient {
@@ -17407,7 +17394,7 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (IMTLDevice device);
 	}
 
-	[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSNNGradientFilterNode), Name = "MPSNNGramMatrixCalculationGradientNode")]
 	[DisableDefaultCtor]
 	interface MPSnnGramMatrixCalculationGradientNode {
@@ -17429,7 +17416,7 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode sourceGradient, MPSNNImageNode sourceImage, MPSNNGradientStateNode gradientState, float alpha);
 	}
 
-	[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSCnnBinaryKernel), Name = "MPSNNGridSample")]
 	[DisableDefaultCtor]
 	interface MPSnnGridSample {
@@ -17445,7 +17432,7 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 	}
 
-	[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSCnnKernel), Name = "MPSNNInitialGradient")]
 	[DisableDefaultCtor]
 	interface MPSnnInitialGradient {
@@ -17453,7 +17440,7 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (IMTLDevice device);
 	}
 
-	[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSNNReduceBinary), Name = "MPSNNLocalCorrelation")]
 	[DisableDefaultCtor]
 	interface MPSnnLocalCorrelation {
@@ -17481,7 +17468,7 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 	}
 
-	[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSCnnBinaryKernel), Name = "MPSNNLossGradient")]
 	[DisableDefaultCtor]
 	interface MPSnnLossGradient {
@@ -17528,19 +17515,19 @@ namespace MetalPerformanceShaders {
 		void EncodeBatch (IMTLCommandBuffer commandBuffer, MPSImage [] sourceGradients, MPSImage [] sourceImages, MPSImage [] labels, [NullAllowed] MPSImage [] weights, [NullAllowed] MPSState [] sourceStates, MPSImage [] destinationGradients);
 	}
 
-	[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSState), Name = "MPSNNMultiaryGradientState")]
 	[DisableDefaultCtor]
 	interface MPSnnMultiaryGradientState {
 	}
 
-	[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSNNStateNode), Name = "MPSNNMultiaryGradientStateNode")]
 	[DisableDefaultCtor]
 	interface MPSnnMultiaryGradientStateNode {
 	}
 
-	[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSKernel), Name = "MPSSVGF")]
 	[DisableDefaultCtor]
 	interface MPSSvgf : NSSecureCoding, NSCopying {
@@ -17623,7 +17610,7 @@ namespace MetalPerformanceShaders {
 		void EncodeBilateralFilter (IMTLCommandBuffer commandBuffer, nuint stepDistance, IMTLTexture sourceTexture, IMTLTexture destinationTexture, [NullAllowed] IMTLTexture sourceTexture2, [NullAllowed] IMTLTexture destinationTexture2, IMTLTexture depthNormalTexture);
 	}
 
-	[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+	[MacCatalyst (13, 0)]
 	[BaseType (typeof (NSObject), Name = "MPSSVGFDefaultTextureAllocator")]
 	[DisableDefaultCtor]
 	interface MPSSvgfDefaultTextureAllocator : MPSSvgfTextureAllocator {
@@ -17644,7 +17631,7 @@ namespace MetalPerformanceShaders {
 		void Reset ();
 	}
 
-	[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+	[MacCatalyst (13, 0)]
 	[BaseType (typeof (NSObject), Name = "MPSSVGFDenoiser")]
 	[DisableDefaultCtor]
 	interface MPSSvfgDenoiser {
@@ -17676,7 +17663,7 @@ namespace MetalPerformanceShaders {
 		void Encode (IMTLCommandBuffer commandBuffer, IMTLTexture sourceTexture, out IMTLTexture destinationTexture, [NullAllowed] IMTLTexture sourceTexture2, out IMTLTexture destinationTexture2, [NullAllowed] IMTLTexture motionVectorTexture, IMTLTexture depthNormalTexture, [NullAllowed] IMTLTexture previousDepthNormalTexture);
 	}
 
-	[TV (13, 0), MacCatalyst (13, 0), iOS (13, 0)]
+	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSKernel))]
 	[DisableDefaultCtor]
 	interface MPSTemporalAA : NSSecureCoding, NSCopying {

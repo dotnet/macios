@@ -64,7 +64,7 @@ namespace CallKit {
 	[ErrorDomain ("CXErrorDomainRequestTransaction")]
 	[Native]
 	public enum CXErrorCodeRequestTransactionError : long {
-		/// <summary>An unknown error occured.</summary>
+		/// <summary>An unknown error occurred.</summary>
 		Unknown = 0,
 		/// <summary>To be added.</summary>
 		Unentitled = 1,
@@ -89,7 +89,7 @@ namespace CallKit {
 	[ErrorDomain ("CXErrorDomainCallDirectoryManager")]
 	[Native]
 	public enum CXErrorCodeCallDirectoryManagerError : long {
-		/// <summary>An unknown error occured.</summary>
+		/// <summary>An unknown error occurred.</summary>
 		Unknown = 0,
 		/// <summary>The extension could not be found.</summary>
 		NoExtensionFound = 1,
@@ -287,7 +287,7 @@ namespace CallKit {
 		NativeHandle Constructor (NSUuid callUuid);
 	}
 
-	/// <summary>Informs the system about in-band user actions, such as reqeusts to start a call, or to put a call on hold.</summary>
+	/// <summary>Informs the system about in-band user actions, such as requests to start a call or put a call on hold.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/CallKit/CXCallController">Apple documentation for <c>CXCallController</c></related>
 	[NoMac]

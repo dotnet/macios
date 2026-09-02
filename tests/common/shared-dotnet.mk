@@ -71,6 +71,10 @@ ifeq ($(TEST_TFM),)
 TEST_TFM=$(DOTNET_TFM)
 endif
 
+ifeq ($(findstring |release|,|$(TEST_VARIATION)|),|release|)
+CONFIG=Release
+endif
+
 ifeq ($(CONFIG),)
 CONFIG=Debug
 else
@@ -80,7 +84,7 @@ endif
 ifeq ($(PLATFORM),)
 PLATFORM=$(shell basename "$(CURDIR)")
 endif
-PLATFORM_UPPERCASE:=$(shell echo $(PLATFORM) | tr 'a-z' 'A-Z')
+PLATFORM_UPPERCASE:=$(call uppercase,$(PLATFORM))
 
 ifneq ($(RUNTIMEIDENTIFIERS)$(RUNTIMEIDENTIFIER),)
 $(error "Don't set RUNTIMEIDENTIFIER or RUNTIMEIDENTIFIERS, set RID instead")
@@ -88,9 +92,17 @@ endif
 
 ifeq ($(RID),)
 ifeq ($(PLATFORM),iOS)
+ifeq ($(shell arch),arm64)
 RID=iossimulator-arm64
+else
+RID=iossimulator-x64
+endif
 else ifeq ($(PLATFORM),tvOS)
+ifeq ($(shell arch),arm64)
 RID=tvossimulator-arm64
+else
+RID=tvossimulator-x64
+endif
 else ifeq ($(PLATFORM),MacCatalyst)
 ifeq ($(CONFIG),Release)
 RID=maccatalyst-x64;maccatalyst-arm64
@@ -138,8 +150,12 @@ else ifeq ($(PLATFORM),tvOS)
 EXECUTABLE="$(abspath .)/bin/$(CONFIG)/$(TEST_TFM)-tvos/$(PATH_RID)$(TESTNAME).app/$(TESTNAME)"
 else ifeq ($(PLATFORM),MacCatalyst)
 EXECUTABLE="$(abspath .)/bin/$(CONFIG)/$(TEST_TFM)-maccatalyst/$(PATH_RID)$(TESTNAME).app/Contents/MacOS/$(TESTNAME)"
+APPMANIFEST:=$(abspath .)/bin/$(CONFIG)/$(TEST_TFM)-maccatalyst/$(PATH_RID)$(TESTNAME).app/Contents/Info.plist
+BUNDLE_ID=$(shell defaults read "$(APPMANIFEST)" CFBundleIdentifier 2>/dev/null)
 else ifeq ($(PLATFORM),macOS)
 EXECUTABLE="$(abspath .)/bin/$(CONFIG)/$(TEST_TFM)-macos/$(PATH_RID)$(TESTNAME).app/Contents/MacOS/$(TESTNAME)"
+APPMANIFEST:=$(abspath .)/bin/$(CONFIG)/$(TEST_TFM)-macos/$(PATH_RID)$(TESTNAME).app/Contents/Info.plist
+BUNDLE_ID=$(shell defaults read "$(APPMANIFEST)" CFBundleIdentifier 2>/dev/null)
 else
 EXECUTABLE="unknown-executable-platform-$(PLATFORM)"
 endif
@@ -166,15 +182,28 @@ reload-and-run:
 	$(Q) $(MAKE) run
 
 build: prepare
+	@echo "Building $(wildcard *.?sproj)... (binlog: $(shell tput setaf 6 2>/dev/null)$(abspath $@-$(BINLOG_TIMESTAMP).binlog)$(shell tput sgr0 2>/dev/null))"
 	$(Q) $(DOTNET) build "/bl:$(abspath $@-$(BINLOG_TIMESTAMP).binlog)" *.?sproj $(DOTNET_BUILD_VERBOSITY) $(BUILD_ARGUMENTS) $(CONFIG_ARGUMENT) $(UNIVERSAL_ARGUMENT) $(NATIVEAOT_ARGUMENTS) $(TEST_VARIATION_ARGUMENT)
 
 run: export SIMCTL_CHILD_NUNIT_AUTOSTART=true
 run: export SIMCTL_CHILD_NUNIT_AUTOEXIT=true
 run: prepare
+	@echo "Running $(wildcard *.?sproj)..."
 	$(Q) $(DOTNET) build "/bl:$(abspath $@-$(BINLOG_TIMESTAMP).binlog)" *.?sproj $(DOTNET_BUILD_VERBOSITY) $(BUILD_ARGUMENTS) $(CONFIG_ARGUMENT) $(UNIVERSAL_ARGUMENT) $(NATIVEAOT_ARGUMENTS) $(TEST_VARIATION_ARGUMENT) -t:Run $(RUN_ARGUMENTS) -tl:off
 
-run-bare:
+# Delete the saved application state for the app, to prevent the
+# "Do you want to try to reopen its windows again?" dialog from
+# blocking automated runs after a crash. See https://github.com/dotnet/macios/issues/25922
+delete-saved-state:
+	$(Q) if test -n "$(BUNDLE_ID)"; then rm -rf "$(HOME)/Library/Saved Application State/$(BUNDLE_ID).savedState" && echo "Deleted saved state for $(BUNDLE_ID)"; fi
+
+# Clear RUNTIMEIDENTIFIER(S) so the recursive '$(MAKE) delete-saved-state' below doesn't
+# inherit the exported value and trip the guard that forbids setting it (set RID instead).
+run-bare: export RUNTIMEIDENTIFIER=
+run-bare: export RUNTIMEIDENTIFIERS=
+run-bare: delete-saved-state
 	$(Q) $(EXECUTABLE) --autostart --autoexit $(RUN_ARGUMENTS)
+	$(Q) $(MAKE) delete-saved-state
 
 # Get the list of applicable simulators, and pick the first in the list.
 # Make sure to have a matching simulator runtime installed, otherwise this won't work.

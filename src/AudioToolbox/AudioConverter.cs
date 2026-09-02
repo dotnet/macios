@@ -141,6 +141,8 @@ namespace AudioToolbox {
 		IntPtr packetDescriptions;
 		int packetDescriptionSize;
 
+		/// <summary>Raised by the converter's <c>FillComplexBuffer</c> methods to request more input audio data to convert.</summary>
+		/// <remarks>The handler must supply the requested input packets to the converter. Return <see cref="AudioToolbox.AudioConverterError.None" /> to provide data, or an error code to stop the conversion.</remarks>
 		public event AudioConverterComplexInputData? InputData;
 
 		[Preserve (Conditional = true)]
@@ -521,7 +523,7 @@ namespace AudioToolbox {
 			}
 		}
 
-		/// <include file="../../docs/api/AudioToolbox/AudioConverter.xml" path="/Documentation/Docs[@DocId='M:AudioToolbox.AudioConverter.Dispose(System.Boolean)']/*" />
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			if (Handle != IntPtr.Zero && Owns)

@@ -108,25 +108,31 @@ namespace AutomaticAssessmentConfiguration {
 		[Export ("allowsContinuousPathKeyboard")]
 		bool AllowsContinuousPathKeyboard { get; set; }
 
-		[iOS (17, 5), Mac (12, 0), MacCatalyst (15, 0)]
+		[iOS (17, 5), MacCatalyst (15, 0)]
 		[Export ("configurationsByApplication", ArgumentSemantic.Copy)]
 		NSDictionary<AEAssessmentApplication, AEAssessmentParticipantConfiguration> ConfigurationsByApplication { get; }
 
-		[iOS (17, 5), Mac (12, 0), MacCatalyst (15, 0)]
+		[iOS (17, 5), MacCatalyst (15, 0)]
 		[Export ("mainParticipantConfiguration", ArgumentSemantic.Strong)]
 		AEAssessmentParticipantConfiguration MainParticipantConfiguration { get; }
 
-		[iOS (17, 5), Mac (12, 0), MacCatalyst (15, 0)]
+		[iOS (17, 5), MacCatalyst (15, 0)]
 		[Export ("removeApplication:")]
 		void Remove (AEAssessmentApplication application);
 
-		[iOS (17, 5), Mac (12, 0), MacCatalyst (15, 0)]
+		[iOS (17, 5), MacCatalyst (15, 0)]
 		[Export ("setConfiguration:forApplication:")]
 		void SetConfiguration (AEAssessmentParticipantConfiguration configuration, AEAssessmentApplication application);
 
 		[NoiOS, MacCatalyst (26, 1), Mac (26, 1)]
 		[Export ("allowsScreenshots")]
 		bool AllowsScreenshots { get; set; }
+
+		/// <summary>Gets or sets a value that determines whether the emoji keyboard is allowed during an assessment session.</summary>
+		[NoMac, iOS (26, 4)]
+		[NoMacCatalyst]
+		[Export ("allowsEmojiKeyboard")]
+		bool AllowsEmojiKeyboard { get; set; }
 	}
 
 	[iOS (13, 4)]
@@ -162,7 +168,7 @@ namespace AutomaticAssessmentConfiguration {
 		[Export ("configuration", ArgumentSemantic.Copy)]
 		AEAssessmentConfiguration Configuration { get; }
 
-		[Mac (12, 0), iOS (17, 5), MacCatalyst (15, 0)]
+		[iOS (17, 5), MacCatalyst (15, 0)]
 		[Export ("updateToConfiguration:")]
 		void Update (AEAssessmentConfiguration configuration);
 
@@ -193,11 +199,11 @@ namespace AutomaticAssessmentConfiguration {
 		[Export ("assessmentSessionDidEnd:")]
 		void DidEnd (AEAssessmentSession session);
 
-		[iOS (17, 5), Mac (12, 0), MacCatalyst (15, 0)]
+		[iOS (17, 5), MacCatalyst (15, 0)]
 		[Export ("assessmentSessionDidUpdate:")]
 		void DidUpdate (AEAssessmentSession session);
 
-		[iOS (17, 5), Mac (12, 0), MacCatalyst (15, 0)]
+		[iOS (17, 5), MacCatalyst (15, 0)]
 		[Export ("assessmentSession:failedToUpdateToConfiguration:error:")]
 		void FailedToUpdate (AEAssessmentSession session, AEAssessmentConfiguration configuration, NSError error);
 	}
@@ -228,7 +234,7 @@ namespace AutomaticAssessmentConfiguration {
 		bool RequiresSignatureValidation { get; set; }
 	}
 
-	[Mac (12, 0), iOS (17, 5), MacCatalyst (15, 0)]
+	[iOS (17, 5), MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
 	interface AEAssessmentParticipantConfiguration : NSCopying {
 		[Export ("allowsNetworkAccess")]

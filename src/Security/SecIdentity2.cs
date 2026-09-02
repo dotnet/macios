@@ -78,20 +78,16 @@ namespace Security {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		public SecCertificate [] Certificates {
+		public SecCertificate []? Certificates {
 			get {
 				var certArray = sec_identity_copy_certificates_ref (GetCheckedHandle ());
-				try {
-					return NSArray.ArrayFromHandle<SecCertificate> (certArray);
-				} finally {
-					CFObject.CFRelease (certArray);
-				}
+				return NSArray.ArrayFromHandleDropNullElements<SecCertificate> (certArray, releaseHandle: true);
 			}
 		}
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.SecurityLibrary)]
 		unsafe static extern byte sec_identity_access_certificates (IntPtr identity, BlockLiteral* block);
@@ -104,9 +100,9 @@ namespace Security {
 				del (new SecCertificate2 (cert, false));
 		}
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		// no [Async] as it can be called multiple times
 		[BindingImpl (BindingImplOptions.Optimizable)]

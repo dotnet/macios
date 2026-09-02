@@ -8,7 +8,7 @@ using Microsoft.DotNet.XHarness.iOS.Shared.Logging;
 using Microsoft.DotNet.XHarness.iOS.Shared.Utilities;
 
 namespace Xharness.Jenkins {
-	class JenkinsDeviceLoader {
+	public class JenkinsDeviceLoader {
 		static readonly string devicesName = "Device";
 		static readonly string simulatorsName = "Simulator";
 

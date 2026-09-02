@@ -16,19 +16,22 @@ using CoreFoundation;
 namespace NearbyInteraction {
 	public partial class NIAlgorithmConvergenceStatusReasonValues {
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("macos")]
 		[DllImport (Constants.NearbyInteractionLibrary)]
 		static extern NativeHandle /* NSString */ NIAlgorithmConvergenceStatusReasonDescription (NativeHandle /* NIAlgorithmConvergenceStatusReason */ reason);
 
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("macos")]
 		public static NSString GetConvergenceStatusReason (NIAlgorithmConvergenceStatusReason reason)
 		{
-			return Runtime.GetNSObject<NSString> (NIAlgorithmConvergenceStatusReasonDescription (reason.GetConstant ().GetHandle ()))!;
+			var constant = reason.GetConstant ();
+			var rv = Runtime.GetNSObject<NSString> (NIAlgorithmConvergenceStatusReasonDescription (constant.GetHandle ()))!;
+			GC.KeepAlive (constant);
+			return rv;
 		}
 	}
 }

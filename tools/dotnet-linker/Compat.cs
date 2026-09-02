@@ -100,7 +100,7 @@ namespace Xamarin.Bundler {
 			}
 		}
 
-		public AssemblyDefinition GetAssembly (string name)
+		public AssemblyDefinition? GetAssembly (string name)
 		{
 			return LinkerConfiguration.Context.GetLoadedAssembly (name);
 		}
@@ -143,6 +143,23 @@ namespace Xamarin.Linker {
 		public bool IsProductAssembly (AssemblyDefinition assembly)
 		{
 			return assembly.Name.Name == Configuration.PlatformAssembly;
+		}
+
+		public bool ReferencesProductAssembly (AssemblyDefinition assembly)
+		{
+			if (!assembly.MainModule.HasAssemblyReferences)
+				return false;
+
+			foreach (var reference in assembly.MainModule.AssemblyReferences) {
+				if (reference.Name == Configuration.PlatformAssembly)
+					return true;
+			}
+			return false;
+		}
+
+		public bool IsOrReferencesProductAssembly (AssemblyDefinition assembly)
+		{
+			return IsProductAssembly (assembly) || ReferencesProductAssembly (assembly);
 		}
 
 		public bool IsSdkAssembly (AssemblyDefinition assembly)

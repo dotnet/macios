@@ -270,6 +270,11 @@ namespace PassKit {
 		[Export ("openPaymentSetup")]
 		void OpenPaymentSetup ();
 
+		/// <summary>Presents the standard interface for the specified merchant to set up credit cards for use with Apple Pay.</summary>
+		[iOS (26, 4), Mac (26, 4), MacCatalyst (26, 4), NoTV]
+		[Export ("openPaymentSetupWithMerchantIdentifier:")]
+		void OpenPaymentSetup (string merchantIdentifier);
+
 		/// <param name="primaryAccountIdentifier">To be added.</param>
 		///         <summary>Whether the app can add a card to Apple Pay for <paramref name="primaryAccountIdentifier" />.</summary>
 		///         <returns>To be added.</returns>
@@ -360,7 +365,7 @@ namespace PassKit {
 		void GetServiceProviderData (PKSecureElementPass secureElementPass, Action<NSData, NSError> completion);
 
 		[Async]
-		[iOS (16, 0), MacCatalyst (16, 0), Mac (13, 0), NoTV]
+		[iOS (16, 0), MacCatalyst (16, 0), NoTV]
 		[Export ("encryptedServiceProviderDataForSecureElementPass:completion:")]
 		void GetEncryptedServiceProviderData (PKSecureElementPass secureElementPass, Action<NSDictionary, NSError> completion);
 
@@ -413,7 +418,7 @@ namespace PassKit {
 		[Field ("PKPassLibrarySerialNumberUserInfoKey")]
 		NSString SerialNumber { get; }
 
-		[iOS (15, 2), Mac (12, 1), MacCatalyst (15, 2)]
+		[iOS (15, 2), MacCatalyst (15, 2)]
 		[Field ("PKPassLibraryRecoveredPassesUserInfoKey")]
 		NSString RecoveredPasses { get; }
 	}
@@ -1123,24 +1128,24 @@ namespace PassKit {
 		[Export ("paymentCouponCodeExpiredErrorWithLocalizedDescription:")]
 		NSError GetCouponCodeExpiredError ([NullAllowed] string localizedDescription);
 
-		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
+		[iOS (16, 0), MacCatalyst (16, 0), NoTV]
 		[Export ("multiTokenContexts", ArgumentSemantic.Copy)]
 		PKPaymentTokenContext [] MultiTokenContexts { get; set; }
 
-		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
+		[iOS (16, 0), MacCatalyst (16, 0), NoTV]
 		[NullAllowed, Export ("recurringPaymentRequest", ArgumentSemantic.Strong)]
 		PKRecurringPaymentRequest RecurringPaymentRequest { get; set; }
 
-		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
+		[iOS (16, 0), MacCatalyst (16, 0), NoTV]
 		[NullAllowed, Export ("automaticReloadPaymentRequest", ArgumentSemantic.Strong)]
 		PKAutomaticReloadPaymentRequest AutomaticReloadPaymentRequest { get; set; }
 
 		[NullAllowed]
-		[Mac (13, 3), iOS (16, 4), MacCatalyst (16, 4), NoTV]
+		[iOS (16, 4), MacCatalyst (16, 4), NoTV]
 		[Export ("deferredPaymentRequest", ArgumentSemantic.Strong)]
 		PKDeferredPaymentRequest DeferredPaymentRequest { get; set; }
 
-		[iOS (17, 0), Mac (14, 0), NoTV, MacCatalyst (17, 0)]
+		[iOS (17, 0), NoTV, MacCatalyst (17, 0)]
 		[Export ("applePayLaterAvailability", ArgumentSemantic.Assign)]
 		PKApplePayLaterAvailability ApplePayLaterAvailability { get; set; }
 
@@ -1152,10 +1157,14 @@ namespace PassKit {
 		[NullAllowed]
 		[Export ("attributionIdentifier")]
 		string AttributionIdentifier { get; set; }
+
+		/// <summary>Gets or sets a value indicating whether this is a delegated request.</summary>
+		[iOS (26, 4), Mac (26, 4), MacCatalyst (26, 4), NoTV]
+		[Export ("isDelegatedRequest")]
+		bool IsDelegatedRequest { get; set; }
 	}
 
 	/// <summary>Enumerates fields for a contact.</summary>
-	[Mac (11, 0)]
 	[MacCatalyst (13, 1)]
 	[Flags]
 	enum PKContactFields {
@@ -1186,7 +1195,6 @@ namespace PassKit {
 	/// <summary>The user's payment credentials. All fields are read-only.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/PassKit/Reference/PKPaymentToken_Ref/index.html">Apple documentation for <c>PKPaymentToken</c></related>
-	[Mac (11, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface PKPaymentToken {
@@ -1459,7 +1467,6 @@ namespace PassKit {
 		[Export ("style", ArgumentSemantic.Assign)]
 		PKAddPaymentPassStyle Style { get; set; }
 
-		[iOS (12, 3)]
 		[MacCatalyst (13, 1)]
 		[Export ("productIdentifiers", ArgumentSemantic.Copy)]
 		NSSet<NSString> ProductIdentifiers { get; set; }
@@ -1738,7 +1745,6 @@ namespace PassKit {
 		[NullAllowed, Export ("secureElementPass", ArgumentSemantic.Copy)]
 		PKSecureElementPass SecureElementPass { get; }
 
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("billingAddress", ArgumentSemantic.Copy)]
 		CNContact BillingAddress { get; }
@@ -1816,7 +1822,7 @@ namespace PassKit {
 		[Field ("PKPaymentNetworkChinaUnionPay")]
 		NSString ChinaUnionPay { get; }
 
-		[Mac (12, 3), iOS (15, 4), MacCatalyst (15, 4)]
+		[iOS (15, 4), MacCatalyst (15, 4)]
 		[Field ("PKPaymentNetworkDankort")]
 		NSString Dankort { get; }
 
@@ -1944,7 +1950,7 @@ namespace PassKit {
 		[Field ("PKPaymentNetworkNanaco")]
 		NSString Nanaco { get; }
 
-		[Mac (13, 3), iOS (16, 4), MacCatalyst (16, 4)]
+		[iOS (16, 4), MacCatalyst (16, 4)]
 		[Field ("PKPaymentNetworkPostFinance")]
 		NSString PKPaymentNetworkPostFinance { get; }
 
@@ -1952,19 +1958,19 @@ namespace PassKit {
 		[Field ("PKPaymentNetworkWaon")]
 		NSString Waon { get; }
 
-		[iOS (16, 0), Mac (13, 0), NoTV, MacCatalyst (16, 0)]
+		[iOS (16, 0), NoTV, MacCatalyst (16, 0)]
 		[Field ("PKPaymentNetworkBancomat")]
 		NSString Bancomat { get; }
 
-		[iOS (16, 0), Mac (13, 0), NoTV, MacCatalyst (16, 0)]
+		[iOS (16, 0), NoTV, MacCatalyst (16, 0)]
 		[Field ("PKPaymentNetworkBancontact")]
 		NSString Bancontact { get; }
 
-		[iOS (17, 0), Mac (14, 0), NoTV, MacCatalyst (17, 0)]
+		[iOS (17, 0), NoTV, MacCatalyst (17, 0)]
 		[Field ("PKPaymentNetworkPagoBancomat")]
 		NSString PagoBancomat { get; }
 
-		[iOS (17, 0), Mac (14, 0), NoTV, MacCatalyst (17, 0)]
+		[iOS (17, 0), NoTV, MacCatalyst (17, 0)]
 		[Field ("PKPaymentNetworkTmoney")]
 		NSString Tmoney { get; }
 
@@ -1995,6 +2001,11 @@ namespace PassKit {
 		[Mac (26, 2), iOS (26, 2), MacCatalyst (26, 2), NoTV]
 		[Field ("PKPaymentNetworkConecs")]
 		NSString Conecs { get; }
+
+		/// <summary>Represents the value associated with the constant PKPaymentNetworkElCorteIngles.</summary>
+		[Mac (26, 4), iOS (26, 4), MacCatalyst (26, 4), NoTV]
+		[Field ("PKPaymentNetworkElCorteIngles")]
+		NSString ElCorteIngles { get; }
 	}
 
 	/// <summary>A button used to activate an Apple Pay payment. Available styles and types are defined by <see cref="PassKit.PKPaymentButtonStyle" /> and <see cref="PassKit.PKPaymentButtonType" />.</summary>
@@ -2043,7 +2054,7 @@ namespace PassKit {
 
 	/// <summary>A button that adds passes to a Wallet.</summary>
 	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Miscellaneous/Reference/PKAddPassButton_Class/index.html">Apple documentation for <c>PKAddPassButton</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/passkit/pkaddpassbutton">Apple documentation for <c>PKAddPassButton</c></related>
 	[NoMac] // under `#if TARGET_OS_IOS`
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UIButton))]
@@ -2110,8 +2121,8 @@ namespace PassKit {
 		bool CanMakePayments { get; }
 
 		/// <param name="supportedNetworks">To be added.</param>
-		///         <summary>Gets a value that tells wether the user can make payments in at least one of the specified <paramref name="supportedNetworks" />.</summary>
-		///         <returns>A value that tells wether the user can make payments in at least one of the specified <paramref name="supportedNetworks" />.</returns>
+		///         <summary>Gets a value that tells whether the user can make payments in at least one of the specified <paramref name="supportedNetworks" />.</summary>
+		///         <returns>A value that tells whether the user can make payments in at least one of the specified <paramref name="supportedNetworks" />.</returns>
 		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("canMakePaymentsUsingNetworks:")]
@@ -2119,8 +2130,8 @@ namespace PassKit {
 
 		/// <param name="supportedNetworks">To be added.</param>
 		///         <param name="capabilties">To be added.</param>
-		///         <summary>Gets a value that tells wether the user can make payments in at least one of the specified <paramref name="supportedNetworks" /> with the specified <paramref name="capabilties" />.</summary>
-		///         <returns>A value that tells wether the user can make payments in at least one of the specified <paramref name="supportedNetworks" /> with the specified <paramref name="capabilties" />.</returns>
+		///         <summary>Gets a value that tells whether the user can make payments in at least one of the specified <paramref name="supportedNetworks" /> with the specified <paramref name="capabilties" />.</summary>
+		///         <returns>A value that tells whether the user can make payments in at least one of the specified <paramref name="supportedNetworks" /> with the specified <paramref name="capabilties" />.</returns>
 		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("canMakePaymentsUsingNetworks:capabilities:")]
@@ -2207,7 +2218,6 @@ namespace PassKit {
 	/// <summary>Delegate object that responds to user interactions on behalf of a <see cref="PassKit.PKPaymentAuthorizationController" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/PassKit/PKPaymentAuthorizationControllerDelegate">Apple documentation for <c>PKPaymentAuthorizationControllerDelegate</c></related>
-	[Mac (11, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	[Model]
@@ -2293,7 +2303,7 @@ namespace PassKit {
 		/// <param name="controller">The controller that owns this delegate.</param>
 		///         <param name="paymentMethod">The payment method that was selected.</param>
 		///         <param name="completion">A handler that takes a list of updated payment summary items.</param>
-		///         <summary>Mehod that is called when the user selects a payment method.</summary>
+		///         <summary>Method that is called when the user selects a payment method.</summary>
 		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'DidSelectPaymentMethod' overload with the 'Action<PKPaymentRequestPaymentMethodUpdate>' parameter instead.")]
@@ -2331,7 +2341,6 @@ namespace PassKit {
 	}
 
 	/// <summary>A labeled value for card details.</summary>
-	[Mac (11, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // there's a designated initializer and it does not accept null
@@ -2417,7 +2426,6 @@ namespace PassKit {
 	}
 
 	/// <summary>Contains Suica pass properties.</summary>
-	[Mac (11, 0)]
 	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor] // hint: getter only props and a factory method.
 	[BaseType (typeof (PKTransitPassProperties))]
@@ -2512,7 +2520,7 @@ namespace PassKit {
 		[NullAllowed, Export ("errors", ArgumentSemantic.Copy)]
 		NSError [] Errors { get; set; }
 
-		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
+		[iOS (16, 0), MacCatalyst (16, 0), NoTV]
 		[NullAllowed, Export ("orderDetails", ArgumentSemantic.Strong)]
 		PKPaymentOrderDetails OrderDetails { get; set; }
 	}
@@ -2545,20 +2553,20 @@ namespace PassKit {
 		[Export ("shippingMethods", ArgumentSemantic.Copy)]
 		PKShippingMethod [] ShippingMethods { get; set; }
 
-		[Mac (13, 0), iOS (16, 0), NoTV, MacCatalyst (16, 0)]
+		[iOS (16, 0), NoTV, MacCatalyst (16, 0)]
 		[NullAllowed, Export ("multiTokenContexts", ArgumentSemantic.Copy)]
 		PKPaymentTokenContext [] MultiTokenContexts { get; set; }
 
-		[Mac (13, 0), iOS (16, 0), NoTV, MacCatalyst (16, 0)]
+		[iOS (16, 0), NoTV, MacCatalyst (16, 0)]
 		[NullAllowed, Export ("recurringPaymentRequest", ArgumentSemantic.Strong)]
 		PKRecurringPaymentRequest RecurringPaymentRequest { get; set; }
 
-		[Mac (13, 0), iOS (16, 0), NoTV, MacCatalyst (16, 0)]
+		[iOS (16, 0), NoTV, MacCatalyst (16, 0)]
 		[NullAllowed, Export ("automaticReloadPaymentRequest", ArgumentSemantic.Strong)]
 		PKAutomaticReloadPaymentRequest AutomaticReloadPaymentRequest { get; set; }
 
 		[NullAllowed]
-		[Mac (13, 3), iOS (16, 4), MacCatalyst (16, 4), NoTV]
+		[iOS (16, 4), MacCatalyst (16, 4), NoTV]
 		[Export ("deferredPaymentRequest", ArgumentSemantic.Strong)]
 		PKDeferredPaymentRequest DeferredPaymentRequest { get; set; }
 	}
@@ -2612,13 +2620,11 @@ namespace PassKit {
 	[DisableDefaultCtor]
 	interface PKPaymentRequestPaymentMethodUpdate {
 
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("initWithErrors:paymentSummaryItems:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor ([NullAllowed] NSError [] errors, PKPaymentSummaryItem [] paymentSummaryItems);
 
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("errors", ArgumentSemantic.Copy)]
 		NSError [] Errors { get; set; }
@@ -2633,19 +2639,18 @@ namespace PassKit {
 	}
 
 	/// <summary>Enumerates fields that caused payment errors.</summary>
-	[Mac (11, 0)]
 	[MacCatalyst (13, 1)]
 	[Static] // not to enum'ify - exposed as NSString inside NSError
 	interface PKPaymentErrorKeys {
 
-		/// <summary>Gets a key that identifes the contact field as the source of the error.</summary>
+		/// <summary>Gets a key that identifies the contact field as the source of the error.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("PKPaymentErrorContactFieldUserInfoKey")]
 		NSString ContactFieldUserInfoKey { get; }
 
-		/// <summary>Gets a key that identifes the postal address field as the source of the error.</summary>
+		/// <summary>Gets a key that identifies the postal address field as the source of the error.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
@@ -2733,6 +2738,11 @@ namespace PassKit {
 		[Static]
 		[Export ("disbursementCardUnsupportedError")]
 		NSError DisbursementCardUnsupportedError { get; }
+
+		/// <summary>Gets or sets a value indicating whether this is a delegated request.</summary>
+		[iOS (26, 4), Mac (26, 4), MacCatalyst (26, 4), NoTV]
+		[Export ("isDelegatedRequest")]
+		bool IsDelegatedRequest { get; set; }
 	}
 
 	[iOS (13, 4)]
@@ -2826,14 +2836,19 @@ namespace PassKit {
 		PKRadioTechnology SupportedRadioTechnologies { get; set; }
 
 		// headers say but PKAddSecureElementPassConfiguration is not supported for watch
-		[iOS (16, 0), Mac (13, 0), MacCatalyst (16, 0), NoTV]
-		[Export ("manufacturerIdentifier")]
+		[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+		[NullAllowed, Export ("manufacturerIdentifier")]
 		string ManufacturerIdentifier { get; set; }
 
 		// headers say but PKAddSecureElementPassConfiguration is not supported for watch
-		[iOS (16, 0), Mac (13, 0), MacCatalyst (16, 0), NoTV]
+		[iOS (16, 0), MacCatalyst (16, 0), NoTV]
 		[NullAllowed, Export ("provisioningTemplateIdentifier", ArgumentSemantic.Strong)]
 		string ProvisioningTemplateIdentifier { get; set; }
+
+		/// <summary>Gets or sets the product plan identifier for the car key pass configuration.</summary>
+		[iOS (26, 4), Mac (26, 4), MacCatalyst (26, 4), NoTV]
+		[NullAllowed, Export ("productPlanIdentifier")]
+		string ProductPlanIdentifier { get; set; }
 	}
 
 	interface IPKAddSecureElementPassViewControllerDelegate { }
@@ -2899,12 +2914,12 @@ namespace PassKit {
 		NativeHandle Constructor (string credentialIdentifier, string sharingInstanceIdentifier, CGImage passThumbnailImage, string ownerDisplayName, string localizedDescription, string accountHash, string templateIdentifier, string relyingPartyIdentifier, bool requiresUnifiedAccessCapableDevice);
 
 		[Internal]
-		[iOS (16, 0), Mac (13, 0), MacCatalyst (16, 0), NoTV]
+		[iOS (16, 0), MacCatalyst (16, 0), NoTV]
 		[Export ("initWithProvisioningCredentialIdentifier:sharingInstanceIdentifier:cardTemplateIdentifier:preview:")]
 		NativeHandle _InitWithCardTemplate (string credentialIdentifier, string sharingInstanceIdentifier, string templateIdentifier, PKShareablePassMetadataPreview preview);
 
 		[Internal]
-		[iOS (16, 0), Mac (13, 0), MacCatalyst (16, 0), NoTV]
+		[iOS (16, 0), MacCatalyst (16, 0), NoTV]
 		[Export ("initWithProvisioningCredentialIdentifier:sharingInstanceIdentifier:cardConfigurationIdentifier:preview:")]
 		NativeHandle _InitWithCardConfiguration (string credentialIdentifier, string sharingInstanceIdentifier, string templateIdentifier, PKShareablePassMetadataPreview preview);
 
@@ -2931,7 +2946,7 @@ namespace PassKit {
 
 		[iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("accountHash", ArgumentSemantic.Strong)]
-		string AccountHash { get; [iOS (16, 0), Mac (13, 0), NoTV, MacCatalyst (16, 0)] set; }
+		string AccountHash { get; [iOS (16, 0), NoTV, MacCatalyst (16, 0)] set; }
 
 		[Deprecated (PlatformName.iOS, 16, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 16, 0)]
@@ -2941,24 +2956,24 @@ namespace PassKit {
 
 		[iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("relyingPartyIdentifier", ArgumentSemantic.Strong)]
-		string RelyingPartyIdentifier { get; [iOS (16, 0), Mac (13, 0), NoTV, MacCatalyst (16, 0)] set; }
+		string RelyingPartyIdentifier { get; [iOS (16, 0), NoTV, MacCatalyst (16, 0)] set; }
 
 		[iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("requiresUnifiedAccessCapableDevice")]
-		bool RequiresUnifiedAccessCapableDevice { get; [iOS (16, 0), Mac (13, 0), NoTV, MacCatalyst (16, 0)] set; }
+		bool RequiresUnifiedAccessCapableDevice { get; [iOS (16, 0), NoTV, MacCatalyst (16, 0)] set; }
 
-		[NoTV, iOS (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
+		[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("cardTemplateIdentifier", ArgumentSemantic.Strong)]
 		string CardTemplateIdentifier { get; }
 
 		[Export ("cardConfigurationIdentifier", ArgumentSemantic.Strong)]
 		string CardConfigurationIdentifier { get; }
 
-		[NoTV, iOS (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
+		[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("preview", ArgumentSemantic.Strong)]
 		PKShareablePassMetadataPreview Preview { get; }
 
-		[NoTV, iOS (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
+		[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("serverEnvironmentIdentifier", ArgumentSemantic.Strong)]
 		string ServerEnvironmentIdentifier { get; set; }
 	}
@@ -2986,7 +3001,7 @@ namespace PassKit {
 		[Export ("provisioningPolicyIdentifier", ArgumentSemantic.Strong)]
 		string ProvisioningPolicyIdentifier { get; }
 
-		[NoTV, iOS (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
+		[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
 		[Static, Async]
 		[Export ("configurationForPassMetadata:primaryAction:completion:")]
 		void GetConfiguration (PKShareablePassMetadata [] passMetadata, PKAddShareablePassConfigurationPrimaryAction action, Action<PKAddShareablePassConfiguration, NSError> completion);
@@ -3245,15 +3260,15 @@ namespace PassKit {
 		[NullAllowed, Export ("errors", ArgumentSemantic.Copy)]
 		NSError [] Errors { get; set; }
 
-		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
+		[iOS (16, 0), MacCatalyst (16, 0), NoTV]
 		[Export ("multiTokenContexts", ArgumentSemantic.Copy)]
 		PKPaymentTokenContext [] MultiTokenContexts { get; set; }
 
-		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
+		[iOS (16, 0), MacCatalyst (16, 0), NoTV]
 		[Export ("recurringPaymentRequest", ArgumentSemantic.Strong)]
 		PKRecurringPaymentRequest RecurringPaymentRequest { get; set; }
 
-		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
+		[iOS (16, 0), MacCatalyst (16, 0), NoTV]
 		[Export ("automaticReloadPaymentRequest", ArgumentSemantic.Strong)]
 		PKAutomaticReloadPaymentRequest AutomaticReloadPaymentRequest { get; set; }
 	}
@@ -3405,7 +3420,7 @@ namespace PassKit {
 
 	interface IPKVehicleConnectionDelegate { }
 
-	[iOS (16, 0), Mac (13, 0), NoTV, MacCatalyst (16, 0)]
+	[iOS (16, 0), NoTV, MacCatalyst (16, 0)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface PKVehicleConnectionDelegate {
@@ -3418,7 +3433,7 @@ namespace PassKit {
 		void SessionDidReceiveData (NSData data);
 	}
 
-	[iOS (16, 0), Mac (13, 0), MacCatalyst (16, 0), NoTV]
+	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface PKAutomaticReloadPaymentRequest // : NSCoding, NSCopying, NSSecureCoding // https://feedbackassistant.apple.com/feedback/11018799
@@ -3443,7 +3458,7 @@ namespace PassKit {
 		NativeHandle Constructor (string paymentDescription, PKAutomaticReloadPaymentSummaryItem automaticReloadBilling, NSUrl managementUrl);
 	}
 
-	[iOS (16, 0), Mac (13, 0), MacCatalyst (16, 0), NoTV]
+	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[BaseType (typeof (PKPaymentSummaryItem))]
 	interface PKAutomaticReloadPaymentSummaryItem // : NSCoding, NSCopying, NSSecureCoding // https://feedbackassistant.apple.com/feedback/11018799
 	{
@@ -3586,6 +3601,30 @@ namespace PassKit {
 		[Static]
 		[Export ("veteranStatusElement")]
 		PKIdentityElement VeteranStatusElement { get; }
+
+		/// <summary>Gets the identity element for DHS temporary lawful status.</summary>
+		[iOS (26, 4), MacCatalyst (26, 4), NoMac, NoTV]
+		[Static]
+		[Export ("dhsTemporaryLawfulStatusElement")]
+		PKIdentityElement DhsTemporaryLawfulStatusElement { get; }
+
+		/// <summary>Gets the identity element for nationality.</summary>
+		[iOS (26, 4), MacCatalyst (26, 4), NoMac, NoTV]
+		[Static]
+		[Export ("nationalityElement")]
+		PKIdentityElement NationalityElement { get; }
+
+		/// <summary>Gets the identity element for place of birth.</summary>
+		[iOS (26, 4), MacCatalyst (26, 4), NoMac, NoTV]
+		[Static]
+		[Export ("placeOfBirthElement")]
+		PKIdentityElement PlaceOfBirthElement { get; }
+
+		/// <summary>Gets the identity element for signature or usual mark.</summary>
+		[iOS (26, 4), MacCatalyst (26, 4), NoMac, NoTV]
+		[Static]
+		[Export ("signatureUsualMarkElement")]
+		PKIdentityElement SignatureUsualMarkElement { get; }
 	}
 
 	[NoTV, NoMac, iOS (16, 0), MacCatalyst (16, 0)]
@@ -3622,7 +3661,7 @@ namespace PassKit {
 		string UsageDescriptionKey { get; set; }
 	}
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface PKPaymentOrderDetails // : NSCopying, NSSecureCoding // https://feedbackassistant.apple.com/feedback/11018799
@@ -3644,7 +3683,7 @@ namespace PassKit {
 		string AuthenticationToken { get; set; }
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), Mac (13, 0), NoTV]
+	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface PKPaymentTokenContext // : NSCoding, NSCopying, NSSecureCoding // https://feedbackassistant.apple.com/feedback/11018799
@@ -3669,7 +3708,7 @@ namespace PassKit {
 		NSDecimalNumber Amount { get; set; }
 	}
 
-	[iOS (16, 0), Mac (13, 0), MacCatalyst (16, 0), NoTV]
+	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface PKRecurringPaymentRequest // : NSCoding, NSCopying, NSSecureCoding // https://feedbackassistant.apple.com/feedback/11018799
@@ -3697,7 +3736,7 @@ namespace PassKit {
 		NSUrl TokenNotificationUrl { get; set; }
 	}
 
-	[NoTV, iOS (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
+	[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (PKAddPassMetadataPreview))]
 	[DisableDefaultCtor]
 	interface PKShareablePassMetadataPreview // : NSCoding, NSCopying, NSSecureCoding // https://feedbackassistant.apple.com/feedback/11018799
@@ -3753,7 +3792,7 @@ namespace PassKit {
 		bool PromptToShareUrl { get; set; }
 	}
 
-	[iOS (16, 0), Mac (13, 0), NoTV, MacCatalyst (16, 0)]
+	[iOS (16, 0), NoTV, MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface PKVehicleConnectionSession {
@@ -3779,7 +3818,7 @@ namespace PassKit {
 		void Invalidate ();
 	}
 
-	[NoTV, Mac (13, 3), iOS (16, 4), MacCatalyst (16, 4)]
+	[NoTV, iOS (16, 4), MacCatalyst (16, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface PKDeferredPaymentRequest {

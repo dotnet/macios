@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Runtime.CompilerServices;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 
@@ -13,22 +13,20 @@ using Xamarin.Utils;
 
 namespace Xamarin.Bundler {
 	public static partial class ErrorHelper {
-		public static ApplePlatform Platform;
-
-		internal static string Prefix {
-			get {
-				switch (Platform) {
-				case ApplePlatform.iOS:
-				case ApplePlatform.TVOS:
-				case ApplePlatform.MacCatalyst:
-				case ApplePlatform.None: // Return "MT" by default instead of throwing an exception, because any exception here will most likely hide whatever other error we're trying to show.
-					return "MT";
-				case ApplePlatform.MacOSX:
-					return "MM";
-				default:
-					// Do not use the ErrorHandler machinery, because it will probably end up recursing and eventually throwing a StackOverflowException.
-					throw new InvalidOperationException ($"Unknown platform: {Platform}");
-				}
+		internal static string GetPrefix (IToolLog? log)
+		{
+			switch (log?.Platform) {
+			case ApplePlatform.iOS:
+			case ApplePlatform.TVOS:
+			case ApplePlatform.MacCatalyst:
+			case ApplePlatform.None: // Return "MT" by default instead of throwing an exception, because any exception here will most likely hide whatever other error we're trying to show.
+			case null:
+				return "MT";
+			case ApplePlatform.MacOSX:
+				return "MM";
+			default:
+				// Do not use the ErrorHandler machinery, because it will probably end up recursing and eventually throwing a StackOverflowException.
+				throw new InvalidOperationException ($"Unknown platform: {log.Platform}");
 			}
 		}
 
@@ -38,49 +36,58 @@ namespace Xamarin.Bundler {
 			Disable = 1,
 		}
 
-		static Dictionary<int, WarningLevel>? warning_levels;
-		public static int Verbosity { get; set; }
+		static ConditionalWeakTable<IToolLog, Dictionary<int, WarningLevel>> warning_levels = new ();
 
-#pragma warning disable 649
-		public static Func<Exception, bool>? IsExpectedException;
-		public static Action<int>? ExitCallback;
-#pragma warning restore 649
-
-		public static WarningLevel GetWarningLevel (int code)
+		public static Dictionary<int, WarningLevel>? GetWarningLevels (IToolLog log)
 		{
-			WarningLevel level;
+			warning_levels.TryGetValue (log, out var log_warning_levels);
+			return log_warning_levels;
+		}
 
-			if (warning_levels is null)
-				return WarningLevel.Warning;
+		public static bool TryGetWarningLevel (IToolLog log, int code, out WarningLevel warningLevel)
+		{
+			warningLevel = default;
 
-			// code -1: all codes
-			if (warning_levels.TryGetValue (-1, out level))
-				return level;
+			if (warning_levels.TryGetValue (log, out var log_warning_levels)) {
+				// code -1: all codes
+				if (log_warning_levels.TryGetValue (-1, out warningLevel))
+					return true;
 
-			if (warning_levels.TryGetValue (code, out level))
-				return level;
+				if (log_warning_levels.TryGetValue (code, out warningLevel))
+					return true;
+			}
+
+			return false;
+		}
+
+		public static WarningLevel GetWarningLevel (IToolLog log, int code)
+		{
+			if (TryGetWarningLevel (log, code, out var warningLevel))
+				return warningLevel;
 
 			return WarningLevel.Warning;
 		}
 
-		public static void SetWarningLevel (WarningLevel level, int? code = null /* if null, apply to all warnings */)
+		public static void SetWarningLevel (IToolLog log, WarningLevel level, int? code = null /* if null, apply to all warnings */)
 		{
-			if (warning_levels is null)
-				warning_levels = new Dictionary<int, WarningLevel> ();
+			if (!warning_levels.TryGetValue (log, out var log_warning_levels)) {
+				log_warning_levels = new Dictionary<int, WarningLevel> ();
+				warning_levels.Add (log, log_warning_levels);
+			}
 			if (code.HasValue) {
-				warning_levels [code.Value] = level;
+				log_warning_levels [code.Value] = level;
 			} else {
-				warning_levels [-1] = level; // code -1: all codes.
+				log_warning_levels [-1] = level; // code -1: all codes.
 			}
 		}
 
-		public static void ParseWarningLevel (WarningLevel level, string value)
+		public static void ParseWarningLevel (IToolLog log, WarningLevel level, string value)
 		{
 			if (string.IsNullOrEmpty (value)) {
-				SetWarningLevel (level);
+				SetWarningLevel (log, level);
 			} else {
 				foreach (var code in value.Split (new char [] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-					SetWarningLevel (level, int.Parse (code));
+					SetWarningLevel (log, level, int.Parse (code));
 			}
 		}
 
@@ -253,102 +260,109 @@ namespace Xamarin.Bundler {
 			return e;
 		}
 
-		public static void Warning (int code, string message, params object [] args)
+		public static void Warning (IToolLog log, int code, string message, params object [] args)
 		{
-			Show (new ProductException (code, false, message, args));
+			Show (log, new ProductException (code, false, null, message, args));
 		}
 
-		public static void Warning (int code, Exception innerException, string message, params object [] args)
+		public static void Warning (IToolLog log, int code, Exception innerException, string message, params object [] args)
 		{
-			Show (new ProductException (code, false, innerException, message, args));
+			Show (log, new ProductException (code, false, innerException, message, args));
 		}
 
 		// Shows any warnings, and if there are any errors, throws an AggregateException.
-		public static void ThrowIfErrors (IList<Exception> exceptions)
+		public static void ThrowIfErrors (IToolLog log, IList<Exception> exceptions)
 		{
 			if (exceptions?.Any () != true)
 				return;
 
 			// Separate warnings from errors
-			var grouped = exceptions.GroupBy ((v) => (v as ProductException)?.Error == false);
+			var grouped = exceptions.GroupBy ((v) => (v as ProductException)?.IsError (log) == false);
 
 			var warnings = grouped.SingleOrDefault ((v) => v.Key);
 			if (warnings?.Any () == true)
-				Show (warnings);
+				Show (log, warnings);
 
 			var errors = grouped.SingleOrDefault ((v) => !v.Key);
 			if (errors?.Any () == true)
 				throw new AggregateException (errors);
 		}
 
-		public static void Show (IEnumerable<Exception> list)
+		public static void Show (IToolLog log, IEnumerable<Exception> list)
 		{
 			var exceptions = CollectExceptions (list);
 			bool error = false;
 
 			foreach (var ex in exceptions)
-				error |= ShowInternal (ex);
+				error |= ShowInternal (log, ex);
 
 			if (error)
 				Exit (1);
 		}
 
-		public static void Show (Exception e)
+		public static void Show (IToolLog log, Exception e)
 		{
-			Show (new Exception [] { e });
+			Show (log, new Exception [] { e });
 		}
 
 		static void Exit (int exitCode)
 		{
-			if (ExitCallback is not null)
-				ExitCallback (exitCode);
 			Environment.Exit (exitCode);
 		}
 
-		static bool ShowInternal (Exception e)
+		static bool ShowInternal (IToolLog log, Exception e)
 		{
 			var mte = e as ProductException;
 			bool error = true;
 
 			if (mte is not null) {
-				error = mte.Error;
+				error = mte.IsError (log);
 
-				if (!error && GetWarningLevel (mte.Code) == WarningLevel.Disable)
+				if (!error && GetWarningLevel (log, mte.Code) == WarningLevel.Disable)
 					return false; // This is an ignored warning.
 
-				Console.Error.WriteLine (mte.ToString ());
+				// Report warnings as warnings, otherwise they'd end up failing the build when
+				// the log is an MSBuild task (which is the case for the assembly preparer).
+				if (error) {
+					log.LogError (mte);
+				} else {
+					log.LogWarning (mte);
+				}
 
-				ShowInner (e);
+				ShowInner (log, e);
 
-				if (Verbosity > 2 && !string.IsNullOrEmpty (e.StackTrace))
-					Console.Error.WriteLine (e.StackTrace);
-			} else if (IsExpectedException is null || !IsExpectedException (e)) {
-				Console.Error.WriteLine ("error " + Prefix + "0000: Unexpected error - Please file a bug report at https://github.com/dotnet/macios/issues/new");
-				Console.Error.WriteLine (e.ToString ());
+				if (log.Verbosity > 2 && !string.IsNullOrEmpty (e.StackTrace)) {
+					// Report the stack trace as an error or a message depending on
+					// whether we're showing an error or a warning, otherwise warnings
+					// would end up failing the build when the log is an MSBuild task.
+					if (error) {
+						log.LogError (e.StackTrace);
+					} else {
+						log.Log (e.StackTrace);
+					}
+				}
 			} else {
-				Console.Error.WriteLine (e.ToString ());
-				ShowInner (e);
-				if (Verbosity > 2 && !string.IsNullOrEmpty (e.StackTrace))
-					Console.Error.WriteLine (e.StackTrace);
+				log.LogError ("error " + GetPrefix (log) + "0000: Unexpected error - Please file a bug report at https://github.com/dotnet/macios/issues/new");
+				log.LogError (e.ToString ());
 			}
 
 			return error;
 		}
 
-		static void ShowInner (Exception e)
+		static void ShowInner (IToolLog log, Exception e)
 		{
 			var ie = e.InnerException;
 			if (ie is null)
 				return;
 
-			if (Verbosity > 3) {
-				Console.Error.WriteLine ("--- inner exception");
-				Console.Error.WriteLine (ie);
-				Console.Error.WriteLine ("---");
-			} else if (Verbosity > 0 || ie is ProductException) {
-				Console.Error.WriteLine ("\t{0}", ie.Message);
+			if (log.Verbosity > 3) {
+				log.LogError ("--- inner exception");
+				log.LogError (ie.ToString ());
+				log.LogError ("---");
+			} else if (log.Verbosity > 0 || ie is ProductException) {
+				log.LogError ($"\t{ie.Message}");
 			}
-			ShowInner (ie);
+			ShowInner (log, ie);
 		}
 	}
 }

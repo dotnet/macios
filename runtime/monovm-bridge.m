@@ -53,11 +53,11 @@ xamarin_bridge_initialize ()
 {
 	if (xamarin_register_modules != NULL)
 		xamarin_register_modules ();
-	DEBUG_LAUNCH_TIME_PRINT ("\tAOT register time");
+	XAMARIN_LAUNCH_TIME_PRINT ("\tAOT register time");
 
 #ifdef DEBUG
 	monotouch_start_debugging ();
-	DEBUG_LAUNCH_TIME_PRINT ("\tDebug init time");
+	XAMARIN_LAUNCH_TIME_PRINT ("\tDebug init time");
 #endif
 	
 	if (xamarin_init_mono_debug)
@@ -68,7 +68,7 @@ xamarin_bridge_initialize ()
 
 #ifdef DEBUG
 	monotouch_start_profiling ();
-	DEBUG_LAUNCH_TIME_PRINT ("\tProfiler config time");
+	XAMARIN_LAUNCH_TIME_PRINT ("\tProfiler config time");
 #endif
 
 	mono_set_signal_chaining (TRUE);
@@ -82,7 +82,7 @@ xamarin_bridge_initialize ()
 	  This is wasteful, but there's no way to manipulate the preload hook list except by adding to it.
 	*/
 	mono_install_assembly_preload_hook (xamarin_assembly_preload_hook, NULL);
-	DEBUG_LAUNCH_TIME_PRINT ("\tJIT init time");
+	XAMARIN_LAUNCH_TIME_PRINT ("\tJIT init time");
 }
 
 void
@@ -170,9 +170,9 @@ xamarin_get_nativehandle_class ()
 }
 
 MonoClass *
-xamarin_get_nsobject_class ()
+xamarin_get_nsobject_class (bool allowAbsence)
 {
-	if (nsobject_class == NULL)
+	if (nsobject_class == NULL && !allowAbsence)
 		xamarin_assertion_message ("Internal consistency error, please file a bug (https://github.com/dotnet/macios/issues/new). Additional data: can't get the %s class because it's been linked away.\n", "NSObject");
 	return nsobject_class;
 }
@@ -225,7 +225,7 @@ xamarin_bridge_free_mono_signature (MonoMethodSignature **psig)
 bool
 xamarin_is_class_nsobject (MonoClass *cls)
 {
-	return mono_class_is_subclass_of (cls, xamarin_get_nsobject_class (), false);
+	return mono_class_is_subclass_of (cls, xamarin_get_nsobject_class (false), false);
 }
 
 bool

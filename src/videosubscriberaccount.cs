@@ -62,7 +62,7 @@ namespace VideoSubscriberAccount {
 #if !XAMCORE_5_0
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	[Obsolete ("Use 'VSUserAccountQueryOptions' instead.")]
-	[TV (16, 0), Mac (13, 0), iOS (16, 0), NoMacCatalyst]
+	[TV (16, 0), iOS (16, 0), NoMacCatalyst]
 	[Native]
 	enum VSUserAccountQueryOption : ulong {
 		None = 0,
@@ -70,7 +70,7 @@ namespace VideoSubscriberAccount {
 	}
 #endif // !XAMCORE_5_0
 
-	[TV (16, 0), NoMacCatalyst, iOS (16, 0), Mac (13, 0)]
+	[TV (16, 0), NoMacCatalyst, iOS (16, 0)]
 	[Flags]
 	[Native]
 	public enum VSUserAccountQueryOptions : long {
@@ -78,14 +78,14 @@ namespace VideoSubscriberAccount {
 		AllDevices,
 	}
 
-	[TV (16, 0), NoMacCatalyst, iOS (16, 0), Mac (13, 0)]
+	[TV (16, 0), NoMacCatalyst, iOS (16, 0)]
 	[Native]
 	public enum VSUserAccountType : long {
 		Free,
 		Paid,
 	}
 
-	[TV (16, 0), NoMacCatalyst, iOS (16, 0), Mac (13, 0)]
+	[TV (16, 0), NoMacCatalyst, iOS (16, 0)]
 	[Native]
 	public enum VSOriginatingDeviceCategory : long {
 		Mobile,
@@ -138,7 +138,7 @@ namespace VideoSubscriberAccount {
 
 	interface IVSAccountManagerDelegate { }
 
-	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/VideoSubscriberAccount/VSAccountManagerDelegate">Apple documentation for <c>VSAccountManagerDelegate</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/videosubscriberaccount/vsaccountmanagerdelegate">Apple documentation for <c>VSAccountManagerDelegate</c></related>
 	[Protocol, Model]
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
@@ -173,7 +173,7 @@ namespace VideoSubscriberAccount {
 
 	/// <summary>Coordinates access to the user's subscription.</summary>
 	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/VideoSubscriberAccount/VSAccountManager">Apple documentation for <c>VSAccountManager</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/videosubscriberaccount/vsaccountmanager">Apple documentation for <c>VSAccountManager</c></related>
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	interface VSAccountManager {
@@ -230,8 +230,6 @@ namespace VideoSubscriberAccount {
 		VSAccountManagerResult Enqueue (VSAccountMetadataRequest accountMetadataRequest, Action<VSAccountMetadata, NSError> completionHandler);
 
 		[NoMac]
-		[TV (13, 0)]
-		[iOS (13, 0)]
 		[Field ("VSOpenTVProviderSettingsURLString")]
 		NSString OpenTVProviderSettingsUrl { get; }
 	}
@@ -261,7 +259,7 @@ namespace VideoSubscriberAccount {
 
 	/// <summary>Represents a cancellable request that is still "in flight".</summary>
 	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/VideoSubscriberAccount/VSAccountManagerResult">Apple documentation for <c>VSAccountManagerResult</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/videosubscriberaccount/vsaccountmanagerresult">Apple documentation for <c>VSAccountManagerResult</c></related>
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -275,7 +273,7 @@ namespace VideoSubscriberAccount {
 
 	/// <summary>Information about a subscription.</summary>
 	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/VideoSubscriberAccount/VSAccountMetadata">Apple documentation for <c>VSAccountMetadata</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/videosubscriberaccount/vsaccountmetadata">Apple documentation for <c>VSAccountMetadata</c></related>
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	interface VSAccountMetadata {
@@ -328,7 +326,7 @@ namespace VideoSubscriberAccount {
 
 	/// <summary>Specifies information being requested from the subscriber's account.</summary>
 	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/VideoSubscriberAccount/VSAccountMetadataRequest">Apple documentation for <c>VSAccountMetadataRequest</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/videosubscriberaccount/vsaccountmetadatarequest">Apple documentation for <c>VSAccountMetadataRequest</c></related>
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	interface VSAccountMetadataRequest {
@@ -409,8 +407,6 @@ namespace VideoSubscriberAccount {
 		[Export ("supportedAuthenticationSchemes", ArgumentSemantic.Copy)]
 		NSString [] SupportedAuthenticationSchemesString { get; set; }
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[NullAllowed, Export ("accountProviderAuthenticationToken")]
 		string AccountProviderAuthenticationToken { get; set; }
 
@@ -461,8 +457,6 @@ namespace VideoSubscriberAccount {
 		[Field ("VSAccountProviderAuthenticationSchemeSAML")]
 		Saml,
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[Field ("VSAccountProviderAuthenticationSchemeAPI")]
 		Api,
 	}
@@ -554,7 +548,7 @@ namespace VideoSubscriberAccount {
 		string Identifier { get; }
 	}
 
-	[TV (16, 0), NoMacCatalyst, iOS (16, 0), Mac (13, 0)]
+	[TV (16, 0), NoMacCatalyst, iOS (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface VSUserAccountManager {
@@ -595,7 +589,7 @@ namespace VideoSubscriberAccount {
 	delegate void VSUserAccountManagerRequestAutoSignInAuthorizationCallback ([NullAllowed] VSAutoSignInTokenUpdateContext updateContext, [NullAllowed] NSError error);
 	delegate void VSUserAccountManagerCallback ([NullAllowed] NSError error);
 
-	[TV (16, 0), NoMacCatalyst, iOS (16, 0), Mac (13, 0)]
+	[TV (16, 0), NoMacCatalyst, iOS (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface VSUserAccount {
@@ -620,7 +614,7 @@ namespace VideoSubscriberAccount {
 		[Export ("deleted")]
 		bool Deleted { [Bind ("isDeleted")] get; set; }
 
-		[TV (16, 4), NoMacCatalyst, iOS (16, 4), Mac (13, 3)]
+		[TV (16, 4), NoMacCatalyst, iOS (16, 4)]
 		[Export ("signedOut")]
 		bool SignedOut { [Bind ("isSignedOut")] get; set; }
 

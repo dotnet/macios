@@ -19,7 +19,7 @@ namespace Extrospection {
 		{
 		}
 
-		static MethodDefinition GetMethod (ObjCMethodDecl decl)
+		static MethodDefinition? GetMethod (ObjCMethodDecl decl)
 		{
 			methods.TryGetValue (decl.GetName (), out var md);
 			return md;
@@ -50,7 +50,7 @@ namespace Extrospection {
 		void Visit (ObjCMethodDecl decl)
 		{
 			// don't process methods (or types) that are unavailable for the current platform
-			if (!decl.IsAvailable () || !(decl.DeclContext as Decl).IsAvailable ())
+			if (!decl.IsAvailable () || !((Decl) decl.DeclContext!).IsAvailable ())
 				return;
 
 			var method = GetMethod (decl);

@@ -34,10 +34,10 @@ namespace Xamarin.Mac.Tests {
 			using (var app2 = SBApplication.GetApplication<MySBApp> (knownBundle))
 			using (var app3 = SBApplication.GetApplication (unknownBundle))
 			using (var app4 = SBApplication.GetApplication<MySBApp> (unknownBundle)) {
-				Assert.IsNotNull (app1, "SBApplication from known bundle is null");
-				Assert.IsNotNull (app2, "MySBApp from known bundle is null");
-				Assert.IsNull (app3, "SBApplication from unknown bundle is non-null");
-				Assert.IsNull (app4, "MySBApp from unknown bundle is non-null");
+				Assert.That (app1, Is.Not.Null, "SBApplication from known bundle is null");
+				Assert.That (app2, Is.Not.Null, "MySBApp from known bundle is null");
+				Assert.That (app3, Is.Null, "SBApplication from unknown bundle is non-null");
+				Assert.That (app4, Is.Null, "MySBApp from unknown bundle is non-null");
 			}
 		}
 
@@ -47,8 +47,8 @@ namespace Xamarin.Mac.Tests {
 			using (NSUrl knownUrl = new NSUrl ("http://www.xamarin.com"))
 			using (var app1 = SBApplication.GetApplication (knownUrl))
 			using (var app2 = SBApplication.GetApplication<MySBApp> (knownUrl)) {
-				Assert.IsNotNull (app1, "SBApplication from known URL is null");
-				Assert.IsNotNull (app2, "MySBApp from known URL is null");
+				Assert.That (app1, Is.Not.Null, "SBApplication from known URL is null");
+				Assert.That (app2, Is.Not.Null, "MySBApp from known URL is null");
 			}
 		}
 
@@ -61,10 +61,10 @@ namespace Xamarin.Mac.Tests {
 			using (var app2 = SBApplication.GetApplication<MySBApp> (knownPid))
 			using (var app3 = SBApplication.GetApplication (unknownPid))
 			using (var app4 = SBApplication.GetApplication<MySBApp> (unknownPid)) {
-				Assert.IsNotNull (app1, "SBApplication from known pid is null");
-				Assert.IsNotNull (app2, "MySBApp from known pid is null");
-				Assert.IsNotNull (app3, "SBApplication from unknown pid is null");
-				Assert.IsNotNull (app4, "MySBApp from unknown pid is null");
+				Assert.That (app1, Is.Not.Null, "SBApplication from known pid is null");
+				Assert.That (app2, Is.Not.Null, "MySBApp from known pid is null");
+				Assert.That (app3, Is.Not.Null, "SBApplication from unknown pid is null");
+				Assert.That (app4, Is.Not.Null, "MySBApp from unknown pid is null");
 			}
 		}
 	}

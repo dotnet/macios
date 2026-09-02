@@ -4,12 +4,11 @@
     <TargetFramework>net$(BundledNETCoreAppTargetFrameworkVersion)</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
-    <LangVersion>latest</LangVersion>
     <DefineConstants>$(DefineConstants);MSBUILD_TASKS</DefineConstants>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>../../../product.snk</AssemblyOriginatorKeyFile>
     <NoWarn>$(NoWarn);MSB3277</NoWarn> <!-- warning MSB3277: Found conflicts between different versions of "System.Reflection.Metadata" that could not be resolved. -->
-    <WarningsAsErrors>Nullable</WarningsAsErrors>
+    <NoWarn>$(NoWarn);CS1685</NoWarn> <!-- Ignore the duplicate ImmutableArray<T> warning caused by the ILMerged Xamarin.MacDev.Tasks assembly. -->
   </PropertyGroup>
 
   <!--
@@ -38,9 +37,9 @@
     <ProjectReference Include="../../../external/Xamarin.MacDev/Xamarin.MacDev/Xamarin.MacDev.csproj" Condition="'$(DesignTimeBuild)' == 'true'"/>
     <ProjectReference Include="../../../msbuild/Xamarin.Localization.MSBuild/Xamarin.Localization.MSBuild.csproj" Condition="'$(DesignTimeBuild)' == 'true'" />
 
-    <PackageReference Include="NUnit" Version="3.12.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.15.1" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
+    <PackageReference Include="NUnit" Version="$(NUnitPackageVersion)" />
+    <PackageReference Include="NUnit3TestAdapter" Version="$(NUnit3TestAdapterPackageVersion)" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="$(MicrosoftNETTestSdkPackageVersion)" />
     <PackageReference Include="Microsoft.Build" Version="$(MicrosoftBuildPackageVersion)" />
     <PackageReference Include="Microsoft.Build.Framework" Version="$(MicrosoftBuildFrameworkPackageVersion)" />
     <PackageReference Include="Microsoft.Build.Tasks.Core" Version="$(MicrosoftBuildTasksCorePackageVersion)" />

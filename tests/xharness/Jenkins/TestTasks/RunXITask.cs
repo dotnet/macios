@@ -9,19 +9,17 @@ using Microsoft.DotNet.XHarness.iOS.Shared.Execution;
 using Microsoft.DotNet.XHarness.iOS.Shared.Hardware;
 
 namespace Xharness.Jenkins.TestTasks {
-	abstract class RunXITask<TDevice> : RunTestTask where TDevice : class, IDevice {
+	public abstract class RunXITask<TDevice> : RunTestTask where TDevice : class, IDevice {
 		public TestTarget AppRunnerTarget { get; set; }
 
-		public AppRunner Runner { get; set; }
-		public AppRunner AdditionalRunner { get; set; }
+		public AppRunner? Runner { get; set; }
+		public AppRunner? AdditionalRunner { get; set; }
 
 		public IEnumerable<TDevice> Candidates { get; }
 
-		public TDevice Device { get; set; }
+		public TDevice? Device { get; set; }
 
-		public TDevice CompanionDevice { get; set; }
-
-		public string BundleIdentifier => Runner.AppInformation.BundleIdentifier;
+		public string BundleIdentifier => Runner?.AppInformation.BundleIdentifier ?? string.Empty;
 
 		public RunXITask (Jenkins jenkins, BuildToolTask build_task, IMlaunchProcessManager processManager, IEnumerable<TDevice> candidates)
 			: base (jenkins, build_task, processManager)
@@ -40,7 +38,7 @@ namespace Xharness.Jenkins.TestTasks {
 			}
 		}
 
-		public override string Mode {
+		public override string? Mode {
 			get {
 
 				switch (Platform) {
@@ -65,7 +63,7 @@ namespace Xharness.Jenkins.TestTasks {
 			var asyncEnumerable = enumerable as IAsyncEnumerable;
 			if (asyncEnumerable is not null)
 				await asyncEnumerable.ReadyTask;
-			if (!enumerable.Any ()) {
+			if (enumerable is null || !enumerable.Any ()) {
 				ExecutionResult = TestExecutingResult.DeviceNotFound;
 				FailureMessage = "No applicable devices found.";
 			}

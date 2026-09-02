@@ -13,7 +13,36 @@
             "args": [
                 "@xtro-sharpie-iOS.rsp",
             ],
+        },
+        {
+            "name": "xtro-sharpie: tvOS",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "dotnet: build",
+            "program": "${workspaceFolder}/xtro-sharpie/bin/Debug/xtro-sharpie.dll",
+            "args": [
+                "@xtro-sharpie-tvOS.rsp",
+            ],
+        },
+        {
+            "name": "xtro-sharpie: Mac Catalyst",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "dotnet: build",
+            "program": "${workspaceFolder}/xtro-sharpie/bin/Debug/xtro-sharpie.dll",
+            "args": [
+                "@xtro-sharpie-MacCatalyst.rsp",
+            ],
+        },
+        {
+            "name": "xtro-sharpie: macOS",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "dotnet: build",
+            "program": "${workspaceFolder}/xtro-sharpie/bin/Debug/xtro-sharpie.dll",
+            "args": [
+                "@xtro-sharpie-macOS.rsp",
+            ],
         }
-
     ]
 }

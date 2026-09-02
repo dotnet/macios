@@ -30,16 +30,19 @@ namespace Xamarin.Linker {
 			case RegistrarMode.Static:
 				Configuration.Application.StaticRegistrar.Register (Configuration.GetNonDeletedAssemblies (this));
 				goto case RegistrarMode.ManagedStatic;
+			case RegistrarMode.TrimmableStatic:
 			case RegistrarMode.ManagedStatic:
 				var dir = Configuration.CacheDirectory;
 				var header = Path.Combine (dir, "registrar.h");
 				var code = Path.Combine (dir, "registrar.mm");
-				if (app.Registrar == RegistrarMode.ManagedStatic) {
+#if !ASSEMBLY_PREPARER
+				if (app.Registrar == RegistrarMode.ManagedStatic || app.Registrar == RegistrarMode.TrimmableStatic) {
 					// Every api has been registered if we're using the managed registrar
 					// (since we registered types before the trimmer did anything),
 					// so we need to remove those that were later trimmed away by the trimmer.
 					Configuration.Application.StaticRegistrar.FilterTrimmedApi (Annotations);
 				}
+#endif
 				Configuration.Application.StaticRegistrar.Generate (header, code, out var initialization_method);
 
 				var items = new List<MSBuildItem> ();
@@ -49,6 +52,10 @@ namespace Xamarin.Linker {
 					new Dictionary<string, string> {
 						{ "Arch", abi.AsArchString () },
 						{ "Arguments", "-std=c++14" },
+						// The generated code #includes the generated header, so the header
+						// has to be next to the code when it's compiled. Declare it here, so
+						// that it's copied to the Mac when building remotely from Windows.
+						{ "AdditionalDependencies", header },
 					}
 				));
 

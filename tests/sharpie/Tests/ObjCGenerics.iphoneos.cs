@@ -6,16 +6,16 @@ using ObjCRuntime;
 interface CNLabeledValue : INSCopying, INSSecureCoding {
 	// @property (readonly, copy, nonatomic) ValueType ValueTypeProperty;
 	[Export ("ValueTypeProperty", ArgumentSemantic.Copy)]
-	NSObject<NSCopying, NSSecureCoding> ValueTypeProperty { get; }
+	NSObject<INSCopying, INSSecureCoding> ValueTypeProperty { get; }
 
 	// -(ValueType _Nullable)getValueTypeMethod;
 	[NullAllowed, Export ("getValueTypeMethod")]
 	[Verify (MethodToProperty)]
-	NSObject<NSCopying, NSSecureCoding> ValueTypeMethod { get; }
+	NSObject<INSCopying, INSSecureCoding> ValueTypeMethod { get; }
 
 	// -(void)setValueTypeMethod:(ValueType _Nullable)obj;
 	[Export ("setValueTypeMethod:")]
-	void SetValueTypeMethod ([NullAllowed] NSObject<NSCopying, NSSecureCoding> obj);
+	void SetValueTypeMethod ([NullAllowed] NSObject<INSCopying, INSSecureCoding> obj);
 }
 
 // @protocol A

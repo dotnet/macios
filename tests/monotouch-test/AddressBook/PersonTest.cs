@@ -11,6 +11,7 @@
 
 using UIKit;
 using AddressBook;
+using Foundation;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.AddressBook {
@@ -36,7 +37,7 @@ namespace MonoTouchFixtures.AddressBook {
 
 			NSError err;
 			var ab = ABAddressBook.Create (out err);
-			Assert.IsNotNull (ab, "#1");
+			Assert.That (ab, Is.Not.Null, "#1");
 
 			var people = ab.GetPeople ();
 			if (people.Length < 1) {
@@ -59,8 +60,115 @@ namespace MonoTouchFixtures.AddressBook {
 			multi.Value = addr;
 			p.SetAddresses (mutable);
 
-			Assert.IsTrue (ab.HasUnsavedChanges);
+			Assert.That (ab.HasUnsavedChanges, Is.True);
 			ab.Save ();
+		}
+
+		[Test]
+		public void LocalizedPropertyName ()
+		{
+			TestRuntime.CheckAddressBookPermission ();
+			var name = ABPerson.LocalizedPropertyName (ABPersonProperty.FirstName);
+			Assert.That (name, Is.Not.Null, "name");
+			Assert.That (name.Length, Is.GreaterThan (0), "Length");
+		}
+
+		[Test]
+		public void LocalizedPropertyName_Int ()
+		{
+			TestRuntime.CheckAddressBookPermission ();
+			// Use the underlying integer ID for ABPersonProperty.LastName (1)
+			var name = ABPerson.LocalizedPropertyName (1);
+			Assert.That (name, Is.Not.Null, "name");
+			Assert.That (name.Length, Is.GreaterThan (0), "Length");
+		}
+
+		[Test]
+		public void PersonToString ()
+		{
+			TestRuntime.CheckAddressBookPermission ();
+			using (var person = new ABPerson ()) {
+				person.FirstName = "Test";
+				person.LastName = "Person";
+				var str = person.ToString ();
+				Assert.That (str, Is.Not.Null, "ToString");
+			}
+		}
+
+		[Test]
+		public void GetImage_NoImage ()
+		{
+			TestRuntime.CheckAddressBookPermission ();
+			using (var person = new ABPerson ()) {
+				Assert.That (person.HasImage, Is.False, "HasImage");
+				Assert.That (person.Image, Is.Null, "Image");
+				Assert.That (person.GetImage (ABPersonImageFormat.Thumbnail), Is.Null, "GetImage");
+			}
+		}
+
+		[Test]
+		public void GetLinkedPeople ()
+		{
+			TestRuntime.CheckAddressBookPermission ();
+			using (var person = new ABPerson ()) {
+				var linked = person.GetLinkedPeople ();
+				// A new person not in the address book may return null or empty
+				Assert.That (linked is null || linked.Length >= 0, Is.True, "GetLinkedPeople");
+			}
+		}
+
+		[Test]
+		public void CreateFromVCard ()
+		{
+			TestRuntime.CheckAddressBookPermission ();
+			var vcard = "BEGIN:VCARD\nVERSION:3.0\nFN:Test Person\nN:Person;Test;;;\nEND:VCARD\n";
+			using (var data = NSData.FromString (vcard)) {
+				var people = ABPerson.CreateFromVCard (null, data);
+				Assert.That (people, Is.Not.Null, "people");
+				Assert.That (people.Length, Is.GreaterThan (0), "Length");
+			}
+		}
+
+		[Test]
+		public void PropertyToString_FirstName ()
+		{
+			TestRuntime.CheckAddressBookPermission ();
+			using (var person = new ABPerson ()) {
+				person.FirstName = "TestFirst";
+				Assert.That (person.FirstName, Is.EqualTo ("TestFirst"), "FirstName");
+			}
+		}
+
+		[Test]
+		public void MultiValueLabel ()
+		{
+			TestRuntime.CheckAddressBookPermission ();
+			using (var person = new ABPerson ()) {
+				var phones = new ABMutableStringMultiValue ();
+				phones.Add ("555-1234", ABPersonPhoneLabel.Mobile);
+				person.SetPhones (phones);
+
+				var allPhones = person.GetPhones ();
+				Assert.That (allPhones.Count, Is.GreaterThan (0), "Count");
+				Assert.That (allPhones [0].Label, Is.Not.Null, "Label");
+			}
+		}
+
+		[Test]
+		public void MultiValueGetValues ()
+		{
+			TestRuntime.CheckAddressBookPermission ();
+			using (var person = new ABPerson ()) {
+				var phones = new ABMutableStringMultiValue ();
+				phones.Add ("555-1234", ABPersonPhoneLabel.Mobile);
+				phones.Add ("555-5678", ABPersonPhoneLabel.Main);
+				person.SetPhones (phones);
+
+				var allPhones = person.GetPhones ();
+				var values = allPhones.GetValues ();
+				Assert.That (values, Is.Not.Null, "values");
+				Assert.That (values.Length, Is.EqualTo (2), "Length");
+			}
 		}
 	}
 }

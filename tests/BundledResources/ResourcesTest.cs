@@ -21,10 +21,10 @@ namespace BundledResources {
 		{
 			// files are extracted (by MonoDevelop) so we can see them in the file system
 			// that's true for simulator or devices and whatever the linker settings are
-			var dir = NSBundle.MainBundle.ResourcePath;
-			Assert.True (File.Exists (Path.Combine (dir, "basn3p08.png")), "file-basn3p08.png");
-			Assert.True (File.Exists (Path.Combine (dir, "basn3p08_with_loc.png")), "file-basn3p08_with_loc.png");
-			Assert.True (File.Exists (Path.Combine (dir, "xamvideotest.mp4")), "xamvideotest.mp4");
+			var dir = NSBundle.MainBundle.ResourcePath!;
+			Assert.That (File.Exists (Path.Combine (dir, "basn3p08.png")), Is.True, "file-basn3p08.png");
+			Assert.That (File.Exists (Path.Combine (dir, "basn3p08_with_loc.png")), Is.True, "file-basn3p08_with_loc.png");
+			Assert.That (File.Exists (Path.Combine (dir, "xamvideotest.mp4")), Is.True, "xamvideotest.mp4");
 
 			// resources are removed by the linker or an extra step (e.g. "link sdk" or "don't link") but that
 			// extra step is done only on device (to keep the simulator builds as fast as possible)
@@ -36,9 +36,21 @@ namespace BundledResources {
 				.ToArray ();
 
 #if __MACOS__ || __MACCATALYST__
-			var hasResources = false;
+			var isSimulator = false;
 #else
-			var hasResources = Runtime.Arch != Arch.DEVICE;
+			var isSimulator = Runtime.Arch != Arch.DEVICE;
+#endif
+
+#if HOTRELOAD_COMPATIBLE_BUILD
+			// In a hot-reload-compatible build, resource stripping is skipped for reloadable
+			// (non-linked) user assemblies, because stripping would re-serialize the assembly and
+			// break Hot Reload. So the bundled resources remain embedded unless this assembly was
+			// linked (in which case it's re-saved regardless, and stripping still applies).
+			var hasResources = isSimulator || !TestRuntime.IsLinkAll;
+#else
+			// Without Hot Reload the resources are always stripped, except on the simulator (where
+			// stripping is skipped to keep simulator builds fast).
+			var hasResources = isSimulator;
 #endif
 			if (!hasResources) {
 				Assert.That (resources.Length, Is.EqualTo (0), "No resources");

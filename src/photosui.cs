@@ -72,7 +72,7 @@ namespace PhotosUI {
 		/// <summary>Initializes the PHLivePhotoView with the specified frame.</summary>
 		/// <remarks>
 		///           <para>This constructor is used to programmatically create a new instance of PHLivePhotoView with the specified dimension in the frame.   The object will only be displayed once it has been added to a view hierarchy by calling AddSubview in a containing view.</para>
-		///           <para>This constructor is not invoked when deserializing objects from storyboards or XIB filesinstead the constructor that takes an NSCoder parameter is invoked.</para>
+		///           <para>This constructor is not invoked when deserializing objects from storyboards or XIB files; instead, the constructor that takes an NSCoder parameter is invoked.</para>
 		///         </remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frame);
@@ -141,7 +141,7 @@ namespace PhotosUI {
 		[NullAllowed, Export ("livePhotoBadgeView", ArgumentSemantic.Strong)]
 		NSView LivePhotoBadgeView { get; }
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("contentsRect", ArgumentSemantic.Assign)]
 		CGRect ContentsRect { get; set; }
 	}
@@ -584,7 +584,7 @@ namespace PhotosUI {
 
 	interface IPHPickerViewControllerDelegate { }
 
-	[NoTV, Mac (13, 0), iOS (14, 0)]
+	[NoTV, iOS (14, 0)]
 	[MacCatalyst (14, 0)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
@@ -594,7 +594,7 @@ namespace PhotosUI {
 		void DidFinishPicking (PHPickerViewController picker, PHPickerResult [] results);
 	}
 
-	[NoTV, Mac (13, 0), iOS (14, 0)]
+	[NoTV, iOS (14, 0)]
 	[MacCatalyst (14, 0)]
 	[BaseType (typeof (UIViewController))]
 	[Advice ("This type should not be subclassed.")]
@@ -613,34 +613,34 @@ namespace PhotosUI {
 		[DesignatedInitializer]
 		NativeHandle Constructor (PHPickerConfiguration configuration);
 
-		[NoTV, Mac (13, 0), iOS (16, 0)]
+		[NoTV, iOS (16, 0)]
 		[MacCatalyst (16, 0)]
 		[Export ("deselectAssetsWithIdentifiers:")]
 		void DeselectAssets (string [] identifiers);
 
-		[NoTV, Mac (13, 0), iOS (16, 0)]
+		[NoTV, iOS (16, 0)]
 		[MacCatalyst (16, 0)]
 		[Export ("moveAssetWithIdentifier:afterAssetWithIdentifier:")]
 		void MoveAsset (string identifier, [NullAllowed] string afterIdentifier);
 
-		[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("updatePickerUsingConfiguration:")]
 		void UpdatePicker (PHPickerUpdateConfiguration configuration);
 
-		[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("scrollToInitialPosition")]
 		void ScrollToInitialPosition ();
 
-		[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("zoomIn")]
 		void ZoomIn ();
 
-		[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("zoomOut")]
 		void ZoomOut ();
 	}
 
-	[NoTV, Mac (13, 0), iOS (14, 0)]
+	[NoTV, iOS (14, 0)]
 	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[Advice ("This type should not be subclassed.")]
@@ -665,20 +665,20 @@ namespace PhotosUI {
 		[Export ("preselectedAssetIdentifiers", ArgumentSemantic.Copy)]
 		string [] PreselectedAssetIdentifiers { get; set; }
 
-		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("mode", ArgumentSemantic.Assign)]
 		PHPickerMode Mode { get; set; }
 
-		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("edgesWithoutContentMargins", ArgumentSemantic.Assign)]
 		NSDirectionalRectEdge EdgesWithoutContentMargins { get; set; }
 
-		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("disabledCapabilities", ArgumentSemantic.Assign)]
 		PHPickerCapabilities DisabledCapabilities { get; set; }
 	}
 
-	[NoTV, Mac (13, 0), iOS (14, 0)]
+	[NoTV, iOS (14, 0)]
 	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[Advice ("This type should not be subclassed.")]
@@ -700,49 +700,49 @@ namespace PhotosUI {
 		[Export ("anyFilterMatchingSubfilters:")]
 		PHPickerFilter GetAnyFilterMatchingSubfilters (PHPickerFilter [] subfilters);
 
-		[NoTV, Mac (13, 0), iOS (16, 0)]
+		[NoTV, iOS (16, 0)]
 		[MacCatalyst (16, 0)]
 		[Static]
 		[Export ("depthEffectPhotosFilter")]
 		PHPickerFilter DepthEffectPhotosFilter { get; }
 
-		[NoTV, Mac (13, 0), iOS (16, 0)]
+		[NoTV, iOS (16, 0)]
 		[MacCatalyst (16, 0)]
 		[Static]
 		[Export ("burstsFilter")]
 		PHPickerFilter BurstsFilter { get; }
 
-		[NoTV, Mac (13, 0), iOS (15, 0)]
+		[NoTV, iOS (15, 0)]
 		[MacCatalyst (15, 0)]
 		[Static]
 		[Export ("panoramasFilter")]
 		PHPickerFilter PanoramasFilter { get; }
 
-		[NoTV, Mac (13, 0), iOS (15, 0)]
+		[NoTV, iOS (15, 0)]
 		[MacCatalyst (15, 0)]
 		[Static]
 		[Export ("screenshotsFilter")]
 		PHPickerFilter ScreenshotsFilter { get; }
 
-		[NoTV, Mac (13, 0), iOS (15, 0)]
+		[NoTV, iOS (15, 0)]
 		[MacCatalyst (15, 0)]
 		[Static]
 		[Export ("screenRecordingsFilter")]
 		PHPickerFilter ScreenRecordingsFilter { get; }
 
-		[NoTV, Mac (13, 0), iOS (16, 0)]
+		[NoTV, iOS (16, 0)]
 		[MacCatalyst (16, 0)]
 		[Static]
 		[Export ("cinematicVideosFilter")]
 		PHPickerFilter CinematicVideosFilter { get; }
 
-		[NoTV, Mac (13, 0), iOS (15, 0)]
+		[NoTV, iOS (15, 0)]
 		[MacCatalyst (15, 0)]
 		[Static]
 		[Export ("slomoVideosFilter")]
 		PHPickerFilter SlomoVideosFilter { get; }
 
-		[NoTV, Mac (13, 0), iOS (15, 0)]
+		[NoTV, iOS (15, 0)]
 		[MacCatalyst (15, 0)]
 		[Static]
 		[Export ("timelapseVideosFilter")]
@@ -753,26 +753,26 @@ namespace PhotosUI {
 		[Export ("spatialMediaFilter")]
 		PHPickerFilter SpatialMediaFilter { get; }
 
-		[NoTV, Mac (13, 0), iOS (15, 0)]
+		[NoTV, iOS (15, 0)]
 		[MacCatalyst (15, 0)]
 		[Static]
 		[Export ("playbackStyleFilter:")]
 		PHPickerFilter GetPlaybackStyleFilter (PHAssetPlaybackStyle playbackStyle);
 
-		[NoTV, Mac (13, 0), iOS (15, 0)]
+		[NoTV, iOS (15, 0)]
 		[MacCatalyst (15, 0)]
 		[Static]
 		[Export ("allFilterMatchingSubfilters:")]
 		PHPickerFilter GetAllFilterMatchingSubfilters (PHPickerFilter [] subfilters);
 
-		[NoTV, Mac (13, 0), iOS (15, 0)]
+		[NoTV, iOS (15, 0)]
 		[MacCatalyst (15, 0)]
 		[Static]
 		[Export ("notFilterOfSubfilter:")]
 		PHPickerFilter GetNotFilterOfSubfilter (PHPickerFilter subfilter);
 	}
 
-	[NoTV, Mac (13, 0), iOS (14, 0)]
+	[NoTV, iOS (14, 0)]
 	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[Advice ("This type should not be subclassed.")]
@@ -799,18 +799,18 @@ namespace PhotosUI {
 		void PresentLimitedLibraryPicker (UIViewController controller, Action<string []> completionHandler);
 	}
 
-	[NoTV, Mac (13, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
 	[Native]
 	public enum PHPickerConfigurationSelection : long {
 		Default = 0,
 		Ordered = 1,
-		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), MacCatalyst (17, 0)]
 		Continuous = 2,
-		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), MacCatalyst (17, 0)]
 		ContinuousAndOrdered = 3,
 	}
 
-	[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	interface PHPickerUpdateConfiguration : NSCopying, NSSecureCoding {
 		[Export ("selectionLimit")]

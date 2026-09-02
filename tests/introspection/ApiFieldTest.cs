@@ -22,8 +22,7 @@
 using System.IO;
 using System.Reflection;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Introspection {
 
@@ -53,7 +52,7 @@ namespace Introspection {
 		/// <param name="property">Property to be tested</param>
 		protected virtual bool Skip (PropertyInfo property)
 		{
-			switch (property.DeclaringType.Name) {
+			switch (property.DeclaringType?.Name) {
 			case "AVPlayerInterstitialEventObserver":
 				switch (property.Name) { // deprecated
 				case "CurrentEventDidChangeNotification":
@@ -76,14 +75,6 @@ namespace Introspection {
 				default:
 					return false;
 				}
-			case "CMSampleAttachmentKey": // kCMSampleAttachmentKey_HDR10PlusPerFrameData":
-				switch (property.Name) {
-				case "Hdr10PlusPerFrameDataKey":
-					if (TestRuntime.IsSimulator)
-						return !TestRuntime.CheckXcodeVersion (14, 1); // not available in the iOS 16.0 simulator, but it is in the iOS 16.1 simulator
-					break;
-				}
-				break;
 			}
 			return SkipDueToAttribute (property);
 		}
@@ -92,7 +83,7 @@ namespace Introspection {
 		/// Override if you want to skip testing the specified constant.
 		/// </summary>
 		/// <param name="constantName">Constant name to ignore.</param>
-		protected virtual bool Skip (string constantName, string libraryName)
+		protected virtual bool Skip (string constantName, string? libraryName)
 		{
 			return false;
 		}
@@ -102,7 +93,7 @@ namespace Introspection {
 		/// </summary>
 		/// <param name="declaredType">Type declaring said notification.</param>
 		/// <param name="notificationName">Name of notification.</param>
-		protected virtual bool SkipNotification (Type declaredType, string notificationName)
+		protected virtual bool SkipNotification (Type? declaredType, string notificationName)
 		{
 			return false;
 		}
@@ -113,7 +104,7 @@ namespace Introspection {
 		bool CheckAgainstNull (PropertyInfo p, out string name)
 		{
 			name = String.Empty;
-			var g = p.GetGetMethod (true);
+			var g = p.GetGetMethod (true)!;
 			if (!g.IsStatic)
 				return true;
 
@@ -125,16 +116,16 @@ namespace Introspection {
 				// or something not available in the executing version of iOS
 				bool result = g.Invoke (null, null) is not null;
 				if (!result)
-					name = p.DeclaringType.FullName + "." + p.Name;
+					name = p.DeclaringType?.FullName + "." + p.Name;
 				return result;
 			} catch (Exception e) {
 				Console.WriteLine ("[FAIL] Exception on '{0}' : {1}", p, e);
-				name = p.DeclaringType.FullName + "." + p.Name;
+				name = p.DeclaringType?.FullName + "." + p.Name;
 				return false;
 			}
 		}
 
-		static List<PropertyInfo> properties;
+		static List<PropertyInfo>? properties;
 
 		IEnumerable<PropertyInfo> AllProperties ()
 		{
@@ -175,15 +166,16 @@ namespace Introspection {
 				if (f is null)
 					continue;
 
-				var name = f.SymbolName;
+				if (f.SymbolName is not string name)
+					continue;
 				if (!name.EndsWith ("Notification", StringComparison.Ordinal))
 					continue;
 
 				if (SkipNotification (p.DeclaringType, name))
 					continue;
 
-				var nested = p.DeclaringType.GetNestedTypes ();
-				if (nested.Length == 0) {
+				var nested = p.DeclaringType?.GetNestedTypes ();
+				if (nested is null || nested.Length == 0) {
 					ReportError (name);
 					failed_fields.Add (name);
 				} else {
@@ -203,13 +195,13 @@ namespace Introspection {
 						}
 					}
 					if (!found) {
-						ReportError ($"Could not find the method '{name}' for the notification '{p.DeclaringType.FullName}.{p.Name}'. Most likely the field is missing a [Notification] attribute.");
+						ReportError ($"Could not find the method '{name}' for the notification '{p.DeclaringType?.FullName}.{p.Name}'. Most likely the field is missing a [Notification] attribute.");
 						failed_fields.Add (name);
 					}
 				}
 				n++;
 			}
-			Assert.AreEqual (0, Errors, "{0} errors found in {1} fields validated: {2}", Errors, n, string.Join (", ", failed_fields));
+			Assert.That (Errors, Is.EqualTo (0), $"{Errors} errors found in {n} fields validated: {string.Join (", ", failed_fields)}");
 		}
 
 		[Test]
@@ -234,7 +226,7 @@ namespace Introspection {
 				}
 				n++;
 			}
-			Assert.AreEqual (0, Errors, "{0} errors found in {1} fields validated: {2}", Errors, n, string.Join (", ", failed_fields));
+			Assert.That (Errors, Is.EqualTo (0), $"{Errors} errors found in {n} fields validated: {string.Join (", ", failed_fields)}");
 		}
 
 		[Test]
@@ -249,11 +241,12 @@ namespace Introspection {
 				if (f is null)
 					continue;
 
-				string name = f.SymbolName;
+				if (f.SymbolName is not string name)
+					continue;
 				if (Skip (name, f.LibraryName))
 					continue;
 
-				string path = FindLibrary (f.LibraryName);
+				string path = FindLibrary (f.LibraryName!);
 				IntPtr lib = Dlfcn.dlopen (path, 0);
 				if (lib == IntPtr.Zero) {
 					ReportError ("Could not open the library '{0}' to find the field '{1}': {2}", path, name, Dlfcn.dlerror ());
@@ -273,7 +266,7 @@ namespace Introspection {
 				Dlfcn.dlclose (lib);
 				n++;
 			}
-			Assert.AreEqual (0, Errors, "{0} errors found in {1} fields validated: {2}", Errors, n, string.Join (", ", failed_fields));
+			Assert.That (Errors, Is.EqualTo (0), $"{Errors} errors found in {n} fields validated: {string.Join (", ", failed_fields)}");
 		}
 	}
 }

@@ -1,4 +1,6 @@
 
+using System.ComponentModel;
+
 namespace HomeKit {
 
 	/// <summary>Enumerates possible failures in Home Kit operations.</summary>
@@ -156,7 +158,12 @@ namespace HomeKit {
 		/// <summary>The read or write failed.</summary>
 		ReadWriteFailure = 74,
 		/// <summary>The user or application is not signed in to iCloud.</summary>
-		NotSignedIntoiCloud = 75,
+		NotSignedIntoICloud = 75,
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'NotSignedIntoICloud' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		NotSignedIntoiCloud = NotSignedIntoICloud,
+#endif
 		/// <summary>Keychain synchronization was not enabled.</summary>
 		KeychainSyncNotEnabled = 76,
 		/// <summary>Data was synchronizing.</summary>
@@ -212,8 +219,10 @@ namespace HomeKit {
 		PartialCommunicationFailure = 104,
 		// iOS 18.4
 		HomeUpgradeRequired = 105,
-		// iOS 26.1
+#if !XAMCORE_5_0
+		// iOS 26.1 - Apple removed this enum value from native headers in Xcode 26.4
 		QuotaExceeded = 106,
+#endif
 	}
 
 
@@ -1619,7 +1628,7 @@ namespace HomeKit {
 		Sunset,
 	}
 
-	[iOS (13, 0), TV (13, 0), NoMac, MacCatalyst (14, 0)]
+	[NoMac, MacCatalyst (14, 0)]
 	[Flags]
 	[Native]
 	public enum HMHomeManagerAuthorizationStatus : ulong {

@@ -296,7 +296,7 @@ namespace MonoTouchFixtures.UIKit {
 			var redColor = UIColor.Red;
 			var transformer = UIConfigurationColorTransformer.Grayscale;
 			var grayColor = transformer (redColor);
-			Assert.NotNull (grayColor, "Not null");
+			Assert.That (grayColor, Is.Not.Null, "Not null");
 		}
 
 		// nfloat red, nfloat green, nfloat blue, nfloat alpha, nfloat linearExposure
@@ -323,13 +323,13 @@ namespace MonoTouchFixtures.UIKit {
 				var c = UIColor.FromRgbaLinearExposure (nr, ng, nb, na, ne);
 				var r = new UIColor (nr, ng, nb, na, ne, isLinearExposure);
 				Assert.That (r.ToString (), Is.EqualTo (c.ToString ()), c.ToString ());
-				Assert.AreEqual (c.LinearExposure, r.LinearExposure, $"LinearExposure: r:{nr}, g:{ng}, b:{nb}, a:{na}, e:{ne}");
+				Assert.That (r.LinearExposure, Is.EqualTo (c.LinearExposure), $"LinearExposure: r:{nr}, g:{ng}, b:{nb}, a:{na}, e:{ne}");
 			} else {
 				// Exponential exposure
 				var c = UIColor.FromRgbaExposure (nr, ng, nb, na, ne);
 				var r = new UIColor (nr, ng, nb, na, ne, isLinearExposure);
 				Assert.That (r.ToString (), Is.EqualTo (c.ToString ()), c.ToString ());
-				Assert.AreEqual (c.LinearExposure, r.LinearExposure, $"ExponentialExposure: r:{nr}, g:{ng}, b:{nb}, a:{na}, e:{ne}");
+				Assert.That (r.LinearExposure, Is.EqualTo (c.LinearExposure), $"ExponentialExposure: r:{nr}, g:{ng}, b:{nb}, a:{na}, e:{ne}");
 			}
 		}
 	}

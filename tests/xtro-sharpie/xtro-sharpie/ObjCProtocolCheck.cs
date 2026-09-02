@@ -43,7 +43,7 @@ namespace Extrospection {
 				return;
 			}
 
-			string pname = null;
+			string? pname = null;
 			bool informal = false;
 
 			foreach (var ca in type.CustomAttributes) {
@@ -82,8 +82,7 @@ namespace Extrospection {
 				return;
 
 			var name = decl.Name;
-			TypeDefinition td;
-			if (!protocol_map.TryGetValue (name, out td)) {
+			if (!protocol_map.TryGetValue (name, out var td)) {
 				if (!decl.IsDeprecated ())
 					Log.On (framework).Add ($"!missing-protocol! {name} not bound");
 				// other checks can't be done without an actual protocol to inspect
@@ -93,9 +92,9 @@ namespace Extrospection {
 			// build type selector-required map
 			var map = new Dictionary<string, bool> ();
 			foreach (var ca in td.CustomAttributes) {
-				string export = null;
-				string g_export = null;
-				string s_export = null;
+				string? export = null;
+				string? g_export = null;
+				string? s_export = null;
 				bool is_required = false;
 				bool is_property = false;
 				bool is_static = false;
@@ -143,7 +142,7 @@ namespace Extrospection {
 				}
 			}
 
-			var deprecatedProtocol = (decl.DeclContext as Decl).IsDeprecated ();
+			var deprecatedProtocol = ((Decl) decl.DeclContext!).IsDeprecated ();
 
 			// don't report anything for deprecated protocols
 			// (we still report some errors for deprecated members of non-deprecated protocols - because abstract/non-abstract can
@@ -196,7 +195,7 @@ namespace Extrospection {
 			protocol_map.Remove (name);
 		}
 
-		static string GetSelector (ObjCMethodDecl method)
+		static string? GetSelector (ObjCMethodDecl method)
 		{
 			var result = method.Selector.ToString ();
 			if (result is not null)

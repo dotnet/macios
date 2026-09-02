@@ -50,7 +50,7 @@ namespace CoreMedia {
 			return new CMSampleBuffer (handle, owns);
 		}
 
-		/// <include file="../../docs/api/CoreMedia/CMSampleBuffer.xml" path="/Documentation/Docs[@DocId='M:CoreMedia.CMSampleBuffer.Dispose(System.Boolean)']/*" />
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			if (invalidate.IsAllocated)
@@ -62,8 +62,8 @@ namespace CoreMedia {
 		/// <summary>Get this sample buffer's tagged buffer group.</summary>
 		/// <returns>The tagged buffer group for this sample buffer, or null in case of failure or if this sample buffer doesn't contain a tagged buffer group.</returns>
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos17.0")]
 		public CMTaggedBufferGroup? TaggedBufferGroup {
 			get => CMTaggedBufferGroup.GetTaggedBufferGroup (this);

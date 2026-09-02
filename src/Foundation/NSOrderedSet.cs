@@ -70,7 +70,7 @@ namespace Foundation {
 		public T [] ToArray<T> () where T : class, INativeObject
 		{
 			IntPtr nsarr = _ToArray ();
-			return NSArray.ArrayFromHandle<T> (nsarr);
+			return NSArray.NonNullArrayFromHandleDropNullElements<T> (nsarr, nsNullElementBehavior: NSNullBehavior.DropIfIncompatible);
 		}
 
 		/// <summary>Creates a new <see cref="NSOrderedSet" /> from an array of strongly typed values.</summary>
@@ -276,7 +276,7 @@ namespace Foundation {
 			return false;
 		}
 
-		[SupportedOSPlatform ("ios13.0"), SupportedOSPlatform ("tvos13.0"), SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios"), SupportedOSPlatform ("tvos"), SupportedOSPlatform ("macos")]
 		public NSOrderedCollectionDifference GetDifference (NSOrderedSet other, NSOrderedCollectionDifferenceCalculationOptions options, NSOrderedCollectionDifferenceEquivalenceTest equivalenceTest)
 		{
 			if (equivalenceTest is null)

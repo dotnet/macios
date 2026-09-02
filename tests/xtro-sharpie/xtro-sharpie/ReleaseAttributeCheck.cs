@@ -28,8 +28,8 @@ namespace Extrospection {
 			if (method.ReturnType.IsValueType)
 				return;
 
-			string family = null;
-			string selector = null;
+			string? family = null;
+			string? selector = null;
 			bool hasReleaseAttribute = false;
 
 			if (method.MethodReturnType.HasCustomAttributes) {

@@ -60,7 +60,29 @@ namespace Xamarin.Tests {
 			public required string RelativePath;
 		}
 
-		void AssertMaxFileLengthInBinAndObjDirectories (ApplePlatform platform, string project_path, string runtimeIdentifiers, string configuration, int maxLength = 110)
+		static (DateTime TimestampUtc, string Contents) GetFileState (string path, string message)
+		{
+			Assert.That (path, Does.Exist, $"{message}: missing file");
+			return (File.GetLastWriteTimeUtc (path), File.ReadAllText (path));
+		}
+
+		static void AssertFileStateUnchanged ((DateTime TimestampUtc, string Contents) previousState, string path, string message)
+		{
+			Assert.That (path, Does.Exist, $"{message}: missing file");
+
+			var currentTimestamp = File.GetLastWriteTimeUtc (path);
+			var currentContents = File.ReadAllText (path);
+
+			Assert.Multiple (() => {
+				Assert.That (
+					currentTimestamp,
+					Is.EqualTo (previousState.TimestampUtc),
+					$"{message}: timestamp changed for '{path}' (before: {previousState.TimestampUtc:o}; after: {currentTimestamp:o})");
+				Assert.That (currentContents, Is.EqualTo (previousState.Contents), $"{message}: contents changed for '{path}'");
+			});
+		}
+
+		void AssertMaxFileLengthInBinAndObjDirectories (ApplePlatform platform, string project_path, string runtimeIdentifiers, string configuration, int maxLength = 118)
 		{
 			var binDir = GetBinDir (project_path, platform, runtimeIdentifiers, configuration);
 			var objDir = GetObjDir (project_path, platform, runtimeIdentifiers, configuration);
@@ -83,18 +105,30 @@ namespace Xamarin.Tests {
 			{
 				// 'full-paths-exceeding-two-hundred-and-sixty-characters' is a subdirectory inside the FrameworkWithLongFileNames framework
 				"full-paths-exceeding-two-hundred-and-sixty-characters",
-				// 'especially-when-contained-in-other-directories.h' is a file inside the FrameworkWithLongFileNames framework
-				"especially-when-contained-in-other-directories.h",
+				// 'especially-when-contained-in-other-directories.txt' is a file inside the FrameworkWithLongFileNames framework
+				"especially-when-contained-in-other-directories.txt",
 			};
 			foreach (var ip in invalidPaths) {
 				var withLongFilenames = allFiles.Where (v => v.RelativePath.Contains (ip)).ToArray ();
-				Assert.That (longerThanMax, Is.Empty, $"No paths with '{ip}'");
+				Assert.That (withLongFilenames, Is.Empty, $"No paths with '{ip}'");
 			}
 		}
 
 		[Category ("RemoteWindows")]
 		[TestCase (ApplePlatform.iOS, "ios-arm64", BundleStructureTest.CodeSignature.All, "Debug")]
-		public void BundleStructureWithRemoteMac (ApplePlatform platform, string runtimeIdentifiers, BundleStructureTest.CodeSignature signature, string configuration)
+		public void BundleStructureWithRemoteMac_Mono (ApplePlatform platform, string runtimeIdentifiers, BundleStructureTest.CodeSignature signature, string configuration)
+		{
+			BundleStructureWithRemoteMac (platform, runtimeIdentifiers, signature, configuration, useMonoRuntime: true);
+		}
+
+		[Category ("RemoteWindows")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", BundleStructureTest.CodeSignature.All, "Debug")]
+		public void BundleStructureWithRemoteMac_CoreCLR (ApplePlatform platform, string runtimeIdentifiers, BundleStructureTest.CodeSignature signature, string configuration)
+		{
+			BundleStructureWithRemoteMac (platform, runtimeIdentifiers, signature, configuration, useMonoRuntime: false);
+		}
+
+		void BundleStructureWithRemoteMac (ApplePlatform platform, string runtimeIdentifiers, BundleStructureTest.CodeSignature signature, string configuration, bool useMonoRuntime)
 		{
 			var project = "BundleStructure";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -109,15 +143,18 @@ namespace Xamarin.Tests {
 			properties ["_IsAppSigned"] = signature != BundleStructureTest.CodeSignature.None ? "true" : "false";
 			if (!string.IsNullOrWhiteSpace (configuration))
 				properties ["Configuration"] = configuration;
+			properties ["UseMonoRuntime"] = useMonoRuntime ? "true" : "false";
 
 			// Copy the app bundle to Windows so that we can inspect the results.
 			properties ["CopyAppBundleToWindows"] = "true";
 
 			var rv = DotNet.AssertBuild (project_path, properties);
 			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
-			var warningMessages = BundleStructureTest.FilterWarnings (warnings, canonicalizePaths: true);
+			var warningMessages = BundleStructureTest.FilterWarnings (warnings, platform, canonicalizePaths: true);
 
 			var isReleaseBuild = string.Equals (configuration, "Release", StringComparison.OrdinalIgnoreCase);
+			var isCoreCLR = !useMonoRuntime;
+			var maxPathLength = isCoreCLR ? 180 : 130;
 			var platformString = platform.AsString ();
 			var tfm = platform.ToFramework ();
 			var testsDirectory = Path.GetDirectoryName (Path.GetDirectoryName (project_dir))!;
@@ -155,13 +192,31 @@ namespace Xamarin.Tests {
 			var objDir = GetObjDir (project_path, platform, runtimeIdentifiers, configuration);
 			var zippedAppBundlePath = Path.Combine (objDir, "AppBundle.zip");
 			Assert.That (zippedAppBundlePath, Does.Exist, "AppBundle.zip");
+			var appManifestPath = Path.Combine (objDir, "AppManifest.plist");
+			var compileAppManifestInputsPath = Path.Combine (objDir, "_CompileAppManifest.inputs");
+			var sharedDotNetPlistPath = Path.Combine (objDir, "unpack", "bindings-framework-test", "PartialAppManifest", "shared-dotnet.plist");
 
-			BundleStructureTest.CheckZippedAppBundleContents (platform, zippedAppBundlePath, rids, signature, isReleaseBuild);
+			BundleStructureTest.CheckZippedAppBundleContents (platform, zippedAppBundlePath, rids, signature, isReleaseBuild, isCoreCLR: isCoreCLR);
 			AssertWarningsEqual (expectedWarnings, warningMessages, "Warnings");
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 
+			// These files participate in _CompileAppManifest incrementality, so verify that they stay stable when we only
+			// touch code. If this test flakes again, these assertions should tell us which input changed unexpectedly.
+			var appManifestState = GetFileState (appManifestPath, "Initial build: AppManifest.plist");
+			var compileAppManifestInputsState = GetFileState (compileAppManifestInputsPath, "Initial build: _CompileAppManifest.inputs");
+			var sharedDotNetPlistState = GetFileState (sharedDotNetPlistPath, "Initial build: shared-dotnet.plist");
+
+			Assert.Multiple (() => {
+				Assert.That (
+					appManifestState.TimestampUtc,
+					Is.GreaterThanOrEqualTo (sharedDotNetPlistState.TimestampUtc),
+					$"Initial build: '{appManifestPath}' should not be older than '{sharedDotNetPlistPath}' (AppManifest.plist: {appManifestState.TimestampUtc:o}; shared-dotnet.plist: {sharedDotNetPlistState.TimestampUtc:o})");
+				Assert.That (compileAppManifestInputsState.Contents, Does.Contain ("shared-dotnet.plist"), "Initial build: _CompileAppManifest.inputs should include shared-dotnet.plist");
+			});
+
 			// Verify that we don't create files with long paths inside bin/obj
-			AssertMaxFileLengthInBinAndObjDirectories (platform, project_path, runtimeIdentifiers, configuration);
+			// CoreCLR adds longer framework names in bin/obj (for example libSystem.Security.Cryptography.Native.Apple.framework).
+			AssertMaxFileLengthInBinAndObjDirectories (platform, project_path, runtimeIdentifiers, configuration, maxLength: maxPathLength);
 
 			// touch AppDelegate.cs, and rebuild should succeed and do the right thing
 			var appDelegatePath = Path.Combine (project_dir, "AppDelegate.cs");
@@ -170,15 +225,18 @@ namespace Xamarin.Tests {
 			rv = DotNet.AssertBuild (project_path, properties);
 			var allTargets = BinLog.GetAllTargets (rv.BinLogPath);
 			warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
-			warningMessages = BundleStructureTest.FilterWarnings (warnings, canonicalizePaths: true);
+			warningMessages = BundleStructureTest.FilterWarnings (warnings, platform, canonicalizePaths: true);
 
-			BundleStructureTest.CheckZippedAppBundleContents (platform, zippedAppBundlePath, rids, signature, isReleaseBuild);
+			BundleStructureTest.CheckZippedAppBundleContents (platform, zippedAppBundlePath, rids, signature, isReleaseBuild, isCoreCLR: isCoreCLR);
 			AssertWarningsEqual (expectedWarnings, warningMessages, "Warnings Rebuild 1");
+			AssertFileStateUnchanged (sharedDotNetPlistState, sharedDotNetPlistPath, "Rebuild 1: shared-dotnet.plist");
+			AssertFileStateUnchanged (compileAppManifestInputsState, compileAppManifestInputsPath, "Rebuild 1: _CompileAppManifest.inputs");
+			AssertFileStateUnchanged (appManifestState, appManifestPath, "Rebuild 1: AppManifest.plist");
 			AssertTargetNotExecuted (allTargets, "_CompileAppManifest", "_CompileAppManifest Rebuild 1");
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 
 			// Verify that we don't create files with long paths inside bin/obj
-			AssertMaxFileLengthInBinAndObjDirectories (platform, project_path, runtimeIdentifiers, configuration);
+			AssertMaxFileLengthInBinAndObjDirectories (platform, project_path, runtimeIdentifiers, configuration, maxLength: maxPathLength);
 
 			// remove the bin directory, and rebuild should succeed and do the right thing
 			var binDirectory = Path.Combine (Path.GetDirectoryName (project_path)!, "bin");
@@ -187,38 +245,55 @@ namespace Xamarin.Tests {
 			rv = DotNet.AssertBuild (project_path, properties);
 			allTargets = BinLog.GetAllTargets (rv.BinLogPath);
 			warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
-			warningMessages = BundleStructureTest.FilterWarnings (warnings, canonicalizePaths: true);
+			warningMessages = BundleStructureTest.FilterWarnings (warnings, platform, canonicalizePaths: true);
 
-			BundleStructureTest.CheckZippedAppBundleContents (platform, zippedAppBundlePath, rids, signature, isReleaseBuild);
+			BundleStructureTest.CheckZippedAppBundleContents (platform, zippedAppBundlePath, rids, signature, isReleaseBuild, isCoreCLR: isCoreCLR);
 			AssertWarningsEqual (expectedWarnings, warningMessages, "Warnings Rebuild 2");
+			AssertFileStateUnchanged (sharedDotNetPlistState, sharedDotNetPlistPath, "Rebuild 2: shared-dotnet.plist");
+			AssertFileStateUnchanged (compileAppManifestInputsState, compileAppManifestInputsPath, "Rebuild 2: _CompileAppManifest.inputs");
+			AssertFileStateUnchanged (appManifestState, appManifestPath, "Rebuild 2: AppManifest.plist");
 			AssertTargetNotExecuted (allTargets, "_CompileAppManifest", "_CompileAppManifest Rebuild 2");
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 
 			// Verify that we don't create files with long paths inside bin/obj
-			AssertMaxFileLengthInBinAndObjDirectories (platform, project_path, runtimeIdentifiers, configuration);
+			AssertMaxFileLengthInBinAndObjDirectories (platform, project_path, runtimeIdentifiers, configuration, maxLength: maxPathLength);
 
 			// a simple rebuild should succeed
 			rv = DotNet.AssertBuild (project_path, properties);
 			allTargets = BinLog.GetAllTargets (rv.BinLogPath);
 			warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
-			warningMessages = BundleStructureTest.FilterWarnings (warnings, canonicalizePaths: true);
+			warningMessages = BundleStructureTest.FilterWarnings (warnings, platform, canonicalizePaths: true);
 
-			BundleStructureTest.CheckZippedAppBundleContents (platform, zippedAppBundlePath, rids, signature, isReleaseBuild);
+			BundleStructureTest.CheckZippedAppBundleContents (platform, zippedAppBundlePath, rids, signature, isReleaseBuild, isCoreCLR: isCoreCLR);
 			AssertWarningsEqual (expectedWarnings, warningMessages, "Warnings Rebuild 3");
+			AssertFileStateUnchanged (sharedDotNetPlistState, sharedDotNetPlistPath, "Rebuild 3: shared-dotnet.plist");
+			AssertFileStateUnchanged (compileAppManifestInputsState, compileAppManifestInputsPath, "Rebuild 3: _CompileAppManifest.inputs");
+			AssertFileStateUnchanged (appManifestState, appManifestPath, "Rebuild 3: AppManifest.plist");
 			AssertTargetNotExecuted (allTargets, "_CompileAppManifest", "_CompileAppManifest Rebuild 3");
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 
 			// Verify that we don't create files with long paths inside bin/obj
-			AssertMaxFileLengthInBinAndObjDirectories (platform, project_path, runtimeIdentifiers, configuration);
+			AssertMaxFileLengthInBinAndObjDirectories (platform, project_path, runtimeIdentifiers, configuration, maxLength: maxPathLength);
 		}
 
 		[Category ("RemoteWindows")]
-		[TestCase (ApplePlatform.iOS, "ios-arm64")]
-		[TestCase (ApplePlatform.iOS, "iossimulator-arm64;iossimulator-x64")]
-		public void PluralRuntimeIdentifiersWithRemoteMac (ApplePlatform platform, string runtimeIdentifiers)
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "Debug")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "Release")]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64;iossimulator-x64", "Debug")]
+		public void PluralRuntimeIdentifiersWithRemoteMac_Mono (ApplePlatform platform, string runtimeIdentifiers, string configuration)
 		{
 			var properties = AddRemoteProperties ();
-			DotNetProjectTest.PluralRuntimeIdentifiersImpl (platform, runtimeIdentifiers, properties);
+			DotNetProjectTest.PluralRuntimeIdentifiersImpl (platform, runtimeIdentifiers, useMonoRuntime: true, extraProperties: properties, configuration: configuration);
+		}
+
+		[Category ("RemoteWindows")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "Debug")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "Release")]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64;iossimulator-x64", "Debug")]
+		public void PluralRuntimeIdentifiersWithRemoteMac_CoreCLR (ApplePlatform platform, string runtimeIdentifiers, string configuration)
+		{
+			var properties = AddRemoteProperties ();
+			DotNetProjectTest.PluralRuntimeIdentifiersImpl (platform, runtimeIdentifiers, useMonoRuntime: false, extraProperties: properties, configuration: configuration);
 		}
 
 		[Category ("RemoteWindows")]
@@ -272,9 +347,30 @@ namespace Xamarin.Tests {
 			Assert.Fail (sb.ToString ());
 		}
 
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "Release")]
+		public void StripTest (ApplePlatform platform, string runtimeIdentifiers, string configuration)
+		{
+			var project = "MySimpleApp";
+
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+			Configuration.IgnoreIfNotOnWindows ();
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
+			var project_dir = Path.GetDirectoryName (project_path)!;
+			Clean (project_path);
+
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["Configuration"] = configuration;
+			properties ["_ExportSymbolsExplicitly"] = "false";
+
+			DotNet.AssertBuild (project_path, properties, timeout: TimeSpan.FromMinutes (15));
+		}
+
+#if !NET11_0_OR_GREATER // in .NET the assembly preparer mode is the default, so no need for a separate test.
 		[Category ("RemoteWindows")]
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
-		public void RemoteTest (ApplePlatform platform, string runtimeIdentifiers)
+		public void AssemblyPreparerRemoteTest (ApplePlatform platform, string runtimeIdentifiers)
 		{
 			var project = "MySimpleApp";
 			var configuration = "Debug";
@@ -295,6 +391,8 @@ namespace Xamarin.Tests {
 			properties ["KeepLocalOutputUpToDate"] = "true";
 			// Don't clean the zip file with the updated files from the remote side so they can be asserted
 			properties ["CleanChangedOutputFilesZipFile"] = "false";
+			// Enable the assembly preparer
+			properties ["AssemblyPreparer"] = "true";
 
 			var result = DotNet.AssertBuild (project_path, properties, timeout: TimeSpan.FromMinutes (15));
 			AssertThatLinkerExecuted (result);
@@ -307,21 +405,21 @@ namespace Xamarin.Tests {
 			// Open the zipped app bundle and get the Info.plist
 			using var zip = ZipFile.OpenRead (zippedAppBundlePath);
 			ZipHelpers.DumpZipFile (zip, zippedAppBundlePath);
-			var infoPlistEntry = zip.Entries.SingleOrDefault (v => v.Name == "Info.plist")!;
-			Assert.NotNull (infoPlistEntry, "Info.plist");
+			var infoPlistEntry = zip.Entries.SingleOrDefault (v => v.Name == "Info.plist");
+			Assert.That (infoPlistEntry, Is.Not.Null, "Info.plist");
 
 			// Parse the Info.plist
 			// PDictionary.FromStream requires a seekable stream, but the zip stream isn't seekable, so copy to a
 			// MemoryStream and use that. Info.plist files aren't big, so this shouldn't become a memory consumption problem.
-			using var memoryStream = new MemoryStream ((int) infoPlistEntry.Length);
+			using var memoryStream = new MemoryStream ((int) infoPlistEntry!.Length);
 			using var plistStream = infoPlistEntry.Open ();
 			plistStream.CopyTo (memoryStream);
 
 			var infoPlist = (PDictionary) PDictionary.FromStream (memoryStream)!;
-			Assert.AreEqual ("com.xamarin.mysimpleapp", infoPlist.GetString ("CFBundleIdentifier").Value, "CFBundleIdentifier");
-			Assert.AreEqual ("MySimpleApp", infoPlist.GetString ("CFBundleDisplayName").Value, "CFBundleDisplayName");
-			Assert.AreEqual ("3.14", infoPlist.GetString ("CFBundleVersion").Value, "CFBundleVersion");
-			Assert.AreEqual ("3.14", infoPlist.GetString ("CFBundleShortVersionString").Value, "CFBundleShortVersionString");
+			Assert.That (infoPlist.GetString ("CFBundleIdentifier").Value, Is.EqualTo ("com.xamarin.mysimpleapp"), "CFBundleIdentifier");
+			Assert.That (infoPlist.GetString ("CFBundleDisplayName").Value, Is.EqualTo ("MySimpleApp"), "CFBundleDisplayName");
+			Assert.That (infoPlist.GetString ("CFBundleVersion").Value, Is.EqualTo ("3.14"), "CFBundleVersion");
+			Assert.That (infoPlist.GetString ("CFBundleShortVersionString").Value, Is.EqualTo ("3.14"), "CFBundleShortVersionString");
 
 			//Validate that the output assemblies report file with the list of local assemblies, lengths and MVIDs has been created
 			var outputAssembliesReportFileName = "OutputAssembliesReport.txt";
@@ -358,7 +456,103 @@ namespace Xamarin.Tests {
 					Guid mvid = metadataReader.GetGuid (metadataReader.GetModuleDefinition ().Mvid);
 					var fileWasUpdated = fileInfo.Length != localInfo.length || mvid != localInfo.mvid;
 
-					Assert.IsTrue (fileWasUpdated, $"The file '{fileName}' is identical to the one present in the output assemblies report file '{outputAssembliesReportFile}'");
+					Assert.That (fileWasUpdated, Is.True, $"The file '{fileName}' is identical to the one present in the output assemblies report file '{outputAssembliesReportFile}'");
+				}
+			}
+		}
+#endif // NET11_0_OR_GREATER
+
+		[Category ("RemoteWindows")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "Debug", true)]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "Debug", false)]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "Release", false)]
+		public void RemoteTest (ApplePlatform platform, string runtimeIdentifiers, string configuration, bool useMonoRuntime)
+		{
+			var project = "MySimpleApp";
+
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+			Configuration.IgnoreIfNotOnWindows ();
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
+			var project_dir = Path.GetDirectoryName (project_path)!;
+			Clean (project_path);
+
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+
+			properties ["UseMonoRuntime"] = useMonoRuntime.ToString ();
+			properties ["Configuration"] = configuration;
+
+			// Copy the app bundle to Windows so that we can inspect the results.
+			properties ["CopyAppBundleToWindows"] = "true";
+			// Check for updated files on the remote output and update them locally so the app is ready for debug
+			properties ["KeepLocalOutputUpToDate"] = "true";
+			// Don't clean the zip file with the updated files from the remote side so they can be asserted
+			properties ["CleanChangedOutputFilesZipFile"] = "false";
+
+			var result = DotNet.AssertBuild (project_path, properties, timeout: TimeSpan.FromMinutes (15));
+			AssertThatLinkerExecuted (result);
+
+			var objDir = GetObjDir (project_path, platform, runtimeIdentifiers, configuration);
+
+			var zippedAppBundlePath = Path.Combine (objDir, "AppBundle.zip");
+			Assert.That (zippedAppBundlePath, Does.Exist, "AppBundle.zip");
+
+			// Open the zipped app bundle and get the Info.plist
+			using var zip = ZipFile.OpenRead (zippedAppBundlePath);
+			ZipHelpers.DumpZipFile (zip, zippedAppBundlePath);
+			var infoPlistEntry = zip.Entries.Where (v => v.Name == "Info.plist").OrderBy (v => v.FullName.Length).First ();
+			Assert.That (infoPlistEntry, Is.Not.Null, "Info.plist");
+
+			// Parse the Info.plist
+			// PDictionary.FromStream requires a seekable stream, but the zip stream isn't seekable, so copy to a
+			// MemoryStream and use that. Info.plist files aren't big, so this shouldn't become a memory consumption problem.
+			using var memoryStream = new MemoryStream ((int) infoPlistEntry!.Length);
+			using var plistStream = infoPlistEntry.Open ();
+			plistStream.CopyTo (memoryStream);
+
+			var infoPlist = (PDictionary) PDictionary.FromStream (memoryStream)!;
+			Assert.That (infoPlist.GetString ("CFBundleIdentifier").Value, Is.EqualTo ("com.xamarin.mysimpleapp"), "CFBundleIdentifier");
+			Assert.That (infoPlist.GetString ("CFBundleDisplayName").Value, Is.EqualTo ("MySimpleApp"), "CFBundleDisplayName");
+			Assert.That (infoPlist.GetString ("CFBundleVersion").Value, Is.EqualTo ("3.14"), "CFBundleVersion");
+			Assert.That (infoPlist.GetString ("CFBundleShortVersionString").Value, Is.EqualTo ("3.14"), "CFBundleShortVersionString");
+
+			//Validate that the output assemblies report file with the list of local assemblies, lengths and MVIDs has been created
+			var outputAssembliesReportFileName = "OutputAssembliesReport.txt";
+			var outputAssembliesReportFile = Path.Combine (objDir, outputAssembliesReportFileName);
+			Assert.That (outputAssembliesReportFile, Does.Exist, outputAssembliesReportFileName);
+
+			//Validate that the file with the updated assemblies to replace locally has been created
+			var zippedChangedOutputFilesFileName = "ChangedOutputFiles.zip";
+			var zippedChangedOutputFiles = Path.Combine (objDir, zippedChangedOutputFilesFileName);
+			Assert.That (zippedChangedOutputFiles, Does.Exist, zippedChangedOutputFilesFileName);
+
+			//Create a directory in the obj to extract the updated assemblies
+			var changedOutputFilesDirectory = Path.Combine (objDir, "ChangedOutputFiles");
+			Directory.CreateDirectory (changedOutputFilesDirectory);
+
+			//Extract the updated assemblies from the zip file
+			using var changedOutputFilesZip = ZipFile.OpenRead (zippedChangedOutputFiles);
+			ZipHelpers.DumpZipFile (changedOutputFilesZip, zippedChangedOutputFiles);
+			changedOutputFilesZip.ExtractToDirectory (changedOutputFilesDirectory, overwriteFiles: true);
+
+			//Reads the output assemblies report file
+			var outputAssembliesReportFileList = GetOutputAssembliesReportFileList (outputAssembliesReportFile);
+			var changedOutputAssemblies = Directory.GetFiles (changedOutputFilesDirectory, "*.dll", SearchOption.TopDirectoryOnly);
+
+			foreach (var file in changedOutputAssemblies) {
+				var fileName = Path.GetFileName (file);
+				var fileInReport = outputAssembliesReportFileList.TryGetValue (fileName, out (long length, Guid mvid) localInfo);
+
+				if (fileInReport) {
+					var fileInfo = new FileInfo (file);
+					using Stream stream = fileInfo.OpenRead ();
+					using var peReader = new PEReader (stream);
+					MetadataReader metadataReader = peReader.GetMetadataReader ();
+					Guid mvid = metadataReader.GetGuid (metadataReader.GetModuleDefinition ().Mvid);
+					var fileWasUpdated = fileInfo.Length != localInfo.length || mvid != localInfo.mvid;
+
+					Assert.That (fileWasUpdated, Is.True, $"The file '{fileName}' is identical to the one present in the output assemblies report file '{outputAssembliesReportFile}'");
 				}
 			}
 		}

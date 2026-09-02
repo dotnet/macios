@@ -19,7 +19,7 @@ namespace StoreKit {
 		Failed,
 		/// <summary>The transaction has restored the original content purchased by the user.</summary>
 		Restored,
-		/// <summary>To be added.</summary>
+		/// <summary>The transaction is in a deferred state, waiting for an external action such as parental approval.</summary>
 		[MacCatalyst (13, 1)]
 		Deferred,
 	}
@@ -49,20 +49,20 @@ namespace StoreKit {
 		/// <summary>Indicates that the cloud service network connection failed.</summary>
 		CloudServiceNetworkConnectionFailed,
 		// iOS 10.3
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the cloud service has been revoked.</summary>
 		CloudServiceRevoked,
 		// iOS 12.2
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that a privacy acknowledgement is required before proceeding.</summary>
 		PrivacyAcknowledgementRequired,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the request data is unauthorized.</summary>
 		UnauthorizedRequestData,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the offer identifier is invalid.</summary>
 		InvalidOfferIdentifier,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the signature is invalid.</summary>
 		InvalidSignature,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that required offer parameters are missing.</summary>
 		MissingOfferParams,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the offer price is invalid.</summary>
 		InvalidOfferPrice,
 		OverlayCancelled = 15,
 
@@ -73,25 +73,28 @@ namespace StoreKit {
 		UnsupportedPlatform = 19,
 		// iOS 14.5
 		OverlayPresentedInBackgroundScene = 20,
+		// Xcode 26.5
+		/// <summary>Indicates that the payment method binding configuration is required.</summary>
+		PaymentMethodBindingConfigurationRequired = 21,
 	}
 
 	// typedef NSInteger SKDownloadState;
 	// StoreKit.framework/Headers/SKDownload.h
-	/// <summary>An enumeration whose values specify the state of an <see cref="StoreKit.SKDownload" /> object. Used with the <see cref="StoreKit.SKDownload.DownloadState" /> property.</summary>
+	/// <summary>An enumeration whose values specify the state of an <see cref="SKDownload" /> object. Used with the <see cref="SKDownload.DownloadState" /> property.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SKDownloadState : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The download is waiting to start.</summary>
 		Waiting,
-		/// <summary>To be added.</summary>
+		/// <summary>The download is actively in progress.</summary>
 		Active,
-		/// <summary>To be added.</summary>
+		/// <summary>The download has been paused.</summary>
 		Paused,
-		/// <summary>To be added.</summary>
+		/// <summary>The download has completed successfully.</summary>
 		Finished,
-		/// <summary>To be added.</summary>
+		/// <summary>The download has failed.</summary>
 		Failed,
-		/// <summary>To be added.</summary>
+		/// <summary>The download has been cancelled.</summary>
 		Cancelled,
 	}
 
@@ -132,7 +135,7 @@ namespace StoreKit {
 		AddToCloudMusicLibrary = 1 << 8,
 	}
 
-	/// <summary>Enumerates visiblity settings for a promoted product.</summary>
+	/// <summary>Enumerates visibility settings for a promoted product.</summary>
 	[Deprecated (PlatformName.iOS, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacCatalyst, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacOSX, 15, 0 /* Apple's replacement requires Swift */ )]

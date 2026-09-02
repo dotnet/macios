@@ -47,23 +47,23 @@ namespace MonoTouchFixtures.CoreText {
 		{
 			using (var url = NSUrl.FromFilename (pacifico_ttf_path)) {
 				var err = CTFontManager.RegisterFontsForUrl (url, CTFontManagerScope.Process);
-				Assert.IsNull (err, "err 1");
+				Assert.That (err, Is.Null, "err 1");
 				err = CTFontManager.UnregisterFontsForUrl (url, CTFontManagerScope.Process);
-				Assert.IsNull (err, "err 2");
+				Assert.That (err, Is.Null, "err 2");
 			}
 
 			using (var url = NSUrl.FromFilename (non_existent_path)) {
 				var err = CTFontManager.RegisterFontsForUrl (url, CTFontManagerScope.Process);
 				// xcode 11 beta 4 stopped reporting errors
-				// Assert.IsNotNull (err, "err 3");
+				// Assert.That (err, Is.Not.Null, "err 3");
 				err = CTFontManager.UnregisterFontsForUrl (url, CTFontManagerScope.Process);
 #if MONOMAC || __MACCATALYST__
 				if (TestRuntime.CheckXcodeVersion (12, 2))
-					Assert.IsNotNull (err, "err 4");
+					Assert.That (err, Is.Not.Null, "err 4");
 				else
-					Assert.IsNull (err, "err 4");
+					Assert.That (err, Is.Null, "err 4");
 #else
-				Assert.IsNotNull (err, "err 4");
+				Assert.That (err, Is.Not.Null, "err 4");
 #endif
 			}
 		}
@@ -105,16 +105,16 @@ namespace MonoTouchFixtures.CoreText {
 		static bool SuccessDone (NSError [] errors, bool done)
 		{
 			Assert.That (errors.Length, Is.EqualTo (0), "errors");
-			Assert.True (done, "done");
+			Assert.That (done, Is.True, "done");
 			return true;
 		}
 
 		static bool FailureDone (NSError [] errors, bool done)
 		{
 			Assert.That (errors.Length, Is.EqualTo (1), "errors");
-			Assert.True (errors [0].UserInfo.TryGetValue (CTFontManagerErrorKeys.FontUrlsKey, out var urls), "FontUrlsKey");
-			Assert.True ((urls as NSArray).GetItem<NSUrl> (0).AbsoluteString.EndsWith ("NonExistent.ttf", StringComparison.Ordinal), "NonExistent");
-			Assert.True (done, "done");
+			Assert.That (errors [0].UserInfo.TryGetValue (CTFontManagerErrorKeys.FontUrlsKey, out var urls), Is.True, "FontUrlsKey");
+			Assert.That ((urls as NSArray).GetItem<NSUrl> (0).AbsoluteString.EndsWith ("NonExistent.ttf", StringComparison.Ordinal), Is.True, "NonExistent");
+			Assert.That (done, Is.True, "done");
 			return true;
 		}
 
@@ -142,29 +142,29 @@ namespace MonoTouchFixtures.CoreText {
 		{
 			using (var url = NSUrl.FromFilename (pacifico_ttf_path)) {
 				var err = CTFontManager.RegisterFontsForUrl (new [] { url }, CTFontManagerScope.Process);
-				Assert.IsNull (err, "err 1");
+				Assert.That (err, Is.Null, "err 1");
 				err = CTFontManager.UnregisterFontsForUrl (new [] { url }, CTFontManagerScope.Process);
-				Assert.IsNull (err, "err 2");
+				Assert.That (err, Is.Null, "err 2");
 			}
 
 			using (var url = NSUrl.FromFilename (non_existent_path)) {
 				var err = CTFontManager.RegisterFontsForUrl (new [] { url }, CTFontManagerScope.Process);
 				// xcode 11 beta 4 stopped reporting errors
-				// Assert.IsNotNull (err, "err 3");
-				// Assert.AreEqual (1, err.Length, "err 3 l");
-				// Assert.IsNotNull (err [0], "err 3[0]");
+				// Assert.That (err, Is.Not.Null, "err 3");
+				// Assert.That (err.Length, Is.EqualTo (1), "err 3 l");
+				// Assert.That (err [0], Is.Not.Null, "err 3[0]");
 				err = CTFontManager.UnregisterFontsForUrl (new [] { url }, CTFontManagerScope.Process);
 #if MONOMAC || __MACCATALYST__
 				if (TestRuntime.CheckXcodeVersion (12, 2)) {
-					Assert.IsNotNull (err, "err 4");
-					Assert.AreEqual (1, err.Length, "err 4 l");
-					Assert.IsNotNull (err [0], "err 4[0]");
+					Assert.That (err, Is.Not.Null, "err 4");
+					Assert.That (err.Length, Is.EqualTo (1), "err 4 l");
+					Assert.That (err [0], Is.Not.Null, "err 4[0]");
 				} else
-					Assert.IsNull (err, "err 4");
+					Assert.That (err, Is.Null, "err 4");
 #else
-				Assert.IsNotNull (err, "err 4");
-				Assert.AreEqual (1, err.Length, "err 4 l");
-				Assert.IsNotNull (err [0], "err 4[0]");
+				Assert.That (err, Is.Not.Null, "err 4");
+				Assert.That (err.Length, Is.EqualTo (1), "err 4 l");
+				Assert.That (err [0], Is.Not.Null, "err 4[0]");
 #endif
 			}
 		}
@@ -216,7 +216,7 @@ namespace MonoTouchFixtures.CoreText {
 				var array = new [] { fd };
 				CTFontManager.RegisterFontDescriptors (array, CTFontManagerScope.Process, true, (NSError [] errors, bool done) => {
 					try {
-						Assert.True (done, "done: RegisterFontDescriptors");
+						Assert.That (done, Is.True, "done: RegisterFontDescriptors");
 					} catch (Exception e) {
 						ex = e;
 					}
@@ -226,7 +226,7 @@ namespace MonoTouchFixtures.CoreText {
 
 				CTFontManager.UnregisterFontDescriptors (array, CTFontManagerScope.Process, (NSError [] errors, bool done) => {
 					try {
-						Assert.True (done, "done: UnregisterFontDescriptors");
+						Assert.That (done, Is.True, "done: UnregisterFontDescriptors");
 					} catch (Exception e) {
 						ex = e;
 					}
@@ -250,15 +250,15 @@ namespace MonoTouchFixtures.CoreText {
 
 			var url = NSUrl.FromFilename (pacifico_ttf_path);
 			var err = CTFontManager.RegisterFontsForUrl (url, CTFontManagerScope.Process);
-			Assert.IsNull (err, "Register error");
+			Assert.That (err, Is.Null, "Register error");
 
 			// method under test
 			var fonts = CTFontManager.GetFonts (url);
-			Assert.AreEqual (1, fonts.Length);
-			Assert.AreEqual ("Pacifico", fonts [0].GetAttributes ().Name?.ToString ());
+			Assert.That (fonts.Length, Is.EqualTo (1));
+			Assert.That (fonts [0].GetAttributes ().Name?.ToString (), Is.EqualTo ("Pacifico"));
 
 			err = CTFontManager.UnregisterFontsForUrl (url, CTFontManagerScope.Process);
-			Assert.IsNull (err, "Unregister error");
+			Assert.That (err, Is.Null, "Unregister error");
 		}
 
 		[Test]
@@ -268,7 +268,7 @@ namespace MonoTouchFixtures.CoreText {
 
 			using (var url = NSUrl.FromFilename (non_existent_path)) {
 				var fonts = CTFontManager.GetFonts (url);
-				Assert.AreEqual (0, fonts.Length);
+				Assert.That (fonts.Length, Is.EqualTo (0));
 			}
 		}
 
@@ -278,10 +278,10 @@ namespace MonoTouchFixtures.CoreText {
 			Assert.Throws<ArgumentNullException> (() => CTFontManager.CreateFontDescriptor (null), "null");
 
 			using (var data = NSData.FromFile (pacifico_ttf_path))
-				Assert.NotNull (CTFontManager.CreateFontDescriptor (data), "font");
+				Assert.That (CTFontManager.CreateFontDescriptor (data), Is.Not.Null, "font");
 
 			using (var data = NSData.FromFile (tamarin_pdf_path))
-				Assert.Null (CTFontManager.CreateFontDescriptor (data), "not a font");
+				Assert.That (CTFontManager.CreateFontDescriptor (data), Is.Null, "not a font");
 		}
 
 		[Test]
@@ -320,7 +320,7 @@ namespace MonoTouchFixtures.CoreText {
 					Assert.That (unresolved.Length, Is.EqualTo (0), "all resolved");
 					callback = true;
 				});
-				Assert.True (callback, "callback");
+				Assert.That (callback, Is.True, "callback");
 			}
 		}
 #endif

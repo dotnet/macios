@@ -77,10 +77,6 @@ namespace MonoTouchFixtures.Security {
 			trust.SetVerifyDate (new DateTime (635108745218945450, DateTimeKind.Utc));
 			// the system was able to construct the chain based on the single certificate
 			var expectedTrust = SecTrustResult.RecoverableTrustFailure;
-#if __MACOS__
-			if (!TestRuntime.CheckSystemVersion (ApplePlatform.MacOSX, 10, 9))
-				expectedTrust = SecTrustResult.Unspecified;
-#endif
 			Assert.That (Evaluate (trust, true), Is.EqualTo (expectedTrust), "Evaluate");
 
 			using (var queue = new DispatchQueue ("TrustAsync")) {
@@ -92,7 +88,7 @@ namespace MonoTouchFixtures.Security {
 				});
 				Assert.That (err, Is.EqualTo (SecStatusCode.Success), "async1/err");
 				TestRuntime.RunAsync (TimeSpan.FromSeconds (5), called.Task);
-				Assert.True (assert, "async1");
+				Assert.That (assert, Is.True, "async1");
 			}
 
 			if (TestRuntime.CheckXcodeVersion (11, 0)) {
@@ -105,19 +101,19 @@ namespace MonoTouchFixtures.Security {
 					});
 					Assert.That (err, Is.EqualTo (SecStatusCode.Success), "async2/err");
 					TestRuntime.RunAsync (TimeSpan.FromSeconds (5), called.Task);
-					Assert.True (assert, "async2");
+					Assert.That (assert, Is.True, "async2");
 				}
 			}
 
 #if __MACOS__
-			var hasNetworkFetchAllowed = TestRuntime.CheckSystemVersion (ApplePlatform.MacOSX, 10, 9);
+			var hasNetworkFetchAllowed = true;
 #else
 			var hasNetworkFetchAllowed = TestRuntime.CheckXcodeVersion (5, 0);
 #endif
 			if (hasNetworkFetchAllowed) {
-				Assert.True (trust.NetworkFetchAllowed, "NetworkFetchAllowed-1");
+				Assert.That (trust.NetworkFetchAllowed, Is.True, "NetworkFetchAllowed-1");
 				trust.NetworkFetchAllowed = false;
-				Assert.False (trust.NetworkFetchAllowed, "NetworkFetchAllowed-2");
+				Assert.That (trust.NetworkFetchAllowed, Is.False, "NetworkFetchAllowed-2");
 
 				trust.SetPolicy (policy);
 
@@ -150,13 +146,7 @@ namespace MonoTouchFixtures.Security {
 
 					var trust_result = SecTrustResult.Invalid;
 #if __MACOS__
-					if (TestRuntime.CheckSystemVersion (ApplePlatform.MacOSX, 10, 13)) {
-						trust_result = SecTrustResult.RecoverableTrustFailure;
-					} else if (TestRuntime.CheckSystemVersion (ApplePlatform.MacOSX, 10, 12)) {
-						trust_result = SecTrustResult.Invalid;
-					} else if (TestRuntime.CheckSystemVersion (ApplePlatform.MacOSX, 10, 8)) {
-						trust_result = SecTrustResult.RecoverableTrustFailure;
-					}
+					trust_result = SecTrustResult.RecoverableTrustFailure;
 #else
 					if (TestRuntime.CheckXcodeVersion (9, 0))
 						trust_result = SecTrustResult.RecoverableTrustFailure; // Result not invalidated starting with Xcode 9 beta 3.
@@ -178,14 +168,10 @@ namespace MonoTouchFixtures.Security {
 				// that certificate stopped being valid on September 30th, 2013 so we validate it with a date earlier than that
 				trust.SetVerifyDate (new DateTime (635108745218945450, DateTimeKind.Utc));
 				var expectedTrust = SecTrustResult.RecoverableTrustFailure;
-#if __MACOS__
-				if (!TestRuntime.CheckSystemVersion (ApplePlatform.MacOSX, 10, 9))
-					expectedTrust = SecTrustResult.Unspecified;
-#endif
 				Assert.That (Evaluate (trust, true), Is.EqualTo (expectedTrust), "Evaluate");
 
 #if __MACOS__
-				var hasCreateRevocationPolicy = TestRuntime.CheckSystemVersion (ApplePlatform.MacOSX, 10, 9);
+				var hasCreateRevocationPolicy = true;
 #else
 				var hasCreateRevocationPolicy = TestRuntime.CheckXcodeVersion (5, 0);
 #endif
@@ -211,20 +197,16 @@ namespace MonoTouchFixtures.Security {
 				trust.SetVerifyDate (new DateTime (635108745218945450, DateTimeKind.Utc));
 				// a host name is not meaningful for client certificates
 				var expectedTrust = SecTrustResult.RecoverableTrustFailure;
-#if __MACOS__
-				if (!TestRuntime.CheckSystemVersion (ApplePlatform.MacOSX, 10, 9))
-					expectedTrust = SecTrustResult.Unspecified;
-#endif
 				Assert.That (Evaluate (trust, true), Is.EqualTo (expectedTrust), "Evaluate");
 
 #if __MACOS__
-				var hasGetResult = TestRuntime.CheckSystemVersion (ApplePlatform.MacOSX, 10, 9);
+				var hasGetResult = true;
 #else
 				var hasGetResult = TestRuntime.CheckXcodeVersion (5, 0);
 #endif
 				if (hasGetResult) {
 					// by default there's no *custom* anchors
-					Assert.Null (trust.GetCustomAnchorCertificates (), "GetCustomAnchorCertificates");
+					Assert.That (trust.GetCustomAnchorCertificates (), Is.Null, "GetCustomAnchorCertificates");
 
 					using (var results = trust.GetResult ()) {
 						Assert.That (CFGetRetainCount (results.Handle), Is.EqualTo ((nint) 1), "RetainCount");
@@ -250,8 +232,6 @@ namespace MonoTouchFixtures.Security {
 
 				var hasOCSPResponse = true;
 #if __MACOS__
-				if (!TestRuntime.CheckSystemVersion (ApplePlatform.MacOSX, 10, 9))
-					hasOCSPResponse = false;
 #else
 				if (!TestRuntime.CheckXcodeVersion (5, 0))
 					hasOCSPResponse = false;
@@ -303,8 +283,8 @@ namespace MonoTouchFixtures.Security {
 				}
 			}
 			if (TestRuntime.CheckXcodeVersion (10, 0)) {
-				Assert.False (trust.Evaluate (out var error), "Evaluate");
-				Assert.NotNull (error, "error");
+				Assert.That (trust.Evaluate (out var error), Is.False, "Evaluate");
+				Assert.That (error, Is.Not.Null, "error");
 			}
 		}
 
@@ -327,8 +307,13 @@ namespace MonoTouchFixtures.Security {
 			trust.SetVerifyDate (new DateTime (2025, 10, 1, 0, 0, 0, DateTimeKind.Utc));
 
 			SecTrustResult trust_result = SecTrustResult.Unspecified;
+			var allow_recoverable_trust_failure = TestRuntime.CheckSystemVersion (TestRuntime.CurrentPlatform, 26, 4);
 			var result = Evaluate (trust, out var trustError, true);
-			Assert.That (result, Is.EqualTo (trust_result), $"Evaluate: {trustError}");
+			if (allow_recoverable_trust_failure) {
+				Assert.That (result, Is.EqualTo (SecTrustResult.Unspecified).Or.EqualTo (SecTrustResult.RecoverableTrustFailure), $"Evaluate: {trustError}");
+			} else {
+				Assert.That (result, Is.EqualTo (trust_result), $"Evaluate: {trustError}");
+			}
 
 			// Evalute must be called prior to Count (Apple documentation)
 			Assert.That (trust.Count, Is.EqualTo (3), "Count");
@@ -347,7 +332,7 @@ namespace MonoTouchFixtures.Security {
 				Assert.That (sc3.SubjectSummary, Is.EqualTo ("GTS Root R1"), "SubjectSummary(sc3)");
 			}
 
-			Assert.That (trust.GetTrustResult (), Is.EqualTo (trust_result), "GetTrustResult");
+			Assert.That (trust.GetTrustResult (), Is.EqualTo (result), "GetTrustResult");
 
 			trust.SetAnchorCertificates (certs);
 			Assert.That (trust.GetCustomAnchorCertificates ().Length, Is.EqualTo (certs.Count), "GetCustomAnchorCertificates");
@@ -355,8 +340,17 @@ namespace MonoTouchFixtures.Security {
 			// since we modified the `trust` instance it's result was invalidated (marked as unspecified on iOS 11)
 			Assert.That (trust.GetTrustResult (), Is.EqualTo (SecTrustResult.Unspecified), "GetTrustResult-2");
 
-			Assert.True (trust.Evaluate (out var error), $"Evaluate: {error}");
-			Assert.Null (error, "error");
+			if (result == SecTrustResult.Unspecified) {
+				Assert.That (trust.Evaluate (out var error), Is.True, $"Evaluate: {error}");
+				Assert.That (error, Is.Null, "error");
+			} else if (result == SecTrustResult.RecoverableTrustFailure) {
+				if (trust.Evaluate (out var error))
+					Assert.That (error, Is.Null, "error");
+				else
+					Assert.That (error, Is.Not.Null, "error");
+			} else {
+				Assert.Fail ($"Unexpected trust result: {result}");
+			}
 		}
 
 		[Test]

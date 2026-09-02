@@ -18,54 +18,6 @@ namespace Introspection {
 	// we want the tests to be available because we use the linker
 	[Preserve (AllMembers = true)]
 	public class iOSApiPInvokeTest : ApiPInvokeTest {
-
-		protected override bool Skip (string symbolName)
-		{
-			var simulator = TestRuntime.IsSimulatorOrDesktop;
-			switch (symbolName) {
-			// Metal support inside simulator is only available in recent iOS9 SDK
-			case "MTLCreateSystemDefaultDevice":
-				return simulator && !UIDevice.CurrentDevice.CheckSystemVersion (9, 0);
-			// still most Metal helpers are not available on the simulator (even when the framework is present, it's missing symbols)
-			case "MPSSupportsMTLDevice":
-			case "MPSGetPreferredDevice":
-			// neither are the CoreVideo extensions for Metal
-			case "CVMetalTextureGetTexture":
-			case "CVMetalTextureIsFlipped":
-			case "CVMetalTextureGetCleanTexCoords":
-			case "CVMetalTextureCacheCreate":
-			case "CVMetalTextureCacheFlush":
-			case "CVMetalTextureCacheCreateTextureFromImage":
-			case "MTKMetalVertexDescriptorFromModelIO":
-			case "MTKModelIOVertexDescriptorFromMetal":
-			case "MTKModelIOVertexFormatFromMetal":
-			case "MTKMetalVertexFormatFromModelIO":
-			case "MTLIOCompressionContextAppendData":
-			case "MTLIOCreateCompressionContext":
-			case "MTLIOFlushAndDestroyCompressionContext":
-			case "MTLIOCompressionContextDefaultChunkSize":
-			case "MPSImageBatchIncrementReadCount":
-			case "MPSImageBatchSynchronize":
-			case "MPSImageBatchResourceSize":
-			case "MPSStateBatchIncrementReadCount":
-			case "MPSStateBatchSynchronize":
-			case "MPSStateBatchResourceSize":
-			case "MPSHintTemporaryMemoryHighWaterMark":
-			case "MPSSetHeapCacheDuration":
-			case "MPSGetImageType":
-				return simulator;
-			case "CVPixelBufferGetIOSurface":
-			case "CVPixelBufferCreateWithIOSurface":
-				return simulator && !TestRuntime.CheckXcodeVersion (11, 0);
-
-			default:
-				// MLCompute not available in simulator as of Xcode 12 beta 3
-				if (simulator && symbolName.StartsWith ("MLC", StringComparison.Ordinal))
-					return true;
-				return base.Skip (symbolName);
-			}
-		}
-
 		protected override bool SkipAssembly (Assembly a)
 		{
 			if (a == typeof (NSObject).Assembly) {

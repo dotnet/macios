@@ -1,3 +1,4 @@
+using System;
 using Foundation;
 using ObjCRuntime;
 
@@ -11,4 +12,8 @@ interface WebFetcher : INSUrlConnectionDelegate {
 	// -(NSURLResponse *)getResponseForUrl:(NSURL *)url withCredential:(NSURLCredential *)credential;
 	[Export ("getResponseForUrl:withCredential:")]
 	NSUrlResponse GetResponseForUrl (NSUrl url, NSUrlCredential credential);
+
+	// -(void)loadDataWithUrl:(NSURL *)url completionHandler:(void (^)(NSData *, NSURLResponse *))handler;
+	[Export ("loadDataWithUrl:completionHandler:")]
+	void LoadDataWithUrl (NSUrl url, Action<NSData, NSUrlResponse> handler);
 }

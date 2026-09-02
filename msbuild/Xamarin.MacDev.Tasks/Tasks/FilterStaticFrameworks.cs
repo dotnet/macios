@@ -44,17 +44,14 @@ namespace Xamarin.MacDev.Tasks {
 			var infoPlistPath = GetFrameworkInfoPlistPath (frameworkPath, platform);
 
 			if (File.Exists (infoPlistPath)) {
-				try {
-					var plist = PDictionary.FromFile (infoPlistPath);
-					if (plist is not null) {
-						var bundleExecutable = plist.GetCFBundleExecutable ();
-						if (!string.IsNullOrEmpty (bundleExecutable)) {
-							return Path.Combine (frameworkPath, bundleExecutable);
-						}
+				if (PDictionary.TryOpenFile (infoPlistPath, out var plist)) {
+					var bundleExecutable = plist.GetCFBundleExecutable ();
+					if (!string.IsNullOrEmpty (bundleExecutable)) {
+						return Path.Combine (frameworkPath, bundleExecutable);
 					}
-				} catch (Exception ex) {
+				} else {
 					// Log exceptions from malformed plist files and fall back to default behavior
-					log?.LogMessage (MessageImportance.Low, $"Failed to parse Info.plist for framework '{frameworkPath}': {ex.Message}");
+					log?.LogMessage (MessageImportance.Low, $"Failed to parse Info.plist for framework '{frameworkPath}'");
 				}
 			}
 
@@ -76,7 +73,15 @@ namespace Xamarin.MacDev.Tasks {
 				var list = FrameworkToPublish.ToList ();
 				for (var i = list.Count - 1; i >= 0; i--) {
 					var item = list [i];
-					var frameworkExecutablePath = PathUtils.ConvertToMacPath (item.ItemSpec);
+					var frameworkPath = Path.GetFullPath (PathUtils.ConvertToMacPath (item.ItemSpec));
+					var outputItem = new TaskItem (frameworkPath);
+					item.CopyMetadataTo (outputItem);
+					var sourceDirectory = item.GetMetadata ("SourceDirectory");
+					if (!string.IsNullOrEmpty (sourceDirectory))
+						outputItem.SetMetadata ("SourceDirectory", Path.GetFullPath (PathUtils.ConvertToMacPath (sourceDirectory)));
+					list [i] = outputItem;
+
+					var frameworkExecutablePath = frameworkPath;
 					try {
 						if (frameworkExecutablePath.EndsWith (".framework", StringComparison.OrdinalIgnoreCase) && Directory.Exists (frameworkExecutablePath)) {
 							frameworkExecutablePath = GetFrameworkExecutablePath (frameworkExecutablePath, Platform, Log);
@@ -103,9 +108,7 @@ namespace Xamarin.MacDev.Tasks {
 					list.RemoveAt (i);
 				}
 
-				// Copy back the list if anything was removed from it
-				if (FrameworkToPublish.Length != list.Count)
-					FrameworkToPublish = list.ToArray ();
+				FrameworkToPublish = list.ToArray ();
 			}
 
 			return !Log.HasLoggedErrors;

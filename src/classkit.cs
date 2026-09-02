@@ -531,7 +531,7 @@ namespace ClassKit {
 
 		[Async (XmlDocs = """
 			<param name="identifierPath">The identifier paths for the contexts to find.</param>
-			<summary>Finds the contexts identifed by a set of identifier paths and returns a task that contains the reults.</summary>
+			<summary>Finds the contexts identified by a set of identifier paths and returns a task that contains the results.</summary>
 			<returns>A task that contains the search results</returns>
 			<remarks>To be added.</remarks>
 			""")]
@@ -546,7 +546,26 @@ namespace ClassKit {
 		[Async]
 		[Export ("fetchActivityForURL:completion:")]
 		void FetchActivity (NSUrl url, Action<CLSActivity, NSError> completion);
+
+		[MacCatalyst (26, 4)]
+		[Mac (26, 4)]
+		[iOS (26, 4)]
+		[Async (XmlDocs = """
+			<param name="documentUrl">The URL of the document to check.</param>
+			<summary>Asynchronously checks whether the specified document is assigned and returns a task that contains the result.</summary>
+			<returns>A task that contains the result of the check.</returns>
+			<remarks>To be added.</remarks>
+			""")]
+		[Export ("checkIsAssignedDocument:completion:")]
+		void CheckIsAssignedDocument (NSUrl documentUrl, CLSDataStoreCheckAssignedDocumentCompletionHandler completion);
 	}
+
+	/// <summary>Completion handler for <see cref="CLSDataStore.CheckIsAssignedDocument" />.</summary>
+	[MacCatalyst (26, 4)]
+	[Mac (26, 4)]
+	[iOS (26, 4)]
+	[NoTV]
+	delegate void CLSDataStoreCheckAssignedDocumentCompletionHandler (bool isAssigned, [NullAllowed] NSError error);
 
 	/// <summary>Represents a quantitative data item.</summary>
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]

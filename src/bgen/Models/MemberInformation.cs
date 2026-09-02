@@ -39,6 +39,16 @@ public class MemberInformation {
 	public bool is_appearance;
 	public bool is_model;
 	public bool is_ctor;
+	// Set when this is a constructor or a named init method annotated with [FactoryMethod],
+	// in which case the backing member (constructor or init helper) is generated as internal
+	// and a public static factory method is generated alongside it.
+	public bool is_factory_method;
+	// Set while rendering the factory method itself (as opposed to the backing member).
+	public bool render_as_factory_method;
+	public string? factory_method_name;
+	// Set when the factory method returns a nullable value (i.e. the native initializer
+	// is failable). This is derived from the nullability of the initializer's return value.
+	public bool is_factory_method_nullable;
 	public bool is_return_release;
 	public bool is_type_sealed;
 	public string? selector;
@@ -67,10 +77,19 @@ public class MemberInformation {
 		var methodInfo = mi as MethodInfo;
 
 		is_ctor = mi is MethodInfo && mi.Name == "Constructor";
+		if (methodInfo is not null && AttributeManager.HasAttribute<FactoryMethodAttribute> (mi)) {
+			is_factory_method = true;
+			var factoryAttribute = AttributeManager.GetCustomAttribute<FactoryMethodAttribute> (mi);
+			// For a constructor the default factory name is "Create"; for a named init method
+			// (used when two initializers share the same managed signature and can't both be
+			// bound as constructors) the default is the binding method's own name.
+			factory_method_name = factoryAttribute?.MethodName ?? (is_ctor ? "Create" : mi.Name);
+			is_factory_method_nullable = AttributeManager.IsNullable (methodInfo.ReturnParameter);
+		}
 		is_abstract = AttributeManager.HasAttribute<AbstractAttribute> (mi) && mi.DeclaringType == type;
 		is_protected = AttributeManager.HasAttribute<ProtectedAttribute> (mi);
 		is_internal = mi.IsInternal (generator);
-		is_override = AttributeManager.HasAttribute<OverrideAttribute> (mi) || !Generator.MemberBelongsToType (mi.DeclaringType, type);
+		is_override = AttributeManager.HasAttribute<OverrideAttribute> (mi) || !Generator.MemberBelongsToType (mi.DeclaringType!, type);
 		is_new = AttributeManager.HasAttribute<NewAttribute> (mi);
 		is_sealed = AttributeManager.HasAttribute<SealedAttribute> (mi);
 		is_static = AttributeManager.IsStatic (mi);
@@ -157,12 +176,12 @@ public class MemberInformation {
 					wrap_method = wrapAtt.MethodName;
 					is_virtual_method = wrapAtt.IsVirtual;
 				} else {
-					BindAttribute ba = (BindAttribute) attr [0];
+					var ba = (BindAttribute) attr [0];
 					this.selector = ba.Selector;
 					is_virtual_method = ba.Virtual;
 				}
 			} else {
-				ExportAttribute ea = (ExportAttribute) attr [0];
+				var ea = (ExportAttribute) attr [0];
 				this.selector = ea.Selector;
 				is_variadic = ea.IsVariadic;
 
@@ -240,6 +259,11 @@ public class MemberInformation {
 		mods += is_new ? "new " : "";
 
 		if (is_sealed) {
+			mods += "";
+		} else if (render_as_factory_method) {
+			mods += "static ";
+		} else if (is_factory_method && !is_ctor) {
+			// The '_Create...' helper backing a named factory method is a private, non-virtual method.
 			mods += "";
 		} else if (is_ctor && is_protocol_member) {
 			mods += "static ";

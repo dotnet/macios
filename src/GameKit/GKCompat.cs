@@ -89,6 +89,8 @@ namespace GameKit {
 			throw new PlatformNotSupportedException (Constants.TypeUnavailable);
 		}
 
+		/// <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>
+		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
 		protected internal GKPeerPickerControllerDelegate (NativeHandle handle) : base (handle)
 		{
 			throw new PlatformNotSupportedException (Constants.TypeUnavailable);
@@ -161,6 +163,8 @@ namespace GameKit {
 			throw new PlatformNotSupportedException (Constants.TypeUnavailable);
 		}
 
+		/// <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>
+		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
 		protected internal GKPeerPickerController (NativeHandle handle) : base (handle)
 		{
 			throw new PlatformNotSupportedException (Constants.TypeUnavailable);
@@ -233,7 +237,7 @@ namespace GameKit {
 			}
 		}
 
-		/// <include file="../../docs/api/GameKit/GKPeerPickerController.xml" path="/Documentation/Docs[@DocId='M:GameKit.GKPeerPickerController.Dispose(System.Boolean)']/*" />
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			throw new PlatformNotSupportedException (Constants.TypeUnavailable);

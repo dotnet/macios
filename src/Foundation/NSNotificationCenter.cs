@@ -48,6 +48,7 @@ namespace Foundation {
 			s.Dispose ();
 		}
 
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			if (disposing && notificationCenter is not null) {

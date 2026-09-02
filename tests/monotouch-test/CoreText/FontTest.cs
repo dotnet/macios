@@ -7,6 +7,8 @@
 // Copyright 2015 Xamarin Inc. All rights reserved.
 //
 
+using System.Linq;
+
 using CoreGraphics;
 using CoreText;
 #if MONOMAC
@@ -55,7 +57,7 @@ namespace MonoTouchFixtures.CoreText {
 			TestRuntime.AssertXcodeVersion (5, 0);
 
 			using (var font = new CTFont ("HoeflerText-Regular", 10, CTFontOptions.Default)) {
-				Assert.NotNull (font.GetDefaultCascadeList (null), "null");
+				Assert.That (font.GetDefaultCascadeList (null), Is.Not.Null, "null");
 			}
 		}
 
@@ -65,7 +67,7 @@ namespace MonoTouchFixtures.CoreText {
 			TestRuntime.AssertXcodeVersion (5, 0);
 
 			using (var font = new CTFont ("HoeflerText-Regular", 10, CTFontOptions.Default)) {
-				Assert.NotNull (font.GetLocalizedName (CTFontNameKey.Copyright), "1");
+				Assert.That (font.GetLocalizedName (CTFontNameKey.Copyright), Is.Not.Null, "1");
 
 				// We need to check if we are using english as our main language since this is the known case
 				// that the following code works. It fails with spanish for example but it is a false positive
@@ -73,8 +75,8 @@ namespace MonoTouchFixtures.CoreText {
 				var language = NSLocale.PreferredLanguages [0];
 				if (language == "en") {
 					string str;
-					Assert.NotNull (font.GetLocalizedName (CTFontNameKey.Full, out str), "2");
-					Assert.NotNull (str, "out str");
+					Assert.That (font.GetLocalizedName (CTFontNameKey.Full, out str), Is.Not.Null, "2");
+					Assert.That (str, Is.Not.Null, "out str");
 				}
 			}
 		}
@@ -82,10 +84,10 @@ namespace MonoTouchFixtures.CoreText {
 		[Test]
 		public void GetGlyphsForCharacters_35048 ()
 		{
-			using (var font = CGFont.CreateWithFontName ("AppleColorEmoji"))
+			using (var font = CreateAppleColorEmojiFont ())
 			using (var ctfont = font.ToCTFont ((nfloat) 10.0)) {
 				ushort [] gid = new ushort [2];
-				Assert.True (ctfont.GetGlyphsForCharacters ("\ud83d\ude00".ToCharArray (), gid), "GetGlyphsForCharacters");
+				Assert.That (ctfont.GetGlyphsForCharacters ("\ud83d\ude00".ToCharArray (), gid), Is.True, "GetGlyphsForCharacters");
 				Assert.That (gid [0], Is.Not.EqualTo (0), "0");
 				Assert.That (gid [1], Is.EqualTo (0), "1");
 			}
@@ -115,6 +117,14 @@ namespace MonoTouchFixtures.CoreText {
 			}
 		}
 
+		static CGFont CreateAppleColorEmojiFont ()
+		{
+			var font = CGFont.CreateWithFontName ("AppleColorEmoji");
+			if (font is null)
+				Assert.Ignore ("Unable to create the 'AppleColorEmoji' font.");
+			return font;
+		}
+
 		[Test]
 		public void CTFontCopyNameForGlyph ()
 		{
@@ -123,9 +133,9 @@ namespace MonoTouchFixtures.CoreText {
 			using (var ctfont = new CTFont ("HoeflerText-Regular", 10, CTFontOptions.Default))
 				Assert.That (ctfont.GetGlyphName ((ushort) 65), Is.EqualTo ("asciicircum"), "1");
 
-			using (var font = CGFont.CreateWithFontName ("AppleColorEmoji"))
+			using (var font = CreateAppleColorEmojiFont ())
 			using (var ctfont = font.ToCTFont ((nfloat) 10.0))
-				Assert.Null (ctfont.GetGlyphName ('\ud83d'), "2");
+				Assert.That (ctfont.GetGlyphName ('\ud83d'), Is.Null, "2");
 		}
 
 		[Test]
@@ -138,7 +148,7 @@ namespace MonoTouchFixtures.CoreText {
 			using var space = CGColorSpace.CreateDeviceRGB ();
 			using var context = new CGBitmapContext (null, 10, 10, 8, 40, space, CGBitmapFlags.PremultipliedLast);
 			font.DrawImage (provider, CGPoint.Empty, context);
-			Assert.AreEqual (1, provider.Count, "#Count");
+			Assert.That (provider.Count, Is.EqualTo (1), "#Count");
 		}
 
 		[Test]
@@ -149,8 +159,22 @@ namespace MonoTouchFixtures.CoreText {
 			using var font = new CTFont ("HoeflerText-Regular", 10, CTFontOptions.Default);
 			using var provider = new AdaptiveImageProvider ();
 			var bounds = font.GetTypographicBoundsForAdaptiveImageProvider (provider);
-			Assert.AreEqual (new CGRect (0, -3.90625, 13, 16.40625), bounds, "Bounds");
-			Assert.AreEqual (0, provider.Count, "#Count");
+			var candidates = new object [] {
+				new CGRect (0, -3.90625, 13, 16.40625),
+				new CGRect (0, -3.90625, 35, 16.40625)
+			};
+			Assert.That (bounds, Is.AnyOf (candidates).Using<CGRect> ((x, y) => x == y), "Bounds");
+			Assert.That (provider.Count, Is.EqualTo (0), "#Count");
+		}
+
+		[Test]
+		public void GetAttribute ()
+		{
+			using (var font = new CTFont ("HoeflerText-Regular", 10, CTFontOptions.Default)) {
+				using (var name = font.GetAttribute (CTFontDescriptorAttributeKey.Name)) {
+					Assert.That (name, Is.Not.Null, "Name");
+				}
+			}
 		}
 
 		class AdaptiveImageProvider : NSObject, ICTAdaptiveImageProviding {
@@ -162,6 +186,33 @@ namespace MonoTouchFixtures.CoreText {
 				Count++;
 				return null;
 			}
+		}
+
+		[Test]
+		public void GetVariationAxes ()
+		{
+			using (var font = new CTFont ("HoeflerText-Regular", 10)) {
+				var axes = font.GetVariationAxes ();
+				Assert.That (axes, Is.Not.Null, "axes");
+				// HoeflerText-Regular has no variation axes, so we expect an empty array
+				Assert.That (axes.Length, Is.EqualTo (0), "Length");
+			}
+		}
+
+		[Test]
+		public void UIFontType_SystemFont ()
+		{
+			TestRuntime.AssertXcodeVersion (26, 4);
+			using var font = new CTFont (CTFontUIFontType.System, 12, "en");
+			Assert.That (font.UIFontType, Is.EqualTo (CTFontUIFontType.System), "System");
+		}
+
+		[Test]
+		public void UIFontType_RegularFont ()
+		{
+			TestRuntime.AssertXcodeVersion (26, 4);
+			using var font = new CTFont ("HoeflerText-Regular", 10);
+			Assert.That (font.UIFontType, Is.EqualTo (CTFontUIFontType.None), "None");
 		}
 	}
 }

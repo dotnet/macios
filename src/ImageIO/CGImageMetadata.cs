@@ -143,6 +143,8 @@ namespace ImageIO {
 			var nsKey = Runtime.GetNSObject<NSString> (key, false)!;
 			var nsValue = Runtime.GetINativeObject<CGImageMetadataTag> (value, false)!;
 			var del = BlockLiteral.GetTarget<CGImageMetadataTagBlock> (block);
+			if (del is null)
+				return default;
 			return del (nsKey, nsValue) ? (byte) 1 : (byte) 0;
 		}
 

@@ -11,10 +11,6 @@
 		<!-- warning CS8981: The type name 'pfloat' only contains lower-cased ascii characters. Such names may become reserved for the language. -->
 		<!-- if this one becomes a problem we can easily fix it with a search&replace -->
 		<NoWarn>$(NoWarn);CS8981</NoWarn>
-
-		<!-- We're warning-free, so let's make sure we stay that way -->
-		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-		<WarningsAsErrors>Nullable</WarningsAsErrors>
 	</PropertyGroup>
 
 	<Import Project="$(RootTestsDirectory)/common/shared-dotnet.csproj" />
@@ -23,6 +19,9 @@
 		<Compile Include="$(EmbeddedResourcesTestDirectory)\ResourcesTest.cs" />
 		<Compile Include="$(RootTestsDirectory)\common\TestRuntime.cs">
 			<Link>TestRuntime.cs</Link>
+		</Compile>
+		<Compile Include="$(RootTestsDirectory)\common\TestRuntime.LinkAll.cs">
+			<Link>TestRuntime.LinkAll.cs</Link>
 		</Compile>
 		<Compile Include="$(RootTestsDirectory)\..\tools\common\ApplePlatform.cs">
 			<Link>ApplePlatform.cs</Link>

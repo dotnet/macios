@@ -37,7 +37,7 @@ using OpenGLES;
 #nullable enable
 
 namespace CoreImage {
-	/// <summary>Use to configure the CIContext rendering pipeline.</summary>
+	/// <summary>Used to configure the CIContext rendering pipeline.</summary>
 	/// <remarks>You would use an instance of this class to configure the CIContext rendering operations.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -72,14 +72,13 @@ namespace CoreImage {
 	}
 
 	public partial class CIContext {
-		/// <param name="options">The context options to use.</param>
-		///         <summary>Creates a new Core Image context with the specified <paramref name="options" />.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Creates a new Core Image context with the specified <paramref name="options" />.</summary>
+		/// <param name="options">The context options to use, or <see langword="null" /> to use the default options.</param>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-		public CIContext (CIContextOptions options) :
+		public CIContext (CIContextOptions? options) :
 			this (options?.Dictionary)
 		{
 		}

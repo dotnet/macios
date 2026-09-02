@@ -6,10 +6,10 @@ using Microsoft.DotNet.XHarness.Common.Execution;
 using Microsoft.DotNet.XHarness.iOS.Shared.Logging;
 
 namespace Xharness.Jenkins.TestTasks {
-	class MSBuildTask : BuildProjectTask {
+	public class MSBuildTask : BuildProjectTask {
 		protected virtual string ToolName {
 			get {
-				return Jenkins.Harness.GetDotNetExecutable (Path.GetDirectoryName (ProjectFile));
+				return Jenkins.Harness.GetDotNetExecutable (Path.GetDirectoryName (ProjectFile)!);
 			}
 		}
 
@@ -26,9 +26,9 @@ namespace Xharness.Jenkins.TestTasks {
 		}
 
 		protected virtual List<string> ToolArguments =>
-				MSBuild.GetToolArguments (ProjectPlatform, ProjectConfiguration, ProjectFile, BuildLog);
+				MSBuild.GetToolArguments (ProjectPlatform, ProjectConfiguration, ProjectFile, BuildLog!);
 
-		MSBuild MSBuild => buildToolTask as MSBuild;
+		MSBuild MSBuild => (MSBuild) buildToolTask;
 
 		public MSBuildTask (Jenkins jenkins, TestProject testProject, IProcessManager processManager)
 			: base (jenkins, testProject, processManager) { }
@@ -49,8 +49,8 @@ namespace Xharness.Jenkins.TestTasks {
 			using var resource = await NotifyAndAcquireDesktopResourceAsync ();
 			BuildLog = Logs.Create ($"build-{Platform}-{Timestamp}.txt", LogType.BuildLog.ToString ());
 			(ExecutionResult, KnownFailure) = await MSBuild.ExecuteAsync (
-				projectPlatform: ProjectPlatform,
-				projectConfiguration: ProjectConfiguration,
+				projectPlatform: ProjectPlatform!,
+				projectConfiguration: ProjectConfiguration!,
 				projectFile: ProjectFile,
 				resource: resource,
 				dryRun: Jenkins.Harness.DryRun,
@@ -62,13 +62,13 @@ namespace Xharness.Jenkins.TestTasks {
 
 		public override Task CleanAsync () =>
 			MSBuild.CleanAsync (
-				projectPlatform: ProjectPlatform,
-				projectConfiguration: ProjectConfiguration,
+				projectPlatform: ProjectPlatform!,
+				projectConfiguration: ProjectConfiguration!,
 				projectFile: ProjectFile,
 				cleanLog: Logs.Create ($"clean-{Platform}-{Timestamp}.txt", "Clean log"),
 				mainLog: Jenkins.MainLog);
 
-		public static void SetDotNetEnvironmentVariables (Dictionary<string, string> environment)
+		public static void SetDotNetEnvironmentVariables (Dictionary<string, string?> environment)
 		{
 			environment ["MSBUILD_EXE_PATH"] = null;
 			environment ["MSBuildExtensionsPathFallbackPathsOverride"] = null;

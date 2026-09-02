@@ -55,7 +55,7 @@ steps:
   workingDirectory: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts
   timeoutInMinutes: 15
   env:
-    IS_PR: and(eq(parameters.isPR, 'true'), not(startsWith(variables['Build.SourceBranch'], 'refs/pull')))
+    IS_PR: ${{ parameters.isPR }}
 
 - checkout: yaml-templates
   clean: true

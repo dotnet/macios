@@ -48,8 +48,8 @@ namespace CoreText {
 		None = 0,
 		/// <summary>To be added.</summary>
 		Process = 1,
-		[SupportedOSPlatform ("ios13.0")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		Persistent = 2,
@@ -153,18 +153,6 @@ namespace CoreText {
 			return NSArray.FromObjects (items);
 		}
 
-		static T []? ArrayFromHandle<T> (IntPtr handle, bool releaseAfterUse) where T : class, INativeObject
-		{
-			if (handle == IntPtr.Zero)
-				return null;
-			try {
-				return NSArray.ArrayFromHandle<T> (handle);
-			} finally {
-				if (releaseAfterUse)
-					CFObject.CFRetain (handle);
-			}
-		}
-
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -198,7 +186,7 @@ namespace CoreText {
 						return null;
 					GC.KeepAlive (arr);
 				}
-				return ArrayFromHandle<NSError> (error_array, releaseAfterUse: true);
+				return NSArray.ArrayFromHandleDropNullElements<NSError> (error_array, releaseHandle: true);
 			}
 		}
 
@@ -211,20 +199,20 @@ namespace CoreText {
 			if (del is null)
 				return 0;
 
-			var rv = del (NSArray.ArrayFromHandle<NSError> (errors), done == 0 ? false : true);
+			var rv = del (NSArray.NonNullArrayFromHandleDropNullElements<NSError> (errors), done == 0 ? false : true);
 			return rv ? (byte) 1 : (byte) 0;
 		}
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern void CTFontManagerRegisterFontURLs (/* CFArrayRef */ IntPtr fontUrls, CTFontManagerScope scope, byte enabled, BlockLiteral* registrationHandler);
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public static void RegisterFonts (NSUrl [] fontUrls, CTFontManagerScope scope, bool enabled, CTFontRegistrationHandler registrationHandler)
@@ -308,20 +296,20 @@ namespace CoreText {
 						return null;
 					GC.KeepAlive (arr);
 				}
-				return ArrayFromHandle<NSError> (error_array, releaseAfterUse: true);
+				return NSArray.ArrayFromHandleDropNullElements<NSError> (error_array, releaseHandle: true);
 			}
 		}
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern unsafe void CTFontManagerUnregisterFontURLs (/* CFArrayRef */ IntPtr fontUrls, CTFontManagerScope scope, BlockLiteral* registrationHandler);
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public unsafe static void UnregisterFonts (NSUrl [] fontUrls, CTFontManagerScope scope, CTFontRegistrationHandler registrationHandler)
@@ -519,16 +507,16 @@ namespace CoreText {
 
 		}
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern unsafe void CTFontManagerRegisterFontDescriptors (/* CFArrayRef */ IntPtr fontDescriptors, CTFontManagerScope scope, byte enabled, BlockLiteral* registrationHandler);
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public unsafe static void RegisterFontDescriptors (CTFontDescriptor [] fontDescriptors, CTFontManagerScope scope, bool enabled, CTFontRegistrationHandler registrationHandler)
@@ -546,16 +534,16 @@ namespace CoreText {
 			}
 		}
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern unsafe void CTFontManagerUnregisterFontDescriptors (/* CFArrayRef */ IntPtr fontDescriptors, CTFontManagerScope scope, BlockLiteral* registrationHandler);
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public unsafe static void UnregisterFontDescriptors (CTFontDescriptor [] fontDescriptors, CTFontManagerScope scope, CTFontRegistrationHandler registrationHandler)
@@ -574,14 +562,14 @@ namespace CoreText {
 		}
 
 #if __IOS__
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern /* CFArrayRef */ IntPtr CTFontManagerCopyRegisteredFontDescriptors (CTFontManagerScope scope, byte enabled);
 
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("macos")]
@@ -589,7 +577,7 @@ namespace CoreText {
 		{
 			var p = CTFontManagerCopyRegisteredFontDescriptors (scope, enabled.AsByte ());
 			// Copy/Create rule - we must release the CFArrayRef
-			return ArrayFromHandle<CTFontDescriptor> (p, releaseAfterUse: true);
+			return NSArray.ArrayFromHandleDropNullElements<CTFontDescriptor> (p, releaseHandle: true);
 		}
 #endif
 
@@ -609,16 +597,16 @@ namespace CoreText {
 			return new CTFontDescriptor (p, owns: true);
 		}
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern unsafe /* CFArrayRef */ IntPtr CTFontManagerCreateFontDescriptorsFromData (/* CFDataRef */ IntPtr data);
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public static CTFontDescriptor []? CreateFontDescriptors (NSData data)
 		{
@@ -628,11 +616,11 @@ namespace CoreText {
 			var p = CTFontManagerCreateFontDescriptorsFromData (data.Handle);
 			GC.KeepAlive (data);
 			// Copy/Create rule - we must release the CFArrayRef
-			return ArrayFromHandle<CTFontDescriptor> (p, releaseAfterUse: true);
+			return NSArray.ArrayFromHandleDropNullElements<CTFontDescriptor> (p, releaseHandle: true);
 		}
 
 #if __IOS__
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("macos")]
@@ -640,7 +628,7 @@ namespace CoreText {
 		static extern unsafe void CTFontManagerRegisterFontsWithAssetNames (/* CFArrayRef */ IntPtr fontAssetNames, /* CFBundleRef _Nullable */ IntPtr bundle, CTFontManagerScope scope, byte enabled, BlockLiteral* registrationHandler);
 
 		// reminder that NSBundle and CFBundle are NOT toll-free bridged :(
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("macos")]
@@ -664,7 +652,7 @@ namespace CoreText {
 
 		public delegate void CTFontManagerRequestFontsHandler (CTFontDescriptor [] unresolvedFontDescriptors);
 
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("macos")]
@@ -676,10 +664,10 @@ namespace CoreText {
 		{
 			var del = BlockLiteral.GetTarget<CTFontManagerRequestFontsHandler> (block);
 			if (del is not null)
-				del (NSArray.ArrayFromHandle<CTFontDescriptor> (fontDescriptors));
+				del (NSArray.NonNullArrayFromHandleDropNullElements<CTFontDescriptor> (fontDescriptors));
 		}
 
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("macos")]

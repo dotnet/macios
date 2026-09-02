@@ -14,7 +14,7 @@ namespace Vision {
 
 		/// <typeparam name="T">The subclass of <see cref="Vision.VNObservation" /> produced.</typeparam>
 		///         <summary>Gets the detected objects, as an array of the specified subclass of <see cref="Vision.VNObservation" />.</summary>
-		///         <returns>To be added.</returns>
+		///         <returns>An array of detected observations of type <typeparamref name="T" />, or <see langword="null" /> if the request has not been processed or failed.</returns>
 		///         <remarks>
 		///           <para>The following example shows how one might retrieve the results of a <see cref="Vision.VNDetectFaceRectanglesRequest" />:</para>
 		///           <example>
@@ -26,13 +26,13 @@ namespace Vision {
 		///     ]]></code>
 		///           </example>
 		///         </remarks>
-		public virtual T [] GetResults<T> () where T : VNObservation
+		public virtual T []? GetResults<T> () where T : VNObservation
 		{
 			// From docs: If the request failed, this property will be nil;
 			// otherwise, it will be an array of zero or more VNObservation
 			// subclasses specific to the VNRequest subclass.
 			// ArrayFromHandle<T> does the null checking for us.
-			return NSArray.ArrayFromHandle<T> (_Results);
+			return NSArray.ArrayFromHandleDropNullElements<T> (_Results);
 		}
 	}
 }

@@ -50,14 +50,6 @@ namespace ObjCRuntime {
 		static public class LibC {
 			static public readonly IntPtr Handle = Dlfcn._dlopen (Constants.libcLibrary, 0);
 		}
-#if HAS_OPENGLES
-		static public class OpenGLES {
-			static public readonly IntPtr Handle = Dlfcn._dlopen (Constants.OpenGLESLibrary, 0);
-		}
-#endif
-		static public class AudioToolbox {
-			static public readonly IntPtr Handle = Dlfcn._dlopen (Constants.AudioToolboxLibrary, 0);
-		}
 #endif
 	}
 

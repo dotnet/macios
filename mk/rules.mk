@@ -98,7 +98,7 @@ $(1)_CFLAGS += \
 
 $(1)_SWIFTFLAGS += $(SWIFTFLAGS) -sdk $($(1)_SDK)
 endef
-$(foreach xcframeworkPlatform,$(XCFRAMEWORK_PLATFORMS),$(eval $(call FlagsTemplate1,$(xcframeworkPlatform),$(DOTNET_$(xcframeworkPlatform)_PLATFORM),$(shell echo $(DOTNET_$(xcframeworkPlatform)_PLATFORM) | tr 'a-z' 'A-Z'))))
+$(foreach xcframeworkPlatform,$(XCFRAMEWORK_PLATFORMS),$(eval $(call FlagsTemplate1,$(xcframeworkPlatform),$(DOTNET_$(xcframeworkPlatform)_PLATFORM),$(call uppercase,$(DOTNET_$(xcframeworkPlatform)_PLATFORM)))))
 
 # 1: xcframework platform
 # 2: platform
@@ -109,7 +109,7 @@ $(4)_CFLAGS += $$($(1)_CFLAGS) -arch $(DOTNET_$(4)_ARCHITECTURES) $(CLANG_$(4)_V
 $(4)_OBJC_FLAGS += $$($(4)_CFLAGS) $(OBJC_CFLAGS)
 $(4)_SWIFTFLAGS += $$($(1)_SWIFTFLAGS) $(SWIFTC_$(4)_VERSION_MIN)
 endef
-$(foreach xcframeworkPlatform,$(XCFRAMEWORK_PLATFORMS),$(foreach rid,$(XCFRAMEWORK_$(xcframeworkPlatform)_RUNTIME_IDENTIFIERS),$(eval $(call FlagsTemplate2,$(xcframeworkPlatform),$(DOTNET_$(xcframeworkPlatform)_PLATFORM),$(shell echo $(DOTNET_$(xcframeworkPlatform)_PLATFORM) | tr 'a-z' 'A-Z'),$(rid)))))
+$(foreach xcframeworkPlatform,$(XCFRAMEWORK_PLATFORMS),$(foreach rid,$(XCFRAMEWORK_$(xcframeworkPlatform)_RUNTIME_IDENTIFIERS),$(eval $(call FlagsTemplate2,$(xcframeworkPlatform),$(DOTNET_$(xcframeworkPlatform)_PLATFORM),$(call uppercase,$(DOTNET_$(xcframeworkPlatform)_PLATFORM)),$(rid)))))
 
 DEBUG_FLAGS=-DDEBUG -D_LIBCPP_HARDENING_MODE=_LIBCPP_HARDENING_MODE_DEBUG
 RELEASE_FLAGS=-O2 -D_LIBCPP_HARDENING_MODE=_LIBCPP_HARDENING_MODE_FAST
@@ -155,7 +155,7 @@ $(foreach rid,$(DOTNET_RUNTIME_IDENTIFIERS),$(eval $(call NativeCompilationTempl
 $(foreach rid,$(DOTNET_RUNTIME_IDENTIFIERS),$(eval $(call NativeCompilationTemplate,$(rid),-dotnet-nativeaot,$(RELEASE_FLAGS) -DCORECLR_RUNTIME -DDOTNET -DNATIVEAOT)))
 $(foreach rid,$(DOTNET_RUNTIME_IDENTIFIERS),$(eval $(call NativeCompilationTemplate,$(rid),-dotnet-nativeaot-debug,$(DEBUG_FLAGS) -DCORECLR_RUNTIME -DDOTNET -DNATIVEAOT)))
 
-%.csproj.inc: %.csproj $(TOP)/Make.config $(TOP)/mk/mono.mk $(TOP)/tools/common/create-makefile-fragment.sh
+%.csproj.inc: %.csproj $(TOP)/Make.config $(TOP)/tools/common/create-makefile-fragment.sh
 	$(Q) $(TOP)/tools/common/create-makefile-fragment.sh $(abspath $<) $(abspath $@)
 
 DIRS = \

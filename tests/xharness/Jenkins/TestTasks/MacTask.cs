@@ -8,7 +8,7 @@ namespace Xharness.Jenkins.TestTasks {
 		{
 		}
 
-		public override string Mode {
+		public override string? Mode {
 			get {
 				switch (Platform) {
 				case TestPlatform.Mac:

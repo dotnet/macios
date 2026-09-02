@@ -123,7 +123,11 @@ namespace Foundation {
 				if (IsDirectBinding) {
 					InitializeHandle (Messaging.IntPtr_objc_msgSend_IntPtr (this.Handle, Selector.GetHandle ("initWithProperties:"), properties.Handle), "initWithProperties:", throwOnInitFailure);
 				} else {
-					InitializeHandle (Messaging.IntPtr_objc_msgSendSuper_IntPtr (this.SuperHandle, Selector.GetHandle ("initWithProperties:"), properties.Handle), "initWithProperties:", throwOnInitFailure);
+					unsafe {
+						var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this);
+						InitializeHandle (Messaging.IntPtr_objc_msgSendSuper_IntPtr (&__objc_super__, Selector.GetHandle ("initWithProperties:"), properties.Handle), "initWithProperties:", throwOnInitFailure);
+						GC.KeepAlive (this);
+					}
 				}
 			}
 		}

@@ -72,8 +72,8 @@ cat "$ROLLBACK_PATH"
 mkdir -p "$DOTNET_NUPKG_DIR"
 ls -R "$ARTIFACTS_PATH/${MACIOS_UPLOAD_PREFIX}not-signed-package"
 cp "$ARTIFACTS_PATH/${MACIOS_UPLOAD_PREFIX}not-signed-package/"*.nupkg "$DOTNET_NUPKG_DIR"
-cp "$ARTIFACTS_PATH/${MACIOS_UPLOAD_PREFIX}not-signed-package/"*.pkg "$DOTNET_NUPKG_DIR"
-cp "$ARTIFACTS_PATH/${MACIOS_UPLOAD_PREFIX}not-signed-package/"*.zip "$DOTNET_NUPKG_DIR"
+cp "$ARTIFACTS_PATH/${MACIOS_UPLOAD_PREFIX}not-signed-package/"*.pkg "$DOTNET_NUPKG_DIR" 2>/dev/null || true
+cp "$ARTIFACTS_PATH/${MACIOS_UPLOAD_PREFIX}not-signed-package/"*.zip "$DOTNET_NUPKG_DIR" 2>/dev/null || true
 ls -R "$DOTNET_NUPKG_DIR"
 
 NUGET_SOURCES=$(grep https://pkgs.dev.azure.com ./NuGet.config | sed -e 's/.*value="//'  -e 's/".*//')

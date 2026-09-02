@@ -40,7 +40,7 @@ namespace CoreAnimation {
 			calayer = layer is null ? null : new WeakReference<CALayer> (layer);
 		}
 
-		/// <include file="../../docs/api/CoreAnimation/CALayerDelegate.xml" path="/Documentation/Docs[@DocId='M:CoreAnimation.CALayerDelegate.Dispose(System.Boolean)']/*" />
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			if (calayer?.TryGetTarget (out var layer) == true) {

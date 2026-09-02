@@ -53,10 +53,10 @@ namespace MonoTouchFixtures.UIKit {
 					Assert.That (resized.CGImage.Height, Is.EqualTo (resized.CGImage.Width), "Width-Height-identical");
 					// caching of the backing CGImage occurs on devices (but not always)
 					if (TestRuntime.IsSimulatorOrDesktop) {
-						Assert.That ((nint) 16, Is.EqualTo (resized.CGImage.Width), "half");
+						Assert.That (resized.CGImage.Width, Is.EqualTo ((nint) 16), "half");
 					} else {
 						var h = resized.CGImage.Height;
-						Assert.True (h == 16 || h == 32, "mostly");
+						Assert.That (h, Is.EqualTo (16).Or.EqualTo (32), "mostly");
 					}
 					Assert.That (handle, Is.Not.EqualTo (resized.CGImage.Handle), "Handle");
 				}
@@ -69,7 +69,7 @@ namespace MonoTouchFixtures.UIKit {
 			using (var i = UIImage.CreateAnimatedImage ("xamarin", UIEdgeInsets.Zero, 1d)) {
 				Assert.That (i.Handle, Is.Not.EqualTo (IntPtr.Zero), "Handle");
 				Assert.That (i.Images.Length, Is.EqualTo (3), "3 images");
-				Assert.True (i.Description.Contains ("UIAnimatedImage"), "UIAnimatedImage");
+				Assert.That (i.Description.Contains ("UIAnimatedImage"), Is.True, "UIAnimatedImage");
 			}
 		}
 

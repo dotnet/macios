@@ -263,7 +263,7 @@ namespace CoreFoundation {
 			/* CFStringRef __nonnull */ IntPtr proxyAutoConfigurationScript,
 			/* CFURLRef __nonnull */ IntPtr targetURL, /* CFErrorRef  __nullable * __nullable */ IntPtr* error);
 
-		static NSArray? CopyProxiesForAutoConfigurationScript (NSString proxyAutoConfigurationScript, NSUrl targetURL)
+		static IntPtr CopyProxiesForAutoConfigurationScript (NSString proxyAutoConfigurationScript, NSUrl targetURL)
 		{
 			IntPtr err;
 			IntPtr native;
@@ -272,7 +272,7 @@ namespace CoreFoundation {
 				GC.KeepAlive (proxyAutoConfigurationScript);
 				GC.KeepAlive (targetURL);
 			}
-			return native == IntPtr.Zero ? null : new NSArray (native);
+			return native;
 		}
 
 		/// <param name="proxyAutoConfigurationScript">JavaScript source to be executed to obtain a list of proxies to use.</param>
@@ -288,21 +288,9 @@ namespace CoreFoundation {
 			if (targetURL is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (targetURL));
 
-			using (var array = CopyProxiesForAutoConfigurationScript (proxyAutoConfigurationScript, targetURL)) {
-				if (array is null)
-					return null;
-
-				NSDictionary [] dictionaries = NSArray.ArrayFromHandle<NSDictionary> (array.Handle);
-				GC.KeepAlive (array);
-				if (dictionaries is null)
-					return null;
-
-				CFProxy [] proxies = new CFProxy [dictionaries.Length];
-				for (int i = 0; i < dictionaries.Length; i++)
-					proxies [i] = new CFProxy (dictionaries [i]);
-
-				return proxies;
-			}
+			var array = CopyProxiesForAutoConfigurationScript (proxyAutoConfigurationScript, targetURL);
+			var proxies = NSArray.DictionaryArrayFromHandleDropNullElements (array, (dict) => new CFProxy (dict), releaseHandle: true);
+			return proxies;
 		}
 
 		/// <include file="../../docs/api/CoreFoundation/CFNetwork.xml" path="/Documentation/Docs[@DocId='M:CoreFoundation.CFNetwork.GetProxiesForAutoConfigurationScript(Foundation.NSString,System.Uri)']/*" />
@@ -325,12 +313,12 @@ namespace CoreFoundation {
 			/* CFURLRef __nonnull */ IntPtr url,
 			/* CFDictionaryRef __nonnull */ IntPtr proxySettings);
 
-		static NSArray? CopyProxiesForURL (NSUrl url, NSDictionary proxySettings)
+		static IntPtr CopyProxiesForURL (NSUrl url, NSDictionary proxySettings)
 		{
 			IntPtr native = CFNetworkCopyProxiesForURL (url.Handle, proxySettings.Handle);
 			GC.KeepAlive (url);
 			GC.KeepAlive (proxySettings);
-			return native == IntPtr.Zero ? null : new NSArray (native);
+			return native;
 		}
 
 		/// <param name="url">The target URL to connect to.</param>
@@ -349,21 +337,9 @@ namespace CoreFoundation {
 			if (proxySettings is null)
 				return null;
 
-			using (NSArray? array = CopyProxiesForURL (url, proxySettings.Dictionary)) {
-				if (array is null)
-					return null;
-
-				NSDictionary [] dictionaries = NSArray.ArrayFromHandle<NSDictionary> (array.Handle);
-				GC.KeepAlive (array);
-				if (dictionaries is null)
-					return null;
-
-				CFProxy [] proxies = new CFProxy [dictionaries.Length];
-				for (int i = 0; i < dictionaries.Length; i++)
-					proxies [i] = new CFProxy (dictionaries [i]);
-
-				return proxies;
-			}
+			var array = CopyProxiesForURL (url, proxySettings.Dictionary);
+			var proxies = NSArray.DictionaryArrayFromHandleDropNullElements (array, (dict) => new CFProxy (dict), releaseHandle: true);
+			return proxies;
 		}
 
 		/// <param name="uri">The target Uri to connect to.</param>

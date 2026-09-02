@@ -4466,14 +4466,15 @@ namespace AppKit {
 		Audiograph,
 	}
 
+	/// <summary>Specifies how a color represents its color data.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSColorType : long {
-		/// <summary>To be added.</summary>
+		/// <summary>A color defined by components in a color space.</summary>
 		ComponentBased,
-		/// <summary>To be added.</summary>
+		/// <summary>A color defined by a repeating image pattern.</summary>
 		Pattern,
-		/// <summary>To be added.</summary>
+		/// <summary>A color obtained from a named color catalog.</summary>
 		Catalog,
 	}
 

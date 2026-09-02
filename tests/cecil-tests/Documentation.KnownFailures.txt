@@ -22420,7 +22420,6 @@ T:AppKit.NSColorPanelMode
 T:AppKit.NSColorRenderingIntent
 T:AppKit.NSColorSpaceModel
 T:AppKit.NSColorSystemEffect
-T:AppKit.NSColorType
 T:AppKit.NSColorWellStyle
 T:AppKit.NSComboButtonStyle
 T:AppKit.NSComposite

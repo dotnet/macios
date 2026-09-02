@@ -197,6 +197,27 @@ The default value of this property `false` in .NET 9, and `true` in .NET 10+.
 > [!NOTE]
 > File an issue if you find that you need to disable this feature, as it's possible that the option to disable it will be removed in future.
 
+## CheckForIllegalCrossThreadCalls
+
+Controls whether the UI thread checks (the `[NS|UI]Application.EnsureUIThread`
+calls the generated bindings emit for UI code) are performed.
+
+When set to `true`, the checks are enabled: accessing UI API off the UI thread
+throws an exception. When set to `false`, the checks are disabled.
+
+This property is emitted as the `ObjCRuntime.Runtime.CheckForIllegalCrossThreadCalls`
+runtime feature switch, so it takes effect even when trimming is disabled: the
+`[NS|UI]Application.CheckForIllegalCrossThreadCalls` field reflects the property
+value at runtime, and the checks are enabled or disabled accordingly.
+
+When trimming is enabled and the checks are disabled, ILLink additionally stubs
+the `[NS|UI]Application.EnsureUIThread` method body and trims away the
+`CheckForIllegalCrossThreadCalls` field, making the app slightly smaller and
+faster.
+
+If this value is not specified, the checks are kept in debug builds and removed
+in release builds.
+
 ## CodesignAllocate
 
 The path to the `codesign_allocate` tool.
@@ -284,6 +305,27 @@ By default we require a provisioning profile if:
 * iOS, tvOS: building for device or an entitlements file has been specified (with the [CodesignEntitlements](#codesignentitlements) property).
 
 Setting this property to `true` or `false` will override the default logic.
+
+## ComputeInstructionSetForReadyToRun
+
+Controls whether to automatically compute and pass the instruction set to the ReadyToRun (R2R) compiler based on the deployment target.
+
+When `PublishReadyToRun` is `true`, the build system automatically computes the minimum CPU instruction set required based on:
+* The `SupportedOSPlatformVersion` (minimum OS version the app supports)
+* The `RuntimeIdentifier` (target architecture and platform)
+
+This computed instruction set is then passed to crossgen2 via the `--instruction-set` argument, enabling the R2R compiler to generate optimized native code using appropriate CPU instructions.
+
+Set this property to `false` to disable automatic instruction set computation and use crossgen2's default behavior.
+
+Default: `true`
+
+Example:
+```xml
+<PropertyGroup>
+  <ComputeInstructionSetForReadyToRun>false</ComputeInstructionSetForReadyToRun>
+</PropertyGroup>
+```
 
 ## CompressBindingResourcePackage
 
@@ -544,6 +586,28 @@ If code signing is enabled.
 
 Code signing is enabled by default for all platforms; this can be overridden with this property.
 
+## EnableCrashReport
+
+Enables crash reports for the app. When enabled, the `DOTNET_EnableCrashReport`
+environment variable is set to `1` at startup, which makes the .NET runtime's
+in-process crash reporter write a JSON crash report when the app crashes.
+
+This setting is disabled by default, but it can be enabled like this:
+
+```xml
+<PropertyGroup>
+    <EnableCrashReport>true</EnableCrashReport>
+</PropertyGroup>
+```
+
+The crash reports are written to a subdirectory of the app's caches directory.
+
+See also: [Collect crash dumps](https://learn.microsoft.com/en-us/dotnet/core/diagnostics/collect-dumps-crash).
+
+The in-process crash reporter is only available in the mobile CoreCLR runtime
+(iOS, tvOS and Mac Catalyst); the desktop macOS runtime relies on the
+[`createdump`](#bundlecreatedump) tool instead.
+
 ## EnableDefaultCodesignEntitlements
 
 See [CodesignEntitlements](#codesignentitlements).
@@ -631,6 +695,13 @@ Default: true
 
 Where the generated source from the generator are saved.
 
+## GenerateTrustedPlatformAssemblies
+
+A boolean property that specifies whether the trusted platform assembly list is
+generated at build time instead of discovered when the app launches.
+
+The default value is `false` for debug builds and `true` for other builds.
+
 ## GetApplicationArtifactsDependsOn
 
 A semi-colon delimited property that can be used to extend the
@@ -663,9 +734,11 @@ Example:
 
 ## HotReloadCompatibleBuild
 
-A boolean property that indicates whether the build must be compatible with Hot
-Reload. When enabled, the build tasks avoid modifying user (reloadable)
-assemblies, since such modifications would break Hot Reload.
+A boolean property that indicates whether the build must remain compatible
+with Hot Reload. When set to `true`, the build avoids modifying user
+assemblies so they stay byte-for-byte unchanged (a requirement for Hot
+Reload). This will disable a few minor optimizations, but will otherwies not
+affect anything.
 
 The default value is `true` for debug builds and `false` otherwise.
 
@@ -1657,6 +1730,12 @@ See [TrimMode](/dotnet/core/deploying/trimming/trimming-options) for a bit more 
 > [PublishTrimmed](/dotnet/core/deploying/trimming/trimming-options?#enable-trimming)
 > to `false` - to disable trimming, set `TrimMode=copy` instead (a build error
 > will be raised if `PublishTrimmed` is set to `false`).
+
+> [!NOTE]
+> Due to [a known issue](https://github.com/dotnet/runtime/issues/108269), setting `PublishTrimmed`
+> to `true` may cause confusing problems, so the build will report an error if this
+> is detected (the solution is to not set `PublishTrimmed` at all).
+
 
 The `TrimMode` property is equivalent to the existing
 [MtouchLink](#mtouchlink) (for iOS, tvOS and Mac Catalyst) and

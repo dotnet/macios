@@ -30,8 +30,9 @@ namespace Xharness.Jenkins {
 			var x64_runtime_identifier = string.Empty;
 			var arm64_sim_runtime_identifier = string.Empty;
 			var x64_sim_runtime_identifier = string.Empty;
-			var supports_coreclr = test.Platform == TestPlatform.Mac || jenkins.Harness.DotNetVersion.Major >= 11;
-			var supports_mono = test.Platform != TestPlatform.Mac;
+			var supports_coreclr = true;
+			var ignore_coreclr = ignore;
+			var supports_mono = jenkins.Harness.DOTNET_MONOVM_SUPPORTED && test.Platform != TestPlatform.Mac;
 			var supports_interpreter = supports_mono;
 			var supports_x64 = string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("ACES")); // x64 is not supported on ACES machines
 
@@ -92,10 +93,27 @@ namespace Xharness.Jenkins {
 					yield return new TestData { Variation = "Debug (don't bundle original resources)", TestVariation = "do-not-bundle-original-resources" };
 				}
 				break;
+			case "introspection":
+				if (supports_coreclr && supports_mono) { // we only need specific coreclr test if we *also* support mono (otherwise the default test will be coreclr)
+					yield return new TestData { Variation = "CoreCLR", TestVariation = "coreclr", Ignored = ignore_coreclr };
+				}
+				break;
 			case "monotouch-test":
+				if (supports_coreclr && supports_mono) { // we only need specific coreclr test if we *also* support mono (otherwise the default test will be coreclr)
+					yield return new TestData { Variation = "Debug (CoreCLR)", TestVariation = "debug|coreclr", Ignored = ignore_coreclr };
+					yield return new TestData { Variation = "Release (CoreCLR, ARM64)", TestVariation = "release|coreclr", Ignored = ignore_coreclr, RuntimeIdentifier = arm64_sim_runtime_identifier };
+					yield return new TestData { Variation = "Release (CoreCLR, x64)", TestVariation = "release|coreclr", Ignored = !supports_x64 ? true : ignore_coreclr, RuntimeIdentifier = x64_sim_runtime_identifier };
+					yield return new TestData { Variation = "Release (CoreCLR, Universal)", TestVariation = "release|coreclr", Ignored = ignore_coreclr };
+				}
 				yield return new TestData { Variation = "Release (link sdk)", TestVariation = "release|linksdk", Ignored = ignore };
 				yield return new TestData { Variation = "Release (link all)", TestVariation = "release|linkall", Ignored = ignore };
 				yield return new TestData { Variation = $"{test.ProjectConfiguration} (PrepareAssemblies)", TestVariation = "prepare-assemblies", Ignored = ignore };
+				// With PrepareAssemblies the registrar runs in a separate process after the trimmer, so it
+				// can't get any information from the trimmer directly, and has to look up trimmed-away
+				// metadata in the pre-trim assemblies instead. Enable the trimmer (linksdk), because
+				// otherwise nothing is trimmed away and none of this is exercised.
+				if (supports_coreclr)
+					yield return new TestData { Variation = $"{test.ProjectConfiguration} (PrepareAssemblies, Trimmable Static Registrar, link sdk)", TestVariation = "linksdk|prepare-assemblies|trimmable-static-registrar", Ignored = ignore };
 				// Explicitly disable the trimmer (dontlink) and enable InlineDlfcnMethods together with
 				// PrepareAssemblies to exercise the inlined-dlfcn native symbol generation when the trimmer
 				// is skipped. On .NET 11+ this is already covered by the plain 'prepare-assemblies' variation
@@ -119,13 +137,16 @@ namespace Xharness.Jenkins {
 					if (supports_interpreter) {
 						yield return new TestData { Variation = "Debug (interpreter)", TestVariation = "interpreter", Ignored = ignore };
 					}
-					yield return new TestData { Variation = "Release (LLVM)", TestVariation = "release|llvm", Ignored = ignore };
+					if (supports_mono)
+						yield return new TestData { Variation = "Release (LLVM)", TestVariation = "release|llvm", Ignored = ignore };
 					yield return new TestData { Variation = "Debug (managed static registrar)", TestVariation = "managed-static-registrar", Ignored = ignore };
 					if (supports_coreclr)
 						yield return new TestData { Variation = "Debug (trimmable static registrar)", TestVariation = "trimmable-static-registrar", Ignored = ignore };
 					yield return new TestData { Variation = "Release (managed static registrar, all optimizations)", TestVariation = "release|managed-static-registrar-all-optimizations-linkall", Ignored = ignore };
-					if (supports_coreclr)
-						yield return new TestData { Variation = "Release (trimmable static registrar, all optimizations)", TestVariation = "trimmable-static-registrar-all-optimizations-linkall", Ignored = ignore };
+					if (supports_coreclr) {
+						yield return new TestData { Variation = "Debug (trimmable static registrar, all optimizations)", TestVariation = "trimmable-static-registrar-all-optimizations-linkall", Ignored = ignore };
+						yield return new TestData { Variation = "Release (trimmable static registrar, all optimizations)", TestVariation = "release|trimmable-static-registrar-all-optimizations-linkall", Ignored = ignore };
+					}
 					yield return new TestData { Variation = "Release (NativeAOT)", TestVariation = "release|nativeaot", Ignored = ignore };
 					yield return new TestData { Variation = "Release (trimmable static registrar, NativeAOT)", TestVariation = "trimmable-static-registrar|release|nativeaot", Ignored = ignore };
 					break;
@@ -145,8 +166,10 @@ namespace Xharness.Jenkins {
 					if (supports_coreclr)
 						yield return new TestData { Variation = "Debug (trimmable static registrar)", TestVariation = "trimmable-static-registrar", Ignored = ignore };
 					yield return new TestData { Variation = "Release (managed static registrar, all optimizations)", TestVariation = "release|managed-static-registrar-all-optimizations-linkall", Ignored = ignore };
-					if (supports_coreclr)
-						yield return new TestData { Variation = "Release (trimmable static registrar, all optimizations)", TestVariation = "trimmable-static-registrar-all-optimizations-linkall", Ignored = ignore };
+					if (supports_coreclr) {
+						yield return new TestData { Variation = "Debug (trimmable static registrar, all optimizations)", TestVariation = "trimmable-static-registrar-all-optimizations-linkall", Ignored = ignore };
+						yield return new TestData { Variation = "Release (trimmable static registrar, all optimizations)", TestVariation = "release|trimmable-static-registrar-all-optimizations-linkall", Ignored = ignore };
+					}
 					yield return new TestData { Variation = "Release (NativeAOT, x64)", TestVariation = "release|nativeaot", Ignored = !supports_x64 ? true : ignore, RuntimeIdentifier = x64_sim_runtime_identifier };
 					yield return new TestData { Variation = "Release (trimmable static registrar, NativeAOT, x64)", TestVariation = "trimmable-static-registrar|release|nativeaot", Ignored = !supports_x64 ? true : ignore, RuntimeIdentifier = x64_sim_runtime_identifier };
 					if (supports_interpreter) {
@@ -183,8 +206,10 @@ namespace Xharness.Jenkins {
 					if (supports_coreclr)
 						yield return new TestData { Variation = "Release (trimmable static registrar)", TestVariation = "trimmable-static-registrar", Ignored = ignore };
 					yield return new TestData { Variation = "Release (managed static registrar, all optimizations)", TestVariation = "release|managed-static-registrar-all-optimizations-linkall", Ignored = ignore };
-					if (supports_coreclr)
-						yield return new TestData { Variation = "Release (trimmable static registrar, all optimizations)", TestVariation = "trimmable-static-registrar-all-optimizations-linkall", Ignored = ignore };
+					if (supports_coreclr) {
+						yield return new TestData { Variation = "Debug (trimmable static registrar, all optimizations)", TestVariation = "trimmable-static-registrar-all-optimizations-linkall", Ignored = ignore };
+						yield return new TestData { Variation = "Release (trimmable static registrar, all optimizations)", TestVariation = "release|trimmable-static-registrar-all-optimizations-linkall", Ignored = ignore };
+					}
 					yield return new TestData { Variation = "Release (NativeAOT)", TestVariation = "release|nativeaot", Ignored = ignore };
 					yield return new TestData { Variation = "Release (NativeAOT, x64)", TestVariation = "release|nativeaot", Ignored = !supports_x64 ? true : ignore, RuntimeIdentifier = x64_runtime_identifier };
 					yield return new TestData { Variation = $"Release (NativeAOT, .NET 11 defaults)", TestVariation = "release|nativeaot-net11-defaults", Ignored = ignore };
@@ -235,7 +260,6 @@ namespace Xharness.Jenkins {
 
 						if (!string.IsNullOrEmpty (runtime_identifer))
 							clone.Xml.SetProperty ("RuntimeIdentifier", runtime_identifer);
-
 						if (!string.IsNullOrEmpty (test_variation)) {
 							clone.Xml.SetProperty ("TestVariation", test_variation);
 							foreach (var pr in clone.ProjectReferences) {

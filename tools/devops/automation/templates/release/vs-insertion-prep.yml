@@ -74,7 +74,7 @@ stages:
         name: disableCodeQLOnArm64
 
   # Check - "xamarin-macios (Prepare Release Convert NuGet to MSI)"
-  - template: nuget-msi-convert/job/v4.yml@yaml-templates
+  - template: nuget-msi-convert/job/v5.yml@yaml-templates
     parameters:
       use1ESTemplate: true
       yamlResourceName: yaml-templates
@@ -184,7 +184,7 @@ stages:
         displayName: Set variable ReleaseDropPrefix
         condition: and(succeeded(), ne(variables['DOTNET_PLATFORMS'], ''))
 
-      # Download nugets drop created by nuget-msi-convert/job/v4.yml and publish to maestro
+      # Download nugets drop created by nuget-msi-convert/job/v5.yml and publish to maestro
       - task: ms-vscs-artifact.build-tasks.artifactDropDownloadTask-1.artifactDropDownloadTask@1
         displayName: Download $(ReleaseDropPrefix)/nugets
         inputs:

@@ -156,6 +156,151 @@ namespace GeneratorTests {
 
 		[Test]
 		[TestCase (Profile.iOS)]
+		public void FactoryMethod (Profile profile)
+		{
+			var bgen = BuildFile (profile, "factory-method.cs");
+			bgen.AssertNoWarnings ();
+
+			const string type = "FactoryMethodTest.FactoryWidget";
+			var widget = bgen.ApiAssembly.MainModule.GetType (type);
+
+			// The factory methods are generated as public static methods returning the type.
+			var create = widget.Methods.Single (m => m.Name == "Create");
+			Assert.That (create.IsStatic, Is.True, "Create is static");
+			Assert.That (create.IsPublic, Is.True, "Create is public");
+			Assert.That (create.ReturnType.FullName, Is.EqualTo (type), "Create return type");
+			Assert.That (create.Parameters.Select (p => p.ParameterType.FullName), Is.EqualTo (new [] { "System.String" }), "Create parameters");
+			Assert.That (FactoryMethodHasBindingImplOption (create), Is.True, "Create has factory method metadata");
+			// A nullable factory method disposes and returns null when the initializer fails.
+			Assert.That (FactoryMethodDisposesOnFailure (create), Is.True, "Create handles nil");
+
+			// The factory method name can be customized via [FactoryMethod ("...")].
+			var createWithCount = widget.Methods.Single (m => m.Name == "CreateWithCount");
+			Assert.That (createWithCount.IsStatic, Is.True, "CreateWithCount is static");
+			Assert.That (createWithCount.IsPublic, Is.True, "CreateWithCount is public");
+			Assert.That (createWithCount.ReturnType.FullName, Is.EqualTo (type), "CreateWithCount return type");
+			Assert.That (createWithCount.Parameters.Select (p => p.ParameterType.FullName), Is.EqualTo (new [] { "System.String", "System.IntPtr" }), "CreateWithCount parameters");
+			Assert.That (FactoryMethodHasBindingImplOption (createWithCount), Is.True, "CreateWithCount has factory method metadata");
+			Assert.That (FactoryMethodDisposesOnFailure (createWithCount), Is.True, "CreateWithCount handles nil");
+
+			// A non-nullable factory method (the initializer isn't failable) just returns
+			// the new instance without a nil check.
+			var createWithColor = widget.Methods.Single (m => m.Name == "CreateWithColor");
+			Assert.That (createWithColor.IsStatic, Is.True, "CreateWithColor is static");
+			Assert.That (createWithColor.IsPublic, Is.True, "CreateWithColor is public");
+			Assert.That (createWithColor.ReturnType.FullName, Is.EqualTo (type), "CreateWithColor return type");
+			Assert.That (FactoryMethodHasBindingImplOption (createWithColor), Is.True, "CreateWithColor has factory method metadata");
+			Assert.That (FactoryMethodDisposesOnFailure (createWithColor), Is.False, "CreateWithColor doesn't handle nil");
+
+			// The backing constructors are generated as internal (not public), so the
+			// public API only exposes the factory methods.
+			var factoryCtors = widget.Methods.Where (m => m.IsConstructor && m.Parameters.Count > 0 && m.Parameters [0].ParameterType.FullName == "System.String").ToArray ();
+			Assert.That (factoryCtors, Is.Not.Empty, "backing constructors exist");
+			foreach (var ctor in factoryCtors)
+				Assert.That (ctor.IsAssembly, Is.True, $"{ctor.FullName} should be internal");
+		}
+
+		// A nullable factory method disposes the instance and returns null when the native
+		// initializer fails; detect this by looking for a Dispose call in the method body.
+		static bool FactoryMethodDisposesOnFailure (Mono.Cecil.MethodDefinition method)
+		{
+			return method.Body.Instructions.Any (i =>
+				i.Operand is Mono.Cecil.MethodReference mr && mr.Name == "Dispose");
+		}
+
+		static bool FactoryMethodHasBindingImplOption (Mono.Cecil.MethodDefinition method)
+		{
+			var attribute = method.CustomAttributes.Single (a => a.AttributeType.Name == "BindingImplAttribute");
+			var options = (int) attribute.ConstructorArguments [0].Value;
+			return (options & 4) == 4; // BindingImplOptions.FactoryMethod
+		}
+
+		[Test]
+		[TestCase (Profile.iOS)]
+		public void FactoryMethodInternal (Profile profile)
+		{
+			var bgen = BuildFile (profile, "factory-method-internal.cs");
+			bgen.AssertNoWarnings ();
+
+			const string type = "FactoryMethodInternalTest.InternalFactoryWidget";
+			var widget = bgen.ApiAssembly.MainModule.GetType (type);
+
+			// An [Internal] factory method is generated as 'internal static' (not
+			// 'public static'), and must still compile (no duplicate modifiers).
+			var create = widget.Methods.Single (m => m.Name == "Create");
+			Assert.That (create.IsStatic, Is.True, "Create is static");
+			Assert.That (create.IsAssembly, Is.True, "Create is internal");
+			Assert.That (create.ReturnType.FullName, Is.EqualTo (type), "Create return type");
+		}
+
+		[Test]
+		[TestCase (Profile.iOS)]
+		public void FactoryMethodMultiple (Profile profile)
+		{
+			var bgen = BuildFile (profile, "factory-method-multiple.cs");
+			bgen.AssertNoWarnings ();
+
+			const string type = "FactoryMethodMultipleTest.MultiWidget";
+			var widget = bgen.ApiAssembly.MainModule.GetType (type);
+
+			// Both initializers are generated as separate public static factory methods.
+			var createWithFoo = widget.Methods.Single (m => m.Name == "CreateWithFoo");
+			Assert.That (createWithFoo.IsStatic, Is.True, "CreateWithFoo is static");
+			Assert.That (createWithFoo.IsPublic, Is.True, "CreateWithFoo is public");
+			Assert.That (createWithFoo.ReturnType.FullName, Is.EqualTo (type), "CreateWithFoo return type");
+			Assert.That (createWithFoo.Parameters.Select (p => p.ParameterType.FullName), Is.EqualTo (new [] { "System.IntPtr" }), "CreateWithFoo parameters");
+			Assert.That (FactoryMethodHasBindingImplOption (createWithFoo), Is.True, "CreateWithFoo has factory method metadata");
+			Assert.That (FactoryMethodDisposesOnFailure (createWithFoo), Is.True, "CreateWithFoo handles nil");
+
+			var createWithBar = widget.Methods.Single (m => m.Name == "CreateWithBar");
+			Assert.That (createWithBar.IsStatic, Is.True, "CreateWithBar is static");
+			Assert.That (createWithBar.IsPublic, Is.True, "CreateWithBar is public");
+			Assert.That (createWithBar.ReturnType.FullName, Is.EqualTo (type), "CreateWithBar return type");
+			Assert.That (createWithBar.Parameters.Select (p => p.ParameterType.FullName), Is.EqualTo (new [] { "System.IntPtr" }), "CreateWithBar parameters");
+			Assert.That (FactoryMethodHasBindingImplOption (createWithBar), Is.True, "CreateWithBar has factory method metadata");
+			Assert.That (FactoryMethodDisposesOnFailure (createWithBar), Is.True, "CreateWithBar handles nil");
+
+			// A non-failable initializer: non-nullable return, so no nil-check/Dispose.
+			var createWithBaz = widget.Methods.Single (m => m.Name == "CreateWithBaz");
+			Assert.That (createWithBaz.IsStatic, Is.True, "CreateWithBaz is static");
+			Assert.That (createWithBaz.IsPublic, Is.True, "CreateWithBaz is public");
+			Assert.That (createWithBaz.ReturnType.FullName, Is.EqualTo (type), "CreateWithBaz return type");
+			Assert.That (createWithBaz.Parameters.Select (p => p.ParameterType.FullName), Is.EqualTo (new [] { "System.IntPtr" }), "CreateWithBaz parameters");
+			Assert.That (FactoryMethodHasBindingImplOption (createWithBaz), Is.True, "CreateWithBaz has factory method metadata");
+			Assert.That (FactoryMethodDisposesOnFailure (createWithBaz), Is.False, "CreateWithBaz doesn't handle nil");
+
+			// The backing 'init' message-send helpers are generated as private instance
+			// methods (prefixed with an underscore) without an [Export] attribute, so the
+			// public API only exposes the static factory methods and the 'init' selectors
+			// aren't registered with the Objective-C runtime.
+			var helperFoo = widget.Methods.Single (m => m.Name == "_CreateWithFoo");
+			Assert.That (helperFoo.IsStatic, Is.False, "_CreateWithFoo is an instance method");
+			Assert.That (helperFoo.IsPrivate, Is.True, "_CreateWithFoo is private");
+			Assert.That (helperFoo.IsVirtual, Is.False, "_CreateWithFoo is not virtual");
+			Assert.That (FactoryMethodHasExport (helperFoo), Is.False, "_CreateWithFoo has no [Export]");
+			var helperBar = widget.Methods.Single (m => m.Name == "_CreateWithBar");
+			Assert.That (helperBar.IsStatic, Is.False, "_CreateWithBar is an instance method");
+			Assert.That (helperBar.IsPrivate, Is.True, "_CreateWithBar is private");
+			Assert.That (helperBar.IsVirtual, Is.False, "_CreateWithBar is not virtual");
+			Assert.That (FactoryMethodHasExport (helperBar), Is.False, "_CreateWithBar has no [Export]");
+		}
+
+		// Returns true if the method has an [Export] attribute.
+		static bool FactoryMethodHasExport (Mono.Cecil.MethodDefinition method)
+		{
+			return method.CustomAttributes.Any (a => a.AttributeType.Name == "ExportAttribute");
+		}
+
+		[Test]
+		[TestCase (Profile.iOS)]
+		public void FactoryMethodOutErrorWithoutNullableReturn (Profile profile)
+		{
+			var bgen = BuildFile (profile, false, "factory-method-error.cs");
+			bgen.AssertWarning (1125, "The [FactoryMethod] binding method 'FactoryMethodErrorTest.FailableWidget.Constructor' has an 'out NSError' parameter, but its return value is not nullable. Add [return: NullAllowed] to the binding method so the generated factory method can return null when the native initializer fails.");
+		}
+
+		[Test]
+		[TestCase (Profile.iOS)]
 		public void NSCopyingNullability (Profile profile)
 		{
 			var bgen = BuildFile (profile, "nscopying-nullability.cs");
@@ -259,29 +404,29 @@ namespace GeneratorTests {
 			var renderedAttributes = "\t" + string.Join ("\n\t", renderedSupportedAttributes.OrderBy (v => v)) + "\n";
 			string expectedAttributes =
 @"	Bug35176.IFooInterface: [SupportedOSPlatform(""ios14.3"")]
-	Bug35176.IFooInterface: [SupportedOSPlatform(""maccatalyst15.3"")]
-	Bug35176.IFooInterface: [SupportedOSPlatform(""macos12.2"")]
+	Bug35176.IFooInterface: [SupportedOSPlatform(""maccatalyst18.2"")]
+	Bug35176.IFooInterface: [SupportedOSPlatform(""macos26.2"")]
 	UIKit.UIView Bug35176.BarObject::BarView(): [SupportedOSPlatform(""ios14.3"")]
-	UIKit.UIView Bug35176.BarObject::BarView(): [SupportedOSPlatform(""maccatalyst15.3"")]
-	UIKit.UIView Bug35176.BarObject::BarView(): [SupportedOSPlatform(""macos12.2"")]
+	UIKit.UIView Bug35176.BarObject::BarView(): [SupportedOSPlatform(""maccatalyst18.2"")]
+	UIKit.UIView Bug35176.BarObject::BarView(): [SupportedOSPlatform(""macos26.2"")]
 	UIKit.UIView Bug35176.BarObject::FooView(): [SupportedOSPlatform(""ios14.3"")]
-	UIKit.UIView Bug35176.BarObject::FooView(): [SupportedOSPlatform(""maccatalyst15.3"")]
-	UIKit.UIView Bug35176.BarObject::FooView(): [SupportedOSPlatform(""macos12.2"")]
+	UIKit.UIView Bug35176.BarObject::FooView(): [SupportedOSPlatform(""maccatalyst18.2"")]
+	UIKit.UIView Bug35176.BarObject::FooView(): [SupportedOSPlatform(""macos26.2"")]
 	UIKit.UIView Bug35176.BarObject::get_BarView(): [SupportedOSPlatform(""ios14.4"")]
-	UIKit.UIView Bug35176.BarObject::get_BarView(): [SupportedOSPlatform(""maccatalyst15.4"")]
-	UIKit.UIView Bug35176.BarObject::get_BarView(): [SupportedOSPlatform(""macos12.2"")]
+	UIKit.UIView Bug35176.BarObject::get_BarView(): [SupportedOSPlatform(""maccatalyst18.3"")]
+	UIKit.UIView Bug35176.BarObject::get_BarView(): [SupportedOSPlatform(""macos26.2"")]
 	UIKit.UIView Bug35176.BarObject::GetBarMember(System.Int32): [SupportedOSPlatform(""ios14.3"")]
-	UIKit.UIView Bug35176.BarObject::GetBarMember(System.Int32): [SupportedOSPlatform(""maccatalyst15.3"")]
-	UIKit.UIView Bug35176.BarObject::GetBarMember(System.Int32): [SupportedOSPlatform(""macos12.2"")]
+	UIKit.UIView Bug35176.BarObject::GetBarMember(System.Int32): [SupportedOSPlatform(""maccatalyst18.2"")]
+	UIKit.UIView Bug35176.BarObject::GetBarMember(System.Int32): [SupportedOSPlatform(""macos26.2"")]
 	UIKit.UIView Bug35176.FooInterface_Extensions::GetBarView(Bug35176.IFooInterface): [SupportedOSPlatform(""ios14.4"")]
-	UIKit.UIView Bug35176.FooInterface_Extensions::GetBarView(Bug35176.IFooInterface): [SupportedOSPlatform(""maccatalyst15.4"")]
-	UIKit.UIView Bug35176.FooInterface_Extensions::GetBarView(Bug35176.IFooInterface): [SupportedOSPlatform(""macos12.2"")]
+	UIKit.UIView Bug35176.FooInterface_Extensions::GetBarView(Bug35176.IFooInterface): [SupportedOSPlatform(""maccatalyst18.3"")]
+	UIKit.UIView Bug35176.FooInterface_Extensions::GetBarView(Bug35176.IFooInterface): [SupportedOSPlatform(""macos26.2"")]
 	UIKit.UIView Bug35176.IFooInterface::_GetBarView(Bug35176.IFooInterface): [SupportedOSPlatform(""ios14.4"")]
-	UIKit.UIView Bug35176.IFooInterface::_GetBarView(Bug35176.IFooInterface): [SupportedOSPlatform(""maccatalyst15.4"")]
-	UIKit.UIView Bug35176.IFooInterface::_GetBarView(Bug35176.IFooInterface): [SupportedOSPlatform(""macos12.2"")]
+	UIKit.UIView Bug35176.IFooInterface::_GetBarView(Bug35176.IFooInterface): [SupportedOSPlatform(""maccatalyst18.3"")]
+	UIKit.UIView Bug35176.IFooInterface::_GetBarView(Bug35176.IFooInterface): [SupportedOSPlatform(""macos26.2"")]
 	UIKit.UIView Bug35176.IFooInterface::get_BarView(): [SupportedOSPlatform(""ios14.4"")]
-	UIKit.UIView Bug35176.IFooInterface::get_BarView(): [SupportedOSPlatform(""maccatalyst15.4"")]
-	UIKit.UIView Bug35176.IFooInterface::get_BarView(): [SupportedOSPlatform(""macos12.2"")]
+	UIKit.UIView Bug35176.IFooInterface::get_BarView(): [SupportedOSPlatform(""maccatalyst18.3"")]
+	UIKit.UIView Bug35176.IFooInterface::get_BarView(): [SupportedOSPlatform(""macos26.2"")]
 ";
 
 			expectedAttributes = expectedAttributes.Replace ("\r", string.Empty);
@@ -1003,13 +1148,13 @@ namespace GeneratorTests {
 			var expectedAttributes = new string [] {
 @"[BindingImpl(3)]
 [Export(""someMethod1:"")]
-[SupportedOSPlatform(""ios13.0"")]
+[SupportedOSPlatform(""ios"")]
 [SupportedOSPlatform(""maccatalyst"")]
 [UnsupportedOSPlatform(""tvos"")]",
 
 @"[BindingImpl(3)]
 [Export(""someMethod2:"")]
-[SupportedOSPlatform(""ios13.0"")]
+[SupportedOSPlatform(""ios"")]
 [SupportedOSPlatform(""maccatalyst"")]
 [UnsupportedOSPlatform(""tvos"")]",
 
@@ -1139,12 +1284,12 @@ namespace GeneratorTests {
 			var expectedPropertyAttributes =
 @"[SupportedOSPlatform(""ios"")]
 [SupportedOSPlatform(""maccatalyst"")]
-[SupportedOSPlatform(""macos13.0"")]
+[SupportedOSPlatform(""macos"")]
 [UnsupportedOSPlatform(""tvos"")]";
 			var expectedSetterAttributes =
 @"[SupportedOSPlatform(""ios"")]
 [SupportedOSPlatform(""maccatalyst"")]
-[SupportedOSPlatform(""macos13.0"")]
+[SupportedOSPlatform(""macos"")]
 [UnsupportedOSPlatform(""tvos"")]";
 
 			expectedPropertyAttributes = expectedPropertyAttributes.Replace ("\r", string.Empty);
@@ -1622,6 +1767,27 @@ namespace GeneratorTests {
 			var contents = File.ReadAllText (generatedFile);
 			Assert.That (contents, Does.Contain ("public static NSString? NullableString"), "Nullable field");
 			Assert.That (contents, Does.Contain ("public static NSString NonNullableString"), "Non-nullable field");
+		}
+
+		[Test]
+		[TestCase (Profile.iOS)]
+		public void NativeFieldGeneration (Profile profile)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
+			var bgen = BuildFile (profile, "native-field-generation.cs");
+
+			var structFile = Path.Combine (bgen.TmpDirectory!, "NativeFieldGeneration", "NativeStructFields.g.cs");
+			Assert.That (File.Exists (structFile), Is.True, "Generated struct file exists");
+			var structContents = File.ReadAllText (structFile);
+			Assert.That (structContents, Does.Contain ("internal unsafe static partial class NativeStructFields"), "Internal field container");
+			Assert.That (structContents, Does.Contain ("return Dlfcn.GetStruct<CGRect> (Libraries.__Internal.Handle, \"RequiredStruct\");"), "Struct");
+			Assert.That (structContents, Does.Contain ("public static NSString? NullableString"), "Nullable field");
+
+			var addressFile = Path.Combine (bgen.TmpDirectory!, "NativeFieldGeneration", "SymbolAddresses.g.cs");
+			Assert.That (File.Exists (addressFile), Is.True, "Generated address file exists");
+			var addressContents = File.ReadAllText (addressFile);
+			Assert.That (addressContents, Does.Contain ("[Field (\"CallbackTable\",  \"__Internal\", SymbolAddress = true)]"), "Symbol address attribute");
+			Assert.That (addressContents, Does.Contain ("return Dlfcn.GetIndirect (Libraries.__Internal.Handle, \"CallbackTable\");"), "Symbol address");
 		}
 
 		[Test]

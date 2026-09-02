@@ -27,7 +27,6 @@ namespace Xamarin.Linker.Steps {
 			if (data is null) {
 				data = new OptimizeGeneratedCodeData {
 					LinkContext = DerivedLinkContext,
-					InlineIsArm64CallingConvention = App.InlineIsArm64CallingConventionForCurrentAbi,
 					Optimizations = App.Optimizations,
 				};
 			}

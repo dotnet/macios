@@ -26,16 +26,16 @@ namespace MetalPerformanceShaders {
 			return result;
 		}
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.MetalPerformanceShadersLibrary)]
 		static extern /* id<MTLDevice> _Nullable */ IntPtr MPSGetPreferredDevice (nuint options);
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public static IMTLDevice? GetPreferredDevice (MPSDeviceOptions options)
 		{
@@ -49,22 +49,6 @@ namespace MetalPerformanceShaders {
 			if (t is null)
 				return null;
 			return new float [3] { t [0], t [1], t [2] };
-		}
-
-		/// <summary>Gets a region that represents the default clipping rectangle.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[Field ("MPSRectNoClip", "MetalPerformanceShaders")]
-		public unsafe static MTLRegion RectNoClip {
-			get {
-				var p = Dlfcn.dlsym (Libraries.MetalPerformanceShaders.Handle, "MPSRectNoClip");
-				if (p == IntPtr.Zero)
-					return new MTLRegion ();
-				unsafe {
-					nint* ptr = (nint*) p;
-					return MTLRegion.Create3D (ptr [0], ptr [1], ptr [2], ptr [3], ptr [4], ptr [5]);
-				}
-			}
 		}
 
 		[SupportedOSPlatform ("tvos")]
@@ -113,14 +97,14 @@ namespace MetalPerformanceShaders {
 
 #if !COREBUILD
 	public partial class MPSImage {
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.MetalPerformanceShadersLibrary)]
 		static extern MPSImageType MPSGetImageType (IntPtr image);
 
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]

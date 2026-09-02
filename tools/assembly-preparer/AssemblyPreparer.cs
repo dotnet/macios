@@ -22,6 +22,7 @@ namespace Xamarin.Build;
 
 public class AssemblyPreparer : IDisposable {
 	AggregateLog log = new AggregateLog ();
+	readonly IToolLog toolLog;
 
 	LinkerConfiguration configuration;
 
@@ -71,7 +72,8 @@ public class AssemblyPreparer : IDisposable {
 					var isTrimmableString = split[2];
 					var isTrimmable = string.IsNullOrEmpty (isTrimmableString) ? (bool?) null : string.Equals (isTrimmableString, "true", StringComparison.OrdinalIgnoreCase);
 					var trimMode = split[3];
-					var apinfo = assemblyPreparerInfoFactory is not null ? assemblyPreparerInfoFactory (input, output) : new AssemblyPreparerInfo (input, output, isTrimmable, trimMode);
+					var originalInput = split.Length > 4 ? split[4] : null;
+					var apinfo = assemblyPreparerInfoFactory is not null ? assemblyPreparerInfoFactory (input, output) : new AssemblyPreparerInfo (input, output, originalInput, isTrimmable, trimMode);
 					Assemblies.Add (apinfo);
 				}),
 				new LinkerConfiguration.SaveValue ((key, storage) => SaveAssemblies (key, storage, reproPath, Assemblies))
@@ -80,21 +82,46 @@ public class AssemblyPreparer : IDisposable {
 		return dict;
 	}
 
-	static void SaveAssemblies (string key, List<string> storage, string? reproPath, IList<AssemblyPreparerInfo> assemblies)
+	void SaveAssemblies (string key, List<string> storage, string? reproPath, IList<AssemblyPreparerInfo> assemblies)
 	{
 		foreach (var assembly in assemblies) {
 			var input = assembly.InputPath;
 			var output = assembly.OutputPath;
+			var originalInput = assembly.OriginalInputPath;
 			if (!string.IsNullOrEmpty (reproPath)) {
 				output = Path.Combine (reproPath, Path.GetFileName (output));
 				File.Copy (input, output);
+				if (!StringUtils.IsNullOrEmpty (originalInput) && CopyBindingResourcePackage (originalInput, output))
+					originalInput = output;
 			}
-			storage.Add ($"{key}={input}|{output}|{(assembly.IsTrimmable.HasValue ? (assembly.IsTrimmable.Value ? "true" : "false") : "")}|{assembly.TrimMode}");
+			storage.Add ($"{key}={input}|{output}|{(assembly.IsTrimmable.HasValue ? (assembly.IsTrimmable.Value ? "true" : "false") : "")}|{assembly.TrimMode}|{originalInput}");
 		}
+	}
+
+	bool CopyBindingResourcePackage (string originalAssemblyPath, string destinationAssemblyPath)
+	{
+		var copied = false;
+		var sourceDirectory = Path.ChangeExtension (originalAssemblyPath, ".resources");
+		if (Directory.Exists (sourceDirectory)) {
+			var destinationDirectory = Path.ChangeExtension (destinationAssemblyPath, ".resources");
+			var destinationParentDirectory = Path.GetDirectoryName (destinationDirectory);
+			if (destinationParentDirectory is null)
+				throw new InvalidOperationException ($"Could not get the directory name for '{destinationDirectory}'.");
+			FileCopier.UpdateDirectory (toolLog, sourceDirectory, destinationParentDirectory);
+			copied = true;
+		}
+
+		var sourceZip = sourceDirectory + ".zip";
+		if (File.Exists (sourceZip)) {
+			File.Copy (sourceZip, Path.ChangeExtension (destinationAssemblyPath, ".resources.zip"), true);
+			copied = true;
+		}
+		return copied;
 	}
 
 	public AssemblyPreparer (IToolLog log, AssemblyPreparerInfo [] assemblies, string linker_file)
 	{
+		toolLog = log;
 		var lines = File.ReadAllLines (linker_file).ToList ();
 		SaveAssemblies ("AssemblyPreparer", lines, null, assemblies);
 		configuration = new LinkerConfiguration (log, lines, linker_file, GetConfigurator (null, assemblies.Length == 0 ? null : (input, output) => assemblies.Single (a => a.InputPath == input && a.OutputPath == output))) {
@@ -199,11 +226,26 @@ public class AssemblyPreparer : IDisposable {
 
 		LoadPreTrimAssemblies ();
 
-		var steps = new ConfigurationAwareStep [] {
+		// For NativeAOT, postprocessing runs after the NativeAOT compiler (ILC) has already compiled the
+		// assemblies, which means that modifying an assembly at this point is pointless (the modification
+		// would be silently lost, and we'd show an MT0099 warning about it). So skip the step that removes
+		// attributes in that case; the static registrar will find the attributes on the assemblies instead
+		// (since they're not removed).
+		var isPostILC = configuration.Application.XamarinRuntime == XamarinRuntime.NativeAOT;
+		ConfigurationAwareStep [] removeAttributesStep = isPostILC ? [] : [new RemoveAttributesStep ()];
+
+		ConfigurationAwareStep [] steps = [
 			// All the same steps as the custom trimmer steps that are run after sweeping in Xamarin.Shared.Sdk.targets (and in the same order).
 			new LoadAssembliesStep (), // LoadNonSkippedAssembliesStep
 
+			// Populate Application.Assemblies with the loaded assemblies. This must happen before
+			// ExtractBindingLibrariesStep (which iterates over Application.Assemblies to find the native
+			// libraries and frameworks embedded in binding assemblies), just like in the ILLink flow,
+			// where LoadNonSkippedAssembliesStep runs before ExtractBindingLibrariesStep.
+			new PopulateApplicationAssembliesStep (),
+
 			// post-sweep
+			.. removeAttributesStep, // from PostSweepDispatcher.
 			new CollectFieldsStep (), // Must run before ListExportedSymbols to populate ExportedFields annotation
 			new ExtractBindingLibrariesStep (),
 			// The ListExportedSymbols must run after ExtractBindingLibrariesStep, otherwise we won't properly list exported Objective-C classes from binding libraries
@@ -219,11 +261,11 @@ public class AssemblyPreparer : IDisposable {
 			new TrimmableRegistrarStep (),
 			new ManagedRegistrarLookupTablesStep (),
 
-			new SaveAssembliesStep (),
+			// Must run after the trimmer (so that we know which assemblies the trimmer removed),
+			// and before SaveAssembliesStep (so that the modification is written to disk).
+			new RemoveStaleTypeMapAssemblyTargetsStep (),
 
-			// PopulateApplicationAssembliesStep must run after SaveAssembliesStep so that
-			// OutputPath is set correctly (used by ComputeAOTArguments and GatherFrameworksStep).
-			new PopulateApplicationAssembliesStep (),
+			new SaveAssembliesStep (),
 
 			// post-output
 
@@ -237,7 +279,7 @@ public class AssemblyPreparer : IDisposable {
 
 			// Must be the last step.
 			new DoneStep (),
-		};
+		];
 
 		var rv = RunSteps (steps, out exceptions);
 
@@ -311,6 +353,8 @@ public class AssemblyPreparer : IDisposable {
 	{
 		foreach (var assembly in Assemblies)
 			assembly.Assembly?.Dispose ();
+		configuration.Application.PreTrimAssemblyResolver?.Dispose ();
+		configuration.Application.PreTrimAssemblyResolver = null;
 		configuration.AssemblyResolver.ResolverCache.Clear ();
 		configuration.DerivedLinkContext.Assemblies.Clear ();
 	}
@@ -321,12 +365,22 @@ public record struct StepExecution (string Name, TimeSpan Duration, bool Modifie
 
 public class AssemblyPreparerInfo {
 	internal AssemblyDefinition? Assembly { get; set; }
-	internal bool IsCILAssembly { get; set; }
+	public bool IsCILAssembly { get; internal set; }
 
 	public string InputPath { get; private set; }
+	public string? OriginalInputPath { get; private set; }
 	public bool? IsTrimmable { get; set; }
 	public string TrimMode { get; set; }
 	public string OutputPath { get; set; }
+
+	public AssemblyPreparerInfo (string inputPath, string outputPath, string? originalInputPath, bool? isTrimmable, string trimMode)
+	{
+		InputPath = inputPath;
+		OutputPath = outputPath;
+		OriginalInputPath = originalInputPath;
+		IsTrimmable = isTrimmable;
+		TrimMode = trimMode;
+	}
 
 	public AssemblyPreparerInfo (string inputPath, string outputPath, bool? isTrimmable, string trimMode)
 	{

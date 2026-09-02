@@ -15,6 +15,11 @@
 #ifndef __XAMARIN_MAIN_H__
 #define __XAMARIN_MAIN_H__
 
+// Universal builds are supported for macOS, Mac Catalyst, and simulator platforms.
+#if TARGET_OS_OSX || TARGET_OS_MACCATALYST || ((TARGET_OS_IOS || TARGET_OS_TV) && TARGET_OS_SIMULATOR)
+#define SUPPORTS_UNIVERSAL_BUILDS 1
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -127,6 +132,18 @@ extern bool xamarin_supports_dynamic_registration;
 extern const char *xamarin_runtime_configuration_name;
 extern enum XamarinNativeLinkMode xamarin_libmono_native_link_mode;
 extern const char** xamarin_runtime_libraries;
+extern const char * const *xamarin_trusted_platform_assembly_names;
+#if defined (SUPPORTS_UNIVERSAL_BUILDS)
+extern bool xamarin_is_multi_rid_build;
+#endif
+
+struct xamarin_r2r_module {
+	const char *name;
+	void *header;
+};
+
+extern struct xamarin_r2r_module *xamarin_r2r_modules;
+extern int xamarin_r2r_module_count;
 
 typedef void (*xamarin_setup_callback) ();
 typedef int (*xamarin_extension_main_callback) (int argc, char** argv);

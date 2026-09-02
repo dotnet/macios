@@ -258,7 +258,7 @@ namespace Xamarin.Linker {
 		void GenerateLookupTypeId (AssemblyTrampolineInfo infos, TypeDefinition registrarType, List<TypeData> types)
 		{
 			var lookupTypeMethod = registrarType.AddMethod ("LookupTypeId", MethodAttributes.Private | MethodAttributes.Final | MethodAttributes.Virtual | MethodAttributes.NewSlot | MethodAttributes.HideBySig, abr.System_UInt32);
-			var handleParameter = lookupTypeMethod.AddParameter ("handle", abr.System_RuntimeTypeHandle);
+			var handleParameter = lookupTypeMethod.AddParameter (abr.System_RuntimeTypeHandle); // handle
 			lookupTypeMethod.Overrides.Add (abr.IManagedRegistrar_LookupTypeId);
 			var body = lookupTypeMethod.CreateBody (out var il);
 
@@ -289,13 +289,13 @@ namespace Xamarin.Linker {
 			il.Emit (OpCodes.Ldc_I4_M1);
 			il.Emit (OpCodes.Ret);
 
-			body.GenerateILOffsets ();
+			body.FinalizeGeneratedBody ();
 		}
 
 		void GenerateLookupType (AssemblyTrampolineInfo infos, TypeDefinition registrarType, List<TypeData> types)
 		{
 			var lookupTypeMethod = registrarType.AddMethod ("LookupType", MethodAttributes.Private | MethodAttributes.Final | MethodAttributes.Virtual | MethodAttributes.NewSlot | MethodAttributes.HideBySig, abr.System_RuntimeTypeHandle);
-			lookupTypeMethod.AddParameter ("id", abr.System_UInt32);
+			lookupTypeMethod.AddParameter (abr.System_UInt32); // id
 			lookupTypeMethod.Overrides.Add (abr.IManagedRegistrar_LookupType);
 			var body = lookupTypeMethod.CreateBody (out var il);
 
@@ -331,14 +331,14 @@ namespace Xamarin.Linker {
 			il.Emit (OpCodes.Ldloc, temporary);
 			il.Emit (OpCodes.Ret);
 
-			body.GenerateILOffsets ();
+			body.FinalizeGeneratedBody ();
 		}
 
 		void GenerateConstructNSObject (TypeDefinition registrarType)
 		{
 			var createInstanceMethod = registrarType.AddMethod ("ConstructNSObject", MethodAttributes.Private | MethodAttributes.Final | MethodAttributes.Virtual | MethodAttributes.NewSlot | MethodAttributes.HideBySig, abr.ObjCRuntime_INativeObject);
-			var typeHandleParameter = createInstanceMethod.AddParameter ("typeHandle", abr.System_RuntimeTypeHandle);
-			var nativeHandleParameter = createInstanceMethod.AddParameter ("nativeHandle", abr.ObjCRuntime_NativeHandle);
+			var typeHandleParameter = createInstanceMethod.AddParameter (abr.System_RuntimeTypeHandle); // typeHandle
+			var nativeHandleParameter = createInstanceMethod.AddParameter (abr.ObjCRuntime_NativeHandle); // nativeHandle
 			createInstanceMethod.Overrides.Add (abr.IManagedRegistrar_ConstructNSObject);
 			var body = createInstanceMethod.CreateBody (out var il);
 
@@ -388,15 +388,15 @@ namespace Xamarin.Linker {
 			il.Emit (OpCodes.Ldnull);
 			il.Emit (OpCodes.Ret);
 
-			body.GenerateILOffsets ();
+			body.FinalizeGeneratedBody ();
 		}
 
 		void GenerateConstructINativeObject (TypeDefinition registrarType)
 		{
 			var createInstanceMethod = registrarType.AddMethod ("ConstructINativeObject", MethodAttributes.Private | MethodAttributes.Final | MethodAttributes.Virtual | MethodAttributes.NewSlot | MethodAttributes.HideBySig, abr.ObjCRuntime_INativeObject);
-			var typeHandleParameter = createInstanceMethod.AddParameter ("typeHandle", abr.System_RuntimeTypeHandle);
-			var nativeHandleParameter = createInstanceMethod.AddParameter ("nativeHandle", abr.ObjCRuntime_NativeHandle);
-			var ownsParameter = createInstanceMethod.AddParameter ("owns", abr.System_Boolean);
+			var typeHandleParameter = createInstanceMethod.AddParameter (abr.System_RuntimeTypeHandle); // typeHandle
+			var nativeHandleParameter = createInstanceMethod.AddParameter (abr.ObjCRuntime_NativeHandle); // nativeHandle
+			var ownsParameter = createInstanceMethod.AddParameter (abr.System_Boolean); // owns
 			createInstanceMethod.Overrides.Add (abr.IManagedRegistrar_ConstructINativeObject);
 			var body = createInstanceMethod.CreateBody (out var il);
 
@@ -446,7 +446,7 @@ namespace Xamarin.Linker {
 			il.Emit (OpCodes.Ldnull);
 			il.Emit (OpCodes.Ret);
 
-			body.GenerateILOffsets ();
+			body.FinalizeGeneratedBody ();
 		}
 
 		// We need to preserve the constructor because it might not be used anywhere else.
@@ -471,7 +471,7 @@ namespace Xamarin.Linker {
 		void GenerateRegisterWrapperTypes (TypeDefinition type)
 		{
 			var method = type.AddMethod ("RegisterWrapperTypes", MethodAttributes.Private | MethodAttributes.Final | MethodAttributes.Virtual | MethodAttributes.NewSlot | MethodAttributes.HideBySig, abr.System_Void);
-			method.AddParameter ("type", abr.System_Collections_Generic_Dictionary2.CreateGenericInstanceType (abr.System_RuntimeTypeHandle, abr.System_RuntimeTypeHandle));
+			method.AddParameter (abr.System_Collections_Generic_Dictionary2.CreateGenericInstanceType (abr.System_RuntimeTypeHandle, abr.System_RuntimeTypeHandle)); // type
 			method.Overrides.Add (abr.IManagedRegistrar_RegisterWrapperTypes);
 			var body = method.CreateBody (out var il);
 
@@ -502,7 +502,7 @@ namespace Xamarin.Linker {
 
 			il.Emit (OpCodes.Ret);
 
-			body.GenerateILOffsets ();
+			body.FinalizeGeneratedBody ();
 		}
 
 		void GenerateLookupUnmanagedFunction (TypeDefinition registrar_type, IList<TrampolineInfo> trampolineInfos)
@@ -523,8 +523,8 @@ namespace Xamarin.Linker {
 			}
 
 			var method = registrar_type.AddMethod ("LookupUnmanagedFunction", MethodAttributes.Private | MethodAttributes.Final | MethodAttributes.Virtual | MethodAttributes.NewSlot | MethodAttributes.HideBySig, abr.System_IntPtr);
-			method.AddParameter ("symbol", abr.System_String);
-			method.AddParameter ("id", abr.System_Int32);
+			method.AddParameter (abr.System_String); // symbol
+			method.AddParameter (abr.System_Int32); // id
 			method.Overrides.Add (abr.IManagedRegistrar_LookupUnmanagedFunction);
 			var body = method.CreateBody (out var il);
 			if (lookupMethods is null) {
@@ -536,7 +536,7 @@ namespace Xamarin.Linker {
 				il.Emit (OpCodes.Call, lookupMethods);
 			}
 			il.Emit (OpCodes.Ret);
-			body.GenerateILOffsets ();
+			body.FinalizeGeneratedBody ();
 		}
 
 		// If WrappedLook is true we'll wrap the ldftn instruction in a separate method, which can be useful for debugging,
@@ -559,8 +559,8 @@ namespace Xamarin.Linker {
 			var startId = trampolineInfos [startIndex].Id;
 			var name = level == 1 ? "LookupUnmanagedFunctionImpl" : $"LookupUnmanagedFunction_{level}_{levels}__{startIndex}_{endIndex}__";
 			method = type.AddMethod (name, MethodAttributes.Private | MethodAttributes.HideBySig | MethodAttributes.Static, abr.System_IntPtr);
-			method.AddParameter ("symbol", abr.System_String);
-			method.AddParameter ("id", abr.System_Int32);
+			method.AddParameter (abr.System_String); // symbol
+			method.AddParameter (abr.System_Int32); // id
 			var body = method.CreateBody (out var il);
 
 			if (level == levels) {
@@ -584,7 +584,7 @@ namespace Xamarin.Linker {
 						var wrappedBody = wrappedLookup.CreateBody (out var wrappedIl);
 						wrappedIl.Emit (OpCodes.Ldftn, mr);
 						wrappedIl.Emit (OpCodes.Ret);
-						wrappedBody.GenerateILOffsets ();
+						wrappedBody.FinalizeGeneratedBody ();
 
 						targets [i] = Instruction.Create (OpCodes.Call, wrappedLookup);
 					} else {
@@ -656,7 +656,7 @@ namespace Xamarin.Linker {
 			il.Emit (OpCodes.Conv_I);
 			il.Emit (OpCodes.Ret);
 
-			body.GenerateILOffsets ();
+			body.FinalizeGeneratedBody ();
 
 			return method;
 		}

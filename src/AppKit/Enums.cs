@@ -3019,16 +3019,17 @@ namespace AppKit {
 		NearestVerticalEdge = 1 << 8,
 	}
 
+	/// <summary>Specifies the category of an element in a collection view layout.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSCollectionElementCategory : long {
-		/// <summary>To be added.</summary>
+		/// <summary>A collection view item.</summary>
 		Item,
-		/// <summary>To be added.</summary>
+		/// <summary>A supplementary view.</summary>
 		SupplementaryView,
-		/// <summary>To be added.</summary>
+		/// <summary>A decoration view.</summary>
 		DecorationView,
-		/// <summary>To be added.</summary>
+		/// <summary>An inter-item gap.</summary>
 		InterItemGap,
 	}
 

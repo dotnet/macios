@@ -22405,7 +22405,6 @@ T:AppKit.NSCellType
 T:AppKit.NSCharacterCollection
 T:AppKit.NSCloudKitSharingServiceOptions
 T:AppKit.NSCoderAppKitAddons
-T:AppKit.NSCollectionElementCategory
 T:AppKit.NSCollectionElementKind
 T:AppKit.NSCollectionLayoutAnchorOffsetType
 T:AppKit.NSCollectionLayoutGroupCustomItemProvider

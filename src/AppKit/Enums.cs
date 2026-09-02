@@ -262,14 +262,15 @@ namespace AppKit {
 		RingAbove,
 	}
 
+	/// <summary>Specifies the focus ring displayed by a control.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSFocusRingType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the default focus ring.</summary>
 		Default,
-		/// <summary>To be added.</summary>
+		/// <summary>Does not display a focus ring.</summary>
 		None,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays a focus ring outside the control.</summary>
 		Exterior,
 	}
 

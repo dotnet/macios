@@ -22469,7 +22469,6 @@ T:AppKit.NSEventSubtype
 T:AppKit.NSEventSwipeTrackingOptions
 T:AppKit.NSEventTrackHandler
 T:AppKit.NSEventType
-T:AppKit.NSFocusRingType
 T:AppKit.NSFontCollectionVisibility
 T:AppKit.NSFontDescriptorSystemDesign
 T:AppKit.NSFontError

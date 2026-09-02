@@ -22776,7 +22776,6 @@ T:AppKit.NSTypesetterBehavior
 T:AppKit.NSTypesetterControlCharacterAction
 T:AppKit.NSUnderlinePattern
 T:AppKit.NSUsableScrollerParts
-T:AppKit.NSUserInterfaceLayoutDirection
 T:AppKit.NSUserInterfaceLayoutOrientation
 T:AppKit.NSVerticalDirections
 T:AppKit.NSView_NSCandidateListTouchBarItem

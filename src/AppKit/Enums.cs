@@ -303,12 +303,13 @@ namespace AppKit {
 		MaxYEdge,
 	}
 
+	/// <summary>Specifies the layout direction of the user interface.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSUserInterfaceLayoutDirection : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Arranges interface elements from left to right.</summary>
 		LeftToRight,
-		/// <summary>To be added.</summary>
+		/// <summary>Arranges interface elements from right to left.</summary>
 		RightToLeft,
 	}
 

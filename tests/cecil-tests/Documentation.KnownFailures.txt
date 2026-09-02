@@ -22394,7 +22394,6 @@ T:AppKit.NSBindingOptions
 T:AppKit.NSBitmapFormat
 T:AppKit.NSBitmapImageFileType
 T:AppKit.NSBoxType
-T:AppKit.NSBrowserColumnResizingType
 T:AppKit.NSButtonType
 T:AppKit.NSCellAttribute
 T:AppKit.NSCellHit

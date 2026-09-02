@@ -1771,14 +1771,15 @@ namespace AppKit {
 	#endregion
 
 	#region NSBrowser
+	/// <summary>Specifies how browser columns can be resized.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSBrowserColumnResizingType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Prevents columns from being resized.</summary>
 		None,
-		/// <summary>To be added.</summary>
+		/// <summary>Automatically resizes columns.</summary>
 		Auto,
-		/// <summary>To be added.</summary>
+		/// <summary>Allows the user to resize columns.</summary>
 		User,
 	}
 

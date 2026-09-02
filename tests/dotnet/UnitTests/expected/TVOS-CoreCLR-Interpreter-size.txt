@@ -1,4 +1,4 @@
-AppBundleSize: 8,528,184 bytes (8,328.3 KB = 8.1 MB)
+AppBundleSize: 8,526,048 bytes (8,326.2 KB = 8.1 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 _Microsoft.tvOS.TypeMap.dll:
     39,936 bytes (39.0 KB = 0.0 MB)
@@ -7,35 +7,33 @@ _Microsoft.tvOS.TypeMaps.dll:
 _SizeTestApp.TypeMap.dll:
     3,584 bytes (3.5 KB = 0.0 MB)
 Frameworks/libcoreclr.framework/Info.plist:
-    810 bytes (0.8 KB = 0.0 MB)
+    837 bytes (0.8 KB = 0.0 MB)
 Frameworks/libcoreclr.framework/libcoreclr:
     4,324,144 bytes (4,222.8 KB = 4.1 MB)
 Frameworks/libSystem.Globalization.Native.framework/Info.plist:
-    852 bytes (0.8 KB = 0.0 MB)
+    879 bytes (0.9 KB = 0.0 MB)
 Frameworks/libSystem.Globalization.Native.framework/libSystem.Globalization.Native:
     124,608 bytes (121.7 KB = 0.1 MB)
 Frameworks/libSystem.IO.Compression.Native.framework/Info.plist:
-    854 bytes (0.8 KB = 0.0 MB)
+    881 bytes (0.9 KB = 0.0 MB)
 Frameworks/libSystem.IO.Compression.Native.framework/libSystem.IO.Compression.Native:
     1,438,032 bytes (1,404.3 KB = 1.4 MB)
 Frameworks/libSystem.Native.framework/Info.plist:
-    824 bytes (0.8 KB = 0.0 MB)
+    851 bytes (0.8 KB = 0.0 MB)
 Frameworks/libSystem.Native.framework/libSystem.Native:
     177,552 bytes (173.4 KB = 0.2 MB)
 Frameworks/libSystem.Security.Cryptography.Native.Apple.framework/Info.plist:
-    880 bytes (0.9 KB = 0.0 MB)
+    907 bytes (0.9 KB = 0.0 MB)
 Frameworks/libSystem.Security.Cryptography.Native.Apple.framework/libSystem.Security.Cryptography.Native.Apple:
     248,672 bytes (242.8 KB = 0.2 MB)
 Info.plist:
-    1,138 bytes (1.1 KB = 0.0 MB)
+    1,165 bytes (1.1 KB = 0.0 MB)
 Microsoft.tvOS.dll:
-    107,008 bytes (104.5 KB = 0.1 MB)
+    106,496 bytes (104.0 KB = 0.1 MB)
 PkgInfo:
     8 bytes (0.0 KB = 0.0 MB)
-runtimeconfig.bin:
-    1,562 bytes (1.5 KB = 0.0 MB)
 SizeTestApp:
-    128,504 bytes (125.5 KB = 0.1 MB)
+    128,280 bytes (125.3 KB = 0.1 MB)
 SizeTestApp.dll:
     6,656 bytes (6.5 KB = 0.0 MB)
 System.Collections.Immutable.dll:

@@ -1,4 +1,4 @@
-AppBundleSize: 11,811,247 bytes (11,534.4 KB = 11.3 MB)
+AppBundleSize: 11,810,198 bytes (11,533.4 KB = 11.3 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 _Microsoft.iOS.TypeMap.dll:
     41,984 bytes (41.0 KB = 0.0 MB)
@@ -7,43 +7,41 @@ _Microsoft.iOS.TypeMaps.dll:
 _SizeTestApp.TypeMap.dll:
     2,560 bytes (2.5 KB = 0.0 MB)
 Frameworks/libcoreclr.framework/Info.plist:
-    834 bytes (0.8 KB = 0.0 MB)
+    861 bytes (0.8 KB = 0.0 MB)
 Frameworks/libcoreclr.framework/libcoreclr:
     4,325,328 bytes (4,224.0 KB = 4.1 MB)
 Frameworks/libSystem.Globalization.Native.framework/Info.plist:
-    876 bytes (0.9 KB = 0.0 MB)
+    903 bytes (0.9 KB = 0.0 MB)
 Frameworks/libSystem.Globalization.Native.framework/libSystem.Globalization.Native:
     124,608 bytes (121.7 KB = 0.1 MB)
 Frameworks/libSystem.IO.Compression.Native.framework/Info.plist:
-    878 bytes (0.9 KB = 0.0 MB)
+    905 bytes (0.9 KB = 0.0 MB)
 Frameworks/libSystem.IO.Compression.Native.framework/libSystem.IO.Compression.Native:
     1,438,032 bytes (1,404.3 KB = 1.4 MB)
 Frameworks/libSystem.Native.framework/Info.plist:
-    848 bytes (0.8 KB = 0.0 MB)
+    875 bytes (0.9 KB = 0.0 MB)
 Frameworks/libSystem.Native.framework/libSystem.Native:
     178,176 bytes (174.0 KB = 0.2 MB)
 Frameworks/libSystem.Net.Security.Native.framework/Info.plist:
-    874 bytes (0.9 KB = 0.0 MB)
+    901 bytes (0.9 KB = 0.0 MB)
 Frameworks/libSystem.Net.Security.Native.framework/libSystem.Net.Security.Native:
     103,072 bytes (100.7 KB = 0.1 MB)
 Frameworks/libSystem.Security.Cryptography.Native.Apple.framework/Info.plist:
-    904 bytes (0.9 KB = 0.0 MB)
+    931 bytes (0.9 KB = 0.0 MB)
 Frameworks/libSystem.Security.Cryptography.Native.Apple.framework/libSystem.Security.Cryptography.Native.Apple:
     249,184 bytes (243.3 KB = 0.2 MB)
 Frameworks/SizeTestApp.r2r.framework/Info.plist:
-    846 bytes (0.8 KB = 0.0 MB)
+    873 bytes (0.9 KB = 0.0 MB)
 Frameworks/SizeTestApp.r2r.framework/SizeTestApp.r2r:
     3,726,640 bytes (3,639.3 KB = 3.6 MB)
 Info.plist:
-    1,162 bytes (1.1 KB = 0.0 MB)
+    1,189 bytes (1.2 KB = 0.0 MB)
 Microsoft.iOS.dll:
-    74,752 bytes (73.0 KB = 0.1 MB)
+    75,264 bytes (73.5 KB = 0.1 MB)
 PkgInfo:
     8 bytes (0.0 KB = 0.0 MB)
-runtimeconfig.bin:
-    1,561 bytes (1.5 KB = 0.0 MB)
 SizeTestApp:
-    128,584 bytes (125.6 KB = 0.1 MB)
+    128,368 bytes (125.4 KB = 0.1 MB)
 SizeTestApp.dll:
     6,144 bytes (6.0 KB = 0.0 MB)
 System.Collections.Immutable.dll:

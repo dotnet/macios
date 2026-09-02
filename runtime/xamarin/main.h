@@ -140,6 +140,14 @@ extern const char * const *xamarin_trusted_platform_assembly_names;
 extern bool xamarin_is_multi_rid_build;
 #endif
 
+struct xamarin_r2r_module {
+	const char *name;
+	void *header;
+};
+
+extern struct xamarin_r2r_module *xamarin_r2r_modules;
+extern int xamarin_r2r_module_count;
+
 typedef void (*xamarin_setup_callback) ();
 typedef int (*xamarin_extension_main_callback) (int argc, char** argv);
 

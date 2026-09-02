@@ -48,6 +48,11 @@ public class PreserveSmartEnumConversionsTests : BaseClass {
 		var cctor = type.GetStaticConstructor ();
 		Assert.That (cctor, Is.Null, "No static constructor should be needed.");
 
+		AssertHasDynamicDependencies (platform, type, "get_RWProperty", "set_RWProperty", "get_ROProperty", "set_WOProperty", "Method1", "Method2", "Method3", "Method4");
+	}
+
+	static void AssertHasDynamicDependencies (ApplePlatform platform, TypeDefinition type, params string [] methodNames)
+	{
 		void AssertHasDynamicDependency (ICustomAttributeProvider provider, string memberSignature, string typeName, string assemblyName)
 		{
 			var ddaAttributes = provider.CustomAttributes.Where (v => v.AttributeType.FullName == "System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute").ToArray ();
@@ -101,7 +106,7 @@ public class PreserveSmartEnumConversionsTests : BaseClass {
 			Assert.Fail (msg);
 		}
 
-		void AssertHasDynamicDependencies (ICustomAttributeProvider provider)
+		void AssertMethodHasDynamicDependencies (ICustomAttributeProvider provider)
 		{
 			// 'GetConstant' has no parameter list, because it's the only method with that name (unlike 'GetValue').
 			AssertHasDynamicDependency (provider, "GetConstant", "CoreAnimation.CAToneMapModeExtensions", $"Microsoft.{platform.AsString ()}");
@@ -109,14 +114,8 @@ public class PreserveSmartEnumConversionsTests : BaseClass {
 		}
 
 		Assert.Multiple (() => {
-			AssertHasDynamicDependencies (type.Methods.Single (v => v.Name == "get_RWProperty"));
-			AssertHasDynamicDependencies (type.Methods.Single (v => v.Name == "set_RWProperty"));
-			AssertHasDynamicDependencies (type.Methods.Single (v => v.Name == "get_ROProperty"));
-			AssertHasDynamicDependencies (type.Methods.Single (v => v.Name == "set_WOProperty"));
-			AssertHasDynamicDependencies (type.Methods.Single (v => v.Name == "Method1"));
-			AssertHasDynamicDependencies (type.Methods.Single (v => v.Name == "Method2"));
-			AssertHasDynamicDependencies (type.Methods.Single (v => v.Name == "Method3"));
-			AssertHasDynamicDependencies (type.Methods.Single (v => v.Name == "Method4"));
+			foreach (var methodName in methodNames)
+				AssertMethodHasDynamicDependencies (type.Methods.Single (v => v.Name == methodName));
 		});
 	}
 
@@ -127,9 +126,9 @@ public class PreserveSmartEnumConversionsTests : BaseClass {
 	[TestCase (ApplePlatform.MacOSX, true)]
 	public void HotReloadCompatibleBuildTest (ApplePlatform platform, bool isCoreCLR)
 	{
-		// When $(HotReloadCompatibleBuild) is enabled, the step must not modify the referencing
-		// (possibly user/reloadable) assembly - otherwise Hot Reload breaks. Instead it must emit an
-		// ILLink root-descriptor XML that preserves the framework-side conversion methods.
+		// When $(HotReloadCompatibleBuild) is enabled and the referencing assembly isn't trimmed, the step
+		// must not modify that (possibly user/reloadable) assembly - otherwise Hot Reload breaks. Instead it
+		// must emit an ILLink root-descriptor XML that preserves the framework-side conversion methods.
 		var code = @"
 		using System;
 		using CoreAnimation;
@@ -147,9 +146,9 @@ public class PreserveSmartEnumConversionsTests : BaseClass {
 		}";
 
 		var cacheDirectory = Xamarin.Cache.CreateTemporaryDirectory ();
-		var extraConfig = $"HotReloadCompatibleBuild=true\n\t\tCacheDirectory={cacheDirectory}";
+		var extraConfig = $"CacheDirectory={cacheDirectory}";
 
-		AssertPrepare (platform, isCoreCLR, code, out var assemblyDefinition, extraConfig);
+		AssertPrepare (platform, isCoreCLR, RegistrarMode.Dynamic, code, out var assemblyDefinition, hotReloadCompatibleBuild: true, testAssemblyTrimMode: "copy", extraConfig: extraConfig);
 
 		var type = assemblyDefinition.MainModule.Types.Single (v => v.Name == "MyClass");
 
@@ -179,5 +178,53 @@ public class PreserveSmartEnumConversionsTests : BaseClass {
 			.ToArray ();
 		Assert.That (signatures, Does.Contain ("Foundation.NSString GetConstant(CoreAnimation.CAToneMapMode)"), "GetConstant must be preserved.");
 		Assert.That (signatures, Does.Contain ("CoreAnimation.CAToneMapMode GetValue(Foundation.NSString)"), "GetValue must be preserved.");
+	}
+
+	[Test]
+	[TestCase (ApplePlatform.MacCatalyst, false)]
+	[TestCase (ApplePlatform.iOS, false)]
+	[TestCase (ApplePlatform.TVOS, false)]
+	[TestCase (ApplePlatform.MacOSX, true)]
+	public void HotReloadCompatibleBuildTrimmedAssemblyTest (ApplePlatform platform, bool isCoreCLR)
+	{
+		// Assemblies that are trimmed can't be hot reloaded, so even when $(HotReloadCompatibleBuild) is
+		// enabled we must inject [DynamicDependency] attributes into them (instead of preserving the
+		// conversion methods unconditionally using the root-descriptor XML).
+		var code = @"
+		using System;
+		using CoreAnimation;
+		using Foundation;
+		using ObjCRuntime;
+
+		class MyClass : NSObject {
+			[BindAs (typeof (CAToneMapMode), OriginalType = typeof (NSString))]
+			public CAToneMapMode RWProperty { get; set; }
+
+			[return: BindAs (typeof (CAToneMapMode), OriginalType = typeof (NSString))]
+			public CAToneMapMode Method1 () { return default; }
+
+			public void Method2 ([BindAs (typeof (CAToneMapMode), OriginalType = typeof (NSString))] CAToneMapMode p1) {}
+		}";
+
+		var cacheDirectory = Xamarin.Cache.CreateTemporaryDirectory ();
+		var extraConfig = $"CacheDirectory={cacheDirectory}";
+
+		AssertPrepare (platform, isCoreCLR, RegistrarMode.Dynamic, code, out var assemblyDefinition, hotReloadCompatibleBuild: true, testAssemblyTrimMode: "link", extraConfig: extraConfig);
+
+		var type = assemblyDefinition.MainModule.Types.Single (v => v.Name == "MyClass");
+		var cctor = type.GetStaticConstructor ();
+		Assert.That (cctor, Is.Null, "No static constructor should be needed.");
+
+		AssertHasDynamicDependencies (platform, type, "get_RWProperty", "set_RWProperty", "Method1", "Method2");
+
+		// The root-descriptor XML must not mention the smart enum from the trimmed assembly.
+		var xmlPath = Path.Combine (cacheDirectory, "preserve-smart-enum-conversions.xml");
+		if (File.Exists (xmlPath)) {
+			var document = XDocument.Load (xmlPath);
+			var extensionType = document
+				.Descendants ("type")
+				.SingleOrDefault (v => (string?) v.Attribute ("fullname") == "CoreAnimation.CAToneMapModeExtensions");
+			Assert.That (extensionType, Is.Null, "The extension type must not be present in the root-descriptor XML.");
+		}
 	}
 }

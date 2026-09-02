@@ -63,7 +63,7 @@ namespace Xamarin {
 			contents.AppendLine ();
 			contents.AppendLine ("static void xamarin_initialize_dotnet ()");
 			contents.AppendLine ("{");
-			if (Configuration.Application.PackageManagedDebugSymbols && Configuration.Application.UseInterpreter)
+			if (Configuration.Application.PackageManagedDebugSymbols && (Configuration.Application.UseInterpreter || Configuration.Application.XamarinRuntime == XamarinRuntime.CoreCLR))
 				contents.AppendLine ($"\tsetenv (\"DOTNET_MODIFIABLE_ASSEMBLIES\", \"debug\", 1);");
 			contents.AppendLine ("}");
 			contents.AppendLine ();

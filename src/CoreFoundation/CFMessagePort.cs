@@ -273,7 +273,10 @@ namespace CoreFoundation {
 			if (context is null)
 				return IntPtr.Zero;
 
-			using (var managedData = Runtime.GetNSObject<NSData> (data)!) {
+			using (var managedData = Runtime.GetNSObject<NSData> (data)) {
+				if (managedData is null)
+					return IntPtr.Zero;
+
 				var result = context.Callback.Invoke (msgid, managedData);
 				// System will release returned CFData
 				result?.DangerousRetain ();

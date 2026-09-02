@@ -67,7 +67,7 @@ namespace MonotouchTest.AudioUnitExtensionHost {
 #if __MACOS__ || __MACCATALYST__
 			Console.WriteLine ($"{logPrefix} Loaded AudioUnit out-of-process: {!audioUnit.IsLoadedInProcess}");
 #endif
-			Console.WriteLine ($"{logPrefix} Holding the host open while the extension runs tests.");
+				Console.WriteLine ($"{logPrefix} Holding the host open while the extension runs tests.");
 
 				while (true)
 					NSRunLoop.Current.RunUntil (NSDate.FromTimeIntervalSinceNow (0.25));

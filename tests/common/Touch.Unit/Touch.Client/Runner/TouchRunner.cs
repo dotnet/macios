@@ -75,7 +75,7 @@ namespace MonoTouch.NUnit.UI {
 
 		public Action<string>? LogCallback;
 
-		public void LogLine (string format, params object?[] args)
+		public void LogLine (string format, params object? [] args)
 		{
 			LogLine (string.Format (format, args));
 		}
@@ -597,7 +597,7 @@ namespace MonoTouch.NUnit.UI {
 
 		Dictionary<string, object> default_settings = new Dictionary<string, object> () {
 #if NUNITLITE_NUGET
-//			{ "RunOnMainThread", true },
+			//			{ "RunOnMainThread", true },
 #endif
 		};
 

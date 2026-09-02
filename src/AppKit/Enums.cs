@@ -370,14 +370,15 @@ namespace AppKit {
 
 	#region NSCell Defines 
 
+	/// <summary>Specifies the type of content displayed by a cell.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSCellType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The cell has no content type.</summary>
 		Null,
-		/// <summary>To be added.</summary>
+		/// <summary>The cell displays text.</summary>
 		Text,
-		/// <summary>To be added.</summary>
+		/// <summary>The cell displays an image.</summary>
 		Image,
 	}
 
@@ -1261,16 +1262,17 @@ namespace AppKit {
 		MaxYMargin = 32,
 	}
 
+	/// <summary>Specifies the style of border drawn around a view.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSBorderType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>No border is drawn.</summary>
 		NoBorder,
-		/// <summary>To be added.</summary>
+		/// <summary>A line border is drawn.</summary>
 		LineBorder,
-		/// <summary>To be added.</summary>
+		/// <summary>A bezel border is drawn.</summary>
 		BezelBorder,
-		/// <summary>To be added.</summary>
+		/// <summary>A groove border is drawn.</summary>
 		GrooveBorder,
 	}
 
@@ -1728,17 +1730,19 @@ namespace AppKit {
 		Luminosity,
 	}
 
+	/// <summary>Specifies an animation effect to display at a screen location.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSAnimationEffect : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The default effect for a disappearing item.</summary>
 		DisappearingItemDefault = 0,
 #if !XAMCORE_5_0
+		/// <summary>The obsolete, misspelled name for <see cref="DisappearingItemDefault" />.</summary>
 		[Obsolete ("Use 'DisappearingItemDefault' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		DissapearingItemDefault = DisappearingItemDefault,
 #endif
-		/// <summary>To be added.</summary>
+		/// <summary>A poof animation effect.</summary>
 		EffectPoof = 10,
 	}
 	#endregion
@@ -1770,12 +1774,13 @@ namespace AppKit {
 		User,
 	}
 
+	/// <summary>Specifies where a browser accepts a drag-and-drop operation.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSBrowserDropOperation : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The drop occurs on an item.</summary>
 		On,
-		/// <summary>To be added.</summary>
+		/// <summary>The drop occurs above an item.</summary>
 		Above,
 	}
 	#endregion
@@ -3015,40 +3020,43 @@ namespace AppKit {
 		NearestVerticalEdge = 1 << 8,
 	}
 
+	/// <summary>Specifies the category of an element in a collection view layout.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSCollectionElementCategory : long {
-		/// <summary>To be added.</summary>
+		/// <summary>A collection view item.</summary>
 		Item,
-		/// <summary>To be added.</summary>
+		/// <summary>A supplementary view.</summary>
 		SupplementaryView,
-		/// <summary>To be added.</summary>
+		/// <summary>A decoration view.</summary>
 		DecorationView,
-		/// <summary>To be added.</summary>
+		/// <summary>An inter-item gap.</summary>
 		InterItemGap,
 	}
 
+	/// <summary>Specifies an update applied to a collection view.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSCollectionUpdateAction : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Inserts an item.</summary>
 		Insert,
-		/// <summary>To be added.</summary>
+		/// <summary>Deletes an item.</summary>
 		Delete,
-		/// <summary>To be added.</summary>
+		/// <summary>Reloads an item.</summary>
 		Reload,
-		/// <summary>To be added.</summary>
+		/// <summary>Moves an item.</summary>
 		Move,
-		/// <summary>To be added.</summary>
+		/// <summary>No update action.</summary>
 		None,
 	}
 
+	/// <summary>Specifies the scrolling direction of a collection view layout.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSCollectionViewScrollDirection : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The collection view scrolls vertically.</summary>
 		Vertical,
-		/// <summary>To be added.</summary>
+		/// <summary>The collection view scrolls horizontally.</summary>
 		Horizontal,
 	}
 
@@ -4388,23 +4396,25 @@ namespace AppKit {
 		ErrorMaximum = 66335,
 	}
 
+	/// <summary>Specifies the position of an accessibility annotation within a range.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSAccessibilityAnnotationPosition : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The annotation applies to the entire range.</summary>
 		FullRange,
-		/// <summary>To be added.</summary>
+		/// <summary>The annotation applies to the start of the range.</summary>
 		Start,
-		/// <summary>To be added.</summary>
+		/// <summary>The annotation applies to the end of the range.</summary>
 		End,
 	}
 
+	/// <summary>Specifies the direction in which an accessibility custom rotor searches.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSAccessibilityCustomRotorSearchDirection : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Searches for the previous item.</summary>
 		Previous,
-		/// <summary>To be added.</summary>
+		/// <summary>Searches for the next item.</summary>
 		Next,
 	}
 
@@ -4456,14 +4466,15 @@ namespace AppKit {
 		Audiograph,
 	}
 
+	/// <summary>Specifies how a color represents its color data.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSColorType : long {
-		/// <summary>To be added.</summary>
+		/// <summary>A color defined by components in a color space.</summary>
 		ComponentBased,
-		/// <summary>To be added.</summary>
+		/// <summary>A color defined by a repeating image pattern.</summary>
 		Pattern,
-		/// <summary>To be added.</summary>
+		/// <summary>A color obtained from a named color catalog.</summary>
 		Catalog,
 	}
 

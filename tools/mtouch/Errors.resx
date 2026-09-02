@@ -1640,6 +1640,10 @@
 		<value>Could not find the trampoline for the category method {0}.</value>
 	</data>
 
+	<data name="MT4192" xml:space="preserve">
+		<value>The registrar cannot use the model class '{0}' as a generic type argument in the generic type '{1}'. Use the protocol interface instead of the model class.</value>
+	</data>
+
 	<data name="MT5101" xml:space="preserve">
 		<value>Missing '{0}' compiler. Please install Xcode 'Command-Line Tools' component</value>
 	</data>

@@ -1728,17 +1728,19 @@ namespace AppKit {
 		Luminosity,
 	}
 
+	/// <summary>Specifies an animation effect to display at a screen location.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSAnimationEffect : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The default effect for a disappearing item.</summary>
 		DisappearingItemDefault = 0,
 #if !XAMCORE_5_0
+		/// <summary>The default effect for a disappearing item.</summary>
 		[Obsolete ("Use 'DisappearingItemDefault' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		DissapearingItemDefault = DisappearingItemDefault,
 #endif
-		/// <summary>To be added.</summary>
+		/// <summary>A poof animation effect.</summary>
 		EffectPoof = 10,
 	}
 	#endregion

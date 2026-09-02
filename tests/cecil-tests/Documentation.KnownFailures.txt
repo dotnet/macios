@@ -22364,7 +22364,6 @@ T:AppKit.NSAccessibilitySortDirection
 T:AppKit.NSAccessibilitySubroles
 T:AppKit.NSAccessibilityUnits
 T:AppKit.NSAlertPredicate
-T:AppKit.NSAnimationEffect
 T:AppKit.NSAnimationPredicate
 T:AppKit.NSAnimationProgress
 T:AppKit.NSApplication_NSServicesMenu

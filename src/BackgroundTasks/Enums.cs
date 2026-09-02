@@ -11,7 +11,7 @@
 
 namespace BackgroundTasks {
 
-	[TV (13, 0), NoMac, iOS (13, 0)]
+	[NoMac]
 	[MacCatalyst (13, 1)]
 	[Native]
 	[ErrorDomain ("BGTaskSchedulerErrorDomain")]

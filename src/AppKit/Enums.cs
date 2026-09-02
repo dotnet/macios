@@ -2400,11 +2400,11 @@ namespace AppKit {
 	[NoMacCatalyst]
 	[Native]
 	public enum NSPrintingPageOrder : long {
-		/// <summary>Prints pages in descending order.</summary>
+		/// <summary>Prints pages from front to back.</summary>
 		Descending = -1,
-		/// <summary>Prints pages using an application-defined order.</summary>
+		/// <summary>Prints pages in the order received by the spooler without rearranging them.</summary>
 		Special,
-		/// <summary>Prints pages in ascending order.</summary>
+		/// <summary>Prints pages from back to front.</summary>
 		Ascending,
 		/// <summary>The page order is unknown.</summary>
 		Unknown,

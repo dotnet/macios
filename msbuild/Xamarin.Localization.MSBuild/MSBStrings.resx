@@ -1624,24 +1624,36 @@
         <value>The task '{0}' is trying to call an external process, but a path to Xcode has not been provided. Please file an issue at https://github.com/dotnet/macios/issues/new/choose.</value>
     </data>
 
+    <data name="E7165" xml:space="preserve">
+        <value>Invalid DotNetRuntime value: '{0}'</value>
+    </data>
+
+    <data name="E7166" xml:space="preserve">
+        <value>Unexpected RuntimeLibLinkMode value for 'NativeAOT': '{0}'</value>
+    </data>
+
     <data name="E7169" xml:space="preserve">
         <value>The task '{0}' requires the property '{1}' to be set. Please file an issue at https://github.com/dotnet/macios/issues/new/choose.</value>
     </data>
 
+    <data name="E7170" xml:space="preserve">
+        <value>Invalid RuntimeLibLinkMode value: '{0}'</value>
+    </data>
+
     <data name="W7171" xml:space="preserve">
-        <value>The environment variable '{0}' is deprecated, and will be ignored in .NET 11+. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.</value>
+        <value>The environment variable '{0}' is deprecated, and will be ignored in .NET 11+. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use an Xcode other than the system's current default Xcode.</value>
     </data>
 
     <data name="W7172" xml:space="preserve">
-        <value>The environment variable '{0}' is deprecated, and will be ignored. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.</value>
+        <value>The environment variable '{0}' is deprecated, and will be ignored. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use an Xcode other than the system's current default Xcode.</value>
     </data>
 
     <data name="W7173" xml:space="preserve">
-        <value>The settings file '{0}' is deprecated, and will be ignored in .NET 11+. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.</value>
+        <value>The settings file '{0}' is deprecated, and will be ignored in .NET 11+. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use an Xcode other than the system's current default Xcode.</value>
     </data>
 
     <data name="W7174" xml:space="preserve">
-        <value>The settings file '{0}' is deprecated, and will be ignored. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.</value>
+        <value>The settings file '{0}' is deprecated, and will be ignored. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use an Xcode other than the system's current default Xcode.</value>
     </data>
 
     <data name="E7175" xml:space="preserve">
@@ -1698,11 +1710,28 @@
 {2} - The computed extraction path.
 {3} - The intended output directory.</comment>
     </data>
+    <data name="E7185" xml:space="preserve">
+        <value>Could not determine the on-device destination path after copying '{0}' to the device. The 'xcrun devicectl' JSON output was: {1}</value>
+        <comment>Shown when the DeviceCtl task copied a file to a device, but the on-device destination path could not be extracted from devicectl's JSON output.
+{0} - The path of the file that was copied to the device.
+{1} - The JSON output from 'xcrun devicectl'.</comment>
+    </data>
     <data name="E0192" xml:space="preserve">
         <value>The PrepareAssemblies task failed without reporting a specific error. Please rebuild with increased verbosity for more details.</value>
     </data>
     <data name="E7184" xml:space="preserve">
         <value>Codesign failed with 'errSecInternalComponent'. This usually means the keychain is locked, which is common when building over SSH. Unlock the keychain first, for example by running 'security unlock-keychain ~/Library/Keychains/login.keychain-db'.</value>
         <comment>Shown when codesign fails with the 'errSecInternalComponent' error, which typically indicates a locked keychain.</comment>
+    </data>
+    <data name="E7185" xml:space="preserve">
+        <value>The runtime configuration file '{0}' is not a valid JSON object.</value>
+        <comment>Shown when the main runtime configuration file (*.runtimeconfig.json) does not contain a valid JSON object at its root.
+{0} - The path to the runtime configuration file.</comment>
+    </data>
+    <data name="E7186" xml:space="preserve">
+        <value>Could not read the runtime configuration file '{0}': {1}</value>
+        <comment>Shown when a runtime configuration file (*.runtimeconfig.json or *.runtimeconfig.dev.json) can't be read or parsed.
+{0} - The path to the runtime configuration file.
+{1} - The error message.</comment>
     </data>
 </root>

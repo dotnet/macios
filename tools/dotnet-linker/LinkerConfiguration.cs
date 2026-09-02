@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Xml.Linq;
 
 using Mono.Cecil;
@@ -32,7 +33,9 @@ namespace Xamarin.Linker {
 		public Version? DeploymentTarget { get; private set; }
 		// The user-provided value of the $(DynamicRegistrationSupported) MSBuild property (null if not set).
 		// When set, RegistrarRemovalTrackingStep doesn't need to run in the assembly-preparer.
-		public bool? DynamicRegistrationSupported { get; private set; }
+		// This is also how the value RegistrarRemovalTrackingStep computed during the preparation pass is
+		// passed to the post-processing pass (which needs it to generate the native main file).
+		public bool? DynamicRegistrationSupported { get; set; }
 		public HashSet<string> FrameworkAssemblies { get; private set; } = new HashSet<string> ();
 		public string IntermediateLinkDir { get; private set; } = string.Empty;
 		public bool InvariantGlobalization { get; private set; }
@@ -65,6 +68,7 @@ namespace Xamarin.Linker {
 		public string UnmanagedCallersOnlyMapPath { get; private set; } = string.Empty;
 		public int Verbosity => Application.Verbosity;
 		public string XamarinNativeLibraryDirectory { get; private set; } = string.Empty;
+		public Version? XcodeVersion { get; private set; }
 
 		static ConditionalWeakTable<LinkContext, LinkerConfiguration> configurations = new ConditionalWeakTable<LinkContext, LinkerConfiguration> ();
 
@@ -138,6 +142,12 @@ namespace Xamarin.Linker {
 
 		// This dictionary contains information about the trampolines created for each assembly.
 		public AssemblyTrampolineInfos AssemblyTrampolineInfos = new ();
+
+		// The per-assembly companion TypeMap assemblies (_<Asm>.TypeMap.dll), keyed by the user
+		// assembly they belong to. When HotReloadCompatibleBuild is enabled, ManagedRegistrarStep
+		// creates these early (so it can emit the registrar trampolines into them instead of into
+		// the user assembly) and TrimmableRegistrarStep reuses them.
+		internal Dictionary<AssemblyDefinition, RegistrarCompanionAssembly> RegistrarCompanionAssemblies = new ();
 
 		// ASSEMBLY_PREPARER TODO move pinvoke wrapper generation out of ListExportedFields step (and remove the #pragma warning)
 #pragma warning disable CS0649 // Field is never assigned to, and will always have its default value null
@@ -302,6 +312,10 @@ namespace Xamarin.Linker {
 						}
 					})
 				)},
+				{ "DylibToConvertToFramework", (
+					new LoadValue ((key, value) => Application.DylibsToConvertToFrameworks.Add (value)),
+					new SaveValue ((key, storage) => storage.AddRange (Application.DylibsToConvertToFrameworks.OrderBy (v => v).Select (v => $"{key}={v}")))
+				)},
 				{ "DynamicRegistrationSupported", (
 					// This is the user-overridable $(DynamicRegistrationSupported) MSBuild property. It maps to
 					// the RemoveDynamicRegistrar optimization (inverted): if dynamic registration is supported,
@@ -353,6 +367,10 @@ namespace Xamarin.Linker {
 					new LoadValue ((key, value) => FrameworkAssemblies.Add (value)),
 					new SaveValue ((key, storage) => storage.AddRange (FrameworkAssemblies.OrderBy (v => v).Select (v => $"{key}={v}")))
 				)},
+				{ "GenerateTrustedPlatformAssemblies", (
+					new LoadValue ((key, value) => loadBool (key, value, out Application.GenerateTrustedPlatformAssemblies)),
+					new SaveValue ((key, storage) => saveOptionalDefaultFalseBool (key, Application.GenerateTrustedPlatformAssemblies, storage))
+				)},
 				{ "HotReloadCompatibleBuild", (
 					new LoadValue ((key, value) => HotReloadCompatibleBuild = string.Equals ("true", value, StringComparison.OrdinalIgnoreCase)),
 					new SaveValue ((key, storage) => saveOptionalDefaultFalseBool (key, HotReloadCompatibleBuild, storage))
@@ -401,6 +419,10 @@ namespace Xamarin.Linker {
 				{ "IsAppExtension", (
 					new LoadValue ((key, value) => Application.IsExtension = string.Equals ("true", value, StringComparison.OrdinalIgnoreCase)),
 					new SaveValue ((key, storage) => storage.Add ($"{key}={(Application.IsExtension ? "true" : "false")}"))
+				)},
+				{ "IsMultiRidBuild", (
+					new LoadValue ((key, value) => loadBool (key, value, out Application.IsMultiRidBuild)),
+					new SaveValue ((key, storage) => saveOptionalDefaultFalseBool (key, Application.IsMultiRidBuild, storage))
 				)},
 				{ "ItemsDirectory", (
 					new LoadValue ((key, value) => ItemsDirectory = value),
@@ -484,6 +506,20 @@ namespace Xamarin.Linker {
 					new LoadValue ((key, value) => PublishTrimmed = string.Equals ("true", value, StringComparison.OrdinalIgnoreCase)),
 					new SaveValue ((key, storage) => storage.Add ($"{key}={(PublishTrimmed ? "true" : "false")}"))
 				 )},
+				{ "PublishReadyToRun", (
+					new LoadValue ((key, value) => {
+						if (!string.IsNullOrEmpty (value)) {
+							if (!TryParseOptionalBoolean (value, out var publishReadyToRun))
+								throw new InvalidOperationException ($"Unable to parse the {key} value: {value} in {linker_file}");
+							Application.PublishReadyToRun = publishReadyToRun;
+						}
+					}),
+					new SaveValue ((key, storage) => saveNullableBool (key, Application.PublishReadyToRun, storage))
+				)},
+				{ "PublishReadyToRunContainerFormat", (
+					new LoadValue ((key, value) => Application.PublishReadyToRunContainerFormat = value),
+					new SaveValue ((key, storage) => saveNonEmpty (key, Application.PublishReadyToRunContainerFormat, storage))
+				)},
 				{ "ReferenceNativeSymbol", (
 					new LoadValue ((key, value) => {
 						(string symbolType, string symbolMode, string symbol) = SplitString3 (value, ':');
@@ -673,6 +709,14 @@ namespace Xamarin.Linker {
 					new LoadValue ((key, value) => XamarinNativeLibraryDirectory = value),
 					new SaveValue ((key, storage) => saveNonEmpty (key, XamarinNativeLibraryDirectory, storage))
 				)},
+				{ "XcodeVersion", (
+					new LoadValue ((key, value) => {
+						if (!Version.TryParse (value, out var xcode_version))
+							throw new InvalidOperationException ($"Unable to parse the {key} value: {value} in {linker_file}");
+						XcodeVersion = xcode_version;
+					}),
+					new SaveValue ((key, storage) => saveNonEmpty (key, XcodeVersion?.ToString (), storage))
+				)},
 			};
 
 			return dict;
@@ -771,7 +815,14 @@ namespace Xamarin.Linker {
 				Application.UnsetInterpreter ();
 			}
 
-			Driver.ValidateXcode (Application, false, false);
+			if (RuntimeInformation.IsOSPlatform (OSPlatform.OSX)) {
+				Driver.ValidateXcode (Application, false, false);
+			} else if (XcodeVersion is not null) {
+				// Xcode only exists on macOS, so when running on any other OS (which happens when
+				// building remotely from Windows) we can't look at the Xcode installation. Use the
+				// Xcode version MSBuild fetched from the Mac instead.
+				Application.XcodeVersion = XcodeVersion;
+			}
 
 			Application.InitializeCommon ();
 			Application.Initialize ();
@@ -895,6 +946,7 @@ namespace Xamarin.Linker {
 				Application.Log ($"    Verbosity: {Verbosity}");
 				Application.Log ($"    XamarinNativeLibraryDirectory: {XamarinNativeLibraryDirectory}");
 				Application.Log ($"    XamarinRuntime: {Application.XamarinRuntime}");
+				Application.Log ($"    XcodeVersion: {XcodeVersion}");
 			}
 		}
 

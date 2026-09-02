@@ -477,7 +477,6 @@ namespace Cecil.Tests {
 			"Foundation.NSError System.Net.Http.NSUrlSessionHandler/WrappedNSInputStream::Error()",
 			"Foundation.NSObject.ConformsToProtocol(ObjCRuntime.NativeHandle)",
 			"Foundation.NSObject.InvokeConformsToProtocol(ObjCRuntime.NativeHandle)",
-			"Foundation.NSObject/NSObject_Disposer",
 			"Foundation.NSObject/Observer.ObserveValue(Foundation.NSString, Foundation.NSObject, Foundation.NSDictionary, System.IntPtr)",
 			"Foundation.NSStreamStatus Foundation.NSUrlSessionHandler/WrappedNSInputStream::Status()",
 			"Foundation.NSStreamStatus System.Net.Http.NSUrlSessionHandler/WrappedNSInputStream::Status()",

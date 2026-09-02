@@ -6,9 +6,9 @@ namespace BusinessChat {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum BCChatButtonStyle : long {
-		/// <summary>To be added.</summary>
+		/// <summary>A light-themed chat button.</summary>
 		Light = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>A dark-themed chat button.</summary>
 		Dark,
 	}
 
@@ -18,15 +18,15 @@ namespace BusinessChat {
 	[Deprecated (PlatformName.MacCatalyst, 16, 2)]
 	public enum BCParameterName {
 
-		/// <summary>To be added.</summary>
+		/// <summary>The intent parameter for the chat session.</summary>
 		[Field ("BCParameterNameIntent")]
 		Intent,
 
-		/// <summary>To be added.</summary>
+		/// <summary>The group parameter for the chat session.</summary>
 		[Field ("BCParameterNameGroup")]
 		Group,
 
-		/// <summary>To be added.</summary>
+		/// <summary>The body parameter for the chat session.</summary>
 		[Field ("BCParameterNameBody")]
 		Body,
 	}

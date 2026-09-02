@@ -2,14 +2,14 @@ using CoreFoundation;
 
 namespace ThreadNetwork {
 
-	[iOS (15, 0), Mac (13, 0), MacCatalyst (16, 1), NoTV]
+	[iOS (15, 0), MacCatalyst (16, 1), NoTV]
 	[BaseType (typeof (NSObject))]
 	interface THClient {
 		[Async]
 		[Export ("retrieveAllCredentials:")]
 		void RetrieveAllCredentials (Action<NSSet<THCredentials>, NSError> completion);
 
-		[iOS (16, 4), Mac (13, 3), MacCatalyst (16, 4)]
+		[iOS (16, 4), MacCatalyst (16, 4)]
 		[Async]
 		[Export ("retrieveAllActiveCredentials:")]
 		void RetrieveAllActiveCredentials (Action<NSSet<THCredentials>, NSError> completion);
@@ -40,13 +40,13 @@ namespace ThreadNetwork {
 		[Export ("checkPreferredNetworkForActiveOperationalDataset:completion:")]
 		void CheckPreferredNetwork (NSData activeOperationalDataSet, Action<bool> completion);
 
-		[iOS (16, 4), Mac (13, 3), MacCatalyst (16, 4)]
+		[iOS (16, 4), MacCatalyst (16, 4)]
 		[Async]
 		[Export ("isPreferredNetworkAvailableWithCompletion:")]
 		void IsPreferredNetworkAvailable (Action<bool> completion);
 	}
 
-	[iOS (15, 0), Mac (13, 0), MacCatalyst (16, 1), NoTV]
+	[iOS (15, 0), MacCatalyst (16, 1), NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface THCredentials : NSSecureCoding {

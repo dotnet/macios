@@ -34,10 +34,9 @@ namespace CoreGraphics {
 
 	// uint32_t -> CGGradient.h
 	/// <summary>Drawing location for gradients.</summary>
-	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum CGGradientDrawingOptions : uint {
-		/// <summary>To be added.</summary>
+		/// <summary>Does not extend the gradient beyond its start or end locations.</summary>
 		None = 0,
 		/// <summary>The fill will draw before the start location.</summary>
 		DrawsBeforeStartLocation = (1 << 0),

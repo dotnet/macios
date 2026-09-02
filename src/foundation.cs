@@ -278,38 +278,31 @@ namespace Foundation {
 		NSArray FromUrl (NSUrl url, out NSError error);
 
 #if false // https://github.com/dotnet/macios/issues/15577
-		[TV (13,0), iOS (13,0)]
 		[Internal]
 		[Export ("differenceFromArray:withOptions:")]
 		NativeHandle _GetDifference (NSArray other, NSOrderedCollectionDifferenceCalculationOptions options);
 
-		[TV (13,0), iOS (13,0)]
 		[Wrap ("Runtime.GetNSObject <NSOrderedCollectionDifference> (_GetDifference (NSArray.FromNSObjects (other), options))")]
 		[return: NullAllowed]
 		NSOrderedCollectionDifference GetDifference (NSObject[] other, NSOrderedCollectionDifferenceCalculationOptions options);
 
 		[Internal]
-		[TV (13,0), iOS (13,0)]
 		[Export ("differenceFromArray:")]
 		NativeHandle _GetDifference (NSArray other);
 
-		[TV (13,0), iOS (13,0)]
 		[Wrap ("Runtime.GetNSObject <NSOrderedCollectionDifference> (_GetDifference(NSArray.FromNSObjects (other)))")]
 		[return: NullAllowed]
 		NSOrderedCollectionDifference GetDifference (NSObject[] other);
 
-		[TV (13,0), iOS (13,0)]
 		[Export ("arrayByApplyingDifference:")]
 		[return: NullAllowed]
 		NativeHandle _GetArrayByApplyingDifference (NSOrderedCollectionDifference difference);
 
-		[TV (13,0), iOS (13,0)]
 		[Wrap ("NSArray.ArrayFromHandle<NSObject> (_GetArrayByApplyingDifference (difference))")]
 		[return: NullAllowed]
 		NSObject[] GetArrayByApplyingDifference (NSOrderedCollectionDifference difference);
 
 		[Internal]
-		[TV (13,0), iOS (13,0)]
 		[Export ("differenceFromArray:withOptions:usingEquivalenceTest:")]
 		NativeHandle _GetDifferenceFromArray (NSArray other, NSOrderedCollectionDifferenceCalculationOptions options, /* Func<NSObject, NSObject, bool> block */ ref BlockLiteral block);
 #endif
@@ -983,7 +976,6 @@ namespace Foundation {
 		// inlined from NSAttributedStringWebKitAdditions category (since they are all static members)
 
 		[NoTV] // really inside WebKit
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("loadFromHTMLWithRequest:options:completionHandler:")]
@@ -993,7 +985,6 @@ namespace Foundation {
 		void LoadFromHtml (NSUrlRequest request, NSDictionary options, NSAttributedStringCompletionHandler completionHandler);
 
 		[NoTV] // really inside WebKit
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Async (ResultTypeName = "NSLoadFromHtmlResult")]
@@ -1001,7 +992,6 @@ namespace Foundation {
 		void LoadFromHtml (NSUrlRequest request, NSAttributedStringDocumentAttributes options, NSAttributedStringCompletionHandler completionHandler);
 
 		[NoTV] // really inside WebKit
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("loadFromHTMLWithFileURL:options:completionHandler:")]
@@ -1011,7 +1001,6 @@ namespace Foundation {
 		void LoadFromHtml (NSUrl fileUrl, NSDictionary options, NSAttributedStringCompletionHandler completionHandler);
 
 		[NoTV] // really inside WebKit
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Async (ResultTypeName = "NSLoadFromHtmlResult")]
@@ -1019,7 +1008,6 @@ namespace Foundation {
 		void LoadFromHtml (NSUrl fileUrl, NSAttributedStringDocumentAttributes options, NSAttributedStringCompletionHandler completionHandler);
 
 		[NoTV] // really inside WebKit
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("loadFromHTMLWithString:options:completionHandler:")]
@@ -1029,7 +1017,6 @@ namespace Foundation {
 		void LoadFromHtml (string @string, NSDictionary options, NSAttributedStringCompletionHandler completionHandler);
 
 		[NoTV] // really inside WebKit
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Async (ResultTypeName = "NSLoadFromHtmlResult")]
@@ -1037,7 +1024,6 @@ namespace Foundation {
 		void LoadFromHtml (string @string, NSAttributedStringDocumentAttributes options, NSAttributedStringCompletionHandler completionHandler);
 
 		[NoTV] // really inside WebKit
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("loadFromHTMLWithData:options:completionHandler:")]
@@ -1047,7 +1033,6 @@ namespace Foundation {
 		void LoadFromHtml (NSData data, NSDictionary options, NSAttributedStringCompletionHandler completionHandler);
 
 		[NoTV] // really inside WebKit
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Async (ResultTypeName = "NSLoadFromHtmlResult")]
@@ -1155,7 +1140,6 @@ namespace Foundation {
 #else
 		[Field ("NSTextScalingDocumentAttribute", "UIKit")]
 #endif
-		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		NSString TextScalingDocumentAttribute { get; }
 #endif // !XAMCORE_5_0
@@ -1166,7 +1150,6 @@ namespace Foundation {
 #else
 		[Field ("NSSourceTextScalingDocumentAttribute", "UIKit")]
 #endif
-		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		NSString SourceTextScalingDocumentAttribute { get; }
 #endif // !XAMCORE_5_0
@@ -1177,7 +1160,6 @@ namespace Foundation {
 #else
 		[Field ("NSCocoaVersionDocumentAttribute", "UIKit")]
 #endif
-		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		NSString CocoaVersionDocumentAttribute { get; }
 #endif // !XAMCORE_5_0
@@ -1211,7 +1193,7 @@ namespace Foundation {
 		[Field ("NSLanguageIdentifierAttributeName")]
 		LanguageIdentifier,
 
-		[TV (16, 0), Mac (13, 0), iOS (16, 0)]
+		[TV (16, 0), iOS (16, 0)]
 		[MacCatalyst (16, 0)]
 		[Field ("NSMarkdownSourcePositionAttributeName")]
 		MarkdownSourcePosition,
@@ -1225,15 +1207,15 @@ namespace Foundation {
 		[Field ("NSReplacementIndexAttributeName")]
 		ReplacementIndex,
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Field ("NSInflectionAgreementArgumentAttributeName")]
 		InflectionAgreementArgument,
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Field ("NSInflectionAgreementConceptAttributeName")]
 		InflectionAgreementConcept,
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Field ("NSInflectionReferentConceptAttributeName")]
 		InflectionReferentConcept,
 
@@ -1246,7 +1228,7 @@ namespace Foundation {
 		ListItemDelimiter,
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum NSGrammaticalCase : long {
 		NotSet = 0,
@@ -1266,7 +1248,7 @@ namespace Foundation {
 		Translative,
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum NSGrammaticalPronounType : long {
 		NotSet = 0,
@@ -1275,7 +1257,7 @@ namespace Foundation {
 		Possessive,
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum NSGrammaticalDefiniteness : long {
 		NotSet = 0,
@@ -1283,7 +1265,7 @@ namespace Foundation {
 		Definite,
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum NSGrammaticalDetermination : long {
 		NotSet = 0,
@@ -1291,7 +1273,7 @@ namespace Foundation {
 		Dependent,
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum NSGrammaticalPerson : long {
 		NotSet = 0,
@@ -1301,7 +1283,6 @@ namespace Foundation {
 	}
 
 	[NoTV] // really inside WebKit
-	[iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	delegate void NSAttributedStringCompletionHandler ([NullAllowed] NSAttributedString attributedString, [NullAllowed] NSDictionary<NSString, NSObject> attributes, [NullAllowed] NSError error);
 
@@ -2613,13 +2594,11 @@ namespace Foundation {
 
 		// NSDataCompression (NSData)
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("decompressedDataUsingAlgorithm:error:")]
 		[return: NullAllowed]
 		NSData Decompress (NSDataCompressionAlgorithm algorithm, [NullAllowed] out NSError error);
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("compressedDataUsingAlgorithm:error:")]
 		[return: NullAllowed]
@@ -2791,19 +2770,16 @@ namespace Foundation {
 		[Export ("formattingContext")]
 		NSFormattingContext FormattingContext { get; set; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("stringForObjectValue:")]
 		[return: NullAllowed]
 		string GetString ([NullAllowed] NSObject obj);
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("stringFromMeasurement:countStyle:")]
 		string Create (NSUnitInformationStorage measurement, NSByteCountFormatterCountStyle countStyle);
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("stringFromMeasurement:")]
 		string Create (NSUnitInformationStorage measurement);
@@ -3106,7 +3082,6 @@ namespace Foundation {
 		[Export ("readDataToEndOfFile")]
 		NSData ReadDataToEndOfFile ();
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("readDataToEndOfFileAndReturnError:")]
 		[return: NullAllowed]
@@ -3123,7 +3098,6 @@ namespace Foundation {
 		[Export ("readDataOfLength:")]
 		NSData ReadDataOfLength (nuint length);
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("readDataUpToLength:error:")]
 		[return: NullAllowed]
@@ -3136,7 +3110,6 @@ namespace Foundation {
 		[Export ("writeData:")]
 		void WriteData (NSData data);
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("writeData:error:")]
 		bool Write (NSData data, [NullAllowed] out NSError error);
@@ -3148,7 +3121,6 @@ namespace Foundation {
 		[Export ("offsetInFile")]
 		ulong OffsetInFile ();
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("getOffset:error:")]
 		bool GetOffset (out ulong offsetInFile, [NullAllowed] out NSError error);
@@ -3160,7 +3132,6 @@ namespace Foundation {
 		[Export ("seekToEndOfFile")]
 		ulong SeekToEndOfFile ();
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("seekToEndReturningOffset:error:")]
 		bool SeekToEnd ([NullAllowed] out ulong offsetInFile, [NullAllowed] out NSError error);
@@ -3172,7 +3143,6 @@ namespace Foundation {
 		[Export ("seekToFileOffset:")]
 		void SeekToFileOffset (ulong offset);
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("seekToOffset:error:")]
 		bool Seek (ulong offset, [NullAllowed] out NSError error);
@@ -3184,7 +3154,6 @@ namespace Foundation {
 		[Export ("truncateFileAtOffset:")]
 		void TruncateFileAtOffset (ulong offset);
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("truncateAtOffset:error:")]
 		bool Truncate (ulong offset, [NullAllowed] out NSError error);
@@ -3196,7 +3165,6 @@ namespace Foundation {
 		[Export ("synchronizeFile")]
 		void SynchronizeFile ();
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("synchronizeAndReturnError:")]
 		bool Synchronize ([NullAllowed] out NSError error);
@@ -3208,7 +3176,6 @@ namespace Foundation {
 		[Export ("closeFile")]
 		void CloseFile ();
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("closeAndReturnError:")]
 		bool Close ([NullAllowed] out NSError error);
@@ -5628,7 +5595,6 @@ namespace Foundation {
 		NSMutableArray FromUrl (NSUrl url);
 
 #if false // https://github.com/dotnet/macios/issues/15577
-		[TV (13,0), iOS (13,0)]
 		[Export ("applyDifference:")]
 		void ApplyDifference (NSOrderedCollectionDifference difference);
 #endif
@@ -5841,18 +5807,15 @@ namespace Foundation {
 
 		// NSMutableDataCompression (NSMutableData)
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("decompressUsingAlgorithm:error:")]
 		bool Decompress (NSDataCompressionAlgorithm algorithm, [NullAllowed] out NSError error);
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("compressUsingAlgorithm:error:")]
 		bool Compress (NSDataCompressionAlgorithm algorithm, [NullAllowed] out NSError error);
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum NSDataCompressionAlgorithm : long {
@@ -6283,7 +6246,6 @@ namespace Foundation {
 		NSString CoreMotionErrorDomain { get; }
 
 		[NoMac, NoTV]
-		[iOS (12, 0)]
 		[NoMacCatalyst] // We don't expose CarPlay on Mac Catalyst for the moment // [MacCatalyst (14, 0)]
 		[Field ("CarPlayErrorDomain", "CarPlay")]
 		NSString CarPlayErrorDomain { get; }
@@ -7043,11 +7005,11 @@ namespace Foundation {
 		[return: NullAllowed]
 		string GetLocalizedCalendarIdentifier (string calendarIdentifier);
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("languageIdentifier")]
 		string LanguageIdentifier { get; }
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[NullAllowed, Export ("regionCode")]
 		string RegionCode { get; }
 	}
@@ -7827,7 +7789,6 @@ namespace Foundation {
 
 		// Inlined from NSUserActivity (UISceneActivationConditions)
 
-		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("targetContentIdentifier")]
 		string TargetContentIdentifier { get; set; }
@@ -8156,7 +8117,7 @@ namespace Foundation {
 		[Static]
 		NSUrl _FromStringRelative (string url, NSUrl relative);
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Static]
 		[Export ("URLWithString:encodingInvalidCharacters:")]
 		[return: NullAllowed]
@@ -8708,7 +8669,7 @@ namespace Foundation {
 		[Field ("NSURLFileResourceTypeKey")]
 		NSString FileResourceTypeKey { get; }
 
-		[TV (16, 4), Mac (13, 3), iOS (16, 4)]
+		[TV (16, 4), iOS (16, 4)]
 		[MacCatalyst (16, 4)]
 		[Field ("NSURLFileIdentifierKey")]
 		NSString FileIdentifierKey { get; }
@@ -8986,17 +8947,17 @@ namespace Foundation {
 		[Field ("NSURLVolumeAvailableCapacityForOpportunisticUsageKey")]
 		NSString VolumeAvailableCapacityForOpportunisticUsageKey { get; }
 
-		[TV (16, 4), Mac (13, 3), iOS (16, 4)]
+		[TV (16, 4), iOS (16, 4)]
 		[MacCatalyst (16, 4)]
 		[Field ("NSURLVolumeTypeNameKey")]
 		NSString VolumeTypeNameKey { get; }
 
-		[TV (16, 4), Mac (13, 3), iOS (16, 4)]
+		[TV (16, 4), iOS (16, 4)]
 		[MacCatalyst (16, 4)]
 		[Field ("NSURLVolumeSubtypeKey")]
 		NSString VolumeSubtypeKey { get; }
 
-		[TV (16, 4), Mac (13, 3), iOS (16, 4)]
+		[TV (16, 4), iOS (16, 4)]
 		[MacCatalyst (16, 4)]
 		[Field ("NSURLVolumeMountFromLocationKey")]
 		NSString VolumeMountFromLocationKey { get; }
@@ -9372,7 +9333,7 @@ namespace Foundation {
 		[Field ("NSURLFileProtectionCompleteWhenUserInactive")]
 		NSString FileProtectionCompleteWhenUserInactive { get; }
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Field ("NSURLDirectoryEntryCountKey")]
 		NSString DirectoryEntryCountKey { get; }
 
@@ -9544,7 +9505,6 @@ namespace Foundation {
 		[Export ("initWithMemoryCapacity:diskCapacity:diskPath:")]
 		NativeHandle Constructor (nuint memoryCapacity, nuint diskCapacity, [NullAllowed] string diskPath);
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("initWithMemoryCapacity:diskCapacity:directoryURL:")]
 		NativeHandle Constructor (nuint memoryCapacity, nuint diskCapacity, [NullAllowed] NSUrl directoryUrl);
@@ -9616,7 +9576,7 @@ namespace Foundation {
 		[Static, Export ("componentsWithString:")]
 		NSUrlComponents FromString (string urlString);
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Static]
 		[Export ("componentsWithString:encodingInvalidCharacters:")]
 		[return: NullAllowed]
@@ -9673,7 +9633,7 @@ namespace Foundation {
 		[Export ("percentEncodedHost", ArgumentSemantic.Copy)]
 		string PercentEncodedHost { get; set; }
 
-		[TV (16, 0), Mac (13, 0), iOS (16, 0)]
+		[TV (16, 0), iOS (16, 0)]
 		[MacCatalyst (16, 0)]
 		[NullAllowed, Export ("encodedHost")]
 		string EncodedHost { get; set; }
@@ -10561,28 +10521,25 @@ namespace Foundation {
 		[Export ("streamTaskWithNetService:")]
 		NSUrlSessionStreamTask CreateBidirectionalStream (NSNetService service);
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("webSocketTaskWithURL:")]
 		NSUrlSessionWebSocketTask CreateWebSocketTask (NSUrl url);
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("webSocketTaskWithURL:protocols:")]
 		NSUrlSessionWebSocketTask CreateWebSocketTask (NSUrl url, string [] protocols);
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("webSocketTaskWithRequest:")]
 		NSUrlSessionWebSocketTask CreateWebSocketTask (NSUrlRequest request);
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("uploadTaskWithResumeData:")]
 		[return: ForcedType]
 		NSUrlSessionUploadTask CreateUploadTask (NSData resumeData);
 
 		[Async (ResultTypeName = "NSUrlSessionUploadTaskResumeRequest")]
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("uploadTaskWithResumeData:completionHandler:")]
 		[return: ForcedType]
 		NSUrlSessionUploadTask CreateUploadTask (NSData resumeData, Action<NSData, NSUrlResponse, NSError> completionHandler);
@@ -10833,12 +10790,12 @@ namespace Foundation {
 		[Export ("init")]
 		NativeHandle Constructor ();
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Field ("NSURLSessionUploadTaskResumeData")]
 		NSString ResumeDataKey { get; }
 
 		[Async]
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("cancelByProducingResumeData:")]
 		void CancelByProducingResumeData (Action<NSData> completionHandler);
 	}
@@ -10960,7 +10917,6 @@ namespace Foundation {
 		[Export ("TLSMinimumSupportedProtocol")]
 		SslProtocol TLSMinimumSupportedProtocol { get; set; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("TLSMinimumSupportedProtocolVersion", ArgumentSemantic.Assign)]
 		TlsProtocolVersion TlsMinimumSupportedProtocolVersion { get; set; }
@@ -10972,7 +10928,6 @@ namespace Foundation {
 		[Export ("TLSMaximumSupportedProtocol")]
 		SslProtocol TLSMaximumSupportedProtocol { get; set; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("TLSMaximumSupportedProtocolVersion", ArgumentSemantic.Assign)]
 		TlsProtocolVersion TlsMaximumSupportedProtocolVersion { get; set; }
@@ -11040,12 +10995,10 @@ namespace Foundation {
 		[Export ("waitsForConnectivity")]
 		bool WaitsForConnectivity { get; set; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("allowsExpensiveNetworkAccess")]
 		bool AllowsExpensiveNetworkAccess { get; set; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("allowsConstrainedNetworkAccess")]
 		bool AllowsConstrainedNetworkAccess { get; set; }
@@ -11054,7 +11007,7 @@ namespace Foundation {
 		[Export ("allowsUltraConstrainedNetworkAccess")]
 		bool AllowsUltraConstrainedNetworkAccess { get; set; }
 
-		[TV (16, 0), Mac (13, 0), iOS (16, 0)]
+		[TV (16, 0), iOS (16, 0)]
 		[MacCatalyst (16, 0)]
 		[Export ("requiresDNSSECValidation")]
 		bool RequiresDnsSecValidation { get; set; }
@@ -11181,16 +11134,16 @@ namespace Foundation {
 		[Export ("URLSession:taskIsWaitingForConnectivity:")]
 		void TaskIsWaitingForConnectivity (NSUrlSession session, NSUrlSessionTask task);
 
-		[TV (16, 0), Mac (13, 0), iOS (16, 0)]
+		[TV (16, 0), iOS (16, 0)]
 		[MacCatalyst (16, 0)]
 		[Export ("URLSession:didCreateTask:")]
 		void DidCreateTask (NSUrlSession session, NSUrlSessionTask task);
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("URLSession:task:didReceiveInformationalResponse:")]
 		void DidReceiveInformationalResponse (NSUrlSession session, NSUrlSessionTask task, NSHttpUrlResponse response);
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("URLSession:task:needNewBodyStreamFromOffset:completionHandler:")]
 		void NeedNewBodyStream (NSUrlSession session, NSUrlSessionTask task, long offset, Action<NSInputStream> completionHandler);
 	}
@@ -11658,12 +11611,10 @@ namespace Foundation {
 		[Export ("allowsCellularAccess")]
 		bool AllowsCellularAccess { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("allowsExpensiveNetworkAccess")]
 		bool AllowsExpensiveNetworkAccess { get; [NotImplemented] set; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("allowsConstrainedNetworkAccess")]
 		bool AllowsConstrainedNetworkAccess { get; [NotImplemented] set; }
@@ -11702,7 +11653,7 @@ namespace Foundation {
 		NSURLRequestAttribution Attribution { get; }
 
 		// macOS is documented out of sync with iOS here
-		[TV (16, 1), Mac (13, 0), iOS (16, 1)]
+		[TV (16, 1), iOS (16, 1)]
 		[MacCatalyst (16, 1)]
 		[Export ("requiresDNSSECValidation")]
 		bool RequiresDnsSecValidation { get; }
@@ -11898,12 +11849,10 @@ namespace Foundation {
 		[Export ("allowsCellularAccess")]
 		bool AllowsCellularAccess { get; set; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("allowsExpensiveNetworkAccess")]
 		bool AllowsExpensiveNetworkAccess { get; set; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("allowsConstrainedNetworkAccess")]
 		bool AllowsConstrainedNetworkAccess { get; set; }
@@ -11923,7 +11872,7 @@ namespace Foundation {
 		NSURLRequestAttribution Attribution { get; set; }
 
 		// Documented as 16.0 but did not work until 16.1 - https://github.com/xamarin/maccore/issues/2608 - https://feedbackassistant.apple.com/feedback/10897552
-		[TV (16, 1), Mac (13, 0), iOS (16, 1)]
+		[TV (16, 1), iOS (16, 1)]
 		[MacCatalyst (16, 1)]
 		[Export ("requiresDNSSECValidation")]
 		bool RequiresDnsSecValidation { get; set; }
@@ -13075,22 +13024,22 @@ namespace Foundation {
 		[Export ("awakeFromNib")]
 		void AwakeFromNib ();
 
-		[TV (13, 0), iOS (13, 0), NoMac]
+		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("accessibilityRespondsToUserInteraction")]
 		bool AccessibilityRespondsToUserInteraction { get; set; }
 
-		[TV (13, 0), iOS (13, 0), NoMac]
+		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("accessibilityUserInputLabels", ArgumentSemantic.Strong)]
 		string [] AccessibilityUserInputLabels { get; set; }
 
-		[TV (13, 0), iOS (13, 0), NoMac]
+		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("accessibilityAttributedUserInputLabels", ArgumentSemantic.Copy)]
 		NSAttributedString [] AccessibilityAttributedUserInputLabels { get; set; }
 
-		[TV (13, 0), iOS (13, 0), NoMac]
+		[NoMac]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("accessibilityTextualContext", ArgumentSemantic.Strong)]
 		string AccessibilityTextualContext { get; set; }
@@ -13429,7 +13378,6 @@ namespace Foundation {
 		[Export ("operationCount")]
 		nint OperationCount { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("addBarrierBlock:")]
 		void AddBarrier (Action barrier);
@@ -13568,39 +13516,32 @@ namespace Foundation {
 		NSOrderedSet GetReverseOrderedSet ();
 
 #if false // https://github.com/dotnet/macios/issues/15577
-		[TV (13,0), iOS (13,0)]
 		[Wrap ("Runtime.GetNSObject <NSOrderedCollectionDifference> (_GetDifference (other, options))")]
 		[return: NullAllowed]
 		NSOrderedCollectionDifference GetDifference (NSOrderedSet other, NSOrderedCollectionDifferenceCalculationOptions options);
 		
 		[Internal]
-		[TV (13,0), iOS (13,0)]
 		[Export ("differenceFromOrderedSet:withOptions:")]
 		IntPtr _GetDifference (NSOrderedSet other, NSOrderedCollectionDifferenceCalculationOptions options);
 
-		[TV (13,0), iOS (13,0)]
 		[Wrap ("Runtime.GetNSObject <NSOrderedCollectionDifference> (_GetDifference (other))")]
 		[return: NullAllowed]
 		NSOrderedCollectionDifference GetDifference (NSOrderedSet other);
 		
 		[Internal]
-		[TV (13,0), iOS (13,0)]
 		[Export ("differenceFromOrderedSet:")]
 		IntPtr _GetDifference (NSOrderedSet other);
 
-		[TV (13,0), iOS (13,0)]
 		[Wrap ("Runtime.GetNSObject <NSOrderedSet> (_GetOrderedSet (difference))")]
 		[return: NullAllowed]
 		NSOrderedSet GetOrderedSet (NSOrderedCollectionDifference difference);
 		
 		[Internal]
-		[TV (13,0), iOS (13,0)]
 		[Export ("orderedSetByApplyingDifference:")]
 		[return: NullAllowed]
 		IntPtr _GetOrderedSet (NSOrderedCollectionDifference difference);
 
 		[Internal]
-		[TV (13,0), iOS (13,0)]
 		[Export ("differenceFromOrderedSet:withOptions:usingEquivalenceTest:")]
 		/* NSOrderedCollectionDifference<NSObject>*/ IntPtr _GetDifference (NSOrderedSet other, NSOrderedCollectionDifferenceCalculationOptions options, /* Func<NSObject, NSObject, bool> */ ref BlockLiteral block);
 #endif
@@ -13772,12 +13713,10 @@ namespace Foundation {
 
 #if false // https://github.com/dotnet/macios/issues/15577
 		[Internal]
-		[TV (13,0), iOS (13,0)]
 		[Export ("applyDifference:")]
 		void _ApplyDifference (IntPtr difference);
 
 		[Sealed]
-		[TV (13,0), iOS (13,0)]
 		[Export ("applyDifference:")]
 		void ApplyDifference (NSOrderedCollectionDifference<NSObject> difference);
 #endif
@@ -13993,22 +13932,18 @@ namespace Foundation {
 		[Field ("NSHTTPCookiePort")]
 		NSString KeyPort { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("NSHTTPCookieSameSitePolicy")]
 		NSString KeySameSitePolicy { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("NSHTTPCookieSameSiteLax")]
 		NSString KeySameSiteLax { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("NSHTTPCookieSameSiteStrict")]
 		NSString KeySameSiteStrict { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("sameSitePolicy")]
 		NSString SameSitePolicy { get; }
@@ -14125,7 +14060,6 @@ namespace Foundation {
 		[Static]
 		string LocalizedStringForStatusCode (nint statusCode);
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("valueForHTTPHeaderField:")]
 		[return: NullAllowed]
@@ -15005,52 +14939,52 @@ namespace Foundation {
 
 		// extension methods from CloudKit
 
-		[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("registerCKShareWithContainer:allowedSharingOptions:preparationHandler:")]
 		void RegisterCKShare (CKContainer container, CKAllowedSharingOptions allowedOptions, Action preparationHandler);
 
-		[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("registerCKShare:container:allowedSharingOptions:")]
 		void RegisterCKShare (CKShare share, CKContainer container, CKAllowedSharingOptions allowedOptions);
 
 		// from interface UTType (NSItemProvider)
 
-		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("initWithContentsOfURL:contentType:openInPlace:coordinated:visibility:")]
 		NativeHandle Constructor (NSUrl fileUrl, [NullAllowed] UTType contentType, bool openInPlace, bool coordinated, NSItemProviderRepresentationVisibility visibility);
 
-		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("registerDataRepresentationForContentType:visibility:loadHandler:")]
 		void RegisterDataRepresentation (UTType contentType, NSItemProviderRepresentationVisibility visibility, NSItemProviderUTTypeLoadDelegate loadHandler);
 
-		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("registerFileRepresentationForContentType:visibility:openInPlace:loadHandler:")]
 		void RegisterFileRepresentation (UTType contentType, NSItemProviderRepresentationVisibility visibility, bool openInPlace, NSItemProviderUTTypeLoadDelegate loadHandler);
 
-		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("registeredContentTypes", ArgumentSemantic.Copy)]
 		UTType [] RegisteredContentTypes { get; }
 
-		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("registeredContentTypesForOpenInPlace", ArgumentSemantic.Copy)]
 		UTType [] RegisteredContentTypesForOpenInPlace { get; }
 
-		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("registeredContentTypesConformingToContentType:")]
 		UTType [] RegisteredContentTypesConforming (UTType contentType);
 
-		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("loadDataRepresentationForContentType:completionHandler:")]
 		NSProgress LoadDataRepresentation (UTType contentType, ItemProviderDataCompletionHandler completionHandler);
 
-		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("loadFileRepresentationForContentType:openInPlace:completionHandler:")]
 		NSProgress LoadFileRepresentation (UTType contentType, bool openInPlace, LoadFileRepresentationHandler completionHandler);
 	}
 
-	[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	delegate NSProgress NSItemProviderUTTypeLoadDelegate ([BlockCallback] ItemProviderDataCompletionHandler completionHandler);
-	[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	delegate void LoadFileRepresentationHandler ([NullAllowed] NSUrl fileUrl, bool openInPlace, [NullAllowed] NSError error);
 	delegate NSProgress RegisterFileRepresentationLoadHandler ([BlockCallback] RegisterFileRepresentationCompletionHandler completionHandler);
 	delegate void RegisterFileRepresentationCompletionHandler (NSUrl fileUrl, bool coordinated, NSError error);
@@ -16096,14 +16030,12 @@ namespace Foundation {
 		CoreAnimation.CATransform3D CATransform3DValue { get; }
 
 		[iOS (16, 0)]
-		[Mac (13, 0)]
 		[MacCatalyst (16, 0)]
 		[TV (16, 0)]
 		[Export ("CMVideoDimensionsValue")]
 		CMVideoDimensions CMVideoDimensionsValue { get; }
 
 		[iOS (16, 0)]
-		[Mac (13, 0)]
 		[MacCatalyst (16, 0)]
 		[TV (16, 0)]
 		[Export ("valueWithCMVideoDimensions:")]
@@ -17219,7 +17151,6 @@ namespace Foundation {
 		NSString ThermalStateDidChangeNotification { get; }
 
 		#region NSProcessInfoPlatform (NSProcessInfo)
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("macCatalystApp")]
 		bool IsMacCatalystApplication { [Bind ("isMacCatalystApp")] get; }
@@ -18808,7 +18739,6 @@ namespace Foundation {
 		[Export ("level")]
 		nint Level { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("isEnumeratingDirectoryPostOrder")]
 		bool IsEnumeratingDirectoryPostOrder { get; }
@@ -21182,90 +21112,74 @@ namespace Foundation {
 		[Export ("resourceFetchType", ArgumentSemantic.Assign)]
 		NSUrlSessionTaskMetricsResourceFetchType ResourceFetchType { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("countOfRequestHeaderBytesSent")]
 		long CountOfRequestHeaderBytesSent { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("countOfRequestBodyBytesSent")]
 		long CountOfRequestBodyBytesSent { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("countOfRequestBodyBytesBeforeEncoding")]
 		long CountOfRequestBodyBytesBeforeEncoding { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("countOfResponseHeaderBytesReceived")]
 		long CountOfResponseHeaderBytesReceived { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("countOfResponseBodyBytesReceived")]
 		long CountOfResponseBodyBytesReceived { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("countOfResponseBodyBytesAfterDecoding")]
 		long CountOfResponseBodyBytesAfterDecoding { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("localAddress")]
 		string LocalAddress { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("localPort", ArgumentSemantic.Copy)]
 		// 0-1023
 		[BindAs (typeof (ushort?))]
 		NSNumber LocalPort { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("remoteAddress")]
 		string RemoteAddress { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("remotePort", ArgumentSemantic.Copy)]
 		// 0-1023
 		[BindAs (typeof (ushort?))]
 		NSNumber RemotePort { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("negotiatedTLSProtocolVersion", ArgumentSemantic.Copy)]
 		// <quote>It is a 2-byte sequence in host byte order.</quote> but it refers to (nicer) `tls_protocol_version_t`
 		[BindAs (typeof (SslProtocol?))]
 		NSNumber NegotiatedTlsProtocolVersion { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("negotiatedTLSCipherSuite", ArgumentSemantic.Copy)]
 		// <quote>It is a 2-byte sequence in host byte order.</quote> but it refers to (nicer) `tls_ciphersuite_t`
 		[BindAs (typeof (TlsCipherSuite?))]
 		NSNumber NegotiatedTlsCipherSuite { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("cellular")]
 		bool Cellular { [Bind ("isCellular")] get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("expensive")]
 		bool Expensive { [Bind ("isExpensive")] get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("constrained")]
 		bool Constrained { [Bind ("isConstrained")] get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("multipath")]
 		bool Multipath { [Bind ("isMultipath")] get; }
@@ -21503,25 +21417,21 @@ namespace Foundation {
 		[Export ("baseUnit")]
 		NSDimension BaseUnit { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("milliseconds", ArgumentSemantic.Copy)]
 		NSUnitDuration Milliseconds { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("microseconds", ArgumentSemantic.Copy)]
 		NSUnitDuration Microseconds { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("nanoseconds", ArgumentSemantic.Copy)]
 		NSUnitDuration Nanoseconds { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("picoseconds", ArgumentSemantic.Copy)]
@@ -21753,7 +21663,6 @@ namespace Foundation {
 		[Export ("baseUnit")]
 		NSDimension BaseUnit { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("framesPerSecond", ArgumentSemantic.Copy)]
@@ -22392,8 +22301,6 @@ namespace Foundation {
 		NSXpcConnection CurrentConnection { [return: NullAllowed] get; }
 
 		[Export ("scheduleSendBarrierBlock:")]
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		void ScheduleSendBarrier (Action block);
 
@@ -22412,7 +22319,7 @@ namespace Foundation {
 		[Export ("activate")]
 		void Activate ();
 
-		[NoTV, NoiOS, Mac (13, 0)]
+		[NoTV, NoiOS]
 		[NoMacCatalyst]
 		[Export ("setCodeSigningRequirement:")]
 		void SetCodeSigningRequirement (string requirement);
@@ -22463,7 +22370,7 @@ namespace Foundation {
 		[Export ("activate")]
 		void Activate ();
 
-		[NoTV, NoiOS, Mac (13, 0)]
+		[NoTV, NoiOS]
 		[NoMacCatalyst]
 		[Export ("setConnectionCodeSigningRequirement:")]
 		void SetConnectionCodeSigningRequirement (string requirement);
@@ -22500,7 +22407,6 @@ namespace Foundation {
 	interface NSXpcListenerEndpoint : NSSecureCoding {
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSFormatter))]
 	interface NSListFormatter {
@@ -22525,7 +22431,6 @@ namespace Foundation {
 		string GetString ([NullAllowed] NSObject obj);
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum NSRelativeDateTimeFormatterStyle : long {
@@ -22533,7 +22438,6 @@ namespace Foundation {
 		Named,
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum NSRelativeDateTimeFormatterUnitsStyle : long {
@@ -22543,7 +22447,6 @@ namespace Foundation {
 		Abbreviated,
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSFormatter))]
 	interface NSRelativeDateTimeFormatter {
@@ -22577,7 +22480,6 @@ namespace Foundation {
 		string GetString ([NullAllowed] NSObject obj);
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum NSCollectionChangeType : long {
@@ -22585,7 +22487,6 @@ namespace Foundation {
 		Remove,
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum NSOrderedCollectionDifferenceCalculationOptions : ulong {
@@ -22594,7 +22495,6 @@ namespace Foundation {
 		InferMoves = (1uL << 2),
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSDimension))]
 	[DisableDefaultCtor] // NSGenericException Reason: -init should never be called on NSUnit!
@@ -22751,7 +22651,6 @@ namespace Foundation {
 		NSUnitInformationStorage Kibibits { get; }
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum NSUrlSessionWebSocketMessageType : long {
@@ -22759,7 +22658,6 @@ namespace Foundation {
 		String = 1,
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject), Name = "NSURLSessionWebSocketMessage")]
 	[DisableDefaultCtor]
@@ -22783,7 +22681,6 @@ namespace Foundation {
 		string String { get; }
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum NSUrlSessionWebSocketCloseCode : long {
@@ -22802,7 +22699,6 @@ namespace Foundation {
 		TlsHandshakeFailure = 1015,
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSUrlSessionTask), Name = "NSURLSessionWebSocketTask")]
 	[DisableDefaultCtor]
@@ -22833,7 +22729,6 @@ namespace Foundation {
 		NSData CloseReason { get; }
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	[Model]
@@ -22847,7 +22742,6 @@ namespace Foundation {
 		void DidClose (NSUrlSession session, NSUrlSessionWebSocketTask webSocketTask, NSUrlSessionWebSocketCloseCode closeCode, [NullAllowed] NSData reason);
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum NSUrlErrorNetworkUnavailableReason : long {
@@ -23058,7 +22952,7 @@ namespace Foundation {
 		[NullAllowed, Export ("languageCode")]
 		string LanguageCode { get; set; }
 
-		[TV (16, 0), Mac (13, 0), iOS (16, 0)]
+		[TV (16, 0), iOS (16, 0)]
 		[MacCatalyst (16, 0)]
 		[Export ("appliesSourcePositionAttributes")]
 		bool AppliesSourcePositionAttributes { get; set; }
@@ -23130,23 +23024,23 @@ namespace Foundation {
 		[Export ("userMorphology")]
 		NSMorphology UserMorphology { get; }
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("grammaticalCase", ArgumentSemantic.Assign)]
 		NSGrammaticalCase GrammaticalCase { get; set; }
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("determination", ArgumentSemantic.Assign)]
 		NSGrammaticalDetermination Determination { get; set; }
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("grammaticalPerson", ArgumentSemantic.Assign)]
 		NSGrammaticalPerson GrammaticalPerson { get; set; }
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("pronounType", ArgumentSemantic.Assign)]
 		NSGrammaticalPronounType PronounType { get; set; }
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("definiteness", ArgumentSemantic.Assign)]
 		NSGrammaticalDefiniteness Definiteness { get; set; }
 	}
@@ -23185,7 +23079,6 @@ namespace Foundation {
 #if false // https://github.com/dotnet/macios/issues/15577
 	interface NSOrderedCollectionChange <TKey> : NSOrderedCollectionChange {}
 	
-	[TV (13,0), iOS (13,0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSOrderedCollectionChange
@@ -23232,7 +23125,6 @@ namespace Foundation {
 
 	interface NSOrderedCollectionDifference <TKey> : NSOrderedCollectionDifference {}
 	
-	[TV (13,0), iOS (13,0)]
 	[BaseType (typeof (NSObject))]
 	interface NSOrderedCollectionDifference : INSFastEnumeration
 	{
@@ -23270,13 +23162,12 @@ namespace Foundation {
 		NativeHandle _GetDifference (/* Func<NSOrderedCollectionChange<NSObject>, NSOrderedCollectionChange<NSObject>>*/ ref BlockLiteral block); 
 
 		[Internal]
-		[TV (13,0), iOS (13,0)]
 		[Export ("inverseDifference")]
 		NativeHandle _InverseDifference ();
 	}
 #endif
 
-	[TV (16, 0), Mac (13, 0), iOS (16, 0)]
+	[TV (16, 0), iOS (16, 0)]
 	[MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	interface NSAttributedStringMarkdownSourcePosition : NSCopying, NSSecureCoding {
@@ -23299,7 +23190,7 @@ namespace Foundation {
 		NSRange RangeInString (string @string);
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSTermOfAddress : NSCopying, NSSecureCoding {
@@ -23331,7 +23222,7 @@ namespace Foundation {
 		NSTermOfAddress CurrentUser { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSMorphologyPronoun : NSCopying, NSSecureCoding {
@@ -23421,13 +23312,10 @@ namespace Foundation {
 		// [Export ("TextLayoutSectionsAttribute")]
 		// NSTextLayoutSection[] TextLayout { get; set; }
 
-		[iOS (13, 0)]
 		NSTextScalingType TextScaling { get; set; }
 
-		[iOS (13, 0)]
 		NSTextScalingType SourceTextScaling { get; set; }
 
-		[iOS (13, 0)]
 		float CocoaVersion { get; set; }
 
 		[NoiOS, NoTV, NoMacCatalyst]

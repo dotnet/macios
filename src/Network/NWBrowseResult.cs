@@ -16,9 +16,9 @@ using OS_nw_endpoint = System.IntPtr;
 using OS_nw_txt_record = System.IntPtr;
 
 namespace Network {
-	[SupportedOSPlatform ("tvos13.0")]
+	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("ios13.0")]
+	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	public class NWBrowseResult : NativeObject {
 

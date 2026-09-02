@@ -42,7 +42,7 @@ This app has crashed because it attempted to access privacy-sensitive data witho
 
 The app crashed because macOS says it needs the `NSAppleMusicUsageDescription` entry in its `Info.plist` file.
 
-This is confusing, because introspection has an `NSAppleMusicUsageDescription` entry in its `Info.plist` file.
+This is confusing, because introspection _has_ an `NSAppleMusicUsageDescription` entry in its `Info.plist` file.
 
 Here's what happens:
 

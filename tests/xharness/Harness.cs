@@ -195,7 +195,6 @@ namespace Xharness {
 			return result;
 		}
 
-#nullable enable
 		string? spawnerPath;
 		public string SpawnerPath {
 			get {
@@ -216,7 +215,6 @@ namespace Xharness {
 			foreach (var args in arguments)
 				processStartInfo.ArgumentList.Add (args);
 		}
-#nullable disable
 
 		public List<TestProject> TestProjects { get; } = new ();
 

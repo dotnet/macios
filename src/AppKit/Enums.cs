@@ -461,14 +461,15 @@ namespace AppKit {
 		ProportionallyUpOrDown,
 	}
 
+	/// <summary>Specifies the state of a cell.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSCellStateValue : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The cell has a mixed state.</summary>
 		Mixed = -1,
-		/// <summary>To be added.</summary>
+		/// <summary>The cell is off.</summary>
 		Off,
-		/// <summary>To be added.</summary>
+		/// <summary>The cell is on.</summary>
 		On,
 	}
 

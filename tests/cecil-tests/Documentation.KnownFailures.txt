@@ -22399,7 +22399,6 @@ T:AppKit.NSButtonType
 T:AppKit.NSCellAttribute
 T:AppKit.NSCellHit
 T:AppKit.NSCellImagePosition
-T:AppKit.NSCellStateValue
 T:AppKit.NSCellStyleMask
 T:AppKit.NSCharacterCollection
 T:AppKit.NSCloudKitSharingServiceOptions

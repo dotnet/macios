@@ -1773,12 +1773,13 @@ namespace AppKit {
 		User,
 	}
 
+	/// <summary>Specifies where a browser accepts a drag-and-drop operation.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSBrowserDropOperation : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The drop occurs on an item.</summary>
 		On,
-		/// <summary>To be added.</summary>
+		/// <summary>The drop occurs above an item.</summary>
 		Above,
 	}
 	#endregion

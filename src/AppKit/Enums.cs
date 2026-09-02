@@ -370,14 +370,15 @@ namespace AppKit {
 
 	#region NSCell Defines 
 
+	/// <summary>Specifies the type of content displayed by a cell.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSCellType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The cell has no content type.</summary>
 		Null,
-		/// <summary>To be added.</summary>
+		/// <summary>The cell displays text.</summary>
 		Text,
-		/// <summary>To be added.</summary>
+		/// <summary>The cell displays an image.</summary>
 		Image,
 	}
 

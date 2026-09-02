@@ -22401,7 +22401,6 @@ T:AppKit.NSCellHit
 T:AppKit.NSCellImagePosition
 T:AppKit.NSCellStateValue
 T:AppKit.NSCellStyleMask
-T:AppKit.NSCellType
 T:AppKit.NSCharacterCollection
 T:AppKit.NSCloudKitSharingServiceOptions
 T:AppKit.NSCoderAppKitAddons

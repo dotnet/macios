@@ -651,6 +651,27 @@ namespace Xamarin.Tests {
 			Assert.That (uniqueErrors [0], Is.EqualTo (expectedError), "Error message");
 		}
 
+		// A '*.csproj.user' file is imported after we've computed '_SdkIsSimulator' from the default
+		// (simulator) RuntimeIdentifier, so a device RuntimeIdentifier in such a file makes the build
+		// inconsistent. The test project has a checked-in '*.csproj.user' file that does exactly that.
+		// Note that the RuntimeIdentifier can't be passed as a property here, because a global property
+		// takes precedence over anything the '*.csproj.user' file does.
+		[Test]
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
+		public void RuntimeIdentifierChangedTooLate (ApplePlatform platform, string deviceRuntimeIdentifier)
+		{
+			var project = "RuntimeIdentifierInUserFile";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			var project_path = GetProjectPath (project, platform: platform);
+			Clean (project_path);
+
+			var rv = DotNet.AssertBuildFailure (project_path, GetDefaultProperties ());
+			var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray ();
+			AssertErrorMessages (errors, $"The RuntimeIdentifier was changed too late in the build (it's currently '{deviceRuntimeIdentifier}', but the build was already configured with SdkIsSimulator=true). A common reason is a '*.csproj.user' file changing it; if you're building outside of the IDE, delete this file.");
+		}
+
 		[Test]
 		[TestCase (ApplePlatform.iOS, "win10-x86", "The specified RuntimeIdentifier 'win10-x86' is not recognized.")]
 		[TestCase (ApplePlatform.TVOS, "win10-x64", "The specified RuntimeIdentifier 'win10-x64' is not recognized.")]

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.IO;
+using System.Linq;
 
 using Mono.Cecil;
 using Mono.Cecil.Cil;
@@ -36,8 +37,12 @@ namespace Xamarin.Bundler {
 			return resolver_cache;
 		}
 
-		public void Dispose ()
+		public virtual void Dispose ()
 		{
+			foreach (var assembly in cache.Values.Distinct ())
+				assembly.Dispose ();
+			cache.Clear ();
+			params_cache.Clear ();
 		}
 
 		public AssemblyDefinition Resolve (AssemblyNameReference name)

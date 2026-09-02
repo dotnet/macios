@@ -11,6 +11,9 @@
 #include <sys/stat.h>
 #include <dlfcn.h>
 #include <mach/mach.h>
+#include <mach-o/dyld.h>
+#include <mach-o/loader.h>
+#include <Security/Security.h>
 
 #include "product.h"
 #include "shared.h"
@@ -22,6 +25,7 @@
 #include "xamarin/monovm-bridge.h"
 #else
 #include "xamarin/coreclr-bridge.h"
+#include "host_runtime_contract.h"
 #endif
 
 #if defined (DEBUG)
@@ -77,6 +81,8 @@ const char *xamarin_runtime_configuration_name = NULL;
 
 enum XamarinNativeLinkMode xamarin_libmono_native_link_mode = XamarinNativeLinkModeStaticObject;
 const char **xamarin_runtime_libraries = NULL;
+struct xamarin_r2r_module *xamarin_r2r_modules = NULL;
+int xamarin_r2r_module_count = 0;
 const char * const *xamarin_trusted_platform_assembly_names = NULL;
 #if defined (SUPPORTS_UNIVERSAL_BUILDS)
 bool xamarin_is_multi_rid_build = false;
@@ -2442,10 +2448,212 @@ xamarin_compute_native_dll_search_directories ()
 	return rv;
 }
 
+#if defined (CORECLR_RUNTIME)
+size_t
+xamarin_get_dyld_image_size (void* base_address)
+{
+	if (base_address == NULL)
+		return 0;
+
+	const struct mach_header_64* header = (const struct mach_header_64 *) base_address;
+
+	// Only support 64-bit Mach-O images.
+	if (header->magic != MH_MAGIC_64 && header->magic != MH_CIGAM_64) {
+		// Not a 64-bit Mach-O image. Return 0 or handle as appropriate.
+		return 0;
+	}
+	const struct load_command* cmd = (const struct load_command*) ((const char *) header + sizeof (struct mach_header_64));
+
+	size_t image_size = 0;
+	for (uint32_t j = 0; j < header->ncmds; ++j) {
+		if (cmd->cmd == LC_SEGMENT_64) {
+			const struct segment_command_64* seg = (const struct segment_command_64 *) cmd;
+			size_t end_addr = (size_t) (seg->vmaddr + seg->vmsize);
+			if (end_addr > image_size)
+				image_size = end_addr;
+		}
+
+		cmd = (const struct load_command *) ((const char *) cmd + cmd->cmdsize);
+	}
+
+	return image_size;
+}
+
+bool
+xamarin_get_native_code_data (const struct host_runtime_contract_native_code_context* context, struct host_runtime_contract_native_code_data* data)
+{
+	if (!context || !data || !context->assembly_path || !context->owner_composite_name)
+		return false;
+
+	void* r2r_header = NULL;
+
+	for (int i = 0; i < xamarin_r2r_module_count; i++) {
+		if (strcmp (xamarin_r2r_modules [i].name, context->owner_composite_name) == 0) {
+			r2r_header = xamarin_r2r_modules [i].header;
+			break;
+		}
+	}
+
+	if (r2r_header == NULL)
+		return false;
+
+	Dl_info info;
+	if (dladdr (r2r_header, &info) == 0)
+		xamarin_assertion_message ("Failed to get dladdr info for the RTR_HEADER symbol.");
+
+	data->size = sizeof (struct host_runtime_contract_native_code_data);
+	data->r2r_header_ptr = r2r_header;
+	data->image_size = xamarin_get_dyld_image_size (info.dli_fbase);
+	data->image_base = info.dli_fbase;
+
+	return true;
+}
+
+// dotnet/runtime#128278 (.NET 11 preview 5) gates the BindToSystem CoreLib fallback on
+// Bundle::AppIsBundle () && Bundle::AppBundle->HasExtractedFiles (). Register a no-op
+// bundle_probe so AppBundle is non-null, and answer BUNDLE_EXTRACTION_PATH with the
+// directory containing System.Private.CoreLib.dll so the fallback finds it.
+static bool xamarin_coreclr_bundle_probe (const char *path, int64_t *offset, int64_t *size, int64_t *compressed_size)
+{
+	return false;
+}
+
+static const char *xamarin_compute_corelib_directory (void)
+{
+	static char *cached = NULL;
+
+	if (cached)
+		return cached;
+
+	const char *bundle_path = xamarin_get_bundle_path ();
+	NSFileManager *manager = [NSFileManager defaultManager];
+	NSString *candidates [] = {
+		[NSString stringWithUTF8String: bundle_path],
+		[NSString stringWithFormat: @"%s/.xamarin/%s", bundle_path, RUNTIMEIDENTIFIER],
+	};
+	for (size_t i = 0; i < sizeof (candidates) / sizeof (candidates [0]); i++) {
+		NSString *probe = [candidates [i] stringByAppendingPathComponent: @"System.Private.CoreLib.dll"];
+		if ([manager fileExistsAtPath: probe]) {
+			cached = strdup ([candidates [i] UTF8String]);
+			break;
+		}
+	}
+
+	return cached;
+}
+
+static size_t xamarin_coreclr_get_runtime_property (const char *key, char *value_buffer, size_t value_buffer_size, void *contract_context)
+{
+	if (strcmp (key, HOST_PROPERTY_BUNDLE_EXTRACTION_PATH) != 0)
+		return (size_t) -1;
+
+	const char *dir = xamarin_compute_corelib_directory ();
+	if (dir == NULL)
+		return (size_t) -1;
+
+	size_t len = strlen (dir);
+	size_t required = len + 1; // include null terminator
+	if (value_buffer != NULL && value_buffer_size >= required)
+		memcpy (value_buffer, dir, required);
+	return required;
+}
+#endif // defined (CORECLR_RUNTIME)
+
+static bool
+xamarin_is_sandboxed ()
+{
+#if TARGET_OS_OSX || TARGET_OS_MACCATALYST
+	SecTaskRef task = SecTaskCreateFromSelf (NULL);
+	if (task == NULL)
+		return false;
+
+	CFTypeRef entitlement = SecTaskCopyValueForEntitlement (task, CFSTR ("com.apple.security.app-sandbox"), NULL);
+	bool is_sandboxed = false;
+	if (entitlement != NULL && CFGetTypeID (entitlement) == CFBooleanGetTypeID ())
+		is_sandboxed = CFBooleanGetValue ((CFBooleanRef) entitlement);
+
+	if (entitlement != NULL)
+		CFRelease (entitlement);
+	CFRelease (task);
+
+	return is_sandboxed;
+#elif TARGET_OS_IOS || TARGET_OS_TV
+	// TARGET_OS_IOS is set for Mac Catalyst too, so we check for TARGET_OS_MACCATALYST first.
+	return true;
+#else
+	#error Unknown platform
+#endif
+}
+
+static void
+xamarin_initialize_crash_report_directory ()
+{
+	// Set DOTNET_CrashReportRootPath before loading CoreCLR so that crash reports
+	// are written to a known, writable location that isn't backed up by iCloud.
+	// We use NSCachesDirectory for this purpose.
+	// Ref: https://github.com/dotnet/runtime/pull/128738
+
+	// Only do this if crash reports are enabled (DOTNET_EnableCrashReport=1),
+	// otherwise there's no point in setting the crash report directory.
+	const char *enableCrashReport = getenv ("DOTNET_EnableCrashReport");
+	if (enableCrashReport == NULL || strcmp (enableCrashReport, "1") != 0)
+		return;
+
+	// If DOTNET_CrashReportRootPath is already set, respect it and don't override it
+	// (nor create any directory), since the caller is then responsible for the location.
+	if (getenv ("DOTNET_CrashReportRootPath") != NULL)
+		return;
+
+	NSArray *paths = NSSearchPathForDirectoriesInDomains (NSCachesDirectory, NSUserDomainMask, YES);
+	if (paths == nil || [paths count] == 0) {
+		LOG (PRODUCT ": Could not find the caches directory for crash reports.\n");
+		return;
+	}
+
+	NSString *cachesDir = paths [0];
+
+	// For non-sandboxed desktop apps, NSCachesDirectory is shared between all apps,
+	// so we need to use a subdirectory specific to this app (using the bundle identifier).
+	// Sandboxed apps already get an app-specific directory.
+	if (!xamarin_is_sandboxed ()) {
+		NSString *bundleId = [[NSBundle mainBundle] bundleIdentifier];
+		if (bundleId != nil) {
+			cachesDir = [cachesDir stringByAppendingPathComponent: bundleId];
+		}
+	}
+
+	// The .NET runtime's in-process crash reporter won't write any crash report files
+	// unless DOTNET_CrashReportRootPath points to an already-existing directory, so make
+	// sure the directory exists before setting the environment variable.
+	NSError *error = nil;
+	if (![[NSFileManager defaultManager] createDirectoryAtPath: cachesDir withIntermediateDirectories: YES attributes: nil error: &error]) {
+		LOG (PRODUCT ": Could not create the crash report directory '%s': %s\n", [cachesDir UTF8String], [[error description] UTF8String]);
+		return;
+	}
+
+	setenv ("DOTNET_CrashReportRootPath", [cachesDir UTF8String], 0 /* don't overwrite */);
+}
+
 void
 xamarin_vm_initialize ()
 {
+	xamarin_initialize_crash_report_directory ();
+
+#if defined (CORECLR_RUNTIME)
+	struct host_runtime_contract host_contract = {
+		.size = sizeof (struct host_runtime_contract),
+		.get_runtime_property = &xamarin_coreclr_get_runtime_property,
+		.bundle_probe = &xamarin_coreclr_bundle_probe,
+		.pinvoke_override = &xamarin_pinvoke_override,
+		.get_native_code_data = &xamarin_get_native_code_data
+	};
+
+	char contract_str [19]; // 0x + 16 hex digits + '\0'
+	snprintf (contract_str, sizeof (contract_str), "0x%zx", (size_t) (&host_contract));
+#else
 	char *pinvokeOverride = xamarin_strdup_printf ("%p", &xamarin_pinvoke_override);
+#endif
+
 	char *trusted_platform_assemblies = xamarin_compute_trusted_platform_assemblies ();
 	char *native_dll_search_directories = xamarin_compute_native_dll_search_directories ();
 	char *system_corelib_directory = xamarin_compute_system_corelib_directory ();
@@ -2456,7 +2664,11 @@ xamarin_vm_initialize ()
 	const char *propertyKeys[] = {
 		"APP_CONTEXT_BASE_DIRECTORY", // path to where the managed assemblies are (usually at least - RID-specific assemblies will be in subfolders)
 		"APP_PATHS",
+#if defined (CORECLR_RUNTIME)
+		"HOST_RUNTIME_CONTRACT",
+#else
 		"PINVOKE_OVERRIDE",
+#endif
 		"TRUSTED_PLATFORM_ASSEMBLIES",
 		"NATIVE_DLL_SEARCH_DIRECTORIES",
 		"RUNTIME_IDENTIFIER",
@@ -2466,7 +2678,11 @@ xamarin_vm_initialize ()
 	const char *propertyValues[] = {
 		xamarin_get_bundle_path (),
 		xamarin_get_bundle_path (),
+#if defined (CORECLR_RUNTIME)
+		contract_str,
+#else
 		pinvokeOverride,
+#endif
 		trusted_platform_assemblies,
 		native_dll_search_directories,
 		RUNTIMEIDENTIFIER,
@@ -2481,7 +2697,9 @@ xamarin_vm_initialize ()
 
 	bool rv = xamarin_bridge_vm_initialize (propertyCount, propertyKeys, propertyValues);
 
+#if !defined (CORECLR_RUNTIME)
 	xamarin_free (pinvokeOverride);
+#endif
 	xamarin_free (trusted_platform_assemblies);
 	xamarin_free (native_dll_search_directories);
 	xamarin_free (system_corelib_directory);
@@ -2518,7 +2736,7 @@ xamarin_is_native_library (const char *libraryName)
 	return rv;
 }
 
-void*
+const void*
 xamarin_pinvoke_override (const char *libraryName, const char *entrypointName)
 {
 

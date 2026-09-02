@@ -2201,18 +2201,19 @@ namespace AppKit {
 		NSLineSweepUp,
 	}
 
+	/// <summary>Specifies the direction in which text layout moves between lines.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSLineMovementDirection : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Does not move between lines.</summary>
 		None,
-		/// <summary>To be added.</summary>
+		/// <summary>Moves to the left.</summary>
 		Left,
-		/// <summary>To be added.</summary>
+		/// <summary>Moves to the right.</summary>
 		Right,
-		/// <summary>To be added.</summary>
+		/// <summary>Moves downward.</summary>
 		Down,
-		/// <summary>To be added.</summary>
+		/// <summary>Moves upward.</summary>
 		Up,
 	}
 

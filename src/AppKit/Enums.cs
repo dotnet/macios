@@ -3033,18 +3033,19 @@ namespace AppKit {
 		InterItemGap,
 	}
 
+	/// <summary>Specifies an update applied to a collection view.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSCollectionUpdateAction : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Inserts an item.</summary>
 		Insert,
-		/// <summary>To be added.</summary>
+		/// <summary>Deletes an item.</summary>
 		Delete,
-		/// <summary>To be added.</summary>
+		/// <summary>Reloads an item.</summary>
 		Reload,
-		/// <summary>To be added.</summary>
+		/// <summary>Moves an item.</summary>
 		Move,
-		/// <summary>To be added.</summary>
+		/// <summary>No update action.</summary>
 		None,
 	}
 

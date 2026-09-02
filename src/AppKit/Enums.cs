@@ -585,12 +585,13 @@ namespace AppKit {
 		Never,
 	}
 
+	/// <summary>Specifies how an image is resized to fill its destination.</summary>
 	[NoMacCatalyst]
 	[Native (ConvertToNative = "NSImageResizingModeExtensions.ToNative", ConvertToManaged = "NSImageResizingModeExtensions.ToManaged")]
 	public enum NSImageResizingMode : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Stretches the image to fill the destination.</summary>
 		Stretch,
-		/// <summary>To be added.</summary>
+		/// <summary>Tiles the image to fill the destination.</summary>
 		Tile,
 	}
 

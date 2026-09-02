@@ -22509,7 +22509,6 @@ T:AppKit.NSImageLoadStatus
 T:AppKit.NSImageName
 T:AppKit.NSImageRect
 T:AppKit.NSImageRepLoadStatus
-T:AppKit.NSImageResizingMode
 T:AppKit.NSImageResizingModeExtensions
 T:AppKit.NSImageScale
 T:AppKit.NSImageScaling

@@ -610,18 +610,19 @@ namespace AppKit {
 		Critical,
 	}
 
+	/// <summary>Specifies a response returned by a modal session.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSModalResponse : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the user accepted the modal session.</summary>
 		OK = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the user canceled the modal session.</summary>
 		Cancel = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the modal session should stop.</summary>
 		Stop = -1000,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the modal session should abort.</summary>
 		Abort = -1001,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the modal session should continue.</summary>
 		Continue = -1002,
 	}
 	#endregion

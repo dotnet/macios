@@ -22528,7 +22528,6 @@ T:AppKit.NSMenuItemBadgeType
 T:AppKit.NSMenuPresentationStyle
 T:AppKit.NSMenuProperty
 T:AppKit.NSMenuSelectionMode
-T:AppKit.NSModalResponse
 T:AppKit.NSMutableAttributedStringAppKitAddons
 T:AppKit.NSObject_NSEditorRegistration
 T:AppKit.NSObject_NSFontPanelValidationAdditions

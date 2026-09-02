@@ -1261,16 +1261,17 @@ namespace AppKit {
 		MaxYMargin = 32,
 	}
 
+	/// <summary>Specifies the style of border drawn around a view.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSBorderType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>No border is drawn.</summary>
 		NoBorder,
-		/// <summary>To be added.</summary>
+		/// <summary>A line border is drawn.</summary>
 		LineBorder,
-		/// <summary>To be added.</summary>
+		/// <summary>A bezel border is drawn.</summary>
 		BezelBorder,
-		/// <summary>To be added.</summary>
+		/// <summary>A groove border is drawn.</summary>
 		GrooveBorder,
 	}
 

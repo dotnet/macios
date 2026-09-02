@@ -22393,7 +22393,6 @@ T:AppKit.NSBindingOption
 T:AppKit.NSBindingOptions
 T:AppKit.NSBitmapFormat
 T:AppKit.NSBitmapImageFileType
-T:AppKit.NSBorderType
 T:AppKit.NSBoxType
 T:AppKit.NSBrowserColumnResizingType
 T:AppKit.NSBrowserDropOperation

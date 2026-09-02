@@ -4400,12 +4400,13 @@ namespace AppKit {
 		End,
 	}
 
+	/// <summary>Specifies the direction in which an accessibility custom rotor searches.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSAccessibilityCustomRotorSearchDirection : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Searches for the previous item.</summary>
 		Previous,
-		/// <summary>To be added.</summary>
+		/// <summary>Searches for the next item.</summary>
 		Next,
 	}
 

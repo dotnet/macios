@@ -22414,7 +22414,6 @@ T:AppKit.NSCollectionViewDiffableDataSourceItemProvider
 T:AppKit.NSCollectionViewDiffableDataSourceSupplementaryViewProvider
 T:AppKit.NSCollectionViewDropOperation
 T:AppKit.NSCollectionViewItemHighlightState
-T:AppKit.NSCollectionViewScrollDirection
 T:AppKit.NSCollectionViewScrollPosition
 T:AppKit.NSColorPanelFlags
 T:AppKit.NSColorPanelMode

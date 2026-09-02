@@ -3050,12 +3050,13 @@ namespace AppKit {
 		None,
 	}
 
+	/// <summary>Specifies the scrolling direction of a collection view layout.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSCollectionViewScrollDirection : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The collection view scrolls vertically.</summary>
 		Vertical,
-		/// <summary>To be added.</summary>
+		/// <summary>The collection view scrolls horizontally.</summary>
 		Horizontal,
 	}
 

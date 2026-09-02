@@ -238,14 +238,15 @@ namespace AppKit {
 		Buffered,
 	}
 
+	/// <summary>Specifies how a window is ordered relative to other windows.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSWindowOrderingMode : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Orders the window below another window.</summary>
 		Below = -1,
-		/// <summary>To be added.</summary>
+		/// <summary>Removes the window from the screen.</summary>
 		Out,
-		/// <summary>To be added.</summary>
+		/// <summary>Orders the window above another window.</summary>
 		Above,
 	}
 

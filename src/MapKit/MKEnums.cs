@@ -227,7 +227,6 @@ namespace MapKit {
 	}
 
 	[Flags]
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MKLocalSearchCompleterResultType : ulong {
@@ -239,7 +238,6 @@ namespace MapKit {
 	}
 
 	[Flags]
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MKLocalSearchResultType : ulong {
@@ -249,7 +247,7 @@ namespace MapKit {
 		PhysicalFeature = 1 << 2,
 	}
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+	[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[Native]
 	public enum MKDirectionsRoutePreference : long {
 		Any = 0,
@@ -265,7 +263,7 @@ namespace MapKit {
 		PhysicalFeatures = 1 << (int) MKMapFeatureType.PhysicalFeature,
 	}
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[Native]
 	public enum MKLookAroundBadgePosition : long {
 		TopLeading = 0,
@@ -273,7 +271,7 @@ namespace MapKit {
 		BottomTrailing,
 	}
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+	[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[Native]
 	public enum MKMapElevationStyle : long {
 		Flat = 0,
@@ -288,14 +286,13 @@ namespace MapKit {
 		PhysicalFeature,
 	}
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+	[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[Native]
 	public enum MKStandardMapEmphasisStyle : long {
 		Default = 0,
 		Muted,
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	public enum MKPointOfInterestCategory {
 

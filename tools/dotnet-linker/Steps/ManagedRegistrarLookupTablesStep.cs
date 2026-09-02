@@ -289,7 +289,7 @@ namespace Xamarin.Linker {
 			il.Emit (OpCodes.Ldc_I4_M1);
 			il.Emit (OpCodes.Ret);
 
-			body.GenerateILOffsets ();
+			body.FinalizeGeneratedBody ();
 		}
 
 		void GenerateLookupType (AssemblyTrampolineInfo infos, TypeDefinition registrarType, List<TypeData> types)
@@ -331,7 +331,7 @@ namespace Xamarin.Linker {
 			il.Emit (OpCodes.Ldloc, temporary);
 			il.Emit (OpCodes.Ret);
 
-			body.GenerateILOffsets ();
+			body.FinalizeGeneratedBody ();
 		}
 
 		void GenerateConstructNSObject (TypeDefinition registrarType)
@@ -388,7 +388,7 @@ namespace Xamarin.Linker {
 			il.Emit (OpCodes.Ldnull);
 			il.Emit (OpCodes.Ret);
 
-			body.GenerateILOffsets ();
+			body.FinalizeGeneratedBody ();
 		}
 
 		void GenerateConstructINativeObject (TypeDefinition registrarType)
@@ -446,7 +446,7 @@ namespace Xamarin.Linker {
 			il.Emit (OpCodes.Ldnull);
 			il.Emit (OpCodes.Ret);
 
-			body.GenerateILOffsets ();
+			body.FinalizeGeneratedBody ();
 		}
 
 		// We need to preserve the constructor because it might not be used anywhere else.
@@ -502,7 +502,7 @@ namespace Xamarin.Linker {
 
 			il.Emit (OpCodes.Ret);
 
-			body.GenerateILOffsets ();
+			body.FinalizeGeneratedBody ();
 		}
 
 		void GenerateLookupUnmanagedFunction (TypeDefinition registrar_type, IList<TrampolineInfo> trampolineInfos)
@@ -536,7 +536,7 @@ namespace Xamarin.Linker {
 				il.Emit (OpCodes.Call, lookupMethods);
 			}
 			il.Emit (OpCodes.Ret);
-			body.GenerateILOffsets ();
+			body.FinalizeGeneratedBody ();
 		}
 
 		// If WrappedLook is true we'll wrap the ldftn instruction in a separate method, which can be useful for debugging,
@@ -584,7 +584,7 @@ namespace Xamarin.Linker {
 						var wrappedBody = wrappedLookup.CreateBody (out var wrappedIl);
 						wrappedIl.Emit (OpCodes.Ldftn, mr);
 						wrappedIl.Emit (OpCodes.Ret);
-						wrappedBody.GenerateILOffsets ();
+						wrappedBody.FinalizeGeneratedBody ();
 
 						targets [i] = Instruction.Create (OpCodes.Call, wrappedLookup);
 					} else {
@@ -656,7 +656,7 @@ namespace Xamarin.Linker {
 			il.Emit (OpCodes.Conv_I);
 			il.Emit (OpCodes.Ret);
 
-			body.GenerateILOffsets ();
+			body.FinalizeGeneratedBody ();
 
 			return method;
 		}

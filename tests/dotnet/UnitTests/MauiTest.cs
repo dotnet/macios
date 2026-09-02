@@ -60,11 +60,9 @@ namespace Xamarin.Tests {
 
 			Assert.That (BinLog.TryFindPropertyValue (rv.BinLogPath, "TrimMode", out var trimModeValue), Is.True, "Could not find the property 'TrimMode' in the binlog.");
 			Assert.That (BinLog.TryFindPropertyValue (rv.BinLogPath, "_LinkMode", out var linkModeValue), Is.True, "Could not find the property '_LinkMode' in the binlog.");
-			Assert.That (BinLog.TryFindPropertyValue (rv.BinLogPath, "MtouchLink", out var mtouchLinkValue), Is.True, "Could not find the property 'MtouchLink' in the binlog.");
 
-			Assert.That (trimModeValue, Is.EqualTo ("copy"), "TrimMode");
-			Assert.That (linkModeValue, Is.EqualTo ("None"), "LinkMode");
-			Assert.That (mtouchLinkValue, Is.EqualTo ("None"), "MtouchLink");
+			Assert.That (trimModeValue, Is.EqualTo ("partial"), "TrimMode");
+			Assert.That (linkModeValue, Is.EqualTo ("SdkOnly"), "LinkMode");
 		}
 
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]

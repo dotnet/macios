@@ -2883,7 +2883,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			Properties="%(_AppExtensionReferenceWithConfigurationExistent.SetConfiguration); %(_AppExtensionReferenceWithConfigurationExistent.SetPlatform)"
 			Condition="'@(_AppExtensionReferenceWithConfigurationExistent)' != '' and '$(_BuildReferencedExtensionProjects)' != 'true'">
 
-			<Output TaskParameter="TargetOutputs" ItemName="_ResolvedAppExtensionReferences" Condition="'%(_AppExtensionReferenceWithConfigurationExistent.ReferenceOutputAssembly)' != 'false'"/>
+			<Output TaskParameter="TargetOutputs" ItemName="_ResolvedAppExtensionReferences" />
 		</MSBuild>
 
 		<!-- Build the referenced project if required -->
@@ -2893,7 +2893,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			Properties="%(_AppExtensionReferenceWithConfigurationExistent.SetConfiguration); %(_AppExtensionReferenceWithConfigurationExistent.SetPlatform)"
 			Condition="'@(_AppExtensionReferenceWithConfigurationExistent)' != '' and '$(_BuildReferencedExtensionProjects)' == 'true' ">
 
-			<Output TaskParameter="TargetOutputs" ItemName="_ResolvedAppExtensionReferences" Condition="'%(_AppExtensionReferenceWithConfigurationExistent.ReferenceOutputAssembly)' != 'false'"/>
+			<Output TaskParameter="TargetOutputs" ItemName="_ResolvedAppExtensionReferences" />
 		</MSBuild>
 
 		<Warning Text="Referenced $(_PlatformName) App Extension Project %(_AppExtensionReferenceWithConfigurationNonExistent.Identity) not found, ignoring."

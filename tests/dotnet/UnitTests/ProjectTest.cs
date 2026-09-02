@@ -2055,6 +2055,50 @@ namespace Xamarin.Tests {
 			BuildProjectsWithExtensionsImpl (platform, runtimeIdentifier, isNativeAot, AddRemoteProperties ());
 		}
 
+		// App extensions must be embedded in the container app even when the project reference
+		// says ReferenceOutputAssembly=false. Ref: https://github.com/dotnet/macios/issues/26453
+		[TestCase (ApplePlatform.iOS, "iossimulator-x64")]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-x64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-x64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
+		public void BuildProjectsWithExtensionsWithoutReferenceOutputAssembly (ApplePlatform platform, string runtimeIdentifier)
+		{
+			var properties = new Dictionary<string, string> {
+				{ "TestReferenceOutputAssembly", "false" },
+			};
+			BuildProjectsWithExtensionsImpl (platform, runtimeIdentifier, isNativeAot: false, properties);
+		}
+
+		// Same as the previous test, but for the code path taken when the extension projects have
+		// already been built (which is what some versions of the IDE do). This exercises the other
+		// <MSBuild> invocation in the _ResolveAppExtensionReferences target.
+		[TestCase (ApplePlatform.iOS, "iossimulator-x64")]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-x64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-x64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
+		public void BuildProjectsWithPrebuiltExtensionsWithoutReferenceOutputAssembly (ApplePlatform platform, string runtimeIdentifier)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			var consumingProjectDir = GetProjectPath ("ExtensionConsumer", runtimeIdentifier, platform, out var appPath);
+			var extensionProjectDir = GetProjectPath ("ExtensionProject", platform: platform);
+
+			Clean (extensionProjectDir);
+			Clean (consumingProjectDir);
+
+			// Build the extension project first, ...
+			DotNet.AssertBuild (extensionProjectDir, GetDefaultProperties (runtimeIdentifier));
+
+			// ... and then build the container app without building the extension project again.
+			var properties = GetDefaultProperties (runtimeIdentifier);
+			properties ["TestReferenceOutputAssembly"] = "false";
+			properties ["_BuildReferencedExtensionProjects"] = "false";
+			DotNet.AssertBuild (consumingProjectDir, properties);
+
+			var extensionPath = Path.Combine (appPath, GetPlugInsRelativePath (platform), "ExtensionProject.appex");
+			Assert.That (Directory.Exists (extensionPath), $"App extension directory does not exist: {extensionPath}");
+		}
+
 		void BuildProjectsWithExtensionsImpl (ApplePlatform platform, string runtimeIdentifier, bool isNativeAot, Dictionary<string, string>? properties = null)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);

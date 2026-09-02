@@ -63,6 +63,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.DetectDebugNetworkConfiguration" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.DetectSdkLocations" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.DetectSigningIdentity" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.DeviceCtl" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.Ditto" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.DSymUtil" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.EmbedProvisionProfile" AssemblyFile="$(_TaskAssemblyName)" />
@@ -88,6 +89,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.PrepareAssemblies" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.PrepareNativeReferences" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.PrepareResourceRules" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ProcessRuntimeLibraries" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.PropertyListEditor" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ReadAppManifest" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ReadItemsFromFile" AssemblyFile="$(_TaskAssemblyName)" />
@@ -2369,6 +2371,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 		<ItemGroup>
 			<_BundlerEnvironmentVariables Condition="'$(MonoUseCompressedInterfaceBitmap)' == 'true'" Include="MONO_COMPRESSED_INTERFACE_BITMAP" Value="1" />
+			<_BundlerEnvironmentVariables Condition="'$(EnableCrashReport)' == 'true'" Include="DOTNET_EnableCrashReport" Value="1" />
 		</ItemGroup>
 
 		<ParseBundlerArguments
@@ -3105,17 +3108,19 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 				<!-- This is the name of the dSYM that will be created (if that's the case) -->
 				<DSymName>%(Filename)%(Extension).framework.dSYM</DSymName>
 			</_PostProcessingItem>
-			<!-- Compute the app-bundle-relative path for each dynamic native library, so that dsymutil and
-			     symbol stripping target the file's actual location in the app bundle (which may include a
-			     subdirectory). Mirror the logic in the '_ComputeDynamicLibrariesToPublish' target: use the
-			     'RelativePath' metadata when it's set (normalizing directory separators to forward slashes),
-			     otherwise fall back to the default (top-level) bundle location. Ref: https://github.com/dotnet/macios/issues/21553 -->
-			<_DynamicNativeReferenceToPostProcess Include="@(_FileNativeReference)" Condition="'%(_FileNativeReference.Kind)' == 'Dynamic'">
-				<BundleRelativePath Condition="'%(_FileNativeReference.RelativePath)' != ''">$([System.String]::Copy('%(_FileNativeReference.RelativePath)').Replace('\', '/'))</BundleRelativePath>
-				<BundleRelativePath Condition="'%(_FileNativeReference.RelativePath)' == ''">$(_AppContentsRelativePathForPostProcessing)%(Filename)%(Extension)</BundleRelativePath>
-			</_DynamicNativeReferenceToPostProcess>
+			<!-- Use ComputedRelativePath for dynamic native references to preserve any subdirectory structure.
+			     Using %(Filename)%(Extension) alone would lose subdirectory paths (e.g., subdir/libframework.so becomes libframework.so). -->
 			<!-- add dylibs, with the path relative to the app bundle -->
-			<_PostProcessingItem Include="@(_DynamicNativeReferenceToPostProcess->'$(_AppBundleName)$(AppBundleExtension)/%(BundleRelativePath)')">
+			<_PostProcessingItem Include="@(_FileNativeReference->'$(_AppBundleName)$(AppBundleExtension)/%(ComputedRelativePath)')" Condition="'%(_FileNativeReference.Kind)' == 'Dynamic' And '%(_FileNativeReference.ComputedRelativePath)' != ''">
+				<!-- Store where this item came from -->
+				<ItemSourcePath>%(Identity)</ItemSourcePath>
+				<!-- If the item in question came with a .dSYM directory, this would be the path to it: -->
+				<dSYMSourcePath>%(Identity).dSYM</dSYMSourcePath>
+				<!-- This is the name of the dSYM that will be created (if that's the case) -->
+				<DSymName>%(Filename).dSYM</DSymName>
+			</_PostProcessingItem>
+			<!-- Fallback for items without ComputedRelativePath -->
+			<_PostProcessingItem Include="@(_FileNativeReference->'$(_AppBundleName)$(AppBundleExtension)/$(_AppContentsRelativePathForPostProcessing)%(Filename)%(Extension)')" Condition="'%(_FileNativeReference.Kind)' == 'Dynamic' And '%(_FileNativeReference.ComputedRelativePath)' == ''">
 				<!-- Store where this item came from -->
 				<ItemSourcePath>%(Identity)</ItemSourcePath>
 				<!-- If the item in question came with a .dSYM directory, this would be the path to it: -->
@@ -3153,11 +3158,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 				<!-- Compute info.plist path inside the dSYM -->
 				<dSYMInfoPlistRelativePath>%(DSymName)\Contents\Info.plist</dSYMInfoPlistRelativePath>
 				<BCSymbolMapName>%(Filename)%(Extension).bcsymbolmap</BCSymbolMapName>
-			</_PostProcessingItem>
-
-			<!-- Don't strip dylibs from the .NET runtime - they may contain symbols that can't be stripped (https://github.com/dotnet/runtime/issues/124570) -->
-			<_PostProcessingItem Condition="$([MSBuild]::ValueOrDefault('%(_PostProcessingItem.NuGetPackageId)', '').StartsWith('Microsoft.NETCore.App.Runtime'))">
-				<NoSymbolStrip>true</NoSymbolStrip>
 			</_PostProcessingItem>
 
 			<!-- Add any items from app extensions -->
@@ -3695,7 +3695,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 	<Target
 		Name="_PrepareAssemblies"
-		Condition="'$(PrepareAssemblies)' == 'true'"
+		Condition="'$(IsMacEnabled)' == 'true' And '$(PrepareAssemblies)' == 'true'"
 		Inputs="@(_AssembliesToPrepare)"
 		Outputs="@(_AssembliesToPrepare->'$(PreparedAssembliesDirectory)%(Filename)%(Extension)');$(_AssemblyPreparerMSBuildOutputFile)"
 		DependsOnTargets="_PrepareAssembliesForPreparation;_ComputeAssembliesToPostprocessOnPublish;SelectRegistrar"
@@ -3741,7 +3741,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	-->
 	<Target
 		Name="_PostprocessAssemblies"
-		Condition="'$(PostProcessAssemblies)' == 'true' And '$(RuntimeIdentifiers)' == '' And '$(_PostprocessAssembliesAfterIlc)' != 'true'"
+		Condition="'$(IsMacEnabled)' == 'true' And '$(PostProcessAssemblies)' == 'true' And '$(RuntimeIdentifiers)' == '' And '$(_PostprocessAssembliesAfterIlc)' != 'true'"
 		Inputs="@(_AssembliesToPostProcess);$(_LinkerCachePath)"
 		Outputs="@(_AssembliesToPostProcess->'$(_PostprocessedAssembliesDirectory)%(Filename)%(Extension)');$(_AssemblyPostProcessorMSBuildOutputFile)"
 		AfterTargets="ILLink"
@@ -3750,6 +3750,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		>
 		<PrepareAssemblies
 			InputAssemblies="@(_AssembliesToPostProcess)"
+			DynamicRegistrationSupported="$(_DynamicRegistrationSupported)"
 			MakeReproPath="$(_PostprocessAssembliesMakeReproPath)"
 			OptionsFile="$(_CustomLinkerOptionsFile)"
 			OutputDirectory="$(_PostprocessedAssembliesDirectory)"

@@ -36,6 +36,13 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 		
 		<!-- Set _ResourcePrefix from AppBundleResourcePrefix -->
 		<_ResourcePrefix>$(AppBundleResourcePrefix)</_ResourcePrefix>
+		<!-- Split _ResourcePrefix into individual properties for multi-prefix glob expansion.
+		     We support up to 3 semicolon-separated resource prefix paths.
+		     Trailing semicolons are appended so that Split(';')[N] never throws IndexOutOfRangeException. -->
+		<_ResourcePrefixCount>$([System.String]::new('$(_ResourcePrefix)').Split(';').Length)</_ResourcePrefixCount>
+		<_ResourcePrefix_1>$([System.String]::new('$(_ResourcePrefix);;;').Split(';')[0])</_ResourcePrefix_1>
+		<_ResourcePrefix_2>$([System.String]::new('$(_ResourcePrefix);;;').Split(';')[1])</_ResourcePrefix_2>
+		<_ResourcePrefix_3>$([System.String]::new('$(_ResourcePrefix);;;').Split(';')[2])</_ResourcePrefix_3>
 
 		<!-- SdkVersion -->
 		<_SdkVersion Condition="'$(_PlatformName)' == 'macOS'">$(MacOSXSdkVersion)</_SdkVersion>

@@ -563,9 +563,6 @@ namespace Xamarin.Linker {
 			instructionsAddedOrRemoved = 0;
 			var mr = ins.Operand as MethodReference;
 			switch (mr?.Name) {
-			case "EnsureUIThread":
-				modified |= ProcessEnsureUIThread (data, caller, ins);
-				break;
 			case "get_IsDirectBinding":
 				modified |= ProcessIsDirectBinding (data, caller, ins);
 				break;
@@ -580,28 +577,6 @@ namespace Xamarin.Linker {
 			}
 
 			return modified;
-		}
-
-		static bool ProcessEnsureUIThread (OptimizeGeneratedCodeData data, MethodDefinition caller, Instruction ins)
-		{
-			if (data.Optimizations.RemoveUIThreadChecks != true)
-				return false;
-
-			// Verify we're checking the right get_EnsureUIThread call
-			var declaringTypeNamespace = data.LinkContext.App.Platform == Utils.ApplePlatform.MacOSX ? Namespaces.AppKit : Namespaces.UIKit;
-			var declaringTypeName = data.LinkContext.App.Platform == Utils.ApplePlatform.MacOSX ? "NSApplication" : "UIApplication";
-			var mr = ins.Operand as MethodReference;
-			if (mr is null || !mr.DeclaringType.Is (declaringTypeNamespace, declaringTypeName))
-				return false;
-
-			// Verify a few assumptions before doing anything
-			const string operation = "remove calls to [NS|UI]Application::EnsureUIThread";
-			if (!ValidateInstruction (data.App, caller, ins, operation, Code.Call))
-				return false;
-
-			// This is simple: just remove the call
-			Nop (ins); // call void UIKit.UIApplication::EnsureUIThread()
-			return true;
 		}
 
 		static bool? IsDirectBindingConstant (OptimizeGeneratedCodeData data, TypeDefinition type)

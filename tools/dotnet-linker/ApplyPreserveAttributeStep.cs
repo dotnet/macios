@@ -115,29 +115,23 @@ namespace Xamarin.Linker.Steps {
 			return AddConditionalDynamicDependencyAttribute (onType, forMethod);
 		}
 
-		// We want to avoid `DynamicallyAccessedMemberTypes.All` because the semantics are different
-		// from `[Preserve (AllMembers = true)]`. Specifically, we don't want to preserve nested types.
-		// `All` would also keep unused private members of base types which `Preserve` also doesn't cover.
-		const DynamicallyAccessedMemberTypes allMemberTypes =
-			DynamicallyAccessedMemberTypes.PublicFields | DynamicallyAccessedMemberTypes.NonPublicFields
-			| DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.NonPublicProperties
-			| DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods
-			| DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors
-			| DynamicallyAccessedMemberTypes.PublicEvents | DynamicallyAccessedMemberTypes.NonPublicEvents
-			| DynamicallyAccessedMemberTypes.Interfaces;
-
 		bool AddDynamicDependencyAttribute (TypeDefinition type, bool allMembers)
 		{
 			var moduleConstructor = GetOrCreateModuleConstructor (abr.CurrentAssembly.MainModule, out var modified);
-			var members = allMembers
-				? allMemberTypes
-				: DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors;
 
 			// only preserve fields for enums
 			if (type.IsEnum) {
-				members = DynamicallyAccessedMemberTypes.PublicFields;
+				var enumAttrib = abr.CreateDynamicDependencyAttribute (DynamicallyAccessedMemberTypes.PublicFields, type);
+				modified |= abr.AddAttributeOnlyOnce (moduleConstructor, enumAttrib);
+				return modified;
 			}
 
+			if (allMembers) {
+				modified |= abr.AddPreserveAllMembersDynamicDependencyAttributes (moduleConstructor, type);
+				return modified;
+			}
+
+			var members = DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors;
 			var attrib = abr.CreateDynamicDependencyAttribute (members, type);
 			modified |= abr.AddAttributeOnlyOnce (moduleConstructor, attrib);
 			return modified;

@@ -53,6 +53,8 @@ namespace Xamarin.MacDev.Tasks {
 		[Required]
 		public bool IsAppExtension { get; set; }
 
+		public bool IsFramework { get; set; }
+
 		[Required]
 		public string MinSupportedOSPlatformVersion { get; set; } = string.Empty;
 
@@ -122,7 +124,7 @@ namespace Xamarin.MacDev.Tasks {
 			if (GenerateApplicationManifest && !string.IsNullOrEmpty (ApplicationId))
 				plist.SetIfNotPresent (ManifestKeys.CFBundleIdentifier, ApplicationId);
 			plist.SetIfNotPresent (ManifestKeys.CFBundleInfoDictionaryVersion, "6.0");
-			plist.SetIfNotPresent (ManifestKeys.CFBundlePackageType, IsAppExtension ? "XPC!" : "APPL");
+			plist.SetIfNotPresent (ManifestKeys.CFBundlePackageType, IsFramework ? "FMWK" : (IsAppExtension ? "XPC!" : "APPL"));
 			plist.SetIfNotPresent (ManifestKeys.CFBundleSignature, "????");
 			plist.SetIfNotPresent (ManifestKeys.CFBundleExecutable, BundleExecutable);
 			plist.SetIfNotPresent (ManifestKeys.CFBundleName, AppBundleName);
@@ -191,9 +193,9 @@ namespace Xamarin.MacDev.Tasks {
 				plist,
 				AppManifestEntries,
 				static (value, _) => value,
-				MSBStrings.E7184, /* Invalid value '{0}' for the app manifest entry '{1}' of type '{2}' specified in the AppManifestEntry item group. Expected no value at all. */
-				MSBStrings.E7185, /* Invalid value '{0}' for the app manifest entry '{1}' of type '{2}' specified in the AppManifestEntry item group. Expected 'true' or 'false'. */
-				MSBStrings.E7186 /* Unknown type '{0}' for the app manifest entry '{1}' specified in the AppManifestEntry item group. Expected 'Remove', 'Boolean', 'String', or 'StringArray'. */);
+				MSBStrings.E7187, /* Invalid value '{0}' for the app manifest entry '{1}' of type '{2}' specified in the AppManifestEntry item group. Expected no value at all. */
+				MSBStrings.E7188, /* Invalid value '{0}' for the app manifest entry '{1}' of type '{2}' specified in the AppManifestEntry item group. Expected 'true' or 'false'. */
+				MSBStrings.E7189 /* Unknown type '{0}' for the app manifest entry '{1}' specified in the AppManifestEntry item group. Expected 'Remove', 'Boolean', 'String', or 'StringArray'. */);
 		}
 
 		void RegisterFonts (PDictionary plist)
@@ -548,6 +550,16 @@ namespace Xamarin.MacDev.Tasks {
 				return;
 
 			PObject? capabilities;
+
+			if (IsFramework) {
+				// When building universal apps, we might get called here once for each architecture.
+				// This will lead to different app manifests in each architecture-specific app bundle,
+				// and then merging them into a universal bundle will fail.
+				// Typically this is not a problem for normal apps, because we compile the app manifest
+				// once for the universal app bundle, but for frameworks we do it once for each architecture,
+				// so just skip setting UIRequiredDeviceCapabilities in that case.
+				return;
+			}
 
 			if (plist.TryGetValue (ManifestKeys.UIRequiredDeviceCapabilities, out capabilities)) {
 				if (capabilities is PArray) {

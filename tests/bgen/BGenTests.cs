@@ -404,29 +404,29 @@ namespace GeneratorTests {
 			var renderedAttributes = "\t" + string.Join ("\n\t", renderedSupportedAttributes.OrderBy (v => v)) + "\n";
 			string expectedAttributes =
 @"	Bug35176.IFooInterface: [SupportedOSPlatform(""ios14.3"")]
-	Bug35176.IFooInterface: [SupportedOSPlatform(""maccatalyst15.3"")]
-	Bug35176.IFooInterface: [SupportedOSPlatform(""macos12.2"")]
+	Bug35176.IFooInterface: [SupportedOSPlatform(""maccatalyst18.2"")]
+	Bug35176.IFooInterface: [SupportedOSPlatform(""macos26.2"")]
 	UIKit.UIView Bug35176.BarObject::BarView(): [SupportedOSPlatform(""ios14.3"")]
-	UIKit.UIView Bug35176.BarObject::BarView(): [SupportedOSPlatform(""maccatalyst15.3"")]
-	UIKit.UIView Bug35176.BarObject::BarView(): [SupportedOSPlatform(""macos12.2"")]
+	UIKit.UIView Bug35176.BarObject::BarView(): [SupportedOSPlatform(""maccatalyst18.2"")]
+	UIKit.UIView Bug35176.BarObject::BarView(): [SupportedOSPlatform(""macos26.2"")]
 	UIKit.UIView Bug35176.BarObject::FooView(): [SupportedOSPlatform(""ios14.3"")]
-	UIKit.UIView Bug35176.BarObject::FooView(): [SupportedOSPlatform(""maccatalyst15.3"")]
-	UIKit.UIView Bug35176.BarObject::FooView(): [SupportedOSPlatform(""macos12.2"")]
+	UIKit.UIView Bug35176.BarObject::FooView(): [SupportedOSPlatform(""maccatalyst18.2"")]
+	UIKit.UIView Bug35176.BarObject::FooView(): [SupportedOSPlatform(""macos26.2"")]
 	UIKit.UIView Bug35176.BarObject::get_BarView(): [SupportedOSPlatform(""ios14.4"")]
-	UIKit.UIView Bug35176.BarObject::get_BarView(): [SupportedOSPlatform(""maccatalyst15.4"")]
-	UIKit.UIView Bug35176.BarObject::get_BarView(): [SupportedOSPlatform(""macos12.2"")]
+	UIKit.UIView Bug35176.BarObject::get_BarView(): [SupportedOSPlatform(""maccatalyst18.3"")]
+	UIKit.UIView Bug35176.BarObject::get_BarView(): [SupportedOSPlatform(""macos26.2"")]
 	UIKit.UIView Bug35176.BarObject::GetBarMember(System.Int32): [SupportedOSPlatform(""ios14.3"")]
-	UIKit.UIView Bug35176.BarObject::GetBarMember(System.Int32): [SupportedOSPlatform(""maccatalyst15.3"")]
-	UIKit.UIView Bug35176.BarObject::GetBarMember(System.Int32): [SupportedOSPlatform(""macos12.2"")]
+	UIKit.UIView Bug35176.BarObject::GetBarMember(System.Int32): [SupportedOSPlatform(""maccatalyst18.2"")]
+	UIKit.UIView Bug35176.BarObject::GetBarMember(System.Int32): [SupportedOSPlatform(""macos26.2"")]
 	UIKit.UIView Bug35176.FooInterface_Extensions::GetBarView(Bug35176.IFooInterface): [SupportedOSPlatform(""ios14.4"")]
-	UIKit.UIView Bug35176.FooInterface_Extensions::GetBarView(Bug35176.IFooInterface): [SupportedOSPlatform(""maccatalyst15.4"")]
-	UIKit.UIView Bug35176.FooInterface_Extensions::GetBarView(Bug35176.IFooInterface): [SupportedOSPlatform(""macos12.2"")]
+	UIKit.UIView Bug35176.FooInterface_Extensions::GetBarView(Bug35176.IFooInterface): [SupportedOSPlatform(""maccatalyst18.3"")]
+	UIKit.UIView Bug35176.FooInterface_Extensions::GetBarView(Bug35176.IFooInterface): [SupportedOSPlatform(""macos26.2"")]
 	UIKit.UIView Bug35176.IFooInterface::_GetBarView(Bug35176.IFooInterface): [SupportedOSPlatform(""ios14.4"")]
-	UIKit.UIView Bug35176.IFooInterface::_GetBarView(Bug35176.IFooInterface): [SupportedOSPlatform(""maccatalyst15.4"")]
-	UIKit.UIView Bug35176.IFooInterface::_GetBarView(Bug35176.IFooInterface): [SupportedOSPlatform(""macos12.2"")]
+	UIKit.UIView Bug35176.IFooInterface::_GetBarView(Bug35176.IFooInterface): [SupportedOSPlatform(""maccatalyst18.3"")]
+	UIKit.UIView Bug35176.IFooInterface::_GetBarView(Bug35176.IFooInterface): [SupportedOSPlatform(""macos26.2"")]
 	UIKit.UIView Bug35176.IFooInterface::get_BarView(): [SupportedOSPlatform(""ios14.4"")]
-	UIKit.UIView Bug35176.IFooInterface::get_BarView(): [SupportedOSPlatform(""maccatalyst15.4"")]
-	UIKit.UIView Bug35176.IFooInterface::get_BarView(): [SupportedOSPlatform(""macos12.2"")]
+	UIKit.UIView Bug35176.IFooInterface::get_BarView(): [SupportedOSPlatform(""maccatalyst18.3"")]
+	UIKit.UIView Bug35176.IFooInterface::get_BarView(): [SupportedOSPlatform(""macos26.2"")]
 ";
 
 			expectedAttributes = expectedAttributes.Replace ("\r", string.Empty);
@@ -1148,13 +1148,13 @@ namespace GeneratorTests {
 			var expectedAttributes = new string [] {
 @"[BindingImpl(3)]
 [Export(""someMethod1:"")]
-[SupportedOSPlatform(""ios13.0"")]
+[SupportedOSPlatform(""ios"")]
 [SupportedOSPlatform(""maccatalyst"")]
 [UnsupportedOSPlatform(""tvos"")]",
 
 @"[BindingImpl(3)]
 [Export(""someMethod2:"")]
-[SupportedOSPlatform(""ios13.0"")]
+[SupportedOSPlatform(""ios"")]
 [SupportedOSPlatform(""maccatalyst"")]
 [UnsupportedOSPlatform(""tvos"")]",
 
@@ -1284,12 +1284,12 @@ namespace GeneratorTests {
 			var expectedPropertyAttributes =
 @"[SupportedOSPlatform(""ios"")]
 [SupportedOSPlatform(""maccatalyst"")]
-[SupportedOSPlatform(""macos13.0"")]
+[SupportedOSPlatform(""macos"")]
 [UnsupportedOSPlatform(""tvos"")]";
 			var expectedSetterAttributes =
 @"[SupportedOSPlatform(""ios"")]
 [SupportedOSPlatform(""maccatalyst"")]
-[SupportedOSPlatform(""macos13.0"")]
+[SupportedOSPlatform(""macos"")]
 [UnsupportedOSPlatform(""tvos"")]";
 
 			expectedPropertyAttributes = expectedPropertyAttributes.Replace ("\r", string.Empty);
@@ -1767,6 +1767,27 @@ namespace GeneratorTests {
 			var contents = File.ReadAllText (generatedFile);
 			Assert.That (contents, Does.Contain ("public static NSString? NullableString"), "Nullable field");
 			Assert.That (contents, Does.Contain ("public static NSString NonNullableString"), "Non-nullable field");
+		}
+
+		[Test]
+		[TestCase (Profile.iOS)]
+		public void NativeFieldGeneration (Profile profile)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
+			var bgen = BuildFile (profile, "native-field-generation.cs");
+
+			var structFile = Path.Combine (bgen.TmpDirectory!, "NativeFieldGeneration", "NativeStructFields.g.cs");
+			Assert.That (File.Exists (structFile), Is.True, "Generated struct file exists");
+			var structContents = File.ReadAllText (structFile);
+			Assert.That (structContents, Does.Contain ("internal unsafe static partial class NativeStructFields"), "Internal field container");
+			Assert.That (structContents, Does.Contain ("return Dlfcn.GetStruct<CGRect> (Libraries.__Internal.Handle, \"RequiredStruct\");"), "Struct");
+			Assert.That (structContents, Does.Contain ("public static NSString? NullableString"), "Nullable field");
+
+			var addressFile = Path.Combine (bgen.TmpDirectory!, "NativeFieldGeneration", "SymbolAddresses.g.cs");
+			Assert.That (File.Exists (addressFile), Is.True, "Generated address file exists");
+			var addressContents = File.ReadAllText (addressFile);
+			Assert.That (addressContents, Does.Contain ("[Field (\"CallbackTable\",  \"__Internal\", SymbolAddress = true)]"), "Symbol address attribute");
+			Assert.That (addressContents, Does.Contain ("return Dlfcn.GetIndirect (Libraries.__Internal.Handle, \"CallbackTable\");"), "Symbol address");
 		}
 
 		[Test]

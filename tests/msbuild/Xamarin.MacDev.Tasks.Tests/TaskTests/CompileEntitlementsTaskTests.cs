@@ -86,7 +86,7 @@ namespace Xamarin.MacDev.Tasks {
 		void ExecuteAndCheckValidationErrors (Task task, params string [] expectedMessages)
 		{
 			IList<BuildEventArgs> buildEvents;
-			var expectErrors = expectedMessages.Any (v => v.StartsWith ("error:", StringComparison.Ordinal)) || AreEntitlementValidationFailuresAnError;
+			var expectErrors = expectedMessages.Any (v => v.StartsWith ("error:", StringComparison.Ordinal));
 			var expectedErrorCount = 0;
 			var expectedWarningCount = 0;
 			if (expectErrors) {
@@ -134,10 +134,11 @@ namespace Xamarin.MacDev.Tasks {
 		public void ValidateEntitlement ()
 		{
 			var task = CreateEntitlementsTask (out var compiledEntitlements, out var archivedEntitlements);
+			var prefix = AreEntitlementValidationFailuresAnError ? "error:" : "";
 			ExecuteAndCheckValidationErrors (task,
-				"The app requests the entitlement 'com.apple.developer.associated-domains', but the provisioning profile 'iOS Team Provisioning Profile: *' doesn't contain this entitlement.",
-				"The app requests the entitlement 'com.apple.developer.pass-type-identifiers', but the provisioning profile 'iOS Team Provisioning Profile: *' doesn't contain this entitlement.",
-				"The app requests the entitlement 'com.apple.developer.ubiquity-kvstore-identifier', but the provisioning profile 'iOS Team Provisioning Profile: *' doesn't contain this entitlement.");
+				$"{prefix}The app requests the entitlement 'com.apple.developer.associated-domains', but the provisioning profile 'iOS Team Provisioning Profile: *' doesn't contain this entitlement.",
+				$"{prefix}The app requests the entitlement 'com.apple.developer.pass-type-identifiers', but the provisioning profile 'iOS Team Provisioning Profile: *' doesn't contain this entitlement.",
+				$"{prefix}The app requests the entitlement 'com.apple.developer.ubiquity-kvstore-identifier', but the provisioning profile 'iOS Team Provisioning Profile: *' doesn't contain this entitlement.");
 
 			var compiled = PDictionary.OpenFile (compiledEntitlements);
 			Assert.That (compiled.Get<PBoolean> (EntitlementKeys.GetTaskAllow)?.Value, Is.True, "#1");

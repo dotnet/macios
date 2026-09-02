@@ -105,6 +105,8 @@
 
 	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|monovm|'))">
 		<UseMonoRuntime>true</UseMonoRuntime>
+		<!-- Opt out of the NETSDK1242 check for the MonoVM variations. -->
+		<_DisableCheckForUnsupportedMonoMobileRuntime>true</_DisableCheckForUnsupportedMonoMobileRuntime>
 		<_TestVariationApplied>true</_TestVariationApplied>
 	</PropertyGroup>
 

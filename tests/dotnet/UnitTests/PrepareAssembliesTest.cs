@@ -58,6 +58,7 @@ namespace Xamarin.Tests {
 			properties ["Configuration"] = configuration;
 			properties ["EnableAssemblyILStripping"] = "true";
 			properties ["MtouchLink"] = registrar == "managed-static" ? "SdkOnly" : "Full";
+			properties ["PublishReadyToRun"] = "false";
 			properties ["PostProcessAssemblies"] = postProcessAssemblies.ToString ();
 			properties ["PrepareAssemblies"] = prepareAssemblies.ToString ();
 			properties ["Registrar"] = registrar;

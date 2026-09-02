@@ -22,8 +22,15 @@ public class ComputeExportAttributeRemovalStep : ConfigurationAwareStep {
 		}
 
 		var explicitlyEnabled = App.TrimExportAttributes == true;
-		if (App.DynamicRegistrationSupported)
-			App.TrimExportAttributesBlockers.Add (ExportAttributeRemovalBlocker.DynamicRegistrationSupported);
+		if (App.DynamicRegistrationSupported) {
+			App.TrimExportAttributes = false;
+			Configuration.SetOutputForMSBuild ("TrimExportAttributes", "false");
+			if (explicitlyEnabled) {
+				var (code, message) = GetDiagnostic (ExportAttributeRemovalBlocker.DynamicRegistrationSupported);
+				Report (ErrorHelper.CreateError (code, message));
+			}
+			return;
+		}
 		if (App.Optimizations.OptimizeBlockLiteralSetupBlock != true)
 			App.TrimExportAttributesBlockers.Add (ExportAttributeRemovalBlocker.BlockLiteralSetupBlockOptimizationDisabled);
 		if (App.Optimizations.StaticBlockToDelegateLookup != true)

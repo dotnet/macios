@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
+using Xamarin.Bundler;
 using Xamarin.Linker;
 
 #nullable enable
@@ -21,6 +23,13 @@ namespace Xamarin {
 
 			var app = Configuration.Application;
 
+			if (app.GenerateTrustedPlatformAssemblies) {
+				app.TrustedPlatformAssemblies.AddRange (app.Assemblies.Select (v => v.FileName));
+#if ASSEMBLY_PREPARER
+				app.TrustedPlatformAssemblies.AddRange (Configuration.AddedAssemblies.Select (v => Path.GetFileName (v.Path)));
+#endif
+			}
+
 			// We want this called before any other initialization methods.
 			registration_methods.Insert (0, "xamarin_initialize_dotnet");
 
@@ -32,7 +41,7 @@ namespace Xamarin {
 			contents.AppendLine ();
 			contents.AppendLine ("static void xamarin_initialize_dotnet ()");
 			contents.AppendLine ("{");
-			if (Configuration.Application.PackageManagedDebugSymbols && Configuration.Application.UseInterpreter)
+			if (Configuration.Application.PackageManagedDebugSymbols && (Configuration.Application.UseInterpreter || Configuration.Application.XamarinRuntime == XamarinRuntime.CoreCLR))
 				contents.AppendLine ($"\tsetenv (\"DOTNET_MODIFIABLE_ASSEMBLIES\", \"debug\", 1);");
 			contents.AppendLine ("}");
 			contents.AppendLine ();

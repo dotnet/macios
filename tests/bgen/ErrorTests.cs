@@ -533,6 +533,28 @@ namespace Bug57094 {
 
 		[Test]
 		[TestCase (Profile.iOS)]
+		public void BI1128 (Profile profile)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
+			var bgen = new BGenTool ();
+			bgen.Profile = profile;
+			bgen.CreateTemporaryBinding (@"
+using Foundation;
+
+namespace BI1128Tests {
+
+	[Static]
+	interface FieldConstants {
+		[Field (""InvalidSymbolAddress"", ""__Internal"", SymbolAddress = true)]
+		int InvalidSymbolAddress { get; }
+	}
+}");
+			bgen.AssertExecuteError ("build");
+			bgen.AssertError (1128, "The [Field] member 'BI1128Tests.FieldConstants.InvalidSymbolAddress' sets SymbolAddress, but its type is 'System.Int32'; only System.IntPtr is supported.");
+		}
+
+		[Test]
+		[TestCase (Profile.iOS)]
 		public void BI1062_NoAsyncMethodRefHandlerTest (Profile profile)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
@@ -984,6 +1006,32 @@ namespace BI1066Errors
 				bgen.AssertError (1121, msg);
 
 			bgen.AssertErrorCount (errorMessages.Length);
+		}
+
+		[Test]
+		[TestCase (Profile.iOS)]
+		public void BI1126 (Profile profile)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
+			var bgen = new BGenTool ();
+			bgen.Profile = profile;
+			bgen.Defines = BGenTool.GetDefaultDefines (profile);
+			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "factory-method-noninit.cs")));
+			bgen.AssertExecuteError ("build");
+			bgen.AssertError (1126, "The [FactoryMethod] attribute on 'FactoryMethodNonInitTest.BadWidget.CreateWithFoo' can only be used with an Objective-C 'init' selector (the selector must be 'init' or start with 'init' followed by an uppercase letter), but the selector is 'createWithFoo:'.");
+		}
+
+		[Test]
+		[TestCase (Profile.iOS)]
+		public void BI1127 (Profile profile)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
+			var bgen = new BGenTool ();
+			bgen.Profile = profile;
+			bgen.Defines = BGenTool.GetDefaultDefines (profile);
+			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "factory-method-named-error.cs")));
+			bgen.AssertExecuteError ("build");
+			bgen.AssertError (1127, "The [FactoryMethod] attribute on 'FactoryMethodNamedError.BadWidget.CreateWithFoo' can't specify a method name when applied to a method that isn't a constructor. Remove the method name from the [FactoryMethod] attribute; the name of the binding method is used instead.");
 		}
 	}
 }

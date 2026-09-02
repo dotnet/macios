@@ -640,4 +640,20 @@
 	<data name="BI1124" xml:space="preserve">
 		<value>Found a [Preserve] attribute on {0}: [Preserve] is deprecated; use [DynamicDependency] instead.</value>
 	</data>
+
+	<data name="BI1125" xml:space="preserve">
+		<value>The [FactoryMethod] binding method '{0}.{1}' has an 'out NSError' parameter, but its return value is not nullable. Add [return: NullAllowed] to the binding method so the generated factory method can return null when the native initializer fails.</value>
+	</data>
+
+	<data name="BI1126" xml:space="preserve">
+		<value>The [FactoryMethod] attribute on '{0}.{1}' can only be used with an Objective-C 'init' selector (the selector must be 'init' or start with 'init' followed by an uppercase letter), but the selector is '{2}'.</value>
+	</data>
+
+	<data name="BI1127" xml:space="preserve">
+		<value>The [FactoryMethod] attribute on '{0}.{1}' can't specify a method name when applied to a method that isn't a constructor. Remove the method name from the [FactoryMethod] attribute; the name of the binding method is used instead.</value>
+	</data>
+
+	<data name="BI1128" xml:space="preserve">
+		<value>The [Field] member '{0}.{1}' sets SymbolAddress, but its type is '{2}'; only System.IntPtr is supported.</value>
+	</data>
 </root>

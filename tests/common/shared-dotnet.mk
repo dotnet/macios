@@ -197,6 +197,10 @@ run: prepare
 delete-saved-state:
 	$(Q) if test -n "$(BUNDLE_ID)"; then rm -rf "$(HOME)/Library/Saved Application State/$(BUNDLE_ID).savedState" && echo "Deleted saved state for $(BUNDLE_ID)"; fi
 
+# Clear RUNTIMEIDENTIFIER(S) so the recursive '$(MAKE) delete-saved-state' below doesn't
+# inherit the exported value and trip the guard that forbids setting it (set RID instead).
+run-bare: export RUNTIMEIDENTIFIER=
+run-bare: export RUNTIMEIDENTIFIERS=
 run-bare: delete-saved-state
 	$(Q) $(EXECUTABLE) --autostart --autoexit $(RUN_ARGUMENTS)
 	$(Q) $(MAKE) delete-saved-state

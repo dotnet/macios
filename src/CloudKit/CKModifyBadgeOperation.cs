@@ -33,6 +33,8 @@ namespace CloudKit {
 			throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms);
 		}
 
+		/// <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>
+		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
 		protected internal CKModifyBadgeOperation (NativeHandle handle) : base (handle)
 		{
 			throw new PlatformNotSupportedException (Constants.TypeRemovedAllPlatforms);

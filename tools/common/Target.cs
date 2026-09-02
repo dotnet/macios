@@ -69,6 +69,11 @@ namespace Xamarin.Bundler {
 
 		public static string GetRealPath (IToolLog log, string path, bool warnIfNoSuchPathExists = true)
 		{
+			// There's no realpath on Windows (and no symlinks to resolve either), so just
+			// return the full path. This matches what PathUtils.ResolveSymbolicLinks does.
+			if (Path.DirectorySeparatorChar == '\\')
+				return Path.GetFullPath (path);
+
 			// For some reason realpath doesn't always like filenames only, and will randomly fail.
 			// Prepend the current directory if there's no directory specified.
 			if (string.IsNullOrEmpty (Path.GetDirectoryName (path)))
@@ -270,11 +275,37 @@ namespace Xamarin.Bundler {
 			sw.WriteLine ("static const char *xamarin_runtime_libraries_array[] = {");
 			foreach (var lib in app.MonoLibraries)
 				sw.WriteLine ($"\t\"{Path.GetFileNameWithoutExtension (lib)}\",");
+			foreach (var lib in app.DylibsToConvertToFrameworks.Except (app.MonoLibraries))
+				sw.WriteLine ($"\t\"{Path.GetFileNameWithoutExtension (lib)}\", // dylib converted to framework");
 			sw.WriteLine ($"\tNULL");
 			sw.WriteLine ("};");
 
+			var trusted_platform_assembly_names = app.TrustedPlatformAssemblies
+				.Distinct (StringComparer.Ordinal)
+				// Any .exe files must be at the end, due to https://github.com/dotnet/runtime/issues/62735
+				.OrderBy (v => Path.GetExtension (v).Equals (".exe", StringComparison.OrdinalIgnoreCase))
+				.ThenBy (v => v, StringComparer.Ordinal)
+				.ToArray ();
+			if (app.GenerateTrustedPlatformAssemblies && trusted_platform_assembly_names.Length > 0) {
+				sw.WriteLine ();
+				sw.WriteLine ("static const char * const xamarin_trusted_platform_assembly_names_array[] = {");
+				foreach (var name in trusted_platform_assembly_names)
+					sw.WriteLine ("\t\"{0}\",", EscapeCString (name));
+				sw.WriteLine ("\tNULL");
+				sw.WriteLine ("};");
+			}
+
 			sw.WriteLine ("void xamarin_setup_impl ()");
 			sw.WriteLine ("{");
+
+			if (app.GenerateTrustedPlatformAssemblies && trusted_platform_assembly_names.Length > 0) {
+				sw.WriteLine ("\txamarin_trusted_platform_assembly_names = xamarin_trusted_platform_assembly_names_array;");
+				if (app.IsMultiRidBuild) {
+					sw.WriteLine ("#if defined (SUPPORTS_UNIVERSAL_BUILDS)");
+					sw.WriteLine ("\txamarin_is_multi_rid_build = true;");
+					sw.WriteLine ("#endif");
+				}
+			}
 
 			if (app.UseInterpreter) {
 				sw.WriteLine ("\tmono_icall_table_init ();");
@@ -376,6 +407,29 @@ namespace Xamarin.Bundler {
 			sw.WriteLine ("}");
 		}
 
+		static string EscapeCString (string value)
+		{
+			var sb = new StringBuilder ();
+			foreach (var b in Encoding.UTF8.GetBytes (value)) {
+				switch (b) {
+				case (byte) '\\':
+					sb.Append ("\\\\");
+					break;
+				case (byte) '"':
+					sb.Append ("\\\"");
+					break;
+				default:
+					if (b >= 0x20 && b <= 0x7e) {
+						sb.Append ((char) b);
+					} else {
+						sb.Append ('\\').Append (Convert.ToString (b, 8).PadLeft (3, '0'));
+					}
+					break;
+				}
+			}
+			return sb.ToString ();
+		}
+
 		static readonly char [] charsToReplaceAot = new [] { '.', '-', '+', '<', '>' };
 		static string EncodeAotSymbol (string symbol)
 		{
@@ -414,32 +468,6 @@ namespace Xamarin.Bundler {
 						return true;
 
 			return false;
-		}
-
-		bool _set_arm64_calling_convention;
-		bool? _is_arm64_calling_convention;
-		public bool? InlineIsArm64CallingConventionForCurrentAbi {
-			get {
-				if (!_set_arm64_calling_convention) {
-					if (Optimizations.InlineIsARM64CallingConvention == true) {
-						// We can usually inline Runtime.InlineIsARM64CallingConvention if the generated code will execute on a single architecture
-						switch (Abi & Abi.ArchMask) {
-						case Abi.x86_64:
-							_is_arm64_calling_convention = false;
-							break;
-						case Abi.ARM64:
-						case Abi.ARM64e:
-							_is_arm64_calling_convention = true;
-							break;
-						default:
-							LinkContext.Exceptions.Add (Xamarin.Bundler.ErrorHelper.CreateWarning (99, Xamarin.Bundler.Errors.MX0099, $"unknown abi: {Abi}"));
-							break;
-						}
-					}
-					_set_arm64_calling_convention = true;
-				}
-				return _is_arm64_calling_convention;
-			}
 		}
 
 #endif // !LEGACY_TOOLS

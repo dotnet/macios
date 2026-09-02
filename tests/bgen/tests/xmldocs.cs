@@ -18,6 +18,17 @@ namespace XmlDocumentation {
 		IntPtr Constructor (string p);
 
 		/// <summary>
+		/// Summary for T1.Create
+		/// </summary>
+		/// <param name="factoryName">Docs for factoryName.</param>
+		/// <param name="dummy">Docs for dummy.</param>
+		/// <returns>A new instance, or null on failure.</returns>
+		[Export ("initWithFactoryName:dummy:")]
+		[FactoryMethod]
+		[return: NullAllowed]
+		IntPtr Constructor (string factoryName, nint dummy);
+
+		/// <summary>
 		/// Summary for T1.Method
 		/// </summary>
 		[Export ("method")]
@@ -69,6 +80,10 @@ namespace XmlDocumentation {
 		/// <summary>TEventArgs.SomeValue</summary>
 		[Export ("TEventArgsSomeValueKey")]
 		nint SomeValue { get; }
+
+		// no xml comment, should get a default value
+		[Export ("TEventArgsSomeOtherValueKey")]
+		nint SomeOtherValue { get; }
 	}
 
 #if IOS
@@ -301,6 +316,11 @@ namespace XmlDocumentation {
 			<summary>TClassDelegate.DidChangeMutteringVolume - EventArgs.</summary>
 			""")]
 		void DidChangeMutteringVolume (TClass obj, double mutteringVolume);
+
+		/// <summary>TClassDelegate.ShouldMutter</summary>
+		[Export ("speechSynthesizer:shouldMutter:")]
+		[DelegateName ("TShouldMutterEventArgs"), DefaultValue (true)]
+		bool ShouldMutter (TClass obj, double mutteringVolume);
 
 		// A single-parameter delegate method with no [EventArgs] docs generates a
 		// non-generic EventHandler event, which gets a default generated summary.

@@ -20,11 +20,6 @@ namespace Vision {
 	[SupportedOSPlatform ("maccatalyst")]
 	public static partial class VNUtils {
 
-		// initialized only once (see tests/cecil-tests/)
-		/// <summary>Gets the normalized identity <see cref="CoreGraphics.CGRect" /> [0, 0, 1, 1].</summary>
-		[Field ("VNNormalizedIdentityRect", Constants.VisionLibrary)]
-		public static CGRect NormalizedIdentityRect { get; } = Dlfcn.GetCGRect (Libraries.Vision.Handle, "VNNormalizedIdentityRect");
-
 		[DllImport (Constants.VisionLibrary, EntryPoint = "VNNormalizedRectIsIdentityRect")]
 		static extern byte _IsIdentityRect (CGRect rect);
 
@@ -111,16 +106,16 @@ namespace Vision {
 			return result;
 		}
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.VisionLibrary)]
 		static extern nuint VNElementTypeSize (nuint elementType);
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public static nuint GetElementTypeSize (VNElementType elementType) => VNElementTypeSize ((nuint) (ulong) elementType);
 	}

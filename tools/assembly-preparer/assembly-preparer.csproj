@@ -150,6 +150,9 @@
 		<Compile Include="../dotnet-linker/MarkForStaticRegistrarStep.cs">
 			<Link>external/tools/dotnet-linker/MarkForStaticRegistrarStep.cs</Link>
 		</Compile>
+		<Compile Include="../dotnet-linker/RegistrarCompanionAssembly.cs">
+			<Link>external/tools/dotnet-linker/RegistrarCompanionAssembly.cs</Link>
+		</Compile>
 		<Compile Include="../dotnet-linker/MarkNSObjectsStep.cs">
 			<Link>external/tools/dotnet-linker/MarkNSObjectsStep.cs</Link>
 		</Compile>
@@ -167,6 +170,9 @@
 		</Compile>
 		<Compile Include="../dotnet-linker/Steps/AssemblyModifierStep.cs">
 			<Link>external/tools/dotnet-linker/Steps/AssemblyModifierStep.cs</Link>
+		</Compile>
+		<Compile Include="../dotnet-linker/Steps/AttributeIteratorBaseStep.cs">
+			<Link>external/tools/dotnet-linker/Steps/AttributeIteratorBaseStep.cs</Link>
 		</Compile>
 		<Compile Include="../dotnet-linker/Steps/ComputeAOTArguments.cs">
 			<Link>external/tools/dotnet-linker/Steps/ComputeAOTArguments.cs</Link>
@@ -209,6 +215,9 @@
 		</Compile>
 		<Compile Include="../dotnet-linker/Steps/RegistrarStep.cs">
 			<Link>external/tools/dotnet-linker/Steps/RegistrarStep.cs</Link>
+		</Compile>
+		<Compile Include="../dotnet-linker/Steps/RemoveAttributesStep.cs">
+			<Link>external/tools/dotnet-linker/Steps/RemoveAttributesStep.cs</Link>
 		</Compile>
 		<Compile Include="../dotnet-linker/Steps/SetBeforeFieldInitStep.cs">
 			<Link>external/tools/dotnet-linker/Steps/SetBeforeFieldInitStep.cs</Link>

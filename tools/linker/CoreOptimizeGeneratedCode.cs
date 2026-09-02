@@ -32,7 +32,6 @@ namespace Xamarin.Linker {
 			if (data is null) {
 				data = new OptimizeGeneratedCodeData {
 					LinkContext = LinkContext,
-					InlineIsArm64CallingConvention = LinkContext.App.InlineIsArm64CallingConventionForCurrentAbi,
 					Optimizations = LinkContext.App.Optimizations,
 				};
 			}

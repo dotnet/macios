@@ -11,7 +11,7 @@ namespace Xamarin.Bundler {
 	public class Optimizations {
 		static readonly string [] opt_names =
 		{
-			"remove-uithread-checks",
+			"remove-uithread-checks", // this optimization has been replaced by the 'CheckForIllegalCrossThreadCalls' MSBuild property (the 'ObjCRuntime.Runtime.CheckForIllegalCrossThreadCalls' feature switch), but leave it here so that we won't break customers trying to enable/disable it
 			"dead-code-elimination",
 			"inline-isdirectbinding",
 			"inline-intptr-size", // this optimization has been removed, but leave it here so that we won't break customers trying to enable/disable it
@@ -22,7 +22,7 @@ namespace Xamarin.Bundler {
 			"static-block-to-delegate-lookup",
 			"remove-dynamic-registrar",
 			"trim-architectures",
-			"inline-is-arm64-calling-convention",
+			"inline-is-arm64-calling-convention", // this optimization has been replaced by the 'ObjCRuntime.Runtime.IsARM64CallingConvention' feature switch, but leave it here so that we won't break customers trying to enable/disable it
 			"seal-and-devirtualize",
 			"cctor-beforefieldinit",
 			"custom-attributes-removal",
@@ -32,7 +32,7 @@ namespace Xamarin.Bundler {
 		};
 
 		static readonly ApplePlatform [] [] valid_platforms = new ApplePlatform [] [] {
-			/* Opt.RemoveUIThreadChecks               */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
+			/* Opt.RemoveUIThreadChecks               */ new ApplePlatform [] {                                                                                        },
 			/* Opt.DeadCodeElimination                */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 			/* Opt.InlineIsDirectBinding              */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 			/* Opt.InlineIntPtrSize                   */ new ApplePlatform [] {                                                                                        },
@@ -43,7 +43,7 @@ namespace Xamarin.Bundler {
 			/* Opt.StaticBlockToDelegateLookup        */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 			/* Opt.RemoveDynamicRegistrar             */ new ApplePlatform [] { ApplePlatform.iOS,                       ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 			/* Opt.TrimArchitectures                  */ new ApplePlatform [] {                    ApplePlatform.MacOSX,                                               },
-			/* Opt.InlineIsARM64CallingConvention     */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
+			/* Opt.InlineIsARM64CallingConvention     */ new ApplePlatform [] {                                                                                        },
 			/* Opt.SealAndDevirtualize                */ new ApplePlatform [] { ApplePlatform.iOS,                       ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 			/* Opt.StaticConstructorBeforeFieldInit   */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 			/* Opt.CustomAttributesRemoval            */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
@@ -222,11 +222,6 @@ namespace Xamarin.Bundler {
 				}
 			}
 
-			// by default we keep the code to ensure we're executing on the UI thread (for UI code) for debug builds
-			// but this can be overridden to either (a) remove it from debug builds or (b) keep it in release builds
-			if (!RemoveUIThreadChecks.HasValue)
-				RemoveUIThreadChecks = !app.EnableDebug;
-
 			// By default we always eliminate dead code.
 			if (!DeadCodeElimination.HasValue)
 				DeadCodeElimination = true;
@@ -308,9 +303,8 @@ namespace Xamarin.Bundler {
 				}
 			}
 
-			// By default Runtime.IsARM64CallingConvention inlining is always enabled.
-			if (!InlineIsARM64CallingConvention.HasValue)
-				InlineIsARM64CallingConvention = true;
+			// The InlineIsARM64CallingConvention optimization has been replaced by the
+			// 'ObjCRuntime.Runtime.IsARM64CallingConvention' trimmer feature switch.
 
 			// by default we try to eliminate any .cctor we can
 			if (!StaticConstructorBeforeFieldInit.HasValue)

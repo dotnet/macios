@@ -428,6 +428,11 @@
             Summary for T2.#ctor(String)
             </summary>
         </member>
+        <member name="M:XmlDocumentation.T1.Create(System.String,System.IntPtr)">
+            <summary>
+            Summary for T1.Create
+            </summary><param name="factoryName">Docs for factoryName.</param><param name="dummy">Docs for dummy.</param><returns>A new instance, or null on failure.</returns>
+        </member>
         <member name="M:XmlDocumentation.T1.AsyncMethod(System.Action{System.Int32,System.Int64,Foundation.NSError})">
             <summary>
             Summary for T1.AsyncMethod
@@ -639,6 +644,9 @@
         <member name="E:XmlDocumentation.TClass.DidFinish">
             <summary>Raised by the object's delegate to signal an event.</summary>
         </member>
+        <member name="M:XmlDocumentation.TClass.Dispose(System.Boolean)">
+            <inheritdoc />
+        </member>
         <member name="T:XmlDocumentation.TMutteranceEventArgs">
             <summary>Provides data for an event based on an Objective-C protocol method.</summary>
         </member>
@@ -646,12 +654,18 @@
             <summary>Create a new instance of the <see cref="T:XmlDocumentation.TMutteranceEventArgs" /> with the specified event data.</summary>
             <param name="mutteringVolume">The value for the <see cref="P:XmlDocumentation.TMutteranceEventArgs.MutteringVolume" /> property.</param>
         </member>
+        <member name="P:XmlDocumentation.TMutteranceEventArgs.MutteringVolume">
+            <summary>The value of the <c>MutteringVolume</c> argument to the event.</summary>
+        </member>
         <member name="T:XmlDocumentation.TUtteranceEventArgs">
             <summary>Provides data for an event based on an Objective-C protocol method.</summary>
         </member>
         <member name="M:XmlDocumentation.TUtteranceEventArgs.#ctor(System.Double)">
             <summary>Create a new instance of the <see cref="T:XmlDocumentation.TUtteranceEventArgs" /> with the specified event data.</summary>
             <param name="utteringSpeed">The value for the <see cref="P:XmlDocumentation.TUtteranceEventArgs.UtteringSpeed" /> property.</param>
+        </member>
+        <member name="P:XmlDocumentation.TUtteranceEventArgs.UtteringSpeed">
+            <summary>The value of the <c>UtteringSpeed</c> argument to the event.</summary>
         </member>
         <member name="T:XmlDocumentation.ITClassDelegate">
             <summary>TClassDelegate</summary>
@@ -667,6 +681,12 @@
         </member>
         <member name="M:XmlDocumentation.ITClassDelegate._DidChangeMutteringVolume(XmlDocumentation.ITClassDelegate,XmlDocumentation.TClass,System.Double)">
             <summary>TClassDelegate.DidChangeMutteringVolume</summary>
+        </member>
+        <member name="M:XmlDocumentation.ITClassDelegate.ShouldMutter(XmlDocumentation.TClass,System.Double)">
+            <summary>TClassDelegate.ShouldMutter</summary>
+        </member>
+        <member name="M:XmlDocumentation.ITClassDelegate._ShouldMutter(XmlDocumentation.ITClassDelegate,XmlDocumentation.TClass,System.Double)">
+            <summary>TClassDelegate.ShouldMutter</summary>
         </member>
         <member name="M:XmlDocumentation.ITClassDelegate.DidFinish(XmlDocumentation.TClass)">
             <summary>TClassDelegate.DidFinish</summary>
@@ -685,6 +705,9 @@
         </member>
         <member name="M:XmlDocumentation.TClassDelegate_Extensions.DidChangeMutteringVolume(XmlDocumentation.ITClassDelegate,XmlDocumentation.TClass,System.Double)">
             <summary>TClassDelegate.DidChangeMutteringVolume</summary>
+        </member>
+        <member name="M:XmlDocumentation.TClassDelegate_Extensions.ShouldMutter(XmlDocumentation.ITClassDelegate,XmlDocumentation.TClass,System.Double)">
+            <summary>TClassDelegate.ShouldMutter</summary>
         </member>
         <member name="M:XmlDocumentation.TClassDelegate_Extensions.DidFinish(XmlDocumentation.ITClassDelegate,XmlDocumentation.TClass)">
             <summary>TClassDelegate.DidFinish</summary>
@@ -764,6 +787,9 @@
         </member>
         <member name="M:XmlDocumentation.TClassDelegate.DidFinish(XmlDocumentation.TClass)">
             <summary>TClassDelegate.DidFinish</summary>
+        </member>
+        <member name="M:XmlDocumentation.TClassDelegate.ShouldMutter(XmlDocumentation.TClass,System.Double)">
+            <summary>TClassDelegate.ShouldMutter</summary>
         </member>
         <member name="T:XmlDocumentation.TG1`2">
             <summary>
@@ -1118,6 +1144,15 @@
         <member name="M:XmlDocumentation.TEventArgs.#ctor(Foundation.NSNotification)">
             <summary>Initializes a new instance of the <see cref="T:XmlDocumentation.TEventArgs" /> class.</summary>
             <param name="notification">The underlying <see cref="T:Foundation.NSNotification" /> object from the posted notification.</param>
+        </member>
+        <member name="P:XmlDocumentation.TEventArgs.SomeValue">
+            <summary>TEventArgs.SomeValue</summary>
+        </member>
+        <member name="P:XmlDocumentation.TEventArgs.SomeOtherValue">
+            <summary>The value of the <c>TEventArgsSomeOtherValueKey</c> key from the underlying <see cref="T:Foundation.NSNotification" />'s user info dictionary.</summary>
+        </member>
+        <member name="T:XmlDocumentation.TShouldMutterEventArgs">
+            <summary>A delegate that represents the callback for the corresponding Objective-C delegate/protocol method.</summary>
         </member>
     </members>
 </doc>

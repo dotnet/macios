@@ -3029,18 +3029,8 @@
 		BeforeTargets="Build;ResolvedFrameworkReference;ResolveRuntimePackAssets">
 		<PropertyGroup>
 			<_IsValidRuntimeIdentifier Condition="@(_XamarinValidRuntimeIdentifier->WithMetadataValue('Platform', '$(_PlatformName)')->WithMetadataValue('Filename', '$(RuntimeIdentifier)')->Count()) &gt; 0">true</_IsValidRuntimeIdentifier>
-
-			<!-- '_SdkIsSimulator' is computed from the RuntimeIdentifier very early in the build (in
-			     Xamarin.Shared.Sdk.props), and numerous other properties are computed from it. If the
-			     RuntimeIdentifier is modified after that point (a '*.csproj.user' file is a common cause,
-			     since it's imported after our props file), we'd end up with a build that's partially
-			     configured for the simulator and partially for device (or vice versa), which fails in
-			     rather confusing ways much later in the build. So detect the mismatch here instead. -->
-			<_RuntimeIdentifierIsSimulator Condition="$(RuntimeIdentifier.Contains('simulator'))">true</_RuntimeIdentifierIsSimulator>
-			<_RuntimeIdentifierIsSimulator Condition="'$(_RuntimeIdentifierIsSimulator)' == ''">false</_RuntimeIdentifierIsSimulator>
 		</PropertyGroup>
 		<Error Condition="'$(_IsValidRuntimeIdentifier)' != 'true'" Text="The RuntimeIdentifier '$(RuntimeIdentifier)' is invalid." />
-		<Error Condition="'$(_RuntimeIdentifierIsSimulator)' != '$(_SdkIsSimulator)'" Text="The RuntimeIdentifier was changed too late in the build (it's currently '$(RuntimeIdentifier)', but the build was already configured with SdkIsSimulator=$(_SdkIsSimulator)). A common reason is a '*.csproj.user' file changing it; if you're building outside of the IDE, delete this file." />
 	</Target>
 
 	<Target Name="_ValidateGarbageCollector"

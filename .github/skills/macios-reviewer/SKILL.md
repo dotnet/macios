@@ -1,5 +1,5 @@
 ---
-name: code-review
+name: macios-reviewer
 description: >-
   Review dotnet/macios PRs against established rules. Trigger on "review this PR",
   a GitHub PR URL, or code review requests. Checks bindings, MSBuild, nullable,

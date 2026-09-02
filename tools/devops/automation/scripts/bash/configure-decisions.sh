@@ -23,8 +23,7 @@ elif [[ "${LABELS_RUN_PACKAGED_MACOS_TESTS:-}" == "True" ]]; then
 elif [[ "${LABELS_SKIP_ALL_TESTS:-}" == "True" ]]; then
 	# All tests have been skipped
 	RUN_MAC_TESTS=false
-elif [[ "${CONFIGURE_PLATFORMS_INCLUDE_DOTNET_MACOS:-}" != "" ]] ||
-	[[ "${CONFIGURE_PLATFORMS_INCLUDE_DOTNET_MACCATALYST:-}" != "" ]]; then
+elif [[ "${CONFIGURE_PLATFORMS_INCLUDE_DOTNET_MACOS:-}" != "" ]]; then
 	# Run mac tests if a .NET desktop platform is enabled
 	RUN_MAC_TESTS=true
 else

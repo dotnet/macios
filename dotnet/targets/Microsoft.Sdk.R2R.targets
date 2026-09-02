@@ -3,11 +3,25 @@
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ComputeInstructionSet" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.GenerateR2RModuleRegistration" AssemblyFile="$(_TaskAssemblyName)" />
 
+	<!-- Workaround for https://github.com/dotnet/runtime/issues/79902 -->
+	<Target Name="_FixR2ROutputPaths" AfterTargets="_PrepareForReadyToRunCompilation">
+		<ItemGroup>
+			<_ReadyToRunFilesToPublishFixed Include="@(_ReadyToRunFilesToPublish->'$(_ReadyToRunOutputPath)/%(Filename)%(Extension)')" />
+			<_ReadyToRunFilesToPublish Remove="@(_ReadyToRunFilesToPublish)" />
+			<_ReadyToRunFilesToPublish Include="@(_ReadyToRunFilesToPublishFixed)" />
+		</ItemGroup>
+		<ItemGroup Condition="'$(PublishReadyToRunComposite)' != 'true'">
+			<_ReadyToRunCompileListFixed Include="@(_ReadyToRunCompileList)" OutputR2RImage="$(_ReadyToRunOutputPath)/%(Filename)%(Extension)" />
+			<_ReadyToRunCompileList Remove="@(_ReadyToRunCompileList)" />
+			<_ReadyToRunCompileList Include="@(_ReadyToRunCompileListFixed)" />
+		</ItemGroup>
+	</Target>
+
 	<!-- Set per-module R2R header symbol names so each .o file exports a unique symbol directly,
 	     avoiding the need for post-link symbol aliasing. -->
 	<Target Name="_SetR2RHeaderSymbolNames"
 			Condition="'$(PublishReadyToRunComposite)' == 'true' And '$(PublishReadyToRunContainerFormat)' == 'macho'"
-			AfterTargets="_PrepareForReadyToRunCompilation">
+			AfterTargets="_FixR2ROutputPaths">
 		<ItemGroup>
 			<_ReadyToRunCompileList>
 				<R2RHeaderSymbolName>RTR_HEADER_$([System.Text.RegularExpressions.Regex]::Replace ($([System.IO.Path]::GetFileName ('%(_ReadyToRunCompileList.OutputR2RImage)')), '[^a-zA-Z0-9_]', '_'))</R2RHeaderSymbolName>

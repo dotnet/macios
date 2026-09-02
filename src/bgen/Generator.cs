@@ -763,8 +763,7 @@ public partial class Generator : IMemberGatherer {
 						}
 					}
 					pars.Add (new TrampolineParameterInfo (NativeHandleType, safe_name));
-					var renderedDelegateType = TypeManager.RenderType (pi.ParameterType);
-					invoke.AppendFormat ("({0}) Marshal.GetDelegateForFunctionPointer ({1}, typeof ({0}))", renderedDelegateType, safe_name);
+					invoke.AppendFormat ("({0}) Marshal.GetDelegateForFunctionPointer ({1}, typeof ({0}))", pi.ParameterType, safe_name);
 				}
 				continue;
 			}

@@ -72,8 +72,8 @@ A maintainer commented `/review` on this pull request. Perform a thorough code r
 
 ## Instructions
 
-1. Read the review rules from `.github/skills/code-review/references/review-rules.md` — these contain the detailed patterns and anti-patterns to check for.
-2. Read the review methodology from `.github/skills/code-review/SKILL.md` — this defines the review workflow, mindset, severity levels, and comment format.
+1. Read the review rules from `.github/skills/macios-reviewer/references/review-rules.md` — these contain the detailed patterns and anti-patterns to check for.
+2. Read the review methodology from `.github/skills/macios-reviewer/SKILL.md` — this defines the review workflow, mindset, severity levels, and comment format.
 3. Follow the skill's workflow to analyze the pull request:
    - Gather context: read the diff and changed files
    - For each changed file, read the **full source file** to understand surrounding context

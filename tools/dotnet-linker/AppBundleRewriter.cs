@@ -1681,10 +1681,12 @@ namespace Xamarin.Linker {
 				if (!method.HasCustomAttribute ("System.Runtime.CompilerServices", "CompilerGeneratedAttribute"))
 					signatures.Add (DocumentationComments.GetNameSignature (method));
 			}
+			// Properties and events don't have a documentation comment signature helper, but the trimmer will
+			// match any member with the given name, which is good enough (and it's what we want here anyway).
 			foreach (var property in type.Properties)
-				signatures.Add (DocumentationComments.GetSignature (property));
+				signatures.Add (property.Name);
 			foreach (var @event in type.Events)
-				signatures.Add (DocumentationComments.GetSignature (@event));
+				signatures.Add (@event.Name);
 
 			if (signatures.Count == 0) {
 				// The type has no declared members, so add a placeholder member and preserve that,

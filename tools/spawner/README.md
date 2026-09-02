@@ -52,10 +52,10 @@ In this particular case:
 
 * I opened the xharness project in VSCode.
 * I launched the xharness project in the debugger, and then ran introspection for Mac Catalyst.
-* The responsible process ended up being VS Code (aka Electron, with pid 85822), and that's where macOS ended up looking for the `NSAppleMusicUsageDescription` key.
+* The responsible process ended up being VS Code (aka Electron, with pid 68966), and that's where macOS ended up looking for the `NSAppleMusicUsageDescription` key.
 
 The fix is to launch `introspection` (and any other test app on macOS) using
-this `spawner` tool, which disclaims reponsibility for anything it launches,
+this `spawner` tool, which disclaims responsibility for anything it launches,
 thus letting `introspection` be a grown up process and fully responsible for
 itself.
 

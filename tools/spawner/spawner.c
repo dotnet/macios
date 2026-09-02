@@ -1,11 +1,12 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-#include <dispatch/dispatch.h>
-#include <dlfcn.h>
+#include <errno.h>
 #include <signal.h>
 #include <spawn.h>
+#include <stdbool.h>
 #include <stdio.h>
+#include <string.h>
 
 errno_t responsibility_spawnattrs_setdisclaim (posix_spawnattr_t *attrs, bool disclaim);
 

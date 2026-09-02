@@ -208,6 +208,10 @@ namespace Xharness {
 		{
 			if (!string.IsNullOrEmpty (processStartInfo.Arguments))
 				throw new InvalidOperationException ($"ProcessStartInfo.Arguments must be empty when using UseSpawner.");
+			if (processStartInfo.ArgumentList.Count > 0)
+				throw new InvalidOperationException ($"ProcessStartInfo.ArgumentList must be empty when using UseSpawner.");
+			if (!File.Exists (SpawnerPath))
+				throw new FileNotFoundException ($"The spawner executable was not found. Did you build it? (make -C tools/spawner)", SpawnerPath);
 
 			var originalFileName = processStartInfo.FileName;
 			processStartInfo.FileName = SpawnerPath;

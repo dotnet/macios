@@ -1761,11 +1761,11 @@ namespace AppKit {
 	public enum NSMatrixMode : ulong {
 		/// <summary>Allows a single cell to be selected at a time.</summary>
 		Radio,
-		/// <summary>Highlights cells during interaction.</summary>
+		/// <summary>Highlights a cell while asking it to track the mouse.</summary>
 		Highlight,
-		/// <summary>Provides list-style cell selection.</summary>
+		/// <summary>Highlights cells without asking them to track the mouse.</summary>
 		List,
-		/// <summary>Tracks interaction within individual cells.</summary>
+		/// <summary>Allows individual cells to track the mouse.</summary>
 		Track,
 	}
 	#endregion

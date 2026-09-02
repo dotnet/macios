@@ -1903,12 +1903,13 @@ namespace AppKit {
 		Bevel,
 	}
 
+	/// <summary>Specifies the rule used to determine which areas of a path are filled.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSWindingRule : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Fills areas using the nonzero winding rule.</summary>
 		NonZero,
-		/// <summary>To be added.</summary>
+		/// <summary>Fills areas using the even-odd winding rule.</summary>
 		EvenOdd,
 	}
 

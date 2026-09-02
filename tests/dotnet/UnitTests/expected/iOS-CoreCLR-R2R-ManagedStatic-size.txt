@@ -1,56 +1,58 @@
-AppBundleSize: 8,528,184 bytes (8,328.3 KB = 8.1 MB)
+AppBundleSize: 11,682,703 bytes (11,408.9 KB = 11.1 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
-_Microsoft.tvOS.TypeMap.dll:
-    39,936 bytes (39.0 KB = 0.0 MB)
-_Microsoft.tvOS.TypeMaps.dll:
-    2,048 bytes (2.0 KB = 0.0 MB)
-_SizeTestApp.TypeMap.dll:
-    3,584 bytes (3.5 KB = 0.0 MB)
 Frameworks/libcoreclr.framework/Info.plist:
-    810 bytes (0.8 KB = 0.0 MB)
+    837 bytes (0.8 KB = 0.0 MB)
 Frameworks/libcoreclr.framework/libcoreclr:
-    4,324,144 bytes (4,222.8 KB = 4.1 MB)
+    4,325,328 bytes (4,224.0 KB = 4.1 MB)
 Frameworks/libSystem.Globalization.Native.framework/Info.plist:
-    852 bytes (0.8 KB = 0.0 MB)
+    879 bytes (0.9 KB = 0.0 MB)
 Frameworks/libSystem.Globalization.Native.framework/libSystem.Globalization.Native:
     124,608 bytes (121.7 KB = 0.1 MB)
 Frameworks/libSystem.IO.Compression.Native.framework/Info.plist:
-    854 bytes (0.8 KB = 0.0 MB)
+    881 bytes (0.9 KB = 0.0 MB)
 Frameworks/libSystem.IO.Compression.Native.framework/libSystem.IO.Compression.Native:
     1,438,032 bytes (1,404.3 KB = 1.4 MB)
 Frameworks/libSystem.Native.framework/Info.plist:
-    824 bytes (0.8 KB = 0.0 MB)
+    851 bytes (0.8 KB = 0.0 MB)
 Frameworks/libSystem.Native.framework/libSystem.Native:
-    177,552 bytes (173.4 KB = 0.2 MB)
+    178,176 bytes (174.0 KB = 0.2 MB)
+Frameworks/libSystem.Net.Security.Native.framework/Info.plist:
+    877 bytes (0.9 KB = 0.0 MB)
+Frameworks/libSystem.Net.Security.Native.framework/libSystem.Net.Security.Native:
+    103,072 bytes (100.7 KB = 0.1 MB)
 Frameworks/libSystem.Security.Cryptography.Native.Apple.framework/Info.plist:
-    880 bytes (0.9 KB = 0.0 MB)
+    907 bytes (0.9 KB = 0.0 MB)
 Frameworks/libSystem.Security.Cryptography.Native.Apple.framework/libSystem.Security.Cryptography.Native.Apple:
-    248,672 bytes (242.8 KB = 0.2 MB)
+    249,184 bytes (243.3 KB = 0.2 MB)
+Frameworks/SizeTestApp.r2r.framework/Info.plist:
+    849 bytes (0.8 KB = 0.0 MB)
+Frameworks/SizeTestApp.r2r.framework/SizeTestApp.r2r:
+    3,660,544 bytes (3,574.8 KB = 3.5 MB)
 Info.plist:
-    1,138 bytes (1.1 KB = 0.0 MB)
-Microsoft.tvOS.dll:
-    107,008 bytes (104.5 KB = 0.1 MB)
+    1,165 bytes (1.1 KB = 0.0 MB)
+Microsoft.iOS.dll:
+    64,512 bytes (63.0 KB = 0.1 MB)
 PkgInfo:
     8 bytes (0.0 KB = 0.0 MB)
 runtimeconfig.bin:
-    1,562 bytes (1.5 KB = 0.0 MB)
+    1,481 bytes (1.4 KB = 0.0 MB)
 SizeTestApp:
-    128,504 bytes (125.5 KB = 0.1 MB)
+    128,656 bytes (125.6 KB = 0.1 MB)
 SizeTestApp.dll:
     6,656 bytes (6.5 KB = 0.0 MB)
 System.Collections.Immutable.dll:
-    14,336 bytes (14.0 KB = 0.0 MB)
+    13,824 bytes (13.5 KB = 0.0 MB)
 System.Diagnostics.StackTrace.dll:
-    8,192 bytes (8.0 KB = 0.0 MB)
+    6,656 bytes (6.5 KB = 0.0 MB)
 System.IO.Compression.dll:
-    23,040 bytes (22.5 KB = 0.0 MB)
+    15,872 bytes (15.5 KB = 0.0 MB)
 System.IO.MemoryMappedFiles.dll:
-    22,016 bytes (21.5 KB = 0.0 MB)
+    16,896 bytes (16.5 KB = 0.0 MB)
 System.Private.CoreLib.dll:
-    1,758,720 bytes (1,717.5 KB = 1.7 MB)
+    1,277,440 bytes (1,247.5 KB = 1.2 MB)
 System.Reflection.Metadata.dll:
-    84,480 bytes (82.5 KB = 0.1 MB)
+    56,832 bytes (55.5 KB = 0.1 MB)
 System.Runtime.dll:
-    5,120 bytes (5.0 KB = 0.0 MB)
+    4,096 bytes (4.0 KB = 0.0 MB)
 System.Runtime.InteropServices.dll:
-    4,608 bytes (4.5 KB = 0.0 MB)
+    3,584 bytes (3.5 KB = 0.0 MB)

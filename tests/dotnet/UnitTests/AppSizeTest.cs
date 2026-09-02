@@ -53,28 +53,30 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.TVOS, "tvos-arm64", true)]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", true)]
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64", false)]
-		public void CoreCLR_Interpreter (ApplePlatform platform, string runtimeIdentifiers, bool isTrimmed)
+		public void CoreCLR_Interpreter_ManagedStatic (ApplePlatform platform, string runtimeIdentifiers, bool isTrimmed)
 		{
 			var dict = new Dictionary<string, string> () {
 				{ "UseMonoRuntime", "false" },
 				{ "PublishReadyToRun", "false" },
 				{ "NoDSymUtil", "false" }, // off by default for macOS, but we want to test it, so enable it
+				{ "Registrar", "managed-static" },
 			};
-			Run (platform, runtimeIdentifiers, "Release", $"{platform}-CoreCLR-Interpreter", isTrimmed, dict);
+			Run (platform, runtimeIdentifiers, "Release", $"{platform}-CoreCLR-Interpreter-ManagedStatic", isTrimmed, dict);
 		}
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]
 		[TestCase (ApplePlatform.TVOS, "tvos-arm64", true)]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", true)]
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64", false)]
-		public void CoreCLR_R2R (ApplePlatform platform, string runtimeIdentifiers, bool isTrimmed)
+		public void CoreCLR_R2R_ManagedStatic (ApplePlatform platform, string runtimeIdentifiers, bool isTrimmed)
 		{
 			var dict = new Dictionary<string, string> () {
 				{ "UseMonoRuntime", "false" },
 				{ "PublishReadyToRun", "true" },
 				{ "NoDSymUtil", "false" }, // off by default for macOS, but we want to test it, so enable it
+				{ "Registrar", "managed-static" },
 			};
-			Run (platform, runtimeIdentifiers, "Release", $"{platform}-CoreCLR-R2R", isTrimmed, dict);
+			Run (platform, runtimeIdentifiers, "Release", $"{platform}-CoreCLR-R2R-ManagedStatic", isTrimmed, dict);
 		}
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
@@ -92,6 +94,9 @@ namespace Xamarin.Tests {
 			Run (platform, runtimeIdentifiers, "Release", $"{platform}-NativeAOT-TrimmableStatic", false, dict);
 		}
 
+		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64", true)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", true)]
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64", false)]
 		public void CoreCLR_Interpreter_TrimmableStatic (ApplePlatform platform, string runtimeIdentifiers, bool isTrimmed)
 		{
@@ -102,6 +107,21 @@ namespace Xamarin.Tests {
 				{ "Registrar", "trimmable-static" },
 			};
 			Run (platform, runtimeIdentifiers, "Release", $"{platform}-CoreCLR-Interpreter-TrimmableStatic", isTrimmed, dict);
+		}
+
+		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64", true)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", true)]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64", false)]
+		public void CoreCLR_R2R_TrimmableStatic (ApplePlatform platform, string runtimeIdentifiers, bool isTrimmed)
+		{
+			var dict = new Dictionary<string, string> () {
+				{ "UseMonoRuntime", "false" },
+				{ "PublishReadyToRun", "true" },
+				{ "NoDSymUtil", "false" }, // off by default for macOS, but we want to test it, so enable it
+				{ "Registrar", "trimmable-static" },
+			};
+			Run (platform, runtimeIdentifiers, "Release", $"{platform}-CoreCLR-R2R-TrimmableStatic", isTrimmed, dict);
 		}
 
 		// This test will build the SizeTestApp, and capture the resulting app size.

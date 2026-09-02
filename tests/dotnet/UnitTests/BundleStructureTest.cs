@@ -48,23 +48,22 @@ namespace Xamarin.Tests {
 			return allFiles;
 		}
 
-		internal static void CheckAppBundleContents (ApplePlatform platform, string appPath, string [] runtimeIdentifiers, CodeSignature isSigned, bool isReleaseBuild)
+		internal static void CheckAppBundleContents (ApplePlatform platform, string appPath, string [] runtimeIdentifiers, CodeSignature isSigned, bool isReleaseBuild, bool isCoreCLR = false)
 		{
 			Console.WriteLine ($"App bundle: {appPath}");
 			Assert.That (appPath, Does.Exist, "App bundle existence");
 			var allFiles = Find (appPath);
-			CheckAppBundleContents (platform, allFiles, runtimeIdentifiers, isSigned, isReleaseBuild, appPath);
+			CheckAppBundleContents (platform, allFiles, runtimeIdentifiers, isSigned, isReleaseBuild, appPath, isCoreCLR: isCoreCLR);
 		}
 
-		internal static void CheckZippedAppBundleContents (ApplePlatform platform, string zippedApp, string [] runtimeIdentifiers, CodeSignature isSigned, bool isReleaseBuild)
+		internal static void CheckZippedAppBundleContents (ApplePlatform platform, string zippedApp, string [] runtimeIdentifiers, CodeSignature isSigned, bool isReleaseBuild, bool isCoreCLR = false)
 		{
 			var allFiles = ZipHelpers.List (zippedApp);
-			CheckAppBundleContents (platform, allFiles, runtimeIdentifiers, isSigned, isReleaseBuild, null);
+			CheckAppBundleContents (platform, allFiles, runtimeIdentifiers, isSigned, isReleaseBuild, null, isCoreCLR: isCoreCLR);
 		}
 
-		internal static void CheckAppBundleContents (ApplePlatform platform, IEnumerable<string> allFiles, string [] runtimeIdentifiers, CodeSignature isSigned, bool isReleaseBuild, string? appPath = null)
+		internal static void CheckAppBundleContents (ApplePlatform platform, IEnumerable<string> allFiles, string [] runtimeIdentifiers, CodeSignature isSigned, bool isReleaseBuild, string? appPath = null, bool isCoreCLR = false)
 		{
-			var isCoreCLR = platform == ApplePlatform.MacOSX;
 			var includeDebugFiles = !isReleaseBuild;
 
 			// Remove various files we don't care about (for this test) from the list of files in the app bundle.
@@ -81,13 +80,13 @@ namespace Xamarin.Tests {
 				case "libhostpolicy.dylib":
 				case "libmscordaccore.dylib":
 				case "libmscordbi.dylib":
-					return platform == ApplePlatform.MacOSX;
+					return isCoreCLR;
 				case "libmono-component-debugger.dylib":
 				case "libmono-component-diagnostics_tracing.dylib":
 				case "libmono-component-hot_reload.dylib":
 				case "libmono-component-marshal-ilgen.dylib":
 				case "libmonosgen-2.0.dylib":
-					return platform != ApplePlatform.MacOSX;
+					return !isCoreCLR;
 				case "libSystem.Native.dylib":
 				case "libSystem.Net.Security.Native.dylib":
 				case "libSystem.Globalization.Native.dylib":
@@ -98,6 +97,8 @@ namespace Xamarin.Tests {
 				case "netstandard.dll":
 				case "libxamarin-dotnet-debug.dylib":
 				case "libxamarin-dotnet.dylib":
+				case "libxamarin-dotnet-coreclr-debug.dylib":
+				case "libxamarin-dotnet-coreclr.dylib":
 					return true;
 
 				case "embedded.mobileprovision":
@@ -115,7 +116,35 @@ namespace Xamarin.Tests {
 					return true;
 
 				if (fn.StartsWith ("libSystem.", StringComparison.Ordinal) && fn.EndsWith (".dylib", StringComparison.Ordinal))
-					return platform == ApplePlatform.MacOSX;
+					return isCoreCLR;
+
+				// The trimmable-static registrar generates a root type map assembly (_Microsoft.<Platform>.TypeMaps.dll)
+				// and a companion type map assembly for each user assembly (_<Assembly>.TypeMap.dll).
+				if (fn.StartsWith ("_", StringComparison.Ordinal) && (fn.EndsWith (".dll", StringComparison.Ordinal) || fn.EndsWith (".pdb", StringComparison.Ordinal))) {
+					var name = Path.GetFileNameWithoutExtension (fn);
+					if (name.EndsWith (".TypeMap", StringComparison.Ordinal) || name.EndsWith (".TypeMaps", StringComparison.Ordinal))
+						return true;
+				}
+
+				if (isCoreCLR) {
+					// R2R compiled dylib (macOS/MacCatalyst)
+					if (fn.EndsWith (".r2r.dylib", StringComparison.Ordinal))
+						return true;
+
+					// On iOS/tvOS, CoreCLR packages native libraries as .framework bundles.
+					// Filter framework entries where the framework name starts with "lib"
+					// (these are runtime native libraries like libcoreclr, libSystem.Native, etc.)
+					// and the app's R2R framework (BundleStructure.framework).
+					if (v!.Contains (".framework")) {
+						var fwIdx = v.IndexOf (".framework", StringComparison.Ordinal);
+						// Zip entries from remote Windows builds use '\' separators, while local
+						// macOS bundle checks use '/'. Handle both when extracting the framework name.
+						var slashIdx = fwIdx > 0 ? v.LastIndexOfAny ([Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar], fwIdx - 1) : -1;
+						var frameworkName = v.Substring (slashIdx + 1, fwIdx - slashIdx - 1);
+						if (frameworkName.StartsWith ("lib", StringComparison.Ordinal) || frameworkName == "BundleStructure" || frameworkName.EndsWith (".r2r", StringComparison.Ordinal))
+							return true;
+					}
+				}
 
 				return false;
 			};
@@ -279,7 +308,7 @@ namespace Xamarin.Tests {
 			expectedFiles.Add (Path.Combine (resourcesDirectory, "SubDirectory"));
 			expectedFiles.Add (Path.Combine (resourcesDirectory, "SubDirectory", "AutoIncluded2.txt"));
 
-			expectedFiles.Add (Path.Combine (assemblyDirectory, "FrameworksInRuntimesNativeDirectory.dll"));
+			AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, "FrameworksInRuntimesNativeDirectory", runtimeIdentifiers, forceSingleRid: !isCoreCLR || platform == ApplePlatform.MacOSX);
 			AddExpectedFrameworkFiles (platform, expectedFiles, "FrameworksInRuntimesNativeDirectory1", isSigned);
 			AddExpectedFrameworkFiles (platform, expectedFiles, "FrameworksInRuntimesNativeDirectory2", isSigned);
 
@@ -315,11 +344,11 @@ namespace Xamarin.Tests {
 			// misc other files not directly related to the test itself
 			AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, "BundleStructure", runtimeIdentifiers, addConfig: true, includeDebugFiles: includeDebugFiles);
 			if (platform != ApplePlatform.MacOSX)
-				AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, "MonoTouch.Dialog", runtimeIdentifiers, forceSingleRid: (platform == ApplePlatform.MacCatalyst && !isReleaseBuild), includeDebugFiles: includeDebugFiles);
-			expectedFiles.Add (Path.Combine (assemblyDirectory, "nunit.framework.dll"));
-			expectedFiles.Add (Path.Combine (assemblyDirectory, "nunit.framework.legacy.dll"));
-			expectedFiles.Add (Path.Combine (assemblyDirectory, "nunitlite.dll"));
-			expectedFiles.Add (Path.Combine (assemblyDirectory, "Mono.Options.dll"));
+				AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, "MonoTouch.Dialog", runtimeIdentifiers, forceSingleRid: (platform == ApplePlatform.MacCatalyst && !isReleaseBuild && !isCoreCLR), includeDebugFiles: includeDebugFiles);
+			AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, "nunit.framework", runtimeIdentifiers, forceSingleRid: !isCoreCLR || platform == ApplePlatform.MacOSX);
+			AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, "nunit.framework.legacy", runtimeIdentifiers, forceSingleRid: !isCoreCLR || platform == ApplePlatform.MacOSX);
+			AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, "nunitlite", runtimeIdentifiers, forceSingleRid: !isCoreCLR || platform == ApplePlatform.MacOSX);
+			AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, "Mono.Options", runtimeIdentifiers, forceSingleRid: !isCoreCLR || platform == ApplePlatform.MacOSX);
 			AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, "Touch.Client", runtimeIdentifiers, platform == ApplePlatform.MacOSX || (platform == ApplePlatform.MacCatalyst && !isReleaseBuild), includeDebugFiles: includeDebugFiles);
 			AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, Path.GetFileNameWithoutExtension (Configuration.GetBaseLibraryName (platform)), runtimeIdentifiers, platform == ApplePlatform.MacOSX, includeDebugFiles: includeDebugFiles);
 			expectedFiles.Add (Path.Combine (assemblyDirectory, "runtimeconfig.bin"));
@@ -656,6 +685,22 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.iOS, "iossimulator-x64", CodeSignature.All, "Debug")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64", CodeSignature.All, "Debug")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64;maccatalyst-arm64", CodeSignature.All, "Debug")]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64", CodeSignature.All, "Debug")]
+		// Release
+		[TestCase (ApplePlatform.iOS, "ios-arm64", CodeSignature.All, "Release")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64;maccatalyst-arm64", CodeSignature.All, "Release")]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64", CodeSignature.All, "Release")]
+		public void Build_Mono (ApplePlatform platform, string runtimeIdentifiers, CodeSignature signature, string configuration)
+		{
+			Build (platform, runtimeIdentifiers, signature, configuration, true);
+		}
+
+		[Test]
+		// Debug
+		[TestCase (ApplePlatform.iOS, "ios-arm64", CodeSignature.All, "Debug")]
+		[TestCase (ApplePlatform.iOS, "iossimulator-x64", CodeSignature.All, "Debug")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64", CodeSignature.All, "Debug")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64;maccatalyst-arm64", CodeSignature.All, "Debug")]
 		[TestCase (ApplePlatform.MacOSX, "osx-x64", CodeSignature.All, "Debug")]
 		[TestCase (ApplePlatform.MacOSX, "osx-x64;osx-arm64", CodeSignature.All, "Debug")]
 		[TestCase (ApplePlatform.TVOS, "tvos-arm64", CodeSignature.All, "Debug")]
@@ -664,7 +709,12 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64;maccatalyst-arm64", CodeSignature.All, "Release")]
 		[TestCase (ApplePlatform.MacOSX, "osx-x64", CodeSignature.All, "Release")]
 		[TestCase (ApplePlatform.TVOS, "tvos-arm64", CodeSignature.All, "Release")]
-		public void Build (ApplePlatform platform, string runtimeIdentifiers, CodeSignature signature, string configuration)
+		public void Build_CoreCLR (ApplePlatform platform, string runtimeIdentifiers, CodeSignature signature, string configuration)
+		{
+			Build (platform, runtimeIdentifiers, signature, configuration, false);
+		}
+
+		void Build (ApplePlatform platform, string runtimeIdentifiers, CodeSignature signature, string configuration, bool useMonoRuntime)
 		{
 			var project = "BundleStructure";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -678,6 +728,7 @@ namespace Xamarin.Tests {
 			properties ["_IsAppSigned"] = signature != CodeSignature.None ? "true" : "false";
 			if (!string.IsNullOrWhiteSpace (configuration))
 				properties ["Configuration"] = configuration;
+			properties ["UseMonoRuntime"] = useMonoRuntime ? "true" : "false";
 			var rv = DotNet.AssertBuild (project_path, properties);
 			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
 			var warningMessages = FilterWarnings (warnings, platform);
@@ -715,8 +766,9 @@ namespace Xamarin.Tests {
 				.ToList ();
 
 			var appExecutable = GetNativeExecutable (platform, appPath);
+			var isCoreCLR = !useMonoRuntime;
 
-			CheckAppBundleContents (platform, appPath, rids, signature, isReleaseBuild);
+			CheckAppBundleContents (platform, appPath, rids, signature, isReleaseBuild, isCoreCLR: isCoreCLR);
 			Assert.That (warningMessages, Is.EqualTo (expectedWarnings), "Warnings");
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 
@@ -728,7 +780,7 @@ namespace Xamarin.Tests {
 			warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
 			warningMessages = FilterWarnings (warnings, platform);
 
-			CheckAppBundleContents (platform, appPath, rids, signature, isReleaseBuild);
+			CheckAppBundleContents (platform, appPath, rids, signature, isReleaseBuild, isCoreCLR: isCoreCLR);
 			Assert.That (warningMessages, Is.EqualTo (expectedWarnings), "Warnings Rebuild 1");
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 
@@ -740,7 +792,7 @@ namespace Xamarin.Tests {
 			warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
 			warningMessages = FilterWarnings (warnings, platform);
 
-			CheckAppBundleContents (platform, appPath, rids, signature, isReleaseBuild);
+			CheckAppBundleContents (platform, appPath, rids, signature, isReleaseBuild, isCoreCLR: isCoreCLR);
 			Assert.That (warningMessages, Is.EqualTo (expectedWarnings), "Warnings Rebuild 2");
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 
@@ -749,7 +801,7 @@ namespace Xamarin.Tests {
 			warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
 			warningMessages = FilterWarnings (warnings, platform);
 
-			CheckAppBundleContents (platform, appPath, rids, signature, isReleaseBuild);
+			CheckAppBundleContents (platform, appPath, rids, signature, isReleaseBuild, isCoreCLR: isCoreCLR);
 			Assert.That (warningMessages, Is.EqualTo (expectedWarnings), "Warnings Rebuild 3");
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 		}

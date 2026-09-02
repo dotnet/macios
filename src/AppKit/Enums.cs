@@ -250,14 +250,15 @@ namespace AppKit {
 		Above,
 	}
 
+	/// <summary>Specifies where a focus ring is drawn relative to content.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSFocusRingPlacement : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Draws only the focus ring.</summary>
 		RingOnly,
-		/// <summary>To be added.</summary>
+		/// <summary>Draws the focus ring below the content.</summary>
 		RingBelow,
-		/// <summary>To be added.</summary>
+		/// <summary>Draws the focus ring above the content.</summary>
 		RingAbove,
 	}
 

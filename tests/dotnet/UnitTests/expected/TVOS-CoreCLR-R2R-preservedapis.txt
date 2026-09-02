@@ -524,6 +524,7 @@ Microsoft.tvOS.dll:Foundation.NSObject.set_HasManagedRef(System.Boolean)
 Microsoft.tvOS.dll:Foundation.NSObject.set_IsDirectBinding(System.Boolean)
 Microsoft.tvOS.dll:Foundation.NSObject.set_RemoveFromObjectMap(System.Boolean)
 Microsoft.tvOS.dll:Foundation.NSObject.ToString()
+Microsoft.tvOS.dll:Foundation.NSObject.TryGetIsUserType(ObjCRuntime.NativeHandle, out System.Boolean&, out System.String&)
 Microsoft.tvOS.dll:Foundation.NSObject.xamarin_release_managed_ref(System.IntPtr, System.Byte)
 Microsoft.tvOS.dll:Foundation.NSObject.xamarin_set_gchandle_with_flags_safe(System.IntPtr, System.IntPtr, Foundation.NSObject/XamarinGCHandleFlags, System.IntPtr)
 Microsoft.tvOS.dll:Foundation.NSObject[] Foundation.NSDictionary::Keys()
@@ -536,6 +537,8 @@ Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::HasManag
 Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::InFinalizerQueue
 Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::IsCustomType
 Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::IsDirectBinding
+Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::IsUserType
+Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::IsUserTypeKnown
 Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::NativeRef
 Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::RegisteredToggleRef
 Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObjectData::flags

@@ -1737,7 +1737,7 @@ namespace AppKit {
 		/// <summary>The default effect for a disappearing item.</summary>
 		DisappearingItemDefault = 0,
 #if !XAMCORE_5_0
-		/// <summary>The default effect for a disappearing item.</summary>
+		/// <summary>The obsolete, misspelled name for <see cref="DisappearingItemDefault" />.</summary>
 		[Obsolete ("Use 'DisappearingItemDefault' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		DissapearingItemDefault = DisappearingItemDefault,

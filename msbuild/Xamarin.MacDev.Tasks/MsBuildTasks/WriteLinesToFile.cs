@@ -6,10 +6,19 @@ using Xamarin.Messaging.Build.Client;
 namespace Microsoft.Build.Tasks {
 	public class WriteLinesToFile : Microsoft_Build_Tasks_Core::Microsoft.Build.Tasks.WriteLinesToFile, IHasSessionId {
 		public string SessionId { get; set; } = string.Empty;
+		public bool CopyToWindows { get; set; }
+
 		public override bool Execute ()
 		{
-			if (this.ShouldExecuteRemotely (SessionId))
-				return XamarinTask.ExecuteRemotely (this);
+			if (this.ShouldExecuteRemotely (SessionId)) {
+				if (!XamarinTask.ExecuteRemotely (this, out var taskRunner))
+					return false;
+
+				if (CopyToWindows)
+					XamarinTask.CopyFilesToWindowsAsync (this, taskRunner, new [] { File }).Wait ();
+
+				return true;
+			}
 
 			return base.Execute ();
 		}

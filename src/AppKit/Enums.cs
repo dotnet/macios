@@ -2666,7 +2666,7 @@ namespace AppKit {
 	[Flags]
 	[Native]
 	public enum NSTableColumnResizing : long {
-		/// <summary>Includes all table column resizing options.</summary>
+		/// <summary>Represents -1, which sets all table column resizing option bits.</summary>
 		None = -1,
 		/// <summary>Allows the table view to resize the column automatically.</summary>
 		Autoresizing = (1 << 0),

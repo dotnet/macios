@@ -27,14 +27,15 @@ using System.ComponentModel;
 
 namespace AppKit {
 
+	/// <summary>Specifies how an application modal session should proceed.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSRunResponse : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Stops the modal session.</summary>
 		Stopped = -1000,
-		/// <summary>To be added.</summary>
+		/// <summary>Aborts the modal session.</summary>
 		Aborted = -1001,
-		/// <summary>To be added.</summary>
+		/// <summary>Continues the modal session.</summary>
 		Continues = -1002,
 	}
 

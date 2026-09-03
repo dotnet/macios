@@ -592,6 +592,10 @@
 	</Target>
 
 	<PropertyGroup>
+		<_PrepareAssembliesForPreparationDependsOnExtra>
+			$(_PrepareAssembliesForPreparationDependsOnExtra);
+			_GenerateLinkerDependencyCache;
+		</_PrepareAssembliesForPreparationDependsOnExtra>
 		<_PrepareAssembliesForPostProcessingDependsOn>
 			$(_PrepareAssembliesForPostProcessingDependsOn);
 			_ComputeLinkerInputs;
@@ -606,16 +610,20 @@
 		<PropertyGroup>
 			<!--
 			Registrar configuration:
+				- On .NET 11+, set 'partial-static' for CoreCLR simulator builds when no assemblies are trimmed
+				  and MarshalManagedExceptionMode is default (or not set), otherwise set 'trimmable-static'.
 				- Set 'managed-static' for:
 					- NativeAOT supported platforms in all configurations
 					- ios/tvos device builds in all configurations
 					- macOS/MacCatalyst builds in release configuration
-				  (On .NET 11+ CoreCLR and NativeAOT default to 'trimmable-static' instead - that's set earlier,
-				  at evaluation time, in Xamarin.Shared.Sdk.props. Mono keeps managed-static.)
+				  (On .NET 11+ NativeAOT defaults to 'trimmable-static' instead - that's set earlier, at
+				  evaluation time, in Xamarin.Shared.Sdk.props.)
 				- Set 'partial-static' for:
 					- when no assemblies are trimmed and when MarshalManagedExceptionMode is default (or not set)
 				- Otherwise set 'dynamic' 
 			-->
+			<Registrar Condition="'$(Registrar)' == '' And '$(UseMonoRuntime)' != 'true' And '$(_SdkIsSimulator)' == 'true' And '$(_AreAnyAssembliesTrimmed)' != 'true' And ('$(MarshalManagedExceptionMode)' == '' Or '$(MarshalManagedExceptionMode)' == 'default') And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '11.0'))">partial-static</Registrar>
+			<Registrar Condition="'$(Registrar)' == '' And '$(UseMonoRuntime)' != 'true' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '11.0'))">trimmable-static</Registrar>
 			<Registrar Condition="'$(Registrar)' == '' And '$(_UseNativeAot)' == 'true'">managed-static</Registrar>
 			<Registrar Condition="'$(Registrar)' == '' And '$(_SdkIsSimulator)' != 'true' And '$(SdkIsMobile)' == 'true'">managed-static</Registrar>
 			<Registrar Condition="'$(Registrar)' == '' And '$(_BundlerDebug)' != 'true' And '$(SdkIsDesktop)' == 'true'">managed-static</Registrar>

@@ -2679,17 +2679,18 @@ namespace AppKit {
 		UserResizingMask = (1 << 1),
 	}
 
+	/// <summary>Specifies which grid lines a table view draws.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSTableViewGridStyle : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Does not draw grid lines.</summary>
 		None = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Draws solid vertical grid lines.</summary>
 		SolidVerticalLine = 1 << 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Draws solid horizontal grid lines.</summary>
 		SolidHorizontalLine = 1 << 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Draws dashed horizontal grid lines.</summary>
 		DashedHorizontalGridLine = 1 << 3,
 	}
 

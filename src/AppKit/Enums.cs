@@ -1436,9 +1436,9 @@ namespace AppKit {
 	[Flags]
 	[Native]
 	public enum NSWindowNumberListOptions : ulong {
-		/// <summary>Includes windows from all applications.</summary>
+		/// <summary>Includes windows from all applications, instead of only the calling application.</summary>
 		AllApplication = 1 << 0,
-		/// <summary>Includes windows from all spaces.</summary>
+		/// <summary>Includes windows from all spaces, instead of only the active space.</summary>
 		AllSpaces = 1 << 4,
 	}
 

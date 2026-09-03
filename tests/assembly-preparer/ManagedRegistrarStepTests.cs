@@ -32,7 +32,7 @@ public class ManagedRegistrarStepTests : BaseClass {
 		}
 		";
 
-		using var preparer = CreatePreparer (ApplePlatform.MacCatalyst, true, p => p.Registrar = RegistrarMode.TrimmableStatic, code, out _, extraConfig: "PlatformAssembly=Microsoft.MacCatalyst");
+		using var preparer = CreatePreparer (ApplePlatform.MacCatalyst, true, p => p.Registrar = RegistrarMode.TrimmableStatic, code, out _);
 		var context = preparer.Configuration.DerivedLinkContext;
 		new LoadAssembliesStep ().Process (context);
 		new ManagedRegistrarStep ().Process (context);

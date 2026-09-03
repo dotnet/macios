@@ -1442,14 +1442,15 @@ namespace AppKit {
 		AllSpaces = 1 << 4,
 	}
 
+	/// <summary>Specifies the direction in which a selection changes.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSSelectionDirection : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Selects an item directly.</summary>
 		Direct = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Selects the next item.</summary>
 		Next,
-		/// <summary>To be added.</summary>
+		/// <summary>Selects the previous item.</summary>
 		Previous,
 	}
 

@@ -22601,7 +22601,6 @@ T:AppKit.NSSegmentBackgroundStyle_NSSegmentedCell
 T:AppKit.NSSegmentDistribution
 T:AppKit.NSSegmentStyle
 T:AppKit.NSSegmentSwitchTracking
-T:AppKit.NSSelectionDirection
 T:AppKit.NSSharingCollaborationMode
 T:AppKit.NSSharingContentScope
 T:AppKit.NSSharingServiceAnchoringViewForSharingService

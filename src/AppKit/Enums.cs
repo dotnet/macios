@@ -2746,14 +2746,15 @@ namespace AppKit {
 		Button,
 	}
 
+	/// <summary>Specifies when a speech synthesizer applies a change or stops speaking.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSSpeechBoundary : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Applies the change or stops speaking immediately.</summary>
 		Immediate = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Applies the change or stops speaking at the next word boundary.</summary>
 		Word = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Applies the change or stops speaking at the next sentence boundary.</summary>
 		Sentence,
 	}
 

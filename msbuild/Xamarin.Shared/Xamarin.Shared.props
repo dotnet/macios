@@ -128,7 +128,6 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 		<!-- StripMergeableLibraries: remove static linking metadata (LC_ATOM_INFO) from mergeable libraries to reduce app size -->
 		<!-- Default to true when optimizing (typically Release builds) -->
 		<StripMergeableLibraries Condition="'$(StripMergeableLibraries)' == ''">$(Optimize)</StripMergeableLibraries>
-		<StripMergeableLibraries Condition="'$(StripMergeableLibraries)' == ''">false</StripMergeableLibraries>
 
 		<!-- NoDSymUtil -->
 		<!-- Xamarin.Mac never had an equivalent for MtouchNoDSymUtil and never produced them -> now, produce them by default when archiving -->

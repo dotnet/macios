@@ -426,8 +426,10 @@ namespace Xamarin {
 			var fat = f as FatFile;
 			if (fat is null)
 				return false;
+			if (fat.entries is null)
+				return false;
 
-			foreach (var entry in fat.entries!)
+			foreach (var entry in fat.entries)
 				if (entry.entry is not null && entry.entry.IsDynamicLibrary && entry.entry.HasAtomInfo)
 					return true;
 
@@ -882,6 +884,8 @@ namespace Xamarin {
 				}
 				return false;
 			}
+		}
+
 		const byte N_EXT = 0x01;  // external symbol
 		const byte N_TYPE = 0x0e; // mask for type bits
 		const byte N_UNDF = 0x0;  // undefined symbol

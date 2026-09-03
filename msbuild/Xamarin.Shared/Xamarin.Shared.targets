@@ -3416,7 +3416,8 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			SessionId="$(BuildSessionId)"
 			Condition="'$(IsMacEnabled)' == 'true'"
 			FrameworksDirectory="$(_AppFrameworksPath)"
-			DylibDirectories="$(_AppContentsPath)"
+			DylibDirectories="$(_AppBundlePath);$(_AppContentsPath)"
+			StripPath="$(StripPath)"
 		/>
 	</Target>
 

@@ -22750,7 +22750,6 @@ T:AppKit.NSToolbarItemGroupControlRepresentation
 T:AppKit.NSToolbarItemGroupSelectionMode
 T:AppKit.NSToolbarItemStyle
 T:AppKit.NSToolbarItemVisibilityPriority
-T:AppKit.NSToolbarSizeMode
 T:AppKit.NSToolbarWillInsert
 T:AppKit.NSTouch_NSTouchBar
 T:AppKit.NSTouchBarItemIdentifier

@@ -2598,14 +2598,15 @@ namespace AppKit {
 		Label,
 	}
 
+	/// <summary>Specifies the size of toolbar items.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSToolbarSizeMode : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the toolbar's default item size.</summary>
 		Default,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses regular-sized toolbar items.</summary>
 		Regular,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses small toolbar items.</summary>
 		Small,
 	}
 

@@ -2442,20 +2442,21 @@ namespace AppKit {
 		Percentage,
 	}
 
+	/// <summary>Identifies a dimension of a text block.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTextBlockDimension : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The text block's width.</summary>
 		Width = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The minimum width of the text block.</summary>
 		MinimumWidth = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The maximum width of the text block.</summary>
 		MaximumWidth = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>The text block's height.</summary>
 		Height = 4,
-		/// <summary>To be added.</summary>
+		/// <summary>The minimum height of the text block.</summary>
 		MinimumHeight = 5,
-		/// <summary>To be added.</summary>
+		/// <summary>The maximum height of the text block.</summary>
 		MaximumHeight = 6,
 	}
 

@@ -22678,7 +22678,6 @@ T:AppKit.NSTextAlignment
 T:AppKit.NSTextAlignmentExtensions
 T:AppKit.NSTextBlockDimension
 T:AppKit.NSTextBlockLayer
-T:AppKit.NSTextBlockValueType
 T:AppKit.NSTextBlockVerticalAlignment
 T:AppKit.NSTextCheckingOptions
 T:AppKit.NSTextContentManagerEnumerationOptions

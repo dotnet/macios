@@ -2432,12 +2432,13 @@ namespace AppKit {
 		ShowsPreview = 131072,
 	}
 
+	/// <summary>Specifies how a text block value is interpreted.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTextBlockValueType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The value is an absolute number of points.</summary>
 		Absolute,
-		/// <summary>To be added.</summary>
+		/// <summary>The value is a percentage of the containing text block.</summary>
 		Percentage,
 	}
 

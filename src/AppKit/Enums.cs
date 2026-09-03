@@ -2661,15 +2661,16 @@ namespace AppKit {
 		Above,
 	}
 
+	/// <summary>Specifies how a table column can be resized.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSTableColumnResizing : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Disables resizing for the table column.</summary>
 		None = -1,
-		/// <summary>To be added.</summary>
+		/// <summary>Allows the table view to resize the column automatically.</summary>
 		Autoresizing = (1 << 0),
-		/// <summary>To be added.</summary>
+		/// <summary>Allows the user to resize the column.</summary>
 		UserResizingMask = (1 << 1),
 	}
 

@@ -22633,7 +22633,6 @@ T:AppKit.NSStringAttributeKey
 T:AppKit.NSStringDrawing_NSAttributedString
 T:AppKit.NSStringDrawing_NSString
 T:AppKit.NSSurfaceOrder
-T:AppKit.NSTableColumnResizing
 T:AppKit.NSTableReorder
 T:AppKit.NSTableRowActionEdge
 T:AppKit.NSTableViewAnimation

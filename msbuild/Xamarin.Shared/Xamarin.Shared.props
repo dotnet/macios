@@ -36,6 +36,13 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 		
 		<!-- Set _ResourcePrefix from AppBundleResourcePrefix -->
 		<_ResourcePrefix>$(AppBundleResourcePrefix)</_ResourcePrefix>
+		<!-- Split _ResourcePrefix into individual properties for multi-prefix glob expansion.
+		     We support up to 3 semicolon-separated resource prefix paths.
+		     Trailing semicolons are appended so that Split(';')[N] never throws IndexOutOfRangeException. -->
+		<_ResourcePrefixCount>$([System.String]::new('$(_ResourcePrefix)').Split(';').Length)</_ResourcePrefixCount>
+		<_ResourcePrefix_1>$([System.String]::new('$(_ResourcePrefix);;;').Split(';')[0])</_ResourcePrefix_1>
+		<_ResourcePrefix_2>$([System.String]::new('$(_ResourcePrefix);;;').Split(';')[1])</_ResourcePrefix_2>
+		<_ResourcePrefix_3>$([System.String]::new('$(_ResourcePrefix);;;').Split(';')[2])</_ResourcePrefix_3>
 
 		<!-- SdkVersion -->
 		<_SdkVersion Condition="'$(_PlatformName)' == 'macOS'">$(MacOSXSdkVersion)</_SdkVersion>
@@ -160,21 +167,23 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 
 		<!-- OptimizePNGs:
 			default to false if a binding project (both XI and XM)
-			otherwise default to false if a Xamarin.Mac project
-			otherwise default to true for Xamarin.iOS
+			otherwise default to true for release builds in .NET 11+ except on macOS
+			otherwise default to false
 		-->
 		<OptimizePNGs Condition="'$(IsBindingProject)' == 'true' And '$(OptimizePNGs)' == ''">false</OptimizePNGs>
 		<OptimizePNGs Condition="'$(_PlatformName)' == 'macOS' And '$(OptimizePNGs)' == ''">false</OptimizePNGs>
-		<OptimizePNGs Condition="'$(_PlatformName)' != 'macOS' And '$(OptimizePNGs)' == ''">true</OptimizePNGs>
+		<OptimizePNGs Condition="'$(OptimizePNGs)' == '' And '$(_BundlerDebug)' != 'true' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), 11.0))">true</OptimizePNGs>
+		<OptimizePNGs Condition="'$(OptimizePNGs)' == ''">false</OptimizePNGs>
 
 		<!-- OptimizePropertyLists:
 			default to false if a binding project (both XI and XM)
-			otherwise default to false if a Xamarin.Mac project
-			otherwise default to true for Xamarin.iOS
+			otherwise default to true for release builds in .NET 11+ except on macOS
+			otherwise default to false
 		-->
 		<OptimizePropertyLists Condition="'$(IsBindingProject)' == 'true' And '$(OptimizePropertyLists)' == ''">false</OptimizePropertyLists>
 		<OptimizePropertyLists Condition="'$(_PlatformName)' == 'macOS' And '$(OptimizePropertyLists)' == ''">false</OptimizePropertyLists>
-		<OptimizePropertyLists Condition="'$(_PlatformName)' != 'macOS' And '$(OptimizePropertyLists)' == ''">true</OptimizePropertyLists>
+		<OptimizePropertyLists Condition="'$(OptimizePropertyLists)' == '' And '$(_BundlerDebug)' != 'true' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), 11.0))">true</OptimizePropertyLists>
+		<OptimizePropertyLists Condition="'$(OptimizePropertyLists)' == ''">false</OptimizePropertyLists>
 
 		<StripFrameworkHeaders Condition="'$(StripFrameworkHeaders)' == ''">true</StripFrameworkHeaders>
 

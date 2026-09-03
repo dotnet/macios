@@ -82,6 +82,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.Metal" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.MetalLib" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.OptimizeImage" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.OptimizeLocalization" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.OptimizePropertyList" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.PackLibraryResources" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ParseBundlerArguments" AssemblyFile="$(_TaskAssemblyName)" />
@@ -425,6 +426,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 		<CollectBundleResourcesDependsOn>
 			$(CollectBundleResourcesDependsOn);
+			_ValidateResourcePrefixCount;
 			_DetectBuildType;
 			_ComputeTargetArchitectures;
 			_ComputeTargetFrameworkMoniker;
@@ -443,6 +445,11 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			_SetResourceMetadata;
 		</CollectBundleResourcesDependsOn>
 	</PropertyGroup>
+
+	<!-- Validate that the number of resource prefixes doesn't exceed the supported limit of 3. -->
+	<Target Name="_ValidateResourcePrefixCount" Condition="'$(_ResourcePrefixCount)' != '' And $(_ResourcePrefixCount) &gt; 3">
+		<Error Text="AppBundleResourcePrefix supports up to 3 semicolon-separated paths, but $(_ResourcePrefixCount) were specified: '$(_ResourcePrefix)'. Please reduce the number of resource prefix paths." />
+	</Target>
 
 	<Target Name="_CollectBundleResources" DependsOnTargets="$(CollectBundleResourcesDependsOn)">
 		<!-- For multi-RID builds, we first build once for each RuntimeIdentifier, then build again to create a universal app bundle.
@@ -475,6 +482,13 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			>
 			<Output TaskParameter="BundleResourcesWithLogicalNames" ItemName="_BundleResourceWithLogicalName" />
 		</CollectBundleResources>
+		<ItemGroup>
+			<!-- Resources embedded in their original form must use the consuming app's optimization settings. -->
+			<_BundleResourceWithLogicalName Update="@(_BundleResourceWithLogicalName)" Condition="'%(_BundleResourceWithLogicalName.IsOriginalResource)' == 'true'">
+				<Optimize Condition="'%(_BundleResourceWithLogicalName.Extension)' == '.png'">$(OptimizePNGs)</Optimize>
+				<Optimize Condition="'%(_BundleResourceWithLogicalName.Extension)' == '.plist' Or '%(_BundleResourceWithLogicalName.Extension)' == '.strings'">$(OptimizePropertyLists)</Optimize>
+			</_BundleResourceWithLogicalName>
+		</ItemGroup>
 
 		<!-- Write out the list of assets we've processed, so that an inner build in a multi-rid build can skip processing them.
 		     Items with a PublishFolderType are not actually processed by CollectBundleResources (they go to ResolvedFileToPublish instead),
@@ -1379,9 +1393,22 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		</ItemGroup>
 	</Target>
 
+	<PropertyGroup>
+		<_ComputeBundleResourceOutputPathsDependsOn>
+			$(_ComputeBundleResourceOutputPathsDependsOn);
+			_CollectBundleResources;
+			_OptimizePngImages;
+			_OptimizePropertyLists;
+			_OptimizeLocalizationFiles;
+			_GenerateBundleName;
+			_DetectSigningIdentity;
+			_ReadAppManifest;
+		</_ComputeBundleResourceOutputPathsDependsOn>
+	</PropertyGroup>
+
 	<Target Name="_ComputeBundleResourceOutputPaths"
 		Condition="'$(_CanOutputAppBundle)' == 'true'"
-		DependsOnTargets="_CollectBundleResources;_GenerateBundleName;_DetectSigningIdentity;_ReadAppManifest">
+		DependsOnTargets="$(_ComputeBundleResourceOutputPathsDependsOn)">
 		<ComputeBundleResourceOutputPaths
 			SessionId="$(BuildSessionId)"
 			Condition="'$(IsMacEnabled)' == 'true'"
@@ -1728,6 +1755,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<!-- Optimize png images -->
 
 	<PropertyGroup>
+		<_StripPngText Condition="'$(_PlatformName)' != 'macOS'">true</_StripPngText>
 		<OptimizePngImagesDependsOn>
 			_CollectPngImages;
 			_CoreOptimizePngImages;
@@ -1738,9 +1766,10 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<Target Name="_OptimizePngImages" DependsOnTargets="$(OptimizePngImagesDependsOn)" />
 
 	<Target Name="_CollectPngImages" DependsOnTargets="_CollectBundleResources">
-		<CreateItem Include="@(_BundleResourceWithLogicalName)" Condition="'%(_BundleResourceWithLogicalName.Extension)' == '.png' And '%(_BundleResourceWithLogicalName.Optimize)' == 'true'">
-			<Output TaskParameter="Include" ItemName="_PngImage" />
-		</CreateItem>
+		<ItemGroup>
+			<_PngImage Include="@(_BundleResourceWithLogicalName)" Condition="'%(_BundleResourceWithLogicalName.Extension)' == '.png' And '%(_BundleResourceWithLogicalName.Optimize)' == 'true'" />
+			<FileWrites Include="@(_PngImage -> '$(DeviceSpecificIntermediateOutputPath)optimized\%(LogicalName)')" />
+		</ItemGroup>
 	</Target>
 
 	<Target Name="_CoreOptimizePngImages"
@@ -1753,20 +1782,20 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			Condition="'$(IsMacEnabled)' == 'true'"
 			PngCrushPath="$(PngcrushPath)"
 			SdkDevPath="$(_SdkDevPath)"
+			StripPngText="$(_StripPngText)"
 			InputImages="@(_PngImage)"
-			OutputImages="@(_PngImage -> '$(DeviceSpecificIntermediateOutputPath)optimized\%(LogicalName)')">
-			<Output TaskParameter="OutputImages" ItemName="FileWrites" />
-		</OptimizeImage>
+			OutputImages="@(_PngImage -> '$(DeviceSpecificIntermediateOutputPath)optimized\%(LogicalName)')" />
 	</Target>
 
 	<Target Name="_AfterCoreOptimizePngImages" Condition="'@(_PngImage)' != ''">
 		<ItemGroup>
 			<_BundleResourceWithLogicalName Remove="@(_PngImage)" />
+			<_BundleResourceWithLogicalName Include="$(DeviceSpecificIntermediateOutputPath)optimized\%(_PngImage.LogicalName)">
+				<LogicalName>%(_PngImage.LogicalName)</LogicalName>
+				<Optimize>false</Optimize>
+				<ResourceTags>%(_PngImage.ResourceTags)</ResourceTags>
+			</_BundleResourceWithLogicalName>
 		</ItemGroup>
-
-		<CreateItem Include="$(DeviceSpecificIntermediateOutputPath)optimized\%(_PngImage.LogicalName)" AdditionalMetadata="LogicalName=%(_PngImage.LogicalName);Optimize='false';ResourceTags=%(_PngImage.ResourceTags)">
-			<Output TaskParameter="Include" ItemName="_BundleResourceWithLogicalName" />
-		</CreateItem>
 	</Target>
 
 	<!-- Optimize property lists -->
@@ -1782,24 +1811,19 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<Target Name="_OptimizePropertyLists" DependsOnTargets="$(OptimizePropertyListsDependsOn)" />
 
 	<Target Name="_CollectPropertyLists" DependsOnTargets="_CollectBundleResources">
-		<CreateItem Include="@(_BundleResourceWithLogicalName)" Condition="'%(_BundleResourceWithLogicalName.Extension)' == '.plist' And '%(_BundleResourceWithLogicalName.Optimize)' == 'true'">
-			<Output TaskParameter="Include" ItemName="_PropertyList" />
-		</CreateItem>
 		<ItemGroup>
-			<FileWrites Include="$(DeviceSpecificIntermediateOutputPath)optimized\%(_PropertyList.LogicalName)" />
+			<_PropertyList Include="@(_BundleResourceWithLogicalName)" Condition="'%(_BundleResourceWithLogicalName.Extension)' == '.plist' And '%(_BundleResourceWithLogicalName.Optimize)' == 'true'" />
+			<FileWrites Include="@(_PropertyList -> '$(DeviceSpecificIntermediateOutputPath)optimized\%(LogicalName)')" />
 		</ItemGroup>
 	</Target>
 
 	<Target Name="_CoreOptimizePropertyLists"
-		DependsOnTargets="_CollectPropertyLists;_DetectSdkLocations"
+		DependsOnTargets="_CollectPropertyLists"
 		Inputs="@(_PropertyList)"
 		Outputs="$(DeviceSpecificIntermediateOutputPath)optimized\%(_PropertyList.LogicalName)"
 		>
 
 		<OptimizePropertyList
-			SessionId="$(BuildSessionId)"
-			Condition="'$(IsMacEnabled)' == 'true'"
-			PlutilPath="$(PlutilPath)"
 			Input="%(_PropertyList.Identity)"
 			Output="$(DeviceSpecificIntermediateOutputPath)optimized\%(_PropertyList.LogicalName)">
 		</OptimizePropertyList>
@@ -1808,11 +1832,11 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<Target Name="_AfterCoreOptimizePropertyLists" Condition="'@(_PropertyList)' != ''">
 		<ItemGroup>
 			<_BundleResourceWithLogicalName Remove="@(_PropertyList)" />
+			<_BundleResourceWithLogicalName Include="$(DeviceSpecificIntermediateOutputPath)optimized\%(_PropertyList.LogicalName)">
+				<LogicalName>%(_PropertyList.LogicalName)</LogicalName>
+				<Optimize>false</Optimize>
+			</_BundleResourceWithLogicalName>
 		</ItemGroup>
-
-		<CreateItem Include="$(DeviceSpecificIntermediateOutputPath)optimized\%(_PropertyList.LogicalName)" AdditionalMetadata="LogicalName=%(_PropertyList.LogicalName);Optimize='false'">
-			<Output TaskParameter="Include" ItemName="_BundleResourceWithLogicalName" />
-		</CreateItem>
 	</Target>
 
 	<!-- Optimize localization files (*.strings) -->
@@ -1828,11 +1852,9 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<Target Name="_OptimizeLocalizationFiles" DependsOnTargets="$(OptimizeLocalizationFilesDependsOn)" />
 
 	<Target Name="_CollectLocalizationFiles" DependsOnTargets="_CollectBundleResources">
-		<CreateItem Include="@(_BundleResourceWithLogicalName)" Condition="'%(_BundleResourceWithLogicalName.Extension)' == '.strings' And '%(_BundleResourceWithLogicalName.Optimize)' == 'true'">
-			<Output TaskParameter="Include" ItemName="_LocalizationFile" />
-		</CreateItem>
 		<ItemGroup>
-			<FileWrites Include="$(DeviceSpecificIntermediateOutputPath)optimized\%(_LocalizationFile.LogicalName)" />
+			<_LocalizationFile Include="@(_BundleResourceWithLogicalName)" Condition="'%(_BundleResourceWithLogicalName.Extension)' == '.strings' And '%(_BundleResourceWithLogicalName.Optimize)' == 'true'" />
+			<FileWrites Include="@(_LocalizationFile -> '$(DeviceSpecificIntermediateOutputPath)optimized\%(LogicalName)')" />
 		</ItemGroup>
 	</Target>
 
@@ -1842,23 +1864,23 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		Outputs="$(DeviceSpecificIntermediateOutputPath)optimized\%(_LocalizationFile.LogicalName)"
 		>
 
-		<OptimizePropertyList
+		<OptimizeLocalization
 			SessionId="$(BuildSessionId)"
 			Condition="'$(IsMacEnabled)' == 'true'"
 			PlutilPath="$(PlutilPath)"
 			Input="%(_LocalizationFile.Identity)"
 			Output="$(DeviceSpecificIntermediateOutputPath)optimized\%(_LocalizationFile.LogicalName)">
-		</OptimizePropertyList>
+		</OptimizeLocalization>
 	</Target>
 
 	<Target Name="_AfterCoreOptimizeLocalizationFiles" Condition="'@(_LocalizationFile)' != ''">
 		<ItemGroup>
 			<_BundleResourceWithLogicalName Remove="@(_LocalizationFile)" />
+			<_BundleResourceWithLogicalName Include="$(DeviceSpecificIntermediateOutputPath)optimized\%(_LocalizationFile.LogicalName)">
+				<LogicalName>%(_LocalizationFile.LogicalName)</LogicalName>
+				<Optimize>false</Optimize>
+			</_BundleResourceWithLogicalName>
 		</ItemGroup>
-
-		<CreateItem Include="$(DeviceSpecificIntermediateOutputPath)optimized\%(_LocalizationFile.LogicalName)" AdditionalMetadata="LogicalName=%(_LocalizationFile.LogicalName);Optimize='false'">
-			<Output TaskParameter="Include" ItemName="_BundleResourceWithLogicalName" />
-		</CreateItem>
 	</Target>
 
 	<PropertyGroup Condition="'$(IsBindingProject)' == 'true'">
@@ -2165,6 +2187,9 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		<_PackLibraryResourcesDependsOn Condition="'$(_BundleOriginalResources)' != 'true'">
 			$(_PackLibraryResourcesDependsOn);
 			_CollectBundleResources;
+			_OptimizePngImages;
+			_OptimizePropertyLists;
+			_OptimizeLocalizationFiles;
 		</_PackLibraryResourcesDependsOn>
 		<_PackLibraryResourcesDependsOn Condition="'$(_BundleOriginalResources)' == 'true'">
 			$(_PackLibraryResourcesDependsOn);
@@ -2865,7 +2890,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			Properties="%(_AppExtensionReferenceWithConfigurationExistent.SetConfiguration); %(_AppExtensionReferenceWithConfigurationExistent.SetPlatform)"
 			Condition="'@(_AppExtensionReferenceWithConfigurationExistent)' != '' and '$(_BuildReferencedExtensionProjects)' != 'true'">
 
-			<Output TaskParameter="TargetOutputs" ItemName="_ResolvedAppExtensionReferences" Condition="'%(_AppExtensionReferenceWithConfigurationExistent.ReferenceOutputAssembly)' != 'false'"/>
+			<Output TaskParameter="TargetOutputs" ItemName="_ResolvedAppExtensionReferences" />
 		</MSBuild>
 
 		<!-- Build the referenced project if required -->
@@ -2875,7 +2900,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			Properties="%(_AppExtensionReferenceWithConfigurationExistent.SetConfiguration); %(_AppExtensionReferenceWithConfigurationExistent.SetPlatform)"
 			Condition="'@(_AppExtensionReferenceWithConfigurationExistent)' != '' and '$(_BuildReferencedExtensionProjects)' == 'true' ">
 
-			<Output TaskParameter="TargetOutputs" ItemName="_ResolvedAppExtensionReferences" Condition="'%(_AppExtensionReferenceWithConfigurationExistent.ReferenceOutputAssembly)' != 'false'"/>
+			<Output TaskParameter="TargetOutputs" ItemName="_ResolvedAppExtensionReferences" />
 		</MSBuild>
 
 		<Warning Text="Referenced $(_PlatformName) App Extension Project %(_AppExtensionReferenceWithConfigurationNonExistent.Identity) not found, ignoring."

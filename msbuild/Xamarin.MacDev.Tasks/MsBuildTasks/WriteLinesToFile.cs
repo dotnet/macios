@@ -14,6 +14,7 @@ namespace Microsoft.Build.Tasks {
 				if (!XamarinTask.ExecuteRemotely (this, out var taskRunner))
 					return false;
 
+				// File isn't an [Output] property, so no empty placeholder is created on Windows.
 				if (CopyToWindows)
 					XamarinTask.CopyFilesToWindowsAsync (this, taskRunner, new [] { File }).Wait ();
 

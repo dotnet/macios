@@ -238,36 +238,39 @@ namespace AppKit {
 		Buffered,
 	}
 
+	/// <summary>Specifies how a window is ordered relative to other windows.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSWindowOrderingMode : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Orders the window below another window.</summary>
 		Below = -1,
-		/// <summary>To be added.</summary>
+		/// <summary>Removes the window from the screen.</summary>
 		Out,
-		/// <summary>To be added.</summary>
+		/// <summary>Orders the window above another window.</summary>
 		Above,
 	}
 
+	/// <summary>Specifies where a focus ring is drawn relative to content.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSFocusRingPlacement : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Draws only the focus ring.</summary>
 		RingOnly,
-		/// <summary>To be added.</summary>
+		/// <summary>Draws the focus ring below the content.</summary>
 		RingBelow,
-		/// <summary>To be added.</summary>
+		/// <summary>Draws the focus ring above the content.</summary>
 		RingAbove,
 	}
 
+	/// <summary>Specifies the focus ring displayed by a control.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSFocusRingType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the default focus ring.</summary>
 		Default,
-		/// <summary>To be added.</summary>
+		/// <summary>Does not display a focus ring.</summary>
 		None,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays a focus ring outside the control.</summary>
 		Exterior,
 	}
 
@@ -300,12 +303,13 @@ namespace AppKit {
 		MaxYEdge,
 	}
 
+	/// <summary>Specifies the layout direction of the user interface.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSUserInterfaceLayoutDirection : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Arranges interface elements from left to right.</summary>
 		LeftToRight,
-		/// <summary>To be added.</summary>
+		/// <summary>Arranges interface elements from right to left.</summary>
 		RightToLeft,
 	}
 
@@ -457,14 +461,15 @@ namespace AppKit {
 		ProportionallyUpOrDown,
 	}
 
+	/// <summary>Specifies the state of a cell.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSCellStateValue : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The cell has a mixed state.</summary>
 		Mixed = -1,
-		/// <summary>To be added.</summary>
+		/// <summary>The cell is off.</summary>
 		Off,
-		/// <summary>To be added.</summary>
+		/// <summary>The cell is on.</summary>
 		On,
 	}
 
@@ -580,12 +585,13 @@ namespace AppKit {
 		Never,
 	}
 
+	/// <summary>Specifies how an image is resized to fill its destination.</summary>
 	[NoMacCatalyst]
 	[Native (ConvertToNative = "NSImageResizingModeExtensions.ToNative", ConvertToManaged = "NSImageResizingModeExtensions.ToManaged")]
 	public enum NSImageResizingMode : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Stretches the image to fill the destination.</summary>
 		Stretch,
-		/// <summary>To be added.</summary>
+		/// <summary>Tiles the image to fill the destination.</summary>
 		Tile,
 	}
 
@@ -604,18 +610,19 @@ namespace AppKit {
 		Critical,
 	}
 
+	/// <summary>Specifies a response returned by a modal session.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSModalResponse : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the user accepted the modal session.</summary>
 		OK = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the user canceled the modal session.</summary>
 		Cancel = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the modal session should stop.</summary>
 		Stop = -1000,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the modal session should abort.</summary>
 		Abort = -1001,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the modal session should continue.</summary>
 		Continue = -1002,
 	}
 	#endregion
@@ -1748,29 +1755,31 @@ namespace AppKit {
 	#endregion
 
 	#region NSMatrix
+	/// <summary>Specifies how a matrix tracks and selects its cells.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSMatrixMode : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Allows a single cell to be selected at a time.</summary>
 		Radio,
-		/// <summary>To be added.</summary>
+		/// <summary>Highlights a cell while asking it to track the mouse.</summary>
 		Highlight,
-		/// <summary>To be added.</summary>
+		/// <summary>Highlights cells without asking them to track the mouse.</summary>
 		List,
-		/// <summary>To be added.</summary>
+		/// <summary>Allows individual cells to track the mouse.</summary>
 		Track,
 	}
 	#endregion
 
 	#region NSBrowser
+	/// <summary>Specifies how browser columns can be resized.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSBrowserColumnResizingType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Prevents columns from being resized.</summary>
 		None,
-		/// <summary>To be added.</summary>
+		/// <summary>Automatically resizes columns.</summary>
 		Auto,
-		/// <summary>To be added.</summary>
+		/// <summary>Allows the user to resize columns.</summary>
 		User,
 	}
 
@@ -1879,34 +1888,37 @@ namespace AppKit {
 
 	#region NSBezelPath
 
+	/// <summary>Specifies the shape of the endpoints of an open path.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSLineCapStyle : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Ends the path at the endpoint.</summary>
 		Butt,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses a semicircular cap centered on the endpoint.</summary>
 		Round,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses a square cap that extends beyond the endpoint.</summary>
 		Square,
 	}
 
+	/// <summary>Specifies the shape used to join connected path segments.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSLineJoinStyle : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Joins segments by extending their outer edges until they meet.</summary>
 		Miter,
-		/// <summary>To be added.</summary>
+		/// <summary>Joins segments with a rounded corner.</summary>
 		Round,
-		/// <summary>To be added.</summary>
+		/// <summary>Joins segments with a beveled corner.</summary>
 		Bevel,
 	}
 
+	/// <summary>Specifies the rule used to determine which areas of a path are filled.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSWindingRule : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Fills areas using the nonzero winding rule.</summary>
 		NonZero,
-		/// <summary>To be added.</summary>
+		/// <summary>Fills areas using the even-odd winding rule.</summary>
 		EvenOdd,
 	}
 
@@ -1926,12 +1938,13 @@ namespace AppKit {
 	#endregion
 
 	#region NSRulerView
+	/// <summary>Specifies the orientation of a ruler view.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSRulerOrientation : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>A horizontal ruler.</summary>
 		Horizontal,
-		/// <summary>To be added.</summary>
+		/// <summary>A vertical ruler.</summary>
 		Vertical,
 	}
 	#endregion
@@ -2133,23 +2146,25 @@ namespace AppKit {
 		DashDotDot = 0x0400,
 	}
 
+	/// <summary>Specifies the direction associated with a selection at a line boundary.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSSelectionAffinity : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The selection is associated with the preceding line.</summary>
 		Upstream,
-		/// <summary>To be added.</summary>
+		/// <summary>The selection is associated with the following line.</summary>
 		Downstream,
 	}
 
+	/// <summary>Specifies the unit used when modifying a text selection.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSSelectionGranularity : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Selects text by character.</summary>
 		Character,
-		/// <summary>To be added.</summary>
+		/// <summary>Selects text by word.</summary>
 		Word,
-		/// <summary>To be added.</summary>
+		/// <summary>Selects text by paragraph.</summary>
 		Paragraph,
 	}
 
@@ -2181,31 +2196,33 @@ namespace AppKit {
 	}
 	#endregion
 
+	/// <summary>Specifies the direction in which text layout sweeps across a line.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSLineSweepDirection : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Sweeps toward the left.</summary>
 		NSLineSweepLeft,
-		/// <summary>To be added.</summary>
+		/// <summary>Sweeps toward the right.</summary>
 		NSLineSweepRight,
-		/// <summary>To be added.</summary>
+		/// <summary>Sweeps downward.</summary>
 		NSLineSweepDown,
-		/// <summary>To be added.</summary>
+		/// <summary>Sweeps upward.</summary>
 		NSLineSweepUp,
 	}
 
+	/// <summary>Specifies the direction in which text layout moves between lines.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSLineMovementDirection : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Does not move between lines.</summary>
 		None,
-		/// <summary>To be added.</summary>
+		/// <summary>Moves to the left.</summary>
 		Left,
-		/// <summary>To be added.</summary>
+		/// <summary>Moves to the right.</summary>
 		Right,
-		/// <summary>To be added.</summary>
+		/// <summary>Moves downward.</summary>
 		Down,
-		/// <summary>To be added.</summary>
+		/// <summary>Moves upward.</summary>
 		Up,
 	}
 
@@ -2289,23 +2306,25 @@ namespace AppKit {
 		BigEndian32Bit = 1 << 11,
 	}
 
+	/// <summary>Specifies the orientation of printed pages.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSPrintingOrientation : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Prints pages in portrait orientation.</summary>
 		Portrait,
-		/// <summary>To be added.</summary>
+		/// <summary>Prints pages in landscape orientation.</summary>
 		Landscape,
 	}
 
+	/// <summary>Specifies how printed content is paginated along one axis.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSPrintingPaginationMode : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Divides the content into equal-sized page rectangles.</summary>
 		Auto,
-		/// <summary>To be added.</summary>
+		/// <summary>Scales the content to produce one row or column of pages.</summary>
 		Fit,
-		/// <summary>To be added.</summary>
+		/// <summary>Clips the content to produce one row or column of pages.</summary>
 		Clip,
 	}
 
@@ -2377,16 +2396,17 @@ namespace AppKit {
 		DecrementArrow,
 	}
 
+	/// <summary>Specifies the order in which pages are printed.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSPrintingPageOrder : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Prints pages from front to back.</summary>
 		Descending = -1,
-		/// <summary>To be added.</summary>
+		/// <summary>Prints pages in the order received by the spooler without rearranging them.</summary>
 		Special,
-		/// <summary>To be added.</summary>
+		/// <summary>Prints pages from back to front.</summary>
 		Ascending,
-		/// <summary>To be added.</summary>
+		/// <summary>The page order is unknown.</summary>
 		Unknown,
 	}
 
@@ -2412,62 +2432,67 @@ namespace AppKit {
 		ShowsPreview = 131072,
 	}
 
+	/// <summary>Specifies how a text block value is interpreted.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTextBlockValueType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The value is an absolute number of points.</summary>
 		Absolute,
-		/// <summary>To be added.</summary>
+		/// <summary>The value is a percentage of the containing text block.</summary>
 		Percentage,
 	}
 
+	/// <summary>Identifies a dimension of a text block.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTextBlockDimension : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The text block's width.</summary>
 		Width = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The minimum width of the text block.</summary>
 		MinimumWidth = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The maximum width of the text block.</summary>
 		MaximumWidth = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>The text block's height.</summary>
 		Height = 4,
-		/// <summary>To be added.</summary>
+		/// <summary>The minimum height of the text block.</summary>
 		MinimumHeight = 5,
-		/// <summary>To be added.</summary>
+		/// <summary>The maximum height of the text block.</summary>
 		MaximumHeight = 6,
 	}
 
+	/// <summary>Identifies a layer of a text block.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTextBlockLayer : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The padding layer between the text and the border.</summary>
 		Padding = -1,
-		/// <summary>To be added.</summary>
+		/// <summary>The border layer surrounding the padding.</summary>
 		Border,
-		/// <summary>To be added.</summary>
+		/// <summary>The margin layer outside the border.</summary>
 		Margin,
 	}
 
+	/// <summary>Specifies the vertical alignment of content in a text block.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTextBlockVerticalAlignment : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns content with the top of the text block.</summary>
 		Top,
-		/// <summary>To be added.</summary>
+		/// <summary>Centers content vertically in the text block.</summary>
 		Middle,
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns content with the bottom of the text block.</summary>
 		Bottom,
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns content with the text block's baseline.</summary>
 		Baseline,
 	}
 
+	/// <summary>Specifies how a text table calculates column widths.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTextTableLayoutAlgorithm : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Calculates column widths based on the table's contents.</summary>
 		Automatic,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the table's specified column widths without considering its contents.</summary>
 		Fixed,
 	}
 
@@ -2559,27 +2584,29 @@ namespace AppKit {
 		WritingPromised = 1 << 9,
 	}
 
+	/// <summary>Specifies how a toolbar displays its items.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSToolbarDisplayMode : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the toolbar's default display mode.</summary>
 		Default,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays both the icon and label for each toolbar item.</summary>
 		IconAndLabel,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays only the icon for each toolbar item.</summary>
 		Icon,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays only the label for each toolbar item.</summary>
 		Label,
 	}
 
+	/// <summary>Specifies the size of toolbar items.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSToolbarSizeMode : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the toolbar's default item size.</summary>
 		Default,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses regular-sized toolbar items.</summary>
 		Regular,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses small toolbar items.</summary>
 		Small,
 	}
 
@@ -2624,24 +2651,26 @@ namespace AppKit {
 		FeedbackStyleGap = 2,
 	}
 
+	/// <summary>Specifies where a table view performs a drop operation.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTableViewDropOperation : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Performs the drop on the specified row.</summary>
 		On,
-		/// <summary>To be added.</summary>
+		/// <summary>Performs the drop above the specified row.</summary>
 		Above,
 	}
 
+	/// <summary>Specifies how a table column can be resized.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSTableColumnResizing : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Represents -1, which sets all table column resizing option bits.</summary>
 		None = -1,
-		/// <summary>To be added.</summary>
+		/// <summary>Allows the table view to resize the column automatically.</summary>
 		Autoresizing = (1 << 0),
-		/// <summary>To be added.</summary>
+		/// <summary>Allows the user to resize the column.</summary>
 		UserResizingMask = (1 << 1),
 	}
 
@@ -2659,15 +2688,16 @@ namespace AppKit {
 		DashedHorizontalGridLine = 1 << 3,
 	}
 
+	/// <summary>Specifies how a gradient extends beyond its starting and ending locations.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSGradientDrawingOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Does not extend the gradient beyond its starting or ending location.</summary>
 		None = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Extends the gradient before its starting location using the starting color.</summary>
 		BeforeStartingLocation = (1 << 0),
-		/// <summary>To be added.</summary>
+		/// <summary>Extends the gradient after its ending location using the ending color.</summary>
 		AfterEndingLocation = (1 << 1),
 	}
 

@@ -2688,15 +2688,16 @@ namespace AppKit {
 		DashedHorizontalGridLine = 1 << 3,
 	}
 
+	/// <summary>Specifies how a gradient extends beyond its starting and ending locations.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSGradientDrawingOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Does not extend the gradient beyond its starting or ending location.</summary>
 		None = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Extends the gradient before its starting location using the starting color.</summary>
 		BeforeStartingLocation = (1 << 0),
-		/// <summary>To be added.</summary>
+		/// <summary>Extends the gradient after its ending location using the ending color.</summary>
 		AfterEndingLocation = (1 << 1),
 	}
 

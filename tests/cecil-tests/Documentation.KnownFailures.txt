@@ -22394,12 +22394,10 @@ T:AppKit.NSBindingOptions
 T:AppKit.NSBitmapFormat
 T:AppKit.NSBitmapImageFileType
 T:AppKit.NSBoxType
-T:AppKit.NSBrowserColumnResizingType
 T:AppKit.NSButtonType
 T:AppKit.NSCellAttribute
 T:AppKit.NSCellHit
 T:AppKit.NSCellImagePosition
-T:AppKit.NSCellStateValue
 T:AppKit.NSCellStyleMask
 T:AppKit.NSCharacterCollection
 T:AppKit.NSCloudKitSharingServiceOptions
@@ -22469,8 +22467,6 @@ T:AppKit.NSEventSubtype
 T:AppKit.NSEventSwipeTrackingOptions
 T:AppKit.NSEventTrackHandler
 T:AppKit.NSEventType
-T:AppKit.NSFocusRingPlacement
-T:AppKit.NSFocusRingType
 T:AppKit.NSFontCollectionVisibility
 T:AppKit.NSFontDescriptorSystemDesign
 T:AppKit.NSFontError
@@ -22512,7 +22508,6 @@ T:AppKit.NSImageLoadStatus
 T:AppKit.NSImageName
 T:AppKit.NSImageRect
 T:AppKit.NSImageRepLoadStatus
-T:AppKit.NSImageResizingMode
 T:AppKit.NSImageResizingModeExtensions
 T:AppKit.NSImageScale
 T:AppKit.NSImageScaling
@@ -22527,12 +22522,10 @@ T:AppKit.NSLevelIndicatorPlaceholderVisibility
 T:AppKit.NSLevelIndicatorStyle
 T:AppKit.NSLineBreakMode
 T:AppKit.NSLineBreakStrategy
-T:AppKit.NSMatrixMode
 T:AppKit.NSMenuItemBadgeType
 T:AppKit.NSMenuPresentationStyle
 T:AppKit.NSMenuProperty
 T:AppKit.NSMenuSelectionMode
-T:AppKit.NSModalResponse
 T:AppKit.NSMutableAttributedStringAppKitAddons
 T:AppKit.NSObject_NSEditorRegistration
 T:AppKit.NSObject_NSFontPanelValidationAdditions
@@ -22576,7 +22569,6 @@ T:AppKit.NSPopoverBehavior
 T:AppKit.NSPopUpArrowPosition
 T:AppKit.NSPressureBehavior
 T:AppKit.NSPrinterTableStatus
-T:AppKit.NSPrintingPageOrder
 T:AppKit.NSPrintPanelOptions
 T:AppKit.NSPrintPanelResult
 T:AppKit.NSPrintRenderingQuality
@@ -22778,7 +22770,6 @@ T:AppKit.NSTypesetterBehavior
 T:AppKit.NSTypesetterControlCharacterAction
 T:AppKit.NSUnderlinePattern
 T:AppKit.NSUsableScrollerParts
-T:AppKit.NSUserInterfaceLayoutDirection
 T:AppKit.NSUserInterfaceLayoutOrientation
 T:AppKit.NSVerticalDirections
 T:AppKit.NSView_NSCandidateListTouchBarItem
@@ -22806,7 +22797,6 @@ T:AppKit.NSWindowLevel
 T:AppKit.NSWindowMenu
 T:AppKit.NSWindowNSWindow
 T:AppKit.NSWindowNumberListOptions
-T:AppKit.NSWindowOrderingMode
 T:AppKit.NSWindowResize
 T:AppKit.NSWindowSharingType
 T:AppKit.NSWindowSheetRect

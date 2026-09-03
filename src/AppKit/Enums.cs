@@ -238,36 +238,39 @@ namespace AppKit {
 		Buffered,
 	}
 
+	/// <summary>Specifies how a window is ordered relative to other windows.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSWindowOrderingMode : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Orders the window below another window.</summary>
 		Below = -1,
-		/// <summary>To be added.</summary>
+		/// <summary>Removes the window from the screen.</summary>
 		Out,
-		/// <summary>To be added.</summary>
+		/// <summary>Orders the window above another window.</summary>
 		Above,
 	}
 
+	/// <summary>Specifies where a focus ring is drawn relative to content.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSFocusRingPlacement : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Draws only the focus ring.</summary>
 		RingOnly,
-		/// <summary>To be added.</summary>
+		/// <summary>Draws the focus ring below the content.</summary>
 		RingBelow,
-		/// <summary>To be added.</summary>
+		/// <summary>Draws the focus ring above the content.</summary>
 		RingAbove,
 	}
 
+	/// <summary>Specifies the focus ring displayed by a control.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSFocusRingType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the default focus ring.</summary>
 		Default,
-		/// <summary>To be added.</summary>
+		/// <summary>Does not display a focus ring.</summary>
 		None,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays a focus ring outside the control.</summary>
 		Exterior,
 	}
 
@@ -300,12 +303,13 @@ namespace AppKit {
 		MaxYEdge,
 	}
 
+	/// <summary>Specifies the layout direction of the user interface.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSUserInterfaceLayoutDirection : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Arranges interface elements from left to right.</summary>
 		LeftToRight,
-		/// <summary>To be added.</summary>
+		/// <summary>Arranges interface elements from right to left.</summary>
 		RightToLeft,
 	}
 
@@ -457,14 +461,15 @@ namespace AppKit {
 		ProportionallyUpOrDown,
 	}
 
+	/// <summary>Specifies the state of a cell.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSCellStateValue : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The cell has a mixed state.</summary>
 		Mixed = -1,
-		/// <summary>To be added.</summary>
+		/// <summary>The cell is off.</summary>
 		Off,
-		/// <summary>To be added.</summary>
+		/// <summary>The cell is on.</summary>
 		On,
 	}
 
@@ -580,12 +585,13 @@ namespace AppKit {
 		Never,
 	}
 
+	/// <summary>Specifies how an image is resized to fill its destination.</summary>
 	[NoMacCatalyst]
 	[Native (ConvertToNative = "NSImageResizingModeExtensions.ToNative", ConvertToManaged = "NSImageResizingModeExtensions.ToManaged")]
 	public enum NSImageResizingMode : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Stretches the image to fill the destination.</summary>
 		Stretch,
-		/// <summary>To be added.</summary>
+		/// <summary>Tiles the image to fill the destination.</summary>
 		Tile,
 	}
 
@@ -604,18 +610,19 @@ namespace AppKit {
 		Critical,
 	}
 
+	/// <summary>Specifies a response returned by a modal session.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSModalResponse : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the user accepted the modal session.</summary>
 		OK = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the user canceled the modal session.</summary>
 		Cancel = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the modal session should stop.</summary>
 		Stop = -1000,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the modal session should abort.</summary>
 		Abort = -1001,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the modal session should continue.</summary>
 		Continue = -1002,
 	}
 	#endregion
@@ -1748,29 +1755,31 @@ namespace AppKit {
 	#endregion
 
 	#region NSMatrix
+	/// <summary>Specifies how a matrix tracks and selects its cells.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSMatrixMode : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Allows a single cell to be selected at a time.</summary>
 		Radio,
-		/// <summary>To be added.</summary>
+		/// <summary>Highlights a cell while asking it to track the mouse.</summary>
 		Highlight,
-		/// <summary>To be added.</summary>
+		/// <summary>Highlights cells without asking them to track the mouse.</summary>
 		List,
-		/// <summary>To be added.</summary>
+		/// <summary>Allows individual cells to track the mouse.</summary>
 		Track,
 	}
 	#endregion
 
 	#region NSBrowser
+	/// <summary>Specifies how browser columns can be resized.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSBrowserColumnResizingType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Prevents columns from being resized.</summary>
 		None,
-		/// <summary>To be added.</summary>
+		/// <summary>Automatically resizes columns.</summary>
 		Auto,
-		/// <summary>To be added.</summary>
+		/// <summary>Allows the user to resize columns.</summary>
 		User,
 	}
 
@@ -2387,16 +2396,17 @@ namespace AppKit {
 		DecrementArrow,
 	}
 
+	/// <summary>Specifies the order in which pages are printed.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSPrintingPageOrder : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Prints pages from front to back.</summary>
 		Descending = -1,
-		/// <summary>To be added.</summary>
+		/// <summary>Prints pages in the order received by the spooler without rearranging them.</summary>
 		Special,
-		/// <summary>To be added.</summary>
+		/// <summary>Prints pages from back to front.</summary>
 		Ascending,
-		/// <summary>To be added.</summary>
+		/// <summary>The page order is unknown.</summary>
 		Unknown,
 	}
 

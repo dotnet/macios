@@ -2631,14 +2631,15 @@ namespace AppKit {
 		FirstColumnOnly,
 	}
 
+	/// <summary>Specifies how a table view highlights selected rows.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTableViewSelectionHighlightStyle : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Does not highlight selected rows.</summary>
 		None = -1,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the regular selection highlight style.</summary>
 		Regular = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the source-list selection highlight style.</summary>
 		[Deprecated (PlatformName.MacOSX, 11, 0, message: "Set 'NSTableView.Style' to 'NSTableViewStyle.SourceList' instead.")]
 		SourceList = 1,
 	}

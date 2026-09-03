@@ -22657,7 +22657,6 @@ T:AppKit.NSTableViewRowHeight
 T:AppKit.NSTableViewRowPredicate
 T:AppKit.NSTableViewRowSizeStyle
 T:AppKit.NSTableViewSearchString
-T:AppKit.NSTableViewSelectionHighlightStyle
 T:AppKit.NSTableViewSource
 T:AppKit.NSTableViewStyle
 T:AppKit.NSTableViewToolTip

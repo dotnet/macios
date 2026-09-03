@@ -22784,7 +22784,6 @@ T:AppKit.NSWindowFramePredicate
 T:AppKit.NSWindowLevel
 T:AppKit.NSWindowMenu
 T:AppKit.NSWindowNSWindow
-T:AppKit.NSWindowNumberListOptions
 T:AppKit.NSWindowResize
 T:AppKit.NSWindowSharingType
 T:AppKit.NSWindowSheetRect

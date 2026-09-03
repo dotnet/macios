@@ -1431,13 +1431,14 @@ namespace AppKit {
 		CanJoinAllApplications = 1 << 18,
 	}
 
+	/// <summary>Specifies which windows to include in a window-number list.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSWindowNumberListOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Includes windows from all applications.</summary>
 		AllApplication = 1 << 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Includes windows from all spaces.</summary>
 		AllSpaces = 1 << 4,
 	}
 

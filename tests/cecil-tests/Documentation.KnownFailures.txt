@@ -22714,7 +22714,6 @@ T:AppKit.NSTextSelectionNavigationDirection
 T:AppKit.NSTextSelectionNavigationLayoutOrientation
 T:AppKit.NSTextSelectionNavigationModifier
 T:AppKit.NSTextSelectionNavigationWritingDirection
-T:AppKit.NSTextTableLayoutAlgorithm
 T:AppKit.NSTextTabType
 T:AppKit.NSTextView_SharingService
 T:AppKit.NSTextViewCellPasteboard

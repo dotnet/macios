@@ -2486,12 +2486,13 @@ namespace AppKit {
 		Baseline,
 	}
 
+	/// <summary>Specifies how a text table calculates column widths.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTextTableLayoutAlgorithm : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Calculates column widths based on the table's contents.</summary>
 		Automatic,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the table's specified column widths without considering its contents.</summary>
 		Fixed,
 	}
 

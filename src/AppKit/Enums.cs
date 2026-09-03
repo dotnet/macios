@@ -341,16 +341,17 @@ namespace AppKit {
 	#endregion
 
 	#region NSParagraphStyle
+	/// <summary>Specifies the alignment of text at a tab stop.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTextTabType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns text to the left of the tab stop.</summary>
 		Left,
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns text to the right of the tab stop.</summary>
 		Right,
-		/// <summary>To be added.</summary>
+		/// <summary>Centers text at the tab stop.</summary>
 		Center,
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns decimal characters at the tab stop.</summary>
 		Decimal,
 	}
 

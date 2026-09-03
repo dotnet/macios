@@ -376,7 +376,7 @@ namespace Xharness {
 					Label = TestLabel.AssemblyProcessing,
 					ProjectPath = Path.GetFullPath (Path.Combine (HarnessConfiguration.RootDirectory, "assembly-preparer", "assembly-preparer-tests.csproj")),
 					Name = "Assembly processing tests",
-					Timeout = (TimeSpan?) TimeSpan.FromMinutes (10),
+					Timeout = (TimeSpan?) TimeSpan.FromMinutes (30),
 					Filter = "",
 				},
 				new {

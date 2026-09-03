@@ -22499,7 +22499,6 @@ T:AppKit.NSHorizontalDirections
 T:AppKit.NSImageAlignment
 T:AppKit.NSImageCacheMode
 T:AppKit.NSImageDynamicRange
-T:AppKit.NSImageFrameStyle
 T:AppKit.NSImageHint
 T:AppKit.NSImageInterpolation
 T:AppKit.NSImageLayoutDirection

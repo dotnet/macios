@@ -2730,18 +2730,19 @@ namespace AppKit {
 		Right,
 	}
 
+	/// <summary>Specifies the frame drawn around an image.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSImageFrameStyle : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Draws no frame.</summary>
 		None = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Draws a frame suitable for a photograph.</summary>
 		Photo,
-		/// <summary>To be added.</summary>
+		/// <summary>Draws a gray bezel frame.</summary>
 		GrayBezel,
-		/// <summary>To be added.</summary>
+		/// <summary>Draws a grooved frame.</summary>
 		Groove,
-		/// <summary>To be added.</summary>
+		/// <summary>Draws a button-style frame.</summary>
 		Button,
 	}
 

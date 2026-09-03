@@ -2651,12 +2651,13 @@ namespace AppKit {
 		FeedbackStyleGap = 2,
 	}
 
+	/// <summary>Specifies where a table view performs a drop operation.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTableViewDropOperation : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Performs the drop on the specified row.</summary>
 		On,
-		/// <summary>To be added.</summary>
+		/// <summary>Performs the drop above the specified row.</summary>
 		Above,
 	}
 

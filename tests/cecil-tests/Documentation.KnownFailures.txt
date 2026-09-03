@@ -22649,7 +22649,6 @@ T:AppKit.NSTableViewDiffableDataSourceCellProvider
 T:AppKit.NSTableViewDiffableDataSourceRowProvider
 T:AppKit.NSTableViewDiffableDataSourceSectionHeaderViewProvider
 T:AppKit.NSTableViewDraggingDestinationFeedbackStyle
-T:AppKit.NSTableViewDropOperation
 T:AppKit.NSTableViewEventString
 T:AppKit.NSTableViewGridStyle
 T:AppKit.NSTableViewIndexFilter

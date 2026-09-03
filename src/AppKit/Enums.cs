@@ -345,9 +345,9 @@ namespace AppKit {
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTextTabType : ulong {
-		/// <summary>Aligns text to the left of the tab stop.</summary>
+		/// <summary>Left-aligns text at the tab stop.</summary>
 		Left,
-		/// <summary>Aligns text to the right of the tab stop.</summary>
+		/// <summary>Right-aligns text at the tab stop.</summary>
 		Right,
 		/// <summary>Centers text at the tab stop.</summary>
 		Center,

@@ -1446,7 +1446,7 @@ namespace AppKit {
 	[NoMacCatalyst]
 	[Native]
 	public enum NSSelectionDirection : ulong {
-		/// <summary>Selects an item directly.</summary>
+		/// <summary>Indicates that the window is not traversing the key-view loop.</summary>
 		Direct = 0,
 		/// <summary>Selects the next item.</summary>
 		Next,

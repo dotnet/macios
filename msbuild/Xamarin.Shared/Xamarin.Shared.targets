@@ -425,6 +425,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 		<CollectBundleResourcesDependsOn>
 			$(CollectBundleResourcesDependsOn);
+			_ValidateResourcePrefixCount;
 			_DetectBuildType;
 			_ComputeTargetArchitectures;
 			_ComputeTargetFrameworkMoniker;
@@ -443,6 +444,11 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			_SetResourceMetadata;
 		</CollectBundleResourcesDependsOn>
 	</PropertyGroup>
+
+	<!-- Validate that the number of resource prefixes doesn't exceed the supported limit of 3. -->
+	<Target Name="_ValidateResourcePrefixCount" Condition="'$(_ResourcePrefixCount)' != '' And $(_ResourcePrefixCount) &gt; 3">
+		<Error Text="AppBundleResourcePrefix supports up to 3 semicolon-separated paths, but $(_ResourcePrefixCount) were specified: '$(_ResourcePrefix)'. Please reduce the number of resource prefix paths." />
+	</Target>
 
 	<Target Name="_CollectBundleResources" DependsOnTargets="$(CollectBundleResourcesDependsOn)">
 		<!-- For multi-RID builds, we first build once for each RuntimeIdentifier, then build again to create a universal app bundle.

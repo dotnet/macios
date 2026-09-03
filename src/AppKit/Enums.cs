@@ -2584,16 +2584,17 @@ namespace AppKit {
 		WritingPromised = 1 << 9,
 	}
 
+	/// <summary>Specifies how a toolbar displays its items.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSToolbarDisplayMode : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the toolbar's default display mode.</summary>
 		Default,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays both the icon and label for each toolbar item.</summary>
 		IconAndLabel,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays only the icon for each toolbar item.</summary>
 		Icon,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays only the label for each toolbar item.</summary>
 		Label,
 	}
 

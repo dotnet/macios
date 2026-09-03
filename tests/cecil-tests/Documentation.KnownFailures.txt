@@ -22744,7 +22744,6 @@ T:AppKit.NSTitlebarSeparatorStyle
 T:AppKit.NSTitlePosition
 T:AppKit.NSTokenStyle
 T:AppKit.NSToolbarCanInsert
-T:AppKit.NSToolbarDisplayMode
 T:AppKit.NSToolbarIdentifiers
 T:AppKit.NSToolbarImmovableItemIdentifiers
 T:AppKit.NSToolbarItemGroupControlRepresentation

@@ -1442,15 +1442,15 @@ namespace AppKit {
 		AllSpaces = 1 << 4,
 	}
 
-	/// <summary>Specifies the direction in which a selection changes.</summary>
+	/// <summary>Specifies the direction in which a window traverses its key-view loop.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSSelectionDirection : ulong {
 		/// <summary>Indicates that the window is not traversing the key-view loop.</summary>
 		Direct = 0,
-		/// <summary>Selects the next item.</summary>
+		/// <summary>Proceeds to the next valid key view.</summary>
 		Next,
-		/// <summary>Selects the previous item.</summary>
+		/// <summary>Proceeds to the previous valid key view.</summary>
 		Previous,
 	}
 

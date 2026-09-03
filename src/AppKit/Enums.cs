@@ -2758,14 +2758,15 @@ namespace AppKit {
 		Sentence,
 	}
 
+	/// <summary>Specifies the visual style of a split view divider.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSSplitViewDividerStyle : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Uses a thick divider.</summary>
 		Thick = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses a thin divider.</summary>
 		Thin = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses a pane-splitter divider.</summary>
 		PaneSplitter = 3,
 	}
 

@@ -22614,7 +22614,6 @@ T:AppKit.NSSharingServiceTransitionImageForShareItem
 T:AppKit.NSSliderType
 T:AppKit.NSSpellCheckerShowCorrectionIndicatorOfTypeHandler
 T:AppKit.NSSpellingState
-T:AppKit.NSSplitViewDividerStyle
 T:AppKit.NSSplitViewItemBehavior
 T:AppKit.NSSpringLoadingHighlight
 T:AppKit.NSSpringLoadingOptions

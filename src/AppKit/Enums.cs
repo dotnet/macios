@@ -2460,14 +2460,15 @@ namespace AppKit {
 		MaximumHeight = 6,
 	}
 
+	/// <summary>Identifies a layer of a text block.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTextBlockLayer : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The padding layer between the text and the border.</summary>
 		Padding = -1,
-		/// <summary>To be added.</summary>
+		/// <summary>The border layer surrounding the padding.</summary>
 		Border,
-		/// <summary>To be added.</summary>
+		/// <summary>The margin layer outside the border.</summary>
 		Margin,
 	}
 

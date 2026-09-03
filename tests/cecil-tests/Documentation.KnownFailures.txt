@@ -22508,7 +22508,6 @@ T:AppKit.NSImageRect
 T:AppKit.NSImageRepLoadStatus
 T:AppKit.NSImageResizingModeExtensions
 T:AppKit.NSImageScale
-T:AppKit.NSImageScaling
 T:AppKit.NSImageSymbolColorRenderingMode
 T:AppKit.NSImageSymbolScale
 T:AppKit.NSImageSymbolVariableValueMode

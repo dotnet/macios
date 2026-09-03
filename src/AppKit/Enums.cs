@@ -2782,16 +2782,17 @@ namespace AppKit {
 		Inspector,
 	}
 
+	/// <summary>Specifies how an image is scaled to fit its frame.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSImageScaling : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Scales the image down proportionally when it is larger than the frame.</summary>
 		ProportionallyDown = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Scales the image independently along each axis to fill the frame.</summary>
 		AxesIndependently,
-		/// <summary>To be added.</summary>
+		/// <summary>Does not scale the image.</summary>
 		None,
-		/// <summary>To be added.</summary>
+		/// <summary>Scales the image proportionally up or down to fit the frame.</summary>
 		ProportionallyUpOrDown,
 	}
 

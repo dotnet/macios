@@ -57,7 +57,6 @@
 !incorrect-protocol-member! +NSWindowRestoration::restoreWindowWithIdentifier:state:completionHandler: is REQUIRED and should be abstract
 
 # This init method is bound manually, because the managed signature is identical to another init method.
-!missing-selector! NSTextContainer::initWithContainerSize: not bound
 
 ## unsorted
 
@@ -132,9 +131,6 @@
 !missing-selector! NSATSTypesetter::usesFontLeading not bound
 !missing-selector! NSATSTypesetter::willSetLineFragmentRect:forGlyphRange:usedRect:baselineOffset: not bound
 !missing-selector! NSMutableAttributedString::fixAttributesInRange: not bound
-!missing-selector! NSString::boundingRectWithSize:options:attributes: not bound
-!missing-selector! NSString::drawWithRect:options:attributes: not bound
-!missing-selector! NSTextContainer::lineFragmentRectForProposedRect:sweepDirection:movementDirection:remainingRect: not bound
 !missing-selector! NSTextStorage::attributeRuns not bound
 !missing-selector! NSTextStorage::characters not bound
 !missing-selector! NSTextStorage::font not bound
@@ -218,7 +214,6 @@
 !missing-null-allowed! 'AppKit.NSColor AppKit.NSColor::ShadowWithLevel(System.Runtime.InteropServices.NFloat)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSColor AppKit.NSColor::UsingColorSpace(AppKit.NSColorSpace)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSColor AppKit.NSColorList::ColorWithKey(System.String)' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'AppKit.NSColor AppKit.NSTextBlock::GetBorderColor(AppKit.NSRectEdge)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSColorList AppKit.NSColorList::ColorListNamed(System.String)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSColorSpace AppKit.NSScreen::get_ColorSpace()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSCustomImageRepDrawingHandler AppKit.NSCustomImageRep::get_DrawingHandler()' is missing an [NullAllowed] on return type
@@ -851,9 +846,6 @@
 !missing-null-allowed! 'System.Void AppKit.NSText::Unscript(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Void AppKit.NSTextAttachment::.ctor(Foundation.NSFileWrapper)' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Void AppKit.NSTextAttachment::set_AttachmentCell(AppKit.NSTextAttachmentCell)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextBlock::set_BackgroundColor(AppKit.NSColor)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextBlock::SetBorderColor(AppKit.NSColor)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextBlock::SetBorderColor(AppKit.NSColor,AppKit.NSRectEdge)' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Void AppKit.NSTextContainer::set_TextView(AppKit.NSTextView)' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Void AppKit.NSTextFinder::set_Client(AppKit.INSTextFinderClient)' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Void AppKit.NSTextFinder::set_FindBarContainer(AppKit.INSTextFinderBarContainer)' is missing an [NullAllowed] on parameter #0

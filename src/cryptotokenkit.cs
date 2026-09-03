@@ -25,6 +25,7 @@ namespace CryptoTokenKit {
 		TokenNotFound = -7,
 		BadParameter = -8,
 		AuthenticationNeeded = -9,
+		InvalidatedDeviceKey = -10,
 	}
 
 #if !STABLE_CRYPTOTOKENKIT
@@ -512,7 +513,7 @@ namespace CryptoTokenKit {
 #if !STABLE_CRYPTOTOKENKIT
 	[Experimental ("APL0001")]
 #endif
-	[iOS (13, 0), Mac (10, 10), MacCatalyst (13, 1), TV (13, 0)]
+	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface TKSmartCardSlotManager {

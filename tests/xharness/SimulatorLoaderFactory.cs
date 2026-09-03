@@ -27,7 +27,7 @@ namespace Xharness {
 		{
 			return target.Platform switch {
 				TestTarget.Simulator_iOS64 => GetiOSDeviceType (Version.Parse (target.OSVersion!)),
-				TestTarget.Simulator_tvOS => "com.apple.CoreSimulator.SimDeviceType.Apple-TV-1080p",
+				TestTarget.Simulator_tvOS => GettvOSDeviceType (Version.Parse (target.OSVersion!)),
 				_ => throw new Exception (string.Format ("Invalid simulator target: {0}", target))
 			};
 		}
@@ -44,6 +44,17 @@ namespace Xharness {
 				return "com.apple.CoreSimulator.SimDeviceType.iPhone-11";
 
 			return "com.apple.CoreSimulator.SimDeviceType.iPhone-14";
+		}
+
+		string GettvOSDeviceType (Version tvOSVersion)
+		{
+			// tvOS 27 (Xcode 27) removed the legacy non-4K "Apple TV" (Apple-TV-1080p) simulator device
+			// type; those runtimes only support the Apple TV 4K device types. Keep using the legacy device
+			// type on older tvOS versions (which is everything Xcode < 27 ships) so behavior is unchanged there.
+			if (tvOSVersion.Major >= 27)
+				return "com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-4K";
+
+			return "com.apple.CoreSimulator.SimDeviceType.Apple-TV-1080p";
 		}
 
 		public override void GetCompanionRuntimeAndDeviceType (TestTargetOs target, bool minVersion, out string? companionRuntime, out string? companionDeviceType)

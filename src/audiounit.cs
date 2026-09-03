@@ -1321,4 +1321,32 @@ namespace AudioUnit {
 		[return: NullAllowed]
 		AUAudioUnit CreateAudioUnit (AudioComponentDescription desc, [NullAllowed] out NSError error);
 	}
+
+	/// <summary>A subclass of <see cref="AUAudioUnit" /> for third-party spatial audio units that provides head-tracking properties for Bluetooth head tracking support.</summary>
+	[iOS (27, 0)]
+	[NoMac, NoTV, NoMacCatalyst]
+	[BaseType (typeof (AUAudioUnit))]
+	[DisableDefaultCtor]
+	interface AUHeadTrackingBinauralRenderer {
+		// re-exposed from base class
+		[Export ("initWithComponentDescription:options:error:")]
+		[DesignatedInitializer]
+		[Internal]
+		NativeHandle _InitWithComponentDescription (AudioComponentDescription componentDescription, AudioComponentInstantiationOptions options, [NullAllowed] out NSError outError);
+
+		/// <summary>Gets a Boolean value that tells whether the host has enabled head tracking for this spatial audio unit.</summary>
+		/// <value><see langword="true" /> if the host has enabled head tracking; otherwise, <see langword="false" />.</value>
+		[Export ("headTracking")]
+		bool HeadTracking { [Bind ("isHeadTracking")] get; }
+
+		/// <summary>Gets a Boolean value that tells whether the host is bypassing the renderer due to poor performance.</summary>
+		/// <value><see langword="true" /> if the host is bypassing the audio unit; otherwise, <see langword="false" />.</value>
+		[Export ("disabled")]
+		bool Disabled { [Bind ("isDisabled")] get; }
+
+		/// <summary>Gets the unique identifier (UID) of the Bluetooth headphone device that provides IMU sensor data for head tracking.</summary>
+		/// <value>The UID of the matched Bluetooth headphone device, or <see langword="null" /> if no device is matched.</value>
+		[NullAllowed, Export ("deviceUID")]
+		string DeviceUId { get; }
+	}
 }

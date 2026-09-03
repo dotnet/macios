@@ -488,6 +488,18 @@ namespace HealthKit {
 		EggWhite,
 	}
 
+	/// <summary>Enumerates menopausal states recorded in a HealthKit category sample.</summary>
+	[MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+	[Native]
+	public enum HKCategoryValueMenopausalState : long {
+		/// <summary>The user is in menopause.</summary>
+		Menopause = 1,
+		/// <summary>The user is in perimenopause.</summary>
+		Perimenopause = 2,
+		/// <summary>The user is not in menopause or perimenopause.</summary>
+		None = 3,
+	}
+
 	/// <summary>Enumerates the amount of menstrual flow.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]

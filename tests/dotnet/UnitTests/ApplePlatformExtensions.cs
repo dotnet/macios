@@ -73,7 +73,7 @@ namespace Xamarin.Utils {
 			var vLibrary = Version.Parse (platform.GetDefaultTargetPlatformVersionLibrary ());
 			var vExecutable = Version.Parse (platform.GetDefaultTargetPlatformVersionExecutable ());
 			Assert.That (vLibrary.Major, Is.EqualTo (26), "vLibrary");
-			Assert.That (vExecutable.Major, Is.EqualTo (26), "vExecutable");
+			Assert.That (vExecutable.Major, Is.EqualTo (27), "vExecutable");
 		}
 	}
 }

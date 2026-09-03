@@ -10682,6 +10682,8 @@ namespace Intents {
 	}
 
 	/// <summary>An <see cref="Intents.INIntent" /> indicating the user wishes to add a task to a list.</summary>
+	[Deprecated (PlatformName.iOS, 27, 0, message: "INAddTasksIntent is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "INAddTasksIntent is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
 	[NoMac, NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntent))]
@@ -10783,6 +10785,8 @@ namespace Intents {
 
 	/// <summary>
 	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINAddTasksIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	[Deprecated (PlatformName.iOS, 27, 0, message: "INAddTasksIntentResponse is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "INAddTasksIntentResponse is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntentResponse))]
@@ -11195,6 +11199,8 @@ namespace Intents {
 	}
 
 	/// <summary>An <see cref="Intents.INIntent" /> indicating the user wishes to create a new note.</summary>
+	[Deprecated (PlatformName.iOS, 27, 0, message: "INCreateNoteIntent is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "INCreateNoteIntent is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntent))]
@@ -11261,6 +11267,8 @@ namespace Intents {
 
 	/// <summary>
 	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINCreateNoteIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	[Deprecated (PlatformName.iOS, 27, 0, message: "INCreateNoteIntentResponse is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "INCreateNoteIntentResponse is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntentResponse))]
@@ -11368,6 +11376,8 @@ namespace Intents {
 		INTaskList CreatedTaskList { get; set; }
 	}
 
+	[Deprecated (PlatformName.iOS, 27, 0, message: "INDateSearchTypeResolutionResult is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "INDateSearchTypeResolutionResult is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntentResolutionResult))]
@@ -11486,6 +11496,8 @@ namespace Intents {
 	}
 
 	/// <summary>Represents an image within a note.</summary>
+	[Deprecated (PlatformName.iOS, 27, 0, message: "INImageNoteContent is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "INImageNoteContent is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INNoteContent))]
@@ -11500,6 +11512,8 @@ namespace Intents {
 
 	/// <summary>
 	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in location search-related interactions.</summary>
+	[Deprecated (PlatformName.iOS, 27, 0, message: "INLocationSearchTypeResolutionResult is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "INLocationSearchTypeResolutionResult is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntentResolutionResult))]
@@ -11548,6 +11562,8 @@ namespace Intents {
 	}
 
 	/// <summary>Note content for a single note in an app.</summary>
+	[Deprecated (PlatformName.iOS, 27, 0, message: "INNote is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "INNote is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
@@ -11577,6 +11593,8 @@ namespace Intents {
 	}
 
 	/// <summary>Base class for note content.</summary>
+	[Deprecated (PlatformName.iOS, 27, 0, message: "INNoteContent is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "INNoteContent is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
@@ -11585,6 +11603,8 @@ namespace Intents {
 
 	/// <summary>
 	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in note content-related interactions.</summary>
+	[Deprecated (PlatformName.iOS, 27, 0, message: "INNoteContentResolutionResult is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "INNoteContentResolutionResult is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntentResolutionResult))]
@@ -11688,6 +11708,8 @@ namespace Intents {
 
 	/// <summary>
 	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in note-related interactions.</summary>
+	[Deprecated (PlatformName.iOS, 27, 0, message: "INNoteResolutionResult is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "INNoteResolutionResult is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntentResolutionResult))]
@@ -11740,6 +11762,8 @@ namespace Intents {
 
 	/// <summary>
 	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in notebook item type-related interactions.</summary>
+	[Deprecated (PlatformName.iOS, 27, 0, message: "INNotebookItemTypeResolutionResult is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "INNotebookItemTypeResolutionResult is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntentResolutionResult))]
@@ -12076,6 +12100,8 @@ namespace Intents {
 	}
 
 	/// <summary>An <see cref="Intents.INIntent" /> indicating the user wishes to search for notes, tasks, or reminders.</summary>
+	[Deprecated (PlatformName.iOS, 27, 0, message: "INSearchForNotebookItemsIntent is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "INSearchForNotebookItemsIntent is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntent))]
@@ -12223,6 +12249,8 @@ namespace Intents {
 
 	/// <summary>
 	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINSearchForNotebookItemsIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	[Deprecated (PlatformName.iOS, 27, 0, message: "INSearchForNotebookItemsIntentResponse is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "INSearchForNotebookItemsIntentResponse is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntentResponse))]
@@ -12486,6 +12514,8 @@ namespace Intents {
 	}
 
 	/// <summary>An <see cref="Intents.INIntent" /> indicating the user wishes to modify a task attribute, for example, by marking a task complete.</summary>
+	[Deprecated (PlatformName.iOS, 27, 0, message: "INSetTaskAttributeIntent is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "INSetTaskAttributeIntent is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntent))]
@@ -12589,6 +12619,8 @@ namespace Intents {
 
 	/// <summary>
 	///       <see cref="Intents.INIntentResponse" /> subclass that developers of <see cref="Intents.IINSetTaskAttributeIntentHandling" /> interface implementations populate with their extension's results.</summary>
+	[Deprecated (PlatformName.iOS, 27, 0, message: "INSetTaskAttributeIntentResponse is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "INSetTaskAttributeIntentResponse is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntentResponse))]
@@ -12677,6 +12709,8 @@ namespace Intents {
 	}
 
 	/// <summary>A task for the user.</summary>
+	[Deprecated (PlatformName.iOS, 27, 0, message: "INTask is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "INTask is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
@@ -12721,6 +12755,8 @@ namespace Intents {
 	}
 
 	/// <summary>A list of tasks for the user.</summary>
+	[Deprecated (PlatformName.iOS, 27, 0, message: "INTaskList is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "INTaskList is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
@@ -12752,6 +12788,8 @@ namespace Intents {
 
 	/// <summary>
 	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in task list-related interactions.</summary>
+	[Deprecated (PlatformName.iOS, 27, 0, message: "INTaskListResolutionResult is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "INTaskListResolutionResult is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntentResolutionResult))]
@@ -12805,6 +12843,8 @@ namespace Intents {
 
 	/// <summary>
 	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in task-related interactions.</summary>
+	[Deprecated (PlatformName.iOS, 27, 0, message: "INTaskResolutionResult is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "INTaskResolutionResult is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntentResolutionResult))]
@@ -12858,6 +12898,8 @@ namespace Intents {
 
 	/// <summary>
 	///       <see cref="Intents.INIntentResolutionResult" /> for resolving parameters in task status-related interactions.</summary>
+	[Deprecated (PlatformName.iOS, 27, 0, message: "INTaskStatusResolutionResult is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "INTaskStatusResolutionResult is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntentResolutionResult))]
@@ -12974,6 +13016,8 @@ namespace Intents {
 	}
 
 	/// <summary>The text of a note.</summary>
+	[Deprecated (PlatformName.iOS, 27, 0, message: "INTextNoteContent is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "INTextNoteContent is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INNoteContent))]
@@ -13704,6 +13748,8 @@ namespace Intents {
 		INAddMediaMediaItemResolutionResult GetConfirmationRequired (NSObject itemToConfirm, nint reason);
 	}
 
+	[Deprecated (PlatformName.iOS, 27, 0)]
+	[Deprecated (PlatformName.MacCatalyst, 27, 0)]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INTaskListResolutionResult))]
@@ -13762,6 +13808,8 @@ namespace Intents {
 		INAddTasksTargetTaskListResolutionResult GetConfirmationRequired (NSObject itemToConfirm, nint reason);
 	}
 
+	[Deprecated (PlatformName.iOS, 27, 0)]
+	[Deprecated (PlatformName.MacCatalyst, 27, 0)]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INTemporalEventTriggerResolutionResult))]
@@ -15275,6 +15323,8 @@ namespace Intents {
 		string SeatingType { get; }
 	}
 
+	[Deprecated (PlatformName.iOS, 27, 0)]
+	[Deprecated (PlatformName.MacCatalyst, 27, 0)]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INTemporalEventTriggerResolutionResult))]
@@ -15334,6 +15384,8 @@ namespace Intents {
 		INSetTaskAttributeTemporalEventTriggerResolutionResult GetConfirmationRequired (NSObject itemToConfirm, nint reason);
 	}
 
+	[Deprecated (PlatformName.iOS, 27, 0, message: "INSnoozeTasksIntent is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "INSnoozeTasksIntent is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntent))]
@@ -15374,6 +15426,8 @@ namespace Intents {
 		void ResolveNextTriggerTime (INSnoozeTasksIntent intent, Action<INDateComponentsRangeResolutionResult> completion);
 	}
 
+	[Deprecated (PlatformName.iOS, 27, 0, message: "INSnoozeTasksIntentResponse is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "INSnoozeTasksIntentResponse is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntentResponse))]
@@ -15391,6 +15445,8 @@ namespace Intents {
 		INTask [] SnoozedTasks { get; set; }
 	}
 
+	[Deprecated (PlatformName.iOS, 27, 0)]
+	[Deprecated (PlatformName.MacCatalyst, 27, 0)]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INTaskResolutionResult))]
@@ -15697,6 +15753,8 @@ namespace Intents {
 		INStartCallIntentResponseCode Code { get; }
 	}
 
+	[Deprecated (PlatformName.iOS, 27, 0, message: "INTaskPriorityResolutionResult is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "INTaskPriorityResolutionResult is deprecated. Please adopt the Notes or Reminders AppSchema domain instead.")]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntentResolutionResult))]
@@ -15740,6 +15798,8 @@ namespace Intents {
 		INTaskPriorityResolutionResult GetConfirmationRequired (NSObject itemToConfirm, nint reason);
 	}
 
+	[Deprecated (PlatformName.iOS, 27, 0)]
+	[Deprecated (PlatformName.MacCatalyst, 27, 0)]
 	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (INIntentResolutionResult))]

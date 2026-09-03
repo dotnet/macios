@@ -67,6 +67,9 @@ namespace NetworkExtension {
 		Tls1_1 = 2,
 		/// <summary>To be added.</summary>
 		Tls1_2 = 3,
+		/// <summary>Uses TLS 1.3.</summary>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		Tls1_3 = 4,
 	}
 
 	[NoTV]
@@ -4681,6 +4684,11 @@ namespace NetworkExtension {
 		[MacCatalyst (26, 0), NoTV, NoMac, iOS (26, 0)]
 		[Export ("matchEthernet")]
 		bool MatchEthernet { get; set; }
+
+		/// <summary>Gets or sets whether the app push provider starts on cellular plans that support Mission Critical Services.</summary>
+		[MacCatalyst (27, 0), NoTV, NoMac, iOS (27, 0)]
+		[Export ("matchMissionCriticalService")]
+		bool MatchMissionCriticalService { get; set; }
 	}
 
 	[NoTV, NoMac, iOS (14, 0)]

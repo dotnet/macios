@@ -662,9 +662,9 @@ namespace MediaPlayer {
 			}
 		}
 
-		[SupportedOSPlatform ("tvos14.5")]
+		[SupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios14.5")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public bool IsPreorder {
 			get {

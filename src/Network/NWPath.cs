@@ -232,15 +232,15 @@ namespace Network {
 			}
 		}
 
-		[SupportedOSPlatform ("ios14.2")]
-		[SupportedOSPlatform ("tvos14.2")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.NetworkLibrary)]
 		static extern NWPathUnsatisfiedReason /* nw_path_unsatisfied_reason_t */ nw_path_get_unsatisfied_reason (IntPtr /* OS_nw_path */ path);
 
-		[SupportedOSPlatform ("ios14.2")]
-		[SupportedOSPlatform ("tvos14.2")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public NWPathUnsatisfiedReason GetUnsatisfiedReason ()
@@ -266,13 +266,13 @@ namespace Network {
 		[SupportedOSPlatform ("ios26.0")]
 		[SupportedOSPlatform ("maccatalyst26.0")]
 		[DllImport (Constants.NetworkLibrary)]
-		static extern NWLinkQuality nw_path_get_link_quality (IntPtr path);
+		static extern byte nw_path_get_link_quality (IntPtr path);
 
 		[SupportedOSPlatform ("tvos26.0")]
 		[SupportedOSPlatform ("macos26.0")]
 		[SupportedOSPlatform ("ios26.0")]
 		[SupportedOSPlatform ("maccatalyst26.0")]
-		public NWLinkQuality LinkQuality => nw_path_get_link_quality (GetCheckedHandle ());
+		public NWLinkQuality LinkQuality => (NWLinkQuality) nw_path_get_link_quality (GetCheckedHandle ());
 
 	}
 }

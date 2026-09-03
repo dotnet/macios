@@ -2219,6 +2219,7 @@ namespace Registrar {
 				header.WriteLine ("#import <CoreTelephony/CTCall.h>");
 				header.WriteLine ("#import <CoreTelephony/CTCallCenter.h>");
 				header.WriteLine ("#import <CoreTelephony/CTCarrier.h>");
+				header.WriteLine ("#import <CoreTelephony/CTQuickSwitch.h>");
 				header.WriteLine ("#import <CoreTelephony/CTTelephonyNetworkInfo.h>");
 				header.WriteLine ("#import <CoreTelephony/CTSubscriber.h>");
 				header.WriteLine ("#import <CoreTelephony/CTSubscriberInfo.h>");
@@ -3254,6 +3255,7 @@ namespace Registrar {
 						case "CAMetalDrawable": // The header isn't available for the simulator.
 						case "MTLResourceViewPool":
 						case "MTLTensor":
+						case "MTLTensorAuxiliaryPlane":
 						case "MTLTensorBinding":
 						case "MTLTextureViewPool":
 						case var protocolName when protocolName.StartsWith ("MTL4", StringComparison.Ordinal): // Metal 4 isn't available in the simulator

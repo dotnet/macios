@@ -822,6 +822,12 @@ namespace HealthKit {
 
 	}
 
+	/// <summary>Handles the result of querying the earliest authorized sample dates for HealthKit object types.</summary>
+	/// <param name="earliestDates">A dictionary that maps each qualifying type to its earliest readable date, or <see langword="null" /> if the query fails.</param>
+	/// <param name="error">The error if the query fails; otherwise, <see langword="null" />.</param>
+	[MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+	delegate void HKHealthStoreGetEarliestAuthorizedSampleDateForTypesHandler ([NullAllowed] NSDictionary<HKObjectType, NSDate> earliestDates, [NullAllowed] NSError error);
+
 	/// <param name="requestStatus">The resulting request status.</param>
 	///     <param name="error">The error, if one occurred..</param>
 	///     <summary>Handler to pass to <see cref="HealthKit.HKHealthStore.GetRequestStatusForAuthorizationToShare(Foundation.NSSet{HealthKit.HKSampleType},Foundation.NSSet{HealthKit.HKObjectType},HealthKit.HKHealthStoreGetRequestStatusForAuthorizationToShareHandler)" />.</summary>
@@ -919,6 +925,20 @@ namespace HealthKit {
 		[MacCatalyst (13, 1)]
 		[Export ("earliestPermittedSampleDate")]
 		NSDate EarliestPermittedSampleDate { get; }
+
+		/// <summary>Gets the earliest readable sample date for each HealthKit object type with limited read authorization.</summary>
+		/// <param name="types">The object types to query.</param>
+		/// <param name="completion">A handler that receives the earliest readable dates or an error.</param>
+		/// <remarks>Types without a limited-access earliest date are omitted from the result. The handler runs on an arbitrary background queue.</remarks>
+		[MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Async (XmlDocs = """
+			<param name="types">The object types to query.</param>
+			<summary>Asynchronously gets the earliest readable sample date for each HealthKit object type with limited read authorization.</summary>
+			<returns>A task whose result maps each qualifying type to its earliest readable date.</returns>
+			<remarks>Types without a limited-access earliest date are omitted from the result.</remarks>
+			""")]
+		[Export ("getEarliestAuthorizedSampleDateForTypes:completion:")]
+		void GetEarliestAuthorizedSampleDateForTypes (NSSet<HKObjectType> types, HKHealthStoreGetEarliestAuthorizedSampleDateForTypesHandler completion);
 
 		// FIXME NS_EXTENSION_UNAVAILABLE("Not available to extensions") ;
 		[Export ("executeQuery:")]
@@ -3699,6 +3719,16 @@ namespace HealthKit {
 		[MacCatalyst (26, 2), Mac (26, 2), iOS (26, 2)]
 		[Field ("HKCategoryTypeIdentifierHypertensionEvent")]
 		HypertensionEvent,
+
+		/// <summary>Identifies samples that record bleeding after menopause.</summary>
+		[MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Field ("HKCategoryTypeIdentifierBleedingAfterMenopause")]
+		BleedingAfterMenopause,
+
+		/// <summary>Identifies samples that record a menopausal state.</summary>
+		[MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Field ("HKCategoryTypeIdentifierMenopausalState")]
+		MenopausalState,
 	}
 
 	/// <summary>Enumerates the forms of <see cref="HealthKit.HKCharacteristicType" />.</summary>
@@ -5273,6 +5303,17 @@ namespace HealthKit {
 
 		[Export ("disableCollectionForType:")]
 		void DisableCollection (HKQuantityType quantityType);
+	}
+
+	// HKLiveWorkoutZoneUpdate is exported by macOS 27, despite the header omitting macOS availability.
+	/// <summary>Describes a workout-zone update from a live workout.</summary>
+	[MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface HKLiveWorkoutZoneUpdate {
+		/// <summary>Gets the timestamp of the most recent sample processed when the workout zone was updated.</summary>
+		[NullAllowed, Export ("lastSampleProcessedDate", ArgumentSemantic.Copy)]
+		NSDate LastSampleProcessedDate { get; }
 	}
 
 	/// <summary>Represents a Fast Healthcare Interoperability Resources (FHIR) resource.</summary>

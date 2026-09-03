@@ -1161,6 +1161,11 @@ namespace Metal {
 		[Abstract]
 		[Export ("copyFromTensor:sourceOrigin:sourceDimensions:toTensor:destinationOrigin:destinationDimensions:")]
 		void CopyFromTensor (IMTLTensor sourceTensor, MTLTensorExtents sourceOrigin, MTLTensorExtents sourceDimensions, IMTLTensor destinationTensor, MTLTensorExtents destinationOrigin, MTLTensorExtents destinationDimensions);
+
+		[Mac (27, 0), iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Abstract]
+		[Export ("copyFromTensor:sourceOrigin:sourceDimensions:sourcePlane:toTensor:destinationOrigin:destinationDimensions:destinationPlane:")]
+		void CopyFromTensor (IMTLTensor sourceTensor, MTLTensorExtents sourceOrigin, MTLTensorExtents sourceDimensions, MTLTensorPlaneType sourcePlane, IMTLTensor destinationTensor, MTLTensorExtents destinationOrigin, MTLTensorExtents destinationDimensions, MTLTensorPlaneType destinationPlane);
 	}
 
 	interface IMTLFence { }
@@ -1970,6 +1975,13 @@ namespace Metal {
 		[return: NullAllowed]
 		[return: Release]
 		IMTLTensor CreateTensor (MTLTensorDescriptor descriptor, [NullAllowed] out NSError error);
+
+		[Mac (27, 0), iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Abstract]
+		[Export ("newTensorWithDescriptor:attachments:error:")]
+		[return: NullAllowed]
+		[return: Release]
+		IMTLTensor CreateTensor (MTLTensorDescriptor descriptor, MTLTensorBufferAttachments attachments, [NullAllowed] out NSError error);
 
 		[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 		[Abstract]
@@ -3355,6 +3367,10 @@ namespace Metal {
 		[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 		[Export ("requiredThreadsPerThreadgroup", ArgumentSemantic.Assign)]
 		MTLSize RequiredThreadsPerThreadgroup { get; set; }
+
+		[Mac (27, 0), iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Export ("floatingPointConversionRoundingMode", ArgumentSemantic.Assign)]
+		MTLFloatingPointConversionRoundingMode FloatingPointConversionRoundingMode { get; set; }
 	}
 
 	/// <summary>Configures a stencil test operation.</summary>
@@ -4482,6 +4498,10 @@ namespace Metal {
 		[Export ("storeAction")]
 		MTLStoreAction StoreAction { get; set; }
 
+		[Deprecated (PlatformName.iOS, 27, 0, message: "Store action options have no effect on Apple Silicon")]
+		[Deprecated (PlatformName.TvOS, 27, 0, message: "Store action options have no effect on Apple Silicon")]
+		[Deprecated (PlatformName.MacOSX, 27, 0, message: "Store action options have no effect on Apple Silicon")]
+		[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Store action options have no effect on Apple Silicon")]
 		[MacCatalyst (13, 1)]
 		[Export ("storeActionOptions", ArgumentSemantic.Assign)]
 		MTLStoreActionOptions StoreActionOptions { get; set; }
@@ -5904,6 +5924,8 @@ namespace Metal {
 	[Introduced (PlatformName.MacCatalyst, 13, 4)]
 	[TV (16, 0)]
 	[BaseType (typeof (NSObject))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLRasterizationRateSampleArray {
 		[Export ("objectAtIndexedSubscript:")]
 		NSNumber GetObject (nuint index);
@@ -5915,6 +5937,8 @@ namespace Metal {
 	[Introduced (PlatformName.MacCatalyst, 13, 4)]
 	[TV (16, 0)]
 	[BaseType (typeof (NSObject))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLRasterizationRateMapDescriptor : NSCopying {
 		[Static]
 		[Export ("rasterizationRateMapDescriptorWithScreenSize:")]
@@ -5956,6 +5980,8 @@ namespace Metal {
 	[TV (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLRasterizationRateLayerDescriptor : NSCopying {
 
 		[Export ("initWithSampleCount:")]
@@ -5995,6 +6021,8 @@ namespace Metal {
 	[Introduced (PlatformName.MacCatalyst, 13, 4)]
 	[TV (16, 0)]
 	[BaseType (typeof (NSObject))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLRasterizationRateLayerArray {
 		[Export ("objectAtIndexedSubscript:")]
 		[return: NullAllowed]
@@ -6252,6 +6280,8 @@ namespace Metal {
 	[MacCatalyst (14, 0)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (MTLAccelerationStructureGeometryDescriptor))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLAccelerationStructureBoundingBoxGeometryDescriptor {
 		[NullAllowed, Export ("boundingBoxBuffer", ArgumentSemantic.Retain)]
 		IMTLBuffer BoundingBoxBuffer { get; set; }
@@ -6273,6 +6303,8 @@ namespace Metal {
 	[iOS (14, 0), TV (16, 0)]
 	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLAccelerationStructureDescriptor : NSCopying {
 		[iOS (17, 0), MacCatalyst (17, 0), TV (17, 0)]
 		[Export ("usage", ArgumentSemantic.Assign)]
@@ -6282,6 +6314,8 @@ namespace Metal {
 	[iOS (14, 0), TV (16, 0)]
 	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLAccelerationStructureGeometryDescriptor : NSCopying {
 		[Export ("intersectionFunctionTableOffset")]
 		nuint IntersectionFunctionTableOffset { get; set; }
@@ -6316,6 +6350,8 @@ namespace Metal {
 	[iOS (14, 0), TV (16, 0)]
 	[MacCatalyst (14, 0)]
 	[BaseType (typeof (MTLAccelerationStructureGeometryDescriptor))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLAccelerationStructureTriangleGeometryDescriptor {
 		[NullAllowed, Export ("vertexBuffer", ArgumentSemantic.Retain)]
 		IMTLBuffer VertexBuffer { get; set; }
@@ -6495,6 +6531,8 @@ namespace Metal {
 	[MacCatalyst (14, 0)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (MTLAccelerationStructureDescriptor))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLInstanceAccelerationStructureDescriptor {
 		[NullAllowed, Export ("instanceDescriptorBuffer", ArgumentSemantic.Retain)]
 		IMTLBuffer InstanceDescriptorBuffer { get; set; }
@@ -6548,12 +6586,16 @@ namespace Metal {
 	[MacCatalyst (14, 0)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (MTLFunctionDescriptor))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLIntersectionFunctionDescriptor : NSCopying { }
 
 	[iOS (14, 0), TV (16, 0)]
 	[MacCatalyst (14, 0)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLIntersectionFunctionTableDescriptor : NSCopying {
 		[Static]
 		[Export ("intersectionFunctionTableDescriptor")]
@@ -6608,6 +6650,8 @@ namespace Metal {
 	[MacCatalyst (14, 0)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (MTLAccelerationStructureDescriptor))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLPrimitiveAccelerationStructureDescriptor {
 		[NullAllowed, Export ("geometryDescriptors", ArgumentSemantic.Retain)]
 		MTLAccelerationStructureGeometryDescriptor [] GeometryDescriptors { get; set; }
@@ -6673,6 +6717,8 @@ namespace Metal {
 	[MacCatalyst (14, 0)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLResourceStatePassDescriptor : NSCopying {
 		[Static]
 		[Export ("resourceStatePassDescriptor")]
@@ -6685,6 +6731,8 @@ namespace Metal {
 	[iOS (14, 0), TV (16, 0)]
 	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLResourceStatePassSampleBufferAttachmentDescriptor : NSCopying {
 		[NullAllowed, Export ("sampleBuffer", ArgumentSemantic.Retain)]
 		IMTLCounterSampleBuffer SampleBuffer { get; set; }
@@ -6699,6 +6747,8 @@ namespace Metal {
 	[iOS (14, 0), TV (16, 0)]
 	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLResourceStatePassSampleBufferAttachmentDescriptorArray {
 		[Export ("objectAtIndexedSubscript:")]
 		MTLResourceStatePassSampleBufferAttachmentDescriptor GetObject (nuint attachmentIndex);
@@ -6712,6 +6762,8 @@ namespace Metal {
 	[MacCatalyst (14, 0)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLVisibleFunctionTableDescriptor : NSCopying {
 		[Static]
 		[Export ("visibleFunctionTableDescriptor")]
@@ -6998,6 +7050,8 @@ namespace Metal {
 
 	[iOS (15, 0), TV (16, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLRenderPipelineFunctionsDescriptor : NSCopying {
 		[NullAllowed, Export ("vertexAdditionalBinaryFunctions", ArgumentSemantic.Copy)]
 		IMTLFunction [] VertexAdditionalBinaryFunctions { get; set; }
@@ -7011,6 +7065,8 @@ namespace Metal {
 
 	[iOS (15, 0), TV (16, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLMotionKeyframeData {
 		[NullAllowed, Export ("buffer", ArgumentSemantic.Retain)]
 		IMTLBuffer Buffer { get; set; }
@@ -7087,6 +7143,8 @@ namespace Metal {
 
 	[iOS (15, 0), TV (16, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (MTLAccelerationStructureGeometryDescriptor))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLAccelerationStructureMotionTriangleGeometryDescriptor {
 		[Export ("vertexBuffers", ArgumentSemantic.Copy)]
 		MTLMotionKeyframeData [] VertexBuffers { get; set; }
@@ -7129,6 +7187,8 @@ namespace Metal {
 
 	[iOS (15, 0), TV (16, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (MTLAccelerationStructureGeometryDescriptor))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLAccelerationStructureMotionBoundingBoxGeometryDescriptor {
 		[Export ("boundingBoxBuffers", ArgumentSemantic.Copy)]
 		MTLMotionKeyframeData [] BoundingBoxBuffers { get; set; }
@@ -7410,6 +7470,8 @@ namespace Metal {
 
 	[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLMeshRenderPipelineDescriptor : NSCopying {
 		[NullAllowed, Export ("label")]
 		string Label { get; set; }
@@ -7512,6 +7574,8 @@ namespace Metal {
 
 	[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLAccelerationStructurePassSampleBufferAttachmentDescriptor : NSCopying {
 		[NullAllowed, Export ("sampleBuffer", ArgumentSemantic.Retain)]
 		IMTLCounterSampleBuffer SampleBuffer { get; set; }
@@ -7525,6 +7589,8 @@ namespace Metal {
 
 	[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLAccelerationStructurePassSampleBufferAttachmentDescriptorArray {
 		[Export ("objectAtIndexedSubscript:")]
 		MTLAccelerationStructurePassSampleBufferAttachmentDescriptor GetObject (nuint attachmentIndex);
@@ -7535,6 +7601,8 @@ namespace Metal {
 
 	[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLAccelerationStructurePassDescriptor : NSCopying {
 		[Static]
 		[Export ("accelerationStructurePassDescriptor")]
@@ -7640,6 +7708,13 @@ namespace Metal {
 	enum MTLMathFloatingPointFunctions : long {
 		Fast = 0,
 		Precise = 1,
+	}
+
+	[Native]
+	[Mac (27, 0), TV (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	enum MTLFloatingPointConversionRoundingMode : long {
+		ToNearestEven = 0,
+		TowardZero = 1,
 	}
 
 	[Native]
@@ -8340,6 +8415,11 @@ namespace Metal {
 		[Export ("copyFromTensor:sourceOrigin:sourceDimensions:toTensor:destinationOrigin:destinationDimensions:")]
 		void CopyFromTensor (IMTLTensor sourceTensor, MTLTensorExtents sourceOrigin, MTLTensorExtents sourceDimensions, IMTLTensor destinationTensor, MTLTensorExtents destinationOrigin, MTLTensorExtents destinationDimensions);
 
+		[Mac (27, 0), iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Abstract]
+		[Export ("copyFromTensor:sourceOrigin:sourceDimensions:sourcePlane:toTensor:destinationOrigin:destinationDimensions:destinationPlane:")]
+		void CopyFromTensor (IMTLTensor sourceTensor, MTLTensorExtents sourceOrigin, MTLTensorExtents sourceDimensions, MTLTensorPlaneType sourcePlane, IMTLTensor destinationTensor, MTLTensorExtents destinationOrigin, MTLTensorExtents destinationDimensions, MTLTensorPlaneType destinationPlane);
+
 		[Abstract]
 		[Export ("generateMipmapsForTexture:")]
 		void GenerateMipmaps (IMTLTexture texture);
@@ -8697,6 +8777,34 @@ namespace Metal {
 		MTLResourceId CopyResourceViews (IMTLResourceViewPool sourcePool, NSRange sourceRange, nuint destinationIndex);
 	}
 
+	interface IMTLTensorAuxiliaryPlane { }
+
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
+	[Mac (27, 0), iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface MTLTensorAuxiliaryPlane {
+		[Abstract]
+		[Export ("dataType")]
+		MTLTensorDataType DataType { get; }
+
+		[Abstract]
+		[Export ("blockFactors")]
+		MTLTensorExtents BlockFactors { get; }
+
+		[Abstract]
+		[NullAllowed, Export ("buffer")]
+		IMTLBuffer Buffer { get; }
+
+		[Abstract]
+		[Export ("bufferOffset")]
+		nuint BufferOffset { get; }
+
+		[Abstract]
+		[Export ("planeType")]
+		MTLTensorPlaneType PlaneType { get; }
+	}
+
 	interface IMTLTensor { }
 
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
@@ -8731,13 +8839,28 @@ namespace Metal {
 		[Export ("usage")]
 		MTLTensorUsage Usage { get; }
 
+		[Mac (27, 0), iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Abstract]
+		[Export ("auxiliaryPlanes")]
+		IMTLTensorAuxiliaryPlane [] AuxiliaryPlanes { get; }
+
 		[Abstract]
 		[Export ("replaceSliceOrigin:sliceDimensions:withBytes:strides:")]
 		void ReplaceSliceOrigin (MTLTensorExtents sliceOrigin, MTLTensorExtents sliceDimensions, /* const void * _Nonnull */ IntPtr bytes, MTLTensorExtents strides);
 
+		[Mac (27, 0), iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Abstract]
+		[Export ("replaceSliceOrigin:sliceDimensions:plane:withBytes:strides:")]
+		void ReplaceSliceOrigin (MTLTensorExtents sliceOrigin, MTLTensorExtents sliceDimensions, MTLTensorPlaneType plane, /* const void * _Nonnull */ IntPtr bytes, MTLTensorExtents strides);
+
 		[Abstract]
 		[Export ("getBytes:strides:fromSliceOrigin:sliceDimensions:")]
 		void GetBytes (IntPtr /* void * _Nonnull */ bytes, MTLTensorExtents strides, MTLTensorExtents sliceOrigin, MTLTensorExtents sliceDimensions);
+
+		[Mac (27, 0), iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Abstract]
+		[Export ("getBytes:strides:fromSliceOrigin:sliceDimensions:plane:")]
+		void GetBytes (IntPtr /* void * _Nonnull */ bytes, MTLTensorExtents strides, MTLTensorExtents sliceOrigin, MTLTensorExtents sliceDimensions, MTLTensorPlaneType plane);
 	}
 
 	interface IMTLTensorBinding { }
@@ -8756,6 +8879,11 @@ namespace Metal {
 		[Abstract]
 		[NullAllowed, Export ("dimensions")]
 		MTLTensorExtents Dimensions { get; }
+
+		[Mac (27, 0), iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Abstract]
+		[Export ("auxiliaryPlanes")]
+		MTLTensorAuxiliaryPlaneType [] AuxiliaryPlanes { get; }
 	}
 
 	interface IMTLTextureViewPool { }
@@ -9761,6 +9889,34 @@ namespace Metal {
 
 	[UnsupportedSimulator ("ios")]
 	[UnsupportedSimulator ("tvos")]
+	[Mac (27, 0), iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	interface MTLTensorAuxiliaryPlaneDescriptor : NSCopying {
+		[Export ("dataType", ArgumentSemantic.Assign)]
+		MTLTensorDataType DataType { get; set; }
+
+		[Export ("blockFactors", ArgumentSemantic.Copy)]
+		MTLTensorExtents BlockFactors { get; set; }
+	}
+
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
+	[Mac (27, 0), iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	interface MTLTensorAuxiliaryPlaneDescriptorMap : NSCopying {
+		[Export ("setDescriptor:forPlane:")]
+		void SetDescriptor (MTLTensorAuxiliaryPlaneDescriptor descriptor, MTLTensorPlaneType plane);
+
+		[Export ("descriptorForPlane:")]
+		[return: NullAllowed]
+		MTLTensorAuxiliaryPlaneDescriptor GetDescriptor (MTLTensorPlaneType plane);
+
+		[Export ("reset")]
+		void Reset ();
+	}
+
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MTLTensorDescriptor : NSCopying {
@@ -9777,6 +9933,10 @@ namespace Metal {
 		[Export ("usage", ArgumentSemantic.Assign)]
 		MTLTensorUsage Usage { get; set; }
 
+		[Mac (27, 0), iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[NullAllowed, Export ("auxiliaryPlanes", ArgumentSemantic.Retain)]
+		MTLTensorAuxiliaryPlaneDescriptorMap AuxiliaryPlanes { get; set; }
+
 		[Export ("resourceOptions", ArgumentSemantic.Assign)]
 		MTLResourceOptions ResourceOptions { get; set; }
 
@@ -9792,10 +9952,29 @@ namespace Metal {
 
 	[UnsupportedSimulator ("ios")]
 	[UnsupportedSimulator ("tvos")]
+	[Mac (27, 0), iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	interface MTLTensorBufferAttachments : NSCopying {
+		[Export ("setBuffer:offset:forPlane:")]
+		void SetBuffer (IMTLBuffer buffer, nuint offset, MTLTensorPlaneType plane);
+
+		[Export ("bufferForPlane:")]
+		[return: NullAllowed]
+		IMTLBuffer GetBuffer (MTLTensorPlaneType plane);
+
+		[Export ("offsetForPlane:")]
+		nuint GetOffset (MTLTensorPlaneType plane);
+
+		[Export ("reset")]
+		void Reset ();
+	}
+
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // all properties are readonly, and has a non-default ctor
-	interface MTLTensorExtents {
+	interface MTLTensorExtents : NSCopying {
 		[Internal]
 		[Export ("initWithRank:values:")]
 		NativeHandle _InitWithRank (nuint rank, /* C Array: [NullAllowed] nint[] */ IntPtr values);
@@ -9805,6 +9984,21 @@ namespace Metal {
 
 		[Export ("extentAtDimensionIndex:")]
 		nint GetExtent (nuint dimensionIndex);
+	}
+
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
+	[Mac (27, 0), iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	interface MTLTensorAuxiliaryPlaneType {
+		[Export ("dataType")]
+		MTLTensorDataType DataType { get; }
+
+		[Export ("blockFactors")]
+		MTLTensorExtents BlockFactors { get; }
+
+		[Export ("planeType")]
+		MTLTensorPlaneType PlaneType { get; }
 	}
 
 	[UnsupportedSimulator ("ios")]
@@ -9820,6 +10014,10 @@ namespace Metal {
 
 		[NullAllowed, Export ("dimensions")]
 		MTLTensorExtents Dimensions { get; }
+
+		[Mac (27, 0), iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Export ("auxiliaryPlanes")]
+		MTLTensorAuxiliaryPlaneType [] AuxiliaryPlanes { get; }
 
 		[Export ("access")]
 		MTLBindingAccess Access { get; }

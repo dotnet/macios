@@ -682,7 +682,7 @@ run-post-pr-build-tests.yml ─────────────────�
         │       └─► templates/build/build-mac-tests.yml                      │
         │           └─► templates/build/build.yml (test build variant)       │
         │                                                                    │
-        ├─► Stage: mac_12_m1, mac_13_m1, mac_14_x64, mac_15_arm64, mac_26_arm64
+        ├─► Stage: mac_14_x64, mac_15_arm64, mac_26_arm64, mac_27_arm64      │
         │   └─► templates/mac/stage.yml (for each config)                    │
         │       └─► Job: run_tests                                           │
         │           └─► templates/mac/build.yml                              │

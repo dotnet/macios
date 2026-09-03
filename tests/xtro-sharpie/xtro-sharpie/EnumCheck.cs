@@ -121,6 +121,7 @@ namespace Extrospection {
 			case "long":
 			case "FourCharCode":
 			case "OSStatus":
+			case "CMPersistentTrackID": // int32_t
 				break;
 			case "UInt64":
 			case "int64_t":

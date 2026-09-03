@@ -62,6 +62,7 @@ $makeConfig = "$packageRoot/Make.config"
 $includeMac = $false
 $includeMacCatalyst = $false
 $dotnetTfm = ""
+$expectedMacOSBuildVersion = ""
 
 if (Test-Path -Path $makeConfig) {
   foreach ($line in Get-Content -Path $makeConfig) {
@@ -73,6 +74,9 @@ if (Test-Path -Path $makeConfig) {
     }
     if ($line -match "^DOTNET_TFM=(.+)$") {
       $dotnetTfm = $Matches[1].Trim()
+    }
+    if ($line -match "^EXPECTED_MACOS_BUILD_VERSION=(.+)$") {
+      $expectedMacOSBuildVersion = $Matches[1].Trim()
     }
   }
 }
@@ -107,6 +111,10 @@ if ($includeMac) {
 }
 if ($includeMacCatalyst) {
   $toolArgs += "--include-maccatalyst"
+}
+
+if ($expectedMacOSBuildVersion -ne "") {
+  $toolArgs += @("--expected-macos-build-version", $expectedMacOSBuildVersion)
 }
 
 if ($TestSummaryPath -ne "") {

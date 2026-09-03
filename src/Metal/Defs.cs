@@ -745,7 +745,7 @@ namespace Metal {
 
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("ios14.0")]
+	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos16.1")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MTLAccelerationStructureSizes {

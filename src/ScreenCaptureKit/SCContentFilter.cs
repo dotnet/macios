@@ -12,6 +12,7 @@
 using CoreFoundation;
 
 namespace ScreenCaptureKit {
+#if __MACOS__ || __MACCATALYST__
 	/// <summary>This enum describes how to interpret some arguments when creating <see cref="SCContentFilter" /> instances.</summary>
 	[UnsupportedOSPlatform ("ios")]
 	[UnsupportedOSPlatform ("tvos")]
@@ -65,4 +66,5 @@ namespace ScreenCaptureKit {
 			}
 		}
 	}
+#endif
 }

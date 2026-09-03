@@ -1086,18 +1086,7 @@
 		<WriteLinesToFile
 			SessionId="$(BuildSessionId)"
 			Condition="'$(IsMacEnabled)' == 'true'"
-			File="$(_CustomLinkerOptionsFile)"
-			Lines="$(_CustomLinkerOptions)"
-			Overwrite="true" />
-
-		<!--
-			When building remotely from Windows, the task above writes the file on the Mac (because it's passed
-			a SessionId), but the PrepareAssemblies task isn't remoted, so it needs the file on the local machine
-			as well. Write it locally too in that case (the contents are identical, since all the properties are
-			evaluated locally in either case).
-		-->
-		<WriteLinesToFile
-			Condition="'$(IsMacEnabled)' == 'true' And '$(BuildSessionId)' != '' And '$(PrepareAssemblies)' == 'true'"
+			CopyToWindows="true"
 			File="$(_CustomLinkerOptionsFile)"
 			Lines="$(_CustomLinkerOptions)"
 			Overwrite="true" />

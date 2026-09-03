@@ -185,6 +185,13 @@ namespace Xharness {
 			}
 		}
 
+		public static IEnumerable<string> GetProjectReferenceIncludes (this XmlDocument csproj)
+		{
+			var projectReferences = csproj.SelectNodes ("//*[local-name() = 'ProjectReference'][@Include]")!;
+			foreach (XmlNode projectReference in projectReferences)
+				yield return projectReference.Attributes! ["Include"]!.Value;
+		}
+
 		public static void AddTopLevelInclude (this XmlDocument csproj, string type, string link, string include, bool prepend = false)
 		{
 			var type_node = csproj.SelectSingleNode ($"//*[local-name() = '{type}']");

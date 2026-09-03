@@ -22676,7 +22676,6 @@ T:AppKit.NSTabViewPredicate
 T:AppKit.NSTabViewType
 T:AppKit.NSTextAlignment
 T:AppKit.NSTextAlignmentExtensions
-T:AppKit.NSTextBlockVerticalAlignment
 T:AppKit.NSTextCheckingOptions
 T:AppKit.NSTextContentManagerEnumerationOptions
 T:AppKit.NSTextContentType

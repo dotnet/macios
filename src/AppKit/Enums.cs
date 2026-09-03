@@ -2472,16 +2472,17 @@ namespace AppKit {
 		Margin,
 	}
 
+	/// <summary>Specifies the vertical alignment of content in a text block.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTextBlockVerticalAlignment : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns content with the top of the text block.</summary>
 		Top,
-		/// <summary>To be added.</summary>
+		/// <summary>Centers content vertically in the text block.</summary>
 		Middle,
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns content with the bottom of the text block.</summary>
 		Bottom,
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns content with the text block's baseline.</summary>
 		Baseline,
 	}
 

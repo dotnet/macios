@@ -725,6 +725,19 @@
 			<_TrimExportAttributes>false</_TrimExportAttributes>
 			<_TrimExportAttributes Condition="'$(_TrimExportAttributesLineText)' != ''">$(_TrimExportAttributesLineText.Replace('TrimExportAttributes=', ''))</_TrimExportAttributes>
 		</PropertyGroup>
+		<!-- Append the resolved value so that post-processing reads the preparation result from the same
+		     options file. LinkerConfiguration processes duplicate keys in order, so this value wins. -->
+		<WriteLinesToFile
+			SessionId="$(BuildSessionId)"
+			Condition="'$(IsMacEnabled)' == 'true'"
+			File="$(_CustomLinkerOptionsFile)"
+			Lines="TrimExportAttributes=$(_TrimExportAttributes)"
+			Overwrite="false" />
+		<WriteLinesToFile
+			Condition="'$(IsMacEnabled)' == 'true' And '$(BuildSessionId)' != ''"
+			File="$(_CustomLinkerOptionsFile)"
+			Lines="TrimExportAttributes=$(_TrimExportAttributes)"
+			Overwrite="false" />
 		<ItemGroup Condition="'$(_TrimExportAttributes)' == 'true'">
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.TrimExportAttributes" Value="true" Trim="true" />
 		</ItemGroup>
@@ -914,6 +927,7 @@
 				SkipMarkingNSObjectsInUserAssemblies=$(_SkipMarkingNSObjectsInUserAssemblies)
 				TargetArchitectures=$(TargetArchitectures)
 				TargetFramework=$(_ComputedTargetFrameworkMoniker)
+				TrimExportAttributes=$(_TrimExportAttributes)
 				TrimMode=$(TrimMode)
 				TypeMapAssemblyName=$(_TypeMapAssemblyName)
 				TypeMapFilePath=$(_TypeMapFilePath)

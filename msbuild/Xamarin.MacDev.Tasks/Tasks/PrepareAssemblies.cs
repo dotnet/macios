@@ -44,8 +44,6 @@ namespace Xamarin.MacDev.Tasks {
 
 		public bool PostProcessing { get; set; }
 
-		public string? TrimExportAttributes { get; set; }
-
 		// The original assemblies from before preparation and trimming, used during post-processing to read
 		// selected registrar attributes removed during trimming.
 		public ITaskItem [] PreTrimAssemblies { get; set; } = [];
@@ -84,20 +82,10 @@ namespace Xamarin.MacDev.Tasks {
 			var msbuildOutputFile = "";
 
 			try {
-				bool? trimExportAttributes = null;
-				if (!string.IsNullOrEmpty (TrimExportAttributes)) {
-					if (!bool.TryParse (TrimExportAttributes, out var parsedTrimExportAttributes)) {
-						Log.LogError ($"Unable to parse the TrimExportAttributes value: {TrimExportAttributes}");
-						return false;
-					}
-					trimExportAttributes = parsedTrimExportAttributes;
-				}
-
 				var infos = InputAssemblies.Select (GetAssemblyInfo).ToArray ();
 				using var preparer = new AssemblyPreparer (this, infos, OptionsFile?.ItemSpec ?? "");
 				msbuildOutputFile = PostProcessing ? preparer.Configuration.MSBuildPostProcessOutputFile : preparer.Configuration.MSBuildOutputFile;
 				preparer.MakeReproPath = MakeReproPath;
-				preparer.TrimExportAttributes = trimExportAttributes;
 				preparer.PreTrimAssemblies.AddRange (PreTrimAssemblies.Select (v => v.ItemSpec));
 
 				if (!string.IsNullOrEmpty (DynamicRegistrationSupported)) {

@@ -3738,7 +3738,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			OptionsFile="$(_CustomLinkerOptionsFile)"
 			OutputDirectory="$(PreparedAssembliesDirectory)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
-			TrimExportAttributes="$(_TrimExportAttributes)"
 		>
 			<Output TaskParameter="OutputAssemblies" ItemName="_PreparedAssemblies" />
 		</PrepareAssemblies>
@@ -3791,7 +3790,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			Postprocessing="true"
 			PreTrimAssemblies="@(_AssembliesToPrepare)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
-			TrimExportAttributes="$(_TrimExportAttributes)"
 		>
 			<Output TaskParameter="OutputAssemblies" ItemName="_PostProcessedAssemblies" />
 		</PrepareAssemblies>

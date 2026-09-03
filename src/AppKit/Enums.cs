@@ -2432,62 +2432,67 @@ namespace AppKit {
 		ShowsPreview = 131072,
 	}
 
+	/// <summary>Specifies how a text block value is interpreted.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTextBlockValueType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The value is an absolute number of points.</summary>
 		Absolute,
-		/// <summary>To be added.</summary>
+		/// <summary>The value is a percentage of the containing text block.</summary>
 		Percentage,
 	}
 
+	/// <summary>Identifies a dimension of a text block.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTextBlockDimension : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The text block's width.</summary>
 		Width = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The minimum width of the text block.</summary>
 		MinimumWidth = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The maximum width of the text block.</summary>
 		MaximumWidth = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>The text block's height.</summary>
 		Height = 4,
-		/// <summary>To be added.</summary>
+		/// <summary>The minimum height of the text block.</summary>
 		MinimumHeight = 5,
-		/// <summary>To be added.</summary>
+		/// <summary>The maximum height of the text block.</summary>
 		MaximumHeight = 6,
 	}
 
+	/// <summary>Identifies a layer of a text block.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTextBlockLayer : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The padding layer between the text and the border.</summary>
 		Padding = -1,
-		/// <summary>To be added.</summary>
+		/// <summary>The border layer surrounding the padding.</summary>
 		Border,
-		/// <summary>To be added.</summary>
+		/// <summary>The margin layer outside the border.</summary>
 		Margin,
 	}
 
+	/// <summary>Specifies the vertical alignment of content in a text block.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTextBlockVerticalAlignment : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns content with the top of the text block.</summary>
 		Top,
-		/// <summary>To be added.</summary>
+		/// <summary>Centers content vertically in the text block.</summary>
 		Middle,
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns content with the bottom of the text block.</summary>
 		Bottom,
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns content with the text block's baseline.</summary>
 		Baseline,
 	}
 
+	/// <summary>Specifies how a text table calculates column widths.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTextTableLayoutAlgorithm : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Calculates column widths based on the table's contents.</summary>
 		Automatic,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the table's specified column widths without considering its contents.</summary>
 		Fixed,
 	}
 
@@ -2579,27 +2584,29 @@ namespace AppKit {
 		WritingPromised = 1 << 9,
 	}
 
+	/// <summary>Specifies how a toolbar displays its items.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSToolbarDisplayMode : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the toolbar's default display mode.</summary>
 		Default,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays both the icon and label for each toolbar item.</summary>
 		IconAndLabel,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays only the icon for each toolbar item.</summary>
 		Icon,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays only the label for each toolbar item.</summary>
 		Label,
 	}
 
+	/// <summary>Specifies the size of toolbar items.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSToolbarSizeMode : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the toolbar's default item size.</summary>
 		Default,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses regular-sized toolbar items.</summary>
 		Regular,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses small toolbar items.</summary>
 		Small,
 	}
 
@@ -2644,24 +2651,26 @@ namespace AppKit {
 		FeedbackStyleGap = 2,
 	}
 
+	/// <summary>Specifies where a table view performs a drop operation.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTableViewDropOperation : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Performs the drop on the specified row.</summary>
 		On,
-		/// <summary>To be added.</summary>
+		/// <summary>Performs the drop above the specified row.</summary>
 		Above,
 	}
 
+	/// <summary>Specifies how a table column can be resized.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSTableColumnResizing : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Represents -1, which sets all table column resizing option bits.</summary>
 		None = -1,
-		/// <summary>To be added.</summary>
+		/// <summary>Allows the table view to resize the column automatically.</summary>
 		Autoresizing = (1 << 0),
-		/// <summary>To be added.</summary>
+		/// <summary>Allows the user to resize the column.</summary>
 		UserResizingMask = (1 << 1),
 	}
 
@@ -2679,15 +2688,16 @@ namespace AppKit {
 		DashedHorizontalGridLine = 1 << 3,
 	}
 
+	/// <summary>Specifies how a gradient extends beyond its starting and ending locations.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSGradientDrawingOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Does not extend the gradient beyond its starting or ending location.</summary>
 		None = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Extends the gradient before its starting location using the starting color.</summary>
 		BeforeStartingLocation = (1 << 0),
-		/// <summary>To be added.</summary>
+		/// <summary>Extends the gradient after its ending location using the ending color.</summary>
 		AfterEndingLocation = (1 << 1),
 	}
 

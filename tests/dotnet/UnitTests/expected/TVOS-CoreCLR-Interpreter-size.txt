@@ -1,4 +1,4 @@
-AppBundleSize: 8,526,048 bytes (8,326.2 KB = 8.1 MB)
+AppBundleSize: 8,584,816 bytes (8,383.6 KB = 8.2 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 _Microsoft.tvOS.TypeMap.dll:
     39,936 bytes (39.0 KB = 0.0 MB)
@@ -25,7 +25,7 @@ Frameworks/libSystem.Native.framework/libSystem.Native:
 Frameworks/libSystem.Security.Cryptography.Native.Apple.framework/Info.plist:
     907 bytes (0.9 KB = 0.0 MB)
 Frameworks/libSystem.Security.Cryptography.Native.Apple.framework/libSystem.Security.Cryptography.Native.Apple:
-    248,672 bytes (242.8 KB = 0.2 MB)
+    249,584 bytes (243.7 KB = 0.2 MB)
 Info.plist:
     1,165 bytes (1.1 KB = 0.0 MB)
 Microsoft.tvOS.dll:
@@ -45,7 +45,7 @@ System.IO.Compression.dll:
 System.IO.MemoryMappedFiles.dll:
     22,016 bytes (21.5 KB = 0.0 MB)
 System.Private.CoreLib.dll:
-    1,758,720 bytes (1,717.5 KB = 1.7 MB)
+    1,816,576 bytes (1,774.0 KB = 1.7 MB)
 System.Reflection.Metadata.dll:
     84,480 bytes (82.5 KB = 0.1 MB)
 System.Runtime.dll:

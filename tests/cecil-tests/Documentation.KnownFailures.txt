@@ -22490,7 +22490,6 @@ T:AppKit.NSGLFormat
 T:AppKit.NSGLTextureCubeMap
 T:AppKit.NSGLTextureTarget
 T:AppKit.NSGlyphInscription
-T:AppKit.NSGradientDrawingOptions
 T:AppKit.NSGradientType
 T:AppKit.NSGridCellPlacement
 T:AppKit.NSGridRowAlignment
@@ -22633,7 +22632,6 @@ T:AppKit.NSStringAttributeKey
 T:AppKit.NSStringDrawing_NSAttributedString
 T:AppKit.NSStringDrawing_NSString
 T:AppKit.NSSurfaceOrder
-T:AppKit.NSTableColumnResizing
 T:AppKit.NSTableReorder
 T:AppKit.NSTableRowActionEdge
 T:AppKit.NSTableViewAnimation
@@ -22649,7 +22647,6 @@ T:AppKit.NSTableViewDiffableDataSourceCellProvider
 T:AppKit.NSTableViewDiffableDataSourceRowProvider
 T:AppKit.NSTableViewDiffableDataSourceSectionHeaderViewProvider
 T:AppKit.NSTableViewDraggingDestinationFeedbackStyle
-T:AppKit.NSTableViewDropOperation
 T:AppKit.NSTableViewEventString
 T:AppKit.NSTableViewGridStyle
 T:AppKit.NSTableViewIndexFilter
@@ -22676,10 +22673,6 @@ T:AppKit.NSTabViewPredicate
 T:AppKit.NSTabViewType
 T:AppKit.NSTextAlignment
 T:AppKit.NSTextAlignmentExtensions
-T:AppKit.NSTextBlockDimension
-T:AppKit.NSTextBlockLayer
-T:AppKit.NSTextBlockValueType
-T:AppKit.NSTextBlockVerticalAlignment
 T:AppKit.NSTextCheckingOptions
 T:AppKit.NSTextContentManagerEnumerationOptions
 T:AppKit.NSTextContentType
@@ -22718,7 +22711,6 @@ T:AppKit.NSTextSelectionNavigationDirection
 T:AppKit.NSTextSelectionNavigationLayoutOrientation
 T:AppKit.NSTextSelectionNavigationModifier
 T:AppKit.NSTextSelectionNavigationWritingDirection
-T:AppKit.NSTextTableLayoutAlgorithm
 T:AppKit.NSTextTabType
 T:AppKit.NSTextView_SharingService
 T:AppKit.NSTextViewCellPasteboard
@@ -22749,14 +22741,12 @@ T:AppKit.NSTitlebarSeparatorStyle
 T:AppKit.NSTitlePosition
 T:AppKit.NSTokenStyle
 T:AppKit.NSToolbarCanInsert
-T:AppKit.NSToolbarDisplayMode
 T:AppKit.NSToolbarIdentifiers
 T:AppKit.NSToolbarImmovableItemIdentifiers
 T:AppKit.NSToolbarItemGroupControlRepresentation
 T:AppKit.NSToolbarItemGroupSelectionMode
 T:AppKit.NSToolbarItemStyle
 T:AppKit.NSToolbarItemVisibilityPriority
-T:AppKit.NSToolbarSizeMode
 T:AppKit.NSToolbarWillInsert
 T:AppKit.NSTouch_NSTouchBar
 T:AppKit.NSTouchBarItemIdentifier

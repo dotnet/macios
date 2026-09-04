@@ -544,13 +544,24 @@ build warns) when those conditions aren't met.
 
 ## EmbedOnDemandResources
 
-Controls where on-demand resource asset packs are placed when packaging an app
-for distribution. This property does **not** enable on-demand resources (use
-[EnableOnDemandResources](#enableondemandresources) for that) — it only affects
-how already-tagged asset packs are packaged.
+Controls where on-demand resource asset packs are placed, so that the on-demand
+resources APIs can find them at runtime. This property does **not** enable
+on-demand resources (use [EnableOnDemandResources](#enableondemandresources) for
+that) — it only affects how already-tagged asset packs are packaged.
 
 This is the property set by the "Embed on-demand resources in the app bundle"
-option in the IDE. It only takes effect for `AdHoc` distribution:
+option in the IDE.
+
+When building for the **simulator**, the asset packs can't be hosted anywhere
+(there's no App Store nor a local hosting server), so they must be embedded in
+the app bundle for on-demand resources to work at all:
+
+* `true`: the asset packs are embedded in the `.app` bundle and served locally
+  by the app.
+* `false`: the asset packs are not embedded, so the on-demand resources APIs
+  won't find them on the simulator.
+
+When packaging an **IPA** for `AdHoc` distribution:
 
 * `true`: the asset packs are embedded in the `.app` bundle inside the IPA and
   served locally by the app.
@@ -560,9 +571,7 @@ option in the IDE. It only takes effect for `AdHoc` distribution:
 For `AppStore` distribution the asset packs are always placed outside the `.app`
 bundle (to be hosted by the App Store), regardless of this property.
 
-This property is only consulted when packaging an IPA for distribution (when
-`BuildIpa` is `true` and the distribution type is `AppStore` or `AdHoc`); it has
-no effect on a simulator or device debug build.
+This property has no effect on a device debug build.
 
 Default: true
 

@@ -91,7 +91,7 @@ namespace Xharness.Jenkins.TestTasks {
 					// Use the spawner to launch the app, to avoid issues with macOS getting confused who's the responsible process
 					Harness.UseSpawner (proc.StartInfo, arguments);
 
-					Jenkins.MainLog.WriteLine ("Executing {0} ({1})", TestName, Mode);
+					Jenkins.MainLog.WriteLine ("Executing {0} ({1} - {2})", TestName, Mode, Variation);
 					var log = Logs.Create ($"execute-{Platform}-{Timestamp}.txt", LogType.ExecutionLog.ToString ());
 					ICrashSnapshotReporter? snapshot = null;
 					if (!Jenkins.Harness.DryRun) {

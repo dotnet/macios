@@ -11,3 +11,5 @@
 ## (baseline for https://github.com/dotnet/macios/issues/26053)
 !unknown-selector! +FSBlockDeviceResource::proxyResourceForBSDName: not found
 !unknown-selector! +FSBlockDeviceResource::proxyResourceForBSDName:isWritable: not found
+!extra-null-allowed! 'FSKit.FSFileName[] FSKit.IFSVolumeXattrOperations::GetSupportedXattrNames(FSKit.FSItem)' has a extraneous [NullAllowed] on return type
+!missing-null-allowed! 'Foundation.NSProgress FSKit.IFSManageableResourceMaintenanceOperations::StartCheckWithTask(FSKit.FSTask,FSKit.FSTaskOptions,Foundation.NSError&)' is missing an [NullAllowed] on return type

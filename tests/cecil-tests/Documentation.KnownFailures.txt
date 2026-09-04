@@ -54426,7 +54426,6 @@ T:AppKit.NSImageAlignment
 T:AppKit.NSImageCacheMode
 T:AppKit.NSImageCell
 T:AppKit.NSImageDynamicRange
-T:AppKit.NSImageFrameStyle
 T:AppKit.NSImageHint
 T:AppKit.NSImageInterpolation
 T:AppKit.NSImageLayoutDirection
@@ -54437,7 +54436,6 @@ T:AppKit.NSImageRep
 T:AppKit.NSImageRepLoadStatus
 T:AppKit.NSImageResizingModeExtensions
 T:AppKit.NSImageScale
-T:AppKit.NSImageScaling
 T:AppKit.NSImageSymbolColorRenderingMode
 T:AppKit.NSImageSymbolConfiguration
 T:AppKit.NSImageSymbolScale
@@ -54574,7 +54572,6 @@ T:AppKit.NSRulerMarkerClientViewDelegation
 T:AppKit.NSRulerView
 T:AppKit.NSRulerViewUnits
 T:AppKit.NSRunningApplication
-T:AppKit.NSRunResponse
 T:AppKit.NSSaveOperationType
 T:AppKit.NSSavePanel
 T:AppKit.NSSavePanelComplete
@@ -54615,7 +54612,6 @@ T:AppKit.NSSegmentedControl
 T:AppKit.NSSegmentedControlRole
 T:AppKit.NSSegmentStyle
 T:AppKit.NSSegmentSwitchTracking
-T:AppKit.NSSelectionDirection
 T:AppKit.NSSharingCollaborationMode
 T:AppKit.NSSharingCollaborationModeRestriction
 T:AppKit.NSSharingContentScope
@@ -54639,7 +54635,6 @@ T:AppKit.NSSliderCell
 T:AppKit.NSSliderTouchBarItem
 T:AppKit.NSSliderType
 T:AppKit.NSSound
-T:AppKit.NSSpeechBoundary
 T:AppKit.NSSpeechRecognizer
 T:AppKit.NSSpeechSynthesizer
 T:AppKit.NSSpellChecker
@@ -54647,7 +54642,6 @@ T:AppKit.NSSpellCheckerShowCorrectionIndicatorOfTypeHandler
 T:AppKit.NSSpellingState
 T:AppKit.NSSplitView
 T:AppKit.NSSplitViewController
-T:AppKit.NSSplitViewDividerStyle
 T:AppKit.NSSplitViewItem
 T:AppKit.NSSplitViewItemAccessoryViewController
 T:AppKit.NSSplitViewItemBehavior
@@ -54698,7 +54692,6 @@ T:AppKit.NSTableViewDiffableDataSourceRowProvider
 T:AppKit.NSTableViewDiffableDataSourceSectionHeaderViewProvider
 T:AppKit.NSTableViewDraggingDestinationFeedbackStyle
 T:AppKit.NSTableViewEventString
-T:AppKit.NSTableViewGridStyle
 T:AppKit.NSTableViewIndexFilter
 T:AppKit.NSTableViewPredicate
 T:AppKit.NSTableViewRowAction
@@ -54710,7 +54703,6 @@ T:AppKit.NSTableViewRowHeight
 T:AppKit.NSTableViewRowPredicate
 T:AppKit.NSTableViewRowSizeStyle
 T:AppKit.NSTableViewSearchString
-T:AppKit.NSTableViewSelectionHighlightStyle
 T:AppKit.NSTableViewSource
 T:AppKit.NSTableViewStyle
 T:AppKit.NSTableViewToolTip
@@ -54794,7 +54786,6 @@ T:AppKit.NSTextSelectionNavigationModifier
 T:AppKit.NSTextSelectionNavigationWritingDirection
 T:AppKit.NSTextTable
 T:AppKit.NSTextTableBlock
-T:AppKit.NSTextTabType
 T:AppKit.NSTextView
 T:AppKit.NSTextView_SharingService
 T:AppKit.NSTextViewCellPasteboard
@@ -54900,7 +54891,6 @@ T:AppKit.NSWindowFramePredicate
 T:AppKit.NSWindowLevel
 T:AppKit.NSWindowMenu
 T:AppKit.NSWindowNSWindow
-T:AppKit.NSWindowNumberListOptions
 T:AppKit.NSWindowResize
 T:AppKit.NSWindowSharingType
 T:AppKit.NSWindowSheetRect

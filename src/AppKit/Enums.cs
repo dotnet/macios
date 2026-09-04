@@ -3793,12 +3793,13 @@ namespace AppKit {
 		Vertical,
 	}
 
+	/// <summary>Specifies the axis affected by Auto Layout constraints.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSLayoutConstraintOrientation : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The horizontal axis.</summary>
 		Horizontal,
-		/// <summary>To be added.</summary>
+		/// <summary>The vertical axis.</summary>
 		Vertical,
 	}
 

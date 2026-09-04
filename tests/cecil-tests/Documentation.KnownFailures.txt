@@ -22509,7 +22509,6 @@ T:AppKit.NSImageSymbolColorRenderingMode
 T:AppKit.NSImageSymbolScale
 T:AppKit.NSImageSymbolVariableValueMode
 T:AppKit.NSKey
-T:AppKit.NSLayoutConstraintOrientation
 T:AppKit.NSLayoutManager_NSTextViewSupport
 T:AppKit.NSLayoutPriority
 T:AppKit.NSLevelIndicatorPlaceholderVisibility

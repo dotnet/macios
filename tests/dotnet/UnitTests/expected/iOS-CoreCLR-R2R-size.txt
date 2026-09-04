@@ -1,4 +1,4 @@
-AppBundleSize: 11,868,019 bytes (11,589.9 KB = 11.3 MB)
+AppBundleSize: 11,866,310 bytes (11,588.2 KB = 11.3 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 _Microsoft.iOS.TypeMap.dll:
     16,384 bytes (16.0 KB = 0.0 MB)
@@ -40,10 +40,8 @@ Microsoft.iOS.dll:
     65,024 bytes (63.5 KB = 0.1 MB)
 PkgInfo:
     8 bytes (0.0 KB = 0.0 MB)
-runtimeconfig.bin:
-    1,485 bytes (1.5 KB = 0.0 MB)
 SizeTestApp:
-    112,024 bytes (109.4 KB = 0.1 MB)
+    111,800 bytes (109.2 KB = 0.1 MB)
 SizeTestApp.dll:
     6,144 bytes (6.0 KB = 0.0 MB)
 System.Collections.Immutable.dll:

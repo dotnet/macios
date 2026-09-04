@@ -1,4 +1,4 @@
-AppBundleSize: 8,537,486 bytes (8,337.4 KB = 8.1 MB)
+AppBundleSize: 8,535,768 bytes (8,335.7 KB = 8.1 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 _Microsoft.tvOS.TypeMap.dll:
     17,920 bytes (17.5 KB = 0.0 MB)
@@ -32,10 +32,8 @@ Microsoft.tvOS.dll:
     97,280 bytes (95.0 KB = 0.1 MB)
 PkgInfo:
     8 bytes (0.0 KB = 0.0 MB)
-runtimeconfig.bin:
-    1,486 bytes (1.5 KB = 0.0 MB)
 SizeTestApp:
-    111,912 bytes (109.3 KB = 0.1 MB)
+    111,680 bytes (109.1 KB = 0.1 MB)
 SizeTestApp.dll:
     6,656 bytes (6.5 KB = 0.0 MB)
 System.Collections.Immutable.dll:

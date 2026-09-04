@@ -22573,7 +22573,6 @@ T:AppKit.NSResponder_NSTouchBarProvider
 T:AppKit.NSResponder_NSWritingToolsSupport
 T:AppKit.NSRuleEditorNestingMode
 T:AppKit.NSRuleEditorNumberOfChildren
-T:AppKit.NSRuleEditorRowType
 T:AppKit.NSRulerEditorChildCriterion
 T:AppKit.NSRulerEditorDisplayValue
 T:AppKit.NSRulerEditorPredicateParts

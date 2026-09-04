@@ -3641,12 +3641,13 @@ namespace AppKit {
 		TornOffMenu = 3,
 	}
 
+	/// <summary>Specifies whether a rule editor row is a leaf condition or a group of subrows.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSRuleEditorRowType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>A leaf row that represents a single condition.</summary>
 		Simple = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>A parent row that groups one or more subrows.</summary>
 		Compound,
 	}
 

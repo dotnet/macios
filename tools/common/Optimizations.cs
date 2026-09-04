@@ -226,17 +226,9 @@ namespace Xamarin.Bundler {
 			if (!DeadCodeElimination.HasValue)
 				DeadCodeElimination = true;
 
-			if (!InlineIsDirectBinding.HasValue) {
-				if (app.Platform != ApplePlatform.MacOSX) {
-					// By default we always inline calls to NSObject.IsDirectBinding
-					// unless the interpreter is enabled (we can't predict if code will be subclassed)
-					InlineIsDirectBinding = !app.UseInterpreter;
-				} else {
-					// NSObject.IsDirectBinding is not a safe optimization to apply to XM apps,
-					// because there may be additional code/assemblies we don't know about at build time.
-					InlineIsDirectBinding = false;
-				}
-			}
+			// By default we always inline IsDirectBinding.
+			if (!InlineIsDirectBinding.HasValue)
+				InlineIsDirectBinding = true;
 
 			// The default behavior for InlineIntPtrSize depends on the assembly being linked,
 			// which means we can't set it to a global constant. It's handled in the OptimizeGeneratedCodeSubStep directly.

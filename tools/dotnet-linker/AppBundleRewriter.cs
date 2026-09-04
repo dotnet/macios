@@ -1547,44 +1547,12 @@ namespace Xamarin.Linker {
 			return action == AssemblyAction.Link;
 		}
 
-		/// <summary>
-		/// Returns the signature to use in a <c>[DynamicDependency]</c> attribute for a method: the
-		/// method name (and generic arity) if no other method in the same type has that name and
-		/// arity, otherwise the full signature (including the parameter list).
-		/// </summary>
-		/// <remarks>
-		///   <para>
-		///     The trimmer only compares the parameter lists when the signature has one, and computing
-		///     the signature of a parameter crashes the trimmer if the parameter's type is a nested type
-		///     reference (see <see cref="DocumentationComments.GetNameSignature (MethodDefinition)" />),
-		///     so use the name alone whenever it's unambiguous.
-		///   </para>
-		///   <para>
-		///     The trimmer matches a signature without a parameter list on both the name and the generic
-		///     arity, so methods that differ in arity (<c>Foo ()</c> vs <c>Foo&lt;T&gt; ()</c>) don't
-		///     collide and don't need a parameter list either.
-		///   </para>
-		/// </remarks>
-		static string GetDynamicDependencySignature (MethodDefinition method)
-		{
-			var count = 0;
-			foreach (var candidate in method.DeclaringType.Methods) {
-				if (candidate.Name != method.Name)
-					continue;
-				if (candidate.GenericParameters.Count != method.GenericParameters.Count)
-					continue;
-				if (++count > 1)
-					return DocumentationComments.GetSignature (method);
-			}
-			return DocumentationComments.GetNameSignature (method);
-		}
-
 		public bool AddDynamicDependencyAttribute (MethodDefinition addToMethod, MethodDefinition dependsOn)
 		{
 			if (!IsAssemblyTrimmed (dependsOn))
 				return false;
 
-			var signature = GetDynamicDependencySignature (dependsOn);
+			var signature = DocumentationComments.GetSignature (dependsOn);
 			if (addToMethod.DeclaringType == dependsOn.DeclaringType) {
 				var attribute = CreateDynamicDependencyAttribute (signature);
 				return AddAttributeOnlyOnce (addToMethod, attribute);
@@ -1736,7 +1704,7 @@ namespace Xamarin.Linker {
 		public bool AddDynamicDependencyAttributeToStaticConstructor (TypeDefinition onType, MethodDefinition forMethod)
 		{
 			CustomAttribute attrib;
-			var signature = GetDynamicDependencySignature (forMethod);
+			var signature = DocumentationComments.GetSignature (forMethod);
 
 			if (onType == forMethod.DeclaringType) {
 				attrib = CreateDynamicDependencyAttribute (signature);

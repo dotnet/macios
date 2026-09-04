@@ -554,6 +554,7 @@ Microsoft.iOS.dll:Foundation.NSObject.set_HasManagedRef(System.Boolean)
 Microsoft.iOS.dll:Foundation.NSObject.set_IsDirectBinding(System.Boolean)
 Microsoft.iOS.dll:Foundation.NSObject.set_RemoveFromObjectMap(System.Boolean)
 Microsoft.iOS.dll:Foundation.NSObject.ToString()
+Microsoft.iOS.dll:Foundation.NSObject.TryGetIsUserType(ObjCRuntime.NativeHandle, out System.Boolean&, out System.String&)
 Microsoft.iOS.dll:Foundation.NSObject.xamarin_release_managed_ref(System.IntPtr, System.Byte)
 Microsoft.iOS.dll:Foundation.NSObject.xamarin_set_gchandle_with_flags_safe(System.IntPtr, System.IntPtr, Foundation.NSObject/XamarinGCHandleFlags, System.IntPtr)
 Microsoft.iOS.dll:Foundation.NSObject[] Foundation.NSDictionary::Keys()
@@ -566,6 +567,8 @@ Microsoft.iOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::HasManage
 Microsoft.iOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::InFinalizerQueue
 Microsoft.iOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::IsCustomType
 Microsoft.iOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::IsDirectBinding
+Microsoft.iOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::IsUserType
+Microsoft.iOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::IsUserTypeKnown
 Microsoft.iOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::NativeRef
 Microsoft.iOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::RegisteredToggleRef
 Microsoft.iOS.dll:Foundation.NSObject/Flags Foundation.NSObjectData::flags

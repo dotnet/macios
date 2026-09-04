@@ -287,6 +287,7 @@
 			_PrepareAssemblies;
 			_SetDynamicRegistrationSupportedFeature;
 			_SetSmartEnumConversionsRootDescriptor;
+			_SetTrimExportAttributesFeature;
 			_ComputeFrameworkFilesToPublish;
 			_ComputeDynamicLibrariesToPublish;
 			ComputeFilesToPublish;
@@ -633,7 +634,7 @@
 	<!--
 		Enables the 'ObjCRuntime.Runtime.DynamicRegistrationSupported' trimmer feature switch so that ILLink
 		hardcodes Runtime.DynamicRegistrationSupported. When PrepareAssemblies is enabled, the assembly-preparer's
-		RegistrarRemovalTrackingStep computes whether the dynamic registrar is needed (instead of rewriting the
+		DetectApiUsageStep computes whether the dynamic registrar is needed (instead of rewriting the
 		platform assembly) and writes the value - as the 'DynamicRegistrationSupported' MSBuild output property -
 		to $(_AssemblyPreparerMSBuildOutputFile). This target runs after _PrepareAssemblies and before the trimmer.
 		It's not incremental-gated, so even if _PrepareAssemblies was skipped (because its outputs were up-to-date),
@@ -705,6 +706,39 @@
 		</ItemGroup>
 	</Target>
 
+	<!--
+		Enables ExportAttribute removal after the assembly-preparer has run the managed registrar and
+		verified that no runtime path still needs Export metadata. The resolved value is persisted in the
+		assembly-preparer output file so incremental builds make the same decision.
+	-->
+	<Target Name="_SetTrimExportAttributesFeature" Condition="'$(PrepareAssemblies)' == 'true'">
+		<ReadLinesFromFile
+			File="$(_AssemblyPreparerMSBuildOutputFile)"
+			Condition="Exists('$(_AssemblyPreparerMSBuildOutputFile)')">
+			<Output TaskParameter="Lines" ItemName="_AssemblyPreparerTrimExportAttributesProperty" />
+		</ReadLinesFromFile>
+		<ItemGroup>
+			<_TrimExportAttributesLine Include="@(_AssemblyPreparerTrimExportAttributesProperty)" Condition="$([System.String]::Copy('%(Identity)').StartsWith('TrimExportAttributes='))" />
+		</ItemGroup>
+		<PropertyGroup>
+			<_TrimExportAttributesLineText>@(_TrimExportAttributesLine)</_TrimExportAttributesLineText>
+			<_TrimExportAttributes>false</_TrimExportAttributes>
+			<_TrimExportAttributes Condition="'$(_TrimExportAttributesLineText)' != ''">$(_TrimExportAttributesLineText.Replace('TrimExportAttributes=', ''))</_TrimExportAttributes>
+		</PropertyGroup>
+		<!-- Append the resolved value so that post-processing reads the preparation result from the same
+		     options file. LinkerConfiguration processes duplicate keys in order, so this value wins. -->
+		<WriteLinesToFile
+			SessionId="$(BuildSessionId)"
+			Condition="'$(IsMacEnabled)' == 'true'"
+			CopyToWindows="true"
+			File="$(_CustomLinkerOptionsFile)"
+			Lines="TrimExportAttributes=$(_TrimExportAttributes)"
+			Overwrite="false" />
+		<ItemGroup Condition="'$(_TrimExportAttributes)' == 'true'">
+			<RuntimeHostConfigurationOption Include="ObjCRuntime.TrimExportAttributes" Value="true" Trim="true" />
+		</ItemGroup>
+	</Target>
+
 	<Target Name="_ComputeLinkerArguments" DependsOnTargets="$(_ComputeLinkerArgumentsDependsOn)" />
 
 	<Target Name="_ComputeLinkerInputs">
@@ -717,8 +751,16 @@
 			/>
 
 		<Warning Text="All assemblies must be processed by the linker when using NativeAOT. Please don't set neither the '$(_LinkModeProperty)' nor the 'TrimMode' property, so that the build can default to linking all assemblies." Condition="'$(_UseNativeAot)' == 'true' And '$(_LinkMode)' != 'Full'" />
+		<Error Text="The 'TrimExportAttributes' property must be either 'true', 'false', or unset." Condition="'$(TrimExportAttributes)' != '' And '$(TrimExportAttributes)' != 'true' And '$(TrimExportAttributes)' != 'false'" />
+		<Error
+			Text="Export attributes can only be removed when PrepareAssemblies=true, PostProcessAssemblies=true, and Registrar=trimmable-static."
+			Condition="'$(TrimExportAttributes)' == 'true' And ('$(PrepareAssemblies)' != 'true' Or '$(PostProcessAssemblies)' != 'true' Or '$(Registrar)' != 'trimmable-static')"
+			/>
 
 		<PropertyGroup>
+			<_TrimExportAttributes>false</_TrimExportAttributes>
+			<_TrimExportAttributes Condition="'$(PrepareAssemblies)' == 'true' And '$(PostProcessAssemblies)' == 'true' And '$(Registrar)' == 'trimmable-static'">$(TrimExportAttributes)</_TrimExportAttributes>
+
 			<_UseDynamicDependenciesInsteadOfMarking Condition="'$(_UseDynamicDependenciesInsteadOfMarking)' == ''">true</_UseDynamicDependenciesInsteadOfMarking>
 			<_UseDynamicDependenciesForProtocolPreservation Condition="'$(_UseDynamicDependenciesForProtocolPreservation)' == ''">$(_UseDynamicDependenciesInsteadOfMarking)</_UseDynamicDependenciesForProtocolPreservation>
 			<_UseDynamicDependenciesForSmartEnumPreservation Condition="'$(_UseDynamicDependenciesForSmartEnumPreservation)' == ''">$(_UseDynamicDependenciesInsteadOfMarking)</_UseDynamicDependenciesForSmartEnumPreservation>
@@ -881,6 +923,7 @@
 				SkipMarkingNSObjectsInUserAssemblies=$(_SkipMarkingNSObjectsInUserAssemblies)
 				TargetArchitectures=$(TargetArchitectures)
 				TargetFramework=$(_ComputedTargetFrameworkMoniker)
+				TrimExportAttributes=$(_TrimExportAttributes)
 				TrimMode=$(TrimMode)
 				TypeMapAssemblyName=$(_TypeMapAssemblyName)
 				TypeMapFilePath=$(_TypeMapFilePath)
@@ -1010,7 +1053,7 @@
 			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.Steps.MarkNSObjectsStep" Condition="'$(PrepareAssemblies)' != 'true' And '$(_AreAnyAssembliesTrimmed)' == 'true' And '$(_UseDynamicDependenciesForMarkNSObjects)' == 'true'" />
 			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.Steps.InlineDlfcnMethodsStep" Condition="'$(PrepareAssemblies)' != 'true' And '$(InlineDlfcnMethods)' != ''" />
 			<!-- The final decision to remove/keep the dynamic registrar must be done before the linking step -->
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="MonoTouch.Tuner.RegistrarRemovalTrackingStep" Condition="'$(PrepareAssemblies)' != 'true'" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="MonoTouch.Tuner.DetectApiUsageStep" Condition="'$(PrepareAssemblies)' != 'true'" />
 			<!-- TODO: these steps should probably run after mark. -->
 			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.Steps.PreMarkDispatcher" Condition="'$(PrepareAssemblies)' != 'true' And '$(_AreAnyAssembliesTrimmed)' == 'true'" />
 			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.ManagedRegistrarStep" Condition="'$(PrepareAssemblies)' != 'true' And ('$(Registrar)' == 'managed-static' Or '$(Registrar)' == 'trimmable-static')" />

@@ -3669,6 +3669,60 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Export attributes cannot be removed because dynamic registration is supported..
+        /// </summary>
+        public static string MX4192 {
+            get {
+                return ResourceManager.GetString("MX4192", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export attributes cannot be removed because the blockliteral-setupblock optimization is disabled..
+        /// </summary>
+        public static string MX4193 {
+            get {
+                return ResourceManager.GetString("MX4193", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export attributes cannot be removed because the static-block-to-delegate-lookup optimization is disabled..
+        /// </summary>
+        public static string MX4194 {
+            get {
+                return ResourceManager.GetString("MX4194", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export attributes cannot be removed because the managed registrar must use Runtime.GetBlockWrapperCreator..
+        /// </summary>
+        public static string MX4195 {
+            get {
+                return ResourceManager.GetString("MX4195", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export attributes cannot be removed because the managed registrar must use RegistrarHelper.GetBlockForDelegate..
+        /// </summary>
+        public static string MX4196 {
+            get {
+                return ResourceManager.GetString("MX4196", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export attributes cannot be removed because the application uses an NSXpcInterface overload that obtains a selector from MethodInfo..
+        /// </summary>
+        public static string MX4197 {
+            get {
+                return ResourceManager.GetString("MX4197", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The native linker failed to execute: {0}. Please file a bug report at https://github.com/dotnet/macios/issues/new
         /// 		.
         /// </summary>

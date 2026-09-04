@@ -655,24 +655,108 @@ namespace Registrar {
 		// Look for linked away attributes as well as attributes on the attribute provider.
 		IEnumerable<ICustomAttribute> GetCustomAttributes (ICustomAttributeProvider provider, string @namespace, string name, bool inherits = false)
 		{
+#if ASSEMBLY_PREPARER
+			var found = false;
+#endif
 #if !LEGACY_TOOLS
 			var dict = LinkContext?.Annotations?.GetCustomAnnotations (name);
 			if (dict?.TryGetValue (provider, out var annotations) == true) {
 				var attributes = (IEnumerable<ICustomAttribute>) annotations;
 				foreach (var attrib in attributes) {
-					if (IsAttributeMatch (attrib, @namespace, name, inherits))
+					if (IsAttributeMatch (attrib, @namespace, name, inherits)) {
+#if ASSEMBLY_PREPARER
+						found = true;
+#endif
 						yield return attrib;
+					}
 				}
 			}
 #endif
 
 			if (provider.HasCustomAttributes) {
 				foreach (var attrib in provider.CustomAttributes) {
-					if (IsAttributeMatch (attrib, @namespace, name, inherits))
+					if (IsAttributeMatch (attrib, @namespace, name, inherits)) {
+#if ASSEMBLY_PREPARER
+						found = true;
+#endif
 						yield return attrib;
+					}
 				}
 			}
+
+#if ASSEMBLY_PREPARER
+			if (found || !ShouldReadAttributeFromPreTrimAssembly (@namespace, name))
+				yield break;
+
+			var preTrimProvider = GetPreTrimAttributeProvider (provider);
+			if (preTrimProvider is null)
+				yield break;
+			foreach (var attrib in preTrimProvider.CustomAttributes) {
+				if (IsAttributeMatch (attrib, @namespace, name, inherits))
+					yield return attrib;
+			}
+#endif
 		}
+
+#if ASSEMBLY_PREPARER
+		bool ShouldReadAttributeFromPreTrimAssembly (string @namespace, string name)
+		{
+			if (!App.IsPostProcessingAssemblies || App.PreTrimAssemblyResolver is null)
+				return false;
+
+			if (@namespace != Foundation)
+				return false;
+
+			if (name == StringConstants.ProtocolMemberAttribute)
+				return true;
+
+			return App.TrimExportAttributes == true && name == StringConstants.ExportAttribute;
+		}
+
+		ICustomAttributeProvider? GetPreTrimAttributeProvider (ICustomAttributeProvider postTrimProvider)
+		{
+			var resolver = App.PreTrimAssemblyResolver;
+			if (resolver is null)
+				throw new InvalidOperationException ("The pre-trim assembly resolver is not available.");
+
+			switch (postTrimProvider) {
+			case AssemblyDefinition assembly:
+				return resolver.Resolve (assembly.Name);
+			case ModuleDefinition module:
+				var preTrimAssembly = resolver.Resolve (module.Assembly.Name);
+				return GetSinglePreTrimProvider (preTrimAssembly.Modules, v => v.Name == module.Name, module);
+			case TypeDefinition type:
+				var preTrimModule = (ModuleDefinition?) GetPreTrimAttributeProvider (type.Module);
+				return preTrimModule?.GetType (type.FullName);
+			case MethodDefinition method:
+				var preTrimType = (TypeDefinition?) GetPreTrimAttributeProvider (method.DeclaringType);
+				return preTrimType is null ? null : GetSinglePreTrimProvider (preTrimType.Methods, v => v.FullName == method.FullName && v.GenericParameters.Count == method.GenericParameters.Count, method);
+			case PropertyDefinition property:
+				var preTrimPropertyType = (TypeDefinition?) GetPreTrimAttributeProvider (property.DeclaringType);
+				return preTrimPropertyType is null ? null : GetSinglePreTrimProvider (preTrimPropertyType.Properties, v => v.FullName == property.FullName, property);
+			case ParameterDefinition parameter:
+				var preTrimMethod = (MethodDefinition?) GetPreTrimAttributeProvider ((MethodDefinition) parameter.Method);
+				if (preTrimMethod is null || parameter.Index < 0 || parameter.Index >= preTrimMethod.Parameters.Count)
+					return null;
+				return preTrimMethod.Parameters [parameter.Index];
+			case MethodReturnType returnType:
+				var preTrimReturnMethod = (MethodDefinition?) GetPreTrimAttributeProvider ((MethodDefinition) returnType.Method);
+				return preTrimReturnMethod?.MethodReturnType;
+			default:
+				throw new InvalidOperationException ($"Unable to map the post-trim custom attribute provider '{postTrimProvider}' ({postTrimProvider.GetType ().FullName}) to a pre-trim provider.");
+			}
+		}
+
+		static T? GetSinglePreTrimProvider<T> (IEnumerable<T> providers, Func<T, bool> predicate, ICustomAttributeProvider postTrimProvider) where T : class, ICustomAttributeProvider
+		{
+			var matches = providers.Where (predicate).Take (2).ToArray ();
+			if (matches.Length == 1)
+				return matches [0];
+			if (matches.Length == 0)
+				return null;
+			throw new InvalidOperationException ($"The post-trim custom attribute provider '{postTrimProvider}' maps to multiple pre-trim providers.");
+		}
+#endif
 
 		public bool TryGetAttribute (ICustomAttributeProvider provider, string @namespace, string attributeName, [NotNullWhen (true)] out ICustomAttribute? attribute)
 		{
@@ -1573,18 +1657,6 @@ namespace Registrar {
 			if (td is null)
 				yield break;
 
-#if ASSEMBLY_PREPARER
-			// When post-processing assemblies with the trimmable static registrar, the [ProtocolMember]
-			// attributes have been removed by the trimmer, so read them from the pre-trim (untrimmed)
-			// assemblies instead.
-			if (App.IsPostProcessingAssemblies && App.PreTrimAssemblyResolver is not null) {
-				var preTrimAssembly = App.PreTrimAssemblyResolver.Resolve (td.Module.Assembly.Name);
-				var preTrimType = preTrimAssembly?.MainModule.GetType (td.FullName);
-				if (preTrimType is not null)
-					td = preTrimType;
-			}
-#endif
-
 			foreach (var ca in GetCustomAttributes (td, Foundation, StringConstants.ProtocolMemberAttribute)) {
 				var rv = new ProtocolMemberAttribute ();
 
@@ -1911,7 +1983,7 @@ namespace Registrar {
 			}
 		}
 
-		public static ExportAttribute? CreateExportAttribute (IMemberDefinition candidate)
+		public ExportAttribute? CreateExportAttribute (IMemberDefinition candidate)
 		{
 			bool is_variadic = false;
 			var attribute = GetExportAttribute (candidate);
@@ -1944,16 +2016,9 @@ namespace Registrar {
 		}
 
 		// [Export] is not sealed anymore - so we cannot simply compare strings
-		public static ICustomAttribute? GetExportAttribute (ICustomAttributeProvider candidate)
+		public ICustomAttribute? GetExportAttribute (ICustomAttributeProvider candidate)
 		{
-			if (!candidate.HasCustomAttributes)
-				return null;
-
-			foreach (CustomAttribute ca in candidate.CustomAttributes) {
-				if (ca.Constructor.DeclaringType.Inherits (Foundation, StringConstants.ExportAttribute))
-					return ca;
-			}
-			return null;
+			return GetCustomAttributes (candidate, Foundation, StringConstants.ExportAttribute, inherits: true).FirstOrDefault ();
 		}
 
 		PropertyDefinition GetBasePropertyInTypeHierarchy (PropertyDefinition property)

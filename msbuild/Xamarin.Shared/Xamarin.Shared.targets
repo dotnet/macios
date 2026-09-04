@@ -3715,13 +3715,20 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		</ItemGroup>
 		<PropertyGroup>
 			<PreparedAssembliesDirectory>$([MSBuild]::EnsureTrailingSlash('$(DeviceSpecificIntermediateOutputPath)prepared-assemblies'))</PreparedAssembliesDirectory>
+			<_AssemblyPreparerConfigurationStamp>$(DeviceSpecificIntermediateOutputPath)assembly-preparer-configuration.txt</_AssemblyPreparerConfigurationStamp>
 		</PropertyGroup>
+		<WriteLinesToFile
+			File="$(_AssemblyPreparerConfigurationStamp)"
+			Lines="DynamicRegistrationSupported=$(DynamicRegistrationSupported);LinkMode=$(_LinkMode);Optimize=$(_BundlerOptimize);PublishTrimmed=$(PublishTrimmed);TrimMode=$(TrimMode);TrimExportAttributes=$(_TrimExportAttributes);@(_AssembliesToPrepare -> 'Assembly=%(Identity)|IsTrimmable=%(IsTrimmable)|TrimMode=%(TrimMode)')"
+			Overwrite="true"
+			WriteOnlyWhenDifferent="true"
+		/>
 	</Target>
 
 	<Target
 		Name="_PrepareAssemblies"
 		Condition="'$(IsMacEnabled)' == 'true' And '$(PrepareAssemblies)' == 'true'"
-		Inputs="@(_AssembliesToPrepare)"
+		Inputs="@(_AssembliesToPrepare);$(_AssemblyPreparerConfigurationStamp)"
 		Outputs="@(_AssembliesToPrepare->'$(PreparedAssembliesDirectory)%(Filename)%(Extension)');$(_AssemblyPreparerMSBuildOutputFile)"
 		DependsOnTargets="_PrepareAssembliesForPreparation;_ComputeAssembliesToPostprocessOnPublish;SelectRegistrar"
 		>
@@ -3739,6 +3746,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<ResolvedFileToPublish Remove="@(_AssembliesToPrepare)" />
 			<ResolvedFileToPublish Include="@(_PreparedAssemblies)" />
 			<FileWrites Include="@(_PreparedAssemblies)" />
+			<FileWrites Include="$(_AssemblyPreparerConfigurationStamp)" />
 			<FileWrites Include="$(_UnmanagedCallersOnlyMapPath)" />
 			<FileWrites Include="$(_AssemblyPreparerMSBuildOutputFile)" Condition="Exists('$(_AssemblyPreparerMSBuildOutputFile)')" />
 		</ItemGroup>
@@ -3780,7 +3788,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			OptionsFile="$(_CustomLinkerOptionsFile)"
 			OutputDirectory="$(_PostprocessedAssembliesDirectory)"
 			Postprocessing="true"
-			PreTrimAssemblies="@(ManagedAssemblyToLink)"
+			PreTrimAssemblies="@(_AssembliesToPrepare)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 		>
 			<Output TaskParameter="OutputAssemblies" ItemName="_PostProcessedAssemblies" />

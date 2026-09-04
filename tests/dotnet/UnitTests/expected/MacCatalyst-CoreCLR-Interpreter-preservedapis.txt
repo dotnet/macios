@@ -401,9 +401,6 @@ Microsoft.MacCatalyst.dll:CoreGraphics.CGRect.Equals(System.Object)
 Microsoft.MacCatalyst.dll:CoreGraphics.CGRect.GetHashCode()
 Microsoft.MacCatalyst.dll:CoreGraphics.CGRect.NSStringFromCGRect(CoreGraphics.CGRect)
 Microsoft.MacCatalyst.dll:CoreGraphics.CGRect.ToString()
-Microsoft.MacCatalyst.dll:Foundation.ExportAttribute
-Microsoft.MacCatalyst.dll:Foundation.ExportAttribute..ctor(System.String, ObjCRuntime.ArgumentSemantic)
-Microsoft.MacCatalyst.dll:Foundation.ExportAttribute..ctor(System.String)
 Microsoft.MacCatalyst.dll:Foundation.INSCoding
 Microsoft.MacCatalyst.dll:Foundation.INSCopying
 Microsoft.MacCatalyst.dll:Foundation.INSExtensionRequestHandling
@@ -671,15 +668,6 @@ Microsoft.MacCatalyst.dll:Foundation.RegisterAttribute.get_IsWrapper()
 Microsoft.MacCatalyst.dll:Foundation.TrackedMemory
 Microsoft.MacCatalyst.dll:Foundation.You_Should_Not_Call_base_In_This_Method
 Microsoft.MacCatalyst.dll:Foundation.You_Should_Not_Call_base_In_This_Method..ctor()
-Microsoft.MacCatalyst.dll:ObjCRuntime.ArgumentSemantic
-Microsoft.MacCatalyst.dll:ObjCRuntime.ArgumentSemantic Foundation.ExportAttribute::semantic
-Microsoft.MacCatalyst.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSemantic::Assign
-Microsoft.MacCatalyst.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSemantic::Copy
-Microsoft.MacCatalyst.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSemantic::None
-Microsoft.MacCatalyst.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSemantic::Retain
-Microsoft.MacCatalyst.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSemantic::Strong
-Microsoft.MacCatalyst.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSemantic::UnsafeUnretained
-Microsoft.MacCatalyst.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSemantic::Weak
 Microsoft.MacCatalyst.dll:ObjCRuntime.BaseWrapper
 Microsoft.MacCatalyst.dll:ObjCRuntime.BaseWrapper..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.MacCatalyst.dll:ObjCRuntime.BaseWrapper.Release()
@@ -1372,7 +1360,6 @@ Microsoft.MacCatalyst.dll:System.Int32 Foundation.NSDictionary::System.Collectio
 Microsoft.MacCatalyst.dll:System.Int32 Foundation.NSDictionary/<GetEnumerator>d__66::<>1__state
 Microsoft.MacCatalyst.dll:System.Int32 Foundation.NSDictionary/<GetEnumerator>d__66::<>7__wrap2
 Microsoft.MacCatalyst.dll:System.Int32 Foundation.NSObjectFlag::value__
-Microsoft.MacCatalyst.dll:System.Int32 ObjCRuntime.ArgumentSemantic::value__
 Microsoft.MacCatalyst.dll:System.Int32 ObjCRuntime.BlockCollector::count
 Microsoft.MacCatalyst.dll:System.Int32 ObjCRuntime.Dlfcn/Mode::value__
 Microsoft.MacCatalyst.dll:System.Int32 ObjCRuntime.MarshalManagedExceptionMode::value__
@@ -1555,7 +1542,6 @@ Microsoft.MacCatalyst.dll:System.Runtime.InteropServices.NFloat CoreGraphics.CGR
 Microsoft.MacCatalyst.dll:System.Runtime.InteropServices.NFloat CoreGraphics.CGRect::y
 Microsoft.MacCatalyst.dll:System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal/UnhandledExceptionPropagationHandler ObjCRuntime.Runtime/<>O::<0>__UnhandledExceptionPropagationHandler
 Microsoft.MacCatalyst.dll:System.String CoreFoundation.CFString::str
-Microsoft.MacCatalyst.dll:System.String Foundation.ExportAttribute::selector
 Microsoft.MacCatalyst.dll:System.String Foundation.NSException::Name()
 Microsoft.MacCatalyst.dll:System.String Foundation.NSException::Reason()
 Microsoft.MacCatalyst.dll:System.String Foundation.NSNumber::StringValue()

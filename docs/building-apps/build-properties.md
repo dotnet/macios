@@ -542,6 +542,20 @@ Removing the dynamic registrar requires a static registrar (`Registrar=static` o
 `Registrar=managed-static`) and trimming, so setting this property has no effect (and the
 build warns) when those conditions aren't met.
 
+## TrimExportAttributes
+
+Controls whether `Foundation.ExportAttribute`, `Foundation.ActionAttribute`,
+and `Foundation.OutletAttribute` instances are removed during trimming.
+
+If this property is not specified, the build automatically removes these
+attributes when assembly preparation and post-processing are enabled, the
+trimmable static registrar is selected, dynamic registration is not required,
+and no runtime fallback needs the attributes.
+
+Set this property to `false` to preserve the attributes. Set it to `true` to
+require their removal; the build will fail if it detects that the attributes
+are needed at runtime.
+
 ## EmbedOnDemandResources
 
 Controls where on-demand resource asset packs are placed, so that the on-demand

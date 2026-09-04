@@ -3,6 +3,7 @@ using System.Linq;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using Mono.Linker;
+using Mono.Tuner;
 
 using Xamarin.Bundler;
 using Xamarin.Linker;
@@ -10,9 +11,9 @@ using Xamarin.Linker;
 #nullable enable
 
 namespace MonoTouch.Tuner {
-	public class RegistrarRemovalTrackingStep : ConfigurationAwareStep {
+	public class DetectApiUsageStep : ConfigurationAwareStep {
 
-		protected override string Name { get; } = "RegistrarRemovalTracking";
+		protected override string Name { get; } = "DetectApiUsage";
 		protected override int ErrorCode { get; } = 2380;
 
 		int WarnCode => ErrorCode + 7;
@@ -87,6 +88,9 @@ namespace MonoTouch.Tuner {
 				if (name != productAssemblyName)
 					continue;
 
+				if (App.TrimExportAttributes != false && IsNSXpcInterfaceMethodInfoOverload (mr))
+					App.TrimExportAttributesBlockers.Add (ExportAttributeRemovalBlocker.NSXpcInterfaceMethodInfoOverloadUsed);
+
 				switch (mr.DeclaringType.Namespace) {
 				case "ObjCRuntime":
 					switch (mr.DeclaringType.Name) {
@@ -153,6 +157,18 @@ namespace MonoTouch.Tuner {
 			}
 
 			return requires;
+		}
+
+		static bool IsNSXpcInterfaceMethodInfoOverload (MemberReference member)
+		{
+			if (member is not MethodReference method)
+				return false;
+			if (!method.DeclaringType.Is ("Foundation", "NSXpcInterface"))
+				return false;
+			if (method.Parameters.Count == 0 || !method.Parameters [0].ParameterType.Is ("System.Reflection", "MethodInfo"))
+				return false;
+
+			return method.Name == "GetAllowedClasses" || method.Name == "SetAllowedClasses";
 		}
 
 		void Warn (AssemblyDefinition assembly, MemberReference mr)

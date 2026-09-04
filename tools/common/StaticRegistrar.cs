@@ -1734,6 +1734,76 @@ namespace Registrar {
 			return false;
 		}
 
+#if !LEGACY_TOOLS
+		IEnumerable<ICustomAttribute> GetAvailabilityAttributes (TypeReference type)
+		{
+			var td = type.Resolve ();
+			if (td is null)
+				yield break;
+
+			if (td.HasCustomAttributes) {
+				foreach (var attribute in td.CustomAttributes)
+					yield return attribute;
+			}
+
+			if (AvailabilityAnnotations is not null && AvailabilityAnnotations.TryGetValue (td, out var attributeObjects)) {
+				foreach (var attribute in (IEnumerable<ICustomAttribute>) attributeObjects)
+					yield return attribute;
+			}
+
+#if ASSEMBLY_PREPARER
+			if (App.IsPostProcessingAssemblies && App.PreTrimAssemblyResolver is not null) {
+				var preTrimAssembly = App.PreTrimAssemblyResolver.Resolve (td.Module.Assembly.Name);
+				var preTrimType = preTrimAssembly?.MainModule.GetType (td.FullName);
+				if (preTrimType is not null && preTrimType.HasCustomAttributes) {
+					foreach (var attribute in preTrimType.CustomAttributes)
+						yield return attribute;
+				}
+			}
+#endif
+		}
+
+		bool IsUnavailableAtDeploymentTarget (TypeReference type)
+		{
+			if (App.DeploymentTarget is null)
+				return false;
+
+			foreach (var attribute in GetAvailabilityAttributes (type)) {
+				if (!attribute.AttributeType.Is ("System.Runtime.Versioning", "UnsupportedOSPlatformAttribute"))
+					continue;
+
+				if (!GetDotNetAvailabilityAttribute (attribute, App.Platform, out var unavailableVersion, out _))
+					continue;
+
+				// Clang diagnoses obsoleted declarations using the deployment target, not the selected SDK version.
+				if (unavailableVersion is null || unavailableVersion <= App.DeploymentTarget)
+					return true;
+			}
+
+			return false;
+		}
+
+		bool IsUnavailablePlatformRegistrarType (ObjCType type)
+		{
+			if (!IsPlatformAssemblyType (type.Type))
+				return false;
+
+			if (IsUnavailableAtDeploymentTarget (type.Type))
+				return true;
+
+			foreach (var hierarchyType in GetProtocolConformanceHierarchy (type)) {
+				if (hierarchyType.Protocols is not null) {
+					foreach (var protocol in hierarchyType.Protocols) {
+						if (IsUnavailableAtDeploymentTarget (protocol.Type))
+							return true;
+					}
+				}
+			}
+
+			return false;
+		}
+#endif
+
 		public override Version? GetSdkIntroducedVersion (TypeReference obj, out string? message)
 		{
 			TypeDefinition td = obj.Resolve ();
@@ -2080,24 +2150,39 @@ namespace Registrar {
 			return false;
 		}
 
+		IEnumerable<ObjCType> GetProtocolConformanceHierarchy (ObjCType type)
+		{
+			ObjCType? current = type;
+			while (current is not null && current != current.BaseType) {
+				if (current.IsWrapper)
+					yield break;
+				yield return current;
+				current = current.BaseType;
+			}
+		}
+
+		bool IsPlatformAssemblyType (TypeReference type)
+		{
+			string assemblyName;
+			if (type.Module is null) {
+				if (LinkContext?.GetLinkedAwayType (type, out var module) is not null) {
+					assemblyName = module?.Assembly?.Name?.Name ?? "<unknown module>";
+				} else {
+					assemblyName = string.Empty;
+				}
+			} else {
+				assemblyName = type.Module.Assembly.Name.Name;
+			}
+
+			return assemblyName == PlatformAssembly;
+		}
+
 		public bool IsPlatformType (TypeReference type)
 		{
 			if (type.IsNested)
 				return false;
 
-			string aname;
-			if (type.Module is null) {
-				// This type was probably linked away
-				if (LinkContext?.GetLinkedAwayType (type, out var module) is not null) {
-					aname = module?.Assembly?.Name?.Name ?? "<unknown module>";
-				} else {
-					aname = string.Empty;
-				}
-			} else {
-				aname = type.Module.Assembly.Name.Name;
-			}
-
-			if (aname != PlatformAssembly)
+			if (!IsPlatformAssemblyType (type))
 				return false;
 
 			return Driver.GetFrameworks (App).ContainsKey (type.Namespace);
@@ -2974,6 +3059,13 @@ namespace Registrar {
 				if (@class.IsWrapper && isPlatformType)
 					continue;
 
+#if !LEGACY_TOOLS
+				if (!@class.IsProtocol && !@class.IsCategory && IsUnavailablePlatformRegistrarType (@class)) {
+					App.Log (3, "Not emitting the registrar implementation for the platform type '{0}' because it or one of its implemented protocols is unavailable at the deployment target {1}.", @class.Type.FullName, App.DeploymentTarget);
+					continue;
+				}
+#endif
+
 				if (@class.Methods is null && isPlatformType && !@class.IsProtocol && !@class.IsCategory)
 					continue;
 
@@ -3008,10 +3100,7 @@ namespace Registrar {
 					declarations.AppendFormat ("@class {0};\n", class_name);
 				}
 				var implementedProtocols = new HashSet<string> ();
-				ObjCType? tp = @class;
-				while (tp is not null && tp != tp.BaseType) {
-					if (tp.IsWrapper)
-						break; // no need to declare protocols for wrapper types, they do it already in their headers.
+				foreach (var tp in GetProtocolConformanceHierarchy (@class)) {
 					if (tp.Protocols is not null) {
 						for (int p = 0; p < tp.Protocols.Length; p++) {
 							implementedProtocols.Add (tp.Protocols [p].ProtocolName);
@@ -3021,7 +3110,6 @@ namespace Registrar {
 					}
 					if (App.Optimizations.RegisterProtocols == true && tp.AdoptedProtocols is not null)
 						implementedProtocols.UnionWith (tp.AdoptedProtocols);
-					tp = tp.BaseType;
 				}
 				implementedProtocols.Remove ("UIAppearance"); // This is not a real protocol
 				if (implementedProtocols.Count > 0) {
@@ -3263,6 +3351,10 @@ namespace Registrar {
 							break;
 						}
 					}
+#if !LEGACY_TOOLS
+					if (!use_dynamic && IsUnavailableAtDeploymentTarget (p.Protocol.Type))
+						use_dynamic = true;
+#endif
 					if (use_dynamic) {
 						map.AppendLine ("objc_getProtocol (\"{0}\"), /* {1} */", p.Protocol.ProtocolName, p.Protocol.Type.FullName);
 					} else {

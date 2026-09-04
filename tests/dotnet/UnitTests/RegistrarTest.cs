@@ -108,6 +108,61 @@ namespace Xamarin.Tests {
 			}
 		}
 
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", "26.0", true, true)]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", "27.0", false, false)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", "26.0", false, true)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", "27.0", false, false)]
+		public void UnavailablePlatformModelRegistrarOutput (ApplePlatform platform, string runtimeIdentifier, string deploymentTarget, bool expectNativeDeclaration, bool expectStaticProtocolLookup)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifier);
+
+			var projectPath = GenerateProject (platform, nameof (UnavailablePlatformModelRegistrarOutput), runtimeIdentifier, out _);
+			var projectDir = Path.GetDirectoryName (projectPath)!;
+			File.WriteAllText (Path.Combine (projectDir, "Main.cs"), """
+				using System;
+				using ObjCRuntime;
+				using UIKit;
+
+				class MainClass {
+					static int Main ()
+					{
+				#pragma warning disable 618, CA1422
+						GC.KeepAlive (typeof (UIAccelerometerDelegate));
+						GC.KeepAlive (new Protocol (typeof (IUIAccelerometerDelegate)));
+				#pragma warning restore 618, CA1422
+						return 0;
+					}
+				}
+				""");
+
+			var properties = GetDefaultProperties (runtimeIdentifier);
+			properties ["UseMonoRuntime"] = "false";
+			properties ["Registrar"] = "static";
+			properties ["SupportedOSPlatformVersion"] = deploymentTarget;
+			DotNet.AssertBuild (projectPath, properties);
+
+			var objDir = GetObjDir (projectPath, platform, runtimeIdentifier);
+			var registrarHeader = Directory.GetFiles (objDir, "registrar.h", SearchOption.AllDirectories).Single ();
+			var registrarImplementation = Directory.GetFiles (objDir, "registrar.mm", SearchOption.AllDirectories).Single ();
+			var headerContents = File.ReadAllText (registrarHeader);
+			var implementationContents = File.ReadAllText (registrarImplementation);
+			const string modelDeclaration = "UIAccelerometerDelegate : NSObject<UIAccelerometerDelegate>";
+
+			if (expectNativeDeclaration) {
+				Assert.That (headerContents, Does.Contain (modelDeclaration), "Native model declaration");
+			} else {
+				Assert.That (headerContents, Does.Not.Contain (modelDeclaration), "Native model declaration");
+			}
+
+			if (expectStaticProtocolLookup) {
+				Assert.That (implementationContents, Does.Contain ("@protocol (UIAccelerometerDelegate)"), "Static protocol lookup");
+			} else {
+				Assert.That (implementationContents, Does.Not.Contain ("@protocol (UIAccelerometerDelegate)"), "Static protocol lookup");
+				Assert.That (implementationContents, Does.Contain ("objc_getProtocol (\"UIAccelerometerDelegate\")"), "Dynamic protocol lookup");
+			}
+		}
+
 		IEnumerable<TypeDefinition> AllTypes (ModuleDefinition module)
 		{
 			foreach (var type in module.Types) {
@@ -129,4 +184,3 @@ namespace Xamarin.Tests {
 		}
 	}
 }
-

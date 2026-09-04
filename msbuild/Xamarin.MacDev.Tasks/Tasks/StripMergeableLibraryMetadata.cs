@@ -76,6 +76,7 @@ namespace Xamarin.MacDev.Tasks {
 			var args = new List<string> ();
 			var stripExecutable = GetExecutable (args, "strip", StripPath);
 			args.Add ("-no_atom_info");
+			args.Add ("-S");
 			args.Add (Path.GetFullPath (path));
 			ExecuteAsync (stripExecutable, args).Wait ();
 		}

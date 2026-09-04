@@ -616,9 +616,12 @@
 		</PropertyGroup>
 	</Target>
 
-	<Target Name="_SetRuntimeHostConfigurationOptions" BeforeTargets="GenerateBuildRuntimeConfigurationFiles" DependsOnTargets="SelectRegistrar">
+	<Target Name="_SetRuntimeHostConfigurationOptions" BeforeTargets="GenerateBuildRuntimeConfigurationFiles" DependsOnTargets="_ComputeHotReloadCompatibleBuild">
 		<ItemGroup Condition="'$(Registrar)' == 'trimmable-static'">
 			<RuntimeHostConfigurationOption Include="System.Runtime.InteropServices.TypeMappingEntryAssembly" Value="$(_TypeMapAssemblyName)" />
+		</ItemGroup>
+		<ItemGroup>
+			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.HotReloadCompatible" Value="$(HotReloadCompatibleBuild)" Trim="true" />
 		</ItemGroup>
 	</Target>
 
@@ -986,7 +989,6 @@
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsManagedStaticRegistrar" Value="$(_IsManagedStaticRegistrarFeature)" Trim="true" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsTrimmableStaticRegistrar" Value="$(_IsTrimmableStaticRegistrarFeature)" Trim="true" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsNativeAOT" Value="$(_IsNativeAOTFeature)" Trim="true" />
-			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.HotReloadCompatible" Value="$(HotReloadCompatibleBuild)" Trim="true" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsCoreCLR" Value="true" Trim="true" Condition="'$(UseMonoRuntime)' != 'true'" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsCoreCLR" Value="false" Trim="true" Condition="'$(UseMonoRuntime)' == 'true'" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Class.ValidateObjectPointers" Value="$(_ValidateObjectPointers)" Trim="true" />

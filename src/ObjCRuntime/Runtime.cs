@@ -1578,6 +1578,17 @@ namespace ObjCRuntime {
 					Runtime.NSLog ($"ConstructINativeObject<{typeof (T).FullName}> (0x{@ptr:X}, {owns}, {type}, {target_type}) failed to create instance using static interface factory method.");
 #endif
 					if (HotReloadCompatible) {
+						if (type.IsSubclassOf (typeof (NSObject))) {
+							var nsObjectCtor = GetIntPtrConstructor (type);
+							if (nsObjectCtor is not null) {
+								var handle = nsObjectCtor.GetParameters () [0].ParameterType == typeof (IntPtr) ? (object) ptr : new NativeHandle (ptr);
+								var instance = (T?) nsObjectCtor.Invoke ([handle]);
+								if (instance is not null && owns)
+									Runtime.TryReleaseINativeObject (instance);
+								return instance;
+							}
+						}
+
 						var reflectionCtor = GetIntPtr_BoolConstructor (type);
 						if (reflectionCtor is not null) {
 							var handle = reflectionCtor.GetParameters () [0].ParameterType == typeof (IntPtr) ? (object) ptr : new NativeHandle (ptr);

@@ -39,6 +39,7 @@ namespace Xamarin.Tests {
 			using var assembly = AssemblyDefinition.ReadAssembly (platformAssembly, new ReaderParameters { ReadingMode = ReadingMode.Immediate });
 			var runtimeType = assembly.MainModule.Types.Single (v => v.FullName == "ObjCRuntime.Runtime");
 			Assert.That (CountCalls (runtimeType, "ConstructNSObject", 5, "GetIntPtrConstructor"), Is.EqualTo (expectedConstructorCalls), "NSObject constructor calls");
+			Assert.That (CountCalls (runtimeType, "ConstructINativeObject", 7, "GetIntPtrConstructor"), Is.EqualTo (expectedConstructorCalls), "INativeObject NSObject constructor calls");
 			Assert.That (CountCalls (runtimeType, "ConstructINativeObject", 7, "GetIntPtr_BoolConstructor"), Is.EqualTo (expectedConstructorCalls), "INativeObject constructor calls");
 		}
 

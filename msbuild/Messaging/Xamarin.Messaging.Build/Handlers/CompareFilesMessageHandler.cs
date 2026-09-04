@@ -29,7 +29,7 @@ namespace Xamarin.Messaging.Build {
 								var localHash = hashAlgorithm.ComputeHashAsString (stream);
 
 								if (file.Hash != localHash) {
-									tracer.Info ($"CompareFiles: '{file.ItemSpec}' has a different hash on the Mac (local: '{localHash}', remote: '{file.Hash}'), it will be copied.");
+									tracer.Info ($"CompareFiles: '{file.ItemSpec}' has a different hash on the Mac (mac: '{localHash}', windows: '{file.Hash}'), it will be copied.");
 									files.Add (file.ItemSpec);
 								} else {
 									tracer.Info ($"CompareFiles: '{file.ItemSpec}' already exists on the Mac with a matching hash, it will not be copied.");

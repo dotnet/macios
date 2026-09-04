@@ -22587,7 +22587,6 @@ T:AppKit.NSScrollerKnobStyle
 T:AppKit.NSScrollerPart
 T:AppKit.NSScrollViewFindBarPosition
 T:AppKit.NSScrubberAlignment
-T:AppKit.NSScrubberMode
 T:AppKit.NSSegmentBackgroundStyle_NSSegmentedCell
 T:AppKit.NSSegmentDistribution
 T:AppKit.NSSegmentStyle

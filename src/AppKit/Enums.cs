@@ -4412,12 +4412,13 @@ namespace AppKit {
 		Indirect = (1 << (int) NSTouchType.Indirect),
 	}
 
+	/// <summary>Specifies how a scrubber responds to touch input.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSScrubberMode : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Items remain fixed while the user moves the selection across them.</summary>
 		Fixed = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Items scroll freely in response to the user's touch.</summary>
 		Free,
 	}
 

@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 
 using Microsoft.Build.Framework;
 using Xamarin.Messaging.Build.Client;
@@ -20,6 +22,11 @@ namespace Xamarin.MacDev.Tasks {
 		public string [] DylibDirectories { get; set; } = [];
 
 		public string StripPath { get; set; } = string.Empty;
+
+		public string StampDirectory { get; set; } = string.Empty;
+
+		[Output]
+		public ITaskItem [] FileWrites { get; set; } = [];
 
 		#endregion
 
@@ -66,8 +73,16 @@ namespace Xamarin.MacDev.Tasks {
 			if (!File.Exists (path))
 				return;
 
+			var stamp = GetStampPath (path);
+			if (stamp is not null && File.Exists (stamp) && File.GetLastWriteTimeUtc (stamp) >= File.GetLastWriteTimeUtc (path)) {
+				Log.LogMessage (MessageImportance.Low, $"Skipping unchanged library: {path}");
+				FileWrites = FileWrites.Append (new Microsoft.Build.Utilities.TaskItem (stamp)).ToArray ();
+				return;
+			}
+
 			if (!MachO.IsMergeableLibrary (path)) {
 				Log.LogMessage (MessageImportance.Low, $"Not a mergeable library: {path}");
+				WriteStamp (stamp);
 				return;
 			}
 
@@ -79,6 +94,28 @@ namespace Xamarin.MacDev.Tasks {
 			args.Add ("-S");
 			args.Add (Path.GetFullPath (path));
 			ExecuteAsync (stripExecutable, args).Wait ();
+			WriteStamp (stamp);
+		}
+
+		string? GetStampPath (string path)
+		{
+			if (string.IsNullOrEmpty (StampDirectory))
+				return null;
+
+			using var sha = SHA256.Create ();
+			var hash = sha.ComputeHash (Encoding.UTF8.GetBytes (Path.GetFullPath (path)));
+			var name = BitConverter.ToString (hash).Replace ("-", "");
+			return Path.Combine (StampDirectory, name + ".stamp");
+		}
+
+		void WriteStamp (string? stamp)
+		{
+			if (stamp is null)
+				return;
+
+			Directory.CreateDirectory (StampDirectory);
+			File.WriteAllText (stamp, string.Empty);
+			FileWrites = FileWrites.Append (new Microsoft.Build.Utilities.TaskItem (stamp)).ToArray ();
 		}
 
 		public bool ShouldCopyToBuildServer (ITaskItem item) => false;

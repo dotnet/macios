@@ -3442,8 +3442,11 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			Condition="'$(IsMacEnabled)' == 'true'"
 			FrameworksDirectory="$(_AppFrameworksPath)"
 			DylibDirectories="$(_AppBundlePath);$(_AppContentsPath)"
+			StampDirectory="$(DeviceSpecificIntermediateOutputPath)mergeable-library-metadata"
 			StripPath="$(StripPath)"
-		/>
+			>
+			<Output TaskParameter="FileWrites" ItemName="FileWrites" />
+		</StripMergeableLibraryMetadata>
 	</Target>
 
 	<!-- make sure spotlight indexes everything we've built -->

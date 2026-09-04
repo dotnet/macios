@@ -30,7 +30,7 @@ namespace Xamarin.MacDev.Tasks {
 		// This can also be specified as metadata on the Executable item (as 'Kind')
 		public string Kind { get; set; } = string.Empty;
 
-		// Whether to strip mergeable library metadata (LC_ATOM_INFO) from frameworks.
+		// Whether to strip mergeable library metadata (LC_ATOM_INFO) from frameworks and dylibs.
 		public bool StripMergeableLibraries { get; set; }
 		#endregion
 

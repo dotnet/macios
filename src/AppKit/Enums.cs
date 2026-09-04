@@ -3801,9 +3801,9 @@ namespace AppKit {
 	[NoMacCatalyst]
 	[Native]
 	public enum NSLayoutConstraintOrientation : long {
-		/// <summary>The horizontal axis.</summary>
+		/// <summary>The constraint has a horizontal orientation.</summary>
 		Horizontal,
-		/// <summary>The vertical axis.</summary>
+		/// <summary>The constraint has a vertical orientation.</summary>
 		Vertical,
 	}
 

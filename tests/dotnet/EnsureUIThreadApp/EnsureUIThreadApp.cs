@@ -3,7 +3,17 @@
 
 using System;
 
+using Foundation;
+using ObjCRuntime;
+
 namespace EnsureUIThreadApp {
+	class GenericObject<T> : NSObject where T : NSObject {
+		protected GenericObject (NativeHandle handle)
+			: base (handle)
+		{
+		}
+	}
+
 	public class Program {
 		static int Main (string [] args)
 		{
@@ -17,6 +27,8 @@ namespace EnsureUIThreadApp {
 #else
 				UIKit.UIApplication.EnsureUIThread ();
 #endif
+				Runtime.GetNSObjectChecked<GenericObject<NSString>> (IntPtr.Zero);
+				Runtime.GetINativeObject<GenericObject<NSString>> (IntPtr.Zero, false);
 			}
 
 			Console.WriteLine (Environment.GetEnvironmentVariable ("MAGIC_WORD"));

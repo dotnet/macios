@@ -1758,14 +1758,24 @@ namespace Xamarin.Linker {
 			return IsOpenType (tr.Resolve ());
 		}
 
-		static void EnsureVisible (MethodDefinition caller, FieldDefinition field)
+		void EnsureVisible (MethodDefinition caller, FieldDefinition field)
 		{
+			if (ShouldRelocateTrampolines (caller)) {
+				Configuration.RegistrarCompanionAssemblies [caller.Module.Assembly].AccessesAssemblies.Add (field.Module.Assembly);
+				return;
+			}
+
 			field.IsPublic = true;
 			EnsureVisible (caller, field.DeclaringType);
 		}
 
-		static void EnsureVisible (MethodDefinition caller, TypeDefinition type)
+		void EnsureVisible (MethodDefinition caller, TypeDefinition type)
 		{
+			if (ShouldRelocateTrampolines (caller)) {
+				Configuration.RegistrarCompanionAssemblies [caller.Module.Assembly].AccessesAssemblies.Add (type.Module.Assembly);
+				return;
+			}
+
 			if (type.IsNested) {
 				type.IsNestedPublic = true;
 				EnsureVisible (caller, type.DeclaringType);
@@ -1774,9 +1784,14 @@ namespace Xamarin.Linker {
 			}
 		}
 
-		static void EnsureVisible (MethodDefinition caller, MethodReference method)
+		void EnsureVisible (MethodDefinition caller, MethodReference method)
 		{
 			var md = method.Resolve ();
+			if (ShouldRelocateTrampolines (caller)) {
+				Configuration.RegistrarCompanionAssemblies [caller.Module.Assembly].AccessesAssemblies.Add (md.Module.Assembly);
+				return;
+			}
+
 			md.IsPublic = true;
 			EnsureVisible (caller, md.DeclaringType);
 		}

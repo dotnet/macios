@@ -1453,6 +1453,13 @@ namespace ObjCRuntime {
 #if LOG_TRIMMABLE_TYPEMAP
 					Runtime.NSLog ($"ConstructNSObject<{typeof (T).FullName}> (0x{@ptr:X}, {type}) failed to create instance using static interface factory method.");
 #endif
+					if (!IsNativeAOT) {
+						var reflectionCtor = GetIntPtrConstructor (type);
+						if (reflectionCtor is not null) {
+							var argument = reflectionCtor.GetParameters () [0].ParameterType == typeof (IntPtr) ? (object) ptr : new NativeHandle (ptr);
+							return (T?) reflectionCtor.Invoke ([argument]);
+						}
+					}
 					CannotCreateManagedInstanceOfGenericType (ptr, IntPtr.Zero, type, missingCtorResolution, sel, method_handle);
 					return null;
 				}
@@ -1566,6 +1573,13 @@ namespace ObjCRuntime {
 #if LOG_TRIMMABLE_TYPEMAP
 					Runtime.NSLog ($"ConstructINativeObject<{typeof (T).FullName}> (0x{@ptr:X}, {owns}, {type}, {target_type}) failed to create instance using static interface factory method.");
 #endif
+					if (!IsNativeAOT) {
+						var reflectionCtor = GetIntPtr_BoolConstructor (type);
+						if (reflectionCtor is not null) {
+							var handle = reflectionCtor.GetParameters () [0].ParameterType == typeof (IntPtr) ? (object) ptr : new NativeHandle (ptr);
+							return (T?) reflectionCtor.Invoke ([handle, owns]);
+						}
+					}
 					CannotCreateManagedInstanceOfGenericType (ptr, IntPtr.Zero, type, missingCtorResolution, sel, method_handle);
 					return default (T);
 				}

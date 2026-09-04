@@ -1285,12 +1285,13 @@ namespace AppKit {
 		GrooveBorder,
 	}
 
+	/// <summary>Specifies the shape of a text field's bezel.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTextFieldBezelStyle : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>A square bezel.</summary>
 		Square,
-		/// <summary>To be added.</summary>
+		/// <summary>A rounded bezel.</summary>
 		Rounded,
 	}
 

@@ -22664,7 +22664,6 @@ T:AppKit.NSTextContentManagerEnumerationOptions
 T:AppKit.NSTextContentType
 T:AppKit.NSTextCursorAccessoryPlacement
 T:AppKit.NSTextField_NSTouchBar
-T:AppKit.NSTextFieldBezelStyle
 T:AppKit.NSTextFieldGetCandidates
 T:AppKit.NSTextFieldSelectCandidate
 T:AppKit.NSTextFieldTextCheckingResults

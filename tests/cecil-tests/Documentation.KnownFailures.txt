@@ -22490,7 +22490,6 @@ T:AppKit.NSGLFormat
 T:AppKit.NSGLTextureCubeMap
 T:AppKit.NSGLTextureTarget
 T:AppKit.NSGlyphInscription
-T:AppKit.NSGradientDrawingOptions
 T:AppKit.NSGradientType
 T:AppKit.NSGridCellPlacement
 T:AppKit.NSGridRowAlignment
@@ -22500,7 +22499,6 @@ T:AppKit.NSHorizontalDirections
 T:AppKit.NSImageAlignment
 T:AppKit.NSImageCacheMode
 T:AppKit.NSImageDynamicRange
-T:AppKit.NSImageFrameStyle
 T:AppKit.NSImageHint
 T:AppKit.NSImageInterpolation
 T:AppKit.NSImageLayoutDirection
@@ -22510,7 +22508,6 @@ T:AppKit.NSImageRect
 T:AppKit.NSImageRepLoadStatus
 T:AppKit.NSImageResizingModeExtensions
 T:AppKit.NSImageScale
-T:AppKit.NSImageScaling
 T:AppKit.NSImageSymbolColorRenderingMode
 T:AppKit.NSImageSymbolScale
 T:AppKit.NSImageSymbolVariableValueMode
@@ -22587,7 +22584,6 @@ T:AppKit.NSRulerEditorDisplayValue
 T:AppKit.NSRulerEditorPredicateParts
 T:AppKit.NSRulerMarkerClientViewDelegation
 T:AppKit.NSRulerViewUnits
-T:AppKit.NSRunResponse
 T:AppKit.NSSaveOperationType
 T:AppKit.NSSavePanelComplete
 T:AppKit.NSScrollArrowPosition
@@ -22603,7 +22599,6 @@ T:AppKit.NSSegmentBackgroundStyle_NSSegmentedCell
 T:AppKit.NSSegmentDistribution
 T:AppKit.NSSegmentStyle
 T:AppKit.NSSegmentSwitchTracking
-T:AppKit.NSSelectionDirection
 T:AppKit.NSSharingCollaborationMode
 T:AppKit.NSSharingContentScope
 T:AppKit.NSSharingServiceAnchoringViewForSharingService
@@ -22616,10 +22611,8 @@ T:AppKit.NSSharingServiceSourceFrameOnScreenForShareItem
 T:AppKit.NSSharingServiceSourceWindowForShareItems
 T:AppKit.NSSharingServiceTransitionImageForShareItem
 T:AppKit.NSSliderType
-T:AppKit.NSSpeechBoundary
 T:AppKit.NSSpellCheckerShowCorrectionIndicatorOfTypeHandler
 T:AppKit.NSSpellingState
-T:AppKit.NSSplitViewDividerStyle
 T:AppKit.NSSplitViewItemBehavior
 T:AppKit.NSSpringLoadingHighlight
 T:AppKit.NSSpringLoadingOptions
@@ -22633,7 +22626,6 @@ T:AppKit.NSStringAttributeKey
 T:AppKit.NSStringDrawing_NSAttributedString
 T:AppKit.NSStringDrawing_NSString
 T:AppKit.NSSurfaceOrder
-T:AppKit.NSTableColumnResizing
 T:AppKit.NSTableReorder
 T:AppKit.NSTableRowActionEdge
 T:AppKit.NSTableViewAnimation
@@ -22649,9 +22641,7 @@ T:AppKit.NSTableViewDiffableDataSourceCellProvider
 T:AppKit.NSTableViewDiffableDataSourceRowProvider
 T:AppKit.NSTableViewDiffableDataSourceSectionHeaderViewProvider
 T:AppKit.NSTableViewDraggingDestinationFeedbackStyle
-T:AppKit.NSTableViewDropOperation
 T:AppKit.NSTableViewEventString
-T:AppKit.NSTableViewGridStyle
 T:AppKit.NSTableViewIndexFilter
 T:AppKit.NSTableViewPredicate
 T:AppKit.NSTableViewRowActionsGetter
@@ -22662,7 +22652,6 @@ T:AppKit.NSTableViewRowHeight
 T:AppKit.NSTableViewRowPredicate
 T:AppKit.NSTableViewRowSizeStyle
 T:AppKit.NSTableViewSearchString
-T:AppKit.NSTableViewSelectionHighlightStyle
 T:AppKit.NSTableViewSource
 T:AppKit.NSTableViewStyle
 T:AppKit.NSTableViewToolTip
@@ -22676,10 +22665,6 @@ T:AppKit.NSTabViewPredicate
 T:AppKit.NSTabViewType
 T:AppKit.NSTextAlignment
 T:AppKit.NSTextAlignmentExtensions
-T:AppKit.NSTextBlockDimension
-T:AppKit.NSTextBlockLayer
-T:AppKit.NSTextBlockValueType
-T:AppKit.NSTextBlockVerticalAlignment
 T:AppKit.NSTextCheckingOptions
 T:AppKit.NSTextContentManagerEnumerationOptions
 T:AppKit.NSTextContentType
@@ -22718,8 +22703,6 @@ T:AppKit.NSTextSelectionNavigationDirection
 T:AppKit.NSTextSelectionNavigationLayoutOrientation
 T:AppKit.NSTextSelectionNavigationModifier
 T:AppKit.NSTextSelectionNavigationWritingDirection
-T:AppKit.NSTextTableLayoutAlgorithm
-T:AppKit.NSTextTabType
 T:AppKit.NSTextView_SharingService
 T:AppKit.NSTextViewCellPasteboard
 T:AppKit.NSTextViewCellPosition
@@ -22749,14 +22732,12 @@ T:AppKit.NSTitlebarSeparatorStyle
 T:AppKit.NSTitlePosition
 T:AppKit.NSTokenStyle
 T:AppKit.NSToolbarCanInsert
-T:AppKit.NSToolbarDisplayMode
 T:AppKit.NSToolbarIdentifiers
 T:AppKit.NSToolbarImmovableItemIdentifiers
 T:AppKit.NSToolbarItemGroupControlRepresentation
 T:AppKit.NSToolbarItemGroupSelectionMode
 T:AppKit.NSToolbarItemStyle
 T:AppKit.NSToolbarItemVisibilityPriority
-T:AppKit.NSToolbarSizeMode
 T:AppKit.NSToolbarWillInsert
 T:AppKit.NSTouch_NSTouchBar
 T:AppKit.NSTouchBarItemIdentifier
@@ -22796,7 +22777,6 @@ T:AppKit.NSWindowFramePredicate
 T:AppKit.NSWindowLevel
 T:AppKit.NSWindowMenu
 T:AppKit.NSWindowNSWindow
-T:AppKit.NSWindowNumberListOptions
 T:AppKit.NSWindowResize
 T:AppKit.NSWindowSharingType
 T:AppKit.NSWindowSheetRect

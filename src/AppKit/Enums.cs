@@ -27,14 +27,15 @@ using System.ComponentModel;
 
 namespace AppKit {
 
+	/// <summary>Specifies a return response from an application modal session.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSRunResponse : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the modal session stopped.</summary>
 		Stopped = -1000,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the modal session was aborted.</summary>
 		Aborted = -1001,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the modal session should continue.</summary>
 		Continues = -1002,
 	}
 
@@ -340,16 +341,17 @@ namespace AppKit {
 	#endregion
 
 	#region NSParagraphStyle
+	/// <summary>Specifies the alignment of text at a tab stop.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTextTabType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Left-aligns text at the tab stop.</summary>
 		Left,
-		/// <summary>To be added.</summary>
+		/// <summary>Right-aligns text at the tab stop.</summary>
 		Right,
-		/// <summary>To be added.</summary>
+		/// <summary>Centers text at the tab stop.</summary>
 		Center,
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns decimal characters at the tab stop.</summary>
 		Decimal,
 	}
 
@@ -1429,24 +1431,26 @@ namespace AppKit {
 		CanJoinAllApplications = 1 << 18,
 	}
 
+	/// <summary>Specifies which windows to include in a window-number list.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSWindowNumberListOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Includes windows from all applications, instead of only the calling application.</summary>
 		AllApplication = 1 << 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Includes windows from all spaces, instead of only the active space.</summary>
 		AllSpaces = 1 << 4,
 	}
 
+	/// <summary>Specifies the direction in which a window traverses its key-view loop.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSSelectionDirection : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the window is not traversing the key-view loop.</summary>
 		Direct = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Proceeds to the next valid key view.</summary>
 		Next,
-		/// <summary>To be added.</summary>
+		/// <summary>Proceeds to the previous valid key view.</summary>
 		Previous,
 	}
 
@@ -2432,62 +2436,67 @@ namespace AppKit {
 		ShowsPreview = 131072,
 	}
 
+	/// <summary>Specifies how a text block value is interpreted.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTextBlockValueType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The value is an absolute number of points.</summary>
 		Absolute,
-		/// <summary>To be added.</summary>
+		/// <summary>The value is a percentage of the containing text block.</summary>
 		Percentage,
 	}
 
+	/// <summary>Identifies a dimension of a text block.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTextBlockDimension : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The text block's width.</summary>
 		Width = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The minimum width of the text block.</summary>
 		MinimumWidth = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The maximum width of the text block.</summary>
 		MaximumWidth = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>The text block's height.</summary>
 		Height = 4,
-		/// <summary>To be added.</summary>
+		/// <summary>The minimum height of the text block.</summary>
 		MinimumHeight = 5,
-		/// <summary>To be added.</summary>
+		/// <summary>The maximum height of the text block.</summary>
 		MaximumHeight = 6,
 	}
 
+	/// <summary>Identifies a layer of a text block.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTextBlockLayer : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The padding layer between the text and the border.</summary>
 		Padding = -1,
-		/// <summary>To be added.</summary>
+		/// <summary>The border layer surrounding the padding.</summary>
 		Border,
-		/// <summary>To be added.</summary>
+		/// <summary>The margin layer outside the border.</summary>
 		Margin,
 	}
 
+	/// <summary>Specifies the vertical alignment of content in a text block.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTextBlockVerticalAlignment : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns content with the top of the text block.</summary>
 		Top,
-		/// <summary>To be added.</summary>
+		/// <summary>Centers content vertically in the text block.</summary>
 		Middle,
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns content with the bottom of the text block.</summary>
 		Bottom,
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns content with the text block's baseline.</summary>
 		Baseline,
 	}
 
+	/// <summary>Specifies how a text table calculates column widths.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTextTableLayoutAlgorithm : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Calculates column widths based on the table's contents.</summary>
 		Automatic,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the table's specified column widths without considering its contents.</summary>
 		Fixed,
 	}
 
@@ -2579,27 +2588,29 @@ namespace AppKit {
 		WritingPromised = 1 << 9,
 	}
 
+	/// <summary>Specifies how a toolbar displays its items.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSToolbarDisplayMode : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the toolbar's default display mode.</summary>
 		Default,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays both the icon and label for each toolbar item.</summary>
 		IconAndLabel,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays only the icon for each toolbar item.</summary>
 		Icon,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays only the label for each toolbar item.</summary>
 		Label,
 	}
 
+	/// <summary>Specifies the size of toolbar items.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSToolbarSizeMode : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the toolbar's default item size.</summary>
 		Default,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses regular-sized toolbar items.</summary>
 		Regular,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses small toolbar items.</summary>
 		Small,
 	}
 
@@ -2620,14 +2631,15 @@ namespace AppKit {
 		FirstColumnOnly,
 	}
 
+	/// <summary>Specifies how a table view highlights selected rows.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTableViewSelectionHighlightStyle : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Does not highlight selected rows.</summary>
 		None = -1,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the regular selection highlight style.</summary>
 		Regular = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the source-list selection highlight style.</summary>
 		[Deprecated (PlatformName.MacOSX, 11, 0, message: "Set 'NSTableView.Style' to 'NSTableViewStyle.SourceList' instead.")]
 		SourceList = 1,
 	}
@@ -2644,50 +2656,54 @@ namespace AppKit {
 		FeedbackStyleGap = 2,
 	}
 
+	/// <summary>Specifies where a table view performs a drop operation.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTableViewDropOperation : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Performs the drop on the specified row.</summary>
 		On,
-		/// <summary>To be added.</summary>
+		/// <summary>Performs the drop above the specified row.</summary>
 		Above,
 	}
 
+	/// <summary>Specifies how a table column can be resized.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSTableColumnResizing : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Represents -1, which sets all table column resizing option bits.</summary>
 		None = -1,
-		/// <summary>To be added.</summary>
+		/// <summary>Allows the table view to resize the column automatically.</summary>
 		Autoresizing = (1 << 0),
-		/// <summary>To be added.</summary>
+		/// <summary>Allows the user to resize the column.</summary>
 		UserResizingMask = (1 << 1),
 	}
 
+	/// <summary>Specifies which grid lines a table view draws.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSTableViewGridStyle : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Does not draw grid lines.</summary>
 		None = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Draws solid vertical grid lines.</summary>
 		SolidVerticalLine = 1 << 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Draws solid horizontal grid lines.</summary>
 		SolidHorizontalLine = 1 << 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Draws dashed horizontal grid lines.</summary>
 		DashedHorizontalGridLine = 1 << 3,
 	}
 
+	/// <summary>Specifies how a gradient extends beyond its starting and ending locations.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSGradientDrawingOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Does not extend the gradient beyond its starting or ending location.</summary>
 		None = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Extends the gradient before its starting location using the starting color.</summary>
 		BeforeStartingLocation = (1 << 0),
-		/// <summary>To be added.</summary>
+		/// <summary>Extends the gradient after its ending location using the ending color.</summary>
 		AfterEndingLocation = (1 << 1),
 	}
 
@@ -2714,40 +2730,43 @@ namespace AppKit {
 		Right,
 	}
 
+	/// <summary>Specifies the frame drawn around an image.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSImageFrameStyle : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Draws no frame.</summary>
 		None = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Draws a frame suitable for a photograph.</summary>
 		Photo,
-		/// <summary>To be added.</summary>
+		/// <summary>Draws a gray bezel frame.</summary>
 		GrayBezel,
-		/// <summary>To be added.</summary>
+		/// <summary>Draws a grooved frame.</summary>
 		Groove,
-		/// <summary>To be added.</summary>
+		/// <summary>Draws a button-style frame.</summary>
 		Button,
 	}
 
+	/// <summary>Specifies when a speech synthesizer pauses or stops speaking.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSSpeechBoundary : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Pauses or stops speaking immediately.</summary>
 		Immediate = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Pauses or stops speaking at the next word boundary.</summary>
 		Word = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Pauses or stops speaking at the next sentence boundary.</summary>
 		Sentence,
 	}
 
+	/// <summary>Specifies the visual style of a split view divider.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSSplitViewDividerStyle : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Uses a thick divider.</summary>
 		Thick = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses a thin divider.</summary>
 		Thin = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses a pane-splitter divider.</summary>
 		PaneSplitter = 3,
 	}
 
@@ -2763,16 +2782,17 @@ namespace AppKit {
 		Inspector,
 	}
 
+	/// <summary>Specifies how an image is scaled to fit its frame.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSImageScaling : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Scales the image down proportionally when it is larger than the frame.</summary>
 		ProportionallyDown = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Scales the image independently along each axis to fill the frame.</summary>
 		AxesIndependently,
-		/// <summary>To be added.</summary>
+		/// <summary>Does not scale the image.</summary>
 		None,
-		/// <summary>To be added.</summary>
+		/// <summary>Scales the image proportionally up or down to fit the frame.</summary>
 		ProportionallyUpOrDown,
 	}
 

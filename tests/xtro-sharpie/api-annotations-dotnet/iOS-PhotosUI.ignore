@@ -1,0 +1,1 @@
+!missing-null-allowed! 'System.Void PhotosUI.IPHContentEditingController::FinishContentEditing(System.Action`1<Photos.PHContentEditingOutput>)' is missing a '?' on parameter 'completionHandler' block parameter #0

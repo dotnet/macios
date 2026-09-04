@@ -1,8 +1,10 @@
 Imports Foundation
+Imports ObjCRuntime
 Imports UIKit
 
 Namespace iOSApp1
 	<Register("SceneDelegate")>
+	<Adopts("UIWindowSceneDelegate")>
 	Public Class SceneDelegate
 		Inherits UIWindowSceneDelegate
 

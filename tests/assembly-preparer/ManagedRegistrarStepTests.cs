@@ -1,9 +1,40 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using MonoTouch.Tuner;
+
+using Xamarin.Linker;
+
 namespace AssemblyPreparerTests;
 
 public class ManagedRegistrarStepTests : BaseClass {
+	[Test]
+	public void FactoryMethodsNotAddedToReloadableAssemblies ()
+	{
+		var code = @"
+		using Foundation;
+		using ObjCRuntime;
+
+		class MyClass : NSObject {
+			protected MyClass (NativeHandle handle)
+				: base (handle)
+			{
+			}
+		}
+		";
+
+		using var preparer = CreatePreparer (ApplePlatform.iOS, false, p => p.Registrar = RegistrarMode.TrimmableStatic, code, out _, hotReloadCompatibleBuild: true, testAssemblyTrimMode: "copy");
+		var context = preparer.Configuration.DerivedLinkContext;
+		new LoadAssembliesStep ().Process (context);
+		new ManagedRegistrarStep ().Process (context);
+		var assembly = context.GetAssemblies ().Single (v => v.Name.Name == "Test");
+		var type = assembly.MainModule.Types.Single (v => v.Name == "MyClass");
+
+		Assert.That (type.Methods.Select (v => v.Name), Does.Not.Contain ("_Xamarin_ConstructNSObject"), "NSObject factory");
+		Assert.That (type.Methods.Select (v => v.Name), Does.Not.Contain ("_Xamarin_ConstructINativeObject"), "INativeObject factory");
+		Assert.That (preparer.Configuration.ModifiedAssemblies, Does.Not.Contain (assembly), "Modified assemblies");
+	}
+
 	[TestCase (XamarinRuntime.CoreCLR, false)]
 	[TestCase (XamarinRuntime.MonoVM, true)]
 	public void UnmanagedCallersOnlyEntryPoint (XamarinRuntime runtime, bool expectedEntryPoint)

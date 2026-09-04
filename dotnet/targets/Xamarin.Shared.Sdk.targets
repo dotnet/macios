@@ -128,14 +128,6 @@
 		<GenerateTrustedPlatformAssemblies Condition="'$(GenerateTrustedPlatformAssemblies)' == '' And '$(_BundlerDebug)' != 'true'">true</GenerateTrustedPlatformAssemblies>
 		<GenerateTrustedPlatformAssemblies Condition="'$(GenerateTrustedPlatformAssemblies)' == ''">false</GenerateTrustedPlatformAssemblies>
 
-		<!--
-			Hot Reload requires that we don't modify user (reloadable) assemblies. It's a debug-only
-			feature, so default $(HotReloadCompatibleBuild) to the debug state: this keeps the current
-			behaviour (and app size) for release builds, where the extra unconditional preservation of
-			smart-enum conversion methods would otherwise cost a bit of app size.
-		-->
-		<HotReloadCompatibleBuild Condition="'$(HotReloadCompatibleBuild)' == ''">$(_BundlerDebug)</HotReloadCompatibleBuild>
-
 		<!-- On the other hand, we want the linker to link away debug support in the actual code unless we're building for Debug -->
 		<DebuggerSupport Condition="'$(DebuggerSupport)' == ''">$(_BundlerDebug)</DebuggerSupport>
 
@@ -631,9 +623,12 @@
 		</PropertyGroup>
 	</Target>
 
-	<Target Name="_SetRuntimeHostConfigurationOptions" BeforeTargets="GenerateBuildRuntimeConfigurationFiles" DependsOnTargets="SelectRegistrar">
+	<Target Name="_SetRuntimeHostConfigurationOptions" BeforeTargets="GenerateBuildRuntimeConfigurationFiles" DependsOnTargets="_ComputeHotReloadCompatibleBuild">
 		<ItemGroup Condition="'$(Registrar)' == 'trimmable-static'">
 			<RuntimeHostConfigurationOption Include="System.Runtime.InteropServices.TypeMappingEntryAssembly" Value="$(_TypeMapAssemblyName)" />
+		</ItemGroup>
+		<ItemGroup>
+			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.HotReloadCompatible" Value="$(HotReloadCompatibleBuild)" Trim="true" />
 		</ItemGroup>
 	</Target>
 
@@ -714,7 +709,21 @@
 
 	<Target Name="_ComputeLinkerArguments" DependsOnTargets="$(_ComputeLinkerArgumentsDependsOn)" />
 
-	<Target Name="_ComputeLinkerInputs">
+	<Target Name="_ComputeHotReloadCompatibleBuild" DependsOnTargets="SelectRegistrar">
+		<PropertyGroup>
+			<!--
+				Hot Reload requires that we don't modify user (reloadable) assemblies. It's a debug-only
+				feature, so default $(HotReloadCompatibleBuild) to the debug state: this keeps the current
+				behaviour (and app size) for release builds, where the extra unconditional preservation of
+				smart-enum conversion methods would otherwise cost a bit of app size.
+			-->
+			<HotReloadCompatibleBuild Condition="'$(HotReloadCompatibleBuild)' == '' And '$(Registrar)' == 'managed-static'">false</HotReloadCompatibleBuild>
+			<HotReloadCompatibleBuild Condition="'$(HotReloadCompatibleBuild)' == '' And '$(_UseNativeAot)' != 'true'">$(_BundlerDebug)</HotReloadCompatibleBuild>
+			<HotReloadCompatibleBuild Condition="'$(HotReloadCompatibleBuild)' == ''">false</HotReloadCompatibleBuild>
+		</PropertyGroup>
+	</Target>
+
+	<Target Name="_ComputeLinkerInputs" DependsOnTargets="_ComputeHotReloadCompatibleBuild">
 		<!-- Validate the linker mode -->
 		<Error Text="Invalid link mode: '$(_LinkMode)'. Valid link modes are: 'None', 'SdkOnly' and 'Full'" Condition="'$(_LinkMode)' != 'None' And '$(_LinkMode)' != 'SdkOnly' And '$(_LinkMode)' != 'Full' And '$(_LinkMode)' != 'TrimMode'" />
 
@@ -728,6 +737,14 @@
 		<PropertyGroup>
 			<_UseDynamicDependenciesInsteadOfMarking Condition="'$(_UseDynamicDependenciesInsteadOfMarking)' == ''">true</_UseDynamicDependenciesInsteadOfMarking>
 			<_UseDynamicDependenciesForProtocolPreservation Condition="'$(_UseDynamicDependenciesForProtocolPreservation)' == ''">$(_UseDynamicDependenciesInsteadOfMarking)</_UseDynamicDependenciesForProtocolPreservation>
+			<!--
+				PreserveSmartEnumConversionsStep injects [DynamicDependency] attributes into the assembly that
+				references the smart enum, and that assembly may be reloadable (i.e. not trimmed), which would
+				break Hot Reload. So use the mark handler instead (it doesn't modify any assemblies) when we're
+				doing a Hot Reload compatible build (this doesn't apply when the assembly-preparer is used,
+				because it emits a root descriptor xml file instead - see PreserveSmartEnumConversionsStep).
+			-->
+			<_UseDynamicDependenciesForSmartEnumPreservation Condition="'$(_UseDynamicDependenciesForSmartEnumPreservation)' == '' And '$(HotReloadCompatibleBuild)' == 'true' And '$(PrepareAssemblies)' != 'true'">false</_UseDynamicDependenciesForSmartEnumPreservation>
 			<_UseDynamicDependenciesForSmartEnumPreservation Condition="'$(_UseDynamicDependenciesForSmartEnumPreservation)' == ''">$(_UseDynamicDependenciesInsteadOfMarking)</_UseDynamicDependenciesForSmartEnumPreservation>
 			<_UseDynamicDependenciesForBlockCodePreservation Condition="'$(_UseDynamicDependenciesForBlockCodePreservation)' == ''">$(_UseDynamicDependenciesInsteadOfMarking)</_UseDynamicDependenciesForBlockCodePreservation>
 			<_UseDynamicDependenciesForGeneratedCodeOptimizations Condition="'$(_UseDynamicDependenciesForGeneratedCodeOptimizations)' == ''">$(_UseDynamicDependenciesInsteadOfMarking)</_UseDynamicDependenciesForGeneratedCodeOptimizations>

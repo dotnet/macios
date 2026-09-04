@@ -70,8 +70,12 @@
 			The $(Registrar) check means a CoreCLR app that explicitly opts in to a registrar before this point
 			only gets PrepareAssemblies enabled for the trimmable-static and partial-static registrars. The default
 			CoreCLR registrar is still empty here (it is selected later), so the default CoreCLR flow also enables
-			PrepareAssemblies. NativeAOT always gets PrepareAssemblies regardless of the registrar, which is the
-			pre-existing behavior.
+			PrepareAssemblies - this is safe because SelectRegistrar's own '$(UseMonoRuntime)' != 'true' and
+			TargetFrameworkVersion >= 11.0 fallback (the same conditions checked here) always resolves an empty
+			registrar to 'trimmable-static' or 'partial-static', never 'managed-static': the managed-static
+			conditions in SelectRegistrar only apply when $(Registrar) is still empty when they run, which can't
+			happen once that fallback has already set it. NativeAOT always gets PrepareAssemblies regardless of
+			the registrar, which is the pre-existing behavior.
 		-->
 		<PrepareAssemblies Condition="'$(PrepareAssemblies)' == '' And '$(UseMonoRuntime)' != 'true' And ('$(_UseNativeAot)' == 'true' Or '$(Registrar)' == 'trimmable-static' Or '$(Registrar)' == 'partial-static' Or '$(Registrar)' == '') And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '11.0'))">true</PrepareAssemblies>
 

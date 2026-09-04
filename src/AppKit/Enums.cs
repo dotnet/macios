@@ -3392,12 +3392,13 @@ namespace AppKit {
 		Large = 18,
 	}
 
+	/// <summary>Specifies the visual style of a progress indicator.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSProgressIndicatorStyle : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Displays progress as a bar.</summary>
 		Bar,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays progress as a spinning indicator.</summary>
 		Spinning,
 	}
 

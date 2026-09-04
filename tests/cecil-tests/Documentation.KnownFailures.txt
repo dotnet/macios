@@ -22565,7 +22565,6 @@ T:AppKit.NSPrinterTableStatus
 T:AppKit.NSPrintPanelOptions
 T:AppKit.NSPrintPanelResult
 T:AppKit.NSPrintRenderingQuality
-T:AppKit.NSProgressIndicatorStyle
 T:AppKit.NSProgressIndicatorThickness
 T:AppKit.NSRectAlignment
 T:AppKit.NSRectEdge

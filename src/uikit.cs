@@ -755,8 +755,10 @@ namespace UIKit {
 	[NoTV]
 	[BaseType (typeof (NSObject))]
 	[Deprecated (PlatformName.iOS, 5, 0, message: "Use 'CoreMotion' instead.")]
+	[Obsoleted (PlatformName.iOS, 27, 0, message: "Use 'CoreMotion' instead.")]
 	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'CoreMotion' instead.")]
+	[Obsoleted (PlatformName.MacCatalyst, 27, 0, message: "Use 'CoreMotion' instead.")]
 	interface UIAcceleration {
 		[Export ("timestamp")]
 		double Time { get; }
@@ -775,8 +777,10 @@ namespace UIKit {
 	[NoTV]
 	[BaseType (typeof (NSObject), Delegates = new string [] { "WeakDelegate" }, Events = new Type [] { typeof (UIAccelerometerDelegate) })]
 	[Deprecated (PlatformName.iOS, 5, 0, message: "Use 'CoreMotion' instead.")]
+	[Obsoleted (PlatformName.iOS, 27, 0, message: "Use 'CoreMotion' instead.")]
 	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'CoreMotion' instead.")]
+	[Obsoleted (PlatformName.MacCatalyst, 27, 0, message: "Use 'CoreMotion' instead.")]
 	interface UIAccelerometer {
 		[Static]
 		[Export ("sharedAccelerometer")]
@@ -812,6 +816,8 @@ namespace UIKit {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIAccelerometerDelegate_Protocol/index.html">Apple documentation for <c>UIAccelerometerDelegate</c></related>
 	[NoTV]
 	[MacCatalyst (13, 1)]
+	[Obsoleted (PlatformName.iOS, 27, 0, message: "Use 'CoreMotion' instead.")]
+	[Obsoleted (PlatformName.MacCatalyst, 27, 0, message: "Use 'CoreMotion' instead.")]
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]

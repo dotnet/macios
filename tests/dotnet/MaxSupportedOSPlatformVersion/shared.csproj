@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	This project intentionally does not import ../../common/shared-dotnet.csproj, because that
+	file (via SupportedOSPlatformVersions.targets) pins SupportedOSPlatformVersion to each
+	platform's minimum supported OS version. This project exists to test what happens when
+	SupportedOSPlatformVersion is *not* pinned, in which case the .NET SDK defaults it to the
+	highest TargetPlatformVersion available (i.e. the newest installed SDK) - see
+	Microsoft.NET.Sdk.targets ("Default SupportedOSPlatformVersion to TargetPlatformVersion").
+-->
+<Project>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+
+		<ApplicationTitle>MaxSupportedOSPlatformVersion</ApplicationTitle>
+		<ApplicationId>com.xamarin.maxsupportedosplatformversion</ApplicationId>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Include="../AppDelegate.cs" />
+	</ItemGroup>
+</Project>

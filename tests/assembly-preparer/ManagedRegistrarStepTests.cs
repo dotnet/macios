@@ -54,7 +54,10 @@ public class ManagedRegistrarStepTests : BaseClass {
 
 		static IEnumerable<CustomAttribute> GetInterfaceDependencies (TypeDefinition type)
 		{
-			var cctor = type.Methods.Single (v => v.IsConstructor && v.IsStatic);
+			var cctor = type.Methods.SingleOrDefault (v => v.IsConstructor && v.IsStatic);
+			if (cctor is null)
+				return [];
+
 			return cctor.CustomAttributes.Where (v =>
 				v.AttributeType.FullName == "System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute"
 					&& v.ConstructorArguments.Count == 2

@@ -315,7 +315,8 @@ namespace Xharness {
 			switch (platform) {
 			case TestPlatform.iOS:
 			case TestPlatform.Mac:
-				// On macOS we can't edit the TCC database easily
+			case TestPlatform.MacCatalyst:
+				// On macOS (and Mac Catalyst, which also runs natively, not in a simulator) we can't edit the TCC database easily
 				// (it requires adding the mac has to be using MDM: https://carlashley.com/2018/09/28/tcc-round-up/)
 				// So by default ignore any tests that would pop up permission dialogs in CI.
 				return !InCI;

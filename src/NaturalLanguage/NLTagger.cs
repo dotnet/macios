@@ -6,8 +6,8 @@ namespace NaturalLanguage {
 
 	public partial class NLTagger {
 
-		[SupportedOSPlatform ("tvos14.0")]
-		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		public Dictionary<NLLanguage, double> GetTagHypotheses (nuint characterIndex, NLTokenUnit unit, NLTagScheme scheme, nuint maximumCount)
@@ -19,8 +19,8 @@ namespace NaturalLanguage {
 				return NLLanguageExtensions.Convert (hypo);
 		}
 
-		[SupportedOSPlatform ("tvos14.0")]
-		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		public Dictionary<NLLanguage, double> GetTagHypotheses (nuint characterIndex, NLTokenUnit unit, NLTagScheme scheme, nuint maximumCount, out NSRange tokenRange)

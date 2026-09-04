@@ -430,6 +430,14 @@ public abstract partial class ObjectiveCBinder : IDisposable {
 					bindingResult.ReportError (5, diagnostic.Location, /* Compilation failed with error: {0} */ msg);
 					break;
 				case CXDiagnosticSeverity.CXDiagnostic_Warning:
+					// The clang we use to parse the headers doesn't know about the 'anyAppleOS'
+					// meta-platform (introduced in the Xcode 27 SDK), so it complains that it's an
+					// unknown platform. We do understand it (see AvailabilityBaseAttribute, where we
+					// expand it into the Apple platforms macios ships), so this warning is spurious.
+					if (msg.Contains ("unknown platform") && msg.IndexOf ("'anyAppleOS'", StringComparison.OrdinalIgnoreCase) >= 0) {
+						bindingResult.Log (1, $"Ignored a spurious clang diagnostic: {msg}");
+						break;
+					}
 					bindingResult.ReportWarning (1000, diagnostic.Location /* A warning occurred during compilation: {0} */, msg);
 					break;
 				case CXDiagnosticSeverity.CXDiagnostic_Ignored:

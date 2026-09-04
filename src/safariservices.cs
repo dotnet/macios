@@ -902,20 +902,30 @@ namespace SafariServices {
 	[NoTV, NoMacCatalyst, iOS (26, 2), NoMac]
 	delegate void SFSafariSettingsOpenExtensionsSettingsCompletionHandler ([NullAllowed] NSError error);
 
-	[NoTV, NoMacCatalyst, iOS (26, 0), NoMac]
+	[NoTV, NoiOS, MacCatalyst (27, 0), Mac (27, 0)]
+	delegate void SFSafariSettingsCheckAutoFillUserNamesAndPasswordsEnabledCompletionHandler (bool isEnabled, [NullAllowed] NSError error);
+
+	[NoTV, iOS (26, 0), MacCatalyst (27, 0), Mac (27, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SFSafariSettings {
+		[NoMacCatalyst, NoMac]
 		[Async]
 		[Static]
 		[Export ("openExportBrowsingDataSettingsWithCompletionHandler:")]
 		void OpenExportBrowsingDataSettings ([NullAllowed] SFSafariSettingsOpenExportBrowsingDataSettingsCompletionHandler completionHandler);
 
 		[Async]
-		[iOS (26, 2)]
+		[NoMacCatalyst, iOS (26, 2), NoMac]
 		[Static]
 		[Export ("openExtensionsSettingsForIdentifiers:completionHandler:")]
 		void OpenExtensionsSettings (string [] extensionIdentifiers, [NullAllowed] SFSafariSettingsOpenExtensionsSettingsCompletionHandler completionHandler);
+
+		[Async]
+		[NoiOS, MacCatalyst (27, 0), Mac (27, 0)]
+		[Static]
+		[Export ("checkAutoFillUserNamesAndPasswordsEnabledWithCompletionHandler:")]
+		void CheckAutoFillUserNamesAndPasswordsEnabled (SFSafariSettingsCheckAutoFillUserNamesAndPasswordsEnabledCompletionHandler completionHandler);
 	}
 
 	[NoTV, iOS (26, 2), MacCatalyst (26, 2), NoMac]

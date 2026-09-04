@@ -285,7 +285,12 @@ namespace Xamarin.Tuner {
 				if (!attrib.AttributeType.Is ("ObjCRuntime", "UnsupportedSimulatorAttribute"))
 					continue;
 				if (attrib.ConstructorArguments.Count == 1 && attrib.ConstructorArguments [0].Value is string unsupportedPlatform) {
-					if (string.Equals (unsupportedPlatform, platformName, StringComparison.OrdinalIgnoreCase))
+					// Match the platform prefix (e.g. "ios" matches both "ios" and a versioned "ios18.0"). A
+					// versioned [UnsupportedSimulator] means the API was removed from the simulator at that
+					// version; since a build can run on any simulator >= the deployment target (including newer
+					// ones where the API is gone), conservatively treat it as unavailable here and skip the
+					// simulator inlining optimization (the precise per-runtime-version check lives in the tests).
+					if (unsupportedPlatform.StartsWith (platformName, StringComparison.OrdinalIgnoreCase))
 						hasUnsupported = true;
 				} else {
 					LinkerConfiguration.Report (LinkerConfiguration.Context, ErrorHelper.CreateWarning (App, 2258, methodForErrorReporting, Errors.MX2258, provider.AsString (), attrib.RenderAttribute ()));

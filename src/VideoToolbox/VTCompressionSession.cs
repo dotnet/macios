@@ -140,6 +140,25 @@ namespace VideoToolbox {
 			return null;
 		}
 
+		// Helpers used by AVFoundation's AVPlannedVideoSegmentWritingRequest.CreateResumableCompressionSession,
+		// which creates the native VTCompressionSession through an AVFoundation selector but reuses this class's
+		// managed callback trampoline and GCHandle lifetime management.
+		internal unsafe static (IntPtr OutputCallback, IntPtr OutputCallbackRefCon) PrepareOutputCallback (VTCompressionOutputCallback? compressionOutputCallback, out GCHandle callbackHandle)
+		{
+			if (compressionOutputCallback is null) {
+				callbackHandle = default;
+				return (IntPtr.Zero, IntPtr.Zero);
+			}
+			callbackHandle = GCHandle.Alloc (compressionOutputCallback);
+			delegate* unmanaged</* void* */ IntPtr, /* void* */ IntPtr, /* OSStatus */ VTStatus, VTEncodeInfoFlags, /* CMSampleBufferRef */ IntPtr, void> trampoline = &CompressionCallback;
+			return ((IntPtr) trampoline, GCHandle.ToIntPtr (callbackHandle));
+		}
+
+		internal static VTCompressionSession CreateFromOwnedHandle (IntPtr handle, GCHandle callbackHandle)
+			=> new VTCompressionSession (handle, true) {
+				callbackHandle = callbackHandle,
+			};
+
 		[DllImport (Constants.VideoToolboxLibrary)]
 		extern static void VTCompressionSessionInvalidate (IntPtr handle);
 

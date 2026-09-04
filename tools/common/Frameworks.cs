@@ -171,6 +171,7 @@ public class Frameworks : Dictionary<string, Framework> {
 					{ "MobileCoreServices", "CoreServices", 10, 3 },
 					{ "OpenGL", 10, 3 },
 					{ "SearchKit", "CoreServices", 10,3, "SearchKit" },
+					{ "SecurityInterface", 10, 3 },
 					{ "SystemConfiguration", 10, 3 },
 
 					{ "CoreData", 10, 4 },
@@ -320,6 +321,10 @@ public class Frameworks : Dictionary<string, Framework> {
 					{ "SecurityUI", "SecurityUI", 15, 4 },
 
 					{ "GameSave", "GameSave", 26, 0 },
+
+					{ "AccessoryAccess", "AccessoryAccess", 27, 0 },
+					{ "LinkSecurity", "LinkSecurity", 27, 0 },
+					{ "StateReporting", "StateReporting", 27, 0 },
 				};
 			}
 			return mac_frameworks;
@@ -504,6 +509,11 @@ public class Frameworks : Dictionary<string, Framework> {
 					{ "ExtensionKit", "ExtensionKit", 26, 0 },
 					{ "GameSave", "GameSave", 26, 0 },
 					{ "TouchController", "TouchController", 26, 0 },
+
+					{ "AVSystemRouting", "AVSystemRouting", new Version (27, 0), NotAvailableInSimulator },
+					{ "LinkSecurity", "LinkSecurity", 27, 0 },
+					{ "ScreenCaptureKit", "ScreenCaptureKit", new Version (27, 0), NotAvailableInSimulator },
+					{ "StateReporting", "StateReporting", 27, 0 },
 					// the above MUST be kept in sync with simlauncher
 					// see tools/mtouch/Makefile
 					// please also keep it sorted to ease comparison
@@ -624,6 +634,10 @@ public class Frameworks : Dictionary<string, Framework> {
 					{ "SecurityUI", "SecurityUI", 18, 4 },
 
 					{ "AVRouting", "AVRouting", 26, 0 },
+
+					{ "LinkSecurity", "LinkSecurity", 27, 0 },
+					{ "ScreenCaptureKit", "ScreenCaptureKit", new Version (27, 0), NotAvailableInSimulator },
+					{ "StateReporting", "StateReporting", 27, 0 },
 				};
 			}
 			return tvos_frameworks;
@@ -645,6 +659,7 @@ public class Frameworks : Dictionary<string, Framework> {
 				var v14_2 = new Version (14, 2);
 				var v16_1 = new Version (16, 1);
 				var v18_0 = new Version (18, 0);
+				var v18_2 = new Version (18, 2);
 				var v26_0 = new Version (26, 0);
 				var v16_0 = new Version (16, 0);
 				foreach (var f in catalyst_frameworks.Values) {
@@ -675,6 +690,10 @@ public class Frameworks : Dictionary<string, Framework> {
 					case "DeviceDiscoveryExtension":
 						f.Version = v18_0;
 						break;
+					case "ScreenCaptureKit":
+						f.Version = v18_2;
+						f.VersionAvailableInSimulator = v18_2;
+						break;
 					// These frameworks are not available on Mac Catalyst
 					case "DeviceDiscoveryUI": // xtro and introspection says it's not in Mac Catalyst, Apple's website says it is. For now, listen to xtro and introspection, until proven otherwise.
 					case "OpenGLES":
@@ -682,6 +701,7 @@ public class Frameworks : Dictionary<string, Framework> {
 					case "GLKit":
 					case "VideoSubscriberAccount":
 					case "AccessorySetupKit":
+					case "AVSystemRouting":
 					// The headers for FileProviderUI exist, but the native linker fails
 					case "FileProviderUI":
 					// The headers for Twitter are there, , but no documentation whatsoever online and the native linker fails too
@@ -708,7 +728,6 @@ public class Frameworks : Dictionary<string, Framework> {
 				catalyst_frameworks.Add ("AppKit", 13, 0);
 				catalyst_frameworks.Add ("ExecutionPolicy", 16, 0);
 				catalyst_frameworks.Add ("ServiceManagement", 16, 0);
-				catalyst_frameworks.Add ("ScreenCaptureKit", 18, 2);
 			}
 			return catalyst_frameworks;
 		}

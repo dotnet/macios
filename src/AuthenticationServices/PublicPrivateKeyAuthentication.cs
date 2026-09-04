@@ -15,7 +15,7 @@ using CoreGraphics;
 
 namespace AuthenticationServices {
 	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("ios15.0")]
+	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[UnsupportedOSPlatform ("tvos")]
 	public static class PublicPrivateKeyAuthentication {

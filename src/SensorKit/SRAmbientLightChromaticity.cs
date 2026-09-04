@@ -2,7 +2,7 @@
 #nullable enable
 
 namespace SensorKit {
-	[SupportedOSPlatform ("ios14.0")]
+	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[UnsupportedOSPlatform ("tvos")]
 	[UnsupportedOSPlatform ("macos")]

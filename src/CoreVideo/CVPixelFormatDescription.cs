@@ -269,8 +269,8 @@ namespace CoreVideo {
 		}
 
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("tvos15.0")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.CoreVideoLibrary)]
 		extern static byte CVIsCompressedPixelFormatAvailable (int /* OSType = int32_t */ pixelFormat);
@@ -279,8 +279,8 @@ namespace CoreVideo {
 		/// <param name="pixelFormat">The pixel format to check.</param>
 		/// <returns>Whether the specified pixel format is supported or not.</returns>
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("tvos15.0")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public static bool IsPixelFormatAvailable (CVPixelFormatType pixelFormat)
 		{

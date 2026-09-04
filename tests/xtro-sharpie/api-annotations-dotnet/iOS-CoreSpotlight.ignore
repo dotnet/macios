@@ -3,8 +3,6 @@
 !missing-null-allowed! 'System.Void CoreSpotlight.CSSearchableIndex::Delete(System.String[],System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
 !missing-null-allowed! 'System.Void CoreSpotlight.CSSearchableIndex::DeleteAll(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
 !missing-null-allowed! 'System.Void CoreSpotlight.CSSearchableIndex::DeleteWithDomain(System.String[],System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
-!missing-null-allowed! 'System.Void CoreSpotlight.CSSearchableIndex::FetchData(System.String,System.String,UniformTypeIdentifiers.UTType,System.Action`2<Foundation.NSData,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
-!missing-null-allowed! 'System.Void CoreSpotlight.CSSearchableIndex::FetchData(System.String,System.String,UniformTypeIdentifiers.UTType,System.Action`2<Foundation.NSData,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1
 !missing-null-allowed! 'System.Void CoreSpotlight.CSSearchableIndex::Index(CoreSpotlight.CSSearchableItem[],System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
 !missing-null-allowed! 'System.Void CoreSpotlight.CSSearchQuery::set_CompletionHandler(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'value' block parameter #0
 

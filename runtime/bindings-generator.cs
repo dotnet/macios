@@ -1931,6 +1931,20 @@ namespace Xamarin.BindingMethods.Generator {
 
 			data.Add (
 				new FunctionData {
+					Comment = " // CGPoint func (NVector3, nfloat, CGSize)",
+					Prefix = "simd__",
+					Variants = Variants.All,
+					ReturnType = Types.CGPoint,
+					Parameters = new ParameterData [] {
+						new ParameterData { TypeData = Types.NVector3 },
+						new ParameterData { TypeData = Types.NFloat },
+						new ParameterData { TypeData = Types.CGSize },
+					},
+				}
+			);
+
+			data.Add (
+				new FunctionData {
 					Comment = " // Matrix4 func (/* UIInterfaceOrientation */ nint)",
 					Prefix = "simd__",
 					Variants = Variants.All,
@@ -2203,12 +2217,39 @@ namespace Xamarin.BindingMethods.Generator {
 
 			data.Add (
 				new FunctionData {
+					Comment = " // NMatrix4 func (nfloat, CGSize, nfloat, nfloat)",
+					Prefix = "simd__",
+					Variants = Variants.All,
+					ReturnType = Types.NMatrix4,
+					Parameters = new ParameterData [] {
+						new ParameterData { TypeData = Types.NFloat },
+						new ParameterData { TypeData = Types.CGSize },
+						new ParameterData { TypeData = Types.NFloat },
+						new ParameterData { TypeData = Types.NFloat },
+					},
+				}
+			);
+
+			data.Add (
+				new FunctionData {
 					Comment = " // NMatrix4 func (double)",
 					Prefix = "simd__",
 					Variants = Variants.All,
 					ReturnType = Types.NMatrix4,
 					Parameters = new ParameterData [] {
 						new ParameterData { TypeData = Types.Double },
+					},
+				}
+			);
+
+			data.Add (
+				new FunctionData {
+					Comment = " // NMatrix4 func (nfloat)",
+					Prefix = "simd__",
+					Variants = Variants.All,
+					ReturnType = Types.NMatrix4,
+					Parameters = new ParameterData [] {
+						new ParameterData { TypeData = Types.NFloat },
 					},
 				}
 			);
@@ -2461,6 +2502,21 @@ namespace Xamarin.BindingMethods.Generator {
 
 			data.Add (
 				new FunctionData {
+					Comment = " // NVector3 func (CGPoint, NMatrix4, nfloat, CGSize)",
+					Prefix = "simd__",
+					Variants = Variants.All,
+					ReturnType = Types.NVector3,
+					Parameters = new ParameterData [] {
+						new ParameterData { TypeData = Types.CGPoint },
+						new ParameterData { TypeData = Types.NMatrix4 },
+						new ParameterData { TypeData = Types.NFloat },
+						new ParameterData { TypeData = Types.CGSize },
+					},
+				}
+			);
+
+			data.Add (
+				new FunctionData {
 					Comment = " // NVector3 func (CGPoint, NMatrix4)",
 					Prefix = "simd__",
 					Variants = Variants.All,
@@ -2538,6 +2594,18 @@ namespace Xamarin.BindingMethods.Generator {
 					Prefix = "simd__",
 					Variants = Variants.All,
 					ReturnType = Types.MPSAxisAlignedBoundingBox,
+				}
+			);
+
+			data.Add (
+				new FunctionData {
+					Comment = " // MPSFunctionsAxisAlignedBoundingBox func (MPSFunctionsAxisAlignedBoundingBox)",
+					Prefix = "simd__",
+					Variants = Variants.All,
+					ReturnType = Types.MPSFunctionsAxisAlignedBoundingBox,
+					Parameters = new ParameterData [] {
+						new ParameterData { TypeData = Types.MPSFunctionsAxisAlignedBoundingBox },
+					},
 				}
 			);
 
@@ -2807,6 +2875,16 @@ namespace Xamarin.BindingMethods.Generator {
 				writer.WriteLine ("\t{0}{2}min.b = {1}.min [1];", managedVariable, nativeVariable, accessor);
 				writer.WriteLine ("\t{0}{2}min.c = {1}.min [2];", managedVariable, nativeVariable, accessor);
 				break;
+			case "MPSFunctionsAxisAlignedBoundingBox":
+				writer.WriteLine ("\t{0}{2}max.a = {1}.max [0];", managedVariable, nativeVariable, accessor);
+				writer.WriteLine ("\t{0}{2}max.b = {1}.max [1];", managedVariable, nativeVariable, accessor);
+				writer.WriteLine ("\t{0}{2}max.c = {1}.max [2];", managedVariable, nativeVariable, accessor);
+				writer.WriteLine ("\t{0}{2}max.d = {1}.max [3];", managedVariable, nativeVariable, accessor);
+				writer.WriteLine ("\t{0}{2}min.a = {1}.min [0];", managedVariable, nativeVariable, accessor);
+				writer.WriteLine ("\t{0}{2}min.b = {1}.min [1];", managedVariable, nativeVariable, accessor);
+				writer.WriteLine ("\t{0}{2}min.c = {1}.min [2];", managedVariable, nativeVariable, accessor);
+				writer.WriteLine ("\t{0}{2}min.d = {1}.min [3];", managedVariable, nativeVariable, accessor);
+				break;
 			case "NVector16b":
 				writer.WriteLine ("\tfor (int i = 0; i < 16; i++)");
 				writer.WriteLine ("\t\t{0}{2}values [i] = {1} [i];", managedVariable, nativeVariable, accessor);
@@ -2957,6 +3035,16 @@ namespace Xamarin.BindingMethods.Generator {
 				writer.WriteLine ("\t{0}.min [0] = {1}{2}min.a;", nativeVariable, managedVariable, accessor);
 				writer.WriteLine ("\t{0}.min [1] = {1}{2}min.b;", nativeVariable, managedVariable, accessor);
 				writer.WriteLine ("\t{0}.min [2] = {1}{2}min.c;", nativeVariable, managedVariable, accessor);
+				break;
+			case "MPSFunctionsAxisAlignedBoundingBox":
+				writer.WriteLine ("\t{0}.max [0] = {1}{2}max.a;", nativeVariable, managedVariable, accessor);
+				writer.WriteLine ("\t{0}.max [1] = {1}{2}max.b;", nativeVariable, managedVariable, accessor);
+				writer.WriteLine ("\t{0}.max [2] = {1}{2}max.c;", nativeVariable, managedVariable, accessor);
+				writer.WriteLine ("\t{0}.max [3] = {1}{2}max.d;", nativeVariable, managedVariable, accessor);
+				writer.WriteLine ("\t{0}.min [0] = {1}{2}min.a;", nativeVariable, managedVariable, accessor);
+				writer.WriteLine ("\t{0}.min [1] = {1}{2}min.b;", nativeVariable, managedVariable, accessor);
+				writer.WriteLine ("\t{0}.min [2] = {1}{2}min.c;", nativeVariable, managedVariable, accessor);
+				writer.WriteLine ("\t{0}.min [3] = {1}{2}min.d;", nativeVariable, managedVariable, accessor);
 				break;
 			case "VectorUChar16":
 				writer.WriteLine ("\tfor (int i = 0; i < 16; i++)");
@@ -3687,6 +3775,14 @@ namespace Xamarin.BindingMethods.Generator {
 				ManagedType = "MPSAxisAlignedBoundingBox",
 				NativeType = "MPSAxisAlignedBoundingBox",
 				NativeWrapperType = "struct MPSAxisAlignedBoundingBoxWrapper",
+				RequireMarshal = true,
+				IsX64Stret = true,
+			};
+
+			public static TypeData MPSFunctionsAxisAlignedBoundingBox = new TypeData {
+				ManagedType = "MPSFunctionsAxisAlignedBoundingBox",
+				NativeType = "MPSFunctions_AABB",
+				NativeWrapperType = "struct MPSFunctionsAxisAlignedBoundingBoxWrapper",
 				RequireMarshal = true,
 				IsX64Stret = true,
 			};

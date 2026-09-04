@@ -368,37 +368,6 @@ function delete_all_simulator_runtimes ()
 	rm -rf "$TMPFILE"
 }
 
-SIMULATORS_WITHOUT_X64=()
-SIMULATORS_WITHOUT_X64_COUNT=0
-function get_non_universal_simulator_runtimes ()
-{
-	local TMPFILE
-	TMPFILE=$(mktemp)
-
-	xcrun simctl runtime list -j --json-output="$TMPFILE"
-
-	# this json query filters the json to simulator runtimes where iOS/tvOS >= 26.0 and where x64 is *not* supported (which we need to run x64 apps in the simulator on arm64)
-	JQ_QUERY='map({identifier: .identifier, version: .version, supportedArchitectures: .supportedArchitectures | join("|"), majorVersion: .version | split(".")[0] | tonumber }) | map(select(.majorVersion>=26) ) | map(select(.supportedArchitectures | contains("x86_64") | not)) | .[].identifier'
-	SIMULATORS_WITHOUT_X64=($(jq "$JQ_QUERY" -r "$TMPFILE"))
-	SIMULATORS_WITHOUT_X64_COUNT="${#SIMULATORS_WITHOUT_X64[@]}"
-
-	rm -f "$TMPFILE"
-}
-
-function print_non_universal_simulator_runtimes ()
-{
-	local TMPFILE
-	TMPFILE=$(mktemp)
-
-	xcrun simctl runtime list -j --json-output="$TMPFILE"
-
-	# this json query filters the json to simulator runtimes where iOS/tvOS >= 26.0 and where x64 is *not* supported (which we need to run x64 apps in the simulator on arm64)
-	JQ_QUERY='map({platformIdentifier: .platformIdentifier, identifier: .identifier, version: .version, state: .state, supportedArchitectures: .supportedArchitectures | join("|"), majorVersion: .version | split(".")[0] | tonumber }) | map(select(.majorVersion>=26) ) | map(select(.supportedArchitectures | contains("x86_64") | not))'
-	jq "$JQ_QUERY" -r "$TMPFILE"
-
-	rm -f "$TMPFILE"
-}
-
 # Checks whether a simulator runtime for the given platform is installed and
 # available (this is the same kind of check as in check_old_simulators).
 # $1: the platform (iOS, tvOS, ...)
@@ -499,10 +468,11 @@ function xcodebuild_download_selected_platforms ()
 
 	IOS_BUILD_VERSION=
 	TVOS_BUILD_VERSION=
+	# kept the is_at_least_version "$XCODE_VERSION" 26.0 guard because -architectureVariant only exists in Xcode 26+; on older Xcode it falls back to a plain -downloadPlatform.
 	if is_at_least_version "$XCODE_VERSION" 26.0; then
-		# we always want the universal variant, so that we can run x64 test apps on arm64
-		IOS_BUILD_VERSION=" -architectureVariant universal"
-		TVOS_BUILD_VERSION=" -architectureVariant universal"
+		# we always want the arm64 variant (the x64 simulators aren't supported anymore)
+		IOS_BUILD_VERSION=" -architectureVariant arm64"
+		TVOS_BUILD_VERSION=" -architectureVariant arm64"
 	fi
 
 	# The expected simulator runtime versions for the current Xcode, so we can
@@ -526,55 +496,6 @@ function xcodebuild_download_selected_platforms ()
 		delete_all_simulator_runtimes
 	else
 		log "    none found."
-	fi
-
-	# If we're executing on arm64, we need simulator runtimes that support x64 in order to run
-	# x64 apps in the simulator (aka the universal architecture variant). If we have any simulator
-	# runtimes that don't support x64, then delete those, so that we can re-install the universal
-	# variant.
-	local DOTNET_ARCH
-	if [[ "$(arch)" == "arm64" ]]; then
-		DOTNET_ARCH=arm64
-	elif [[ "$(sysctl -n sysctl.proc_translated 2>/dev/null)" == "1" ]]; then
-		DOTNET_ARCH=arm64
-	fi
-	if [[ "$DOTNET_ARCH" == "arm64" ]]; then
-		log "Looking for iOS/tvOS 26+ simulator runtimes that don't support x64..."
-
-		get_non_universal_simulator_runtimes
-		if [[ "$SIMULATORS_WITHOUT_X64_COUNT" -gt 0 && "$ACES" == "1" ]]; then
-			log "Found ${SIMULATORS_WITHOUT_X64_COUNT} simulator runtimes that don't support x64, but we're running on ACES, so we can't do anything about that."
-		elif [[ "$SIMULATORS_WITHOUT_X64_COUNT" -gt 0 ]]; then
-			log "Found ${SIMULATORS_WITHOUT_X64_COUNT} simulator runtimes that don't support x64, which will now be deleted: ${SIMULATORS_WITHOUT_X64[*]}"
-			for sim in "${SIMULATORS_WITHOUT_X64[@]}"; do
-				log "Executing 'xcrun simctl runtime delete $sim'"
-				xcrun simctl runtime delete "$sim"
-			done
-			# sadly simulator deletion is done asynchronously, so we have to wait until they're all gone
-			log "Waiting for the simulators to be deleted..."
-			printf "            "
-			for i in $(seq 1 300); do
-				sleep 1
-				get_non_universal_simulator_runtimes
-				if [[ "$SIMULATORS_WITHOUT_X64_COUNT" == "0" ]]; then
-					break
-				fi
-				# every 60 seconds print the simulators left to delete
-				if [[ $(( i % 60)) == 0 ]]; then
-					printf "\n"
-					printf "            Simulators left to delete:\n"
-					print_non_universal_simulator_runtimes | sed 's/^/            /'
-					printf "            "
-				fi
-				printf "$SIMULATORS_WITHOUT_X64_COUNT"
-			done
-			printf "\n"
-			if [[ "$SIMULATORS_WITHOUT_X64_COUNT" != "0" ]]; then
-				warn "Waited for 5 minutes, but there are still $SIMULATORS_WITHOUT_X64_COUNT simulators waiting to deleted."
-			fi
-		else
-			log "All installed iOS/tvOS 26+ simulators support x64"
-		fi
 	fi
 
 	local RC=0
@@ -1063,6 +984,99 @@ IFS='
 IFS=$IFS_tmp
 }
 
+# Download and install a simulator runtime from Apple's downloadable simulator index.
+#
+# This is the same index Xcode's UI uses to download simulators, and we need it because
+# 'xcodebuild -downloadPlatform' can't download the older simulators anymore with Xcode 27+
+# (Apple removed them from the platform catalog xcodebuild uses, but they're still available
+# in this index).
+#
+# $1: the simulator's os (iOS, tvOS, ...)
+# $2: the simulator's version (16.0, ...)
+function install_old_simulator_from_index ()
+{
+	local os="$1"
+	local version="$2"
+
+	local platform
+	local dldir
+	local index_url
+	local query
+	local source
+	local expectedSize
+	local path
+	local dmg
+	local actualSize
+
+	case "$os" in
+		iOS)             platform=com.apple.platform.iphoneos ;;
+		tvOS)            platform=com.apple.platform.appletvos ;;
+		watchOS)         platform=com.apple.platform.watchos ;;
+		xrOS | visionOS) platform=com.apple.platform.xros ;;
+		*)
+			warn "Don't know the platform identifier for the $os simulator."
+			return 1
+			;;
+	esac
+
+	dldir="$SD_TMP_DIR/$os-$version-runtime"
+	rm -rf -- "$dldir"
+	mkdir -p "$dldir"
+
+	# This is the index Xcode uses to find downloadable simulator runtimes.
+	index_url=https://devimages-cdn.apple.com/downloads/xcode/simulators/index2.dvtdownloadableindex
+	log "Downloading the simulator runtime index from $index_url..."
+	if ! curl --fail --location --silent --show-error --max-time 120 "$index_url" --output "$dldir/index.plist"; then
+		warn "Failed to download the simulator runtime index."
+		return 1
+	fi
+	plutil -convert json -o "$dldir/index.json" "$dldir/index.plist"
+
+	# Find the download url (and expected file size) for the requested simulator in the index.
+	query=".downloadables[] | select(.platform == \"$platform\" and .simulatorVersion.version == \"$version\")"
+	source=$(jq -r "first($query) | .source // empty" "$dldir/index.json")
+	if test -z "$source"; then
+		warn "Could not find the $os $version simulator in the downloadable simulator index."
+		return 1
+	fi
+	expectedSize=$(jq -r "first($query) | .fileSize // empty" "$dldir/index.json")
+
+	# The runtime dmgs require a download authorization cookie. No account is needed, but Apple's
+	# cdn rejects requests without the cookie, and requesting the download path from developerservices2
+	# hands out the cookie without requiring any authentication.
+	path=$(printf '%s' "$source" | sed -E 's,^https?://[^/]+,,')
+	log "Fetching a download authorization cookie..."
+	if ! curl --fail --location --silent --show-error --max-time 60 --cookie-jar "$dldir/cookies.txt" "https://developerservices2.apple.com/services/download?path=$path" --output /dev/null; then
+		warn "Failed to fetch a download authorization cookie for the $os $version simulator."
+		return 1
+	fi
+
+	dmg="$dldir/$(basename "$source")"
+	log "Downloading the $os $version simulator runtime from $source..."
+	if ! curl --fail --location --silent --show-error --cookie "$dldir/cookies.txt" "$source" --output "$dmg"; then
+		warn "Failed to download the $os $version simulator runtime."
+		return 1
+	fi
+
+	# Sanity check the size of the downloaded file (in case we got an error page instead of the dmg).
+	if test -n "$expectedSize"; then
+		actualSize=$(stat -f '%z' "$dmg")
+		if [[ "$actualSize" != "$expectedSize" ]]; then
+			warn "The downloaded $os $version simulator runtime has an unexpected size (expected $expectedSize bytes, got $actualSize bytes)."
+			return 1
+		fi
+	fi
+
+	log "Installing the $os $version simulator runtime..."
+	if ! xcrun simctl runtime add "$dmg" 2>&1 | sed 's/^/        /'; then
+		warn "Failed to install the $os $version simulator runtime."
+		return 1
+	fi
+
+	rm -rf -- "$dldir"
+	return 0
+}
+
 function check_old_simulators ()
 {
 	if test -n "$IGNORE_OLD_SIMULATORS"; then return; fi
@@ -1111,10 +1125,19 @@ function check_old_simulators ()
 			$action "The $os $version simulator is not installed. Execute ${COLOR_MAGENTA}xcodebuild -downloadPlatform $os -buildVersion $version${COLOR_RESET} to install."
 		else
 			warn "The $os $version simulator is not installed. Now executing ${COLOR_BLUE}"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform $os -buildVersion $version${COLOR_RESET} to install..."
-			if xcodebuild_download_platform "$os" "$version" -buildVersion "$version"; then
+			if "$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform "$os" -buildVersion "$version" 2>&1 | sed 's/^/        /'; then
 				warn "Successfully executed ${COLOR_BLUE}"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform $os -buildVersion $version${COLOR_RESET}."
 			else
-				$action "Failed to download the $os $version simulator runtime after several attempts. Execute ${COLOR_MAGENTA}xcodebuild -downloadPlatform $os -buildVersion $version${COLOR_RESET} to install it manually."
+				# Starting with Xcode 27 'xcodebuild -downloadPlatform' can't download the old simulators
+				# anymore (Apple removed them from the platform catalog xcodebuild uses), so fall back to
+				# downloading the runtime directly from Apple's downloadable simulator index (the same index
+				# Xcode's UI uses, which still has the old simulators).
+				warn "Failed to install the $os $version simulator using xcodebuild; falling back to Apple's downloadable simulator index..."
+				if install_old_simulator_from_index "$os" "$version"; then
+					ok "Successfully installed the $os $version simulator from the downloadable simulator index."
+				else
+					$action "The $os $version simulator is not installed, and it couldn't be downloaded."
+				fi
 			fi
 		fi
 	done

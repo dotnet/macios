@@ -174,16 +174,16 @@ namespace CoreVideo {
 	[SupportedOSPlatform ("tvos")]
 	public static class CVPixelFormatTypeExtensions {
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.CoreVideoLibrary)]
 		static extern byte CVIsCompressedPixelFormatAvailable (uint pixelFormatType);
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public static bool IsCompressedPixelFormatAvailable (this CVPixelFormatType type)
 			=> CVIsCompressedPixelFormatAvailable ((uint) type) != 0;

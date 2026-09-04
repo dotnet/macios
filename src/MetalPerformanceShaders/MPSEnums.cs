@@ -68,6 +68,18 @@ namespace MetalPerformanceShaders {
 		Float16 = FloatBit | 16,
 		/// <summary>Indicates 32-bit floating point format data.</summary>
 		Float32 = FloatBit | 32,
+		/// <summary>Indicates a 4-bit floating-point format with a 2-bit exponent and a 1-bit mantissa.</summary>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		Float4E2M1 = FloatBit | 0x210000 | 4,
+		/// <summary>Indicates an 8-bit floating-point format with a 4-bit exponent and a 3-bit mantissa.</summary>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		Float8E4M3 = FloatBit | 0x430000 | 8,
+		/// <summary>Indicates an 8-bit floating-point format with a 5-bit exponent and a 2-bit mantissa.</summary>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		Float8E5M2 = FloatBit | 0x520000 | 8,
+		/// <summary>Indicates an 8-bit floating-point format with an 8-bit exponent and no mantissa bits.</summary>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		Float8E8M0 = FloatBit | 0x800000 | 8,
 
 		[iOS (16, 2), MacCatalyst (16, 2), TV (16, 2)]
 		ComplexBit = 0x01000000,
@@ -684,5 +696,33 @@ namespace MetalPerformanceShaders {
 		Default = 0x0,
 		LowPower = 0x1,
 		SkipRemovable = 0x2,
+	}
+
+	/// <summary>Specifies options for building a color conversion function.</summary>
+	[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+	[Flags]
+	public enum MPSFColorConversionOptions : ulong {
+		/// <summary>Uses no additional options.</summary>
+		None = 0,
+		/// <summary>Uses the default intermediate precision.</summary>
+		PrecisionDefault = None,
+		/// <summary>Uses signed normalized 8-bit intermediate precision.</summary>
+		PrecisionSnorm8 = 7,
+		/// <summary>Uses unsigned normalized 8-bit intermediate precision.</summary>
+		PrecisionUnorm8 = 8,
+		/// <summary>Uses signed normalized 16-bit intermediate precision.</summary>
+		PrecisionSnorm16 = 15,
+		/// <summary>Uses unsigned normalized 16-bit intermediate precision.</summary>
+		PrecisionUnorm16 = 16,
+		/// <summary>Uses 16-bit floating-point intermediate precision.</summary>
+		PrecisionFloat16 = 11,
+		/// <summary>Uses 32-bit floating-point intermediate precision.</summary>
+		PrecisionFloat32 = 24,
+		/// <summary>The mask for the intermediate precision bits.</summary>
+		PrecisionMask = 0x3f,
+		/// <summary>Replicates grayscale output across the RGB color channels.</summary>
+		ReturnGrayscaleAsRgb = 0x100,
+		/// <summary>Enables verbose logging while building the conversion.</summary>
+		VerboseLogging = 0x200,
 	}
 }

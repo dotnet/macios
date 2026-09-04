@@ -10,39 +10,39 @@ using Xamarin.Utils;
 
 namespace Xamarin {
 	static class SdkVersions {
-		public const string Xcode = "26.6";
-		public const string OSX = "26.5";
-		public const string iOS = "26.5";
-		public const string TVOS = "26.5";
-		public const string MacCatalyst = "26.5";
+		public const string Xcode = "27.0";
+		public const string OSX = "27.0";
+		public const string iOS = "27.0";
+		public const string TVOS = "27.0";
+		public const string MacCatalyst = "27.0";
 
 		public const string MinOSX = "14.0";
-		public const string MiniOS = "13.0";
-		public const string MinTVOS = "13.0";
+		public const string MiniOS = "15.0";
+		public const string MinTVOS = "15.0";
 		public const string MinMacCatalyst = "17.0";
 
-		public const string DotNetMiniOS = "13.0";
-		public const string DotNetMinTVOS = "13.0";
+		public const string DotNetMiniOS = "15.0";
+		public const string DotNetMinTVOS = "15.0";
 		public const string DotNetMinMacCatalyst = "17.0";
 
 		public const string MiniOSSimulator = "16.0";
 		public const string MinTVOSSimulator = "16.0";
 
-		public const string MaxiOSSimulator = "26.5";
-		public const string MaxTVOSSimulator = "26.5";
+		public const string MaxiOSSimulator = "27.0";
+		public const string MaxTVOSSimulator = "27.0";
 
-		public const string MaxiOSDeploymentTarget = "26.5";
-		public const string MaxTVOSDeploymentTarget = "26.5";
+		public const string MaxiOSDeploymentTarget = "27.0";
+		public const string MaxTVOSDeploymentTarget = "27.0";
 
-		public const string TargetPlatformVersionExecutableiOS = "26.5";
-		public const string TargetPlatformVersionExecutabletvOS = "26.5";
-		public const string TargetPlatformVersionExecutablemacOS = "26.5";
-		public const string TargetPlatformVersionExecutableMacCatalyst = "26.5";
+		public const string TargetPlatformVersionExecutableiOS = "27.0";
+		public const string TargetPlatformVersionExecutabletvOS = "27.0";
+		public const string TargetPlatformVersionExecutablemacOS = "27.0";
+		public const string TargetPlatformVersionExecutableMacCatalyst = "27.0";
 
-		public const string TargetPlatformVersionLibraryiOS = "26.5";
-		public const string TargetPlatformVersionLibrarytvOS = "26.5";
-		public const string TargetPlatformVersionLibrarymacOS = "26.5";
-		public const string TargetPlatformVersionLibraryMacCatalyst = "26.5";
+		public const string TargetPlatformVersionLibraryiOS = "27.0";
+		public const string TargetPlatformVersionLibrarytvOS = "27.0";
+		public const string TargetPlatformVersionLibrarymacOS = "27.0";
+		public const string TargetPlatformVersionLibraryMacCatalyst = "27.0";
 
 		public static Version OSXVersion { get { return new Version (OSX); } }
 		public static Version iOSVersion { get { return new Version (iOS); } }

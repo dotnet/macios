@@ -46,8 +46,6 @@
 !missing-pinvoke! AVSampleBufferAttachContentKey is not bound
 
 # Missing some MIDI APIs to bind these
-!missing-selector! AVAudioEngine::connectMIDI:to:format:eventListBlock: not bound
-!missing-selector! AVAudioEngine::connectMIDI:toNodes:format:eventListBlock: not bound
 !missing-selector! AVAudioUnitMIDIInstrument::sendMIDIEventList: not bound
 
 # results from initial block parameter nullability analysis

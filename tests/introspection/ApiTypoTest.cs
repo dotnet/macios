@@ -80,7 +80,7 @@ namespace Introspection {
 			{ "Ahap", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst }, // Apple Haptics Pattern
 			{ "Aifc", All }, // AIFF-C audio format
 			{ "Aiff", All }, // Audio Interchange File
-			{ "Aime", ApplePlatform.MacOSX }, // cashless payment brand
+			{ "Aime", All }, // AVMetadataIdentifierQuickTimeMetadataAIMEData
 			{ "Aio", ApplePlatform.MacOSX }, // all-in-one abbreviation
 			{ "Alg", All }, // short for Algorithm
 			{ "Alem", All }, // Ethiopic "Amete Alem" calendar
@@ -223,6 +223,7 @@ namespace Introspection {
 			{ "Denoiser", All }, // noise reduction filter
 			{ "Depthwise", All }, // ML convolution term
 			{ "Dequantize", All }, // signal processing term
+			{ "Despeckle", All }, // image noise correction term
 			{ "Dfsi", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // Apple API abbreviation
 			{ "Dhe", All }, // Diffie–Hellman key exchange
 			{ "Dhs", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // Apple API abbreviation
@@ -278,6 +279,7 @@ namespace Introspection {
 			{ "Eftpos", All & ~ApplePlatform.TVOS }, // Electronic funds transfer at point of sale
 			{ "Eisu", ApplePlatform.MacOSX }, // Japanese input mode
 			{ "Elative", All }, // linguistic case
+			{ "Elcard", All & ~ApplePlatform.TVOS }, // Kyrgyz payment network
 			{ "Elu", All }, // activation function
 			{ "Emagic", All }, // audio software brand
 			{ "Embd", All }, // embedded abbreviation
@@ -353,6 +355,7 @@ namespace Introspection {
 			{ "Hfp", All & ~ApplePlatform.MacOSX }, // Bluetooth Hands-Free Profile
 			{ "Hhr", All }, // Apple API abbreviation
 			{ "Himyan", All & ~ApplePlatform.TVOS }, // South Arabian script
+			{ "Humo", All & ~ApplePlatform.TVOS }, // Uzbek payment network
 			{ "Hermitean", All }, // Apple's spelling of Hermitian in MPSGraph FFT methods
 			{ "Hindlegs", All }, // compound word
 			{ "Hipass", All }, // high-pass filter
@@ -360,6 +363,7 @@ namespace Introspection {
 			{ "Hlg", All }, // Hybrid Log-Gamma
 			{ "Hls", All }, // HTTP Live Streaming
 			{ "Hoa", All }, // higher-order ambisonics
+			{ "Hov", ApplePlatform.iOS }, // high-occupancy vehicle
 			{ "Hpke", ApplePlatform.MacOSX }, // Hybrid Public Key Encryption
 			{ "Hrtf", All }, // acronym used in AUSpatializationAlgorithm
 			{ "Hsb", ApplePlatform.MacOSX }, // hue-saturation-brightness
@@ -433,6 +437,7 @@ namespace Introspection {
 			{ "Kiloamperes", All }, // SI unit name
 			{ "Kiloohms", All }, // SI unit name
 			{ "Kilopascals", All }, // SI unit name
+			{ "Koio", ApplePlatform.MacOSX }, // Kernel Offloaded I/O
 			{ "ks", All }, // word fragment from spell checker
 			{ "Kullback", All }, // Kullback-Leibler Divergence
 			{ "Lacunarity", All }, // fractal geometry term
@@ -461,6 +466,7 @@ namespace Introspection {
 			{ "Lzfse", All }, // acronym
 			{ "Lzma", All }, // acronym
 			{ "Lzw", ApplePlatform.MacOSX }, // Lempel-Ziv-Welch
+			{ "Maal", All & ~ApplePlatform.TVOS }, // Maldivian payment network
 			{ "Mada", All & ~ApplePlatform.TVOS }, // payment system
 			{ "Mcp", All }, // metacarpophalangeal (hand)
 			{ "Mebibits", All }, // IEC unit name
@@ -560,6 +566,7 @@ namespace Introspection {
 			{ "ove", All }, // word fragment from spell checker
 			{ "Overline", All & ~ApplePlatform.TVOS }, // typography term
 			{ "Paeth", All }, // PNG filter
+			{ "Pak", All & ~ApplePlatform.TVOS }, // PayPak, Pakistani payment network
 			{ "Palettize", All }, // graphics term
 			{ "Parms", All }, // parameters abbreviation
 			{ "Pausable", All }, // valid English derivative
@@ -663,6 +670,7 @@ namespace Introspection {
 			{ "Sdk", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst }, // software development kit
 			{ "Sdnn", All & ~ApplePlatform.TVOS }, // Apple API abbreviation
 			{ "Sdof", ApplePlatform.MacOSX }, // synthetic depth of field
+			{ "Sdpa", All }, // Scaled Dot Product Attention
 			{ "Sdr", All }, // standard dynamic range
 			{ "Sdtv", ApplePlatform.TVOS }, // acronym: Standard Definition Tele Vision
 			{ "Securit", ApplePlatform.iOS }, // Apple API selector fragment
@@ -782,7 +790,7 @@ namespace Introspection {
 			{ "Unsynced", ApplePlatform.MacOSX | ApplePlatform.iOS }, // sync state adjective
 			{ "Untrash", ApplePlatform.iOS }, // mail/files verb
 			{ "Upce", All }, // UPC-E barcode
-			{ "Upi", ApplePlatform.iOS }, // Unified Payments Interface
+			{ "Upi", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // Unified Payments Interface
 			{ "Uri", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst }, // Uniform Resource Identifier
 			{ "Usac", All }, // Unified Speech and Audio Coding
 			{ "Usd", All }, // Universal Scene Description
@@ -1182,7 +1190,9 @@ namespace Introspection {
 					break;
 #endif
 #if !__MACOS__
+				case "AVSystemRoutingLibrary":
 				case "CinematicLibrary":
+				case "ScreenCaptureKitLibrary":
 				case "ThreadNetworkLibrary":
 				case "MediaSetupLibrary":
 				case "MLComputeLibrary":

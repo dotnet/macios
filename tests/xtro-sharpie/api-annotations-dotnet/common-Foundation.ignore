@@ -1171,7 +1171,6 @@
 !missing-null-allowed! 'System.Void Foundation.NSHttpCookieStorage::SetCookies(Foundation.NSHttpCookie[],Foundation.NSUrl,Foundation.NSUrl)' is missing an [NullAllowed] on parameter #1
 !missing-null-allowed! 'System.Void Foundation.NSHttpCookieStorage::SetCookies(Foundation.NSHttpCookie[],Foundation.NSUrl,Foundation.NSUrl)' is missing an [NullAllowed] on parameter #2
 !missing-null-allowed! 'System.Void Foundation.NSIso8601DateFormatter::set_TimeZone(Foundation.NSTimeZone)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void Foundation.NSItemProvider::.ctor(Foundation.NSObject,System.String)' is missing an [NullAllowed] on parameter #1
 !missing-null-allowed! 'System.Void Foundation.NSItemProvider::SetPreviewImageHandler(Foundation.NSItemProviderLoadHandler)' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Void Foundation.NSKeyedArchiver::SetClassName(System.String,ObjCRuntime.Class)' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Void Foundation.NSKeyedArchiverDelegate::EncodedObject(Foundation.NSKeyedArchiver,Foundation.NSObject)' is missing an [NullAllowed] on parameter #1

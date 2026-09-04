@@ -22,6 +22,7 @@ partial class Frameworks {
 		"AVFoundation",
 		"AVKit",
 		"AVRouting",
+		"AVSystemRouting",
 		"BackgroundAssets",
 		"BackgroundTasks",
 		"BrowserEngineCore",
@@ -83,6 +84,7 @@ partial class Frameworks {
 		"IOSurface",
 		"JavaScriptCore",
 		"LinkPresentation",
+		"LinkSecurity",
 		"LocalAuthentication",
 		"MapKit",
 		"MediaAccessibility",
@@ -123,6 +125,7 @@ partial class Frameworks {
 		"SafariServices",
 		"SafetyKit",
 		"SceneKit",
+		"ScreenCaptureKit",
 		"ScreenTime",
 		"Security",
 		"SecurityUI",
@@ -135,6 +138,7 @@ partial class Frameworks {
 		"SoundAnalysis",
 		"Speech",
 		"SpriteKit",
+		"StateReporting",
 		"StoreKit",
 		"Symbols",
 		"SystemConfiguration",
@@ -157,6 +161,7 @@ partial class Frameworks {
 	internal readonly HashSet<string> macosframeworks = new HashSet<string> {
 		"Accelerate",
 		"Accessibility",
+		"AccessoryAccess",
 		"Accounts",
 		"AdServices",
 		"AdSupport",
@@ -227,6 +232,7 @@ partial class Frameworks {
 		"iTunesLibrary",
 		"JavaScriptCore",
 		"LinkPresentation",
+		"LinkSecurity",
 		"LocalAuthentication",
 		"LocalAuthenticationEmbeddedUI",
 		"MailKit",
@@ -274,6 +280,7 @@ partial class Frameworks {
 		"ScriptingBridge",
 		"SearchKit",
 		"Security",
+		"SecurityInterface",
 		"SecurityUI",
 		"SensitiveContentAnalysis",
 		"ServiceManagement",
@@ -284,6 +291,7 @@ partial class Frameworks {
 		"SoundAnalysis",
 		"Speech",
 		"SpriteKit",
+		"StateReporting",
 		"StoreKit",
 		"Symbols",
 		"SystemConfiguration",
@@ -346,6 +354,7 @@ partial class Frameworks {
 		"IOSurface",
 		"JavaScriptCore",
 		"LinkPresentation",
+		"LinkSecurity",
 		"MapKit",
 		"MediaAccessibility",
 		"MediaPlayer",
@@ -370,6 +379,7 @@ partial class Frameworks {
 		"PhotosUI",
 		"ReplayKit",
 		"SceneKit",
+		"ScreenCaptureKit",
 		"Security",
 		"SecurityUI",
 		"SharedWithYou",
@@ -377,6 +387,7 @@ partial class Frameworks {
 		"ShazamKit",
 		"SoundAnalysis",
 		"SpriteKit",
+		"StateReporting",
 		"StoreKit",
 		"Symbols",
 		"SystemConfiguration",
@@ -466,6 +477,7 @@ partial class Frameworks {
 		"IOSurface",
 		"JavaScriptCore",
 		"LinkPresentation",
+		"LinkSecurity",
 		"LocalAuthentication",
 		"MapKit",
 		"MediaAccessibility",
@@ -516,6 +528,7 @@ partial class Frameworks {
 		"SoundAnalysis",
 		"Speech",
 		"SpriteKit",
+		"StateReporting",
 		"StoreKit",
 		"Symbols",
 		"SystemConfiguration",
@@ -532,6 +545,7 @@ partial class Frameworks {
 	};
 	bool? _Accelerate;
 	bool? _Accessibility;
+	bool? _AccessoryAccess;
 	bool? _AccessorySetupKit;
 	bool? _Accounts;
 	bool? _AddressBook;
@@ -550,6 +564,7 @@ partial class Frameworks {
 	bool? _AVFoundation;
 	bool? _AVKit;
 	bool? _AVRouting;
+	bool? _AVSystemRouting;
 	bool? _BackgroundAssets;
 	bool? _BackgroundTasks;
 	bool? _BrowserEngineCore;
@@ -620,6 +635,7 @@ partial class Frameworks {
 	bool? _iTunesLibrary;
 	bool? _JavaScriptCore;
 	bool? _LinkPresentation;
+	bool? _LinkSecurity;
 	bool? _LocalAuthentication;
 	bool? _LocalAuthenticationEmbeddedUI;
 	bool? _MailKit;
@@ -673,6 +689,7 @@ partial class Frameworks {
 	bool? _ScriptingBridge;
 	bool? _SearchKit;
 	bool? _Security;
+	bool? _SecurityInterface;
 	bool? _SecurityUI;
 	bool? _SensitiveContentAnalysis;
 	bool? _SensorKit;
@@ -684,6 +701,7 @@ partial class Frameworks {
 	bool? _SoundAnalysis;
 	bool? _Speech;
 	bool? _SpriteKit;
+	bool? _StateReporting;
 	bool? _StoreKit;
 	bool? _Symbols;
 	bool? _SystemConfiguration;
@@ -706,6 +724,7 @@ partial class Frameworks {
 	bool? _XKit;
 	public bool HaveAccelerate { get { if (!_Accelerate.HasValue) _Accelerate = GetValue ("Accelerate"); return _Accelerate.Value; } }
 	public bool HaveAccessibility { get { if (!_Accessibility.HasValue) _Accessibility = GetValue ("Accessibility"); return _Accessibility.Value; } }
+	public bool HaveAccessoryAccess { get { if (!_AccessoryAccess.HasValue) _AccessoryAccess = GetValue ("AccessoryAccess"); return _AccessoryAccess.Value; } }
 	public bool HaveAccessorySetupKit { get { if (!_AccessorySetupKit.HasValue) _AccessorySetupKit = GetValue ("AccessorySetupKit"); return _AccessorySetupKit.Value; } }
 	public bool HaveAccounts { get { if (!_Accounts.HasValue) _Accounts = GetValue ("Accounts"); return _Accounts.Value; } }
 	public bool HaveAddressBook { get { if (!_AddressBook.HasValue) _AddressBook = GetValue ("AddressBook"); return _AddressBook.Value; } }
@@ -724,6 +743,7 @@ partial class Frameworks {
 	public bool HaveAVFoundation { get { if (!_AVFoundation.HasValue) _AVFoundation = GetValue ("AVFoundation"); return _AVFoundation.Value; } }
 	public bool HaveAVKit { get { if (!_AVKit.HasValue) _AVKit = GetValue ("AVKit"); return _AVKit.Value; } }
 	public bool HaveAVRouting { get { if (!_AVRouting.HasValue) _AVRouting = GetValue ("AVRouting"); return _AVRouting.Value; } }
+	public bool HaveAVSystemRouting { get { if (!_AVSystemRouting.HasValue) _AVSystemRouting = GetValue ("AVSystemRouting"); return _AVSystemRouting.Value; } }
 	public bool HaveBackgroundAssets { get { if (!_BackgroundAssets.HasValue) _BackgroundAssets = GetValue ("BackgroundAssets"); return _BackgroundAssets.Value; } }
 	public bool HaveBackgroundTasks { get { if (!_BackgroundTasks.HasValue) _BackgroundTasks = GetValue ("BackgroundTasks"); return _BackgroundTasks.Value; } }
 	public bool HaveBrowserEngineCore { get { if (!_BrowserEngineCore.HasValue) _BrowserEngineCore = GetValue ("BrowserEngineCore"); return _BrowserEngineCore.Value; } }
@@ -794,6 +814,7 @@ partial class Frameworks {
 	public bool HaveiTunesLibrary { get { if (!_iTunesLibrary.HasValue) _iTunesLibrary = GetValue ("iTunesLibrary"); return _iTunesLibrary.Value; } }
 	public bool HaveJavaScriptCore { get { if (!_JavaScriptCore.HasValue) _JavaScriptCore = GetValue ("JavaScriptCore"); return _JavaScriptCore.Value; } }
 	public bool HaveLinkPresentation { get { if (!_LinkPresentation.HasValue) _LinkPresentation = GetValue ("LinkPresentation"); return _LinkPresentation.Value; } }
+	public bool HaveLinkSecurity { get { if (!_LinkSecurity.HasValue) _LinkSecurity = GetValue ("LinkSecurity"); return _LinkSecurity.Value; } }
 	public bool HaveLocalAuthentication { get { if (!_LocalAuthentication.HasValue) _LocalAuthentication = GetValue ("LocalAuthentication"); return _LocalAuthentication.Value; } }
 	public bool HaveLocalAuthenticationEmbeddedUI { get { if (!_LocalAuthenticationEmbeddedUI.HasValue) _LocalAuthenticationEmbeddedUI = GetValue ("LocalAuthenticationEmbeddedUI"); return _LocalAuthenticationEmbeddedUI.Value; } }
 	public bool HaveMailKit { get { if (!_MailKit.HasValue) _MailKit = GetValue ("MailKit"); return _MailKit.Value; } }
@@ -847,6 +868,7 @@ partial class Frameworks {
 	public bool HaveScriptingBridge { get { if (!_ScriptingBridge.HasValue) _ScriptingBridge = GetValue ("ScriptingBridge"); return _ScriptingBridge.Value; } }
 	public bool HaveSearchKit { get { if (!_SearchKit.HasValue) _SearchKit = GetValue ("SearchKit"); return _SearchKit.Value; } }
 	public bool HaveSecurity { get { if (!_Security.HasValue) _Security = GetValue ("Security"); return _Security.Value; } }
+	public bool HaveSecurityInterface { get { if (!_SecurityInterface.HasValue) _SecurityInterface = GetValue ("SecurityInterface"); return _SecurityInterface.Value; } }
 	public bool HaveSecurityUI { get { if (!_SecurityUI.HasValue) _SecurityUI = GetValue ("SecurityUI"); return _SecurityUI.Value; } }
 	public bool HaveSensitiveContentAnalysis { get { if (!_SensitiveContentAnalysis.HasValue) _SensitiveContentAnalysis = GetValue ("SensitiveContentAnalysis"); return _SensitiveContentAnalysis.Value; } }
 	public bool HaveSensorKit { get { if (!_SensorKit.HasValue) _SensorKit = GetValue ("SensorKit"); return _SensorKit.Value; } }
@@ -858,6 +880,7 @@ partial class Frameworks {
 	public bool HaveSoundAnalysis { get { if (!_SoundAnalysis.HasValue) _SoundAnalysis = GetValue ("SoundAnalysis"); return _SoundAnalysis.Value; } }
 	public bool HaveSpeech { get { if (!_Speech.HasValue) _Speech = GetValue ("Speech"); return _Speech.Value; } }
 	public bool HaveSpriteKit { get { if (!_SpriteKit.HasValue) _SpriteKit = GetValue ("SpriteKit"); return _SpriteKit.Value; } }
+	public bool HaveStateReporting { get { if (!_StateReporting.HasValue) _StateReporting = GetValue ("StateReporting"); return _StateReporting.Value; } }
 	public bool HaveStoreKit { get { if (!_StoreKit.HasValue) _StoreKit = GetValue ("StoreKit"); return _StoreKit.Value; } }
 	public bool HaveSymbols { get { if (!_Symbols.HasValue) _Symbols = GetValue ("Symbols"); return _Symbols.Value; } }
 	public bool HaveSystemConfiguration { get { if (!_SystemConfiguration.HasValue) _SystemConfiguration = GetValue ("SystemConfiguration"); return _SystemConfiguration.Value; } }

@@ -70,6 +70,15 @@ namespace ImageIO {
 		/// https://developer.apple.com/library/mac/#documentation/FileManagement/Conceptual/understanding_utis/understand_utis_intro/understand_utis_intro.html</remarks>
 		public string? BestGuessTypeIdentifier { get; set; }
 
+		/// <summary>Gets or sets the uniform type identifiers that restrict the image formats this source may decode.</summary>
+		/// <value><see langword="null" /> omits the per-source restriction, while an empty array disables image parsing.</value>
+		/// <remarks>Unknown identifiers are ignored. If process-wide restrictions were configured with <see cref="CGImageSource.SetAllowableTypes" />, only identifiers allowed by both lists are permitted.</remarks>
+		[SupportedOSPlatform ("ios27.0")]
+		[SupportedOSPlatform ("tvos27.0")]
+		[SupportedOSPlatform ("macos27.0")]
+		[SupportedOSPlatform ("maccatalyst27.0")]
+		public string []? AllowableTypes { get; set; }
+
 		/// <summary>Determines whether the loaded image should be cached.</summary>
 		///         <value />
 		///         <remarks>To be added.</remarks>
@@ -89,12 +98,29 @@ namespace ImageIO {
 		///         <remarks>To be added.</remarks>
 		public bool ShouldAllowFloat { get; set; }
 
+		/// <summary>Gets or sets whether image decoding prioritizes quality over speed.</summary>
+		/// <value><see langword="true" /> to use the highest-quality available decoder; otherwise, <see langword="false" />.</value>
+		/// <remarks>This option currently affects camera RAW images and is ignored for unsupported image formats.</remarks>
+		[SupportedOSPlatform ("ios27.0")]
+		[SupportedOSPlatform ("tvos27.0")]
+		[SupportedOSPlatform ("macos27.0")]
+		[SupportedOSPlatform ("maccatalyst27.0")]
+		public bool PrioritizeQuality { get; set; }
+
 		internal virtual NSMutableDictionary ToDictionary ()
 		{
 			var dict = new NSMutableDictionary ();
 
 			if (BestGuessTypeIdentifier is not null)
 				dict.LowlevelSetObject (BestGuessTypeIdentifier, kTypeIdentifierHint);
+#pragma warning disable CA1416 // The key is only used when available on the current OS.
+			if (kAllowableTypes != IntPtr.Zero && AllowableTypes is not null) {
+				using (var allowableTypes = NSArray.FromStrings (AllowableTypes))
+					dict.LowlevelSetObject (allowableTypes, kAllowableTypes);
+			}
+			if (kPrioritizeQuality != IntPtr.Zero && PrioritizeQuality)
+				dict.LowlevelSetObject (CFBoolean.TrueHandle, kPrioritizeQuality);
+#pragma warning restore CA1416
 			if (!ShouldCache)
 				dict.LowlevelSetObject (CFBoolean.FalseHandle, kShouldCache);
 			if (ShouldAllowFloat)

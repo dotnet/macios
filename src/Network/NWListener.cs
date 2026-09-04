@@ -310,17 +310,17 @@ namespace Network {
 			set => nw_listener_set_new_connection_limit (GetCheckedHandle (), value);
 		}
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_listener_set_new_connection_group_handler (IntPtr listener, /* [NullAllowed] */ BlockLiteral* handler);
 
 		[UnmanagedCallersOnly]
-		[SupportedOSPlatform ("tvos14.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		static void TrampolineNewConnectionGroup (IntPtr block, nw_connection_group_t connectionGroup)
 		{
@@ -331,9 +331,9 @@ namespace Network {
 			del (nwConnectionGroup);
 		}
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void SetNewConnectionGroupHandler (Action<NWConnectionGroup> handler)

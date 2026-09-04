@@ -162,24 +162,24 @@ namespace Network {
 
 		public NWDataTransferReportState State => nw_data_transfer_report_get_state (GetCheckedHandle ());
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.NetworkLibrary)]
 		static extern NWInterfaceRadioType nw_data_transfer_report_get_path_radio_type (OS_nw_data_transfer_report report, uint pathIndex);
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public NWInterfaceRadioType GetPathRadioType (uint pathIndex)
 			=> nw_data_transfer_report_get_path_radio_type (GetCheckedHandle (), pathIndex);
 
 #if !XAMCORE_5_0
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[Obsolete ("Use the 'GetPathRadioType' property instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]

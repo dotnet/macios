@@ -28,6 +28,47 @@ namespace Introspection {
 			//LogProgress = true;
 		}
 
+		protected override bool Skip (Type type, string selectorName)
+		{
+#if __TVOS__
+			switch (type.Name) {
+			case "AVAssetWriter":
+				switch (selectorName) {
+				// These Pro Video Storage selectors are declared for tvOS 27 but are not implemented in the tvOS 27 simulator.
+				case "isProVideoStorageSupported":
+				case "usesProVideoStorage":
+				case "setUsesProVideoStorage:":
+					if (TestRuntime.IsSimulator)
+						return true;
+					break;
+				}
+				break;
+			}
+#endif // __TVOS__
+#if __MACCATALYST__
+			switch (type.Name) {
+			case "AVAssetWriter":
+				switch (selectorName) {
+				// These Pro Video Storage selectors are declared for Mac Catalyst 27 but are not implemented in the Mac Catalyst 27 runtime.
+				case "isProVideoStorageSupported":
+				case "usesProVideoStorage":
+				case "setUsesProVideoStorage:":
+					return true;
+				}
+				break;
+			case "CBPeripheral":
+				switch (selectorName) {
+				// These selectors are declared for Mac Catalyst 27 but are not implemented in the Mac Catalyst 27 runtime.
+				case "cancelChannelSoundingSession":
+				case "startChannelSoundingSession:":
+					return true;
+				}
+				break;
+			}
+#endif // __MACCATALYST__
+			return base.Skip (type, selectorName);
+		}
+
 		protected override bool Skip (Type type)
 		{
 			switch (type.Namespace) {
@@ -84,6 +125,7 @@ namespace Introspection {
 					return true;
 				break;
 #endif // HAS_WATCHCONNECTIVITY
+			case "AVSystemRouting":
 			case "Cinematic":
 			case "PushToTalk":
 			case "ShazamKit":
@@ -340,6 +382,15 @@ namespace Introspection {
 				switch (name) {
 				case "isTracked":
 					if (!TestRuntime.CheckXcodeVersion (10, 0))
+						return true;
+					break;
+				}
+				break;
+			// ARObjectAnchor was added in iOS 12.0 but the conformance to ARTrackable, where `isTracked` comes from, started with iOS 27.0
+			case "ARObjectAnchor":
+				switch (name) {
+				case "isTracked":
+					if (!TestRuntime.CheckXcodeVersion (27, 0))
 						return true;
 					break;
 				}

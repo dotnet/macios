@@ -86,11 +86,15 @@ namespace Xamarin {
 			switch (Profile) {
 			case Profile.iOS:
 				platformName = "iOS";
-				simType = "iPhone-SE";
+				// iPhone SE (1st generation) was removed as a simulator device type in iOS 27, so use a
+				// device type that's available there. Older SDKs keep the previous device type unchanged.
+				simType = SimSdkIsAtLeast27 () ? "iPhone-14" : "iPhone-SE";
 				break;
 			case Profile.tvOS:
 				platformName = "tvOS";
-				simType = "Apple-TV-1080p";
+				// The legacy non-4K "Apple TV" (Apple-TV-1080p) device type was removed in tvOS 27, so use
+				// an Apple TV 4K device type there. Older SDKs keep the previous device type unchanged.
+				simType = SimSdkIsAtLeast27 () ? "Apple-TV-4K-3rd-generation-4K" : "Apple-TV-1080p";
 				break;
 			default:
 				throw new Exception ("Profile not specified.");
@@ -102,6 +106,13 @@ namespace Xamarin {
 			}
 
 			return sb;
+		}
+
+		// The runtime above uses Configuration.sdk_version, so gate the device type on the same version:
+		// some simulator device types were removed in the Xcode 27 SDKs (iOS/tvOS 27).
+		static bool SimSdkIsAtLeast27 ()
+		{
+			return Version.TryParse (Configuration.sdk_version, out var version) && version.Major >= 27;
 		}
 
 		protected override string ToolPath {

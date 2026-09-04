@@ -133,6 +133,11 @@ namespace SharedWithYou {
 		[Field ("SWCollaborationMetadataTypeIdentifier")]
 		NSString MetadataTypeIdentifier { get; }
 
+		/// <summary>Gets the type identifier that signals the system to use the app's local document version for a copy representation.</summary>
+		[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[Field ("SWCopyRepresentationTypeIdentifier", "SharedWithYouCore")]
+		NSString CopyRepresentationTypeIdentifier { get; }
+
 		[Export ("identifier", ArgumentSemantic.Copy)]
 		NSObject/*<NSSecureCoding, NSCopying>*/ Identifier { get; }
 
@@ -267,6 +272,11 @@ namespace SharedWithYou {
 
 		[Export ("activeParticipantCount")]
 		nuint ActiveParticipantCount { get; set; }
+
+		/// <summary>Gets or sets the number of pending access requests.</summary>
+		[iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[Export ("pendingAccessRequestsCount")]
+		nuint PendingAccessRequestsCount { get; set; }
 
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]

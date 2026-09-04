@@ -13,6 +13,12 @@
 
 		<ApplicationTitle>MaxSupportedOSPlatformVersion</ApplicationTitle>
 		<ApplicationId>com.xamarin.maxsupportedosplatformversion</ApplicationId>
+
+		<!-- Disable trimming so that all platforms behave the same way (some platforms, like
+		     Mac Catalyst, trim by default even for a plain 'dotnet build', which would otherwise
+		     remove the unreferenced obsoleted types this test project is trying to keep around).
+		     TrimMode=copy means framework assemblies are copied as-is, without any trimming. -->
+		<TrimMode>copy</TrimMode>
 	</PropertyGroup>
 
 	<ItemGroup>

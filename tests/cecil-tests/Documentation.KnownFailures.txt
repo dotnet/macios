@@ -22436,7 +22436,6 @@ T:AppKit.NSCursorFrameResizeDirections
 T:AppKit.NSCursorFrameResizePosition
 T:AppKit.NSCustomImageRepDrawingHandler
 T:AppKit.NSDatePickerElementFlags
-T:AppKit.NSDatePickerMode
 T:AppKit.NSDatePickerStyle
 T:AppKit.NSDirectionalRectEdge
 T:AppKit.NSDisplayGamut

@@ -3111,12 +3111,13 @@ namespace AppKit {
 		TextField,
 	}
 
+	/// <summary>Specifies whether a date picker selects a single date or a date range.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSDatePickerMode : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The date picker selects a single date.</summary>
 		Single,
-		/// <summary>To be added.</summary>
+		/// <summary>The date picker selects a range of dates.</summary>
 		Range,
 	}
 

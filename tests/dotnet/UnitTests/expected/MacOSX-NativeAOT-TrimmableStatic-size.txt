@@ -1,19 +1,9 @@
-AppBundleSize: 20,803,813 bytes (20,316.2 KB = 19.8 MB)
+AppBundleSize: 4,700,600 bytes (4,590.4 KB = 4.5 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 Contents/Info.plist:
-    717 bytes (0.7 KB = 0.0 MB)
+    752 bytes (0.7 KB = 0.0 MB)
 Contents/MacOS/SizeTestApp:
-    17,714,536 bytes (17,299.4 KB = 16.9 MB)
-Contents/MonoBundle/libSystem.Globalization.Native.dylib:
-    267,872 bytes (261.6 KB = 0.3 MB)
-Contents/MonoBundle/libSystem.IO.Compression.Native.dylib:
-    2,025,904 bytes (1,978.4 KB = 1.9 MB)
-Contents/MonoBundle/libSystem.Native.dylib:
-    307,872 bytes (300.7 KB = 0.3 MB)
-Contents/MonoBundle/libSystem.Net.Security.Native.dylib:
-    151,904 bytes (148.3 KB = 0.1 MB)
-Contents/MonoBundle/libSystem.Security.Cryptography.Native.Apple.dylib:
-    333,152 bytes (325.3 KB = 0.3 MB)
+    4,697,992 bytes (4,587.9 KB = 4.5 MB)
 Contents/MonoBundle/runtimeconfig.bin:
     1,848 bytes (1.8 KB = 0.0 MB)
 Contents/PkgInfo:

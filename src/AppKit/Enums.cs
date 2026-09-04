@@ -3724,12 +3724,13 @@ namespace AppKit {
 		BelowContent,
 	}
 
+	/// <summary>Specifies how a scroller is displayed relative to its content.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSScrollerStyle : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The scroller occupies space reserved for it in the layout.</summary>
 		Legacy = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The scroller is drawn over the content without reserving layout space.</summary>
 		Overlay,
 	}
 

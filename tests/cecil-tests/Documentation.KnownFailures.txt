@@ -22585,7 +22585,6 @@ T:AppKit.NSScrollElasticity
 T:AppKit.NSScrollerArrow
 T:AppKit.NSScrollerKnobStyle
 T:AppKit.NSScrollerPart
-T:AppKit.NSScrollerStyle
 T:AppKit.NSScrollViewFindBarPosition
 T:AppKit.NSScrubberAlignment
 T:AppKit.NSScrubberMode

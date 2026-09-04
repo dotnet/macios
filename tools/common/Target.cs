@@ -280,6 +280,25 @@ namespace Xamarin.Bundler {
 			sw.WriteLine ($"\tNULL");
 			sw.WriteLine ("};");
 
+			// For CoreCLR we bake the runtimeconfig.json 'configProperties' directly into the app as C arrays
+			// (assigned to the xamarin_runtime_config_property_* globals in xamarin_setup_impl below, and
+			// consumed by xamarin_bridge_compute_properties). This avoids shipping the binary runtimeconfig
+			// format and decoding it at startup.
+			var runtimeConfigProperties = app.XamarinRuntime == XamarinRuntime.CoreCLR ? app.RuntimeConfigProperties : null;
+			if (runtimeConfigProperties is not null && runtimeConfigProperties.Count > 0) {
+				// Sort by key so the generated main is stable regardless of the dictionary's enumeration order.
+				var sortedRuntimeConfigProperties = runtimeConfigProperties.OrderBy (v => v.Key, StringComparer.Ordinal).ToArray ();
+				sw.WriteLine ();
+				sw.WriteLine ("static const char *xamarin_runtime_config_property_keys_array [] = {");
+				foreach (var property in sortedRuntimeConfigProperties)
+					sw.WriteLine ($"\t\"{EscapeCString (property.Key)}\",");
+				sw.WriteLine ("};");
+				sw.WriteLine ("static const char *xamarin_runtime_config_property_values_array [] = {");
+				foreach (var property in sortedRuntimeConfigProperties)
+					sw.WriteLine ($"\t\"{EscapeCString (property.Value)}\",");
+				sw.WriteLine ("};");
+			}
+
 			var trusted_platform_assembly_names = app.TrustedPlatformAssemblies
 				.Distinct (StringComparer.Ordinal)
 				// Any .exe files must be at the end, due to https://github.com/dotnet/runtime/issues/62735
@@ -368,6 +387,11 @@ namespace Xamarin.Bundler {
 				sw.WriteLine ("\txamarin_supports_dynamic_registration = {0};", app.DynamicRegistrationSupported ? "TRUE" : "FALSE");
 			}
 			sw.WriteLine ("\txamarin_runtime_configuration_name = {0};", string.IsNullOrEmpty (app.RuntimeConfigurationFile) ? "NULL" : $"\"{app.RuntimeConfigurationFile}\"");
+			if (runtimeConfigProperties is not null && runtimeConfigProperties.Count > 0) {
+				sw.WriteLine ("\txamarin_runtime_config_property_count = {0};", runtimeConfigProperties.Count);
+				sw.WriteLine ("\txamarin_runtime_config_property_keys = xamarin_runtime_config_property_keys_array;");
+				sw.WriteLine ("\txamarin_runtime_config_property_values = xamarin_runtime_config_property_values_array;");
+			}
 			if (app.Registrar == RegistrarMode.TrimmableStatic)
 				sw.WriteLine ("\txamarin_set_is_trimmable_static_registrar (true);");
 			if (app.Registrar == RegistrarMode.ManagedStatic)

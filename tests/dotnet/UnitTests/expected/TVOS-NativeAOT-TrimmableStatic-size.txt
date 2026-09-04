@@ -4,7 +4,5 @@ Info.plist:
     1,105 bytes (1.1 KB = 0.0 MB)
 PkgInfo:
     8 bytes (0.0 KB = 0.0 MB)
-runtimeconfig.bin:
-    1,889 bytes (1.8 KB = 0.0 MB)
 SizeTestApp:
     2,230,984 bytes (2,178.7 KB = 2.1 MB)

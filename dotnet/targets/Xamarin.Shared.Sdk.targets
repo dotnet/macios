@@ -496,8 +496,10 @@
 		DependsOnTargets="_RunRidSpecificBuild"
 		>
 		<ItemGroup>
-			<!-- If we're creating a runtimeconfig.json file, then the resulting binary runtimeconfig.bin file can be put in the architecture-specific subdirectory -->
-			<_ArchitectureSpecificFiles Include="$(_RuntimeConfigurationFile)" Condition="'$(GenerateRuntimeConfigurationFiles)' != ''" />
+			<!-- If we're creating a runtimeconfig.json file, then the resulting binary runtimeconfig.bin file can be put in the architecture-specific subdirectory.
+			     Only MonoVM ships this file; CoreCLR bakes the runtime configuration into the app as C code, and
+			     NativeAOT embeds it into the executable at publish time (neither reads runtimeconfig.bin). -->
+			<_ArchitectureSpecificFiles Include="$(_RuntimeConfigurationFile)" Condition="'$(GenerateRuntimeConfigurationFiles)' != '' And '$(_XamarinRuntime)' == 'MonoVM'" />
 		</ItemGroup>
 
 		<MergeAppBundles
@@ -818,6 +820,13 @@
 			<!-- Set default ValidateObjectPointers value -->
 			<_ValidateObjectPointers Condition="'$(_ValidateObjectPointers)' == ''">false</_ValidateObjectPointers>
 
+			<!-- Only MonoVM ships the binary runtimeconfig format and reads it at startup (locating it by name
+			     via RuntimeConfigurationFile). CoreCLR bakes the runtime configuration into the app as C code
+			     (from the merged json, handed to the linker via RuntimeConfigurationFilePath), and NativeAOT
+			     embeds it into the executable at publish time - neither ships nor reads a runtimeconfig file. -->
+			<_BundlerRuntimeConfigurationFile Condition="'$(_XamarinRuntime)' == 'MonoVM'">$(_RuntimeConfigurationFile)</_BundlerRuntimeConfigurationFile>
+			<_BundlerRuntimeConfigurationFilePath Condition="'$(_XamarinRuntime)' == 'CoreCLR' And '$(GenerateRuntimeConfigurationFiles)' == 'true'">$(_MergedRuntimeConfigFilePath)</_BundlerRuntimeConfigurationFilePath>
+
 			<!--
 				Set the 'ObjCRuntime.Runtime.CheckForIllegalCrossThreadCalls' feature switch value. When false, ILLink stubs
 				the [NS|UI]Application.EnsureUIThread method body (so the UI thread checks are removed). A user-specified
@@ -881,7 +890,8 @@
 				@(ReferenceNativeSymbol -> 'ReferenceNativeSymbol=%(SymbolType):%(SymbolMode):%(Identity)')
 				RequireLinkWithAttributeForObjectiveCClassSearch=$(RequireLinkWithAttributeForObjectiveCClassSearch)
 				RequirePInvokeWrappers=$(_RequirePInvokeWrappers)
-				RuntimeConfigurationFile=$(_RuntimeConfigurationFile)
+				RuntimeConfigurationFile=$(_BundlerRuntimeConfigurationFile)
+				RuntimeConfigurationFilePath=$(_BundlerRuntimeConfigurationFilePath)
 				SdkDevPath=$(_SdkDevPath)
 				SdkRootDirectory=$(_XamarinSdkRootDirectory)
 				SdkVersion=$(_SdkVersion)
@@ -1681,6 +1691,9 @@
 
 			<_RuntimeConfigurationFile>runtimeconfig.bin</_RuntimeConfigurationFile>
 
+			<!-- The runtimeconfig.json merged with the companion runtimeconfig.dev.json (see _CreateRuntimeConfiguration). -->
+			<_MergedRuntimeConfigFilePath>$(DeviceSpecificIntermediateOutputPath)runtimeconfig.merged.json</_MergedRuntimeConfigFilePath>
+
 			<!-- Path to the file where Objective-C type map information is stored -->
 			<_TypeMapFilePath Condition="'$(_TypeMapFilePath)' == ''">$(_LinkerCacheDirectory)/type-map.txt</_TypeMapFilePath>
 
@@ -1700,12 +1713,9 @@
 
 	<Target Name="_CreateRuntimeConfiguration"
 		Inputs="$(ProjectRuntimeConfigFilePath);$(ProjectRuntimeConfigDevFilePath)"
-		Outputs="$(_ParsedRuntimeConfigFilePath)"
+		Outputs="$(_RuntimeConfigurationOutputFile)"
 		DependsOnTargets="GenerateBuildRuntimeConfigurationFiles;_ComputePublishLocation"
 		>
-		<PropertyGroup>
-			<_MergedRuntimeConfigFilePath>$(DeviceSpecificIntermediateOutputPath)runtimeconfig.merged.json</_MergedRuntimeConfigFilePath>
-		</PropertyGroup>
 		<ItemGroup>
 			<!-- List all the properties passed to xamarin_bridge_vm_initialize in xamarin_vm_initialize (in runtime.m) -->
 			<_RuntimeConfigReservedProperties Include="APP_PATHS" />
@@ -1734,7 +1744,7 @@
 		</ItemGroup>
 
 		<RuntimeConfigParserTask
-			Condition="'$(GenerateRuntimeConfigurationFiles)' == 'true'"
+			Condition="'$(GenerateRuntimeConfigurationFiles)' == 'true' And '$(_XamarinRuntime)' == 'MonoVM'"
 			RuntimeConfigFile="$(_MergedRuntimeConfigFilePath)"
 			OutputFile="$(_ParsedRuntimeConfigFilePath)"
 			RuntimeConfigReservedProperties="@(_RuntimeConfigReservedProperties)"
@@ -2671,10 +2681,17 @@
 			<_DylibPublishDir Condition="'$(SdkIsMobile)' == 'true'">$(_RelativeAppBundlePath)\</_DylibPublishDir>
 			<_DylibPublishDir Condition="'$(SdkIsDesktop)' == 'true'">$(_RelativeAppBundlePath)\Contents\$(_CustomBundleName)\</_DylibPublishDir>
 			<_ParsedRuntimeConfigFilePath Condition="'$(_ParsedRuntimeConfigFilePath)' == ''">$(DeviceSpecificIntermediateOutputPath)$(_RuntimeConfigurationFile)</_ParsedRuntimeConfigFilePath>
+
+			<!-- The final output of _CreateRuntimeConfiguration: only MonoVM ships the binary runtimeconfig format;
+			     CoreCLR and NativeAOT use the merged json instead (baked into the app as C code by the linker for
+			     CoreCLR, embedded into the executable at publish time for NativeAOT). -->
+			<_RuntimeConfigurationOutputFile Condition="'$(_XamarinRuntime)' != 'MonoVM'">$(_MergedRuntimeConfigFilePath)</_RuntimeConfigurationOutputFile>
+			<_RuntimeConfigurationOutputFile Condition="'$(_RuntimeConfigurationOutputFile)' == ''">$(_ParsedRuntimeConfigFilePath)</_RuntimeConfigurationOutputFile>
 		</PropertyGroup>
 		<ItemGroup>
-			<!-- Add runtimeconfig.bin to ResolvedFileToPublish so we process it in ComputeBundlePath and copy the file to the app bundle -->
-			<ResolvedFileToPublish Include="$(_ParsedRuntimeConfigFilePath)" Condition="'$(GenerateRuntimeConfigurationFiles)' == 'true'">
+			<!-- Add runtimeconfig.bin to ResolvedFileToPublish so we process it in ComputeBundlePath and copy the file to the app bundle.
+			     Only MonoVM ships this file (CoreCLR bakes the configuration into the app as C code, NativeAOT embeds it at publish time). -->
+			<ResolvedFileToPublish Include="$(_ParsedRuntimeConfigFilePath)" Condition="'$(GenerateRuntimeConfigurationFiles)' == 'true' And '$(_XamarinRuntime)' == 'MonoVM'">
 				<RelativePath>$([System.IO.Path]::GetFileName('$(_ParsedRuntimeConfigFilePath)'))</RelativePath>
 				<PublishFolderType>Assembly</PublishFolderType>
 				<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>

@@ -3860,12 +3860,13 @@ namespace AppKit {
 		Large,
 	}
 
+	/// <summary>Specifies the edge of a table row where row actions appear.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTableRowActionEdge : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The leading edge in the current user interface layout direction.</summary>
 		Leading,
-		/// <summary>To be added.</summary>
+		/// <summary>The trailing edge in the current user interface layout direction.</summary>
 		Trailing,
 	}
 

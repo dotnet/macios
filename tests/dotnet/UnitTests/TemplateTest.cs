@@ -222,6 +222,7 @@ namespace Xamarin.Tests {
 			var outputDir = Path.Combine (tmpDir, info.Template);
 			DotNet.AssertNew (outputDir, info.Template, language: language.AsLanguageIdentifier ());
 			var proj = Path.Combine (outputDir, $"{info.Template}.{language.AsFileExtension ()}");
+			AssertCurrentTargetFramework (proj, info.Platform);
 			var properties = GetDefaultProperties ();
 			var rv = DotNet.AssertBuild (proj, properties);
 			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).FilterWarnings (info.Platform).Select (v => v.Message);
@@ -277,11 +278,12 @@ namespace Xamarin.Tests {
 			var tmpDir = Cache.CreateTemporaryDirectory ();
 			var outputDir = Path.Combine (tmpDir, info.Template);
 			DotNet.AssertNew (outputDir, info.Template, language: language.AsLanguageIdentifier ());
+			var proj = Path.Combine (outputDir, $"{info.Template}.{language.AsFileExtension ()}");
+			AssertCurrentTargetFramework (proj, platform);
 
 			foreach (var item in itemTemplates)
 				DotNet.AssertNew (outputDir, item.Template, "item_" + item.Template, language: language.AsLanguageIdentifier ());
 
-			var proj = Path.Combine (outputDir, $"{info.Template}.{language.AsFileExtension ()}");
 			var properties = GetDefaultProperties ();
 			var rv = DotNet.AssertBuild (proj, properties);
 			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).FilterWarnings (platform).Select (v => v.Message);
@@ -306,6 +308,12 @@ namespace Xamarin.Tests {
 				var appExecutable = GetNativeExecutable (platform, appPath);
 				ExecuteWithMagicWordAndAssert (appExecutable);
 			}
+		}
+
+		static void AssertCurrentTargetFramework (string projectPath, ApplePlatform platform)
+		{
+			var expectedTargetFramework = $"<TargetFramework>{platform.ToFramework (Configuration.DotNetTfm)}</TargetFramework>";
+			Assert.That (File.ReadAllText (projectPath), Does.Contain (expectedTargetFramework), $"The generated project must target the current .NET TFM.");
 		}
 
 		static void InsertCodeToExitAppAfterLaunch (TemplateLanguage language, string outputDir)

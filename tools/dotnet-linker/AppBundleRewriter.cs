@@ -1552,14 +1552,15 @@ namespace Xamarin.Linker {
 			if (!IsAssemblyTrimmed (dependsOn))
 				return false;
 
+			var signature = DocumentationComments.GetSignature (dependsOn);
 			if (addToMethod.DeclaringType == dependsOn.DeclaringType) {
-				var attribute = CreateDynamicDependencyAttribute (DocumentationComments.GetSignature (dependsOn));
+				var attribute = CreateDynamicDependencyAttribute (signature);
 				return AddAttributeOnlyOnce (addToMethod, attribute);
 			} else if (addToMethod.DeclaringType.Module == dependsOn.DeclaringType.Module) {
-				var attribute = CreateDynamicDependencyAttribute (DocumentationComments.GetSignature (dependsOn), dependsOn.DeclaringType);
+				var attribute = CreateDynamicDependencyAttribute (signature, dependsOn.DeclaringType);
 				return AddAttributeOnlyOnce (addToMethod, attribute);
 			} else {
-				var attribute = CreateDynamicDependencyAttribute (DocumentationComments.GetSignature (dependsOn), dependsOn.DeclaringType, dependsOn.DeclaringType.Module.Assembly);
+				var attribute = CreateDynamicDependencyAttribute (signature, dependsOn.DeclaringType, dependsOn.DeclaringType.Module.Assembly);
 				return AddAttributeOnlyOnce (addToMethod, attribute);
 			}
 		}
@@ -1703,13 +1704,14 @@ namespace Xamarin.Linker {
 		public bool AddDynamicDependencyAttributeToStaticConstructor (TypeDefinition onType, MethodDefinition forMethod)
 		{
 			CustomAttribute attrib;
+			var signature = DocumentationComments.GetSignature (forMethod);
 
 			if (onType == forMethod.DeclaringType) {
-				attrib = CreateDynamicDependencyAttribute (DocumentationComments.GetSignature (forMethod));
+				attrib = CreateDynamicDependencyAttribute (signature);
 			} else if (onType.Module == forMethod.DeclaringType.Module) {
-				attrib = CreateDynamicDependencyAttribute (DocumentationComments.GetSignature (forMethod), forMethod.DeclaringType);
+				attrib = CreateDynamicDependencyAttribute (signature, forMethod.DeclaringType);
 			} else {
-				attrib = CreateDynamicDependencyAttribute (DocumentationComments.GetSignature (forMethod), forMethod.DeclaringType, forMethod.Module.Assembly);
+				attrib = CreateDynamicDependencyAttribute (signature, forMethod.DeclaringType, forMethod.Module.Assembly);
 			}
 
 			return AddAttributeToStaticConstructor (onType, attrib);

@@ -4343,12 +4343,13 @@ namespace AppKit {
 		AllowReadWrite = 1 << 5,
 	}
 
+	/// <summary>Specifies a color gamut that a display can represent.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSDisplayGamut : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The sRGB color gamut.</summary>
 		Srgb = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The Display P3 color gamut.</summary>
 		P3,
 	}
 

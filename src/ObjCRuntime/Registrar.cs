@@ -1154,6 +1154,7 @@ namespace Registrar {
 		protected abstract bool IsAbstract (TType type);
 		protected abstract bool IsPointer (TType type);
 		protected abstract TType GetGenericTypeDefinition (TType type);
+		protected abstract IEnumerable<TType> GetGenericArguments (TType type);
 		public abstract bool VerifyIsConstrainedToNSObject (TType type, out TType? constrained_type);
 		protected abstract TType? GetEnumUnderlyingType (TType type);
 		protected abstract bool TryGetEnumUnderlyingType ([NotNullWhen (true)] TType? tr, [NotNullWhen (true)] out TType? underlyingType);
@@ -2779,6 +2780,9 @@ namespace Registrar {
 				return "#";
 
 			if (IsINativeObject (type)) {
+				if (IsGenericType (type))
+					VerifyGenericArguments (type, member);
+
 				if (!IsGenericType (type) && !IsInterface (type) && !IsNSObject (type) && IsAbstract (type)) {
 					ReportWarning (4179, Errors.MT4179, type.FullName, member?.FullName);
 				}
@@ -2808,6 +2812,17 @@ namespace Registrar {
 
 			success = false;
 			return string.Empty;
+		}
+
+		void VerifyGenericArguments (TType type, ObjCMember? member)
+		{
+			foreach (var argument in GetGenericArguments (type)) {
+				if (HasModelAttribute (argument))
+					throw CreateException (4192, member, Errors.MT4192, GetTypeFullName (argument), GetTypeFullName (type));
+
+				if (IsGenericType (argument))
+					VerifyGenericArguments (argument, member);
+			}
 		}
 
 		string ValueTypeSignature (TType type, ObjCMember member)

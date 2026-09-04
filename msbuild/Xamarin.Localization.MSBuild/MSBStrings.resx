@@ -1723,11 +1723,6 @@
         <value>Codesign failed with 'errSecInternalComponent'. This usually means the keychain is locked, which is common when building over SSH. Unlock the keychain first, for example by running 'security unlock-keychain ~/Library/Keychains/login.keychain-db'.</value>
         <comment>Shown when codesign fails with the 'errSecInternalComponent' error, which typically indicates a locked keychain.</comment>
     </data>
-    <data name="E7185" xml:space="preserve">
-        <value>The runtime configuration file '{0}' is not a valid JSON object.</value>
-        <comment>Shown when the main runtime configuration file (*.runtimeconfig.json) does not contain a valid JSON object at its root.
-{0} - The path to the runtime configuration file.</comment>
-    </data>
     <data name="E7186" xml:space="preserve">
         <value>Could not read the runtime configuration file '{0}': {1}</value>
         <comment>Shown when a runtime configuration file (*.runtimeconfig.json or *.runtimeconfig.dev.json) can't be read or parsed.
@@ -1740,5 +1735,10 @@
             {0}: user-provided value
             {1}: name of an MSBuild property (SupportedOSPlatformVersion or MinSupportedOSPlatformVersion): don't translate
         </comment>
+    </data>
+    <data name="E7188" xml:space="preserve">
+        <value>The runtime configuration file '{0}' is not a valid JSON object.</value>
+        <comment>Shown when the main runtime configuration file (*.runtimeconfig.json) does not contain a valid JSON object at its root.
+{0} - The path to the runtime configuration file.</comment>
     </data>
 </root>

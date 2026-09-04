@@ -295,6 +295,19 @@ namespace Xamarin.Tests {
 							if (propname == property)
 								value = propvalue;
 						}
+					} else if (bmea.Message?.StartsWith ("Set Property: ", StringComparison.Ordinal) == true) {
+						// This is what MSBuild's property tracking (the 'MSBuildLogPropertyTracking' environment
+						// variable) logs for properties that are set inside a target (as opposed to properties
+						// set at evaluation time, which show up in ProjectEvaluationFinishedEventArgs.Properties
+						// above): a plain message of the form "Set Property: Name=Value".
+						var kvp = bmea.Message.Substring ("Set Property: ".Length);
+						var eq = kvp.IndexOf ('=');
+						if (eq > 0) {
+							var propname = kvp.Substring (0, eq);
+							var propvalue = kvp.Substring (eq + 1);
+							if (propname == property)
+								value = propvalue;
+						}
 					} else if (bmea.Message?.StartsWith ($"TaskOutput: {property}") == true) {
 						value = bmea.Message?.Substring ($"TaskOutput: {property}".Length).Trim ();
 					}

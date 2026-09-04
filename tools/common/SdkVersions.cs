@@ -39,10 +39,10 @@ namespace Xamarin {
 		public const string TargetPlatformVersionExecutablemacOS = "27.0";
 		public const string TargetPlatformVersionExecutableMacCatalyst = "27.0";
 
-		public const string TargetPlatformVersionLibraryiOS = "26.5";
-		public const string TargetPlatformVersionLibrarytvOS = "26.5";
-		public const string TargetPlatformVersionLibrarymacOS = "26.5";
-		public const string TargetPlatformVersionLibraryMacCatalyst = "26.5";
+		public const string TargetPlatformVersionLibraryiOS = "27.0";
+		public const string TargetPlatformVersionLibrarytvOS = "27.0";
+		public const string TargetPlatformVersionLibrarymacOS = "27.0";
+		public const string TargetPlatformVersionLibraryMacCatalyst = "27.0";
 
 		public static Version OSXVersion { get { return new Version (OSX); } }
 		public static Version iOSVersion { get { return new Version (iOS); } }

@@ -110,7 +110,7 @@ namespace MonoTouch.NUnit.UI {
 
 		public HashSet<string>? ExcludedCategories { get; set; }
 
-		public bool RunOnMainThread { get; set; }
+		public bool RunOnMainThread { get; set; } = true;
 
 		public bool TerminateAfterExecution {
 			get { return TouchOptions.Current.TerminateAfterExecution && !connection_failure; }

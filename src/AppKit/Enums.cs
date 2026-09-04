@@ -3918,12 +3918,13 @@ namespace AppKit {
 		Stack,
 	}
 
+	/// <summary>Specifies whether a dragging operation occurs within or outside the application.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSDraggingContext : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The dragging operation occurs outside the application.</summary>
 		OutsideApplication,
-		/// <summary>To be added.</summary>
+		/// <summary>The dragging operation occurs within the application.</summary>
 		WithinApplication,
 	}
 

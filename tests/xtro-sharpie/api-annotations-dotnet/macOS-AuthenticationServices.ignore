@@ -27,3 +27,7 @@
 ## the class, managed callback infrastructure, or API Apple removed/privatized - kept for compatibility
 ## (baseline for https://github.com/dotnet/macios/issues/26053)
 !unknown-selector! +ASWebAuthenticationSessionWebBrowserSessionManager::registerDefaultsForASWASInSetupAssistantIfNeeded not found
+!missing-null-allowed! 'AuthenticationServices.ASPublicKeyCredentialClientData AuthenticationServices.IASAuthorizationWebBrowserPlatformPublicKeyCredentialAssertionRequest::get_ClientData()' is missing an [NullAllowed] on return type
+!missing-null-allowed! 'AuthenticationServices.ASPublicKeyCredentialClientData AuthenticationServices.IASAuthorizationWebBrowserPlatformPublicKeyCredentialRegistrationRequest::get_ClientData()' is missing an [NullAllowed] on return type
+!missing-null-allowed! 'AuthenticationServices.ASPublicKeyCredentialClientData AuthenticationServices.IASAuthorizationWebBrowserSecurityKeyPublicKeyCredentialAssertionRequest::get_ClientData()' is missing an [NullAllowed] on return type
+!missing-null-allowed! 'AuthenticationServices.ASPublicKeyCredentialClientData AuthenticationServices.IASAuthorizationWebBrowserSecurityKeyPublicKeyCredentialRegistrationRequest::get_ClientData()' is missing an [NullAllowed] on return type

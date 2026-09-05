@@ -230,6 +230,11 @@ namespace Xamarin.MacDev.Tasks {
 
 		bool SetMinimumOSVersion (PDictionary plist)
 		{
+			if (!IsValidVersionValue (SupportedOSPlatformVersion, nameof (SupportedOSPlatformVersion)))
+				return false;
+			if (!IsValidVersionValue (MinSupportedOSPlatformVersion, nameof (MinSupportedOSPlatformVersion)))
+				return false;
+
 			var minimumVersionKey = PlatformFrameworkHelper.GetMinimumOSVersionKey (Platform);
 			var minimumOSVersionInManifest = plist.Get<PString> (minimumVersionKey)?.Value;
 			string convertedSupportedOSPlatformVersion;
@@ -292,6 +297,22 @@ namespace Xamarin.MacDev.Tasks {
 
 			// Write out our value
 			plist [minimumVersionKey] = minimumOSVersion;
+
+			return true;
+		}
+
+		// Verify that the value doesn't contain any whitespace (in particular newlines), because such values
+		// end up breaking other parts of the build (even though they may successfully parse as a Version).
+		bool IsValidVersionValue (string value, string propertyName)
+		{
+			if (string.IsNullOrEmpty (value))
+				return true;
+
+			if (value.Any (char.IsWhiteSpace)) {
+				var printableValue = value.Replace ("\r", "\\r").Replace ("\n", "\\n").Replace ("\t", "\\t");
+				Log.LogError (MSBStrings.E7187 /* The value '{0}' for the property '{1}' is not a valid version number, because it contains whitespace. */, printableValue, propertyName);
+				return false;
+			}
 
 			return true;
 		}

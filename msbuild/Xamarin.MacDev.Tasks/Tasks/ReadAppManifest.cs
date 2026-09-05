@@ -14,6 +14,8 @@ namespace Xamarin.MacDev.Tasks {
 	public class ReadAppManifest : XamarinTask, ITaskCallback {
 		public ITaskItem? AppManifest { get; set; }
 
+		public bool DisableMinimumOSVersion { get; set; }
+
 		[Output]
 		public string? CLKComplicationGroup { get; set; }
 
@@ -69,7 +71,7 @@ namespace Xamarin.MacDev.Tasks {
 				}
 			}
 
-			CFBundleExecutable = plist.GetCFBundleExecutable ();
+			CFBundleExecutable = plist?.GetCFBundleExecutable ();
 			CFBundleDisplayName = plist?.GetCFBundleDisplayName ();
 			CFBundleName = plist?.GetCFBundleName ();
 			CFBundleIdentifier = plist?.GetCFBundleIdentifier ();
@@ -77,13 +79,15 @@ namespace Xamarin.MacDev.Tasks {
 			CFBundleVersion = plist?.GetCFBundleVersion ();
 			CLKComplicationGroup = plist?.Get<PString> (ManifestKeys.CLKComplicationGroup)?.Value;
 
-			MinimumOSVersion = plist?.Get<PString> (PlatformFrameworkHelper.GetMinimumOSVersionKey (Platform))?.Value;
-			if (Platform == ApplePlatform.MacCatalyst) {
-				// The minimum version in the Info.plist is the macOS version. However, the rest of our tooling
-				// expects the iOS version, so expose that.
-				if (!MacCatalystSupport.TryGetiOSVersion (CurrentSdk.GetSdkPath (), MinimumOSVersion!, out var convertedVersion, out var knownMacOSVersions))
-					Log.LogError (MSBStrings.E0187, MinimumOSVersion, string.Join (", ", knownMacOSVersions.OrderBy (v => v)));
-				MinimumOSVersion = convertedVersion;
+			if (!DisableMinimumOSVersion) {
+				MinimumOSVersion = plist?.Get<PString> (PlatformFrameworkHelper.GetMinimumOSVersionKey (Platform))?.Value;
+				if (Platform == ApplePlatform.MacCatalyst) {
+					// The minimum version in the Info.plist is the macOS version. However, the rest of our tooling
+					// expects the iOS version, so expose that.
+					if (!MacCatalystSupport.TryGetiOSVersion (CurrentSdk.GetSdkPath (), MinimumOSVersion!, out var convertedVersion, out var knownMacOSVersions))
+						Log.LogError (MSBStrings.E0187, MinimumOSVersion, string.Join (", ", knownMacOSVersions.OrderBy (v => v)));
+					MinimumOSVersion = convertedVersion;
+				}
 			}
 
 			NSExtensionPointIdentifier = plist?.GetNSExtensionPointIdentifier ();

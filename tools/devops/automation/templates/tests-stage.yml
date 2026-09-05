@@ -30,36 +30,6 @@ parameters:
   type: object
   default: [
     {
-      stageName: 'mac_12_m1',
-      displayName: 'M1 - Mac Monterey (12)',
-      label: 'mac_monterey',
-      macPool: 'VSEng-VSMac-Xamarin-Shared',
-      useImage: false,
-      statusContext: 'M1 - Mac Monterey (12)',
-      demands: [
-        "Agent.OS -equals Darwin",
-        "macOS.Name -equals Monterey",
-        "macOS.Architecture -equals arm64",
-        "Agent.HasDevices -equals False",
-        "Agent.IsPaired -equals False"
-      ]
-    },
-    {
-      stageName: 'mac_13_m1',
-      displayName: 'M1 - Mac Ventura (13)',
-      label: 'mac_ventura',
-      macPool: 'VSEng-VSMac-Xamarin-Shared',
-      useImage: false,
-      statusContext: 'M1 - Mac Ventura (13)',
-      demands: [
-        "Agent.OS -equals Darwin",
-        "macOS.Name -equals Ventura",
-        "macOS.Architecture -equals arm64",
-        "Agent.HasDevices -equals False",
-        "Agent.IsPaired -equals False"
-      ]
-    },
-    {
       stageName: 'mac_14_x64',
       displayName: 'X64 - Mac Sonoma (14)',
       label: 'mac_sonoma',

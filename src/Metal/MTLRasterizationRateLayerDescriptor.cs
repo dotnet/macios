@@ -5,7 +5,7 @@ using System.ComponentModel;
 namespace Metal {
 	public partial class MTLRasterizationRateLayerDescriptor {
 		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos16.0")]
 #if XAMCORE_5_0
@@ -26,7 +26,7 @@ namespace Metal {
 		}
 
 		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos16.0")]
 #if XAMCORE_5_0
@@ -52,7 +52,7 @@ namespace Metal {
 		/// <param name="vertical">The vertical rasterization rates for the new <see cref="MTLRasterizationRateLayerDescriptor" /> instance.</param>
 		/// <returns>A new <see cref="MTLRasterizationRateLayerDescriptor" /> instance with the specified rasterization rates.</returns>
 		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos16.0")]
 		static public MTLRasterizationRateLayerDescriptor Create (MTLSize sampleCount, float [] horizontal, float [] vertical)
@@ -79,7 +79,7 @@ namespace Metal {
 		/// <param name="vertical">The vertical rasterization rates for the new <see cref="MTLRasterizationRateLayerDescriptor" /> instance.</param>
 		/// <returns>A new <see cref="MTLRasterizationRateLayerDescriptor" /> instance with the specified rasterization rates.</returns>
 		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos16.0")]
 		public static MTLRasterizationRateLayerDescriptor Create (float [] horizontal, float [] vertical)

@@ -1716,6 +1716,26 @@
 {0} - The path of the file that was copied to the device.
 {1} - The JSON output from 'xcrun devicectl'.</comment>
     </data>
+    <data name="E7187" xml:space="preserve">
+        <value>Invalid value '{0}' for the app manifest entry '{1}' of type '{2}' specified in the AppManifestEntry item group. Expected no value at all.</value>
+        <comment>Shown when an AppManifestEntry item of type Remove has a value.
+{0} - The invalid value.
+{1} - The app manifest entry name.
+{2} - The app manifest entry type.</comment>
+    </data>
+    <data name="E7188" xml:space="preserve">
+        <value>Invalid value '{0}' for the app manifest entry '{1}' of type '{2}' specified in the AppManifestEntry item group. Expected 'true' or 'false'.</value>
+        <comment>Shown when an AppManifestEntry item of type Boolean has an invalid value.
+{0} - The invalid value.
+{1} - The app manifest entry name.
+{2} - The app manifest entry type.</comment>
+    </data>
+    <data name="E7189" xml:space="preserve">
+        <value>Unknown type '{0}' for the app manifest entry '{1}' specified in the AppManifestEntry item group. Expected 'Remove', 'Boolean', 'String', or 'StringArray'.</value>
+        <comment>Shown when an AppManifestEntry item has an unknown type.
+{0} - The unknown type.
+{1} - The app manifest entry name.</comment>
+    </data>
     <data name="E0192" xml:space="preserve">
         <value>The PrepareAssemblies task failed without reporting a specific error. Please rebuild with increased verbosity for more details.</value>
     </data>

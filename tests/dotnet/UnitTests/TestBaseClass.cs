@@ -500,7 +500,10 @@ namespace Xamarin.Tests {
 					env [kvp.Key] = kvp.Value;
 			}
 
-			var rv = Execution.RunAsync (executable, Array.Empty<string> (), environment: env, timeout: TimeSpan.FromSeconds (30)).Result;
+			// Tell AppKit to skip its "Do you want to try to reopen its windows again?" prompt entirely (even if
+			// the OS thinks the app has a history of crashing), so that a persistent modal dialog doesn't hang the test.
+			var args = new [] { "-ApplePersistenceIgnoreState", "YES" };
+			var rv = Execution.RunAsync (executable, args, environment: env, timeout: TimeSpan.FromSeconds (30)).Result;
 			output = rv.Output.MergedOutput;
 
 			DeleteSavedState (executable);
@@ -540,14 +543,19 @@ namespace Xamarin.Tests {
 			if (string.IsNullOrEmpty (bundleIdentifier))
 				return;
 
-			var savedStateDir = Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.UserProfile), "Library", "Saved Application State", $"{bundleIdentifier}.savedState");
-			try {
-				if (Directory.Exists (savedStateDir)) {
-					Directory.Delete (savedStateDir, true);
-					Console.WriteLine ($"Deleted saved application state: {savedStateDir}");
+			var savedStateParentDir = Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.UserProfile), "Library", "Saved Application State");
+			// Mac Catalyst apps run under the "iosmac" personality, and macOS stores their saved state
+			// with a "~iosmac" suffix added to the bundle identifier, so delete both variants.
+			foreach (var identifier in new [] { bundleIdentifier, $"{bundleIdentifier}~iosmac" }) {
+				var savedStateDir = Path.Combine (savedStateParentDir, $"{identifier}.savedState");
+				try {
+					if (Directory.Exists (savedStateDir)) {
+						Directory.Delete (savedStateDir, true);
+						Console.WriteLine ($"Deleted saved application state: {savedStateDir}");
+					}
+				} catch (Exception e) {
+					Console.WriteLine ($"Could not delete saved application state '{savedStateDir}': {e.Message}");
 				}
-			} catch (Exception e) {
-				Console.WriteLine ($"Could not delete saved application state '{savedStateDir}': {e.Message}");
 			}
 		}
 

@@ -199,5 +199,14 @@ namespace MonoTouchFixtures.Foundation {
 				Assert.That (list [0].ToString (), Is.EqualTo ("abc"), "Value");
 			}
 		}
+
+		[Test]
+		public void LinqFirstOrDefault_MutableArray ()
+		{
+			using var array = new NSMutableArray ();
+			array.Add ((NSString) "abc");
+			var first = array.FirstOrDefault ();
+			Assert.That (first, Is.EqualTo ((NSString) "abc"), "FirstOrDefault");
+		}
 	}
 }

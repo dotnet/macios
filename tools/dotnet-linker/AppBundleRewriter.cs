@@ -2078,11 +2078,9 @@ namespace Xamarin.Linker {
 			var ifaceImplementation = new InterfaceImplementation (iface);
 			type.Interfaces.Add (ifaceImplementation);
 
-			// make sure the trimmer doesn't trim it away if the type is kept
-			if (context.App.Registrar == RegistrarMode.TrimmableStatic) {
-				// TODO: need to investigate why this is needed (https://github.com/dotnet/macios/issues/25232)
-				abr.AddAttributeToStaticConstructor (type, abr.CreateDynamicDependencyAttribute (DynamicallyAccessedMemberTypes.Interfaces, type));
-			} else {
+			// The trimmer discovers this relationship from the generated method override.
+			// Other registrar modes use linker annotations instead.
+			if (context.App.Registrar != RegistrarMode.TrimmableStatic) {
 				context.Annotations.Mark (ifaceImplementation);
 				context.Annotations.Mark (ifaceImplementation.InterfaceType);
 				context.Annotations.Mark (ifaceImplementation.InterfaceType.Resolve ());

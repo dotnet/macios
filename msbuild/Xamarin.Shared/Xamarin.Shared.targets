@@ -3700,6 +3700,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		<_PrepareAssembliesForPreparationDependsOn>
 			_ComputeAssembliesToPostprocessOnPublish;
 			_ComputeLinkerInputs;
+			$(_PrepareAssembliesForPreparationDependsOnExtra);
 		</_PrepareAssembliesForPreparationDependsOn>
 	</PropertyGroup>
 
@@ -3721,7 +3722,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<Target
 		Name="_PrepareAssemblies"
 		Condition="'$(IsMacEnabled)' == 'true' And '$(PrepareAssemblies)' == 'true'"
-		Inputs="@(_AssembliesToPrepare)"
+		Inputs="@(_AssembliesToPrepare);$(_LinkerCachePath)"
 		Outputs="@(_AssembliesToPrepare->'$(PreparedAssembliesDirectory)%(Filename)%(Extension)');$(_AssemblyPreparerMSBuildOutputFile)"
 		DependsOnTargets="_PrepareAssembliesForPreparation;_ComputeAssembliesToPostprocessOnPublish;SelectRegistrar"
 		>

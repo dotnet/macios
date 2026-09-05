@@ -627,13 +627,18 @@ namespace Xamarin.MacDev.Tasks {
 			foreach (var reference in References) {
 				var resourcesPackage = Path.Combine (Path.GetDirectoryName (reference.ItemSpec)!, Path.GetFileNameWithoutExtension (reference.ItemSpec)) + ".resources";
 				if (Directory.Exists (resourcesPackage)) {
-					var resources = CreateItemsForAllFilesRecursively (new string [] { resourcesPackage });
+					var resources = CreateItemsForAllFilesRecursively (new string [] { resourcesPackage }).ToList ();
+					Log.LogMessage (MessageImportance.Low, $"Found the resources directory '{resourcesPackage}' for the reference '{reference.ItemSpec}', copying {resources.Count} file(s) from it.");
 					rv.AddRange (resources);
 					continue;
 				}
 				var zipPackage = resourcesPackage + ".zip";
-				if (File.Exists (zipPackage))
+				if (File.Exists (zipPackage)) {
+					Log.LogMessage (MessageImportance.Low, $"Found the resources zip file '{zipPackage}' for the reference '{reference.ItemSpec}', copying it.");
 					rv.Add (new TaskItem (zipPackage));
+				} else {
+					Log.LogMessage (MessageImportance.Low, $"No resources directory ('{resourcesPackage}') nor resources zip file ('{zipPackage}') found for the reference '{reference.ItemSpec}'.");
+				}
 			}
 			return rv;
 		}

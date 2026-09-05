@@ -61,6 +61,8 @@ include $(TOP)/mk/colors.mk
 
 unexport MSBUILD_EXE_PATH
 
+SPAWNER?=$(TOP)/tools/spawner/spawner
+
 BINLOG_TIMESTAMP:=$(shell date +%Y-%m-%d-%H%M%S)
 
 ifeq ($(TESTNAME),)
@@ -202,7 +204,7 @@ delete-saved-state:
 run-bare: export RUNTIMEIDENTIFIER=
 run-bare: export RUNTIMEIDENTIFIERS=
 run-bare: delete-saved-state
-	$(Q) $(EXECUTABLE) --autostart --autoexit $(RUN_ARGUMENTS)
+	$(Q) $(SPAWNER) $(EXECUTABLE) --autostart --autoexit $(RUN_ARGUMENTS)
 	$(Q) $(MAKE) delete-saved-state
 
 # Get the list of applicable simulators, and pick the first in the list.

@@ -1179,6 +1179,13 @@ namespace Registrar {
 			return type;
 		}
 
+		protected override IEnumerable<TypeReference> GetGenericArguments (TypeReference type)
+		{
+			if (type is GenericInstanceType git)
+				return git.GenericArguments;
+			return [];
+		}
+
 		protected override bool AreEqual (TypeReference? a, TypeReference? b)
 		{
 			if (a == b)
@@ -1335,7 +1342,13 @@ namespace Registrar {
 
 		protected override bool TryGetAttribute (TypeReference type, string attributeNamespace, string attributeType, [NotNullWhen (true)] out object? attribute)
 		{
-			bool res = TryGetAttribute (type.Resolve (), attributeNamespace, attributeType, out var attrib);
+			var resolvedType = type.Resolve ();
+			if (resolvedType is null) {
+				attribute = null;
+				return false;
+			}
+
+			bool res = TryGetAttribute (resolvedType, attributeNamespace, attributeType, out var attrib);
 			attribute = attrib;
 			return res;
 		}
@@ -2875,7 +2888,9 @@ namespace Registrar {
 					// A class is skipped only if it had trampolines and none survived ILC. Every other class is
 					// emitted, so we must keep its entire base class chain (their @implementation is needed as
 					// superclasses), even if a base class itself had all its trampolines trimmed away.
-					if (!hadTrampolines || survived) {
+					// A class whose class handle is still looked up from managed code that survived ILC must
+					// also be kept, even if all its trampolines were trimmed away.
+					if (!hadTrampolines || survived || App.IsClassReferencedByInlinedClassGetHandle (type.ExportedName)) {
 						var keep = type;
 						while (keep is not null && classesToKeep.Add (keep))
 							keep = keep.SuperType;

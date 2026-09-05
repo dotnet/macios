@@ -105,7 +105,7 @@ namespace LinkSdk {
 					sne_validation_callback++;
 					return true;
 				};
-				ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
+				ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls; // CodeQL [SM02212] this test is testing Tls1, so this is expected.
 				WebClient wc = new WebClient ();
 				Assert.That (wc.DownloadString (NetworkResources.StatsUrl), Is.Not.Null);
 			} catch (WebException we) {

@@ -156,6 +156,9 @@ namespace Xamarin {
 			MinwatchOS = 0x30,//#define LC_VERSION_MIN_WATCHOS 0x30 /* build for Watch min OS version */
 							  //#define LC_NOTE 0x31 /* arbitrary data included within a Mach-O file */
 			BuildVersion = 0x32,//#define LC_BUILD_VERSION 0x32 /* build for platform min OS version */
+								//#define LC_DYLD_CHAINED_FIXUPS (0x34 | LC_REQ_DYLD) /* used with linkedit_data_command */
+								//#define LC_FILESET_ENTRY (0x35 | LC_REQ_DYLD) /* used with fileset_entry_command */
+			AtomInfo = 0x36,//#define LC_ATOM_INFO 0x36 /* used with linkedit_data_command, used by mergeable libraries */
 		}
 
 		public enum Platform : uint {
@@ -408,6 +411,29 @@ namespace Xamarin {
 					return false;
 
 			return true;
+		}
+
+		// A mergeable library is a dynamic library that also contains atom info (LC_ATOM_INFO),
+		// which allows it to be linked statically as well. The atom info can be stripped to
+		// reduce the size of the library when it's used as a dynamic library.
+		// Ref: https://developer.apple.com/videos/play/wwdc2023/10268/
+		public static bool IsMergeableLibrary (string filename)
+		{
+			var f = ReadFile (filename);
+			if (f is MachOFile mf)
+				return mf.IsDynamicLibrary && mf.HasAtomInfo;
+
+			var fat = f as FatFile;
+			if (fat is null)
+				return false;
+			if (fat.entries is null)
+				return false;
+
+			foreach (var entry in fat.entries)
+				if (entry.entry is not null && entry.entry.IsDynamicLibrary && entry.entry.HasAtomInfo)
+					return true;
+
+			return false;
 		}
 
 		public static bool IsMachOFile (string filename)
@@ -846,6 +872,18 @@ namespace Xamarin {
 
 		public bool IsObjectFile {
 			get => filetype == MachO.MH_OBJECT;
+		}
+
+		// Whether the Mach-O file contains atom info (LC_ATOM_INFO), which is the metadata
+		// added to mergeable libraries that enables static linking.
+		public bool HasAtomInfo {
+			get {
+				foreach (var lc in load_commands) {
+					if ((MachO.LoadCommands) lc.cmd == MachO.LoadCommands.AtomInfo)
+						return true;
+				}
+				return false;
+			}
 		}
 
 		const byte N_EXT = 0x01;  // external symbol

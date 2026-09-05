@@ -122,6 +122,47 @@ namespace Xamarin.Tests {
 		}
 
 		[Test]
+		[TestCase (ApplePlatform.iOS, true)]
+		[TestCase (ApplePlatform.iOS, false)]
+		[TestCase (ApplePlatform.TVOS, true)]
+		[TestCase (ApplePlatform.TVOS, false)]
+		[TestCase (ApplePlatform.MacOSX, true)]
+		[TestCase (ApplePlatform.MacOSX, false)]
+		[TestCase (ApplePlatform.MacCatalyst, true)]
+		[TestCase (ApplePlatform.MacCatalyst, false)]
+		public void BindingMergeableFrameworksProject (ApplePlatform platform, bool noBindingEmbedding)
+		{
+			var project = "bindings-framework-test-mergeable";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			var project_path = Path.Combine (Configuration.RootPath, "tests", "mergeable-framework-test", platform.AsString (), $"{project}.csproj");
+			Clean (project_path);
+
+			var tmpdir = Cache.CreateTemporaryDirectory ();
+			var outputPath = Path.Combine (tmpdir, "OutputPath");
+			var intermediateOutputPath = Path.Combine (tmpdir, "IntermediateOutputPath");
+			var properties = GetDefaultProperties ();
+			properties ["OutputPath"] = outputPath + Path.DirectorySeparatorChar;
+			properties ["IntermediateOutputPath"] = intermediateOutputPath + Path.DirectorySeparatorChar;
+			properties ["NoBindingEmbedding"] = noBindingEmbedding ? "true" : "false";
+
+			DotNet.AssertPack (project_path, properties, msbuildParallelism: false);
+
+			var nupkg = Path.Combine (outputPath, project + ".1.0.0.nupkg");
+			Assert.That (nupkg, Does.Exist, "nupkg existence");
+
+			using var archive = ZipFile.OpenRead (nupkg);
+			var files = archive.Entries.Select (v => v.FullName).ToHashSet ();
+			var tfm = platform.ToFrameworkWithPlatformVersion (isExecutable: false);
+			Assert.That (files, Does.Contain (project + ".nuspec"), "nuspec");
+			Assert.That (files, Does.Contain ($"lib/{tfm}/{project}.dll"), $"{project}.dll");
+			if (noBindingEmbedding) {
+				// The XMergeableTest framework is always packaged as a .resources.zip
+				Assert.That (files, Does.Contain ($"lib/{tfm}/{project}.resources.zip"), $"{project}.resources.zip");
+			}
+		}
+
+		[Test]
 		[Category ("Multiplatform")]
 		[TestCase (ApplePlatform.iOS, true, true, true)]
 		[TestCase (ApplePlatform.iOS, true, true, false)]

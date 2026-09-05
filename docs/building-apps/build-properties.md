@@ -1702,6 +1702,25 @@ The full path to the `strip` command-line tool.
 
 The default behavior is to use `xcrun strip`.
 
+## StripMergeableLibraries
+
+A boolean property that specifies whether static linking metadata (`LC_ATOM_INFO`)
+is removed from mergeable libraries embedded in the app bundle.
+
+Mergeable libraries are dynamic libraries that also contain metadata for static
+linking. This metadata can roughly double the size of the library. When this
+property is `true`, the metadata is stripped to reduce app size.
+
+The default value is the value of the `Optimize` property, which means `Release`
+builds strip mergeable library metadata by default, while `Debug` builds preserve
+it.
+
+```xml
+<PropertyGroup>
+  <StripMergeableLibraries>true</StripMergeableLibraries>
+</PropertyGroup>
+```
+
 ## SupportedOSPlatformVersion
 
 Specifies the minimum OS version the app can run on.

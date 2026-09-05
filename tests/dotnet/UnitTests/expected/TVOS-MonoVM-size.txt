@@ -1,11 +1,11 @@
-AppBundleSize: 9,918,610 bytes (9,686.1 KB = 9.5 MB)
+AppBundleSize: 9,917,728 bytes (9,685.3 KB = 9.5 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 aot-instances.aotdata.arm64:
-    900,304 bytes (879.2 KB = 0.9 MB)
+    899,704 bytes (878.6 KB = 0.9 MB)
 Info.plist:
-    1,105 bytes (1.1 KB = 0.0 MB)
+    1,127 bytes (1.1 KB = 0.0 MB)
 Microsoft.tvOS.aotdata.arm64:
-    23,784 bytes (23.2 KB = 0.0 MB)
+    23,760 bytes (23.2 KB = 0.0 MB)
 Microsoft.tvOS.dll:
     49,664 bytes (48.5 KB = 0.0 MB)
 PkgInfo:
@@ -13,13 +13,13 @@ PkgInfo:
 runtimeconfig.bin:
     1,481 bytes (1.4 KB = 0.0 MB)
 SizeTestApp:
-    7,632,040 bytes (7,453.2 KB = 7.3 MB)
+    7,632,024 bytes (7,453.1 KB = 7.3 MB)
 SizeTestApp.aotdata.arm64:
     1,464 bytes (1.4 KB = 0.0 MB)
 SizeTestApp.dll:
     7,168 bytes (7.0 KB = 0.0 MB)
 System.Private.CoreLib.aotdata.arm64:
-    721,448 bytes (704.5 KB = 0.7 MB)
+    721,184 bytes (704.3 KB = 0.7 MB)
 System.Private.CoreLib.dll:
     568,832 bytes (555.5 KB = 0.5 MB)
 System.Runtime.aotdata.arm64:

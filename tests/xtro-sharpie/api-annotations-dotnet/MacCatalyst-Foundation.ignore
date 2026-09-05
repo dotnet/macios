@@ -483,7 +483,7 @@
 
 !missing-null-allowed! 'System.Void Foundation.NSFileManager::GetFileProviderServices(Foundation.NSUrl,System.Action`2<Foundation.NSDictionary`2<Foundation.NSString,Foundation.NSFileProviderService>,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
 !missing-null-allowed! 'System.Void Foundation.NSFileManager::GetFileProviderServices(Foundation.NSUrl,System.Action`2<Foundation.NSDictionary`2<Foundation.NSString,Foundation.NSFileProviderService>,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1
-!missing-null-allowed! 'System.Void Foundation.NSFilePresenter::AccommodatePresentedItemEviction(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Foundation.INSFilePresenter::AccommodatePresentedItemEviction(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
 !missing-null-allowed! 'System.Void Foundation.NSFileProviderService::GetFileProviderConnection(System.Action`2<Foundation.NSXpcConnection,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
 !missing-null-allowed! 'System.Void Foundation.NSFileProviderService::GetFileProviderConnection(System.Action`2<Foundation.NSXpcConnection,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1
 
@@ -492,3 +492,16 @@
 ## the class, managed callback infrastructure, or API Apple removed/privatized - kept for compatibility
 ## (baseline for https://github.com/dotnet/macios/issues/26053)
 !unknown-selector! NSInputStream::_setCFClientFlags:callback:context: not found
+!missing-null-allowed! 'Foundation.NSCachedUrlResponse Foundation.INSUrlConnectionDataDelegate::WillCacheResponse(Foundation.NSUrlConnection,Foundation.NSCachedUrlResponse)' is missing an [NullAllowed] on return type
+!missing-null-allowed! 'Foundation.NSInputStream Foundation.INSUrlConnectionDataDelegate::NeedNewBodyStream(Foundation.NSUrlConnection,Foundation.NSUrlRequest)' is missing an [NullAllowed] on return type
+!missing-null-allowed! 'Foundation.NSProgress Foundation.INSItemProviderWriting::LoadData(System.String,System.Action`2<Foundation.NSData,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'Foundation.NSProgress Foundation.INSItemProviderWriting::LoadData(System.String,System.Action`2<Foundation.NSData,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1
+!missing-null-allowed! 'Foundation.NSUrlRequest Foundation.INSUrlConnectionDataDelegate::WillSendRequest(Foundation.NSUrlConnection,Foundation.NSUrlRequest,Foundation.NSUrlResponse)' is missing an [NullAllowed] on parameter #2
+!missing-null-allowed! 'Foundation.NSUrlRequest Foundation.INSUrlConnectionDataDelegate::WillSendRequest(Foundation.NSUrlConnection,Foundation.NSUrlRequest,Foundation.NSUrlResponse)' is missing an [NullAllowed] on return type
+!missing-null-allowed! 'System.Void Foundation.INSUrlSessionDataDelegate::WillCacheResponse(Foundation.NSUrlSession,Foundation.NSUrlSessionDataTask,Foundation.NSCachedUrlResponse,System.Action`1<Foundation.NSCachedUrlResponse>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Foundation.INSUrlSessionDelegate::DidBecomeInvalid(Foundation.NSUrlSession,Foundation.NSError)' is missing an [NullAllowed] on parameter #1
+!missing-null-allowed! 'System.Void Foundation.INSUrlSessionDelegate::DidReceiveChallenge(Foundation.NSUrlSession,Foundation.NSUrlAuthenticationChallenge,System.Action`2<Foundation.NSUrlSessionAuthChallengeDisposition,Foundation.NSUrlCredential>)' is missing a '?' on parameter 'completionHandler' block parameter #1
+!missing-null-allowed! 'System.Void Foundation.INSUrlSessionTaskDelegate::DidReceiveChallenge(Foundation.NSUrlSession,Foundation.NSUrlSessionTask,Foundation.NSUrlAuthenticationChallenge,System.Action`2<Foundation.NSUrlSessionAuthChallengeDisposition,Foundation.NSUrlCredential>)' is missing a '?' on parameter 'completionHandler' block parameter #1
+!missing-null-allowed! 'System.Void Foundation.INSUrlSessionTaskDelegate::NeedNewBodyStream(Foundation.NSUrlSession,Foundation.NSUrlSessionTask,System.Action`1<Foundation.NSInputStream>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Foundation.INSUrlSessionTaskDelegate::NeedNewBodyStream(Foundation.NSUrlSession,Foundation.NSUrlSessionTask,System.Int64,System.Action`1<Foundation.NSInputStream>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Foundation.INSUrlSessionTaskDelegate::WillBeginDelayedRequest(Foundation.NSUrlSession,Foundation.NSUrlSessionTask,Foundation.NSUrlRequest,System.Action`2<Foundation.NSUrlSessionDelayedRequestDisposition,Foundation.NSUrlRequest>)' is missing a '?' on parameter 'completionHandler' block parameter #1

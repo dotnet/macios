@@ -8,16 +8,13 @@ namespace Xamarin.Tests {
 	public class EnableCrashReportTest : TestBaseClass {
 		[Test]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
 		public void Enabled (ApplePlatform platform, string runtimeIdentifiers)
 		{
 			// When $(EnableCrashReport) is set to true, the DOTNET_EnableCrashReport=1 environment
 			// variable is set at startup, which makes the .NET runtime's in-process crash reporter
 			// write a JSON crash report when the app crashes. Verify this by crashing the app on
 			// launch and checking that a crash report file was created.
-			//
-			// Note: only the mobile CoreCLR flavor (iOS, tvOS and Mac Catalyst) has the in-process
-			// crash reporter; the desktop macOS runtime relies on 'createdump' instead (see the
-			// BundleCreateDump property), which is why macOS isn't tested here.
 			var project = "MySimpleApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);

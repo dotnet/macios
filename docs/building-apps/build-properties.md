@@ -167,8 +167,9 @@ This can be overriden by setting the `BundleCreateDump` property:
 
 Note: the `createdump` tool does currently not work for sandboxed apps ([#18961](https://github.com/dotnet/macios/issues/18961));
 
-Only applicable to projects that use the CoreCLR runtime (which, at the moment
-of this writing, is only macOS projects).
+Note: an alternative option is to enable the in-process crash reporter (see [EnableCrashReport](#enablecrashreport)). The in-process crash reporter also works for sandboxed apps.
+
+Only applicable to macOS projects.
 
 [createdump]: https://github.com/dotnet/runtime/blob/3b63eb1346f1ddbc921374a5108d025662fb5ffd/docs/design/coreclr/botr/xplat-minidump-generation.md
 
@@ -598,10 +599,6 @@ This setting is disabled by default, but it can be enabled like this:
 The crash reports are written to a subdirectory of the app's caches directory.
 
 See also: [Collect crash dumps](https://learn.microsoft.com/en-us/dotnet/core/diagnostics/collect-dumps-crash).
-
-The in-process crash reporter is only available in the mobile CoreCLR runtime
-(iOS, tvOS and Mac Catalyst); the desktop macOS runtime relies on the
-[`createdump`](#bundlecreatedump) tool instead.
 
 ## EnableDefaultCodesignEntitlements
 
@@ -1411,6 +1408,14 @@ The default behavior is to use `xcrun productbuild`.
 The product definition template (`.plist`) to be used when creating the product definition to pass to the product build tool when creating packages (.pkg).
 
 Only applicable to macOS and Mac Catalyst apps.
+
+## PublishReadyToRunComposite
+
+Specifies whether ReadyToRun (R2R) compilation produces a single composite image containing all the assemblies, or one image per assembly.
+
+Only composite ReadyToRun compilation is supported for iOS, tvOS and Mac Catalyst apps, because the ReadyToRun code is embedded in the app bundle as native Mach-O code, and the runtime only knows how to locate such code for a composite image. Setting this property to `false` will produce a build error; set [PublishReadyToRun](https://learn.microsoft.com/dotnet/core/deploying/ready-to-run) to `false` to turn off ReadyToRun compilation completely instead.
+
+Default: `true` (when `PublishReadyToRun` is `true`).
 
 ## RecommendedXcodeVersion
 

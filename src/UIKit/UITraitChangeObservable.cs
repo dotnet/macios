@@ -26,6 +26,26 @@ namespace UIKit {
 			return Class.FromTypes (traits);
 		}
 
+		// Register the observing object with the toggle-ref GC bridge before we hand a
+		// reference to it to native code. Without this, the managed peer's toggle-ref status
+		// defaults to whatever xamarin_gc_toggleref_callback infers from -retainCount, which
+		// only reflects normal ObjC retains: it can't see that _UITraitChangeRegistry now also
+		// holds a reference to this object internally (observer registries are conventionally
+		// non-retaining, to avoid retain cycles with their observers). If -retainCount is 1 at
+		// the next GC, the bridge downgrades the peer to a weak GC handle and it can be
+		// collected while _UITraitChangeRegistry still references it, corrupting the shared
+		// registry (a crash then tends to surface later, in unrelated code that next touches
+		// the registry, rather than here). MarkDirty is idempotent and mirrors the pattern
+		// already used by UIControl.AddTarget, UIGestureRecognizer, and
+		// NSNotificationCenter.AddObserver for the same reason.
+		private static void MarkDirtyForTraitRegistration (IUITraitChangeObservable observable)
+		{
+			// NSObject.MarkDirty() is 'protected'; the (bool) overload is 'internal' and can be
+			// called from anywhere in this assembly, which is what we need from a static method
+			// on an unrelated interface.
+			(observable as NSObject)?.MarkDirty (false);
+		}
+
 		/// <summary>
 		/// Registers a callback handler that will be executed when one of the specified traits changes.
 		/// </summary>
@@ -39,6 +59,7 @@ namespace UIKit {
 
 		internal static IUITraitChangeRegistration _RegisterForTraitChanges (IUITraitChangeObservable This, Type [] traits, Action<IUITraitEnvironment, UITraitCollection> handler)
 		{
+			MarkDirtyForTraitRegistration (This);
 			return _RegisterForTraitChanges (This, ToClasses (traits), handler);
 		}
 
@@ -56,6 +77,7 @@ namespace UIKit {
 		internal static IUITraitChangeRegistration _RegisterForTraitChanges (IUITraitChangeObservable This, Action<IUITraitEnvironment, UITraitCollection> handler, params Type [] traits)
 		{
 			// Add an override with 'params', unfortunately this means reordering the parameters.
+			MarkDirtyForTraitRegistration (This);
 			return _RegisterForTraitChanges (This, ToClasses (traits), handler);
 		}
 
@@ -74,6 +96,7 @@ namespace UIKit {
 		internal static IUITraitChangeRegistration _RegisterForTraitChanges<T> (IUITraitChangeObservable This, Action<IUITraitEnvironment, UITraitCollection> handler)
 			where T : IUITraitDefinition
 		{
+			MarkDirtyForTraitRegistration (This);
 			return _RegisterForTraitChanges (This, ToClasses (typeof (T)), handler);
 		}
 
@@ -95,6 +118,7 @@ namespace UIKit {
 			where T1 : IUITraitDefinition
 			where T2 : IUITraitDefinition
 		{
+			MarkDirtyForTraitRegistration (This);
 			return _RegisterForTraitChanges (This, ToClasses (typeof (T1), typeof (T2)), handler);
 		}
 
@@ -119,6 +143,7 @@ namespace UIKit {
 			where T2 : IUITraitDefinition
 			where T3 : IUITraitDefinition
 		{
+			MarkDirtyForTraitRegistration (This);
 			return _RegisterForTraitChanges (This, ToClasses (typeof (T1), typeof (T2), typeof (T3)), handler);
 		}
 
@@ -146,6 +171,7 @@ namespace UIKit {
 			where T3 : IUITraitDefinition
 			where T4 : IUITraitDefinition
 		{
+			MarkDirtyForTraitRegistration (This);
 			return _RegisterForTraitChanges (This, ToClasses (typeof (T1), typeof (T2), typeof (T3), typeof (T4)), handler);
 		}
 
@@ -163,6 +189,10 @@ namespace UIKit {
 
 		internal static IUITraitChangeRegistration _RegisterForTraitChanges (IUITraitChangeObservable This, Type [] traits, NSObject target, Selector action)
 		{
+			MarkDirtyForTraitRegistration (This);
+			// 'target' receives the callback via -action:, so it needs the same protection as
+			// 'This' even though it isn't the object being observed.
+			target.MarkDirty (false);
 			return _RegisterForTraitChanges (This, ToClasses (traits), target, action);
 		}
 
@@ -179,6 +209,7 @@ namespace UIKit {
 
 		internal static IUITraitChangeRegistration _RegisterForTraitChanges (IUITraitChangeObservable This, Type [] traits, Selector action)
 		{
+			MarkDirtyForTraitRegistration (This);
 			return _RegisterForTraitChanges (This, ToClasses (traits), action);
 		}
 

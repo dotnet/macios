@@ -22436,10 +22436,8 @@ T:AppKit.NSCursorFrameResizeDirections
 T:AppKit.NSCursorFrameResizePosition
 T:AppKit.NSCustomImageRepDrawingHandler
 T:AppKit.NSDatePickerElementFlags
-T:AppKit.NSDatePickerMode
 T:AppKit.NSDatePickerStyle
 T:AppKit.NSDirectionalRectEdge
-T:AppKit.NSDisplayGamut
 T:AppKit.NSDocumentChangeType
 T:AppKit.NSDocumentCompletionHandler
 T:AppKit.NSDocumentControllerOpenPanelResultHandler
@@ -22450,7 +22448,6 @@ T:AppKit.NSDocumentMoveCompletionHandler
 T:AppKit.NSDocumentMoveToUrlCompletionHandler
 T:AppKit.NSDocumentUnlockCompletionHandler
 T:AppKit.NSDocumentUnlockDocumentCompletionHandler
-T:AppKit.NSDraggingContext
 T:AppKit.NSDraggingEnumerator
 T:AppKit.NSDraggingFormation
 T:AppKit.NSDraggingItemEnumerationOptions
@@ -22512,7 +22509,6 @@ T:AppKit.NSImageSymbolColorRenderingMode
 T:AppKit.NSImageSymbolScale
 T:AppKit.NSImageSymbolVariableValueMode
 T:AppKit.NSKey
-T:AppKit.NSLayoutConstraintOrientation
 T:AppKit.NSLayoutManager_NSTextViewSupport
 T:AppKit.NSLayoutPriority
 T:AppKit.NSLevelIndicatorPlaceholderVisibility
@@ -22569,7 +22565,6 @@ T:AppKit.NSPrinterTableStatus
 T:AppKit.NSPrintPanelOptions
 T:AppKit.NSPrintPanelResult
 T:AppKit.NSPrintRenderingQuality
-T:AppKit.NSProgressIndicatorStyle
 T:AppKit.NSProgressIndicatorThickness
 T:AppKit.NSRectAlignment
 T:AppKit.NSRectEdge
@@ -22578,7 +22573,6 @@ T:AppKit.NSResponder_NSTouchBarProvider
 T:AppKit.NSResponder_NSWritingToolsSupport
 T:AppKit.NSRuleEditorNestingMode
 T:AppKit.NSRuleEditorNumberOfChildren
-T:AppKit.NSRuleEditorRowType
 T:AppKit.NSRulerEditorChildCriterion
 T:AppKit.NSRulerEditorDisplayValue
 T:AppKit.NSRulerEditorPredicateParts
@@ -22591,10 +22585,8 @@ T:AppKit.NSScrollElasticity
 T:AppKit.NSScrollerArrow
 T:AppKit.NSScrollerKnobStyle
 T:AppKit.NSScrollerPart
-T:AppKit.NSScrollerStyle
 T:AppKit.NSScrollViewFindBarPosition
 T:AppKit.NSScrubberAlignment
-T:AppKit.NSScrubberMode
 T:AppKit.NSSegmentBackgroundStyle_NSSegmentedCell
 T:AppKit.NSSegmentDistribution
 T:AppKit.NSSegmentStyle
@@ -22627,7 +22619,6 @@ T:AppKit.NSStringDrawing_NSAttributedString
 T:AppKit.NSStringDrawing_NSString
 T:AppKit.NSSurfaceOrder
 T:AppKit.NSTableReorder
-T:AppKit.NSTableRowActionEdge
 T:AppKit.NSTableViewAnimation
 T:AppKit.NSTableViewAnimationOptions
 T:AppKit.NSTableViewCell
@@ -22670,7 +22661,6 @@ T:AppKit.NSTextContentManagerEnumerationOptions
 T:AppKit.NSTextContentType
 T:AppKit.NSTextCursorAccessoryPlacement
 T:AppKit.NSTextField_NSTouchBar
-T:AppKit.NSTextFieldBezelStyle
 T:AppKit.NSTextFieldGetCandidates
 T:AppKit.NSTextFieldSelectCandidate
 T:AppKit.NSTextFieldTextCheckingResults

@@ -1285,12 +1285,13 @@ namespace AppKit {
 		GrooveBorder,
 	}
 
+	/// <summary>Specifies the shape of a text field's bezel.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTextFieldBezelStyle : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>A square bezel.</summary>
 		Square,
-		/// <summary>To be added.</summary>
+		/// <summary>A rounded bezel.</summary>
 		Rounded,
 	}
 
@@ -3111,12 +3112,13 @@ namespace AppKit {
 		TextField,
 	}
 
+	/// <summary>Specifies whether a date picker selects a single date or a date range.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSDatePickerMode : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The date picker selects a single date.</summary>
 		Single,
-		/// <summary>To be added.</summary>
+		/// <summary>The date picker selects a range of dates.</summary>
 		Range,
 	}
 
@@ -3391,12 +3393,13 @@ namespace AppKit {
 		Large = 18,
 	}
 
+	/// <summary>Specifies the visual style of a progress indicator.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSProgressIndicatorStyle : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Displays progress as a bar.</summary>
 		Bar,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays progress as a spinning indicator.</summary>
 		Spinning,
 	}
 
@@ -3639,12 +3642,13 @@ namespace AppKit {
 		TornOffMenu = 3,
 	}
 
+	/// <summary>Specifies whether a rule editor row is a leaf condition or a group of subrows.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSRuleEditorRowType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>A leaf row that represents a single condition.</summary>
 		Simple = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>A parent row that groups one or more subrows.</summary>
 		Compound,
 	}
 
@@ -3720,12 +3724,13 @@ namespace AppKit {
 		BelowContent,
 	}
 
+	/// <summary>Specifies how a scroller is displayed relative to its content.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSScrollerStyle : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The scroller occupies space reserved for it in the layout.</summary>
 		Legacy = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The scroller is drawn over the content without reserving layout space.</summary>
 		Overlay,
 	}
 
@@ -3792,12 +3797,13 @@ namespace AppKit {
 		Vertical,
 	}
 
+	/// <summary>Specifies the axis affected by Auto Layout constraints.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSLayoutConstraintOrientation : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The constraint has a horizontal orientation.</summary>
 		Horizontal,
-		/// <summary>To be added.</summary>
+		/// <summary>The constraint has a vertical orientation.</summary>
 		Vertical,
 	}
 
@@ -3854,12 +3860,13 @@ namespace AppKit {
 		Large,
 	}
 
+	/// <summary>Specifies the edge of a table row where row actions appear.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTableRowActionEdge : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The leading edge in the current user interface layout direction.</summary>
 		Leading,
-		/// <summary>To be added.</summary>
+		/// <summary>The trailing edge in the current user interface layout direction.</summary>
 		Trailing,
 	}
 
@@ -3917,12 +3924,13 @@ namespace AppKit {
 		Stack,
 	}
 
+	/// <summary>Specifies whether a dragging operation occurs within or outside the application.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSDraggingContext : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The dragging operation occurs outside the application.</summary>
 		OutsideApplication,
-		/// <summary>To be added.</summary>
+		/// <summary>The dragging operation occurs within the application.</summary>
 		WithinApplication,
 	}
 
@@ -4342,12 +4350,13 @@ namespace AppKit {
 		AllowReadWrite = 1 << 5,
 	}
 
+	/// <summary>Specifies a color gamut that a display can represent.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSDisplayGamut : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The sRGB color gamut.</summary>
 		Srgb = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The Display P3 color gamut.</summary>
 		P3,
 	}
 
@@ -4404,12 +4413,13 @@ namespace AppKit {
 		Indirect = (1 << (int) NSTouchType.Indirect),
 	}
 
+	/// <summary>Specifies how a scrubber responds to touch input.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSScrubberMode : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Items remain fixed while the user moves the selection across them.</summary>
 		Fixed = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Items scroll freely in response to the user's touch.</summary>
 		Free,
 	}
 

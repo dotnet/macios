@@ -167,8 +167,9 @@ This can be overriden by setting the `BundleCreateDump` property:
 
 Note: the `createdump` tool does currently not work for sandboxed apps ([#18961](https://github.com/dotnet/macios/issues/18961));
 
-Only applicable to projects that use the CoreCLR runtime (which, at the moment
-of this writing, is only macOS projects).
+Note: an alternative option is to enable the in-process crash reporter (see [EnableCrashReport](#enablecrashreport)). The in-process crash reporter also works for sandboxed apps.
+
+Only applicable to macOS projects.
 
 [createdump]: https://github.com/dotnet/runtime/blob/3b63eb1346f1ddbc921374a5108d025662fb5ffd/docs/design/coreclr/botr/xplat-minidump-generation.md
 
@@ -305,6 +306,27 @@ By default we require a provisioning profile if:
 * iOS, tvOS: building for device or an entitlements file has been specified (with the [CodesignEntitlements](#codesignentitlements) property).
 
 Setting this property to `true` or `false` will override the default logic.
+
+## ComputeInstructionSetForReadyToRun
+
+Controls whether to automatically compute and pass the instruction set to the ReadyToRun (R2R) compiler based on the deployment target.
+
+When `PublishReadyToRun` is `true`, the build system automatically computes the minimum CPU instruction set required based on:
+* The `SupportedOSPlatformVersion` (minimum OS version the app supports)
+* The `RuntimeIdentifier` (target architecture and platform)
+
+This computed instruction set is then passed to crossgen2 via the `--instruction-set` argument, enabling the R2R compiler to generate optimized native code using appropriate CPU instructions.
+
+Set this property to `false` to disable automatic instruction set computation and use crossgen2's default behavior.
+
+Default: `true`
+
+Example:
+```xml
+<PropertyGroup>
+  <ComputeInstructionSetForReadyToRun>false</ComputeInstructionSetForReadyToRun>
+</PropertyGroup>
+```
 
 ## CompressBindingResourcePackage
 
@@ -523,13 +545,24 @@ build warns) when those conditions aren't met.
 
 ## EmbedOnDemandResources
 
-Controls where on-demand resource asset packs are placed when packaging an app
-for distribution. This property does **not** enable on-demand resources (use
-[EnableOnDemandResources](#enableondemandresources) for that) — it only affects
-how already-tagged asset packs are packaged.
+Controls where on-demand resource asset packs are placed, so that the on-demand
+resources APIs can find them at runtime. This property does **not** enable
+on-demand resources (use [EnableOnDemandResources](#enableondemandresources) for
+that) — it only affects how already-tagged asset packs are packaged.
 
 This is the property set by the "Embed on-demand resources in the app bundle"
-option in the IDE. It only takes effect for `AdHoc` distribution:
+option in the IDE.
+
+When building for the **simulator**, the asset packs can't be hosted anywhere
+(there's no App Store nor a local hosting server), so they must be embedded in
+the app bundle for on-demand resources to work at all:
+
+* `true`: the asset packs are embedded in the `.app` bundle and served locally
+  by the app.
+* `false`: the asset packs are not embedded, so the on-demand resources APIs
+  won't find them on the simulator.
+
+When packaging an **IPA** for `AdHoc` distribution:
 
 * `true`: the asset packs are embedded in the `.app` bundle inside the IPA and
   served locally by the app.
@@ -539,9 +572,7 @@ option in the IDE. It only takes effect for `AdHoc` distribution:
 For `AppStore` distribution the asset packs are always placed outside the `.app`
 bundle (to be hosted by the App Store), regardless of this property.
 
-This property is only consulted when packaging an IPA for distribution (when
-`BuildIpa` is `true` and the distribution type is `AppStore` or `AdHoc`); it has
-no effect on a simulator or device debug build.
+This property has no effect on a device debug build.
 
 Default: true
 
@@ -550,6 +581,24 @@ Default: true
 If code signing is enabled.
 
 Code signing is enabled by default for all platforms; this can be overridden with this property.
+
+## EnableCrashReport
+
+Enables crash reports for the app. When enabled, the `DOTNET_EnableCrashReport`
+environment variable is set to `1` at startup, which makes the .NET runtime's
+in-process crash reporter write a JSON crash report when the app crashes.
+
+This setting is disabled by default, but it can be enabled like this:
+
+```xml
+<PropertyGroup>
+    <EnableCrashReport>true</EnableCrashReport>
+</PropertyGroup>
+```
+
+The crash reports are written to a subdirectory of the app's caches directory.
+
+See also: [Collect crash dumps](https://learn.microsoft.com/en-us/dotnet/core/diagnostics/collect-dumps-crash).
 
 ## EnableDefaultCodesignEntitlements
 
@@ -1263,7 +1312,11 @@ A string property that specifies the resource url for on-demand resources.
 
 ## OptimizePNGs
 
-A boolean property that specifies whether png images should be optimized.
+A boolean property that specifies whether PNG bundle resources should be optimized using Apple's `pngcrush` tool.
+
+In .NET 11 and later, this defaults to `true` for release builds on iOS, tvOS, and Mac Catalyst. It defaults to `false` for debug builds, macOS builds, and projects targeting earlier .NET versions. Set this property explicitly to opt in or out.
+
+The `Optimize` metadata on individual `BundleResource` items overrides this property.
 
 ## OptimizePngImagesDependsOn
 
@@ -1284,7 +1337,11 @@ Example:
 
 ## OptimizePropertyLists
 
-A boolean property that specifies whether property lists (plists) should be optimized.
+A boolean property that specifies whether property list (`.plist`) and localization (`.strings`) bundle resources should be converted to binary property lists.
+
+In .NET 11 and later, this defaults to `true` for release builds on iOS, tvOS, and Mac Catalyst. It defaults to `false` for debug builds, macOS builds, and projects targeting earlier .NET versions. Set this property explicitly to opt in or out.
+
+The `Optimize` metadata on individual `BundleResource` items overrides this property.
 
 ## OptimizePropertyListsDependsOn
 
@@ -1351,6 +1408,14 @@ The default behavior is to use `xcrun productbuild`.
 The product definition template (`.plist`) to be used when creating the product definition to pass to the product build tool when creating packages (.pkg).
 
 Only applicable to macOS and Mac Catalyst apps.
+
+## PublishReadyToRunComposite
+
+Specifies whether ReadyToRun (R2R) compilation produces a single composite image containing all the assemblies, or one image per assembly.
+
+Only composite ReadyToRun compilation is supported for iOS, tvOS and Mac Catalyst apps, because the ReadyToRun code is embedded in the app bundle as native Mach-O code, and the runtime only knows how to locate such code for a composite image. Setting this property to `false` will produce a build error; set [PublishReadyToRun](https://learn.microsoft.com/dotnet/core/deploying/ready-to-run) to `false` to turn off ReadyToRun compilation completely instead.
+
+Default: `true` (when `PublishReadyToRun` is `true`).
 
 ## RecommendedXcodeVersion
 
@@ -1673,6 +1738,12 @@ See [TrimMode](/dotnet/core/deploying/trimming/trimming-options) for a bit more 
 > [PublishTrimmed](/dotnet/core/deploying/trimming/trimming-options?#enable-trimming)
 > to `false` - to disable trimming, set `TrimMode=copy` instead (a build error
 > will be raised if `PublishTrimmed` is set to `false`).
+
+> [!NOTE]
+> Due to [a known issue](https://github.com/dotnet/runtime/issues/108269), setting `PublishTrimmed`
+> to `true` may cause confusing problems, so the build will report an error if this
+> is detected (the solution is to not set `PublishTrimmed` at all).
+
 
 The `TrimMode` property is equivalent to the existing
 [MtouchLink](#mtouchlink) (for iOS, tvOS and Mac Catalyst) and

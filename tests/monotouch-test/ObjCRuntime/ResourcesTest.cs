@@ -23,7 +23,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		public void Embedded ()
 		{
 			var manager = new ResourceManager ("monotouchtest.Welcome", typeof (ResourcesTest).Assembly);
-
 			Assert.That (manager.GetString ("String1", new CultureInfo ("en")), Is.EqualTo ("Welcome!"), "en");
 			Assert.That (manager.GetString ("String1", new CultureInfo ("en-AU")), Is.EqualTo ("G'day!"), "en-AU");
 			Assert.That (manager.GetString ("String1", new CultureInfo ("de")), Is.EqualTo ("Willkommen!"), "de");

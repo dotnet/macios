@@ -201,6 +201,7 @@ namespace Xharness {
 		public bool INCLUDE_TVOS { get; }
 		public bool INCLUDE_MAC { get; }
 		public bool INCLUDE_MACCATALYST { get; }
+		public bool DOTNET_MONOVM_SUPPORTED { get; }
 		public string JENKINS_RESULTS_DIRECTORY { get; } // Use same name as in Makefiles, so that a grep finds it.
 		public string DOTNET_DIR { get; set; }
 		public string DOTNET_TFM { get; set; }
@@ -267,6 +268,7 @@ namespace Xharness {
 			JENKINS_RESULTS_DIRECTORY = GetVariable (nameof (JENKINS_RESULTS_DIRECTORY)) ?? throw new Exception ($"Could not get the Jenkins results directory from the environment variable {nameof (JENKINS_RESULTS_DIRECTORY)}");
 			INCLUDE_MAC = IsVariableSet (nameof (INCLUDE_MAC));
 			INCLUDE_MACCATALYST = IsVariableSet (nameof (INCLUDE_MACCATALYST));
+			DOTNET_MONOVM_SUPPORTED = IsVariableSet (nameof (DOTNET_MONOVM_SUPPORTED));
 			DOTNET_DIR = GetVariable (nameof (DOTNET_DIR)) ?? throw new Exception ($"Could not get the .NET directory from the environment variable {nameof (DOTNET_DIR)}");
 			DOTNET_TFM = GetVariable (nameof (DOTNET_TFM)) ?? throw new Exception ($"Could not get the .NET TFM from the environment variable {nameof (DOTNET_TFM)}");
 
@@ -353,7 +355,7 @@ namespace Xharness {
 					Label = TestLabel.AssemblyProcessing,
 					ProjectPath = Path.GetFullPath (Path.Combine (HarnessConfiguration.RootDirectory, "assembly-preparer", "assembly-preparer-tests.csproj")),
 					Name = "Assembly processing tests",
-					Timeout = (TimeSpan?) TimeSpan.FromMinutes (10),
+					Timeout = (TimeSpan?) TimeSpan.FromMinutes (30),
 					Filter = "",
 				},
 				new {

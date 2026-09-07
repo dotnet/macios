@@ -9735,7 +9735,7 @@ M:CoreFoundation.CFNetwork.ExecuteProxyAutoConfigurationScriptAsync(System.Strin
 M:CoreFoundation.CFNetwork.ExecuteProxyAutoConfigurationUrl(System.Uri,System.Uri,Foundation.NSError@)
 M:CoreFoundation.CFNetwork.ExecuteProxyAutoConfigurationUrlAsync(System.Uri,System.Uri,System.Threading.CancellationToken)
 M:CoreFoundation.CFRange.#ctor(System.IntPtr,System.IntPtr)
-M:CoreFoundation.CFReadStream.DoSetClient(.method,System.IntPtr,System.IntPtr)
+M:CoreFoundation.CFReadStream.DoSetClient(,System.IntPtr,System.IntPtr)
 M:CoreFoundation.CFRunLoop.RunInMode(System.String,System.Double,System.Boolean)
 M:CoreFoundation.CFSocket.Invalidate
 M:CoreFoundation.CFStream.#ctor(ObjCRuntime.NativeHandle,System.Boolean)
@@ -9743,10 +9743,10 @@ M:CoreFoundation.CFStream.CreateBoundPair(CoreFoundation.CFReadStream@,CoreFound
 M:CoreFoundation.CFStream.CreateForHTTPRequest(CFNetwork.CFHTTPMessage)
 M:CoreFoundation.CFStream.CreateForStreamedHTTPRequest(CFNetwork.CFHTTPMessage,CoreFoundation.CFReadStream)
 M:CoreFoundation.CFStream.CreateForStreamedHTTPRequest(CFNetwork.CFHTTPMessage,Foundation.NSInputStream)
-M:CoreFoundation.CFStream.DoSetClient(.method,System.IntPtr,System.IntPtr)
+M:CoreFoundation.CFStream.DoSetClient(,System.IntPtr,System.IntPtr)
 M:CoreFoundation.CFString.op_Implicit(CoreFoundation.CFString)~System.String
 M:CoreFoundation.CFString.op_Implicit(System.String)~CoreFoundation.CFString
-M:CoreFoundation.CFWriteStream.DoSetClient(.method,System.IntPtr,System.IntPtr)
+M:CoreFoundation.CFWriteStream.DoSetClient(,System.IntPtr,System.IntPtr)
 M:CoreFoundation.CFWriteStream.Write(System.Byte[],System.IntPtr,System.IntPtr)
 M:CoreFoundation.DispatchBlock.op_Explicit(CoreFoundation.DispatchBlock)~System.Action
 M:CoreFoundation.DispatchData.CreateMap(System.IntPtr@,System.UIntPtr@)
@@ -9954,7 +9954,7 @@ M:CoreGraphics.CGPDFObject.TryGetValue(System.IntPtr@)
 M:CoreGraphics.CGPDFObject.TryGetValue(System.Runtime.InteropServices.NFloat@)
 M:CoreGraphics.CGPDFOperatorTable.Release
 M:CoreGraphics.CGPDFOperatorTable.Retain
-M:CoreGraphics.CGPDFOperatorTable.SetCallback(System.String,.method)
+M:CoreGraphics.CGPDFOperatorTable.SetCallback(System.String,)
 M:CoreGraphics.CGPDFPage.Release
 M:CoreGraphics.CGPDFPage.Retain
 M:CoreGraphics.CGPDFPageInfo.#ctor

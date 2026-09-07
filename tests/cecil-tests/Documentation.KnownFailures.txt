@@ -22633,7 +22633,6 @@ T:AppKit.NSTableViewEventString
 T:AppKit.NSTableViewIndexFilter
 T:AppKit.NSTableViewPredicate
 T:AppKit.NSTableViewRowActionsGetter
-T:AppKit.NSTableViewRowActionStyle
 T:AppKit.NSTableViewRowGetter
 T:AppKit.NSTableViewRowHandler
 T:AppKit.NSTableViewRowHeight

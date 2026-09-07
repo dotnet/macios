@@ -3874,12 +3874,13 @@ namespace AppKit {
 		Trailing,
 	}
 
+	/// <summary>Specifies whether a table row action is regular or destructive.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTableViewRowActionStyle : long {
-		/// <summary>To be added.</summary>
+		/// <summary>A regular, nondestructive action.</summary>
 		Regular,
-		/// <summary>To be added.</summary>
+		/// <summary>An action that performs a destructive operation.</summary>
 		Destructive,
 	}
 

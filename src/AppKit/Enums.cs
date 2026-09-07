@@ -1989,7 +1989,7 @@ namespace AppKit {
 	}
 
 	// NSStackView.h:typedef float NSStackViewVisibilityPriority
-	/// <summary>Specifies the priority for keeping a view visible in a stack view.</summary>
+	/// <summary>Provides predefined visibility-priority values that can be cast to <see cref="float"/> for use with <see cref="NSStackView"/> APIs.</summary>
 	[NoMacCatalyst]
 	public enum NSStackViewVisibilityPriority : int {
 		/// <summary>The view must remain attached to the stack view.</summary>

@@ -4265,12 +4265,13 @@ namespace AppKit {
 		OrderedFrontToBack = (1 << 0),
 	}
 
+	/// <summary>Specifies optional behaviors for a status item.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSStatusItemBehavior : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Allows the user to remove the status item from the menu bar.</summary>
 		RemovalAllowed = (1 << 1),
-		/// <summary>To be added.</summary>
+		/// <summary>Terminates the application when the status item is removed.</summary>
 		TerminationOnRemoval = (1 << 2),
 	}
 

@@ -22609,7 +22609,6 @@ T:AppKit.NSStackViewDistribution
 T:AppKit.NSStackViewGravity
 T:AppKit.NSStackViewVisibilityPriority
 T:AppKit.NSStandardKeyBindingMethods
-T:AppKit.NSStatusItemBehavior
 T:AppKit.NSStoryboardControllerCreator
 T:AppKit.NSStringAttributeKey
 T:AppKit.NSStringDrawing_NSAttributedString

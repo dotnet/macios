@@ -89,7 +89,7 @@ namespace CoreMidi {
 			return 0;
 		}
 
-		static List<MidiDriver> strongReferences = new List<MidiDriver> ();
+		static readonly List<MidiDriver> strongReferences = new List<MidiDriver> ();
 
 		[UnmanagedCallersOnly]
 		unsafe static uint AddRef (MidiDriverInterface* self)

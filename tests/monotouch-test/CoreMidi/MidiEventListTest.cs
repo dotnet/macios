@@ -23,7 +23,7 @@ namespace MonoTouchFixtures.CoreMidi {
 		public void CtorTest ()
 		{
 			Assert.Multiple (() => {
-				var obj = new MidiEventList (MidiProtocolId.Protocol_1_0);
+				using var obj = new MidiEventList (MidiProtocolId.Protocol_1_0);
 				Assert.That (obj.Protocol, Is.EqualTo (MidiProtocolId.Protocol_1_0), "Protocol");
 				Assert.That (obj.PacketCount, Is.EqualTo (0), "PacketCount");
 				var packets = obj.ToArray ();
@@ -46,7 +46,7 @@ namespace MonoTouchFixtures.CoreMidi {
 				ex = Assert.Throws<ArgumentOutOfRangeException> (() => new MidiEventList (MidiProtocolId.Protocol_1_0, 275), "AOORE 275");
 				Assert.That (ex.Message, Does.Contain ("size must be at least 276."), "AOORE msg 275");
 
-				var obj = new MidiEventList (MidiProtocolId.Protocol_1_0, 276);
+				using var obj = new MidiEventList (MidiProtocolId.Protocol_1_0, 276);
 				Assert.That (obj.Protocol, Is.EqualTo (MidiProtocolId.Protocol_1_0), "Protocol");
 				Assert.That (obj.PacketCount, Is.EqualTo (0), "PacketCount");
 				var packets = obj.ToArray ();
@@ -58,7 +58,7 @@ namespace MonoTouchFixtures.CoreMidi {
 		public void AddTest ()
 		{
 			Assert.Multiple (() => {
-				var obj = new MidiEventList (MidiProtocolId.Protocol_2_0);
+				using var obj = new MidiEventList (MidiProtocolId.Protocol_2_0);
 				Assert.That (obj.Protocol, Is.EqualTo (MidiProtocolId.Protocol_2_0), "Protocol");
 				Assert.That (obj.PacketCount, Is.EqualTo (0), "PacketCount");
 
@@ -79,7 +79,7 @@ namespace MonoTouchFixtures.CoreMidi {
 		public void AddTest_ManyWords ()
 		{
 			Assert.Multiple (() => {
-				var obj = new MidiEventList (MidiProtocolId.Protocol_2_0);
+				using var obj = new MidiEventList (MidiProtocolId.Protocol_2_0);
 				Assert.That (obj.Protocol, Is.EqualTo (MidiProtocolId.Protocol_2_0), "Protocol");
 				Assert.That (obj.PacketCount, Is.EqualTo (0), "PacketCount");
 
@@ -93,7 +93,7 @@ namespace MonoTouchFixtures.CoreMidi {
 		public void AddTest_NotEnoughSpace ()
 		{
 			Assert.Multiple (() => {
-				var obj = new MidiEventList (MidiProtocolId.Protocol_2_0);
+				using var obj = new MidiEventList (MidiProtocolId.Protocol_2_0);
 				Assert.That (obj.Protocol, Is.EqualTo (MidiProtocolId.Protocol_2_0), "Protocol");
 				Assert.That (obj.PacketCount, Is.EqualTo (0), "PacketCount");
 
@@ -111,7 +111,7 @@ namespace MonoTouchFixtures.CoreMidi {
 		public void EnumeratorTest ()
 		{
 			Assert.Multiple (() => {
-				var obj = new MidiEventList (MidiProtocolId.Protocol_2_0);
+				using var obj = new MidiEventList (MidiProtocolId.Protocol_2_0);
 				var rv = obj.Add (789, new uint [] { 4, 5, 6 });
 				Assert.That (rv, Is.EqualTo (true), "Add B");
 				Assert.That (obj.Protocol, Is.EqualTo (MidiProtocolId.Protocol_2_0), "Protocol B");
@@ -129,7 +129,7 @@ namespace MonoTouchFixtures.CoreMidi {
 		public void IteratorTest ()
 		{
 			Assert.Multiple (() => {
-				var obj = new MidiEventList (MidiProtocolId.Protocol_2_0);
+				using var obj = new MidiEventList (MidiProtocolId.Protocol_2_0);
 				var rv = obj.Add (456, new uint [] { 1, 2, 3, 4, 5, 6 });
 				Assert.That (rv, Is.EqualTo (true), "Add B");
 				Assert.That (obj.Protocol, Is.EqualTo (MidiProtocolId.Protocol_2_0), "Protocol B");
@@ -159,14 +159,14 @@ namespace MonoTouchFixtures.CoreMidi {
 		[Test]
 		public void ForEachEventTest_Null ()
 		{
-			var obj = new MidiEventList (MidiProtocolId.Protocol_1_0);
+			using var obj = new MidiEventList (MidiProtocolId.Protocol_1_0);
 			Assert.Throws<ArgumentNullException> (() => obj.ForEachEvent (null), "ForEachEvent (null)");
 		}
 
 		[Test]
 		public void ForEachEventTest_Empty ()
 		{
-			var obj = new MidiEventList (MidiProtocolId.Protocol_1_0);
+			using var obj = new MidiEventList (MidiProtocolId.Protocol_1_0);
 			var count = 0;
 			obj.ForEachEvent ((ulong timeStamp, MidiUniversalMessage message) => count++);
 			Assert.That (count, Is.EqualTo (0), "count");
@@ -175,7 +175,7 @@ namespace MonoTouchFixtures.CoreMidi {
 		[Test]
 		public void ForEachEventTest_Midi1NoteOn ()
 		{
-			var obj = new MidiEventList (MidiProtocolId.Protocol_1_0);
+			using var obj = new MidiEventList (MidiProtocolId.Protocol_1_0);
 			Assert.That (obj.Add (1234, new uint [] { Midi1NoteOn (0, 3, 60, 100) }), Is.True, "Add");
 
 			var messages = new List<(ulong TimeStamp, MidiUniversalMessage Message)> ();
@@ -196,7 +196,7 @@ namespace MonoTouchFixtures.CoreMidi {
 		[Test]
 		public void ForEachEventTest_Midi2NoteOn ()
 		{
-			var obj = new MidiEventList (MidiProtocolId.Protocol_2_0);
+			using var obj = new MidiEventList (MidiProtocolId.Protocol_2_0);
 			// A MIDI 2.0 channel voice Note On UMP (two 32-bit words).
 			var word0 = ((uint) MidiMessageType.ChannelVoice2 << 28) | (0x9u << 20) | (2u << 16) | (60u << 8) | (uint) MidiNoteAttribute.None;
 			var word1 = (0xCAFEu << 16) | 0xBEEFu;
@@ -230,7 +230,7 @@ namespace MonoTouchFixtures.CoreMidi {
 				77, 77, 76, 72, 74, 72,
 			};
 
-			var obj = new MidiEventList (MidiProtocolId.Protocol_1_0, 4096);
+			using var obj = new MidiEventList (MidiProtocolId.Protocol_1_0, 4096);
 			for (var i = 0; i < melody.Length; i++)
 				Assert.That (obj.Add ((ulong) (i + 1), new uint [] { Midi1NoteOn (0, 0, melody [i], 96) }), Is.True, $"Add #{i}");
 

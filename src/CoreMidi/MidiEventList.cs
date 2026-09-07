@@ -153,7 +153,7 @@ namespace CoreMidi {
 		}
 
 		/// <summary>Distribute the packets from the specified <paramref name="source" />.</summary>
-		/// <param name="source">The endpoint where the packates come from.</param>
+		/// <param name="source">The endpoint where the packets come from.</param>
 		/// <returns>A non-zero error code in case of failure, otherwise zero (which indicates success).</returns>
 		[SupportedOSPlatform ("ios14.0")]
 		[UnsupportedOSPlatform ("tvos")]
@@ -167,7 +167,7 @@ namespace CoreMidi {
 		}
 #endif
 
-		/// <summary>Add a new <see cref="MidiEventPacket" /> to this lis.</summary>
+		/// <summary>Add a new <see cref="MidiEventPacket" /> to this list.</summary>
 		/// <param name="time">The timestamp for the new packet.</param>
 		/// <param name="words">The data for the midi event to add.</param>
 		/// <returns>True if successful, otherwise false (which typically means there's not enough space for the new packet).</returns>

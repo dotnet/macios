@@ -1,0 +1,4 @@
+!extra-null-allowed! 'System.Void CoreImage.ICIBlurredRectangleGeneratorProtocol::set_Color(CoreImage.CIColor)' has a extraneous [NullAllowed] on parameter #0
+!extra-null-allowed! 'System.Void CoreImage.ICIRoundedRectangleStrokeGeneratorProtocol::set_Color(CoreImage.CIColor)' has a extraneous [NullAllowed] on parameter #0
+!missing-null-allowed! 'System.Void CoreImage.ICIColorAbsoluteDifferenceProtocol::set_Image2(CoreImage.CIImage)' is missing an [NullAllowed] on parameter #0
+!missing-null-allowed! 'System.Void CoreImage.ICIDistanceGradientFromRedMaskProtocol::set_InputImage(CoreImage.CIImage)' is missing an [NullAllowed] on parameter #0

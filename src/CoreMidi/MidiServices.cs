@@ -1017,7 +1017,7 @@ namespace CoreMidi {
 		/// <summary>Create a new <see cref="MidiPacket" /> with the specified timestamp and MIDI data.</summary>
 		/// <param name="timestamp">The timestamp for the packet.</param>
 		/// <param name="bytes">The MIDI data for the packet.</param>
-		public MidiPacket (long timestamp, byte [] bytes) : this (timestamp, bytes, 0, bytes.Length, false)
+		public MidiPacket (long timestamp, byte [] bytes) : this (timestamp, bytes, 0, bytes is null ? 0 : bytes.Length, false)
 		{
 		}
 
@@ -3303,7 +3303,10 @@ namespace CoreMidi {
 			ref1 = IntPtr.Zero;
 			ref2 = IntPtr.Zero;
 			unsafe {
-				return (MidiError) MIDIEndpointGetRefCons (GetCheckedHandle (), (IntPtr*) Unsafe.AsRef<IntPtr> (ref ref1), (IntPtr*) Unsafe.AsRef<IntPtr> (ref ref2));
+				fixed (IntPtr* ref1Ptr = &ref1)
+				fixed (IntPtr* ref2Ptr = &ref2) {
+					return (MidiError) MIDIEndpointGetRefCons (GetCheckedHandle (), ref1Ptr, ref2Ptr);
+				}
 			}
 		}
 
@@ -3330,7 +3333,7 @@ namespace CoreMidi {
 			if (data is null)
 				ThrowHelper.ThrowArgumentNullException (nameof (data));
 
-			var tcs = new TaskCompletionSource<MidiError> ();
+			var tcs = new TaskCompletionSource<MidiError> (TaskCreationOptions.RunContinuationsAsynchronously);
 			var request = new SysexRequest (this, data, tcs);
 			var rv = (MidiError) MIDISendSysex (request.GetSysexRequestStruct (cancellationToken));
 			if (rv != MidiError.Ok) {
@@ -3361,7 +3364,7 @@ namespace CoreMidi {
 			if (data is null)
 				ThrowHelper.ThrowArgumentNullException (nameof (data));
 
-			var tcs = new TaskCompletionSource<MidiError> ();
+			var tcs = new TaskCompletionSource<MidiError> (TaskCreationOptions.RunContinuationsAsynchronously);
 			var request = new SysexRequest (this, data, tcs);
 			var rv = (MidiError) MIDISendUMPSysex (request.GetSysexUmpRequestStruct (cancellationToken));
 			if (rv != MidiError.Ok) {
@@ -3392,7 +3395,7 @@ namespace CoreMidi {
 			if (data is null)
 				ThrowHelper.ThrowArgumentNullException (nameof (data));
 
-			var tcs = new TaskCompletionSource<MidiError> ();
+			var tcs = new TaskCompletionSource<MidiError> (TaskCreationOptions.RunContinuationsAsynchronously);
 			var request = new SysexRequest (this, data, tcs);
 			var rv = (MidiError) MIDISendUMPSysex8 (request.GetSysexUmpRequestStruct (cancellationToken));
 			if (rv != MidiError.Ok) {

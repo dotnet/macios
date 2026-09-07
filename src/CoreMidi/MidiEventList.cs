@@ -93,7 +93,7 @@ namespace CoreMidi {
 				if (currentPacket is null) {
 					Marshal.FreeHGlobal ((IntPtr) midiDataPointer);
 					midiDataPointer = null;
-					throw new Exception ($"Failed to create midi event list.");
+					throw new InvalidOperationException ("Failed to create midi event list.");
 				}
 			}
 		}

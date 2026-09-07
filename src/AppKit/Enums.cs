@@ -4271,7 +4271,7 @@ namespace AppKit {
 	public enum NSStatusItemBehavior : ulong {
 		/// <summary>Allows the user to remove the status item from the menu bar.</summary>
 		RemovalAllowed = (1 << 1),
-		/// <summary>Terminates the application when the status item is removed.</summary>
+		/// <summary>Allows the user to remove the status item and terminates the application when they do so. This option implies <see cref="RemovalAllowed" />.</summary>
 		TerminationOnRemoval = (1 << 2),
 	}
 

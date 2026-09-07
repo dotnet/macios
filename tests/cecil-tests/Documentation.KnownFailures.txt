@@ -22750,7 +22750,6 @@ T:AppKit.NSWindowButton
 T:AppKit.NSWindowClient
 T:AppKit.NSWindowCollectionBehavior
 T:AppKit.NSWindowCompletionHandler
-T:AppKit.NSWindowDepth
 T:AppKit.NSWindowDocumentDrag
 T:AppKit.NSWindowFrame
 T:AppKit.NSWindowFramePredicate

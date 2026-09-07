@@ -1668,14 +1668,15 @@ namespace AppKit {
 	#endregion
 
 	#region NSGraphics
+	/// <summary>Specifies the color depth of a window's backing store.</summary>
 	[NoMacCatalyst]
 	// NSGraphics.h:typedef int NSWindowDepth;
 	public enum NSWindowDepth : int {
-		/// <summary>To be added.</summary>
+		/// <summary>A 24-bit RGB color depth.</summary>
 		TwentyfourBitRgb = 0x208,
-		/// <summary>To be added.</summary>
+		/// <summary>A 64-bit RGB color depth.</summary>
 		SixtyfourBitRgb = 0x210,
-		/// <summary>To be added.</summary>
+		/// <summary>A 128-bit RGB color depth.</summary>
 		OneHundredTwentyEightBitRgb = 0x220,
 	}
 

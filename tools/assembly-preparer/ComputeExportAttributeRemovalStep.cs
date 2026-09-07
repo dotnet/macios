@@ -55,12 +55,12 @@ public class ComputeExportAttributeRemovalStep : ConfigurationAwareStep {
 	static (int Code, string Message) GetDiagnostic (ExportAttributeRemovalBlocker blocker)
 	{
 		return blocker switch {
-			ExportAttributeRemovalBlocker.DynamicRegistrationSupported => (4192, Errors.MX4192),
-			ExportAttributeRemovalBlocker.BlockLiteralSetupBlockOptimizationDisabled => (4193, Errors.MX4193),
-			ExportAttributeRemovalBlocker.StaticBlockToDelegateLookupOptimizationDisabled => (4194, Errors.MX4194),
-			ExportAttributeRemovalBlocker.RuntimeGetBlockWrapperCreatorRequired => (4195, Errors.MX4195),
-			ExportAttributeRemovalBlocker.RegistrarHelperGetBlockForDelegateRequired => (4196, Errors.MX4196),
-			ExportAttributeRemovalBlocker.NSXpcInterfaceMethodInfoOverloadUsed => (4197, Errors.MX4197),
+			ExportAttributeRemovalBlocker.DynamicRegistrationSupported => (4193, Errors.MX4193),
+			ExportAttributeRemovalBlocker.BlockLiteralSetupBlockOptimizationDisabled => (4194, Errors.MX4194),
+			ExportAttributeRemovalBlocker.StaticBlockToDelegateLookupOptimizationDisabled => (4195, Errors.MX4195),
+			ExportAttributeRemovalBlocker.RuntimeGetBlockWrapperCreatorRequired => (4196, Errors.MX4196),
+			ExportAttributeRemovalBlocker.RegistrarHelperGetBlockForDelegateRequired => (4197, Errors.MX4197),
+			ExportAttributeRemovalBlocker.NSXpcInterfaceMethodInfoOverloadUsed => (4198, Errors.MX4198),
 			_ => throw new InvalidOperationException ($"Unknown Export attribute removal blocker: {blocker}."),
 		};
 	}

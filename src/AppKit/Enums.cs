@@ -4065,12 +4065,13 @@ namespace AppKit {
 		HorizontalStrip,
 	}
 
+	/// <summary>Specifies whether a window's title is displayed.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSWindowTitleVisibility : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The window title is displayed.</summary>
 		Visible = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The window title is hidden.</summary>
 		Hidden = 1,
 	}
 

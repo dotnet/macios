@@ -22769,7 +22769,6 @@ T:AppKit.NSWindowSize
 T:AppKit.NSWindowSizeSize
 T:AppKit.NSWindowStyle
 T:AppKit.NSWindowTabbingMode
-T:AppKit.NSWindowTitleVisibility
 T:AppKit.NSWindowToolbarStyle
 T:AppKit.NSWindowTrackEventsMatchingCompletionHandler
 T:AppKit.NSWindowUndoManager

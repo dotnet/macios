@@ -4412,13 +4412,14 @@ namespace AppKit {
 		Indirect,
 	}
 
+	/// <summary>Specifies the types of touch input to include.</summary>
 	[NoMacCatalyst]
 	[Native]
 	[Flags]
 	public enum NSTouchTypeMask : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Includes direct touch input.</summary>
 		Direct = (1 << (int) NSTouchType.Direct),
-		/// <summary>To be added.</summary>
+		/// <summary>Includes indirect touch input.</summary>
 		Indirect = (1 << (int) NSTouchType.Indirect),
 	}
 

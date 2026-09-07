@@ -2987,6 +2987,7 @@ namespace AppKit {
 		ApplicationOnlyMask = 1,
 	}
 
+	/// <summary>Specifies whether a drop occurs on an item or before it.</summary>
 #if XAMCORE_5_0
 	[NoMacCatalyst]
 #else
@@ -2998,9 +2999,9 @@ namespace AppKit {
 #endif
 	[Native]
 	public enum NSCollectionViewDropOperation : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The drop occurs on the item at the specified index path.</summary>
 		On = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The drop occurs before the item at the specified index path.</summary>
 		Before = 1,
 	}
 

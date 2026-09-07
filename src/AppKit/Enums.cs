@@ -2906,13 +2906,14 @@ namespace AppKit {
 		Default = Async | AllowingClassicStartup,
 	}
 
+	/// <summary>Specifies legacy icon representations to exclude when creating a file icon.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSWorkspaceIconCreationOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Excludes QuickDraw icon representations.</summary>
 		NSExcludeQuickDrawElements = 1 << 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Excludes icon representations introduced in macOS 10.4.</summary>
 		NSExclude10_4Elements = 1 << 2,
 	}
 

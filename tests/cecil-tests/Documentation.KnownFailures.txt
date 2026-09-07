@@ -22729,7 +22729,6 @@ T:AppKit.NSTouchBarItemIdentifier
 T:AppKit.NSTouchBarMakeItem
 T:AppKit.NSTouchEvent
 T:AppKit.NSTouchPhase
-T:AppKit.NSTouchType
 T:AppKit.NSTouchTypeMask
 T:AppKit.NSTrackingAreaOptions
 T:AppKit.NSTypesetterBehavior

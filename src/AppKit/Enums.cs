@@ -4402,12 +4402,13 @@ namespace AppKit {
 		CurrentHostOnly = 1,
 	}
 
+	/// <summary>Specifies whether contact occurs directly on a display or through an indirect input device.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTouchType : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Contact occurs directly on a display.</summary>
 		Direct,
-		/// <summary>To be added.</summary>
+		/// <summary>Contact occurs on an indirect input device, such as a trackpad.</summary>
 		Indirect,
 	}
 

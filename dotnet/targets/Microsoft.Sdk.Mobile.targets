@@ -77,7 +77,18 @@
 			 />
 	</Target>
 
-	<Target Name="_InstallMobile" DependsOnTargets="_DetectSdkLocations;_GenerateBundleName;ComputeMlaunchInstallArguments" Condition="'$(_SdkIsSimulator)' == 'false'">
+	<!--
+	***********************************************************************************************
+	DeployToDevice
+
+	Target that deploys an already-built app to a device or simulator.
+	This target is called by 'dotnet run' to support deployment without rebuilding.
+	It accepts the $(Device) property for device selection.
+
+	See: https://github.com/dotnet/sdk/blob/c164a9bc1246c48191fb780992530f0fe975141b/documentation/specs/dotnet-run-for-maui.md
+	***********************************************************************************************
+	-->
+	<Target Name="DeployToDevice" DependsOnTargets="_DetectSdkLocations;_GenerateBundleName;_DetectAppManifest;ComputeAvailableDevices;ComputeMlaunchInstallArguments" Condition="'$(SdkIsMobile)' == 'true'">
 		<Exec SessionId="$(BuildSessionId)" Command="'$(MlaunchPath)' $(MlaunchInstallArguments)" />
 	</Target>
 
@@ -148,46 +159,8 @@
 	<Target
 		Name="_PrepareRunMobile"
 		BeforeTargets="ComputeRunArguments"
-		DependsOnTargets="_ValidateHotReloadConfiguration;_InstallMobile;ComputeMlaunchRunArguments"
+		DependsOnTargets="_ValidateHotReloadConfiguration;ComputeMlaunchRunArguments"
 		Condition="'$(SdkIsDesktop)' != 'true'">
-	</Target>
-
-	<!--
-	***********************************************************************************************
-	DeployToDevice
-
-	Target that deploys an already-built app to a device or simulator.
-	This target is called by 'dotnet run' to support deployment without rebuilding.
-	It accepts the $(Device) property for device selection.
-
-	See: https://github.com/dotnet/sdk/blob/c164a9bc1246c48191fb780992530f0fe975141b/documentation/specs/dotnet-run-for-maui.md
-	***********************************************************************************************
-	-->
-	<Target Name="DeployToDevice"
-		DependsOnTargets="_DetectSdkLocations;_GenerateBundleName;_DetectAppManifest;ComputeAvailableDevices;_DeployToDevice"
-		Condition="'$(SdkIsMobile)' == 'true'" />
-
-	<Target Name="_DeployToDevice">
-		<Error Condition="$([MSBuild]::IsOSPlatform('windows'))" Text="It's currently not supported to deploy an app from the command line on Windows." />
-		<Error Condition="!Exists('$(_AppBundlePath)')" Text="The app must be built before it can be deployed. Could not find the app bundle at '$(_AppBundlePath)'." />
-
-		<GetMlaunchArguments
-			SessionId="$(BuildSessionId)"
-			AppManifestPath="$(_AppBundleManifestPath)"
-			DiscardedDevices="@(DiscardedDevices)"
-			Devices="@(Devices)"
-			DeviceName="$(Device)"
-			InstallApp="$(_AppBundlePath)"
-			MlaunchPath="$(MlaunchPath)"
-			SdkDevPath="$(_SdkDevPath)"
-			SdkIsSimulator="$(_SdkIsSimulator)"
-			SdkVersion="$(_SdkVersion)"
-			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
-		>
-			<Output TaskParameter="MlaunchArguments" PropertyName="_DeployToDeviceArguments" />
-		</GetMlaunchArguments>
-
-		<Exec Command="'$(MlaunchPath)' $(_DeployToDeviceArguments)" />
 	</Target>
 
 	<!--

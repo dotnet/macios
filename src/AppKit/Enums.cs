@@ -2337,14 +2337,15 @@ namespace AppKit {
 		Clip,
 	}
 
+	/// <summary>Specifies the status of a table in a printer's PostScript Printer Description.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSPrinterTableStatus : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The table is available.</summary>
 		Ok,
-		/// <summary>To be added.</summary>
+		/// <summary>The table was not found.</summary>
 		NotFound,
-		/// <summary>To be added.</summary>
+		/// <summary>An error occurred while accessing the table.</summary>
 		Error,
 	}
 

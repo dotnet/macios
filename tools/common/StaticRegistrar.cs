@@ -1179,6 +1179,13 @@ namespace Registrar {
 			return type;
 		}
 
+		protected override IEnumerable<TypeReference> GetGenericArguments (TypeReference type)
+		{
+			if (type is GenericInstanceType git)
+				return git.GenericArguments;
+			return [];
+		}
+
 		protected override bool AreEqual (TypeReference? a, TypeReference? b)
 		{
 			if (a == b)
@@ -1335,7 +1342,13 @@ namespace Registrar {
 
 		protected override bool TryGetAttribute (TypeReference type, string attributeNamespace, string attributeType, [NotNullWhen (true)] out object? attribute)
 		{
-			bool res = TryGetAttribute (type.Resolve (), attributeNamespace, attributeType, out var attrib);
+			var resolvedType = type.Resolve ();
+			if (resolvedType is null) {
+				attribute = null;
+				return false;
+			}
+
+			bool res = TryGetAttribute (resolvedType, attributeNamespace, attributeType, out var attrib);
 			attribute = attrib;
 			return res;
 		}

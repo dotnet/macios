@@ -1,0 +1,1 @@
+!missing-null-allowed! 'System.Void BackgroundAssets.IBADownloaderExtension::DidReceiveChallenge(BackgroundAssets.BADownload,Foundation.NSUrlAuthenticationChallenge,System.Action`2<Foundation.NSUrlSessionAuthChallengeDisposition,Foundation.NSUrlCredential>)' is missing a '?' on parameter 'completionHandler' block parameter #1

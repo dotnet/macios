@@ -3796,14 +3796,15 @@ namespace AppKit {
 		ClampGestureAmount = 2,
 	}
 
+	/// <summary>Specifies the axis associated with a gesture event.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSEventGestureAxis : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The gesture is not associated with an axis.</summary>
 		None,
-		/// <summary>To be added.</summary>
+		/// <summary>The gesture is associated with the horizontal axis.</summary>
 		Horizontal,
-		/// <summary>To be added.</summary>
+		/// <summary>The gesture is associated with the vertical axis.</summary>
 		Vertical,
 	}
 

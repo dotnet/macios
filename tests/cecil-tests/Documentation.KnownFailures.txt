@@ -22454,7 +22454,6 @@ T:AppKit.NSDraggingItemImagesContentProvider
 T:AppKit.NSDragOperation
 T:AppKit.NSDrawerState
 T:AppKit.NSEventButtonMask
-T:AppKit.NSEventGestureAxis
 T:AppKit.NSEventMask
 T:AppKit.NSEventModifierFlags
 T:AppKit.NSEventModifierMask

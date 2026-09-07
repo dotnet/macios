@@ -22398,7 +22398,6 @@ T:AppKit.NSCollectionLayoutSectionVisibleItemsInvalidationHandler
 T:AppKit.NSCollectionViewCompositionalLayoutSectionProvider
 T:AppKit.NSCollectionViewDiffableDataSourceItemProvider
 T:AppKit.NSCollectionViewDiffableDataSourceSupplementaryViewProvider
-T:AppKit.NSCollectionViewDropOperation
 T:AppKit.NSCollectionViewItemHighlightState
 T:AppKit.NSCollectionViewScrollPosition
 T:AppKit.NSColorPanelFlags
@@ -22545,7 +22544,6 @@ T:AppKit.NSPathStyle
 T:AppKit.NSPickerTouchBarItemControlRepresentation
 T:AppKit.NSPickerTouchBarItemSelectionMode
 T:AppKit.NSPointingDeviceType
-T:AppKit.NSPopoverAppearance
 T:AppKit.NSPopoverBehavior
 T:AppKit.NSPopUpArrowPosition
 T:AppKit.NSPressureBehavior
@@ -22590,7 +22588,6 @@ T:AppKit.NSSharingServicePickerSharingServicesForItems
 T:AppKit.NSSharingServiceSourceFrameOnScreenForShareItem
 T:AppKit.NSSharingServiceSourceWindowForShareItems
 T:AppKit.NSSharingServiceTransitionImageForShareItem
-T:AppKit.NSSliderType
 T:AppKit.NSSpellCheckerShowCorrectionIndicatorOfTypeHandler
 T:AppKit.NSSpellingState
 T:AppKit.NSSplitViewItemBehavior
@@ -22600,7 +22597,6 @@ T:AppKit.NSStackViewDistribution
 T:AppKit.NSStackViewGravity
 T:AppKit.NSStackViewVisibilityPriority
 T:AppKit.NSStandardKeyBindingMethods
-T:AppKit.NSStatusItemBehavior
 T:AppKit.NSStoryboardControllerCreator
 T:AppKit.NSStringAttributeKey
 T:AppKit.NSStringDrawing_NSAttributedString
@@ -22624,7 +22620,6 @@ T:AppKit.NSTableViewEventString
 T:AppKit.NSTableViewIndexFilter
 T:AppKit.NSTableViewPredicate
 T:AppKit.NSTableViewRowActionsGetter
-T:AppKit.NSTableViewRowActionStyle
 T:AppKit.NSTableViewRowGetter
 T:AppKit.NSTableViewRowHandler
 T:AppKit.NSTableViewRowHeight
@@ -22722,14 +22717,11 @@ T:AppKit.NSTouchBarItemIdentifier
 T:AppKit.NSTouchBarMakeItem
 T:AppKit.NSTouchEvent
 T:AppKit.NSTouchPhase
-T:AppKit.NSTouchType
-T:AppKit.NSTouchTypeMask
 T:AppKit.NSTrackingAreaOptions
 T:AppKit.NSTypesetterBehavior
 T:AppKit.NSTypesetterControlCharacterAction
 T:AppKit.NSUnderlinePattern
 T:AppKit.NSUsableScrollerParts
-T:AppKit.NSUserInterfaceLayoutOrientation
 T:AppKit.NSVerticalDirections
 T:AppKit.NSView_NSCandidateListTouchBarItem
 T:AppKit.NSView_NSTouchBar
@@ -22738,7 +22730,6 @@ T:AppKit.NSViewLayerContentsPlacement
 T:AppKit.NSViewLayerContentsRedrawPolicy
 T:AppKit.NSViewLayoutRegionAdaptivityAxis
 T:AppKit.NSViewResizingMask
-T:AppKit.NSVisualEffectBlendingMode
 T:AppKit.NSVisualEffectMaterial
 T:AppKit.NSVisualEffectState
 T:AppKit.NSWindowAnimationBehavior
@@ -22762,7 +22753,6 @@ T:AppKit.NSWindowSize
 T:AppKit.NSWindowSizeSize
 T:AppKit.NSWindowStyle
 T:AppKit.NSWindowTabbingMode
-T:AppKit.NSWindowTitleVisibility
 T:AppKit.NSWindowToolbarStyle
 T:AppKit.NSWindowTrackEventsMatchingCompletionHandler
 T:AppKit.NSWindowUndoManager

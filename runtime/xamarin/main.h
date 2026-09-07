@@ -130,6 +130,9 @@ extern enum XamarinLaunchMode xamarin_launch_mode;
 extern bool xamarin_supports_dynamic_registration;
 #endif
 extern const char *xamarin_runtime_configuration_name;
+extern int xamarin_runtime_config_property_count;
+extern const char **xamarin_runtime_config_property_keys;
+extern const char **xamarin_runtime_config_property_values;
 extern enum XamarinNativeLinkMode xamarin_libmono_native_link_mode;
 extern const char** xamarin_runtime_libraries;
 extern const char * const *xamarin_trusted_platform_assembly_names;

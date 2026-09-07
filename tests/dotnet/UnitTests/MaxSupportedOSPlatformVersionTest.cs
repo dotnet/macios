@@ -1,6 +1,7 @@
 #nullable enable
 
 namespace Xamarin.Tests {
+	[TestFixture]
 	public class MaxSupportedOSPlatformVersionTest : TestBaseClass {
 		// This test builds a project that doesn't set SupportedOSPlatformVersion explicitly (and
 		// doesn't import tests/common/shared-dotnet.csproj, which would otherwise pin it to each
@@ -24,7 +25,7 @@ namespace Xamarin.Tests {
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
 
 			var project = "MaxSupportedOSPlatformVersion";
-			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out _);
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 

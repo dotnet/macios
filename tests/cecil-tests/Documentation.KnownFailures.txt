@@ -9733,7 +9733,7 @@ M:CoreFoundation.CFStream.CreateBoundPair(CoreFoundation.CFReadStream@,CoreFound
 M:CoreFoundation.CFStream.CreateForHTTPRequest(CFNetwork.CFHTTPMessage)
 M:CoreFoundation.CFStream.CreateForStreamedHTTPRequest(CFNetwork.CFHTTPMessage,CoreFoundation.CFReadStream)
 M:CoreFoundation.CFStream.CreateForStreamedHTTPRequest(CFNetwork.CFHTTPMessage,Foundation.NSInputStream)
-M:CoreFoundation.CFStream.DoSetClient(.method,System.IntPtr,System.IntPtr)
+M:CoreFoundation.CFStream.DoSetClient(,System.IntPtr,System.IntPtr)
 M:CoreFoundation.CFString.op_Implicit(CoreFoundation.CFString)~System.String
 M:CoreFoundation.CFString.op_Implicit(System.String)~CoreFoundation.CFString
 M:CoreFoundation.CFWriteStream.DoSetClient(,System.IntPtr,System.IntPtr)
@@ -10379,7 +10379,6 @@ M:CoreMidi.MidiDevice.GetEntity(System.IntPtr)
 M:CoreMidi.MidiDeviceList.Get(System.UIntPtr)
 M:CoreMidi.MidiDriver.#ctor
 M:CoreMidi.MidiDriver.Finalize
-M:CoreMidi.MidiEndpoint.add_MessageReceived(System.EventHandler{CoreMidi.MidiPacketsEventArgs})
 M:CoreMidi.MidiEndpoint.GetDestination(System.IntPtr)
 M:CoreMidi.MidiEndpoint.GetSource(System.IntPtr)
 M:CoreMidi.MidiEntity.GetDestination(System.IntPtr)

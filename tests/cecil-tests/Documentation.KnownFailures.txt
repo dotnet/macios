@@ -22556,7 +22556,6 @@ T:AppKit.NSPathStyle
 T:AppKit.NSPickerTouchBarItemControlRepresentation
 T:AppKit.NSPickerTouchBarItemSelectionMode
 T:AppKit.NSPointingDeviceType
-T:AppKit.NSPopoverAppearance
 T:AppKit.NSPopoverBehavior
 T:AppKit.NSPopUpArrowPosition
 T:AppKit.NSPressureBehavior

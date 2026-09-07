@@ -3828,12 +3828,13 @@ namespace AppKit {
 		FittingSizeCompression = 50,
 	}
 
+	/// <summary>Specifies the visual appearance of a popover.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSPopoverAppearance : long {
-		/// <summary>To be added.</summary>
+		/// <summary>A minimal popover appearance.</summary>
 		Minimal,
-		/// <summary>To be added.</summary>
+		/// <summary>A heads-up display appearance.</summary>
 		HUD,
 	}
 

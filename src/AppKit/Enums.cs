@@ -3786,13 +3786,14 @@ namespace AppKit {
 		MayBegin = 32,
 	}
 
+	/// <summary>Specifies options for tracking a swipe gesture.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSEventSwipeTrackingOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Clamps the gesture amount to zero when the user reverses the initial swipe direction.</summary>
 		LockDirection = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Clamps the gesture amount to the range from -1.0 through 1.0.</summary>
 		ClampGestureAmount = 2,
 	}
 

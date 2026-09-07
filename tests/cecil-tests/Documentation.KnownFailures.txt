@@ -22459,7 +22459,6 @@ T:AppKit.NSEventModifierFlags
 T:AppKit.NSEventModifierMask
 T:AppKit.NSEventPhase
 T:AppKit.NSEventSubtype
-T:AppKit.NSEventSwipeTrackingOptions
 T:AppKit.NSEventTrackHandler
 T:AppKit.NSEventType
 T:AppKit.NSFontCollectionVisibility

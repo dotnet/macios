@@ -1976,12 +1976,13 @@ namespace AppKit {
 	#endregion
 
 	#region NSStackLayout
+	/// <summary>Specifies the axis along which user interface elements are laid out.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSUserInterfaceLayoutOrientation : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Elements are laid out along the horizontal axis.</summary>
 		Horizontal = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Elements are laid out along the vertical axis.</summary>
 		Vertical = 1,
 	}
 

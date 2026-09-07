@@ -4022,15 +4022,16 @@ namespace AppKit {
 		AllModesMask = unchecked((ulong) UInt32.MaxValue),
 	}
 
+	/// <summary>Specifies the scope in which a font collection is visible.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSFontCollectionVisibility : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The collection is visible only to the current process and is not persistent.</summary>
 		Process = 1 << 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The collection is persisted and visible to all processes for the current user.</summary>
 		User = 1 << 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The collection is persisted and visible to all users of the computer.</summary>
 		Computer = 1 << 2,
 	}
 

@@ -22461,7 +22461,6 @@ T:AppKit.NSEventPhase
 T:AppKit.NSEventSubtype
 T:AppKit.NSEventTrackHandler
 T:AppKit.NSEventType
-T:AppKit.NSFontCollectionVisibility
 T:AppKit.NSFontDescriptorSystemDesign
 T:AppKit.NSFontError
 T:AppKit.NSFontPanelMode

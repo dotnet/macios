@@ -530,9 +530,9 @@ namespace Xamarin.Tests {
 					}
 
 					if (cleanup) {
-						Execution.RunAsync ("/usr/bin/defaults", new [] { "delete", bundleIdentifier, "ApplePersistenceIgnoreState" }, timeout: TimeSpan.FromSeconds (30)).Result;
+						Execution.RunAsync ("/usr/bin/defaults", new [] { "delete", bundleIdentifier, "ApplePersistenceIgnoreState" }, timeout: TimeSpan.FromSeconds (30)).Wait ();
 					} else {
-						Execution.RunAsync ("/usr/bin/defaults", new [] { "write", bundleIdentifier, "ApplePersistenceIgnoreState", "-bool", "YES" }, timeout: TimeSpan.FromSeconds (30)).Result;
+						Execution.RunAsync ("/usr/bin/defaults", new [] { "write", bundleIdentifier, "ApplePersistenceIgnoreState", "-bool", "YES" }, timeout: TimeSpan.FromSeconds (30)).Wait ();
 					}
 				} catch (Exception e) {
 					Console.WriteLine ($"Could not delete saved application state '{savedStateDir}': {e.Message}");

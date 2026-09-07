@@ -27,14 +27,15 @@ using System.ComponentModel;
 
 namespace AppKit {
 
+	/// <summary>Specifies a return response from an application modal session.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSRunResponse : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the modal session stopped.</summary>
 		Stopped = -1000,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the modal session was aborted.</summary>
 		Aborted = -1001,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the modal session should continue.</summary>
 		Continues = -1002,
 	}
 
@@ -340,16 +341,17 @@ namespace AppKit {
 	#endregion
 
 	#region NSParagraphStyle
+	/// <summary>Specifies the alignment of text at a tab stop.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTextTabType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Left-aligns text at the tab stop.</summary>
 		Left,
-		/// <summary>To be added.</summary>
+		/// <summary>Right-aligns text at the tab stop.</summary>
 		Right,
-		/// <summary>To be added.</summary>
+		/// <summary>Centers text at the tab stop.</summary>
 		Center,
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns decimal characters at the tab stop.</summary>
 		Decimal,
 	}
 
@@ -1429,24 +1431,26 @@ namespace AppKit {
 		CanJoinAllApplications = 1 << 18,
 	}
 
+	/// <summary>Specifies which windows to include in a window-number list.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSWindowNumberListOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Includes windows from all applications, instead of only the calling application.</summary>
 		AllApplication = 1 << 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Includes windows from all spaces, instead of only the active space.</summary>
 		AllSpaces = 1 << 4,
 	}
 
+	/// <summary>Specifies the direction in which a window traverses its key-view loop.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSSelectionDirection : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the window is not traversing the key-view loop.</summary>
 		Direct = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Proceeds to the next valid key view.</summary>
 		Next,
-		/// <summary>To be added.</summary>
+		/// <summary>Proceeds to the previous valid key view.</summary>
 		Previous,
 	}
 
@@ -2627,14 +2631,15 @@ namespace AppKit {
 		FirstColumnOnly,
 	}
 
+	/// <summary>Specifies how a table view highlights selected rows.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTableViewSelectionHighlightStyle : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Does not highlight selected rows.</summary>
 		None = -1,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the regular selection highlight style.</summary>
 		Regular = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the source-list selection highlight style.</summary>
 		[Deprecated (PlatformName.MacOSX, 11, 0, message: "Set 'NSTableView.Style' to 'NSTableViewStyle.SourceList' instead.")]
 		SourceList = 1,
 	}
@@ -2674,17 +2679,18 @@ namespace AppKit {
 		UserResizingMask = (1 << 1),
 	}
 
+	/// <summary>Specifies which grid lines a table view draws.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSTableViewGridStyle : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Does not draw grid lines.</summary>
 		None = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Draws solid vertical grid lines.</summary>
 		SolidVerticalLine = 1 << 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Draws solid horizontal grid lines.</summary>
 		SolidHorizontalLine = 1 << 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Draws dashed horizontal grid lines.</summary>
 		DashedHorizontalGridLine = 1 << 3,
 	}
 
@@ -2724,40 +2730,43 @@ namespace AppKit {
 		Right,
 	}
 
+	/// <summary>Specifies the frame drawn around an image.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSImageFrameStyle : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Draws no frame.</summary>
 		None = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Draws a frame suitable for a photograph.</summary>
 		Photo,
-		/// <summary>To be added.</summary>
+		/// <summary>Draws a gray bezel frame.</summary>
 		GrayBezel,
-		/// <summary>To be added.</summary>
+		/// <summary>Draws a grooved frame.</summary>
 		Groove,
-		/// <summary>To be added.</summary>
+		/// <summary>Draws a button-style frame.</summary>
 		Button,
 	}
 
+	/// <summary>Specifies when a speech synthesizer pauses or stops speaking.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSSpeechBoundary : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Pauses or stops speaking immediately.</summary>
 		Immediate = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Pauses or stops speaking at the next word boundary.</summary>
 		Word = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Pauses or stops speaking at the next sentence boundary.</summary>
 		Sentence,
 	}
 
+	/// <summary>Specifies the visual style of a split view divider.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSSplitViewDividerStyle : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Uses a thick divider.</summary>
 		Thick = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses a thin divider.</summary>
 		Thin = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses a pane-splitter divider.</summary>
 		PaneSplitter = 3,
 	}
 
@@ -2773,16 +2782,17 @@ namespace AppKit {
 		Inspector,
 	}
 
+	/// <summary>Specifies how an image is scaled to fit its frame.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSImageScaling : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Scales the image down proportionally when it is larger than the frame.</summary>
 		ProportionallyDown = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Scales the image independently along each axis to fill the frame.</summary>
 		AxesIndependently,
-		/// <summary>To be added.</summary>
+		/// <summary>Does not scale the image.</summary>
 		None,
-		/// <summary>To be added.</summary>
+		/// <summary>Scales the image proportionally up or down to fit the frame.</summary>
 		ProportionallyUpOrDown,
 	}
 

@@ -22499,7 +22499,6 @@ T:AppKit.NSHorizontalDirections
 T:AppKit.NSImageAlignment
 T:AppKit.NSImageCacheMode
 T:AppKit.NSImageDynamicRange
-T:AppKit.NSImageFrameStyle
 T:AppKit.NSImageHint
 T:AppKit.NSImageInterpolation
 T:AppKit.NSImageLayoutDirection
@@ -22509,7 +22508,6 @@ T:AppKit.NSImageRect
 T:AppKit.NSImageRepLoadStatus
 T:AppKit.NSImageResizingModeExtensions
 T:AppKit.NSImageScale
-T:AppKit.NSImageScaling
 T:AppKit.NSImageSymbolColorRenderingMode
 T:AppKit.NSImageSymbolScale
 T:AppKit.NSImageSymbolVariableValueMode
@@ -22586,7 +22584,6 @@ T:AppKit.NSRulerEditorDisplayValue
 T:AppKit.NSRulerEditorPredicateParts
 T:AppKit.NSRulerMarkerClientViewDelegation
 T:AppKit.NSRulerViewUnits
-T:AppKit.NSRunResponse
 T:AppKit.NSSaveOperationType
 T:AppKit.NSSavePanelComplete
 T:AppKit.NSScrollArrowPosition
@@ -22602,7 +22599,6 @@ T:AppKit.NSSegmentBackgroundStyle_NSSegmentedCell
 T:AppKit.NSSegmentDistribution
 T:AppKit.NSSegmentStyle
 T:AppKit.NSSegmentSwitchTracking
-T:AppKit.NSSelectionDirection
 T:AppKit.NSSharingCollaborationMode
 T:AppKit.NSSharingContentScope
 T:AppKit.NSSharingServiceAnchoringViewForSharingService
@@ -22615,10 +22611,8 @@ T:AppKit.NSSharingServiceSourceFrameOnScreenForShareItem
 T:AppKit.NSSharingServiceSourceWindowForShareItems
 T:AppKit.NSSharingServiceTransitionImageForShareItem
 T:AppKit.NSSliderType
-T:AppKit.NSSpeechBoundary
 T:AppKit.NSSpellCheckerShowCorrectionIndicatorOfTypeHandler
 T:AppKit.NSSpellingState
-T:AppKit.NSSplitViewDividerStyle
 T:AppKit.NSSplitViewItemBehavior
 T:AppKit.NSSpringLoadingHighlight
 T:AppKit.NSSpringLoadingOptions
@@ -22648,7 +22642,6 @@ T:AppKit.NSTableViewDiffableDataSourceRowProvider
 T:AppKit.NSTableViewDiffableDataSourceSectionHeaderViewProvider
 T:AppKit.NSTableViewDraggingDestinationFeedbackStyle
 T:AppKit.NSTableViewEventString
-T:AppKit.NSTableViewGridStyle
 T:AppKit.NSTableViewIndexFilter
 T:AppKit.NSTableViewPredicate
 T:AppKit.NSTableViewRowActionsGetter
@@ -22659,7 +22652,6 @@ T:AppKit.NSTableViewRowHeight
 T:AppKit.NSTableViewRowPredicate
 T:AppKit.NSTableViewRowSizeStyle
 T:AppKit.NSTableViewSearchString
-T:AppKit.NSTableViewSelectionHighlightStyle
 T:AppKit.NSTableViewSource
 T:AppKit.NSTableViewStyle
 T:AppKit.NSTableViewToolTip
@@ -22711,7 +22703,6 @@ T:AppKit.NSTextSelectionNavigationDirection
 T:AppKit.NSTextSelectionNavigationLayoutOrientation
 T:AppKit.NSTextSelectionNavigationModifier
 T:AppKit.NSTextSelectionNavigationWritingDirection
-T:AppKit.NSTextTabType
 T:AppKit.NSTextView_SharingService
 T:AppKit.NSTextViewCellPasteboard
 T:AppKit.NSTextViewCellPosition
@@ -22786,7 +22777,6 @@ T:AppKit.NSWindowFramePredicate
 T:AppKit.NSWindowLevel
 T:AppKit.NSWindowMenu
 T:AppKit.NSWindowNSWindow
-T:AppKit.NSWindowNumberListOptions
 T:AppKit.NSWindowResize
 T:AppKit.NSWindowSharingType
 T:AppKit.NSWindowSheetRect

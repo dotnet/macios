@@ -167,8 +167,9 @@ This can be overriden by setting the `BundleCreateDump` property:
 
 Note: the `createdump` tool does currently not work for sandboxed apps ([#18961](https://github.com/dotnet/macios/issues/18961));
 
-Only applicable to projects that use the CoreCLR runtime (which, at the moment
-of this writing, is only macOS projects).
+Note: an alternative option is to enable the in-process crash reporter (see [EnableCrashReport](#enablecrashreport)). The in-process crash reporter also works for sandboxed apps.
+
+Only applicable to macOS projects.
 
 [createdump]: https://github.com/dotnet/runtime/blob/3b63eb1346f1ddbc921374a5108d025662fb5ffd/docs/design/coreclr/botr/xplat-minidump-generation.md
 
@@ -598,10 +599,6 @@ This setting is disabled by default, but it can be enabled like this:
 The crash reports are written to a subdirectory of the app's caches directory.
 
 See also: [Collect crash dumps](https://learn.microsoft.com/en-us/dotnet/core/diagnostics/collect-dumps-crash).
-
-The in-process crash reporter is only available in the mobile CoreCLR runtime
-(iOS, tvOS and Mac Catalyst); the desktop macOS runtime relies on the
-[`createdump`](#bundlecreatedump) tool instead.
 
 ## EnableDefaultCodesignEntitlements
 

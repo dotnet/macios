@@ -488,8 +488,6 @@ namespace Xamarin.Tests {
 			if (!File.Exists (executable))
 				throw new FileNotFoundException ($"The executable '{executable}' does not exists.");
 
-			DeleteSavedState (executable);
-
 			magicWord = Guid.NewGuid ().ToString ();
 			var env = new Dictionary<string, string?> {
 				{ "MAGIC_WORD", magicWord },
@@ -500,25 +498,21 @@ namespace Xamarin.Tests {
 					env [kvp.Key] = kvp.Value;
 			}
 
-			var bundleIdentifier = GetBundleIdentifier (executable);
-			if (!string.IsNullOrEmpty (bundleIdentifier))
-				Execution.RunAsync ("/usr/bin/defaults", new [] { "write", bundleIdentifier, "ApplePersistenceIgnoreState", "-bool", "YES" }, timeout: TimeSpan.FromSeconds (30)).Result;
+			DeleteSavedState (executable, false);
 			try {
 				var rv = Execution.RunAsync (executable, Array.Empty<string> (), environment: env, timeout: TimeSpan.FromSeconds (30)).Result;
 				output = rv.Output.MergedOutput;
 				return rv;
 			} finally {
 				// Remove the override so it doesn't affect a later test using the same bundle identifier.
-				if (!string.IsNullOrEmpty (bundleIdentifier))
-					Execution.RunAsync ("/usr/bin/defaults", new [] { "delete", bundleIdentifier, "ApplePersistenceIgnoreState" }, timeout: TimeSpan.FromSeconds (30)).Result;
-				DeleteSavedState (executable);
+				DeleteSavedState (executable, true);
 			}
 		}
 
 		// Delete the saved application state for the app being launched, to prevent
 		// the "Do you want to try to reopen its windows again?" dialog from showing
 		// if the app crashed during a previous test run. See https://github.com/dotnet/macios/issues/25922
-		static void DeleteSavedState (string executable)
+		static void DeleteSavedState (string executable, bool cleanup)
 		{
 			var bundleIdentifier = GetBundleIdentifier (executable);
 			if (string.IsNullOrEmpty (bundleIdentifier))
@@ -533,6 +527,12 @@ namespace Xamarin.Tests {
 					if (Directory.Exists (savedStateDir)) {
 						Directory.Delete (savedStateDir, true);
 						Console.WriteLine ($"Deleted saved application state: {savedStateDir}");
+					}
+
+					if (cleanup) {
+						Execution.RunAsync ("/usr/bin/defaults", new [] { "delete", bundleIdentifier, "ApplePersistenceIgnoreState" }, timeout: TimeSpan.FromSeconds (30)).Result;
+					} else {
+						Execution.RunAsync ("/usr/bin/defaults", new [] { "write", bundleIdentifier, "ApplePersistenceIgnoreState", "-bool", "YES" }, timeout: TimeSpan.FromSeconds (30)).Result;
 					}
 				} catch (Exception e) {
 					Console.WriteLine ($"Could not delete saved application state '{savedStateDir}': {e.Message}");

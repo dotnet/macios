@@ -36,6 +36,13 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 		
 		<!-- Set _ResourcePrefix from AppBundleResourcePrefix -->
 		<_ResourcePrefix>$(AppBundleResourcePrefix)</_ResourcePrefix>
+		<!-- Split _ResourcePrefix into individual properties for multi-prefix glob expansion.
+		     We support up to 3 semicolon-separated resource prefix paths.
+		     Trailing semicolons are appended so that Split(';')[N] never throws IndexOutOfRangeException. -->
+		<_ResourcePrefixCount>$([System.String]::new('$(_ResourcePrefix)').Split(';').Length)</_ResourcePrefixCount>
+		<_ResourcePrefix_1>$([System.String]::new('$(_ResourcePrefix);;;').Split(';')[0])</_ResourcePrefix_1>
+		<_ResourcePrefix_2>$([System.String]::new('$(_ResourcePrefix);;;').Split(';')[1])</_ResourcePrefix_2>
+		<_ResourcePrefix_3>$([System.String]::new('$(_ResourcePrefix);;;').Split(';')[2])</_ResourcePrefix_3>
 
 		<!-- SdkVersion -->
 		<_SdkVersion Condition="'$(_PlatformName)' == 'macOS'">$(MacOSXSdkVersion)</_SdkVersion>
@@ -120,8 +127,6 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 		<!-- Xamarin.Mac never had an equivalent for MtouchNoSymbolStrip and was never stripped, except when using NativeAOT -> true -->
 		<!-- default to 'false' -->
 		<NoSymbolStrip Condition="'$(NoSymbolStrip)' == '' And '$(_PlatformName)' != 'macOS'">$(MtouchNoSymbolStrip)</NoSymbolStrip>
-		<!-- Disable stripping for Debug builds by default -->
-		<NoSymbolStrip Condition="'$(NoSymbolStrip)' == '' And '$(Configuration)' == 'Debug'">true</NoSymbolStrip>
 		<NoSymbolStrip Condition="'$(NoSymbolStrip)' == '' And '$(SdkIsDesktop)' == 'true' And '$(_UseNativeAot)' != 'true'">true</NoSymbolStrip>
 		<!-- Disable stripping for simulator builds by default -->
 		<NoSymbolStrip Condition="'$(NoSymbolStrip)' == '' And '$(SdkIsSimulator)' == 'true'">true</NoSymbolStrip>
@@ -130,8 +135,8 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 		<!-- NoDSymUtil -->
 		<!-- Xamarin.Mac never had an equivalent for MtouchNoDSymUtil and never produced them -> now, produce them by default when archiving -->
 		<NoDSymUtil Condition="'$(NoDSymUtil)' == '' And '$(_PlatformName)' != 'macOS'">$(MtouchNoDSymUtil)</NoDSymUtil>
-		<!-- Disable dsymutil on desktop unless archiving -->
-		<NoDSymUtil Condition="'$(NoDSymUtil)' == '' And '$(SdkIsDesktop)' == 'true' And '$(ArchiveOnBuild)' != 'true'">true</NoDSymUtil>
+		<!-- Disable dsymutil on desktop unless archiving, except when using NativeAOT (where dSYMs are useful) -->
+		<NoDSymUtil Condition="'$(NoDSymUtil)' == '' And '$(SdkIsDesktop)' == 'true' And '$(ArchiveOnBuild)' != 'true' And '$(_UseNativeAot)' != 'true'">true</NoDSymUtil>
 		<!-- Disable dsymutil for simulator builds by default -->
 		<NoDSymUtil Condition="'$(NoDSymUtil)' == '' And '$(SdkIsSimulator)' == 'true'">true</NoDSymUtil>
 		<NoDSymUtil Condition="'$(NoDSymUtil)' == ''">false</NoDSymUtil>
@@ -158,21 +163,25 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 
 		<!-- OptimizePNGs:
 			default to false if a binding project (both XI and XM)
-			otherwise default to false if a Xamarin.Mac project
-			otherwise default to true for Xamarin.iOS
+			otherwise default to true for release builds in .NET 11+ except on macOS
+			otherwise default to false
 		-->
 		<OptimizePNGs Condition="'$(IsBindingProject)' == 'true' And '$(OptimizePNGs)' == ''">false</OptimizePNGs>
 		<OptimizePNGs Condition="'$(_PlatformName)' == 'macOS' And '$(OptimizePNGs)' == ''">false</OptimizePNGs>
-		<OptimizePNGs Condition="'$(_PlatformName)' != 'macOS' And '$(OptimizePNGs)' == ''">true</OptimizePNGs>
+		<OptimizePNGs Condition="'$(OptimizePNGs)' == '' And '$(_BundlerDebug)' != 'true' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), 11.0))">true</OptimizePNGs>
+		<OptimizePNGs Condition="'$(OptimizePNGs)' == ''">false</OptimizePNGs>
 
 		<!-- OptimizePropertyLists:
 			default to false if a binding project (both XI and XM)
-			otherwise default to false if a Xamarin.Mac project
-			otherwise default to true for Xamarin.iOS
+			otherwise default to true for release builds in .NET 11+ except on macOS
+			otherwise default to false
 		-->
 		<OptimizePropertyLists Condition="'$(IsBindingProject)' == 'true' And '$(OptimizePropertyLists)' == ''">false</OptimizePropertyLists>
 		<OptimizePropertyLists Condition="'$(_PlatformName)' == 'macOS' And '$(OptimizePropertyLists)' == ''">false</OptimizePropertyLists>
-		<OptimizePropertyLists Condition="'$(_PlatformName)' != 'macOS' And '$(OptimizePropertyLists)' == ''">true</OptimizePropertyLists>
+		<OptimizePropertyLists Condition="'$(OptimizePropertyLists)' == '' And '$(_BundlerDebug)' != 'true' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), 11.0))">true</OptimizePropertyLists>
+		<OptimizePropertyLists Condition="'$(OptimizePropertyLists)' == ''">false</OptimizePropertyLists>
+
+		<StripFrameworkHeaders Condition="'$(StripFrameworkHeaders)' == ''">true</StripFrameworkHeaders>
 
 		<!-- EnableOnDemandResources: default to true for Xamarin.iOS and false for Xamarin.Mac -->
 		<EnableOnDemandResources Condition="'$(_PlatformName)' == 'macOS' And '$(EnableOnDemandResources)' == ''">false</EnableOnDemandResources>
@@ -189,7 +198,7 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 		<AppBundleExtension Condition="'$(AppBundleExtension)' == ''">.app</AppBundleExtension>
 
 		<!-- Accept 'UseInterpreter' as an alternative for 'MtouchInterpreter', so that we have the same variable name as Android -->
-		<MtouchInterpreter Condition="'$(MtouchInterpreter)' == '' And '$(UseInterpreter)' == 'True'">all</MtouchInterpreter>
+		<MtouchInterpreter Condition="'$(MtouchInterpreter)' == '' And '$(UseInterpreter)' == 'True' And '$(UseMonoRuntime)' == 'true'">all</MtouchInterpreter>
 
 		<_AppBundleName Condition="'$(_AppBundleName)' == '' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), 10.0)) And '$(SdkIsDesktop)' == 'true'">$(ApplicationTitle)</_AppBundleName>
 		<_AppBundleName Condition="'$(_AppBundleName)' == ''">$(AssemblyName)</_AppBundleName>
@@ -199,6 +208,14 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 		<!-- Does not apply unless we're actually building a library - and since BundleOriginalResources can be specified on the command line, use a secondary property -->
 		<!-- that also encapsulates whether we're a library or not (this makes conditions simpler) -->
 		<_BundleOriginalResources Condition="'$(OutputType)' == 'Library' And '$(IsAppExtension)' != 'true' And '$(BundleOriginalResources)' == 'true'">true</_BundleOriginalResources>
+
+		<!-- Resolve Content and BundleResource items relative to the project file instead of the defining project file.
+		     This fixes issues where SDKs (like the Razor SDK) add items from a directory far from the project,
+		     producing nonsensical paths. Ref: https://github.com/dotnet/macios/issues/23898
+		     Opt-in for < .NET 12, opt-out (default true) for .NET 12+, permanently enabled for .NET 13+. -->
+		<ResolveResourceItemsRelativeToProject Condition="'$(ResolveResourceItemsRelativeToProject)' == '' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), 12.0))">true</ResolveResourceItemsRelativeToProject>
+		<ResolveResourceItemsRelativeToProject Condition="'$(ResolveResourceItemsRelativeToProject)' == ''">false</ResolveResourceItemsRelativeToProject>
+		<_ResolveResourceItemsRelativeToProjectInvalid Condition="'$(ResolveResourceItemsRelativeToProject)' == 'false' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), 13.0))">true</_ResolveResourceItemsRelativeToProjectInvalid>
 
 		<EnableDiagnostics Condition="'$(EnableDiagnostics)' == '' And ('$(DiagnosticConfiguration)' != '' Or '$(DiagnosticAddress)' != '' Or '$(DiagnosticPort)' != '' Or '$(DiagnosticSuspend)' != '' Or '$(DiagnosticListenMode)' != '')">true</EnableDiagnostics>
 
@@ -235,6 +252,10 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 
 		<!-- Default NoBindingEmbedding to 'true' for .NET projects, it's the new way -->
 		<NoBindingEmbedding Condition="'$(NoBindingEmbedding)' == ''">true</NoBindingEmbedding>
+
+		<!-- NoBindingEmbedding=false is deprecated in .NET 10, and removed in .NET 12+ -->
+		<_NoBindingEmbeddingDeprecated Condition="'$(NoBindingEmbedding)' != 'true' And !$([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), 12.0))">true</_NoBindingEmbeddingDeprecated>
+		<_NoBindingEmbeddingRemoved Condition="'$(NoBindingEmbedding)' != 'true' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), 12.0))">true</_NoBindingEmbeddingRemoved>
 
 		<!-- We don't want to build a binding project when in design time mode, and not bundling original resources, because we might end up requiring a connection to a remote mac, which is not a good idea for a supposedly quick design-time build. -->
 		<_DisableBindingProjectBuild Condition="'$(_DisableBindingProjectBuild)' == '' And '$(BundleOriginalResources)' != 'true' And '$(DesignTimeBuild)' == 'true'">true</_DisableBindingProjectBuild>
@@ -287,4 +308,3 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 	<Import Project="$(MSBuildThisFileDirectory)$(MSBuildThisFileName).After.targets"
 			Condition="Exists('$(MSBuildThisFileDirectory)$(MSBuildThisFileName).After.targets')"/>
 </Project>
-

@@ -32,9 +32,8 @@ namespace CoreAnimation {
 		// or some other trickery. Our NSString -> C# string -> NSString conversions
 		// were breaking this on the Mac. We look up the equivilant NSString and pass that
 		// along to "fix" this
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the calculation mode used to interpolate key frame values.</summary>
+		/// <value>The calculation mode string.</value>
 		public virtual string CalculationMode {
 			get {
 				return _CalculationMode;

@@ -24,14 +24,13 @@ namespace AppKit {
 namespace UIKit {
 #endif
 	partial class NSLayoutManager {
-		/// <param name="glyphRange">To be added.</param>
-		/// <param name="glyphBuffer">To be added.</param>
-		/// <param name="props">To be added.</param>
-		/// <param name="charIndexBuffer">To be added.</param>
-		/// <param name="bidiLevelBuffer">To be added.</param>
 		/// <summary>Fills <paramref name="glyphBuffer" /> with the glyphs in <paramref name="glyphRange" />.</summary>
+		/// <param name="glyphRange">The range of glyphs to retrieve.</param>
+		/// <param name="glyphBuffer">An output buffer that receives the glyph identifiers for the specified range.</param>
+		/// <param name="props">An output buffer that receives the glyph properties for each glyph.</param>
+		/// <param name="charIndexBuffer">An output buffer that receives the character index corresponding to each glyph.</param>
+		/// <param name="bidiLevelBuffer">An output buffer that receives the bidirectional embedding level for each glyph.</param>
 		/// <returns>The number of glyphs in <paramref name="glyphBuffer" />.</returns>
-		/// <remarks>To be added.</remarks>
 		public unsafe nuint GetGlyphs (
 			NSRange glyphRange,
 			short [] /* CGGlyph* = CGFontIndex* = unsigned short* */ glyphBuffer,
@@ -68,16 +67,16 @@ namespace UIKit {
 		}
 
 		/// <summary>Renders <paramref name="glyphs" /> at <paramref name="positions" /> into <paramref name="graphicsContext" />.</summary>
-		/// <param name="glyphs">To be added.</param>
-		/// <param name="positions">To be added.</param>
-		/// <param name="glyphCount">To be added.</param>
-		/// <param name="font">To be added.</param>
-		/// <param name="textMatrix">To be added.</param>
-		/// <param name="attributes">To be added.</param>
-		/// <param name="graphicsContext">To be added.</param>
-		[SupportedOSPlatform ("tvos13.0")]
+		/// <param name="glyphs">The glyphs.</param>
+		/// <param name="positions">The positions.</param>
+		/// <param name="glyphCount">The glyph count.</param>
+		/// <param name="font">The font.</param>
+		/// <param name="textMatrix">The text matrix.</param>
+		/// <param name="attributes">The attributes.</param>
+		/// <param name="graphicsContext">The graphics context.</param>
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public unsafe void ShowGlyphs (
 			short [] /* const CGGlyph* = CGFontIndex* = unsigned short* */ glyphs,
@@ -95,14 +94,13 @@ namespace UIKit {
 			}
 		}
 
-		/// <param name="charIndex">To be added.</param>
-		/// <param name="alternatePosition">To be added.</param>
-		/// <param name="inDisplayOrder">To be added.</param>
-		/// <param name="positions">To be added.</param>
-		/// <param name="charIndexes">To be added.</param>
 		/// <summary>Fills <paramref name="positions" /> and <paramref name="charIndexes" /> with the positions and indices of the insertion points for a line fragment.</summary>
+		/// <param name="charIndex">A character index within the line fragment.</param>
+		/// <param name="alternatePosition">Whether to use the alternate insertion point position.</param>
+		/// <param name="inDisplayOrder">Whether to return the insertion points in display order rather than logical order.</param>
+		/// <param name="positions">An output buffer that receives the horizontal positions of each insertion point.</param>
+		/// <param name="charIndexes">An output buffer that receives the character index for each insertion point.</param>
 		/// <returns>The number of insertion points returned in <paramref name="positions" /> and <paramref name="charIndexes" />.</returns>
-		/// <remarks>To be added.</remarks>
 		public unsafe nuint GetLineFragmentInsertionPoints (
 			nuint /* NSUInteger */ charIndex,
 			bool /* BOOL */ alternatePosition,

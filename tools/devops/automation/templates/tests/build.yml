@@ -19,14 +19,6 @@ parameters:
 - name: labelWithPlatform
   type: string
 
-- name: disableProvisionatorCache
-  type: boolean
-  default: false
-
-- name: clearProvisionatorCache
-  type: boolean
-  default: false
-
 - name: vsdropsPrefix
   type: string
 
@@ -179,30 +171,19 @@ steps:
   displayName: 'List downloaded artifacts'
   timeoutInMinutes: 5
 
-- bash: |
-    make -C $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/ provisioning
-  displayName: 'Generate Provisionator csx file'
-
-# Executed ONLY if we want to clear the provisionator cache.
-- bash: rm -rf "$TOOLS_DIR/provisionator"
-  env:
-    TOOLS_DIR: $(Agent.ToolsDirectory)
-  displayName: 'Remove Provisionator Tool Cache'
-  condition: ${{ parameters.clearProvisionatorCache }}
-
-# Use the provisionator to install the test dependencies. Those have been generated in the 'Generate Provisionator csx file' step.
-- template: ../common/provision.yml
+# Provision Xcode and the test dependencies. This must happen before ./configure so that
+# configure.inc captures the Xcode we just selected.
+- template: ../common/provision-xcode.yml
   parameters:
-    provisioning_script: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/build-provisioning.csx
-    displayName: 'Provisionator dependencies'
-    provisionatorChannel: $(PROVISIONATOR_CHANNEL)
-    retryCount: 3
+    repositoryPath: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)
+    provisionSimulators: true
+    xcodeChannel: ${{ parameters.XcodeChannel }}
+    retryCount: ${{ parameters.retryCount }}
 
-# Run ./configure AFTER 'Provisionator dependencies' so it captures the Xcode that
-# Provisionator selected (via xcode-select). configure writes XCODE_DEVELOPER_ROOT into
-# configure.inc, which Make.config includes; running it before provisioning would bake in
-# the bot's pre-provisioning Xcode and make 'Provision system dependencies' (and the test
-# build) use the wrong Xcode.
+# Run ./configure AFTER provisioning so it captures the Xcode that was selected (via
+# xcode-select). configure writes XCODE_DEVELOPER_ROOT into configure.inc, which
+# Make.config includes; running it before provisioning would bake in the bot's
+# pre-provisioning Xcode and make the test build use the wrong Xcode.
 - bash: |
     set -eo pipefail
     set -x
@@ -220,23 +201,6 @@ steps:
     ./configure "${ARGS[@]}"
   displayName: 'Enable Xamarin and configure platforms'
   timeoutInMinutes: 1
-
-- bash: |
-    set -x
-    set -e
-    ARGS=()
-    ARGS+=(--provision-simulators)
-    ARGS+=(--provision-xcode-components)
-    if [[ "$XCODE_CHANNEL" == "Beta" ]]; then
-      ARGS+=(--provision-old-simulators)
-    fi
-    ARGS+=(--ignore-shellcheck)
-    ARGS+=(--ignore-yamllint)
-    $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/system-dependencies.sh "${ARGS[@]}"
-  displayName: 'Provision system dependencies'
-  timeoutInMinutes: 250
-  env:
-    XCODE_CHANNEL: ${{ parameters.XcodeChannel }}
 
 # clean sims incase we were left in a strange state
 - bash: |

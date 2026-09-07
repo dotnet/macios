@@ -250,6 +250,7 @@ namespace CoreGraphics {
 		public void SetOutline (CGPDFOutlineOptions? options)
 		{
 			CGPDFContextSetOutline (Handle, options.GetHandle ());
+			GC.KeepAlive (options);
 		}
 
 		[SupportedOSPlatform ("ios")]

@@ -37,6 +37,63 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 		base.TryProcess ();
 	}
 
+	// When false, we don't rewrite the Dlfcn call sites (to keep reloadable assemblies byte-for-byte
+	// unmodified for Hot Reload); instead we only collect the referenced native symbols (see ProcessMethod).
+	bool inlining_enabled = true;
+
+	protected override bool ModifyAssembly (AssemblyDefinition assembly)
+	{
+		// Dlfcn calls can only appear in assemblies that reference (or, for the platform assembly, define)
+		// ObjCRuntime.Dlfcn, which is only the platform assembly and binding libraries. Skip everything else
+		// (e.g. the BCL and most user assemblies) without iterating all their types, methods and instructions.
+		if (!ReferencesDlfcn (assembly))
+			return false;
+
+		// When building for Hot Reload compatibility, we must not modify reloadable (user) assemblies,
+		// i.e. assemblies that aren't being trimmed (AssemblyAction != Link), because inlining rewrites
+		// call sites and adds helper methods/fields, which would break Hot Reload. In that case we don't
+		// inline, but we still walk the assembly to collect the referenced native symbols, so the native
+		// linker keeps them alive (via RequiredSymbols -> GenerateReferencesStep) just like the inlined
+		// P/Invokes would have. Release builds don't set this property, so they keep inlining everywhere
+		// (even non-trimmed assemblies) for the optimization. NativeAOT is not compatible with Hot Reload,
+		// so we don't have to worry about the post-NativeAOT native symbol collection here.
+		inlining_enabled = !(Configuration.HotReloadCompatibleBuild && Annotations.GetAction (assembly) != AssemblyAction.Link);
+
+		var modified = base.ModifyAssembly (assembly);
+		inlining_enabled = true;
+		return modified;
+	}
+
+	// When inlining is disabled (Hot Reload compatible build + reloadable assembly), we don't rewrite the
+	// Dlfcn call site, but we still register the referenced native symbol so the native linker keeps it
+	// alive (GenerateReferencesStep turns RequiredSymbols into native references, just like the surviving
+	// inlined P/Invokes would). Returns true if the symbol was collected and the caller must not inline,
+	// false if inlining should proceed as usual.
+	bool CollectSymbolWithoutInlining (string symbolName)
+	{
+		if (inlining_enabled)
+			return false;
+		DerivedLinkContext.RequiredSymbols.AddField (symbolName);
+		return true;
+	}
+
+	bool ReferencesDlfcn (AssemblyDefinition assembly)
+	{
+		// Dlfcn lives in the product assembly, so an assembly that doesn't even reference the product assembly
+		// (the BCL, most third-party code) can't possibly call it. This only looks at the assembly references,
+		// so it's the cheapest check - do it first.
+		if (!Configuration.Profile.IsOrReferencesProductAssembly (assembly))
+			return false;
+
+		// The product assembly defines (and calls) Dlfcn itself.
+		if (Configuration.Profile.IsProductAssembly (assembly))
+			return true;
+
+		// Otherwise (binding libraries, user code that references the product assembly) it must reference the
+		// Dlfcn type specifically - this scans the type reference table, so it's the most expensive check.
+		return assembly.MainModule.HasTypeReference ("ObjCRuntime.Dlfcn");
+	}
+
 	string? current_framework;
 	protected override bool ProcessType (TypeDefinition type)
 	{
@@ -44,6 +101,14 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 		if (type.HasMethods) {
 			if (Frameworks.TryGetFramework (App, type, out Framework? framework) && framework.IsFrameworkUnavailable (App)) {
 				App.Log (3, $"Type {type.FullName} appears to be part of the '{framework.Name}' framework, which is not available in the current SDK. Skipping inlining Dlfcn calls for this type.");
+				return modified;
+			}
+
+			// If the type isn't available in the simulator, and we're building for the simulator, then don't
+			// inline any of its methods. Checking this once per type (instead of once per method) avoids
+			// re-scanning the declaring type's availability attributes for every method.
+			if (DerivedLinkContext.App.IsSimulatorBuild && DerivedLinkContext.HasAvailabilityAttributesShowingUnavailableInSimulator (type)) {
+				App.Log (3, $"Type {type.FullName} is not available in the simulator. Skipping inlining Dlfcn calls for this type.");
 				return modified;
 			}
 
@@ -338,6 +403,9 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 		}
 		il.Append (il.Create (OpCodes.Ret));
 
+		// See the comment in CecilExtensions.FinalizeGeneratedBody for why this is needed.
+		body.FinalizeGeneratedBody ();
+
 		return rv;
 	}
 
@@ -439,6 +507,9 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 		}
 		il.Append (il.Create (OpCodes.Ret));
 
+		// See the comment in CecilExtensions.FinalizeGeneratedBody for why this is needed.
+		body.FinalizeGeneratedBody ();
+
 		return rv;
 	}
 
@@ -493,6 +564,9 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 		il.Append (il.Create (OpCodes.Stind_I));
 		il.Append (il.Create (OpCodes.Ret));
 
+		// See the comment in CecilExtensions.FinalizeGeneratedBody for why this is needed.
+		body.FinalizeGeneratedBody ();
+
 		return rv;
 	}
 
@@ -523,13 +597,10 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 			return modified; // don't process the Dlfcn methods themselves
 
 		if (DerivedLinkContext.App.IsSimulatorBuild) {
-			// if the method or its declaring type aren't available in the simulator, and we're building for the simulator, then don't inline.
+			// if the method isn't available in the simulator, and we're building for the simulator, then don't inline.
+			// (the declaring type's availability is checked once per type in ProcessType.)
 			if (DerivedLinkContext.HasAvailabilityAttributesShowingUnavailableInSimulator (method, method)) {
 				App.Log (3, $"Method {method.FullName} is not available in the simulator. Skipping inlining Dlfcn calls for this method.");
-				return modified;
-			}
-			if (DerivedLinkContext.HasAvailabilityAttributesShowingUnavailableInSimulator (method.DeclaringType, method)) {
-				App.Log (3, $"Type {method.DeclaringType.FullName} is not available in the simulator. Skipping inlining Dlfcn calls for this type.");
 				return modified;
 			}
 		}
@@ -554,6 +625,9 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 					continue;
 				}
 				if (!InlineSymbol (symbolName))
+					continue;
+
+				if (CollectSymbolWithoutInlining (symbolName))
 					continue;
 
 				switch (mr.Name) {
@@ -632,6 +706,9 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 				if (!InlineSymbol (symbolName))
 					continue;
 
+				if (CollectSymbolWithoutInlining (symbolName))
+					continue;
+
 
 				switch (mr.Name) {
 				case "dlsym":
@@ -659,6 +736,9 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 				}
 
 				if (!InlineSymbol (symbolName))
+					continue;
+
+				if (CollectSymbolWithoutInlining (symbolName))
 					continue;
 
 				switch (mr.Name) {
@@ -735,6 +815,9 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 				}
 
 				if (!InlineSymbol (symbolName))
+					continue;
+
+				if (CollectSymbolWithoutInlining (symbolName))
 					continue;
 
 				switch (mr.Name) {
@@ -834,6 +917,9 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 					il.Append (loadPointerInstructionStart); // il.Create (OpCodes.Ldloc, ptrVariable)
 					il.Append (il.Create (OpCodes.Ldind_I));
 					il.Append (il.Create (OpCodes.Ret));
+
+					// See the comment in CecilExtensions.FinalizeGeneratedBody for why this is needed.
+					method.Body.FinalizeGeneratedBody ();
 
 					modified = true;
 					return modified; // we replace the whole method body, so no need to continue processing the method

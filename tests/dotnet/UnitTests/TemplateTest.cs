@@ -104,24 +104,28 @@ namespace Xamarin.Tests {
 			new TemplateInfo (ApplePlatform.iOS, "iosbinding", TemplateLanguage.CSharp),
 			new TemplateInfo (ApplePlatform.iOS, "ios-notification-content-extension", TemplateLanguage.CSharp),
 			new TemplateInfo (ApplePlatform.iOS, "ios-notification-service-extension", TemplateLanguage.CSharp),
+			new TemplateInfo (ApplePlatform.iOS, "iostest", TemplateLanguage.CSharp),
 
 			new TemplateInfo (ApplePlatform.TVOS, "tvos", TemplateLanguage.CSharp),
 			new TemplateInfo (ApplePlatform.TVOS, "tvos", TemplateLanguage.VisualBasic),
 			new TemplateInfo (ApplePlatform.TVOS, "tvoslib", TemplateLanguage.CSharp),
 			new TemplateInfo (ApplePlatform.TVOS, "tvoslib", TemplateLanguage.VisualBasic),
 			new TemplateInfo (ApplePlatform.TVOS, "tvosbinding", TemplateLanguage.CSharp),
+			new TemplateInfo (ApplePlatform.TVOS, "tvostest", TemplateLanguage.CSharp),
 
 			new TemplateInfo (ApplePlatform.MacCatalyst, "maccatalyst", TemplateLanguage.CSharp, execute: true),
 			new TemplateInfo (ApplePlatform.MacCatalyst, "maccatalyst", TemplateLanguage.VisualBasic, execute: true),
 			new TemplateInfo (ApplePlatform.MacCatalyst, "maccatalystlib", TemplateLanguage.CSharp),
 			new TemplateInfo (ApplePlatform.MacCatalyst, "maccatalystlib", TemplateLanguage.VisualBasic),
 			new TemplateInfo (ApplePlatform.MacCatalyst, "maccatalystbinding", TemplateLanguage.CSharp),
+			new TemplateInfo (ApplePlatform.MacCatalyst, "maccatalysttest", TemplateLanguage.CSharp),
 
 			new TemplateInfo (ApplePlatform.MacOSX, "macos", TemplateLanguage.CSharp, execute: true),
 			new TemplateInfo (ApplePlatform.MacOSX, "macos", TemplateLanguage.VisualBasic, execute: true),
 			new TemplateInfo (ApplePlatform.MacOSX, "macoslib", TemplateLanguage.CSharp),
 			new TemplateInfo (ApplePlatform.MacOSX, "macoslib", TemplateLanguage.VisualBasic),
 			new TemplateInfo (ApplePlatform.MacOSX, "macosbinding", TemplateLanguage.CSharp),
+			new TemplateInfo (ApplePlatform.MacOSX, "macostest", TemplateLanguage.CSharp),
 
 			/* item templates */
 			new TemplateInfo (ApplePlatform.iOS, "ios-controller"),
@@ -218,6 +222,7 @@ namespace Xamarin.Tests {
 			var outputDir = Path.Combine (tmpDir, info.Template);
 			DotNet.AssertNew (outputDir, info.Template, language: language.AsLanguageIdentifier ());
 			var proj = Path.Combine (outputDir, $"{info.Template}.{language.AsFileExtension ()}");
+			AssertCurrentTargetFramework (proj, info.Platform);
 			var properties = GetDefaultProperties ();
 			var rv = DotNet.AssertBuild (proj, properties);
 			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).FilterWarnings (info.Platform).Select (v => v.Message);
@@ -273,11 +278,12 @@ namespace Xamarin.Tests {
 			var tmpDir = Cache.CreateTemporaryDirectory ();
 			var outputDir = Path.Combine (tmpDir, info.Template);
 			DotNet.AssertNew (outputDir, info.Template, language: language.AsLanguageIdentifier ());
+			var proj = Path.Combine (outputDir, $"{info.Template}.{language.AsFileExtension ()}");
+			AssertCurrentTargetFramework (proj, platform);
 
 			foreach (var item in itemTemplates)
 				DotNet.AssertNew (outputDir, item.Template, "item_" + item.Template, language: language.AsLanguageIdentifier ());
 
-			var proj = Path.Combine (outputDir, $"{info.Template}.{language.AsFileExtension ()}");
 			var properties = GetDefaultProperties ();
 			var rv = DotNet.AssertBuild (proj, properties);
 			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).FilterWarnings (platform).Select (v => v.Message);
@@ -302,6 +308,12 @@ namespace Xamarin.Tests {
 				var appExecutable = GetNativeExecutable (platform, appPath);
 				ExecuteWithMagicWordAndAssert (appExecutable);
 			}
+		}
+
+		static void AssertCurrentTargetFramework (string projectPath, ApplePlatform platform)
+		{
+			var expectedTargetFramework = $"<TargetFramework>{platform.ToFramework (Configuration.DotNetTfm)}</TargetFramework>";
+			Assert.That (File.ReadAllText (projectPath), Does.Contain (expectedTargetFramework), $"The generated project must target the current .NET TFM.");
 		}
 
 		static void InsertCodeToExitAppAfterLaunch (TemplateLanguage language, string outputDir)

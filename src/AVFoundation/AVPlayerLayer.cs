@@ -14,8 +14,7 @@ using CoreVideo;
 namespace AVFoundation {
 	public partial class AVPlayerLayer {
 		/// <summary>Gets or sets the attributes of the client visual buffer.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <value>The pixel buffer attributes, or <see langword="null" /> if none are set.</value>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]

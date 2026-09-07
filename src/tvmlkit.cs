@@ -418,7 +418,6 @@ namespace TVMLKit {
 		[Async (ResultType = typeof (TVViewElementDispatchResult))]
 		void DispatchEvent (string eventName, bool canBubble, bool isCancellable, [NullAllowed] NSDictionary<NSString, NSObject> extraInfo, [NullAllowed] Action<bool, bool> completion);
 
-		[TV (13, 0)]
 		[Export ("elementData")]
 		NSDictionary<NSString, NSObject> ElementData { get; }
 	}
@@ -684,13 +683,11 @@ namespace TVMLKit {
 		[Export ("changeToMediaItemAtIndex:")]
 		void ChangeToMediaItem (nint index);
 
-		[TV (13, 0)]
 		[Export ("presentWithAnimation:")]
 		void Present (bool animated);
 	}
 
 	[Deprecated (PlatformName.TvOS, 18, 0, message: "Use SwiftUI or UIKit instead.")]
-	[TV (13, 0)]
 	[Native]
 	[ErrorDomain ("TVDocumentErrorDomain")]
 	public enum TVDocumentError : long {
@@ -701,7 +698,6 @@ namespace TVMLKit {
 	interface ITVBrowserViewControllerDataSource { }
 
 	[Deprecated (PlatformName.TvOS, 18, 0, message: "Use SwiftUI or UIKit instead.")]
-	[TV (13, 0)]
 	[Protocol]
 	[Model]
 	[BaseType (typeof (NSObject))]
@@ -715,7 +711,6 @@ namespace TVMLKit {
 	interface ITVBrowserViewControllerDelegate { }
 
 	[Deprecated (PlatformName.TvOS, 18, 0, message: "Use SwiftUI or UIKit instead.")]
-	[TV (13, 0)]
 	[Protocol]
 	[Model]
 	[BaseType (typeof (NSObject))]
@@ -728,7 +723,6 @@ namespace TVMLKit {
 	}
 
 	[Deprecated (PlatformName.TvOS, 18, 0, message: "Use SwiftUI or UIKit instead.")]
-	[TV (13, 0)]
 	[BaseType (typeof (UIViewController))]
 	[DisableDefaultCtor]
 	interface TVBrowserViewController {
@@ -776,7 +770,6 @@ namespace TVMLKit {
 	interface ITVDocumentViewControllerDelegate { }
 
 	[Deprecated (PlatformName.TvOS, 18, 0, message: "Use SwiftUI or UIKit instead.")]
-	[TV (13, 0)]
 	[Protocol]
 	[Model]
 	[BaseType (typeof (NSObject))]
@@ -799,7 +792,6 @@ namespace TVMLKit {
 	}
 
 	[Deprecated (PlatformName.TvOS, 18, 0, message: "Use SwiftUI or UIKit instead.")]
-	[TV (13, 0)]
 	enum TVDocumentEvent {
 		[Field ("TVDocumentEventPlay")]
 		Play,
@@ -820,7 +812,6 @@ namespace TVMLKit {
 	}
 
 	[Deprecated (PlatformName.TvOS, 18, 0, message: "Use SwiftUI or UIKit instead.")]
-	[TV (13, 0)]
 	[BaseType (typeof (UIViewController))]
 	[DisableDefaultCtor]
 	interface TVDocumentViewController {
@@ -849,7 +840,6 @@ namespace TVMLKit {
 	}
 
 	[Deprecated (PlatformName.TvOS, 18, 0, message: "Use SwiftUI or UIKit instead.")]
-	[TV (13, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface TVBrowserTransitionAnimator : UIViewControllerAnimatedTransitioning {

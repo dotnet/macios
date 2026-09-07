@@ -54,16 +54,7 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary, EntryPoint = "CFArrayGetTypeID")]
 		internal extern static /* CFTypeID */ nint GetTypeID ();
 
-		// pointer to a const struct (REALLY APPLE?)
-		static IntPtr kCFTypeArrayCallbacks_ptr_value;
-		static IntPtr kCFTypeArrayCallbacks_ptr {
-			get {
-				// FIXME: right now we can't use [Fields] for GetIndirect
-				if (kCFTypeArrayCallbacks_ptr_value == IntPtr.Zero)
-					kCFTypeArrayCallbacks_ptr_value = Dlfcn.GetIndirect (Libraries.CoreFoundation.Handle, "kCFTypeArrayCallBacks");
-				return kCFTypeArrayCallbacks_ptr_value;
-			}
-		}
+		static IntPtr kCFTypeArrayCallbacks_ptr = _CFTypeArrayCallbacks;
 
 		internal static CFArray FromIntPtrs (params NativeHandle [] values)
 		{
@@ -117,8 +108,11 @@ namespace CoreFoundation {
 			var _values = c <= 256 ? stackalloc IntPtr [c] : new IntPtr [c];
 			for (int i = 0; i < c; ++i)
 				_values [i] = values [i].Handle;
+			IntPtr rv;
 			fixed (IntPtr* pv = _values)
-				return CFArrayCreate (IntPtr.Zero, (IntPtr) pv, c, kCFTypeArrayCallbacks_ptr);
+				rv = CFArrayCreate (IntPtr.Zero, (IntPtr) pv, c, kCFTypeArrayCallbacks_ptr);
+			GC.KeepAlive (values);
+			return rv;
 		}
 
 		/// <summary>Create a <see cref="CFArray" /> from an array of strings.</summary>

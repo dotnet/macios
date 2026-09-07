@@ -1628,7 +1628,7 @@ namespace HomeKit {
 		Sunset,
 	}
 
-	[iOS (13, 0), TV (13, 0), NoMac, MacCatalyst (14, 0)]
+	[NoMac, MacCatalyst (14, 0)]
 	[Flags]
 	[Native]
 	public enum HMHomeManagerAuthorizationStatus : ulong {

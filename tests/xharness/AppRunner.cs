@@ -274,7 +274,7 @@ namespace Xharness {
 			listener.StartAsync ();
 
 			// object that will take care of capturing and parsing the results
-			ICrashSnapshotReporter crashReporter = snapshotReporterFactory.Create (MainLog, Logs, isDevice: !isSimulator, deviceName);
+			ICrashSnapshotReporter crashReporter = snapshotReporterFactory.Create (MainLog, Logs, isDevice: !isSimulator, deviceName, AppInformation);
 
 			var testReporterTimeout = TimeSpan.FromMinutes (harness.Timeout * timeoutMultiplier);
 			var testReporter = testReporterFactory.Create (MainLog,
@@ -288,8 +288,7 @@ namespace Xharness {
 				harness.XmlJargon,
 				deviceName,
 				testReporterTimeout,
-				buildTask?.Logs?.Directory,
-				(level, message) => harness.Log (level, message));
+				buildTask?.Logs?.Directory);
 
 			listener.ConnectedTask
 				.TimeoutAfter (TimeSpan.FromMinutes (harness.LaunchTimeout))

@@ -9,9 +9,8 @@
 namespace AppKit {
 
 	public partial class NSTextField {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the text field cell associated with this control.</summary>
+		/// <value>The <see cref="NSTextFieldCell" /> used by this control.</value>
 		public new NSTextFieldCell Cell {
 			get { return (NSTextFieldCell) base.Cell; }
 			set { base.Cell = value; }

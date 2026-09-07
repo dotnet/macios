@@ -138,6 +138,15 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		[Test]
+		public void SupportedOSPlatformVersionWithWhitespace ()
+		{
+			var task = CreateTask ();
+			task.SupportedOSPlatformVersion = "\n13.0";
+			ExecuteTask (task, expectedErrorCount: 1);
+			Assert.That (Engine.Logger.ErrorEvents [0].Message, Is.EqualTo ("The value '\\n13.0' for the property 'SupportedOSPlatformVersion' is not a valid version number, because it contains whitespace."));
+		}
+
+		[Test]
 		public void MacCatalystVersionCheck ()
 		{
 			var task = CreateTask (platform: ApplePlatform.MacCatalyst);
@@ -173,20 +182,66 @@ namespace Xamarin.MacDev.Tasks {
 
 			var plist = PDictionary.OpenFile (task.CompiledAppManifest!.ItemSpec);
 			var variables = new string [] {
-				"DTCompiler",
-				"DTPlatformBuild",
-				"DTPlatformName",
-				"DTPlatformVersion",
-				"DTSDKBuild",
-				"DTSDKName",
-				"DTXcode",
-				"DTXcodeBuild",
-			};
+			"DTCompiler",
+			"DTPlatformBuild",
+			"DTPlatformName",
+			"DTPlatformVersion",
+			"DTSDKBuild",
+			"DTSDKName",
+			"DTXcode",
+			"DTXcodeBuild",
+		};
 			foreach (var variable in variables) {
 				var value = plist.GetString (variable)?.Value;
 				Assert.That (value, Is.Not.Null.And.Not.Empty, variable);
 			}
 			Assert.That (plist.GetString ("DTPlatformName")?.Value, Is.EqualTo (expectedDTPlatformName), "Expected DTPlatformName");
+		}
+
+		[Test]
+		[TestCase ("ARM64")]
+		[TestCase ("x86_64")]
+		[TestCase ("x86_64, ARM64")]
+		public void MacCatalystDoesNotInjectRequiredDeviceCapabilities (string targetArchitectures)
+		{
+			// UIRequiredDeviceCapabilities is neither required nor evaluated for Mac Catalyst (the
+			// macOS App Store ignores hardware capability values such as 'arm64'). Injecting an
+			// architecture-specific value would also make the Info.plist differ between the x64 and
+			// arm64 slices of a universal build, which breaks merging the per-RID app bundles. Verify
+			// we never inject it for Mac Catalyst.
+			var task = CreateTask (platform: ApplePlatform.MacCatalyst);
+			task.TargetArchitectures = targetArchitectures;
+			ExecuteTask (task);
+
+			var plist = PDictionary.OpenFile (task.CompiledAppManifest!.ItemSpec);
+			Assert.That (plist.ContainsKey (ManifestKeys.UIRequiredDeviceCapabilities), Is.False, "UIRequiredDeviceCapabilities");
+		}
+
+		[Test]
+		[TestCase ("metal")]
+		[TestCase ("arm64")]
+		public void MacCatalystPreservesUserRequiredDeviceCapabilities (string capability)
+		{
+			// A shared iOS/iPad/Mac Catalyst Info.plist may legitimately declare
+			// UIRequiredDeviceCapabilities. It's ignored on Mac Catalyst, but we must preserve it
+			// as-authored (and identically between the architecture slices of a universal build, so
+			// the app bundles can be merged).
+			var dir = Cache.CreateTemporaryDirectory ();
+			var task = CreateTask (dir, ApplePlatform.MacCatalyst);
+			task.TargetArchitectures = "ARM64";
+
+			var manifest = new PDictionary ();
+			manifest [ManifestKeys.UIRequiredDeviceCapabilities] = new PArray { new PString (capability) };
+			var manifestPath = Path.Combine (dir, "Info.plist");
+			manifest.Save (manifestPath);
+			task.AppManifest = new TaskItem (manifestPath);
+
+			ExecuteTask (task);
+
+			var plist = PDictionary.OpenFile (task.CompiledAppManifest!.ItemSpec);
+			var array = plist.Get<PArray> (ManifestKeys.UIRequiredDeviceCapabilities);
+			Assert.That (array, Is.Not.Null, "present");
+			Assert.That (array!.OfType<PString> ().Select (x => x.Value).ToArray (), Is.EqualTo (new [] { capability }), "preserved");
 		}
 	}
 }

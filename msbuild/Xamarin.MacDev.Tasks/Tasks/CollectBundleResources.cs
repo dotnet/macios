@@ -11,7 +11,7 @@ using Xamarin.Messaging.Build.Client;
 using Xamarin.Utils;
 
 namespace Xamarin.MacDev.Tasks {
-	public class CollectBundleResources : XamarinTask, ICancelableTask, IHasProjectDir, IHasResourcePrefix {
+	public class CollectBundleResources : XamarinTask, ICancelableTask, IHasProjectDir, IHasResourcePrefix, IHasResolveResourceItemsRelativeToProject {
 		#region Inputs
 
 		public ITaskItem [] BundleResources { get; set; } = Array.Empty<ITaskItem> ();
@@ -25,6 +25,8 @@ namespace Xamarin.MacDev.Tasks {
 
 		[Required]
 		public string ResourcePrefix { get; set; } = string.Empty;
+
+		public bool ResolveResourceItemsRelativeToProject { get; set; }
 
 		#endregion
 

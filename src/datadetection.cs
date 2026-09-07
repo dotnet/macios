@@ -3,7 +3,7 @@
 
 namespace DataDetection {
 
-	[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0), Mac (12, 0)]
+	[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface DDMatch {
@@ -11,14 +11,14 @@ namespace DataDetection {
 		string MatchedString { get; }
 	}
 
-	[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0), Mac (12, 0)]
+	[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (DDMatch))]
 	interface DDMatchLink {
 		[Export ("URL")]
 		NSUrl Url { get; }
 	}
 
-	[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0), Mac (12, 0)]
+	[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (DDMatch))]
 	interface DDMatchPhoneNumber {
 		[Export ("phoneNumber")]
@@ -28,7 +28,7 @@ namespace DataDetection {
 		string Label { get; }
 	}
 
-	[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0), Mac (12, 0)]
+	[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (DDMatch))]
 	interface DDMatchEmailAddress {
 		[Export ("emailAddress")]
@@ -38,7 +38,7 @@ namespace DataDetection {
 		string Label { get; }
 	}
 
-	[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0), Mac (12, 0)]
+	[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (DDMatch))]
 	interface DDMatchPostalAddress {
 		[NullAllowed, Export ("street")]
@@ -57,7 +57,7 @@ namespace DataDetection {
 		string Country { get; }
 	}
 
-	[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0), Mac (12, 0)]
+	[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (DDMatch))]
 	interface DDMatchCalendarEvent {
 		[Export ("allDay")]
@@ -76,7 +76,7 @@ namespace DataDetection {
 		NSTimeZone EndTimeZone { get; }
 	}
 
-	[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0), Mac (12, 0)]
+	[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (DDMatch))]
 	interface DDMatchShipmentTrackingNumber {
 		[Export ("carrier")]
@@ -86,7 +86,7 @@ namespace DataDetection {
 		string TrackingNumber { get; }
 	}
 
-	[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0), Mac (12, 0)]
+	[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (DDMatch))]
 	interface DDMatchFlightNumber {
 		[Export ("airline")]
@@ -96,7 +96,7 @@ namespace DataDetection {
 		string FlightNumber { get; }
 	}
 
-	[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0), Mac (12, 0)]
+	[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (DDMatch))]
 	interface DDMatchMoneyAmount {
 		[Export ("currency")]

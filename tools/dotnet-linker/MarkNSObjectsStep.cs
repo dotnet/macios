@@ -44,7 +44,11 @@ namespace Xamarin.Linker.Steps {
 		public bool PreserveType (TypeDefinition type, bool allMembers)
 		{
 			var moduleConstructor = abr.GetOrCreateStaticConstructor (type.Module.GetModuleType (), out var modified);
-			var attrib = CreateDynamicDependencyAttribute (type, allMembers);
+			if (allMembers) {
+				modified |= abr.AddPreserveAllMembersDynamicDependencyAttributes (moduleConstructor, type);
+				return modified;
+			}
+			var attrib = abr.CreateDynamicDependencyAttribute (DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors, type);
 			modified |= abr.AddAttributeOnlyOnce (moduleConstructor, attrib);
 			return modified;
 		}
@@ -52,25 +56,6 @@ namespace Xamarin.Linker.Steps {
 		public bool PreserveType (TypeDefinition onType, TypeDefinition type)
 		{
 			return abr.AddDynamicDependencyAttributeToStaticConstructor (onType, type);
-		}
-
-		// We want to avoid `DynamicallyAccessedMemberTypes.All` because it preserves nested types.
-		// `All` would also keep unused private members of base types.
-		const DynamicallyAccessedMemberTypes allMemberTypes =
-			DynamicallyAccessedMemberTypes.PublicFields | DynamicallyAccessedMemberTypes.NonPublicFields
-			| DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.NonPublicProperties
-			| DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods
-			| DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors
-			| DynamicallyAccessedMemberTypes.PublicEvents | DynamicallyAccessedMemberTypes.NonPublicEvents
-			| DynamicallyAccessedMemberTypes.Interfaces;
-
-		CustomAttribute CreateDynamicDependencyAttribute (TypeDefinition type, bool allMembers)
-		{
-			var members = allMembers
-				? allMemberTypes
-				: DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors;
-
-			return abr.CreateDynamicDependencyAttribute (members, type);
 		}
 
 		public bool PreserveMethod (TypeDefinition onType, MethodDefinition method)

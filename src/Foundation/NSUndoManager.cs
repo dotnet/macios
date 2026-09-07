@@ -13,8 +13,7 @@
 namespace Foundation {
 	public partial class NSUndoManager {
 		/// <summary>Returns the modes governing the types of input handled during a cycle of the run loop.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <value>An array of run loop modes in which the undo manager accepts undo and redo operations.</value>
 		public NSRunLoopMode [] RunLoopModes {
 			get {
 				var modes = WeakRunLoopModes;

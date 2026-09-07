@@ -25,70 +25,59 @@ namespace CoreML {
 			return NSArray.NonNullArrayFromHandleDropNullElements<nint> (handle, (v) => (nint) Messaging.IntPtr_objc_msgSend (v, Selector.GetHandle ("integerValue")));
 		}
 
-		/// <param name="shape">To be added.</param>
-		/// <param name="dataType">To be added.</param>
-		/// <param name="error">To be added.</param>
 		/// <summary>Creates a new MLMultiArray with the specified shape and data type.</summary>
-		/// <remarks>To be added.</remarks>
+		/// <param name="shape">The shape.</param>
+		/// <param name="dataType">The data type.</param>
+		/// <param name="error">The error.</param>
 		public MLMultiArray (nint [] shape, MLMultiArrayDataType dataType, out NSError error)
 			: this (ConvertArray (shape), dataType, out error)
 		{
 		}
 
-		/// <param name="dataPointer">To be added.</param>
-		/// <param name="shape">To be added.</param>
-		/// <param name="dataType">To be added.</param>
-		/// <param name="strides">To be added.</param>
-		/// <param name="deallocator">To be added.</param>
-		/// <param name="error">To be added.</param>
 		/// <summary>Creates a new MLMultiArray with the specified details.</summary>
-		/// <remarks>To be added.</remarks>
+		/// <param name="dataPointer">The data pointer.</param>
+		/// <param name="shape">The shape.</param>
+		/// <param name="dataType">The data type.</param>
+		/// <param name="strides">The strides.</param>
+		/// <param name="deallocator">The deallocator.</param>
+		/// <param name="error">The error.</param>
 		public MLMultiArray (IntPtr dataPointer, nint [] shape, MLMultiArrayDataType dataType, nint [] strides, Action<IntPtr> deallocator, out NSError error)
 			: this (dataPointer, ConvertArray (shape), dataType, ConvertArray (strides), deallocator, out error)
 		{
 		}
 
-		/// <param name="idx">A numeric identifier for the object to get or set.</param>
 		/// <summary>Retrieves the element at <paramref name="idx" />, as if the array were single-dimensional.</summary>
-		/// <value>To be added.</value>
-		/// <remarks>To be added.</remarks>
+		/// <param name="idx">A numeric identifier for the object to get or set.</param>
 		public NSNumber this [nint idx] {
 			get { return GetObject (idx); }
 			set { SetObject (value, idx); }
 		}
 
-		/// <param name="indices">A multidimensional coordinate for the object to get or set.</param>
 		/// <summary>Gets or sets the element at <paramref name="indices" />.</summary>
-		/// <value>To be added.</value>
-		/// <remarks>To be added.</remarks>
+		/// <param name="indices">A multidimensional coordinate for the object to get or set.</param>
 		public NSNumber this [params nint [] indices] {
 			get { return GetObject (indices); }
 			set { SetObject (value, indices); }
 		}
 
-		/// <param name="key">A numeric identifier for the object to get or set.</param>
 		/// <summary>Accesses the point in the multi-dimensional array identified by <paramref name="key" />.</summary>
-		/// <value>To be added.</value>
-		/// <remarks>To be added.</remarks>
+		/// <param name="key">A numeric identifier for the object to get or set.</param>
 		public NSNumber this [NSNumber [] key] {
 			get { return GetObject (key); }
 			set { SetObject (value, key); }
 		}
 
-		/// <param name="indices">A multidimensional coordinate for the object to get.</param>
 		/// <summary>Retrieves the element at <paramref name="indices" />.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <param name="indices">A multidimensional coordinate for the object to get.</param>
 		public NSNumber GetObject (params nint [] indices)
 		{
 			using (var arr = NSArray.FromNSObjects<nint> (NSNumber.FromNInt, indices))
 				return GetObjectInternal (arr.GetHandle ());
 		}
 
-		/// <param name="obj">The new value</param>
-		/// <param name="indices">The multidimensional coordinate of the item to set</param>
 		/// <summary>Sets the element at <paramref name="indices" />.</summary>
-		/// <remarks>To be added.</remarks>
+		/// <param name="obj">The new value.</param>
+		/// <param name="indices">The multidimensional coordinate of the item to set.</param>
 		public void SetObject (NSNumber obj, params nint [] indices)
 		{
 			using (var arr = NSArray.FromNSObjects<nint> (NSNumber.FromNInt, indices))
@@ -96,8 +85,6 @@ namespace CoreML {
 		}
 
 		/// <summary>The dimensions of the array.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		public nint [] Shape {
 			get {
 				return ConvertArray (_Shape);
@@ -105,12 +92,11 @@ namespace CoreML {
 		}
 
 		/// <summary>The number of elements to skip to advance an index value by one in the chosen direction.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>
-		///           <para>
-		///             <see cref="CoreML.MLMultiArray" /> objects can be treated as one-dimensional arrays. The <see cref="CoreML.MLMultiArray.Strides" /> property retrieves the number of elements in a one-dimensional array that are necessary to "skip over" in order to advance by 1 in the desired dimension.</para>
-		///           <example>
-		///             <code lang="csharp lang-csharp"><![CDATA[
+		/// <remarks>
+		///   <para>
+		///     <see cref="CoreML.MLMultiArray" /> objects can be treated as one-dimensional arrays. The <see cref="CoreML.MLMultiArray.Strides" /> property retrieves the number of elements in a one-dimensional array that are necessary to "skip over" in order to advance by 1 in the desired dimension.</para>
+		///   <example>
+		///     <code lang="csharp lang-csharp"><![CDATA[
 		/// NSError err;
 		/// var ma = new CoreML.MLMultiArray(new NSNumber[] { 3, 5, 7, 9 },CoreML.MLMultiArrayDataType.Int32, out err);
 		/// if (err is not null) 
@@ -127,8 +113,8 @@ namespace CoreML {
 		/// */        
 		///
 		///     ]]></code>
-		///           </example>
-		///         </remarks>
+		///   </example>
+		/// </remarks>
 		public nint [] Strides {
 			get {
 				return ConvertArray (_Strides);

@@ -2,3 +2,8 @@
 # However, Apple seems to also have added it to ReplayKit for iOS and tvOS, which is why xtro detects it as such.
 # It doesn't seem useful though in ReplayKit, so just skip binding it.
 !missing-field! SCStreamErrorDomain not bound
+
+!missing-null-allowed! 'System.Void ReplayKit.RPBroadcastActivityViewController::LoadBroadcastActivityViewController(System.Action`2<ReplayKit.RPBroadcastActivityViewController,Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #0
+!missing-null-allowed! 'System.Void ReplayKit.RPBroadcastActivityViewController::LoadBroadcastActivityViewController(System.Action`2<ReplayKit.RPBroadcastActivityViewController,Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #1
+!missing-null-allowed! 'System.Void ReplayKit.RPBroadcastActivityViewController::LoadBroadcastActivityViewController(System.String,System.Action`2<ReplayKit.RPBroadcastActivityViewController,Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #0
+!missing-null-allowed! 'System.Void ReplayKit.RPBroadcastActivityViewController::LoadBroadcastActivityViewController(System.String,System.Action`2<ReplayKit.RPBroadcastActivityViewController,Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #1

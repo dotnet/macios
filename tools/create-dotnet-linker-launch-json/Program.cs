@@ -144,14 +144,17 @@ class Program {
 					var isTrimmableString = item.GetMetadata ("IsTrimmable");
 					var isTrimmable = string.IsNullOrEmpty (isTrimmableString) ? (bool?) null : string.Equals (isTrimmableString, "true", StringComparison.OrdinalIgnoreCase);
 					var trimMode = item.GetMetadata ("TrimMode");
+					var originalInputPath = item.GetMetadata ("OriginalItemSpec");
+					if (!string.IsNullOrEmpty (originalInputPath))
+						originalInputPath = Path.GetFullPath (originalInputPath, originalBinlogDirectory);
 
-					return $"InputPath={inputPath}|OutputPath={outputPath}|IsTrimmable={isTrimmable}|TrimMode={trimMode}";
+					return $"InputPath={inputPath}|OutputPath={outputPath}|IsTrimmable={isTrimmable}|TrimMode={trimMode}|OriginalInputPath={originalInputPath}";
 				}
 
 				var launcherArgs = new List<string> ();
 				launcherArgs.Add ("${workspaceFolder}/bin/Debug/ap-launcher.dll");
 				if (!string.IsNullOrEmpty (makeReproPath))
-					launcherArgs.Add ("--make-repro=" + makeReproPath);
+					launcherArgs.Add ("--make-repro-path=" + makeReproPath);
 				if (!string.IsNullOrEmpty (optionsFile))
 					launcherArgs.Add ("--options-file=" + optionsFile);
 

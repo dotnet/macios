@@ -143,8 +143,7 @@ namespace CoreAnimation {
 		}
 
 		/// <summary>Gets the contents format for the layer.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <value>The format used for the layer's contents.</value>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]

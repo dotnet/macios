@@ -75,18 +75,62 @@ namespace Xamarin.Bundler {
 		public RegistrarOptions RegistrarOptions = RegistrarOptions.Default;
 		public SymbolMode SymbolMode;
 		public HashSet<string> IgnoredSymbols = new HashSet<string> ();
+		public bool? PublishReadyToRun;
+		public string PublishReadyToRunContainerFormat = "";
 
 		// The AOT arguments are currently not used for macOS, but they could eventually be used there as well (there's no mmp option to set these yet).
 		public List<string> AotArguments = new List<string> ();
 		public List<string>? AotOtherArguments = null;
 		public bool? AotFloat32 = null;
 		public bool PrepareAssemblies; // True if '$(PrepareAssemblies)' == 'true'
+
+		// The set of UnmanagedCallersOnly trampoline symbols (without the leading Mach-O underscore)
+		// that survived the NativeAOT compiler (ILC). This is only set when the native registrar code
+		// is generated after ILC has run, so that we can avoid emitting direct native references to
+		// trampolines ILC trimmed away (we route those through the dlsym fallback instead). A null value
+		// means the information isn't available (e.g. we're not compiling for NativeAOT, or the registrar
+		// runs before ILC), in which case every trampoline is assumed to have survived.
+		public HashSet<string>? SurvivingTrampolineSymbols;
+
+		// Returns true if the native registrar can emit a direct reference to the given UnmanagedCallersOnly
+		// trampoline. When we know which trampolines survived ILC, a trampoline that didn't survive must not
+		// be referenced directly (it would be an undefined symbol at native link time).
+		public bool DidTrampolineSurviveIlc (string ucoEntryPoint)
+		{
+			if (SurvivingTrampolineSymbols is null)
+				return true;
+			return SurvivingTrampolineSymbols.Contains (ucoEntryPoint);
+		}
+
+		// The set of Objective-C class names whose inlined Class.GetHandle native function is still
+		// referenced by the NativeAOT compiler's (ILC) output. These classes must be registered in the
+		// native registrar code even if all their trampolines were trimmed away, because managed code
+		// still looks up their class handle (and the generated native code references the Objective-C
+		// class, which wouldn't exist otherwise). This is set alongside SurvivingTrampolineSymbols.
+		// See docs/code/class-handles.md.
+		public HashSet<string>? ClassesReferencedByInlinedClassGetHandle;
+
+		// Returns true if managed code that survived ILC looks up the class handle for the given
+		// Objective-C class name using the inlined Class.GetHandle optimization.
+		public bool IsClassReferencedByInlinedClassGetHandle (string exportedName)
+		{
+			if (ClassesReferencedByInlinedClassGetHandle is null)
+				return false;
+			return ClassesReferencedByInlinedClassGetHandle.Contains (exportedName);
+		}
+
 #if ASSEMBLY_PREPARER
 		public bool InCustomTrimmerStep = false;
+		public bool IsPostProcessingAssemblies;
+		// When post-processing assemblies with the trimmable static registrar, the [ProtocolMember] attributes
+		// have been removed by the trimmer, so the registrar reads them from the pre-trim (untrimmed) assemblies
+		// instead. This resolver provides access to the pre-trim assemblies (a separate metadata universe from
+		// the post-trim assemblies), and is null when not applicable.
+		public Mono.Cecil.IAssemblyResolver? PreTrimAssemblyResolver;
 #else
 		public bool InCustomTrimmerStep = true;
-#endif
 		public bool IsPostProcessingAssemblies => PrepareAssemblies && InCustomTrimmerStep;
+#endif
 
 #if !LEGACY_TOOLS
 		public DlsymOptions DlsymOptions;
@@ -101,6 +145,7 @@ namespace Xamarin.Bundler {
 		public TargetFramework TargetFramework { get; set; }
 		public ApplePlatform Platform { get { return TargetFramework.Platform; } }
 
+		public List<string> DylibsToConvertToFrameworks = new List<string> ();
 		public List<string> MonoLibraries = new List<string> ();
 		public List<string> InterpretedAssemblies = new List<string> ();
 
@@ -261,6 +306,9 @@ namespace Xamarin.Bundler {
 			}
 			set { package_managed_debug_symbols = value; }
 		}
+		public bool GenerateTrustedPlatformAssemblies;
+		public bool IsMultiRidBuild;
+		public List<string> TrustedPlatformAssemblies = new List<string> ();
 
 		public Version GetMacCatalystiOSVersion (Version macOSVersion)
 		{

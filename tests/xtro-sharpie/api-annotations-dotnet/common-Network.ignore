@@ -54,7 +54,6 @@
 !missing-enum! nw_data_transfer_report_state_t not bound
 !missing-enum! nw_endpoint_type_t not bound
 !missing-enum! nw_error_domain_t not bound
-!missing-enum! nw_ethernet_channel_state_t not bound
 !missing-enum! nw_framer_start_result_t not bound
 !missing-enum! nw_interface_radio_type_t not bound
 !missing-enum! nw_interface_type_t not bound

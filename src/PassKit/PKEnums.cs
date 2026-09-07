@@ -133,7 +133,7 @@ namespace PassKit {
 		Credit = 1 << 2,
 		/// <summary>Supports debit cards.</summary>
 		Debit = 1 << 3,
-		[iOS (17, 0), Mac (14, 0), NoTV, MacCatalyst (17, 0)]
+		[iOS (17, 0), NoTV, MacCatalyst (17, 0)]
 		InstantFundsOut = 1 << 7,
 	}
 
@@ -254,7 +254,6 @@ namespace PassKit {
 	}
 
 	/// <summary>Enumerates results that are used in calls to <see cref="PassKit.PKPassLibrary.RequestAutomaticPassPresentationSuppression(System.Action{PassKit.PKAutomaticPassPresentationSuppressionResult})" />.</summary>
-	[Mac (11, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PKAutomaticPassPresentationSuppressionResult : ulong {
@@ -302,9 +301,9 @@ namespace PassKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PKAddPassButtonStyle : long {
-		/// <summary>To be added.</summary>
+		/// <summary>A black "Add Pass" button.</summary>
 		Black = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>An outlined "Add Pass" button.</summary>
 		Outline,
 	}
 
@@ -328,9 +327,9 @@ namespace PassKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PKAddPaymentPassStyle : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>A payment pass style.</summary>
 		Payment,
-		/// <summary>To be added.</summary>
+		/// <summary>An access pass style.</summary>
 		Access,
 	}
 
@@ -386,7 +385,7 @@ namespace PassKit {
 		RegionNotSupported = 8,
 	}
 
-	[iOS (16, 0), Mac (13, 0), NoTV, MacCatalyst (16, 0)]
+	[iOS (16, 0), NoTV, MacCatalyst (16, 0)]
 	[Native]
 	[ErrorDomain ("PKShareSecureElementPassErrorDomain")]
 	public enum PKShareSecureElementPassErrorCode : long {
@@ -402,7 +401,7 @@ namespace PassKit {
 		Failed,
 	}
 
-	[iOS (16, 0), Mac (13, 0), NoTV, MacCatalyst (16, 0)]
+	[iOS (16, 0), NoTV, MacCatalyst (16, 0)]
 	[Native]
 	public enum PKVehicleConnectionErrorCode : long {
 		Unknown = 0,
@@ -410,7 +409,7 @@ namespace PassKit {
 		SessionNotActive,
 	}
 
-	[iOS (16, 0), Mac (13, 0), NoTV, MacCatalyst (16, 0)]
+	[iOS (16, 0), NoTV, MacCatalyst (16, 0)]
 	[Native]
 	public enum PKVehicleConnectionSessionConnectionState : long {
 		Disconnected = 0,
@@ -419,7 +418,7 @@ namespace PassKit {
 		FailedToConnect,
 	}
 
-	[iOS (17, 0), Mac (14, 0), TV (17, 0), MacCatalyst (17, 0)]
+	[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum PKApplePayLaterAvailability : long {
 		Available,

@@ -22,8 +22,10 @@ namespace MonoTouch.Tuner {
 			var log = Configuration;
 
 			foreach (var assembly in configuration.AssemblyInfos) {
-				if (!assembly.IsCILAssembly)
+				if (!assembly.IsCILAssembly) {
+					// Non-managed assembly, already handled by LoadAssembliesStep (OutputPath = InputPath).
 					continue;
+				}
 
 				var assemblyDefinition = assembly.Assembly;
 				if (assemblyDefinition is null) {
@@ -35,10 +37,17 @@ namespace MonoTouch.Tuner {
 				switch (action) {
 				case AssemblyAction.Copy:
 				case AssemblyAction.CopyUsed:
-					assembly.OutputPath = assembly.InputPath;
+					OutputWithoutRewriting (assembly);
 					continue;
 				case AssemblyAction.Link:
 				case AssemblyAction.Save:
+					if (!configuration.ModifiedAssemblies.Contains (assemblyDefinition)) {
+						// The assembly is marked to be saved (e.g. it's part of the set of assemblies to
+						// trim), but the assembly-preparer didn't actually modify it, so there's no need to
+						// re-serialize it - just output the original assembly.
+						OutputWithoutRewriting (assembly);
+						continue;
+					}
 					log.Log ($"Saving {assembly.InputPath} to {assembly.OutputPath}");
 					break;
 				default:
@@ -72,6 +81,17 @@ namespace MonoTouch.Tuner {
 			}
 		}
 
+		void OutputWithoutRewriting (Xamarin.Build.AssemblyPreparerInfo assembly)
+		{
+			if (Configuration.Application.IsPostProcessingAssemblies && assembly.InputPath != assembly.OutputPath) {
+				// During post-processing, copy unchanged assemblies to the output directory
+				// so all assemblies are in the same directory (required for AOT compilation).
+				CopyAssemblyToOutput (assembly.InputPath, assembly.OutputPath);
+			} else {
+				assembly.OutputPath = assembly.InputPath;
+			}
+		}
+
 		void RemoveCrossGen (AssemblyDefinition assemblyDefinition)
 		{
 			// Drop crossgened code from the assembly
@@ -87,6 +107,30 @@ namespace MonoTouch.Tuner {
 					module.Characteristics |= ModuleCharacteristics.NoSEH;
 				}
 			}
+		}
+
+		void CopyAssemblyToOutput (string source, string target)
+		{
+			PathUtils.CreateDirectoryForFile (target);
+
+			CopyIfNeeded (source, target);
+			CopyIfNeeded (Path.ChangeExtension (source, ".pdb"), Path.ChangeExtension (target, ".pdb"));
+			CopyIfNeeded (source + ".config", target + ".config");
+		}
+
+		void CopyIfNeeded (string source, string target)
+		{
+			if (!File.Exists (source))
+				return;
+
+			// Skip if target is already up-to-date.
+			if (File.Exists (target) && File.GetLastWriteTimeUtc (source) <= File.GetLastWriteTimeUtc (target)) {
+				Configuration.Log ($"Not copying '{source}' to '{target}' because it's already up-to-date.");
+				return;
+			}
+
+			Configuration.Log ($"Copying '{source}' to '{target}'.");
+			File.Copy (source, target, true);
 		}
 	}
 }

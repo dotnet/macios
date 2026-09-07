@@ -10,6 +10,8 @@
 		<Compile Include="../*.cs" />
 
 		<BundleResource Update="$(_ResourcePrefix)/B.otf" RegisterFont="true" />
+		<!-- This linked resource verifies that the consuming app optimizes PNGs from referenced libraries. -->
+		<BundleResource Include="../../MyCatalystApp/Resources/image.png" Link="library-image.png" />
 
 		<PartialAppManifest Include="../shared.plist" />
 
@@ -23,5 +25,3 @@
 		<CoreMLModel Include="../*.mlmodel" />
 	</ItemGroup>
 </Project>
-
-

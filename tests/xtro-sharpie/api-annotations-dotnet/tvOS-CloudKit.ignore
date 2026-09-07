@@ -2,3 +2,12 @@
 ## In reality the selectors only answer in the simulator, not on AppleTV devices
 !missing-selector! CKContainer::fetchAllLongLivedOperationIDsWithCompletionHandler: not bound
 !missing-selector! CKContainer::fetchLongLivedOperationWithID:completionHandler: not bound
+
+## bound selectors with no native declaration reachable from the class in the current SDK headers:
+## private/SPI selectors, protocol/category members Apple inlines without declaring the conformance on
+## the class, managed callback infrastructure, or API Apple removed/privatized - kept for compatibility
+## (baseline for https://github.com/dotnet/macios/issues/26053)
+!unknown-selector! CKSubscription::predicate not found
+!unknown-selector! CKSubscription::recordType not found
+!unknown-selector! CKSubscription::setZoneID: not found
+!unknown-selector! CKSubscription::zoneID not found

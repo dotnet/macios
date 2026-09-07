@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Xml.Linq;
 
 using Mono.Cecil;
@@ -30,10 +31,18 @@ namespace Xamarin.Linker {
 		public string DedupAssembly = string.Empty;
 		public string CacheDirectory { get; private set; } = string.Empty;
 		public Version? DeploymentTarget { get; private set; }
+		// The user-provided value of the $(DynamicRegistrationSupported) MSBuild property (null if not set).
+		// When set, RegistrarRemovalTrackingStep doesn't need to run in the assembly-preparer.
+		// This is also how the value RegistrarRemovalTrackingStep computed during the preparation pass is
+		// passed to the post-processing pass (which needs it to generate the native main file).
+		public bool? DynamicRegistrationSupported { get; set; }
 		public HashSet<string> FrameworkAssemblies { get; private set; } = new HashSet<string> ();
 		public string IntermediateLinkDir { get; private set; } = string.Empty;
 		public bool InvariantGlobalization { get; private set; }
 		public bool HybridGlobalization { get; private set; }
+		// The value of the $(HotReloadCompatibleBuild) MSBuild property. When enabled, steps that
+		// re-serialize user assemblies (breaking Hot Reload) must leave reloadable assemblies untouched.
+		public bool HotReloadCompatibleBuild { get; private set; }
 		public InlineDlfcnMethodsMode InlineDlfcnMethods { get; set; }
 		public bool InlineDlfcnMethodsEnabled => InlineDlfcnMethods != InlineDlfcnMethodsMode.Disabled;
 		public InlineClassGetHandleMode InlineClassGetHandle { get; set; }
@@ -43,12 +52,16 @@ namespace Xamarin.Linker {
 		public HashSet<string> FieldSymbols { get; } = new HashSet<string> ();
 		public string IntermediateOutputPath { get; private set; } = string.Empty;
 		public string ItemsDirectory { get; private set; } = string.Empty;
+		// The files the assembly-preparer writes its MSBuild output properties to (one per pass).
+		public string MSBuildOutputFile { get; private set; } = string.Empty;
+		public string MSBuildPostProcessOutputFile { get; private set; } = string.Empty;
 		public bool IsSimulatorBuild { get; private set; }
 		public string PartialStaticRegistrarLibrary { get; set; } = string.Empty;
 		public ApplePlatform Platform { get; private set; }
 		public string PlatformAssembly { get; private set; } = string.Empty;
 		public bool PublishTrimmed { get; private set; }
 		public string RelativeAppBundlePath { get; private set; } = string.Empty;
+		public string RuntimeConfigurationFilePath { get; private set; } = string.Empty;
 		public Version? SdkVersion { get; private set; }
 		public string SdkRootDirectory { get; private set; } = string.Empty;
 		public string TypeMapFilePath { get; set; } = string.Empty;
@@ -56,6 +69,7 @@ namespace Xamarin.Linker {
 		public string UnmanagedCallersOnlyMapPath { get; private set; } = string.Empty;
 		public int Verbosity => Application.Verbosity;
 		public string XamarinNativeLibraryDirectory { get; private set; } = string.Empty;
+		public Version? XcodeVersion { get; private set; }
 
 		static ConditionalWeakTable<LinkContext, LinkerConfiguration> configurations = new ConditionalWeakTable<LinkContext, LinkerConfiguration> ();
 
@@ -65,9 +79,7 @@ namespace Xamarin.Linker {
 
 		public IList<string> RegistrationMethods { get; set; } = new List<string> ();
 		public List<string> NativeCodeToCompileAndLink { get; private set; } = new List<string> ();
-#if !ASSEMBLY_PREPARER
 		public CompilerFlags CompilerFlags;
-#endif
 
 #if ASSEMBLY_PREPARER
 		List<ProductException> exceptions = new List<ProductException> ();
@@ -93,6 +105,9 @@ namespace Xamarin.Linker {
 		public List<AssemblyDefinition> Assemblies => Application.LinkContext.Assemblies;
 		public required List<AssemblyPreparerInfo> AssemblyInfos;
 		public List<(string Path, AssemblyDefinition Assembly, string? OriginatingAssembly)> AddedAssemblies = new ();
+		// The set of assemblies that were modified (i.e. that AppBundleRewriter.SaveAssembly was called for).
+		// Assemblies that aren't modified don't need to be re-serialized when saved.
+		public HashSet<AssemblyDefinition> ModifiedAssemblies = new ();
 #else
 		// The list of assemblies is populated in CollectAssembliesStep.
 		public List<AssemblyDefinition> Assemblies = new List<AssemblyDefinition> ();
@@ -101,6 +116,10 @@ namespace Xamarin.Linker {
 		string? user_optimize_flags;
 
 		Dictionary<string, List<MSBuildItem>> msbuild_items = new Dictionary<string, List<MSBuildItem>> ();
+
+		// MSBuild output properties (property name -> value), written (alphabetically sorted) to the
+		// MSBuild output file by FlushOutputForMSBuild.
+		SortedDictionary<string, string> msbuild_properties = new SortedDictionary<string, string> (StringComparer.Ordinal);
 
 		AppBundleRewriter? abr;
 		internal AppBundleRewriter AppBundleRewriter {
@@ -124,6 +143,12 @@ namespace Xamarin.Linker {
 
 		// This dictionary contains information about the trampolines created for each assembly.
 		public AssemblyTrampolineInfos AssemblyTrampolineInfos = new ();
+
+		// The per-assembly companion TypeMap assemblies (_<Asm>.TypeMap.dll), keyed by the user
+		// assembly they belong to. When HotReloadCompatibleBuild is enabled, ManagedRegistrarStep
+		// creates these early (so it can emit the registrar trampolines into them instead of into
+		// the user assembly) and TrimmableRegistrarStep reuses them.
+		internal Dictionary<AssemblyDefinition, RegistrarCompanionAssembly> RegistrarCompanionAssemblies = new ();
 
 		// ASSEMBLY_PREPARER TODO move pinvoke wrapper generation out of ListExportedFields step (and remove the #pragma warning)
 #pragma warning disable CS0649 // Field is never assigned to, and will always have its default value null
@@ -288,6 +313,28 @@ namespace Xamarin.Linker {
 						}
 					})
 				)},
+				{ "DylibToConvertToFramework", (
+					new LoadValue ((key, value) => Application.DylibsToConvertToFrameworks.Add (value)),
+					new SaveValue ((key, storage) => storage.AddRange (Application.DylibsToConvertToFrameworks.OrderBy (v => v).Select (v => $"{key}={v}")))
+				)},
+				{ "DynamicRegistrationSupported", (
+					// This is the user-overridable $(DynamicRegistrationSupported) MSBuild property. It maps to
+					// the RemoveDynamicRegistrar optimization (inverted): if dynamic registration is supported,
+					// then we're not removing the dynamic registrar. When set, RegistrarRemovalTrackingStep doesn't
+					// need to run in the assembly-preparer (the value is passed straight through to the trimmer
+					// feature switch), and it won't recompute the value in the real linker either.
+					new LoadValue ((key, value) => {
+						if (string.IsNullOrEmpty (value))
+							return; // Not set: RegistrarRemovalTrackingStep will compute a default value.
+						if (!TryParseOptionalBoolean (value, out var dynamicRegistrationSupported))
+							throw new InvalidOperationException ($"Unable to parse the {key} value: {value} in {linker_file}");
+						if (dynamicRegistrationSupported.HasValue) {
+							DynamicRegistrationSupported = dynamicRegistrationSupported.Value;
+							Application.Optimizations.RemoveDynamicRegistrar = !dynamicRegistrationSupported.Value;
+						}
+					}),
+					new SaveValue ((key, storage) => saveNullableBool (key, DynamicRegistrationSupported, storage))
+				)},
 				{ "EnableSGenConc", (
 					new LoadValue ((key, value) => Application.EnableSGenConc = string.Equals ("true", value, StringComparison.OrdinalIgnoreCase)),
 					new SaveValue ((key, storage) => storage.Add ($"{key}={(Application.EnableSGenConc ? "true" : "false")}"))
@@ -320,6 +367,14 @@ namespace Xamarin.Linker {
 				{ "FrameworkAssembly", (
 					new LoadValue ((key, value) => FrameworkAssemblies.Add (value)),
 					new SaveValue ((key, storage) => storage.AddRange (FrameworkAssemblies.OrderBy (v => v).Select (v => $"{key}={v}")))
+				)},
+				{ "GenerateTrustedPlatformAssemblies", (
+					new LoadValue ((key, value) => loadBool (key, value, out Application.GenerateTrustedPlatformAssemblies)),
+					new SaveValue ((key, storage) => saveOptionalDefaultFalseBool (key, Application.GenerateTrustedPlatformAssemblies, storage))
+				)},
+				{ "HotReloadCompatibleBuild", (
+					new LoadValue ((key, value) => HotReloadCompatibleBuild = string.Equals ("true", value, StringComparison.OrdinalIgnoreCase)),
+					new SaveValue ((key, storage) => saveOptionalDefaultFalseBool (key, HotReloadCompatibleBuild, storage))
 				)},
 				{ "InlineDlfcnMethods", (
 					new LoadValue ((key, value) => {
@@ -366,6 +421,10 @@ namespace Xamarin.Linker {
 					new LoadValue ((key, value) => Application.IsExtension = string.Equals ("true", value, StringComparison.OrdinalIgnoreCase)),
 					new SaveValue ((key, storage) => storage.Add ($"{key}={(Application.IsExtension ? "true" : "false")}"))
 				)},
+				{ "IsMultiRidBuild", (
+					new LoadValue ((key, value) => loadBool (key, value, out Application.IsMultiRidBuild)),
+					new SaveValue ((key, storage) => saveOptionalDefaultFalseBool (key, Application.IsMultiRidBuild, storage))
+				)},
 				{ "ItemsDirectory", (
 					new LoadValue ((key, value) => ItemsDirectory = value),
 					new SaveValue ((key, storage) => saveNonEmpty (key, ItemsDirectory, storage))
@@ -406,6 +465,16 @@ namespace Xamarin.Linker {
 					new LoadValue ((key, value) => Application.MonoLibraries.Add (value)),
 					new SaveValue ((key, storage) => storage.AddRange (Application.MonoLibraries.OrderBy (v => v).Select (v => $"{key}={v}")))
 				)},
+				{ "MSBuildOutputFile", (
+					// The file the assembly-preparer's preparation pass writes its MSBuild output properties to.
+					new LoadValue ((key, value) => MSBuildOutputFile = value),
+					new SaveValue ((key, storage) => saveNonEmpty (key, MSBuildOutputFile, storage))
+				)},
+				{ "MSBuildPostProcessOutputFile", (
+					// The file the assembly-preparer's post-processing pass writes its MSBuild output properties to.
+					new LoadValue ((key, value) => MSBuildPostProcessOutputFile = value),
+					new SaveValue ((key, storage) => saveNonEmpty (key, MSBuildPostProcessOutputFile, storage))
+				)},
 				{ "MtouchFloat32", (
 					new LoadValue ((key, value) => loadNullableBool (key, value, out Application.AotFloat32)),
 					new SaveValue ((key, storage) => saveNullableBool (key, Application.AotFloat32, storage))
@@ -438,6 +507,20 @@ namespace Xamarin.Linker {
 					new LoadValue ((key, value) => PublishTrimmed = string.Equals ("true", value, StringComparison.OrdinalIgnoreCase)),
 					new SaveValue ((key, storage) => storage.Add ($"{key}={(PublishTrimmed ? "true" : "false")}"))
 				 )},
+				{ "PublishReadyToRun", (
+					new LoadValue ((key, value) => {
+						if (!string.IsNullOrEmpty (value)) {
+							if (!TryParseOptionalBoolean (value, out var publishReadyToRun))
+								throw new InvalidOperationException ($"Unable to parse the {key} value: {value} in {linker_file}");
+							Application.PublishReadyToRun = publishReadyToRun;
+						}
+					}),
+					new SaveValue ((key, storage) => saveNullableBool (key, Application.PublishReadyToRun, storage))
+				)},
+				{ "PublishReadyToRunContainerFormat", (
+					new LoadValue ((key, value) => Application.PublishReadyToRunContainerFormat = value),
+					new SaveValue ((key, storage) => saveNonEmpty (key, Application.PublishReadyToRunContainerFormat, storage))
+				)},
 				{ "ReferenceNativeSymbol", (
 					new LoadValue ((key, value) => {
 						(string symbolType, string symbolMode, string symbol) = SplitString3 (value, ':');
@@ -511,6 +594,10 @@ namespace Xamarin.Linker {
 				{ "RuntimeConfigurationFile", (
 					new LoadValue ((key, value) => Application.RuntimeConfigurationFile = value),
 					new SaveValue ((key, storage) => saveNonEmpty (key, Application.RuntimeConfigurationFile, storage))
+				)},
+				{ "RuntimeConfigurationFilePath", (
+					new LoadValue ((key, value) => RuntimeConfigurationFilePath = value),
+					new SaveValue ((key, storage) => saveNonEmpty (key, RuntimeConfigurationFilePath, storage))
 				)},
 				{ "SdkDevPath", (
 					new LoadValue ((key, value) => Application.SdkRoot = value),
@@ -627,6 +714,14 @@ namespace Xamarin.Linker {
 					new LoadValue ((key, value) => XamarinNativeLibraryDirectory = value),
 					new SaveValue ((key, storage) => saveNonEmpty (key, XamarinNativeLibraryDirectory, storage))
 				)},
+				{ "XcodeVersion", (
+					new LoadValue ((key, value) => {
+						if (!Version.TryParse (value, out var xcode_version))
+							throw new InvalidOperationException ($"Unable to parse the {key} value: {value} in {linker_file}");
+						XcodeVersion = xcode_version;
+					}),
+					new SaveValue ((key, storage) => saveNonEmpty (key, XcodeVersion?.ToString (), storage))
+				)},
 			};
 
 			return dict;
@@ -653,9 +748,7 @@ namespace Xamarin.Linker {
 			configurations.Add (this.Context, this);
 #endif
 
-#if !ASSEMBLY_PREPARER
 			CompilerFlags = new CompilerFlags (Application);
-#endif
 
 			var configurator = GetConfigurator (linker_file);
 
@@ -727,7 +820,14 @@ namespace Xamarin.Linker {
 				Application.UnsetInterpreter ();
 			}
 
-			Driver.ValidateXcode (Application, false, false);
+			if (RuntimeInformation.IsOSPlatform (OSPlatform.OSX)) {
+				Driver.ValidateXcode (Application, false, false);
+			} else if (XcodeVersion is not null) {
+				// Xcode only exists on macOS, so when running on any other OS (which happens when
+				// building remotely from Windows) we can't look at the Xcode installation. Use the
+				// Xcode version MSBuild fetched from the Mac instead.
+				Application.XcodeVersion = XcodeVersion;
+			}
 
 			Application.InitializeCommon ();
 			Application.Initialize ();
@@ -838,6 +938,7 @@ namespace Xamarin.Linker {
 				Application.Log ($"    RelativeAppBundlePath: {RelativeAppBundlePath}");
 				Application.Log ($"    Registrar: {Application.Registrar} (Options: {Application.RegistrarOptions})");
 				Application.Log ($"    RuntimeConfigurationFile: {Application.RuntimeConfigurationFile}");
+				Application.Log ($"    RuntimeConfigurationFilePath: {RuntimeConfigurationFilePath}");
 				Application.Log ($"    RequirePInvokeWrappers: {Application.RequiresPInvokeWrappers}");
 				Application.Log ($"    SdkDevPath: {Application.SdkRoot}");
 				Application.Log ($"    SdkRootDirectory: {SdkRootDirectory}");
@@ -851,6 +952,7 @@ namespace Xamarin.Linker {
 				Application.Log ($"    Verbosity: {Verbosity}");
 				Application.Log ($"    XamarinNativeLibraryDirectory: {XamarinNativeLibraryDirectory}");
 				Application.Log ($"    XamarinRuntime: {Application.XamarinRuntime}");
+				Application.Log ($"    XcodeVersion: {XcodeVersion}");
 			}
 		}
 
@@ -870,24 +972,48 @@ namespace Xamarin.Linker {
 			}
 		}
 
+		// Register an MSBuild output property. The collected properties are written to the MSBuild
+		// output file (see FlushOutputForMSBuild) so that MSBuild can read them back.
+		public void SetOutputForMSBuild (string propertyName, string value)
+		{
+			msbuild_properties [propertyName] = value;
+		}
+
 		public void FlushOutputForMSBuild ()
 		{
-			foreach (var kvp in msbuild_items) {
-				var itemName = kvp.Key;
-				var items = kvp.Value;
+			// ItemsDirectory isn't set when running in the assembly-preparer, so only write
+			// the item files when we have a directory to write them to.
+			if (!string.IsNullOrEmpty (ItemsDirectory)) {
+				Directory.CreateDirectory (ItemsDirectory);
+				foreach (var kvp in msbuild_items) {
+					var itemName = kvp.Key;
+					var items = kvp.Value;
 
-				var xmlNs = XNamespace.Get ("http://schemas.microsoft.com/developer/msbuild/2003");
-				var elements = items.Select (item =>
-					new XElement (xmlNs + itemName,
-						new XAttribute ("Include", item.Include),
-							item.Metadata.Select (metadata => new XElement (xmlNs + metadata.Key, metadata.Value))));
+					var xmlNs = XNamespace.Get ("http://schemas.microsoft.com/developer/msbuild/2003");
+					var elements = items.Select (item =>
+						new XElement (xmlNs + itemName,
+							new XAttribute ("Include", item.Include),
+								item.Metadata.Select (metadata => new XElement (xmlNs + metadata.Key, metadata.Value))));
 
-				var document = new XDocument (
-					new XElement (xmlNs + "Project",
-						new XElement (xmlNs + "ItemGroup",
-							elements)));
+					var document = new XDocument (
+						new XElement (xmlNs + "Project",
+							new XElement (xmlNs + "ItemGroup",
+								elements)));
 
-				document.Save (Path.Combine (ItemsDirectory, itemName + ".items"));
+					document.Save (Path.Combine (ItemsDirectory, itemName + ".items"));
+				}
+			}
+
+			// Write the collected MSBuild output properties (alphabetically sorted, one 'Name=Value' per line)
+			// to the output file for the current pass, so that MSBuild can read them back. We always write the
+			// file (even when there are no properties), so it's a consistent, persistent artifact of the pass
+			// (it's added to FileWrites by the _PrepareAssemblies/_PostprocessAssemblies targets).
+			var outputFile = Application.IsPostProcessingAssemblies ? MSBuildPostProcessOutputFile : MSBuildOutputFile;
+			if (!string.IsNullOrEmpty (outputFile)) {
+				var directory = Path.GetDirectoryName (outputFile);
+				if (!string.IsNullOrEmpty (directory))
+					Directory.CreateDirectory (directory);
+				File.WriteAllLines (outputFile, msbuild_properties.Select (kvp => $"{kvp.Key}={kvp.Value}"));
 			}
 		}
 

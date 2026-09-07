@@ -20,10 +20,8 @@ packages
 jenkins-results
 .vs
 *.raw
-provisionator.msbuild.props
 global.json
 .idea
-provision-shared.csx
 mono_crash.*.json
 *.binlog
 .vscode

@@ -85,9 +85,8 @@ namespace Foundation {
 			get { return error.UserInfo; }
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets a message that describes the error.</summary>
+		/// <value>The error description from the underlying <see cref="NSError" />.</value>
 		public override string Message {
 			get {
 				return error.Description;

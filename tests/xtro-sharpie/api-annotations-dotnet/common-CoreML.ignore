@@ -3,3 +3,23 @@
 
 ## managed version bound using another method
 !missing-selector! MLDictionaryFeatureProvider::objectForKeyedSubscript: not bound
+
+# results from initial block parameter nullability analysis
+!missing-null-allowed! 'System.Void CoreML.MLComputePlan::Load(CoreML.MLModelAsset,CoreML.MLModelConfiguration,System.Action`2<CoreML.MLComputePlan,Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #0
+!missing-null-allowed! 'System.Void CoreML.MLComputePlan::Load(CoreML.MLModelAsset,CoreML.MLModelConfiguration,System.Action`2<CoreML.MLComputePlan,Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #1
+!missing-null-allowed! 'System.Void CoreML.MLComputePlan::Load(Foundation.NSUrl,CoreML.MLModelConfiguration,System.Action`2<CoreML.MLComputePlan,Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #0
+!missing-null-allowed! 'System.Void CoreML.MLComputePlan::Load(Foundation.NSUrl,CoreML.MLModelConfiguration,System.Action`2<CoreML.MLComputePlan,Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #1
+!missing-null-allowed! 'System.Void CoreML.MLModel::CompileModel(Foundation.NSUrl,System.Action`2<Foundation.NSUrl,Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #0
+!missing-null-allowed! 'System.Void CoreML.MLModel::CompileModel(Foundation.NSUrl,System.Action`2<Foundation.NSUrl,Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #1
+!missing-null-allowed! 'System.Void CoreML.MLModel::GetPrediction(CoreML.IMLFeatureProvider,CoreML.MLPredictionOptions,System.Action`2<CoreML.IMLFeatureProvider,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void CoreML.MLModel::GetPrediction(CoreML.IMLFeatureProvider,CoreML.MLPredictionOptions,System.Action`2<CoreML.IMLFeatureProvider,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1
+!missing-null-allowed! 'System.Void CoreML.MLModel::GetPrediction(CoreML.IMLFeatureProvider,System.Action`2<CoreML.IMLFeatureProvider,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void CoreML.MLModel::GetPrediction(CoreML.IMLFeatureProvider,System.Action`2<CoreML.IMLFeatureProvider,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1
+!missing-null-allowed! 'System.Void CoreML.MLModel::Load(CoreML.MLModelAsset,CoreML.MLModelConfiguration,System.Action`2<CoreML.MLModel,Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #0
+!missing-null-allowed! 'System.Void CoreML.MLModel::Load(CoreML.MLModelAsset,CoreML.MLModelConfiguration,System.Action`2<CoreML.MLModel,Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #1
+!missing-null-allowed! 'System.Void CoreML.MLModel::LoadContents(Foundation.NSUrl,CoreML.MLModelConfiguration,System.Action`2<CoreML.MLModel,Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #0
+!missing-null-allowed! 'System.Void CoreML.MLModel::LoadContents(Foundation.NSUrl,CoreML.MLModelConfiguration,System.Action`2<CoreML.MLModel,Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #1
+!missing-null-allowed! 'System.Void CoreML.MLModelStructure::Load(CoreML.MLModelAsset,System.Action`2<CoreML.MLModelStructure,Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #0
+!missing-null-allowed! 'System.Void CoreML.MLModelStructure::Load(CoreML.MLModelAsset,System.Action`2<CoreML.MLModelStructure,Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #1
+!missing-null-allowed! 'System.Void CoreML.MLModelStructure::Load(Foundation.NSUrl,System.Action`2<CoreML.MLModelStructure,Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #0
+!missing-null-allowed! 'System.Void CoreML.MLModelStructure::Load(Foundation.NSUrl,System.Action`2<CoreML.MLModelStructure,Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #1

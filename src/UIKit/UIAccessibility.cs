@@ -342,16 +342,16 @@ namespace UIKit {
 		[SupportedOSPlatform ("maccatalyst")]
 		public static bool PrefersCrossFadeTransitions => UIAccessibilityPrefersCrossFadeTransitions () != 0;
 
-		[SupportedOSPlatform ("ios13.0")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.UIKitLibrary)]
 		static extern byte UIAccessibilityIsVideoAutoplayEnabled ();
 
 		/// <summary>Gets a value indicating whether videos should autoplay.</summary>
 		/// <value><see langword="true"/> if video autoplay is enabled; otherwise, <see langword="false"/>.</value>
-		[SupportedOSPlatform ("ios13.0")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		static public bool IsVideoAutoplayEnabled => UIAccessibilityIsVideoAutoplayEnabled () != 0;
 
@@ -410,29 +410,29 @@ namespace UIKit {
 			}
 		}
 
-		[SupportedOSPlatform ("ios13.0")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.UIKitLibrary)]
 		static extern byte UIAccessibilityShouldDifferentiateWithoutColor ();
 
 		/// <summary>Gets a value indicating whether the user prefers UI elements to differentiate without relying solely on color.</summary>
 		/// <value><see langword="true"/> if differentiation without color is preferred; otherwise, <see langword="false"/>.</value>
-		[SupportedOSPlatform ("ios13.0")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public static bool ShouldDifferentiateWithoutColor => UIAccessibilityShouldDifferentiateWithoutColor () != 0;
 
-		[SupportedOSPlatform ("ios13.0")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.UIKitLibrary)]
 		static extern byte UIAccessibilityIsOnOffSwitchLabelsEnabled ();
 
 		/// <summary>Gets a value indicating whether on/off switch labels are enabled.</summary>
 		/// <value><see langword="true"/> if on/off switch labels are enabled; otherwise, <see langword="false"/>.</value>
-		[SupportedOSPlatform ("ios13.0")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public static bool IsOnOffSwitchLabelsEnabled => UIAccessibilityIsOnOffSwitchLabelsEnabled () != 0;
 

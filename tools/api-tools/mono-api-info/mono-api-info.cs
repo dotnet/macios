@@ -1014,8 +1014,7 @@ namespace Mono.ApiTools {
 			base.AddExtraAttributes (memberDefinition);
 
 			FieldDefinition field = (FieldDefinition) memberDefinition;
-			var fieldTypeName = Utils.CleanupTypeName (field.FieldType);
-			fieldTypeName = NullabilityHelper.AppendNullabilityToTypeName (fieldTypeName, field.FieldType, field, field.DeclaringType);
+			var fieldTypeName = NullabilityHelper.FormatTypeNameWithFullNullability (field.FieldType, field, field.DeclaringType);
 			AddAttribute ("fieldtype", fieldTypeName);
 
 			if (field.IsLiteral) {
@@ -1085,8 +1084,7 @@ namespace Mono.ApiTools {
 			base.AddExtraAttributes (memberDefinition);
 
 			PropertyDefinition prop = (PropertyDefinition) memberDefinition;
-			var ptypeName = Utils.CleanupTypeName (prop.PropertyType);
-			ptypeName = NullabilityHelper.AppendNullabilityToTypeName (ptypeName, prop.PropertyType, prop, prop.DeclaringType);
+			var ptypeName = NullabilityHelper.FormatTypeNameWithFullNullability (prop.PropertyType, prop, prop.DeclaringType);
 			AddAttribute ("ptype", ptypeName);
 
 			bool haveParameters;
@@ -1153,8 +1151,7 @@ namespace Mono.ApiTools {
 			base.AddExtraAttributes (memberDefinition);
 
 			EventDefinition evt = (EventDefinition) memberDefinition;
-			var evtTypeName = Utils.CleanupTypeName (evt.EventType);
-			evtTypeName = NullabilityHelper.AppendNullabilityToTypeName (evtTypeName, evt.EventType, evt, evt.DeclaringType);
+			var evtTypeName = NullabilityHelper.FormatTypeNameWithFullNullability (evt.EventType, evt, evt.DeclaringType);
 			AddAttribute ("eventtype", evtTypeName);
 		}
 
@@ -1222,10 +1219,9 @@ namespace Mono.ApiTools {
 				// base method can come from another assembly.
 				AddAttribute ("is-override", "true");
 			}
-			string rettype = Utils.CleanupTypeName (mbase.MethodReturnType.ReturnType);
+			string rettype = NullabilityHelper.FormatTypeNameWithFullNullability (mbase.MethodReturnType.ReturnType, mbase.MethodReturnType, mbase);
 			if (rettype != "System.Void" || !mbase.IsConstructor) {
-				rettype = NullabilityHelper.AppendNullabilityToTypeName (rettype, mbase.MethodReturnType.ReturnType, mbase.MethodReturnType, mbase);
-				AddAttribute ("returntype", (rettype));
+				AddAttribute ("returntype", rettype);
 			}
 			//
 			//			if (mbase.MethodReturnType.HasCustomAttributes)
@@ -1310,7 +1306,7 @@ namespace Mono.ApiTools {
 					pt = brt.ElementType;
 				}
 
-				AddAttribute ("type", NullabilityHelper.AppendNullabilityToTypeName (Utils.CleanupTypeName (pt), pt, parameter, parameter.Method as ICustomAttributeProvider));
+				AddAttribute ("type", NullabilityHelper.FormatTypeNameWithFullNullability (pt, parameter, parameter.Method as ICustomAttributeProvider));
 
 				if (parameter.IsOptional) {
 					AddAttribute ("optional", "true");
@@ -1413,6 +1409,10 @@ namespace Mono.ApiTools {
 			switch (attribute.AttributeType.FullName) {
 			case "System.Runtime.CompilerServices.NativeIntegerAttribute":
 				return false;
+			case "System.Runtime.CompilerServices.NullableAttribute":
+			case "System.Runtime.CompilerServices.NullableContextAttribute":
+				// Nullability is already rendered via '?' annotations on type names.
+				return true;
 			}
 
 			if (!state.TypeHelper.IsPublic (attribute))
@@ -1468,25 +1468,6 @@ namespace Mono.ApiTools {
 		const string NullableAttributeName = "System.Runtime.CompilerServices.NullableAttribute";
 		const string NullableContextAttributeName = "System.Runtime.CompilerServices.NullableContextAttribute";
 
-		// Returns the nullability flag for the top-level type:
-		// 0 = oblivious, 1 = not-null, 2 = nullable
-		public static byte GetTopLevelNullability (ICustomAttributeProvider provider, ICustomAttributeProvider? context)
-		{
-			// Check for NullableAttribute directly on the member/parameter/return type
-			var flag = GetNullableFlagFromProvider (provider);
-			if (flag.HasValue)
-				return flag.Value;
-
-			// Fall back to NullableContextAttribute on the containing method/type
-			if (context is not null) {
-				var contextFlag = GetNullableContextFlag (context);
-				if (contextFlag.HasValue)
-					return contextFlag.Value;
-			}
-
-			return 0; // oblivious
-		}
-
 		// Gets the NullableContextAttribute flag from a method or type
 		public static byte? GetNullableContextFlag (ICustomAttributeProvider provider)
 		{
@@ -1539,7 +1520,9 @@ namespace Mono.ApiTools {
 			return null;
 		}
 
-		static byte? GetNullableFlagFromProvider (ICustomAttributeProvider provider)
+		// Gets the full NullableAttribute byte array from a provider.
+		// Returns null if no NullableAttribute is present.
+		static byte []? GetNullabilityBytesFromProvider (ICustomAttributeProvider provider)
 		{
 			if (!provider.HasCustomAttributes)
 				return null;
@@ -1552,39 +1535,122 @@ namespace Mono.ApiTools {
 
 				var arg = attr.ConstructorArguments [0];
 				if (arg.Value is byte b)
-					return b;
-				if (arg.Value is CustomAttributeArgument [] arr && arr.Length > 0 && arr [0].Value is byte b2)
-					return b2;
+					return new byte [] { b };
+				if (arg.Value is CustomAttributeArgument [] arr) {
+					var result = new byte [arr.Length];
+					for (int i = 0; i < arr.Length; i++) {
+						if (arr [i].Value is byte val) {
+							result [i] = val;
+						}
+					}
+					return result;
+				}
 			}
 
 			return null;
 		}
 
-		public static bool IsNullableReferenceType (TypeReference type, ICustomAttributeProvider provider, ICustomAttributeProvider? context)
+		// Gets the full nullability byte array for a provider, falling back to NullableContext.
+		static byte []? GetFullNullabilityBytes (ICustomAttributeProvider provider, ICustomAttributeProvider? context)
 		{
-			if (type is null)
-				return false;
+			var bytes = GetNullabilityBytesFromProvider (provider);
+			if (bytes is not null)
+				return bytes;
 
-			// Value types use Nullable<T> for nullability, not annotations
-			if (type.IsValueType)
-				return false;
-
-			// ByReference types (ref/out parameters): check the element type
-			if (type.IsByReference) {
-				var elementType = ((ByReferenceType) type).ElementType;
-				if (elementType.IsValueType)
-					return false;
+			if (context is not null) {
+				var contextFlag = GetNullableContextFlag (context);
+				if (contextFlag.HasValue)
+					return new byte [] { contextFlag.Value };
 			}
 
-			var flag = GetTopLevelNullability (provider, context);
-			return flag == 2;
+			return null;
 		}
 
-		public static string AppendNullabilityToTypeName (string typeName, TypeReference type, ICustomAttributeProvider provider, ICustomAttributeProvider? context)
+		// Formats a type name with full nullability annotations, including generic type arguments.
+		// This reads the NullableAttribute byte array and applies '?' at every position in
+		// the type tree (depth-first), not just the top-level type.
+		public static string FormatTypeNameWithFullNullability (TypeReference type, ICustomAttributeProvider provider, ICustomAttributeProvider? context)
 		{
-			if (IsNullableReferenceType (type, provider, context))
-				return typeName + "?";
-			return typeName;
+			var bytes = GetFullNullabilityBytes (provider, context);
+			if (bytes is null)
+				return Utils.CleanupTypeName (type);
+
+			int index = 0;
+			return FormatTypeWithNullabilityBytes (type, bytes, ref index);
+		}
+
+		// Recursively formats a type name, consuming nullability bytes in depth-first order.
+		// Value types don't consume bytes. Reference types consume one byte each.
+		// A single-byte array means uniform nullability for all positions.
+		static string FormatTypeWithNullabilityBytes (TypeReference type, byte [] bytes, ref int index)
+		{
+			// Void is never nullable
+			if (type.FullName == "System.Void")
+				return "System.Void";
+
+			// Value types don't consume bytes from the NullableAttribute array.
+			// Their nullability is structural (Nullable<T>).
+			if (type.IsValueType) {
+				if (type is GenericInstanceType valueGenType) {
+					// Handle Nullable<T>
+					if (valueGenType.ElementType.FullName == "System.Nullable`1") {
+						return FormatTypeWithNullabilityBytes (valueGenType.GenericArguments [0], bytes, ref index) + "?";
+					}
+					// Other generic value types: recurse into args
+					var sb = new StringBuilder ();
+					sb.Append (CleanForNullability (valueGenType.ElementType.FullName));
+					sb.Append ('[');
+					for (int i = 0; i < valueGenType.GenericArguments.Count; i++) {
+						if (i > 0)
+							sb.Append (", ");
+						sb.Append (FormatTypeWithNullabilityBytes (valueGenType.GenericArguments [i], bytes, ref index));
+					}
+					sb.Append (']');
+					return sb.ToString ();
+				}
+				return Utils.CleanupTypeName (type);
+			}
+
+			// Reference types consume one byte
+			byte currentByte;
+			if (bytes.Length == 1) {
+				// Single byte: uniform nullability for all positions
+				currentByte = bytes [0];
+			} else {
+				currentByte = index < bytes.Length ? bytes [index] : (byte) 0;
+				index++;
+			}
+			bool isNullable = currentByte == 2;
+
+			if (type is ArrayType arrType) {
+				string ranks = new string (',', arrType.Rank - 1);
+				return FormatTypeWithNullabilityBytes (arrType.ElementType, bytes, ref index) + "[" + ranks + "]" + (isNullable ? "?" : "");
+			}
+
+			if (type is GenericInstanceType genType) {
+				var sb = new StringBuilder ();
+				sb.Append (CleanForNullability (genType.ElementType.FullName));
+				sb.Append ('[');
+				for (int i = 0; i < genType.GenericArguments.Count; i++) {
+					if (i > 0)
+						sb.Append (", ");
+					sb.Append (FormatTypeWithNullabilityBytes (genType.GenericArguments [i], bytes, ref index));
+				}
+				sb.Append (']');
+				if (isNullable)
+					sb.Append ('?');
+				return sb.ToString ();
+			}
+
+			return Utils.CleanupTypeName (type) + (isNullable ? "?" : "");
+		}
+
+		// Converts / to + for nested types (same as CleanupTypeName but without <> replacement,
+		// since we build the generic argument list ourselves with nullability annotations).
+		// The generic arity suffix (e.g., `2) is preserved because mono-api-html uses it to detect generics.
+		static string CleanForNullability (string name)
+		{
+			return name.Replace ('/', '+');
 		}
 	}
 

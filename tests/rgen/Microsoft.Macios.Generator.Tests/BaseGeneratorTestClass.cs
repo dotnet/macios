@@ -6,7 +6,6 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.Macios.Generator.Extensions;
@@ -92,46 +91,40 @@ public class BaseGeneratorTestClass {
 		return new (CSharpCompilation.Create (name, trees, references, options), trees);
 	}
 
-	readonly static Lock uiNamespaceLock = new ();
 	protected void CompareGeneratedCode (GenerationTestData testData)
 	{
-		lock (uiNamespaceLock) {
-			var driver = CSharpGeneratorDriver.Create (new BindingSourceGeneratorGenerator ());
-			// We need to create a compilation with the required source code.
-			var (compilation, _) = CreateCompilation (testData.Platform, sources: testData.InputText);
-			// for the refresh of the namespaces, this is needed to make sure that the generator does not get confused
-			// when several compilations are running
-			compilation.GetUINamespaces (force: true);
+		var driver = CSharpGeneratorDriver.Create (new BindingSourceGeneratorGenerator ());
+		// We need to create a compilation with the required source code.
+		var (compilation, _) = CreateCompilation (testData.Platform, sources: testData.InputText);
 
-			// Run generators and retrieve all results.
-			var runResult = RunGenerators (driver, compilation);
+		// Run generators and retrieve all results.
+		var runResult = RunGenerators (driver, compilation);
 
-			// All generated files can be found in 'RunResults.GeneratedTrees'.
-			var generatedFileSyntax = runResult.GeneratedTrees.Where (t => t.FilePath.EndsWith ($"{testData.ClassName}.g.cs")).ToArray ();
-			Assert.Single (generatedFileSyntax);
+		// All generated files can be found in 'RunResults.GeneratedTrees'.
+		var generatedFileSyntax = runResult.GeneratedTrees.Where (t => t.FilePath.EndsWith ($"{testData.ClassName}.g.cs")).ToArray ();
+		Assert.Single (generatedFileSyntax);
 
-			// Complex generators should be tested using text comparison.
-			Assert.Equal (testData.ExpectedOutputText, generatedFileSyntax [0].GetText ().ToString (),
-				ignoreLineEndingDifferences: true);
+		// Complex generators should be tested using text comparison.
+		Assert.Equal (testData.ExpectedOutputText, generatedFileSyntax [0].GetText ().ToString (),
+			ignoreLineEndingDifferences: true);
 
-			if (testData.ExpectedLibraryText is not null) {
-				// validate that Library.g.cs was created by the LibraryEmitter and matches the expectation
-				var generatedLibSyntax = runResult.GeneratedTrees.Single (t => t.FilePath.EndsWith ("Libraries.g.cs"));
-				Assert.Equal (testData.ExpectedLibraryText, generatedLibSyntax.GetText ().ToString ());
-			}
+		if (testData.ExpectedLibraryText is not null) {
+			// validate that Library.g.cs was created by the LibraryEmitter and matches the expectation
+			var generatedLibSyntax = runResult.GeneratedTrees.Single (t => t.FilePath.EndsWith ("Libraries.g.cs"));
+			Assert.Equal (testData.ExpectedLibraryText, generatedLibSyntax.GetText ().ToString ());
+		}
 
-			if (testData.ExpectedTrampolineText is not null) {
-				// validate that Library.g.cs was created by the LibraryEmitter and matches the expectation
-				var generatedLibSyntax = runResult.GeneratedTrees.Single (t => t.FilePath.EndsWith ("ObjCRuntime/Trampolines.g.cs"));
-				Assert.Equal (testData.ExpectedTrampolineText, generatedLibSyntax.GetText ().ToString ());
-			}
+		if (testData.ExpectedTrampolineText is not null) {
+			// validate that Library.g.cs was created by the LibraryEmitter and matches the expectation
+			var generatedLibSyntax = runResult.GeneratedTrees.Single (t => t.FilePath.EndsWith ("ObjCRuntime/Trampolines.g.cs"));
+			Assert.Equal (testData.ExpectedTrampolineText, generatedLibSyntax.GetText ().ToString ());
+		}
 
-			if (testData.ExtraFiles is not null) {
-				// validate that we have the expected extra files and that their values are the correct ones
-				foreach (var (filePath, fileContent) in testData.ExtraFiles) {
-					var generatedFile = runResult.GeneratedTrees.Single (t => t.FilePath.EndsWith (filePath));
-					Assert.Equal (fileContent, generatedFile.GetText ().ToString ());
-				}
+		if (testData.ExtraFiles is not null) {
+			// validate that we have the expected extra files and that their values are the correct ones
+			foreach (var (filePath, fileContent) in testData.ExtraFiles) {
+				var generatedFile = runResult.GeneratedTrees.Single (t => t.FilePath.EndsWith (filePath));
+				Assert.Equal (fileContent, generatedFile.GetText ().ToString ());
 			}
 		}
 

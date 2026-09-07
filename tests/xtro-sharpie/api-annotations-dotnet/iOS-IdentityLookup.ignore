@@ -1,0 +1,3 @@
+# results from initial block parameter nullability analysis
+!missing-null-allowed! 'System.Void IdentityLookup.ILMessageFilterExtensionContext::DeferQueryRequestToNetwork(System.Action`2<IdentityLookup.ILNetworkResponse,Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void IdentityLookup.ILMessageFilterExtensionContext::DeferQueryRequestToNetwork(System.Action`2<IdentityLookup.ILNetworkResponse,Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #1

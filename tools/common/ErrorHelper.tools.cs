@@ -44,16 +44,26 @@ namespace Xamarin.Bundler {
 			return log_warning_levels;
 		}
 
-		public static WarningLevel GetWarningLevel (IToolLog log, int code)
+		public static bool TryGetWarningLevel (IToolLog log, int code, out WarningLevel warningLevel)
 		{
+			warningLevel = default;
+
 			if (warning_levels.TryGetValue (log, out var log_warning_levels)) {
 				// code -1: all codes
-				if (log_warning_levels.TryGetValue (-1, out var level))
-					return level;
+				if (log_warning_levels.TryGetValue (-1, out warningLevel))
+					return true;
 
-				if (log_warning_levels.TryGetValue (code, out level))
-					return level;
+				if (log_warning_levels.TryGetValue (code, out warningLevel))
+					return true;
 			}
+
+			return false;
+		}
+
+		public static WarningLevel GetWarningLevel (IToolLog log, int code)
+		{
+			if (TryGetWarningLevel (log, code, out var warningLevel))
+				return warningLevel;
 
 			return WarningLevel.Warning;
 		}
@@ -311,12 +321,26 @@ namespace Xamarin.Bundler {
 				if (!error && GetWarningLevel (log, mte.Code) == WarningLevel.Disable)
 					return false; // This is an ignored warning.
 
-				log.LogError (mte.ToString ());
+				// Report warnings as warnings, otherwise they'd end up failing the build when
+				// the log is an MSBuild task (which is the case for the assembly preparer).
+				if (error) {
+					log.LogError (mte);
+				} else {
+					log.LogWarning (mte);
+				}
 
 				ShowInner (log, e);
 
-				if (log.Verbosity > 2 && !string.IsNullOrEmpty (e.StackTrace))
-					log.LogError (e.StackTrace);
+				if (log.Verbosity > 2 && !string.IsNullOrEmpty (e.StackTrace)) {
+					// Report the stack trace as an error or a message depending on
+					// whether we're showing an error or a warning, otherwise warnings
+					// would end up failing the build when the log is an MSBuild task.
+					if (error) {
+						log.LogError (e.StackTrace);
+					} else {
+						log.Log (e.StackTrace);
+					}
+				}
 			} else {
 				log.LogError ("error " + GetPrefix (log) + "0000: Unexpected error - Please file a bug report at https://github.com/dotnet/macios/issues/new");
 				log.LogError (e.ToString ());

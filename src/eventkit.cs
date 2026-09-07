@@ -36,7 +36,7 @@ namespace EventKit {
 	/// <summary>The base-class for persistent Event Kit classes.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/EventKit/Reference/EKObjectClassRef/index.html">Apple documentation for <c>EKObject</c></related>
-	[iOS (13, 0), MacCatalyst (13, 1), NoTV]
+	[MacCatalyst (13, 1), NoTV]
 	[BaseType (typeof (NSObject))]
 	[Abstract]
 	interface EKObject {
@@ -171,7 +171,7 @@ namespace EventKit {
 		[Export ("calendarsForEntityType:")]
 		NSSet GetCalendars (EKEntityType entityType);
 
-		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
+		[iOS (16, 0), MacCatalyst (16, 0), NoTV]
 		[Export ("isDelegate", ArgumentSemantic.Assign)]
 		bool IsDelegate { get; }
 	}
@@ -707,17 +707,17 @@ namespace EventKit {
 			""")]
 		void RequestAccess (EKEntityType entityType, Action<bool, NSError> completionHandler);
 
-		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("requestFullAccessToEventsWithCompletion:")]
 		[Async]
 		void RequestFullAccessToEvents (EKEventStoreRequestAccessCompletionHandler completion);
 
-		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("requestWriteOnlyAccessToEventsWithCompletion:")]
 		[Async]
 		void RequestWriteOnlyAccessToEvents (EKEventStoreRequestAccessCompletionHandler completion);
 
-		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("requestFullAccessToRemindersWithCompletion:")]
 		[Async]
 		void RequestFullAccessToReminders (EKEventStoreRequestAccessCompletionHandler completion);

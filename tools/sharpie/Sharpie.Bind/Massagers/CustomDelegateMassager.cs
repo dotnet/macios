@@ -116,7 +116,7 @@ public sealed class CustomDelegateMassager : Massager<CustomDelegateMassager> {
 
 		int i = 0;
 		foreach (var typeArg in delegateType.TypeArguments) {
-			var clone = typeArg.Clone ();
+			var clone = UnwrapNullableType (typeArg.Clone ());
 			del.Parameters.Add (new ParameterDeclaration (clone, String.Format ("arg{0}", i++)));
 		}
 
@@ -142,5 +142,21 @@ public sealed class CustomDelegateMassager : Massager<CustomDelegateMassager> {
 		while (!usedNames.Add (name))
 			name = baseName + counter++;
 		return name;
+	}
+
+	/// <summary>
+	/// Unwraps a nullable ComposedType (T?) back to its base type while
+	/// preserving annotations, so that NullabilityMassager can add [NullAllowed]
+	/// to the delegate parameter instead.
+	/// </summary>
+	static AstType UnwrapNullableType (AstType type)
+	{
+		if (type is ComposedType composed && composed.HasNullableSpecifier && composed.PointerRank == 0) {
+			var baseType = composed.BaseType.Clone ();
+			foreach (var annotation in composed.Annotations)
+				baseType.AddAnnotation (annotation);
+			return baseType;
+		}
+		return type;
 	}
 }

@@ -30,9 +30,8 @@ namespace AppKit {
 	public partial class NSBrowser {
 
 		// note: if needed override the protected Get|Set methods
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the browser's current path.</summary>
+		/// <value>The browser's current path string.</value>
 		public string Path {
 			get { return GetPath (); }
 			// ignore return value (bool)

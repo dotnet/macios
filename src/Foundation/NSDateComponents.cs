@@ -1,8 +1,7 @@
 
 namespace Foundation {
 	public partial class NSDateComponents {
-		/// <summary>Reprsents a date component that is undefined.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Represents a date component that is undefined.</summary>
 		public static readonly nint Undefined = nint.MaxValue;
 	}
 }

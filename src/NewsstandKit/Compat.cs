@@ -21,6 +21,8 @@ namespace NewsstandKit {
 			throw new InvalidOperationException (Constants.NewsstandKitRemoved);
 		}
 
+		/// <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>
+		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
 		protected internal NKAssetDownload (NativeHandle handle) : base (handle)
 		{
 			throw new InvalidOperationException (Constants.NewsstandKitRemoved);
@@ -97,6 +99,8 @@ namespace NewsstandKit {
 			throw new InvalidOperationException (Constants.NewsstandKitRemoved);
 		}
 
+		/// <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>
+		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
 		protected internal NKIssue (NativeHandle handle) : base (handle)
 		{
 			throw new InvalidOperationException (Constants.NewsstandKitRemoved);
@@ -214,6 +218,8 @@ namespace NewsstandKit {
 			throw new InvalidOperationException (Constants.NewsstandKitRemoved);
 		}
 
+		/// <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>
+		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
 		protected internal NKLibrary (NativeHandle handle) : base (handle)
 		{
 			throw new InvalidOperationException (Constants.NewsstandKitRemoved);

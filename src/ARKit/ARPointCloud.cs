@@ -15,8 +15,7 @@ namespace ARKit {
 	public partial class ARPointCloud {
 
 		/// <summary>A set of positions in the world coordinate system. Image-processing tentatively believes that the position is a point on a real-world surface.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <value>An array of 3D points in world coordinates.</value>
 		public unsafe Vector3 [] Points {
 			get {
 				var count = (int) Count;
@@ -29,8 +28,7 @@ namespace ARKit {
 		}
 
 		/// <summary>Gets an array of identifiers that correspond, index by index, to each point in <see cref="ARKit.ARPointCloud.Points" />.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <value>An array of unique identifiers for each point.</value>
 		public unsafe ulong [] Identifiers {
 			get {
 				var count = (int) Count;

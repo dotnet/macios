@@ -45,8 +45,12 @@ namespace HomeKit {
 	[Register ("HMMatterRoom", SkipRegistration = true)]
 	public partial class HMMatterRoom : NSObject, INSCoding, INSCopying, INSSecureCoding {
 		public override NativeHandle ClassHandle => throw new InvalidOperationException (Constants.RemovedFromHomeKit);
+		/// <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>
+		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
 		protected HMMatterRoom (NativeHandle handle) => throw new InvalidOperationException (Constants.RemovedFromHomeKit);
 		public HMMatterRoom (NSCoder coder) => throw new InvalidOperationException (Constants.RemovedFromHomeKit);
+		/// <summary>Constructor to call on derived classes to skip initialization and merely allocate the object.</summary>
+		/// <param name="t">Unused sentinel value, pass NSObjectFlag.Empty.</param>
 		protected HMMatterRoom (NSObjectFlag t) => throw new InvalidOperationException (Constants.RemovedFromHomeKit);
 		public HMMatterRoom (NSUuid uuid, string name) => throw new InvalidOperationException (Constants.RemovedFromHomeKit);
 
@@ -69,8 +73,12 @@ namespace HomeKit {
 
 		public override NativeHandle ClassHandle => throw new InvalidOperationException (Constants.RemovedFromHomeKit);
 
+		/// <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>
+		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
 		protected HMMatterHome (NativeHandle handle) => throw new InvalidOperationException (Constants.RemovedFromHomeKit);
 		public HMMatterHome (NSCoder coder) => throw new InvalidOperationException (Constants.RemovedFromHomeKit);
+		/// <summary>Constructor to call on derived classes to skip initialization and merely allocate the object.</summary>
+		/// <param name="t">Unused sentinel value, pass NSObjectFlag.Empty.</param>
 		protected HMMatterHome (NSObjectFlag t) => throw new InvalidOperationException (Constants.RemovedFromHomeKit);
 
 		public HMMatterHome (NSUuid uuid, string name) => throw new InvalidOperationException (Constants.RemovedFromHomeKit);
@@ -93,8 +101,12 @@ namespace HomeKit {
 
 		public override NativeHandle ClassHandle => throw new InvalidOperationException (Constants.RemovedFromHomeKit);
 
+		/// <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>
+		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
 		protected HMMatterTopology (NativeHandle handle) => throw new InvalidOperationException (Constants.RemovedFromHomeKit);
 		public HMMatterTopology (NSCoder coder) => throw new InvalidOperationException (Constants.RemovedFromHomeKit);
+		/// <summary>Constructor to call on derived classes to skip initialization and merely allocate the object.</summary>
+		/// <param name="t">Unused sentinel value, pass NSObjectFlag.Empty.</param>
 		protected HMMatterTopology (NSObjectFlag t) => throw new InvalidOperationException (Constants.RemovedFromHomeKit);
 
 		public HMMatterTopology (HMMatterHome [] homes) => throw new InvalidOperationException (Constants.RemovedFromHomeKit);
@@ -117,7 +129,11 @@ namespace HomeKit {
 		public override NativeHandle ClassHandle => throw new InvalidOperationException (Constants.RemovedFromHomeKit);
 
 		public HMMatterRequestHandler () => throw new InvalidOperationException (Constants.RemovedFromHomeKit);
+		/// <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>
+		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
 		protected HMMatterRequestHandler (NativeHandle handle) => throw new InvalidOperationException (Constants.RemovedFromHomeKit);
+		/// <summary>Constructor to call on derived classes to skip initialization and merely allocate the object.</summary>
+		/// <param name="t">Unused sentinel value, pass NSObjectFlag.Empty.</param>
 		protected HMMatterRequestHandler (NSObjectFlag t) => throw new InvalidOperationException (Constants.RemovedFromHomeKit);
 
 		public virtual void FetchRooms (HMMatterHome home, HMFetchRoomHandler completion) => throw new InvalidOperationException (Constants.RemovedFromHomeKit);

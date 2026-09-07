@@ -193,3 +193,11 @@ xamarin_get_block_descriptor ()
 {
 	return &xamarin_block_descriptor;
 }
+
+#if (TARGET_OS_MACCATALYST || TARGET_OS_IOS || TARGET_OS_TV || TARGET_OS_SIMULATOR)
+// Workaround for https://github.com/dotnet/runtime/issues/126299
+int32_t SystemNative_IsATty (intptr_t fd)
+{
+	return 0;
+}
+#endif

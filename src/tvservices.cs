@@ -98,7 +98,6 @@ namespace TVServices {
 	}
 
 	[Deprecated (PlatformName.TvOS, 16, 0, message: "Use runs-as-current-user-with-user-independent-keychain entitlement instead.")]
-	[TV (13, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // Name property can't be null
 	interface TVAppProfileDescriptor : NSCopying, NSSecureCoding {
@@ -110,7 +109,6 @@ namespace TVServices {
 		string Name { get; set; }
 	}
 
-	[TV (13, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface TVTopShelfAction {
@@ -122,7 +120,6 @@ namespace TVServices {
 		NativeHandle Constructor (NSUrl url);
 	}
 
-	[TV (13, 0)]
 	[Native]
 	enum TVTopShelfCarouselContentStyle : long {
 		Actions,
@@ -131,11 +128,9 @@ namespace TVServices {
 
 	interface ITVTopShelfContent { }
 
-	[TV (13, 0)]
 	[Protocol]
 	interface TVTopShelfContent { }
 
-	[TV (13, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface TVTopShelfCarouselContent : TVTopShelfContent {
@@ -150,7 +145,6 @@ namespace TVServices {
 		NativeHandle Constructor (TVTopShelfCarouselContentStyle style, TVTopShelfCarouselItem [] items);
 	}
 
-	[TV (13, 0)]
 	[Flags]
 	[Native]
 	public enum TVTopShelfCarouselItemMediaOptions : ulong {
@@ -164,7 +158,6 @@ namespace TVServices {
 		AudioDescription = 1uL << 15,
 	}
 
-	[TV (13, 0)]
 	[BaseType (typeof (TVTopShelfItem))]
 	[DisableDefaultCtor] // -[TVTopShelfCarouselItem init]: unrecognized selector sent to instance 0x600000eb18c0
 	interface TVTopShelfCarouselItem {
@@ -202,7 +195,6 @@ namespace TVServices {
 		TVTopShelfNamedAttribute [] NamedAttributes { get; set; }
 	}
 
-	[TV (13, 0)]
 	[BaseType (typeof (NSObject))]
 	interface TVTopShelfContentProvider {
 		[Async]
@@ -214,7 +206,6 @@ namespace TVServices {
 		void DidChange ();
 	}
 
-	[TV (13, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface TVTopShelfInsetContent : TVTopShelfContent {
@@ -229,7 +220,6 @@ namespace TVServices {
 		NativeHandle Constructor (TVTopShelfItem [] items);
 	}
 
-	[TV (13, 0)]
 	[BaseType (typeof (TVTopShelfObject))]
 	[DisableDefaultCtor] // identifier can't be null and we have a designated initializer
 	interface TVTopShelfItem {
@@ -258,7 +248,6 @@ namespace TVServices {
 		NativeHandle Constructor (string identifier);
 	}
 
-	[TV (13, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface TVTopShelfNamedAttribute {
@@ -274,7 +263,6 @@ namespace TVServices {
 		NativeHandle Constructor (string name, string [] values);
 	}
 
-	[TV (13, 0)]
 	[BaseType (typeof (NSObject))]
 	[Abstract]
 	[DisableDefaultCtor]
@@ -283,7 +271,6 @@ namespace TVServices {
 		string Title { get; set; }
 	}
 
-	[TV (13, 0)]
 	[Flags]
 	[Native]
 	enum TVTopShelfItemImageTraits : ulong {
@@ -291,7 +278,6 @@ namespace TVServices {
 		Scale2x = 2,
 	}
 
-	[TV (13, 0)]
 	[BaseType (typeof (NSObject))]
 	interface TVUserManager {
 
@@ -323,7 +309,6 @@ namespace TVServices {
 		bool ShouldStorePreferencesForCurrentUser { get; }
 	}
 
-	[TV (13, 0)]
 	[BaseType (typeof (TVTopShelfObject))]
 	[DisableDefaultCtor] // null is not allowed for items
 	interface TVTopShelfItemCollection {
@@ -335,7 +320,6 @@ namespace TVServices {
 		NativeHandle Constructor (TVTopShelfItem [] items);
 	}
 
-	[TV (13, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface TVTopShelfSectionedContent : TVTopShelfContent {
@@ -352,7 +336,6 @@ namespace TVServices {
 		CGSize GetImageSize (TVTopShelfSectionedItemImageShape shape);
 	}
 
-	[TV (13, 0)]
 	[Native]
 	public enum TVTopShelfSectionedItemImageShape : long {
 		Square,
@@ -360,7 +343,6 @@ namespace TVServices {
 		Hdtv,
 	}
 
-	[TV (13, 0)]
 	[BaseType (typeof (TVTopShelfItem))]
 	[DisableDefaultCtor] // -[TVTopShelfSectionedItem init]: unrecognized selector sent to instance 0x600001f251a0
 	interface TVTopShelfSectionedItem {

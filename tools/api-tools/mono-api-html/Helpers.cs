@@ -262,11 +262,12 @@ namespace Mono.ApiTools {
 			if (type is null)
 				return null;
 			// Remove all '?' that appear before ']', at end of string, before ',',
-			// before '>' or '&' (HTML entities like &gt;), or before ' ' (before param name)
+			// before '>' or '&' (HTML entities like &gt;), before ' ' (before param name),
+			// or before '%' (placeholder boundaries like %GREATERTHANREPLACEMENT%)
 			var sb = new StringBuilder (type.Length);
 			for (int i = 0; i < type.Length; i++) {
 				if (type [i] == '?') {
-					if (i + 1 >= type.Length || type [i + 1] == ']' || type [i + 1] == ',' || type [i + 1] == '>' || type [i + 1] == '&' || type [i + 1] == ' ')
+					if (i + 1 >= type.Length || type [i + 1] == ']' || type [i + 1] == ',' || type [i + 1] == '>' || type [i + 1] == '&' || type [i + 1] == ' ' || type [i + 1] == '%')
 						continue;
 				}
 				sb.Append (type [i]);

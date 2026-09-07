@@ -20,5 +20,8 @@
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Include="$(BundledResourcesTestDirectory)\ResourcesTest.cs" />
+		<Compile Include="$(RootTestsDirectory)\common\TestRuntime.LinkAll.cs">
+			<Link>TestRuntime.LinkAll.cs</Link>
+		</Compile>
 	</ItemGroup>
 </Project>

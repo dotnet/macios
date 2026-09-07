@@ -224,6 +224,7 @@ namespace CoreVideo {
 					DictionaryContainerHelper.GetHandle (pixelBufferAttributes),
 					&handle);
 			}
+			GC.KeepAlive (pixelBufferAttributes);
 
 			if (status != CVReturn.Success) {
 				gchandle.Free ();
@@ -370,6 +371,7 @@ namespace CoreVideo {
 					}
 				}
 			}
+			GC.KeepAlive (pixelBufferAttributes);
 
 			if (status != CVReturn.Success) {
 				ReleasePlanarBytesCallbackImpl (data_handle_ptr, IntPtr.Zero, 0, 0, IntPtr.Zero);

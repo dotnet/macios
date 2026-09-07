@@ -13,7 +13,7 @@ namespace Xharness {
 			this.processManager = processManager ?? throw new ArgumentNullException (nameof (processManager));
 		}
 
-		public ICrashSnapshotReporter Create (ILog log, ILogs logs, bool isDevice, string? deviceName) =>
-			new CrashSnapshotReporter (processManager, log, logs, isDevice, deviceName);
+		public ICrashSnapshotReporter Create (ILog log, ILogs logs, bool isDevice, string? deviceName, AppBundleInformation appInformation) =>
+			new CrashSnapshotReporter (processManager, log, logs, isDevice, deviceName, appInformation);
 	}
 }

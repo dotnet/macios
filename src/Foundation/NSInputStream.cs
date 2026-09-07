@@ -30,23 +30,19 @@ namespace Foundation {
 		CFStreamClientContext context;
 
 		// This is done manually because the generator can't handle byte[] as a native pointer (it will try to use NSArray instead).
+		/// <summary>Reads data from the stream into the provided buffer.</summary>
 		/// <param name="buffer">The buffer where data should be put.</param>
 		/// <param name="len">The size of the buffer (in bytes).</param>
-		/// <summary>Reads data from the stream into the provided buffer.</summary>
 		/// <returns>The number of bytes actually written.</returns>
-		/// <remarks>
-		///         </remarks>
 		public nint Read (byte [] buffer, nuint len)
 		{
 			return objc_msgSend (Handle, Selector.GetHandle (selReadMaxLength), buffer, len);
 		}
 
-		/// <param name="buffer">To be added.</param>
-		/// <param name="offset">To be added.</param>
-		/// <param name="len">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Reads data from the stream into the provided buffer starting at the given offset.</summary>
+		/// <param name="buffer">The buffer where data should be stored.</param>
+		/// <param name="offset">The byte offset in <paramref name="buffer" /> at which to begin storing data.</param>
+		/// <param name="len">The maximum number of bytes to read.</param>
 		public unsafe nint Read (byte [] buffer, int offset, nuint len)
 		{
 			if (offset + (long) len > buffer.Length)
@@ -91,14 +87,11 @@ namespace Foundation {
 		}
 
 		// Private API, so no documentation.
+		/// <summary>Adds a client for the stream. This method is not supposed to be called by managed code, it will be called by consumers of the stream. When overriding it make sure to call the base implementation.</summary>
 		/// <param name="inFlags">Flags.</param>
-		///         <param name="inCallback">The callbacks to call when events occur.</param>
-		///         <param name="inContextPtr">User-defined data for the callback.</param>
-		///         <summary>Adds a client for the stream. This method is not supposed to be called by managed code, it will be called by consumers of the stream. When overriding it make sure to call the base implementation.</summary>
-		///         <returns>
-		///         </returns>
-		///         <remarks>
-		///         </remarks>
+		/// <param name="inCallback">The callbacks to call when events occur.</param>
+		/// <param name="inContextPtr">User-defined data for the callback.</param>
+		/// <returns><see langword="true" /> if the client was added successfully; otherwise, <see langword="false" />.</returns>
 		[Export ("_setCFClientFlags:callback:context:")]
 		protected virtual bool SetCFClientFlags (CFStreamEventType inFlags, IntPtr inCallback, IntPtr inContextPtr)
 		{
@@ -129,10 +122,8 @@ namespace Foundation {
 			return false;
 		}
 
+		/// <summary>Notifies consumers of events in the stream.</summary>
 		/// <param name="eventType">The events to notify.</param>
-		///         <summary>Notifies consumers of events in the stream.</summary>
-		///         <remarks>
-		///         </remarks>
 		public void Notify (CFStreamEventType eventType)
 		{
 			if ((flags & eventType) == 0)

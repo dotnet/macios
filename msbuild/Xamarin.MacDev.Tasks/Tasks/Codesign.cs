@@ -22,6 +22,9 @@ namespace Xamarin.MacDev.Tasks {
 		const string CodeSignatureDirName = "_CodeSignature";
 		string? toolExe;
 
+		// Set to 1 (using Interlocked) the first time we log the errSecInternalComponent hint, so we only log it once per task invocation.
+		int loggedInternalComponentHint;
+
 		#region Inputs
 
 		// Whether we'll check for and show an error if the app bundle we're trying to sign contains a 'Resources' subdirectory.
@@ -375,6 +378,8 @@ namespace Xamarin.MacDev.Tasks {
 					Log.LogError (MSBStrings.E0004, item.ItemSpec, errors);
 				else
 					Log.LogError (MSBStrings.E0005, item.ItemSpec);
+				if (errors.IndexOf ("errSecInternalComponent", StringComparison.Ordinal) >= 0 && System.Threading.Interlocked.CompareExchange (ref loggedInternalComponentHint, 1, 0) == 0)
+					Log.LogError (MSBStrings.E7184 /* Codesign failed with 'errSecInternalComponent'. This usually means the keychain is locked, which is common when building over SSH. Unlock the keychain first, for example by running 'security unlock-keychain ~/Library/Keychains/login.keychain-db'. */);
 			} else {
 				var stampFile = GetCodesignStampFile (item);
 				if (string.IsNullOrEmpty (stampFile)) {

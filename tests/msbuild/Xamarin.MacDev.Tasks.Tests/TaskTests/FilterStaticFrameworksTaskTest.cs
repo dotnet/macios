@@ -173,6 +173,34 @@ namespace Xamarin.MacDev.Tasks.Tests {
 		}
 
 		[Test]
+		public void TestOutputUsesFullPaths ()
+		{
+			var tempDir = Cache.CreateTemporaryDirectory ();
+			var frameworkDir = Path.Combine (tempDir, "TestFramework.framework");
+			Directory.CreateDirectory (frameworkDir);
+			File.WriteAllBytes (Path.Combine (frameworkDir, "TestFramework"), CreateMinimalMachODylib ());
+
+			var relativeFrameworkDir = Path.GetRelativePath (Directory.GetCurrentDirectory (), frameworkDir);
+			var relativeSourceDir = Path.GetDirectoryName (relativeFrameworkDir) ?? "";
+			var framework = new TaskItem (relativeFrameworkDir.Replace ('/', '\\'));
+			framework.SetMetadata ("SourceDirectory", relativeSourceDir.Replace ('/', '\\'));
+			framework.SetMetadata ("CustomMetadata", "CustomValue");
+
+			var task = CreateTask<FilterStaticFrameworks> ();
+			task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (ApplePlatform.iOS).ToString ();
+			task.FrameworkToPublish = [framework];
+			task.OnlyFilterFrameworks = true;
+
+			ExecuteTask (task);
+
+			var output = task.FrameworkToPublish ?? throw new InvalidOperationException ("The task did not produce any output.");
+			Assert.That (output, Has.Length.EqualTo (1));
+			Assert.That (output [0].ItemSpec, Is.EqualTo (frameworkDir), "Identity");
+			Assert.That (output [0].GetMetadata ("SourceDirectory"), Is.EqualTo (Path.GetFullPath (relativeSourceDir)), "SourceDirectory");
+			Assert.That (output [0].GetMetadata ("CustomMetadata"), Is.EqualTo ("CustomValue"), "CustomMetadata");
+		}
+
+		[Test]
 		[TestCase (ApplePlatform.iOS, "BadFramework.framework")]
 		[TestCase (ApplePlatform.TVOS, "BadFramework.framework")]
 		[TestCase (ApplePlatform.MacOSX, "BadFramework.framework")]

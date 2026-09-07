@@ -1,9 +1,5 @@
 # yamllint disable rule:line-length
 parameters:
-  - name: provisionatorChannel
-    type: string
-    default: 'latest'
-
   - name: pool
     type: string
 

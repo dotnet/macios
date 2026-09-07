@@ -1,0 +1,14 @@
+
+# results from initial block parameter nullability analysis
+!missing-null-allowed! 'System.Void ReplayKit.RPBroadcastController::FinishBroadcast(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #0
+!missing-null-allowed! 'System.Void ReplayKit.RPBroadcastController::StartBroadcast(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #0
+!missing-null-allowed! 'System.Void ReplayKit.RPScreenRecorder::ExportClip(Foundation.NSUrl,System.Double,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void ReplayKit.RPScreenRecorder::StartCapture(System.Action`3<CoreMedia.CMSampleBuffer,ReplayKit.RPSampleBufferType,Foundation.NSError>,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'captureHandler' block parameter #2
+!missing-null-allowed! 'System.Void ReplayKit.RPScreenRecorder::StartCapture(System.Action`3<CoreMedia.CMSampleBuffer,ReplayKit.RPSampleBufferType,Foundation.NSError>,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void ReplayKit.RPScreenRecorder::StartClipBuffering(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void ReplayKit.RPScreenRecorder::StartRecording(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #0
+!missing-null-allowed! 'System.Void ReplayKit.RPScreenRecorder::StopCapture(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #0
+!missing-null-allowed! 'System.Void ReplayKit.RPScreenRecorder::StopClipBuffering(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void ReplayKit.RPScreenRecorder::StopRecording(Foundation.NSUrl,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void ReplayKit.RPScreenRecorder::StopRecording(System.Action`2<ReplayKit.RPPreviewViewController,Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #0
+!missing-null-allowed! 'System.Void ReplayKit.RPScreenRecorder::StopRecording(System.Action`2<ReplayKit.RPPreviewViewController,Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #1

@@ -47,7 +47,7 @@ param_iter_next (enum IteratorAction action, void *context, const char *type, si
 	if (target == NULL) {
 		LOGZ("skipping over %lu bytes\n", size);
 		if (size % sizeof (void *) != 0)
-			xamarin_assertion_message ("Cannot marshal structure of type '%s' with size %i since it's not a multiple of %i.\n", type, size, sizeof (void *));
+			xamarin_assertion_message ("Cannot marshal structure of type '%s' with size %i since it's not a multiple of %i.\n", type, (int) size, (int) sizeof (void *));
 
 		do {
 			va_arg (it->ap, void *);
@@ -59,7 +59,7 @@ param_iter_next (enum IteratorAction action, void *context, const char *type, si
 	void **target_ptr = (void **) target;
 	if (size > sizeof (void *)) {
 		if (size % sizeof (void *) != 0)
-			xamarin_assertion_message ("Cannot marshal structure of type '%s' with size %i since it's not a multiple of %i.\n", type, size, sizeof (void *));
+			xamarin_assertion_message ("Cannot marshal structure of type '%s' with size %i since it's not a multiple of %i.\n", type, (int) size, (int) sizeof (void *));
 
 		size_t size_left = size;
 		do {

@@ -175,7 +175,7 @@ endef
 # pseudo-code:
 #     foreach (var platform in DOTNET_PLATFORMS)
 #        BuildDotNetIntermediateAssembly (platform, platform.ToUpper (), platform.ToLower ())
-$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call DotNetVariables,$(platform),$(shell echo $(platform) | tr '[:lower:]' '[:upper:]'),$(shell echo $(platform) | tr '[:upper:]' '[:lower:]'))))
+$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call DotNetVariables,$(platform),$(call uppercase,$(platform)),$(call lowercase,$(platform)))))
 
 #
 # iOS
@@ -372,7 +372,7 @@ endif
 # pseudo-code:
 #     foreach (var platform in DOTNET_PLATFORMS)
 #        BuildDotNetIntermediateAssembly (platform, platform.ToUpper (), platform.ToLower ())
-$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call BuildDotNetIntermediateAssembly,$(platform),$(shell echo $(platform) | tr '[:lower:]' '[:upper:]'),$(shell echo $(platform) | tr '[:upper:]' '[:lower:]'))))
+$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call BuildDotNetIntermediateAssembly,$(platform),$(call uppercase,$(platform)),$(call lowercase,$(platform)))))
 
 define BuildDotNetPlatformAssembly
 $(2)_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES = \
@@ -480,7 +480,7 @@ endef
 # pseudo-code:
 #     foreach (var platform in DOTNET_PLATFORMS)
 #        BuildDotNetPlatformAssembly (platform, platform.ToUpper (), platform.ToLower (), 64)
-$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call BuildDotNetPlatformAssembly,$(platform),$(shell echo $(platform) | tr '[:lower:]' '[:upper:]'),$(shell echo $(platform) | tr '[:upper:]' '[:lower:]'),64)))
+$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call BuildDotNetPlatformAssembly,$(platform),$(call uppercase,$(platform)),$(call lowercase,$(platform)),64)))
 
 define DefineTargets
 $(1)_NUGET_TARGETS = \
@@ -512,7 +512,7 @@ $(DOTNET_BUILD_DIR)/%/Constants.generated.cs: Makefile $(GENERATE_FRAMEWORKS_CON
 
 # This target builds all the generated project files. It's not really useful by itself,
 # except to validate that the csproj files actually work.
-build-csproj: $(CSPROJECTS) $(foreach platform,$(DOTNET_PLATFORMS),$($(shell echo $(platform) | tr '[:lower:]' '[:upper:]')_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES))
+build-csproj: $(CSPROJECTS) $(foreach platform,$(DOTNET_PLATFORMS),$($(call uppercase,$(platform))_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES))
 	$(Q) set -e; \
 	for csproj in $(CSPROJECTS); do \
 		echo "Building $$csproj..."; \
@@ -521,7 +521,7 @@ build-csproj: $(CSPROJECTS) $(foreach platform,$(DOTNET_PLATFORMS),$($(shell ech
 	done
 
 # This targets runs 'dotnet format' on the generated project files.
-format-csproj: $(CSPROJECTS) $(foreach platform,$(DOTNET_PLATFORMS),$($(shell echo $(platform) | tr '[:lower:]' '[:upper:]')_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES))
+format-csproj: $(CSPROJECTS) $(foreach platform,$(DOTNET_PLATFORMS),$($(call uppercase,$(platform))_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES))
 	$(Q) set -e; \
 	for csproj in $(CSPROJECTS); do \
 		echo "Formatting $$csproj..."; \
@@ -531,7 +531,7 @@ format-csproj: $(CSPROJECTS) $(foreach platform,$(DOTNET_PLATFORMS),$($(shell ec
 
 # This builds the project files, enabling C# analyzers
 analyze:
-	$(Q) $(MAKE) -j $(CSPROJECTS) $(foreach platform,$(DOTNET_PLATFORMS),$($(shell echo $(platform) | tr '[:lower:]' '[:upper:]')_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES))
+	$(Q) $(MAKE) -j $(CSPROJECTS) $(foreach platform,$(DOTNET_PLATFORMS),$($(call uppercase,$(platform))_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES))
 	$(Q) set -e; \
 	for csproj in $(CSPROJECTS); do \
 		echo "Analyzing $$csproj..."; \
@@ -541,7 +541,7 @@ analyze:
 	done
 
 # This target builds the generated project files with StyleCop enabled.
-stylecop-csproj: $(CSPROJECTS) $(foreach platform,$(DOTNET_PLATFORMS),$($(shell echo $(platform) | tr '[:lower:]' '[:upper:]')_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES))
+stylecop-csproj: $(CSPROJECTS) $(foreach platform,$(DOTNET_PLATFORMS),$($(call uppercase,$(platform))_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES))
 	$(Q) set -e; \
 	for csproj in $(CSPROJECTS); do \
 		echo "Building $$csproj with StyleCop enabled..."; \

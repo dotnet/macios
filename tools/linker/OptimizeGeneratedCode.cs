@@ -536,15 +536,6 @@ namespace Xamarin.Linker {
 				return modified;
 			}
 
-			if (data.Optimizations.InlineIsARM64CallingConvention == true && data.InlineIsArm64CallingConvention.HasValue && method.Name == "GetIsARM64CallingConvention" && method.DeclaringType.Is (Namespaces.ObjCRuntime, "Runtime")) {
-				// Rewrite to return the constant value
-				var instr = method.Body.Instructions;
-				instr.Clear ();
-				instr.Add (Instruction.Create (data.InlineIsArm64CallingConvention.Value ? OpCodes.Ldc_I4_1 : OpCodes.Ldc_I4_0));
-				instr.Add (Instruction.Create (OpCodes.Ret));
-				return true; // nothing else to do here.
-			}
-
 			if (ProcessProtocolInterfaceStaticConstructor (data, method))
 				return true;
 
@@ -556,9 +547,6 @@ namespace Xamarin.Linker {
 				case Code.Call:
 					modified |= ProcessCalls (data, method, ins, out var instructionsAddedOrRemoved);
 					i += instructionsAddedOrRemoved;
-					break;
-				case Code.Ldsfld:
-					modified |= ProcessLoadStaticField (data, method, ins);
 					break;
 				}
 			}
@@ -575,9 +563,6 @@ namespace Xamarin.Linker {
 			instructionsAddedOrRemoved = 0;
 			var mr = ins.Operand as MethodReference;
 			switch (mr?.Name) {
-			case "EnsureUIThread":
-				modified |= ProcessEnsureUIThread (data, caller, ins);
-				break;
 			case "get_IsDirectBinding":
 				modified |= ProcessIsDirectBinding (data, caller, ins);
 				break;
@@ -592,44 +577,6 @@ namespace Xamarin.Linker {
 			}
 
 			return modified;
-		}
-
-		static bool ProcessLoadStaticField (OptimizeGeneratedCodeData data, MethodDefinition caller, Instruction ins)
-		{
-			var modified = false;
-			var fr = ins.Operand as FieldReference;
-			switch (fr?.Name) {
-			case "IsARM64CallingConvention":
-				modified |= ProcessIsARM64CallingConvention (data, caller, ins);
-				break;
-			case "Arch":
-				// https://app.asana.com/0/77259014252/77812690163
-				modified |= ProcessRuntimeArch (data, caller, ins);
-				break;
-			}
-			return modified;
-		}
-
-		static bool ProcessEnsureUIThread (OptimizeGeneratedCodeData data, MethodDefinition caller, Instruction ins)
-		{
-			if (data.Optimizations.RemoveUIThreadChecks != true)
-				return false;
-
-			// Verify we're checking the right get_EnsureUIThread call
-			var declaringTypeNamespace = data.LinkContext.App.Platform == Utils.ApplePlatform.MacOSX ? Namespaces.AppKit : Namespaces.UIKit;
-			var declaringTypeName = data.LinkContext.App.Platform == Utils.ApplePlatform.MacOSX ? "NSApplication" : "UIApplication";
-			var mr = ins.Operand as MethodReference;
-			if (mr is null || !mr.DeclaringType.Is (declaringTypeNamespace, declaringTypeName))
-				return false;
-
-			// Verify a few assumptions before doing anything
-			const string operation = "remove calls to [NS|UI]Application::EnsureUIThread";
-			if (!ValidateInstruction (data.App, caller, ins, operation, Code.Call))
-				return false;
-
-			// This is simple: just remove the call
-			Nop (ins); // call void UIKit.UIApplication::EnsureUIThread()
-			return true;
 		}
 
 		static bool? IsDirectBindingConstant (OptimizeGeneratedCodeData data, TypeDefinition type)
@@ -965,54 +912,6 @@ namespace Xamarin.Linker {
 			return ins;
 		}
 
-		static bool ProcessIsARM64CallingConvention (OptimizeGeneratedCodeData data, MethodDefinition caller, Instruction ins)
-		{
-			const string operation = "inline Runtime.IsARM64CallingConvention";
-
-			if (data.Optimizations.InlineIsARM64CallingConvention != true)
-				return false;
-
-			if (!data.InlineIsArm64CallingConvention.HasValue)
-				return false;
-
-			// Verify we're checking the right IsARM64CallingConvention field
-			var fr = ins.Operand as FieldReference;
-			if (fr is null || !fr.DeclaringType.Is (Namespaces.ObjCRuntime, "Runtime"))
-				return false;
-
-			if (!ValidateInstruction (data.App, caller, ins, operation, Code.Ldsfld))
-				return false;
-
-			// We're fine, inline the Runtime.IsARM64CallingConvention value
-			ins.OpCode = data.InlineIsArm64CallingConvention.Value ? OpCodes.Ldc_I4_1 : OpCodes.Ldc_I4_0;
-			ins.Operand = null;
-
-			return true;
-		}
-
-		static bool ProcessRuntimeArch (OptimizeGeneratedCodeData data, MethodDefinition caller, Instruction ins)
-		{
-			const string operation = "inline Runtime.Arch";
-
-			if (data.Optimizations.InlineRuntimeArch != true)
-				return false;
-
-			// Verify we're checking the right Arch field
-			var fr = ins.Operand as FieldReference;
-			if (fr is null || !fr.DeclaringType.Is (Namespaces.ObjCRuntime, "Runtime"))
-				return false;
-
-			// Verify a few assumptions before doing anything
-			if (!ValidateInstruction (data.App, caller, ins, operation, Code.Ldsfld))
-				return false;
-
-			// We're fine, inline the Runtime.Arch condition
-			// The enum values are Runtime.DEVICE = 0 and Runtime.SIMULATOR = 1,
-			ins.OpCode = data.Device ? OpCodes.Ldc_I4_0 : OpCodes.Ldc_I4_1;
-			ins.Operand = null;
-			return true;
-		}
-
 		// Returns the type of the value pushed on the stack by the given instruction.
 		// Returns null for unknown instructions, or for instructions that don't push anything on the stack.
 		static TypeReference? GetPushedType (MethodDefinition method, Instruction ins)
@@ -1205,11 +1104,9 @@ namespace Xamarin.Linker {
 	public class OptimizeGeneratedCodeData {
 		public required Xamarin.Tuner.DerivedLinkContext LinkContext;
 		public required Optimizations Optimizations;
-		public required bool Device;
 
 		public MethodDefinition? SetupBlockImplDefinition;
 		public MethodDefinition? BlockCtorDefinition;
-		public bool? InlineIsArm64CallingConvention;
 
 		public Application App => LinkContext.App;
 	}

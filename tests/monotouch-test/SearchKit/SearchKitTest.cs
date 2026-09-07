@@ -30,8 +30,7 @@ namespace apitest {
 		public void TestCreate ()
 		{
 			var idx = SKIndex.CreateWithUrl (new NSUrl ("file://" + path), "myIndex", SKIndexType.InvertedVector, null);
-			if (idx is null)
-				throw new Exception ();
+			Assert.That (idx, Is.Not.Null, "non-null index");
 
 
 			var d1 = new SKDocument (new NSUrl ("file:///etc/passwd"));

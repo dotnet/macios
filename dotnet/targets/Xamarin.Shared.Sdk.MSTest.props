@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+	<!-- Default properties for MSTest runner projects on Apple platforms -->
+	<PropertyGroup>
+		<!-- MSTest runner projects need the interpreter because test platform assemblies fail AOT compilation -->
+		<MtouchInterpreter Condition="'$(MtouchInterpreter)' == '' And '$(UseMonoRuntime)' == 'true'">all</MtouchInterpreter>
+		<!-- MSTest adapter has duplicate publish output files, suppress the error -->
+		<ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
+		<!-- Apple platforms provide their own entry point (UIApplication.Main, NSApplication.Main, etc.) -->
+		<GenerateTestingPlatformEntryPoint Condition="'$(GenerateTestingPlatformEntryPoint)' == ''">false</GenerateTestingPlatformEntryPoint>
+		<!-- Suppress trimmer warnings from test framework dependencies (e.g. Microsoft.ApplicationInsights) -->
+		<SuppressTrimAnalysisWarnings Condition="'$(SuppressTrimAnalysisWarnings)' == ''">true</SuppressTrimAnalysisWarnings>
+		<!--
+			On macOS and Mac Catalyst 'dotnet run/test' launches the app via 'open' by default,
+			which goes through LaunchServices and does not propagate the parent process's
+			environment variables or reliably forward CLI arguments to the app. That breaks
+			the Microsoft.Testing.Platform (MTP) handshake that 'dotnet test' relies on.
+			Launching the app binary directly avoids the problem.
+		-->
+		<RunWithOpen Condition="'$(RunWithOpen)' == ''">false</RunWithOpen>
+	</PropertyGroup>
+	<ItemGroup>
+		<!-- Disable ANSI escape codes in MSTest output, as they appear as garbled text in simulator/device logs -->
+		<RuntimeEnvironmentVariable Include="NO_COLOR" Value="1" />
+	</ItemGroup>
+
+</Project>

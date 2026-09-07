@@ -112,10 +112,12 @@ namespace CoreText {
 			fitRange = default;
 			unsafe {
 				fixed (NSRange* fitRangePtr = &fitRange) {
-					return CTFramesetterSuggestFrameSizeWithConstraints (
+					var rv = CTFramesetterSuggestFrameSizeWithConstraints (
 							Handle, stringRange,
 							frameAttributes.GetHandle (),
 							constraints, fitRangePtr);
+					GC.KeepAlive (frameAttributes);
+					return rv;
 				}
 			}
 		}

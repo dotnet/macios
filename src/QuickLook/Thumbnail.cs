@@ -69,8 +69,12 @@ namespace QuickLook {
 
 			if (scaleFactor != 1 && iconMode != false) {
 				dictionary = new NSMutableDictionary ();
-				dictionary.LowlevelSetObject ((NSNumber) scaleFactor, OptionScaleFactorKey.Handle);
-				dictionary.LowlevelSetObject (iconMode ? CFBoolean.TrueHandle : CFBoolean.FalseHandle, OptionIconModeKey.Handle);
+				var scaleFactorKey = OptionScaleFactorKey;
+				dictionary.LowlevelSetObject ((NSNumber) scaleFactor, scaleFactorKey.Handle);
+				GC.KeepAlive (scaleFactorKey);
+				var iconModeKey = OptionIconModeKey;
+				dictionary.LowlevelSetObject (iconMode ? CFBoolean.TrueHandle : CFBoolean.FalseHandle, iconModeKey.Handle);
+				GC.KeepAlive (iconModeKey);
 			}
 
 			var handle = QLThumbnailImageCreate (IntPtr.Zero, url.Handle, maxThumbnailSize, dictionary.GetHandle ());

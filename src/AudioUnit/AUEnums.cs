@@ -340,7 +340,7 @@ namespace AudioUnit {
 		[NoiOS]
 		[MacCatalyst (15, 0), NoTV]
 		ProcessMute = 1634758765, // 'appm'
-		[MacCatalyst (17, 0), Mac (14, 0), NoTV]
+		[MacCatalyst (17, 0), NoTV]
 		InputMute = 1852403056, //pmin
 	}
 
@@ -358,11 +358,12 @@ namespace AudioUnit {
 		PlayThrough = 1886679669, // 'ptru'
 	}
 
+	/// <summary>Identifies an element of an audio object property.</summary>
 	[MacCatalyst (13, 1)]
 	[NoTV]
 	[NoiOS]
 	public enum AudioObjectPropertyElement : uint {
-		/// <summary>To be added.</summary>
+		/// <summary>The main element of the audio object.</summary>
 		Main = 0, // 0
 	}
 
@@ -636,11 +637,11 @@ namespace AudioUnit {
 		SpatialMixerAttenuationCurve = 3013,
 		SpatialMixerOutputType = 3100,
 		SpatialMixerPointSourceInHeadMode = 3103,
-		[Mac (12, 3), iOS (18, 0), TV (18, 0), MacCatalyst (18, 0)]
+		[iOS (18, 0), TV (18, 0), MacCatalyst (18, 0)]
 		SpatialMixerEnableHeadTracking = 3111,
-		[Mac (13, 0), iOS (18, 0), TV (18, 0), MacCatalyst (18, 0)]
+		[iOS (18, 0), TV (18, 0), MacCatalyst (18, 0)]
 		SpatialMixerPersonalizedHrtfMode = 3113,
-		[Mac (14, 0), iOS (18, 0), TV (18, 0), MacCatalyst (18, 0)]
+		[iOS (18, 0), TV (18, 0), MacCatalyst (18, 0)]
 		SpatialMixerAnyInputIsUsingPersonalizedHrtf = 3116,
 
 		// AUScheduledSoundPlayer
@@ -1195,8 +1196,9 @@ namespace AudioUnit {
 		Cycling = 8,
 	}
 
+	/// <summary>Specifies sample times for scheduling audio unit events.</summary>
 	public enum AUEventSampleTime : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Schedules the event to occur immediately.</summary>
 		Immediate = unchecked((long) 0xffffffff00000000),
 	}
 
@@ -1412,7 +1414,7 @@ namespace AudioUnit {
 		Ended = 1,
 	}
 
-	[iOS (16, 0), TV (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
+	[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 	public enum AudioUnitEventType : uint {
 		ParameterValueChange = 0,
 		BeginParameterChangeGesture = 1,
@@ -1485,7 +1487,7 @@ namespace AudioUnit {
 		/// <summary>A light reverb.</summary>
 		Reverb2 = 0x72766232, // 'rvb2'
 		/// <summary>An audio unit that can be used to isolate a sound type.</summary>
-		[iOS (16, 0), Mac (13, 0), MacCatalyst (16, 0), NoTV]
+		[iOS (16, 0), MacCatalyst (16, 0), NoTV]
 		AUSoundIsolation = 0x766f6973, // 'vois'
 		/// <summary>An audio unit that supports AudioMix separate-and-remix.</summary>
 		[iOS (26, 0), Mac (26, 0), MacCatalyst (26, 0), NoTV]
@@ -1530,7 +1532,7 @@ namespace AudioUnit {
 #endif
 	}
 
-	[MacCatalyst (17, 0), Mac (14, 0), NoTV, NoiOS]
+	[MacCatalyst (17, 0), NoTV, NoiOS]
 	public enum AudioAggregateDriftCompensation : uint {
 		MinQuality = 0,
 		LowQuality = 0x20,

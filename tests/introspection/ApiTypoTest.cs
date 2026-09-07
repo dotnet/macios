@@ -935,30 +935,33 @@ namespace Introspection {
 			using var checker = new SpellChecker ();
 
 			// Collect all unique words from public API names (split on uppercase boundaries)
-			var words = new HashSet<string> (StringComparer.Ordinal);
+			var words = new Dictionary<string, List<MemberInfo>> (StringComparer.Ordinal);
 			var types = Assembly.GetTypes ();
 			foreach (Type t in types) {
 				if (!t.IsPublic || IsObsolete (t))
 					continue;
 
-				SplitIntoWords (words, t.Name);
+				SplitIntoWords (words, t.Name, t);
 
 				foreach (FieldInfo f in t.GetFields ()) {
 					if ((!f.IsPublic && !f.IsFamily) || IsObsolete (f))
 						continue;
-					SplitIntoWords (words, f.Name);
+					SplitIntoWords (words, f.Name, f);
 				}
 
 				foreach (MethodInfo m in t.GetMethods ()) {
 					if ((!m.IsPublic && !m.IsFamily) || IsObsolete (m))
 						continue;
-					SplitIntoWords (words, m.Name);
+					if (Skip (m))
+						continue;
+					SplitIntoWords (words, m.Name, m);
 				}
 			}
 
 			// Check each unique word individually with the spell checker
-			var typos = new HashSet<string> (StringComparer.Ordinal);
-			foreach (var word in words) {
+			var typos = new Dictionary<string, List<MemberInfo>> (StringComparer.Ordinal);
+			foreach (var kvp in words) {
+				var word = kvp.Key;
 				var checkRange = new NSRange (0, word.Length);
 #if MONOMAC
 				var typoRange = checker.CheckSpelling (word, 0, "en_US", false, 0, out var _);
@@ -966,19 +969,20 @@ namespace Introspection {
 				var typoRange = checker.RangeOfMisspelledWordInString (word, checkRange, checkRange.Location, false, "en_US");
 #endif
 				if (typoRange.Length > 0)
-					typos.Add (word.Substring ((int) typoRange.Location, (int) typoRange.Length));
+					typos [word.Substring ((int) typoRange.Location, (int) typoRange.Length)] = kvp.Value;
 			}
 
 			// Check each typo against allowed list
 			int totalErrors = 0;
 			var currentPlatform = TestRuntime.CurrentPlatform;
 			var usedAllowed = new HashSet<string> ();
-			foreach (var typo in typos) {
+			foreach (var kvp in typos) {
+				var typo = kvp.Key;
 				if (allowed.TryGetValue (typo, out var platforms) && platforms.HasFlag (currentPlatform)) {
 					usedAllowed.Add (typo);
 					continue;
 				}
-				ReportError ("Typo: {0}", typo);
+				ReportError ($"Typo: {typo}, found in {kvp.Value.Count} APIs:\n\t{string.Join ("\n\t", kvp.Value.Select (v => v.ToString ()))}", typo);
 				totalErrors++;
 			}
 
@@ -996,25 +1000,44 @@ namespace Introspection {
 		}
 
 		// Split an API name into words on uppercase/digit/symbol boundaries and add to the set
-		static void SplitIntoWords (HashSet<string> words, string name)
+		static void SplitIntoWords (Dictionary<string, List<MemberInfo>> words, string name, MemberInfo member)
 		{
 			int start = -1;
 			for (int i = 0; i < name.Length; i++) {
 				char c = name [i];
 				if (Char.IsUpper (c)) {
 					if (start >= 0 && i > start)
-						words.Add (name.Substring (start, i - start));
+						Add (words, name.Substring (start, i - start), member);
 					start = i;
 				} else if (Char.IsDigit (c) || c == '<' || c == '>' || c == '_') {
 					if (start >= 0 && i > start)
-						words.Add (name.Substring (start, i - start));
+						Add (words, name.Substring (start, i - start), member);
 					start = -1;
 				} else if (start < 0) {
 					// lowercase char with no word start — skip
 				}
 			}
 			if (start >= 0 && name.Length > start)
-				words.Add (name.Substring (start));
+				Add (words, name.Substring (start), member);
+		}
+
+		static void Add (Dictionary<string, List<MemberInfo>> words, string name, MemberInfo member)
+		{
+			if (!words.TryGetValue (name, out var list))
+				words [name] = list = new List<MemberInfo> ();
+			list.Add (member);
+		}
+
+		bool Skip (MethodInfo method)
+		{
+			// These are methods injected by the registrar, and not API we expose, so skip them.
+			switch (method.Name) {
+			case "_Xamarin_ConstructINativeObject":
+			case "_Xamarin_ConstructNSObject":
+				return true;
+			}
+
+			return false;
 		}
 
 		string? GetMessage (object attribute)

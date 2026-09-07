@@ -3098,7 +3098,7 @@
         <Str Cat="Text">
           <Val><![CDATA[Adjusted path from '{0}' to '{1}']D;]A;        ]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['{0}' から '{1}']D; にパスを調整しました]A;        ]]></Val>
+            <Val><![CDATA['{0}' から '{1}' にパスを調整しました]D;]A;        ]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

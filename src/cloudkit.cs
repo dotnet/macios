@@ -2282,7 +2282,7 @@ namespace CloudKit {
 		Action<CKRecordZoneID> RecordZoneWithIdWasDeletedDueToUserEncryptedDataReset { get; set; }
 	}
 
-	[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CKAllowedSharingOptions : NSSecureCoding, NSCopying {
@@ -2308,7 +2308,7 @@ namespace CloudKit {
 		bool AllowsAccessRequests { get; set; }
 	}
 
-	[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CKSystemSharingUIObserver {
@@ -2323,7 +2323,7 @@ namespace CloudKit {
 		Action<CKRecordID, NSError> SystemSharingUIDidStopSharingHandler { get; set; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	interface CKSyncEngineSendChangesScope : NSCopying {
 		[NullAllowed, Export ("zoneIDs", ArgumentSemantic.Copy)]
@@ -2353,7 +2353,7 @@ namespace CloudKit {
 		bool ContainsPendingRecordZoneChange (CKSyncEnginePendingRecordZoneChange pendingRecordZoneChange);
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	interface CKSyncEngineFetchChangesScope : NSCopying {
 		[NullAllowed, Export ("zoneIDs", ArgumentSemantic.Copy)]
@@ -2375,7 +2375,7 @@ namespace CloudKit {
 		bool Contains (CKRecordZoneID zoneId);
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CKSyncEngineFetchChangesContext {
@@ -2386,7 +2386,7 @@ namespace CloudKit {
 		CKSyncEngineFetchChangesOptions Options { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CKSyncEngineEvent {
@@ -2430,7 +2430,7 @@ namespace CloudKit {
 		CKSyncEngineDidSendChangesEvent DidSendChangesEvent { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (CKSyncEngineEvent))]
 	interface CKSyncEngineAccountChangeEvent {
 		[Export ("changeType", ArgumentSemantic.Assign)]
@@ -2443,12 +2443,12 @@ namespace CloudKit {
 		CKRecordID CurrentUser { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CKSyncEngineStateSerialization : NSSecureCoding { }
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CKSyncEngineConfiguration {
@@ -2475,21 +2475,21 @@ namespace CloudKit {
 		string SubscriptionId { get; set; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (CKSyncEngineEvent))]
 	interface CKSyncEngineWillSendChangesEvent {
 		[Export ("context", ArgumentSemantic.Strong)]
 		CKSyncEngineSendChangesContext Context { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (CKSyncEngineEvent))]
 	interface CKSyncEngineWillFetchRecordZoneChangesEvent {
 		[Export ("zoneID", ArgumentSemantic.Copy)]
 		CKRecordZoneID ZoneId { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CKSyncEngineSendChangesContext {
@@ -2502,7 +2502,7 @@ namespace CloudKit {
 
 	interface ICKSyncEngineDelegate { }
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface CKSyncEngineDelegate {
@@ -2519,14 +2519,14 @@ namespace CloudKit {
 		CKSyncEngineFetchChangesOptions SyncEngine (CKSyncEngine syncEngine, CKSyncEngineFetchChangesContext context);
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (CKSyncEngineEvent))]
 	interface CKSyncEngineDidSendChangesEvent {
 		[Export ("context", ArgumentSemantic.Strong)]
 		CKSyncEngineSendChangesContext Context { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CKSyncEnginePendingRecordZoneChange {
@@ -2541,7 +2541,7 @@ namespace CloudKit {
 		CKSyncEnginePendingRecordZoneChangeType Type { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	interface CKSyncEngineFetchChangesOptions : NSCopying {
 		[Export ("scope", ArgumentSemantic.Copy)]
@@ -2557,14 +2557,14 @@ namespace CloudKit {
 		NativeHandle Constructor ([NullAllowed] CKSyncEngineFetchChangesScope scope);
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (CKSyncEngineEvent))]
 	interface CKSyncEngineStateUpdateEvent {
 		[Export ("stateSerialization", ArgumentSemantic.Copy)]
 		CKSyncEngineStateSerialization StateSerialization { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (CKSyncEngineEvent))]
 	interface CKSyncEngineFetchedDatabaseChangesEvent {
 		[Export ("modifications", ArgumentSemantic.Copy)]
@@ -2574,7 +2574,7 @@ namespace CloudKit {
 		CKSyncEngineFetchedZoneDeletion [] Deletions { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (CKSyncEngineEvent))]
 	interface CKSyncEngineFetchedRecordZoneChangesEvent {
 		[Export ("modifications", ArgumentSemantic.Copy)]
@@ -2584,7 +2584,7 @@ namespace CloudKit {
 		CKSyncEngineFetchedRecordDeletion [] Deletions { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (CKSyncEngineEvent))]
 	interface CKSyncEngineSentDatabaseChangesEvent {
 		[Export ("savedZones", ArgumentSemantic.Copy)]
@@ -2600,7 +2600,7 @@ namespace CloudKit {
 		NSDictionary<CKRecordZoneID, NSError> FailedZoneDeletes { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (CKSyncEngineEvent))]
 	interface CKSyncEngineWillFetchChangesEvent {
 
@@ -2610,7 +2610,7 @@ namespace CloudKit {
 
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (CKSyncEngineEvent))]
 	interface CKSyncEngineSentRecordZoneChangesEvent {
 		[Export ("savedRecords", ArgumentSemantic.Copy)]
@@ -2626,7 +2626,7 @@ namespace CloudKit {
 		NSDictionary<CKRecordID, NSError> FailedRecordDeletes { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	interface CKSyncEngineSendChangesOptions : NSCopying {
 		[Export ("scope", ArgumentSemantic.Copy)]
@@ -2639,7 +2639,7 @@ namespace CloudKit {
 		NativeHandle Constructor ([NullAllowed] CKSyncEngineSendChangesScope scope);
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CKSyncEngineFailedRecordSave {
@@ -2650,7 +2650,7 @@ namespace CloudKit {
 		NSError Error { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CKSyncEngine {
@@ -2684,7 +2684,7 @@ namespace CloudKit {
 		void CancelOperations ([NullAllowed] Action completionHandler);
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (CKSyncEngineEvent))]
 	interface CKSyncEngineDidFetchChangesEvent {
 
@@ -2694,7 +2694,7 @@ namespace CloudKit {
 
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (CKSyncEngineEvent))]
 	interface CKSyncEngineDidFetchRecordZoneChangesEvent {
 		[Export ("zoneID", ArgumentSemantic.Copy)]
@@ -2704,7 +2704,7 @@ namespace CloudKit {
 		NSError Error { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CKSyncEngineRecordZoneChangeBatch {
@@ -2724,7 +2724,7 @@ namespace CloudKit {
 		bool AtomicByZone { get; set; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CKSyncEngineFetchedZoneDeletion {
@@ -2735,7 +2735,7 @@ namespace CloudKit {
 		CKSyncEngineZoneDeletionReason Reason { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CKSyncEngineFetchedRecordDeletion {
@@ -2746,7 +2746,7 @@ namespace CloudKit {
 		string RecordType { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CKSyncEngineFailedZoneSave {
@@ -2757,7 +2757,7 @@ namespace CloudKit {
 		NSError Error { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CKSyncEngineState {
@@ -2786,7 +2786,7 @@ namespace CloudKit {
 		void RemovePendingDatabaseChanges (CKSyncEnginePendingDatabaseChange [] changes);
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CKSyncEnginePendingDatabaseChange {
@@ -2797,7 +2797,7 @@ namespace CloudKit {
 		CKSyncEnginePendingDatabaseChangeType Type { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (CKSyncEnginePendingDatabaseChange))]
 	interface CKSyncEnginePendingZoneSave {
 		[Export ("initWithZone:")]
@@ -2807,7 +2807,7 @@ namespace CloudKit {
 		CKRecordZone Zone { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (CKSyncEnginePendingDatabaseChange))]
 	interface CKSyncEnginePendingZoneDelete {
 		[Export ("initWithZoneID:")]

@@ -48,8 +48,8 @@ public partial class NSValue : NSObject {
 	/// <param name="handle">The native handle.</param>
 	/// <returns>The CMTimeRange.</returns>
 	[SupportedOSPlatform ("ios16.0")]
-	[SupportedOSPlatform ("macos13.0")]
-	[SupportedOSPlatform ("maccatalyst16.0")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("tvos16.0")]
 	public static CMVideoDimensions ToCMVideoDimensions (NativeHandle handle)
 	{

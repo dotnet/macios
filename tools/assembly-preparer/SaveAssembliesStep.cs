@@ -37,16 +37,17 @@ namespace MonoTouch.Tuner {
 				switch (action) {
 				case AssemblyAction.Copy:
 				case AssemblyAction.CopyUsed:
-					if (configuration.Application.IsPostProcessingAssemblies && assembly.InputPath != assembly.OutputPath) {
-						// During post-processing, copy unchanged assemblies to the output directory
-						// so all assemblies are in the same directory (required for AOT compilation).
-						CopyAssemblyToOutput (assembly.InputPath, assembly.OutputPath);
-					} else {
-						assembly.OutputPath = assembly.InputPath;
-					}
+					OutputWithoutRewriting (assembly);
 					continue;
 				case AssemblyAction.Link:
 				case AssemblyAction.Save:
+					if (!configuration.ModifiedAssemblies.Contains (assemblyDefinition)) {
+						// The assembly is marked to be saved (e.g. it's part of the set of assemblies to
+						// trim), but the assembly-preparer didn't actually modify it, so there's no need to
+						// re-serialize it - just output the original assembly.
+						OutputWithoutRewriting (assembly);
+						continue;
+					}
 					log.Log ($"Saving {assembly.InputPath} to {assembly.OutputPath}");
 					break;
 				default:
@@ -77,6 +78,17 @@ namespace MonoTouch.Tuner {
 					log.Log ($"Failed to write {assembly.OutputPath}: {e}");
 					return;
 				}
+			}
+		}
+
+		void OutputWithoutRewriting (Xamarin.Build.AssemblyPreparerInfo assembly)
+		{
+			if (Configuration.Application.IsPostProcessingAssemblies && assembly.InputPath != assembly.OutputPath) {
+				// During post-processing, copy unchanged assemblies to the output directory
+				// so all assemblies are in the same directory (required for AOT compilation).
+				CopyAssemblyToOutput (assembly.InputPath, assembly.OutputPath);
+			} else {
+				assembly.OutputPath = assembly.InputPath;
 			}
 		}
 

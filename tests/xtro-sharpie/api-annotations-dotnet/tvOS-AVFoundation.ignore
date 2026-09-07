@@ -23,3 +23,6 @@
 !missing-type! AVCaptionRenderer not bound
 
 !missing-null-allowed! 'System.Void AVFoundation.AVCapturePhotoOutput::SetPreparedPhotoSettings(AVFoundation.AVCapturePhotoSettings[],System.Action`2<System.Boolean,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1
+
+# AVAudioRoutingArbitrationCategory is macOS-only natively (API_UNAVAILABLE on the typedef), but the managed enum is bound and used by AVAudioRoutingArbiter.BeginArbitration.
+!unknown-native-enum! AVAudioRoutingArbitrationCategory bound

@@ -23,7 +23,10 @@
 @protocol B
 @end
 
+typedef NSDictionary<NSString *, NSObject<NSCoding> *> GCKSessionOptions;
+
 @interface GenericTypesTest
+@property(nonatomic, strong, readonly, nullable) GCKSessionOptions *sessionOptions;
 -(NSDictionary<NSString *, NSNumber *> *)NSDictionaryOfNSStringToNSNumber;
 -(NSDictionary<id<A, B>, NSString *> *)NSDictionaryOfNSObjectConformingToAANDBToNSString;
 -(NSArray<NSString *> *)NSArrayOfNSString;

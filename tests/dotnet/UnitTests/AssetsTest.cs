@@ -86,6 +86,69 @@ namespace Xamarin.Tests {
 			Assert.That (File.Exists (x64txt), Is.EqualTo (runtimeIdentifiers.Split (';').Any (v => v.EndsWith ("-x64"))), "x64.txt");
 		}
 
+		// Verify that image assets coming from a referenced library aren't lost when actool is re-run
+		// on an incremental build (https://github.com/dotnet/macios/issues/5755). The app has its own
+		// image asset ('AppImage'), and it references a library with another image asset ('Image').
+		// Touching the app's own asset forces actool to regenerate Assets.car, and the library's asset
+		// must still be present afterwards.
+		[Test]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
+		public void LibraryImageAssetsSurviveIncrementalBuild (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			const string project = "AppWithLibraryWithResourcesReference";
+			var config = "Debug";
+			var projectPath = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: config);
+			Clean (projectPath);
+			Clean (GetProjectPath ("LibraryWithResources", platform: platform));
+
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["Configuration"] = config;
+
+			// Clean build: both the app's own asset and the library's asset must be present.
+			DotNet.AssertBuild (projectPath, properties);
+
+			var sdkVersion = GetFullSdkVersion (platform, runtimeIdentifiers);
+			var resourcesDirectory = GetResourcesDirectory (platform, appPath);
+			var assetsCar = Path.Combine (resourcesDirectory, "Assets.car");
+			Assert.That (assetsCar, Does.Exist, "Assets.car after clean build");
+
+			var assetsAfterCleanBuild = FindImageAssetNames (assetsCar, sdkVersion);
+			Assert.That (assetsAfterCleanBuild, Does.Contain ("AppImage"), "App image asset after clean build");
+			Assert.That (assetsAfterCleanBuild, Does.Contain ("Image"), "Library image asset after clean build");
+
+			// Touch the app's own asset so that actool re-runs and regenerates Assets.car.
+			var appAsset = Path.Combine (Path.GetDirectoryName (projectPath)!, "..", "AppImages.xcassets", "AppImage.imageset", "Contents.json");
+			Assert.That (appAsset, Does.Exist, "App asset to touch");
+			Configuration.Touch (appAsset);
+
+			// Incremental build: the library's asset must still be present.
+			DotNet.AssertBuild (projectPath, properties);
+
+			var assetsAfterIncrementalBuild = FindImageAssetNames (assetsCar, sdkVersion);
+			Assert.That (assetsAfterIncrementalBuild, Does.Contain ("AppImage"), "App image asset after incremental build");
+			Assert.That (assetsAfterIncrementalBuild, Does.Contain ("Image"), "Library image asset after incremental build (issue #5755)");
+		}
+
+		// Returns the set of image asset (imageset) names in the given compiled Assets.car.
+		static HashSet<string> FindImageAssetNames (string assetsCar, string sdkVersion)
+		{
+			var doc = ProcessAssets (assetsCar, sdkVersion);
+			Assert.That (doc, Is.Not.Null, "There was an issue processing the asset binary.");
+
+			var names = new HashSet<string> ();
+			foreach (var item in doc.RootElement.EnumerateArray ()) {
+				if (item.TryGetProperty ("AssetType", out var assetType) && assetType.ToString () == "Image" && item.TryGetProperty ("Name", out var name))
+					names.Add (name.ToString ());
+			}
+			return names;
+		}
+
 		void ConfigureAssets (string projectPath, string runtimeIdentifiers, string config, bool isStartingWithAssets)
 		{
 			Clean (projectPath);

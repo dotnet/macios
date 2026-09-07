@@ -16,10 +16,9 @@ namespace CoreSpotlight {
 	public partial class CSSearchableIndex {
 
 		// Strongly typed version of initWithName:protectionClass:
-		/// <param name="name">To be added.</param>
-		///         <param name="protectionOption">To be added.</param>
-		///         <summary>Creates a new <see cref="CoreSpotlight.CSSearchableIndex" /> with the specified <paramref name="name" /> and protection options.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Creates a new <see cref="CoreSpotlight.CSSearchableIndex" /> with the specified <paramref name="name" /> and protection options.</summary>
+		/// <param name="name">The name of the searchable index.</param>
+		/// <param name="protectionOption">The file protection level for the index.</param>
 		public CSSearchableIndex (string name, CSFileProtection protectionOption = CSFileProtection.None) : this (name, Translate (protectionOption))
 		{ }
 

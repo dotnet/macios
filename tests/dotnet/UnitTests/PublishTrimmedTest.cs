@@ -1,14 +1,22 @@
+using Cecil.Tests;
+using Mono.Cecil;
+
 namespace Xamarin.Tests {
 	[TestFixture]
 	public class PublishTrimmedTest : TestBaseClass {
 		[Test]
-		[TestCase (ApplePlatform.iOS, "ios-arm64")]
-		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
-		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
-		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64")]
-		[TestCase (ApplePlatform.MacOSX, "osx-x64")]
-		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64")]
-		public void DisableLinker (ApplePlatform platform, string runtimeIdentifiers)
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "false")]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64", "false")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", "false")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64", "false")]
+		[TestCase (ApplePlatform.MacOSX, "osx-x64", "false")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64", "false")]
+
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "true")]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64", "true")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", "true")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64", "true")]
+		public void PublishTrimmedNotSupported (ApplePlatform platform, string runtimeIdentifiers, string value)
 		{
 			var project = "MySimpleApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -17,13 +25,12 @@ namespace Xamarin.Tests {
 			var project_path = GetProjectPath (project, platform: platform);
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
-			properties ["PublishTrimmed"] = "false";
+			properties ["PublishTrimmed"] = value;
 
 			var rv = DotNet.AssertBuildFailure (project_path, properties);
 			var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray ();
-			Assert.That (errors.Length, Is.EqualTo (1), "Error count");
 			var linkModeName = platform == ApplePlatform.MacOSX ? "LinkMode" : "MtouchLink";
-			Assert.That (errors [0].Message, Is.EqualTo ($"{platform.AsString ()} projects must build with PublishTrimmed=true. Current value: false. Set '{linkModeName}=None' instead to disable trimming for all assemblies."), "Error message");
+			AssertErrorMessages (errors, $"{platform.AsString ()} projects do not support setting 'PublishTrimmed' to any value (current value: {value}). Use the '{linkModeName}' property to configure trimming behavior instead.");
 		}
 
 		[Test]
@@ -54,6 +61,47 @@ namespace Xamarin.Tests {
 			// on CI.
 			var targets = BinLog.GetAllTargets (rv.BinLogPath);
 			AssertTargetNotExecuted (targets, "ILLink", "The trimmer should not have executed.");
+		}
+
+		[TestCase (ApplePlatform.iOS)]
+		public void RemoveFoundationMemberAttributes (ApplePlatform platform)
+		{
+			var project = "LinkerAttributesTestApp";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			var runtimeIdentifiers = GetDefaultRuntimeIdentifier (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var projectPath = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
+			Clean (projectPath);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["MtouchLink"] = "Full";
+			properties ["ExcludeTouchUnitReference"] = "true";
+			properties ["ExcludeNUnitLiteReference"] = "true";
+
+			var rv = DotNet.AssertBuild (projectPath, properties);
+			AssertThatLinkerExecuted (rv);
+
+			var assemblyDirectory = Path.Combine (appPath, GetRelativeAssemblyDirectory (platform));
+			var platformAssemblyPath = Path.Combine (assemblyDirectory, $"Microsoft.{platform.AsString ()}.dll");
+			using var platformAssembly = AssemblyDefinition.ReadAssembly (platformAssemblyPath, new ReaderParameters { ReadingMode = ReadingMode.Deferred });
+			var platformAttributeNames = GetCustomAttributeNames (platformAssembly);
+			Assert.That (platformAttributeNames, Does.Not.Contain ("Foundation.RequiredMemberAttribute"), platformAssemblyPath);
+			Assert.That (platformAttributeNames, Does.Not.Contain ("Foundation.OptionalMemberAttribute"), platformAssemblyPath);
+
+			var appAssemblyPath = Path.Combine (assemblyDirectory, $"{project}.dll");
+			using var appAssembly = AssemblyDefinition.ReadAssembly (appAssemblyPath, new ReaderParameters { ReadingMode = ReadingMode.Deferred });
+			var appAttributeNames = GetCustomAttributeNames (appAssembly);
+			Assert.That (appAttributeNames, Does.Not.Contain ("Foundation.RequiredMemberAttribute"), appAssemblyPath);
+			Assert.That (appAttributeNames, Does.Not.Contain ("Foundation.OptionalMemberAttribute"), appAssemblyPath);
+			Assert.That (appAttributeNames, Does.Contain ("System.Runtime.CompilerServices.RequiredMemberAttribute"), appAssemblyPath);
+		}
+
+		static string [] GetCustomAttributeNames (AssemblyDefinition assembly)
+		{
+			return assembly.EnumerateAttributeProviders ().
+				SelectMany (v => v.CustomAttributes).
+				Select (v => v.AttributeType.FullName).
+				ToArray ();
 		}
 	}
 }

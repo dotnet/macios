@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Threading;
+using System.Runtime.CompilerServices;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -73,8 +73,7 @@ static class CompilationExtensions {
 		"MapKit"
 	};
 
-	readonly static Lock uiNamespaceLock = new Lock ();
-	static HashSet<string>? uiNamespacesCache = null;
+	readonly static ConditionalWeakTable<Compilation, IReadOnlySet<string>> uiNamespacesCache = new ();
 
 	/// <summary>
 	/// Calculates the UI namespaces for the current compilation.
@@ -84,20 +83,23 @@ static class CompilationExtensions {
 	/// <returns>The currently configured UI namespaces.</returns>
 	public static IReadOnlySet<string> GetUINamespaces (this Compilation self, bool force = false)
 	{
-		lock (uiNamespaceLock) {
-			if (force || uiNamespacesCache is null) {
-				uiNamespacesCache = new ();
-				// build the hash set based on the current definitions used in the compilation
-				var preprocessorSymbols = self.GetPreprocessorSymbols ();
-				foreach (var ns in uiNamespaces) {
-					var define = $"HAS_{ns.ToUpper ()}";
-					if (preprocessorSymbols.Contains (define)) {
-						uiNamespacesCache.Add (ns);
-					}
+		// The cache is keyed on the compilation, so that concurrent compilations targeting different
+		// platforms (e.g. an iOS and a macOS compilation running in parallel) do not race and overwrite
+		// each other's results.
+		if (force)
+			uiNamespacesCache.Remove (self);
+
+		return uiNamespacesCache.GetValue (self, static compilation => {
+			var result = new HashSet<string> ();
+			// build the hash set based on the current definitions used in the compilation
+			var preprocessorSymbols = compilation.GetPreprocessorSymbols ();
+			foreach (var ns in uiNamespaces) {
+				var define = $"HAS_{ns.ToUpper ()}";
+				if (preprocessorSymbols.Contains (define)) {
+					result.Add (ns);
 				}
 			}
-
-			return uiNamespacesCache;
-		}
+			return result;
+		});
 	}
 }

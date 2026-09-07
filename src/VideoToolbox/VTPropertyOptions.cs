@@ -17,9 +17,8 @@ using CoreVideo;
 namespace VideoToolbox {
 
 	public partial class VTPropertyOptions {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the property's value type.</summary>
+		/// <value>The property value type.</value>
 		public VTPropertyType Type {
 			get {
 				var key = GetNSStringValue (VTPropertyKeys.Type);
@@ -52,9 +51,8 @@ namespace VideoToolbox {
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets whether the property can be read or written.</summary>
+		/// <value>The property's read/write status.</value>
 		public VTReadWriteStatus ReadWriteStatus {
 			get {
 				var key = GetNSStringValue (VTPropertyKeys.ReadWriteStatus);

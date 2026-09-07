@@ -14,22 +14,18 @@
 namespace SceneKit {
 
 	public partial class SCNText {
-		/// <param name="str">To be added.</param>
-		/// <param name="extrusionDepth">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Creates a new <see cref="SCNText" /> geometry from the specified string and extrusion depth.</summary>
+		/// <param name="str">The text string to render.</param>
+		/// <param name="extrusionDepth">The extrusion depth.</param>
 		public static SCNText Create (string str, nfloat extrusionDepth)
 		{
 			using (var tmp = new NSString (str))
 				return Create ((NSObject) tmp, extrusionDepth);
 		}
 
-		/// <param name="attributedString">To be added.</param>
-		/// <param name="extrusionDepth">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Creates a new <see cref="SCNText" /> geometry from the specified attributed string and extrusion depth.</summary>
+		/// <param name="attributedString">The attributed string to render.</param>
+		/// <param name="extrusionDepth">The extrusion depth.</param>
 		public static SCNText Create (NSAttributedString attributedString, nfloat extrusionDepth)
 		{
 			return Create ((NSObject) attributedString, extrusionDepth);

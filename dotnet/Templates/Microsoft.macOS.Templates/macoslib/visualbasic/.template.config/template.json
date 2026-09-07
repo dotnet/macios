@@ -24,12 +24,16 @@
       "datatype": "choice",
       "choices": [
         {
+          "choice": "net11.0-macos",
+          "description": "Target net11.0-macos"
+        },
+        {
           "choice": "net10.0-macos",
           "description": "Target net10.0-macos"
         }
       ],
-      "replaces": "DOTNET_TFM",
-      "defaultValue": "net10.0-macos"
+      "replaces": "net11.0-macos",
+      "defaultValue": "net11.0-macos"
     }
   }
 }

@@ -22,19 +22,15 @@
 //
 
 namespace Foundation {
-	/// <summary>An convenience exception used in Model method implementations.</summary>
-	///     <remarks>To be added.</remarks>
+	/// <summary>A convenience exception used in Model method implementations.</summary>
 	public class ModelNotImplementedException : Exception {
-		/// <summary>Default constructor.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Initializes a new instance of the <see cref="ModelNotImplementedException" /> class.</summary>
 		public ModelNotImplementedException () { }
 	}
 
-	/// <summary>This class exits purely as a warning to future generations.   You called a method using “base”, but this was not required.</summary>
-	///     <remarks>To be added.</remarks>
+	/// <summary>This class exists purely as a warning to future generations. You called a method using "base", but this was not required.</summary>
 	public class You_Should_Not_Call_base_In_This_Method : Exception {
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Initializes a new instance of the <see cref="You_Should_Not_Call_base_In_This_Method" /> class.</summary>
 		public You_Should_Not_Call_base_In_This_Method () { }
 	}
 }

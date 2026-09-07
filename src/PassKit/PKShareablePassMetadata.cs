@@ -8,8 +8,8 @@ namespace PassKit {
 
 		/// <summary>This enum describes how to interpret some arguments when creating <see cref="PKShareablePassMetadata" /> instances.</summary>
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("macos13.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
 		public enum CardType {
 			/// <summary>The 'templateIdentifier' parameter identifies a card template identifier.</summary>
@@ -24,8 +24,8 @@ namespace PassKit {
 		/// <param name="templateIdentifier">The card template identifier for the new <see cref="PKShareablePassMetadata" /> instance.</param>
 		/// <param name="preview">The preview for the new <see cref="PKShareablePassMetadata" /> instance.</param>
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("macos13.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
 		public PKShareablePassMetadata (string credentialIdentifier, string sharingInstanceIdentifier, string templateIdentifier, PKShareablePassMetadataPreview preview) :
 			this (credentialIdentifier, sharingInstanceIdentifier, templateIdentifier, preview, CardType.Template)
@@ -39,8 +39,8 @@ namespace PassKit {
 		/// <param name="preview">The preview for the new <see cref="PKShareablePassMetadata" /> instance.</param>
 		/// <param name="cardType">Specifies whether the <paramref name="templateIdentifier" /> parameter specifies a card template identifier or a card configuration identifier.</param>
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("macos13.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
 		public PKShareablePassMetadata (string credentialIdentifier, string sharingInstanceIdentifier, string templateIdentifier, PKShareablePassMetadataPreview preview, CardType cardType) : base (NSObjectFlag.Empty)
 		{

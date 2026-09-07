@@ -12,6 +12,9 @@ if (args.Length <= 1) {
 }
 
 var launchTimeout = TimeSpan.FromSeconds (10); // must launch within a few seconds.
+var launchTimeoutValue = Environment.GetEnvironmentVariable ("LAUNCH_TIMEOUT_SECONDS");
+if (int.TryParse (launchTimeoutValue, out var launchTimeoutSeconds) && launchTimeoutSeconds > 0)
+	launchTimeout = TimeSpan.FromSeconds (launchTimeoutSeconds);
 var argIndex = 0;
 var executionTimeout = TimeSpan.FromSeconds (int.Parse (args [argIndex++]));
 var commands = args.Skip (argIndex).ToArray ();

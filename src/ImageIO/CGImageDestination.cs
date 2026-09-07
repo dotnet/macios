@@ -407,7 +407,9 @@ namespace ImageIO {
 		public void AddAuxiliaryDataInfo (CGImageAuxiliaryDataType auxiliaryImageDataType, CGImageAuxiliaryDataInfo? auxiliaryDataInfo)
 		{
 			using (var dict = auxiliaryDataInfo?.Dictionary) {
-				CGImageDestinationAddAuxiliaryDataInfo (Handle, auxiliaryImageDataType.GetConstant ().GetHandle (), dict.GetHandle ());
+				var constant = auxiliaryImageDataType.GetConstant ();
+				CGImageDestinationAddAuxiliaryDataInfo (Handle, constant.GetHandle (), dict.GetHandle ());
+				GC.KeepAlive (constant);
 			}
 		}
 	}

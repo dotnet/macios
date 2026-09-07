@@ -376,7 +376,7 @@ Copyright (C) 2011-2013 Xamarin. All rights reserved.
 
 			<_RemoteExtraTrimmerArgs Condition="'$(_ExtraTrimmerArgs)' != ''">$(_ExtraTrimmerArgs.Replace('$(NetCoreRoot)', '$(_DotNetRootRemoteDirectory)'))</_RemoteExtraTrimmerArgs>
 
-			<_CopyLinkerOutputToWindows Condition="'$(UseMonoRuntime)' == 'false'">true</_CopyLinkerOutputToWindows>
+			<_CopyLinkerOutputToWindows Condition="'$(UseMonoRuntime)' == 'false' Or $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '11.0'))">true</_CopyLinkerOutputToWindows>
 		</PropertyGroup>
 
 		<!-- Include Debug symbols as input so those are copied to the server -->

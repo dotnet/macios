@@ -119,23 +119,35 @@ namespace Xamarin.MacDev.Tasks {
 				.Select (symbol => symbol.Substring (prefix.Length, symbol.Length - prefix.Length - suffix.Length));
 		}
 
-		static void CollectInternalSymbolsFromAssembly (string assemblyPath, HashSet<string> survivingSymbols)
+		void CollectInternalSymbolsFromAssembly (string assemblyPath, HashSet<string> survivingSymbols)
 		{
-			using var assembly = AssemblyDefinition.ReadAssembly (assemblyPath, new ReaderParameters { ReadSymbols = false });
-			foreach (var module in assembly.Modules) {
-				if (!module.HasModuleReferences)
-					continue;
-				if (!module.ModuleReferences.Any (mr => mr.Name == "__Internal"))
-					continue;
-				foreach (var type in module.Types) {
-					if (!type.HasMethods)
+			AssemblyDefinition assembly;
+			try {
+				assembly = AssemblyDefinition.ReadAssembly (assemblyPath, new ReaderParameters { ReadSymbols = false });
+			} catch (BadImageFormatException) {
+				// The input list of assemblies can contain native libraries with a managed extension
+				// (for example a native 'NativeLibrary.dll'), which aren't managed assemblies. Just skip
+				// those, they can't contain any managed P/Invokes.
+				Log.LogMessage (MessageImportance.Low, "Skipping '{0}' because it's not a managed assembly.", assemblyPath);
+				return;
+			}
+
+			using (assembly) {
+				foreach (var module in assembly.Modules) {
+					if (!module.HasModuleReferences)
 						continue;
-					foreach (var method in type.Methods) {
-						if (!method.IsPInvokeImpl)
+					if (!module.ModuleReferences.Any (mr => mr.Name == "__Internal"))
+						continue;
+					foreach (var type in module.Types) {
+						if (!type.HasMethods)
 							continue;
-						if (method.PInvokeInfo?.Module?.Name != "__Internal")
-							continue;
-						survivingSymbols.Add (Symbol.Prefix + (method.PInvokeInfo.EntryPoint ?? method.Name));
+						foreach (var method in type.Methods) {
+							if (!method.IsPInvokeImpl)
+								continue;
+							if (method.PInvokeInfo?.Module?.Name != "__Internal")
+								continue;
+							survivingSymbols.Add (Symbol.Prefix + (method.PInvokeInfo.EntryPoint ?? method.Name));
+						}
 					}
 				}
 			}

@@ -138,6 +138,15 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		[Test]
+		public void SupportedOSPlatformVersionWithWhitespace ()
+		{
+			var task = CreateTask ();
+			task.SupportedOSPlatformVersion = "\n13.0";
+			ExecuteTask (task, expectedErrorCount: 1);
+			Assert.That (Engine.Logger.ErrorEvents [0].Message, Is.EqualTo ("The value '\\n13.0' for the property 'SupportedOSPlatformVersion' is not a valid version number, because it contains whitespace."));
+		}
+
+		[Test]
 		public void MacCatalystVersionCheck ()
 		{
 			var task = CreateTask (platform: ApplePlatform.MacCatalyst);
@@ -173,15 +182,15 @@ namespace Xamarin.MacDev.Tasks {
 
 			var plist = PDictionary.OpenFile (task.CompiledAppManifest!.ItemSpec);
 			var variables = new string [] {
-				"DTCompiler",
-				"DTPlatformBuild",
-				"DTPlatformName",
-				"DTPlatformVersion",
-				"DTSDKBuild",
-				"DTSDKName",
-				"DTXcode",
-				"DTXcodeBuild",
-			};
+			"DTCompiler",
+			"DTPlatformBuild",
+			"DTPlatformName",
+			"DTPlatformVersion",
+			"DTSDKBuild",
+			"DTSDKName",
+			"DTXcode",
+			"DTXcodeBuild",
+		};
 			foreach (var variable in variables) {
 				var value = plist.GetString (variable)?.Value;
 				Assert.That (value, Is.Not.Null.And.Not.Empty, variable);

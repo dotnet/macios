@@ -9,12 +9,8 @@ namespace MetalPerformanceShaders {
 	public partial class MPSImageScale {
 		static int size_of_scale_transform = Marshal.SizeOf<MPSScaleTransform> ();
 
-		/// <summary>To be added.</summary>
-		///         <value>
-		///           <para>(More documentation for this node is coming)</para>
-		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the scale transform applied to the image.</summary>
+		/// <value>The scale transform, or <see langword="null" /> if no transform is set.</value>
 		public virtual MPSScaleTransform? ScaleTransform {
 			get {
 				var ptr = _GetScaleTransform ();

@@ -27,7 +27,7 @@ downloads/$(DOTNET_INSTALL_NAME): $(DOTNET_INSTALL_SCRIPT)
 	$(Q) echo "Downloading and installing .NET $(DOTNET_VERSION) ($(DOTNET_ARCH)) into $@..."
 ifeq ($(OS),Windows_NT)
 	rm -Rf "$@"
-	pwsh -ExecutionPolicy ByPass -NoProfile -Command '& ./$(DOTNET_INSTALL_SCRIPT) -Version "$(DOTNET_VERSION)" -InstallDir "$@.tmp" -Verbose'
+	pwsh -ExecutionPolicy ByPass -NoProfile -Command '& ./$(DOTNET_INSTALL_SCRIPT) -Version "$(DOTNET_VERSION)" -InstallDir "$@.tmp" -ZipPath "downloads/$(DOTNET_FILENAME)" -Verbose'
 	mv "$@.tmp" "$@"
 else
 	$(Q) if test -f $(DOTNET_CACHE_FILENAME); then \
@@ -174,7 +174,7 @@ $(DOTNET_DESTDIR)/$($(1)_NUGET_SDK_NAME)/tools/buildinfo: $(TOP)/Make.config.inc
 	$$(Q) echo "Build date: $$(shell date '+%Y-%m-%d %H:%M:%S%z')" >> $$@.tmp
 	$$(Q) mv $$@.tmp $$@
 endef
-$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call BuildInfo,$(platform),$(shell echo $(platform) | tr a-z A-Z))))
+$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call BuildInfo,$(platform),$(call uppercase,$(platform)))))
 
 $(DOTNET_COMMON_DIRECTORIES):
 	$(Q) mkdir -p $@

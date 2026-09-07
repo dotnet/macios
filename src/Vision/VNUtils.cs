@@ -14,27 +14,17 @@ using CoreGraphics;
 
 namespace Vision {
 	/// <summary>A set of utility functions for working with images.</summary>
-	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	public static partial class VNUtils {
 
-		// initialized only once (see tests/cecil-tests/)
-		/// <summary>Gets the normalized identity <see cref="CoreGraphics.CGRect" /> [0, 0, 1, 1].</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[Field ("VNNormalizedIdentityRect", Constants.VisionLibrary)]
-		public static CGRect NormalizedIdentityRect { get; } = Dlfcn.GetCGRect (Libraries.Vision.Handle, "VNNormalizedIdentityRect");
-
 		[DllImport (Constants.VisionLibrary, EntryPoint = "VNNormalizedRectIsIdentityRect")]
 		static extern byte _IsIdentityRect (CGRect rect);
 
-		/// <param name="rect">To be added.</param>
-		///         <summary>Returns <see langword="true" /> if the <paramref name="rect" /> is [0, 0, 1, 1].</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Returns <see langword="true" /> if the <paramref name="rect" /> is [0, 0, 1, 1].</summary>
+		/// <param name="rect">The rect.</param>
 		public static bool IsIdentityRect (CGRect rect)
 		{
 			return _IsIdentityRect (rect) != 0;
@@ -116,16 +106,16 @@ namespace Vision {
 			return result;
 		}
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.VisionLibrary)]
 		static extern nuint VNElementTypeSize (nuint elementType);
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public static nuint GetElementTypeSize (VNElementType elementType) => VNElementTypeSize ((nuint) (ulong) elementType);
 	}

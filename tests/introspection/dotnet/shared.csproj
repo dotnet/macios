@@ -117,6 +117,9 @@
     <Compile Include="$(IntrospectionTestDirectory)\..\common\TestRuntime.cs">
       <Link>TestRuntime.cs</Link>
     </Compile>
+    <Compile Include="$(IntrospectionTestDirectory)\..\common\TestRuntime.LinkAll.cs">
+      <Link>TestRuntime.LinkAll.cs</Link>
+    </Compile>
     <Compile Include="$(IntrospectionTestDirectory)\..\..\tools\common\Frameworks.cs">
       <Link>Frameworks.cs</Link>
     </Compile>

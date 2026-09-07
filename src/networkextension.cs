@@ -166,7 +166,6 @@ namespace NetworkExtension {
 	}
 
 	[NoTV]
-	[iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum NETrafficDirection : long {
@@ -196,7 +195,6 @@ namespace NetworkExtension {
 	}
 
 	[NoTV]
-	[iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum NEFilterReportEvent : long {
@@ -233,7 +231,7 @@ namespace NetworkExtension {
 		Unknown = 4,
 	}
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (17, 0)]
+	[iOS (16, 0), MacCatalyst (16, 0), TV (17, 0)]
 	[Native]
 	[ErrorDomain ("NEVPNConnectionErrorDomain")]
 	public enum NEVpnConnectionError : long {
@@ -408,7 +406,6 @@ namespace NetworkExtension {
 		[Export ("handleNewFlow:")]
 		bool HandleNewFlow (NEAppProxyFlow flow);
 
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("handleNewUDPFlow:initialRemoteEndpoint:")]
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Call 'HandleNewUdpFlowWithInitialFlowEndPoint' instead.")]
@@ -992,7 +989,6 @@ namespace NetworkExtension {
 		[NullAllowed, Export ("sourceAppVersion")]
 		string SourceAppVersion { get; }
 
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("direction")]
 		NETrafficDirection Direction { get; }
@@ -1001,7 +997,7 @@ namespace NetworkExtension {
 		[NullAllowed, Export ("sourceAppAuditToken")]
 		NSData SourceAppAuditToken { get; }
 
-		[Mac (13, 0), NoiOS, NoMacCatalyst, NoTV]
+		[NoiOS, NoMacCatalyst, NoTV]
 		[NullAllowed]
 		[Export ("sourceProcessAuditToken")]
 		NSData SourceProcessAuditToken { get; }
@@ -1204,7 +1200,6 @@ namespace NetworkExtension {
 			""")]
 		void StopFilter (NEProviderStopReason reason, Action completionHandler);
 
-		[iOS (13, 0)] // new in this (base) type
 		[MacCatalyst (13, 1)]
 		[Export ("handleReport:")]
 		void HandleReport (NEFilterReport report);
@@ -1766,7 +1761,7 @@ namespace NetworkExtension {
 		[NullAllowed, Export ("excludedRoutes", ArgumentSemantic.Copy)]
 		NEIPv4Route [] ExcludedRoutes { get; set; }
 
-		[NoTV, NoiOS, Mac (13, 0)]
+		[NoTV, NoiOS]
 		[NoMacCatalyst]
 		[Export ("router")]
 		[NullAllowed]
@@ -2426,7 +2421,7 @@ namespace NetworkExtension {
 		NSString StatusDidChangeNotification { get; }
 
 		[Async]
-		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("fetchLastDisconnectErrorWithCompletionHandler:")]
 		void FetchLastDisconnectError (Action<NSError> handler);
 	}
@@ -2538,11 +2533,11 @@ namespace NetworkExtension {
 		[Export ("excludeLocalNetworks")]
 		bool ExcludeLocalNetworks { get; set; }
 
-		[NoTV, Mac (13, 3), iOS (16, 4), MacCatalyst (16, 4)]
+		[NoTV, iOS (16, 4), MacCatalyst (16, 4)]
 		[Export ("excludeCellularServices")]
 		bool ExcludeCellularServices { get; set; }
 
-		[NoTV, Mac (13, 3), iOS (16, 4), MacCatalyst (16, 4)]
+		[NoTV, iOS (16, 4), MacCatalyst (16, 4)]
 		[Export ("excludeAPNs")]
 		bool ExcludeApns { get; set; }
 
@@ -2550,7 +2545,6 @@ namespace NetworkExtension {
 		[Export ("excludeDeviceCommunication")]
 		bool ExcludeDeviceCommunication { get; set; }
 
-		[Mac (11, 0)]
 		[iOS (14, 2)]
 		[MacCatalyst (14, 2)]
 		[Export ("enforceRoutes")]
@@ -2765,7 +2759,6 @@ namespace NetworkExtension {
 		NEVpnIkev2TlsVersion MaximumTlsVersion { get; set; }
 
 		[NoMac]
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("enableFallback")]
 		bool EnableFallback { get; set; }
@@ -3733,17 +3726,14 @@ namespace NetworkExtension {
 		[Export ("action")]
 		NEFilterAction Action { get; }
 
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("event")]
 		NEFilterReportEvent Event { get; }
 
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("bytesInboundCount")]
 		nuint BytesInboundCount { get; }
 
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("bytesOutboundCount")]
 		nuint BytesOutboundCount { get; }
@@ -4200,7 +4190,6 @@ namespace NetworkExtension {
 		[NullAllowed, Export ("systemDNSSettings")]
 		NEDnsSettings [] SystemDnsSettings { get; }
 
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("handleNewUDPFlow:initialRemoteEndpoint:")]
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'HandleNewUdpFlowWithInitialFlowEndPoint' instead.")]
@@ -4398,23 +4387,19 @@ namespace NetworkExtension {
 		NativeHandle Constructor (NEHotspotHS20Settings hs20Settings, NEHotspotEapSettings eapSettings);
 
 		[Internal]
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("initWithSSIDPrefix:")]
 		IntPtr _InitWithSsidPrefix (string ssidPrefix);
 
 		[Internal]
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("initWithSSIDPrefix:passphrase:isWEP:")]
 		IntPtr _InitWithSsidPrefixAndPassphrase (string ssidPrefix, string passphrase, bool isWep);
 
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("hidden")]
 		bool Hidden { get; set; }
 
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("SSIDPrefix")]
 		string SsidPrefix { get; }
@@ -4744,7 +4729,7 @@ namespace NetworkExtension {
 		[Export ("serverURL", ArgumentSemantic.Copy)]
 		NSUrl ServerUrl { get; set; }
 
-		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("identityReference", ArgumentSemantic.Copy)]
 		[NullAllowed]
 		NSData IdentityReference { get; set; }
@@ -4758,7 +4743,7 @@ namespace NetworkExtension {
 		[Export ("serverName")]
 		string ServerName { get; set; }
 
-		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("identityReference", ArgumentSemantic.Copy)]
 		[NullAllowed]
 		NSData IdentityReference { get; set; }
@@ -4835,14 +4820,14 @@ namespace NetworkExtension {
 		string TrackingAreaCode { get; set; }
 	}
 
-	[NoTV, NoiOS, Mac (13, 0)]
+	[NoTV, NoiOS]
 	[NoMacCatalyst]
 	[BaseType (typeof (NEPacketTunnelProvider))]
 	[DisableDefaultCtor]
 	interface NEEthernetTunnelProvider {
 	}
 
-	[NoTV, NoiOS, Mac (13, 0)]
+	[NoTV, NoiOS]
 	[NoMacCatalyst]
 	[BaseType (typeof (NEPacketTunnelNetworkSettings))]
 	interface NEEthernetTunnelNetworkSettings {
@@ -4853,7 +4838,7 @@ namespace NetworkExtension {
 		string EthernetAddress { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	interface NERelay : NSCopying, NSSecureCoding {
 		[NullAllowed, Export ("HTTP3RelayURL", ArgumentSemantic.Copy)]
@@ -4892,7 +4877,7 @@ namespace NetworkExtension {
 
 	delegate void NERelayManagerGetLastClientErrorsCallback ([NullAllowed] NSError [] errors);
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	interface NERelayManager {
 		[Static]

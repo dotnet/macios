@@ -52,6 +52,7 @@ namespace Foundation {
 		{
 			unsafe {
 				count = NSFastEnumerator.objc_msgSend (collection.Handle, Selector.GetHandle ("countByEnumeratingWithState:objects:count:"), state, &state->array1, (nuint) NSFastEnumerationState.ArrayLength);
+				GC.KeepAlive (collection);
 				if (!started) {
 					started = true;
 					mutationValue = *state->mutationsPtr;

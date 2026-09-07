@@ -17,9 +17,9 @@ using OS_nw_ws_response = System.IntPtr;
 using dispatch_queue_t = System.IntPtr;
 
 namespace Network {
-	[SupportedOSPlatform ("tvos13.0")]
+	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("ios13.0")]
+	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	public class NWWebSocketMetadata : NWProtocolMetadata {
 

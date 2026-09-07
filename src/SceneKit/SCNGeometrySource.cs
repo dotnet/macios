@@ -16,10 +16,8 @@ using Metal;
 namespace SceneKit {
 	public partial class SCNGeometrySource {
 
-		/// <param name="vertices">To be added.</param>
-		///         <summary>Factory method to create a source for vertex data.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Factory method to create a source for vertex data.</summary>
+		/// <param name="vertices">The array of vertices to use as the geometry source.</param>
 		public static unsafe SCNGeometrySource FromVertices (SCNVector3 [] vertices)
 		{
 			if (vertices is null)
@@ -29,12 +27,11 @@ namespace SceneKit {
 				return FromVertices ((IntPtr) ptr, vertices.Length);
 		}
 
-		/// <param name="normals">To be added.</param>
-		///         <summary>Factory method that creates a source for vertex normals.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>
-		///           <para>The <paramref name="normals" /> must correspond directly to their associated vertices (in another <see cref="SceneKit.SCNGeometrySource" />).</para>
-		///         </remarks>
+		/// <summary>Factory method that creates a source for vertex normals.</summary>
+		/// <param name="normals">The array of normal vectors for the geometry source.</param>
+		/// <remarks>
+		///   <para>The <paramref name="normals" /> must correspond directly to their associated vertices (in another <see cref="SceneKit.SCNGeometrySource" />).</para>
+		/// </remarks>
 		public static unsafe SCNGeometrySource FromNormals (SCNVector3 [] normals)
 		{
 			if (normals is null)
@@ -44,13 +41,12 @@ namespace SceneKit {
 				return FromNormals ((IntPtr) ptr, normals.Length);
 		}
 
-		/// <param name="texcoords">To be added.</param>
-		///         <summary>Factory method that creates a source for texture coordinates.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>
-		///           <para>The <paramref name="texcoords" /> must correspond directly to their associated vertices (in another <see cref="SceneKit.SCNGeometrySource" />).</para>
-		///           <para>For non-tiling textures, texture coordinates are values between 0 and 1 that describe the mapping between a texture location and a geometry location. A value of [0,0] represents the origin of the texture while [1,1] represents the point at its furthest extent.</para>
-		///         </remarks>
+		/// <summary>Factory method that creates a source for texture coordinates.</summary>
+		/// <param name="texcoords">The array of texture coordinates for the geometry source.</param>
+		/// <remarks>
+		///   <para>The <paramref name="texcoords" /> must correspond directly to their associated vertices (in another <see cref="SceneKit.SCNGeometrySource" />).</para>
+		///   <para>For non-tiling textures, texture coordinates are values between 0 and 1 that describe the mapping between a texture location and a geometry location. A value of [0,0] represents the origin of the texture while [1,1] represents the point at its furthest extent.</para>
+		/// </remarks>
 		public static unsafe SCNGeometrySource FromTextureCoordinates (CGPoint [] texcoords)
 		{
 			if (texcoords is null)
@@ -84,31 +80,27 @@ namespace SceneKit {
 			}
 		}
 
-		/// <param name="data">To be added.</param>
-		/// <param name="semantic">To be added.</param>
-		/// <param name="vectorCount">To be added.</param>
-		/// <param name="floatComponents">To be added.</param>
-		/// <param name="componentsPerVector">To be added.</param>
-		/// <param name="bytesPerComponent">To be added.</param>
-		/// <param name="offset">To be added.</param>
-		/// <param name="stride">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Creates a geometry source from raw data with the specified layout.</summary>
+		/// <param name="data">The data buffer containing the geometry source values.</param>
+		/// <param name="semantic">The semantic type of the geometry source data.</param>
+		/// <param name="vectorCount">The number of vectors in the data.</param>
+		/// <param name="floatComponents">Whether the component values are floating-point.</param>
+		/// <param name="componentsPerVector">The number of scalar components in each vector.</param>
+		/// <param name="bytesPerComponent">The size, in bytes, of each component.</param>
+		/// <param name="offset">The offset, in bytes, from the beginning of the data to the first vector.</param>
+		/// <param name="stride">The number of bytes between vectors in the data.</param>
 		public static SCNGeometrySource FromData (NSData data, SCNGeometrySourceSemantics semantic, nint vectorCount, bool floatComponents, nint componentsPerVector, nint bytesPerComponent, nint offset, nint stride)
 		{
 			return FromData (data, SemanticToToken (semantic), vectorCount, floatComponents, componentsPerVector, bytesPerComponent, offset, stride);
 		}
 
-		/// <param name="mtlBuffer">To be added.</param>
-		/// <param name="vertexFormat">To be added.</param>
-		/// <param name="semantic">To be added.</param>
-		/// <param name="vertexCount">To be added.</param>
-		/// <param name="offset">To be added.</param>
-		/// <param name="stride">To be added.</param>
-		/// <summary>Factory method to create a new <see cref="SceneKit.SCNGeometrySource" /> from a data buffer.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Factory method to create a new <see cref="SceneKit.SCNGeometrySource" /> from a Metal buffer.</summary>
+		/// <param name="mtlBuffer">The Metal buffer containing the vertex data.</param>
+		/// <param name="vertexFormat">The vertex format describing the data layout.</param>
+		/// <param name="semantic">The semantic type of the geometry source data.</param>
+		/// <param name="vertexCount">The number of vertices in the buffer.</param>
+		/// <param name="offset">The offset, in bytes, to the first vertex in the buffer.</param>
+		/// <param name="stride">The number of bytes between vertices in the buffer.</param>
 		public static SCNGeometrySource FromMetalBuffer (IMTLBuffer mtlBuffer, MTLVertexFormat vertexFormat, SCNGeometrySourceSemantics semantic, nint vertexCount, nint offset, nint stride)
 		{
 			return FromMetalBuffer (mtlBuffer, vertexFormat, SemanticToToken (semantic), vertexCount, offset, stride);

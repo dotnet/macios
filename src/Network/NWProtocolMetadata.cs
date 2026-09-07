@@ -129,29 +129,29 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		internal extern static /* uint32_t */ uint nw_tcp_get_available_send_buffer (IntPtr handle);
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.NetworkLibrary)]
 		internal static extern byte nw_protocol_metadata_is_framer_message (OS_nw_protocol_metadata metadata);
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public bool IsFramerMessage => nw_protocol_metadata_is_framer_message (GetCheckedHandle ()) != 0;
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.NetworkLibrary)]
 		internal static extern byte nw_protocol_metadata_is_ws (OS_nw_protocol_metadata metadata);
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public bool IsWebSocket => nw_protocol_metadata_is_ws (GetCheckedHandle ()) != 0;
 	}

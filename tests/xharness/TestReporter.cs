@@ -60,7 +60,7 @@ namespace Xharness {
 
 		public bool ResultsUseXml => xmlJargon != XmlResultJargon.Missing;
 
-		bool TestExecutionStarted => listener.ConnectedTask.IsCompletedSuccessfully && listener.ConnectedTask.Result;
+		public bool TestProtocolConnected => listener.ConnectedTask.IsCompletedSuccessfully && listener.ConnectedTask.Result;
 
 		public TestReporter (
 			IMlaunchProcessManager processManager,
@@ -228,7 +228,7 @@ namespace Xharness {
 			cancellationTokenSource.Cancel ();
 			timedout = true;
 
-			if (TestExecutionStarted) {
+			if (TestProtocolConnected) {
 				mainLog.WriteLine ($"Test execution timed out after {timeoutWatch.Elapsed.TotalMinutes:0.##} minutes");
 				return;
 			}
@@ -464,7 +464,7 @@ namespace Xharness {
 			await crashReporter.EndCaptureAsync (TimeSpan.FromSeconds (crashLogWaitTime));
 
 			if (timedout) {
-				if (TestExecutionStarted) {
+				if (TestProtocolConnected) {
 					result.ExecutingResult = TestExecutingResult.TimedOut;
 				} else {
 					result.ExecutingResult = TestExecutingResult.LaunchTimedOut;

@@ -166,7 +166,8 @@ namespace Introspection {
 				if (f is null)
 					continue;
 
-				var name = f.SymbolName;
+				if (f.SymbolName is not string name)
+					continue;
 				if (!name.EndsWith ("Notification", StringComparison.Ordinal))
 					continue;
 
@@ -240,7 +241,8 @@ namespace Introspection {
 				if (f is null)
 					continue;
 
-				string name = f.SymbolName;
+				if (f.SymbolName is not string name)
+					continue;
 				if (Skip (name, f.LibraryName))
 					continue;
 

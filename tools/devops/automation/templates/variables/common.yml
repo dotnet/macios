@@ -1,10 +1,5 @@
 variables:
-# provisionator-uri setting
 - group: XamarinCompatLab
-
-# allow to override the provisionator channel via a paramter
-- name: PROVISIONATOR_CHANNEL
-  value: ${{ parameters.provisionatorChannel }}
 
 - group: xamops-azdev-secrets
 

@@ -625,10 +625,13 @@ namespace AudioUnit {
 		///         <remarks>To be added.</remarks>
 		public AudioUnitStatus SetClassInfo (ClassInfoDictionary preset, AudioUnitScopeType scope = AudioUnitScopeType.Global, uint audioUnitElement = 0)
 		{
-			var ptr = preset.Dictionary.Handle;
+			var dictionary = preset.Dictionary;
+			var ptr = dictionary.Handle;
 			unsafe {
-				return AudioUnitSetProperty (Handle, AudioUnitPropertyIDType.ClassInfo, scope, audioUnitElement,
+				var rv = AudioUnitSetProperty (Handle, AudioUnitPropertyIDType.ClassInfo, scope, audioUnitElement,
 					&ptr, IntPtr.Size);
+				GC.KeepAlive (dictionary);
+				return rv;
 			}
 		}
 
@@ -1348,6 +1351,8 @@ namespace AudioUnit {
 		///         <remarks>To be added.</remarks>
 		public bool IsAtEnd { get { return current is null; } }
 
+		/// <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>
+		/// <param name="ptr">Pointer (handle) to the unmanaged object.</param>
 		public AURenderEventEnumerator (NativeHandle ptr)
 			: this (ptr, false)
 		{

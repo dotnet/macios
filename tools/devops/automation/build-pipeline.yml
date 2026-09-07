@@ -6,11 +6,6 @@
 # https://jenkins.internalx.com/view/Xamarin.MaciOS/job/macios/job/main/
 # https://jenkins.internalx.com/view/Xamarin.MaciOS/job/macios/configure
 parameters:
-  - name: provisionatorChannel
-    displayName: Provisionator channel to use
-    type: string
-    default: 'latest'
-
   - name: macOSName  # comes from the build agent demand named macOS.Name
     displayName: Name of the version of macOS to use
     type: string
@@ -126,7 +121,6 @@ extends:
           xcodeChannel: $(xcodeChannel)
           macOSName: ${{ parameters.macOSName }}
           isPR: false
-          provisionatorChannel: ${{ parameters.provisionatorChannel }}
           pool: $(CIBuildPool)
           runGovernanceTests: ${{ parameters.runGovernanceTests }}
           forceInsertion: ${{ parameters.forceInsertion }}

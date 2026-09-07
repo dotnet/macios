@@ -27,8 +27,6 @@ using System.Reflection;
 using Generator = System.Object;
 #endif
 
-#if !RGEN
-#endif
 
 #nullable enable
 

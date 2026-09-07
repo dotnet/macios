@@ -9,6 +9,12 @@ namespace Mono.Linker;
 public class AnnotationStore {
 	Dictionary<AssemblyDefinition, AssemblyAction> assemblyActions = new Dictionary<AssemblyDefinition, AssemblyAction> ();
 	Dictionary<MethodDefinition, List<OverrideInformation>> overrides = new Dictionary<MethodDefinition, List<OverrideInformation>> ();
+	// The overrides map is computed lazily (the first time GetOverrides is called) from these fields, so we
+	// don't scan every type in every assembly when nothing ends up querying the map - which is the case when
+	// we're not trimming, because MarkNSObjectsStep (the only consumer) doesn't run then.
+	IEnumerable<AssemblyDefinition>? overridesAssemblies;
+	LinkContext? overridesContext;
+	bool overridesCollected;
 	public AssemblyAction GetAction (AssemblyDefinition assembly)
 	{
 		if (assemblyActions.TryGetValue (assembly, out var action))
@@ -23,20 +29,37 @@ public class AnnotationStore {
 
 	public IEnumerable<OverrideInformation>? GetOverrides (MethodDefinition method)
 	{
+		CollectOverridesIfNeeded ();
 		if (overrides.TryGetValue (method, out var list))
 			return list;
 		return null;
 	}
 
-	// Scan all types in the given assemblies and build the overrides map.
-	// For each method that overrides a base virtual method (or explicitly implements an interface method),
-	// record an OverrideInformation entry keyed by the base method.
+	// Register the assemblies whose method overrides may be queried later. The overrides map itself is only
+	// built the first time GetOverrides is called (see CollectOverridesIfNeeded).
 	public void CollectOverrides (IEnumerable<AssemblyDefinition> assemblies, LinkContext context)
 	{
-		foreach (var assembly in assemblies) {
+		overridesAssemblies = assemblies;
+		overridesContext = context;
+		overridesCollected = false;
+	}
+
+	// Scan all types in the registered assemblies and build the overrides map.
+	// For each method that overrides a base virtual method (or explicitly implements an interface method),
+	// record an OverrideInformation entry keyed by the base method.
+	void CollectOverridesIfNeeded ()
+	{
+		if (overridesCollected)
+			return;
+		overridesCollected = true;
+
+		if (overridesAssemblies is null || overridesContext is null)
+			return;
+
+		foreach (var assembly in overridesAssemblies) {
 			foreach (var module in assembly.Modules) {
 				foreach (var type in module.GetTypes ()) {
-					CollectOverridesForType (type, context);
+					CollectOverridesForType (type, overridesContext);
 				}
 			}
 		}

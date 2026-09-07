@@ -192,6 +192,24 @@ namespace Xamarin.Linker.Steps {
 			return true;
 		}
 
+		// Whether we need to collect [Field] symbols referenced via Dlfcn here (instead of relying on the
+		// inlined 'xamarin_Dlfcn_*_Native' P/Invokes that a post-trim scan would otherwise pick up). This is
+		// the case when InlineDlfcnMethodsStep didn't inline the call sites for the assembly:
+		// * when inlining is disabled globally, or
+		// * in a Hot Reload compatible build, for reloadable assemblies (AssemblyAction != Link), which
+		//   InlineDlfcnMethodsStep intentionally leaves byte-unmodified.
+		// In prepare-assemblies mode InlineDlfcnMethodsStep runs in a separate process (the "prepare" pass)
+		// whose collected symbols are discarded before the "post-process" pass runs GenerateReferencesStep,
+		// so collecting here (in the post-process pass) is what actually keeps the symbol alive.
+		bool ShouldCollectFieldSymbols (MethodDefinition method)
+		{
+			if (!Configuration.InlineDlfcnMethodsEnabled)
+				return true;
+			if (Configuration.HotReloadCompatibleBuild && Annotations.GetAction (method.Module.Assembly) != AssemblyAction.Link)
+				return true;
+			return false;
+		}
+
 #if ASSEMBLY_PREPARER
 		protected override bool ProcessMethod (MethodDefinition method)
 #else
@@ -270,7 +288,7 @@ namespace Xamarin.Linker.Steps {
 				}
 			}
 
-			if (method.IsPropertyMethod () && !Configuration.InlineDlfcnMethodsEnabled) {
+			if (method.IsPropertyMethod () && ShouldCollectFieldSymbols (method)) {
 				var property = method.GetProperty ();
 				// The Field attribute may have been linked away, but we've stored it in an annotation.
 				if (property is not null && Annotations.GetCustomAnnotations ("ExportedFields").TryGetValue (property, out var symbol) && symbol is string symbolStr) {

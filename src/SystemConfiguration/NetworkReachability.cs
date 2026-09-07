@@ -20,7 +20,6 @@ namespace SystemConfiguration {
 
 	// SCNetworkReachabilityFlags -> uint32_t -> SCNetworkReachability.h
 	/// <summary>The reachability status.</summary>
-	///     <remarks>To be added.</remarks>
 	[Flags]
 	public enum NetworkReachabilityFlags {
 		/// <summary>The host is reachable using a transient connection (PPP for example).</summary>

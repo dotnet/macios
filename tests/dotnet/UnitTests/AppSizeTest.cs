@@ -49,6 +49,9 @@ namespace Xamarin.Tests {
 			Run (platform, runtimeIdentifiers, "Release", $"{platform}-NativeAOT", false, dict);
 		}
 
+		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64", true)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", true)]
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64", false)]
 		public void CoreCLR_Interpreter (ApplePlatform platform, string runtimeIdentifiers, bool isTrimmed)
 		{
@@ -58,6 +61,20 @@ namespace Xamarin.Tests {
 				{ "NoDSymUtil", "false" }, // off by default for macOS, but we want to test it, so enable it
 			};
 			Run (platform, runtimeIdentifiers, "Release", $"{platform}-CoreCLR-Interpreter", isTrimmed, dict);
+		}
+
+		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64", true)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", true)]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64", false)]
+		public void CoreCLR_R2R (ApplePlatform platform, string runtimeIdentifiers, bool isTrimmed)
+		{
+			var dict = new Dictionary<string, string> () {
+				{ "UseMonoRuntime", "false" },
+				{ "PublishReadyToRun", "true" },
+				{ "NoDSymUtil", "false" }, // off by default for macOS, but we want to test it, so enable it
+			};
+			Run (platform, runtimeIdentifiers, "Release", $"{platform}-CoreCLR-R2R", isTrimmed, dict);
 		}
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
@@ -101,6 +118,9 @@ namespace Xamarin.Tests {
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			if (!Configuration.XcodeIsStable)
+				Assert.Ignore ("Using a beta version of Xcode, so disabling this test (it will need very frequent updates to the known failures, which is better delayed until the final Xcode release)");
 
 			var project = "SizeTestApp";
 			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: configuration);
@@ -325,9 +345,65 @@ namespace Xamarin.Tests {
 				outputDir = Path.Combine (Cache.CreateTemporaryDirectory ("AppSizeTest"), "updated-expected-sizes");
 			}
 			Directory.CreateDirectory (outputDir);
-			var outputFile = Path.Combine (outputDir, fileName);
-			File.WriteAllText (outputFile, content);
-			Console.WriteLine ($"    Updated expected file written to: {outputFile}");
+
+			// The expected files can be very big, so instead of uploading the entire updated file, compute a
+			// unified diff between the committed expected file and the new content. The diff is typically much
+			// smaller, and it can be applied later using the '/apply-gist' command. The '.diff' extension makes
+			// it clear that these files are diffs rather than full expected files.
+			var diff = CreateExpectedFileDiff (expectedFilePath, content);
+			var outputFile = Path.Combine (outputDir, fileName + ".diff");
+			File.WriteAllText (outputFile, diff);
+			Console.WriteLine ($"    Updated expected file diff written to: {outputFile}");
+		}
+
+		// Compute a unified diff (applyable from the repository root with 'git apply -p1' or 'patch -p1') between
+		// the committed expected file and the new content. If the expected file doesn't exist yet, the diff
+		// describes the creation of a new file.
+		static string CreateExpectedFileDiff (string expectedFilePath, string content)
+		{
+			// The path the diff refers to, relative to the repository root, using forward slashes.
+			var relativePath = Path.GetRelativePath (Configuration.SourceRoot, expectedFilePath).Replace ('\\', '/');
+
+			var newContentPath = Path.GetTempFileName ();
+			try {
+				File.WriteAllText (newContentPath, content);
+
+				// '/dev/null' represents a non-existing original file (i.e. a brand new expected file).
+				var originalPath = File.Exists (expectedFilePath) ? expectedFilePath : "/dev/null";
+				var arguments = new List<string> {
+					"-u",
+					originalPath,
+					newContentPath,
+				};
+				// 'diff' returns 0 when the files are identical, 1 when they differ, and >1 on error. We only
+				// get here when there are differences, so an exit code of 1 is expected; anything else is an error.
+				var rv = Execution.RunAsync ("diff", arguments, timeout: TimeSpan.FromMinutes (1)).Result;
+				if (rv.ExitCode > 1)
+					throw new Exception ($"Failed to compute diff for '{expectedFilePath}' (exit code {rv.ExitCode}):\n{rv.Output.StandardError}");
+
+				// 'diff' puts the input file paths (a temporary file and the committed expected file or '/dev/null')
+				// in the '---'/'+++' header lines. Rewrite them to 'a/<path>' and 'b/<path>' so the patch can be
+				// applied from the repository root with 'git apply -p1'. We rewrite the header ourselves rather than
+				// using 'diff --label', because '--label' is a GNU extension that isn't available in every 'diff'
+				// implementation. Only the first '--- '/'+++ ' lines are the file header; hunk content lines are
+				// prefixed with ' ', '+' or '-', so they never begin with '--- ' or '+++ '.
+				var lines = rv.Output.StandardOutput.Split ('\n');
+				for (var i = 0; i < lines.Length; i++) {
+					if (lines [i].StartsWith ("--- ", StringComparison.Ordinal)) {
+						lines [i] = $"--- a/{relativePath}";
+						break;
+					}
+				}
+				for (var i = 0; i < lines.Length; i++) {
+					if (lines [i].StartsWith ("+++ ", StringComparison.Ordinal)) {
+						lines [i] = $"+++ b/{relativePath}";
+						break;
+					}
+				}
+				return string.Join ('\n', lines);
+			} finally {
+				File.Delete (newContentPath);
+			}
 		}
 
 		static string GetUpdateHint ()

@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.Versioning;
 using System.Threading;
 
@@ -126,10 +127,26 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			}
 		}
 
+		// Returns "" at runtime, but the linker can't constant-fold this, which prevents
+		// its dataflow analysis from resolving type names passed to Assembly.GetType.
+		[MethodImpl (MethodImplOptions.NoInlining)]
+		static string GetEmptyString () => string.Intern ("");
+		static string WorkAroundLinkerHeuristics => GetEmptyString ();
+
 		[Test]
 		[UnconditionalSuppressMessage ("Trimming", "IL2026", Justification = "This test verifies linker behavior, and as such any behavioral difference when the trimmer is enabled is exactly what it's looking for.")]
 		public void RegistrarRemoval ()
 		{
+#if NATIVEAOT && NET11_0_OR_GREATER
+			// ILLink isn't executed when using NativeAOT on .NET 11+ (ILC does all the trimming), and even
+			// though ILC trims away all the dynamic registrar's code, it still keeps the reflection metadata
+			// for its types: monotouch-test sets $(IlcGenerateCompleteTypeMetadata)=true (NUnit requires it),
+			// which promotes any type referenced from a member that's kept (ObjCRuntime.Runtime has a static
+			// field of type Registrar.DynamicRegistrar) to complete type metadata. So looking for the types
+			// says nothing about whether the dynamic registrar was removed; verify that dynamic registration
+			// has been turned off instead.
+			Assert.That (Runtime.DynamicRegistrationSupported, Is.False, "Dynamic registration support");
+#else
 			// define set by xharness when creating test variations.
 			// It's not safe to remove the dynamic registrar in monotouch-test (by design; some of the tested API makes it unsafe, and the linker correctly detects this),
 			// so the dynamic registrar will only be removed if manually requested.
@@ -139,8 +156,9 @@ namespace MonoTouchFixtures.ObjCRuntime {
 #else
 			var shouldBeRemoved = false;
 #endif
-			Assert.That (typeof (NSObject).Assembly.GetType ("Registrar.Registrar") is null, Is.EqualTo (shouldBeRemoved), "Registrar removal");
-			Assert.That (typeof (NSObject).Assembly.GetType ("Registrar.DynamicRegistrar") is null, Is.EqualTo (shouldBeRemoved), "DynamicRegistrar removal");
+			Assert.That (typeof (NSObject).Assembly.GetType ("Registrar.Registrar" + WorkAroundLinkerHeuristics) is null, Is.EqualTo (shouldBeRemoved), "Registrar removal");
+			Assert.That (typeof (NSObject).Assembly.GetType ("Registrar.DynamicRegistrar" + WorkAroundLinkerHeuristics) is null, Is.EqualTo (shouldBeRemoved), "DynamicRegistrar removal");
+#endif
 		}
 
 #if !MONOMAC
@@ -5544,7 +5562,13 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		void AssertMemberCount (Type type)
 		{
 			var members = type.GetMembers (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance);
-#if OPTIMIZEALL || NATIVEAOT
+#if NATIVEAOT && NET11_0_OR_GREATER
+			// ILLink isn't executed when using NativeAOT on .NET 11+ (ILC does all the trimming), and
+			// monotouch-test tells ILC to keep complete reflection metadata (NUnit requires
+			// $(IlcGenerateCompleteTypeMetadata)=true and $(IlcTrimMetadata)=false), so even though ILC
+			// trims away the code, the reflection metadata for the members is still there.
+			var expectNoMembers = false;
+#elif OPTIMIZEALL || NATIVEAOT
 			var expectNoMembers = true;
 #elif !__MACOS__
 			var expectNoMembers = global::XamarinTests.ObjCRuntime.Registrar.IsStaticRegistrar && TestRuntime.IsLinkAny;

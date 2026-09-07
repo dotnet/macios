@@ -294,8 +294,10 @@ namespace AudioToolbox {
 		protected override void Dispose (bool disposing)
 		{
 			if (Handle != IntPtr.Zero && Owns) {
-				if (sequence is not null)
+				if (sequence is not null) {
 					MusicSequenceDisposeTrack (sequence.Handle, Handle);
+					GC.KeepAlive (sequence);
+				}
 			}
 			sequence = null;
 			base.Dispose (disposing);

@@ -30,70 +30,42 @@
 
 namespace CoreFoundation {
 	/// <summary>A class whose static fields define error domains for <see cref="CoreFoundation.CFException.Domain" />.</summary>
-	///     <remarks>To be added.</remarks>
-	[SupportedOSPlatform ("ios")]
-	[SupportedOSPlatform ("maccatalyst")]
-	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("tvos")]
-	public static class CFErrorDomain {
+	public static partial class CFErrorDomain {
 
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
-		public static readonly NSString? Cocoa;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
-		public static readonly NSString? Mach;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
-		public static readonly NSString? OSStatus;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
-		public static readonly NSString? Posix;
+#if !XAMCORE_5_0
+		/// <summary>Identifies errors reported by Cocoa APIs.</summary>
+		public static readonly NSString? Cocoa = _Cocoa;
 
-		static CFErrorDomain ()
-		{
-			var handle = Libraries.CoreFoundation.Handle;
-			Cocoa = Dlfcn.GetStringConstant (handle, "kCFErrorDomainCocoa");
-			Mach = Dlfcn.GetStringConstant (handle, "kCFErrorDomainMach");
-			OSStatus = Dlfcn.GetStringConstant (handle, "kCFErrorDomainOSStatus");
-			Posix = Dlfcn.GetStringConstant (handle, "kCFErrorDomainPOSIX");
-		}
+		/// <summary>Identifies errors reported by Mach APIs.</summary>
+		public static readonly NSString? Mach = _Mach;
+
+		/// <summary>Identifies errors reported using OSStatus values.</summary>
+		public static readonly NSString? OSStatus = _OSStatus;
+
+		/// <summary>Identifies errors reported using POSIX error codes.</summary>
+		public static readonly NSString? Posix = _Posix;
+#endif
 	}
 
 	/// <summary>Class that contains keys that identify exception data values.</summary>
-	///     <remarks>To be added.</remarks>
-	///     <!-- TODO: Unused? Couldn't find any references 2013-05-02 -->
-	[SupportedOSPlatform ("ios")]
-	[SupportedOSPlatform ("maccatalyst")]
-	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("tvos")]
-	public static class CFExceptionDataKey {
+	public static partial class CFExceptionDataKey {
 
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
-		public static readonly NSString? Description;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
-		public static readonly NSString? LocalizedDescription;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
-		public static readonly NSString? LocalizedFailureReason;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
-		public static readonly NSString? LocalizedRecoverySuggestion;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
-		public static readonly NSString? UnderlyingError;
+#if !XAMCORE_5_0
+		/// <summary>Gets the key for an error's nonlocalized description.</summary>
+		public static readonly NSString? Description = _Description;
 
-		static CFExceptionDataKey ()
-		{
-			var handle = Libraries.CoreFoundation.Handle;
-			Description = Dlfcn.GetStringConstant (handle, "kCFErrorDescriptionKey");
-			LocalizedDescription = Dlfcn.GetStringConstant (handle, "kCFErrorLocalizedDescriptionKey");
-			LocalizedFailureReason = Dlfcn.GetStringConstant (handle, "kCFErrorLocalizedFailureReasonKey");
-			LocalizedRecoverySuggestion = Dlfcn.GetStringConstant (handle, "kCFErrorLocalizedRecoverySuggestionKey");
-			UnderlyingError = Dlfcn.GetStringConstant (handle, "kCFErrorUnderlyingErrorKey");
-		}
+		/// <summary>Gets the key for an error's localized description.</summary>
+		public static readonly NSString? LocalizedDescription = _LocalizedDescription;
+
+		/// <summary>Gets the key for an error's localized failure reason.</summary>
+		public static readonly NSString? LocalizedFailureReason = _LocalizedFailureReason;
+
+		/// <summary>Gets the key for an error's localized recovery suggestion.</summary>
+		public static readonly NSString? LocalizedRecoverySuggestion = _LocalizedRecoverySuggestion;
+
+		/// <summary>Gets the key for an underlying error.</summary>
+		public static readonly NSString? UnderlyingError = _UnderlyingError;
+#endif
 	}
 
 	/// <summary>Represents an exception arising from a Core Foundation <c>CFError</c>, having an error domain, a domain-specific error code, and perhaps additional information.</summary>

@@ -4,6 +4,7 @@
 #include <objc/objc.h>
 #include <objc/runtime.h>
 #include <objc/message.h>
+#include <unistd.h>
 #include <zlib.h>
 #include "libtest.h"
 
@@ -1550,6 +1551,136 @@ static void block_called ()
 -(void) buildHighway
 {
 	[self.delegate buildIntergalacticHighway: self];
+}
+@end
+
+@implementation InitCallsVirtualMethod
+-(instancetype) init
+{
+	if ((self = [super init]) != NULL) {
+		// Call a method that may be overridden in managed code, while 'init' is still
+		// executing. If a managed subclass overrides it, the overridden managed method
+		// must be invoked on this very instance.
+		[self virtualMethodCalledDuringInit: 0x1234];
+	}
+	return self;
+}
+-(void) virtualMethodCalledDuringInit: (int) value
+{
+	// Default (native) implementation; overridden in managed code by the test.
+}
+@end
+
+static init_self_callback x_init_self_callback = NULL;
+void x_set_init_self_callback (init_self_callback callback)
+{
+	x_init_self_callback = callback;
+}
+
+@implementation InitSurfacesSelfToManaged
+-(instancetype) init
+{
+	if ((self = [super init]) != NULL) {
+		// Synchronously surface 'self' to managed code while 'init' is still executing.
+		if (x_init_self_callback != NULL)
+			x_init_self_callback ((void *) self);
+	}
+	return self;
+}
+@end
+
+// A tiny custom "allocator" used to deterministically reproduce the alloc/init
+// handle-reuse race in issue #25861. When x_forced_next_alloc is set, the next
+// allocation reuses that exact address (instead of calloc'ing a fresh one), so a
+// ReuseSlotClassB can be made to occupy the address a ReuseSlotClassA just vacated.
+static void *x_forced_next_alloc = NULL;
+
+static id x_reuse_alloc (Class cls)
+{
+	void *mem;
+	if (x_forced_next_alloc != NULL) {
+		mem = x_forced_next_alloc;
+		x_forced_next_alloc = NULL;
+	} else {
+		mem = calloc (1, 256);
+	}
+	memset (mem, 0, 256);
+	return objc_constructInstance (cls, mem);
+}
+
+static void x_reuse_dealloc (id self)
+{
+	// Destruct the instance but intentionally do NOT free its memory: the address may
+	// be deterministically reused by another object (that's the whole point of the
+	// issue #25861 reproduction), and leaking a few small buffers in a test is fine.
+	objc_destructInstance (self);
+}
+
+static reuse_alloc_callback x_reuse_alloc_callback = NULL;
+void x_set_reuse_alloc_callback (reuse_alloc_callback callback)
+{
+	x_reuse_alloc_callback = callback;
+}
+
+// The dealloc methods below intentionally don't call [super dealloc]: they manage the
+// object's memory manually (see x_reuse_dealloc) so an address can be reused.
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wobjc-missing-super-calls"
+@implementation ReuseSlotClassA
++(instancetype) allocWithZone: (NSZone *) zone
+{
+	return x_reuse_alloc (self);
+}
+-(void) dealloc
+{
+	x_reuse_dealloc (self);
+}
+-(instancetype) init
+{
+	void *x = (void *) self;
+	Class cls = object_getClass (self);
+	// Free this instance (its memory is not actually released, see x_reuse_dealloc). At
+	// this point the managed runtime still maps 'x' to the wrapper being constructed.
+	[self release];
+	// Force the next allocation to reuse 'x', then let managed code allocate a
+	// ReuseSlotClassB; it will land exactly at 'x', so the managed runtime now maps 'x'
+	// to that new object instead.
+	x_forced_next_alloc = x;
+	if (x_reuse_alloc_callback != NULL)
+		x_reuse_alloc_callback (x);
+	x_forced_next_alloc = NULL;
+	void *fresh = objc_constructInstance (cls, calloc (1, 256));
+	// Return a distinct, valid ReuseSlotClassA instance at a fresh address (not 'x').
+	// Rebinding this wrapper's handle to that address is what would, with a
+	// non-ownership-aware unregister, remove the ReuseSlotClassB now living at 'x'.
+	return (ReuseSlotClassA *) fresh;
+}
+@end
+
+@implementation ReuseSlotClassB
++(instancetype) allocWithZone: (NSZone *) zone
+{
+	return x_reuse_alloc (self);
+}
+-(void) dealloc
+{
+	x_reuse_dealloc (self);
+}
+@end
+#pragma clang diagnostic pop
+
+// Helper for issue #23679: a directly-bound native class whose 'init' fails by raising an
+// Objective-C exception (as e.g. an invalid AVAssetWriterInput does). Constructing the
+// managed wrapper throws, and a later GC must not crash trying to release a managed
+// reference for the alloc'd instance.
+@implementation InitReturnsNilClass
+-(instancetype) init
+{
+	// Reproduce issue #23679: a native initializer that raises an Objective-C exception
+	// (as e.g. an invalid AVAssetWriterInput does). The managed runtime marshals this to
+	// a managed ObjCException; the alloc'd instance must be cleaned up so a later GC
+	// doesn't crash releasing a managed reference for it.
+	@throw [NSException exceptionWithName: @"InitReturnsNilClassException" reason: @"init failed" userInfo: nil];
 }
 @end
 

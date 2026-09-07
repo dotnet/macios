@@ -52,6 +52,10 @@ namespace Xamarin.Linker {
 					new Dictionary<string, string> {
 						{ "Arch", abi.AsArchString () },
 						{ "Arguments", "-std=c++14" },
+						// The generated code #includes the generated header, so the header
+						// has to be next to the code when it's compiled. Declare it here, so
+						// that it's copied to the Mac when building remotely from Windows.
+						{ "AdditionalDependencies", header },
 					}
 				));
 

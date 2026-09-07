@@ -123,6 +123,7 @@ if (!string.IsNullOrEmpty (testOutputDir))
 Process? logStreamProcess = null;
 string? logStreamFile = null;
 StreamWriter? logStreamWriter = null;
+var logStreamWriterClosed = false;
 if (!string.IsNullOrEmpty (crashReportsDir)) {
 	Directory.CreateDirectory (crashReportsDir);
 	logStreamFile = Path.Combine (crashReportsDir, "system.log");
@@ -138,13 +139,17 @@ if (!string.IsNullOrEmpty (crashReportsDir)) {
 	var writer = logStreamWriter;
 	logStreamProcess.OutputDataReceived += (_, e) => {
 		if (e.Data is not null)
-			lock (writer)
-				writer.WriteLine (e.Data);
+			lock (writer) {
+				if (!logStreamWriterClosed)
+					writer.WriteLine (e.Data);
+			}
 	};
 	logStreamProcess.ErrorDataReceived += (_, e) => {
 		if (e.Data is not null)
-			lock (writer)
-				writer.WriteLine (e.Data);
+			lock (writer) {
+				if (!logStreamWriterClosed)
+					writer.WriteLine (e.Data);
+			}
 	};
 	logStreamProcess.Start ();
 	logStreamProcess.BeginOutputReadLine ();
@@ -287,13 +292,71 @@ if (!string.IsNullOrEmpty (htmlReportPath)) {
 if (logStreamProcess is not null && logStreamFile is not null) {
 	try {
 		NativeMethods.kill (logStreamProcess.Id, 2 /* SIGINT */);
-		logStreamProcess.WaitForExit (10_000);
-	} catch {
-		// Process may have already exited
+		// WaitForExit (int) returns as soon as the process exits, but it doesn't wait
+		// for the asynchronous output handlers to finish processing buffered output,
+		// so the tail of the log stream would be lost (this is the same reason
+		// ExecuteWithTimeout calls the parameterless overload below).
+		//
+		// The parameterless overload can block indefinitely if anything else still
+		// holds the redirected pipes, so drain on a background thread and give up
+		// after a while rather than risk hanging the job for hours.
+		var exited = logStreamProcess.WaitForExit (10_000);
+		if (!exited) {
+			Console.Error.WriteLine ("Warning: 'log stream' did not exit after SIGINT; terminating it.");
+			try {
+				logStreamProcess.Kill ();
+				exited = logStreamProcess.WaitForExit (10_000);
+			} catch (InvalidOperationException) {
+				// The process exited before Kill could terminate it.
+				exited = true;
+			} catch (Exception e) {
+				Console.Error.WriteLine ($"Warning: Failed to terminate 'log stream': {e.Message}");
+			}
+		}
+		if (exited) {
+			Exception? drainException = null;
+			var drain = new Thread (() => {
+				try {
+					logStreamProcess.WaitForExit ();
+				} catch (Exception e) {
+					drainException = e;
+				}
+			}) { IsBackground = true };
+			drain.Start ();
+			if (!drain.Join (30_000)) {
+				Console.Error.WriteLine ("Warning: Timed out draining buffered 'log stream' output; system.log may be incomplete.");
+			} else if (drainException is not null) {
+				Console.Error.WriteLine ($"Warning: Failed to drain buffered 'log stream' output; system.log may be incomplete: {drainException.Message}");
+			}
+		} else {
+			Console.Error.WriteLine ("Warning: 'log stream' did not terminate; system.log may be incomplete.");
+		}
+	} catch (Exception e) {
+		Console.Error.WriteLine ($"Warning: Failed to stop 'log stream': {e.Message}");
 	}
 
-	// Flush and close the log writer
-	logStreamWriter?.Dispose ();
+	// Stop delivering output, so no further callbacks are queued.
+	try {
+		logStreamProcess.CancelOutputRead ();
+		logStreamProcess.CancelErrorRead ();
+	} catch {
+		// The asynchronous reads may already have completed
+	}
+
+	// Flush and close the log writer. The flag is what actually makes a late
+	// callback harmless: without it a queued line could still be delivered here
+	// and throw ObjectDisposedException on a thread pool thread, which would
+	// crash this process even though every test passed.
+	if (logStreamWriter is not null) {
+		try {
+			lock (logStreamWriter) {
+				logStreamWriterClosed = true;
+				logStreamWriter.Dispose ();
+			}
+		} catch (Exception e) {
+			Console.Error.WriteLine ($"Warning: Failed to flush and close {logStreamFile}: {e.Message}");
+		}
+	}
 
 	try {
 		Console.WriteLine ($"Wrote {new FileInfo (logStreamFile).Length} bytes to {logStreamFile}");
@@ -308,7 +371,11 @@ if (logStreamProcess is not null && logStreamFile is not null) {
 		Console.Error.WriteLine ($"Warning: Failed to save log stream output: {ex.Message}");
 	}
 
-	logStreamProcess.Dispose ();
+	try {
+		logStreamProcess.Dispose ();
+	} catch (Exception e) {
+		Console.Error.WriteLine ($"Warning: Failed to dispose 'log stream': {e.Message}");
+	}
 }
 
 return failedSuites > 0 ? 1 : 0;
@@ -441,21 +508,43 @@ string TakeScreenshot (string reason, string outputDirectory)
 	var path = string.IsNullOrEmpty (outputDirectory)
 		? Path.GetFullPath (fileName)
 		: Path.Combine (outputDirectory, fileName);
+	Console.WriteLine ($"Attempting to capture the screen to {path}...");
 	try {
-		var p = Process.Start (new ProcessStartInfo {
-			FileName = "/usr/sbin/screencapture",
-			ArgumentList = { "-x", "-T", "0", path },
-			UseShellExecute = false,
-		});
-		if (p is not null) {
-			p.WaitForExit (TimeSpan.FromSeconds (10));
-			if (File.Exists (path)) {
-				Console.WriteLine ($"Screenshot saved to {path}");
-				return path;
-			}
+		var outputSb = new StringBuilder ();
+		var p = new Process ();
+		p.StartInfo.FileName = "/usr/sbin/screencapture";
+		p.StartInfo.ArgumentList.Add ("-x");
+		p.StartInfo.ArgumentList.Add ("-T");
+		p.StartInfo.ArgumentList.Add ("0");
+		p.StartInfo.ArgumentList.Add (path);
+		p.StartInfo.UseShellExecute = false;
+		p.StartInfo.RedirectStandardOutput = true;
+		p.StartInfo.RedirectStandardError = true;
+		p.OutputDataReceived += (_, e) => {
+			if (e.Data is not null)
+				lock (outputSb)
+					outputSb.AppendLine (e.Data);
+		};
+		p.ErrorDataReceived += (_, e) => {
+			if (e.Data is not null)
+				lock (outputSb)
+					outputSb.AppendLine (e.Data);
+		};
+		p.Start ();
+		p.BeginOutputReadLine ();
+		p.BeginErrorReadLine ();
+		p.WaitForExit (TimeSpan.FromSeconds (10));
+		if (File.Exists (path)) {
+			var fileSize = new FileInfo (path).Length;
+			Console.WriteLine ($"Successfully captured the screen to {path} (file size: {fileSize})");
+			return path;
 		}
+		string output;
+		lock (outputSb)
+			output = outputSb.ToString ().Trim ();
+		Console.WriteLine ($"Failed to capture the screen (exit code: {p.ExitCode}; output: '{output}').");
 	} catch (Exception e) {
-		Console.WriteLine ($"Failed to take screenshot: {e.Message}");
+		Console.WriteLine ($"Failed to capture the screen: {e.Message}");
 	}
 	return "";
 }

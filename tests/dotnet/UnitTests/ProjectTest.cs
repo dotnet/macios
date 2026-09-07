@@ -2406,9 +2406,10 @@ namespace Xamarin.Tests {
 			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
-			var extraArgs = "--require-pinvoke-wrappers:true --registrar:static"; // enable the static registrar too, see https://github.com/dotnet/macios/issues/15190.
+			var extraArgs = "--require-pinvoke-wrappers:true";
 			properties ["MonoBundlingExtraArgs"] = extraArgs;
 			properties ["MtouchExtraArgs"] = extraArgs;
+			properties ["Registrar"] = "static"; // enable the static registrar too, see https://github.com/dotnet/macios/issues/15190.
 
 			DotNet.AssertBuild (project_path, properties);
 		}

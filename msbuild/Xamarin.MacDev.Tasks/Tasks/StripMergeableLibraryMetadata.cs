@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 
 using Microsoft.Build.Framework;
 using Xamarin.Messaging.Build.Client;
@@ -100,7 +102,9 @@ namespace Xamarin.MacDev.Tasks {
 			if (string.IsNullOrEmpty (StampDirectory))
 				return null;
 
-			var name = Path.GetFullPath (path).Replace (Path.DirectorySeparatorChar, '_').Replace (Path.AltDirectorySeparatorChar, '_');
+			using var sha = SHA256.Create ();
+			var hash = sha.ComputeHash (Encoding.UTF8.GetBytes (Path.GetFullPath (path)));
+			var name = BitConverter.ToString (hash).Replace ("-", "");
 			return Path.Combine (StampDirectory, name + ".stamp");
 		}
 

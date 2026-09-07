@@ -500,15 +500,19 @@ namespace Xamarin.Tests {
 					env [kvp.Key] = kvp.Value;
 			}
 
-			// Tell AppKit to skip its "Do you want to try to reopen its windows again?" prompt entirely (even if
-			// the OS thinks the app has a history of crashing), so that a persistent modal dialog doesn't hang the test.
-			var args = new [] { "-ApplePersistenceIgnoreState", "YES" };
-			var rv = Execution.RunAsync (executable, args, environment: env, timeout: TimeSpan.FromSeconds (30)).Result;
-			output = rv.Output.MergedOutput;
-
-			DeleteSavedState (executable);
-
-			return rv;
+			var bundleIdentifier = GetBundleIdentifier (executable);
+			if (!string.IsNullOrEmpty (bundleIdentifier))
+				Execution.RunAsync ("/usr/bin/defaults", new [] { "write", bundleIdentifier, "ApplePersistenceIgnoreState", "-bool", "YES" }, timeout: TimeSpan.FromSeconds (30)).Result;
+			try {
+				var rv = Execution.RunAsync (executable, Array.Empty<string> (), environment: env, timeout: TimeSpan.FromSeconds (30)).Result;
+				output = rv.Output.MergedOutput;
+				return rv;
+			} finally {
+				// Remove the override so it doesn't affect a later test using the same bundle identifier.
+				if (!string.IsNullOrEmpty (bundleIdentifier))
+					Execution.RunAsync ("/usr/bin/defaults", new [] { "delete", bundleIdentifier, "ApplePersistenceIgnoreState" }, timeout: TimeSpan.FromSeconds (30)).Result;
+				DeleteSavedState (executable);
+			}
 		}
 
 		// Delete the saved application state for the app being launched, to prevent
@@ -516,30 +520,7 @@ namespace Xamarin.Tests {
 		// if the app crashed during a previous test run. See https://github.com/dotnet/macios/issues/25922
 		static void DeleteSavedState (string executable)
 		{
-			// Find the .app bundle directory from the executable path
-			var dir = Path.GetDirectoryName (executable);
-			while (!string.IsNullOrEmpty (dir) && !dir.EndsWith (".app", StringComparison.OrdinalIgnoreCase))
-				dir = Path.GetDirectoryName (dir);
-
-			if (string.IsNullOrEmpty (dir))
-				return;
-
-			// Read the bundle identifier from Info.plist
-			string? bundleIdentifier = null;
-			var infoPlistPath = Path.Combine (dir, "Contents", "Info.plist");
-			if (!File.Exists (infoPlistPath))
-				infoPlistPath = Path.Combine (dir, "Info.plist");
-			if (!File.Exists (infoPlistPath))
-				return;
-
-			try {
-				var infoPlist = PDictionary.OpenFile (infoPlistPath);
-				bundleIdentifier = infoPlist.GetString ("CFBundleIdentifier")?.Value;
-			} catch (Exception e) {
-				Console.WriteLine ($"Could not read bundle identifier from '{infoPlistPath}': {e.Message}");
-				return;
-			}
-
+			var bundleIdentifier = GetBundleIdentifier (executable);
 			if (string.IsNullOrEmpty (bundleIdentifier))
 				return;
 
@@ -556,6 +537,32 @@ namespace Xamarin.Tests {
 				} catch (Exception e) {
 					Console.WriteLine ($"Could not delete saved application state '{savedStateDir}': {e.Message}");
 				}
+			}
+		}
+
+		static string? GetBundleIdentifier (string executable)
+		{
+			// Find the .app bundle directory from the executable path
+			var dir = Path.GetDirectoryName (executable);
+			while (!string.IsNullOrEmpty (dir) && !dir.EndsWith (".app", StringComparison.OrdinalIgnoreCase))
+				dir = Path.GetDirectoryName (dir);
+
+			if (string.IsNullOrEmpty (dir))
+				return null;
+
+			// Read the bundle identifier from Info.plist
+			var infoPlistPath = Path.Combine (dir, "Contents", "Info.plist");
+			if (!File.Exists (infoPlistPath))
+				infoPlistPath = Path.Combine (dir, "Info.plist");
+			if (!File.Exists (infoPlistPath))
+				return null;
+
+			try {
+				var infoPlist = PDictionary.OpenFile (infoPlistPath);
+				return infoPlist.GetString ("CFBundleIdentifier")?.Value;
+			} catch (Exception e) {
+				Console.WriteLine ($"Could not read bundle identifier from '{infoPlistPath}': {e.Message}");
+				return null;
 			}
 		}
 

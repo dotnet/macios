@@ -113,9 +113,9 @@ The diagnostic id for Rgen is APL0003.
 
 ## CoreMidi.MidiDriver (APL0004)
 
-The [MIDIDevice](https://developer.apple.com/documentation/coremidi/midi-drivers) API is untested, and as such it's marked experimental until .NET 12.
+The [MidiDriver](https://developer.apple.com/documentation/coremidi/midi-drivers) API is untested, and as such it's marked experimental until .NET 12.
 
-The diagnostic id for MidiDevice is APL0004.
+The diagnostic id for MidiDriver is APL0004.
 
 ---
 

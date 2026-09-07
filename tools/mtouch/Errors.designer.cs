@@ -2677,6 +2677,15 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The registrar cannot use the model class &apos;{0}&apos; as a generic type argument in the generic type &apos;{1}&apos;. Use the protocol interface instead of the model class..
+        /// </summary>
+        public static string MT4192 {
+            get {
+                return ResourceManager.GetString("MT4192", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Missing &apos;{0}&apos; compiler. Please install Xcode &apos;Command-Line Tools&apos; component.
         /// </summary>
         public static string MT5101 {

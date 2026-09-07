@@ -48,6 +48,10 @@ interface B {
 
 // @interface GenericTypesTest
 interface GenericTypesTest {
+	// @property (readonly, nonatomic, strong) GCKSessionOptions * _Nullable sessionOptions;
+	[NullAllowed, Export ("sessionOptions", ArgumentSemantic.Strong)]
+	NSDictionary<NSString, INSCoding> SessionOptions { get; }
+
 	// -(NSDictionary<NSString *,NSNumber *> *)NSDictionaryOfNSStringToNSNumber;
 	[Export ("NSDictionaryOfNSStringToNSNumber")]
 	[Verify (MethodToProperty)]

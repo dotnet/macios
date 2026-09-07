@@ -3,6 +3,18 @@
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ComputeInstructionSet" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.GenerateR2RModuleRegistration" AssemblyFile="$(_TaskAssemblyName)" />
 
+	<!--
+		Only composite ReadyToRun compilation is supported with the 'macho' container format: crossgen2
+		emits a Mach-O object file per assembly, but it doesn't emit the corresponding component assemblies,
+		and the runtime only knows how to locate platform-native ReadyToRun code for a composite image.
+		See https://github.com/dotnet/runtime/blob/main/docs/design/coreclr/botr/readytorun-platform-native-envelope.md
+	-->
+	<Target Name="_ValidateReadyToRunComposite"
+			Condition="'$(PublishReadyToRun)' == 'true' And '$(PublishReadyToRunContainerFormat)' == 'macho' And '$(PublishReadyToRunComposite)' != 'true' And '$(_CanOutputAppBundle)' == 'true'"
+			BeforeTargets="_PrepareForReadyToRunCompilation">
+		<Error Text="Setting 'PublishReadyToRunComposite' to '$(PublishReadyToRunComposite)' isn't supported for $(_PlatformName) projects, only composite ReadyToRun compilation is supported. Either remove the 'PublishReadyToRunComposite' property, or set 'PublishReadyToRun=false' to turn off ReadyToRun compilation completely." />
+	</Target>
+
 	<!-- Set per-module R2R header symbol names so each .o file exports a unique symbol directly,
 	     avoiding the need for post-link symbol aliasing. -->
 	<Target Name="_SetR2RHeaderSymbolNames"

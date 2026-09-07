@@ -22746,7 +22746,6 @@ T:AppKit.NSVisualEffectMaterial
 T:AppKit.NSVisualEffectState
 T:AppKit.NSWindowAnimationBehavior
 T:AppKit.NSWindowApplicationPresentationOptions
-T:AppKit.NSWindowBackingLocation
 T:AppKit.NSWindowButton
 T:AppKit.NSWindowClient
 T:AppKit.NSWindowCollectionBehavior

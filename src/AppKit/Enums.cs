@@ -1386,14 +1386,15 @@ namespace AppKit {
 		ReadWrite,
 	}
 
+	/// <summary>Specifies where a window's backing store is located.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSWindowBackingLocation : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The system determines the backing store location.</summary>
 		Default,
-		/// <summary>To be added.</summary>
+		/// <summary>The backing store is located in video memory.</summary>
 		VideoMemory,
-		/// <summary>To be added.</summary>
+		/// <summary>The backing store is located in main memory.</summary>
 		MainMemory,
 	}
 

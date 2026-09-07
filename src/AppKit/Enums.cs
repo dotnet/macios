@@ -2948,14 +2948,15 @@ namespace AppKit {
 		NSNoTabsNoBorder,
 	}
 
+	/// <summary>Specifies the visual state of a tab view item.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTabState : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The tab is selected.</summary>
 		Selected,
-		/// <summary>To be added.</summary>
+		/// <summary>The tab is displayed in the background.</summary>
 		Background,
-		/// <summary>To be added.</summary>
+		/// <summary>The tab is being pressed.</summary>
 		Pressed,
 	}
 

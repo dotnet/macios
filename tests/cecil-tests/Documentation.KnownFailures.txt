@@ -22642,7 +22642,6 @@ T:AppKit.NSTableViewToolTip
 T:AppKit.NSTableViewUserCanChangeColumnVisibility
 T:AppKit.NSTableViewViewGetter
 T:AppKit.NSTabPosition
-T:AppKit.NSTabState
 T:AppKit.NSTabViewBorderType
 T:AppKit.NSTabViewControllerTabStyle
 T:AppKit.NSTabViewPredicate

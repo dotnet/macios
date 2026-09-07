@@ -2849,12 +2849,13 @@ namespace AppKit {
 		Trailing = Right,
 	}
 
+	/// <summary>Specifies the shape of a slider.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSSliderType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>A horizontal or vertical linear slider.</summary>
 		Linear = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>A circular slider.</summary>
 		Circular = 1,
 	}
 

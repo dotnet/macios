@@ -22601,7 +22601,6 @@ T:AppKit.NSSharingServicePickerSharingServicesForItems
 T:AppKit.NSSharingServiceSourceFrameOnScreenForShareItem
 T:AppKit.NSSharingServiceSourceWindowForShareItems
 T:AppKit.NSSharingServiceTransitionImageForShareItem
-T:AppKit.NSSliderType
 T:AppKit.NSSpellCheckerShowCorrectionIndicatorOfTypeHandler
 T:AppKit.NSSpellingState
 T:AppKit.NSSplitViewItemBehavior

@@ -1989,13 +1989,14 @@ namespace AppKit {
 	}
 
 	// NSStackView.h:typedef float NSStackViewVisibilityPriority
+	/// <summary>Specifies the priority for keeping a view visible in a stack view.</summary>
 	[NoMacCatalyst]
 	public enum NSStackViewVisibilityPriority : int {
-		/// <summary>To be added.</summary>
+		/// <summary>The view must remain attached to the stack view.</summary>
 		MustHold = 1000,
-		/// <summary>To be added.</summary>
+		/// <summary>The view is detached only when necessary.</summary>
 		DetachOnlyIfNecessary = 900,
-		/// <summary>To be added.</summary>
+		/// <summary>The view is not visible.</summary>
 		NotVisible = 0,
 	}
 

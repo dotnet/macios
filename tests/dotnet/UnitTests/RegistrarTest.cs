@@ -12,12 +12,14 @@ namespace Xamarin.Tests {
 			{ "MSBuildLogPropertyTracking", "1" },
 		};
 
-		[TestCase ("None", "partial-static")]
-		[TestCase ("SdkOnly", "trimmable-static")]
-		public void DefaultCoreCLRSimulatorRegistrar (string linkMode, string expectedRegistrar)
+		[TestCase (ApplePlatform.iOS, "None", "partial-static")]
+		[TestCase (ApplePlatform.iOS, "SdkOnly", "trimmable-static")]
+		public void DefaultCoreCLRSimulatorRegistrar (ApplePlatform platform, string linkMode, string expectedRegistrar)
 		{
-			var platform = ApplePlatform.iOS;
 			var runtimeIdentifiers = "iossimulator-arm64";
+
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
 			var projectPath = GetProjectPath ("MySimpleApp", platform: platform);
 			Clean (projectPath);
 
@@ -33,11 +35,13 @@ namespace Xamarin.Tests {
 			Assert.That (prepareAssemblies, Is.EqualTo ("true"), "PrepareAssemblies");
 		}
 
-		[Test]
-		public void ChangeDefaultCoreCLRSimulatorRegistrar ()
+		[TestCase (ApplePlatform.iOS)]
+		public void ChangeDefaultCoreCLRSimulatorRegistrar (ApplePlatform platform)
 		{
-			var platform = ApplePlatform.iOS;
 			var runtimeIdentifiers = "iossimulator-arm64";
+
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
 			var projectPath = GetProjectPath ("MySimpleApp", platform: platform);
 			Clean (projectPath);
 
@@ -72,9 +76,10 @@ namespace Xamarin.Tests {
 			var project = "MyRegistrarApp";
 			var configuration = "Debug";
 
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
 			runtimeIdentifiers ??= GetDefaultRuntimeIdentifier (platform);
 
-			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
 
 			var projectPath = GetProjectPath (project, platform: platform);

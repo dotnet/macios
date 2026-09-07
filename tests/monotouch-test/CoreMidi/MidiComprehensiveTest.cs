@@ -29,6 +29,16 @@ namespace MonoTouchFixtures.CoreMidi {
 
 			Assert.That (status, Is.EqualTo (MidiError.Ok), message);
 		}
+
+		// Asserts that 'value' isn't null, and returns the non-null value (avoiding the
+		// need for the null-forgiving operator at the call site).
+		public static T AssertNotNull<T> (T? value, string message) where T : class
+		{
+			Assert.That (value, Is.Not.Null, message);
+			if (value is null)
+				throw new InvalidOperationException ($"'{message}' should not be null.");
+			return value;
+		}
 	}
 
 	[TestFixture]
@@ -93,10 +103,10 @@ namespace MonoTouchFixtures.CoreMidi {
 			MidiError status;
 			using var device = Midi.CreateExternalDevice ("Test Device", "Test Manufacturer", "Test Model", out status);
 			Assert.That (status, Is.EqualTo (MidiError.Ok), "Status");
-			Assert.That (device, Is.Not.Null, "Device");
+			var nonNullDevice = MidiTestHelpers.AssertNotNull (device, "Device");
 
 			// Clean up
-			var removeStatus = MidiSetup.RemoveExternalDevice (device!);
+			var removeStatus = MidiSetup.RemoveExternalDevice (nonNullDevice);
 			Assert.That (removeStatus, Is.EqualTo (MidiError.Ok), "RemoveExternalDevice");
 		}
 	}
@@ -120,12 +130,12 @@ namespace MonoTouchFixtures.CoreMidi {
 		{
 			var device = Midi.CreateExternalDevice ("TestExtDevice", "TestExtManufacturer", "TestExtModel", out var createStatus);
 			Assert.That (createStatus, Is.EqualTo (MidiError.Ok), "Create");
-			Assert.That (device, Is.Not.Null, "Device not null");
+			var nonNullDevice = MidiTestHelpers.AssertNotNull (device, "Device not null");
 
-			var addStatus = MidiSetup.AddExternalDevice (device!);
+			var addStatus = MidiSetup.AddExternalDevice (nonNullDevice);
 			Assert.That (addStatus, Is.EqualTo (MidiError.Ok), "AddExternalDevice");
 
-			var removeStatus = MidiSetup.RemoveExternalDevice (device!);
+			var removeStatus = MidiSetup.RemoveExternalDevice (nonNullDevice);
 			Assert.That (removeStatus, Is.EqualTo (MidiError.Ok), "RemoveExternalDevice");
 		}
 	}
@@ -252,9 +262,8 @@ namespace MonoTouchFixtures.CoreMidi {
 		{
 			// Use an existing device if available, otherwise verify the API exists
 			if (Midi.DeviceCount > 0) {
-				var device = Midi.GetDevice (0);
-				Assert.That (device, Is.Not.Null, "Device");
-				Assert.That ((int) device!.EntityCount, Is.GreaterThanOrEqualTo (0), "EntityCount >= 0");
+				var device = MidiTestHelpers.AssertNotNull (Midi.GetDevice (0), "Device");
+				Assert.That ((int) device.EntityCount, Is.GreaterThanOrEqualTo (0), "EntityCount >= 0");
 			}
 		}
 
@@ -279,9 +288,8 @@ namespace MonoTouchFixtures.CoreMidi {
 		{
 			// Use an existing device if available
 			if (Midi.DeviceCount > 0) {
-				var device = Midi.GetDevice (0);
-				Assert.That (device, Is.Not.Null, "Device");
-				if (device!.EntityCount > 0) {
+				var device = MidiTestHelpers.AssertNotNull (Midi.GetDevice (0), "Device");
+				if (device.EntityCount > 0) {
 					var entity = device.GetEntity (0);
 					Assert.That (entity, Is.Not.Null, "GetEntity (0)");
 				}
@@ -295,10 +303,9 @@ namespace MonoTouchFixtures.CoreMidi {
 		{
 			// Use an existing device if available
 			if (Midi.DeviceCount > 0) {
-				var device = Midi.GetDevice (0);
-				Assert.That (device, Is.Not.Null, "Device");
+				var device = MidiTestHelpers.AssertNotNull (Midi.GetDevice (0), "Device");
 				Assert.DoesNotThrow (() => {
-					var uniqueId = device!.UniqueID;
+					var uniqueId = device.UniqueID;
 				}, "UniqueID getter");
 			}
 		}
@@ -314,9 +321,8 @@ namespace MonoTouchFixtures.CoreMidi {
 			if (Midi.DeviceCount > 0) {
 				var device = Midi.GetDevice (0);
 				if (device is not null && device.EntityCount > 0) {
-					var entity = device.GetEntity (0);
-					Assert.That (entity, Is.Not.Null, "Entity");
-					Assert.That ((int) entity!.Sources, Is.GreaterThanOrEqualTo (0), "Sources");
+					var entity = MidiTestHelpers.AssertNotNull (device.GetEntity (0), "Entity");
+					Assert.That ((int) entity.Sources, Is.GreaterThanOrEqualTo (0), "Sources");
 					Assert.That ((int) entity.Destinations, Is.GreaterThanOrEqualTo (0), "Destinations");
 				}
 			}
@@ -337,9 +343,8 @@ namespace MonoTouchFixtures.CoreMidi {
 			if (Midi.DeviceCount > 0) {
 				var device = Midi.GetDevice (0);
 				if (device is not null && device.EntityCount > 0) {
-					var entity = device.GetEntity (0);
-					Assert.That (entity, Is.Not.Null, "Entity");
-					var entityDevice = entity!.Device;
+					var entity = MidiTestHelpers.AssertNotNull (device.GetEntity (0), "Entity");
+					var entityDevice = entity.Device;
 					Assert.That (entityDevice, Is.Not.Null, "Device");
 				}
 			}
@@ -353,9 +358,8 @@ namespace MonoTouchFixtures.CoreMidi {
 		public void GetSource ()
 		{
 			if (Midi.SourceCount > 0) {
-				var source = MidiEndpoint.GetSource (0);
-				Assert.That (source, Is.Not.Null, "GetSource (0)");
-				Assert.That (source!.Handle, Is.Not.EqualTo (0), "Handle");
+				var source = MidiTestHelpers.AssertNotNull (MidiEndpoint.GetSource (0), "GetSource (0)");
+				Assert.That (source.Handle, Is.Not.EqualTo (0), "Handle");
 			}
 		}
 
@@ -363,9 +367,8 @@ namespace MonoTouchFixtures.CoreMidi {
 		public void GetDestination ()
 		{
 			if (Midi.DestinationCount > 0) {
-				var dest = MidiEndpoint.GetDestination (0);
-				Assert.That (dest, Is.Not.Null, "GetDestination (0)");
-				Assert.That (dest!.Handle, Is.Not.EqualTo (0), "Handle");
+				var dest = MidiTestHelpers.AssertNotNull (MidiEndpoint.GetDestination (0), "GetDestination (0)");
+				Assert.That (dest.Handle, Is.Not.EqualTo (0), "Handle");
 			}
 		}
 
@@ -378,8 +381,9 @@ namespace MonoTouchFixtures.CoreMidi {
 			var dest = client.CreateVirtualDestination ("TestFlushDest", out var status);
 #pragma warning restore CS0618
 			MidiTestHelpers.AssertStatusOkOrInconclusive (status, "Create");
-			Assert.DoesNotThrow (() => dest!.FlushOutput (), "FlushOutput");
-			dest?.Dispose ();
+			var nonNullDest = MidiTestHelpers.AssertNotNull (dest, "Destination");
+			Assert.DoesNotThrow (() => nonNullDest.FlushOutput (), "FlushOutput");
+			nonNullDest.Dispose ();
 		}
 
 		[Test]
@@ -388,8 +392,9 @@ namespace MonoTouchFixtures.CoreMidi {
 			using var client = new MidiClient ("TestEndpointNameClient");
 			var source = client.CreateVirtualSource ("TestNameSource", MidiProtocolId.Protocol_1_0, out var status);
 			MidiTestHelpers.AssertStatusOkOrInconclusive (status, "Create");
-			Assert.That (source!.EndpointName, Is.Not.Null, "EndpointName");
-			source?.Dispose ();
+			var nonNullSource = MidiTestHelpers.AssertNotNull (source, "Source");
+			Assert.That (nonNullSource.EndpointName, Is.Not.Null, "EndpointName");
+			nonNullSource.Dispose ();
 		}
 
 		[Test]
@@ -398,10 +403,11 @@ namespace MonoTouchFixtures.CoreMidi {
 			using var client = new MidiClient ("TestEntityClient");
 			var source = client.CreateVirtualSource ("TestEntitySource", MidiProtocolId.Protocol_1_0, out var status);
 			MidiTestHelpers.AssertStatusOkOrInconclusive (status, "Create");
+			var nonNullSource = MidiTestHelpers.AssertNotNull (source, "Source");
 			// Virtual endpoints don't have a parent entity
-			var entity = source!.Entity;
+			var entity = nonNullSource.Entity;
 			Assert.That (entity, Is.Null, "Entity should be null for virtual endpoints");
-			source.Dispose ();
+			nonNullSource.Dispose ();
 		}
 
 		[Test]
@@ -411,14 +417,14 @@ namespace MonoTouchFixtures.CoreMidi {
 			using var client = new MidiClient ("TestPropsClient");
 			var source = client.CreateVirtualSource ("TestPropsSource", MidiProtocolId.Protocol_1_0, out var srcStatus);
 			MidiTestHelpers.AssertStatusOkOrInconclusive (srcStatus, "Create source");
-			Assert.That (source, Is.Not.Null, "source");
+			var nonNullSource = MidiTestHelpers.AssertNotNull (source, "source");
 
 			// Test properties that should be readable
 			Assert.DoesNotThrow (() => {
-				_ = source!.MaxSysExSpeed;
+				_ = nonNullSource.MaxSysExSpeed;
 			}, "MaxSysExSpeed");
 
-			source?.Dispose ();
+			nonNullSource.Dispose ();
 		}
 	}
 
@@ -430,9 +436,8 @@ namespace MonoTouchFixtures.CoreMidi {
 		{
 			// Use an existing device to find by unique ID
 			if (Midi.DeviceCount > 0) {
-				var device = Midi.GetDevice (0);
-				Assert.That (device, Is.Not.Null, "Device");
-				var uniqueId = device!.UniqueID;
+				var device = MidiTestHelpers.AssertNotNull (Midi.GetDevice (0), "Device");
+				var uniqueId = device.UniqueID;
 				var findStatus = MidiObject.FindByUniqueId (uniqueId, out var found);
 				Assert.That (findStatus, Is.EqualTo (MidiError.Ok), "FindByUniqueId");
 				Assert.That (found, Is.Not.Null, "Found object not null");
@@ -458,10 +463,11 @@ namespace MonoTouchFixtures.CoreMidi {
 			using var client = new MidiClient ("TestDictPropsClient");
 			var source = client.CreateVirtualSource ("TestDictPropsSource", MidiProtocolId.Protocol_1_0, out var status);
 			MidiTestHelpers.AssertStatusOkOrInconclusive (status, "Create");
+			var nonNullSource = MidiTestHelpers.AssertNotNull (source, "Source");
 
-			var dict = source!.GetDictionaryProperties (false);
-			Assert.That (dict, Is.Not.Null, "GetDictionaryProperties");
-			Assert.That ((int) dict!.Count, Is.GreaterThan (0), "Properties count > 0");
+			var dict = nonNullSource.GetDictionaryProperties (false);
+			var nonNullDict = MidiTestHelpers.AssertNotNull (dict, "GetDictionaryProperties");
+			Assert.That ((int) nonNullDict.Count, Is.GreaterThan (0), "Properties count > 0");
 
 			source.Dispose ();
 		}
@@ -577,16 +583,17 @@ namespace MonoTouchFixtures.CoreMidi {
 
 			var source = client.CreateVirtualSource ("TestEventListSource", MidiProtocolId.Protocol_1_0, out var status);
 			MidiTestHelpers.AssertStatusOkOrInconclusive (status, "CreateVirtualSource");
+			var nonNullSource = MidiTestHelpers.AssertNotNull (source, "Source");
 
 			using var list = new MidiEventList (MidiProtocolId.Protocol_1_0, 1024);
 			// MIDI 1.0 Note On: channel 0, note 60 (middle C), velocity 127
 			list.Add (0, new uint [] { 0x20903C7F });
 
 			// Send from source (distribute to listeners)
-			var sendStatus = list.Receive (source!);
+			var sendStatus = list.Receive (nonNullSource);
 			Assert.That (sendStatus, Is.EqualTo (0), "Receive status");
 
-			source?.Dispose ();
+			nonNullSource.Dispose ();
 		}
 
 		/// <summary>
@@ -823,9 +830,9 @@ namespace MonoTouchFixtures.CoreMidi {
 		[Test]
 		public void Ctor_NullBytes ()
 		{
-			// The public constructor dereferences bytes.Length before the null check in the
-			// private constructor, so it throws NullReferenceException rather than ArgumentNullException.
-			Assert.Throws<NullReferenceException> (() => new MidiPacket (0, (byte []) null!), "Null bytes");
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
+			Assert.Throws<ArgumentNullException> (() => new MidiPacket (0, (byte []) null), "Null bytes");
+#pragma warning restore CS8625
 		}
 
 		[Test]
@@ -865,8 +872,8 @@ namespace MonoTouchFixtures.CoreMidi {
 			var type = typeof (MidiException);
 			Assert.That (type, Is.Not.Null, "MidiException type exists");
 			var prop = type.GetProperty ("ErrorCode");
-			Assert.That (prop, Is.Not.Null, "ErrorCode property exists");
-			Assert.That (prop!.PropertyType, Is.EqualTo (typeof (MidiError)), "ErrorCode type");
+			var nonNullProp = MidiTestHelpers.AssertNotNull (prop, "ErrorCode property exists");
+			Assert.That (nonNullProp.PropertyType, Is.EqualTo (typeof (MidiError)), "ErrorCode type");
 		}
 	}
 

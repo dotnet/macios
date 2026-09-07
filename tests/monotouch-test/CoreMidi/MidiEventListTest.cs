@@ -1,5 +1,5 @@
 //
-// Unit tests for MidiEventPacket
+// Unit tests for MidiEventList
 //
 // Copyright 2025 Microsoft Corp. All rights reserved.
 //

@@ -4168,12 +4168,13 @@ namespace AppKit {
 		UnderPageBackground = 22,
 	}
 
+	/// <summary>Specifies which content a visual effect view blends with.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSVisualEffectBlendingMode : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Blends with content behind the window.</summary>
 		BehindWindow,
-		/// <summary>To be added.</summary>
+		/// <summary>Blends with content behind the view in the current window.</summary>
 		WithinWindow,
 	}
 

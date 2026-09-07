@@ -3193,11 +3193,12 @@ namespace AppKit {
 		MpsSwapsInFlight = 315,
 	}
 
+	/// <summary>Specifies the position of an OpenGL surface relative to its window.</summary>
 	[NoMacCatalyst]
 	public enum NSSurfaceOrder {
-		/// <summary>To be added.</summary>
+		/// <summary>The surface is displayed above the window.</summary>
 		AboveWindow = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The surface is displayed below the window.</summary>
 		BelowWindow = -1,
 	}
 

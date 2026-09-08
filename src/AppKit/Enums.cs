@@ -5136,10 +5136,13 @@ namespace AppKit {
 		Changed,
 	}
 
+	/// <summary>Specifies the outcome of a print panel session.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSPrintPanelResult : long {
+		/// <summary>The user cancelled the print panel.</summary>
 		Cancelled = 0,
+		/// <summary>The user confirmed the print panel and printing proceeded.</summary>
 		Printed,
 	}
 

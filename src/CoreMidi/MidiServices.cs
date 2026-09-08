@@ -3424,6 +3424,7 @@ namespace CoreMidi {
 
 				unsafe {
 					structPointer = Marshal.AllocHGlobal (sizeof (MidiSysexSendRequest));
+					new Span<byte> ((void*) structPointer, sizeof (MidiSysexSendRequest)).Clear ();
 				}
 				dataHandle = GCHandle.Alloc (byteData, GCHandleType.Pinned);
 				thisHandle = GCHandle.Alloc (this);
@@ -3437,6 +3438,7 @@ namespace CoreMidi {
 
 				unsafe {
 					structPointer = Marshal.AllocHGlobal (sizeof (MidiSysexSendRequestUmp));
+					new Span<byte> ((void*) structPointer, sizeof (MidiSysexSendRequestUmp)).Clear ();
 				}
 				dataHandle = GCHandle.Alloc (uintData, GCHandleType.Pinned);
 				thisHandle = GCHandle.Alloc (this);
@@ -3518,10 +3520,12 @@ namespace CoreMidi {
 			{
 				cancellationTokenRegistration?.Dispose ();
 				cancellationTokenRegistration = null;
-				if (structPointer != IntPtr.Zero) {
-					Marshal.FreeHGlobal (structPointer);
-					structPointer = IntPtr.Zero;
-				}
+				// Zero out 'structPointer' before freeing it, so that a concurrent
+				// cancellation callback (which checks 'structPointer' for null) can
+				// never see a stale, already-freed pointer.
+				var ptr = Interlocked.Exchange (ref structPointer, IntPtr.Zero);
+				if (ptr != IntPtr.Zero)
+					Marshal.FreeHGlobal (ptr);
 				if (dataHandle.IsAllocated)
 					dataHandle.Free ();
 				if (thisHandle.IsAllocated)

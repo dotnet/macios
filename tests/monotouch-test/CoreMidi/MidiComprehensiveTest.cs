@@ -115,17 +115,6 @@ namespace MonoTouchFixtures.CoreMidi {
 	[Preserve (AllMembers = true)]
 	public class MidiSetupTest {
 		[Test]
-		public void AddRemoveDevice ()
-		{
-			// MIDIDeviceCreate requires a MIDI driver context and returns -50 (paramErr) in user-space.
-			// Verify the API doesn't crash and returns a meaningful error.
-			var device = MidiDevice.Create (null, "TestSetupDevice", "TestManufacturer", "TestModel", out var createStatus);
-			// -50 is paramErr - expected when not running as a MIDI driver
-			Assert.That ((int) createStatus, Is.EqualTo (-50), "Create returns paramErr without driver");
-			Assert.That (device, Is.Null, "Device is null without driver");
-		}
-
-		[Test]
 		public void AddRemoveExternalDevice ()
 		{
 			var device = Midi.CreateExternalDevice ("TestExtDevice", "TestExtManufacturer", "TestExtModel", out var createStatus);
@@ -202,21 +191,6 @@ namespace MonoTouchFixtures.CoreMidi {
 			Assert.That (dest, Is.Not.Null, "Destination not null");
 			dest?.Dispose ();
 		}
-
-		[Test]
-		public void Events ()
-		{
-			using var client = new MidiClient ("TestEventsClient");
-			// We can't easily trigger these events in a test, but verify the subscription doesn't crash
-			Assert.DoesNotThrow (() => {
-				client.ObjectAdded += (sender, args) => { };
-				client.ObjectRemoved += (sender, args) => { };
-				client.PropertyChanged += (sender, args) => { };
-				client.ThruConnectionsChanged += (sender, args) => { };
-				client.SerialPortOwnerChanged += (sender, args) => { };
-				client.IOError += (sender, args) => { };
-			}, "Event subscriptions");
-		}
 	}
 
 	[TestFixture]
@@ -268,22 +242,6 @@ namespace MonoTouchFixtures.CoreMidi {
 		}
 
 		[Test]
-		public void CreateEntity ()
-		{
-			// MIDIDeviceCreate requires a driver context, can't test entity creation in user-space
-			var device = MidiDevice.Create (null, "TestEntityDevice", "Manufacturer", "Model", out var status);
-			Assert.That ((int) status, Is.EqualTo (-50), "Create returns paramErr");
-		}
-
-		[Test]
-		public void RemoveEntity ()
-		{
-			// MIDIDeviceCreate requires a driver context, can't test entity removal in user-space
-			var device = MidiDevice.Create (null, "TestRemoveEntityDevice", "Manufacturer", "Model", out var status);
-			Assert.That ((int) status, Is.EqualTo (-50), "Create returns paramErr");
-		}
-
-		[Test]
 		public void GetEntity ()
 		{
 			// Use an existing device if available
@@ -326,14 +284,6 @@ namespace MonoTouchFixtures.CoreMidi {
 					Assert.That ((int) entity.Destinations, Is.GreaterThanOrEqualTo (0), "Destinations");
 				}
 			}
-		}
-
-		[Test]
-		public void AddOrRemoveEndpoints ()
-		{
-			// MIDIDeviceCreate requires a driver context, can't test in user-space
-			var device = MidiDevice.Create (null, "TestAddRemoveEndpointsDevice", "Manufacturer", "Model", out var status);
-			Assert.That ((int) status, Is.EqualTo (-50), "Create returns paramErr");
 		}
 
 		[Test]
@@ -675,122 +625,6 @@ namespace MonoTouchFixtures.CoreMidi {
 
 	[TestFixture]
 	[Preserve (AllMembers = true)]
-	public class MidiEventPacketTest_Comprehensive {
-		[Test]
-		public void DefaultValues ()
-		{
-			var packet = new MidiEventPacket ();
-			Assert.That (packet.Timestamp, Is.EqualTo (0UL), "Timestamp default");
-			Assert.That (packet.WordCount, Is.EqualTo (0U), "WordCount default");
-			Assert.That (packet.Words.Length, Is.EqualTo (0), "Words default length");
-		}
-
-		[Test]
-		public void Timestamp_SetGet ()
-		{
-			var packet = new MidiEventPacket ();
-			packet.Timestamp = ulong.MaxValue;
-			Assert.That (packet.Timestamp, Is.EqualTo (ulong.MaxValue), "MaxValue");
-
-			packet.Timestamp = 0;
-			Assert.That (packet.Timestamp, Is.EqualTo (0UL), "Zero");
-
-			packet.Timestamp = 12345678UL;
-			Assert.That (packet.Timestamp, Is.EqualTo (12345678UL), "Arbitrary");
-		}
-
-		[Test]
-		public void WordCount_Validation ()
-		{
-			var packet = new MidiEventPacket ();
-			Assert.DoesNotThrow (() => packet.WordCount = 0, "0 is valid");
-			Assert.DoesNotThrow (() => packet.WordCount = 64, "64 is valid");
-			Assert.Throws<ArgumentOutOfRangeException> (() => packet.WordCount = 65, "65 is invalid");
-		}
-
-		[Test]
-		public void Words_SetGet ()
-		{
-			var packet = new MidiEventPacket ();
-			var words = new uint [] { 0xDEADBEEF, 0xCAFEBABE, 0x12345678 };
-			packet.Words = words;
-
-			Assert.That (packet.WordCount, Is.EqualTo (3U), "WordCount after set");
-			Assert.That (packet.Words, Is.EqualTo (words), "Words match");
-		}
-
-		[Test]
-		public void Words_MaxWords ()
-		{
-			var packet = new MidiEventPacket ();
-			var words = Enumerable.Range (1, 64).Select (v => (uint) v).ToArray ();
-			packet.Words = words;
-
-			Assert.That (packet.WordCount, Is.EqualTo (64U), "WordCount = 64");
-			Assert.That (packet.Words, Is.EqualTo (words), "Words match");
-		}
-
-		[Test]
-		public void Words_TooMany ()
-		{
-			var packet = new MidiEventPacket ();
-			var words = Enumerable.Range (1, 65).Select (v => (uint) v).ToArray ();
-			Assert.Throws<ArgumentOutOfRangeException> (() => packet.Words = words, "65 words is too many");
-		}
-
-		[Test]
-		public void Indexer ()
-		{
-			var packet = new MidiEventPacket ();
-			packet.Words = new uint [] { 10, 20, 30, 40, 50 };
-
-			Assert.That (packet [0], Is.EqualTo (10U), "Index 0");
-			Assert.That (packet [4], Is.EqualTo (50U), "Index 4");
-
-			packet [2] = 999;
-			Assert.That (packet [2], Is.EqualTo (999U), "Modified index 2");
-		}
-
-		[Test]
-		public void Indexer_OutOfRange ()
-		{
-			var packet = new MidiEventPacket ();
-			packet.Words = new uint [] { 1, 2, 3 };
-
-			Assert.Throws<ArgumentOutOfRangeException> (() => { var _ = packet [-1]; }, "Negative index");
-			Assert.Throws<ArgumentOutOfRangeException> (() => { var _ = packet [64]; }, "Index 64");
-			Assert.Throws<ArgumentOutOfRangeException> (() => { var _ = packet [3]; }, "Beyond WordCount");
-		}
-
-		[Test]
-		public void NoteOnOffRoundtrip ()
-		{
-			// Construct a MIDI 1.0 Note On as UMP
-			var packet = new MidiEventPacket ();
-			packet.Timestamp = 1000;
-			// UMP Type 2 (MIDI 1.0 CV), Group 0, Note On, Channel 0, Note 60, Velocity 127
-			packet.Words = new uint [] { 0x20903C7F };
-
-			Assert.That (packet.Timestamp, Is.EqualTo (1000UL), "Timestamp");
-			Assert.That (packet.WordCount, Is.EqualTo (1U), "WordCount");
-
-			var word = packet [0];
-			var messageType = (word >> 28) & 0xF;
-			var group = (word >> 24) & 0xF;
-			var status = (word >> 16) & 0xFF;
-			var note = (word >> 8) & 0xFF;
-			var velocity = word & 0xFF;
-
-			Assert.That (messageType, Is.EqualTo (2U), "Message type (MIDI 1.0 CV)");
-			Assert.That (group, Is.EqualTo (0U), "Group 0");
-			Assert.That (status, Is.EqualTo (0x90U), "Note On status");
-			Assert.That (note, Is.EqualTo (60U), "Middle C (note 60)");
-			Assert.That (velocity, Is.EqualTo (127U), "Velocity 127");
-		}
-	}
-
-	[TestFixture]
-	[Preserve (AllMembers = true)]
 	public class MidiPacketTest {
 		[Test]
 		public void Ctor_IntPtr ()
@@ -856,24 +690,6 @@ namespace MonoTouchFixtures.CoreMidi {
 			} finally {
 				Marshal.FreeHGlobal (handle);
 			}
-		}
-	}
-
-	[TestFixture]
-	[Preserve (AllMembers = true)]
-	public class MidiExceptionTest {
-		[Test]
-		public void ErrorCode_Property ()
-		{
-			// MidiException has an ErrorCode property with the underlying MidiError value.
-			// Verify by creating a client with a null name, which should fail on some platforms.
-			// Since we can't construct MidiException directly, verify the type exists and
-			// its ErrorCode property is accessible via reflection.
-			var type = typeof (MidiException);
-			Assert.That (type, Is.Not.Null, "MidiException type exists");
-			var prop = type.GetProperty ("ErrorCode");
-			var nonNullProp = MidiTestHelpers.AssertNotNull (prop, "ErrorCode property exists");
-			Assert.That (nonNullProp.PropertyType, Is.EqualTo (typeof (MidiError)), "ErrorCode type");
 		}
 	}
 

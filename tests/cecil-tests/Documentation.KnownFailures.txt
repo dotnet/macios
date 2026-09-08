@@ -22672,7 +22672,6 @@ T:AppKit.NSTouchBarMakeItem
 T:AppKit.NSTouchEvent
 T:AppKit.NSTypesetterBehavior
 T:AppKit.NSTypesetterControlCharacterAction
-T:AppKit.NSUsableScrollerParts
 T:AppKit.NSVerticalDirections
 T:AppKit.NSView_NSCandidateListTouchBarItem
 T:AppKit.NSView_NSTouchBar

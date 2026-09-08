@@ -2453,15 +2453,16 @@ namespace AppKit {
 		None = 2,
 	}
 
+	/// <summary>Specifies which parts of a scroller are usable.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSUsableScrollerParts : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>No part of the scroller is usable; the scroller is disabled.</summary>
 		NoScroller,
-		/// <summary>To be added.</summary>
+		/// <summary>Only the scroll arrows are usable.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 14)]
 		OnlyArrows,
-		/// <summary>To be added.</summary>
+		/// <summary>All parts of the scroller, including the knob and arrows, are usable.</summary>
 		All,
 	}
 

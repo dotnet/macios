@@ -103,7 +103,7 @@ namespace Xamarin.Linker {
 		// pass (and the RegistrarCompanionAssemblies dictionary is empty because it's a fresh process).
 		AssemblyDefinition? FindRelocatedCompanionAssembly (AssemblyDefinition userAssembly)
 		{
-			var companionName = "_" + userAssembly.Name.Name + ".TypeMap";
+			var companionName = RegistrarCompanionAssembly.GetName (userAssembly);
 			foreach (var assembly in Configuration.Assemblies) {
 				if (assembly.Name.Name == companionName)
 					return assembly;

@@ -3918,29 +3918,30 @@ namespace AppKit {
 		Closing = 3,
 	}
 
+	/// <summary>Specifies the layering level of a window relative to other windows on the screen.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSWindowLevel : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The default level used by ordinary application windows.</summary>
 		Normal = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The level used by the Dock.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 13)]
 		Dock = 20,
-		/// <summary>To be added.</summary>
+		/// <summary>The level used by floating panels, which appear above normal windows.</summary>
 		Floating = 3,
-		/// <summary>To be added.</summary>
+		/// <summary>The level used by the application's main menu bar.</summary>
 		MainMenu = 24,
-		/// <summary>To be added.</summary>
+		/// <summary>The level used by modal panels, which appear above floating windows.</summary>
 		ModalPanel = 8,
-		/// <summary>To be added.</summary>
+		/// <summary>The level used by pop-up menus.</summary>
 		PopUpMenu = 101,
-		/// <summary>To be added.</summary>
+		/// <summary>The level used by the screen saver, above nearly all other windows.</summary>
 		ScreenSaver = 1000,
-		/// <summary>To be added.</summary>
+		/// <summary>The level used by status bar items and windows.</summary>
 		Status = 25,
-		/// <summary>To be added.</summary>
+		/// <summary>The level used by submenus. Equivalent to <see cref="F:AppKit.NSWindowLevel.Floating" />.</summary>
 		Submenu = 3,
-		/// <summary>To be added.</summary>
+		/// <summary>The level used by torn-off menus. Equivalent to <see cref="F:AppKit.NSWindowLevel.Floating" />.</summary>
 		TornOffMenu = 3,
 	}
 

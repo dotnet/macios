@@ -836,16 +836,17 @@ namespace AppKit {
 		DeviceIndependentModifierFlagsMask = 0xffff0000,
 	}
 
+	/// <summary>Specifies the type of pointing device that generated a tablet event.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSPointingDeviceType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The device type is not known.</summary>
 		Unknown,
-		/// <summary>To be added.</summary>
+		/// <summary>The device is the tip (writing point) of a stylus.</summary>
 		Pen,
-		/// <summary>To be added.</summary>
+		/// <summary>The device is a puck-style pointing device, such as a mouse used with a graphics tablet.</summary>
 		Cursor,
-		/// <summary>To be added.</summary>
+		/// <summary>The device is the eraser end of a stylus.</summary>
 		Eraser,
 	}
 

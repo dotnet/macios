@@ -22532,7 +22532,6 @@ T:AppKit.NSPasteboardTypeTextFinderOptionKey
 T:AppKit.NSPathStyle
 T:AppKit.NSPickerTouchBarItemControlRepresentation
 T:AppKit.NSPickerTouchBarItemSelectionMode
-T:AppKit.NSPointingDeviceType
 T:AppKit.NSPopoverBehavior
 T:AppKit.NSPopUpArrowPosition
 T:AppKit.NSPressureBehavior

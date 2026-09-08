@@ -539,16 +539,19 @@ namespace AppKit {
 		Clear = 7,
 	}
 
+	/// <summary>Specifies the physical size at which a control is drawn.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSControlSize : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The standard, full-size control.</summary>
 		Regular = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>A smaller variant of the control.</summary>
 		Small = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The smallest variant of the control.</summary>
 		Mini = 2,
+		/// <summary>A control size that is larger than <see cref="F:AppKit.NSControlSize.Regular" />.</summary>
 		Large = 3,
+		/// <summary>A control size that is larger than <see cref="F:AppKit.NSControlSize.Large" />.</summary>
 		[Mac (26, 0)]
 		ExtraLarge = 4,
 	}

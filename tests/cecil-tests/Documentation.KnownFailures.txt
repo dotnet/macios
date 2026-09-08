@@ -22414,7 +22414,6 @@ T:AppKit.NSComboButtonStyle
 T:AppKit.NSCompositingOperation
 T:AppKit.NSControlBorderShape
 T:AppKit.NSControlCommand
-T:AppKit.NSControlSize
 T:AppKit.NSControlText
 T:AppKit.NSControlTextError
 T:AppKit.NSControlTextFilter

@@ -2333,7 +2333,7 @@ namespace AppKit {
 		/// <summary>LZW compression.</summary>
 		Lzw = 5,
 
-		/// <summary>JPEG compression, as defined by the 1994 TIFF Technical Note 2.</summary>
+		/// <summary>A legacy JPEG-in-TIFF compression code that is no longer supported for input or output.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 7)]
 		Jpeg = 6,
 		/// <summary>NeXT's proprietary 2-bit run-length encoding scheme.</summary>
@@ -2341,7 +2341,7 @@ namespace AppKit {
 		/// <summary>PackBits (Macintosh RLE) compression.</summary>
 		PackBits = 32773,
 
-		/// <summary>The obsolete, original JPEG-in-TIFF compression scheme.</summary>
+		/// <summary>A legacy JPEG-in-TIFF compression code that is no longer supported for input or output.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 7)]
 		OldJpeg = 32865,
 	}
@@ -2981,7 +2981,7 @@ namespace AppKit {
 		Rounded,
 		/// <summary>Displays the token with square corners.</summary>
 		Squared = 3,
-		/// <summary>Displays the token's text with a square background, but without the standard token border.</summary>
+		/// <summary>Displays the token with square edges and no background unless the token is selected or highlighted.</summary>
 		PlainSquared = 4,
 	}
 
@@ -5150,13 +5150,13 @@ namespace AppKit {
 	public enum NSTextCursorAccessoryPlacement : long {
 		/// <summary>The placement is not specified; the system chooses an appropriate placement.</summary>
 		Unspecified,
-		/// <summary>The accessory is placed immediately before the cursor.</summary>
+		/// <summary>The accessory is shown above horizontal text or to the right of vertical text.</summary>
 		Backward,
-		/// <summary>The accessory is placed immediately after the cursor.</summary>
+		/// <summary>The accessory is shown below horizontal text or to the left of vertical text.</summary>
 		Forward,
 		/// <summary>The accessory is not shown.</summary>
 		Invisible,
-		/// <summary>The accessory is centered over the cursor.</summary>
+		/// <summary>The accessory is centered above the selected text.</summary>
 		Center,
 		/// <summary>The accessory is shown at the left edge of the visible rectangle with a left-pointing arrow when the cursor is off-screen to the left.</summary>
 		OffscreenLeft,

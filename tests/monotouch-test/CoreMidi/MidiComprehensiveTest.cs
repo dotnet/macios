@@ -6,7 +6,7 @@
 
 #if HAS_COREMIDI && !__TVOS__
 
-#pragma warning disable APL0004 // MidiDevice.Create is experimental
+#pragma warning disable APL0005 // MidiDevice.Create is experimental
 
 using System;
 using System.Collections.Generic;

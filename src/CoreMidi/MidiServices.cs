@@ -2114,7 +2114,7 @@ namespace CoreMidi {
 		}
 
 #if !STABLE_MIDIDRIVER
-		[Experimental ("APL0004")]
+		[Experimental ("APL0005")]
 #endif
 		[DllImport (Constants.CoreMidiLibrary)]
 		unsafe extern static OSStatus MIDIDeviceCreate (MidiDriverInterface** /* MidiDriverRef _nullable */ owner, IntPtr /* CFStringRef */ name, IntPtr /* CFStringRef */ manufacturer, IntPtr /* CFStringRef */ model, MidiDeviceRef* outDevice);
@@ -2127,7 +2127,7 @@ namespace CoreMidi {
 		/// <param name="status">A status code that describes the result of creating the new device. This will be <see cref="MidiError.Ok" /> in case of success.</param>
 		/// <returns>A newly created <see cref="MidiDevice" /> instance, null otherwise.</returns>
 #if !STABLE_MIDIDRIVER
-		[Experimental ("APL0004")]
+		[Experimental ("APL0005")]
 #endif
 		public static MidiDevice? Create (MidiDriver? owner, string name, string manufacturer, string model, out MidiError status)
 		{

@@ -35,7 +35,7 @@ using HRESULT = System.Int32;
 namespace CoreMidi {
 	/// <summary>Abstract base class for implementing custom MIDI drivers. Subclass this to create a driver that communicates with MIDI hardware.</summary>
 #if !STABLE_MIDIDRIVER
-	[Experimental ("APL0004")]
+	[Experimental ("APL0005")]
 #endif
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -45,6 +45,10 @@ namespace CoreMidi {
 		unsafe MidiDriverInterface* driverInterface;
 
 		unsafe internal MidiDriverInterface* DriverInterface { get => driverInterface; }
+
+		/// <summary>Gets the native driver interface pointer for this instance.</summary>
+		/// <remarks>This is the COM-style (IUnknown-compatible) interface pointer a CFPlugIn factory function must return when CoreMIDI asks to instantiate this driver. It's only useful when authoring a native driver bundle; most consumers of this API won't need it.</remarks>
+		public unsafe IntPtr Handle => (IntPtr) driverInterface;
 
 		unsafe protected MidiDriver ()
 		{
@@ -322,7 +326,7 @@ namespace CoreMidi {
 
 #if !COREBUILD
 #if !STABLE_MIDIDRIVER
-	[Experimental ("APL0004")]
+	[Experimental ("APL0005")]
 #endif
 	[StructLayout (LayoutKind.Sequential)]
 	struct MidiDriverInterface {

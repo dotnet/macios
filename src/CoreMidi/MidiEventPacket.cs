@@ -196,7 +196,7 @@ namespace CoreMidi {
 			}
 			if (handle == IntPtr.Zero)
 				return null;
-			return Runtime.GetNSObject<NSData> (handle, false);
+			return Runtime.GetNSObject<NSData> (handle, true);
 		}
 #endif // !__TVOS__
 	}

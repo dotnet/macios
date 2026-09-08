@@ -771,6 +771,10 @@ namespace CoreMidi {
 		/// <param name="status">A status code that describes the result of this operation. This will be <see cref="MidiError.Ok" /> in case of success.</param>
 		/// <returns>A newly created <see cref="MidiEndpoint" /> if successful, otherwise null.</returns>
 		/// <remarks>The <paramref name="readBlock" /> callback receives two pointers: the first is a pointer to the <c>MIDIEventList</c>, and the second is a pointer to the source <c>MIDIEndpointRef</c>. Use <see cref="MidiEventList(IntPtr)" /> to wrap the event list pointer.</remarks>
+		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
+		[UnsupportedOSPlatform ("tvos")]
 		public unsafe MidiEndpoint? CreateVirtualDestination (string name, MidiProtocolId protocol, MidiReceiveBlock readBlock, out MidiError status)
 		{
 			if (readBlock is null)
@@ -857,7 +861,7 @@ namespace CoreMidi {
 			status = (MidiError) MIDIInputPortCreateWithProtocol (GetCheckedHandle (), namePtr, protocol, &handle, blockPtr);
 			if (handle == MidiObject.InvalidRef)
 				return null;
-			return new MidiPort (handle, true, this, name);
+			return new MidiPort (handle, true, this, name, true);
 		}
 
 		/// <summary>Raised when the MIDI system's configuration changes, for example when devices are added, removed, or their properties change. The notification is coalesced and sent once after a series of changes.</summary>
@@ -1247,11 +1251,13 @@ namespace CoreMidi {
 		GCHandle gch;
 		bool input;
 
-		internal MidiPort (MidiPortRef handle, bool owns, MidiClient client, string portName)
+		internal MidiPort (MidiPortRef handle, bool owns, MidiClient client, string portName, bool input)
 			: base (handle, owns)
 		{
 			Client = client;
 			PortName = portName;
+			this.input = input;
+			gch = GCHandle.Alloc (this);
 		}
 
 		internal MidiPort (MidiClient client, string portName, bool input)
@@ -2044,6 +2050,9 @@ namespace CoreMidi {
 		/// <param name="numberOfDestinationEndpoints">The number of destination endpoints in the new entity.</param>
 		/// <param name="status">A status code that describes the result of creating the new entity. This will be <see cref="MidiError.Ok" /> in case of success.</param>
 		/// <returns>A newly created entity in case of success, null otherwise. In case of failure, <paramref name="status" /> will contain an error code.</returns>
+		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("maccatalyst14.0")]
+		[SupportedOSPlatform ("macos")]
 		public MidiEntity? CreateEntity (string name, MidiProtocolId protocol, bool embedded, nuint numberOfSourceEndpoints, nuint numberOfDestinationEndpoints, out MidiError status)
 		{
 			using var namePtr = new TransientCFString (name);
@@ -3435,6 +3444,7 @@ namespace CoreMidi {
 			GCHandle thisHandle;
 			TaskCompletionSource<MidiError> onCompletion;
 			CancellationTokenRegistration? cancellationTokenRegistration;
+			volatile bool wasCancelled;
 
 			public SysexRequest (MidiEndpoint endpoint, byte [] data, TaskCompletionSource<MidiError> onCompletion)
 			{
@@ -3502,7 +3512,11 @@ namespace CoreMidi {
 
 			void OnCompleted ()
 			{
-				onCompletion.TrySetResult (MidiError.Ok);
+				if (wasCancelled) {
+					onCompletion.TrySetCanceled ();
+				} else {
+					onCompletion.TrySetResult (MidiError.Ok);
+				}
 				Dispose ();
 			}
 
@@ -3522,6 +3536,7 @@ namespace CoreMidi {
 
 			unsafe void SysexCancellationRequest ()
 			{
+				wasCancelled = true;
 				var rv = (MidiSysexSendRequest*) structPointer;
 				if (rv is null)
 					return;
@@ -3530,6 +3545,7 @@ namespace CoreMidi {
 
 			unsafe void UmpSysexCancellationRequest ()
 			{
+				wasCancelled = true;
 				var rv = (MidiSysexSendRequestUmp*) structPointer;
 				if (rv is null)
 					return;

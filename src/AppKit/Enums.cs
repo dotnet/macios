@@ -3504,14 +3504,15 @@ namespace AppKit {
 		NegativeZ = 0x851A,
 	}
 
+	/// <summary>Specifies an OpenGL color buffer, such as the front, back, or an auxiliary buffer.</summary>
 	[NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'Metal' Framework instead.")]
 	public enum NSGLColorBuffer : uint {
-		/// <summary>To be added.</summary>
+		/// <summary>The front (visible) color buffer.</summary>
 		Front = 0x0404,
-		/// <summary>To be added.</summary>
+		/// <summary>The back (offscreen) color buffer.</summary>
 		Back = 0x0405,
-		/// <summary>To be added.</summary>
+		/// <summary>The first auxiliary color buffer.</summary>
 		Aux0 = 0x0409,
 	}
 

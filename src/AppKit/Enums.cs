@@ -734,77 +734,80 @@ namespace AppKit {
 		MouseCancelled = 40,
 	}
 
+	/// <summary>Specifies a bitmask of one or more <see cref="T:AppKit.NSEventType" /> values, used to filter which kinds of events are retrieved or handled.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	public enum NSEventMask : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Matches <see cref="F:AppKit.NSEventType.LeftMouseDown" /> events.</summary>
 		LeftMouseDown = 1UL << (int) NSEventType.LeftMouseDown,
-		/// <summary>To be added.</summary>
+		/// <summary>Matches <see cref="F:AppKit.NSEventType.LeftMouseUp" /> events.</summary>
 		LeftMouseUp = 1UL << (int) NSEventType.LeftMouseUp,
-		/// <summary>To be added.</summary>
+		/// <summary>Matches <see cref="F:AppKit.NSEventType.RightMouseDown" /> events.</summary>
 		RightMouseDown = 1UL << (int) NSEventType.RightMouseDown,
-		/// <summary>To be added.</summary>
+		/// <summary>Matches <see cref="F:AppKit.NSEventType.RightMouseUp" /> events.</summary>
 		RightMouseUp = 1UL << (int) NSEventType.RightMouseUp,
-		/// <summary>To be added.</summary>
+		/// <summary>Matches <see cref="F:AppKit.NSEventType.MouseMoved" /> events.</summary>
 		MouseMoved = 1UL << (int) NSEventType.MouseMoved,
-		/// <summary>To be added.</summary>
+		/// <summary>Matches <see cref="F:AppKit.NSEventType.LeftMouseDragged" /> events.</summary>
 		LeftMouseDragged = 1UL << (int) NSEventType.LeftMouseDragged,
-		/// <summary>To be added.</summary>
+		/// <summary>Matches <see cref="F:AppKit.NSEventType.RightMouseDragged" /> events.</summary>
 		RightMouseDragged = 1UL << (int) NSEventType.RightMouseDragged,
-		/// <summary>To be added.</summary>
+		/// <summary>Matches <see cref="F:AppKit.NSEventType.MouseEntered" /> events.</summary>
 		MouseEntered = 1UL << (int) NSEventType.MouseEntered,
-		/// <summary>To be added.</summary>
+		/// <summary>Matches <see cref="F:AppKit.NSEventType.MouseExited" /> events.</summary>
 		MouseExited = 1UL << (int) NSEventType.MouseExited,
-		/// <summary>To be added.</summary>
+		/// <summary>Matches <see cref="F:AppKit.NSEventType.KeyDown" /> events.</summary>
 		KeyDown = 1UL << (int) NSEventType.KeyDown,
-		/// <summary>To be added.</summary>
+		/// <summary>Matches <see cref="F:AppKit.NSEventType.KeyUp" /> events.</summary>
 		KeyUp = 1UL << (int) NSEventType.KeyUp,
-		/// <summary>To be added.</summary>
+		/// <summary>Matches <see cref="F:AppKit.NSEventType.FlagsChanged" /> events.</summary>
 		FlagsChanged = 1UL << (int) NSEventType.FlagsChanged,
-		/// <summary>To be added.</summary>
+		/// <summary>Matches <see cref="F:AppKit.NSEventType.AppKitDefined" /> events.</summary>
 		AppKitDefined = 1UL << (int) NSEventType.AppKitDefined,
-		/// <summary>To be added.</summary>
+		/// <summary>Matches <see cref="F:AppKit.NSEventType.SystemDefined" /> events.</summary>
 		SystemDefined = 1UL << (int) NSEventType.SystemDefined,
-		/// <summary>To be added.</summary>
+		/// <summary>Matches <see cref="F:AppKit.NSEventType.ApplicationDefined" /> events.</summary>
 		ApplicationDefined = 1UL << (int) NSEventType.ApplicationDefined,
-		/// <summary>To be added.</summary>
+		/// <summary>Matches <see cref="F:AppKit.NSEventType.Periodic" /> events.</summary>
 		Periodic = 1UL << (int) NSEventType.Periodic,
-		/// <summary>To be added.</summary>
+		/// <summary>Matches <see cref="F:AppKit.NSEventType.CursorUpdate" /> events.</summary>
 		CursorUpdate = 1UL << (int) NSEventType.CursorUpdate,
-		/// <summary>To be added.</summary>
+		/// <summary>Matches <see cref="F:AppKit.NSEventType.ScrollWheel" /> events.</summary>
 		ScrollWheel = 1UL << (int) NSEventType.ScrollWheel,
-		/// <summary>To be added.</summary>
+		/// <summary>Matches <see cref="F:AppKit.NSEventType.TabletPoint" /> events.</summary>
 		TabletPoint = 1UL << (int) NSEventType.TabletPoint,
-		/// <summary>To be added.</summary>
+		/// <summary>Matches <see cref="F:AppKit.NSEventType.TabletProximity" /> events.</summary>
 		TabletProximity = 1UL << (int) NSEventType.TabletProximity,
-		/// <summary>To be added.</summary>
+		/// <summary>Matches <see cref="F:AppKit.NSEventType.OtherMouseDown" /> events.</summary>
 		OtherMouseDown = 1UL << (int) NSEventType.OtherMouseDown,
-		/// <summary>To be added.</summary>
+		/// <summary>Matches <see cref="F:AppKit.NSEventType.OtherMouseUp" /> events.</summary>
 		OtherMouseUp = 1UL << (int) NSEventType.OtherMouseUp,
-		/// <summary>To be added.</summary>
+		/// <summary>Matches <see cref="F:AppKit.NSEventType.OtherMouseDragged" /> events.</summary>
 		OtherMouseDragged = 1UL << (int) NSEventType.OtherMouseDragged,
-		/// <summary>To be added.</summary>
+		/// <summary>Matches <see cref="F:AppKit.NSEventType.Gesture" /> events.</summary>
 		EventGesture = 1UL << (int) NSEventType.Gesture,
-		/// <summary>To be added.</summary>
+		/// <summary>Matches <see cref="F:AppKit.NSEventType.Magnify" /> events.</summary>
 		EventMagnify = 1UL << (int) NSEventType.Magnify,
-		/// <summary>To be added.</summary>
+		/// <summary>Matches <see cref="F:AppKit.NSEventType.Swipe" /> events.</summary>
 		EventSwipe = 1UL << (int) NSEventType.Swipe,
-		/// <summary>To be added.</summary>
+		/// <summary>Matches <see cref="F:AppKit.NSEventType.Rotate" /> events.</summary>
 		EventRotate = 1UL << (int) NSEventType.Rotate,
-		/// <summary>To be added.</summary>
+		/// <summary>Matches <see cref="F:AppKit.NSEventType.BeginGesture" /> events.</summary>
 		EventBeginGesture = 1UL << (int) NSEventType.BeginGesture,
-		/// <summary>To be added.</summary>
+		/// <summary>Matches <see cref="F:AppKit.NSEventType.EndGesture" /> events.</summary>
 		EventEndGesture = 1UL << (int) NSEventType.EndGesture,
-		/// <summary>To be added.</summary>
+		/// <summary>Matches <see cref="F:AppKit.NSEventType.SmartMagnify" /> events.</summary>
 		SmartMagnify = 1UL << (int) NSEventType.SmartMagnify,
-		/// <summary>To be added.</summary>
+		/// <summary>Matches <see cref="F:AppKit.NSEventType.Pressure" /> events.</summary>
 		Pressure = 1UL << (int) NSEventType.Pressure, // 10.10.3, 64-bit-only
-		/// <summary>To be added.</summary>
+		/// <summary>Matches <see cref="F:AppKit.NSEventType.DirectTouch" /> events.</summary>
 		DirectTouch = 1UL << (int) NSEventType.DirectTouch, // 10.10
+		/// <summary>Matches <see cref="F:AppKit.NSEventType.ChangeMode" /> events.</summary>
 		ChangeMode = 1UL << (int) NSEventType.ChangeMode,
+		/// <summary>Matches <see cref="F:AppKit.NSEventType.MouseCancelled" /> events.</summary>
 		[Mac (26, 0)]
 		MouseCancelled = 1UL << (int) NSEventType.MouseCancelled,
-		/// <summary>To be added.</summary>
+		/// <summary>Matches every kind of event.</summary>
 		AnyEvent = unchecked((ulong) UInt64.MaxValue),
 	}
 

@@ -3087,16 +3087,17 @@ namespace AppKit {
 		Unspecified = -1,
 	}
 
+	/// <summary>Specifies the visual style of an <see cref="T:AppKit.NSLevelIndicator" />.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSLevelIndicatorStyle : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Displays a series of horizontal tick marks indicating a relevancy level, such as in search results.</summary>
 		Relevancy,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays a continuous bar indicating a capacity level, such as a battery or disk usage indicator.</summary>
 		ContinuousCapacity,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays a series of discrete segments indicating a capacity level.</summary>
 		DiscreteCapacity,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays a row of shapes, such as stars, indicating a rating level.</summary>
 		RatingLevel,
 	}
 

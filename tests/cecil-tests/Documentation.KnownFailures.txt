@@ -22467,7 +22467,6 @@ T:AppKit.NSImageSymbolVariableValueMode
 T:AppKit.NSLayoutManager_NSTextViewSupport
 T:AppKit.NSLayoutPriority
 T:AppKit.NSLevelIndicatorPlaceholderVisibility
-T:AppKit.NSLevelIndicatorStyle
 T:AppKit.NSLineBreakStrategy
 T:AppKit.NSMenuItemBadgeType
 T:AppKit.NSMenuPresentationStyle

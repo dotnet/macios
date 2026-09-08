@@ -363,20 +363,21 @@ namespace AppKit {
 		Decimal,
 	}
 
+	/// <summary>Specifies how a line of text is wrapped or truncated when it does not fit within its container.</summary>
 	[Native]
 	[NoMacCatalyst]
 	public enum NSLineBreakMode : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Wraps lines at word boundaries, so a word is never split across lines.</summary>
 		ByWordWrapping,
-		/// <summary>To be added.</summary>
+		/// <summary>Wraps lines at character boundaries, splitting words if necessary.</summary>
 		CharWrapping,
-		/// <summary>To be added.</summary>
+		/// <summary>Clips text that does not fit, without wrapping to a new line.</summary>
 		Clipping,
-		/// <summary>To be added.</summary>
+		/// <summary>Truncates the beginning of the line, inserting an ellipsis, so the end of the text remains visible.</summary>
 		TruncatingHead,
-		/// <summary>To be added.</summary>
+		/// <summary>Truncates the end of the line, inserting an ellipsis, so the beginning of the text remains visible.</summary>
 		TruncatingTail,
-		/// <summary>To be added.</summary>
+		/// <summary>Truncates the middle of the line, inserting an ellipsis, so both the beginning and end of the text remain visible.</summary>
 		TruncatingMiddle,
 	}
 

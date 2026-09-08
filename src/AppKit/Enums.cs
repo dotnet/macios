@@ -5285,12 +5285,17 @@ namespace AppKit {
 		Draw,
 	}
 
+	/// <summary>Specifies how prominently a control's tint color is applied to its appearance.</summary>
 	[NoMacCatalyst, Mac (26, 0)]
 	[Native]
 	public enum NSTintProminence : long {
+		/// <summary>Uses the default tint prominence for the control.</summary>
 		Automatic = 0,
+		/// <summary>Does not apply a tint color.</summary>
 		None,
+		/// <summary>Applies the tint color as the primary, most prominent color.</summary>
 		Primary,
+		/// <summary>Applies the tint color with secondary, less prominent emphasis.</summary>
 		Secondary,
 	}
 

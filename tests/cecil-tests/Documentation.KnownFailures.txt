@@ -22344,7 +22344,6 @@ T:AppKit.DrawerShouldCloseDelegate
 T:AppKit.DrawerShouldOpenDelegate
 T:AppKit.DrawerWillResizeContentsDelegate
 T:AppKit.GlobalEventHandler
-T:AppKit.HfsTypeCode
 T:AppKit.INSDraggingInfo_Extensions
 T:AppKit.LocalEventHandler
 T:AppKit.NSAboutPanelOption

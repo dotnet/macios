@@ -3554,189 +3554,351 @@ namespace AppKit {
 	}
 
 	// FileType 4cc values to use with NSFileTypeForHFSTypeCode.
+	/// <summary>Specifies a legacy four-character HFS file type code identifying one of the classic Mac OS Finder icons, for use with <see cref="M:AppKit.NSWorkspace.IconForFileType(AppKit.HfsTypeCode)" />.</summary>
 	[MacCatalyst (15, 0)]
 	public enum HfsTypeCode : uint {
 		/* Generic Finder icons */
+		/// <summary>The four-character code (FourCC) 'CLIP', identifying the clipboard icon.</summary>
 		ClipboardIcon = 0x434C4950,   //'CLIP'
+		/// <summary>The four-character code (FourCC) 'clpu', identifying the clipping unknown type icon.</summary>
 		ClippingUnknownTypeIcon = 0x636C7075,   //'clpu'
+		/// <summary>The four-character code (FourCC) 'clpp', identifying the clipping picture type icon.</summary>
 		ClippingPictureTypeIcon = 0x636C7070,   //'clpp'
+		/// <summary>The four-character code (FourCC) 'clpt', identifying the clipping text type icon.</summary>
 		ClippingTextTypeIcon = 0x636C7074,   //'clpt'
+		/// <summary>The four-character code (FourCC) 'clps', identifying the clipping sound type icon.</summary>
 		ClippingSoundTypeIcon = 0x636C7073,   //'clps'
+		/// <summary>The four-character code (FourCC) 'desk', identifying the desktop icon.</summary>
 		DesktopIcon = 0x6465736B,   //'desk'
+		/// <summary>The four-character code (FourCC) 'FNDR', identifying the finder icon.</summary>
 		FinderIcon = 0x464E4452,   //'FNDR'
+		/// <summary>The four-character code (FourCC) 'root', identifying the computer icon.</summary>
 		ComputerIcon = 0x726F6F74,   //'root'
+		/// <summary>The four-character code (FourCC) 'FFIL', identifying the font suitcase icon.</summary>
 		FontSuitcaseIcon = 0x4646494C,   //'FFIL'
+		/// <summary>The four-character code (FourCC) 'ftrh', identifying the full trash icon.</summary>
 		FullTrashIcon = 0x66747268,   //'ftrh'
+		/// <summary>The four-character code (FourCC) 'APPL', identifying the generic application icon.</summary>
 		GenericApplicationIcon = 0x4150504C,   //'APPL'
+		/// <summary>The four-character code (FourCC) 'cddr', identifying the generic cdrom icon.</summary>
 		GenericCdromIcon = 0x63646472,   //'cddr'
+		/// <summary>The four-character code (FourCC) 'APPC', identifying the generic control panel icon.</summary>
 		GenericControlPanelIcon = 0x41505043,   //'APPC'
+		/// <summary>The four-character code (FourCC) 'sdev', identifying the generic control strip module icon.</summary>
 		GenericControlStripModuleIcon = 0x73646576,   //'sdev'
+		/// <summary>The four-character code (FourCC) 'thng', identifying the generic component icon.</summary>
 		GenericComponentIcon = 0x74686E67,   //'thng'
+		/// <summary>The four-character code (FourCC) 'APPD', identifying the generic desk accessory icon.</summary>
 		GenericDeskAccessoryIcon = 0x41505044,   //'APPD'
+		/// <summary>The four-character code (FourCC) 'docu', identifying the generic document icon.</summary>
 		GenericDocumentIcon = 0x646F6375,   //'docu'
+		/// <summary>The four-character code (FourCC) 'edtf', identifying the generic edition file icon.</summary>
 		GenericEditionFileIcon = 0x65647466,   //'edtf'
+		/// <summary>The four-character code (FourCC) 'INIT', identifying the generic extension icon.</summary>
 		GenericExtensionIcon = 0x494E4954,   //'INIT'
+		/// <summary>The four-character code (FourCC) 'srvr', identifying the generic file server icon.</summary>
 		GenericFileServerIcon = 0x73727672,   //'srvr'
+		/// <summary>The four-character code (FourCC) 'ffil', identifying the generic font icon.</summary>
 		GenericFontIcon = 0x6666696C,   //'ffil'
+		/// <summary>The four-character code (FourCC) 'sclr', identifying the generic font scaler icon.</summary>
 		GenericFontScalerIcon = 0x73636C72,   //'sclr'
+		/// <summary>The four-character code (FourCC) 'flpy', identifying the generic floppy icon.</summary>
 		GenericFloppyIcon = 0x666C7079,   //'flpy'
+		/// <summary>The four-character code (FourCC) 'hdsk', identifying the generic hard disk icon.</summary>
 		GenericHardDiskIcon = 0x6864736B,   //'hdsk'
+		/// <summary>The four-character code (FourCC) 'idsk', identifying the generic idisk icon.</summary>
 		GenericIDiskIcon = 0x6964736B,   //'idsk'
+		/// <summary>The four-character code (FourCC) 'rmov', identifying the generic removable media icon.</summary>
 		GenericRemovableMediaIcon = 0x726D6F76,   //'rmov'
+		/// <summary>The four-character code (FourCC) 'movr', identifying the generic mover object icon.</summary>
 		GenericMoverObjectIcon = 0x6D6F7672,   //'movr'
+		/// <summary>The four-character code (FourCC) 'pcmc', identifying the generic PC card icon.</summary>
 		GenericPCCardIcon = 0x70636D63,   //'pcmc'
+		/// <summary>The four-character code (FourCC) 'pref', identifying the generic preferences icon.</summary>
 		GenericPreferencesIcon = 0x70726566,   //'pref'
+		/// <summary>The four-character code (FourCC) 'qery', identifying the generic query document icon.</summary>
 		GenericQueryDocumentIcon = 0x71657279,   //'qery'
+		/// <summary>The four-character code (FourCC) 'ramd', identifying the generic ram disk icon.</summary>
 		GenericRamDiskIcon = 0x72616D64,   //'ramd'
+		/// <summary>The four-character code (FourCC) 'shlb', identifying the generic shared library icon.</summary>
 		GenericSharedLibraryIcon = 0x73686C62,   //'shlb'
+		/// <summary>The four-character code (FourCC) 'sdoc', identifying the generic stationery icon.</summary>
 		GenericStationeryIcon = 0x73646F63,   //'sdoc'
+		/// <summary>The four-character code (FourCC) 'suit', identifying the generic suitcase icon.</summary>
 		GenericSuitcaseIcon = 0x73756974,   //'suit'
+		/// <summary>The four-character code (FourCC) 'gurl', identifying the generic URL icon.</summary>
 		GenericUrlIcon = 0x6775726C,   //'gurl'
+		/// <summary>The four-character code (FourCC) 'worm', identifying the generic worm icon.</summary>
 		GenericWormIcon = 0x776F726D,   //'worm'
+		/// <summary>The four-character code (FourCC) 'ifil', identifying the international resources icon.</summary>
 		InternationalResourcesIcon = 0x6966696C,   //'ifil'
+		/// <summary>The four-character code (FourCC) 'kfil', identifying the keyboard layout icon.</summary>
 		KeyboardLayoutIcon = 0x6B66696C,   //'kfil'
+		/// <summary>The four-character code (FourCC) 'sfil', identifying the sound file icon.</summary>
 		SoundFileIcon = 0x7366696C,   //'sfil'
+		/// <summary>The four-character code (FourCC) 'zsys', identifying the system suitcase icon.</summary>
 		SystemSuitcaseIcon = 0x7A737973,   //'zsys'
+		/// <summary>The four-character code (FourCC) 'trsh', identifying the trash icon.</summary>
 		TrashIcon = 0x74727368,   //'trsh'
+		/// <summary>The four-character code (FourCC) 'tfil', identifying the true type font icon.</summary>
 		TrueTypeFontIcon = 0x7466696C,   //'tfil'
+		/// <summary>The four-character code (FourCC) 'sfnt', identifying the true type flat font icon.</summary>
 		TrueTypeFlatFontIcon = 0x73666E74,   //'sfnt'
+		/// <summary>The four-character code (FourCC) 'ttcf', identifying the true type multi flat font icon.</summary>
 		TrueTypeMultiFlatFontIcon = 0x74746366,   //'ttcf'
+		/// <summary>The four-character code (FourCC) 'udsk', identifying the user idisk icon.</summary>
 		UserIDiskIcon = 0x7564736B,   //'udsk'
+		/// <summary>The four-character code (FourCC) 'unfs', identifying the unknown FS object icon.</summary>
 		UnknownFSObjectIcon = 0x756E6673,   //'unfs'
 
 		/* Internet locations */
+		/// <summary>The four-character code (FourCC) 'ilht', identifying the internet location HTTP icon.</summary>
 		InternetLocationHttpIcon = 0x696C6874,   //'ilht'
+		/// <summary>The four-character code (FourCC) 'ilft', identifying the internet location FTP icon.</summary>
 		InternetLocationFtpIcon = 0x696C6674,   //'ilft'
+		/// <summary>The four-character code (FourCC) 'ilaf', identifying the internet location apple share icon.</summary>
 		InternetLocationAppleShareIcon = 0x696C6166,   //'ilaf'
+		/// <summary>The four-character code (FourCC) 'ilat', identifying the internet location apple talk zone icon.</summary>
 		InternetLocationAppleTalkZoneIcon = 0x696C6174,   //'ilat'
+		/// <summary>The four-character code (FourCC) 'ilfi', identifying the internet location file icon.</summary>
 		InternetLocationFileIcon = 0x696C6669,   //'ilfi'
+		/// <summary>The four-character code (FourCC) 'ilma', identifying the internet location mail icon.</summary>
 		InternetLocationMailIcon = 0x696C6D61,   //'ilma'
+		/// <summary>The four-character code (FourCC) 'ilnw', identifying the internet location news icon.</summary>
 		InternetLocationNewsIcon = 0x696C6E77,   //'ilnw'
+		/// <summary>The four-character code (FourCC) 'ilns', identifying the internet location NSL neighborhood icon.</summary>
 		InternetLocationNslNeighborhoodIcon = 0x696C6E73,   //'ilns'
+		/// <summary>The four-character code (FourCC) 'ilge', identifying the internet location generic icon.</summary>
 		InternetLocationGenericIcon = 0x696C6765,   //'ilge'
 
 		/* Folders */
+		/// <summary>The four-character code (FourCC) 'fldr', identifying the generic folder icon.</summary>
 		GenericFolderIcon = 0x666C6472,   //'fldr'
+		/// <summary>The four-character code (FourCC) 'dbox', identifying the drop folder icon.</summary>
 		DropFolderIcon = 0x64626F78,   //'dbox'
+		/// <summary>The four-character code (FourCC) 'mntd', identifying the mounted folder icon.</summary>
 		MountedFolderIcon = 0x6D6E7464,   //'mntd'
+		/// <summary>The four-character code (FourCC) 'ofld', identifying the open folder icon.</summary>
 		OpenFolderIcon = 0x6F666C64,   //'ofld'
+		/// <summary>The four-character code (FourCC) 'ownd', identifying the owned folder icon.</summary>
 		OwnedFolderIcon = 0x6F776E64,   //'ownd'
+		/// <summary>The four-character code (FourCC) 'prvf', identifying the private folder icon.</summary>
 		PrivateFolderIcon = 0x70727666,   //'prvf'
+		/// <summary>The four-character code (FourCC) 'shfl', identifying the shared folder icon.</summary>
 		SharedFolderIcon = 0x7368666C,   //'shfl'
 
 		/* Sharingprivileges icons */
+		/// <summary>The four-character code (FourCC) 'shna', identifying the sharing privs not applicable icon.</summary>
 		SharingPrivsNotApplicableIcon = 0x73686E61,   //'shna'
+		/// <summary>The four-character code (FourCC) 'shro', identifying the sharing privs read only icon.</summary>
 		SharingPrivsReadOnlyIcon = 0x7368726F,   //'shro'
+		/// <summary>The four-character code (FourCC) 'shrw', identifying the sharing privs read write icon.</summary>
 		SharingPrivsReadWriteIcon = 0x73687277,   //'shrw'
+		/// <summary>The four-character code (FourCC) 'shuk', identifying the sharing privs unknown icon.</summary>
 		SharingPrivsUnknownIcon = 0x7368756B,   //'shuk'
+		/// <summary>The four-character code (FourCC) 'writ', identifying the sharing privs writable icon.</summary>
 		SharingPrivsWritableIcon = 0x77726974,   //'writ'
 
 		/* Users and Groups icons */
+		/// <summary>The four-character code (FourCC) 'ufld', identifying the user folder icon.</summary>
 		UserFolderIcon = 0x75666C64,   //'ufld'
+		/// <summary>The four-character code (FourCC) 'wfld', identifying the workgroup folder icon.</summary>
 		WorkgroupFolderIcon = 0x77666C64,   //'wfld'
+		/// <summary>The four-character code (FourCC) 'gusr', identifying the guest user icon.</summary>
 		GuestUserIcon = 0x67757372,   //'gusr'
+		/// <summary>The four-character code (FourCC) 'user', identifying the user icon.</summary>
 		UserIcon = 0x75736572,   //'user'
+		/// <summary>The four-character code (FourCC) 'susr', identifying the owner icon.</summary>
 		OwnerIcon = 0x73757372,   //'susr'
+		/// <summary>The four-character code (FourCC) 'grup', identifying the group icon.</summary>
 		GroupIcon = 0x67727570,   //'grup'
 
 		/* Special folders */
+		/// <summary>The four-character code (FourCC) 'appr', identifying the appearance folder icon.</summary>
 		AppearanceFolderIcon = 0x61707072,   //'appr'
+		/// <summary>The four-character code (FourCC) 'amnu', identifying the apple menu folder icon.</summary>
 		AppleMenuFolderIcon = 0x616D6E75,   //'amnu'
+		/// <summary>The four-character code (FourCC) 'apps', identifying the applications folder icon.</summary>
 		ApplicationsFolderIcon = 0x61707073,   //'apps'
+		/// <summary>The four-character code (FourCC) 'asup', identifying the application support folder icon.</summary>
 		ApplicationSupportFolderIcon = 0x61737570,   //'asup'
+		/// <summary>The four-character code (FourCC) 'prof', identifying the color sync folder icon.</summary>
 		ColorSyncFolderIcon = 0x70726F66,   //'prof'
+		/// <summary>The four-character code (FourCC) 'cmnu', identifying the contextual menu items folder icon.</summary>
 		ContextualMenuItemsFolderIcon = 0x636D6E75,   //'cmnu'
+		/// <summary>The four-character code (FourCC) 'ctrD', identifying the control panel disabled folder icon.</summary>
 		ControlPanelDisabledFolderIcon = 0x63747244,   //'ctrD'
+		/// <summary>The four-character code (FourCC) 'ctrl', identifying the control panel folder icon.</summary>
 		ControlPanelFolderIcon = 0x6374726C,   //'ctrl'
+		/// <summary>The four-character code (FourCC) 'docs', identifying the documents folder icon.</summary>
 		DocumentsFolderIcon = 0x646F6373,   //'docs'
+		/// <summary>The four-character code (FourCC) 'extD', identifying the extensions disabled folder icon.</summary>
 		ExtensionsDisabledFolderIcon = 0x65787444,   //'extD'
+		/// <summary>The four-character code (FourCC) 'extn', identifying the extensions folder icon.</summary>
 		ExtensionsFolderIcon = 0x6578746E,   //'extn'
+		/// <summary>The four-character code (FourCC) 'favs', identifying the favorites folder icon.</summary>
 		FavoritesFolderIcon = 0x66617673,   //'favs'
+		/// <summary>The four-character code (FourCC) 'font', identifying the fonts folder icon.</summary>
 		FontsFolderIcon = 0x666F6E74,   //'font'
+		/// <summary>The four-character code (FourCC) 'issf', identifying the internet search sites folder icon.</summary>
 		InternetSearchSitesFolderIcon = 0x69737366,   //'issf'
+		/// <summary>The four-character code (FourCC) 'pubf', identifying the public folder icon.</summary>
 		PublicFolderIcon = 0x70756266,   //'pubf'
+		/// <summary>The four-character code (FourCC) 'ppdf', identifying the printer description folder icon.</summary>
 		PrinterDescriptionFolderIcon = 0x70706466,   //'ppdf'
+		/// <summary>The four-character code (FourCC) 'prnt', identifying the print monitor folder icon.</summary>
 		PrintMonitorFolderIcon = 0x70726E74,   //'prnt'
+		/// <summary>The four-character code (FourCC) 'rapp', identifying the recent applications folder icon.</summary>
 		RecentApplicationsFolderIcon = 0x72617070,   //'rapp'
+		/// <summary>The four-character code (FourCC) 'rdoc', identifying the recent documents folder icon.</summary>
 		RecentDocumentsFolderIcon = 0x72646F63,   //'rdoc'
+		/// <summary>The four-character code (FourCC) 'rsrv', identifying the recent servers folder icon.</summary>
 		RecentServersFolderIcon = 0x72737276,   //'rsrv'
+		/// <summary>The four-character code (FourCC) 'shdD', identifying the shutdown items disabled folder icon.</summary>
 		ShutdownItemsDisabledFolderIcon = 0x73686444,   //'shdD'
+		/// <summary>The four-character code (FourCC) 'shdf', identifying the shutdown items folder icon.</summary>
 		ShutdownItemsFolderIcon = 0x73686466,   //'shdf'
+		/// <summary>The four-character code (FourCC) 'spki', identifying the speakable items folder.</summary>
 		SpeakableItemsFolder = 0x73706B69,   //'spki'
+		/// <summary>The four-character code (FourCC) 'strD', identifying the startup items disabled folder icon.</summary>
 		StartupItemsDisabledFolderIcon = 0x73747244,   //'strD'
+		/// <summary>The four-character code (FourCC) 'strt', identifying the startup items folder icon.</summary>
 		StartupItemsFolderIcon = 0x73747274,   //'strt'
+		/// <summary>The four-character code (FourCC) 'macD', identifying the system extension disabled folder icon.</summary>
 		SystemExtensionDisabledFolderIcon = 0x6D616344,   //'macD'
+		/// <summary>The four-character code (FourCC) 'macs', identifying the system folder icon.</summary>
 		SystemFolderIcon = 0x6D616373,   //'macs'
+		/// <summary>The four-character code (FourCC) 'fvoc', identifying the voices folder icon.</summary>
 		VoicesFolderIcon = 0x66766F63,   //'fvoc'
 
 		/* Badges */
+		/// <summary>The four-character code (FourCC) 'scrp', identifying the apple script badge icon.</summary>
 		AppleScriptBadgeIcon = 0x73637270,   //'scrp'
+		/// <summary>The four-character code (FourCC) 'lbdg', identifying the locked badge icon.</summary>
 		LockedBadgeIcon = 0x6C626467,   //'lbdg'
+		/// <summary>The four-character code (FourCC) 'mbdg', identifying the mounted badge icon.</summary>
 		MountedBadgeIcon = 0x6D626467,   //'mbdg'
+		/// <summary>The four-character code (FourCC) 'sbdg', identifying the shared badge icon.</summary>
 		SharedBadgeIcon = 0x73626467,   //'sbdg'
+		/// <summary>The four-character code (FourCC) 'abdg', identifying the alias badge icon.</summary>
 		AliasBadgeIcon = 0x61626467,   //'abdg'
+		/// <summary>The four-character code (FourCC) 'cbdg', identifying the alert caution badge icon.</summary>
 		AlertCautionBadgeIcon = 0x63626467,   //'cbdg'
 
 		/* Alert icons */
+		/// <summary>The four-character code (FourCC) 'note', identifying the alert note icon.</summary>
 		AlertNoteIcon = 0x6E6F7465,   //'note'
+		/// <summary>The four-character code (FourCC) 'caut', identifying the alert caution icon.</summary>
 		AlertCautionIcon = 0x63617574,   //'caut'
+		/// <summary>The four-character code (FourCC) 'stop', identifying the alert stop icon.</summary>
 		AlertStopIcon = 0x73746F70,   //'stop'
 
 		/* Networking icons */
+		/// <summary>The four-character code (FourCC) 'atlk', identifying the apple talk icon.</summary>
 		AppleTalkIcon = 0x61746C6B,   //'atlk'
+		/// <summary>The four-character code (FourCC) 'atzn', identifying the apple talk zone icon.</summary>
 		AppleTalkZoneIcon = 0x61747A6E,   //'atzn'
+		/// <summary>The four-character code (FourCC) 'afps', identifying the AFP server icon.</summary>
 		AfpServerIcon = 0x61667073,   //'afps'
+		/// <summary>The four-character code (FourCC) 'ftps', identifying the FTP server icon.</summary>
 		FtpServerIcon = 0x66747073,   //'ftps'
+		/// <summary>The four-character code (FourCC) 'htps', identifying the HTTP server icon.</summary>
 		HttpServerIcon = 0x68747073,   //'htps'
+		/// <summary>The four-character code (FourCC) 'gnet', identifying the generic network icon.</summary>
 		GenericNetworkIcon = 0x676E6574,   //'gnet'
+		/// <summary>The four-character code (FourCC) 'isrv', identifying the IP file server icon.</summary>
 		IPFileServerIcon = 0x69737276,   //'isrv'
 
 		/* Toolbar icons */
+		/// <summary>The four-character code (FourCC) 'tcus', identifying the toolbar customize icon.</summary>
 		ToolbarCustomizeIcon = 0x74637573,   //'tcus'
+		/// <summary>The four-character code (FourCC) 'tdel', identifying the toolbar delete icon.</summary>
 		ToolbarDeleteIcon = 0x7464656C,   //'tdel'
+		/// <summary>The four-character code (FourCC) 'tfav', identifying the toolbar favorites icon.</summary>
 		ToolbarFavoritesIcon = 0x74666176,   //'tfav'
+		/// <summary>The four-character code (FourCC) 'thom', identifying the toolbar home icon.</summary>
 		ToolbarHomeIcon = 0x74686F6D,   //'thom'
+		/// <summary>The four-character code (FourCC) 'tbav', identifying the toolbar advanced icon.</summary>
 		ToolbarAdvancedIcon = 0x74626176,   //'tbav'
+		/// <summary>The four-character code (FourCC) 'tbin', identifying the toolbar info icon.</summary>
 		ToolbarInfoIcon = 0x7462696E,   //'tbin'
+		/// <summary>The four-character code (FourCC) 'tblb', identifying the toolbar labels icon.</summary>
 		ToolbarLabelsIcon = 0x74626C62,   //'tblb'
+		/// <summary>The four-character code (FourCC) 'tAps', identifying the toolbar applications folder icon.</summary>
 		ToolbarApplicationsFolderIcon = 0x74417073,   //'tAps'
+		/// <summary>The four-character code (FourCC) 'tDoc', identifying the toolbar documents folder icon.</summary>
 		ToolbarDocumentsFolderIcon = 0x74446F63,   //'tDoc'
+		/// <summary>The four-character code (FourCC) 'tMov', identifying the toolbar movie folder icon.</summary>
 		ToolbarMovieFolderIcon = 0x744D6F76,   //'tMov'
+		/// <summary>The four-character code (FourCC) 'tMus', identifying the toolbar music folder icon.</summary>
 		ToolbarMusicFolderIcon = 0x744D7573,   //'tMus'
+		/// <summary>The four-character code (FourCC) 'tPic', identifying the toolbar pictures folder icon.</summary>
 		ToolbarPicturesFolderIcon = 0x74506963,   //'tPic'
+		/// <summary>The four-character code (FourCC) 'tPub', identifying the toolbar public folder icon.</summary>
 		ToolbarPublicFolderIcon = 0x74507562,   //'tPub'
+		/// <summary>The four-character code (FourCC) 'tDsk', identifying the toolbar desktop folder icon.</summary>
 		ToolbarDesktopFolderIcon = 0x7444736B,   //'tDsk'
+		/// <summary>The four-character code (FourCC) 'tDwn', identifying the toolbar downloads folder icon.</summary>
 		ToolbarDownloadsFolderIcon = 0x7444776E,   //'tDwn'
+		/// <summary>The four-character code (FourCC) 'tLib', identifying the toolbar library folder icon.</summary>
 		ToolbarLibraryFolderIcon = 0x744C6962,   //'tLib'
+		/// <summary>The four-character code (FourCC) 'tUtl', identifying the toolbar utilities folder icon.</summary>
 		ToolbarUtilitiesFolderIcon = 0x7455746C,   //'tUtl'
+		/// <summary>The four-character code (FourCC) 'tSts', identifying the toolbar sites folder icon.</summary>
 		ToolbarSitesFolderIcon = 0x74537473,   //'tSts'
 
 		/* Other icons */
+		/// <summary>The four-character code (FourCC) 'capl', identifying the apple logo icon.</summary>
 		AppleLogoIcon = 0x6361706C,   //'capl'
+		/// <summary>The four-character code (FourCC) 'sapl', identifying the apple menu icon.</summary>
 		AppleMenuIcon = 0x7361706C,   //'sapl'
+		/// <summary>The four-character code (FourCC) 'baro', identifying the backward arrow icon.</summary>
 		BackwardArrowIcon = 0x6261726F,   //'baro'
+		/// <summary>The four-character code (FourCC) 'favr', identifying the favorite items icon.</summary>
 		FavoriteItemsIcon = 0x66617672,   //'favr'
+		/// <summary>The four-character code (FourCC) 'faro', identifying the forward arrow icon.</summary>
 		ForwardArrowIcon = 0x6661726F,   //'faro'
+		/// <summary>The four-character code (FourCC) 'grid', identifying the grid icon.</summary>
 		GridIcon = 0x67726964,   //'grid'
+		/// <summary>The four-character code (FourCC) 'help', identifying the help icon.</summary>
 		HelpIcon = 0x68656C70,   //'help'
+		/// <summary>The four-character code (FourCC) 'arng', identifying the keep arranged icon.</summary>
 		KeepArrangedIcon = 0x61726E67,   //'arng'
+		/// <summary>The four-character code (FourCC) 'lock', identifying the locked icon.</summary>
 		LockedIcon = 0x6C6F636B,   //'lock'
+		/// <summary>The four-character code (FourCC) 'nfil', identifying the no files icon.</summary>
 		NoFilesIcon = 0x6E66696C,   //'nfil'
+		/// <summary>The four-character code (FourCC) 'nfld', identifying the no folder icon.</summary>
 		NoFolderIcon = 0x6E666C64,   //'nfld'
+		/// <summary>The four-character code (FourCC) 'nwrt', identifying the no write icon.</summary>
 		NoWriteIcon = 0x6E777274,   //'nwrt'
+		/// <summary>The four-character code (FourCC) 'papp', identifying the protected application folder icon.</summary>
 		ProtectedApplicationFolderIcon = 0x70617070,   //'papp'
+		/// <summary>The four-character code (FourCC) 'psys', identifying the protected system folder icon.</summary>
 		ProtectedSystemFolderIcon = 0x70737973,   //'psys'
+		/// <summary>The four-character code (FourCC) 'rcnt', identifying the recent items icon.</summary>
 		RecentItemsIcon = 0x72636E74,   //'rcnt'
+		/// <summary>The four-character code (FourCC) 'shrt', identifying the shortcut icon.</summary>
 		ShortcutIcon = 0x73687274,   //'shrt'
+		/// <summary>The four-character code (FourCC) 'asnd', identifying the sort ascending icon.</summary>
 		SortAscendingIcon = 0x61736E64,   //'asnd'
+		/// <summary>The four-character code (FourCC) 'dsnd', identifying the sort descending icon.</summary>
 		SortDescendingIcon = 0x64736E64,   //'dsnd'
+		/// <summary>The four-character code (FourCC) 'ulck', identifying the unlocked icon.</summary>
 		UnlockedIcon = 0x756C636B,   //'ulck'
+		/// <summary>The four-character code (FourCC) 'cnct', identifying the connect to icon.</summary>
 		ConnectToIcon = 0x636E6374,   //'cnct'
+		/// <summary>The four-character code (FourCC) 'gwin', identifying the generic window icon.</summary>
 		GenericWindowIcon = 0x6777696E,   //'gwin'
+		/// <summary>The four-character code (FourCC) 'ques', identifying the question mark icon.</summary>
 		QuestionMarkIcon = 0x71756573,   //'ques'
+		/// <summary>The four-character code (FourCC) 'dali', identifying the delete alias icon.</summary>
 		DeleteAliasIcon = 0x64616C69,   //'dali'
+		/// <summary>The four-character code (FourCC) 'ejec', identifying the eject media icon.</summary>
 		EjectMediaIcon = 0x656A6563,   //'ejec'
+		/// <summary>The four-character code (FourCC) 'burn', identifying the burning icon.</summary>
 		BurningIcon = 0x6275726E,   //'burn'
+		/// <summary>The four-character code (FourCC) 'rcar', identifying the right container arrow icon.</summary>
 		RightContainerArrowIcon = 0x72636172,   //'rcar'
 	}
 

@@ -1976,12 +1976,13 @@ namespace AppKit {
 	#endregion
 
 	#region NSStackLayout
+	/// <summary>Specifies the axis along which user interface elements are laid out.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSUserInterfaceLayoutOrientation : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Elements are laid out along the horizontal axis.</summary>
 		Horizontal = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Elements are laid out along the vertical axis.</summary>
 		Vertical = 1,
 	}
 
@@ -2848,12 +2849,13 @@ namespace AppKit {
 		Trailing = Right,
 	}
 
+	/// <summary>Specifies the shape of a slider.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSSliderType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>A horizontal or vertical linear slider.</summary>
 		Linear = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>A circular slider.</summary>
 		Circular = 1,
 	}
 
@@ -2987,6 +2989,7 @@ namespace AppKit {
 		ApplicationOnlyMask = 1,
 	}
 
+	/// <summary>Specifies whether a drop occurs on an item or before it.</summary>
 #if XAMCORE_5_0
 	[NoMacCatalyst]
 #else
@@ -2998,9 +3001,9 @@ namespace AppKit {
 #endif
 	[Native]
 	public enum NSCollectionViewDropOperation : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The drop occurs on the item at the specified index path.</summary>
 		On = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The drop occurs before the item at the specified index path.</summary>
 		Before = 1,
 	}
 
@@ -3825,12 +3828,13 @@ namespace AppKit {
 		FittingSizeCompression = 50,
 	}
 
+	/// <summary>Specifies the visual appearance of a popover.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSPopoverAppearance : long {
-		/// <summary>To be added.</summary>
+		/// <summary>A minimal popover appearance.</summary>
 		Minimal,
-		/// <summary>To be added.</summary>
+		/// <summary>A heads-up display appearance.</summary>
 		HUD,
 	}
 
@@ -3870,12 +3874,13 @@ namespace AppKit {
 		Trailing,
 	}
 
+	/// <summary>Specifies whether a table row action is regular or destructive.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTableViewRowActionStyle : long {
-		/// <summary>To be added.</summary>
+		/// <summary>A regular, nondestructive action.</summary>
 		Regular,
-		/// <summary>To be added.</summary>
+		/// <summary>An action that performs a destructive operation.</summary>
 		Destructive,
 	}
 
@@ -4060,12 +4065,13 @@ namespace AppKit {
 		HorizontalStrip,
 	}
 
+	/// <summary>Specifies whether a window's title is displayed.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSWindowTitleVisibility : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The window title is displayed.</summary>
 		Visible = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The window title is hidden.</summary>
 		Hidden = 1,
 	}
 
@@ -4162,12 +4168,13 @@ namespace AppKit {
 		UnderPageBackground = 22,
 	}
 
+	/// <summary>Specifies which content a visual effect view blends with.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSVisualEffectBlendingMode : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Blends with content behind the window.</summary>
 		BehindWindow,
-		/// <summary>To be added.</summary>
+		/// <summary>Blends with content behind the view in the current window.</summary>
 		WithinWindow,
 	}
 
@@ -4258,12 +4265,13 @@ namespace AppKit {
 		OrderedFrontToBack = (1 << 0),
 	}
 
+	/// <summary>Specifies optional behaviors for a status item.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSStatusItemBehavior : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Allows the user to remove the status item from the menu bar.</summary>
 		RemovalAllowed = (1 << 1),
-		/// <summary>To be added.</summary>
+		/// <summary>Allows the user to remove the status item and terminates the application when they do so. This option implies <see cref="RemovalAllowed" />.</summary>
 		TerminationOnRemoval = (1 << 2),
 	}
 
@@ -4394,22 +4402,24 @@ namespace AppKit {
 		CurrentHostOnly = 1,
 	}
 
+	/// <summary>Specifies whether contact occurs directly on a display or through an indirect input device.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTouchType : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Contact occurs directly on a display.</summary>
 		Direct,
-		/// <summary>To be added.</summary>
+		/// <summary>Contact occurs on an indirect input device, such as a trackpad.</summary>
 		Indirect,
 	}
 
+	/// <summary>Specifies the types of touch input to include.</summary>
 	[NoMacCatalyst]
 	[Native]
 	[Flags]
 	public enum NSTouchTypeMask : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Includes direct touch input.</summary>
 		Direct = (1 << (int) NSTouchType.Direct),
-		/// <summary>To be added.</summary>
+		/// <summary>Includes indirect touch input.</summary>
 		Indirect = (1 << (int) NSTouchType.Indirect),
 	}
 

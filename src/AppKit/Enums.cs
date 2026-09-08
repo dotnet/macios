@@ -1581,22 +1581,23 @@ namespace AppKit {
 
 	#region NSBox
 
+	/// <summary>Specifies where a box's title is positioned relative to its border.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTitlePosition : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>No title is displayed.</summary>
 		NoTitle,
-		/// <summary>To be added.</summary>
+		/// <summary>The title is centered above the box's top border.</summary>
 		AboveTop,
-		/// <summary>To be added.</summary>
+		/// <summary>The title is centered on the box's top border.</summary>
 		AtTop,
-		/// <summary>To be added.</summary>
+		/// <summary>The title is centered just below the box's top border, inside the box.</summary>
 		BelowTop,
-		/// <summary>To be added.</summary>
+		/// <summary>The title is centered just above the box's bottom border, inside the box.</summary>
 		AboveBottom,
-		/// <summary>To be added.</summary>
+		/// <summary>The title is centered on the box's bottom border.</summary>
 		AtBottom,
-		/// <summary>To be added.</summary>
+		/// <summary>The title is centered below the box's bottom border.</summary>
 		BelowBottom,
 	};
 

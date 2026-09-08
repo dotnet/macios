@@ -22681,7 +22681,6 @@ T:AppKit.NSTickMarkPosition
 T:AppKit.NSTiffCompression
 T:AppKit.NSTintProminence
 T:AppKit.NSTitlebarSeparatorStyle
-T:AppKit.NSTitlePosition
 T:AppKit.NSTokenStyle
 T:AppKit.NSToolbarCanInsert
 T:AppKit.NSToolbarIdentifiers

@@ -4947,18 +4947,19 @@ namespace AppKit {
 		FillProportionally,
 	}
 
+	/// <summary>Specifies a system-defined visual effect applied to a color to reflect a control's interaction state.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSColorSystemEffect : long {
-		/// <summary>To be added.</summary>
+		/// <summary>No effect is applied to the color.</summary>
 		None,
-		/// <summary>To be added.</summary>
+		/// <summary>The effect applied to a color while its control is pressed.</summary>
 		Pressed,
-		/// <summary>To be added.</summary>
+		/// <summary>The effect applied to a color while its control is pressed deeply, such as with a Force Touch trackpad.</summary>
 		DeepPressed,
-		/// <summary>To be added.</summary>
+		/// <summary>The effect applied to a color when its control is disabled.</summary>
 		Disabled,
-		/// <summary>To be added.</summary>
+		/// <summary>The effect applied to a color while the pointer is hovering over its control.</summary>
 		Rollover,
 	}
 

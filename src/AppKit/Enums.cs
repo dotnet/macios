@@ -1899,23 +1899,23 @@ namespace AppKit {
 	[Flags]
 	[Native]
 	public enum NSColorPanelFlags : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The grayscale picker.</summary>
 		Gray = 0x00000001,
-		/// <summary>To be added.</summary>
+		/// <summary>The red-green-blue (RGB) sliders picker.</summary>
 		RGB = 0x00000002,
-		/// <summary>To be added.</summary>
+		/// <summary>The cyan-magenta-yellow-black (CMYK) sliders picker.</summary>
 		CMYK = 0x00000004,
-		/// <summary>To be added.</summary>
+		/// <summary>The hue-saturation-brightness (HSB) sliders picker.</summary>
 		HSB = 0x00000008,
-		/// <summary>To be added.</summary>
+		/// <summary>The custom color list/palette picker.</summary>
 		CustomPalette = 0x00000010,
-		/// <summary>To be added.</summary>
+		/// <summary>The named color list picker.</summary>
 		ColorList = 0x00000020,
-		/// <summary>To be added.</summary>
+		/// <summary>The color wheel picker.</summary>
 		Wheel = 0x00000040,
-		/// <summary>To be added.</summary>
+		/// <summary>The crayon-style picker.</summary>
 		Crayon = 0x00000080,
-		/// <summary>To be added.</summary>
+		/// <summary>All of the available color-picking modes.</summary>
 		All = 0x0000ffff,
 	}
 

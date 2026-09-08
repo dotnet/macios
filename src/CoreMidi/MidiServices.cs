@@ -759,6 +759,11 @@ namespace CoreMidi {
 			return null;
 		}
 
+		/// <summary>A callback that receives incoming MIDI data on a virtual destination or input port created with a MIDI protocol.</summary>
+		/// <param name="eventList">A pointer to the native <c>MIDIEventList</c> containing the incoming MIDI message(s). Use <see cref="MidiEventList(IntPtr)" /> to wrap it.</param>
+		/// <param name="srcConnRefCon">A reference constant identifying the source connection, if any (passed to <see cref="MidiPort.ConnectSource(CoreMidi.MidiEndpoint)" />).</param>
+		public delegate void MidiReceiveBlock (IntPtr eventList, IntPtr srcConnRefCon);
+
 		/// <summary>Create a virtual destination for this client.</summary>
 		/// <param name="name">The name for the virtual destination.</param>
 		/// <param name="protocol">The MIDI protocol for the data this destination will receive.</param>
@@ -766,16 +771,27 @@ namespace CoreMidi {
 		/// <param name="status">A status code that describes the result of this operation. This will be <see cref="MidiError.Ok" /> in case of success.</param>
 		/// <returns>A newly created <see cref="MidiEndpoint" /> if successful, otherwise null.</returns>
 		/// <remarks>The <paramref name="readBlock" /> callback receives two pointers: the first is a pointer to the <c>MIDIEventList</c>, and the second is a pointer to the source <c>MIDIEndpointRef</c>. Use <see cref="MidiEventList(IntPtr)" /> to wrap the event list pointer.</remarks>
-		public unsafe MidiEndpoint? CreateVirtualDestination (string name, MidiProtocolId protocol, delegate* unmanaged<void*, void*, void> readBlock, out MidiError status)
+		public unsafe MidiEndpoint? CreateVirtualDestination (string name, MidiProtocolId protocol, MidiReceiveBlock readBlock, out MidiError status)
 		{
+			if (readBlock is null)
+				throw new ArgumentNullException (nameof (readBlock));
+
 			using var namePtr = new TransientCFString (name);
 			var handle = default (MidiEndpointRef);
-			unsafe {
-				status = (MidiError) MIDIDestinationCreateWithProtocol (GetCheckedHandle (), namePtr, protocol, &handle, readBlock);
-			}
+			delegate* unmanaged<IntPtr, IntPtr, IntPtr, void> trampoline = &ReceiveBlockTrampoline;
+			using var block = new BlockLiteral (trampoline, readBlock, typeof (MidiClient), nameof (ReceiveBlockTrampoline));
+			var blockPtr = (BlockLiteral*) &block;
+			status = (MidiError) MIDIDestinationCreateWithProtocol (GetCheckedHandle (), namePtr, protocol, &handle, blockPtr);
 			if (handle == MidiObject.InvalidRef)
 				return null;
 			return new MidiEndpoint (handle, name, true);
+		}
+
+		[UnmanagedCallersOnly]
+		static unsafe void ReceiveBlockTrampoline (IntPtr block, IntPtr eventList, IntPtr srcConnRefCon)
+		{
+			var del = BlockLiteral.GetTarget<MidiReceiveBlock> (block);
+			del?.Invoke (eventList, srcConnRefCon);
 		}
 
 		[SupportedOSPlatform ("ios14.0")]
@@ -783,7 +799,7 @@ namespace CoreMidi {
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
 		[DllImport (Constants.CoreMidiLibrary)]
-		unsafe extern static OSStatus MIDIDestinationCreateWithProtocol (MidiClientRef client, IntPtr /* CFStringRef */ name, MidiProtocolId protocol, MidiEndpointRef* outSrc, delegate* unmanaged<void* /* const MIDIEventList * */, void* /* __nullable srcConnRefCon */, void> readBlock);
+		unsafe extern static OSStatus MIDIDestinationCreateWithProtocol (MidiClientRef client, IntPtr /* CFStringRef */ name, MidiProtocolId protocol, MidiEndpointRef* outSrc, BlockLiteral* /* MIDIReceiveBlock */ readBlock);
 
 		/// <param name="name">name for the input port.</param>
 		///         <summary>Creates a new MIDI input port.</summary>
@@ -815,7 +831,7 @@ namespace CoreMidi {
 			IntPtr /* CFStringRef */ name,
 			MidiProtocolId protocol,
 			MidiPortRef* outPort,
-			delegate* unmanaged<void* /* const MIDIEventList * */, void* /* __nullable srcConnRefCon */, void> receiveBlock);
+			BlockLiteral* /* MIDIReceiveBlock */ receiveBlock);
 
 		/// <summary>Create a input port for this client.</summary>
 		/// <param name="name">The name for the port.</param>
@@ -828,13 +844,17 @@ namespace CoreMidi {
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
-		public unsafe MidiPort? CreateInputPort (string name, MidiProtocolId protocol, delegate* unmanaged<void*, void*, void> readBlock, out MidiError status)
+		public unsafe MidiPort? CreateInputPort (string name, MidiProtocolId protocol, MidiReceiveBlock readBlock, out MidiError status)
 		{
+			if (readBlock is null)
+				throw new ArgumentNullException (nameof (readBlock));
+
 			using var namePtr = new TransientCFString (name);
 			var handle = default (MidiPortRef);
-			unsafe {
-				status = (MidiError) MIDIInputPortCreateWithProtocol (GetCheckedHandle (), namePtr, protocol, &handle, readBlock);
-			}
+			delegate* unmanaged<IntPtr, IntPtr, IntPtr, void> trampoline = &ReceiveBlockTrampoline;
+			using var block = new BlockLiteral (trampoline, readBlock, typeof (MidiClient), nameof (ReceiveBlockTrampoline));
+			var blockPtr = (BlockLiteral*) &block;
+			status = (MidiError) MIDIInputPortCreateWithProtocol (GetCheckedHandle (), namePtr, protocol, &handle, blockPtr);
 			if (handle == MidiObject.InvalidRef)
 				return null;
 			return new MidiPort (handle, true, this, name);

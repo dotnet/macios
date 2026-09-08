@@ -4786,13 +4786,14 @@ namespace AppKit {
 		Center,
 	}
 
+	/// <summary>Specifies an error code related to font asset requests.</summary>
 	[NoMacCatalyst]
 	public enum NSFontError : int {
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates an error while downloading a font asset.</summary>
 		AssetDownloadError = 66304,
-		/// <summary>To be added.</summary>
+		/// <summary>The smallest error code value reserved for font-related errors.</summary>
 		ErrorMinimum = 66304,
-		/// <summary>To be added.</summary>
+		/// <summary>The largest error code value reserved for font-related errors.</summary>
 		ErrorMaximum = 66335,
 	}
 

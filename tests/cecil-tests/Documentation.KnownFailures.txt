@@ -22424,7 +22424,6 @@ T:AppKit.NSDraggingItemImagesContentProvider
 T:AppKit.NSEventModifierFlags
 T:AppKit.NSEventTrackHandler
 T:AppKit.NSFontDescriptorSystemDesign
-T:AppKit.NSFontError
 T:AppKit.NSFontPanelModeMask
 T:AppKit.NSFontTextStyle
 T:AppKit.NSFontWeight

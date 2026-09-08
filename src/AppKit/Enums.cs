@@ -3128,6 +3128,7 @@ namespace AppKit {
 		Before = 1,
 	}
 
+	/// <summary>Specifies the highlight state applied to an item in a collection view, such as during selection or a drag-and-drop operation.</summary>
 #if XAMCORE_5_0
 	[NoMacCatalyst]
 #else
@@ -3139,13 +3140,13 @@ namespace AppKit {
 #endif
 	[Native]
 	public enum NSCollectionViewItemHighlightState : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The item is not highlighted.</summary>
 		None = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The item is highlighted because it is being selected.</summary>
 		ForSelection = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The item is highlighted because it is being deselected.</summary>
 		ForDeselection = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>The item is highlighted because it is the target of a drag-and-drop operation.</summary>
 		AsDropTarget = 3,
 	}
 

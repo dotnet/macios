@@ -22429,7 +22429,6 @@ T:AppKit.NSGestureRecognizer_NSTouchBar
 T:AppKit.NSGesturesProbe
 T:AppKit.NSGlassEffectViewStyle
 T:AppKit.NSHorizontalDirections
-T:AppKit.NSImageDynamicRange
 T:AppKit.NSImageHint
 T:AppKit.NSImageName
 T:AppKit.NSImageRect

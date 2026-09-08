@@ -5076,12 +5076,17 @@ namespace AppKit {
 		Unified = 1,
 	}
 
+	/// <summary>Specifies the dynamic range of an image, describing whether it contains high dynamic range (HDR) content.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSImageDynamicRange : long {
+		/// <summary>The image's dynamic range is not known.</summary>
 		Unspecified = -1,
+		/// <summary>The image uses the standard dynamic range (SDR).</summary>
 		Standard = 0,
+		/// <summary>The image uses a constrained high dynamic range, suitable for contexts with limited HDR headroom.</summary>
 		ConstrainedHigh = 1,
+		/// <summary>The image uses the full high dynamic range (HDR).</summary>
 		High = 2,
 	}
 

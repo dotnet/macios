@@ -1923,22 +1923,23 @@ namespace AppKit {
 	#endregion
 	#region NSDocument
 
+	/// <summary>Specifies the kind of change that was made to a document, reported when updating the document's change count.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSDocumentChangeType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>A change was made to the document.</summary>
 		Done,
-		/// <summary>To be added.</summary>
+		/// <summary>A change was undone.</summary>
 		Undone,
-		/// <summary>To be added.</summary>
+		/// <summary>The undo and redo stacks were cleared, and the change count was reset.</summary>
 		Cleared,
-		/// <summary>To be added.</summary>
+		/// <summary>The document's contents were read from another file, such as during a revert-to-saved or duplicate operation.</summary>
 		ReadOtherContents,
-		/// <summary>To be added.</summary>
+		/// <summary>The document was saved automatically.</summary>
 		Autosaved,
-		/// <summary>To be added.</summary>
+		/// <summary>A previously undone change was redone.</summary>
 		Redone,
-		/// <summary>To be added.</summary>
+		/// <summary>The change can be discarded without prompting the user to save, and does not affect the document's edited state.</summary>
 		Discardable = 256, /* New in Lion */
 	}
 

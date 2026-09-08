@@ -22419,7 +22419,6 @@ T:AppKit.NSCustomImageRepDrawingHandler
 T:AppKit.NSDatePickerElementFlags
 T:AppKit.NSDatePickerStyle
 T:AppKit.NSDirectionalRectEdge
-T:AppKit.NSDocumentChangeType
 T:AppKit.NSDocumentCompletionHandler
 T:AppKit.NSDocumentControllerOpenPanelResultHandler
 T:AppKit.NSDocumentControllerOpenPanelWithCompletionHandler

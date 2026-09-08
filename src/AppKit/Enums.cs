@@ -1353,32 +1353,33 @@ namespace AppKit {
 		Crossfade = 4,
 	}
 
+	/// <summary>Specifies how a view's backing layer positions its contents within the layer's bounds when the layer's <see cref="T:AppKit.NSViewLayerContentsRedrawPolicy" /> does not redraw on every resize.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSViewLayerContentsPlacement : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Scales the contents independently along each axis to exactly fill the layer's bounds.</summary>
 		ScaleAxesIndependently,
-		/// <summary>To be added.</summary>
+		/// <summary>Scales the contents proportionally so the entire contents fit within the layer's bounds.</summary>
 		ScaleProportionallyToFit,
-		/// <summary>To be added.</summary>
+		/// <summary>Scales the contents proportionally so they completely fill the layer's bounds, cropping if necessary.</summary>
 		ScaleProportionallyToFill,
-		/// <summary>To be added.</summary>
+		/// <summary>Centers the contents within the layer's bounds, without scaling.</summary>
 		Center,
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns the contents to the top edge of the layer's bounds, without scaling.</summary>
 		Top,
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns the contents to the top-right corner of the layer's bounds, without scaling.</summary>
 		TopRight,
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns the contents to the right edge of the layer's bounds, without scaling.</summary>
 		Right,
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns the contents to the bottom-right corner of the layer's bounds, without scaling.</summary>
 		BottomRight,
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns the contents to the bottom edge of the layer's bounds, without scaling.</summary>
 		Bottom,
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns the contents to the bottom-left corner of the layer's bounds, without scaling.</summary>
 		BottomLeft,
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns the contents to the left edge of the layer's bounds, without scaling.</summary>
 		Left,
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns the contents to the top-left corner of the layer's bounds, without scaling.</summary>
 		TopLeft,
 	}
 

@@ -20,6 +20,7 @@ PLATFORM=$(shell basename "$(CURDIR)")
 endif
 
 LOGFILENAME:=$(TMPDIR)/monotouch-test/extensions/audio-unit/$(PLATFORM)-$(shell date +%Y-%m-%d--%H:%M:%S).log
+RESULTSFILENAME?=$(patsubst %.log,%.nunit-results.xml,$(LOGFILENAME))
 
 # The runtime (CoreCLR/MonoVM), the registrar and other options are selected
 # using TEST_VARIATION (see tests/common/test-variations.csproj for the full
@@ -98,7 +99,7 @@ register-extension: build
 	$(Q) "$(LSREGISTER)" -f "$(APP_PATH)"
 	$(Q) pluginkit -a "$(EXTENSION_PATH)"
 
-run: $(RUN_AUDIO_UNIT_EXTENSION_TESTS)
+run: build $(RUN_AUDIO_UNIT_EXTENSION_TESTS)
 	$(Q) echo "Running monotouch-test from the audio unit extension: $(COLOR_GRAY)$(EXTENSION_PATH)$(COLOR_CLEAR)"
 	$(Q) echo "Writing output to: $(COLOR_GRAY)$(LOGFILENAME)$(COLOR_CLEAR)"
 	$(Q) $(RUN_AUDIO_UNIT_EXTENSION_TESTS_EXEC) \
@@ -109,6 +110,7 @@ run: $(RUN_AUDIO_UNIT_EXTENSION_TESTS)
 		--extension "$(EXTENSION_PATH)" \
 		--executable "$(EXECUTABLE)" \
 		--log-file "$(LOGFILENAME)" \
+		--results-file "$(RESULTSFILENAME)" \
 		--timeout-seconds "$(RUN_TIMEOUT_SECONDS)" \
 		--lsregister "$(LSREGISTER)" \
 		$(if $(TEST_FILTER),--test-filter "$(TEST_FILTER)")

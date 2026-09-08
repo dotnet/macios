@@ -39,7 +39,7 @@ return await runner.RunAsync ();
 static void PrintUsage ()
 {
 	Console.WriteLine ("Usage:");
-	Console.WriteLine ("  run-audio-unit-extension-tests --platform <platform> --rid <rid> --config <config> --app <app path> --extension <appex path> --executable <host executable> --log-file <log file> --timeout-seconds <seconds> [--test-filter <test name>] [--lsregister <path>]");
+	Console.WriteLine ("  run-audio-unit-extension-tests --platform <platform> --rid <rid> --config <config> --app <app path> --extension <appex path> --executable <host executable> --log-file <log file> [--results-file <results file>] --timeout-seconds <seconds> [--test-filter <test name>] [--lsregister <path>]");
 }
 
 sealed class AudioUnitExtensionTestRunner {
@@ -58,6 +58,8 @@ sealed class AudioUnitExtensionTestRunner {
 
 	string ResultsFilePath {
 		get {
+			if (!string.IsNullOrEmpty (options.ResultsFilePath))
+				return options.ResultsFilePath;
 			var directory = Path.GetDirectoryName (options.LogFilePath)!;
 			var name = Path.GetFileNameWithoutExtension (options.LogFilePath);
 			return Path.Combine (directory, name + ".nunit-results.xml");
@@ -342,6 +344,7 @@ sealed class Options {
 	public string ExtensionPath { get; private init; } = "";
 	public string ExecutablePath { get; private init; } = "";
 	public string LogFilePath { get; private init; } = "";
+	public string? ResultsFilePath { get; private init; }
 	public string LsRegisterPath { get; private init; } = "/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister";
 	public string? TestFilter { get; private init; }
 	public TimeSpan Timeout { get; private init; }
@@ -373,6 +376,7 @@ sealed class Options {
 			ExtensionPath = Path.GetFullPath (GetRequired (parsed, "--extension")),
 			ExecutablePath = Path.GetFullPath (GetRequired (parsed, "--executable")),
 			LogFilePath = Path.GetFullPath (GetRequired (parsed, "--log-file")),
+			ResultsFilePath = GetOptional (parsed, "--results-file") is string resultsFilePath ? Path.GetFullPath (resultsFilePath) : null,
 			LsRegisterPath = GetOptional (parsed, "--lsregister") ?? "/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister",
 			TestFilter = GetOptional (parsed, "--test-filter"),
 			Timeout = TimeSpan.FromSeconds (timeoutSeconds),

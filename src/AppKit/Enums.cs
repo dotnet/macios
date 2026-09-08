@@ -3249,22 +3249,23 @@ namespace AppKit {
 		Range,
 	}
 
+	/// <summary>Specifies a bitmask of the date and time components displayed by an <see cref="T:AppKit.NSDatePicker" />.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSDatePickerElementFlags : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Displays the hour and minute.</summary>
 		HourMinute = 0xc,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays the hour, minute, and second.</summary>
 		HourMinuteSecond = 0xe,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays the time zone.</summary>
 		TimeZone = 0x10,
 
-		/// <summary>To be added.</summary>
+		/// <summary>Displays the year, month, and date.</summary>
 		YearMonthDate = 0xc0,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays the year, month, date, and day of the week.</summary>
 		YearMonthDateDay = 0xe0,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays the era.</summary>
 		Era = 0x100,
 	}
 

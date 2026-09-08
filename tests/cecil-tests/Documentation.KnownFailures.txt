@@ -22411,7 +22411,6 @@ T:AppKit.NSCorrectionResponse
 T:AppKit.NSCursorFrameResizeDirections
 T:AppKit.NSCursorFrameResizePosition
 T:AppKit.NSCustomImageRepDrawingHandler
-T:AppKit.NSDatePickerElementFlags
 T:AppKit.NSDirectionalRectEdge
 T:AppKit.NSDocumentCompletionHandler
 T:AppKit.NSDocumentControllerOpenPanelResultHandler

@@ -1870,29 +1870,31 @@ namespace AppKit {
 	#endregion
 
 	#region NSColorPanel
+	/// <summary>Specifies which color-picking mode is active in the shared color panel.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSColorPanelMode : long {
-		/// <summary>To be added.</summary>
+		/// <summary>No specific mode; the color panel's default picker is shown.</summary>
 		None = -1,
-		/// <summary>To be added.</summary>
+		/// <summary>The grayscale picker.</summary>
 		Gray = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The red-green-blue (RGB) sliders picker.</summary>
 		RGB,
-		/// <summary>To be added.</summary>
+		/// <summary>The cyan-magenta-yellow-black (CMYK) sliders picker.</summary>
 		CMYK,
-		/// <summary>To be added.</summary>
+		/// <summary>The hue-saturation-brightness (HSB) sliders picker.</summary>
 		HSB,
-		/// <summary>To be added.</summary>
+		/// <summary>The custom color list/palette picker.</summary>
 		CustomPalette,
-		/// <summary>To be added.</summary>
+		/// <summary>The named color list picker.</summary>
 		ColorList,
-		/// <summary>To be added.</summary>
+		/// <summary>The color wheel picker.</summary>
 		Wheel,
-		/// <summary>To be added.</summary>
+		/// <summary>The crayon-style picker.</summary>
 		Crayon,
 	};
 
+	/// <summary>Specifies a bitmask of the color-picking modes available in the shared color panel.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]

@@ -22403,7 +22403,6 @@ T:AppKit.NSCollectionViewDiffableDataSourceSupplementaryViewProvider
 T:AppKit.NSCollectionViewItemHighlightState
 T:AppKit.NSCollectionViewScrollPosition
 T:AppKit.NSColorPanelFlags
-T:AppKit.NSColorPanelMode
 T:AppKit.NSColorSystemEffect
 T:AppKit.NSColorWellStyle
 T:AppKit.NSComboButtonStyle

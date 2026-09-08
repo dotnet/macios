@@ -4721,14 +4721,15 @@ namespace AppKit {
 		Right,
 	}
 
+	/// <summary>Specifies the style of border drawn around a tab view.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTabViewBorderType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>No border is drawn.</summary>
 		None = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>A plain line border is drawn.</summary>
 		Line,
-		/// <summary>To be added.</summary>
+		/// <summary>A bezeled border is drawn.</summary>
 		Bezel,
 	}
 

@@ -22536,7 +22536,6 @@ T:AppKit.NSTableViewStyle
 T:AppKit.NSTableViewToolTip
 T:AppKit.NSTableViewUserCanChangeColumnVisibility
 T:AppKit.NSTableViewViewGetter
-T:AppKit.NSTabViewBorderType
 T:AppKit.NSTabViewPredicate
 T:AppKit.NSTextAlignmentExtensions
 T:AppKit.NSTextCheckingOptions

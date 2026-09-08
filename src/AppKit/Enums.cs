@@ -149,18 +149,19 @@ namespace AppKit {
 		ReplyLater,
 	}
 
+	/// <summary>Specifies the level of interpolation quality used when an image is scaled or transformed.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSImageInterpolation : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the interpolation quality most appropriate for the current context.</summary>
 		Default,
-		/// <summary>To be added.</summary>
+		/// <summary>Performs no interpolation; the image is drawn using nearest-neighbor sampling.</summary>
 		None,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses a fast, low-quality interpolation algorithm.</summary>
 		Low,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses an interpolation algorithm that balances speed and quality.</summary>
 		Medium,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the slowest, highest-quality interpolation algorithm available.</summary>
 		High,
 	}
 

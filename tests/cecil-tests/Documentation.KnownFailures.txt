@@ -22492,7 +22492,6 @@ T:AppKit.NSImageAlignment
 T:AppKit.NSImageCacheMode
 T:AppKit.NSImageDynamicRange
 T:AppKit.NSImageHint
-T:AppKit.NSImageInterpolation
 T:AppKit.NSImageLayoutDirection
 T:AppKit.NSImageLoadStatus
 T:AppKit.NSImageName

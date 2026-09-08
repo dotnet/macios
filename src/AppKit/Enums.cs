@@ -230,16 +230,17 @@ namespace AppKit {
 		Luminosity,
 	}
 
+	/// <summary>Specifies how a window's drawing is buffered before being flushed to the screen.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSBackingStore : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The window renders directly into display memory and is not buffered.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'Buffered' instead.")]
 		Retained,
-		/// <summary>To be added.</summary>
+		/// <summary>The window renders directly into display memory, without retaining its contents.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'Buffered' instead.")]
 		Nonretained,
-		/// <summary>To be added.</summary>
+		/// <summary>The window renders into an off-screen buffer, which is then flushed to the display in a single operation.</summary>
 		Buffered,
 	}
 

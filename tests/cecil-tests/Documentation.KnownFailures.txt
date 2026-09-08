@@ -22385,7 +22385,6 @@ T:AppKit.NSAttributedString_NSExtendedStringDrawing
 T:AppKit.NSAttributedStringDocumentReadingOptions
 T:AppKit.NSAttributedStringDocumentType
 T:AppKit.NSBackgroundStyle
-T:AppKit.NSBackingStore
 T:AppKit.NSBezelStyle
 T:AppKit.NSBezierPathElement
 T:AppKit.NSBindingOption

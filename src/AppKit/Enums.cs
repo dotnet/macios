@@ -603,7 +603,7 @@ namespace AppKit {
 		Default,
 		/// <summary>Always caches the rendered image.</summary>
 		Always,
-		/// <summary>Caches the rendered image only when it is drawn at its native size.</summary>
+		/// <summary>Caches the rendered image only when the cache would be smaller than the original image data.</summary>
 		BySize,
 		/// <summary>Never caches the rendered image; it is always redrawn from its source representation.</summary>
 		Never,
@@ -1931,7 +1931,7 @@ namespace AppKit {
 		Done,
 		/// <summary>A change was undone.</summary>
 		Undone,
-		/// <summary>The undo and redo stacks were cleared, and the change count was reset.</summary>
+		/// <summary>The document was synchronized with its file, resetting the change count.</summary>
 		Cleared,
 		/// <summary>The document's contents were read from another file, such as during a revert-to-saved or duplicate operation.</summary>
 		ReadOtherContents,
@@ -1939,7 +1939,7 @@ namespace AppKit {
 		Autosaved,
 		/// <summary>A previously undone change was redone.</summary>
 		Redone,
-		/// <summary>The change can be discarded without prompting the user to save, and does not affect the document's edited state.</summary>
+		/// <summary>The change can be discarded instead of prompting the user to save it, but still marks the document as edited.</summary>
 		Discardable = 256, /* New in Lion */
 	}
 
@@ -2271,7 +2271,7 @@ namespace AppKit {
 		MouseEnteredAndExited = 0x01,
 		/// <summary>Generates events when the pointer moves within the tracking area.</summary>
 		MouseMoved = 0x02,
-		/// <summary>Generates cursor-update events when the pointer enters or exits the tracking area.</summary>
+		/// <summary>Generates a cursor-update event when the pointer enters the tracking area.</summary>
 		CursorUpdate = 0x04,
 		/// <summary>The tracking area is active only while its owning view is the first responder.</summary>
 		ActiveWhenFirstResponder = 0x10,
@@ -2281,7 +2281,7 @@ namespace AppKit {
 		ActiveInActiveApp = 0x40,
 		/// <summary>The tracking area is always active, regardless of the key window or active application.</summary>
 		ActiveAlways = 0x80,
-		/// <summary>Assumes the pointer starts inside the tracking area when it is initially created, generating an immediate mouse-entered event if appropriate.</summary>
+		/// <summary>Assumes the pointer starts inside the tracking area, allowing a mouse-exited event when the pointer leaves without a preceding mouse-entered event.</summary>
 		AssumeInside = 0x100,
 		/// <summary>Automatically updates the tracking area's rectangle to always match the visible portion of its owning view.</summary>
 		InVisibleRect = 0x200,
@@ -2472,11 +2472,11 @@ namespace AppKit {
 	public enum NSScrollerPart : ulong {
 		/// <summary>No part of the scroller.</summary>
 		None,
-		/// <summary>The area of the knob slot below or to the right of the knob, which pages down or right when clicked.</summary>
+		/// <summary>The area of the knob slot above or to the left of the knob, which pages up or left when clicked.</summary>
 		DecrementPage,
 		/// <summary>The scroller's knob, which is dragged to scroll continuously.</summary>
 		Knob,
-		/// <summary>The area of the knob slot above or to the left of the knob, which pages up or left when clicked.</summary>
+		/// <summary>The area of the knob slot below or to the right of the knob, which pages down or right when clicked.</summary>
 		IncrementPage,
 		/// <summary>The arrow that scrolls up or left by a small increment.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 14)]
@@ -2758,7 +2758,7 @@ namespace AppKit {
 		Regular = 0,
 		/// <summary>Draws the source-list style drop-target highlight.</summary>
 		SourceList = 1,
-		/// <summary>An unused value reserved to separate the feedback styles from other values.</summary>
+		/// <summary>Opens a gap between rows at the proposed drop location.</summary>
 		FeedbackStyleGap = 2,
 	}
 
@@ -2995,7 +2995,7 @@ namespace AppKit {
 		Print = 2,
 		/// <summary>Presents a user interface if an error occurs while launching.</summary>
 		WithErrorPresentation = 0x40,
-		/// <summary>Launches the application only if it isn't currently running, without bringing an already-running instance to the foreground.</summary>
+		/// <summary>Causes the launch to fail if the target application runs only in the background.</summary>
 		InhibitingBackgroundOnly = 0x80,
 		/// <summary>Launches the application, and opens its documents, without adding them to the Recent Items list.</summary>
 		WithoutAddingToRecents = 0x100,
@@ -3261,9 +3261,9 @@ namespace AppKit {
 		/// <summary>Displays the time zone.</summary>
 		TimeZone = 0x10,
 
-		/// <summary>Displays the year, month, and date.</summary>
+		/// <summary>Displays the year and month.</summary>
 		YearMonthDate = 0xc0,
-		/// <summary>Displays the year, month, date, and day of the week.</summary>
+		/// <summary>Displays the year, month, and day.</summary>
 		YearMonthDateDay = 0xe0,
 		/// <summary>Displays the era.</summary>
 		Era = 0x100,
@@ -3498,7 +3498,7 @@ namespace AppKit {
 		PositiveZ = 0x8519,
 		/// <summary>The negative x-axis face of the cube map.</summary>
 		NegativeX = 0x8516,
-		/// <summary>The negative y-axis face of the cube map.</summary>
+		/// <summary>A legacy value named for the negative y-axis face whose underlying OpenGL constant identifies the positive y-axis face.</summary>
 		NegativeY = 0x8517,
 		/// <summary>The negative z-axis face of the cube map.</summary>
 		NegativeZ = 0x851A,
@@ -4157,7 +4157,7 @@ namespace AppKit {
 		ApplicationDefined,
 		/// <summary>The popover is closed automatically when the user interacts with a user interface element outside of it.</summary>
 		Transient,
-		/// <summary>The popover is closed automatically when the user interacts with a user interface element outside of the popover and its parent window, but not when interacting with the parent window itself.</summary>
+		/// <summary>The popover is closed automatically when the user interacts with a user interface element in the window containing its positioning view.</summary>
 		Semitransient,
 	}
 
@@ -4583,7 +4583,7 @@ namespace AppKit {
 		Enabled = 1 << 0,
 		/// <summary>The spring-loading action is invoked repeatedly for as long as the drag hovers over the target.</summary>
 		ContinuousActivation = 1 << 1,
-		/// <summary>Spring-loading activates without requiring the pointer to hover; it can be triggered immediately.</summary>
+		/// <summary>Spring-loading is enabled but cannot be activated by hovering; the user must force click the target.</summary>
 		NoHover = 1 << 3,
 	}
 

@@ -22623,7 +22623,6 @@ T:AppKit.NSTouchEvent
 T:AppKit.NSVerticalDirections
 T:AppKit.NSView_NSCandidateListTouchBarItem
 T:AppKit.NSView_NSTouchBar
-T:AppKit.NSViewControllerTransitionOptions
 T:AppKit.NSViewLayoutRegionAdaptivityAxis
 T:AppKit.NSVisualEffectMaterial
 T:AppKit.NSVisualEffectState

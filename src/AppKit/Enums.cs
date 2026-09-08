@@ -4398,27 +4398,28 @@ namespace AppKit {
 		Hidden = 1,
 	}
 
+	/// <summary>Specifies a bitmask of options describing the transition animation used when one view controller replaces another.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSViewControllerTransitionOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>No transition animation; the new view controller replaces the old one immediately.</summary>
 		None = 0x0,
-		/// <summary>To be added.</summary>
+		/// <summary>Crossfades from the old view controller's view to the new one.</summary>
 		Crossfade = 0x1,
-		/// <summary>To be added.</summary>
+		/// <summary>Slides the new view controller's view up, over the old one.</summary>
 		SlideUp = 0x10,
-		/// <summary>To be added.</summary>
+		/// <summary>Slides the new view controller's view down, over the old one.</summary>
 		SlideDown = 0x20,
-		/// <summary>To be added.</summary>
+		/// <summary>Slides the new view controller's view in from the right.</summary>
 		SlideLeft = 0x40,
-		/// <summary>To be added.</summary>
+		/// <summary>Slides the new view controller's view in from the left.</summary>
 		SlideRight = 0x80,
-		/// <summary>To be added.</summary>
+		/// <summary>Slides the new view controller's view in as if moving forward, honoring the current layout direction.</summary>
 		SlideForward = 0x140,
-		/// <summary>To be added.</summary>
+		/// <summary>Slides the new view controller's view in as if moving backward, honoring the current layout direction.</summary>
 		SlideBackward = 0x180,
-		/// <summary>To be added.</summary>
+		/// <summary>Allows the user to interact with the views while the transition animation is in progress.</summary>
 		AllowUserInteraction = 0x1000,
 	}
 

@@ -1528,24 +1528,25 @@ namespace AppKit {
 		FullScreenButton,
 	}
 
+	/// <summary>Specifies a bitmask describing the phase of a touch during a multi-touch tracking sequence.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSTouchPhase : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The touch has just begun.</summary>
 		Began = 1 << 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The position of the touch has changed.</summary>
 		Moved = 1 << 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The touch has not moved since the previous event.</summary>
 		Stationary = 1 << 2,
-		/// <summary>To be added.</summary>
+		/// <summary>The touch has ended.</summary>
 		Ended = 1 << 3,
-		/// <summary>To be added.</summary>
+		/// <summary>The touch was cancelled and did not end normally.</summary>
 		Cancelled = 1 << 4,
 
-		/// <summary>To be added.</summary>
+		/// <summary>A combination of the phases that indicate an ongoing touch: <see cref="F:AppKit.NSTouchPhase.Began" />, <see cref="F:AppKit.NSTouchPhase.Moved" />, and <see cref="F:AppKit.NSTouchPhase.Stationary" />.</summary>
 		Touching = Began | Moved | Stationary,
-		/// <summary>To be added.</summary>
+		/// <summary>Matches every touch phase.</summary>
 		Any = unchecked((ulong) UInt64.MaxValue),
 	}
 	#endregion

@@ -22695,7 +22695,6 @@ T:AppKit.NSTouch_NSTouchBar
 T:AppKit.NSTouchBarItemIdentifier
 T:AppKit.NSTouchBarMakeItem
 T:AppKit.NSTouchEvent
-T:AppKit.NSTouchPhase
 T:AppKit.NSTrackingAreaOptions
 T:AppKit.NSTypesetterBehavior
 T:AppKit.NSTypesetterControlCharacterAction

@@ -2092,20 +2092,21 @@ namespace AppKit {
 	}
 	#endregion
 
+	/// <summary>Specifies how the arranged views of an <see cref="T:AppKit.NSStackView" /> are sized and spaced along the stack's axis.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSStackViewDistribution : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Views are positioned according to their assigned gravity areas, rather than an automatic distribution.</summary>
 		GravityAreas = -1,
-		/// <summary>To be added.</summary>
+		/// <summary>Views are resized to fill the available space based on their content-hugging and compression-resistance priorities.</summary>
 		Fill = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Views are resized equally to fill the available space.</summary>
 		FillEqually,
-		/// <summary>To be added.</summary>
+		/// <summary>Views are resized proportionally, based on their initial sizes, to fill the available space.</summary>
 		FillProportionally,
-		/// <summary>To be added.</summary>
+		/// <summary>Views keep their intrinsic size, and any extra space is distributed equally between them.</summary>
 		EqualSpacing,
-		/// <summary>To be added.</summary>
+		/// <summary>Views keep their intrinsic size, and any extra space is distributed so that the centers of the views are equally spaced.</summary>
 		EqualCentering,
 	}
 

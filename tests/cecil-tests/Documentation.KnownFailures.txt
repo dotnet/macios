@@ -22564,7 +22564,6 @@ T:AppKit.NSSpellingState
 T:AppKit.NSSplitViewItemBehavior
 T:AppKit.NSSpringLoadingHighlight
 T:AppKit.NSSpringLoadingOptions
-T:AppKit.NSStackViewDistribution
 T:AppKit.NSStandardKeyBindingMethods
 T:AppKit.NSStoryboardControllerCreator
 T:AppKit.NSStringAttributeKey

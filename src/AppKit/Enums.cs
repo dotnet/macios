@@ -4921,14 +4921,15 @@ namespace AppKit {
 		AllModes = (ulong) 0XFFFFFFFF,
 	}
 
+	/// <summary>Specifies when a level indicator displays placeholder tick marks in place of missing values.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSLevelIndicatorPlaceholderVisibility : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The system decides automatically when to show placeholders.</summary>
 		Automatic = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Placeholders are always shown for missing values.</summary>
 		Always = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Placeholders are shown only while the level indicator is being edited.</summary>
 		WhileEditing = 2,
 	}
 

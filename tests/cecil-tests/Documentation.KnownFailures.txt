@@ -22435,7 +22435,6 @@ T:AppKit.NSGestureProbe
 T:AppKit.NSGestureRecognizer_NSTouchBar
 T:AppKit.NSGesturesProbe
 T:AppKit.NSGlassEffectViewStyle
-T:AppKit.NSGridCellPlacement
 T:AppKit.NSGridRowAlignment
 T:AppKit.NSHorizontalDirections
 T:AppKit.NSImageDynamicRange

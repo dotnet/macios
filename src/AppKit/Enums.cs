@@ -4630,24 +4630,25 @@ namespace AppKit {
 		InFullScreen,
 	}
 
+	/// <summary>Specifies how a view is aligned within its cell in an <see cref="T:AppKit.NSGridView" />.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSGridCellPlacement : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Inherits the placement from the grid view's row or column.</summary>
 		Inherited = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Does not constrain the view's placement within the cell.</summary>
 		None,
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns the view with the leading edge of the cell.</summary>
 		Leading,
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns the view with the top edge of the cell. Equivalent to <see cref="F:AppKit.NSGridCellPlacement.Leading" />.</summary>
 		Top = Leading,
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns the view with the trailing edge of the cell.</summary>
 		Trailing,
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns the view with the bottom edge of the cell. Equivalent to <see cref="F:AppKit.NSGridCellPlacement.Trailing" />.</summary>
 		Bottom = Trailing,
-		/// <summary>To be added.</summary>
+		/// <summary>Centers the view within the cell.</summary>
 		Center,
-		/// <summary>To be added.</summary>
+		/// <summary>Resizes the view to fill the entire cell.</summary>
 		Fill,
 	}
 

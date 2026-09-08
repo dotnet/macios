@@ -4376,14 +4376,15 @@ namespace AppKit {
 		ContainerBreak = 1 << 5,
 	}
 
+	/// <summary>Specifies the visual transition style used by an <see cref="T:AppKit.NSPageController" /> when navigating between pages.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSPageControllerTransitionStyle : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Pages are stacked and animated similarly to navigating back and forward through history.</summary>
 		StackHistory,
-		/// <summary>To be added.</summary>
+		/// <summary>Pages are stacked and animated similarly to turning the pages of a book.</summary>
 		StackBook,
-		/// <summary>To be added.</summary>
+		/// <summary>Pages are arranged in a horizontal strip and animated by sliding.</summary>
 		HorizontalStrip,
 	}
 

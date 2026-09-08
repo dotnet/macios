@@ -4020,14 +4020,15 @@ namespace AppKit {
 		Alert = 1 << 2,
 	}
 
+	/// <summary>Specifies where a scroll view positions its find bar.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSScrollViewFindBarPosition : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Positions the find bar above the horizontal ruler.</summary>
 		AboveHorizontalRuler = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Positions the find bar above the scroll view's content.</summary>
 		AboveContent,
-		/// <summary>To be added.</summary>
+		/// <summary>Positions the find bar below the scroll view's content.</summary>
 		BelowContent,
 	}
 

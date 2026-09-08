@@ -22507,7 +22507,6 @@ T:AppKit.NSRulerViewUnits
 T:AppKit.NSSavePanelComplete
 T:AppKit.NSScrollElasticity
 T:AppKit.NSScrollerKnobStyle
-T:AppKit.NSScrollViewFindBarPosition
 T:AppKit.NSScrubberAlignment
 T:AppKit.NSSegmentBackgroundStyle_NSSegmentedCell
 T:AppKit.NSSegmentDistribution

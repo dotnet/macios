@@ -5181,11 +5181,15 @@ namespace AppKit {
 		WhileTracking = 1L << 1,
 	}
 
+	/// <summary>Specifies whether the animated text insertion point indicator is displayed.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTextInsertionIndicatorDisplayMode : long {
+		/// <summary>The system decides automatically whether to display the animated insertion point indicator.</summary>
 		Automatic = 0,
+		/// <summary>The animated insertion point indicator is always hidden.</summary>
 		Hidden,
+		/// <summary>The animated insertion point indicator is always visible.</summary>
 		Visible,
 	}
 

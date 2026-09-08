@@ -22532,7 +22532,6 @@ T:AppKit.NSTextFinderSupport
 T:AppKit.NSTextHighlightColorScheme
 T:AppKit.NSTextHighlightStyle
 T:AppKit.NSTextInputTraitType
-T:AppKit.NSTextInsertionIndicatorDisplayMode
 T:AppKit.NSTextLayoutFragmentEnumerationOptions
 T:AppKit.NSTextLayoutFragmentState
 T:AppKit.NSTextLayoutManagerEnumerateRenderingAttributesDelegate

@@ -22453,7 +22453,6 @@ T:AppKit.NSImageSymbolColorRenderingMode
 T:AppKit.NSImageSymbolScale
 T:AppKit.NSImageSymbolVariableValueMode
 T:AppKit.NSLayoutManager_NSTextViewSupport
-T:AppKit.NSLayoutPriority
 T:AppKit.NSLevelIndicatorPlaceholderVisibility
 T:AppKit.NSLineBreakStrategy
 T:AppKit.NSMenuItemBadgeType

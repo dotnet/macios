@@ -4120,21 +4120,22 @@ namespace AppKit {
 		Vertical,
 	}
 
+	/// <summary>Provides standard priority values used with Auto Layout constraints to resolve conflicts between competing constraints.</summary>
 	[NoMacCatalyst]
 	public enum NSLayoutPriority : int /*float*/ {
-		/// <summary>To be added.</summary>
+		/// <summary>The highest priority; a constraint at this priority must always be satisfied and cannot be broken.</summary>
 		Required = 1000,
-		/// <summary>To be added.</summary>
+		/// <summary>A high priority used for constraints that should be satisfied if at all possible, such as a view's preferred content size.</summary>
 		DefaultHigh = 750,
-		/// <summary>To be added.</summary>
+		/// <summary>The priority at which a window can be resized by the user beyond its current drag operation.</summary>
 		DragThatCanResizeWindow = 510,
-		/// <summary>To be added.</summary>
+		/// <summary>The priority at which a window's current size is preferred to remain unchanged.</summary>
 		WindowSizeStayPut = 500,
-		/// <summary>To be added.</summary>
+		/// <summary>The priority at which a user's drag operation should not resize the window.</summary>
 		DragThatCannotResizeWindow = 490,
-		/// <summary>To be added.</summary>
+		/// <summary>A low priority used for constraints that are satisfied only if higher-priority constraints allow it, such as a view's content-hugging priority.</summary>
 		DefaultLow = 250,
-		/// <summary>To be added.</summary>
+		/// <summary>The priority at which a view is compressed to its minimum size that still fits its content.</summary>
 		FittingSizeCompression = 50,
 	}
 

@@ -1386,14 +1386,15 @@ namespace AppKit {
 		ReadWrite,
 	}
 
+	/// <summary>Specifies where a window's backing store is located.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSWindowBackingLocation : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The system determines the backing store location.</summary>
 		Default,
-		/// <summary>To be added.</summary>
+		/// <summary>The backing store is located in video memory.</summary>
 		VideoMemory,
-		/// <summary>To be added.</summary>
+		/// <summary>The backing store is located in main memory.</summary>
 		MainMemory,
 	}
 
@@ -1667,14 +1668,15 @@ namespace AppKit {
 	#endregion
 
 	#region NSGraphics
+	/// <summary>Specifies the color depth of a window's backing store.</summary>
 	[NoMacCatalyst]
 	// NSGraphics.h:typedef int NSWindowDepth;
 	public enum NSWindowDepth : int {
-		/// <summary>To be added.</summary>
+		/// <summary>A 24-bit RGB color depth.</summary>
 		TwentyfourBitRgb = 0x208,
-		/// <summary>To be added.</summary>
+		/// <summary>A 64-bit RGB color depth.</summary>
 		SixtyfourBitRgb = 0x210,
-		/// <summary>To be added.</summary>
+		/// <summary>A 128-bit RGB color depth.</summary>
 		OneHundredTwentyEightBitRgb = 0x220,
 	}
 
@@ -1987,13 +1989,14 @@ namespace AppKit {
 	}
 
 	// NSStackView.h:typedef float NSStackViewVisibilityPriority
+	/// <summary>Provides predefined visibility-priority values that can be cast to <see cref="float"/> for use with <see cref="NSStackView"/> APIs.</summary>
 	[NoMacCatalyst]
 	public enum NSStackViewVisibilityPriority : int {
-		/// <summary>To be added.</summary>
+		/// <summary>The view must remain attached to the stack view.</summary>
 		MustHold = 1000,
-		/// <summary>To be added.</summary>
+		/// <summary>The view is detached only when necessary.</summary>
 		DetachOnlyIfNecessary = 900,
-		/// <summary>To be added.</summary>
+		/// <summary>The view is not visible.</summary>
 		NotVisible = 0,
 	}
 
@@ -2334,14 +2337,15 @@ namespace AppKit {
 		Clip,
 	}
 
+	/// <summary>Specifies the status of a table in a printer's PostScript Printer Description.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSPrinterTableStatus : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The table is available.</summary>
 		Ok,
-		/// <summary>To be added.</summary>
+		/// <summary>The table was not found.</summary>
 		NotFound,
-		/// <summary>To be added.</summary>
+		/// <summary>An error occurred while accessing the table.</summary>
 		Error,
 	}
 
@@ -2902,13 +2906,14 @@ namespace AppKit {
 		Default = Async | AllowingClassicStartup,
 	}
 
+	/// <summary>Specifies legacy icon representations to exclude when creating a file icon.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSWorkspaceIconCreationOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Excludes QuickDraw icon representations.</summary>
 		NSExcludeQuickDrawElements = 1 << 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Excludes icon representations introduced in macOS 10.4.</summary>
 		NSExclude10_4Elements = 1 << 2,
 	}
 
@@ -2943,14 +2948,15 @@ namespace AppKit {
 		NSNoTabsNoBorder,
 	}
 
+	/// <summary>Specifies the visual state of a tab view item.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTabState : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The tab is selected.</summary>
 		Selected,
-		/// <summary>To be added.</summary>
+		/// <summary>The tab is displayed in the background.</summary>
 		Background,
-		/// <summary>To be added.</summary>
+		/// <summary>The tab is being pressed.</summary>
 		Pressed,
 	}
 
@@ -3187,11 +3193,12 @@ namespace AppKit {
 		MpsSwapsInFlight = 315,
 	}
 
+	/// <summary>Specifies the position of an OpenGL surface relative to its window.</summary>
 	[NoMacCatalyst]
 	public enum NSSurfaceOrder {
-		/// <summary>To be added.</summary>
+		/// <summary>The surface is displayed above the window.</summary>
 		AboveWindow = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The surface is displayed below the window.</summary>
 		BelowWindow = -1,
 	}
 
@@ -3779,24 +3786,26 @@ namespace AppKit {
 		MayBegin = 32,
 	}
 
+	/// <summary>Specifies options for tracking a swipe gesture.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSEventSwipeTrackingOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Clamps the gesture amount to zero when the user reverses the initial swipe direction.</summary>
 		LockDirection = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Clamps the gesture amount to the range from -1.0 through 1.0.</summary>
 		ClampGestureAmount = 2,
 	}
 
+	/// <summary>Specifies the axis associated with a gesture event.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSEventGestureAxis : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The gesture is not associated with an axis.</summary>
 		None,
-		/// <summary>To be added.</summary>
+		/// <summary>The gesture is associated with the horizontal axis.</summary>
 		Horizontal,
-		/// <summary>To be added.</summary>
+		/// <summary>The gesture is associated with the vertical axis.</summary>
 		Vertical,
 	}
 
@@ -4013,15 +4022,16 @@ namespace AppKit {
 		AllModesMask = unchecked((ulong) UInt32.MaxValue),
 	}
 
+	/// <summary>Specifies the scope in which a font collection is visible.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSFontCollectionVisibility : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The collection is visible only to the current process and is not persistent.</summary>
 		Process = 1 << 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The collection is persisted and visible to all processes for the current user.</summary>
 		User = 1 << 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The collection is persisted and visible to all users of the computer.</summary>
 		Computer = 1 << 2,
 	}
 

@@ -22454,16 +22454,13 @@ T:AppKit.NSDraggingItemImagesContentProvider
 T:AppKit.NSDragOperation
 T:AppKit.NSDrawerState
 T:AppKit.NSEventButtonMask
-T:AppKit.NSEventGestureAxis
 T:AppKit.NSEventMask
 T:AppKit.NSEventModifierFlags
 T:AppKit.NSEventModifierMask
 T:AppKit.NSEventPhase
 T:AppKit.NSEventSubtype
-T:AppKit.NSEventSwipeTrackingOptions
 T:AppKit.NSEventTrackHandler
 T:AppKit.NSEventType
-T:AppKit.NSFontCollectionVisibility
 T:AppKit.NSFontDescriptorSystemDesign
 T:AppKit.NSFontError
 T:AppKit.NSFontPanelMode
@@ -22559,7 +22556,6 @@ T:AppKit.NSPointingDeviceType
 T:AppKit.NSPopoverBehavior
 T:AppKit.NSPopUpArrowPosition
 T:AppKit.NSPressureBehavior
-T:AppKit.NSPrinterTableStatus
 T:AppKit.NSPrintPanelOptions
 T:AppKit.NSPrintPanelResult
 T:AppKit.NSPrintRenderingQuality
@@ -22607,13 +22603,11 @@ T:AppKit.NSSpringLoadingHighlight
 T:AppKit.NSSpringLoadingOptions
 T:AppKit.NSStackViewDistribution
 T:AppKit.NSStackViewGravity
-T:AppKit.NSStackViewVisibilityPriority
 T:AppKit.NSStandardKeyBindingMethods
 T:AppKit.NSStoryboardControllerCreator
 T:AppKit.NSStringAttributeKey
 T:AppKit.NSStringDrawing_NSAttributedString
 T:AppKit.NSStringDrawing_NSString
-T:AppKit.NSSurfaceOrder
 T:AppKit.NSTableReorder
 T:AppKit.NSTableViewAnimation
 T:AppKit.NSTableViewAnimationOptions
@@ -22644,7 +22638,6 @@ T:AppKit.NSTableViewToolTip
 T:AppKit.NSTableViewUserCanChangeColumnVisibility
 T:AppKit.NSTableViewViewGetter
 T:AppKit.NSTabPosition
-T:AppKit.NSTabState
 T:AppKit.NSTabViewBorderType
 T:AppKit.NSTabViewControllerTabStyle
 T:AppKit.NSTabViewPredicate
@@ -22746,12 +22739,10 @@ T:AppKit.NSVisualEffectMaterial
 T:AppKit.NSVisualEffectState
 T:AppKit.NSWindowAnimationBehavior
 T:AppKit.NSWindowApplicationPresentationOptions
-T:AppKit.NSWindowBackingLocation
 T:AppKit.NSWindowButton
 T:AppKit.NSWindowClient
 T:AppKit.NSWindowCollectionBehavior
 T:AppKit.NSWindowCompletionHandler
-T:AppKit.NSWindowDepth
 T:AppKit.NSWindowDocumentDrag
 T:AppKit.NSWindowFrame
 T:AppKit.NSWindowFramePredicate
@@ -22771,7 +22762,6 @@ T:AppKit.NSWindowUndoManager
 T:AppKit.NSWindowUserTabbingPreference
 T:AppKit.NSWindowWindows
 T:AppKit.NSWorkspaceAuthorizationType
-T:AppKit.NSWorkspaceIconCreationOptions
 T:AppKit.NSWorkspaceLaunchOptions
 T:AppKit.NSWorkspaceUrlHandler
 T:AppKit.NSWritingToolsBehavior

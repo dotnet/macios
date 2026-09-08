@@ -22556,7 +22556,6 @@ T:AppKit.NSPrintPanelResult
 T:AppKit.NSPrintRenderingQuality
 T:AppKit.NSProgressIndicatorThickness
 T:AppKit.NSRectAlignment
-T:AppKit.NSRectEdge
 T:AppKit.NSRemoteNotificationType
 T:AppKit.NSResponder_NSTouchBarProvider
 T:AppKit.NSResponder_NSWritingToolsSupport

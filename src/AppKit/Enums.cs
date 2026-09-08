@@ -297,16 +297,17 @@ namespace AppKit {
 
 	}
 
+	/// <summary>Specifies one of the four edges of a rectangle.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSRectEdge : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The minimum edge on the x-axis (the left edge, in a flipped coordinate system).</summary>
 		MinXEdge,
-		/// <summary>To be added.</summary>
+		/// <summary>The minimum edge on the y-axis (the bottom edge, in a non-flipped coordinate system).</summary>
 		MinYEdge,
-		/// <summary>To be added.</summary>
+		/// <summary>The maximum edge on the x-axis (the right edge, in a flipped coordinate system).</summary>
 		MaxXEdge,
-		/// <summary>To be added.</summary>
+		/// <summary>The maximum edge on the y-axis (the top edge, in a non-flipped coordinate system).</summary>
 		MaxYEdge,
 	}
 

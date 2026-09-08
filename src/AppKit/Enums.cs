@@ -397,42 +397,43 @@ namespace AppKit {
 		Image,
 	}
 
+	/// <summary>Specifies a generic attribute of a cell that can be queried or modified using the legacy <c>GetCellAttribute</c> and <c>SetCellAttribute</c> APIs.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSCellAttribute : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The cell does not respond to mouse events or other user actions.</summary>
 		CellDisabled,
-		/// <summary>To be added.</summary>
+		/// <summary>The current on/off/mixed state of the cell.</summary>
 		CellState,
-		/// <summary>To be added.</summary>
+		/// <summary>The cell is drawn with a pushed-in (pressed) appearance.</summary>
 		PushInCell,
-		/// <summary>To be added.</summary>
+		/// <summary>The cell's contents can be edited by the user.</summary>
 		CellEditable,
-		/// <summary>To be added.</summary>
+		/// <summary>The cell displays a grayed appearance to indicate its highlighted state.</summary>
 		ChangeGrayCell,
-		/// <summary>To be added.</summary>
+		/// <summary>The cell is currently highlighted.</summary>
 		CellHighlighted,
-		/// <summary>To be added.</summary>
+		/// <summary>The cell indicates its highlighted state by changing its contents rather than its background.</summary>
 		CellLightsByContents,
-		/// <summary>To be added.</summary>
+		/// <summary>The cell indicates its highlighted state by changing to a grayed appearance.</summary>
 		CellLightsByGray,
-		/// <summary>To be added.</summary>
+		/// <summary>The cell indicates its highlighted state by changing its background color.</summary>
 		ChangeBackgroundCell,
-		/// <summary>To be added.</summary>
+		/// <summary>The cell indicates its highlighted state by lightening or darkening its background.</summary>
 		CellLightsByBackground,
-		/// <summary>To be added.</summary>
+		/// <summary>The cell draws a border around itself.</summary>
 		CellIsBordered,
-		/// <summary>To be added.</summary>
+		/// <summary>The cell's image is drawn overlapping its title text.</summary>
 		CellHasOverlappingImage,
-		/// <summary>To be added.</summary>
+		/// <summary>The cell's image and title are arranged horizontally, side by side.</summary>
 		CellHasImageHorizontal,
-		/// <summary>To be added.</summary>
+		/// <summary>The cell's image is positioned to the left of, or below, its title.</summary>
 		CellHasImageOnLeftOrBottom,
-		/// <summary>To be added.</summary>
+		/// <summary>The cell's displayed contents change to reflect its current state.</summary>
 		CellChangesContents,
-		/// <summary>To be added.</summary>
+		/// <summary>The degree to which the cell's bezel is inset, expressed as an integer level.</summary>
 		CellIsInsetButton,
-		/// <summary>To be added.</summary>
+		/// <summary>The cell supports a third, mixed state in addition to its on and off states.</summary>
 		CellAllowsMixedState,
 	}
 

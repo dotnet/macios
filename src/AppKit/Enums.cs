@@ -4572,17 +4572,18 @@ namespace AppKit {
 		Emphasized,
 	}
 
+	/// <summary>Specifies a bitmask of options controlling whether, and how, a view participates in spring-loading during drag-and-drop.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSSpringLoadingOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Spring-loading is disabled.</summary>
 		Disabled = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Spring-loading is enabled.</summary>
 		Enabled = 1 << 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The spring-loading action is invoked repeatedly for as long as the drag hovers over the target.</summary>
 		ContinuousActivation = 1 << 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Spring-loading activates without requiring the pointer to hover; it can be triggered immediately.</summary>
 		NoHover = 1 << 3,
 	}
 

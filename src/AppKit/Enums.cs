@@ -5090,12 +5090,17 @@ namespace AppKit {
 		High = 2,
 	}
 
+	/// <summary>Specifies the kind of badge displayed on a menu item.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSMenuItemBadgeType : long {
+		/// <summary>No badge is displayed.</summary>
 		None = 0,
+		/// <summary>A badge indicating that updates are available.</summary>
 		Updates,
+		/// <summary>A badge indicating that new items are available.</summary>
 		NewItems,
+		/// <summary>A badge indicating that alerts require attention.</summary>
 		Alerts,
 	}
 

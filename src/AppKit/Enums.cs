@@ -2175,21 +2175,22 @@ namespace AppKit {
 		Cancel = 0x17,
 	}
 
+	/// <summary>Specifies a bitmask of the properties of a menu item that should be observed for changes, or included in comparisons.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSMenuProperty : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The menu item's title.</summary>
 		Title = 1 << 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The menu item's attributed title.</summary>
 		AttributedTitle = 1 << 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The menu item's key equivalent.</summary>
 		KeyEquivalent = 1 << 2,
-		/// <summary>To be added.</summary>
+		/// <summary>The menu item's image.</summary>
 		Image = 1 << 3,
-		/// <summary>To be added.</summary>
+		/// <summary>Whether the menu item is enabled.</summary>
 		Enabled = 1 << 4,
-		/// <summary>To be added.</summary>
+		/// <summary>The menu item's accessibility description.</summary>
 		AccessibilityDescription = 1 << 5,
 	}
 

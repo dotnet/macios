@@ -22478,7 +22478,6 @@ T:AppKit.NSLevelIndicatorStyle
 T:AppKit.NSLineBreakStrategy
 T:AppKit.NSMenuItemBadgeType
 T:AppKit.NSMenuPresentationStyle
-T:AppKit.NSMenuProperty
 T:AppKit.NSMenuSelectionMode
 T:AppKit.NSMutableAttributedStringAppKitAddons
 T:AppKit.NSObject_NSEditorRegistration

@@ -1386,36 +1386,37 @@ namespace AppKit {
 	#endregion
 
 	#region NSWindow
+	/// <summary>Specifies a bitmask of stylistic and behavioral traits for a window's title bar, borders, and behavior.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native ("NSWindowStyleMask")]
 	public enum NSWindowStyle : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The window has no title bar and no border.</summary>
 		Borderless = 0 << 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The window displays a title bar.</summary>
 		Titled = 1 << 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The window displays a close button in its title bar.</summary>
 		Closable = 1 << 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The window displays a minimize button in its title bar.</summary>
 		Miniaturizable = 1 << 2,
-		/// <summary>To be added.</summary>
+		/// <summary>The window can be resized by the user.</summary>
 		Resizable = 1 << 3,
-		/// <summary>To be added.</summary>
+		/// <summary>The window is drawn using the "utility" panel appearance (a thinner title bar), typically used for auxiliary windows.</summary>
 		Utility = 1 << 4,
-		/// <summary>To be added.</summary>
+		/// <summary>The panel behaves like a document-modal sheet.</summary>
 		DocModal = 1 << 6,
-		/// <summary>To be added.</summary>
+		/// <summary>The panel does not activate the application when it is clicked, and it does not become the key window.</summary>
 		NonactivatingPanel = 1 << 7,
-		/// <summary>To be added.</summary>
+		/// <summary>The window has a textured background, such as the appearance historically used by metal-style windows.</summary>
 		[Deprecated (PlatformName.MacOSX, 11, 0, message: "Don't use 'TexturedBackground' anymore.")]
 		TexturedBackground = 1 << 8,
-		/// <summary>To be added.</summary>
+		/// <summary>The title bar and toolbar are drawn as a single, unified area.</summary>
 		UnifiedTitleAndToolbar = 1 << 12,
-		/// <summary>To be added.</summary>
+		/// <summary>The window is drawn using the dark, translucent heads-up display (HUD) panel appearance.</summary>
 		Hud = 1 << 13,
-		/// <summary>To be added.</summary>
+		/// <summary>The window is currently participating in full-screen mode.</summary>
 		FullScreenWindow = 1 << 14,
-		/// <summary>To be added.</summary>
+		/// <summary>The window's content view extends to fill the entire window frame, including the area behind the title bar.</summary>
 		FullSizeContentView = 1 << 15,
 	}
 

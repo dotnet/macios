@@ -5146,17 +5146,27 @@ namespace AppKit {
 		Printed,
 	}
 
+	/// <summary>Specifies where an accessory view is placed relative to the text insertion point (cursor).</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTextCursorAccessoryPlacement : long {
+		/// <summary>The placement is not specified; the system chooses an appropriate placement.</summary>
 		Unspecified,
+		/// <summary>The accessory is placed immediately before the cursor.</summary>
 		Backward,
+		/// <summary>The accessory is placed immediately after the cursor.</summary>
 		Forward,
+		/// <summary>The accessory is not shown.</summary>
 		Invisible,
+		/// <summary>The accessory is centered over the cursor.</summary>
 		Center,
+		/// <summary>The accessory is placed off-screen, to the left.</summary>
 		OffscreenLeft,
+		/// <summary>The accessory is placed off-screen, above.</summary>
 		OffscreenTop,
+		/// <summary>The accessory is placed off-screen, to the right.</summary>
 		OffscreenRight,
+		/// <summary>The accessory is placed off-screen, below.</summary>
 		OffscreenBottom,
 	}
 

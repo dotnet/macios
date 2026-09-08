@@ -22523,7 +22523,6 @@ T:AppKit.NSTextAlignmentExtensions
 T:AppKit.NSTextCheckingOptions
 T:AppKit.NSTextContentManagerEnumerationOptions
 T:AppKit.NSTextContentType
-T:AppKit.NSTextCursorAccessoryPlacement
 T:AppKit.NSTextField_NSTouchBar
 T:AppKit.NSTextFieldGetCandidates
 T:AppKit.NSTextFieldSelectCandidate

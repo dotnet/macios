@@ -5005,13 +5005,19 @@ namespace AppKit {
 		Shadow,
 	}
 
+	/// <summary>Specifies how a window's toolbar is displayed relative to its title bar.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSWindowToolbarStyle : long {
+		/// <summary>The system chooses the most appropriate toolbar style automatically, based on the window's configuration.</summary>
 		Automatic,
+		/// <summary>The toolbar is expanded below a larger title, with more vertical space for toolbar items.</summary>
 		Expanded,
+		/// <summary>The toolbar is styled to match a Preferences-style window.</summary>
 		Preference,
+		/// <summary>The toolbar and title bar are unified into a single bar.</summary>
 		Unified,
+		/// <summary>The toolbar and title bar are unified into a single, more compact bar.</summary>
 		UnifiedCompact,
 	}
 

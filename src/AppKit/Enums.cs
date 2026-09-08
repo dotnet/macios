@@ -280,18 +280,19 @@ namespace AppKit {
 		Exterior,
 	}
 
+	/// <summary>Specifies how out-of-gamut colors are mapped to the destination color space.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSColorRenderingIntent : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the rendering intent embedded in the source profile, or <see cref="F:AppKit.NSColorRenderingIntent.Perceptual" /> if none is specified.</summary>
 		Default,
-		/// <summary>To be added.</summary>
+		/// <summary>Preserves the exact color values that fall within both color spaces' gamuts and clips out-of-gamut colors to the nearest reproducible color.</summary>
 		AbsoluteColorimetric,
-		/// <summary>To be added.</summary>
+		/// <summary>Preserves the exact color values that fall within both color spaces' gamuts, and rescales white points to compensate for differing white points between the color spaces.</summary>
 		RelativeColorimetric,
-		/// <summary>To be added.</summary>
+		/// <summary>Compresses the entire source gamut into the destination gamut, preserving the overall visual relationship between colors.</summary>
 		Perceptual,
-		/// <summary>To be added.</summary>
+		/// <summary>Preserves the relative saturation of colors, sacrificing color accuracy to maintain vivid colors.</summary>
 		Saturation,
 
 	}

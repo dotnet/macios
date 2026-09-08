@@ -1337,17 +1337,19 @@ namespace AppKit {
 		Rounded,
 	}
 
+	/// <summary>Specifies when a view's backing layer redraws its contents in response to the view being resized.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSViewLayerContentsRedrawPolicy : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The layer never redraws its contents automatically; the view is responsible for updating it.</summary>
 		Never,
-		/// <summary>To be added.</summary>
+		/// <summary>The layer redraws its contents only when the view calls <c>SetNeedsDisplay</c>.</summary>
 		OnSetNeedsDisplay,
-		/// <summary>To be added.</summary>
+		/// <summary>The layer redraws its contents continuously while the view is being resized.</summary>
 		DuringViewResize,
-		/// <summary>To be added.</summary>
+		/// <summary>The layer redraws its contents once, immediately before the view is resized.</summary>
 		BeforeViewResize,
+		/// <summary>The layer redraws its contents once, immediately after the view is resized, and cross-fades from the previous contents.</summary>
 		Crossfade = 4,
 	}
 

@@ -22706,7 +22706,6 @@ T:AppKit.NSView_NSCandidateListTouchBarItem
 T:AppKit.NSView_NSTouchBar
 T:AppKit.NSViewControllerTransitionOptions
 T:AppKit.NSViewLayerContentsPlacement
-T:AppKit.NSViewLayerContentsRedrawPolicy
 T:AppKit.NSViewLayoutRegionAdaptivityAxis
 T:AppKit.NSVisualEffectMaterial
 T:AppKit.NSVisualEffectState

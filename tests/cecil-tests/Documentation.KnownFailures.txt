@@ -22678,7 +22678,6 @@ T:AppKit.NSTouchEvent
 T:AppKit.NSTrackingAreaOptions
 T:AppKit.NSTypesetterBehavior
 T:AppKit.NSTypesetterControlCharacterAction
-T:AppKit.NSUnderlinePattern
 T:AppKit.NSUsableScrollerParts
 T:AppKit.NSVerticalDirections
 T:AppKit.NSView_NSCandidateListTouchBarItem

@@ -2224,17 +2224,18 @@ namespace AppKit {
 	}
 
 	// Convenience enum, untyped in ObjC
+	/// <summary>Specifies the dash pattern used when drawing an underline or strikethrough beneath text.</summary>
 	[NoMacCatalyst]
 	public enum NSUnderlinePattern : int {
-		/// <summary>To be added.</summary>
+		/// <summary>A solid line.</summary>
 		Solid = 0x0000,
-		/// <summary>To be added.</summary>
+		/// <summary>A dotted line.</summary>
 		Dot = 0x0100,
-		/// <summary>To be added.</summary>
+		/// <summary>A dashed line.</summary>
 		Dash = 0x0200,
-		/// <summary>To be added.</summary>
+		/// <summary>A line alternating dashes and dots.</summary>
 		DashDot = 0x0300,
-		/// <summary>To be added.</summary>
+		/// <summary>A line alternating dashes and pairs of dots.</summary>
 		DashDotDot = 0x0400,
 	}
 

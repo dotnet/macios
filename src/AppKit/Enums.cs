@@ -4666,14 +4666,15 @@ namespace AppKit {
 		LastBaseline,
 	}
 
+	/// <summary>Specifies the layout direction used when drawing a directional image.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSImageLayoutDirection : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The image does not have a specific layout direction.</summary>
 		Unspecified = -1,
-		/// <summary>To be added.</summary>
+		/// <summary>The image is drawn for a left-to-right layout direction.</summary>
 		LeftToRight = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>The image is drawn for a right-to-left layout direction.</summary>
 		RightToLeft = 3,
 	}
 

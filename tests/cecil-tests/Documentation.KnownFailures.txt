@@ -22438,7 +22438,6 @@ T:AppKit.NSGlassEffectViewStyle
 T:AppKit.NSHorizontalDirections
 T:AppKit.NSImageDynamicRange
 T:AppKit.NSImageHint
-T:AppKit.NSImageLayoutDirection
 T:AppKit.NSImageName
 T:AppKit.NSImageRect
 T:AppKit.NSImageResizingModeExtensions

@@ -22561,7 +22561,6 @@ T:AppKit.NSTableViewAnimation
 T:AppKit.NSTableViewAnimationOptions
 T:AppKit.NSTableViewCell
 T:AppKit.NSTableViewCellGetter
-T:AppKit.NSTableViewColumnAutoresizingStyle
 T:AppKit.NSTableViewColumnPredicate
 T:AppKit.NSTableViewColumnRowPredicate
 T:AppKit.NSTableViewColumnRowString

@@ -2717,20 +2717,21 @@ namespace AppKit {
 		Small,
 	}
 
+	/// <summary>Specifies how a table view automatically resizes its columns to fill the available width.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTableViewColumnAutoresizingStyle : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Columns are not automatically resized.</summary>
 		None = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>All resizable columns are resized uniformly.</summary>
 		Uniform,
-		/// <summary>To be added.</summary>
+		/// <summary>Columns are resized one at a time, starting with the last column, in order.</summary>
 		Sequential,
-		/// <summary>To be added.</summary>
+		/// <summary>Columns are resized one at a time, starting with the first column, in reverse order.</summary>
 		ReverseSequential,
-		/// <summary>To be added.</summary>
+		/// <summary>Only the last column is resized.</summary>
 		LastColumnOnly,
-		/// <summary>To be added.</summary>
+		/// <summary>Only the first column is resized.</summary>
 		FirstColumnOnly,
 	}
 

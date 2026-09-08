@@ -2466,24 +2466,25 @@ namespace AppKit {
 		All,
 	}
 
+	/// <summary>Specifies a part of a scroller, such as an arrow, the knob, or the knob slot.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSScrollerPart : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>No part of the scroller.</summary>
 		None,
-		/// <summary>To be added.</summary>
+		/// <summary>The area of the knob slot below or to the right of the knob, which pages down or right when clicked.</summary>
 		DecrementPage,
-		/// <summary>To be added.</summary>
+		/// <summary>The scroller's knob, which is dragged to scroll continuously.</summary>
 		Knob,
-		/// <summary>To be added.</summary>
+		/// <summary>The area of the knob slot above or to the left of the knob, which pages up or left when clicked.</summary>
 		IncrementPage,
-		/// <summary>To be added.</summary>
+		/// <summary>The arrow that scrolls up or left by a small increment.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 14)]
 		DecrementLine,
-		/// <summary>To be added.</summary>
+		/// <summary>The arrow that scrolls down or right by a small increment.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 14)]
 		IncrementLine,
-		/// <summary>To be added.</summary>
+		/// <summary>The track (slot) within which the knob moves.</summary>
 		KnobSlot,
 	}
 

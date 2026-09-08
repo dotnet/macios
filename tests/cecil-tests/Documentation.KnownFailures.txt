@@ -22533,7 +22533,6 @@ T:AppKit.NSSavePanelComplete
 T:AppKit.NSScrollElasticity
 T:AppKit.NSScrollerArrow
 T:AppKit.NSScrollerKnobStyle
-T:AppKit.NSScrollerPart
 T:AppKit.NSScrollViewFindBarPosition
 T:AppKit.NSScrubberAlignment
 T:AppKit.NSSegmentBackgroundStyle_NSSegmentedCell

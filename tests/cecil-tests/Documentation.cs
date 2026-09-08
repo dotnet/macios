@@ -324,6 +324,12 @@ namespace Cecil.Tests {
 
 		static string GetDocId (TypeReference tr)
 		{
+			// Roslyn's own generated XML docs use an empty string for function pointer
+			// parameters/types (e.g. "M:...CreateInputPort(System.String,CoreMidi.MidiProtocolId,,CoreMidi.MidiError@)"),
+			// so do the same here to stay consistent with the doc ids Roslyn computes.
+			if (tr is FunctionPointerType)
+				return "";
+
 			string name = "";
 			if (tr.IsNested) {
 				var decl = tr.DeclaringType;

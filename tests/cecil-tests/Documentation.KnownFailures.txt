@@ -22627,7 +22627,6 @@ T:AppKit.NSTextLayoutManagerSegmentOptions
 T:AppKit.NSTextLayoutManagerSegmentType
 T:AppKit.NSTextListMarkerFormats
 T:AppKit.NSTextListOptions
-T:AppKit.NSTextMovement
 T:AppKit.NSTextPredicate
 T:AppKit.NSTextScalingType
 T:AppKit.NSTextSelectionAffinity

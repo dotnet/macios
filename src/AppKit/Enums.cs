@@ -2151,26 +2151,27 @@ namespace AppKit {
 		Natural = 4,
 	}
 
+	/// <summary>Specifies the kind of action, such as pressing Return or Tab, that ended editing in a text field.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTextMovement : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Editing ended for a reason other than one of the other defined movements.</summary>
 		Other = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Editing ended because the user pressed Return.</summary>
 		Return = 0x10,
-		/// <summary>To be added.</summary>
+		/// <summary>Editing ended because the user pressed Tab.</summary>
 		Tab = 0x11,
-		/// <summary>To be added.</summary>
+		/// <summary>Editing ended because the user pressed Shift-Tab, moving backward.</summary>
 		Backtab = 0x12,
-		/// <summary>To be added.</summary>
+		/// <summary>Editing ended because the user pressed the left arrow key.</summary>
 		Left = 0x13,
-		/// <summary>To be added.</summary>
+		/// <summary>Editing ended because the user pressed the right arrow key.</summary>
 		Right = 0x14,
-		/// <summary>To be added.</summary>
+		/// <summary>Editing ended because the user pressed the up arrow key.</summary>
 		Up = 0x15,
-		/// <summary>To be added.</summary>
+		/// <summary>Editing ended because the user pressed the down arrow key.</summary>
 		Down = 0x16,
-		/// <summary>To be added.</summary>
+		/// <summary>Editing ended because the user pressed Escape, cancelling the edit.</summary>
 		Cancel = 0x17,
 	}
 

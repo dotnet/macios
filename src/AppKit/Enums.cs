@@ -4042,14 +4042,15 @@ namespace AppKit {
 		Overlay,
 	}
 
+	/// <summary>Specifies whether a scroll view exhibits elastic (rubber-band) scrolling past its content bounds.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSScrollElasticity : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the system's default elasticity behavior for the scroll view's context.</summary>
 		Automatic = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Disables elastic scrolling; the scroll view stops at its content bounds.</summary>
 		None,
-		/// <summary>To be added.</summary>
+		/// <summary>Allows elastic scrolling past the scroll view's content bounds.</summary>
 		Allowed,
 	}
 

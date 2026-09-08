@@ -22505,7 +22505,6 @@ T:AppKit.NSRulerEditorPredicateParts
 T:AppKit.NSRulerMarkerClientViewDelegation
 T:AppKit.NSRulerViewUnits
 T:AppKit.NSSavePanelComplete
-T:AppKit.NSScrollElasticity
 T:AppKit.NSScrollerKnobStyle
 T:AppKit.NSScrubberAlignment
 T:AppKit.NSSegmentBackgroundStyle_NSSegmentedCell

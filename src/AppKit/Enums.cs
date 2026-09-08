@@ -5114,11 +5114,15 @@ namespace AppKit {
 		Palette = 1,
 	}
 
+	/// <summary>Specifies how items within a menu can be selected.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSMenuSelectionMode : long {
+		/// <summary>The system chooses the most appropriate selection mode automatically.</summary>
 		Automatic = 0,
+		/// <summary>Only one menu item can be selected at a time.</summary>
 		SelectOne = 1,
+		/// <summary>Any number of menu items can be selected simultaneously.</summary>
 		SelectAny = 2,
 	}
 

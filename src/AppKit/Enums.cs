@@ -556,22 +556,23 @@ namespace AppKit {
 		ExtraLarge = 4,
 	}
 
+	/// <summary>Specifies the visual context in which content, such as a cell's text or image, is being drawn, so it can adjust its appearance for legibility.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSBackgroundStyle : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The content is drawn against a normal, unemphasized background.</summary>
 		Normal = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The content is drawn against a light background.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'Normal' instead.")]
 		Light = Normal,
-		/// <summary>To be added.</summary>
+		/// <summary>The content is drawn against a dark, selected, or otherwise emphasized background, and should adjust its appearance for contrast.</summary>
 		Emphasized,
-		/// <summary>To be added.</summary>
+		/// <summary>The content is drawn against a dark background.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'Emphasized' instead.")]
 		Dark = Emphasized,
-		/// <summary>To be added.</summary>
+		/// <summary>The content is drawn on a raised, embossed surface.</summary>
 		Raised,
-		/// <summary>To be added.</summary>
+		/// <summary>The content is drawn on a lowered, engraved surface.</summary>
 		Lowered,
 	}
 	#endregion

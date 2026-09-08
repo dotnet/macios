@@ -4054,14 +4054,15 @@ namespace AppKit {
 		Allowed,
 	}
 
+	/// <summary>Specifies the visual style of a scroller's knob.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSScrollerKnobStyle : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the default knob style for the current context.</summary>
 		Default = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses a dark-colored knob, suited to light backgrounds.</summary>
 		Dark = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses a light-colored knob, suited to dark backgrounds.</summary>
 		Light = 2,
 	}
 

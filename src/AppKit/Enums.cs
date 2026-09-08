@@ -3484,22 +3484,23 @@ namespace AppKit {
 		DepthComponent = 0x1902,
 	}
 
+	/// <summary>Specifies a face of a cube-map texture, or that the texture is not a cube map.</summary>
 	[NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'Metal' Framework instead.")]
 	public enum NSGLTextureCubeMap : uint {
-		/// <summary>To be added.</summary>
+		/// <summary>The texture is not a cube map.</summary>
 		None = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The positive x-axis face of the cube map.</summary>
 		PositiveX = 0x8515,
-		/// <summary>To be added.</summary>
+		/// <summary>The positive y-axis face of the cube map.</summary>
 		PositiveY = 0x8517,
-		/// <summary>To be added.</summary>
+		/// <summary>The positive z-axis face of the cube map.</summary>
 		PositiveZ = 0x8519,
-		/// <summary>To be added.</summary>
+		/// <summary>The negative x-axis face of the cube map.</summary>
 		NegativeX = 0x8516,
-		/// <summary>To be added.</summary>
+		/// <summary>The negative y-axis face of the cube map.</summary>
 		NegativeY = 0x8517,
-		/// <summary>To be added.</summary>
+		/// <summary>The negative z-axis face of the cube map.</summary>
 		NegativeZ = 0x851A,
 	}
 

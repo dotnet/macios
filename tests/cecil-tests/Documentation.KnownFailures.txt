@@ -22442,7 +22442,6 @@ T:AppKit.NSGestureRecognizer_NSTouchBar
 T:AppKit.NSGesturesProbe
 T:AppKit.NSGlassEffectViewStyle
 T:AppKit.NSGLColorBuffer
-T:AppKit.NSGLTextureCubeMap
 T:AppKit.NSGlyphInscription
 T:AppKit.NSGridCellPlacement
 T:AppKit.NSGridRowAlignment

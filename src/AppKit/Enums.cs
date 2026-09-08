@@ -4819,8 +4819,6 @@ namespace AppKit {
 		Next,
 	}
 
-	[NoMacCatalyst]
-	[Native]
 	/// <summary>Specifies a category of content that VoiceOver's accessibility rotor can navigate between.</summary>
 	[NoMacCatalyst]
 	[Native]

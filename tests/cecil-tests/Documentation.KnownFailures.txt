@@ -22496,7 +22496,6 @@ T:AppKit.NSPressureBehavior
 T:AppKit.NSPrintPanelResult
 T:AppKit.NSPrintRenderingQuality
 T:AppKit.NSRectAlignment
-T:AppKit.NSRemoteNotificationType
 T:AppKit.NSResponder_NSTouchBarProvider
 T:AppKit.NSResponder_NSWritingToolsSupport
 T:AppKit.NSRuleEditorNumberOfChildren

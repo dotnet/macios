@@ -4005,17 +4005,18 @@ namespace AppKit {
 
 	}
 
+	/// <summary>Specifies a bitmask of the types of remote (push) notifications an application can receive.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSRemoteNotificationType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The application does not receive any remote notifications.</summary>
 		None = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The application can update its icon badge in response to a remote notification.</summary>
 		Badge = 1 << 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The application can play a sound in response to a remote notification.</summary>
 		Sound = 1 << 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The application can display an alert in response to a remote notification.</summary>
 		Alert = 1 << 2,
 	}
 

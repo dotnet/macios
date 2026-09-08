@@ -4066,23 +4066,24 @@ namespace AppKit {
 		Light = 2,
 	}
 
+	/// <summary>Specifies a bitmask describing the phase of a continuous gesture or scrolling event, such as a trackpad scroll.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSEventPhase : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The event has no associated phase.</summary>
 		None,
-		/// <summary>To be added.</summary>
+		/// <summary>The event marks the beginning of a continuous gesture.</summary>
 		Began = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The gesture has not changed since the previous event.</summary>
 		Stationary = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>The gesture has changed since the previous event.</summary>
 		Changed = 4,
-		/// <summary>To be added.</summary>
+		/// <summary>The event marks the end of a continuous gesture.</summary>
 		Ended = 8,
-		/// <summary>To be added.</summary>
+		/// <summary>The gesture was cancelled and did not end normally.</summary>
 		Cancelled = 16,
-		/// <summary>To be added.</summary>
+		/// <summary>The event indicates that a gesture may begin, but has not yet been confirmed.</summary>
 		MayBegin = 32,
 	}
 

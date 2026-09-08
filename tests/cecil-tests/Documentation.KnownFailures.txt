@@ -22425,7 +22425,6 @@ T:AppKit.NSDraggingFormation
 T:AppKit.NSDraggingItemEnumerationOptions
 T:AppKit.NSDraggingItemImagesContentProvider
 T:AppKit.NSEventModifierFlags
-T:AppKit.NSEventPhase
 T:AppKit.NSEventTrackHandler
 T:AppKit.NSFontDescriptorSystemDesign
 T:AppKit.NSFontError

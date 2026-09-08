@@ -22538,7 +22538,6 @@ T:AppKit.NSRulerEditorDisplayValue
 T:AppKit.NSRulerEditorPredicateParts
 T:AppKit.NSRulerMarkerClientViewDelegation
 T:AppKit.NSRulerViewUnits
-T:AppKit.NSSaveOperationType
 T:AppKit.NSSavePanelComplete
 T:AppKit.NSScrollArrowPosition
 T:AppKit.NSScrollElasticity

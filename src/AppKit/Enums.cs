@@ -1943,22 +1943,23 @@ namespace AppKit {
 		Discardable = 256, /* New in Lion */
 	}
 
+	/// <summary>Specifies the kind of save operation being performed on a document.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSSaveOperationType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Saves the document to its existing location.</summary>
 		Save,
-		/// <summary>To be added.</summary>
+		/// <summary>Saves the document to a new location chosen by the user, which becomes the document's new location.</summary>
 		SaveAs,
-		/// <summary>To be added.</summary>
+		/// <summary>Saves a copy of the document to a new location chosen by the user, without changing the document's current location.</summary>
 		SaveTo,
-		/// <summary>To be added.</summary>
+		/// <summary>The document is being saved automatically. Deprecated in favor of <see cref="F:AppKit.NSSaveOperationType.Elsewhere" />.</summary>
 		Autosave = 3,   /* Deprecated name in Lion */
-		/// <summary>To be added.</summary>
+		/// <summary>The document is being saved automatically to a location other than its current location.</summary>
 		Elsewhere = 3,  /* New Lion name */
-		/// <summary>To be added.</summary>
+		/// <summary>The document is being saved automatically, in place, to its current location.</summary>
 		InPlace = 4,    /* New in Lion */
-		/// <summary>To be added.</summary>
+		/// <summary>The document is being saved automatically to a new location chosen by the system, such as during version browsing.</summary>
 		AutoSaveAs = 5, /* New in Mountain Lion */
 	}
 

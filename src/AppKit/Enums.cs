@@ -234,7 +234,7 @@ namespace AppKit {
 	[NoMacCatalyst]
 	[Native]
 	public enum NSBackingStore : ulong {
-		/// <summary>The window renders directly into display memory and is not buffered.</summary>
+		/// <summary>The window renders visible portions directly to the screen and retains obscured portions in a buffer.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'Buffered' instead.")]
 		Retained,
 		/// <summary>The window renders directly into display memory, without retaining its contents.</summary>
@@ -301,11 +301,11 @@ namespace AppKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSRectEdge : ulong {
-		/// <summary>The minimum edge on the x-axis (the left edge, in a flipped coordinate system).</summary>
+		/// <summary>The minimum edge on the x-axis (the left edge).</summary>
 		MinXEdge,
 		/// <summary>The minimum edge on the y-axis (the bottom edge, in a non-flipped coordinate system).</summary>
 		MinYEdge,
-		/// <summary>The maximum edge on the x-axis (the right edge, in a flipped coordinate system).</summary>
+		/// <summary>The maximum edge on the x-axis (the right edge).</summary>
 		MaxXEdge,
 		/// <summary>The maximum edge on the y-axis (the top edge, in a non-flipped coordinate system).</summary>
 		MaxYEdge,
@@ -1458,7 +1458,7 @@ namespace AppKit {
 		MoveToActiveSpace = 1 << 1,
 		/// <summary>The window participates in Spaces and Exposé, and can be managed like an ordinary application window.</summary>
 		Managed = 1 << 2,
-		/// <summary>The window participates in Exposé and Spaces the same way as a transient window, such as a menu or panel, and is not affected by Exposé.</summary>
+		/// <summary>The window floats above the active Space and is hidden from the Mission Control window overview.</summary>
 		Transient = 1 << 3,
 		/// <summary>The window is treated like a desktop icon and does not move to a different Space, similar to the Finder desktop.</summary>
 		Stationary = 1 << 4,

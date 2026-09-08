@@ -14,7 +14,7 @@ namespace PreviewExtensionTest {
 
 		public void PreparePreviewOfFile (NSUrl url, Action<NSError> completionHandler)
 		{
-			completionHandler (null);
+			completionHandler (null!);
 		}
 	}
 }

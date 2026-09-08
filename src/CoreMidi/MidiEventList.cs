@@ -33,14 +33,11 @@ namespace CoreMidi {
 		 */
 
 		// this struct is just used internally to avoid some manual pointer math
+		[StructLayout (LayoutKind.Sequential)]
 		struct MIDIEventList {
-#pragma warning disable CS0649 // Field '...' is never assigned to, and will always have its default value
-#pragma warning disable CS0169 // The field '...' is never used
 			internal MidiProtocolId protocol;
 			internal uint numPackets;
 			internal MidiEventPacket packet;
-#pragma warning restore CS0169
-#pragma warning restore CS0649
 		}
 
 		unsafe MIDIEventList* midiDataPointer;
@@ -226,7 +223,7 @@ namespace CoreMidi {
 
 			unsafe {
 				MidiEventPacket* packet = &midiDataPointer->packet;
-				packetToYield = *packet;
+				packetToYield = CopyPacket (packet);
 				packetPtr = (IntPtr) packet;
 			}
 			yield return packetToYield;
@@ -236,11 +233,28 @@ namespace CoreMidi {
 					MidiEventPacket* packet = (MidiEventPacket*) packetPtr;
 					uint* wordPointer = &packet->word_00;
 					packet = (MidiEventPacket*) (wordPointer + packet->WordCount);
-					packetToYield = *packet;
+					packetToYield = CopyPacket (packet);
 					packetPtr = (IntPtr) packet;
 				}
 				yield return packetToYield;
 			}
+		}
+
+		// MIDIEventPacket is variable-sized: only the timestamp, word count, and
+		// the actual words (WordCount of them) are guaranteed to be within the
+		// allocated memory of the event list. Dereferencing the whole (fixed-size,
+		// 64-word) struct can read past the end of the allocated buffer for the
+		// last packet in the list, so only copy the words that are actually there.
+		static unsafe MidiEventPacket CopyPacket (MidiEventPacket* packet)
+		{
+			var rv = default (MidiEventPacket);
+			rv.Timestamp = packet->Timestamp;
+			var wordCount = packet->WordCount;
+			rv.WordCount = wordCount;
+			uint* words = &packet->word_00;
+			for (var w = 0; w < wordCount; w++)
+				rv [(int) w] = words [w];
+			return rv;
 		}
 
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator ()

@@ -7,9 +7,6 @@ using System.Runtime.Versioning;
 
 #nullable enable
 
-#pragma warning disable CS0649 // Field '...' is never assigned to, and will always have its default value
-#pragma warning disable CS0169 // The field '...' is never used
-
 namespace CoreMidi {
 	/// <summary>A representation of all possible messages stored in a Universal MIDI packet (UMP).</summary>
 	/// <remarks>
@@ -686,6 +683,3 @@ namespace CoreMidi {
 		public uint [] Words => new uint [] { word0, word1, word2, word3 };
 	}
 }
-
-#pragma warning restore CS0649
-#pragma warning restore CS0169

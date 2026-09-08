@@ -3,10 +3,12 @@
 
 #nullable enable
 
+using System.Runtime.InteropServices;
+
 namespace CoreFoundation {
 	// This struct is only used for P/Invokes.
+	[StructLayout (LayoutKind.Sequential)]
 	struct CFUuidBytes {
-#pragma warning disable CS0649 // Field '...' is never assigned to, and will always have its default value 0
 		public byte Byte0;
 		public byte Byte1;
 		public byte Byte2;
@@ -23,6 +25,5 @@ namespace CoreFoundation {
 		public byte Byte13;
 		public byte Byte14;
 		public byte Byte15;
-#pragma warning restore CS0649
 	}
 }

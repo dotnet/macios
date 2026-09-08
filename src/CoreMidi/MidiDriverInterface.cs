@@ -324,10 +324,9 @@ namespace CoreMidi {
 #if !STABLE_MIDIDRIVER
 	[Experimental ("APL0004")]
 #endif
+	[StructLayout (LayoutKind.Sequential)]
 	struct MidiDriverInterface {
-#pragma warning disable CS0169 // The field 'MidiDriverInterface._reserved' is never used
 		IntPtr _reserved;
-#pragma warning restore CS0169
 		internal unsafe delegate* unmanaged<MidiDriverInterface* /* thisPointer */, CFUuidBytes /* REFIID iid */, void* /* ppv */, int /* HRESULT */> QueryInterface;
 		internal unsafe delegate* unmanaged<MidiDriverInterface* /* thisPointer */, uint /* ULONG */> AddRef;
 		internal unsafe delegate* unmanaged<MidiDriverInterface* /* thisPointer */, uint /* ULONG */ > Release;

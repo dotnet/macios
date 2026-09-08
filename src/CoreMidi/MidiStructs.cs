@@ -1,6 +1,8 @@
 #if !TVOS
 #nullable enable
 
+using System.Runtime.InteropServices;
+
 using CoreFoundation;
 
 using MidiObjectRef = System.Int32;
@@ -167,16 +169,15 @@ namespace CoreMidi {
 
 	/// <summary>A struct that represents a request to transmit a single system-exclusive event.</summary>
 	[NativeName ("MIDISysexSendRequest")]
+	[StructLayout (LayoutKind.Sequential)]
 	struct MidiSysexSendRequest {
 		MidiEndpointRef destination;
 		IntPtr /* const Byte * */                                                        data;
 		uint bytesToSend;
 		byte /* Boolean */                                                               complete;
-#pragma warning disable CS0169 //  The field '...' is never used
 		byte reserved1;
 		byte reserved2;
 		byte reserved3;
-#pragma warning restore CS0169
 		unsafe delegate* unmanaged<MidiSysexSendRequest*, void> /* MIDICompletionProc */ completionProc;
 		IntPtr /* void * __nullable */                                                   completionRefCon;
 

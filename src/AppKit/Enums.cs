@@ -1507,22 +1507,23 @@ namespace AppKit {
 		Previous,
 	}
 
+	/// <summary>Specifies one of the standard buttons that can appear in a window's title bar.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSWindowButton : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The button that closes the window.</summary>
 		CloseButton,
-		/// <summary>To be added.</summary>
+		/// <summary>The button that minimizes the window to the Dock.</summary>
 		MiniaturizeButton,
-		/// <summary>To be added.</summary>
+		/// <summary>The button that zooms the window between its standard and user-defined sizes.</summary>
 		ZoomButton,
-		/// <summary>To be added.</summary>
+		/// <summary>The button used to toggle the visibility of the window's toolbar.</summary>
 		ToolbarButton,
-		/// <summary>To be added.</summary>
+		/// <summary>The button that displays the document icon in the title bar.</summary>
 		DocumentIconButton,
-		/// <summary>To be added.</summary>
+		/// <summary>The button that displays the document's version history.</summary>
 		DocumentVersionsButton = 6,
-		/// <summary>To be added.</summary>
+		/// <summary>The button that toggles full-screen mode.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 12, message: "The standard window button for FullScreenButton is always null; use ZoomButton instead.")]
 		FullScreenButton,
 	}

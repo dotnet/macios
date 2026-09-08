@@ -22634,7 +22634,6 @@ T:AppKit.NSWindowSizeSize
 T:AppKit.NSWindowToolbarStyle
 T:AppKit.NSWindowTrackEventsMatchingCompletionHandler
 T:AppKit.NSWindowUndoManager
-T:AppKit.NSWindowUserTabbingPreference
 T:AppKit.NSWindowWindows
 T:AppKit.NSWorkspaceAuthorizationType
 T:AppKit.NSWorkspaceUrlHandler

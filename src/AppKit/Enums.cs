@@ -4618,14 +4618,15 @@ namespace AppKit {
 		Disallowed,
 	}
 
+	/// <summary>Specifies the user's system-wide preference for when new windows should be opened as tabs.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSWindowUserTabbingPreference : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The user prefers to open new windows as tabs only when explicitly requested.</summary>
 		Manual,
-		/// <summary>To be added.</summary>
+		/// <summary>The user prefers to always open new windows as tabs.</summary>
 		Always,
-		/// <summary>To be added.</summary>
+		/// <summary>The user prefers to open new windows as tabs only while in full-screen mode.</summary>
 		InFullScreen,
 	}
 

@@ -55,6 +55,62 @@ namespace Xamarin.Tests {
 			Assert.That (scriptContents, Is.EqualTo (expectedScriptContents), "Script contents");
 		}
 
+		[Test]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "--installdev")]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", "--installsim")]
+		public void DeployToDevice (ApplePlatform platform, string runtimeIdentifiers, string expectedInstallArgument)
+		{
+			var project = "MySimpleApp";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["EnableCodeSigning"] = "false"; // Skip code signing, since that would require making sure we have code signing configured on bots.
+
+			// Build the app first, since 'DeployToDevice' is meant to deploy an already-built app.
+			DotNet.AssertBuild (project_path, properties);
+
+			var rv = DotNet.Execute ("build", project_path, properties, assert_success: false, target: "DeployToDevice");
+
+			// The 'MlaunchInstallArguments' property is computed (and thus present in the binlog) as soon as a device/simulator
+			// was found, regardless of whether the actual install (done by mlaunch, executed via an <Exec/> task) succeeds - and
+			// bots may not have any devices/simulators available to actually install to, so only verify the computed arguments,
+			// not whether the whole build (which includes actually installing the app) succeeded.
+			if (BinLog.TryFindPropertyValue (rv.BinLogPath, "MlaunchInstallArguments", out var mlaunchInstallArguments)) {
+				Assert.That (mlaunchInstallArguments, Does.StartWith (expectedInstallArgument), "install arguments");
+				return;
+			}
+
+			Assert.That (rv.ExitCode, Is.Not.EqualTo (0), "should have failed if no arguments were computed");
+			var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).Select (v => v.Message).OfType<string> ().ToArray ();
+			Assert.That (string.Join ("\n", errors), Does.Contain ("No applicable and available devices found."));
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		public void DeployToDevice_AppNotBuilt (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			var project = "MySimpleApp";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["EnableCodeSigning"] = "false";
+
+			// Make sure the app manifest doesn't exist, regardless of whether this project has been built by another test already.
+			var manifestPath = Path.Combine (appPath, "Info.plist");
+			if (File.Exists (manifestPath))
+				File.Delete (manifestPath);
+
+			var rv = DotNet.Execute ("build", project_path, properties, assert_success: false, target: "DeployToDevice");
+
+			Assert.That (rv.ExitCode, Is.Not.EqualTo (0), "should fail because the app hasn't been built");
+			var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).Select (v => v.Message).OfType<string> ().ToArray ();
+			Assert.That (string.Join ("\n", errors), Does.Contain ("The app must be built before the arguments to launch the app using mlaunch can be computed."));
+		}
+
 		public static object [] GetMlaunchRunArgumentsTestCases ()
 		{
 			return new object [] {

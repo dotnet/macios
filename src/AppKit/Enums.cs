@@ -4678,19 +4678,20 @@ namespace AppKit {
 		RightToLeft = 3,
 	}
 
+	/// <summary>Specifies a bitmask of options controlling which CloudKit sharing configurations are offered by the sharing service.</summary>
 	[NoMacCatalyst]
 	[Native]
 	[Flags]
 	public enum NSCloudKitSharingServiceOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the standard set of sharing options.</summary>
 		Standard = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Allows sharing with anyone who has the link (public sharing).</summary>
 		AllowPublic = 1 << 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Allows sharing only with specifically invited people (private sharing).</summary>
 		AllowPrivate = 1 << 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Allows participants to be granted read-only access.</summary>
 		AllowReadOnly = 1 << 4,
-		/// <summary>To be added.</summary>
+		/// <summary>Allows participants to be granted read-write access.</summary>
 		AllowReadWrite = 1 << 5,
 	}
 

@@ -3269,46 +3269,47 @@ namespace AppKit {
 		Era = 0x100,
 	}
 
+	/// <summary>Specifies a parameter that can be set or queried on an <see cref="T:AppKit.NSOpenGLContext" />.</summary>
 	[NoMacCatalyst]
 	[Native]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'Metal' Framework instead.")]
 	public enum NSOpenGLContextParameter : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The rectangle used for a partial screen swap operation.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 7)]
 		SwapRectangle = 200,
-		/// <summary>To be added.</summary>
+		/// <summary>Enables or disables the use of a partial screen swap rectangle.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 7)]
 		SwapRectangleEnable = 201,
-		/// <summary>To be added.</summary>
+		/// <summary>Enables or disables rasterization.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 7)]
 		RasterizationEnable = 221,
-		/// <summary>To be added.</summary>
+		/// <summary>Validates the context's state before each rendering call, which is useful for debugging.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 7)]
 		StateValidation = 301,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the surface's contents are volatile and do not need to be preserved.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 7)]
 		SurfaceSurfaceVolatile = 306,
 
-		/// <summary>To be added.</summary>
+		/// <summary>Controls whether buffer swaps are synchronized with the display's vertical refresh rate.</summary>
 		SwapInterval = 222,
-		/// <summary>To be added.</summary>
+		/// <summary>Controls whether the surface is displayed above or below its window, as specified by an <see cref="T:AppKit.NSSurfaceOrder" /> value.</summary>
 		SurfaceOrder = 235,
-		/// <summary>To be added.</summary>
+		/// <summary>Controls whether the surface is opaque or supports transparency.</summary>
 		SurfaceOpacity = 236,
 
-		/// <summary>To be added.</summary>
+		/// <summary>Sets the size of the surface's offscreen backing store.</summary>
 		SurfaceBackingSize = 304,
-		/// <summary>To be added.</summary>
+		/// <summary>Reclaims graphics resources associated with the context that are no longer needed.</summary>
 		ReclaimResources = 308,
-		/// <summary>To be added.</summary>
+		/// <summary>The identifier of the renderer currently used by the context.</summary>
 		CurrentRendererID = 309,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates whether the current renderer performs vertex processing on the GPU.</summary>
 		GpuVertexProcessing = 310,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates whether the current renderer performs fragment processing on the GPU.</summary>
 		GpuFragmentProcessing = 311,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates whether the context currently has a drawable object attached.</summary>
 		HasDrawable = 314,
-		/// <summary>To be added.</summary>
+		/// <summary>The number of buffer swaps that can be queued and not yet completed.</summary>
 		MpsSwapsInFlight = 315,
 	}
 

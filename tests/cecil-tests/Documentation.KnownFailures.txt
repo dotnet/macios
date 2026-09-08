@@ -22505,7 +22505,6 @@ T:AppKit.NSPasteboardName
 T:AppKit.NSPasteboardType
 T:AppKit.NSPasteboardTypeFindPanelSearchOptionKey
 T:AppKit.NSPasteboardTypeTextFinderOptionKey
-T:AppKit.NSPathStyle
 T:AppKit.NSPickerTouchBarItemControlRepresentation
 T:AppKit.NSPickerTouchBarItemSelectionMode
 T:AppKit.NSPopoverBehavior

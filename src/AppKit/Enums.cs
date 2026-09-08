@@ -3028,15 +3028,16 @@ namespace AppKit {
 		NSExclude10_4Elements = 1 << 2,
 	}
 
+	/// <summary>Specifies the visual style of an <see cref="T:AppKit.NSPathControl" />.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSPathStyle : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Displays the path using the standard bezeled control style.</summary>
 		Standard,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays the path using a navigation-bar style.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 7)]
 		NavigationBar,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays the path as a pop-up button.</summary>
 		PopUp,
 	}
 

@@ -30,7 +30,7 @@ namespace AudioUnitExtensionTest {
 		AUAudioUnitBusArray inputBusArray;
 		AUAudioUnitBusArray outputBusArray;
 
-		public TestAudioUnit (AudioComponentDescription componentDescription, out NSError error)
+		public TestAudioUnit (AudioComponentDescription componentDescription, out NSError? error)
 			: base (componentDescription, AudioComponentInstantiationOptions.OutOfProcess, out error)
 		{
 			var format = new AVAudioFormat (44100, 2);

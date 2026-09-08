@@ -11,7 +11,7 @@ namespace SpotlightImportExtensionTest {
 		{
 		}
 
-		public override bool Update (CSSearchableItemAttributeSet attributes, NSUrl contentUrl, out NSError error)
+		public override bool Update (CSSearchableItemAttributeSet attributes, NSUrl contentUrl, out NSError? error)
 		{
 			error = null;
 			attributes.Title = "Test Spotlight Import";

@@ -2941,20 +2941,21 @@ namespace AppKit {
 		MomentaryAccelerator, // 10.10.3
 	}
 
+	/// <summary>Specifies the position of tick marks relative to a slider.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTickMarkPosition : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Places tick marks below a horizontal slider.</summary>
 		Below,
-		/// <summary>To be added.</summary>
+		/// <summary>Places tick marks above a horizontal slider.</summary>
 		Above,
-		/// <summary>To be added.</summary>
+		/// <summary>Places tick marks to the left of a vertical slider.</summary>
 		Left,
-		/// <summary>To be added.</summary>
+		/// <summary>Places tick marks to the right of a vertical slider.</summary>
 		Right,
-		/// <summary>To be added.</summary>
+		/// <summary>Places tick marks at the leading edge of a vertical slider, honoring the current layout direction. Equivalent to <see cref="F:AppKit.NSTickMarkPosition.Left" />.</summary>
 		Leading = Left,
-		/// <summary>To be added.</summary>
+		/// <summary>Places tick marks at the trailing edge of a vertical slider, honoring the current layout direction. Equivalent to <see cref="F:AppKit.NSTickMarkPosition.Right" />.</summary>
 		Trailing = Right,
 	}
 

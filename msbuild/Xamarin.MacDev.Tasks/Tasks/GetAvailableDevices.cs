@@ -48,8 +48,11 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 		devices.AddRange (simctlTask.Result);
 
 		// devicectl may return simulators as well, so exclude any devices we've already added
-		var devicectlDevices = devicectlTask.Result;
-		devices.AddRange (devicectlDevices.Where (dev => !devices.Any (sim => sim.Udid == dev.Udid)));
+		var existingUdids = new HashSet<string> (devices.Select (d => d.Udid), StringComparer.OrdinalIgnoreCase);
+		foreach (var device in devicectlTask.Result) {
+			if (existingUdids.Add (device.Udid))
+				devices.Add (device);
+		}
 
 		// filter to the current platform
 		foreach (var d in devices.Where (d => !d.Discarded && d.Platform != Platform))

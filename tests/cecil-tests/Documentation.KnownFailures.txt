@@ -22568,7 +22568,6 @@ T:AppKit.NSTableViewColumnWidth
 T:AppKit.NSTableViewDiffableDataSourceCellProvider
 T:AppKit.NSTableViewDiffableDataSourceRowProvider
 T:AppKit.NSTableViewDiffableDataSourceSectionHeaderViewProvider
-T:AppKit.NSTableViewDraggingDestinationFeedbackStyle
 T:AppKit.NSTableViewEventString
 T:AppKit.NSTableViewIndexFilter
 T:AppKit.NSTableViewPredicate

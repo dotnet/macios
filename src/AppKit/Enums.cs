@@ -2748,15 +2748,17 @@ namespace AppKit {
 		SourceList = 1,
 	}
 
+	/// <summary>Specifies the visual feedback style used to indicate a valid drop target while dragging over a table view.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTableViewDraggingDestinationFeedbackStyle : long {
-		/// <summary>To be added.</summary>
+		/// <summary>No drop-target feedback is drawn.</summary>
 		None = -1,
-		/// <summary>To be added.</summary>
+		/// <summary>Draws the regular drop-target highlight.</summary>
 		Regular = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Draws the source-list style drop-target highlight.</summary>
 		SourceList = 1,
+		/// <summary>An unused value reserved to separate the feedback styles from other values.</summary>
 		FeedbackStyleGap = 2,
 	}
 

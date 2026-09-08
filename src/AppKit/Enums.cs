@@ -322,24 +322,25 @@ namespace AppKit {
 	}
 
 	#region NSColorSpace
+	/// <summary>Specifies the fundamental type of color space, describing the number and meaning of its color components.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSColorSpaceModel : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The color space model is not known.</summary>
 		Unknown = -1,
-		/// <summary>To be added.</summary>
+		/// <summary>A grayscale color space, with a single component representing intensity.</summary>
 		Gray,
-		/// <summary>To be added.</summary>
+		/// <summary>A red-green-blue color space.</summary>
 		RGB,
-		/// <summary>To be added.</summary>
+		/// <summary>A cyan-magenta-yellow-black color space.</summary>
 		CMYK,
-		/// <summary>To be added.</summary>
+		/// <summary>A CIE L*a*b* color space.</summary>
 		LAB,
-		/// <summary>To be added.</summary>
+		/// <summary>A color space with an arbitrary number of color components, such as those used by spot-color or multi-ink printing.</summary>
 		DeviceN,
-		/// <summary>To be added.</summary>
+		/// <summary>A color space whose colors are looked up by index in a fixed palette.</summary>
 		Indexed,
-		/// <summary>To be added.</summary>
+		/// <summary>A color space whose colors are defined by a repeating pattern image.</summary>
 		Pattern,
 	}
 	#endregion

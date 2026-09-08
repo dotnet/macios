@@ -22412,7 +22412,6 @@ T:AppKit.NSCollectionViewItemHighlightState
 T:AppKit.NSCollectionViewScrollPosition
 T:AppKit.NSColorPanelFlags
 T:AppKit.NSColorPanelMode
-T:AppKit.NSColorSpaceModel
 T:AppKit.NSColorSystemEffect
 T:AppKit.NSColorWellStyle
 T:AppKit.NSComboButtonStyle

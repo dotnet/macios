@@ -775,6 +775,7 @@ namespace CoreMidi {
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
+		[BindingImpl (BindingImplOptions.Optimizable)]
 		public unsafe MidiEndpoint? CreateVirtualDestination (string name, MidiProtocolId protocol, MidiReceiveBlock readBlock, out MidiError status)
 		{
 			if (readBlock is null)
@@ -848,6 +849,7 @@ namespace CoreMidi {
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
+		[BindingImpl (BindingImplOptions.Optimizable)]
 		public unsafe MidiPort? CreateInputPort (string name, MidiProtocolId protocol, MidiReceiveBlock readBlock, out MidiError status)
 		{
 			if (readBlock is null)

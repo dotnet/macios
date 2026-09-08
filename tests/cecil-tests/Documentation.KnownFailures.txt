@@ -22455,7 +22455,6 @@ T:AppKit.NSFontTextStyle
 T:AppKit.NSFontTraitMask
 T:AppKit.NSFontWeight
 T:AppKit.NSFontWidth
-T:AppKit.NSFunctionKey
 T:AppKit.NSGestureEvent
 T:AppKit.NSGestureProbe
 T:AppKit.NSGestureRecognizer_NSTouchBar

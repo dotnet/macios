@@ -1109,151 +1109,152 @@ namespace AppKit {
 	}
 
 	// This is an untyped enum in AppKit's NSEvent.h
+	/// <summary>Specifies a Unicode private-use-area code point representing a non-printable function key, such as an arrow key or F-key.</summary>
 	[NoMacCatalyst]
 	public enum NSFunctionKey : int {
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the up arrow key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		UpArrow = 0xF700,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the down arrow key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		DownArrow = 0xF701,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the left arrow key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		LeftArrow = 0xF702,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the right arrow key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		RightArrow = 0xF703,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the F1 function key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		F1 = 0xF704,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the F2 function key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		F2 = 0xF705,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the F3 function key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		F3 = 0xF706,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the F4 function key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		F4 = 0xF707,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the F5 function key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		F5 = 0xF708,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the F6 function key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		F6 = 0xF709,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the F7 function key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		F7 = 0xF70A,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the F8 function key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		F8 = 0xF70B,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the F9 function key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		F9 = 0xF70C,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the F10 function key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		F10 = 0xF70D,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the F11 function key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		F11 = 0xF70E,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the F12 function key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		F12 = 0xF70F,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the F13 function key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		F13 = 0xF710,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the F14 function key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		F14 = 0xF711,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the F15 function key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		F15 = 0xF712,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the F16 function key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		F16 = 0xF713,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the F17 function key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		F17 = 0xF714,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the F18 function key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		F18 = 0xF715,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the F19 function key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		F19 = 0xF716,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the F20 function key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		F20 = 0xF717,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the F21 function key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		F21 = 0xF718,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the F22 function key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		F22 = 0xF719,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the F23 function key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		F23 = 0xF71A,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the F24 function key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		F24 = 0xF71B,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the F25 function key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		F25 = 0xF71C,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the F26 function key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		F26 = 0xF71D,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the F27 function key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		F27 = 0xF71E,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the F28 function key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		F28 = 0xF71F,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the F29 function key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		F29 = 0xF720,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the F30 function key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		F30 = 0xF721,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the F31 function key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		F31 = 0xF722,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the F32 function key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		F32 = 0xF723,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the F33 function key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		F33 = 0xF724,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the F34 function key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		F34 = 0xF725,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the F35 function key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		F35 = 0xF726,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the Insert key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		Insert = 0xF727,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the Delete key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		Delete = 0xF728,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the Home key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		Home = 0xF729,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the Begin key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		Begin = 0xF72A,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the End key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		End = 0xF72B,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the Page Up key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		PageUp = 0xF72C,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the Page Down key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		PageDown = 0xF72D,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the Print Screen key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		PrintScreen = 0xF72E,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the Scroll Lock key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		ScrollLock = 0xF72F,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the Pause key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		Pause = 0xF730,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the System Request key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		SysReq = 0xF731,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the Break key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		Break = 0xF732,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the Reset key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		Reset = 0xF733,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the Stop key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		Stop = 0xF734,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the Menu key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		Menu = 0xF735,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the User key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		User = 0xF736,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the System key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		System = 0xF737,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the Print key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		Print = 0xF738,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the Clear Line key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		ClearLine = 0xF739,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the Clear Display key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		ClearDisplay = 0xF73A,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the Insert Line key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		InsertLine = 0xF73B,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the Delete Line key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		DeleteLine = 0xF73C,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the Insert Character key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		InsertChar = 0xF73D,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the Delete Character key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		DeleteChar = 0xF73E,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the Previous key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		Prev = 0xF73F,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the Next key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		Next = 0xF740,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the Select key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		Select = 0xF741,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the Execute key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		Execute = 0xF742,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the Undo key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		Undo = 0xF743,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the Redo key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		Redo = 0xF744,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the Find key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		Find = 0xF745,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the Help key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		Help = 0xF746,
-		/// <summary>To be added.</summary>
+		/// <summary>A unicode private-use-area code point representing the Mode Switch key, used when reporting the <see cref="P:AppKit.NSEvent.CharactersIgnoringModifiers" /> for a non-printable key.</summary>
 		ModeSwitch = 0xF747,
 	}
 

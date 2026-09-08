@@ -5251,10 +5251,13 @@ namespace AppKit {
 		ContentType,
 	}
 
+	/// <summary>Specifies the visual prominence of a toolbar item.</summary>
 	[MacCatalyst (26, 0), Mac (26, 0)]
 	[Native]
 	public enum NSToolbarItemStyle : long {
+		/// <summary>The toolbar item uses the standard, unemphasized appearance.</summary>
 		Plain,
+		/// <summary>The toolbar item uses a visually emphasized, prominent appearance.</summary>
 		Prominent,
 	}
 

@@ -22578,7 +22578,6 @@ T:AppKit.NSToolbarIdentifiers
 T:AppKit.NSToolbarImmovableItemIdentifiers
 T:AppKit.NSToolbarItemGroupControlRepresentation
 T:AppKit.NSToolbarItemGroupSelectionMode
-T:AppKit.NSToolbarItemStyle
 T:AppKit.NSToolbarItemVisibilityPriority
 T:AppKit.NSToolbarWillInsert
 T:AppKit.NSTouch_NSTouchBar

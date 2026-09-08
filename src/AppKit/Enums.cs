@@ -850,15 +850,16 @@ namespace AppKit {
 		Eraser,
 	}
 
+	/// <summary>Specifies a bitmask of stylus buttons on a graphics tablet pen.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSEventButtonMask : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The tip of the pen is in contact with the tablet.</summary>
 		Pen = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The lower side button of the pen is pressed.</summary>
 		PenLower = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>The upper side button of the pen is pressed.</summary>
 		PenUpper = 4,
 	}
 

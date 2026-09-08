@@ -22418,7 +22418,6 @@ T:AppKit.NSColorSpaceModel
 T:AppKit.NSColorSystemEffect
 T:AppKit.NSColorWellStyle
 T:AppKit.NSComboButtonStyle
-T:AppKit.NSComposite
 T:AppKit.NSCompositingOperation
 T:AppKit.NSControlBorderShape
 T:AppKit.NSControlCommand

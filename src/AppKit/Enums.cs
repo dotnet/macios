@@ -3903,17 +3903,18 @@ namespace AppKit {
 	}
 
 	// These constants specify the possible states of a drawer.
+	/// <summary>Specifies the current animation state of an <see cref="T:AppKit.NSDrawer" />.</summary>
 	[NoMacCatalyst]
 	[Native]
 	[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'NSSplitViewController' instead.")]
 	public enum NSDrawerState : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The drawer is fully closed.</summary>
 		Closed = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The drawer is animating from closed to open.</summary>
 		Opening = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The drawer is fully open.</summary>
 		Open = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>The drawer is animating from open to closed.</summary>
 		Closing = 3,
 	}
 

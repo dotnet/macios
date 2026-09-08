@@ -3,6 +3,7 @@ using System.Collections.Generic;
 #nullable enable
 
 namespace System.Linq {
+	/// <summary>Provides LINQ extension methods for generic Foundation collections.</summary>
 	public static class NSCollectionLinqExtensions {
 		// NSSet<TKey>
 		/// <summary>Returns the first element of <see cref="Foundation.NSSet{TKey}"/>.</summary>

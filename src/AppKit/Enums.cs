@@ -1657,7 +1657,7 @@ namespace AppKit {
 		Push = 1,
 		/// <summary>A push-button bezel whose height adapts to the button's content, unlike the fixed-height <see cref="F:AppKit.NSBezelStyle.Push" /> style.</summary>
 		FlexiblePush = 2,
-		/// <summary>A bezel that displays a disclosure triangle, used to reveal or hide additional content.</summary>
+		/// <summary>An unbezeled button with a disclosure triangle, used to reveal or hide additional content.</summary>
 		Disclosure = 5,
 		/// <summary>A round bezel, typically used for buttons that contain only an image.</summary>
 		Circular = 7,
@@ -3423,7 +3423,7 @@ namespace AppKit {
 	[NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'Metal' Framework instead.")]
 	public enum NSOpenGLProfile : int {
-		/// <summary>Requests the legacy (pre-3.2) OpenGL profile.</summary>
+		/// <summary>Requests the legacy (pre-3.0) OpenGL profile.</summary>
 		VersionLegacy = 0x1000, // Legacy
 		/// <summary>Requests the OpenGL 3.2 Core Profile or better.</summary>
 		Version3_2Core = 0x3200,  // 3.2 or better
@@ -4241,7 +4241,7 @@ namespace AppKit {
 		Pile,
 		/// <summary>Arranges the items in a list.</summary>
 		List,
-		/// <summary>Stacks the items directly on top of one another.</summary>
+		/// <summary>Lays out the items overlapping diagonally.</summary>
 		Stack,
 	}
 
@@ -4407,9 +4407,9 @@ namespace AppKit {
 		None = 0x0,
 		/// <summary>Crossfades from the old view controller's view to the new one.</summary>
 		Crossfade = 0x1,
-		/// <summary>Slides the new view controller's view up, over the old one.</summary>
+		/// <summary>Slides the old view controller's view up while the new view comes in from the bottom.</summary>
 		SlideUp = 0x10,
-		/// <summary>Slides the new view controller's view down, over the old one.</summary>
+		/// <summary>Slides the old view controller's view down while the new view comes in from the top.</summary>
 		SlideDown = 0x20,
 		/// <summary>Slides the new view controller's view in from the right.</summary>
 		SlideLeft = 0x40,
@@ -4937,7 +4937,7 @@ namespace AppKit {
 	public enum NSSegmentDistribution : long {
 		/// <summary>Sizes each segment to fit its content, without necessarily filling the control's width.</summary>
 		Fit = 0,
-		/// <summary>Resizes segments to fill the control's width, based on their content-hugging and compression-resistance priorities.</summary>
+		/// <summary>Resizes segments to fill the control's width, distributing extra space equally among dynamically sized segments. This is the default distribution.</summary>
 		Fill,
 		/// <summary>Resizes all segments equally to fill the control's width.</summary>
 		FillEqually,
@@ -5092,7 +5092,7 @@ namespace AppKit {
 	[NoMacCatalyst]
 	[Native]
 	public enum NSMenuItemBadgeType : long {
-		/// <summary>No badge is displayed.</summary>
+		/// <summary>The badge has no descriptive string; only its count is displayed.</summary>
 		None = 0,
 		/// <summary>A badge indicating that updates are available.</summary>
 		Updates,

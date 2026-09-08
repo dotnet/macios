@@ -2927,16 +2927,17 @@ namespace AppKit {
 		Separated = 8,
 	}
 
+	/// <summary>Specifies how a segmented control's segments are selected when clicked.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSSegmentSwitchTracking : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Only one segment can be selected at a time, like a set of radio buttons.</summary>
 		SelectOne = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Any number of segments can be selected simultaneously, like a set of checkboxes.</summary>
 		SelectAny = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Segments are highlighted only while pressed and do not retain a selected state.</summary>
 		Momentary = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>Segments behave like <see cref="F:AppKit.NSSegmentSwitchTracking.Momentary" />, but repeatedly send their action message at an accelerating rate while held down.</summary>
 		MomentaryAccelerator, // 10.10.3
 	}
 

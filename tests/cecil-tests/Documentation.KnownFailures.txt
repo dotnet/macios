@@ -22393,7 +22393,6 @@ T:AppKit.NSBitmapFormat
 T:AppKit.NSBitmapImageFileType
 T:AppKit.NSBoxType
 T:AppKit.NSButtonType
-T:AppKit.NSCellHit
 T:AppKit.NSCharacterCollection
 T:AppKit.NSCloudKitSharingServiceOptions
 T:AppKit.NSCoderAppKitAddons

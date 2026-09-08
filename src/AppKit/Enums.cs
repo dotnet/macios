@@ -504,19 +504,21 @@ namespace AppKit {
 		ChangeBackgroundCell = 1 << 3,
 	}
 
+	/// <summary>Specifies which part of a cell, if any, a hit-test point falls within.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSCellHit : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The point does not fall within any part of the cell.</summary>
 		None,
-		/// <summary>To be added.</summary>
+		/// <summary>The point falls within the cell's content area.</summary>
 		ContentArea = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The point falls within an editable and selectable text area of the cell.</summary>
 		EditableTextArea = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>The point falls within a trackable area of the cell, such as one that responds to mouse tracking.</summary>
 		TrackableArea = 4,
 #if !XAMCORE_5_0
+		/// <summary>Obsolete alias kept for backward compatibility. Use <see cref="F:AppKit.NSCellHit.TrackableArea" /> instead.</summary>
 		[Obsolete ("Use 'TrackableArea' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		TrackableArae = TrackableArea,

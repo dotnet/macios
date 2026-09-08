@@ -4444,51 +4444,52 @@ namespace AppKit {
 
 
 	#region NSVisualEffectView
+	/// <summary>Specifies a semantic vibrancy material used to render the background of an <see cref="T:AppKit.NSVisualEffectView" />.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSVisualEffectMaterial : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Chooses a material automatically based on the view's appearance (light or dark).</summary>
 		[Advice ("Use a specific material instead.")]
 		AppearanceBased,
-		/// <summary>To be added.</summary>
+		/// <summary>A light-colored material.</summary>
 		[Advice ("Use a semantic material instead.")]
 		Light,
-		/// <summary>To be added.</summary>
+		/// <summary>A dark-colored material.</summary>
 		[Advice ("Use a semantic material instead.")]
 		Dark,
-		/// <summary>To be added.</summary>
+		/// <summary>The material used behind a window's title bar.</summary>
 		Titlebar,
-		/// <summary>To be added.</summary>
+		/// <summary>The material used behind selected content, such as a selected table row.</summary>
 		Selection,
-		/// <summary>To be added.</summary>
+		/// <summary>The material used behind menus.</summary>
 		Menu,
-		/// <summary>To be added.</summary>
+		/// <summary>The material used behind popovers.</summary>
 		Popover,
-		/// <summary>To be added.</summary>
+		/// <summary>The material used behind sidebars.</summary>
 		Sidebar,
-		/// <summary>To be added.</summary>
+		/// <summary>A medium-light material.</summary>
 		[Advice ("Use a semantic material instead.")]
 		MediumLight,
-		/// <summary>To be added.</summary>
+		/// <summary>An ultra-dark material.</summary>
 		[Advice ("Use a semantic material instead.")]
 		UltraDark,
-		/// <summary>To be added.</summary>
+		/// <summary>The material used behind header views, such as table or outline view headers.</summary>
 		HeaderView = 10,
-		/// <summary>To be added.</summary>
+		/// <summary>The material used behind sheets.</summary>
 		Sheet = 11,
-		/// <summary>To be added.</summary>
+		/// <summary>The material used for a standard window's background.</summary>
 		WindowBackground = 12,
-		/// <summary>To be added.</summary>
+		/// <summary>The material used behind heads-up display (HUD) windows.</summary>
 		HudWindow = 13,
-		/// <summary>To be added.</summary>
+		/// <summary>The material used for full-screen user interface elements.</summary>
 		FullScreenUI = 15,
-		/// <summary>To be added.</summary>
+		/// <summary>The material used behind tooltips.</summary>
 		ToolTip = 17,
-		/// <summary>To be added.</summary>
+		/// <summary>The material used behind the background of a window's content area.</summary>
 		ContentBackground = 18,
-		/// <summary>To be added.</summary>
+		/// <summary>The material that appears underneath a window's background, visible through translucent window areas.</summary>
 		UnderWindowBackground = 21,
-		/// <summary>To be added.</summary>
+		/// <summary>The material that appears underneath a page's background, for use with paginated content.</summary>
 		UnderPageBackground = 22,
 	}
 

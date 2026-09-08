@@ -67,32 +67,6 @@ namespace Xamarin.MacDev.Tasks {
 			Assert.That (Engine.Logger.ErrorEvents [0].Message, Does.Not.Contain ("Old Phone"));
 		}
 
-		[Test]
-		public void HelpListsDiscardedDevicesWhenNoDevicesAreAvailable ()
-		{
-			var task = CreateTask<GetMlaunchArguments> ();
-			task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (ApplePlatform.iOS).ToString ();
-			task.AppManifestPath = CreateAppManifest (1, 2);
-			task.Devices = CreateDevices (
-				("DEVICE-2", "Connected iPhone", "Device")
-			);
-			task.DiscardedDevices = CreateDiscardedDevices (
-				("SIM-1", "Unsupported Simulator", "Simulator", "Device is not an iPad, but the app only supports iPads"),
-				("DEVICE-1", "Old Phone", "Device", "Device OS version '17.0' is lower than the app's minimum OS version '18.0'")
-			);
-			task.Help = "true";
-			task.MlaunchPath = "/usr/bin/false";
-			task.SdkIsSimulator = true;
-			task.SdkVersion = "26.2";
-
-			ExecuteTask (task);
-
-			Assert.That (Engine.Logger.WarningsEvents [0].Message, Does.Contain ("The following devices were discarded:"));
-			Assert.That (Engine.Logger.WarningsEvents [0].Message, Does.Contain ("Unsupported Simulator (SIM-1): Device is not an iPad, but the app only supports iPads"));
-			Assert.That (Engine.Logger.WarningsEvents [0].Message, Does.Contain ("Connected iPhone"));
-			Assert.That (Engine.Logger.WarningsEvents [0].Message, Does.Contain ("Old Phone (DEVICE-1): Device OS version '17.0' is lower than the app's minimum OS version '18.0'"));
-		}
-
 		static TaskItem [] CreateDevices (params (string Udid, string Name, string Type) [] devices)
 		{
 			return devices.Select (v => {

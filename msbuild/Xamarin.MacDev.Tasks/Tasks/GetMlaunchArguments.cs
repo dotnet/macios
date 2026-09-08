@@ -30,7 +30,6 @@ namespace Xamarin.MacDev.Tasks {
 		public ITaskItem [] AdditionalArguments { get; set; } = Array.Empty<ITaskItem> ();
 		public string DeviceName { get; set; } = string.Empty;
 		public ITaskItem [] EnvironmentVariables { get; set; } = Array.Empty<ITaskItem> ();
-		public string Help { get; set; } = string.Empty;
 		public string LaunchApp { get; set; } = string.Empty;
 		public string InstallApp { get; set; } = string.Empty;
 		public bool CaptureOutput { get; set; } // Set to true to capture output. If StandardOutput|ErrorPath is not set, write to the current terminal's stdout/stderr (requires WaitForExit)
@@ -485,65 +484,10 @@ namespace Xamarin.MacDev.Tasks {
 			return Marshal.PtrToStringAuto (ttyname (fd)) ?? string.Empty;
 		}
 
-		void ShowHelp ()
-		{
-			var sb = new StringBuilder ();
-			var f = $"net{TargetFramework.Version}-{Platform.AsString ().ToLower ()}";
-			var rid = Platform == ApplePlatform.TVOS ? "tvos-arm64" : "ios-arm64";
-
-			sb.AppendLine ($"");
-			sb.AppendLine ($"To run on physical device:");
-			sb.AppendLine ($"    1. If the project has multiple target frameworks, select the desired target framework. Example: -f {f}");
-			sb.AppendLine ($"    2. Pass a RuntimeIdentifier for a device. Example: -p:{rid}");
-			sb.AppendLine ($"    3. Pass the name or identifier of the target device using '-p:DeviceName=<name or identifier of device>'");
-			var devices = GetDeviceListForDevice ();
-			if (devices.Count == 0) {
-				sb.AppendLine ($"        There are no devices connected to this Mac that can be used to run this app.");
-			} else {
-				sb.AppendLine ($"        There are {devices.Count} device(s) connected to this Mac that can be used to run this app:");
-				foreach (var d in devices)
-					sb.AppendLine ($"            {d.Name} ({d.Identifier}) {d.NotApplicableBecause}");
-				var firstDevice = devices.First ();
-				sb.AppendLine ($"        Example: -p:DeviceName={firstDevice.Identifier} or -p:DeviceName={StringUtils.Quote (firstDevice.Name)}");
-				sb.AppendLine ($"    For example:");
-				var sampleDevice = firstDevice.Name == StringUtils.Quote (firstDevice.Name) ? firstDevice.Name : firstDevice.Identifier;
-				sb.AppendLine ($"        dotnet run -f {f} -r {rid} -p:DeviceName={sampleDevice}");
-			}
-			AppendDiscardedDevices (sb, "        ", "Device");
-
-			sb.AppendLine ($"");
-			sb.AppendLine ($"To run in a simulator:");
-			sb.AppendLine ($"    1. If the project has multiple target frameworks, select the desired target framework. Exmaple: -f {f}");
-			sb.AppendLine ($"    2. Pass the name or identifier of the target simulator using '-p:DeviceName=<name or identifier of simulator>'");
-			var simulators = GetDeviceListForSimulator ();
-			if (simulators.Count == 0) {
-				sb.AppendLine ($"        There are no simulators available that can be used to run this app. Please open Xcode, then the menu Window -> Devices and Simulators, select Simulators on the top left, and create a new simulator clicking on the plus sign on the bottom left.");
-			} else {
-				sb.AppendLine ($"        There are {simulators.Count} simulators(s) on this Mac that can be used to run this app:");
-				foreach (var s in simulators)
-					sb.AppendLine ($"            {s.Name} ({s.Identifier}) {s.NotApplicableBecause}");
-				var firstSim = simulators.First ();
-				sb.AppendLine ($"        Example: -p:DeviceName={firstSim.Identifier} or -p:DeviceName={StringUtils.Quote (firstSim.Name)}");
-				sb.AppendLine ($"    For example:");
-				var sampleDevice = firstSim.Name == StringUtils.Quote (firstSim.Name) ? firstSim.Name : firstSim.Identifier;
-				sb.AppendLine ($"        dotnet run -f {f} -p:DeviceName={sampleDevice}");
-			}
-			AppendDiscardedDevices (sb, "        ", "Simulator");
-			sb.AppendLine ();
-
-			// Sadly the only way to have the help show up in the terminal reliably is to make it a warning
-			Log.LogWarning (sb.ToString ());
-		}
-
 		public override bool Execute ()
 		{
 			if (ShouldExecuteRemotely ())
 				return ExecuteRemotely ();
-
-			if (!string.IsNullOrEmpty (Help)) {
-				ShowHelp ();
-				return !Log.HasLoggedErrors;
-			}
 
 			FilterTaskItemInputs ();
 			if (Devices.Length == 0) {

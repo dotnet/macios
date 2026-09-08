@@ -2600,52 +2600,54 @@ namespace AppKit {
 		Fixed,
 	}
 
+	/// <summary>Specifies a bitmask of stylistic traits, such as weight, slant, and font-family classification, associated with a font descriptor.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	public enum NSFontSymbolicTraits : int { // uint32_t NSFontSymbolicTraits
-		/// <summary>To be added.</summary>
+		/// <summary>The font has an italic or oblique style.</summary>
 		ItalicTrait = (1 << 0),
-		/// <summary>To be added.</summary>
+		/// <summary>The font has a bold weight.</summary>
 		BoldTrait = (1 << 1),
-		/// <summary>To be added.</summary>
+		/// <summary>The font has an expanded (wider) character width.</summary>
 		ExpandedTrait = (1 << 5),
-		/// <summary>To be added.</summary>
+		/// <summary>The font has a condensed (narrower) character width.</summary>
 		CondensedTrait = (1 << 6),
-		/// <summary>To be added.</summary>
+		/// <summary>The font uses monospaced (fixed-pitch) glyphs.</summary>
 		MonoSpaceTrait = (1 << 10),
-		/// <summary>To be added.</summary>
+		/// <summary>The font contains vertical glyph variants for vertical text layout.</summary>
 		VerticalTrait = (1 << 11),
-		/// <summary>To be added.</summary>
+		/// <summary>The font has been optimized for rendering in user interfaces.</summary>
 		UIOptimizedTrait = (1 << 12),
-		/// <summary>To be added.</summary>
+		/// <summary>The font is optimized for use with tight line spacing.</summary>
 		TraitTightLeading = 1 << 15,
-		/// <summary>To be added.</summary>
+		/// <summary>The font is optimized for use with loose line spacing.</summary>
 		TraitLooseLeading = 1 << 16,
+		/// <summary>The font is emphasized, equivalent to <see cref="F:AppKit.NSFontSymbolicTraits.BoldTrait" />.</summary>
 		TraitEmphasized = BoldTrait,
-		/// <summary>To be added.</summary>
+		/// <summary>The font's design classification is not known.</summary>
 		UnknownClass = 0 << 28,
-		/// <summary>To be added.</summary>
+		/// <summary>The font belongs to the old-style serif design classification, such as Garamond.</summary>
 		OldStyleSerifsClass = 1 << 28,
-		/// <summary>To be added.</summary>
+		/// <summary>The font belongs to the transitional serif design classification, such as Times.</summary>
 		TransitionalSerifsClass = 2 << 28,
-		/// <summary>To be added.</summary>
+		/// <summary>The font belongs to the modern serif design classification, such as Bodoni.</summary>
 		ModernSerifsClass = 3 << 28,
-		/// <summary>To be added.</summary>
+		/// <summary>The font belongs to the Clarendon (slab) serif design classification.</summary>
 		ClarendonSerifsClass = 4 << 28,
-		/// <summary>To be added.</summary>
+		/// <summary>The font belongs to the slab serif design classification.</summary>
 		SlabSerifsClass = 5 << 28,
-		/// <summary>To be added.</summary>
+		/// <summary>The font belongs to the freeform serif design classification.</summary>
 		FreeformSerifsClass = 7 << 28,
-		/// <summary>To be added.</summary>
+		/// <summary>The font belongs to the sans-serif design classification.</summary>
 		SansSerifClass = 8 << 28,
-		/// <summary>To be added.</summary>
+		/// <summary>The font belongs to the ornamental design classification, such as display or decorative faces.</summary>
 		OrnamentalsClass = 9 << 28,
-		/// <summary>To be added.</summary>
+		/// <summary>The font belongs to the script design classification, resembling handwriting.</summary>
 		ScriptsClass = 10 << 28,
-		/// <summary>To be added.</summary>
+		/// <summary>The font belongs to the symbolic design classification, such as an icon or dingbat font.</summary>
 		SymbolicClass = 12 << 28,
 
-		/// <summary>To be added.</summary>
+		/// <summary>A mask that isolates the font-family classification bits.</summary>
 		FamilyClassMask = (int) -268435456,
 	}
 

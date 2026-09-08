@@ -731,6 +731,8 @@ namespace Xamarin.Tests {
 			if (!string.IsNullOrWhiteSpace (configuration))
 				properties ["Configuration"] = configuration;
 			properties ["UseMonoRuntime"] = useMonoRuntime ? "true" : "false";
+			// HotReloadCompatibleBuild creates multiple configurations of transitive project references with shared output paths.
+			properties ["BuildInParallel"] = "false";
 			var rv = DotNet.AssertBuild (project_path, properties);
 			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
 			var warningMessages = FilterWarnings (warnings, platform);

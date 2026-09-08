@@ -4963,14 +4963,15 @@ namespace AppKit {
 		Rollover,
 	}
 
+	/// <summary>Specifies a type of privileged file-system operation that requires the user's authorization.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSWorkspaceAuthorizationType : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Authorization to create a symbolic link.</summary>
 		CreateSymbolicLink,
-		/// <summary>To be added.</summary>
+		/// <summary>Authorization to set the attributes of a file or directory.</summary>
 		SetAttributes,
-		/// <summary>To be added.</summary>
+		/// <summary>Authorization to replace the contents of a file.</summary>
 		ReplaceFile,
 	}
 

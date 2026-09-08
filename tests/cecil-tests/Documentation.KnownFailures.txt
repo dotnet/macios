@@ -22439,7 +22439,6 @@ T:AppKit.NSFontDescriptorSystemDesign
 T:AppKit.NSFontError
 T:AppKit.NSFontPanelMode
 T:AppKit.NSFontPanelModeMask
-T:AppKit.NSFontRenderingMode
 T:AppKit.NSFontSymbolicTraits
 T:AppKit.NSFontTextStyle
 T:AppKit.NSFontTraitMask

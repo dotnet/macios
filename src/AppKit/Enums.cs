@@ -2194,16 +2194,17 @@ namespace AppKit {
 		AccessibilityDescription = 1 << 5,
 	}
 
+	/// <summary>Specifies how a font renders glyphs and computes glyph advancements.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSFontRenderingMode : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the default rendering mode for the current context.</summary>
 		Default,
-		/// <summary>To be added.</summary>
+		/// <summary>Renders glyphs with antialiasing.</summary>
 		Antialiased,
-		/// <summary>To be added.</summary>
+		/// <summary>Renders glyphs using integer advancements between characters, without antialiasing.</summary>
 		IntegerAdvancements,
-		/// <summary>To be added.</summary>
+		/// <summary>Renders glyphs with antialiasing, using integer advancements between characters.</summary>
 		AntialiasedIntegerAdvancements,
 	}
 

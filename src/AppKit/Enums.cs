@@ -63,39 +63,41 @@ namespace AppKit {
 		Prohibited,
 	}
 
+	/// <summary>Specifies options that control the visibility of system UI, such as the Dock and menu bar, while the application is active.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSApplicationPresentationOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>No special presentation options; the Dock and menu bar behave normally.</summary>
 		Default = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The Dock is hidden and appears only when the pointer moves to its screen edge.</summary>
 		AutoHideDock = (1 << 0),
-		/// <summary>To be added.</summary>
+		/// <summary>The Dock is entirely unavailable to the user.</summary>
 		HideDock = (1 << 1),
 
-		/// <summary>To be added.</summary>
+		/// <summary>The menu bar is hidden and appears only when the pointer moves to the top of the screen.</summary>
 		AutoHideMenuBar = (1 << 2),
-		/// <summary>To be added.</summary>
+		/// <summary>The menu bar is entirely unavailable to the user.</summary>
 		HideMenuBar = (1 << 3),
 
-		/// <summary>To be added.</summary>
+		/// <summary>All Apple menu items are disabled.</summary>
 		DisableAppleMenu = (1 << 4),
-		/// <summary>To be added.</summary>
+		/// <summary>The process switching user interface (such as Command-Tab) is disabled.</summary>
 		DisableProcessSwitching = (1 << 5),
-		/// <summary>To be added.</summary>
+		/// <summary>The Force Quit panel is disabled.</summary>
 		DisableForceQuit = (1 << 6),
-		/// <summary>To be added.</summary>
+		/// <summary>Logging out and shutting down are disabled.</summary>
 		DisableSessionTermination = (1 << 7),
-		/// <summary>To be added.</summary>
+		/// <summary>The "Hide" and "Hide Others" menu commands, as well as their keyboard shortcuts, are disabled.</summary>
 		DisableHideApplication = (1 << 8),
-		/// <summary>To be added.</summary>
+		/// <summary>The menu bar does not display its usual translucent background.</summary>
 		DisableMenuBarTransparency = (1 << 9),
 
-		/// <summary>To be added.</summary>
+		/// <summary>The application's windows are displayed in full-screen mode, hiding the Dock and menu bar.</summary>
 		FullScreen = (1 << 10),
-		/// <summary>To be added.</summary>
+		/// <summary>The toolbar is hidden and shown automatically together with the menu bar.</summary>
 		AutoHideToolbar = (1 << 11),
+		/// <summary>The floating overlay that assists in locating the pointer is disabled.</summary>
 		DisableCursorLocationAssistance = (1 << 12),
 	}
 

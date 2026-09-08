@@ -2320,27 +2320,28 @@ namespace AppKit {
 		Up,
 	}
 
+	/// <summary>Specifies the compression scheme used when writing TIFF image data.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTiffCompression : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>No compression.</summary>
 		None = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>CCITT Group 3 fax compression.</summary>
 		CcittFax3 = 3,
-		/// <summary>To be added.</summary>
+		/// <summary>CCITT Group 4 fax compression.</summary>
 		CcittFax4 = 4,
-		/// <summary>To be added.</summary>
+		/// <summary>LZW compression.</summary>
 		Lzw = 5,
 
-		/// <summary>To be added.</summary>
+		/// <summary>JPEG compression, as defined by the 1994 TIFF Technical Note 2.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 7)]
 		Jpeg = 6,
-		/// <summary>To be added.</summary>
+		/// <summary>NeXT's proprietary 2-bit run-length encoding scheme.</summary>
 		Next = 32766,
-		/// <summary>To be added.</summary>
+		/// <summary>PackBits (Macintosh RLE) compression.</summary>
 		PackBits = 32773,
 
-		/// <summary>To be added.</summary>
+		/// <summary>The obsolete, original JPEG-in-TIFF compression scheme.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 7)]
 		OldJpeg = 32865,
 	}

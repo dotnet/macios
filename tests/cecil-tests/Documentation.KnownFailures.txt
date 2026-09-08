@@ -22659,7 +22659,6 @@ T:AppKit.NSTextViewTooltip
 T:AppKit.NSTextViewTypeAttribute
 T:AppKit.NSTextViewUpdateTouchBarItemIdentifiers
 T:AppKit.NSTickMarkPosition
-T:AppKit.NSTiffCompression
 T:AppKit.NSTintProminence
 T:AppKit.NSTitlebarSeparatorStyle
 T:AppKit.NSTokenStyle

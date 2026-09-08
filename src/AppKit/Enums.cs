@@ -2262,29 +2262,30 @@ namespace AppKit {
 	}
 
 	#region NSTrackingArea
+	/// <summary>Specifies a bitmask of options that control when and how an <see cref="T:AppKit.NSTrackingArea" /> generates tracking events.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSTrackingAreaOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Generates events when the pointer enters or exits the tracking area.</summary>
 		MouseEnteredAndExited = 0x01,
-		/// <summary>To be added.</summary>
+		/// <summary>Generates events when the pointer moves within the tracking area.</summary>
 		MouseMoved = 0x02,
-		/// <summary>To be added.</summary>
+		/// <summary>Generates cursor-update events when the pointer enters or exits the tracking area.</summary>
 		CursorUpdate = 0x04,
-		/// <summary>To be added.</summary>
+		/// <summary>The tracking area is active only while its owning view is the first responder.</summary>
 		ActiveWhenFirstResponder = 0x10,
-		/// <summary>To be added.</summary>
+		/// <summary>The tracking area is active only while its owning window is the key window.</summary>
 		ActiveInKeyWindow = 0x20,
-		/// <summary>To be added.</summary>
+		/// <summary>The tracking area is active only while its owning application is the active application.</summary>
 		ActiveInActiveApp = 0x40,
-		/// <summary>To be added.</summary>
+		/// <summary>The tracking area is always active, regardless of the key window or active application.</summary>
 		ActiveAlways = 0x80,
-		/// <summary>To be added.</summary>
+		/// <summary>Assumes the pointer starts inside the tracking area when it is initially created, generating an immediate mouse-entered event if appropriate.</summary>
 		AssumeInside = 0x100,
-		/// <summary>To be added.</summary>
+		/// <summary>Automatically updates the tracking area's rectangle to always match the visible portion of its owning view.</summary>
 		InVisibleRect = 0x200,
-		/// <summary>To be added.</summary>
+		/// <summary>Continues to generate tracking events even while the mouse button is held down and being dragged.</summary>
 		EnabledDuringMouseDrag = 0x400,
 	}
 	#endregion

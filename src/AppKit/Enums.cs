@@ -4991,12 +4991,17 @@ namespace AppKit {
 		Plain,
 	}
 
+	/// <summary>Specifies the visual style of the separator drawn between a window's title bar and its content.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTitlebarSeparatorStyle : long {
+		/// <summary>The system chooses the most appropriate separator style automatically, based on the window's content.</summary>
 		Automatic,
+		/// <summary>No separator is drawn.</summary>
 		None,
+		/// <summary>A plain line separator is drawn.</summary>
 		Line,
+		/// <summary>A shadow is drawn to separate the title bar from the content.</summary>
 		Shadow,
 	}
 

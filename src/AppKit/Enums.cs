@@ -4975,13 +4975,19 @@ namespace AppKit {
 		ReplaceFile,
 	}
 
+	/// <summary>Specifies the overall visual style of an <see cref="T:AppKit.NSTableView" />.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTableViewStyle : long {
+		/// <summary>The system chooses the most appropriate style automatically, based on the table view's context.</summary>
 		Automatic,
+		/// <summary>The table view's rows and content extend the full width of the enclosing scroll view.</summary>
 		FullWidth,
+		/// <summary>The table view's content is inset from the edges of the enclosing scroll view.</summary>
 		Inset,
+		/// <summary>The table view uses the source-list appearance, as seen in Finder-style sidebars.</summary>
 		SourceList,
+		/// <summary>The table view uses a plain appearance, with no additional insets or styling.</summary>
 		Plain,
 	}
 

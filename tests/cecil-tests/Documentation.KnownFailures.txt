@@ -22525,7 +22525,6 @@ T:AppKit.NSTableViewRowHeight
 T:AppKit.NSTableViewRowPredicate
 T:AppKit.NSTableViewSearchString
 T:AppKit.NSTableViewSource
-T:AppKit.NSTableViewStyle
 T:AppKit.NSTableViewToolTip
 T:AppKit.NSTableViewUserCanChangeColumnVisibility
 T:AppKit.NSTableViewViewGetter

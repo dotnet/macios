@@ -22449,7 +22449,6 @@ T:AppKit.NSFontWidth
 T:AppKit.NSGestureEvent
 T:AppKit.NSGestureProbe
 T:AppKit.NSGestureRecognizer_NSTouchBar
-T:AppKit.NSGestureRecognizerState
 T:AppKit.NSGesturesProbe
 T:AppKit.NSGlassEffectViewStyle
 T:AppKit.NSGLColorBuffer

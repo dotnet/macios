@@ -2031,22 +2031,23 @@ namespace AppKit {
 	#endregion
 
 	#region NSGestureRecognizer
+	/// <summary>Specifies the current state of a gesture recognizer's recognition state machine.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSGestureRecognizerState : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The gesture recognizer has not yet recognized its gesture, but may still do so.</summary>
 		Possible,
-		/// <summary>To be added.</summary>
+		/// <summary>The gesture recognizer has recognized the start of its gesture.</summary>
 		Began,
-		/// <summary>To be added.</summary>
+		/// <summary>The gesture recognizer has recognized a change in a continuous gesture that is already in progress.</summary>
 		Changed,
-		/// <summary>To be added.</summary>
+		/// <summary>The gesture recognizer has recognized the end of its gesture and reported a successful completion.</summary>
 		Ended,
-		/// <summary>To be added.</summary>
+		/// <summary>The gesture recognizer's recognition of a continuous gesture was cancelled, without ending normally.</summary>
 		Cancelled,
-		/// <summary>To be added.</summary>
+		/// <summary>The gesture recognizer failed to recognize its gesture.</summary>
 		Failed,
-		/// <summary>To be added.</summary>
+		/// <summary>The gesture recognizer recognized a discrete gesture. Equivalent to <see cref="F:AppKit.NSGestureRecognizerState.Ended" />.</summary>
 		Recognized = NSGestureRecognizerState.Ended,
 	}
 	#endregion

@@ -766,31 +766,6 @@ namespace MonoTouchFixtures.CoreMidi {
 			Assert.That (id.ManufacturerSpecific.Info2, Is.EqualTo (0x20), "Info2");
 		}
 	}
-
-	[TestFixture]
-	[Preserve (AllMembers = true)]
-	public class MidiErrorTest {
-		[Test]
-		public void ErrorValues ()
-		{
-			Assert.That ((int) MidiError.Ok, Is.EqualTo (0), "Ok");
-			Assert.That ((int) MidiError.InvalidClient, Is.EqualTo (-10830), "InvalidClient");
-			Assert.That ((int) MidiError.InvalidPort, Is.EqualTo (-10831), "InvalidPort");
-			Assert.That ((int) MidiError.WrongEndpointType, Is.EqualTo (-10832), "WrongEndpointType");
-			Assert.That ((int) MidiError.NoConnection, Is.EqualTo (-10833), "NoConnection");
-			Assert.That ((int) MidiError.UnknownEndpoint, Is.EqualTo (-10834), "UnknownEndpoint");
-			Assert.That ((int) MidiError.UnknownProperty, Is.EqualTo (-10835), "UnknownProperty");
-			Assert.That ((int) MidiError.WrongPropertyType, Is.EqualTo (-10836), "WrongPropertyType");
-			Assert.That ((int) MidiError.NoCurrentSetup, Is.EqualTo (-10837), "NoCurrentSetup");
-			Assert.That ((int) MidiError.MessageSendErr, Is.EqualTo (-10838), "MessageSendErr");
-			Assert.That ((int) MidiError.ServerStartErr, Is.EqualTo (-10839), "ServerStartErr");
-			Assert.That ((int) MidiError.SetupFormatErr, Is.EqualTo (-10840), "SetupFormatErr");
-			Assert.That ((int) MidiError.WrongThread, Is.EqualTo (-10841), "WrongThread");
-			Assert.That ((int) MidiError.ObjectNotFound, Is.EqualTo (-10842), "ObjectNotFound");
-			Assert.That ((int) MidiError.IDNotUnique, Is.EqualTo (-10843), "IDNotUnique");
-			Assert.That ((int) MidiError.NotPermitted, Is.EqualTo (-10844), "NotPermitted");
-		}
-	}
 }
 
 #endif

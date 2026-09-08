@@ -4933,16 +4933,17 @@ namespace AppKit {
 		WhileEditing = 2,
 	}
 
+	/// <summary>Specifies how a segmented control sizes and distributes its segments across its width.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSSegmentDistribution : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Sizes each segment to fit its content, without necessarily filling the control's width.</summary>
 		Fit = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Resizes segments to fill the control's width, based on their content-hugging and compression-resistance priorities.</summary>
 		Fill,
-		/// <summary>To be added.</summary>
+		/// <summary>Resizes all segments equally to fill the control's width.</summary>
 		FillEqually,
-		/// <summary>To be added.</summary>
+		/// <summary>Resizes segments proportionally, based on their initial sizes, to fill the control's width.</summary>
 		FillProportionally,
 	}
 

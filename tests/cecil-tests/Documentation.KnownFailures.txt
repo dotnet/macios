@@ -22488,7 +22488,6 @@ T:AppKit.NSRulerMarkerClientViewDelegation
 T:AppKit.NSRulerViewUnits
 T:AppKit.NSSavePanelComplete
 T:AppKit.NSSegmentBackgroundStyle_NSSegmentedCell
-T:AppKit.NSSegmentDistribution
 T:AppKit.NSSharingCollaborationMode
 T:AppKit.NSSharingServiceAnchoringViewForSharingService
 T:AppKit.NSSharingServiceHandler

@@ -22464,7 +22464,6 @@ T:AppKit.NSImageHint
 T:AppKit.NSImageLayoutDirection
 T:AppKit.NSImageName
 T:AppKit.NSImageRect
-T:AppKit.NSImageRepLoadStatus
 T:AppKit.NSImageResizingModeExtensions
 T:AppKit.NSImageSymbolColorRenderingMode
 T:AppKit.NSImageSymbolScale

@@ -2364,20 +2364,21 @@ namespace AppKit {
 		Jpeg2000,
 	}
 
+	/// <summary>Specifies the progress of an incremental image-representation loading operation.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSImageRepLoadStatus : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The image data's type could not be determined.</summary>
 		UnknownType = -1,
-		/// <summary>To be added.</summary>
+		/// <summary>The image representation is still reading the image's header.</summary>
 		ReadingHeader = -2,
-		/// <summary>To be added.</summary>
+		/// <summary>The image representation requires all of the remaining data before it can continue loading.</summary>
 		WillNeedAllData = -3,
-		/// <summary>To be added.</summary>
+		/// <summary>The image data is invalid or malformed.</summary>
 		InvalidData = -4,
-		/// <summary>To be added.</summary>
+		/// <summary>The image data ended unexpectedly before loading completed.</summary>
 		UnexpectedEOF = -5,
-		/// <summary>To be added.</summary>
+		/// <summary>The image finished loading successfully.</summary>
 		Completed = -6,
 	}
 

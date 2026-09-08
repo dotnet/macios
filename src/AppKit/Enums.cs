@@ -5021,16 +5021,24 @@ namespace AppKit {
 		UnifiedCompact,
 	}
 
+	/// <summary>Specifies the visual animation effect used when a diffable data source applies a snapshot to a table view.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSTableViewAnimationOptions : ulong {
+		/// <summary>No animation effect.</summary>
 		EffectNone = 0x0,
+		/// <summary>Fades the affected rows in or out.</summary>
 		EffectFade = 0x1,
+		/// <summary>Leaves a gap in place of the affected rows, without shifting other rows.</summary>
 		EffectGap = 0x2,
+		/// <summary>Slides the affected rows upward.</summary>
 		SlideUp = 0x10,
+		/// <summary>Slides the affected rows downward.</summary>
 		SlideDown = 0x20,
+		/// <summary>Slides the affected rows to the left.</summary>
 		SlideLeft = 0x30,
+		/// <summary>Slides the affected rows to the right.</summary>
 		SlideRight = 0x40,
 	}
 

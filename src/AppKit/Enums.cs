@@ -5205,38 +5205,50 @@ namespace AppKit {
 		AlwaysDeny = 3,
 	}
 
+	/// <summary>Specifies a kind of content to detect in pasteboard items.</summary>
 	[Mac (15, 4), NoMacCatalyst]
 	enum NSPasteboardDetectionPattern {
+		/// <summary>Detects text that is likely to be a web URL.</summary>
 		[Field ("NSPasteboardDetectionPatternProbableWebURL")]
 		ProbableWebUrl,
 
+		/// <summary>Detects text that is likely to be a web search query.</summary>
 		[Field ("NSPasteboardDetectionPatternProbableWebSearch")]
 		ProbableWebSearch,
 
+		/// <summary>Detects numbers.</summary>
 		[Field ("NSPasteboardDetectionPatternNumber")]
 		Number,
 
+		/// <summary>Detects links.</summary>
 		[Field ("NSPasteboardDetectionPatternLink")]
 		Link,
 
+		/// <summary>Detects phone numbers.</summary>
 		[Field ("NSPasteboardDetectionPatternPhoneNumber")]
 		PhoneNumber,
 
+		/// <summary>Detects email addresses.</summary>
 		[Field ("NSPasteboardDetectionPatternEmailAddress")]
 		EmailAddress,
 
+		/// <summary>Detects postal addresses.</summary>
 		[Field ("NSPasteboardDetectionPatternPostalAddress")]
 		PostalAddress,
 
+		/// <summary>Detects calendar events.</summary>
 		[Field ("NSPasteboardDetectionPatternCalendarEvent")]
 		CalendarEvent,
 
+		/// <summary>Detects shipment tracking numbers.</summary>
 		[Field ("NSPasteboardDetectionPatternShipmentTrackingNumber")]
 		ShipmentTrackingNumber,
 
+		/// <summary>Detects flight numbers.</summary>
 		[Field ("NSPasteboardDetectionPatternFlightNumber")]
 		FlightNumber,
 
+		/// <summary>Detects monetary amounts.</summary>
 		[Field ("NSPasteboardDetectionPatternMoneyAmount")]
 		MoneyAmount,
 	}

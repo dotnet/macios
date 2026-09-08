@@ -22444,7 +22444,6 @@ T:AppKit.NSGlassEffectViewStyle
 T:AppKit.NSGLColorBuffer
 T:AppKit.NSGLFormat
 T:AppKit.NSGLTextureCubeMap
-T:AppKit.NSGLTextureTarget
 T:AppKit.NSGlyphInscription
 T:AppKit.NSGridCellPlacement
 T:AppKit.NSGridRowAlignment

@@ -3460,14 +3460,15 @@ namespace AppKit {
 		ResetLibrary = 504,
 	}
 
+	/// <summary>Specifies the OpenGL texture target used when binding a texture, such as with <c>glTexImage2D</c>.</summary>
 	[NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'Metal' Framework instead.")]
 	public enum NSGLTextureTarget : uint {
-		/// <summary>To be added.</summary>
+		/// <summary>A standard two-dimensional texture (equivalent to <c>GL_TEXTURE_2D</c>).</summary>
 		T2D = 0x0de1,
-		/// <summary>To be added.</summary>
+		/// <summary>A cube-map texture (equivalent to <c>GL_TEXTURE_CUBE_MAP</c>).</summary>
 		CubeMap = 0x8513,
-		/// <summary>To be added.</summary>
+		/// <summary>A rectangular texture with non-normalized texture coordinates (equivalent to <c>GL_TEXTURE_RECTANGLE_EXT</c>).</summary>
 		RectangleExt = 0x84F5,
 	}
 

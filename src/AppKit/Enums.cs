@@ -5299,12 +5299,17 @@ namespace AppKit {
 		Secondary,
 	}
 
+	/// <summary>Specifies the shape of the border drawn around a control.</summary>
 	[NoMacCatalyst, Mac (26, 0)]
 	[Native]
 	public enum NSControlBorderShape : long {
+		/// <summary>Uses the default border shape for the control.</summary>
 		Automatic,
+		/// <summary>Draws a capsule-shaped (fully rounded) border.</summary>
 		Capsule,
+		/// <summary>Draws a rounded-rectangle border.</summary>
 		RoundedRectangle,
+		/// <summary>Draws a circular border.</summary>
 		Circle,
 	}
 }

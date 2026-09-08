@@ -3322,98 +3322,99 @@ namespace AppKit {
 		BelowWindow = -1,
 	}
 
+	/// <summary>Specifies an attribute used to describe the capabilities requested when creating an <see cref="T:AppKit.NSOpenGLPixelFormat" />.</summary>
 	[NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'Metal' Framework instead.")]
 	public enum NSOpenGLPixelFormatAttribute : uint { // uint32_t NSOpenGLPixelFormatAttribute
-		/// <summary>To be added.</summary>
+		/// <summary>Chooses from among all available renderers, instead of only accelerated ones.</summary>
 		AllRenderers = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Requests a double-buffered context.</summary>
 		DoubleBuffer = 5,
-		/// <summary>To be added.</summary>
+		/// <summary>Requests a triple-buffered context.</summary>
 		TripleBuffer = 3,
-		/// <summary>To be added.</summary>
+		/// <summary>Requests a stereoscopic (left- and right-eye) rendering context.</summary>
 		Stereo = 6,
-		/// <summary>To be added.</summary>
+		/// <summary>Specifies the number of auxiliary buffers.</summary>
 		AuxBuffers = 7,
-		/// <summary>To be added.</summary>
+		/// <summary>Specifies the number of bits per color buffer.</summary>
 		ColorSize = 8,
-		/// <summary>To be added.</summary>
+		/// <summary>Specifies the number of bits in the alpha component of the color buffer.</summary>
 		AlphaSize = 11,
-		/// <summary>To be added.</summary>
+		/// <summary>Specifies the number of bits in the depth buffer.</summary>
 		DepthSize = 12,
-		/// <summary>To be added.</summary>
+		/// <summary>Specifies the number of bits in the stencil buffer.</summary>
 		StencilSize = 13,
-		/// <summary>To be added.</summary>
+		/// <summary>Specifies the number of bits per component in the accumulation buffer.</summary>
 		AccumSize = 14,
-		/// <summary>To be added.</summary>
+		/// <summary>Chooses a renderer whose capabilities meet or exceed, but most closely match, the minimum requested values.</summary>
 		MinimumPolicy = 51,
-		/// <summary>To be added.</summary>
+		/// <summary>Chooses a renderer with the maximum available capabilities, ignoring the other requested attribute values.</summary>
 		MaximumPolicy = 52,
-		/// <summary>To be added.</summary>
+		/// <summary>Requests a renderer capable of rendering to an offscreen buffer.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 7)]
 		OffScreen = 53,
-		/// <summary>To be added.</summary>
+		/// <summary>Requests a renderer capable of rendering to the full screen.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 6)]
 		FullScreen = 54,
-		/// <summary>To be added.</summary>
+		/// <summary>Specifies the number of multisample buffers.</summary>
 		SampleBuffers = 55,
-		/// <summary>To be added.</summary>
+		/// <summary>Specifies the number of samples per pixel used for multisampling.</summary>
 		Samples = 56,
-		/// <summary>To be added.</summary>
+		/// <summary>Requests that auxiliary buffers have their own depth and stencil buffers.</summary>
 		AuxDepthStencil = 57,
-		/// <summary>To be added.</summary>
+		/// <summary>Requests floating-point color buffer components.</summary>
 		ColorFloat = 58,
-		/// <summary>To be added.</summary>
+		/// <summary>Requests multisample antialiasing.</summary>
 		Multisample = 59,
-		/// <summary>To be added.</summary>
+		/// <summary>Requests supersample antialiasing.</summary>
 		Supersample = 60,
-		/// <summary>To be added.</summary>
+		/// <summary>Requests that the alpha channel be filtered, rather than only color components, when using multisample antialiasing.</summary>
 		SampleAlpha = 61,
-		/// <summary>To be added.</summary>
+		/// <summary>Requests a renderer matching a specific renderer identifier.</summary>
 		RendererID = 70,
-		/// <summary>To be added.</summary>
+		/// <summary>Requires that all displays use the same renderer.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 9)]
 		SingleRenderer = 71,
-		/// <summary>To be added.</summary>
+		/// <summary>Disallows falling back to a software renderer if a hardware-accelerated renderer is not available.</summary>
 		NoRecovery = 72,
-		/// <summary>To be added.</summary>
+		/// <summary>Requests a hardware-accelerated renderer.</summary>
 		Accelerated = 73,
-		/// <summary>To be added.</summary>
+		/// <summary>Chooses the renderer whose capabilities most closely match the requested attribute values.</summary>
 		ClosestPolicy = 74,
-		/// <summary>To be added.</summary>
+		/// <summary>Requests that the contents of the back buffer be preserved after a buffer swap, rather than becoming undefined.</summary>
 		BackingStore = 76,
-		/// <summary>To be added.</summary>
+		/// <summary>Requests a renderer capable of rendering to a window.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 9)]
 		Window = 80,
-		/// <summary>To be added.</summary>
+		/// <summary>Requests a fully OpenGL-compliant renderer.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 9)]
 		Compliant = 83,
-		/// <summary>To be added.</summary>
+		/// <summary>Specifies a bitmask of the displays on which the pixel format is usable.</summary>
 		ScreenMask = 84,
-		/// <summary>To be added.</summary>
+		/// <summary>Requests a renderer capable of rendering to a pixel buffer.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 7)]
 		PixelBuffer = 90,
-		/// <summary>To be added.</summary>
+		/// <summary>Requests a renderer capable of rendering to a pixel buffer for use with a remote context.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 7)]
 		RemotePixelBuffer = 91,
-		/// <summary>To be added.</summary>
+		/// <summary>Allows the pixel format to use renderers that are not attached to a display.</summary>
 		AllowOfflineRenderers = 96,
-		/// <summary>To be added.</summary>
+		/// <summary>Requests a renderer with hardware-accelerated compute support.</summary>
 		AcceleratedCompute = 97,
 
 		// Specify the profile
-		/// <summary>To be added.</summary>
+		/// <summary>Specifies the OpenGL profile (version) requested, as an <see cref="T:AppKit.NSOpenGLProfile" /> value.</summary>
 		OpenGLProfile = 99,
-		/// <summary>To be added.</summary>
+		/// <summary>Specifies the number of virtual screens described by the pixel format.</summary>
 		VirtualScreenCount = 128,
 
-		/// <summary>To be added.</summary>
+		/// <summary>Requests a renderer that guards against corruption caused by other running applications.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 5)]
 		Robust = 75,
-		/// <summary>To be added.</summary>
+		/// <summary>Requests a context that is safe to share across multiple processes.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 5)]
 		MPSafe = 78,
-		/// <summary>To be added.</summary>
+		/// <summary>Requests a renderer capable of driving multiple displays.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 5)]
 		MultiScreen = 81,
 	}

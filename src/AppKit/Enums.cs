@@ -1747,67 +1747,68 @@ namespace AppKit {
 		OneHundredTwentyEightBitRgb = 0x220,
 	}
 
+	/// <summary>Specifies a Porter-Duff compositing operator, or a Core Image-style blend mode, used to combine a source image with a destination image.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSCompositingOperation : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The result is transparent black; neither the source nor the destination contributes.</summary>
 		Clear,
-		/// <summary>To be added.</summary>
+		/// <summary>The source image replaces the destination image.</summary>
 		Copy,
-		/// <summary>To be added.</summary>
+		/// <summary>The source image is composited over the destination image.</summary>
 		SourceOver,
-		/// <summary>To be added.</summary>
+		/// <summary>The part of the source image that lies within the destination image replaces the destination; everything else is discarded.</summary>
 		SourceIn,
-		/// <summary>To be added.</summary>
+		/// <summary>The part of the source image that lies outside the destination image is displayed; everything else is discarded.</summary>
 		SourceOut,
-		/// <summary>To be added.</summary>
+		/// <summary>The source image is composited over the destination image, but only the part of the source that lies within the destination is displayed.</summary>
 		SourceAtop,
-		/// <summary>To be added.</summary>
+		/// <summary>The destination image is composited over the source image.</summary>
 		DestinationOver,
-		/// <summary>To be added.</summary>
+		/// <summary>The part of the destination image that lies within the source image replaces the destination; everything else is discarded.</summary>
 		DestinationIn,
-		/// <summary>To be added.</summary>
+		/// <summary>The part of the destination image that lies outside the source image is displayed; everything else is discarded.</summary>
 		DestinationOut,
-		/// <summary>To be added.</summary>
+		/// <summary>The destination image is composited over the source image, but only the part of the destination that lies within the source is displayed.</summary>
 		DestinationAtop,
-		/// <summary>To be added.</summary>
+		/// <summary>The parts of the source and destination images that do not overlap are displayed; the overlapping region is discarded.</summary>
 		Xor,
-		/// <summary>To be added.</summary>
+		/// <summary>The source and destination color values are summed and the result approaches 0 (black) as the limit.</summary>
 		PlusDarker,
-		/// <summary>To be added.</summary>
+		/// <summary>The source image is composited over the destination image using the same behavior as <see cref="F:AppKit.NSCompositingOperation.SourceOver" />.</summary>
 		Highlight,
-		/// <summary>To be added.</summary>
+		/// <summary>The source and destination color values are summed and the result approaches 1 (white) as the limit.</summary>
 		PlusLighter,
 
-		/// <summary>To be added.</summary>
+		/// <summary>The source and destination color values are multiplied together, always producing a darker or equal color.</summary>
 		Multiply,
-		/// <summary>To be added.</summary>
+		/// <summary>The source and destination color values are inverted, multiplied, and inverted again, always producing a lighter or equal color.</summary>
 		Screen,
-		/// <summary>To be added.</summary>
+		/// <summary>Multiplies or screens the color values, depending on the destination color, preserving highlights and shadows.</summary>
 		Overlay,
-		/// <summary>To be added.</summary>
+		/// <summary>The darker of the source and destination color values is used at each pixel.</summary>
 		Darken,
-		/// <summary>To be added.</summary>
+		/// <summary>The lighter of the source and destination color values is used at each pixel.</summary>
 		Lighten,
-		/// <summary>To be added.</summary>
+		/// <summary>The destination color is brightened to reflect the source color, increasing the contrast between the two.</summary>
 		ColorDodge,
-		/// <summary>To be added.</summary>
+		/// <summary>The destination color is darkened to reflect the source color, increasing the contrast between the two.</summary>
 		ColorBurn,
-		/// <summary>To be added.</summary>
+		/// <summary>Darkens or lightens the colors, depending on the source color value, producing an effect similar to shining a diffuse spotlight on the destination.</summary>
 		SoftLight,
-		/// <summary>To be added.</summary>
+		/// <summary>Multiplies or screens the color values, depending on the source color, producing an effect similar to shining a harsh spotlight on the destination.</summary>
 		HardLight,
-		/// <summary>To be added.</summary>
+		/// <summary>Subtracts either the source color from the destination color or vice versa, whichever produces a positive value, producing an inversion effect.</summary>
 		Difference,
-		/// <summary>To be added.</summary>
+		/// <summary>Produces an effect similar to <see cref="F:AppKit.NSCompositingOperation.Difference" /> but with lower contrast.</summary>
 		Exclusion,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the luminance and saturation of the destination and the hue of the source.</summary>
 		Hue,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the luminance and hue of the destination and the saturation of the source.</summary>
 		Saturation,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the luminance of the destination and the hue and saturation of the source.</summary>
 		Color,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the hue and saturation of the destination and the luminance of the source.</summary>
 		Luminosity,
 	}
 

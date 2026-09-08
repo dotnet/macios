@@ -1601,20 +1601,21 @@ namespace AppKit {
 		BelowBottom,
 	};
 
+	/// <summary>Specifies the visual style of an <see cref="T:AppKit.NSBox" />.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSBoxType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>A box with a simple border and an optional title, used as a general-purpose grouping box.</summary>
 		NSBoxPrimary,
-		/// <summary>To be added.</summary>
+		/// <summary>A box style identical to <see cref="F:AppKit.NSBoxType.NSBoxPrimary" />.</summary>
 		[Obsoleted (PlatformName.MacOSX, 10, 15, message: "Identical to 'NSBoxPrimary'.")]
 		NSBoxSecondary,
-		/// <summary>To be added.</summary>
+		/// <summary>A box drawn as a thin separator line, typically used to divide sections of a user interface.</summary>
 		NSBoxSeparator,
-		/// <summary>To be added.</summary>
+		/// <summary>A box drawn with the appearance used in older versions of macOS.</summary>
 		[Obsoleted (PlatformName.MacOSX, 10, 15, message: "'NSBoxOldStyle' is discouraged. Use 'NSBoxPrimary' or 'NSBoxCustom'.")]
 		NSBoxOldStyle,
-		/// <summary>To be added.</summary>
+		/// <summary>A box whose border, background, and title appearance can be fully customized.</summary>
 		NSBoxCustom,
 	};
 	#endregion

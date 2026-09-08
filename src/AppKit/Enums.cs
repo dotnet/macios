@@ -3472,14 +3472,15 @@ namespace AppKit {
 		RectangleExt = 0x84F5,
 	}
 
+	/// <summary>Specifies the OpenGL pixel format used when reading or copying texture image data.</summary>
 	[NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'Metal' Framework instead.")]
 	public enum NSGLFormat : uint {
-		/// <summary>To be added.</summary>
+		/// <summary>Red, green, and blue color components (equivalent to <c>GL_RGB</c>).</summary>
 		RGB = 0x1907,
-		/// <summary>To be added.</summary>
+		/// <summary>Red, green, blue, and alpha color components (equivalent to <c>GL_RGBA</c>).</summary>
 		RGBA = 0x1908,
-		/// <summary>To be added.</summary>
+		/// <summary>Depth buffer component data (equivalent to <c>GL_DEPTH_COMPONENT</c>).</summary>
 		DepthComponent = 0x1902,
 	}
 

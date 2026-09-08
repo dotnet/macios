@@ -3041,22 +3041,23 @@ namespace AppKit {
 		PopUp,
 	}
 
+	/// <summary>Specifies the position and border style of the tabs in an <see cref="T:AppKit.NSTabView" />.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTabViewType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Displays tabs along the top edge, with a bezeled border around the content.</summary>
 		NSTopTabsBezelBorder,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays tabs along the left edge, with a bezeled border around the content.</summary>
 		NSLeftTabsBezelBorder,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays tabs along the bottom edge, with a bezeled border around the content.</summary>
 		NSBottomTabsBezelBorder,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays tabs along the right edge, with a bezeled border around the content.</summary>
 		NSRightTabsBezelBorder,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays no tabs, with a bezeled border around the content.</summary>
 		NSNoTabsBezelBorder,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays no tabs, with a plain line border around the content.</summary>
 		NSNoTabsLineBorder,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays no tabs and no border around the content.</summary>
 		NSNoTabsNoBorder,
 	}
 

@@ -22712,7 +22712,6 @@ T:AppKit.NSWindowAnimationBehavior
 T:AppKit.NSWindowApplicationPresentationOptions
 T:AppKit.NSWindowButton
 T:AppKit.NSWindowClient
-T:AppKit.NSWindowCollectionBehavior
 T:AppKit.NSWindowCompletionHandler
 T:AppKit.NSWindowDocumentDrag
 T:AppKit.NSWindowFrame

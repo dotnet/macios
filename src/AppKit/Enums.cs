@@ -1445,38 +1445,42 @@ namespace AppKit {
 		MainMemory,
 	}
 
+	/// <summary>Specifies a bitmask that describes how a window behaves with respect to Spaces and Exposé/Mission Control.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSWindowCollectionBehavior : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The window uses the default Spaces and Exposé behavior.</summary>
 		Default = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The window can be visible on every Space simultaneously.</summary>
 		CanJoinAllSpaces = 1 << 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The window moves to the currently active Space when it is ordered to the front.</summary>
 		MoveToActiveSpace = 1 << 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The window participates in Spaces and Exposé, and can be managed like an ordinary application window.</summary>
 		Managed = 1 << 2,
-		/// <summary>To be added.</summary>
+		/// <summary>The window participates in Exposé and Spaces the same way as a transient window, such as a menu or panel, and is not affected by Exposé.</summary>
 		Transient = 1 << 3,
-		/// <summary>To be added.</summary>
+		/// <summary>The window is treated like a desktop icon and does not move to a different Space, similar to the Finder desktop.</summary>
 		Stationary = 1 << 4,
-		/// <summary>To be added.</summary>
+		/// <summary>The window's minimized representation participates in the Cmd-`/Cmd-Shift-` window-cycling order.</summary>
 		ParticipatesInCycle = 1 << 5,
-		/// <summary>To be added.</summary>
+		/// <summary>The window does not participate in the Cmd-`/Cmd-Shift-` window-cycling order.</summary>
 		IgnoresCycle = 1 << 6,
-		/// <summary>To be added.</summary>
+		/// <summary>The window is the primary content window in a full-screen session.</summary>
 		FullScreenPrimary = 1 << 7,
-		/// <summary>To be added.</summary>
+		/// <summary>The window can appear alongside a full-screen window as an auxiliary, such as a panel or inspector.</summary>
 		FullScreenAuxiliary = 1 << 8,
-		/// <summary>To be added.</summary>
+		/// <summary>The window does not support full-screen mode.</summary>
 		FullScreenNone = 1 << 9,
-		/// <summary>To be added.</summary>
+		/// <summary>The window supports being tiled side-by-side with another window in full-screen mode.</summary>
 		FullScreenAllowsTiling = 1 << 11,
-		/// <summary>To be added.</summary>
+		/// <summary>The window does not support being tiled side-by-side with another window in full-screen mode.</summary>
 		FullScreenDisallowsTiling = 1 << 12,
+		/// <summary>The window is a primary window in a Stage Manager-style set, and other secondary windows can be grouped with it.</summary>
 		Primary = 1 << 16,
+		/// <summary>The window is an auxiliary window that is grouped together with a primary window.</summary>
 		Auxiliary = 1 << 17,
+		/// <summary>The window can join a set of windows that spans multiple applications.</summary>
 		CanJoinAllApplications = 1 << 18,
 	}
 

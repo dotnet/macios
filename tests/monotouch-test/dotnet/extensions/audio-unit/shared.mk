@@ -83,8 +83,13 @@ endif
 
 CONTAINER_PROJECT=$(abspath $(CURDIR))/ContainerApp/ContainerApp.csproj
 APP_PATH=$(abspath $(CURDIR))/ContainerApp/bin/$(CONFIG)/$(DOTNET_TFM)-$(shell echo $(PLATFORM) | tr 'A-Z' 'a-z')/$(PATH_RID)ContainerApp.app
+ifeq ($(filter $(PLATFORM),iOS tvOS),)
 EXTENSION_PATH=$(APP_PATH)/Contents/PlugIns/monotouchtest.appex
 EXECUTABLE=$(APP_PATH)/Contents/MacOS/ContainerApp
+else
+EXTENSION_PATH=$(APP_PATH)/PlugIns/monotouchtest.appex
+EXECUTABLE=$(APP_PATH)/ContainerApp
+endif
 LSREGISTER=/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister
 prepare:
 	@# nothing to do here right now
@@ -113,6 +118,7 @@ run: build $(RUN_AUDIO_UNIT_EXTENSION_TESTS)
 		--results-file "$(RESULTSFILENAME)" \
 		--timeout-seconds "$(RUN_TIMEOUT_SECONDS)" \
 		--lsregister "$(LSREGISTER)" \
+		$(if $(SIMULATOR_UDID),--simulator-udid "$(SIMULATOR_UDID)") \
 		$(if $(TEST_FILTER),--test-filter "$(TEST_FILTER)")
 
 run-bare: run

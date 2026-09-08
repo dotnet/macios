@@ -4,7 +4,8 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <ApplicationTitle>ContainerApp</ApplicationTitle>
-    <ApplicationId>com.xamarin.monotouch-test.audiounit.containerapp</ApplicationId>
+    <ApplicationId Condition="$(TargetFramework.EndsWith('-ios')) Or $(TargetFramework.EndsWith('-tvos'))">com.xamarin.monotouch-test</ApplicationId>
+    <ApplicationId Condition="!$(TargetFramework.EndsWith('-ios')) And !$(TargetFramework.EndsWith('-tvos'))">com.xamarin.monotouch-test.audiounit.containerapp</ApplicationId>
     <ApplicationVersion>1.0</ApplicationVersion>
   </PropertyGroup>
 

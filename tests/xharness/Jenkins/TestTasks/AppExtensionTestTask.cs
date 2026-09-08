@@ -2,9 +2,14 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.DotNet.XHarness.iOS.Shared.Collections;
+using Microsoft.DotNet.XHarness.iOS.Shared.Hardware;
 using Microsoft.DotNet.XHarness.iOS.Shared;
 using Microsoft.DotNet.XHarness.iOS.Shared.Execution;
 using Microsoft.DotNet.XHarness.iOS.Shared.Logging;
@@ -13,12 +18,14 @@ namespace Xharness.Jenkins.TestTasks {
 	class AppExtensionTestTask : AppleTestTask {
 		readonly IMlaunchProcessManager processManager;
 		readonly string testVariation;
+		readonly IEnumerable<ISimulatorDevice>? candidates;
 
-		public AppExtensionTestTask (Jenkins jenkins, IMlaunchProcessManager processManager, TestPlatform platform, string testVariation)
+		public AppExtensionTestTask (Jenkins jenkins, IMlaunchProcessManager processManager, TestPlatform platform, string testVariation, IEnumerable<ISimulatorDevice>? candidates)
 			: base (jenkins)
 		{
 			this.processManager = processManager;
 			this.testVariation = testVariation;
+			this.candidates = candidates;
 			Platform = platform;
 			SupportsParallelExecution = false;
 		}
@@ -50,7 +57,20 @@ namespace Xharness.Jenkins.TestTasks {
 			process.StartInfo.ArgumentList.Add ("TEST_FILTER=");
 			process.StartInfo.ArgumentList.Add ($"LOGFILENAME={extensionLogPath}");
 			process.StartInfo.ArgumentList.Add ($"RESULTSFILENAME={resultsPath}");
-			process.StartInfo.ArgumentList.Add ("RUN_TIMEOUT_SECONDS=1200");
+			process.StartInfo.ArgumentList.Add ("RUN_TIMEOUT_SECONDS=600");
+
+			ISimulatorDevice? simulator = null;
+			if (candidates is not null) {
+				if (candidates is IAsyncEnumerable asyncCandidates)
+					await asyncCandidates.ReadyTask;
+				simulator = candidates.FirstOrDefault ();
+				if (simulator is null) {
+					FailureMessage = $"No {platformName} simulator was found.";
+					ExecutionResult = TestExecutingResult.DeviceNotFound;
+					return;
+				}
+				process.StartInfo.ArgumentList.Add ($"SIMULATOR_UDID={simulator.UDID}");
+			}
 			SetEnvironmentVariables (process);
 
 			Jenkins.MainLog.WriteLine ($"Executing {TestName} ({Variation})");
@@ -60,20 +80,27 @@ namespace Xharness.Jenkins.TestTasks {
 			}
 
 			ExecutionResult = TestExecutingResult.Running;
-			var result = await processManager.RunAsync (process, executionLog, TimeSpan.FromMinutes (30));
-			if (File.Exists (extensionLogPath))
-				Logs.AddFile (extensionLogPath, LogType.ExecutionLog.ToString ());
-			if (File.Exists (resultsPath))
-				Logs.AddFile (resultsPath, LogType.NUnitResult.ToString ());
+			try {
+				if (simulator is not null)
+					await simulator.Boot (executionLog, CancellationToken.None);
+				var result = await processManager.RunAsync (process, executionLog, TimeSpan.FromMinutes (20));
+				if (File.Exists (extensionLogPath))
+					Logs.AddFile (extensionLogPath, LogType.ExecutionLog.ToString ());
+				if (File.Exists (resultsPath))
+					Logs.AddFile (resultsPath, LogType.NUnitResult.ToString ());
 
-			if (result.TimedOut) {
-				FailureMessage = "App extension test run timed out after 30 minutes.";
-				ExecutionResult = TestExecutingResult.TimedOut;
-			} else if (result.Succeeded) {
-				ExecutionResult = TestExecutingResult.Succeeded;
-			} else {
-				FailureMessage = $"App extension test run failed with exit code {result.ExitCode}.";
-				ExecutionResult = TestExecutingResult.Failed;
+				if (result.TimedOut) {
+					FailureMessage = "App extension build and test run timed out after 20 minutes.";
+					ExecutionResult = TestExecutingResult.TimedOut;
+				} else if (result.Succeeded) {
+					ExecutionResult = TestExecutingResult.Succeeded;
+				} else {
+					FailureMessage = $"App extension test run failed with exit code {result.ExitCode}.";
+					ExecutionResult = TestExecutingResult.Failed;
+				}
+			} finally {
+				if (simulator is not null)
+					await simulator.Shutdown (Jenkins.MainLog);
 			}
 			Jenkins.MainLog.WriteLine ($"Executed {TestName} ({Variation})");
 		}

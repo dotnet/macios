@@ -39,11 +39,13 @@ return await runner.RunAsync ();
 static void PrintUsage ()
 {
 	Console.WriteLine ("Usage:");
-	Console.WriteLine ("  run-audio-unit-extension-tests --platform <platform> --rid <rid> --config <config> --app <app path> --extension <appex path> --executable <host executable> --log-file <log file> [--results-file <results file>] --timeout-seconds <seconds> [--test-filter <test name>] [--lsregister <path>]");
+	Console.WriteLine ("  run-audio-unit-extension-tests --platform <platform> --rid <rid> --config <config> --app <app path> --extension <appex path> --executable <host executable> --log-file <log file> [--results-file <results file>] --timeout-seconds <seconds> [--simulator-udid <udid>] [--test-filter <test name>] [--lsregister <path>]");
 }
 
 sealed class AudioUnitExtensionTestRunner {
 	const string BundleIdentifier = "com.xamarin.monotouch-test.AudioUnitExtension";
+	const string DesktopContainerBundleIdentifier = "com.xamarin.monotouch-test.audiounit.containerapp";
+	const string MobileContainerBundleIdentifier = "com.xamarin.monotouch-test";
 
 	// Predicate used to capture the system log for diagnostic purposes only. The
 	// actual test results are streamed back over a TCP connection (see below).
@@ -55,6 +57,8 @@ sealed class AudioUnitExtensionTestRunner {
 
 	readonly Options options;
 	readonly object logLock = new ();
+
+	string ContainerBundleIdentifier => options.SimulatorUdid is null ? DesktopContainerBundleIdentifier : MobileContainerBundleIdentifier;
 
 	string ResultsFilePath {
 		get {
@@ -84,6 +88,8 @@ sealed class AudioUnitExtensionTestRunner {
 		Log ($"Log file: {options.LogFilePath}");
 		if (!string.IsNullOrEmpty (options.TestFilter))
 			Log ($"Test filter: {options.TestFilter}");
+		if (!string.IsNullOrEmpty (options.SimulatorUdid))
+			Log ($"Simulator UDID: {options.SimulatorUdid}");
 		Log ("");
 
 		var exitCode = 0;
@@ -101,12 +107,17 @@ sealed class AudioUnitExtensionTestRunner {
 		Task<Execution>? hostTask = null;
 
 		try {
-			await ConfigureDefaultsAsync (port);
+			if (options.SimulatorUdid is null) {
+				await RunToolAsync (options.LsRegisterPath, "-f", options.AppPath);
+				Log ("");
+				await RunToolAsync ("pluginkit", "-a", options.ExtensionPath);
+				Log ("");
+			} else {
+				await RunToolAsync ("xcrun", "simctl", "install", options.SimulatorUdid, options.AppPath);
+				Log ("");
+			}
 
-			await RunToolAsync (options.LsRegisterPath, "-f", options.AppPath);
-			Log ("");
-			await RunToolAsync ("pluginkit", "-a", options.ExtensionPath);
-			Log ("");
+			await ConfigureDefaultsAsync (port);
 
 			hostTask = StartHost (hostCts.Token);
 
@@ -134,6 +145,8 @@ sealed class AudioUnitExtensionTestRunner {
 			}
 
 			await CleanupDefaultsAsync ();
+			if (options.SimulatorUdid is not null)
+				await RunBestEffortAsync ("xcrun", "simctl", "uninstall", options.SimulatorUdid, ContainerBundleIdentifier);
 
 			var logEnd = DateTime.Now;
 			Log ("");
@@ -146,17 +159,17 @@ sealed class AudioUnitExtensionTestRunner {
 
 	async Task ConfigureDefaultsAsync (int port)
 	{
-		await RunToolAsync ("defaults", "write", BundleIdentifier, "network.enabled", "-bool", "YES");
-		await RunToolAsync ("defaults", "write", BundleIdentifier, "network.host.name", "-string", "127.0.0.1");
-		await RunToolAsync ("defaults", "write", BundleIdentifier, "network.host.port", "-int", port.ToString (CultureInfo.InvariantCulture));
-		await RunToolAsync ("defaults", "write", BundleIdentifier, "network.transport", "-string", "TCP");
-		await RunToolAsync ("defaults", "write", BundleIdentifier, "execution.usetcptunnel", "-bool", "NO");
-		await RunToolAsync ("defaults", "write", BundleIdentifier, "xml.enabled", "-bool", "YES");
+		await RunDefaultsToolAsync (false, "write", BundleIdentifier, "network.enabled", "-bool", "YES");
+		await RunDefaultsToolAsync (false, "write", BundleIdentifier, "network.host.name", "-string", "127.0.0.1");
+		await RunDefaultsToolAsync (false, "write", BundleIdentifier, "network.host.port", "-int", port.ToString (CultureInfo.InvariantCulture));
+		await RunDefaultsToolAsync (false, "write", BundleIdentifier, "network.transport", "-string", "TCP");
+		await RunDefaultsToolAsync (false, "write", BundleIdentifier, "execution.usetcptunnel", "-bool", "NO");
+		await RunDefaultsToolAsync (false, "write", BundleIdentifier, "xml.enabled", "-bool", "YES");
 
 		if (string.IsNullOrEmpty (options.TestFilter)) {
-			await RunBestEffortAsync ("defaults", "delete", BundleIdentifier, "test.name");
+			await RunDefaultsToolAsync (true, "delete", BundleIdentifier, "test.name");
 		} else {
-			await RunToolAsync ("defaults", "write", BundleIdentifier, "test.name", "-string", options.TestFilter);
+			await RunDefaultsToolAsync (false, "write", BundleIdentifier, "test.name", "-string", options.TestFilter);
 		}
 		Log ("");
 	}
@@ -164,14 +177,26 @@ sealed class AudioUnitExtensionTestRunner {
 	async Task CleanupDefaultsAsync ()
 	{
 		foreach (var key in new [] { "network.enabled", "network.host.name", "network.host.port", "network.transport", "execution.usetcptunnel", "xml.enabled", "test.name" })
-			await RunBestEffortAsync ("defaults", "delete", BundleIdentifier, key);
+			await RunDefaultsToolAsync (true, "delete", BundleIdentifier, key);
 	}
 
 	Task<Execution> StartHost (CancellationToken cancellationToken)
 	{
 		var environment = new Dictionary<string, string?> {
-			["RUN_EXTENSION_TESTS"] = "1",
+			[options.SimulatorUdid is null ? "RUN_EXTENSION_TESTS" : "SIMCTL_CHILD_RUN_EXTENSION_TESTS"] = "1",
 		};
+		if (options.SimulatorUdid is not null) {
+			var arguments = new List<string> { "simctl", "launch", "--console-pty", "--terminate-running-process", options.SimulatorUdid, ContainerBundleIdentifier };
+			Log ($"Executing: SIMCTL_CHILD_RUN_EXTENSION_TESTS=1 xcrun {StringUtils.FormatArguments (arguments)}");
+			return Execution.RunWithCallbacksAsync (
+				"xcrun",
+				arguments,
+				environment: environment,
+				standardOutput: Log,
+				standardError: Log,
+				cancellationToken: cancellationToken);
+		}
+
 		Log ($"Executing: RUN_EXTENSION_TESTS=1 {options.ExecutablePath}");
 		return Execution.RunWithCallbacksAsync (
 			options.ExecutablePath,
@@ -180,6 +205,16 @@ sealed class AudioUnitExtensionTestRunner {
 			standardOutput: Log,
 			standardError: Log,
 			cancellationToken: cancellationToken);
+	}
+
+	Task RunDefaultsToolAsync (bool bestEffort, params string [] arguments)
+	{
+		if (options.SimulatorUdid is null)
+			return bestEffort ? RunBestEffortAsync ("defaults", arguments) : RunToolAsync ("defaults", arguments);
+
+		var simulatorArguments = new List<string> { "simctl", "spawn", options.SimulatorUdid, "defaults" };
+		simulatorArguments.AddRange (arguments);
+		return bestEffort ? RunBestEffortAsync ("xcrun", simulatorArguments.ToArray ()) : RunToolAsync ("xcrun", simulatorArguments.ToArray ());
 	}
 
 	async Task<(string Result, bool TimedOut)> ReceiveResultsAsync (TcpListener listener)
@@ -345,6 +380,7 @@ sealed class Options {
 	public string ExecutablePath { get; private init; } = "";
 	public string LogFilePath { get; private init; } = "";
 	public string? ResultsFilePath { get; private init; }
+	public string? SimulatorUdid { get; private init; }
 	public string LsRegisterPath { get; private init; } = "/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister";
 	public string? TestFilter { get; private init; }
 	public TimeSpan Timeout { get; private init; }
@@ -377,6 +413,7 @@ sealed class Options {
 			ExecutablePath = Path.GetFullPath (GetRequired (parsed, "--executable")),
 			LogFilePath = Path.GetFullPath (GetRequired (parsed, "--log-file")),
 			ResultsFilePath = GetOptional (parsed, "--results-file") is string resultsFilePath ? Path.GetFullPath (resultsFilePath) : null,
+			SimulatorUdid = GetOptional (parsed, "--simulator-udid"),
 			LsRegisterPath = GetOptional (parsed, "--lsregister") ?? "/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister",
 			TestFilter = GetOptional (parsed, "--test-filter"),
 			Timeout = TimeSpan.FromSeconds (timeoutSeconds),

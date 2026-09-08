@@ -22645,7 +22645,6 @@ T:AppKit.NSTextViewTypeAttribute
 T:AppKit.NSTextViewUpdateTouchBarItemIdentifiers
 T:AppKit.NSTintProminence
 T:AppKit.NSTitlebarSeparatorStyle
-T:AppKit.NSTokenStyle
 T:AppKit.NSToolbarCanInsert
 T:AppKit.NSToolbarIdentifiers
 T:AppKit.NSToolbarImmovableItemIdentifiers

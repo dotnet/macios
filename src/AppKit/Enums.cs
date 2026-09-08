@@ -2969,16 +2969,19 @@ namespace AppKit {
 		Circular = 1,
 	}
 
+	/// <summary>Specifies the visual style of tokens displayed in an <see cref="T:AppKit.NSTokenField" />.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTokenStyle : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the default token style, currently equivalent to <see cref="F:AppKit.NSTokenStyle.Rounded" />.</summary>
 		Default,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays the token's text without any surrounding token background.</summary>
 		PlainText,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays the token with fully rounded ends.</summary>
 		Rounded,
+		/// <summary>Displays the token with square corners.</summary>
 		Squared = 3,
+		/// <summary>Displays the token's text with a square background, but without the standard token border.</summary>
 		PlainSquared = 4,
 	}
 

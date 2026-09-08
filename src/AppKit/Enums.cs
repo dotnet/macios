@@ -5261,11 +5261,15 @@ namespace AppKit {
 		Prominent,
 	}
 
+	/// <summary>Specifies how color is applied when rendering a multicolor or variable-value SF Symbol image.</summary>
 	[NoMacCatalyst, Mac (26, 0)]
 	[Native]
 	public enum NSImageSymbolColorRenderingMode : long {
+		/// <summary>Uses the default color rendering mode for the symbol's configuration.</summary>
 		Automatic = 0,
+		/// <summary>Renders the symbol using flat, solid colors.</summary>
 		Flat,
+		/// <summary>Renders the symbol using a gradient effect.</summary>
 		Gradient,
 	}
 

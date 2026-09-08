@@ -22433,7 +22433,6 @@ T:AppKit.NSImageHint
 T:AppKit.NSImageName
 T:AppKit.NSImageRect
 T:AppKit.NSImageResizingModeExtensions
-T:AppKit.NSImageSymbolColorRenderingMode
 T:AppKit.NSImageSymbolVariableValueMode
 T:AppKit.NSLayoutManager_NSTextViewSupport
 T:AppKit.NSLineBreakStrategy

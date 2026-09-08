@@ -2346,20 +2346,21 @@ namespace AppKit {
 		OldJpeg = 32865,
 	}
 
+	/// <summary>Specifies the file format used to store bitmap image data.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSBitmapImageFileType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The TIFF (Tagged Image File Format) format.</summary>
 		Tiff,
-		/// <summary>To be added.</summary>
+		/// <summary>The BMP (Windows bitmap) format.</summary>
 		Bmp,
-		/// <summary>To be added.</summary>
+		/// <summary>The GIF (Graphics Interchange Format) format.</summary>
 		Gif,
-		/// <summary>To be added.</summary>
+		/// <summary>The JPEG format.</summary>
 		Jpeg,
-		/// <summary>To be added.</summary>
+		/// <summary>The PNG (Portable Network Graphics) format.</summary>
 		Png,
-		/// <summary>To be added.</summary>
+		/// <summary>The JPEG 2000 format.</summary>
 		Jpeg2000,
 	}
 

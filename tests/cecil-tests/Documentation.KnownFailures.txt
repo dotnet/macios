@@ -22387,7 +22387,6 @@ T:AppKit.NSAttributedStringDocumentType
 T:AppKit.NSBindingOption
 T:AppKit.NSBindingOptions
 T:AppKit.NSBitmapFormat
-T:AppKit.NSBitmapImageFileType
 T:AppKit.NSCharacterCollection
 T:AppKit.NSCloudKitSharingServiceOptions
 T:AppKit.NSCoderAppKitAddons

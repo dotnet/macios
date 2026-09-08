@@ -1647,64 +1647,75 @@ namespace AppKit {
 		MultiLevelAccelerator, // 10.10.3
 	}
 
+	/// <summary>Specifies the appearance of a button's bezel (its border and background).</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSBezelStyle : ulong {
+		/// <summary>The system chooses the most appropriate bezel style for the button's current configuration.</summary>
 		Automatic = 0,
+		/// <summary>A standard push-button bezel, typically used for the default button in a dialog.</summary>
 		Push = 1,
+		/// <summary>A push-button bezel whose height adapts to the button's content, unlike the fixed-height <see cref="F:AppKit.NSBezelStyle.Push" /> style.</summary>
 		FlexiblePush = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>A bezel that displays a disclosure triangle, used to reveal or hide additional content.</summary>
 		Disclosure = 5,
-		/// <summary>To be added.</summary>
+		/// <summary>A round bezel, typically used for buttons that contain only an image.</summary>
 		Circular = 7,
-		/// <summary>To be added.</summary>
+		/// <summary>A round bezel showing a question mark, used for standard Help buttons.</summary>
 		HelpButton = 9,
-		/// <summary>To be added.</summary>
+		/// <summary>A small, square bezel with square corners.</summary>
 		SmallSquare = 10,
+		/// <summary>A bezel appropriate for buttons placed in a window's toolbar.</summary>
 		Toolbar = 11,
+		/// <summary>A bezel appropriate for action buttons placed in an accessory bar, such as the bottom bar of a table or scroll view.</summary>
 		AccessoryBarAction = 12,
+		/// <summary>A bezel appropriate for buttons placed in an accessory bar, such as the bottom bar of a table or scroll view.</summary>
 		AccessoryBar = 13,
+		/// <summary>A push-button bezel that also displays a disclosure triangle.</summary>
 		PushDisclosure = 14,
+		/// <summary>A small, rounded bezel typically used for buttons that display a badge or count.</summary>
 		Badge = 15,
+		/// <summary>A bezel using the Liquid Glass material appearance.</summary>
 		[Mac (20, 0)]
 		Glass = 16,
 #if !XAMCORE_5_0
-		/// <summary>To be added.</summary>
+		/// <summary>A push-button bezel with rounded corners. Superseded by <see cref="F:AppKit.NSBezelStyle.Push" />.</summary>
 		[Obsoleted (PlatformName.MacOSX, 10, 14, message: "Use 'Push' instead.")]
 		Rounded = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>A square button bezel. Superseded by <see cref="F:AppKit.NSBezelStyle.FlexiblePush" />.</summary>
 		[Obsoleted (PlatformName.MacOSX, 10, 14, message: "Use 'FlexiblePush' instead.")]
 		RegularSquare = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>A thick square button bezel. Superseded by <see cref="F:AppKit.NSBezelStyle.FlexiblePush" />.</summary>
 		[Obsoleted (PlatformName.MacOSX, 10, 12, message: "Use 'FlexiblePush' instead.")]
 		ThickSquare = 3,
-		/// <summary>To be added.</summary>
+		/// <summary>An even thicker square button bezel. Superseded by <see cref="F:AppKit.NSBezelStyle.FlexiblePush" />.</summary>
 		[Obsoleted (PlatformName.MacOSX, 10, 12, message: "Use 'FlexiblePush' instead.")]
 		ThickerSquare = 4,
-		/// <summary>To be added.</summary>
+		/// <summary>A square bezel drawn without a shadow. Superseded by <see cref="F:AppKit.NSBezelStyle.SmallSquare" />.</summary>
 		[Obsoleted (PlatformName.MacOSX, 10, 14, message: "Use 'SmallSquare' instead.")]
 		ShadowlessSquare = 6,
-		/// <summary>To be added.</summary>
+		/// <summary>A square bezel with a textured appearance. Superseded by <see cref="F:AppKit.NSBezelStyle.SmallSquare" />.</summary>
 		[Obsoleted (PlatformName.MacOSX, 10, 14, message: "Use 'SmallSquare' instead.")]
 		TexturedSquare = 8,
-		/// <summary>To be added.</summary>
+		/// <summary>A rounded bezel with a textured appearance. Superseded by <see cref="F:AppKit.NSBezelStyle.Toolbar" />.</summary>
 		[Obsoleted (PlatformName.MacOSX, 10, 14, message: "Use 'Toolbar' instead.")]
 		TexturedRounded = 11,
-		/// <summary>To be added.</summary>
+		/// <summary>A bezel with rounded rectangle corners. Superseded by <see cref="F:AppKit.NSBezelStyle.AccessoryBarAction" />.</summary>
 		[Obsoleted (PlatformName.MacOSX, 10, 14, message: "Use 'AccessoryBarAction' instead.")]
 		RoundRect = 12,
-		/// <summary>To be added.</summary>
+		/// <summary>A bezel with a recessed appearance. Superseded by <see cref="F:AppKit.NSBezelStyle.AccessoryBar" />.</summary>
 		[Obsoleted (PlatformName.MacOSX, 10, 14, message: "Use 'AccessoryBar' instead.")]
 		Recessed = 13,
-		/// <summary>To be added.</summary>
+		/// <summary>A push-button bezel with rounded corners that also displays a disclosure triangle. Superseded by <see cref="F:AppKit.NSBezelStyle.PushDisclosure" />.</summary>
 		[Obsoleted (PlatformName.MacOSX, 10, 14, message: "Use 'PushDisclosure' instead.")]
 		RoundedDisclosure = 14,
-		/// <summary>To be added.</summary>
+		/// <summary>A bezel drawn inline with surrounding content. Superseded by <see cref="F:AppKit.NSBezelStyle.Badge" />.</summary>
 		[Obsoleted (PlatformName.MacOSX, 10, 14, message: "Use 'Badge' instead.")]
 		Inline = 15,
 #endif // !XAMCORE_5_0
 	}
 
+	/// <summary>Specifies a gradient style that was previously drawn on certain bezeled controls; no longer has any visual effect.</summary>
 	[NoMacCatalyst]
 	[Native]
 	[Deprecated (PlatformName.MacOSX, 10, 12, message: "The GradientType property is unused, and setting it has no effect.")]

@@ -4892,31 +4892,32 @@ namespace AppKit {
 		UsesStandardUI = 1 << 0,
 	}
 
+	/// <summary>Specifies a bitmask of the panels and controls displayed by the shared font panel.</summary>
 	[NoMacCatalyst]
 	[Native]
 	[Flags]
 	public enum NSFontPanelModeMask : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Shows the font family/typeface controls.</summary>
 		Face = 1 << 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Shows the font size control.</summary>
 		Size = 1 << 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Shows the font collection list.</summary>
 		Collection = 1 << 2,
-		/// <summary>To be added.</summary>
+		/// <summary>Shows the underline effect control.</summary>
 		UnderlineEffect = 1 << 8,
-		/// <summary>To be added.</summary>
+		/// <summary>Shows the strikethrough effect control.</summary>
 		StrikethroughEffect = 1 << 9,
-		/// <summary>To be added.</summary>
+		/// <summary>Shows the text color control.</summary>
 		TextColorEffect = 1 << 10,
-		/// <summary>To be added.</summary>
+		/// <summary>Shows the document background color control.</summary>
 		DocumentColorEffect = 1 << 11,
-		/// <summary>To be added.</summary>
+		/// <summary>Shows the shadow effect control.</summary>
 		ShadowEffect = 1 << 12,
-		/// <summary>To be added.</summary>
+		/// <summary>Shows all of the available text effect controls.</summary>
 		AllEffects = (ulong) 0XFFF00,
-		/// <summary>To be added.</summary>
+		/// <summary>Shows the standard set of controls: font family, size, and collection.</summary>
 		StandardModes = (ulong) 0XFFFF,
-		/// <summary>To be added.</summary>
+		/// <summary>Shows all available controls and effects.</summary>
 		AllModes = (ulong) 0XFFFFFFFF,
 	}
 

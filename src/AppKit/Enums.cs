@@ -4303,31 +4303,32 @@ namespace AppKit {
 		HideReplaceInterface = 13,
 	}
 
+	/// <summary>Specifies a bitmask of the panels and controls displayed by the shared font panel.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSFontPanelMode : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Shows the font family/typeface controls.</summary>
 		FaceMask = 1 << 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Shows the font size control.</summary>
 		SizeMask = 1 << 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Shows the font collection list.</summary>
 		CollectionMask = 1 << 2,
-		/// <summary>To be added.</summary>
+		/// <summary>Shows the underline effect control.</summary>
 		UnderlineEffectMask = 1 << 8,
-		/// <summary>To be added.</summary>
+		/// <summary>Shows the strikethrough effect control.</summary>
 		StrikethroughEffectMask = 1 << 9,
-		/// <summary>To be added.</summary>
+		/// <summary>Shows the text color control.</summary>
 		TextColorEffectMask = 1 << 10,
-		/// <summary>To be added.</summary>
+		/// <summary>Shows the document background color control.</summary>
 		DocumentColorEffectMask = 1 << 11,
-		/// <summary>To be added.</summary>
+		/// <summary>Shows the shadow effect control.</summary>
 		ShadowEffectMask = 1 << 12,
-		/// <summary>To be added.</summary>
+		/// <summary>Shows all of the available text effect controls.</summary>
 		AllEffectsMask = 0XFFF00,
-		/// <summary>To be added.</summary>
+		/// <summary>Shows the standard set of controls: font family, size, and collection.</summary>
 		StandardMask = 0xFFFF,
-		/// <summary>To be added.</summary>
+		/// <summary>Shows all available controls and effects.</summary>
 		AllModesMask = unchecked((ulong) UInt32.MaxValue),
 	}
 

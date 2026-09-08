@@ -22531,7 +22531,6 @@ T:AppKit.NSRulerMarkerClientViewDelegation
 T:AppKit.NSRulerViewUnits
 T:AppKit.NSSavePanelComplete
 T:AppKit.NSScrollElasticity
-T:AppKit.NSScrollerArrow
 T:AppKit.NSScrollerKnobStyle
 T:AppKit.NSScrollViewFindBarPosition
 T:AppKit.NSScrubberAlignment

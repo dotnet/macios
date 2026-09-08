@@ -2488,13 +2488,14 @@ namespace AppKit {
 		KnobSlot,
 	}
 
+	/// <summary>Specifies one of a scroller's two scroll arrows.</summary>
 	[NoMacCatalyst]
 	[Native]
 	[Deprecated (PlatformName.MacOSX, 10, 14)]
 	public enum NSScrollerArrow : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The arrow that increments the scroll position.</summary>
 		IncrementArrow,
-		/// <summary>To be added.</summary>
+		/// <summary>The arrow that decrements the scroll position.</summary>
 		DecrementArrow,
 	}
 

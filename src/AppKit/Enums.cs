@@ -487,19 +487,20 @@ namespace AppKit {
 		On,
 	}
 
+	/// <summary>Specifies legacy style-mask flags that describe the appearance and behavior of a cell.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSCellStyleMask : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>No style flags are set.</summary>
 		NoCell = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The cell displays content, such as text or an image.</summary>
 		ContentsCell = 1 << 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The cell is drawn with a pushed-in (pressed) appearance.</summary>
 		PushInCell = 1 << 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The cell displays a grayed appearance to indicate its highlighted state.</summary>
 		ChangeGrayCell = 1 << 2,
-		/// <summary>To be added.</summary>
+		/// <summary>The cell indicates its highlighted state by changing its background color.</summary>
 		ChangeBackgroundCell = 1 << 3,
 	}
 

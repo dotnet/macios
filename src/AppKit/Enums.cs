@@ -4536,14 +4536,15 @@ namespace AppKit {
 		PrimaryDeepDrag = 6,
 	}
 
+	/// <summary>Specifies a predefined haptic feedback pattern played on the Force Touch trackpad.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSHapticFeedbackPattern : long {
-		/// <summary>To be added.</summary>
+		/// <summary>A generic, general-purpose haptic pattern.</summary>
 		Generic = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>A haptic pattern indicating that an object aligned with a guide or another object.</summary>
 		Alignment,
-		/// <summary>To be added.</summary>
+		/// <summary>A haptic pattern indicating a discrete change in a value, such as a slider snapping to a level.</summary>
 		LevelChange,
 	}
 

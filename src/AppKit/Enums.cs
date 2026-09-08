@@ -3419,14 +3419,15 @@ namespace AppKit {
 		MultiScreen = 81,
 	}
 
+	/// <summary>Specifies the version and feature profile of OpenGL requested for a context.</summary>
 	[NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'Metal' Framework instead.")]
 	public enum NSOpenGLProfile : int {
-		/// <summary>To be added.</summary>
+		/// <summary>Requests the legacy (pre-3.2) OpenGL profile.</summary>
 		VersionLegacy = 0x1000, // Legacy
-		/// <summary>To be added.</summary>
+		/// <summary>Requests the OpenGL 3.2 Core Profile or better.</summary>
 		Version3_2Core = 0x3200,  // 3.2 or better
-		/// <summary>To be added.</summary>
+		/// <summary>Requests the OpenGL 4.1 Core Profile.</summary>
 		Version4_1Core = 0x4100,
 	}
 

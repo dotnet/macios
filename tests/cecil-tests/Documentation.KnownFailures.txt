@@ -22473,7 +22473,6 @@ T:AppKit.NSObject_NSFontPanelValidationAdditions
 T:AppKit.NSObject_NSToolbarItemValidation
 T:AppKit.NSObjectPredicate
 T:AppKit.NSOpenGLGlobalOption
-T:AppKit.NSOpenGLProfile
 T:AppKit.NSOpenSaveCompare
 T:AppKit.NSOpenSaveFilename
 T:AppKit.NSOpenSaveFilenameConfirmation

@@ -22508,7 +22508,6 @@ T:AppKit.NSPasteboardDetectValuesCompletionHandler
 T:AppKit.NSPasteboardDetectValuesHandler
 T:AppKit.NSPasteboardMetadataType
 T:AppKit.NSPasteboardName
-T:AppKit.NSPasteboardReadingOptions
 T:AppKit.NSPasteboardType
 T:AppKit.NSPasteboardTypeFindPanelSearchOptionKey
 T:AppKit.NSPasteboardTypeTextFinderOptionKey

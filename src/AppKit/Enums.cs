@@ -2208,17 +2208,18 @@ namespace AppKit {
 		AntialiasedIntegerAdvancements,
 	}
 
+	/// <summary>Specifies a bitmask of options for reading an object from the pasteboard.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSPasteboardReadingOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Reads the pasteboard item as raw data.</summary>
 		AsData = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Reads the pasteboard item as a string.</summary>
 		AsString = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Reads the pasteboard item as a property list.</summary>
 		AsPropertyList = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>Reads the pasteboard item as a keyed archive.</summary>
 		AsKeyedArchive = 4,
 	}
 

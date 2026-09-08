@@ -13,9 +13,12 @@
 
   <Import Project="$(MSBuildThisFileDirectory)..\..\shared.csproj" />
 
-  <ItemGroup>
+  <ItemGroup Condition="!$(TargetFramework.EndsWith('-tvos'))">
     <!-- The Info.plist values that are common to all platforms. Everything else is either an MSBuild property or computed by the SDK. -->
     <PartialAppManifest Include="$(MSBuildThisFileDirectory)AppExtension-Info.plist" />
+  </ItemGroup>
+  <ItemGroup Condition="$(TargetFramework.EndsWith('-tvos'))">
+    <PartialAppManifest Include="$(MSBuildThisFileDirectory)AppExtension-tvOS-Info.plist" />
   </ItemGroup>
 
   <!-- On desktop the audio unit extension must be sandboxed. On mobile there's no app sandbox entitlement. -->

@@ -12,6 +12,9 @@ using AVFoundation;
 using Foundation;
 using MonoTouch.NUnit.UI;
 using ObjCRuntime;
+#if __TVOS__
+using TVServices;
+#endif
 
 namespace MonotouchTest.AudioUnitExtensionHost {
 	static class ExtensionTestHost {
@@ -118,6 +121,24 @@ namespace MonotouchTest.AudioUnitExtensionHost {
 			}
 		}
 	}
+
+#if __TVOS__
+	[Register ("MonotouchTestTopShelfProvider")]
+	public class MonotouchTestTopShelfProvider : TVTopShelfContentProvider {
+		public MonotouchTestTopShelfProvider (NativeHandle handle) : base (handle)
+		{
+		}
+
+		public override void LoadTopShelfContent (Action<ITVTopShelfContent> completionHandler)
+		{
+			ExtensionTestHost.InstallDebugHooks ();
+			Task.Run (async () => {
+				await ExtensionTestHost.RunOnce ();
+				completionHandler (null);
+			});
+		}
+	}
+#endif
 
 
 	[Register ("MonotouchTestAudioUnitFactory")]

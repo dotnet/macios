@@ -22560,7 +22560,6 @@ T:AppKit.NSTextField_NSTouchBar
 T:AppKit.NSTextFieldGetCandidates
 T:AppKit.NSTextFieldSelectCandidate
 T:AppKit.NSTextFieldTextCheckingResults
-T:AppKit.NSTextFinderAction
 T:AppKit.NSTextFinderMatchingType
 T:AppKit.NSTextFinderSupport
 T:AppKit.NSTextHighlightColorScheme

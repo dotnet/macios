@@ -4271,34 +4271,35 @@ namespace AppKit {
 		AlertPanel,
 	}
 
+	/// <summary>Specifies an action to perform on an <see cref="T:AppKit.NSTextFinder" />, such as showing the find bar or navigating between matches.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTextFinderAction : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Shows the find interface.</summary>
 		ShowFindInterface = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Selects and scrolls to the next match.</summary>
 		NextMatch = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>Selects and scrolls to the previous match.</summary>
 		PreviousMatch = 3,
-		/// <summary>To be added.</summary>
+		/// <summary>Replaces all matches with the replacement text.</summary>
 		ReplaceAll = 4,
-		/// <summary>To be added.</summary>
+		/// <summary>Replaces the current match with the replacement text.</summary>
 		Replace = 5,
-		/// <summary>To be added.</summary>
+		/// <summary>Replaces the current match and advances to the next match.</summary>
 		ReplaceAndFind = 6,
-		/// <summary>To be added.</summary>
+		/// <summary>Sets the search string from the current selection.</summary>
 		SetSearchString = 7,
-		/// <summary>To be added.</summary>
+		/// <summary>Replaces all matches found within the current selection.</summary>
 		ReplaceAllInSelection = 8,
-		/// <summary>To be added.</summary>
+		/// <summary>Selects all matches.</summary>
 		SelectAll = 9,
-		/// <summary>To be added.</summary>
+		/// <summary>Selects all matches found within the current selection.</summary>
 		SelectAllInSelection = 10,
-		/// <summary>To be added.</summary>
+		/// <summary>Hides the find interface.</summary>
 		HideFindInterface = 11,
-		/// <summary>To be added.</summary>
+		/// <summary>Shows the find-and-replace interface.</summary>
 		ShowReplaceInterface = 12,
-		/// <summary>To be added.</summary>
+		/// <summary>Hides the find-and-replace interface.</summary>
 		HideReplaceInterface = 13,
 	}
 

@@ -4548,14 +4548,15 @@ namespace AppKit {
 		LevelChange,
 	}
 
+	/// <summary>Specifies when a haptic feedback pattern is played relative to the visual update it accompanies.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSHapticFeedbackPerformanceTime : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the default timing for the current context.</summary>
 		Default = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Plays the haptic feedback immediately.</summary>
 		Now,
-		/// <summary>To be added.</summary>
+		/// <summary>Plays the haptic feedback after the corresponding visual update has finished drawing.</summary>
 		DrawCompleted,
 	}
 

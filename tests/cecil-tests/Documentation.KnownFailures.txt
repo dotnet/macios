@@ -22437,7 +22437,6 @@ T:AppKit.NSGesturesProbe
 T:AppKit.NSGlassEffectViewStyle
 T:AppKit.NSGridCellPlacement
 T:AppKit.NSGridRowAlignment
-T:AppKit.NSHapticFeedbackPerformanceTime
 T:AppKit.NSHorizontalDirections
 T:AppKit.NSImageDynamicRange
 T:AppKit.NSImageHint

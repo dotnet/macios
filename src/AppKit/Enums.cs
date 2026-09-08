@@ -3986,20 +3986,21 @@ namespace AppKit {
 		OverBelow,
 	}
 
+	/// <summary>Specifies the text layout compatibility behavior used by a typesetter, matching the behavior of a specific historical macOS release.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTypesetterBehavior : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the most recent typesetter behavior available.</summary>
 		Latest = -1,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the original typesetter behavior, matching macOS 10.0 through 10.1.</summary>
 		Original = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the typesetter behavior introduced in macOS 10.2, with compatibility fixes for the original behavior.</summary>
 		Specific_10_2_WithCompatibility = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the typesetter behavior introduced in macOS 10.2.</summary>
 		Specific_10_2 = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the typesetter behavior introduced in macOS 10.3.</summary>
 		Specific_10_3 = 3,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the typesetter behavior introduced in macOS 10.4.</summary>
 		Specific_10_4 = 4,
 
 	}

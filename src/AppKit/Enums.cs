@@ -3955,16 +3955,17 @@ namespace AppKit {
 		Compound,
 	}
 
+	/// <summary>Specifies how deeply an <see cref="T:AppKit.NSRuleEditor" /> allows compound rows to be nested.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSRuleEditorNestingMode : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Only a single row is allowed, with no compound rows.</summary>
 		Single,
-		/// <summary>To be added.</summary>
+		/// <summary>A list of rows is allowed at the top level, with no further nesting.</summary>
 		List,
-		/// <summary>To be added.</summary>
+		/// <summary>Compound rows can be nested to any depth.</summary>
 		Compound,
-		/// <summary>To be added.</summary>
+		/// <summary>A single compound row is allowed at the top level, containing only simple (non-nested) rows.</summary>
 		Simple,
 	}
 

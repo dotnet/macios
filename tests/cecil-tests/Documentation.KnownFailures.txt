@@ -22500,7 +22500,6 @@ T:AppKit.NSRectAlignment
 T:AppKit.NSRemoteNotificationType
 T:AppKit.NSResponder_NSTouchBarProvider
 T:AppKit.NSResponder_NSWritingToolsSupport
-T:AppKit.NSRuleEditorNestingMode
 T:AppKit.NSRuleEditorNumberOfChildren
 T:AppKit.NSRulerEditorChildCriterion
 T:AppKit.NSRulerEditorDisplayValue

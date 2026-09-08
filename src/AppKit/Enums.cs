@@ -2382,24 +2382,25 @@ namespace AppKit {
 		Completed = -6,
 	}
 
+	/// <summary>Specifies a bitmask describing the pixel layout and sample encoding of an <see cref="T:AppKit.NSBitmapImageRep" />.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSBitmapFormat : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The alpha component is stored first in each pixel, rather than last.</summary>
 		AlphaFirst = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The color components are not premultiplied by the alpha component.</summary>
 		AlphaNonpremultiplied = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>Each sample is stored as a floating-point value, rather than an integer.</summary>
 		FloatingPointSamples = 4,
 
-		/// <summary>To be added.</summary>
+		/// <summary>16-bit samples are stored in little-endian byte order.</summary>
 		LittleEndian16Bit = 1 << 8,
-		/// <summary>To be added.</summary>
+		/// <summary>32-bit samples are stored in little-endian byte order.</summary>
 		LittleEndian32Bit = 1 << 9,
-		/// <summary>To be added.</summary>
+		/// <summary>16-bit samples are stored in big-endian byte order.</summary>
 		BigEndian16Bit = 1 << 10,
-		/// <summary>To be added.</summary>
+		/// <summary>32-bit samples are stored in big-endian byte order.</summary>
 		BigEndian32Bit = 1 << 11,
 	}
 

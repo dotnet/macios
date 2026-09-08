@@ -22419,7 +22419,6 @@ T:AppKit.NSControlText
 T:AppKit.NSControlTextError
 T:AppKit.NSControlTextFilter
 T:AppKit.NSControlTextValidation
-T:AppKit.NSControlTint
 T:AppKit.NSCorrectionIndicatorType
 T:AppKit.NSCorrectionResponse
 T:AppKit.NSCursorFrameResizeDirections

@@ -525,16 +525,17 @@ namespace AppKit {
 #endif
 	}
 
+	/// <summary>Specifies the tint color applied to certain controls, following the user's system-wide color preference.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSControlTint : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the system's default control tint.</summary>
 		Default = 0,    // system 'default'
-		/// <summary>To be added.</summary>
+		/// <summary>Uses a blue control tint.</summary>
 		Blue = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses a graphite (gray) control tint.</summary>
 		Graphite = 6,
-		/// <summary>To be added.</summary>
+		/// <summary>No control tint is applied.</summary>
 		Clear = 7,
 	}
 

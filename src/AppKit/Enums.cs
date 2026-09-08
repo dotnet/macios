@@ -4516,22 +4516,23 @@ namespace AppKit {
 	}
 	#endregion
 
+	/// <summary>Specifies how a control responds to varying levels of pressure on a Force Touch trackpad.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSPressureBehavior : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The pressure behavior is not known.</summary>
 		Unknown = -1,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the default pressure behavior for the control.</summary>
 		PrimaryDefault = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Behaves like a standard click, with a single activation threshold.</summary>
 		PrimaryClick = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Provides continuous, generic feedback proportional to the amount of pressure applied.</summary>
 		PrimaryGeneric = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>Repeats its action at a rate that accelerates as more pressure is applied.</summary>
 		PrimaryAccelerator = 3,
-		/// <summary>To be added.</summary>
+		/// <summary>Requires a deep press to activate, similar to a "Force Click".</summary>
 		PrimaryDeepClick = 5,
-		/// <summary>To be added.</summary>
+		/// <summary>Requires a deep press to activate a drag operation.</summary>
 		PrimaryDeepDrag = 6,
 	}
 

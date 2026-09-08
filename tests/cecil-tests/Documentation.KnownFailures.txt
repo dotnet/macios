@@ -22485,7 +22485,6 @@ T:AppKit.NSPasteboardTypeFindPanelSearchOptionKey
 T:AppKit.NSPasteboardTypeTextFinderOptionKey
 T:AppKit.NSPickerTouchBarItemControlRepresentation
 T:AppKit.NSPickerTouchBarItemSelectionMode
-T:AppKit.NSPressureBehavior
 T:AppKit.NSPrintPanelResult
 T:AppKit.NSPrintRenderingQuality
 T:AppKit.NSRectAlignment

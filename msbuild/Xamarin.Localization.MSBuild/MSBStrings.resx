@@ -1716,14 +1716,14 @@
 {0} - The path of the file that was copied to the device.
 {1} - The JSON output from 'xcrun devicectl'.</comment>
     </data>
-    <data name="E7187" xml:space="preserve">
+    <data name="E7190" xml:space="preserve">
         <value>Invalid value '{0}' for the app manifest entry '{1}' of type '{2}' specified in the AppManifestEntry item group. Expected no value at all.</value>
         <comment>Shown when an AppManifestEntry item of type Remove has a value.
 {0} - The invalid value.
 {1} - The app manifest entry name.
 {2} - The app manifest entry type.</comment>
     </data>
-    <data name="E7188" xml:space="preserve">
+    <data name="E7191" xml:space="preserve">
         <value>Invalid value '{0}' for the app manifest entry '{1}' of type '{2}' specified in the AppManifestEntry item group. Expected 'true' or 'false'.</value>
         <comment>Shown when an AppManifestEntry item of type Boolean has an invalid value.
 {0} - The invalid value.

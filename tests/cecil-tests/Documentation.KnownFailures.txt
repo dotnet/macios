@@ -22455,7 +22455,6 @@ T:AppKit.NSGridRowAlignment
 T:AppKit.NSHapticFeedbackPattern
 T:AppKit.NSHapticFeedbackPerformanceTime
 T:AppKit.NSHorizontalDirections
-T:AppKit.NSImageAlignment
 T:AppKit.NSImageDynamicRange
 T:AppKit.NSImageHint
 T:AppKit.NSImageLayoutDirection

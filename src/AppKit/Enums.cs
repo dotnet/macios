@@ -2813,26 +2813,27 @@ namespace AppKit {
 		AfterEndingLocation = (1 << 1),
 	}
 
+	/// <summary>Specifies how an image is aligned within its frame when it is not scaled to fill the entire frame.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSImageAlignment : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Centers the image within its frame.</summary>
 		Center = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns the image with the top edge of its frame, centered horizontally.</summary>
 		Top,
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns the image with the top-left corner of its frame.</summary>
 		TopLeft,
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns the image with the top-right corner of its frame.</summary>
 		TopRight,
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns the image with the left edge of its frame, centered vertically.</summary>
 		Left,
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns the image with the bottom edge of its frame, centered horizontally.</summary>
 		Bottom,
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns the image with the bottom-left corner of its frame.</summary>
 		BottomLeft,
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns the image with the bottom-right corner of its frame.</summary>
 		BottomRight,
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns the image with the right edge of its frame, centered vertically.</summary>
 		Right,
 	}
 

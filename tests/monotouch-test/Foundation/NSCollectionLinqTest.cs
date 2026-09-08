@@ -1021,7 +1021,7 @@ namespace MonoTouchFixtures.Foundation {
 		public void NSMutableArray_Aggregate_Seed ()
 		{
 			using var arr = MakeMutableArray ("a", "b", "c");
-			var result = arr.Aggregate (0, (acc, s) => acc + s.Length);
+			var result = arr.Aggregate (0, (acc, s) => acc + (int) s.Length);
 			Assert.That (result, Is.EqualTo (3), "Aggregate seed");
 		}
 

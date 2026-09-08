@@ -2905,24 +2905,25 @@ namespace AppKit {
 		ProportionallyUpOrDown,
 	}
 
+	/// <summary>Specifies the visual appearance of a segmented control.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSSegmentStyle : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The system chooses the most appropriate style based on the control's context.</summary>
 		Automatic = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>A style with rounded ends, resembling the classic segmented control appearance.</summary>
 		Rounded = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>A textured, rounded style; superseded by <see cref="F:AppKit.NSSegmentStyle.TexturedSquare" />, which uses the same artwork.</summary>
 		TexturedRounded = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>A rounded-rectangle style appropriate for scope bars and title bar accessories.</summary>
 		RoundRect = 3,
-		/// <summary>To be added.</summary>
+		/// <summary>A textured, square style appropriate for toolbars and title bar areas.</summary>
 		TexturedSquare = 4,
-		/// <summary>To be added.</summary>
+		/// <summary>A style with fully rounded, pill-shaped ends.</summary>
 		Capsule = 5,
-		/// <summary>To be added.</summary>
+		/// <summary>A small, square style suited to compact user interfaces.</summary>
 		SmallSquare = 6,
-		/// <summary>To be added.</summary>
+		/// <summary>A style in which the segments are visually separated from one another while remaining grouped.</summary>
 		Separated = 8,
 	}
 

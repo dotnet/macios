@@ -3541,14 +3541,15 @@ namespace AppKit {
 		Spinning,
 	}
 
+	/// <summary>Specifies where a pop-up button displays its indicator arrows.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSPopUpArrowPosition : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Does not display arrows.</summary>
 		None,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays arrows centered within the button.</summary>
 		Center,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays arrows near the bottom edge of the button.</summary>
 		Bottom,
 	}
 

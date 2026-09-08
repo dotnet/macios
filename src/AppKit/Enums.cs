@@ -4821,49 +4821,53 @@ namespace AppKit {
 
 	[NoMacCatalyst]
 	[Native]
+	/// <summary>Specifies a category of content that VoiceOver's accessibility rotor can navigate between.</summary>
+	[NoMacCatalyst]
+	[Native]
 	public enum NSAccessibilityCustomRotorType : long {
-		/// <summary>To be added.</summary>
+		/// <summary>A custom, application-defined rotor category.</summary>
 		Custom = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Any kind of accessibility element.</summary>
 		Any = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>An annotation, such as a comment or tracked change.</summary>
 		Annotation,
-		/// <summary>To be added.</summary>
+		/// <summary>Text rendered in a bold font.</summary>
 		BoldText,
-		/// <summary>To be added.</summary>
+		/// <summary>A heading of any level.</summary>
 		Heading,
-		/// <summary>To be added.</summary>
+		/// <summary>A level-1 heading.</summary>
 		HeadingLevel1,
-		/// <summary>To be added.</summary>
+		/// <summary>A level-2 heading.</summary>
 		HeadingLevel2,
-		/// <summary>To be added.</summary>
+		/// <summary>A level-3 heading.</summary>
 		HeadingLevel3,
-		/// <summary>To be added.</summary>
+		/// <summary>A level-4 heading.</summary>
 		HeadingLevel4,
-		/// <summary>To be added.</summary>
+		/// <summary>A level-5 heading.</summary>
 		HeadingLevel5,
-		/// <summary>To be added.</summary>
+		/// <summary>A level-6 heading.</summary>
 		HeadingLevel6,
-		/// <summary>To be added.</summary>
+		/// <summary>An image.</summary>
 		Image,
-		/// <summary>To be added.</summary>
+		/// <summary>Text rendered in an italic font.</summary>
 		ItalicText,
-		/// <summary>To be added.</summary>
+		/// <summary>A landmark region, such as navigation or main content.</summary>
 		Landmark,
-		/// <summary>To be added.</summary>
+		/// <summary>A hyperlink.</summary>
 		Link,
-		/// <summary>To be added.</summary>
+		/// <summary>A list.</summary>
 		List,
-		/// <summary>To be added.</summary>
+		/// <summary>A misspelled word.</summary>
 		MisspelledWord,
-		/// <summary>To be added.</summary>
+		/// <summary>A table.</summary>
 		Table,
-		/// <summary>To be added.</summary>
+		/// <summary>A text field.</summary>
 		TextField,
-		/// <summary>To be added.</summary>
+		/// <summary>Text with an underline.</summary>
 		UnderlinedText,
-		/// <summary>To be added.</summary>
+		/// <summary>A hyperlink that has already been visited.</summary>
 		VisitedLink,
+		/// <summary>An audio graph, describing a chart or graph through sound.</summary>
 		Audiograph,
 	}
 

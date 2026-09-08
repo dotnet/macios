@@ -22350,7 +22350,6 @@ T:AppKit.NSAboutPanelOption
 T:AppKit.NSAccessibilityActions
 T:AppKit.NSAccessibilityAnnotationAttributeKey
 T:AppKit.NSAccessibilityAttributes
-T:AppKit.NSAccessibilityCustomRotorType
 T:AppKit.NSAccessibilityFontKeys
 T:AppKit.NSAccessibilityForSearchPredicateKey
 T:AppKit.NSAccessibilityNotificationUserInfoKeys

@@ -3516,17 +3516,18 @@ namespace AppKit {
 		Aux0 = 0x0409,
 	}
 
+	/// <summary>Specifies the standard thickness, in points, of a horizontal or vertical progress indicator.</summary>
 	[NoMacCatalyst]
 	[Native]
 	[Deprecated (PlatformName.MacOSX, 10, 14)]
 	public enum NSProgressIndicatorThickness : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>A small progress indicator, 10 points thick.</summary>
 		Small = 10,
-		/// <summary>To be added.</summary>
+		/// <summary>A regular-sized progress indicator, 14 points thick.</summary>
 		Regular = 14,
-		/// <summary>To be added.</summary>
+		/// <summary>An Aqua-style progress indicator, 12 points thick.</summary>
 		Aqua = 12,
-		/// <summary>To be added.</summary>
+		/// <summary>A large progress indicator, 18 points thick.</summary>
 		Large = 18,
 	}
 

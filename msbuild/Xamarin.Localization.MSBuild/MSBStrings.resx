@@ -752,6 +752,10 @@
         </comments>
     </data>
 
+    <data name="E0192" xml:space="preserve">
+        <value>The PrepareAssemblies task failed without reporting a specific error. Please rebuild with increased verbosity for more details.</value>
+    </data>
+
     <data name="E7001" xml:space="preserve">
         <value>Could not resolve host IPs for WiFi debugger settings.</value>
     </data>
@@ -1493,19 +1497,9 @@
         <value>Can't process the native reference '{0}' on this platform because it is or contains a symlink.</value>
     </data>
 
-    <data name="E7149" xml:space="preserve">
-        <value>Unable to calculate the assemblies report from '{0}'. Directory not found.</value>
-        <comment>{0}: path from where to calculate assemblies report</comment>
-    </data>
-    
     <data name="W7145" xml:space="preserve">
         <value>Unable to retrieve information from '{0}'. The file may not be a valid PE file.</value>
         <comment>{0}: path of the file that failed the VMID calculation</comment>
-    </data>
-
-    <data name="E7150" xml:space="preserve">
-        <value>Unable to calculate assemblies report from '{0}'. An unexpected error occurred.</value>
-        <comment>{0}: path from where to calculate assemblies report</comment>
     </data>
 
     <data name="E7146" xml:space="preserve">
@@ -1524,6 +1518,16 @@
         <comment>{0}: path to use for file changes calculation</comment>
     </data>
 
+    <data name="E7149" xml:space="preserve">
+        <value>Unable to calculate the assemblies report from '{0}'. Directory not found.</value>
+        <comment>{0}: path from where to calculate assemblies report</comment>
+    </data>
+    
+    <data name="E7150" xml:space="preserve">
+        <value>Unable to calculate assemblies report from '{0}'. An unexpected error occurred.</value>
+        <comment>{0}: path from where to calculate assemblies report</comment>
+    </data>
+
     <data name="E7151" xml:space="preserve">
         <value>The app requests the entitlement '{0}', but this entitlement is not allowed on the current platform ({1}). It's only allowed on: {2}.</value>
         <comment>
@@ -1538,15 +1542,15 @@
         </comment>
     </data>
 
+    <data name="E7152_InvalidMtouchHttpClientHandler" xml:space="preserve">
+        <value>Invalid value for 'MtouchHttpClientHandler' ('{0}', must be either 'NSUrlSessionHandler' or 'CFNetworkHandler' (or not set at all).</value>
+    </data>
+
     <data name="E7153" xml:space="preserve">
         <value>The app requests the entitlement '{0}' with the value '{1}' of type '{2}', but this entitlement must be of type '{3}'.</value>
         <comment>
             This may be either a warning or an error, depending on build configuration.
         </comment>
-    </data>
-
-    <data name="E7152_InvalidMtouchHttpClientHandler" xml:space="preserve">
-        <value>Invalid value for 'MtouchHttpClientHandler' ('{0}', must be either 'NSUrlSessionHandler' or 'CFNetworkHandler' (or not set at all).</value>
     </data>
 
     <data name="W7154" xml:space="preserve">
@@ -1710,38 +1714,15 @@
 {2} - The computed extraction path.
 {3} - The intended output directory.</comment>
     </data>
+    <data name="E7184" xml:space="preserve">
+        <value>Codesign failed with 'errSecInternalComponent'. This usually means the keychain is locked, which is common when building over SSH. Unlock the keychain first, for example by running 'security unlock-keychain ~/Library/Keychains/login.keychain-db'.</value>
+        <comment>Shown when codesign fails with the 'errSecInternalComponent' error, which typically indicates a locked keychain.</comment>
+    </data>
     <data name="E7185" xml:space="preserve">
         <value>Could not determine the on-device destination path after copying '{0}' to the device. The 'xcrun devicectl' JSON output was: {1}</value>
         <comment>Shown when the DeviceCtl task copied a file to a device, but the on-device destination path could not be extracted from devicectl's JSON output.
 {0} - The path of the file that was copied to the device.
 {1} - The JSON output from 'xcrun devicectl'.</comment>
-    </data>
-    <data name="E7190" xml:space="preserve">
-        <value>Invalid value '{0}' for the app manifest entry '{1}' of type '{2}' specified in the AppManifestEntry item group. Expected no value at all.</value>
-        <comment>Shown when an AppManifestEntry item of type Remove has a value.
-{0} - The invalid value.
-{1} - The app manifest entry name.
-{2} - The app manifest entry type.</comment>
-    </data>
-    <data name="E7191" xml:space="preserve">
-        <value>Invalid value '{0}' for the app manifest entry '{1}' of type '{2}' specified in the AppManifestEntry item group. Expected 'true' or 'false'.</value>
-        <comment>Shown when an AppManifestEntry item of type Boolean has an invalid value.
-{0} - The invalid value.
-{1} - The app manifest entry name.
-{2} - The app manifest entry type.</comment>
-    </data>
-    <data name="E7189" xml:space="preserve">
-        <value>Unknown type '{0}' for the app manifest entry '{1}' specified in the AppManifestEntry item group. Expected 'Remove', 'Boolean', 'String', or 'StringArray'.</value>
-        <comment>Shown when an AppManifestEntry item has an unknown type.
-{0} - The unknown type.
-{1} - The app manifest entry name.</comment>
-    </data>
-    <data name="E0192" xml:space="preserve">
-        <value>The PrepareAssemblies task failed without reporting a specific error. Please rebuild with increased verbosity for more details.</value>
-    </data>
-    <data name="E7184" xml:space="preserve">
-        <value>Codesign failed with 'errSecInternalComponent'. This usually means the keychain is locked, which is common when building over SSH. Unlock the keychain first, for example by running 'security unlock-keychain ~/Library/Keychains/login.keychain-db'.</value>
-        <comment>Shown when codesign fails with the 'errSecInternalComponent' error, which typically indicates a locked keychain.</comment>
     </data>
     <data name="E7186" xml:space="preserve">
         <value>Could not read the runtime configuration file '{0}': {1}</value>
@@ -1760,5 +1741,25 @@
         <value>The runtime configuration file '{0}' is not a valid JSON object.</value>
         <comment>Shown when the main runtime configuration file (*.runtimeconfig.json) does not contain a valid JSON object at its root.
 {0} - The path to the runtime configuration file.</comment>
+    </data>
+    <data name="E7189" xml:space="preserve">
+        <value>Unknown type '{0}' for the app manifest entry '{1}' specified in the AppManifestEntry item group. Expected 'Remove', 'Boolean', 'String', or 'StringArray'.</value>
+        <comment>Shown when an AppManifestEntry item has an unknown type.
+{0} - The unknown type.
+{1} - The app manifest entry name.</comment>
+    </data>
+    <data name="E7190" xml:space="preserve">
+        <value>Invalid value '{0}' for the app manifest entry '{1}' of type '{2}' specified in the AppManifestEntry item group. Expected no value at all.</value>
+        <comment>Shown when an AppManifestEntry item of type Remove has a value.
+{0} - The invalid value.
+{1} - The app manifest entry name.
+{2} - The app manifest entry type.</comment>
+    </data>
+    <data name="E7191" xml:space="preserve">
+        <value>Invalid value '{0}' for the app manifest entry '{1}' of type '{2}' specified in the AppManifestEntry item group. Expected 'true' or 'false'.</value>
+        <comment>Shown when an AppManifestEntry item of type Boolean has an invalid value.
+{0} - The invalid value.
+{1} - The app manifest entry name.
+{2} - The app manifest entry type.</comment>
     </data>
 </root>

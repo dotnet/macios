@@ -22443,7 +22443,6 @@ T:AppKit.NSDragOperation
 T:AppKit.NSDrawerState
 T:AppKit.NSEventButtonMask
 T:AppKit.NSEventModifierFlags
-T:AppKit.NSEventModifierMask
 T:AppKit.NSEventPhase
 T:AppKit.NSEventSubtype
 T:AppKit.NSEventTrackHandler

@@ -811,27 +811,28 @@ namespace AppKit {
 		AnyEvent = unchecked((ulong) UInt64.MaxValue),
 	}
 
+	/// <summary>Specifies a bitmask of modifier keys, such as Shift, Control, or Command, that were held down when an event occurred.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSEventModifierMask : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The Caps Lock key is engaged.</summary>
 		AlphaShiftKeyMask = 1 << 16,
-		/// <summary>To be added.</summary>
+		/// <summary>A Shift key is held down.</summary>
 		ShiftKeyMask = 1 << 17,
-		/// <summary>To be added.</summary>
+		/// <summary>A Control key is held down.</summary>
 		ControlKeyMask = 1 << 18,
-		/// <summary>To be added.</summary>
+		/// <summary>An Option (Alternate) key is held down.</summary>
 		AlternateKeyMask = 1 << 19,
-		/// <summary>To be added.</summary>
+		/// <summary>A Command key is held down.</summary>
 		CommandKeyMask = 1 << 20,
-		/// <summary>To be added.</summary>
+		/// <summary>The key is located on the numeric keypad.</summary>
 		NumericPadKeyMask = 1 << 21,
-		/// <summary>To be added.</summary>
+		/// <summary>The Help key is held down.</summary>
 		HelpKeyMask = 1 << 22,
-		/// <summary>To be added.</summary>
+		/// <summary>The key is a function key, such as F1 through F12, or an arrow key.</summary>
 		FunctionKeyMask = 1 << 23,
-		/// <summary>To be added.</summary>
+		/// <summary>A mask covering all of the device-independent modifier flags.</summary>
 		DeviceIndependentModifierFlagsMask = 0xffff0000,
 	}
 

@@ -5126,10 +5126,13 @@ namespace AppKit {
 		SelectAny = 2,
 	}
 
+	/// <summary>Specifies the outcome of a page layout panel session.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSPageLayoutResult : long {
+		/// <summary>The user cancelled the page layout panel.</summary>
 		Cancelled = 0,
+		/// <summary>The user made changes and accepted the page layout panel.</summary>
 		Changed,
 	}
 

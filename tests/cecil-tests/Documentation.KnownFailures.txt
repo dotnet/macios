@@ -22451,7 +22451,6 @@ T:AppKit.NSOpenSavePanelValidate
 T:AppKit.NSPageControllerGetFrame
 T:AppKit.NSPageControllerGetIdentifier
 T:AppKit.NSPageControllerGetViewController
-T:AppKit.NSPageLayoutResult
 T:AppKit.NSPasteboardAccessBehavior
 T:AppKit.NSPasteboardDetectionPattern
 T:AppKit.NSPasteboardDetectMetadataCompletionHandler

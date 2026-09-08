@@ -595,16 +595,17 @@ namespace AppKit {
 		ReadError,
 	}
 
+	/// <summary>Specifies when an <see cref="T:AppKit.NSImageRep" /> caches its rendered output as a bitmap.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSImageCacheMode : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Lets the image decide the appropriate caching behavior.</summary>
 		Default,
-		/// <summary>To be added.</summary>
+		/// <summary>Always caches the rendered image.</summary>
 		Always,
-		/// <summary>To be added.</summary>
+		/// <summary>Caches the rendered image only when it is drawn at its native size.</summary>
 		BySize,
-		/// <summary>To be added.</summary>
+		/// <summary>Never caches the rendered image; it is always redrawn from its source representation.</summary>
 		Never,
 	}
 

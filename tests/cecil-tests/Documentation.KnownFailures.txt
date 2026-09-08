@@ -22478,7 +22478,6 @@ T:AppKit.NSHapticFeedbackPattern
 T:AppKit.NSHapticFeedbackPerformanceTime
 T:AppKit.NSHorizontalDirections
 T:AppKit.NSImageAlignment
-T:AppKit.NSImageCacheMode
 T:AppKit.NSImageDynamicRange
 T:AppKit.NSImageHint
 T:AppKit.NSImageLayoutDirection

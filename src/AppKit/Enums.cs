@@ -2877,15 +2877,17 @@ namespace AppKit {
 		PaneSplitter = 3,
 	}
 
+	/// <summary>Specifies the standard behavior of a split view item, such as a sidebar or inspector pane, within a split view controller.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSSplitViewItemBehavior : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The item has no special behavior; it participates in the split view like an ordinary pane.</summary>
 		Default,
-		/// <summary>To be added.</summary>
+		/// <summary>The item behaves as a sidebar, with the system-defined sidebar appearance and collapsing behavior.</summary>
 		Sidebar,
-		/// <summary>To be added.</summary>
+		/// <summary>The item behaves as the primary content list pane alongside a sidebar.</summary>
 		ContentList,
+		/// <summary>The item behaves as an inspector pane, with the system-defined inspector appearance and collapsing behavior.</summary>
 		Inspector,
 	}
 

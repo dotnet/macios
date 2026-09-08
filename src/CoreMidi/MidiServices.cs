@@ -638,8 +638,8 @@ namespace CoreMidi {
 		unsafe extern static int /* OSStatus = SInt32 */ MIDISourceCreate (MidiObjectRef handle, IntPtr name, MidiEndpointRef* endpoint);
 
 		[SupportedOSPlatform ("ios14.0")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst14.0")]
+		[SupportedOSPlatform ("macos11.0")]
 		[UnsupportedOSPlatform ("tvos")]
 		[DllImport (Constants.CoreMidiLibrary)]
 		unsafe extern static OSStatus MIDISourceCreateWithProtocol (MidiClientRef client, IntPtr /* CFStringRef */ name, MidiProtocolId protocol, MidiEndpointRef* outSrc);
@@ -724,8 +724,8 @@ namespace CoreMidi {
 		/// <param name="status">A status code that describes the result of this operation. This will be <see cref="MidiError.Ok" /> in case of success.</param>
 		/// <returns>A newly created <see cref="MidiEndpoint" /> if successful, otherwise null.</returns>
 		[SupportedOSPlatform ("ios14.0")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst14.0")]
+		[SupportedOSPlatform ("macos11.0")]
 		[UnsupportedOSPlatform ("tvos")]
 		public MidiEndpoint? CreateVirtualSource (string name, MidiProtocolId protocol, out MidiError status)
 		{
@@ -772,8 +772,8 @@ namespace CoreMidi {
 		/// <returns>A newly created <see cref="MidiEndpoint" /> if successful, otherwise null.</returns>
 		/// <remarks>The <paramref name="readBlock" /> callback receives two pointers: the first is a pointer to the <c>MIDIEventList</c>, and the second is a pointer to the source <c>MIDIEndpointRef</c>. Use <see cref="MidiEventList(IntPtr)" /> to wrap the event list pointer.</remarks>
 		[SupportedOSPlatform ("ios14.0")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst14.0")]
+		[SupportedOSPlatform ("macos11.0")]
 		[UnsupportedOSPlatform ("tvos")]
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public unsafe MidiEndpoint? CreateVirtualDestination (string name, MidiProtocolId protocol, MidiReceiveBlock readBlock, out MidiError status)
@@ -800,8 +800,8 @@ namespace CoreMidi {
 		}
 
 		[SupportedOSPlatform ("ios14.0")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst14.0")]
+		[SupportedOSPlatform ("macos11.0")]
 		[UnsupportedOSPlatform ("tvos")]
 		[DllImport (Constants.CoreMidiLibrary)]
 		unsafe extern static OSStatus MIDIDestinationCreateWithProtocol (MidiClientRef client, IntPtr /* CFStringRef */ name, MidiProtocolId protocol, MidiEndpointRef* outSrc, BlockLiteral* /* MIDIReceiveBlock */ readBlock);
@@ -827,8 +827,8 @@ namespace CoreMidi {
 		}
 
 		[SupportedOSPlatform ("ios14.0")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst14.0")]
+		[SupportedOSPlatform ("macos11.0")]
 		[UnsupportedOSPlatform ("tvos")]
 		[DllImport (Constants.CoreMidiLibrary)]
 		unsafe extern static OSStatus MIDIInputPortCreateWithProtocol (
@@ -846,8 +846,8 @@ namespace CoreMidi {
 		/// <returns>A newly created <see cref="MidiPort" /> if successful, otherwise null.</returns>
 		/// <remarks>The <paramref name="readBlock" /> callback receives two pointers: the first is a pointer to the <c>MIDIEventList</c>, and the second is a pointer to the source <c>MIDIEndpointRef</c>. Use <see cref="MidiEventList(IntPtr)" /> to wrap the event list pointer.</remarks>
 		[SupportedOSPlatform ("ios14.0")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst14.0")]
+		[SupportedOSPlatform ("macos11.0")]
 		[UnsupportedOSPlatform ("tvos")]
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public unsafe MidiPort? CreateInputPort (string name, MidiProtocolId protocol, MidiReceiveBlock readBlock, out MidiError status)
@@ -1962,8 +1962,8 @@ namespace CoreMidi {
 		}
 
 		[SupportedOSPlatform ("ios14.0")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst14.0")]
+		[SupportedOSPlatform ("macos11.0")]
 		[UnsupportedOSPlatform ("tvos")]
 		public MidiProtocolId ProtocolId {
 			get {
@@ -1975,8 +1975,8 @@ namespace CoreMidi {
 		}
 
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("macos14.0")]
 		[UnsupportedOSPlatform ("tvos")]
 		public ushort UmpActiveGroupBitmap {
 			get {
@@ -1988,8 +1988,8 @@ namespace CoreMidi {
 		}
 
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("macos14.0")]
 		[UnsupportedOSPlatform ("tvos")]
 		public bool UmpCanTransmitGroupless {
 			get {
@@ -2040,7 +2040,7 @@ namespace CoreMidi {
 
 		[SupportedOSPlatform ("ios14.0")]
 		[SupportedOSPlatform ("maccatalyst14.0")]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("macos11.0")]
 		[DllImport (Constants.CoreMidiLibrary)]
 		unsafe extern static OSStatus MIDIDeviceNewEntity (MidiDeviceRef device, /* CFString */ IntPtr name, /* MIDIProtocolId */ MidiProtocolId protocol, byte embedded, /* ItemCount */ nuint numSourceEndpoints, /* ItemCount */ nuint numDestinationEndpoints, MidiEntityRef* newEntity);
 
@@ -2054,7 +2054,7 @@ namespace CoreMidi {
 		/// <returns>A newly created entity in case of success, null otherwise. In case of failure, <paramref name="status" /> will contain an error code.</returns>
 		[SupportedOSPlatform ("ios14.0")]
 		[SupportedOSPlatform ("maccatalyst14.0")]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("macos11.0")]
 		public MidiEntity? CreateEntity (string name, MidiProtocolId protocol, bool embedded, nuint numberOfSourceEndpoints, nuint numberOfDestinationEndpoints, out MidiError status)
 		{
 			using var namePtr = new TransientCFString (name);
@@ -2789,8 +2789,8 @@ namespace CoreMidi {
 		}
 
 		[SupportedOSPlatform ("ios14.0")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst14.0")]
+		[SupportedOSPlatform ("macos11.0")]
 		[UnsupportedOSPlatform ("tvos")]
 		public MidiProtocolId ProtocolId {
 			get {
@@ -3268,8 +3268,8 @@ namespace CoreMidi {
 		}
 
 		[SupportedOSPlatform ("ios14.0")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst14.0")]
+		[SupportedOSPlatform ("macos11.0")]
 		[UnsupportedOSPlatform ("tvos")]
 		public MidiProtocolId ProtocolId {
 			get {
@@ -3281,8 +3281,8 @@ namespace CoreMidi {
 		}
 
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("macos14.0")]
 		[UnsupportedOSPlatform ("tvos")]
 		public ushort UmpActiveGroupBitmap {
 			get {
@@ -3294,8 +3294,8 @@ namespace CoreMidi {
 		}
 
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("macos14.0")]
 		[UnsupportedOSPlatform ("tvos")]
 		public bool UmpCanTransmitGroupless {
 			get {
@@ -3377,8 +3377,8 @@ namespace CoreMidi {
 
 		[DllImport (Constants.CoreMidiLibrary)]
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("macos14.0")]
 		[UnsupportedOSPlatform ("tvos")]
 		unsafe extern static OSStatus MIDISendUMPSysex (MidiSysexSendRequestUmp* request);
 
@@ -3387,8 +3387,8 @@ namespace CoreMidi {
 		/// <param name="cancellationToken">An optional cancellation token that can be used to cancel the request.</param>
 		/// <returns>A <see cref="MidiError" /> value for the request. This will be <see cref="MidiError.Ok" /> if the request was successful, an error code otherwise.</returns>
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("macos14.0")]
 		[UnsupportedOSPlatform ("tvos")]
 		public unsafe Task<MidiError> SendSysexUmpAsync (uint [] data, CancellationToken? cancellationToken = null)
 		{
@@ -3407,8 +3407,8 @@ namespace CoreMidi {
 		}
 
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("macos14.0")]
 		[UnsupportedOSPlatform ("tvos")]
 		[DllImport (Constants.CoreMidiLibrary)]
 		unsafe extern static OSStatus MIDISendUMPSysex8 (MidiSysexSendRequestUmp* request);
@@ -3418,8 +3418,8 @@ namespace CoreMidi {
 		/// <param name="cancellationToken">An optional cancellation token that can be used to cancel the request.</param>
 		/// <returns>A <see cref="MidiError" /> value for the request. This will be <see cref="MidiError.Ok" /> if the request was successful, an error code otherwise.</returns>
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("macos14.0")]
 		[UnsupportedOSPlatform ("tvos")]
 		public unsafe Task<MidiError> SendSysexUmp8Async (uint [] data, CancellationToken? cancellationToken = null)
 		{

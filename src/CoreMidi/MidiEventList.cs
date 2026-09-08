@@ -19,8 +19,8 @@ namespace CoreMidi {
 	/// <summary>This class represents the Objective-C struct MIDIEventList, which is a list of <see cref="MidiEventPacket" /> packets.</summary>
 	[SupportedOSPlatform ("ios14.0")]
 	[SupportedOSPlatform ("tvos15.0")]
-	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("maccatalyst")]
+	[SupportedOSPlatform ("macos11.0")]
+	[SupportedOSPlatform ("maccatalyst14.0")]
 	// [NativeName ("MIDIEventList")]
 	public sealed class MidiEventList : IEnumerable<MidiEventPacket>, IDisposable {
 		/* This is a variable sized struct, so store all the data in a byte array.
@@ -139,8 +139,8 @@ namespace CoreMidi {
 		/// <returns>A non-zero error code in case of failure, otherwise zero (which indicates success).</returns>
 		[SupportedOSPlatform ("ios14.0")]
 		[UnsupportedOSPlatform ("tvos")]
-		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos11.0")]
+		[SupportedOSPlatform ("maccatalyst14.0")]
 		public unsafe int /* OSStatus */ Send (MidiPort port, MidiEndpoint destination)
 		{
 			var rv = MIDISendEventList (port.Handle, destination.Handle, midiDataPointer);
@@ -154,8 +154,8 @@ namespace CoreMidi {
 		/// <returns>A non-zero error code in case of failure, otherwise zero (which indicates success).</returns>
 		[SupportedOSPlatform ("ios14.0")]
 		[UnsupportedOSPlatform ("tvos")]
-		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos11.0")]
+		[SupportedOSPlatform ("maccatalyst14.0")]
 		public unsafe int /* OSStatus */ Receive (MidiEndpoint source)
 		{
 			var rv = MIDIReceivedEventList (source.Handle, midiDataPointer);
@@ -185,9 +185,17 @@ namespace CoreMidi {
 			}
 		}
 
+		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("macos11.0")]
+		[SupportedOSPlatform ("maccatalyst14.0")]
 		[DllImport (Constants.CoreMidiLibrary)]
 		unsafe static extern MidiEventPacket* MIDIEventListInit (MIDIEventList* evtlist, MidiProtocolId /* MIDIProtocolID */ protocol);
 
+		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("macos11.0")]
+		[SupportedOSPlatform ("maccatalyst14.0")]
 		[DllImport (Constants.CoreMidiLibrary)]
 		unsafe static extern MidiEventPacket* MIDIEventListAdd (
 			MIDIEventList* evtlist,
@@ -200,15 +208,15 @@ namespace CoreMidi {
 #if !__TVOS__
 		[SupportedOSPlatform ("ios14.0")]
 		[UnsupportedOSPlatform ("tvos")]
-		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos11.0")]
+		[SupportedOSPlatform ("maccatalyst14.0")]
 		[DllImport (Constants.CoreMidiLibrary)]
 		unsafe static extern int /* OSStatus */ MIDISendEventList (MidiPortRef port, MidiEndpointRef dest, MIDIEventList* evtList);
 
 		[SupportedOSPlatform ("ios14.0")]
 		[UnsupportedOSPlatform ("tvos")]
-		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos11.0")]
+		[SupportedOSPlatform ("maccatalyst14.0")]
 		[DllImport (Constants.CoreMidiLibrary)]
 		unsafe static extern int /* OSStatus */ MIDIReceivedEventList (MidiEndpointRef src, MIDIEventList* evtlist);
 #endif // !__TVOS__
@@ -283,8 +291,8 @@ namespace CoreMidi {
 		/// <remarks>This is a binding for the native <c>MIDIEventListForEachEvent</c> function, which parses each UMP and fills a <see cref="MidiUniversalMessage" /> struct.</remarks>
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("tvos15.0")]
-		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos12.0")]
+		[SupportedOSPlatform ("maccatalyst15.0")]
 		public unsafe void ForEachEvent (MidiUniversalMessageVisitor visitor)
 		{
 			ArgumentNullException.ThrowIfNull (visitor);
@@ -307,8 +315,8 @@ namespace CoreMidi {
 
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("tvos15.0")]
-		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos12.0")]
+		[SupportedOSPlatform ("maccatalyst15.0")]
 		[DllImport (Constants.CoreMidiLibrary)]
 		unsafe static extern void MIDIEventListForEachEvent (MIDIEventList* evtlist, delegate* unmanaged<void*, ulong, MidiUniversalMessage, void> visitor, void* visitorContext);
 	}

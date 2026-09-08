@@ -865,243 +865,246 @@ namespace AppKit {
 
 	// This enum is defined as an untyped enum in MacOSX.sdk/System/Library/Frameworks/Carbon.framework/Versions/A/Frameworks/HIToolbox.framework/Versions/A/Headers/Events.h
 	// It represents values that may be returned by NSEvent.KeyCode (which isn't typed as 'NSKey' because it may be many other values as well).
+	/// <summary>Specifies a virtual key code identifying a physical key on the keyboard, independent of the current keyboard layout.</summary>
 	[NoMacCatalyst]
 	public enum NSKey {
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the 'A' key.</summary>
 		A = 0x00,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the 'S' key.</summary>
 		S = 0x01,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the 'D' key.</summary>
 		D = 0x02,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the 'F' key.</summary>
 		F = 0x03,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the 'H' key.</summary>
 		H = 0x04,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the 'G' key.</summary>
 		G = 0x05,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the 'Z' key.</summary>
 		Z = 0x06,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the 'X' key.</summary>
 		X = 0x07,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the 'C' key.</summary>
 		C = 0x08,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the 'V' key.</summary>
 		V = 0x09,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the 'B' key.</summary>
 		B = 0x0B,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the 'Q' key.</summary>
 		Q = 0x0C,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the 'W' key.</summary>
 		W = 0x0D,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the 'E' key.</summary>
 		E = 0x0E,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the 'R' key.</summary>
 		R = 0x0F,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the 'Y' key.</summary>
 		Y = 0x10,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the 'T' key.</summary>
 		T = 0x11,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the '1' key on the top row.</summary>
 		D1 = 0x12,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the '2' key on the top row.</summary>
 		D2 = 0x13,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the '3' key on the top row.</summary>
 		D3 = 0x14,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the '4' key on the top row.</summary>
 		D4 = 0x15,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the '6' key on the top row.</summary>
 		D6 = 0x16,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the '5' key on the top row.</summary>
 		D5 = 0x17,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the '=' (equals) key.</summary>
 		Equal = 0x18,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the '9' key on the top row.</summary>
 		D9 = 0x19,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the '7' key on the top row.</summary>
 		D7 = 0x1A,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the '-' (minus/hyphen) key.</summary>
 		Minus = 0x1B,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the '8' key on the top row.</summary>
 		D8 = 0x1C,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the '0' key on the top row.</summary>
 		D0 = 0x1D,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the ']' (right bracket) key.</summary>
 		RightBracket = 0x1E,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the 'O' key.</summary>
 		O = 0x1F,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the 'U' key.</summary>
 		U = 0x20,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the '[' (left bracket) key.</summary>
 		LeftBracket = 0x21,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the 'I' key.</summary>
 		I = 0x22,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the 'P' key.</summary>
 		P = 0x23,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the 'L' key.</summary>
 		L = 0x25,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the 'J' key.</summary>
 		J = 0x26,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the quote (') key.</summary>
 		Quote = 0x27,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the 'K' key.</summary>
 		K = 0x28,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the ';' (semicolon) key.</summary>
 		Semicolon = 0x29,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the backslash ('\') key.</summary>
 		Backslash = 0x2A,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the ',' (comma) key.</summary>
 		Comma = 0x2B,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the '/' (slash) key.</summary>
 		Slash = 0x2C,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the 'N' key.</summary>
 		N = 0x2D,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the 'M' key.</summary>
 		M = 0x2E,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the '.' (period) key.</summary>
 		Period = 0x2F,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the grave accent/tilde ('`') key.</summary>
 		Grave = 0x32,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the decimal point key on the numeric keypad.</summary>
 		KeypadDecimal = 0x41,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the multiply ('*') key on the numeric keypad.</summary>
 		KeypadMultiply = 0x43,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the plus ('+') key on the numeric keypad.</summary>
 		KeypadPlus = 0x45,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the Clear key on the numeric keypad.</summary>
 		KeypadClear = 0x47,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the divide ('/') key on the numeric keypad.</summary>
 		KeypadDivide = 0x4B,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the Enter key on the numeric keypad.</summary>
 		KeypadEnter = 0x4C,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the minus ('-') key on the numeric keypad.</summary>
 		KeypadMinus = 0x4E,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the equals ('=') key on the numeric keypad.</summary>
 		KeypadEquals = 0x51,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the '0' key on the numeric keypad.</summary>
 		Keypad0 = 0x52,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the '1' key on the numeric keypad.</summary>
 		Keypad1 = 0x53,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the '2' key on the numeric keypad.</summary>
 		Keypad2 = 0x54,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the '3' key on the numeric keypad.</summary>
 		Keypad3 = 0x55,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the '4' key on the numeric keypad.</summary>
 		Keypad4 = 0x56,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the '5' key on the numeric keypad.</summary>
 		Keypad5 = 0x57,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the '6' key on the numeric keypad.</summary>
 		Keypad6 = 0x58,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the '7' key on the numeric keypad.</summary>
 		Keypad7 = 0x59,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the '8' key on the numeric keypad.</summary>
 		Keypad8 = 0x5B,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the '9' key on the numeric keypad.</summary>
 		Keypad9 = 0x5C,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the Return key.</summary>
 		Return = 0x24,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the Tab key.</summary>
 		Tab = 0x30,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the Space bar.</summary>
 		Space = 0x31,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the Delete (Backspace) key.</summary>
 		Delete = 0x33,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the Escape key.</summary>
 		Escape = 0x35,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the (left) Command key.</summary>
 		Command = 0x37,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the (left) Shift key.</summary>
 		Shift = 0x38,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the Caps Lock key.</summary>
 		CapsLock = 0x39,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the (left) Option key.</summary>
 		Option = 0x3A,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the (left) Control key.</summary>
 		Control = 0x3B,
+		/// <summary>The virtual key code for the right Command key.</summary>
 		RightCommand = 0x36,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the right Shift key.</summary>
 		RightShift = 0x3C,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the right Option key.</summary>
 		RightOption = 0x3D,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the right Control key.</summary>
 		RightControl = 0x3E,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the Fn (Function) key.</summary>
 		Function = 0x3F,
+		/// <summary>The virtual key code for the F17 function key.</summary>
 		F17 = 0x40,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the volume up media key.</summary>
 		VolumeUp = 0x48,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the volume down media key.</summary>
 		VolumeDown = 0x49,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the mute media key.</summary>
 		Mute = 0x4A,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the Forward Delete key (deletes the character in front of the insertion point).</summary>
 		ForwardDelete = 0x75,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the extra key found between Shift and 'Z' on ISO keyboard layouts.</summary>
 		ISOSection = 0x0A,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the Yen ('¥') key found on JIS keyboard layouts.</summary>
 		JISYen = 0x5D,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the underscore ('_') key found on JIS keyboard layouts.</summary>
 		JISUnderscore = 0x5E,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the comma key on the numeric keypad, found on JIS keyboard layouts.</summary>
 		JISKeypadComma = 0x5F,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the Eisu (alphanumeric input) key found on JIS keyboard layouts.</summary>
 		JISEisu = 0x66,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the Kana (Japanese kana input) key found on JIS keyboard layouts.</summary>
 		JISKana = 0x68,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the F18 function key.</summary>
 		F18 = 0x4F,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the F19 function key.</summary>
 		F19 = 0x50,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the F20 function key.</summary>
 		F20 = 0x5A,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the F5 function key.</summary>
 		F5 = 0x60,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the F6 function key.</summary>
 		F6 = 0x61,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the F7 function key.</summary>
 		F7 = 0x62,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the F3 function key.</summary>
 		F3 = 0x63,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the F8 function key.</summary>
 		F8 = 0x64,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the F9 function key.</summary>
 		F9 = 0x65,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the F11 function key.</summary>
 		F11 = 0x67,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the F13 function key.</summary>
 		F13 = 0x69,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the F16 function key.</summary>
 		F16 = 0x6A,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the F14 function key.</summary>
 		F14 = 0x6B,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the F10 function key.</summary>
 		F10 = 0x6D,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the F12 function key.</summary>
 		F12 = 0x6F,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the F15 function key.</summary>
 		F15 = 0x71,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the Help key.</summary>
 		Help = 0x72,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the Home key.</summary>
 		Home = 0x73,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the Page Up key.</summary>
 		PageUp = 0x74,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the F4 function key.</summary>
 		F4 = 0x76,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the End key.</summary>
 		End = 0x77,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the F2 function key.</summary>
 		F2 = 0x78,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the Page Down key.</summary>
 		PageDown = 0x79,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the F1 function key.</summary>
 		F1 = 0x7A,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the left arrow key.</summary>
 		LeftArrow = 0x7B,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the right arrow key.</summary>
 		RightArrow = 0x7C,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the down arrow key.</summary>
 		DownArrow = 0x7D,
-		/// <summary>To be added.</summary>
+		/// <summary>The virtual key code for the up arrow key.</summary>
 		UpArrow = 0x7E,
 	}
 

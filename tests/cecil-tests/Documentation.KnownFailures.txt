@@ -22484,7 +22484,6 @@ T:AppKit.NSImageResizingModeExtensions
 T:AppKit.NSImageSymbolColorRenderingMode
 T:AppKit.NSImageSymbolScale
 T:AppKit.NSImageSymbolVariableValueMode
-T:AppKit.NSKey
 T:AppKit.NSLayoutManager_NSTextViewSupport
 T:AppKit.NSLayoutPriority
 T:AppKit.NSLevelIndicatorPlaceholderVisibility

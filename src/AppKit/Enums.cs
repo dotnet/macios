@@ -3150,6 +3150,7 @@ namespace AppKit {
 		AsDropTarget = 3,
 	}
 
+	/// <summary>Specifies a bitmask describing where a scrolled-to item should be positioned within a collection view's visible area.</summary>
 #if XAMCORE_5_0
 	[NoMacCatalyst]
 #else
@@ -3162,27 +3163,27 @@ namespace AppKit {
 	[Native]
 	[Flags]
 	public enum NSCollectionViewScrollPosition : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>No particular scroll position is requested.</summary>
 		None = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Positions the item at the top of the visible area.</summary>
 		Top = 1 << 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Centers the item vertically within the visible area.</summary>
 		CenteredVertically = 1 << 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Positions the item at the bottom of the visible area.</summary>
 		Bottom = 1 << 2,
-		/// <summary>To be added.</summary>
+		/// <summary>Scrolls the minimum amount necessary to bring the item's nearest horizontal edge into view.</summary>
 		NearestHorizontalEdge = 1 << 9,
-		/// <summary>To be added.</summary>
+		/// <summary>Positions the item at the left of the visible area.</summary>
 		Left = 1 << 3,
-		/// <summary>To be added.</summary>
+		/// <summary>Centers the item horizontally within the visible area.</summary>
 		CenteredHorizontally = 1 << 4,
-		/// <summary>To be added.</summary>
+		/// <summary>Positions the item at the right of the visible area.</summary>
 		Right = 1 << 5,
-		/// <summary>To be added.</summary>
+		/// <summary>Positions the item at the leading edge of the visible area, honoring the current layout direction.</summary>
 		LeadingEdge = 1 << 6,
-		/// <summary>To be added.</summary>
+		/// <summary>Positions the item at the trailing edge of the visible area, honoring the current layout direction.</summary>
 		TrailingEdge = 1 << 7,
-		/// <summary>To be added.</summary>
+		/// <summary>Scrolls the minimum amount necessary to bring the item's nearest vertical edge into view.</summary>
 		NearestVerticalEdge = 1 << 8,
 	}
 

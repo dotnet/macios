@@ -3346,8 +3346,8 @@ namespace CoreMidi {
 
 		[DllImport (Constants.CoreMidiLibrary)]
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
 		unsafe extern static OSStatus MIDISendUMPSysex (MidiSysexSendRequestUmp* request);
 
@@ -3356,8 +3356,8 @@ namespace CoreMidi {
 		/// <param name="cancellationToken">An optional cancellation token that can be used to cancel the request.</param>
 		/// <returns>A <see cref="MidiError" /> value for the request. This will be <see cref="MidiError.Ok" /> if the request was successful, an error code otherwise.</returns>
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
 		public unsafe Task<MidiError> SendSysexUmpAsync (uint [] data, CancellationToken? cancellationToken = null)
 		{
@@ -3376,8 +3376,8 @@ namespace CoreMidi {
 		}
 
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
 		[DllImport (Constants.CoreMidiLibrary)]
 		unsafe extern static OSStatus MIDISendUMPSysex8 (MidiSysexSendRequestUmp* request);
@@ -3387,8 +3387,8 @@ namespace CoreMidi {
 		/// <param name="cancellationToken">An optional cancellation token that can be used to cancel the request.</param>
 		/// <returns>A <see cref="MidiError" /> value for the request. This will be <see cref="MidiError.Ok" /> if the request was successful, an error code otherwise.</returns>
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
 		public unsafe Task<MidiError> SendSysexUmp8Async (uint [] data, CancellationToken? cancellationToken = null)
 		{

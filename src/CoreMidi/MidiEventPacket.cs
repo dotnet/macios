@@ -173,8 +173,8 @@ namespace CoreMidi {
 #if !__TVOS__
 
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
 		[DllImport (Constants.CoreMidiLibrary)]
 		unsafe extern static OSStatus MIDIEventPacketSysexBytesForGroup (MidiEventPacket* pkt, byte /* UInt8 */ groupIndex, IntPtr* /* CFDataRef __nullable * __mononull */ outData);
@@ -184,8 +184,8 @@ namespace CoreMidi {
 		/// <param name="status">A status code that describes the result of the operation. This will be <see cref="MidiError.Ok" /> in case of success.</param>
 		/// <returns>An <see cref="NSData" /> that contains the requested byte stream.</returns>
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
 		public unsafe NSData? GetSysexBytes (byte groupIndex, out MidiError status)
 		{

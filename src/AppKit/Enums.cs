@@ -461,16 +461,17 @@ namespace AppKit {
 		ImageTrailing,
 	}
 
+	/// <summary>Specifies how an image is scaled to fit the space allotted to it.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSImageScale : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Scales the image proportionally down to fit the space, but never scales it up.</summary>
 		ProportionallyDown = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Scales each dimension of the image independently, without regard to the image's original aspect ratio, so it fills the space exactly.</summary>
 		AxesIndependently,
-		/// <summary>To be added.</summary>
+		/// <summary>Does not scale the image.</summary>
 		None,
-		/// <summary>To be added.</summary>
+		/// <summary>Scales the image proportionally, either up or down, to fit the space as closely as possible.</summary>
 		ProportionallyUpOrDown,
 	}
 

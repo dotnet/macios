@@ -57,24 +57,44 @@ namespace MonoTouchFixtures.CoreMidi {
 					foreach (var ep in endpoints) {
 						Assert.NotNull (ep, "EndPoint");
 
-						// These APIs returns -50 (GeneralParamError) no matter what I do :/
+						// GetRefCons/SetRefCons return GeneralParamError (-50) on hosts that don't
+						// support refcons for endpoints, but can succeed (Ok) on hosts that do.
+						// Accept both, and only verify the refcon round-trip when the calls succeed.
 
-						Assert.AreEqual (AudioQueueStatus.GeneralParamError, (AudioQueueStatus) ep.GetRefCons (out var ref1, out var ref2), "GetRefCons A");
-						Assert.That (ref1, Is.EqualTo (IntPtr.Zero), "GetRefCons A 1");
-						Assert.That (ref2, Is.EqualTo (IntPtr.Zero), "GetRefCons A 2");
+						var getA = (AudioQueueStatus) ep.GetRefCons (out var ref1, out var ref2);
+						Assert.That (getA, Is.EqualTo (AudioQueueStatus.Ok).Or.EqualTo (AudioQueueStatus.GeneralParamError), "GetRefCons A");
+						if (getA == AudioQueueStatus.GeneralParamError) {
+							Assert.That (ref1, Is.EqualTo (IntPtr.Zero), "GetRefCons A 1");
+							Assert.That (ref2, Is.EqualTo (IntPtr.Zero), "GetRefCons A 2");
+						}
 
 						ref1 = unchecked((IntPtr) 0xfee1600d);
 						ref2 = 0x42f00f00;
-						Assert.AreEqual (AudioQueueStatus.GeneralParamError, (AudioQueueStatus) ep.SetRefCons (ref1, ref2), "SetRefCons B");
-						Assert.AreEqual (AudioQueueStatus.GeneralParamError, (AudioQueueStatus) ep.GetRefCons (out ref1, out ref2), "GetRefCons C");
-						Assert.That (ref1, Is.EqualTo (IntPtr.Zero) /* 0xfee1600d */, "GetRefCons C 1");
-						Assert.That (ref2, Is.EqualTo (IntPtr.Zero) /* 0x42f00f00 */, "GetRefCons C 2");
+						var setB = (AudioQueueStatus) ep.SetRefCons (ref1, ref2);
+						Assert.That (setB, Is.EqualTo (AudioQueueStatus.Ok).Or.EqualTo (AudioQueueStatus.GeneralParamError), "SetRefCons B");
 
-						Assert.AreEqual (AudioQueueStatus.GeneralParamError, (AudioQueueStatus) ep.SetRefCons (IntPtr.Zero, IntPtr.Zero), "SetRefCons D");
+						var getC = (AudioQueueStatus) ep.GetRefCons (out var ref1C, out var ref2C);
+						Assert.That (getC, Is.EqualTo (AudioQueueStatus.Ok).Or.EqualTo (AudioQueueStatus.GeneralParamError), "GetRefCons C");
+						if (setB == AudioQueueStatus.Ok && getC == AudioQueueStatus.Ok) {
+							Assert.That (ref1C, Is.EqualTo (ref1), "GetRefCons C 1");
+							Assert.That (ref2C, Is.EqualTo (ref2), "GetRefCons C 2");
+						} else if (getC == AudioQueueStatus.GeneralParamError) {
+							Assert.That (ref1C, Is.EqualTo (IntPtr.Zero), "GetRefCons C 1");
+							Assert.That (ref2C, Is.EqualTo (IntPtr.Zero), "GetRefCons C 2");
+						}
 
-						Assert.AreEqual (AudioQueueStatus.GeneralParamError, (AudioQueueStatus) ep.GetRefCons (out ref1, out ref2), "GetRefCons E");
-						Assert.That (ref1, Is.EqualTo (IntPtr.Zero), "GetRefCons E 1");
-						Assert.That (ref2, Is.EqualTo (IntPtr.Zero), "GetRefCons E 2");
+						var setD = (AudioQueueStatus) ep.SetRefCons (IntPtr.Zero, IntPtr.Zero);
+						Assert.That (setD, Is.EqualTo (AudioQueueStatus.Ok).Or.EqualTo (AudioQueueStatus.GeneralParamError), "SetRefCons D");
+
+						var getE = (AudioQueueStatus) ep.GetRefCons (out var ref1E, out var ref2E);
+						Assert.That (getE, Is.EqualTo (AudioQueueStatus.Ok).Or.EqualTo (AudioQueueStatus.GeneralParamError), "GetRefCons E");
+						if (setD == AudioQueueStatus.Ok && getE == AudioQueueStatus.Ok) {
+							Assert.That (ref1E, Is.EqualTo (IntPtr.Zero), "GetRefCons E 1");
+							Assert.That (ref2E, Is.EqualTo (IntPtr.Zero), "GetRefCons E 2");
+						} else if (getE == AudioQueueStatus.GeneralParamError) {
+							Assert.That (ref1E, Is.EqualTo (IntPtr.Zero), "GetRefCons E 1");
+							Assert.That (ref2E, Is.EqualTo (IntPtr.Zero), "GetRefCons E 2");
+						}
 
 						anyChecks = true;
 					}

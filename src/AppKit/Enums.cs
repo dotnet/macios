@@ -1292,23 +1292,24 @@ namespace AppKit {
 	#endregion
 
 	#region NSView
+	/// <summary>Specifies a bitmask of options that describe how a view resizes relative to its superview.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSViewResizingMask : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The view does not resize with its superview.</summary>
 		NotSizable = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The left margin between the view and its superview can grow or shrink.</summary>
 		MinXMargin = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The view's width can grow or shrink.</summary>
 		WidthSizable = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>The right margin between the view and its superview can grow or shrink.</summary>
 		MaxXMargin = 4,
-		/// <summary>To be added.</summary>
+		/// <summary>The bottom margin between the view and its superview can grow or shrink.</summary>
 		MinYMargin = 8,
-		/// <summary>To be added.</summary>
+		/// <summary>The view's height can grow or shrink.</summary>
 		HeightSizable = 16,
-		/// <summary>To be added.</summary>
+		/// <summary>The top margin between the view and its superview can grow or shrink.</summary>
 		MaxYMargin = 32,
 	}
 

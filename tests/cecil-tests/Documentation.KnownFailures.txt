@@ -22708,7 +22708,6 @@ T:AppKit.NSViewControllerTransitionOptions
 T:AppKit.NSViewLayerContentsPlacement
 T:AppKit.NSViewLayerContentsRedrawPolicy
 T:AppKit.NSViewLayoutRegionAdaptivityAxis
-T:AppKit.NSViewResizingMask
 T:AppKit.NSVisualEffectMaterial
 T:AppKit.NSVisualEffectState
 T:AppKit.NSWindowAnimationBehavior

@@ -5104,10 +5104,13 @@ namespace AppKit {
 		Alerts,
 	}
 
+	/// <summary>Specifies how a menu is visually presented.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSMenuPresentationStyle : long {
+		/// <summary>Presents the menu using the regular, standard menu appearance.</summary>
 		Regular = 0,
+		/// <summary>Presents the menu as a floating palette, such as a color or character palette.</summary>
 		Palette = 1,
 	}
 

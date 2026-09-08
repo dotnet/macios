@@ -4255,18 +4255,19 @@ namespace AppKit {
 		WithinApplication,
 	}
 
+	/// <summary>Specifies the default animation behavior used when a window appears, closes, or is ordered onto the screen.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSWindowAnimationBehavior : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the default animation behavior, chosen automatically based on the window's style.</summary>
 		Default = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Disables default window animations.</summary>
 		None = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the animation behavior appropriate for a standard document window.</summary>
 		DocumentWindow,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the animation behavior appropriate for a utility window or panel.</summary>
 		UtilityWindow,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the animation behavior appropriate for an alert panel.</summary>
 		AlertPanel,
 	}
 

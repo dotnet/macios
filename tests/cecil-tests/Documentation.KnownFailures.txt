@@ -22632,7 +22632,6 @@ T:AppKit.NSViewControllerTransitionOptions
 T:AppKit.NSViewLayoutRegionAdaptivityAxis
 T:AppKit.NSVisualEffectMaterial
 T:AppKit.NSVisualEffectState
-T:AppKit.NSWindowAnimationBehavior
 T:AppKit.NSWindowApplicationPresentationOptions
 T:AppKit.NSWindowClient
 T:AppKit.NSWindowCompletionHandler

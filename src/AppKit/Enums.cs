@@ -3227,14 +3227,15 @@ namespace AppKit {
 		Horizontal,
 	}
 
+	/// <summary>Specifies the visual style of an <see cref="T:AppKit.NSDatePicker" />.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSDatePickerStyle : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Displays an editable text field with a stepper control for incrementing and decrementing its value.</summary>
 		TextFieldAndStepper,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays a graphical clock and calendar for choosing a time and date.</summary>
 		ClockAndCalendar,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays only an editable text field, without a stepper.</summary>
 		TextField,
 	}
 

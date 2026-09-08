@@ -22602,7 +22602,6 @@ T:AppKit.NSTabViewBorderType
 T:AppKit.NSTabViewControllerTabStyle
 T:AppKit.NSTabViewPredicate
 T:AppKit.NSTabViewType
-T:AppKit.NSTextAlignment
 T:AppKit.NSTextAlignmentExtensions
 T:AppKit.NSTextCheckingOptions
 T:AppKit.NSTextContentManagerEnumerationOptions

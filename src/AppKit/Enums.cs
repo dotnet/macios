@@ -2135,18 +2135,19 @@ namespace AppKit {
 		All = ulong.MaxValue,
 	}
 
+	/// <summary>Specifies the horizontal alignment of text within its container.</summary>
 	[NoMacCatalyst]
 	[Native (ConvertToNative = "NSTextAlignmentExtensions.ToNative", ConvertToManaged = "NSTextAlignmentExtensions.ToManaged")]
 	public enum NSTextAlignment : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns text to the left edge of its container.</summary>
 		Left = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns text to the right edge of its container.</summary>
 		Right = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Centers text within its container.</summary>
 		Center = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>Justifies text so that both edges align with the container, except for the last line.</summary>
 		Justified = 3,
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns text according to the natural writing direction of its script (left for left-to-right languages, right for right-to-left languages).</summary>
 		Natural = 4,
 	}
 

@@ -2513,25 +2513,26 @@ namespace AppKit {
 		Unknown,
 	}
 
+	/// <summary>Specifies a bitmask of the accessory panels shown in the standard print panel.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSPrintPanelOptions : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Shows the control for choosing the number of copies to print.</summary>
 		ShowsCopies = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Shows the control for choosing which pages to print.</summary>
 		ShowsPageRange = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>Shows the control for choosing the paper size.</summary>
 		ShowsPaperSize = 4,
-		/// <summary>To be added.</summary>
+		/// <summary>Shows the control for choosing the page orientation.</summary>
 		ShowsOrientation = 8,
-		/// <summary>To be added.</summary>
+		/// <summary>Shows the control for choosing the scale factor.</summary>
 		ShowsScaling = 16,
-		/// <summary>To be added.</summary>
+		/// <summary>Shows the control for choosing whether to print the entire document or only the current selection.</summary>
 		ShowsPrintSelection = 32,
-		/// <summary>To be added.</summary>
+		/// <summary>Shows the page setup accessory controls.</summary>
 		ShowsPageSetupAccessory = 256,
-		/// <summary>To be added.</summary>
+		/// <summary>Shows a preview of the document being printed.</summary>
 		ShowsPreview = 131072,
 	}
 

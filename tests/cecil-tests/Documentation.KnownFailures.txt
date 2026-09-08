@@ -22514,7 +22514,6 @@ T:AppKit.NSPickerTouchBarItemSelectionMode
 T:AppKit.NSPopoverBehavior
 T:AppKit.NSPopUpArrowPosition
 T:AppKit.NSPressureBehavior
-T:AppKit.NSPrintPanelOptions
 T:AppKit.NSPrintPanelResult
 T:AppKit.NSPrintRenderingQuality
 T:AppKit.NSProgressIndicatorThickness

@@ -4581,7 +4581,7 @@ namespace AppKit {
 		Disabled = 0,
 		/// <summary>Spring-loading is enabled.</summary>
 		Enabled = 1 << 0,
-		/// <summary>The spring-loading action is invoked repeatedly for as long as the drag hovers over the target.</summary>
+		/// <summary>Spring-loading activates when a force click begins or the hover timeout elapses, and deactivates when the force click is released or the drag exits the target.</summary>
 		ContinuousActivation = 1 << 1,
 		/// <summary>Spring-loading is enabled but cannot be activated by hovering; the user must force click the target.</summary>
 		NoHover = 1 << 3,
@@ -5158,13 +5158,13 @@ namespace AppKit {
 		Invisible,
 		/// <summary>The accessory is centered over the cursor.</summary>
 		Center,
-		/// <summary>The accessory is placed off-screen, to the left.</summary>
+		/// <summary>The accessory is shown at the left edge of the visible rectangle with a left-pointing arrow when the cursor is off-screen to the left.</summary>
 		OffscreenLeft,
-		/// <summary>The accessory is placed off-screen, above.</summary>
+		/// <summary>The accessory is shown at the top edge of the visible rectangle with an upward-pointing arrow when the cursor is off-screen above.</summary>
 		OffscreenTop,
-		/// <summary>The accessory is placed off-screen, to the right.</summary>
+		/// <summary>The accessory is shown at the right edge of the visible rectangle with a right-pointing arrow when the cursor is off-screen to the right.</summary>
 		OffscreenRight,
-		/// <summary>The accessory is placed off-screen, below.</summary>
+		/// <summary>The accessory is shown at the bottom edge of the visible rectangle with a downward-pointing arrow when the cursor is off-screen below.</summary>
 		OffscreenBottom,
 	}
 

@@ -3073,16 +3073,17 @@ namespace AppKit {
 		Pressed,
 	}
 
+	/// <summary>Specifies how an <see cref="T:AppKit.NSTabViewController" /> displays the controls used to switch between its tabbed items.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTabViewControllerTabStyle : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Displays a segmented control above the tab view's content.</summary>
 		SegmentedControlOnTop = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays a segmented control below the tab view's content.</summary>
 		SegmentedControlOnBottom,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays a toolbar, with one toolbar item per tab, above the tab view's content.</summary>
 		Toolbar,
-		/// <summary>To be added.</summary>
+		/// <summary>No tab-switching control is displayed; the tab view controller does not manage the presentation of a control.</summary>
 		Unspecified = -1,
 	}
 

@@ -5170,11 +5170,14 @@ namespace AppKit {
 		OffscreenBottom,
 	}
 
+	/// <summary>Specifies a bitmask of options controlling when the text insertion point automatically displays its animated appearance.</summary>
 	[NoMacCatalyst]
 	[Native]
 	[Flags]
 	public enum NSTextInsertionIndicatorAutomaticModeOptions : long {
+		/// <summary>Shows the animated insertion point effects view.</summary>
 		EffectsView = 1L << 0,
+		/// <summary>Shows the animated insertion point while the user is actively tracking (typing or navigating) it.</summary>
 		WhileTracking = 1L << 1,
 	}
 

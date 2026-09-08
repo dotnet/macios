@@ -22721,7 +22721,6 @@ T:AppKit.NSWindowLevel
 T:AppKit.NSWindowMenu
 T:AppKit.NSWindowNSWindow
 T:AppKit.NSWindowResize
-T:AppKit.NSWindowSharingType
 T:AppKit.NSWindowSheetRect
 T:AppKit.NSWindowSize
 T:AppKit.NSWindowSizeSize

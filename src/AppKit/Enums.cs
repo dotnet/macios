@@ -1420,14 +1420,15 @@ namespace AppKit {
 		FullSizeContentView = 1 << 15,
 	}
 
+	/// <summary>Specifies whether, and how, a window's contents can be read by other processes, such as screen-recording or accessibility clients.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSWindowSharingType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The window's contents cannot be read by another process.</summary>
 		None,
-		/// <summary>To be added.</summary>
+		/// <summary>The window's contents can be read, but not modified, by another process.</summary>
 		ReadOnly,
-		/// <summary>To be added.</summary>
+		/// <summary>The window's contents can be both read and modified by another process.</summary>
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'ReadOnly' instead.")]
 		ReadWrite,
 	}

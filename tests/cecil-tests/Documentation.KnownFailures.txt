@@ -22545,7 +22545,6 @@ T:AppKit.NSTableViewRowGetter
 T:AppKit.NSTableViewRowHandler
 T:AppKit.NSTableViewRowHeight
 T:AppKit.NSTableViewRowPredicate
-T:AppKit.NSTableViewRowSizeStyle
 T:AppKit.NSTableViewSearchString
 T:AppKit.NSTableViewSource
 T:AppKit.NSTableViewStyle

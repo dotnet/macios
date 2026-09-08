@@ -4161,18 +4161,19 @@ namespace AppKit {
 		Semitransient,
 	}
 
+	/// <summary>Specifies the row height used by a table view.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTableViewRowSizeStyle : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the default row size style for the table view's context.</summary>
 		Default = -1,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the row height explicitly set on the table view, ignoring the standard size styles.</summary>
 		Custom = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses a small, compact row height.</summary>
 		Small,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses a medium row height.</summary>
 		Medium,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses a large row height.</summary>
 		Large,
 	}
 

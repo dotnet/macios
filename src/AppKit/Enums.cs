@@ -5273,11 +5273,15 @@ namespace AppKit {
 		Gradient,
 	}
 
+	/// <summary>Specifies how a variable-value SF Symbol, such as a signal-strength icon, visually represents its current value.</summary>
 	[NoMacCatalyst, Mac (26, 0)]
 	[Native]
 	public enum NSImageSymbolVariableValueMode : long {
+		/// <summary>Uses the default representation mode for the symbol.</summary>
 		Automatic = 0,
+		/// <summary>Represents the value by coloring a proportional part of the symbol.</summary>
 		Color,
+		/// <summary>Represents the value by drawing a proportional part of the symbol's layers.</summary>
 		Draw,
 	}
 

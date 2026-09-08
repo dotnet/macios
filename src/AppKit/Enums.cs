@@ -4606,14 +4606,15 @@ namespace AppKit {
 		TerminationOnRemoval = (1 << 2),
 	}
 
+	/// <summary>Specifies whether a window supports tabbing with other windows.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSWindowTabbingMode : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The system decides automatically whether the window supports tabbing, based on the user's tabbing preference.</summary>
 		Automatic,
-		/// <summary>To be added.</summary>
+		/// <summary>The window prefers to open as a tab whenever possible.</summary>
 		Preferred,
-		/// <summary>To be added.</summary>
+		/// <summary>The window never opens as a tab.</summary>
 		Disallowed,
 	}
 

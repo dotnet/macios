@@ -22631,7 +22631,6 @@ T:AppKit.NSWindowResize
 T:AppKit.NSWindowSheetRect
 T:AppKit.NSWindowSize
 T:AppKit.NSWindowSizeSize
-T:AppKit.NSWindowTabbingMode
 T:AppKit.NSWindowToolbarStyle
 T:AppKit.NSWindowTrackEventsMatchingCompletionHandler
 T:AppKit.NSWindowUndoManager

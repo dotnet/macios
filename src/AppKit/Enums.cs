@@ -5243,8 +5243,10 @@ namespace AppKit {
 		MoneyAmount,
 	}
 
+	/// <summary>Specifies a key identifying a piece of metadata that can be detected within a pasteboard item.</summary>
 	[Mac (15, 4), NoMacCatalyst]
 	enum NSPasteboardMetadataType {
+		/// <summary>The uniform type identifier (content type) of the pasteboard item.</summary>
 		[Field ("NSPasteboardMetadataTypeContentType")]
 		ContentType,
 	}

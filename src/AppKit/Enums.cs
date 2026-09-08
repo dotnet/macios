@@ -2110,27 +2110,28 @@ namespace AppKit {
 		EqualCentering,
 	}
 
+	/// <summary>Specifies a bitmask of the drag-and-drop operations that a dragging source allows a destination to perform.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSDragOperation : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>No operation is allowed; the drop is refused.</summary>
 		None,
-		/// <summary>To be added.</summary>
+		/// <summary>The dragged data is copied to the destination.</summary>
 		Copy = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>A link is created from the destination to the original data.</summary>
 		Link = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>The destination performs a generic operation defined by the destination application.</summary>
 		Generic = 4,
-		/// <summary>To be added.</summary>
+		/// <summary>The destination performs an operation defined privately between the source and destination.</summary>
 		Private = 8,
-		/// <summary>To be added.</summary>
+		/// <summary>A mask combining all of the deprecated drag-operation flags.</summary>
 		AllObsolete = 15,
-		/// <summary>To be added.</summary>
+		/// <summary>The dragged data is moved from the source to the destination.</summary>
 		Move = 16,
-		/// <summary>To be added.</summary>
+		/// <summary>The dragged data is deleted.</summary>
 		Delete = 32,
-		/// <summary>To be added.</summary>
+		/// <summary>All drag operations are allowed; the destination chooses the most appropriate one.</summary>
 		All = ulong.MaxValue,
 	}
 

@@ -22431,7 +22431,6 @@ T:AppKit.NSDraggingEnumerator
 T:AppKit.NSDraggingFormation
 T:AppKit.NSDraggingItemEnumerationOptions
 T:AppKit.NSDraggingItemImagesContentProvider
-T:AppKit.NSDragOperation
 T:AppKit.NSDrawerState
 T:AppKit.NSEventModifierFlags
 T:AppKit.NSEventPhase

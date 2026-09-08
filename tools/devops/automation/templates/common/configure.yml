@@ -38,7 +38,7 @@ parameters:
     },
     {
       label: appextensions,
-      splitByPlatforms: true,
+      splitByPlatforms: false,
       needsMultiplePlatforms: false,
       testPrefix: 'simulator_tests',
     },

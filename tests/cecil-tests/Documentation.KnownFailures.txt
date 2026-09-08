@@ -22510,7 +22510,6 @@ T:AppKit.NSSharingServiceSourceWindowForShareItems
 T:AppKit.NSSharingServiceTransitionImageForShareItem
 T:AppKit.NSSpellCheckerShowCorrectionIndicatorOfTypeHandler
 T:AppKit.NSSpellingState
-T:AppKit.NSSpringLoadingHighlight
 T:AppKit.NSSpringLoadingOptions
 T:AppKit.NSStandardKeyBindingMethods
 T:AppKit.NSStoryboardControllerCreator

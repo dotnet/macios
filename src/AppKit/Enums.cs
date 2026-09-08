@@ -4560,14 +4560,15 @@ namespace AppKit {
 		DrawCompleted,
 	}
 
+	/// <summary>Specifies the highlight style shown on a spring-loaded destination during a drag-and-drop operation.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSSpringLoadingHighlight : long {
-		/// <summary>To be added.</summary>
+		/// <summary>No highlight is shown.</summary>
 		None = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The standard spring-loading highlight is shown.</summary>
 		Standard,
-		/// <summary>To be added.</summary>
+		/// <summary>An emphasized spring-loading highlight is shown.</summary>
 		Emphasized,
 	}
 

@@ -1720,15 +1720,15 @@ namespace AppKit {
 	[Native]
 	[Deprecated (PlatformName.MacOSX, 10, 12, message: "The GradientType property is unused, and setting it has no effect.")]
 	public enum NSGradientType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>No gradient is drawn.</summary>
 		None,
-		/// <summary>To be added.</summary>
+		/// <summary>A subtle concave (inward-curving) gradient.</summary>
 		ConcaveWeak,
-		/// <summary>To be added.</summary>
+		/// <summary>A pronounced concave (inward-curving) gradient.</summary>
 		ConcaveStrong,
-		/// <summary>To be added.</summary>
+		/// <summary>A subtle convex (outward-curving) gradient.</summary>
 		ConvexWeak,
-		/// <summary>To be added.</summary>
+		/// <summary>A pronounced convex (outward-curving) gradient.</summary>
 		ConvexStrong,
 	}
 

@@ -22462,7 +22462,6 @@ T:AppKit.NSGLFormat
 T:AppKit.NSGLTextureCubeMap
 T:AppKit.NSGLTextureTarget
 T:AppKit.NSGlyphInscription
-T:AppKit.NSGradientType
 T:AppKit.NSGridCellPlacement
 T:AppKit.NSGridRowAlignment
 T:AppKit.NSHapticFeedbackPattern

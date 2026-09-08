@@ -114,6 +114,9 @@ namespace CoreMidi {
 	}
 
 	/// <summary>A system message in a <see cref="MidiUniversalMessage" />.</summary>
+	/// <remarks>
+	///   <para>As of this writing, CoreMIDI's native <c>MIDIEventListForEachEvent</c> function only successfully decodes UMP words carrying <see cref="MidiSystemStatus.Mtc" />, <see cref="MidiSystemStatus.SongPosPointer" /> or <see cref="MidiSystemStatus.SongSelect" /> as <see cref="MidiMessageType.System" />. Every other <see cref="MidiSystemStatus" /> value — including <see cref="MidiSystemStatus.TuneRequest" /> and all System Real-Time statuses (<see cref="MidiSystemStatus.TimingClock" />, <see cref="MidiSystemStatus.Start" />, <see cref="MidiSystemStatus.Continue" />, <see cref="MidiSystemStatus.Stop" />, <see cref="MidiSystemStatus.ActiveSending" />, <see cref="MidiSystemStatus.SystemReset" />) — is reported as <see cref="MidiMessageType.Invalid" /> instead, regardless of caller. This is native CoreMIDI framework behavior, not a limitation of this binding.</para>
+	/// </remarks>
 	[SupportedOSPlatform ("ios15.0")]
 	[SupportedOSPlatform ("tvos15.0")]
 	[SupportedOSPlatform ("macos12.0")]

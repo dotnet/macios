@@ -288,7 +288,7 @@ namespace CoreMidi {
 
 		/// <summary>Parse each Universal MIDI Packet (UMP) in this list, invoking the specified <paramref name="visitor" /> for each parsed message.</summary>
 		/// <param name="visitor">The function to call for each parsed message. Unknown messages are reported with their raw words.</param>
-		/// <remarks>This is a binding for the native <c>MIDIEventListForEachEvent</c> function, which parses each UMP and fills a <see cref="MidiUniversalMessage" /> struct.</remarks>
+		/// <remarks>This is a binding for the native <c>MIDIEventListForEachEvent</c> function, which parses each UMP and fills a <see cref="MidiUniversalMessage" /> struct. Note that CoreMIDI's decoder only recognizes a subset of documented System status bytes as <see cref="MidiMessageType.System" /> messages (see <see cref="MidiUniversalMessageSystem" />) — everything else, including all System Real-Time statuses, is reported as <see cref="MidiMessageType.Invalid" />.</remarks>
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("tvos15.0")]
 		[SupportedOSPlatform ("macos12.0")]

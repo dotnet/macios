@@ -22410,7 +22410,6 @@ T:AppKit.NSCollectionLayoutSectionVisibleItemsInvalidationHandler
 T:AppKit.NSCollectionViewCompositionalLayoutSectionProvider
 T:AppKit.NSCollectionViewDiffableDataSourceItemProvider
 T:AppKit.NSCollectionViewDiffableDataSourceSupplementaryViewProvider
-T:AppKit.NSCollectionViewDropOperation
 T:AppKit.NSCollectionViewItemHighlightState
 T:AppKit.NSCollectionViewScrollPosition
 T:AppKit.NSColorPanelFlags
@@ -22436,10 +22435,8 @@ T:AppKit.NSCursorFrameResizeDirections
 T:AppKit.NSCursorFrameResizePosition
 T:AppKit.NSCustomImageRepDrawingHandler
 T:AppKit.NSDatePickerElementFlags
-T:AppKit.NSDatePickerMode
 T:AppKit.NSDatePickerStyle
 T:AppKit.NSDirectionalRectEdge
-T:AppKit.NSDisplayGamut
 T:AppKit.NSDocumentChangeType
 T:AppKit.NSDocumentCompletionHandler
 T:AppKit.NSDocumentControllerOpenPanelResultHandler
@@ -22450,7 +22447,6 @@ T:AppKit.NSDocumentMoveCompletionHandler
 T:AppKit.NSDocumentMoveToUrlCompletionHandler
 T:AppKit.NSDocumentUnlockCompletionHandler
 T:AppKit.NSDocumentUnlockDocumentCompletionHandler
-T:AppKit.NSDraggingContext
 T:AppKit.NSDraggingEnumerator
 T:AppKit.NSDraggingFormation
 T:AppKit.NSDraggingItemEnumerationOptions
@@ -22512,7 +22508,6 @@ T:AppKit.NSImageSymbolColorRenderingMode
 T:AppKit.NSImageSymbolScale
 T:AppKit.NSImageSymbolVariableValueMode
 T:AppKit.NSKey
-T:AppKit.NSLayoutConstraintOrientation
 T:AppKit.NSLayoutManager_NSTextViewSupport
 T:AppKit.NSLayoutPriority
 T:AppKit.NSLevelIndicatorPlaceholderVisibility
@@ -22561,7 +22556,6 @@ T:AppKit.NSPathStyle
 T:AppKit.NSPickerTouchBarItemControlRepresentation
 T:AppKit.NSPickerTouchBarItemSelectionMode
 T:AppKit.NSPointingDeviceType
-T:AppKit.NSPopoverAppearance
 T:AppKit.NSPopoverBehavior
 T:AppKit.NSPopUpArrowPosition
 T:AppKit.NSPressureBehavior
@@ -22569,7 +22563,6 @@ T:AppKit.NSPrinterTableStatus
 T:AppKit.NSPrintPanelOptions
 T:AppKit.NSPrintPanelResult
 T:AppKit.NSPrintRenderingQuality
-T:AppKit.NSProgressIndicatorStyle
 T:AppKit.NSProgressIndicatorThickness
 T:AppKit.NSRectAlignment
 T:AppKit.NSRectEdge
@@ -22578,7 +22571,6 @@ T:AppKit.NSResponder_NSTouchBarProvider
 T:AppKit.NSResponder_NSWritingToolsSupport
 T:AppKit.NSRuleEditorNestingMode
 T:AppKit.NSRuleEditorNumberOfChildren
-T:AppKit.NSRuleEditorRowType
 T:AppKit.NSRulerEditorChildCriterion
 T:AppKit.NSRulerEditorDisplayValue
 T:AppKit.NSRulerEditorPredicateParts
@@ -22591,10 +22583,8 @@ T:AppKit.NSScrollElasticity
 T:AppKit.NSScrollerArrow
 T:AppKit.NSScrollerKnobStyle
 T:AppKit.NSScrollerPart
-T:AppKit.NSScrollerStyle
 T:AppKit.NSScrollViewFindBarPosition
 T:AppKit.NSScrubberAlignment
-T:AppKit.NSScrubberMode
 T:AppKit.NSSegmentBackgroundStyle_NSSegmentedCell
 T:AppKit.NSSegmentDistribution
 T:AppKit.NSSegmentStyle
@@ -22610,7 +22600,6 @@ T:AppKit.NSSharingServicePickerSharingServicesForItems
 T:AppKit.NSSharingServiceSourceFrameOnScreenForShareItem
 T:AppKit.NSSharingServiceSourceWindowForShareItems
 T:AppKit.NSSharingServiceTransitionImageForShareItem
-T:AppKit.NSSliderType
 T:AppKit.NSSpellCheckerShowCorrectionIndicatorOfTypeHandler
 T:AppKit.NSSpellingState
 T:AppKit.NSSplitViewItemBehavior
@@ -22620,14 +22609,12 @@ T:AppKit.NSStackViewDistribution
 T:AppKit.NSStackViewGravity
 T:AppKit.NSStackViewVisibilityPriority
 T:AppKit.NSStandardKeyBindingMethods
-T:AppKit.NSStatusItemBehavior
 T:AppKit.NSStoryboardControllerCreator
 T:AppKit.NSStringAttributeKey
 T:AppKit.NSStringDrawing_NSAttributedString
 T:AppKit.NSStringDrawing_NSString
 T:AppKit.NSSurfaceOrder
 T:AppKit.NSTableReorder
-T:AppKit.NSTableRowActionEdge
 T:AppKit.NSTableViewAnimation
 T:AppKit.NSTableViewAnimationOptions
 T:AppKit.NSTableViewCell
@@ -22645,7 +22632,6 @@ T:AppKit.NSTableViewEventString
 T:AppKit.NSTableViewIndexFilter
 T:AppKit.NSTableViewPredicate
 T:AppKit.NSTableViewRowActionsGetter
-T:AppKit.NSTableViewRowActionStyle
 T:AppKit.NSTableViewRowGetter
 T:AppKit.NSTableViewRowHandler
 T:AppKit.NSTableViewRowHeight
@@ -22670,7 +22656,6 @@ T:AppKit.NSTextContentManagerEnumerationOptions
 T:AppKit.NSTextContentType
 T:AppKit.NSTextCursorAccessoryPlacement
 T:AppKit.NSTextField_NSTouchBar
-T:AppKit.NSTextFieldBezelStyle
 T:AppKit.NSTextFieldGetCandidates
 T:AppKit.NSTextFieldSelectCandidate
 T:AppKit.NSTextFieldTextCheckingResults
@@ -22744,14 +22729,11 @@ T:AppKit.NSTouchBarItemIdentifier
 T:AppKit.NSTouchBarMakeItem
 T:AppKit.NSTouchEvent
 T:AppKit.NSTouchPhase
-T:AppKit.NSTouchType
-T:AppKit.NSTouchTypeMask
 T:AppKit.NSTrackingAreaOptions
 T:AppKit.NSTypesetterBehavior
 T:AppKit.NSTypesetterControlCharacterAction
 T:AppKit.NSUnderlinePattern
 T:AppKit.NSUsableScrollerParts
-T:AppKit.NSUserInterfaceLayoutOrientation
 T:AppKit.NSVerticalDirections
 T:AppKit.NSView_NSCandidateListTouchBarItem
 T:AppKit.NSView_NSTouchBar
@@ -22760,7 +22742,6 @@ T:AppKit.NSViewLayerContentsPlacement
 T:AppKit.NSViewLayerContentsRedrawPolicy
 T:AppKit.NSViewLayoutRegionAdaptivityAxis
 T:AppKit.NSViewResizingMask
-T:AppKit.NSVisualEffectBlendingMode
 T:AppKit.NSVisualEffectMaterial
 T:AppKit.NSVisualEffectState
 T:AppKit.NSWindowAnimationBehavior
@@ -22784,7 +22765,6 @@ T:AppKit.NSWindowSize
 T:AppKit.NSWindowSizeSize
 T:AppKit.NSWindowStyle
 T:AppKit.NSWindowTabbingMode
-T:AppKit.NSWindowTitleVisibility
 T:AppKit.NSWindowToolbarStyle
 T:AppKit.NSWindowTrackEventsMatchingCompletionHandler
 T:AppKit.NSWindowUndoManager

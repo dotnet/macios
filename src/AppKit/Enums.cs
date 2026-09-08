@@ -3969,19 +3969,20 @@ namespace AppKit {
 		Simple,
 	}
 
+	/// <summary>Specifies how a glyph is positioned relative to its base glyph, such as for diacritical marks.</summary>
 	[NoMacCatalyst]
 	[Native]
 	[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'NSGlyphProperty' instead.")]
 	public enum NSGlyphInscription : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The glyph is a standalone base glyph.</summary>
 		Base,
-		/// <summary>To be added.</summary>
+		/// <summary>The glyph is positioned below its base glyph.</summary>
 		Below,
-		/// <summary>To be added.</summary>
+		/// <summary>The glyph is positioned above its base glyph.</summary>
 		Above,
-		/// <summary>To be added.</summary>
+		/// <summary>The glyph is drawn overstruck directly on top of its base glyph.</summary>
 		Overstrike,
-		/// <summary>To be added.</summary>
+		/// <summary>The glyph is drawn overstruck below its base glyph.</summary>
 		OverBelow,
 	}
 

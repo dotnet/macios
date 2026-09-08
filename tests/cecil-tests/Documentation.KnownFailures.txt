@@ -22482,7 +22482,6 @@ T:AppKit.NSImageCacheMode
 T:AppKit.NSImageDynamicRange
 T:AppKit.NSImageHint
 T:AppKit.NSImageLayoutDirection
-T:AppKit.NSImageLoadStatus
 T:AppKit.NSImageName
 T:AppKit.NSImageRect
 T:AppKit.NSImageRepLoadStatus

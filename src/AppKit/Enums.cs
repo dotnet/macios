@@ -579,18 +579,19 @@ namespace AppKit {
 
 	#region NSImage
 
+	/// <summary>Specifies the outcome of an incremental image-loading operation.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSImageLoadStatus : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The image finished loading successfully.</summary>
 		Completed,
-		/// <summary>To be added.</summary>
+		/// <summary>The image load operation was canceled.</summary>
 		Cancelled,
-		/// <summary>To be added.</summary>
+		/// <summary>The image data was invalid or malformed.</summary>
 		InvalidData,
-		/// <summary>To be added.</summary>
+		/// <summary>The image data ended unexpectedly before loading completed.</summary>
 		UnexpectedEOF,
-		/// <summary>To be added.</summary>
+		/// <summary>An error occurred while reading the image data.</summary>
 		ReadError,
 	}
 

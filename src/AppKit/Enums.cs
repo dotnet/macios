@@ -5054,11 +5054,15 @@ namespace AppKit {
 		Large = 3,
 	}
 
+	/// <summary>Specifies the visual style of an <see cref="T:AppKit.NSColorWell" />.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSColorWellStyle : long {
+		/// <summary>Uses the default color well style.</summary>
 		Default = 0,
+		/// <summary>Uses a minimal, compact color well style without a disclosure button.</summary>
 		Minimal,
+		/// <summary>Uses an expanded color well style with a built-in disclosure button for choosing recent or custom colors.</summary>
 		Expanded,
 	}
 

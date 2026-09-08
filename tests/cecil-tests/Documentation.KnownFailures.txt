@@ -22565,7 +22565,6 @@ T:AppKit.NSSplitViewItemBehavior
 T:AppKit.NSSpringLoadingHighlight
 T:AppKit.NSSpringLoadingOptions
 T:AppKit.NSStackViewDistribution
-T:AppKit.NSStackViewGravity
 T:AppKit.NSStandardKeyBindingMethods
 T:AppKit.NSStoryboardControllerCreator
 T:AppKit.NSStringAttributeKey

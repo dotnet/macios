@@ -2075,18 +2075,19 @@ namespace AppKit {
 		NotVisible = 0,
 	}
 
+	/// <summary>Specifies the "gravity area" of an <see cref="T:AppKit.NSStackView" /> to which a view is added, controlling its position relative to other views.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSStackViewGravity : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Places the view in the leading gravity area of a vertical stack view, at its top.</summary>
 		Top = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Places the view in the leading gravity area of the stack view.</summary>
 		Leading = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Places the view in the center gravity area of the stack view.</summary>
 		Center = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>Places the view in the trailing gravity area of a vertical stack view, at its bottom.</summary>
 		Bottom = 3,
-		/// <summary>To be added.</summary>
+		/// <summary>Places the view in the trailing gravity area of the stack view.</summary>
 		Trailing = 3,
 	}
 	#endregion

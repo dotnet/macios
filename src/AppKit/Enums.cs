@@ -4652,16 +4652,17 @@ namespace AppKit {
 		Fill,
 	}
 
+	/// <summary>Specifies how the content of the cells in a grid view row is aligned vertically.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSGridRowAlignment : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Inherits the alignment from the grid view.</summary>
 		Inherited = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Does not apply any special baseline alignment.</summary>
 		None,
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns the cells' content to the first baseline of the row.</summary>
 		FirstBaseline,
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns the cells' content to the last baseline of the row.</summary>
 		LastBaseline,
 	}
 

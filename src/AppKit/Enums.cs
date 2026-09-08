@@ -4149,14 +4149,15 @@ namespace AppKit {
 		HUD,
 	}
 
+	/// <summary>Specifies how a popover is dismissed in response to user interaction.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSPopoverBehavior : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The application is responsible for closing the popover explicitly; it is not dismissed automatically.</summary>
 		ApplicationDefined,
-		/// <summary>To be added.</summary>
+		/// <summary>The popover is closed automatically when the user interacts with a user interface element outside of it.</summary>
 		Transient,
-		/// <summary>To be added.</summary>
+		/// <summary>The popover is closed automatically when the user interacts with a user interface element outside of the popover and its parent window, but not when interacting with the parent window itself.</summary>
 		Semitransient,
 	}
 

@@ -22624,7 +22624,6 @@ T:AppKit.NSVerticalDirections
 T:AppKit.NSView_NSCandidateListTouchBarItem
 T:AppKit.NSView_NSTouchBar
 T:AppKit.NSViewLayoutRegionAdaptivityAxis
-T:AppKit.NSVisualEffectState
 T:AppKit.NSWindowApplicationPresentationOptions
 T:AppKit.NSWindowClient
 T:AppKit.NSWindowCompletionHandler

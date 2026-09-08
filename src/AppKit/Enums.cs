@@ -4503,14 +4503,15 @@ namespace AppKit {
 		WithinWindow,
 	}
 
+	/// <summary>Specifies whether a visual effect view appears active or inactive, affecting the vibrancy of its material.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSVisualEffectState : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The visual effect view's appearance follows the active or inactive state of its window.</summary>
 		FollowsWindowActiveState,
-		/// <summary>To be added.</summary>
+		/// <summary>The visual effect view always appears active, regardless of its window's state.</summary>
 		Active,
-		/// <summary>To be added.</summary>
+		/// <summary>The visual effect view always appears inactive, regardless of its window's state.</summary>
 		Inactive,
 	}
 	#endregion

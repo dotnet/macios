@@ -22503,7 +22503,6 @@ T:AppKit.NSScrubberAlignment
 T:AppKit.NSSegmentBackgroundStyle_NSSegmentedCell
 T:AppKit.NSSegmentDistribution
 T:AppKit.NSSharingCollaborationMode
-T:AppKit.NSSharingContentScope
 T:AppKit.NSSharingServiceAnchoringViewForSharingService
 T:AppKit.NSSharingServiceHandler
 T:AppKit.NSSharingServiceName

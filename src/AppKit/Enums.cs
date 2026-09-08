@@ -4345,14 +4345,15 @@ namespace AppKit {
 		Computer = 1 << 2,
 	}
 
+	/// <summary>Specifies how much of the shared content a sharing service should consider when validating or presenting items.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSSharingContentScope : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Each item is shared as a full, standalone item.</summary>
 		Item,
-		/// <summary>To be added.</summary>
+		/// <summary>The items represent only part of a larger piece of content, such as a portion of a document.</summary>
 		Partial,
-		/// <summary>To be added.</summary>
+		/// <summary>The items together represent the complete content, such as an entire document.</summary>
 		Full,
 	}
 

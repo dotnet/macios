@@ -437,26 +437,27 @@ namespace AppKit {
 		CellAllowsMixedState,
 	}
 
+	/// <summary>Specifies how an image and title text are arranged within a cell.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSCellImagePosition : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The cell displays no image.</summary>
 		NoImage,
-		/// <summary>To be added.</summary>
+		/// <summary>The cell displays only its image; any title is not shown.</summary>
 		ImageOnly,
-		/// <summary>To be added.</summary>
+		/// <summary>The image appears to the left of the title.</summary>
 		ImageLeft,
-		/// <summary>To be added.</summary>
+		/// <summary>The image appears to the right of the title.</summary>
 		ImageRight,
-		/// <summary>To be added.</summary>
+		/// <summary>The image appears below the title.</summary>
 		ImageBelow,
-		/// <summary>To be added.</summary>
+		/// <summary>The image appears above the title.</summary>
 		ImageAbove,
-		/// <summary>To be added.</summary>
+		/// <summary>The image is drawn directly on top of the title.</summary>
 		ImageOverlaps,
-		/// <summary>To be added.</summary>
+		/// <summary>The image appears at the leading edge of the title, honoring the current layout direction.</summary>
 		ImageLeading,
-		/// <summary>To be added.</summary>
+		/// <summary>The image appears at the trailing edge of the title, honoring the current layout direction.</summary>
 		ImageTrailing,
 	}
 

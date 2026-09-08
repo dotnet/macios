@@ -22394,7 +22394,6 @@ T:AppKit.NSBitmapImageFileType
 T:AppKit.NSBoxType
 T:AppKit.NSButtonType
 T:AppKit.NSCellHit
-T:AppKit.NSCellImagePosition
 T:AppKit.NSCellStyleMask
 T:AppKit.NSCharacterCollection
 T:AppKit.NSCloudKitSharingServiceOptions

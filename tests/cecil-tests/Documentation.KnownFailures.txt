@@ -22443,7 +22443,6 @@ T:AppKit.NSDragOperation
 T:AppKit.NSDrawerState
 T:AppKit.NSEventModifierFlags
 T:AppKit.NSEventPhase
-T:AppKit.NSEventSubtype
 T:AppKit.NSEventTrackHandler
 T:AppKit.NSFontDescriptorSystemDesign
 T:AppKit.NSFontError

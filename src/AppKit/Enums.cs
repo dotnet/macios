@@ -1258,28 +1258,34 @@ namespace AppKit {
 		ModeSwitch = 0xF747,
 	}
 
+	/// <summary>Specifies additional information about certain kinds of events; the meaning of each value depends on the event's <see cref="T:AppKit.NSEventType" />.</summary>
 	[NoMacCatalyst]
 	public enum NSEventSubtype : short {
 		/* event subtypes for NSEventTypeAppKitDefined events */
-		/// <summary>To be added.</summary>
+		/// <summary>For an <see cref="F:AppKit.NSEventType.AppKitDefined" /> event, indicates that a window was exposed.</summary>
 		WindowExposed = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>For an <see cref="F:AppKit.NSEventType.AppKitDefined" /> event, indicates that the application was activated.</summary>
 		ApplicationActivated = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>For an <see cref="F:AppKit.NSEventType.AppKitDefined" /> event, indicates that the application was deactivated.</summary>
 		ApplicationDeactivated = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>For an <see cref="F:AppKit.NSEventType.AppKitDefined" /> event, indicates that a window was moved.</summary>
 		WindowMoved = 4,
-		/// <summary>To be added.</summary>
+		/// <summary>For an <see cref="F:AppKit.NSEventType.AppKitDefined" /> event, indicates that the screen configuration changed.</summary>
 		ScreenChanged = 8,
 		/* event subtypes for NSEventTypeSystemDefined events */
 		/* the value is repeated from above */
+		/// <summary>For a <see cref="F:AppKit.NSEventType.SystemDefined" /> event, indicates that the system is powering off.</summary>
 		PowerOff = 1,
 
 		/* event subtypes for mouse events */
 		/* the values are repeated from above */
+		/// <summary>For a mouse event, indicates a standard mouse event.</summary>
 		MouseEvent = 0, /* NX_SUBTYPE_DEFAULT */
+		/// <summary>For a mouse event, indicates that the event originated from a graphics tablet stylus point.</summary>
 		TabletPoint = 1, /* NX_SUBTYPE_TABLET_POINT */
+		/// <summary>For a mouse event, indicates that the event originated from a graphics tablet proximity change.</summary>
 		TabletProximity = 2, /* NX_SUBTYPE_TABLET_PROXIMITY */
+		/// <summary>For a mouse event, indicates that the event originated from a touch on a touch-sensitive surface.</summary>
 		Touch = 3, /* NX_SUBTYPE_MOUSE_TOUCH */
 	}
 

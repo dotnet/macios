@@ -367,7 +367,7 @@ namespace AppKit {
 	[Native]
 	[NoMacCatalyst]
 	public enum NSLineBreakMode : ulong {
-		/// <summary>Wraps lines at word boundaries, so a word is never split across lines.</summary>
+		/// <summary>Wraps lines at word boundaries, splitting a word only when it cannot fit on a single line.</summary>
 		ByWordWrapping,
 		/// <summary>Wraps lines at character boundaries, splitting words if necessary.</summary>
 		CharWrapping,
@@ -409,7 +409,7 @@ namespace AppKit {
 		PushInCell,
 		/// <summary>The cell's contents can be edited by the user.</summary>
 		CellEditable,
-		/// <summary>The cell displays a grayed appearance to indicate its highlighted state.</summary>
+		/// <summary>The cell darkens its image when its state is on or mixed.</summary>
 		ChangeGrayCell,
 		/// <summary>The cell is currently highlighted.</summary>
 		CellHighlighted,
@@ -417,7 +417,7 @@ namespace AppKit {
 		CellLightsByContents,
 		/// <summary>The cell indicates its highlighted state by changing to a grayed appearance.</summary>
 		CellLightsByGray,
-		/// <summary>The cell indicates its highlighted state by changing its background color.</summary>
+		/// <summary>The cell changes its background when its state is on or mixed.</summary>
 		ChangeBackgroundCell,
 		/// <summary>The cell indicates its highlighted state by lightening or darkening its background.</summary>
 		CellLightsByBackground,
@@ -494,13 +494,13 @@ namespace AppKit {
 	public enum NSCellStyleMask : ulong {
 		/// <summary>No style flags are set.</summary>
 		NoCell = 0,
-		/// <summary>The cell displays content, such as text or an image.</summary>
+		/// <summary>The button cell displays its alternate image, title, or both.</summary>
 		ContentsCell = 1 << 0,
 		/// <summary>The cell is drawn with a pushed-in (pressed) appearance.</summary>
 		PushInCell = 1 << 1,
-		/// <summary>The cell displays a grayed appearance to indicate its highlighted state.</summary>
+		/// <summary>The cell darkens its image when its state is on or mixed.</summary>
 		ChangeGrayCell = 1 << 2,
-		/// <summary>The cell indicates its highlighted state by changing its background color.</summary>
+		/// <summary>The cell changes its background when its state is on or mixed.</summary>
 		ChangeBackgroundCell = 1 << 3,
 	}
 
@@ -727,7 +727,7 @@ namespace AppKit {
 		Pressure = 34, // 10.10.3, 64-bit-only
 		/// <summary>A touch event received directly from a touch-capable surface, such as the Touch Bar.</summary>
 		DirectTouch = 37, // 10.10
-		/// <summary>Indicates a change in input mode, such as switching between mouse and touch input.</summary>
+		/// <summary>Indicates a device mode-change request, such as an Apple Pencil double-tap while using an iPad as an additional display.</summary>
 		ChangeMode = 38,
 		/// <summary>Indicates that a mouse event in progress was cancelled.</summary>
 		[Mac (26, 0)]
@@ -1405,7 +1405,7 @@ namespace AppKit {
 		Utility = 1 << 4,
 		/// <summary>The panel behaves like a document-modal sheet.</summary>
 		DocModal = 1 << 6,
-		/// <summary>The panel does not activate the application when it is clicked, and it does not become the key window.</summary>
+		/// <summary>The panel does not activate its application when the user interacts with it.</summary>
 		NonactivatingPanel = 1 << 7,
 		/// <summary>The window has a textured background, such as the appearance historically used by metal-style windows.</summary>
 		[Deprecated (PlatformName.MacOSX, 11, 0, message: "Don't use 'TexturedBackground' anymore.")]
@@ -1460,9 +1460,9 @@ namespace AppKit {
 		Managed = 1 << 2,
 		/// <summary>The window floats above the active Space and is hidden from the Mission Control window overview.</summary>
 		Transient = 1 << 3,
-		/// <summary>The window is treated like a desktop icon and does not move to a different Space, similar to the Finder desktop.</summary>
+		/// <summary>The window remains visible and stationary during Mission Control, like the desktop window.</summary>
 		Stationary = 1 << 4,
-		/// <summary>The window's minimized representation participates in the Cmd-`/Cmd-Shift-` window-cycling order.</summary>
+		/// <summary>The window participates in the Cycle Through Windows window-cycling order.</summary>
 		ParticipatesInCycle = 1 << 5,
 		/// <summary>The window does not participate in the Cmd-`/Cmd-Shift-` window-cycling order.</summary>
 		IgnoresCycle = 1 << 6,
@@ -1641,9 +1641,9 @@ namespace AppKit {
 		OnOff,
 		/// <summary>The button appears pushed in only while the mouse button is held down, reverting when released, without retaining any state.</summary>
 		MomentaryPushIn,
-		/// <summary>The button repeatedly sends its action message at an accelerating rate while it is held down.</summary>
+		/// <summary>The pressure-sensitive button sends actions as pressure changes and, when continuous, repeats them at an accelerating rate.</summary>
 		Accelerator, // 10.10.3
-		/// <summary>The button repeatedly sends its action message at an accelerating rate that varies according to how firmly it is pressed on a Force Touch trackpad.</summary>
+		/// <summary>The pressure-sensitive button supports configurable pressure levels with tactile feedback and, when continuous, repeats actions according to the applied pressure.</summary>
 		MultiLevelAccelerator, // 10.10.3
 	}
 
@@ -2125,7 +2125,7 @@ namespace AppKit {
 		Generic = 4,
 		/// <summary>The destination performs an operation defined privately between the source and destination.</summary>
 		Private = 8,
-		/// <summary>A mask combining all of the deprecated drag-operation flags.</summary>
+		/// <summary>An obsolete mask combining the <see cref="F:AppKit.NSDragOperation.Copy" />, <see cref="F:AppKit.NSDragOperation.Link" />, <see cref="F:AppKit.NSDragOperation.Generic" />, and <see cref="F:AppKit.NSDragOperation.Private" /> operations.</summary>
 		AllObsolete = 15,
 		/// <summary>The dragged data is moved from the source to the destination.</summary>
 		Move = 16,
@@ -3348,7 +3348,7 @@ namespace AppKit {
 		AccumSize = 14,
 		/// <summary>Chooses a renderer whose capabilities meet or exceed, but most closely match, the minimum requested values.</summary>
 		MinimumPolicy = 51,
-		/// <summary>Chooses a renderer with the maximum available capabilities, ignoring the other requested attribute values.</summary>
+		/// <summary>Prefers the largest available color, depth, and accumulation buffers when a nonzero size is requested.</summary>
 		MaximumPolicy = 52,
 		/// <summary>Requests a renderer capable of rendering to an offscreen buffer.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 7)]
@@ -3411,7 +3411,7 @@ namespace AppKit {
 		/// <summary>Requests a renderer that guards against corruption caused by other running applications.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 5)]
 		Robust = 75,
-		/// <summary>Requests a context that is safe to share across multiple processes.</summary>
+		/// <summary>Requests a multiprocessor-safe renderer.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 5)]
 		MPSafe = 78,
 		/// <summary>Requests a renderer capable of driving multiple displays.</summary>
@@ -4206,7 +4206,7 @@ namespace AppKit {
 		None,
 		/// <summary>Fades the affected rows in or out.</summary>
 		Fade = 1,
-		/// <summary>Leaves a gap in place of the affected rows, without shifting other rows.</summary>
+		/// <summary>Opens a gap for newly inserted rows.</summary>
 		Gap = 2,
 		/// <summary>Slides the affected rows upward.</summary>
 		SlideUp = 0x10,
@@ -4326,7 +4326,7 @@ namespace AppKit {
 		ShadowEffectMask = 1 << 12,
 		/// <summary>Shows all of the available text effect controls.</summary>
 		AllEffectsMask = 0XFFF00,
-		/// <summary>Shows the standard set of controls: font family, size, and collection.</summary>
+		/// <summary>Shows the standard font controls and text effect controls.</summary>
 		StandardMask = 0xFFFF,
 		/// <summary>Shows all available controls and effects.</summary>
 		AllModesMask = unchecked((ulong) UInt32.MaxValue),
@@ -4532,7 +4532,7 @@ namespace AppKit {
 		PrimaryAccelerator = 3,
 		/// <summary>Requires a deep press to activate, similar to a "Force Click".</summary>
 		PrimaryDeepClick = 5,
-		/// <summary>Requires a deep press to activate a drag operation.</summary>
+		/// <summary>Provides two-stage pressure sensing that remains active while dragging.</summary>
 		PrimaryDeepDrag = 6,
 	}
 
@@ -4913,7 +4913,7 @@ namespace AppKit {
 		ShadowEffect = 1 << 12,
 		/// <summary>Shows all of the available text effect controls.</summary>
 		AllEffects = (ulong) 0XFFF00,
-		/// <summary>Shows the standard set of controls: font family, size, and collection.</summary>
+		/// <summary>Shows the standard font controls and text effect controls.</summary>
 		StandardModes = (ulong) 0XFFFF,
 		/// <summary>Shows all available controls and effects.</summary>
 		AllModes = (ulong) 0XFFFFFFFF,
@@ -5028,7 +5028,7 @@ namespace AppKit {
 		EffectNone = 0x0,
 		/// <summary>Fades the affected rows in or out.</summary>
 		EffectFade = 0x1,
-		/// <summary>Leaves a gap in place of the affected rows, without shifting other rows.</summary>
+		/// <summary>Opens a gap for newly inserted rows.</summary>
 		EffectGap = 0x2,
 		/// <summary>Slides the affected rows upward.</summary>
 		SlideUp = 0x10,
@@ -5108,7 +5108,7 @@ namespace AppKit {
 	public enum NSMenuPresentationStyle : long {
 		/// <summary>Presents the menu using the regular, standard menu appearance.</summary>
 		Regular = 0,
-		/// <summary>Presents the menu as a floating palette, such as a color or character palette.</summary>
+		/// <summary>Displays horizontally arranged menu items in place of the presenting menu item.</summary>
 		Palette = 1,
 	}
 
@@ -5118,7 +5118,7 @@ namespace AppKit {
 	public enum NSMenuSelectionMode : long {
 		/// <summary>The system chooses the most appropriate selection mode automatically.</summary>
 		Automatic = 0,
-		/// <summary>Only one menu item can be selected at a time.</summary>
+		/// <summary>Allows at most one selected menu item in each selection group.</summary>
 		SelectOne = 1,
 		/// <summary>Any number of menu items can be selected simultaneously.</summary>
 		SelectAny = 2,
@@ -5197,11 +5197,11 @@ namespace AppKit {
 	public enum NSPasteboardAccessBehavior : ulong {
 		/// <summary>Uses the system's default pasteboard access behavior.</summary>
 		Default = 0,
-		/// <summary>Prompts the user for permission before allowing access to the pasteboard.</summary>
+		/// <summary>Prompts the user before access that is not part of a user-initiated paste operation.</summary>
 		Ask = 1,
 		/// <summary>Always allows the application to access the pasteboard without prompting.</summary>
 		AlwaysAllow = 2,
-		/// <summary>Always denies the application access to the pasteboard without prompting.</summary>
+		/// <summary>Denies access that is not part of a user-initiated paste operation without prompting.</summary>
 		AlwaysDeny = 3,
 	}
 

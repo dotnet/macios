@@ -5042,11 +5042,15 @@ namespace AppKit {
 		SlideRight = 0x40,
 	}
 
+	/// <summary>Specifies the point size variant used to render an SF Symbols image.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSImageSymbolScale : long {
+		/// <summary>A small-scale symbol variant.</summary>
 		Small = 1,
+		/// <summary>A medium-scale symbol variant.</summary>
 		Medium = 2,
+		/// <summary>A large-scale symbol variant.</summary>
 		Large = 3,
 	}
 

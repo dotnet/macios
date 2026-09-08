@@ -4197,23 +4197,24 @@ namespace AppKit {
 		Destructive,
 	}
 
+	/// <summary>Specifies the visual animation effect used when rows are inserted into or removed from a table view.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSTableViewAnimation : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>No animation effect.</summary>
 		None,
-		/// <summary>To be added.</summary>
+		/// <summary>Fades the affected rows in or out.</summary>
 		Fade = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Leaves a gap in place of the affected rows, without shifting other rows.</summary>
 		Gap = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>Slides the affected rows upward.</summary>
 		SlideUp = 0x10,
-		/// <summary>To be added.</summary>
+		/// <summary>Slides the affected rows downward.</summary>
 		SlideDown = 0x20,
-		/// <summary>To be added.</summary>
+		/// <summary>Slides the affected rows to the left.</summary>
 		SlideLeft = 0x30,
-		/// <summary>To be added.</summary>
+		/// <summary>Slides the affected rows to the right.</summary>
 		SlideRight = 0x40,
 	}
 

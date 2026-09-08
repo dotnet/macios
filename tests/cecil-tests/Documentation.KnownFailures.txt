@@ -22526,7 +22526,6 @@ T:AppKit.NSStringAttributeKey
 T:AppKit.NSStringDrawing_NSAttributedString
 T:AppKit.NSStringDrawing_NSString
 T:AppKit.NSTableReorder
-T:AppKit.NSTableViewAnimation
 T:AppKit.NSTableViewAnimationOptions
 T:AppKit.NSTableViewCell
 T:AppKit.NSTableViewCellGetter

@@ -71,8 +71,7 @@ steps:
   displayName: 'Fix device discovery (reset launchctl)'
 
 - bash: |
-    make -C src build/generator-frameworks.g.cs
-    make -C src build/ios/Constants.cs
+    set -ex
     make -C msbuild Versions.g.cs
   workingDirectory: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)
   displayName: Generate constants files 

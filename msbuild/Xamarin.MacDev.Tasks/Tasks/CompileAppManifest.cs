@@ -34,6 +34,8 @@ namespace Xamarin.MacDev.Tasks {
 		// This must be an ITaskItem to copy the file to Windows for remote builds.
 		public ITaskItem? AppManifest { get; set; }
 
+		public ITaskItem [] AppManifestEntries { get; set; } = [];
+
 		[Required]
 		public string BundleExecutable { get; set; } = "";
 
@@ -159,6 +161,8 @@ namespace Xamarin.MacDev.Tasks {
 			// Merge with any partial plists...
 			MergePartialPlistTemplates (plist);
 
+			AddAppManifestEntries (plist);
+
 			Validation (plist);
 
 			// write the resulting app manifest
@@ -180,6 +184,18 @@ namespace Xamarin.MacDev.Tasks {
 			var dict = new PDictionary ();
 			dict.Add ("Version", new PString (value));
 			plist.Add (name, dict);
+		}
+
+		void AddAppManifestEntries (PDictionary plist)
+		{
+			PListItemGroup.Merge (
+				Log,
+				plist,
+				AppManifestEntries,
+				static (value, _) => value,
+				MSBStrings.E7187, /* Invalid value '{0}' for the app manifest entry '{1}' of type '{2}' specified in the AppManifestEntry item group. Expected no value at all. */
+				MSBStrings.E7188, /* Invalid value '{0}' for the app manifest entry '{1}' of type '{2}' specified in the AppManifestEntry item group. Expected 'true' or 'false'. */
+				MSBStrings.E7189 /* Unknown type '{0}' for the app manifest entry '{1}' specified in the AppManifestEntry item group. Expected 'Remove', 'Boolean', 'String', or 'StringArray'. */);
 		}
 
 		void RegisterFonts (PDictionary plist)
@@ -230,6 +246,11 @@ namespace Xamarin.MacDev.Tasks {
 
 		bool SetMinimumOSVersion (PDictionary plist)
 		{
+			if (!IsValidVersionValue (SupportedOSPlatformVersion, nameof (SupportedOSPlatformVersion)))
+				return false;
+			if (!IsValidVersionValue (MinSupportedOSPlatformVersion, nameof (MinSupportedOSPlatformVersion)))
+				return false;
+
 			var minimumVersionKey = PlatformFrameworkHelper.GetMinimumOSVersionKey (Platform);
 			var minimumOSVersionInManifest = plist.Get<PString> (minimumVersionKey)?.Value;
 			string convertedSupportedOSPlatformVersion;
@@ -292,6 +313,22 @@ namespace Xamarin.MacDev.Tasks {
 
 			// Write out our value
 			plist [minimumVersionKey] = minimumOSVersion;
+
+			return true;
+		}
+
+		// Verify that the value doesn't contain any whitespace (in particular newlines), because such values
+		// end up breaking other parts of the build (even though they may successfully parse as a Version).
+		bool IsValidVersionValue (string value, string propertyName)
+		{
+			if (string.IsNullOrEmpty (value))
+				return true;
+
+			if (value.Any (char.IsWhiteSpace)) {
+				var printableValue = value.Replace ("\r", "\\r").Replace ("\n", "\\n").Replace ("\t", "\\t");
+				Log.LogError (MSBStrings.E7187 /* The value '{0}' for the property '{1}' is not a valid version number, because it contains whitespace. */, printableValue, propertyName);
+				return false;
+			}
 
 			return true;
 		}

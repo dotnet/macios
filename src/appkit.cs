@@ -657,21 +657,24 @@ namespace AppKit {
 		NSGraphicsContext Context { get; }
 
 		[Export ("hide:")]
-		void Hide (NSObject sender);
+		void Hide ([NullAllowed] NSObject sender);
 
 		[Export ("unhide:")]
-		void Unhide (NSObject sender);
+		void Unhide ([NullAllowed] NSObject sender);
 
 		[Export ("unhideWithoutActivation")]
 		void UnhideWithoutActivation ();
 
 		[Export ("windowWithWindowNumber:")]
+		[return: NullAllowed]
 		NSWindow WindowWithWindowNumber (nint windowNum);
 
 		[Export ("mainWindow")]
+		[NullAllowed]
 		NSWindow MainWindow { get; }
 
 		[Export ("keyWindow")]
+		[NullAllowed]
 		NSWindow KeyWindow { get; }
 
 		/// <summary>To be added.</summary>
@@ -700,10 +703,10 @@ namespace AppKit {
 		void ActivateIgnoringOtherApps (bool flag);
 
 		[Export ("hideOtherApplications:")]
-		void HideOtherApplications (NSObject sender);
+		void HideOtherApplications ([NullAllowed] NSObject sender);
 
 		[Export ("unhideAllApplications:")]
-		void UnhideAllApplications (NSObject sender);
+		void UnhideAllApplications ([NullAllowed] NSObject sender);
 
 		[Export ("finishLaunching")]
 		void FinishLaunching ();
@@ -715,7 +718,7 @@ namespace AppKit {
 		nint RunModalForWindow (NSWindow theWindow);
 
 		[Export ("stop:")]
-		void Stop (NSObject sender);
+		void Stop ([NullAllowed] NSObject sender);
 
 		[Export ("stopModal")]
 		void StopModal ();
@@ -727,6 +730,7 @@ namespace AppKit {
 		void AbortModal ();
 
 		[Export ("modalWindow")]
+		[NullAllowed]
 		NSWindow ModalWindow { get; }
 
 		[Export ("beginModalSessionForWindow:")]
@@ -760,6 +764,7 @@ namespace AppKit {
 		void EndSheet (NSWindow sheet, nint returnCode);
 
 		[Export ("nextEventMatchingMask:untilDate:inMode:dequeue:"), Protected]
+		[return: NullAllowed]
 		NSEvent NextEvent (NSEventMask mask, [NullAllowed] NSDate expiration, NSString runLoopMode, bool deqFlag);
 
 		// NSEventMask must be casted to nuint to preserve the NSEventMask.Any special value on 64 bit systems. NSEventMask is not [Native].
@@ -771,16 +776,18 @@ namespace AppKit {
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Wrap ("NextEvent (mask, expiration, runLoopMode.GetConstant ()!, deqFlag)")]
+		[return: NullAllowed]
 		NSEvent NextEvent (NSEventMask mask, NSDate expiration, NSRunLoopMode runLoopMode, bool deqFlag);
 
 		[Export ("discardEventsMatchingMask:beforeEvent:"), Protected]
-		void DiscardEvents (nuint mask, NSEvent lastEvent);
+		void DiscardEvents (nuint mask, [NullAllowed] NSEvent lastEvent);
 
 		[ThreadSafe]
 		[Export ("postEvent:atStart:")]
 		void PostEvent (NSEvent theEvent, bool atStart);
 
 		[Export ("currentEvent")]
+		[NullAllowed]
 		NSEvent CurrentEvent { get; }
 
 		[Export ("sendEvent:")]
@@ -804,6 +811,7 @@ namespace AppKit {
 		void UpdateWindows ();
 
 		[Export ("mainMenu", ArgumentSemantic.Retain)]
+		[NullAllowed]
 		NSMenu MainMenu { get; set; }
 
 		[Export ("helpMenu", ArgumentSemantic.Retain)]
@@ -811,6 +819,7 @@ namespace AppKit {
 		NSMenu HelpMenu { get; set; }
 
 		[Export ("applicationIconImage", ArgumentSemantic.Retain)]
+		[NullAllowed]
 		NSImage ApplicationIconImage { get; set; }
 
 		[Export ("activationPolicy"), Protected]
@@ -826,9 +835,11 @@ namespace AppKit {
 		bool SendAction (Selector theAction, [NullAllowed] NSObject theTarget, [NullAllowed] NSObject sender);
 
 		[Export ("targetForAction:")]
+		[return: NullAllowed]
 		NSObject TargetForAction (Selector theAction);
 
 		[Export ("targetForAction:to:from:")]
+		[return: NullAllowed]
 		NSObject TargetForAction (Selector theAction, [NullAllowed] NSObject theTarget, [NullAllowed] NSObject sender);
 
 		[Export ("tryToPerform:with:")]
@@ -836,14 +847,14 @@ namespace AppKit {
 
 		[Export ("validRequestorForSendType:returnType:")]
 		[return: NullAllowed]
-		NSObject ValidRequestor (string sendType, string returnType);
+		NSObject ValidRequestor ([NullAllowed] string sendType, [NullAllowed] string returnType);
 
 		[Export ("reportException:")]
 		void ReportException (NSException theException);
 
 		[Static]
 		[Export ("detachDrawingThread:toTarget:withObject:")]
-		void DetachDrawingThread (Selector selector, NSObject target, NSObject argument);
+		void DetachDrawingThread (Selector selector, NSObject target, [NullAllowed] NSObject argument);
 
 		[Export ("replyToApplicationShouldTerminate:")]
 		void ReplyToApplicationShouldTerminate (bool shouldTerminate);
@@ -852,7 +863,7 @@ namespace AppKit {
 		void ReplyToOpenOrPrint (NSApplicationDelegateReply reply);
 
 		[Export ("orderFrontCharacterPalette:")]
-		void OrderFrontCharacterPalette (NSObject sender);
+		void OrderFrontCharacterPalette ([NullAllowed] NSObject sender);
 
 		[Export ("presentationOptions")]
 		NSApplicationPresentationOptions PresentationOptions { get; set; }
@@ -861,10 +872,11 @@ namespace AppKit {
 		NSApplicationPresentationOptions CurrentSystemPresentationOptions { get; }
 
 		[Export ("windowsMenu")]
+		[NullAllowed]
 		NSMenu WindowsMenu { get; set; }
 
 		[Export ("arrangeInFront:")]
-		void ArrangeInFront (NSObject sender);
+		void ArrangeInFront ([NullAllowed] NSObject sender);
 
 		[Export ("removeWindowsItem:")]
 		void RemoveWindowsItem (NSWindow win);
@@ -879,7 +891,7 @@ namespace AppKit {
 		void UpdateWindowsItem (NSWindow win);
 
 		[Export ("miniaturizeAll:")]
-		void MiniaturizeAll (NSObject sender);
+		void MiniaturizeAll ([NullAllowed] NSObject sender);
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
@@ -888,17 +900,19 @@ namespace AppKit {
 		bool FullKeyboardAccessEnabled { get; }
 
 		[Export ("servicesProvider")]
+		[NullAllowed]
 		NSObject ServicesProvider { get; set; }
 
 		[Export ("userInterfaceLayoutDirection")]
 		NSUserInterfaceLayoutDirection UserInterfaceLayoutDirection { get; }
 
 		[Export ("servicesMenu")]
+		[NullAllowed]
 		NSMenu ServicesMenu { get; set; }
 
 		// From NSColorPanel
 		[Export ("orderFrontColorPanel:")]
-		void OrderFrontColorPanel (NSObject sender);
+		void OrderFrontColorPanel ([NullAllowed] NSObject sender);
 
 		[Export ("disableRelaunchOnLogin"), ThreadSafe]
 		void DisableRelaunchOnLogin ();
@@ -6570,6 +6584,7 @@ namespace AppKit {
 
 		//Detected properties
 		[Export ("contentView", ArgumentSemantic.Retain)]
+		[NullAllowed]
 		NSView ContentView { get; set; }
 
 		[Export ("showsApplicationBadge")]

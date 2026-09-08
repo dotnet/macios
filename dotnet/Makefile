@@ -328,6 +328,7 @@ $(DOTNET_PACKS_PATH)/$($(1)_NUGET_REF_NAME)/$2: | $(DOTNET_PACKS_PATH)/$($(1)_NU
 	$$(Q_LN) ln -Fs $$(abspath $(DOTNET_DESTDIR)/$($(1)_NUGET_REF_NAME)) $$(abspath $$@)
 
 $(DOTNET_TEMPLATE_PACKS_PATH)/Microsoft.$1.Templates.$(2).nupkg: $(TEMPLATE_PACKS_$(call uppercase,$(1))) | $(DOTNET_TEMPLATE_PACKS_PATH)
+	$$(Q) rm -f $(DOTNET_TEMPLATE_PACKS_PATH)/Microsoft.$1.Templates.*.nupkg
 	$$(Q) $$(CP) $$< $$@
 
 WORKLOAD_TARGETS += \

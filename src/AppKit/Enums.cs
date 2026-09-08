@@ -2001,17 +2001,19 @@ namespace AppKit {
 		EvenOdd,
 	}
 
+	/// <summary>Specifies the kind of path segment represented by an element of a <see cref="T:AppKit.NSBezierPath" />.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSBezierPathElement : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Begins a new subpath at the given point, without drawing a segment.</summary>
 		MoveTo,
-		/// <summary>To be added.</summary>
+		/// <summary>Draws a straight line segment to the given point.</summary>
 		LineTo,
-		/// <summary>To be added.</summary>
+		/// <summary>Draws a cubic Bézier curve segment to the given point, using two control points.</summary>
 		CurveTo,
-		/// <summary>To be added.</summary>
+		/// <summary>Closes the current subpath by drawing a straight line back to its starting point.</summary>
 		ClosePath,
+		/// <summary>Draws a quadratic Bézier curve segment to the given point, using a single control point.</summary>
 		QuadraticCurveTo,
 	}
 	#endregion

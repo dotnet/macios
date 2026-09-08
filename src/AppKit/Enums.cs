@@ -4229,18 +4229,19 @@ namespace AppKit {
 		ClearNonenumeratedImages = 1 << 16,
 	}
 
+	/// <summary>Specifies how multiple dragged items are visually arranged during a drag session.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSDraggingFormation : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the default formation for the current context.</summary>
 		Default,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays each item at its original location, without rearranging them.</summary>
 		None,
-		/// <summary>To be added.</summary>
+		/// <summary>Stacks the items in an overlapping pile.</summary>
 		Pile,
-		/// <summary>To be added.</summary>
+		/// <summary>Arranges the items in a list.</summary>
 		List,
-		/// <summary>To be added.</summary>
+		/// <summary>Stacks the items directly on top of one another.</summary>
 		Stack,
 	}
 

@@ -2985,33 +2985,35 @@ namespace AppKit {
 		PlainSquared = 4,
 	}
 
+	/// <summary>Specifies a bitmask of options that control how an application is launched.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	[Deprecated (PlatformName.MacOSX, 11, 0)]
 	public enum NSWorkspaceLaunchOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Prints the specified file or files instead of opening them.</summary>
 		Print = 2,
+		/// <summary>Presents a user interface if an error occurs while launching.</summary>
 		WithErrorPresentation = 0x40,
-		/// <summary>To be added.</summary>
+		/// <summary>Launches the application only if it isn't currently running, without bringing an already-running instance to the foreground.</summary>
 		InhibitingBackgroundOnly = 0x80,
-		/// <summary>To be added.</summary>
+		/// <summary>Launches the application, and opens its documents, without adding them to the Recent Items list.</summary>
 		WithoutAddingToRecents = 0x100,
-		/// <summary>To be added.</summary>
+		/// <summary>Launches the application without activating it (bringing it to the foreground).</summary>
 		WithoutActivation = 0x200,
-		/// <summary>To be added.</summary>
+		/// <summary>Launches the application asynchronously, without waiting for it to finish launching.</summary>
 		Async = 0x10000,
-		/// <summary>To be added.</summary>
+		/// <summary>Allows the application to be launched in the legacy Classic environment if necessary.</summary>
 		AllowingClassicStartup = 0x20000,
-		/// <summary>To be added.</summary>
+		/// <summary>Prefers launching the application in the legacy Classic environment over a native launch.</summary>
 		PreferringClassic = 0x40000,
-		/// <summary>To be added.</summary>
+		/// <summary>Launches a new instance of the application, even if another instance is already running.</summary>
 		NewInstance = 0x80000,
-		/// <summary>To be added.</summary>
+		/// <summary>Hides the application after it launches.</summary>
 		Hide = 0x100000,
-		/// <summary>To be added.</summary>
+		/// <summary>Hides all other applications when this one launches.</summary>
 		HideOthers = 0x200000,
-		/// <summary>To be added.</summary>
+		/// <summary>The default launch options, combining <see cref="F:AppKit.NSWorkspaceLaunchOptions.Async" /> and <see cref="F:AppKit.NSWorkspaceLaunchOptions.AllowingClassicStartup" />.</summary>
 		Default = Async | AllowingClassicStartup,
 	}
 

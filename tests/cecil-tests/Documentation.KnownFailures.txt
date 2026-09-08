@@ -22687,7 +22687,6 @@ T:AppKit.NSWindowUndoManager
 T:AppKit.NSWindowUserTabbingPreference
 T:AppKit.NSWindowWindows
 T:AppKit.NSWorkspaceAuthorizationType
-T:AppKit.NSWorkspaceLaunchOptions
 T:AppKit.NSWorkspaceUrlHandler
 T:AppKit.NSWritingToolsBehavior
 T:AppKit.NSWritingToolsCoordinatorContextScope

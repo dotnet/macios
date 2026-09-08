@@ -2651,33 +2651,34 @@ namespace AppKit {
 		FamilyClassMask = (int) -268435456,
 	}
 
+	/// <summary>Specifies a bitmask of stylistic traits used with the legacy <see cref="T:AppKit.NSFontManager" /> font-selection APIs.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSFontTraitMask : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The font has an italic or oblique style.</summary>
 		Italic = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The font has a bold weight.</summary>
 		Bold = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>The font does not have a bold weight.</summary>
 		Unbold = 4,
-		/// <summary>To be added.</summary>
+		/// <summary>The font does not use a standard character set.</summary>
 		NonStandardCharacterSet = 8,
-		/// <summary>To be added.</summary>
+		/// <summary>The font has a narrow character width.</summary>
 		Narrow = 0x10,
-		/// <summary>To be added.</summary>
+		/// <summary>The font has an expanded (wider) character width.</summary>
 		Expanded = 0x20,
-		/// <summary>To be added.</summary>
+		/// <summary>The font has a condensed (narrower) character width.</summary>
 		Condensed = 0x40,
-		/// <summary>To be added.</summary>
+		/// <summary>The font uses small capital letters.</summary>
 		SmallCaps = 0x80,
-		/// <summary>To be added.</summary>
+		/// <summary>The font is designed for use at large, poster-like sizes.</summary>
 		Poster = 0x100,
-		/// <summary>To be added.</summary>
+		/// <summary>The font has a compressed character width.</summary>
 		Compressed = 0x200,
-		/// <summary>To be added.</summary>
+		/// <summary>The font uses monospaced (fixed-pitch) glyphs.</summary>
 		FixedPitch = 0x400,
-		/// <summary>To be added.</summary>
+		/// <summary>The font does not have an italic or oblique style.</summary>
 		Unitalic = 0x1000000,
 	}
 

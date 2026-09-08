@@ -22438,7 +22438,6 @@ T:AppKit.NSFontError
 T:AppKit.NSFontPanelMode
 T:AppKit.NSFontPanelModeMask
 T:AppKit.NSFontTextStyle
-T:AppKit.NSFontTraitMask
 T:AppKit.NSFontWeight
 T:AppKit.NSFontWidth
 T:AppKit.NSGestureEvent

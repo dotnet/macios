@@ -413,7 +413,11 @@ namespace MonoTouch.NUnit.UI {
 						Console.WriteLine ("Network error: Cannot connect to {0}:{1}: {2}. Continuing on console.", options.HostName, options.HostPort, ex);
 					}
 				}
-				writers.Add (Console.Out);
+				// NUnit redirects Console.Out while tests run. Keep this writer independent from
+				// both the original and redirected writers to avoid acquiring their locks in reverse order.
+				writers.Add (TextWriter.Synchronized (new StreamWriter (Console.OpenStandardOutput ()) {
+					AutoFlush = true,
+				}));
 				Writer = new MultiplexedTextWriter (writers);
 			}
 

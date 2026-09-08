@@ -2438,17 +2438,18 @@ namespace AppKit {
 		Error,
 	}
 
+	/// <summary>Specifies where a scroll view's scroll arrows are positioned.</summary>
 	[NoMacCatalyst]
 	[Native]
 	[Deprecated (PlatformName.MacOSX, 10, 14)]
 	public enum NSScrollArrowPosition : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Places the scroll arrows at the maximum end (bottom or right) of the scroller.</summary>
 		MaxEnd = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Places the scroll arrows at the minimum end (top or left) of the scroller.</summary>
 		MinEnd = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses the system's default scroll arrow position.</summary>
 		DefaultSetting = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Does not display scroll arrows.</summary>
 		None = 2,
 	}
 

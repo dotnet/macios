@@ -22530,7 +22530,6 @@ T:AppKit.NSRulerEditorPredicateParts
 T:AppKit.NSRulerMarkerClientViewDelegation
 T:AppKit.NSRulerViewUnits
 T:AppKit.NSSavePanelComplete
-T:AppKit.NSScrollArrowPosition
 T:AppKit.NSScrollElasticity
 T:AppKit.NSScrollerArrow
 T:AppKit.NSScrollerKnobStyle

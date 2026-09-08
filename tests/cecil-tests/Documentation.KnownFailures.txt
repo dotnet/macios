@@ -22422,7 +22422,6 @@ T:AppKit.NSDocumentUnlockCompletionHandler
 T:AppKit.NSDocumentUnlockDocumentCompletionHandler
 T:AppKit.NSDraggingEnumerator
 T:AppKit.NSDraggingFormation
-T:AppKit.NSDraggingItemEnumerationOptions
 T:AppKit.NSDraggingItemImagesContentProvider
 T:AppKit.NSEventModifierFlags
 T:AppKit.NSEventTrackHandler

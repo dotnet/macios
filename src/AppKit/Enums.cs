@@ -4218,13 +4218,14 @@ namespace AppKit {
 		SlideRight = 0x40,
 	}
 
+	/// <summary>Specifies a bitmask of options for enumerating the items participating in a drag session.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSDraggingItemEnumerationOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Enumerates the dragging items concurrently, rather than sequentially.</summary>
 		Concurrent = 1 << 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Clears the drag images of items that are not enumerated (matched) by the enumeration.</summary>
 		ClearNonenumeratedImages = 1 << 16,
 	}
 

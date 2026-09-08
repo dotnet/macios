@@ -5066,10 +5066,13 @@ namespace AppKit {
 		Expanded,
 	}
 
+	/// <summary>Specifies the visual style of an <see cref="T:AppKit.NSComboButton" />.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSComboButtonStyle : long {
+		/// <summary>Displays the button's action and menu-disclosure controls as visually separate segments.</summary>
 		Split = 0,
+		/// <summary>Displays the button's action and menu-disclosure controls as a single, unified control.</summary>
 		Unified = 1,
 	}
 

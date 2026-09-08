@@ -1621,28 +1621,29 @@ namespace AppKit {
 	#endregion
 
 	#region NSButtonCell
+	/// <summary>Specifies the highlighting and state-tracking behavior of a button.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSButtonType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The button highlights while pressed and reverts to its normal appearance when released, without retaining any state; used for simple action buttons.</summary>
 		MomentaryLightButton,
-		/// <summary>To be added.</summary>
+		/// <summary>The button alternates between a pushed-in "on" appearance and its normal "off" appearance each time it is clicked.</summary>
 		PushOnPushOff,
-		/// <summary>To be added.</summary>
+		/// <summary>The button alternates between its normal image or title and its alternate image or title each time it is clicked.</summary>
 		Toggle,
-		/// <summary>To be added.</summary>
+		/// <summary>The button behaves like a checkbox, toggling between an unchecked and checked appearance each time it is clicked.</summary>
 		Switch,
-		/// <summary>To be added.</summary>
+		/// <summary>The button behaves like a radio button; selecting it deselects the other radio buttons in the same group.</summary>
 		Radio,
-		/// <summary>To be added.</summary>
+		/// <summary>The button displays its alternate image or title only while the mouse button is held down, reverting when released, without retaining any state.</summary>
 		MomentaryChange,
-		/// <summary>To be added.</summary>
+		/// <summary>The button toggles between an "on" and "off" state each time it is clicked, remaining highlighted while "on".</summary>
 		OnOff,
-		/// <summary>To be added.</summary>
+		/// <summary>The button appears pushed in only while the mouse button is held down, reverting when released, without retaining any state.</summary>
 		MomentaryPushIn,
-		/// <summary>To be added.</summary>
+		/// <summary>The button repeatedly sends its action message at an accelerating rate while it is held down.</summary>
 		Accelerator, // 10.10.3
-		/// <summary>To be added.</summary>
+		/// <summary>The button repeatedly sends its action message at an accelerating rate that varies according to how firmly it is pressed on a Force Touch trackpad.</summary>
 		MultiLevelAccelerator, // 10.10.3
 	}
 

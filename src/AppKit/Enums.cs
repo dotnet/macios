@@ -4705,18 +4705,19 @@ namespace AppKit {
 		P3,
 	}
 
+	/// <summary>Specifies which edge of a tab view displays its tabs.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTabPosition : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>No tabs are displayed.</summary>
 		None = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Tabs are displayed along the top edge.</summary>
 		Top,
-		/// <summary>To be added.</summary>
+		/// <summary>Tabs are displayed along the left edge.</summary>
 		Left,
-		/// <summary>To be added.</summary>
+		/// <summary>Tabs are displayed along the bottom edge.</summary>
 		Bottom,
-		/// <summary>To be added.</summary>
+		/// <summary>Tabs are displayed along the right edge.</summary>
 		Right,
 	}
 

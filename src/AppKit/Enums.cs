@@ -5193,12 +5193,17 @@ namespace AppKit {
 		Visible,
 	}
 
+	/// <summary>Specifies how much confirmation is required before an application can access the general pasteboard.</summary>
 	[Native]
 	[Mac (15, 4), NoMacCatalyst]
 	public enum NSPasteboardAccessBehavior : ulong {
+		/// <summary>Uses the system's default pasteboard access behavior.</summary>
 		Default = 0,
+		/// <summary>Prompts the user for permission before allowing access to the pasteboard.</summary>
 		Ask = 1,
+		/// <summary>Always allows the application to access the pasteboard without prompting.</summary>
 		AlwaysAllow = 2,
+		/// <summary>Always denies the application access to the pasteboard without prompting.</summary>
 		AlwaysDeny = 3,
 	}
 

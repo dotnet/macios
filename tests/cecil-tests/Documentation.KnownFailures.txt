@@ -22491,7 +22491,6 @@ T:AppKit.NSRulerEditorPredicateParts
 T:AppKit.NSRulerMarkerClientViewDelegation
 T:AppKit.NSRulerViewUnits
 T:AppKit.NSSavePanelComplete
-T:AppKit.NSScrubberAlignment
 T:AppKit.NSSegmentBackgroundStyle_NSSegmentedCell
 T:AppKit.NSSegmentDistribution
 T:AppKit.NSSharingCollaborationMode

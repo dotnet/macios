@@ -4772,16 +4772,17 @@ namespace AppKit {
 		Free,
 	}
 
+	/// <summary>Specifies how a scrubber aligns its selected item within its visible bounds.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSScrubberAlignment : long {
-		/// <summary>To be added.</summary>
+		/// <summary>No particular alignment is applied.</summary>
 		None = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns the selected item with the leading edge of the scrubber.</summary>
 		Leading,
-		/// <summary>To be added.</summary>
+		/// <summary>Aligns the selected item with the trailing edge of the scrubber.</summary>
 		Trailing,
-		/// <summary>To be added.</summary>
+		/// <summary>Centers the selected item within the scrubber.</summary>
 		Center,
 	}
 

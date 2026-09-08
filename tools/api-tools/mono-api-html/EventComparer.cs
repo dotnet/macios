@@ -59,7 +59,7 @@ namespace Mono.ApiTools {
 			var tgtEventType = target.GetTypeName ("eventtype", State) ?? "";
 
 			if (srcEventType != tgtEventType) {
-				change.AppendModified (srcEventType, tgtEventType);
+				change.AppendTypeModified (srcEventType, tgtEventType);
 			} else {
 				change.Append (srcEventType);
 			}

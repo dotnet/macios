@@ -26,7 +26,6 @@
 
 namespace AVFoundation {
 	/// <summary>An audio player that can play audio from memory or the local file system.</summary>
-	///     <remarks>To be added.</remarks>
 	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/AVTouchSample/">avTouch</related>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudioplayer">Apple documentation for <c>AVAudioPlayer</c></related>
 	public partial class AVAudioPlayer {

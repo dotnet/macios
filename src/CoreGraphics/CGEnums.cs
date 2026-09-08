@@ -9,6 +9,8 @@
 
 #nullable enable
 
+using System.ComponentModel;
+
 namespace CoreGraphics {
 
 	public enum MatrixOrder {
@@ -168,7 +170,6 @@ namespace CoreGraphics {
 		PlusLighter,
 	}
 
-	[iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	public enum CGPdfTagType /* int32_t */ {
 		Document = 100,
@@ -216,7 +217,12 @@ namespace CoreGraphics {
 		RubyPunctuation,
 		Warichu,
 		WarichuText,
-		WarichuPunctiation,
+		WarichuPunctuation,
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'WarichuPunctuation' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		WarichuPunctiation = WarichuPunctuation,
+#endif
 		Figure = 700,
 		Formula,
 		Form,

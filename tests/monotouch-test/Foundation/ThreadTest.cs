@@ -40,7 +40,7 @@ namespace MonoTouchFixtures.Foundation {
 				IsBackground = true,
 			};
 			t.Start ();
-			t.Join ();
+			Assert.That (t.Join (TimeSpan.FromSeconds (5)), Is.True, "Thread.Join timed out");
 			Assert.That (rv, Is.EqualTo (0));
 		}
 

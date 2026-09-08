@@ -18,15 +18,15 @@ using System.Collections.Generic;
 namespace HealthKit {
 	public partial class HKCategoryValueSleepAnalysisAsleep {
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("macos13.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
 		[DllImport (Constants.HealthKitLibrary)]
 		static extern NativeHandle HKCategoryValueSleepAnalysisAsleepValues ();
 
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("macos13.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
 		public static HashSet<HKCategoryValueSleepAnalysis> GetAsleepValues ()
 		{

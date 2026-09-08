@@ -5,6 +5,7 @@ using OS_nw_group_descriptor = System.IntPtr;
 using OS_nw_parameters = System.IntPtr;
 using OS_nw_content_context = System.IntPtr;
 using OS_nw_path = System.IntPtr;
+using System.ComponentModel;
 using OS_nw_endpoint = System.IntPtr;
 using OS_nw_protocol_metadata = System.IntPtr;
 using OS_nw_protocol_definition = System.IntPtr;
@@ -116,7 +117,7 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern OS_nw_endpoint nw_connection_group_copy_remote_endpoint_for_message (OS_nw_connection_group group, OS_nw_content_context context);
 
-		public NWEndpoint? GetRemmoteEndpoint (NWContentContext context)
+		public NWEndpoint? GetRemoteEndpoint (NWContentContext context)
 		{
 			if (context is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (context));
@@ -124,6 +125,12 @@ namespace Network {
 			GC.KeepAlive (context);
 			return ptr == IntPtr.Zero ? null : new NWEndpoint (ptr, owns: true);
 		}
+
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'GetRemoteEndpoint' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		public NWEndpoint? GetRemmoteEndpoint (NWContentContext context) => GetRemoteEndpoint (context);
+#endif
 
 		// can return null
 		[DllImport (Constants.NetworkLibrary)]

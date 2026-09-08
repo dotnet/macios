@@ -44,7 +44,7 @@ namespace Xamarin.Linker {
 			if (provider?.HasCustomAttribute (@namespace, name) == true)
 				return true;
 
-			return context?.GetCustomAttributes (provider, @namespace, name)?.Count > 0;
+			return context?.GetCustomAttributes (provider, @namespace, name)?.Any () == true;
 		}
 
 		public static bool HasCustomAttribute (this ICustomAttributeProvider? provider, string @namespace, string name)

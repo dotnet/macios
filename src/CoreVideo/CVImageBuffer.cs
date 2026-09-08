@@ -135,7 +135,10 @@ namespace CoreVideo {
 		[SupportedOSPlatform ("maccatalyst")]
 		public static int GetCodePoint (CVImageBufferYCbCrMatrix yCbCrMatrix)
 		{
-			return CVYCbCrMatrixGetIntegerCodePointForString (yCbCrMatrix.GetConstant ()!.Handle);
+			var constant = yCbCrMatrix.GetConstant ();
+			var rv = CVYCbCrMatrixGetIntegerCodePointForString (constant.GetHandle ());
+			GC.KeepAlive (constant);
+			return rv;
 		}
 
 		[SupportedOSPlatform ("ios")]
@@ -155,7 +158,10 @@ namespace CoreVideo {
 		[SupportedOSPlatform ("maccatalyst")]
 		public static int GetCodePoint (CVImageBufferColorPrimaries color)
 		{
-			return CVColorPrimariesGetIntegerCodePointForString (color.GetConstant ()!.Handle);
+			var constant = color.GetConstant ();
+			var rv = CVColorPrimariesGetIntegerCodePointForString (constant.GetHandle ());
+			GC.KeepAlive (constant);
+			return rv;
 		}
 
 		[SupportedOSPlatform ("ios")]
@@ -175,7 +181,10 @@ namespace CoreVideo {
 		[SupportedOSPlatform ("maccatalyst")]
 		public static int GetCodePoint (CVImageBufferTransferFunction function)
 		{
-			return CVTransferFunctionGetIntegerCodePointForString (function.GetConstant ()!.Handle);
+			var constant = function.GetConstant ();
+			var rv = CVTransferFunctionGetIntegerCodePointForString (constant.GetHandle ());
+			GC.KeepAlive (constant);
+			return rv;
 		}
 
 		[SupportedOSPlatform ("ios")]

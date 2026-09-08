@@ -1,3 +1,8 @@
 ## unsorted
 
 !missing-field! kCLHeadingFilterNone not bound
+
+# results from initial block parameter nullability analysis
+!missing-null-allowed! 'CoreLocation.CLLocationUpdater CoreLocation.CLLocationUpdater::CreateLiveUpdates(CoreFoundation.DispatchQueue,System.Action`1<CoreLocation.CLUpdate>)' is missing a '?' on parameter 'handler' block parameter #0
+!missing-null-allowed! 'CoreLocation.CLLocationUpdater CoreLocation.CLLocationUpdater::CreateLiveUpdates(CoreLocation.CLLiveUpdateConfiguration,CoreFoundation.DispatchQueue,System.Action`1<CoreLocation.CLUpdate>)' is missing a '?' on parameter 'handler' block parameter #0
+!missing-null-allowed! 'System.Void CoreLocation.CLLocationManager::RequestTemporaryFullAccuracyAuthorization(System.String,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net$(BundledNETCoreAppTargetFrameworkVersion)-macos</TargetFramework>
+		<OutputType>Exe</OutputType>
+		<ApplicationTitle>ContentWithPublishFolderType</ApplicationTitle>
+		<ApplicationId>com.xamarin.contentwithpublishfoldertype</ApplicationId>
+	</PropertyGroup>
+
+	<Import Project="../../../common/shared-dotnet.csproj" />
+
+	<ItemGroup>
+		<Compile Include="../AppDelegate.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="../helper/**/*">
+			<PublishFolderType>RootDirectory</PublishFolderType>
+			<Link>Contents/SharedSupport/%(RecursiveDir)%(Filename)%(Extension)</Link>
+		</Content>
+	</ItemGroup>
+</Project>

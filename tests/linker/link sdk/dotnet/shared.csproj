@@ -54,6 +54,9 @@
     <Compile Include="$(RootTestsDirectory)\common\TestRuntime.cs">
         <Link>TestRuntime.cs</Link>
     </Compile>
+    <Compile Include="$(RootTestsDirectory)\common\TestRuntime.LinkAll.cs">
+        <Link>TestRuntime.LinkAll.cs</Link>
+    </Compile>
     <Compile Include="$(ThisTestDirectory)\..\ILReader.cs">
       <Link>ILReader.cs</Link>
     </Compile>
@@ -65,6 +68,9 @@
     </Compile>
     <Compile Include="$(RootTestsDirectory)\monotouch-test\System.Net.Http\NetworkResources.cs">
       <Link>NetworkResources.cs</Link>
+    </Compile>
+    <Compile Include="$(RootTestsDirectory)\monotouch-test\System.Net.Http\HttpbinTestServer.cs">
+      <Link>HttpbinTestServer.cs</Link>
     </Compile>
     <Compile Include="$(RootTestsDirectory)\common\TestAssemblyLoader.cs" />
   </ItemGroup>

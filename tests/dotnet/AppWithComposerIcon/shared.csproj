@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+
+		<ApplicationTitle>AppWithComposerIcon</ApplicationTitle>
+		<ApplicationId>com.xamarin.appwithcomposericon</ApplicationId>
+
+		<UseInterpreter>true</UseInterpreter> <!-- this is only to speed up the build -->
+	</PropertyGroup>
+
+	<Import Project="../../common/shared-dotnet.csproj" />
+
+	<PropertyGroup>
+		<AppIcon>AppIcon</AppIcon>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Include="../*.cs" />
+
+		<!-- ImageAssets: included by default (each platform has a Resources/AppIcon.icon directory) -->
+	</ItemGroup>
+</Project>

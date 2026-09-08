@@ -137,6 +137,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 			var calledOnAllocate = false;
 			var calledOnFree = false;
 			var calledOnError = false;
+			CGRenderingBufferProvider? bufferProviderRef = null;
 
 			using (var pool = new NSAutoreleasePool ()) {
 				using var context = CGBitmapContext.Create (width, height, (CGAdaptiveOptions?) null,
@@ -166,6 +167,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 								calledOnReleaseInfo = true;
 							}
 						);
+						bufferProviderRef = renderingBufferProvider;
 						return renderingBufferProvider;
 					},
 					(CGRenderingBufferProvider renderingBufferProvider, ref CGContentInfo contentInfo, ref CGBitmapParameters bitmapParameters) => {
@@ -191,6 +193,9 @@ namespace MonoTouchFixtures.CoreGraphics {
 			Assert.That (calledOnLockPointer, Is.True, "calledOnLockPointer#2");
 			Assert.That (calledOnUnlockPointer, Is.True, "calledOnUnlockPointer#2");
 			Assert.That (calledOnReleaseInfo, Is.False, "calledOnReleaseInfo#2");
+
+			// prevent the GC from collecting the buffer provider (and calling releaseInfo via the finalizer) before the assertions above
+			GC.KeepAlive (bufferProviderRef);
 		}
 
 		[Test]
@@ -212,6 +217,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 			var options = new CGAdaptiveOptions () {
 				MaximumBitDepth = CGComponent.Float16Bit,
 			};
+			CGRenderingBufferProvider? bufferProviderRef = null;
 
 			using (var pool = new NSAutoreleasePool ()) {
 				using var context = CGBitmapContext.Create (width, height, options,
@@ -241,6 +247,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 								calledOnReleaseInfo = true;
 							}
 						);
+						bufferProviderRef = renderingBufferProvider;
 						return renderingBufferProvider;
 					},
 					(CGRenderingBufferProvider renderingBufferProvider, ref CGContentInfo contentInfo, ref CGBitmapParameters bitmapParameters) => {
@@ -266,6 +273,9 @@ namespace MonoTouchFixtures.CoreGraphics {
 			Assert.That (calledOnLockPointer, Is.True, "calledOnLockPointer#3");
 			Assert.That (calledOnUnlockPointer, Is.True, "calledOnUnlockPointer#3");
 			Assert.That (calledOnReleaseInfo, Is.False, "calledOnReleaseInfo#3");
+
+			// prevent the GC from collecting the buffer provider (and calling releaseInfo via the finalizer) before the assertions above
+			GC.KeepAlive (bufferProviderRef);
 		}
 
 		[Test]

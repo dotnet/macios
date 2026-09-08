@@ -140,7 +140,7 @@ namespace MonoTouchFixtures.Foundation {
 			// OK, we're done now, time to stop.
 			stopSignal.Set ();
 			for (var i = 0; i < threadCount; i++) {
-				threads [i].Join ();
+				Assert.That (threads [i].Join (TimeSpan.FromSeconds (5)), Is.True, $"Thread {i} failed to join within 5 seconds");
 			}
 			Assert.That (ex, Is.Null, "Exception");
 		}

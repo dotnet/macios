@@ -68,6 +68,8 @@ namespace Xamarin.Mac.Tests {
 									dataSource.SetValue (instance, null, null);
 								}
 							}
+						} catch (NotSupportedException e) when (e.Message.Contains ("This object cannot be invoked because no code was generated for it")) {
+							Console.WriteLine ($"Not testing {t.FullName}, because it's been partially trimmed away.");
 						} catch (TargetInvocationException e) {
 							failingTypes.Add (t, e.InnerException.Message);
 						} catch (Exception e) {

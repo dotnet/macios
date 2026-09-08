@@ -32,6 +32,9 @@
     <PackageIcon>Icon.png</PackageIcon>
     <PackageProjectUrl>https://github.com/dotnet/macios</PackageProjectUrl>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
+
+    <!-- NU5123: the file 'tools/any/osx-arm64/Sharpie.Bind.Tool.dSYM/Contents/Resources/Relocations/aarch64/Sharpie.Bind.Tool.yml' path, name, or both are too long. Your package might not work without long file path support. Please shorten the file path or file name. -->
+    <NoWarn>NU5123;$(NoWarn)</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

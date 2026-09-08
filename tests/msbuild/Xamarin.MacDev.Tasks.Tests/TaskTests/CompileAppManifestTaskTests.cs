@@ -1,5 +1,6 @@
 #nullable enable
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.Build.Utilities;
@@ -20,11 +21,11 @@ namespace Xamarin.MacDev.Tasks {
 			var task = CreateTask<CompileAppManifest> ();
 			task.AppBundleName = "AppBundleName";
 			task.CompiledAppManifest = new TaskItem (Path.Combine (tmpdir, "TemporaryAppManifest.plist"));
-			task.DefaultSdkVersion = Sdks.GetAppleSdk (platform).GetInstalledSdkVersions (false).First ().ToString ()!;
 			task.MinSupportedOSPlatformVersion = "10.0";
 			task.SupportedOSPlatformVersion = "15.0";
 			task.SdkVersion = task.DefaultSdkVersion ?? string.Empty;
 			task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (platform).ToString ();
+			task.DefaultSdkVersion = task.CurrentSdk.GetInstalledSdkVersions (false).First ().ToString ()!;
 
 			return task;
 		}
@@ -47,6 +48,62 @@ namespace Xamarin.MacDev.Tasks {
 
 			var plist = PDictionary.OpenFile (task.CompiledAppManifest!.ItemSpec);
 			Assert.That (plist.GetMinimumOSVersion (), Is.EqualTo ("14.0"), "MinimumOSVersion");
+		}
+
+		[Test]
+		public void AppManifestEntries ()
+		{
+			var dir = Cache.CreateTemporaryDirectory ();
+			var task = CreateTask (dir);
+
+			var mainPath = Path.Combine (dir, "Info.plist");
+			var main = new PDictionary {
+				{ "StringValue", new PString ("main") },
+				{ "RemoveValue", new PString ("remove me") },
+			};
+			main.Save (mainPath);
+
+			var partialPath = Path.Combine (dir, "PartialAppManifest.plist");
+			var partial = new PDictionary {
+				{ "StringValue", new PString ("partial") },
+			};
+			partial.Save (partialPath);
+
+			task.AppManifest = new TaskItem (mainPath);
+			task.PartialAppManifests = [new TaskItem (partialPath)];
+			task.AppManifestEntries = [
+				new TaskItem ("StringValue", new Dictionary<string, string> { { "Type", "String" }, { "Value", "entry" } }),
+				new TaskItem ("BooleanValue", new Dictionary<string, string> { { "Type", "Boolean" }, { "Value", "TrUe" } }),
+				new TaskItem ("StringArrayValue", new Dictionary<string, string> { { "Type", "StringArray" }, { "Value", "a;b" } }),
+				new TaskItem ("CustomStringArrayValue", new Dictionary<string, string> { { "Type", "StringArray" }, { "Value", "c|d" }, { "ArraySeparator", "|" } }),
+				new TaskItem ("RemoveValue", new Dictionary<string, string> { { "Type", "Remove" } }),
+			];
+
+			ExecuteTask (task);
+
+			var plist = PDictionary.OpenFile (task.CompiledAppManifest!.ItemSpec);
+			Assert.That (plist.GetString ("StringValue").Value, Is.EqualTo ("entry"), "StringValue");
+			Assert.That (plist.Get<PBoolean> ("BooleanValue")?.Value, Is.True, "BooleanValue");
+			Assert.That (plist.GetArray ("StringArrayValue").OfType<PString> ().Select (v => v.Value), Is.EqualTo (new [] { "a", "b" }), "StringArrayValue");
+			Assert.That (plist.GetArray ("CustomStringArrayValue").OfType<PString> ().Select (v => v.Value), Is.EqualTo (new [] { "c", "d" }), "CustomStringArrayValue");
+			Assert.That (plist.ContainsKey ("RemoveValue"), Is.False, "RemoveValue");
+		}
+
+		[Test]
+		[TestCase ("Remove", "unexpected", "Invalid value 'unexpected' for the app manifest entry 'TestEntry' of type 'Remove' specified in the AppManifestEntry item group. Expected no value at all.")]
+		[TestCase ("Boolean", "not-a-boolean", "Invalid value 'not-a-boolean' for the app manifest entry 'TestEntry' of type 'Boolean' specified in the AppManifestEntry item group. Expected 'true' or 'false'.")]
+		[TestCase ("Boolean", " true ", "Invalid value ' true ' for the app manifest entry 'TestEntry' of type 'Boolean' specified in the AppManifestEntry item group. Expected 'true' or 'false'.")]
+		[TestCase ("Unknown", "value", "Unknown type 'Unknown' for the app manifest entry 'TestEntry' specified in the AppManifestEntry item group. Expected 'Remove', 'Boolean', 'String', or 'StringArray'.")]
+		public void InvalidAppManifestEntry (string type, string value, string expectedError)
+		{
+			var task = CreateTask ();
+			task.AppManifestEntries = [
+				new TaskItem ("TestEntry", new Dictionary<string, string> { { "Type", type }, { "Value", value } }),
+			];
+
+			ExecuteTask (task, expectedErrorCount: 1);
+
+			Assert.That (Engine.Logger.ErrorEvents [0].Message, Is.EqualTo (expectedError));
 		}
 
 		[Test]
@@ -138,6 +195,15 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		[Test]
+		public void SupportedOSPlatformVersionWithWhitespace ()
+		{
+			var task = CreateTask ();
+			task.SupportedOSPlatformVersion = "\n13.0";
+			ExecuteTask (task, expectedErrorCount: 1);
+			Assert.That (Engine.Logger.ErrorEvents [0].Message, Is.EqualTo ("The value '\\n13.0' for the property 'SupportedOSPlatformVersion' is not a valid version number, because it contains whitespace."));
+		}
+
+		[Test]
 		public void MacCatalystVersionCheck ()
 		{
 			var task = CreateTask (platform: ApplePlatform.MacCatalyst);
@@ -173,20 +239,66 @@ namespace Xamarin.MacDev.Tasks {
 
 			var plist = PDictionary.OpenFile (task.CompiledAppManifest!.ItemSpec);
 			var variables = new string [] {
-				"DTCompiler",
-				"DTPlatformBuild",
-				"DTPlatformName",
-				"DTPlatformVersion",
-				"DTSDKBuild",
-				"DTSDKName",
-				"DTXcode",
-				"DTXcodeBuild",
-			};
+			"DTCompiler",
+			"DTPlatformBuild",
+			"DTPlatformName",
+			"DTPlatformVersion",
+			"DTSDKBuild",
+			"DTSDKName",
+			"DTXcode",
+			"DTXcodeBuild",
+		};
 			foreach (var variable in variables) {
 				var value = plist.GetString (variable)?.Value;
 				Assert.That (value, Is.Not.Null.And.Not.Empty, variable);
 			}
 			Assert.That (plist.GetString ("DTPlatformName")?.Value, Is.EqualTo (expectedDTPlatformName), "Expected DTPlatformName");
+		}
+
+		[Test]
+		[TestCase ("ARM64")]
+		[TestCase ("x86_64")]
+		[TestCase ("x86_64, ARM64")]
+		public void MacCatalystDoesNotInjectRequiredDeviceCapabilities (string targetArchitectures)
+		{
+			// UIRequiredDeviceCapabilities is neither required nor evaluated for Mac Catalyst (the
+			// macOS App Store ignores hardware capability values such as 'arm64'). Injecting an
+			// architecture-specific value would also make the Info.plist differ between the x64 and
+			// arm64 slices of a universal build, which breaks merging the per-RID app bundles. Verify
+			// we never inject it for Mac Catalyst.
+			var task = CreateTask (platform: ApplePlatform.MacCatalyst);
+			task.TargetArchitectures = targetArchitectures;
+			ExecuteTask (task);
+
+			var plist = PDictionary.OpenFile (task.CompiledAppManifest!.ItemSpec);
+			Assert.That (plist.ContainsKey (ManifestKeys.UIRequiredDeviceCapabilities), Is.False, "UIRequiredDeviceCapabilities");
+		}
+
+		[Test]
+		[TestCase ("metal")]
+		[TestCase ("arm64")]
+		public void MacCatalystPreservesUserRequiredDeviceCapabilities (string capability)
+		{
+			// A shared iOS/iPad/Mac Catalyst Info.plist may legitimately declare
+			// UIRequiredDeviceCapabilities. It's ignored on Mac Catalyst, but we must preserve it
+			// as-authored (and identically between the architecture slices of a universal build, so
+			// the app bundles can be merged).
+			var dir = Cache.CreateTemporaryDirectory ();
+			var task = CreateTask (dir, ApplePlatform.MacCatalyst);
+			task.TargetArchitectures = "ARM64";
+
+			var manifest = new PDictionary ();
+			manifest [ManifestKeys.UIRequiredDeviceCapabilities] = new PArray { new PString (capability) };
+			var manifestPath = Path.Combine (dir, "Info.plist");
+			manifest.Save (manifestPath);
+			task.AppManifest = new TaskItem (manifestPath);
+
+			ExecuteTask (task);
+
+			var plist = PDictionary.OpenFile (task.CompiledAppManifest!.ItemSpec);
+			var array = plist.Get<PArray> (ManifestKeys.UIRequiredDeviceCapabilities);
+			Assert.That (array, Is.Not.Null, "present");
+			Assert.That (array!.OfType<PString> ().Select (x => x.Value).ToArray (), Is.EqualTo (new [] { capability }), "preserved");
 		}
 	}
 }

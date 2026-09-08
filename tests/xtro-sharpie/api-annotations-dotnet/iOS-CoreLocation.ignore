@@ -1,0 +1,2 @@
+!missing-null-allowed! 'System.Void CoreLocation.CLLocationManager::StartMonitoringLocationPushes(System.Action`2<Foundation.NSData,Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void CoreLocation.CLLocationManager::StartMonitoringLocationPushes(System.Action`2<Foundation.NSData,Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #1

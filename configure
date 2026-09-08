@@ -29,6 +29,11 @@ Usage: configure [options]
 
     --custom-dotnet=[dotnet/runtime] Use a locally built version of dotnet/runtime. Pass the path to an already build checkout of dotnet/runtime. See docs/CORECLR.md for detailed instructions about how to build dotnet/runtime from source.
 
+    --xcode=[path]          Select the Xcode app or developer root to use for the build.
+    --xcode-root=[path]     Select the Xcode app to use for the build.
+    --xcode-developer-root=[path]
+                            Select the Xcode developer root to use for the build.
+
     --ignore-unknown-params  alters the default behavior to not return an non-zero exit code when an unknown parameter is provided.
 
     --no-xcode               Only do things that don't require Xcode. This won't produce anything useful, but might come in handy once in a blue moon when testing something that doesn't require Xcode somewhere Xcode can't be installed (Linux, older macOS devices, etc.)
@@ -39,6 +44,39 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 CONFIGURED_FILE=configure.inc
 IGNORE_UNKNOWN_PARAMS=false
 UNKNOWN_PARAMETERS=
+NO_XCODE_FLAG=
+XCODE_ARG=
+
+function fail_configure () {
+    echo "configure: $1" >&2
+    rm -f "$CONFIGURED_FILE"
+    exit 1
+}
+
+function set_xcode_arg () {
+    local value="$1"
+    local option="$2"
+
+    while [[ "$value" == */ ]]; do
+        value="${value%/}"
+    done
+
+    if [[ -z "$value" ]]; then
+        fail_configure "$option requires a non-empty path"
+    fi
+
+    if [[ ! "$value" =~ ^/[A-Za-z0-9._+/-]+$ ]]; then
+        fail_configure "$option path contains unsupported characters: '$value'"
+    fi
+
+    if [[ "$value" == *.app ]]; then
+        value="$value/Contents/Developer"
+    elif [[ "$value" != */Contents/Developer ]]; then
+        fail_configure "$option must point to an Xcode .app bundle or Contents/Developer directory"
+    fi
+
+    XCODE_ARG="$value"
+}
 
 rm -f $CONFIGURED_FILE
 
@@ -130,6 +168,17 @@ while test "x$1" != x; do
         echo "DOTNET_RUNTIME_PATH=$2" >> "$CONFIGURED_FILE"
         shift 2
         ;;
+    --xcode=*|--xcode-root=*|--xcode-developer-root=*)
+        set_xcode_arg "${1#*=}" "${1%%=*}"
+        shift
+        ;;
+    --xcode|--xcode-root|--xcode-developer-root)
+        if [[ $# -lt 2 ]] || [[ "$2" == --* ]]; then
+            fail_configure "$1 requires a value"
+        fi
+        set_xcode_arg "$2" "$1"
+        shift 2
+        ;;
     --disable-device)
         echo "INCLUDE_DEVICE=" >> "$CONFIGURED_FILE"
         shift
@@ -153,6 +202,7 @@ while test "x$1" != x; do
         ;;
     --no-xcode)
         echo "Ignoring Xcode requirement"
+        NO_XCODE_FLAG=1
         echo "NO_XCODE=1" >> "$CONFIGURED_FILE"
         shift
         ;;
@@ -168,12 +218,21 @@ while test "x$1" != x; do
     esac
 done
 
+if [[ -n "$NO_XCODE_FLAG" && -n "$XCODE_ARG" ]]; then
+    fail_configure "--no-xcode cannot be combined with --xcode, --xcode-root, or --xcode-developer-root"
+fi
+
 if [[ "$IGNORE_UNKNOWN_PARAMS" = false ]] && [[ -n "$UNKNOWN_PARAMETERS" ]]; then
     exit 1
 fi
 
 if [[ "$IGNORE_UNKNOWN_PARAMS" = true ]] && [[ -n "$UNKNOWN_PARAMETERS" ]]; then
     echo "The following parameters were ignored: $UNKNOWN_PARAMETERS"
+fi
+
+if [[ -n "$XCODE_ARG" ]]; then
+    echo "XCODE_DEVELOPER_ROOT=$XCODE_ARG" >> "$CONFIGURED_FILE"
+    echo "Xcode developer root set to $XCODE_ARG"
 fi
 
 exit 0

@@ -17,3 +17,4 @@ extends:
   template: templates/pipelines/run-tests-pipeline.yml
   parameters:
     isPR: false
+    useACES: true  # see templates/variables/common.yml

@@ -10,13 +10,11 @@
 #nullable enable
 
 namespace MediaPlayer {
-	/// <summary>Additional information for the skip interval command properties defined in <see cref="MediaPlayer.MPRemoteCommandCenter" />.</summary>
-	///     <remarks>To be added.</remarks>
-	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPSkipIntervalCommand_Ref/index.html">Apple documentation for <c>MPSkipIntervalCommand</c></related>
+	/// <summary>Additional information for the skip interval command properties defined in <see cref="MPRemoteCommandCenter" />.</summary>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MediaPlayer/Reference/MPSkipIntervalCommand_Ref/index.html">Apple documentation for <c>MPSkipIntervalCommand</c></related>
 	public partial class MPSkipIntervalCommand {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the preferred skip intervals, in seconds.</summary>
+		/// <value>An array of preferred skip intervals in seconds, or <see langword="null" /> if no intervals are set.</value>
 		public double []? PreferredIntervals {
 			get {
 				NSArray a = _PreferredIntervals;

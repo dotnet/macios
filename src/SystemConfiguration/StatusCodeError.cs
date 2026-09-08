@@ -12,8 +12,7 @@
 namespace SystemConfiguration {
 
 	// https://developer.apple.com/library/mac/#documentation/SystemConfiguration/Reference/SystemConfiguration_Utilities/Reference/reference.html
-	/// <summary>Provides access to a text description associated with a <see cref="SystemConfiguration.StatusCode" />.</summary>
-	///     <remarks>To be added.</remarks>
+	/// <summary>Provides access to a text description associated with a <see cref="StatusCode" />.</summary>
 	public static class StatusCodeError {
 		[DllImport (Constants.SystemConfigurationLibrary)]
 		extern internal static StatusCode /* int */ SCError ();
@@ -21,10 +20,9 @@ namespace SystemConfiguration {
 		[DllImport (Constants.SystemConfigurationLibrary)]
 		extern static IntPtr /* const char* */ SCErrorString (int code);
 
-		/// <param name="statusCode">To be added.</param>
-		///         <summary>Description for the status code.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Returns the human-readable description for the specified status code.</summary>
+		/// <param name="statusCode">The <see cref="StatusCode" /> to describe.</param>
+		/// <returns>A string containing the description of the status code, or <see langword="null" /> if no description is available.</returns>
 		public static string? GetErrorDescription (StatusCode statusCode)
 		{
 			var ptr = SCErrorString ((int) statusCode);

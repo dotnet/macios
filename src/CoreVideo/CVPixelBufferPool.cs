@@ -49,10 +49,6 @@ namespace CoreVideo {
 		[DllImport (Constants.CoreVideoLibrary)]
 		extern static nint CVPixelBufferPoolGetTypeID ();
 		/// <summary>CoreFoundation TypeID for the CVPixelBufferPool.</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>
-		///         </remarks>
 		public nint TypeID {
 			get {
 				return CVPixelBufferPoolGetTypeID ();
@@ -65,9 +61,7 @@ namespace CoreVideo {
 
 		// TODO: Return type is CVPixelBufferAttributes but need different name when this one is not WeakXXXX
 		/// <summary>Loosely typed NSDictionary containing all of the PixelBuffer attributes in the pool, it is easier to use the strogly typed Settings property.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>
-		///         </remarks>
+		/// <value>The pixel buffer attributes dictionary.</value>
 		public NSDictionary? PixelBufferAttributes {
 			get {
 				return Runtime.GetNSObject<NSDictionary> (CVPixelBufferPoolGetPixelBufferAttributes (Handle));
@@ -144,6 +138,7 @@ namespace CoreVideo {
 			unsafe {
 				error = CVPixelBufferPoolCreatePixelBufferWithAuxAttributes (IntPtr.Zero, Handle, allocationSettings.GetHandle (), &pb);
 			}
+			GC.KeepAlive (allocationSettings);
 			if (error != CVReturn.Success)
 				return null;
 
@@ -200,9 +195,8 @@ namespace CoreVideo {
 		static extern void CVPixelBufferPoolFlush (/* CVPixelBufferPoolRef __nonnull */ IntPtr pool,
 			CVPixelBufferPoolFlushFlags options);
 
-		/// <param name="options">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <param name="options">The flush options specifying which buffers to flush.</param>
+		/// <summary>Flushes the pixel buffer pool with the specified options.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]

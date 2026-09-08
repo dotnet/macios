@@ -131,9 +131,11 @@ namespace MonoTouchFixtures.CoreAnimation {
 				} catch (Exception e) {
 					ex = e;
 				}
-			});
+			}) {
+				IsBackground = true,
+			};
 			thread.Start ();
-			thread.Join ();
+			Assert.That (thread.Join (TimeSpan.FromSeconds (10)), Is.True, "Thread.Join timed out");
 
 			var watch = new Stopwatch ();
 			watch.Start ();
@@ -181,7 +183,7 @@ namespace MonoTouchFixtures.CoreAnimation {
 				IsBackground = true,
 			};
 			t.Start ();
-			t.Join ();
+			Assert.That (t.Join (TimeSpan.FromSeconds (5)), Is.True, "Thread.Join timed out");
 			GC.Collect ();
 
 			NSRunLoop.Main.RunUntil (NSDate.Now.AddSeconds (0.1));

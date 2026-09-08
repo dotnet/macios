@@ -15,7 +15,7 @@ namespace Xamarin.MacDev.Tasks {
 			Configuration.IgnoreIfIgnoredPlatform (ApplePlatform.iOS);
 
 			base.ConfigureTask ();
-			Task.DefaultSdkVersion = Sdks.IOS.GetClosestInstalledSdk (AppleSdkVersion.V6_1, true).ToString ();
+			Task.DefaultSdkVersion = Task.CurrentSdk.GetClosestInstalledSdk (AppleSdkVersion.V6_1, true).ToString () ?? "";
 			Task.TargetFrameworkMoniker = TargetFramework.DotNet_iOS_String;
 			Task.TargetArchitectures = "ARM64";
 		}

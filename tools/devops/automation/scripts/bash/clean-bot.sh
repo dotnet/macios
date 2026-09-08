@@ -6,6 +6,11 @@ if [[ "$BUILD_REVISION" == "" ]] ; then
 	exit 1
 fi
 
+if [[ "$ACES" != "" ]]; then
+	echo "Assuming ACES bots are already clean, so not cleaning anything."
+	exit 0
+fi
+
 # Print disk status before cleaning
 df -h
 

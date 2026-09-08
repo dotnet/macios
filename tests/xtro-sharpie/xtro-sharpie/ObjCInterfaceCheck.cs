@@ -142,6 +142,8 @@ namespace Extrospection {
 				// internal inner classes are not mapped to native ones
 				if (type.IsNestedAssembly)
 					continue;
+				if (AttributeHelpers.HasUnsupportedOSPlatform (type))
+					continue;
 				var framework = Helpers.MapFramework (type.Namespace);
 				Log.On (framework).Add ($"!unknown-type! {extra} bound");
 			}

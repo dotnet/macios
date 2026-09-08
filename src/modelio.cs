@@ -4871,7 +4871,6 @@ namespace ModelIO {
 		MDLAnimatedMatrix4x4 AnimatedValue { get; }
 	}
 
-	[iOS (13, 0), TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLTransformOrientOp : MDLTransformOp {
@@ -4945,7 +4944,6 @@ namespace ModelIO {
 		[Export ("addMatrixOp:inverse:")]
 		MDLTransformMatrixOp AddMatrixOp (string animatedValueName, bool inverse);
 
-		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("addOrientOp:inverse:")]
 		MDLTransformOrientOp AddOrientOp (string animatedValueName, bool inverse);
@@ -5032,7 +5030,6 @@ namespace ModelIO {
 		nuint _GetDouble4x4Array (IntPtr valuesArray, nuint maxCount);
 	}
 
-	[iOS (13, 0), TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MDLAnimatedValue))]
 	interface MDLAnimatedQuaternion {

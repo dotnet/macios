@@ -7,7 +7,20 @@ namespace Xamarin.Tests {
 		[Test]
 		// this test is fairly slow, so execute on one arch only
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
-		public void Link (ApplePlatform platform, string runtimeIdentifiers)
+		public void Link_Mono (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			LinkImpl (platform, runtimeIdentifiers, useMonoRuntime: true);
+		}
+
+		[Test]
+		// this test is fairly slow, so execute on one arch only
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
+		public void Link_CoreCLR (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			LinkImpl (platform, runtimeIdentifiers, useMonoRuntime: false);
+		}
+
+		void LinkImpl (ApplePlatform platform, string runtimeIdentifiers, bool useMonoRuntime)
 		{
 			var project = "IncrementalTestApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -17,10 +30,13 @@ namespace Xamarin.Tests {
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 
-			properties ["UseInterpreter"] = "true"; // this makes the test faster
+			properties ["UseMonoRuntime"] = useMonoRuntime ? "true" : "false";
+			properties ["UseInterpreter"] = "true"; // this makes the test faster on MonoVM and is ignored by CoreCLR
 
 			// Build the first time
-			DotNet.AssertBuild (project_path, properties);
+			var rv = DotNet.AssertBuild (project_path, properties);
+			var allTargets = BinLog.GetAllTargets (rv.BinLogPath);
+			AssertTargetExecuted (allTargets, "_LinkNativeExecutable", "A");
 
 			// Make sure it runs successfully (if on desktop)
 			var appExecutable = GetNativeExecutable (platform, appPath);
@@ -36,7 +52,9 @@ namespace Xamarin.Tests {
 
 			// Build again, adding a package with frameworks
 			properties ["IncludeFwInRuntimesNativeDirectory"] = "true";
-			DotNet.AssertBuild (project_path, properties);
+			rv = DotNet.AssertBuild (project_path, properties);
+			allTargets = BinLog.GetAllTargets (rv.BinLogPath);
+			AssertTargetExecuted (allTargets, "_LinkNativeExecutable", "B");
 
 			// Executing should work just fine
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
@@ -53,7 +71,15 @@ namespace Xamarin.Tests {
 			appExecutableTimestamp = File.GetLastWriteTimeUtc (appExecutable);
 
 			// Build again, not doing anything
-			DotNet.AssertBuild (project_path, properties);
+			rv = DotNet.AssertBuild (project_path, properties);
+			allTargets = BinLog.GetAllTargets (rv.BinLogPath);
+			if (useMonoRuntime) {
+				AssertTargetNotExecuted (allTargets, "_LinkNativeExecutable", "C");
+			} else {
+				// With CoreCLR, the app executable is re-linked because the generated R2R
+				// framework participates in the native link inputs and is refreshed each build.
+				AssertTargetExecuted (allTargets, "_LinkNativeExecutable", "C");
+			}
 
 			// Executing should work just fine
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
@@ -63,12 +89,18 @@ namespace Xamarin.Tests {
 			Assert.That (lc_load_dylib, Does.Contain ("@rpath/FrameworksInRuntimesNativeDirectory1.framework/FrameworksInRuntimesNativeDirectory1"), "C: Should link with @rpath/FrameworksInRuntimesNativeDirectory1.framework/FrameworksInRuntimesNativeDirectory1");
 			Assert.That (lc_load_dylib, Does.Contain ("@rpath/FrameworksInRuntimesNativeDirectory2.framework/FrameworksInRuntimesNativeDirectory2"), "C: Should link with @rpath/FrameworksInRuntimesNativeDirectory2.framework/FrameworksInRuntimesNativeDirectory2");
 
-			// The main executable must not be modified
-			Assert.That (File.GetLastWriteTimeUtc (appExecutable), Is.EqualTo (appExecutableTimestamp), "Modified C");
+			if (useMonoRuntime) {
+				Assert.That (File.GetLastWriteTimeUtc (appExecutable), Is.EqualTo (appExecutableTimestamp), "Modified C");
+			} else {
+				Assert.That (File.GetLastWriteTimeUtc (appExecutable), Is.GreaterThan (appExecutableTimestamp), "Modified C");
+				appExecutableTimestamp = File.GetLastWriteTimeUtc (appExecutable);
+			}
 
 			// Build yet again, now removing the package
 			properties.Remove ("IncludeFwInRuntimesNativeDirectory");
-			DotNet.AssertBuild (project_path, properties);
+			rv = DotNet.AssertBuild (project_path, properties);
+			allTargets = BinLog.GetAllTargets (rv.BinLogPath);
+			AssertTargetExecuted (allTargets, "_LinkNativeExecutable", "D");
 
 			// Executing should work just fine
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
@@ -100,6 +132,7 @@ namespace Xamarin.Tests {
 
 			var project_path = GenerateProject (platform, name: nameof (NativeLink), runtimeIdentifiers: runtimeIdentifiers, out var appPath);
 			var properties = new Dictionary<string, string> (verbosity);
+			properties ["UseMonoRuntime"] = "true"; // this test is only applicable to Mono.
 			SetRuntimeIdentifiers (properties, runtimeIdentifiers);
 
 			var mainContents = @"
@@ -152,6 +185,8 @@ class MainClass {
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 
+			properties ["UseMonoRuntime"] = "true"; // only applicable when using MonoVM.
+
 			// Build with the interpreter disabled
 			properties ["UseInterpreter"] = "false";
 			DotNet.AssertBuild (project_path, properties);
@@ -190,19 +225,35 @@ class MainClass {
 		[Test]
 		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", true)]
 		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", false)]
-		public void CodeChangeSkipsTargets (ApplePlatform platform, string runtimeIdentifiers, bool interpreterEnabled)
+		public void CodeChangeSkipsTargets_Mono (ApplePlatform platform, string runtimeIdentifiers, bool interpreterEnabled)
 		{
-			CodeChangeSkipsTargetsImpl (platform, runtimeIdentifiers, interpreterEnabled);
+			CodeChangeSkipsTargetsImpl (platform, runtimeIdentifiers, useMonoRuntime: true, interpreterEnabled: interpreterEnabled);
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64")]
+		public void CodeChangeSkipsTargets_CoreCLR (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			CodeChangeSkipsTargetsImpl (platform, runtimeIdentifiers, useMonoRuntime: false, interpreterEnabled: false);
 		}
 
 		[Test]
 		[Category ("RemoteWindows")]
 		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", true)]
 		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", false)]
-		public void CodeChangeSkipsTargetsOnRemoteWindows (ApplePlatform platform, string runtimeIdentifiers, bool interpreterEnabled)
+		public void CodeChangeSkipsTargetsOnRemoteWindows_Mono (ApplePlatform platform, string runtimeIdentifiers, bool interpreterEnabled)
 		{
 			Configuration.IgnoreIfNotOnWindows ();
-			CodeChangeSkipsTargetsImpl (platform, runtimeIdentifiers, interpreterEnabled);
+			CodeChangeSkipsTargetsImpl (platform, runtimeIdentifiers, useMonoRuntime: true, interpreterEnabled: interpreterEnabled);
+		}
+
+		[Test]
+		[Category ("RemoteWindows")]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64")]
+		public void CodeChangeSkipsTargetsOnRemoteWindows_CoreCLR (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			Configuration.IgnoreIfNotOnWindows ();
+			CodeChangeSkipsTargetsImpl (platform, runtimeIdentifiers, useMonoRuntime: false, interpreterEnabled: false);
 		}
 
 		[Test]
@@ -256,7 +307,10 @@ kernel void myKernel (texture2d<half, access::read> inTexture [[texture(0)]],
 			AssertTargetNotExecuted (allTargets, "_TemperMetal", "Second build");
 		}
 
-		void CodeChangeSkipsTargetsImpl (ApplePlatform platform, string runtimeIdentifiers, bool interpreterEnabled)
+		[Test]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
+		public void UserCodeChangeSkipsR2RCompilation_CoreCLR (ApplePlatform platform, string runtimeIdentifiers)
 		{
 			var project = "IncrementalTestApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -266,6 +320,30 @@ kernel void myKernel (texture2d<half, access::read> inTexture [[texture(0)]],
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 
+			var rv = DotNet.AssertBuild (project_path, properties);
+			var allTargets = BinLog.GetAllTargets (rv.BinLogPath);
+			AssertTargetExecuted (allTargets, "_SelectR2RAssemblies", "First build");
+			AssertTargetExecuted (allTargets, "_CreateR2RImages", "First build");
+
+			properties ["AdditionalDefineConstants"] = "INCLUDED_ADDITIONAL_CODE";
+
+			rv = DotNet.AssertBuild (project_path, properties);
+			allTargets = BinLog.GetAllTargets (rv.BinLogPath);
+			AssertTargetExecuted (allTargets, "_TouchR2ROutputs", "Second build");
+			AssertTargetNotExecuted (allTargets, "_CreateR2RImages", "Second build");
+		}
+
+		void CodeChangeSkipsTargetsImpl (ApplePlatform platform, string runtimeIdentifiers, bool useMonoRuntime, bool interpreterEnabled)
+		{
+			var project = "IncrementalTestApp";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+
+			properties ["UseMonoRuntime"] = useMonoRuntime ? "true" : "false";
 			properties ["UseInterpreter"] = interpreterEnabled.ToString ();
 			properties ["MtouchLink"] = "None";
 
@@ -287,10 +365,20 @@ kernel void myKernel (texture2d<half, access::read> inTexture [[texture(0)]],
 
 			// Verify these targets did NOT execute on incremental build after C# change
 			AssertTargetNotExecuted (allTargets, "_CreatePkgInfo", "B");
-			AssertTargetNotExecuted (allTargets, "_CompileNativeExecutable", "B");
+			if (useMonoRuntime) {
+				AssertTargetNotExecuted (allTargets, "_CompileNativeExecutable", "B");
+			} else {
+				// With CoreCLR we use the trimmable static registrar, and the generated native registrar
+				// code contains the MVID of every assembly in the app. The MVID of the app's own assembly
+				// changes every time it's recompiled, so the native registrar code has to be recompiled too.
+				AssertTargetExecuted (allTargets, "_CompileNativeExecutable", "B");
+			}
 			if (interpreterEnabled) {
+				// With interpreter enabled, _LinkNativeExecutable should be skipped.
 				AssertTargetNotExecuted (allTargets, "_LinkNativeExecutable", "B");
 			} else {
+				// Without interpreter on MonoVM: AOT output changes, forcing a native re-link.
+				// With CoreCLR: the recompiled native registrar code forces a native re-link.
 				AssertTargetExecuted (allTargets, "_LinkNativeExecutable", "B");
 			}
 		}

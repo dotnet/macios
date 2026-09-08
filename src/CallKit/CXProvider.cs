@@ -18,7 +18,6 @@ namespace CallKit {
 		///         <param name="callUuid">The identifier of the call for which to return pending call actions.</param>
 		///         <summary>Returns a list of the actions of class <typeparamref name="T" /> that have yet to be completed on the call that is identified by <paramref name="callUuid" />.</summary>
 		///         <returns>A list of the actions of type <typeparamref name="T" /> that have yet to be completed on the call that is identified by <paramref name="callUuid" />.</returns>
-		///         <remarks>To be added.</remarks>
 		public CXCallAction [] GetPendingCallActions<T> (NSUuid callUuid)
 		{
 			return GetPendingCallActions (new Class (typeof (T)), callUuid);

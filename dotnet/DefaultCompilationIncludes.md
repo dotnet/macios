@@ -33,6 +33,13 @@ All \*.pdf, \*.jpg, \*.png and \*.json files inside asset catalogs
 (\*.xcassets) in the project directory or any subdirectory are included by
 default (as `ImageAsset` items).
 
+## Icon Composer files
+
+All files inside Icon Composer directories (\*.icon) in the project directory
+or any subdirectory are included by default (as `ImageAsset` items). Icon
+Composer files are created by Xcode's Icon Composer tool (Xcode 26+) and
+contain layered app icons with `icon.json` metadata.
+
 ## Atlas Textures
 
 All \*.png files inside \*.atlas directories in the project directory or any
@@ -52,7 +59,7 @@ included by default (as `Metal` items).
 
 All files in the Resources/ subdirectory, except any items in the `Compile` or
 `EmbeddedResource` item groups, and except the ones mentioned above
-(\*.scnassets, \*.storyboard, \*.xib, \*.xcassets, \*.atlas, \*.mlmodel,
+(\*.scnassets, \*.storyboard, \*.xib, \*.xcassets, \*.icon, \*.atlas, \*.mlmodel,
 \*.metal) are included by default (as `BundleResource` items).
 
 [1]: https://docs.microsoft.com/en-us/dotnet/core/tools/csproj#default-compilation-includes-in-net-core-projects

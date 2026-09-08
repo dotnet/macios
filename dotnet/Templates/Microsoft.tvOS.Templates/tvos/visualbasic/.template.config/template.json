@@ -1,7 +1,10 @@
 ﻿{
   "$schema": "http://json.schemastore.org/template",
   "author": "Microsoft",
-  "classifications": [ "tvOS", "Mobile" ],
+  "classifications": [
+    "tvOS",
+    "Mobile"
+  ],
   "groupIdentity": "Microsoft.tvOS.tvOSApp",
   "identity": "Microsoft.tvOS.tvOSApp.VisualBasic",
   "name": "tvOS Application",
@@ -21,21 +24,42 @@
   ],
   "preferNameDirectory": true,
   "primaryOutputs": [
-    { "path": "tvOSApp1.vbproj" }
+    {
+      "path": "tvOSApp1.vbproj"
+    }
   ],
   "symbols": {
     "bundleId": {
       "type": "parameter",
+      "displayName": "Bundle ID",
       "description": "Overrides CFBundleIdentifier in the Info.plist",
       "datatype": "string",
       "replaces": "com.companyname.tvOSApp1"
     },
     "minOSVersion": {
       "type": "parameter",
+      "displayName": "Minimum OS version",
       "description": "Overrides SupportedOSPlatformVersion in the project file",
       "replaces": "minOSVersion",
       "datatype": "string",
-      "defaultValue": "12.2"
+      "defaultValue": "13.0"
+    },
+    "Framework": {
+      "type": "parameter",
+      "description": "The target framework for the project.",
+      "datatype": "choice",
+      "choices": [
+        {
+          "choice": "net11.0-tvos",
+          "description": "Target net11.0-tvos"
+        },
+        {
+          "choice": "net10.0-tvos",
+          "description": "Target net10.0-tvos"
+        }
+      ],
+      "replaces": "net11.0-tvos",
+      "defaultValue": "net11.0-tvos"
     }
   },
   "defaultName": "tvOSApp1"

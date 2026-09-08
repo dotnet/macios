@@ -14,7 +14,6 @@ if ($Env:SYSTEM_DEFAULTWORKINGDIRECTORY.EndsWith($Env:BUILD_REPOSITORY_TITLE)) {
 # Set a few variables
 $Env:DOTNET = "$Env:BUILD_SOURCESDIRECTORY\$Env:BUILD_REPOSITORY_TITLE\tests\dotnet\Windows\bin\dotnet\dotnet.exe"
 $Env:DOTNET_DIR = "$Env:BUILD_SOURCESDIRECTORY\$Env:BUILD_REPOSITORY_TITLE\tests\dotnet\Windows\bin\dotnet\"
-$Env:TESTS_USE_SYSTEM = "1"
 
 # Set Xcode version info so BGen tests can determine preview API diagnostic suppression
 $Env:XCODE_VERSION = $Env:CONFIGURATION_XCODE_VERSION

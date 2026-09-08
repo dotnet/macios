@@ -55,10 +55,10 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="NUnitLite">
-      <Version>3.12.0</Version>
+      <Version>$(NUnitLitePackageVersion)</Version>
     </PackageReference>
     <PackageReference Include="NUnit.Extension.NUnitV2ResultWriter">
-      <Version>3.6.0</Version>
+      <Version>$(NUnitV2ResultWriterPackageVersion)</Version>
     </PackageReference>
     <PackageReference Include="Mono.Options">
       <Version>6.12.0.148</Version>

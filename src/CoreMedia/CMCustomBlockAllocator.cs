@@ -13,8 +13,7 @@ using CoreFoundation;
 
 namespace CoreMedia {
 
-	/// <summary>To be added.</summary>
-	///     <remarks>To be added.</remarks>
+	/// <summary>Provides custom memory allocation for Core Media block buffers.</summary>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -23,8 +22,7 @@ namespace CoreMedia {
 
 		GCHandle gch;
 
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Initializes a new instance of the <see cref="CMCustomBlockAllocator" /> class.</summary>
 		public CMCustomBlockAllocator ()
 		{
 			gch = GCHandle.Alloc (this);
@@ -84,10 +82,13 @@ namespace CoreMedia {
 		}
 
 		/// <summary>Releases the resources used by the CMCustomBlockAllocator object.</summary>
-		///         <remarks>
-		///           <para>The Dispose method releases the resources used by the CMCustomBlockAllocator class.</para>
-		///           <para>Calling the Dispose method when the application is finished using the CMCustomBlockAllocator ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.  For more information on releasing resources see ``Cleaning up Unmananaged Resources'' at https://msdn.microsoft.com/en-us/library/498928w2.aspx</para>
-		///         </remarks>
+		/// <remarks>
+		///   <para>The Dispose method releases the resources used by the CMCustomBlockAllocator class.</para>
+		///   <para>Calling the Dispose method when the application is finished using the CMCustomBlockAllocator ensures
+		///   that all external resources used by this managed object are released as soon as possible. Once developers
+		///   have invoked the Dispose method, the object is no longer useful and developers should no longer make any
+		///   calls to it.</para>
+		/// </remarks>
 		public void Dispose ()
 		{
 			Dispose (true);

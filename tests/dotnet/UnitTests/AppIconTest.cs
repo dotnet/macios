@@ -672,5 +672,39 @@ namespace Xamarin.Tests {
 				throw;
 			}
 		}
+
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
+		public void ComposerIcon (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			var project = "AppWithComposerIcon";
+			var projectPath = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
+			Clean (projectPath);
+
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			DotNet.Execute ("build", projectPath, properties);
+
+			var resourcesDirectory = GetResourcesDirectory (platform, appPath);
+
+			// Verify that the raw .icon files are not in the app bundle as BundleResources
+			var iconJsonInBundle = Path.Combine (resourcesDirectory, "AppIcon.icon", "icon.json");
+			Assert.That (iconJsonInBundle, Does.Not.Exist, "icon.json should not be in the app bundle as a raw BundleResource");
+
+			var frontPngInBundle = Path.Combine (resourcesDirectory, "AppIcon.icon", "Assets", "front.png");
+			Assert.That (frontPngInBundle, Does.Not.Exist, "front.png should not be in the app bundle as a raw BundleResource");
+
+			var backPngInBundle = Path.Combine (resourcesDirectory, "AppIcon.icon", "Assets", "back.png");
+			Assert.That (backPngInBundle, Does.Not.Exist, "back.png should not be in the app bundle as a raw BundleResource");
+
+			// Verify that the compiled asset catalog exists in the app bundle
+			var assetsCar = Path.Combine (resourcesDirectory, "Assets.car");
+			Assert.That (assetsCar, Does.Exist, "Assets.car");
+		}
 	}
 }
+

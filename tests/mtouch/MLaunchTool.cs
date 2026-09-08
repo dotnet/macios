@@ -97,7 +97,7 @@ namespace Xamarin {
 			}
 
 			if (!string.IsNullOrEmpty (platformName) && !string.IsNullOrEmpty (simType)) {
-				var device = string.Format (":v2:runtime=com.apple.CoreSimulator.SimRuntime.{0}-{1},devicetype=com.apple.CoreSimulator.SimDeviceType.{2}", platformName, Configuration.sdk_version.Replace ('.', '-'), simType);
+				var device = string.Format (":v2:runtime=com.apple.CoreSimulator.SimRuntime.{0}-{1},devicetype=com.apple.CoreSimulator.SimDeviceType.{2}", platformName, Configuration.ios_sdk_version.Replace ('.', '-'), simType);
 				sb.Add ($"--device:{device}");
 			}
 

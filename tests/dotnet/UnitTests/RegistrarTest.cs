@@ -76,6 +76,7 @@ namespace Xamarin.Tests {
 			// enable the linker (so that the main assembly is modified)
 			properties ["LinkMode"] = "full";
 			properties ["MtouchLink"] = "full";
+			properties ["InlineClassGetHandle"] = "disabled";
 			if (rewriteHandles)
 				properties ["MtouchExtraArgs"] = "--optimize=redirect-class-handles";
 

@@ -2677,6 +2677,15 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The registrar cannot use the model class &apos;{0}&apos; as a generic type argument in the generic type &apos;{1}&apos;. Use the protocol interface instead of the model class..
+        /// </summary>
+        public static string MT4192 {
+            get {
+                return ResourceManager.GetString("MT4192", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Missing &apos;{0}&apos; compiler. Please install Xcode &apos;Command-Line Tools&apos; component.
         /// </summary>
         public static string MT5101 {
@@ -3354,6 +3363,15 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot find the product assembly &apos;{0}&apos; in the list of loaded assemblies..
+        /// </summary>
+        public static string MX1504 {
+            get {
+                return ResourceManager.GetString("MX1504", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Not a Mach-O dynamic library (unknown header &apos;0x{0}&apos;): {1}..
         /// </summary>
         public static string MX1600 {
@@ -3593,6 +3611,15 @@ namespace Xamarin.Bundler {
         public static string MX2261 {
             get {
                 return ResourceManager.GetString("MX2261", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The &apos;InlineClassGetHandle&apos; option is set to &apos;Strict&apos;, but we&apos;re using the dynamic registrar. This is not a supported configuration, because &apos;Strict&apos; mode requires exported Objective-C classes to be available at compile time, but the dynamic registrar will create them at runtime. Please either change the &apos;InlineClassGetHandle&apos; option to &apos;Disabled&apos; or &apos;Compat&apos;, or switch to using the static registrar..
+        /// </summary>
+        public static string MX2262 {
+            get {
+                return ResourceManager.GetString("MX2262", resourceCulture);
             }
         }
         

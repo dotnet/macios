@@ -1,0 +1,9 @@
+# results from initial block parameter nullability analysis
+!missing-null-allowed! 'System.Void CallKit.CXCallController::RequestTransaction(CallKit.CXAction,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void CallKit.CXCallController::RequestTransaction(CallKit.CXAction[],System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void CallKit.CXCallController::RequestTransaction(CallKit.CXTransaction,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void CallKit.CXCallDirectoryManager::GetEnabledStatusForExtension(System.String,System.Action`2<CallKit.CXCallDirectoryEnabledStatus,Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #1
+!missing-null-allowed! 'System.Void CallKit.CXCallDirectoryManager::OpenSettings(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void CallKit.CXCallDirectoryManager::ReloadExtension(System.String,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void CallKit.CXProvider::ReportNewIncomingCall(Foundation.NSUuid,CallKit.CXCallUpdate,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void CallKit.CXProvider::ReportNewIncomingVoIPPushPayload(Foundation.NSDictionary,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0

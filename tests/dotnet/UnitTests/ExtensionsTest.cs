@@ -59,7 +59,7 @@ namespace Xamarin.Tests {
 			} else {
 				var rv = DotNet.AssertBuild (project_path, properties);
 				var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath)
-					.Where (v => v?.Message?.Contains ("Supported iPhone orientations have not been set") != true)
+					.FilterWarnings (platform)
 					.ToArray ();
 				var extensionPath = Path.Combine (appPath, GetPlugInsRelativePath (platform), $"{extensionProject}.appex");
 				AssertWarningMessages (warnings, [

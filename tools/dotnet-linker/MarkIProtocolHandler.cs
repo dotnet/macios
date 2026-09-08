@@ -16,7 +16,7 @@ namespace Xamarin.Linker {
 		{
 			base.Initialize (context);
 
-			if (LinkContext.App.Registrar == Bundler.RegistrarMode.Dynamic) {
+			if (LinkContext.Registrar == Bundler.RegistrarMode.Dynamic) {
 				markContext.RegisterMarkTypeAction (ProcessType);
 			}
 		}
@@ -26,19 +26,27 @@ namespace Xamarin.Linker {
 			if (!type.HasInterfaces)
 				return;
 
+			var anyAdded = false;
 			foreach (var iface in type.Interfaces) {
 				var resolvedInterfaceType = iface.InterfaceType.Resolve ();
 				// If we're using the dynamic registrar, we need to mark interfaces that represent protocols
 				// even if it doesn't look like the interfaces are used, since we need them at runtime.
 				var isProtocol = type.IsNSObject (LinkContext) && resolvedInterfaceType.HasCustomAttribute (LinkContext, Namespaces.Foundation, "ProtocolAttribute");
 				if (isProtocol) {
-					// Mark only if not already marked.
-					// otherwise we might enqueue something everytime and never get an empty queue
-					if (!LinkContext.Annotations.IsMarked (resolvedInterfaceType)) {
-						LinkContext.Annotations.Mark (resolvedInterfaceType);
-					}
+					// Preserve the method and field on the static constructor of the type.
+					abr.AddDynamicDependencyAttributeToStaticConstructor (type, resolvedInterfaceType);
+					anyAdded = true;
 				}
 			}
+
+#if ASSEMBLY_PREPARER
+			if (anyAdded) {
+				abr.SetCurrentAssembly (type.Module.Assembly);
+				abr.SaveCurrentAssembly ();
+			}
+#else
+			_ = anyAdded;
+#endif
 		}
 	}
 }

@@ -24,6 +24,9 @@ public class VTMotionEstimationSessionTest {
 	public void CreateTest ()
 	{
 		TestRuntime.AssertXcodeVersion (26, 0);
+#if __MACOS__ || __MACCATALYST__
+		TestRuntime.AssertNotVirtualMachine ();
+#endif
 		// VTMotionEstimationSessionCreate just returns in the simulator (a single 'ret' instruction),
 		// which means it returns with status=VTStatus.Ok, but no session actually created. So ignore
 		// this test in the simulator.
@@ -49,6 +52,9 @@ public class VTMotionEstimationSessionTest {
 	public void CreateStronglyTypedTest ()
 	{
 		TestRuntime.AssertXcodeVersion (26, 0);
+#if __MACOS__ || __MACCATALYST__
+		TestRuntime.AssertNotVirtualMachine ();
+#endif
 		// VTMotionEstimationSessionCreate just returns in the simulator (a single 'ret' instruction),
 		// which means it returns with status=VTStatus.Ok, but no session actually created. So ignore
 		// this test in the simulator.

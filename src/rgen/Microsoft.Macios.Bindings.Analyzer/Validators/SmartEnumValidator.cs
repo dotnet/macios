@@ -134,8 +134,7 @@ sealed class SmartEnumValidator : BindingValidator {
 			return false;
 		}
 
-		var appleFrameworks = Frameworks.GetFrameworks (platformName.ToApplePlatform (), false);
-		if (appleFrameworks is null) {
+		if (!Frameworks.TryGetFrameworks (platformName.ToApplePlatform (), out var appleFrameworks)) {
 			// we could not get the frameworks, we have a bug
 			// we could not identify the platform, we have a bug 
 			diagnostics = [Diagnostic.Create (

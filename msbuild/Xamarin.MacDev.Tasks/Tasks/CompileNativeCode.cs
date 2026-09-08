@@ -156,7 +156,20 @@ namespace Xamarin.MacDev.Tasks {
 			return !Log.HasLoggedErrors;
 		}
 
-		public bool ShouldCopyToBuildServer (ITaskItem item) => false;
+		public bool ShouldCopyToBuildServer (ITaskItem item)
+		{
+			// Some files are already on the Mac, and we have a 0-length
+			// output file on Windows. We don't want to copy these files.
+			// However, some files have to be copied, because they don't
+			// already exist on the Mac (if they were created on Windows). So
+			// filter to files with a non-zero length.
+
+			var finfo = new FileInfo (item.ItemSpec);
+			if (!finfo.Exists || finfo.Length == 0)
+				return false;
+
+			return true;
+		}
 
 		public bool ShouldCreateOutputFile (ITaskItem item) => true;
 
@@ -167,6 +180,21 @@ namespace Xamarin.MacDev.Tasks {
 					foreach (var file in Directory.EnumerateFiles (dir.ItemSpec, "*.*", SearchOption.AllDirectories)) {
 						yield return new TaskItem (file);
 					}
+				}
+			}
+
+			// Any files the source files need in order to compile (headers they #include,
+			// for instance) have to be copied to the Mac as well. Use the same filter as for
+			// any other input: if the local file doesn't exist or is empty, then it's the
+			// Mac's version that's the real one, and it must not be overwritten.
+			foreach (var info in CompileInfo) {
+				var dependencies = info.GetMetadata ("AdditionalDependencies");
+				if (string.IsNullOrEmpty (dependencies))
+					continue;
+				foreach (var dependency in dependencies.Split (new char [] { ';' }, StringSplitOptions.RemoveEmptyEntries)) {
+					var item = new TaskItem (dependency);
+					if (ShouldCopyToBuildServer (item))
+						yield return item;
 				}
 			}
 		}

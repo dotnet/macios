@@ -3,6 +3,8 @@
 //
 
 using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Net;
@@ -25,6 +27,9 @@ namespace MonoTests.System.Net.Http {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class MessageHandlerTest {
+		const string AllowSameOriginRedirectCredentialsSwitch = "Foundation.NSUrlSessionHandler.AllowSameOriginRedirectCredentials";
+		const string UseSharedCredentialStorageSwitch = "Foundation.NSUrlSessionHandler.UseSharedCredentialStorage";
+
 		public MessageHandlerTest ()
 		{
 			// Https seems broken on our macOS 10.9 bot, so skip this test.
@@ -48,7 +53,9 @@ namespace MonoTests.System.Net.Http {
 
 		[Test]
 		[TestCase (typeof (HttpClientHandler))]
-		[TestCase (typeof (CFNetworkHandler))]
+		// There are known issues (deadlocks) with CFNetworkHandler: https://github.com/dotnet/macios/issues/25634
+		// CFNetworkHandler is obsolete, so we won't fix any such issues, so to avoid deadlocks, just avoid testing CFNetworkHandler.
+		[TestCase (typeof (CFNetworkHandler), Ignore = "There are known issues (deadlocks) with CFNetworkHandler: https://github.com/dotnet/macios/issues/25634")]
 		[TestCase (typeof (SocketsHttpHandler))]
 		[TestCase (typeof (NSUrlSessionHandler))]
 		public void DnsFailure (Type handlerType)
@@ -110,8 +117,6 @@ namespace MonoTests.System.Net.Http {
 			var managedHasExpectedCookie = managedCookies?.Any (v => v.StartsWith ("cookie=chocolate-chip;", StringComparison.Ordinal)) == true;
 			var nativeHasExpectedCookie = nativeCookies?.Any (v => v.StartsWith ("cookie=chocolate-chip;", StringComparison.Ordinal)) == true;
 
-			if (!completed || !managedCookieResult || !nativeCookieResult || !managedHasExpectedCookie || !nativeHasExpectedCookie)
-				TestRuntime.IgnoreInCI ("Transient network failure - ignore in CI");
 			Assert.That (completed, Is.True, "Network request completed");
 			Assert.That (ex, Is.Null, "Exception");
 			Assert.That (managedCookieResult, Is.True, $"Failed to get managed cookies");
@@ -160,17 +165,6 @@ namespace MonoTests.System.Net.Http {
 				nativeCookieResult = await nativeResponse.Content.ReadAsStringAsync ();
 			}, out var ex);
 
-			if (!completed)
-				TestRuntime.IgnoreInCI ("Transient network failure - ignore in CI");
-			var intermittentFailures = new string [] {
-				"500 Internal Server Error",
-				"502 Bad Gateway",
-				"503 Service Temporarily Unavailable",
-				"504 Gateway Time-out",
-			};
-			if (intermittentFailures.Any (v => managedCookieResult.Contains (v) || nativeCookieResult.Contains (v)))
-				TestRuntime.IgnoreInCI ("Intermittent network failure - ignore in CI");
-
 			Assert.That (completed, Is.True, "Network request completed");
 			Assert.That (ex, Is.Null, "Exception");
 			Assert.That (managedCookieResult, Is.Not.Null, "Managed cookies result");
@@ -198,15 +192,11 @@ namespace MonoTests.System.Net.Http {
 				nativeCookieResult = await nativeResponse.Content.ReadAsStringAsync ();
 			}, out var ex);
 
-			if (!completed)
-				TestRuntime.IgnoreInCI ("Transient network failure - ignore in CI");
 			Assert.That (completed, Is.True, "Network request completed");
 			Assert.That (ex, Is.Null, "Exception");
 			Assert.That (nativeCookieResult, Is.Not.Null, "Native cookies result");
 			var cookiesFromServer = cookieContainer.GetCookies (new Uri (url));
 			var hasExpectedCookie = cookiesFromServer.Cast<Cookie> ().Any (v => v.Name == "cookie" && v.Value == "chocolate-chip");
-			if (!hasExpectedCookie)
-				TestRuntime.IgnoreInCI ("Transient network failure - ignore in CI");
 			Assert.That (hasExpectedCookie, Is.True, "Cookies received from server.");
 		}
 
@@ -235,8 +225,6 @@ namespace MonoTests.System.Net.Http {
 				nativeCookieResult = await nativeResponse.Content.ReadAsStringAsync ();
 			}, out var ex);
 
-			if (!completed)
-				TestRuntime.IgnoreInCI ("Transient network failure - ignore in CI");
 			Assert.That (completed, Is.True, "Network request completed");
 			Assert.That (ex, Is.Null, "Exception");
 			Assert.That (nativeSetCookieResult, Is.Not.Null, "Native set-cookies result");
@@ -270,8 +258,6 @@ namespace MonoTests.System.Net.Http {
 				nativeCookieResult = await nativeResponse.Content.ReadAsStringAsync ();
 			}, out var ex);
 
-			if (!completed)
-				TestRuntime.IgnoreInCI ("Transient network failure - ignore in CI");
 			Assert.That (completed, Is.True, "Network request completed");
 			Assert.That (ex, Is.Null, "Exception");
 			Assert.That (nativeSetCookieResult, Is.Not.Null, "Native set-cookies result");
@@ -434,7 +420,9 @@ namespace MonoTests.System.Net.Http {
 
 		// ensure that if we have a redirect, we do not have the auth headers in the following requests
 		[TestCase (typeof (HttpClientHandler))]
-		[TestCase (typeof (CFNetworkHandler))]
+		// There are known issues (deadlocks) with CFNetworkHandler: https://github.com/dotnet/macios/issues/25634
+		// CFNetworkHandler is obsolete, so we won't fix any such issues, so to avoid deadlocks, just avoid testing CFNetworkHandler.
+		[TestCase (typeof (CFNetworkHandler), Ignore = "There are known issues (deadlocks) with CFNetworkHandler: https://github.com/dotnet/macios/issues/25634")]
 		[TestCase (typeof (NSUrlSessionHandler))]
 		public void RedirectionWithAuthorizationHeaders (Type handlerType)
 		{
@@ -446,25 +434,133 @@ namespace MonoTests.System.Net.Http {
 			bool containsHeaders = false;
 			string json = "";
 
+			using var handler = GetHandler (handlerType);
 			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
-				HttpClient client = new HttpClient (GetHandler (handlerType));
+				using var client = new HttpClient (handler, disposeHandler: false) {
+					Timeout = TimeSpan.FromSeconds (20),
+				};
 				client.BaseAddress = NetworkResources.Httpbin.Uri;
 				var byteArray = new UTF8Encoding ().GetBytes ("username:password");
 				client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue ("Basic", Convert.ToBase64String (byteArray));
-				var result = await client.GetAsync (NetworkResources.Httpbin.GetRedirectUrl (3));
+				using var result = await client.GetAsync (NetworkResources.Httpbin.GetRedirectUrl (3));
 				// get the data returned from httpbin which contains the details of the requested performed.
 				json = await result.Content.ReadAsStringAsync ();
 				containsAuthorizarion = json.Contains ("Authorization");
 				containsHeaders = json.Contains ("headers");  // ensure we do have the headers in the response
 			}, out var ex);
 
-			if (!done) { // timeouts happen in the bots due to dns issues, connection issues etc.. we do not want to fail
-				Assert.Inconclusive ("Request timedout.");
-			} else if (!containsHeaders) {
-				Assert.Inconclusive ("Response from httpbin does not contain headers, therefore we cannot ensure that if the authoriation is present.");
+			Assert.That (done, Is.True, "Request completed");
+			Assert.That (ex, Is.Null, $"Exception {ex} for {json}");
+			Assert.That (containsHeaders, Is.True, "Response does not contain headers");
+			Assert.That (containsAuthorizarion, Is.False, $"Authorization header did reach the final destination. {json}");
+		}
+
+		[TestCase (true, false, HttpStatusCode.Unauthorized, false, TestName = "NSUrlSessionHandlerOriginCredentialCacheNotSentToCrossOriginRedirectTarget")]
+		[TestCase (true, true, HttpStatusCode.OK, true, TestName = "NSUrlSessionHandlerTargetCredentialCacheSentToCrossOriginRedirectTarget")]
+		[TestCase (false, false, HttpStatusCode.Unauthorized, false, TestName = "NSUrlSessionHandlerNetworkCredentialNotSentToCrossOriginRedirectTarget")]
+		public void NSUrlSessionHandlerCredentialsCrossOriginRedirectTarget (bool useCredentialCache, bool cacheRedirectTarget, HttpStatusCode expectedStatusCode, bool expectAuthorizationHeader)
+		{
+			if (!HttpListener.IsSupported) {
+				Assert.Inconclusive ("HttpListener is not supported");
+			}
+
+			using var server = new RedirectBasicAuthServer (crossOrigin: true);
+			using var handler = new NSUrlSessionHandler ();
+			var username = "origin-user";
+			var password = "origin-password";
+
+			if (useCredentialCache) {
+				var cache = new CredentialCache ();
+				var credentialUri = cacheRedirectTarget ? new Uri (server.TargetUri, "protected") : server.OriginUri;
+				cache.Add (credentialUri, "basic", new NetworkCredential (username, password));
+				handler.Credentials = cache;
 			} else {
-				Assert.That (containsAuthorizarion, Is.False, $"Authorization header did reach the final destination. {json}");
-				Assert.That (ex, Is.Null, $"Exception {ex} for {json}");
+				handler.Credentials = new NetworkCredential (username, password);
+			}
+
+			using var client = new HttpClient (handler);
+			using var response = GetResponseWithTimeout (client, new Uri (server.OriginUri, "start"));
+
+			Assert.That (response.StatusCode, Is.EqualTo (expectedStatusCode), "StatusCode");
+			Assert.That (server.TargetRequestCount, Is.GreaterThanOrEqualTo (1), "Target request count");
+			Assert.That (server.TargetAuthorizationHeaders.Length > 0, Is.EqualTo (expectAuthorizationHeader), "Authorization header presence.");
+		}
+
+		[TestCase (false, HttpStatusCode.Unauthorized, TestName = "NSUrlSessionHandlerNetworkCredentialNotSentAfterSameOriginRedirectByDefault")]
+		[TestCase (true, HttpStatusCode.OK, TestName = "NSUrlSessionHandlerNetworkCredentialSentAfterSameOriginRedirectWithAppContextSwitch")]
+		public void NSUrlSessionHandlerNetworkCredentialSameOriginRedirectCredentials (bool allowSameOriginRedirectCredentials, HttpStatusCode expectedStatusCode)
+		{
+			if (!HttpListener.IsSupported) {
+				Assert.Inconclusive ("HttpListener is not supported");
+			}
+
+			AppContext.TryGetSwitch (AllowSameOriginRedirectCredentialsSwitch, out var originalValue);
+			try {
+				AppContext.SetSwitch (AllowSameOriginRedirectCredentialsSwitch, allowSameOriginRedirectCredentials);
+
+				using var server = new RedirectBasicAuthServer (crossOrigin: false);
+				using var handler = new NSUrlSessionHandler {
+					Credentials = new NetworkCredential ("origin-user", "origin-password"),
+				};
+
+				using var client = new HttpClient (handler);
+				using var response = GetResponseWithTimeout (client, new Uri (server.OriginUri, "start"));
+
+				Assert.That (response.StatusCode, Is.EqualTo (expectedStatusCode), "StatusCode");
+				Assert.That (server.TargetRequestCount, Is.GreaterThanOrEqualTo (1), "Target request count");
+				Assert.That (server.TargetAuthorizationHeaders.Length > 0, Is.EqualTo (allowSameOriginRedirectCredentials), "Authorization header presence.");
+			} finally {
+				AppContext.SetSwitch (AllowSameOriginRedirectCredentialsSwitch, originalValue);
+			}
+		}
+
+		[TestCase (false, HttpStatusCode.Unauthorized, false, TestName = "NSUrlSessionHandlerNetworkCredentialNotSentToCrossOriginRedirectWithDefaultCredentialStorage")]
+		[TestCase (true, HttpStatusCode.OK, true, TestName = "NSUrlSessionHandlerNetworkCredentialSentToCrossOriginRedirectWithSharedCredentialStorage")]
+		public void NSUrlSessionHandlerUseSharedCredentialStorage (bool useSharedCredentialStorage, HttpStatusCode expectedStatusCode, bool expectSecondRequestAuthorizationHeader)
+		{
+			if (!HttpListener.IsSupported) {
+				Assert.Inconclusive ("HttpListener is not supported");
+			}
+
+			AppContext.TryGetSwitch (UseSharedCredentialStorageSwitch, out var originalValue);
+			try {
+				AppContext.SetSwitch (UseSharedCredentialStorageSwitch, useSharedCredentialStorage);
+
+				using var server = new RedirectBasicAuthServer (crossOrigin: true);
+
+				// First, prime the shared credential storage by making a successful auth request
+				// using a CredentialCache with the target URI. When shared storage is enabled,
+				// NSUrlSession stores the credential with ForSession persistence in SharedCredentialStorage,
+				// making it available to subsequent handlers targeting the same host:port.
+				var cache = new CredentialCache ();
+				cache.Add (new Uri (server.TargetUri, "protected"), "basic", new NetworkCredential ("origin-user", "origin-password"));
+
+				using (var primingHandler = new NSUrlSessionHandler { Credentials = cache }) {
+					using var primingClient = new HttpClient (primingHandler);
+					using var primingResponse = GetResponseWithTimeout (primingClient, new Uri (server.OriginUri, "start"));
+				}
+
+				// Record how many auth headers the server received from the priming request
+				var authHeadersAfterPriming = server.TargetAuthorizationHeaders.Length;
+
+				// Now make a second request with a NetworkCredential (not CredentialCache) to the same server.
+				// With shared storage enabled, NSUrlSession finds cached credentials in SharedCredentialStorage
+				// and pre-emptively authenticates the redirect target without calling DidReceiveChallenge.
+				// With shared storage disabled (default), no stored credentials exist, and the
+				// DidReceiveChallenge delegate blocks the NetworkCredential after the cross-origin redirect.
+				using var handler = new NSUrlSessionHandler {
+					Credentials = new NetworkCredential ("origin-user", "origin-password"),
+				};
+
+				using var client = new HttpClient (handler);
+				using var response = GetResponseWithTimeout (client, new Uri (server.OriginUri, "start"));
+
+				Assert.That (response.StatusCode, Is.EqualTo (expectedStatusCode), "StatusCode");
+
+				var authHeadersFromSecondRequest = server.TargetAuthorizationHeaders.Length - authHeadersAfterPriming;
+				Assert.That (authHeadersFromSecondRequest > 0, Is.EqualTo (expectSecondRequestAuthorizationHeader), "Authorization header on second request.");
+			} finally {
+				AppContext.SetSwitch (UseSharedCredentialStorageSwitch, originalValue);
 			}
 		}
 
@@ -522,10 +618,9 @@ namespace MonoTests.System.Net.Http {
 			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
 				try {
 					HttpClient client = new HttpClient (handler);
-					client.BaseAddress = NetworkResources.Httpbin.Uri;
 					var byteArray = new UTF8Encoding ().GetBytes ("username:password");
 					client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue ("Basic", Convert.ToBase64String (byteArray));
-					result = await client.GetAsync (NetworkResources.Httpbin.GetRedirectUrl (3));
+					result = await client.GetAsync (NetworkResources.MicrosoftUrl);
 				} finally {
 #pragma warning disable SYSLIB0014 // 'ServicePointManager' is obsolete: 'WebRequest, HttpWebRequest, ServicePoint, and WebClient are obsolete. Use HttpClient instead. Settings on ServicePointManager no longer affect SslStream or HttpClient.' (https://aka.ms/dotnet-warnings/SYSLIB0014)
 					ServicePointManager.ServerCertificateValidationCallback = null;
@@ -574,10 +669,9 @@ namespace MonoTests.System.Net.Http {
 			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
 				try {
 					HttpClient client = new HttpClient (handler);
-					client.BaseAddress = NetworkResources.Httpbin.Uri;
 					var byteArray = new UTF8Encoding ().GetBytes ("username:password");
 					client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue ("Basic", Convert.ToBase64String (byteArray));
-					var result = await client.GetAsync (NetworkResources.Httpbin.GetRedirectUrl (3));
+					var result = await client.GetAsync (NetworkResources.MicrosoftUrl);
 				} finally {
 #pragma warning disable SYSLIB0014 // 'ServicePointManager' is obsolete: 'WebRequest, HttpWebRequest, ServicePoint, and WebClient are obsolete. Use HttpClient instead. Settings on ServicePointManager no longer affect SslStream or HttpClient.' (https://aka.ms/dotnet-warnings/SYSLIB0014)
 					ServicePointManager.ServerCertificateValidationCallback = null;
@@ -722,7 +816,7 @@ namespace MonoTests.System.Net.Http {
 		{
 			NWListener? listener = null;
 			try {
-				listener = CreateNWTlsListener (requireClientCert: false);
+				listener = TlsTestServer.CreateNWTlsListener (requireClientCert: false);
 				var port = listener.Port;
 
 				var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
@@ -745,7 +839,7 @@ namespace MonoTests.System.Net.Http {
 		{
 			NWListener? listener = null;
 			try {
-				listener = CreateNWTlsListener (requireClientCert: true);
+				listener = TlsTestServer.CreateNWTlsListener (requireClientCert: true);
 				var port = listener.Port;
 
 				var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
@@ -773,7 +867,7 @@ namespace MonoTests.System.Net.Http {
 			NWListener? listener = null;
 			try {
 				AppContext.SetSwitch ("Foundation.NSUrlSessionHandler.NoMissingCertificateHandling", true);
-				listener = CreateNWTlsListener (requireClientCert: true);
+				listener = TlsTestServer.CreateNWTlsListener (requireClientCert: true);
 				var port = listener.Port;
 
 				var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
@@ -796,75 +890,186 @@ namespace MonoTests.System.Net.Http {
 			}
 		}
 
-		static NWListener CreateNWTlsListener (bool requireClientCert)
+		static HttpResponseMessage GetResponseWithTimeout (HttpClient client, Uri uri)
 		{
-			var (pfxData, pfxPassword) = CreateSelfSignedServerCertificatePfx ();
-			using var secIdentity = SecIdentity.Import (pfxData, pfxPassword);
-			using var secIdentity2 = new SecIdentity2 (secIdentity);
-			using var readyEvent = new ManualResetEventSlim (false);
-			NWError? listenerError = null;
+			HttpResponseMessage? response = null;
+			var stopwatch = Stopwatch.StartNew ();
+			Console.WriteLine ($"RedirectBasicAuthServer entering TestRuntime.TryRunAsync for {uri}.");
+			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
+				Console.WriteLine ($"RedirectBasicAuthServer starting HttpClient.GetAsync for {uri} after {stopwatch.ElapsedMilliseconds} ms.");
+				var receivedResponse = await client.GetAsync (uri);
+				response = receivedResponse;
+				Console.WriteLine ($"RedirectBasicAuthServer completed HttpClient.GetAsync for {uri} with status {(int) receivedResponse.StatusCode} after {stopwatch.ElapsedMilliseconds} ms.");
+			}, out var exception);
+			Console.WriteLine ($"RedirectBasicAuthServer returned from TestRuntime.TryRunAsync for {uri}: done={done}, exception={exception?.GetType ().FullName ?? "<none>"}, elapsed={stopwatch.ElapsedMilliseconds} ms.");
 
-			var parameters = NWParameters.CreateSecureTcp (
-				configureTls: tlsOptions => {
-					var tls = (NWProtocolTlsOptions) tlsOptions;
-					var secOptions = tls.ProtocolOptions;
-					secOptions.SetLocalIdentity (secIdentity2);
-					secOptions.SetPeerAuthenticationRequired (requireClientCert);
-				});
-			using var localEndpoint = NWEndpoint.Create ("127.0.0.1", "0");
-			parameters.LocalEndpoint = localEndpoint;
-
-			var listener = NWListener.Create (parameters);
-			parameters.Dispose ();
-
-			listener.SetQueue (CoreFoundation.DispatchQueue.DefaultGlobalQueue);
-
-			listener.SetStateChangedHandler ((state, error) => {
-				if (state == NWListenerState.Failed)
-					listenerError = error;
-				if (state == NWListenerState.Ready || state == NWListenerState.Failed)
-					readyEvent.Set ();
-			});
-
-			listener.SetNewConnectionHandler (connection => {
-				connection.SetQueue (CoreFoundation.DispatchQueue.DefaultGlobalQueue);
-				connection.SetStateChangeHandler ((connState, connError) => {
-					if (connState == NWConnectionState.Ready) {
-						// Read the HTTP request (just consume it), then send a response
-						connection.ReceiveReadOnlyData (1, 4096, (data, context, isComplete, error) => {
-							var response = Encoding.UTF8.GetBytes ("HTTP/1.1 200 OK\r\nContent-Length: 2\r\nConnection: close\r\n\r\nOK");
-							connection.Send (response, NWContentContext.FinalMessage, true, sendError => {
-								connection.Cancel ();
-							});
-						});
-					}
-				});
-				connection.Start ();
-			});
-
-			listener.Start ();
-
-			if (!readyEvent.Wait (TimeSpan.FromSeconds (10)))
-				throw new TimeoutException ("NWListener did not become ready in time.");
-
-			if (listenerError is not null)
-				throw new InvalidOperationException ($"NWListener failed to start: {listenerError}");
-
-			return listener;
+			Assert.That (done, Is.True, $"Request to {uri} timed out.");
+			Assert.That (exception, Is.Null, $"Exception while requesting {uri}.");
+			return response ?? throw new InvalidOperationException ($"Request to {uri} completed without a response.");
 		}
 
-		static (byte [] Data, string Password) CreateSelfSignedServerCertificatePfx ()
-		{
-			using var rsa = RSA.Create (2048);
-			var certRequest = new CertificateRequest (
-				"CN=localhost", rsa, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
-			var sanBuilder = new SubjectAlternativeNameBuilder ();
-			sanBuilder.AddIpAddress (IPAddress.Loopback);
-			sanBuilder.AddDnsName ("localhost");
-			certRequest.CertificateExtensions.Add (sanBuilder.Build ());
-			var cert = certRequest.CreateSelfSigned (DateTimeOffset.UtcNow.AddDays (-1), DateTimeOffset.UtcNow.AddYears (1));
-			var password = Guid.NewGuid ().ToString ();
-			return (cert.Export (X509ContentType.Pfx, password), password);
+		sealed class RedirectBasicAuthServer : IDisposable {
+			readonly bool crossOrigin;
+			readonly HttpListener originListener;
+			readonly HttpListener? targetListener;
+			readonly Task originTask;
+			readonly Task? targetTask;
+			readonly object targetAuthorizationHeadersLock = new object ();
+			readonly List<string> targetAuthorizationHeaders = new List<string> ();
+			readonly string expectedBasicAuth;
+			int targetRequestCount;
+
+			public Uri OriginUri { get; }
+			public Uri TargetUri { get; }
+			public int TargetRequestCount => Volatile.Read (ref targetRequestCount);
+
+			public string [] TargetAuthorizationHeaders {
+				get {
+					lock (targetAuthorizationHeadersLock)
+						return targetAuthorizationHeaders.ToArray ();
+				}
+			}
+
+			public RedirectBasicAuthServer (bool crossOrigin, string username = "origin-user", string password = "origin-password")
+			{
+				this.crossOrigin = crossOrigin;
+				expectedBasicAuth = "Basic " + Convert.ToBase64String (global::System.Text.Encoding.UTF8.GetBytes ($"{username}:{password}"));
+				originListener = CreateStartedHttpListener (out var originUri);
+				OriginUri = originUri;
+
+				if (crossOrigin) {
+					targetListener = CreateStartedHttpListener (out var targetUri);
+					TargetUri = targetUri;
+				} else {
+					TargetUri = OriginUri;
+				}
+
+				originTask = Task.Run (RunOrigin);
+				if (targetListener is not null)
+					targetTask = Task.Run (RunTarget);
+			}
+
+			async Task RunOrigin ()
+			{
+				while (true) {
+					var context = await GetContextAsync (originListener);
+					if (context is null)
+						return;
+
+					if (!crossOrigin && string.Equals (context.Request.Url?.AbsolutePath, "/protected", StringComparison.Ordinal)) {
+						RespondToProtectedResource (context);
+					} else {
+						RespondWithRedirect (context);
+					}
+				}
+			}
+
+			async Task RunTarget ()
+			{
+				if (targetListener is null)
+					return;
+
+				while (true) {
+					var context = await GetContextAsync (targetListener);
+					if (context is null)
+						return;
+
+					RespondToProtectedResource (context);
+				}
+			}
+
+			void RespondWithRedirect (HttpListenerContext context)
+			{
+				var response = context.Response;
+				response.StatusCode = (int) HttpStatusCode.Redirect;
+				response.RedirectLocation = new Uri (TargetUri, "protected").AbsoluteUri;
+				response.ContentLength64 = 0;
+				response.KeepAlive = false;
+				response.Close ();
+			}
+
+			void RespondToProtectedResource (HttpListenerContext context)
+			{
+				Interlocked.Increment (ref targetRequestCount);
+
+				var authorization = context.Request.Headers ["Authorization"];
+				if (!string.IsNullOrEmpty (authorization)) {
+					lock (targetAuthorizationHeadersLock)
+						targetAuthorizationHeaders.Add (authorization);
+				}
+
+				var response = context.Response;
+				if (string.Equals (authorization, expectedBasicAuth, StringComparison.Ordinal)) {
+					response.StatusCode = (int) HttpStatusCode.OK;
+				} else {
+					response.StatusCode = (int) HttpStatusCode.Unauthorized;
+					response.AddHeader ("WWW-Authenticate", "Basic realm=\"redirect-target\"");
+				}
+				response.ContentLength64 = 0;
+				response.KeepAlive = false;
+				response.Close ();
+			}
+
+			static async Task<HttpListenerContext?> GetContextAsync (HttpListener listener)
+			{
+				try {
+					return await listener.GetContextAsync ();
+				} catch (HttpListenerException) {
+					return null;
+				} catch (ObjectDisposedException) {
+					return null;
+				} catch (InvalidOperationException) {
+					return null;
+				}
+			}
+
+			static HttpListener CreateStartedHttpListener (out Uri uri)
+			{
+				const int MinPort = 49215;
+				const int MaxPort = 65535;
+				const int PortRange = MaxPort - MinPort;
+				const int MaxAttempts = 50;
+				Exception? lastException = null;
+				var stopwatch = Stopwatch.StartNew ();
+
+				// Pick a random start port, then probe sequentially (with wraparound) so
+				// each attempt tries a distinct port while keeping the bounded retry behavior.
+				var startPort = Random.Shared.Next (MinPort, MaxPort);
+				for (var attempt = 0; attempt < MaxAttempts; attempt++) {
+					var port = MinPort + (startPort - MinPort + attempt) % PortRange;
+					var listener = new HttpListener ();
+					var url = $"http://127.0.0.1:{port}/";
+					listener.Prefixes.Add (url);
+					try {
+						listener.Start ();
+						uri = new Uri (url);
+						Console.WriteLine ($"RedirectBasicAuthServer listening on {uri} after {attempt + 1} attempt(s) in {stopwatch.ElapsedMilliseconds} ms.");
+						return listener;
+					} catch (Exception ex) {
+						lastException = ex;
+						listener.Close ();
+					}
+				}
+
+				throw new InvalidOperationException ($"Could not start a local HTTP listener after {MaxAttempts} attempts.", lastException);
+			}
+
+			public void Dispose ()
+			{
+				Console.WriteLine ($"RedirectBasicAuthServer stopping origin {OriginUri} and target {TargetUri}.");
+				originListener.Close ();
+				targetListener?.Close ();
+
+				try {
+					if (targetTask is null)
+						Task.WaitAll (new [] { originTask }, TimeSpan.FromSeconds (1));
+					else
+						Task.WaitAll (new [] { originTask, targetTask }, TimeSpan.FromSeconds (1));
+				} catch {
+					// Listener disposal wakes the request loops.
+				}
+				Console.WriteLine ($"RedirectBasicAuthServer stopped origin {OriginUri} and target {TargetUri}.");
+			}
 		}
 
 		[Test]
@@ -900,14 +1105,9 @@ namespace MonoTests.System.Net.Http {
 				httpStatus = result.StatusCode;
 			}, out var ex);
 
-			if (!done) { // timeouts happen in the bots due to dns issues, connection issues etc.. we do not want to fail
-				Assert.Inconclusive ("Request timedout.");
-			} else {
-				TestRuntime.IgnoreInCIIfBadNetwork (ex);
-				TestRuntime.IgnoreInCIIfBadNetwork (httpStatus);
-				Assert.That (ex, Is.Null, "Exception not null");
-				Assert.That (httpStatus, Is.EqualTo (expectedStatus), "Status not ok");
-			}
+			Assert.That (done, Is.True, "Request completed");
+			Assert.That (ex, Is.Null, "Exception not null");
+			Assert.That (httpStatus, Is.EqualTo (expectedStatus), "Status not ok");
 		}
 
 		[TestCase (HttpStatusCode.OK, "mandel", "12345678", "mandel", "12345678")]
@@ -927,14 +1127,9 @@ namespace MonoTests.System.Net.Http {
 				httpStatus = result.StatusCode;
 			}, out var ex);
 
-			if (!done) {
-				Assert.Inconclusive ("Request timedout.");
-			} else {
-				TestRuntime.IgnoreInCIIfBadNetwork (ex);
-				TestRuntime.IgnoreInCIIfBadNetwork (httpStatus);
-				Assert.That (ex, Is.Null, "Exception not null");
-				Assert.That (httpStatus, Is.EqualTo (expectedStatus), "Status not ok");
-			}
+			Assert.That (done, Is.True, "Request completed");
+			Assert.That (ex, Is.Null, "Exception not null");
+			Assert.That (httpStatus, Is.EqualTo (expectedStatus), "Status not ok");
 		}
 
 		[TestCase]
@@ -958,13 +1153,10 @@ namespace MonoTests.System.Net.Http {
 				httpStatus = result.StatusCode;
 			}, out var ex);
 
-			if (!done) { // timeouts happen in the bots due to dns issues, connection issues etc.. we do not want to fail
-				Assert.Inconclusive ("First request timedout.");
-			} else {
-				TestRuntime.IgnoreInCIIfBadNetwork (httpStatus);
-				Assert.That (ex, Is.Null, "First request exception not null");
-				Assert.That (httpStatus, Is.EqualTo (HttpStatusCode.OK), "First status not ok");
-			}
+			Assert.That (done, Is.True, "First request completed");
+			Assert.That (ex, Is.Null, "First request exception not null");
+			Assert.That (httpStatus, Is.EqualTo (HttpStatusCode.OK), "First status not ok");
+
 			// exactly same operation, diff handler, wrong password, should fail
 
 			var secondHandler = new NSUrlSessionHandler () {
@@ -979,13 +1171,9 @@ namespace MonoTests.System.Net.Http {
 				httpStatus = result.StatusCode;
 			}, out ex);
 
-			if (!done) { // timeouts happen in the bots due to dns issues, connection issues etc.. we do not want to fail
-				Assert.Inconclusive ("Second request timedout.");
-			} else {
-				TestRuntime.IgnoreInCIIfBadNetwork (httpStatus);
-				Assert.That (ex, Is.Null, "Second request exception not null");
-				Assert.That (httpStatus, Is.EqualTo (HttpStatusCode.Unauthorized), "Second status not ok");
-			}
+			Assert.That (done, Is.True, "Second request completed");
+			Assert.That (ex, Is.Null, "Second request exception not null");
+			Assert.That (httpStatus, Is.EqualTo (HttpStatusCode.Unauthorized), "Second status not ok");
 		}
 
 		class TestDelegateHandler : DelegatingHandler {
@@ -1039,27 +1227,22 @@ namespace MonoTests.System.Net.Http {
 				}
 			}, out var ex);
 
-			if (!done) { // timeouts happen in the bots due to dns issues, connection issues etc.. we do not want to fail
-				Assert.Inconclusive ("Request timedout.");
-			} else {
-				TestRuntime.IgnoreInCIIfBadNetwork (ex);
-				Assert.That (ex, Is.Null, "Exception");
+			Assert.That (done, Is.True, "Request completed");
+			Assert.That (ex, Is.Null, "Exception");
 
-				for (var i = 0; i < iterations; i++) {
-					var rsp = delegatingHandler.Responses [i];
-					TestRuntime.IgnoreInCIIfBadNetwork (rsp.StatusCode);
-					Assert.That (delegatingHandler.IsCompleted (i), Is.True, $"Completed #{i}");
-					Assert.That (rsp.ReasonPhrase, Is.EqualTo ("OK"), $"ReasonPhrase #{i}");
-					Assert.That (rsp.StatusCode, Is.EqualTo (HttpStatusCode.OK), $"StatusCode #{i}");
+			for (var i = 0; i < iterations; i++) {
+				var rsp = delegatingHandler.Responses [i];
+				Assert.That (delegatingHandler.IsCompleted (i), Is.True, $"Completed #{i}");
+				Assert.That (rsp.ReasonPhrase, Is.EqualTo ("OK"), $"ReasonPhrase #{i}");
+				Assert.That (rsp.StatusCode, Is.EqualTo (HttpStatusCode.OK), $"StatusCode #{i}");
 
-					var body = bodies [i];
-					// Poor-man's json parser
-					var data = body.Split ('\n', '\r').Single (v => v.Contains ("\"data\": \""));
-					data = data.Trim ().Replace ("\"data\": \"", "").TrimEnd ('"', ',');
-					data = data.Replace ("\\\"", "\"");
+				var body = bodies [i];
+				// Poor-man's json parser
+				var data = body.Split ('\n', '\r').Single (v => v.Contains ("\"data\": \""));
+				data = data.Trim ().Replace ("\"data\": \"", "").TrimEnd ('"', ',');
+				data = data.Replace ("\\\"", "\"");
 
-					Assert.That (data, Is.EqualTo (json), $"Post data #{i}");
-				}
+				Assert.That (data, Is.EqualTo (json), $"Post data #{i}");
 			}
 		}
 
@@ -1069,23 +1252,21 @@ namespace MonoTests.System.Net.Http {
 		{
 			// https://github.com/dotnet/macios/issues/20629
 
+			using var handler = GetHandler (handlerType);
 			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
-				var client = new HttpClient (GetHandler (handlerType));
+				using var client = new HttpClient (handler, disposeHandler: false) {
+					Timeout = TimeSpan.FromSeconds (20),
+				};
 				var postRequestUri = NetworkResources.Httpbin.Url + "/";
 				var initialRequestUri = NetworkResources.Httpbin.GetRedirectToUrl (postRequestUri);
-				var request = new HttpRequestMessage (HttpMethod.Get, initialRequestUri);
+				using var request = new HttpRequestMessage (HttpMethod.Get, initialRequestUri);
 				Assert.That (request.RequestUri.ToString (), Is.EqualTo (initialRequestUri), "Initial RequestUri");
-				var response = await client.SendAsync (request);
-				TestRuntime.IgnoreInCIIfBadNetwork (response.StatusCode);
+				using var response = await client.SendAsync (request);
 				Assert.That (request.RequestUri.ToString (), Is.EqualTo (postRequestUri), "Post RequestUri");
 			}, out var ex);
 
-			if (!done) { // timeouts happen in the bots due to dns issues, connection issues etc. we do not want to fail
-				Assert.Inconclusive ("Request timedout.");
-			} else {
-				TestRuntime.IgnoreInCIIfBadNetwork (ex);
-				Assert.That (ex, Is.Null, "Exception");
-			}
+			Assert.That (done, Is.True, "Request completed");
+			Assert.That (ex, Is.Null, "Exception");
 		}
 
 		[TestCase (typeof (NSUrlSessionHandler))]
@@ -1094,22 +1275,20 @@ namespace MonoTests.System.Net.Http {
 		{
 			// https://github.com/dotnet/macios/issues/20629
 
+			using var handler = GetHandler (handlerType);
 			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
-				var client = new HttpClient (GetHandler (handlerType));
+				using var client = new HttpClient (handler, disposeHandler: false) {
+					Timeout = TimeSpan.FromSeconds (20),
+				};
 				var requestUri = NetworkResources.Httpbin.Uri + "?stuffHere=[]{}";
-				var request = new HttpRequestMessage (HttpMethod.Get, requestUri);
+				using var request = new HttpRequestMessage (HttpMethod.Get, requestUri);
 				Assert.That (request.RequestUri.ToString (), Is.EqualTo (requestUri), "Initial RequestUri");
-				var response = await client.SendAsync (request);
-				TestRuntime.IgnoreInCIIfBadNetwork (response.StatusCode);
+				using var response = await client.SendAsync (request);
 				Assert.That (request.RequestUri.ToString (), Is.EqualTo (requestUri), "Post RequestUri");
 			}, out var ex);
 
-			if (!done) { // timeouts happen in the bots due to dns issues, connection issues etc. we do not want to fail
-				Assert.Inconclusive ("Request timedout.");
-			} else {
-				TestRuntime.IgnoreInCIIfBadNetwork (ex);
-				Assert.That (ex, Is.Null, "Exception");
-			}
+			Assert.That (done, Is.True, "Request completed");
+			Assert.That (ex, Is.Null, "Exception");
 		}
 
 		// https://github.com/dotnet/macios/issues/23764

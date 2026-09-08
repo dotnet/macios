@@ -697,8 +697,8 @@ namespace Metal {
 #endif // MONOMAC
 
 	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("ios13.0")]
-	[SupportedOSPlatform ("tvos13.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MTLTextureSwizzleChannels {
@@ -720,7 +720,7 @@ namespace Metal {
 	}
 
 #if IOS || MONOMAC || COREBUILD || TVOS
-	[SupportedOSPlatform ("ios13.0")]
+	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos16.0")]
@@ -731,7 +731,7 @@ namespace Metal {
 		public uint RenderTargetArrayIndexOffset;
 	}
 
-	[SupportedOSPlatform ("ios13.0")]
+	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos17.0")]
@@ -757,8 +757,8 @@ namespace Metal {
 	}
 
 	[SupportedOSPlatform ("ios16.0")]
-	[SupportedOSPlatform ("maccatalyst16.0")]
-	[SupportedOSPlatform ("macos13.0")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos16.0")]
 	[NativeName ("MTLResourceID")]
 	[StructLayout (LayoutKind.Sequential)]

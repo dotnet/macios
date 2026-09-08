@@ -44,9 +44,7 @@ namespace MonoTouchFixtures.Security {
 		}
 
 		[Test]
-		// We do not want to block for a long period of time if the event is not set.
 		// We are testing the fact that the trampoline works.
-		[Timeout (5000)]
 		public void AddSharedWebCredentialNotNullPassword ()
 		{
 			Action<NSError> handler = (NSError e) => {
@@ -56,9 +54,7 @@ namespace MonoTouchFixtures.Security {
 		}
 
 		[Test]
-		// We do not want to block for a long period of time if the event is not set.
 		// We are testing the fact that the trampoline works.
-		[Timeout (5000)]
 		public void AddSharedWebCredentialNullPassword ()
 		{
 			password = null;
@@ -69,9 +65,7 @@ namespace MonoTouchFixtures.Security {
 		}
 
 		[Test]
-		// We do not want to block for a long period of time if the event is not set.
 		// We are testing the fact that the trampoline works.
-		[Timeout (5000)]
 		public void RequestSharedWebCredentialTest ()
 		{
 			Action<SecSharedCredentialInfo [], NSError> handler = (SecSharedCredentialInfo [] creds, NSError e) => {
@@ -81,9 +75,7 @@ namespace MonoTouchFixtures.Security {
 		}
 
 		[Test]
-		// We do not want to block for a long period of time if the event is not set.
 		// We are testing the fact that the trampoline works.
-		[Timeout (5000)]
 		public void RequestSharedWebCredentialNullDomainAndAccountTest ()
 		{
 			Action<SecSharedCredentialInfo [], NSError> handler = (SecSharedCredentialInfo [] creds, NSError e) => {

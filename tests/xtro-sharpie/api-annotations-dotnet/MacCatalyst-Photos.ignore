@@ -1,0 +1,1 @@
+!missing-null-allowed! 'System.Int32 Photos.PHLivePhoto::RequestLivePhoto(Foundation.NSUrl[],UIKit.UIImage,CoreGraphics.CGSize,Photos.PHImageContentMode,System.Action`2<Photos.PHLivePhoto,Foundation.NSDictionary>)' is missing a '?' on parameter 'resultHandler' block parameter #0

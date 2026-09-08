@@ -33,7 +33,6 @@ using CoreFoundation;
 namespace CoreGraphics {
 	// CGDataConsumer.h
 	/// <summary>Data sink for <see cref="CoreGraphics.CGContextPDF" /> or <see cref="ImageIO.CGImageDestination" /> to store data on.</summary>
-	///     <remarks>To be added.</remarks>
 	public partial class CGDataConsumer : NativeObject {
 		[Preserve (Conditional = true)]
 		internal CGDataConsumer (NativeHandle handle, bool owns)
@@ -70,9 +69,8 @@ namespace CoreGraphics {
 			return result;
 		}
 
-		/// <param name="data">To be added.</param>
-		///         <summary>Creates a data sink that saves the data on the specified NSData.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Creates a data sink that saves the data on the specified NSData.</summary>
+		/// <param name="data">The data.</param>
 		public CGDataConsumer (NSMutableData data)
 			: base (Create (data), true)
 		{
@@ -91,9 +89,8 @@ namespace CoreGraphics {
 			return result;
 		}
 
-		/// <param name="url">To be added.</param>
-		///         <summary>Creates a data sink that saves the data on a file specified by the url.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Creates a data sink that saves the data on a file specified by the url.</summary>
+		/// <param name="url">The url.</param>
 		public CGDataConsumer (NSUrl url)
 			: base (Create (url), true)
 		{

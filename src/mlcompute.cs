@@ -1,5 +1,6 @@
 
 using Metal;
+using System.ComponentModel;
 
 namespace MLCompute {
 
@@ -108,7 +109,12 @@ namespace MLCompute {
 		Float16 = 3,
 		Boolean = 4,
 		Int64 = 5,
-		Inot32 = 7,
+		Int32 = 7,
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'Int32' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		Inot32 = Int32,
+#endif
 		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
 		Int8 = 8,
 		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]

@@ -23,13 +23,13 @@ namespace EmbeddedResources {
 		public void Embedded ()
 		{
 			var manager = new ResourceManager ("EmbeddedResources.Welcome", typeof (ResourcesTest).Assembly);
-			Assert.AreEqual ("Welcome", manager.GetString ("String1", new CultureInfo ("en")), "en");
-			Assert.AreEqual ("G'day", manager.GetString ("String1", new CultureInfo ("en-AU")), "en-AU");
-			Assert.AreEqual ("Willkommen", manager.GetString ("String1", new CultureInfo ("de")), "de");
-			Assert.AreEqual ("Willkommen", manager.GetString ("String1", new CultureInfo ("de-DE")), "de-DE");
-			Assert.AreEqual ("Bienvenido", manager.GetString ("String1", new CultureInfo ("es")), "es");
-			Assert.AreEqual ("Bienvenido", manager.GetString ("String1", new CultureInfo ("es-AR")), "es-AR");
-			Assert.AreEqual ("Bienvenido", manager.GetString ("String1", new CultureInfo ("es-ES")), "es-ES");
+			Assert.That (manager.GetString ("String1", new CultureInfo ("en")), Is.EqualTo ("Welcome"), "en");
+			Assert.That (manager.GetString ("String1", new CultureInfo ("en-AU")), Is.EqualTo ("G'day"), "en-AU");
+			Assert.That (manager.GetString ("String1", new CultureInfo ("de")), Is.EqualTo ("Willkommen"), "de");
+			Assert.That (manager.GetString ("String1", new CultureInfo ("de-DE")), Is.EqualTo ("Willkommen"), "de-DE");
+			Assert.That (manager.GetString ("String1", new CultureInfo ("es")), Is.EqualTo ("Bienvenido"), "es");
+			Assert.That (manager.GetString ("String1", new CultureInfo ("es-AR")), Is.EqualTo ("Bienvenido"), "es-AR");
+			Assert.That (manager.GetString ("String1", new CultureInfo ("es-ES")), Is.EqualTo ("Bienvenido"), "es-ES");
 		}
 	}
 }

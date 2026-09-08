@@ -14,7 +14,7 @@ namespace Xamarin.MacDev.Tasks {
 	/// Takes the list of unresolved native symbols from a NativeAOT static library and computes
 	/// which inlined dlfcn native symbols survived trimming. The output file has the same format
 	/// as CollectPostILTrimInformation's surviving symbols file.
-	/// See docs/code/native-symbols.md for an overview of native symbol handling.
+	/// See docs/code/native-symbols.md and docs/code/class-handles.md for an overview of native symbol handling.
 	/// </summary>
 	public class ComputeNativeAOTSurvivingNativeSymbols : XamarinTask {
 		/// <summary>
@@ -29,39 +29,17 @@ namespace Xamarin.MacDev.Tasks {
 		[Required]
 		public string SurvivingNativeSymbolsFile { get; set; } = "";
 
+		/// <summary>
+		/// Output file listing the Class.GetHandle calls that survived trimming.
+		/// </summary>
+		[Required]
+		public string SurvivingClassesFile { get; set; } = "";
+
 		public override bool Execute ()
 		{
-			if (!File.Exists (UnresolvedSymbolsFile))
-				return !Log.HasLoggedErrors;
-
-			const string prefix = "_xamarin_Dlfcn_";
-			const string suffix = "_Native";
-			var survivingSymbols = new HashSet<string> ();
-
-			foreach (var sym in File.ReadAllLines (UnresolvedSymbolsFile)) {
-				if (!sym.StartsWith (prefix) || !sym.EndsWith (suffix))
-					continue;
-				var symbolLength = sym.Length - prefix.Length - suffix.Length;
-				if (symbolLength <= 0)
-					continue;
-				var symbolName = sym.Substring (prefix.Length, symbolLength);
-				survivingSymbols.Add (symbolName);
-			}
-
-			var sorted = survivingSymbols.OrderBy (s => s).ToArray ();
-
-			if (File.Exists (SurvivingNativeSymbolsFile)) {
-				var existing = File.ReadAllLines (SurvivingNativeSymbolsFile);
-				if (existing.SequenceEqual (sorted))
-					return !Log.HasLoggedErrors;
-			}
-
-			var dir = Path.GetDirectoryName (SurvivingNativeSymbolsFile);
-			if (!string.IsNullOrEmpty (dir))
-				Directory.CreateDirectory (dir);
-			File.WriteAllLines (SurvivingNativeSymbolsFile, sorted);
-			Log.LogMessage (MessageImportance.Low, "Found {0} surviving native symbols from NativeAOT", survivingSymbols.Count);
-
+			var unresolvedSymbols = File.Exists (UnresolvedSymbolsFile) ? File.ReadAllLines (UnresolvedSymbolsFile) : [];
+			CollectPostILTrimInformation.WriteSymbolsToFile (this, SurvivingNativeSymbolsFile, CollectPostILTrimInformation.FilterToDlfcnSymbols (unresolvedSymbols));
+			CollectPostILTrimInformation.WriteSymbolsToFile (this, SurvivingClassesFile, CollectPostILTrimInformation.FilterToClassSymbols (unresolvedSymbols));
 			return !Log.HasLoggedErrors;
 		}
 	}

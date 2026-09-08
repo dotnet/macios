@@ -7,8 +7,7 @@ namespace NetworkExtension {
 	public partial class NEFilterFlow {
 
 		// NEFilterFlowBytesMax define
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The maximum number of bytes that can be used for filter flow operations.</summary>
 		public const ulong MaxBytes = ulong.MaxValue;
 	}
 }

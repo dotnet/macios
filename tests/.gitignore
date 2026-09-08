@@ -19,7 +19,6 @@ Info-*.plist
 Makefile.inc
 *.stamp
 test.config
-test-system.config
 mac-test-package
 dotnet-test-package
 .nuget

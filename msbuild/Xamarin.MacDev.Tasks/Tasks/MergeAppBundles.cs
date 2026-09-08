@@ -186,19 +186,16 @@ namespace Xamarin.MacDev.Tasks {
 				return true;
 			}
 
-			public void CopyTo (string outputDirectory, string? subDirectory = null)
+			public void CopyTo (string outputDirectory, string? subDirectory = null, Entry? dependentOn = null)
 			{
 				string outputFile;
 
 				if (subDirectory is null) {
 					outputFile = Path.Combine (outputDirectory, RelativePath);
 				} else {
-					var relativeAppDir = Path.GetDirectoryName (RelativePath);
-					if (string.IsNullOrEmpty (relativeAppDir)) {
-						outputFile = Path.Combine (outputDirectory, subDirectory, RelativePath);
-					} else {
-						outputFile = Path.Combine (outputDirectory, relativeAppDir, subDirectory, Path.GetFileName (RelativePath));
-					}
+					var outputRelativePath = Path.GetDirectoryName (dependentOn?.RelativePath ?? RelativePath) ?? "";
+					var outputRelativeName = RelativePath.Substring (outputRelativePath.Length).TrimStart ('/');
+					outputFile = Path.Combine (outputDirectory, outputRelativePath, subDirectory, outputRelativeName);
 				}
 
 				if (Type == FileType.Directory) {
@@ -215,13 +212,13 @@ namespace Xamarin.MacDev.Tasks {
 					}
 				} else {
 					Directory.CreateDirectory (Path.GetDirectoryName (outputFile)!);
-					if (!FileCopier.IsUptodate (FullPath, outputFile, Task.FileCopierReportErrorCallback, Task.FileCopierLogCallback))
+					if (!FileCopier.IsUptodate (Task, FullPath, outputFile))
 						File.Copy (FullPath, outputFile, true);
 				}
 
 				if (DependentFiles is not null) {
 					foreach (var file in DependentFiles)
-						file.CopyTo (outputDirectory, subDirectory);
+						file.CopyTo (outputDirectory, subDirectory, this);
 				}
 			}
 		}
@@ -246,7 +243,7 @@ namespace Xamarin.MacDev.Tasks {
 					sourceDirectory += Path.DirectorySeparatorChar;
 
 				Log.LogMessage (MessageImportance.Low, $"Copying the single input directory {sourceDirectory} to {targetDirectory}");
-				FileCopier.UpdateDirectory (sourceDirectory, targetDirectory, FileCopierReportErrorCallback, FileCopierLogCallback);
+				FileCopier.UpdateDirectory (this, sourceDirectory, targetDirectory);
 				return !Log.HasLoggedErrors;
 			}
 
@@ -428,7 +425,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			var sourceFiles = input.Select (v => v.FullPath).ToArray ();
 
-			if (FileCopier.IsUptodate (sourceFiles, new string [] { output }, FileCopierReportErrorCallback, FileCopierLogCallback))
+			if (FileCopier.IsUptodate (this, sourceFiles, new string [] { output }))
 				return;
 
 			Log.LogMessage (MessageImportance.Low, $"Lipoing '{input [0].RelativePath}' for the merged app bundle from the following sources:\n\t{string.Join ("\n\t", input.Select (v => v.FullPath))}");

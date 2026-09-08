@@ -7,8 +7,7 @@ namespace StoreKit {
 	partial class SKCloudServiceSetupOptions {
 
 		/// <summary>Gets or sets the setup action.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <value>The cloud service setup action, or <see langword="null" /> if not set.</value>
 		public virtual SKCloudServiceSetupAction? Action {
 			get {
 				if (_Action is null)

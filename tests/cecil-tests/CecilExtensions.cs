@@ -301,5 +301,6 @@ namespace ObjCRuntime {
 		None = 0,
 		GeneratedCode = 1,
 		Optimizable = 2,
+		FactoryMethod = 4,
 	}
 }

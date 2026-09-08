@@ -83,7 +83,7 @@ namespace NaturalLanguage {
 	/// <summary>Enumerates languages for which recognition is supported.</summary>
 	[MacCatalyst (13, 1)]
 	public enum NLLanguage {
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the language has not been evaluated yet.</summary>
 		[DefaultEnumValue]
 		[Field (null)]
 		Unevaluated,
@@ -259,7 +259,7 @@ namespace NaturalLanguage {
 		[Field ("NLLanguageVietnamese")]
 		Vietnamese,
 
-		[iOS (16, 0), Mac (13, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Field ("NLLanguageKazakh")]
 		Kazakh,
 	}
@@ -288,13 +288,12 @@ namespace NaturalLanguage {
 		/// <summary>Indicates that tokens will be tagged with the script in which they were written.</summary>
 		[Field ("NLTagSchemeScript")]
 		Script,
-		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("NLTagSchemeSentimentScore")]
 		SentimentScore,
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	public enum NLScript {
 		[Field ("NLScriptUndetermined")]
 		Undetermined,
@@ -360,7 +359,7 @@ namespace NaturalLanguage {
 		TraditionalChinese,
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum NLContextualEmbeddingAssetsResult : long {
 		Available,
@@ -368,8 +367,12 @@ namespace NaturalLanguage {
 		Error,
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+#if XAMCORE_5_0
+	public enum NLContextualEmbeddingKey {
+#else
 	public enum NLContextualEmebeddingKey {
+#endif
 		[Field ("NLContextualEmbeddingKeyLanguages")]
 		Languages,
 		[Field ("NLContextualEmbeddingKeyScripts")]

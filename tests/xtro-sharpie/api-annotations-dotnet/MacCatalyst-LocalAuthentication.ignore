@@ -1,0 +1,2 @@
+# results from initial block parameter nullability analysis
+!missing-null-allowed! 'System.Void LocalAuthentication.LAContext::EvaluateAccessControl(Security.SecAccessControl,LocalAuthentication.LAAccessControlOperation,System.String,System.Action`2<System.Boolean,Foundation.NSError>)' is missing a '?' on parameter 'reply' block parameter #1

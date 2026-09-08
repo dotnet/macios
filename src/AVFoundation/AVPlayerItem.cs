@@ -2,9 +2,8 @@
 
 namespace AVFoundation {
 	public partial class AVPlayerItem {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the video aperture mode for the player item.</summary>
+		/// <value>The video aperture mode.</value>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,7 @@ using Microsoft.Build.Utilities;
 using Xamarin.Localization.MSBuild;
 
 using Xamarin.MacDev;
+using Xamarin.MacDev.Models;
 using Xamarin.Messaging.Build.Client;
 using Xamarin.Utils;
 
@@ -154,6 +156,92 @@ namespace Xamarin.MacDev.Tasks {
 			return translated.Value;
 		}
 
+		// Cache simulator runtime check results to avoid running simctl multiple times.
+		// Key includes SdkDevPath because different Xcode installations may have different runtimes.
+		static ConcurrentDictionary<string, bool> simulatorRuntimeCache = new ();
+
+		/// <summary>
+		/// Returns the platform name used by simctl for the current build platform, or null if no simulator is needed.
+		/// </summary>
+		string? GetSimulatorPlatformName ()
+		{
+			switch (Platform) {
+			case ApplePlatform.iOS:
+			case ApplePlatform.MacCatalyst:
+				// Mac Catalyst uses the iOS-based toolchain, so it also needs the iOS simulator runtime.
+				return "iOS";
+			case ApplePlatform.TVOS:
+				return "tvOS";
+			case ApplePlatform.MacOSX:
+			default:
+				return null;
+			}
+		}
+
+		/// <summary>
+		/// Checks if the required simulator runtime is installed and emits a diagnostic if not.
+		/// Apple's Xcode tools (actool, ibtool, etc.) require the simulator runtime to function,
+		/// even when building for physical devices. Call this after a tool failure to provide
+		/// actionable guidance to the user.
+		/// </summary>
+		void CheckSimulatorRuntimeAvailable ()
+		{
+			var simPlatform = GetSimulatorPlatformName ();
+			if (simPlatform is null)
+				return;
+
+			var cacheKey = $"{simPlatform}:{SdkDevPath}";
+			if (simulatorRuntimeCache.TryGetValue (cacheKey, out var cachedResult)) {
+				if (!cachedResult)
+					Log.LogError (MSBStrings.E7175, simPlatform);
+				return;
+			}
+
+			var jsonOutputFile = Path.GetTempFileName ();
+			try {
+				using var timeoutCts = CancellationTokenSource.CreateLinkedTokenSource (cancellationTokenSource.Token);
+				timeoutCts.CancelAfter (TimeSpan.FromMinutes (1));
+				var args = new List<string> {
+					"simctl",
+					"list",
+					"runtimes",
+					"-j",
+					"--json-output=" + jsonOutputFile
+				};
+				var rv = ExecuteAsync ("xcrun", args, showErrorIfFailure: false, cancellationToken: timeoutCts.Token).Result;
+
+				if (rv.ExitCode != 0) {
+					Log.LogWarning (MSBStrings.W7176, simPlatform);
+					return;
+				}
+
+				var json = File.ReadAllText (jsonOutputFile);
+				var runtimes = SimctlOutputParser.ParseRuntimes (json);
+
+				var hasRuntime = runtimes.Any (r =>
+					string.Equals (r.Platform, simPlatform, StringComparison.OrdinalIgnoreCase) && r.IsAvailable);
+
+				simulatorRuntimeCache [cacheKey] = hasRuntime;
+				if (!hasRuntime)
+					Log.LogError (MSBStrings.E7175, simPlatform);
+			} catch (OperationCanceledException) when (cancellationTokenSource.IsCancellationRequested) {
+				// User cancelled - don't emit diagnostics
+			} catch (AggregateException ae) when (ae.InnerException is OperationCanceledException && cancellationTokenSource.IsCancellationRequested) {
+				// User cancelled - don't emit diagnostics
+			} catch (OperationCanceledException) {
+				// Timeout
+				Log.LogWarning (MSBStrings.W7176, simPlatform);
+			} catch (AggregateException ae) when (ae.InnerException is OperationCanceledException) {
+				// Timeout
+				Log.LogWarning (MSBStrings.W7176, simPlatform);
+			} catch (Exception ex) {
+				Log.LogWarning (MSBStrings.W7176, simPlatform);
+				Log.LogMessage (MessageImportance.Low, "Exception while checking simulator runtime: {0}", ex.Message);
+			} finally {
+				File.Delete (jsonOutputFile);
+			}
+		}
+
 		protected int Compile (ITaskItem [] items, string output, ITaskItem manifest)
 		{
 			var environment = new Dictionary<string, string?> ();
@@ -193,7 +281,7 @@ namespace Xamarin.MacDev.Tasks {
 			if (Log.HasLoggedErrors)
 				return 1;
 
-			var rv = ExecuteAsync (executable, args, environment: environment, cancellationToken: cancellationTokenSource.Token).Result;
+			var rv = ExecuteAsync (executable, args, showErrorIfFailure: true, environment: environment, cancellationToken: cancellationTokenSource.Token).Result;
 			var exitCode = rv.ExitCode;
 			var messages = rv.Output.StandardOutput;
 			File.WriteAllText (manifest.ItemSpec, messages);
@@ -205,8 +293,6 @@ namespace Xamarin.MacDev.Tasks {
 				var errors = rv.Output.StandardError;
 				if (errors.Length > 0)
 					Log.LogError (null, null, null, items [0].ItemSpec, 0, 0, 0, 0, "{0}", errors);
-
-				Log.LogError (MSBStrings.E0117, ToolName, exitCode);
 
 				// Note: If the log file exists and is parseable, log those warnings/errors as well...
 				if (File.Exists (manifest.ItemSpec)) {
@@ -220,6 +306,9 @@ namespace Xamarin.MacDev.Tasks {
 
 					File.Delete (manifest.ItemSpec);
 				}
+
+				// Check if the failure might be caused by a missing simulator runtime.
+				CheckSimulatorRuntimeAvailable ();
 			}
 
 			return exitCode;
@@ -285,8 +374,14 @@ namespace Xamarin.MacDev.Tasks {
 
 			if (plist.TryGetValue (string.Format ("com.apple.{0}.errors", ToolName), out array)) {
 				foreach (var item in array.OfType<PDictionary> ()) {
-					if (item.TryGetValue ("description", out message))
+					if (item.TryGetValue ("description", out message)) {
 						Log.LogError (ToolName, null, null, file.ItemSpec, 0, 0, 0, 0, "{0}", message.Value);
+						if (IsSimulatorRuntimeVersionError (message.Value)) {
+							var simPlatform = GetSimulatorPlatformName ();
+							if (simPlatform is not null)
+								Log.LogError (MSBStrings.E7177, simPlatform);
+						}
+					}
 				}
 			}
 
@@ -296,6 +391,15 @@ namespace Xamarin.MacDev.Tasks {
 						Log.LogMessage (MessageImportance.Low, "{0} notice : {1}", ToolName, message.Value);
 				}
 			}
+		}
+
+		/// <summary>
+		/// Detects error messages like "No simulator runtime version from [...] available to use with ... SDK version ..."
+		/// which indicate an incompatible or missing simulator runtime version.
+		/// </summary>
+		static bool IsSimulatorRuntimeVersionError (string message)
+		{
+			return message.IndexOf ("simulator runtime", StringComparison.OrdinalIgnoreCase) >= 0;
 		}
 
 		public void Cancel ()

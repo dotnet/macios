@@ -33,7 +33,7 @@ namespace Xamarin.Bundler {
 #else
 		public PlatformLinkContext LinkContext;
 #endif
-		public PlatformResolver Resolver = new PlatformResolver ();
+		public PlatformResolver Resolver;
 
 		internal StaticRegistrar StaticRegistrar { get; set; }
 
@@ -67,8 +67,13 @@ namespace Xamarin.Bundler {
 		[DllImport ("libc", SetLastError = true)]
 		static extern string realpath (string path, IntPtr zero);
 
-		public static string GetRealPath (string path, bool warnIfNoSuchPathExists = true)
+		public static string GetRealPath (IToolLog log, string path, bool warnIfNoSuchPathExists = true)
 		{
+			// There's no realpath on Windows (and no symlinks to resolve either), so just
+			// return the full path. This matches what PathUtils.ResolveSymbolicLinks does.
+			if (Path.DirectorySeparatorChar == '\\')
+				return Path.GetFullPath (path);
+
 			// For some reason realpath doesn't always like filenames only, and will randomly fail.
 			// Prepend the current directory if there's no directory specified.
 			if (string.IsNullOrEmpty (Path.GetDirectoryName (path)))
@@ -80,7 +85,7 @@ namespace Xamarin.Bundler {
 
 			var errno = Marshal.GetLastWin32Error ();
 			if (warnIfNoSuchPathExists || (errno != 2))
-				ErrorHelper.Warning (54, Errors.MT0054, path, FileCopier.strerror (errno), errno);
+				ErrorHelper.Warning (log, 54, Errors.MT0054, path, FileCopier.strerror (errno), errno);
 			return path;
 		}
 
@@ -135,7 +140,7 @@ namespace Xamarin.Bundler {
 			sb.AppendLine ("}");
 			sb.AppendLine ();
 
-			Driver.WriteIfDifferent (reference_m, sb.ToString (), true);
+			Driver.WriteIfDifferent (App, reference_m, sb.ToString (), true);
 
 			return reference_m;
 		}
@@ -193,7 +198,7 @@ namespace Xamarin.Bundler {
 						throw ErrorHelper.CreateError (71, Errors.MX0071, platform, App.ProductName);
 					}
 				}
-				Driver.WriteIfDifferent (main_source, sb.ToString (), true);
+				Driver.WriteIfDifferent (App, main_source, sb.ToString (), true);
 			} catch (ProductException) {
 				throw;
 			} catch (Exception e) {
@@ -270,11 +275,56 @@ namespace Xamarin.Bundler {
 			sw.WriteLine ("static const char *xamarin_runtime_libraries_array[] = {");
 			foreach (var lib in app.MonoLibraries)
 				sw.WriteLine ($"\t\"{Path.GetFileNameWithoutExtension (lib)}\",");
+			foreach (var lib in app.DylibsToConvertToFrameworks.Except (app.MonoLibraries))
+				sw.WriteLine ($"\t\"{Path.GetFileNameWithoutExtension (lib)}\", // dylib converted to framework");
 			sw.WriteLine ($"\tNULL");
 			sw.WriteLine ("};");
 
+			// For CoreCLR we bake the runtimeconfig.json 'configProperties' directly into the app as C arrays
+			// (assigned to the xamarin_runtime_config_property_* globals in xamarin_setup_impl below, and
+			// consumed by xamarin_bridge_compute_properties). This avoids shipping the binary runtimeconfig
+			// format and decoding it at startup.
+			var runtimeConfigProperties = app.XamarinRuntime == XamarinRuntime.CoreCLR ? app.RuntimeConfigProperties : null;
+			if (runtimeConfigProperties is not null && runtimeConfigProperties.Count > 0) {
+				// Sort by key so the generated main is stable regardless of the dictionary's enumeration order.
+				var sortedRuntimeConfigProperties = runtimeConfigProperties.OrderBy (v => v.Key, StringComparer.Ordinal).ToArray ();
+				sw.WriteLine ();
+				sw.WriteLine ("static const char *xamarin_runtime_config_property_keys_array [] = {");
+				foreach (var property in sortedRuntimeConfigProperties)
+					sw.WriteLine ($"\t\"{EscapeCString (property.Key)}\",");
+				sw.WriteLine ("};");
+				sw.WriteLine ("static const char *xamarin_runtime_config_property_values_array [] = {");
+				foreach (var property in sortedRuntimeConfigProperties)
+					sw.WriteLine ($"\t\"{EscapeCString (property.Value)}\",");
+				sw.WriteLine ("};");
+			}
+
+			var trusted_platform_assembly_names = app.TrustedPlatformAssemblies
+				.Distinct (StringComparer.Ordinal)
+				// Any .exe files must be at the end, due to https://github.com/dotnet/runtime/issues/62735
+				.OrderBy (v => Path.GetExtension (v).Equals (".exe", StringComparison.OrdinalIgnoreCase))
+				.ThenBy (v => v, StringComparer.Ordinal)
+				.ToArray ();
+			if (app.GenerateTrustedPlatformAssemblies && trusted_platform_assembly_names.Length > 0) {
+				sw.WriteLine ();
+				sw.WriteLine ("static const char * const xamarin_trusted_platform_assembly_names_array[] = {");
+				foreach (var name in trusted_platform_assembly_names)
+					sw.WriteLine ("\t\"{0}\",", EscapeCString (name));
+				sw.WriteLine ("\tNULL");
+				sw.WriteLine ("};");
+			}
+
 			sw.WriteLine ("void xamarin_setup_impl ()");
 			sw.WriteLine ("{");
+
+			if (app.GenerateTrustedPlatformAssemblies && trusted_platform_assembly_names.Length > 0) {
+				sw.WriteLine ("\txamarin_trusted_platform_assembly_names = xamarin_trusted_platform_assembly_names_array;");
+				if (app.IsMultiRidBuild) {
+					sw.WriteLine ("#if defined (SUPPORTS_UNIVERSAL_BUILDS)");
+					sw.WriteLine ("\txamarin_is_multi_rid_build = true;");
+					sw.WriteLine ("#endif");
+				}
+			}
 
 			if (app.UseInterpreter) {
 				sw.WriteLine ("\tmono_icall_table_init ();");
@@ -315,7 +365,7 @@ namespace Xamarin.Bundler {
 			sw.WriteLine ("\txamarin_executable_name = \"{0}\";", assembly_name);
 			if (app.XamarinRuntime == XamarinRuntime.MonoVM)
 				sw.WriteLine ("\tmono_use_llvm = {0};", enable_llvm ? "TRUE" : "FALSE");
-			sw.WriteLine ("\txamarin_log_level = {0};", Driver.Verbosity.ToString (CultureInfo.InvariantCulture));
+			sw.WriteLine ("\txamarin_log_level = {0};", Verbosity.ToString (CultureInfo.InvariantCulture));
 			sw.WriteLine ("\txamarin_arch_name = \"{0}\";", abi.AsArchString ());
 			if (!app.IsDefaultMarshalManagedExceptionMode)
 				sw.WriteLine ("\txamarin_marshal_managed_exception_mode = MarshalManagedExceptionMode{0};", app.MarshalManagedExceptions);
@@ -331,9 +381,17 @@ namespace Xamarin.Bundler {
 				var overwrite = kvp.Value.Overwrite;
 				sw.WriteLine ("\tsetenv (\"{0}\", \"{1}\", {2});", name.Replace ("\"", "\\\""), value.Replace ("\"", "\\\""), overwrite ? 1 : 0);
 			}
-			if (app.XamarinRuntime != XamarinRuntime.NativeAOT)
+			if (app.XamarinRuntime != XamarinRuntime.NativeAOT) {
+				if (app.DynamicRegistrationSupported)
+					sw.WriteLine ("\txamarin_initialize_dynamic_registrar ();");
 				sw.WriteLine ("\txamarin_supports_dynamic_registration = {0};", app.DynamicRegistrationSupported ? "TRUE" : "FALSE");
+			}
 			sw.WriteLine ("\txamarin_runtime_configuration_name = {0};", string.IsNullOrEmpty (app.RuntimeConfigurationFile) ? "NULL" : $"\"{app.RuntimeConfigurationFile}\"");
+			if (runtimeConfigProperties is not null && runtimeConfigProperties.Count > 0) {
+				sw.WriteLine ("\txamarin_runtime_config_property_count = {0};", runtimeConfigProperties.Count);
+				sw.WriteLine ("\txamarin_runtime_config_property_keys = xamarin_runtime_config_property_keys_array;");
+				sw.WriteLine ("\txamarin_runtime_config_property_values = xamarin_runtime_config_property_values_array;");
+			}
 			if (app.Registrar == RegistrarMode.TrimmableStatic)
 				sw.WriteLine ("\txamarin_set_is_trimmable_static_registrar (true);");
 			if (app.Registrar == RegistrarMode.ManagedStatic)
@@ -371,6 +429,29 @@ namespace Xamarin.Bundler {
 			sw.WriteLine ("\txamarin_register_assemblies = xamarin_register_assemblies_impl;");
 			sw.WriteLine ("\txamarin_register_modules = xamarin_register_modules_impl;");
 			sw.WriteLine ("}");
+		}
+
+		static string EscapeCString (string value)
+		{
+			var sb = new StringBuilder ();
+			foreach (var b in Encoding.UTF8.GetBytes (value)) {
+				switch (b) {
+				case (byte) '\\':
+					sb.Append ("\\\\");
+					break;
+				case (byte) '"':
+					sb.Append ("\\\"");
+					break;
+				default:
+					if (b >= 0x20 && b <= 0x7e) {
+						sb.Append ((char) b);
+					} else {
+						sb.Append ('\\').Append (Convert.ToString (b, 8).PadLeft (3, '0'));
+					}
+					break;
+				}
+			}
+			return sb.ToString ();
 		}
 
 		static readonly char [] charsToReplaceAot = new [] { '.', '-', '+', '<', '>' };
@@ -411,32 +492,6 @@ namespace Xamarin.Bundler {
 						return true;
 
 			return false;
-		}
-
-		bool _set_arm64_calling_convention;
-		bool? _is_arm64_calling_convention;
-		public bool? InlineIsArm64CallingConventionForCurrentAbi {
-			get {
-				if (!_set_arm64_calling_convention) {
-					if (Optimizations.InlineIsARM64CallingConvention == true) {
-						// We can usually inline Runtime.InlineIsARM64CallingConvention if the generated code will execute on a single architecture
-						switch (Abi & Abi.ArchMask) {
-						case Abi.x86_64:
-							_is_arm64_calling_convention = false;
-							break;
-						case Abi.ARM64:
-						case Abi.ARM64e:
-							_is_arm64_calling_convention = true;
-							break;
-						default:
-							LinkContext.Exceptions.Add (Xamarin.Bundler.ErrorHelper.CreateWarning (99, Xamarin.Bundler.Errors.MX0099, $"unknown abi: {Abi}"));
-							break;
-						}
-					}
-					_set_arm64_calling_convention = true;
-				}
-				return _is_arm64_calling_convention;
-			}
 		}
 
 #endif // !LEGACY_TOOLS

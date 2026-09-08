@@ -12,6 +12,7 @@ using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
 using Xamarin.Localization.MSBuild;
+using Xamarin.Utils;
 
 #nullable enable
 
@@ -350,12 +351,22 @@ namespace Xamarin.MacDev.Tasks {
 						continue;
 					}
 
-					var path = Path.Combine (intermediatePath, itemType, rpath);
+					var extractionDirectory = Path.Combine (intermediatePath, itemType);
+					var path = Path.Combine (extractionDirectory, rpath);
+					if (!PathUtils.IsPathContained (extractionDirectory, path)) {
+						Log.LogError (MSBStrings.E7183 /* The resource '{0}' in assembly '{1}' would extract to '{2}' which is outside of the target directory '{3}'. */, resourceName, assembly, path, extractionDirectory);
+						continue;
+					}
 					var file = new FileInfo (path);
 
 					var item = new TaskItem (path);
 					item.SetMetadata ("LogicalName", rpath);
 					item.SetMetadata ("Optimize", "false");
+					// Original BundleResource items are embedded without processing. Mark them so that
+					// the consuming app can apply its own optimization settings after unpacking them,
+					// while resources already processed by a library remain untouched.
+					if (contentType == "item" && resourceType == ResourceType.BundleResource)
+						item.SetMetadata ("IsOriginalResource", "true");
 					item.SetMetadata ("BundledInAssembly", assembly);
 
 					if (file.Exists && file.LastWriteTimeUtc >= asmWriteTime) {

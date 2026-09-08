@@ -51,10 +51,10 @@ namespace MonoTouchFixtures.VideoToolbox {
 
 				Assert.That (VTFrameRateConversionConfiguration.ProcessorSupported, Is.True, "ProcessorSupported");
 				Assert.That (VTFrameRateConversionConfiguration.SupportedRevisions, Is.Not.Null, "SupportedRevisions");
-				Assert.That (VTFrameRateConversionConfiguration.SupportedRevisions, Does.Contain (VTFrameRateConversionConfigurationRevision.Revision1), "SupportedRevisions.Contains");
+				Assert.That (VTFrameRateConversionConfiguration.SupportedRevisions.Contains (VTFrameRateConversionConfigurationRevision.Revision1), "SupportedRevisions.Contains");
 				Assert.That (VTFrameRateConversionConfiguration.WeakSupportedRevisions, Is.Not.Null, "WeakSupportedRevisions");
-				Assert.That (VTFrameRateConversionConfiguration.WeakSupportedRevisions, Does.Contain ((nuint) 1), "WeakSupportedRevisions.Contains");
-				Assert.That (Enum.GetValues<VTFrameRateConversionConfigurationRevision> (), Does.Contain (VTFrameRateConversionConfiguration.DefaultRevision), "DefaultRevision");
+				Assert.That (VTFrameRateConversionConfiguration.WeakSupportedRevisions.Contains ((nuint) 1), "WeakSupportedRevisions.Contains");
+				Assert.That (Enum.GetValues<VTFrameRateConversionConfigurationRevision> ().Contains (VTFrameRateConversionConfiguration.DefaultRevision), "DefaultRevision");
 			});
 		}
 	}

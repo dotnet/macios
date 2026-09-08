@@ -14,7 +14,7 @@ namespace Xamarin.Linker.Steps {
 
 		protected override bool IsActiveFor (AssemblyDefinition assembly)
 		{
-			return OptimizeGeneratedCodeHandler.IsActiveFor (assembly, Configuration.Profile, DerivedLinkContext.Annotations);
+			return OptimizeGeneratedCode.IsActiveFor (assembly, Configuration.Profile, DerivedLinkContext.Annotations);
 		}
 
 		protected override bool ProcessType (TypeDefinition type)
@@ -27,12 +27,10 @@ namespace Xamarin.Linker.Steps {
 			if (data is null) {
 				data = new OptimizeGeneratedCodeData {
 					LinkContext = DerivedLinkContext,
-					InlineIsArm64CallingConvention = App.InlineIsArm64CallingConventionForCurrentAbi,
 					Optimizations = App.Optimizations,
-					Device = App.IsDeviceBuild,
 				};
 			}
-			return OptimizeGeneratedCodeHandler.OptimizeMethod (data, method);
+			return OptimizeGeneratedCode.OptimizeMethod (data, method);
 		}
 	}
 }

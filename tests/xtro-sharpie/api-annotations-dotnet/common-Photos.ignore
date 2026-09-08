@@ -2,3 +2,11 @@
 
 # updated sharpie results
 !missing-protocol-conformance! PHCloudIdentifier should conform to NSCopying (defined in '' category)
+
+# results from initial block parameter nullability analysis
+!missing-null-allowed! 'System.Int32 Photos.PHAssetResourceManager::RequestData(Photos.PHAssetResource,Photos.PHAssetResourceRequestOptions,System.Action`1<Foundation.NSData>,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Photos.PHAssetResourceManager::WriteData(Photos.PHAssetResource,Foundation.NSUrl,Photos.PHAssetResourceRequestOptions,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Photos.PHLivePhotoEditingContext::_PrepareLivePhotoForPlayback(CoreGraphics.CGSize,Foundation.NSDictionary,System.Action`2<Photos.PHLivePhoto,Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #0
+!missing-null-allowed! 'System.Void Photos.PHLivePhotoEditingContext::_PrepareLivePhotoForPlayback(CoreGraphics.CGSize,Foundation.NSDictionary,System.Action`2<Photos.PHLivePhoto,Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #1
+!missing-null-allowed! 'System.Void Photos.PHLivePhotoEditingContext::_SaveLivePhoto(Photos.PHContentEditingOutput,Foundation.NSDictionary,System.Action`2<System.Boolean,Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #1
+!missing-null-allowed! 'System.Void Photos.PHPhotoLibrary::PerformChanges(System.Action,System.Action`2<System.Boolean,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1

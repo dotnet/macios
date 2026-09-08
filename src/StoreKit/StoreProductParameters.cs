@@ -88,9 +88,8 @@ namespace StoreKit {
 			}
 		}
 
-		/// <summary>Gets or sets a key for the affiliate token.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the affiliate token used to track App Store referrals.</summary>
+		/// <value>The affiliate token string, or <see langword="null" /> if not set.</value>
 		public string? AffiliateToken {
 			get {
 				return GetStringValue (SKStoreProductParameterKey.AffiliateToken);
@@ -100,9 +99,8 @@ namespace StoreKit {
 			}
 		}
 
-		/// <summary>Gets or sets a key for the campaign token.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the campaign token used to track App Store marketing campaigns.</summary>
+		/// <value>The campaign token string, or <see langword="null" /> if not set.</value>
 		public string? CampaignToken {
 			get {
 				return GetStringValue (SKStoreProductParameterKey.CampaignToken);

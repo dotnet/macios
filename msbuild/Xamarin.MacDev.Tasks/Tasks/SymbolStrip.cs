@@ -23,6 +23,10 @@ namespace Xamarin.MacDev.Tasks {
 		// This can also be specified as metadata on the Executable item (as 'SymbolFile')
 		public string SymbolFile { get; set; } = string.Empty;
 
+		// The local path to the symbol file (used to transfer it to the remote Mac).
+		// This can also be specified as metadata on the Executable item (as 'SymbolFileLocalPath')
+		public string SymbolFileLocalPath { get; set; } = string.Empty;
+
 		// This can also be specified as metadata on the Executable item (as 'Kind')
 		public string Kind { get; set; } = string.Empty;
 		#endregion
@@ -31,6 +35,13 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			var value = GetNonEmptyStringOrFallback (item, "Kind", Kind);
 			if (string.Equals (value, "Framework", StringComparison.OrdinalIgnoreCase))
+				return true;
+
+			// A framework's executable lives inside a '*.framework' directory. Detect that even when
+			// the 'Kind' metadata is missing, so we never do a full strip on a framework (which fails
+			// for dynamic libraries). Ref: https://github.com/dotnet/macios/issues/25952
+			var directory = Path.GetDirectoryName (item.ItemSpec);
+			if (!string.IsNullOrEmpty (directory) && directory.EndsWith (".framework", StringComparison.OrdinalIgnoreCase))
 				return true;
 
 			if (string.Equals (value, "Dynamic", StringComparison.OrdinalIgnoreCase) || item.ItemSpec.EndsWith (".dylib", StringComparison.OrdinalIgnoreCase))
@@ -78,6 +89,16 @@ namespace Xamarin.MacDev.Tasks {
 
 		public bool ShouldCreateOutputFile (ITaskItem item) => false;
 
-		public IEnumerable<ITaskItem> GetAdditionalItemsToBeCopied () => Enumerable.Empty<ITaskItem> ();
+		public IEnumerable<ITaskItem> GetAdditionalItemsToBeCopied ()
+		{
+			if (!string.IsNullOrEmpty (SymbolFileLocalPath))
+				yield return new Microsoft.Build.Utilities.TaskItem (SymbolFileLocalPath);
+
+			foreach (var item in Executable) {
+				var symbolFileLocalPath = item.GetMetadata ("SymbolFileLocalPath");
+				if (!string.IsNullOrEmpty (symbolFileLocalPath))
+					yield return new Microsoft.Build.Utilities.TaskItem (symbolFileLocalPath);
+			}
+		}
 	}
 }

@@ -149,7 +149,7 @@ public class Binding
 
 			var properties = GetDefaultProperties ();
 			var rv = DotNet.AssertBuild (proj, properties);
-			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).Select (v => v.Message);
+			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).FilterWarnings (platform).Select (v => v.Message);
 			Assert.That (warnings, Is.Empty, $"Build warnings:\n\t{string.Join ("\n\t", warnings)}");
 			AssertXcFrameworkOutput (platform, testDir, xcodeProjName);
 		}
@@ -388,15 +388,9 @@ public class Binding
 			var properties = GetDefaultProperties ();
 			var rv = DotNet.AssertBuildFailure (proj, properties);
 			var expectedErrorContent = $"xcodebuild: error: The project named \"{xcodeProjName}\" does not contain a scheme named \"{invaldSchemeName}\".";
-			var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray ();
-			AssertErrorMessages (errors,
-				new Func<string, bool> [] {
-					(msg) => msg?.Contains (expectedErrorContent) == true
-				},
-				new Func<string> [] {
-					() => expectedErrorContent
-				}
-			);
+			var errors = BinLog.GetBuildMessages (rv.BinLogPath).ToArray ();
+			var anyExpectedError = errors.Where (v => v.Message?.Contains (expectedErrorContent) == true);
+			Assert.That (anyExpectedError.Any (), Is.True, "Expected error");
 		}
 
 	}

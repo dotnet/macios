@@ -624,42 +624,34 @@ namespace SceneKit {
 		[Export ("screenSpaceAmbientOcclusionNormalThreshold")]
 		nfloat ScreenSpaceAmbientOcclusionNormalThreshold { get; set; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("projectionTransformWithViewportSize:")]
 		SCNMatrix4 GetProjectionTransform (CGSize viewportSize);
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("bloomIterationCount")]
 		nint BloomIterationCount { get; set; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("bloomIterationSpread")]
 		nfloat BloomIterationSpread { get; set; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("grainIntensity")]
 		nfloat GrainIntensity { get; set; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("grainScale")]
 		nfloat GrainScale { get; set; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("grainIsColored")]
 		bool GrainIsColored { get; set; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("whiteBalanceTemperature")]
 		nfloat WhiteBalanceTemperature { get; set; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("whiteBalanceTint")]
 		nfloat WhiteBalanceTint { get; set; }
@@ -1386,7 +1378,6 @@ namespace SceneKit {
 		[Field ("SCNHitTestOptionSearchMode")]
 		NSString SearchModeKey { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("SCNHitTestOptionIgnoreLightArea")]
 		NSString IgnoreLightAreaKey { get; }
@@ -1605,17 +1596,14 @@ namespace SceneKit {
 		[Export ("lightWithMDLLight:")]
 		SCNLight FromModelLight (MDLLight mdllight);
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("probeType", ArgumentSemantic.Assign)]
 		SCNLightProbeType ProbeType { get; set; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("probeUpdateType", ArgumentSemantic.Assign)]
 		SCNLightProbeUpdateType ProbeUpdateType { get; set; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("probeExtents", ArgumentSemantic.Assign)]
 		Vector3 ProbeExtents {
@@ -1625,7 +1613,6 @@ namespace SceneKit {
 			set;
 		}
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("probeOffset", ArgumentSemantic.Assign)]
 		Vector3 ProbeOffset {
@@ -1635,12 +1622,10 @@ namespace SceneKit {
 			set;
 		}
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("parallaxCorrectionEnabled")]
 		bool ParallaxCorrectionEnabled { get; set; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("parallaxExtentsFactor", ArgumentSemantic.Assign)]
 		Vector3 ParallaxExtentsFactor {
@@ -1650,7 +1635,6 @@ namespace SceneKit {
 			set;
 		}
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("parallaxCenterOffset", ArgumentSemantic.Assign)]
 		Vector3 ParallaxCenterOffset {
@@ -1660,17 +1644,14 @@ namespace SceneKit {
 			set;
 		}
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("probeEnvironment")]
 		SCNMaterialProperty ProbeEnvironment { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("areaType", ArgumentSemantic.Assign)]
 		SCNLightAreaType AreaType { get; set; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("areaExtents", ArgumentSemantic.Assign)]
 		Vector3 AreaExtents {
@@ -1680,17 +1661,14 @@ namespace SceneKit {
 			set;
 		}
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("areaPolygonVertices", ArgumentSemantic.Copy)]
 		NSValue [] AreaPolygonVertices { get; set; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("drawsArea")]
 		bool DrawsArea { get; set; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("doubleSided")]
 		bool DoubleSided { get; set; }
@@ -1742,7 +1720,6 @@ namespace SceneKit {
 		[Field ("SCNLightTypeProbe")]
 		NSString Probe { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("SCNLightTypeArea")]
 		NSString Area { get; }
@@ -1836,7 +1813,6 @@ namespace SceneKit {
 		[Field ("SCNLightingModelPhysicallyBased")]
 		NSString PhysicallyBased { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("SCNLightingModelShadowOnly")]
 		NSString ShadowOnly { get; }
@@ -1957,17 +1933,14 @@ namespace SceneKit {
 		[Export ("colorBufferWriteMask", ArgumentSemantic.Assign)]
 		SCNColorMask ColorBufferWriteMask { get; set; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("clearCoat")]
 		SCNMaterialProperty ClearCoat { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("clearCoatRoughness")]
 		SCNMaterialProperty ClearCoatRoughness { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("clearCoatNormal")]
 		SCNMaterialProperty ClearCoatNormal { get; }
@@ -2086,19 +2059,19 @@ namespace SceneKit {
 		SCNMaterialProperty Create (NSObject contents);
 
 		[Static]
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[return: NullAllowed]
 		[Export ("precomputedLightingEnvironmentContentsWithURL:error:")]
 		NSObject GetPrecomputedLightingEnvironmentContents (NSUrl url, out NSError error);
 
 		[Static]
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[return: NullAllowed]
 		[Export ("precomputedLightingEnvironmentContentsWithData:error:")]
 		NSObject GetPrecomputedLightingEnvironmentContents (NSData url, out NSError error);
 
 		[Static]
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[return: NullAllowed]
 		[Export ("precomputedLightingEnvironmentDataForContents:device:error:")]
 		NSData GetPrecomputedLightingEnvironmentData (NSObject contents, [NullAllowed] IMTLDevice device, out NSError error);
@@ -2190,7 +2163,6 @@ namespace SceneKit {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		SCNHitTestSearchMode SearchMode { get; set; }
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		bool IgnoreLightArea { get; set; }
 	}
@@ -3380,22 +3352,18 @@ namespace SceneKit {
 		[Export ("sceneWithMDLAsset:")]
 		SCNScene FromAsset (MDLAsset asset);
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("wantsScreenSpaceReflection")]
 		bool WantsScreenSpaceReflection { get; set; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("screenSpaceReflectionSampleCount")]
 		nint ScreenSpaceReflectionSampleCount { get; set; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("screenSpaceReflectionMaximumDistance")]
 		nfloat ScreenSpaceReflectionMaximumDistance { get; set; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("screenSpaceReflectionStride")]
 		nfloat ScreenSpaceReflectionStride { get; set; }
@@ -4044,19 +4012,16 @@ namespace SceneKit {
 		SCNNode AudioListener { get; set; }
 
 		[Abstract]
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("temporalAntialiasingEnabled")]
 		bool TemporalAntialiasingEnabled { [Bind ("isTemporalAntialiasingEnabled")] get; set; }
 
 		[Abstract]
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("currentViewport")]
 		CGRect CurrentViewport { get; }
 
 		[Abstract]
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("usesReverseZ")]
 		bool UsesReverseZ { get; set; }
@@ -4068,7 +4033,7 @@ namespace SceneKit {
 		[Export ("currentRenderPassDescriptor")]
 		MTLRenderPassDescriptor CurrentRenderPassDescriptor { get; }
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 #if XAMCORE_5_0
 		[Abstract]
 #endif
@@ -5172,7 +5137,6 @@ namespace SceneKit {
 		[Internal, Export ("setObject:forKeyedSubscript:")]
 		void _SetObject ([NullAllowed] NSObject obj, INSCopying key);
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("library", ArgumentSemantic.Strong)]
 		IMTLLibrary Library { get; set; }

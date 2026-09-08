@@ -20,7 +20,7 @@ This involves:
 
 ### Bind new APIs
 
-This is technically optional, because we can release support for a new OS version even if we bind any of the new APIs.
+This is technically optional, because we can release support for a new OS version even if we don't bind any of the new APIs.
 
 Yet we try to bind most of new APIs, because it's hard to predict what users will need.
 

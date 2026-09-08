@@ -103,7 +103,7 @@ namespace Mono.ApiTools {
 			if (srcType == tgtType) {
 				change.Append (tgtType);
 			} else {
-				change.AppendModified (srcType, tgtType);
+				change.AppendTypeModified (srcType, tgtType);
 			}
 			change.Append (" ");
 		}
@@ -150,7 +150,7 @@ namespace Mono.ApiTools {
 				if (srcType == tgtType) {
 					change.Append (tgtType);
 				} else {
-					change.AppendModified (srcType, tgtType);
+					change.AppendTypeModified (srcType, tgtType);
 				}
 				change.Append (" ");
 

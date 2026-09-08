@@ -408,27 +408,35 @@ namespace CoreGraphics {
 		}
 
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern void CGPDFContextBeginTag (/* CGContextRef* */ IntPtr context, CGPdfTagType tagType, /* CFDictionaryRef* _Nullable */ IntPtr tagProperties);
 
+		/// <summary>Opens a tagged content sequence of the specified <paramref name="tagType" /> in the PDF context.</summary>
+		/// <param name="tagType">The type of the tag to open.</param>
+		/// <param name="tagProperties">A dictionary of properties for the tag, or <see langword="null" /> if there are none.</param>
+		/// <remarks>Every call to <c>BeginTag</c> must be balanced by a matching call to <see cref="EndTag" />.</remarks>
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-		public void BeginTag (CGPdfTagType tagType, NSDictionary tagProperties)
+		public void BeginTag (CGPdfTagType tagType, NSDictionary? tagProperties)
 		{
 			CGPDFContextBeginTag (Handle, tagType, tagProperties.GetHandle ());
 			GC.KeepAlive (tagProperties);
 		}
 
+		/// <summary>Opens a tagged content sequence of the specified <paramref name="tagType" /> in the PDF context.</summary>
+		/// <param name="tagType">The type of the tag to open.</param>
+		/// <param name="tagProperties">The properties for the tag, or <see langword="null" /> if there are none.</param>
+		/// <remarks>Every call to <c>BeginTag</c> must be balanced by a matching call to <see cref="EndTag" />.</remarks>
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
-		public void BeginTag (CGPdfTagType tagType, CGPdfTagProperties tagProperties)
+		public void BeginTag (CGPdfTagType tagType, CGPdfTagProperties? tagProperties)
 		{
 			var d = tagProperties?.Dictionary;
 			CGPDFContextBeginTag (Handle, tagType, d.GetHandle ());
@@ -436,15 +444,15 @@ namespace CoreGraphics {
 		}
 
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern void CGPDFContextEndTag (/* CGContextRef* */ IntPtr context);
 
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public void EndTag ()
 		{

@@ -18,8 +18,6 @@ namespace ARKit {
 
 		// Using GetXXX methods so it's similar to the ARFaceGeometry methods.
 		/// <summary>The array of X,Y,Z coordinates defining the plane geometry.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
 		public unsafe Vector3 [] GetVertices ()
 		{
 			var count = (int) VertexCount;
@@ -32,8 +30,6 @@ namespace ARKit {
 
 		// Using GetXXX methods so it's similar to the ARFaceGeometry methods.
 		/// <summary>The UV texture coordinates for the corresponding vertex in the <see cref="ARKit.ARPlaneGeometry.GetVertices" /> array.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
 		public unsafe Vector2 [] GetTextureCoordinates ()
 		{
 			var count = (int) TextureCoordinateCount;
@@ -46,8 +42,6 @@ namespace ARKit {
 
 		// Using GetXXX methods so it's similar to the ARFaceGeometry methods.
 		/// <summary>An array of indices into the <see cref="ARKit.ARPlaneGeometry.GetVertices" /> and <see cref="ARKit.ARPlaneGeometry.GetTextureCoordinates" /> arrays.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
 		public unsafe short [] GetTriangleIndices ()
 		{
 			// There are always 3x more 'TriangleIndices' than 'TriangleCount' since 'TriangleIndices' represents Triangles (set of three indices).
@@ -61,8 +55,6 @@ namespace ARKit {
 
 		// Using GetXXX methods so it's similar to the ARFaceGeometry methods.
 		/// <summary>The vertices that lie along the plane's boundary.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
 		public unsafe Vector3 [] GetBoundaryVertices ()
 		{
 			var count = (int) BoundaryVertexCount;

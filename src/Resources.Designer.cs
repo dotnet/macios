@@ -440,7 +440,7 @@ namespace bgen {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Support for ZeroCopy strings is not implemented. Strings will be marshalled as NSStrings..
+        ///   Looks up a localized string similar to The --use-zero-copy option is not supported and will be ignored..
         /// </summary>
         internal static string BI1027 {
             get {
@@ -638,7 +638,7 @@ namespace bgen {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to [BindAs] cannot be used inside Protocol or Model types. Type: {0}.
+        ///   Looks up a localized string similar to [BindAs] cannot be used on properties or return values inside Protocol or Model types. Type: {0}.
         /// </summary>
         internal static string BI1050 {
             get {
@@ -1192,6 +1192,42 @@ namespace bgen {
         internal static string BI1124 {
             get {
                 return ResourceManager.GetString("BI1124", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The [FactoryMethod] binding method &apos;{0}.{1}&apos; has an &apos;out NSError&apos; parameter, but its return value is not nullable. Add [return: NullAllowed] to the binding method so the generated factory method can return null when the native initializer fails..
+        /// </summary>
+        internal static string BI1125 {
+            get {
+                return ResourceManager.GetString("BI1125", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The [FactoryMethod] attribute on &apos;{0}.{1}&apos; can only be used with an Objective-C &apos;init&apos; selector (the selector must be &apos;init&apos; or start with &apos;init&apos; followed by an uppercase letter), but the selector is &apos;{2}&apos;..
+        /// </summary>
+        internal static string BI1126 {
+            get {
+                return ResourceManager.GetString("BI1126", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The [FactoryMethod] attribute on &apos;{0}.{1}&apos; can&apos;t specify a method name when applied to a method that isn&apos;t a constructor. Remove the method name from the [FactoryMethod] attribute; the name of the binding method is used instead..
+        /// </summary>
+        internal static string BI1127 {
+            get {
+                return ResourceManager.GetString("BI1127", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The [Field] member &apos;{0}.{1}&apos; sets SymbolAddress, but its type is &apos;{2}&apos;; only System.IntPtr is supported..
+        /// </summary>
+        internal static string BI1128 {
+            get {
+                return ResourceManager.GetString("BI1128", resourceCulture);
             }
         }
     }

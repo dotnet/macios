@@ -106,6 +106,10 @@ Use these attributes to specify platform availability:
 
 It's typically `make run-tests` in the directory with the test project.
 
+### Adding Test Cases
+
+When adding new test cases that require a runtime identifier, prefer `-arm64` over `-x64` unless there's a specific reason to use `-x64`.
+
 ## Apple Platform Integration
 
 ### Xcode Requirements
@@ -135,6 +139,20 @@ interface SomeClass {
 
 Located in `msbuild/` directory:
 - `Xamarin.MacDev.Tasks` - Shared Apple development tasks
+
+### MSBuild Targets Pitfalls
+
+* **Never use `$([System.IO.Path]::GetFullPath('...'))` in MSBuild targets.** When building
+  remotely from Windows (Hot Restart, remote Mac builds), `GetFullPath` resolves against the
+  *local* Windows file system, producing a Windows-style absolute path instead of the intended
+  remote Mac path. Use relative paths or existing MSBuild metadata (such as `ComputedRelativePath`)
+  instead. The same applies to other `System.IO.Path` methods that resolve against the current
+  working directory (e.g., `GetDirectoryName` with a relative path may produce unexpected results
+  in a cross-platform build).
+
+### FileWrites
+
+If a target or task creates a file, that file must be added to the `FileWrites` item group. This ensures MSBuild's incremental clean can delete generated files. Additionally, if a target produces multiple output files, all of them should be listed in the target's `Outputs` attribute for correct incremental build behavior.
 
 ### Project Templates
 
@@ -342,3 +360,7 @@ try {
 
 * When creating a branch from `origin/main` (for example `git checkout -b <name> origin/main`), the new branch may be configured to track `origin/main` depending on how it is created and your Git configuration. In that case, a later `git push` or `git push origin` may try to push to `main`.
 * To avoid accidentally pushing to main, use `git push -u origin <branch>` for the first push so Git creates `origin/<branch>` and sets the branch's upstream safely. If you want to be completely explicit, use `git push origin <branch>:<branch>`.
+
+## Process stdout/stderr Capture
+
+* Never redirect both `StandardOutput` and `StandardError` and then call `ReadToEnd ()` on both streams — this can deadlock. Instead, use the asynchronous event-based approach: set `RedirectStandardOutput = true` and `RedirectStandardError = true`, subscribe to `OutputDataReceived` and `ErrorDataReceived`, then call `BeginOutputReadLine ()` and `BeginErrorReadLine ()` after `Start ()`.

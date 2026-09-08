@@ -198,7 +198,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				IsBackground = true,
 			};
 			t.Start ();
-			t.Join ();
+			Assert.That (t.Join (TimeSpan.FromSeconds (5)), Is.True, "Thread.Join timed out");
 
 			// Now we have a handle to an object that may be garbage collected at any time.
 			int counter = 0;
@@ -297,7 +297,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				IsBackground = true
 			};
 			thread.Start ();
-			thread.Join ();
+			Assert.That (thread.Join (TimeSpan.FromSeconds (5)), Is.True, "Thread.Join timed out");
 
 			var getter1 = new Func<string, string> ((key) => dict [key] as NSString);
 			var getter2 = new Func<string, NSString> ((key) => dict [key] as NSString);
@@ -555,9 +555,11 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			var t1 = new Thread (() => {
 				for (int i = 0; i < objects.Length; i++)
 					Messaging.bool_objc_msgSend_IntPtr_int (invokerClassHandle, Selector.GetHandle ("invokeMe:wait:"), objects [i], 0);
-			});
+			}) {
+				IsBackground = true,
+			};
 			t1.Start ();
-			t1.Join ();
+			Assert.That (t1.Join (TimeSpan.FromSeconds (5)), Is.True, "Thread.Join timed out");
 
 			// Collect all those managed wrappers, and make sure their finalizers are executed.
 			GC.Collect ();

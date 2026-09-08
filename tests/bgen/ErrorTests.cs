@@ -193,7 +193,7 @@ namespace GeneratorTests {
 			bgen.Profile = profile;
 			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "bindas1050modelerror.cs")));
 			bgen.AssertExecuteError ("build");
-			bgen.AssertError (1050, "[BindAs] cannot be used inside Protocol or Model types. Type: MyFooClass");
+			bgen.AssertError (1050, "[BindAs] cannot be used on properties or return values inside Protocol or Model types. Type: MyFooClass");
 		}
 
 		[Test]
@@ -205,7 +205,7 @@ namespace GeneratorTests {
 			bgen.Profile = profile;
 			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "bindas1050protocolerror.cs")));
 			bgen.AssertExecuteError ("build");
-			bgen.AssertError (1050, "[BindAs] cannot be used inside Protocol or Model types. Type: MyFooClass");
+			bgen.AssertError (1050, "[BindAs] cannot be used on properties or return values inside Protocol or Model types. Type: MyFooClass");
 		}
 
 		[Test]
@@ -230,6 +230,18 @@ namespace GeneratorTests {
 			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "bug42855.cs")));
 			bgen.AssertExecute ("build");
 			bgen.AssertWarning (1060, "The Bug42855Tests.MyFooClass protocol is decorated with [Model], but not [BaseType]. Please verify that [Model] is relevant for this protocol; if so, add [BaseType] as well, otherwise remove [Model].");
+		}
+
+		// https://github.com/dotnet/macios/issues/10015
+		[Test]
+		[TestCase (Profile.iOS)]
+		public void Issue10015 (Profile profile)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
+			var bgen = new BGenTool ();
+			bgen.Profile = profile;
+			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "issue10015.cs")));
+			bgen.AssertExecute ("build");
 		}
 
 		[Test]
@@ -529,6 +541,28 @@ namespace Bug57094 {
 }");
 			bgen.AssertExecuteError ("build");
 			bgen.AssertError (1014, "Unsupported type for Fields: byte[] for 'Bug57094.FooObject SomeField'.");
+		}
+
+		[Test]
+		[TestCase (Profile.iOS)]
+		public void BI1128 (Profile profile)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
+			var bgen = new BGenTool ();
+			bgen.Profile = profile;
+			bgen.CreateTemporaryBinding (@"
+using Foundation;
+
+namespace BI1128Tests {
+
+	[Static]
+	interface FieldConstants {
+		[Field (""InvalidSymbolAddress"", ""__Internal"", SymbolAddress = true)]
+		int InvalidSymbolAddress { get; }
+	}
+}");
+			bgen.AssertExecuteError ("build");
+			bgen.AssertError (1128, "The [Field] member 'BI1128Tests.FieldConstants.InvalidSymbolAddress' sets SymbolAddress, but its type is 'System.Int32'; only System.IntPtr is supported.");
 		}
 
 		[Test]
@@ -984,6 +1018,32 @@ namespace BI1066Errors
 				bgen.AssertError (1121, msg);
 
 			bgen.AssertErrorCount (errorMessages.Length);
+		}
+
+		[Test]
+		[TestCase (Profile.iOS)]
+		public void BI1126 (Profile profile)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
+			var bgen = new BGenTool ();
+			bgen.Profile = profile;
+			bgen.Defines = BGenTool.GetDefaultDefines (profile);
+			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "factory-method-noninit.cs")));
+			bgen.AssertExecuteError ("build");
+			bgen.AssertError (1126, "The [FactoryMethod] attribute on 'FactoryMethodNonInitTest.BadWidget.CreateWithFoo' can only be used with an Objective-C 'init' selector (the selector must be 'init' or start with 'init' followed by an uppercase letter), but the selector is 'createWithFoo:'.");
+		}
+
+		[Test]
+		[TestCase (Profile.iOS)]
+		public void BI1127 (Profile profile)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
+			var bgen = new BGenTool ();
+			bgen.Profile = profile;
+			bgen.Defines = BGenTool.GetDefaultDefines (profile);
+			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "factory-method-named-error.cs")));
+			bgen.AssertExecuteError ("build");
+			bgen.AssertError (1127, "The [FactoryMethod] attribute on 'FactoryMethodNamedError.BadWidget.CreateWithFoo' can't specify a method name when applied to a method that isn't a constructor. Remove the method name from the [FactoryMethod] attribute; the name of the binding method is used instead.");
 		}
 	}
 }

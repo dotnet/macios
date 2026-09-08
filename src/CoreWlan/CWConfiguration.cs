@@ -6,12 +6,10 @@
 using CoreFoundation;
 
 namespace CoreWlan {
-	/// <summary>To be added.</summary>
-	///     <remarks>To be added.</remarks>
+	/// <summary>Encapsulates a CoreWLAN network configuration.</summary>
 	public unsafe partial class CWConfiguration {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the ordered list of preferred network profiles.</summary>
+		/// <value>An array of network profiles, or <see langword="null" /> if none are configured.</value>
 		public CWNetworkProfile []? NetworkProfiles {
 			get {
 				NSOrderedSet profiles = _NetworkProfiles;

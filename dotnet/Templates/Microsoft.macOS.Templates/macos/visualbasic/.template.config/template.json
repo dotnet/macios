@@ -1,7 +1,10 @@
 {
   "$schema": "http://json.schemastore.org/template",
   "author": "Microsoft",
-  "classifications": [ "macOS" ],
+  "classifications": [
+    "Desktop",
+    "macOS"
+  ],
   "groupIdentity": "Microsoft.macOS.macOSApp",
   "identity": "Microsoft.macOS.macOSApp.VisualBasic",
   "name": "macOS Application",
@@ -21,21 +24,42 @@
   ],
   "preferNameDirectory": true,
   "primaryOutputs": [
-    { "path": "macOSApp1.vbproj" }
+    {
+      "path": "macOSApp1.vbproj"
+    }
   ],
   "symbols": {
     "bundleId": {
       "type": "parameter",
+      "displayName": "Bundle ID",
       "description": "Overrides CFBundleIdentifier in the Info.plist",
       "datatype": "string",
       "replaces": "com.companyname.macOSApp1"
     },
     "minOSVersion": {
       "type": "parameter",
+      "displayName": "Minimum OS version",
       "description": "Overrides SupportedOSPlatformVersion in the project file",
       "replaces": "minOSVersion",
       "datatype": "string",
-      "defaultValue": "12.0"
+      "defaultValue": "14.0"
+    },
+    "Framework": {
+      "type": "parameter",
+      "description": "The target framework for the project.",
+      "datatype": "choice",
+      "choices": [
+        {
+          "choice": "net11.0-macos",
+          "description": "Target net11.0-macos"
+        },
+        {
+          "choice": "net10.0-macos",
+          "description": "Target net10.0-macos"
+        }
+      ],
+      "replaces": "net11.0-macos",
+      "defaultValue": "net11.0-macos"
     }
   },
   "defaultName": "macOSApp1"

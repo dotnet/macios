@@ -206,10 +206,13 @@ namespace Mono.ApiTools {
 
 		public override void DiffModification (TextChunk chunk, string old, string @new)
 		{
+			// The 'old' text is what's being removed (wrap in ---), and 'new' is
+			// what's being added (wrap in +++). The original code incorrectly called
+			// DiffAddition for 'old' and DiffRemoval for 'new'.
 			if (old is not null && old.Length > 0)
-				DiffAddition (chunk, old);
+				DiffRemoval (chunk, old);
 			if (@new is not null && @new.Length > 0)
-				DiffRemoval (chunk, @new);
+				DiffAddition (chunk, @new);
 		}
 
 		public override void DiffRemoval (TextChunk chunk, string text)
@@ -223,9 +226,13 @@ namespace Mono.ApiTools {
 		public override void Diff (ApiChange apichange)
 		{
 			foreach (var line in apichange.Member.GetStringBuilder (this).ToString ().Split (new [] { Environment.NewLine }, 0)) {
-				if (line.Contains ("+++")) {
-					output.WriteLine ("-{0}", Clean (line, "+++", "---"));
-					output.WriteLine ("+{0}", Clean (line, "---", "+++"));
+				if (line.Contains ("+++") || line.Contains ("---")) {
+					var removed = Clean (line, "---", "+++");
+					var added = Clean (line, "+++", "---");
+					if (!string.IsNullOrWhiteSpace (removed))
+						output.WriteLine ("-{0}", removed);
+					if (!string.IsNullOrWhiteSpace (added))
+						output.WriteLine ("+{0}", added);
 				} else {
 					output.WriteLine (" {0}", line);
 				}

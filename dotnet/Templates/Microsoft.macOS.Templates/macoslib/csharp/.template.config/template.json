@@ -1,7 +1,7 @@
 ﻿{
   "$schema": "http://json.schemastore.org/template",
   "author": "Microsoft",
-  "classifications": [ "macOS" ],
+  "classifications": [ "Desktop", "macOS" ],
   "groupIdentity": "Microsoft.macOS.macOSLib",
   "identity": "Microsoft.macOS.macOSLib.CSharp",
   "name": "macOS Class Library",
@@ -16,5 +16,24 @@
   "primaryOutputs": [
     { "path": "macOSLib1.csproj" }
   ],
-  "defaultName": "macOSLib1"
+  "defaultName": "macOSLib1",
+  "symbols": {
+    "Framework": {
+      "type": "parameter",
+      "description": "The target framework for the project.",
+      "datatype": "choice",
+      "choices": [
+        {
+          "choice": "net11.0-macos",
+          "description": "Target net11.0-macos"
+        },
+        {
+          "choice": "net10.0-macos",
+          "description": "Target net10.0-macos"
+        }
+      ],
+      "replaces": "net11.0-macos",
+      "defaultValue": "net11.0-macos"
+    }
+  }
 }

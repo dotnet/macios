@@ -42,7 +42,7 @@ namespace MonoTouchFixtures.Foundation {
 				thread.Start ();
 
 				Assert.That (evt.Wait (TimeSpan.FromSeconds (5)), Is.True, "Not signalled twice in 5s");
-				thread.Join ();
+				Assert.That (thread.Join (TimeSpan.FromSeconds (10)), Is.True, "Thread.Join timed out");
 			}
 		}
 
@@ -70,7 +70,7 @@ namespace MonoTouchFixtures.Foundation {
 				thread.Start ();
 
 				Assert.That (evt.Wait (TimeSpan.FromSeconds (5)), Is.True, "Not signalled twice in 5s");
-				thread.Join ();
+				Assert.That (thread.Join (TimeSpan.FromSeconds (10)), Is.True, "Thread.Join timed out");
 			}
 		}
 
@@ -101,7 +101,7 @@ namespace MonoTouchFixtures.Foundation {
 
 				Assert.That (evt.WaitOne (TimeSpan.FromSeconds (5)), Is.True, "WaitOne");
 				Assert.That (result, Is.True, "result");
-				thread.Join ();
+				Assert.That (thread.Join (TimeSpan.FromSeconds (10)), Is.True, "Thread.Join timed out");
 			}
 		}
 	}

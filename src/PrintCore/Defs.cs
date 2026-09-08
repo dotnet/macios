@@ -9,6 +9,7 @@
 
 #nullable enable
 
+using System.ComponentModel;
 using System.Threading;
 using System.IO;
 
@@ -215,7 +216,12 @@ namespace PrintCore {
 		/// <summary>To be added.</summary>
 		PluginNotFound = -9701,
 		/// <summary>To be added.</summary>
-		PluginRegisterationFailed = -9702,
+		PluginRegistrationFailed = -9702,
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'PluginRegistrationFailed' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		PluginRegisterationFailed = PluginRegistrationFailed,
+#endif
 		/// <summary>To be added.</summary>
 		FontNotFound = -9703,
 		/// <summary>To be added.</summary>

@@ -3,6 +3,7 @@
 #nullable enable
 
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 using Mono.Cecil;
 using Mono.Cecil.Cil;
@@ -13,10 +14,9 @@ namespace Xamarin.Bundler {
 	public static partial class ErrorHelper {
 		public static ApplePlatform Platform;
 
-		internal static string Prefix {
-			get {
-				return "TESTS";
-			}
+		internal static string GetPrefix (IToolLog? log)
+		{
+			return "TESTS";
 		}
 
 		public enum WarningLevel {
@@ -25,33 +25,42 @@ namespace Xamarin.Bundler {
 			Disable = 1,
 		}
 
-		static Dictionary<int, WarningLevel>? warning_levels;
+		static ConditionalWeakTable<IToolLog, Dictionary<int, WarningLevel>> warning_levels = new ();
 
-		public static WarningLevel GetWarningLevel (int code)
+		public static bool TryGetWarningLevel (IToolLog log, int code, out WarningLevel warningLevel)
 		{
-			WarningLevel level;
+			warningLevel = default;
 
-			if (warning_levels is null)
-				return WarningLevel.Warning;
+			if (warning_levels.TryGetValue (log, out var log_warning_levels)) {
+				// code -1: all codes
+				if (log_warning_levels.TryGetValue (-1, out warningLevel))
+					return true;
 
-			// code -1: all codes
-			if (warning_levels.TryGetValue (-1, out level))
-				return level;
+				if (log_warning_levels.TryGetValue (code, out warningLevel))
+					return true;
+			}
 
-			if (warning_levels.TryGetValue (code, out level))
-				return level;
+			return false;
+		}
+
+		public static WarningLevel GetWarningLevel (IToolLog log, int code)
+		{
+			if (TryGetWarningLevel (log, code, out var warningLevel))
+				return warningLevel;
 
 			return WarningLevel.Warning;
 		}
 
-		public static void SetWarningLevel (WarningLevel level, int? code = null /* if null, apply to all warnings */)
+		public static void SetWarningLevel (IToolLog log, WarningLevel level, int? code = null /* if null, apply to all warnings */)
 		{
-			if (warning_levels is null)
-				warning_levels = new Dictionary<int, WarningLevel> ();
+			if (!warning_levels.TryGetValue (log, out var log_warning_levels)) {
+				log_warning_levels = new Dictionary<int, WarningLevel> ();
+				warning_levels.Add (log, log_warning_levels);
+			}
 			if (code.HasValue) {
-				warning_levels [code.Value] = level;
+				log_warning_levels [code.Value] = level;
 			} else {
-				warning_levels [-1] = level; // code -1: all codes.
+				log_warning_levels [-1] = level; // code -1: all codes.
 			}
 		}
 	}

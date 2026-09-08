@@ -32,7 +32,10 @@ namespace GenerateFrameworksConstants {
 
 		static int Fix (ApplePlatform platform, string output)
 		{
-			var frameworks = Frameworks.GetFrameworks (platform, false)!.Values.Where (v => !v.IsFrameworkUnavailable ());
+			if (!Frameworks.TryGetFrameworks (platform, out var fwks))
+				return 1;
+
+			var frameworks = fwks.Values.Where (v => !v.IsFrameworkUnavailable ());
 			var sb = new StringBuilder ();
 
 			sb.AppendLine ("namespace ObjCRuntime {");

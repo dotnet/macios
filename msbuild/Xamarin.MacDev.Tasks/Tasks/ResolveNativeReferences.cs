@@ -299,6 +299,42 @@ namespace Xamarin.MacDev.Tasks {
 			item.SetMetadata ("RelativePath", Path.Combine (FrameworksDirectory, Path.GetFileName (Path.GetDirectoryName (item.ItemSpec)!)));
 		}
 
+		// Metadata we must NOT copy from a binding resource package's 'manifest' file. A binding resource
+		// package is passive data that may come from a restored package, so its manifest must only
+		// describe native-reference content - it must not be able to inject the build-controlled
+		// path/layout/identity metadata below, which is used to compute where a native library is laid
+		// out, reidentified or published (and could otherwise redirect output outside the intended output
+		// directory). Everything else - including binding-defined metadata such as 'NoDSymUtil' or
+		// 'NoSymbolStrip' - is legitimate native-reference content and is copied as-is.
+		static readonly HashSet<string> blockedManifestMetadata = new HashSet<string> (StringComparer.OrdinalIgnoreCase) {
+			"RelativePath",
+			"ReidentifiedPath",
+			"ComputedRelativePath",
+			"DynamicLibraryId",
+			"PublishFolderType",
+			"TargetDirectory",
+			"SourceDirectory",
+		};
+
+		// Returns true if 'path' is not a safe relative subpath: i.e. it's rooted/absolute, drive-qualified,
+		// or contains a '..' traversal segment. Used to validate untrusted path-shaped values that come
+		// from a binding resource package manifest before they're combined with a directory.
+		static bool IsUnsafeRelativePath (string path)
+		{
+			if (string.IsNullOrEmpty (path))
+				return false;
+			// Drive-qualified (e.g. "C:..." on Windows) or alternate-data-stream separators.
+			if (path.IndexOf (':') >= 0)
+				return true;
+			if (Path.IsPathRooted (path))
+				return true;
+			foreach (var segment in path.Split ('/', '\\')) {
+				if (segment == "..")
+					return true;
+			}
+			return false;
+		}
+
 		void ProcessSidecar (ITaskItem r, string resources, List<ITaskItem> native_frameworks, List<string> createdFiles, CancellationToken? cancellationToken)
 		{
 			if (!TryGetSidecarManifest (Log, resources, out var manifestContents))
@@ -310,6 +346,19 @@ namespace Xamarin.MacDev.Tasks {
 			foreach (XmlNode referenceNode in document.GetElementsByTagName ("NativeReference")) {
 				ITaskItem t = new TaskItem (r);
 				var name = referenceNode.Attributes? ["Name"]?.Value.Trim ('\\', '/') ?? string.Empty;
+				// A native reference without a (usable) name can't be processed; skip it instead of falling
+				// through and accidentally treating the managed reference itself as a native reference.
+				if (string.IsNullOrEmpty (name)) {
+					Log.LogWarning (MSBStrings.W7182 /* Ignoring a native reference with no name in the binding resource package '{0}'. */, r.ItemSpec);
+					continue;
+				}
+				// The 'Name' is combined with the binding resource package's directory to locate (and
+				// potentially extract) the native reference, so make sure it can't be used to escape the
+				// binding resource package using an absolute path or '..' traversal segments.
+				if (IsUnsafeRelativePath (name)) {
+					Log.LogError (MSBStrings.E7180 /* The native reference '{0}' in the binding resource package '{1}' is invalid: the name must be a relative path without '..' segments. */, name, r.ItemSpec);
+					continue;
+				}
 				if (name.EndsWith (".xcframework", StringComparison.Ordinal) || name.EndsWith (".xcframework.zip", StringComparison.Ordinal)) {
 					if (!TryResolveXCFramework (this, TargetFrameworkMoniker, SdkIsSimulator, Architectures, resources, name, GetIntermediateDecompressionDir (resources), createdFiles, cancellationToken, out var nativeLibraryPath))
 						continue;
@@ -359,9 +408,24 @@ namespace Xamarin.MacDev.Tasks {
 				t.SetMetadata ("LinkWithSwiftSystemLibraries", "False");
 				t.SetMetadata ("SmartLink", "True");
 
-				// values from manifest, overriding defaults if provided
-				foreach (XmlNode attribute in referenceNode.ChildNodes)
-					t.SetMetadata (attribute.Name, attribute.InnerText);
+				// Values from the manifest, overriding the defaults above if provided. Skip the
+				// build-controlled path/layout/identity metadata: the manifest is passive data and must not
+				// be able to inject metadata that could redirect output outside the intended directory.
+				foreach (XmlNode attribute in referenceNode.ChildNodes) {
+					if (attribute.NodeType != XmlNodeType.Element)
+						continue;
+					if (blockedManifestMetadata.Contains (attribute.Name)) {
+						Log.LogWarning (MSBStrings.W7179 /* Ignoring the metadata '{0}' for the native reference '{1}' in the binding resource package '{2}': this metadata is computed by the build and can't be set in a binding resource package manifest. */, attribute.Name, name, r.ItemSpec);
+						continue;
+					}
+					try {
+						t.SetMetadata (attribute.Name, attribute.InnerText);
+					} catch (ArgumentException) {
+						// Reserved MSBuild metadata names (e.g. 'FullPath') can't be set and shouldn't appear
+						// in a manifest; ignore (and warn about) them rather than failing the build.
+						Log.LogWarning (MSBStrings.W7179 /* Ignoring the metadata '{0}' for the native reference '{1}' in the binding resource package '{2}': this metadata is computed by the build and can't be set in a binding resource package manifest. */, attribute.Name, name, r.ItemSpec);
+					}
+				}
 
 				native_frameworks.Add (t);
 			}

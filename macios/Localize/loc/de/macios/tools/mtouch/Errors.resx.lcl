@@ -4300,6 +4300,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";MX1504" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Cannot find the product assembly '{0}' in the list of loaded assemblies.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Die Produktassembly „{0}“ wurde in der Liste geladener Assemblys nicht gefunden.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";MX1600" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Not a Mach-O dynamic library (unknown header '0x{0}'): {1}.]]></Val>
@@ -4569,6 +4578,15 @@
           <Val><![CDATA['{0}' has multiple SupportedSimulator attributes for the '{1}' platform. Please file an issue at https://github.com/dotnet/macios/issues/new]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[„{0}“ verfügt für die Plattform „{1}“ über mehrere SupportedSimulator-Attribute. Melden Sie unter https://github.com/dotnet/macios/issues/new ein Problem.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX2262" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The 'InlineClassGetHandle' option is set to 'Strict', but we're using the dynamic registrar. This is not a supported configuration, because 'Strict' mode requires exported Objective-C classes to be available at compile time, but the dynamic registrar will create them at runtime. Please either change the 'InlineClassGetHandle' option to 'Disabled' or 'Compat', or switch to using the static registrar.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Die Option „InlineClassGetHandle“ ist auf „Streng“ festgelegt, aber es wird der dynamische Registrar verwendet. Dies ist keine unterstützte Konfiguration, da der Strengmodus erfordert, dass exportierte Objective-C-Klassen zur Kompilierzeit verfügbar sind, aber die dynamische Registrierungsstelle erstellt sie zur Laufzeit. Ändern Sie die Option „InlineClassGetHandle“ entweder in „Deaktiviert“ oder „Kompatibilität“, oder wechseln Sie zum statischen Registrar.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

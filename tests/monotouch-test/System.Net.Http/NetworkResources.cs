@@ -10,6 +10,7 @@ namespace MonoTests.System.Net.Http {
 		public static string MicrosoftUrl => AssertNetworkConnection ("https://www.microsoft.com");
 		public static Uri MicrosoftUri => new Uri (MicrosoftUrl);
 		public static string MicrosoftHttpUrl => AssertNetworkConnection ("http://www.microsoft.com");
+		public static Uri MicrosoftHttpUri => new Uri (MicrosoftHttpUrl);
 		public static string XamarinUrl => AssertNetworkConnection ("https://dotnet.microsoft.com/apps/xamarin");
 		public static string XamarinHttpUrl => AssertNetworkConnection ("http://dotnet.microsoft.com/apps/xamarin");
 		public static Uri XamarinUri => new Uri (XamarinUrl);
@@ -19,7 +20,6 @@ namespace MonoTests.System.Net.Http {
 		public static string [] HttpsUrls => new [] {
 			MicrosoftUrl,
 			XamarinUrl,
-			Httpbin.Url,
 		};
 
 		public static string [] HttpUrls => new [] {
@@ -86,7 +86,8 @@ namespace MonoTests.System.Net.Http {
 		}
 
 		public static class Httpbin {
-			public static string Url => AssertNetworkConnection ("https://httpbin.org");
+			// Uses an in-proc HTTP server to avoid external network dependencies.
+			public static string Url => HttpbinTestServer.BaseUrl;
 			public static Uri Uri => new Uri ($"{Url}");
 			public static string DeleteUrl => $"{Url}/delete";
 			public static string GetUrl => $"{Url}/get";
@@ -94,13 +95,13 @@ namespace MonoTests.System.Net.Http {
 			public static string PostUrl => $"{Url}/post";
 			public static string PutUrl => $"{Url}/put";
 			public static string CookiesUrl => $"{Url}/cookies";
-			public static string HttpUrl => AssertNetworkConnection ("http://httpbin.org");
+			public static string HttpUrl => Url;
 
 			public static string GetAbsoluteRedirectUrl (int count) => $"{Url}/absolute-redirect/{count}";
 			public static string GetRedirectUrl (int count) => $"{Url}/redirect/{count}";
 			public static string GetRelativeRedirectUrl (int count) => $"{Url}/relative-redirect/{count}";
 			public static string GetRedirectToUrl (string redirectTo) => $"{Url}/redirect-to?url={Uri.EscapeDataString (redirectTo)}";
-			public static string GetStatusCodeUrl (HttpStatusCode status) => $"{HttpUrl}/status/{(int) status}";
+			public static string GetStatusCodeUrl (HttpStatusCode status) => $"{Url}/status/{(int) status}";
 			public static string GetSetCookieUrl (string cookie, string value) => $"{Url}/cookies/set?{cookie}={value}";
 			public static string GetBasicAuthUrl (string username, string password) => $"{Url}/basic-auth/{username}/{password}";
 			public static string GetDigestAuthUrl (string username, string password) => $"{Url}/digest-auth/auth/{username}/{password}";

@@ -38,7 +38,6 @@ namespace Xharness {
 			var os = new OptionSet () {
 				{ "h|?|help", "Displays the help", (v) => showHelp!.Invoke () },
 				{ "v|verbose", "Show verbose output", (v) => configuration.Verbosity++ },
-				{ "use-system:", "Use the system version of Xamarin.iOS/Xamarin.Mac or the locally build version. Default: the locally build version.", (v) => configuration.UseSystemXamarinIOSMac = v == "1" || v == "true" || string.IsNullOrEmpty (v) },
 				{ "rootdir=", "The root directory for the tests.", (v) => HarnessConfiguration.RootDirectory = v },
 				{ "sdkroot=", "Where Xcode is", (v) => configuration.SdkRoot = v },
 				{ "target=", "Where to run the project ([ios|tvos]-[device|simulator).", (v) => configuration.Target = v.ParseAsAppRunnerTarget () },

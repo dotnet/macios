@@ -2,6 +2,11 @@
   "author": "Microsoft",
   "name": "Mac Catalyst Uygulaması",
   "description": ".NET Mac Catalyst uygulaması oluşturmaya yönelik bir proje",
+  "symbols/bundleId/displayName": "Bundle ID",
   "symbols/bundleId/description": "Info.plist dosyasındaki CFBundleIdentifier öğesini geçersiz kılar",
-  "symbols/minOSVersion/description": "Proje dosyasındaki SupportedOSPlatformVersion öğesini geçersiz kılar"
+  "symbols/minOSVersion/displayName": "Minimum OS version",
+  "symbols/minOSVersion/description": "Proje dosyasındaki SupportedOSPlatformVersion öğesini geçersiz kılar",
+  "symbols/Framework/description": "The target framework for the project.",
+  "symbols/Framework/choices/net11.0-maccatalyst/description": "Target net11.0-maccatalyst",
+  "symbols/Framework/choices/net10.0-maccatalyst/description": "Target net10.0-maccatalyst"
 }

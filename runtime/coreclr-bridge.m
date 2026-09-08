@@ -8,16 +8,15 @@
 
 #if defined (CORECLR_RUNTIME)
 
-#include <sys/stat.h>
 #include <inttypes.h>
 #include <pthread.h>
-#include <sys/mman.h>
 
 #include "product.h"
 #include "runtime-internal.h"
 #include "slinked-list.h"
 #include "xamarin/xamarin.h"
 #include "xamarin/coreclr-bridge.h"
+#include "monotouch-debug.h"
 
 #include "coreclrhost.h"
 
@@ -213,10 +212,6 @@ monoobject_dict_free_value (CFAllocatorRef allocator, const void *value)
  * Ref: https://github.com/dotnet/designs/blob/1bb5844c165195e2f633cb1dbe042c4b92aefc4d/accepted/2021/objectivec-interop.md
  */
 
-struct TrackedObjectInfo {
-	struct NSObjectData* data;
-};
-
 void
 xamarin_bridge_setup ()
 {
@@ -296,10 +291,10 @@ xamarin_coreclr_reference_tracking_is_referenced_callback (void* ptr)
 	// But we can access the native memory given to us when the object was toggled
 	// (and which is passed as the 'ptr' argument), so let's get the data we need from there.
 	int rv = 0;
-	struct TrackedObjectInfo *info = (struct TrackedObjectInfo *) ptr;
-	enum NSObjectFlags flags = (enum NSObjectFlags) info->data->flags;
+	struct NSObjectData *data = (struct NSObjectData *) ptr;
+	enum NSObjectFlags flags = (enum NSObjectFlags) data->flags;
 	bool isRegisteredToggleRef = (flags & NSObjectFlagsRegisteredToggleRef) == NSObjectFlagsRegisteredToggleRef;
-	id handle = info->data->handle;
+	id handle = data->handle;
 	MonoToggleRefStatus res = (MonoToggleRefStatus) 0;
 
 	if (isRegisteredToggleRef) {
@@ -337,9 +332,9 @@ xamarin_coreclr_reference_tracking_is_referenced_callback (void* ptr)
 void
 xamarin_coreclr_reference_tracking_tracked_object_entered_finalization (void* ptr)
 {
-	struct TrackedObjectInfo *info = (struct TrackedObjectInfo *) ptr;
-	info->data->flags = (enum NSObjectFlags) (info->data->flags | NSObjectFlagsInFinalizerQueue);
-	LOG_CORECLR (stderr, "%s (%p) flags: %i\n", __func__, ptr, (int) info->flags);
+	struct NSObjectData *data = (struct NSObjectData *) ptr;
+	data->flags = (enum NSObjectFlags) (data->flags | NSObjectFlagsInFinalizerQueue);
+	LOG_CORECLR (stderr, "%s (%p) flags: %i\n", __func__, ptr, (int) data->flags);
 }
 
 void
@@ -365,104 +360,29 @@ xamarin_enable_new_refcount ()
 }
 
 /**
- * xamarin_bridge_decode_value:
- * 
- * This implementation is a slightly modified copy (to make it compile) of mono_metadata_decode_value
- * https://github.com/dotnet/runtime/blob/08a7b2382799082eedb94d70fca6c66eb75f2872/src/mono/mono/metadata/metadata.c#L1525
+ * The runtimeconfig.json 'configProperties' are baked into the app as C arrays at build time
+ * (see the generated main and Xamarin.Shared.Sdk.targets), and made available here through the
+ * xamarin_runtime_config_property_* globals. This is simpler than the mobile-runtimeconfig binary
+ * format used by MonoVM: no separate file to ship, mmap and decode at startup.
  */
-guint32
-xamarin_bridge_decode_value (const char *_ptr, const char **rptr)
-{
-	const unsigned char *ptr = (const unsigned char *) _ptr;
-	unsigned char b = *ptr;
-	guint32 len;
-	
-	if ((b & 0x80) == 0){
-		len = b;
-		++ptr;
-	} else if ((b & 0x40) == 0){
-		len = (guint32) ((b & 0x3f) << 8 | ptr [1]);
-		ptr += 2;
-	} else {
-		len = (guint32) (((b & 0x1f) << 24) |
-			(ptr [1] << 16) |
-			(ptr [2] << 8) |
-			ptr [3]);
-		ptr += 4;
-	}
-	if (rptr)
-		*rptr = (char*)ptr;
-	
-	return len;
-}
-
-static char *
-xamarin_read_config_string (const char **buf)
-{
-		guint32 configLength = xamarin_bridge_decode_value (*buf, buf);
-		char *value = strndup (*buf, configLength);
-		*buf = *buf + configLength;
-		return value;
-}
-
-static void *
-xamarin_mmap_runtime_config_file (size_t *length)
-{
-	if (xamarin_runtime_configuration_name == NULL) {
-		LOG (PRODUCT ": No runtime config file provided at build time.\n");
-		return NULL;
-	}
-
-	char path [1024];
-	if (!xamarin_locate_app_resource (xamarin_runtime_configuration_name, path, sizeof (path))) {
-		LOG (PRODUCT ": Could not locate the runtime config file '%s' in the app bundle.\n", xamarin_runtime_configuration_name);
-		return NULL;
-	}
-	
-	int fd = open (path, O_RDONLY);
-	if (fd == -1) {
-		LOG (PRODUCT ": Could not open the runtime config file '%s' in the app bundle: %s\n", path, strerror (errno));
-		return NULL;
-	}
-
-	struct stat stat_buf = { };
-	if (fstat (fd, &stat_buf) == -1) {
-		LOG (PRODUCT ": Could not stat the runtime config file '%s' in the app bundle: %s\n", path, strerror (errno));
-		close (fd);
-		return NULL;
-	}
-
-	*length = (size_t) stat_buf.st_size;
-	void *buffer = mmap (NULL, *length, PROT_READ, MAP_PRIVATE, fd, 0);
-	close (fd);
-	return buffer;
-}
 
 // Input: the property keys + values passed to xamarin_bridge_vm_initialize
-// Output: newly allocated arrays of property keys + values that include those passed to xamarin_bridge_vm_initialize together with those in the runtimeconfig.bin file
+// Output: newly allocated arrays of property keys + values that include those passed to xamarin_bridge_vm_initialize together with those baked into the app from the runtimeconfig.json file
 // Caller must free the allocated arrays + their elements
 void
 xamarin_bridge_compute_properties (int inputCount, const char **inputKeys, const char **inputValues, int* outputCount, const char ***outputKeys, const char ***outputValues)
 {
-	size_t fd_len = 0;
-	const char *buf = (const char *) xamarin_mmap_runtime_config_file (&fd_len);
-	int runtimeConfigCount = 0;
-
-	if (buf != NULL)
-		runtimeConfigCount = (int) xamarin_bridge_decode_value (buf, &buf);
+	int runtimeConfigCount = xamarin_runtime_config_property_count;
 
 	// Allocate the output arrays
 	*outputCount = inputCount + runtimeConfigCount;
 	*outputKeys = (const char **) calloc ((size_t) *outputCount, sizeof (char *));
 	*outputValues = (const char **) calloc ((size_t) *outputCount, sizeof (char *));
 
-	// Read the runtimeconfig properties
-	// https://github.com/dotnet/runtime/blob/57bfe474518ab5b7cfe6bf7424a79ce3af9d6657/docs/design/mono/mobile-runtimeconfig-json.md#the-encoded-runtimeconfig-format
+	// Copy the runtimeconfig properties baked into the app
 	for (int i = 0; i < runtimeConfigCount; i++) {
-		char *key = xamarin_read_config_string (&buf);
-		char *value = xamarin_read_config_string (&buf);
-		(*outputKeys) [i] = key;
-		(*outputValues) [i] = value;
+		(*outputKeys) [i] = strdup (xamarin_runtime_config_property_keys [i]);
+		(*outputValues) [i] = strdup (xamarin_runtime_config_property_values [i]);
 	}
 
 	// Copy the input properties
@@ -474,9 +394,6 @@ xamarin_bridge_compute_properties (int inputCount, const char **inputKeys, const
 			NSLog (@PRODUCT ": No name/value specified for runtime property %s=%s", inputKeys [i], inputValues [i]);
 		}
 	}
-
-	if (buf != NULL)
-		munmap ((void *) buf, fd_len);
 }
 
 #if !defined (NATIVEAOT)
@@ -484,6 +401,13 @@ bool
 xamarin_bridge_vm_initialize (int propertyCount, const char **propertyKeys, const char **propertyValues)
 {
 	int rv;
+
+#if defined (DEBUG) && !TARGET_OS_SIMULATOR && !TARGET_OS_MACCATALYST && !TARGET_OS_OSX
+	// If mlaunch is going to set up port forwarding (and change environment variables such
+	// as the hot reload websocket endpoint), wait for that to complete before we initialize
+	// CoreCLR - otherwise CoreCLR (and the startup hooks) may read/cache the old values.
+	monotouch_wait_for_port_forwarding ();
+#endif
 
 	int combinedPropertyCount = 0;
 	const char **combinedPropertyKeys = NULL;
@@ -510,6 +434,10 @@ xamarin_bridge_vm_initialize (int propertyCount, const char **propertyKeys, cons
 	free ((void *) combinedPropertyValues);
 
 	LOG_CORECLR (stderr, "xamarin_vm_initialize (%i, %p, %p): rv: %i domainId: %i handle: %p\n", combinedPropertyCount, combinedPropertyKeys, combinedPropertyValues, rv, coreclr_domainId, coreclr_handle);
+
+	if (rv != 0) {
+		LOG (PRODUCT ": The call to 'coreclr_initialize' failed: %i (%p)\n", rv, (void *) (intptr_t) rv);
+	}
 
 	return rv == 0;
 }
@@ -841,7 +769,7 @@ mono_object_unbox (MonoObject *obj)
 	void *rv = obj->struct_value;
 
 	if (rv == NULL)
-		xamarin_assertion_message ("%s (%p) => no struct value?\n", __func__);
+		xamarin_assertion_message ("%s (%p) => no struct value?\n", __func__, obj);
 
 	LOG_CORECLR (stderr, "%s (%p) => %p\n", __func__, obj, rv);
 

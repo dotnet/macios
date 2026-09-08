@@ -3443,18 +3443,19 @@ namespace AppKit {
 		Third = 1002,
 	}
 
+	/// <summary>Specifies a global option affecting all OpenGL contexts within the process.</summary>
 	[NoMacCatalyst]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'Metal' Framework instead.")]
 	public enum NSOpenGLGlobalOption : uint {
-		/// <summary>To be added.</summary>
+		/// <summary>Specifies the number of pixel format entries the format cache can hold.</summary>
 		FormatCacheSize = 501,
-		/// <summary>To be added.</summary>
+		/// <summary>Clears the pixel format cache.</summary>
 		ClearFormatCache = 502,
-		/// <summary>To be added.</summary>
+		/// <summary>Controls whether renderers are retained in memory between uses.</summary>
 		RetainRenderers = 503,
-		/// <summary>To be added.</summary>
+		/// <summary>Controls whether the shader build cache is used.</summary>
 		UseBuildCache = 506,
-		/// <summary>To be added.</summary>
+		/// <summary>Resets the internal OpenGL library state.</summary>
 		[Deprecated (PlatformName.MacOSX, 10, 4)]
 		ResetLibrary = 504,
 	}

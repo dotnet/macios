@@ -415,7 +415,7 @@ namespace MonoTouch.NUnit.UI {
 				}
 				// NUnit redirects Console.Out while tests run. Keep this writer independent from
 				// both the original and redirected writers to avoid acquiring their locks in reverse order.
-				writers.Add (TextWriter.Synchronized (new StreamWriter (Console.OpenStandardOutput ()) {
+				writers.Add (TextWriter.Synchronized (new StreamWriter (Console.OpenStandardOutput (), new UTF8Encoding (false), 1024, leaveOpen: true) {
 					AutoFlush = true,
 				}));
 				Writer = new MultiplexedTextWriter (writers);

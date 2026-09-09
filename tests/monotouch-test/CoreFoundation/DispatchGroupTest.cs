@@ -7,6 +7,8 @@
 // Copyright 2013 Xamarin Inc. All rights reserved.
 //
 
+using System.Threading.Tasks;
+
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.CoreFoundation {

@@ -306,22 +306,9 @@ namespace Xamarin.MacDev.Tasks {
 			return !Log.HasLoggedErrors;
 		}
 
-		static readonly object homeEnvironmentLock = new ();
-
 		static int ExecuteBGen (List<string> args, string? customHome, CancellationToken cancellationToken)
 		{
-			if (string.IsNullOrEmpty (customHome))
-				return BindingTouch.Run (args.ToArray (), cancellationToken);
-
-			lock (homeEnvironmentLock) {
-				var previousHome = Environment.GetEnvironmentVariable ("HOME");
-				Environment.SetEnvironmentVariable ("HOME", customHome);
-				try {
-					return BindingTouch.Run (args.ToArray (), cancellationToken);
-				} finally {
-					Environment.SetEnvironmentVariable ("HOME", previousHome);
-				}
-			}
+			return BindingTouch.Run (args.ToArray (), cancellationToken, customHome);
 		}
 
 		public bool ShouldCopyToBuildServer (ITaskItem item) => !item.IsFrameworkItem ();

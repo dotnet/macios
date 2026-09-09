@@ -50,14 +50,16 @@ using System.Diagnostics;
 
 public class BindingTouch : IDisposable, IToolLog {
 	readonly CancellationToken cancellationToken;
+	readonly string? customHome;
 
-	public BindingTouch () : this (CancellationToken.None)
+	public BindingTouch () : this (CancellationToken.None, null)
 	{
 	}
 
-	BindingTouch (CancellationToken cancellationToken)
+	BindingTouch (CancellationToken cancellationToken, string? customHome)
 	{
 		this.cancellationToken = cancellationToken;
+		this.customHome = customHome;
 	}
 
 	public static ApplePlatform [] AllPlatforms = new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst };
@@ -119,10 +121,10 @@ public class BindingTouch : IDisposable, IToolLog {
 
 	public static int Main (string [] args)
 	{
-		return Run (args, CancellationToken.None);
+		return Run (args, CancellationToken.None, null);
 	}
 
-	public static int Run (string [] args, CancellationToken cancellationToken)
+	public static int Run (string [] args, CancellationToken cancellationToken, string? customHome)
 	{
 		try {
 #if XAMMACIOS_DEBUGGER
@@ -138,7 +140,7 @@ public class BindingTouch : IDisposable, IToolLog {
 
 			Console.WriteLine ("Debugger attached");
 #endif
-			return Main2 (args, cancellationToken);
+			return Main2 (args, cancellationToken, customHome);
 		} catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) {
 			throw;
 		} catch (Exception ex) {
@@ -147,9 +149,9 @@ public class BindingTouch : IDisposable, IToolLog {
 		}
 	}
 
-	static int Main2 (string [] args, CancellationToken cancellationToken)
+	static int Main2 (string [] args, CancellationToken cancellationToken, string? customHome)
 	{
-		using var touch = new BindingTouch (cancellationToken);
+		using var touch = new BindingTouch (cancellationToken, customHome);
 		return touch.Main3 (args);
 	}
 
@@ -555,7 +557,10 @@ public class BindingTouch : IDisposable, IToolLog {
 			arguments.Insert (i - 1, compile_command [i]);
 		}
 
-		if (Driver.RunCommand (this, compile_command [0], arguments, null, out var compile_output, true, Verbosity) != 0)
+		var environment = new Dictionary<string, string?> ();
+		if (!string.IsNullOrEmpty (customHome))
+			environment ["HOME"] = customHome;
+		if (Driver.RunCommand (this, compile_command [0], arguments, environment, out var compile_output, true, Verbosity) != 0)
 			throw ErrorHelper.CreateError (errorCode, $"{compiler} {StringUtils.FormatArguments (arguments)}\n{compile_output}".Replace ("\n", "\n\t"));
 		var output = string.Join (Environment.NewLine, compile_output.ToString ().Split (new char [] { '\n' }, StringSplitOptions.RemoveEmptyEntries));
 		if (!string.IsNullOrEmpty (output))

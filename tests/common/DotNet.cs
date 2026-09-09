@@ -61,10 +61,10 @@ namespace Xamarin.Tests {
 			return Execute ("restore", project, properties, false);
 		}
 
-		public static ExecutionResult AssertBuild (string project, Dictionary<string, string>? properties = null, string? target = null, TimeSpan? timeout = null)
+		public static ExecutionResult AssertBuild (string project, Dictionary<string, string>? properties = null, string? target = null, TimeSpan? timeout = null, Dictionary<string, string?>? environmentVariables = null)
 		{
 			IgnoreIfUnsupportedMonoRuntime (properties);
-			return Execute ("build", project, properties, true, target: target, timeout: timeout);
+			return Execute ("build", project, properties, true, target: target, timeout: timeout, environmentVariables: environmentVariables);
 		}
 
 		static void IgnoreIfUnsupportedMonoRuntime (Dictionary<string, string>? properties)
@@ -255,7 +255,7 @@ namespace Xamarin.Tests {
 				string.Join ("\n", lastLines);
 		}
 
-		public static ExecutionResult Execute (string verb, string project, Dictionary<string, string>? properties, bool assert_success = true, string? target = null, bool? msbuildParallelism = null, TimeSpan? timeout = null, params string [] extraArguments)
+		public static ExecutionResult Execute (string verb, string project, Dictionary<string, string>? properties, bool assert_success = true, string? target = null, bool? msbuildParallelism = null, TimeSpan? timeout = null, Dictionary<string, string?>? environmentVariables = null, params string [] extraArguments)
 		{
 			if (!File.Exists (project))
 				throw new FileNotFoundException ($"The project file '{project}' does not exist.");
@@ -358,6 +358,10 @@ namespace Xamarin.Tests {
 				var env = new Dictionary<string, string?> ();
 				env ["MSBuildSDKsPath"] = null;
 				env ["MSBUILD_EXE_PATH"] = null;
+				if (environmentVariables is not null) {
+					foreach (var kvp in environmentVariables)
+						env [kvp.Key] = kvp.Value;
+				}
 				timeout ??= TimeSpan.FromMinutes (10);
 				var rv = Execution.RunAsync (Executable, args, env, Console.Out, workingDirectory: Path.GetDirectoryName (project), timeout: timeout).Result;
 				var output = rv.Output.MergedOutput;

@@ -3,6 +3,69 @@ using Mono.Cecil;
 namespace Xamarin.Tests {
 	[TestFixture]
 	public class RegistrarTest : TestBaseClass {
+		// The 'Registrar' property is computed inside the 'SelectRegistrar' target (not at evaluation
+		// time), so its value is only recorded in the binlog when MSBuild's property tracking is
+		// enabled. This isn't the case by default (in particular not on CI), so explicitly enable it
+		// (just for the child 'dotnet build' process) for the tests in this file that need to look up
+		// the resulting value of $(Registrar) in the binlog.
+		static readonly Dictionary<string, string?> EnablePropertyTracking = new Dictionary<string, string?> {
+			{ "MSBuildLogPropertyTracking", "1" },
+		};
+
+		[TestCase (ApplePlatform.iOS, "None", "partial-static")]
+		[TestCase (ApplePlatform.iOS, "SdkOnly", "trimmable-static")]
+		public void DefaultCoreCLRSimulatorRegistrar (ApplePlatform platform, string linkMode, string expectedRegistrar)
+		{
+			var runtimeIdentifiers = "iossimulator-arm64";
+
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			var projectPath = GetProjectPath ("MySimpleApp", platform: platform);
+			Clean (projectPath);
+
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["MtouchLink"] = linkMode;
+			properties ["UseMonoRuntime"] = "false";
+
+			var result = DotNet.AssertBuild (projectPath, properties, environmentVariables: EnablePropertyTracking);
+
+			Assert.That (BinLog.TryFindPropertyValue (result.BinLogPath, "Registrar", out var registrar), Is.True, "Could not find the 'Registrar' property in the binlog.");
+			Assert.That (registrar, Is.EqualTo (expectedRegistrar), "Registrar");
+			Assert.That (BinLog.TryFindPropertyValue (result.BinLogPath, "PrepareAssemblies", out var prepareAssemblies), Is.True, "Could not find the 'PrepareAssemblies' property in the binlog.");
+			Assert.That (prepareAssemblies, Is.EqualTo ("true"), "PrepareAssemblies");
+		}
+
+		[TestCase (ApplePlatform.iOS)]
+		public void ChangeDefaultCoreCLRSimulatorRegistrar (ApplePlatform platform)
+		{
+			var runtimeIdentifiers = "iossimulator-arm64";
+
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			var projectPath = GetProjectPath ("MySimpleApp", platform: platform);
+			Clean (projectPath);
+
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["MtouchLink"] = "None";
+			properties ["UseMonoRuntime"] = "false";
+			properties ["Registrar"] = "trimmable-static";
+			DotNet.AssertBuild (projectPath, properties);
+
+			properties.Remove ("Registrar");
+			var result = DotNet.AssertBuild (projectPath, properties, environmentVariables: EnablePropertyTracking);
+
+			Assert.That (BinLog.TryFindPropertyValue (result.BinLogPath, "Registrar", out var registrar), Is.True, "Could not find the 'Registrar' property in the binlog.");
+			Assert.That (registrar, Is.EqualTo ("partial-static"), "Registrar");
+
+			var targets = BinLog.GetAllTargets (result.BinLogPath);
+			Assert.That (targets.Any (v => v.TargetName == "_PrepareAssemblies" && !v.Skipped), Is.True, "_PrepareAssemblies should execute when the registrar changes.");
+
+			var objDir = GetObjDir (projectPath, platform, runtimeIdentifiers);
+			var registrarItemsPath = Path.Combine (objDir, "linker-items", "_RegistrarFile.items");
+			Assert.That (registrarItemsPath, Does.Exist, "_RegistrarFile.items");
+			Assert.That (File.ReadAllText (registrarItemsPath), Does.Not.Contain ("<_RegistrarFile Include="), "_RegistrarFile.items");
+		}
+
 		// This test does evil things that the AOT runtime complains about, so it only works when not running the AOT compiler (aka x64 when using Mono).
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64", true)]
 		[TestCase (ApplePlatform.MacOSX, null, true)]
@@ -13,9 +76,10 @@ namespace Xamarin.Tests {
 			var project = "MyRegistrarApp";
 			var configuration = "Debug";
 
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
 			runtimeIdentifiers ??= GetDefaultRuntimeIdentifier (platform);
 
-			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
 
 			var projectPath = GetProjectPath (project, platform: platform);

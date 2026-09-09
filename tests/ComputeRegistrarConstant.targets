@@ -2,12 +2,12 @@
 <Project>
 	<Target Name="ComputeRegistrarConstant" BeforeTargets="BeforeBuild">
 		<PropertyGroup Condition="('$(_PlatformName)' == 'iOS' Or $(TargetFramework.EndsWith('-ios')) Or '$(_PlatformName)' == 'tvOS' Or $(TargetFramework.EndsWith('-tvos'))) And '$(_UseNativeAot)' != 'true'">
-			<IsDynamicRegistrar Condition="'$(SdkIsSimulator)' == 'true' And '$(Registrar)' == ''">true</IsDynamicRegistrar>
+			<IsDynamicRegistrar Condition="'$(UseMonoRuntime)' == 'true' And '$(SdkIsSimulator)' == 'true' And '$(Registrar)' == ''">true</IsDynamicRegistrar>
 			<IsDynamicRegistrar Condition="'$(Registrar)' == 'dynamic'">true</IsDynamicRegistrar>
 		</PropertyGroup>
 
 		<PropertyGroup Condition="('$(_PlatformName)' == 'macOS' Or $(TargetFramework.EndsWith('-macos')) Or '$(_PlatformName)' == 'MacCatalyst' Or $(TargetFramework.EndsWith('-maccatalyst'))) And '$(_UseNativeAot)' != 'true'">
-			<IsDynamicRegistrar Condition="'$(Configuration)' == 'Debug' And '$(Registrar)' == ''">true</IsDynamicRegistrar>
+			<IsDynamicRegistrar Condition="'$(UseMonoRuntime)' == 'true' And '$(Configuration)' == 'Debug' And '$(Registrar)' == ''">true</IsDynamicRegistrar>
 			<IsDynamicRegistrar Condition="'$(Registrar)' == 'dynamic'">true</IsDynamicRegistrar>
 		</PropertyGroup>
 

@@ -324,6 +324,11 @@ namespace Cecil.Tests {
 
 		static string GetDocId (TypeReference tr)
 		{
+			// Roslyn currently renders function pointers as an empty type name in DocIds (e.g. "M:C.M(,System.Int32)").
+			// Ref: https://github.com/dotnet/roslyn/issues/48363
+			if (tr is FunctionPointerType)
+				return "";
+
 			string name = "";
 			if (tr.IsNested) {
 				var decl = tr.DeclaringType;

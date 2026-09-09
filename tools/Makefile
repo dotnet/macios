@@ -14,4 +14,8 @@ SUBDIRS+=mlaunch
 
 SUBDIRS += dotnet-linker
 
+ifndef NO_XCODE
+SUBDIRS += spawner
+endif
+
 SUBDIRS += assembly-preparer

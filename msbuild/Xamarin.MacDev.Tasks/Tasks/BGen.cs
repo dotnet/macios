@@ -295,7 +295,7 @@ namespace Xamarin.MacDev.Tasks {
 			ThreadStaticTextWriter.ReplaceConsole (output);
 			int exitCode;
 			try {
-				exitCode = ExecuteBGen (args, customHome);
+				exitCode = ExecuteBGen (args, customHome, cancellationTokenSource.Token);
 			} finally {
 				ThreadStaticTextWriter.RestoreConsole ();
 			}
@@ -308,16 +308,16 @@ namespace Xamarin.MacDev.Tasks {
 
 		static readonly object homeEnvironmentLock = new ();
 
-		static int ExecuteBGen (List<string> args, string? customHome)
+		static int ExecuteBGen (List<string> args, string? customHome, CancellationToken cancellationToken)
 		{
 			if (string.IsNullOrEmpty (customHome))
-				return BindingTouch.Main (args.ToArray ());
+				return BindingTouch.Run (args.ToArray (), cancellationToken);
 
 			lock (homeEnvironmentLock) {
 				var previousHome = Environment.GetEnvironmentVariable ("HOME");
 				Environment.SetEnvironmentVariable ("HOME", customHome);
 				try {
-					return BindingTouch.Main (args.ToArray ());
+					return BindingTouch.Run (args.ToArray (), cancellationToken);
 				} finally {
 					Environment.SetEnvironmentVariable ("HOME", previousHome);
 				}

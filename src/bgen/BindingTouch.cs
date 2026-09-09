@@ -560,7 +560,9 @@ public class BindingTouch : IDisposable, IToolLog {
 		var environment = new Dictionary<string, string?> ();
 		if (!string.IsNullOrEmpty (customHome))
 			environment ["HOME"] = customHome;
-		if (Driver.RunCommand (this, compile_command [0], arguments, environment, out var compile_output, true, Verbosity) != 0)
+		var exitCode = Driver.RunCommand (this, compile_command [0], arguments, environment, out var compile_output, true, Verbosity, cancellationToken);
+		cancellationToken.ThrowIfCancellationRequested ();
+		if (exitCode != 0)
 			throw ErrorHelper.CreateError (errorCode, $"{compiler} {StringUtils.FormatArguments (arguments)}\n{compile_output}".Replace ("\n", "\n\t"));
 		var output = string.Join (Environment.NewLine, compile_output.ToString ().Split (new char [] { '\n' }, StringSplitOptions.RemoveEmptyEntries));
 		if (!string.IsNullOrEmpty (output))

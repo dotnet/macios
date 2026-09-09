@@ -10,6 +10,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Xamarin.Utils;
@@ -22,6 +23,12 @@ namespace Xamarin.Bundler {
 		{
 			output = new StringBuilder ();
 			return RunCommand (log, path, args, env, output, suppressPrintOnErrors, verbose);
+		}
+
+		public static int RunCommand (IToolLog log, string path, IList<string> args, Dictionary<string, string?>? env, out StringBuilder output, bool suppressPrintOnErrors, int verbose, CancellationToken cancellationToken)
+		{
+			output = new StringBuilder ();
+			return RunCommand (log, path, args, env, output, output, suppressPrintOnErrors, verbose, cancellationToken);
 		}
 
 		public static int RunCommand (IToolLog log, string path, IList<string> args, Dictionary<string, string?>? env, out StringBuilder output, bool suppressPrintOnErrors)
@@ -77,6 +84,13 @@ namespace Xamarin.Bundler {
 			return RunCommand (log, path, args, env, output_received, error_received, suppressPrintOnErrors, verbosity);
 		}
 
+		public static int RunCommand (IToolLog log, string path, IList<string> args, Dictionary<string, string?>? env, StringBuilder? output, StringBuilder? error, bool suppressPrintOnErrors, int verbosity, CancellationToken cancellationToken)
+		{
+			var output_received = output is null ? null : new Action<string?> ((v) => { if (v is not null) output.AppendLine (v); });
+			var error_received = error is null ? null : new Action<string?> ((v) => { if (v is not null) error.AppendLine (v); });
+			return RunCommand (log, path, args, env, output_received, error_received, suppressPrintOnErrors, verbosity, cancellationToken);
+		}
+
 		static int RunCommand (IToolLog log, string path, IList<string> args, Dictionary<string, string?>? env, Action<string?>? output_received, bool suppressPrintOnErrors)
 		{
 			return RunCommand (log, path, args, env, output_received, output_received, suppressPrintOnErrors, log.Verbosity);
@@ -87,7 +101,7 @@ namespace Xamarin.Bundler {
 			return RunCommand (log, path, args, env, output_received, error_received, false, log.Verbosity);
 		}
 
-		static int RunCommand (IToolLog log, string path, IList<string> args, Dictionary<string, string?>? env, Action<string?>? output_received, Action<string?>? error_received, bool suppressPrintOnErrors, int verbosity)
+		static int RunCommand (IToolLog log, string path, IList<string> args, Dictionary<string, string?>? env, Action<string?>? output_received, Action<string?>? error_received, bool suppressPrintOnErrors, int verbosity, CancellationToken? cancellationToken = null)
 		{
 			var output = new StringBuilder ();
 			var outputCallback = new Action<string?> ((line) => {
@@ -105,7 +119,7 @@ namespace Xamarin.Bundler {
 
 			log.Log (1, $"{path} {StringUtils.FormatArguments (args)}");
 
-			var p = Execution.RunWithCallbacksAsync (path, args, env, outputCallback, errorCallback).Result;
+			var p = Execution.RunWithCallbacksAsync (path, args, env, outputCallback, errorCallback, cancellationToken: cancellationToken).Result;
 
 			if (output_received is not null)
 				output_received (null);

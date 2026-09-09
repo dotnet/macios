@@ -57,5 +57,20 @@ namespace Xamarin.MacDev.Tasks {
 
 			ExecuteTask (task);
 		}
+
+		[Test]
+		public void ExecutesExternalProcess ()
+		{
+			var task = CreateTask<BGen> ();
+
+			task.ApiDefinitions = new [] { new TaskItem ("ignored.cs") };
+			task.BGenToolPath = "/does/not/exist";
+			task.BGenToolExe = "bgen.dll";
+			task.ExtraArgs = "/help";
+			task.ResponseFilePath = Path.Combine (Cache.CreateTemporaryDirectory (), "response-file.txt");
+			task.UseExternalProcess = true;
+
+			ExecuteTask (task, expectedErrorCount: 1);
+		}
 	}
 }

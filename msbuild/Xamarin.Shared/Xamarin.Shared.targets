@@ -2098,6 +2098,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 			BGenToolPath="$(BGenToolPath)"
 			BGenToolExe="$(BGenToolExe)"
+			UseExternalProcess="$(_BGenUseExternalProcess)"
 			>
 		</BGen>
 	</Target>

@@ -68,6 +68,8 @@ namespace Xamarin.MacDev.Tasks {
 
 		public bool ProcessEnums { get; set; }
 
+		public bool UseExternalProcess { get; set; }
+
 		[Required]
 		public string ProjectDir { get; set; } = string.Empty;
 
@@ -271,9 +273,25 @@ namespace Xamarin.MacDev.Tasks {
 			if (Log.HasLoggedErrors)
 				return false;
 
-			var output = new StringBuilder ();
 			var customHome = Environment.GetEnvironmentVariable ("DOTNET_CUSTOM_HOME");
 			cancellationTokenSource = new CancellationTokenSource ();
+			if (UseExternalProcess) {
+				var env = new Dictionary<string, string?> ();
+				if (!string.IsNullOrEmpty (customHome))
+					env ["HOME"] = customHome;
+
+				var bgenPath = PathUtils.ConvertToMacPath (BGenToolPath);
+				var bgenExe = PathUtils.ConvertToMacPath (BGenToolExe);
+				args.Insert (0, Path.Combine (bgenPath, bgenExe));
+				var executable = this.GetDotNetPath ();
+				if (Log.HasLoggedErrors)
+					return false;
+
+				ExecuteAsync (executable, args, environment: env, cancellationToken: cancellationTokenSource.Token).Wait ();
+				return !Log.HasLoggedErrors;
+			}
+
+			var output = new StringBuilder ();
 			ThreadStaticTextWriter.ReplaceConsole (output);
 			int exitCode;
 			try {

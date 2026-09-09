@@ -19,15 +19,15 @@ namespace MonoTouchFixtures.CoreFoundation {
 		{
 			using (var dg = DispatchGroup.Create ()) {
 				var dq = DispatchQueue.GetGlobalQueue (DispatchQueuePriority.Default);
-				var called = false;
+				var called = new TaskCompletionSource<bool> ();
 
 				dg.DispatchAsync (dq, delegate
 				{
-					called = true;
+					called.SetResult (true);
 				});
 
 				Assert.That (dg.Wait (DispatchTime.Forever), Is.True);
-				Assert.That (called, Is.True, "Called");
+				Assert.That (called.Task.Result, Is.True, "Called");
 				dq.Dispose ();
 			}
 		}

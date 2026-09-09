@@ -16,7 +16,7 @@ namespace Xamarin.Tests {
 		{
 			// When the user sets $(DynamicRegistrationSupported), the value must be passed straight through to
 			// the 'ObjCRuntime.Runtime.DynamicRegistrationSupported' trimmer feature switch (the assembly-preparer
-			// doesn't need to compute it, so RegistrarRemovalTrackingStep is skipped).
+			// doesn't need to compute it, so DetectApiUsageStep is skipped).
 			var project = "MySimpleApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
@@ -58,7 +58,7 @@ namespace Xamarin.Tests {
 		public void SkippedWhenPlatformAssemblyNotTrimmed (ApplePlatform platform, string runtimeIdentifiers)
 		{
 			// When the platform assembly isn't being trimmed (link mode None), the dynamic registrar can't be
-			// removed, so RegistrarRemovalTrackingStep is skipped and no DynamicRegistrationSupported feature
+			// removed, so DetectApiUsageStep is skipped and no DynamicRegistrationSupported feature
 			// switch is emitted (the dynamic registrar is kept, which is the default).
 			var project = "MySimpleApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);

@@ -27,12 +27,18 @@
 
 #nullable enable
 
+#if !NET
+#pragma warning disable CS8604
+#endif
+
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Mono.Options;
+
+using Assembly = System.Reflection.Assembly;
 
 using Xamarin.Bundler;
 using Xamarin.Utils;
@@ -60,7 +66,7 @@ public class BindingTouch : IDisposable, IToolLog {
 	public bool SupportsXmlDocumentation { get => supportsXmlDocumentation; }
 
 	public MetadataLoadContext? universe;
-	public Frameworks? Frameworks;
+	public BGenFrameworks? Frameworks;
 
 	DocumentationManager? documentationManager;
 	public DocumentationManager DocumentationManager => documentationManager!;
@@ -290,12 +296,16 @@ public class BindingTouch : IDisposable, IToolLog {
 
 			documentationManager = new DocumentationManager (supportsXmlDocumentation ? tmpass : string.Empty);
 
-			Frameworks = new Frameworks (CurrentPlatform);
+			Frameworks = new BGenFrameworks (CurrentPlatform);
 
 			// Explicitly load our attribute library so that IKVM doesn't try (and fail) to find it.
 			universe.LoadFromAssemblyPath (LibraryManager.GetAttributeLibraryPath (LibraryInfo, CurrentPlatform));
 
-			typeCache ??= new (universe, Frameworks, CurrentPlatform, apiAssembly, universe.CoreAssembly, baselib,
+			var coreAssembly = universe.CoreAssembly;
+			if (coreAssembly is null)
+				throw new InvalidOperationException ("Could not load the core assembly.");
+
+			typeCache ??= new (universe, Frameworks, CurrentPlatform, apiAssembly, coreAssembly, baselib,
 				BindThirdPartyLibrary);
 			attributeManager ??= new (typeCache);
 			typeManager ??= new (this);
@@ -597,6 +607,18 @@ public class BindingTouch : IDisposable, IToolLog {
 		ErrorHelper.Show (exception);
 	}
 
+#if MSBUILD_TASKS
+	public void LogError (Xamarin.Bundler.ProductException exception)
+	{
+		ErrorHelper.Show (exception);
+	}
+
+	public void LogWarning (Xamarin.Bundler.ProductException exception)
+	{
+		ErrorHelper.Show (exception);
+	}
+#endif
+
 	public void LogException (Exception exception)
 	{
 		ErrorHelper.Show (exception);
@@ -610,7 +632,9 @@ public class BindingTouch : IDisposable, IToolLog {
 }
 
 namespace Xamarin.Bundler {
+#if !MSBUILD_TASKS
 	public partial class Driver {
 		public static int GetDefaultVerbosity () => 0;
 	}
+#endif
 }

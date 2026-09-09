@@ -56,11 +56,15 @@ using Xamarin.Utils;
 
 #nullable enable
 
+#if !NET
+#pragma warning disable CS8600, CS8602, CS8604
+#endif
+
 public partial class Generator : IMemberGatherer {
 	internal bool IsPublicMode;
 	internal const string NativeHandleType = "NativeHandle";
 	BindingTouch BindingTouch;
-	Frameworks Frameworks { get { return BindingTouch.Frameworks!; } }
+	BGenFrameworks Frameworks { get { return BindingTouch.Frameworks!; } }
 	public TypeManager TypeManager { get { return BindingTouch.TypeManager; } }
 	public AttributeManager AttributeManager { get { return BindingTouch.AttributeManager; } }
 	NamespaceCache NamespaceCache { get { return BindingTouch.NamespaceCache; } }
@@ -8067,5 +8071,4 @@ public partial class Generator : IMemberGatherer {
 	{
 		return assembly == api.Assembly;
 	}
-
 }

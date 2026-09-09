@@ -66,7 +66,12 @@
 		<CreateR2RFramework Condition="'$(CreateR2RFramework)' == '' And ('$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS')">true</CreateR2RFramework>
 		<CreateR2RDylib Condition="'$(CreateR2RDylib)' == '' And '$(CreateR2RFramework)' != 'true'">true</CreateR2RDylib>
 
-		<FilterReadyToRunAssemblies Condition="'$(FilterReadyToRunAssemblies)' == '' And '$(Configuration)' != 'Release'">true</FilterReadyToRunAssemblies>
+		<!--
+		We don't R2R user assemblies when we're building a debug build:
+		  * because R2R-compiled assemblies aren't debuggable.
+		  * to speed up debug builds.
+		-->
+		<FilterReadyToRunAssemblies Condition="'$(FilterReadyToRunAssemblies)' == '' And '$(_BundlerDebug)' == 'true'">true</FilterReadyToRunAssemblies>
 	</PropertyGroup>
 
 

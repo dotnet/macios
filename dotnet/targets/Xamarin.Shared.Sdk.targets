@@ -756,6 +756,14 @@
 			<HotReloadCompatibleBuild Condition="'$(HotReloadCompatibleBuild)' == '' And '$(Registrar)' == 'managed-static'">false</HotReloadCompatibleBuild>
 			<HotReloadCompatibleBuild Condition="'$(HotReloadCompatibleBuild)' == '' And '$(_UseNativeAot)' != 'true'">$(_BundlerDebug)</HotReloadCompatibleBuild>
 			<HotReloadCompatibleBuild Condition="'$(HotReloadCompatibleBuild)' == ''">false</HotReloadCompatibleBuild>
+
+			<!--
+				$(HotReloadCompatibleBuild) requires that reloadable assemblies aren't modified, and the
+				linker fails the build with an error if that happens. This is a safety net to catch bugs, so
+				it's not meant to be a public/documented opt-out, but provide an (undocumented) escape hatch
+				in case the safety net itself has a bug and produces a false positive.
+			-->
+			<_HotReloadModifiedAssemblySafetyNet Condition="'$(_HotReloadModifiedAssemblySafetyNet)' == ''">true</_HotReloadModifiedAssemblySafetyNet>
 		</PropertyGroup>
 	</Target>
 
@@ -923,6 +931,7 @@
 				InvariantGlobalization=$(InvariantGlobalization)
 				HybridGlobalization=$(HybridGlobalization)
 				HotReloadCompatibleBuild=$(HotReloadCompatibleBuild)
+				HotReloadModifiedAssemblySafetyNet=$(_HotReloadModifiedAssemblySafetyNet)
 				ItemsDirectory=$(_LinkerItemsDirectory)
 				IsAppExtension=$(IsAppExtension)
 				IsMultiRidBuild=$(_IsUniversalBuild)

@@ -1252,10 +1252,8 @@ public partial class Generator : IMemberGatherer {
 		if (string.IsNullOrEmpty (export.Selector))
 			throw new BindingException (1024, true, mo.DeclaringType!.FullName, mo.Name);
 
-		if (export.Selector.IndexOfAny (invalid_selector_chars) != -1) {
-			Console.Error.WriteLine ("Export attribute contains invalid selector name: {0}", export.Selector);
-			Environment.Exit (1);
-		}
+		if (export.Selector.IndexOfAny (invalid_selector_chars) != -1)
+			throw new BindingException (1129, true, export.Selector);
 
 		return export;
 	}

@@ -46,7 +46,7 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			if (TryParse (RuntimeConfigFile) is not JsonObject mainObject) {
 				if (!Log.HasLoggedErrors)
-					Log.LogError (MSBStrings.E7185 /* The runtime configuration file '{0}' is not a valid JSON object. */, RuntimeConfigFile);
+					Log.LogError (MSBStrings.E7188 /* The runtime configuration file '{0}' is not a valid JSON object. */, RuntimeConfigFile);
 				return false;
 			}
 

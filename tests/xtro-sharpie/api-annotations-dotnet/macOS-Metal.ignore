@@ -15,3 +15,70 @@
 !unknown-selector! MTLLinkedFunctions::setMotionTransformBuffer: not found
 !unknown-selector! MTLLinkedFunctions::setMotionTransformBufferOffset: not found
 !unknown-selector! MTLLinkedFunctions::setMotionTransformCount: not found
+!deprecated-attribute-missing! MTLBlitCommandEncoder::getTextureAccessCounters:region:mipLevel:slice:resetCounters:countersBuffer:countersBufferOffset: missing a [Deprecated] attribute
+!deprecated-attribute-missing! MTLBlitCommandEncoder::resetTextureAccessCounters:region:mipLevel:slice: missing a [Deprecated] attribute
+!deprecated-attribute-missing! MTLDevice::areBarycentricCoordsSupported missing a [Deprecated] attribute
+!deprecated-attribute-missing! MTLDevice::newLibraryWithFile:error: missing a [Deprecated] attribute
+!deprecated-attribute-missing! MTLDevice::supportsFeatureSet: missing a [Deprecated] attribute
+!deprecated-attribute-missing! MTLFunction::newArgumentEncoderWithBufferIndex:reflection: missing a [Deprecated] attribute
+!deprecated-attribute-missing! MTLRenderCommandEncoder::useHeap: missing a [Deprecated] attribute
+!deprecated-attribute-missing! MTLRenderCommandEncoder::useHeaps:count: missing a [Deprecated] attribute
+!deprecated-attribute-missing! MTLRenderCommandEncoder::useResource:usage: missing a [Deprecated] attribute
+!deprecated-attribute-missing! MTLRenderCommandEncoder::useResources:count:usage: missing a [Deprecated] attribute
+!missing-null-allowed! 'Foundation.NSError Metal.IMTLCommandBuffer::get_Error()' is missing an [NullAllowed] on return type
+!missing-null-allowed! 'Metal.IMTLAccelerationStructureCommandEncoder Metal.IMTLCommandBuffer::CreateAccelerationStructureCommandEncoder()' is missing an [NullAllowed] on return type
+!missing-null-allowed! 'Metal.IMTLBlitCommandEncoder Metal.IMTLCommandBuffer::CreateBlitCommandEncoder(Metal.MTLBlitPassDescriptor)' is missing an [NullAllowed] on return type
+!missing-null-allowed! 'Metal.IMTLBlitCommandEncoder Metal.IMTLCommandBuffer::get_BlitCommandEncoder()' is missing an [NullAllowed] on return type
+!missing-null-allowed! 'Metal.IMTLBuffer Metal.IMTLDevice::CreateBufferNoCopy(System.IntPtr,System.UIntPtr,Metal.MTLResourceOptions,Metal.MTLDeallocator)' is missing an [NullAllowed] on parameter #3
+!missing-null-allowed! 'Metal.IMTLComputeCommandEncoder Metal.IMTLCommandBuffer::CreateComputeCommandEncoder(Metal.MTLComputePassDescriptor)' is missing an [NullAllowed] on return type
+!missing-null-allowed! 'Metal.IMTLComputeCommandEncoder Metal.IMTLCommandBuffer::get_ComputeCommandEncoder()' is missing an [NullAllowed] on return type
+!missing-null-allowed! 'Metal.IMTLComputePipelineState Metal.IMTLComputePipelineState::CreateComputePipelineState(Metal.IMTLFunction[],Foundation.NSError&)' is missing an [NullAllowed] on return type
+!missing-null-allowed! 'Metal.IMTLComputePipelineState Metal.IMTLDevice::CreateComputePipelineState(Metal.IMTLFunction,Foundation.NSError&)' is missing an [NullAllowed] on return type
+!missing-null-allowed! 'Metal.IMTLComputePipelineState Metal.IMTLDevice::CreateComputePipelineState(Metal.IMTLFunction,Metal.MTLPipelineOption,Metal.MTLComputePipelineReflection&,Foundation.NSError&)' is missing an [NullAllowed] on return type
+!missing-null-allowed! 'Metal.IMTLComputePipelineState Metal.IMTLDevice::CreateComputePipelineState(Metal.MTLComputePipelineDescriptor,Metal.MTLPipelineOption,Metal.MTLComputePipelineReflection&,Foundation.NSError&)' is missing an [NullAllowed] on return type
+!missing-null-allowed! 'Metal.IMTLFence Metal.IMTLDevice::CreateFence()' is missing an [NullAllowed] on return type
+!missing-null-allowed! 'Metal.IMTLFunction Metal.IMTLLibrary::CreateFunction(System.String)' is missing an [NullAllowed] on return type
+!missing-null-allowed! 'Metal.IMTLFunctionHandle Metal.IMTLComputePipelineState::CreateFunctionHandle(Metal.IMTLFunction)' is missing an [NullAllowed] on return type
+!missing-null-allowed! 'Metal.IMTLIntersectionFunctionTable Metal.IMTLComputePipelineState::CreateIntersectionFunctionTable(Metal.MTLIntersectionFunctionTableDescriptor)' is missing an [NullAllowed] on return type
+!missing-null-allowed! 'Metal.IMTLLibrary Metal.IMTLDevice::CreateDefaultLibrary()' is missing an [NullAllowed] on return type
+!missing-null-allowed! 'Metal.IMTLLibrary Metal.IMTLDevice::CreateLibrary(CoreFoundation.DispatchData,Foundation.NSError&)' is missing an [NullAllowed] on return type
+!missing-null-allowed! 'Metal.IMTLLibrary Metal.IMTLDevice::CreateLibrary(System.String,Metal.MTLCompileOptions,Foundation.NSError&)' is missing an [NullAllowed] on parameter #1
+!missing-null-allowed! 'Metal.IMTLLibrary Metal.IMTLDevice::CreateLibrary(System.String,Metal.MTLCompileOptions,Foundation.NSError&)' is missing an [NullAllowed] on return type
+!missing-null-allowed! 'Metal.IMTLRenderCommandEncoder Metal.IMTLCommandBuffer::CreateRenderCommandEncoder(Metal.MTLRenderPassDescriptor)' is missing an [NullAllowed] on return type
+!missing-null-allowed! 'Metal.IMTLRenderPipelineState Metal.IMTLDevice::CreateRenderPipelineState(Metal.MTLRenderPipelineDescriptor,Foundation.NSError&)' is missing an [NullAllowed] on return type
+!missing-null-allowed! 'Metal.IMTLRenderPipelineState Metal.IMTLDevice::CreateRenderPipelineState(Metal.MTLRenderPipelineDescriptor,Metal.MTLPipelineOption,Metal.MTLRenderPipelineReflection&,Foundation.NSError&)' is missing an [NullAllowed] on return type
+!missing-null-allowed! 'Metal.IMTLResourceStateCommandEncoder Metal.IMTLCommandBuffer::CreateResourceStateCommandEncoder(Metal.MTLResourceStatePassDescriptor)' is missing an [NullAllowed] on return type
+!missing-null-allowed! 'Metal.IMTLVisibleFunctionTable Metal.IMTLComputePipelineState::CreateVisibleFunctionTable(Metal.MTLVisibleFunctionTableDescriptor)' is missing an [NullAllowed] on return type
+!missing-null-allowed! 'Metal.MTLVertexAttribute[] Metal.IMTLFunction::get_VertexAttributes()' is missing an [NullAllowed] on return type
+!missing-null-allowed! 'System.String Metal.IMTLDepthStencilState::get_Label()' is missing an [NullAllowed] on return type
+!missing-null-allowed! 'System.String Metal.IMTLRenderPipelineState::get_Label()' is missing an [NullAllowed] on return type
+!missing-null-allowed! 'System.String Metal.IMTLSamplerState::get_Label()' is missing an [NullAllowed] on return type
+!missing-null-allowed! 'System.Void Metal.IMTL4MachineLearningCommandEncoder::SetArgumentTable(Metal.IMTL4ArgumentTable)' is missing an [NullAllowed] on parameter #0
+!missing-null-allowed! 'System.Void Metal.IMTL4RenderCommandEncoder::SetArgumentTable(Metal.IMTL4ArgumentTable,Metal.MTLRenderStages)' is missing an [NullAllowed] on parameter #0
+!missing-null-allowed! 'System.Void Metal.IMTLAccelerationStructureCommandEncoder::RefitAccelerationStructure(Metal.IMTLAccelerationStructure,Metal.MTLAccelerationStructureDescriptor,Metal.IMTLAccelerationStructure,Metal.IMTLBuffer,System.UIntPtr)' is missing an [NullAllowed] on parameter #3
+!missing-null-allowed! 'System.Void Metal.IMTLCommandBuffer::set_Label(System.String)' is missing an [NullAllowed] on parameter #0
+!missing-null-allowed! 'System.Void Metal.IMTLCommandEncoder::set_Label(System.String)' is missing an [NullAllowed] on parameter #0
+!missing-null-allowed! 'System.Void Metal.IMTLCommandQueue::set_Label(System.String)' is missing an [NullAllowed] on parameter #0
+!missing-null-allowed! 'System.Void Metal.IMTLComputeCommandEncoder::SetBuffer(Metal.IMTLBuffer,System.UIntPtr,System.UIntPtr)' is missing an [NullAllowed] on parameter #0
+!missing-null-allowed! 'System.Void Metal.IMTLComputeCommandEncoder::SetSamplerState(Metal.IMTLSamplerState,System.Single,System.Single,System.UIntPtr)' is missing an [NullAllowed] on parameter #0
+!missing-null-allowed! 'System.Void Metal.IMTLComputeCommandEncoder::SetSamplerState(Metal.IMTLSamplerState,System.UIntPtr)' is missing an [NullAllowed] on parameter #0
+!missing-null-allowed! 'System.Void Metal.IMTLComputeCommandEncoder::SetTexture(Metal.IMTLTexture,System.UIntPtr)' is missing an [NullAllowed] on parameter #0
+!missing-null-allowed! 'System.Void Metal.IMTLDevice::CreateLibrary(System.String,Metal.MTLCompileOptions,System.Action`2<Metal.IMTLLibrary,Foundation.NSError>)' is missing an [NullAllowed] on parameter #1
+!missing-null-allowed! 'System.Void Metal.IMTLLibrary::CreateFunction(Metal.MTLFunctionDescriptor,System.Action`2<Metal.IMTLFunction,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Metal.IMTLLibrary::CreateFunction(Metal.MTLFunctionDescriptor,System.Action`2<Metal.IMTLFunction,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1
+!missing-null-allowed! 'System.Void Metal.IMTLLibrary::CreateFunction(System.String,Metal.MTLFunctionConstantValues,System.Action`2<Metal.IMTLFunction,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Metal.IMTLLibrary::CreateFunction(System.String,Metal.MTLFunctionConstantValues,System.Action`2<Metal.IMTLFunction,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1
+!missing-null-allowed! 'System.Void Metal.IMTLLibrary::CreateIntersectionFunction(Metal.MTLIntersectionFunctionDescriptor,System.Action`2<Metal.IMTLFunction,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Metal.IMTLLibrary::CreateIntersectionFunction(Metal.MTLIntersectionFunctionDescriptor,System.Action`2<Metal.IMTLFunction,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1
+!missing-null-allowed! 'System.Void Metal.IMTLLibrary::set_Label(System.String)' is missing an [NullAllowed] on parameter #0
+!missing-null-allowed! 'System.Void Metal.IMTLRenderCommandEncoder::SetDepthStencilState(Metal.IMTLDepthStencilState)' is missing an [NullAllowed] on parameter #0
+!missing-null-allowed! 'System.Void Metal.IMTLRenderCommandEncoder::SetFragmentBuffer(Metal.IMTLBuffer,System.UIntPtr,System.UIntPtr)' is missing an [NullAllowed] on parameter #0
+!missing-null-allowed! 'System.Void Metal.IMTLRenderCommandEncoder::SetFragmentSamplerState(Metal.IMTLSamplerState,System.Single,System.Single,System.UIntPtr)' is missing an [NullAllowed] on parameter #0
+!missing-null-allowed! 'System.Void Metal.IMTLRenderCommandEncoder::SetFragmentSamplerState(Metal.IMTLSamplerState,System.UIntPtr)' is missing an [NullAllowed] on parameter #0
+!missing-null-allowed! 'System.Void Metal.IMTLRenderCommandEncoder::SetFragmentTexture(Metal.IMTLTexture,System.UIntPtr)' is missing an [NullAllowed] on parameter #0
+!missing-null-allowed! 'System.Void Metal.IMTLRenderCommandEncoder::SetObjectBuffer(Metal.IMTLBuffer,System.UIntPtr,System.UIntPtr)' is missing an [NullAllowed] on parameter #0
+!missing-null-allowed! 'System.Void Metal.IMTLRenderCommandEncoder::SetVertexBuffer(Metal.IMTLBuffer,System.UIntPtr,System.UIntPtr)' is missing an [NullAllowed] on parameter #0
+!missing-null-allowed! 'System.Void Metal.IMTLRenderCommandEncoder::SetVertexSamplerState(Metal.IMTLSamplerState,System.Single,System.Single,System.UIntPtr)' is missing an [NullAllowed] on parameter #0
+!missing-null-allowed! 'System.Void Metal.IMTLRenderCommandEncoder::SetVertexSamplerState(Metal.IMTLSamplerState,System.UIntPtr)' is missing an [NullAllowed] on parameter #0
+!missing-null-allowed! 'System.Void Metal.IMTLRenderCommandEncoder::SetVertexTexture(Metal.IMTLTexture,System.UIntPtr)' is missing an [NullAllowed] on parameter #0
+!missing-null-allowed! 'System.Void Metal.IMTLResource::set_Label(System.String)' is missing an [NullAllowed] on parameter #0

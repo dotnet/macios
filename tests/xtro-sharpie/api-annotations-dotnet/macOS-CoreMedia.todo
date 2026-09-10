@@ -1,0 +1,6 @@
+!missing-field! kCMGenlockClockNotification_DisplayGenlockModeChanged not bound
+!missing-field! kCMGenlockClockNotificationPayload_AnyDisplayIsSynchronizedToLockedGenlockSignal not bound
+!missing-pinvoke! CMClockCreateGenlockClock is not bound
+!missing-pinvoke! CMClockGetPreferredStartTimePattern is not bound
+!missing-pinvoke! CMClockImplementsGetPreferredStartTimePattern is not bound
+!missing-pinvoke! CMIsAnyDisplaySynchronizedToLockedGenlockSignal is not bound

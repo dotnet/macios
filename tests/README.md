@@ -112,20 +112,6 @@ And then (note that VARIATION has to be set for both 'make build' and 'make run'
     $ make build VARIATION=variation
     $ make run VARIATION=variation
 
-### Packaged macOS callback diagnostics
-
-On macOS 26, the packaged test runner enables `MACIOS_TEST_CALLBACK_DIAGNOSTICS=1`
-for `monotouch-test`. Network connection setup logs callback state transitions and
-probes the default global and a private dispatch queue without changing the
-existing waits. On the first `[NWConnection callback timeout]` message, the runner
-captures a three-second native thread sample, bounded by a 20-second sampling
-timeout. The sample is included in the per-test output log and its HtmlReport
-artifact; the test application's exit code is preserved.
-
-To enable the callback logging in a locally built test application:
-
-    $ MACIOS_TEST_CALLBACK_DIAGNOSTICS=1 make -C monotouch-test/dotnet/macOS run-bare RUN_ARGUMENTS=--test=MonoTouchFixtures.Network.NWConnectionTest
-
 ### Test-harness windows
 
 The macOS runner and `TestRuntime.RunAsync` disable animations on their own

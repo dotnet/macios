@@ -25,7 +25,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
@@ -269,11 +268,10 @@ foreach (var config in testConfigs) {
 	var useLaunchArgs = config.Platform == "MacCatalyst";
 	var execArgs = useLaunchArgs ? launchArguments : [];
 	var timeout = config.Suite.IsLonger ? longerTimeout : defaultTimeout;
-	var diagnoseCallbacks = macOSMajorVersion == 26 && config.Platform == "macOS" && config.Suite.Name == "monotouch-test";
 
 	Console.WriteLine ($"Executing {config.DisplayName}...");
 	var sw = Stopwatch.StartNew ();
-	var (execExit, output, screenshotPath) = ExecuteWithTimeout (executablePath, execArgs, timeout, diagnoseCallbacks);
+	var (execExit, output, screenshotPath) = ExecuteWithTimeout (executablePath, execArgs, timeout);
 	sw.Stop ();
 
 	// Save output file
@@ -419,7 +417,7 @@ return failedSuites > 0 ? 1 : 0;
 
 // ===== Helper methods =====
 
-(int ExitCode, string Output, string ScreenshotPath) ExecuteWithTimeout (string executable, string [] arguments, int timeoutSeconds, bool diagnoseCallbacks)
+(int ExitCode, string Output, string ScreenshotPath) ExecuteWithTimeout (string executable, string [] arguments, int timeoutSeconds)
 {
 	var launchTimeout = TimeSpan.FromSeconds (30);
 	var executionTimeout = TimeSpan.FromSeconds (timeoutSeconds);
@@ -433,8 +431,6 @@ return failedSuites > 0 ? 1 : 0;
 	for (var attempt = 0; attempt < maxLaunchAttempts; attempt++) {
 		var launchTimeoutFile = Path.GetFullPath ($"launch-timeout-sentinel-{pid}-{attempt}.txt");
 		using var launchTimedOut = new ManualResetEvent (false);
-		Thread? sampleThread = null;
-		var sampleRequested = 0;
 
 		var p = new Process ();
 		p.StartInfo.FileName = executable;
@@ -444,33 +440,17 @@ return failedSuites > 0 ? 1 : 0;
 		p.StartInfo.RedirectStandardOutput = true;
 		p.StartInfo.RedirectStandardError = true;
 		p.StartInfo.EnvironmentVariables ["LAUNCH_SENTINEL_FILE"] = launchTimeoutFile;
-		if (diagnoseCallbacks)
-			p.StartInfo.EnvironmentVariables ["MACIOS_TEST_CALLBACK_DIAGNOSTICS"] = "1";
 
-		void CaptureOutput (string? line)
-		{
-			if (line is null)
-				return;
-			lock (outputSb)
-				outputSb.AppendLine (line);
-
-			if (!diagnoseCallbacks || !line.Contains ("[NWConnection callback timeout]", StringComparison.Ordinal) || Interlocked.CompareExchange (ref sampleRequested, 1, 0) != 0)
-				return;
-
-			var targetPid = p.Id;
-			sampleThread = new Thread (() => {
-				var sample = CaptureThreadSample (targetPid);
+		p.OutputDataReceived += (_, e) => {
+			if (e.Data is not null)
 				lock (outputSb)
-					outputSb.AppendLine (sample);
-			}) {
-				IsBackground = true,
-				Name = "Callback timeout diagnostics",
-			};
-			sampleThread.Start ();
-		}
-
-		p.OutputDataReceived += (_, e) => CaptureOutput (e.Data);
-		p.ErrorDataReceived += (_, e) => CaptureOutput (e.Data);
+					outputSb.AppendLine (e.Data);
+		};
+		p.ErrorDataReceived += (_, e) => {
+			if (e.Data is not null)
+				lock (outputSb)
+					outputSb.AppendLine (e.Data);
+		};
 
 		var launchTimer = new Thread (() => {
 			if (p.WaitForExit ((int) launchTimeout.TotalMilliseconds)) {
@@ -503,7 +483,6 @@ return failedSuites > 0 ? 1 : 0;
 			}
 			// this is required, even if 'p.WaitForExit (timeout)' return true, to flush output buffers.
 			p.WaitForExit ();
-			sampleThread?.Join ();
 
 			launchTimer.Join ();
 
@@ -530,65 +509,6 @@ return failedSuites > 0 ? 1 : 0;
 	}
 
 	return (-1, output, screenshotPath);
-}
-
-string CaptureThreadSample (int targetPid)
-{
-	var diagnostics = new StringBuilder ();
-	diagnostics.AppendLine ($"--- Native callback thread sample (pid {targetPid}) ---");
-	var sampleFile = "";
-	try {
-		sampleFile = Path.GetTempFileName ();
-		using var sample = new Process ();
-		sample.StartInfo.FileName = "/usr/bin/sample";
-		sample.StartInfo.ArgumentList.Add (targetPid.ToString ());
-		sample.StartInfo.ArgumentList.Add ("3");
-		sample.StartInfo.ArgumentList.Add ("-file");
-		sample.StartInfo.ArgumentList.Add (sampleFile);
-		sample.StartInfo.UseShellExecute = false;
-		sample.StartInfo.RedirectStandardOutput = true;
-		sample.StartInfo.RedirectStandardError = true;
-		sample.OutputDataReceived += (_, e) => {
-			if (e.Data is not null)
-				lock (diagnostics)
-					diagnostics.AppendLine (e.Data);
-		};
-		sample.ErrorDataReceived += (_, e) => {
-			if (e.Data is not null)
-				lock (diagnostics)
-					diagnostics.AppendLine (e.Data);
-		};
-		sample.Start ();
-		sample.BeginOutputReadLine ();
-		sample.BeginErrorReadLine ();
-		if (!sample.WaitForExit (TimeSpan.FromSeconds (20))) {
-			sample.Kill (entireProcessTree: true);
-			sample.WaitForExit ();
-			diagnostics.AppendLine ("Native thread sampling timed out after 20 seconds.");
-		} else {
-			sample.WaitForExit ();
-			diagnostics.AppendLine ($"Native thread sampling exited with code {sample.ExitCode}.");
-		}
-		var contents = File.ReadAllText (sampleFile);
-		if (string.IsNullOrEmpty (contents))
-			diagnostics.AppendLine ("Native thread sampling produced no stack data.");
-		else
-			diagnostics.AppendLine (contents);
-	} catch (Exception e) when (e is Win32Exception or IOException or UnauthorizedAccessException or InvalidOperationException) {
-		lock (diagnostics)
-			diagnostics.AppendLine ($"Failed to collect native thread sample: {e}");
-	} finally {
-		if (!string.IsNullOrEmpty (sampleFile)) {
-			try {
-				File.Delete (sampleFile);
-			} catch (Exception e) when (e is IOException or UnauthorizedAccessException) {
-				lock (diagnostics)
-					diagnostics.AppendLine ($"Failed to remove native thread sample file '{sampleFile}': {e}");
-			}
-		}
-	}
-	lock (diagnostics)
-		return diagnostics.ToString ();
 }
 
 void AbortProcess (Process process)

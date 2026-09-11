@@ -683,6 +683,7 @@ namespace Introspection {
 			{ "Shadable", All }, // graphics term
 			{ "Siemen", All & ~ApplePlatform.TVOS }, // Apple API singular form
 			{ "Signbit", All }, // math library term
+			{ "Simd", All }, // Single Instruction, Multiple Data
 			{ "Sint", All }, // as in "Signed Integer"
 			{ "Sixtyfour", ApplePlatform.MacOSX }, // compound number word
 			{ "Slerp", All }, // spherical interpolation

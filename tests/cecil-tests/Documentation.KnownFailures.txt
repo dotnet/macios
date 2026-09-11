@@ -14912,9 +14912,6 @@ M:Cinematic.CNObjectTracker.FindObject(CoreGraphics.CGPoint,CoreVideo.CVPixelBuf
 M:Cinematic.CNObjectTracker.ResetDetectionTrack
 M:Cinematic.CNObjectTracker.StartTracking(CoreMedia.CMTime,CoreGraphics.CGRect,CoreVideo.CVPixelBuffer,CoreVideo.CVPixelBuffer)
 M:Cinematic.CNRenderingSession.#ctor(Metal.IMTLCommandQueue,Cinematic.CNRenderingSessionAttributes,CoreGraphics.CGAffineTransform,Cinematic.CNRenderingQuality)
-M:Cinematic.CNRenderingSession.EncodeRender(Metal.IMTLCommandBuffer,Cinematic.CNRenderingSessionFrameAttributes,CoreVideo.CVPixelBuffer,CoreVideo.CVPixelBuffer,CoreVideo.CVPixelBuffer)
-M:Cinematic.CNRenderingSession.EncodeRender(Metal.IMTLCommandBuffer,Cinematic.CNRenderingSessionFrameAttributes,CoreVideo.CVPixelBuffer,CoreVideo.CVPixelBuffer,Metal.IMTLTexture,Metal.IMTLTexture)
-M:Cinematic.CNRenderingSession.EncodeRender(Metal.IMTLCommandBuffer,Cinematic.CNRenderingSessionFrameAttributes,CoreVideo.CVPixelBuffer,CoreVideo.CVPixelBuffer,Metal.IMTLTexture)
 M:Cinematic.CNRenderingSessionAttributes.Load(AVFoundation.AVAsset,System.Action{Cinematic.CNRenderingSessionAttributes,Foundation.NSError})
 M:Cinematic.CNRenderingSessionAttributes.LoadAsync(AVFoundation.AVAsset)
 M:Cinematic.CNRenderingSessionFrameAttributes.#ctor(AVFoundation.AVTimedMetadataGroup,Cinematic.CNRenderingSessionAttributes)

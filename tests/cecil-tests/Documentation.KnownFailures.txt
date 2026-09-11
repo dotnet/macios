@@ -13197,6 +13197,7 @@ M:AVFoundation.AVCaptureDevice.ShowSystemUserInterface(AVFoundation.AVCaptureSys
 M:AVFoundation.AVCaptureDevice.SupportsAVCaptureSessionPreset(System.String)
 M:AVFoundation.AVCaptureDevice.UnlockForConfiguration
 M:AVFoundation.AVCaptureDeviceDiscoverySession.Create(AVFoundation.AVCaptureDeviceType[],AVFoundation.AVMediaTypes,AVFoundation.AVCaptureDevicePosition)
+M:AVFoundation.AVCaptureDeviceExposureSignalExtensions.ToFlags(System.Collections.Generic.IEnumerable{Foundation.NSString})
 M:AVFoundation.AVCaptureDeviceFormat.GetVideoFieldOfView(System.String,System.Boolean)
 M:AVFoundation.AVCaptureDeviceFormat.IsVideoStabilizationModeSupported(AVFoundation.AVCaptureVideoStabilizationMode)
 M:AVFoundation.AVCaptureDeviceInput.#ctor(AVFoundation.AVCaptureDevice,Foundation.NSError@)

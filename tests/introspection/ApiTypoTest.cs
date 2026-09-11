@@ -630,6 +630,7 @@ namespace Introspection {
 			{ "Qwac", All }, // qualified website cert
 			{ "Raycast", ApplePlatform.iOS }, // graphics/AR term
 			{ "Raycasts", ApplePlatform.iOS }, // graphics/AR term
+			{ "Rdd", All }, // SMPTE RDD 18 ancillary data standard
 			{ "Reacquirer", All }, // valid English noun
 			{ "Reassociation", ApplePlatform.MacOSX }, // networking term
 			{ "Reauthentication", ApplePlatform.MacOSX }, // compound word
@@ -766,9 +767,10 @@ namespace Introspection {
 			{ "Twips", ApplePlatform.MacOSX }, // typography unit
 			{ "tx", All }, // translation x axis
 			{ "ty", All }, // translation y axis
+			{ "Udam", All }, // User Defined Acquisition Metadata
 			{ "Udi", All & ~ApplePlatform.TVOS }, // device identifier standard
 			{ "Udp", All }, // User Datagram Protocol
-			{ "Uid", All & ~ApplePlatform.TVOS }, // user identifier
+			{ "Uid", All }, // user identifier
 			{ "Unconfigured", All & ~ApplePlatform.MacOSX }, // valid English derivative
 			{ "Undecodable", All }, // valid English derivative
 			{ "Underrun", All }, // audio/buffer term

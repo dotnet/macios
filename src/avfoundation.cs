@@ -12667,6 +12667,28 @@ namespace AVFoundation {
 	interface AVMetadataDogHeadObject : NSCopying {
 	}
 
+	/// <summary>Describes an object tracked by the camera's continuous autofocus system.</summary>
+	[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (AVMetadataObject))]
+	[DisableDefaultCtor]
+	interface AVMetadataFocusTrackedObject : NSCopying {
+	}
+
+	/// <summary>Contains captured metadata used for post-capture cinematic video editing.</summary>
+	[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (AVMetadataObject))]
+	[DisableDefaultCtor]
+	interface AVMetadataCinematicVideoMetadataObject : NSCopying {
+		/// <summary>Gets the format description for a cinematic video timed metadata track, or <see langword="null" /> if unavailable.</summary>
+		[Static]
+		[NullAllowed, Export ("cinematicVideoMetadataFormatDescription")]
+		CMFormatDescription CinematicVideoMetadataFormatDescription { get; }
+
+		/// <summary>Gets the cinematic video metadata group to append to a metadata writer adaptor, or <see langword="null" /> if unavailable.</summary>
+		[NullAllowed, Export ("timedMetadataGroup")]
+		AVTimedMetadataGroup TimedMetadataGroup { get; }
+	}
+
 	/// <summary>Enumerates barcode descriptions.</summary>
 	/// <remarks>To be added.</remarks>
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
@@ -12807,6 +12829,16 @@ namespace AVFoundation {
 		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 		[Field ("AVMetadataObjectTypeDogHead")]
 		DogHead = 1 << 26,
+
+		/// <summary>Identifies metadata for an object tracked by continuous autofocus.</summary>
+		[MacCatalyst (27, 0), TV (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Field ("AVMetadataObjectTypeFocusTrackedObject")]
+		FocusTrackedObject = 1 << 27,
+
+		/// <summary>Identifies captured metadata for cinematic video editing.</summary>
+		[MacCatalyst (27, 0), TV (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Field ("AVMetadataObjectTypeCinematicVideoMetadata")]
+		CinematicVideoMetadata = 1 << 28,
 	}
 
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
@@ -15847,6 +15879,22 @@ namespace AVFoundation {
 		[iOS (17, 0), MacCatalyst (17, 0), TV (17, 0)]
 		[Export ("videoRotationAngle")]
 		nfloat VideoRotationAngle { get; set; }
+
+		/// <summary>Gets whether the connection supports low-light video noise reduction in its current configuration.</summary>
+		[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[Export ("lowLightVideoNoiseReductionSupported")]
+		bool LowLightVideoNoiseReductionSupported { [Bind ("isLowLightVideoNoiseReductionSupported")] get; }
+
+		/// <summary>Gets or sets whether the connection automatically enables low-light video noise reduction.</summary>
+		[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[Export ("automaticallyEnablesLowLightVideoNoiseReduction")]
+		bool AutomaticallyEnablesLowLightVideoNoiseReduction { get; set; }
+
+		/// <summary>Gets or sets whether low-light video noise reduction is enabled.</summary>
+		/// <remarks>Disable automatic enablement before setting this property, and only enable noise reduction on a supported connection.</remarks>
+		[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[Export ("lowLightVideoNoiseReductionEnabled")]
+		bool LowLightVideoNoiseReductionEnabled { [Bind ("isLowLightVideoNoiseReductionEnabled")] get; set; }
 	}
 
 	/// <summary>An audio channel in a capture connection.</summary>
@@ -16451,6 +16499,87 @@ namespace AVFoundation {
 
 		[Export ("droppedFrameReplacementPolicy", ArgumentSemantic.Assign)]
 		AVCaptureBroadcastVideoOutputDroppedFrameReplacementPolicy DroppedFrameReplacementPolicy { get; set; }
+
+		/// <summary>Gets the encoder that supplies ancillary metadata for the broadcast video.</summary>
+		[Export ("ancillaryDataEncoder")]
+		AVCaptureAncillaryDataEncoder AncillaryDataEncoder { get; }
+	}
+
+	[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+	[Internal]
+	[Static]
+	interface AVCaptureAncillaryDataUserKeys {
+		[Field ("AVCaptureAncillaryDataUserKeyRDD18InstanceUID")]
+		NSString Rdd18InstanceUidKey { get; }
+
+		[Field ("AVCaptureAncillaryDataUserKeyRDD18UDAMSetVersion")]
+		NSString Rdd18UdamSetVersionKey { get; }
+
+		[Field ("AVCaptureAncillaryDataUserKeyRDD18UserItems")]
+		NSString Rdd18UserItemsKey { get; }
+	}
+
+	/// <summary>Provides a read-only view of user-defined SMPTE RDD 18 ancillary metadata.</summary>
+	[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+	[StrongDictionary ("AVCaptureAncillaryDataUserKeys")]
+	interface AVCaptureAncillaryDataUserData {
+		/// <summary>Gets the ancillary data instance identifier, or <see langword="null" /> if it is absent.</summary>
+		NSUuid Rdd18InstanceUid { get; }
+
+		/// <summary>Gets the User Defined Acquisition Metadata set version, or <see langword="null" /> if it is absent.</summary>
+		ushort Rdd18UdamSetVersion { get; }
+
+		/// <summary>Gets the dictionary of user tags and their values, or <see langword="null" /> if it is absent.</summary>
+		NSDictionary Rdd18UserItems { get; }
+	}
+
+	/// <summary>Encodes ancillary metadata accompanying video from a broadcast capture output.</summary>
+	[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface AVCaptureAncillaryDataEncoder {
+		/// <summary>Gets or sets whether ancillary metadata is encoded and transmitted with video buffers.</summary>
+		[Export ("enabled")]
+		bool Enabled { [Bind ("isEnabled")] get; set; }
+
+		/// <summary>Gets the native dictionary describing the current user-defined ancillary metadata.</summary>
+		[Export ("currentUserDefinedAncillaryData")]
+		NSDictionary<NSString, NSObject> WeakCurrentUserDefinedAncillaryData { get; }
+
+		/// <summary>Gets a typed view of the current user-defined ancillary metadata.</summary>
+		[Wrap ("WeakCurrentUserDefinedAncillaryData")]
+		AVCaptureAncillaryDataUserData CurrentUserDefinedAncillaryData { get; }
+
+		/// <summary>Gets the remaining capacity, in bytes, for user-defined ancillary metadata.</summary>
+		[Export ("userDefinedAncillaryDataSizeRemaining")]
+		short UserDefinedAncillaryDataSizeRemaining { get; }
+
+		/// <summary>Sets the identifier and version of the user-defined ancillary data instance.</summary>
+		/// <param name="uuid">The instance identifier.</param>
+		/// <param name="version">The unsigned 16-bit User Defined Acquisition Metadata set version.</param>
+		[Export ("setUserInstanceUID:forUserUDAMVersion:")]
+		void SetUserInstanceUid (NSUuid uuid, [BindAs (typeof (ushort))] NSNumber version);
+
+		/// <summary>Associates binary ancillary data with a SMPTE RDD 18 tag.</summary>
+		/// <param name="data">The data to encode.</param>
+		/// <param name="tag">A non-reserved SMPTE RDD 18 tag that supports binary data.</param>
+		/// <param name="error">Receives the error if the data cannot be added.</param>
+		/// <returns><see langword="true" /> if the data was added; otherwise, <see langword="false" />.</returns>
+		[Export ("setRDD18AncillaryData:forTag:error:")]
+		bool SetRdd18AncillaryData (NSData data, ushort tag, [NullAllowed] out NSError error);
+
+		/// <summary>Associates a string to encode as ancillary data with a SMPTE RDD 18 tag.</summary>
+		/// <param name="value">The string to encode.</param>
+		/// <param name="tag">A non-reserved SMPTE RDD 18 tag that supports string data.</param>
+		/// <param name="error">Receives the error if the string cannot be added.</param>
+		/// <returns><see langword="true" /> if the string was added; otherwise, <see langword="false" />.</returns>
+		[Export ("setRDD18AncillaryDataString:forTag:error:")]
+		bool SetRdd18AncillaryData (string value, ushort tag, [NullAllowed] out NSError error);
+
+		/// <summary>Removes the ancillary data associated with a SMPTE RDD 18 tag.</summary>
+		/// <param name="tag">The tag whose data is to be removed.</param>
+		[Export ("removeRDD18AncillaryDataForTag:")]
+		void RemoveRdd18AncillaryData (ushort tag);
 	}
 
 	/// <summary>AVCaptureOutput that captures frames from the video being recorded.</summary>
@@ -17937,6 +18066,22 @@ namespace AVFoundation {
 		[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
 		[Export ("usesProVideoStorage")]
 		bool UsesProVideoStorage { get; set; }
+
+		/// <summary>Gets whether cinematic video metadata capture is supported by the current configuration.</summary>
+		[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[Export ("cinematicVideoMetadataCaptureSupported")]
+		bool CinematicVideoMetadataCaptureSupported { [Bind ("isCinematicVideoMetadataCaptureSupported")] get; }
+
+		/// <summary>Gets or sets whether cinematic video metadata capture is managed automatically.</summary>
+		[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[Export ("automaticallyAdjustsCinematicVideoMetadataCaptureEnabled")]
+		bool AutomaticallyAdjustsCinematicVideoMetadataCaptureEnabled { get; set; }
+
+		/// <summary>Gets or sets whether cinematic video metadata is recorded.</summary>
+		/// <remarks>Disable automatic adjustment before setting this property, and only enable capture when it is supported.</remarks>
+		[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[Export ("cinematicVideoMetadataCaptureEnabled")]
+		bool CinematicVideoMetadataCaptureEnabled { [Bind ("isCinematicVideoMetadataCaptureEnabled")] get; set; }
 	}
 
 	/// <summary>AVCaptureOutput that captures still images with their metadata.</summary>
@@ -18823,6 +18968,24 @@ namespace AVFoundation {
 			""")]
 		void LockExposure (CMTime duration, float /* float, not CGFloat */ ISO, [NullAllowed] Action<CMTime> completionHandler);
 
+		/// <summary>Configures custom exposure using a lens aperture, exposure duration, and ISO.</summary>
+		/// <param name="lensAperture">The aperture value, or the current or automatic aperture sentinel.</param>
+		/// <param name="duration">The exposure duration, or the current or automatic duration sentinel.</param>
+		/// <param name="iso">The ISO value, or the current or automatic ISO sentinel.</param>
+		/// <param name="completionHandler">An optional callback receiving the first affected buffer's timestamp in the device clock.</param>
+		/// <remarks>The device must be locked for configuration, and its active format must support the requested combination.</remarks>
+		[NoMac, iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Async (XmlDocs = """
+			<summary>Asynchronously configures custom exposure using a lens aperture, exposure duration, and ISO.</summary>
+			<param name="lensAperture">The aperture value, or the current or automatic aperture sentinel.</param>
+			<param name="duration">The exposure duration, or the current or automatic duration sentinel.</param>
+			<param name="iso">The ISO value, or the current or automatic ISO sentinel.</param>
+			<returns>A task whose result is the first affected buffer's timestamp in the device clock.</returns>
+			<remarks>The device must be locked for configuration, and its active format must support the requested combination.</remarks>
+			""")]
+		[Export ("setExposureModeCustomWithLensAperture:duration:ISO:completionHandler:")]
+		void LockExposure (float lensAperture, CMTime duration, float iso, [NullAllowed] Action<CMTime> completionHandler);
+
 		[NoMac]
 		[MacCatalyst (14, 0)]
 		[Export ("setExposureTargetBias:completionHandler:")]
@@ -19341,6 +19504,124 @@ namespace AVFoundation {
 		[Static]
 		[Export ("edgeLightActive")]
 		bool EdgeLightActive { [Bind ("isEdgeLightActive")] get; }
+
+		/// <summary>Gets or sets whether continuous autofocus tracks a selected subject.</summary>
+		/// <remarks>
+		/// Requires a supported active format and a configuration lock. Subscribe to focus-tracked metadata to receive tracking updates.
+		/// After changing this property, reapply <see cref="AVCaptureFocusMode.ContinuousAutoFocus" /> to <see cref="FocusMode" /> to engage or disengage tracking.
+		/// Selecting another focus mode also disengages tracking.
+		/// </remarks>
+		[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[Export ("continuousAutoFocusTrackingEnabled")]
+		bool ContinuousAutoFocusTrackingEnabled { [Bind ("isContinuousAutoFocusTrackingEnabled")] get; set; }
+
+		/// <summary>Gets or sets the tracking lens-position bias, from -1 for the nearest part of a subject to 1 for the farthest.</summary>
+		/// <remarks>
+		/// The device must be locked for configuration. A nonzero bias requires tracking to be enabled, and cinematic video capture must be disabled.
+		/// Reapply continuous autofocus mode after changing this value for the new bias to take effect.
+		/// </remarks>
+		[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[Export ("continuousAutoFocusTrackingLensPositionBias")]
+		float ContinuousAutoFocusTrackingLensPositionBias { get; set; }
+
+		/// <summary>Gets whether continuous autofocus tracking has acquired a subject.</summary>
+		[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[Export ("continuousAutoFocusTrackingSubjectAcquired")]
+		bool ContinuousAutoFocusTrackingSubjectAcquired { [Bind ("isContinuousAutoFocusTrackingSubjectAcquired")] get; }
+
+		/// <summary>Gets whether primary constituent device switching can be locked to a specific device.</summary>
+		[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[Export ("primaryConstituentDeviceSwitchingBehaviorLockedWithDeviceSupported")]
+		bool PrimaryConstituentDeviceSwitchingBehaviorLockedWithDeviceSupported { [Bind ("isPrimaryConstituentDeviceSwitchingBehaviorLockedWithDeviceSupported")] get; }
+
+		/// <summary>Locks primary constituent device switching to the specified constituent device.</summary>
+		/// <param name="device">The constituent device to use as the primary device.</param>
+		/// <remarks>The operation must be supported, and the receiving device must be locked for configuration.</remarks>
+		[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[Export ("setPrimaryConstituentDeviceSwitchingBehaviorLockedWithDevice:")]
+		void SetPrimaryConstituentDeviceSwitchingBehaviorLocked (AVCaptureDevice device);
+
+		/// <summary>Gets the sentinel that locks lens aperture at its current value.</summary>
+		[NoMac, iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Field ("AVCaptureLensApertureCurrent")]
+		float LensApertureCurrent { get; }
+
+		/// <summary>Gets the sentinel that lets automatic exposure adjust the lens aperture.</summary>
+		[NoMac, iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Field ("AVCaptureLensApertureAuto")]
+		float LensApertureAuto { get; }
+
+		/// <summary>Gets the sentinel that lets automatic exposure adjust the exposure duration.</summary>
+		[NoMac, iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Field ("AVCaptureExposureDurationAuto")]
+		CMTime ExposureDurationAuto { get; }
+
+		/// <summary>Gets the sentinel that lets automatic exposure adjust ISO.</summary>
+		[NoMac, iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Field ("AVCaptureISOAuto")]
+		float ISOAuto { get; }
+
+		/// <summary>Gets or sets the frame-to-frame aperture-area ratio limit used by automatic exposure.</summary>
+		/// <remarks>The device must be locked for configuration. Zero selects the system-managed rate; other valid values are at least 1.</remarks>
+		[NoMac, iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Export ("autoExposureLensApertureRateLimit")]
+		float AutoExposureLensApertureRateLimit { get; set; }
+
+		/// <summary>Gets whether automatic exposure is currently allowed to adjust lens aperture.</summary>
+		[NoMac, iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Export ("automaticallyAdjustsLensAperture")]
+		bool AutomaticallyAdjustsLensAperture { get; }
+
+		/// <summary>Gets whether automatic exposure is currently allowed to adjust exposure duration.</summary>
+		[NoMac, iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Export ("automaticallyAdjustsExposureDuration")]
+		bool AutomaticallyAdjustsExposureDuration { get; }
+
+		/// <summary>Gets whether automatic exposure is currently allowed to adjust ISO.</summary>
+		[NoMac, iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Export ("automaticallyAdjustsISO")]
+		bool AutomaticallyAdjustsISO { get; }
+
+		/// <summary>Gets the native set of exposure signals currently influencing automatic exposure.</summary>
+		[NoMac, iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Export ("activeExposureSignals")]
+		NSSet<NSString> WeakActiveExposureSignals { get; }
+
+		/// <summary>Gets the exposure signals currently influencing automatic exposure.</summary>
+		[NoMac, iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Wrap ("AVCaptureDeviceExposureSignalExtensions.ToFlags (WeakActiveExposureSignals)")]
+		AVCaptureDeviceExposureSignal ActiveExposureSignals { get; }
+
+		/// <summary>Gets or sets the native set of enabled automatic exposure signals.</summary>
+		[NoMac, iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Export ("enabledExposureSignals", ArgumentSemantic.Assign)]
+		NSSet<NSString> WeakEnabledExposureSignals { get; set; }
+
+		/// <summary>Gets or sets the enabled automatic exposure signals.</summary>
+		/// <remarks>Disable automatic signal selection and lock the device for configuration before assigning a subset of its supported signals.</remarks>
+		[NoMac, iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		AVCaptureDeviceExposureSignal EnabledExposureSignals {
+			[Wrap ("AVCaptureDeviceExposureSignalExtensions.ToFlags (WeakEnabledExposureSignals)")]
+			get;
+			[Wrap ("WeakEnabledExposureSignals = new NSSet<NSString> (value.ToArray ())")]
+			set;
+		}
+
+		/// <summary>Gets the native set of exposure signals supported by the device.</summary>
+		[NoMac, iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Export ("supportedExposureSignals")]
+		NSSet<NSString> WeakSupportedExposureSignals { get; }
+
+		/// <summary>Gets the exposure signals supported by the device.</summary>
+		[NoMac, iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Wrap ("AVCaptureDeviceExposureSignalExtensions.ToFlags (WeakSupportedExposureSignals)")]
+		AVCaptureDeviceExposureSignal SupportedExposureSignals { get; }
+
+		/// <summary>Gets or sets whether the device automatically chooses which exposure signals to enable.</summary>
+		/// <remarks>Defaults to <see langword="true" />. The device must be locked for configuration before changing this property.</remarks>
+		[NoMac, iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Export ("automaticallyEnablesExposureSignals")]
+		bool AutomaticallyEnablesExposureSignals { get; set; }
 	}
 
 	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
@@ -19744,6 +20025,51 @@ namespace AVFoundation {
 		[TV (26, 2), MacCatalyst (26, 2), Mac (26, 2), iOS (26, 2)]
 		[Export ("edgeLightSupported")]
 		bool EdgeLightSupported { [Bind ("isEdgeLightSupported")] get; }
+
+		/// <summary>Gets whether the format supports continuous autofocus subject tracking.</summary>
+		[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[Export ("continuousAutoFocusTrackingSupported")]
+		bool ContinuousAutoFocusTrackingSupported { [Bind ("isContinuousAutoFocusTrackingSupported")] get; }
+
+		/// <summary>Gets whether the format supports capturing cinematic video metadata.</summary>
+		[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[Export ("cinematicVideoMetadataCaptureSupported")]
+		bool CinematicVideoMetadataCaptureSupported { [Bind ("isCinematicVideoMetadataCaptureSupported")] get; }
+
+		/// <summary>Gets whether the format supports low-light video noise reduction.</summary>
+		[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[Export ("lowLightVideoNoiseReductionSupported")]
+		bool LowLightVideoNoiseReductionSupported { [Bind ("isLowLightVideoNoiseReductionSupported")] get; }
+
+		/// <summary>Checks whether a combination of custom exposure settings is supported.</summary>
+		/// <param name="lensAperture">The aperture value, or the current or automatic aperture sentinel.</param>
+		/// <param name="duration">The exposure duration, or the current or automatic duration sentinel.</param>
+		/// <param name="iso">The ISO value, or the current or automatic ISO sentinel.</param>
+		/// <returns><see langword="true" /> if the combination is supported; otherwise, <see langword="false" />.</returns>
+		[NoMac, iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Export ("supportsExposureModeCustomWithLensAperture:duration:ISO:")]
+		bool SupportsExposureModeCustom (float lensAperture, CMTime duration, float iso);
+
+		/// <summary>Gets the recommended lens aperture stops in sorted order.</summary>
+		[NoMac, iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[BindAs (typeof (float []))]
+		[Export ("recommendedLensApertureStops")]
+		NSNumber [] RecommendedLensApertureStops { get; }
+
+		/// <summary>Gets the minimum lens aperture value supported by the format.</summary>
+		[NoMac, iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Export ("minLensAperture")]
+		float MinLensAperture { get; }
+
+		/// <summary>Gets the maximum lens aperture value supported by the format.</summary>
+		[NoMac, iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Export ("maxLensAperture")]
+		float MaxLensAperture { get; }
+
+		/// <summary>Gets the default lens aperture value for the format.</summary>
+		[NoMac, iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Export ("defaultLensAperture")]
+		float DefaultLensAperture { get; }
 	}
 
 	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]

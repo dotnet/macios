@@ -1287,12 +1287,13 @@ namespace AppKit {
 		GrooveBorder,
 	}
 
+	/// <summary>Specifies the shape of a text field's bezel.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTextFieldBezelStyle : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>A square bezel.</summary>
 		Square,
-		/// <summary>To be added.</summary>
+		/// <summary>A rounded bezel.</summary>
 		Rounded,
 	}
 
@@ -1387,14 +1388,15 @@ namespace AppKit {
 		ReadWrite,
 	}
 
+	/// <summary>Specifies where a window's backing store is located.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSWindowBackingLocation : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The system determines the backing store location.</summary>
 		Default,
-		/// <summary>To be added.</summary>
+		/// <summary>The backing store is located in video memory.</summary>
 		VideoMemory,
-		/// <summary>To be added.</summary>
+		/// <summary>The backing store is located in main memory.</summary>
 		MainMemory,
 	}
 
@@ -1668,14 +1670,15 @@ namespace AppKit {
 	#endregion
 
 	#region NSGraphics
+	/// <summary>Specifies the color depth of a window's backing store.</summary>
 	[NoMacCatalyst]
 	// NSGraphics.h:typedef int NSWindowDepth;
 	public enum NSWindowDepth : int {
-		/// <summary>To be added.</summary>
+		/// <summary>A 24-bit RGB color depth.</summary>
 		TwentyfourBitRgb = 0x208,
-		/// <summary>To be added.</summary>
+		/// <summary>A 64-bit RGB color depth.</summary>
 		SixtyfourBitRgb = 0x210,
-		/// <summary>To be added.</summary>
+		/// <summary>A 128-bit RGB color depth.</summary>
 		OneHundredTwentyEightBitRgb = 0x220,
 	}
 
@@ -1977,23 +1980,25 @@ namespace AppKit {
 	#endregion
 
 	#region NSStackLayout
+	/// <summary>Specifies the axis along which user interface elements are laid out.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSUserInterfaceLayoutOrientation : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Elements are laid out along the horizontal axis.</summary>
 		Horizontal = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Elements are laid out along the vertical axis.</summary>
 		Vertical = 1,
 	}
 
 	// NSStackView.h:typedef float NSStackViewVisibilityPriority
+	/// <summary>Provides predefined visibility-priority values that can be cast to <see cref="float"/> for use with <see cref="NSStackView"/> APIs.</summary>
 	[NoMacCatalyst]
 	public enum NSStackViewVisibilityPriority : int {
-		/// <summary>To be added.</summary>
+		/// <summary>The view must remain attached to the stack view.</summary>
 		MustHold = 1000,
-		/// <summary>To be added.</summary>
+		/// <summary>The view is detached only when necessary.</summary>
 		DetachOnlyIfNecessary = 900,
-		/// <summary>To be added.</summary>
+		/// <summary>The view is not visible.</summary>
 		NotVisible = 0,
 	}
 
@@ -2334,14 +2339,15 @@ namespace AppKit {
 		Clip,
 	}
 
+	/// <summary>Specifies the status of a table in a printer's PostScript Printer Description.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSPrinterTableStatus : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The table is available.</summary>
 		Ok,
-		/// <summary>To be added.</summary>
+		/// <summary>The table was not found.</summary>
 		NotFound,
-		/// <summary>To be added.</summary>
+		/// <summary>An error occurred while accessing the table.</summary>
 		Error,
 	}
 
@@ -2849,12 +2855,13 @@ namespace AppKit {
 		Trailing = Right,
 	}
 
+	/// <summary>Specifies the shape of a slider.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSSliderType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>A horizontal or vertical linear slider.</summary>
 		Linear = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>A circular slider.</summary>
 		Circular = 1,
 	}
 
@@ -2901,13 +2908,14 @@ namespace AppKit {
 		Default = Async | AllowingClassicStartup,
 	}
 
+	/// <summary>Specifies legacy icon representations to exclude when creating a file icon.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSWorkspaceIconCreationOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Excludes QuickDraw icon representations.</summary>
 		NSExcludeQuickDrawElements = 1 << 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Excludes icon representations introduced in macOS 10.4.</summary>
 		NSExclude10_4Elements = 1 << 2,
 	}
 
@@ -2942,14 +2950,15 @@ namespace AppKit {
 		NSNoTabsNoBorder,
 	}
 
+	/// <summary>Specifies the visual state of a tab view item.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTabState : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The tab is selected.</summary>
 		Selected,
-		/// <summary>To be added.</summary>
+		/// <summary>The tab is displayed in the background.</summary>
 		Background,
-		/// <summary>To be added.</summary>
+		/// <summary>The tab is being pressed.</summary>
 		Pressed,
 	}
 
@@ -2988,6 +2997,7 @@ namespace AppKit {
 		ApplicationOnlyMask = 1,
 	}
 
+	/// <summary>Specifies whether a drop occurs on an item or before it.</summary>
 #if XAMCORE_5_0
 	[NoMacCatalyst]
 #else
@@ -2999,9 +3009,9 @@ namespace AppKit {
 #endif
 	[Native]
 	public enum NSCollectionViewDropOperation : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The drop occurs on the item at the specified index path.</summary>
 		On = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The drop occurs before the item at the specified index path.</summary>
 		Before = 1,
 	}
 
@@ -3113,12 +3123,13 @@ namespace AppKit {
 		TextField,
 	}
 
+	/// <summary>Specifies whether a date picker selects a single date or a date range.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSDatePickerMode : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The date picker selects a single date.</summary>
 		Single,
-		/// <summary>To be added.</summary>
+		/// <summary>The date picker selects a range of dates.</summary>
 		Range,
 	}
 
@@ -3184,11 +3195,12 @@ namespace AppKit {
 		MpsSwapsInFlight = 315,
 	}
 
+	/// <summary>Specifies the position of an OpenGL surface relative to its window.</summary>
 	[NoMacCatalyst]
 	public enum NSSurfaceOrder {
-		/// <summary>To be added.</summary>
+		/// <summary>The surface is displayed above the window.</summary>
 		AboveWindow = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The surface is displayed below the window.</summary>
 		BelowWindow = -1,
 	}
 
@@ -3393,12 +3405,13 @@ namespace AppKit {
 		Large = 18,
 	}
 
+	/// <summary>Specifies the visual style of a progress indicator.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSProgressIndicatorStyle : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Displays progress as a bar.</summary>
 		Bar,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays progress as a spinning indicator.</summary>
 		Spinning,
 	}
 
@@ -3641,12 +3654,13 @@ namespace AppKit {
 		TornOffMenu = 3,
 	}
 
+	/// <summary>Specifies whether a rule editor row is a leaf condition or a group of subrows.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSRuleEditorRowType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>A leaf row that represents a single condition.</summary>
 		Simple = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>A parent row that groups one or more subrows.</summary>
 		Compound,
 	}
 
@@ -3722,12 +3736,13 @@ namespace AppKit {
 		BelowContent,
 	}
 
+	/// <summary>Specifies how a scroller is displayed relative to its content.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSScrollerStyle : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The scroller occupies space reserved for it in the layout.</summary>
 		Legacy = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The scroller is drawn over the content without reserving layout space.</summary>
 		Overlay,
 	}
 
@@ -3773,33 +3788,36 @@ namespace AppKit {
 		MayBegin = 32,
 	}
 
+	/// <summary>Specifies options for tracking a swipe gesture.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSEventSwipeTrackingOptions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Clamps the gesture amount to zero when the user reverses the initial swipe direction.</summary>
 		LockDirection = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Clamps the gesture amount to the range from -1.0 through 1.0.</summary>
 		ClampGestureAmount = 2,
 	}
 
+	/// <summary>Specifies the axis associated with a gesture event.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSEventGestureAxis : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The gesture is not associated with an axis.</summary>
 		None,
-		/// <summary>To be added.</summary>
+		/// <summary>The gesture is associated with the horizontal axis.</summary>
 		Horizontal,
-		/// <summary>To be added.</summary>
+		/// <summary>The gesture is associated with the vertical axis.</summary>
 		Vertical,
 	}
 
+	/// <summary>Specifies the axis affected by Auto Layout constraints.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSLayoutConstraintOrientation : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The constraint has a horizontal orientation.</summary>
 		Horizontal,
-		/// <summary>To be added.</summary>
+		/// <summary>The constraint has a vertical orientation.</summary>
 		Vertical,
 	}
 
@@ -3821,12 +3839,13 @@ namespace AppKit {
 		FittingSizeCompression = 50,
 	}
 
+	/// <summary>Specifies the visual appearance of a popover.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSPopoverAppearance : long {
-		/// <summary>To be added.</summary>
+		/// <summary>A minimal popover appearance.</summary>
 		Minimal,
-		/// <summary>To be added.</summary>
+		/// <summary>A heads-up display appearance.</summary>
 		HUD,
 	}
 
@@ -3856,21 +3875,23 @@ namespace AppKit {
 		Large,
 	}
 
+	/// <summary>Specifies the edge of a table row where row actions appear.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTableRowActionEdge : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The leading edge in the current user interface layout direction.</summary>
 		Leading,
-		/// <summary>To be added.</summary>
+		/// <summary>The trailing edge in the current user interface layout direction.</summary>
 		Trailing,
 	}
 
+	/// <summary>Specifies whether a table row action is regular or destructive.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTableViewRowActionStyle : long {
-		/// <summary>To be added.</summary>
+		/// <summary>A regular, nondestructive action.</summary>
 		Regular,
-		/// <summary>To be added.</summary>
+		/// <summary>An action that performs a destructive operation.</summary>
 		Destructive,
 	}
 
@@ -3919,12 +3940,13 @@ namespace AppKit {
 		Stack,
 	}
 
+	/// <summary>Specifies whether a dragging operation occurs within or outside the application.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSDraggingContext : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The dragging operation occurs outside the application.</summary>
 		OutsideApplication,
-		/// <summary>To be added.</summary>
+		/// <summary>The dragging operation occurs within the application.</summary>
 		WithinApplication,
 	}
 
@@ -4002,15 +4024,16 @@ namespace AppKit {
 		AllModesMask = unchecked((ulong) UInt32.MaxValue),
 	}
 
+	/// <summary>Specifies the scope in which a font collection is visible.</summary>
 	[NoMacCatalyst]
 	[Flags]
 	[Native]
 	public enum NSFontCollectionVisibility : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The collection is visible only to the current process and is not persistent.</summary>
 		Process = 1 << 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The collection is persisted and visible to all processes for the current user.</summary>
 		User = 1 << 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The collection is persisted and visible to all users of the computer.</summary>
 		Computer = 1 << 2,
 	}
 
@@ -4054,12 +4077,13 @@ namespace AppKit {
 		HorizontalStrip,
 	}
 
+	/// <summary>Specifies whether a window's title is displayed.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSWindowTitleVisibility : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The window title is displayed.</summary>
 		Visible = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The window title is hidden.</summary>
 		Hidden = 1,
 	}
 
@@ -4156,12 +4180,13 @@ namespace AppKit {
 		UnderPageBackground = 22,
 	}
 
+	/// <summary>Specifies which content a visual effect view blends with.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSVisualEffectBlendingMode : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Blends with content behind the window.</summary>
 		BehindWindow,
-		/// <summary>To be added.</summary>
+		/// <summary>Blends with content behind the view in the current window.</summary>
 		WithinWindow,
 	}
 
@@ -4252,12 +4277,13 @@ namespace AppKit {
 		OrderedFrontToBack = (1 << 0),
 	}
 
+	/// <summary>Specifies optional behaviors for a status item.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSStatusItemBehavior : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Allows the user to remove the status item from the menu bar.</summary>
 		RemovalAllowed = (1 << 1),
-		/// <summary>To be added.</summary>
+		/// <summary>Allows the user to remove the status item and terminates the application when they do so. This option implies <see cref="RemovalAllowed" />.</summary>
 		TerminationOnRemoval = (1 << 2),
 	}
 
@@ -4344,12 +4370,13 @@ namespace AppKit {
 		AllowReadWrite = 1 << 5,
 	}
 
+	/// <summary>Specifies a color gamut that a display can represent.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSDisplayGamut : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The sRGB color gamut.</summary>
 		Srgb = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The Display P3 color gamut.</summary>
 		P3,
 	}
 
@@ -4387,31 +4414,34 @@ namespace AppKit {
 		CurrentHostOnly = 1,
 	}
 
+	/// <summary>Specifies whether contact occurs directly on a display or through an indirect input device.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSTouchType : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Contact occurs directly on a display.</summary>
 		Direct,
-		/// <summary>To be added.</summary>
+		/// <summary>Contact occurs on an indirect input device, such as a trackpad.</summary>
 		Indirect,
 	}
 
+	/// <summary>Specifies the types of touch input to include.</summary>
 	[NoMacCatalyst]
 	[Native]
 	[Flags]
 	public enum NSTouchTypeMask : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Includes direct touch input.</summary>
 		Direct = (1 << (int) NSTouchType.Direct),
-		/// <summary>To be added.</summary>
+		/// <summary>Includes indirect touch input.</summary>
 		Indirect = (1 << (int) NSTouchType.Indirect),
 	}
 
+	/// <summary>Specifies how a scrubber responds to touch input.</summary>
 	[NoMacCatalyst]
 	[Native]
 	public enum NSScrubberMode : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Items remain fixed while the user moves the selection across them.</summary>
 		Fixed = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Items scroll freely in response to the user's touch.</summary>
 		Free,
 	}
 

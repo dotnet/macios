@@ -7,6 +7,8 @@
 // Copyright 2017 Xamarin Inc. All rights reserved.
 //
 
+#nullable enable
+
 using CoreFoundation;
 
 namespace CoreNFC {
@@ -263,7 +265,7 @@ namespace CoreNFC {
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("sendCustomCommandWithConfiguration:completionHandler:")]
-		void SendCustomCommand (NFCIso15693CustomCommandConfiguration commandConfiguration, Action<NSData, NSError> completionHandler);
+		void SendCustomCommand (NFCIso15693CustomCommandConfiguration commandConfiguration, Action<NSData, NSError?> completionHandler);
 
 		/// <param name="readConfiguration">To be added.</param>
 		/// <param name="completionHandler">To be added.</param>
@@ -271,67 +273,67 @@ namespace CoreNFC {
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("readMultipleBlocksWithConfiguration:completionHandler:")]
-		void ReadMultipleBlocks (NFCIso15693ReadMultipleBlocksConfiguration readConfiguration, Action<NSData, NSError> completionHandler);
+		void ReadMultipleBlocks (NFCIso15693ReadMultipleBlocksConfiguration readConfiguration, Action<NSData, NSError?> completionHandler);
 
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("stayQuietWithCompletionHandler:")]
-		void StayQuiet (Action<NSError> completionHandler);
+		void StayQuiet (Action<NSError?> completionHandler);
 
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("readSingleBlockWithRequestFlags:blockNumber:completionHandler:")]
-		void ReadSingleBlock (NFCIso15693RequestFlag flags, byte blockNumber, Action<NSData, NSError> completionHandler);
+		void ReadSingleBlock (NFCIso15693RequestFlag flags, byte blockNumber, Action<NSData, NSError?> completionHandler);
 
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("writeSingleBlockWithRequestFlags:blockNumber:dataBlock:completionHandler:")]
-		void WriteSingleBlock (NFCIso15693RequestFlag flags, byte blockNumber, NSData dataBlock, Action<NSError> completionHandler);
+		void WriteSingleBlock (NFCIso15693RequestFlag flags, byte blockNumber, NSData dataBlock, Action<NSError?> completionHandler);
 
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("lockBlockWithRequestFlags:blockNumber:completionHandler:")]
-		void LockBlock (NFCIso15693RequestFlag flags, byte blockNumber, Action<NSError> completionHandler);
+		void LockBlock (NFCIso15693RequestFlag flags, byte blockNumber, Action<NSError?> completionHandler);
 
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("readMultipleBlocksWithRequestFlags:blockRange:completionHandler:")]
-		void ReadMultipleBlocks (NFCIso15693RequestFlag flags, NSRange blockRange, Action<NSData [], NSError> completionHandler);
+		void ReadMultipleBlocks (NFCIso15693RequestFlag flags, NSRange blockRange, Action<NSData [], NSError?> completionHandler);
 
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("writeMultipleBlocksWithRequestFlags:blockRange:dataBlocks:completionHandler:")]
-		void WriteMultipleBlocks (NFCIso15693RequestFlag flags, NSRange blockRange, NSData [] dataBlocks, Action<NSError> completionHandler);
+		void WriteMultipleBlocks (NFCIso15693RequestFlag flags, NSRange blockRange, NSData [] dataBlocks, Action<NSError?> completionHandler);
 
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("selectWithRequestFlags:completionHandler:")]
-		void Select (NFCIso15693RequestFlag flags, Action<NSError> completionHandler);
+		void Select (NFCIso15693RequestFlag flags, Action<NSError?> completionHandler);
 
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("resetToReadyWithRequestFlags:completionHandler:")]
-		void ResetToReady (NFCIso15693RequestFlag flags, Action<NSError> completionHandler);
+		void ResetToReady (NFCIso15693RequestFlag flags, Action<NSError?> completionHandler);
 
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("writeAFIWithRequestFlag:afi:completionHandler:")]
-		void WriteAfi (NFCIso15693RequestFlag flags, byte afi, Action<NSError> completionHandler);
+		void WriteAfi (NFCIso15693RequestFlag flags, byte afi, Action<NSError?> completionHandler);
 
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("lockAFIWithRequestFlag:completionHandler:")]
-		void LockAfi (NFCIso15693RequestFlag flags, Action<NSError> completionHandler);
+		void LockAfi (NFCIso15693RequestFlag flags, Action<NSError?> completionHandler);
 
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("writeDSFIDWithRequestFlag:dsfid:completionHandler:")]
-		void WriteDsfi (NFCIso15693RequestFlag flags, byte dsfid, Action<NSError> completionHandler);
+		void WriteDsfi (NFCIso15693RequestFlag flags, byte dsfid, Action<NSError?> completionHandler);
 
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("lockDFSIDWithRequestFlag:completionHandler:")]
-		void LockDfsi (NFCIso15693RequestFlag flags, Action<NSError> completionHandler);
+		void LockDfsi (NFCIso15693RequestFlag flags, Action<NSError?> completionHandler);
 
 		[MacCatalyst (13, 1)]
 		[Abstract]
@@ -341,38 +343,38 @@ namespace CoreNFC {
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("getMultipleBlockSecurityStatusWithRequestFlag:blockRange:completionHandler:")]
-		void GetMultipleBlockSecurityStatus (NFCIso15693RequestFlag flags, NSRange blockRange, Action<NSNumber [], NSError> completionHandler);
+		void GetMultipleBlockSecurityStatus (NFCIso15693RequestFlag flags, NSRange blockRange, Action<NSNumber [], NSError?> completionHandler);
 
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("customCommandWithRequestFlag:customCommandCode:customRequestParameters:completionHandler:")]
-		void CustomCommand (NFCIso15693RequestFlag flags, nint customCommandCode, NSData customRequestParameters, Action<NSData, NSError> completionHandler);
+		void CustomCommand (NFCIso15693RequestFlag flags, nint customCommandCode, NSData customRequestParameters, Action<NSData, NSError?> completionHandler);
 
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("extendedReadSingleBlockWithRequestFlags:blockNumber:completionHandler:")]
-		void ExtendedReadSingleBlock (NFCIso15693RequestFlag flags, nint blockNumber, Action<NSData, NSError> completionHandler);
+		void ExtendedReadSingleBlock (NFCIso15693RequestFlag flags, nint blockNumber, Action<NSData, NSError?> completionHandler);
 
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("extendedWriteSingleBlockWithRequestFlags:blockNumber:dataBlock:completionHandler:")]
-		void ExtendedWriteSingleBlock (NFCIso15693RequestFlag flags, nint blockNumber, NSData dataBlock, Action<NSError> completionHandler);
+		void ExtendedWriteSingleBlock (NFCIso15693RequestFlag flags, nint blockNumber, NSData dataBlock, Action<NSError?> completionHandler);
 
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("extendedLockBlockWithRequestFlags:blockNumber:completionHandler:")]
-		void ExtendedLockBlock (NFCIso15693RequestFlag flags, nint blockNumber, Action<NSError> completionHandler);
+		void ExtendedLockBlock (NFCIso15693RequestFlag flags, nint blockNumber, Action<NSError?> completionHandler);
 
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("extendedReadMultipleBlocksWithRequestFlags:blockRange:completionHandler:")]
-		void ExtendedReadMultipleBlocks (NFCIso15693RequestFlag flags, NSRange blockRange, Action<NSData [], NSError> completionHandler);
+		void ExtendedReadMultipleBlocks (NFCIso15693RequestFlag flags, NSRange blockRange, Action<NSData [], NSError?> completionHandler);
 
 		[iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Abstract]
 		[Export ("extendedWriteMultipleBlocksWithRequestFlags:blockRange:dataBlocks:completionHandler:")]
-		void ExtendedWriteMultipleBlocks (NFCIso15693RequestFlag flags, NSRange blockRange, NSData [] dataBlocks, Action<NSError> completionHandler);
+		void ExtendedWriteMultipleBlocks (NFCIso15693RequestFlag flags, NSRange blockRange, NSData [] dataBlocks, Action<NSError?> completionHandler);
 
 		[iOS (14, 0)]
 		[MacCatalyst (14, 0)]
@@ -390,7 +392,7 @@ namespace CoreNFC {
 		[MacCatalyst (14, 0)]
 		[Abstract]
 		[Export ("challengeWithRequestFlags:cryptoSuiteIdentifier:message:completionHandler:")]
-		void Challenge (NFCIso15693RequestFlag flags, nint cryptoSuiteIdentifier, NSData message, Action<NSError> completionHandler);
+		void Challenge (NFCIso15693RequestFlag flags, nint cryptoSuiteIdentifier, NSData message, Action<NSError?> completionHandler);
 
 		[iOS (14, 0)]
 		[MacCatalyst (14, 0)]
@@ -432,7 +434,7 @@ namespace CoreNFC {
 		[MacCatalyst (14, 0)]
 		[Abstract]
 		[Export ("lockDSFIDWithRequestFlag:completionHandler:")]
-		void LockDsfId (NFCIso15693RequestFlag flags, Action<NSError> completionHandler);
+		void LockDsfId (NFCIso15693RequestFlag flags, Action<NSError?> completionHandler);
 
 	}
 
@@ -597,7 +599,7 @@ namespace CoreNFC {
 		[MacCatalyst (13, 1)]
 		[Export ("connectToTag:completionHandler:")]
 		[Async]
-		void ConnectToTag (INFCNdefTag tag, Action<NSError> completionHandler);
+		void ConnectToTag (INFCNdefTag tag, Action<NSError?> completionHandler);
 	}
 
 	/// <summary>Abstract class implementing <see cref="CoreNFC.INFCReaderSessionContract" /> and base class for <see cref="CoreNFC.NFCNdefReaderSession" />. A session for detecting and reading NFC tags.</summary>
@@ -891,7 +893,7 @@ namespace CoreNFC {
 
 	interface INFCNdefTag { }
 
-	delegate void NFCQueryNdefStatusCompletionHandler (NFCNdefStatus status, nuint capacity, NSError error);
+	delegate void NFCQueryNdefStatusCompletionHandler (NFCNdefStatus status, nuint capacity, NSError? error);
 
 	[MacCatalyst (13, 1)]
 	[Protocol (Name = "NFCNDEFTag")]
@@ -907,15 +909,15 @@ namespace CoreNFC {
 
 		[Abstract]
 		[Export ("readNDEFWithCompletionHandler:")]
-		void ReadNdef (Action<NFCNdefMessage, NSError> completionHandler);
+		void ReadNdef (Action<NFCNdefMessage?, NSError?> completionHandler);
 
 		[Abstract]
 		[Export ("writeNDEF:completionHandler:")]
-		void WriteNdef (NFCNdefMessage ndefMessage, Action<NSError> completionHandler);
+		void WriteNdef (NFCNdefMessage ndefMessage, Action<NSError?> completionHandler);
 
 		[Abstract]
 		[Export ("writeLockWithCompletionHandler:")]
-		void WriteLock (Action<NSError> completionHandler);
+		void WriteLock (Action<NSError?> completionHandler);
 	}
 
 	interface INFCFeliCaTag { }
@@ -944,11 +946,11 @@ namespace CoreNFC {
 
 		[Abstract]
 		[Export ("requestServiceWithNodeCodeList:completionHandler:")]
-		void RequestService (NSData [] nodeCodeList, Action<NSData [], NSError> completionHandler);
+		void RequestService (NSData [] nodeCodeList, Action<NSData [], NSError?> completionHandler);
 
 		[Abstract]
 		[Export ("requestResponseWithCompletionHandler:")]
-		void RequestResponse (Action<nint, NSError> completionHandler);
+		void RequestResponse (Action<nint, NSError?> completionHandler);
 
 		[Abstract]
 		[Export ("readWithoutEncryptionWithServiceCodeList:blockList:completionHandler:")]
@@ -960,7 +962,7 @@ namespace CoreNFC {
 
 		[Abstract]
 		[Export ("requestSystemCodeWithCompletionHandler:")]
-		void RequestSystemCode (Action<NSData [], NSError> completionHandler);
+		void RequestSystemCode (Action<NSData [], NSError?> completionHandler);
 
 		[Abstract]
 		[Export ("requestServiceV2WithNodeCodeList:completionHandler:")]
@@ -976,7 +978,7 @@ namespace CoreNFC {
 
 		[Abstract]
 		[Export ("sendFeliCaCommandPacket:completionHandler:")]
-		void Send (NSData commandPacket, Action<NSData, NSError> completionHandler);
+		void Send (NSData commandPacket, Action<NSData, NSError?> completionHandler);
 	}
 
 	interface INFCIso7816Tag { }
@@ -1067,7 +1069,7 @@ namespace CoreNFC {
 
 		[Abstract]
 		[Export ("sendMiFareCommand:completionHandler:")]
-		void SendMiFareCommand (NSData command, Action<NSData, NSError> completionHandler);
+		void SendMiFareCommand (NSData command, Action<NSData, NSError?> completionHandler);
 
 		[Abstract]
 		[Export ("sendMiFareISO7816Command:completionHandler:")]
@@ -1124,7 +1126,7 @@ namespace CoreNFC {
 
 		[Export ("connectToTag:completionHandler:")]
 		[Async]
-		void ConnectTo (INFCTag tag, Action<NSError> completionHandler);
+		void ConnectTo (INFCTag tag, Action<NSError?> completionHandler);
 
 		[Field ("NFCTagResponseUnexpectedLengthErrorKey")]
 		NSString UnexpectedLengthErrorKey { get; }

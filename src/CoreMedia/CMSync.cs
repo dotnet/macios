@@ -193,7 +193,7 @@ namespace CoreMedia {
 		/// <param name="deltaBetweenPreferredStartTimes">Receives the interval between successive preferred start times.</param>
 		/// <returns>
 		///   <see cref="CMClockError.None" /> on success, <see cref="CMClockError.UnsupportedOperation" /> if unsupported,
-		///   or <c>kCMClockError_PreferredStartTimeNotAvailable</c> (<c>-12758</c>) if the system is not synchronized to a present signal.
+		///   or <see cref="CMClockError.PreferredStartTimeNotAvailable" /> if the system is not synchronized to a present signal.
 		/// </returns>
 		/// <exception cref="ObjectDisposedException">This clock has been disposed.</exception>
 		/// <remarks>

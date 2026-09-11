@@ -45,6 +45,13 @@ namespace MonoTouchFixtures.CoreMedia {
 		}
 
 		[Test]
+		public void PreferredStartTimeNotAvailableError ()
+		{
+			Assert.That ((int) CMClockError.PreferredStartTimeNotAvailable, Is.EqualTo (-12758), "Native value");
+			Assert.That (Enum.GetName (typeof (CMClockError), -12758), Is.EqualTo (nameof (CMClockError.PreferredStartTimeNotAvailable)), "Name");
+		}
+
+		[Test]
 		public void PreferredStartTimePattern ()
 		{
 			TestRuntime.AssertXcodeVersion (27, 0);
@@ -60,9 +67,7 @@ namespace MonoTouchFixtures.CoreMedia {
 			var error = clock.GetPreferredStartTimePattern (out var clockStartTime, out var hostClockStartTime, out var delta);
 			TestContext.WriteLine ($"Preferred start-time pattern: supported={implements}, status={error}");
 			if (implements) {
-				// kCMClockError_PreferredStartTimeNotAvailable is not exposed in CMClockError.
-				const CMClockError preferredStartTimeNotAvailable = (CMClockError) (-12758);
-				Assert.That (error, Is.EqualTo (CMClockError.None).Or.EqualTo (preferredStartTimeNotAvailable), "Error");
+				Assert.That (error, Is.EqualTo (CMClockError.None).Or.EqualTo (CMClockError.PreferredStartTimeNotAvailable), "Error");
 			} else {
 				Assert.That (error, Is.EqualTo (CMClockError.UnsupportedOperation), "Error");
 			}
@@ -91,6 +96,8 @@ namespace MonoTouchFixtures.CoreMedia {
 		{
 			TestRuntime.AssertXcodeVersion (27, 0);
 
+			// The parameterless native factory has no documented way to force a null result.
+			// Without a genlock signal, it falls back to host time rather than failing.
 			using (var clock = CMClock.CreateGenlockClock ()) {
 				Assert.That (clock, Is.Not.Null, "Clock");
 				Assert.That (clock.Handle, Is.Not.EqualTo (NativeHandle.Zero), "Handle");

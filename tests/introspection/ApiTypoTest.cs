@@ -650,6 +650,7 @@ namespace Introspection {
 			{ "Rint", All }, // round-to-integer function
 			{ "Rle", All }, // run-length encoding
 			{ "Rms", All }, // root mean square
+			{ "Rmssd", All & ~ApplePlatform.TVOS }, // root mean square of successive differences
 			{ "Rnn", All }, // recurrent neural network
 			{ "Roi", All }, // region of interest
 			{ "Romm", All }, // acronym: Reference Output Medium Metric

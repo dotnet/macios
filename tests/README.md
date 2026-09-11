@@ -125,3 +125,11 @@ artifact; the test application's exit code is preserved.
 To enable the callback logging in a locally built test application:
 
     $ MACIOS_TEST_CALLBACK_DIAGNOSTICS=1 make -C monotouch-test/dotnet/macOS run-bare RUN_ARGUMENTS=--test=MonoTouchFixtures.Network.NWConnectionTest
+
+### Test-harness windows
+
+The macOS runner and `TestRuntime.RunAsync` disable animations on their own
+windows. On Tahoe CI hosts, stalled AppKit window animations can consume all 64
+dispatch workers and prevent unrelated Network and pasteboard callbacks from
+running. Test windows and images are still displayed; animation behavior of
+windows created by individual tests is unchanged.

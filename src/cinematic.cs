@@ -18,6 +18,42 @@ namespace Cinematic {
 		Unsupported = 5,
 		Incompatible = 6,
 		Cancelled = 7,
+		/// <summary>Required Cinematic resources could not be downloaded.</summary>
+		DownloadFailed = 8,
+	}
+
+	/// <summary>Identifies a version of Cinematic resources.</summary>
+	[TV (27, 0), MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+	[Native]
+	public enum CNCinematicResourceVersion : long {
+		/// <summary>Version 1 of the Cinematic resources.</summary>
+		Version1 = 1,
+	}
+
+	/// <summary>Describes the Cinematic capabilities of an asset.</summary>
+	[TV (27, 0), MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+	[Native]
+	public enum CNCinematicCapability : long {
+		/// <summary>The asset has no Cinematic capabilities.</summary>
+		None = 0,
+		/// <summary>The asset can be rendered without preprocessing.</summary>
+		Renderable = 1,
+		/// <summary>The asset requires preprocessing.</summary>
+		NeedsPreprocessing = 2,
+	}
+
+	/// <summary>Describes the availability of resources required to process a Cinematic asset.</summary>
+	[TV (27, 0), MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+	[Native]
+	public enum CNResourceStatus : long {
+		/// <summary>The configuration is supported and its required resources are available.</summary>
+		Ready,
+		/// <summary>The configuration is supported, but required resources must be downloaded.</summary>
+		NeedsDownloading,
+		/// <summary>The device lacks the required hardware capabilities.</summary>
+		UnsupportedDevice,
+		/// <summary>The asset is unsupported by the current system build.</summary>
+		UnsupportedAsset,
 	}
 
 	[TV (17, 0), iOS (17, 0), MacCatalyst (26, 0)]
@@ -118,10 +154,69 @@ namespace Cinematic {
 	delegate void CNAssetSpatialAudioInfoCheckIfContainsSpatialAudioCallback (bool result);
 	delegate void CNAssetSpatialAudioInfoLoadCallback ([NullAllowed] CNAssetSpatialAudioInfo assetInfo, [NullAllowed] NSError error);
 
+	/// <summary>Configures preprocessing of a Cinematic asset.</summary>
+	[NoTV, MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+	[BaseType (typeof (NSObject))]
+	interface CNAssetPreprocessConfiguration {
+		/// <summary>Creates a preprocessing configuration with the specified output location.</summary>
+		/// <param name="destinationAssetUrl">The URL where the preprocessed asset will be written.</param>
+		[Export ("initWithDestinationAssetURL:")]
+		NativeHandle Constructor (NSUrl destinationAssetUrl);
+
+		/// <summary>Gets or sets whether the output references the source asset's color track instead of embedding it.</summary>
+		/// <value><see langword="true" /> to reference the source track; otherwise, <see langword="false" />. The default is <see langword="false" />.</value>
+		/// <remarks>Referencing the source produces a smaller output, but requires the source asset to remain at its original location. Disparity and metadata tracks are always embedded.</remarks>
+		[Export ("referenceSourceAssetTracks")]
+		bool ReferenceSourceAssetTracks { get; set; }
+
+		/// <summary>Gets the URL where the preprocessed asset will be written.</summary>
+		[Export ("destinationAssetURL")]
+		NSUrl DestinationAssetUrl { get; }
+	}
+
+	/// <summary>Handles the result of checking an asset's Cinematic capabilities.</summary>
+	/// <param name="capability">The asset's Cinematic capability.</param>
+	[TV (27, 0), MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+	delegate void CNAssetInfoCheckCinematicCapabilityCallback (CNCinematicCapability capability);
+
+	/// <summary>Handles completion of a download of Cinematic resource versions.</summary>
+	/// <param name="error">The error, or <see langword="null" /> if the download succeeded.</param>
+	[NoTV, MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+	delegate void CNAssetInfoDownloadResourcesForVersionsCallback ([NullAllowed] NSError error);
+
+	/// <summary>Handles completion of a download of resources for a Cinematic asset.</summary>
+	/// <param name="assetInfo">Refreshed asset information with the downloaded resources available, or <see langword="null" /> on failure.</param>
+	/// <param name="error">The error, or <see langword="null" /> if the download succeeded.</param>
+	[NoTV, MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+	delegate void CNAssetInfoDownloadResourcesCallback ([NullAllowed] CNAssetInfo assetInfo, [NullAllowed] NSError error);
+
+	/// <summary>Handles completion of preprocessing a Cinematic asset.</summary>
+	/// <param name="assetInfo">Information for the new, renderable, preprocessed asset, or <see langword="null" /> on failure.</param>
+	/// <param name="error">The error, or <see langword="null" /> if preprocessing succeeded.</param>
+	[NoTV, MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+	delegate void CNAssetInfoPreprocessAssetCallback ([NullAllowed] CNAssetInfo assetInfo, [NullAllowed] NSError error);
+
 	[TV (17, 0), iOS (17, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CNAssetInfo {
+		/// <summary>Checks the Cinematic capabilities of an asset.</summary>
+		/// <param name="asset">The asset to inspect.</param>
+		/// <param name="completionHandler">The callback that receives the asset's Cinematic capability.</param>
+		[TV (27, 0), MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Async (XmlDocs = """
+			<summary>Asynchronously checks the Cinematic capabilities of an asset.</summary>
+			<param name="asset">The asset to inspect.</param>
+			<returns>A task whose result is the asset's Cinematic capability.</returns>
+			""")]
+		[Static]
+		[Export ("checkCinematicCapabilityForAsset:completionHandler:")]
+		void CheckCinematicCapability (AVAsset asset, CNAssetInfoCheckCinematicCapabilityCallback completionHandler);
+
+		[Deprecated (PlatformName.iOS, 27, 0, message: "Use 'CheckCinematicCapability' instead.")]
+		[Deprecated (PlatformName.TvOS, 27, 0, message: "Use 'CheckCinematicCapability' instead.")]
+		[Deprecated (PlatformName.MacOSX, 27, 0, message: "Use 'CheckCinematicCapability' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Use 'CheckCinematicCapability' instead.")]
 		[Async]
 		[Static]
 		[Export ("checkIfCinematic:completionHandler:")]
@@ -172,6 +267,105 @@ namespace Cinematic {
 
 		[Export ("sampleDataTrackIDs", ArgumentSemantic.Strong)]
 		NSNumber [] SampleDataTrackIds { get; }
+
+		// From the CNAssetWithoutDisparity category
+
+		/// <summary>Gets the status of the requested Cinematic resource versions on the current device.</summary>
+		/// <param name="resourceVersions">A set of <see cref="T:Cinematic.CNCinematicResourceVersion" /> values boxed as <see cref="T:Foundation.NSNumber" /> objects, or an empty set to check all available versions.</param>
+		/// <returns>The first non-ready status encountered, or <see cref="F:Cinematic.CNResourceStatus.Ready" /> if all requested versions are ready.</returns>
+		[TV (27, 0), MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Static]
+		[Export ("resourceStatusForVersions:")]
+		CNResourceStatus GetResourceStatus (NSSet<NSNumber> resourceVersions);
+
+		/// <summary>Downloads the requested Cinematic resource versions.</summary>
+		/// <param name="resourceVersions">A set of <see cref="T:Cinematic.CNCinematicResourceVersion" /> values boxed as <see cref="T:Foundation.NSNumber" /> objects, or an empty set to download all available versions.</param>
+		/// <param name="downloadTimeout">The maximum download time, in seconds. Use <see cref="P:Cinematic.CNAssetInfo.DefaultResourceDownloadTimeout" /> for the default timeout.</param>
+		/// <param name="completionHandler">The callback invoked when downloading finishes.</param>
+		/// <returns>An object that reports download progress.</returns>
+		/// <remarks>The downloaded resources are device-wide and cached for subsequent use.</remarks>
+		[NoTV, MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Async (XmlDocs = """
+			<summary>Asynchronously downloads the requested Cinematic resource versions.</summary>
+			<param name="resourceVersions">A set of <see cref="T:Cinematic.CNCinematicResourceVersion" /> values boxed as <see cref="T:Foundation.NSNumber" /> objects, or an empty set to download all available versions.</param>
+			<param name="downloadTimeout">The maximum download time, in seconds.</param>
+			<returns>A task that completes when downloading finishes.</returns>
+			<remarks>The downloaded resources are device-wide and cached for subsequent use.</remarks>
+			""",
+			XmlDocsWithOutParameter = """
+			<summary>Asynchronously downloads the requested Cinematic resource versions and provides download progress.</summary>
+			<param name="resourceVersions">A set of <see cref="T:Cinematic.CNCinematicResourceVersion" /> values boxed as <see cref="T:Foundation.NSNumber" /> objects, or an empty set to download all available versions.</param>
+			<param name="downloadTimeout">The maximum download time, in seconds.</param>
+			<param name="result">An object that reports download progress.</param>
+			<returns>A task that completes when downloading finishes.</returns>
+			<remarks>The downloaded resources are device-wide and cached for subsequent use.</remarks>
+			""")]
+		[Static]
+		[Export ("downloadResourcesForVersions:timeout:completionHandler:")]
+		NSProgress DownloadResourcesForVersions (NSSet<NSNumber> resourceVersions, double downloadTimeout, CNAssetInfoDownloadResourcesForVersionsCallback completionHandler);
+
+		/// <summary>Downloads the resources required by this asset.</summary>
+		/// <param name="downloadTimeout">The maximum download time, in seconds. Use <see cref="P:Cinematic.CNAssetInfo.DefaultResourceDownloadTimeout" /> for the default timeout.</param>
+		/// <param name="completionHandler">The callback that receives refreshed asset information when downloading finishes.</param>
+		/// <returns>An object that reports download progress.</returns>
+		/// <remarks>Use the refreshed asset information supplied to the callback after a successful download.</remarks>
+		[NoTV, MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Async (XmlDocs = """
+			<summary>Asynchronously downloads the resources required by this asset.</summary>
+			<param name="downloadTimeout">The maximum download time, in seconds.</param>
+			<returns>A task whose result is refreshed asset information with the downloaded resources available.</returns>
+			""",
+			XmlDocsWithOutParameter = """
+			<summary>Asynchronously downloads the resources required by this asset and provides download progress.</summary>
+			<param name="downloadTimeout">The maximum download time, in seconds.</param>
+			<param name="result">An object that reports download progress.</param>
+			<returns>A task whose result is refreshed asset information with the downloaded resources available.</returns>
+			""")]
+		[Export ("downloadResourcesWithTimeout:completionHandler:")]
+		NSProgress DownloadResources (double downloadTimeout, CNAssetInfoDownloadResourcesCallback completionHandler);
+
+		/// <summary>Preprocesses the asset by generating a disparity track and writing a new asset.</summary>
+		/// <param name="configuration">The preprocessing configuration, including the destination asset URL.</param>
+		/// <param name="completionHandler">The callback that receives information for the new, renderable, preprocessed asset.</param>
+		/// <returns>An object that reports preprocessing progress.</returns>
+		/// <remarks>Ensure <see cref="P:Cinematic.CNAssetInfo.ResourceStatus" /> is <see cref="F:Cinematic.CNResourceStatus.Ready" /> before preprocessing. Download any required resources first.</remarks>
+		[NoTV, MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Async (XmlDocs = """
+			<summary>Asynchronously preprocesses the asset by generating a disparity track and writing a new asset.</summary>
+			<param name="configuration">The preprocessing configuration, including the destination asset URL.</param>
+			<returns>A task whose result describes the new, renderable, preprocessed asset.</returns>
+			<remarks>Ensure <see cref="P:Cinematic.CNAssetInfo.ResourceStatus" /> is <see cref="F:Cinematic.CNResourceStatus.Ready" /> before preprocessing. Download any required resources first.</remarks>
+			""",
+			XmlDocsWithOutParameter = """
+			<summary>Asynchronously preprocesses the asset and provides preprocessing progress.</summary>
+			<param name="configuration">The preprocessing configuration, including the destination asset URL.</param>
+			<param name="result">An object that reports preprocessing progress.</param>
+			<returns>A task whose result describes the new, renderable, preprocessed asset.</returns>
+			<remarks>Ensure <see cref="P:Cinematic.CNAssetInfo.ResourceStatus" /> is <see cref="F:Cinematic.CNResourceStatus.Ready" /> before preprocessing. Download any required resources first.</remarks>
+			""")]
+		[Export ("preprocessAssetWithConfiguration:completionHandler:")]
+		NSProgress PreprocessAsset (CNAssetPreprocessConfiguration configuration, CNAssetInfoPreprocessAssetCallback completionHandler);
+
+		/// <summary>Gets the default timeout, in seconds, for Cinematic resource downloads.</summary>
+		[NoTV, MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Static]
+		[Export ("defaultResourceDownloadTimeout")]
+		double DefaultResourceDownloadTimeout { get; }
+
+		/// <summary>Gets whether the asset has been preprocessed.</summary>
+		[TV (27, 0), MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Export ("preprocessed")]
+		bool Preprocessed { [Bind ("isPreprocessed")] get; }
+
+		/// <summary>Gets the asset's Cinematic capability.</summary>
+		[TV (27, 0), MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Export ("cinematicCapability")]
+		CNCinematicCapability CinematicCapability { get; }
+
+		/// <summary>Gets the status of the resources required by the asset on the current device.</summary>
+		[TV (27, 0), MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Export ("resourceStatus")]
+		CNResourceStatus ResourceStatus { get; }
 	}
 
 	[TV (17, 0), iOS (17, 0), MacCatalyst (26, 0)]
@@ -230,14 +424,39 @@ namespace Cinematic {
 		[Export ("quality")]
 		CNRenderingQuality Quality { get; }
 
+		/// <summary>Encodes rendering of a Cinematic frame into a pixel buffer.</summary>
+		/// <param name="commandBuffer">The command buffer to encode into.</param>
+		/// <param name="frameAttributes">The rendering attributes for the frame.</param>
+		/// <param name="sourceImage">The source image.</param>
+		/// <param name="sourceDisparity">The source disparity buffer, or <see langword="null" /> only when previewing an asset whose capability is <see cref="F:Cinematic.CNCinematicCapability.NeedsPreprocessing" /> before preprocessing.</param>
+		/// <param name="destinationImage">The destination image buffer.</param>
+		/// <returns><see langword="true" /> if rendering was encoded; otherwise, <see langword="false" />.</returns>
+		/// <remarks>When the disparity buffer is <see langword="null" />, source disparity and focus disparity are computed internally. A <see langword="null" /> disparity buffer for any other asset type causes this method to return <see langword="false" />.</remarks>
 		[Export ("encodeRenderToCommandBuffer:frameAttributes:sourceImage:sourceDisparity:destinationImage:")]
-		bool EncodeRender (IMTLCommandBuffer commandBuffer, CNRenderingSessionFrameAttributes frameAttributes, CVPixelBuffer sourceImage, CVPixelBuffer sourceDisparity, CVPixelBuffer destinationImage);
+		bool EncodeRender (IMTLCommandBuffer commandBuffer, CNRenderingSessionFrameAttributes frameAttributes, CVPixelBuffer sourceImage, [NullAllowed] CVPixelBuffer sourceDisparity, CVPixelBuffer destinationImage);
 
+		/// <summary>Encodes rendering of a Cinematic frame into an RGBA texture.</summary>
+		/// <param name="commandBuffer">The command buffer to encode into.</param>
+		/// <param name="frameAttributes">The rendering attributes for the frame.</param>
+		/// <param name="sourceImage">The source image.</param>
+		/// <param name="sourceDisparity">The source disparity buffer, or <see langword="null" /> only when previewing an asset whose capability is <see cref="F:Cinematic.CNCinematicCapability.NeedsPreprocessing" /> before preprocessing.</param>
+		/// <param name="destinationRgba">The destination RGBA texture.</param>
+		/// <returns><see langword="true" /> if rendering was encoded; otherwise, <see langword="false" />.</returns>
+		/// <remarks>When the disparity buffer is <see langword="null" />, source disparity and focus disparity are computed internally. A <see langword="null" /> disparity buffer for any other asset type causes this method to return <see langword="false" />.</remarks>
 		[Export ("encodeRenderToCommandBuffer:frameAttributes:sourceImage:sourceDisparity:destinationRGBA:")]
-		bool EncodeRender (IMTLCommandBuffer commandBuffer, CNRenderingSessionFrameAttributes frameAttributes, CVPixelBuffer sourceImage, CVPixelBuffer sourceDisparity, IMTLTexture destinationRgba);
+		bool EncodeRender (IMTLCommandBuffer commandBuffer, CNRenderingSessionFrameAttributes frameAttributes, CVPixelBuffer sourceImage, [NullAllowed] CVPixelBuffer sourceDisparity, IMTLTexture destinationRgba);
 
+		/// <summary>Encodes rendering of a Cinematic frame into separate luma and chroma textures.</summary>
+		/// <param name="commandBuffer">The command buffer to encode into.</param>
+		/// <param name="frameAttributes">The rendering attributes for the frame.</param>
+		/// <param name="sourceImage">The source image.</param>
+		/// <param name="sourceDisparity">The source disparity buffer, or <see langword="null" /> only when previewing an asset whose capability is <see cref="F:Cinematic.CNCinematicCapability.NeedsPreprocessing" /> before preprocessing.</param>
+		/// <param name="destinationLuma">The destination luma texture.</param>
+		/// <param name="destinationChroma">The destination chroma texture.</param>
+		/// <returns><see langword="true" /> if rendering was encoded; otherwise, <see langword="false" />.</returns>
+		/// <remarks>When the disparity buffer is <see langword="null" />, source disparity and focus disparity are computed internally. A <see langword="null" /> disparity buffer for any other asset type causes this method to return <see langword="false" />.</remarks>
 		[Export ("encodeRenderToCommandBuffer:frameAttributes:sourceImage:sourceDisparity:destinationLuma:destinationChroma:")]
-		bool EncodeRender (IMTLCommandBuffer commandBuffer, CNRenderingSessionFrameAttributes frameAttributes, CVPixelBuffer sourceImage, CVPixelBuffer sourceDisparity, IMTLTexture destinationLuma, IMTLTexture destinationChroma);
+		bool EncodeRender (IMTLCommandBuffer commandBuffer, CNRenderingSessionFrameAttributes frameAttributes, CVPixelBuffer sourceImage, [NullAllowed] CVPixelBuffer sourceDisparity, IMTLTexture destinationLuma, IMTLTexture destinationChroma);
 
 		[Static]
 		[Export ("sourcePixelFormatTypes", ArgumentSemantic.Strong)]

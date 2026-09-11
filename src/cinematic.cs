@@ -157,14 +157,15 @@ namespace Cinematic {
 	/// <summary>Configures preprocessing of a Cinematic asset.</summary>
 	[NoTV, MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
 	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
 	interface CNAssetPreprocessConfiguration {
 		/// <summary>Creates a preprocessing configuration with the specified output location.</summary>
 		/// <param name="destinationAssetUrl">The URL where the preprocessed asset will be written.</param>
 		[Export ("initWithDestinationAssetURL:")]
 		NativeHandle Constructor (NSUrl destinationAssetUrl);
 
-		/// <summary>Gets or sets whether the output references the source asset's color track instead of embedding it.</summary>
-		/// <value><see langword="true" /> to reference the source track; otherwise, <see langword="false" />. The default is <see langword="false" />.</value>
+		/// <summary>Gets or sets whether the output references the source asset's color and audio tracks instead of embedding them.</summary>
+		/// <value><see langword="true" /> to reference the source tracks; otherwise, <see langword="false" />. The default is <see langword="false" />.</value>
 		/// <remarks>Referencing the source produces a smaller output, but requires the source asset to remain at its original location. Disparity and metadata tracks are always embedded.</remarks>
 		[Export ("referenceSourceAssetTracks")]
 		bool ReferenceSourceAssetTracks { get; set; }

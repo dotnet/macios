@@ -150,6 +150,7 @@ namespace CoreFoundation {
 			this.socketType = SocketTypeToInt (type);
 			this.protocol = ProtocolToInt (proto);
 			this.address = address.Handle;
+			GC.KeepAlive (address);
 		}
 
 		internal static int AddressFamilyToInt (AddressFamily family)

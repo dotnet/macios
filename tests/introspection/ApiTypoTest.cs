@@ -630,6 +630,7 @@ namespace Introspection {
 			{ "Qwac", All }, // qualified website cert
 			{ "Raycast", ApplePlatform.iOS }, // graphics/AR term
 			{ "Raycasts", ApplePlatform.iOS }, // graphics/AR term
+			{ "Rdd", All }, // SMPTE RDD 18 ancillary data standard
 			{ "Reacquirer", All }, // valid English noun
 			{ "Reassociation", ApplePlatform.MacOSX }, // networking term
 			{ "Reauthentication", ApplePlatform.MacOSX }, // compound word
@@ -650,6 +651,7 @@ namespace Introspection {
 			{ "Rint", All }, // round-to-integer function
 			{ "Rle", All }, // run-length encoding
 			{ "Rms", All }, // root mean square
+			{ "Rmssd", All & ~ApplePlatform.TVOS }, // root mean square of successive differences
 			{ "Rnn", All }, // recurrent neural network
 			{ "Roi", All }, // region of interest
 			{ "Romm", All }, // acronym: Reference Output Medium Metric
@@ -683,6 +685,7 @@ namespace Introspection {
 			{ "Shadable", All }, // graphics term
 			{ "Siemen", All & ~ApplePlatform.TVOS }, // Apple API singular form
 			{ "Signbit", All }, // math library term
+			{ "Simd", All }, // Single Instruction, Multiple Data
 			{ "Sint", All }, // as in "Signed Integer"
 			{ "Sixtyfour", ApplePlatform.MacOSX }, // compound number word
 			{ "Slerp", All }, // spherical interpolation
@@ -765,9 +768,10 @@ namespace Introspection {
 			{ "Twips", ApplePlatform.MacOSX }, // typography unit
 			{ "tx", All }, // translation x axis
 			{ "ty", All }, // translation y axis
+			{ "Udam", All }, // User Defined Acquisition Metadata
 			{ "Udi", All & ~ApplePlatform.TVOS }, // device identifier standard
 			{ "Udp", All }, // User Datagram Protocol
-			{ "Uid", All & ~ApplePlatform.TVOS }, // user identifier
+			{ "Uid", All }, // user identifier
 			{ "Unconfigured", All & ~ApplePlatform.MacOSX }, // valid English derivative
 			{ "Undecodable", All }, // valid English derivative
 			{ "Underrun", All }, // audio/buffer term

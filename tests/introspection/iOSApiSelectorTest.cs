@@ -30,8 +30,9 @@ namespace Introspection {
 
 		protected override bool Skip (Type type, string selectorName)
 		{
-#if __TVOS__
+#if !__MACCATALYST__
 			switch (type.Name) {
+#if __TVOS__
 			case "AVAssetWriter":
 				switch (selectorName) {
 				// These Pro Video Storage selectors are declared for tvOS 27 but are not implemented in the tvOS 27 simulator.
@@ -43,8 +44,14 @@ namespace Introspection {
 					break;
 				}
 				break;
-			}
 #endif // __TVOS__
+			case "AVCaptureDevice":
+				// The iOS/tvOS 27 simulators do not expose this setter declared by the Xcode 27 RC1 headers.
+				if (selectorName == "setContinuousAutoFocusTrackingLensPositionBias:" && TestRuntime.IsSimulator)
+					return true;
+				break;
+			}
+#endif // !__MACCATALYST__
 #if __MACCATALYST__
 			switch (type.Name) {
 			case "AVAssetWriter":

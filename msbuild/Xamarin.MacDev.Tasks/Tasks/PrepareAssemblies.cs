@@ -31,7 +31,7 @@ namespace Xamarin.MacDev.Tasks {
 		public string MakeReproPath { get; set; } = "";
 
 		// The value of the $(_DynamicRegistrationSupported) MSBuild property. During post-processing this is
-		// how the value RegistrarRemovalTrackingStep computed during the preparation pass is passed back to
+		// how the value DetectApiUsageStep computed during the preparation pass is passed back to
 		// the assembly-preparer (the native main file is generated during post-processing, and it must agree
 		// with the managed side about whether the dynamic registrar is available).
 		public string DynamicRegistrationSupported { get; set; } = "";
@@ -44,8 +44,8 @@ namespace Xamarin.MacDev.Tasks {
 
 		public bool PostProcessing { get; set; }
 
-		// The pre-trim (untrimmed) assemblies (the trimmer's input), used during post-processing to read
-		// the [ProtocolMember] attributes the trimmer removed from the post-trim assemblies.
+		// The original assemblies from before preparation and trimming, used during post-processing to read
+		// selected registrar attributes removed during trimming.
 		public ITaskItem [] PreTrimAssemblies { get; set; } = [];
 
 		// When set (to ILC's output object file), the defined symbols in this file are used to determine
@@ -78,10 +78,13 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			// Capture Console usage and show an error if anything uses Console.[Error.]Write*
 			using var consoleToLog = ConsoleToTaskWriter.EnsureNoConsoleUsage (Log);
+			var success = false;
+			var msbuildOutputFile = "";
 
 			try {
 				var infos = InputAssemblies.Select (GetAssemblyInfo).ToArray ();
 				using var preparer = new AssemblyPreparer (this, infos, OptionsFile?.ItemSpec ?? "");
+				msbuildOutputFile = PostProcessing ? preparer.Configuration.MSBuildPostProcessOutputFile : preparer.Configuration.MSBuildOutputFile;
 				preparer.MakeReproPath = MakeReproPath;
 				preparer.PreTrimAssemblies.AddRange (PreTrimAssemblies.Select (v => v.ItemSpec));
 
@@ -140,8 +143,10 @@ namespace Xamarin.MacDev.Tasks {
 
 				outputAssemblies.AddRange (preparer.AddedAssemblies.Select (v => {
 					var rv = new TaskItem (v.Path);
+					var relativePath = preparer.Configuration.AssemblyPublishDir + Path.GetFileName (v.Path);
 					rv.SetMetadata ("PostprocessAssembly", "true");
-					rv.SetMetadata ("RelativePath", preparer.Configuration.AssemblyPublishDir + Path.GetFileName (v.Path));
+					rv.SetMetadata ("OriginalRelativePath", relativePath);
+					rv.SetMetadata ("RelativePath", relativePath);
 					if (v.OriginatingAssembly is not null) {
 						var originatingAssembly = preparer.Assemblies.SingleOrDefault (assembly => assembly.InputPath == v.OriginatingAssembly);
 						originatingAssembly ??= preparer.Assemblies.SingleOrDefault (assembly => assembly.IsCILAssembly && Path.GetFileName (assembly.InputPath) == Path.GetFileName (v.OriginatingAssembly));
@@ -162,10 +167,14 @@ namespace Xamarin.MacDev.Tasks {
 				OutputAssemblies = outputAssemblies.ToArray ();
 				if (!rv && !Log.HasLoggedErrors)
 					Log.LogError (MSBStrings.E0192);
-				return rv && !Log.HasLoggedErrors;
+				success = rv && !Log.HasLoggedErrors;
+				return success;
 			} catch (Exception e) {
 				((IToolLog) this).LogException (e);
 				return false;
+			} finally {
+				if (!success && !string.IsNullOrEmpty (msbuildOutputFile))
+					File.Delete (msbuildOutputFile);
 			}
 		}
 	}

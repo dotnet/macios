@@ -113,5 +113,13 @@ namespace Xamarin.MacDev.Tasks {
 			Assert.That (errorsNotInResources, Is.Empty, $"The following error(s) were found in MSBStrings.resx but not through the MSBStrings resource. Try to recompile the msbuild project and then the test project\n{errorsNotInResources}");
 			Assert.That (errorsNotInResx, Is.Empty, $"The following error(s) were found in the MSBStrings resource but not in MSBStrings.resx. Try to recompile the msbuild project and then the test project\n{errorsNotInResx}");
 		}
+
+		[TestCase ("msbuild/Xamarin.Localization.MSBuild/MSBStrings.resx")]
+		[TestCase ("tools/mtouch/Errors.resx")]
+		public void ResourcesAreUniqueAndSorted (string relativePath)
+		{
+			var resxPath = Path.Combine (Configuration.RootPath, relativePath);
+			ResxAssertions.AssertEntriesAreUniqueAndSorted (resxPath);
+		}
 	}
 }

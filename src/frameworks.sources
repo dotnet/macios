@@ -850,6 +850,7 @@ FOUNDATION_SOURCES = \
 	Foundation/NSOrderedCollectionDifference.cs \
 	Foundation/NSOrderedCollectionDifference_1.cs \
 	Foundation/NSConnection.cs \
+	Foundation/NSCollectionLinqExtensions.cs \
 	Foundation/NSData.cs \
 	Foundation/NSDate.cs \
 	Foundation/NSDictionary.cs \

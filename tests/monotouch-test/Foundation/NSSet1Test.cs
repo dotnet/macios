@@ -295,6 +295,15 @@ namespace MonoTouchFixtures.Foundation {
 		}
 
 		[Test]
+		public void LinqFirstOrDefaultTest ()
+		{
+			using var st = new NSSet<NSString> ((NSString) "1", (NSString) "2");
+			var first = st.FirstOrDefault ();
+			Assert.That (first, Is.Not.Null, "FirstOrDefault");
+			Assert.That (st.Contains (first), Is.True, "Contains");
+		}
+
+		[Test]
 		public void IEnumerableTest ()
 		{
 			const int C = 16 * 2 + 3; // NSFastEnumerator has a array of size 16, use more than that, and not an exact multiple.

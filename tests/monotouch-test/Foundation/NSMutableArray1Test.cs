@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 
 namespace MonoTouchFixtures.Foundation {
 
@@ -237,6 +238,14 @@ namespace MonoTouchFixtures.Foundation {
 				// This means that we don't have to actually execute this code, it's enough to make it compile.
 				Console.WriteLine (item.LongValue);
 			}
+		}
+
+		[Test]
+		public void LinqFirstOrDefaultTest ()
+		{
+			using var arr = new NSMutableArray<NSString> ((NSString) "1", (NSString) "2");
+			var first = arr.FirstOrDefault ();
+			Assert.That (first, Is.EqualTo ((NSString) "1"), "FirstOrDefault");
 		}
 	}
 }

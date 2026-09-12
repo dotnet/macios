@@ -21,7 +21,7 @@ namespace CoreMedia {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public class CMClock : CMClockOrTimebase {
+	public partial class CMClock : CMClockOrTimebase {
 		[Preserve (Conditional = true)]
 		internal CMClock (NativeHandle handle, bool owns)
 			: base (handle, owns)
@@ -76,6 +76,49 @@ namespace CoreMedia {
 		}
 #endif
 
+#if __MACOS__ || __MACCATALYST__
+		[SupportedOSPlatform ("macos27.0")]
+		[SupportedOSPlatform ("maccatalyst27.0")]
+		[UnsupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("tvos")]
+		[DllImport (Constants.CoreMediaLibrary)]
+		extern static /* CMClockRef */ IntPtr CMClockCreateGenlockClock ();
+
+		/// <summary>Creates a clock that follows an external genlock signal when synchronized, or host time otherwise.</summary>
+		/// <returns>A genlock clock, or <see langword="null" /> if the clock could not be created.</returns>
+		/// <remarks>
+		///   Dispose the clock when it is no longer needed, because monitoring the genlock signal may increase energy use.
+		///   Multiple calls may return clocks backed by the same native clock.
+		/// </remarks>
+		[SupportedOSPlatform ("macos27.0")]
+		[SupportedOSPlatform ("maccatalyst27.0")]
+		[UnsupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("tvos")]
+		public static CMClock? CreateGenlockClock ()
+		{
+			var handle = CMClockCreateGenlockClock ();
+			return handle == IntPtr.Zero ? null : new CMClock (handle, owns: true);
+		}
+
+		[SupportedOSPlatform ("macos27.0")]
+		[SupportedOSPlatform ("maccatalyst27.0")]
+		[UnsupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("tvos")]
+		[DllImport (Constants.CoreMediaLibrary)]
+		extern static /* Boolean */ byte CMIsAnyDisplaySynchronizedToLockedGenlockSignal ();
+
+		/// <summary>Gets whether any display is synchronized to a locked external genlock signal.</summary>
+		[SupportedOSPlatform ("macos27.0")]
+		[SupportedOSPlatform ("maccatalyst27.0")]
+		[UnsupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("tvos")]
+		public static bool IsAnyDisplaySynchronizedToLockedGenlockSignal {
+			get {
+				return CMIsAnyDisplaySynchronizedToLockedGenlockSignal () != 0;
+			}
+		}
+#endif
+
 		[DllImport (Constants.CoreMediaLibrary)]
 		unsafe extern static /* OSStatus */ CMClockError CMClockGetAnchorTime (/* CMClockRef */ IntPtr clock, CMTime* outClockTime, CMTime* outReferenceClockTime);
 
@@ -110,6 +153,69 @@ namespace CoreMedia {
 			bool result = CMClockMightDrift (Handle, otherClock.Handle) != 0;
 			GC.KeepAlive (otherClock);
 			return result;
+		}
+
+		[SupportedOSPlatform ("ios27.0")]
+		[SupportedOSPlatform ("maccatalyst27.0")]
+		[SupportedOSPlatform ("macos27.0")]
+		[SupportedOSPlatform ("tvos27.0")]
+		[DllImport (Constants.CoreMediaLibrary)]
+		extern static /* Boolean */ byte CMClockImplementsGetPreferredStartTimePattern (/* CMClockRef */ IntPtr clock);
+
+		/// <summary>Gets whether this clock implements <see cref="GetPreferredStartTimePattern" />.</summary>
+		/// <exception cref="ObjectDisposedException">This clock has been disposed.</exception>
+		[SupportedOSPlatform ("ios27.0")]
+		[SupportedOSPlatform ("maccatalyst27.0")]
+		[SupportedOSPlatform ("macos27.0")]
+		[SupportedOSPlatform ("tvos27.0")]
+		public bool ImplementsGetPreferredStartTimePattern {
+			get {
+				var result = CMClockImplementsGetPreferredStartTimePattern (GetCheckedHandle ()) != 0;
+				GC.KeepAlive (this);
+				return result;
+			}
+		}
+
+		[SupportedOSPlatform ("ios27.0")]
+		[SupportedOSPlatform ("maccatalyst27.0")]
+		[SupportedOSPlatform ("macos27.0")]
+		[SupportedOSPlatform ("tvos27.0")]
+		[DllImport (Constants.CoreMediaLibrary)]
+		unsafe extern static /* OSStatus */ CMClockError CMClockGetPreferredStartTimePattern (
+			/* CMClockRef */ IntPtr clock,
+			CMTime* outClockStartTime,
+			CMTime* outHostClockStartTime,
+			CMTime* outDeltaBetweenPreferredStartTimes);
+
+		/// <summary>Gets the pattern of preferred start times for synchronization with an external signal.</summary>
+		/// <param name="clockStartTime">Receives the next preferred start time in this clock's time.</param>
+		/// <param name="hostClockStartTime">Receives the matching preferred start time in host-clock time.</param>
+		/// <param name="deltaBetweenPreferredStartTimes">Receives the interval between successive preferred start times.</param>
+		/// <returns>
+		///   <see cref="CMClockError.None" /> on success, <see cref="CMClockError.UnsupportedOperation" /> if unsupported,
+		///   or <see cref="CMClockError.PreferredStartTimeNotAvailable" /> if the system is not synchronized to a present signal.
+		/// </returns>
+		/// <exception cref="ObjectDisposedException">This clock has been disposed.</exception>
+		/// <remarks>
+		///   The output values are meaningful only on success. Add integer multiples of
+		///   <paramref name="deltaBetweenPreferredStartTimes" /> to both start times to calculate subsequent preferred start times in the near future.
+		/// </remarks>
+		[SupportedOSPlatform ("ios27.0")]
+		[SupportedOSPlatform ("maccatalyst27.0")]
+		[SupportedOSPlatform ("macos27.0")]
+		[SupportedOSPlatform ("tvos27.0")]
+		public CMClockError GetPreferredStartTimePattern (out CMTime clockStartTime, out CMTime hostClockStartTime, out CMTime deltaBetweenPreferredStartTimes)
+		{
+			clockStartTime = default;
+			hostClockStartTime = default;
+			deltaBetweenPreferredStartTimes = default;
+			unsafe {
+				fixed (CMTime* clockStartTimePtr = &clockStartTime, hostClockStartTimePtr = &hostClockStartTime, deltaPtr = &deltaBetweenPreferredStartTimes) {
+					var result = CMClockGetPreferredStartTimePattern (GetCheckedHandle (), clockStartTimePtr, hostClockStartTimePtr, deltaPtr);
+					GC.KeepAlive (this);
+					return result;
+				}
+			}
 		}
 
 		[DllImport (Constants.CoreMediaLibrary)]

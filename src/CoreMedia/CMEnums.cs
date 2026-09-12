@@ -387,6 +387,8 @@ namespace CoreMedia {
 		AllocationFailed = -12747,
 		/// <summary>To be added.</summary>
 		UnsupportedOperation = -12756,
+		/// <summary>No preferred start time is available because the system is not synchronized to a signal.</summary>
+		PreferredStartTimeNotAvailable = -12758,
 	}
 
 	// untyped enum (used as OSStatus) -> CMSync.h

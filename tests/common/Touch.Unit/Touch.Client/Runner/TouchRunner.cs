@@ -69,6 +69,9 @@ using SettingsDictionary = System.Collections.IDictionary;
 
 namespace MonoTouch.NUnit.UI {
 	public abstract class BaseTouchRunner : ITestListener {
+		const int ConsoleWriterBufferSize = 1024;
+		static readonly Encoding ConsoleWriterEncoding = new UTF8Encoding (encoderShouldEmitUTF8Identifier: false);
+
 		TestSuite suite = new TestSuite ("TestSuite");
 		ITestFilter filter = TestFilter.Empty;
 		bool connection_failure;
@@ -413,7 +416,11 @@ namespace MonoTouch.NUnit.UI {
 						Console.WriteLine ("Network error: Cannot connect to {0}:{1}: {2}. Continuing on console.", options.HostName, options.HostPort, ex);
 					}
 				}
-				writers.Add (Console.Out);
+				// NUnit redirects Console.Out while tests run. Keep this writer independent from
+				// both the original and redirected writers to avoid acquiring their locks in reverse order.
+				writers.Add (TextWriter.Synchronized (new StreamWriter (Console.OpenStandardOutput (), ConsoleWriterEncoding, ConsoleWriterBufferSize, leaveOpen: true) {
+					AutoFlush = true,
+				}));
 				Writer = new MultiplexedTextWriter (writers);
 			}
 

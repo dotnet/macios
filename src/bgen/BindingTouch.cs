@@ -27,22 +27,41 @@
 
 #nullable enable
 
+#if !NET
+#pragma warning disable CS8604
+#endif
+
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using System.Threading;
 using Mono.Options;
+
+using Assembly = System.Reflection.Assembly;
 
 using Xamarin.Bundler;
 using Xamarin.Utils;
 
 #if XAMMACIOS_DEBUGGER
 using System.Diagnostics;
-using System.Threading;
 #endif
 
 public class BindingTouch : IDisposable, IToolLog {
+	readonly CancellationToken cancellationToken;
+	readonly string? customHome;
+
+	public BindingTouch () : this (CancellationToken.None, null)
+	{
+	}
+
+	BindingTouch (CancellationToken cancellationToken, string? customHome)
+	{
+		this.cancellationToken = cancellationToken;
+		this.customHome = customHome;
+	}
+
 	public static ApplePlatform [] AllPlatforms = new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst };
 	public static PlatformName [] AllPlatformNames = new PlatformName [] { PlatformName.iOS, PlatformName.MacOSX, PlatformName.TvOS, PlatformName.MacCatalyst };
 	public PlatformName CurrentPlatform;
@@ -60,7 +79,7 @@ public class BindingTouch : IDisposable, IToolLog {
 	public bool SupportsXmlDocumentation { get => supportsXmlDocumentation; }
 
 	public MetadataLoadContext? universe;
-	public Frameworks? Frameworks;
+	public BGenFrameworks? Frameworks;
 
 	DocumentationManager? documentationManager;
 	public DocumentationManager DocumentationManager => documentationManager!;
@@ -102,6 +121,11 @@ public class BindingTouch : IDisposable, IToolLog {
 
 	public static int Main (string [] args)
 	{
+		return Run (args, CancellationToken.None, null);
+	}
+
+	public static int Run (string [] args, CancellationToken cancellationToken, string? customHome)
+	{
 		try {
 #if XAMMACIOS_DEBUGGER
 			// the following code will only be available for the macios
@@ -116,16 +140,18 @@ public class BindingTouch : IDisposable, IToolLog {
 
 			Console.WriteLine ("Debugger attached");
 #endif
-			return Main2 (args);
+			return Main2 (args, cancellationToken, customHome);
+		} catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) {
+			throw;
 		} catch (Exception ex) {
 			ErrorHelper.Show (ex, false);
 			return 1;
 		}
 	}
 
-	static int Main2 (string [] args)
+	static int Main2 (string [] args, CancellationToken cancellationToken, string? customHome)
 	{
-		using var touch = new BindingTouch ();
+		using var touch = new BindingTouch (cancellationToken, customHome);
 		return touch.Main3 (args);
 	}
 
@@ -290,12 +316,16 @@ public class BindingTouch : IDisposable, IToolLog {
 
 			documentationManager = new DocumentationManager (supportsXmlDocumentation ? tmpass : string.Empty);
 
-			Frameworks = new Frameworks (CurrentPlatform);
+			Frameworks = new BGenFrameworks (CurrentPlatform);
 
 			// Explicitly load our attribute library so that IKVM doesn't try (and fail) to find it.
 			universe.LoadFromAssemblyPath (LibraryManager.GetAttributeLibraryPath (LibraryInfo, CurrentPlatform));
 
-			typeCache ??= new (universe, Frameworks, CurrentPlatform, apiAssembly, universe.CoreAssembly, baselib,
+			var coreAssembly = universe.CoreAssembly;
+			if (coreAssembly is null)
+				throw new InvalidOperationException ("Could not load the core assembly.");
+
+			typeCache ??= new (universe, Frameworks, CurrentPlatform, apiAssembly, coreAssembly, baselib,
 				BindThirdPartyLibrary);
 			attributeManager ??= new (typeCache);
 			typeManager ??= new (this);
@@ -342,6 +372,7 @@ public class BindingTouch : IDisposable, IToolLog {
 
 	int Main3 (string [] args)
 	{
+		ThrowIfCancellationRequested ();
 		ErrorHelper.ClearWarningLevels ();
 		BindingTouchConfig config = new ();
 
@@ -356,6 +387,7 @@ public class BindingTouch : IDisposable, IToolLog {
 		libraryInfo = LibraryInfo.LibraryInfoBuilder.Build (references, config);
 		CurrentPlatform = LibraryManager.DetermineCurrentPlatform (TargetFramework.Platform);
 
+		ThrowIfCancellationRequested ();
 		if (!TryInitializeApi (config, out Api? api) || !TryGenerate (config, api))
 			return 1;
 
@@ -365,12 +397,14 @@ public class BindingTouch : IDisposable, IToolLog {
 	bool TryGenerate (BindingTouchConfig config, Api api)
 	{
 		try {
+			ThrowIfCancellationRequested ();
 			var g = new Generator (this, api, config.IsPublicMode, config.IsExternal, config.IsDebug) {
 				BaseDir = config.BindingFilesOutputDirectory ?? config.TemporaryFileDirectory!,
 				InlineSelectors = config.InlineSelectors ?? (CurrentPlatform != PlatformName.MacOSX),
 			};
 
 			g.Go ();
+			ThrowIfCancellationRequested ();
 
 			if (config.GeneratedFileList is not null) {
 				using (var f = File.CreateText (config.GeneratedFileList)) {
@@ -523,7 +557,12 @@ public class BindingTouch : IDisposable, IToolLog {
 			arguments.Insert (i - 1, compile_command [i]);
 		}
 
-		if (Driver.RunCommand (this, compile_command [0], arguments, null, out var compile_output, true, Verbosity) != 0)
+		var environment = new Dictionary<string, string?> ();
+		if (!string.IsNullOrEmpty (customHome))
+			environment ["HOME"] = customHome;
+		var exitCode = Driver.RunCommand (this, compile_command [0], arguments, environment, out var compile_output, true, Verbosity, cancellationToken);
+		cancellationToken.ThrowIfCancellationRequested ();
+		if (exitCode != 0)
 			throw ErrorHelper.CreateError (errorCode, $"{compiler} {StringUtils.FormatArguments (arguments)}\n{compile_output}".Replace ("\n", "\n\t"));
 		var output = string.Join (Environment.NewLine, compile_output.ToString ().Split (new char [] { '\n' }, StringSplitOptions.RemoveEmptyEntries));
 		if (!string.IsNullOrEmpty (output))
@@ -582,6 +621,11 @@ public class BindingTouch : IDisposable, IToolLog {
 		Console.WriteLine (message);
 	}
 
+	public void ThrowIfCancellationRequested ()
+	{
+		cancellationToken.ThrowIfCancellationRequested ();
+	}
+
 	public void LogError (string message)
 	{
 		Console.Error.WriteLine (message);
@@ -597,6 +641,18 @@ public class BindingTouch : IDisposable, IToolLog {
 		ErrorHelper.Show (exception);
 	}
 
+#if MSBUILD_TASKS
+	public void LogError (Xamarin.Bundler.ProductException exception)
+	{
+		ErrorHelper.Show (exception);
+	}
+
+	public void LogWarning (Xamarin.Bundler.ProductException exception)
+	{
+		ErrorHelper.Show (exception);
+	}
+#endif
+
 	public void LogException (Exception exception)
 	{
 		ErrorHelper.Show (exception);
@@ -610,7 +666,9 @@ public class BindingTouch : IDisposable, IToolLog {
 }
 
 namespace Xamarin.Bundler {
+#if !MSBUILD_TASKS
 	public partial class Driver {
 		public static int GetDefaultVerbosity () => 0;
 	}
+#endif
 }

@@ -43,5 +43,34 @@ namespace Xamarin.MacDev.Tasks {
 			args.AddRange (File.ReadAllLines (task.ResponseFilePath));
 			Assert.That (args.Contains ("-invalid"), "incorrect ExtraArg not causing an exception");
 		}
+
+		[Test]
+		public void ExecutesInProcess ()
+		{
+			var task = CreateTask<BGen> ();
+
+			task.ApiDefinitions = new [] { new TaskItem ("ignored.cs") };
+			task.BGenToolPath = "/does/not/exist";
+			task.BGenToolExe = "bgen.dll";
+			task.ExtraArgs = "/help";
+			task.ResponseFilePath = Path.Combine (Cache.CreateTemporaryDirectory (), "response-file.txt");
+
+			ExecuteTask (task);
+		}
+
+		[Test]
+		public void ExecutesExternalProcess ()
+		{
+			var task = CreateTask<BGen> ();
+
+			task.ApiDefinitions = new [] { new TaskItem ("ignored.cs") };
+			task.BGenToolPath = "/does/not/exist";
+			task.BGenToolExe = "bgen.dll";
+			task.ExtraArgs = "/help";
+			task.ResponseFilePath = Path.Combine (Cache.CreateTemporaryDirectory (), "response-file.txt");
+			task.UseExternalProcess = true;
+
+			ExecuteTask (task, expectedErrorCount: 1);
+		}
 	}
 }

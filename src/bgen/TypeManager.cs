@@ -6,7 +6,7 @@ using System.Reflection;
 
 public class TypeManager {
 	public BindingTouch BindingTouch;
-	Frameworks Frameworks { get; }
+	BGenFrameworks Frameworks { get; }
 	AttributeManager AttributeManager { get { return BindingTouch.AttributeManager; } }
 	NamespaceCache NamespaceCache { get { return BindingTouch.NamespaceCache; } }
 	TypeCache TypeCache { get { return BindingTouch.TypeCache; } }

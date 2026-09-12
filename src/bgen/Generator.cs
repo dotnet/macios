@@ -56,11 +56,15 @@ using Xamarin.Utils;
 
 #nullable enable
 
+#if !NET
+#pragma warning disable CS8600, CS8602, CS8604
+#endif
+
 public partial class Generator : IMemberGatherer {
 	internal bool IsPublicMode;
 	internal const string NativeHandleType = "NativeHandle";
 	BindingTouch BindingTouch;
-	Frameworks Frameworks { get { return BindingTouch.Frameworks!; } }
+	BGenFrameworks Frameworks { get { return BindingTouch.Frameworks!; } }
 	public TypeManager TypeManager { get { return BindingTouch.TypeManager; } }
 	public AttributeManager AttributeManager { get { return BindingTouch.AttributeManager; } }
 	NamespaceCache NamespaceCache { get { return BindingTouch.NamespaceCache; } }
@@ -1248,10 +1252,8 @@ public partial class Generator : IMemberGatherer {
 		if (string.IsNullOrEmpty (export.Selector))
 			throw new BindingException (1024, true, mo.DeclaringType!.FullName, mo.Name);
 
-		if (export.Selector.IndexOfAny (invalid_selector_chars) != -1) {
-			Console.Error.WriteLine ("Export attribute contains invalid selector name: {0}", export.Selector);
-			Environment.Exit (1);
-		}
+		if (export.Selector.IndexOfAny (invalid_selector_chars) != -1)
+			throw new BindingException (1129, true, export.Selector);
 
 		return export;
 	}
@@ -1353,6 +1355,7 @@ public partial class Generator : IMemberGatherer {
 		TypeManager.SetTypesThatMustAlwaysBeGloballyNamed (api.Types);
 
 		foreach (Type t in api.Types) {
+			BindingTouch.ThrowIfCancellationRequested ();
 			if (t.IsUnavailable (this))
 				continue;
 
@@ -1521,6 +1524,7 @@ public partial class Generator : IMemberGatherer {
 		}
 
 		foreach (Type t in api.Types) {
+			BindingTouch.ThrowIfCancellationRequested ();
 			if (t.IsUnavailable (this))
 				continue;
 
@@ -8067,5 +8071,4 @@ public partial class Generator : IMemberGatherer {
 	{
 		return assembly == api.Assembly;
 	}
-
 }

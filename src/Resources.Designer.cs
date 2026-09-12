@@ -1230,5 +1230,14 @@ namespace bgen {
                 return ResourceManager.GetString("BI1128", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export attribute contains invalid selector name: {0}.
+        /// </summary>
+        internal static string BI1129 {
+            get {
+                return ResourceManager.GetString("BI1129", resourceCulture);
+            }
+        }
     }
 }

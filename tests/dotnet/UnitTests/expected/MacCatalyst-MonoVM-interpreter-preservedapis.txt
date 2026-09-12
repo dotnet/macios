@@ -167,6 +167,7 @@ Microsoft.MacCatalyst.dll:Foundation.NSObject.set_HasManagedRef(System.Boolean)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.set_IsDirectBinding(System.Boolean)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.set_RemoveFromObjectMap(System.Boolean)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.ToString()
+Microsoft.MacCatalyst.dll:Foundation.NSObject.TryGetIsUserType(ObjCRuntime.NativeHandle, out System.Boolean&, out System.String&)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.xamarin_release_managed_ref(System.IntPtr, System.Byte)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.xamarin_set_gchandle_with_flags_safe(System.IntPtr, System.IntPtr, Foundation.NSObject/XamarinGCHandleFlags, System.IntPtr)
 Microsoft.MacCatalyst.dll:Foundation.NSObject[] Foundation.NSDictionary::Keys()
@@ -178,6 +179,8 @@ Microsoft.MacCatalyst.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::H
 Microsoft.MacCatalyst.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::InFinalizerQueue
 Microsoft.MacCatalyst.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::IsCustomType
 Microsoft.MacCatalyst.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::IsDirectBinding
+Microsoft.MacCatalyst.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::IsUserType
+Microsoft.MacCatalyst.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::IsUserTypeKnown
 Microsoft.MacCatalyst.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::NativeRef
 Microsoft.MacCatalyst.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::RegisteredToggleRef
 Microsoft.MacCatalyst.dll:Foundation.NSObject/Flags Foundation.NSObjectData::flags

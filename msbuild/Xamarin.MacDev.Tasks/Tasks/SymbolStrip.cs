@@ -29,6 +29,9 @@ namespace Xamarin.MacDev.Tasks {
 
 		// This can also be specified as metadata on the Executable item (as 'Kind')
 		public string Kind { get; set; } = string.Empty;
+
+		// Whether to strip mergeable library metadata (LC_ATOM_INFO) from frameworks and dylibs.
+		public bool StripMergeableLibraries { get; set; }
 		#endregion
 
 		bool GetIsFrameworkOrDynamicLibrary (ITaskItem item)
@@ -66,6 +69,11 @@ namespace Xamarin.MacDev.Tasks {
 				// Only remove debug symbols from frameworks.
 				args.Add ("-S");
 				args.Add ("-x");
+				if (StripMergeableLibraries) {
+					// Remove atom info (LC_ATOM_INFO) from mergeable libraries to reduce size.
+					// This is a no-op for non-mergeable libraries.
+					args.Add ("-no_atom_info");
+				}
 			}
 
 			args.Add (Path.GetFullPath (item.ItemSpec));

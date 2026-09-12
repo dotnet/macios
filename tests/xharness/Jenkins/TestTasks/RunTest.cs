@@ -49,17 +49,24 @@ namespace Xharness.Jenkins.TestTasks {
 		public IEnumerable<ILog> BuildAggregatedLogs => BuildTask.AggregatedLogs;
 		public TestExecutingResult BuildResult => BuildTask.ExecutionResult;
 
-		public async Task<bool> BuildAsync ()
+		public async Task<bool?> PrepareBuildAsync ()
 		{
 			if (testTask.Finished)
-				return true;
+				return null;
 
 			await testTask.VerifyBuildAsync ();
 			if (testTask.Finished)
-				return BuildTask.Succeeded;
+				return false;
 
 			testTask.ExecutionResult = TestExecutingResult.Building;
-			await BuildTask.RunAsync ();
+			if (BuildTask.InitialTask is not null)
+				await BuildTask.InitialTask;
+
+			return true;
+		}
+
+		public bool CompleteBuild ()
+		{
 			if (!BuildTask.Succeeded) {
 				if (BuildTask.TimedOut) {
 					testTask.ExecutionResult = TestExecutingResult.TimedOut;
@@ -89,6 +96,20 @@ namespace Xharness.Jenkins.TestTasks {
 				testTask.ExecutionResult = TestExecutingResult.Built;
 			}
 			return BuildTask.Succeeded;
+		}
+
+		public async Task<bool> BuildAsync ()
+		{
+			if (testTask.Finished)
+				return true;
+
+			await testTask.VerifyBuildAsync ();
+			if (testTask.Finished)
+				return BuildTask.Succeeded;
+
+			testTask.ExecutionResult = TestExecutingResult.Building;
+			await BuildTask.RunAsync ();
+			return CompleteBuild ();
 		}
 
 		public async Task ExecuteAsync ()

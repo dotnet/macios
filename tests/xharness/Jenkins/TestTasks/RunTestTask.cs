@@ -76,6 +76,10 @@ namespace Xharness.Jenkins.TestTasks {
 
 		public Task<bool> BuildAsync () => runTest.BuildAsync ();
 
+		public Task<bool?> PrepareBuildAsync () => runTest.PrepareBuildAsync ();
+
+		public bool CompleteBuild () => runTest.CompleteBuild ();
+
 		protected override Task ExecuteAsync () => runTest.ExecuteAsync ();
 
 		public abstract Task RunTestAsync ();

@@ -650,6 +650,14 @@ namespace Xamarin.Tests {
 		[TestCase ("NativeFrameworkReferencesApp", ApplePlatform.MacOSX, "osx-x64")]
 		[TestCase ("NativeXCFrameworkReferencesApp", ApplePlatform.iOS, "iossimulator-x64")]
 		[TestCase ("NativeXCFrameworkReferencesApp", ApplePlatform.MacOSX, "osx-x64")]
+		[TestCase ("NativeMergeableFrameworkReferencesApp", ApplePlatform.iOS, "iossimulator-arm64")]
+		[TestCase ("NativeMergeableFrameworkReferencesApp", ApplePlatform.TVOS, "tvossimulator-arm64")]
+		[TestCase ("NativeMergeableFrameworkReferencesApp", ApplePlatform.MacOSX, "osx-arm64")]
+		[TestCase ("NativeMergeableFrameworkReferencesApp", ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
+		[TestCase ("NativeMergeableDylibReferencesApp", ApplePlatform.iOS, "iossimulator-arm64")]
+		[TestCase ("NativeMergeableDylibReferencesApp", ApplePlatform.TVOS, "tvossimulator-arm64")]
+		[TestCase ("NativeMergeableDylibReferencesApp", ApplePlatform.MacOSX, "osx-arm64")]
+		[TestCase ("NativeMergeableDylibReferencesApp", ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
 		public void BuildAndExecuteNativeReferencesTestApp (string project, ApplePlatform platform, string runtimeIdentifier)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -664,6 +672,60 @@ namespace Xamarin.Tests {
 				var appExecutable = Path.Combine (appPath, "Contents", "MacOS", Path.GetFileNameWithoutExtension (project_path));
 				Assert.That (appExecutable, Does.Exist, "There is an executable");
 				ExecuteWithMagicWordAndAssert (appExecutable);
+			}
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64", true)] // Optimize=true should strip atom info
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64", false)] // Optimize=false should preserve atom info
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", true)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", false)]
+		public void BuildNativeMergeableFrameworkReferencesApp_AtomInfoStripping (ApplePlatform platform, string runtimeIdentifier, bool optimize)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifier);
+
+			var project = "NativeMergeableFrameworkReferencesApp";
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifier, platform: platform, out var appPath);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifier);
+			properties ["Optimize"] = optimize.ToString ().ToLowerInvariant ();
+			DotNet.AssertBuild (project_path, properties);
+
+			var frameworkPath = Path.Combine (appPath, GetFrameworksRelativePath (platform), "XMergeableTest.framework", "XMergeableTest");
+			Assert.That (frameworkPath, Does.Exist, "Framework should exist in app bundle");
+
+			if (optimize) {
+				Assert.That (MachO.IsMergeableLibrary (frameworkPath), Is.False, "Framework should not be mergeable when Optimize=true");
+			} else {
+				Assert.That (MachO.IsMergeableLibrary (frameworkPath), Is.True, "Framework should be mergeable when Optimize=false");
+			}
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64", true)] // Optimize=true should strip atom info
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64", false)] // Optimize=false should preserve atom info
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", true)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", false)]
+		public void BuildNativeMergeableDylibReferencesApp_AtomInfoStripping (ApplePlatform platform, string runtimeIdentifier, bool optimize)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifier);
+
+			var project = "NativeMergeableDylibReferencesApp";
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifier, platform: platform, out var appPath);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifier);
+			properties ["Optimize"] = optimize.ToString ().ToLowerInvariant ();
+			DotNet.AssertBuild (project_path, properties);
+
+			var dylibPath = Path.Combine (appPath, GetRelativeDylibDirectory (platform), "libMergeableFramework.dylib");
+			Assert.That (dylibPath, Does.Exist, "Dylib should exist in app bundle");
+
+			if (optimize) {
+				Assert.That (MachO.IsMergeableLibrary (dylibPath), Is.False, "Dylib should not be mergeable when Optimize=true");
+			} else {
+				Assert.That (MachO.IsMergeableLibrary (dylibPath), Is.True, "Dylib should be mergeable when Optimize=false");
 			}
 		}
 
@@ -2956,6 +3018,8 @@ namespace Xamarin.Tests {
 				new ExpectedBuildMessage ($"MSBuild", $"It's not safe to remove the dynamic registrar, because monotouchtest references 'ObjCRuntime.Runtime.ConnectMethod (System.Type, System.Reflection.MethodInfo, Foundation.ExportAttribute)'."),
 				new ExpectedBuildMessage ($"MSBuild", $"It's not safe to remove the dynamic registrar, because monotouchtest references 'ObjCRuntime.Runtime.ConnectMethod (System.Type, System.Reflection.MethodInfo, ObjCRuntime.Selector)'."),
 				new ExpectedBuildMessage ($"MSBuild", $"It's not safe to remove the dynamic registrar, because monotouchtest references 'ObjCRuntime.Runtime.RegisterAssembly (System.Reflection.Assembly)'."),
+				new ExpectedBuildMessage ($"MSBuild", $"Export attributes cannot be removed because the managed registrar must use Runtime.GetBlockWrapperCreator."),
+				new ExpectedBuildMessage ($"MSBuild", $"Export attributes cannot be removed because the managed registrar must use RegistrarHelper.GetBlockForDelegate."),
 				new ExpectedBuildMessage ($"tests/bindings-test/RegistrarBindingTest.cs", $"Unable to locate the block to delegate conversion method for the method System.Void Xamarin.BindingTests.RegistrarBindingTest/FakePropertyBlock::set_MyOptionalProperty(Bindings.Test.SimpleCallback)'s parameter #1."),
 				new ExpectedBuildMessage ($"tests/bindings-test/RegistrarBindingTest.cs", $"Unable to locate the block to delegate conversion method for the method System.Void Xamarin.BindingTests.RegistrarBindingTest/FakePropertyBlock::set_MyOptionalStaticProperty(Bindings.Test.SimpleCallback)'s parameter #1."),
 				new ExpectedBuildMessage ($"tests/bindings-test/RegistrarBindingTest.cs", $"Unable to locate the block to delegate conversion method for the method System.Void Xamarin.BindingTests.RegistrarBindingTest/FakePropertyBlock::set_MyRequiredProperty(Bindings.Test.SimpleCallback)'s parameter #1."),
@@ -4011,13 +4075,8 @@ namespace Xamarin.Tests {
 			"@executable_path/../../Contents/MonoBundle/libSystem.Net.Security.Native.dylib",
 			"@executable_path/../../Contents/MonoBundle/libSystem.Security.Cryptography.Native.Apple.dylib",
 			"/System/Library/Frameworks/AppKit.framework/Versions/C/AppKit",
-			"/System/Library/Frameworks/ApplicationServices.framework/Versions/A/ApplicationServices",
-			"/System/Library/Frameworks/CloudKit.framework/Versions/A/CloudKit",
-			"/System/Library/Frameworks/CoreData.framework/Versions/A/CoreData",
 			"/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation",
 			"/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation",
-			"/System/Library/Frameworks/Quartz.framework/Versions/A/Quartz",
-			"/System/Library/Frameworks/QuartzCore.framework/Versions/A/QuartzCore",
 			"/System/Library/Frameworks/Security.framework/Versions/A/Security",
 			"/usr/lib/libc++.1.dylib",
 			"/usr/lib/libcompression.dylib",
@@ -4223,20 +4282,9 @@ namespace Xamarin.Tests {
 			.. coreclrFrameworks_iOS,
 			.. expectedFrameworks_iOS_None,
 		];
-		// The trimmable static registrar (the default registrar for CoreCLR) keeps protocol interfaces
-		// (and their corresponding *Wrapper types) alive in order to be able to register the protocol
-		// conformances of the types that survive trimming, which means that we end up linking with the
-		// frameworks those protocols come from (CloudKit.ICKRecordValue and CoreData.INSFetchRequestResult
-		// are implemented by Foundation types such as NSNumber and NSString).
-		static string [] trimmableStaticRegistrarFrameworks = [
-			"/System/Library/Frameworks/CloudKit.framework/CloudKit",
-			"/System/Library/Frameworks/CoreData.framework/CoreData",
-		];
-
 		static string [] expectedFrameworks_iOS_Full_CoreCLR = [
 			.. coreclrFrameworks_iOS,
 			.. expectedFrameworks_iOS_Full,
-			.. trimmableStaticRegistrarFrameworks,
 		];
 		static string [] expectedFrameworks_tvOS_None_CoreCLR = [
 			.. coreclrFrameworks_tvOS,
@@ -4245,16 +4293,15 @@ namespace Xamarin.Tests {
 		static string [] expectedFrameworks_tvOS_Full_CoreCLR = [
 			.. coreclrFrameworks_tvOS,
 			.. expectedFrameworks_tvOS_Full,
-			.. trimmableStaticRegistrarFrameworks,
 		];
 		static string [] expectedFrameworks_MacCatalyst_None_CoreCLR = [
 			.. coreclrFrameworks_MacCatalyst,
 			.. expectedFrameworks_MacCatalyst_None,
 		];
-		// CoreGraphics and QuartzCore are trimmed away for CoreCLR (but not for Mono).
+		// CloudKit, CoreData, CoreGraphics and QuartzCore are trimmed away for CoreCLR (but not for Mono).
 		static string [] expectedFrameworks_MacCatalyst_Full_CoreCLR = [
 			.. coreclrFrameworks_MacCatalyst,
-			.. expectedFrameworks_MacCatalyst_Full.Where (v => !v.Contains ("/CoreGraphics.framework/") && !v.Contains ("/QuartzCore.framework/")),
+			.. expectedFrameworks_MacCatalyst_Full.Where (v => !v.Contains ("/CloudKit.framework/") && !v.Contains ("/CoreData.framework/") && !v.Contains ("/CoreGraphics.framework/") && !v.Contains ("/QuartzCore.framework/")),
 		];
 
 		static IEnumerable<TestCaseData> GetLinkedWithNativeLibrariesTestCases_Mono ()

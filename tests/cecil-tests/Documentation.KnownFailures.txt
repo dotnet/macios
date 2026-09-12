@@ -15339,7 +15339,7 @@ M:CoreFoundation.CFNetwork.ExecuteProxyAutoConfigurationScriptAsync(System.Strin
 M:CoreFoundation.CFNetwork.ExecuteProxyAutoConfigurationUrl(System.Uri,System.Uri,Foundation.NSError@)
 M:CoreFoundation.CFNetwork.ExecuteProxyAutoConfigurationUrlAsync(System.Uri,System.Uri,System.Threading.CancellationToken)
 M:CoreFoundation.CFRange.#ctor(System.IntPtr,System.IntPtr)
-M:CoreFoundation.CFReadStream.DoSetClient(.method,System.IntPtr,System.IntPtr)
+M:CoreFoundation.CFReadStream.DoSetClient(,System.IntPtr,System.IntPtr)
 M:CoreFoundation.CFRunLoop.RunInMode(System.String,System.Double,System.Boolean)
 M:CoreFoundation.CFSocket.Invalidate
 M:CoreFoundation.CFStream.#ctor(ObjCRuntime.NativeHandle,System.Boolean)
@@ -15347,10 +15347,10 @@ M:CoreFoundation.CFStream.CreateBoundPair(CoreFoundation.CFReadStream@,CoreFound
 M:CoreFoundation.CFStream.CreateForHTTPRequest(CFNetwork.CFHTTPMessage)
 M:CoreFoundation.CFStream.CreateForStreamedHTTPRequest(CFNetwork.CFHTTPMessage,CoreFoundation.CFReadStream)
 M:CoreFoundation.CFStream.CreateForStreamedHTTPRequest(CFNetwork.CFHTTPMessage,Foundation.NSInputStream)
-M:CoreFoundation.CFStream.DoSetClient(.method,System.IntPtr,System.IntPtr)
+M:CoreFoundation.CFStream.DoSetClient(,System.IntPtr,System.IntPtr)
 M:CoreFoundation.CFString.op_Implicit(CoreFoundation.CFString)~System.String
 M:CoreFoundation.CFString.op_Implicit(System.String)~CoreFoundation.CFString
-M:CoreFoundation.CFWriteStream.DoSetClient(.method,System.IntPtr,System.IntPtr)
+M:CoreFoundation.CFWriteStream.DoSetClient(,System.IntPtr,System.IntPtr)
 M:CoreFoundation.CFWriteStream.Write(System.Byte[],System.IntPtr,System.IntPtr)
 M:CoreFoundation.DispatchBlock.op_Explicit(CoreFoundation.DispatchBlock)~System.Action
 M:CoreFoundation.DispatchData.CreateMap(System.IntPtr@,System.UIntPtr@)
@@ -15558,7 +15558,7 @@ M:CoreGraphics.CGPDFObject.TryGetValue(System.IntPtr@)
 M:CoreGraphics.CGPDFObject.TryGetValue(System.Runtime.InteropServices.NFloat@)
 M:CoreGraphics.CGPDFOperatorTable.Release
 M:CoreGraphics.CGPDFOperatorTable.Retain
-M:CoreGraphics.CGPDFOperatorTable.SetCallback(System.String,.method)
+M:CoreGraphics.CGPDFOperatorTable.SetCallback(System.String,)
 M:CoreGraphics.CGPDFPage.Release
 M:CoreGraphics.CGPDFPage.Retain
 M:CoreGraphics.CGPDFPageInfo.#ctor
@@ -54271,7 +54271,6 @@ T:AppKit.NSCollectionViewCompositionalLayoutSectionProvider
 T:AppKit.NSCollectionViewDiffableDataSource`2
 T:AppKit.NSCollectionViewDiffableDataSourceItemProvider
 T:AppKit.NSCollectionViewDiffableDataSourceSupplementaryViewProvider
-T:AppKit.NSCollectionViewDropOperation
 T:AppKit.NSCollectionViewFlowLayout
 T:AppKit.NSCollectionViewFlowLayoutInvalidationContext
 T:AppKit.NSCollectionViewGridLayout
@@ -54325,13 +54324,11 @@ T:AppKit.NSCustomTouchBarItem
 T:AppKit.NSDatePicker
 T:AppKit.NSDatePickerCell
 T:AppKit.NSDatePickerElementFlags
-T:AppKit.NSDatePickerMode
 T:AppKit.NSDatePickerStyle
 T:AppKit.NSDictionaryController
 T:AppKit.NSDictionaryControllerKeyValuePair
 T:AppKit.NSDiffableDataSourceSnapshot`2
 T:AppKit.NSDirectionalRectEdge
-T:AppKit.NSDisplayGamut
 T:AppKit.NSDockTile
 T:AppKit.NSDocument
 T:AppKit.NSDocumentChangeType
@@ -54345,7 +54342,6 @@ T:AppKit.NSDocumentMoveCompletionHandler
 T:AppKit.NSDocumentMoveToUrlCompletionHandler
 T:AppKit.NSDocumentUnlockCompletionHandler
 T:AppKit.NSDocumentUnlockDocumentCompletionHandler
-T:AppKit.NSDraggingContext
 T:AppKit.NSDraggingEnumerator
 T:AppKit.NSDraggingFormation
 T:AppKit.NSDraggingImageComponent
@@ -54359,13 +54355,11 @@ T:AppKit.NSDrawerState
 T:AppKit.NSEPSImageRep
 T:AppKit.NSEvent
 T:AppKit.NSEventButtonMask
-T:AppKit.NSEventGestureAxis
 T:AppKit.NSEventMask
 T:AppKit.NSEventModifierFlags
 T:AppKit.NSEventModifierMask
 T:AppKit.NSEventPhase
 T:AppKit.NSEventSubtype
-T:AppKit.NSEventSwipeTrackingOptions
 T:AppKit.NSEventTrackHandler
 T:AppKit.NSEventType
 T:AppKit.NSFilePromiseProvider
@@ -54373,7 +54367,6 @@ T:AppKit.NSFilePromiseReceiver
 T:AppKit.NSFont
 T:AppKit.NSFontAssetRequest
 T:AppKit.NSFontCollection
-T:AppKit.NSFontCollectionVisibility
 T:AppKit.NSFontDescriptor
 T:AppKit.NSFontDescriptorSystemDesign
 T:AppKit.NSFontError
@@ -54443,7 +54436,6 @@ T:AppKit.NSImageSymbolVariableValueMode
 T:AppKit.NSImageView
 T:AppKit.NSItemBadge
 T:AppKit.NSKey
-T:AppKit.NSLayoutConstraintOrientation
 T:AppKit.NSLayoutGuide
 T:AppKit.NSLayoutManager_NSTextViewSupport
 T:AppKit.NSLayoutPriority
@@ -54529,7 +54521,6 @@ T:AppKit.NSPickerTouchBarItemControlRepresentation
 T:AppKit.NSPickerTouchBarItemSelectionMode
 T:AppKit.NSPointingDeviceType
 T:AppKit.NSPopover
-T:AppKit.NSPopoverAppearance
 T:AppKit.NSPopoverBehavior
 T:AppKit.NSPopoverTouchBarItem
 T:AppKit.NSPopUpArrowPosition
@@ -54542,7 +54533,6 @@ T:AppKit.NSPressureBehavior
 T:AppKit.NSPressureConfiguration
 T:AppKit.NSPreviewRepresentingActivityItem
 T:AppKit.NSPrinter
-T:AppKit.NSPrinterTableStatus
 T:AppKit.NSPrintInfo
 T:AppKit.NSPrintOperation
 T:AppKit.NSPrintPanel
@@ -54550,7 +54540,6 @@ T:AppKit.NSPrintPanelOptions
 T:AppKit.NSPrintPanelResult
 T:AppKit.NSPrintRenderingQuality
 T:AppKit.NSProgressIndicator
-T:AppKit.NSProgressIndicatorStyle
 T:AppKit.NSProgressIndicatorThickness
 T:AppKit.NSRectAlignment
 T:AppKit.NSRectEdge
@@ -54563,7 +54552,6 @@ T:AppKit.NSRotationGestureRecognizer
 T:AppKit.NSRuleEditor
 T:AppKit.NSRuleEditorNestingMode
 T:AppKit.NSRuleEditorNumberOfChildren
-T:AppKit.NSRuleEditorRowType
 T:AppKit.NSRulerEditorChildCriterion
 T:AppKit.NSRulerEditorDisplayValue
 T:AppKit.NSRulerEditorPredicateParts
@@ -54584,7 +54572,6 @@ T:AppKit.NSScroller
 T:AppKit.NSScrollerArrow
 T:AppKit.NSScrollerKnobStyle
 T:AppKit.NSScrollerPart
-T:AppKit.NSScrollerStyle
 T:AppKit.NSScrollView
 T:AppKit.NSScrollViewFindBarPosition
 T:AppKit.NSScrubber
@@ -54595,7 +54582,6 @@ T:AppKit.NSScrubberImageItemView
 T:AppKit.NSScrubberItemView
 T:AppKit.NSScrubberLayout
 T:AppKit.NSScrubberLayoutAttributes
-T:AppKit.NSScrubberMode
 T:AppKit.NSScrubberProportionalLayout
 T:AppKit.NSScrubberSelectionStyle
 T:AppKit.NSScrubberSelectionView
@@ -54633,7 +54619,6 @@ T:AppKit.NSSliderAccessory
 T:AppKit.NSSliderAccessoryBehavior
 T:AppKit.NSSliderCell
 T:AppKit.NSSliderTouchBarItem
-T:AppKit.NSSliderType
 T:AppKit.NSSound
 T:AppKit.NSSpeechRecognizer
 T:AppKit.NSSpeechSynthesizer
@@ -54650,12 +54635,10 @@ T:AppKit.NSSpringLoadingOptions
 T:AppKit.NSStackView
 T:AppKit.NSStackViewDistribution
 T:AppKit.NSStackViewGravity
-T:AppKit.NSStackViewVisibilityPriority
 T:AppKit.NSStandardKeyBindingMethods
 T:AppKit.NSStatusBar
 T:AppKit.NSStatusBarButton
 T:AppKit.NSStatusItem
-T:AppKit.NSStatusItemBehavior
 T:AppKit.NSStatusItemExpandedInterfaceSession
 T:AppKit.NSStepper
 T:AppKit.NSStepperCell
@@ -54667,14 +54650,12 @@ T:AppKit.NSStringAttributeKey
 T:AppKit.NSStringDrawing_NSAttributedString
 T:AppKit.NSStringDrawing_NSString
 T:AppKit.NSStringDrawingContext
-T:AppKit.NSSurfaceOrder
 T:AppKit.NSSwitch
 T:AppKit.NSTableCellView
 T:AppKit.NSTableColumn
 T:AppKit.NSTableHeaderCell
 T:AppKit.NSTableHeaderView
 T:AppKit.NSTableReorder
-T:AppKit.NSTableRowActionEdge
 T:AppKit.NSTableRowView
 T:AppKit.NSTableView
 T:AppKit.NSTableViewAnimation
@@ -54696,7 +54677,6 @@ T:AppKit.NSTableViewIndexFilter
 T:AppKit.NSTableViewPredicate
 T:AppKit.NSTableViewRowAction
 T:AppKit.NSTableViewRowActionsGetter
-T:AppKit.NSTableViewRowActionStyle
 T:AppKit.NSTableViewRowGetter
 T:AppKit.NSTableViewRowHandler
 T:AppKit.NSTableViewRowHeight
@@ -54709,7 +54689,6 @@ T:AppKit.NSTableViewToolTip
 T:AppKit.NSTableViewUserCanChangeColumnVisibility
 T:AppKit.NSTableViewViewGetter
 T:AppKit.NSTabPosition
-T:AppKit.NSTabState
 T:AppKit.NSTabView
 T:AppKit.NSTabViewBorderType
 T:AppKit.NSTabViewController
@@ -54735,7 +54714,6 @@ T:AppKit.NSTextCursorAccessoryPlacement
 T:AppKit.NSTextElement
 T:AppKit.NSTextField
 T:AppKit.NSTextField_NSTouchBar
-T:AppKit.NSTextFieldBezelStyle
 T:AppKit.NSTextFieldCell
 T:AppKit.NSTextFieldGetCandidates
 T:AppKit.NSTextFieldSelectCandidate
@@ -54840,8 +54818,6 @@ T:AppKit.NSTouchBarItemIdentifier
 T:AppKit.NSTouchBarMakeItem
 T:AppKit.NSTouchEvent
 T:AppKit.NSTouchPhase
-T:AppKit.NSTouchType
-T:AppKit.NSTouchTypeMask
 T:AppKit.NSTrackingArea
 T:AppKit.NSTrackingAreaOptions
 T:AppKit.NSTrackingSeparatorToolbarItem
@@ -54854,7 +54830,6 @@ T:AppKit.NSUnderlinePattern
 T:AppKit.NSUsableScrollerParts
 T:AppKit.NSUserDefaultsController
 T:AppKit.NSUserInterfaceCompressionOptions
-T:AppKit.NSUserInterfaceLayoutOrientation
 T:AppKit.NSVerticalDirections
 T:AppKit.NSView
 T:AppKit.NSView_NSCandidateListTouchBarItem
@@ -54871,20 +54846,17 @@ T:AppKit.NSViewLayerContentsRedrawPolicy
 T:AppKit.NSViewLayoutRegion
 T:AppKit.NSViewLayoutRegionAdaptivityAxis
 T:AppKit.NSViewResizingMask
-T:AppKit.NSVisualEffectBlendingMode
 T:AppKit.NSVisualEffectMaterial
 T:AppKit.NSVisualEffectState
 T:AppKit.NSVisualEffectView
 T:AppKit.NSWindow
 T:AppKit.NSWindowAnimationBehavior
 T:AppKit.NSWindowApplicationPresentationOptions
-T:AppKit.NSWindowBackingLocation
 T:AppKit.NSWindowButton
 T:AppKit.NSWindowClient
 T:AppKit.NSWindowCollectionBehavior
 T:AppKit.NSWindowCompletionHandler
 T:AppKit.NSWindowController
-T:AppKit.NSWindowDepth
 T:AppKit.NSWindowDocumentDrag
 T:AppKit.NSWindowFrame
 T:AppKit.NSWindowFramePredicate
@@ -54900,7 +54872,6 @@ T:AppKit.NSWindowStyle
 T:AppKit.NSWindowTab
 T:AppKit.NSWindowTabbingMode
 T:AppKit.NSWindowTabGroup
-T:AppKit.NSWindowTitleVisibility
 T:AppKit.NSWindowToolbarStyle
 T:AppKit.NSWindowTrackEventsMatchingCompletionHandler
 T:AppKit.NSWindowUndoManager
@@ -54909,7 +54880,6 @@ T:AppKit.NSWindowWindows
 T:AppKit.NSWorkspace
 T:AppKit.NSWorkspaceAuthorization
 T:AppKit.NSWorkspaceAuthorizationType
-T:AppKit.NSWorkspaceIconCreationOptions
 T:AppKit.NSWorkspaceLaunchOptions
 T:AppKit.NSWorkspaceOpenConfiguration
 T:AppKit.NSWorkspaceUrlHandler

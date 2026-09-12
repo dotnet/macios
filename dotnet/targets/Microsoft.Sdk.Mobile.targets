@@ -18,36 +18,8 @@
 		<Device Condition="'$(Device)' == ''">$(_DeviceName)</Device>
 	</PropertyGroup>
 
-	<Target
-		Name="ShowRunHelp"
-		DependsOnTargets="_DetectSdkLocations;_GenerateBundleName;_DetectAppManifest;ComputeAvailableDevices">
-		<Error Condition="$([MSBuild]::IsOSPlatform('windows'))" Text="It's currently not supported to launch an app from the command line on Windows." />
-		<Error Condition="!Exists('$(_AppBundleManifestPath)')" Text="The app must be built before showing how to launch it." />
-
-		<GetMlaunchArguments
-			AppManifestPath="$(_AppBundleManifestPath)"
-			DiscardedDevices="@(DiscardedDevices)"
-			Devices="@(Devices)"
-			Help="true"
-			MlaunchPath="$(MlaunchPath)"
-			SdkDevPath="$(_SdkDevPath)"
-			SdkIsSimulator="$(_SdkIsSimulator)"
-			SdkVersion="$(_SdkVersion)"
-			SupportedOSPlatformVersion="$(SupportedOSPlatformVersion)"
-			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
-		>
-		</GetMlaunchArguments>
-
-		<!-- If invoked from 'dotnet run', don't actually run anything -->
-		<PropertyGroup>
-			<RunCommand>true</RunCommand>
-			<RunArguments />
-		</PropertyGroup>
-	</Target>
-	<Target Name="_ShowRunHelpConditioned" Condition="'$(Help)' == 'true'" DependsOnTargets="ShowRunHelp" />
-
-	<Target Name="ComputeMlaunchInstallArguments" DependsOnTargets="_DetectSdkLocations;_GenerateBundleName;_DetectAppManifest;ComputeAvailableDevices;_ShowRunHelpConditioned;_ComputeMlaunchInstallArguments" />
-	<Target Name="_ComputeMlaunchInstallArguments" Condition="'$(_SdkIsSimulator)' == 'false' And '$(Help)' != 'true'">
+	<Target Name="ComputeMlaunchInstallArguments" DependsOnTargets="_DetectSdkLocations;_GenerateBundleName;_DetectAppManifest;ComputeAvailableDevices;_ComputeMlaunchInstallArguments" />
+	<Target Name="_ComputeMlaunchInstallArguments" Condition="'$(SdkIsMobile)' == 'true'">
 		<!-- Launching from the command line on windows hasn't been implemented: https://github.com/dotnet/macios/issues/16609 -->
 		<Error Condition="$([MSBuild]::IsOSPlatform('windows'))" Text="It's currently not supported to launch an app from the command line on Windows." />
 		<Error Condition="!Exists('$(_AppBundleManifestPath)')" Text="The app must be built before the arguments to launch the app using mlaunch can be computed." />
@@ -77,13 +49,27 @@
 			 />
 	</Target>
 
-	<Target Name="_InstallMobile" DependsOnTargets="_DetectSdkLocations;_GenerateBundleName;ComputeMlaunchInstallArguments" Condition="'$(_SdkIsSimulator)' == 'false'">
+	<Target Name="_DeployToDevice" DependsOnTargets="_DetectSdkLocations;_GenerateBundleName;_DetectAppManifest;ComputeAvailableDevices;ComputeMlaunchInstallArguments" Condition="'$(SdkIsMobile)' == 'true'">
 		<Exec SessionId="$(BuildSessionId)" Command="'$(MlaunchPath)' $(MlaunchInstallArguments)" />
 	</Target>
 
-	<Target Name="ComputeMlaunchRunArguments" DependsOnTargets="_DetectSdkLocations;_GenerateBundleName;_DetectAppManifest;ComputeAvailableDevices;_ShowRunHelpConditioned;_ComputeMlaunchRunArguments" Condition="'$(SdkIsDesktop)' != 'true'" />
+	<!--
+	***********************************************************************************************
+	DeployToDevice
 
-	<Target Name="_ComputeMlaunchRunArguments" Condition="'$(Help)' != 'true'">
+	Target that deploys an already-built app to a device or simulator.
+	This target is called by 'dotnet run' to support deployment without rebuilding.
+	It accepts the $(Device) property for device selection.
+
+	See: https://github.com/dotnet/sdk/blob/c164a9bc1246c48191fb780992530f0fe975141b/documentation/specs/dotnet-run-for-maui.md
+	***********************************************************************************************
+	-->
+	<Target Name="DeployToDevice" DependsOnTargets="_DeployToDevice;_CopyStartupHooksToDevice" Condition="'$(SdkIsMobile)' == 'true'">
+	</Target>
+
+	<Target Name="ComputeMlaunchRunArguments" DependsOnTargets="_DetectSdkLocations;_GenerateBundleName;_DetectAppManifest;ComputeAvailableDevices;_ComputeMlaunchRunArguments" Condition="'$(SdkIsDesktop)' != 'true'" />
+
+	<Target Name="_ComputeMlaunchRunArguments">
 		<!-- Launching from the command line on windows hasn't been implemented: https://github.com/dotnet/macios/issues/16609 -->
 		<Error Condition="$([MSBuild]::IsOSPlatform('windows'))" Text="It's currently not supported to launch an app from the command line on Windows." />
 		<Error Condition="!Exists('$(_AppBundleManifestPath)')" Text="The app must be built before the arguments to launch the app using mlaunch can be computed." />
@@ -148,7 +134,7 @@
 	<Target
 		Name="_PrepareRunMobile"
 		BeforeTargets="ComputeRunArguments"
-		DependsOnTargets="_ValidateHotReloadConfiguration;_InstallMobile;_CopyStartupHooksToDevice;ComputeMlaunchRunArguments"
+		DependsOnTargets="_ValidateHotReloadConfiguration;ComputeMlaunchRunArguments"
 		Condition="'$(SdkIsDesktop)' != 'true'">
 	</Target>
 
@@ -161,7 +147,7 @@
 	-->
 	<Target
 		Name="_CopyStartupHooksToDevice"
-		DependsOnTargets="_ValidateHotReloadConfiguration;_InstallMobile;_ReadAppManifest"
+		DependsOnTargets="_ValidateHotReloadConfiguration;_ReadAppManifest"
 		Condition="'$(SdkIsDevice)' == 'true'">
 
 		<ItemGroup>

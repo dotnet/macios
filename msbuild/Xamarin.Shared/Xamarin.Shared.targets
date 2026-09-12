@@ -100,6 +100,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.SmartCopy" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.SpotlightIndexer" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.StripFrameworkHeaders" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.StripMergeableLibraryMetadata" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.SymbolStrip" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.TextureAtlas" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.UnpackLibraryResources" AssemblyFile="$(_TaskAssemblyName)" />
@@ -600,9 +601,10 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		    * An Info.plist in their project file (by using a `None` item with filename "Info.plist" or with a `Link` metadata with filename "Info.plist"). We figure this out in the DetectAppManifest target.
 		    * A partial plist in their project (using the `PartialAppManifest` item group). Developers can add targets to the public CollectAppManifestsDependsOn
 		      property to run targets that add to the `PartialAppManifest` item group before we process them.
+		    * Individual entries in the `AppManifestEntry` item group.
 		    * Some MSBuild properties can also add values.
 
-		    The precedence is: MSBuild properties can be overridden by the Info.plist, which can be overridden by a partial plist (a partial plist can also specify the "Overwrite=false" metadata to not overwrite any existing entries).
+		    The precedence is: MSBuild properties can be overridden by the Info.plist, which can be overridden by a partial plist (a partial plist can also specify the "Overwrite=false" metadata to not overwrite any existing entries), which can be overridden by an AppManifestEntry item.
 
 		2. In the `CompileAppManifest` target we get all the inputs from above, and compute a temporary app manifest, which is written to a temporary output file.
 
@@ -639,7 +641,16 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<Target Name="_CompileAppManifestInputs" Condition="'$(IsMacEnabled)' == 'true'" >
 		<ItemGroup>
 			<_FontFilesToRegister Include="@(BundleResource)" Condition="'%(BundleResource.RegisterFont)' == 'true'" />
+			<_AppManifestEntryToHash Include="@(AppManifestEntry)" />
+			<_AppManifestEntryHashMetadata Include="Identity;Type;Value;ArraySeparator" />
 		</ItemGroup>
+		<ComputeHashForItems
+			Input="@(_AppManifestEntryToHash)"
+			InputMetadata="@(_AppManifestEntryHashMetadata)"
+			OutputMetadata="_Hash"
+			>
+			<Output TaskParameter="Output" ItemName="_AppManifestEntryWithHash" />
+		</ComputeHashForItems>
 
 		<PropertyGroup>
 			<_CompileAppManifestInputFile>$(DeviceSpecificIntermediateOutputPath)_CompileAppManifest.inputs</_CompileAppManifestInputFile>
@@ -654,6 +665,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<_CompileAppManifestInputLine Include="ApplicationTitle=$(ApplicationTitle)" />
 			<_CompileAppManifestInputLine Include="ApplicationVersion=$(ApplicationVersion)" />
 			<_CompileAppManifestInputLine Include="AppManifest=$(AppBundleManifest)" />
+			<_CompileAppManifestInputLine Include="AppManifestEntry=%(_AppManifestEntryWithHash._Hash)" />
 			<_CompileAppManifestInputLine Include="CompiledAppManifest=$(_TemporaryAppManifest)" />
 			<_CompileAppManifestInputLine Include="DefaultSdkVersion=$(_SdkVersion)" />
 			<_CompileAppManifestInputLine Include="FontFilesToRegister=$(_CompileAppManifestFontFilesToRegister)" />
@@ -704,6 +716,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			ApplicationTitle="$(ApplicationTitle)"
 			ApplicationVersion="$(ApplicationVersion)"
 			AppManifest="$(AppBundleManifest)"
+			AppManifestEntries="@(AppManifestEntry)"
 			BundleExecutable="$(_NativeExecutableName)"
 			CompiledAppManifest="$(_TemporaryAppManifest)"
 			DefaultSdkVersion="$(_SdkVersion)"
@@ -3247,6 +3260,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			_ComputeXCFrameworkDSyms;
 			_CopyXCFrameworkDSyms;
 			_NativeStripFiles;
+			_StripMergeableLibraryMetadata;
 			_NotifySpotlight;
 		</_PostProcessAppBundleDependsOn>
 	</PropertyGroup>
@@ -3395,6 +3409,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			Executable="$(_AppContainerDir)%(_NativeStripItems.Identity)"
 			Kind="%(_NativeStripItems.Kind)"
 			MaxDegreeOfParallelism="$(SymbolStripMaxDegreeOfParallelism)"
+			StripMergeableLibraries="$(StripMergeableLibraries)"
 			StripPath="$(StripPath)"
 			SymbolFile="%(_NativeStripItems.SymbolFile)"
 			SymbolFileLocalPath="%(_NativeStripItems.SymbolFileLocalPath)"
@@ -3421,6 +3436,29 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			Condition="'$(IsMacEnabled)' == 'true' And Exists('%(_NativeStripItems.dSYMInfoPlist)')"
 			Files="%(_NativeStripItems.dSYMInfoPlist)"
 		/>
+	</Target>
+
+	<!--
+		Strip mergeable library metadata (LC_ATOM_INFO) from frameworks and dylibs in the app bundle.
+		This runs independently of the regular symbol stripping, because symbol stripping
+		may be disabled (e.g. simulator builds, debug builds, macOS/MacCatalyst).
+	-->
+	<Target
+		Name="_StripMergeableLibraryMetadata"
+		Condition="'$(_PostProcess)' == 'true' And '$(StripMergeableLibraries)' == 'true'"
+		DependsOnTargets="_PreparePostProcessing"
+		>
+
+		<StripMergeableLibraryMetadata
+			SessionId="$(BuildSessionId)"
+			Condition="'$(IsMacEnabled)' == 'true'"
+			FrameworksDirectory="$(_AppFrameworksPath)"
+			DylibDirectories="$(_AppBundlePath);$(_AppContentsPath)"
+			StampDirectory="$(DeviceSpecificIntermediateOutputPath)mergeable-library-metadata"
+			StripPath="$(StripPath)"
+			>
+			<Output TaskParameter="FileWrites" ItemName="FileWrites" />
+		</StripMergeableLibraryMetadata>
 	</Target>
 
 	<!-- make sure spotlight indexes everything we've built -->
@@ -3700,6 +3738,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		<_PrepareAssembliesForPreparationDependsOn>
 			_ComputeAssembliesToPostprocessOnPublish;
 			_ComputeLinkerInputs;
+			$(_PrepareAssembliesForPreparationDependsOnExtra);
 		</_PrepareAssembliesForPreparationDependsOn>
 	</PropertyGroup>
 
@@ -3715,13 +3754,20 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		</ItemGroup>
 		<PropertyGroup>
 			<PreparedAssembliesDirectory>$([MSBuild]::EnsureTrailingSlash('$(DeviceSpecificIntermediateOutputPath)prepared-assemblies'))</PreparedAssembliesDirectory>
+			<_AssemblyPreparerConfigurationStamp>$(DeviceSpecificIntermediateOutputPath)assembly-preparer-configuration.txt</_AssemblyPreparerConfigurationStamp>
 		</PropertyGroup>
+		<WriteLinesToFile
+			File="$(_AssemblyPreparerConfigurationStamp)"
+			Lines="DynamicRegistrationSupported=$(DynamicRegistrationSupported);LinkMode=$(_LinkMode);Optimize=$(_BundlerOptimize);PublishTrimmed=$(PublishTrimmed);TrimMode=$(TrimMode);TrimExportAttributes=$(_TrimExportAttributes);@(_AssembliesToPrepare -> 'Assembly=%(Identity)|IsTrimmable=%(IsTrimmable)|TrimMode=%(TrimMode)')"
+			Overwrite="true"
+			WriteOnlyWhenDifferent="true"
+		/>
 	</Target>
 
 	<Target
 		Name="_PrepareAssemblies"
 		Condition="'$(IsMacEnabled)' == 'true' And '$(PrepareAssemblies)' == 'true'"
-		Inputs="@(_AssembliesToPrepare)"
+		Inputs="@(_AssembliesToPrepare);$(_LinkerCachePath);$(_AssemblyPreparerConfigurationStamp)"
 		Outputs="@(_AssembliesToPrepare->'$(PreparedAssembliesDirectory)%(Filename)%(Extension)');$(_AssemblyPreparerMSBuildOutputFile)"
 		DependsOnTargets="_PrepareAssembliesForPreparation;_ComputeAssembliesToPostprocessOnPublish;SelectRegistrar"
 		>
@@ -3739,6 +3785,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<ResolvedFileToPublish Remove="@(_AssembliesToPrepare)" />
 			<ResolvedFileToPublish Include="@(_PreparedAssemblies)" />
 			<FileWrites Include="@(_PreparedAssemblies)" />
+			<FileWrites Include="$(_AssemblyPreparerConfigurationStamp)" />
 			<FileWrites Include="$(_UnmanagedCallersOnlyMapPath)" />
 			<FileWrites Include="$(_AssemblyPreparerMSBuildOutputFile)" Condition="Exists('$(_AssemblyPreparerMSBuildOutputFile)')" />
 		</ItemGroup>
@@ -3780,7 +3827,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			OptionsFile="$(_CustomLinkerOptionsFile)"
 			OutputDirectory="$(_PostprocessedAssembliesDirectory)"
 			Postprocessing="true"
-			PreTrimAssemblies="@(ManagedAssemblyToLink)"
+			PreTrimAssemblies="@(_AssembliesToPrepare)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 		>
 			<Output TaskParameter="OutputAssemblies" ItemName="_PostProcessedAssemblies" />

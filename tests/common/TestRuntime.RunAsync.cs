@@ -183,6 +183,8 @@ partial class TestRuntime {
 			var size = new CGRect (0, 0, 300, 300);
 			var loc = new CGPoint ((NSScreen.MainScreen.Frame.Width - size.Width) / 2, (NSScreen.MainScreen.Frame.Height - size.Height) / 2);
 			window = new NSWindow (size, NSWindowStyle.Closable | NSWindowStyle.Miniaturizable | NSWindowStyle.Resizable | NSWindowStyle.Titled, NSBackingStore.Retained, false);
+			// Stalled window animations can exhaust the global dispatch worker pool on CI.
+			window.AnimationBehavior = NSWindowAnimationBehavior.None;
 			window.SetFrameOrigin (loc);
 			window.ContentViewController = vc;
 			window.MakeKeyAndOrderFront (null);

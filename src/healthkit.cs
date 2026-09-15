@@ -3350,6 +3350,14 @@ namespace HealthKit {
 		[iOS (18, 0), MacCatalyst (18, 0), Mac (15, 0)]
 		[Field ("HKQuantityTypeIdentifierAppleSleepingBreathingDisturbances")]
 		AppleSleepingBreathingDisturbances,
+
+		/// <summary>
+		/// Identifies heart rate variability as the root mean square of successive heartbeat interval differences,
+		/// in milliseconds.
+		/// </summary>
+		[NoTV, iOS (27, 0), MacCatalyst (27, 0), Mac (27, 0)]
+		[Field ("HKQuantityTypeIdentifierHeartRateVariabilityRMSSD")]
+		HeartRateVariabilityRmssd,
 	}
 
 	/// <summary>Contains constants that identify HealthKit correlation types.</summary>

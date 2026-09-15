@@ -165,5 +165,19 @@ namespace MonoTouchFixtures.CoreFoundation {
 		{
 			Assert.That (DispatchQueue.MainQueue, Is.EqualTo (DispatchQueue.CurrentQueue), "MainQueue");
 		}
+
+#if __MACOS__
+		[Test]
+		public void GlobalQueueAfterAsyncWindows ()
+		{
+			// Exceed the 64-worker dispatch limit observed when window animations stall on Tahoe.
+			for (var i = 0; i < 128; i++)
+				Assert.That (TestRuntime.RunAsync (TimeSpan.FromSeconds (5), Task.CompletedTask), Is.True, $"Window {i}");
+
+			var completed = new TaskCompletionSource<bool> ();
+			DispatchQueue.DefaultGlobalQueue.DispatchAsync (() => completed.SetResult (true));
+			Assert.That (completed.Task.Wait (TimeSpan.FromSeconds (5)), Is.True, "Global queue remained responsive after closing async-test windows");
+		}
+#endif
 	}
 }

@@ -723,6 +723,23 @@ namespace CoreMedia {
 		IntPtr AgeOutPeriodSelector { get; }
 	}
 
+	[Partial]
+	interface CMClock {
+		/// <summary>Identifies the notification posted when a display enters or leaves genlock mode.</summary>
+		/// <remarks>
+		///   This notification is posted through the native CoreMedia <c>CMNotificationCenter</c>, not <see cref="NSNotificationCenter" />.
+		///   Its payload contains a boolean value under <see cref="AnyDisplayIsSynchronizedToLockedGenlockSignalKey" />.
+		/// </remarks>
+		[NoiOS, NoTV, Mac (27, 0), MacCatalyst (27, 0)]
+		[Field ("kCMGenlockClockNotification_DisplayGenlockModeChanged")]
+		NSString DisplayGenlockModeChangedNotification { get; }
+
+		/// <summary>Identifies the boolean payload value indicating whether any display is synchronized to a locked genlock signal.</summary>
+		[NoiOS, NoTV, Mac (27, 0), MacCatalyst (27, 0)]
+		[Field ("kCMGenlockClockNotificationPayload_AnyDisplayIsSynchronizedToLockedGenlockSignal")]
+		NSString AnyDisplayIsSynchronizedToLockedGenlockSignalKey { get; }
+	}
+
 	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 	public enum CMFormatDescriptionProjectionKind {
 		[Field ("kCMFormatDescriptionProjectionKind_Rectilinear")]

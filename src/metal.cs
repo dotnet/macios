@@ -969,6 +969,20 @@ namespace Metal {
 		[Abstract]
 		[Export ("requiredThreadsPerThreadgroup")]
 		MTLSize RequiredThreadsPerThreadgroup { get; }
+
+		/// <summary>Gets the recommended number of persistent threadgroups per grid for a threadgroup size.</summary>
+		/// <param name="threadsPerThreadgroup">The number of threads in each dimension of a threadgroup.</param>
+		/// <returns>The recommended number of persistent threadgroups per grid.</returns>
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		[Abstract]
+		[Export ("recommendedPersistentThreadgroupsPerGridForThreadsPerThreadgroup:")]
+		nuint GetRecommendedPersistentThreadgroupsPerGrid (MTLSize threadsPerThreadgroup);
+
+		/// <summary>Gets the forward-progress behavior of the compute pipeline.</summary>
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		[Abstract]
+		[Export ("forwardProgressUsage")]
+		MTLForwardProgressUsage ForwardProgressUsage { get; }
 	}
 
 	interface IMTLBlitCommandEncoder { }
@@ -2394,6 +2408,15 @@ namespace Metal {
 		[Abstract]
 		[Export ("sparseTextureTier")]
 		MTLTextureSparseTier SparseTextureTier { get; }
+
+		/// <summary>Gets the lower limit of the level-of-detail range that texture operations can access.</summary>
+		/// <remarks>The GPU applies this limit after sampler LOD clamping and texture-view level-range offsets.</remarks>
+		[UnsupportedSimulator ("ios")]
+		[UnsupportedSimulator ("tvos")]
+		[Mac (27, 0), iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Abstract]
+		[Export ("minLOD")]
+		float MinLod { get; }
 	}
 
 
@@ -4998,6 +5021,21 @@ namespace Metal {
 		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 		[Export ("requiredThreadsPerThreadgroup", ArgumentSemantic.Assign)]
 		MTLSize RequiredThreadsPerThreadgroup { get; set; }
+
+		/// <summary>Gets or sets the forward-progress behavior to use for the compute pipeline.</summary>
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		[Export ("forwardProgressUsage", ArgumentSemantic.Assign)]
+		MTLForwardProgressUsage ForwardProgressUsage { get; set; }
+
+		/// <summary>Gets or sets how the compute pipeline relieves contention.</summary>
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		[Export ("contentionRelief", ArgumentSemantic.Assign)]
+		MTLContentionRelief ContentionRelief { get; set; }
+
+		/// <summary>Gets or sets whether to optimize the compute pipeline for a persistent kernel.</summary>
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		[Export ("optimizeForPersistentKernel")]
+		bool OptimizeForPersistentKernel { get; set; }
 	}
 
 	[MacCatalyst (13, 1)]
@@ -9251,6 +9289,21 @@ namespace Metal {
 		[Export ("supportIndirectCommandBuffers", ArgumentSemantic.Assign)]
 		MTL4IndirectCommandBufferSupportState SupportIndirectCommandBuffers { get; set; }
 
+		/// <summary>Gets or sets the forward-progress behavior to use for the compute pipeline.</summary>
+		[Mac (27, 0), iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Export ("forwardProgressUsage", ArgumentSemantic.Assign)]
+		MTLForwardProgressUsage ForwardProgressUsage { get; set; }
+
+		/// <summary>Gets or sets how the compute pipeline relieves contention.</summary>
+		[Mac (27, 0), iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Export ("contentionRelief", ArgumentSemantic.Assign)]
+		MTLContentionRelief ContentionRelief { get; set; }
+
+		/// <summary>Gets or sets whether to optimize the compute pipeline for a persistent kernel.</summary>
+		[Mac (27, 0), iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Export ("optimizeForPersistentKernel")]
+		bool OptimizeForPersistentKernel { get; set; }
+
 		[Export ("reset")]
 		void Reset ();
 	}
@@ -10042,5 +10095,12 @@ namespace Metal {
 
 		[Export ("swizzle", ArgumentSemantic.Assign)]
 		MTLTextureSwizzleChannels Swizzle { get; set; }
+
+		/// <summary>Gets or sets the lower limit of the level-of-detail range for texture views created with this descriptor.</summary>
+		/// <value>The default value is <c>0.0</c>.</value>
+		/// <remarks>The GPU applies this limit after sampler LOD clamping and texture-view level-range offsets.</remarks>
+		[Mac (27, 0), iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Export ("minLOD")]
+		float MinLod { get; set; }
 	}
 }

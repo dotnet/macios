@@ -1,0 +1,22 @@
+AppBundleSize: 3,557,518 bytes (3,474.1 KB = 3.4 MB)
+# The following list of files and their sizes is just informational / for review, and isn't used in the test:
+Info.plist:
+    1,113 bytes (1.1 KB = 0.0 MB)
+Microsoft.tvOS.dll:
+    152,576 bytes (149.0 KB = 0.1 MB)
+PkgInfo:
+    8 bytes (0.0 KB = 0.0 MB)
+runtimeconfig.bin:
+    1,405 bytes (1.4 KB = 0.0 MB)
+SizeTestApp:
+    2,348,696 bytes (2,293.6 KB = 2.2 MB)
+SizeTestApp.dll:
+    7,168 bytes (7.0 KB = 0.0 MB)
+System.Private.CoreLib.aotdata.arm64:
+    41,496 bytes (40.5 KB = 0.0 MB)
+System.Private.CoreLib.dll:
+    991,744 bytes (968.5 KB = 0.9 MB)
+System.Runtime.dll:
+    5,120 bytes (5.0 KB = 0.0 MB)
+System.Runtime.InteropServices.dll:
+    8,192 bytes (8.0 KB = 0.0 MB)

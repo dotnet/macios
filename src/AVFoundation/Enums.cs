@@ -1646,6 +1646,31 @@ namespace AVFoundation {
 		Capturing,
 	}
 
+	/// <summary>Identifies scene signals that can influence automatic exposure.</summary>
+	[NoMac, iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+	[Flags]
+	public enum AVCaptureDeviceExposureSignal {
+		/// <summary>Subject motion that may require reducing motion blur.</summary>
+		[Field ("AVCaptureDeviceExposureSignalSubjectMotion")]
+		SubjectMotion = 1,
+
+		/// <summary>Multiple faces that may require greater depth of field.</summary>
+		[Field ("AVCaptureDeviceExposureSignalGroupPhoto")]
+		GroupPhoto = 2,
+
+		/// <summary>A document scene that may benefit from greater sharpness.</summary>
+		[Field ("AVCaptureDeviceExposureSignalDocument")]
+		Document = 4,
+
+		/// <summary>Diffraction artifacts that may benefit from an aperture adjustment.</summary>
+		[Field ("AVCaptureDeviceExposureSignalStarburst")]
+		Starburst = 8,
+
+		/// <summary>Artificial-light flicker that may require coordinating aperture and exposure duration.</summary>
+		[Field ("AVCaptureDeviceExposureSignalFlicker")]
+		Flicker = 16,
+	}
+
 	/// <summary>Constants for known video codecs.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (15, 0)]

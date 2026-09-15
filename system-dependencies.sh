@@ -449,6 +449,20 @@ function xcodebuild_download_platform ()
 	done
 }
 
+function print_non_universal_simulator_runtimes ()
+{
+	local TMPFILE
+	TMPFILE=$(mktemp)
+
+	xcrun simctl runtime list -j --json-output="$TMPFILE"
+
+	# this json query filters the json to simulator runtimes where iOS/tvOS >= 26.0 and where x64 is *not* supported (which we need to run x64 apps in the simulator on arm64)
+	JQ_QUERY='map({platformIdentifier: .platformIdentifier, identifier: .identifier, version: .version, state: .state, supportedArchitectures: .supportedArchitectures | join("|"), majorVersion: .version | split(".")[0] | tonumber }) | map(select(.majorVersion>=26) ) | map(select(.supportedArchitectures | contains("x86_64") | not))'
+	jq "$JQ_QUERY" -r "$TMPFILE"
+
+	rm -f "$TMPFILE"
+}
+
 function xcodebuild_download_selected_platforms ()
 {
 	local XCODE_DEVELOPER_ROOT

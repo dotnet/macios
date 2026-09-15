@@ -178,14 +178,20 @@ stages:
         BRANCH_NAME: $[ replace(variables['Build.SourceBranch'], 'refs/heads/', '') ]
         XHARNESS_LABELS: $[ stageDependencies.configure_build.configure.outputs['labels.xharness_labels'] ]
         RUN_MAC_TESTS: $[ stageDependencies.configure_build.configure.outputs['decisions.RUN_MAC_TESTS'] ]
-      pool:
-        name: $(PRBuildPool)
-        demands:
-        - Agent.OS -equals Darwin
-        - Agent.OSVersion -gtVersion $(minimumMacOSVersion)
-        - macOS.Name -equals ${{ parameters.macOSName }}
-        - macOS.Architecture -equals arm64  # the pinned Xcode package is Apple silicon only
-        - XcodeChannel -equals ${{ parameters.xcodeChannel }}
+      ${{ if parameters.useACES }}:
+        pool:
+          name: $(CIBuildPoolACES)
+          demands:
+          - ImageOverride -equals $(CIBuildPoolACESImage)
+      ${{ else }}:
+        pool:
+          name: $(PRBuildPool)
+          demands:
+          - Agent.OS -equals Darwin
+          - Agent.OSVersion -gtVersion $(minimumMacOSVersion)
+          - macOS.Name -equals ${{ parameters.macOSName }}
+          - macOS.Architecture -equals arm64  # the pinned Xcode package is Apple silicon only
+          - XcodeChannel -equals ${{ parameters.xcodeChannel }}
       steps:
       - template: build/build-pkgs.yml
         parameters:

@@ -1000,9 +1000,9 @@
 !missing-null-allowed! 'Foundation.NSObject Foundation.NSFileManager::get_UbiquityIdentityToken()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSObject Foundation.NSJsonSerialization::Deserialize(Foundation.NSData,Foundation.NSJsonReadingOptions,Foundation.NSError&)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSObject Foundation.NSJsonSerialization::Deserialize(Foundation.NSInputStream,Foundation.NSJsonReadingOptions,Foundation.NSError&)' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'Foundation.NSObject Foundation.NSKeyedArchiverDelegate::WillEncode(Foundation.NSKeyedArchiver,Foundation.NSObject)' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'Foundation.NSObject Foundation.NSKeyedUnarchiverDelegate::DecodedObject(Foundation.NSKeyedUnarchiver,Foundation.NSObject)' is missing an [NullAllowed] on parameter #1
-!missing-null-allowed! 'Foundation.NSObject Foundation.NSKeyedUnarchiverDelegate::DecodedObject(Foundation.NSKeyedUnarchiver,Foundation.NSObject)' is missing an [NullAllowed] on return type
+!missing-null-allowed! 'Foundation.NSObject Foundation.INSKeyedArchiverDelegate::WillEncode(Foundation.NSKeyedArchiver,Foundation.NSObject)' is missing an [NullAllowed] on return type
+!missing-null-allowed! 'Foundation.NSObject Foundation.INSKeyedUnarchiverDelegate::DecodedObject(Foundation.NSKeyedUnarchiver,Foundation.NSObject)' is missing an [NullAllowed] on parameter #1
+!missing-null-allowed! 'Foundation.NSObject Foundation.INSKeyedUnarchiverDelegate::DecodedObject(Foundation.NSKeyedUnarchiver,Foundation.NSObject)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSObject Foundation.NSMetadataItem::ValueForAttribute(System.String)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSObject Foundation.NSMetadataQuery::ValueOfAttribute(System.String,System.IntPtr)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSObject Foundation.NSMetadataQueryAttributeValueTuple::get_Value()' is missing an [NullAllowed] on return type
@@ -1064,7 +1064,7 @@
 !missing-null-allowed! 'Foundation.NSUrlSessionUploadTask Foundation.NSUrlSession::CreateUploadTask(Foundation.NSUrlRequest,Foundation.NSData,Foundation.NSUrlSessionResponse)' is missing an [NullAllowed] on parameter #1
 !missing-null-allowed! 'Foundation.NSValue Foundation.NSValue::ValueFromNonretainedObject(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'Foundation.NSXpcConnection Foundation.NSXpcConnection::get_CurrentConnection()' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'ObjCRuntime.Class Foundation.NSKeyedUnarchiverDelegate::CannotDecodeClass(Foundation.NSKeyedUnarchiver,System.String,System.String[])' is missing an [NullAllowed] on return type
+!missing-null-allowed! 'ObjCRuntime.Class Foundation.INSKeyedUnarchiverDelegate::CannotDecodeClass(Foundation.NSKeyedUnarchiver,System.String,System.String[])' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'System.Boolean Foundation.NSFileManager::CreateFile(System.String,Foundation.NSData,Foundation.NSDictionary)' is missing an [NullAllowed] on parameter #1
 !missing-null-allowed! 'System.Boolean Foundation.NSPredicate::EvaluateWithObject(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Boolean Foundation.NSPredicate::EvaluateWithObject(Foundation.NSObject,Foundation.NSDictionary)' is missing an [NullAllowed] on parameter #0
@@ -1174,9 +1174,9 @@
 !missing-null-allowed! 'System.Void Foundation.NSItemProvider::.ctor(Foundation.NSObject,System.String)' is missing an [NullAllowed] on parameter #1
 !missing-null-allowed! 'System.Void Foundation.NSItemProvider::SetPreviewImageHandler(Foundation.NSItemProviderLoadHandler)' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Void Foundation.NSKeyedArchiver::SetClassName(System.String,ObjCRuntime.Class)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void Foundation.NSKeyedArchiverDelegate::EncodedObject(Foundation.NSKeyedArchiver,Foundation.NSObject)' is missing an [NullAllowed] on parameter #1
-!missing-null-allowed! 'System.Void Foundation.NSKeyedArchiverDelegate::ReplacingObject(Foundation.NSKeyedArchiver,Foundation.NSObject,Foundation.NSObject)' is missing an [NullAllowed] on parameter #1
-!missing-null-allowed! 'System.Void Foundation.NSKeyedArchiverDelegate::ReplacingObject(Foundation.NSKeyedArchiver,Foundation.NSObject,Foundation.NSObject)' is missing an [NullAllowed] on parameter #2
+!missing-null-allowed! 'System.Void Foundation.INSKeyedArchiverDelegate::EncodedObject(Foundation.NSKeyedArchiver,Foundation.NSObject)' is missing an [NullAllowed] on parameter #1
+!missing-null-allowed! 'System.Void Foundation.INSKeyedArchiverDelegate::ReplacingObject(Foundation.NSKeyedArchiver,Foundation.NSObject,Foundation.NSObject)' is missing an [NullAllowed] on parameter #1
+!missing-null-allowed! 'System.Void Foundation.INSKeyedArchiverDelegate::ReplacingObject(Foundation.NSKeyedArchiver,Foundation.NSObject,Foundation.NSObject)' is missing an [NullAllowed] on parameter #2
 !missing-null-allowed! 'System.Void Foundation.NSKeyedUnarchiver::SetClass(ObjCRuntime.Class,System.String)' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Void Foundation.NSLengthFormatter::set_NumberFormatter(Foundation.NSNumberFormatter)' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Void Foundation.NSListFormatter::set_Locale(Foundation.NSLocale)' is missing an [NullAllowed] on parameter #0
@@ -1318,9 +1318,9 @@
 !missing-null-allowed! 'Foundation.NSUrlSessionUploadTask Foundation.NSUrlSession::CreateUploadTask(Foundation.NSData,System.Action`3<Foundation.NSData,Foundation.NSUrlResponse,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1
 !missing-null-allowed! 'Foundation.NSUrlSessionUploadTask Foundation.NSUrlSession::CreateUploadTask(Foundation.NSData,System.Action`3<Foundation.NSData,Foundation.NSUrlResponse,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #2
 !missing-null-allowed! 'System.Void Foundation.NSFileCoordinator::CoordinateAccess(Foundation.NSFileAccessIntent[],Foundation.NSOperationQueue,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'accessor' block parameter #0
-!missing-null-allowed! 'System.Void Foundation.NSFilePresenter::AccommodatePresentedItemDeletion(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
-!missing-null-allowed! 'System.Void Foundation.NSFilePresenter::AccommodatePresentedSubitemDeletion(Foundation.NSUrl,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
-!missing-null-allowed! 'System.Void Foundation.NSFilePresenter::SavePresentedItemChanges(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Foundation.INSFilePresenter::AccommodatePresentedItemDeletion(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Foundation.INSFilePresenter::AccommodatePresentedSubitemDeletion(Foundation.NSUrl,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Foundation.INSFilePresenter::SavePresentedItemChanges(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
 !missing-null-allowed! 'System.Void Foundation.NSHttpCookieStorage::GetCookiesForTask(Foundation.NSUrlSessionTask,System.Action`1<Foundation.NSHttpCookie[]>)' is missing a '?' on parameter 'completionHandler' block parameter #0
 !missing-null-allowed! 'System.Void Foundation.NSUrlCache::GetCachedResponse(Foundation.NSUrlSessionDataTask,System.Action`1<Foundation.NSCachedUrlResponse>)' is missing a '?' on parameter 'completionHandler' block parameter #0
 !missing-null-allowed! 'System.Void Foundation.NSUrlCredentialStorage::GetCredentials(Foundation.NSUrlProtectionSpace,Foundation.NSUrlSessionTask,System.Action`1<Foundation.NSDictionary>)' is missing a '?' on parameter 'completionHandler' block parameter #0

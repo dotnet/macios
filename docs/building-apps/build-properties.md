@@ -167,8 +167,9 @@ This can be overriden by setting the `BundleCreateDump` property:
 
 Note: the `createdump` tool does currently not work for sandboxed apps ([#18961](https://github.com/dotnet/macios/issues/18961));
 
-Only applicable to projects that use the CoreCLR runtime (which, at the moment
-of this writing, is only macOS projects).
+Note: an alternative option is to enable the in-process crash reporter (see [EnableCrashReport](#enablecrashreport)). The in-process crash reporter also works for sandboxed apps.
+
+Only applicable to macOS projects.
 
 [createdump]: https://github.com/dotnet/runtime/blob/3b63eb1346f1ddbc921374a5108d025662fb5ffd/docs/design/coreclr/botr/xplat-minidump-generation.md
 
@@ -542,15 +543,40 @@ Removing the dynamic registrar requires a static registrar (`Registrar=static` o
 `Registrar=managed-static`) and trimming, so setting this property has no effect (and the
 build warns) when those conditions aren't met.
 
+## TrimExportAttributes
+
+Controls whether `Foundation.ExportAttribute`, `Foundation.ActionAttribute`,
+and `Foundation.OutletAttribute` instances are removed during trimming.
+
+If this property is not specified, the build automatically removes these
+attributes when assembly preparation and post-processing are enabled, the
+trimmable static registrar is selected, dynamic registration is not required,
+and no runtime fallback needs the attributes.
+
+Set this property to `false` to preserve the attributes. Set it to `true` to
+require their removal; the build will fail if it detects that the attributes
+are needed at runtime.
+
 ## EmbedOnDemandResources
 
-Controls where on-demand resource asset packs are placed when packaging an app
-for distribution. This property does **not** enable on-demand resources (use
-[EnableOnDemandResources](#enableondemandresources) for that) — it only affects
-how already-tagged asset packs are packaged.
+Controls where on-demand resource asset packs are placed, so that the on-demand
+resources APIs can find them at runtime. This property does **not** enable
+on-demand resources (use [EnableOnDemandResources](#enableondemandresources) for
+that) — it only affects how already-tagged asset packs are packaged.
 
 This is the property set by the "Embed on-demand resources in the app bundle"
-option in the IDE. It only takes effect for `AdHoc` distribution:
+option in the IDE.
+
+When building for the **simulator**, the asset packs can't be hosted anywhere
+(there's no App Store nor a local hosting server), so they must be embedded in
+the app bundle for on-demand resources to work at all:
+
+* `true`: the asset packs are embedded in the `.app` bundle and served locally
+  by the app.
+* `false`: the asset packs are not embedded, so the on-demand resources APIs
+  won't find them on the simulator.
+
+When packaging an **IPA** for `AdHoc` distribution:
 
 * `true`: the asset packs are embedded in the `.app` bundle inside the IPA and
   served locally by the app.
@@ -560,9 +586,7 @@ option in the IDE. It only takes effect for `AdHoc` distribution:
 For `AppStore` distribution the asset packs are always placed outside the `.app`
 bundle (to be hosted by the App Store), regardless of this property.
 
-This property is only consulted when packaging an IPA for distribution (when
-`BuildIpa` is `true` and the distribution type is `AppStore` or `AdHoc`); it has
-no effect on a simulator or device debug build.
+This property has no effect on a device debug build.
 
 Default: true
 
@@ -589,10 +613,6 @@ This setting is disabled by default, but it can be enabled like this:
 The crash reports are written to a subdirectory of the app's caches directory.
 
 See also: [Collect crash dumps](https://learn.microsoft.com/en-us/dotnet/core/diagnostics/collect-dumps-crash).
-
-The in-process crash reporter is only available in the mobile CoreCLR runtime
-(iOS, tvOS and Mac Catalyst); the desktop macOS runtime relies on the
-[`createdump`](#bundlecreatedump) tool instead.
 
 ## EnableDefaultCodesignEntitlements
 
@@ -1403,6 +1423,14 @@ The product definition template (`.plist`) to be used when creating the product 
 
 Only applicable to macOS and Mac Catalyst apps.
 
+## PublishReadyToRunComposite
+
+Specifies whether ReadyToRun (R2R) compilation produces a single composite image containing all the assemblies, or one image per assembly.
+
+Only composite ReadyToRun compilation is supported for iOS, tvOS and Mac Catalyst apps, because the ReadyToRun code is embedded in the app bundle as native Mach-O code, and the runtime only knows how to locate such code for a composite image. Setting this property to `false` will produce a build error; set [PublishReadyToRun](https://learn.microsoft.com/dotnet/core/deploying/ready-to-run) to `false` to turn off ReadyToRun compilation completely instead.
+
+Default: `true` (when `PublishReadyToRun` is `true`).
+
 ## RecommendedXcodeVersion
 
 The version of Xcode recommended for use with this version of .NET for iOS, tvOS, macOS and Mac Catalyst.
@@ -1687,6 +1715,25 @@ The default value is `true`. Set it to `false` to preserve these directories.
 The full path to the `strip` command-line tool.
 
 The default behavior is to use `xcrun strip`.
+
+## StripMergeableLibraries
+
+A boolean property that specifies whether static linking metadata (`LC_ATOM_INFO`)
+is removed from mergeable libraries embedded in the app bundle.
+
+Mergeable libraries are dynamic libraries that also contain metadata for static
+linking. This metadata can roughly double the size of the library. When this
+property is `true`, the metadata is stripped to reduce app size.
+
+The default value is the value of the `Optimize` property, which means `Release`
+builds strip mergeable library metadata by default, while `Debug` builds preserve
+it.
+
+```xml
+<PropertyGroup>
+  <StripMergeableLibraries>true</StripMergeableLibraries>
+</PropertyGroup>
+```
 
 ## SupportedOSPlatformVersion
 

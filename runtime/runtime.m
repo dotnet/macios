@@ -79,6 +79,13 @@ bool xamarin_supports_dynamic_registration = true;
 #endif
 const char *xamarin_runtime_configuration_name = NULL;
 
+// The runtimeconfig.json 'configProperties' baked into the app as C arrays (CoreCLR only).
+// These are set from the generated main (xamarin_setup_impl) and consumed by
+// xamarin_bridge_compute_properties when initializing CoreCLR.
+int xamarin_runtime_config_property_count = 0;
+const char **xamarin_runtime_config_property_keys = NULL;
+const char **xamarin_runtime_config_property_values = NULL;
+
 enum XamarinNativeLinkMode xamarin_libmono_native_link_mode = XamarinNativeLinkModeStaticObject;
 const char **xamarin_runtime_libraries = NULL;
 struct xamarin_r2r_module *xamarin_r2r_modules = NULL;

@@ -108,8 +108,7 @@ public class PreserveSmartEnumConversionsTests : BaseClass {
 
 		void AssertMethodHasDynamicDependencies (ICustomAttributeProvider provider)
 		{
-			// 'GetConstant' has no parameter list, because it's the only method with that name (unlike 'GetValue').
-			AssertHasDynamicDependency (provider, "GetConstant", "CoreAnimation.CAToneMapModeExtensions", $"Microsoft.{platform.AsString ()}");
+			AssertHasDynamicDependency (provider, "GetConstant(CoreAnimation.CAToneMapMode)", "CoreAnimation.CAToneMapModeExtensions", $"Microsoft.{platform.AsString ()}");
 			AssertHasDynamicDependency (provider, "GetValue(Foundation.NSString)", "CoreAnimation.CAToneMapModeExtensions", $"Microsoft.{platform.AsString ()}");
 		}
 

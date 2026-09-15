@@ -1,2 +1,5 @@
 # results from initial block parameter nullability analysis
 !missing-null-allowed! 'Foundation.NSProgress PhotosUI.PHProjectExtensionContext::UpdatedProjectInfo(PhotosUI.PHProjectInfo,System.Action`1<PhotosUI.PHProjectInfo>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void PhotosUI.IPHContentEditingController::FinishContentEditing(System.Action`1<Photos.PHContentEditingOutput>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void PhotosUI.IPHProjectExtensionController::BeginProject(PhotosUI.PHProjectExtensionContext,PhotosUI.PHProjectInfo,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void PhotosUI.IPHProjectExtensionController::ResumeProject(PhotosUI.PHProjectExtensionContext,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0

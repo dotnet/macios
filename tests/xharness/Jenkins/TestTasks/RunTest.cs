@@ -128,7 +128,7 @@ namespace Xharness.Jenkins.TestTasks {
 			envManager.SetEnvironmentVariables (proc);
 			foreach (DictionaryEntry de in proc.StartInfo.EnvironmentVariables)
 				log.WriteLine ($"export {de.Key}={de.Value}");
-			mainLog.WriteLine ("Executing {0} ({1})", testTask.TestName, testTask.Mode);
+			mainLog.WriteLine ("Executing {0} ({1} - {2})", testTask.TestName, testTask.Mode, testTask.Variation);
 			if (!dryRun) {
 				testTask.ExecutionResult = TestExecutingResult.Running;
 				var result = await ProcessManager.RunAsync (proc, log, Timeout);

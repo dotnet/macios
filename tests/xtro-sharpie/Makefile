@@ -227,6 +227,9 @@ $(U2TODO): $(wildcard u2todo/*.cs u2todo/*.csproj xtro-sharpie/Filter.cs)
 unclassified2todo: $(U2TODO)
 	cd $(DOTNET_ANNOTATIONS_DIR) && $(DOTNET) exec $(abspath $(U2TODO))
 
+unclassified2ignore: $(U2TODO)
+	cd $(DOTNET_ANNOTATIONS_DIR) && $(DOTNET) exec $(abspath $(U2TODO)) --ignore
+
 run-tests run-unit-tests:
 	$(Q) $(MAKE) -C UnitTests $@
 

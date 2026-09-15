@@ -202,6 +202,7 @@ public class ReproTest : BaseClass {
 class TestLogger : IToolLog {
 	public int Verbosity => 0;
 	public required ApplePlatform Platform { get; set; }
+	public List<ProductException> Errors { get; } = [];
 
 	public void Log (string value)
 	{
@@ -220,6 +221,7 @@ class TestLogger : IToolLog {
 
 	public void LogError (ProductException ex)
 	{
+		Errors.Add (ex);
 		Console.WriteLine (ex.ToString ());
 	}
 

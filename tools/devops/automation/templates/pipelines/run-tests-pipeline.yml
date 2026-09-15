@@ -32,7 +32,7 @@ parameters:
     default: false
 
   - name: useACES
-    displayName: Use ACES shared pool for simulator tests
+    displayName: Use ACES shared pool for builds and simulator tests
     type: boolean
     default: false
 

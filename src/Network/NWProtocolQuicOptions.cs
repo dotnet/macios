@@ -8,9 +8,9 @@ using SecProtocolOptionsRef = System.IntPtr;
 #nullable enable
 
 namespace Network {
-	[SupportedOSPlatform ("tvos15.0")]
+	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("ios15.0")]
+	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	public class NWProtocolQuicOptions : NWProtocolOptions {
 

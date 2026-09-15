@@ -9,7 +9,7 @@ namespace WebKit {
 #if !COREBUILD
 		// we use the attrs of the old property 
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios14.5")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
 		public bool TextInteractionEnabled {

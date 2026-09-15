@@ -1,3 +1,7 @@
+# These CFMessagePort getters don't do anything useful for us.
+!missing-pinvoke! CFMessagePortGetContext is not bound
+!missing-pinvoke! CFMessagePortGetInvalidationCallBack is not bound
+
 ## we already expose the NSURLFileProtection* constants
 !missing-field! kCFURLVolumeSupportsFileProtectionKey not bound
 

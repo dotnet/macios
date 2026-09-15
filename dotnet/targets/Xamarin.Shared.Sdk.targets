@@ -753,7 +753,7 @@
 
 	<Target Name="_ComputeLinkerArguments" DependsOnTargets="$(_ComputeLinkerArgumentsDependsOn)" />
 
-	<Target Name="_ComputeHotReloadCompatibleBuild" DependsOnTargets="SelectRegistrar">
+	<Target Name="_ComputeHotReloadCompatibleBuild" DependsOnTargets="_ComputePublishTrimmed;SelectRegistrar">
 		<PropertyGroup>
 			<!--
 				Hot Reload requires that we don't modify user (reloadable) assemblies. It's a debug-only

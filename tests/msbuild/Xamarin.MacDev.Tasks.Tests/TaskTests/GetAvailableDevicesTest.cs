@@ -107,6 +107,20 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		[Test]
+		public void DeviceCtlDuplicateSimulator ()
+		{
+			var platform = ApplePlatform.iOS;
+			var task = CreateTask (platform, SIMCTL_JSON_1, DEVICECTL_JSON_1.Replace ("00008003-012301230123ABCD", "3F1C114D-FC3D-481A-9CA1-499EE1339390"));
+			Assert.That (task.Execute (), Is.True, "Task should have succeeded.");
+
+			Assert.Multiple (() => {
+				Assert.That (task.Devices.Count, Is.EqualTo (4), "Devices count mismatch.");
+				Assert.That (task.Devices.Count (d => d.ItemSpec == "3F1C114D-FC3D-481A-9CA1-499EE1339390"), Is.EqualTo (1), "Duplicate simulator count mismatch.");
+				Assert.That (task.Devices.Single (d => d.ItemSpec == "3F1C114D-FC3D-481A-9CA1-499EE1339390").GetMetadata ("Type"), Is.EqualTo ("Simulator"), "Simulator metadata mismatch.");
+			});
+		}
+
+		[Test]
 		public void SimCtl1 ()
 		{
 			if (!Configuration.CanRunArm64)

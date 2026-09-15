@@ -38,6 +38,36 @@ namespace GeneratorTests {
 		}
 
 		[Test]
+		[NonParallelizable]
+		public void GeneratedSourceFileListIsRequired ()
+		{
+			var output = new StringBuilder ();
+			ThreadStaticTextWriter.ReplaceConsole (output);
+			try {
+				Assert.That (BindingTouch.Main (new [] { "--compiled-api-definition-assembly=api.dll", "--tmpdir=generated" }), Is.EqualTo (1));
+			} finally {
+				ThreadStaticTextWriter.RestoreConsole ();
+			}
+
+			Assert.That (output.ToString (), Does.Contain ("no generated source file list provided"));
+		}
+
+		[Test]
+		[NonParallelizable]
+		public void PersistentGeneratedSourceDirectoryIsRequired ()
+		{
+			var output = new StringBuilder ();
+			ThreadStaticTextWriter.ReplaceConsole (output);
+			try {
+				Assert.That (BindingTouch.Main (new [] { "--compiled-api-definition-assembly=api.dll", "--sourceonly=generated-sources.txt" }), Is.EqualTo (1));
+			} finally {
+				ThreadStaticTextWriter.RestoreConsole ();
+			}
+
+			Assert.That (output.ToString (), Does.Contain ("no persistent generated source output directory provided"));
+		}
+
+		[Test]
 		public void BI0086 ()
 		{
 			var bgen = new BGenTool ();

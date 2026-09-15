@@ -91,7 +91,7 @@ public class BindingTouch : IDisposable, IToolLog {
 	static void ShowHelp (OptionSet os)
 	{
 		Console.WriteLine ("{0} - Mono Objective-C API binder", ToolName);
-		Console.WriteLine ("Usage is:\n {0} [options] --compiled-api-definition-assembly=api.dll", ToolName);
+		Console.WriteLine ("Usage is:\n {0} [options] --compiled-api-definition-assembly=api.dll --sourceonly=generated-sources.txt --tmpdir=generated-sources", ToolName);
 
 		os.WriteOptionDescriptions (Console.Out);
 	}
@@ -131,7 +131,7 @@ public class BindingTouch : IDisposable, IToolLog {
 			config.OptionSet = new OptionSet () {
 				{ "h|?|help", "Displays the help", v => config.ShowHelp = true },
 				{ "a", "Include alpha bindings (Obsolete).", v => {}, true },
-				{ "outdir=", "Sets the output directory for the temporary binding files", v => { config.BindingFilesOutputDirectory = v; }},
+				{ "outdir=", "Sets the output directory for the generated binding source files", v => { config.BindingFilesOutputDirectory = v; }},
 				{ "o|out=", "Sets the name of the generated binding assembly", v => outfile = v },
 				{ "tmpdir=", "Sets the working directory for temp files", v => { config.TemporaryFileDirectory = v; config.DeleteTemporaryFiles = false; }},
 				{ "debug", "Generates a debugging build of the binding", v => config.IsDebug = true },
@@ -231,7 +231,6 @@ public class BindingTouch : IDisposable, IToolLog {
 			ShowHelp (config.OptionSet);
 			return false;
 		}
-
 		if (config.TemporaryFileDirectory is null)
 			config.TemporaryFileDirectory = GetWorkDir ();
 
@@ -305,6 +304,22 @@ public class BindingTouch : IDisposable, IToolLog {
 		return true;
 	}
 
+	bool ValidateGeneratedSourceOutput (BindingTouchConfig config)
+	{
+		if (string.IsNullOrEmpty (config.GeneratedFileList)) {
+			Console.WriteLine ("Error: no generated source file list provided");
+			ShowHelp (config.OptionSet);
+			return false;
+		}
+		if (config.BindingFilesOutputDirectory is null && config.DeleteTemporaryFiles) {
+			Console.WriteLine ("Error: no persistent generated source output directory provided");
+			ShowHelp (config.OptionSet);
+			return false;
+		}
+
+		return true;
+	}
+
 	int Main3 (string [] args)
 	{
 		ErrorHelper.ClearWarningLevels ();
@@ -317,6 +332,9 @@ public class BindingTouch : IDisposable, IToolLog {
 			ShowHelp (config.OptionSet);
 			return 0;
 		}
+
+		if (!ValidateGeneratedSourceOutput (config))
+			return 1;
 
 		libraryInfo = LibraryInfo.LibraryInfoBuilder.Build (references, config);
 		CurrentPlatform = LibraryManager.DetermineCurrentPlatform (TargetFramework.Platform);

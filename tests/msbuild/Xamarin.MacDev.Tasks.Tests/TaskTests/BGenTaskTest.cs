@@ -29,6 +29,16 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		[Test]
+		public void GeneratedSourceOutputsAreRequired ()
+		{
+			var task = CreateTask<BGen> ();
+			task.CompiledApiDefinitionAssembly = new TaskItem ("compiled-api-definitions.dll");
+
+			Assert.That (task.Execute (), Is.False);
+			Assert.That (task.Log.HasLoggedErrors, Is.True);
+		}
+
+		[Test]
 		public void Bug656983 ()
 		{
 			var task = CreateTask<BGen> ();

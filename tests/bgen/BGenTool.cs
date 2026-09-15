@@ -192,14 +192,34 @@ namespace Xamarin.Tests {
 
 		int Execute ()
 		{
+			var compileApiDefinitions = false;
 			if (CompiledApiDefinitionAssembly is null) {
 				CompiledApiDefinitionAssembly = Path.Combine (EnsureTempDir (), "compiled-api-definitions.dll");
+				compileApiDefinitions = true;
+			}
+
+			var arguments = BuildArgumentArray ();
+			if (Profile == Profile.None)
+				return ExecuteBgen (arguments);
+
+			if (compileApiDefinitions) {
 				var compileApiDefinitionsResult = Compile (CompiledApiDefinitionAssembly, ApiDefinitions.Concat (Sources), true);
 				if (compileApiDefinitionsResult != 0)
 					return compileApiDefinitionsResult;
 			}
 
-			var arguments = BuildArgumentArray ();
+			var rv = ExecuteBgen (arguments);
+			if (rv != 0)
+				return rv;
+
+			var compileResult = Compile (AssemblyPath, File.ReadAllLines (GetGeneratedSourcesFileList ()).Concat (Sources).Concat (ExtraSources), false);
+			if (InProcess)
+				ParseMessages ();
+			return compileResult;
+		}
+
+		int ExecuteBgen (string [] arguments)
+		{
 			var in_process = InProcess;
 			if (in_process) {
 				int rv;
@@ -230,10 +250,7 @@ namespace Xamarin.Tests {
 					return rv;
 			}
 
-			var compileResult = Compile (AssemblyPath, File.ReadAllLines (GetGeneratedSourcesFileList ()).Concat (Sources).Concat (ExtraSources), false);
-			if (in_process)
-				ParseMessages ();
-			return compileResult;
+			return 0;
 		}
 
 		IEnumerable<string> GetReferences (TargetFramework? targetFramework)
@@ -466,7 +483,7 @@ namespace Xamarin.Tests {
 		public string AssemblyPath {
 			get {
 				var tmpDirectory = EnsureTempDir ();
-				return Out ?? (Path.Combine (tmpDirectory, Path.GetFileNameWithoutExtension (ApiDefinitions [0]).Replace ('-', '_') + ".dll"));
+				return Out ?? Path.Combine (tmpDirectory, "binding.dll");
 			}
 		}
 

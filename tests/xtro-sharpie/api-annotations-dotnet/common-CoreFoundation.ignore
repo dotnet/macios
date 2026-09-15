@@ -600,11 +600,6 @@
 !missing-pinvoke! CFPlugInGetBundle is not bound
 !missing-pinvoke! CFPlugInGetTypeID is not bound
 !missing-pinvoke! CFPlugInInstanceCreate is not bound
-!missing-pinvoke! CFPlugInInstanceCreateWithInstanceDataSize is not bound
-!missing-pinvoke! CFPlugInInstanceGetFactoryName is not bound
-!missing-pinvoke! CFPlugInInstanceGetInstanceData is not bound
-!missing-pinvoke! CFPlugInInstanceGetInterfaceFunctionTable is not bound
-!missing-pinvoke! CFPlugInInstanceGetTypeID is not bound
 !missing-pinvoke! CFPlugInIsLoadOnDemand is not bound
 !missing-pinvoke! CFPlugInRegisterFactoryFunction is not bound
 !missing-pinvoke! CFPlugInRegisterFactoryFunctionByName is not bound

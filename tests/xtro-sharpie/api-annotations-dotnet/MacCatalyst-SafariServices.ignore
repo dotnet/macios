@@ -4,6 +4,9 @@
 ## this member references a framework which isn't available on Mac Catalyst
 !missing-protocol-member! SFAddToHomeScreenActivityItem::getWebAppManifestWithCompletionHandler: not found
 
+## the SFAddToHomeScreenInfo callback type is only forward-declared on Mac Catalyst
+!missing-protocol-member! SFAddToHomeScreenActivityItem::getHomeScreenWebAppInfoWithCompletionHandler: not found
+
 # results from initial block parameter nullability analysis
 !missing-null-allowed! 'System.Void SafariServices.SFContentBlockerManager::GetStateOfContentBlocker(System.String,System.Action`2<SafariServices.SFContentBlockerState,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
 !missing-null-allowed! 'System.Void SafariServices.SFContentBlockerManager::GetStateOfContentBlocker(System.String,System.Action`2<SafariServices.SFContentBlockerState,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1

@@ -50,6 +50,27 @@ namespace MonoTouchFixtures.CarPlay {
 		}
 
 		[Test]
+		public void CreateWithVariants ()
+		{
+			TestRuntime.AssertXcodeVersion (27, 0);
+
+			var centerPoint = new CPLocationCoordinate3D { Latitude = 37.3349, Longitude = -122.0090, Altitude = 0.0 };
+			var nameVariants = new [] { "Apple Park", "Apple" };
+			var addressVariants = new [] { "1 Apple Park Way, Cupertino, CA", "Cupertino, CA" };
+			var entryPoints = new [] {
+				new CPLocationCoordinate3D { Latitude = 37.3360, Longitude = -122.0080, Altitude = 0.0 },
+			};
+
+			var waypoint = CPNavigationWaypoint.CreateWithVariants (centerPoint, null, nameVariants, addressVariants, entryPoints, null);
+
+			Assert.That (waypoint, Is.Not.Null, "waypoint");
+			Assert.That (waypoint.NameVariants, Is.EqualTo (nameVariants), "NameVariants");
+			Assert.That (waypoint.AddressVariants, Is.EqualTo (addressVariants), "AddressVariants");
+			Assert.That (waypoint.EntryPointsCount, Is.EqualTo ((nuint) 1), "EntryPointsCount");
+			Assert.That (waypoint.EntryPoints [0].Latitude, Is.EqualTo (entryPoints [0].Latitude).Within (0.0001), "EntryPoints[0].Latitude");
+		}
+
+		[Test]
 		public void CreateWithNullEntryPoints ()
 		{
 			var centerPoint = new CPLocationCoordinate3D { Latitude = 40.7128, Longitude = -74.0060, Altitude = 0.0 };

@@ -3210,6 +3210,117 @@ namespace GameController {
 		IGCRelativeInput SequentialInput { get; }
 	}
 
+	/// <summary>Specifies the system action performed in response to a controller Home button press.</summary>
+	[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[Native]
+	enum GCControllerHomeButtonSettingSystemAction : long {
+		/// <summary>The setting could not be read.</summary>
+		Unavailable = -1,
+
+		/// <summary>The Home button performs a system action other than opening the current application.</summary>
+		Other = 0,
+
+		/// <summary>The Home button opens the current application.</summary>
+		OpenCurrentApplication = 1,
+
+		/// <summary>The system does not respond to the Home button.</summary>
+		[NoiOS, NoMacCatalyst]
+		Disabled = long.MaxValue,
+	}
+
+	/// <summary>Specifies how the system responds to a controller Home button press while the application is frontmost.</summary>
+	[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[Native]
+	enum GCControllerHomeButtonSettingInAppAction : long {
+		/// <summary>The setting could not be read.</summary>
+		Unavailable = -1,
+
+		/// <summary>The system uses its default Home button behavior.</summary>
+		Default = 0,
+
+		/// <summary>The system defers to the application's preferred Home button handling.</summary>
+		Defer = 1,
+
+		/// <summary>The system does not respond to the Home button.</summary>
+		[NoiOS, NoMacCatalyst]
+		Disabled = long.MaxValue,
+	}
+
+	/// <summary>Specifies whether the user has customized a controller Home button setting.</summary>
+	[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[Native]
+	enum GCControllerHomeButtonSettingCustomizationStatus : long {
+		/// <summary>The setting uses the system default and has not been customized.</summary>
+		Default = 0,
+
+		/// <summary>The user has customized the setting.</summary>
+		User,
+	}
+
+	/// <summary>Specifies the controller Home button setting to customize.</summary>
+	[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[Native]
+	enum GCControllerHomeButtonSettingsCustomizationActivity : long {
+		/// <summary>Customize the Home button's system action.</summary>
+		CustomizeSystemAction = 1,
+
+		/// <summary>Customize the Home button's in-app action.</summary>
+		CustomizeInAppAction,
+	}
+
+	/// <summary>Handler invoked after controller Home button settings change.</summary>
+	/// <param name="manager">The settings manager whose settings changed.</param>
+	[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	delegate void GCControllerHomeButtonSettingsDidChangeHandler (GCControllerHomeButtonSettingsManager manager);
+
+	/// <summary>Provides access to the system settings for controller Home button behavior.</summary>
+	[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	interface GCControllerHomeButtonSettingsManager {
+		/// <summary>Initializes a new instance of the <see cref="GCControllerHomeButtonSettingsManager" /> class using the specified dispatch queue.</summary>
+		/// <param name="queue">The queue on which to schedule settings-change handlers, or <see langword="null" />.</param>
+		[Export ("initWithQueue:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor ([NullAllowed] DispatchQueue queue);
+
+		/// <summary>Gets or sets the handler invoked after controller Home button settings change.</summary>
+		[NullAllowed, Export ("settingsDidChangeHandler", ArgumentSemantic.Copy)]
+		GCControllerHomeButtonSettingsDidChangeHandler SettingsDidChangeHandler { get; set; }
+
+		/// <summary>Opens the system settings for customizing the controller Home button.</summary>
+		/// <param name="activity">The controller Home button setting to customize.</param>
+		/// <param name="error">The error if the settings could not be opened; otherwise, <see langword="null" />.</param>
+		/// <returns><see langword="true" /> if the settings were opened; otherwise, <see langword="false" />.</returns>
+		[Export ("openControllerHomeButtonSettingsForActivity:error:")]
+		bool OpenControllerHomeButtonSettings (GCControllerHomeButtonSettingsCustomizationActivity activity, [NullAllowed] out NSError error);
+
+		/// <summary>Gets the current controller Home button system action and its customization status.</summary>
+		/// <param name="customization">The customization status for the setting.</param>
+		/// <param name="error">The error if the setting could not be read; otherwise, <see langword="null" />.</param>
+		/// <returns>The current controller Home button system action.</returns>
+		[Export ("readControllerHomeButtonSystemAction:withError:")]
+		GCControllerHomeButtonSettingSystemAction ReadControllerHomeButtonSystemAction (out GCControllerHomeButtonSettingCustomizationStatus customization, [NullAllowed] out NSError error);
+
+		/// <summary>Gets the current controller Home button system action.</summary>
+		/// <param name="error">The error if the setting could not be read; otherwise, <see langword="null" />.</param>
+		/// <returns>The current controller Home button system action.</returns>
+		[Export ("readControllerHomeButtonSystemActionWithError:")]
+		GCControllerHomeButtonSettingSystemAction ReadControllerHomeButtonSystemAction ([NullAllowed] out NSError error);
+
+		/// <summary>Gets the current in-app controller Home button action and its customization status.</summary>
+		/// <param name="customization">The customization status for the setting.</param>
+		/// <param name="error">The error if the setting could not be read; otherwise, <see langword="null" />.</param>
+		/// <returns>The current in-app controller Home button action.</returns>
+		[Export ("readControllerHomeButtonInAppAction:withError:")]
+		GCControllerHomeButtonSettingInAppAction ReadControllerHomeButtonInAppAction (out GCControllerHomeButtonSettingCustomizationStatus customization, [NullAllowed] out NSError error);
+
+		/// <summary>Gets the current in-app controller Home button action.</summary>
+		/// <param name="error">The error if the setting could not be read; otherwise, <see langword="null" />.</param>
+		/// <returns>The current in-app controller Home button action.</returns>
+		[Export ("readControllerHomeButtonInAppActionWithError:")]
+		GCControllerHomeButtonSettingInAppAction ReadControllerHomeButtonInAppAction ([NullAllowed] out NSError error);
+	}
+
 	[Static]
 	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	interface GCControllerUserCustomizations {

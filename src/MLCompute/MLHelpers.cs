@@ -3,8 +3,8 @@
 using CoreFoundation;
 
 namespace MLCompute {
-	[SupportedOSPlatform ("ios14.0")]
-	[SupportedOSPlatform ("tvos14.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	public static class MLCActivationTypeExtensions {
@@ -20,8 +20,8 @@ namespace MLCompute {
 		}
 	}
 
-	[SupportedOSPlatform ("ios14.0")]
-	[SupportedOSPlatform ("tvos14.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	public static class MLCArithmeticOperationExtensions {
@@ -37,8 +37,8 @@ namespace MLCompute {
 		}
 	}
 
-	[SupportedOSPlatform ("ios14.0")]
-	[SupportedOSPlatform ("tvos14.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	public static class MLCPaddingPolicyExtensions {
@@ -54,8 +54,8 @@ namespace MLCompute {
 		}
 	}
 
-	[SupportedOSPlatform ("ios14.0")]
-	[SupportedOSPlatform ("tvos14.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	public static class MLCLossTypeExtensions {
@@ -71,8 +71,8 @@ namespace MLCompute {
 		}
 	}
 
-	[SupportedOSPlatform ("ios14.0")]
-	[SupportedOSPlatform ("tvos14.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	public static class MLCReductionTypeExtensions {
@@ -88,8 +88,8 @@ namespace MLCompute {
 		}
 	}
 
-	[SupportedOSPlatform ("ios14.0")]
-	[SupportedOSPlatform ("tvos14.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	public static class MLCPaddingTypeExtensions {
@@ -105,8 +105,8 @@ namespace MLCompute {
 		}
 	}
 
-	[SupportedOSPlatform ("ios14.0")]
-	[SupportedOSPlatform ("tvos14.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	public static class MLCConvolutionTypeExtensions {
@@ -122,8 +122,8 @@ namespace MLCompute {
 		}
 	}
 
-	[SupportedOSPlatform ("ios14.0")]
-	[SupportedOSPlatform ("tvos14.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	public static class MLCPoolingTypeExtensions {
@@ -139,8 +139,8 @@ namespace MLCompute {
 		}
 	}
 
-	[SupportedOSPlatform ("ios14.0")]
-	[SupportedOSPlatform ("tvos14.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	public static class MLCSoftmaxOperationExtensions {
@@ -156,8 +156,8 @@ namespace MLCompute {
 		}
 	}
 
-	[SupportedOSPlatform ("ios14.0")]
-	[SupportedOSPlatform ("tvos14.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	public static class MLCSampleModeExtensions {
@@ -173,8 +173,8 @@ namespace MLCompute {
 		}
 	}
 
-	[SupportedOSPlatform ("ios14.0")]
-	[SupportedOSPlatform ("tvos14.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	public static class MLCLstmResultModeExtensions {
@@ -190,9 +190,9 @@ namespace MLCompute {
 		}
 	}
 
-	[SupportedOSPlatform ("tvos14.5")]
+	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("ios14.5")]
+	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	public static class MLCComparisonOperationExtensions {
 
@@ -207,9 +207,9 @@ namespace MLCompute {
 		}
 	}
 
-	[SupportedOSPlatform ("tvos15.0")]
+	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("ios15.0")]
+	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	public static class MLCGradientClippingTypeExtensions {
 

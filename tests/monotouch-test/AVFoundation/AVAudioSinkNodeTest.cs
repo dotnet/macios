@@ -34,6 +34,22 @@ namespace MonoTouchFixtures.AVFoundation {
 			});
 		}
 
+		[Test]
+		public void CreateRealtimeSafe ()
+		{
+			TestRuntime.AssertXcodeVersion (27, 0);
+
+			var callbackEvent = new ManualResetEvent (false);
+			SinkNodeCallbackTest (callbackEvent, () => {
+#if XAMCORE_5_0
+				var handler = new AVAudioSinkNodeReceiverHandler ((ts, n, buffers) => SinkHandler (ts, n, buffers, callbackEvent));
+#else
+				var handler = new AVAudioSinkNodeReceiverHandler2 ((ts, n, buffers) => SinkHandler2 (ts, n, buffers, callbackEvent));
+#endif
+				return AVAudioSinkNode.CreateRealtimeSafe (handler);
+			});
+		}
+
 #if !XAMCORE_5_0
 		[Test]
 		public void SinkNodeCallback2 ()

@@ -99,6 +99,8 @@ namespace AppKit {
 		AutoHideToolbar = (1 << 11),
 		/// <summary>The floating overlay that assists in locating the pointer is disabled.</summary>
 		DisableCursorLocationAssistance = (1 << 12),
+		[Mac (27, 0)]
+		DisableScreenCornerInteractions = (1 << 15),
 	}
 
 	/// <summary>Specifies the result of an application delegate operation.</summary>

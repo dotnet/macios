@@ -409,8 +409,8 @@ namespace AVFoundation {
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-	[SupportedOSPlatform ("ios15.0")]
-	[SupportedOSPlatform ("tvos15.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AVSampleCursorSyncInfo {
 #if XAMCORE_5_0
@@ -456,8 +456,8 @@ namespace AVFoundation {
 #if !XAMCORE_5_0
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-	[SupportedOSPlatform ("ios15.0")]
-	[SupportedOSPlatform ("tvos15.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
 	[StructLayout (LayoutKind.Sequential)]
 	[NativeName ("AVSampleCursorSyncInfo")]
 #if COREBUILD
@@ -497,8 +497,8 @@ namespace AVFoundation {
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-	[SupportedOSPlatform ("ios15.0")]
-	[SupportedOSPlatform ("tvos15.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AVSampleCursorDependencyInfo {
 #if XAMCORE_5_0
@@ -580,8 +580,8 @@ namespace AVFoundation {
 #if !XAMCORE_5_0
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-	[SupportedOSPlatform ("ios15.0")]
-	[SupportedOSPlatform ("tvos15.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
 	[StructLayout (LayoutKind.Sequential)]
 	[NativeName ("AVSampleCursorDependencyInfo")]
 #if COREBUILD
@@ -643,8 +643,8 @@ namespace AVFoundation {
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-	[SupportedOSPlatform ("ios15.0")]
-	[SupportedOSPlatform ("tvos15.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AVSampleCursorStorageRange {
 		/// <summary>The location of the first byte.</summary>
@@ -659,8 +659,8 @@ namespace AVFoundation {
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-	[SupportedOSPlatform ("ios15.0")]
-	[SupportedOSPlatform ("tvos15.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AVSampleCursorChunkInfo {
 		/// <summary>The number of samples present.</summary>
@@ -719,8 +719,8 @@ namespace AVFoundation {
 #if !XAMCORE_5_0
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-	[SupportedOSPlatform ("ios15.0")]
-	[SupportedOSPlatform ("tvos15.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
 	[StructLayout (LayoutKind.Sequential)]
 	[NativeName ("AVSampleCursorChunkInfo")]
 #if COREBUILD
@@ -760,8 +760,8 @@ namespace AVFoundation {
 
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-	[SupportedOSPlatform ("ios15.0")]
-	[SupportedOSPlatform ("tvos15.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AVSampleCursorAudioDependencyInfo {
 #if XAMCORE_5_0 || (__IOS__ && !__MACCATALYST__) || __TVOS__
@@ -782,8 +782,8 @@ namespace AVFoundation {
 #if !XAMCORE_5_0 && !(__IOS__ && !__MACCATALYST__) && !__TVOS__
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-	[SupportedOSPlatform ("ios15.0")]
-	[SupportedOSPlatform ("tvos15.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
 	[StructLayout (LayoutKind.Sequential)]
 	[NativeName ("AVSampleCursorAudioDependencyInfo")]
 #if COREBUILD
@@ -1046,5 +1046,37 @@ namespace AVFoundation {
 		/// <returns>A hash code for the current timecode.</returns>
 		public override int GetHashCode () => HashCode.Combine (Hours, Minutes, Seconds, Frames, UserBits, FrameDuration, SourceType);
 #endif
+	}
+
+	/// <summary>Guidelines for determining segment boundaries when writing a video track incrementally with <see cref="AVFoundation.AVAssetWritingPlanner" />.</summary>
+	[SupportedOSPlatform ("ios27.0")]
+	[SupportedOSPlatform ("maccatalyst27.0")]
+	[SupportedOSPlatform ("macos27.0")]
+	[SupportedOSPlatform ("tvos27.0")]
+	[StructLayout (LayoutKind.Sequential)]
+	public struct AVPlannedVideoSegmentBoundaryGuidelines {
+		nint minimumFrameCount;
+		CMTime minimumDuration;
+
+		/// <summary>The minimum number of frames in each incremental segment. 0 means incremental segmentation is not supported for the codec; 1 means there is no frame count restriction.</summary>
+		public nint MinimumFrameCount {
+			get => minimumFrameCount;
+			set => minimumFrameCount = value;
+		}
+
+		/// <summary>The minimum duration of each incremental segment. <see cref="CoreMedia.CMTime.Zero" /> means there is no minimum duration requirement; <see cref="CoreMedia.CMTime.PositiveInfinity" /> means incremental segmentation is not supported for the codec.</summary>
+		public CMTime MinimumDuration {
+			get => minimumDuration;
+			set => minimumDuration = value;
+		}
+
+		/// <summary>Creates a new <see cref="AVFoundation.AVPlannedVideoSegmentBoundaryGuidelines" />.</summary>
+		/// <param name="minimumFrameCount">The minimum number of frames in each incremental segment.</param>
+		/// <param name="minimumDuration">The minimum duration of each incremental segment.</param>
+		public AVPlannedVideoSegmentBoundaryGuidelines (nint minimumFrameCount, CMTime minimumDuration)
+		{
+			this.minimumFrameCount = minimumFrameCount;
+			this.minimumDuration = minimumDuration;
+		}
 	}
 }

@@ -32,6 +32,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using System.Threading;
 using Mono.Options;
 
 using Xamarin.Bundler;
@@ -39,10 +40,25 @@ using Xamarin.Utils;
 
 #if XAMMACIOS_DEBUGGER
 using System.Diagnostics;
-using System.Threading;
 #endif
 
 public class BindingTouch : IDisposable, IToolLog {
+	readonly IToolLog log;
+	readonly CancellationToken cancellationToken;
+	readonly string? customHome;
+
+	public BindingTouch (IToolLog log) : this (log, CancellationToken.None, null)
+	{
+	}
+
+	BindingTouch (IToolLog log, CancellationToken cancellationToken, string? customHome)
+	{
+		this.log = log;
+		this.cancellationToken = cancellationToken;
+		this.customHome = customHome;
+		Verbosity = log.Verbosity;
+	}
+
 	public static ApplePlatform [] AllPlatforms = new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst };
 	public static PlatformName [] AllPlatformNames = new PlatformName [] { PlatformName.iOS, PlatformName.MacOSX, PlatformName.TvOS, PlatformName.MacCatalyst };
 	public PlatformName CurrentPlatform;
@@ -92,15 +108,22 @@ public class BindingTouch : IDisposable, IToolLog {
 		get { return "bgen"; }
 	}
 
-	static void ShowHelp (OptionSet os)
+	static void ShowHelp (IToolLog log, OptionSet os)
 	{
-		Console.WriteLine ("{0} - Mono Objective-C API binder", ToolName);
-		Console.WriteLine ("Usage is:\n {0} [options] apifile1.cs [--api=apifile2.cs [--api=apifile3.cs]] [-s=core1.cs [-s=core2.cs]] [core1.cs [core2.cs]] [-x=extra1.cs [-x=extra2.cs]]", ToolName);
+		log.Log ("{0} - Mono Objective-C API binder", ToolName);
+		log.Log ("Usage is:\n {0} [options] apifile1.cs [--api=apifile2.cs [--api=apifile3.cs]] [-s=core1.cs [-s=core2.cs]] [core1.cs [core2.cs]] [-x=extra1.cs [-x=extra2.cs]]", ToolName);
 
-		os.WriteOptionDescriptions (Console.Out);
+		using var writer = new StringWriter ();
+		os.WriteOptionDescriptions (writer);
+		log.Log (writer.ToString ().TrimEnd ());
 	}
 
 	public static int Main (string [] args)
+	{
+		return Run (args, ConsoleLog.Instance, CancellationToken.None, null);
+	}
+
+	public static int Run (string [] args, IToolLog log, CancellationToken cancellationToken, string? customHome)
 	{
 		try {
 #if XAMMACIOS_DEBUGGER
@@ -109,23 +132,25 @@ public class BindingTouch : IDisposable, IToolLog {
 			// block the generator until a debugger has attached to it
 			// our customers won't find any use for this.
 			var process = Process.GetCurrentProcess();
-			Console.WriteLine ($"Waiting for debugger to attach: ({ process.Id}) {process.ProcessName} { string.Join (" ", args)}");
+			log.Log ($"Waiting for debugger to attach: ({ process.Id}) {process.ProcessName} { string.Join (" ", args)}");
 			while (!Debugger.IsAttached) {
 				Thread.Sleep (100);
 			}
 
-			Console.WriteLine ("Debugger attached");
+			log.Log ("Debugger attached");
 #endif
-			return Main2 (args);
+			return Main2 (args, log, cancellationToken, customHome);
+		} catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) {
+			throw;
 		} catch (Exception ex) {
-			ErrorHelper.Show (ex, false);
+			ErrorHelper.Show (log, ex, false);
 			return 1;
 		}
 	}
 
-	static int Main2 (string [] args)
+	static int Main2 (string [] args, IToolLog log, CancellationToken cancellationToken, string? customHome)
 	{
-		using var touch = new BindingTouch ();
+		using var touch = new BindingTouch (log, cancellationToken, customHome);
 		return touch.Main3 (args);
 	}
 
@@ -153,7 +178,7 @@ public class BindingTouch : IDisposable, IToolLog {
 					}
 				},
 				{ "sdk=", "Sets the .NET SDK to use (Obsolete)", v => {}, true },
-				{ "new-style", "Build for Unified (Obsolete).", v => { Console.WriteLine ("The --new-style option is obsolete and ignored."); }, true},
+				{ "new-style", "Build for Unified (Obsolete).", v => { Log ("The --new-style option is obsolete and ignored."); }, true},
 				{ "d=", "Defines a symbol", v => config.Defines.Add (v) },
 				{ "api=", "Adds a API definition source file", v => config.ApiSources.Add (v) },
 				{ "s=", "Adds a source file required to build the API", v => config.CoreSources.Add (v) },
@@ -165,7 +190,7 @@ public class BindingTouch : IDisposable, IToolLog {
 				{ "baselib=", "Sets the base library", v => config.Baselibdll = v },
 				{ "attributelib=", "Sets the attribute library", v => config.Attributedll = v },
 #if !XAMCORE_5_0
-				{ "use-zero-copy", v=> ErrorHelper.Warning (1027) },
+				{ "use-zero-copy", v=> ErrorHelper.Warning (this, 1027) },
 #endif
 				{ "nostdlib", "Does not reference mscorlib.dll library", l => config.OmitStandardLibrary = true },
 #if !XAMCORE_5_0
@@ -236,8 +261,8 @@ public class BindingTouch : IDisposable, IToolLog {
 			};
 			config.Sources = config.OptionSet.Parse (args);
 		} catch (Exception e) {
-			Console.Error.WriteLine ("{0}: {1}", ToolName, e.Message);
-			Console.Error.WriteLine ("see {0} --help for more information", ToolName);
+			LogError ($"{ToolName}: {e.Message}");
+			LogError ($"see {ToolName} --help for more information");
 			return false;
 		}
 
@@ -254,8 +279,8 @@ public class BindingTouch : IDisposable, IToolLog {
 		}
 
 		if (config.ApiSources.Count == 0 && string.IsNullOrEmpty (compiled_api_definition_assembly)) {
-			Console.WriteLine ("Error: no api file provided, nor a compiled api definition assembly");
-			ShowHelp (config.OptionSet);
+			Log ("Error: no api file provided, nor a compiled api definition assembly");
+			ShowHelp (this, config.OptionSet);
 			return false;
 		}
 
@@ -297,7 +322,7 @@ public class BindingTouch : IDisposable, IToolLog {
 
 			typeCache ??= new (universe, Frameworks, CurrentPlatform, apiAssembly, universe.CoreAssembly, baselib,
 				BindThirdPartyLibrary);
-			attributeManager ??= new (typeCache);
+			attributeManager ??= new (this, typeCache);
 			typeManager ??= new (this);
 
 			if (!TestLinkWith (apiAssembly, config))
@@ -320,7 +345,7 @@ public class BindingTouch : IDisposable, IToolLog {
 					try {
 						universe.LoadFromAssemblyPath (r);
 					} catch (Exception ex) {
-						ErrorHelper.Warning (1104, r, ex.Message);
+						ErrorHelper.Warning (this, 1104, r, ex.Message);
 					}
 				}
 			}
@@ -333,7 +358,7 @@ public class BindingTouch : IDisposable, IToolLog {
 
 
 		} catch (Exception ex) {
-			ErrorHelper.Show (ex);
+			ErrorHelper.Show (this, ex);
 			return false;
 		}
 
@@ -342,6 +367,7 @@ public class BindingTouch : IDisposable, IToolLog {
 
 	int Main3 (string [] args)
 	{
+		ThrowIfCancellationRequested ();
 		ErrorHelper.ClearWarningLevels ();
 		BindingTouchConfig config = new ();
 
@@ -349,13 +375,14 @@ public class BindingTouch : IDisposable, IToolLog {
 			return 1;
 
 		if (config.ShowHelp) {
-			ShowHelp (config.OptionSet);
+			ShowHelp (this, config.OptionSet);
 			return 0;
 		}
 
 		libraryInfo = LibraryInfo.LibraryInfoBuilder.Build (references, config);
 		CurrentPlatform = LibraryManager.DetermineCurrentPlatform (TargetFramework.Platform);
 
+		ThrowIfCancellationRequested ();
 		if (!TryInitializeApi (config, out Api? api) || !TryGenerate (config, api))
 			return 1;
 
@@ -365,12 +392,14 @@ public class BindingTouch : IDisposable, IToolLog {
 	bool TryGenerate (BindingTouchConfig config, Api api)
 	{
 		try {
+			ThrowIfCancellationRequested ();
 			var g = new Generator (this, api, config.IsPublicMode, config.IsExternal, config.IsDebug) {
 				BaseDir = config.BindingFilesOutputDirectory ?? config.TemporaryFileDirectory!,
 				InlineSelectors = config.InlineSelectors ?? (CurrentPlatform != PlatformName.MacOSX),
 			};
 
 			g.Go ();
+			ThrowIfCancellationRequested ();
 
 			if (config.GeneratedFileList is not null) {
 				using (var f = File.CreateText (config.GeneratedFileList)) {
@@ -427,9 +456,7 @@ public class BindingTouch : IDisposable, IToolLog {
 				continue;
 
 			if (!config.LinkWith.Contains (linkWith.LibraryName)) {
-				Console.Error.WriteLine (
-					"Missing native library {0}, please use `--link-with' to specify the path to this library.",
-					linkWith.LibraryName);
+				LogError ($"Missing native library {linkWith.LibraryName}, please use `--link-with' to specify the path to this library.");
 				return false; // return 1;
 			}
 		}
@@ -523,11 +550,16 @@ public class BindingTouch : IDisposable, IToolLog {
 			arguments.Insert (i - 1, compile_command [i]);
 		}
 
-		if (Driver.RunCommand (this, compile_command [0], arguments, null, out var compile_output, true, Verbosity) != 0)
+		var environment = new Dictionary<string, string?> ();
+		if (!string.IsNullOrEmpty (customHome))
+			environment ["HOME"] = customHome;
+		var exitCode = Driver.RunCommand (this, compile_command [0], arguments, environment, out var compile_output, true, Verbosity, cancellationToken);
+		ThrowIfCancellationRequested ();
+		if (exitCode != 0)
 			throw ErrorHelper.CreateError (errorCode, $"{compiler} {StringUtils.FormatArguments (arguments)}\n{compile_output}".Replace ("\n", "\n\t"));
 		var output = string.Join (Environment.NewLine, compile_output.ToString ().Split (new char [] { '\n' }, StringSplitOptions.RemoveEmptyEntries));
 		if (!string.IsNullOrEmpty (output))
-			Console.WriteLine (output);
+			Log (output);
 	}
 
 	bool TryLoadApi (string? name, [NotNullWhen (true)] out Assembly? assembly)
@@ -579,27 +611,32 @@ public class BindingTouch : IDisposable, IToolLog {
 
 	public void Log (string message)
 	{
-		Console.WriteLine (message);
+		log.Log (message);
+	}
+
+	public void ThrowIfCancellationRequested ()
+	{
+		cancellationToken.ThrowIfCancellationRequested ();
 	}
 
 	public void LogError (string message)
 	{
-		Console.Error.WriteLine (message);
+		log.LogError (message);
 	}
 
 	public void LogError (BindingException exception)
 	{
-		ErrorHelper.Show (exception);
+		log.LogError (exception);
 	}
 
 	public void LogWarning (BindingException exception)
 	{
-		ErrorHelper.Show (exception);
+		log.LogWarning (exception);
 	}
 
 	public void LogException (Exception exception)
 	{
-		ErrorHelper.Show (exception);
+		log.LogException (exception);
 	}
 
 	int verbosity = 0;

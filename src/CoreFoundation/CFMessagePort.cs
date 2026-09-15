@@ -316,7 +316,7 @@ namespace CoreFoundation {
 			if (context?.Retain is not null)
 				result = context.Retain ();
 
-			return result.GetHandle ();
+			return Runtime.RetainAndAutoreleaseNativeObject (result);
 		}
 
 		[UnmanagedCallersOnly]
@@ -343,9 +343,7 @@ namespace CoreFoundation {
 			if (context?.CopyDescription is not null)
 				result = context.CopyDescription ();
 
-#pragma warning disable RBI0014
-			return result.GetHandle ();
-#pragma warning restore RBI0014
+			return Runtime.RetainAndAutoreleaseNSObject (result);
 		}
 
 		[UnmanagedCallersOnly]
@@ -362,10 +360,7 @@ namespace CoreFoundation {
 			using (var managedData = Runtime.GetNSObject<NSData> (data)!) {
 				var result = callback.Invoke (msgid, managedData);
 				// System will release returned CFData
-				result?.DangerousRetain ();
-#pragma warning disable RBI0014
-				return result.GetHandle ();
-#pragma warning restore RBI0014
+				return Runtime.RetainNSObject (result);
 			}
 		}
 

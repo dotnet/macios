@@ -15,7 +15,7 @@ IOS_DOTNET_BUILD_DIR=$(DOTNET_BUILD_DIR)/ios
 TVOS_DOTNET_BUILD_DIR=$(DOTNET_BUILD_DIR)/tvos
 MACCATALYST_DOTNET_BUILD_DIR=$(DOTNET_BUILD_DIR)/maccatalyst
 
-GENERATOR_FLAGS=-process-enums -core -nologo -nostdlib -native-exception-marshalling --ns:ObjCRuntime
+GENERATOR_FLAGS=-process-enums -core -nostdlib -native-exception-marshalling --ns:ObjCRuntime
 
 GENERATOR_TF_VERSION=$(subst net,,$(DOTNET_TFM))
 
@@ -294,7 +294,6 @@ $($(2)_DOTNET_BUILD_DIR)/$(3)-generated-sources: $(DOTNET_GENERATOR) $($(2)_DOTN
 
 $($(2)_DOTNET_BUILD_DIR)/$(3).rsp: Makefile Makefile.generator Makefile.rgenerator frameworks.sources $(ROSLYN_GENERATOR) $(ROSLYN_ANALYZER) | $($(2)_DOTNET_BUILD_DIR)
 	$(Q) echo \
-		$($(2)_DEFINES) \
 		$($(2)_GENERATOR_FLAGS) \
 		$(DOTNET_GENERATOR_FLAGS) \
 		$($(2)_GENERATOR_WARNASERROR) \

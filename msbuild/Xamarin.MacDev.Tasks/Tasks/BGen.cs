@@ -4,7 +4,6 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,7 +12,6 @@ using Microsoft.Build.Utilities;
 using Microsoft.Build.Tasks;
 
 using Xamarin.Utils;
-using Xamarin.Localization.MSBuild;
 using Xamarin.Messaging;
 using Xamarin.Messaging.Build.Client;
 
@@ -35,21 +33,12 @@ namespace Xamarin.MacDev.Tasks {
 
 		public ITaskItem [] AdditionalLibPaths { get; set; } = Array.Empty<ITaskItem> ();
 
-		public bool AllowUnsafeBlocks { get; set; }
-
 		[Required]
 		public string BaseLibDll { get; set; } = string.Empty;
-
-		[Required]
-		public ITaskItem [] ApiDefinitions { get; set; } = Array.Empty<ITaskItem> ();
 
 		public string AttributeAssembly { get; set; } = string.Empty;
 
 		public ITaskItem? CompiledApiDefinitionAssembly { get; set; }
-
-		public ITaskItem [] CoreSources { get; set; } = Array.Empty<ITaskItem> ();
-
-		public string DefineConstants { get; set; } = string.Empty;
 
 		public bool EmitDebugInformation { get; set; }
 
@@ -61,8 +50,6 @@ namespace Xamarin.MacDev.Tasks {
 
 		public string Namespace { get; set; } = string.Empty;
 
-		public bool NoNFloatUsing { get; set; }
-
 		public ITaskItem [] NativeLibraries { get; set; } = Array.Empty<ITaskItem> ();
 
 		public string OutputAssembly { get; set; } = string.Empty;
@@ -73,10 +60,6 @@ namespace Xamarin.MacDev.Tasks {
 		public string ProjectDir { get; set; } = string.Empty;
 
 		public ITaskItem [] References { get; set; } = Array.Empty<ITaskItem> ();
-
-		public ITaskItem [] Resources { get; set; } = Array.Empty<ITaskItem> ();
-
-		public ITaskItem [] Sources { get; set; } = Array.Empty<ITaskItem> ();
 
 		[Required]
 		public string ResponseFilePath { get; set; } = string.Empty;
@@ -124,35 +107,10 @@ namespace Xamarin.MacDev.Tasks {
 			if (EmitDebugInformation)
 				cmd.Add ("/debug");
 
-			if (AllowUnsafeBlocks)
-				cmd.Add ("/unsafe");
-
 			if (!string.IsNullOrEmpty (Namespace))
 				cmd.Add ($"/ns:{Namespace}");
 
-			if (NoNFloatUsing)
-				cmd.Add ("/no-nfloat-using:true");
-
-			if (!string.IsNullOrEmpty (DefineConstants)) {
-				var strv = DefineConstants.Split (new [] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-				foreach (var str in strv)
-					cmd.Add ($"/d:{str}");
-			}
-
 			//cmd.AppendSwitch ("/e");
-
-			foreach (var item in ApiDefinitions)
-				cmd.Add (Path.GetFullPath (item.ItemSpec));
-
-			if (CoreSources is not null) {
-				foreach (var item in CoreSources)
-					cmd.Add ($"/s:{Path.GetFullPath (item.ItemSpec)}");
-			}
-
-			if (Sources is not null) {
-				foreach (var item in Sources)
-					cmd.Add ($"/x:{Path.GetFullPath (item.ItemSpec)}");
-			}
 
 			if (AdditionalLibPaths is not null) {
 				foreach (var item in AdditionalLibPaths)
@@ -160,28 +118,6 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			HandleReferences (cmd);
-
-			if (Resources is not null) {
-				foreach (var item in Resources) {
-					var argument = item.ToString ();
-					var id = item.GetMetadata ("LogicalName");
-					if (!string.IsNullOrEmpty (id))
-						argument += "," + id;
-
-					cmd.Add ($"/res:{argument}");
-				}
-			}
-
-			if (NativeLibraries is not null) {
-				foreach (var item in NativeLibraries) {
-					var argument = item.ToString ();
-					var id = item.GetMetadata ("LogicalName");
-					if (string.IsNullOrEmpty (id))
-						id = Path.GetFileName (argument);
-
-					cmd.Add ($"/res:{argument},{id}");
-				}
-			}
 
 			if (!string.IsNullOrEmpty (GeneratedSourcesDir))
 				cmd.Add ($"/tmpdir:{Path.GetFullPath (GeneratedSourcesDir)}");
@@ -269,8 +205,8 @@ namespace Xamarin.MacDev.Tasks {
 				Directory.CreateDirectory (GeneratedSourcesDir);
 			}
 
-			if (ApiDefinitions.Length == 0) {
-				Log.LogError (MSBStrings.E0097);
+			if (CompiledApiDefinitionAssembly is null || string.IsNullOrEmpty (CompiledApiDefinitionAssembly.ItemSpec)) {
+				Log.LogError ("A compiled API definition assembly is required.");
 				return false;
 			}
 

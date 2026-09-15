@@ -14,12 +14,15 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			var task = CreateTask<BGen> ();
 
-			task.ApiDefinitions = new [] { new TaskItem ("apidefinition.cs") };
+			task.CompiledApiDefinitionAssembly = new TaskItem ("compiled-api-definitions.dll");
+			task.GeneratedSourcesFileList = Path.Combine (Cache.CreateTemporaryDirectory (), "generated-sources.txt");
 			task.References = new [] { new TaskItem ("a.dll"), new TaskItem ("b.dll"), new TaskItem ("c.dll") };
 			task.ResponseFilePath = Path.Combine (Cache.CreateTemporaryDirectory (), "response-file.txt");
 
 			var args = task.GenerateCommandLineArguments ();
 			args.AddRange (File.ReadAllLines (task.ResponseFilePath));
+			Assert.That (args, Does.Contain ("/compiled-api-definition-assembly:compiled-api-definitions.dll"));
+			Assert.That (args, Does.Contain ("/sourceonly:" + Path.GetFullPath (task.GeneratedSourcesFileList)));
 			Assert.That (args, Does.Contain ("-r:" + Path.Combine (Environment.CurrentDirectory, "a.dll")), "#1a");
 			Assert.That (args, Does.Contain ("-r:" + Path.Combine (Environment.CurrentDirectory, "b.dll")), "#1b");
 			Assert.That (args, Does.Contain ("-r:" + Path.Combine (Environment.CurrentDirectory, "c.dll")), "#1c");
@@ -30,7 +33,6 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			var task = CreateTask<BGen> ();
 
-			task.ApiDefinitions = new [] { new TaskItem ("apidefinition.cs") };
 			task.References = new [] { new TaskItem ("a.dll"), new TaskItem ("b.dll"), new TaskItem ("c.dll") };
 			task.ProjectDir = "~/"; // not important, but required (so can't be null)
 			task.ResponseFilePath = Path.Combine (Cache.CreateTemporaryDirectory (), "response-file.txt");

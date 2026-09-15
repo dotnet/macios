@@ -1,4 +1,5 @@
 using System.IO;
+using System.Text;
 
 using Xamarin.Tests;
 
@@ -7,15 +8,33 @@ namespace GeneratorTests {
 	[Parallelizable (ParallelScope.All)]
 	public class ErrorTests {
 		[Test]
-		[TestCase (Profile.iOS)]
-		public void BI0002 (Profile profile)
+		[NonParallelizable]
+		public void ApiDefinitionSourceIsNotSupported ()
 		{
-			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
-			var bgen = new BGenTool ();
-			bgen.Profile = profile;
-			bgen.CreateTemporaryBinding ("InvalidCodeHere");
-			bgen.AssertExecuteError ("build");
-			bgen.AssertError (2, "Could not compile the API bindings.");
+			var output = new StringBuilder ();
+			ThreadStaticTextWriter.ReplaceConsole (output);
+			try {
+				Assert.That (BindingTouch.Main (new [] { "api.cs" }), Is.EqualTo (1));
+			} finally {
+				ThreadStaticTextWriter.RestoreConsole ();
+			}
+
+			Assert.That (output.ToString (), Does.Contain ("API definition source files are no longer supported"));
+		}
+
+		[Test]
+		[NonParallelizable]
+		public void CompileCommandIsNotSupported ()
+		{
+			var output = new StringBuilder ();
+			ThreadStaticTextWriter.ReplaceConsole (output);
+			try {
+				Assert.That (BindingTouch.Main (new [] { "--compile-command=csc" }), Is.EqualTo (1));
+			} finally {
+				ThreadStaticTextWriter.RestoreConsole ();
+			}
+
+			Assert.That (output.ToString (), Does.Contain ("Unknown option"));
 		}
 
 		[Test]

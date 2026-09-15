@@ -34,7 +34,10 @@ namespace Xamarin.Tests {
 			DotNet.AssertBuild (project_path, properties);
 
 			// The second (incremental) build, without any changes, must also succeed.
-			DotNet.AssertBuild (project_path, properties);
+			var result = DotNet.AssertBuild (project_path, properties);
+			var targets = BinLog.GetAllTargets (result.BinLogPath);
+			AssertTargetNotExecuted (targets, "_PrepareAssemblies", "Incremental preparation");
+			AssertTargetNotExecuted (targets, "_PostprocessAssemblies", "Incremental post-processing");
 		}
 
 		[TestCase (true, true, "trimmable-static", null, null, true)]

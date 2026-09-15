@@ -1,10 +1,8 @@
 TOP=../..
 include $(TOP)/Make.config
 
-LocProject.json: LocProject.json.in Makefile $(TOP)/Make.config
-	$(Q_GEN) sed \
-		-e 's#@WORKING_DIRECTORY@#$(PWD)#g' \
-		$< > $(TOP)/Localize/$@;
+LocProject.json: generate-loc-project.sh Makefile $(TOP)/Make.config
+	$(Q_GEN) $(TOP)/tools/devops/generate-loc-project.sh "$(CURDIR)" "$(TOP)" > $(TOP)/Localize/$@;
 
 all check: check-sh check-yaml
 	@true

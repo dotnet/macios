@@ -2,7 +2,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net$(BundledNETCoreAppTargetFrameworkVersion)-macos</TargetFramework>
-    <DefineConstants>$(DefineConstants);XAMMAC_TESTS</DefineConstants>
   </PropertyGroup>
 
   <!-- Imports of the form '../shared.csproj' will be inlined by xharness -->

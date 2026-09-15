@@ -48,58 +48,37 @@ namespace CoreVideo {
 	public struct CVTime {
 
 		/// <summary>Determines how many TimeValues are represented by this CVTime.</summary>
-		///         <remarks>
-		///         </remarks>
 		public /* int64_t */ long TimeValue;
 		/// <summary>Determines how many TimeValues make up one second.</summary>
-		///         <remarks>
-		///           <para>
-		/// 	    If the value of TimeScale is 600, that means that there are 600 TimeValues per second.   
-		/// 	  </para>
-		///           <para>
-		/// 	    If the TimeScale is 600 and TimeValue is 2,400 that means that the CVTime represents four seconds. 
-		/// 	  </para>
-		///         </remarks>
+		/// <remarks>
+		///   <para>
+		///     If the value of TimeScale is 600, that means that there are 600 TimeValues per second.
+		///   </para>
+		///   <para>
+		///     If the TimeScale is 600 and TimeValue is 2,400 that means that the CVTime represents four seconds.
+		///   </para>
+		/// </remarks>
 		public /* int64_t */ long TimeScale;
 		/// <summary>Flags for CVTime, if set to 1, the CVTime is indefinite and neither the TimeValue and TimeScale are valid.</summary>
-		///         <remarks>Currently only the value 1 is supported, the CVTime is indefinite.   </remarks>
+		/// <remarks>Currently only the value 1 is supported, the CVTime is indefinite.</remarks>
 		public /* int32_t */ CVTimeFlags TimeFlags;
 
 		/// <summary>Flags for CVTime, if set to IsIndefinite, the CVTime is indefinite and neither the TimeValue and TimeScale are valid.</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>Currently only the value IsIndefinited is supported, the CVTime is indefinite.   </remarks>
+		/// <remarks>Currently only the value IsIndefinited is supported, the CVTime is indefinite.</remarks>
 		public int Flags { get { return (int) TimeFlags; } set { TimeFlags = (CVTimeFlags) value; } }
 
 #if !COREBUILD
-		/// <summary>Represents a zero duration..</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>
-		///         </remarks>
-		public static CVTime ZeroTime {
-			get {
-				return Marshal.PtrToStructure<CVTime> (Dlfcn.GetIndirect (Libraries.CoreVideo.Handle, "kCVZeroTime"))!;
-			}
-		}
+		/// <summary>Represents a zero duration.</summary>
+		public static CVTime ZeroTime => CVTimeFields.ZeroTime;
 
-		/// <summary>Unknown or indefinite time.</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>
-		///         </remarks>
-		public static CVTime IndefiniteTime {
-			get {
-				return Marshal.PtrToStructure<CVTime> (Dlfcn.GetIndirect (Libraries.CoreVideo.Handle, "kCVIndefiniteTime"))!;
-			}
-		}
+		/// <summary>Represents an unknown or indefinite time.</summary>
+		public static CVTime IndefiniteTime => CVTimeFields.IndefiniteTime;
 #endif
 
+		/// <summary>Determines whether two CVTime objects are equal.</summary>
 		/// <param name="other">Object to compare with.</param>
-		///         <summary>Determines whether two CVTime objects are equal.</summary>
-		///         <returns>
-		///         </returns>
-		///         <remarks>Two CVTime structures are considered to be equal if their TimeValue, TimeScale and Flags fields are the same.</remarks>
+		/// <returns><see langword="true" /> if the two CVTime objects are equal; otherwise, <see langword="false" />.</returns>
+		/// <remarks>Two CVTime structures are considered to be equal if their TimeValue, TimeScale and Flags fields are the same.</remarks>
 		public override bool Equals (object? other)
 		{
 			if (!(other is CVTime))
@@ -111,10 +90,6 @@ namespace CoreVideo {
 		}
 
 		/// <summary>Returns the hashcode for this object.</summary>
-		///         <returns>
-		///         </returns>
-		///         <remarks>
-		///         </remarks>
 		public override int GetHashCode ()
 		{
 			return HashCode.Combine (TimeValue, TimeScale, Flags);
@@ -122,27 +97,21 @@ namespace CoreVideo {
 
 		// CVHostTime.h
 
-		/// <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Returns the current value of the host time clock, in units of the host time clock frequency.</summary>
 		[DllImport (Constants.CoreVideoLibrary, EntryPoint = "CVGetCurrentHostTime")]
 		public static extern /* uint64_t */ ulong GetCurrentHostTime ();
 
 
 		/// <summary>Returns the system's clock frequency.</summary>
-		///         <returns>
-		///         </returns>
-		///         <remarks>
-		///           <para>
-		/// 	    The value 1,000,000,000 would represent a nanosecond (10^-9).
-		/// 	  </para>
-		///         </remarks>
+		/// <remarks>
+		///   <para>
+		///     The value 1,000,000,000 would represent a nanosecond (10^-9).
+		///   </para>
+		/// </remarks>
 		[DllImport (Constants.CoreVideoLibrary, EntryPoint = "CVGetHostClockFrequency")]
 		public static extern /* double */ double GetHostClockFrequency ();
 
-		/// <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Returns the smallest time delta that the host clock can represent.</summary>
 		[DllImport (Constants.CoreVideoLibrary, EntryPoint = "CVGetHostClockMinimumTimeDelta")]
 		public static extern /* uint32_t */ uint GetHostClockMinimumTimeDelta ();
 	}

@@ -20,7 +20,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 		{
 			using (var dd = DispatchData.FromByteBuffer (testData)) {
 				var ddString = Encoding.UTF8.GetString (dd.ToArray ());
-				Assert.AreEqual (testString, ddString);
+				Assert.That (ddString, Is.EqualTo (testString));
 			}
 		}
 
@@ -31,7 +31,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 			using (var dd = DispatchData.FromReadOnlySpan (readOnlySpan)) {
 				var data = dd.ToArray ();
 				var ddString = Encoding.UTF8.GetString (dd.ToArray ());
-				Assert.AreEqual (testString, ddString);
+				Assert.That (ddString, Is.EqualTo (testString));
 			}
 		}
 

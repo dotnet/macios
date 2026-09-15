@@ -5,8 +5,8 @@ using CoreFoundation;
 namespace CoreMedia {
 	/// <summary>A structure that is used to add additional data (tags) to a resource.</summary>
 	[SupportedOSPlatform ("ios17.0")]
-	[SupportedOSPlatform ("maccatalyst17.0")]
-	[SupportedOSPlatform ("macos14.0")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos17.0")]
 	public struct CMTag {
 #if COREBUILD

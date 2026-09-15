@@ -12,6 +12,7 @@ using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
 using Xamarin.Localization.MSBuild;
+using Xamarin.Utils;
 
 #nullable enable
 
@@ -350,7 +351,12 @@ namespace Xamarin.MacDev.Tasks {
 						continue;
 					}
 
-					var path = Path.Combine (intermediatePath, itemType, rpath);
+					var extractionDirectory = Path.Combine (intermediatePath, itemType);
+					var path = Path.Combine (extractionDirectory, rpath);
+					if (!PathUtils.IsPathContained (extractionDirectory, path)) {
+						Log.LogError (MSBStrings.E7183 /* The resource '{0}' in assembly '{1}' would extract to '{2}' which is outside of the target directory '{3}'. */, resourceName, assembly, path, extractionDirectory);
+						continue;
+					}
 					var file = new FileInfo (path);
 
 					var item = new TaskItem (path);

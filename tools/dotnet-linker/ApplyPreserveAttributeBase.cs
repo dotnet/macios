@@ -12,7 +12,7 @@ using Mono.Tuner;
 #nullable enable
 
 namespace Xamarin.Linker.Steps {
-
+#if !ASSEMBLY_PREPARER
 	public partial class ApplyPreserveAttribute : ConfigurationAwareSubStep, IApplyPreserveAttribute {
 		ApplyPreserveAttributeImpl impl;
 
@@ -64,6 +64,7 @@ namespace Xamarin.Linker.Steps {
 			return true;
 		}
 	}
+#endif
 
 	public interface IApplyPreserveAttribute {
 		bool PreserveType (TypeDefinition type, bool allMembers);

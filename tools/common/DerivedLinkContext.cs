@@ -6,12 +6,13 @@ using Mono.Linker;
 using Mono.Collections.Generic;
 
 using Registrar;
+
 using Mono.Tuner;
 using Xamarin.Bundler;
 using Xamarin.Linker;
 using Xamarin.Utils;
 
-#if !LEGACY_TOOLS
+#if !LEGACY_TOOLS && !ASSEMBLY_PREPARER
 using LinkContext = Xamarin.Bundler.DotNetLinkContext;
 #endif
 
@@ -41,6 +42,9 @@ namespace Xamarin.Tuner {
 		//   true/false = corresponding constant value
 		Dictionary<TypeDefinition, bool?>? isdirectbinding_value;
 
+		// A map from Objective-C class name to C# type
+		Dictionary<string, (TypeDefinition type, string Framework, string Version)>? objectiveCTypeInfo;
+
 		// Store interfaces the linker has linked away so that the static registrar can access them.
 		public Dictionary<TypeDefinition, List<TypeDefinition>> ProtocolImplementations { get; private set; } = new Dictionary<TypeDefinition, List<TypeDefinition>> ();
 		// Store types the linker has linked away so that the static registrar can access them.
@@ -62,6 +66,11 @@ namespace Xamarin.Tuner {
 		}
 
 		AssemblyDefinition? corlib;
+
+#if !LEGACY_TOOLS
+		public RegistrarMode Registrar => App.Registrar;
+#endif // !LEGACY_TOOLS
+
 		public AssemblyDefinition Corlib {
 			get {
 				if (corlib is null) {
@@ -73,6 +82,7 @@ namespace Xamarin.Tuner {
 				return corlib;
 			}
 		}
+
 		public HashSet<TypeDefinition>? CachedIsNSObject {
 			get { return cached_isnsobject; }
 			set { cached_isnsobject = value; }
@@ -81,6 +91,11 @@ namespace Xamarin.Tuner {
 		public Dictionary<TypeDefinition, bool?>? IsDirectBindingValue {
 			get { return isdirectbinding_value; }
 			set { isdirectbinding_value = value; }
+		}
+
+		public Dictionary<string, (TypeDefinition type, string Framework, string Version)>? ObjectiveCTypeInfo {
+			get { return objectiveCTypeInfo; }
+			set { objectiveCTypeInfo = value; }
 		}
 
 		public IList<ICustomAttributeProvider> DataContract {
@@ -237,8 +252,11 @@ namespace Xamarin.Tuner {
 		}
 
 #if !LEGACY_TOOLS
-		public bool HasAvailabilityAttributesShowingUnavailableInSimulator (ICustomAttributeProvider provider, MethodDefinition? methodForErrorReporting = null)
+		public bool HasAvailabilityAttributesShowingUnavailableInSimulator (ICustomAttributeProvider? provider, MethodDefinition? methodForErrorReporting = null)
 		{
+			if (provider is null)
+				return false;
+
 			if (!App.IsSimulatorBuild) {
 				LinkerConfiguration.Report (LinkerConfiguration.Context, ErrorHelper.CreateError (99, "HasAvailabilityAttributesShowingUnavailableInSimulator should not be called when not building for the simulator. Please file an issue at https://github.com/dotnet/macios/issues."));
 				return false;
@@ -267,7 +285,12 @@ namespace Xamarin.Tuner {
 				if (!attrib.AttributeType.Is ("ObjCRuntime", "UnsupportedSimulatorAttribute"))
 					continue;
 				if (attrib.ConstructorArguments.Count == 1 && attrib.ConstructorArguments [0].Value is string unsupportedPlatform) {
-					if (string.Equals (unsupportedPlatform, platformName, StringComparison.OrdinalIgnoreCase))
+					// Match the platform prefix (e.g. "ios" matches both "ios" and a versioned "ios18.0"). A
+					// versioned [UnsupportedSimulator] means the API was removed from the simulator at that
+					// version; since a build can run on any simulator >= the deployment target (including newer
+					// ones where the API is gone), conservatively treat it as unavailable here and skip the
+					// simulator inlining optimization (the precise per-runtime-version check lives in the tests).
+					if (unsupportedPlatform.StartsWith (platformName, StringComparison.OrdinalIgnoreCase))
 						hasUnsupported = true;
 				} else {
 					LinkerConfiguration.Report (LinkerConfiguration.Context, ErrorHelper.CreateWarning (App, 2258, methodForErrorReporting, Errors.MX2258, provider.AsString (), attrib.RenderAttribute ()));
@@ -327,6 +350,15 @@ namespace Xamarin.Tuner {
 
 			// No matching attributes: assume available
 			return false;
+		}
+
+		public AssemblyDefinition GetProductAssembly ()
+		{
+			var productAssemblyName = Driver.GetProductAssembly (App);
+			var rv = this.GetAssembly (productAssemblyName);
+			if (rv is null)
+				throw ErrorHelper.CreateError (1504, Errors.MX1504 /* Can not find the product assembly '{0}' in the list of loaded assemblies. */, productAssemblyName);
+			return rv;
 		}
 
 		class AttributeStorage : ICustomAttribute {

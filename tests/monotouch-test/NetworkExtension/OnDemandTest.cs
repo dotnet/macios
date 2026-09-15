@@ -20,35 +20,35 @@ namespace MonoTouchFixtures.NetworkExtension {
 
 		void OnDemandRule (NEOnDemandRule rule)
 		{
-			Assert.Null (rule.DnsSearchDomainMatch, "DnsSearchDomainMatch");
+			Assert.That (rule.DnsSearchDomainMatch, Is.Null, "DnsSearchDomainMatch");
 			rule.DnsSearchDomainMatch = new string [] { "1" };
 			Assert.That (rule.DnsSearchDomainMatch.Length, Is.EqualTo (1), "DnsSearchDomainMatch-2");
 			rule.DnsSearchDomainMatch = null;
-			Assert.Null (rule.DnsSearchDomainMatch, "DnsSearchDomainMatch-3");
+			Assert.That (rule.DnsSearchDomainMatch, Is.Null, "DnsSearchDomainMatch-3");
 
-			Assert.Null (rule.DnsServerAddressMatch, "");
+			Assert.That (rule.DnsServerAddressMatch, Is.Null, "");
 			rule.DnsServerAddressMatch = new string [] { "1", "2" };
 			Assert.That (rule.DnsServerAddressMatch.Length, Is.EqualTo (2), "DnsServerAddressMatch-2");
 			rule.DnsServerAddressMatch = null;
-			Assert.Null (rule.DnsServerAddressMatch, "DnsServerAddressMatch-3");
+			Assert.That (rule.DnsServerAddressMatch, Is.Null, "DnsServerAddressMatch-3");
 
 			Assert.That (rule.InterfaceTypeMatch, Is.EqualTo ((NEOnDemandRuleInterfaceType) 0), "InterfaceTypeMatch");
 			rule.InterfaceTypeMatch = NEOnDemandRuleInterfaceType.WiFi;
 			Assert.That (rule.InterfaceTypeMatch, Is.EqualTo (NEOnDemandRuleInterfaceType.WiFi), "InterfaceTypeMatch-2");
 
-			Assert.Null (rule.ProbeUrl, "ProbeUrl");
+			Assert.That (rule.ProbeUrl, Is.Null, "ProbeUrl");
 			using (var url = new NSUrl ("http://www.xamarin.com")) {
 				rule.ProbeUrl = url;
-				Assert.AreSame (url, rule.ProbeUrl, "ProbeUrl-2");
+				Assert.That (rule.ProbeUrl, Is.SameAs (url), "ProbeUrl-2");
 			}
 			rule.ProbeUrl = null;
-			Assert.Null (rule.ProbeUrl, "ProbeUrl-3");
+			Assert.That (rule.ProbeUrl, Is.Null, "ProbeUrl-3");
 
-			Assert.Null (rule.SsidMatch, "SsidMatch");
+			Assert.That (rule.SsidMatch, Is.Null, "SsidMatch");
 			rule.SsidMatch = new string [] { "1", "2", "3" };
 			Assert.That (rule.SsidMatch.Length, Is.EqualTo (3), "SsidMatch-2");
 			rule.SsidMatch = null;
-			Assert.Null (rule.SsidMatch, "SsidMatch-3");
+			Assert.That (rule.SsidMatch, Is.Null, "SsidMatch-3");
 		}
 
 		[Test]
@@ -97,13 +97,13 @@ namespace MonoTouchFixtures.NetworkExtension {
 				Assert.That (rule.Action, Is.EqualTo (NEOnDemandRuleAction.EvaluateConnection), "Action");
 				OnDemandRule (rule);
 				// 
-				Assert.IsNull (rule.ConnectionRules, "ConnectionRules");
+				Assert.That (rule.ConnectionRules, Is.Null, "ConnectionRules");
 				rule.ConnectionRules = new NEEvaluateConnectionRule [] {
 					new NEEvaluateConnectionRule ()
 				};
-				Assert.IsNotNull (rule.ConnectionRules, "ConnectionRules-2");
+				Assert.That (rule.ConnectionRules, Is.Not.Null, "ConnectionRules-2");
 				rule.ConnectionRules = null;
-				Assert.IsNull (rule.ConnectionRules, "ConnectionRules-3");
+				Assert.That (rule.ConnectionRules, Is.Null, "ConnectionRules-3");
 			}
 		}
 
@@ -115,9 +115,9 @@ namespace MonoTouchFixtures.NetworkExtension {
 
 			using (var rule = new NEEvaluateConnectionRule ()) {
 				Assert.That (rule.Action, Is.EqualTo ((NEEvaluateConnectionRuleAction) 0), "Action");
-				Assert.Null (rule.MatchDomains, "MatchDomains");
-				Assert.Null (rule.ProbeUrl, "ProbeUrl");
-				Assert.Null (rule.UseDnsServers, "UseDnsServers");
+				Assert.That (rule.MatchDomains, Is.Null, "MatchDomains");
+				Assert.That (rule.ProbeUrl, Is.Null, "ProbeUrl");
+				Assert.That (rule.UseDnsServers, Is.Null, "UseDnsServers");
 			}
 		}
 
@@ -130,19 +130,19 @@ namespace MonoTouchFixtures.NetworkExtension {
 			using (var rule = new NEEvaluateConnectionRule (new [] { "xamarin.com" }, NEEvaluateConnectionRuleAction.ConnectIfNeeded)) {
 				Assert.That (rule.Action, Is.EqualTo (NEEvaluateConnectionRuleAction.ConnectIfNeeded), "Action");
 				Assert.That (rule.MatchDomains [0], Is.EqualTo ("xamarin.com"), "MatchDomains");
-				Assert.Null (rule.ProbeUrl, "ProbeUrl");
+				Assert.That (rule.ProbeUrl, Is.Null, "ProbeUrl");
 				using (var url = new NSUrl ("http://www.xamarin.com")) {
 					rule.ProbeUrl = url;
-					Assert.AreSame (url, rule.ProbeUrl, "ProbeUrl-2");
+					Assert.That (rule.ProbeUrl, Is.SameAs (url), "ProbeUrl-2");
 				}
 				rule.ProbeUrl = null;
-				Assert.Null (rule.ProbeUrl, "ProbeUrl-3");
+				Assert.That (rule.ProbeUrl, Is.Null, "ProbeUrl-3");
 
-				Assert.Null (rule.UseDnsServers, "UseDnsServers");
+				Assert.That (rule.UseDnsServers, Is.Null, "UseDnsServers");
 				rule.UseDnsServers = new [] { "8.8.8.8" };
 				Assert.That (rule.UseDnsServers [0], Is.EqualTo ("8.8.8.8"), "UseDnsServers-2");
 				rule.UseDnsServers = null;
-				Assert.Null (rule.UseDnsServers, "UseDnsServers-3");
+				Assert.That (rule.UseDnsServers, Is.Null, "UseDnsServers-3");
 			}
 		}
 	}

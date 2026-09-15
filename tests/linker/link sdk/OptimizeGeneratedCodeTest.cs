@@ -66,7 +66,7 @@ namespace Linker.Shared {
 		public void IsNewRefcountEnabled ()
 		{
 			using (UIWebView wv = new UIWebView ()) {
-				Assert.Null (wv.Request, "IsNewRefcountEnabled");
+				Assert.That (wv.Request, Is.Null, "IsNewRefcountEnabled");
 			}
 		}
 
@@ -92,7 +92,7 @@ namespace Linker.Shared {
 			using (UIView v = new UIView ())
 			using (UIFont font = UIFont.SystemFontOfSize (12f)!) {
 				var size = "MonoTouch".StringSize (font);
-				Assert.False (size.IsEmpty, "!Empty");
+				Assert.That (size.IsEmpty, Is.False, "!Empty");
 			}
 		}
 #endif // !__TVOS__
@@ -107,7 +107,7 @@ namespace Linker.Shared {
 		{
 			var empty = CGSize.Empty;
 			using (UIView v = new UIView ()) {
-				Assert.True (v.SizeThatFits (empty).IsEmpty, "Empty");
+				Assert.That (v.SizeThatFits (empty).IsEmpty, Is.True, "Empty");
 			}
 		}
 #endif // !__MACOS__
@@ -152,7 +152,7 @@ namespace Linker.Shared {
 
 			// bug #26415
 			FinallyTestMethod ();
-			Assert.IsTrue (finally_invoked);
+			Assert.That (finally_invoked, Is.True);
 		}
 
 		bool finally_invoked;

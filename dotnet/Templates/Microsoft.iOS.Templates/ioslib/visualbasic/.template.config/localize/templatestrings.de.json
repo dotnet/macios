@@ -1,5 +1,7 @@
 {
   "author": "Microsoft",
   "name": "iOS-Klassenbibliothek",
-  "description": "Ein Projekt zum Erstellen einer .NET iOS-Klassenbibliothek"
+  "description": "Ein Projekt zum Erstellen einer .NET iOS-Klassenbibliothek",
+  "symbols/Framework/description": "The target framework for the project.",
+  "symbols/Framework/choices/net10.0-ios/description": "Target net10.0-ios"
 }

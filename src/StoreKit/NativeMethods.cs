@@ -3,8 +3,7 @@
 namespace StoreKit {
 
 	partial class SKReceiptRefreshRequest {
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Terminates the application if the receipt is invalid.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]

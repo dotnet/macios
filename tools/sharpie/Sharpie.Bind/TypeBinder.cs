@@ -454,7 +454,7 @@ public class TypeBinder : AstVisitor {
 		if (proto is not null) {
 			foreach (var paramType in proto.ParamTypes) {
 				paramType.Accept (this);
-				delegateArgTypes.Add (resolvedTypes.Pop ());
+				delegateArgTypes.Add (MakeNullableIfAnnotated (resolvedTypes.Pop ()));
 			}
 
 			if (proto.IsVariadic)
@@ -469,8 +469,32 @@ public class TypeBinder : AstVisitor {
 			return;
 		}
 
-		delegateArgTypes.Add (resolvedReturnType);
+		delegateArgTypes.Add (MakeNullableIfAnnotated (resolvedReturnType));
 		Resolve (new FuncType (delegateArgTypes), type);
+	}
+
+	static AstType MakeNullableIfAnnotated (AstType type)
+	{
+		// Don't mark value types as nullable
+		if (type is PrimitiveType || type is VoidType)
+			return type;
+
+		// Don't mark pointer types as nullable (they're already unsafe pointers)
+		if (type is ComposedType composedType && composedType.PointerRank > 0)
+			return type;
+
+		var attributedTypes = type.Annotations.OfType<AttributedType> ();
+		if (attributedTypes.Any (a => a.AttrKind == CX_AttrKind.CX_AttrKind_TypeNullable)) {
+			var nullable = new ComposedType ();
+			nullable.BaseType = type;
+			nullable.HasNullableSpecifier = true;
+			// Preserve annotations on the composed type
+			foreach (var annotation in type.Annotations)
+				nullable.AddAnnotation (annotation);
+			return nullable;
+		}
+
+		return type;
 	}
 
 	public override void VisitArrayType (ArrayType type)

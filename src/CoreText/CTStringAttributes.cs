@@ -246,9 +246,9 @@ namespace CoreText {
 			set { Adapter.SetNativeValue (Dictionary, CTStringAttributeKey.StrokeColor!, value); }
 		}
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public float? TrackingAdjustment {
 			get { return Adapter.GetSingleValue (Dictionary, CTStringAttributeKey.TrackingAttributeName); }

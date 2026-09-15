@@ -27,42 +27,42 @@ namespace MonoTouchFixtures.Metal {
 		public void GetSetAccessTest ()
 		{
 			descriptor.Access = MTLArgumentAccess.ReadWrite;
-			Assert.AreEqual (MTLArgumentAccess.ReadWrite, descriptor.Access);
+			Assert.That (descriptor.Access, Is.EqualTo (MTLArgumentAccess.ReadWrite));
 		}
 
 		[Test]
 		public void GetSetArrayLengthTest ()
 		{
 			descriptor.ArrayLength = 1;
-			Assert.AreEqual ((nuint) 1, descriptor.ArrayLength);
+			Assert.That (descriptor.ArrayLength, Is.EqualTo ((nuint) 1));
 		}
 
 		[Test]
 		public void GetSetConstantBlockAlignmentTest ()
 		{
 			descriptor.ConstantBlockAlignment = 1;
-			Assert.AreEqual ((nuint) 1, descriptor.ConstantBlockAlignment);
+			Assert.That (descriptor.ConstantBlockAlignment, Is.EqualTo ((nuint) 1));
 		}
 
 		[Test]
 		public void GetSetDataTypeTest ()
 		{
 			descriptor.DataType = MTLDataType.Half4;
-			Assert.AreEqual (MTLDataType.Half4, descriptor.DataType);
+			Assert.That (descriptor.DataType, Is.EqualTo (MTLDataType.Half4));
 		}
 
 		[Test]
 		public void GetSetIndexTest ()
 		{
 			descriptor.Index = 1;
-			Assert.AreEqual ((nuint) 1, descriptor.Index);
+			Assert.That (descriptor.Index, Is.EqualTo ((nuint) 1));
 		}
 
 		[Test]
 		public void GetSetTextureTypeTest ()
 		{
 			descriptor.TextureType = MTLTextureType.k2DArray;
-			Assert.AreEqual (MTLTextureType.k2DArray, descriptor.TextureType);
+			Assert.That (descriptor.TextureType, Is.EqualTo (MTLTextureType.k2DArray));
 		}
 	}
 }

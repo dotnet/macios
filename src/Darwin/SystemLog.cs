@@ -236,8 +236,17 @@ namespace Darwin {
 		{
 			if (msg is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (msg));
+			// The native asl_search call is done here (and not in the iterator method below) to
+			// keep 'msg' alive across the native call. If it were done in the iterator, the C#
+			// compiler would hoist 'this' and 'msg' into fields of the generated state machine, and
+			// the GC.KeepAlive call wouldn't reliably keep 'msg' alive across the native call.
 			var search = asl_search (Handle, msg.Handle);
 			GC.KeepAlive (msg);
+			return EnumerateSearchResults (search);
+		}
+
+		static IEnumerable<Message> EnumerateSearchResults (IntPtr search)
+		{
 			IntPtr mh;
 
 			while ((mh = aslresponse_next (search)) != IntPtr.Zero)

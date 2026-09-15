@@ -24,7 +24,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 			var rect = new CGRect (0, 0, 15, 15);
 			var matrix = CGAffineTransform.MakeIdentity ();
 			using (CGPath p = CGPath.EllipseFromRect (rect, matrix)) {
-				Assert.IsNotNull (p, "non-null");
+				Assert.That (p, Is.Not.Null, "non-null");
 			}
 		}
 
@@ -56,10 +56,10 @@ namespace MonoTouchFixtures.CoreGraphics {
 			var matrix = CGAffineTransform.MakeIdentity ();
 			using (CGPath p1 = new CGPath ())
 			using (CGPath p2 = new CGPath ()) {
-				Assert.IsTrue (p1.IsEmpty, "IsEmpty-1");
+				Assert.That (p1.IsEmpty, Is.True, "IsEmpty-1");
 				p1.MoveToPoint (0, 0);
 				p2.MoveToPoint (matrix, 0, 0);
-				Assert.IsFalse (p1.IsEmpty, "IsEmpty-2");
+				Assert.That (p1.IsEmpty, Is.False, "IsEmpty-2");
 				Assert.That (p1, Is.EqualTo (p2), "CGPathEqualToPath");
 			}
 		}
@@ -70,12 +70,12 @@ namespace MonoTouchFixtures.CoreGraphics {
 			var matrix = CGAffineTransform.MakeIdentity ();
 			using (CGPath p1 = new CGPath ())
 			using (CGPath p2 = new CGPath ()) {
-				Assert.IsTrue (p1.IsEmpty, "IsEmpty-1");
+				Assert.That (p1.IsEmpty, Is.True, "IsEmpty-1");
 				p1.MoveToPoint (0, 0);
 				p1.AddLineToPoint (1, 1);
 				p2.MoveToPoint (matrix, 0, 0);
 				p2.AddLineToPoint (matrix, 1, 1);
-				Assert.IsFalse (p1.IsEmpty, "IsEmpty-2");
+				Assert.That (p1.IsEmpty, Is.False, "IsEmpty-2");
 				Assert.That (p1, Is.EqualTo (p2), "CGPathEqualToPath");
 			}
 		}
@@ -86,12 +86,12 @@ namespace MonoTouchFixtures.CoreGraphics {
 			var matrix = CGAffineTransform.MakeIdentity ();
 			using (CGPath p1 = new CGPath ())
 			using (CGPath p2 = new CGPath ()) {
-				Assert.IsTrue (p1.IsEmpty, "IsEmpty-1");
+				Assert.That (p1.IsEmpty, Is.True, "IsEmpty-1");
 				p1.MoveToPoint (0, 0);
 				p1.AddCurveToPoint (1, 2, 3, 4, 5, 6);
 				p2.MoveToPoint (0, 0);
 				p2.AddCurveToPoint (matrix, 1, 2, 3, 4, 5, 6);
-				Assert.IsFalse (p1.IsEmpty, "IsEmpty-2");
+				Assert.That (p1.IsEmpty, Is.False, "IsEmpty-2");
 				Assert.That (p1, Is.EqualTo (p2), "CGPathEqualToPath");
 			}
 		}
@@ -102,13 +102,13 @@ namespace MonoTouchFixtures.CoreGraphics {
 			var matrix = CGAffineTransform.MakeIdentity ();
 			using (CGPath p1 = new CGPath ())
 			using (CGPath p2 = new CGPath ()) {
-				Assert.IsTrue (p1.IsEmpty, "IsEmpty-1");
+				Assert.That (p1.IsEmpty, Is.True, "IsEmpty-1");
 				p1.MoveToPoint (0, 0);
 				p1.AddQuadCurveToPoint (1, 2, 3, 4);
 				p1.CloseSubpath ();
 				p2.MoveToPoint (0, 0);
 				p2.AddQuadCurveToPoint (matrix, 1, 2, 3, 4);
-				Assert.IsFalse (p1.IsEmpty, "IsEmpty-2");
+				Assert.That (p1.IsEmpty, Is.False, "IsEmpty-2");
 				Assert.That (p1, Is.Not.EqualTo (p2), "CGPathEqualToPath-2");
 				p2.CloseSubpath ();
 				Assert.That (p1, Is.EqualTo (p2), "CGPathEqualToPath");
@@ -122,10 +122,10 @@ namespace MonoTouchFixtures.CoreGraphics {
 			var matrix = CGAffineTransform.MakeIdentity ();
 			using (CGPath p1 = new CGPath ())
 			using (CGPath p2 = new CGPath ()) {
-				Assert.IsTrue (p1.IsEmpty, "IsEmpty-1");
+				Assert.That (p1.IsEmpty, Is.True, "IsEmpty-1");
 				p1.AddRect (rect);
 				p2.AddRect (matrix, rect);
-				Assert.IsFalse (p1.IsEmpty, "IsEmpty-2");
+				Assert.That (p1.IsEmpty, Is.False, "IsEmpty-2");
 				Assert.That (p1, Is.EqualTo (p2), "CGPathEqualToPath");
 			}
 		}
@@ -137,10 +137,10 @@ namespace MonoTouchFixtures.CoreGraphics {
 			var matrix = CGAffineTransform.MakeIdentity ();
 			using (CGPath p1 = new CGPath ())
 			using (CGPath p2 = new CGPath ()) {
-				Assert.IsTrue (p1.IsEmpty, "IsEmpty-1");
+				Assert.That (p1.IsEmpty, Is.True, "IsEmpty-1");
 				p1.AddRects (new [] { rect, rect }, 1);
 				p2.AddRects (matrix, new [] { rect }, 1);
-				Assert.IsFalse (p1.IsEmpty, "IsEmpty-2");
+				Assert.That (p1.IsEmpty, Is.False, "IsEmpty-2");
 				Assert.That (p1, Is.EqualTo (p2), "CGPathEqualToPath");
 			}
 		}
@@ -151,10 +151,10 @@ namespace MonoTouchFixtures.CoreGraphics {
 			var matrix = CGAffineTransform.MakeIdentity ();
 			using (CGPath p1 = new CGPath ())
 			using (CGPath p2 = new CGPath ()) {
-				Assert.IsTrue (p1.IsEmpty, "IsEmpty-1");
+				Assert.That (p1.IsEmpty, Is.True, "IsEmpty-1");
 				p1.AddLines (new [] { CGPoint.Empty });
 				p2.AddLines (matrix, new [] { CGPoint.Empty });
-				Assert.IsFalse (p1.IsEmpty, "IsEmpty-2");
+				Assert.That (p1.IsEmpty, Is.False, "IsEmpty-2");
 				Assert.That (p1, Is.EqualTo (p2), "CGPathEqualToPath");
 			}
 		}
@@ -166,10 +166,10 @@ namespace MonoTouchFixtures.CoreGraphics {
 			var matrix = CGAffineTransform.MakeIdentity ();
 			using (CGPath p1 = new CGPath ())
 			using (CGPath p2 = new CGPath ()) {
-				Assert.IsTrue (p1.IsEmpty, "IsEmpty-1");
+				Assert.That (p1.IsEmpty, Is.True, "IsEmpty-1");
 				p1.AddEllipseInRect (rect);
 				p2.AddEllipseInRect (matrix, rect);
-				Assert.IsFalse (p1.IsEmpty, "IsEmpty-2");
+				Assert.That (p1.IsEmpty, Is.False, "IsEmpty-2");
 				Assert.That (p1, Is.EqualTo (p2), "CGPathEqualToPath");
 			}
 		}
@@ -180,10 +180,10 @@ namespace MonoTouchFixtures.CoreGraphics {
 			var matrix = CGAffineTransform.MakeIdentity ();
 			using (CGPath p1 = new CGPath ())
 			using (CGPath p2 = new CGPath ()) {
-				Assert.IsTrue (p1.IsEmpty, "IsEmpty-1");
+				Assert.That (p1.IsEmpty, Is.True, "IsEmpty-1");
 				p1.AddArc (0, 0, 10, 0, 90, true);
 				p2.AddArc (matrix, 0, 0, 10, 0, 90, true);
-				Assert.IsFalse (p1.IsEmpty, "IsEmpty-2");
+				Assert.That (p1.IsEmpty, Is.False, "IsEmpty-2");
 				Assert.That (p1, Is.EqualTo (p2), "CGPathEqualToPath");
 			}
 		}
@@ -194,12 +194,12 @@ namespace MonoTouchFixtures.CoreGraphics {
 			var matrix = CGAffineTransform.MakeIdentity ();
 			using (CGPath p1 = new CGPath ())
 			using (CGPath p2 = new CGPath ()) {
-				Assert.IsTrue (p1.IsEmpty, "IsEmpty-1");
+				Assert.That (p1.IsEmpty, Is.True, "IsEmpty-1");
 				p1.MoveToPoint (0, 0);
 				p1.AddArcToPoint (0, 0, 10, 0, 90);
 				p2.MoveToPoint (0, 0);
 				p2.AddArcToPoint (matrix, 0, 0, 10, 0, 90);
-				Assert.IsFalse (p1.IsEmpty, "IsEmpty-2");
+				Assert.That (p1.IsEmpty, Is.False, "IsEmpty-2");
 				Assert.That (p1, Is.EqualTo (p2), "CGPathEqualToPath");
 			}
 		}
@@ -210,12 +210,12 @@ namespace MonoTouchFixtures.CoreGraphics {
 			var matrix = CGAffineTransform.MakeIdentity ();
 			using (CGPath p1 = new CGPath ())
 			using (CGPath p2 = new CGPath ()) {
-				Assert.IsTrue (p1.IsEmpty, "IsEmpty-1");
+				Assert.That (p1.IsEmpty, Is.True, "IsEmpty-1");
 				p1.MoveToPoint (0, 0);
 				p1.AddRelativeArc (0, 0, 10, 0, 90);
 				p2.MoveToPoint (0, 0);
 				p2.AddRelativeArc (matrix, 0, 0, 10, 0, 90);
-				Assert.IsFalse (p1.IsEmpty, "IsEmpty-2");
+				Assert.That (p1.IsEmpty, Is.False, "IsEmpty-2");
 				Assert.That (p1, Is.EqualTo (p2), "CGPathEqualToPath");
 			}
 		}
@@ -227,7 +227,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 			using (CGPath p2 = new CGPath ()) {
 				p1.MoveToPoint (0, 0);
 				p2.AddPath (p1);
-				Assert.IsFalse (p2.IsEmpty, "IsEmpty");
+				Assert.That (p2.IsEmpty, Is.False, "IsEmpty");
 			}
 		}
 
@@ -238,8 +238,8 @@ namespace MonoTouchFixtures.CoreGraphics {
 			using (CGPath p1 = new CGPath ()) {
 				p1.MoveToPoint (0, 0);
 				p1.AddLineToPoint (1, 1);
-				Assert.IsNotNull (p1.CreateByNormalizing (false));
-				Assert.IsNotNull (p1.CreateByNormalizing (true));
+				Assert.That (p1.CreateByNormalizing (false), Is.Not.Null);
+				Assert.That (p1.CreateByNormalizing (true), Is.Not.Null);
 			}
 		}
 
@@ -253,8 +253,8 @@ namespace MonoTouchFixtures.CoreGraphics {
 				using (CGPath p2 = new CGPath ()) {
 					p2.MoveToPoint (2, 2);
 					p2.AddLineToPoint (0, 0);
-					Assert.IsNotNull (p1.CreateByUnioningPath (p2, false));
-					Assert.IsNotNull (p1.CreateByUnioningPath (p2, true));
+					Assert.That (p1.CreateByUnioningPath (p2, false), Is.Not.Null);
+					Assert.That (p1.CreateByUnioningPath (p2, true), Is.Not.Null);
 				}
 			}
 		}
@@ -269,8 +269,8 @@ namespace MonoTouchFixtures.CoreGraphics {
 				using (CGPath p2 = new CGPath ()) {
 					p2.MoveToPoint (2, 2);
 					p2.AddLineToPoint (0, 0);
-					Assert.IsNotNull (p1.CreateByIntersectingPath (p2, false));
-					Assert.IsNotNull (p1.CreateByIntersectingPath (p2, true));
+					Assert.That (p1.CreateByIntersectingPath (p2, false), Is.Not.Null);
+					Assert.That (p1.CreateByIntersectingPath (p2, true), Is.Not.Null);
 				}
 			}
 		}
@@ -285,8 +285,8 @@ namespace MonoTouchFixtures.CoreGraphics {
 				using (CGPath p2 = new CGPath ()) {
 					p2.MoveToPoint (2, 2);
 					p2.AddLineToPoint (0, 0);
-					Assert.IsNotNull (p1.CreateBySubtractingPath (p2, false));
-					Assert.IsNotNull (p1.CreateBySubtractingPath (p2, true));
+					Assert.That (p1.CreateBySubtractingPath (p2, false), Is.Not.Null);
+					Assert.That (p1.CreateBySubtractingPath (p2, true), Is.Not.Null);
 				}
 			}
 		}
@@ -301,8 +301,8 @@ namespace MonoTouchFixtures.CoreGraphics {
 				using (CGPath p2 = new CGPath ()) {
 					p2.MoveToPoint (2, 2);
 					p2.AddLineToPoint (0, 0);
-					Assert.IsNotNull (p1.CreateBySymmetricDifferenceOfPath (p2, false));
-					Assert.IsNotNull (p1.CreateBySymmetricDifferenceOfPath (p2, true));
+					Assert.That (p1.CreateBySymmetricDifferenceOfPath (p2, false), Is.Not.Null);
+					Assert.That (p1.CreateBySymmetricDifferenceOfPath (p2, true), Is.Not.Null);
 				}
 			}
 		}
@@ -317,8 +317,8 @@ namespace MonoTouchFixtures.CoreGraphics {
 				using (CGPath p2 = new CGPath ()) {
 					p2.MoveToPoint (2, 2);
 					p2.AddLineToPoint (0, 0);
-					Assert.IsNotNull (p1.CreateLineBySubtractingPath (p2, false));
-					Assert.IsNotNull (p1.CreateLineBySubtractingPath (p2, true));
+					Assert.That (p1.CreateLineBySubtractingPath (p2, false), Is.Not.Null);
+					Assert.That (p1.CreateLineBySubtractingPath (p2, true), Is.Not.Null);
 				}
 			}
 		}
@@ -333,8 +333,8 @@ namespace MonoTouchFixtures.CoreGraphics {
 				using (CGPath p2 = new CGPath ()) {
 					p2.MoveToPoint (2, 2);
 					p2.AddLineToPoint (0, 0);
-					Assert.IsNotNull (p1.CreateLineByIntersectingPath (p2, false));
-					Assert.IsNotNull (p1.CreateLineByIntersectingPath (p2, true));
+					Assert.That (p1.CreateLineByIntersectingPath (p2, false), Is.Not.Null);
+					Assert.That (p1.CreateLineByIntersectingPath (p2, true), Is.Not.Null);
 				}
 			}
 		}
@@ -346,8 +346,8 @@ namespace MonoTouchFixtures.CoreGraphics {
 			using (CGPath p1 = new CGPath ()) {
 				p1.MoveToPoint (0, 0);
 				p1.AddLineToPoint (1, 1);
-				Assert.AreEqual (0, p1.GetSeparateComponents (true).Length);
-				Assert.AreEqual (0, p1.GetSeparateComponents (false).Length);
+				Assert.That (p1.GetSeparateComponents (true).Length, Is.EqualTo (0));
+				Assert.That (p1.GetSeparateComponents (false).Length, Is.EqualTo (0));
 			}
 		}
 
@@ -358,7 +358,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 			using (CGPath p1 = new CGPath ()) {
 				p1.MoveToPoint (0, 0);
 				p1.AddLineToPoint (1, 1);
-				Assert.IsNotNull (p1.CreateByFlattening (new nfloat (0.5)));
+				Assert.That (p1.CreateByFlattening (new nfloat (0.5)), Is.Not.Null);
 			}
 		}
 
@@ -372,8 +372,8 @@ namespace MonoTouchFixtures.CoreGraphics {
 				using (CGPath p2 = new CGPath ()) {
 					p2.MoveToPoint (0, 2);
 					p2.AddLineToPoint (2, 0);
-					Assert.IsFalse (p1.DoesIntersect (p2, false));
-					Assert.IsFalse (p1.DoesIntersect (p2, false));
+					Assert.That (p1.DoesIntersect (p2, false), Is.False);
+					Assert.That (p1.DoesIntersect (p2, false), Is.False);
 				}
 			}
 		}
@@ -387,7 +387,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 			// Assertion failed: (corner_height >= 0 && 2 * corner_height <= CGRectGetHeight(rect)), function CGPathRef CGPathCreateWithRoundedRect
 			Assert.Throws<ArgumentException> (() => CGPath.FromRoundedRect (rect, 1, 13.5f), "height");
 			using (var path = CGPath.FromRoundedRect (rect, 1, 1)) {
-				Assert.IsNotNull (path, "path");
+				Assert.That (path, Is.Not.Null, "path");
 			}
 		}
 
@@ -399,9 +399,9 @@ namespace MonoTouchFixtures.CoreGraphics {
 				var count = CFGetRetainCount (p1.Handle);
 				using (var copy = p1.Copy ()) {
 					var newRetainCount = CFGetRetainCount (copy.Handle);
-					Assert.AreEqual (count, newRetainCount, "Ref count should not have changed.");
-					Assert.AreEqual ((nint) 1, count, "Original count.");
-					Assert.AreEqual ((nint) 1, newRetainCount, "New count");
+					Assert.That (newRetainCount, Is.EqualTo (count), "Ref count should not have changed.");
+					Assert.That (count, Is.EqualTo ((nint) 1), "Original count.");
+					Assert.That (newRetainCount, Is.EqualTo ((nint) 1), "New count");
 				}
 			}
 		}

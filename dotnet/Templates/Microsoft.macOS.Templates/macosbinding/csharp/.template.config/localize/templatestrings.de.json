@@ -1,5 +1,7 @@
 {
   "author": "Microsoft",
   "name": "macOS-Bindungsbibliothek",
-  "description": "Ein Projekt zum Erstellen einer .NET macOS-Bindungsbibliothek"
+  "description": "Ein Projekt zum Erstellen einer .NET macOS-Bindungsbibliothek",
+  "symbols/Framework/description": "The target framework for the project.",
+  "symbols/Framework/choices/net10.0-macos/description": "Target net10.0-macos"
 }

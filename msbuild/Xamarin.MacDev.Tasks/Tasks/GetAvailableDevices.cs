@@ -60,7 +60,7 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 
 		// filter to values we find in the app manifest, if it exists
 		if (File.Exists (AppBundleManifestPath)) {
-			var appManifest = PDictionary.FromFile (AppBundleManifestPath)!;
+			var appManifest = PDictionary.OpenFile (AppBundleManifestPath);
 
 			var uiDeviceFamily = appManifest.GetUIDeviceFamily ();
 			// an iPhone app can run on an iPad, but an iPad app cannot run on an iPhone
@@ -86,8 +86,6 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 			if (Version.TryParse (minimumOSVersionString, out var minimumOSVersion)) {
 				foreach (var d in devices.Where (d => !d.Discarded && d.MinimumOSVersion < minimumOSVersion))
 					d.DiscardedReason = $"Device OS version '{d.MinimumOSVersion}' is lower than the app's minimum OS version '{minimumOSVersion}'";
-				foreach (var d in devices.Where (d => !d.Discarded && d.MaximumOSVersion < minimumOSVersion))
-					d.DiscardedReason = $"Device maximum OS version '{d.MaximumOSVersion}' is lower than the app's minimum OS version '{minimumOSVersion}'";
 			}
 		}
 
@@ -100,8 +98,13 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 				continue;
 			}
 			// if we have multiple runtime identifiers, we're running in the simulator, and one is x64 and the other is arm64.
+			// if 'RuntimeIdentifier' is set on the task, set that value, otherwise
 			// if we can run on arm64, then pick the arm64 simulator, otherwise pick the x64 simulator
-			d.Item.SetMetadata ("RuntimeIdentifier", d.RuntimeIdentifiers.Single (v => v.Contains ("arm64") == CanRunArm64));
+			if (!string.IsNullOrEmpty (RuntimeIdentifier)) {
+				d.Item.SetMetadata ("RuntimeIdentifier", RuntimeIdentifier);
+			} else {
+				d.Item.SetMetadata ("RuntimeIdentifier", d.RuntimeIdentifiers.Single (v => v.Contains ("arm64") == CanRunArm64));
+			}
 		}
 
 		DiscardedDevices = devices.Where (d => d.Discarded).Select (v => {
@@ -110,9 +113,11 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 		}).ToArray ();
 
 		// sort the devices, so we return them in a stable order
+		// Booted simulators come first so the interactive device selection shows running simulators at the top.
 		var sortedDevices = devices
 			.Where (d => !d.Discarded) // discard discarded devices
-			.OrderByDescending (d => d.MinimumOSVersion) // newer devices first (probably has duplicates)
+			.OrderByDescending (d => d.Item.GetMetadata ("State") == "Booted") // booted simulators first
+			.ThenByDescending (d => d.MinimumOSVersion) // newer devices first (probably has duplicates)
 			.ThenBy (d => d.Item.GetMetadata ("Name")) // then sort by name (may have duplicates)
 			.ThenBy (d => d.Item.ItemSpec); // and finally by UDID, which should be unique
 
@@ -132,17 +137,15 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 		public ApplePlatform Platform { get; set; }
 		public IPhoneDeviceType DeviceType { get; set; }
 		public Version MinimumOSVersion { get; set; }
-		public Version MaximumOSVersion { get; set; }
 		public string DiscardedReason { get; set; }
 		public bool Discarded { get => !string.IsNullOrEmpty (DiscardedReason); }
-		public DeviceInfo (ITaskItem item, IEnumerable<string> runtimeIdentifiers, ApplePlatform platform, IPhoneDeviceType deviceType, Version minimumOSVersion, Version maximumOSVersion, string discardedReason)
+		public DeviceInfo (ITaskItem item, IEnumerable<string> runtimeIdentifiers, ApplePlatform platform, IPhoneDeviceType deviceType, Version minimumOSVersion, string discardedReason)
 		{
 			Item = item;
 			RuntimeIdentifiers = runtimeIdentifiers;
 			Platform = platform;
 			DeviceType = deviceType;
 			MinimumOSVersion = minimumOSVersion;
-			MaximumOSVersion = maximumOSVersion;
 			DiscardedReason = discardedReason;
 		}
 	}
@@ -189,10 +192,19 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 			item.SetMetadata ("PairingState", device.PairingState);
 
 			// we provide the following metadata for both simulator and device
-			item.SetMetadata ("Description", device.Name);
+			var deviceDescription = device.Name;
+			if (!string.IsNullOrEmpty (device.OSVersion) && !deviceDescription.Contains (device.OSVersion))
+				deviceDescription = $"{deviceDescription} - {device.Platform} {device.OSVersion}";
+			item.SetMetadata ("Description", deviceDescription);
 			item.SetMetadata ("Type", "Device");
 			item.SetMetadata ("OSVersion", device.OSVersion);
 			item.SetMetadata ("UDID", udid);
+			// Capitalize the first letter of PairingState for the Status metadata.
+			// Default to "Unpaired" when devicectl doesn't report a pairing state.
+			var pairingState = device.PairingState;
+			if (string.IsNullOrEmpty (pairingState))
+				pairingState = "unpaired";
+			item.SetMetadata ("Status", char.ToUpperInvariant (pairingState [0]) + pairingState.Substring (1));
 
 			// compute the platform and runtime identifier
 			var runtimeIdentifier = "";
@@ -239,9 +251,8 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 			}
 
 			Version.TryParse (device.OSVersion, out var minimumOSVersion);
-			var maximumOSVersion = new Version (65535, 255, 255);
 
-			rv.Add (new DeviceInfo (item, [runtimeIdentifier], platform, deviceType, minimumOSVersion ?? new Version (0, 0), maximumOSVersion, discardedReason));
+			rv.Add (new DeviceInfo (item, [runtimeIdentifier], platform, deviceType, minimumOSVersion ?? new Version (0, 0), discardedReason));
 		}
 		return rv;
 	}
@@ -282,10 +293,20 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 			item.SetMetadata ("SupportedArchitectures", string.Join (",", supportedArchitectures));
 
 			// we provide the following metadata for both simulator and device
-			item.SetMetadata ("Description", device.Name);
+			var description = device.Name;
+			if (!string.IsNullOrEmpty (runtimeVersion) && !description.Contains (runtimeVersion)) {
+				if (!string.IsNullOrEmpty (runtimePlatform))
+					description = $"{description} - {runtimePlatform} {runtimeVersion}";
+				else
+					description = $"{description} - {runtimeVersion}";
+			}
+			if (!string.IsNullOrEmpty (device.State))
+				description = $"{description} ({device.State})";
+			item.SetMetadata ("Description", description);
 			item.SetMetadata ("Type", "Simulator");
 			item.SetMetadata ("OSVersion", runtimeVersion);
 			item.SetMetadata ("UDID", device.Udid);
+			item.SetMetadata ("Status", device.State);
 
 			var discardedReason = "";
 			var runtimeIdentifier = "";
@@ -344,7 +365,6 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 			}
 			var deviceType = IPhoneDeviceType.NotSet;
 			var minimumOSVersion = new Version (0, 0);
-			var maximumOSVersion = new Version (65535, 255, 255);
 			if (string.IsNullOrEmpty (discardedReason)) {
 				if (deviceTypes.TryGetValue (device.DeviceTypeIdentifier, out var deviceTypeInfo)) {
 					switch (deviceTypeInfo.ProductFamily.ToLowerInvariant ()) {
@@ -363,16 +383,14 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 						discardedReason = $"Unknown product family '{deviceTypeInfo.ProductFamily}'";
 						break;
 					}
-					if (Version.TryParse (deviceTypeInfo.MinRuntimeVersionString, out var parsedMinimumOSVersion))
+					if (Version.TryParse (runtimeVersion, out var parsedMinimumOSVersion))
 						minimumOSVersion = parsedMinimumOSVersion;
-					if (Version.TryParse (deviceTypeInfo.MaxRuntimeVersionString, out var parsedMaximumOSVersion))
-						maximumOSVersion = parsedMaximumOSVersion;
 				} else {
 					discardedReason = $"Unknown device type identifier '{device.DeviceTypeIdentifier}'";
 				}
 			}
 
-			rv.Add (new DeviceInfo (item, runtimeIdentifiers, platform, deviceType, minimumOSVersion, maximumOSVersion, discardedReason));
+			rv.Add (new DeviceInfo (item, runtimeIdentifiers, platform, deviceType, minimumOSVersion, discardedReason));
 		}
 		return rv;
 	}

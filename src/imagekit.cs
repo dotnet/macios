@@ -31,6 +31,7 @@ using CoreImage;
 using ImageCaptureCore;
 using CoreGraphics;
 using CoreAnimation;
+using System.ComponentModel;
 
 namespace ImageKit {
 
@@ -2028,7 +2029,15 @@ namespace ImageKit {
 		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("exportSlideshowItem:toApplication:")]
+		void ExportSlideshowItem (NSObject item, string applicationBundleIdentifier);
+
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'ExportSlideshowItem' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("ExportSlideshowItem (item, applicationBundleIdentifier)")]
+		[Static]
 		void ExportSlideshowItemtoApplication (NSObject item, string applicationBundleIdentifier);
+#endif
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>

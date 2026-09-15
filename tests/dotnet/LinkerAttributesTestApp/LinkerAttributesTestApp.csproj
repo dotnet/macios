@@ -1,0 +1,13 @@
+<!-- Copyright (c) Microsoft Corporation. -->
+<!-- Licensed under the MIT License. -->
+
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net$(BundledNETCoreAppTargetFrameworkVersion)-ios</TargetFramework>
+		<OutputType>Exe</OutputType>
+		<ApplicationTitle>LinkerAttributesTestApp</ApplicationTitle>
+		<ApplicationId>com.xamarin.linkerattributestestapp</ApplicationId>
+	</PropertyGroup>
+
+	<Import Project="../../common/shared-dotnet.csproj" />
+</Project>

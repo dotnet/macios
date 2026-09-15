@@ -211,6 +211,13 @@ namespace Mono.ApiTools {
 			cachedOutput.Append (value);
 		}
 
+		public void Append (char value)
+		{
+			foreach (var kvp in stringbuilders)
+				kvp.StringBuilder.Append (value);
+			cachedOutput.Append (value);
+		}
+
 		public override string ToString ()
 		{
 			throw new InvalidOperationException ();

@@ -36,14 +36,14 @@ namespace Xamarin.Mac.Tests {
 			int outputNode = graph.AddNode (outputDesciption);
 
 			AUGraphError error = graph.ConnnectNodeInput (mixerNode, 0, outputNode, 0);
-			Assert.AreEqual (AUGraphError.OK, error);
+			Assert.That (error, Is.EqualTo (AUGraphError.OK));
 
 			graph.Open ();
 
 			mMixer = graph.GetNodeInfo (mixerNode);
 
 			AudioUnitStatus status = mMixer.SetElementCount (AudioUnitScopeType.Input, 0);
-			Assert.AreEqual (AudioUnitStatus.OK, status);
+			Assert.That (status, Is.EqualTo (AudioUnitStatus.OK));
 		}
 
 		[Test]
@@ -59,7 +59,7 @@ namespace Xamarin.Mac.Tests {
 			//graph.RenderCallback += HandleRenderCallback;
 
 			AudioUnitStatus status = mMixer.SetRenderCallback (MixerRenderCallback);
-			Assert.AreEqual (AudioUnitStatus.OK, status);
+			Assert.That (status, Is.EqualTo (AudioUnitStatus.OK));
 
 			WaitOnGraphAndMixerCallbacks ();
 		}

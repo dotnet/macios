@@ -53,9 +53,9 @@ namespace LinkAll.Layout {
 			var fields = t.GetFields ();
 			Assert.That (fields.Length, Is.EqualTo (2), "Length");
 
-			Assert.False (t.IsAutoLayout, "IsAutoLayout");
-			Assert.False (t.IsExplicitLayout, "IsExplicitLayout");
-			Assert.True (t.IsLayoutSequential, "IsLayoutSequential");
+			Assert.That (t.IsAutoLayout, Is.False, "IsAutoLayout");
+			Assert.That (t.IsExplicitLayout, Is.False, "IsExplicitLayout");
+			Assert.That (t.IsLayoutSequential, Is.True, "IsLayoutSequential");
 		}
 
 		[Test]
@@ -68,9 +68,9 @@ namespace LinkAll.Layout {
 			var fields = t.GetFields ();
 			Assert.That (fields.Length, Is.EqualTo (2), "Length");
 
-			Assert.True (t.IsAutoLayout, "IsAutoLayout");
-			Assert.False (t.IsExplicitLayout, "IsExplicitLayout");
-			Assert.False (t.IsLayoutSequential, "IsLayoutSequential");
+			Assert.That (t.IsAutoLayout, Is.True, "IsAutoLayout");
+			Assert.That (t.IsExplicitLayout, Is.False, "IsExplicitLayout");
+			Assert.That (t.IsLayoutSequential, Is.False, "IsLayoutSequential");
 		}
 
 		[Test]
@@ -83,9 +83,9 @@ namespace LinkAll.Layout {
 			var fields = t.GetFields ();
 			Assert.That (fields.Length, Is.EqualTo (2), "Length");
 
-			Assert.False (t.IsAutoLayout, "IsAutoLayout");
-			Assert.False (t.IsExplicitLayout, "IsExplicitLayout");
-			Assert.True (t.IsLayoutSequential, "IsLayoutSequential");
+			Assert.That (t.IsAutoLayout, Is.False, "IsAutoLayout");
+			Assert.That (t.IsExplicitLayout, Is.False, "IsExplicitLayout");
+			Assert.That (t.IsLayoutSequential, Is.True, "IsLayoutSequential");
 		}
 
 		[Test]
@@ -98,9 +98,9 @@ namespace LinkAll.Layout {
 			var fields = t.GetFields ();
 			Assert.That (fields.Length, Is.EqualTo (3), "Length");
 
-			Assert.False (t.IsAutoLayout, "IsAutoLayout");
-			Assert.True (t.IsExplicitLayout, "IsExplicitLayout");
-			Assert.False (t.IsLayoutSequential, "IsLayoutSequential");
+			Assert.That (t.IsAutoLayout, Is.False, "IsAutoLayout");
+			Assert.That (t.IsExplicitLayout, Is.True, "IsExplicitLayout");
+			Assert.That (t.IsLayoutSequential, Is.False, "IsLayoutSequential");
 		}
 	}
 }

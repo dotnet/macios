@@ -16,8 +16,8 @@ namespace MonoTouchFixtures.AVFoundation {
 		{
 			TestRuntime.AssertXcodeVersion (16, 0);
 			using var tagCollection = CMTagCollectionVideoOutputPreset.Monoscopic.Create (out var status);
-			Assert.AreEqual (CMTagCollectionError.Success, status, "Status");
-			Assert.IsNotNull (tagCollection, "TagCollection");
+			Assert.That (status, Is.EqualTo (CMTagCollectionError.Success), "Status");
+			Assert.That (tagCollection, Is.Not.Null, "TagCollection");
 		}
 	}
 }

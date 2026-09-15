@@ -13,10 +13,10 @@ namespace Xamarin.Mac.Tests {
 			var clipView = new NSClipView (new CGRect (0, 0, 50, 50));
 			var rect = clipView.ConstrainBoundsRect (new CGRect (10, 10, 30, 30));
 
-			Assert.IsTrue (rect.X == 0, "NSClipViewConstrainBoundsRect - X value was not 0");
-			Assert.IsTrue (rect.Y == 0, "NSClipViewConstrainBoundsRect - Y value was not 0");
-			Assert.IsTrue (rect.Width == 30, "NSClipViewConstrainBoundsRect - Width value was not 30");
-			Assert.IsTrue (rect.Height == 30, "NSClipViewConstrainBoundsRect - Height value was not 30");
+			Assert.That (rect.X == 0, Is.True, "NSClipViewConstrainBoundsRect - X value was not 0");
+			Assert.That (rect.Y == 0, Is.True, "NSClipViewConstrainBoundsRect - Y value was not 0");
+			Assert.That (rect.Width == 30, Is.True, "NSClipViewConstrainBoundsRect - Width value was not 30");
+			Assert.That (rect.Height == 30, Is.True, "NSClipViewConstrainBoundsRect - Height value was not 30");
 		}
 	}
 }

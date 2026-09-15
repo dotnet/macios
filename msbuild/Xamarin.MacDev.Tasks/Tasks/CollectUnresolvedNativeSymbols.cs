@@ -10,7 +10,7 @@ using Microsoft.Build.Framework;
 #nullable enable
 
 namespace Xamarin.MacDev.Tasks {
-	// See docs/code/native-symbols.md for an overview of native symbol handling.
+	// See docs/code/native-symbols.md and docs/code/class-handles.md for an overview of native symbol handling.
 	public class CollectUnresolvedNativeSymbols : XamarinTask {
 		public ITaskItem? StaticLibrary { get; set; }
 

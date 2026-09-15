@@ -24,9 +24,9 @@ namespace MonoTouchFixtures.Foundation {
 		[Test, TestCaseSource ("VersionCasesEqual")]
 		public void NSVersionEqual ((NSOperatingSystemVersion v1, NSOperatingSystemVersion v2, bool res) sample)
 		{
-			Assert.AreEqual (sample.v1 == sample.v2, sample.res, $"{sample.v1}=={sample.v2}");
-			Assert.AreEqual (sample.v2 == sample.v1, sample.res, $"{sample.v2}=={sample.v1}");
-			Assert.AreNotEqual (sample.v1 != sample.v2, sample.res, $"{sample.v1}!={sample.v2}");
+			Assert.That (sample.res, Is.EqualTo (sample.v1 == sample.v2), $"{sample.v1}=={sample.v2}");
+			Assert.That (sample.res, Is.EqualTo (sample.v2 == sample.v1), $"{sample.v2}=={sample.v1}");
+			Assert.That (sample.res, Is.Not.EqualTo (sample.v1 != sample.v2), $"{sample.v1}!={sample.v2}");
 		}
 
 		// Object Equal Tests
@@ -44,7 +44,7 @@ namespace MonoTouchFixtures.Foundation {
 		public void NSVersionObject ((Object obj, bool res) sample)
 		{
 			NSOperatingSystemVersion v1 = new NSOperatingSystemVersion ((nint) 1, (nint) 2, (nint) 3);
-			Assert.AreEqual (v1.Equals (sample.obj), sample.res);
+			Assert.That (sample.res, Is.EqualTo (v1.Equals (sample.obj)));
 		}
 
 		// Object Compare Tests
@@ -62,7 +62,7 @@ namespace MonoTouchFixtures.Foundation {
 		public void NSVersionCompareObject ((Object obj, int result) sample)
 		{
 			NSOperatingSystemVersion v1 = new NSOperatingSystemVersion ((nint) 1, (nint) 2, (nint) 3);
-			Assert.AreEqual (v1.CompareTo (sample.obj), sample.result);
+			Assert.That (sample.result, Is.EqualTo (v1.CompareTo (sample.obj)));
 		}
 
 		// Hash Tests
@@ -78,7 +78,7 @@ namespace MonoTouchFixtures.Foundation {
 
 		[Test, TestCaseSource ("VersionCasesHashCode")]
 		public void NSVersionHashCode (NSOperatingSystemVersion version)
-			=> Assert.AreEqual (version.GetHashCode (), version.GetHashCode ());
+			=> Assert.That (version.GetHashCode (), Is.EqualTo (version.GetHashCode ()));
 
 
 		// ToString Tests
@@ -94,7 +94,7 @@ namespace MonoTouchFixtures.Foundation {
 
 		[Test, TestCaseSource ("VersionCasesString")]
 		public void NSVersionToString ((NSOperatingSystemVersion version, string versionStr) sample)
-			=> Assert.AreEqual (sample.version.ToString (), sample.versionStr);
+			=> Assert.That (sample.versionStr, Is.EqualTo (sample.version.ToString ()));
 
 
 		// ICompare Tests
@@ -110,7 +110,7 @@ namespace MonoTouchFixtures.Foundation {
 
 		[Test, TestCaseSource ("VersionCasesCompare")]
 		public void NSVersionCompare ((NSOperatingSystemVersion v1, NSOperatingSystemVersion v2, int res) sample)
-			=> Assert.AreEqual (sample.v1.CompareTo (sample.v2), sample.res);
+			=> Assert.That (sample.res, Is.EqualTo (sample.v1.CompareTo (sample.v2)));
 
 	}
 }

@@ -568,8 +568,8 @@ namespace MonoTouch.NUnit.UI {
 #endif
 
 				string? stacktrace = result.StackTrace;
-				if (!String.IsNullOrEmpty (result.StackTrace)) {
-					string [] lines = stacktrace.Split (new char [] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+				if (!String.IsNullOrEmpty (stacktrace)) {
+					string [] lines = stacktrace!.Split (new char [] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
 					foreach (string line in lines)
 						writer.WriteLine ("\t\t{0}", line);
 				}
@@ -689,9 +689,11 @@ namespace MonoTouch.NUnit.UI {
 
 			var tsr = new TestSuiteResult (suite);
 			foreach (var runner in runners) {
-				var rv = (TestResult) (find_result (runner.Result) ?? runner.Result);
-				if (rv is not null)
-					tsr.AddResult (rv);
+				var runnerResult = runner.Result is not null ? (find_result (runner.Result) ?? runner.Result) : null;
+				if (runnerResult is null)
+					continue;
+				var rv = (TestResult) runnerResult;
+				tsr.AddResult (rv);
 			}
 			Result = tsr;
 #else

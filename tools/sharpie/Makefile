@@ -21,7 +21,7 @@ SHARPIE_BIND_TOOL_NUPKG_NAME=Sharpie.Bind.Tool.$(SHARPIE_BIND_TOOL_NUGET_VERSION
 SHARPIE_BIND_TOOL_NUPKG=Sharpie.Bind.Tool/bin/Release/$(SHARPIE_BIND_TOOL_NUPKG_NAME)
 
 pack: $(SHARPIE_BIND_TOOL_NUPKG)
-$(SHARPIE_BIND_TOOL_NUPKG): $(Sharpie.Bind_dependencies)
+$(SHARPIE_BIND_TOOL_NUPKG): $(Sharpie.Bind_dependencies) | $(SHARPIE_BIND_TOOL_DEBUG)
 	$(Q_BUILD) $(DOTNET) pack Sharpie.Bind.Tool/Sharpie.Bind.Tool.csproj "/p:Version=$(SHARPIE_VERSION)" "/p:CurrentBranch=$(CURRENT_BRANCH)" "/p:CurrentHash=$(CURRENT_HASH_LONG)" $(DOTNET_PACK_VERBOSITY) -bl:$@.binlog
 
 all-local:: $(DOTNET_NUPKG_DIR)/$(SHARPIE_BIND_TOOL_NUPKG_NAME)

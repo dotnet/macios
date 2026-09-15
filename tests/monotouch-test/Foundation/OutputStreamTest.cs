@@ -38,10 +38,10 @@ namespace MonoTouchFixtures.Foundation {
 				s.Open ();
 				s.Write (new byte [] { 1, 2, 3 }, 3);
 				using (var obj = s [NSStream.DataWrittenToMemoryStreamKey] as NSData) {
-					Assert.IsNotNull (obj, "a");
-					Assert.AreEqual (1, Marshal.ReadByte (obj.Bytes, 0), "a[0]");
-					Assert.AreEqual (2, Marshal.ReadByte (obj.Bytes, 1), "a[1]");
-					Assert.AreEqual (3, Marshal.ReadByte (obj.Bytes, 2), "a[2]");
+					Assert.That (obj, Is.Not.Null, "a");
+					Assert.That (Marshal.ReadByte (obj.Bytes, 0), Is.EqualTo (1), "a[0]");
+					Assert.That (Marshal.ReadByte (obj.Bytes, 1), Is.EqualTo (2), "a[1]");
+					Assert.That (Marshal.ReadByte (obj.Bytes, 2), Is.EqualTo (3), "a[2]");
 				}
 			}
 
@@ -49,10 +49,10 @@ namespace MonoTouchFixtures.Foundation {
 				s.Open ();
 				s.Write (new byte [] { 1, 2, 3 });
 				using (var obj = s [NSStream.DataWrittenToMemoryStreamKey] as NSData) {
-					Assert.IsNotNull (obj, "a");
-					Assert.AreEqual (1, Marshal.ReadByte (obj.Bytes, 0), "b[0]");
-					Assert.AreEqual (2, Marshal.ReadByte (obj.Bytes, 1), "b[1]");
-					Assert.AreEqual (3, Marshal.ReadByte (obj.Bytes, 2), "b[2]");
+					Assert.That (obj, Is.Not.Null, "a");
+					Assert.That (Marshal.ReadByte (obj.Bytes, 0), Is.EqualTo (1), "b[0]");
+					Assert.That (Marshal.ReadByte (obj.Bytes, 1), Is.EqualTo (2), "b[1]");
+					Assert.That (Marshal.ReadByte (obj.Bytes, 2), Is.EqualTo (3), "b[2]");
 				}
 			}
 
@@ -60,8 +60,8 @@ namespace MonoTouchFixtures.Foundation {
 				s.Open ();
 				s.Write (new byte [] { 1, 2, 3 }, 2, 1);
 				using (var obj = s [NSStream.DataWrittenToMemoryStreamKey] as NSData) {
-					Assert.IsNotNull (obj, "a");
-					Assert.AreEqual (3, Marshal.ReadByte (obj.Bytes, 0), "c[0]");
+					Assert.That (obj, Is.Not.Null, "a");
+					Assert.That (Marshal.ReadByte (obj.Bytes, 0), Is.EqualTo (3), "c[0]");
 				}
 			}
 		}

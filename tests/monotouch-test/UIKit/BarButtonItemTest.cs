@@ -26,13 +26,13 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			using (var img = new UIImage ())
 			using (var btn = new UIBarButtonItem (img, UIBarButtonItemStyle.Bordered, null, null)) {
-				Assert.Null (btn.Target, "Target");
-				Assert.AreSame (img, btn.Image, "Image");
+				Assert.That (btn.Target, Is.Null, "Target");
+				Assert.That (btn.Image, Is.SameAs (img), "Image");
 				btn.Image = null; // nullable
 			}
 
 			using (var btn = new UIBarButtonItem ((UIImage) null, UIBarButtonItemStyle.Bordered, null, null)) {
-				Assert.Null (btn.Image, "Image-null");
+				Assert.That (btn.Image, Is.Null, "Image-null");
 			}
 		}
 
@@ -41,13 +41,13 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			using (var img = new UIImage ())
 			using (var btn = new UIBarButtonItem (img, img, UIBarButtonItemStyle.Bordered, null, null)) {
-				Assert.Null (btn.Target, "Target");
-				Assert.AreSame (img, btn.Image, "Image");
+				Assert.That (btn.Target, Is.Null, "Target");
+				Assert.That (btn.Image, Is.SameAs (img), "Image");
 				btn.Image = null; // nullable
 			}
 
 			using (var btn = new UIBarButtonItem (null, null, UIBarButtonItemStyle.Bordered, null, null)) {
-				Assert.Null (btn.Image, "Image-null");
+				Assert.That (btn.Image, Is.Null, "Image-null");
 			}
 		}
 
@@ -55,13 +55,13 @@ namespace MonoTouchFixtures.UIKit {
 		public void InitWithText ()
 		{
 			using (var btn = new UIBarButtonItem ("title", UIBarButtonItemStyle.Bordered, null, null)) {
-				Assert.Null (btn.Target, "Target");
+				Assert.That (btn.Target, Is.Null, "Target");
 				Assert.That (btn.Title, Is.EqualTo ("title"), "Title");
 				btn.Title = null; // nullable
 			}
 
 			using (var btn = new UIBarButtonItem ((string) null, UIBarButtonItemStyle.Bordered, null, null)) {
-				Assert.Null (btn.Title, "Title-null");
+				Assert.That (btn.Title, Is.Null, "Title-null");
 			}
 		}
 
@@ -69,7 +69,7 @@ namespace MonoTouchFixtures.UIKit {
 		public void CustomView_Null ()
 		{
 			using (var btn = new UIBarButtonItem ("title", UIBarButtonItemStyle.Bordered, null, null)) {
-				Assert.Null (btn.CustomView, "default");
+				Assert.That (btn.CustomView, Is.Null, "default");
 				btn.CustomView = null; // nullable
 			}
 		}
@@ -78,11 +78,11 @@ namespace MonoTouchFixtures.UIKit {
 		public void TintColor_Null ()
 		{
 			using (var btn = new UIBarButtonItem ("title", UIBarButtonItemStyle.Bordered, null, null)) {
-				Assert.Null (btn.TintColor, "default");
+				Assert.That (btn.TintColor, Is.Null, "default");
 				btn.TintColor = UIColor.Blue;
 				Assert.That (btn.TintColor == UIColor.Blue, "blue");
 				btn.TintColor = null;
-				Assert.Null (btn.TintColor, "null");
+				Assert.That (btn.TintColor, Is.Null, "null");
 			}
 		}
 
@@ -100,10 +100,10 @@ namespace MonoTouchFixtures.UIKit {
 		public void BackgroundImage ()
 		{
 			using (UIBarButtonItem btn = new UIBarButtonItem ()) {
-				Assert.Null (btn.GetBackgroundImage (UIControlState.Highlighted, UIBarMetrics.Default), "Get");
+				Assert.That (btn.GetBackgroundImage (UIControlState.Highlighted, UIBarMetrics.Default), Is.Null, "Get");
 				btn.SetBackgroundImage (null, UIControlState.Highlighted, UIBarMetrics.Default);
 
-				Assert.Null (btn.GetBackgroundImage (UIControlState.Highlighted, UIBarButtonItemStyle.Plain, UIBarMetrics.Default), "Get2");
+				Assert.That (btn.GetBackgroundImage (UIControlState.Highlighted, UIBarButtonItemStyle.Plain, UIBarMetrics.Default), Is.Null, "Get2");
 				btn.SetBackgroundImage (null, UIControlState.Highlighted, UIBarButtonItemStyle.Plain, UIBarMetrics.Default);
 			}
 		}
@@ -113,7 +113,7 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			using (UIBarButtonItem btn = new UIBarButtonItem ()) {
 #if !__TVOS__
-				Assert.Null (btn.GetBackButtonBackgroundImage (UIControlState.Highlighted, UIBarMetrics.Default), "Get");
+				Assert.That (btn.GetBackButtonBackgroundImage (UIControlState.Highlighted, UIBarMetrics.Default), Is.Null, "Get");
 				btn.SetBackButtonBackgroundImage (null, UIControlState.Highlighted, UIBarMetrics.Default);
 #endif
 			}

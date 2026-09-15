@@ -10,9 +10,9 @@ Microsoft.MacCatalyst.dll:AppKit.ActionDispatcher.get_WorksWhenModal()
 Microsoft.MacCatalyst.dll:AppKit.ActionDispatcher.OnActivated(Foundation.NSObject)
 Microsoft.MacCatalyst.dll:AppKit.ActionDispatcher.OnActivated2(Foundation.NSObject)
 Microsoft.MacCatalyst.dll:AppKit.ActionDispatcher/__Registrar_Callbacks__
-Microsoft.MacCatalyst.dll:AppKit.ActionDispatcher/__Registrar_Callbacks__.callback_3136_AppKit_ActionDispatcher_OnActivated(System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
-Microsoft.MacCatalyst.dll:AppKit.ActionDispatcher/__Registrar_Callbacks__.callback_3137_AppKit_ActionDispatcher_OnActivated2(System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
-Microsoft.MacCatalyst.dll:AppKit.ActionDispatcher/__Registrar_Callbacks__.callback_3139_AppKit_ActionDispatcher_get_WorksWhenModal(System.IntPtr, System.IntPtr, System.IntPtr*)
+Microsoft.MacCatalyst.dll:AppKit.ActionDispatcher/__Registrar_Callbacks__.callback_3144_AppKit_ActionDispatcher_OnActivated(System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
+Microsoft.MacCatalyst.dll:AppKit.ActionDispatcher/__Registrar_Callbacks__.callback_3145_AppKit_ActionDispatcher_OnActivated2(System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
+Microsoft.MacCatalyst.dll:AppKit.ActionDispatcher/__Registrar_Callbacks__.callback_3147_AppKit_ActionDispatcher_get_WorksWhenModal(System.IntPtr, System.IntPtr, System.IntPtr*)
 Microsoft.MacCatalyst.dll:CoreFoundation.CFArray
 Microsoft.MacCatalyst.dll:CoreFoundation.CFArray._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.MacCatalyst.dll:CoreFoundation.CFArray..cctor()
@@ -23,11 +23,12 @@ Microsoft.MacCatalyst.dll:CoreFoundation.CFArray.ArrayFromHandleFunc`1(ObjCRunti
 Microsoft.MacCatalyst.dll:CoreFoundation.CFArray.CFArrayGetValues(System.IntPtr, CoreFoundation.CFRange, System.IntPtr)
 Microsoft.MacCatalyst.dll:CoreFoundation.CFArray.DefaultConvert`1(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:CoreFoundation.CFArray.get__CFNullHandle()
+Microsoft.MacCatalyst.dll:CoreFoundation.CFArray.get__CFTypeArrayCallbacks()
 Microsoft.MacCatalyst.dll:CoreFoundation.CFArray.GetCount(System.IntPtr)
 Microsoft.MacCatalyst.dll:CoreFoundation.CFArray.StringArrayFromHandle(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.MacCatalyst.dll:CoreFoundation.CFArray.StringArrayFromHandle(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:CoreFoundation.CFArray/<>O
-Microsoft.MacCatalyst.dll:CoreFoundation.CFArray/<ArrayFromHandle>O__25_0`1
+Microsoft.MacCatalyst.dll:CoreFoundation.CFArray/<ArrayFromHandle>O__23_0`1
 Microsoft.MacCatalyst.dll:CoreFoundation.CFObject
 Microsoft.MacCatalyst.dll:CoreFoundation.CFObject.CFRelease(System.IntPtr)
 Microsoft.MacCatalyst.dll:CoreFoundation.CFObject.CFRetain(System.IntPtr)
@@ -117,14 +118,13 @@ Microsoft.MacCatalyst.dll:Foundation.NSException.get_Name()
 Microsoft.MacCatalyst.dll:Foundation.NSException.get_Reason()
 Microsoft.MacCatalyst.dll:Foundation.NSObject
 Microsoft.MacCatalyst.dll:Foundation.NSObject..cctor()
-Microsoft.MacCatalyst.dll:Foundation.NSObject..ctor()
 Microsoft.MacCatalyst.dll:Foundation.NSObject..ctor(Foundation.NSObjectFlag)
 Microsoft.MacCatalyst.dll:Foundation.NSObject..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.MacCatalyst.dll:Foundation.NSObject..ctor(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.AllocIfNeeded()
 Microsoft.MacCatalyst.dll:Foundation.NSObject.ClearHandle()
 Microsoft.MacCatalyst.dll:Foundation.NSObject.ConformsToProtocol(ObjCRuntime.NativeHandle)
-Microsoft.MacCatalyst.dll:Foundation.NSObject.CreateManagedRef(System.Boolean)
+Microsoft.MacCatalyst.dll:Foundation.NSObject.CreateManagedRef(System.Boolean, System.Boolean)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.CreateNSObject(System.IntPtr, System.IntPtr, Foundation.NSObject/Flags)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.DangerousAutorelease()
 Microsoft.MacCatalyst.dll:Foundation.NSObject.DangerousAutorelease(ObjCRuntime.NativeHandle)
@@ -135,6 +135,7 @@ Microsoft.MacCatalyst.dll:Foundation.NSObject.DangerousRetain(ObjCRuntime.Native
 Microsoft.MacCatalyst.dll:Foundation.NSObject.Dispose()
 Microsoft.MacCatalyst.dll:Foundation.NSObject.Dispose(System.Boolean)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.DynamicConformsToProtocol(ObjCRuntime.NativeHandle)
+Microsoft.MacCatalyst.dll:Foundation.NSObject.EnsureManagedReference(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.Equals(Foundation.NSObject)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.Equals(System.Object)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.Finalize()
@@ -147,14 +148,12 @@ Microsoft.MacCatalyst.dll:Foundation.NSObject.get_Handle()
 Microsoft.MacCatalyst.dll:Foundation.NSObject.get_InFinalizerQueue()
 Microsoft.MacCatalyst.dll:Foundation.NSObject.get_IsDirectBinding()
 Microsoft.MacCatalyst.dll:Foundation.NSObject.get_IsRegisteredToggleRef()
-Microsoft.MacCatalyst.dll:Foundation.NSObject.get_SuperHandle()
 Microsoft.MacCatalyst.dll:Foundation.NSObject.GetData()
 Microsoft.MacCatalyst.dll:Foundation.NSObject.GetHashCode()
 Microsoft.MacCatalyst.dll:Foundation.NSObject.GetNativeHash()
-Microsoft.MacCatalyst.dll:Foundation.NSObject.GetSuper()
-Microsoft.MacCatalyst.dll:Foundation.NSObject.Initialize()
 Microsoft.MacCatalyst.dll:Foundation.NSObject.InitializeHandle(ObjCRuntime.NativeHandle, System.String, System.Boolean)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.InitializeHandle(ObjCRuntime.NativeHandle, System.String)
+Microsoft.MacCatalyst.dll:Foundation.NSObject.InitializeObject()
 Microsoft.MacCatalyst.dll:Foundation.NSObject.InitializeObject(System.Boolean)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.InvokeConformsToProtocol(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.IsEqual(Foundation.NSObject)
@@ -184,25 +183,19 @@ Microsoft.MacCatalyst.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::R
 Microsoft.MacCatalyst.dll:Foundation.NSObject/Flags Foundation.NSObjectData::flags
 Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer
 Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer..cctor()
-Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer..ctor()
-Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer..ctor(System.IntPtr, ObjCRuntime.IManagedRegistrar)
 Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer.Add(Foundation.NSObject)
 Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer.Drain(Foundation.NSObject)
 Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer.ScheduleDrain()
 Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__
-Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_3055_Foundation_NSObject_NSObject_Disposer__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
-Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_3056_Foundation_NSObject_NSObject_Disposer_Drain(System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
+Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_3064_Foundation_NSObject_NSObject_Disposer_Drain(System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
 Microsoft.MacCatalyst.dll:Foundation.NSObject/XamarinGCHandleFlags
 Microsoft.MacCatalyst.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::HasManagedRef
 Microsoft.MacCatalyst.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::InitialSet
 Microsoft.MacCatalyst.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::None
 Microsoft.MacCatalyst.dll:Foundation.NSObjectData
-Microsoft.MacCatalyst.dll:Foundation.NSObjectData* Foundation.NSObjectDataHandle::data
 Microsoft.MacCatalyst.dll:Foundation.NSObjectData* Foundation.NSObjectDataHandle::Data()
 Microsoft.MacCatalyst.dll:Foundation.NSObjectDataHandle
 Microsoft.MacCatalyst.dll:Foundation.NSObjectDataHandle..ctor()
-Microsoft.MacCatalyst.dll:Foundation.NSObjectDataHandle.CreateHandle(Foundation.NSObject)
-Microsoft.MacCatalyst.dll:Foundation.NSObjectDataHandle.Finalize()
 Microsoft.MacCatalyst.dll:Foundation.NSObjectDataHandle.get_Data()
 Microsoft.MacCatalyst.dll:Foundation.NSObjectFlag
 Microsoft.MacCatalyst.dll:Foundation.NSObjectFlag Foundation.NSObjectFlag::Empty
@@ -230,8 +223,8 @@ Microsoft.MacCatalyst.dll:Foundation.ProtocolAttribute.get_IsInformal()
 Microsoft.MacCatalyst.dll:Foundation.ProtocolAttribute.get_Name()
 Microsoft.MacCatalyst.dll:Foundation.ProtocolAttribute.get_WrapperType()
 Microsoft.MacCatalyst.dll:Foundation.ProtocolMemberAttribute
-Microsoft.MacCatalyst.dll:Foundation.ProtocolMemberAttribute Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31::<>2__current
-Microsoft.MacCatalyst.dll:Foundation.ProtocolMemberAttribute Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31::System.Collections.Generic.IEnumerator<Foundation.ProtocolMemberAttribute>.Current()
+Microsoft.MacCatalyst.dll:Foundation.ProtocolMemberAttribute Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32::<>2__current
+Microsoft.MacCatalyst.dll:Foundation.ProtocolMemberAttribute Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32::System.Collections.Generic.IEnumerator<Foundation.ProtocolMemberAttribute>.Current()
 Microsoft.MacCatalyst.dll:Foundation.ProtocolMemberAttribute.get_ArgumentSemantic()
 Microsoft.MacCatalyst.dll:Foundation.ProtocolMemberAttribute.get_GetterSelector()
 Microsoft.MacCatalyst.dll:Foundation.ProtocolMemberAttribute.get_IsProperty()
@@ -254,6 +247,12 @@ Microsoft.MacCatalyst.dll:Foundation.RegisterAttribute.get_IsStubClass()
 Microsoft.MacCatalyst.dll:Foundation.RegisterAttribute.get_IsWrapper()
 Microsoft.MacCatalyst.dll:Foundation.RegisterAttribute.get_Name()
 Microsoft.MacCatalyst.dll:Foundation.RegisterAttribute.get_SkipRegistration()
+Microsoft.MacCatalyst.dll:Foundation.TrackedMemory
+Microsoft.MacCatalyst.dll:Foundation.TrackedMemory..ctor(System.UIntPtr)
+Microsoft.MacCatalyst.dll:Foundation.TrackedMemory.CreateHandle(Foundation.NSObject)
+Microsoft.MacCatalyst.dll:Foundation.TrackedMemory.Finalize()
+Microsoft.MacCatalyst.dll:Foundation.TrackedMemory.get_Value()
+Microsoft.MacCatalyst.dll:Foundation.TrackedMemory.set_Value(System.IntPtr)
 Microsoft.MacCatalyst.dll:Foundation.You_Should_Not_Call_base_In_This_Method
 Microsoft.MacCatalyst.dll:Foundation.You_Should_Not_Call_base_In_This_Method..ctor()
 Microsoft.MacCatalyst.dll:ObjCRuntime.__Registrar__
@@ -323,7 +322,7 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.Class.GetClassName(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.GetHandle(System.String)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.GetHandle(System.Type)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.GetHashCode()
-Microsoft.MacCatalyst.dll:ObjCRuntime.Class.Initialize(ObjCRuntime.Runtime/InitializationOptions*)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Class.InitializeClass(ObjCRuntime.Runtime/InitializationOptions*)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.Lookup(System.IntPtr, System.Boolean)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.Lookup(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.objc_allocateClassPair(System.IntPtr, System.IntPtr, System.IntPtr)
@@ -361,6 +360,7 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.Dlfcn._dlopen(System.IntPtr, ObjCRuntime.D
 Microsoft.MacCatalyst.dll:ObjCRuntime.Dlfcn._dlopen(System.String, ObjCRuntime.Dlfcn/Mode)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Dlfcn.dlsym(System.IntPtr, System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Dlfcn.dlsym(System.IntPtr, System.String)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Dlfcn.GetIndirect(System.IntPtr, System.String)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Dlfcn.GetIntPtr(System.IntPtr, System.String)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Dlfcn/Mode
 Microsoft.MacCatalyst.dll:ObjCRuntime.Dlfcn/Mode ObjCRuntime.Dlfcn/Mode::First
@@ -440,29 +440,29 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.MarshalObjectiveCExceptionMode ObjCRuntime
 Microsoft.MacCatalyst.dll:ObjCRuntime.Messaging
 Microsoft.MacCatalyst.dll:ObjCRuntime.Messaging.bool_objc_msgSend_IntPtr(System.IntPtr, System.IntPtr, System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Messaging.bool_objc_msgSend_NativeHandle(System.IntPtr, System.IntPtr, ObjCRuntime.NativeHandle)
-Microsoft.MacCatalyst.dll:ObjCRuntime.Messaging.bool_objc_msgSendSuper_IntPtr(System.IntPtr, System.IntPtr, System.IntPtr)
-Microsoft.MacCatalyst.dll:ObjCRuntime.Messaging.bool_objc_msgSendSuper_NativeHandle(System.IntPtr, System.IntPtr, ObjCRuntime.NativeHandle)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Messaging.bool_objc_msgSendSuper_IntPtr(ObjCRuntime.ObjCSuper*, System.IntPtr, System.IntPtr)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Messaging.bool_objc_msgSendSuper_NativeHandle(ObjCRuntime.ObjCSuper*, System.IntPtr, ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Messaging.CGRect_objc_msgSend(System.IntPtr, System.IntPtr)
-Microsoft.MacCatalyst.dll:ObjCRuntime.Messaging.CGRect_objc_msgSendSuper(System.IntPtr, System.IntPtr)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Messaging.CGRect_objc_msgSendSuper(ObjCRuntime.ObjCSuper*, System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Messaging.IntPtr_objc_msgSend_NativeHandle(System.IntPtr, System.IntPtr, ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Messaging.IntPtr_objc_msgSend(System.IntPtr, System.IntPtr)
-Microsoft.MacCatalyst.dll:ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_NativeHandle(System.IntPtr, System.IntPtr, ObjCRuntime.NativeHandle)
-Microsoft.MacCatalyst.dll:ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper(System.IntPtr, System.IntPtr)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_NativeHandle(ObjCRuntime.ObjCSuper*, System.IntPtr, ObjCRuntime.NativeHandle)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper(ObjCRuntime.ObjCSuper*, System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Messaging.NativeHandle_objc_msgSend_CGRect(System.IntPtr, System.IntPtr, CoreGraphics.CGRect)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Messaging.NativeHandle_objc_msgSend_NativeHandle(System.IntPtr, System.IntPtr, ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Messaging.NativeHandle_objc_msgSend(System.IntPtr, System.IntPtr)
-Microsoft.MacCatalyst.dll:ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper_CGRect(System.IntPtr, System.IntPtr, CoreGraphics.CGRect)
-Microsoft.MacCatalyst.dll:ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper_NativeHandle(System.IntPtr, System.IntPtr, ObjCRuntime.NativeHandle)
-Microsoft.MacCatalyst.dll:ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper(System.IntPtr, System.IntPtr)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper_CGRect(ObjCRuntime.ObjCSuper*, System.IntPtr, CoreGraphics.CGRect)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper_NativeHandle(ObjCRuntime.ObjCSuper*, System.IntPtr, ObjCRuntime.NativeHandle)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper(ObjCRuntime.ObjCSuper*, System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Messaging.UIntPtr_objc_msgSend(System.IntPtr, System.IntPtr)
-Microsoft.MacCatalyst.dll:ObjCRuntime.Messaging.UIntPtr_objc_msgSendSuper(System.IntPtr, System.IntPtr)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Messaging.UIntPtr_objc_msgSendSuper(ObjCRuntime.ObjCSuper*, System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle_NativeHandle_bool(System.IntPtr, System.IntPtr, ObjCRuntime.NativeHandle, ObjCRuntime.NativeHandle, System.Byte)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle_UIntPtr(System.IntPtr, System.IntPtr, ObjCRuntime.NativeHandle, System.UIntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle(System.IntPtr, System.IntPtr, ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Messaging.void_objc_msgSend(System.IntPtr, System.IntPtr)
-Microsoft.MacCatalyst.dll:ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle_UIntPtr(System.IntPtr, System.IntPtr, ObjCRuntime.NativeHandle, System.UIntPtr)
-Microsoft.MacCatalyst.dll:ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle(System.IntPtr, System.IntPtr, ObjCRuntime.NativeHandle)
-Microsoft.MacCatalyst.dll:ObjCRuntime.Messaging.void_objc_msgSendSuper(System.IntPtr, System.IntPtr)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle_UIntPtr(ObjCRuntime.ObjCSuper*, System.IntPtr, ObjCRuntime.NativeHandle, System.UIntPtr)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle(ObjCRuntime.ObjCSuper*, System.IntPtr, ObjCRuntime.NativeHandle)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Messaging.void_objc_msgSendSuper(ObjCRuntime.ObjCSuper*, System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Method
 Microsoft.MacCatalyst.dll:ObjCRuntime.Method.get_ConstructorTrampoline()
 Microsoft.MacCatalyst.dll:ObjCRuntime.Method.get_DoubleTrampoline()
@@ -497,8 +497,6 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle Foundation.NSObject::class_pt
 Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle Foundation.NSObject::ClassHandle()
 Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle Foundation.NSObject::handle()
 Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle Foundation.NSObject::Handle()
-Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle Foundation.NSObject::SuperHandle()
-Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle Foundation.NSObjectData::classHandle
 Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle Foundation.NSObjectData::handle
 Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle Foundation.NSString::class_ptr
 Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle Foundation.NSString::ClassHandle()
@@ -508,6 +506,8 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle ObjCRuntime.DisposableObject:
 Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle ObjCRuntime.DisposableObject::Handle()
 Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle ObjCRuntime.INativeObject::Handle()
 Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle ObjCRuntime.NativeHandle::Zero
+Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle ObjCRuntime.ObjCSuper::classHandle
+Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle ObjCRuntime.ObjCSuper::receiver
 Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle ObjCRuntime.Protocol::handle
 Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle ObjCRuntime.Protocol::Handle()
 Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle ObjCRuntime.Runtime/ClassHandles::unused
@@ -553,6 +553,8 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.ObjCException.get_Name()
 Microsoft.MacCatalyst.dll:ObjCRuntime.ObjCException.get_NSException()
 Microsoft.MacCatalyst.dll:ObjCRuntime.ObjCException.get_Reason()
 Microsoft.MacCatalyst.dll:ObjCRuntime.ObjCException.ToString()
+Microsoft.MacCatalyst.dll:ObjCRuntime.ObjCSuper
+Microsoft.MacCatalyst.dll:ObjCRuntime.ObjCSuper..ctor(Foundation.NSObject)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Protocol
 Microsoft.MacCatalyst.dll:ObjCRuntime.Protocol._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Protocol..cctor()
@@ -587,11 +589,10 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.RegistrarHelper/MapInfo
 Microsoft.MacCatalyst.dll:ObjCRuntime.RegistrarHelper/MapInfo..ctor(ObjCRuntime.IManagedRegistrar)
 Microsoft.MacCatalyst.dll:ObjCRuntime.ReleaseAttribute
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime
-Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.<ConstructINativeObject>g__ConstructINativeObjectViaFactoryMethod|289_0`1(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.<ConstructNSObject>g__ConstructNSObjectViaFactoryMethod|288_0`1(ObjCRuntime.NativeHandle)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.<ConstructINativeObject>g__ConstructINativeObjectViaFactoryMethod|296_0`1(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.<ConstructNSObject>g__ConstructNSObjectViaFactoryMethod|295_0`1(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.AllocGCHandle(System.Object, System.Runtime.InteropServices.GCHandleType)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.AllocGCHandle(System.Object)
-Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.AllocZeroed`1()
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.AppendAdditionalInformation(System.Text.StringBuilder, System.IntPtr, System.RuntimeMethodHandle)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.attempt_retain_nsobject(System.IntPtr, System.IntPtr*)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.AttemptRetainNSObject(System.IntPtr)
@@ -634,6 +635,7 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.get_method_for_selector(System.Int
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.get_method_from_token(System.UInt32, System.IntPtr*)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.get_nsobject_with_type(System.IntPtr, System.IntPtr, System.Int32*, System.IntPtr*)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.get_object_type_fullname(System.IntPtr, System.IntPtr*)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.get_RegisterObjectsBeforeInit()
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.get_selector(System.IntPtr, System.IntPtr*)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.GetBlockProxyAttributeMethod(System.Reflection.MethodInfo, System.Int32)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.GetBlockWrapperCreator(System.IntPtr, System.Int32)
@@ -641,6 +643,7 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.GetBlockWrapperCreator(System.Refl
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.GetClass(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.GetExceptionMessage(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.GetExportAttribute(System.Reflection.MethodInfo)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.GetGCHandleForObject(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.GetGCHandleTarget(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.GetHandleForINativeObject(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.GetINativeObject_Dynamic(System.IntPtr, System.SByte, System.IntPtr)
@@ -701,7 +704,7 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.RegisterDelegates(ObjCRuntime.Runt
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.RegisterDelegatesDynamic(ObjCRuntime.Runtime/InitializationOptions*)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.RegisterEntryAssembly(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.RegisterEntryAssembly(System.Reflection.Assembly)
-Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.RegisterNSObject(Foundation.NSObject, System.IntPtr)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.RegisterNSObject(Foundation.NSObject, System.IntPtr, System.Boolean)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.ReleaseBlockOnMainThread(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.ReleaseBlockWhenDelegateIsCollected(System.IntPtr, System.Delegate)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.RemoveFromObjectMap(Foundation.NSObject)
@@ -720,15 +723,19 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.ThrowNSException(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.try_get_or_construct_nsobject(System.IntPtr, System.IntPtr*)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.TryGetIsUserType(System.IntPtr, out System.Boolean&, out System.String&)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.TryGetNSObject(System.IntPtr, System.Boolean)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.TryGetNSObjectFromIvar(System.IntPtr, System.Boolean)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.TryGetNSObjectFromIvar(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.TryGetOrConstructNSObjectWrapped(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.TryReleaseINativeObject(ObjCRuntime.INativeObject)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.TypeGetFullName(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.unregister_nsobject(System.IntPtr, System.IntPtr, System.IntPtr*)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.UnregisterNSObject(System.IntPtr, Foundation.NSObject)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.UnregisterNSObject(System.IntPtr, System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.UnregisterNSObject(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.unwrap_ns_exception(System.IntPtr, System.IntPtr*)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.UnwrapNSException(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.write(System.Int32, System.Byte[], System.IntPtr)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.xamarin_get_gchandle(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.xamarin_is_user_type(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.xamarin_log(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime/ClassHandles
@@ -796,14 +803,6 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.Selector.GetName(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Selector.sel_getName(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Selector.sel_isMapped(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Selector.sel_registerName(System.IntPtr)
-Microsoft.MacCatalyst.dll:ObjCRuntime.Stret
-Microsoft.MacCatalyst.dll:ObjCRuntime.Stret.AlignAndAdd(System.Type, System.Int32, System.Int32, System.Int32&)
-Microsoft.MacCatalyst.dll:ObjCRuntime.Stret.GetTypeName(System.Type)
-Microsoft.MacCatalyst.dll:ObjCRuntime.Stret.GetValueTypeSize(System.Type, System.Collections.Generic.List`1<System.Type>, System.Object)
-Microsoft.MacCatalyst.dll:ObjCRuntime.Stret.GetValueTypeSize(System.Type, System.Type, System.Collections.Generic.List`1<System.Type>, System.Int32&, System.Int32&, System.Object)
-Microsoft.MacCatalyst.dll:ObjCRuntime.Stret.IsBuiltInType(System.Type, out System.Int32&)
-Microsoft.MacCatalyst.dll:ObjCRuntime.Stret.IsBuiltInType(System.Type)
-Microsoft.MacCatalyst.dll:ObjCRuntime.Stret.X86_64NeedStret(System.Type, System.Object)
 Microsoft.MacCatalyst.dll:ObjCRuntime.StringEqualityComparer
 Microsoft.MacCatalyst.dll:ObjCRuntime.StringEqualityComparer ObjCRuntime.RegistrarHelper::StringEqualityComparer
 Microsoft.MacCatalyst.dll:ObjCRuntime.StringEqualityComparer..ctor()
@@ -939,12 +938,12 @@ Microsoft.MacCatalyst.dll:Registrar.DynamicRegistrar.TryGetEnumUnderlyingType(Sy
 Microsoft.MacCatalyst.dll:Registrar.DynamicRegistrar.TryMatchProperty(System.Type, System.Reflection.PropertyInfo)
 Microsoft.MacCatalyst.dll:Registrar.DynamicRegistrar.TypeMatch(System.Type, System.Type)
 Microsoft.MacCatalyst.dll:Registrar.DynamicRegistrar.VerifyIsConstrainedToNSObject(System.Type, out System.Type&)
-Microsoft.MacCatalyst.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31
-Microsoft.MacCatalyst.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31..ctor(System.Int32)
-Microsoft.MacCatalyst.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31.MoveNext()
-Microsoft.MacCatalyst.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31.System.Collections.Generic.IEnumerable<Foundation.ProtocolMemberAttribute>.GetEnumerator()
-Microsoft.MacCatalyst.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31.System.Collections.Generic.IEnumerator<Foundation.ProtocolMemberAttribute>.get_Current()
-Microsoft.MacCatalyst.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31.System.IDisposable.Dispose()
+Microsoft.MacCatalyst.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32
+Microsoft.MacCatalyst.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32..ctor(System.Int32)
+Microsoft.MacCatalyst.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32.MoveNext()
+Microsoft.MacCatalyst.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32.System.Collections.Generic.IEnumerable<Foundation.ProtocolMemberAttribute>.GetEnumerator()
+Microsoft.MacCatalyst.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32.System.Collections.Generic.IEnumerator<Foundation.ProtocolMemberAttribute>.get_Current()
+Microsoft.MacCatalyst.dll:Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32.System.IDisposable.Dispose()
 Microsoft.MacCatalyst.dll:Registrar.Registrar
 Microsoft.MacCatalyst.dll:Registrar.Registrar Registrar.Registrar/ObjCMember::Registrar
 Microsoft.MacCatalyst.dll:Registrar.Registrar Registrar.Registrar/ObjCType::Registrar
@@ -973,7 +972,6 @@ Microsoft.MacCatalyst.dll:Registrar.Registrar.CreateExceptionImpl(System.Int32, 
 Microsoft.MacCatalyst.dll:Registrar.Registrar.CreateExceptionImpl(System.Int32, System.Boolean, System.String, System.Object[])
 Microsoft.MacCatalyst.dll:Registrar.Registrar.CreateExceptionImpl(System.Int32, System.Boolean, System.Type, System.String, System.Object[])
 Microsoft.MacCatalyst.dll:Registrar.Registrar.CreateSetterSelector(System.String)
-Microsoft.MacCatalyst.dll:Registrar.Registrar.CreateWarning(System.Int32, Registrar.Registrar/ObjCMember, System.String, System.Object[])
 Microsoft.MacCatalyst.dll:Registrar.Registrar.FindMethods(System.Type, System.String)
 Microsoft.MacCatalyst.dll:Registrar.Registrar.FindProperty(System.Type, System.String)
 Microsoft.MacCatalyst.dll:Registrar.Registrar.FindType(System.Type, System.String, System.String)
@@ -1069,6 +1067,7 @@ Microsoft.MacCatalyst.dll:Registrar.Registrar.RegisterType(System.Type, System.C
 Microsoft.MacCatalyst.dll:Registrar.Registrar.RegisterType(System.Type)
 Microsoft.MacCatalyst.dll:Registrar.Registrar.RegisterTypeUnsafe(System.Type, System.Collections.Generic.List`1<System.Exception>&)
 Microsoft.MacCatalyst.dll:Registrar.Registrar.ReportError(System.Int32, System.String, System.Object[])
+Microsoft.MacCatalyst.dll:Registrar.Registrar.ReportWarning(System.Int32, System.String, System.Object[])
 Microsoft.MacCatalyst.dll:Registrar.Registrar.SanitizeObjectiveCName(System.String)
 Microsoft.MacCatalyst.dll:Registrar.Registrar.SkipRegisterAssembly(System.Reflection.Assembly)
 Microsoft.MacCatalyst.dll:Registrar.Registrar.ToSignature(System.Type, Registrar.Registrar/ObjCMember, System.Boolean)
@@ -1120,6 +1119,7 @@ Microsoft.MacCatalyst.dll:Registrar.Registrar/ObjCMethod.get_ReturnType()
 Microsoft.MacCatalyst.dll:Registrar.Registrar/ObjCMethod.get_Signature()
 Microsoft.MacCatalyst.dll:Registrar.Registrar/ObjCMethod.get_Trampoline()
 Microsoft.MacCatalyst.dll:Registrar.Registrar/ObjCMethod.IsValidToManagedTypeConversion(System.Type, System.Type)
+Microsoft.MacCatalyst.dll:Registrar.Registrar/ObjCMethod.PrepareNativeParameters()
 Microsoft.MacCatalyst.dll:Registrar.Registrar/ObjCMethod.set_IsConstructor(System.Boolean)
 Microsoft.MacCatalyst.dll:Registrar.Registrar/ObjCMethod.set_IsStatic(System.Boolean)
 Microsoft.MacCatalyst.dll:Registrar.Registrar/ObjCMethod.set_Parameters(System.Type[])
@@ -1229,6 +1229,7 @@ Microsoft.MacCatalyst.dll:System.Boolean ObjCRuntime.DisposableObject::owns
 Microsoft.MacCatalyst.dll:System.Boolean ObjCRuntime.RegistrarHelper/MapInfo::RegisteredWrapperTypes
 Microsoft.MacCatalyst.dll:System.Boolean ObjCRuntime.Runtime::initialized
 Microsoft.MacCatalyst.dll:System.Boolean ObjCRuntime.Runtime::IsARM64CallingConvention
+Microsoft.MacCatalyst.dll:System.Boolean ObjCRuntime.Runtime::RegisterObjectsBeforeInit()
 Microsoft.MacCatalyst.dll:System.Boolean ObjCRuntime.RuntimeException::<Error>k__BackingField
 Microsoft.MacCatalyst.dll:System.Boolean ObjCRuntime.RuntimeException::Error()
 Microsoft.MacCatalyst.dll:System.Boolean Registrar.DynamicRegistrar::computed_class_count
@@ -1264,7 +1265,6 @@ Microsoft.MacCatalyst.dll:System.Boolean Registrar.Registrar/ObjCType::IsModel
 Microsoft.MacCatalyst.dll:System.Boolean Registrar.Registrar/ObjCType::IsProtocol
 Microsoft.MacCatalyst.dll:System.Boolean Registrar.Registrar/ObjCType::IsWrapper
 Microsoft.MacCatalyst.dll:System.Boolean UIKit.UIApplication::CheckForEventAndDelegateMismatches
-Microsoft.MacCatalyst.dll:System.Boolean UIKit.UIApplication::CheckForIllegalCrossThreadCalls
 Microsoft.MacCatalyst.dll:System.Boolean[] Foundation.ProtocolMemberAttribute::ParameterByRef()
 Microsoft.MacCatalyst.dll:System.Byte Registrar.Registrar/ObjCField::Alignment
 Microsoft.MacCatalyst.dll:System.Char[] Registrar.Registrar/ObjCType::invalidSelectorCharacters
@@ -1283,6 +1283,7 @@ Microsoft.MacCatalyst.dll:System.Collections.Generic.Dictionary`2<System.String,
 Microsoft.MacCatalyst.dll:System.Collections.Generic.Dictionary`2<System.String,System.Type> Registrar.Registrar::protocol_map
 Microsoft.MacCatalyst.dll:System.Collections.Generic.Dictionary`2<System.String,System.Type> Registrar.Registrar::type_map
 Microsoft.MacCatalyst.dll:System.Collections.Generic.Dictionary`2<System.Type,Registrar.Registrar/ObjCType> Registrar.Registrar::types
+Microsoft.MacCatalyst.dll:System.Collections.Generic.Dictionary`2<System.Type,System.Collections.Generic.Dictionary`2<System.Reflection.MethodBase,System.Collections.Generic.List`1<System.Reflection.MethodBase>>> Registrar.DynamicRegistrar::cached_interface_method_mappings
 Microsoft.MacCatalyst.dll:System.Collections.Generic.Dictionary`2<System.Type,System.IntPtr> ObjCRuntime.Class::type_to_class
 Microsoft.MacCatalyst.dll:System.Collections.Generic.Dictionary`2<System.Type,System.Object> Registrar.DynamicRegistrar::custom_type_map
 Microsoft.MacCatalyst.dll:System.Collections.Generic.Dictionary`2<System.Type,System.Reflection.ConstructorInfo> ObjCRuntime.Runtime::intptr_bool_ctor_cache
@@ -1300,7 +1301,7 @@ Microsoft.MacCatalyst.dll:System.Collections.Generic.List`1<System.Reflection.As
 Microsoft.MacCatalyst.dll:System.Exception ObjCRuntime.MarshalManagedExceptionEventArgs::<Exception>k__BackingField
 Microsoft.MacCatalyst.dll:System.Exception ObjCRuntime.MarshalManagedExceptionEventArgs::Exception()
 Microsoft.MacCatalyst.dll:System.Func`2<ObjCRuntime.NativeHandle,System.String> CoreFoundation.CFArray/<>O::<0>__FromHandle
-Microsoft.MacCatalyst.dll:System.Func`2<ObjCRuntime.NativeHandle,T> CoreFoundation.CFArray/<ArrayFromHandle>O__25_0`1::<0>__DefaultConvert
+Microsoft.MacCatalyst.dll:System.Func`2<ObjCRuntime.NativeHandle,T> CoreFoundation.CFArray/<ArrayFromHandle>O__23_0`1::<0>__DefaultConvert
 Microsoft.MacCatalyst.dll:System.Int32 Foundation.NSDictionary::System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<Foundation.NSObject,Foundation.NSObject>>.Count()
 Microsoft.MacCatalyst.dll:System.Int32 Foundation.NSDictionary/<GetEnumerator>d__66::<>1__state
 Microsoft.MacCatalyst.dll:System.Int32 Foundation.NSDictionary/<GetEnumerator>d__66::<>7__wrap2
@@ -1322,17 +1323,21 @@ Microsoft.MacCatalyst.dll:System.Int32 ObjCRuntime.Runtime/MTRegistrationMap::sk
 Microsoft.MacCatalyst.dll:System.Int32 ObjCRuntime.RuntimeException::<Code>k__BackingField
 Microsoft.MacCatalyst.dll:System.Int32 ObjCRuntime.RuntimeException::Code()
 Microsoft.MacCatalyst.dll:System.Int32 ObjCRuntime.TransientString/Encoding::value__
-Microsoft.MacCatalyst.dll:System.Int32 Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31::<>1__state
-Microsoft.MacCatalyst.dll:System.Int32 Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31::<>7__wrap2
-Microsoft.MacCatalyst.dll:System.Int32 Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31::<>l__initialThreadId
+Microsoft.MacCatalyst.dll:System.Int32 Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32::<>1__state
+Microsoft.MacCatalyst.dll:System.Int32 Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32::<>7__wrap2
+Microsoft.MacCatalyst.dll:System.Int32 Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32::<>l__initialThreadId
 Microsoft.MacCatalyst.dll:System.Int32 Registrar.Registrar/ObjCField::Size
 Microsoft.MacCatalyst.dll:System.Int32 Registrar.Trampoline::value__
 Microsoft.MacCatalyst.dll:System.Int64 Foundation.NSComparisonResult::value__
 Microsoft.MacCatalyst.dll:System.IntPtr CoreFoundation.CFArray::_CFNullHandle()
+Microsoft.MacCatalyst.dll:System.IntPtr CoreFoundation.CFArray::_CFTypeArrayCallbacks()
+Microsoft.MacCatalyst.dll:System.IntPtr CoreFoundation.CFArray::kCFTypeArrayCallbacks_ptr
 Microsoft.MacCatalyst.dll:System.IntPtr CoreFoundation.CFRange::len
 Microsoft.MacCatalyst.dll:System.IntPtr CoreFoundation.CFRange::loc
 Microsoft.MacCatalyst.dll:System.IntPtr Foundation.NSObject::__data
 Microsoft.MacCatalyst.dll:System.IntPtr Foundation.NSObject/NSObject_Disposer::class_ptr
+Microsoft.MacCatalyst.dll:System.IntPtr Foundation.TrackedMemory::<Value>k__BackingField
+Microsoft.MacCatalyst.dll:System.IntPtr Foundation.TrackedMemory::Value()
 Microsoft.MacCatalyst.dll:System.IntPtr ObjCRuntime.AdoptsAttribute::ProtocolHandle()
 Microsoft.MacCatalyst.dll:System.IntPtr ObjCRuntime.BlockCollector::block
 Microsoft.MacCatalyst.dll:System.IntPtr ObjCRuntime.Libraries/CoreFoundation::Handle
@@ -1488,7 +1493,7 @@ Microsoft.MacCatalyst.dll:System.Object Foundation.NSObject/NSObject_Disposer::l
 Microsoft.MacCatalyst.dll:System.Object ObjCRuntime.Class::verification_lock
 Microsoft.MacCatalyst.dll:System.Object ObjCRuntime.Runtime::lock_obj
 Microsoft.MacCatalyst.dll:System.Object Registrar.DynamicRegistrar::lock_obj
-Microsoft.MacCatalyst.dll:System.Object[] Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31::<>7__wrap1
+Microsoft.MacCatalyst.dll:System.Object[] Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32::<>7__wrap1
 Microsoft.MacCatalyst.dll:System.Reflection.Assembly Foundation.NSObject::PlatformAssembly
 Microsoft.MacCatalyst.dll:System.Reflection.MethodBase Registrar.Registrar::conforms_to_protocol
 Microsoft.MacCatalyst.dll:System.Reflection.MethodBase Registrar.Registrar::invoke_conforms_to_protocol
@@ -1496,9 +1501,10 @@ Microsoft.MacCatalyst.dll:System.Reflection.MethodBase Registrar.Registrar/ObjCM
 Microsoft.MacCatalyst.dll:System.Reflection.PropertyInfo Registrar.Registrar/ObjCProperty::Property
 Microsoft.MacCatalyst.dll:System.Reflection.TypeFilter Registrar.SharedDynamic/<>c::<>9__0_0
 Microsoft.MacCatalyst.dll:System.Runtime.CompilerServices.ConditionalWeakTable`2<Foundation.NSObject,Foundation.NSObjectDataHandle> Foundation.NSObject::data_table
+Microsoft.MacCatalyst.dll:System.Runtime.CompilerServices.ConditionalWeakTable`2<Foundation.NSObject,Foundation.TrackedMemory> Foundation.NSObject::super_map
 Microsoft.MacCatalyst.dll:System.Runtime.CompilerServices.ConditionalWeakTable`2<System.Delegate,ObjCRuntime.BlockCollector> ObjCRuntime.Runtime::block_lifetime_table
 Microsoft.MacCatalyst.dll:System.Runtime.CompilerServices.ConditionalWeakTable`2<System.Reflection.Assembly,System.String> ObjCRuntime.Class::assembly_to_name
-Microsoft.MacCatalyst.dll:System.Runtime.InteropServices.GCHandle Foundation.NSObjectDataHandle::handle
+Microsoft.MacCatalyst.dll:System.Runtime.InteropServices.GCHandle Foundation.TrackedMemory::handle
 Microsoft.MacCatalyst.dll:System.Runtime.InteropServices.NFloat CoreGraphics.CGRect::height
 Microsoft.MacCatalyst.dll:System.Runtime.InteropServices.NFloat CoreGraphics.CGRect::width
 Microsoft.MacCatalyst.dll:System.Runtime.InteropServices.NFloat CoreGraphics.CGRect::x
@@ -1547,7 +1553,7 @@ Microsoft.MacCatalyst.dll:System.String Registrar.Registrar/ObjCType::ExportedNa
 Microsoft.MacCatalyst.dll:System.String Registrar.Registrar/ObjCType::ProtocolName()
 Microsoft.MacCatalyst.dll:System.String[] Foundation.NSException::CallStackSymbols()
 Microsoft.MacCatalyst.dll:System.String[] Registrar.Registrar/ObjCType::AdoptedProtocols
-Microsoft.MacCatalyst.dll:System.Threading.Thread UIKit.UIApplication::mainThread
+Microsoft.MacCatalyst.dll:System.Threading.Thread ObjCRuntime.Runtime::mainThread
 Microsoft.MacCatalyst.dll:System.Type Foundation.ProtocolAttribute::<WrapperType>k__BackingField
 Microsoft.MacCatalyst.dll:System.Type Foundation.ProtocolAttribute::WrapperType()
 Microsoft.MacCatalyst.dll:System.Type Foundation.ProtocolMemberAttribute::PropertyType()
@@ -1556,8 +1562,8 @@ Microsoft.MacCatalyst.dll:System.Type ObjCRuntime.BindAsAttribute::OriginalType
 Microsoft.MacCatalyst.dll:System.Type ObjCRuntime.BindAsAttribute::Type
 Microsoft.MacCatalyst.dll:System.Type ObjCRuntime.BlockProxyAttribute::Type()
 Microsoft.MacCatalyst.dll:System.Type ObjCRuntime.CategoryAttribute::Type()
-Microsoft.MacCatalyst.dll:System.Type Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31::<>3__type
-Microsoft.MacCatalyst.dll:System.Type Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__31::type
+Microsoft.MacCatalyst.dll:System.Type Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32::<>3__type
+Microsoft.MacCatalyst.dll:System.Type Registrar.DynamicRegistrar/<GetProtocolMemberAttributes>d__32::type
 Microsoft.MacCatalyst.dll:System.Type Registrar.Registrar/ObjCMethod::native_return_type
 Microsoft.MacCatalyst.dll:System.Type Registrar.Registrar/ObjCMethod::NativeReturnType()
 Microsoft.MacCatalyst.dll:System.Type Registrar.Registrar/ObjCMethod::return_type
@@ -1592,8 +1598,9 @@ Microsoft.MacCatalyst.dll:UIKit.UIApplication._Xamarin_ConstructNSObject(ObjCRun
 Microsoft.MacCatalyst.dll:UIKit.UIApplication..cctor()
 Microsoft.MacCatalyst.dll:UIKit.UIApplication..ctor(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:UIKit.UIApplication.Dispose(System.Boolean)
+Microsoft.MacCatalyst.dll:UIKit.UIApplication.EnsureUIThread()
 Microsoft.MacCatalyst.dll:UIKit.UIApplication.get_ClassHandle()
-Microsoft.MacCatalyst.dll:UIKit.UIApplication.Initialize()
+Microsoft.MacCatalyst.dll:UIKit.UIApplication.InitializeApplication()
 Microsoft.MacCatalyst.dll:UIKit.UIApplication.Main(System.String[], System.Type, System.Type)
 Microsoft.MacCatalyst.dll:UIKit.UIApplication.UIApplicationMain(System.Int32, System.String[], System.IntPtr, System.IntPtr)
 Microsoft.MacCatalyst.dll:UIKit.UIApplication.xamarin_UIApplicationMain(System.Int32, System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
@@ -1606,7 +1613,7 @@ Microsoft.MacCatalyst.dll:UIKit.UIApplicationDelegate..ctor(ObjCRuntime.NativeHa
 Microsoft.MacCatalyst.dll:UIKit.UIApplicationDelegate..ctor(System.IntPtr, ObjCRuntime.IManagedRegistrar)
 Microsoft.MacCatalyst.dll:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)
 Microsoft.MacCatalyst.dll:UIKit.UIApplicationDelegate/__Registrar_Callbacks__
-Microsoft.MacCatalyst.dll:UIKit.UIApplicationDelegate/__Registrar_Callbacks__.callback_568_UIKit_UIApplicationDelegate__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
+Microsoft.MacCatalyst.dll:UIKit.UIApplicationDelegate/__Registrar_Callbacks__.callback_573_UIKit_UIApplicationDelegate__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
 Microsoft.MacCatalyst.dll:UIKit.UIButton
 Microsoft.MacCatalyst.dll:UIKit.UIButton._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.MacCatalyst.dll:UIKit.UIButton._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
@@ -1792,6 +1799,8 @@ System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeS
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=696_Align=8 <PrivateImplementationDetails>::02BF302F66F50150BCF5E322DA879E92E417084D14FBE4F5345DDCB68F863E518
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=76_Align=4
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=76_Align=4 <PrivateImplementationDetails>::25308BAB47481701F1E861B1EA4F2409E73ABB14E9579C26DF4ABE440A0DCF0A4
+System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=8_Align=2
+System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=8_Align=2 <PrivateImplementationDetails>::8BFD94DEAAC0F168DC8B50A00AC120A113B550B68FEF344F807D503D1A6E5DED2
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=88_Align=8
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=88_Align=8 <PrivateImplementationDetails>::40EC13C575237954625B718CA2B291A90543D086FE5E3258F158FDDD3A9067CC8
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=936_Align=4
@@ -2818,7 +2827,9 @@ System.Private.CoreLib.dll:System.Boolean System.Type::IsGenericType()
 System.Private.CoreLib.dll:System.Boolean System.Type::IsGenericTypeDefinition()
 System.Private.CoreLib.dll:System.Boolean System.Type::IsInterface()
 System.Private.CoreLib.dll:System.Boolean System.Type::IsNested()
+System.Private.CoreLib.dll:System.Boolean System.Type::IsNestedAssembly()
 System.Private.CoreLib.dll:System.Boolean System.Type::IsNestedPrivate()
+System.Private.CoreLib.dll:System.Boolean System.Type::IsNestedPublic()
 System.Private.CoreLib.dll:System.Boolean System.Type::IsNotPublic()
 System.Private.CoreLib.dll:System.Boolean System.Type::IsPointer()
 System.Private.CoreLib.dll:System.Boolean System.Type::IsPrimitive()
@@ -4156,6 +4167,7 @@ System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicDependencyAttr
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute..ctor(System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes, System.Type)
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute..ctor(System.String, System.String, System.String)
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute..ctor(System.String, System.Type)
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute..ctor(System.String)
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.MaybeNullAttribute
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.MaybeNullAttribute..ctor()
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribute
@@ -6582,7 +6594,6 @@ System.Private.CoreLib.dll:System.Int32 System.Runtime.InteropServices.CallingCo
 System.Private.CoreLib.dll:System.Int32 System.Runtime.InteropServices.CharSet::value__
 System.Private.CoreLib.dll:System.Int32 System.Runtime.InteropServices.DllImportSearchPath::value__
 System.Private.CoreLib.dll:System.Int32 System.Runtime.InteropServices.FieldOffsetAttribute::<Value>k__BackingField
-System.Private.CoreLib.dll:System.Int32 System.Runtime.InteropServices.FieldOffsetAttribute::Value()
 System.Private.CoreLib.dll:System.Int32 System.Runtime.InteropServices.GCHandleType::value__
 System.Private.CoreLib.dll:System.Int32 System.Runtime.InteropServices.Marshal::SystemDefaultCharSize
 System.Private.CoreLib.dll:System.Int32 System.Runtime.InteropServices.Marshal::SystemMaxDBCSCharSize
@@ -7059,8 +7070,7 @@ System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEntry.ToSpecifiedFull
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEntry/FileNameBuffer
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEntry/FileNameBuffer System.IO.Enumeration.FileSystemEntry::_fileNameBuffer
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerable`1
-System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerable`1..ctor(System.String, System.IO.Enumeration.FileSystemEnumerable`1/FindTransform<TResult>, System.IO.EnumerationOptions, System.Boolean)
-System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerable`1..ctor(System.String, System.IO.Enumeration.FileSystemEnumerable`1/FindTransform<TResult>, System.IO.EnumerationOptions)
+System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerable`1..ctor(System.String, System.IO.Enumeration.FileSystemEnumerable`1/FindTransform<TResult>, System.IO.EnumerationOptions, System.Boolean, System.String)
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerable`1.get_ShouldIncludePredicate()
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerable`1.get_ShouldRecursePredicate()
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerable`1.GetEnumerator()
@@ -7109,8 +7119,9 @@ System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerableFactory/<>c
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerableFactory/<>c.<UserEntries>b__4_0(System.IO.Enumeration.FileSystemEntry&)
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerableFactory/<>c.<UserFiles>b__2_0(System.IO.Enumeration.FileSystemEntry&)
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerator`1
+System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerator`1..ctor(System.String, System.Boolean, System.IO.EnumerationOptions, System.String)
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerator`1..ctor(System.String, System.Boolean, System.IO.EnumerationOptions)
-System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerator`1.<MoveNext>g__ShouldSkip|35_0(System.IO.FileAttributes)
+System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerator`1.<MoveNext>g__ShouldSkip|36_0(System.IO.FileAttributes)
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerator`1.CloseDirectoryHandle()
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerator`1.ContinueOnError(System.Int32)
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerator`1.CreateDirectoryHandle(System.String, System.Boolean)
@@ -7132,6 +7143,7 @@ System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerator`1.ShouldIn
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerator`1.ShouldRecurseIntoEntry(System.IO.Enumeration.FileSystemEntry&)
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerator`1.TransformEntry(System.IO.Enumeration.FileSystemEntry&)
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemName
+System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemName.EscapeExpression(System.String)
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemName.MatchesSimpleExpression(System.ReadOnlySpan`1<System.Char>, System.ReadOnlySpan`1<System.Char>, System.Boolean)
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemName.MatchesWin32Expression(System.ReadOnlySpan`1<System.Char>, System.ReadOnlySpan`1<System.Char>, System.Boolean)
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemName.MatchPattern(System.ReadOnlySpan`1<System.Char>, System.ReadOnlySpan`1<System.Char>, System.Boolean, System.Boolean)
@@ -9116,6 +9128,7 @@ System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeEnumBuilder.GetEvent(Sy
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeEnumBuilder.GetField(System.String, System.Reflection.BindingFlags)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeEnumBuilder.GetFields(System.Reflection.BindingFlags)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeEnumBuilder.GetInterfaces()
+System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeEnumBuilder.GetMembers(System.Reflection.BindingFlags)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeEnumBuilder.GetMethodImpl(System.String, System.Reflection.BindingFlags, System.Reflection.Binder, System.Reflection.CallingConventions, System.Type[], System.Reflection.ParameterModifier[])
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeEnumBuilder.GetMethods(System.Reflection.BindingFlags)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeEnumBuilder.GetProperties(System.Reflection.BindingFlags)
@@ -9161,6 +9174,7 @@ System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeGenericTypeParameterBui
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeGenericTypeParameterBuilder.GetField(System.String, System.Reflection.BindingFlags)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeGenericTypeParameterBuilder.GetFields(System.Reflection.BindingFlags)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeGenericTypeParameterBuilder.GetInterfaces()
+System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeGenericTypeParameterBuilder.GetMembers(System.Reflection.BindingFlags)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeGenericTypeParameterBuilder.GetMethodImpl(System.String, System.Reflection.BindingFlags, System.Reflection.Binder, System.Reflection.CallingConventions, System.Type[], System.Reflection.ParameterModifier[])
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeGenericTypeParameterBuilder.GetMethods(System.Reflection.BindingFlags)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeGenericTypeParameterBuilder.GetProperties(System.Reflection.BindingFlags)
@@ -9310,6 +9324,7 @@ System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeTypeBuilder.GetGenericA
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeTypeBuilder.GetGenericTypeDefinition()
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeTypeBuilder.GetInterfaceMap(System.Type)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeTypeBuilder.GetInterfaces()
+System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeTypeBuilder.GetMembers(System.Reflection.BindingFlags)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeTypeBuilder.GetMethodImpl(System.String, System.Reflection.BindingFlags, System.Reflection.Binder, System.Reflection.CallingConventions, System.Type[], System.Reflection.ParameterModifier[])
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeTypeBuilder.GetMethods(System.Reflection.BindingFlags)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeTypeBuilder.GetMethodsByName(System.String, System.Reflection.BindingFlags, System.Boolean)
@@ -9399,6 +9414,7 @@ System.Private.CoreLib.dll:System.Reflection.Emit.SymbolType.GetField(System.Str
 System.Private.CoreLib.dll:System.Reflection.Emit.SymbolType.GetFields(System.Reflection.BindingFlags)
 System.Private.CoreLib.dll:System.Reflection.Emit.SymbolType.GetInterfaceMap(System.Type)
 System.Private.CoreLib.dll:System.Reflection.Emit.SymbolType.GetInterfaces()
+System.Private.CoreLib.dll:System.Reflection.Emit.SymbolType.GetMembers(System.Reflection.BindingFlags)
 System.Private.CoreLib.dll:System.Reflection.Emit.SymbolType.GetMethodImpl(System.String, System.Reflection.BindingFlags, System.Reflection.Binder, System.Reflection.CallingConventions, System.Type[], System.Reflection.ParameterModifier[])
 System.Private.CoreLib.dll:System.Reflection.Emit.SymbolType.GetMethods(System.Reflection.BindingFlags)
 System.Private.CoreLib.dll:System.Reflection.Emit.SymbolType.GetProperties(System.Reflection.BindingFlags)
@@ -9474,6 +9490,7 @@ System.Private.CoreLib.dll:System.Reflection.Emit.TypeBuilderInstantiation.GetGe
 System.Private.CoreLib.dll:System.Reflection.Emit.TypeBuilderInstantiation.GetGenericTypeDefinition()
 System.Private.CoreLib.dll:System.Reflection.Emit.TypeBuilderInstantiation.GetInterfaceMap(System.Type)
 System.Private.CoreLib.dll:System.Reflection.Emit.TypeBuilderInstantiation.GetInterfaces()
+System.Private.CoreLib.dll:System.Reflection.Emit.TypeBuilderInstantiation.GetMembers(System.Reflection.BindingFlags)
 System.Private.CoreLib.dll:System.Reflection.Emit.TypeBuilderInstantiation.GetMethodImpl(System.String, System.Reflection.BindingFlags, System.Reflection.Binder, System.Reflection.CallingConventions, System.Type[], System.Reflection.ParameterModifier[])
 System.Private.CoreLib.dll:System.Reflection.Emit.TypeBuilderInstantiation.GetMethods(System.Reflection.BindingFlags)
 System.Private.CoreLib.dll:System.Reflection.Emit.TypeBuilderInstantiation.GetProperties(System.Reflection.BindingFlags)
@@ -9711,8 +9728,11 @@ System.Private.CoreLib.dll:System.Reflection.MemberInfo.get_ReflectedType()
 System.Private.CoreLib.dll:System.Reflection.MemberInfo.GetCustomAttributes(System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.MemberInfo.GetCustomAttributes(System.Type, System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.MemberInfo.GetHashCode()
+System.Private.CoreLib.dll:System.Reflection.MemberInfo.HasSameMetadataDefinitionAs(System.Reflection.MemberInfo)
+System.Private.CoreLib.dll:System.Reflection.MemberInfo.HasSameMetadataDefinitionAsCore`1(System.Reflection.MemberInfo)
 System.Private.CoreLib.dll:System.Reflection.MemberInfo.IsDefined(System.Type, System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.MemberInfo.op_Equality(System.Reflection.MemberInfo, System.Reflection.MemberInfo)
+System.Private.CoreLib.dll:System.Reflection.MemberInfo.op_Inequality(System.Reflection.MemberInfo, System.Reflection.MemberInfo)
 System.Private.CoreLib.dll:System.Reflection.MemberTypes
 System.Private.CoreLib.dll:System.Reflection.MemberTypes System.Reflection.ConstructorInfo::MemberType()
 System.Private.CoreLib.dll:System.Reflection.MemberTypes System.Reflection.Emit.ConstructorOnTypeBuilderInstantiation::MemberType()
@@ -9733,6 +9753,8 @@ System.Private.CoreLib.dll:System.Reflection.MemberTypes System.Reflection.Prope
 System.Private.CoreLib.dll:System.Reflection.MemberTypes System.Reflection.SignatureType::MemberType()
 System.Private.CoreLib.dll:System.Reflection.MemberTypes System.RuntimeType::MemberType()
 System.Private.CoreLib.dll:System.Reflection.MemberTypes System.Type::MemberType()
+System.Private.CoreLib.dll:System.Reflection.Metadata.TypeNameParserHelpers
+System.Private.CoreLib.dll:System.Reflection.Metadata.TypeNameParserHelpers.IndexOfNamespaceDelimiter(System.ReadOnlySpan`1<System.Char>)
 System.Private.CoreLib.dll:System.Reflection.MethodAttributes
 System.Private.CoreLib.dll:System.Reflection.MethodAttributes System.Reflection.Emit.ConstructorOnTypeBuilderInstantiation::Attributes()
 System.Private.CoreLib.dll:System.Reflection.MethodAttributes System.Reflection.Emit.DynamicMethod::_attributes
@@ -10135,6 +10157,7 @@ System.Private.CoreLib.dll:System.Reflection.RuntimeConstructorInfo.GetParameter
 System.Private.CoreLib.dll:System.Reflection.RuntimeConstructorInfo.GetParametersCount()
 System.Private.CoreLib.dll:System.Reflection.RuntimeConstructorInfo.GetParametersInternal()
 System.Private.CoreLib.dll:System.Reflection.RuntimeConstructorInfo.GetRuntimeModule()
+System.Private.CoreLib.dll:System.Reflection.RuntimeConstructorInfo.HasSameMetadataDefinitionAs(System.Reflection.MemberInfo)
 System.Private.CoreLib.dll:System.Reflection.RuntimeConstructorInfo.InternalInvoke(System.Object, System.IntPtr*, out System.Exception&)
 System.Private.CoreLib.dll:System.Reflection.RuntimeConstructorInfo.Invoke(System.Object, System.Reflection.BindingFlags, System.Reflection.Binder, System.Object[], System.Globalization.CultureInfo)
 System.Private.CoreLib.dll:System.Reflection.RuntimeConstructorInfo.InvokeClassConstructor()
@@ -10176,6 +10199,7 @@ System.Private.CoreLib.dll:System.Reflection.RuntimeEventInfo.GetEventInfo(Syste
 System.Private.CoreLib.dll:System.Reflection.RuntimeEventInfo.GetRaiseMethod(System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.RuntimeEventInfo.GetRemoveMethod(System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.RuntimeEventInfo.GetRuntimeModule()
+System.Private.CoreLib.dll:System.Reflection.RuntimeEventInfo.HasSameMetadataDefinitionAs(System.Reflection.MemberInfo)
 System.Private.CoreLib.dll:System.Reflection.RuntimeEventInfo.internal_from_handle_type(System.IntPtr, System.IntPtr)
 System.Private.CoreLib.dll:System.Reflection.RuntimeEventInfo.IsDefined(System.Type, System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.RuntimeEventInfo.ToString()
@@ -10207,6 +10231,7 @@ System.Private.CoreLib.dll:System.Reflection.RuntimeFieldInfo.GetRawConstantValu
 System.Private.CoreLib.dll:System.Reflection.RuntimeFieldInfo.GetRuntimeModule()
 System.Private.CoreLib.dll:System.Reflection.RuntimeFieldInfo.GetValue(System.Object)
 System.Private.CoreLib.dll:System.Reflection.RuntimeFieldInfo.GetValueInternal(System.Object)
+System.Private.CoreLib.dll:System.Reflection.RuntimeFieldInfo.HasSameMetadataDefinitionAs(System.Reflection.MemberInfo)
 System.Private.CoreLib.dll:System.Reflection.RuntimeFieldInfo.IsDefined(System.Type, System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.RuntimeFieldInfo.ResolveType()
 System.Private.CoreLib.dll:System.Reflection.RuntimeFieldInfo.ToString()
@@ -10261,6 +10286,7 @@ System.Private.CoreLib.dll:System.Reflection.RuntimeMethodInfo.GetPInvoke(out Sy
 System.Private.CoreLib.dll:System.Reflection.RuntimeMethodInfo.GetPseudoCustomAttributes()
 System.Private.CoreLib.dll:System.Reflection.RuntimeMethodInfo.GetPseudoCustomAttributesData()
 System.Private.CoreLib.dll:System.Reflection.RuntimeMethodInfo.GetRuntimeModule()
+System.Private.CoreLib.dll:System.Reflection.RuntimeMethodInfo.HasSameMetadataDefinitionAs(System.Reflection.MemberInfo)
 System.Private.CoreLib.dll:System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Object, System.IntPtr*, out System.Exception&)
 System.Private.CoreLib.dll:System.Reflection.RuntimeMethodInfo.Invoke(System.Object, System.Reflection.BindingFlags, System.Reflection.Binder, System.Object[], System.Globalization.CultureInfo)
 System.Private.CoreLib.dll:System.Reflection.RuntimeMethodInfo.IsDefined(System.Type, System.Boolean)
@@ -10331,6 +10357,7 @@ System.Private.CoreLib.dll:System.Reflection.RuntimePropertyInfo.GetPropertyFrom
 System.Private.CoreLib.dll:System.Reflection.RuntimePropertyInfo.GetRuntimeModule()
 System.Private.CoreLib.dll:System.Reflection.RuntimePropertyInfo.GetSetMethod(System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.RuntimePropertyInfo.GetterAdapterFrame`2(System.Reflection.RuntimePropertyInfo/Getter`2<T,R>, System.Object)
+System.Private.CoreLib.dll:System.Reflection.RuntimePropertyInfo.HasSameMetadataDefinitionAs(System.Reflection.MemberInfo)
 System.Private.CoreLib.dll:System.Reflection.RuntimePropertyInfo.internal_from_handle_type(System.IntPtr, System.IntPtr)
 System.Private.CoreLib.dll:System.Reflection.RuntimePropertyInfo.IsDefined(System.Type, System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.RuntimePropertyInfo.StaticGetterAdapterFrame`1(System.Reflection.RuntimePropertyInfo/StaticGetter`1<R>, System.Object)
@@ -10476,6 +10503,7 @@ System.Private.CoreLib.dll:System.Reflection.SignatureType.GetGenericParameterCo
 System.Private.CoreLib.dll:System.Reflection.SignatureType.GetGenericTypeDefinition()
 System.Private.CoreLib.dll:System.Reflection.SignatureType.GetInterfaceMap(System.Type)
 System.Private.CoreLib.dll:System.Reflection.SignatureType.GetInterfaces()
+System.Private.CoreLib.dll:System.Reflection.SignatureType.GetMembers(System.Reflection.BindingFlags)
 System.Private.CoreLib.dll:System.Reflection.SignatureType.GetMethodImpl(System.String, System.Int32, System.Reflection.BindingFlags, System.Reflection.Binder, System.Reflection.CallingConventions, System.Type[], System.Reflection.ParameterModifier[])
 System.Private.CoreLib.dll:System.Reflection.SignatureType.GetMethodImpl(System.String, System.Reflection.BindingFlags, System.Reflection.Binder, System.Reflection.CallingConventions, System.Type[], System.Reflection.ParameterModifier[])
 System.Private.CoreLib.dll:System.Reflection.SignatureType.GetMethods(System.Reflection.BindingFlags)
@@ -10483,6 +10511,7 @@ System.Private.CoreLib.dll:System.Reflection.SignatureType.GetProperties(System.
 System.Private.CoreLib.dll:System.Reflection.SignatureType.GetPropertyImpl(System.String, System.Reflection.BindingFlags, System.Reflection.Binder, System.Type, System.Type[], System.Reflection.ParameterModifier[])
 System.Private.CoreLib.dll:System.Reflection.SignatureType.GetTypeCodeImpl()
 System.Private.CoreLib.dll:System.Reflection.SignatureType.HasElementTypeImpl()
+System.Private.CoreLib.dll:System.Reflection.SignatureType.HasSameMetadataDefinitionAs(System.Reflection.MemberInfo)
 System.Private.CoreLib.dll:System.Reflection.SignatureType.IsArrayImpl()
 System.Private.CoreLib.dll:System.Reflection.SignatureType.IsAssignableFrom(System.Type)
 System.Private.CoreLib.dll:System.Reflection.SignatureType.IsByRefImpl()
@@ -10575,6 +10604,7 @@ System.Private.CoreLib.dll:System.Reflection.TypeDelegator.GetEvent(System.Strin
 System.Private.CoreLib.dll:System.Reflection.TypeDelegator.GetField(System.String, System.Reflection.BindingFlags)
 System.Private.CoreLib.dll:System.Reflection.TypeDelegator.GetFields(System.Reflection.BindingFlags)
 System.Private.CoreLib.dll:System.Reflection.TypeDelegator.GetInterfaces()
+System.Private.CoreLib.dll:System.Reflection.TypeDelegator.GetMembers(System.Reflection.BindingFlags)
 System.Private.CoreLib.dll:System.Reflection.TypeDelegator.GetMethodImpl(System.String, System.Reflection.BindingFlags, System.Reflection.Binder, System.Reflection.CallingConventions, System.Type[], System.Reflection.ParameterModifier[])
 System.Private.CoreLib.dll:System.Reflection.TypeDelegator.GetMethods(System.Reflection.BindingFlags)
 System.Private.CoreLib.dll:System.Reflection.TypeDelegator.GetProperties(System.Reflection.BindingFlags)
@@ -10861,7 +10891,6 @@ System.Private.CoreLib.dll:System.Runtime.InteropServices.DllImportSearchPath Sy
 System.Private.CoreLib.dll:System.Runtime.InteropServices.DllImportSearchPath System.Runtime.InteropServices.DllImportSearchPath::UserDirectories
 System.Private.CoreLib.dll:System.Runtime.InteropServices.FieldOffsetAttribute
 System.Private.CoreLib.dll:System.Runtime.InteropServices.FieldOffsetAttribute..ctor(System.Int32)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.FieldOffsetAttribute.get_Value()
 System.Private.CoreLib.dll:System.Runtime.InteropServices.GCHandle
 System.Private.CoreLib.dll:System.Runtime.InteropServices.GCHandle..ctor(System.IntPtr)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.GCHandle..ctor(System.Object, System.Runtime.InteropServices.GCHandleType)
@@ -11766,10 +11795,12 @@ System.Private.CoreLib.dll:System.RuntimeType.CreateInstanceInternal(System.Runt
 System.Private.CoreLib.dll:System.RuntimeType.CreateInstanceMono(System.Boolean, System.Boolean)
 System.Private.CoreLib.dll:System.RuntimeType.CreateInstanceOfT()
 System.Private.CoreLib.dll:System.RuntimeType.Equals(System.Object)
+System.Private.CoreLib.dll:System.RuntimeType.FilterApplyBase(System.Reflection.MemberInfo, System.Reflection.BindingFlags, System.Boolean, System.Boolean, System.Boolean, System.String, System.Boolean)
 System.Private.CoreLib.dll:System.RuntimeType.FilterApplyConstructorInfo(System.Reflection.RuntimeConstructorInfo, System.Reflection.BindingFlags, System.Reflection.CallingConventions, System.Type[])
 System.Private.CoreLib.dll:System.RuntimeType.FilterApplyMethodBase(System.Reflection.MethodBase, System.Reflection.BindingFlags, System.Reflection.CallingConventions, System.Type[])
 System.Private.CoreLib.dll:System.RuntimeType.FilterApplyMethodInfo(System.Reflection.RuntimeMethodInfo, System.Reflection.BindingFlags, System.Reflection.CallingConventions, System.Type[])
 System.Private.CoreLib.dll:System.RuntimeType.FilterApplyPrefixLookup(System.Reflection.MemberInfo, System.String, System.Boolean)
+System.Private.CoreLib.dll:System.RuntimeType.FilterApplyType(System.Type, System.Reflection.BindingFlags, System.String, System.Boolean, System.String)
 System.Private.CoreLib.dll:System.RuntimeType.FilterHelper(System.Reflection.BindingFlags, System.String&, out System.Boolean&, out System.RuntimeType/MemberListType&)
 System.Private.CoreLib.dll:System.RuntimeType.FilterHelper(System.Reflection.BindingFlags, System.String&, System.Boolean, out System.Boolean&, out System.Boolean&, out System.RuntimeType/MemberListType&)
 System.Private.CoreLib.dll:System.RuntimeType.FilterPreCalculate(System.Boolean, System.Boolean, System.Boolean)
@@ -11815,6 +11846,7 @@ System.Private.CoreLib.dll:System.RuntimeType.GetConstructorImpl(System.Reflecti
 System.Private.CoreLib.dll:System.RuntimeType.GetConstructors_internal(System.Reflection.BindingFlags, System.RuntimeType)
 System.Private.CoreLib.dll:System.RuntimeType.GetConstructors_native(System.Runtime.CompilerServices.QCallTypeHandle, System.Reflection.BindingFlags)
 System.Private.CoreLib.dll:System.RuntimeType.GetConstructors(System.Reflection.BindingFlags)
+System.Private.CoreLib.dll:System.RuntimeType.GetConstructorWithSameMetadataDefinitionAs(System.RuntimeType, System.Reflection.MemberInfo)
 System.Private.CoreLib.dll:System.RuntimeType.GetCorElementType()
 System.Private.CoreLib.dll:System.RuntimeType.GetCorrespondingInflatedMethod(System.Runtime.CompilerServices.QCallTypeHandle, System.Reflection.MemberInfo)
 System.Private.CoreLib.dll:System.RuntimeType.GetCustomAttributes(System.Boolean)
@@ -11826,13 +11858,16 @@ System.Private.CoreLib.dll:System.RuntimeType.GetElementType()
 System.Private.CoreLib.dll:System.RuntimeType.GetEnumNames()
 System.Private.CoreLib.dll:System.RuntimeType.GetEnumUnderlyingType()
 System.Private.CoreLib.dll:System.RuntimeType.GetEvent(System.String, System.Reflection.BindingFlags)
+System.Private.CoreLib.dll:System.RuntimeType.GetEventCandidates(System.String, System.Reflection.BindingFlags, System.Boolean)
 System.Private.CoreLib.dll:System.RuntimeType.GetEvents_internal(System.String, System.RuntimeType/MemberListType, System.RuntimeType)
 System.Private.CoreLib.dll:System.RuntimeType.GetEvents_native(System.Runtime.CompilerServices.QCallTypeHandle, System.IntPtr, System.RuntimeType/MemberListType)
+System.Private.CoreLib.dll:System.RuntimeType.GetEventWithSameMetadataDefinitionAs(System.RuntimeType, System.Reflection.MemberInfo)
 System.Private.CoreLib.dll:System.RuntimeType.GetField(System.String, System.Reflection.BindingFlags)
 System.Private.CoreLib.dll:System.RuntimeType.GetFieldCandidates(System.String, System.Reflection.BindingFlags, System.Boolean)
 System.Private.CoreLib.dll:System.RuntimeType.GetFields_internal(System.String, System.Reflection.BindingFlags, System.RuntimeType/MemberListType, System.RuntimeType)
 System.Private.CoreLib.dll:System.RuntimeType.GetFields_native(System.Runtime.CompilerServices.QCallTypeHandle, System.IntPtr, System.Reflection.BindingFlags, System.RuntimeType/MemberListType)
 System.Private.CoreLib.dll:System.RuntimeType.GetFields(System.Reflection.BindingFlags)
+System.Private.CoreLib.dll:System.RuntimeType.GetFieldWithSameMetadataDefinitionAs(System.RuntimeType, System.Reflection.MemberInfo)
 System.Private.CoreLib.dll:System.RuntimeType.getFullName(System.Boolean, System.Boolean)
 System.Private.CoreLib.dll:System.RuntimeType.getFullName(System.Runtime.CompilerServices.QCallTypeHandle, System.Runtime.CompilerServices.ObjectHandleOnStack, System.Boolean, System.Boolean)
 System.Private.CoreLib.dll:System.RuntimeType.GetFunctionPointerParameterTypes()
@@ -11849,14 +11884,21 @@ System.Private.CoreLib.dll:System.RuntimeType.GetInterfaceMap(System.Type)
 System.Private.CoreLib.dll:System.RuntimeType.GetInterfaceMapData(System.Runtime.CompilerServices.QCallTypeHandle, System.Runtime.CompilerServices.QCallTypeHandle, out System.Reflection.MethodInfo[]&, out System.Reflection.MethodInfo[]&)
 System.Private.CoreLib.dll:System.RuntimeType.GetInterfaces()
 System.Private.CoreLib.dll:System.RuntimeType.GetInterfaces(System.Runtime.CompilerServices.QCallTypeHandle, System.Runtime.CompilerServices.ObjectHandleOnStack)
+System.Private.CoreLib.dll:System.RuntimeType.GetMembers(System.Reflection.BindingFlags)
+System.Private.CoreLib.dll:System.RuntimeType.GetMemberWithSameMetadataDefinitionAs(System.Reflection.MemberInfo)
 System.Private.CoreLib.dll:System.RuntimeType.GetMethodCandidates(System.String, System.Reflection.BindingFlags, System.Reflection.CallingConventions, System.Type[], System.Int32, System.Boolean)
 System.Private.CoreLib.dll:System.RuntimeType.GetMethodImpl(System.String, System.Int32, System.Reflection.BindingFlags, System.Reflection.Binder, System.Reflection.CallingConventions, System.Type[], System.Reflection.ParameterModifier[])
 System.Private.CoreLib.dll:System.RuntimeType.GetMethodImpl(System.String, System.Reflection.BindingFlags, System.Reflection.Binder, System.Reflection.CallingConventions, System.Type[], System.Reflection.ParameterModifier[])
 System.Private.CoreLib.dll:System.RuntimeType.GetMethods(System.Reflection.BindingFlags)
 System.Private.CoreLib.dll:System.RuntimeType.GetMethodsByName_native(System.Runtime.CompilerServices.QCallTypeHandle, System.IntPtr, System.Reflection.BindingFlags, System.RuntimeType/MemberListType)
 System.Private.CoreLib.dll:System.RuntimeType.GetMethodsByName(System.String, System.Reflection.BindingFlags, System.RuntimeType/MemberListType, System.RuntimeType)
+System.Private.CoreLib.dll:System.RuntimeType.GetMethodWithSameMetadataDefinitionAs(System.RuntimeType, System.Reflection.MemberInfo)
 System.Private.CoreLib.dll:System.RuntimeType.GetName(System.Runtime.CompilerServices.QCallTypeHandle, System.Runtime.CompilerServices.ObjectHandleOnStack)
 System.Private.CoreLib.dll:System.RuntimeType.GetNamespace(System.Runtime.CompilerServices.QCallTypeHandle, System.Runtime.CompilerServices.ObjectHandleOnStack)
+System.Private.CoreLib.dll:System.RuntimeType.GetNestedTypeCandidates(System.String, System.Reflection.BindingFlags, System.Boolean)
+System.Private.CoreLib.dll:System.RuntimeType.GetNestedTypes_internal(System.String, System.Reflection.BindingFlags, System.RuntimeType/MemberListType)
+System.Private.CoreLib.dll:System.RuntimeType.GetNestedTypes_native(System.Runtime.CompilerServices.QCallTypeHandle, System.IntPtr, System.Reflection.BindingFlags, System.RuntimeType/MemberListType)
+System.Private.CoreLib.dll:System.RuntimeType.GetNestedTypeWithSameMetadataDefinitionAs(System.RuntimeType, System.Reflection.MemberInfo)
 System.Private.CoreLib.dll:System.RuntimeType.GetParentType()
 System.Private.CoreLib.dll:System.RuntimeType.GetParentType(System.Runtime.CompilerServices.QCallTypeHandle, System.Runtime.CompilerServices.ObjectHandleOnStack)
 System.Private.CoreLib.dll:System.RuntimeType.GetProperties(System.Reflection.BindingFlags)
@@ -11864,9 +11906,11 @@ System.Private.CoreLib.dll:System.RuntimeType.GetPropertiesByName_native(System.
 System.Private.CoreLib.dll:System.RuntimeType.GetPropertiesByName(System.String, System.Reflection.BindingFlags, System.RuntimeType/MemberListType, System.RuntimeType)
 System.Private.CoreLib.dll:System.RuntimeType.GetPropertyCandidates(System.String, System.Reflection.BindingFlags, System.Type[], System.Boolean)
 System.Private.CoreLib.dll:System.RuntimeType.GetPropertyImpl(System.String, System.Reflection.BindingFlags, System.Reflection.Binder, System.Type, System.Type[], System.Reflection.ParameterModifier[])
+System.Private.CoreLib.dll:System.RuntimeType.GetPropertyWithSameMetadataDefinitionAs(System.RuntimeType, System.Reflection.MemberInfo)
 System.Private.CoreLib.dll:System.RuntimeType.GetRuntimeModule()
 System.Private.CoreLib.dll:System.RuntimeType.GetTypeCodeImpl()
 System.Private.CoreLib.dll:System.RuntimeType.HasElementTypeImpl()
+System.Private.CoreLib.dll:System.RuntimeType.HasSameMetadataDefinitionAs(System.Reflection.MemberInfo)
 System.Private.CoreLib.dll:System.RuntimeType.IsArrayImpl()
 System.Private.CoreLib.dll:System.RuntimeType.IsAssignableFrom(System.Type)
 System.Private.CoreLib.dll:System.RuntimeType.IsByRefImpl()
@@ -11893,6 +11937,7 @@ System.Private.CoreLib.dll:System.RuntimeType.MakePointerType()
 System.Private.CoreLib.dll:System.RuntimeType.op_Equality(System.RuntimeType, System.RuntimeType)
 System.Private.CoreLib.dll:System.RuntimeType.op_Inequality(System.RuntimeType, System.RuntimeType)
 System.Private.CoreLib.dll:System.RuntimeType.SanityCheckGenericArguments(System.RuntimeType[], System.RuntimeType[])
+System.Private.CoreLib.dll:System.RuntimeType.SplitName(System.String, out System.String&, out System.String&)
 System.Private.CoreLib.dll:System.RuntimeType.ThrowIfTypeNeverValidGenericArgument(System.RuntimeType)
 System.Private.CoreLib.dll:System.RuntimeType.ThrowMustBeEnum()
 System.Private.CoreLib.dll:System.RuntimeType.ToString()
@@ -11913,6 +11958,7 @@ System.Private.CoreLib.dll:System.RuntimeType/CheckValueStatus System.RuntimeTyp
 System.Private.CoreLib.dll:System.RuntimeType/ListBuilder`1
 System.Private.CoreLib.dll:System.RuntimeType/ListBuilder`1..ctor(System.Int32)
 System.Private.CoreLib.dll:System.RuntimeType/ListBuilder`1.Add(T)
+System.Private.CoreLib.dll:System.RuntimeType/ListBuilder`1.CopyTo(System.Object[], System.Int32)
 System.Private.CoreLib.dll:System.RuntimeType/ListBuilder`1.get_Count()
 System.Private.CoreLib.dll:System.RuntimeType/ListBuilder`1.get_Item(System.Int32)
 System.Private.CoreLib.dll:System.RuntimeType/ListBuilder`1.ToArray()
@@ -12425,6 +12471,7 @@ System.Private.CoreLib.dll:System.String System.Int16::System.IBinaryIntegerPars
 System.Private.CoreLib.dll:System.String System.Int32::System.IBinaryIntegerParseAndFormatInfo<System.Int32>.OverflowMessage()
 System.Private.CoreLib.dll:System.String System.Int64::System.IBinaryIntegerParseAndFormatInfo<System.Int64>.OverflowMessage()
 System.Private.CoreLib.dll:System.String System.IO.Enumeration.FileSystemEnumerable`1::_directory
+System.Private.CoreLib.dll:System.String System.IO.Enumeration.FileSystemEnumerable`1::_expression
 System.Private.CoreLib.dll:System.String System.IO.Enumeration.FileSystemEnumerableFactory/<>c__DisplayClass2_0::expression
 System.Private.CoreLib.dll:System.String System.IO.Enumeration.FileSystemEnumerableFactory/<>c__DisplayClass3_0::expression
 System.Private.CoreLib.dll:System.String System.IO.Enumeration.FileSystemEnumerableFactory/<>c__DisplayClass4_0::expression
@@ -12709,8 +12756,6 @@ System.Private.CoreLib.dll:System.String.op_Equality(System.String, System.Strin
 System.Private.CoreLib.dll:System.String.op_Implicit(System.String) => System.ReadOnlySpan`1<System.Char>
 System.Private.CoreLib.dll:System.String.op_Inequality(System.String, System.String)
 System.Private.CoreLib.dll:System.String.Replace(System.Char, System.Char)
-System.Private.CoreLib.dll:System.String.Replace(System.String, System.String)
-System.Private.CoreLib.dll:System.String.ReplaceHelper(System.Int32, System.String, System.ReadOnlySpan`1<System.Int32>)
 System.Private.CoreLib.dll:System.String.Split(System.Char, System.StringSplitOptions)
 System.Private.CoreLib.dll:System.String.Split(System.String, System.StringSplitOptions)
 System.Private.CoreLib.dll:System.String.SplitInternal(System.ReadOnlySpan`1<System.Char>, System.Int32, System.StringSplitOptions)
@@ -13925,6 +13970,7 @@ System.Private.CoreLib.dll:System.Type System.Type::UnderlyingSystemType()
 System.Private.CoreLib.dll:System.Type..cctor()
 System.Private.CoreLib.dll:System.Type..ctor()
 System.Private.CoreLib.dll:System.Type.BinarySearch(System.Array, System.Object)
+System.Private.CoreLib.dll:System.Type.CreateGetMemberWithSameMetadataDefinitionAsNotFoundException(System.Reflection.MemberInfo)
 System.Private.CoreLib.dll:System.Type.Equals(System.Object)
 System.Private.CoreLib.dll:System.Type.Equals(System.Type)
 System.Private.CoreLib.dll:System.Type.FilterAttributeImpl(System.Reflection.MemberInfo, System.Object)
@@ -13958,7 +14004,9 @@ System.Private.CoreLib.dll:System.Type.get_IsGenericType()
 System.Private.CoreLib.dll:System.Type.get_IsGenericTypeDefinition()
 System.Private.CoreLib.dll:System.Type.get_IsInterface()
 System.Private.CoreLib.dll:System.Type.get_IsNested()
+System.Private.CoreLib.dll:System.Type.get_IsNestedAssembly()
 System.Private.CoreLib.dll:System.Type.get_IsNestedPrivate()
+System.Private.CoreLib.dll:System.Type.get_IsNestedPublic()
 System.Private.CoreLib.dll:System.Type.get_IsNotPublic()
 System.Private.CoreLib.dll:System.Type.get_IsPointer()
 System.Private.CoreLib.dll:System.Type.get_IsPrimitive()
@@ -13999,6 +14047,8 @@ System.Private.CoreLib.dll:System.Type.GetGenericTypeDefinition()
 System.Private.CoreLib.dll:System.Type.GetHashCode()
 System.Private.CoreLib.dll:System.Type.GetInterfaceMap(System.Type)
 System.Private.CoreLib.dll:System.Type.GetInterfaces()
+System.Private.CoreLib.dll:System.Type.GetMembers(System.Reflection.BindingFlags)
+System.Private.CoreLib.dll:System.Type.GetMemberWithSameMetadataDefinitionAs(System.Reflection.MemberInfo)
 System.Private.CoreLib.dll:System.Type.GetMethod(System.String, System.Reflection.BindingFlags, System.Reflection.Binder, System.Reflection.CallingConventions, System.Type[], System.Reflection.ParameterModifier[])
 System.Private.CoreLib.dll:System.Type.GetMethod(System.String, System.Reflection.BindingFlags, System.Reflection.Binder, System.Type[], System.Reflection.ParameterModifier[])
 System.Private.CoreLib.dll:System.Type.GetMethod(System.String, System.Reflection.BindingFlags)

@@ -24,6 +24,20 @@ typedef void (^x_block_callback)();
 void x_call_block (x_block_callback block);
 void* x_call_func_3 (void* (*fptr)(void*, void*, void*), void* p1, void* p2, void* p3);
 
+// Helper for the issue #25861 design work: a C callback invoked from
+// InitSurfacesSelfToManaged's 'init' with the 'self' pointer, used to verify that
+// managed code can resolve 'self' to the wrapper being constructed while 'init'
+// is still executing (see InitSurfacesSelfToManaged below).
+typedef void (*init_self_callback) (void *self_ptr);
+void x_set_init_self_callback (init_self_callback callback);
+
+// Helper for the issue #25861 deterministic test: a C callback invoked from
+// ReuseSlotClassA's 'init' (after it has freed the alloc'd instance) with the freed
+// address, so managed code can allocate a ReuseSlotClassB that deterministically
+// reuses that address (see ReuseSlotClassA/ReuseSlotClassB below).
+typedef void (*reuse_alloc_callback) (void *original_ptr);
+void x_set_reuse_alloc_callback (reuse_alloc_callback callback);
+
 void x_get_matrix_float2x2 (id self, const char *sel, float* r0c0, float* r0c1, float* r1c0, float* r1c1);
 void x_get_matrix_float3x3 (id self, const char *sel, float* r0c0, float* r0c1, float* r0c2, float* r1c0, float* r1c1, float* r1c2, float* r2c0, float* r2c1, float* r2c2);
 void x_get_matrix_float4x4 (id self, const char *sel, float* r0c0, float* r0c1, float* r0c2, float* r0c3, float* r1c0, float* r1c1, float* r1c2, float* r1c3, float* r2c0, float* r2c1, float* r2c2, float* r2c3, float* r3c0, float* r3c1, float* r3c2, float* r3c3);
@@ -379,6 +393,52 @@ typedef void (^outerBlock) (innerBlock callback);
 @property (retain) id<HitchhikerDelegate> delegate;
 -(void) destroyEarth;
 -(void) buildHighway;
+@end
+
+// Helper for the issue #25861 design work: a native class whose 'init' calls a
+// method that can be overridden in managed code. Used to verify that an overridden
+// managed method is invoked (on the correct instance) while 'init' is still
+// executing.
+@interface InitCallsVirtualMethod : NSObject {
+}
+-(instancetype) init;
+-(void) virtualMethodCalledDuringInit: (int) value;
+@end
+
+// Helper for the issue #25861 design work: a directly-bound native class (no managed
+// subclass, so no gchandle ivar) whose 'init' synchronously surfaces 'self' to
+// managed code via a C callback. Used to verify that managed code resolves 'self'
+// to the wrapper being constructed (and doesn't create a duplicate wrapper) while
+// 'init' is still executing.
+@interface InitSurfacesSelfToManaged : NSObject {
+}
+-(instancetype) init;
+@end
+
+// Helpers for a deterministic reproduction of the alloc/init handle-reuse race in
+// issue #25861 (and #9478). ReuseSlotClassA's 'init' frees its own instance and forces
+// the next allocation to reuse that exact address, so a ReuseSlotClassB allocated from
+// managed code during that 'init' deterministically lands on the freed address. Both are
+// directly-bound native classes (no managed subclass), so their alloc/dealloc aren't
+// managed by the registrar and this address-reuse trick works. This reproduces the exact
+// object_map clobber of issue #25861: while ReuseSlotClassA is executing its 'init', its
+// (still-registered) alloc address is reused by a ReuseSlotClassB; when ReuseSlotClassA
+// then rebinds its handle to the value 'init' returns, a non-ownership-aware unregister
+// would remove the ReuseSlotClassB that now occupies that address from the object_map.
+@interface ReuseSlotClassA : NSObject {
+}
+-(instancetype) init;
+@end
+
+@interface ReuseSlotClassB : NSObject {
+}
+@end
+
+// Helper for issue #23679: a native class whose 'init' fails by raising an Objective-C
+// exception. Constructing the managed wrapper throws; a later GC must not crash.
+@interface InitReturnsNilClass : NSObject {
+}
+-(instancetype) init;
 @end
 
 #pragma clang diagnostic pop

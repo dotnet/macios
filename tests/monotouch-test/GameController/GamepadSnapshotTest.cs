@@ -25,18 +25,18 @@ namespace MonoTouchFixtures.GameController {
 				Assert.Inconclusive ("GameController is iOS7+ or macOS 10.9+");
 
 			GCGamepadSnapShotDataV100 data;
-			Assert.False (GCGamepadSnapshot.TryGetSnapshotData (null, out data), "TryGetSnapshotData");
-			Assert.True (data.Version == 0, "Version");
-			Assert.True (data.Size == 0, "Size");
+			Assert.That (GCGamepadSnapshot.TryGetSnapshotData (null, out data), Is.False, "TryGetSnapshotData");
+			Assert.That (data.Version == 0, Is.True, "Version");
+			Assert.That (data.Size == 0, Is.True, "Size");
 
 			data = new GCGamepadSnapShotDataV100 ();
-			Assert.True (data.Version == 0, "Version-2");
-			Assert.True (data.Size == 0, "Size-2");
+			Assert.That (data.Version == 0, Is.True, "Version-2");
+			Assert.That (data.Size == 0, Is.True, "Size-2");
 
 			using (var nsd = data.ToNSData ()) {
-				Assert.True (GCGamepadSnapshot.TryGetSnapshotData (nsd, out data), "TryGetSnapshotData-2");
-				Assert.True (data.Version == 0x100, "Version-3");
-				Assert.True (data.Size == nsd.Length, "Size-3");
+				Assert.That (GCGamepadSnapshot.TryGetSnapshotData (nsd, out data), Is.True, "TryGetSnapshotData-2");
+				Assert.That (data.Version == 0x100, Is.True, "Version-3");
+				Assert.That (data.Size == nsd.Length, Is.True, "Size-3");
 			}
 		}
 	}

@@ -17,7 +17,7 @@ namespace CoreHaptics {
 	interface AVAudioSession { }
 #endif
 
-	[iOS (13, 0), TV (14, 0)]
+	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -34,7 +34,7 @@ namespace CoreHaptics {
 		NativeHandle Constructor ([BindAs (typeof (CHHapticEventParameterId))] NSString parameterId, float value);
 	}
 
-	[iOS (13, 0), TV (14, 0)]
+	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -54,7 +54,7 @@ namespace CoreHaptics {
 		NativeHandle Constructor ([BindAs (typeof (CHHapticDynamicParameterId))] NSString parameterId, float value, double time);
 	}
 
-	[iOS (13, 0), TV (14, 0)]
+	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -70,7 +70,7 @@ namespace CoreHaptics {
 		NativeHandle Constructor (double time, float value);
 	}
 
-	[iOS (13, 0), TV (14, 0)]
+	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -90,7 +90,7 @@ namespace CoreHaptics {
 		NativeHandle Constructor ([BindAs (typeof (CHHapticDynamicParameterId))] NSString parameterId, CHHapticParameterCurveControlPoint [] controlPoints, double relativeTime);
 	}
 
-	[iOS (13, 0), TV (14, 0)]
+	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -123,7 +123,7 @@ namespace CoreHaptics {
 
 	interface ICHHapticParameterAttributes { }
 
-	[iOS (13, 0), TV (14, 0)]
+	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface CHHapticParameterAttributes {
@@ -142,7 +142,6 @@ namespace CoreHaptics {
 
 	interface ICHHapticDeviceCapability { }
 
-	[iOS (13, 0)]
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol]
@@ -170,7 +169,7 @@ namespace CoreHaptics {
 
 	interface ICHHapticPatternPlayer { }
 
-	[iOS (13, 0), TV (14, 0)]
+	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface CHHapticPatternPlayer {
@@ -201,7 +200,7 @@ namespace CoreHaptics {
 
 	interface ICHHapticAdvancedPatternPlayer { }
 
-	[iOS (13, 0), TV (14, 0)]
+	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface CHHapticAdvancedPatternPlayer : CHHapticPatternPlayer {
@@ -238,7 +237,7 @@ namespace CoreHaptics {
 		new bool IsMuted { get; set; }
 	}
 
-	[iOS (13, 0), TV (14, 0)]
+	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -314,14 +313,14 @@ namespace CoreHaptics {
 		[Export ("playPatternFromData:error:")]
 		bool PlayPattern (NSData data, [NullAllowed] out NSError outError);
 
-		[TV (16, 0), MacCatalyst (16, 0), Mac (13, 0), iOS (16, 0)]
+		[TV (16, 0), MacCatalyst (16, 0), iOS (16, 0)]
 		[Export ("playsAudioOnly")]
 		bool PlaysAudioOnly { get; set; }
 	}
 
 	[Static]
 	[Internal]
-	[iOS (13, 0), TV (14, 0)]
+	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
 	partial interface CHHapticPatternDefinitionKeys {
 		[Field ("CHHapticPatternKeyVersion")]
@@ -367,12 +366,12 @@ namespace CoreHaptics {
 		[Field ("CHHapticPatternKeyEventWaveformUseVolumeEnvelope")]
 		NSString EventWaveformUseVolumeEnvelopeKey { get; }
 
-		[TV (16, 0), MacCatalyst (16, 0), Mac (13, 0), iOS (16, 0)]
+		[TV (16, 0), MacCatalyst (16, 0), iOS (16, 0)]
 		[Field ("CHHapticPatternKeyEventWaveformLoopEnabled")]
 		NSString EventWaveformLoopEnabledKey { get; }
 	}
 
-	[iOS (13, 0), TV (14, 0)]
+	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("CHHapticPatternDefinitionKeys")]
 	partial interface CHHapticPatternDefinition {
@@ -400,7 +399,7 @@ namespace CoreHaptics {
 		bool EventWaveformUseVolumeEnvelope { get; set; }
 	}
 
-	[iOS (13, 0), TV (14, 0)]
+	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -420,7 +419,7 @@ namespace CoreHaptics {
 		[Wrap ("this (patternDefinition.GetDictionary ()!, out outError)")]
 		NativeHandle Constructor (CHHapticPatternDefinition patternDefinition, [NullAllowed] out NSError outError);
 
-		[TV (16, 0), MacCatalyst (16, 0), Mac (13, 0), iOS (16, 0)]
+		[TV (16, 0), MacCatalyst (16, 0), iOS (16, 0)]
 		[Export ("initWithContentsOfURL:error:")]
 		NativeHandle Constructor (NSUrl url, [NullAllowed] out NSError error);
 
@@ -441,7 +440,7 @@ namespace CoreHaptics {
 		[Field ("CHHapticAudioResourceKeyUseVolumeEnvelope")]
 		NSString UseVolumeEnvelopeKey { get; }
 
-		[TV (16, 0), MacCatalyst (16, 0), Mac (13, 0), iOS (16, 0)]
+		[TV (16, 0), MacCatalyst (16, 0), iOS (16, 0)]
 		[Field ("CHHapticAudioResourceKeyLoopEnabled")]
 		NSString LoopEnabledKey { get; }
 

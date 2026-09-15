@@ -1,5 +1,7 @@
 {
   "author": "Microsoft",
   "name": "Libreria di classi macOS",
-  "description": "Progetto per la creazione di una libreria di classi macOS .NET"
+  "description": "Progetto per la creazione di una libreria di classi macOS .NET",
+  "symbols/Framework/description": "The target framework for the project.",
+  "symbols/Framework/choices/net10.0-macos/description": "Target net10.0-macos"
 }

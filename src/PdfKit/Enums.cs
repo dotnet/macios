@@ -33,8 +33,7 @@
 
 namespace PdfKit {
 
-	/// <summary>Enumerates named PDF action names.</summary>
-	/// <remarks>To be added.</remarks>
+	/// <summary>Enumerates named actions that can be performed in a PDF document.</summary>
 	[Native]
 	[TV (18, 2)]
 	public enum PdfActionNamedName : long {
@@ -65,7 +64,6 @@ namespace PdfKit {
 	}
 
 	/// <summary>Enumerates annotation widget controls.</summary>
-	/// <remarks>To be added.</remarks>
 	[Native]
 	[TV (18, 2)]
 	public enum PdfWidgetControlType : long {
@@ -79,8 +77,7 @@ namespace PdfKit {
 		CheckBox = 2,
 	}
 
-	/// <summary>Enumerates line ending styles</summary>
-	/// <remarks>To be added.</remarks>
+	/// <summary>Enumerates line ending styles.</summary>
 	[Native]
 	[TV (18, 2)]
 	public enum PdfLineStyle : long {
@@ -98,8 +95,7 @@ namespace PdfKit {
 		ClosedArrow = 5,
 	}
 
-	/// <summary>Indicates annotation markup types.</summary>
-	/// <remarks>To be added.</remarks>
+	/// <summary>Enumerates annotation markup types.</summary>
 	[Native]
 	[TV (18, 2)]
 	public enum PdfMarkupType : long {
@@ -109,11 +105,11 @@ namespace PdfKit {
 		StrikeOut = 1,
 		/// <summary>Indicates an underline markup.</summary>
 		Underline = 2,
+		/// <summary>Indicates a redaction markup.</summary>
 		Redact = 3,
 	}
 
 	/// <summary>Enumerates annotation icon types.</summary>
-	/// <remarks>To be added.</remarks>
 	[Native]
 	[TV (18, 2)]
 	public enum PdfTextAnnotationIconType : long {
@@ -134,7 +130,6 @@ namespace PdfKit {
 	}
 
 	/// <summary>Enumerates annotation border styles.</summary>
-	/// <remarks>To be added.</remarks>
 	[Native]
 	[TV (18, 2)]
 	public enum PdfBorderStyle : long {
@@ -176,7 +171,6 @@ namespace PdfKit {
 	}
 
 	/// <summary>Enumerates Adobe-specified PDF display box boundaries.</summary>
-	/// <remarks>To be added.</remarks>
 	[Native]
 	[TV (18, 2)]
 	public enum PdfDisplayBox : long {
@@ -192,8 +186,7 @@ namespace PdfKit {
 		Art = 4,
 	}
 
-	/// <summary>Enumerated PDF display modes.</summary>
-	/// <remarks>To be added.</remarks>
+	/// <summary>Enumerates PDF display modes.</summary>
 	[Native]
 	[TV (18, 2)]
 	public enum PdfDisplayMode : long {
@@ -207,8 +200,7 @@ namespace PdfKit {
 		TwoUpContinuous = 3,
 	}
 
-	/// <summary>Orable flags that describe areas of interest for a touch position.</summary>
-	/// <remarks>To be added.</remarks>
+	/// <summary>Bitwise flags that describe areas of interest for a touch position.</summary>
 	[Flags]
 	[Native]
 	[TV (18, 2)]
@@ -233,6 +225,7 @@ namespace PdfKit {
 		PopupArea = 1 << 7,
 		/// <summary>Indicates that the touch position is over an image.</summary>
 		ImageArea = 1 << 8,
+		/// <summary>Indicates that all areas of interest are included.</summary>
 		[iOS (15, 0), MacCatalyst (15, 0)]
 		AnyArea = Int64.MaxValue,
 	}

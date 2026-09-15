@@ -26,39 +26,49 @@ using System.Text;
 #nullable enable
 
 namespace ObjCRuntime {
-	/// <summary>To be added.</summary>
-	///     <remarks>To be added.</remarks>
+	/// <summary>Represents an Objective-C exception that has been caught and wrapped as a managed exception.</summary>
 	public class ObjCException : Exception {
 		NSException native_exc;
 
+		/// <summary>Initializes a new instance of the <see cref="ObjCException" /> class with a default NSException.</summary>
 		public ObjCException () : base ()
 		{
 			native_exc = new NSException ("default", String.Empty, null);
 		}
 
+		/// <summary>Initializes a new instance of the <see cref="ObjCException" /> class wrapping the specified Objective-C exception.</summary>
+		/// <param name="exc">The native <see cref="Foundation.NSException" /> to wrap.</param>
 		public ObjCException (NSException exc) : base ()
 		{
 			native_exc = exc;
 		}
 
+		/// <summary>Gets the underlying <see cref="Foundation.NSException" /> that this exception wraps.</summary>
+		/// <value>The native Objective-C exception, or <see langword="null" /> if not available.</value>
 		public NSException? NSException {
 			get {
 				return native_exc;
 			}
 		}
 
+		/// <summary>Gets the reason string from the underlying Objective-C exception.</summary>
+		/// <value>The reason for the exception, or <see langword="null" /> if not available.</value>
 		public string? Reason {
 			get {
 				return native_exc?.Reason;
 			}
 		}
 
+		/// <summary>Gets the name of the underlying Objective-C exception.</summary>
+		/// <value>The exception name, or <see langword="null" /> if not available.</value>
 		public string? Name {
 			get {
 				return native_exc?.Name;
 			}
 		}
 
+		/// <summary>Gets a message that includes the exception name, reason, and native stack trace.</summary>
+		/// <value>A formatted string describing the Objective-C exception.</value>
 		public override string Message {
 			get {
 				var sb = new StringBuilder ("Objective-C exception thrown.  Name: ").Append (Name);

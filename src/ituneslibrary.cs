@@ -698,7 +698,7 @@ namespace iTunesLibrary {
 		void UnloadData ();
 	}
 
-	[Mac (13, 0), NoiOS, NoMacCatalyst, NoTV]
+	[NoiOS, NoMacCatalyst, NoTV]
 	[Static]
 	interface ITLibraryNotifications {
 		[Field ("ITLibraryDidChangeNotification")]

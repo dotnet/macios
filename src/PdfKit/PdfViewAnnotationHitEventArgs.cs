@@ -1,5 +1,9 @@
 namespace PdfKit;
 
+[SupportedOSPlatform ("maccatalyst")]
+[SupportedOSPlatform ("tvos18.2")]
+[SupportedOSPlatform ("ios")]
+[SupportedOSPlatform ("macos")]
 partial class PdfViewAnnotationHitEventArgs : NSNotificationEventArgs {
 	// This property needs a manual binding, because it's not using a constant string value,
 	// it's using a literal string value (as per Apple's documentation).

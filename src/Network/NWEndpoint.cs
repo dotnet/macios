@@ -162,16 +162,16 @@ namespace Network {
 		///         <remarks>To be added.</remarks>
 		public string? BonjourServiceDomain => Marshal.PtrToStringAnsi (nw_endpoint_get_bonjour_service_domain (GetCheckedHandle ()));
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.NetworkLibrary, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
 		static extern OS_nw_endpoint nw_endpoint_create_url (IntPtr url);
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public static NWEndpoint? Create (string url)
 		{
@@ -184,30 +184,30 @@ namespace Network {
 			return new NWEndpoint (handle, owns: true);
 		}
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.NetworkLibrary, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr nw_endpoint_get_url (OS_nw_endpoint endpoint);
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public string? Url => Marshal.PtrToStringAnsi (nw_endpoint_get_url (GetCheckedHandle ()));
 
 		[SupportedOSPlatform ("tvos16.0")]
-		[SupportedOSPlatform ("macos13.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.NetworkLibrary)]
 		static extern unsafe byte* nw_endpoint_get_signature (OS_nw_endpoint endpoint, nuint* out_signature_length);
 
 		[SupportedOSPlatform ("tvos16.0")]
-		[SupportedOSPlatform ("macos13.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public ReadOnlySpan<byte> Signature {
 			get {
 				unsafe {
@@ -222,16 +222,16 @@ namespace Network {
 		}
 
 		[SupportedOSPlatform ("tvos16.0")]
-		[SupportedOSPlatform ("macos13.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.NetworkLibrary)]
 		static extern OS_nw_txt_record nw_endpoint_copy_txt_record (OS_nw_endpoint endpoint);
 
 		[SupportedOSPlatform ("tvos16.0")]
-		[SupportedOSPlatform ("macos13.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public NWTxtRecord? TxtRecord {
 			get {
 				var record = nw_endpoint_copy_txt_record (GetCheckedHandle ());

@@ -12,6 +12,7 @@ using UIImage = AppKit.NSImage;
 using UIColor = AppKit.NSColor;
 using UIGestureRecognizer = Foundation.NSObject;
 using PHLivePhotoBadgeOptions = Foundation.NSObject;
+using UIPhotoSearchSuggestion = Foundation.NSObject;
 using UIViewController = AppKit.NSViewController;
 using XView = AppKit.NSView;
 #endif
@@ -141,7 +142,7 @@ namespace PhotosUI {
 		[NullAllowed, Export ("livePhotoBadgeView", ArgumentSemantic.Strong)]
 		NSView LivePhotoBadgeView { get; }
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("contentsRect", ArgumentSemantic.Assign)]
 		CGRect ContentsRect { get; set; }
 	}
@@ -584,7 +585,7 @@ namespace PhotosUI {
 
 	interface IPHPickerViewControllerDelegate { }
 
-	[NoTV, Mac (13, 0), iOS (14, 0)]
+	[NoTV, iOS (14, 0)]
 	[MacCatalyst (14, 0)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
@@ -594,7 +595,7 @@ namespace PhotosUI {
 		void DidFinishPicking (PHPickerViewController picker, PHPickerResult [] results);
 	}
 
-	[NoTV, Mac (13, 0), iOS (14, 0)]
+	[NoTV, iOS (14, 0)]
 	[MacCatalyst (14, 0)]
 	[BaseType (typeof (UIViewController))]
 	[Advice ("This type should not be subclassed.")]
@@ -613,34 +614,34 @@ namespace PhotosUI {
 		[DesignatedInitializer]
 		NativeHandle Constructor (PHPickerConfiguration configuration);
 
-		[NoTV, Mac (13, 0), iOS (16, 0)]
+		[NoTV, iOS (16, 0)]
 		[MacCatalyst (16, 0)]
 		[Export ("deselectAssetsWithIdentifiers:")]
 		void DeselectAssets (string [] identifiers);
 
-		[NoTV, Mac (13, 0), iOS (16, 0)]
+		[NoTV, iOS (16, 0)]
 		[MacCatalyst (16, 0)]
 		[Export ("moveAssetWithIdentifier:afterAssetWithIdentifier:")]
 		void MoveAsset (string identifier, [NullAllowed] string afterIdentifier);
 
-		[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("updatePickerUsingConfiguration:")]
 		void UpdatePicker (PHPickerUpdateConfiguration configuration);
 
-		[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("scrollToInitialPosition")]
 		void ScrollToInitialPosition ();
 
-		[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("zoomIn")]
 		void ZoomIn ();
 
-		[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("zoomOut")]
 		void ZoomOut ();
 	}
 
-	[NoTV, Mac (13, 0), iOS (14, 0)]
+	[NoTV, iOS (14, 0)]
 	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[Advice ("This type should not be subclassed.")]
@@ -665,20 +666,42 @@ namespace PhotosUI {
 		[Export ("preselectedAssetIdentifiers", ArgumentSemantic.Copy)]
 		string [] PreselectedAssetIdentifiers { get; set; }
 
-		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("mode", ArgumentSemantic.Assign)]
 		PHPickerMode Mode { get; set; }
 
-		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("edgesWithoutContentMargins", ArgumentSemantic.Assign)]
 		NSDirectionalRectEdge EdgesWithoutContentMargins { get; set; }
 
-		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("disabledCapabilities", ArgumentSemantic.Assign)]
 		PHPickerCapabilities DisabledCapabilities { get; set; }
+
+		[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("metadataOptions", ArgumentSemantic.Assign)]
+		PHPickerMetadataOptions MetadataOptions { get; set; }
+
+		[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[NullAllowed, Export ("searchText", ArgumentSemantic.Copy)]
+		PHPickerSearchText SearchText { get; set; }
 	}
 
-	[NoTV, Mac (13, 0), iOS (14, 0)]
+	[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface PHPickerSearchText : NSCopying {
+		[Export ("initWithString:")]
+		NativeHandle Constructor (string text);
+
+		/// <summary>Creates search text from a photo search suggestion.</summary>
+		/// <param name="suggestion">The photo search suggestion.</param>
+		[NoTV, NoMacCatalyst, NoMac, iOS (27, 0)]
+		[Export ("initWithPhotoSearchSuggestion:")]
+		NativeHandle Constructor (UIPhotoSearchSuggestion suggestion);
+	}
+
+	[NoTV, iOS (14, 0)]
 	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[Advice ("This type should not be subclassed.")]
@@ -700,49 +723,49 @@ namespace PhotosUI {
 		[Export ("anyFilterMatchingSubfilters:")]
 		PHPickerFilter GetAnyFilterMatchingSubfilters (PHPickerFilter [] subfilters);
 
-		[NoTV, Mac (13, 0), iOS (16, 0)]
+		[NoTV, iOS (16, 0)]
 		[MacCatalyst (16, 0)]
 		[Static]
 		[Export ("depthEffectPhotosFilter")]
 		PHPickerFilter DepthEffectPhotosFilter { get; }
 
-		[NoTV, Mac (13, 0), iOS (16, 0)]
+		[NoTV, iOS (16, 0)]
 		[MacCatalyst (16, 0)]
 		[Static]
 		[Export ("burstsFilter")]
 		PHPickerFilter BurstsFilter { get; }
 
-		[NoTV, Mac (13, 0), iOS (15, 0)]
+		[NoTV, iOS (15, 0)]
 		[MacCatalyst (15, 0)]
 		[Static]
 		[Export ("panoramasFilter")]
 		PHPickerFilter PanoramasFilter { get; }
 
-		[NoTV, Mac (13, 0), iOS (15, 0)]
+		[NoTV, iOS (15, 0)]
 		[MacCatalyst (15, 0)]
 		[Static]
 		[Export ("screenshotsFilter")]
 		PHPickerFilter ScreenshotsFilter { get; }
 
-		[NoTV, Mac (13, 0), iOS (15, 0)]
+		[NoTV, iOS (15, 0)]
 		[MacCatalyst (15, 0)]
 		[Static]
 		[Export ("screenRecordingsFilter")]
 		PHPickerFilter ScreenRecordingsFilter { get; }
 
-		[NoTV, Mac (13, 0), iOS (16, 0)]
+		[NoTV, iOS (16, 0)]
 		[MacCatalyst (16, 0)]
 		[Static]
 		[Export ("cinematicVideosFilter")]
 		PHPickerFilter CinematicVideosFilter { get; }
 
-		[NoTV, Mac (13, 0), iOS (15, 0)]
+		[NoTV, iOS (15, 0)]
 		[MacCatalyst (15, 0)]
 		[Static]
 		[Export ("slomoVideosFilter")]
 		PHPickerFilter SlomoVideosFilter { get; }
 
-		[NoTV, Mac (13, 0), iOS (15, 0)]
+		[NoTV, iOS (15, 0)]
 		[MacCatalyst (15, 0)]
 		[Static]
 		[Export ("timelapseVideosFilter")]
@@ -753,26 +776,26 @@ namespace PhotosUI {
 		[Export ("spatialMediaFilter")]
 		PHPickerFilter SpatialMediaFilter { get; }
 
-		[NoTV, Mac (13, 0), iOS (15, 0)]
+		[NoTV, iOS (15, 0)]
 		[MacCatalyst (15, 0)]
 		[Static]
 		[Export ("playbackStyleFilter:")]
 		PHPickerFilter GetPlaybackStyleFilter (PHAssetPlaybackStyle playbackStyle);
 
-		[NoTV, Mac (13, 0), iOS (15, 0)]
+		[NoTV, iOS (15, 0)]
 		[MacCatalyst (15, 0)]
 		[Static]
 		[Export ("allFilterMatchingSubfilters:")]
 		PHPickerFilter GetAllFilterMatchingSubfilters (PHPickerFilter [] subfilters);
 
-		[NoTV, Mac (13, 0), iOS (15, 0)]
+		[NoTV, iOS (15, 0)]
 		[MacCatalyst (15, 0)]
 		[Static]
 		[Export ("notFilterOfSubfilter:")]
 		PHPickerFilter GetNotFilterOfSubfilter (PHPickerFilter subfilter);
 	}
 
-	[NoTV, Mac (13, 0), iOS (14, 0)]
+	[NoTV, iOS (14, 0)]
 	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[Advice ("This type should not be subclassed.")]
@@ -799,18 +822,18 @@ namespace PhotosUI {
 		void PresentLimitedLibraryPicker (UIViewController controller, Action<string []> completionHandler);
 	}
 
-	[NoTV, Mac (13, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
 	[Native]
 	public enum PHPickerConfigurationSelection : long {
 		Default = 0,
 		Ordered = 1,
-		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), MacCatalyst (17, 0)]
 		Continuous = 2,
-		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), MacCatalyst (17, 0)]
 		ContinuousAndOrdered = 3,
 	}
 
-	[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	interface PHPickerUpdateConfiguration : NSCopying, NSSecureCoding {
 		[Export ("selectionLimit")]
@@ -818,5 +841,128 @@ namespace PhotosUI {
 
 		[Export ("edgesWithoutContentMargins", ArgumentSemantic.Assign)]
 		NSDirectionalRectEdge EdgesWithoutContentMargins { get; set; }
+
+		[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[NullAllowed, Export ("searchText", ArgumentSemantic.Copy)]
+		PHPickerSearchText SearchText { get; set; }
+	}
+
+	[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface PHSharedAlbumCreationConfiguration {
+		[Export ("initWithPhotoLibrary:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor (PHPhotoLibrary photoLibrary);
+
+		[Export ("photoLibrary")]
+		PHPhotoLibrary PhotoLibrary { get; }
+
+		[NullAllowed, Export ("defaultTitle", ArgumentSemantic.Copy)]
+		string DefaultTitle { get; set; }
+
+		[Export ("defaultPolicy", ArgumentSemantic.Assign)]
+		PHSharedAlbumCreationSharingPolicy DefaultPolicy { get; set; }
+	}
+
+	[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface PHSharedAlbumCreationResult {
+		[Export ("albumIdentifier")]
+		string AlbumIdentifier { get; }
+
+		[Export ("albumURL")]
+		NSUrl AlbumUrl { get; }
+	}
+
+	interface IPHSharedAlbumCreationViewControllerDelegate { }
+
+	[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
+	[BaseType (typeof (NSObject))]
+	interface PHSharedAlbumCreationViewControllerDelegate {
+		[Abstract]
+		[Export ("sharedAlbumCreationViewController:didCompleteWithError:")]
+		void DidComplete (PHSharedAlbumCreationViewController creationViewController, [NullAllowed] NSError error);
+	}
+
+	[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (UIViewController))]
+	[DisableDefaultCtor]
+	interface PHSharedAlbumCreationViewController {
+		[Export ("initWithConfiguration:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor (PHSharedAlbumCreationConfiguration configuration);
+
+		[Wrap ("WeakDelegate")]
+		[NullAllowed]
+		IPHSharedAlbumCreationViewControllerDelegate Delegate { get; set; }
+
+		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
+		NSObject WeakDelegate { get; set; }
+
+		[NullAllowed, Export ("creationResult", ArgumentSemantic.Copy)]
+		PHSharedAlbumCreationResult CreationResult { get; }
+	}
+
+	interface IPHSharedAlbumCustomizationViewControllerDelegate { }
+
+	[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
+	[BaseType (typeof (NSObject))]
+	interface PHSharedAlbumCustomizationViewControllerDelegate {
+		[Abstract]
+		[Export ("sharedAlbumCustomizationViewController:didCompleteWithError:")]
+		void DidComplete (PHSharedAlbumCustomizationViewController customizationViewController, [NullAllowed] NSError error);
+	}
+
+	[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (UIViewController))]
+	[DisableDefaultCtor]
+	interface PHSharedAlbumCustomizationViewController {
+		[Export ("initWithAlbumIdentifier:photoLibrary:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor (string albumIdentifier, PHPhotoLibrary photoLibrary);
+
+		[Wrap ("WeakDelegate")]
+		[NullAllowed]
+		IPHSharedAlbumCustomizationViewControllerDelegate Delegate { get; set; }
+
+		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
+		NSObject WeakDelegate { get; set; }
+
+		[Export ("albumIdentifier", ArgumentSemantic.Copy)]
+		string AlbumIdentifier { get; }
+	}
+
+	interface IPHSharedAlbumPostingViewControllerDelegate { }
+
+	[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
+	[BaseType (typeof (NSObject))]
+	interface PHSharedAlbumPostingViewControllerDelegate {
+		[Abstract]
+		[Export ("sharedAlbumPostingViewController:didCompleteWithError:")]
+		void DidComplete (PHSharedAlbumPostingViewController postingViewController, [NullAllowed] NSError error);
+	}
+
+	[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (UIViewController))]
+	[DisableDefaultCtor]
+	interface PHSharedAlbumPostingViewController {
+		[Export ("initWithItems:defaultAlbumIdentifier:photoLibrary:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor (PHPickerResult [] items, [NullAllowed] string defaultAlbumIdentifier, PHPhotoLibrary photoLibrary);
+
+		[Wrap ("WeakDelegate")]
+		[NullAllowed]
+		IPHSharedAlbumPostingViewControllerDelegate Delegate { get; set; }
+
+		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
+		NSObject WeakDelegate { get; set; }
+
+		[NullAllowed, Export ("albumIdentifier", ArgumentSemantic.Copy)]
+		string AlbumIdentifier { get; }
 	}
 }

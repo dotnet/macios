@@ -70,7 +70,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			foreach (var dir in Directory.EnumerateDirectories (onDemandResourcesDir)) {
 				var path = Path.Combine (dir, "Info.plist");
-				PDictionary info;
+				PDictionary? info;
 
 				if (!File.Exists (path))
 					continue;
@@ -80,11 +80,8 @@ namespace Xamarin.MacDev.Tasks {
 				updateOnDemandResources = updateOnDemandResources || mtime > onDemandResourcesStamp;
 				updateManifest = updateManifest || mtime > manifestStamp;
 
-				try {
-					info = PDictionary.FromFile (path)!;
-				} catch {
+				if (!PDictionary.TryOpenFile (path, out info))
 					continue;
-				}
 
 				var bundleIdentifier = info.GetCFBundleIdentifier ();
 				var primaryContentHash = new PDictionary ();

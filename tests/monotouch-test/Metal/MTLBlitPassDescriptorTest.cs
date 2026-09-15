@@ -19,7 +19,7 @@ namespace MonoTouchFixtures.Metal {
 		{
 			// need to be tested since it fails intro
 			using var passDescripton = MTLBlitPassDescriptor.Create ();
-			Assert.IsNotNull (passDescripton, "passDescriptor");
+			Assert.That (passDescripton, Is.Not.Null, "passDescriptor");
 			Assert.DoesNotThrow (() => {
 				using var attachments = passDescripton.SampleBufferAttachments; // don't care about the value, just that it works
 			}, "Attachements");

@@ -35,7 +35,7 @@ namespace MonoTouchFixtures.Network {
 				descriptor.DisabledUnicastTraffic = true;
 			}, "Setter");
 			Assert.DoesNotThrow (() => {
-				Assert.IsTrue (descriptor.DisabledUnicastTraffic, "Value");
+				Assert.That (descriptor.DisabledUnicastTraffic, Is.True, "Value");
 			}, "Getter");
 		}
 
@@ -52,7 +52,7 @@ namespace MonoTouchFixtures.Network {
 
 			var e = new AutoResetEvent (false);
 			descriptor.EnumerateEndpoints ((endPoint) => {
-				Assert.IsNotNull (endPoint);
+				Assert.That (endPoint, Is.Not.Null);
 				e.Set ();
 				return true;
 			});

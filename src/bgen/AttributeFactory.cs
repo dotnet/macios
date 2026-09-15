@@ -1,49 +1,71 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 #nullable enable
 
 public static partial class AttributeFactory {
 
-	public static T CreateNewAttribute<T> (Type [] ctorTypes, object? [] ctorValues)
+	public static T CreateNewAttribute<T> (AttributeManager attributeManager, Type [] ctorTypes, object? [] ctorValues)
 		where T : Attribute
 	{
+		var constructorCache = attributeManager.constructorCache;
 		var attribType = typeof (T);
-		var ctor = attribType.GetConstructor (ctorTypes);
-		if (ctor is null)
-			throw ErrorHelper.CreateError (1058, attribType.FullName);
+		if (!constructorCache.TryGetValue ((attribType, ctorTypes), out var ctor)) {
+			ctor = attribType.GetConstructor (ctorTypes);
+			if (ctor is null)
+				throw ErrorHelper.CreateError (1058, attribType.FullName);
+			constructorCache [(attribType, ctorTypes)] = ctor;
+		}
 
 		return (T) ctor.Invoke (ctorValues);
 	}
 
-	public static T CreateNewAttribute<T> (PlatformName platform, int major, int minor, string? message = null)
+	public static T CreateNewAttribute<T> (AttributeManager attributeManager, PlatformName platform, int major, int minor, string? message = null)
 		where T : Attribute
 	{
 		var args = new ConstructorArguments (platform, major, minor, message);
-		return CreateNewAttribute<T> (args.GetCtorTypes (), args.GetCtorValues ());
+		return CreateNewAttribute<T> (attributeManager, args.GetCtorTypes (), args.GetCtorValues ());
 	}
 
-	public static T CreateNewAttribute<T> (PlatformName platform, int major, int minor, int build, string? message = null)
+	public static T CreateNewAttribute<T> (AttributeManager attributeManager, PlatformName platform, int major, int minor, int build, string? message = null)
 		where T : Attribute
 	{
 		var args = new ConstructorArguments (platform, major, minor, build, message);
-		return CreateNewAttribute<T> (args.GetCtorTypes (), args.GetCtorValues ());
+		return CreateNewAttribute<T> (attributeManager, args.GetCtorTypes (), args.GetCtorValues ());
 	}
 
-	public static T CreateNewAttribute<T> (PlatformName platform, string? message = null) where T : Attribute
+	public static T CreateNewAttribute<T> (AttributeManager attributeManager, PlatformName platform, string? message = null) where T : Attribute
 	{
 		var args = new ConstructorArguments (platform, message);
-		return CreateNewAttribute<T> (args.GetCtorTypes (), args.GetCtorValues ());
+		return CreateNewAttribute<T> (attributeManager, args.GetCtorTypes (), args.GetCtorValues ());
 	}
+
+	static readonly IntroducedAttribute [] noVersionSupportedCache = new IntroducedAttribute [] {
+		new (PlatformName.iOS),
+		new (PlatformName.TvOS),
+		new (PlatformName.MacOSX),
+		new (PlatformName.MacCatalyst),
+	};
+
+	static readonly UnavailableAttribute [] unsupportedCache = new UnavailableAttribute [] {
+		new (PlatformName.iOS),
+		new (PlatformName.MacCatalyst),
+		new (PlatformName.MacOSX),
+		new (PlatformName.TvOS),
+	};
 
 	public static IntroducedAttribute CreateNoVersionSupportedAttribute (PlatformName platform)
 	{
 		switch (platform) {
 		case PlatformName.iOS:
+			return noVersionSupportedCache [0];
 		case PlatformName.TvOS:
+			return noVersionSupportedCache [1];
 		case PlatformName.MacOSX:
+			return noVersionSupportedCache [2];
 		case PlatformName.MacCatalyst:
-			return new (platform);
+			return noVersionSupportedCache [3];
 		case PlatformName.WatchOS:
 			throw new InvalidOperationException ("CreateNoVersionSupportedAttribute for WatchOS never makes sense");
 		default:
@@ -55,10 +77,13 @@ public static partial class AttributeFactory {
 	{
 		switch (platform) {
 		case PlatformName.iOS:
+			return unsupportedCache [0];
 		case PlatformName.MacCatalyst:
+			return unsupportedCache [1];
 		case PlatformName.MacOSX:
+			return unsupportedCache [2];
 		case PlatformName.TvOS:
-			return new (platform);
+			return unsupportedCache [3];
 		case PlatformName.WatchOS:
 			throw new InvalidOperationException ("CreateUnsupportedAttribute for WatchOS never makes sense");
 		default:
@@ -68,6 +93,16 @@ public static partial class AttributeFactory {
 
 	public static AvailabilityBaseAttribute CloneFromOtherPlatform (AvailabilityBaseAttribute attr, PlatformName platform)
 	{
+		if (attr.Version is null && string.IsNullOrEmpty (attr.Message)) {
+			// For no-version, no-message attributes, return the cached singletons
+			switch (attr.AvailabilityKind) {
+			case AvailabilityKind.Introduced:
+				return CreateNoVersionSupportedAttribute (platform);
+			case AvailabilityKind.Unavailable:
+				return CreateUnsupportedAttribute (platform);
+			}
+		}
+
 		if (attr.Version is null) {
 			switch (attr.AvailabilityKind) {
 			case AvailabilityKind.Introduced:
@@ -88,8 +123,26 @@ public static partial class AttributeFactory {
 		// So determine if the build is -1, and use the 2 or 3 param ctor...
 		var version = attr.Version;
 		var minimum = Xamarin.SdkVersions.GetMinVersion (platform.AsApplePlatform ());
-		if (version < minimum)
-			version = minimum;
+		if (version <= minimum) {
+			// If the version is at or below the platform minimum, it's redundant,
+			// so create a no-version attribute instead of clamping.
+			switch (attr.AvailabilityKind) {
+			case AvailabilityKind.Introduced:
+				return string.IsNullOrEmpty (attr.Message)
+					? CreateNoVersionSupportedAttribute (platform)
+					: new IntroducedAttribute (platform, message: attr.Message);
+			case AvailabilityKind.Deprecated:
+				return new DeprecatedAttribute (platform, minimum.Major, minimum.Minor, message: attr.Message);
+			case AvailabilityKind.Obsoleted:
+				return new ObsoletedAttribute (platform, minimum.Major, minimum.Minor, message: attr.Message);
+			case AvailabilityKind.Unavailable:
+				return string.IsNullOrEmpty (attr.Message)
+					? CreateUnsupportedAttribute (platform)
+					: new UnavailableAttribute (platform, message: attr.Message);
+			default:
+				throw new NotImplementedException ();
+			}
+		}
 
 		if (version.Build == -1) {
 			switch (attr.AvailabilityKind) {

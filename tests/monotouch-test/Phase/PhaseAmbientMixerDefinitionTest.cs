@@ -31,7 +31,7 @@ namespace MonoTouchFixtures.Phase {
 			var orientation = new Quaternion (1, 0, 0, 0);
 			using var layout = new AVAudioChannelLayout (AudioChannelLayoutTag.MPEG_5_1_A);
 			using (var mixer = new PhaseAmbientMixerDefinition (layout, orientation)) {
-				Assert.AreEqual (orientation, mixer.Orientation);
+				Assert.That (mixer.Orientation, Is.EqualTo (orientation));
 			}
 		}
 	}

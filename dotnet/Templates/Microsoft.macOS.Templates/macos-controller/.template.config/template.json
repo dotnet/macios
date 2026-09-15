@@ -1,7 +1,7 @@
 {
   "$schema": "http://json.schemastore.org/template",
   "author": "Microsoft",
-  "classifications": [ "macOS" ],
+  "classifications": [ "Desktop", "macOS" ],
   "name": "macOS Controller",
   "description": "A macOS View Controller with UI implemented in code",
   "tags": {

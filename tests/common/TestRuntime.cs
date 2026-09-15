@@ -2,7 +2,6 @@
 #define MONOMAC
 #endif
 
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -210,7 +209,7 @@ partial class TestRuntime {
 		if (CheckXcodeVersion (major, minor, build))
 			return;
 
-		NUnit.Framework.Assert.Ignore ("Requires the platform version shipped with Xcode {0}.{1}", major, minor);
+		NUnit.Framework.Assert.Ignore ($"Requires the platform version shipped with Xcode {major}.{minor}");
 	}
 
 	public static void AssertDevice (string message = "This test only runs on device.")
@@ -446,6 +445,21 @@ partial class TestRuntime {
 	public static bool CheckXcodeVersion (int major, int minor, int build = 0)
 	{
 		switch (major) {
+		case 27:
+			switch (minor) {
+			case 0:
+#if __TVOS__
+				return ChecktvOSSystemVersion (27, 0);
+#elif __IOS__
+				return CheckiOSSystemVersion (27, 0);
+#elif MONOMAC
+				return CheckMacSystemVersion (27, 0);
+#else
+				throw new NotImplementedException ($"Missing platform case for Xcode {major}.{minor}");
+#endif
+			default:
+				throw new NotImplementedException ($"Missing version logic for checking for Xcode {major}.{minor}");
+			}
 		case 26:
 			switch (minor) {
 			case 0:
@@ -1552,47 +1566,30 @@ partial class TestRuntime {
 
 	public static uint GetFlags (NSObject obj)
 	{
-		const string name = "flags";
-		var prop = typeof (NSObject).GetProperty (name, BindingFlags.Instance | BindingFlags.NonPublic);
-		if (prop is null)
-			throw new InvalidOperationException ($"Unable to find the property '{name}' in NSObject.");
-		return (uint) prop.GetValue (obj)!;
+		// NSObject stores its flags in native memory, in a struct that looks like this:
+		//     struct NSObjectData {
+		//         NativeHandle handle;
+		//         uint flags;
+		//     }
+		// and the pointer to that struct is stored in the '__data' field in NSObject.
+		// Fetch the field instead of the 'flags' property, because the trimmer may remove
+		// the metadata for the property (while the field is always kept, since it's used).
+		const string name = "__data";
+		var field = typeof (NSObject).GetField (name, BindingFlags.Instance | BindingFlags.NonPublic);
+		if (field is null)
+			throw new InvalidOperationException ($"Unable to find the field '{name}' in NSObject.");
+		_ = obj.Handle; // make sure the native memory has been allocated.
+		var data = (IntPtr) field.GetValue (obj)!;
+		if (data == IntPtr.Zero)
+			throw new InvalidOperationException ($"The field '{name}' in NSObject is null.");
+		var rv = (uint) Marshal.ReadInt32 (data, IntPtr.Size);
+		GC.KeepAlive (obj);
+		return rv;
 	}
 
 	// Determine if linkall was enabled by checking if an unused class in this assembly is still here.
-	static bool? link_all;
-	[UnconditionalSuppressMessage ("Trimming", "IL2026", Justification = "This property checks whether the trimmer is enabled by checking if a type survived trimming; it's thus trimmer safe in that the any behavioral difference when the trimmer is enabled is exactly what it's looking for.")]
-	public static bool IsLinkAll {
-		get {
-			if (!link_all.HasValue)
-				link_all = typeof (TestRuntime).Assembly.GetType (typeof (TestRuntime).FullName + "+LinkerSentinel") is null;
-			return link_all.Value;
-		}
-	}
-	class LinkerSentinel { }
-
-	// Determine if any assemblies were linked by checking if a few uncommon classes in corlib are still here.
-	static bool? link_any;
-	[UnconditionalSuppressMessage ("Trimming", "IL2026", Justification = "This property checks whether the trimmer is enabled by checking if a type survived trimming; it's thus trimmer safe in that the any behavioral difference when the trimmer is enabled is exactly what it's looking for.")]
-	public static bool IsLinkAny {
-		get {
-			if (!link_any.HasValue) {
-				var uncommonTypes = new string [] {
-					"System.Action`14",
-					"System.DBNull",
-					"System.Diagnostics.Debugger",
-					"System.Func`15",
-				};
-				link_any = false;
-				foreach (var uncommonType in uncommonTypes) {
-					link_any = typeof (int).Assembly.GetType (uncommonType) is null;
-					if (link_any == true)
-						break;
-				}
-			}
-			return link_any.Value;
-		}
-	}
+	// IsLinkAll/IsLinkAny (and the LinkerSentinel helper) live in TestRuntime.LinkAll.cs, so they can
+	// be compiled on their own into assemblies that can't compile the full TestRuntime.cs.
 
 	public static bool IsOptimizeAll {
 		get {
@@ -1624,6 +1621,7 @@ partial class TestRuntime {
 		IgnoreInCIIfSshConnectionError (ex);
 		IgnoreInCIIfTimedOut (ex);
 		IgnoreInCIIfHttpClientTimedOut (ex);
+		IgnoreInCIIfResponseEndedPrematurely (ex);
 	}
 
 	public static void IgnoreInCIIfBadNetwork (NSError? error)
@@ -1700,6 +1698,15 @@ partial class TestRuntime {
 		}
 	}
 
+	public static void IgnoreInCIIfResponseEndedPrematurely (Exception ex)
+	{
+		var httpIoEx = FindInner<HttpIOException> (ex);
+		if (httpIoEx is null)
+			return;
+
+		IgnoreInCI ($"Ignored due to premature response termination: {httpIoEx.Message}");
+	}
+
 	public static void IgnoreInCIIfForbidden (Exception ex)
 	{
 		IgnoreInCIfHttpStatusCodes (ex, HttpStatusCode.BadGateway, HttpStatusCode.GatewayTimeout, HttpStatusCode.ServiceUnavailable, HttpStatusCode.Forbidden);
@@ -1751,9 +1758,19 @@ partial class TestRuntime {
 
 	public static void IgnoreInCIIfSshConnectionError (Exception ex)
 	{
-		var msg = ex.Message;
-		if (msg.Contains ("The SSL connection could not be established")) {
-			IgnoreInCI ($"Ignored due to network error: {ex}");
+		// Check all exceptions in the chain for TLS/SSL error messages
+		var current = ex;
+		while (current is not null) {
+			var msg = current.Message;
+			if (msg.Contains ("The SSL connection could not be established") ||
+				msg.Contains ("A TLS error caused the secure connection to fail")) {
+				IgnoreInCI ($"Ignored due to network error: {ex}");
+			}
+			if (current is NSErrorException nex) {
+				// CFNetworkErrors.SecureConnectionFailed = -1200
+				IgnoreNetworkError (nex.Error, CFNetworkErrors.SecureConnectionFailed);
+			}
+			current = current.InnerException;
 		}
 	}
 
@@ -1876,7 +1893,7 @@ partial class TestRuntime {
 		case InconclusiveException: throw new InconclusiveException (ex.Message, ex);
 		case ResultStateException: throw ex;
 		default:
-			Assert.IsNull (ex, message);
+			Assert.That (ex, Is.Null, message);
 			break;
 		}
 	}

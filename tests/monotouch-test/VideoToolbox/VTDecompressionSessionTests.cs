@@ -40,7 +40,7 @@ namespace MonoTouchFixtures.VideoToolbox {
 
 			using (var asset = AVAsset.FromUrl (NSBundle.MainBundle.GetUrlForResource ("xamvideotest", "mp4")))
 			using (var session = CreateSession (asset)) {
-				Assert.IsNotNull (session, "Session should not be null");
+				Assert.That (session, Is.Not.Null, "Session should not be null");
 			}
 		}
 
@@ -59,7 +59,7 @@ namespace MonoTouchFixtures.VideoToolbox {
 					OnlyTheseFrames = VTOnlyTheseFrames.AllFrames
 				});
 
-				Assert.AreEqual (VTStatus.Ok, result, "SetDecompressionProperties");
+				Assert.That (result, Is.EqualTo (VTStatus.Ok), "SetDecompressionProperties");
 			}
 		}
 
@@ -78,7 +78,7 @@ namespace MonoTouchFixtures.VideoToolbox {
 					ShouldBeSerialized = true
 				});
 
-				Assert.AreEqual (VTStatus.Ok, result, "SetProperties");
+				Assert.That (result, Is.EqualTo (VTStatus.Ok), "SetProperties");
 			}
 		}
 
@@ -92,7 +92,7 @@ namespace MonoTouchFixtures.VideoToolbox {
 			using (var asset = AVAsset.FromUrl (NSBundle.MainBundle.GetUrlForResource ("xamvideotest", "mp4")))
 			using (var session = CreateSession (asset)) {
 				var supportedProps = session.GetSupportedProperties ();
-				Assert.NotNull (supportedProps, "GetSupportedProperties");
+				Assert.That (supportedProps, Is.Not.Null, "GetSupportedProperties");
 				Assert.That (supportedProps.Count, Is.GreaterThan ((nuint) 0), "GetSupportedProperties should be more than zero");
 			}
 		}
@@ -128,7 +128,7 @@ namespace MonoTouchFixtures.VideoToolbox {
 
 				asset.LoadTrackWithMediaCharacteristics (characteristic.GetConstant (), (tracks, error) => {
 					try {
-						Assert.Null (error, "Failed to load track");
+						Assert.That (error, Is.Null, "Failed to load track");
 
 						videoTrack = (AVAssetTrack) tracks.ToArray ().First ();
 
@@ -139,7 +139,7 @@ namespace MonoTouchFixtures.VideoToolbox {
 					}
 				});
 
-				Assert.IsTrue (loaded.Task.Wait (TimeSpan.FromSeconds (15)), "Timed out waiting for track to load");
+				Assert.That (loaded.Task.Wait (TimeSpan.FromSeconds (15)), Is.True, "Timed out waiting for track to load");
 				FormatDescription = loaded.Task.Result;
 			}
 
@@ -152,8 +152,8 @@ namespace MonoTouchFixtures.VideoToolbox {
 
 				do {
 					using var buffer = sampleBufferGenerator.CreateSampleBuffer (request, out var sampleBufferError);
-					Assert.NotNull (buffer, "Sample Buffer");
-					Assert.Null (sampleBufferError, "Sample Buffer Error");
+					Assert.That (buffer, Is.Not.Null, "Sample Buffer");
+					Assert.That (sampleBufferError, Is.Null, "Sample Buffer Error");
 
 					iterator (buffer);
 

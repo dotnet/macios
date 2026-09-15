@@ -26,15 +26,15 @@ namespace MonoTouchFixtures.CoreLocation {
 
 			using (var uuid = new NSUuid ("E2C56DB5-DFFB-48D2-B060-D0F5A71096E0"))
 			using (var br = new CLBeaconRegion (uuid, "identifier")) {
-				Assert.Null (br.Major, "Major");
-				Assert.Null (br.Minor, "Minor");
-				Assert.False (br.NotifyEntryStateOnDisplay, "NotifyEntryStateOnDisplay");
+				Assert.That (br.Major, Is.Null, "Major");
+				Assert.That (br.Minor, Is.Null, "Minor");
+				Assert.That (br.NotifyEntryStateOnDisplay, Is.False, "NotifyEntryStateOnDisplay");
 				Assert.That (uuid.AsString (), Is.EqualTo (br.ProximityUuid.AsString ()), "ProximityUuid");
 				// CLRegion
 				Assert.That (br.Identifier, Is.EqualTo ("identifier"), "identifier");
-				Assert.True (br.NotifyOnEntry, "NotifyOnEntry");
-				Assert.True (br.NotifyOnExit, "NotifyOnExit");
-				Assert.False (br.NotifyEntryStateOnDisplay, "NotifyEntryStateOnDisplay");
+				Assert.That (br.NotifyOnEntry, Is.True, "NotifyOnEntry");
+				Assert.That (br.NotifyOnExit, Is.True, "NotifyOnExit");
+				Assert.That (br.NotifyEntryStateOnDisplay, Is.False, "NotifyEntryStateOnDisplay");
 			}
 		}
 
@@ -46,13 +46,13 @@ namespace MonoTouchFixtures.CoreLocation {
 			using (var uuid = new NSUuid ("E2C56DB5-DFFB-48D2-B060-D0F5A71096E0"))
 			using (var br = new CLBeaconRegion (uuid, 0, "identifier")) {
 				Assert.That (br.Major.Int32Value, Is.EqualTo (0), "Major");
-				Assert.Null (br.Minor, "Minor");
-				Assert.False (br.NotifyEntryStateOnDisplay, "NotifyEntryStateOnDisplay");
+				Assert.That (br.Minor, Is.Null, "Minor");
+				Assert.That (br.NotifyEntryStateOnDisplay, Is.False, "NotifyEntryStateOnDisplay");
 				Assert.That (uuid.AsString (), Is.EqualTo (br.ProximityUuid.AsString ()), "ProximityUuid");
 				// CLRegion
 				Assert.That (br.Identifier, Is.EqualTo ("identifier"), "identifier");
-				Assert.True (br.NotifyOnEntry, "NotifyOnEntry");
-				Assert.True (br.NotifyOnExit, "NotifyOnExit");
+				Assert.That (br.NotifyOnEntry, Is.True, "NotifyOnEntry");
+				Assert.That (br.NotifyOnExit, Is.True, "NotifyOnExit");
 			}
 		}
 
@@ -65,12 +65,12 @@ namespace MonoTouchFixtures.CoreLocation {
 			using (var br = new CLBeaconRegion (uuid, 2, 3, "identifier")) {
 				Assert.That (br.Major.Int32Value, Is.EqualTo (2), "Major");
 				Assert.That (br.Minor.Int32Value, Is.EqualTo (3), "Minor");
-				Assert.False (br.NotifyEntryStateOnDisplay, "NotifyEntryStateOnDisplay");
+				Assert.That (br.NotifyEntryStateOnDisplay, Is.False, "NotifyEntryStateOnDisplay");
 				Assert.That (uuid.AsString (), Is.EqualTo (br.ProximityUuid.AsString ()), "ProximityUuid");
 				// CLRegion
 				Assert.That (br.Identifier, Is.EqualTo ("identifier"), "identifier");
-				Assert.True (br.NotifyOnEntry, "NotifyOnEntry");
-				Assert.True (br.NotifyOnExit, "NotifyOnExit");
+				Assert.That (br.NotifyOnEntry, Is.True, "NotifyOnEntry");
+				Assert.That (br.NotifyOnExit, Is.True, "NotifyOnExit");
 			}
 		}
 	}

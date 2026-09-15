@@ -1,5 +1,7 @@
 {
   "author": "Microsoft",
   "name": "Bibliothèque de liaisons iOS",
-  "description": "Projet de création d’une bibliothèque de liaisons .NET iOS"
+  "description": "Projet de création d’une bibliothèque de liaisons .NET iOS",
+  "symbols/Framework/description": "The target framework for the project.",
+  "symbols/Framework/choices/net10.0-ios/description": "Target net10.0-ios"
 }

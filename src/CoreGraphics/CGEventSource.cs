@@ -13,6 +13,7 @@
 #if MONOMAC || __MACCATALYST__
 
 using CoreFoundation;
+using System.ComponentModel;
 
 namespace CoreGraphics {
 	/// <summary>To be added.</summary>
@@ -157,10 +158,16 @@ namespace CoreGraphics {
 		///         <param name="state">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		public void SetLocalEventsFilterDuringSupressionState (CGEventFilterMask filter, CGEventSuppressionState state)
+		public void SetLocalEventsFilterDuringSuppressionState (CGEventFilterMask filter, CGEventSuppressionState state)
 		{
 			CGEventSourceSetLocalEventsFilterDuringSuppressionState (Handle, filter, state);
 		}
+
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'SetLocalEventsFilterDuringSuppressionState' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		public void SetLocalEventsFilterDuringSupressionState (CGEventFilterMask filter, CGEventSuppressionState state) => SetLocalEventsFilterDuringSuppressionState (filter, state);
+#endif
 
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
 		extern static CGEventFilterMask CGEventSourceGetLocalEventsFilterDuringSuppressionState (IntPtr handle, CGEventSuppressionState state);
@@ -169,10 +176,16 @@ namespace CoreGraphics {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		public CGEventFilterMask GetLocalEventsFilterDuringSupressionState (CGEventSuppressionState state)
+		public CGEventFilterMask GetLocalEventsFilterDuringSuppressionState (CGEventSuppressionState state)
 		{
 			return CGEventSourceGetLocalEventsFilterDuringSuppressionState (Handle, state);
 		}
+
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'GetLocalEventsFilterDuringSuppressionState' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		public CGEventFilterMask GetLocalEventsFilterDuringSupressionState (CGEventSuppressionState state) => GetLocalEventsFilterDuringSuppressionState (state);
+#endif
 
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
 		extern static void CGEventSourceSetLocalEventsSuppressionInterval (IntPtr handle, double seconds);
@@ -183,7 +196,7 @@ namespace CoreGraphics {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		public double LocalEventsSupressionInterval {
+		public double LocalEventsSuppressionInterval {
 			get {
 				return CGEventSourceGetLocalEventsSuppressionInterval (Handle);
 			}
@@ -191,6 +204,15 @@ namespace CoreGraphics {
 				CGEventSourceSetLocalEventsSuppressionInterval (Handle, value);
 			}
 		}
+
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'LocalEventsSuppressionInterval' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		public double LocalEventsSupressionInterval {
+			get => LocalEventsSuppressionInterval;
+			set => LocalEventsSuppressionInterval = value;
+		}
+#endif
 
 	}
 }

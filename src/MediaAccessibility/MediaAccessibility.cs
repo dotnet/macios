@@ -301,18 +301,18 @@ namespace MediaAccessibility {
 			return (MACaptionAppearanceTextEdgeStyle) (int) rv;
 		}
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.MediaAccessibilityLibrary)]
 		static extern void MACaptionAppearanceDidDisplayCaptions (IntPtr /* CFArratRef */ strings);
 
 		/// <summary>Notifies the system that the specified captions were displayed.</summary>
 		/// <param name="strings">The captions that were displayed, or null or an empty array if no captions were displayed.</param>
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public static void DidDisplayCaptions (string []? strings)
 		{
@@ -326,9 +326,9 @@ namespace MediaAccessibility {
 
 		/// <summary>Notifies the system that the specified captions were displayed.</summary>
 		/// <param name="strings">The captions that were displayed, or null or an empty array if no captions were displayed.</param>
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public static void DidDisplayCaptions (NSAttributedString []? strings)
 		{
@@ -509,20 +509,20 @@ namespace MediaAccessibility {
 	}
 
 	[SupportedOSPlatform ("ios16.4")]
-	[SupportedOSPlatform ("maccatalyst16.4")]
-	[SupportedOSPlatform ("macos13.3")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos16.4")]
 	public static partial class MAVideoAccommodations {
 		[SupportedOSPlatform ("ios16.4")]
-		[SupportedOSPlatform ("maccatalyst16.4")]
-		[SupportedOSPlatform ("macos13.3")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos16.4")]
 		[DllImport (Constants.MediaAccessibilityLibrary)]
 		static extern byte MADimFlashingLightsEnabled ();
 
 		[SupportedOSPlatform ("ios16.4")]
-		[SupportedOSPlatform ("maccatalyst16.4")]
-		[SupportedOSPlatform ("macos13.3")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos16.4")]
 		public static bool IsDimFlashingLightsEnabled () => MADimFlashingLightsEnabled () != 0;
 	}

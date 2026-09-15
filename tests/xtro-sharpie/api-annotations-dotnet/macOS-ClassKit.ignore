@@ -1,0 +1,8 @@
+# results from initial block parameter nullability analysis
+!missing-null-allowed! 'System.Void ClassKit.CLSContext::FindDescendantMatching(System.String[],System.Action`2<ClassKit.CLSContext,Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void ClassKit.CLSContext::FindDescendantMatching(System.String[],System.Action`2<ClassKit.CLSContext,Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #1
+!missing-null-allowed! 'System.Void ClassKit.CLSDataStore::FetchActivity(Foundation.NSUrl,System.Action`2<ClassKit.CLSActivity,Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void ClassKit.CLSDataStore::FetchActivity(Foundation.NSUrl,System.Action`2<ClassKit.CLSActivity,Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #1
+!missing-null-allowed! 'System.Void ClassKit.CLSDataStore::FindContextsMatching(Foundation.NSPredicate,System.Action`2<ClassKit.CLSContext[],Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #1
+!missing-null-allowed! 'System.Void ClassKit.CLSDataStore::FindContextsMatching(System.String[],System.Action`2<ClassKit.CLSContext[],Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #1
+!missing-null-allowed! 'System.Void ClassKit.CLSDataStore::Save(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0

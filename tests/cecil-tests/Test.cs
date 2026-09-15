@@ -37,8 +37,8 @@ namespace Cecil.Tests {
 						if (name == "<Default>k__BackingField")
 							break;
 						goto default;
-					case "Vision.VNUtils":
-						if (name == "<NormalizedIdentityRect>k__BackingField")
+					case "CoreMedia.CMTimeRange":
+						if (name == "<TimeMappingSourceKey>k__BackingField" || name == "<TimeMappingTargetKey>k__BackingField")
 							break;
 						goto default;
 					default:

@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="../../ExtensionProject/MacCatalyst/ExtensionProject.csproj" />
+  <Project Path="ExtensionConsumer.csproj" />
+</Solution>

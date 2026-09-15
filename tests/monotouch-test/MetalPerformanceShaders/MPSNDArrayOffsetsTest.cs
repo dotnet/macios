@@ -15,11 +15,11 @@ namespace MonoTouchFixtures.MetalPerformanceShaders {
 		public void Dimensions ()
 		{
 			var value = default (MPSNDArrayOffsets);
-			CollectionAssert.AreEqual (new nint [16], value.Dimensions, "A");
+			Assert.That (value.Dimensions, Is.EqualTo (new nint [16]), "A");
 
 			var array = new nint [] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
 			value.Dimensions = array;
-			CollectionAssert.AreEqual (array, value.Dimensions, "B");
+			Assert.That (value.Dimensions, Is.EqualTo (array), "B");
 
 			Assert.Throws<ArgumentNullException> (() => value.Dimensions = null, "C");
 			Assert.Throws<ArgumentOutOfRangeException> (() => value.Dimensions = new nint [15], "D");

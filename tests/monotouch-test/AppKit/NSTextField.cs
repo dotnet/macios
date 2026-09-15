@@ -19,7 +19,7 @@ namespace Xamarin.Mac.Tests {
 			var placeholder = textField.PlaceholderString;
 			textField.PlaceholderString = "Test";
 
-			Assert.IsFalse (textField.PlaceholderString == placeholder, "NSTextFieldShouldChangePlaceholderString - Failed to set the PlaceholderString property");
+			Assert.That (textField.PlaceholderString == placeholder, Is.False, "NSTextFieldShouldChangePlaceholderString - Failed to set the PlaceholderString property");
 		}
 
 		[Test]
@@ -28,7 +28,7 @@ namespace Xamarin.Mac.Tests {
 			var placeholder = textField.PlaceholderAttributedString;
 			textField.PlaceholderAttributedString = new NSAttributedString ("Test");
 
-			Assert.IsFalse (textField.PlaceholderAttributedString == placeholder, "NSTextFieldShouldChangePlaceholderAttributedString - Failed to set the PlaceholderAttributedString property");
+			Assert.That (textField.PlaceholderAttributedString == placeholder, Is.False, "NSTextFieldShouldChangePlaceholderAttributedString - Failed to set the PlaceholderAttributedString property");
 		}
 	}
 }

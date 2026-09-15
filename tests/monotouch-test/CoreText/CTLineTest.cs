@@ -41,7 +41,7 @@ namespace MonoTouchFixtures.CoreText {
 			line.EnumerateCaretOffsets ((double o, nint charIndex, bool leadingEdge, ref bool stop) => {
 				executed = true;
 			});
-			Assert.IsTrue (executed);
+			Assert.That (executed, Is.True);
 		}
 
 		[Test]
@@ -49,7 +49,7 @@ namespace MonoTouchFixtures.CoreText {
 		{
 			using (var a = new NSAttributedString ())
 			using (var l = new CTLine (a)) {
-				Assert.True (l.GetImageBounds (null).IsEmpty, "GetImageBounds");
+				Assert.That (l.GetImageBounds (null).IsEmpty, Is.True, "GetImageBounds");
 			}
 		}
 	}

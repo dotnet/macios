@@ -14,7 +14,7 @@ namespace MetricKit {
 	interface NSUnitDuration : NSUnit { }
 	interface NSUnitInformationStorage : NSUnit { }
 
-	[NoTV, iOS (13, 0)]
+	[NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MXMetric : NSSecureCoding {
@@ -35,7 +35,7 @@ namespace MetricKit {
 		NSDictionary _DictionaryRepresentation14 { get; }
 	}
 
-	[NoTV, iOS (13, 0)]
+	[NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MXMetric), Name = "MXCPUMetric")]
 	interface MXCpuMetric {
@@ -48,7 +48,7 @@ namespace MetricKit {
 		NSMeasurement<NSUnit> CumulativeCpuInstructions { get; }
 	}
 
-	[NoTV, iOS (13, 0)]
+	[NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MXMetric), Name = "MXGPUMetric")]
 	interface MXGpuMetric {
@@ -58,7 +58,7 @@ namespace MetricKit {
 
 	// NSUnit is added as a parent to ensure that the intermediate tmp dll can be compiled
 	// since at this stage the compiler does not know about the inheritance of NSDimension.
-	[NoTV, iOS (13, 0)]
+	[NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSDimension))]
 	[DisableDefaultCtor]
@@ -75,7 +75,7 @@ namespace MetricKit {
 
 	// NSUnit is added as a parent to ensure that the intermediate tmp dll can be compiled
 	// since at this stage the compiler does not know about the inheritance of NSDimension.
-	[NoTV, iOS (13, 0)]
+	[NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSDimension))]
 	[DisableDefaultCtor]
@@ -90,7 +90,7 @@ namespace MetricKit {
 		MXUnitAveragePixelLuminance Apl { get; }
 	}
 
-	[NoTV, iOS (13, 0)]
+	[NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MXHistogramBucket<UnitType> : NSSecureCoding
@@ -105,7 +105,7 @@ namespace MetricKit {
 		nuint BucketCount { get; }
 	}
 
-	[NoTV, iOS (13, 0)]
+	[NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MXHistogram<UnitType> : NSSecureCoding
@@ -117,7 +117,7 @@ namespace MetricKit {
 		NSEnumerator<MXHistogramBucket<UnitType>> BucketEnumerator { get; }
 	}
 
-	[NoTV, iOS (13, 0)]
+	[NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MXMetric))]
 	interface MXCellularConditionMetric {
@@ -125,7 +125,7 @@ namespace MetricKit {
 		MXHistogram<MXUnitSignalBars> HistogrammedCellularConditionTime { get; }
 	}
 
-	[NoTV, iOS (13, 0)]
+	[NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MXMetaData : NSSecureCoding {
@@ -163,15 +163,15 @@ namespace MetricKit {
 		[Export ("platformArchitecture", ArgumentSemantic.Strong)]
 		string PlatformArchitecture { get; }
 
-		[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("lowPowerModeEnabled")]
 		bool LowPowerModeEnabled { get; }
 
-		[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("isTestFlightApp")]
 		bool IsTestFlightApp { get; }
 
-		[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("pid")]
 		int Pid { get; }
 
@@ -180,7 +180,7 @@ namespace MetricKit {
 		string BundleIdentifier { get; }
 	}
 
-	[NoTV, iOS (13, 0)]
+	[NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MXMetric))]
 	interface MXAppRunTimeMetric {
@@ -197,7 +197,7 @@ namespace MetricKit {
 		NSMeasurement<NSUnitDuration> CumulativeBackgroundLocationTime { get; }
 	}
 
-	[NoTV, iOS (13, 0)]
+	[NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MXMetric))]
 	interface MXLocationActivityMetric {
@@ -220,7 +220,7 @@ namespace MetricKit {
 		NSMeasurement<NSUnitDuration> CumulativeThreeKilometersAccuracyTime { get; }
 	}
 
-	[NoTV, iOS (13, 0)]
+	[NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MXMetric))]
 	interface MXNetworkTransferMetric {
@@ -237,7 +237,7 @@ namespace MetricKit {
 		NSMeasurement<NSUnitInformationStorage> CumulativeCellularDownload { get; }
 	}
 
-	[NoTV, iOS (13, 0)]
+	[NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MXMetric))]
 	interface MXAppLaunchMetric {
@@ -247,16 +247,16 @@ namespace MetricKit {
 		[Export ("histogrammedApplicationResumeTime", ArgumentSemantic.Strong)]
 		MXHistogram<NSUnitDuration> HistogrammedApplicationResumeTime { get; }
 
-		[NoTV, Mac (12, 2), iOS (15, 2), MacCatalyst (15, 2)]
+		[NoTV, iOS (15, 2), MacCatalyst (15, 2)]
 		[Export ("histogrammedOptimizedTimeToFirstDraw", ArgumentSemantic.Strong)]
 		MXHistogram<NSUnitDuration> HistogrammedOptimizedTimeToFirstDraw { get; }
 
-		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
+		[iOS (16, 0), MacCatalyst (16, 0), NoTV]
 		[Export ("histogrammedExtendedLaunch", ArgumentSemantic.Strong)]
 		MXHistogram<NSUnitDuration> HistogrammedExtendedLaunch { get; }
 	}
 
-	[NoTV, iOS (13, 0)]
+	[NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MXMetric))]
 	interface MXAppResponsivenessMetric {
@@ -264,7 +264,7 @@ namespace MetricKit {
 		MXHistogram<NSUnitDuration> HistogrammedApplicationHangTime { get; }
 	}
 
-	[NoTV, iOS (13, 0)]
+	[NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MXMetric))]
 	interface MXDiskIOMetric {
@@ -272,7 +272,7 @@ namespace MetricKit {
 		NSMeasurement<NSUnitInformationStorage> CumulativeLogicalWrites { get; }
 	}
 
-	[NoTV, iOS (13, 0)]
+	[NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -288,7 +288,7 @@ namespace MetricKit {
 		double StandardDeviation { get; }
 	}
 
-	[NoTV, iOS (13, 0)]
+	[NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MXMetric))]
 	interface MXMemoryMetric {
@@ -299,7 +299,7 @@ namespace MetricKit {
 		MXAverage<NSUnitInformationStorage> AverageSuspendedMemory { get; }
 	}
 
-	[NoTV, iOS (13, 0)]
+	[NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MXMetric))]
 	interface MXDisplayMetric {
@@ -307,7 +307,7 @@ namespace MetricKit {
 		MXAverage<MXUnitAveragePixelLuminance> AveragePixelLuminance { get; }
 	}
 
-	[NoTV, iOS (13, 0)]
+	[NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MXSignpostIntervalData : NSSecureCoding {
@@ -329,7 +329,7 @@ namespace MetricKit {
 		NSMeasurement<NSUnit> CumulativeHitchTimeRatio { get; }
 	}
 
-	[NoTV, iOS (13, 0)]
+	[NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MXMetric))]
 	interface MXSignpostMetric {
@@ -346,7 +346,7 @@ namespace MetricKit {
 		nuint TotalCount { get; }
 	}
 
-	[NoTV, iOS (13, 0)]
+	[NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MXMetricPayload : NSSecureCoding {
@@ -434,7 +434,7 @@ namespace MetricKit {
 		MXDiskSpaceUsageMetric DiskSpaceUsageMetrics { get; }
 	}
 
-	[NoTV, iOS (13, 0)]
+	[NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -463,12 +463,12 @@ namespace MetricKit {
 		[Export ("makeLogHandleWithCategory:")]
 		IntPtr /* os_log_t */ _MakeLogHandle (NSString category);
 
-		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
+		[iOS (16, 0), MacCatalyst (16, 0), NoTV]
 		[Static]
 		[Export ("extendLaunchMeasurementForTaskID:error:")]
 		bool ExtendLaunchMeasurement (string taskId, [NullAllowed] out NSError error);
 
-		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
+		[iOS (16, 0), MacCatalyst (16, 0), NoTV]
 		[Static]
 		[Export ("finishExtendedLaunchMeasurementForTaskID:error:")]
 		bool FinishExtendedLaunchMeasurement (string taskId, [NullAllowed] out NSError error);
@@ -476,7 +476,7 @@ namespace MetricKit {
 
 	interface IMXMetricManagerSubscriber { }
 
-	[NoTV, iOS (13, 0)]
+	[NoTV]
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MXMetricManagerSubscriber {
@@ -642,7 +642,7 @@ namespace MetricKit {
 		[NullAllowed, Export ("signal", ArgumentSemantic.Strong)]
 		NSNumber Signal { get; }
 
-		[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
 		[NullAllowed, Export ("exceptionReason", ArgumentSemantic.Strong)]
 		MXCrashDiagnosticObjectiveCExceptionReason ExceptionReason { get; }
 	}
@@ -666,7 +666,7 @@ namespace MetricKit {
 		[Export ("dictionaryRepresentation")]
 		NSDictionary DictionaryRepresentation { get; }
 
-		[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
 		[NullAllowed, Export ("signpostData", ArgumentSemantic.Strong)]
 		MXSignpostRecord [] SignpostData { get; }
 	}
@@ -748,7 +748,7 @@ namespace MetricKit {
 		NSMeasurement<NSUnitDuration> HangDuration { get; }
 	}
 
-	[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MXSignpostRecord : NSSecureCoding {
 		[Export ("subsystem")]
@@ -779,7 +779,7 @@ namespace MetricKit {
 		NSDictionary DictionaryRepresentation { get; }
 	}
 
-	[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MXCrashDiagnosticObjectiveCExceptionReason : NSSecureCoding {
 		[Export ("composedMessage")]

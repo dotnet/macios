@@ -72,9 +72,9 @@ namespace Introspection {
 		Frameworks GetFrameworks ()
 		{
 #if __MACCATALYST__
-			return Frameworks.GetMacCatalystFrameworks ();
+			return Frameworks.MacCatalystFrameworks;
 #elif __IOS__
-			return Frameworks.GetiOSFrameworks (app.IsSimulatorBuild);
+			return Frameworks.iOSFrameworks;
 #elif __TVOS__
 			return Frameworks.TVOSFrameworks;
 #elif __MACOS__

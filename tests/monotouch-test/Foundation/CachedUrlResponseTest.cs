@@ -15,12 +15,12 @@ namespace MonoTouchFixtures.Foundation {
 				// Test that UserInfo is NullAllowed
 				using (var res1 = new NSCachedUrlResponse (response, data, null, NSUrlCacheStoragePolicy.Allowed)) {
 					Assert.That (res1.StoragePolicy, Is.EqualTo (NSUrlCacheStoragePolicy.Allowed), "StoragePolicy-1");
-					Assert.Null (res1.UserInfo, "UserInfo-1");
+					Assert.That (res1.UserInfo, Is.Null, "UserInfo-1");
 				}
 
 				using (var res2 = new NSCachedUrlResponse (response, data)) {
 					Assert.That (res2.StoragePolicy, Is.EqualTo (NSUrlCacheStoragePolicy.Allowed), "StoragePolicy-2");
-					Assert.Null (res2.UserInfo, "UserInfo-2");
+					Assert.That (res2.UserInfo, Is.Null, "UserInfo-2");
 				}
 			}
 		}

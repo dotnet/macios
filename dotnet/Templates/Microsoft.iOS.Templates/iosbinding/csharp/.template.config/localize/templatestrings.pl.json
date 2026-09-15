@@ -1,5 +1,7 @@
 {
   "author": "Microsoft",
   "name": "Biblioteka powiązań systemu iOS",
-  "description": "Projekt służący do tworzenia biblioteki powiązań platformy .NET 6 dla systemu iOS"
+  "description": "Projekt służący do tworzenia biblioteki powiązań platformy .NET 6 dla systemu iOS",
+  "symbols/Framework/description": "The target framework for the project.",
+  "symbols/Framework/choices/net10.0-ios/description": "Target net10.0-ios"
 }

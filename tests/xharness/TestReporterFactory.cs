@@ -11,8 +11,6 @@ using Microsoft.DotNet.XHarness.iOS.Shared.Listeners;
 using Microsoft.DotNet.XHarness.iOS.Shared.Logging;
 using Microsoft.DotNet.XHarness.iOS.Shared.XmlResults;
 
-using ExceptionLogger = System.Action<int, string>;
-
 namespace Xharness {
 	public class TestReporterFactory : ITestReporterFactory {
 		readonly IMlaunchProcessManager processManager;
@@ -35,7 +33,6 @@ namespace Xharness {
 			string? device,
 			TimeSpan timeout,
 			string? additionalLogsDirectory = null,
-			ExceptionLogger? exceptionLogger = null,
 			bool generateHtml = false)
 		{
 			return new TestReporter (
@@ -52,8 +49,7 @@ namespace Xharness {
 				device,
 				timeout,
 				additionalLogsDirectory,
-				exceptionLogger,
-				generateHtml);
+				generateHtml: generateHtml);
 		}
 	}
 }

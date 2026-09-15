@@ -20,6 +20,12 @@ Info.plist in the project doesn't already contain entries for these keys):
 This is only enabled if the `GenerateApplicationManifest` is set to `true`
 (which is the default for all supported .NET versions)
 
+Final application outputs expose these values as common metadata on
+`@(ApplicationArtifact)`. The metadata is read back from the compiled
+`Info.plist`, so explicit values in a custom manifest win even when the
+corresponding single-project properties are set. `ApplicationName` uses
+`CFBundleDisplayName` when present and otherwise falls back to `CFBundleName`.
+
 Additionally, `$(ApplicationDisplayVersion)` will overwrite the value for `$(Version)`,
 so the following properties will be set with the same value:
 

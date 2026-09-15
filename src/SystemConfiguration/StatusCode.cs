@@ -51,7 +51,7 @@ namespace SystemConfiguration {
 		ReachabilityUnknown = 4001,
 		/// <summary>Network service for connection is unavailable.</summary>
 		ConnectionNoService = 5001,
-		/// <summary>To be added.</summary>
+		/// <summary>The connection request should be ignored.</summary>
 		ConnectionIgnore = 5002,
 	}
 }

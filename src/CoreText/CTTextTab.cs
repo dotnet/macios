@@ -111,6 +111,7 @@ namespace CoreText {
 		public CTTextTab (CTTextAlignment alignment, double location, CTTextTabOptions? options)
 			: base (CTTextTabCreate (alignment, location, options.GetHandle ()), true, true)
 		{
+			GC.KeepAlive (options);
 		}
 		#endregion
 

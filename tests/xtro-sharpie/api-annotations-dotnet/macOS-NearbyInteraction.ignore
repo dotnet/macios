@@ -1,3 +1,4 @@
-# Headers are clear that these two enums are not supported on macOS, don't know why xtro thinks they are
-!missing-enum! NIDLTDOACoordinatesType not bound
-!missing-enum! NIDLTDOAMeasurementType not bound
+# These enums are unavailable on macOS natively (API_UNAVAILABLE on the typedef), but the managed enums are bound and used by bound API.
+!unknown-native-enum! NIAlgorithmConvergenceStatus bound
+!unknown-native-enum! NINearbyObjectRemovalReason bound
+!unknown-native-enum! NINearbyObjectVerticalDirectionEstimate bound

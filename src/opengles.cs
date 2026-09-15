@@ -167,4 +167,56 @@ namespace OpenGLES {
 		[Export ("drawableProperties", ArgumentSemantic.Copy)]
 		NSDictionary DrawableProperties { get; set; }
 	}
+
+	[NoMac, NoMacCatalyst]
+	[Static, Partial]
+	interface EAGLDrawableProperty {
+#if !XAMCORE_5_0
+		[Internal]
+		[Field ("kEAGLDrawablePropertyColorFormat")]
+		NSString _ColorFormat { get; }
+
+		[Internal]
+		[Field ("kEAGLDrawablePropertyRetainedBacking")]
+		NSString _RetainedBacking { get; }
+#endif
+#if XAMCORE_5_0
+		/// <summary>Can be used to configure the internal color format for drawables.</summary>
+		[Field ("kEAGLDrawablePropertyColorFormat")]
+		[NullAllowed]
+		NSString ColorFormat { get; }
+
+		/// <summary>Can be used to configure whether drawables retain their contents after displaying them.</summary>
+		[Field ("kEAGLDrawablePropertyRetainedBacking")]
+		[NullAllowed]
+		NSString RetainedBacking { get; }
+#endif
+	}
+
+	[NoMac, NoMacCatalyst]
+	[Static, Partial]
+	interface EAGLColorFormat {
+#if !XAMCORE_5_0
+		[Internal]
+		[Field ("kEAGLColorFormatRGB565")]
+		NSString _RGB565 { get; }
+
+		[Internal]
+		[Field ("kEAGLColorFormatRGBA8")]
+		NSString _RGBA8 { get; }
+#endif
+#if XAMCORE_5_0
+		/// <summary>16-bit RGB color format.</summary>
+		/// <remarks>This format uses 5 bits for the red components, 6 bits for the green component and 5 bits for the blue component. Corresponds to the OpenGL ES GL_RGB565 format.</remarks>
+		[Field ("kEAGLColorFormatRGB565")]
+		[NullAllowed]
+		NSString RGB565 { get; }
+
+		/// <summary>32-bit RGBA format.</summary>
+		/// <remarks>This is a 32 bit format that uses 8 bits for red, green, blue and alpha channels. Corresponds to the OpenGL ES GL_RGBA8888 value.</remarks>
+		[Field ("kEAGLColorFormatRGBA8")]
+		[NullAllowed]
+		NSString RGBA8 { get; }
+#endif
+	}
 }

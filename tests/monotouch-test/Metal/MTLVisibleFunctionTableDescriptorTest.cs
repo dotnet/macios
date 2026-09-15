@@ -37,7 +37,7 @@ namespace MonoTouchFixtures.Metal {
 			Assert.DoesNotThrow (() => {
 				objFunctionCount = descriptor.FunctionCount;
 			}, "Getter");
-			Assert.AreEqual (newFunctionCount, objFunctionCount, "Value");
+			Assert.That (objFunctionCount, Is.EqualTo (newFunctionCount), "Value");
 		}
 	}
 }

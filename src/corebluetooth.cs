@@ -57,7 +57,6 @@ namespace CoreBluetooth {
 		CBManagerState State { get; }
 
 		[Internal]
-		[iOS (13, 0)]
 		[NoTV]
 		[NoMac]
 		[MacCatalyst (13, 1)]
@@ -73,7 +72,6 @@ namespace CoreBluetooth {
 		[Export ("authorization", ArgumentSemantic.Assign)]
 		CBManagerAuthorization _SAuthorization { get; }
 
-		[TV (13, 0)]
 		[NoiOS]
 		[NoMacCatalyst]
 		[Static]
@@ -81,7 +79,7 @@ namespace CoreBluetooth {
 		CBManagerAuthorization Authorization { get; }
 	}
 
-	[iOS (13, 0), TV (13, 0), NoMac]
+	[NoMac]
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("CBConnectionEventMatchingOptionsKeys")]
 	interface CBConnectionEventMatchingOptions {
@@ -89,7 +87,7 @@ namespace CoreBluetooth {
 		CBUUID [] ServiceUuids { get; set; }
 	}
 
-	[iOS (13, 0), TV (13, 0), NoMac]
+	[NoMac]
 	[MacCatalyst (13, 1)]
 	[Static]
 	[Internal]
@@ -107,13 +105,13 @@ namespace CoreBluetooth {
 		bool NotifyOnDisconnection { get; set; }
 		[MacCatalyst (13, 1)]
 		bool NotifyOnNotification { get; set; }
-		[iOS (13, 0), TV (13, 0), NoMac]
+		[NoMac]
 		[MacCatalyst (13, 1)]
 		bool EnableTransportBridging { get; set; }
-		[iOS (13, 0), TV (13, 0), NoMac]
+		[NoMac]
 		[MacCatalyst (13, 1)]
 		bool RequiresAncs { get; set; }
-		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		bool EnableAutoReconnect { get; }
 	}
 
@@ -128,15 +126,15 @@ namespace CoreBluetooth {
 		[MacCatalyst (13, 1)]
 		[Field ("CBConnectPeripheralOptionNotifyOnNotificationKey")]
 		NSString NotifyOnNotificationKey { get; }
-		[iOS (13, 0), TV (13, 0), NoMac]
+		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Field ("CBConnectPeripheralOptionEnableTransportBridgingKey")]
 		NSString EnableTransportBridgingKey { get; }
-		[iOS (13, 0), TV (13, 0), NoMac]
+		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Field ("CBConnectPeripheralOptionRequiresANCS")]
 		NSString RequiresAncsKey { get; }
-		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Field ("CBConnectPeripheralOptionEnableAutoReconnect")]
 		NSString EnableAutoReconnectKey { get; }
 	}
@@ -330,19 +328,19 @@ namespace CoreBluetooth {
 		[Export ("isScanning")]
 		bool IsScanning { get; }
 
-		[iOS (13, 0), TV (13, 0), NoMac]
+		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("supportsFeatures:")]
 		bool SupportsFeatures (CBCentralManagerFeature features);
 
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
-		[iOS (13, 0), TV (13, 0), NoMac]
+		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("registerForConnectionEventsWithOptions:")]
 		void RegisterForConnectionEvents ([NullAllowed] NSDictionary options);
 
-		[iOS (13, 0), TV (13, 0), NoMac]
+		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Wrap ("RegisterForConnectionEvents (options.GetDictionary ())")]
 		void RegisterForConnectionEvents ([NullAllowed] CBConnectionEventMatchingOptions options);
@@ -533,17 +531,17 @@ namespace CoreBluetooth {
 			""")]
 		void WillRestoreState (CBCentralManager central, NSDictionary dict);
 
-		[iOS (13, 0), TV (13, 0), NoMac]
+		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("centralManager:connectionEventDidOccur:forPeripheral:"), EventArgs ("CBPeripheralConnectionEvent")]
 		void ConnectionEventDidOccur (CBCentralManager central, CBConnectionEvent connectionEvent, CBPeripheral peripheral);
 
-		[iOS (13, 0), TV (13, 0), NoMac]
+		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("centralManager:didUpdateANCSAuthorizationForPeripheral:"), EventArgs ("CBAncsAuthorizationUpdate")]
 		void DidUpdateAncsAuthorization (CBCentralManager central, CBPeripheral peripheral);
 
-		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0), EventArgs ("CBPeripheralDiconnectionEvent")]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), EventArgs ("CBPeripheralDiconnectionEvent")]
 		[Export ("centralManager:didDisconnectPeripheral:timestamp:isReconnecting:error:")]
 		void DidDisconnectPeripheral (CBCentralManager central, CBPeripheral peripheral, double timestamp, bool isReconnecting, [NullAllowed] NSError error);
 	}
@@ -791,7 +789,6 @@ namespace CoreBluetooth {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("name", ArgumentSemantic.Retain)]
-		[DisableZeroCopy]
 		[NullAllowed]
 		string Name { get; }
 
@@ -919,7 +916,18 @@ namespace CoreBluetooth {
 		[Export ("openL2CAPChannel:")]
 		void OpenL2CapChannel (ushort psm);
 
-		[iOS (13, 0), TV (13, 0), NoMac]
+		/// <param name="configuration">The configuration for the channel sounding session.</param>
+		/// <summary>Starts a channel sounding session with the peripheral.</summary>
+		[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("startChannelSoundingSession:")]
+		void StartChannelSoundingSession (CBChannelSoundingSessionConfiguration configuration);
+
+		/// <summary>Cancels the active channel sounding session, if one exists.</summary>
+		[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("cancelChannelSoundingSession")]
+		void CancelChannelSoundingSession ();
+
+		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("ancsAuthorized")]
 		bool AncsAuthorized { get; }
@@ -1006,7 +1014,11 @@ namespace CoreBluetooth {
 			<summary>Event raised by the object.</summary>
 			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
 			""")]
+#if XAMCORE_5_0
+		void UpdatedCharacteristicValue (CBPeripheral peripheral, CBCharacteristic characteristic, [NullAllowed] NSError error);
+#else
 		void UpdatedCharacterteristicValue (CBPeripheral peripheral, CBCharacteristic characteristic, [NullAllowed] NSError error);
+#endif
 
 		/// <param name="peripheral">To be added.</param>
 		///         <param name="characteristic">To be added.</param>
@@ -1102,6 +1114,38 @@ namespace CoreBluetooth {
 		[Export ("peripheral:didOpenL2CAPChannel:error:")]
 		void DidOpenL2CapChannel (CBPeripheral peripheral, [NullAllowed] CBL2CapChannel channel, [NullAllowed] NSError error);
 
+		/// <param name="peripheral">The peripheral that provided the update.</param>
+		/// <param name="results">
+		///   <para>The channel sounding procedure results.</para>
+		///   <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		/// </param>
+		/// <param name="error">
+		///   <para>The error that occurred.</para>
+		///   <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		/// </param>
+		/// <summary>Called when a channel sounding procedure produces results.</summary>
+		[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+		[EventArgs ("CBChannelSoundingProcedureResults", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
+		[Export ("peripheral:didReceiveChannelSoundingProcedureResults:error:")]
+		void DidReceiveChannelSoundingProcedureResults (CBPeripheral peripheral, [NullAllowed] CBChannelSoundingProcedureResults results, [NullAllowed] NSError error);
+
+		/// <param name="peripheral">The peripheral whose channel sounding session completed.</param>
+		/// <param name="error">
+		///   <para>The error that occurred.</para>
+		///   <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		/// </param>
+		/// <summary>Called when a channel sounding session completes.</summary>
+		[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+		[EventArgs ("NSError", true, XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
+		[Export ("peripheral:didCompleteChannelSoundingSession:")]
+		void DidCompleteChannelSoundingSession (CBPeripheral peripheral, [NullAllowed] NSError error);
+
 		/// <param name="peripheral">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
@@ -1112,6 +1156,32 @@ namespace CoreBluetooth {
 		[MacCatalyst (13, 1)]
 		[Export ("peripheralIsReadyToSendWriteWithoutResponse:")]
 		void IsReadyToSendWriteWithoutResponse (CBPeripheral peripheral);
+	}
+
+	/// <summary>Configures the role that a peripheral assumes in a channel sounding session.</summary>
+	[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface CBChannelSoundingSessionConfiguration {
+		/// <summary>Gets the role that the peripheral assumes in the channel sounding session.</summary>
+		[Export ("role")]
+		CBChannelSoundingSessionConfigurationRole Role { get; }
+
+		/// <param name="role">The role that the peripheral assumes in the channel sounding session.</param>
+		/// <summary>Creates a channel sounding session configuration with the specified role.</summary>
+		[DesignatedInitializer]
+		[Export ("initWithRole:")]
+		NativeHandle Constructor (CBChannelSoundingSessionConfigurationRole role);
+	}
+
+	/// <summary>Contains the results of a channel sounding procedure.</summary>
+	[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface CBChannelSoundingProcedureResults {
+		/// <summary>Gets the measured distance to the peripheral, in meters.</summary>
+		[Export ("distance")]
+		double Distance { get; }
 	}
 
 	/// <summary>Represents the services of a remote peripheral.</summary>

@@ -55,7 +55,7 @@ namespace Xamarin.Tests {
 			Assert.That (assetsCar, Does.Exist, "Assets.car");
 
 			var doc = ProcessAssets (assetsCar, GetFullSdkVersion (platform, runtimeIdentifiers));
-			Assert.IsNotNull (doc, "There was an issue processing the asset binary.");
+			Assert.That (doc, Is.Not.Null, "There was an issue processing the asset binary.");
 
 			var foundAssets = FindAssets (platform, doc);
 
@@ -78,12 +78,75 @@ namespace Xamarin.Tests {
 				throw new ArgumentOutOfRangeException ($"Unknown platform: {platform}");
 			}
 
-			CollectionAssert.AreEquivalent (expectedAssets, foundAssets, $"Incorrect assets in {assetsCar}");
+			Assert.That (foundAssets, Is.EquivalentTo (expectedAssets), $"Incorrect assets in {assetsCar}");
 
 			var arm64txt = Path.Combine (resourcesDirectory, "arm64.txt");
 			var x64txt = Path.Combine (resourcesDirectory, "x64.txt");
-			Assert.AreEqual (runtimeIdentifiers.Split (';').Any (v => v.EndsWith ("-arm64")), File.Exists (arm64txt), "arm64.txt");
-			Assert.AreEqual (runtimeIdentifiers.Split (';').Any (v => v.EndsWith ("-x64")), File.Exists (x64txt), "x64.txt");
+			Assert.That (File.Exists (arm64txt), Is.EqualTo (runtimeIdentifiers.Split (';').Any (v => v.EndsWith ("-arm64"))), "arm64.txt");
+			Assert.That (File.Exists (x64txt), Is.EqualTo (runtimeIdentifiers.Split (';').Any (v => v.EndsWith ("-x64"))), "x64.txt");
+		}
+
+		// Verify that image assets coming from a referenced library aren't lost when actool is re-run
+		// on an incremental build (https://github.com/dotnet/macios/issues/5755). The app has its own
+		// image asset ('AppImage'), and it references a library with another image asset ('Image').
+		// Touching the app's own asset forces actool to regenerate Assets.car, and the library's asset
+		// must still be present afterwards.
+		[Test]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
+		public void LibraryImageAssetsSurviveIncrementalBuild (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			const string project = "AppWithLibraryWithResourcesReference";
+			var config = "Debug";
+			var projectPath = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: config);
+			Clean (projectPath);
+			Clean (GetProjectPath ("LibraryWithResources", platform: platform));
+
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["Configuration"] = config;
+
+			// Clean build: both the app's own asset and the library's asset must be present.
+			DotNet.AssertBuild (projectPath, properties);
+
+			var sdkVersion = GetFullSdkVersion (platform, runtimeIdentifiers);
+			var resourcesDirectory = GetResourcesDirectory (platform, appPath);
+			var assetsCar = Path.Combine (resourcesDirectory, "Assets.car");
+			Assert.That (assetsCar, Does.Exist, "Assets.car after clean build");
+
+			var assetsAfterCleanBuild = FindImageAssetNames (assetsCar, sdkVersion);
+			Assert.That (assetsAfterCleanBuild, Does.Contain ("AppImage"), "App image asset after clean build");
+			Assert.That (assetsAfterCleanBuild, Does.Contain ("Image"), "Library image asset after clean build");
+
+			// Touch the app's own asset so that actool re-runs and regenerates Assets.car.
+			var appAsset = Path.Combine (Path.GetDirectoryName (projectPath)!, "..", "AppImages.xcassets", "AppImage.imageset", "Contents.json");
+			Assert.That (appAsset, Does.Exist, "App asset to touch");
+			Configuration.Touch (appAsset);
+
+			// Incremental build: the library's asset must still be present.
+			DotNet.AssertBuild (projectPath, properties);
+
+			var assetsAfterIncrementalBuild = FindImageAssetNames (assetsCar, sdkVersion);
+			Assert.That (assetsAfterIncrementalBuild, Does.Contain ("AppImage"), "App image asset after incremental build");
+			Assert.That (assetsAfterIncrementalBuild, Does.Contain ("Image"), "Library image asset after incremental build (issue #5755)");
+		}
+
+		// Returns the set of image asset (imageset) names in the given compiled Assets.car.
+		static HashSet<string> FindImageAssetNames (string assetsCar, string sdkVersion)
+		{
+			var doc = ProcessAssets (assetsCar, sdkVersion);
+			Assert.That (doc, Is.Not.Null, "There was an issue processing the asset binary.");
+
+			var names = new HashSet<string> ();
+			foreach (var item in doc.RootElement.EnumerateArray ()) {
+				if (item.TryGetProperty ("AssetType", out var assetType) && assetType.ToString () == "Image" && item.TryGetProperty ("Name", out var name))
+					names.Add (name.ToString ());
+			}
+			return names;
 		}
 
 		void ConfigureAssets (string projectPath, string runtimeIdentifiers, string config, bool isStartingWithAssets)
@@ -128,7 +191,7 @@ namespace Xamarin.Tests {
 			var executable = "ln";
 			var arguments = new string [] { "-s", sourceDir, destDir };
 			var rv = Execution.RunAsync (executable, arguments, timeout: TimeSpan.FromSeconds (60)).Result;
-			Assert.AreEqual (0, rv.ExitCode, $"Creating Symlink Error: {rv.Output.MergedOutput}. Unexpected ExitCode");
+			Assert.That (rv.ExitCode, Is.EqualTo (0), $"Creating Symlink Error: {rv.Output.MergedOutput}. Unexpected ExitCode");
 		}
 
 		public static string GetFullSdkVersion (ApplePlatform platform, string runtimeIdentifiers)
@@ -136,9 +199,9 @@ namespace Xamarin.Tests {
 			switch (platform) {
 			case ApplePlatform.iOS:
 				if (runtimeIdentifiers.Contains ("simulator")) {
-					return $"iphonesimulator{Configuration.sdk_version}";
+					return $"iphonesimulator{Configuration.ios_sdk_version}";
 				} else {
-					return $"iphoneos{Configuration.sdk_version}";
+					return $"iphoneos{Configuration.ios_sdk_version}";
 				}
 			case ApplePlatform.TVOS:
 				if (runtimeIdentifiers.Contains ("simulator")) {
@@ -147,8 +210,9 @@ namespace Xamarin.Tests {
 					return $"appletvos{Configuration.tvos_sdk_version}";
 				}
 			case ApplePlatform.MacOSX:
-			case ApplePlatform.MacCatalyst:
 				return $"macosx{Configuration.macos_sdk_version}";
+			case ApplePlatform.MacCatalyst:
+				return $"macosx{Configuration.maccatalyst_sdk_version}";
 			default:
 				throw new ArgumentOutOfRangeException ($"Unknown platform: {platform}");
 			}
@@ -161,12 +225,12 @@ namespace Xamarin.Tests {
 			var assets = Directory.EnumerateFiles (xcassetsDir, "*.*", SearchOption.AllDirectories).ToArray ();
 
 			// assets first value is a .DS_Store file that work trigger MSBuild recompile so we want the second value
-			Assert.Greater (assets.Length, 1);
+			Assert.That (assets.Length, Is.GreaterThan (1));
 
 			var executable = "touch";
 			var arguments = new string [] { assets [1] };
 			var rv = Execution.RunAsync (executable, arguments, timeout: TimeSpan.FromSeconds (120)).Result;
-			Assert.AreEqual (0, rv.ExitCode, $"Processing Update Symlink Error: {rv.Output.MergedOutput}. Unexpected ExitCode");
+			Assert.That (rv.ExitCode, Is.EqualTo (0), $"Processing Update Symlink Error: {rv.Output.MergedOutput}. Unexpected ExitCode");
 		}
 
 		public static JsonDocument ProcessAssets (string assetsPath, string sdkVersion)
@@ -176,7 +240,7 @@ namespace Xamarin.Tests {
 			var tmpfile = Path.Combine (tmpdir, "Assets.json");
 			var arguments = new string [] { "--sdk", sdkVersion, "assetutil", "--info", assetsPath, "-o", tmpfile };
 			var rv = Execution.RunAsync (executable, arguments, timeout: TimeSpan.FromSeconds (120)).Result;
-			Assert.AreEqual (0, rv.ExitCode, $"Processing Assets Error: {rv.Output.StandardError}. Unexpected ExitCode");
+			Assert.That (rv.ExitCode, Is.EqualTo (0), $"Processing Assets Error: {rv.Output.StandardError}. Unexpected ExitCode");
 			var s = File.ReadAllText (tmpfile);
 
 			try {
@@ -212,7 +276,7 @@ namespace Xamarin.Tests {
 				case ApplePlatform.MacCatalyst:
 				case ApplePlatform.iOS:
 				case ApplePlatform.TVOS:
-					Assert.AreEqual ("2", schemaVersion.ToString (), "Verify SchemaVersion");
+					Assert.That (schemaVersion.ToString (), Is.EqualTo ("2"), "Verify SchemaVersion");
 					break;
 				default:
 					throw new ArgumentOutOfRangeException ($"Unknown platform: {platform}");

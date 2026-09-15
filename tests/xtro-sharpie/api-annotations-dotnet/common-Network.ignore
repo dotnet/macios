@@ -54,7 +54,6 @@
 !missing-enum! nw_data_transfer_report_state_t not bound
 !missing-enum! nw_endpoint_type_t not bound
 !missing-enum! nw_error_domain_t not bound
-!missing-enum! nw_ethernet_channel_state_t not bound
 !missing-enum! nw_framer_start_result_t not bound
 !missing-enum! nw_interface_radio_type_t not bound
 !missing-enum! nw_interface_type_t not bound
@@ -76,3 +75,6 @@
 !missing-enum! nw_ws_opcode_t not bound
 !missing-enum! nw_ws_response_status_t not bound
 !missing-enum! nw_ws_version_t not bound
+
+## nw_link_quality_t - changing the backing type from uint to byte is a breaking change; fixed in XAMCORE_5_0
+!wrong-enum-size! nw_link_quality_t managed 4 vs native 1

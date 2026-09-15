@@ -14,5 +14,11 @@ namespace ObjCRuntime {
 
 		[DllImport (LIBOBJC_DYLIB, EntryPoint = "objc_msgSend")]
 		public extern static byte byte_objc_msgSend_IntPtr (IntPtr receiver, IntPtr selector, IntPtr a);
+
+		[DllImport (LIBOBJC_DYLIB, EntryPoint = "objc_msgSend")]
+		public extern static void void_objc_msgSend_IntPtr (IntPtr receiver, IntPtr selector, IntPtr a);
+
+		[DllImport (LIBOBJC_DYLIB, EntryPoint = "objc_msgSend")]
+		public extern static void void_objc_msgSend_IntPtr_IntPtr (IntPtr receiver, IntPtr selector, IntPtr a, IntPtr b);
 	}
 }

@@ -33,12 +33,16 @@ namespace Xamarin.Linker.Steps {
 
 		protected override bool ProcessType (TypeDefinition type)
 		{
-			if (!GetMembersToPreserve (type, out var field, out var method))
-				return false;
-
 			var modified = false;
-			modified |= abr.AddDynamicDependencyAttributeToStaticConstructor (type, field);
-			modified |= abr.AddDynamicDependencyAttributeToStaticConstructor (type, method);
+
+			if (GetMembersToPreserve (type, out var field, out var method)) {
+				modified |= abr.AddDynamicDependencyAttributeToStaticConstructor (type, field);
+				modified |= abr.AddDynamicDependencyAttributeToStaticConstructor (type, method);
+			}
+
+			if (GetNewStyleMethodToPreserve (type, out var invokeMethod))
+				modified |= abr.AddDynamicDependencyAttributeToStaticConstructor (type, invokeMethod);
+
 			return modified;
 		}
 
@@ -102,6 +106,72 @@ namespace Xamarin.Linker.Steps {
 
 			// The type was used, so preserve the method and field
 			return true;
+		}
+
+		// New-style block proxy types use [UnmanagedCallersOnly] on the Invoke method
+		// and don't have a Handler field. They are generated when the bgen tool emits
+		// function pointer-based block trampolines. We need to preserve the Invoke method
+		// because the runtime looks it up via reflection in Blocks.GetBlockForDelegate.
+		public static bool GetNewStyleMethodToPreserve (TypeDefinition type, [NotNullWhen (true)] out MethodDefinition? method)
+		{
+			method = null;
+
+			/* For the following class:
+
+			static internal class SDRegistrarTestBlock {
+				[UnmanagedCallersOnly]
+				[UserDelegateType (typeof (RegistrarTestBlock))]
+				internal static unsafe uint Invoke (IntPtr block, uint magic)
+				{
+				}
+				internal static unsafe BlockLiteral CreateBlock (RegistrarTestBlock callback)
+				{
+					delegate* unmanaged<IntPtr, uint, uint> trampoline = &Invoke;
+					return new BlockLiteral (trampoline, callback, typeof (SDRegistrarTestBlock), nameof (Invoke));
+				}
+			}
+
+			* We need to make sure the linker doesn't remove the Invoke method.
+			*/
+
+			// The type must be abstract, sealed (static class) and nested
+			if (!type.IsAbstract || !type.IsSealed || !type.IsNested)
+				return false;
+
+			// The type must not have fields (old-style types have a Handler field and are handled by GetMembersToPreserve)
+			if (type.HasFields)
+				return false;
+
+			// The type is nested inside ObjCRuntime.Trampolines class
+			var nestingType = type.DeclaringType;
+			if (!nestingType.Is ("ObjCRuntime", "Trampolines"))
+				return false;
+
+			if (!type.HasMethods)
+				return false;
+
+			// The class has an 'Invoke' method with [UnmanagedCallersOnly] and [UserDelegateType] attributes
+			method = type.Methods.SingleOrDefault (v => {
+				if (v.Name != "Invoke")
+					return false;
+				if (!v.HasParameters)
+					return false;
+				if (!v.HasCustomAttributes)
+					return false;
+				var hasUnmanagedCallersOnly = false;
+				var hasUserDelegateType = false;
+				foreach (var attr in v.CustomAttributes) {
+					if (attr.AttributeType.Name == "UnmanagedCallersOnlyAttribute")
+						hasUnmanagedCallersOnly = true;
+					else if (attr.AttributeType.Name == "UserDelegateTypeAttribute")
+						hasUserDelegateType = true;
+					if (hasUnmanagedCallersOnly && hasUserDelegateType)
+						break;
+				}
+				return hasUnmanagedCallersOnly && hasUserDelegateType;
+			});
+
+			return method is not null;
 		}
 	}
 }

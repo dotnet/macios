@@ -26,7 +26,7 @@ namespace MonoTouchFixtures.AudioToolbox {
 			Assert.Throws<ArgumentNullException> (delegate { SoundBank.GetName (null); }, "null");
 
 			using (NSUrl url = new NSUrl ("http://www.xamarin.com")) {
-				Assert.Null (SoundBank.GetName (url), "Not a SoundBank");
+				Assert.That (SoundBank.GetName (url), Is.Null, "Not a SoundBank");
 			}
 		}
 
@@ -52,7 +52,7 @@ namespace MonoTouchFixtures.AudioToolbox {
 			Assert.Throws<ArgumentNullException> (delegate { SoundBank.GetInstrumentInfo (null); }, "null");
 
 			using (NSUrl url = new NSUrl ("http://www.xamarin.com")) {
-				Assert.Null (SoundBank.GetInstrumentInfo (url), "Not a SoundBank");
+				Assert.That (SoundBank.GetInstrumentInfo (url), Is.Null, "Not a SoundBank");
 			}
 		}
 

@@ -79,6 +79,9 @@
   <ItemGroup>
     <FirstParty Include="bgen.dll" />
     <FirstParty Include="dotnet-linker.dll" />
+    <!-- assembly-preparer tool (replaces pre-mark custom linker steps) + localized satellites -->
+    <FirstParty Include="assembly-preparer.dll" />
+    <FirstParty Include="assembly-preparer.resources.dll" />
     <FirstParty Include="Mono.Options.dll" />
     <FirstParty Include="Xamarin.*.dll" />
     <!-- mlaunch.app MonoBundle content-->
@@ -140,6 +143,8 @@
     <!-- Xamarin.Messaging -->
     <FirstParty Include="Merq.dll" />
     <FirstParty Include="Merq.Core.dll" />
+    <FirstParty Include="Microsoft.Extensions.DependencyInjection.Abstractions.dll" />
+    <FirstParty Include="Microsoft.Extensions.Logging.Abstractions.dll" />
     <!-- Broker.zip -->
     <FirstParty Include="Broker.exe" />
     <FirstParty Include="Broker.resources.dll" />

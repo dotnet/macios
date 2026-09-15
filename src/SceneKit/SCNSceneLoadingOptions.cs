@@ -3,9 +3,8 @@
 
 namespace SceneKit {
 	public partial class SCNSceneLoadingOptions {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the animation import policy for scene loading.</summary>
+		/// <value>The animation import policy.</value>
 		public SCNAnimationImportPolicy AnimationImportPolicy {
 			get {
 				var k = _AnimationImportPolicyKey;

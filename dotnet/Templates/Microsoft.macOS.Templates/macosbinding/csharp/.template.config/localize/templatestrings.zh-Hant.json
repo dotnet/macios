@@ -1,5 +1,7 @@
 {
   "author": "Microsoft",
   "name": "macOS 繫結程式庫",
-  "description": "用於建立 .NET macOS 繫結程式庫的專案"
+  "description": "用於建立 .NET macOS 繫結程式庫的專案",
+  "symbols/Framework/description": "The target framework for the project.",
+  "symbols/Framework/choices/net10.0-macos/description": "Target net10.0-macos"
 }

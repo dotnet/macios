@@ -98,6 +98,13 @@ namespace Introspection {
 					return true;
 				}
 				break;
+			case "NSTextViewportRenderingSurfaceKey":
+				switch (type.Name) {
+				// Xcode 27 beta: conformance is declared in the headers but is not reported by the runtime (empty marker protocol)
+				case "NSTextLayoutFragment":
+					return true;
+				}
+				break;
 			case "NSCopying":
 				switch (type.Name) {
 				// undocumented conformance (up to 7.0) and conformity varies between iOS versions
@@ -465,6 +472,9 @@ namespace Introspection {
 				// Xcode 26.4 Conformance not in headers
 				case "CNFetchRequest":
 					return true;
+				// Xcode 27.0 Conformance not in headers
+				case "PHPickerSearchText":
+					return true;
 				}
 				break;
 			case "NSSecureCoding":
@@ -706,6 +716,9 @@ namespace Introspection {
 				// Xcode 26.4 Conformance not in headers
 				case "CNFetchRequest":
 					return true;
+				// Xcode 27.0 Conformance not in headers
+				case "PHPickerSearchText":
+					return true;
 				}
 				break;
 			// conformance added in Xcode 8 (iOS 10 / macOS 10.12)
@@ -846,7 +859,7 @@ namespace Introspection {
 		void CheckProtocol (string protocolName, Action<Type, IntPtr, bool> action)
 		{
 			IntPtr protocol = Runtime.GetProtocol (protocolName);
-			Assert.AreNotEqual (protocol, IntPtr.Zero, protocolName);
+			Assert.That (IntPtr.Zero, Is.Not.EqualTo (protocol), protocolName);
 
 			int n = 0;
 			foreach (Type t in Assembly.GetTypes ()) {
@@ -881,7 +894,7 @@ namespace Introspection {
 					// FIXME: and implement the .ctor(NSCoder)
 				}
 			});
-			Assert.AreEqual (Errors, 0, "{0} types conforms to NSCoding but does not implement INSCoding: {1}", Errors, String.Join ('\n', list));
+			Assert.That (0, Is.EqualTo (Errors), $"{Errors} types conforms to NSCoding but does not implement INSCoding: {String.Join ('\n', list)}");
 		}
 
 		// [Test] -> iOS 6.0+ and Mountain Lion (10.8) +
@@ -898,7 +911,7 @@ namespace Introspection {
 					}
 				}
 			});
-			Assert.AreEqual (Errors, 0, "{0} types conforms to NSSecureCoding but does not implement INSSecureCoding: {1}", Errors, String.Join ('\n', list));
+			Assert.That (0, Is.EqualTo (Errors), $"{Errors} types conforms to NSSecureCoding but does not implement INSSecureCoding: {String.Join ('\n', list)}");
 		}
 
 		bool SupportsSecureCoding (Type type)
@@ -941,11 +954,11 @@ namespace Introspection {
 				} else if (type.IsPublic && supports) {
 					// there are internal types, e.g. DataWrapper : NSData, that subclass NSSecureCoding-types without
 					// [re-]declaring their allegiance - but we can live with those small betrayals
-					Assert.IsFalse (NSSecureCoding.SupportsSecureCoding (type), "{0} !SupportsSecureCoding", type.Name);
+					Assert.That (NSSecureCoding.SupportsSecureCoding (type), Is.False, $"{type.Name} !SupportsSecureCoding");
 					ReportError ("SupportsSecureCoding returns true but {0} does not conforms to NSSecureCoding", type.Name);
 				}
 			});
-			Assert.AreEqual (Errors, 0, "{0} types conforms to NSCoding but does not implement INSSecureCoding", Errors);
+			Assert.That (0, Is.EqualTo (Errors), $"{Errors} types conforms to NSCoding but does not implement INSSecureCoding");
 		}
 
 		[Test]
@@ -964,7 +977,7 @@ namespace Introspection {
 					}
 				}
 			});
-			Assert.AreEqual (Errors, 0, "{0} types conforms to NSCopying but does not implement INSCopying: {1}", Errors, String.Join ('\n', list));
+			Assert.That (0, Is.EqualTo (Errors), $"{Errors} types conforms to NSCopying but does not implement INSCopying: {String.Join ('\n', list)}");
 		}
 
 		[Test]
@@ -983,7 +996,7 @@ namespace Introspection {
 					}
 				}
 			});
-			Assert.AreEqual (Errors, 0, "{0} types conforms to NSMutableCopying but does not implement INSMutableCopying: {1}", Errors, String.Join ('\n', list));
+			Assert.That (0, Is.EqualTo (Errors), $"{Errors} types conforms to NSMutableCopying but does not implement INSMutableCopying: {String.Join ('\n', list)}");
 		}
 
 		[Test]

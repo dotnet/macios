@@ -29,7 +29,7 @@ namespace MonoTouchFixtures.HomeKit {
 		public void SignificantEventPropertyTest ()
 		{
 			using (var obj = new HMSignificantTimeEvent (HMSignificantEvent.Sunrise, null)) {
-				Assert.AreEqual (HMSignificantEvent.Sunrise, obj.SignificantEvent, "1 SignificantEvent Getter");
+				Assert.That (obj.SignificantEvent, Is.EqualTo (HMSignificantEvent.Sunrise), "1 SignificantEvent Getter");
 			}
 		}
 	}

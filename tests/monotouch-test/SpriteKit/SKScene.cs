@@ -18,7 +18,7 @@ namespace Xamarin.Mac.Tests {
 
 			SKNode c = new SKNode ();
 			//SKScene c = new SKScene (new CGSize (50, 50));
-			Assert.IsNotNull (c);
+			Assert.That (c, Is.Not.Null);
 		}
 
 		[Test]
@@ -28,7 +28,7 @@ namespace Xamarin.Mac.Tests {
 				return;
 
 			MyScene c = new MyScene (new CGSize (50, 50));
-			Assert.IsNotNull (c);
+			Assert.That (c, Is.Not.Null);
 		}
 
 		class MyScene : SKScene {

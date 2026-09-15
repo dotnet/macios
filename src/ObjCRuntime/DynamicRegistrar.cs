@@ -95,6 +95,7 @@ namespace Registrar {
 		// Note that the registrar is already making sure it's not _mutated_ from
 		// multiple threads at the same time.
 		Dictionary<Type, object?> custom_type_map; // Use Dictionary instead of HashSet to avoid pulling in System.Core.dll.
+		Dictionary<Type, Dictionary<MethodBase, List<MethodBase>>?> cached_interface_method_mappings;
 
 		protected object lock_obj = new object ();
 
@@ -102,6 +103,7 @@ namespace Registrar {
 		{
 			type_map = new Dictionary<IntPtr, ObjCType> (Runtime.IntPtrEqualityComparer);
 			custom_type_map = new Dictionary<Type, object?> (Runtime.TypeEqualityComparer);
+			cached_interface_method_mappings = new Dictionary<Type, Dictionary<MethodBase, List<MethodBase>>?> (Runtime.TypeEqualityComparer);
 		}
 
 		protected override bool SkipRegisterAssembly (Assembly assembly)
@@ -360,7 +362,13 @@ namespace Registrar {
 
 		protected override Dictionary<MethodBase, List<MethodBase>>? PrepareMethodMapping (Type type)
 		{
-			return SharedDynamic.PrepareInterfaceMethodMapping (type);
+			lock (cached_interface_method_mappings) {
+				if (!cached_interface_method_mappings.TryGetValue (type, out var methodMap)) {
+					methodMap = SharedDynamic.PrepareInterfaceMethodMapping (type);
+					cached_interface_method_mappings [type] = methodMap;
+				}
+				return methodMap;
+			}
 		}
 
 		protected override ExportAttribute? GetExportAttribute (PropertyInfo property)
@@ -806,7 +814,7 @@ namespace Registrar {
 			return attribute is not null;
 		}
 
-		protected override void ReportError (int code, string message, params object [] args)
+		protected override void ReportError (int code, string message, params object? [] args)
 		{
 			Runtime.NSLog (String.Format (message, args));
 		}

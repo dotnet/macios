@@ -27,7 +27,7 @@ namespace MonoTouchFixtures.CloudKit {
 		public void TestCompletedSetter ()
 		{
 			op.Completed = (dict, e) => { Console.WriteLine ("Completed"); };
-			Assert.NotNull (op.Completed);
+			Assert.That (op.Completed, Is.Not.Null);
 		}
 	}
 }

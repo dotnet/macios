@@ -1,5 +1,8 @@
 name: Add changelog for Maestro bump
+
 on: pull_request
+
+permissions: {}
 
 jobs:
   add-changelog:
@@ -9,26 +12,25 @@ jobs:
     # https://docs.opensource.microsoft.com/github/apps/permission-changes/
     # https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
     permissions:
-      issues: write
-      pull-requests: write
+      pull-requests: write # will add/edit comments
       contents: read
-    if: github.actor == 'dotnet-maestro[bot]'
+    if: github.event.pull_request.user.login == 'dotnet-maestro[bot]'
 
     steps:
-    - uses: actions/setup-dotnet@v5
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
-        dotnet-version: '9'
+        persist-credentials: false
+    - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+      with:
+        global-json-file: ./global.json
 
     - name: 'Compute changelog'
       run: |
         set -exo pipefail
-        git clone https://github.com/spouliot/dotnet-tools
-        cd dotnet-tools/changelog
-        dotnet build
-        ./bin/Debug/net9.0/changelog https://github.com/$GITHUB_REPOSITORY/pull/${GITHUB_REF_NAME/\/*/} > /tmp/changelog.txt 2>&1
+        dotnet run --project scripts/changelog/changelog.csproj --verbosity quiet -- https://github.com/$GITHUB_REPOSITORY/pull/${GITHUB_REF_NAME/\/*/} /tmp/changelog.txt
 
     - name: 'Add changelog'
-      uses: actions/github-script@v9.0.0
+      uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}
         script: |
@@ -43,7 +45,9 @@ jobs:
             issue_number: context.issue.number
           }).then ((comments) =>
           {
-            const changelogComment = comments.find(comment => comment.body.includes (".net ChangeLog for") && comment.user.login == 'github-actions[bot]')
+            const changelogComment = comments.find(comment =>
+              (comment.body.includes (".NET Changelog for") || comment.body.includes (".net ChangeLog for")) &&
+              comment.user.login == 'github-actions[bot]')
             if (changelogComment)
               commentId = changelogComment.id
           })

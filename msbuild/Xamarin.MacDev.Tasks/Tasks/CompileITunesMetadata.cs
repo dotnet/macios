@@ -46,7 +46,7 @@ namespace Xamarin.MacDev.Tasks {
 				var path = ITunesMetadata [0].GetMetadata ("FullPath");
 
 				try {
-					metadata = PDictionary.FromFile (path)!;
+					metadata = PDictionary.OpenFile (path);
 				} catch (Exception ex) {
 					Log.LogError (null, null, null, path, 0, 0, 0, 0, MSBStrings.E0010, path, ex.Message);
 					return false;

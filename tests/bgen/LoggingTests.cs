@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 using System.IO;
-using System.Threading;
 
 using Xamarin.Bundler;
 using Xamarin.Utils;
@@ -35,11 +34,10 @@ namespace GeneratorTests {
 			}
 
 			Assert.That (output.ToString (), Does.Contain ("normal output"));
-			Assert.That (output.ToString (), Does.Contain ("error BI0086:"));
 			Assert.That (output.ToString (), Does.Contain ("warning BI1027:"));
-			Assert.That (output.ToString (), Does.Contain ("error BI0000: Unexpected error"));
-			Assert.That (output.ToString (), Does.Contain ("System.InvalidOperationException: unexpected"));
-			Assert.That (error.ToString (), Is.EqualTo ($"plain error{Environment.NewLine}"));
+			Assert.That (error.ToString (), Does.Contain ("plain error"));
+			Assert.That (error.ToString (), Does.Contain ("error BI0086:"));
+			Assert.That (error.ToString (), Does.Contain ("System.InvalidOperationException: unexpected"));
 		}
 
 		[Test]
@@ -47,7 +45,7 @@ namespace GeneratorTests {
 		{
 			var log = new TestLog ();
 
-			var exitCode = BindingTouch.Run (new [] { "--use-zero-copy", "--help" }, log, CancellationToken.None);
+			var exitCode = BindingTouch.Run (new [] { "--use-zero-copy", "--help" }, log);
 
 			Assert.That (exitCode, Is.EqualTo (0));
 			Assert.That (log.Messages, Has.Some.Contains ("Mono Objective-C API binder"));
@@ -61,7 +59,7 @@ namespace GeneratorTests {
 		{
 			var log = new TestLog ();
 
-			var exitCode = BindingTouch.Run (new [] { "--compiled-api-definition-assembly=api.dll" }, log, CancellationToken.None);
+			var exitCode = BindingTouch.Run (new [] { "--compiled-api-definition-assembly=api.dll" }, log);
 
 			Assert.That (exitCode, Is.EqualTo (1));
 			Assert.That (log.Errors, Has.Count.EqualTo (1));
@@ -78,14 +76,6 @@ namespace GeneratorTests {
 			Assert.That (log.Messages, Has.Some.StartsWith ("error BI0000: Unexpected error"));
 			Assert.That (log.Exceptions, Has.Count.EqualTo (1));
 			Assert.That (log.Exceptions [0].Message, Is.EqualTo ("unexpected"));
-		}
-
-		[Test]
-		public void Cancellation ()
-		{
-			var cancellationToken = new CancellationToken (true);
-
-			Assert.Throws<OperationCanceledException> (() => BindingTouch.Run ([], new TestLog (), cancellationToken));
 		}
 
 		class TestLog : IToolLog {

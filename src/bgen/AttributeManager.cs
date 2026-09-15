@@ -7,7 +7,7 @@ using System.Reflection;
 #nullable enable
 
 public class AttributeManager {
-	readonly Xamarin.Bundler.IToolLog log;
+	readonly IToolLog log;
 
 	readonly Dictionary<System.Type, Type> typeLookup = new ();
 
@@ -33,9 +33,9 @@ public class AttributeManager {
 	internal readonly Dictionary<(Type, Type []), ConstructorInfo> constructorCache = new ();
 
 	TypeCache TypeCache { get; }
-	internal Xamarin.Bundler.IToolLog Log => log;
+	internal IToolLog Log => log;
 
-	public AttributeManager (Xamarin.Bundler.IToolLog log, TypeCache typeCache)
+	public AttributeManager (IToolLog log, TypeCache typeCache)
 	{
 		this.log = log;
 		TypeCache = typeCache;

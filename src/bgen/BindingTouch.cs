@@ -32,10 +32,8 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using System.Threading;
 using Mono.Options;
 
-using Xamarin.Bundler;
 using Xamarin.Utils;
 
 #if XAMMACIOS_DEBUGGER
@@ -44,16 +42,10 @@ using System.Diagnostics;
 
 public class BindingTouch : IDisposable, IToolLog {
 	readonly IToolLog log;
-	readonly CancellationToken cancellationToken;
 
-	public BindingTouch (IToolLog log) : this (log, CancellationToken.None)
-	{
-	}
-
-	BindingTouch (IToolLog log, CancellationToken cancellationToken)
+	public BindingTouch (IToolLog log)
 	{
 		this.log = log;
-		this.cancellationToken = cancellationToken;
 		Verbosity = log.Verbosity;
 	}
 
@@ -114,10 +106,10 @@ public class BindingTouch : IDisposable, IToolLog {
 
 	public static int Main (string [] args)
 	{
-		return Run (args, ConsoleLog.Instance, CancellationToken.None);
+		return Run (args, ConsoleLog.Instance);
 	}
 
-	public static int Run (string [] args, IToolLog log, CancellationToken cancellationToken)
+	public static int Run (string [] args, IToolLog log)
 	{
 		try {
 #if XAMMACIOS_DEBUGGER
@@ -133,18 +125,16 @@ public class BindingTouch : IDisposable, IToolLog {
 
 			log.Log ("Debugger attached");
 #endif
-			return Main2 (args, log, cancellationToken);
-		} catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) {
-			throw;
+			return Main2 (args, log);
 		} catch (Exception ex) {
 			ErrorHelper.Show (log, ex, false);
 			return 1;
 		}
 	}
 
-	static int Main2 (string [] args, IToolLog log, CancellationToken cancellationToken)
+	static int Main2 (string [] args, IToolLog log)
 	{
-		using var touch = new BindingTouch (log, cancellationToken);
+		using var touch = new BindingTouch (log);
 		return touch.Main3 (args);
 	}
 
@@ -330,7 +320,6 @@ public class BindingTouch : IDisposable, IToolLog {
 
 	int Main3 (string [] args)
 	{
-		ThrowIfCancellationRequested ();
 		ErrorHelper.ClearWarningLevels ();
 		BindingTouchConfig config = new ();
 
@@ -345,7 +334,6 @@ public class BindingTouch : IDisposable, IToolLog {
 		libraryInfo = LibraryInfo.LibraryInfoBuilder.Build (references, config);
 		CurrentPlatform = LibraryManager.DetermineCurrentPlatform (TargetFramework.Platform);
 
-		ThrowIfCancellationRequested ();
 		if (!TryInitializeApi (config, out Api? api) || !TryGenerate (config, api))
 			return 1;
 
@@ -355,15 +343,12 @@ public class BindingTouch : IDisposable, IToolLog {
 	bool TryGenerate (BindingTouchConfig config, Api api)
 	{
 		try {
-			ThrowIfCancellationRequested ();
 			var g = new Generator (this, api, config.IsPublicMode, config.IsExternal, config.IsDebug) {
 				BaseDir = config.BindingFilesOutputDirectory ?? config.TemporaryFileDirectory!,
 				InlineSelectors = config.InlineSelectors ?? (CurrentPlatform != PlatformName.MacOSX),
 			};
 
 			g.Go ();
-			ThrowIfCancellationRequested ();
-
 			if (config.GeneratedFileList is not null) {
 				using (var f = File.CreateText (config.GeneratedFileList)) {
 					foreach (var x in g.GeneratedFiles.OrderBy ((v) => v))
@@ -443,11 +428,6 @@ public class BindingTouch : IDisposable, IToolLog {
 	public void Log (string message)
 	{
 		log.Log (message);
-	}
-
-	public void ThrowIfCancellationRequested ()
-	{
-		cancellationToken.ThrowIfCancellationRequested ();
 	}
 
 	public void LogError (string message)

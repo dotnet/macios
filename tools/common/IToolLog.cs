@@ -69,11 +69,7 @@ public class ConsoleLog : IToolLog {
 
 	public void LogError (ProductException exception)
 	{
-#if BGENERATOR
-		Console.Out.WriteLine (exception);
-#else
 		Console.Error.WriteLine (exception);
-#endif
 	}
 
 	public void LogWarning (ProductException exception)
@@ -83,11 +79,7 @@ public class ConsoleLog : IToolLog {
 
 	public void LogException (Exception exception)
 	{
-#if BGENERATOR
-		Console.Out.WriteLine (exception);
-#else
 		Console.Error.WriteLine (exception);
-#endif
 	}
 }
 #endif // !MSBUILD_TASKS

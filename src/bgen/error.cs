@@ -96,17 +96,17 @@ public static class ErrorHelper {
 		return new ProductException (code, false, args);
 	}
 
-	public static void Warning (Xamarin.Bundler.IToolLog log, int code)
+	public static void Warning (IToolLog log, int code)
 	{
 		Show (log, new ProductException (code, false));
 	}
 
-	public static void Warning (Xamarin.Bundler.IToolLog log, int code, params object? [] args)
+	public static void Warning (IToolLog log, int code, params object? [] args)
 	{
 		Show (log, new ProductException (code, false, args));
 	}
 
-	static public void Show (Xamarin.Bundler.IToolLog log, Exception e, bool rethrow_errors = true)
+	static public void Show (IToolLog log, Exception e, bool rethrow_errors = true)
 	{
 		var exceptions = new List<Exception> ();
 		bool error = false;
@@ -144,7 +144,7 @@ public static class ErrorHelper {
 #endif
 	}
 
-	static bool ShowInternal (Xamarin.Bundler.IToolLog log, Exception e)
+	static bool ShowInternal (IToolLog log, Exception e)
 	{
 		var mte = (e as BindingException);
 		bool error = true;
@@ -176,9 +176,9 @@ public static class ErrorHelper {
 			if (log.Verbosity > 2 && e.StackTrace is not null)
 				log.LogError (e.StackTrace);
 		} else {
-			log.Log ("error BI0000: Unexpected error - Please file a bug report at https://github.com/dotnet/macios/issues/new");
+			log.LogError ("error BI0000: Unexpected error - Please file a bug report at https://github.com/dotnet/macios/issues/new");
 			log.LogException (e);
-			log.Log (Environment.StackTrace);
+			log.LogError (Environment.StackTrace);
 		}
 		return error;
 	}

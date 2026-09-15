@@ -77,8 +77,9 @@ namespace Xamarin.Linker {
 
 					// Store a relative path if possible, it makes things easier with XVS.
 					var fwkDirectory = fwk;
-					if (Path.IsPathRooted (fwkDirectory))
-						fwkDirectory = Path.GetRelativePath (Environment.CurrentDirectory, PathUtils.ResolveSymbolicLinks (fwkDirectory));
+					if (Path.IsPathRooted (fwkDirectory)) {
+						fwkDirectory = PathUtils.AbsoluteToRelative (Environment.CurrentDirectory, PathUtils.ResolveSymbolicLinks (fwkDirectory));
+					}
 
 					var executable = Path.Combine (fwkDirectory, Path.GetFileNameWithoutExtension (fwkDirectory));
 

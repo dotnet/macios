@@ -14,7 +14,6 @@ using CoreFoundation;
 
 namespace CFNetwork {
 	/// <summary>Represents HTTP authentication information for use with <see cref="CFHTTPMessage" />.</summary>
-	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

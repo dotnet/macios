@@ -24,12 +24,12 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			};
 
 			foreach (var d in data) {
-				Assert.AreNotEqual (IntPtr.Zero, new Protocol (d.Type).Handle, $"{d.Name} type");
-				Assert.AreNotEqual (IntPtr.Zero, new Protocol (d.Name).Handle, $"{d.Name} string");
-				Assert.AreEqual (d.Name, new Protocol (d.Name).Name, $"{d.Name} name");
-				Assert.AreEqual (d.Name, new Protocol (d.Type).Name, $"{d.Name} type name");
-				Assert.AreEqual (d.Name, new Protocol (new Protocol (d.Name).Handle).Name, $"{d.Name} IntPtr name");
-				Assert.AreEqual (d.Name, new Protocol (Protocol.GetHandle (d.Name)).Name, $"{d.Name} GetHandle name");
+				Assert.That (new Protocol (d.Type).Handle, Is.Not.EqualTo (IntPtr.Zero), $"{d.Name} type");
+				Assert.That (new Protocol (d.Name).Handle, Is.Not.EqualTo (IntPtr.Zero), $"{d.Name} string");
+				Assert.That (new Protocol (d.Name).Name, Is.EqualTo (d.Name), $"{d.Name} name");
+				Assert.That (new Protocol (d.Type).Name, Is.EqualTo (d.Name), $"{d.Name} type name");
+				Assert.That (new Protocol (new Protocol (d.Name).Handle).Name, Is.EqualTo (d.Name), $"{d.Name} IntPtr name");
+				Assert.That (new Protocol (Protocol.GetHandle (d.Name)).Name, Is.EqualTo (d.Name), $"{d.Name} GetHandle name");
 			}
 		}
 	}

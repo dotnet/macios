@@ -22,7 +22,7 @@ namespace MonoTouchFixtures.Network {
 		[Test]
 		public void ProtocolOptionsTest ()
 		{
-			Assert.NotNull (options.ProtocolOptions);
+			Assert.That (options.ProtocolOptions, Is.Not.Null);
 		}
 	}
 }

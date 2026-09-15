@@ -1,0 +1,50 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net$(BundledNETCoreAppTargetFrameworkVersion)</TargetFramework>
+		<LangVersion>latest</LangVersion>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<IsPackable>false</IsPackable>
+		<WarningsAsErrors>true</WarningsAsErrors>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="NUnit" Version="$(NUnitPackageVersion)" />
+		<PackageReference Include="NUnit.ConsoleRunner" Version="$(NUnitConsoleRunnerPackageVersion)" />
+		<PackageReference Include="NUnit.Analyzers" Version="$(NUnitAnalyzersPackageVersion)" />
+		<PackageReference Include="NUnit3TestAdapter" Version="$(NUnit3TestAdapterPackageVersion)" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="$(MicrosoftNETTestSdkPackageVersion)" />
+		<PackageReference Include="NUnitXml.TestLogger" Version="$(NUnitXmlTestLoggerPackageVersion)" />
+		<PackageReference Include="MSBuild.StructuredLogger" Version="$(MSBuildStructuredLoggerPackageVersion)" />
+		<ProjectReference Include="../../tools/assembly-preparer/assembly-preparer.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Include="../common/BinLog.cs">
+			<Link>external/tests/common/BinLog.cs</Link>
+		</Compile>
+		<Compile Include="../mtouch/Cache.cs">
+			<Link>external/tests/mtouch/Cache.cs</Link>
+		</Compile>
+		<Compile Include="../common/Configuration.cs">
+			<Link>external/tests/common/Configuration.cs</Link>
+		</Compile>
+		<Compile Include="../common/ConfigurationNUnit.cs">
+			<Link>external/tests/common/ConfigurationNUnit.cs</Link>
+		</Compile>
+		<Compile Include="../common/DotNet.cs">
+			<Link>external/tests/common/DotNet.cs</Link>
+		</Compile>
+		<Compile Include="../common/ExecutionHelper.cs">
+			<Link>external/tests/common/ExecutionHelper.cs</Link>
+		</Compile>
+		<Compile Include="../../tools/common/SdkVersions.cs">
+			<Link>external/tools/common/SdkVersions.cs</Link>
+		</Compile>
+		<Compile Include="../../tools/common/StringUtils.cs">
+			<Link>external/tools/common/StringUtils.cs</Link>
+		</Compile>
+	</ItemGroup>
+</Project>
+

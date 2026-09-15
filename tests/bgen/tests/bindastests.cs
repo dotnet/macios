@@ -141,4 +141,11 @@ namespace BindAsTests {
 		[Export ("getScrollEnumNullable:")]
 		NSNumber GetScrollEnumNullable2 ([BindAs (typeof (CAScroll?))] NSNumber arg1);
 	}
+
+	[Protocol, Model]
+	[BaseType (typeof (NSObject))]
+	interface MyFooProtocol {
+		[Export ("setScroll:")]
+		void SetScroll ([BindAs (typeof (CAScroll))] NSString value);
+	}
 }

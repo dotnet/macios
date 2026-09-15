@@ -118,16 +118,16 @@ namespace CoreVideo {
 
 		// The new method is the same as the old one but changing the ownership from Get to Copy, so we will use the new version if possible since the
 		// older method has been deprecatd.
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.CoreVideoLibrary)]
 		unsafe extern static /* CFTypeRef */ IntPtr CVBufferCopyAttachment (/* CVBufferRef */ IntPtr buffer, /* CFStringRef */ IntPtr key, CVAttachmentMode* attachmentMode);
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		unsafe static IntPtr CVBufferCopyAttachment (IntPtr buffer, IntPtr key, out CVAttachmentMode attachmentMode)
 		{
@@ -148,7 +148,9 @@ namespace CoreVideo {
 			if (key is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
 			if (!SystemVersion.IsAtLeastXcode13) {
+#pragma warning disable CA1422 // The analyzer doesn't recognize SupportedOSPlatformGuard attributes when guarding obsoleted APIs (https://github.com/dotnet/roslyn-analyzers/issues/7665).
 				T? result = Runtime.GetINativeObject<T> (CVBufferGetAttachment (Handle, key.Handle, out attachmentMode), false);
+#pragma warning restore CA1422
 				GC.KeepAlive (key);
 				return result;
 			}
@@ -190,9 +192,9 @@ namespace CoreVideo {
 		[DllImport (Constants.CoreVideoLibrary)]
 		extern static /* CFDictionaryRef */ IntPtr CVBufferGetAttachments (/* CVBufferRef */ IntPtr buffer, CVAttachmentMode attachmentMode);
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.CoreVideoLibrary)]
 		extern static /* CFDictionaryRef */ IntPtr CVBufferCopyAttachments (/* CVBufferRef */ IntPtr buffer, CVAttachmentMode attachmentMode);
@@ -203,8 +205,11 @@ namespace CoreVideo {
 		///         <remarks>To be added.</remarks>
 		public NSDictionary? GetAttachments (CVAttachmentMode attachmentMode)
 		{
-			if (!SystemVersion.IsAtLeastXcode13)
+			if (!SystemVersion.IsAtLeastXcode13) {
+#pragma warning disable CA1422 // The analyzer doesn't recognize SupportedOSPlatformGuard attributes when guarding obsoleted APIs (https://github.com/dotnet/roslyn-analyzers/issues/7665).
 				return Runtime.GetNSObject<NSDictionary> (CVBufferGetAttachments (Handle, attachmentMode), false);
+#pragma warning restore CA1422
+			}
 			return Runtime.GetINativeObject<NSDictionary> (CVBufferCopyAttachments (Handle, attachmentMode), true);
 		}
 
@@ -222,7 +227,9 @@ namespace CoreVideo {
 		{
 			if (SystemVersion.IsAtLeastXcode13)
 				return Runtime.GetNSObject<NSDictionary<TKey, TValue>> (CVBufferCopyAttachments (Handle, attachmentMode), true);
+#pragma warning disable CA1422 // The analyzer doesn't recognize SupportedOSPlatformGuard attributes when guarding obsoleted APIs (https://github.com/dotnet/roslyn-analyzers/issues/7665).
 			return Runtime.GetNSObject<NSDictionary<TKey, TValue>> (CVBufferGetAttachments (Handle, attachmentMode), false);
+#pragma warning restore CA1422
 		}
 
 		[DllImport (Constants.CoreVideoLibrary)]
@@ -231,7 +238,7 @@ namespace CoreVideo {
 		/// <param name="destinationBuffer">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		public void PropogateAttachments (CVBuffer destinationBuffer)
+		public void PropagateAttachments (CVBuffer destinationBuffer)
 		{
 			if (destinationBuffer is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (destinationBuffer));
@@ -239,6 +246,12 @@ namespace CoreVideo {
 			CVBufferPropagateAttachments (Handle, destinationBuffer.Handle);
 			GC.KeepAlive (destinationBuffer);
 		}
+
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'PropagateAttachments' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		public void PropogateAttachments (CVBuffer destinationBuffer) => PropagateAttachments (destinationBuffer);
+#endif
 
 		[DllImport (Constants.CoreVideoLibrary)]
 		extern static void CVBufferSetAttachment (/* CVBufferRef */ IntPtr buffer, /* CFStringRef */ IntPtr key, /* CFTypeRef */ IntPtr @value, CVAttachmentMode attachmentMode);
@@ -274,15 +287,15 @@ namespace CoreVideo {
 			GC.KeepAlive (theAttachments);
 		}
 
-		[SupportedOSPlatform ("ios15.0")]
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[DllImport (Constants.CoreVideoLibrary)]
 		static extern byte CVBufferHasAttachment (/* CVBufferRef */ IntPtr buffer, /* CFStringRef */ IntPtr key);
 
-		[SupportedOSPlatform ("ios15.0")]
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		public bool HasAttachment (NSString key)

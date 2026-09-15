@@ -55,7 +55,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 			using var img = renderer.CreateImage ((context) => {
 				try {
 					using var hdrCapableColorspace = CGColorSpace.CreateWithName (CGColorSpaceNames.DisplayP3_PQ);
-					Assert.IsTrue (hdrCapableColorspace.IsHdr, "IsHdr");
+					Assert.That (hdrCapableColorspace.IsHdr, Is.True, "IsHdr");
 
 					using var slopedFunction = FunctionTest.CreateSlopedFunction (() => functionCalled = true, 1, hdrCapableColorspace.Components + 1);
 
@@ -66,8 +66,8 @@ namespace MonoTouchFixtures.CoreGraphics {
 				}
 			});
 
-			Assert.IsTrue (functionCalled, "Function called");
-			Assert.IsNull (ex, "Exception");
+			Assert.That (functionCalled, Is.True, "Function called");
+			Assert.That (ex, Is.Null, "Exception");
 		}
 #endif
 	}

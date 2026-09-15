@@ -23,32 +23,32 @@ namespace LinkSdk {
 			const string url = "http://www.google.com";
 			Uri uri = new Uri (url);
 
-			Assert.False (this is ICommand, "ICommand");
+			Assert.That (this is ICommand, Is.False, "ICommand");
 
 			try {
 				HttpWebRequest hwr = WebRequest.CreateHttp (uri);
 				try {
-					Assert.True (hwr.SupportsCookieContainer, "SupportsCookieContainer");
+					Assert.That (hwr.SupportsCookieContainer, Is.True, "SupportsCookieContainer");
 				} catch (NotImplementedException) {
 					// feature is not available, but the symbol itself is needed
 				}
 
 				WebResponse wr = hwr.GetResponse ();
 				try {
-					Assert.True (wr.SupportsHeaders, "SupportsHeaders");
+					Assert.That (wr.SupportsHeaders, Is.True, "SupportsHeaders");
 				} catch (NotImplementedException) {
 					// feature is not available, but the symbol itself is needed
 				}
 				wr.Dispose ();
 
 				try {
-					Assert.NotNull (WebRequest.CreateHttp (url));
+					Assert.That (WebRequest.CreateHttp (url), Is.Not.Null);
 				} catch (NotImplementedException) {
 					// feature is not available, but the symbol itself is needed
 				}
 
 				try {
-					Assert.NotNull (WebRequest.CreateHttp (uri));
+					Assert.That (WebRequest.CreateHttp (uri), Is.Not.Null);
 				} catch (NotImplementedException) {
 					// feature is not available, but the symbol itself is needed
 				}

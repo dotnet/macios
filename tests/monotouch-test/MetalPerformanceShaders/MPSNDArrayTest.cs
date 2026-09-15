@@ -22,7 +22,7 @@ namespace MonoTouchFixtures.MetalPerformanceShaders {
 
 			using var array = new MPSNDArray (device, 3.14);
 			using var newArray = array.Create (1, new nuint [] { 1 }, new nuint [] { 1 });
-			Assert.IsNull (newArray, "Create"); // creation probably fails because I don't know which arguments to pass.
+			Assert.That (newArray, Is.Null, "Create"); // creation probably fails because I don't know which arguments to pass.
 
 			Assert.Throws<ArgumentOutOfRangeException> (() => array.Create (2, new nuint [1], new nuint [2]), "AOORE 1");
 			Assert.Throws<ArgumentOutOfRangeException> (() => array.Create (2, new nuint [2], new nuint [1]), "AOORE 2");

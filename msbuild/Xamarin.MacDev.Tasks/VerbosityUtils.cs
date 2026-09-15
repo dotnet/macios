@@ -10,39 +10,28 @@ namespace Xamarin.MacDev.Tasks {
 	// needs to be verbosity-aware
 	public static class VerbosityUtils {
 
-		// verbosity can be set in multiple ways
-		// this makes it a consistent interpretation of them
-		static public string [] Merge (string extraArguments, LoggerVerbosity taskVerbosity)
+		public static void RenderVerbosity (IList<string> arguments, int taskVerbosity)
 		{
-			string [] result = Array.Empty<string> ();
-			var empty_extra = String.IsNullOrEmpty (extraArguments);
-			// We give the priority to the extra arguments given to the tools
-			if (empty_extra || (!empty_extra && !extraArguments.Contains ("-q") && !extraArguments.Contains ("-v"))) {
-				// if nothing is specified fall back to msbuild settings
-				// first check if some were supplied on the command-line
-				result = GetVerbosityLevel (Environment.CommandLine);
-				// if not then use the default from the msbuild config files, which Visual Studio for Mac can override (to match the IDE setting for msbuild)
-				if (result.Length == 0)
-					result = GetVerbosityLevel (taskVerbosity);
-			}
-			return result;
+			if (taskVerbosity == 0)
+				return;
+
+			for (var i = 0; i < Math.Abs (taskVerbosity); i++)
+				arguments.Add (taskVerbosity < 0 ? "-q" : "-v");
 		}
 
 		//
 		// This is an hack, since there can be multiple loggers.
-		// However it's the most common use case and `mtouch` logs
-		// are often the most important to gather and developers expect
-		// a single change (in verbosity) to do the job and be consistent in CI.
+		// However it should cover most use cases.
 		//
 		// msbuild argument format
 		//	-verbosity:<level> Display this amount of information in the event log.
 		//		The available verbosity levels are: q[uiet], m[inimal],
 		//		n[ormal], d[etailed], and diag[nostic]. (Short form: -v)
 		//
-		static public string [] GetVerbosityLevel (string commandLine)
+		public static int GetVerbosityLevel (string commandLine)
 		{
 			if (!StringUtils.TryParseArguments (commandLine, out var args, out _))
-				return GetVerbosityLevel (LoggerVerbosity.Normal);
+				return 0;
 
 			var hasBinaryLog = false;
 			foreach (var arg in args) {
@@ -99,20 +88,20 @@ namespace Xamarin.MacDev.Tasks {
 
 		// The values here come from: https://github.com/mono/monodevelop/blob/143f9b6617123a0841a5cc5a2a4e13b309535792/main/src/core/MonoDevelop.Projects.Formats.MSBuild/MonoDevelop.Projects.MSBuild.Shared/RemoteBuildEngineMessages.cs#L186
 		// Assume 'Normal (2)' is the default verbosity (no change), and the other values follow from there.
-		static public string [] GetVerbosityLevel (LoggerVerbosity v)
+		public static int GetVerbosityLevel (LoggerVerbosity v)
 		{
 			switch ((LoggerVerbosity) v) {
 			case LoggerVerbosity.Quiet:
-				return new [] { "-q", "-q", "-q", "-q" };
+				return -4;
 			case LoggerVerbosity.Minimal:
-				return new [] { "-q", "-q" };
+				return -2;
 			case LoggerVerbosity.Normal:
 			default:
-				return Array.Empty<string> ();
+				return 0;
 			case LoggerVerbosity.Detailed:
-				return new [] { "-v", "-v" };
+				return 2;
 			case LoggerVerbosity.Diagnostic:
-				return new [] { "-v", "-v", "-v", "-v" };
+				return 4;
 			}
 		}
 	}

@@ -23,7 +23,7 @@ namespace MonoTouchFixtures.CoreMedia {
 		{
 			TestRuntime.AssertXcodeVersion (15, 0);
 
-			Assert.AreNotEqual (0, CMTagCollection.GetTypeId (), "GetTypeId");
+			Assert.That (CMTagCollection.GetTypeId (), Is.Not.EqualTo (0), "GetTypeId");
 		}
 
 		[Test]
@@ -33,26 +33,26 @@ namespace MonoTouchFixtures.CoreMedia {
 
 			{
 				using var tagCollection = CMTagCollection.Create ();
-				Assert.AreEqual (0, (int) tagCollection.Count, "Count A");
-				Assert.IsTrue (tagCollection.IsEmpty, "IsEmpty A");
+				Assert.That ((int) tagCollection.Count, Is.EqualTo (0), "Count A");
+				Assert.That (tagCollection.IsEmpty, Is.True, "IsEmpty A");
 			}
 
 			{
 				using var tagCollection = CMTagCollection.Create (CMTag.MediaTypeVideo);
-				Assert.AreEqual (1, (int) tagCollection.Count, "Count B");
-				Assert.IsFalse (tagCollection.IsEmpty, "IsEmpty B");
+				Assert.That ((int) tagCollection.Count, Is.EqualTo (1), "Count B");
+				Assert.That (tagCollection.IsEmpty, Is.False, "IsEmpty B");
 			}
 
 			{
 				using var tagCollection = CMTagCollection.Create (new CMTag [] { CMTag.MediaTypeVideo });
-				Assert.AreEqual (1, (int) tagCollection.Count, "Count C");
-				Assert.IsFalse (tagCollection.IsEmpty, "IsEmpty C");
+				Assert.That ((int) tagCollection.Count, Is.EqualTo (1), "Count C");
+				Assert.That (tagCollection.IsEmpty, Is.False, "IsEmpty C");
 			}
 
 			{
 				using var tagCollection = CMTagCollection.Create ((CMTag []) null);
-				Assert.AreEqual (0, (int) tagCollection.Count, "Count D");
-				Assert.IsTrue (tagCollection.IsEmpty, "IsEmpty D");
+				Assert.That ((int) tagCollection.Count, Is.EqualTo (0), "Count D");
+				Assert.That (tagCollection.IsEmpty, Is.True, "IsEmpty D");
 			}
 		}
 
@@ -63,30 +63,30 @@ namespace MonoTouchFixtures.CoreMedia {
 
 			{
 				using var tagCollection = CMTagCollection.Create (out var status);
-				Assert.AreEqual (CMTagCollectionError.Success, status, "Status A");
-				Assert.AreEqual (0, (int) tagCollection.Count, "Count A");
-				Assert.IsTrue (tagCollection.IsEmpty, "IsEmpty A");
+				Assert.That (status, Is.EqualTo (CMTagCollectionError.Success), "Status A");
+				Assert.That ((int) tagCollection.Count, Is.EqualTo (0), "Count A");
+				Assert.That (tagCollection.IsEmpty, Is.True, "IsEmpty A");
 			}
 
 			{
 				using var tagCollection = CMTagCollection.Create (out var status, CMTag.MediaTypeVideo);
-				Assert.AreEqual (CMTagCollectionError.Success, status, "Status B");
-				Assert.AreEqual (1, (int) tagCollection.Count, "Count B");
-				Assert.IsFalse (tagCollection.IsEmpty, "IsEmpty B");
+				Assert.That (status, Is.EqualTo (CMTagCollectionError.Success), "Status B");
+				Assert.That ((int) tagCollection.Count, Is.EqualTo (1), "Count B");
+				Assert.That (tagCollection.IsEmpty, Is.False, "IsEmpty B");
 			}
 
 			{
 				using var tagCollection = CMTagCollection.Create (out var status, new CMTag [] { CMTag.MediaTypeVideo });
-				Assert.AreEqual (CMTagCollectionError.Success, status, "Status C");
-				Assert.AreEqual (1, (int) tagCollection.Count, "Count C");
-				Assert.IsFalse (tagCollection.IsEmpty, "IsEmpty C");
+				Assert.That (status, Is.EqualTo (CMTagCollectionError.Success), "Status C");
+				Assert.That ((int) tagCollection.Count, Is.EqualTo (1), "Count C");
+				Assert.That (tagCollection.IsEmpty, Is.False, "IsEmpty C");
 			}
 
 			{
 				using var tagCollection = CMTagCollection.Create (out var status, (CMTag []) null);
-				Assert.AreEqual (CMTagCollectionError.Success, status, "Status D");
-				Assert.AreEqual (0, (int) tagCollection.Count, "Count D");
-				Assert.IsTrue (tagCollection.IsEmpty, "IsEmpty D");
+				Assert.That (status, Is.EqualTo (CMTagCollectionError.Success), "Status D");
+				Assert.That ((int) tagCollection.Count, Is.EqualTo (0), "Count D");
+				Assert.That (tagCollection.IsEmpty, Is.True, "IsEmpty D");
 			}
 		}
 
@@ -97,28 +97,28 @@ namespace MonoTouchFixtures.CoreMedia {
 
 			{
 				using var tagCollection = CMTagCollection.CreateMutable (out var status);
-				Assert.AreEqual (CMTagCollectionError.Success, status, "Status A");
-				Assert.AreEqual (0, (int) tagCollection.Count, "Count A");
-				Assert.IsTrue (tagCollection.IsEmpty, "IsEmpty A");
+				Assert.That (status, Is.EqualTo (CMTagCollectionError.Success), "Status A");
+				Assert.That ((int) tagCollection.Count, Is.EqualTo (0), "Count A");
+				Assert.That (tagCollection.IsEmpty, Is.True, "IsEmpty A");
 			}
 
 			{
 				using var tagCollection = CMTagCollection.CreateMutable (1, out var status);
-				Assert.AreEqual (CMTagCollectionError.Success, status, "Status B");
-				Assert.AreEqual (0, (int) tagCollection.Count, "Count B");
-				Assert.IsTrue (tagCollection.IsEmpty, "IsEmpty B");
+				Assert.That (status, Is.EqualTo (CMTagCollectionError.Success), "Status B");
+				Assert.That ((int) tagCollection.Count, Is.EqualTo (0), "Count B");
+				Assert.That (tagCollection.IsEmpty, Is.True, "IsEmpty B");
 			}
 
 			{
 				using var tagCollection = CMTagCollection.CreateMutable (-1, out var status);
-				Assert.AreEqual (CMTagCollectionError.ParamErr, status, "Status C");
-				Assert.IsNull (tagCollection, "Null C");
+				Assert.That (status, Is.EqualTo (CMTagCollectionError.ParamErr), "Status C");
+				Assert.That (tagCollection, Is.Null, "Null C");
 			}
 
 			{
 				using var tagCollection = CMTagCollection.CreateMutable ();
-				Assert.AreEqual (0, (int) tagCollection.Count, "Count D");
-				Assert.IsTrue (tagCollection.IsEmpty, "IsEmpty D");
+				Assert.That ((int) tagCollection.Count, Is.EqualTo (0), "Count D");
+				Assert.That (tagCollection.IsEmpty, Is.True, "IsEmpty D");
 			}
 		}
 
@@ -128,13 +128,13 @@ namespace MonoTouchFixtures.CoreMedia {
 			TestRuntime.AssertXcodeVersion (15, 0);
 
 			using var tagCollection = CMTagCollection.Create (CMTag.MediaTypeVideo);
-			Assert.AreEqual (1, (int) tagCollection.Count, "Count A");
-			Assert.IsFalse (tagCollection.IsEmpty, "IsEmpty A");
+			Assert.That ((int) tagCollection.Count, Is.EqualTo (1), "Count A");
+			Assert.That (tagCollection.IsEmpty, Is.False, "IsEmpty A");
 
 			using var copy = tagCollection.Copy (out var status);
-			Assert.AreEqual (1, (int) copy.Count, "Count B");
-			Assert.IsFalse (copy.IsEmpty, "IsEmpty B");
-			Assert.AreEqual (CMTagCollectionError.Success, status, "Status B");
+			Assert.That ((int) copy.Count, Is.EqualTo (1), "Count B");
+			Assert.That (copy.IsEmpty, Is.False, "IsEmpty B");
+			Assert.That (status, Is.EqualTo (CMTagCollectionError.Success), "Status B");
 		}
 
 		[Test]
@@ -143,13 +143,13 @@ namespace MonoTouchFixtures.CoreMedia {
 			TestRuntime.AssertXcodeVersion (15, 0);
 
 			using var tagCollection = CMTagCollection.Create (CMTag.MediaTypeVideo);
-			Assert.AreEqual (1, (int) tagCollection.Count, "Count A");
-			Assert.IsFalse (tagCollection.IsEmpty, "IsEmpty A");
+			Assert.That ((int) tagCollection.Count, Is.EqualTo (1), "Count A");
+			Assert.That (tagCollection.IsEmpty, Is.False, "IsEmpty A");
 
 			using var copy = tagCollection.CreateMutableCopy (out var status);
-			Assert.AreEqual (1, (int) copy.Count, "Count B");
-			Assert.IsFalse (copy.IsEmpty, "IsEmpty B");
-			Assert.AreEqual (CMTagCollectionError.Success, status, "Status B");
+			Assert.That ((int) copy.Count, Is.EqualTo (1), "Count B");
+			Assert.That (copy.IsEmpty, Is.False, "IsEmpty B");
+			Assert.That (status, Is.EqualTo (CMTagCollectionError.Success), "Status B");
 		}
 
 		[Test]
@@ -158,7 +158,7 @@ namespace MonoTouchFixtures.CoreMedia {
 			TestRuntime.AssertXcodeVersion (15, 0);
 
 			using var tagCollection = CMTagCollection.Create (CMTag.MediaTypeVideo);
-			Assert.AreEqual ("CMTagCollection{\n{category:'mdia' value:'vide' <OSType>}\n}", tagCollection.ToString (), "ToString");
+			Assert.That (tagCollection.ToString (), Is.EqualTo ("CMTagCollection{\n{category:'mdia' value:'vide' <OSType>}\n}"), "ToString");
 		}
 
 		[Test]
@@ -167,8 +167,8 @@ namespace MonoTouchFixtures.CoreMedia {
 			TestRuntime.AssertXcodeVersion (15, 0);
 
 			using var tagCollection = CMTagCollection.Create (CMTag.MediaTypeVideo);
-			Assert.AreEqual (true, tagCollection.ContainsTag (CMTag.MediaTypeVideo), "MediaTypeVideo");
-			Assert.AreEqual (false, tagCollection.ContainsTag (CMTag.MediaTypeAudio), "MediaTypeAudio");
+			Assert.That (tagCollection.ContainsTag (CMTag.MediaTypeVideo), Is.EqualTo (true), "MediaTypeVideo");
+			Assert.That (tagCollection.ContainsTag (CMTag.MediaTypeAudio), Is.EqualTo (false), "MediaTypeAudio");
 		}
 
 		[Test]
@@ -178,8 +178,8 @@ namespace MonoTouchFixtures.CoreMedia {
 
 			using var tagCollection1 = CMTagCollection.Create (CMTag.MediaTypeVideo, CMTag.MediaTypeAudio);
 			using var tagCollection2 = CMTagCollection.Create (CMTag.MediaTypeAudio);
-			Assert.AreEqual (true, tagCollection1.ContainsTagCollection (tagCollection2), "1");
-			Assert.AreEqual (false, tagCollection2.ContainsTagCollection (tagCollection1), "2");
+			Assert.That (tagCollection1.ContainsTagCollection (tagCollection2), Is.EqualTo (true), "1");
+			Assert.That (tagCollection2.ContainsTagCollection (tagCollection1), Is.EqualTo (false), "2");
 
 			Assert.Throws<ArgumentNullException> (() => tagCollection1.ContainsTagCollection (null), "Null");
 		}
@@ -190,10 +190,10 @@ namespace MonoTouchFixtures.CoreMedia {
 			TestRuntime.AssertXcodeVersion (15, 0);
 
 			using var tagCollection = CMTagCollection.Create (CMTag.MediaTypeVideo, CMTag.MediaTypeAudio);
-			Assert.AreEqual (true, tagCollection.ContainsTags (CMTag.MediaTypeVideo), "MediaTypeVideo");
-			Assert.AreEqual (true, tagCollection.ContainsTags (CMTag.MediaTypeVideo, CMTag.MediaTypeAudio), "MediaTypeVideo+MediaTypeAudio");
-			Assert.AreEqual (false, tagCollection.ContainsTags (CMTag.MediaTypeVideo, CMTag.PackingTypeNone), "MediaTypeVideo+PackingTypeNone");
-			Assert.AreEqual (false, tagCollection.ContainsTags (CMTag.PackingTypeNone), "PackingTypeNone");
+			Assert.That (tagCollection.ContainsTags (CMTag.MediaTypeVideo), Is.EqualTo (true), "MediaTypeVideo");
+			Assert.That (tagCollection.ContainsTags (CMTag.MediaTypeVideo, CMTag.MediaTypeAudio), Is.EqualTo (true), "MediaTypeVideo+MediaTypeAudio");
+			Assert.That (tagCollection.ContainsTags (CMTag.MediaTypeVideo, CMTag.PackingTypeNone), Is.EqualTo (false), "MediaTypeVideo+PackingTypeNone");
+			Assert.That (tagCollection.ContainsTags (CMTag.PackingTypeNone), Is.EqualTo (false), "PackingTypeNone");
 		}
 
 		[Test]
@@ -202,8 +202,8 @@ namespace MonoTouchFixtures.CoreMedia {
 			TestRuntime.AssertXcodeVersion (15, 0);
 
 			using var tagCollection = CMTagCollection.Create (CMTag.MediaTypeVideo, CMTag.MediaTypeAudio);
-			Assert.AreEqual (false, tagCollection.ContainsCategory (CMTagCategory.ProjectionType), "ProjectionType");
-			Assert.AreEqual (true, tagCollection.ContainsCategory (CMTagCategory.MediaType), "MediaType");
+			Assert.That (tagCollection.ContainsCategory (CMTagCategory.ProjectionType), Is.EqualTo (false), "ProjectionType");
+			Assert.That (tagCollection.ContainsCategory (CMTagCategory.MediaType), Is.EqualTo (true), "MediaType");
 		}
 
 		[Test]
@@ -212,8 +212,8 @@ namespace MonoTouchFixtures.CoreMedia {
 			TestRuntime.AssertXcodeVersion (15, 0);
 
 			using var tagCollection = CMTagCollection.Create (CMTag.MediaTypeVideo, CMTag.MediaTypeAudio);
-			Assert.AreEqual (0, (int) tagCollection.GetCount (CMTagCategory.ProjectionType), "ProjectionType");
-			Assert.AreEqual (2, (int) tagCollection.GetCount (CMTagCategory.MediaType), "MediaType");
+			Assert.That ((int) tagCollection.GetCount (CMTagCategory.ProjectionType), Is.EqualTo (0), "ProjectionType");
+			Assert.That ((int) tagCollection.GetCount (CMTagCategory.MediaType), Is.EqualTo (2), "MediaType");
 		}
 
 		[Test]
@@ -223,7 +223,7 @@ namespace MonoTouchFixtures.CoreMedia {
 
 			using var tagCollection = CMTagCollection.Create (CMTag.MediaTypeVideo, CMTag.MediaTypeAudio);
 			var tags = tagCollection.Tags;
-			Assert.AreEqual (2, tags.Length, "Length");
+			Assert.That (tags.Length, Is.EqualTo (2), "Length");
 		}
 
 		[Test]
@@ -233,8 +233,8 @@ namespace MonoTouchFixtures.CoreMedia {
 
 			using var tagCollection = CMTagCollection.Create (CMTag.MediaTypeVideo, CMTag.MediaTypeAudio);
 			var tags = tagCollection.GetTags (out var status);
-			Assert.AreEqual (2, tags.Length, "Length");
-			Assert.AreEqual (CMTagCollectionError.Success, status, "Status");
+			Assert.That (tags.Length, Is.EqualTo (2), "Length");
+			Assert.That (status, Is.EqualTo (CMTagCollectionError.Success), "Status");
 		}
 
 		[Test]
@@ -245,10 +245,10 @@ namespace MonoTouchFixtures.CoreMedia {
 			using var tagCollection = CMTagCollection.Create (CMTag.MediaTypeVideo, CMTag.MediaTypeAudio);
 			var tags = new CMTag [1];
 			var status = tagCollection.GetTags (tags, tags.Length, out var tagsCopied);
-			Assert.AreEqual (1, tags.Length, "Length");
-			Assert.AreEqual (1, (int) tagsCopied, "Tags Copied");
-			Assert.AreEqual (CMTagCollectionError.ExhaustedBufferSize, status, "Status");
-			Assert.IsTrue (tags [0].IsValid, "Tags[0].IsValid");
+			Assert.That (tags.Length, Is.EqualTo (1), "Length");
+			Assert.That ((int) tagsCopied, Is.EqualTo (1), "Tags Copied");
+			Assert.That (status, Is.EqualTo (CMTagCollectionError.ExhaustedBufferSize), "Status");
+			Assert.That (tags [0].IsValid, Is.True, "Tags[0].IsValid");
 
 			Assert.Throws<ArgumentOutOfRangeException> (() => tagCollection.GetTags (tags, tags.Length + 1, out tagsCopied), "AOORE");
 			Assert.Throws<ArgumentOutOfRangeException> (() => tagCollection.GetTags (tags, -1, out tagsCopied), "AOORE 2");
@@ -261,8 +261,8 @@ namespace MonoTouchFixtures.CoreMedia {
 
 			using var tagCollection = CMTagCollection.Create (CMTag.MediaTypeVideo, CMTag.MediaTypeAudio, CMTag.PackingTypeNone);
 			var tags = tagCollection.GetTags (CMTagCategory.MediaType, out var status);
-			Assert.AreEqual (CMTagCollectionError.Success, status, "Status");
-			Assert.AreEqual (2, tags.Length, "Length");
+			Assert.That (status, Is.EqualTo (CMTagCollectionError.Success), "Status");
+			Assert.That (tags.Length, Is.EqualTo (2), "Length");
 		}
 
 		[Test]
@@ -273,10 +273,10 @@ namespace MonoTouchFixtures.CoreMedia {
 			using var tagCollection = CMTagCollection.Create (CMTag.MediaTypeVideo, CMTag.MediaTypeAudio, CMTag.PackingTypeNone);
 			var tags = new CMTag [1];
 			var status = tagCollection.GetTags (CMTagCategory.MediaType, tags, tags.Length, out var tagsCopied);
-			Assert.AreEqual (1, tags.Length, "Length");
-			Assert.AreEqual (1, (int) tagsCopied, "Tags Copied");
-			Assert.AreEqual (CMTagCollectionError.ExhaustedBufferSize, status, "Status");
-			Assert.IsTrue (tags [0].IsValid, "Tags[0].IsValid");
+			Assert.That (tags.Length, Is.EqualTo (1), "Length");
+			Assert.That ((int) tagsCopied, Is.EqualTo (1), "Tags Copied");
+			Assert.That (status, Is.EqualTo (CMTagCollectionError.ExhaustedBufferSize), "Status");
+			Assert.That (tags [0].IsValid, Is.True, "Tags[0].IsValid");
 
 			Assert.Throws<ArgumentOutOfRangeException> (() => tagCollection.GetTags (CMTagCategory.MediaType, tags, tags.Length + 1, out var tagsCopied), "AOORE");
 			Assert.Throws<ArgumentOutOfRangeException> (() => tagCollection.GetTags (CMTagCategory.MediaType, tags, -1, out var tagsCopied), "AOORE 2");
@@ -288,7 +288,7 @@ namespace MonoTouchFixtures.CoreMedia {
 			TestRuntime.AssertXcodeVersion (15, 0);
 
 			using var tagCollection = CMTagCollection.Create (CMTag.MediaTypeVideo, CMTag.MediaTypeAudio, CMTag.PackingTypeNone);
-			Assert.AreEqual (2, (int) tagCollection.GetCount ((v) => v.Category == CMTagCategory.MediaType), "Count");
+			Assert.That ((int) tagCollection.GetCount ((v) => v.Category == CMTagCategory.MediaType), Is.EqualTo (2), "Count");
 		}
 
 		[Test]
@@ -298,7 +298,7 @@ namespace MonoTouchFixtures.CoreMedia {
 
 			using var tagCollection = CMTagCollection.Create (CMTag.MediaTypeVideo, CMTag.MediaTypeAudio, CMTag.PackingTypeNone);
 			var count = tagCollection.GetCount ((v) => v.Category == CMTagCategory.MediaType);
-			Assert.AreEqual (2, (int) count, "Count");
+			Assert.That ((int) count, Is.EqualTo (2), "Count");
 		}
 
 		[Test]
@@ -309,10 +309,10 @@ namespace MonoTouchFixtures.CoreMedia {
 			using var tagCollection = CMTagCollection.Create (CMTag.MediaTypeVideo, CMTag.MediaTypeAudio, CMTag.PackingTypeNone);
 			var tags = new CMTag [1];
 			var status = tagCollection.GetTags ((v) => v.Category == CMTagCategory.MediaType, tags, tags.Length, out var tagsCopied);
-			Assert.AreEqual (1, tags.Length, "Length");
-			Assert.AreEqual (1, (int) tagsCopied, "Tags Copied");
-			Assert.AreEqual (CMTagCollectionError.ExhaustedBufferSize, status, "Status");
-			Assert.IsTrue (tags [0].IsValid, "Tags[0].IsValid");
+			Assert.That (tags.Length, Is.EqualTo (1), "Length");
+			Assert.That ((int) tagsCopied, Is.EqualTo (1), "Tags Copied");
+			Assert.That (status, Is.EqualTo (CMTagCollectionError.ExhaustedBufferSize), "Status");
+			Assert.That (tags [0].IsValid, Is.True, "Tags[0].IsValid");
 
 			Assert.Throws<ArgumentOutOfRangeException> (() => tagCollection.GetTags ((v) => v.Category == CMTagCategory.MediaType, tags, tags.Length + 1, out tagsCopied), "AOORE");
 			Assert.Throws<ArgumentOutOfRangeException> (() => tagCollection.GetTags ((v) => v.Category == CMTagCategory.MediaType, tags, -1, out tagsCopied), "AOORE 2");
@@ -325,8 +325,8 @@ namespace MonoTouchFixtures.CoreMedia {
 
 			using var tagCollection1 = CMTagCollection.Create (CMTag.MediaTypeVideo, CMTag.MediaTypeAudio, CMTag.PackingTypeNone);
 			using var tagCollection2 = tagCollection1.CreateWithCopyOfTags (out var status, CMTagCategory.MediaType);
-			Assert.AreEqual (2, (int) tagCollection2.Count, "Count");
-			Assert.AreEqual (CMTagCollectionError.Success, status, "Status");
+			Assert.That ((int) tagCollection2.Count, Is.EqualTo (2), "Count");
+			Assert.That (status, Is.EqualTo (CMTagCollectionError.Success), "Status");
 		}
 
 		[Test]
@@ -339,7 +339,7 @@ namespace MonoTouchFixtures.CoreMedia {
 			tagCollection.Apply ((v) => {
 				counter++;
 			});
-			Assert.AreEqual ((int) tagCollection.Count, counter, "Counter");
+			Assert.That (counter, Is.EqualTo ((int) tagCollection.Count), "Counter");
 		}
 
 		[Test]
@@ -353,8 +353,8 @@ namespace MonoTouchFixtures.CoreMedia {
 				counter++;
 				return false;
 			});
-			Assert.AreEqual ((int) tagCollection.Count, counter, "Counter A");
-			Assert.IsFalse (tag.IsValid, "IsValid A");
+			Assert.That (counter, Is.EqualTo ((int) tagCollection.Count), "Counter A");
+			Assert.That (tag.IsValid, Is.False, "IsValid A");
 
 			counter = 0;
 			tag = tagCollection.ApplyUntil ((v) => {
@@ -365,8 +365,8 @@ namespace MonoTouchFixtures.CoreMedia {
 			});
 			Assert.That (counter, Is.GreaterThan (0), "Counter B1");
 			Assert.That (counter, Is.LessThanOrEqualTo ((int) tagCollection.Count), "Counter B2");
-			Assert.IsTrue (tag.IsValid, "IsValid B");
-			Assert.IsTrue (CMTag.Equals (tag, CMTag.PackingTypeNone), "Equals B");
+			Assert.That (tag.IsValid, Is.True, "IsValid B");
+			Assert.That (CMTag.Equals (tag, CMTag.PackingTypeNone), Is.True, "Equals B");
 		}
 
 		[Test]
@@ -377,9 +377,9 @@ namespace MonoTouchFixtures.CoreMedia {
 			using var tagCollection1 = CMTagCollection.Create (CMTag.MediaTypeVideo, CMTag.MediaTypeAudio);
 			using var tagCollection2 = CMTagCollection.Create (CMTag.MediaTypeAudio, CMTag.PackingTypeNone);
 			using var tagCollection = CMTagCollection.Intersect (tagCollection1, tagCollection2, out var status);
-			Assert.AreEqual (CMTagCollectionError.Success, status, "Status");
-			Assert.AreEqual (1, (int) tagCollection.Count, "Count");
-			Assert.IsTrue (CMTag.Equals (CMTag.MediaTypeAudio, tagCollection.Tags [0]), "Tag #0");
+			Assert.That (status, Is.EqualTo (CMTagCollectionError.Success), "Status");
+			Assert.That ((int) tagCollection.Count, Is.EqualTo (1), "Count");
+			Assert.That (CMTag.Equals (CMTag.MediaTypeAudio, tagCollection.Tags [0]), Is.True, "Tag #0");
 		}
 
 
@@ -391,9 +391,9 @@ namespace MonoTouchFixtures.CoreMedia {
 			using var tagCollection1 = CMTagCollection.Create (CMTag.MediaTypeVideo, CMTag.MediaTypeAudio);
 			using var tagCollection2 = CMTagCollection.Create (CMTag.MediaTypeAudio, CMTag.PackingTypeNone);
 			using var tagCollection = tagCollection1.Intersect (tagCollection2, out var status);
-			Assert.AreEqual (CMTagCollectionError.Success, status, "Status");
-			Assert.AreEqual (1, (int) tagCollection.Count, "Count");
-			Assert.IsTrue (CMTag.Equals (CMTag.MediaTypeAudio, tagCollection.Tags [0]), "Tag #0");
+			Assert.That (status, Is.EqualTo (CMTagCollectionError.Success), "Status");
+			Assert.That ((int) tagCollection.Count, Is.EqualTo (1), "Count");
+			Assert.That (CMTag.Equals (CMTag.MediaTypeAudio, tagCollection.Tags [0]), Is.True, "Tag #0");
 		}
 
 		[Test]
@@ -404,8 +404,8 @@ namespace MonoTouchFixtures.CoreMedia {
 			using var tagCollection1 = CMTagCollection.Create (CMTag.MediaTypeVideo, CMTag.MediaTypeAudio);
 			using var tagCollection2 = CMTagCollection.Create (CMTag.MediaTypeAudio, CMTag.PackingTypeNone);
 			using var tagCollection = CMTagCollection.Union (tagCollection1, tagCollection2, out var status);
-			Assert.AreEqual (CMTagCollectionError.Success, status, "Status");
-			Assert.AreEqual (3, (int) tagCollection.Count, "Count");
+			Assert.That (status, Is.EqualTo (CMTagCollectionError.Success), "Status");
+			Assert.That ((int) tagCollection.Count, Is.EqualTo (3), "Count");
 		}
 
 
@@ -417,8 +417,8 @@ namespace MonoTouchFixtures.CoreMedia {
 			using var tagCollection1 = CMTagCollection.Create (CMTag.MediaTypeVideo, CMTag.MediaTypeAudio);
 			using var tagCollection2 = CMTagCollection.Create (CMTag.MediaTypeAudio, CMTag.PackingTypeNone);
 			using var tagCollection = tagCollection1.Union (tagCollection2, out var status);
-			Assert.AreEqual (CMTagCollectionError.Success, status, "Status");
-			Assert.AreEqual (3, (int) tagCollection.Count, "Count");
+			Assert.That (status, Is.EqualTo (CMTagCollectionError.Success), "Status");
+			Assert.That ((int) tagCollection.Count, Is.EqualTo (3), "Count");
 		}
 
 		[Test]
@@ -429,9 +429,9 @@ namespace MonoTouchFixtures.CoreMedia {
 			using var tagCollection1 = CMTagCollection.Create (CMTag.MediaTypeVideo, CMTag.MediaTypeAudio);
 			using var tagCollection2 = CMTagCollection.Create (CMTag.MediaTypeAudio, CMTag.PackingTypeNone);
 			using var tagCollection = CMTagCollection.Subtract (tagCollection1, tagCollection2, out var status);
-			Assert.AreEqual (CMTagCollectionError.Success, status, "Status");
-			Assert.AreEqual (1, (int) tagCollection.Count, "Count");
-			Assert.IsTrue (CMTag.Equals (CMTag.MediaTypeVideo, tagCollection.Tags [0]), "Tag #0");
+			Assert.That (status, Is.EqualTo (CMTagCollectionError.Success), "Status");
+			Assert.That ((int) tagCollection.Count, Is.EqualTo (1), "Count");
+			Assert.That (CMTag.Equals (CMTag.MediaTypeVideo, tagCollection.Tags [0]), Is.True, "Tag #0");
 		}
 
 		[Test]
@@ -442,9 +442,9 @@ namespace MonoTouchFixtures.CoreMedia {
 			using var tagCollection1 = CMTagCollection.Create (CMTag.MediaTypeVideo, CMTag.MediaTypeAudio);
 			using var tagCollection2 = CMTagCollection.Create (CMTag.MediaTypeAudio, CMTag.PackingTypeNone);
 			using var tagCollection = tagCollection1.Subtract (tagCollection2, out var status);
-			Assert.AreEqual (CMTagCollectionError.Success, status, "Status");
-			Assert.AreEqual (1, (int) tagCollection.Count, "Count");
-			Assert.IsTrue (CMTag.Equals (CMTag.MediaTypeVideo, tagCollection.Tags [0]), "Tag #0");
+			Assert.That (status, Is.EqualTo (CMTagCollectionError.Success), "Status");
+			Assert.That ((int) tagCollection.Count, Is.EqualTo (1), "Count");
+			Assert.That (CMTag.Equals (CMTag.MediaTypeVideo, tagCollection.Tags [0]), Is.True, "Tag #0");
 		}
 
 		[Test]
@@ -455,8 +455,8 @@ namespace MonoTouchFixtures.CoreMedia {
 			using var tagCollection1 = CMTagCollection.Create (CMTag.MediaTypeVideo, CMTag.MediaTypeAudio);
 			using var tagCollection2 = CMTagCollection.Create (CMTag.MediaTypeAudio, CMTag.PackingTypeNone);
 			using var tagCollection = CMTagCollection.ExclusiveOr (tagCollection1, tagCollection2, out var status);
-			Assert.AreEqual (CMTagCollectionError.Success, status, "Status");
-			Assert.AreEqual (2, (int) tagCollection.Count, "Count");
+			Assert.That (status, Is.EqualTo (CMTagCollectionError.Success), "Status");
+			Assert.That ((int) tagCollection.Count, Is.EqualTo (2), "Count");
 		}
 
 		[Test]
@@ -467,8 +467,8 @@ namespace MonoTouchFixtures.CoreMedia {
 			using var tagCollection1 = CMTagCollection.Create (CMTag.MediaTypeVideo, CMTag.MediaTypeAudio);
 			using var tagCollection2 = CMTagCollection.Create (CMTag.MediaTypeAudio, CMTag.PackingTypeNone);
 			using var tagCollection = tagCollection1.ExclusiveOr (tagCollection2, out var status);
-			Assert.AreEqual (CMTagCollectionError.Success, status, "Status");
-			Assert.AreEqual (2, (int) tagCollection.Count, "Count");
+			Assert.That (status, Is.EqualTo (CMTagCollectionError.Success), "Status");
+			Assert.That ((int) tagCollection.Count, Is.EqualTo (2), "Count");
 		}
 
 		[Test]
@@ -478,7 +478,7 @@ namespace MonoTouchFixtures.CoreMedia {
 
 			// Trying to modify a non-mutable collection
 			using var tagCollection = CMTagCollection.Create (CMTag.MediaTypeVideo);
-			Assert.AreEqual (CMTagCollectionError.ParamErr, tagCollection.Add (CMTag.MediaTypeAudio), "Add");
+			Assert.That (tagCollection.Add (CMTag.MediaTypeAudio), Is.EqualTo (CMTagCollectionError.ParamErr), "Add");
 		}
 
 		[Test]
@@ -487,9 +487,9 @@ namespace MonoTouchFixtures.CoreMedia {
 			TestRuntime.AssertXcodeVersion (15, 0);
 
 			using var tagCollection = CMTagCollection.CreateMutable ();
-			Assert.AreEqual (CMTagCollectionError.Success, tagCollection.Add (CMTag.MediaTypeAudio), "Add 1");
-			Assert.AreEqual (CMTagCollectionError.Success, tagCollection.Add (CMTag.MediaTypeAudio), "Add 2");
-			Assert.AreEqual (1, (int) tagCollection.Count, "Count");
+			Assert.That (tagCollection.Add (CMTag.MediaTypeAudio), Is.EqualTo (CMTagCollectionError.Success), "Add 1");
+			Assert.That (tagCollection.Add (CMTag.MediaTypeAudio), Is.EqualTo (CMTagCollectionError.Success), "Add 2");
+			Assert.That ((int) tagCollection.Count, Is.EqualTo (1), "Count");
 		}
 
 		[Test]
@@ -499,7 +499,7 @@ namespace MonoTouchFixtures.CoreMedia {
 
 			// Trying to modify a non-mutable collection
 			using var tagCollection = CMTagCollection.Create (CMTag.MediaTypeVideo);
-			Assert.AreEqual (CMTagCollectionError.ParamErr, tagCollection.Remove (CMTag.MediaTypeAudio), "Remove");
+			Assert.That (tagCollection.Remove (CMTag.MediaTypeAudio), Is.EqualTo (CMTagCollectionError.ParamErr), "Remove");
 		}
 
 		[Test]
@@ -508,11 +508,11 @@ namespace MonoTouchFixtures.CoreMedia {
 			TestRuntime.AssertXcodeVersion (15, 0);
 
 			using var tagCollection = CMTagCollection.CreateMutable ();
-			Assert.AreEqual (CMTagCollectionError.TagNotFound, tagCollection.Remove (CMTag.MediaTypeAudio), "Remove 1");
-			Assert.AreEqual (CMTagCollectionError.Success, tagCollection.Add (CMTag.MediaTypeAudio), "Add 1");
-			Assert.AreEqual (CMTagCollectionError.Success, tagCollection.Remove (CMTag.MediaTypeAudio), "Remove 2");
-			Assert.AreEqual (0, (int) tagCollection.Count, "Count");
-			Assert.AreEqual (CMTagCollectionError.TagNotFound, tagCollection.Remove (CMTag.MediaTypeAudio), "Remove 3");
+			Assert.That (tagCollection.Remove (CMTag.MediaTypeAudio), Is.EqualTo (CMTagCollectionError.TagNotFound), "Remove 1");
+			Assert.That (tagCollection.Add (CMTag.MediaTypeAudio), Is.EqualTo (CMTagCollectionError.Success), "Add 1");
+			Assert.That (tagCollection.Remove (CMTag.MediaTypeAudio), Is.EqualTo (CMTagCollectionError.Success), "Remove 2");
+			Assert.That ((int) tagCollection.Count, Is.EqualTo (0), "Count");
+			Assert.That (tagCollection.Remove (CMTag.MediaTypeAudio), Is.EqualTo (CMTagCollectionError.TagNotFound), "Remove 3");
 		}
 
 		[Test]
@@ -522,7 +522,7 @@ namespace MonoTouchFixtures.CoreMedia {
 
 			// Trying to modify a non-mutable collection
 			using var tagCollection = CMTagCollection.Create (CMTag.MediaTypeVideo);
-			Assert.AreEqual (CMTagCollectionError.ParamErr, tagCollection.RemoveAllTags (), "Remove");
+			Assert.That (tagCollection.RemoveAllTags (), Is.EqualTo (CMTagCollectionError.ParamErr), "Remove");
 		}
 
 		[Test]
@@ -531,10 +531,10 @@ namespace MonoTouchFixtures.CoreMedia {
 			TestRuntime.AssertXcodeVersion (15, 0);
 
 			using var tagCollection = CMTagCollection.CreateMutable ();
-			Assert.AreEqual (CMTagCollectionError.Success, tagCollection.Add (CMTag.MediaTypeAudio), "Add 1");
-			Assert.AreEqual (CMTagCollectionError.Success, tagCollection.Add (CMTag.MediaTypeVideo), "Add 2");
-			Assert.AreEqual (CMTagCollectionError.Success, tagCollection.RemoveAllTags (), "RemoveAll");
-			Assert.AreEqual (0, (int) tagCollection.Count, "Count");
+			Assert.That (tagCollection.Add (CMTag.MediaTypeAudio), Is.EqualTo (CMTagCollectionError.Success), "Add 1");
+			Assert.That (tagCollection.Add (CMTag.MediaTypeVideo), Is.EqualTo (CMTagCollectionError.Success), "Add 2");
+			Assert.That (tagCollection.RemoveAllTags (), Is.EqualTo (CMTagCollectionError.Success), "RemoveAll");
+			Assert.That ((int) tagCollection.Count, Is.EqualTo (0), "Count");
 		}
 
 		[Test]
@@ -546,7 +546,7 @@ namespace MonoTouchFixtures.CoreMedia {
 			using var tagCollection1 = CMTagCollection.Create (CMTag.MediaTypeVideo, CMTag.MediaTypeAudio);
 			using var tagCollection2 = CMTagCollection.Create (CMTag.MediaTypeAudio, CMTag.PackingTypeNone);
 			Assert.Throws<ArgumentNullException> (() => tagCollection1.Add ((CMTagCollection) null), "Add null");
-			Assert.AreEqual (CMTagCollectionError.ParamErr, tagCollection1.Add (tagCollection2), "Add");
+			Assert.That (tagCollection1.Add (tagCollection2), Is.EqualTo (CMTagCollectionError.ParamErr), "Add");
 		}
 
 		[Test]
@@ -556,7 +556,7 @@ namespace MonoTouchFixtures.CoreMedia {
 
 			using var tagCollection = CMTagCollection.Create (CMTag.MediaTypeVideo, CMTag.MediaTypeAudio);
 			Assert.Throws<ArgumentNullException> (() => tagCollection.Add ((CMTag []) null), "Add null");
-			Assert.AreEqual (CMTagCollectionError.ParamErr, tagCollection.Add (CMTag.MediaTypeAudio, CMTag.PackingTypeNone), "Add");
+			Assert.That (tagCollection.Add (CMTag.MediaTypeAudio, CMTag.PackingTypeNone), Is.EqualTo (CMTagCollectionError.ParamErr), "Add");
 		}
 
 		[Test]
@@ -567,11 +567,11 @@ namespace MonoTouchFixtures.CoreMedia {
 			var roundTrip = new Action<CMTagCollection, string> ((collection, message) => {
 				var dict = collection.ToDictionary ();
 				var deserializedCollection = CMTagCollection.Create (dict, out var status);
-				Assert.AreEqual (CMTagCollectionError.Success, status, $"{message}: Status");
+				Assert.That (status, Is.EqualTo (CMTagCollectionError.Success), $"{message}: Status");
 				// if the union of the original and deserialized collection has the same number of tags as the original collection, then the original and deserialized collections are identical.
 				var union = collection.Union (deserializedCollection, out status);
-				Assert.AreEqual (CMTagCollectionError.Success, status, $"{message}: Status 2");
-				Assert.AreEqual (collection.Count, union.Count, "Count");
+				Assert.That (status, Is.EqualTo (CMTagCollectionError.Success), $"{message}: Status 2");
+				Assert.That (union.Count, Is.EqualTo (collection.Count), "Count");
 			});
 
 			Assert.Multiple (() => {
@@ -590,11 +590,11 @@ namespace MonoTouchFixtures.CoreMedia {
 			var roundTrip = new Action<CMTagCollection, string> ((collection, message) => {
 				var data = collection.ToData ();
 				var deserializedCollection = CMTagCollection.Create (data, out var status);
-				Assert.AreEqual (CMTagCollectionError.Success, status, $"{message}: Status");
+				Assert.That (status, Is.EqualTo (CMTagCollectionError.Success), $"{message}: Status");
 				// if the union of the original and deserialized collection has the same number of tags as the original collection, then the original and deserialized collections are identical.
 				var union = collection.Union (deserializedCollection, out status);
-				Assert.AreEqual (CMTagCollectionError.Success, status, $"{message}: Status 2");
-				Assert.AreEqual (collection.Count, union.Count, "Count");
+				Assert.That (status, Is.EqualTo (CMTagCollectionError.Success), $"{message}: Status 2");
+				Assert.That (union.Count, Is.EqualTo (collection.Count), "Count");
 			});
 
 			Assert.Multiple (() => {

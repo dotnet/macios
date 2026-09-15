@@ -17,3 +17,5 @@
 !missing-selector! NSFetchedResultsController::sections not bound
 !missing-selector! NSFetchedResultsController::setDelegate: not bound
 !missing-type! NSFetchedResultsController not bound
+
+!missing-null-allowed! 'System.Void CoreData.NSCoreDataCoreSpotlightDelegate::DeleteSpotlightIndex(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0

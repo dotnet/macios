@@ -30,9 +30,8 @@ namespace AppKit {
 	public partial class NSSpellChecker {
 
 		// note: if needed override the protected Get|Set methods
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the language used for spell checking.</summary>
+		/// <value>The language identifier.</value>
 		public string Language {
 			get { return GetLanguage (); }
 			// ignore return value (bool)

@@ -39,7 +39,7 @@ namespace MonoTouchFixtures.CoreVideo {
 		{
 			TestRuntime.AssertXcodeVersion (16, 0);
 
-			Assert.AreNotEqual (0, CVMetalBufferCache.GetTypeId (), "GetTypeId");
+			Assert.That (CVMetalBufferCache.GetTypeId (), Is.Not.EqualTo (0), "GetTypeId");
 		}
 
 		[Test]
@@ -50,7 +50,7 @@ namespace MonoTouchFixtures.CoreVideo {
 
 			using var device = MTLDevice.SystemDefault;
 			using var cache = new CVMetalBufferCache (device, (NSDictionary) null);
-			Assert.IsNotNull (cache);
+			Assert.That (cache, Is.Not.Null);
 		}
 
 		[Test]
@@ -63,11 +63,11 @@ namespace MonoTouchFixtures.CoreVideo {
 
 			var rv = CVMetalBufferCache.TryCreate (device, (NSDictionary) null, out var metalBufferCache, out var status);
 			if (rv) {
-				Assert.AreEqual (CVReturn.Success, status, "Status A");
-				Assert.IsNotNull (metalBufferCache, "MetalBufferCache A");
+				Assert.That (status, Is.EqualTo (CVReturn.Success), "Status A");
+				Assert.That (metalBufferCache, Is.Not.Null, "MetalBufferCache A");
 			} else {
-				Assert.AreEqual (CVReturn.Unsupported, status, "Status B");
-				Assert.IsNull (metalBufferCache, "MetalBufferCache B");
+				Assert.That (status, Is.EqualTo (CVReturn.Unsupported), "Status B");
+				Assert.That (metalBufferCache, Is.Null, "MetalBufferCache B");
 			}
 			metalBufferCache?.Dispose ();
 		}
@@ -82,11 +82,11 @@ namespace MonoTouchFixtures.CoreVideo {
 
 			var rv = CVMetalBufferCache.TryCreateHandle (device, (NSDictionary) null, out var metalBufferCache, out var status);
 			if (rv) {
-				Assert.AreEqual (CVReturn.Success, status, "Status A");
-				Assert.AreNotEqual (IntPtr.Zero, metalBufferCache, "MetalBufferCache A");
+				Assert.That (status, Is.EqualTo (CVReturn.Success), "Status A");
+				Assert.That (metalBufferCache, Is.Not.EqualTo (IntPtr.Zero), "MetalBufferCache A");
 			} else {
-				Assert.AreEqual (CVReturn.Unsupported, status, "Status B");
-				Assert.AreEqual (IntPtr.Zero, metalBufferCache, "MetalBufferCache B");
+				Assert.That (status, Is.EqualTo (CVReturn.Unsupported), "Status B");
+				Assert.That (metalBufferCache, Is.EqualTo (IntPtr.Zero), "MetalBufferCache B");
 			}
 			if (metalBufferCache != IntPtr.Zero)
 				TestRuntime.CFRelease (metalBufferCache);
@@ -100,7 +100,7 @@ namespace MonoTouchFixtures.CoreVideo {
 
 			using var device = MTLDevice.SystemDefault;
 			using var cache = new CVMetalBufferCache (device, (CVMetalBufferCacheAttributes) null);
-			Assert.IsNotNull (cache);
+			Assert.That (cache, Is.Not.Null);
 		}
 
 #if !MONOMAC
@@ -119,7 +119,7 @@ namespace MonoTouchFixtures.CoreVideo {
 			};
 			using var image = new CVPixelBuffer (320, 320, pft, dict);
 			using var buffer = cache.CreateBufferFromImage (image);
-			Assert.IsNotNull (buffer, "Buffer");
+			Assert.That (buffer, Is.Not.Null, "Buffer");
 		}
 #endif // !MONOMAC
 

@@ -35,40 +35,40 @@ namespace MonoTouchFixtures.Phase {
 		public void RightTest ()
 		{
 			var right = PhaseObject.Right;
-			Assert.NotNull (right, "not null");
-			Assert.AreEqual (1, right.Length (), "length");
+			Assert.That (right, Is.Not.Null, "not null");
+			Assert.That (right.Length (), Is.EqualTo (1), "length");
 		}
 
 		[Test]
 		public void UpTest ()
 		{
 			var up = PhaseObject.Up;
-			Assert.NotNull (up, "not null");
-			Assert.AreEqual (1, up.Length (), "length");
+			Assert.That (up, Is.Not.Null, "not null");
+			Assert.That (up.Length (), Is.EqualTo (1), "length");
 		}
 
 		[Test]
 		public void ForwardTest ()
 		{
 			var fwd = PhaseObject.Forward;
-			Assert.NotNull (fwd, "not null");
-			Assert.AreEqual (1, fwd.Length (), "length");
+			Assert.That (fwd, Is.Not.Null, "not null");
+			Assert.That (fwd.Length (), Is.EqualTo (1), "length");
 		}
 
 		[Test]
 		public void TransformTest ()
 		{
 			var matrix = phaseObject.Transform;
-			Assert.NotNull (matrix, "not null");
-			Assert.AreEqual (1, matrix.M11, "11");
+			Assert.That (matrix, Is.Not.Null, "not null");
+			Assert.That (matrix.M11, Is.EqualTo (1), "11");
 		}
 
 		[Test]
 		public void WorldTransform ()
 		{
 			var matrix = phaseObject.WorldTransform;
-			Assert.NotNull (matrix, "not null");
-			Assert.AreEqual (1, matrix.M11, "11");
+			Assert.That (matrix, Is.Not.Null, "not null");
+			Assert.That (matrix.M11, Is.EqualTo (1), "11");
 		}
 
 	}

@@ -51,87 +51,60 @@ namespace Xharness {
 			}
 		}
 
-		// Retrieves a property from an MSBuild project file by executing MSBuild and getting MSBuild to print the property.
-		// We do this by creating a custom MSBuild file which:
-		// * Will import the project file we're inspecting
-		// * Has a target that will print a given property
-		// and then executing MSBuild on this custom MSBuild file.
+		// Retrieves a property from an MSBuild project file by executing
+		// 'dotnet build -getProperty:... -t:...' on the project directly.
 		async Task<string> GetPropertyByMSBuildEvaluationAsync (XmlDocument csproj, string projectPath, string evaluateProperty, string dependsOnTargets = "", Dictionary<string, string>? properties = null)
 		{
-			var xml =
-@"<Project DefaultTargets='WriteProperty' xmlns='http://schemas.microsoft.com/developer/msbuild/2003'>
-	<!-- Import the project we want to inspect -->
-	<Import Project='$(ProjectFile)' Condition=""'$(ProjectFile)' != ''"" />
-	<!-- Target to write out the property we want -->
-	<Target Name='WriteProperty' DependsOnTargets='%DEPENDSONTARGETS%'>
-		<PropertyGroup>
-			<_Properties>$(%PROPERTY%)</_Properties>
-		</PropertyGroup>
-		<Error Text='The ProjectFile variable must be set.' Condition=""'$(ProjectFile)' == ''"" />
-		<Error Text='The OutputFile variable must be set.' Condition=""'$(OutputFile)' == ''"" />
-		<WriteLinesToFile File='$(OutputFile)' Lines='$(_Properties)' Overwrite='true' />
-	</Target>
-</Project>
-";
+			if (!csproj.IsDotNetProject ())
+				throw new NotSupportedException ("Legacy projects not supported anymore");
 
 			var dir = Path.GetDirectoryName (projectPath)!;
-			var inspector = Path.Combine (dir, "PropertyInspector.csproj");
-			var output = Path.Combine (dir, "PropertyInspector.txt");
-			try {
-				File.WriteAllText (inspector, xml.Replace ("%PROPERTY%", evaluateProperty).Replace ("%DEPENDSONTARGETS%", dependsOnTargets));
-				using (var proc = new Process ()) {
-					var isDotNetProject = csproj.IsDotNetProject ();
 
-					if (!isDotNetProject)
-						throw new NotSupportedException ("Legacy projects not supported anymore");
+			using (var proc = new Process ()) {
+				proc.StartInfo.FileName = GetDotNetExecutable (projectPath);
+				proc.StartInfo.WorkingDirectory = dir;
+				var args = proc.StartInfo.ArgumentList;
 
-					proc.StartInfo.FileName = GetDotNetExecutable (projectPath);
-					var args = new List<string> ();
+				args.Add ("build");
+				args.Add (projectPath);
+				args.Add ($"-getProperty:{evaluateProperty}");
 
-					if (isDotNetProject)
-						args.Add ("build");
+				if (!string.IsNullOrEmpty (dependsOnTargets))
+					args.Add ($"-t:{dependsOnTargets}");
 
-					args.Add ("/p:ProjectFile=" + projectPath);
-					args.Add ("/p:OutputFile=" + output);
+				args.Add ("-nologo");
+				args.Add ("-verbosity:quiet");
 
-					if (properties is not null) {
-						foreach (var prop in properties)
-							args.Add ($"/p:{prop.Key}={prop.Value}");
-					}
-
-					args.Add (inspector);
-
-					var env = new Dictionary<string, string?> {
-						{ "MSBUILD_EXE_PATH", null },
-					};
-
-					proc.StartInfo.Arguments = StringUtils.FormatArguments (args);
-					proc.StartInfo.WorkingDirectory = dir;
-
-					// Don't evaluate in parallel on multiple threads to avoid overloading the mac.
-					var acquired = await evaluate_semaphore.WaitAsync (TimeSpan.FromMinutes (5));
-					try {
-						var log = getLog () ?? new ConsoleLog ();
-						var memoryLog = new MemoryLog ();
-						var aggregated = Log.CreateAggregatedLog (memoryLog, log);
-						if (!acquired)
-							aggregated.WriteLine ("Unable to acquire lock to evaluate MSBuild property in 5 minutes; will try to evaluate anyway.");
-						var rv = await processManager.RunAsync (proc, aggregated, environmentVariables: env, timeout: TimeSpan.FromMinutes (5));
-						if (!rv.Succeeded) {
-							var msg = $"Unable to evaluate the property {evaluateProperty} in {projectPath}, build failed with exit code {rv.ExitCode}. Timed out: {rv.TimedOut}";
-							Console.WriteLine (msg + " Output: \n" + memoryLog.ToString ());
-							throw new Exception (msg);
-						}
-					} finally {
-						if (acquired)
-							evaluate_semaphore.Release ();
-					}
-
-					return File.ReadAllText (output).Trim ();
+				if (properties is not null) {
+					foreach (var prop in properties)
+						args.Add ($"/p:{prop.Key}={prop.Value}");
 				}
-			} finally {
-				File.Delete (inspector);
-				File.Delete (output);
+
+				var env = new Dictionary<string, string?> {
+					{ "MSBUILD_EXE_PATH", null },
+					{ "MSBuildSDKsPath", null },
+				};
+
+
+				// Don't evaluate in parallel on multiple threads to avoid overloading the mac.
+				var acquired = await evaluate_semaphore.WaitAsync (TimeSpan.FromMinutes (5));
+				try {
+					var log = getLog () ?? new ConsoleLog ();
+					var stdout = new MemoryLog () { Timestamp = false };
+					if (!acquired)
+						log.WriteLine ("Unable to acquire lock to evaluate MSBuild property in 5 minutes; will try to evaluate anyway.");
+					var rv = await processManager.RunAsync (proc, log, stdoutLog: stdout, stderrLog: log, environmentVariables: env, timeout: TimeSpan.FromMinutes (5));
+					if (!rv.Succeeded) {
+						var msg = $"Unable to evaluate the property {evaluateProperty} in {projectPath}, build failed with exit code {rv.ExitCode}. Timed out: {rv.TimedOut}";
+						Console.WriteLine (msg + " Output: \n" + stdout.ToString ());
+						throw new Exception (msg);
+					}
+
+					return stdout.ToString ().Trim ();
+				} finally {
+					if (acquired)
+						evaluate_semaphore.Release ();
+				}
 			}
 		}
 

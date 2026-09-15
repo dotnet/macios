@@ -66,6 +66,7 @@ public class NamespaceCache {
 
 		ImplicitNamespaces = new HashSet<string> ();
 		ImplicitNamespaces.Add ("System");
+		ImplicitNamespaces.Add ("System.Runtime.CompilerServices");
 		ImplicitNamespaces.Add ("System.Runtime.InteropServices");
 		ImplicitNamespaces.Add ("System.Diagnostics");
 		ImplicitNamespaces.Add ("System.Diagnostics.CodeAnalysis");

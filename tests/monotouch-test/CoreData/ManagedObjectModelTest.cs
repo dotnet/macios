@@ -19,7 +19,7 @@ namespace MonoTouchFixtures.CoreData {
 		{
 			Assert.That (moc.EntitiesByName.Count, Is.EqualTo ((nuint) 0), "EntitiesByName");
 			Assert.That (moc.Configurations.Length, Is.EqualTo (0), "Configurations");
-			Assert.Null (moc.LocalizationDictionary, "LocalizationDictionary");
+			Assert.That (moc.LocalizationDictionary, Is.Null, "LocalizationDictionary");
 			Assert.That (moc.FetchRequestTemplatesByName.Count, Is.EqualTo ((nuint) 0), "FetchRequestTemplatesByName");
 			Assert.That (moc.VersionIdentifiers.Count, Is.EqualTo ((nuint) 0), "VersionIdentifiers");
 			Assert.That (moc.EntityVersionHashesByName.Count, Is.EqualTo ((nuint) 0), "EntityVersionHashesByName");
@@ -29,7 +29,7 @@ namespace MonoTouchFixtures.CoreData {
 		public void IsConfiguration_Null ()
 		{
 			using (var moc = new NSManagedObjectModel ()) {
-				Assert.IsFalse (moc.IsConfigurationCompatibleWithStoreMetadata (null, new NSDictionary ()), "IsConfiguration");
+				Assert.That (moc.IsConfigurationCompatibleWithStoreMetadata (null, new NSDictionary ()), Is.False, "IsConfiguration");
 				Default (moc);
 			}
 		}

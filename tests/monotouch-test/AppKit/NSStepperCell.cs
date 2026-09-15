@@ -20,7 +20,7 @@ namespace apitest {
 			var minValue = cell.MinValue;
 			cell.MinValue = 3.14159;
 
-			Assert.IsTrue (cell.MinValue != minValue, "NSStepperCell_ShouldSetMinValue - Failed to set the MinValue property");
+			Assert.That (cell.MinValue != minValue, Is.True, "NSStepperCell_ShouldSetMinValue - Failed to set the MinValue property");
 		}
 
 		[Test]
@@ -29,7 +29,7 @@ namespace apitest {
 			var maxValue = cell.MaxValue;
 			cell.MaxValue = 3.14159;
 
-			Assert.IsTrue (cell.MinValue != maxValue, "NSStepperCell_ShouldSetMaxValue - Failed to set the MaxValue property");
+			Assert.That (cell.MinValue != maxValue, Is.True, "NSStepperCell_ShouldSetMaxValue - Failed to set the MaxValue property");
 		}
 		[Test]
 		public void NSStepperCell_ShouldSetIncrement ()
@@ -37,7 +37,7 @@ namespace apitest {
 			var increment = cell.Increment;
 			cell.Increment = 3.14159;
 
-			Assert.IsTrue (cell.Increment != increment, "NSStepperCell_ShouldSetIncrement - Failed to set the Increment property");
+			Assert.That (cell.Increment != increment, Is.True, "NSStepperCell_ShouldSetIncrement - Failed to set the Increment property");
 		}
 		[Test]
 		public void NSStepperCell_ShouldSetValueWraps ()
@@ -45,7 +45,7 @@ namespace apitest {
 			var valueWraps = cell.ValueWraps;
 			cell.ValueWraps = !valueWraps;
 
-			Assert.IsTrue (cell.ValueWraps != valueWraps, "NSStepperCell_ShouldSetValueWraps - Failed to set the ValueWraps property");
+			Assert.That (cell.ValueWraps != valueWraps, Is.True, "NSStepperCell_ShouldSetValueWraps - Failed to set the ValueWraps property");
 		}
 		[Test]
 		public void NSStepperCell_ShouldSetAutoRepeat ()
@@ -53,7 +53,7 @@ namespace apitest {
 			var autoRepeat = cell.Autorepeat;
 			cell.Autorepeat = !autoRepeat;
 
-			Assert.IsTrue (cell.Autorepeat != autoRepeat, "NSStepperCell_ShouldSetAutoRepeat - Failed to set the Autorepeat property");
+			Assert.That (cell.Autorepeat != autoRepeat, Is.True, "NSStepperCell_ShouldSetAutoRepeat - Failed to set the Autorepeat property");
 		}
 	}
 }

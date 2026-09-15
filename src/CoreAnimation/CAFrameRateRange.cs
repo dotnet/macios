@@ -2,9 +2,9 @@
 #nullable enable
 
 namespace CoreAnimation {
-	[SupportedOSPlatform ("tvos15.0")]
+	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("ios15.0")]
+	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct CAFrameRateRange {
@@ -24,8 +24,8 @@ namespace CoreAnimation {
 			=> IsEqualTo (this, other) != 0;
 
 #if !COREBUILD
-		[Field ("CAFrameRateRangeDefault", "CoreAnimation")]
-		public static CAFrameRateRange Default => Marshal.PtrToStructure<CAFrameRateRange> (Dlfcn.GetIndirect (Libraries.CoreAnimation.Handle, "CAFrameRateRangeDefault"))!;
+		/// <summary>Gets the default frame-rate range.</summary>
+		public static CAFrameRateRange Default => CAFrameRateRangeFields.Default;
 #endif
 
 	}

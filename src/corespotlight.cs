@@ -110,6 +110,12 @@ namespace CoreSpotlight {
 		[NullAllowed]
 		ICSSearchableIndexDelegate IndexDelegate { get; set; }
 
+		/// <summary>Gets the file protection class used by the search index.</summary>
+		[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[Export ("protectionClass")]
+		[BindAs (typeof (NSFileProtectionType))]
+		NSString ProtectionClass { get; }
+
 		/// <summary>Gets a Boolean value that tells whether indexing is available.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -142,12 +148,12 @@ namespace CoreSpotlight {
 		NativeHandle Constructor (string name, [NullAllowed] NSString protectionClass);
 
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
-		[iOS (17, 0), Mac (14, 0), MacCatalyst (17, 0), NoTV]
+		[iOS (17, 0), MacCatalyst (17, 0), NoTV]
 		[Export ("initWithName:protectionClass:bundleIdentifier:options:")]
 		NativeHandle Constructor (string name, [NullAllowed] NSString protectionClass, string bundleIdentifier, nint options);
 
 		[Wrap ("this (name, protectionClass.GetConstant (), bundleIdentifier, options)")]
-		[iOS (17, 0), Mac (14, 0), MacCatalyst (17, 0), NoTV]
+		[iOS (17, 0), MacCatalyst (17, 0), NoTV]
 		NativeHandle Constructor (string name, NSFileProtectionType protectionClass, string bundleIdentifier, nint options);
 
 		/// <param name="items">The items to index.</param>
@@ -216,12 +222,12 @@ namespace CoreSpotlight {
 		// from interface CSExternalProvider (CSSearchableIndex)
 
 		[Async (ResultTypeName = "CSSearchableIndexBundleDataResult")]
-		[iOS (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("provideDataForBundle:identifier:type:completionHandler:")]
 		void ProvideData (string bundle, string identifier, string type, Action<NSData, NSError> completionHandler);
 
 		[Async (ResultTypeName = "CSSearchableIndexBundleDataResult")]
-		[iOS (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("fetchDataForBundleIdentifier:itemIdentifier:contentType:completionHandler:")]
 		void FetchData (string bundleIdentifier, string itemIdentifier, UTType contentType, Action<NSData, NSError> completionHandler);
 	}
@@ -336,6 +342,15 @@ namespace CoreSpotlight {
 		[Export ("searchableItemsForIdentifiers:searchableItemsHandler:")]
 		void GetSearchableItems (string [] identifiers, CSSearchableIndexDelegateGetSearchableItemsHandler searchableItemsHandler);
 
+		/// <param name="identifiers">The identifiers of the searchable items to retrieve.</param>
+		/// <param name="protectionClass">The file protection class for the requested items.</param>
+		/// <param name="searchableItemsHandler">The handler to invoke with the matching searchable items.</param>
+		/// <summary>Provides searchable items for the specified identifiers and file protection class.</summary>
+		[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[Export ("searchableItemsForIdentifiers:protectionClass:searchableItemsHandler:")]
+		// FIXME: Strongly type protectionClass as NSFileProtectionType once https://github.com/dotnet/macios/issues/26273 is fixed.
+		void GetSearchableItems (string [] identifiers, NSString protectionClass, CSSearchableIndexDelegateGetSearchableItemsHandler searchableItemsHandler);
+
 		[NoTV]
 		[iOS (18, 4), Mac (15, 4), MacCatalyst (18, 4)]
 		[Export ("searchableItemsDidUpdate:")]
@@ -343,6 +358,16 @@ namespace CoreSpotlight {
 	}
 
 	delegate void CSSearchableIndexDelegateGetSearchableItemsHandler (CSSearchableItem [] items);
+
+	/// <summary>Describes a searchable index.</summary>
+	[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	interface CSSearchableIndexDescription : NSSecureCoding, NSCopying {
+		/// <summary>Gets the file protection class associated with the searchable index.</summary>
+		[NullAllowed, Export ("protectionClass")]
+		[BindAs (typeof (NSFileProtectionType?))]
+		NSString ProtectionClass { get; }
+	}
 
 	/// <summary>A uniquely identifiable, searchable object in a <see cref="CoreSpotlight.CSSearchableIndex" />.</summary>
 	///     
@@ -424,7 +449,7 @@ namespace CoreSpotlight {
 		[Export ("attributeSet", ArgumentSemantic.Strong)]
 		CSSearchableItemAttributeSet AttributeSet { get; set; }
 
-		[NoTV, iOS (16, 0), MacCatalyst (16, 0), Mac (13, 0)]
+		[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("compareByRank:")]
 		NSComparisonResult CompareByRank (CSSearchableItem other);
 
@@ -432,6 +457,10 @@ namespace CoreSpotlight {
 		[Export ("isUpdate", ArgumentSemantic.Assign)]
 		bool IsUpdate { get; set; }
 
+#if !XAMCORE_5_0 && __TVOS__
+		[Obsolete ("This property is not available on tvOS.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+#endif
 		[NoTV, iOS (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
 		[Export ("updateListenerOptions", ArgumentSemantic.Assign)]
 		CSSearchableItemUpdateListenerOptions UpdateListenerOptions { get; set; }
@@ -518,8 +547,16 @@ namespace CoreSpotlight {
 
 	/// <summary>Represents keys that identify commonly used mailboxes.</summary>
 	/// <remarks>To be added.</remarks>
+#if XAMCORE_5_0
+	[NoTV]
+#endif
 	[MacCatalyst (13, 1)]
+#if !XAMCORE_5_0 && __TVOS__
+	[Obsolete ("This type is not available on tvOS.")]
+	[EditorBrowsable (EditorBrowsableState.Never)]
+#else
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
+#endif
 	[Static]
 	interface CSMailboxKey {
 
@@ -2285,7 +2322,16 @@ namespace CoreSpotlight {
 		///         <remarks>To be added.</remarks>
 		[NullAllowed]
 		[Export ("GPSDifferental", ArgumentSemantic.Strong)]
+#if XAMCORE_5_0
+		NSNumber GpsDifferential { get; set; }
+#else
+		[Obsolete ("Use 'GpsDifferential' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		NSNumber GpsDifferental { get; set; }
+
+		[Wrap ("GpsDifferental")]
+		NSNumber GpsDifferential { get; set; }
+#endif
 
 		/// <summary>Gets or sets the fully formatted geographic address of the item.</summary>
 		///         <value>
@@ -2521,7 +2567,7 @@ namespace CoreSpotlight {
 		[Export ("initWithQueryString:attributes:")]
 		NativeHandle Constructor (string queryString, [NullAllowed] string [] attributes);
 
-		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("initWithQueryString:queryContext:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (string queryString, [NullAllowed] CSSearchQueryContext queryContext);
@@ -2581,7 +2627,7 @@ namespace CoreSpotlight {
 		bool Update (CSSearchableItemAttributeSet attributes, NSUrl contentUrl, [NullAllowed] out NSError error);
 	}
 
-	[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (CSSearchQuery))]
 	[DisableDefaultCtor]
 	interface CSUserQuery {
@@ -2625,7 +2671,7 @@ namespace CoreSpotlight {
 		void UserEngaged (CSSuggestion suggestion, CSSuggestion [] visibleSuggestions, CSUserInteraction userInteractionType);
 	}
 
-	[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (CSSearchQueryContext))]
 	[DisableDefaultCtor]
 	interface CSUserQueryContext {
@@ -2656,7 +2702,7 @@ namespace CoreSpotlight {
 	}
 
 
-	[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CSSuggestion : NSSecureCoding, NSCopying {
@@ -2676,16 +2722,16 @@ namespace CoreSpotlight {
 		[Export ("compareByRank:")]
 		NSComparisonResult CompareByRank (CSSuggestion other);
 
-		[iOS (17, 0), MacCatalyst (17, 0), Mac (14, 0), NoTV]
+		[iOS (17, 0), MacCatalyst (17, 0), NoTV]
 		[Export ("score")]
 		NSNumber Score { get; }
 
-		[iOS (17, 0), MacCatalyst (17, 0), Mac (14, 0), NoTV]
+		[iOS (17, 0), MacCatalyst (17, 0), NoTV]
 		[Export ("suggestionDataSources")]
 		NSObject [] SuggestionDataSources { get; }
 	}
 
-	[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	interface CSSearchQueryContext : NSSecureCoding, NSCopying {
 		[Export ("fetchAttributes", ArgumentSemantic.Strong)]
@@ -2697,15 +2743,42 @@ namespace CoreSpotlight {
 		[NullAllowed, Export ("keyboardLanguage", ArgumentSemantic.Strong)]
 		string KeyboardLanguage { get; set; }
 
+#if XAMCORE_5_0
+		/// <summary>Gets or sets the sources that the query can search.</summary>
+		[NoTV, NoiOS, NoMacCatalyst]
+#elif !__MACOS__
+		/// <summary>Gets or sets the sources that the query can search.</summary>
+		[Obsolete ("This property is not available on this platform.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+#else
+		/// <summary>Gets or sets the sources that the query can search.</summary>
+#endif
 		[Export ("sourceOptions", ArgumentSemantic.Assign)]
 		CSSearchQuerySourceOptions SourceOptions { get; set; }
 	}
 
-	[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+#if XAMCORE_5_0
+	/// <summary>Specifies the sources that a Core Spotlight query can search.</summary>
+	[NoTV, NoiOS, NoMacCatalyst]
+#else
+#if !__MACOS__
+	/// <summary>Specifies the sources that a Core Spotlight query can search.</summary>
+	[Obsolete ("This enum is not available on this platform.")]
+	[EditorBrowsable (EditorBrowsableState.Never)]
+#else
+	/// <summary>Specifies the sources that a Core Spotlight query can search.</summary>
+#endif
+	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
+#endif
+	[Flags]
 	[Native]
+#if XAMCORE_5_0
+	public enum CSSearchQuerySourceOptions : ulong {
+#else
 	public enum CSSearchQuerySourceOptions : long {
+#endif
 		Default = 0,
-		AllowMail = 1L << 0,
+		AllowMail = 1 << 0,
 	}
 
 	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
@@ -2716,8 +2789,18 @@ namespace CoreSpotlight {
 		Default,
 	}
 
+#if XAMCORE_5_0
+	[NoTV]
+#else
+#if __TVOS__
+	[Obsolete ("This enum is not available on tvOS.")]
+	[EditorBrowsable (EditorBrowsableState.Never)]
+#endif
+	[TV (18, 4)]
+#endif
+	[Flags]
 	[Native]
-	[TV (18, 4), iOS (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
+	[iOS (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
 	public enum CSSearchableItemUpdateListenerOptions : ulong {
 		Default = 0,
 		Summarization = 1 << 1,

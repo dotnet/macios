@@ -18,7 +18,6 @@ using CoreVideo;
 
 namespace VideoToolbox {
 	/// <summary>Turns uncompressed frames into compressed video frames</summary>
-	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -140,6 +139,25 @@ namespace VideoToolbox {
 
 			return null;
 		}
+
+		// Helpers used by AVFoundation's AVPlannedVideoSegmentWritingRequest.CreateResumableCompressionSession,
+		// which creates the native VTCompressionSession through an AVFoundation selector but reuses this class's
+		// managed callback trampoline and GCHandle lifetime management.
+		internal unsafe static (IntPtr OutputCallback, IntPtr OutputCallbackRefCon) PrepareOutputCallback (VTCompressionOutputCallback? compressionOutputCallback, out GCHandle callbackHandle)
+		{
+			if (compressionOutputCallback is null) {
+				callbackHandle = default;
+				return (IntPtr.Zero, IntPtr.Zero);
+			}
+			callbackHandle = GCHandle.Alloc (compressionOutputCallback);
+			delegate* unmanaged</* void* */ IntPtr, /* void* */ IntPtr, /* OSStatus */ VTStatus, VTEncodeInfoFlags, /* CMSampleBufferRef */ IntPtr, void> trampoline = &CompressionCallback;
+			return ((IntPtr) trampoline, GCHandle.ToIntPtr (callbackHandle));
+		}
+
+		internal static VTCompressionSession CreateFromOwnedHandle (IntPtr handle, GCHandle callbackHandle)
+			=> new VTCompressionSession (handle, true) {
+				callbackHandle = callbackHandle,
+			};
 
 		[DllImport (Constants.VideoToolboxLibrary)]
 		extern static void VTCompressionSessionInvalidate (IntPtr handle);
@@ -342,32 +360,35 @@ namespace VideoToolbox {
 			if (options is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (options));
 
-			return VTSessionSetProperties (GetCheckedHandle (), options.Dictionary.Handle);
+			var dictionary = options.Dictionary;
+			var rv = VTSessionSetProperties (GetCheckedHandle (), dictionary.Handle);
+			GC.KeepAlive (dictionary);
+			return rv;
 		}
 
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.VideoToolboxLibrary)]
 		extern static /* Boolean */ byte VTIsStereoMVHEVCEncodeSupported ();
 
 		/// <summary>Returns whether the current system supports stereo MV-HEVC encode.</summary>
 		/// <returns>True if the current system supports stereo MV-HEVC encode, false otherwise.</returns>
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public static bool IsStereoMvHevcEncodeSupported ()
 		{
 			return VTIsStereoMVHEVCEncodeSupported () != 0;
 		}
 
 #if !__TVOS__
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios17.0")]
 		[UnsupportedOSPlatform ("tvos")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.VideoToolboxLibrary)]
 		unsafe static extern VTStatus VTCompressionSessionEncodeMultiImageFrame (
 			IntPtr /* CM_NONNULL VTCompressionSessionRef */ session,
@@ -386,10 +407,10 @@ namespace VideoToolbox {
 		/// <param name="sourceFrame">This value will be passed to the <see cref="VTCompressionOutputCallback" /> callback that was specified when the compression session was created.</param>
 		/// <param name="infoFlags">Upon return, any information flags from the encoder for this frame.</param>
 		/// <returns><see cref="VTStatus.Ok" /> if successful, or an error code otherwise.</returns>
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios17.0")]
 		[UnsupportedOSPlatform ("tvos")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public unsafe VTStatus EncodeMultiImageFrame (CMTaggedBufferGroup taggedBufferGroup, CMTime presentationTimestamp, CMTime duration, NSDictionary? frameProperties, IntPtr sourceFrame, out VTEncodeInfoFlags infoFlags)
 		{
 			infoFlags = default;
@@ -411,10 +432,10 @@ namespace VideoToolbox {
 			}
 		}
 
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios17.0")]
 		[UnsupportedOSPlatform ("tvos")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.VideoToolboxLibrary)]
 		unsafe static extern VTStatus VTCompressionSessionEncodeMultiImageFrameWithOutputHandler (
 			IntPtr /* CM_NONNULL VTCompressionSessionRef */ session,
@@ -433,10 +454,10 @@ namespace VideoToolbox {
 		/// <param name="infoFlags">Upon return, any information flags from the encoder for this frame.</param>
 		/// <param name="outputHandler">A callback that will be invoked to process a compressed frame. See the delegate type for more information on the received parameters.</param>
 		/// <returns><see cref="VTStatus.Ok" /> if successful, or an error code otherwise.</returns>
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios17.0")]
 		[UnsupportedOSPlatform ("tvos")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public unsafe VTStatus EncodeMultiImageFrame (CMTaggedBufferGroup taggedBufferGroup, CMTime presentationTimestamp, CMTime duration, NSDictionary? frameProperties, out VTEncodeInfoFlags infoFlags, VTCompressionOutputHandler outputHandler)
 		{

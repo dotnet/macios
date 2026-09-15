@@ -30,7 +30,7 @@ namespace DontLink {
 		public void Bug587_FullAotRuntime ()
 		{
 			KeyValuePair<string, string> valuePair = queued.FirstOrDefault (delegate { return true; });
-			Assert.NotNull (valuePair);
+			Assert.That (valuePair, Is.Not.Null);
 			// should not crash with System.ExecutionEngineException
 		}
 
@@ -39,7 +39,7 @@ namespace DontLink {
 		{
 			// since we do not link the attributes will be available - used or not by the application
 			var fullname = typeof (NSObject).Assembly.FullName;
-			Assert.NotNull (Type.GetType ("ObjCRuntime.ThreadSafeAttribute, " + fullname), "ThreadSafeAttribute");
+			Assert.That (Type.GetType ("ObjCRuntime.ThreadSafeAttribute, " + fullname), Is.Not.Null, "ThreadSafeAttribute");
 		}
 
 #if !__MACOS__
@@ -65,7 +65,7 @@ namespace DontLink {
 			// https://bugzilla.xamarin.com/show_bug.cgi?id=29928
 			var de = System.Text.Encoding.Default;
 			Assert.That (de.WebName, Is.EqualTo ("utf-8"), "Name");
-			Assert.True (de.IsReadOnly, "IsReadOnly");
+			Assert.That (de.IsReadOnly, Is.True, "IsReadOnly");
 		}
 
 #if __TVOS__
@@ -77,7 +77,7 @@ namespace DontLink {
 			} catch (TargetInvocationException tie) {
 				var nse = tie.InnerException as TargetInvocationException;
 				if (nse is not null)
-					Assert.Fail ("An exception was thrown, but {0} instead of NotSupportedException. " + message, nse.GetType ().FullName);
+					Assert.Fail ($"An exception was thrown, but {nse.GetType ().FullName} instead of NotSupportedException. " + message);
 			}
 		}
 		[Test]

@@ -22,7 +22,7 @@ namespace MonoTouchFixtures.CoreMedia {
 			using (var mp = new CMMemoryPool ()) {
 				var allocator = mp.GetAllocator ();
 				var ptr = allocator.Allocate (55);
-				Assert.AreNotEqual (IntPtr.Zero, ptr);
+				Assert.That (ptr, Is.Not.EqualTo (IntPtr.Zero));
 				allocator.Deallocate (ptr);
 			}
 		}
@@ -35,7 +35,7 @@ namespace MonoTouchFixtures.CoreMedia {
 			using (var mp = new CMMemoryPool (TimeSpan.FromSeconds (40))) {
 				var allocator = mp.GetAllocator ();
 				var ptr = allocator.Allocate (2);
-				Assert.AreNotEqual (IntPtr.Zero, ptr);
+				Assert.That (ptr, Is.Not.EqualTo (IntPtr.Zero));
 				allocator.Deallocate (ptr);
 			}
 		}

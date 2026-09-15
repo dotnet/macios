@@ -53,7 +53,7 @@ namespace Xamarin.MacDev.Tasks {
 				switch (Platform) {
 				case ApplePlatform.iOS:
 				case ApplePlatform.TVOS:
-					var plist = PDictionary.FromFile (AppManifestPath);
+					var plist = PDictionary.OpenFile (AppManifestPath);
 					return plist.GetUIDeviceFamily ();
 				default:
 					throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, Platform));

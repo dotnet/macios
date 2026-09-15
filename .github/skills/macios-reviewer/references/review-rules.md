@@ -47,7 +47,7 @@ Build tasks ship to customers. Getting them wrong causes broken builds.
 
 | Check | What to look for |
 |-------|-----------------|
-| **`[Required]` properties** | `[Required]` properties must be non-nullable with a default: `public string Foo { get; set; } = "";` or `public ITaskItem[] Bar { get; set; } = [];`. Non-`[Required]` and `[Output]` properties must be nullable (`string?`, `ITaskItem[]?`). |
+| **`[Required]` properties** | `[Required]` properties must be non-nullable with a default if they're strings or arrays: `public string Foo { get; set; } = "";` or `public ITaskItem[] Bar { get; set; } = [];`. Non-`[Required]` and `[Output]` properties must be nullable (`string?`, `ITaskItem[]?`). |
 | **Return `!Log.HasLoggedErrors`** | Task `Execute()` methods should return `!Log.HasLoggedErrors`, not hardcoded `true`/`false`. |
 | **SessionId for remote execution** | Tasks that must execute on a Mac (when building from Windows) need the `SessionId` property and `IsMacEnabled` condition. Without these, the task only runs on Windows. |
 | **`Inputs`/`Outputs` for incremental builds** | Targets that write files must have `Inputs` and `Outputs` attributes. Missing them breaks incremental builds. |

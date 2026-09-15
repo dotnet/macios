@@ -29,13 +29,13 @@ namespace MonoTouchFixtures.AudioToolbox {
 				var completed = new TaskCompletionSource<bool> ();
 				const int timeout = 10;
 
-				Assert.AreEqual (AudioServicesError.None, ss.AddSystemSoundCompletion (delegate
+				Assert.That (ss.AddSystemSoundCompletion (delegate
 				{
 					completed.SetResult (true);
-				}));
+				}), Is.EqualTo (AudioServicesError.None));
 
 				ss.PlaySystemSound ();
-				Assert.IsTrue (TestRuntime.RunAsync (TimeSpan.FromSeconds (timeout), completed.Task), "PlaySystemSound");
+				Assert.That (TestRuntime.RunAsync (TimeSpan.FromSeconds (timeout), completed.Task), Is.True, "PlaySystemSound");
 			}
 		}
 
@@ -74,7 +74,7 @@ namespace MonoTouchFixtures.AudioToolbox {
 				const int timeout = 10;
 
 				ss.PlaySystemSound (() => { completed.SetResult (true); });
-				Assert.IsTrue (TestRuntime.RunAsync (TimeSpan.FromSeconds (timeout), completed.Task), "TestCallbackPlaySystem");
+				Assert.That (TestRuntime.RunAsync (TimeSpan.FromSeconds (timeout), completed.Task), Is.True, "TestCallbackPlaySystem");
 			}
 		}
 
@@ -92,7 +92,7 @@ namespace MonoTouchFixtures.AudioToolbox {
 				const int timeout = 10;
 
 				ss.PlayAlertSound (() => { completed.SetResult (true); });
-				Assert.IsTrue (TestRuntime.RunAsync (TimeSpan.FromSeconds (timeout), completed.Task), "TestCallbackPlayAlert");
+				Assert.That (TestRuntime.RunAsync (TimeSpan.FromSeconds (timeout), completed.Task), Is.True, "TestCallbackPlayAlert");
 			}
 		}
 

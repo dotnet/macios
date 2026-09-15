@@ -19,7 +19,7 @@ the build process will attempt to create an XCFramework from the specified Xcode
 output will be added as a `@(NativeReference)` to the .NET project so that it can be bound and have its
 API surfaced via an [API definition][0] file.
 
-Please see the [build-items](build-apps/build-items.md) docs for more information about
+Please see the [build-items](building-apps/build-items.md) docs for more information about
 the `@(XcodeProject)` build action.
 
 Additional documentation and references can be found below:

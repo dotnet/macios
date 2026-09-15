@@ -42,20 +42,10 @@ namespace CoreGraphics {
 
 #if !COREBUILD
 		/// <summary>Gets an invalid, or null, rectangle.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[Field ("CGRectNull", "CoreGraphics")] // unused but helps xtro
-		public static CGRect Null {
-			get { return Dlfcn.GetCGRect (Libraries.CoreGraphics.Handle, "CGRectNull"); }
-		}
+		public static CGRect Null => CGRectFields.Null;
 
 		/// <summary>Gets an infinitely large rectangle.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[Field ("CGRectInfinite", "CoreGraphics")] // unused but helps xtro
-		public static CGRect Infinite {
-			get { return Dlfcn.GetCGRect (Libraries.CoreGraphics.Handle, "CGRectInfinite"); }
-		}
+		public static CGRect Infinite => CGRectFields.Infinite;
 
 		public static bool operator == (CGRect left, CGRect right)
 		{

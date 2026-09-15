@@ -1,5 +1,7 @@
 {
   "author": "Microsoft",
   "name": "Biblioteka powiązań dla systemu tvOS",
-  "description": "Projekt do tworzenia biblioteki powiązań platformy .NET dla systemu tvOS"
+  "description": "Projekt do tworzenia biblioteki powiązań platformy .NET dla systemu tvOS",
+  "symbols/Framework/description": "The target framework for the project.",
+  "symbols/Framework/choices/net10.0-tvos/description": "Target net10.0-tvos"
 }

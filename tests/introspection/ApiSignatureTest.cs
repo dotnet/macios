@@ -57,7 +57,7 @@ namespace Introspection {
 
 			if (encoded [end] != '@' || encoded [end + 1] != '0' || encoded [end + 2] != ':') {
 				if (!ContinueOnFailure)
-					Assert.Fail ("Unexpected format, missing '@0:', inside '{0}'", encoded);
+					Assert.Fail ($"Unexpected format, missing '@0:', inside '{encoded}'");
 				return null;
 			}
 

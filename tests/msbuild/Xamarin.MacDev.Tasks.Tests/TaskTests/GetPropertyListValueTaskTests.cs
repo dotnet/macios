@@ -23,7 +23,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			ExecuteTask (task);
 
-			Assert.AreEqual (expected, task.Value, "Task produced the incorrect plist output.");
+			Assert.That (task.Value, Is.EqualTo (expected), "Task produced the incorrect plist output.");
 		}
 
 		[Test]

@@ -5,6 +5,7 @@ using OS_nw_group_descriptor = System.IntPtr;
 using OS_nw_parameters = System.IntPtr;
 using OS_nw_content_context = System.IntPtr;
 using OS_nw_path = System.IntPtr;
+using System.ComponentModel;
 using OS_nw_endpoint = System.IntPtr;
 using OS_nw_protocol_metadata = System.IntPtr;
 using OS_nw_protocol_definition = System.IntPtr;
@@ -17,9 +18,9 @@ namespace Network {
 
 	public delegate void NWConnectionGroupStateChangedDelegate (NWConnectionGroupState state, NWError? error);
 
-	[SupportedOSPlatform ("tvos14.0")]
+	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("ios14.0")]
+	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	public class NWConnectionGroup : NativeObject {
 		[Preserve (Conditional = true)]
@@ -116,7 +117,7 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern OS_nw_endpoint nw_connection_group_copy_remote_endpoint_for_message (OS_nw_connection_group group, OS_nw_content_context context);
 
-		public NWEndpoint? GetRemmoteEndpoint (NWContentContext context)
+		public NWEndpoint? GetRemoteEndpoint (NWContentContext context)
 		{
 			if (context is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (context));
@@ -124,6 +125,12 @@ namespace Network {
 			GC.KeepAlive (context);
 			return ptr == IntPtr.Zero ? null : new NWEndpoint (ptr, owns: true);
 		}
+
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'GetRemoteEndpoint' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		public NWEndpoint? GetRemmoteEndpoint (NWContentContext context) => GetRemoteEndpoint (context);
+#endif
 
 		// can return null
 		[DllImport (Constants.NetworkLibrary)]
@@ -253,16 +260,16 @@ namespace Network {
 			}
 		}
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.NetworkLibrary)]
 		static extern OS_nw_protocol_metadata nw_connection_group_copy_protocol_metadata (OS_nw_connection_group group, OS_nw_protocol_definition definition);
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public NWProtocolMetadata? GetProtocolMetadata (NWContentContext context)
 		{
@@ -273,16 +280,16 @@ namespace Network {
 			return ptr == IntPtr.Zero ? null : new NWProtocolMetadata (ptr, true);
 		}
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.NetworkLibrary)]
 		static extern OS_nw_protocol_metadata nw_connection_group_copy_protocol_metadata_for_message (OS_nw_connection_group group, OS_nw_content_context context, OS_nw_protocol_definition definition);
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public NWProtocolMetadata? GetProtocolMetadata (NWContentContext context, NWProtocolDefinition definition)
 		{
@@ -296,16 +303,16 @@ namespace Network {
 			return ptr == IntPtr.Zero ? null : new NWProtocolMetadata (ptr, true);
 		}
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.NetworkLibrary)]
 		static extern OS_nw_connection nw_connection_group_extract_connection (OS_nw_connection_group group, OS_nw_endpoint endpoint, OS_nw_protocol_options protocolOptions);
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public NWConnection? ExtractConnection (NWEndpoint endpoint, NWProtocolOptions protocolOptions)
 		{
@@ -315,16 +322,16 @@ namespace Network {
 			return ptr == IntPtr.Zero ? null : new NWConnection (ptr, true);
 		}
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.NetworkLibrary)]
 		static extern byte nw_connection_group_reinsert_extracted_connection (OS_nw_connection_group group, OS_nw_connection connection);
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public bool TryReinsertExtractedConnection (NWConnection connection)
 		{
@@ -335,9 +342,9 @@ namespace Network {
 			return result;
 		}
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_connection_group_set_new_connection_handler (OS_nw_connection_group group, BlockLiteral* connectionHandler);
@@ -353,9 +360,9 @@ namespace Network {
 			}
 		}
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void SetNewConnectionHandler (Action<NWConnection> handler)

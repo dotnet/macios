@@ -18,6 +18,7 @@
       <MergedAssemblies Include="@(ReferenceDependencyPaths)" Condition="'%(FileName)' == 'AssemblyStripper'" />
       <MergedAssemblies Include="@(ReferencePath)" Condition="'%(FileName)' == 'MonoTargetsTasks'" />
       <MergedAssemblies Include="@(ReferencePath)" Condition="'%(FileName)' == 'Xamarin.Apple.Tools.MaciOS'" />
+      <MergedAssemblies Include="@(ReferencePath)" Condition="'%(FileName)' == 'assembly-preparer'" />
       <MergedAssemblies Include="@(ReferencePath)" Condition="'%(FileName)' == 'DotNetZip'" />
       <MergedAssemblies Include="@(ReferencePath)" Condition="'%(FileName)' == 'ILLink.Tasks'" />
       <MergedAssemblies Include="@(ReferencePath)" Condition="'%(FileName)' == 'ILStrip'" />

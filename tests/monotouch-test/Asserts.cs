@@ -31,90 +31,90 @@ using pfloat = System.Single;
 public static class Asserts {
 	public static void AreEqual (bool expected, bool actual, string message)
 	{
-		Assert.AreEqual (expected, actual, $"{message} (M) expected: {expected} actual: {actual}");
+		Assert.That (actual, Is.EqualTo (expected), $"{message} (M) expected: {expected} actual: {actual}");
 	}
 
 	public static void AreEqual (float expected, float actual, string message)
 	{
-		Assert.AreEqual (expected, actual, $"{message} (M) expected: {expected} actual: {actual}");
+		Assert.That (actual, Is.EqualTo (expected), $"{message} (M) expected: {expected} actual: {actual}");
 	}
 
 	public static void AreEqual (float expected, float actual, float delta, string message)
 	{
-		Assert.AreEqual (expected, actual, delta, message);
+		Assert.That (actual, Is.EqualTo (expected).Within (delta), message);
 	}
 
 	public static void AreEqual (Vector2 expected, Vector2 actual, string message)
 	{
-		Assert.AreEqual (expected.X, actual.X, $"{message} (X) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.Y, actual.Y, $"{message} (Y) expected: {expected} actual: {actual}");
+		Assert.That (actual.X, Is.EqualTo (expected.X), $"{message} (X) expected: {expected} actual: {actual}");
+		Assert.That (actual.Y, Is.EqualTo (expected.Y), $"{message} (Y) expected: {expected} actual: {actual}");
 	}
 
 	public static void AreEqual (Vector3 expected, Vector3 actual, string message)
 	{
 
-		Assert.AreEqual (expected.X, actual.X, 0.001, $"{message} (X) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.Y, actual.Y, 0.001, $"{message} (Y) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.Z, actual.Z, 0.001, $"{message} (Z) expected: {expected} actual: {actual}");
+		Assert.That (actual.X, Is.EqualTo (expected.X).Within (0.001), $"{message} (X) expected: {expected} actual: {actual}");
+		Assert.That (actual.Y, Is.EqualTo (expected.Y).Within (0.001), $"{message} (Y) expected: {expected} actual: {actual}");
+		Assert.That (actual.Z, Is.EqualTo (expected.Z).Within (0.001), $"{message} (Z) expected: {expected} actual: {actual}");
 	}
 
 	public static void AreEqual (Vector3 expected, Vector3 actual, float delta, string message)
 	{
-		Assert.AreEqual (expected.X, actual.X, delta, $"{message} (X) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.Y, actual.Y, delta, $"{message} (Y) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.Z, actual.Z, delta, $"{message} (Z) expected: {expected} actual: {actual}");
+		Assert.That (actual.X, Is.EqualTo (expected.X).Within (delta), $"{message} (X) expected: {expected} actual: {actual}");
+		Assert.That (actual.Y, Is.EqualTo (expected.Y).Within (delta), $"{message} (Y) expected: {expected} actual: {actual}");
+		Assert.That (actual.Z, Is.EqualTo (expected.Z).Within (delta), $"{message} (Z) expected: {expected} actual: {actual}");
 	}
 
 	public static void AreEqual (Vector3 expected, VectorFloat3 actual, string message)
 	{
-		Assert.AreEqual (expected.X, actual.X, 0.001, $"{message} (X) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.Y, actual.Y, 0.001, $"{message} (Y) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.Z, actual.Z, 0.001, $"{message} (Z) expected: {expected} actual: {actual}");
+		Assert.That (actual.X, Is.EqualTo (expected.X).Within (0.001), $"{message} (X) expected: {expected} actual: {actual}");
+		Assert.That (actual.Y, Is.EqualTo (expected.Y).Within (0.001), $"{message} (Y) expected: {expected} actual: {actual}");
+		Assert.That (actual.Z, Is.EqualTo (expected.Z).Within (0.001), $"{message} (Z) expected: {expected} actual: {actual}");
 	}
 
 	public static void AreEqual (VectorFloat3 expected, Vector3 actual, string message)
 	{
-		Assert.AreEqual (expected.X, actual.X, 0.001, $"{message} (X) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.Y, actual.Y, 0.001, $"{message} (Y) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.Z, actual.Z, 0.001, $"{message} (Z) expected: {expected} actual: {actual}");
+		Assert.That (actual.X, Is.EqualTo (expected.X).Within (0.001), $"{message} (X) expected: {expected} actual: {actual}");
+		Assert.That (actual.Y, Is.EqualTo (expected.Y).Within (0.001), $"{message} (Y) expected: {expected} actual: {actual}");
+		Assert.That (actual.Z, Is.EqualTo (expected.Z).Within (0.001), $"{message} (Z) expected: {expected} actual: {actual}");
 	}
 
 	public static void AreEqual (VectorFloat3 expected, VectorFloat3 actual, string message)
 	{
-		Assert.AreEqual (expected.X, actual.X, 0.001, $"{message} (X) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.Y, actual.Y, 0.001, $"{message} (Y) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.Z, actual.Z, 0.001, $"{message} (Z) expected: {expected} actual: {actual}");
+		Assert.That (actual.X, Is.EqualTo (expected.X).Within (0.001), $"{message} (X) expected: {expected} actual: {actual}");
+		Assert.That (actual.Y, Is.EqualTo (expected.Y).Within (0.001), $"{message} (Y) expected: {expected} actual: {actual}");
+		Assert.That (actual.Z, Is.EqualTo (expected.Z).Within (0.001), $"{message} (Z) expected: {expected} actual: {actual}");
 	}
 
 	public static void AreEqual (VectorFloat3 expected, VectorFloat3 actual, float delta, string message)
 	{
-		Assert.AreEqual (expected.X, actual.X, delta, $"{message} (X) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.Y, actual.Y, delta, $"{message} (Y) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.Z, actual.Z, delta, $"{message} (Z) expected: {expected} actual: {actual}");
+		Assert.That (actual.X, Is.EqualTo (expected.X).Within (delta), $"{message} (X) expected: {expected} actual: {actual}");
+		Assert.That (actual.Y, Is.EqualTo (expected.Y).Within (delta), $"{message} (Y) expected: {expected} actual: {actual}");
+		Assert.That (actual.Z, Is.EqualTo (expected.Z).Within (delta), $"{message} (Z) expected: {expected} actual: {actual}");
 	}
 
 	public static void AreEqual (Vector4 expected, Vector4 actual, string message)
 	{
-		Assert.AreEqual (expected.X, actual.X, $"{message} (X) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.Y, actual.Y, $"{message} (Y) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.Z, actual.Z, $"{message} (Z) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.W, actual.W, $"{message} (W) expected: {expected} actual: {actual}");
+		Assert.That (actual.X, Is.EqualTo (expected.X), $"{message} (X) expected: {expected} actual: {actual}");
+		Assert.That (actual.Y, Is.EqualTo (expected.Y), $"{message} (Y) expected: {expected} actual: {actual}");
+		Assert.That (actual.Z, Is.EqualTo (expected.Z), $"{message} (Z) expected: {expected} actual: {actual}");
+		Assert.That (actual.W, Is.EqualTo (expected.W), $"{message} (W) expected: {expected} actual: {actual}");
 	}
 
 	public static void AreEqual (float expectedX, float expectedY, float expectedZ, float expectedW, Vector4 actual, string message)
 	{
-		Assert.AreEqual (expectedX, actual.X, $"{message} (X) expected: {new Vector4 (expectedX, expectedY, expectedZ, expectedW)} actual: {actual}");
-		Assert.AreEqual (expectedY, actual.Y, $"{message} (Y) expected: {new Vector4 (expectedX, expectedY, expectedZ, expectedW)} actual: {actual}");
-		Assert.AreEqual (expectedZ, actual.Z, $"{message} (Z) expected: {new Vector4 (expectedX, expectedY, expectedZ, expectedW)} actual: {actual}");
-		Assert.AreEqual (expectedW, actual.W, $"{message} (W) expected: {new Vector4 (expectedX, expectedY, expectedZ, expectedW)} actual: {actual}");
+		Assert.That (actual.X, Is.EqualTo (expectedX), $"{message} (X) expected: {new Vector4 (expectedX, expectedY, expectedZ, expectedW)} actual: {actual}");
+		Assert.That (actual.Y, Is.EqualTo (expectedY), $"{message} (Y) expected: {new Vector4 (expectedX, expectedY, expectedZ, expectedW)} actual: {actual}");
+		Assert.That (actual.Z, Is.EqualTo (expectedZ), $"{message} (Z) expected: {new Vector4 (expectedX, expectedY, expectedZ, expectedW)} actual: {actual}");
+		Assert.That (actual.W, Is.EqualTo (expectedW), $"{message} (W) expected: {new Vector4 (expectedX, expectedY, expectedZ, expectedW)} actual: {actual}");
 	}
 
 	public static void AreEqual (Vector4 expected, Vector4 actual, float delta, string message)
 	{
-		Assert.AreEqual (expected.X, actual.X, delta, $"{message} (X) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.Y, actual.Y, delta, $"{message} (Y) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.Z, actual.Z, delta, $"{message} (Z) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.W, actual.W, delta, $"{message} (W) expected: {expected} actual: {actual}");
+		Assert.That (actual.X, Is.EqualTo (expected.X).Within (delta), $"{message} (X) expected: {expected} actual: {actual}");
+		Assert.That (actual.Y, Is.EqualTo (expected.Y).Within (delta), $"{message} (Y) expected: {expected} actual: {actual}");
+		Assert.That (actual.Z, Is.EqualTo (expected.Z).Within (delta), $"{message} (Z) expected: {expected} actual: {actual}");
+		Assert.That (actual.W, Is.EqualTo (expected.W).Within (delta), $"{message} (W) expected: {expected} actual: {actual}");
 	}
 
 	public static void AreEqual (Matrix4 expected, Matrix4 actual, string message)
@@ -159,16 +159,16 @@ public static class Asserts {
 
 	public static void AreEqual (Vector2i expected, Vector2i actual, string message)
 	{
-		Assert.AreEqual (expected.X, actual.X, $"{message} (X) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.Y, actual.Y, $"{message} (Y) expected: {expected} actual: {actual}");
+		Assert.That (actual.X, Is.EqualTo (expected.X), $"{message} (X) expected: {expected} actual: {actual}");
+		Assert.That (actual.Y, Is.EqualTo (expected.Y), $"{message} (Y) expected: {expected} actual: {actual}");
 	}
 
 	public static void AreEqual (Vector4i expected, Vector4i actual, string message)
 	{
-		Assert.AreEqual (expected.X, actual.X, $"{message} (X) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.Y, actual.Y, $"{message} (Y) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.Z, actual.Z, $"{message} (Z) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.W, actual.W, $"{message} (W) expected: {expected} actual: {actual}");
+		Assert.That (actual.X, Is.EqualTo (expected.X), $"{message} (X) expected: {expected} actual: {actual}");
+		Assert.That (actual.Y, Is.EqualTo (expected.Y), $"{message} (Y) expected: {expected} actual: {actual}");
+		Assert.That (actual.Z, Is.EqualTo (expected.Z), $"{message} (Z) expected: {expected} actual: {actual}");
+		Assert.That (actual.W, Is.EqualTo (expected.W), $"{message} (W) expected: {expected} actual: {actual}");
 	}
 
 	public static void AreEqual (MDLAxisAlignedBoundingBox expected, MDLAxisAlignedBoundingBox actual, string message)
@@ -179,10 +179,10 @@ public static class Asserts {
 
 	public static void AreEqual (Quaternion expected, Quaternion actual, string message)
 	{
-		Assert.AreEqual (expected.X, actual.X, $"{message} (X) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.Y, actual.Y, $"{message} (Y) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.Z, actual.Z, $"{message} (Z) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.W, actual.W, $"{message} (W) expected: {expected} actual: {actual}");
+		Assert.That (actual.X, Is.EqualTo (expected.X), $"{message} (X) expected: {expected} actual: {actual}");
+		Assert.That (actual.Y, Is.EqualTo (expected.Y), $"{message} (Y) expected: {expected} actual: {actual}");
+		Assert.That (actual.Z, Is.EqualTo (expected.Z), $"{message} (Z) expected: {expected} actual: {actual}");
+		Assert.That (actual.W, Is.EqualTo (expected.W), $"{message} (W) expected: {expected} actual: {actual}");
 	}
 
 	public static void AreEqual (Quaternion [] expected, Quaternion [] actual, string message)
@@ -195,7 +195,7 @@ public static class Asserts {
 			Assert.Fail ($"Expected {expected}, got null. {message}");
 		}
 
-		Assert.AreEqual (expected.Length, actual.Length, $"{message} array lengths");
+		Assert.That (actual.Length, Is.EqualTo (expected.Length), $"{message} array lengths");
 		for (var i = 0; i < expected.Length; i++) {
 			AreEqual (expected [i], actual [i], message + $" [{i}]");
 		}
@@ -203,23 +203,23 @@ public static class Asserts {
 
 	public static void AreEqual (Quaterniond expected, Quaterniond actual, string message)
 	{
-		Assert.AreEqual (expected.X, actual.X, $"{message} (X) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.Y, actual.Y, $"{message} (Y) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.Z, actual.Z, $"{message} (Z) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.W, actual.W, $"{message} (W) expected: {expected} actual: {actual}");
+		Assert.That (actual.X, Is.EqualTo (expected.X), $"{message} (X) expected: {expected} actual: {actual}");
+		Assert.That (actual.Y, Is.EqualTo (expected.Y), $"{message} (Y) expected: {expected} actual: {actual}");
+		Assert.That (actual.Z, Is.EqualTo (expected.Z), $"{message} (Z) expected: {expected} actual: {actual}");
+		Assert.That (actual.W, Is.EqualTo (expected.W), $"{message} (W) expected: {expected} actual: {actual}");
 	}
 
 	public static void AreEqual (Quaterniond expected, Quaterniond actual, double delta, string message)
 	{
-		Assert.AreEqual (expected.X, actual.X, delta, $"{message} (X) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.Y, actual.Y, delta, $"{message} (Y) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.Z, actual.Z, delta, $"{message} (Z) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.W, actual.W, delta, $"{message} (W) expected: {expected} actual: {actual}");
+		Assert.That (actual.X, Is.EqualTo (expected.X).Within (delta), $"{message} (X) expected: {expected} actual: {actual}");
+		Assert.That (actual.Y, Is.EqualTo (expected.Y).Within (delta), $"{message} (Y) expected: {expected} actual: {actual}");
+		Assert.That (actual.Z, Is.EqualTo (expected.Z).Within (delta), $"{message} (Z) expected: {expected} actual: {actual}");
+		Assert.That (actual.W, Is.EqualTo (expected.W).Within (delta), $"{message} (W) expected: {expected} actual: {actual}");
 	}
 
 	public static void AreEqual (Quaterniond [] expected, Quaterniond [] actual, string message)
 	{
-		Assert.AreEqual (expected.Length, actual.Length, $"{message} array lengths");
+		Assert.That (actual.Length, Is.EqualTo (expected.Length), $"{message} array lengths");
 		for (var i = 0; i < expected.Length; i++) {
 			AreEqual (expected [i], actual [i], message + $" [{i}]");
 		}
@@ -227,10 +227,10 @@ public static class Asserts {
 
 	public static void AreEqual (MPSImageHistogramInfo expected, MPSImageHistogramInfo actual, string message)
 	{
-		Assert.AreEqual (expected.HistogramForAlpha, actual.HistogramForAlpha, $"{message} HistogramForAlpha expected: {expected} actual: {actual}");
+		Assert.That (actual.HistogramForAlpha, Is.EqualTo (expected.HistogramForAlpha), $"{message} HistogramForAlpha expected: {expected} actual: {actual}");
 		Asserts.AreEqual (expected.MaxPixelValue, actual.MaxPixelValue, $"{message} MaxPixelValue expected: {expected} actual: {actual}");
 		Asserts.AreEqual (expected.MinPixelValue, actual.MinPixelValue, $"{message} MinPixelValue expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.NumberOfHistogramEntries, actual.NumberOfHistogramEntries, $"{message} NumberOfHistogramEntries expected: {expected} actual: {actual}");
+		Assert.That (actual.NumberOfHistogramEntries, Is.EqualTo (expected.NumberOfHistogramEntries), $"{message} NumberOfHistogramEntries expected: {expected} actual: {actual}");
 	}
 
 	public static void AreEqual (MatrixFloat2x2 expected, MatrixFloat2x2 actual, string message)
@@ -378,54 +378,54 @@ public static class Asserts {
 	#region Double Based Types
 	public static void AreEqual (double expected, double actual, string message)
 	{
-		Assert.AreEqual (expected, actual, $"{message} (M) expected: {expected} actual: {actual}");
+		Assert.That (actual, Is.EqualTo (expected), $"{message} (M) expected: {expected} actual: {actual}");
 	}
 
 	public static void AreEqual (double expected, double actual, double delta, string message)
 	{
-		Assert.AreEqual (expected, actual, delta, message);
+		Assert.That (actual, Is.EqualTo (expected).Within (delta), message);
 	}
 
 	public static void AreEqual (VectorDouble2 expected, VectorDouble2 actual, string message)
 	{
-		Assert.AreEqual (expected.X, actual.X, 0.001, message + " (X)");
-		Assert.AreEqual (expected.Y, actual.Y, 0.001, message + " (Y)");
+		Assert.That (actual.X, Is.EqualTo (expected.X).Within (0.001), message + " (X)");
+		Assert.That (actual.Y, Is.EqualTo (expected.Y).Within (0.001), message + " (Y)");
 	}
 
 	public static void AreEqual (VectorDouble2 expected, VectorDouble2 actual, double delta, string message)
 	{
-		Assert.AreEqual (expected.X, actual.X, delta, message + " (X)");
-		Assert.AreEqual (expected.Y, actual.Y, delta, message + " (Y)");
+		Assert.That (actual.X, Is.EqualTo (expected.X).Within (delta), message + " (X)");
+		Assert.That (actual.Y, Is.EqualTo (expected.Y).Within (delta), message + " (Y)");
 	}
 
 	public static void AreEqual (VectorDouble3 expected, VectorDouble3 actual, string message)
 	{
-		Assert.AreEqual (expected.X, actual.X, 0.001, $"{message} (X) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.Y, actual.Y, 0.001, $"{message} (Y) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.Z, actual.Z, 0.001, $"{message} (Z) expected: {expected} actual: {actual}");
+		Assert.That (actual.X, Is.EqualTo (expected.X).Within (0.001), $"{message} (X) expected: {expected} actual: {actual}");
+		Assert.That (actual.Y, Is.EqualTo (expected.Y).Within (0.001), $"{message} (Y) expected: {expected} actual: {actual}");
+		Assert.That (actual.Z, Is.EqualTo (expected.Z).Within (0.001), $"{message} (Z) expected: {expected} actual: {actual}");
 	}
 
 	public static void AreEqual (VectorDouble3 expected, VectorDouble3 actual, double delta, string message)
 	{
-		Assert.AreEqual (expected.X, actual.X, delta, $"{message} (X) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.Y, actual.Y, delta, $"{message} (Y) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.Z, actual.Z, delta, $"{message} (Z) expected: {expected} actual: {actual}");
+		Assert.That (actual.X, Is.EqualTo (expected.X).Within (delta), $"{message} (X) expected: {expected} actual: {actual}");
+		Assert.That (actual.Y, Is.EqualTo (expected.Y).Within (delta), $"{message} (Y) expected: {expected} actual: {actual}");
+		Assert.That (actual.Z, Is.EqualTo (expected.Z).Within (delta), $"{message} (Z) expected: {expected} actual: {actual}");
 	}
 
 	public static void AreEqual (Vector4d expected, Vector4d actual, string message)
 	{
-		Assert.AreEqual (expected.X, actual.X, $"{message} (X) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.Y, actual.Y, $"{message} (Y) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.Z, actual.Z, $"{message} (Z) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.W, actual.W, $"{message} (W) expected: {expected} actual: {actual}");
+		Assert.That (actual.X, Is.EqualTo (expected.X), $"{message} (X) expected: {expected} actual: {actual}");
+		Assert.That (actual.Y, Is.EqualTo (expected.Y), $"{message} (Y) expected: {expected} actual: {actual}");
+		Assert.That (actual.Z, Is.EqualTo (expected.Z), $"{message} (Z) expected: {expected} actual: {actual}");
+		Assert.That (actual.W, Is.EqualTo (expected.W), $"{message} (W) expected: {expected} actual: {actual}");
 	}
 
 	public static void AreEqual (Vector4d expected, Vector4d actual, double delta, string message)
 	{
-		Assert.AreEqual (expected.X, actual.X, delta, $"{message} (X) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.Y, actual.Y, delta, $"{message} (Y) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.Z, actual.Z, delta, $"{message} (Z) expected: {expected} actual: {actual}");
-		Assert.AreEqual (expected.W, actual.W, delta, $"{message} (W) expected: {expected} actual: {actual}");
+		Assert.That (actual.X, Is.EqualTo (expected.X).Within (delta), $"{message} (X) expected: {expected} actual: {actual}");
+		Assert.That (actual.Y, Is.EqualTo (expected.Y).Within (delta), $"{message} (Y) expected: {expected} actual: {actual}");
+		Assert.That (actual.Z, Is.EqualTo (expected.Z).Within (delta), $"{message} (Z) expected: {expected} actual: {actual}");
+		Assert.That (actual.W, Is.EqualTo (expected.W).Within (delta), $"{message} (W) expected: {expected} actual: {actual}");
 	}
 
 	public static void AreEqual (MatrixDouble4x4 expected, MatrixDouble4x4 actual, string message)

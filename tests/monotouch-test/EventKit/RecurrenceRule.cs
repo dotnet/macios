@@ -27,17 +27,17 @@ namespace MonoTouchFixtures.EventKit {
 		public void DefaultProperties ()
 		{
 			using (var rule = new EKRecurrenceRule ()) {
-				Assert.AreEqual ("gregorian", rule.CalendarIdentifier, "CalendarIdentifier");
-				Assert.IsNull (rule.RecurrenceEnd, "RecurrenceEnd");
-				Assert.AreEqual (EKRecurrenceFrequency.Weekly, rule.Frequency, "Frequency");
-				Assert.AreEqual ((nint) 1, rule.Interval, "Interval");
-				Assert.AreEqual (EKWeekday.Monday, rule.FirstDayOfTheWeek, "FirstDayOfTheWeek");
-				Assert.IsNull (rule.DaysOfTheWeek, "DaysOfTheWeek");
-				Assert.IsNull (rule.DaysOfTheMonth, "DaysOfTheMonth");
-				Assert.IsNull (rule.DaysOfTheYear, "DaysOfTheYear");
-				Assert.IsNull (rule.WeeksOfTheYear, "WeeksOfTheYear");
-				Assert.IsNull (rule.MonthsOfTheYear, "MonthsOfTheYear");
-				Assert.IsNull (rule.SetPositions, "SetPositions");
+				Assert.That (rule.CalendarIdentifier, Is.EqualTo ("gregorian"), "CalendarIdentifier");
+				Assert.That (rule.RecurrenceEnd, Is.Null, "RecurrenceEnd");
+				Assert.That (rule.Frequency, Is.EqualTo (EKRecurrenceFrequency.Weekly), "Frequency");
+				Assert.That (rule.Interval, Is.EqualTo ((nint) 1), "Interval");
+				Assert.That (rule.FirstDayOfTheWeek, Is.EqualTo (EKWeekday.Monday), "FirstDayOfTheWeek");
+				Assert.That (rule.DaysOfTheWeek, Is.Null, "DaysOfTheWeek");
+				Assert.That (rule.DaysOfTheMonth, Is.Null, "DaysOfTheMonth");
+				Assert.That (rule.DaysOfTheYear, Is.Null, "DaysOfTheYear");
+				Assert.That (rule.WeeksOfTheYear, Is.Null, "WeeksOfTheYear");
+				Assert.That (rule.MonthsOfTheYear, Is.Null, "MonthsOfTheYear");
+				Assert.That (rule.SetPositions, Is.Null, "SetPositions");
 			}
 		}
 

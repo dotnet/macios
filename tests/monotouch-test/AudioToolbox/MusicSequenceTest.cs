@@ -21,7 +21,7 @@ namespace MonoTouchFixtures.AudioToolbox {
 		public void Defaults ()
 		{
 			using (var ms = new MusicSequence ()) {
-				Assert.NotNull (ms.AUGraph, "AUGraph");
+				Assert.That (ms.AUGraph, Is.Not.Null, "AUGraph");
 				Assert.That (ms.Handle, Is.Not.EqualTo (IntPtr.Zero), "Handle");
 				Assert.That (ms.SequenceType, Is.EqualTo (MusicSequenceType.Beats), "SequenceType");
 				Assert.That (ms.TrackCount, Is.EqualTo (0), "TrackCount");

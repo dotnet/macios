@@ -30,9 +30,8 @@ namespace AppKit {
 	public partial class NSSpeechSynthesizer {
 
 		// note: if needed override the protected Get|Set methods
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the voice used by the speech synthesizer.</summary>
+		/// <value>The identifier of the voice.</value>
 		public string Voice {
 			get { return GetVoice (); }
 			// ignore return value (bool)

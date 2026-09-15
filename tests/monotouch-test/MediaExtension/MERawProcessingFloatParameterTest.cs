@@ -12,17 +12,17 @@ namespace MonoTouchFixtures.MediaExtension {
 
 			using var obj = new MERawProcessingFloatParameter ("name", "key", "description", 1.2f, 3.4f, 0.1f, 1.1f, MERawProcessingFloatParameterInitializationOption.NeutralValue);
 			Assert.Multiple (() => {
-				Assert.AreEqual ("name", obj.Name, "Name");
-				Assert.AreEqual ("key", obj.Key, "Key");
-				Assert.IsNull (obj.LongDescription, "LongDescription");
-				Assert.AreEqual (1.2f, obj.InitialValue, "InitialValue");
-				Assert.AreEqual (1.2f, obj.CurrentValue, "CurrentValue");
-				Assert.AreEqual (3.4f, obj.MaximumValue, "MaximumValue");
-				Assert.AreEqual (0.1f, obj.MinimumValue, "MinimumValue");
-				Assert.IsTrue (obj.HasNeutralValue (out var neutralValue), "HasNeutralValue");
-				Assert.AreEqual (1.1f, neutralValue, "NeutralValue");
-				Assert.IsFalse (obj.HasCameraValue (out var cameraValue), "HasCameraValue");
-				Assert.AreEqual (0f, cameraValue, "NeutralValue");
+				Assert.That (obj.Name, Is.EqualTo ("name"), "Name");
+				Assert.That (obj.Key, Is.EqualTo ("key"), "Key");
+				Assert.That (obj.LongDescription, Is.Null, "LongDescription");
+				Assert.That (obj.InitialValue, Is.EqualTo (1.2f), "InitialValue");
+				Assert.That (obj.CurrentValue, Is.EqualTo (1.2f), "CurrentValue");
+				Assert.That (obj.MaximumValue, Is.EqualTo (3.4f), "MaximumValue");
+				Assert.That (obj.MinimumValue, Is.EqualTo (0.1f), "MinimumValue");
+				Assert.That (obj.HasNeutralValue (out var neutralValue), Is.True, "HasNeutralValue");
+				Assert.That (neutralValue, Is.EqualTo (1.1f), "NeutralValue");
+				Assert.That (obj.HasCameraValue (out var cameraValue), Is.False, "HasCameraValue");
+				Assert.That (cameraValue, Is.EqualTo (0f), "NeutralValue");
 			});
 		}
 
@@ -33,17 +33,17 @@ namespace MonoTouchFixtures.MediaExtension {
 
 			using var obj = new MERawProcessingFloatParameter ("name", "key", "description", 1.2f, 3.4f, 0.1f, 1.1f, MERawProcessingFloatParameterInitializationOption.CameraValue);
 			Assert.Multiple (() => {
-				Assert.AreEqual ("name", obj.Name, "Name");
-				Assert.AreEqual ("key", obj.Key, "Key");
-				Assert.IsNull (obj.LongDescription, "LongDescription");
-				Assert.AreEqual (1.2f, obj.InitialValue, "InitialValue");
-				Assert.AreEqual (1.2f, obj.CurrentValue, "CurrentValue");
-				Assert.AreEqual (3.4f, obj.MaximumValue, "MaximumValue");
-				Assert.AreEqual (0.1f, obj.MinimumValue, "MinimumValue");
-				Assert.IsFalse (obj.HasNeutralValue (out var neutralValue), "HasNeutralValue");
-				Assert.AreEqual (0f, neutralValue, "NeutralValue");
-				Assert.IsTrue (obj.HasCameraValue (out var cameraValue), "HasCameraValue");
-				Assert.AreEqual (1.1f, cameraValue, "NeutralValue");
+				Assert.That (obj.Name, Is.EqualTo ("name"), "Name");
+				Assert.That (obj.Key, Is.EqualTo ("key"), "Key");
+				Assert.That (obj.LongDescription, Is.Null, "LongDescription");
+				Assert.That (obj.InitialValue, Is.EqualTo (1.2f), "InitialValue");
+				Assert.That (obj.CurrentValue, Is.EqualTo (1.2f), "CurrentValue");
+				Assert.That (obj.MaximumValue, Is.EqualTo (3.4f), "MaximumValue");
+				Assert.That (obj.MinimumValue, Is.EqualTo (0.1f), "MinimumValue");
+				Assert.That (obj.HasNeutralValue (out var neutralValue), Is.False, "HasNeutralValue");
+				Assert.That (neutralValue, Is.EqualTo (0f), "NeutralValue");
+				Assert.That (obj.HasCameraValue (out var cameraValue), Is.True, "HasCameraValue");
+				Assert.That (cameraValue, Is.EqualTo (1.1f), "NeutralValue");
 			});
 		}
 	}

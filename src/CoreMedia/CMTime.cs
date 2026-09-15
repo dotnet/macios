@@ -14,7 +14,6 @@ using CoreFoundation;
 namespace CoreMedia {
 
 	/// <summary>A time value that represents a rational number <see cref="CoreMedia.CMTime.Value" />/<see cref="CoreMedia.CMTime.TimeScale" />.</summary>
-	///     <remarks>To be added.</remarks>
 	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/AVCaptureFrames/">avcaptureframes</related>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
@@ -444,28 +443,17 @@ namespace CoreMedia {
 			return CMTimeFoldIntoRange (time, foldRange);
 		}
 
-		// FIXME: generated will need some changes to emit [Field] in partial struct (not class)
 		/// <summary>Key that can be used in NSDictionary objects returned by CMTime to extract the Value property.</summary>
-		///         <remarks>To be added.</remarks>
-		public readonly static NSString? ValueKey;
-		/// <summary>Key that can be used in NSDictionary objects returned by CMTime to extract the Scale property.</summary>
-		///         <remarks>To be added.</remarks>
-		public readonly static NSString? ScaleKey;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
-		public readonly static NSString? EpochKey;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
-		public readonly static NSString? FlagsKey;
+		public readonly static NSString? ValueKey = CMTimeFields.ValueKey;
 
-		static CMTime ()
-		{
-			var lib = Libraries.CoreMedia.Handle;
-			ValueKey = Dlfcn.GetStringConstant (lib, "kCMTimeValueKey");
-			ScaleKey = Dlfcn.GetStringConstant (lib, "kCMTimeScaleKey");
-			EpochKey = Dlfcn.GetStringConstant (lib, "kCMTimeEpochKey");
-			FlagsKey = Dlfcn.GetStringConstant (lib, "kCMTimeFlagsKey");
-		}
+		/// <summary>Key that can be used in NSDictionary objects returned by CMTime to extract the Scale property.</summary>
+		public readonly static NSString? ScaleKey = CMTimeFields.ScaleKey;
+
+		/// <summary>Key that can be used in NSDictionary objects returned by CMTime to extract the Epoch property.</summary>
+		public readonly static NSString? EpochKey = CMTimeFields.EpochKey;
+
+		/// <summary>Key that can be used in NSDictionary objects returned by CMTime to extract the Flags property.</summary>
+		public readonly static NSString? FlagsKey = CMTimeFields.FlagsKey;
 
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* CFDictionaryRef */ IntPtr CMTimeCopyAsDictionary (CMTime time, /* CFAllocatorRef */ IntPtr allocator);

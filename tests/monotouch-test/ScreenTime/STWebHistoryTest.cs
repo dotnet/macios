@@ -22,8 +22,8 @@ namespace MonoTouchFixtures.ScreenTime {
 		{
 			TestRuntime.AssertXcodeVersion (16, 3);
 			using var obj = STWebHistory.Create ("com.xamarin.monotouch-test", out var error);
-			Assert.IsNotNull (obj, "Object");
-			Assert.IsNull (error, "Error");
+			Assert.That (obj, Is.Not.Null, "Object");
+			Assert.That (error, Is.Null, "Error");
 		}
 
 		[Test]
@@ -31,8 +31,8 @@ namespace MonoTouchFixtures.ScreenTime {
 		{
 			TestRuntime.AssertXcodeVersion (16, 3);
 			using var obj = STWebHistory.Create ("com.xamarin.monotouch-test", (NSString) "profile", out var error);
-			Assert.IsNotNull (obj, "Object");
-			Assert.IsNull (error, "Error");
+			Assert.That (obj, Is.Not.Null, "Object");
+			Assert.That (error, Is.Null, "Error");
 		}
 	}
 }

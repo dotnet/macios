@@ -1,3 +1,6 @@
 # Added but deprecated, so there is not point to add them
 !missing-protocol-member! CLLocationManagerDelegate::locationManager:didRangeBeacons:inRegion: not found
 !missing-protocol-member! CLLocationManagerDelegate::locationManager:rangingBeaconsDidFailForRegion:withError: not found
+
+# CLServiceSessionAuthorizationRequirement is unavailable on macOS natively (API_UNAVAILABLE on the typedef), but the managed enum is bound and used by CLServiceSession.
+!unknown-native-enum! CLServiceSessionAuthorizationRequirement bound

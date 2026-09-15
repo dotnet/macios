@@ -20,7 +20,7 @@ namespace LocalAuthentication {
 		/// <summary>Indicates that Face ID is supported.</summary>
 		[MacCatalyst (13, 1)]
 		FaceId,
-		[iOS (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), MacCatalyst (17, 0)]
 		OpticId = 1L << 2,
 	}
 
@@ -193,7 +193,7 @@ namespace LocalAuthentication {
 		LADomainState DomainState { get; }
 	}
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[BaseType (typeof (LARight))]
 	[DisableDefaultCtor]
 	interface LAPersistedRight {
@@ -206,7 +206,7 @@ namespace LocalAuthentication {
 
 	delegate void LAPrivateKeyCompletionHandler ([NullAllowed] NSData data, [NullAllowed] NSError error);
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface LAPrivateKey {
@@ -238,7 +238,7 @@ namespace LocalAuthentication {
 	delegate void LAPublicKeyCompletionHandler ([NullAllowed] NSData data, [NullAllowed] NSError error);
 	delegate void LAPublicKeyVerifyDataCompletionHandler ([NullAllowed] NSError error);
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface LAPublicKey {
@@ -261,7 +261,7 @@ namespace LocalAuthentication {
 		bool CanVerify (SecKeyAlgorithm algorithm);
 	}
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[BaseType (typeof (NSObject))]
 	interface LAAuthenticationRequirement {
 		[Static]
@@ -281,7 +281,7 @@ namespace LocalAuthentication {
 		LAAuthenticationRequirement GetBiometryRequirement (LABiometryFallbackRequirement fallback);
 	}
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[BaseType (typeof (NSObject))]
 	interface LABiometryFallbackRequirement {
 		[Static]
@@ -295,7 +295,7 @@ namespace LocalAuthentication {
 
 	delegate void LARightAuthorizeCompletionHandler ([NullAllowed] NSError error);
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[BaseType (typeof (NSObject))]
 	interface LARight {
 		[Export ("state")]
@@ -330,7 +330,7 @@ namespace LocalAuthentication {
 	delegate void LARightStoreCompletionHandler ([NullAllowed] LAPersistedRight right, [NullAllowed] NSError error);
 	delegate void LARightStoreRemoveRightCompletionHandler ([NullAllowed] NSError error);
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface LARightStore {
@@ -365,7 +365,7 @@ namespace LocalAuthentication {
 
 	delegate void LASecretCompletionHandler ([NullAllowed] NSData data, [NullAllowed] NSError error);
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface LASecret {

@@ -24,10 +24,9 @@ namespace Foundation {
 			}
 		}
 
-		/// <param name="action">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Starts a new thread that executes the specified action.</summary>
+		/// <param name="action">The action to perform on the new thread.</param>
+		/// <returns>The newly created and started thread.</returns>
 		public static NSThread Start (Action action)
 		{
 			if (action is null) {

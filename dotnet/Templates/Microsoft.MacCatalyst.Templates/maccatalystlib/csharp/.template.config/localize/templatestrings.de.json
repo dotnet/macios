@@ -1,5 +1,7 @@
 {
   "author": "Microsoft",
   "name": "Mac Catalyst-Klassenbibliothek",
-  "description": "Ein Projekt zum Erstellen einer .NET Mac Catalyst-Klassenbibliothek"
+  "description": "Ein Projekt zum Erstellen einer .NET Mac Catalyst-Klassenbibliothek",
+  "symbols/Framework/description": "The target framework for the project.",
+  "symbols/Framework/choices/net10.0-maccatalyst/description": "Target net10.0-maccatalyst"
 }

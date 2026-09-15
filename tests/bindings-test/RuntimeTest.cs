@@ -9,7 +9,7 @@ namespace Xamarin.Tests {
 		[Test]
 		public void GlobalStringTest ()
 		{
-			Assert.AreEqual ("There's nothing cruvus here!", (string) Globals.GlobalString, "Global string");
+			Assert.That ((string) Globals.GlobalString, Is.EqualTo ("There's nothing cruvus here!"), "Global string");
 		}
 
 		[Test]
@@ -95,7 +95,7 @@ namespace Xamarin.Tests {
 		{
 			TestRuntime.AssertXcodeVersion (13, 0);
 			using var obj = new SwiftTestClass ();
-			Assert.AreEqual ("Hello from Swift", obj.SayHello (), "Hello");
+			Assert.That (obj.SayHello (), Is.EqualTo ("Hello from Swift"), "Hello");
 		}
 
 		[Test]
@@ -105,18 +105,18 @@ namespace Xamarin.Tests {
 
 			using var obj = new SwiftTestClass ();
 
-			Assert.AreEqual ("42", obj.DoSomething ("42"), "DoSomething");
+			Assert.That (obj.DoSomething ("42"), Is.EqualTo ("42"), "DoSomething");
 
 			string? asyncResult = null;
 			obj.DoSomethingAsync ("dolphins", (v) => asyncResult = v);
 			var done = TestRuntime.RunAsync (TimeSpan.FromSeconds (5), () => asyncResult is not null);
-			Assert.AreEqual ("dolphins", asyncResult, "DoSomethingAsync");
-			Assert.IsTrue (done, "Done");
+			Assert.That (asyncResult, Is.EqualTo ("dolphins"), "DoSomethingAsync");
+			Assert.That (done, Is.True, "Done");
 
 			obj.DoSomethingComplexAsync ("fish", IntPtr.Zero, (v) => asyncResult = v);
 			done = TestRuntime.RunAsync (TimeSpan.FromSeconds (5), () => asyncResult is not null);
-			Assert.AreEqual ("fish", asyncResult, "DoSomethingComplexAsync");
-			Assert.IsTrue (done, "Done 2");
+			Assert.That (asyncResult, Is.EqualTo ("fish"), "DoSomethingComplexAsync");
+			Assert.That (done, Is.True, "Done 2");
 		}
 
 		[Test]
@@ -124,7 +124,7 @@ namespace Xamarin.Tests {
 		{
 			TestRuntime.AssertXcodeVersion (13, 0);
 			using var obj = new SwiftTestClass2 ();
-			Assert.AreEqual ("Hello from Swift 2", obj.SayHello2 (), "Hello");
+			Assert.That (obj.SayHello2 (), Is.EqualTo ("Hello from Swift 2"), "Hello");
 		}
 
 		[Test]

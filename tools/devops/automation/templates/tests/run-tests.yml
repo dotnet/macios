@@ -52,11 +52,6 @@ steps:
     TESTS_PLATFORM: ${{ parameters.testPlatform }}
     LABEL_WITH_PLATFORM: ${{ parameters.labelWithPlatform }}
 
-- pwsh: |
-    Write-Host "##vso[task.setvariable variable=TESTS_USE_SYSTEM]true"
-  displayName: Set SDK destination dirs 
-
-
 # remove any old processes that might have been left behind.
 - pwsh: |
     Import-Module $Env:SYSTEM_DEFAULTWORKINGDIRECTORY/$Env:BUILD_REPOSITORY_TITLE/tools/devops/automation/scripts/MaciosCI.psd1
@@ -171,6 +166,41 @@ steps:
     artifactName: '${{ parameters.uploadPrefix }}TestSummary-${{ parameters.testPrefix }}-$(System.JobAttempt)'
   continueOnError: true
   condition: succeededOrFailed()
+
+# Upload updated expected app size files if the app size tests produced any.
+- bash: |
+    if [ -d "$(Build.ArtifactStagingDirectory)/updated-expected-sizes" ]; then
+      echo "##vso[task.setvariable variable=HAS_UPDATED_EXPECTED_SIZES]true"
+    fi
+  displayName: 'Check for updated expected app size files'
+  condition: succeededOrFailed()
+
+- bash: |
+    if [ -d "$(Build.ArtifactStagingDirectory)/failed-app-size-bundles" ]; then
+      echo "##vso[task.setvariable variable=HAS_FAILED_APP_SIZE_BUNDLES]true"
+    fi
+  displayName: 'Check for app bundles'
+  condition: succeededOrFailed()
+
+- task: PublishPipelineArtifact@1
+  displayName: 'Publish Artifact: Updated expected app size files'
+  inputs:
+    targetPath: '$(Build.ArtifactStagingDirectory)/updated-expected-sizes'
+    artifactName: '${{ parameters.uploadPrefix }}updated-expected-sizes-${{ parameters.testPrefix }}-$(System.JobAttempt)'
+  continueOnError: true
+  condition: and(succeededOrFailed(), eq(variables['HAS_UPDATED_EXPECTED_SIZES'], 'true'))
+
+# Note: the updated expected app size files from all the test jobs are aggregated into a
+# single gist + PR comment in the 'publish_test_results' job (see publish-html.yml), so that
+# a maintainer only has to apply one gist to update the expected files for all platforms.
+
+- task: PublishPipelineArtifact@1
+  displayName: 'Publish Artifact: Updated app bundles'
+  inputs:
+    targetPath: '$(Build.ArtifactStagingDirectory)/failed-app-size-bundles'
+    artifactName: '${{ parameters.uploadPrefix }}failed-app-size-bundles-${{ parameters.testPrefix }}-$(System.JobAttempt)'
+  continueOnError: true
+  condition: and(succeededOrFailed(), eq(variables['HAS_FAILED_APP_SIZE_BUNDLES'], 'true'))
 
 - pwsh: |
     $summaryName = "TestSummary-${{ parameters.testPrefix }}.md"

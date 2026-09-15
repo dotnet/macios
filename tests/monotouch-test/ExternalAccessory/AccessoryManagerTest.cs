@@ -30,7 +30,7 @@ namespace MonoTouchFixtures.ExternalAccessory {
 			// reported to throw an InvalidCastException on http://stackoverflow.com/q/18884195/220643
 			var am = EAAccessoryManager.SharedAccessoryManager;
 			// IsEmpty most of the time... unless you docked something, like a keyboard
-			Assert.IsNotNull (am.ConnectedAccessories, "ConnectedAccessories");
+			Assert.That (am.ConnectedAccessories, Is.Not.Null, "ConnectedAccessories");
 		}
 
 #if !MONOMAC && !__MACCATALYST__

@@ -13,7 +13,7 @@ namespace Linker.Shared.Reflection {
 		{
 			// linker will disable the metadata removal optimization if that property is used by user code
 			// however it's used inside mscorlib.dll (and SDK) so it cannot be checked while testing
-			//Assert.Null (typeof (ParameterInfo).GetProperty ("Name"), "Name");
+			//Assert.That (typeof (ParameterInfo).GetProperty ("Name"), Is.Null, "Name");
 
 			// Call the method we want to test, so that the linker doesn't remove it.
 			// The method needs to be in a different class, because this class has the Preserve attribute,

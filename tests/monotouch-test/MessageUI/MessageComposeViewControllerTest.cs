@@ -27,9 +27,9 @@ namespace MonoTouchFixtures.MessageUI {
 				Assert.Inconclusive ("Not configured to send text");
 
 			using (var mail = new MFMessageComposeViewController ()) {
-				Assert.Null (mail.MessageComposeDelegate, "MessageComposeDelegate");
+				Assert.That (mail.MessageComposeDelegate, Is.Null, "MessageComposeDelegate");
 				mail.Finished += (sender, e) => { };
-				Assert.NotNull (mail.MessageComposeDelegate, "MessageComposeDelegate");
+				Assert.That (mail.MessageComposeDelegate, Is.Not.Null, "MessageComposeDelegate");
 			}
 		}
 	}

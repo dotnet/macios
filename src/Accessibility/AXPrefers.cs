@@ -5,7 +5,7 @@ using CoreGraphics;
 namespace Accessibility {
 
 	// accessibility.cs already provide the following attributes on the type
-	// [TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	// [TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	public static partial class AXPrefers {
 
 		[DllImport (Constants.AccessibilityLibrary)]

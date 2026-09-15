@@ -1,5 +1,7 @@
 {
   "author": "Microsoft",
   "name": "Mac Catalyst Binding Library",
-  "description": "A project for creating a .NET Mac Catalyst binding library"
+  "description": "A project for creating a .NET Mac Catalyst binding library",
+  "symbols/Framework/description": "The target framework for the project.",
+  "symbols/Framework/choices/net10.0-maccatalyst/description": "Target net10.0-maccatalyst"
 }

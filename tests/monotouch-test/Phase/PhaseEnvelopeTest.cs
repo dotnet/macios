@@ -28,7 +28,7 @@ namespace MonoTouchFixtures.Phase {
 			var start = new Vector2d (1, 2);
 			using (var envelope = new PhaseEnvelope (start, new PhaseEnvelopeSegment [] { })) {
 				// assert we do get the start vector
-				Assert.AreEqual (start, envelope.StartPoint);
+				Assert.That (envelope.StartPoint, Is.EqualTo (start));
 			}
 		}
 

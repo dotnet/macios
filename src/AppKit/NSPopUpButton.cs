@@ -33,9 +33,8 @@
 namespace AppKit {
 
 	public partial class NSPopUpButton {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the pop-up button cell associated with this control.</summary>
+		/// <value>The <see cref="NSPopUpButtonCell" /> used by this control.</value>
 		public new NSPopUpButtonCell Cell {
 			get { return (NSPopUpButtonCell) base.Cell; }
 			set { base.Cell = value; }

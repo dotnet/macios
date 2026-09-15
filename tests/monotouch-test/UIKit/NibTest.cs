@@ -23,7 +23,7 @@ namespace MonoTouchFixtures.UIKit {
 			using (UINib n = UINib.FromName ("does-not-exists", null)) {
 				// note: it's not really loaded until `instantiateWithOwner:options:` is called
 				// so the result is not null
-				Assert.NotNull (n, "created with null options");
+				Assert.That (n, Is.Not.Null, "created with null options");
 			}
 		}
 
@@ -32,7 +32,7 @@ namespace MonoTouchFixtures.UIKit {
 		public void FromName ()
 		{
 			using (UINib n = UINib.FromName ("EmptyNib", null)) {
-				Assert.NotNull (n, "created with null options");
+				Assert.That (n, Is.Not.Null, "created with null options");
 				// newer version (same selector)
 				var result2 = n.Instantiate (null, null);
 				Assert.That (result2.Length, Is.EqualTo (0), "Instantiate");
@@ -44,7 +44,7 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			using (NSData data = NSData.FromFile ("EmptyNib.nib"))
 			using (UINib n = UINib.FromData (data, null)) {
-				Assert.NotNull (n, "created with null options");
+				Assert.That (n, Is.Not.Null, "created with null options");
 				// newer version (same selector)
 				var result2 = n.Instantiate (null, null);
 				Assert.That (result2.Length, Is.EqualTo (0), "Instantiate");

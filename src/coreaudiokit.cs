@@ -337,7 +337,7 @@ namespace CoreAudioKit {
 	}
 #endif
 
-	[Mac (13, 0), iOS (16, 0)]
+	[iOS (16, 0)]
 	[MacCatalyst (16, 0)]
 	[BaseType (typeof (UIViewController))]
 	interface AUGenericViewController {

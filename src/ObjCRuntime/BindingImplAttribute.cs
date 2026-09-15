@@ -34,5 +34,7 @@ namespace ObjCRuntime {
 		GeneratedCode = 1,
 		/// <summary>If the method contains code that can be optimized by the Xamarin.iOS build process.</summary>
 		Optimizable = 2,
+		/// <summary>If the method is a generated factory method.</summary>
+		FactoryMethod = 4,
 	}
 }

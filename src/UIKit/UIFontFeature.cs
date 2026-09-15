@@ -22,9 +22,8 @@ namespace UIKit {
 		FontFeatureGroup fontFeature;
 		object? fontFeatureValue;
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the native handle for this font feature.</summary>
+		/// <value>The native object handle.</value>
 		NativeHandle INativeObject.Handle {
 			get {
 				return dictionary.Handle;

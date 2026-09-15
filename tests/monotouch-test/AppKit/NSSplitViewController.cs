@@ -20,7 +20,7 @@ namespace Xamarin.Mac.Tests {
 			var splitView = controller.SplitView;
 			controller.SplitView = new NSSplitView ();
 
-			Assert.IsFalse (controller.SplitView == splitView, "NSSplitViewControllerShouldChangeSplitView - Failed to set the SplitView property");
+			Assert.That (controller.SplitView == splitView, Is.False, "NSSplitViewControllerShouldChangeSplitView - Failed to set the SplitView property");
 		}
 
 		[Test]
@@ -29,7 +29,7 @@ namespace Xamarin.Mac.Tests {
 			var items = controller.SplitViewItems;
 			controller.SplitViewItems = new NSSplitViewItem [] { new NSSplitViewItem { ViewController = new NSViewController () } };
 
-			Assert.IsFalse (controller.SplitViewItems == items, "NSSplitViewControllerShouldChangeSplitViewItems - Failed to set the SplitViewItems property");
+			Assert.That (controller.SplitViewItems == items, Is.False, "NSSplitViewControllerShouldChangeSplitViewItems - Failed to set the SplitViewItems property");
 		}
 
 		[Test]
@@ -38,7 +38,7 @@ namespace Xamarin.Mac.Tests {
 			var item = new NSSplitViewItem { ViewController = new NSViewController () };
 			controller.AddSplitViewItem (item);
 
-			Assert.IsTrue (controller.SplitViewItems.Contains (item), "NSSplitViewControllerShouldAddSplitViewItem - Failed to add item");
+			Assert.That (controller.SplitViewItems.Contains (item), Is.True, "NSSplitViewControllerShouldAddSplitViewItem - Failed to add item");
 		}
 
 		[Test]
@@ -47,11 +47,11 @@ namespace Xamarin.Mac.Tests {
 			var item = new NSSplitViewItem { ViewController = new NSViewController () };
 			controller.AddSplitViewItem (item);
 
-			Assert.IsTrue (controller.SplitViewItems.Contains (item), "NSSplitViewControllerShouldRemoveSplitViewItem - Failed to add item");
+			Assert.That (controller.SplitViewItems.Contains (item), Is.True, "NSSplitViewControllerShouldRemoveSplitViewItem - Failed to add item");
 
 			controller.RemoveSplitViewItem (item);
 
-			Assert.IsFalse (controller.SplitViewItems.Contains (item), "NSSplitViewControllerShouldRemoveSplitViewItem - Failed to remove item");
+			Assert.That (controller.SplitViewItems.Contains (item), Is.False, "NSSplitViewControllerShouldRemoveSplitViewItem - Failed to remove item");
 		}
 
 		[Test]
@@ -63,8 +63,8 @@ namespace Xamarin.Mac.Tests {
 			var item = new NSSplitViewItem { ViewController = new NSViewController () };
 			controller.InsertSplitViewItem (item, 1);
 
-			Assert.IsTrue (controller.SplitViewItems [1] == item, "NSSplitViewControllerShouldInsertSplitViewItem - Failed to insert the item at the given position.");
-			Assert.IsFalse (controller.SplitViewItems [0] == item, "NSSplitViewControllerShouldInsertSplitViewItem - Inserted the item in the wrong position.");
+			Assert.That (controller.SplitViewItems [1] == item, Is.True, "NSSplitViewControllerShouldInsertSplitViewItem - Failed to insert the item at the given position.");
+			Assert.That (controller.SplitViewItems [0] == item, Is.False, "NSSplitViewControllerShouldInsertSplitViewItem - Inserted the item in the wrong position.");
 		}
 
 		[Test]
@@ -79,7 +79,7 @@ namespace Xamarin.Mac.Tests {
 
 			var retrievedItem = controller.GetSplitViewItem (viewController);
 
-			Assert.IsTrue (retrievedItem == item, "NSSplitViewControllerShouldGetSplitViewItem - Failed to get SplitViewItem from ViewController");
+			Assert.That (retrievedItem == item, Is.True, "NSSplitViewControllerShouldGetSplitViewItem - Failed to get SplitViewItem from ViewController");
 		}
 	}
 }

@@ -25,7 +25,7 @@ namespace MonoTouchFixtures.SceneKit {
 			TestRuntime.AssertNotVirtualMachine ();
 
 			var view = new SCNView (new CGRect (), (NSDictionary) null);
-			Assert.NotNull (view, "View not null");
+			Assert.That (view, Is.Not.Null, "View not null");
 			Assert.DoesNotThrow (() => view.OverlayScene = null, "Should not throw");
 		}
 	}

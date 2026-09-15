@@ -58,4 +58,3 @@
 # Since the parameter is passed by reference rather than value, the marshal directive is not necessary
 # validated by VisionAnalyzer sample: https://github.com/haritha-mohan/vision-analyzer
 !wrong-simd-missing-marshaldirective! System.Boolean Vision.VNHumanBodyPose3DObservation::GetCameraRelativePosition(CoreGraphics.NMatrix4&,Vision.VNHumanBodyPose3DObservationJointName,Foundation.NSError&): simd type: simd_float4x4
-

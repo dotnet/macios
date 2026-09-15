@@ -21,10 +21,10 @@ namespace MonoTouchFixtures.UniformTypeIdentifiers {
 			TestRuntime.AssertIfSimulatorThenARM64 ();
 
 			var a = UTTypes.Archive;
-			Assert.False (a.Dynamic, "Dynamic");
+			Assert.That (a.Dynamic, Is.False, "Dynamic");
 			var z = UTTypes.Zip;
-			Assert.True (z.IsSubtypeOf (a), "IsSubtypeOf");
-			Assert.True (a.IsSupertypeOf (z), "IsSupertypeOf");
+			Assert.That (z.IsSubtypeOf (a), Is.True, "IsSubtypeOf");
+			Assert.That (a.IsSupertypeOf (z), Is.True, "IsSupertypeOf");
 		}
 	}
 }

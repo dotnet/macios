@@ -36,4 +36,8 @@
     <BuildType Solution="Debug-net461|*" Project="Debug" />
     <BuildType Solution="Debug-netstandard2.0|*" Project="Debug" />
   </Project>
+  <Project Path="../tools/assembly-preparer/assembly-preparer.csproj">
+    <BuildType Solution="Debug-net461|*" Project="Debug" />
+    <BuildType Solution="Debug-netstandard2.0|*" Project="Debug" />
+  </Project>
 </Solution>

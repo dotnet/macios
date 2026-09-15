@@ -30,7 +30,7 @@ namespace MonoTouchFixtures.SceneKit {
 				using (var source = SCNGeometrySource.FromMetalBuffer (buffer, MTLVertexFormat.Char2, SCNGeometrySourceSemantic.Vertex, 36, 0, 0)) {
 					// the fact that it works means the lack of respondToSelector (in introspection tests) is no 
 					// big deal and that the API really exists
-					Assert.NotNull (source);
+					Assert.That (source, Is.Not.Null);
 				}
 			}
 		}

@@ -1,5 +1,7 @@
 {
   "author": "Microsoft",
   "name": "Biblioteca de enlace de Mac Catalyst",
-  "description": "Proyecto para crear una biblioteca de enlace de Mac Catalyst de .NET"
+  "description": "Proyecto para crear una biblioteca de enlace de Mac Catalyst de .NET",
+  "symbols/Framework/description": "The target framework for the project.",
+  "symbols/Framework/choices/net10.0-maccatalyst/description": "Target net10.0-maccatalyst"
 }

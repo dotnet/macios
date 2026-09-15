@@ -13,8 +13,7 @@ namespace Vision {
 	public partial class VNDetectBarcodesRequest {
 
 		/// <summary>Gets or sets the array of <see cref="VNBarcodeSymbology" /> types the request should attempt to recognize.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <value>An array of barcode symbologies to detect.</value>
 		public VNBarcodeSymbology [] Symbologies {
 			get { return VNBarcodeSymbologyExtensions.GetValues (WeakSymbologies); }
 			set { WeakSymbologies = value.GetConstants (); }

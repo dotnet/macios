@@ -1,5 +1,7 @@
 {
   "author": "Microsoft",
   "name": "tvOS クラス ライブラリ",
-  "description": ".NET tvOS クラス ライブラリを作成するためのプロジェクト"
+  "description": ".NET tvOS クラス ライブラリを作成するためのプロジェクト",
+  "symbols/Framework/description": "The target framework for the project.",
+  "symbols/Framework/choices/net10.0-tvos/description": "Target net10.0-tvos"
 }

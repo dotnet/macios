@@ -64,7 +64,7 @@ namespace Xamarin.MacDev.Tasks {
 		public string? SkipMarkingNSObjectsInUserAssemblies { get; set; }
 
 		[Output]
-		public string? Verbosity { get; set; }
+		public string? BundlerVerbosity { get; set; }
 
 		[Output]
 		public string? Warn { get; set; }
@@ -307,7 +307,7 @@ namespace Xamarin.MacDev.Tasks {
 				}
 
 				if (verbosity.HasValue)
-					Verbosity = verbosity.Value.ToString ();
+					BundlerVerbosity = verbosity.Value.ToString ();
 			}
 
 			return !Log.HasLoggedErrors;

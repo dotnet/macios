@@ -29,12 +29,6 @@ namespace Xamarin.MacDev.Tasks {
 		static readonly string [] macDirectDistributionPrefixes = { "Developer ID Application" };
 		static readonly string [] macDevelopmentPrefixes = { "Mac Developer", "Apple Development" };
 
-		protected string DeveloperRoot {
-			get {
-				return Sdks.GetAppleSdk (TargetFrameworkMoniker).DeveloperRoot;
-			}
-		}
-
 		protected string [] DevelopmentPrefixes {
 			get {
 				switch (Platform) {
@@ -186,7 +180,7 @@ namespace Xamarin.MacDev.Tasks {
 						hasEntitlements = false;
 					} else {
 						// Check the file to see if there are any entitlements inside
-						var entitlements = PDictionary.FromFile (CodesignEntitlements!.ItemSpec)!;
+						var entitlements = PDictionary.OpenFile (CodesignEntitlements!.ItemSpec);
 						hasEntitlements = entitlements.Count > 0;
 					}
 				}
@@ -583,7 +577,7 @@ namespace Xamarin.MacDev.Tasks {
 			else if (ProvisioningProfile == AutomaticAdHocProvision)
 				type = MobileProvisionDistributionType.AdHoc;
 
-			DetectedCodesignAllocate = Path.Combine (DeveloperRoot, "Toolchains", "XcodeDefault.xctoolchain", "usr", "bin", "codesign_allocate");
+			DetectedCodesignAllocate = Path.Combine (CurrentSdk.DeveloperRoot, "Toolchains", "XcodeDefault.xctoolchain", "usr", "bin", "codesign_allocate");
 			DetectedDistributionType = type.ToString ();
 
 			identity.BundleId = BundleIdentifier;

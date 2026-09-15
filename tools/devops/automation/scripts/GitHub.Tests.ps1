@@ -225,6 +225,60 @@ Describe 'Convert-Markdown' {
     }
 }
 
+Describe 'Test-GitIsAncestor' {
+    It 'returns true and does not leak a non-zero exit code when the commit is an ancestor' {
+        InModuleScope 'GitHub' {
+            $head = (& git rev-parse HEAD).Trim()
+            $parent = (& git rev-parse HEAD~1).Trim()
+            $global:LASTEXITCODE = 0
+            $result = Test-GitIsAncestor -Commit $parent -Branch $head
+            $result | Should -Be $true
+            $global:LASTEXITCODE | Should -Be 0
+        }
+    }
+
+    It 'returns false and does not leak a non-zero exit code when the commit is not an ancestor' {
+        InModuleScope 'GitHub' {
+            $head = (& git rev-parse HEAD).Trim()
+            $parent = (& git rev-parse HEAD~1).Trim()
+            $global:LASTEXITCODE = 0
+            $result = Test-GitIsAncestor -Commit $head -Branch $parent
+            $result | Should -Be $false
+            $global:LASTEXITCODE | Should -Be 0
+        }
+    }
+
+    It 'does not leak a non-zero exit code when the branch cannot be resolved' {
+        InModuleScope 'GitHub' {
+            $head = (& git rev-parse HEAD).Trim()
+            $global:LASTEXITCODE = 0
+            { Test-GitIsAncestor -Commit $head -Branch "origin/this-branch-does-not-exist-26107" } | Should -Throw
+            $global:LASTEXITCODE | Should -Be 0
+        }
+    }
+}
+
+Describe 'Get-GitCommitParents' {
+    It 'returns the parents and does not leak a non-zero exit code for a valid commit' {
+        InModuleScope 'GitHub' {
+            $head = (& git rev-parse HEAD).Trim()
+            $parent = (& git rev-parse HEAD~1).Trim()
+            $global:LASTEXITCODE = 0
+            $result = Get-GitCommitParents -Commit $head
+            $result | Should -Contain $parent
+            $global:LASTEXITCODE | Should -Be 0
+        }
+    }
+
+    It 'does not leak a non-zero exit code when the commit cannot be resolved' {
+        InModuleScope 'GitHub' {
+            $global:LASTEXITCODE = 0
+            { Get-GitCommitParents -Commit "this-commit-does-not-exist-26107" } | Should -Throw
+            $global:LASTEXITCODE | Should -Be 0
+        }
+    }
+}
+
 Describe 'IsCurrentCommitLatestInPR' {
     Context 'when in PR context' {
         BeforeAll {

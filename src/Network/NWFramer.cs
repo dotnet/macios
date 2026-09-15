@@ -25,9 +25,9 @@ namespace Network {
 	public delegate nuint NWFramerParseCompletionDelegate (Memory<byte> buffer, bool isCompleted);
 	public delegate nuint NWFramerInputDelegate (NWFramer framer);
 
-	[SupportedOSPlatform ("tvos13.0")]
+	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("ios13.0")]
+	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	public class NWFramer : NativeObject {
 		[Preserve (Conditional = true)]
@@ -373,16 +373,16 @@ namespace Network {
 		}
 
 		[SupportedOSPlatform ("tvos16.0")]
-		[SupportedOSPlatform ("macos13.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.NetworkLibrary)]
 		static extern OS_nw_protocol_options nw_framer_copy_options (OS_nw_framer framer);
 
 		[SupportedOSPlatform ("tvos16.0")]
-		[SupportedOSPlatform ("macos13.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public NSProtocolFramerOptions? ProtocolOptions {
 			get {
 				var x = nw_framer_copy_options (GetCheckedHandle ());

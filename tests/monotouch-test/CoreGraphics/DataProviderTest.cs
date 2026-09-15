@@ -57,13 +57,13 @@ namespace MonoTouchFixtures.CoreGraphics {
 		{
 			IntPtr memory = Marshal.AllocHGlobal (20);
 			using (var provider = new CGDataProvider (memory, 20, ((IntPtr mem) => {
-				Assert.AreEqual (memory, mem, "mem");
+				Assert.That (mem, Is.EqualTo (memory), "mem");
 				Marshal.FreeHGlobal (mem);
 				memory = IntPtr.Zero;
 			}))) {
 			}
 
-			Assert.AreEqual (IntPtr.Zero, memory, "mem freed");
+			Assert.That (memory, Is.EqualTo (IntPtr.Zero), "mem freed");
 		}
 
 		[Test]

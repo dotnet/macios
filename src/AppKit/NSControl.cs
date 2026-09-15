@@ -37,8 +37,7 @@ namespace AppKit {
 		NSObject? target;
 		Selector? action;
 
-		/// <summary>To be added.</summary>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Occurs when the control is activated by the user.</summary>
 		public event EventHandler Activated {
 			add {
 				target = ActionDispatcher.SetupAction (Target, value);

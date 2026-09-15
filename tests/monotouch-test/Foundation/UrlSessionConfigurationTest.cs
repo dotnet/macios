@@ -41,35 +41,35 @@ namespace MonoTouchFixtures.Foundation {
 
 			// in iOS9 those selectors do not respond - but they do work (forwarded to __NSCFURLSessionConfiguration type ?)
 
-			Assert.True (config.AllowsCellularAccess, "allowsCellularAccess");
+			Assert.That (config.AllowsCellularAccess, Is.True, "allowsCellularAccess");
 			config.AllowsCellularAccess = config.AllowsCellularAccess; // setAllowsCellularAccess:
 
-			Assert.Null (config.ConnectionProxyDictionary, "connectionProxyDictionary");
+			Assert.That (config.ConnectionProxyDictionary, Is.Null, "connectionProxyDictionary");
 			config.ConnectionProxyDictionary = null; // setConnectionProxyDictionary:
 
-			Assert.False (config.Discretionary, "isDiscretionary");
+			Assert.That (config.Discretionary, Is.False, "isDiscretionary");
 			config.Discretionary = config.Discretionary; // setDiscretionary:
 
-			Assert.Null (config.HttpAdditionalHeaders, "HTTPAdditionalHeaders");
+			Assert.That (config.HttpAdditionalHeaders, Is.Null, "HTTPAdditionalHeaders");
 			config.HttpAdditionalHeaders = config.HttpAdditionalHeaders; // setHTTPAdditionalHeaders:
 
 			Assert.That (config.HttpCookieAcceptPolicy, Is.EqualTo (NSHttpCookieAcceptPolicy.OnlyFromMainDocumentDomain), "HTTPCookieAcceptPolicy");
 			config.HttpCookieAcceptPolicy = config.HttpCookieAcceptPolicy; // setHTTPCookieAcceptPolicy:
 
-			Assert.NotNull (config.HttpCookieStorage, "HTTPCookieStorage");
+			Assert.That (config.HttpCookieStorage, Is.Not.Null, "HTTPCookieStorage");
 			config.HttpCookieStorage = config.HttpCookieStorage; // setHTTPCookieStorage:
 
 			// iOS 7.x returned 6 (instead of 4)
 			Assert.That (config.HttpMaximumConnectionsPerHost, Is.GreaterThanOrEqualTo ((nint) 4), "HTTPMaximumConnectionsPerHost");
 			config.HttpMaximumConnectionsPerHost = config.HttpMaximumConnectionsPerHost; // setHTTPMaximumConnectionsPerHost:
 
-			Assert.True (config.HttpShouldSetCookies, "HTTPShouldSetCookies");
+			Assert.That (config.HttpShouldSetCookies, Is.True, "HTTPShouldSetCookies");
 			config.HttpShouldSetCookies = config.HttpShouldSetCookies; // setHTTPShouldSetCookies:
 
-			Assert.False (config.HttpShouldUsePipelining, "HTTPShouldUsePipelining");
+			Assert.That (config.HttpShouldUsePipelining, Is.False, "HTTPShouldUsePipelining");
 			config.HttpShouldUsePipelining = config.HttpShouldUsePipelining; // setHTTPShouldUsePipelining:
 
-			Assert.Null (config.Identifier, "identifier");
+			Assert.That (config.Identifier, Is.Null, "identifier");
 
 			Assert.That (config.NetworkServiceType, Is.EqualTo (NSUrlRequestNetworkServiceType.Default), "networkServiceType");
 			config.NetworkServiceType = config.NetworkServiceType; // setNetworkServiceType:
@@ -77,7 +77,7 @@ namespace MonoTouchFixtures.Foundation {
 			Assert.That (config.RequestCachePolicy, Is.EqualTo (NSUrlRequestCachePolicy.UseProtocolCachePolicy), "requestCachePolicy");
 			config.RequestCachePolicy = config.RequestCachePolicy; // setRequestCachePolicy:
 
-			Assert.False (config.SessionSendsLaunchEvents, "sessionSendsLaunchEvents");
+			Assert.That (config.SessionSendsLaunchEvents, Is.False, "sessionSendsLaunchEvents");
 			config.SessionSendsLaunchEvents = config.SessionSendsLaunchEvents; // setSessionSendsLaunchEvents:
 
 			var hasSharedContainerIdentifier = true;
@@ -87,7 +87,7 @@ namespace MonoTouchFixtures.Foundation {
 			hasSharedContainerIdentifier = TestRuntime.CheckXcodeVersion (6, 0);
 #endif
 			if (hasSharedContainerIdentifier) {
-				Assert.Null (config.SharedContainerIdentifier, "sharedContainerIdentifier");
+				Assert.That (config.SharedContainerIdentifier, Is.Null, "sharedContainerIdentifier");
 				config.SharedContainerIdentifier = config.SharedContainerIdentifier; // setSharedContainerIdentifier:
 			}
 
@@ -104,10 +104,10 @@ namespace MonoTouchFixtures.Foundation {
 			Assert.That (config.TLSMinimumSupportedProtocol, Is.GreaterThanOrEqualTo (SslProtocol.Ssl_3_0), "TLSMinimumSupportedProtocol");
 			config.TLSMinimumSupportedProtocol = config.TLSMinimumSupportedProtocol; // setTLSMinimumSupportedProtocol:
 
-			Assert.NotNull (config.URLCache, "URLCache");
+			Assert.That (config.URLCache, Is.Not.Null, "URLCache");
 			config.URLCache = config.URLCache; // setURLCache:
 
-			Assert.NotNull (config.URLCredentialStorage, "URLCredentialStorage");
+			Assert.That (config.URLCredentialStorage, Is.Not.Null, "URLCredentialStorage");
 			config.URLCredentialStorage = config.URLCredentialStorage; // setURLCredentialStorage:
 
 			var hasProtocolClasses = true;
@@ -117,9 +117,9 @@ namespace MonoTouchFixtures.Foundation {
 			hasProtocolClasses = TestRuntime.CheckXcodeVersion (6, 0);
 #endif
 			if (hasProtocolClasses) {
-				Assert.NotNull (config.WeakProtocolClasses, "protocolClasses");
+				Assert.That (config.WeakProtocolClasses, Is.Not.Null, "protocolClasses");
 			} else {
-				Assert.Null (config.WeakProtocolClasses, "protocolClasses");
+				Assert.That (config.WeakProtocolClasses, Is.Null, "protocolClasses");
 			}
 			config.WeakProtocolClasses = config.WeakProtocolClasses; // setProtocolClasses:
 		}

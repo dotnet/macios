@@ -47,7 +47,7 @@ namespace MonoTouchFixtures.ModelIO {
 						new Vector4i (1, 2, 3, 4),
 						new Vector4i (5, 6, 7, 8));
 					var voxels = obj.GetVoxels (extents);
-					Assert.IsNull (voxels, "GetVoxels");
+					Assert.That (voxels, Is.Null, "GetVoxels");
 
 					extents = obj.VoxelIndexExtent;
 					Assert.That (extents.MaximumExtent.X, Is.EqualTo (-1).Or.EqualTo (0), "MaxX");

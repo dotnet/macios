@@ -1,5 +1,7 @@
 #nullable enable
 
+using Xamarin.Bundler;
+
 namespace Xamarin.Tests {
 	[TestFixture]
 	public class BundleStructureTest : TestBaseClass {
@@ -292,10 +294,14 @@ namespace Xamarin.Tests {
 			AddExpectedFrameworkFiles (platform, expectedFiles, "FrameworkTest4", isSigned);
 			AddExpectedFrameworkFiles (platform, expectedFiles, "FrameworkTest5", isSigned);
 
-			AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, "bindings-framework-test", runtimeIdentifiers, forceSingleRid: platform != ApplePlatform.MacCatalyst, includeDebugFiles: includeDebugFiles);
+			// In a hot-reload-compatible build (the default for Debug) the assembly-preparer doesn't
+			// modify reloadable user assemblies (previously it injected smart-enum conversion
+			// [DynamicDependency] attributes, which made bindings-framework-test differ per RID). So the
+			// assembly is now identical across RIDs and gets deduplicated into a single top-level copy.
+			AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, "bindings-framework-test", runtimeIdentifiers, forceSingleRid: platform != ApplePlatform.MacCatalyst || !isReleaseBuild, includeDebugFiles: includeDebugFiles);
 			AddExpectedFrameworkFiles (platform, expectedFiles, "XTest", isSigned);
 
-			AddExpectedFrameworkFiles (platform, expectedFiles, "FrameworkWithLongFileNames", isSigned, longHeader: true);
+			AddExpectedFrameworkFiles (platform, expectedFiles, "FrameworkWithLongFileNames", isSigned, longFile: true);
 
 			// various directories
 			expectedFiles.Add (frameworksDirectory);
@@ -311,6 +317,7 @@ namespace Xamarin.Tests {
 			if (platform != ApplePlatform.MacOSX)
 				AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, "MonoTouch.Dialog", runtimeIdentifiers, forceSingleRid: (platform == ApplePlatform.MacCatalyst && !isReleaseBuild), includeDebugFiles: includeDebugFiles);
 			expectedFiles.Add (Path.Combine (assemblyDirectory, "nunit.framework.dll"));
+			expectedFiles.Add (Path.Combine (assemblyDirectory, "nunit.framework.legacy.dll"));
 			expectedFiles.Add (Path.Combine (assemblyDirectory, "nunitlite.dll"));
 			expectedFiles.Add (Path.Combine (assemblyDirectory, "Mono.Options.dll"));
 			AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, "Touch.Client", runtimeIdentifiers, platform == ApplePlatform.MacOSX || (platform == ApplePlatform.MacCatalyst && !isReleaseBuild), includeDebugFiles: includeDebugFiles);
@@ -534,11 +541,11 @@ namespace Xamarin.Tests {
 			}
 		}
 
-		static void AddExpectedFrameworkFiles (ApplePlatform platform, List<string> expectedFiles, string frameworkName, CodeSignature signature, string subdirectory = "", bool longHeader = false)
+		static void AddExpectedFrameworkFiles (ApplePlatform platform, List<string> expectedFiles, string frameworkName, CodeSignature signature, string subdirectory = "", bool longFile = false)
 		{
 			var isSigned = signature != CodeSignature.None;
 			var frameworksDirectory = "Frameworks";
-			var headersDirectoryInFramework = "Headers";
+			var longFileInFramework = Path.Combine ("Resources", "full-paths-exceeding-two-hundred-and-sixty-characters", "often-cause-trouble-on-windows", "where-the-maximum-is-by-default-two-hundred-and-sixty-characters", "because-frameworks-and-by-extension-xcframeworks", "very-often-have-paths-longer-than-this-limit", "especially-when-contained-in-other-directories.txt");
 			switch (platform) {
 			case ApplePlatform.iOS:
 			case ApplePlatform.TVOS:
@@ -546,15 +553,11 @@ namespace Xamarin.Tests {
 			case ApplePlatform.MacCatalyst:
 			case ApplePlatform.MacOSX:
 				frameworksDirectory = Path.Combine ("Contents", "Frameworks");
-				headersDirectoryInFramework = Path.Combine ("Versions", "A", "Headers");
+				longFileInFramework = Path.Combine ("Versions", "A", longFileInFramework);
 				break;
 			default:
 				throw new NotImplementedException ($"Unknown platform: {platform}");
 			}
-
-			var headers = new List<string> ();
-			if (longHeader)
-				headers.Add (Path.Combine (headersDirectoryInFramework, "full-paths-exceeding-two-hundred-and-sixty-characters", "often-cause-trouble-on-windows", "where-the-maximum-is-by-default-two-hundred-and-sixty-characters", "because-frameworks-and-by-extension-xcframeworks", "very-often-have-paths-longer-than-this-limit", "especially-when-contained-in-other-directories.h"));
 
 			expectedFiles.Add (Path.Combine (frameworksDirectory, $"{frameworkName}.framework"));
 			expectedFiles.Add (Path.Combine (frameworksDirectory, $"{frameworkName}.framework", frameworkName));
@@ -562,6 +565,8 @@ namespace Xamarin.Tests {
 			case ApplePlatform.iOS:
 			case ApplePlatform.TVOS:
 				expectedFiles.Add (Path.Combine (frameworksDirectory, $"{frameworkName}.framework", "Info.plist"));
+				if (longFile)
+					expectedFiles.Add (Path.Combine (frameworksDirectory, $"{frameworkName}.framework", "Resources"));
 				break;
 			case ApplePlatform.MacCatalyst:
 			case ApplePlatform.MacOSX:
@@ -573,19 +578,17 @@ namespace Xamarin.Tests {
 				expectedFiles.Add (Path.Combine (frameworksDirectory, $"{frameworkName}.framework", "Versions", "A", frameworkName));
 				expectedFiles.Add (Path.Combine (frameworksDirectory, $"{frameworkName}.framework", "Versions", "Current"));
 
-				if (headers.Any ())
-					expectedFiles.Add (Path.Combine (frameworksDirectory, $"{frameworkName}.framework", "Headers"));
 				break;
 			default:
 				throw new NotImplementedException ($"Unknown platform: {platform}");
 			}
 
-			foreach (var header in headers) {
+			if (longFile) {
 				var path = Path.Combine (frameworksDirectory, $"{frameworkName}.framework");
-				var headerComponents = header.Split ('\\', '/');
-				for (var i = 0; i < headerComponents.Length; i++) {
-					path = Path.Combine (path, headerComponents [i]);
-					expectedFiles.Add (path);
+				foreach (var component in longFileInFramework.Split ('\\', '/')) {
+					path = Path.Combine (path, component);
+					if (!expectedFiles.Contains (path))
+						expectedFiles.Add (path);
 				}
 			}
 
@@ -611,6 +614,40 @@ namespace Xamarin.Tests {
 			None,
 			Frameworks,
 			All,
+		}
+
+		[Test]
+		public void PreserveFrameworkHeaders ()
+		{
+			var platform = ApplePlatform.iOS;
+			var runtimeIdentifier = "iossimulator-arm64";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifier);
+
+			var projectPath = GetProjectPath ("BundleStructure", runtimeIdentifiers: runtimeIdentifier, platform: platform, out var appPath);
+			Clean (projectPath);
+
+			var properties = GetDefaultProperties (runtimeIdentifier);
+			properties ["EnableCodeSigning"] = "false";
+			DotNet.AssertBuild (projectPath, properties);
+
+			var header = Path.Combine (appPath, "Frameworks", "FrameworkWithLongFileNames.framework", "Headers", "test.h");
+			Assert.That (header, Does.Not.Exist);
+
+			properties ["StripFrameworkHeaders"] = "false";
+			DotNet.AssertBuild (projectPath, properties);
+
+			Assert.That (header, Does.Exist);
+
+			properties ["StripFrameworkHeaders"] = "true";
+			DotNet.AssertBuild (projectPath, properties);
+
+			Assert.That (header, Does.Not.Exist);
+
+			properties ["StripFrameworkHeaders"] = "false";
+			DotNet.AssertBuild (projectPath, properties);
+
+			Assert.That (header, Does.Exist);
 		}
 
 		[Test]
@@ -643,7 +680,7 @@ namespace Xamarin.Tests {
 				properties ["Configuration"] = configuration;
 			var rv = DotNet.AssertBuild (project_path, properties);
 			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
-			var warningMessages = FilterWarnings (warnings);
+			var warningMessages = FilterWarnings (warnings, platform);
 
 			var isReleaseBuild = string.Equals (configuration, "Release", StringComparison.OrdinalIgnoreCase);
 			var platformString = platform.AsString ();
@@ -680,7 +717,7 @@ namespace Xamarin.Tests {
 			var appExecutable = GetNativeExecutable (platform, appPath);
 
 			CheckAppBundleContents (platform, appPath, rids, signature, isReleaseBuild);
-			CollectionAssert.AreEqual (expectedWarnings, warningMessages, "Warnings");
+			Assert.That (warningMessages, Is.EqualTo (expectedWarnings), "Warnings");
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 
 			// touch AppDelegate.cs, and rebuild should succeed and do the right thing
@@ -689,10 +726,10 @@ namespace Xamarin.Tests {
 
 			rv = DotNet.AssertBuild (project_path, properties);
 			warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
-			warningMessages = FilterWarnings (warnings);
+			warningMessages = FilterWarnings (warnings, platform);
 
 			CheckAppBundleContents (platform, appPath, rids, signature, isReleaseBuild);
-			CollectionAssert.AreEqual (expectedWarnings, warningMessages, "Warnings Rebuild 1");
+			Assert.That (warningMessages, Is.EqualTo (expectedWarnings), "Warnings Rebuild 1");
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 
 			// remove the bin directory, and rebuild should succeed and do the right thing
@@ -701,19 +738,19 @@ namespace Xamarin.Tests {
 
 			rv = DotNet.AssertBuild (project_path, properties);
 			warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
-			warningMessages = FilterWarnings (warnings);
+			warningMessages = FilterWarnings (warnings, platform);
 
 			CheckAppBundleContents (platform, appPath, rids, signature, isReleaseBuild);
-			CollectionAssert.AreEqual (expectedWarnings, warningMessages, "Warnings Rebuild 2");
+			Assert.That (warningMessages, Is.EqualTo (expectedWarnings), "Warnings Rebuild 2");
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 
 			// a simple rebuild should succeed
 			rv = DotNet.AssertBuild (project_path, properties);
 			warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
-			warningMessages = FilterWarnings (warnings);
+			warningMessages = FilterWarnings (warnings, platform);
 
 			CheckAppBundleContents (platform, appPath, rids, signature, isReleaseBuild);
-			CollectionAssert.AreEqual (expectedWarnings, warningMessages, "Warnings Rebuild 3");
+			Assert.That (warningMessages, Is.EqualTo (expectedWarnings), "Warnings Rebuild 3");
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 		}
 
@@ -737,9 +774,9 @@ namespace Xamarin.Tests {
 			}
 		}
 
-		public static string [] FilterWarnings (IEnumerable<BuildLogEvent> warnings, bool canonicalizePaths = false)
+		public static string [] FilterWarnings (IEnumerable<BuildLogEvent> warnings, ApplePlatform platform, bool canonicalizePaths = false)
 		{
-			return warnings
+			return Extensions.FilterWarnings (warnings, platform)
 				.Select (v => v?.Message!).Where (v => !string.IsNullOrWhiteSpace (v))
 				// Remove warnings of the form "This call site is reachable on: '...' and later. 'TheAPI' is only supported on: '...' and later."
 				.Where (v => !v.StartsWith ("This call site is reachable on:"))
@@ -749,8 +786,6 @@ namespace Xamarin.Tests {
 				.Where (v => !v.Contains (" is obsolete: "))
 				// More obsolete warnings
 				.Where (v => !v.Contains (" overrides obsolete member "))
-				// Don't care about this
-				.Where (v => !v.Contains ("Supported iPhone orientations have not been set"))
 				// Canonicalize if so requested
 				.Select (v => canonicalizePaths ? v.Replace (Path.DirectorySeparatorChar, '/') : v)
 				// Sort the messages so that comparison against the expected array is faster
@@ -793,8 +828,8 @@ namespace Xamarin.Tests {
 					return false;
 				});
 			foreach (var lib in libraries) {
-				var libArchitectures = renderArchitectures (MachO.GetArchitectures (lib));
-				Assert.AreEqual (expectedArchitectures, libArchitectures, $"Architectures in {lib}");
+				var libArchitectures = renderArchitectures (MachO.GetArchitectures (ConsoleLog.Instance, lib));
+				Assert.That (libArchitectures, Is.EqualTo (expectedArchitectures), $"Architectures in {lib}");
 			}
 		}
 	}

@@ -13,10 +13,10 @@ namespace MonoTouchFixtures.CoreMidi {
 		public void SysExIdByte ()
 		{
 			var value = default (Midi2DeviceManufacturer);
-			CollectionAssert.AreEqual (new byte [] { 0, 0, 0 }, value.SysExIdByte, "A");
+			Assert.That (value.SysExIdByte, Is.EqualTo (new byte [] { 0, 0, 0 }), "A");
 
 			value.SysExIdByte = new byte [] { 1, 2, 3 };
-			CollectionAssert.AreEqual (new byte [] { 1, 2, 3 }, value.SysExIdByte, "B");
+			Assert.That (value.SysExIdByte, Is.EqualTo (new byte [] { 1, 2, 3 }), "B");
 
 			Assert.Throws<ArgumentNullException> (() => value.SysExIdByte = null, "C");
 			Assert.Throws<ArgumentOutOfRangeException> (() => value.SysExIdByte = new byte [2], "D");

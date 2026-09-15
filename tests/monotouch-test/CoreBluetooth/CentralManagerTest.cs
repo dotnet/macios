@@ -84,7 +84,7 @@ namespace MonoTouchFixtures.CoreBluetooth {
 		public void Constructors ()
 		{
 			// Manager creates it, we'll simply check it has a non-null delegate
-			Assert.NotNull (mgr.Delegate, "Delegate");
+			Assert.That (mgr.Delegate, Is.Not.Null, "Delegate");
 		}
 
 		[Test]

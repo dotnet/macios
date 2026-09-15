@@ -130,6 +130,7 @@ APPKIT_SOURCES = \
 	AppKit/NSPopUpButtonCell.cs \
 	AppKit/NSPredicateEditorRowTemplate.cs \
 	AppKit/NSPrintInfo.cs \
+	AppKit/NSPrintPreviewGraphicsContext.cs \
 	AppKit/NSScreen.cs \
 	AppKit/NSSegmentedControl.cs \
 	AppKit/NSSharingService.cs \
@@ -203,6 +204,7 @@ AUDIOTOOLBOX_SOURCES = \
 	AudioToolbox/AudioFormatAvailability.cs \
 	AudioToolbox/AudioQueue.cs \
 	AudioToolbox/AudioServices.cs \
+	AudioToolbox/AudioServerPlugIn.cs \
 	AudioToolbox/AudioToolbox.cs \
 	AudioToolbox/SystemSound.cs \
 	AudioToolbox/MusicPlayer.cs \
@@ -225,6 +227,7 @@ AUDIOUNIT_SOURCES = \
 	AudioUnit/ExtAudioFile.cs \
 	AudioUnit/AUScheduledAudioFileRegion.cs \
 	AudioUnit/AUParameter.cs \
+	AudioUnit/AUHeadTrackingBinauralRenderer.cs \
 
 # AuthenticationServices
 
@@ -277,12 +280,12 @@ AVFOUNDATION_SOURCES = \
 	AVFoundation/AVOutputSettingsAssistant.cs \
 	AVFoundation/AVPlayerItem.cs \
 	AVFoundation/AVPlayerItemVideoOutput.cs \
+	AVFoundation/AVPlannedVideoSegmentWritingRequest.cs \
 	AVFoundation/AVPlayerLayer.cs \
 	AVFoundation/AVSampleBufferExtensions.cs \
 	AVFoundation/AVSampleCursor.cs \
 	AVFoundation/AVSpeechSynthesizer.cs \
 	AVFoundation/AVSpeechSynthesisMarker.cs \
-	AVFoundation/AVSpeechSynthesisProviderAudioUnit.cs \
 	AVFoundation/AVSpeechUtterance.cs \
 	AVFoundation/AVTextStyleRule.cs \
 	AVFoundation/AVAssetTrack.cs \
@@ -300,7 +303,6 @@ AVKIT_API_SOURCES = \
 	AVKit/Enums.cs \
 
 AVKIT_SOURCES = \
-	AVKit/AVCaptureEventSound.cs \
 	AVKit/AVPlayerViewController.cs \
 
 # AVRouting
@@ -316,12 +318,12 @@ BACKGROUNDTASKS_API_SOURCES = \
 # BackgroundAssets
 
 BACKGROUNDASSETS_SOURCES = \
-	BackgroundAssets/BAAssetPackManifest.cs \
 	BackgroundAssets/BACompat.cs \
 
 # BrowserEngineKit
 
 BROWSERENGINEKIT_CORE_SOURCES = \
+	BrowserEngineKit/BEWebContentFilterEvaluateUrlWithMainFrameResult.cs \
 	BrowserEngineKit/BEStructs.cs \
 
 # BusinessChat
@@ -540,12 +542,14 @@ COREGRAPHICS_SOURCES = \
 	CoreGraphics/CGPDFArray.cs \
 	CoreGraphics/CGPDFContentStream.cs \
 	CoreGraphics/CGPDFDictionary.cs \
+	CoreGraphics/CGPDFMarkedContentItem.cs \
 	CoreGraphics/CGPDFObject.cs \
 	CoreGraphics/CGPDFOperatorTable.cs \
 	CoreGraphics/CGPDFPage.cs \
 	CoreGraphics/CGPDFScanner.cs \
 	CoreGraphics/CGPDFStream.cs \
 	CoreGraphics/CGPDFString.cs \
+	CoreGraphics/CGPDFStructureElement.cs \
 	CoreGraphics/CGPdfTagType.cs \
 	CoreGraphics/CGRenderingBufferProvider.cs \
 	CoreGraphics/CGSession.cs \
@@ -573,6 +577,7 @@ COREIMAGE_SOURCES = \
 	CoreImage/CIDetector.cs \
 	CoreImage/CIDetectorOptions.cs \
 	CoreImage/CIFilter.cs \
+	CoreImage/CIFilterGenerator.cs \
 	CoreImage/CIImage.cs \
 	CoreImage/CISampler.cs \
 	CoreImage/CISystemToneMap.cs \
@@ -933,6 +938,7 @@ FSKIT_CORE_SOURCES = \
 
 FSKIT_SOURCES = \
 	FSKit/FSBlockDeviceResource.cs \
+	FSKit/FSEntityIdentifier.cs \
 	FSKit/FSFileName.cs \
 	FSKit/FSKitFunctions.cs \
 
@@ -1471,6 +1477,7 @@ PHOTOS_API_SOURCES = \
 PHOTOS_SOURCES = \
 	Photos/PHAssetChangeRequest.cs \
 	Photos/PHAssetCreationRequest.cs \
+	Photos/PHCloudIdentifier.cs \
 	Photos/PHFetchResult.cs \
 	Photos/PHLivePhoto.cs \
 	Photos/PHPhotoLibrary.cs \
@@ -1590,8 +1597,12 @@ SECURITY_API_SOURCES = \
 	Security/SecureTransport.cs \
 
 SECURITY_CORE_SOURCES = \
+	Security/AuthorizationEngine.cs \
+	Security/AuthorizationEnums.cs \
 	Security/Certificate.cs \
 	Security/SecAccessControl.cs \
+	Security/SecKeychain.cs \
+	Security/SecKeychainSettings.cs \
 	Security/SecProtocolMetadata.cs \
 	Security/SecProtocolOptions.cs \
 	Security/Trust.cs \
@@ -1600,6 +1611,8 @@ SECURITY_CORE_SOURCES = \
 
 SECURITY_SOURCES = \
 	Security/Authorization.cs \
+	Security/AuthorizationCallbacks.cs \
+	Security/AuthorizationRights.cs \
 	Security/ImportExport.cs \
 	Security/Items.cs \
 	Security/Policy.cs \
@@ -1612,10 +1625,22 @@ SECURITY_SOURCES = \
 	Security/SslConnection.cs \
 	Security/SslContext.cs \
 
-# SensitiveContentAnalysis
+# SecurityInterface
 
-SENSITIVECONTENTANALYSIS_SOURCES = \
-	SensitiveContentAnalysis/SCVideoStreamAnalyzer.cs \
+SECURITYINTERFACE_CORE_SOURCES = \
+	SecurityInterface/Enums.cs \
+
+SECURITYINTERFACE_SOURCES = \
+	SecurityInterface/SecurityInterfaceSheetDispatcher.cs \
+	SecurityInterface/SFCertificatePanel.cs \
+	SecurityInterface/SFCertificateView.cs \
+	SecurityInterface/SFChooseIdentityPanel.cs \
+	SecurityInterface/SFAuthorizationPluginView.cs \
+	SecurityInterface/SFAuthorizationView.cs \
+	SecurityInterface/SFKeychainSavePanel.cs \
+	SecurityInterface/SFKeychainSettingsPanel.cs \
+
+# SensitiveContentAnalysis
 
 # SensorKit
 
@@ -1751,7 +1776,6 @@ UIKIT_SOURCES = \
 	UIKit/UIImagePickerController.cs \
 	UIKit/UIKeyboard.cs \
 	UIKit/UIKitSynchronizationContext.cs \
-	UIKit/UIListSeparatorConfiguration.cs \
 	UIKit/UIMenu.cs \
 	UIKit/UINavigationBar.cs \
 	UIKit/UINavigationController.cs \
@@ -1810,7 +1834,6 @@ VIDEOTOOLBOX_SOURCES = \
 	VideoToolbox/VTDecompressionSession.cs \
 	VideoToolbox/VTFrameSilo.cs \
 	VideoToolbox/VTHdrPerFrameMetadataGenerationSession.cs \
-	VideoToolbox/VTLowLatencyFrameInterpolationConfiguration.cs \
 	VideoToolbox/VTMultiPassStorage.cs \
 	VideoToolbox/VTPixelRotationProperties.cs \
 	VideoToolbox/VTPixelRotationSession.cs \
@@ -1863,7 +1886,6 @@ WEBKIT_SOURCES = \
 	WebKit/WKContentRuleListStore.cs \
 	WebKit/WKNavigationResponse.cs \
 	WebKit/WKPreferences.cs \
-	WebKit/WKWebExtensionMatchPattern.cs \
 	WebKit/WKWindowFeatures.cs \
 
 #
@@ -1908,6 +1930,7 @@ SHARED_CORE_SOURCES = \
 	ObjCRuntime/TransientCFString.cs \
 	ObjCRuntime/TransientString.cs \
 	ObjCRuntime/NFloat.cs \
+	ObjCRuntime/ObjCSuper.cs \
 	ObjCRuntime/ObjectiveCFrameworkAttribute.cs \
 	ObjCRuntime/ObsoleteConstants.cs \
 	ObjCRuntime/Protocol.cs \
@@ -2003,20 +2026,24 @@ COMMON_FRAMEWORKS =         \
 	DeviceCheck             \
 	Foundation              \
 	GameKit                 \
+	LinkSecurity            \
 	MetalFX                 \
 	NaturalLanguage         \
 	Network                 \
 	OSLog                   \
 	SceneKit                \
+	ScreenCaptureKit        \
 	ShazamKit               \
 	Symbols                 \
 	SoundAnalysis 			\
 	SpriteKit               \
+	StateReporting          \
 	StoreKit				\
 	UniformTypeIdentifiers  \
 
 MACOS_FRAMEWORKS =          \
 	$(COMMON_FRAMEWORKS)    \
+	AccessoryAccess         \
 	Accounts                \
 	AdServices              \
 	AdSupport               \
@@ -2108,13 +2135,13 @@ MACOS_FRAMEWORKS =          \
 	ReplayKit               \
 	SafariServices          \
 	SafetyKit               \
-	ScreenCaptureKit        \
 	ScreenTime              \
 	ScriptingBridge         \
 	SearchKit               \
 	SensitiveContentAnalysis \
 	ServiceManagement       \
 	Security                \
+	SecurityInterface       \
 	SecurityUI              \
 	SharedWithYou           \
 	SharedWithYouCore       \
@@ -2133,6 +2160,7 @@ IOS_FRAMEWORKS =         \
 	$(COMMON_FRAMEWORKS) \
 	AVKit \
 	AVRouting \
+	AVSystemRouting \
 	Accounts \
 	AccessorySetupKit \
 	AdServices \
@@ -2403,7 +2431,6 @@ MACCATALYST_FRAMEWORKS = \
 	ReplayKit \
 	SafariServices \
 	SafetyKit \
-	ScreenCaptureKit \
 	ScreenTime \
 	Security \
 	SecurityUI \
@@ -2428,25 +2455,25 @@ MACCATALYST_FRAMEWORKS = \
 # Compute the SOURCES variables.
 #
 
-IOS_DOTNET_CORE_SOURCES      := $(sort $(foreach framework,$(shell echo $(IOS_FRAMEWORKS) | tr '[:lower:]' '[:upper:]'),$($(framework)_CORE_SOURCES))     $(SHARED_CORE_SOURCES))
-IOS_DOTNET_API_SOURCES       := $(sort $(foreach framework,$(shell echo $(IOS_FRAMEWORKS) | tr '[:lower:]' '[:upper:]'),$($(framework)_API_SOURCES))      $(SHARED_API_SOURCES))
-IOS_DOTNET_APIS              := $(sort $(foreach framework,$(shell echo $(IOS_FRAMEWORKS) | tr '[:upper:]' '[:lower:]'),$(framework).cs)                  $(IOS_DOTNET_API_SOURCES))
-IOS_DOTNET_SOURCES           := $(sort $(foreach framework,$(shell echo $(IOS_FRAMEWORKS) | tr '[:lower:]' '[:upper:]'),$($(framework)_SOURCES))          $(SHARED_SOURCES) $(IOS_DOTNET_CORE_SOURCES))
+IOS_DOTNET_CORE_SOURCES      := $(sort $(foreach framework,$(call uppercase,$(IOS_FRAMEWORKS)),$($(framework)_CORE_SOURCES))     $(SHARED_CORE_SOURCES))
+IOS_DOTNET_API_SOURCES       := $(sort $(foreach framework,$(call uppercase,$(IOS_FRAMEWORKS)),$($(framework)_API_SOURCES))      $(SHARED_API_SOURCES))
+IOS_DOTNET_APIS              := $(sort $(foreach framework,$(call lowercase,$(IOS_FRAMEWORKS)),$(framework).cs)                  $(IOS_DOTNET_API_SOURCES))
+IOS_DOTNET_SOURCES           := $(sort $(foreach framework,$(call uppercase,$(IOS_FRAMEWORKS)),$($(framework)_SOURCES))          $(SHARED_SOURCES) $(IOS_DOTNET_CORE_SOURCES))
 
-MACOS_DOTNET_CORE_SOURCES    := $(sort $(foreach framework,$(shell echo $(MACOS_FRAMEWORKS) | tr '[:lower:]' '[:upper:]'),$($(framework)_CORE_SOURCES))   $(SHARED_CORE_SOURCES))
-MACOS_DOTNET_API_SOURCES     := $(sort $(foreach framework,$(shell echo $(MACOS_FRAMEWORKS) | tr '[:lower:]' '[:upper:]'),$($(framework)_API_SOURCES))    $(SHARED_API_SOURCES))
-MACOS_DOTNET_APIS            := $(sort $(foreach framework,$(shell echo $(MACOS_FRAMEWORKS) | tr '[:upper:]' '[:lower:]'),$(framework).cs)                $(MACOS_DOTNET_API_SOURCES))
-MACOS_DOTNET_SOURCES         := $(sort $(foreach framework,$(shell echo $(MACOS_FRAMEWORKS) | tr '[:lower:]' '[:upper:]'),$($(framework)_SOURCES))        $(SHARED_SOURCES) $(MACOS_DOTNET_CORE_SOURCES))
+MACOS_DOTNET_CORE_SOURCES    := $(sort $(foreach framework,$(call uppercase,$(MACOS_FRAMEWORKS)),$($(framework)_CORE_SOURCES))   $(SHARED_CORE_SOURCES))
+MACOS_DOTNET_API_SOURCES     := $(sort $(foreach framework,$(call uppercase,$(MACOS_FRAMEWORKS)),$($(framework)_API_SOURCES))    $(SHARED_API_SOURCES))
+MACOS_DOTNET_APIS            := $(sort $(foreach framework,$(call lowercase,$(MACOS_FRAMEWORKS)),$(framework).cs)                $(MACOS_DOTNET_API_SOURCES))
+MACOS_DOTNET_SOURCES         := $(sort $(foreach framework,$(call uppercase,$(MACOS_FRAMEWORKS)),$($(framework)_SOURCES))        $(SHARED_SOURCES) $(MACOS_DOTNET_CORE_SOURCES))
 
-TVOS_DOTNET_CORE_SOURCES     := $(sort $(foreach framework,$(shell echo $(TVOS_FRAMEWORKS) | tr '[:lower:]' '[:upper:]'),$($(framework)_CORE_SOURCES))    $(SHARED_CORE_SOURCES))
-TVOS_DOTNET_API_SOURCES      := $(sort $(foreach framework,$(shell echo $(TVOS_FRAMEWORKS) | tr '[:lower:]' '[:upper:]'),$($(framework)_API_SOURCES))     $(SHARED_API_SOURCES))
-TVOS_DOTNET_APIS             := $(sort $(foreach framework,$(shell echo $(TVOS_FRAMEWORKS) | tr '[:upper:]' '[:lower:]'),$(framework).cs)                 $(TVOS_DOTNET_API_SOURCES))
-TVOS_DOTNET_SOURCES          := $(sort $(foreach framework,$(shell echo $(TVOS_FRAMEWORKS) | tr '[:lower:]' '[:upper:]'),$($(framework)_SOURCES))         $(SHARED_SOURCES) $(TVOS_DOTNET_CORE_SOURCES))
+TVOS_DOTNET_CORE_SOURCES     := $(sort $(foreach framework,$(call uppercase,$(TVOS_FRAMEWORKS)),$($(framework)_CORE_SOURCES))    $(SHARED_CORE_SOURCES))
+TVOS_DOTNET_API_SOURCES      := $(sort $(foreach framework,$(call uppercase,$(TVOS_FRAMEWORKS)),$($(framework)_API_SOURCES))     $(SHARED_API_SOURCES))
+TVOS_DOTNET_APIS             := $(sort $(foreach framework,$(call lowercase,$(TVOS_FRAMEWORKS)),$(framework).cs)                 $(TVOS_DOTNET_API_SOURCES))
+TVOS_DOTNET_SOURCES          := $(sort $(foreach framework,$(call uppercase,$(TVOS_FRAMEWORKS)),$($(framework)_SOURCES))         $(SHARED_SOURCES) $(TVOS_DOTNET_CORE_SOURCES))
 
-MACCATALYST_DOTNET_CORE_SOURCES := $(sort $(foreach framework,$(shell echo $(MACCATALYST_FRAMEWORKS) | tr '[:lower:]' '[:upper:]'),$($(framework)_CORE_SOURCES)) $(SHARED_CORE_SOURCES))
-MACCATALYST_DOTNET_API_SOURCES  := $(sort $(foreach framework,$(shell echo $(MACCATALYST_FRAMEWORKS) | tr '[:lower:]' '[:upper:]'),$($(framework)_API_SOURCES))  $(SHARED_API_SOURCES))
-MACCATALYST_DOTNET_APIS         := $(sort $(foreach framework,$(shell echo $(MACCATALYST_FRAMEWORKS) | tr '[:upper:]' '[:lower:]'),$(framework).cs)              $(MACCATALYST_DOTNET_API_SOURCES))
-MACCATALYST_DOTNET_SOURCES      := $(sort $(foreach framework,$(shell echo $(MACCATALYST_FRAMEWORKS) | tr '[:lower:]' '[:upper:]'),$($(framework)_SOURCES))      $(SHARED_SOURCES) $(MACCATALYST_DOTNET_CORE_SOURCES))
+MACCATALYST_DOTNET_CORE_SOURCES := $(sort $(foreach framework,$(call uppercase,$(MACCATALYST_FRAMEWORKS)),$($(framework)_CORE_SOURCES)) $(SHARED_CORE_SOURCES))
+MACCATALYST_DOTNET_API_SOURCES  := $(sort $(foreach framework,$(call uppercase,$(MACCATALYST_FRAMEWORKS)),$($(framework)_API_SOURCES))  $(SHARED_API_SOURCES))
+MACCATALYST_DOTNET_APIS         := $(sort $(foreach framework,$(call lowercase,$(MACCATALYST_FRAMEWORKS)),$(framework).cs)              $(MACCATALYST_DOTNET_API_SOURCES))
+MACCATALYST_DOTNET_SOURCES      := $(sort $(foreach framework,$(call uppercase,$(MACCATALYST_FRAMEWORKS)),$($(framework)_SOURCES))      $(SHARED_SOURCES) $(MACCATALYST_DOTNET_CORE_SOURCES))
 
 IOS_CORE_SOURCES         := $(IOS_DOTNET_CORE_SOURCES)
 IOS_API_SOURCES          := $(IOS_DOTNET_API_SOURCES)

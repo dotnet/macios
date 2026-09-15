@@ -64,6 +64,7 @@ class TestResult {
     [bool] $VSDropsPublishFailed
     hidden [int] $Passed
     hidden [int] $Failed
+    hidden [bool] $Skipped = $false
     hidden [string[]] $NotTestSummaryLabels = @()
 
     TestResult (
@@ -188,6 +189,12 @@ class TestResult {
                     } elseif ($content -match $regexp) {
                         $this.Passed = $matches.passed -as [int]
                         Write-Host "`tPassed tests count: $($this.Passed)"
+                    } elseif ($content -match "Tests skipped, incorrect beta version") {
+                        # The tests were skipped because the OS is a beta version that
+                        # doesn't match the expected build version (see run-packaged-macos-tests).
+                        Write-Host "`t`tTests skipped due to beta version mismatch"
+                        $this.Passed = 0
+                        $this.Skipped = $true
                     } else {
                         throw "Unable to understand the test result '$content' for test '$($this.GetLabelWithSuffix(`"`"))'"
                     }
@@ -267,6 +274,7 @@ class ParallelTestsResults {
     [string] $VSDropsIndex
     [TestResult[]] $Results
     [string] $LinuxBuildStatus
+    [string] $BuildMacTestsStatus
 
     ParallelTestsResults (
         [TestResult[]] $results,
@@ -354,7 +362,9 @@ class ParallelTestsResults {
         $downloadInfo = $this.GetDownloadLinks($testResult)
         $result = $testResult.GetPassedTests()
         $attemptText = $testResult.GetAttemptText()
-        if ($result.Passed -eq 0) {
+        if ($testResult.Skipped) {
+            $stringBuilder.AppendLine(":warning: $($testResult.GetLabelWithSuffix(`"`")): Tests skipped, incorrect beta version.$attemptText $downloadInfo")
+        } elseif ($result.Passed -eq 0) {
             $stringBuilder.AppendLine(":warning: $($testResult.GetLabelWithSuffix(`"`")): No tests selected.$attemptText $downloadInfo")
         } else {
             $stringBuilder.AppendLine(":white_check_mark: $($testResult.GetLabelWithSuffix(`"`")): All $($result.Passed) tests passed.$attemptText $downloadInfo")
@@ -364,13 +374,16 @@ class ParallelTestsResults {
     [void] WriteComment($stringBuilder) {
         if (-not [string]::IsNullOrEmpty($this.BuildFailureMessage)) {
             $pipelineLink = "$Env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI$Env:SYSTEM_TEAMPROJECT/_build/index?buildId=$Env:BUILD_BUILDID"
+            $stringBuilder.AppendLine("[comment]: <> (This is a test result report added by Azure DevOps)")
+            $stringBuilder.AppendLine()
             $stringBuilder.AppendLine("# :x: Build failure :x:")
             $stringBuilder.AppendLine()
             $stringBuilder.AppendLine("Build result: [$($this.BuildFailureMessage)]($($pipelineLink))")
-            $stringBuilder.AppendLine()
-            $stringBuilder.AppendLine("[comment]: <> (This is a test result report added by Azure DevOps)")
             return
         }
+
+        $stringBuilder.AppendLine("[comment]: <> (This is a test result report added by Azure DevOps)")
+        $stringBuilder.AppendLine()
 
         # Split results into regular tests and macOS tests
         $regularResults = @($this.Results | Where-Object { -not $_.IsMacTest })
@@ -422,7 +435,12 @@ class ParallelTestsResults {
                 # get the result, if -1, we had a crash, else we print the result
                 $result = $r.GetPassedTests()
                 if ($result.Passed -eq -2 -or $result.Failed -eq -2) {
-                    $stringBuilder.AppendLine(":fire: Failed catastrophically on $($r.Context) (no summary found).")
+                    if ($r.IsMacTest -and -not [string]::IsNullOrEmpty($this.BuildMacTestsStatus) -and $this.BuildMacTestsStatus -ne "Succeeded") {
+                        $pipelineLink = "$Env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI$Env:SYSTEM_TEAMPROJECT/_build/results?buildId=$Env:BUILD_BUILDID"
+                        $stringBuilder.AppendLine(":warning: Tests did not run because the [Build macOS tests]($pipelineLink) job failed.")
+                    } else {
+                        $stringBuilder.AppendLine(":fire: Failed catastrophically on $($r.Context) (no summary found).")
+                    }
                     $stringBuilder.AppendLine("")
                     $stringBuilder.AppendLine($this.GetDownloadLinks($r))
                     $stringBuilder.AppendLine("")
@@ -513,7 +531,6 @@ class ParallelTestsResults {
         }
 
         $stringBuilder.AppendLine()
-        $stringBuilder.AppendLine("[comment]: <> (This is a test result report added by Azure DevOps)")
     }
 
     static [ParallelTestsResults] Create(
@@ -701,6 +718,18 @@ class ParallelTestsResults {
                 if ($linuxJob.ContainsKey("result")) {
                     $result.LinuxBuildStatus = $linuxJob["result"]
                     Write-Host "Linux build verification status: $($result.LinuxBuildStatus)"
+                }
+            }
+        }
+
+        # Extract the Build macOS tests status from stage dependencies
+        if ($stageDep.ContainsKey("build_macos_tests")) {
+            $buildMacStage = $stageDep["build_macos_tests"]
+            if ($buildMacStage.ContainsKey("build_macos_tests_job")) {
+                $buildMacJob = $buildMacStage["build_macos_tests_job"]
+                if ($buildMacJob.ContainsKey("result")) {
+                    $result.BuildMacTestsStatus = $buildMacJob["result"]
+                    Write-Host "Build macOS tests status: $($result.BuildMacTestsStatus)"
                 }
             }
         }

@@ -14,36 +14,23 @@
 
 namespace CoreFoundation {
 	/// <summary>A collection of utility methods for setting Core Foundation preferences.</summary>
-	///     <remarks>To be added.</remarks>
-	[SupportedOSPlatform ("ios")]
-	[SupportedOSPlatform ("maccatalyst")]
-	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("tvos")]
-	public static class CFPreferences {
+	public static partial class CFPreferences {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		static extern IntPtr CFPreferencesCopyAppValue (IntPtr key, IntPtr applicationId);
 
+#if !XAMCORE_5_0
 		/// <summary>The current application.</summary>
-		///         <remarks>To be added.</remarks>
-		public static readonly NSString? CurrentApplication;
+		/// <remarks>
+		///   <para>Use this value to read or write preferences for the calling application.</para>
+		/// </remarks>
+		public static readonly NSString? CurrentApplication = _CurrentApplication;
+#endif
 
 		/*public static readonly NSString AnyApplication;
 		public static readonly NSString CurrentHost;
 		public static readonly NSString AnyHost;
 		public static readonly NSString CurrentUser;
 		public static readonly NSString AnyUser;*/
-
-		static CFPreferences ()
-		{
-			var handle = Libraries.CoreFoundation.Handle;
-			CurrentApplication = Dlfcn.GetStringConstant (handle, "kCFPreferencesCurrentApplication");
-
-			/*AnyApplication = Dlfcn.GetStringConstant (handle, "kCFPreferencesAnyApplication");
-			CurrentHost = Dlfcn.GetStringConstant (handle, "kCFPreferencesCurrentHost");
-			AnyHost = Dlfcn.GetStringConstant (handle, "kCFPreferencesAnyHost");
-			CurrentUser = Dlfcn.GetStringConstant (handle, "kCFPreferencesCurrentUser");
-			AnyUser = Dlfcn.GetStringConstant (handle, "kCFPreferencesAnyUser");*/
-		}
 
 		/// <param name="key">To be added.</param>
 		///         <summary>Gets the preference value that is identified by <paramref name="key" />, for the current application.</summary>
@@ -154,6 +141,7 @@ namespace CoreFoundation {
 				} else if (value is string) {
 					using (var valueStr = new CFString ((string) value)) {
 						CFPreferencesSetAppValue (cfKey.Handle, valueStr.Handle, applicationId.Handle);
+						GC.KeepAlive (cfKey);
 						GC.KeepAlive (applicationId);
 					}
 
@@ -164,6 +152,7 @@ namespace CoreFoundation {
 					value is NSDictionary || value is CFDictionary ||
 					value is NSNumber || value is CFBoolean) {
 					CFPreferencesSetAppValue (cfKey.Handle, ((INativeObject) value).Handle, applicationId.Handle);
+					GC.KeepAlive (cfKey);
 					GC.KeepAlive (value);
 					GC.KeepAlive (applicationId);
 					return;
@@ -173,6 +162,8 @@ namespace CoreFoundation {
 				if (nsnumber is not null) {
 					using (nsnumber) {
 						CFPreferencesSetAppValue (cfKey.Handle, nsnumber.Handle, applicationId.Handle);
+						GC.KeepAlive (cfKey);
+						GC.KeepAlive (nsnumber);
 						GC.KeepAlive (applicationId);
 					}
 					return;

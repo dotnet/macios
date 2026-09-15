@@ -54,7 +54,7 @@ namespace Xharness.Jenkins.TestTasks {
 			process.StartInfo.ArgumentList.Add (projectDirectory);
 			process.StartInfo.ArgumentList.Add ("run");
 			process.StartInfo.ArgumentList.Add ($"TEST_VARIATION={testVariation}");
-			process.StartInfo.ArgumentList.Add ("TEST_FILTER=");
+			process.StartInfo.ArgumentList.Add ("TEST_FILTER=MonoTouchFixtures.AudioUnit.AppExtensionSmokeTest");
 			process.StartInfo.ArgumentList.Add ($"LOGFILENAME={extensionLogPath}");
 			process.StartInfo.ArgumentList.Add ($"RESULTSFILENAME={resultsPath}");
 			process.StartInfo.ArgumentList.Add ("RUN_TIMEOUT_SECONDS=600");

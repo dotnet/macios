@@ -233,7 +233,7 @@ namespace Xamarin.Tests {
 
 			DotNet.AssertBuild (containerProjectPath, properties);
 
-			var extensionPath = Path.Combine (appPath, GetPlugInsRelativePath (platform), "AppExtension.appex");
+			var extensionPath = Path.Combine (appPath, GetPlugInsRelativePath (platform), "monotouchtest.appex");
 			Assert.That (Directory.Exists (extensionPath), Is.True, $"App extension directory does not exist: {extensionPath}");
 
 			if (CanExecute (platform, runtimeIdentifiers)) {

@@ -13,7 +13,7 @@ namespace AudioUnitExtensionTest {
 		{
 		}
 
-		public AUAudioUnit CreateAudioUnit (AudioComponentDescription desc, out NSError error)
+		public AUAudioUnit CreateAudioUnit (AudioComponentDescription desc, out NSError? error)
 		{
 			error = null;
 			return new TestAudioUnit (desc, out error);
@@ -27,8 +27,8 @@ namespace AudioUnitExtensionTest {
 
 	[Register ("TestAudioUnit")]
 	public class TestAudioUnit : AUAudioUnit {
-		AUAudioUnitBusArray inputBusArray;
-		AUAudioUnitBusArray outputBusArray;
+		AUAudioUnitBusArray? inputBusArray;
+		AUAudioUnitBusArray? outputBusArray;
 
 		public TestAudioUnit (AudioComponentDescription componentDescription, out NSError? error)
 			: base (componentDescription, AudioComponentInstantiationOptions.OutOfProcess, out error)
@@ -44,9 +44,9 @@ namespace AudioUnitExtensionTest {
 		{
 		}
 
-		public override AUAudioUnitBusArray InputBusses => inputBusArray;
+		public override AUAudioUnitBusArray InputBusses => inputBusArray ?? throw new InvalidOperationException ("The input bus array has not been initialized.");
 
-		public override AUAudioUnitBusArray OutputBusses => outputBusArray;
+		public override AUAudioUnitBusArray OutputBusses => outputBusArray ?? throw new InvalidOperationException ("The output bus array has not been initialized.");
 
 		public override AUInternalRenderBlock InternalRenderBlock {
 			get {

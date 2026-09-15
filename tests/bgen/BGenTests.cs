@@ -12,6 +12,27 @@ namespace GeneratorTests {
 	[TestFixture ()]
 	[Parallelizable (ParallelScope.All)]
 	public class BGenTests : BGenBase {
+		[Test]
+		public void PrecompiledApiAssemblyWithoutSources ()
+		{
+			var baseLibrary = Path.Combine (Configuration.SourceRoot, "src", "build", "dotnet", "ios", "ref", "Microsoft.iOS.dll");
+			var attributeLibrary = Path.Combine (Configuration.SourceRoot, "src", "build", "dotnet", "Xamarin.Apple.BindingAttributes.dll");
+			var compiledApi = BuildFile (Profile.iOS, bgen => {
+				bgen.BaseLibrary = baseLibrary;
+				bgen.AttributeLibrary = attributeLibrary;
+			}, "bug15283.cs");
+			var bgen = new BGenTool {
+				Profile = Profile.iOS,
+				BaseLibrary = baseLibrary,
+				AttributeLibrary = attributeLibrary,
+				CompiledApiDefinitionAssembly = compiledApi.CompiledApiDefinitionAssembly,
+				TmpDirectory = Cache.CreateTemporaryDirectory (),
+			};
+
+			bgen.AssertExecute ("Generate from a precompiled API assembly");
+			Assert.That (bgen.AssemblyPath, Is.EqualTo (Path.Combine (bgen.TmpDirectory, "binding.dll")), "Assembly path");
+		}
+
 		// Removing the following variable might make running the unit tests in VSMac fail.
 		static Type variable_to_keep_reference_to_system_runtime_compilerservices_unsafe_assembly = typeof (System.Runtime.CompilerServices.Unsafe);
 

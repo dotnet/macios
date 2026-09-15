@@ -59,7 +59,7 @@ namespace GeneratorTests {
 		{
 			var log = new TestLog ();
 
-			var exitCode = BindingTouch.Run (new [] { "--compiled-api-definition-assembly=api.dll" }, log);
+			var exitCode = BindingTouch.Run (new [] { "--compiled-api-definition-assembly=api.dll", "--sourceonly=generated-sources.txt", "--tmpdir=generated-sources" }, log);
 
 			Assert.That (exitCode, Is.EqualTo (1));
 			Assert.That (log.Errors, Has.Count.EqualTo (1));

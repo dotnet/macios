@@ -44,8 +44,10 @@ namespace Xamarin.MacDev.Tasks {
 
 		public string ExtraArgs { get; set; } = string.Empty;
 
+		[Required]
 		public string GeneratedSourcesDir { get; set; } = string.Empty;
 
+		[Required]
 		public string GeneratedSourcesFileList { get; set; } = string.Empty;
 
 		public string Namespace { get; set; } = string.Empty;
@@ -170,6 +172,15 @@ namespace Xamarin.MacDev.Tasks {
 
 		public override bool Execute ()
 		{
+			if (CompiledApiDefinitionAssembly is null || string.IsNullOrEmpty (CompiledApiDefinitionAssembly.ItemSpec)) {
+				Log.LogError ("A compiled API definition assembly is required.");
+				return false;
+			}
+			if (string.IsNullOrEmpty (GeneratedSourcesDir) || string.IsNullOrEmpty (GeneratedSourcesFileList)) {
+				Log.LogError ("A generated sources directory and file list are required.");
+				return false;
+			}
+
 			if (ShouldExecuteRemotely ()) {
 				try {
 					BGenToolPath = PlatformPath.GetPathForCurrentPlatform (BGenToolPath);
@@ -203,11 +214,6 @@ namespace Xamarin.MacDev.Tasks {
 				!string.IsNullOrEmpty (GeneratedSourcesDir) &&
 				!Directory.Exists (GeneratedSourcesDir)) {
 				Directory.CreateDirectory (GeneratedSourcesDir);
-			}
-
-			if (CompiledApiDefinitionAssembly is null || string.IsNullOrEmpty (CompiledApiDefinitionAssembly.ItemSpec)) {
-				Log.LogError ("A compiled API definition assembly is required.");
-				return false;
 			}
 
 			var bgenPath = PathUtils.ConvertToMacPath (BGenToolPath);

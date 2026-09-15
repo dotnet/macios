@@ -173,6 +173,48 @@ namespace PassKit {
 			""")]
 		void AddPasses (PKPass [] passes, [NullAllowed] Action<PKPassLibraryAddPassesStatus> completion);
 
+		/// <param name="passesData">The serialized data for each pass to add.</param>
+		/// <param name="completionHandler">The handler to invoke with the result of the add operation.</param>
+		/// <summary>Asks the user whether to add the passes represented by the specified data.</summary>
+		/// <remarks>If the result is <see cref="PassKit.PKPassLibraryAddPassesStatus.ShouldReviewPasses" />, present a <see cref="PassKit.PKAddPassesViewController" /> so the user can review the passes.</remarks>
+		[iOS (27, 0), MacCatalyst (27, 0), NoMac, NoTV]
+		[Export ("addPassesWithData:completionHandler:")]
+		[Async (XmlDocs = """
+			<param name="passesData">The serialized data for each pass to add.</param>
+			<summary>Asynchronously asks the user whether to add the passes represented by the specified data.</summary>
+			<returns>A task whose result indicates whether the passes were added, require review, or the operation was canceled.</returns>
+			<remarks>If the result is <see cref="PassKit.PKPassLibraryAddPassesStatus.ShouldReviewPasses" />, present a <see cref="PassKit.PKAddPassesViewController" /> so the user can review the passes.</remarks>
+			""")]
+		void AddPasses (NSData [] passesData, Action<PKPassLibraryAddPassesStatus> completionHandler);
+
+		/// <param name="passesArchiveFileUrl">The URL of the pass archive to add.</param>
+		/// <param name="completionHandler">The handler to invoke with the result of the add operation.</param>
+		/// <summary>Asks the user whether to add the passes from the specified archive.</summary>
+		/// <remarks>If the result is <see cref="PassKit.PKPassLibraryAddPassesStatus.ShouldReviewPasses" />, present a <see cref="PassKit.PKAddPassesViewController" /> so the user can review the passes.</remarks>
+		[iOS (27, 0), MacCatalyst (27, 0), NoMac, NoTV]
+		[Export ("addPassesFromArchiveAtFileURL:completionHandler:")]
+		[Async (XmlDocs = """
+			<param name="passesArchiveFileUrl">The URL of the pass archive to add.</param>
+			<summary>Asynchronously asks the user whether to add the passes from the specified archive.</summary>
+			<returns>A task whose result indicates whether the passes were added, require review, or the operation was canceled.</returns>
+			<remarks>If the result is <see cref="PassKit.PKPassLibraryAddPassesStatus.ShouldReviewPasses" />, present a <see cref="PassKit.PKAddPassesViewController" /> so the user can review the passes.</remarks>
+			""")]
+		void AddPassesFromArchive (NSUrl passesArchiveFileUrl, Action<PKPassLibraryAddPassesStatus> completionHandler);
+
+		/// <param name="passesArchiveData">The serialized pass archive to add.</param>
+		/// <param name="completionHandler">The handler to invoke with the result of the add operation.</param>
+		/// <summary>Asks the user whether to add the passes from the specified archive.</summary>
+		/// <remarks>If the result is <see cref="PassKit.PKPassLibraryAddPassesStatus.ShouldReviewPasses" />, present a <see cref="PassKit.PKAddPassesViewController" /> so the user can review the passes.</remarks>
+		[iOS (27, 0), MacCatalyst (27, 0), NoMac, NoTV]
+		[Export ("addPassesFromArchiveWithData:completionHandler:")]
+		[Async (XmlDocs = """
+			<param name="passesArchiveData">The serialized pass archive to add.</param>
+			<summary>Asynchronously asks the user whether to add the passes from the specified archive.</summary>
+			<returns>A task whose result indicates whether the passes were added, require review, or the operation was canceled.</returns>
+			<remarks>If the result is <see cref="PassKit.PKPassLibraryAddPassesStatus.ShouldReviewPasses" />, present a <see cref="PassKit.PKAddPassesViewController" /> so the user can review the passes.</remarks>
+			""")]
+		void AddPassesFromArchive (NSData passesArchiveData, Action<PKPassLibraryAddPassesStatus> completionHandler);
+
 		[Field ("PKPassLibraryDidChangeNotification")]
 		[Notification]
 		NSString DidChangeNotification { get; }
@@ -356,6 +398,9 @@ namespace PassKit {
 		[Async (ResultTypeName = "PKSignDataCompletionResult")]
 		[iOS (13, 4)]
 		[MacCatalyst (13, 1)]
+		[Deprecated (PlatformName.iOS, 26, 0, message: "No longer supported.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "No longer supported.")]
+		[Deprecated (PlatformName.MacOSX, 26, 0, message: "No longer supported.")]
 		[Export ("signData:withSecureElementPass:completion:")]
 		void SignData (NSData signData, PKSecureElementPass secureElementPass, PKPassLibrarySignDataCompletionHandler completion);
 
@@ -868,6 +913,11 @@ namespace PassKit {
 		[Export ("supportedNetworks", ArgumentSemantic.Copy)]
 		NSString [] SupportedNetworks { get; set; }
 
+		/// <summary>Gets or sets the primary account identifiers that payments should exclude.</summary>
+		[iOS (27, 0), MacCatalyst (27, 0), Mac (27, 0), NoTV]
+		[Export ("unsupportedPrimaryAccountIdentifiers", ArgumentSemantic.Copy)]
+		string [] UnsupportedPrimaryAccountIdentifiers { get; set; }
+
 		/// <summary>Defines the developer's payment-processing capabilities.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -1274,6 +1324,27 @@ namespace PassKit {
 		/// <remarks>To be added.</remarks>
 		[Export ("initWithPasses:")]
 		NativeHandle Constructor (PKPass [] pass);
+
+		/// <param name="passesData">The serialized data for each pass to display.</param>
+		/// <summary>Creates a view controller that displays passes represented by the specified data.</summary>
+		[iOS (27, 0), MacCatalyst (27, 0), NoMac, NoTV]
+		[Export ("initWithPassesData:")]
+		[return: NullAllowed]
+		NativeHandle Constructor (NSData [] passesData);
+
+		/// <param name="passesArchiveFileUrl">The URL of the pass archive to display.</param>
+		/// <summary>Creates a view controller that displays passes from the specified archive.</summary>
+		[iOS (27, 0), MacCatalyst (27, 0), NoMac, NoTV]
+		[Export ("initWithPassesArchiveAtFileURL:")]
+		[return: NullAllowed]
+		NativeHandle Constructor (NSUrl passesArchiveFileUrl);
+
+		/// <param name="passesArchiveData">The serialized pass archive to display.</param>
+		/// <summary>Creates a view controller that displays passes from the specified archive.</summary>
+		[iOS (27, 0), MacCatalyst (27, 0), NoMac, NoTV]
+		[Export ("initWithPassesArchiveData:")]
+		[return: NullAllowed]
+		NativeHandle Constructor (NSData passesArchiveData);
 
 		[iOS (16, 4), MacCatalyst (16, 4)]
 		[Export ("initWithIssuerData:signature:error:")]
@@ -2006,6 +2077,41 @@ namespace PassKit {
 		[Mac (26, 4), iOS (26, 4), MacCatalyst (26, 4), NoTV]
 		[Field ("PKPaymentNetworkElCorteIngles")]
 		NSString ElCorteIngles { get; }
+
+		/// <summary>Gets the RuPay payment network.</summary>
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), NoTV]
+		[Field ("PKPaymentNetworkRuPay")]
+		NSString RuPay { get; }
+
+		/// <summary>Gets the Verve payment network.</summary>
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), NoTV]
+		[Field ("PKPaymentNetworkVerve")]
+		NSString Verve { get; }
+
+		/// <summary>Gets the Humo payment network.</summary>
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), NoTV]
+		[Field ("PKPaymentNetworkHumo")]
+		NSString Humo { get; }
+
+		/// <summary>Gets the UzCard payment network.</summary>
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), NoTV]
+		[Field ("PKPaymentNetworkUzCard")]
+		NSString UzCard { get; }
+
+		/// <summary>Gets the PayPak payment network.</summary>
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), NoTV]
+		[Field ("PKPaymentNetworkPayPak")]
+		NSString PayPak { get; }
+
+		/// <summary>Gets the Maal payment network.</summary>
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), NoTV]
+		[Field ("PKPaymentNetworkMaal")]
+		NSString Maal { get; }
+
+		/// <summary>Gets the Elcard payment network.</summary>
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), NoTV]
+		[Field ("PKPaymentNetworkElcard")]
+		NSString Elcard { get; }
 	}
 
 	/// <summary>A button used to activate an Apple Pay payment. Available styles and types are defined by <see cref="PassKit.PKPaymentButtonStyle" /> and <see cref="PassKit.PKPaymentButtonType" />.</summary>
@@ -2705,6 +2811,11 @@ namespace PassKit {
 		[Export ("supportedNetworks", ArgumentSemantic.Copy)]
 		string [] SupportedNetworks { get; set; }
 
+		/// <summary>Gets or sets the primary account identifiers that disbursements should exclude.</summary>
+		[iOS (27, 0), Mac (27, 0), NoTV, MacCatalyst (27, 0)]
+		[Export ("unsupportedPrimaryAccountIdentifiers", ArgumentSemantic.Copy)]
+		string [] UnsupportedPrimaryAccountIdentifiers { get; set; }
+
 		[iOS (17, 0), Mac (15, 0), NoTV, MacCatalyst (17, 0)]
 		[Export ("merchantCapabilities", ArgumentSemantic.Assign)]
 		PKMerchantCapability MerchantCapabilities { get; set; }
@@ -2769,6 +2880,11 @@ namespace PassKit {
 
 		[Export ("passActivationState")]
 		PKSecureElementPassActivationState PassActivationState { get; }
+
+		/// <summary>Gets a value that indicates whether provisioning can be completed for a pre-provisioned pass.</summary>
+		[iOS (27, 0), MacCatalyst (27, 0), Mac (27, 0), NoTV]
+		[Export ("provisioningAvailable")]
+		bool ProvisioningAvailable { [Bind ("isProvisioningAvailable")] get; }
 
 		[NullAllowed, Export ("devicePassIdentifier")]
 		string DevicePassIdentifier { get; }
@@ -3394,6 +3510,13 @@ namespace PassKit {
 		[Export ("elements")]
 		PKIdentityElement [] Elements { get; }
 
+		/// <summary>Gets or sets the issuer identifiers for acceptable document signer certificates.</summary>
+		/// <remarks>An empty array accepts any document signer certificate. The native API limits this array to 1,000 identifiers and each identifier to 64 bytes; exceeding either limit terminates the app.</remarks>
+		[iOS (27, 0), MacCatalyst (27, 0), NoMac, NoTV]
+		[Abstract]
+		[Export ("issuerIdentifiers", ArgumentSemantic.Copy)]
+		NSData [] IssuerIdentifiers { get; set; }
+
 		[Abstract]
 		[Export ("intentToStoreForElement:")]
 		[return: NullAllowed]
@@ -3521,6 +3644,13 @@ namespace PassKit {
 		[Static]
 		[Export ("familyNameElement")]
 		PKIdentityElement FamilyNameElement { get; }
+
+		/// <summary>Gets the identity element for a person's name.</summary>
+		/// <remarks>For driver's licenses, this element returns given and family names as separate fields because the mobile driver's license standard does not define a full-name field.</remarks>
+		[iOS (27, 0), MacCatalyst (27, 0), NoMac, NoTV]
+		[Static]
+		[Export ("nameElement")]
+		PKIdentityElement NameElement { get; }
 
 		[Static]
 		[Export ("portraitElement")]

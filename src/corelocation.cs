@@ -85,6 +85,9 @@ namespace CoreLocation {
 		OtherNavigation,
 		Fitness,
 		Airborne,
+		/// <summary>Configures location updates for vehicular maritime navigation.</summary>
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		Maritime = 5,
 	}
 
 
@@ -490,9 +493,18 @@ namespace CoreLocation {
 		///         <value>The default value assumes that the app, in upright portrait mode, represents due North.</value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
+		[Deprecated (PlatformName.iOS, 27, 0, message: "Use 'HeadingBody' instead.")]
+		[Deprecated (PlatformName.MacOSX, 27, 0, message: "Use 'HeadingBody' instead.")]
 		[MacCatalyst (13, 1)]
+		[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Use 'HeadingBody' instead.")]
 		[Export ("headingOrientation", ArgumentSemantic.Assign)]
 		CLDeviceOrientation HeadingOrientation { get; set; }
+
+		/// <summary>Gets or sets the body used as the reference for heading calculations.</summary>
+		/// <value>The reference body, or <see langword="null" /> if no body is set.</value>
+		[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[NullAllowed, Export ("headingBody", ArgumentSemantic.Retain)]
+		ICLBodyIdentifiable HeadingBody { get; set; }
 
 		/// <summary>The most recent heading (direction in which the device is traveling).</summary>
 		///         <value>This value may be <see langword="null" /> if heading updates have not been started.</value>
@@ -1756,6 +1768,13 @@ namespace CoreLocation {
 		[NullAllowed, Export ("minor", ArgumentSemantic.Copy)]
 		[BindAs (typeof (short?))]
 		NSNumber Minor { get; }
+	}
+
+	interface ICLBodyIdentifiable { }
+
+	[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[Protocol]
+	interface CLBodyIdentifiable {
 	}
 
 	[iOS (15, 0), NoTV, NoMacCatalyst, NoMac]

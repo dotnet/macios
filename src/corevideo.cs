@@ -512,6 +512,10 @@ namespace CoreVideo {
 		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 		[Field ("kCVImageBufferDisplayMaskRectangleStereoRightKey")]
 		NSString DisplayMaskRectangleStereoRightKey { get; }
+
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[Field ("kCVImageBufferHorizontalDisparityAdjustmentKey")]
+		NSString HorizontalDisparityAdjustmentKey { get; }
 	}
 
 	[MacCatalyst (13, 1)]

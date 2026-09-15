@@ -149,6 +149,9 @@ namespace CoreLocation {
 		/// <summary>Indicates that the app is involved in airborne activities.</summary>
 		[MacCatalyst (13, 1)]
 		Airborne,
+		/// <summary>Indicates navigation for vehicular activities on the water.</summary>
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		Maritime = 6,
 	}
 
 	[Native]

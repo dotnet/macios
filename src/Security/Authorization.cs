@@ -30,68 +30,6 @@
 #if MONOMAC || __MACCATALYST__
 
 namespace Security {
-	/// <summary>To be added.</summary>
-	///     <remarks>To be added.</remarks>
-	[SupportedOSPlatform ("maccatalyst")]
-	[SupportedOSPlatform ("macos")]
-	// Untyped enum in ObjC
-	public enum AuthorizationStatus {
-		/// <summary>To be added.</summary>
-		Success = 0,
-		/// <summary>To be added.</summary>
-		InvalidSet = -60001,
-		/// <summary>To be added.</summary>
-		InvalidRef = -60002,
-		/// <summary>To be added.</summary>
-		InvalidTag = -60003,
-		/// <summary>To be added.</summary>
-		InvalidPointer = -60004,
-		/// <summary>To be added.</summary>
-		Denied = -60005,
-		/// <summary>To be added.</summary>
-		Canceled = -60006,
-		/// <summary>To be added.</summary>
-		InteractionNotAllowed = -60007,
-		/// <summary>To be added.</summary>
-		Internal = -60008,
-		/// <summary>To be added.</summary>
-		ExternalizeNotAllowed = -60009,
-		/// <summary>To be added.</summary>
-		InternalizeNotAllowed = -60010,
-		/// <summary>To be added.</summary>
-		InvalidFlags = -60011,
-		/// <summary>To be added.</summary>
-		ToolExecuteFailure = -60031,
-		/// <summary>To be added.</summary>
-		ToolEnvironmentError = -60032,
-		/// <summary>To be added.</summary>
-		BadAddress = -60033,
-	}
-
-	/// <summary>To be added.</summary>
-	///     <remarks>To be added.</remarks>
-	[SupportedOSPlatform ("maccatalyst")]
-	[SupportedOSPlatform ("macos")]
-	// typedef UInt32 AuthorizationFlags;
-	[Flags]
-	public enum AuthorizationFlags : int {
-		/// <summary>To be added.</summary>
-		Defaults,
-		/// <summary>To be added.</summary>
-		InteractionAllowed = 1 << 0,
-		/// <summary>To be added.</summary>
-		ExtendRights = 1 << 1,
-		/// <summary>To be added.</summary>
-		PartialRights = 1 << 2,
-		/// <summary>To be added.</summary>
-		DestroyRights = 1 << 3,
-		/// <summary>To be added.</summary>
-		PreAuthorize = 1 << 4,
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("macos")]
-		SkipInternalAuth = 1 << 9,
-		NoData = 1 << 20,
-	}
 
 	//
 	// For ease of use, we let the user pass the AuthorizationParameters, and we

@@ -75,6 +75,33 @@ namespace SensorKit {
 		PhoneAndMedia,
 	}
 
+	[iOS (27, 0)]
+	[MacCatalyst (27, 0)]
+	[Native]
+	public enum SRHeadphoneSettingsSettingEnablement : long {
+		Unsupported = 0,
+		Enabled,
+		Disabled,
+	}
+
+	[iOS (27, 0)]
+	[MacCatalyst (27, 0)]
+	[Native]
+	public enum SRHeadphoneSettingsListeningMode : long {
+		Normal = 1,
+		ActiveNoiseCancelling,
+		Transparency,
+		AutoActiveNoiseCancelling,
+	}
+
+	[iOS (27, 0)]
+	[MacCatalyst (27, 0)]
+	public enum SRHeadphoneSettingsAdaptiveAudioStrength : uint {
+		Low = 1,
+		Medium,
+		High,
+	}
+
 	// helpers for code generation
 	interface NSUnitDuration : NSUnit { }
 	interface NSUnitIlluminance : NSUnit { }
@@ -517,6 +544,11 @@ namespace SensorKit {
 
 		[Export ("timestamp")]
 		double /* SRAbsoluteTime */ Timestamp { get; }
+
+		[iOS (27, 0), MacCatalyst (27, 0)]
+		[NullAllowed]
+		[Export ("sourceDevice", ArgumentSemantic.Strong)]
+		SRSourceDevice SourceDevice { get; }
 	}
 
 	[NoTV, NoMac]
@@ -977,6 +1009,14 @@ namespace SensorKit {
 		[iOS (26, 0), MacCatalyst (26, 0)]
 		[Field ("SRSensorSleepSessions")]
 		SleepSessions,
+
+		[iOS (27, 0), MacCatalyst (27, 0)]
+		[Field ("SRSensorHeadphoneMotion")]
+		HeadphoneMotion,
+
+		[iOS (27, 0), MacCatalyst (27, 0)]
+		[Field ("SRSensorHeadphoneSettings")]
+		HeadphoneSettings,
 	}
 
 	[NoTV, NoMac]
@@ -1559,5 +1599,91 @@ namespace SensorKit {
 
 		[Export ("identifier")]
 		string Identifier { get; }
+	}
+
+	[iOS (27, 0)]
+	[MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface SRSourceDevice : NSSecureCoding, NSCopying {
+
+		[Export ("localIdentifier")]
+		string LocalIdentifier { get; }
+
+		[NullAllowed, Export ("manufacturer")]
+		string Manufacturer { get; }
+
+		[NullAllowed, Export ("model")]
+		string Model { get; }
+
+		[NullAllowed, Export ("hardwareVersion")]
+		string HardwareVersion { get; }
+
+		[NullAllowed, Export ("firmwareVersion")]
+		string FirmwareVersion { get; }
+	}
+
+	[iOS (27, 0)]
+	[MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	interface SRHeadphoneSettingsHearingAssistance : NSSecureCoding, NSCopying {
+
+		[Export ("hearingAidEnabled")]
+		SRHeadphoneSettingsSettingEnablement HearingAidEnabled { get; }
+
+		[Export ("mediaAssistEnabled")]
+		SRHeadphoneSettingsSettingEnablement MediaAssistEnabled { get; }
+
+		[Export ("adjustMediaEnabled")]
+		SRHeadphoneSettingsSettingEnablement AdjustMediaEnabled { get; }
+
+		[Export ("adjustVoiceEnabled")]
+		SRHeadphoneSettingsSettingEnablement AdjustVoiceEnabled { get; }
+
+		[Export ("hearingProtectionEnabled")]
+		SRHeadphoneSettingsSettingEnablement HearingProtectionEnabled { get; }
+
+		[Export ("conversationBoostEnabled")]
+		SRHeadphoneSettingsSettingEnablement ConversationBoostEnabled { get; }
+
+		[Export ("hearingAidAmplification")]
+		double HearingAidAmplification { get; }
+
+		[Export ("hearingAidBalance")]
+		double HearingAidBalance { get; }
+
+		[Export ("hearingAidTone")]
+		double HearingAidTone { get; }
+
+		[Export ("ambientNoiseReduction")]
+		double AmbientNoiseReduction { get; }
+	}
+
+	[iOS (27, 0)]
+	[MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface SRHeadphoneSettings : NSSecureCoding, NSCopying {
+
+		[Export ("adaptiveAudioStrength")]
+		SRHeadphoneSettingsAdaptiveAudioStrength AdaptiveAudioStrength { get; }
+
+		[Export ("listeningMode")]
+		SRHeadphoneSettingsListeningMode ListeningMode { get; }
+
+		[Export ("personalizedVolumeEnabled")]
+		SRHeadphoneSettingsSettingEnablement PersonalizedVolumeEnabled { get; }
+
+		[Export ("conversationAwarenessEnabled")]
+		SRHeadphoneSettingsSettingEnablement ConversationAwarenessEnabled { get; }
+
+		[Export ("spatialAudioEnabled")]
+		SRHeadphoneSettingsSettingEnablement SpatialAudioEnabled { get; }
+
+		[Export ("personalizedSpatialAudioEnabled")]
+		SRHeadphoneSettingsSettingEnablement PersonalizedSpatialAudioEnabled { get; }
+
+		[NullAllowed, Export ("hearingAssistance", ArgumentSemantic.Strong)]
+		SRHeadphoneSettingsHearingAssistance HearingAssistance { get; }
 	}
 }

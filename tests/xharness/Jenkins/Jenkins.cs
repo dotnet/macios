@@ -129,6 +129,7 @@ namespace Xharness.Jenkins {
 				new NUnitTestTasksEnumerable (this, processManager, testVariationsFactory),
 				new RunDeviceTasksFactory (this, processManager, testVariationsFactory),
 				new MacTestTasksFactory (this, processManager, testVariationsFactory, crashReportSnapshotFactory),
+				new AppExtensionTestTasksFactory (this, processManager, testVariationsFactory),
 			};
 
 			// Start creating all the tasks in parallel

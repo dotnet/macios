@@ -1512,12 +1512,14 @@
 		a reduced one) keeps the generated native registrar code consistent with the other native files generated
 		earlier (e.g. inlined-class-gethandle.m). It's wired to run before _LoadLinkerOutput (via
 		_LoadLinkerOutputExtraDependsOn) so the *.items files it produces are loaded and fed to the native compile.
+		The always-written MSBuild output file is the incremental completion marker because unchanged assembly
+		copies preserve their source timestamps.
 	-->
 	<Target
 		Name="_PostprocessAssembliesAfterIlc"
 		Condition="'$(IsMacEnabled)' == 'true' And '$(_PostprocessAssembliesAfterIlc)' == 'true' And '$(RuntimeIdentifiers)' == ''"
 		Inputs="@(_AssembliesToPostProcess);$(_LinkerCachePath);$(NativeObject)"
-		Outputs="@(_AssembliesToPostProcess->'$(_PostprocessedAssembliesDirectory)%(Filename)%(Extension)');$(_AssemblyPostProcessorMSBuildOutputFile)"
+		Outputs="$(_AssemblyPostProcessorMSBuildOutputFile)"
 		DependsOnTargets="IlcCompile;ComputeFilesToPublish;_PrepareAssembliesForPostProcessing;_ComputeLinkerInputs"
 		>
 		<PrepareAssemblies

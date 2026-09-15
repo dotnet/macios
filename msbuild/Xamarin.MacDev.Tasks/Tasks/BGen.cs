@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
@@ -68,6 +67,8 @@ namespace Xamarin.MacDev.Tasks {
 		public string OutputAssembly { get; set; } = string.Empty;
 
 		public bool ProcessEnums { get; set; }
+
+		public bool UseExternalProcess { get; set; }
 
 		[Required]
 		public string ProjectDir { get; set; } = string.Empty;
@@ -257,12 +258,6 @@ namespace Xamarin.MacDev.Tasks {
 			AttributeAssembly = PathUtils.ConvertToMacPath (AttributeAssembly);
 			BaseLibDll = PathUtils.ConvertToMacPath (BaseLibDll);
 
-			var customHome = Environment.GetEnvironmentVariable ("DOTNET_CUSTOM_HOME");
-			var env = new Dictionary<string, string?> ();
-			if (!string.IsNullOrEmpty (customHome)) {
-				env ["HOME"] = customHome;
-			}
-
 			if (!string.IsNullOrEmpty (SessionId) &&
 				!string.IsNullOrEmpty (GeneratedSourcesDir) &&
 				!Directory.Exists (GeneratedSourcesDir)) {
@@ -274,18 +269,46 @@ namespace Xamarin.MacDev.Tasks {
 				return false;
 			}
 
-			var bgenPath = PathUtils.ConvertToMacPath (BGenToolPath);
-			var bgenExe = PathUtils.ConvertToMacPath (BGenToolExe);
-			var bgen = Path.Combine (bgenPath, bgenExe);
 			var args = GenerateCommandLineArguments ();
-			args.Insert (0, bgen);
-			var executable = this.GetDotNetPath ();
 			if (Log.HasLoggedErrors)
 				return false;
 
+			var customHome = Environment.GetEnvironmentVariable ("DOTNET_CUSTOM_HOME");
 			cancellationTokenSource = new CancellationTokenSource ();
-			ExecuteAsync (executable, args, environment: env, cancellationToken: cancellationTokenSource.Token).Wait ();
+			if (UseExternalProcess) {
+				var env = new Dictionary<string, string?> ();
+				if (!string.IsNullOrEmpty (customHome))
+					env ["HOME"] = customHome;
+
+				var bgenPath = PathUtils.ConvertToMacPath (BGenToolPath);
+				var bgenExe = PathUtils.ConvertToMacPath (BGenToolExe);
+				args.Insert (0, Path.Combine (bgenPath, bgenExe));
+				var executable = this.GetDotNetPath ();
+				if (Log.HasLoggedErrors)
+					return false;
+
+				ExecuteAsync (executable, args, environment: env, cancellationToken: cancellationTokenSource.Token).Wait ();
+				return !Log.HasLoggedErrors;
+			}
+
+			var output = new StringBuilder ();
+			ThreadStaticTextWriter.ReplaceConsole (output);
+			int exitCode;
+			try {
+				exitCode = ExecuteBGen (args, customHome, cancellationTokenSource.Token);
+			} finally {
+				ThreadStaticTextWriter.RestoreConsole ();
+			}
+			if (exitCode != 0)
+				Log.LogError (output.ToString ());
+			else if (output.Length > 0)
+				Log.LogMessage (MessageImportance.Low, output.ToString ());
 			return !Log.HasLoggedErrors;
+		}
+
+		static int ExecuteBGen (List<string> args, string? customHome, CancellationToken cancellationToken)
+		{
+			return BindingTouch.Run (args.ToArray (), cancellationToken, customHome);
 		}
 
 		public bool ShouldCopyToBuildServer (ITaskItem item) => !item.IsFrameworkItem ();
@@ -330,6 +353,81 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			File.WriteAllLines (GeneratedSourcesFileList, localGeneratedSourcesFileNames);
+		}
+
+		sealed class ThreadStaticTextWriter : TextWriter {
+			[ThreadStatic]
+			static TextWriter? currentWriter;
+
+			static readonly ThreadStaticTextWriter instance = new ();
+			static readonly object lockObject = new ();
+			static int counter;
+			static TextWriter? originalStdout;
+			static TextWriter? originalStderr;
+
+			public override Encoding Encoding => Encoding.UTF8;
+
+			public static void ReplaceConsole (StringBuilder output)
+			{
+				lock (lockObject) {
+					if (counter == 0) {
+						originalStdout = Console.Out;
+						originalStderr = Console.Error;
+						Console.SetOut (instance);
+						Console.SetError (instance);
+					}
+					counter++;
+					currentWriter = new StringWriter (output);
+				}
+			}
+
+			public static void RestoreConsole ()
+			{
+				lock (lockObject) {
+					currentWriter?.Dispose ();
+					currentWriter = null;
+					counter--;
+					if (counter == 0) {
+						if (originalStdout is null || originalStderr is null)
+							throw new InvalidOperationException ("The original console writers were not captured.");
+						Console.SetOut (originalStdout);
+						Console.SetError (originalStderr);
+						originalStdout = null;
+						originalStderr = null;
+					}
+				}
+			}
+
+			TextWriter CurrentWriter {
+				get {
+					lock (lockObject)
+						return currentWriter ?? originalStdout ?? TextWriter.Null;
+				}
+			}
+
+			public override void Write (char value)
+			{
+				lock (lockObject)
+					CurrentWriter.Write (value);
+			}
+
+			public override void Write (string? value)
+			{
+				lock (lockObject)
+					CurrentWriter.Write (value);
+			}
+
+			public override void WriteLine ()
+			{
+				lock (lockObject)
+					CurrentWriter.WriteLine ();
+			}
+
+			public override void WriteLine (string? value)
+			{
+				lock (lockObject)
+					CurrentWriter.WriteLine (value);
+			}
 		}
 
 		string GetLocalRelativePath (string path)

@@ -8371,6 +8371,7 @@ System.Private.CoreLib.dll:System.Int16 System.Threading.PortableThreadPool/Coun
 System.Private.CoreLib.dll:System.Int16 System.Threading.PortableThreadPool/ThreadCounts::NumExistingThreads()
 System.Private.CoreLib.dll:System.Int16 System.Threading.PortableThreadPool/ThreadCounts::NumProcessingWork()
 System.Private.CoreLib.dll:System.Int16 System.Threading.PortableThreadPool/ThreadCounts::NumThreadsGoal()
+System.Private.CoreLib.dll:System.Int16 System.Threading.PortableThreadPool/WorkerThread::SpuriousDispatchNoSpinThreshold
 System.Private.CoreLib.dll:System.Int16 System.Threading.PortableThreadPool/WorkerThread::ThreadsToKeepAlive
 System.Private.CoreLib.dll:System.Int16 System.Threading.Tasks.Sources.ManualResetValueTaskSourceCore`1::_version
 System.Private.CoreLib.dll:System.Int16 System.Threading.Tasks.Sources.ManualResetValueTaskSourceCore`1::Version()
@@ -20863,18 +20864,19 @@ System.Private.CoreLib.dll:System.Threading.PortableThreadPool/ThreadCounts.TryI
 System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread
 System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread..cctor()
 System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread.CreateWorkerThread()
+System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread.DetermineSpuriousDispatchNoSpinThreshold()
 System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread.DetermineThreadsToKeepAlive()
 System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread.MaybeAddWorkingWorker(System.Threading.PortableThreadPool)
 System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread.ShouldExitWorker(System.Threading.PortableThreadPool, System.Threading.LowLevelLock)
 System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread.ShouldStopProcessingWorkNow(System.Threading.PortableThreadPool)
-System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread.TryRemoveWorkingWorker(System.Threading.PortableThreadPool)
+System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread.TryRemoveWorkingWorker(System.Threading.PortableThreadPool, out System.Int16&)
 System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread.WorkerDoWork(System.Threading.PortableThreadPool)
 System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread.WorkerThreadStart()
 System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread/<>c
 System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread/<>c System.Threading.PortableThreadPool/WorkerThread/<>c::<>9
 System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread/<>c..cctor()
 System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread/<>c..ctor()
-System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread/<>c.<.cctor>b__14_0()
+System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread/<>c.<.cctor>b__16_0()
 System.Private.CoreLib.dll:System.Threading.ProcessorIdCache
 System.Private.CoreLib.dll:System.Threading.ProcessorIdCache..cctor()
 System.Private.CoreLib.dll:System.Threading.ProcessorIdCache.GetCurrentProcessorId()

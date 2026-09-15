@@ -48,7 +48,11 @@ namespace MonotouchTest.AudioUnitExtensionHost {
 #else
 			var desc = new AudioComponentDescription {
 				ComponentType = AudioComponentType.Effect,
-				ComponentSubType = (AudioUnitSubType) FourCC ("test"),
+#if __MACCATALYST__
+				ComponentSubType = (AudioUnitSubType) FourCC ("mttc"),
+#else
+				ComponentSubType = (AudioUnitSubType) FourCC ("mtts"),
+#endif
 				ComponentManufacturer = (AudioComponentManufacturerType) (uint) FourCC ("Xmrn"),
 			};
 

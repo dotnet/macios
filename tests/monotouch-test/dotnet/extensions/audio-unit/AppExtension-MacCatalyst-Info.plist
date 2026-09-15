@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- This partial app manifest contains the Info.plist values shared by all the platform-specific AppExtension projects. -->
+<!-- Copyright (c) Microsoft Corporation. -->
+<!-- Licensed under the MIT License. -->
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
@@ -17,7 +18,7 @@
 					<key>type</key>
 					<string>aufx</string>
 					<key>subtype</key>
-					<string>mtts</string>
+					<string>mttc</string>
 					<key>manufacturer</key>
 					<string>Xmrn</string>
 					<key>name</key>

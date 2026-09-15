@@ -11,7 +11,7 @@ include $(TOP)/scripts/run-audio-unit-extension-tests/fragment.mk
 # tests/monotouch-test/dotnet/extensions/audio-unit/<platform>/Makefile.
 
 BINLOG_TIMESTAMP:=$(shell date +%Y-%m-%d-%H%M%S)
-AUVAL_ARGUMENTS?=-v aufx test Xmrn
+AUVAL_ARGUMENTS?=-v aufx mtts Xmrn
 RUN_TIMEOUT_SECONDS?=600
 BUILD_PARAMETERS+=$(BUILD_ARGUMENTS)
 

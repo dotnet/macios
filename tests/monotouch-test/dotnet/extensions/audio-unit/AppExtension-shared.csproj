@@ -6,16 +6,20 @@
     <IsAppExtension>true</IsAppExtension>
     <AssemblyName>monotouchtest</AssemblyName>
     <RootNamespace>monotouchtestappextension</RootNamespace>
-    <ApplicationId>com.xamarin.monotouch-test.AudioUnitExtension</ApplicationId>
+    <ApplicationId Condition="$(TargetFramework.EndsWith('-maccatalyst'))">com.xamarin.monotouch-test.AudioUnitExtension.MacCatalyst</ApplicationId>
+    <ApplicationId Condition="!$(TargetFramework.EndsWith('-maccatalyst'))">com.xamarin.monotouch-test.AudioUnitExtension</ApplicationId>
     <ApplicationVersion>1</ApplicationVersion>
     <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
   </PropertyGroup>
 
   <Import Project="$(MSBuildThisFileDirectory)..\..\shared.csproj" />
 
-  <ItemGroup Condition="!$(TargetFramework.EndsWith('-tvos'))">
+  <ItemGroup Condition="!$(TargetFramework.EndsWith('-tvos')) And !$(TargetFramework.EndsWith('-maccatalyst'))">
     <!-- The Info.plist values that are common to all platforms. Everything else is either an MSBuild property or computed by the SDK. -->
     <PartialAppManifest Include="$(MSBuildThisFileDirectory)AppExtension-Info.plist" />
+  </ItemGroup>
+  <ItemGroup Condition="$(TargetFramework.EndsWith('-maccatalyst'))">
+    <PartialAppManifest Include="$(MSBuildThisFileDirectory)AppExtension-MacCatalyst-Info.plist" />
   </ItemGroup>
   <ItemGroup Condition="$(TargetFramework.EndsWith('-tvos'))">
     <PartialAppManifest Include="$(MSBuildThisFileDirectory)AppExtension-tvOS-Info.plist" />

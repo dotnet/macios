@@ -239,7 +239,8 @@ namespace Xamarin.Tests {
 			if (CanExecute (platform, runtimeIdentifiers)) {
 				ExecuteProjectWithMagicWordAndAssert (containerProjectPath, platform, runtimeIdentifiers);
 
-				var logText = TriggerAudioUnitExtension (appPath, extensionPath, "MonoTouchFixtures.AudioUnit.AppExtensionSmokeTest");
+				var componentSubType = platform == ApplePlatform.MacCatalyst ? "mttc" : "mtts";
+				var logText = TriggerAudioUnitExtension (appPath, extensionPath, "MonoTouchFixtures.AudioUnit.AppExtensionSmokeTest", componentSubType);
 				Assert.That (logText, Does.Contain ("[monotouch-test-audio-unit-extension] Starting monotouch-test audio unit extension test run"), "Start marker");
 				Assert.That (logText, Does.Contain ("MonoTouchFixtures.AudioUnit.AppExtensionSmokeTest"), "Smoke test selection");
 				Assert.That (logText, Does.Contain ("[monotouch-test-audio-unit-extension] Finished monotouch-test audio unit extension test run. Passed: 1 Failed: 0"), "Summary");
@@ -252,12 +253,16 @@ namespace Xamarin.Tests {
 		// 1. A non-ad-hoc signing certificate (extension discovery requires a team ID)
 		// 2. The host app to be registered with Launch Services (for extension discovery)
 		// 3. auvaltool -v to trigger Audio Unit validation which loads the extension
-		string TriggerAudioUnitExtension (string appPath, string extensionPath, string? testName = null)
+		string TriggerAudioUnitExtension (string appPath, string extensionPath, string? testName = null, string componentSubType = "test")
 		{
 			int exitCode;
 			StringBuilder output;
 			var testFilterFile = Path.Combine (extensionPath, "Contents", "Resources", "monotouch-extension-test-filter.txt");
 			var hostTestFilterFile = Path.Combine (appPath, "Contents", "Resources", "monotouch-extension-test-filter.txt");
+			var bundleIdentifier = componentSubType == "mttc" ? "com.xamarin.monotouch-test.AudioUnitExtension.MacCatalyst" : "com.xamarin.monotouch-test.AudioUnitExtension";
+			var defaultsDomain = componentSubType == "mttc"
+				? Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.UserProfile), "Library", "Containers", bundleIdentifier, "Data", "Library", "Preferences", bundleIdentifier + ".plist")
+				: bundleIdentifier;
 
 			// Register the app with Launch Services so the system discovers the
 			// extension and its AudioComponents.
@@ -275,13 +280,13 @@ namespace Xamarin.Tests {
 
 			try {
 				if (string.IsNullOrEmpty (testName)) {
-					ExecutionHelper.Execute ("defaults", new [] { "delete", "com.xamarin.monotouch-test.AudioUnitExtension", "test.name" }, out output, (string) null!);
+					ExecutionHelper.Execute ("defaults", new [] { "delete", defaultsDomain, "test.name" }, out output, (string) null!);
 					if (File.Exists (testFilterFile))
 						File.Delete (testFilterFile);
 					if (File.Exists (hostTestFilterFile))
 						File.Delete (hostTestFilterFile);
 				} else {
-					exitCode = ExecutionHelper.Execute ("defaults", new [] { "write", "com.xamarin.monotouch-test.AudioUnitExtension", "test.name", "-string", testName }, out output, (string) null!);
+					exitCode = ExecutionHelper.Execute ("defaults", new [] { "write", defaultsDomain, "test.name", "-string", testName }, out output, (string) null!);
 					Directory.CreateDirectory (Path.GetDirectoryName (testFilterFile)!);
 					Directory.CreateDirectory (Path.GetDirectoryName (hostTestFilterFile)!);
 					File.WriteAllText (testFilterFile, testName);
@@ -293,11 +298,11 @@ namespace Xamarin.Tests {
 
 				// Run auvaltool to validate the Audio Unit, which triggers the system
 				// to discover and launch the extension process.
-				// aufx = effect type, test = subtype, Xmrn = manufacturer (matching Info.plist).
+				// aufx = effect type, componentSubType = subtype, Xmrn = manufacturer (matching Info.plist).
 				// auvaltool may fail validation (the AU is minimal), but the system will
 				// still attempt to load the extension process.
-				Console.WriteLine ("Executing: auvaltool -v aufx test Xmrn");
-				exitCode = ExecutionHelper.Execute ("auvaltool", new [] { "-v", "aufx", "test", "Xmrn" }, out output, (string) null!, timeout: TimeSpan.FromMinutes (2));
+				Console.WriteLine ($"Executing: auvaltool -v aufx {componentSubType} Xmrn");
+				exitCode = ExecutionHelper.Execute ("auvaltool", new [] { "-v", "aufx", componentSubType, "Xmrn" }, out output, (string) null!, timeout: TimeSpan.FromMinutes (2));
 				Console.WriteLine ($"Exit code: {exitCode}");
 				Console.WriteLine (output);
 				var auvalOutput = output.ToString ();
@@ -322,7 +327,7 @@ namespace Xamarin.Tests {
 				Console.WriteLine (logText);
 				return auvalOutput + Environment.NewLine + logText;
 			} finally {
-				ExecutionHelper.Execute ("defaults", new [] { "delete", "com.xamarin.monotouch-test.AudioUnitExtension", "test.name" }, out output, (string) null!);
+				ExecutionHelper.Execute ("defaults", new [] { "delete", defaultsDomain, "test.name" }, out output, (string) null!);
 				if (File.Exists (testFilterFile))
 					File.Delete (testFilterFile);
 				if (File.Exists (hostTestFilterFile))
@@ -406,12 +411,13 @@ namespace Xamarin.Tests {
 			Console.WriteLine (output);
 
 			// Check system logs for evidence the extension process was launched.
+			System.Threading.Thread.Sleep (TimeSpan.FromSeconds (2));
 			var logEnd = DateTime.Now;
 			var logStartStr = logStartTime.ToString ("yyyy-MM-dd HH:mm:ss");
 			var logEndStr = logEnd.ToString ("yyyy-MM-dd HH:mm:ss");
 			var logArgs = new [] {
 				"show",
-				"--predicate", "eventMessage CONTAINS \"SpotlightImportExtensionTest\"",
+				"--predicate", "eventMessage CONTAINS \"com.xamarin.SpotlightImportExtensionTest\"",
 				"--start", logStartStr,
 				"--end", logEndStr,
 			};
@@ -420,7 +426,7 @@ namespace Xamarin.Tests {
 			Console.WriteLine ($"Exit code: {exitCode}");
 			var logText = output.ToString ();
 			Console.WriteLine (logText);
-			Assert.That (logText, Does.Contain ("SpotlightImportExtensionTest"),
+			Assert.That (logText, Does.Contain ("com.xamarin.SpotlightImportExtensionTest"),
 				"The Spotlight import extension process was not launched by the system.");
 		}
 

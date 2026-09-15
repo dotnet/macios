@@ -52,7 +52,7 @@ namespace AudioUnitExtensionTest {
 			get {
 				return (ref AudioUnitRenderActionFlags actionFlags, ref AudioTimeStamp timestamp,
 						uint frameCount, nint outputBusNumber, AudioBuffers outputData,
-						AURenderEventEnumerator realtimeEventListHead, AURenderPullInputBlock pullInputBlock) => {
+						AURenderEventEnumerator realtimeEventListHead, AURenderPullInputBlock? pullInputBlock) => {
 							if (pullInputBlock is null)
 								return AudioUnitStatus.NoError;
 							pullInputBlock (ref actionFlags, ref timestamp, frameCount, 0, outputData);

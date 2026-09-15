@@ -43,7 +43,8 @@ static void PrintUsage ()
 }
 
 sealed class AudioUnitExtensionTestRunner {
-	const string BundleIdentifier = "com.xamarin.monotouch-test.AudioUnitExtension";
+	const string DefaultBundleIdentifier = "com.xamarin.monotouch-test.AudioUnitExtension";
+	const string MacCatalystBundleIdentifier = "com.xamarin.monotouch-test.AudioUnitExtension.MacCatalyst";
 	const string DesktopContainerBundleIdentifier = "com.xamarin.monotouch-test.audiounit.containerapp";
 	const string MobileContainerBundleIdentifier = "com.xamarin.monotouch-test";
 
@@ -58,6 +59,10 @@ sealed class AudioUnitExtensionTestRunner {
 	readonly Options options;
 	readonly object logLock = new ();
 
+	string BundleIdentifier => options.Platform == "MacCatalyst" ? MacCatalystBundleIdentifier : DefaultBundleIdentifier;
+	string DefaultsDomain => options.Platform == "MacCatalyst"
+		? Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.UserProfile), "Library", "Containers", BundleIdentifier, "Data", "Library", "Preferences", BundleIdentifier + ".plist")
+		: BundleIdentifier;
 	string ContainerBundleIdentifier => options.SimulatorUdid is null ? DesktopContainerBundleIdentifier : MobileContainerBundleIdentifier;
 
 	string ResultsFilePath {
@@ -159,17 +164,17 @@ sealed class AudioUnitExtensionTestRunner {
 
 	async Task ConfigureDefaultsAsync (int port)
 	{
-		await RunDefaultsToolAsync (false, "write", BundleIdentifier, "network.enabled", "-bool", "YES");
-		await RunDefaultsToolAsync (false, "write", BundleIdentifier, "network.host.name", "-string", "127.0.0.1");
-		await RunDefaultsToolAsync (false, "write", BundleIdentifier, "network.host.port", "-int", port.ToString (CultureInfo.InvariantCulture));
-		await RunDefaultsToolAsync (false, "write", BundleIdentifier, "network.transport", "-string", "TCP");
-		await RunDefaultsToolAsync (false, "write", BundleIdentifier, "execution.usetcptunnel", "-bool", "NO");
-		await RunDefaultsToolAsync (false, "write", BundleIdentifier, "xml.enabled", "-bool", "YES");
+		await RunDefaultsToolAsync (false, "write", DefaultsDomain, "network.enabled", "-bool", "YES");
+		await RunDefaultsToolAsync (false, "write", DefaultsDomain, "network.host.name", "-string", "127.0.0.1");
+		await RunDefaultsToolAsync (false, "write", DefaultsDomain, "network.host.port", "-int", port.ToString (CultureInfo.InvariantCulture));
+		await RunDefaultsToolAsync (false, "write", DefaultsDomain, "network.transport", "-string", "TCP");
+		await RunDefaultsToolAsync (false, "write", DefaultsDomain, "execution.usetcptunnel", "-bool", "NO");
+		await RunDefaultsToolAsync (false, "write", DefaultsDomain, "xml.enabled", "-bool", "YES");
 
 		if (string.IsNullOrEmpty (options.TestFilter)) {
-			await RunDefaultsToolAsync (true, "delete", BundleIdentifier, "test.name");
+			await RunDefaultsToolAsync (true, "delete", DefaultsDomain, "test.name");
 		} else {
-			await RunDefaultsToolAsync (false, "write", BundleIdentifier, "test.name", "-string", options.TestFilter);
+			await RunDefaultsToolAsync (false, "write", DefaultsDomain, "test.name", "-string", options.TestFilter);
 		}
 		Log ("");
 	}
@@ -177,7 +182,7 @@ sealed class AudioUnitExtensionTestRunner {
 	async Task CleanupDefaultsAsync ()
 	{
 		foreach (var key in new [] { "network.enabled", "network.host.name", "network.host.port", "network.transport", "execution.usetcptunnel", "xml.enabled", "test.name" })
-			await RunDefaultsToolAsync (true, "delete", BundleIdentifier, key);
+			await RunDefaultsToolAsync (true, "delete", DefaultsDomain, key);
 	}
 
 	Task<Execution> StartHost (CancellationToken cancellationToken)
@@ -192,6 +197,17 @@ sealed class AudioUnitExtensionTestRunner {
 				"xcrun",
 				arguments,
 				environment: environment,
+				standardOutput: Log,
+				standardError: Log,
+				cancellationToken: cancellationToken);
+		}
+
+		if (options.Platform == "MacCatalyst") {
+			var arguments = new List<string> { "-v", "aufx", "mttc", "Xmrn" };
+			Log ($"Executing: auvaltool {StringUtils.FormatArguments (arguments)}");
+			return Execution.RunWithCallbacksAsync (
+				"auvaltool",
+				arguments,
 				standardOutput: Log,
 				standardError: Log,
 				cancellationToken: cancellationToken);

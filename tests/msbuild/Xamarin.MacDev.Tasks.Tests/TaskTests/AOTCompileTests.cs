@@ -65,7 +65,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			ExecuteTask (task);
 
-			var fileWrites = task.FileWrites!.Select (v => v.ItemSpec).ToArray ();
+			var fileWrites = task.FileWrites?.Select (v => v.ItemSpec).ToArray ();
 			Assert.That (fileWrites, Is.EquivalentTo (new [] {
 				itemA.GetMetadata ("ObjectFile"),
 				itemB.GetMetadata ("ObjectFile"),

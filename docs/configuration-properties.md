@@ -5,14 +5,15 @@ There are a number of properties that are contingent upon the configuration sett
 
 ### Release Configuration
 
-| **Property**                                            	| **Default value**                 	| **Condition?**                        	|
-|---------------------------------------------------------	|-----------------------------------	|---------------------------------------	|
-| DebuggerSupport                                         	| false                             	|                                       	|
-| EnableAssemblyILStripping                               	| true                              	|                                       	|
-| RuntimeIdentifiers                                      	| maccatalyst-x64;maccatalyst-arm64 	| TargetFramework == netx.x-maccatalyst 	|
-| RuntimeIdentifiers                                      	| osx-x64;osx-arm64                 	| TargetFramework == netx.x-macos       	|
-| UseSystemResourceKeys                                   	| true                              	|                                       	|
-| VerifyDependencyInjectionOpenGenericServiceTrimmability 	| false                             	|                                       	|
+| **Property**                                            | **Default value**                 | **Condition?**                                                                |
+|---------------------------------------------------------|-----------------------------------|-------------------------------------------------------------------------------|
+| DebuggerSupport                                         | false                             |                                                                               |
+| EnableAssemblyILStripping                               | true                              |                                                                               |
+| RuntimeIdentifiers                                      | maccatalyst-x64;maccatalyst-arm64 | TargetFramework == netx.x-maccatalyst                                         |
+| RuntimeIdentifiers                                      | osx-x64;osx-arm64                 | TargetFramework == netx.x-macos and SupportedOSPlatformVersion < 27.0          |
+| RuntimeIdentifier                                       | Host architecture                 | TargetFramework == netx.x-macos and SupportedOSPlatformVersion >= 27.0         |
+| UseSystemResourceKeys                                   | true                              |                                                                               |
+| VerifyDependencyInjectionOpenGenericServiceTrimmability | false                             |                                                                               |
 
 
 ### Debug Configuration
@@ -35,4 +36,3 @@ These are options that are set when the `Optimize` property is `true` (which hap
 | EventSourceSupport             | false      |
 | HttpActivityPropagationSupport | false      |
 | MetricsSupport                 | false      |
-

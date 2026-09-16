@@ -21,6 +21,11 @@ namespace Xamarin.MacDev.Tasks {
 			{
 				return base.AppendAdditionalArguments (arguments);
 			}
+
+			public bool InvokeInterfaceDefinitionChanged (ITaskItem interfaceDefinition, ITaskItem log)
+			{
+				return base.InterfaceDefinitionChanged (interfaceDefinition, log);
+			}
 		}
 
 		[Test]
@@ -46,6 +51,31 @@ namespace Xamarin.MacDev.Tasks {
 			Assert.That (task.InvokeAppendAdditionalArguments (arguments), Is.False, "Append arguments");
 			Assert.That (task.Log.HasLoggedErrors, Is.True, "Logged error");
 			Assert.That (arguments, Is.Empty, "Arguments");
+		}
+
+		[Test]
+		public void AdditionalArgumentsInvalidateManifest ()
+		{
+			var directory = Cache.CreateTemporaryDirectory ();
+			var interfaceDefinition = new TaskItem (Path.Combine (directory, "View.xib"));
+			var additionalArgumentsFile = Path.Combine (directory, "ibtool-extra-args.txt");
+			var manifest = new TaskItem (Path.Combine (directory, "View.nib"));
+			var now = DateTime.UtcNow;
+			var task = CreateTask<TestIBTool> ();
+
+			File.WriteAllText (interfaceDefinition.ItemSpec, "");
+			File.WriteAllText (additionalArgumentsFile, "");
+			new PDictionary ().Save (manifest.ItemSpec);
+			File.SetLastWriteTimeUtc (interfaceDefinition.ItemSpec, now.AddMinutes (-2));
+			File.SetLastWriteTimeUtc (additionalArgumentsFile, now.AddMinutes (-2));
+			File.SetLastWriteTimeUtc (manifest.ItemSpec, now.AddMinutes (-1));
+			task.AdditionalArgumentsFile = additionalArgumentsFile;
+
+			Assert.That (task.InvokeInterfaceDefinitionChanged (interfaceDefinition, manifest), Is.False, "Unchanged arguments");
+
+			File.SetLastWriteTimeUtc (additionalArgumentsFile, now);
+
+			Assert.That (task.InvokeInterfaceDefinitionChanged (interfaceDefinition, manifest), Is.True, "Changed arguments");
 		}
 
 		IBTool CreateIBToolTask (ApplePlatform framework, string projectDir, string intermediateOutputPath)

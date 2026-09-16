@@ -18,10 +18,12 @@ namespace AccessorySetupKit {
 		Authorized = 20,
 	}
 
+	/// <summary>Specifies options for renaming an accessory.</summary>
 	[Flags]
 	[Native]
 	[iOS (18, 0)]
 	public enum ASAccessoryRenameOptions : ulong {
+		/// <summary>Changes the accessory's SSID along with its display name.</summary>
 		Ssid = 1U << 0,
 	}
 

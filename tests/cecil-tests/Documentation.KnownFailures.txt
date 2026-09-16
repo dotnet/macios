@@ -47,7 +47,6 @@ F:AccessorySetupKit.ASAccessoryEventType.PickerSetupFailed
 F:AccessorySetupKit.ASAccessoryEventType.PickerSetupPairing
 F:AccessorySetupKit.ASAccessoryEventType.PickerSetupRename
 F:AccessorySetupKit.ASAccessoryEventType.Unknown
-F:AccessorySetupKit.ASAccessoryRenameOptions.Ssid
 F:AccessorySetupKit.ASAccessorySupportOptions.BluetoothHid
 F:AccessorySetupKit.ASAccessorySupportOptions.BluetoothPairingLE
 F:AccessorySetupKit.ASAccessorySupportOptions.BluetoothTransportBridging
@@ -53824,7 +53823,6 @@ T:AccessoryAccess.AAUsbAccessoryMatchingCriteria
 T:AccessorySetupKit.ASAccessory
 T:AccessorySetupKit.ASAccessoryEvent
 T:AccessorySetupKit.ASAccessoryEventType
-T:AccessorySetupKit.ASAccessoryRenameOptions
 T:AccessorySetupKit.ASAccessorySession
 T:AccessorySetupKit.ASAccessorySessionCompletionHandler
 T:AccessorySetupKit.ASAccessorySessionFinishPickerDiscoveryHandler

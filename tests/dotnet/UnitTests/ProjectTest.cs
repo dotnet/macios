@@ -51,22 +51,25 @@ namespace Xamarin.Tests {
 			AssertAppContents (platform, appPath);
 		}
 
-		[TestCase ("26.0", true)]
-		[TestCase ("27.0", false)]
-		public void DefaultMacOSReleaseRuntimeIdentifiers (string supportedOSPlatformVersion, bool expectUniversal)
+		[TestCase (ApplePlatform.MacOSX, "26.0", true)]
+		[TestCase (ApplePlatform.MacOSX, "27.0", false)]
+		[TestCase (ApplePlatform.MacCatalyst, "26.0", true)]
+		[TestCase (ApplePlatform.MacCatalyst, "27.0", false)]
+		public void DefaultDesktopReleaseRuntimeIdentifiers (ApplePlatform platform, string supportedOSPlatformVersion, bool expectUniversal)
 		{
-			var platform = ApplePlatform.MacOSX;
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 
-			var projectPath = GetProjectPath ("MyCocoaApp", platform: platform);
+			var project = platform == ApplePlatform.MacOSX ? "MyCocoaApp" : "MyCatalystApp";
+			var runtimeIdentifierPrefix = platform == ApplePlatform.MacOSX ? "osx" : "maccatalyst";
+			var projectPath = GetProjectPath (project, platform: platform);
 			var properties = GetDefaultProperties ();
 			properties ["Configuration"] = "Release";
 			properties ["SupportedOSPlatformVersion"] = supportedOSPlatformVersion;
 
 			var runtimeIdentifier = DotNet.GetProperty (projectPath, "RuntimeIdentifier", properties);
 			var runtimeIdentifiers = DotNet.GetProperty (projectPath, "RuntimeIdentifiers", properties);
-			var expectedRuntimeIdentifier = expectUniversal ? "" : $"osx-{(Configuration.CanRunArm64 ? "arm64" : "x64")}";
-			var expectedRuntimeIdentifiers = expectUniversal ? "osx-x64;osx-arm64" : "";
+			var expectedRuntimeIdentifier = expectUniversal ? "" : $"{runtimeIdentifierPrefix}-{(Configuration.CanRunArm64 ? "arm64" : "x64")}";
+			var expectedRuntimeIdentifiers = expectUniversal ? $"{runtimeIdentifierPrefix}-x64;{runtimeIdentifierPrefix}-arm64" : "";
 
 			Assert.That (runtimeIdentifier, Is.EqualTo (expectedRuntimeIdentifier), "RuntimeIdentifier");
 			Assert.That (runtimeIdentifiers, Is.EqualTo (expectedRuntimeIdentifiers), "RuntimeIdentifiers");

@@ -17,6 +17,10 @@ The full path to the `altool` tool.
 
 The default behavior is to use `xcrun altool`.
 
+## ACToolExtraArgs
+
+Additional arguments to pass to `actool`.
+
 ## ACToolPath
 
 The full path to the `actool` tool.
@@ -747,6 +751,18 @@ Reload). This will disable a few minor optimizations, but will otherwies not
 affect anything.
 
 The default value is `true` for debug builds and `false` otherwise.
+
+## IBToolExtraArgs
+
+Additional arguments to pass to `ibtool`.
+
+For example, to use the simulator-based Interface Builder compilation mode:
+
+```xml
+<PropertyGroup>
+  <IBToolExtraArgs>--cocoatouch-compiler-mode simulator</IBToolExtraArgs>
+</PropertyGroup>
+```
 
 ## IBToolPath
 

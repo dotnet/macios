@@ -260,21 +260,34 @@ namespace AccessorySetupKit {
 		ASPropertyCompareString WifiAwareVendorNameMatch { get; set; }
 	}
 
+	/// <summary>Specifies errors reported by AccessorySetupKit.</summary>
 	[Native]
 	[iOS (18, 0)]
 	[ErrorDomain ("ASErrorDomain")]
 	enum ASErrorCode : long {
+		/// <summary>The operation completed successfully.</summary>
 		Success = 0,
+		/// <summary>An underlying failure occurred for an unknown reason.</summary>
 		Unknown = 1,
+		/// <summary>The session could not be activated.</summary>
 		ActivationFailed = 100,
+		/// <summary>The session could not establish a connection with the accessory.</summary>
 		ConnectionFailed = 150,
+		/// <summary>Accessory discovery timed out.</summary>
 		DiscoveryTimeout = 200,
+		/// <summary>The app extension could not be found.</summary>
 		ExtensionNotFound = 300,
+		/// <summary>The session was invalidated before the operation completed.</summary>
 		Invalidated = 400,
+		/// <summary>The session received an invalid request.</summary>
 		InvalidRequest = 450,
+		/// <summary>The picker received a request to show while it was already active.</summary>
 		PickerAlreadyActive = 500,
+		/// <summary>The picker cannot be used because the app is in the background.</summary>
 		PickerRestricted = 550,
+		/// <summary>The user canceled the operation.</summary>
 		UserCancelled = 700,
+		/// <summary>The user restricted access.</summary>
 		UserRestricted = 750,
 	}
 

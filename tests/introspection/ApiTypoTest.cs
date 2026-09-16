@@ -971,8 +971,6 @@ namespace Introspection {
 			}
 
 			// Check each unique word individually with the spell checker
-			// Grammar checking is not a substitute for explicit-English spelling of identifier fragments.
-			// See README.md for the RequestGrammarChecking evaluation.
 			var typos = new Dictionary<string, List<MemberInfo>> (StringComparer.Ordinal);
 			foreach (var kvp in words) {
 				var word = kvp.Key;

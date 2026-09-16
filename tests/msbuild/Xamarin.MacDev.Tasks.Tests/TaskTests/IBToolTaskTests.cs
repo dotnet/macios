@@ -16,7 +16,7 @@ using Xamarin.Utils;
 namespace Xamarin.MacDev.Tasks {
 	[TestFixture]
 	public class IBToolTaskTests : TestBase {
-		public class TestIBTool : IBTool {
+		class TestIBTool : IBTool {
 			public bool InvokeAppendAdditionalArguments (List<string> arguments)
 			{
 				return base.AppendAdditionalArguments (arguments);

@@ -327,6 +327,7 @@ namespace Introspection {
 			{ "Gcm", All }, // Galois/Counter Mode
 			{ "Gelu", All }, // Gaussian Error Linear Unit (ML)
 			{ "Gen", All }, // generation (e.g. SiriRemote1stGen)
+			{ "Genlock", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst }, // generator locking synchronization
 			{ "Gibibits", All }, // IEC unit name
 			{ "Gid", ApplePlatform.MacOSX }, // group identifier
 			{ "Gigapascals", All }, // SI unit name

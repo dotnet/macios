@@ -63,6 +63,11 @@ namespace Introspection {
 					return true;
 				}
 				break;
+			case "AVCaptureDevice":
+				// This setter is declared for Mac Catalyst 27 but is not implemented in the Mac Catalyst 27 runtime.
+				if (selectorName == "setContinuousAutoFocusTrackingLensPositionBias:")
+					return true;
+				break;
 			case "CBPeripheral":
 				switch (selectorName) {
 				// These selectors are declared for Mac Catalyst 27 but are not implemented in the Mac Catalyst 27 runtime.

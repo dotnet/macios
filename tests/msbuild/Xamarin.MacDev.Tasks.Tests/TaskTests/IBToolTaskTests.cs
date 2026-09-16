@@ -47,9 +47,11 @@ namespace Xamarin.MacDev.Tasks {
 			var arguments = new List<string> ();
 
 			task.AdditionalArguments = "\"";
+			task.AdditionalArgumentsPropertyName = "IBToolExtraArgs";
 
 			Assert.That (task.InvokeAppendAdditionalArguments (arguments), Is.False, "Append arguments");
 			Assert.That (task.Log.HasLoggedErrors, Is.True, "Logged error");
+			Assert.That (Engine.Logger.ErrorEvents.Single ().Message, Does.Contain ("IBToolExtraArgs"), "Error message");
 			Assert.That (arguments, Is.Empty, "Arguments");
 		}
 

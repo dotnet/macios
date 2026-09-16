@@ -32,6 +32,8 @@ namespace Xamarin.MacDev.Tasks {
 
 		public string? AdditionalArguments { get; set; }
 
+		public string? AdditionalArgumentsPropertyName { get; set; }
+
 		[Required]
 		public string MinimumOSVersion { get; set; } = string.Empty;
 
@@ -149,7 +151,8 @@ namespace Xamarin.MacDev.Tasks {
 				return true;
 
 			if (!StringUtils.TryParseArguments (additionalArgumentsValue, out var additionalArguments, out var _)) {
-				Log.LogError (MSBStrings.E7132 /* Unable to parse the 'AdditionalArguments' value: {0} */, additionalArgumentsValue);
+				var propertyName = AdditionalArgumentsPropertyName ?? nameof (AdditionalArguments);
+				Log.LogError ("Unable to parse the '{0}' value: {1}", propertyName, additionalArgumentsValue);
 				return false;
 			}
 

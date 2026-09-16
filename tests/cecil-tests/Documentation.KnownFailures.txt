@@ -52219,7 +52219,6 @@ P:VideoToolbox.VTCompressionProperties.HasRightStereoEyeView
 P:VideoToolbox.VTCompressionProperties.HeroEye
 P:VideoToolbox.VTCompressionProperties.HorizontalDisparityAdjustment
 P:VideoToolbox.VTCompressionProperties.HorizontalFieldOfView
-P:VideoToolbox.VTCompressionProperties.LogTransferFunction
 P:VideoToolbox.VTCompressionProperties.MaxAllowedFrameQP
 P:VideoToolbox.VTCompressionProperties.MaximumRealTimeFrameRate
 P:VideoToolbox.VTCompressionProperties.MinAllowedFrameQP

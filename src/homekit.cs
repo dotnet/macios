@@ -2637,7 +2637,7 @@ namespace HomeKit {
 		NSNumber Max { get; }
 	}
 
-	[NoMac, NoTV, NoMacCatalyst]
+	[NoMac, NoTV, MacCatalyst (27, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface HMAccessoryOwnershipToken {
@@ -2705,7 +2705,7 @@ namespace HomeKit {
 		void DidUpdateNetworkAccessMode (HMNetworkConfigurationProfile profile);
 	}
 
-	[NoTV, NoMacCatalyst]
+	[NoTV, MacCatalyst (27, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface HMAccessorySetupPayload {
@@ -2828,7 +2828,7 @@ namespace HomeKit {
 
 	}
 
-	[NoTV, NoMacCatalyst, NoMac, iOS (15, 4)]
+	[NoTV, MacCatalyst (27, 0), NoMac, iOS (15, 4)]
 	[BaseType (typeof (NSObject))]
 	interface HMAccessorySetupRequest : NSCopying {
 
@@ -2845,7 +2845,7 @@ namespace HomeKit {
 		string SuggestedAccessoryName { get; set; }
 	}
 
-	[NoTV, NoMacCatalyst, NoMac, iOS (15, 4)]
+	[NoTV, MacCatalyst (27, 0), NoMac, iOS (15, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface HMAccessorySetupResult : NSCopying {
@@ -2857,9 +2857,15 @@ namespace HomeKit {
 		NSUuid [] AccessoryUniqueIdentifiers { get; }
 	}
 
-	[iOS (15, 2), NoTV, NoMacCatalyst]
+	[iOS (15, 2), NoTV, MacCatalyst (27, 0)]
 	[BaseType (typeof (NSObject))]
 	interface HMAccessorySetupManager {
+		/// <summary>Gets a value that indicates whether accessory setup is supported on the current device.</summary>
+		[MacCatalyst (27, 0), iOS (27, 0)]
+		[Static]
+		[Export ("supported")]
+		bool Supported { [Bind ("isSupported")] get; }
+
 		[Async]
 		[iOS (15, 4)]
 		[Export ("performAccessorySetupUsingRequest:completionHandler:")]

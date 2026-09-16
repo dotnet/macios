@@ -1,0 +1,6 @@
+!deprecated-attribute-missing! MTLParallelRenderCommandEncoder::setColorStoreActionOptions:atIndex: missing a [Deprecated] attribute
+!deprecated-attribute-missing! MTLParallelRenderCommandEncoder::setDepthStoreActionOptions: missing a [Deprecated] attribute
+!deprecated-attribute-missing! MTLParallelRenderCommandEncoder::setStencilStoreActionOptions: missing a [Deprecated] attribute
+!deprecated-attribute-missing! MTLRenderCommandEncoder::setColorStoreActionOptions:atIndex: missing a [Deprecated] attribute
+!deprecated-attribute-missing! MTLRenderCommandEncoder::setDepthStoreActionOptions: missing a [Deprecated] attribute
+!deprecated-attribute-missing! MTLRenderCommandEncoder::setStencilStoreActionOptions: missing a [Deprecated] attribute

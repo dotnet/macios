@@ -1,7 +1,6 @@
 ## the most useful bindings were added to satisfy the common usages
 
 !missing-enum! PMDataFormat not bound
-!missing-pinvoke! PMCGImageCreateWithEPSDataProvider is not bound
 !missing-pinvoke! PMCopyAvailablePPDs is not bound
 !missing-pinvoke! PMCopyLocalizedPPD is not bound
 !missing-pinvoke! PMCopyPageFormat is not bound
@@ -31,7 +30,6 @@
 !missing-pinvoke! PMPrinterGetLocation is not bound
 !missing-pinvoke! PMPrinterGetPrinterResolutionCount is not bound
 !missing-pinvoke! PMPrinterSendCommand is not bound
-!missing-pinvoke! PMPrinterWritePostScriptToURL is not bound
 !missing-pinvoke! PMPrintSettingsCopyAsDictionary is not bound
 !missing-pinvoke! PMPrintSettingsCopyKeys is not bound
 !missing-pinvoke! PMPrintSettingsCreateDataRepresentation is not bound

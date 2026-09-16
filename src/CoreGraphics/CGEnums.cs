@@ -228,6 +228,9 @@ namespace CoreGraphics {
 		Form,
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		Object = 800,
+		/// <summary>A non-structural tag for content that should be excluded from the document's logical structure.</summary>
+		[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		Artifact = 900,
 	}
 
 	// untyped enum -> CGPDFObject.h

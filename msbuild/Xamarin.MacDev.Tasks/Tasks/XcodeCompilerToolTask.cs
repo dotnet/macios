@@ -30,7 +30,7 @@ namespace Xamarin.MacDev.Tasks {
 
 		public string BundleIdentifier { get; set; } = string.Empty;
 
-		public string AdditionalArguments { get; set; } = string.Empty;
+		public string? AdditionalArguments { get; set; }
 
 		[Required]
 		public string MinimumOSVersion { get; set; } = string.Empty;
@@ -144,11 +144,12 @@ namespace Xamarin.MacDev.Tasks {
 
 		protected bool AppendAdditionalArguments (List<string> args)
 		{
-			if (string.IsNullOrEmpty (AdditionalArguments))
+			var additionalArgumentsValue = AdditionalArguments;
+			if (additionalArgumentsValue is null || additionalArgumentsValue.Length == 0)
 				return true;
 
-			if (!StringUtils.TryParseArguments (AdditionalArguments, out var additionalArguments, out var _)) {
-				Log.LogError (MSBStrings.E7132 /* Unable to parse the 'AdditionalArguments' value: {0} */, AdditionalArguments);
+			if (!StringUtils.TryParseArguments (additionalArgumentsValue, out var additionalArguments, out var _)) {
+				Log.LogError (MSBStrings.E7132 /* Unable to parse the 'AdditionalArguments' value: {0} */, additionalArgumentsValue);
 				return false;
 			}
 

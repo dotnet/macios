@@ -47,8 +47,6 @@ F:AccessorySetupKit.ASAccessoryEventType.PickerSetupFailed
 F:AccessorySetupKit.ASAccessoryEventType.PickerSetupPairing
 F:AccessorySetupKit.ASAccessoryEventType.PickerSetupRename
 F:AccessorySetupKit.ASAccessoryEventType.Unknown
-F:AccessorySetupKit.ASDiscoveryDescriptorRange.Default
-F:AccessorySetupKit.ASDiscoveryDescriptorRange.Immediate
 F:AccessorySetupKit.ASDiscoveryDescriptorWiFiAwareServiceRole.Publisher
 F:AccessorySetupKit.ASDiscoveryDescriptorWiFiAwareServiceRole.Subscriber
 F:AccessorySetupKit.ASErrorCode.ActivationFailed
@@ -53829,7 +53827,6 @@ T:AccessorySetupKit.ASAccessorySettings
 T:AccessorySetupKit.ASDiscoveredAccessory
 T:AccessorySetupKit.ASDiscoveredDisplayItem
 T:AccessorySetupKit.ASDiscoveryDescriptor
-T:AccessorySetupKit.ASDiscoveryDescriptorRange
 T:AccessorySetupKit.ASDiscoveryDescriptorWiFiAwareServiceRole
 T:AccessorySetupKit.ASErrorCode
 T:AccessorySetupKit.ASMigrationDisplayItem

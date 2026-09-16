@@ -41,10 +41,13 @@ namespace AccessorySetupKit {
 		BluetoothHid = 1U << 3,
 	}
 
+	/// <summary>Specifies the range within which to discover Bluetooth accessories.</summary>
 	[Native]
 	[iOS (18, 0)]
 	public enum ASDiscoveryDescriptorRange : long {
+		/// <summary>Uses the default accessory discovery range.</summary>
 		Default = 0,
+		/// <summary>Discovers accessories in the immediate vicinity of the device.</summary>
 		Immediate = 10,
 	}
 

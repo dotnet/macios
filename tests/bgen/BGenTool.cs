@@ -194,7 +194,10 @@ namespace Xamarin.Tests {
 		{
 			var compileApiDefinitions = false;
 			if (CompiledApiDefinitionAssembly is null) {
-				CompiledApiDefinitionAssembly = Path.Combine (EnsureTempDir (), "compiled-api-definitions.dll");
+				var apiDefinitionName = ApiDefinitions.Count > 0 ? Path.GetFileNameWithoutExtension (ApiDefinitions [0]) : "compiled-api-definitions";
+				var compiledApiDefinitionDirectory = Path.Combine (EnsureTempDir (), "compiled-api-definitions");
+				Directory.CreateDirectory (compiledApiDefinitionDirectory);
+				CompiledApiDefinitionAssembly = Path.Combine (compiledApiDefinitionDirectory, apiDefinitionName + ".dll");
 				compileApiDefinitions = true;
 			}
 

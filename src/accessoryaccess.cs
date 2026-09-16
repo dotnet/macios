@@ -25,10 +25,13 @@ namespace AccessoryAccess {
 		InvalidAccessoryState = 4,
 	}
 
+	/// <summary>Specifies how interface matching dictionaries are applied when matching a USB accessory.</summary>
 	[Mac (27, 0)]
 	[Native ("AAUSBAccessoryMatchingCriteriaInterfaceMatchingOption")]
 	public enum AAUsbAccessoryMatchingCriteriaInterfaceMatchingOption : long {
+		/// <summary>All interface matching dictionaries must match.</summary>
 		MatchAll,
+		/// <summary>At least one interface matching dictionary must match.</summary>
 		MatchAny,
 	}
 

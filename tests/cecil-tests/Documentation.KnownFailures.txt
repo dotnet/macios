@@ -33,8 +33,6 @@ F:Accessibility.AXTechnology.SwitchControl
 F:Accessibility.AXTechnology.VoiceControl
 F:Accessibility.AXTechnology.VoiceOver
 F:Accessibility.AXTechnology.Zoom
-F:AccessoryAccess.AAUsbAccessoryMatchingCriteriaInterfaceMatchingOption.MatchAll
-F:AccessoryAccess.AAUsbAccessoryMatchingCriteriaInterfaceMatchingOption.MatchAny
 F:AccessorySetupKit.ASAccessoryEventType.AccessoryAdded
 F:AccessorySetupKit.ASAccessoryEventType.AccessoryChanged
 F:AccessorySetupKit.ASAccessoryEventType.AccessoryRemoved
@@ -53826,7 +53824,6 @@ T:AccessoryAccess.AAUsbAccessoryManager
 T:AccessoryAccess.AAUsbAccessoryManagerRegisterListenerCompletionHandler
 T:AccessoryAccess.AAUsbAccessoryManagerUnregisterListenerCompletionHandler
 T:AccessoryAccess.AAUsbAccessoryMatchingCriteria
-T:AccessoryAccess.AAUsbAccessoryMatchingCriteriaInterfaceMatchingOption
 T:AccessorySetupKit.ASAccessory
 T:AccessorySetupKit.ASAccessoryEvent
 T:AccessorySetupKit.ASAccessoryEventType

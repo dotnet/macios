@@ -185,7 +185,9 @@
 
 		<!-- For debug desktop builds we default to the host architecture -->
 		<!-- For release desktop builds we default to universal apps in .NET 7+, except for macOS and Mac Catalyst 27+ -->
-		<_DefaultToUniversalDesktopApp Condition="'$(Configuration)' == 'Release' And ('$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst') And ('$(SupportedOSPlatformVersion)' == '' Or $([MSBuild]::VersionLessThan($(SupportedOSPlatformVersion), '27.0')))">true</_DefaultToUniversalDesktopApp>
+		<_EffectiveSupportedOSPlatformVersion Condition="'$(SupportedOSPlatformVersion)' != ''">$(SupportedOSPlatformVersion)</_EffectiveSupportedOSPlatformVersion>
+		<_EffectiveSupportedOSPlatformVersion Condition="'$(_EffectiveSupportedOSPlatformVersion)' == ''">$(TargetPlatformVersion)</_EffectiveSupportedOSPlatformVersion>
+		<_DefaultToUniversalDesktopApp Condition="'$(Configuration)' == 'Release' And ('$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst') And $([MSBuild]::VersionLessThan($(_EffectiveSupportedOSPlatformVersion), '27.0'))">true</_DefaultToUniversalDesktopApp>
 		<RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == '' And '$(_PlatformName)' == 'macOS' And '$(_DefaultToUniversalDesktopApp)' != 'true' And '$(_IsArm64Machine)' == 'true'">osx-arm64</RuntimeIdentifier>
 		<RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == '' And '$(_PlatformName)' == 'macOS' And '$(_DefaultToUniversalDesktopApp)' != 'true' And '$(_IsArm64Machine)' != 'true'">osx-x64</RuntimeIdentifier>
 		<RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == '' And '$(_PlatformName)' == 'MacCatalyst' And '$(_DefaultToUniversalDesktopApp)' != 'true' And '$(_IsArm64Machine)' == 'true'">maccatalyst-arm64</RuntimeIdentifier>

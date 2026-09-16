@@ -22,7 +22,7 @@ namespace Xamarin.MacDev.Tasks {
 		[TestCase (ApplePlatform.iOS, "16.0", "armv8-a")]     // iPad5 (A9) can run iOS 16
 		[TestCase (ApplePlatform.iOS, "17.0", "armv8-a")]     // iPad7 (A10) can run iOS 17
 		[TestCase (ApplePlatform.iOS, "18.0", "armv8-a")]     // iPad7 (A10) can run iPadOS 18
-		[TestCase (ApplePlatform.iOS, "26.0", "armv8.3-a")]   // A12 devices can run iOS/iPadOS 26
+		[TestCase (ApplePlatform.iOS, "26.0", "armv8.3-a")]   // A12 iPad devices can run iPadOS 26
 		[TestCase (ApplePlatform.iOS, "26.7", "armv8.3-a")]   // Last release for A12 devices
 		[TestCase (ApplePlatform.iOS, "27.0", "armv8.3-a")]   // A12Z iPad Pro can run iPadOS 27
 		public void TestiOSInstructionSets (ApplePlatform platform, string osVersion, string expectedInstructionSet)

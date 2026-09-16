@@ -83,7 +83,11 @@ namespace Cecil.Tests {
 				Assert.That (method.IsPublic, Is.True, $"{typeName} visibility");
 				Assert.That (method.ReturnType.FullName, Is.EqualTo ("System.Void"), $"{typeName} return type");
 				Assert.That (method.Parameters.Skip (offset).Select (p => p.ParameterType.FullName), Is.EqualTo (parameterTypes), $"{typeName} parameter types");
-				Assert.That (type.Methods.Any (m => m.Name == "GetSearchableItems" && m.Parameters.Count == 2 + offset), Is.True, $"{typeName} older overload");
+				var olderOverload = type.Methods.Single (m => m.Name == "GetSearchableItems" && m.Parameters.Count == 2 + offset);
+				Assert.That (olderOverload.IsPublic, Is.True, $"{typeName} older overload visibility");
+				Assert.That (olderOverload.ReturnType.FullName, Is.EqualTo ("System.Void"), $"{typeName} older overload return type");
+				Assert.That (olderOverload.Parameters.Skip (offset).Select (p => p.ParameterType.FullName), Is.EqualTo (new [] { parameterTypes [0], parameterTypes [2] }), $"{typeName} older overload parameter types");
+				Assert.That (olderOverload.Parameters [1 + offset].CustomAttributes.Any (a => a.AttributeType.Is ("ObjCRuntime", "BlockProxyAttribute")), Is.True, $"{typeName} older overload block proxy");
 
 				var bindAs = method.Parameters [1 + offset].CustomAttributes.Single (a => a.AttributeType.Is ("ObjCRuntime", "BindAsAttribute"));
 				Assert.That (((TypeReference) bindAs.ConstructorArguments [0].Value).FullName, Is.EqualTo ("Foundation.NSFileProtectionType"), $"{typeName} BindAs type");
@@ -91,7 +95,6 @@ namespace Cecil.Tests {
 				Assert.That (method.Parameters [2 + offset].CustomAttributes.Any (a => a.AttributeType.Is ("ObjCRuntime", "BlockProxyAttribute")), Is.True, $"{typeName} block proxy");
 			}
 
-#if !XAMCORE_5_0
 			if (info.Platform != ApplePlatform.TVOS) {
 				var protocol = info.Assembly.MainModule.GetType ("CoreSpotlight.ICSSearchableIndexDelegate");
 				var member = protocol.CustomAttributes.Single (a => a.AttributeType.Is ("Foundation", "ProtocolMemberAttribute") &&
@@ -105,7 +108,6 @@ namespace Cecil.Tests {
 				Assert.That (blockProxies [1].Value, Is.Null, "Protection class block proxy");
 				Assert.That (blockProxies [2].Value, Is.Not.Null, "Handler block proxy");
 			}
-#endif
 		}
 
 		static void AddFailure (ref List<string>? failures, string failure)

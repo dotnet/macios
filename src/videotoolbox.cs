@@ -927,10 +927,36 @@ namespace VideoToolbox {
 		[Export ("ConstantQualityFactor")]
 		float ConstantQualityFactor { get; set; }
 
+		/// <summary>Gets or sets the log transfer function identifier declared for the compressed content.</summary>
+		/// <value>
+		///   The log curve identifier, or <see langword="null" /> if none is specified.
+		///   Setting this property to <see langword="null" /> removes the dictionary entry.
+		/// </value>
+		/// <remarks>
+		///   Use this property to store or read identifiers without a corresponding <see cref="CMFormatDescriptionLogTransferFunction" /> value.
+		///   See <see cref="LogTransferFunction" /> for the requirements when configuring a compression session.
+		/// </remarks>
 		[TV (27, 0), MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
 		// not strongly typed to CMFormatDescriptionLogTransferFunction because other values are allowed as well
 		[Export ("LogTransferFunction")]
-		string LogTransferFunction { get; set; }
+		string WeakLogTransferFunction { get; set; }
+
+		/// <summary>Gets or sets the log transfer function declared for the compressed content.</summary>
+		/// <value>
+		///   The log transfer function, or <see langword="null" /> if none is specified.
+		///   Setting this property to <see langword="null" /> removes the dictionary entry.
+		/// </value>
+		/// <exception cref="NotSupportedException">
+		///   The getter encountered an identifier without a corresponding <see cref="CMFormatDescriptionLogTransferFunction" /> value.
+		/// </exception>
+		/// <remarks>
+		///   When a log transfer function is specified for a <see cref="VTCompressionSession" />,
+		///   source image buffers must have exactly that log transfer function, or encoding fails.
+		///   Use <see cref="WeakLogTransferFunction" /> to access identifiers that are not represented by the enum.
+		/// </remarks>
+		[TV (27, 0), MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Export ("LogTransferFunction")]
+		CMFormatDescriptionLogTransferFunction LogTransferFunction { get; set; }
 	}
 
 	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]

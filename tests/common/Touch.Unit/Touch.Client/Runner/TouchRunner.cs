@@ -401,7 +401,7 @@ namespace MonoTouch.NUnit.UI {
 								break;
 							}
 							writers.Add (new NUnitOutputTextWriter (
-								this, defaultWriter, formatter, options.XmlMode));
+								this, defaultWriter ?? new ConsoleTextWriter (), formatter, options.XmlMode));
 						} else if (defaultWriter is not null) {
 							writers.Add (defaultWriter);
 						}
@@ -989,29 +989,6 @@ namespace MonoTouch.NUnit.UI {
 
 			return false;
 
-		}
-	}
-
-	class ConsoleTextWriter : TextWriter {
-		public override Encoding Encoding {
-			get {
-				return Console.Out.Encoding;
-			}
-		}
-
-		public override void Write (char value)
-		{
-			Console.Out.Write (value);
-		}
-
-		public override void Write (char []? buffer)
-		{
-			Console.Out.Write (buffer);
-		}
-
-		public override void WriteLine (string? value)
-		{
-			Console.Out.WriteLine (value);
 		}
 	}
 

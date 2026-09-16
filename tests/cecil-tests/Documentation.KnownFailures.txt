@@ -61,9 +61,6 @@ F:AccessorySetupKit.ASErrorCode.Success
 F:AccessorySetupKit.ASErrorCode.Unknown
 F:AccessorySetupKit.ASErrorCode.UserCancelled
 F:AccessorySetupKit.ASErrorCode.UserRestricted
-F:AccessorySetupKit.ASPickerDisplayItemSetupOptions.ConfirmAuthorization
-F:AccessorySetupKit.ASPickerDisplayItemSetupOptions.FinishInApp
-F:AccessorySetupKit.ASPickerDisplayItemSetupOptions.Rename
 F:AccessorySetupKit.ASPickerDisplaySettingsOptions.FilterDiscoveryResults
 F:AccessorySetupKit.ASPickerDisplaySettingsOptions.None
 F:AddressBook.ABPropertyType.MultiMask
@@ -53831,7 +53828,6 @@ T:AccessorySetupKit.ASDiscoveryDescriptorWiFiAwareServiceRole
 T:AccessorySetupKit.ASErrorCode
 T:AccessorySetupKit.ASMigrationDisplayItem
 T:AccessorySetupKit.ASPickerDisplayItem
-T:AccessorySetupKit.ASPickerDisplayItemSetupOptions
 T:AccessorySetupKit.ASPickerDisplaySettings
 T:AccessorySetupKit.ASPickerDisplaySettingsDiscoveryTimeout
 T:AccessorySetupKit.ASPickerDisplaySettingsOptions

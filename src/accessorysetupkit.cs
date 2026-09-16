@@ -51,12 +51,16 @@ namespace AccessorySetupKit {
 		Immediate = 10,
 	}
 
+	/// <summary>Specifies options for setting up an accessory in the picker.</summary>
 	[Flags]
 	[Native]
 	[iOS (18, 0)]
 	public enum ASPickerDisplayItemSetupOptions : long {
+		/// <summary>Asks the user to rename the accessory.</summary>
 		Rename = 1 << 0,
+		/// <summary>Requires the app to finish accessory authorization before showing the setup view.</summary>
 		ConfirmAuthorization = 1 << 1,
+		/// <summary>Asks the user to complete additional setup in the app after authorization.</summary>
 		FinishInApp = 1 << 2,
 	}
 

@@ -33,10 +33,6 @@ F:Accessibility.AXTechnology.SwitchControl
 F:Accessibility.AXTechnology.VoiceControl
 F:Accessibility.AXTechnology.VoiceOver
 F:Accessibility.AXTechnology.Zoom
-F:AccessoryAccess.AAErrorCode.AccessoryListenerAlreadyRegistered
-F:AccessoryAccess.AAErrorCode.AccessoryNotAccessible
-F:AccessoryAccess.AAErrorCode.Internal
-F:AccessoryAccess.AAErrorCode.InvalidAccessoryState
 F:AccessoryAccess.AAUsbAccessoryMatchingCriteriaInterfaceMatchingOption.MatchAll
 F:AccessoryAccess.AAUsbAccessoryMatchingCriteriaInterfaceMatchingOption.MatchAny
 F:AccessorySetupKit.ASAccessoryEventType.AccessoryAdded
@@ -53824,7 +53820,6 @@ T:Accessibility.AXSettings
 T:Accessibility.AXSettingsFeature
 T:Accessibility.AXTechnology
 T:Accessibility.ValueDescriptionProviderHandler
-T:AccessoryAccess.AAErrorCode
 T:AccessoryAccess.AAUsbAccessory
 T:AccessoryAccess.AAUsbAccessoryCloseCompletionHandler
 T:AccessoryAccess.AAUsbAccessoryManager

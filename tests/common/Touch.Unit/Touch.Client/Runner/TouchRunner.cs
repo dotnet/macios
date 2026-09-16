@@ -413,7 +413,9 @@ namespace MonoTouch.NUnit.UI {
 						Console.WriteLine ("Network error: Cannot connect to {0}:{1}: {2}. Continuing on console.", options.HostName, options.HostPort, ex);
 					}
 				}
-				writers.Add (Console.Out);
+				// NUnit redirects Console.Out while tests run. Resolve it for each write instead of
+				// keeping the original writer, which can deadlock with NUnit's forwarding writer.
+				writers.Add (new ConsoleTextWriter ());
 				Writer = new MultiplexedTextWriter (writers);
 			}
 
@@ -987,6 +989,29 @@ namespace MonoTouch.NUnit.UI {
 
 			return false;
 
+		}
+	}
+
+	class ConsoleTextWriter : TextWriter {
+		public override Encoding Encoding {
+			get {
+				return Console.Out.Encoding;
+			}
+		}
+
+		public override void Write (char value)
+		{
+			Console.Out.Write (value);
+		}
+
+		public override void Write (char []? buffer)
+		{
+			Console.Out.Write (buffer);
+		}
+
+		public override void WriteLine (string? value)
+		{
+			Console.Out.WriteLine (value);
 		}
 	}
 

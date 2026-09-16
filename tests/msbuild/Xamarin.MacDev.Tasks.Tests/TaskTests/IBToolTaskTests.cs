@@ -16,6 +16,38 @@ using Xamarin.Utils;
 namespace Xamarin.MacDev.Tasks {
 	[TestFixture]
 	public class IBToolTaskTests : TestBase {
+		public class TestIBTool : IBTool {
+			public bool InvokeAppendAdditionalArguments (List<string> arguments)
+			{
+				return base.AppendAdditionalArguments (arguments);
+			}
+		}
+
+		[Test]
+		public void AdditionalArguments ()
+		{
+			var task = CreateTask<TestIBTool> ();
+			var arguments = new List<string> ();
+
+			task.AdditionalArguments = "--cocoatouch-compiler-mode simulator --module \"My Module\"";
+
+			Assert.That (task.InvokeAppendAdditionalArguments (arguments), Is.True, "Append arguments");
+			Assert.That (arguments, Is.EqualTo (new [] { "--cocoatouch-compiler-mode", "simulator", "--module", "My Module" }), "Arguments");
+		}
+
+		[Test]
+		public void InvalidAdditionalArguments ()
+		{
+			var task = CreateTask<TestIBTool> ();
+			var arguments = new List<string> ();
+
+			task.AdditionalArguments = "\"";
+
+			Assert.That (task.InvokeAppendAdditionalArguments (arguments), Is.False, "Append arguments");
+			Assert.That (task.Log.HasLoggedErrors, Is.True, "Logged error");
+			Assert.That (arguments, Is.Empty, "Arguments");
+		}
+
 		IBTool CreateIBToolTask (ApplePlatform framework, string projectDir, string intermediateOutputPath)
 		{
 			var task = CreateTask<IBTool> ();

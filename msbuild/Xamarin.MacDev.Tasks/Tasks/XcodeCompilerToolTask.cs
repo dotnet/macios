@@ -30,6 +30,8 @@ namespace Xamarin.MacDev.Tasks {
 
 		public string BundleIdentifier { get; set; } = string.Empty;
 
+		public string AdditionalArguments { get; set; } = string.Empty;
+
 		[Required]
 		public string MinimumOSVersion { get; set; } = string.Empty;
 
@@ -139,6 +141,20 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		protected abstract void AppendCommandLineArguments (IDictionary<string, string?> environment, List<string> args, ITaskItem [] items);
+
+		protected bool AppendAdditionalArguments (List<string> args)
+		{
+			if (string.IsNullOrEmpty (AdditionalArguments))
+				return true;
+
+			if (!StringUtils.TryParseArguments (AdditionalArguments, out var additionalArguments, out var _)) {
+				Log.LogError (MSBStrings.E7132 /* Unable to parse the 'AdditionalArguments' value: {0} */, AdditionalArguments);
+				return false;
+			}
+
+			args.AddRange (additionalArguments);
+			return true;
+		}
 
 		static bool? translated;
 
@@ -254,6 +270,9 @@ namespace Xamarin.MacDev.Tasks {
 			args.Add ("xml1");
 
 			AppendCommandLineArguments (environment, args, items);
+
+			if (!AppendAdditionalArguments (args))
+				return 1;
 
 			if (Link)
 				args.Add ("--link");

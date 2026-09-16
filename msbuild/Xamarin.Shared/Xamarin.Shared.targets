@@ -908,9 +908,21 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		</ItemGroup>
 	</Target>
 
+	<Target Name="_WriteIBToolExtraArgsInput">
+		<WriteLinesToFile
+			File="$(_IBToolExtraArgsInput)"
+			Lines="$(IBToolExtraArgs)"
+			Overwrite="true"
+			WriteOnlyWhenDifferent="true" />
+		<ItemGroup>
+			<FileWrites Include="$(_IBToolExtraArgsInput)" />
+		</ItemGroup>
+	</Target>
+
 	<Target Name="_BeforeCoreCompileInterfaceDefinitions"
-		Inputs="@(InterfaceDefinition)"
-		Outputs="$(_IBToolCache)">
+		Inputs="@(InterfaceDefinition);$(_IBToolExtraArgsInput)"
+		Outputs="$(_IBToolCache)"
+		DependsOnTargets="_WriteIBToolExtraArgsInput">
 
 		<!-- If any InterfaceDefinition is newer than the generated items list, we delete them so that the _CoreCompileInterfaceDefinitions 
 		     target runs again and updates those lists for the next run
@@ -945,6 +957,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			SessionId="$(BuildSessionId)"
 			Condition="'$(IsMacEnabled)' == 'true'"
 			ToolPath="$(IBToolPath)"
+			AdditionalArguments="$(IBToolExtraArgs)"
 			BundleIdentifier="$(_BundleIdentifier)"
 			CLKComplicationGroup="$(_CLKComplicationGroup)"
 			EnableOnDemandResources="$(EnableOnDemandResources)"
@@ -1024,10 +1037,21 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		</ItemGroup>
 	</Target>
 
+	<Target Name="_WriteACToolExtraArgsInput">
+		<WriteLinesToFile
+			File="$(_ACToolExtraArgsInput)"
+			Lines="$(ACToolExtraArgs)"
+			Overwrite="true"
+			WriteOnlyWhenDifferent="true" />
+		<ItemGroup>
+			<FileWrites Include="$(_ACToolExtraArgsInput)" />
+		</ItemGroup>
+	</Target>
+
 	<Target Name="_BeforeCoreCompileImageAssets"
-		Inputs="@(ImageAsset);$(_TemporaryAppManifest)"
+		Inputs="@(ImageAsset);$(_TemporaryAppManifest);$(_ACToolExtraArgsInput)"
 		Outputs="$(_ACTool_PartialAppManifestCache);$(_ACTool_BundleResourceCache)"
-		DependsOnTargets="_ReadAppManifest"
+		DependsOnTargets="_ReadAppManifest;_WriteACToolExtraArgsInput"
 		>
 
 		<!-- If any ImageAsset or AppManifest is newer than the generated items list, we delete them so that the _CoreCompileImageAssets
@@ -1071,6 +1095,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			SessionId="$(BuildSessionId)"
 			Condition="'$(IsMacEnabled)' == 'true' And '@(ImageAsset)' != ''"
 			ToolPath="$(ACToolPath)"
+			AdditionalArguments="$(ACToolExtraArgs)"
 			AccentColor="$(AccentColor)"
 			AlternateAppIcons="@(AlternateAppIcon)"
 			AppIcon="$(AppIcon)"
@@ -1348,6 +1373,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<!-- actool output caches -->
 			<_ACTool_PartialAppManifestCache>$(DeviceSpecificIntermediateOutputPath)actool\_PartialAppManifest.items</_ACTool_PartialAppManifestCache>
 			<_ACTool_BundleResourceCache>$(DeviceSpecificIntermediateOutputPath)actool\_BundleResourceWithLogicalName.items</_ACTool_BundleResourceCache>
+			<_ACToolExtraArgsInput>$(DeviceSpecificIntermediateOutputPath)actool-extra-args.txt</_ACToolExtraArgsInput>
 
 			<!-- coremlc output caches -->
 			<_CoreMLModel_PartialAppManifestCache>$(DeviceSpecificIntermediateOutputPath)coremlc\_PartialAppManifest.items</_CoreMLModel_PartialAppManifestCache>
@@ -1355,6 +1381,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 			<!-- ibtool output caches -->
 			<_IBToolCache>$(DeviceSpecificIntermediateOutputPath)ibtool\_BundleResourceWithLogicalName.items</_IBToolCache>
+			<_IBToolExtraArgsInput>$(DeviceSpecificIntermediateOutputPath)ibtool-extra-args.txt</_IBToolExtraArgsInput>
 
 			<!-- scntool output caches -->
 			<_SceneKitCache>$(DeviceSpecificIntermediateOutputPath)copySceneKitAssets\_BundleResourceWithLogicalName.items</_SceneKitCache>

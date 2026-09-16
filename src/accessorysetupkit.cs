@@ -356,10 +356,13 @@ namespace AccessorySetupKit {
 		NativeHandle Constructor (string @string, NSStringCompareOptions compareOptions);
 	}
 
+	/// <summary>Specifies the service role of a Wi-Fi Aware accessory.</summary>
 	[iOS (26, 0)]
 	[Native]
 	public enum ASDiscoveryDescriptorWiFiAwareServiceRole : long {
+		/// <summary>The accessory uses the subscriber service role.</summary>
 		Subscriber = 10,
+		/// <summary>The accessory uses the publisher service role.</summary>
 		Publisher = 20,
 	}
 

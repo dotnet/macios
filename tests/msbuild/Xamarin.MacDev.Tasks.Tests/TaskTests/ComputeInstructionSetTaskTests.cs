@@ -21,7 +21,10 @@ namespace Xamarin.MacDev.Tasks {
 		[TestCase (ApplePlatform.iOS, "15.0", "armv8-a")]     // iPhone 6s era (iOS 15)
 		[TestCase (ApplePlatform.iOS, "16.0", "armv8-a")]     // iPad5 (A9) can run iOS 16
 		[TestCase (ApplePlatform.iOS, "17.0", "armv8-a")]     // iPad7 (A10) can run iOS 17
-		[TestCase (ApplePlatform.iOS, "18.0", "armv8.3-a")]   // iPhone XR and newer (iOS 18)
+		[TestCase (ApplePlatform.iOS, "18.0", "armv8-a")]     // iPad7 (A10) can run iPadOS 18
+		[TestCase (ApplePlatform.iOS, "26.0", "armv8.3-a")]   // A12 devices can run iOS/iPadOS 26
+		[TestCase (ApplePlatform.iOS, "26.7", "armv8.3-a")]   // Last release for A12 devices
+		[TestCase (ApplePlatform.iOS, "27.0", "armv8.3-a")]   // A12Z iPad Pro can run iPadOS 27
 		public void TestiOSInstructionSets (ApplePlatform platform, string osVersion, string expectedInstructionSet)
 		{
 			var task = CreateTask (platform);
@@ -37,8 +40,12 @@ namespace Xamarin.MacDev.Tasks {
 		[TestCase (ApplePlatform.TVOS, "13.0", "armv8-a")]     // Apple TV 4
 		[TestCase (ApplePlatform.TVOS, "14.0", "armv8-a")]     // Apple TV 4
 		[TestCase (ApplePlatform.TVOS, "15.0", "armv8-a")]     // Apple TV 4
-		[TestCase (ApplePlatform.TVOS, "16.0", "armv8.1-a")]   // Apple TV 4K and newer
-		[TestCase (ApplePlatform.TVOS, "17.0", "armv8.1-a")]   // Apple TV 4K and newer
+		[TestCase (ApplePlatform.TVOS, "16.0", "armv8-a")]     // Apple TV 4
+		[TestCase (ApplePlatform.TVOS, "17.0", "armv8-a")]     // Apple TV 4
+		[TestCase (ApplePlatform.TVOS, "18.0", "armv8-a")]     // Apple TV 4
+		[TestCase (ApplePlatform.TVOS, "26.0", "armv8-a")]     // Apple TV 4
+		[TestCase (ApplePlatform.TVOS, "26.6", "armv8-a")]     // Last release for Apple TV 4
+		[TestCase (ApplePlatform.TVOS, "27.0", "armv8.3-a")]   // Apple TV 4K 2nd gen and newer
 		public void TesttvOSInstructionSets (ApplePlatform platform, string osVersion, string expectedInstructionSet)
 		{
 			var task = CreateTask (platform);

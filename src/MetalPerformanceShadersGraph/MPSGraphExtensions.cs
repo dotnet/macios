@@ -7,8 +7,8 @@ using MetalPerformanceShaders;
 
 namespace MetalPerformanceShadersGraph {
 	public static partial class MPSGraphMemoryOps_Extensions {
-		[SupportedOSPlatform ("ios14.0")]
-		[SupportedOSPlatform ("tvos14.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		public static unsafe MPSGraphTensor Constant (this MPSGraph graph, float scalar)
@@ -16,8 +16,8 @@ namespace MetalPerformanceShadersGraph {
 			return graph.Constant ((double) scalar, new [] { 1 }, MPSDataType.Float32);
 		}
 
-		[SupportedOSPlatform ("ios14.0")]
-		[SupportedOSPlatform ("tvos14.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		public static unsafe MPSGraphTensor Constant (this MPSGraph graph, ReadOnlySpan<float> values, int [] shape)
@@ -33,8 +33,8 @@ namespace MetalPerformanceShadersGraph {
 			}
 		}
 
-		[SupportedOSPlatform ("ios14.0")]
-		[SupportedOSPlatform ("tvos14.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		public static MPSGraphTensor Variable (this MPSGraph graph, float initialValue, int [] shape, string? name = null)
@@ -50,8 +50,8 @@ namespace MetalPerformanceShadersGraph {
 			return v;
 		}
 
-		[SupportedOSPlatform ("ios14.0")]
-		[SupportedOSPlatform ("tvos14.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		public static unsafe MPSGraphTensor Variable (this MPSGraph graph, ReadOnlySpan<float> initialValues, int [] shape, string? name = null)

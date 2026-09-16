@@ -40,6 +40,22 @@ namespace Cecil.Tests {
 			Assert.That (failures, Is.Null.Or.Empty, "All subclasses from ARConfiguration must explicitly implement GetSupportedVideoFormats.");
 		}
 
+		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformAssemblyDefinitions))]
+		public void CNAssetPreprocessConfiguration_Constructors (AssemblyInfo info)
+		{
+			var type = info.Assembly.MainModule.GetType ("Cinematic.CNAssetPreprocessConfiguration");
+			if (info.Platform == ApplePlatform.TVOS) {
+				Assert.That (type, Is.Null, "CNAssetPreprocessConfiguration is unavailable on tvOS.");
+				return;
+			}
+
+			Assert.That (type, Is.Not.Null, "CNAssetPreprocessConfiguration must be available.");
+			var constructors = type.Methods.Where (m => m.IsConstructor && m.IsPublic).ToArray ();
+			Assert.That (constructors, Has.Length.EqualTo (1), "Only the destination URL constructor should be public.");
+			Assert.That (constructors [0].Parameters, Has.Count.EqualTo (1), "Constructor parameter count");
+			Assert.That (constructors [0].Parameters [0].ParameterType.FullName, Is.EqualTo ("Foundation.NSUrl"), "Destination URL parameter");
+		}
+
 		static void AddFailure (ref List<string>? failures, string failure)
 		{
 			if (failures is null)

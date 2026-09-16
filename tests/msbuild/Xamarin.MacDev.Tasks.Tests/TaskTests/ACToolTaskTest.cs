@@ -228,11 +228,6 @@ namespace Xamarin.MacDev.Tasks {
 							<dict>
 								<key>AppIcons</key>
 								<dict>
-									<key>CFBundleIconFiles</key>
-									<array>
-										<string>AppIcons60x60</string>
-										<string>AppIcons76x76</string>
-									</array>
 									<key>CFBundleIconName</key>
 									<string>AppIcons</string>
 								</dict>
@@ -253,11 +248,6 @@ namespace Xamarin.MacDev.Tasks {
 							<dict>
 								<key>AppIcons</key>
 								<dict>
-									<key>CFBundleIconFiles</key>
-									<array>
-										<string>AppIcons60x60</string>
-										<string>AppIcons76x76</string>
-									</array>
 									<key>CFBundleIconName</key>
 									<string>AppIcons</string>
 								</dict>
@@ -450,11 +440,6 @@ namespace Xamarin.MacDev.Tasks {
 							<dict>
 								<key>AlternateAppIcons</key>
 								<dict>
-									<key>CFBundleIconFiles</key>
-									<array>
-										<string>AlternateAppIcons60x60</string>
-										<string>AlternateAppIcons76x76</string>
-									</array>
 									<key>CFBundleIconName</key>
 									<string>AlternateAppIcons</string>
 								</dict>
@@ -475,11 +460,6 @@ namespace Xamarin.MacDev.Tasks {
 							<dict>
 								<key>AlternateAppIcons</key>
 								<dict>
-									<key>CFBundleIconFiles</key>
-									<array>
-										<string>AlternateAppIcons60x60</string>
-										<string>AlternateAppIcons76x76</string>
-									</array>
 									<key>CFBundleIconName</key>
 									<string>AlternateAppIcons</string>
 								</dict>

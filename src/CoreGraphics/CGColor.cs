@@ -129,8 +129,8 @@ namespace CoreGraphics {
 		{
 		}
 
-		[SupportedOSPlatform ("ios14.0")]
-		[SupportedOSPlatform ("tvos14.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		static IntPtr Create (CGConstantColor color)
@@ -146,8 +146,8 @@ namespace CoreGraphics {
 			return handle;
 		}
 
-		[SupportedOSPlatform ("ios14.0")]
-		[SupportedOSPlatform ("tvos14.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		public CGColor (CGConstantColor color)
@@ -377,15 +377,15 @@ namespace CoreGraphics {
 			return h == IntPtr.Zero ? null : new CGColor (h, owns: true);
 		}
 
-		[SupportedOSPlatform ("ios14.0")]
-		[SupportedOSPlatform ("tvos14.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern /* CGColorRef */ IntPtr CGColorCreateGenericCMYK (nfloat cyan, nfloat magenta, nfloat yellow, nfloat black, nfloat alpha);
 
-		[SupportedOSPlatform ("ios14.0")]
-		[SupportedOSPlatform ("tvos14.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		static public CGColor? CreateCmyk (nfloat cyan, nfloat magenta, nfloat yellow, nfloat black, nfloat alpha)
@@ -394,15 +394,15 @@ namespace CoreGraphics {
 			return h == IntPtr.Zero ? null : new CGColor (h, owns: true);
 		}
 
-		[SupportedOSPlatform ("ios14.0")]
-		[SupportedOSPlatform ("tvos14.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.AccessibilityLibrary)]
 		static extern /* NSString */ IntPtr AXNameFromColor (/* CGColorRef */ IntPtr color);
 
-		[SupportedOSPlatform ("ios14.0")]
-		[SupportedOSPlatform ("tvos14.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public string? AXName => CFString.FromHandle (AXNameFromColor (Handle));

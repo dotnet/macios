@@ -6,11 +6,15 @@ using UIKit;
 using ASAccessoryWiFiAwarePairedDeviceId = System.UInt64;
 
 namespace AccessorySetupKit {
+	/// <summary>Specifies the authorization state of an accessory.</summary>
 	[Native]
 	[iOS (18, 0)]
 	public enum ASAccessoryState : long {
+		/// <summary>The accessory is invalid or unauthorized.</summary>
 		Unauthorized = 0,
+		/// <summary>The accessory is selected, but full authorization is pending.</summary>
 		AwaitingAuthorization = 10,
+		/// <summary>The accessory is authorized and available.</summary>
 		Authorized = 20,
 	}
 

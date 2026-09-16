@@ -48,9 +48,6 @@ F:AccessorySetupKit.ASAccessoryEventType.PickerSetupPairing
 F:AccessorySetupKit.ASAccessoryEventType.PickerSetupRename
 F:AccessorySetupKit.ASAccessoryEventType.Unknown
 F:AccessorySetupKit.ASAccessoryRenameOptions.Ssid
-F:AccessorySetupKit.ASAccessoryState.Authorized
-F:AccessorySetupKit.ASAccessoryState.AwaitingAuthorization
-F:AccessorySetupKit.ASAccessoryState.Unauthorized
 F:AccessorySetupKit.ASAccessorySupportOptions.BluetoothHid
 F:AccessorySetupKit.ASAccessorySupportOptions.BluetoothPairingLE
 F:AccessorySetupKit.ASAccessorySupportOptions.BluetoothTransportBridging
@@ -53834,7 +53831,6 @@ T:AccessorySetupKit.ASAccessorySessionFinishPickerDiscoveryHandler
 T:AccessorySetupKit.ASAccessorySessionUpdateAuthorizationHandler
 T:AccessorySetupKit.ASAccessorySessionUpdatePickerHandler
 T:AccessorySetupKit.ASAccessorySettings
-T:AccessorySetupKit.ASAccessoryState
 T:AccessorySetupKit.ASAccessorySupportOptions
 T:AccessorySetupKit.ASDiscoveredAccessory
 T:AccessorySetupKit.ASDiscoveredDisplayItem

@@ -23,3 +23,36 @@ Cons
 
 * Incomplete - Not everything is encoded in the metadata / executable;
 * Too complete - Not every truth is good to be known (or published), which requires creating special cases in the tests
+
+## API-name spelling
+
+When enabled, `ApiTypoTest.TypoTest` splits public API names into individual
+words and checks each unique word with `NSSpellChecker.CheckSpelling` on macOS
+or `UITextChecker.RangeOfMisspelledWordInString` on UIKit platforms. Both paths
+explicitly select `en_US`. Technical terms and existing API spellings are
+handled by the platform-specific allowlist.
+
+### Grammar-checking evaluation
+
+[Issue #25895](https://github.com/dotnet/macios/issues/25895) considers using
+`UITextChecker.RequestGrammarChecking`. Retain the spelling checks rather than
+replacing them or requiring grammar checking to confirm their findings:
+
+* The Xcode 27 `UITextChecker.h` contract permits `NSTextCheckingTypeGrammar`
+  and `NSTextCheckingTypeCorrection` results, not `NSTextCheckingTypeSpelling`.
+  Corrections can overlap spelling errors, but a suggested correction is not
+  equivalent to reporting a misspelled word.
+* Identifier fragments do not provide sentence context. Joining unrelated API
+  words would invent context rather than check the original identifiers.
+* The grammar request has no language parameter, so it does not provide the
+  existing explicit `en_US` selection. It is also a completion-handler API
+  introduced in iOS, tvOS, and Mac Catalyst 27, not a replacement for the
+  synchronous macOS spelling path.
+
+Reconsider an additional grammar pass only with evidence of new, actionable
+typos in the actual identifier-word corpus, without losing spelling findings
+or introducing false positives. Compare both `waitForAllResults` settings and
+record runtime versions and language preferences. Include misspelled words
+and deliberately incorrect sentences as controls: empty grammar results,
+especially when the sentence controls also return nothing, do not establish
+that grammar analysis is working or that the API can never help.

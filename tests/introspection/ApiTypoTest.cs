@@ -970,6 +970,8 @@ namespace Introspection {
 			}
 
 			// Check each unique word individually with the spell checker
+			// Grammar checking is not a substitute for explicit-English spelling of identifier fragments.
+			// See README.md for the RequestGrammarChecking evaluation.
 			var typos = new HashSet<string> (StringComparer.Ordinal);
 			foreach (var word in words) {
 				var checkRange = new NSRange (0, word.Length);

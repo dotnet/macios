@@ -47,8 +47,6 @@ F:AccessorySetupKit.ASAccessoryEventType.PickerSetupFailed
 F:AccessorySetupKit.ASAccessoryEventType.PickerSetupPairing
 F:AccessorySetupKit.ASAccessoryEventType.PickerSetupRename
 F:AccessorySetupKit.ASAccessoryEventType.Unknown
-F:AccessorySetupKit.ASPickerDisplaySettingsOptions.FilterDiscoveryResults
-F:AccessorySetupKit.ASPickerDisplaySettingsOptions.None
 F:AddressBook.ABPropertyType.MultiMask
 F:AdServices.AAAttributionErrorCode.InternalError
 F:AdServices.AAAttributionErrorCode.NetworkError
@@ -53814,7 +53812,6 @@ T:AccessorySetupKit.ASMigrationDisplayItem
 T:AccessorySetupKit.ASPickerDisplayItem
 T:AccessorySetupKit.ASPickerDisplaySettings
 T:AccessorySetupKit.ASPickerDisplaySettingsDiscoveryTimeout
-T:AccessorySetupKit.ASPickerDisplaySettingsOptions
 T:AccessorySetupKit.ASPropertyCompareString
 T:Accounts.ACLinkedInKey
 T:AdServices.AAAttribution

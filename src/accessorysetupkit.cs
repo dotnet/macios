@@ -423,11 +423,14 @@ namespace AccessorySetupKit {
 		NativeHandle Constructor (string name, UIImage productImage, ASDiscoveredAccessory accessory);
 	}
 
+	/// <summary>Specifies options that customize accessory picker discovery.</summary>
 	[iOS (26, 1)]
 	[Flags]
 	[Native]
 	public enum ASPickerDisplaySettingsOptions : ulong {
+		/// <summary>No custom picker discovery options are enabled.</summary>
 		None = 0,
+		/// <summary>Passes discovered accessories to the app for filtering before displaying them in the picker.</summary>
 		FilterDiscoveryResults = (1uL << 0),
 	}
 }

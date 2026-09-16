@@ -109,15 +109,26 @@ sealed class AudioUnitExtensionTestRunner {
 		Log ($"Listening for test results on 127.0.0.1:{port}.");
 
 		using var hostCts = new CancellationTokenSource ();
-		Task<Execution>? hostTask = null;
+		Task? hostTask = null;
+		string? stagedAppDirectory = null;
+		var registeredAppPath = options.AppPath;
+		var registeredExtensionPath = options.ExtensionPath;
+		var executablePath = options.ExecutablePath;
 
 		try {
 			if (options.SimulatorUdid is null) {
-				await RunToolAsync (options.LsRegisterPath, "-f", options.AppPath);
+				stagedAppDirectory = Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.UserProfile), "Applications", "dotnet-macios-tests", Guid.NewGuid ().ToString ("N"));
+				registeredAppPath = Path.Combine (stagedAppDirectory, Path.GetFileName (options.AppPath));
+				registeredExtensionPath = Path.Combine (registeredAppPath, Path.GetRelativePath (options.AppPath, options.ExtensionPath));
+				executablePath = Path.Combine (registeredAppPath, Path.GetRelativePath (options.AppPath, options.ExecutablePath));
+				Directory.CreateDirectory (stagedAppDirectory);
+				await RunToolAsync ("ditto", options.AppPath, registeredAppPath);
 				Log ("");
-				await RunToolAsync ("pluginkit", "-a", options.ExtensionPath);
+				await RunToolAsync (options.LsRegisterPath, "-f", registeredAppPath);
 				Log ("");
-				await WaitForAudioUnitRegistrationAsync ();
+				await RunToolAsync ("pluginkit", "-a", registeredExtensionPath);
+				Log ("");
+				await WaitForAudioUnitRegistrationAsync (registeredAppPath, registeredExtensionPath);
 			} else {
 				await RunToolAsync ("xcrun", "simctl", "install", options.SimulatorUdid, options.AppPath);
 				Log ("");
@@ -125,7 +136,7 @@ sealed class AudioUnitExtensionTestRunner {
 
 			await ConfigureDefaultsAsync (port);
 
-			hostTask = StartHost (hostCts.Token);
+			hostTask = StartHost (registeredAppPath, executablePath, hostCts.Token);
 
 			var (result, timedOut) = await ReceiveResultsAsync (listener);
 
@@ -142,6 +153,8 @@ sealed class AudioUnitExtensionTestRunner {
 			listener.Stop ();
 
 			// Stop the container host so its process (and the extension) can exit.
+			if (options.SimulatorUdid is null && options.Platform == "MacCatalyst")
+				TerminateHostProcess (executablePath);
 			hostCts.Cancel ();
 			if (hostTask is not null) {
 				try {
@@ -153,6 +166,11 @@ sealed class AudioUnitExtensionTestRunner {
 			await CleanupDefaultsAsync ();
 			if (options.SimulatorUdid is not null)
 				await RunBestEffortAsync ("xcrun", "simctl", "uninstall", options.SimulatorUdid, ContainerBundleIdentifier);
+			if (stagedAppDirectory is not null) {
+				await RunBestEffortAsync ("pluginkit", "-r", registeredExtensionPath);
+				await RunBestEffortAsync (options.LsRegisterPath, "-u", registeredAppPath);
+				Directory.Delete (stagedAppDirectory, true);
+			}
 
 			var logEnd = DateTime.Now;
 			Log ("");
@@ -186,7 +204,7 @@ sealed class AudioUnitExtensionTestRunner {
 			await RunDefaultsToolAsync (true, "delete", DefaultsDomain, key);
 	}
 
-	Task<Execution> StartHost (CancellationToken cancellationToken)
+	async Task StartHost (string appPath, string executablePath, CancellationToken cancellationToken)
 	{
 		var environment = new Dictionary<string, string?> {
 			[options.SimulatorUdid is null ? "RUN_EXTENSION_TESTS" : "SIMCTL_CHILD_RUN_EXTENSION_TESTS"] = "1",
@@ -194,37 +212,62 @@ sealed class AudioUnitExtensionTestRunner {
 		if (options.SimulatorUdid is not null) {
 			var arguments = new List<string> { "simctl", "launch", "--console-pty", "--terminate-running-process", options.SimulatorUdid, ContainerBundleIdentifier };
 			Log ($"Executing: SIMCTL_CHILD_RUN_EXTENSION_TESTS=1 xcrun {StringUtils.FormatArguments (arguments)}");
-			return Execution.RunWithCallbacksAsync (
+			await Execution.RunWithCallbacksAsync (
 				"xcrun",
 				arguments,
 				environment: environment,
 				standardOutput: Log,
 				standardError: Log,
 				cancellationToken: cancellationToken);
+			return;
 		}
 
 		if (options.Platform == "MacCatalyst") {
-			var arguments = new List<string> { "-v", "aufx", "mttc", "Xmrn" };
-			Log ($"Executing: auvaltool {StringUtils.FormatArguments (arguments)}");
-			return Execution.RunWithCallbacksAsync (
-				"auvaltool",
+			var arguments = new List<string> { "-W", "-n", "--env", "RUN_EXTENSION_TESTS=1", appPath };
+			Log ($"Executing: open {StringUtils.FormatArguments (arguments)}");
+			await Execution.RunWithCallbacksAsync (
+				"open",
 				arguments,
 				standardOutput: Log,
 				standardError: Log,
 				cancellationToken: cancellationToken);
+			return;
 		}
 
-		Log ($"Executing: RUN_EXTENSION_TESTS=1 {options.ExecutablePath}");
-		return Execution.RunWithCallbacksAsync (
-			options.ExecutablePath,
-			new List<string> (),
-			environment: environment,
-			standardOutput: Log,
-			standardError: Log,
-			cancellationToken: cancellationToken);
+		while (!cancellationToken.IsCancellationRequested) {
+			Log ($"Executing: RUN_EXTENSION_TESTS=1 {executablePath}");
+			await Execution.RunWithCallbacksAsync (
+				executablePath,
+				new List<string> (),
+				environment: environment,
+				standardOutput: Log,
+				standardError: Log,
+				cancellationToken: cancellationToken);
+			if (!cancellationToken.IsCancellationRequested) {
+				Log ("The container host exited before the extension reported results; retrying in 2 seconds.");
+				await Task.Delay (TimeSpan.FromSeconds (2), cancellationToken);
+			}
+		}
 	}
 
-	async Task WaitForAudioUnitRegistrationAsync ()
+	void TerminateHostProcess (string executablePath)
+	{
+		foreach (var process in System.Diagnostics.Process.GetProcessesByName (Path.GetFileName (executablePath))) {
+			using (process) {
+				try {
+					if (process.MainModule?.FileName == executablePath) {
+						Log ($"Terminating host process {process.Id}: {executablePath}");
+						process.Kill ();
+						process.WaitForExit (10000);
+					}
+				} catch (Exception ex) {
+					Log ($"Could not terminate host process {process.Id}: {ex.Message}");
+				}
+			}
+		}
+	}
+
+	async Task WaitForAudioUnitRegistrationAsync (string appPath, string extensionPath)
 	{
 		var componentSubType = options.Platform == "MacCatalyst" ? "mttc" : "mtts";
 		var expectedComponent = $"aufx {componentSubType} Xmrn";
@@ -247,8 +290,8 @@ sealed class AudioUnitExtensionTestRunner {
 				return;
 			}
 			if (attempts % 10 == 0) {
-				await RunBestEffortAsync (options.LsRegisterPath, "-f", options.AppPath);
-				await RunBestEffortAsync ("pluginkit", "-a", options.ExtensionPath);
+				await RunBestEffortAsync (options.LsRegisterPath, "-f", appPath);
+				await RunBestEffortAsync ("pluginkit", "-a", extensionPath);
 			}
 			await Task.Delay (TimeSpan.FromSeconds (1));
 		}

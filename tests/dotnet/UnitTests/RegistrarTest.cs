@@ -247,40 +247,47 @@ namespace Xamarin.Tests {
 			}
 		}
 
-		// Trigger the Audio Unit extension via auvaltool to verify the extension
-		// actually loads and runs with the managed-static registrar.
+		// Trigger the Audio Unit extension to verify it actually loads and runs
+		// with the managed-static registrar.
 		// This requires:
 		// 1. A non-ad-hoc signing certificate (extension discovery requires a team ID)
 		// 2. The host app to be registered with Launch Services (for extension discovery)
-		// 3. auvaltool -v to trigger Audio Unit validation which loads the extension
 		string TriggerAudioUnitExtension (string appPath, string extensionPath, string? testName = null, string componentSubType = "test")
 		{
 			int exitCode;
 			StringBuilder output;
-			var testFilterFile = Path.Combine (extensionPath, "Contents", "Resources", "monotouch-extension-test-filter.txt");
-			var hostTestFilterFile = Path.Combine (appPath, "Contents", "Resources", "monotouch-extension-test-filter.txt");
 			var bundleIdentifier = componentSubType == "mttc" ? "com.xamarin.monotouch-test.AudioUnitExtension.MacCatalyst" : "com.xamarin.monotouch-test.AudioUnitExtension";
 			var defaultsDomain = componentSubType == "mttc"
 				? Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.UserProfile), "Library", "Containers", bundleIdentifier, "Data", "Library", "Preferences", bundleIdentifier + ".plist")
 				: bundleIdentifier;
-
-			// Register the app with Launch Services so the system discovers the
-			// extension and its AudioComponents.
 			var lsregister = "/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister";
-			Console.WriteLine ($"Executing: {lsregister} -f {appPath}");
-			exitCode = ExecutionHelper.Execute (lsregister, new [] { "-f", appPath }, out output, (string) null!);
-			Console.WriteLine ($"Exit code: {exitCode}");
-			Console.WriteLine (output);
-
-			// Register the extension explicitly with pluginkit.
-			Console.WriteLine ($"Executing: pluginkit -a {extensionPath}");
-			exitCode = ExecutionHelper.Execute ("pluginkit", new [] { "-a", extensionPath }, out output, (string) null!);
-			Console.WriteLine ($"Exit code: {exitCode}");
-			Console.WriteLine (output);
-
-			WaitForAudioUnitRegistration (appPath, extensionPath, componentSubType);
+			var stagedAppDirectory = Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.UserProfile), "Applications", "dotnet-macios-tests", Guid.NewGuid ().ToString ("N"));
+			var stagedAppPath = Path.Combine (stagedAppDirectory, Path.GetFileName (appPath));
+			var stagedExtensionPath = Path.Combine (stagedAppPath, Path.GetRelativePath (appPath, extensionPath));
+			var testFilterFile = Path.Combine (stagedExtensionPath, "Contents", "Resources", "monotouch-extension-test-filter.txt");
+			var hostTestFilterFile = Path.Combine (stagedAppPath, "Contents", "Resources", "monotouch-extension-test-filter.txt");
 
 			try {
+				Directory.CreateDirectory (stagedAppDirectory);
+				Console.WriteLine ($"Executing: ditto {appPath} {stagedAppPath}");
+				exitCode = ExecutionHelper.Execute ("ditto", new [] { appPath, stagedAppPath }, out output, (string) null!);
+				Assert.That (exitCode, Is.EqualTo (0), $"Could not stage the app in ~/Applications.{Environment.NewLine}{output}");
+
+				// Register the app with Launch Services so the system discovers the
+				// extension and its AudioComponents.
+				Console.WriteLine ($"Executing: {lsregister} -f {stagedAppPath}");
+				exitCode = ExecutionHelper.Execute (lsregister, new [] { "-f", stagedAppPath }, out output, (string) null!);
+				Console.WriteLine ($"Exit code: {exitCode}");
+				Console.WriteLine (output);
+
+				// Register the extension explicitly with pluginkit.
+				Console.WriteLine ($"Executing: pluginkit -a {stagedExtensionPath}");
+				exitCode = ExecutionHelper.Execute ("pluginkit", new [] { "-a", stagedExtensionPath }, out output, (string) null!);
+				Console.WriteLine ($"Exit code: {exitCode}");
+				Console.WriteLine (output);
+
+				WaitForAudioUnitRegistration (stagedAppPath, stagedExtensionPath, componentSubType);
+
 				if (string.IsNullOrEmpty (testName)) {
 					ExecutionHelper.Execute ("defaults", new [] { "delete", defaultsDomain, "test.name" }, out output, (string) null!);
 					if (File.Exists (testFilterFile))
@@ -298,18 +305,42 @@ namespace Xamarin.Tests {
 				// Record the current time so we can query system logs after triggering.
 				var logStartTime = DateTime.Now;
 
-				// Run auvaltool to validate the Audio Unit, which triggers the system
-				// to discover and launch the extension process.
-				// aufx = effect type, componentSubType = subtype, Xmrn = manufacturer (matching Info.plist).
-				// auvaltool may fail validation (the AU is minimal), but the system will
-				// still attempt to load the extension process.
-				Console.WriteLine ($"Executing: auvaltool -v aufx {componentSubType} Xmrn");
-				exitCode = ExecutionHelper.Execute ("auvaltool", new [] { "-v", "aufx", componentSubType, "Xmrn" }, out output, (string) null!, timeout: TimeSpan.FromMinutes (2));
-				Console.WriteLine ($"Exit code: {exitCode}");
-				Console.WriteLine (output);
-				var auvalOutput = output.ToString ();
-				Assert.That (auvalOutput, Does.Contain ("Loaded AudioUnit out-of-process: true"),
-					"auvaltool did not report loading the audio unit extension out-of-process.");
+				string triggerOutput;
+				if (componentSubType == "mttc") {
+					var arguments = new [] { "-n", "--env", "RUN_EXTENSION_TESTS=1", stagedAppPath };
+					Console.WriteLine ($"Executing: open {string.Join (" ", arguments)}");
+					exitCode = ExecutionHelper.Execute ("open", arguments, out output, (string) null!, timeout: TimeSpan.FromMinutes (1));
+					Console.WriteLine ($"Exit code: {exitCode}");
+					Console.WriteLine (output);
+					Assert.That (exitCode, Is.EqualTo (0), $"Could not launch the staged Mac Catalyst app.{Environment.NewLine}{output}");
+					System.Threading.Thread.Sleep (TimeSpan.FromSeconds (30));
+					triggerOutput = output.ToString ();
+				} else {
+					// aufx = effect type, componentSubType = subtype, Xmrn = manufacturer (matching Info.plist).
+					var triggerOutputBuilder = new StringBuilder ();
+					var timeout = TimeSpan.FromMinutes (2);
+					var stopwatch = System.Diagnostics.Stopwatch.StartNew ();
+					var attempts = 0;
+					do {
+						attempts++;
+						Console.WriteLine ($"Executing: auvaltool -v aufx {componentSubType} Xmrn");
+						exitCode = ExecutionHelper.Execute ("auvaltool", new [] { "-v", "aufx", componentSubType, "Xmrn" }, out output, (string) null!, timeout: timeout - stopwatch.Elapsed);
+						Console.WriteLine ($"Exit code: {exitCode}");
+						Console.WriteLine (output);
+						triggerOutputBuilder.Append (output);
+						if (triggerOutputBuilder.ToString ().Contains ("Loaded AudioUnit out-of-process: true", StringComparison.Ordinal))
+							break;
+						if (attempts % 10 == 0) {
+							ExecutionHelper.Execute (lsregister, new [] { "-f", stagedAppPath }, out output, (string) null!);
+							ExecutionHelper.Execute ("pluginkit", new [] { "-a", stagedExtensionPath }, out output, (string) null!);
+						}
+						if (stopwatch.Elapsed < timeout)
+							System.Threading.Thread.Sleep (TimeSpan.FromSeconds (1));
+					} while (stopwatch.Elapsed < timeout);
+					triggerOutput = triggerOutputBuilder.ToString ();
+					Assert.That (triggerOutput, Does.Contain ("Loaded AudioUnit out-of-process: true"),
+						"auvaltool did not report loading the audio unit extension out-of-process.");
+				}
 
 				// Check system logs for evidence the extension process was launched.
 				var logEnd = DateTime.Now;
@@ -327,13 +358,36 @@ namespace Xamarin.Tests {
 				Console.WriteLine ($"Exit code: {exitCode}");
 				var logText = output.ToString ();
 				Console.WriteLine (logText);
-				return auvalOutput + Environment.NewLine + logText;
+				return triggerOutput + Environment.NewLine + logText;
 			} finally {
+				if (componentSubType == "mttc")
+					TerminateApp (stagedAppPath, ApplePlatform.MacCatalyst);
 				ExecutionHelper.Execute ("defaults", new [] { "delete", defaultsDomain, "test.name" }, out output, (string) null!);
 				if (File.Exists (testFilterFile))
 					File.Delete (testFilterFile);
 				if (File.Exists (hostTestFilterFile))
 					File.Delete (hostTestFilterFile);
+				ExecutionHelper.Execute ("pluginkit", new [] { "-r", stagedExtensionPath }, out output, (string) null!);
+				ExecutionHelper.Execute (lsregister, new [] { "-u", stagedAppPath }, out output, (string) null!);
+				if (Directory.Exists (stagedAppDirectory))
+					Directory.Delete (stagedAppDirectory, true);
+			}
+		}
+
+		void TerminateApp (string appPath, ApplePlatform platform)
+		{
+			var executablePath = GetNativeExecutable (platform, appPath);
+			foreach (var process in System.Diagnostics.Process.GetProcessesByName (Path.GetFileName (executablePath))) {
+				using (process) {
+					try {
+						if (process.MainModule?.FileName == executablePath) {
+							process.Kill ();
+							process.WaitForExit (10000);
+						}
+					} catch (Exception ex) {
+						Console.WriteLine ($"Could not terminate host process {process.Id}: {ex.Message}");
+					}
+				}
 			}
 		}
 

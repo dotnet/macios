@@ -27,12 +27,16 @@ namespace AccessorySetupKit {
 		Ssid = 1U << 0,
 	}
 
+	/// <summary>Specifies the technologies that an accessory supports.</summary>
 	[Flags]
 	[Native]
 	[iOS (18, 0)]
 	public enum ASAccessorySupportOptions : ulong {
+		/// <summary>The accessory supports Bluetooth Low Energy pairing.</summary>
 		BluetoothPairingLE = 1U << 1,
+		/// <summary>The accessory supports activating Bluetooth Classic transport profiles over a Bluetooth Low Energy connection.</summary>
 		BluetoothTransportBridging = 1U << 2,
+		/// <summary>The accessory supports the Bluetooth Low Energy Human Interface Device service.</summary>
 		[iOS (18, 4)]
 		BluetoothHid = 1U << 3,
 	}

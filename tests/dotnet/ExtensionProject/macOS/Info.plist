@@ -5,11 +5,11 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>ShareExtension</string>
+	<string>PreviewExtension</string>
 	<key>CFBundleExecutable</key>
 	<string>ExtensionProject</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.xamarin.ShareExtensionTest</string>
+	<string>com.xamarin.PreviewExtensionTest</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -26,15 +26,18 @@
 	<dict>
 		<key>NSExtensionAttributes</key>
 		<dict>
-			<key>NSExtensionActivationRule</key>
-			<string>TRUEPREDICATE</string>
+			<key>QLSupportedContentTypes</key>
+			<array>
+				<string>com.xamarin.test-preview</string>
+			</array>
+			<key>QLSupportsSearchableItems</key>
+			<false/>
 		</dict>
 		<key>NSExtensionPointIdentifier</key>
-		<string>com.apple.share-services</string>
+		<string>com.apple.quicklook.preview</string>
 		<key>NSExtensionPrincipalClass</key>
-		<string>ShareViewController</string>
+		<string>PreviewViewController</string>
 	</dict>
-
 </dict>
 </plist>
 

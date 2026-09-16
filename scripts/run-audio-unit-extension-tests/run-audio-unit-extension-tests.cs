@@ -117,6 +117,7 @@ sealed class AudioUnitExtensionTestRunner {
 				Log ("");
 				await RunToolAsync ("pluginkit", "-a", options.ExtensionPath);
 				Log ("");
+				await WaitForAudioUnitRegistrationAsync ();
 			} else {
 				await RunToolAsync ("xcrun", "simctl", "install", options.SimulatorUdid, options.AppPath);
 				Log ("");
@@ -221,6 +222,38 @@ sealed class AudioUnitExtensionTestRunner {
 			standardOutput: Log,
 			standardError: Log,
 			cancellationToken: cancellationToken);
+	}
+
+	async Task WaitForAudioUnitRegistrationAsync ()
+	{
+		var componentSubType = options.Platform == "MacCatalyst" ? "mttc" : "mtts";
+		var expectedComponent = $"aufx {componentSubType} Xmrn";
+		var timeout = TimeSpan.FromMinutes (2);
+		var stopwatch = System.Diagnostics.Stopwatch.StartNew ();
+		Execution? execution = null;
+		var attempts = 0;
+
+		while (stopwatch.Elapsed < timeout) {
+			attempts++;
+			var output = new StringBuilder ();
+			execution = await Execution.RunWithCallbacksAsync (
+				"auvaltool",
+				new List<string> { "-a" },
+				standardOutput: line => output.AppendLine (line),
+				standardError: AppendToLogFile);
+			if (execution.ExitCode == 0 && output.ToString ().Contains (expectedComponent, StringComparison.Ordinal)) {
+				Log ($"Audio Unit registration is available: {expectedComponent}");
+				Log ("");
+				return;
+			}
+			if (attempts % 10 == 0) {
+				await RunBestEffortAsync (options.LsRegisterPath, "-f", options.AppPath);
+				await RunBestEffortAsync ("pluginkit", "-a", options.ExtensionPath);
+			}
+			await Task.Delay (TimeSpan.FromSeconds (1));
+		}
+
+		throw new InvalidOperationException ($"Audio Unit registration did not become available within {timeout.TotalSeconds:0} seconds: {expectedComponent} (last auvaltool exit code: {execution?.ExitCode})");
 	}
 
 	Task RunDefaultsToolAsync (bool bestEffort, params string [] arguments)

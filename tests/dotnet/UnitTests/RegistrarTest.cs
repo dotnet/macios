@@ -278,6 +278,8 @@ namespace Xamarin.Tests {
 			Console.WriteLine ($"Exit code: {exitCode}");
 			Console.WriteLine (output);
 
+			WaitForAudioUnitRegistration (appPath, extensionPath, componentSubType);
+
 			try {
 				if (string.IsNullOrEmpty (testName)) {
 					ExecutionHelper.Execute ("defaults", new [] { "delete", defaultsDomain, "test.name" }, out output, (string) null!);
@@ -333,6 +335,33 @@ namespace Xamarin.Tests {
 				if (File.Exists (hostTestFilterFile))
 					File.Delete (hostTestFilterFile);
 			}
+		}
+
+		void WaitForAudioUnitRegistration (string appPath, string extensionPath, string componentSubType)
+		{
+			var expectedComponent = $"aufx {componentSubType} Xmrn";
+			var timeout = TimeSpan.FromMinutes (2);
+			var stopwatch = System.Diagnostics.Stopwatch.StartNew ();
+			var output = new StringBuilder ();
+			int exitCode = 0;
+			var attempts = 0;
+			var lsregister = "/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister";
+
+			while (stopwatch.Elapsed < timeout) {
+				attempts++;
+				exitCode = ExecutionHelper.Execute ("auvaltool", new [] { "-a" }, out output, (string) null!);
+				if (exitCode == 0 && output.ToString ().Contains (expectedComponent, StringComparison.Ordinal)) {
+					Console.WriteLine ($"Audio Unit registration is available: {expectedComponent}");
+					return;
+				}
+				if (attempts % 10 == 0) {
+					ExecutionHelper.Execute (lsregister, new [] { "-f", appPath }, out output, (string) null!);
+					ExecutionHelper.Execute ("pluginkit", new [] { "-a", extensionPath }, out output, (string) null!);
+				}
+				System.Threading.Thread.Sleep (TimeSpan.FromSeconds (1));
+			}
+
+			Assert.Fail ($"Audio Unit registration did not become available within {timeout.TotalSeconds:0} seconds: {expectedComponent} (last auvaltool exit code: {exitCode}){Environment.NewLine}{output}");
 		}
 
 		[TestCase (ApplePlatform.MacOSX)]

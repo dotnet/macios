@@ -154,7 +154,6 @@ namespace MonotouchTest.AudioUnitExtensionHost {
 			var audioUnit = new MonotouchTestAudioUnit (desc, out error);
 			if (error is null)
 				Task.Run (async () => {
-					await Task.Delay (1000);
 					await ExtensionTestHost.RunOnce ();
 				});
 			return audioUnit;

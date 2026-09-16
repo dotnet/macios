@@ -53,18 +53,21 @@ namespace Xamarin.Tests {
 
 		[TestCase (ApplePlatform.MacOSX, "26.0", true)]
 		[TestCase (ApplePlatform.MacOSX, "27.0", false)]
+		[TestCase (ApplePlatform.MacOSX, null, false)]
 		[TestCase (ApplePlatform.MacCatalyst, "26.0", true)]
 		[TestCase (ApplePlatform.MacCatalyst, "27.0", false)]
-		public void DefaultDesktopReleaseRuntimeIdentifiers (ApplePlatform platform, string supportedOSPlatformVersion, bool expectUniversal)
+		[TestCase (ApplePlatform.MacCatalyst, null, false)]
+		public void DefaultDesktopReleaseRuntimeIdentifiers (ApplePlatform platform, string? supportedOSPlatformVersion, bool expectUniversal)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 
-			var project = platform == ApplePlatform.MacOSX ? "MyCocoaApp" : "MyCatalystApp";
+			var project = supportedOSPlatformVersion is null ? "MaxSupportedOSPlatformVersion" : platform == ApplePlatform.MacOSX ? "MyCocoaApp" : "MyCatalystApp";
 			var runtimeIdentifierPrefix = platform == ApplePlatform.MacOSX ? "osx" : "maccatalyst";
 			var projectPath = GetProjectPath (project, platform: platform);
 			var properties = GetDefaultProperties ();
 			properties ["Configuration"] = "Release";
-			properties ["SupportedOSPlatformVersion"] = supportedOSPlatformVersion;
+			if (supportedOSPlatformVersion is not null)
+				properties ["SupportedOSPlatformVersion"] = supportedOSPlatformVersion;
 
 			var runtimeIdentifier = DotNet.GetProperty (projectPath, "RuntimeIdentifier", properties);
 			var runtimeIdentifiers = DotNet.GetProperty (projectPath, "RuntimeIdentifiers", properties);

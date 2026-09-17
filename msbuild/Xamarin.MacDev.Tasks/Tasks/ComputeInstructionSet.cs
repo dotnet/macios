@@ -73,9 +73,9 @@ namespace Xamarin.MacDev.Tasks {
 				{ "iPhone8", new DeviceInfo ("A11", "16.7") },
 				{ "iPhone8Plus", new DeviceInfo ("A11", "16.7") },
 				{ "iPhoneX", new DeviceInfo ("A11", "16.7") },
-				{ "iPhoneXR", new DeviceInfo ("A12", latestIOSVersion) },
-				{ "iPhoneXS", new DeviceInfo ("A12", latestIOSVersion) },
-				{ "iPhoneXSMax", new DeviceInfo ("A12", latestIOSVersion) },
+				{ "iPhoneXR", new DeviceInfo ("A12", "18.7") },
+				{ "iPhoneXS", new DeviceInfo ("A12", "18.7") },
+				{ "iPhoneXSMax", new DeviceInfo ("A12", "18.7") },
 				{ "iPhone11", new DeviceInfo ("A13", latestIOSVersion) },
 				{ "iPhone11Pro", new DeviceInfo ("A13", latestIOSVersion) },
 				{ "iPhone11ProMax", new DeviceInfo ("A13", latestIOSVersion) },
@@ -101,6 +101,15 @@ namespace Xamarin.MacDev.Tasks {
 				{ "iPhone16Plus", new DeviceInfo ("A18", latestIOSVersion) },
 				{ "iPhone16Pro", new DeviceInfo ("A18Pro", latestIOSVersion) },
 				{ "iPhone16ProMax", new DeviceInfo ("A18Pro", latestIOSVersion) },
+				{ "iPhone16e", new DeviceInfo ("A18", latestIOSVersion) },
+				{ "iPhone17", new DeviceInfo ("A19", latestIOSVersion) },
+				{ "iPhoneAir", new DeviceInfo ("A19Pro", latestIOSVersion) },
+				{ "iPhone17Pro", new DeviceInfo ("A19Pro", latestIOSVersion) },
+				{ "iPhone17ProMax", new DeviceInfo ("A19Pro", latestIOSVersion) },
+				{ "iPhone17e", new DeviceInfo ("A19", latestIOSVersion) },
+				{ "iPhone18Pro", new DeviceInfo ("A20Pro", latestIOSVersion) },
+				{ "iPhone18ProMax", new DeviceInfo ("A20Pro", latestIOSVersion) },
+				{ "iPhoneDuo", new DeviceInfo ("A20Pro", latestIOSVersion) },
 
 				// iPad models
 				{ "iPadAir2", new DeviceInfo ("A8X", "15.8") },
@@ -111,12 +120,14 @@ namespace Xamarin.MacDev.Tasks {
 				{ "iPadPro10_5", new DeviceInfo ("A10X", "16.7") },
 				{ "iPadPro12_9_2", new DeviceInfo ("A10X", "16.7") },
 				{ "iPad6", new DeviceInfo ("A10", "16.7") },
-				{ "iPadAir3", new DeviceInfo ("A12", "17.7") },
-				{ "iPadMini5", new DeviceInfo ("A12", "17.7") },
-				{ "iPad7", new DeviceInfo ("A10", "17.7") },
-				{ "iPadPro11", new DeviceInfo ("A12X", latestIOSVersion) },
-				{ "iPadPro12_9_3", new DeviceInfo ("A12X", latestIOSVersion) },
-				{ "iPad8", new DeviceInfo ("A12", latestIOSVersion) },
+				{ "iPad7", new DeviceInfo ("A10", "18.7") },
+				{ "iPadAir3", new DeviceInfo ("A12", "26.7") },
+				{ "iPadMini5", new DeviceInfo ("A12", "26.7") },
+				{ "iPadPro11", new DeviceInfo ("A12X", "26.7") },
+				{ "iPadPro12_9_3", new DeviceInfo ("A12X", "26.7") },
+				{ "iPad8", new DeviceInfo ("A12", "26.7") },
+				{ "iPadPro11_2", new DeviceInfo ("A12Z", latestIOSVersion) },
+				{ "iPadPro12_9_4", new DeviceInfo ("A12Z", latestIOSVersion) },
 				{ "iPadAir4", new DeviceInfo ("A14", latestIOSVersion) },
 				{ "iPad9", new DeviceInfo ("A13", latestIOSVersion) },
 				{ "iPadMini6", new DeviceInfo ("A15", latestIOSVersion) },
@@ -126,13 +137,22 @@ namespace Xamarin.MacDev.Tasks {
 				{ "iPad10", new DeviceInfo ("A14", latestIOSVersion) },
 				{ "iPadPro11_4", new DeviceInfo ("M2", latestIOSVersion) },
 				{ "iPadPro12_9_6", new DeviceInfo ("M2", latestIOSVersion) },
-				{ "iPadAir6", new DeviceInfo ("M2", latestIOSVersion) },
+				{ "iPadAir11_M2", new DeviceInfo ("M2", latestIOSVersion) },
+				{ "iPadAir13_M2", new DeviceInfo ("M2", latestIOSVersion) },
 				{ "iPadPro11_M4", new DeviceInfo ("M4", latestIOSVersion) },
 				{ "iPadPro13_M4", new DeviceInfo ("M4", latestIOSVersion) },
+				{ "iPadMini_A17Pro", new DeviceInfo ("A17Pro", latestIOSVersion) },
+				{ "iPad_A16", new DeviceInfo ("A16", latestIOSVersion) },
+				{ "iPadAir11_M3", new DeviceInfo ("M3", latestIOSVersion) },
+				{ "iPadAir13_M3", new DeviceInfo ("M3", latestIOSVersion) },
+				{ "iPadPro11_M5", new DeviceInfo ("M5", latestIOSVersion) },
+				{ "iPadPro13_M5", new DeviceInfo ("M5", latestIOSVersion) },
+				{ "iPadAir11_M4", new DeviceInfo ("M4", latestIOSVersion) },
+				{ "iPadAir13_M4", new DeviceInfo ("M4", latestIOSVersion) },
 
 				// Apple TV models
-				{ "AppleTV4", new DeviceInfo ("A8", "15.6") },
-				{ "AppleTV4K", new DeviceInfo ("A10X", latestTVOSVersion) },
+				{ "AppleTV4", new DeviceInfo ("A8", "26.6") },
+				{ "AppleTV4K", new DeviceInfo ("A10X", "26.6") },
 				{ "AppleTV4K2", new DeviceInfo ("A12", latestTVOSVersion) },
 				{ "AppleTV4K3", new DeviceInfo ("A15", latestTVOSVersion) },
 			};
@@ -164,6 +184,7 @@ namespace Xamarin.MacDev.Tasks {
 			{ "A11", "armv8.2-a" },      // ARMv8.2-A (iPhone 8, iPhone X)
 			{ "A12", "armv8.3-a" },      // ARMv8.3-A (iPhone XS, iPad Air 3, Apple TV 4K 2nd gen)
 			{ "A12X", "armv8.3-a" },     // ARMv8.3-A (iPad Pro 11, iPad Pro 12.9 3rd gen)
+			{ "A12Z", "armv8.3-a" },     // ARMv8.3-A (iPad Pro 11 2nd gen, iPad Pro 12.9 4th gen)
 			{ "A13", "armv8.4-a" },      // ARMv8.4-A (iPhone 11, iPhone SE 2nd gen)
 			{ "A14", "armv8.4-a" },      // ARMv8.4-A with additional features (iPhone 12, iPad Air 4)
 			{ "A15", "armv8.5-a" },      // ARMv8.5-A (iPhone 13, Apple TV 4K 3rd gen)
@@ -171,12 +192,16 @@ namespace Xamarin.MacDev.Tasks {
 			{ "A17Pro", "armv8.6-a" },   // ARMv8.6-A+ (iPhone 15 Pro)
 			{ "A18", "armv8.6-a" },      // ARMv8.6-A+ (iPhone 16)
 			{ "A18Pro", "armv8.6-a" },   // ARMv8.6-A+ (iPhone 16 Pro)
+			{ "A19", "armv8.6-a" },      // Newer than ARMv8.6-A, limited to crossgen2's newest supported ARM instruction set
+			{ "A19Pro", "armv8.6-a" },   // Newer than ARMv8.6-A, limited to crossgen2's newest supported ARM instruction set
+			{ "A20Pro", "armv8.6-a" },   // Newer than ARMv8.6-A, limited to crossgen2's newest supported ARM instruction set
 
 			// Apple Silicon (M-series) for macOS/Mac Catalyst
 			{ "M1", "apple-m1" },        // Apple M1 (Mac, iPad Air 5, iPad Pro)
 			{ "M2", "apple-m1" },        // Apple M2 (similar to M1 in instruction support for crossgen2)
 			{ "M3", "apple-m1" },        // Apple M3 (similar to M1 in instruction support for crossgen2)
 			{ "M4", "apple-m1" },        // Apple M4 (similar to M1 in instruction support for crossgen2)
+			{ "M5", "apple-m1" },        // Apple M5 (similar to M1 in instruction support for crossgen2)
 
 			// Intel chips for macOS
 			{ "Intel", "x86-64-v2" },    // Default Intel instruction set

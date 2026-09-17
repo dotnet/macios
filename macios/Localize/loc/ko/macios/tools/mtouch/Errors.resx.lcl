@@ -3478,6 +3478,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";MT4192" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The registrar cannot use the model class '{0}' as a generic type argument in the generic type '{1}'. Use the protocol interface instead of the model class.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[등록자는 모델 클래스 '{0}'을(를) 일반 형식 '{1}'의 일반 형식 인수로 사용할 수 없습니다. 모델 클래스 대신 프로토콜 인터페이스를 사용합니다.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";MT5101" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Missing '{0}' compiler. Please install Xcode 'Command-Line Tools' component]]></Val>
@@ -4647,6 +4656,60 @@
           <Val><![CDATA[Could not find the trampoline for the category method {0}.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[범주 메서드 {0}에 대한 트램펄린을 찾을 수 없습니다.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX4193" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Export attributes cannot be removed because dynamic registration is supported.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[동적 등록이 지원되므로 내보내기 특성을 제거할 수 없습니다.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX4194" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Export attributes cannot be removed because the blockliteral-setupblock optimization is disabled.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[blockliteral-setupblock 최적화가 비활성화되었으므로 내보내기 특성을 제거할 수 없습니다.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX4195" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Export attributes cannot be removed because the static-block-to-delegate-lookup optimization is disabled.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[static-block-to-delegate-lookup 최적화가 비활성화되었으므로 내보내기 특성을 제거할 수 없습니다.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX4196" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Export attributes cannot be removed because the managed registrar must use Runtime.GetBlockWrapperCreator.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[관리되는 등록자가 Runtime.GetBlockWrapperCreator를 사용해야 하므로 내보내기 특성을 제거할 수 없습니다.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX4197" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Export attributes cannot be removed because the managed registrar must use RegistrarHelper.GetBlockForDelegate.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[관리되는 등록자가 RegistrarHelper.GetBlockForDelegate를 사용해야 하므로 내보내기 특성을 제거할 수 없습니다.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX4198" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Export attributes cannot be removed because the application uses an NSXpcInterface overload that obtains a selector from MethodInfo.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[애플리케이션이 MethodInfo에서 선택기를 가져오는 NSXpcInterface 오버로드를 사용하므로 내보내기 특성을 제거할 수 없습니다.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

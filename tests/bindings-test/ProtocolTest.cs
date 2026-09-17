@@ -244,6 +244,22 @@ namespace Xamarin.BindingTests {
 				Value = value;
 				Other = other;
 			}
+
+			public void GetValues (string [] identifiers, StrongEnum value, Action<string []> handler)
+			{
+				Value = value;
+				handler (identifiers.Reverse ().ToArray ());
+			}
+		}
+
+		class BindAsProtocolModelSubclass : BindAsProtocol {
+			public StrongEnum Value { get; private set; }
+
+			public override void GetValues (string [] identifiers, StrongEnum value, Action<string []> handler)
+			{
+				Value = value;
+				handler (identifiers.Reverse ().ToArray ());
+			}
 		}
 
 		[Test]
@@ -271,6 +287,26 @@ namespace Xamarin.BindingTests {
 			GC.KeepAlive (other);
 			Assert.That (implementation.Value, Is.EqualTo (StrongEnum.B));
 			Assert.That (implementation.Other, Is.EqualTo (StrongEnum.C));
+		}
+
+		[TestCase (false)]
+		[TestCase (true)]
+		public void BindAsProtocolParameterWithBlock (bool useModel)
+		{
+			using NSObject implementation = useModel ? new BindAsProtocolModelSubclass () : new BindAsProtocolImplementation ();
+			string []? values = null;
+			var callbackCount = 0;
+
+			// Use the generated messaging helper to avoid managed interface dispatch, including when legacy extensions are disabled.
+			IBindAsProtocol._GetValues ((IBindAsProtocol) implementation, ["first", "second"], StrongEnum.C, result => {
+				values = result;
+				callbackCount++;
+			});
+
+			var value = implementation is BindAsProtocolModelSubclass model ? model.Value : ((BindAsProtocolImplementation) implementation).Value;
+			Assert.That (value, Is.EqualTo (StrongEnum.C), "Strong enum");
+			Assert.That (callbackCount, Is.EqualTo (1), "Callback count");
+			Assert.That (values, Is.EqualTo (new [] { "second", "first" }), "Callback values");
 		}
 
 		void CleanupSignatures (objc_method_description [] methods)

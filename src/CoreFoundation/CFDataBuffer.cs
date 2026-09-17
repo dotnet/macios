@@ -71,7 +71,9 @@ namespace CoreFoundation {
 		}
 
 		public IntPtr Handle {
-			get { return data.GetHandle (); }
+			get {
+				return Runtime.RetainAndAutoreleaseHandle (data);
+			}
 		}
 
 		public byte [] Data {

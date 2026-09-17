@@ -85,7 +85,10 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		public bool Transform (ref CFRange range, CFStringTransform transform, bool reverse)
 		{
-			return Transform (ref range, transform.GetConstant ().GetHandle (), reverse);
+			var constant = transform.GetConstant ();
+			var result = Transform (ref range, constant.GetHandle (), reverse);
+			GC.KeepAlive (constant);
+			return result;
 		}
 
 		// constant documentation mention it also accept any ICT transform
@@ -150,7 +153,10 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		public bool Transform (CFStringTransform transform, bool reverse)
 		{
-			return Transform (transform.GetConstant ().GetHandle (), reverse);
+			var constant = transform.GetConstant ();
+			var result = Transform (constant.GetHandle (), reverse);
+			GC.KeepAlive (constant);
+			return result;
 		}
 
 		// constant documentation mention it also accept any ICT transform

@@ -3478,6 +3478,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";MT4192" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The registrar cannot use the model class '{0}' as a generic type argument in the generic type '{1}'. Use the protocol interface instead of the model class.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Registrátor nemůže použít třídu modelu '{0}' jako argument obecného typu v '{1}' obecného typu. Místo třídy modelu použijte rozhraní protokolu.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";MT5101" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Missing '{0}' compiler. Please install Xcode 'Command-Line Tools' component]]></Val>
@@ -4647,6 +4656,60 @@
           <Val><![CDATA[Could not find the trampoline for the category method {0}.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Nepodařilo se najít metodu trampoline pro metodu kategorie {0}.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX4193" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Export attributes cannot be removed because dynamic registration is supported.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Atributy exportu nelze odebrat, protože je podporována dynamická registrace.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX4194" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Export attributes cannot be removed because the blockliteral-setupblock optimization is disabled.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Atributy exportu nelze odebrat, protože optimalizace blockliteral-setupblock je zakázaná.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX4195" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Export attributes cannot be removed because the static-block-to-delegate-lookup optimization is disabled.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Atributy exportu nelze odebrat, protože optimalizace static-block-to-delegate-lookup je zakázaná.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX4196" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Export attributes cannot be removed because the managed registrar must use Runtime.GetBlockWrapperCreator.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Atributy exportu nelze odebrat, protože spravovaný registrátor musí používat Runtime.GetBlockWrapperCreator.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX4197" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Export attributes cannot be removed because the managed registrar must use RegistrarHelper.GetBlockForDelegate.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Atributy exportu nelze odebrat, protože spravovaný registrátor musí používat RegistrarHelper.GetBlockForDelegate.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX4198" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Export attributes cannot be removed because the application uses an NSXpcInterface overload that obtains a selector from MethodInfo.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Atributy exportu nelze odebrat, protože aplikace používá přetížení NSXpcInterface, které získává selektor z MethodInfo.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

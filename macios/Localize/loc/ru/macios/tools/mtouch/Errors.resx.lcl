@@ -3478,6 +3478,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";MT4192" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The registrar cannot use the model class '{0}' as a generic type argument in the generic type '{1}'. Use the protocol interface instead of the model class.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Регистратор не может использовать класс модели '{0}' в качестве аргумента универсального типа в '{1}' универсального типа. Используйте интерфейс протокола вместо класса модели.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";MT5101" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Missing '{0}' compiler. Please install Xcode 'Command-Line Tools' component]]></Val>
@@ -4647,6 +4656,60 @@
           <Val><![CDATA[Could not find the trampoline for the category method {0}.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Не удалось найти трамплин для метода категории {0}.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX4193" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Export attributes cannot be removed because dynamic registration is supported.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Атрибуты экспорта нельзя удалить, потому что поддерживается динамическая регистрация.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX4194" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Export attributes cannot be removed because the blockliteral-setupblock optimization is disabled.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Атрибуты экспорта нельзя удалить, потому что оптимизация blockliteral-setupblock отключена.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX4195" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Export attributes cannot be removed because the static-block-to-delegate-lookup optimization is disabled.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Атрибуты экспорта нельзя удалить, потому что оптимизация static-block-to-delegate-lookup отключена.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX4196" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Export attributes cannot be removed because the managed registrar must use Runtime.GetBlockWrapperCreator.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Атрибуты экспорта нельзя удалить, потому что управляемый регистратор должен использовать Runtime.GetBlockWrapperCreator.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX4197" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Export attributes cannot be removed because the managed registrar must use RegistrarHelper.GetBlockForDelegate.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Атрибуты экспорта нельзя удалить, потому что управляемый регистратор должен использовать RegistrarHelper.GetBlockForDelegate.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX4198" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Export attributes cannot be removed because the application uses an NSXpcInterface overload that obtains a selector from MethodInfo.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Атрибуты экспорта нельзя удалить, поскольку приложение использует перегрузку метода NSXpcInterface, которая получает селектор из MethodInfo.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

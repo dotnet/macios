@@ -582,10 +582,13 @@
       </Item>
       <Item ItemId=";BI1050" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[[BindAs]5D; cannot be used inside Protocol or Model types. Type: {0}]]></Val>
+          <Val><![CDATA[[BindAs]5D; cannot be used on properties or return values inside Protocol or Model types. Type: {0}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[[BindAs]5D; невозможно использовать внутри типов Protocol или Model. Тип: {0}]]></Val>
+            <Val><![CDATA[[BindAs]5D; не может использоваться для свойств или возвращаемых значений внутри типов Protocol или Model. Тип: {0}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[[BindAs]5D; cannot be used inside Protocol or Model types. Type: {0}]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -1140,6 +1143,42 @@
           <Val><![CDATA[Found a [Preserve]5D; attribute on {0}: [Preserve]5D; is deprecated; use [DynamicDependency]5D; instead.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Обнаружен атрибут [Preserve]5D; в {0}: [Preserve]5D; является нерекомендуемым, используйте вместо него [DynamicDependency]5D;.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1125" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The [FactoryMethod]5D; binding method '{0}.{1}' has an 'out NSError' parameter, but its return value is not nullable. Add [return: NullAllowed]5D; to the binding method so the generated factory method can return null when the native initializer fails.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Метод привязки [FactoryMethod]5D; {0}.{1} имеет параметр out NSError, но его возвращаемое значение не допускает null. Добавьте [return: NullAllowed]5D; к методу привязки, чтобы сгенерированный производственный метод мог возвращать null при сбое нативного инициализатора.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1126" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The [FactoryMethod]5D; attribute on '{0}.{1}' can only be used with an Objective-C 'init' selector (the selector must be 'init' or start with 'init' followed by an uppercase letter), but the selector is '{2}'.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Атрибут [FactoryMethod]5D; в "{0}.{1}" можно использовать только с селектором "init" Objective-C (селектор должен быть "init" или начинаться с "init", за которым следует прописная буква), но селектор '{2}'.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1127" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The [FactoryMethod]5D; attribute on '{0}.{1}' can't specify a method name when applied to a method that isn't a constructor. Remove the method name from the [FactoryMethod]5D; attribute; the name of the binding method is used instead.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Атрибут [FactoryMethod]5D; в "{0}.{1}" не может указывать имя метода, если применяется к методу, который не является конструктором. Удалить имя метода из атрибута [FactoryMethod]5D;; Вместо него используется имя метода привязки.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1128" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The [Field]5D; member '{0}.{1}' sets SymbolAddress, but its type is '{2}'; only System.IntPtr is supported.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Элемент [Field]5D; "{0}.{1}" задает SymbolAddress, но его тип '{2}'; поддерживается только System.IntPtr.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

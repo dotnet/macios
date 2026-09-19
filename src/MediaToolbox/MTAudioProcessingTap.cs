@@ -91,11 +91,19 @@ namespace MediaToolbox {
 			MTAudioProcessingTapCreationFlags flags,
 			/* MTAudioProcessingTapRef* */ IntPtr* tapOut);
 
-		/// <param name="callbacks">To be added.</param>
-		///         <param name="flags">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
-		public MTAudioProcessingTap (MTAudioProcessingTapCallbacks callbacks, MTAudioProcessingTapCreationFlags flags)
+		[SupportedOSPlatform ("ios27.0")]
+		[SupportedOSPlatform ("tvos27.0")]
+		[SupportedOSPlatform ("macos27.0")]
+		[SupportedOSPlatform ("maccatalyst27.0")]
+		[DllImport (Constants.MediaToolboxLibrary)]
+		unsafe extern static /* OSStatus */ MTAudioProcessingTapError MTAudioProcessingTapCreateWithPreferredFormat (
+			/* CFAllocatorRef*/ IntPtr allocator,
+			/* const MTAudioProcessingTapCallbacks* */ Callbacks* callbacks,
+			MTAudioProcessingTapCreationFlags flags,
+			/* CMAudioFormatDescriptionRef */ IntPtr preferredFormat,
+			/* MTAudioProcessingTapRef* */ IntPtr* tapOut);
+
+		static Callbacks CreateCallbacks (MTAudioProcessingTapCallbacks callbacks, MTAudioProcessingTapCreationFlags flags)
 		{
 			if (callbacks is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (callbacks));
@@ -103,8 +111,6 @@ namespace MediaToolbox {
 			const MTAudioProcessingTapCreationFlags all_flags = MTAudioProcessingTapCreationFlags.PreEffects | MTAudioProcessingTapCreationFlags.PostEffects;
 			if ((flags & all_flags) == all_flags)
 				throw new ArgumentException ("Only one effect type can be set");
-
-			this.callbacks = callbacks;
 
 			var c = new Callbacks ();
 			unsafe {
@@ -118,6 +124,28 @@ namespace MediaToolbox {
 					c.unprepare = &UnprepareProxy;
 				c.process = &ProcessProxy;
 			}
+			return c;
+		}
+
+		void CompleteInitialization (MTAudioProcessingTapError result, IntPtr handle)
+		{
+			if (result != 0)
+				throw new ArgumentException (result.ToString ());
+
+			InitializeHandle (handle);
+
+			lock (handles)
+				handles [handle] = this;
+		}
+
+		/// <param name="callbacks">To be added.</param>
+		///         <param name="flags">To be added.</param>
+		///         <summary>To be added.</summary>
+		///         <remarks>To be added.</remarks>
+		public MTAudioProcessingTap (MTAudioProcessingTapCallbacks callbacks, MTAudioProcessingTapCreationFlags flags)
+		{
+			var c = CreateCallbacks (callbacks, flags);
+			this.callbacks = callbacks;
 
 			// a GCHandle is needed because we do not have an handle before calling MTAudioProcessingTapCreate
 			// and that will call the InitializeProxy. So using this (short-lived) GCHandle allow us to find back the
@@ -127,20 +155,47 @@ namespace MediaToolbox {
 
 			IntPtr handle;
 			MTAudioProcessingTapError res;
-			unsafe {
-				res = MTAudioProcessingTapCreate (IntPtr.Zero, &c, flags, &handle);
+			try {
+				unsafe {
+					res = MTAudioProcessingTapCreate (IntPtr.Zero, &c, flags, &handle);
+				}
+			} finally {
+				// we won't need the GCHandle after the Create call
+				gch.Free ();
 			}
 
-			// we won't need the GCHandle after the Create call
-			gch.Free ();
+			CompleteInitialization (res, handle);
+		}
 
-			if (res != 0)
-				throw new ArgumentException (res.ToString ());
+		/// <summary>Creates an audio processing tap with a preferred linear PCM audio format.</summary>
+		/// <param name="callbacks">The callbacks the processing tap invokes.</param>
+		/// <param name="flags">Whether the tap processes audio before or after other effects.</param>
+		/// <param name="preferredFormat">The preferred linear PCM format, or <see langword="null" /> to let the system choose the format. Formats with more than two channels must include a channel layout.</param>
+		/// <remarks>The actual processing format can differ in numeric type, interleaving, and sample size. Use the format supplied to the prepare callback when configuring any required conversions.</remarks>
+		[SupportedOSPlatform ("ios27.0")]
+		[SupportedOSPlatform ("tvos27.0")]
+		[SupportedOSPlatform ("macos27.0")]
+		[SupportedOSPlatform ("maccatalyst27.0")]
+		public MTAudioProcessingTap (MTAudioProcessingTapCallbacks callbacks, MTAudioProcessingTapCreationFlags flags, CMAudioFormatDescription? preferredFormat)
+		{
+			var c = CreateCallbacks (callbacks, flags);
+			this.callbacks = callbacks;
 
-			InitializeHandle (handle);
+			var gch = GCHandle.Alloc (this);
+			c.clientInfo = (IntPtr) gch;
 
-			lock (handles)
-				handles [handle] = this;
+			IntPtr handle;
+			MTAudioProcessingTapError res;
+			try {
+				unsafe {
+					res = MTAudioProcessingTapCreateWithPreferredFormat (IntPtr.Zero, &c, flags, preferredFormat.GetHandle (), &handle);
+					GC.KeepAlive (preferredFormat);
+				}
+			} finally {
+				gch.Free ();
+			}
+
+			CompleteInitialization (res, handle);
 		}
 
 		/// <inheritdoc />

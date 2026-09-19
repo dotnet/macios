@@ -93,6 +93,8 @@ namespace PencilKit {
 		Version3 = 3,
 		[iOS (26, 0), Mac (26, 0), MacCatalyst (26, 0)]
 		Version4 = 4,
+		[iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		Version5 = 5,
 	}
 
 	[NoMac]
@@ -112,6 +114,10 @@ namespace PencilKit {
 
 		[Export ("canvasViewDidEndUsingTool:")]
 		void EndUsingTool (PKCanvasView canvasView);
+
+		[iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("canvasViewSelectionDidChange:")]
+		void SelectionDidChange (PKCanvasView canvasView);
 
 #if !XAMCORE_5_0
 		[iOS (18, 1), NoMacCatalyst]
@@ -167,6 +173,10 @@ namespace PencilKit {
 			get;
 			set;
 		}
+
+		[iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("selectedStrokeIDs", ArgumentSemantic.Copy)]
+		NSSet<NSUuid> SelectedStrokeIds { get; set; }
 	}
 
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
@@ -210,6 +220,10 @@ namespace PencilKit {
 		[MacCatalyst (14, 0)]
 		[Export ("drawingByAppendingStrokes:")]
 		PKDrawing GetDrawing (PKStroke [] strokes);
+
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("drawingByErasingStrokePath:mask:transform:")]
+		PKDrawing GetDrawing (PKStrokePath eraserPath, [NullAllowed] BezierPath mask, CGAffineTransform transform);
 
 		[iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("requiredContentVersion")]
@@ -501,6 +515,13 @@ namespace PencilKit {
 		nfloat UpperBound { get; }
 	}
 
+	[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	interface PKStrokeRenderState : NSCopying, NSSecureCoding {
+		[Export ("grainOffset", ArgumentSemantic.Assign)]
+		CGPoint GrainOffset { get; set; }
+	}
+
 	[iOS (14, 0)]
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[DisableDefaultCtor]
@@ -513,8 +534,16 @@ namespace PencilKit {
 		[Export ("initWithInk:strokePath:transform:mask:randomSeed:")]
 		NativeHandle Constructor (PKInk ink, PKStrokePath strokePath, CGAffineTransform transform, [NullAllowed] BezierPath mask, uint randomSeed);
 
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("initWithInk:strokePath:transform:mask:randomSeed:strokeID:renderGroupID:renderState:")]
+		NativeHandle Constructor (PKInk ink, PKStrokePath strokePath, CGAffineTransform transform, [NullAllowed] BezierPath mask, uint randomSeed, NSUuid strokeId, [NullAllowed] NSUuid renderGroupId, [NullAllowed] PKStrokeRenderState renderState);
+
 		[Export ("ink")]
 		PKInk Ink { get; }
+
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("strokeID")]
+		NSUuid StrokeId { get; }
 
 		[Export ("transform")]
 		CGAffineTransform Transform { get; }
@@ -535,10 +564,42 @@ namespace PencilKit {
 		[Export ("randomSeed")]
 		uint RandomSeed { get; }
 
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[NullAllowed, Export ("renderGroupID")]
+		NSUuid RenderGroupId { get; }
+
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[NullAllowed, Export ("renderState")]
+		PKStrokeRenderState RenderState { get; }
+
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("substrokeWithRange:")]
+		PKStroke GetSubStroke (PKFloatRange range);
+
 		[iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("requiredContentVersion")]
 		PKContentVersion RequiredContentVersion { get; }
 	}
+
+	[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface PKConvertedBezierPoint {
+		[Export ("index")]
+		nint Index { get; }
+
+		[Export ("pointCount")]
+		nint PointCount { get; }
+
+		[Export ("location", ArgumentSemantic.Assign)]
+		CGPoint Location { get; }
+
+		[Export ("bezierSegmentIndex")]
+		nint BezierSegmentIndex { get; }
+	}
+
+	[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	delegate PKStrokePoint PKStrokePathPointProvider (PKConvertedBezierPoint convertedPoint);
 
 	delegate void PKInterpolatedPointsEnumeratorHandler (PKStrokePoint strokePoint, out bool stop);
 
@@ -551,11 +612,31 @@ namespace PencilKit {
 		[DesignatedInitializer]
 		NativeHandle Constructor (PKStrokePoint [] controlPoints, NSDate creationDate);
 
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("initWithControlPoints:creationDate:strokePathID:")]
+		NativeHandle Constructor (PKStrokePoint [] controlPoints, NSDate creationDate, NSUuid strokePathId);
+
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("initWithBezierPath:creationDate:pointProvider:")]
+		NativeHandle Constructor (CGPath bezierPath, NSDate creationDate, PKStrokePathPointProvider pointProvider);
+
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("strokePathID")]
+		NSUuid StrokePathId { get; }
+
 		[Export ("count")]
 		nuint Count { get; }
 
 		[Export ("creationDate")]
 		NSDate CreationDate { get; }
+
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("bezierRepresentation")]
+		CGPath BezierRepresentation { get; }
+
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("subpathWithRange:")]
+		PKStrokePath GetSubpath (PKFloatRange range);
 
 		[Export ("pointAtIndex:")]
 		PKStrokePoint GetPoint (nuint index);
@@ -604,6 +685,11 @@ namespace PencilKit {
 		[DesignatedInitializer]
 		NativeHandle Constructor (CGPoint location, double timeOffset, CGSize size, nfloat opacity, nfloat force, nfloat azimuth, nfloat altitude, nfloat secondaryScale, nfloat threshold);
 
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("initWithLocation:timeOffset:size:opacity:force:azimuth:altitude:secondaryScale:threshold:lateralJitter:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor (CGPoint location, double timeOffset, CGSize size, nfloat opacity, nfloat force, nfloat azimuth, nfloat altitude, nfloat secondaryScale, nfloat threshold, nfloat lateralJitter);
+
 		[Export ("location")]
 		CGPoint Location { get; }
 
@@ -632,6 +718,10 @@ namespace PencilKit {
 		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
 		[Export ("threshold")]
 		nfloat Threshold { get; }
+
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("lateralJitter")]
+		nfloat LateralJitter { get; }
 	}
 
 	[iOS (18, 0), MacCatalyst (18, 0), NoMac]

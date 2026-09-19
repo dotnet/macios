@@ -35,6 +35,22 @@ namespace MonoTouchFixtures.AVFoundation {
 			});
 		}
 
+		[Test]
+		public void CreateRealtimeSafe ()
+		{
+			TestRuntime.AssertXcodeVersion (27, 0);
+
+			var callbackEvent = new TaskCompletionSource<bool> ();
+			SourceNodeCallbackTest (callbackEvent, () => {
+#if XAMCORE_5_0
+				var handler = new AVAudioSourceNodeRenderHandler ((ref bool isSilence, ref AudioTimeStamp timestamp, uint frameCount, AudioBuffers buffers) => SourceHandler (ref isSilence, ref timestamp, frameCount, buffers, callbackEvent));
+#else
+				var handler = new AVAudioSourceNodeRenderHandler3 ((ref bool isSilence, ref AudioTimeStamp timestamp, uint frameCount, AudioBuffers buffers) => SourceHandler (ref isSilence, ref timestamp, frameCount, buffers, callbackEvent));
+#endif
+				return AVAudioSourceNode.CreateRealtimeSafe (handler);
+			});
+		}
+
 #if !XAMCORE_5_0
 		[Test]
 		public void SourceNodeCallback2 ()

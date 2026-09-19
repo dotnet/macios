@@ -106,6 +106,8 @@ namespace AuthenticationServices {
 		Password = 1,
 		UserSecureEnclaveKey = 2,
 		SmartCard = 3,
+		[Mac (27, 0)]
+		OpenId = 5,
 	}
 
 	[NoTV, NoiOS, NoMacCatalyst]
@@ -737,6 +739,10 @@ namespace AuthenticationServices {
 		None = 0,
 		WSTrust = 1,
 		DynamicWSTrust = 2,
+		[Mac (27, 0)]
+		OpenId = 3,
+		[Mac (27, 0)]
+		DynamicOpenId = 4,
 	}
 
 	[TV (17, 4), Mac (14, 4), iOS (17, 4), MacCatalyst (17, 4)]
@@ -1560,6 +1566,8 @@ namespace AuthenticationServices {
 		JwtBearer = 1L << 1,
 		Saml11 = 1L << 2,
 		Saml20 = 1L << 3,
+		[Mac (27, 0)]
+		TokenExchange = 1L << 4,
 	}
 
 	[NoTV, NoiOS, NoMacCatalyst]
@@ -2110,6 +2118,11 @@ namespace AuthenticationServices {
 		[NullAllowed, Export ("additionalAuthorizationScopes")]
 		string AdditionalAuthorizationScopes { get; set; }
 
+		/// <summary>Gets or sets whether requests include the Platform SSO authorization scopes.</summary>
+		[Mac (27, 0)]
+		[Export ("includePlatformSSOAuthorizationScopes")]
+		bool IncludePlatformSsoAuthorizationScopes { get; set; }
+
 		[NullAllowed]
 		[Export ("federationRequestURN")]
 		string FederationRequestUrn { get; set; }
@@ -2124,6 +2137,18 @@ namespace AuthenticationServices {
 
 		[Export ("federationType", ArgumentSemantic.Assign)]
 		ASAuthorizationProviderExtensionFederationType FederationType { get; set; }
+
+		[Mac (27, 0)]
+		[Export ("fallbackFederationType", ArgumentSemantic.Assign)]
+		ASAuthorizationProviderExtensionFederationType FallbackFederationType { get; set; }
+
+		[Mac (27, 0)]
+		[Export ("authorizationURL", ArgumentSemantic.Copy)]
+		NSUrl AuthorizationUrl { get; set; }
+
+		[Mac (27, 0)]
+		[Export ("authorizationURLKeypath")]
+		string AuthorizationUrlKeypath { get; set; }
 
 		[NullAllowed]
 		[Export ("federationPredicate")]

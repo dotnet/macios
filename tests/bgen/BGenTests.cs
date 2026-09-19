@@ -403,28 +403,28 @@ namespace GeneratorTests {
 			var preserves = allSupportedAttributes.Count ();
 			var renderedAttributes = "\t" + string.Join ("\n\t", renderedSupportedAttributes.OrderBy (v => v)) + "\n";
 			string expectedAttributes =
-@"	Bug35176.IFooInterface: [SupportedOSPlatform(""ios14.3"")]
+@"	Bug35176.IFooInterface: [SupportedOSPlatform(""ios"")]
 	Bug35176.IFooInterface: [SupportedOSPlatform(""maccatalyst18.2"")]
 	Bug35176.IFooInterface: [SupportedOSPlatform(""macos26.2"")]
-	UIKit.UIView Bug35176.BarObject::BarView(): [SupportedOSPlatform(""ios14.3"")]
+	UIKit.UIView Bug35176.BarObject::BarView(): [SupportedOSPlatform(""ios"")]
 	UIKit.UIView Bug35176.BarObject::BarView(): [SupportedOSPlatform(""maccatalyst18.2"")]
 	UIKit.UIView Bug35176.BarObject::BarView(): [SupportedOSPlatform(""macos26.2"")]
-	UIKit.UIView Bug35176.BarObject::FooView(): [SupportedOSPlatform(""ios14.3"")]
+	UIKit.UIView Bug35176.BarObject::FooView(): [SupportedOSPlatform(""ios"")]
 	UIKit.UIView Bug35176.BarObject::FooView(): [SupportedOSPlatform(""maccatalyst18.2"")]
 	UIKit.UIView Bug35176.BarObject::FooView(): [SupportedOSPlatform(""macos26.2"")]
-	UIKit.UIView Bug35176.BarObject::get_BarView(): [SupportedOSPlatform(""ios14.4"")]
+	UIKit.UIView Bug35176.BarObject::get_BarView(): [SupportedOSPlatform(""ios"")]
 	UIKit.UIView Bug35176.BarObject::get_BarView(): [SupportedOSPlatform(""maccatalyst18.3"")]
 	UIKit.UIView Bug35176.BarObject::get_BarView(): [SupportedOSPlatform(""macos26.2"")]
-	UIKit.UIView Bug35176.BarObject::GetBarMember(System.Int32): [SupportedOSPlatform(""ios14.3"")]
+	UIKit.UIView Bug35176.BarObject::GetBarMember(System.Int32): [SupportedOSPlatform(""ios"")]
 	UIKit.UIView Bug35176.BarObject::GetBarMember(System.Int32): [SupportedOSPlatform(""maccatalyst18.2"")]
 	UIKit.UIView Bug35176.BarObject::GetBarMember(System.Int32): [SupportedOSPlatform(""macos26.2"")]
-	UIKit.UIView Bug35176.FooInterface_Extensions::GetBarView(Bug35176.IFooInterface): [SupportedOSPlatform(""ios14.4"")]
+	UIKit.UIView Bug35176.FooInterface_Extensions::GetBarView(Bug35176.IFooInterface): [SupportedOSPlatform(""ios"")]
 	UIKit.UIView Bug35176.FooInterface_Extensions::GetBarView(Bug35176.IFooInterface): [SupportedOSPlatform(""maccatalyst18.3"")]
 	UIKit.UIView Bug35176.FooInterface_Extensions::GetBarView(Bug35176.IFooInterface): [SupportedOSPlatform(""macos26.2"")]
-	UIKit.UIView Bug35176.IFooInterface::_GetBarView(Bug35176.IFooInterface): [SupportedOSPlatform(""ios14.4"")]
+	UIKit.UIView Bug35176.IFooInterface::_GetBarView(Bug35176.IFooInterface): [SupportedOSPlatform(""ios"")]
 	UIKit.UIView Bug35176.IFooInterface::_GetBarView(Bug35176.IFooInterface): [SupportedOSPlatform(""maccatalyst18.3"")]
 	UIKit.UIView Bug35176.IFooInterface::_GetBarView(Bug35176.IFooInterface): [SupportedOSPlatform(""macos26.2"")]
-	UIKit.UIView Bug35176.IFooInterface::get_BarView(): [SupportedOSPlatform(""ios14.4"")]
+	UIKit.UIView Bug35176.IFooInterface::get_BarView(): [SupportedOSPlatform(""ios"")]
 	UIKit.UIView Bug35176.IFooInterface::get_BarView(): [SupportedOSPlatform(""maccatalyst18.3"")]
 	UIKit.UIView Bug35176.IFooInterface::get_BarView(): [SupportedOSPlatform(""macos26.2"")]
 ";
@@ -1990,6 +1990,22 @@ namespace GeneratorTests {
 			var expectedPlatform = profile == Profile.iOS ? "ios" : "tvos";
 			Assert.That (platformName, Is.EqualTo (expectedPlatform), "UnsupportedOnAllSimulators platform name");
 
+			// Verify simulator attributes are copied from methods too
+			var unsupportedMethod = unsupportedAll.Methods.Single (m => m.Name == "UnsupportedMethod");
+			var unsupportedMethodAttrs = unsupportedMethod.CustomAttributes
+				.Where (a => a.AttributeType.Name == "UnsupportedSimulatorAttribute")
+				.ToArray ();
+			Assert.That (unsupportedMethodAttrs.Length, Is.EqualTo (1), "UnsupportedMethod: one attribute for current platform");
+			Assert.That ((string) unsupportedMethodAttrs [0].ConstructorArguments [0].Value, Is.EqualTo (expectedPlatform), "UnsupportedMethod platform name");
+
+			var supportedMethod = unsupportedAll.Methods.Single (m => m.Name == "SupportedMethod");
+			var supportedMethodAttrs = supportedMethod.CustomAttributes
+				.Where (a => a.AttributeType.Name == "SupportedSimulatorAttribute")
+				.ToArray ();
+			Assert.That (supportedMethodAttrs.Length, Is.EqualTo (1), "SupportedMethod: one attribute for current platform");
+			var expectedMethodVersion = profile == Profile.iOS ? "ios17.0" : "tvos17.0";
+			Assert.That ((string) supportedMethodAttrs [0].ConstructorArguments [0].Value, Is.EqualTo (expectedMethodVersion), "SupportedMethod platform name");
+
 			// Verify only the current platform's attribute is emitted
 			var iosOnly = module.GetType ("NS", "UnsupportedOnIosSimulatorOnly");
 			var iosOnlyAttrs = iosOnly.CustomAttributes
@@ -2015,6 +2031,28 @@ namespace GeneratorTests {
 				.Where (a => a.AttributeType.Name == "UnsupportedSimulatorAttribute" || a.AttributeType.Name == "SupportedSimulatorAttribute")
 				.ToArray ();
 			Assert.That (simulatorAttrs.Length, Is.EqualTo (0), "NoSimulatorAttributes: no simulator attributes");
+
+			// Verify simulator attributes on methods are copied for the current platform
+			var methods = module.GetType ("NS", "SimulatorAvailabilityMethods");
+			var unsupportedSimulatorMethod = methods.Methods.Single (m => m.Name == "Unsupported");
+			var unsupportedSimulatorMethodAttrs = unsupportedSimulatorMethod.CustomAttributes
+				.Where (a => a.AttributeType.Name == "UnsupportedSimulatorAttribute")
+				.ToArray ();
+			Assert.That (unsupportedSimulatorMethodAttrs.Length, Is.EqualTo (1), "Unsupported method: one UnsupportedSimulator attribute");
+			Assert.That ((string) unsupportedSimulatorMethodAttrs [0].ConstructorArguments [0].Value, Is.EqualTo (expectedPlatform), "Unsupported method platform name");
+
+			var supportedSimulatorMethod = methods.Methods.Single (m => m.Name == "Supported");
+			var supportedSimulatorMethodAttrs = supportedSimulatorMethod.CustomAttributes
+				.Where (a => a.AttributeType.Name == "SupportedSimulatorAttribute")
+				.ToArray ();
+			Assert.That (supportedSimulatorMethodAttrs.Length, Is.EqualTo (1), "Supported method: one SupportedSimulator attribute");
+			Assert.That ((string) supportedSimulatorMethodAttrs [0].ConstructorArguments [0].Value, Is.EqualTo (expectedVersion), "Supported method platform name");
+
+			var plainMethod = methods.Methods.Single (m => m.Name == "Plain");
+			var plainMethodAttrs = plainMethod.CustomAttributes
+				.Where (a => a.AttributeType.Name == "UnsupportedSimulatorAttribute" || a.AttributeType.Name == "SupportedSimulatorAttribute")
+				.ToArray ();
+			Assert.That (plainMethodAttrs.Length, Is.EqualTo (0), "Plain method: no simulator attributes");
 
 			// Verify a [SupportedSimulator] on a smart-enum [Field] member is propagated to the generated accessor
 			var smartExtensions = module.GetType ("NS", "SmartEnumWithSimulatorFieldExtensions");
@@ -2051,6 +2089,23 @@ namespace GeneratorTests {
 					.Where (a => a.AttributeType.Name == "UnsupportedSimulatorAttribute" || a.AttributeType.Name == "SupportedSimulatorAttribute")
 					.ToArray ();
 				Assert.That (simulatorAttrs.Length, Is.EqualTo (0), $"{typeName}: no simulator attributes on Mac platforms");
+			}
+
+			var unsupportedAll = module.GetType ("NS", "UnsupportedOnAllSimulators");
+			foreach (var methodName in new [] { "UnsupportedMethod", "SupportedMethod" }) {
+				var method = unsupportedAll.Methods.Single (m => m.Name == methodName);
+				var simulatorAttrs = method.CustomAttributes
+					.Where (a => a.AttributeType.Name == "UnsupportedSimulatorAttribute" || a.AttributeType.Name == "SupportedSimulatorAttribute")
+					.ToArray ();
+				Assert.That (simulatorAttrs.Length, Is.EqualTo (0), $"{methodName}: no simulator attributes on Mac platforms");
+			}
+
+			var methods = module.GetType ("NS", "SimulatorAvailabilityMethods");
+			foreach (var method in methods.Methods.Where (m => !m.IsConstructor)) {
+				var methodAttrs = method.CustomAttributes
+					.Where (a => a.AttributeType.Name == "UnsupportedSimulatorAttribute" || a.AttributeType.Name == "SupportedSimulatorAttribute")
+					.ToArray ();
+				Assert.That (methodAttrs.Length, Is.EqualTo (0), $"{method.Name}: no simulator attributes on Mac platforms");
 			}
 
 			// The smart-enum field accessor must not carry simulator attributes on Mac platforms either

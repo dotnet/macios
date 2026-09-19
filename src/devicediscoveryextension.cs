@@ -63,12 +63,21 @@ namespace DeviceDiscoveryExtension {
 		[Export ("url", ArgumentSemantic.Copy)]
 		NSUrl Url { get; set; }
 
+		[Deprecated (PlatformName.iOS, 27, 0, message: "Please use MediaDeviceExtension")]
+		[Deprecated (PlatformName.MacOSX, 27, 0, message: "Please use MediaDeviceExtension")]
+		[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Please use MediaDeviceExtension")]
 		[Export ("mediaPlaybackState", ArgumentSemantic.Assign)]
 		DDDeviceMediaPlaybackState MediaPlaybackState { get; set; }
 
+		[Deprecated (PlatformName.iOS, 27, 0, message: "Please use MediaDeviceExtension")]
+		[Deprecated (PlatformName.MacOSX, 27, 0, message: "Please use MediaDeviceExtension")]
+		[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Please use MediaDeviceExtension")]
 		[NullAllowed, Export ("mediaContentTitle")]
 		string MediaContentTitle { get; set; }
 
+		[Deprecated (PlatformName.iOS, 27, 0, message: "Please use MediaDeviceExtension")]
+		[Deprecated (PlatformName.MacOSX, 27, 0, message: "Please use MediaDeviceExtension")]
+		[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Please use MediaDeviceExtension")]
 		[NullAllowed, Export ("mediaContentSubtitle")]
 		string MediaContentSubtitle { get; set; }
 

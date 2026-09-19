@@ -128,16 +128,16 @@ namespace CoreVideo {
 			return Runtime.GetNSObject<NSDictionary> (resolvedDictionaryOut);
 		}
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.CoreVideoLibrary)]
 		static extern CFDictionaryRef CVPixelBufferCopyCreationAttributes (CVPixelBufferRef pixelBuffer);
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public CVPixelBufferAttributes? GetPixelBufferCreationAttributes ()
 		{

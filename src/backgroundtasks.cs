@@ -77,6 +77,9 @@ namespace BackgroundTasks {
 	interface BGProcessingTask {
 	}
 
+	[NoMac, iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+	delegate void BGTaskSchedulerSubmitCompletionHandler ([NullAllowed] NSError error);
+
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
@@ -90,8 +93,16 @@ namespace BackgroundTasks {
 		[Export ("registerForTaskWithIdentifier:usingQueue:launchHandler:")]
 		bool Register (string identifier, [NullAllowed] DispatchQueue queue, Action<BGTask> launchHandler);
 
+		[Deprecated (PlatformName.iOS, 27, 0, message: "Use 'Submit (BGTaskRequest, BGTaskSchedulerSubmitCompletionHandler)' instead to capture all error conditions.")]
+		[Deprecated (PlatformName.TvOS, 27, 0, message: "Use 'Submit (BGTaskRequest, BGTaskSchedulerSubmitCompletionHandler)' instead to capture all error conditions.")]
+		[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Use 'Submit (BGTaskRequest, BGTaskSchedulerSubmitCompletionHandler)' instead to capture all error conditions.")]
 		[Export ("submitTaskRequest:error:")]
 		bool Submit (BGTaskRequest taskRequest, [NullAllowed] out NSError error);
+
+		[iOS (27, 0), TV (27, 0), MacCatalyst (27, 0)]
+		[Async]
+		[Export ("submitTaskRequest:completionHandler:")]
+		void Submit (BGTaskRequest taskRequest, BGTaskSchedulerSubmitCompletionHandler completionHandler);
 
 		[Export ("cancelTaskRequestWithIdentifier:")]
 		void Cancel (string identifier);
@@ -109,7 +120,13 @@ namespace BackgroundTasks {
 		BGContinuedProcessingTaskRequestResources SupportedResources { get; }
 	}
 
-	[TV (17, 0), NoMac, iOS (17, 0), MacCatalyst (17, 0)]
+#if XAMCORE_5_0
+	[NoTV]
+#else
+	[TV (17, 0)]
+	[Obsoleted (PlatformName.TvOS, 27, 0, message: "This type is not available on tvOS 27.0 or later.")]
+#endif
+	[NoMac, iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (BGProcessingTask))]
 	interface BGHealthResearchTask { }
 

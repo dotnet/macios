@@ -4736,6 +4736,26 @@ namespace UIKit {
 		Large,
 	}
 
+	/// <summary>Specifies where a sheet is placed within its presenting view.</summary>
+	[TV (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[Native]
+	public enum UISheetPresentationControllerPlacement : long {
+		/// <summary>The system determines the sheet placement.</summary>
+		Automatic,
+
+		/// <summary>Places the sheet on the leading edge.</summary>
+		[NoTV]
+		Leading,
+
+		/// <summary>Centers the sheet within the presenting view.</summary>
+		[NoTV]
+		Center,
+
+		/// <summary>Places the sheet on the trailing edge.</summary>
+		[NoTV]
+		Trailing,
+	}
+
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[Native]
 	public enum UIWindowScenePresentationStyle : ulong {
@@ -4842,5 +4862,120 @@ namespace UIKit {
 	public enum UIGlassEffectStyle : long {
 		Regular,
 		Clear,
+	}
+
+	// NSInteger -> UIMenuElement.h
+	[TV (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[Native]
+	public enum UIMenuElementImageVisibility : long {
+		Automatic = 0,
+		Visible = 1,
+		Hidden = 2,
+	}
+
+	// NSInteger -> UIBarMinimization.h
+	[TV (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[Native]
+	public enum UIBarMinimizationBehavior : long {
+		Automatic = 0,
+		[NoTV]
+		Never,
+		[NoTV]
+		OnScrollDown,
+		[NoTV]
+		OnScrollUp,
+	}
+
+	// NSInteger -> UIBarMinimization.h
+	[TV (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[Native]
+	public enum UIBarMinimizationSafeAreaAdjustment : long {
+		Automatic = 0,
+		[NoTV]
+		Enabled,
+		[NoTV]
+		Disabled,
+	}
+
+	// NSInteger -> UIBarMinimization.h
+	[TV (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[Native]
+	public enum UIBarMinimizationRestorationBehavior : long {
+		Automatic = 0,
+		[NoTV]
+		AtScrollEdge,
+	}
+
+	// NSInteger -> UITabBarControllerSidebar.h
+	[NoTV, iOS (27, 0), MacCatalyst (27, 0)]
+	[Native]
+	public enum UITabBarControllerSidebarPlacement : long {
+		Automatic = 0,
+		Sidebar = 1,
+		TabBar = 2,
+	}
+
+	// NSUInteger -> UIDragInteraction.h
+	[NoTV, iOS (27, 0), MacCatalyst (27, 0)]
+	[Native]
+	public enum UIDragLiftBehavior : ulong {
+		Default = 0,
+		Extended = 1,
+	}
+
+	// NSUInteger -> UITextView.h
+	[Flags]
+	[TV (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[Native]
+	public enum UITextAttachmentViewProviderReusePolicy : ulong {
+		ScrollingOutOfViewport = 1uL << 0,
+		EditingInlineParagraphs = 1uL << 1,
+	}
+
+	// NSInteger -> NSTextTable.h
+	[MacCatalyst (13, 1)]
+	[Native]
+	public enum NSTextBlockValueType : long {
+		Absolute = 0,
+		Percentage = 1,
+	}
+
+	// NSInteger -> NSTextTable.h
+	[MacCatalyst (13, 1)]
+	[Native]
+	public enum NSTextBlockDimension : long {
+		Width = 0,
+		MinimumWidth = 1,
+		MaximumWidth = 2,
+		Height = 4,
+		MinimumHeight = 5,
+		MaximumHeight = 6,
+	}
+
+	// NSInteger -> NSTextTable.h
+	[MacCatalyst (13, 1)]
+	[Native]
+	public enum NSTextBlockLayer : long {
+		Padding = -1,
+		Border = 0,
+		Margin = 1,
+	}
+
+	// NSInteger -> NSTextTable.h
+	[MacCatalyst (13, 1)]
+	[Native]
+	public enum NSTextBlockVerticalAlignment : long {
+		Top = 0,
+		Middle = 1,
+		Bottom = 2,
+		Baseline = 3,
+	}
+
+	// NSInteger -> NSTextTable.h
+	[MacCatalyst (13, 1)]
+	[Native]
+	public enum NSTextTableLayoutAlgorithm : long {
+		Automatic = 0,
+		Fixed = 1,
 	}
 }

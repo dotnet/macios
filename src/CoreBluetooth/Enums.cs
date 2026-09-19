@@ -157,6 +157,10 @@ namespace CoreBluetooth {
 		TooManyLEPairedDevices = 16,
 		LEGattExceededBackgroundNotificationLimit = 17,
 		LEGattNearBackgroundNotificationLimit = 18,
+		/// <summary>The channel sounding session configuration failed.</summary>
+		ChannelSoundingConfigurationFailed = 19,
+		/// <summary>The channel sounding procedure failed.</summary>
+		ChannelSoundingProcedureFailed = 20,
 	}
 
 	/// <summary>Errors returned by a GATT server.</summary>
@@ -213,6 +217,14 @@ namespace CoreBluetooth {
 		WithoutResponse,
 	}
 
+	/// <summary>Specifies the role that a peripheral assumes in a channel sounding session.</summary>
+	[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+	[Native]
+	public enum CBChannelSoundingSessionConfigurationRole : long {
+		/// <summary>The peripheral acts as the initiator for the channel sounding session.</summary>
+		Initiator = 0,
+	}
+
 	// NSUInteger -> CBCharacteristic.h
 	/// <summary>Enumerates the read, write, and encryption permissions for a characteristic's values.</summary>
 	[MacCatalyst (13, 1)]
@@ -254,6 +266,9 @@ namespace CoreBluetooth {
 	[Native]
 	public enum CBCentralManagerFeature : ulong {
 		ExtendedScanAndConnect = 1uL << 0,
+		/// <summary>The hardware and region support channel sounding.</summary>
+		[NoTV, iOS (27, 0), MacCatalyst (27, 0)]
+		ChannelSounding = 1uL << 10,
 	}
 
 	[MacCatalyst (13, 1)]

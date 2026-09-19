@@ -13,6 +13,12 @@ namespace UniformTypeIdentifiers {
 		[return: NullAllowed]
 		UTType CreateFromIdentifier (string identifier);
 
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Static]
+		[Export ("typeWithIdentifier:allowUndeclared:")]
+		[return: NullAllowed]
+		UTType CreateFromIdentifier (string identifier, bool allowUndeclared);
+
 		[Static]
 		[Export ("typeWithFilenameExtension:")]
 		[return: NullAllowed]
@@ -294,6 +300,10 @@ namespace UniformTypeIdentifiers {
 
 		[Field ("UTTypeJSON")]
 		UTType Json { get; }
+
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Field ("UTTypeMarkdown")]
+		UTType Markdown { get; }
 
 		[Field ("UTTypePropertyList")]
 		UTType PropertyList { get; }

@@ -43,9 +43,9 @@ namespace Network {
 
 		// added to have a consistent API, but obsolete it
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.NetworkLibrary)]
 		internal static extern IntPtr nw_quic_create_options ();
@@ -144,16 +144,16 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		internal extern static IntPtr nw_tls_copy_sec_protocol_options (IntPtr options);
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.NetworkLibrary)]
 		static extern byte nw_protocol_options_is_quic (IntPtr options);
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public bool IsQuic => nw_protocol_options_is_quic (GetCheckedHandle ()) != 0;
 	}

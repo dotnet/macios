@@ -90,6 +90,7 @@ namespace AccessoryAccess {
 	/// <param name="accessories">The USB accessories that are already connected.</param>
 	/// <param name="error">The error that occurred, or <see langword="null" /> if registration succeeded.</param>
 	delegate void AAUsbAccessoryManagerRegisterListenerCompletionHandler (AAUsbAccessory [] accessories, [NullAllowed] NSError error);
+	/// <summary>A completion handler for unregistering a USB accessory listener.</summary>
 	delegate void AAUsbAccessoryManagerUnregisterListenerCompletionHandler ();
 
 	[Mac (27, 0)]

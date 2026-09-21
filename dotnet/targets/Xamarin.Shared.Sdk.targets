@@ -7,6 +7,19 @@
 		<Version Condition="'$(GenerateApplicationManifest)' == 'true' and '$(ApplicationDisplayVersion)' != ''">$(ApplicationDisplayVersion)</Version>
 	</PropertyGroup>
 
+	<!-- Set the default desktop RuntimeIdentifier after the project has been evaluated, so that SupportedOSPlatformVersion is available. -->
+	<PropertyGroup Condition="'$(_RuntimeIdentifierIsRequired)' == 'true' And '$(RuntimeIdentifier)' == '' And '$(RuntimeIdentifiers)' == '' And ('$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst')">
+		<_EffectiveSupportedOSPlatformVersion Condition="'$(SupportedOSPlatformVersion)' != ''">$(SupportedOSPlatformVersion)</_EffectiveSupportedOSPlatformVersion>
+		<_EffectiveSupportedOSPlatformVersion Condition="'$(_EffectiveSupportedOSPlatformVersion)' == ''">$(TargetPlatformVersion)</_EffectiveSupportedOSPlatformVersion>
+		<_DefaultToUniversalDesktopApp Condition="'$(Configuration)' == 'Release' And $([MSBuild]::VersionLessThan($(_EffectiveSupportedOSPlatformVersion), '27.0'))">true</_DefaultToUniversalDesktopApp>
+		<RuntimeIdentifier Condition="'$(_DefaultToUniversalDesktopApp)' != 'true' And '$(_PlatformName)' == 'macOS' And '$(_IsArm64Machine)' == 'true'">osx-arm64</RuntimeIdentifier>
+		<RuntimeIdentifier Condition="'$(_DefaultToUniversalDesktopApp)' != 'true' And '$(_PlatformName)' == 'macOS' And '$(_IsArm64Machine)' != 'true'">osx-x64</RuntimeIdentifier>
+		<RuntimeIdentifier Condition="'$(_DefaultToUniversalDesktopApp)' != 'true' And '$(_PlatformName)' == 'MacCatalyst' And '$(_IsArm64Machine)' == 'true'">maccatalyst-arm64</RuntimeIdentifier>
+		<RuntimeIdentifier Condition="'$(_DefaultToUniversalDesktopApp)' != 'true' And '$(_PlatformName)' == 'MacCatalyst' And '$(_IsArm64Machine)' != 'true'">maccatalyst-x64</RuntimeIdentifier>
+		<RuntimeIdentifiers Condition="'$(_DefaultToUniversalDesktopApp)' == 'true' And '$(_PlatformName)' == 'macOS'">osx-x64;osx-arm64</RuntimeIdentifiers>
+		<RuntimeIdentifiers Condition="'$(_DefaultToUniversalDesktopApp)' == 'true' And '$(_PlatformName)' == 'MacCatalyst'">maccatalyst-x64;maccatalyst-arm64</RuntimeIdentifiers>
+	</PropertyGroup>
+
 	<PropertyGroup Condition="'$(_TaskAssemblyName)' == ''">
 		<_TaskAssemblyFileName>Xamarin.MacDev.Tasks.dll</_TaskAssemblyFileName>
 		<_TaskAssemblyFileNameWindows>Xamarin.iOS.Tasks.Windows.dll</_TaskAssemblyFileNameWindows>

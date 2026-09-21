@@ -64,7 +64,7 @@
 	See: https://github.com/dotnet/sdk/blob/c164a9bc1246c48191fb780992530f0fe975141b/documentation/specs/dotnet-run-for-maui.md
 	***********************************************************************************************
 	-->
-	<Target Name="DeployToDevice" DependsOnTargets="_DeployToDevice;_CopyStartupHooksToDevice" Condition="'$(SdkIsMobile)' == 'true'">
+	<Target Name="DeployToDevice" DependsOnTargets="_ValidateHotReloadConfiguration;_DeployToDevice;_CopyStartupHooksToDevice" Condition="'$(SdkIsMobile)' == 'true'">
 	</Target>
 
 	<Target Name="ComputeMlaunchRunArguments" DependsOnTargets="_DetectSdkLocations;_GenerateBundleName;_DetectAppManifest;ComputeAvailableDevices;_ComputeMlaunchRunArguments" Condition="'$(SdkIsDesktop)' != 'true'" />

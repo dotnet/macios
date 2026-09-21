@@ -2551,15 +2551,20 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		[Test]
 		public void ConstructorChaining ()
 		{
+			CtorChaining2.InitializedInstance = null;
 			using (var obj = new CtorChaining2 (2)) {
 				Assert.That (obj.InitCalled, Is.True, "Init called");
 				Assert.That (obj.InitCallsInitCalled, Is.True, "InitCallsInit called");
+				Assert.That (CtorChaining2.InitializedInstance, Is.SameAs (obj), "Initialized instance");
 			}
 		}
 
 		class CtorChaining2 : CtorChaining1 {
+			public static CtorChaining2 InitializedInstance;
+
 			public CtorChaining2 ()
 			{
+				InitializedInstance = this;
 			}
 
 			public CtorChaining2 (int value)

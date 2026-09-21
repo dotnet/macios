@@ -401,6 +401,12 @@ namespace Foundation {
 				return IntPtr.Zero;
 
 			try {
+				// A native initializer may chain to another managed constructor on the same
+				// object. Reuse the wrapper created before the initializer was invoked.
+				var existing = Runtime.TryGetNSObjectFromIvar (handle);
+				if (existing is not null && existing.Handle == handle && type.IsAssignableFrom (existing.GetType ()))
+					return Runtime.AllocGCHandle (existing);
+
 				var obj = (NSObject) RuntimeHelpers.GetUninitializedObject (type);
 				obj.handle = handle;
 				obj.flags = flags;
@@ -545,17 +551,21 @@ namespace Foundation {
 			HasManagedRef = true;
 
 			if (isUserType) {
-				var gchandle_flags = XamarinGCHandleFlags.HasManagedRef | XamarinGCHandleFlags.InitialSet;
-				var gchandle = GCHandle.Alloc (this, GCHandleType.WeakTrackResurrection);
-				var h = GCHandle.ToIntPtr (gchandle);
-				byte rv;
-				unsafe {
-					rv = xamarin_set_gchandle_with_flags_safe (handle, h, gchandle_flags, (IntPtr) GetData ());
-				}
-				if (rv == 0) {
-					// A GCHandle already existed: this shouldn't happen, but let's handle it anyway.
-					Runtime.NSLog ($"Tried to create a managed reference from an object that already has a managed reference (type: {GetType ()})");
-					gchandle.Free ();
+				var existing = Runtime.GetGCHandleForObject (handle);
+				// Constructor chaining may initialize the same wrapper more than once.
+				if (!ReferenceEquals (Runtime.GetGCHandleTarget (existing), this)) {
+					var gchandle_flags = XamarinGCHandleFlags.HasManagedRef | XamarinGCHandleFlags.InitialSet;
+					var gchandle = GCHandle.Alloc (this, GCHandleType.WeakTrackResurrection);
+					var h = GCHandle.ToIntPtr (gchandle);
+					byte rv;
+					unsafe {
+						rv = xamarin_set_gchandle_with_flags_safe (handle, h, gchandle_flags, (IntPtr) GetData ());
+					}
+					if (rv == 0) {
+						// A GCHandle already existed: this shouldn't happen, but let's handle it anyway.
+						Runtime.NSLog ($"Tried to create a managed reference from an object that already has a managed reference (type: {GetType ()})");
+						gchandle.Free ();
+					}
 				}
 			}
 

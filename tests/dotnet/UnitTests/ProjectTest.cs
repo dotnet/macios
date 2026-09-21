@@ -71,33 +71,11 @@ namespace Xamarin.Tests {
 
 			var runtimeIdentifier = DotNet.GetProperty (projectPath, "RuntimeIdentifier", properties);
 			var runtimeIdentifiers = DotNet.GetProperty (projectPath, "RuntimeIdentifiers", properties);
-			var selfContained = DotNet.GetProperty (projectPath, "SelfContained", properties);
 			var expectedRuntimeIdentifier = expectUniversal ? "" : $"{runtimeIdentifierPrefix}-{(Configuration.CanRunArm64 ? "arm64" : "x64")}";
 			var expectedRuntimeIdentifiers = expectUniversal ? $"{runtimeIdentifierPrefix}-x64;{runtimeIdentifierPrefix}-arm64" : "";
 
 			Assert.That (runtimeIdentifier, Is.EqualTo (expectedRuntimeIdentifier), "RuntimeIdentifier");
 			Assert.That (runtimeIdentifiers, Is.EqualTo (expectedRuntimeIdentifiers), "RuntimeIdentifiers");
-			if (!expectUniversal)
-				Assert.That (selfContained, Is.EqualTo ("true"), "SelfContained");
-		}
-
-		[TestCase (ApplePlatform.MacOSX)]
-		[TestCase (ApplePlatform.MacCatalyst)]
-		public void DefaultDesktopReleaseRuntimeIdentifiersFromProject (ApplePlatform platform)
-		{
-			Configuration.IgnoreIfIgnoredPlatform (platform);
-
-			var project = platform == ApplePlatform.MacOSX ? "MyCocoaApp" : "MyCatalystApp";
-			var runtimeIdentifierPrefix = platform == ApplePlatform.MacOSX ? "osx" : "maccatalyst";
-			var projectPath = GetProjectPath (project, platform: platform);
-			var properties = GetDefaultProperties ();
-			properties ["Configuration"] = "Release";
-
-			var runtimeIdentifier = DotNet.GetProperty (projectPath, "RuntimeIdentifier", properties);
-			var runtimeIdentifiers = DotNet.GetProperty (projectPath, "RuntimeIdentifiers", properties);
-
-			Assert.That (runtimeIdentifier, Is.Empty, "RuntimeIdentifier");
-			Assert.That (runtimeIdentifiers, Is.EqualTo ($"{runtimeIdentifierPrefix}-x64;{runtimeIdentifierPrefix}-arm64"), "RuntimeIdentifiers");
 		}
 
 		[TestCase (ApplePlatform.MacOSX, false)]

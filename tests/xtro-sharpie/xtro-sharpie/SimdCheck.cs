@@ -68,6 +68,7 @@ namespace Extrospection {
 			// (using [MarshalDirective]), managed code doesn't get incorrect results.
 			{ "MDLAxisAlignedBoundingBox", new NativeSimdInfo { Managed = "MDLAxisAlignedBoundingBox", }},
 			{ "MPSAxisAlignedBoundingBox", new NativeSimdInfo { Managed = "MPSAxisAlignedBoundingBox" }},
+			{ "MPSFunctions_AABB", new NativeSimdInfo { Managed = "MPSFunctionsAxisAlignedBoundingBox" }},
 			// The managed definition is identical to the native definition
 			{ "MPSImageHistogramInfo", new NativeSimdInfo { Managed = "MPSImageHistogramInfo" }},
 		};
@@ -375,6 +376,8 @@ namespace Extrospection {
 					attrs.AddRange (parentClass.Attrs);
 
 				foreach (var av_attr in attrs.GetAvailabilityAttributes ()) {
+					// Note: the 'anyAppleOS' meta-platform (Xcode 27+) isn't handled here; this is only a
+					// leniency heuristic for new SIMD APIs, which don't currently use 'anyappleos'.
 					if (av_attr.AvailabilityAttributePlatformIdentifierName.ToLowerInvariant () != "ios")
 						continue;
 					if (av_attr.Introduced.Major >= 11) {

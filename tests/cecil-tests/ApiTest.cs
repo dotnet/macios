@@ -40,6 +40,76 @@ namespace Cecil.Tests {
 			Assert.That (failures, Is.Null.Or.Empty, "All subclasses from ARConfiguration must explicitly implement GetSupportedVideoFormats.");
 		}
 
+		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformAssemblyDefinitions))]
+		public void CNAssetPreprocessConfiguration_Constructors (AssemblyInfo info)
+		{
+			var type = info.Assembly.MainModule.GetType ("Cinematic.CNAssetPreprocessConfiguration");
+			if (info.Platform == ApplePlatform.TVOS) {
+				Assert.That (type, Is.Null, "CNAssetPreprocessConfiguration is unavailable on tvOS.");
+				return;
+			}
+
+			Assert.That (type, Is.Not.Null, "CNAssetPreprocessConfiguration must be available.");
+			var constructors = type.Methods.Where (m => m.IsConstructor && m.IsPublic).ToArray ();
+			Assert.That (constructors, Has.Length.EqualTo (1), "Only the destination URL constructor should be public.");
+			Assert.That (constructors [0].Parameters, Has.Count.EqualTo (1), "Constructor parameter count");
+			Assert.That (constructors [0].Parameters [0].ParameterType.FullName, Is.EqualTo ("Foundation.NSUrl"), "Destination URL parameter");
+		}
+
+		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformAssemblyDefinitions))]
+		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformImplementationAssemblyDefinitions))]
+		public void CSSearchableIndexDelegate_GetSearchableItems (AssemblyInfo info)
+		{
+			string [] typeNames = [
+				"CoreSpotlight.ICSSearchableIndexDelegate",
+				"CoreSpotlight.CSSearchableIndexDelegate",
+#if !XAMCORE_5_0
+				"CoreSpotlight.CSSearchableIndexDelegate_Extensions",
+#endif
+				"CoreSpotlight.CSIndexExtensionRequestHandler",
+			];
+			string [] parameterTypes = ["System.String[]", "Foundation.NSFileProtectionType", "CoreSpotlight.CSSearchableIndexDelegateGetSearchableItemsHandler"];
+
+			foreach (var typeName in typeNames) {
+				var type = info.Assembly.MainModule.GetType (typeName);
+				if (info.Platform == ApplePlatform.TVOS) {
+					Assert.That (type, Is.Null, $"{typeName} is unavailable on tvOS.");
+					continue;
+				}
+
+				Assert.That (type, Is.Not.Null, typeName);
+				var offset = typeName.EndsWith ("_Extensions", StringComparison.Ordinal) ? 1 : 0;
+				var method = type.Methods.Single (m => m.Name == "GetSearchableItems" && m.Parameters.Count == 3 + offset);
+				Assert.That (method.IsPublic, Is.True, $"{typeName} visibility");
+				Assert.That (method.ReturnType.FullName, Is.EqualTo ("System.Void"), $"{typeName} return type");
+				Assert.That (method.Parameters.Skip (offset).Select (p => p.ParameterType.FullName), Is.EqualTo (parameterTypes), $"{typeName} parameter types");
+				var olderOverload = type.Methods.Single (m => m.Name == "GetSearchableItems" && m.Parameters.Count == 2 + offset);
+				Assert.That (olderOverload.IsPublic, Is.True, $"{typeName} older overload visibility");
+				Assert.That (olderOverload.ReturnType.FullName, Is.EqualTo ("System.Void"), $"{typeName} older overload return type");
+				Assert.That (olderOverload.Parameters.Skip (offset).Select (p => p.ParameterType.FullName), Is.EqualTo (new [] { parameterTypes [0], parameterTypes [2] }), $"{typeName} older overload parameter types");
+				Assert.That (olderOverload.Parameters [1 + offset].CustomAttributes.Any (a => a.AttributeType.Is ("ObjCRuntime", "BlockProxyAttribute")), Is.True, $"{typeName} older overload block proxy");
+
+				var bindAs = method.Parameters [1 + offset].CustomAttributes.Single (a => a.AttributeType.Is ("ObjCRuntime", "BindAsAttribute"));
+				Assert.That (((TypeReference) bindAs.ConstructorArguments [0].Value).FullName, Is.EqualTo ("Foundation.NSFileProtectionType"), $"{typeName} BindAs type");
+				Assert.That (((TypeReference) bindAs.Fields.Single (f => f.Name == "OriginalType").Argument.Value).FullName, Is.EqualTo ("Foundation.NSString"), $"{typeName} native type");
+				Assert.That (method.Parameters [2 + offset].CustomAttributes.Any (a => a.AttributeType.Is ("ObjCRuntime", "BlockProxyAttribute")), Is.True, $"{typeName} block proxy");
+			}
+
+			if (info.Platform != ApplePlatform.TVOS) {
+				var protocol = info.Assembly.MainModule.GetType ("CoreSpotlight.ICSSearchableIndexDelegate");
+				var member = protocol.CustomAttributes.Single (a => a.AttributeType.Is ("Foundation", "ProtocolMemberAttribute") &&
+					a.Properties.Any (p => p.Name == "Selector" && (string) p.Argument.Value == "searchableItemsForIdentifiers:protectionClass:searchableItemsHandler:"));
+				Assert.That (member.Properties.Single (p => p.Name == "IsRequired").Argument.Value, Is.False, "Optional protocol method");
+				var nativeTypes = (CustomAttributeArgument []) member.Properties.Single (p => p.Name == "ParameterType").Argument.Value;
+				Assert.That (nativeTypes.Select (p => ((TypeReference) p.Value).FullName), Is.EqualTo (new [] { "System.String[]", "Foundation.NSString", "CoreSpotlight.CSSearchableIndexDelegateGetSearchableItemsHandler" }), "Native protocol parameter types");
+				var blockProxies = (CustomAttributeArgument []) member.Properties.Single (p => p.Name == "ParameterBlockProxy").Argument.Value;
+				Assert.That (blockProxies, Has.Length.EqualTo (3), "Block proxy count");
+				Assert.That (blockProxies [0].Value, Is.Null, "Identifiers block proxy");
+				Assert.That (blockProxies [1].Value, Is.Null, "Protection class block proxy");
+				Assert.That (blockProxies [2].Value, Is.Not.Null, "Handler block proxy");
+			}
+		}
+
 		static void AddFailure (ref List<string>? failures, string failure)
 		{
 			if (failures is null)

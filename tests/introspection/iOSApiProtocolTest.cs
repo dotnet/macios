@@ -28,6 +28,7 @@ namespace Introspection {
 		protected override bool Skip (Type type)
 		{
 			switch (type.Namespace) {
+			case "AVSystemRouting":
 			case "MetalKit":
 			case "MetalPerformanceShaders":
 			case "MLCompute":
@@ -188,9 +189,22 @@ namespace Introspection {
 				if (protocolName == "ARTrackable")
 					return !TestRuntime.CheckXcodeVersion (10, 0);
 				break;
+			case "ARObjectAnchor":
+				// the type was added in iOS 12.0 but the conformance to ARTrackable started with iOS 27.0
+				if (protocolName == "ARTrackable")
+					return !TestRuntime.CheckXcodeVersion (27, 0);
+				break;
 			case "PHLivePhoto":
 				if (protocolName == "NSItemProviderReading")
 					return !TestRuntime.CheckXcodeVersion (12, 0);
+				break;
+			case "UITextView":
+				// UITextView declares NSTextViewportLayoutControllerDelegate conformance in the
+				// Xcode 27 headers, but the runtime only registers the conformance starting with
+				// iOS 27.0 / tvOS 27.0 / Mac Catalyst 27.0 (the delegate methods are all
+				// API_AVAILABLE(ios(27.0), tvos(27.0))), so skip the check on older OS versions.
+				if (protocolName == "NSTextViewportLayoutControllerDelegate")
+					return !TestRuntime.CheckXcodeVersion (27, 0);
 				break;
 #if __MACCATALYST__
 			case "BCChatButton":
@@ -453,6 +467,9 @@ namespace Introspection {
 				// Xcode 26.2
 				case "SFSafariExtensionState": // Conformance not in headers
 					return true;
+				// Xcode 27.0
+				case "NIDlTdoaMeasurementFloorElevation": // Conformance not in headers
+					return true;
 				}
 				break;
 			case "NSSecureCoding":
@@ -667,6 +684,9 @@ namespace Introspection {
 				// Xcode 26.2
 				case "SFSafariExtensionState": // Conformance not in headers
 					return true;
+				// Xcode 27.0
+				case "NIDlTdoaMeasurementFloorElevation": // Conformance not in headers
+					return true;
 				}
 				break;
 			case "NSCopying":
@@ -768,6 +788,13 @@ namespace Introspection {
 				case "SRWristDetection":
 				case "UIMenuSystemFindElementGroupConfiguration": // conformance not in headers
 				case "PKAddIdentityDocumentMetadata": // conformance not in headers
+													  // Xcode 27
+				case "CPTextButton": // conformance not in headers
+				case "CPButton": // conformance not in headers
+				case "CPContactCallButton": // conformance not in headers
+				case "CPContactDirectionsButton": // conformance not in headers
+				case "CPContactMessageButton": // conformance not in headers
+				case "CPTravelEstimates": // conformance not in headers
 					return true;
 				}
 				break;

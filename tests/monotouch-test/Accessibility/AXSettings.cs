@@ -18,6 +18,13 @@ namespace MonoTouchFixtures.Accessibility {
 			Assert.That (AXSettings.IsAssistiveAccessEnabled, Is.EqualTo (true).Or.EqualTo (false), "IsAssistiveAccessEnabled");
 		}
 
+		[Test]
+		public void IsApplicationAccessibilityEnabled ()
+		{
+			TestRuntime.AssertXcodeVersion (27, 0);
+			Assert.That (AXSettings.IsApplicationAccessibilityEnabled, Is.EqualTo (true).Or.EqualTo (false), "IsApplicationAccessibilityEnabled");
+		}
+
 		static bool testedOnce;
 		[Test]
 		public void OpenSettingsFeature ()

@@ -324,9 +324,8 @@ namespace Cecil.Tests {
 
 		static string GetDocId (TypeReference tr)
 		{
-			// Roslyn's own generated XML docs use an empty string for function pointer
-			// parameters/types (e.g. "M:...CreateInputPort(System.String,CoreMidi.MidiProtocolId,,CoreMidi.MidiError@)"),
-			// so do the same here to stay consistent with the doc ids Roslyn computes.
+			// Roslyn currently renders function pointers as an empty type name in DocIds (e.g. "M:C.M(,System.Int32)").
+			// Ref: https://github.com/dotnet/roslyn/issues/48363
 			if (tr is FunctionPointerType)
 				return "";
 

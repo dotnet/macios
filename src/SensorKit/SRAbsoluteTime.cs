@@ -3,7 +3,7 @@
 
 namespace SensorKit {
 	/// <summary>Provides methods for converting between SensorKit absolute time and other time representations.</summary>
-	[SupportedOSPlatform ("ios14.0")]
+	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[UnsupportedOSPlatform ("tvos")]
 	[UnsupportedOSPlatform ("macos")]

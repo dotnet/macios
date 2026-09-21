@@ -69,6 +69,7 @@ namespace Xamarin.Tests {
 			properties ["EnableCodeSigning"] = "false"; // Skip code signing, since that would require making sure we have code signing configured on bots.
 
 			// Build the app first, since 'DeployToDevice' is meant to deploy an already-built app.
+			DotNet.Execute ("clean", project_path, properties);
 			DotNet.AssertBuild (project_path, properties);
 
 			var rv = DotNet.Execute ("build", project_path, properties, assert_success: false, target: "DeployToDevice");
@@ -77,7 +78,7 @@ namespace Xamarin.Tests {
 			// was found, regardless of whether the actual install (done by mlaunch, executed via an <Exec/> task) succeeds - and
 			// bots may not have any devices/simulators available to actually install to, so only verify the computed arguments,
 			// not whether the whole build (which includes actually installing the app) succeeded.
-			if (BinLog.TryFindPropertyValue (rv.BinLogPath, "MlaunchInstallArguments", out var mlaunchInstallArguments)) {
+			if (BinLog.TryFindPropertyValue (rv.BinLogPath, "MlaunchInstallArguments", out var mlaunchInstallArguments) && !string.IsNullOrEmpty (mlaunchInstallArguments)) {
 				Assert.That (mlaunchInstallArguments, Does.StartWith (expectedInstallArgument), "install arguments");
 				return;
 			}

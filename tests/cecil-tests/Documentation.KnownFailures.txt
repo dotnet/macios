@@ -53790,7 +53790,6 @@ T:Accessibility.AXSettingsFeature
 T:Accessibility.AXTechnology
 T:Accessibility.ValueDescriptionProviderHandler
 T:AccessoryAccess.AAUsbAccessory
-T:AccessoryAccess.AAUsbAccessoryCloseCompletionHandler
 T:AccessoryAccess.AAUsbAccessoryManager
 T:AccessoryAccess.AAUsbAccessoryManagerRegisterListenerCompletionHandler
 T:AccessoryAccess.AAUsbAccessoryManagerUnregisterListenerCompletionHandler

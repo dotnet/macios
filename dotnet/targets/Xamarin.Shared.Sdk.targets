@@ -649,8 +649,8 @@
 		DetectApiUsageStep computes whether the dynamic registrar is needed (instead of rewriting the
 		platform assembly) and writes the value - as the 'DynamicRegistrationSupported' MSBuild output property -
 		to $(_AssemblyPreparerMSBuildOutputFile). This target runs after _PrepareAssemblies and before the trimmer.
-		It's not incremental-gated, so even if _PrepareAssemblies was skipped (because its outputs were up-to-date),
-		the value is still read from the (persisted) file and the feature switch is set. A user-specified
+		It's not incremental-gated, so even if _ExecutePrepareAssemblies was skipped (because its outputs were
+		up-to-date), the value is still read from the (persisted) file and the feature switch is set. A user-specified
 		$(DynamicRegistrationSupported) always wins.
 	-->
 	<Target Name="_SetDynamicRegistrationSupportedFeature" Condition="'$(PrepareAssemblies)' == 'true'">
@@ -697,7 +697,7 @@
 		preserves the framework-side conversion methods (GetConstant/GetValue), and reports its path as
 		the 'SmartEnumConversionsRootDescriptor' MSBuild output property in $(_AssemblyPreparerMSBuildOutputFile).
 		This target runs after _PrepareAssemblies and before the trimmer. It's not incremental-gated, so
-		even if _PrepareAssemblies was skipped (because its outputs were up-to-date), the value is still
+		even if _ExecutePrepareAssemblies was skipped (because its outputs were up-to-date), the value is still
 		read from the (persisted) file and the descriptor is added to the trimmer inputs.
 	-->
 	<Target Name="_SetSmartEnumConversionsRootDescriptor" Condition="'$(PrepareAssemblies)' == 'true'">
@@ -1539,11 +1539,13 @@
 		earlier (e.g. inlined-class-gethandle.m). It's wired to run before _LoadLinkerOutput (via
 		_LoadLinkerOutputExtraDependsOn) so the *.items files it produces are loaded and fed to the native compile.
 	-->
+	<!-- Persist the task outputs so _PostprocessAssembliesAfterIlc can restore its item changes when this
+	     target is skipped. -->
 	<Target
-		Name="_PostprocessAssembliesAfterIlc"
+		Name="_ExecutePostprocessAssembliesAfterIlc"
 		Condition="'$(IsMacEnabled)' == 'true' And '$(_PostprocessAssembliesAfterIlc)' == 'true' And '$(RuntimeIdentifiers)' == ''"
 		Inputs="@(_AssembliesToPostProcess);$(_LinkerCachePath);$(NativeObject)"
-		Outputs="@(_AssembliesToPostProcess->'$(_PostprocessedAssembliesDirectory)%(Filename)%(Extension)');$(_AssemblyPostProcessorMSBuildOutputFile)"
+		Outputs="$(_PostprocessedAssembliesItemsPath);$(_AssemblyPostProcessorMSBuildOutputFile)"
 		DependsOnTargets="IlcCompile;ComputeFilesToPublish;_PrepareAssembliesForPostProcessing;_ComputeLinkerInputs"
 		>
 		<PrepareAssemblies
@@ -1559,8 +1561,27 @@
 			<Output TaskParameter="OutputAssemblies" ItemName="_PostProcessedAssemblies" />
 		</PrepareAssemblies>
 
+		<WriteItemsToFile
+			Items="@(_PostProcessedAssemblies)"
+			ItemName="_PostProcessedAssemblies"
+			File="$(_PostprocessedAssembliesItemsPath)"
+			IncludeMetadata="true"
+			Overwrite="true"
+		/>
+	</Target>
+
+	<Target
+		Name="_PostprocessAssembliesAfterIlc"
+		Condition="'$(IsMacEnabled)' == 'true' And '$(_PostprocessAssembliesAfterIlc)' == 'true' And '$(RuntimeIdentifiers)' == ''"
+		DependsOnTargets="_ExecutePostprocessAssembliesAfterIlc"
+		>
+		<ReadItemsFromFile File="$(_PostprocessedAssembliesItemsPath)">
+			<Output TaskParameter="Items" ItemName="_RestoredPostProcessedAssemblies" />
+		</ReadItemsFromFile>
+
 		<ItemGroup>
-			<FileWrites Include="@(_PostProcessedAssemblies)" />
+			<FileWrites Include="@(_RestoredPostProcessedAssemblies)" />
+			<FileWrites Include="$(_PostprocessedAssembliesItemsPath)" />
 			<FileWrites Include="$(_AssemblyPostProcessorMSBuildOutputFile)" Condition="Exists('$(_AssemblyPostProcessorMSBuildOutputFile)')" />
 		</ItemGroup>
 	</Target>

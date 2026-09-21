@@ -176,14 +176,14 @@ Microsoft.tvOS.dll:Foundation.NSAsyncDispatcher..cctor()
 Microsoft.tvOS.dll:Foundation.NSAsyncDispatcher..ctor()
 Microsoft.tvOS.dll:Foundation.NSAsyncDispatcher.Apply()
 Microsoft.tvOS.dll:Foundation.NSAsyncDispatcher/__Registrar_Callbacks__
-Microsoft.tvOS.dll:Foundation.NSAsyncDispatcher/__Registrar_Callbacks__.callback_2642_Foundation_NSAsyncDispatcher__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
-Microsoft.tvOS.dll:Foundation.NSAsyncDispatcher/__Registrar_Callbacks__.callback_2643_Foundation_NSAsyncDispatcher_Apply(System.IntPtr, System.IntPtr, System.IntPtr*)
+Microsoft.tvOS.dll:Foundation.NSAsyncDispatcher/__Registrar_Callbacks__.callback_2648_Foundation_NSAsyncDispatcher__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
+Microsoft.tvOS.dll:Foundation.NSAsyncDispatcher/__Registrar_Callbacks__.callback_2649_Foundation_NSAsyncDispatcher_Apply(System.IntPtr, System.IntPtr, System.IntPtr*)
 Microsoft.tvOS.dll:Foundation.NSAsyncSynchronizationContextDispatcher
 Microsoft.tvOS.dll:Foundation.NSAsyncSynchronizationContextDispatcher..cctor()
 Microsoft.tvOS.dll:Foundation.NSAsyncSynchronizationContextDispatcher..ctor(System.Threading.SendOrPostCallback, System.Object)
 Microsoft.tvOS.dll:Foundation.NSAsyncSynchronizationContextDispatcher.Apply()
 Microsoft.tvOS.dll:Foundation.NSAsyncSynchronizationContextDispatcher/__Registrar_Callbacks__
-Microsoft.tvOS.dll:Foundation.NSAsyncSynchronizationContextDispatcher/__Registrar_Callbacks__.callback_2645_Foundation_NSAsyncSynchronizationContextDispatcher_Apply(System.IntPtr, System.IntPtr, System.IntPtr*)
+Microsoft.tvOS.dll:Foundation.NSAsyncSynchronizationContextDispatcher/__Registrar_Callbacks__.callback_2651_Foundation_NSAsyncSynchronizationContextDispatcher_Apply(System.IntPtr, System.IntPtr, System.IntPtr*)
 Microsoft.tvOS.dll:Foundation.NSAutoreleasePool
 Microsoft.tvOS.dll:Foundation.NSAutoreleasePool._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.tvOS.dll:Foundation.NSAutoreleasePool..cctor()
@@ -226,8 +226,8 @@ Microsoft.tvOS.dll:Foundation.NSDispatcher..cctor()
 Microsoft.tvOS.dll:Foundation.NSDispatcher..ctor()
 Microsoft.tvOS.dll:Foundation.NSDispatcher.Apply()
 Microsoft.tvOS.dll:Foundation.NSDispatcher/__Registrar_Callbacks__
-Microsoft.tvOS.dll:Foundation.NSDispatcher/__Registrar_Callbacks__.callback_2637_Foundation_NSDispatcher__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
-Microsoft.tvOS.dll:Foundation.NSDispatcher/__Registrar_Callbacks__.callback_2638_Foundation_NSDispatcher_Apply(System.IntPtr, System.IntPtr, System.IntPtr*)
+Microsoft.tvOS.dll:Foundation.NSDispatcher/__Registrar_Callbacks__.callback_2643_Foundation_NSDispatcher__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
+Microsoft.tvOS.dll:Foundation.NSDispatcher/__Registrar_Callbacks__.callback_2644_Foundation_NSDispatcher_Apply(System.IntPtr, System.IntPtr, System.IntPtr*)
 Microsoft.tvOS.dll:Foundation.NSException
 Microsoft.tvOS.dll:Foundation.NSException ObjCRuntime.MarshalObjectiveCExceptionEventArgs::<Exception>k__BackingField
 Microsoft.tvOS.dll:Foundation.NSException ObjCRuntime.MarshalObjectiveCExceptionEventArgs::Exception()
@@ -331,8 +331,8 @@ Microsoft.tvOS.dll:Foundation.NSObject/NSObject_Disposer.Add(Foundation.NSObject
 Microsoft.tvOS.dll:Foundation.NSObject/NSObject_Disposer.Drain(Foundation.NSObject)
 Microsoft.tvOS.dll:Foundation.NSObject/NSObject_Disposer.ScheduleDrain()
 Microsoft.tvOS.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__
-Microsoft.tvOS.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_2670_Foundation_NSObject_NSObject_Disposer__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
-Microsoft.tvOS.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_2671_Foundation_NSObject_NSObject_Disposer_Drain(System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
+Microsoft.tvOS.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_2676_Foundation_NSObject_NSObject_Disposer__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
+Microsoft.tvOS.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_2677_Foundation_NSObject_NSObject_Disposer_Drain(System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
 Microsoft.tvOS.dll:Foundation.NSObject/XamarinGCHandleFlags
 Microsoft.tvOS.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::HasManagedRef
 Microsoft.tvOS.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::InitialSet
@@ -368,7 +368,7 @@ Microsoft.tvOS.dll:Foundation.NSSynchronizationContextDispatcher..cctor()
 Microsoft.tvOS.dll:Foundation.NSSynchronizationContextDispatcher..ctor(System.Threading.SendOrPostCallback, System.Object)
 Microsoft.tvOS.dll:Foundation.NSSynchronizationContextDispatcher.Apply()
 Microsoft.tvOS.dll:Foundation.NSSynchronizationContextDispatcher/__Registrar_Callbacks__
-Microsoft.tvOS.dll:Foundation.NSSynchronizationContextDispatcher/__Registrar_Callbacks__.callback_2640_Foundation_NSSynchronizationContextDispatcher_Apply(System.IntPtr, System.IntPtr, System.IntPtr*)
+Microsoft.tvOS.dll:Foundation.NSSynchronizationContextDispatcher/__Registrar_Callbacks__.callback_2646_Foundation_NSSynchronizationContextDispatcher_Apply(System.IntPtr, System.IntPtr, System.IntPtr*)
 Microsoft.tvOS.dll:Foundation.NSValue
 Microsoft.tvOS.dll:Foundation.NSValue._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.tvOS.dll:Foundation.NSValue..cctor()
@@ -646,8 +646,8 @@ Microsoft.tvOS.dll:ObjCRuntime.RegistrarHelper.TryGetMapEntry(System.String, out
 Microsoft.tvOS.dll:ObjCRuntime.RegistrarHelper/MapInfo
 Microsoft.tvOS.dll:ObjCRuntime.Runtime
 Microsoft.tvOS.dll:ObjCRuntime.Runtime..cctor()
-Microsoft.tvOS.dll:ObjCRuntime.Runtime.<ConstructINativeObject>g__ConstructINativeObjectViaFactoryMethod|296_0`1(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.tvOS.dll:ObjCRuntime.Runtime.<ConstructNSObject>g__ConstructNSObjectViaFactoryMethod|295_0`1(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.<ConstructINativeObject>g__ConstructINativeObjectViaFactoryMethod|298_0`1(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.<ConstructNSObject>g__ConstructNSObjectViaFactoryMethod|297_0`1(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:ObjCRuntime.Runtime.AllocGCHandle(System.Object, System.Runtime.InteropServices.GCHandleType)
 Microsoft.tvOS.dll:ObjCRuntime.Runtime.AllocGCHandle(System.Object)
 Microsoft.tvOS.dll:ObjCRuntime.Runtime.AppendAdditionalInformation(System.Text.StringBuilder, System.IntPtr, System.RuntimeMethodHandle)
@@ -1302,7 +1302,7 @@ Microsoft.tvOS.dll:UIKit.UIApplicationDelegate..ctor(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:UIKit.UIApplicationDelegate..ctor(System.IntPtr, ObjCRuntime.IManagedRegistrar)
 Microsoft.tvOS.dll:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)
 Microsoft.tvOS.dll:UIKit.UIApplicationDelegate/__Registrar_Callbacks__
-Microsoft.tvOS.dll:UIKit.UIApplicationDelegate/__Registrar_Callbacks__.callback_361_UIKit_UIApplicationDelegate__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
+Microsoft.tvOS.dll:UIKit.UIApplicationDelegate/__Registrar_Callbacks__.callback_367_UIKit_UIApplicationDelegate__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
 Microsoft.tvOS.dll:UIKit.UIButton
 Microsoft.tvOS.dll:UIKit.UIButton._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.tvOS.dll:UIKit.UIButton..cctor()
@@ -8371,6 +8371,7 @@ System.Private.CoreLib.dll:System.Int16 System.Threading.PortableThreadPool/Coun
 System.Private.CoreLib.dll:System.Int16 System.Threading.PortableThreadPool/ThreadCounts::NumExistingThreads()
 System.Private.CoreLib.dll:System.Int16 System.Threading.PortableThreadPool/ThreadCounts::NumProcessingWork()
 System.Private.CoreLib.dll:System.Int16 System.Threading.PortableThreadPool/ThreadCounts::NumThreadsGoal()
+System.Private.CoreLib.dll:System.Int16 System.Threading.PortableThreadPool/WorkerThread::SpuriousDispatchNoSpinThreshold
 System.Private.CoreLib.dll:System.Int16 System.Threading.PortableThreadPool/WorkerThread::ThreadsToKeepAlive
 System.Private.CoreLib.dll:System.Int16 System.Threading.Tasks.Sources.ManualResetValueTaskSourceCore`1::_version
 System.Private.CoreLib.dll:System.Int16 System.Threading.Tasks.Sources.ManualResetValueTaskSourceCore`1::Version()
@@ -20863,18 +20864,19 @@ System.Private.CoreLib.dll:System.Threading.PortableThreadPool/ThreadCounts.TryI
 System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread
 System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread..cctor()
 System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread.CreateWorkerThread()
+System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread.DetermineSpuriousDispatchNoSpinThreshold()
 System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread.DetermineThreadsToKeepAlive()
 System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread.MaybeAddWorkingWorker(System.Threading.PortableThreadPool)
 System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread.ShouldExitWorker(System.Threading.PortableThreadPool, System.Threading.LowLevelLock)
 System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread.ShouldStopProcessingWorkNow(System.Threading.PortableThreadPool)
-System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread.TryRemoveWorkingWorker(System.Threading.PortableThreadPool)
+System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread.TryRemoveWorkingWorker(System.Threading.PortableThreadPool, out System.Int16&)
 System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread.WorkerDoWork(System.Threading.PortableThreadPool)
 System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread.WorkerThreadStart()
 System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread/<>c
 System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread/<>c System.Threading.PortableThreadPool/WorkerThread/<>c::<>9
 System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread/<>c..cctor()
 System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread/<>c..ctor()
-System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread/<>c.<.cctor>b__14_0()
+System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread/<>c.<.cctor>b__16_0()
 System.Private.CoreLib.dll:System.Threading.ProcessorIdCache
 System.Private.CoreLib.dll:System.Threading.ProcessorIdCache..cctor()
 System.Private.CoreLib.dll:System.Threading.ProcessorIdCache.GetCurrentProcessorId()

@@ -240,6 +240,10 @@ namespace CoreMedia {
 	enum CMFormatDescriptionLogTransferFunction {
 		[Field ("kCMFormatDescriptionLogTransferFunction_AppleLog")]
 		AppleLog,
+
+		[MacCatalyst (27, 0), TV (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Field ("kCMFormatDescriptionLogTransferFunction_AppleLog2")]
+		AppleLog2,
 	}
 
 	[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
@@ -251,6 +255,7 @@ namespace CoreMedia {
 		Right,
 	}
 
+	/// <summary>Provides keys for Core Media metadata format descriptions.</summary>
 	[Static]
 	interface CMMetadataFormatDescriptionKeys {
 		[Field ("kCMMetadataFormatDescriptionKey_Namespace")]
@@ -279,6 +284,20 @@ namespace CoreMedia {
 
 		[Field ("kCMMetadataFormatDescriptionKey_SetupData")]
 		NSString SetupData { get; }
+
+		/// <summary>Gets the key for a human-readable description of the metadata.</summary>
+		[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[Field ("kCMMetadataFormatDescriptionKey_HumanReadableString")]
+		NSString HumanReadableString { get; }
+	}
+
+	/// <summary>Provides keys for Core Media metadata format description specifications.</summary>
+	[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+	[Static]
+	interface CMMetadataFormatDescriptionMetadataSpecificationKeys {
+		/// <summary>Gets the key for a human-readable description of the metadata specification.</summary>
+		[Field ("kCMMetadataFormatDescriptionMetadataSpecificationKey_HumanReadableString")]
+		NSString HumanReadableString { get; }
 	}
 
 	[StrongDictionary ("CMMetadataFormatDescriptionKeys", Suffix = "")]
@@ -301,6 +320,10 @@ namespace CoreMedia {
 		NSDictionary StructuralDependency { get; }
 
 		NSData SetupData { get; }
+
+		/// <summary>Gets the human-readable description of the metadata.</summary>
+		[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		string HumanReadableString { get; }
 	}
 
 	[Static]
@@ -700,6 +723,23 @@ namespace CoreMedia {
 		IntPtr AgeOutPeriodSelector { get; }
 	}
 
+	[Partial]
+	interface CMClock {
+		/// <summary>Identifies the notification posted when a display enters or leaves genlock mode.</summary>
+		/// <remarks>
+		///   This notification is posted through the native CoreMedia <c>CMNotificationCenter</c>, not <see cref="NSNotificationCenter" />.
+		///   Its payload contains a boolean value under <see cref="AnyDisplayIsSynchronizedToLockedGenlockSignalKey" />.
+		/// </remarks>
+		[NoiOS, NoTV, Mac (27, 0), MacCatalyst (27, 0)]
+		[Field ("kCMGenlockClockNotification_DisplayGenlockModeChanged")]
+		NSString DisplayGenlockModeChangedNotification { get; }
+
+		/// <summary>Identifies the boolean payload value indicating whether any display is synchronized to a locked genlock signal.</summary>
+		[NoiOS, NoTV, Mac (27, 0), MacCatalyst (27, 0)]
+		[Field ("kCMGenlockClockNotificationPayload_AnyDisplayIsSynchronizedToLockedGenlockSignal")]
+		NSString AnyDisplayIsSynchronizedToLockedGenlockSignalKey { get; }
+	}
+
 	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 	public enum CMFormatDescriptionProjectionKind {
 		[Field ("kCMFormatDescriptionProjectionKind_Rectilinear")]
@@ -905,6 +945,9 @@ namespace CoreMedia {
 
 		[TV (16, 0), iOS (16, 0)]
 		[MacCatalyst (16, 0)]
+		// Declared available at iOS/tvOS 16.0 but only added to the simulator runtimes in a later release.
+		[SupportedSimulator ("ios16.1")]
+		[SupportedSimulator ("tvos16.1")]
 		[Field ("kCMSampleAttachmentKey_HDR10PlusPerFrameData")]
 		NSString Hdr10PlusPerFrameDataKey { get; }
 
@@ -1318,6 +1361,10 @@ namespace CoreMedia {
 		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 		[Field ("kCMMetadataIdentifier_QuickTimeMetadataPresentationImmersiveMedia")]
 		QuickTimeMetadataPresentationImmersiveMedia,
+
+		[MacCatalyst (27, 0), TV (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Field ("kCMMetadataIdentifier_ITUT_T35MetadataSMPTE2094_50")]
+		ITUT_T35MetadataSMPTE2094_50,
 	}
 
 	enum CMMetadataBaseDataType {
@@ -1403,5 +1450,13 @@ namespace CoreMedia {
 		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 		[Field ("kCMMetadataBaseDataType_ExtendedRasterRectangleValue")]
 		ExtendedRasterRectangleValue,
+
+		[MacCatalyst (27, 0), TV (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Field ("kCMMetadataBaseDataType_MacRoman")]
+		MacRoman,
+
+		[MacCatalyst (27, 0), TV (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Field ("kCMMetadataBaseDataType_ISOLatin1")]
+		IsoLatin1,
 	}
 }

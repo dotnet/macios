@@ -53,6 +53,20 @@ namespace MetalPerformanceShadersGraph {
 		[Export ("runAsyncWithMTLCommandQueue:feeds:targetOperations:resultsDictionary:executionDescriptor:")]
 		void RunAsync (IMTLCommandQueue commandQueue, MPSGraphTensorDataDictionary feeds, [NullAllowed] MPSGraphOperation [] targetOperations, MPSGraphTensorDataDictionary resultsDictionary, [NullAllowed] MPSGraphExecutionDescriptor executionDescriptor);
 
+		/// <summary>Runs the graph asynchronously on a Metal 4 command queue and returns the requested tensor data.</summary>
+		[UnsupportedSimulator ("ios")]
+		[UnsupportedSimulator ("tvos")]
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("runAsyncWithMTL4CommandQueue:feeds:targetTensors:targetOperations:executionDescriptor:")]
+		MPSGraphTensorDataDictionary RunAsync (IMTL4CommandQueue commandQueue, MPSGraphTensorDataDictionary feeds, MPSGraphTensor [] targetTensors, [NullAllowed] MPSGraphOperation [] targetOperations, [NullAllowed] MPSGraphExecutionDescriptor executionDescriptor);
+
+		/// <summary>Runs the graph asynchronously on a Metal 4 command queue and writes the requested tensor data to the supplied results dictionary.</summary>
+		[UnsupportedSimulator ("ios")]
+		[UnsupportedSimulator ("tvos")]
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("runAsyncWithMTL4CommandQueue:feeds:targetOperations:resultsDictionary:executionDescriptor:")]
+		void RunAsync (IMTL4CommandQueue commandQueue, MPSGraphTensorDataDictionary feeds, [NullAllowed] MPSGraphOperation [] targetOperations, MPSGraphTensorDataDictionary resultsDictionary, [NullAllowed] MPSGraphExecutionDescriptor executionDescriptor);
+
 		[Export ("encodeToCommandBuffer:feeds:targetTensors:targetOperations:executionDescriptor:")]
 		MPSGraphTensorDataDictionary Encode (MPSCommandBuffer commandBuffer, MPSGraphTensorDataDictionary feeds, MPSGraphTensor [] targetTensors, [NullAllowed] MPSGraphOperation [] targetOperations, [NullAllowed] MPSGraphExecutionDescriptor executionDescriptor);
 
@@ -811,6 +825,32 @@ namespace MetalPerformanceShadersGraph {
 		MPSGraphTensor SoftMaxCrossEntropyGradient (MPSGraphTensor gradientTensor, MPSGraphTensor sourceTensor, MPSGraphTensor labelsTensor, nint axis, MPSGraphLossReductionType reductionType, [NullAllowed] string name);
 	}
 
+	/// <summary>Configures a scaled dot product attention operation.</summary>
+	[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (MPSGraphObject), Name = "MPSGraphSDPADescriptor")]
+	interface MPSGraphSdpaDescriptor {
+		/// <summary>Gets or sets the scale applied to the query-key matrix multiplication result before softmax.</summary>
+		[Export ("scale")]
+		float Scale { get; set; }
+
+		/// <summary>Gets or sets an optional additive mask tensor.</summary>
+		[NullAllowed, Export ("maskTensor", ArgumentSemantic.Retain)]
+		MPSGraphTensor MaskTensor { get; set; }
+
+		/// <summary>Gets or sets whether to apply a causal mask.</summary>
+		[Export ("isCausal")]
+		bool IsCausal { get; set; }
+
+		/// <summary>Gets or sets an optional attention-sinks tensor.</summary>
+		[NullAllowed, Export ("sinksTensor", ArgumentSemantic.Retain)]
+		MPSGraphTensor SinksTensor { get; set; }
+
+		/// <summary>Creates a scaled dot product attention descriptor with the specified scale.</summary>
+		[Static]
+		[Export ("descriptorWithScale:")]
+		MPSGraphSdpaDescriptor Create (float scale);
+	}
+
 	// @interface MPSGraphMatrixMultiplicationOps (MPSGraph)
 	[iOS (14, 0), TV (14, 0), MacCatalyst (14, 0)]
 	[Category]
@@ -831,6 +871,11 @@ namespace MetalPerformanceShadersGraph {
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("scaledDotProductAttentionWithQueryTensor:keyTensor:valueTensor:scale:name:")]
 		MPSGraphTensor ScaledDotProductAttention (MPSGraphTensor queryTensor, MPSGraphTensor keyTensor, MPSGraphTensor valueTensor, float scale, [NullAllowed] string name);
+
+		/// <summary>Creates a scaled dot product attention operation using the specified descriptor.</summary>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("scaledDotProductAttentionWithQueryTensor:keyTensor:valueTensor:descriptor:name:")]
+		MPSGraphTensor ScaledDotProductAttention (MPSGraphTensor queryTensor, MPSGraphTensor keyTensor, MPSGraphTensor valueTensor, MPSGraphSdpaDescriptor descriptor, [NullAllowed] string name);
 	}
 
 	// @interface MPSGraphCreateSparseOpDescriptor : NSObject <NSCopying>
@@ -2033,8 +2078,17 @@ namespace MetalPerformanceShadersGraph {
 
 		/// <summary>Converts the graph layout to NHWC (batch, height, width, channels) format.</summary>
 		[iOS (26, 4), TV (26, 4), MacCatalyst (26, 4), Mac (26, 4)]
+		[Deprecated (PlatformName.iOS, 27, 0, message: "Layout Conversion to NHWC is enabled by default on M5 and newer.")]
+		[Deprecated (PlatformName.TvOS, 27, 0, message: "Layout Conversion to NHWC is enabled by default on M5 and newer.")]
+		[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Layout Conversion to NHWC is enabled by default on M5 and newer.")]
+		[Deprecated (PlatformName.MacOSX, 27, 0, message: "Layout Conversion to NHWC is enabled by default on M5 and newer.")]
 		[Export ("convertLayoutToNHWC")]
 		void ConvertLayoutToNhwc ();
+
+		/// <summary>Disables automatic graph layout conversion for convolution-like operations.</summary>
+		[iOS (27, 0), TV (27, 0), MacCatalyst (27, 0), Mac (27, 0)]
+		[Export ("disableAutoLayoutConversion")]
+		void DisableAutoLayoutConversion ();
 	}
 
 	// @interface MPSGraphDevice : NSObject
@@ -2113,6 +2167,20 @@ namespace MetalPerformanceShadersGraph {
 		// -(NSArray<MPSGraphTensorData *> * _Nonnull)runAsyncWithMTLCommandQueue:(id<IMTLCommandQueue> _Nonnull)commandQueue inputsArray:(NSArray<MPSGraphTensorData *> * _Nonnull)inputsArray resultsArray:(NSArray<MPSGraphTensorData *> * _Nullable)resultsArray executionDescriptor:(MPSGraphExecutableExecutionDescriptor * _Nullable)executionDescriptor __attribute__((swift_name("runAsync(with:inputs:results:executionDescriptor:)")));
 		[Export ("runAsyncWithMTLCommandQueue:inputsArray:resultsArray:executionDescriptor:")]
 		MPSGraphTensorData [] RunAsync (IMTLCommandQueue commandQueue, MPSGraphTensorData [] inputsArray, [NullAllowed] MPSGraphTensorData [] resultsArray, [NullAllowed] MPSGraphExecutableExecutionDescriptor executionDescriptor);
+
+		/// <summary>Runs the executable synchronously on a Metal 4 command queue.</summary>
+		[UnsupportedSimulator ("ios")]
+		[UnsupportedSimulator ("tvos")]
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("runWithMTL4CommandQueue:inputsArray:resultsArray:executionDescriptor:")]
+		MPSGraphTensorData [] Run (IMTL4CommandQueue commandQueue, MPSGraphTensorData [] inputsArray, [NullAllowed] MPSGraphTensorData [] resultsArray, [NullAllowed] MPSGraphExecutableExecutionDescriptor executionDescriptor);
+
+		/// <summary>Runs the executable asynchronously on a Metal 4 command queue.</summary>
+		[UnsupportedSimulator ("ios")]
+		[UnsupportedSimulator ("tvos")]
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("runAsyncWithMTL4CommandQueue:inputsArray:resultsArray:executionDescriptor:")]
+		MPSGraphTensorData [] RunAsync (IMTL4CommandQueue commandQueue, MPSGraphTensorData [] inputsArray, [NullAllowed] MPSGraphTensorData [] resultsArray, [NullAllowed] MPSGraphExecutableExecutionDescriptor executionDescriptor);
 
 		// -(NSArray<MPSGraphTensorData *> * _Nonnull)encodeToCommandBuffer:(MPSCommandBuffer * _Nonnull)commandBuffer inputsArray:(NSArray<MPSGraphTensorData *> * _Nonnull)inputsArray resultsArray:(NSArray<MPSGraphTensorData *> * _Nullable)resultsArray executionDescriptor:(MPSGraphExecutableExecutionDescriptor * _Nullable)executionDescriptor __attribute__((swift_name("encode(to:inputs:results:executionDescriptor:)")));
 		[Export ("encodeToCommandBuffer:inputsArray:resultsArray:executionDescriptor:")]

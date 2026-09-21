@@ -611,6 +611,9 @@ namespace Bindings.Test {
 
 		[Export ("setStrongEnum:other:")]
 		void SetStrongEnums ([BindAs (typeof (StrongEnum))] NSString value, [BindAs (typeof (StrongEnum))] NSString other);
+
+		[Export ("getValues:strongEnum:handler:")]
+		void GetValues (string [] identifiers, [BindAs (typeof (StrongEnum))] NSString value, Action<string []> handler);
 	}
 
 	enum NormalEnum {

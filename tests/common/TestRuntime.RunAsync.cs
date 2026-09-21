@@ -143,6 +143,7 @@ partial class TestRuntime {
 	class AsyncState : IDisposable {
 #if HAS_UIKIT
 		UIViewController? initialRootViewController;
+		UIViewController? child;
 		UIWindow? window;
 		UINavigationController? navigation;
 #else
@@ -176,8 +177,13 @@ partial class TestRuntime {
 
 			if (navigation is not null) {
 				navigation.PushViewController (vc, false);
-			} else {
-				window.RootViewController = vc;
+			} else if (!close_window) {
+				child = vc;
+				initialRootViewController.AddChildViewController (vc);
+				vc.View.Frame = initialRootViewController.View.Bounds;
+				vc.View.AutoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
+				initialRootViewController.View.AddSubview (vc.View);
+				vc.DidMoveToParentViewController (initialRootViewController);
 			}
 #else
 			var size = new CGRect (0, 0, 300, 300);
@@ -200,8 +206,11 @@ partial class TestRuntime {
 #if HAS_UIKIT
 			if (navigation is not null) {
 				navigation.PopViewController (false);
-			} else if (!close_window) {
-				window.RootViewController = initialRootViewController;
+			} else if (child is not null) {
+				child.WillMoveToParentViewController (null);
+				child.View.RemoveFromSuperview ();
+				child.RemoveFromParentViewController ();
+				child = null;
 			}
 #endif // HAS_UIKIT
 

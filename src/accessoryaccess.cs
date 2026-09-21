@@ -10,20 +10,28 @@ using OS_xpc_object = Foundation.NSObject;
 
 namespace AccessoryAccess {
 
+	/// <summary>Specifies errors reported by AccessoryAccess.</summary>
 	[Mac (27, 0)]
 	[Native]
 	[ErrorDomain ("AAErrorDomain")]
 	public enum AAErrorCode : long {
+		/// <summary>An internal error occurred.</summary>
 		Internal = 1,
+		/// <summary>An accessory listener is already registered.</summary>
 		AccessoryListenerAlreadyRegistered = 2,
+		/// <summary>The accessory is not accessible.</summary>
 		AccessoryNotAccessible = 3,
+		/// <summary>The accessory is in an invalid state for the requested operation.</summary>
 		InvalidAccessoryState = 4,
 	}
 
+	/// <summary>Specifies how interface matching dictionaries are applied when matching a USB accessory.</summary>
 	[Mac (27, 0)]
 	[Native ("AAUSBAccessoryMatchingCriteriaInterfaceMatchingOption")]
 	public enum AAUsbAccessoryMatchingCriteriaInterfaceMatchingOption : long {
+		/// <summary>All interface matching dictionaries must match.</summary>
 		MatchAll,
+		/// <summary>At least one interface matching dictionary must match.</summary>
 		MatchAny,
 	}
 

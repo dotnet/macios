@@ -95,39 +95,41 @@ namespace Xamarin.Linker {
 				MarkAssemblyAsTrimmable (rootTypeMapAssembly);
 
 			foreach (var assembly in assemblies.OrderBy (v => v.FullName)) {
+				var typeMapAssemblyName = RegistrarCompanionAssembly.GetName (assembly);
+
 				/*
 				 * [assembly: TypeMapAssemblyTarget<NSObject> ("...")]
 				 */
 				var attribute = abr.CreateAttribute (CreateMethodReference (abr.TypeMapAssemblyTargetAttribute_1_Constructor_String_Type_Type, abr.Foundation_NSObject));
-				attribute.ConstructorArguments.Add (new CustomAttributeArgument (abr.System_String, "_" + assembly.Name.Name + ".TypeMap"));
+				attribute.ConstructorArguments.Add (new CustomAttributeArgument (abr.System_String, typeMapAssemblyName));
 				rootTypeMapAssembly.CustomAttributes.Add (attribute);
 
 				/*
 				 * [assembly: TypeMapAssemblyTarget<SkippedObjectiveCTypeUniverse> ("...")]
 				 */
 				attribute = abr.CreateAttribute (CreateMethodReference (abr.TypeMapAssemblyTargetAttribute_1_Constructor_String_Type_Type, abr.ObjCRuntime_SkippedObjectiveCTypeUniverse));
-				attribute.ConstructorArguments.Add (new CustomAttributeArgument (abr.System_String, "_" + assembly.Name.Name + ".TypeMap"));
+				attribute.ConstructorArguments.Add (new CustomAttributeArgument (abr.System_String, typeMapAssemblyName));
 				rootTypeMapAssembly.CustomAttributes.Add (attribute);
 
 				/*
 				 * [assembly: TypeMapAssemblyTarget<INativeObject> ("...")]
 				 */
 				attribute = abr.CreateAttribute (CreateMethodReference (abr.TypeMapAssemblyTargetAttribute_1_Constructor_String_Type_Type, abr.ObjCRuntime_INativeObject));
-				attribute.ConstructorArguments.Add (new CustomAttributeArgument (abr.System_String, "_" + assembly.Name.Name + ".TypeMap"));
+				attribute.ConstructorArguments.Add (new CustomAttributeArgument (abr.System_String, typeMapAssemblyName));
 				rootTypeMapAssembly.CustomAttributes.Add (attribute);
 
 				/*
 				 * [assembly: TypeMapAssemblyTarget<ProtocolProxyAttribute> ("...")]
 				 */
 				attribute = abr.CreateAttribute (CreateMethodReference (abr.TypeMapAssemblyTargetAttribute_1_Constructor_String_Type_Type, abr.ObjCRuntime_ProtocolProxyAttribute));
-				attribute.ConstructorArguments.Add (new CustomAttributeArgument (abr.System_String, "_" + assembly.Name.Name + ".TypeMap"));
+				attribute.ConstructorArguments.Add (new CustomAttributeArgument (abr.System_String, typeMapAssemblyName));
 				rootTypeMapAssembly.CustomAttributes.Add (attribute);
 
 				/*
 				 * [assembly: TypeMapAssemblyTarget<ProtocolAttribute> ("...")]
 				 */
 				attribute = abr.CreateAttribute (CreateMethodReference (abr.TypeMapAssemblyTargetAttribute_1_Constructor_String_Type_Type, abr.Foundation_ProtocolAttribute));
-				attribute.ConstructorArguments.Add (new CustomAttributeArgument (abr.System_String, "_" + assembly.Name.Name + ".TypeMap"));
+				attribute.ConstructorArguments.Add (new CustomAttributeArgument (abr.System_String, typeMapAssemblyName));
 				rootTypeMapAssembly.CustomAttributes.Add (attribute);
 			}
 			abr.SaveCurrentAssembly ();

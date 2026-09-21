@@ -17,10 +17,10 @@ using MidiPortRef = System.Int32;
 
 namespace CoreMidi {
 	/// <summary>This class represents the Objective-C struct MIDIEventList, which is a list of <see cref="MidiEventPacket" /> packets.</summary>
-	[SupportedOSPlatform ("ios14.0")]
-	[SupportedOSPlatform ("tvos15.0")]
-	[SupportedOSPlatform ("macos11.0")]
-	[SupportedOSPlatform ("maccatalyst14.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("maccatalyst")]
 	// [NativeName ("MIDIEventList")]
 	public sealed class MidiEventList : IEnumerable<MidiEventPacket>, IDisposable {
 		/* This is a variable sized struct, so store all the data in a byte array.
@@ -137,10 +137,10 @@ namespace CoreMidi {
 		/// <param name="port">The port through which the packets are sent.</param>
 		/// <param name="destination">The destination where the packets are sent.</param>
 		/// <returns>A non-zero error code in case of failure, otherwise zero (which indicates success).</returns>
-		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
-		[SupportedOSPlatform ("macos11.0")]
-		[SupportedOSPlatform ("maccatalyst14.0")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public unsafe int /* OSStatus */ Send (MidiPort port, MidiEndpoint destination)
 		{
 			var rv = MIDISendEventList (port.Handle, destination.Handle, midiDataPointer);
@@ -152,10 +152,10 @@ namespace CoreMidi {
 		/// <summary>Distribute the packets from the specified <paramref name="source" />.</summary>
 		/// <param name="source">The endpoint where the packets come from.</param>
 		/// <returns>A non-zero error code in case of failure, otherwise zero (which indicates success).</returns>
-		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
-		[SupportedOSPlatform ("macos11.0")]
-		[SupportedOSPlatform ("maccatalyst14.0")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public unsafe int /* OSStatus */ Receive (MidiEndpoint source)
 		{
 			var rv = MIDIReceivedEventList (source.Handle, midiDataPointer);
@@ -185,17 +185,17 @@ namespace CoreMidi {
 			}
 		}
 
-		[SupportedOSPlatform ("ios14.0")]
-		[SupportedOSPlatform ("tvos15.0")]
-		[SupportedOSPlatform ("macos11.0")]
-		[SupportedOSPlatform ("maccatalyst14.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.CoreMidiLibrary)]
 		unsafe static extern MidiEventPacket* MIDIEventListInit (MIDIEventList* evtlist, MidiProtocolId /* MIDIProtocolID */ protocol);
 
-		[SupportedOSPlatform ("ios14.0")]
-		[SupportedOSPlatform ("tvos15.0")]
-		[SupportedOSPlatform ("macos11.0")]
-		[SupportedOSPlatform ("maccatalyst14.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.CoreMidiLibrary)]
 		unsafe static extern MidiEventPacket* MIDIEventListAdd (
 			MIDIEventList* evtlist,
@@ -206,17 +206,17 @@ namespace CoreMidi {
 			uint* /* const UInt32 * */ words);
 
 #if !__TVOS__
-		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
-		[SupportedOSPlatform ("macos11.0")]
-		[SupportedOSPlatform ("maccatalyst14.0")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.CoreMidiLibrary)]
 		unsafe static extern int /* OSStatus */ MIDISendEventList (MidiPortRef port, MidiEndpointRef dest, MIDIEventList* evtList);
 
-		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
-		[SupportedOSPlatform ("macos11.0")]
-		[SupportedOSPlatform ("maccatalyst14.0")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.CoreMidiLibrary)]
 		unsafe static extern int /* OSStatus */ MIDIReceivedEventList (MidiEndpointRef src, MIDIEventList* evtlist);
 #endif // !__TVOS__
@@ -289,10 +289,10 @@ namespace CoreMidi {
 		/// <summary>Parse each Universal MIDI Packet (UMP) in this list, invoking the specified <paramref name="visitor" /> for each parsed message.</summary>
 		/// <param name="visitor">The function to call for each parsed message. Unknown messages are reported with their raw words.</param>
 		/// <remarks>This is a binding for the native <c>MIDIEventListForEachEvent</c> function, which parses each UMP and fills a <see cref="MidiUniversalMessage" /> struct. Note that CoreMIDI's decoder only recognizes a subset of documented System status bytes as <see cref="MidiMessageType.System" /> messages (see <see cref="MidiUniversalMessageSystem" />) — everything else, including all System Real-Time statuses, is reported as <see cref="MidiMessageType.Invalid" />.</remarks>
-		[SupportedOSPlatform ("ios15.0")]
-		[SupportedOSPlatform ("tvos15.0")]
-		[SupportedOSPlatform ("macos12.0")]
-		[SupportedOSPlatform ("maccatalyst15.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public unsafe void ForEachEvent (MidiUniversalMessageVisitor visitor)
 		{
 			ArgumentNullException.ThrowIfNull (visitor);
@@ -313,10 +313,10 @@ namespace CoreMidi {
 				visitor (timeStamp, message);
 		}
 
-		[SupportedOSPlatform ("ios15.0")]
-		[SupportedOSPlatform ("tvos15.0")]
-		[SupportedOSPlatform ("macos12.0")]
-		[SupportedOSPlatform ("maccatalyst15.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.CoreMidiLibrary)]
 		unsafe static extern void MIDIEventListForEachEvent (MIDIEventList* evtlist, delegate* unmanaged<void*, ulong, MidiUniversalMessage, void> visitor, void* visitorContext);
 	}

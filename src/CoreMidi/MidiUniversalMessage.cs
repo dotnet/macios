@@ -12,10 +12,10 @@ namespace CoreMidi {
 	/// <remarks>
 	///   <para>This is the managed representation of the native <c>MIDIUniversalMessage</c> struct. The active variant is determined by the <see cref="Type" /> property: only the union member matching the message type contains valid data.</para>
 	/// </remarks>
-	[SupportedOSPlatform ("ios15.0")]
-	[SupportedOSPlatform ("tvos15.0")]
-	[SupportedOSPlatform ("macos12.0")]
-	[SupportedOSPlatform ("maccatalyst15.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
 	public unsafe struct MidiUniversalMessage {
 		MidiMessageType type;
@@ -94,10 +94,10 @@ namespace CoreMidi {
 	}
 
 	/// <summary>A utility message in a <see cref="MidiUniversalMessage" />.</summary>
-	[SupportedOSPlatform ("ios15.0")]
-	[SupportedOSPlatform ("tvos15.0")]
-	[SupportedOSPlatform ("macos12.0")]
-	[SupportedOSPlatform ("maccatalyst15.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiUniversalMessageUtility {
 		MidiUtilityStatus status;
@@ -117,10 +117,10 @@ namespace CoreMidi {
 	/// <remarks>
 	///   <para>As of this writing, CoreMIDI's native <c>MIDIEventListForEachEvent</c> function only successfully decodes UMP words carrying <see cref="MidiSystemStatus.Mtc" />, <see cref="MidiSystemStatus.SongPosPointer" /> or <see cref="MidiSystemStatus.SongSelect" /> as <see cref="MidiMessageType.System" />. Every other <see cref="MidiSystemStatus" /> value — including <see cref="MidiSystemStatus.TuneRequest" /> and all System Real-Time statuses (<see cref="MidiSystemStatus.TimingClock" />, <see cref="MidiSystemStatus.Start" />, <see cref="MidiSystemStatus.Continue" />, <see cref="MidiSystemStatus.Stop" />, <see cref="MidiSystemStatus.ActiveSending" />, <see cref="MidiSystemStatus.SystemReset" />) — is reported as <see cref="MidiMessageType.Invalid" /> instead, regardless of caller. This is native CoreMIDI framework behavior, not a limitation of this binding.</para>
 	/// </remarks>
-	[SupportedOSPlatform ("ios15.0")]
-	[SupportedOSPlatform ("tvos15.0")]
-	[SupportedOSPlatform ("macos12.0")]
-	[SupportedOSPlatform ("maccatalyst15.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiUniversalMessageSystem {
 		MidiSystemStatus status;
@@ -140,10 +140,10 @@ namespace CoreMidi {
 	}
 
 	/// <summary>The note data of a MIDI 1.0 channel voice message.</summary>
-	[SupportedOSPlatform ("ios15.0")]
-	[SupportedOSPlatform ("tvos15.0")]
-	[SupportedOSPlatform ("macos12.0")]
-	[SupportedOSPlatform ("maccatalyst15.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiUniversalMessageChannelVoice1Note {
 		byte number;
@@ -157,10 +157,10 @@ namespace CoreMidi {
 	}
 
 	/// <summary>The poly pressure data of a MIDI 1.0 channel voice message.</summary>
-	[SupportedOSPlatform ("ios15.0")]
-	[SupportedOSPlatform ("tvos15.0")]
-	[SupportedOSPlatform ("macos12.0")]
-	[SupportedOSPlatform ("maccatalyst15.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiUniversalMessageChannelVoice1PolyPressure {
 		byte noteNumber;
@@ -174,10 +174,10 @@ namespace CoreMidi {
 	}
 
 	/// <summary>The control change data of a MIDI 1.0 channel voice message.</summary>
-	[SupportedOSPlatform ("ios15.0")]
-	[SupportedOSPlatform ("tvos15.0")]
-	[SupportedOSPlatform ("macos12.0")]
-	[SupportedOSPlatform ("maccatalyst15.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiUniversalMessageChannelVoice1ControlChange {
 		byte index;
@@ -191,10 +191,10 @@ namespace CoreMidi {
 	}
 
 	/// <summary>A MIDI 1.0 channel voice message in a <see cref="MidiUniversalMessage" />.</summary>
-	[SupportedOSPlatform ("ios15.0")]
-	[SupportedOSPlatform ("tvos15.0")]
-	[SupportedOSPlatform ("macos12.0")]
-	[SupportedOSPlatform ("maccatalyst15.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
 	public unsafe struct MidiUniversalMessageChannelVoice1 {
 		MidiCVStatus status;
@@ -245,10 +245,10 @@ namespace CoreMidi {
 	}
 
 	/// <summary>A system exclusive (SysEx) message in a <see cref="MidiUniversalMessage" />.</summary>
-	[SupportedOSPlatform ("ios15.0")]
-	[SupportedOSPlatform ("tvos15.0")]
-	[SupportedOSPlatform ("macos12.0")]
-	[SupportedOSPlatform ("maccatalyst15.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiUniversalMessageSysEx {
 		MidiSysExStatus status;
@@ -273,10 +273,10 @@ namespace CoreMidi {
 	}
 
 	/// <summary>The note data of a MIDI 2.0 channel voice message.</summary>
-	[SupportedOSPlatform ("ios15.0")]
-	[SupportedOSPlatform ("tvos15.0")]
-	[SupportedOSPlatform ("macos12.0")]
-	[SupportedOSPlatform ("maccatalyst15.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiUniversalMessageChannelVoice2Note {
 		byte number;
@@ -298,10 +298,10 @@ namespace CoreMidi {
 	}
 
 	/// <summary>The poly pressure data of a MIDI 2.0 channel voice message.</summary>
-	[SupportedOSPlatform ("ios15.0")]
-	[SupportedOSPlatform ("tvos15.0")]
-	[SupportedOSPlatform ("macos12.0")]
-	[SupportedOSPlatform ("maccatalyst15.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiUniversalMessageChannelVoice2PolyPressure {
 		byte noteNumber;
@@ -316,10 +316,10 @@ namespace CoreMidi {
 	}
 
 	/// <summary>The control change data of a MIDI 2.0 channel voice message.</summary>
-	[SupportedOSPlatform ("ios15.0")]
-	[SupportedOSPlatform ("tvos15.0")]
-	[SupportedOSPlatform ("macos12.0")]
-	[SupportedOSPlatform ("maccatalyst15.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiUniversalMessageChannelVoice2ControlChange {
 		byte index;
@@ -334,10 +334,10 @@ namespace CoreMidi {
 	}
 
 	/// <summary>The program change data of a MIDI 2.0 channel voice message.</summary>
-	[SupportedOSPlatform ("ios15.0")]
-	[SupportedOSPlatform ("tvos15.0")]
-	[SupportedOSPlatform ("macos12.0")]
-	[SupportedOSPlatform ("maccatalyst15.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiUniversalMessageChannelVoice2ProgramChange {
 		MidiProgramChangeOptions options;
@@ -357,10 +357,10 @@ namespace CoreMidi {
 	}
 
 	/// <summary>The channel pressure data of a MIDI 2.0 channel voice message.</summary>
-	[SupportedOSPlatform ("ios15.0")]
-	[SupportedOSPlatform ("tvos15.0")]
-	[SupportedOSPlatform ("macos12.0")]
-	[SupportedOSPlatform ("maccatalyst15.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiUniversalMessageChannelVoice2ChannelPressure {
 		uint data;
@@ -372,10 +372,10 @@ namespace CoreMidi {
 	}
 
 	/// <summary>The pitch bend data of a MIDI 2.0 channel voice message.</summary>
-	[SupportedOSPlatform ("ios15.0")]
-	[SupportedOSPlatform ("tvos15.0")]
-	[SupportedOSPlatform ("macos12.0")]
-	[SupportedOSPlatform ("maccatalyst15.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiUniversalMessageChannelVoice2PitchBend {
 		uint data;
@@ -387,10 +387,10 @@ namespace CoreMidi {
 	}
 
 	/// <summary>The per-note controller data of a MIDI 2.0 channel voice message.</summary>
-	[SupportedOSPlatform ("ios15.0")]
-	[SupportedOSPlatform ("tvos15.0")]
-	[SupportedOSPlatform ("macos12.0")]
-	[SupportedOSPlatform ("maccatalyst15.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiUniversalMessageChannelVoice2PerNoteController {
 		byte noteNumber;
@@ -408,10 +408,10 @@ namespace CoreMidi {
 	}
 
 	/// <summary>The registered/assignable controller data of a MIDI 2.0 channel voice message.</summary>
-	[SupportedOSPlatform ("ios15.0")]
-	[SupportedOSPlatform ("tvos15.0")]
-	[SupportedOSPlatform ("macos12.0")]
-	[SupportedOSPlatform ("maccatalyst15.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiUniversalMessageChannelVoice2Controller {
 		byte bank;
@@ -429,10 +429,10 @@ namespace CoreMidi {
 	}
 
 	/// <summary>The per-note pitch bend data of a MIDI 2.0 channel voice message.</summary>
-	[SupportedOSPlatform ("ios15.0")]
-	[SupportedOSPlatform ("tvos15.0")]
-	[SupportedOSPlatform ("macos12.0")]
-	[SupportedOSPlatform ("maccatalyst15.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiUniversalMessageChannelVoice2PerNotePitchBend {
 		byte noteNumber;
@@ -447,10 +447,10 @@ namespace CoreMidi {
 	}
 
 	/// <summary>The per-note management data of a MIDI 2.0 channel voice message.</summary>
-	[SupportedOSPlatform ("ios15.0")]
-	[SupportedOSPlatform ("tvos15.0")]
-	[SupportedOSPlatform ("macos12.0")]
-	[SupportedOSPlatform ("maccatalyst15.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiUniversalMessageChannelVoice2PerNoteManagement {
 		byte note;
@@ -468,10 +468,10 @@ namespace CoreMidi {
 	}
 
 	/// <summary>A MIDI 2.0 channel voice message in a <see cref="MidiUniversalMessage" />.</summary>
-	[SupportedOSPlatform ("ios15.0")]
-	[SupportedOSPlatform ("tvos15.0")]
-	[SupportedOSPlatform ("macos12.0")]
-	[SupportedOSPlatform ("maccatalyst15.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
 	public unsafe struct MidiUniversalMessageChannelVoice2 {
 		MidiCVStatus status;
@@ -570,10 +570,10 @@ namespace CoreMidi {
 	}
 
 	/// <summary>The 8-bit system exclusive (SysEx8) data of a 128-bit data message.</summary>
-	[SupportedOSPlatform ("ios15.0")]
-	[SupportedOSPlatform ("tvos15.0")]
-	[SupportedOSPlatform ("macos12.0")]
-	[SupportedOSPlatform ("maccatalyst15.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiUniversalMessageSysEx8 {
 		byte byteCount;
@@ -605,10 +605,10 @@ namespace CoreMidi {
 	}
 
 	/// <summary>The mixed data set of a 128-bit data message.</summary>
-	[SupportedOSPlatform ("ios15.0")]
-	[SupportedOSPlatform ("tvos15.0")]
-	[SupportedOSPlatform ("macos12.0")]
-	[SupportedOSPlatform ("maccatalyst15.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiUniversalMessageMixedDataSet {
 		byte mdsID;
@@ -637,10 +637,10 @@ namespace CoreMidi {
 	}
 
 	/// <summary>A 128-bit data message in a <see cref="MidiUniversalMessage" />.</summary>
-	[SupportedOSPlatform ("ios15.0")]
-	[SupportedOSPlatform ("tvos15.0")]
-	[SupportedOSPlatform ("macos12.0")]
-	[SupportedOSPlatform ("maccatalyst15.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
 	public unsafe struct MidiUniversalMessageData128 {
 		MidiSysExStatus status;
@@ -670,10 +670,10 @@ namespace CoreMidi {
 	}
 
 	/// <summary>The raw words of an unknown message in a <see cref="MidiUniversalMessage" />.</summary>
-	[SupportedOSPlatform ("ios15.0")]
-	[SupportedOSPlatform ("tvos15.0")]
-	[SupportedOSPlatform ("macos12.0")]
-	[SupportedOSPlatform ("maccatalyst15.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiUniversalMessageUnknown {
 		uint word0;

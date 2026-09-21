@@ -1,4 +1,4 @@
-
+#if !TVOS
 // MidiBluetoothDriver.cs
 //
 // Authors: TJ Lambert (TJ.Lambert@microsoft.com)
@@ -13,14 +13,12 @@ using CoreFoundation;
 namespace CoreMidi {
 	/// <summary>Provides access to the MIDI Bluetooth driver for managing Bluetooth MIDI connections.</summary>
 	[SupportedOSPlatform ("ios16.0")]
-	[SupportedOSPlatform ("maccatalyst16.0")]
-	[SupportedOSPlatform ("macos13.0")]
-	[UnsupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[SupportedOSPlatform ("macos")]
 	public partial class MidiBluetoothDriver {
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
-		[SupportedOSPlatform ("macos13.0")]
-		[UnsupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		[DllImport (Constants.CoreMidiLibrary)]
 		static extern int MIDIBluetoothDriverActivateAllConnections ();
 
@@ -29,9 +27,8 @@ namespace CoreMidi {
 		public static int ActivateAllConnections () => MIDIBluetoothDriverActivateAllConnections ();
 
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
-		[SupportedOSPlatform ("macos13.0")]
-		[UnsupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		[DllImport (Constants.CoreMidiLibrary)]
 		static extern unsafe int MIDIBluetoothDriverDisconnect (/* CFStringRef* */ NativeHandle uuid);
 
@@ -46,3 +43,4 @@ namespace CoreMidi {
 		}
 	}
 }
+#endif

@@ -3026,7 +3026,10 @@ namespace Xamarin.Tests {
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
 
-			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: configuration);
+			var expectedRuntimeIdentifiers = runtimeIdentifiers;
+			if (string.IsNullOrEmpty (expectedRuntimeIdentifiers) && platform == ApplePlatform.MacOSX)
+				expectedRuntimeIdentifiers = $"osx-{(Configuration.CanRunArm64 ? "arm64" : "x64")}";
+			var project_path = GetProjectPath (project, runtimeIdentifiers: expectedRuntimeIdentifiers, platform: platform, out var appPath, configuration: configuration);
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			properties ["Configuration"] = configuration;

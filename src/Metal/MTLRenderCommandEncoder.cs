@@ -17,7 +17,7 @@ namespace Metal {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("tvos14.5")]
+		[SupportedOSPlatform ("tvos")]
 		public unsafe static void SetViewports (this IMTLRenderCommandEncoder This, MTLViewport [] viewports)
 		{
 			fixed (void* handle = viewports)
@@ -31,7 +31,7 @@ namespace Metal {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("tvos14.5")]
+		[SupportedOSPlatform ("tvos")]
 		public unsafe static void SetScissorRects (this IMTLRenderCommandEncoder This, MTLScissorRect [] scissorRects)
 		{
 			fixed (void* handle = scissorRects)
@@ -40,7 +40,7 @@ namespace Metal {
 
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos14.5")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		public unsafe static void SetTileBuffers (this IMTLRenderCommandEncoder This, IMTLBuffer [] buffers, nuint [] offsets, NSRange range)
 		{
@@ -50,7 +50,7 @@ namespace Metal {
 
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos14.5")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		public unsafe static void SetTileSamplerStates (this IMTLRenderCommandEncoder This, IMTLSamplerState [] samplers, float [] lodMinClamps, float [] lodMaxClamps, NSRange range)
 		{

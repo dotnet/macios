@@ -7,6 +7,15 @@
     <type fullname="Foundation.FieldAttribute">
       <attribute internal="RemoveAttributeInstances" />
     </type>
+    <type fullname="Foundation.ExportAttribute" feature="ObjCRuntime.TrimExportAttributes" featurevalue="true">
+      <attribute internal="RemoveAttributeInstances" />
+    </type>
+    <type fullname="Foundation.ActionAttribute" feature="ObjCRuntime.TrimExportAttributes" featurevalue="true">
+      <attribute internal="RemoveAttributeInstances" />
+    </type>
+    <type fullname="Foundation.OutletAttribute" feature="ObjCRuntime.TrimExportAttributes" featurevalue="true">
+      <attribute internal="RemoveAttributeInstances" />
+    </type>
     <type fullname="Foundation.NotImplementedAttribute">
       <attribute internal="RemoveAttributeInstances" />
     </type>

@@ -2,7 +2,7 @@
 
 This repository contains .NET for iOS, Mac Catalyst, macOS, and tvOS.
 
-This is the main branch targeting .NET 9.
+This is the main branch targeting .NET 11.
 
 ## Comment Handling
 
@@ -295,9 +295,7 @@ void DoSomething (Action<bool, NSError> completion);
 
 ### Branch Strategy
 
-- `main` - .NET 9 development
-- `net10.0` - .NET 10 development  
-- `net11.0` - .NET 11 development
+- `main` - .NET 11 development
 - `release/` branches for specific releases
 - Platform-specific branches for Xcode updates
 

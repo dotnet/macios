@@ -203,6 +203,8 @@ Core variables used across all pipelines:
 - Environment: `xcodeChannel`, `minimumMacOSVersion`
 - Azure DevOps groups: `XamarinCompatLab`, `Xamarin-Secrets`, etc.
 
+For test pipelines, `useACES: true` selects `CIBuildPoolACES` (`AcesShared`) with `CIBuildPoolACESImage` for simulator tests, macOS test builds, and package builds when `buildPackages: true`. Set `useACES: false` to retain the traditional pool and demands.
+
 ### `api-scan.yml`
 APIScan-specific variables:
 - `TeamName: xamarin-macios`
@@ -682,7 +684,7 @@ run-post-pr-build-tests.yml ─────────────────�
         │       └─► templates/build/build-mac-tests.yml                      │
         │           └─► templates/build/build.yml (test build variant)       │
         │                                                                    │
-        ├─► Stage: mac_12_m1, mac_13_m1, mac_14_x64, mac_15_arm64, mac_26_arm64
+        ├─► Stage: mac_14_x64, mac_15_arm64, mac_26_arm64, mac_27_arm64      │
         │   └─► templates/mac/stage.yml (for each config)                    │
         │       └─► Job: run_tests                                           │
         │           └─► templates/mac/build.yml                              │

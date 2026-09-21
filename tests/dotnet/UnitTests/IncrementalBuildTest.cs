@@ -325,12 +325,28 @@ kernel void myKernel (texture2d<half, access::read> inTexture [[texture(0)]],
 			AssertTargetExecuted (allTargets, "_SelectR2RAssemblies", "First build");
 			AssertTargetExecuted (allTargets, "_CreateR2RImages", "First build");
 
+			rv = DotNet.AssertBuild (project_path, properties);
+			allTargets = BinLog.GetAllTargets (rv.BinLogPath);
+			AssertTargetNotExecuted (allTargets, "_CreateR2RImages", "Unchanged build");
+
+			var r2rInputHashPath = Path.Combine (GetObjDir (project_path, platform, runtimeIdentifiers), "r2r-input.hash");
+			Assert.That (r2rInputHashPath, Does.Exist, "R2R input hash");
+			File.SetLastWriteTimeUtc (r2rInputHashPath, DateTime.UtcNow.AddMinutes (1));
+
 			properties ["AdditionalDefineConstants"] = "INCLUDED_ADDITIONAL_CODE";
 
 			rv = DotNet.AssertBuild (project_path, properties);
 			allTargets = BinLog.GetAllTargets (rv.BinLogPath);
-			AssertTargetExecuted (allTargets, "_TouchR2ROutputs", "Second build");
-			AssertTargetNotExecuted (allTargets, "_CreateR2RImages", "Second build");
+			AssertTargetExecuted (allTargets, "_TouchR2ROutputs", "User code change");
+			AssertTargetNotExecuted (allTargets, "_CreateR2RImages", "User code change");
+
+			File.WriteAllText (r2rInputHashPath, "changed");
+			properties.Remove ("AdditionalDefineConstants");
+
+			rv = DotNet.AssertBuild (project_path, properties);
+			allTargets = BinLog.GetAllTargets (rv.BinLogPath);
+			AssertTargetNotExecuted (allTargets, "_TouchR2ROutputs", "R2R input change");
+			AssertTargetExecuted (allTargets, "_CreateR2RImages", "R2R input change");
 		}
 
 		void CodeChangeSkipsTargetsImpl (ApplePlatform platform, string runtimeIdentifiers, bool useMonoRuntime, bool interpreterEnabled)
@@ -365,20 +381,13 @@ kernel void myKernel (texture2d<half, access::read> inTexture [[texture(0)]],
 
 			// Verify these targets did NOT execute on incremental build after C# change
 			AssertTargetNotExecuted (allTargets, "_CreatePkgInfo", "B");
-			if (useMonoRuntime) {
-				AssertTargetNotExecuted (allTargets, "_CompileNativeExecutable", "B");
-			} else {
-				// With CoreCLR we use the trimmable static registrar, and the generated native registrar
-				// code contains the MVID of every assembly in the app. The MVID of the app's own assembly
-				// changes every time it's recompiled, so the native registrar code has to be recompiled too.
-				AssertTargetExecuted (allTargets, "_CompileNativeExecutable", "B");
-			}
-			if (interpreterEnabled) {
-				// With interpreter enabled, _LinkNativeExecutable should be skipped.
+			AssertTargetNotExecuted (allTargets, "_CompileNativeExecutable", "B");
+			if (interpreterEnabled || !useMonoRuntime) {
+				// With interpreter enabled on MonoVM, or with the partial static registrar on CoreCLR,
+				// _LinkNativeExecutable should be skipped.
 				AssertTargetNotExecuted (allTargets, "_LinkNativeExecutable", "B");
 			} else {
-				// Without interpreter on MonoVM: AOT output changes, forcing a native re-link.
-				// With CoreCLR: the recompiled native registrar code forces a native re-link.
+				// Without interpreter on MonoVM, AOT output changes, forcing a native re-link.
 				AssertTargetExecuted (allTargets, "_LinkNativeExecutable", "B");
 			}
 		}

@@ -227,8 +227,8 @@
     <Compile Include="..\common\XamarinRuntime.cs">
       <Link>external/tools/common/XamarinRuntime.cs</Link>
     </Compile>
-    <Compile Include="..\linker\RegistrarRemovalTrackingStep.cs">
-      <Link>external/tools/linker/RegistrarRemovalTrackingStep.cs</Link>
+    <Compile Include="..\linker\DetectApiUsageStep.cs">
+      <Link>external/tools/linker/DetectApiUsageStep.cs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>

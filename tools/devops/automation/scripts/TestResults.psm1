@@ -64,6 +64,7 @@ class TestResult {
     [bool] $VSDropsPublishFailed
     hidden [int] $Passed
     hidden [int] $Failed
+    hidden [bool] $Skipped = $false
     hidden [string[]] $NotTestSummaryLabels = @()
 
     TestResult (
@@ -188,6 +189,12 @@ class TestResult {
                     } elseif ($content -match $regexp) {
                         $this.Passed = $matches.passed -as [int]
                         Write-Host "`tPassed tests count: $($this.Passed)"
+                    } elseif ($content -match "Tests skipped, incorrect beta version") {
+                        # The tests were skipped because the OS is a beta version that
+                        # doesn't match the expected build version (see run-packaged-macos-tests).
+                        Write-Host "`t`tTests skipped due to beta version mismatch"
+                        $this.Passed = 0
+                        $this.Skipped = $true
                     } else {
                         throw "Unable to understand the test result '$content' for test '$($this.GetLabelWithSuffix(`"`"))'"
                     }
@@ -355,7 +362,9 @@ class ParallelTestsResults {
         $downloadInfo = $this.GetDownloadLinks($testResult)
         $result = $testResult.GetPassedTests()
         $attemptText = $testResult.GetAttemptText()
-        if ($result.Passed -eq 0) {
+        if ($testResult.Skipped) {
+            $stringBuilder.AppendLine(":warning: $($testResult.GetLabelWithSuffix(`"`")): Tests skipped, incorrect beta version.$attemptText $downloadInfo")
+        } elseif ($result.Passed -eq 0) {
             $stringBuilder.AppendLine(":warning: $($testResult.GetLabelWithSuffix(`"`")): No tests selected.$attemptText $downloadInfo")
         } else {
             $stringBuilder.AppendLine(":white_check_mark: $($testResult.GetLabelWithSuffix(`"`")): All $($result.Passed) tests passed.$attemptText $downloadInfo")

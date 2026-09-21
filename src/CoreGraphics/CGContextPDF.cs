@@ -128,14 +128,14 @@ namespace CoreGraphics {
 		public CGPDFAccessPermissions? AccessPermissions { get; set; }
 		//public NSDictionary OutputIntent { get; set; }
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios14.0")]
-		[SupportedOSPlatform ("tvos14.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public bool? CreateLinearizedPdf { get; set; }
 
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios14.0")]
-		[SupportedOSPlatform ("tvos14.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public bool? CreatePdfA2u { get; set; }
 
@@ -509,6 +509,123 @@ namespace CoreGraphics {
 			CGPDFContextSetPageTagStructureTree (GetCheckedHandle (), pageTagStructureTreeDictionary.GetNonNullHandle (nameof (pageTagStructureTreeDictionary)));
 			GC.KeepAlive (pageTagStructureTreeDictionary);
 		}
+
+#if !__TVOS__
+		[SupportedOSPlatform ("ios27.0")]
+		[SupportedOSPlatform ("maccatalyst27.0")]
+		[SupportedOSPlatform ("macos27.0")]
+		[UnsupportedOSPlatform ("tvos")]
+		[DllImport (Constants.CoreGraphicsLibrary)]
+		static extern IntPtr CGPDFContextBeginMarkedContentSequence (IntPtr context, CGPdfTagType tagType);
+
+		/// <summary>Begins a structural marked-content sequence.</summary>
+		/// <param name="tagType">The structure tag for the marked content.</param>
+		/// <returns>The marked-content item to add to a structure element, or <see langword="null" /> if another structural sequence is already open.</returns>
+		/// <remarks>Use a structural tag such as <see cref="CGPdfTagType.Paragraph" /> or <see cref="CGPdfTagType.Span" />, and balance each successful call with <see cref="EndMarkedContentSequence" />. <see cref="CGPdfTagType.Artifact" /> is not valid for structural marked content.</remarks>
+		[SupportedOSPlatform ("ios27.0")]
+		[SupportedOSPlatform ("maccatalyst27.0")]
+		[SupportedOSPlatform ("macos27.0")]
+		[UnsupportedOSPlatform ("tvos")]
+		public CGPDFMarkedContentItem? BeginMarkedContentSequence (CGPdfTagType tagType)
+		{
+			var handle = CGPDFContextBeginMarkedContentSequence (GetCheckedHandle (), tagType);
+			return handle == IntPtr.Zero ? null : new CGPDFMarkedContentItem (handle, owns: true);
+		}
+
+		[SupportedOSPlatform ("ios27.0")]
+		[SupportedOSPlatform ("maccatalyst27.0")]
+		[SupportedOSPlatform ("macos27.0")]
+		[UnsupportedOSPlatform ("tvos")]
+		[DllImport (Constants.CoreGraphicsLibrary)]
+		static extern void CGPDFContextBeginNonStructuralMarkedContentSequence (IntPtr context, CGPdfTagType tagType);
+
+		/// <summary>Begins a marked-content sequence that is excluded from the document's logical structure.</summary>
+		/// <param name="tagType">The non-structural tag for the marked content.</param>
+		/// <remarks>Use <see cref="CGPdfTagType.Artifact" /> for non-structural content and balance this call with <see cref="EndMarkedContentSequence" />. <see cref="CGPdfTagType.NonStructure" /> is a structural grouping tag and is not valid here.</remarks>
+		[SupportedOSPlatform ("ios27.0")]
+		[SupportedOSPlatform ("maccatalyst27.0")]
+		[SupportedOSPlatform ("macos27.0")]
+		[UnsupportedOSPlatform ("tvos")]
+		public void BeginNonStructuralMarkedContentSequence (CGPdfTagType tagType)
+		{
+			CGPDFContextBeginNonStructuralMarkedContentSequence (GetCheckedHandle (), tagType);
+		}
+
+		[SupportedOSPlatform ("ios27.0")]
+		[SupportedOSPlatform ("maccatalyst27.0")]
+		[SupportedOSPlatform ("macos27.0")]
+		[UnsupportedOSPlatform ("tvos")]
+		[DllImport (Constants.CoreGraphicsLibrary)]
+		static extern void CGPDFContextEndMarkedContentSequence (IntPtr context);
+
+		/// <summary>Ends the current structural or non-structural marked-content sequence.</summary>
+		[SupportedOSPlatform ("ios27.0")]
+		[SupportedOSPlatform ("maccatalyst27.0")]
+		[SupportedOSPlatform ("macos27.0")]
+		[UnsupportedOSPlatform ("tvos")]
+		public void EndMarkedContentSequence ()
+		{
+			CGPDFContextEndMarkedContentSequence (GetCheckedHandle ());
+		}
+
+		[SupportedOSPlatform ("ios27.0")]
+		[SupportedOSPlatform ("maccatalyst27.0")]
+		[SupportedOSPlatform ("macos27.0")]
+		[UnsupportedOSPlatform ("tvos")]
+		[DllImport (Constants.CoreGraphicsLibrary)]
+		static extern IntPtr CGPDFContextBeginObjectReference (IntPtr context);
+
+		/// <summary>Begins a reference to a single object drawn into the PDF context.</summary>
+		/// <returns>The marked-content item to add to a structure element, or <see langword="null" /> if the reference could not be created.</returns>
+		/// <remarks>Draw exactly one object before calling <see cref="EndObjectReference" />.</remarks>
+		[SupportedOSPlatform ("ios27.0")]
+		[SupportedOSPlatform ("maccatalyst27.0")]
+		[SupportedOSPlatform ("macos27.0")]
+		[UnsupportedOSPlatform ("tvos")]
+		public CGPDFMarkedContentItem? BeginObjectReference ()
+		{
+			var handle = CGPDFContextBeginObjectReference (GetCheckedHandle ());
+			return handle == IntPtr.Zero ? null : new CGPDFMarkedContentItem (handle, owns: true);
+		}
+
+		[SupportedOSPlatform ("ios27.0")]
+		[SupportedOSPlatform ("maccatalyst27.0")]
+		[SupportedOSPlatform ("macos27.0")]
+		[UnsupportedOSPlatform ("tvos")]
+		[DllImport (Constants.CoreGraphicsLibrary)]
+		static extern void CGPDFContextEndObjectReference (IntPtr context);
+
+		/// <summary>Ends the current object reference.</summary>
+		[SupportedOSPlatform ("ios27.0")]
+		[SupportedOSPlatform ("maccatalyst27.0")]
+		[SupportedOSPlatform ("macos27.0")]
+		[UnsupportedOSPlatform ("tvos")]
+		public void EndObjectReference ()
+		{
+			CGPDFContextEndObjectReference (GetCheckedHandle ());
+		}
+
+		[SupportedOSPlatform ("ios27.0")]
+		[SupportedOSPlatform ("maccatalyst27.0")]
+		[SupportedOSPlatform ("macos27.0")]
+		[UnsupportedOSPlatform ("tvos")]
+		[DllImport (Constants.CoreGraphicsLibrary)]
+		static extern OSStatus CGPDFContextAddStructureTreeRootChild (IntPtr context, IntPtr structureElement);
+
+		/// <summary>Adds a structure element as a child of the PDF document's structure-tree root.</summary>
+		/// <param name="structureElement">The structure element to add.</param>
+		/// <returns>An <c>OSStatus</c> value, where zero indicates success.</returns>
+		[SupportedOSPlatform ("ios27.0")]
+		[SupportedOSPlatform ("maccatalyst27.0")]
+		[SupportedOSPlatform ("macos27.0")]
+		[UnsupportedOSPlatform ("tvos")]
+		public OSStatus AddStructureTreeRootChild (CGPDFStructureElement structureElement)
+		{
+			var status = CGPDFContextAddStructureTreeRootChild (GetCheckedHandle (), structureElement.GetNonNullHandle (nameof (structureElement)));
+			GC.KeepAlive (structureElement);
+			return status;
+		}
+#endif // !__TVOS__
 
 		/// <inheritdoc />
 		protected override void Dispose (bool disposing)

@@ -195,6 +195,31 @@ namespace Xharness {
 			return result;
 		}
 
+		string? spawnerPath;
+		public string SpawnerPath {
+			get {
+				if (spawnerPath is null)
+					spawnerPath = Path.GetFullPath (Path.Combine (RootDirectory, "..", "tools", "spawner", "spawner"));
+				return spawnerPath;
+			}
+		}
+
+		public void UseSpawner (ProcessStartInfo processStartInfo, IList<string> arguments)
+		{
+			if (!string.IsNullOrEmpty (processStartInfo.Arguments))
+				throw new InvalidOperationException ($"ProcessStartInfo.Arguments must be empty when using UseSpawner.");
+			if (processStartInfo.ArgumentList.Count > 0)
+				throw new InvalidOperationException ($"ProcessStartInfo.ArgumentList must be empty when using UseSpawner.");
+			if (!File.Exists (SpawnerPath))
+				throw new FileNotFoundException ($"The spawner executable was not found. Did you build it? (make -C tools/spawner)", SpawnerPath);
+
+			var originalFileName = processStartInfo.FileName;
+			processStartInfo.FileName = SpawnerPath;
+			processStartInfo.ArgumentList.Add (originalFileName);
+			foreach (var args in arguments)
+				processStartInfo.ArgumentList.Add (args);
+		}
+
 		public List<TestProject> TestProjects { get; } = new ();
 
 		public bool INCLUDE_IOS { get; }
@@ -290,7 +315,8 @@ namespace Xharness {
 			switch (platform) {
 			case TestPlatform.iOS:
 			case TestPlatform.Mac:
-				// On macOS we can't edit the TCC database easily
+			case TestPlatform.MacCatalyst:
+				// On macOS (and Mac Catalyst, which also runs natively, not in a simulator) we can't edit the TCC database easily
 				// (it requires adding the mac has to be using MDM: https://carlashley.com/2018/09/28/tcc-round-up/)
 				// So by default ignore any tests that would pop up permission dialogs in CI.
 				return !InCI;

@@ -25,6 +25,7 @@ public class SdkDbTest {
 
 			var macCatalystExclude = new string [] {
 				// most of these frameworks are not available on Mac Catalyst
+				"AccessoryAccess",
 				"AccessorySetupKit",
 				"AudioVideoBridging",
 				"Carbon",

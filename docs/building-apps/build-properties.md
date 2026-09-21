@@ -543,6 +543,20 @@ Removing the dynamic registrar requires a static registrar (`Registrar=static` o
 `Registrar=managed-static`) and trimming, so setting this property has no effect (and the
 build warns) when those conditions aren't met.
 
+## TrimExportAttributes
+
+Controls whether `Foundation.ExportAttribute`, `Foundation.ActionAttribute`,
+and `Foundation.OutletAttribute` instances are removed during trimming.
+
+If this property is not specified, the build automatically removes these
+attributes when assembly preparation and post-processing are enabled, the
+trimmable static registrar is selected, dynamic registration is not required,
+and no runtime fallback needs the attributes.
+
+Set this property to `false` to preserve the attributes. Set it to `true` to
+require their removal; the build will fail if it detects that the attributes
+are needed at runtime.
+
 ## EmbedOnDemandResources
 
 Controls where on-demand resource asset packs are placed, so that the on-demand
@@ -732,7 +746,9 @@ assemblies so they stay byte-for-byte unchanged (a requirement for Hot
 Reload). This will disable a few minor optimizations, but will otherwies not
 affect anything.
 
-The default value is `true` for debug builds and `false` otherwise.
+The default value is `true` for non-NativeAOT debug builds that don't use the
+managed static registrar, and `false` otherwise (the managed static registrar
+modifies user assemblies, which is incompatible with Hot Reload).
 
 ## IBToolPath
 
@@ -1701,6 +1717,25 @@ The default value is `true`. Set it to `false` to preserve these directories.
 The full path to the `strip` command-line tool.
 
 The default behavior is to use `xcrun strip`.
+
+## StripMergeableLibraries
+
+A boolean property that specifies whether static linking metadata (`LC_ATOM_INFO`)
+is removed from mergeable libraries embedded in the app bundle.
+
+Mergeable libraries are dynamic libraries that also contain metadata for static
+linking. This metadata can roughly double the size of the library. When this
+property is `true`, the metadata is stripped to reduce app size.
+
+The default value is the value of the `Optimize` property, which means `Release`
+builds strip mergeable library metadata by default, while `Debug` builds preserve
+it.
+
+```xml
+<PropertyGroup>
+  <StripMergeableLibraries>true</StripMergeableLibraries>
+</PropertyGroup>
+```
 
 ## SupportedOSPlatformVersion
 

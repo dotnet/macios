@@ -249,8 +249,8 @@
 		<Compile Include="../linker/OptimizeGeneratedCode.cs">
 			<Link>external/tools/linker/OptimizeGeneratedCode.cs</Link>
 		</Compile>
-		<Compile Include="../linker/RegistrarRemovalTrackingStep.cs">
-			<Link>external/tools/linker/RegistrarRemovalTrackingStep.cs</Link>
+		<Compile Include="../linker/DetectApiUsageStep.cs">
+			<Link>external/tools/linker/DetectApiUsageStep.cs</Link>
 		</Compile>
 		<Compile Include="../linker/RemoveUserResourcesSubStep.cs">
 			<Link>external/tools/linker/RemoveUserResourcesSubStep.cs</Link>

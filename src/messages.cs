@@ -511,5 +511,35 @@ namespace Messages {
 		[Export ("alternateLayout")]
 		MSMessageTemplateLayout AlternateLayout { get; }
 	}
+
+	/// <summary>Represents a request for Unified Payments Interface (UPI) device validation.</summary>
+	/// <remarks>Using this API requires the <c>com.apple.developer.upi-device-validation</c> managed entitlement. It works only on devices with SMS capability and with recipients who cannot receive iMessages.</remarks>
+	[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject), Name = "MSUPIRequest")]
+	[DisableDefaultCtor]
+	interface MSUpiRequest {
+		/// <summary>Gets the validation token to send.</summary>
+		[Export ("validationToken")]
+		string ValidationToken { get; }
+
+		/// <summary>Gets the SMS recipients who will receive the UPI validation message.</summary>
+		[Export ("recipients", ArgumentSemantic.Copy)]
+		string [] Recipients { get; }
+
+		/// <param name="validationToken">The validation token to send.</param>
+		/// <param name="recipients">The SMS recipients who will receive the UPI validation message.</param>
+		/// <summary>Creates a UPI request with the specified validation token and recipients.</summary>
+		[Export ("initWithValidationToken:recipients:")]
+		NativeHandle Constructor (string validationToken, string [] recipients);
+
+		/// <param name="completionHandler">The handler to invoke when sending completes. Its argument is <see langword="true" /> if the message was sent; otherwise, <see langword="false" />.</param>
+		/// <summary>Sends this UPI request.</summary>
+		[Async (XmlDocs = """
+			<summary>Sends this UPI request asynchronously.</summary>
+			<returns>A task whose result is <see langword="true" /> if the message was sent; otherwise, <see langword="false" />.</returns>
+			""")]
+		[Export ("sendWithCompletionHandler:")]
+		void Send (Action<bool> completionHandler);
+	}
 }
 #endif // !MONOMAC

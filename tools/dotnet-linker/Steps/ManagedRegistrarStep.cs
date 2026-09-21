@@ -103,7 +103,7 @@ namespace Xamarin.Linker {
 		// pass (and the RegistrarCompanionAssemblies dictionary is empty because it's a fresh process).
 		AssemblyDefinition? FindRelocatedCompanionAssembly (AssemblyDefinition userAssembly)
 		{
-			var companionName = "_" + userAssembly.Name.Name + ".TypeMap";
+			var companionName = RegistrarCompanionAssembly.GetName (userAssembly);
 			foreach (var assembly in Configuration.Assemblies) {
 				if (assembly.Name.Name == companionName)
 					return assembly;
@@ -241,7 +241,8 @@ namespace Xamarin.Linker {
 			// The factory methods must be added before trimming: either in the assembly preparer (when
 			// PrepareAssemblies=true), or inside ILLink itself (when PrepareAssemblies=false). They must not
 			// be added again when post-processing assemblies, since they're already there at that point.
-			if (App.Registrar == RegistrarMode.TrimmableStatic && !type.IsAbstract && !type.IsInterface && !App.IsPostProcessingAssemblies) {
+			if (App.Registrar == RegistrarMode.TrimmableStatic && !type.IsAbstract && !type.IsInterface && !App.IsPostProcessingAssemblies
+				&& (!Configuration.HotReloadCompatibleBuild || Annotations.GetAction (type.Module.Assembly) == AssemblyAction.Link)) {
 				if (isNSObject) {
 					var ctorRef = AppBundleRewriter.FindNSObjectConstructor (type);
 					if (ctorRef is not null) {
@@ -1669,6 +1670,8 @@ namespace Xamarin.Linker {
 				if (toManaged) {
 					var createMethod = StaticRegistrar.GetBlockWrapperCreator (objcMethod, parameter);
 					if (createMethod is null) {
+						if (App.TrimExportAttributes != false)
+							App.TrimExportAttributesBlockers.Add (ExportAttributeRemovalBlocker.RuntimeGetBlockWrapperCreatorRequired);
 						AddException (ErrorHelper.CreateWarning (App, 4174 /* Unable to locate the block to delegate conversion method for the method {0}'s parameter #{1}. */, method, Errors.MT4174, method.FullName, parameter + 1));
 						// var blockCopy = BlockLiteral.Copy (block);
 						var tmpVariable = il.Body.AddVariable (abr.System_IntPtr);
@@ -1725,6 +1728,8 @@ namespace Xamarin.Linker {
 						il.Emit (OpCodes.Ldstr, signature);
 						il.Emit (OpCodes.Call, abr.BlockLiteral_CreateBlockForDelegate);
 					} else {
+						if (App.TrimExportAttributes != false)
+							App.TrimExportAttributesBlockers.Add (ExportAttributeRemovalBlocker.RegistrarHelperGetBlockForDelegateRequired);
 						il.Emit (OpCodes.Ldtoken, method);
 						il.Emit (OpCodes.Call, abr.RegistrarHelper_GetBlockForDelegate);
 					}
@@ -1759,14 +1764,24 @@ namespace Xamarin.Linker {
 			return IsOpenType (tr.Resolve ());
 		}
 
-		static void EnsureVisible (MethodDefinition caller, FieldDefinition field)
+		void EnsureVisible (MethodDefinition caller, FieldDefinition field)
 		{
+			if (ShouldRelocateTrampolines (caller)) {
+				Configuration.RegistrarCompanionAssemblies [caller.Module.Assembly].AccessesAssemblies.Add (field.Module.Assembly);
+				return;
+			}
+
 			field.IsPublic = true;
 			EnsureVisible (caller, field.DeclaringType);
 		}
 
-		static void EnsureVisible (MethodDefinition caller, TypeDefinition type)
+		void EnsureVisible (MethodDefinition caller, TypeDefinition type)
 		{
+			if (ShouldRelocateTrampolines (caller)) {
+				Configuration.RegistrarCompanionAssemblies [caller.Module.Assembly].AccessesAssemblies.Add (type.Module.Assembly);
+				return;
+			}
+
 			if (type.IsNested) {
 				type.IsNestedPublic = true;
 				EnsureVisible (caller, type.DeclaringType);
@@ -1775,9 +1790,14 @@ namespace Xamarin.Linker {
 			}
 		}
 
-		static void EnsureVisible (MethodDefinition caller, MethodReference method)
+		void EnsureVisible (MethodDefinition caller, MethodReference method)
 		{
 			var md = method.Resolve ();
+			if (ShouldRelocateTrampolines (caller)) {
+				Configuration.RegistrarCompanionAssemblies [caller.Module.Assembly].AccessesAssemblies.Add (md.Module.Assembly);
+				return;
+			}
+
 			md.IsPublic = true;
 			EnsureVisible (caller, md.DeclaringType);
 		}

@@ -188,6 +188,8 @@ namespace AccessorySetupKit {
 	/// <summary>A completion handler for updating accessory authorization.</summary>
 	/// <param name="error">The error that occurred, or <see langword="null" /> if authorization was updated successfully.</param>
 	delegate void ASAccessorySessionUpdateAuthorizationHandler ([NullAllowed] NSError error);
+	/// <summary>A completion handler for updating the accessories shown in the picker.</summary>
+	/// <param name="error">The error that occurred, or <see langword="null" /> if the picker was updated successfully.</param>
 	delegate void ASAccessorySessionUpdatePickerHandler ([NullAllowed] NSError error);
 	delegate void ASAccessorySessionFinishPickerDiscoveryHandler ([NullAllowed] NSError error);
 

@@ -58,6 +58,8 @@ namespace Xamarin.Tests {
 		[Test]
 		[TestCase (ApplePlatform.iOS, "ios-arm64", "--installdev")]
 		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", "--installsim")]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64", "--installdev")]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64", "--installsim")]
 		public void DeployToDevice (ApplePlatform platform, string runtimeIdentifiers, string expectedInstallArgument)
 		{
 			var project = "MySimpleApp";

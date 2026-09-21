@@ -124,6 +124,8 @@ namespace AccessorySetupKit {
 		NSError Error { get; }
 	}
 
+	/// <summary>A completion handler for accessory session operations.</summary>
+	/// <param name="error">The error that occurred, or <see langword="null" /> if the operation succeeded.</param>
 	delegate void ASAccessorySessionCompletionHandler ([NullAllowed] NSError error);
 
 	[BaseType (typeof (NSObject))]

@@ -547,11 +547,11 @@ namespace MonoTouchFixtures.CoreMidi {
 		}
 
 		/// <summary>
-		/// Test creating a MIDI event list with the notes for "Happy Birthday" melody.
+		/// Test creating a MIDI event list with the opening theme from "Dovregubbens Hall".
 		/// Uses MIDI 1.0 protocol with Note On/Off messages.
 		/// </summary>
 		[Test]
-		public void HappyBirthday ()
+		public void DovregubbensHall ()
 		{
 			using var list = new MidiEventList (MidiProtocolId.Protocol_1_0, 4096);
 			Assert.That (list.Protocol, Is.EqualTo (MidiProtocolId.Protocol_1_0), "Protocol");
@@ -561,23 +561,17 @@ namespace MonoTouchFixtures.CoreMidi {
 			// Status: 0x90 = Note On channel 0, 0x80 = Note Off channel 0
 			// Format: 0x2tssnnvv where t=type(0=group0), ss=status, nn=note, vv=velocity
 			//
-			// "Happy Birthday to You" melody notes (in MIDI note numbers):
-			// C4=60, D4=62, E4=64, F4=65, G4=67, A4=69, Bb4=70, C5=72
-			//
-			// Melody: C C D C F E | C C D C G F | C C C' A F E D | Bb Bb A F G F
+			// The opening theme from "Dovregubbens Hall" in B minor:
+			// B1 C#2 D2 E2 F#2 D2 F#2 | F2 C#2 F2 | E2 C2 E2
 			byte [] melody = {
-				60, 60, 62, 60, 65, 64,        // Hap-py Birth-day to You
-				60, 60, 62, 60, 67, 65,        // Hap-py Birth-day to You
-				60, 60, 72, 69, 65, 64, 62,   // Hap-py Birth-day dear friend
-				70, 70, 69, 65, 67, 65         // Hap-py Birth-day to You
+				35, 37, 38, 40, 42, 38, 42,
+				41, 37, 41, 40, 36, 40,
 			};
 
 			// Duration in ticks (arbitrary units) for each note
 			ulong [] durations = {
-				250, 250, 500, 500, 500, 1000,          // line 1
-				250, 250, 500, 500, 500, 1000,          // line 2
-				250, 250, 500, 500, 500, 500, 1000,    // line 3
-				250, 250, 500, 500, 500, 1000           // line 4
+				250, 250, 250, 250, 250, 250, 500,
+				250, 250, 500, 250, 250, 500,
 			};
 
 			byte velocity = 100;
@@ -600,8 +594,8 @@ namespace MonoTouchFixtures.CoreMidi {
 			// MIDIEventListAdd merges events with the same timestamp into a single packet.
 			// The NoteOff of note i and NoteOn of note i+1 share the same timestamp,
 			// so they are merged into one packet. This gives us:
-			// 1 NoteOn at time 0 + 24 merged (NoteOff + NoteOn) packets + 1 final NoteOff = 26 packets
-			Assert.That ((int) list.PacketCount, Is.EqualTo (26), "PacketCount (merged by timestamp)");
+			// 1 NoteOn at time 0 + 12 merged (NoteOff + NoteOn) packets + 1 final NoteOff = 14 packets
+			Assert.That ((int) list.PacketCount, Is.EqualTo (14), "PacketCount (merged by timestamp)");
 
 			// Verify the melody by iterating and collecting all words
 			var allWords = new List<(ulong Timestamp, uint Word)> ();
@@ -613,13 +607,13 @@ namespace MonoTouchFixtures.CoreMidi {
 
 			Assert.That (allWords.Count, Is.EqualTo (melody.Length * 2), "Total word count");
 
-			// Verify first note: C4 Note On at time 0
+			// Verify first note: B1 Note On at time 0
 			Assert.That (allWords [0].Timestamp, Is.EqualTo (0UL), "First note timestamp");
-			Assert.That (allWords [0].Word & 0xFF00, Is.EqualTo ((uint) (60 << 8)), "First note is C4 (60)");
+			Assert.That (allWords [0].Word & 0xFF00, Is.EqualTo ((uint) (35 << 8)), "First note is B1 (35)");
 
-			// Verify the sequence contains all happy birthday notes
+			// Verify the sequence contains the complete theme.
 			var noteOnMessages = allWords.Where (n => (n.Word & 0x00F00000) == 0x00900000).Select (n => (byte) ((n.Word >> 8) & 0xFF)).ToArray ();
-			Assert.That (noteOnMessages, Is.EqualTo (melody), "Happy Birthday melody matches");
+			Assert.That (noteOnMessages, Is.EqualTo (melody), "Dovregubbens Hall melody matches");
 		}
 	}
 

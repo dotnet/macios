@@ -220,14 +220,12 @@ namespace MonoTouchFixtures.CoreMidi {
 		}
 
 		[Test]
-		public void ForEachEventTest_HappyBirthday ()
+		public void ForEachEventTest_DovregubbensHall ()
 		{
-			// The "Happy Birthday" melody as MIDI note numbers.
+			// The opening theme from "Dovregubbens Hall" in B minor.
 			var melody = new byte [] {
-				67, 67, 69, 67, 72, 71,
-				67, 67, 69, 67, 74, 72,
-				67, 67, 79, 76, 72, 71, 69,
-				77, 77, 76, 72, 74, 72,
+				35, 37, 38, 40, 42, 38, 42,
+				41, 37, 41, 40, 36, 40,
 			};
 
 			using var obj = new MidiEventList (MidiProtocolId.Protocol_1_0, 4096);

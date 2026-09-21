@@ -71,11 +71,14 @@ namespace Xamarin.Tests {
 
 			var runtimeIdentifier = DotNet.GetProperty (projectPath, "RuntimeIdentifier", properties);
 			var runtimeIdentifiers = DotNet.GetProperty (projectPath, "RuntimeIdentifiers", properties);
+			var selfContained = DotNet.GetProperty (projectPath, "SelfContained", properties);
 			var expectedRuntimeIdentifier = expectUniversal ? "" : $"{runtimeIdentifierPrefix}-{(Configuration.CanRunArm64 ? "arm64" : "x64")}";
 			var expectedRuntimeIdentifiers = expectUniversal ? $"{runtimeIdentifierPrefix}-x64;{runtimeIdentifierPrefix}-arm64" : "";
 
 			Assert.That (runtimeIdentifier, Is.EqualTo (expectedRuntimeIdentifier), "RuntimeIdentifier");
 			Assert.That (runtimeIdentifiers, Is.EqualTo (expectedRuntimeIdentifiers), "RuntimeIdentifiers");
+			if (!expectUniversal)
+				Assert.That (selfContained, Is.EqualTo ("true"), "SelfContained");
 		}
 
 		[TestCase (ApplePlatform.MacOSX)]

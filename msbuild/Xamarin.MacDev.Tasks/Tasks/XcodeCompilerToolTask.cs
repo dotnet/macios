@@ -152,7 +152,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			if (!StringUtils.TryParseArguments (additionalArgumentsValue, out var additionalArguments, out var _)) {
 				var propertyName = AdditionalArgumentsPropertyName ?? nameof (AdditionalArguments);
-				Log.LogError ("Unable to parse the '{0}' value: {1}", propertyName, additionalArgumentsValue);
+				Log.LogError (MSBStrings.E7192 /* Unable to parse the '{0}' value: {1} */, propertyName, additionalArgumentsValue);
 				return false;
 			}
 

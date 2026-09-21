@@ -581,8 +581,8 @@
 			<!-- Set the 'SysRoot' variable, so that NativeAOT's build logic doesn't try to compute it, which doesn't work when building remotely from Windows. -->
 			<SysRoot Condition="'$(SysRoot)' == ''">$(_SdkRoot)</SysRoot>
 
-			<!-- default 'UseLdClassicXCodeLinker' to our value for '_UseClassicLinker', and in case it's still not set, default to 'false', since typically the new linker will work. -->
-			<UseLdClassicXCodeLinker Condition="'$(UseLdClassicXCodeLinker)' == ''">$(_UseClassicLinker)</UseLdClassicXCodeLinker>
+			<!-- default 'UseLdClassicXCodeLinker' to our value for '_UseClassicLinker' before Xcode 27, and in case it's still not set, default to 'false', since typically the new linker will work. -->
+			<UseLdClassicXCodeLinker Condition="'$(UseLdClassicXCodeLinker)' == '' And $([MSBuild]::VersionLessThan('$(_XcodeVersion)', '27.0'))">$(_UseClassicLinker)</UseLdClassicXCodeLinker>
 			<UseLdClassicXCodeLinker Condition="'$(UseLdClassicXCodeLinker)' == ''">false</UseLdClassicXCodeLinker>
 
 			<!-- Ask ILC to produce a static library -->
@@ -2525,8 +2525,8 @@
 			<_AllLinkerFlags Include="@(_AssemblyLinkerFlags);@(_MainLinkerFlags);@(_CustomLinkFlags)" />
 			<_AllLinkerFlags Condition="'$(_ExportSymbolsExplicitly)' != 'true'" Include="@(_ProcessedReferenceNativeSymbol->'-u%(Identity)')" />
 
-			<_AllLinkerFlags Condition="'$(_UseClassicLinker)' == 'true'" Include="-Xlinker" />
-			<_AllLinkerFlags Condition="'$(_UseClassicLinker)' == 'true'" Include="-ld_classic" />
+			<_AllLinkerFlags Condition="'$(_UseClassicLinker)' == 'true' And $([MSBuild]::VersionLessThan('$(_XcodeVersion)', '27.0'))" Include="-Xlinker" />
+			<_AllLinkerFlags Condition="'$(_UseClassicLinker)' == 'true' And $([MSBuild]::VersionLessThan('$(_XcodeVersion)', '27.0'))" Include="-ld_classic" />
 
 			<_AllLinkerFlags Include="@(LinkerArgument)" />
 		</ItemGroup>

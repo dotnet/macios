@@ -30,11 +30,15 @@ public class AssemblyPreparer : IDisposable {
 
 	public string MakeReproPath { get; set; } = "";
 
-	// The pre-trim (untrimmed) assemblies. Used during post-processing with the trimmable static
-	// registrar to read [ProtocolMember] attributes that the trimmer has removed. This is the complete
-	// set of assemblies that were fed into the trimmer (ILLink's input), so it forms a self-contained
-	// metadata universe separate from the post-trim assemblies.
+	// The original assemblies from before preparation and trimming. Used during post-processing with the
+	// trimmable static registrar to read selected registrar attributes that were removed during trimming.
+	// This is a complete metadata universe separate from the post-trim assemblies.
 	public List<string> PreTrimAssemblies { get; } = new List<string> ();
+
+	public bool? TrimExportAttributes {
+		get => configuration.Application.TrimExportAttributes;
+		set => configuration.Application.TrimExportAttributes = value;
+	}
 
 	public RegistrarMode Registrar {
 		get => configuration.Application.Registrar;
@@ -161,10 +165,10 @@ public class AssemblyPreparer : IDisposable {
 		var steps = new List<ConfigurationAwareStep> {
 			// CollectAssembliesStep
 			new LoadAssembliesStep (),
-			new ComputeMethodOverridesStep (),
-			new CoreTypeMapStep (),
-			new CollectFieldsStep (), // ProcessExportedFields
 		};
+		steps.Add (new ComputeMethodOverridesStep ());
+		steps.Add (new CoreTypeMapStep ());
+		steps.Add (new CollectFieldsStep ()); // ProcessExportedFields
 
 		// These steps only do anything for assemblies that are being trimmed (their IsActiveFor requires
 		// AssemblyAction.Link), so don't even add them to the list when nothing's being trimmed.
@@ -180,16 +184,17 @@ public class AssemblyPreparer : IDisposable {
 
 		steps.Add (new InlineDlfcnMethodsStep ());
 
-		// Only add RegistrarRemovalTrackingStep if it's needed:
-		// * If the user explicitly set $(DynamicRegistrationSupported), we don't need to compute the value (it's
-		//   passed straight through to the trimmer feature switch).
+		// Only add DetectApiUsageStep if it's needed:
+		// * If the user explicitly set $(DynamicRegistrationSupported), we don't need to compute the value, but
+		//   Export attribute removal still needs the step to detect NSXpcInterface reflection.
 		// * If nothing is being trimmed, the dynamic registrar (which lives in the platform assembly, an SDK
 		//   assembly that's only trimmed when trimming is enabled) can't be removed, so there's nothing to compute.
-		if (!configuration.DynamicRegistrationSupported.HasValue && configuration.Application.AreAnyAssembliesTrimmed)
-			steps.Add (new RegistrarRemovalTrackingStep ());
+		if (configuration.Application.AreAnyAssembliesTrimmed && (!configuration.DynamicRegistrationSupported.HasValue || configuration.Application.TrimExportAttributes != false))
+			steps.Add (new DetectApiUsageStep ());
 
 		// PreMarkDispatcher: I don't think we need this one
 		steps.Add (new ManagedRegistrarStep ());
+		steps.Add (new ComputeExportAttributeRemovalStep ());
 		steps.Add (new TrimmableRegistrarStep ());
 		steps.Add (new ManagedRegistrarLookupTablesStep ());
 		steps.Add (new InlineClassGetHandleStep ());
@@ -198,12 +203,11 @@ public class AssemblyPreparer : IDisposable {
 		return RunSteps (steps, out exceptions);
 	}
 
-	// Load the pre-trim (untrimmed) assemblies so the trimmable static registrar can read the
-	// [ProtocolMember] attributes the trimmer removed from the post-trim assemblies. The pre-trim
-	// assemblies are loaded into their own resolver (a separate, self-contained metadata universe from
-	// the post-trim assemblies), and stored on the Application for the registrar to consult. There's no
-	// fallback to the post-trim resolver: the pre-trim set is complete (it's the trimmer's input), and
-	// falling back would mix the two universes and resolve trimmed-away references incorrectly.
+	// Load the original assemblies so the trimmable static registrar can read selected attributes removed
+	// during trimming. The assemblies are loaded into their own resolver (a separate, self-contained
+	// metadata universe from the post-trim assemblies), and stored on the Application for the registrar to
+	// consult. There's no fallback to the post-trim resolver: the original set is complete, and falling back
+	// would mix the two universes and resolve trimmed-away references incorrectly.
 	void LoadPreTrimAssemblies ()
 	{
 		if (PreTrimAssemblies.Count == 0)
@@ -296,6 +300,13 @@ public class AssemblyPreparer : IDisposable {
 		if (Registrar == RegistrarMode.Default) {
 			exceptions.Add (ErrorHelper.CreateError (99, "RegistrarMode must be explicitly set."));
 			return false;
+		}
+		if (Registrar != RegistrarMode.TrimmableStatic) {
+			if (TrimExportAttributes == true) {
+				exceptions.Add (ErrorHelper.CreateError (99, "Export attributes can only be trimmed with the trimmable static registrar."));
+				return false;
+			}
+			TrimExportAttributes = false;
 		}
 
 		if (!string.IsNullOrEmpty (MakeReproPath) && !SaveToReproPath (exceptions))

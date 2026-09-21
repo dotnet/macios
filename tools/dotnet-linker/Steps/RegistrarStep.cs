@@ -17,6 +17,9 @@ namespace Xamarin.Linker {
 		{
 			var app = Configuration.Application;
 
+			// Always write this item file so that changing registrar modes doesn't leave stale generated registrar sources behind.
+			Configuration.WriteOutputForMSBuild ("_RegistrarFile", new List<MSBuildItem> ());
+
 			switch (app.Registrar) {
 			case RegistrarMode.Dynamic:
 				// Nothing to do here

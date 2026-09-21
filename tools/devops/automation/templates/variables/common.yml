@@ -93,6 +93,8 @@ variables:
 
 # Tighten the needed network calls to comply with restrictions
 # See https://devdiv.visualstudio.com/DevDiv/_git/Xamarin.yaml-templates/pullrequest/749941
+- name: DOTNET_CLI_TELEMETRY_OPTOUT
+  value: '1'
 - name: DOTNET_CLI_WORKLOAD_UPDATE_NOTIFY_DISABLE
   value: 'true'
 - name: DOTNET_SDK_VULNERABILITY_CHECK_DISABLE

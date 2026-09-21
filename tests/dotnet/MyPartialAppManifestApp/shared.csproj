@@ -6,12 +6,17 @@
 		<ApplicationTitle>MyPartialAppManifestApp</ApplicationTitle>
 		<ApplicationId>com.xamarin.mypartialappmanifestapp</ApplicationId>
 		<ApplicationVersion>3.14</ApplicationVersion>
+		<LaunchStoryboardName Condition="'$(LaunchStoryboardName)' == ''">LaunchScreen</LaunchStoryboardName>
+		<ManifestKey Condition="'$(ManifestKey)' == ''">a|String</ManifestKey>
+		<ManifestValue Condition="'$(ManifestValue)' == ''">b</ManifestValue>
 	</PropertyGroup>
 
 	<Import Project="../../common/shared-dotnet.csproj" />
 
 	<ItemGroup>
 		<Compile Include="../*.cs" />
+		<AppManifestEntry Include="$(ManifestKey)" Type="String" Value="$(ManifestValue)" />
+		<AppManifestEntry Include="UILaunchStoryboardName" Type="String" Value="$(LaunchStoryboardName)" />
 		<PartialAppManifest Include="../Partial.plist" />
 	</ItemGroup>
 </Project>

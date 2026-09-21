@@ -12,13 +12,32 @@ UIApplication.Main (args, null, typeof (AppDelegate));
 
 [Register ("AppDelegate")]
 class AppDelegate : UIApplicationDelegate {
-	public override UIWindow? Window {
-		get;
-		set;
-	}
-
-	public override bool FinishedLaunching (UIApplication application, NSDictionary? launchOptions)
+	public override UISceneConfiguration GetConfiguration (UIApplication application,
+		UISceneSession connectingSceneSession, UISceneConnectionOptions options)
 	{
+		return new UISceneConfiguration ("Default Configuration", connectingSceneSession.Role);
+	}
+}
+
+[Register ("SceneDelegate")]
+class SceneDelegate : UIResponder, IUIWindowSceneDelegate {
+	[Export ("window")]
+	public UIWindow? Window { get; set; }
+
+	[Export ("scene:willConnectToSession:options:")]
+	public void WillConnect (UIScene scene, UISceneSession session, UISceneConnectionOptions connectionOptions)
+	{
+		if (scene is not UIWindowScene windowScene) {
+			Console.WriteLine ($"Unexpected scene type: {scene.GetType ().FullName}");
+			Environment.Exit (1);
+			return;
+		}
+
+		Window = new UIWindow (windowScene) {
+			RootViewController = new UIViewController (),
+		};
+		Window.MakeKeyAndVisible ();
+
 		var consumer = new ResultConsumer ();
 
 		Task.Run (async () => {
@@ -43,8 +62,6 @@ class AppDelegate : UIApplicationDelegate {
 				Environment.Exit (1);
 			}
 		});
-
-		return true;
 	}
 
 	class ResultConsumer : IDataConsumer {

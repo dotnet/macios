@@ -1250,9 +1250,8 @@ namespace ObjCRuntime {
 
 		// Completes deferred object_map registration (issue #25861): when 'onlyIfNeeded' is
 		// true, registers the object only if the pointer isn't already present, and leaves
-		// any existing entry untouched. This avoids redundantly re-registering objects that
-		// were registered eagerly (e.g. direct bindings), and avoids clobbering a concurrent
-		// registration (e.g. another object reusing a freed native pointer).
+		// any live existing entry untouched. Dead entries are removed so they don't prevent
+		// registration of a new object for a reused native pointer.
 		internal static void RegisterNSObject (NSObject obj, IntPtr ptr, bool onlyIfNeeded = false)
 		{
 			GCHandle handle;
@@ -1264,11 +1263,18 @@ namespace ObjCRuntime {
 
 			lock (lock_obj) {
 				if (onlyIfNeeded) {
-					if (object_map.ContainsKey (ptr)) {
-						// Already registered; don't touch the existing entry, just free the
-						// handle we speculatively allocated.
-						handle.Free ();
-						return;
+					if (object_map.TryGetValue (ptr, out var existing)) {
+						if (existing.Target is not null) {
+							// Already registered; don't touch the existing entry, just free
+							// the handle we speculatively allocated.
+							handle.Free ();
+							return;
+						}
+
+						// The weak target was collected without the native object dying.
+						// Remove the stale entry before registering the replacement.
+						object_map.Remove (ptr);
+						existing.Free ();
 					}
 				} else {
 					if (object_map.Remove (ptr, out var existing))

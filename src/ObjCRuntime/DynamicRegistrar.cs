@@ -708,6 +708,11 @@ namespace Registrar {
 			return type.GetGenericTypeDefinition ();
 		}
 
+		protected override IEnumerable<Type> GetGenericArguments (Type type)
+		{
+			return type.GetGenericArguments ();
+		}
+
 		protected override bool IsDelegate (Type type)
 		{
 			return type.IsSubclassOf (typeof (System.Delegate));

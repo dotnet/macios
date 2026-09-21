@@ -81,6 +81,9 @@
     <Compile Include="..\..\common\PListAsserts.cs">
       <Link>external\PListAsserts.cs</Link>
     </Compile>
+    <Compile Include="..\..\common\ResxAssertions.cs">
+      <Link>external\ResxAssertions.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\tools\common\SdkVersions.cs">
       <Link>external\SdkVersions.cs</Link>
     </Compile>

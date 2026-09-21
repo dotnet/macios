@@ -45,8 +45,10 @@ namespace MonoTouchFixtures.Foundation {
 			Assert.That (value, Is.TypeOf (typeof (NSNumber)), "NSNumber");
 			Assert.That ((int) (value as NSNumber), Is.EqualTo (0), "0");
 
-			var paths = NSSearchPath.GetDirectories (NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomain.User);
-			var filename = Path.Combine (paths [0], $"DoNotBackupMe-NSUrl-{Process.GetCurrentProcess ().Id}");
+			// Use the temporary directory instead of the Documents directory: writing to the Documents
+			// directory can trigger a TCC ("Files and Folders") permission prompt on macOS, which hangs
+			// forever in CI (there's no user around to answer the prompt).
+			var filename = Path.Combine (NSFileManager.TemporaryDirectory, $"DoNotBackupMe-NSUrl-{Process.GetCurrentProcess ().Id}");
 			try {
 				File.WriteAllText (filename, "not worth a bit");
 				using (NSUrl url = NSUrl.FromFilename (filename)) {

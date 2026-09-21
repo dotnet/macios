@@ -3,25 +3,23 @@
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ComputeInstructionSet" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.GenerateR2RModuleRegistration" AssemblyFile="$(_TaskAssemblyName)" />
 
-	<!-- Workaround for https://github.com/dotnet/runtime/issues/79902 -->
-	<Target Name="_FixR2ROutputPaths" AfterTargets="_PrepareForReadyToRunCompilation">
-		<ItemGroup>
-			<_ReadyToRunFilesToPublishFixed Include="@(_ReadyToRunFilesToPublish->'$(_ReadyToRunOutputPath)/%(Filename)%(Extension)')" />
-			<_ReadyToRunFilesToPublish Remove="@(_ReadyToRunFilesToPublish)" />
-			<_ReadyToRunFilesToPublish Include="@(_ReadyToRunFilesToPublishFixed)" />
-		</ItemGroup>
-		<ItemGroup Condition="'$(PublishReadyToRunComposite)' != 'true'">
-			<_ReadyToRunCompileListFixed Include="@(_ReadyToRunCompileList)" OutputR2RImage="$(_ReadyToRunOutputPath)/%(Filename)%(Extension)" />
-			<_ReadyToRunCompileList Remove="@(_ReadyToRunCompileList)" />
-			<_ReadyToRunCompileList Include="@(_ReadyToRunCompileListFixed)" />
-		</ItemGroup>
+	<!--
+		Only composite ReadyToRun compilation is supported with the 'macho' container format: crossgen2
+		emits a Mach-O object file per assembly, but it doesn't emit the corresponding component assemblies,
+		and the runtime only knows how to locate platform-native ReadyToRun code for a composite image.
+		See https://github.com/dotnet/runtime/blob/main/docs/design/coreclr/botr/readytorun-platform-native-envelope.md
+	-->
+	<Target Name="_ValidateReadyToRunComposite"
+			Condition="'$(PublishReadyToRun)' == 'true' And '$(PublishReadyToRunContainerFormat)' == 'macho' And '$(PublishReadyToRunComposite)' != 'true' And '$(_CanOutputAppBundle)' == 'true'"
+			BeforeTargets="_PrepareForReadyToRunCompilation">
+		<Error Text="Setting 'PublishReadyToRunComposite' to '$(PublishReadyToRunComposite)' isn't supported for $(_PlatformName) projects, only composite ReadyToRun compilation is supported. Either remove the 'PublishReadyToRunComposite' property, or set 'PublishReadyToRun=false' to turn off ReadyToRun compilation completely." />
 	</Target>
 
 	<!-- Set per-module R2R header symbol names so each .o file exports a unique symbol directly,
 	     avoiding the need for post-link symbol aliasing. -->
 	<Target Name="_SetR2RHeaderSymbolNames"
 			Condition="'$(PublishReadyToRunComposite)' == 'true' And '$(PublishReadyToRunContainerFormat)' == 'macho'"
-			AfterTargets="_FixR2ROutputPaths">
+			AfterTargets="_PrepareForReadyToRunCompilation">
 		<ItemGroup>
 			<_ReadyToRunCompileList>
 				<R2RHeaderSymbolName>RTR_HEADER_$([System.Text.RegularExpressions.Regex]::Replace ($([System.IO.Path]::GetFileName ('%(_ReadyToRunCompileList.OutputR2RImage)')), '[^a-zA-Z0-9_]', '_'))</R2RHeaderSymbolName>
@@ -68,7 +66,12 @@
 		<CreateR2RFramework Condition="'$(CreateR2RFramework)' == '' And ('$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS')">true</CreateR2RFramework>
 		<CreateR2RDylib Condition="'$(CreateR2RDylib)' == '' And '$(CreateR2RFramework)' != 'true'">true</CreateR2RDylib>
 
-		<FilterReadyToRunAssemblies Condition="'$(FilterReadyToRunAssemblies)' == '' And '$(Configuration)' != 'Release'">true</FilterReadyToRunAssemblies>
+		<!--
+		We don't R2R user assemblies when we're building a debug build:
+		  * because R2R-compiled assemblies aren't debuggable.
+		  * to speed up debug builds.
+		-->
+		<FilterReadyToRunAssemblies Condition="'$(FilterReadyToRunAssemblies)' == '' And '$(_BundlerDebug)' == 'true'">true</FilterReadyToRunAssemblies>
 	</PropertyGroup>
 
 
@@ -89,6 +92,13 @@
 			<PublishReadyToRunCompositeRoots Include="System.Private.CoreLib.dll" KeepDuplicates="false" />
 		</ItemGroup>
 
+		<PropertyGroup>
+			<_R2RInputHashFile>$(IntermediateOutputPath)r2r-input.hash</_R2RInputHashFile>
+		</PropertyGroup>
+		<ReadLinesFromFile File="$(_R2RInputHashFile)" Condition="Exists('$(_R2RInputHashFile)')">
+			<Output TaskParameter="Lines" ItemName="_PreviousR2RInputHash" />
+		</ReadLinesFromFile>
+
 		<!-- Hash the R2R input assemblies so we can detect when the set actually changes -->
 		<GetFileHash Files="@(_NonUserAssemblies)" Algorithm="SHA256">
 			<Output TaskParameter="Items" ItemName="_NonUserAssembliesWithHash" />
@@ -98,16 +108,15 @@
 		</Hash>
 
 		<PropertyGroup>
-			<_R2RInputHashFile>$(IntermediateOutputPath)r2r-input.hash</_R2RInputHashFile>
+			<_PreviousR2RInputHashValue>@(_PreviousR2RInputHash)</_PreviousR2RInputHashValue>
+			<_R2RInputHashChanged Condition="'$(_R2RInputHash)' != '$(_PreviousR2RInputHashValue)'">true</_R2RInputHashChanged>
+			<_R2RInputHashChanged Condition="'$(_R2RInputHashChanged)' == ''">false</_R2RInputHashChanged>
 		</PropertyGroup>
-		<!-- Create trigger file before writing hash, so we can compare timestamps -->
-		<Touch Files="$(_R2RInputHashFile).trigger" AlwaysCreate="true" />
 
 		<WriteLinesToFile Lines="$(_R2RInputHash)" File="$(_R2RInputHashFile)" Overwrite="true" WriteOnlyWhenDifferent="true" />
 
 		<ItemGroup>
 			<FileWrites Include="$(_R2RInputHashFile)" />
-			<FileWrites Include="$(_R2RInputHashFile).trigger" />
 		</ItemGroup>
 	</Target>
 
@@ -121,9 +130,9 @@
 		</ItemGroup>
 	</Target>
 
-	<!-- Touch R2R outputs when only user assemblies changed. If hash file is older than trigger, hash didn't change, so touch outputs to skip R2R -->
+	<!-- Touch R2R outputs when only user assemblies changed, so that R2R compilation is skipped. -->
 	<Target Name="_TouchR2ROutputs"
-			Condition="'$(FilterReadyToRunAssemblies)' == 'true' And Exists('$(_R2RInputHashFile)') And Exists('$(_R2RInputHashFile).trigger') And $([System.IO.File]::GetLastWriteTime('$(_R2RInputHashFile)').Ticks) &lt; $([System.IO.File]::GetLastWriteTime('$(_R2RInputHashFile).trigger').Ticks)"
+			Condition="'$(FilterReadyToRunAssemblies)' == 'true' And '$(_R2RInputHashChanged)' == 'false'"
 			AfterTargets="_PrepareForReadyToRunCompilation"
 			BeforeTargets="_CreateR2RImages">
 		<Touch Files="%(_ReadyToRunCompileList.OutputR2RImage)"

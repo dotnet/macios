@@ -53797,7 +53797,6 @@ T:AccessorySetupKit.ASAccessoryEvent
 T:AccessorySetupKit.ASAccessoryEventType
 T:AccessorySetupKit.ASAccessorySession
 T:AccessorySetupKit.ASAccessorySessionFinishPickerDiscoveryHandler
-T:AccessorySetupKit.ASAccessorySessionUpdateAuthorizationHandler
 T:AccessorySetupKit.ASAccessorySessionUpdatePickerHandler
 T:AccessorySetupKit.ASAccessorySettings
 T:AccessorySetupKit.ASDiscoveredAccessory

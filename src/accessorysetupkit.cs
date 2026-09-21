@@ -185,6 +185,8 @@ namespace AccessorySetupKit {
 		void FinishPickerDiscovery (ASAccessorySessionFinishPickerDiscoveryHandler completionHandler);
 	}
 
+	/// <summary>A completion handler for updating accessory authorization.</summary>
+	/// <param name="error">The error that occurred, or <see langword="null" /> if authorization was updated successfully.</param>
 	delegate void ASAccessorySessionUpdateAuthorizationHandler ([NullAllowed] NSError error);
 	delegate void ASAccessorySessionUpdatePickerHandler ([NullAllowed] NSError error);
 	delegate void ASAccessorySessionFinishPickerDiscoveryHandler ([NullAllowed] NSError error);

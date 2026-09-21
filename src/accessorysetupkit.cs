@@ -349,16 +349,22 @@ namespace AccessorySetupKit {
 		ulong WifiAwarePairedDeviceId { get; set; }
 	}
 
+	/// <summary>Represents a string and the comparison options used to match it.</summary>
 	[iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface ASPropertyCompareString {
+		/// <summary>Gets the string to match.</summary>
 		[Export ("string")]
 		string String { get; }
 
+		/// <summary>Gets the options used to compare the string.</summary>
 		[Export ("compareOptions", ArgumentSemantic.Assign)]
 		NSStringCompareOptions CompareOptions { get; }
 
+		/// <summary>Creates a string comparison value.</summary>
+		/// <param name="string">The string to match.</param>
+		/// <param name="compareOptions">The options to use when comparing the string.</param>
 		[Export ("initWithString:compareOptions:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (string @string, NSStringCompareOptions compareOptions);

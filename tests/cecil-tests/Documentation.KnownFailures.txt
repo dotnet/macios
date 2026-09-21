@@ -8112,7 +8112,6 @@ M:AccessorySetupKit.ASAccessorySession.UpdatePicker(AccessorySetupKit.ASDiscover
 M:AccessorySetupKit.ASAccessorySession.UpdatePickerAsync(AccessorySetupKit.ASDiscoveredDisplayItem[])
 M:AccessorySetupKit.ASMigrationDisplayItem.#ctor(System.String,UIKit.UIImage,AccessorySetupKit.ASDiscoveryDescriptor)
 M:AccessorySetupKit.ASPickerDisplayItem.#ctor(System.String,UIKit.UIImage,AccessorySetupKit.ASDiscoveryDescriptor)
-M:AccessorySetupKit.ASPropertyCompareString.#ctor(System.String,Foundation.NSStringCompareOptions)
 M:Accounts.ACAccount.#ctor(Accounts.ACAccountType)
 M:Accounts.ACAccountCredential.#ctor(System.String,System.String,Foundation.NSDate)
 M:Accounts.ACAccountCredential.#ctor(System.String,System.String)
@@ -29556,8 +29555,6 @@ P:AccessorySetupKit.ASPickerDisplayItem.SetupOptions
 P:AccessorySetupKit.ASPickerDisplaySettings.DefaultSettings
 P:AccessorySetupKit.ASPickerDisplaySettings.DiscoveryTimeout
 P:AccessorySetupKit.ASPickerDisplaySettings.Options
-P:AccessorySetupKit.ASPropertyCompareString.CompareOptions
-P:AccessorySetupKit.ASPropertyCompareString.String
 P:Accounts.ACAccount.AccountDescription
 P:Accounts.ACAccount.AccountType
 P:Accounts.ACAccount.Credential
@@ -53798,7 +53795,6 @@ T:AccessorySetupKit.ASMigrationDisplayItem
 T:AccessorySetupKit.ASPickerDisplayItem
 T:AccessorySetupKit.ASPickerDisplaySettings
 T:AccessorySetupKit.ASPickerDisplaySettingsDiscoveryTimeout
-T:AccessorySetupKit.ASPropertyCompareString
 T:Accounts.ACLinkedInKey
 T:AdServices.AAAttribution
 T:AdServices.AAAttributionErrorCode

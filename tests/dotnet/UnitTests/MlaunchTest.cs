@@ -69,7 +69,7 @@ namespace Xamarin.Tests {
 			properties ["EnableCodeSigning"] = "false"; // Skip code signing, since that would require making sure we have code signing configured on bots.
 
 			// Build the app first, since 'DeployToDevice' is meant to deploy an already-built app.
-			DotNet.Execute ("clean", project_path, properties);
+			DotNet.Execute ("build", project_path, properties, target: "Clean");
 			DotNet.AssertBuild (project_path, properties);
 
 			var rv = DotNet.Execute ("build", project_path, properties, assert_success: false, target: "DeployToDevice");

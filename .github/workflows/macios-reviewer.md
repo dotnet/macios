@@ -4,6 +4,12 @@ on:
     name: review
     events: [pull_request_comment]
   roles: [admin, maintain, write]
+if: >-
+  github.event.issue.pull_request != null &&
+  github.event.issue.user.login != 'csigs' &&
+  (github.event.comment.body == '/review' ||
+  startsWith(github.event.comment.body, '/review ') ||
+  startsWith(github.event.comment.body, '/review\n'))
 
 # ###############################################################
 # Select a PAT from the pool and override COPILOT_GITHUB_TOKEN.

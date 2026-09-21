@@ -53791,7 +53791,6 @@ T:Accessibility.AXTechnology
 T:Accessibility.ValueDescriptionProviderHandler
 T:AccessoryAccess.AAUsbAccessory
 T:AccessoryAccess.AAUsbAccessoryManager
-T:AccessoryAccess.AAUsbAccessoryManagerRegisterListenerCompletionHandler
 T:AccessoryAccess.AAUsbAccessoryManagerUnregisterListenerCompletionHandler
 T:AccessoryAccess.AAUsbAccessoryMatchingCriteria
 T:AccessorySetupKit.ASAccessory

@@ -29529,9 +29529,6 @@ P:AccessorySetupKit.ASAccessorySession.PickerDisplaySettings
 P:AccessorySetupKit.ASAccessorySettings.BluetoothTransportBridgingIdentifier
 P:AccessorySetupKit.ASAccessorySettings.DefaultSettings
 P:AccessorySetupKit.ASAccessorySettings.Ssid
-P:AccessorySetupKit.ASDiscoveredAccessory.BluetoothAdvertisementData
-P:AccessorySetupKit.ASDiscoveredAccessory.BluetoothRSSI
-P:AccessorySetupKit.ASDiscoveredAccessory.WeakBluetoothAdvertisementData
 P:AccessorySetupKit.ASDiscoveryDescriptor.BluetoothCompanyIdentifier
 P:AccessorySetupKit.ASDiscoveryDescriptor.BluetoothManufacturerDataBlob
 P:AccessorySetupKit.ASDiscoveryDescriptor.BluetoothManufacturerDataMask
@@ -53796,7 +53793,6 @@ T:AccessorySetupKit.ASAccessoryEvent
 T:AccessorySetupKit.ASAccessoryEventType
 T:AccessorySetupKit.ASAccessorySession
 T:AccessorySetupKit.ASAccessorySettings
-T:AccessorySetupKit.ASDiscoveredAccessory
 T:AccessorySetupKit.ASDiscoveryDescriptor
 T:AccessorySetupKit.ASMigrationDisplayItem
 T:AccessorySetupKit.ASPickerDisplayItem

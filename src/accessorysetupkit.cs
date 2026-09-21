@@ -408,16 +408,20 @@ namespace AccessorySetupKit {
 		double Unbounded { get; }
 	}
 
+	/// <summary>Provides information about an accessory discovered for custom picker filtering.</summary>
 	[iOS (26, 1)]
 	[BaseType (typeof (ASAccessory))]
 	interface ASDiscoveredAccessory {
+		/// <summary>Gets the parsed Bluetooth advertisement data from the discovered accessory.</summary>
 		[NullAllowed]
 		[Wrap ("WeakBluetoothAdvertisementData")]
 		CoreBluetooth.AdvertisementData BluetoothAdvertisementData { get; }
 
+		/// <summary>Gets the raw Bluetooth advertisement data from the discovered accessory.</summary>
 		[NullAllowed, Export ("bluetoothAdvertisementData", ArgumentSemantic.Copy)]
 		NSDictionary WeakBluetoothAdvertisementData { get; }
 
+		/// <summary>Gets the Bluetooth received signal strength, in dBm, when the accessory was discovered.</summary>
 		[Export ("bluetoothRSSI", ArgumentSemantic.Copy)]
 		[BindAs (typeof (nint?))]
 		NSNumber BluetoothRSSI { get; }

@@ -78,6 +78,51 @@ namespace Xamarin.Tests {
 			Assert.That (runtimeIdentifiers, Is.EqualTo (expectedRuntimeIdentifiers), "RuntimeIdentifiers");
 		}
 
+		[TestCase (ApplePlatform.MacOSX)]
+		[TestCase (ApplePlatform.MacCatalyst)]
+		public void DefaultDesktopReleaseRuntimeIdentifiersFromProject (ApplePlatform platform)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			var project = platform == ApplePlatform.MacOSX ? "MyCocoaApp" : "MyCatalystApp";
+			var runtimeIdentifierPrefix = platform == ApplePlatform.MacOSX ? "osx" : "maccatalyst";
+			var projectPath = GetProjectPath (project, platform: platform);
+			var properties = GetDefaultProperties ();
+			properties ["Configuration"] = "Release";
+
+			var runtimeIdentifier = DotNet.GetProperty (projectPath, "RuntimeIdentifier", properties);
+			var runtimeIdentifiers = DotNet.GetProperty (projectPath, "RuntimeIdentifiers", properties);
+
+			Assert.That (runtimeIdentifier, Is.Empty, "RuntimeIdentifier");
+			Assert.That (runtimeIdentifiers, Is.EqualTo ($"{runtimeIdentifierPrefix}-x64;{runtimeIdentifierPrefix}-arm64"), "RuntimeIdentifiers");
+		}
+
+		[TestCase (ApplePlatform.MacOSX, false)]
+		[TestCase (ApplePlatform.MacOSX, true)]
+		[TestCase (ApplePlatform.MacCatalyst, false)]
+		[TestCase (ApplePlatform.MacCatalyst, true)]
+		public void ExplicitDesktopReleaseRuntimeIdentifiers (ApplePlatform platform, bool multiple)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			var runtimeIdentifierPrefix = platform == ApplePlatform.MacOSX ? "osx" : "maccatalyst";
+			var expectedRuntimeIdentifier = multiple ? "" : $"{runtimeIdentifierPrefix}-arm64";
+			var expectedRuntimeIdentifiers = multiple ? $"{runtimeIdentifierPrefix}-x64;{runtimeIdentifierPrefix}-arm64" : "";
+			var projectPath = GetProjectPath ("MaxSupportedOSPlatformVersion", platform: platform);
+			var properties = GetDefaultProperties ();
+			properties ["Configuration"] = "Release";
+			if (multiple)
+				properties ["RuntimeIdentifiers"] = expectedRuntimeIdentifiers;
+			else
+				properties ["RuntimeIdentifier"] = expectedRuntimeIdentifier;
+
+			var runtimeIdentifier = DotNet.GetProperty (projectPath, "RuntimeIdentifier", properties);
+			var runtimeIdentifiers = DotNet.GetProperty (projectPath, "RuntimeIdentifiers", properties);
+
+			Assert.That (runtimeIdentifier, Is.EqualTo (expectedRuntimeIdentifier), "RuntimeIdentifier");
+			Assert.That (runtimeIdentifiers, Is.EqualTo (expectedRuntimeIdentifiers), "RuntimeIdentifiers");
+		}
+
 		[Test]
 		[TestCase (null)]
 		[TestCase ("tvossimulator-x64")]

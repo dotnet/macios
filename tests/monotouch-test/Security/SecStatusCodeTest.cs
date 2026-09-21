@@ -22,7 +22,7 @@ namespace MonoTouchFixtures.Security {
 			TestRuntime.AssertXcodeVersion (9, 3);
 
 			var desc = SecStatusCode.Success.GetStatusDescription ();
-			Assert.NotNull (desc, $"{nameof (desc)} not null");
+			Assert.That (desc, Is.Not.Null, $"{nameof (desc)} not null");
 
 			var noErr = "No error.";
 			Assert.That (desc, Is.EqualTo (noErr), $"{nameof (desc)} == {noErr}");

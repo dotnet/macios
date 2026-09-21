@@ -513,7 +513,7 @@ namespace PdfKit {
 		NSString KeywordsKey { get; }
 	}
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[iOS (16, 0), MacCatalyst (16, 0)]
 	[TV (18, 2)]
 	[StrongDictionary ("PdfPageImageInitializationOptionKeys")]
 	interface PdfPageImageInitializationOption {
@@ -523,7 +523,7 @@ namespace PdfKit {
 		double CompressionQuality { get; set; }
 	}
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[iOS (16, 0), MacCatalyst (16, 0)]
 	[TV (18, 2)]
 	[Static]
 	interface PdfPageImageInitializationOptionKeys {
@@ -595,19 +595,19 @@ namespace PdfKit {
 		[Field ("PDFDocumentAccessPermissionsOption", "+PDFKit")]
 		NSString AccessPermissionsKey { get; }
 
-		[iOS (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), MacCatalyst (16, 0)]
 		[Field ("PDFDocumentBurnInAnnotationsOption", "+PDFKit")]
 		NSString BurnInAnnotationsKey { get; }
 
-		[iOS (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), MacCatalyst (16, 0)]
 		[Field ("PDFDocumentSaveTextFromOCROption", "+PDFKit")]
 		NSString SaveTextFromOcrKey { get; }
 
-		[iOS (16, 4), Mac (13, 3), MacCatalyst (16, 4)]
+		[iOS (16, 4), MacCatalyst (16, 4)]
 		[Field ("PDFDocumentSaveImagesAsJPEGOption", "+PDFKit")]
 		NSString SaveImagesAsJpegKey { get; }
 
-		[iOS (16, 4), Mac (13, 3), MacCatalyst (16, 4)]
+		[iOS (16, 4), MacCatalyst (16, 4)]
 		[Field ("PDFDocumentOptimizeImagesForScreenOption", "+PDFKit")]
 		NSString OptimizeImagesForScreenKey { get; }
 	}
@@ -629,16 +629,16 @@ namespace PdfKit {
 		[iOS (15, 0), MacCatalyst (15, 0)]
 		string AccessPermissions { get; set; }
 
-		[iOS (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), MacCatalyst (16, 0)]
 		bool BurnInAnnotations { get; set; }
 
-		[iOS (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), MacCatalyst (16, 0)]
 		bool SaveTextFromOcr { get; set; }
 
-		[iOS (16, 4), Mac (13, 3), MacCatalyst (16, 4)]
+		[iOS (16, 4), MacCatalyst (16, 4)]
 		bool SaveImagesAsJpeg { get; set; }
 
-		[iOS (16, 4), Mac (13, 3), MacCatalyst (16, 4)]
+		[iOS (16, 4), MacCatalyst (16, 4)]
 		bool OptimizeImagesForScreen { get; set; }
 	}
 
@@ -1431,7 +1431,7 @@ namespace PdfKit {
 		[NullAllowed, Export ("stampName")]
 		string StampName { get; set; }
 
-		[iOS (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("activatableTextField")]
 		bool ActivatableTextField { [Bind ("isActivatableTextField")] get; }
 	}
@@ -2575,12 +2575,12 @@ namespace PdfKit {
 		NativeHandle Constructor (NSImage image);
 
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
-		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), MacCatalyst (16, 0)]
 		[DesignatedInitializer]
 		[Export ("initWithImage:options:")]
 		NativeHandle Constructor (NSImage image, NSDictionary options);
 
-		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), MacCatalyst (16, 0)]
 		[Wrap ("this (image, options.GetDictionary ()!)")]
 		NativeHandle Constructor (NSImage image, PdfPageImageInitializationOption options);
 
@@ -3663,11 +3663,11 @@ namespace PdfKit {
 		[Export ("acceptsDraggedFiles")]
 		bool AcceptsDraggedFiles { get; set; }
 
-		[iOS (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), MacCatalyst (16, 0)]
 		[NullAllowed, Export ("pageOverlayViewProvider", ArgumentSemantic.Weak)]
 		IPdfPageOverlayViewProvider PageOverlayViewProvider { get; set; }
 
-		[iOS (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("inMarkupMode")]
 		bool InMarkupMode { [Bind ("isInMarkupMode")] get; set; }
 
@@ -3788,18 +3788,17 @@ namespace PdfKit {
 			""")]
 		void OpenPdf (PdfView sender, PdfActionRemoteGoTo action);
 
-		[iOS (13, 0)]
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("PDFViewParentViewController")]
 		UIViewController ParentViewController { get; }
 	}
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[iOS (16, 0), MacCatalyst (16, 0)]
 	[TV (18, 2)]
 	interface IPdfPageOverlayViewProvider { }
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[iOS (16, 0), MacCatalyst (16, 0)]
 	[TV (18, 2)]
 	[Protocol (Name = "PDFPageOverlayViewProvider")]
 	interface PdfPageOverlayViewProvider {

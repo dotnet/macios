@@ -108,7 +108,7 @@ namespace Xamarin.MacDev {
 
 			var stampFile = decompressedResource.TrimEnd ('\\', '/') + ".stamp";
 
-			if (FileCopier.IsUptodate (zip, stampFile, XamarinTask.GetFileCopierReportErrorCallback (log), XamarinTask.GetFileCopierLogCallback (log), check_stamp: false))
+			if (FileCopier.IsUptodate (task, zip, stampFile, check_stamp: false))
 				return true;
 
 			// We use 'unzip' to extract on !Windows, and System.IO.Compression to extract on Windows.

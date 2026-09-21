@@ -26,8 +26,8 @@ namespace MonoTouchFixtures.Network {
 		public void HttpConstructorTest ()
 		{
 			using var resolver = new NWResolverConfig (endpoint, NWResolverConfigEndpointType.Https);
-			Assert.NotNull (resolver, "Not null https");
-			Assert.AreNotEqual (IntPtr.Zero, resolver.Handle, "Zero Handle htttps");
+			Assert.That (resolver, Is.Not.Null, "Not null https");
+			Assert.That (resolver.Handle, Is.Not.EqualTo (IntPtr.Zero), "Zero Handle htttps");
 		}
 
 		[Test]

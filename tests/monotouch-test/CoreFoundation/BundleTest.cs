@@ -15,10 +15,9 @@ namespace MonoTouchFixtures.CoreFoundation {
 		public void TestGetAll ()
 		{
 			var bundles = CFBundle.GetAll ();
-			Assert.IsTrue (bundles.Length > 0);
+			Assert.That (bundles.Length > 0, Is.True);
 			foreach (CFBundle b in bundles) {
-				Assert.IsFalse (String.IsNullOrEmpty (b.Url.ToString ()),
-  						String.Format ("Found bundle with null url and id {0}", b.Identifier));
+				Assert.That (String.IsNullOrEmpty (b.Url.ToString ()), Is.False, String.Format ("Found bundle with null url and id {0}", b.Identifier));
 			}
 		}
 
@@ -26,7 +25,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 		public void TestGetBundleIdMissing ()
 		{
 			var bundle = CFBundle.Get ("????");
-			Assert.IsNull (bundle);
+			Assert.That (bundle, Is.Null);
 		}
 
 		[Test]
@@ -34,7 +33,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 		{
 			// grab all bundles and make sure we do get the correct ones using their id
 			var bundles = CFBundle.GetAll ();
-			Assert.IsTrue (bundles.Length > 0);
+			Assert.That (bundles.Length > 0, Is.True);
 
 			// There may be multiple apps providing the same bundle ID (the typical example is that we usually have multiple Xcodes installed)
 			// So compute a map for bundle id -> bundle paths that's used in the second part here to verify the CFBundle.Get results.
@@ -52,11 +51,10 @@ namespace MonoTouchFixtures.CoreFoundation {
 				var id = b.Identifier;
 				if (!String.IsNullOrEmpty (id)) {
 					var otherBundle = CFBundle.Get (id);
-					Assert.AreEqual (b.Info.Type, otherBundle.Info.Type,
-  							 String.Format ("Found bundle with diff type and id {0}", id));
+					Assert.That (otherBundle.Info.Type, Is.EqualTo (b.Info.Type), String.Format ("Found bundle with diff type and id {0}", id));
 					var bPath = (string) ((NSString) b.Url.Path).ResolveSymlinksInPath ();
 					var list = dict [id];
-					Assert.That (list, Does.Contain (bPath), "None of the bundles for {0} matches the path {1}", id, bPath);
+					Assert.That (list, Does.Contain (bPath), $"None of the bundles for {id} matches the path {bPath}");
 				}
 			}
 		}
@@ -73,8 +71,8 @@ namespace MonoTouchFixtures.CoreFoundation {
 		{
 			var main = CFBundle.GetMain ();
 			var expectedBundleId = "com.xamarin.monotouch-test";
-			Assert.AreEqual (expectedBundleId, main.Identifier);
-			Assert.IsTrue (main.HasLoadedExecutable);
+			Assert.That (main.Identifier, Is.EqualTo (expectedBundleId));
+			Assert.That (main.HasLoadedExecutable, Is.True);
 		}
 
 		[Test]
@@ -136,7 +134,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 		public void TestArchitectures ()
 		{
 			var main = CFBundle.GetMain ();
-			Assert.IsTrue (main.Architectures.Length > 0);
+			Assert.That (main.Architectures.Length > 0, Is.True);
 		}
 
 		[Test]
@@ -150,7 +148,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 		public void TestDevelopmentRegion ()
 		{
 			var main = CFBundle.GetMain ();
-			Assert.IsTrue (String.IsNullOrEmpty (main.DevelopmentRegion));
+			Assert.That (String.IsNullOrEmpty (main.DevelopmentRegion), Is.True);
 		}
 
 		[Test]
@@ -161,7 +159,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 			var expected = new string [] {
 				"Base", "en-AU", "en-UK", "es", "es-AR", "es-ES"
 			}.OrderBy (v => v).ToArray ();
-			Assert.AreEqual (string.Join (";", expected), string.Join (";", localizations), "Localizations");
+			Assert.That (string.Join (";", localizations), Is.EqualTo (string.Join (";", expected)), "Localizations");
 		}
 
 		[Test]
@@ -175,7 +173,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 		{
 			var preferred = new string [] { "en", "es" };
 			var used = CFBundle.GetPreferredLocalizations (preferred);
-			Assert.IsTrue (used.Length > 0);
+			Assert.That (used.Length > 0, Is.True);
 			foreach (var u in used)
 				Assert.That (preferred, Contains.Item (u), u);
 		}
@@ -199,7 +197,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 		{
 			var main = CFBundle.GetMain ();
 			var url = main.GetAuxiliaryExecutableUrl ("fake-exe");
-			Assert.IsNull (url);
+			Assert.That (url, Is.Null);
 		}
 
 		[TestCase ("")]
@@ -334,9 +332,9 @@ namespace MonoTouchFixtures.CoreFoundation {
 		public void TestGetInfoDictionary ()
 		{
 			var main = CFBundle.GetMain ();
-			Assert.NotNull (main.Url, "Url");
+			Assert.That (main.Url, Is.Not.Null, "Url");
 			var dict = CFBundle.GetInfoDictionary (main.Url);
-			Assert.NotNull (dict, "GetInfoDictionary");
+			Assert.That (dict, Is.Not.Null, "GetInfoDictionary");
 			Assert.That (dict.Count, Is.GreaterThan ((nuint) 0), "Count");
 		}
 
@@ -382,7 +380,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 						break;
 					}
 					s = main.GetLocalizedString (key, defaultValue, tableName);
-					Assert.AreEqual (expectedValue, s, $"{tableName}/{key}");
+					Assert.That (s, Is.EqualTo (expectedValue), $"{tableName}/{key}");
 				}
 
 				// no matching table, so default value
@@ -391,7 +389,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 					key = "GoodMorning";
 					expectedValue = "default";
 					s = main.GetLocalizedString (key, defaultValue, tableName);
-					Assert.AreEqual (expectedValue, s, $"{tableName}/{key}");
+					Assert.That (s, Is.EqualTo (expectedValue), $"{tableName}/{key}");
 				}
 
 				tableName = "CustomTable";
@@ -418,7 +416,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 					break;
 				}
 				s = main.GetLocalizedString (key, defaultValue, tableName);
-				Assert.AreEqual (expectedValue, s, key);
+				Assert.That (s, Is.EqualTo (expectedValue), key);
 			});
 		}
 
@@ -442,112 +440,112 @@ namespace MonoTouchFixtures.CoreFoundation {
 				tableName = "CustomTable";
 				key = "Local Animal";
 				s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { });
-				Assert.AreEqual ("Tiger of the Highlands", s, $"{tableName}/{key}:[]");
+				Assert.That (s, Is.EqualTo ("Tiger of the Highlands"), $"{tableName}/{key}:[]");
 
 				// There's no en-US translation, so the en-UK one is picked instead
 				s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "en-US" });
-				Assert.AreEqual ("Tiger of the Highlands", s, $"{tableName}/{key}:en-US");
+				Assert.That (s, Is.EqualTo ("Tiger of the Highlands"), $"{tableName}/{key}:en-US");
 
 				// There's no de-DE translation, so the en-UK one is picked instead
 				s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "de-DE" });
-				Assert.AreEqual ("Tiger of the Highlands", s, $"{tableName}/{key}:en-US");
+				Assert.That (s, Is.EqualTo ("Tiger of the Highlands"), $"{tableName}/{key}:en-US");
 
 				s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "en-AU" });
-				Assert.AreEqual ("Quokka", s, $"{tableName}/{key}:en-AU");
+				Assert.That (s, Is.EqualTo ("Quokka"), $"{tableName}/{key}:en-AU");
 
 				s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "en-UK" });
-				Assert.AreEqual ("Tiger of the Highlands", s, $"{tableName}/{key}:en-UK");
+				Assert.That (s, Is.EqualTo ("Tiger of the Highlands"), $"{tableName}/{key}:en-UK");
 
 				s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "es-ES" });
-				Assert.AreEqual ("Lince ibérico", s, $"{tableName}/{key}:es-ES");
+				Assert.That (s, Is.EqualTo ("Lince ibérico"), $"{tableName}/{key}:es-ES");
 
 				s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "es-AR" });
-				Assert.AreEqual ("Pato vapor cabeza blanca", s, $"{tableName}/{key}:es-AR");
+				Assert.That (s, Is.EqualTo ("Pato vapor cabeza blanca"), $"{tableName}/{key}:es-AR");
 
 				s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "es" });
-				Assert.AreEqual ("Ocelote", s, $"{tableName}/{key}:es");
+				Assert.That (s, Is.EqualTo ("Ocelote"), $"{tableName}/{key}:es");
 
 				s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "es-MX" });
-				Assert.AreEqual ("Ocelote", s, $"{tableName}/{key}:es-MX");
+				Assert.That (s, Is.EqualTo ("Ocelote"), $"{tableName}/{key}:es-MX");
 
 				s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "es-AR", "es-ES" });
-				Assert.AreEqual ("Pato vapor cabeza blanca", s, $"{tableName}/{key}:es-AR;es-ES");
+				Assert.That (s, Is.EqualTo ("Pato vapor cabeza blanca"), $"{tableName}/{key}:es-AR;es-ES");
 
 				s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "es-ES", "es-AR" });
-				Assert.AreEqual ("Lince ibérico", s, $"{tableName}/{key}:es-ES;es-AR");
+				Assert.That (s, Is.EqualTo ("Lince ibérico"), $"{tableName}/{key}:es-ES;es-AR");
 
 				foreach (var tn in new string [] { "Localizable", null, "" }) {
 					tableName = tn;
 					key = "GoodMorning";
 					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { });
-					Assert.AreEqual ("Wakey, wakey, eggs and bakey", s, $"{tableName}/{key}:[]");
+					Assert.That (s, Is.EqualTo ("Wakey, wakey, eggs and bakey"), $"{tableName}/{key}:[]");
 
 					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "en-CA" });
-					Assert.AreEqual ("Wakey, wakey, eggs and bakey", s, $"{tableName}/{key}:en-CA");
+					Assert.That (s, Is.EqualTo ("Wakey, wakey, eggs and bakey"), $"{tableName}/{key}:en-CA");
 
 					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "en-US" });
-					Assert.AreEqual ("Wakey, wakey, eggs and bakey", s, $"{tableName}/{key}:en-US");
+					Assert.That (s, Is.EqualTo ("Wakey, wakey, eggs and bakey"), $"{tableName}/{key}:en-US");
 
 					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "en-AU" });
-					Assert.AreEqual ("G'day mate", s, $"{tableName}/{key}:en-AU");
+					Assert.That (s, Is.EqualTo ("G'day mate"), $"{tableName}/{key}:en-AU");
 
 					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "en-UK" });
-					Assert.AreEqual ("Wakey, wakey, eggs and bakey", s, $"{tableName}/{key}:en-UK");
+					Assert.That (s, Is.EqualTo ("Wakey, wakey, eggs and bakey"), $"{tableName}/{key}:en-UK");
 
 					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "es-ES" });
-					Assert.AreEqual ("Buenos días", s, $"{tableName}/{key}:es-ES");
+					Assert.That (s, Is.EqualTo ("Buenos días"), $"{tableName}/{key}:es-ES");
 
 					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "es-AR" });
-					Assert.AreEqual ("Buen día", s, $"{tableName}/{key}:es-AR");
+					Assert.That (s, Is.EqualTo ("Buen día"), $"{tableName}/{key}:es-AR");
 
 					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "es" });
-					Assert.AreEqual ("Buenas", s, $"{tableName}/{key}:es");
+					Assert.That (s, Is.EqualTo ("Buenas"), $"{tableName}/{key}:es");
 
 					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "es-MX" });
-					Assert.AreEqual ("Buenas", s, $"{tableName}/{key}:es-MX");
+					Assert.That (s, Is.EqualTo ("Buenas"), $"{tableName}/{key}:es-MX");
 
 					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "es-AR", "es-ES" });
-					Assert.AreEqual ("Buen día", s, $"{tableName}/{key}:es-AR;es-ES");
+					Assert.That (s, Is.EqualTo ("Buen día"), $"{tableName}/{key}:es-AR;es-ES");
 
 					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "es-ES", "es-AR" });
-					Assert.AreEqual ("Buenos días", s, $"{tableName}/{key}:es-ES;es-AR");
+					Assert.That (s, Is.EqualTo ("Buenos días"), $"{tableName}/{key}:es-ES;es-AR");
 				}
 
 				foreach (var tn in new string [] { "Base", "AnythingElse" }) {
 					tableName = tn;
 					key = "GoodMorning";
 					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { });
-					Assert.AreEqual (defaultValue, s, $"{tableName}/{key}:[]");
+					Assert.That (s, Is.EqualTo (defaultValue), $"{tableName}/{key}:[]");
 
 					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "en-CA" });
-					Assert.AreEqual (defaultValue, s, $"{tableName}/{key}:en-CA");
+					Assert.That (s, Is.EqualTo (defaultValue), $"{tableName}/{key}:en-CA");
 
 					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "en-US" });
-					Assert.AreEqual (defaultValue, s, $"{tableName}/{key}:en-US");
+					Assert.That (s, Is.EqualTo (defaultValue), $"{tableName}/{key}:en-US");
 
 					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "en-AU" });
-					Assert.AreEqual (defaultValue, s, $"{tableName}/{key}:en-AU");
+					Assert.That (s, Is.EqualTo (defaultValue), $"{tableName}/{key}:en-AU");
 
 					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "en-UK" });
-					Assert.AreEqual (defaultValue, s, $"{tableName}/{key}:en-UK");
+					Assert.That (s, Is.EqualTo (defaultValue), $"{tableName}/{key}:en-UK");
 
 					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "es-ES" });
-					Assert.AreEqual (defaultValue, s, $"{tableName}/{key}:es-ES");
+					Assert.That (s, Is.EqualTo (defaultValue), $"{tableName}/{key}:es-ES");
 
 					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "es-AR" });
-					Assert.AreEqual (defaultValue, s, $"{tableName}/{key}:es-AR");
+					Assert.That (s, Is.EqualTo (defaultValue), $"{tableName}/{key}:es-AR");
 
 					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "es" });
-					Assert.AreEqual (defaultValue, s, $"{tableName}/{key}:es");
+					Assert.That (s, Is.EqualTo (defaultValue), $"{tableName}/{key}:es");
 
 					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "es-MX" });
-					Assert.AreEqual (defaultValue, s, $"{tableName}/{key}:es-MX");
+					Assert.That (s, Is.EqualTo (defaultValue), $"{tableName}/{key}:es-MX");
 
 					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "es-AR", "es-ES" });
-					Assert.AreEqual (defaultValue, s, $"{tableName}/{key}:es-AR;es-ES");
+					Assert.That (s, Is.EqualTo (defaultValue), $"{tableName}/{key}:es-AR;es-ES");
 
 					s = main.GetLocalizedString (key, defaultValue, tableName, new string [] { "es-ES", "es-AR" });
-					Assert.AreEqual (defaultValue, s, $"{tableName}/{key}:es-ES;es-AR");
+					Assert.That (s, Is.EqualTo (defaultValue), $"{tableName}/{key}:es-ES;es-AR");
 				}
 			});
 		}
@@ -564,13 +562,13 @@ namespace MonoTouchFixtures.CoreFoundation {
 			bool loadable_x86_64 = CFBundle.IsArchitectureLoadable (CFBundle.Architecture.X86_64);
 			// Due to Rosetta, both x64 and arm64 executables are loadable on Apple Silicon.
 			if (isX64Executable || isArm64Executable)
-				Assert.IsTrue (loadable_x86_64, "x86_64 Expected => true");
+				Assert.That (loadable_x86_64, Is.True, "x86_64 Expected => true");
 			else
-				Assert.IsFalse (loadable_x86_64, "x86_64 Expected => false");
+				Assert.That (loadable_x86_64, Is.False, "x86_64 Expected => false");
 
 			bool loadable_arm64 = CFBundle.IsArchitectureLoadable (CFBundle.Architecture.ARM64);
 			if (isArm64Executable)
-				Assert.IsTrue (loadable_arm64, "arm64 Expected => true");
+				Assert.That (loadable_arm64, Is.True, "arm64 Expected => true");
 			// Due to Rosetta, we can't determine whether ARM64 is loadable or not if we're an X64 executable ourselves.
 		}
 
@@ -581,10 +579,10 @@ namespace MonoTouchFixtures.CoreFoundation {
 
 			var main = CFBundle.GetMain ();
 			var loadableBundle = CFBundle.IsExecutableLoadable (main);
-			Assert.IsTrue (loadableBundle, "loadableBundle");
+			Assert.That (loadableBundle, Is.True, "loadableBundle");
 
 			var loadableBundleUrl = CFBundle.IsExecutableLoadable (main.ExecutableUrl);
-			Assert.IsTrue (loadableBundleUrl, "loadableBundleUrl");
+			Assert.That (loadableBundleUrl, Is.True, "loadableBundleUrl");
 		}
 #endif
 	}

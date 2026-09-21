@@ -1,5 +1,7 @@
 {
   "author": "Microsoft",
   "name": "tvOS-Bindungsbibliothek",
-  "description": "Ein Projekt zum Erstellen einer .NET tvOS-Bindungsbibliothek"
+  "description": "Ein Projekt zum Erstellen einer .NET tvOS-Bindungsbibliothek",
+  "symbols/Framework/description": "The target framework for the project.",
+  "symbols/Framework/choices/net10.0-tvos/description": "Target net10.0-tvos"
 }

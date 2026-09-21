@@ -26,15 +26,16 @@ namespace Foundation {
 					if (IsDirectBinding) {
 						InitializeHandle (Messaging.IntPtr_objc_msgSend_IntPtr (this.Handle, Selector.GetHandle ("initWithUUIDBytes:"), ptr), "initWithUUIDBytes:");
 					} else {
-						InitializeHandle (Messaging.IntPtr_objc_msgSendSuper_IntPtr (this.SuperHandle, Selector.GetHandle ("initWithUUIDBytes:"), ptr), "initWithUUIDBytes:");
+						var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this);
+						InitializeHandle (Messaging.IntPtr_objc_msgSendSuper_IntPtr (&__objc_super__, Selector.GetHandle ("initWithUUIDBytes:"), ptr), "initWithUUIDBytes:");
+						GC.KeepAlive (this);
 					}
 				}
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the UUID as a 16-byte array.</summary>
+		/// <returns>A 16-byte array containing the UUID value.</returns>
 		public byte [] GetBytes ()
 		{
 			byte [] ret = new byte [16];

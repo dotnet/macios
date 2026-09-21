@@ -52,8 +52,6 @@ namespace CoreFoundation {
 		extern static IntPtr CFMachPortGetPort (IntPtr handle);
 
 		/// <summary>Gets the pointer to the wrapped Mach port instance.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		public IntPtr MachPort {
 			get {
 				return CFMachPortGetPort (Handle);
@@ -64,7 +62,6 @@ namespace CoreFoundation {
 		extern static void CFMachPortInvalidate (IntPtr handle);
 
 		/// <summary>Stops the Mach port from sending or receiving messages, but does not destroy it.</summary>
-		///         <remarks>To be added.</remarks>
 		public void Invalidate ()
 		{
 			CFMachPortInvalidate (Handle);
@@ -73,8 +70,6 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static byte CFMachPortIsValid (IntPtr handle);
 		/// <summary>Gets a value that tells whether the port can send and receive messages.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		public bool IsValid {
 			get {
 				return CFMachPortIsValid (Handle) != 0;
@@ -85,8 +80,6 @@ namespace CoreFoundation {
 		extern static IntPtr CFMachPortCreateRunLoopSource (IntPtr allocator, IntPtr port, IntPtr order);
 
 		/// <summary>Creates the run loop source for the Mach port.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
 		public CFRunLoopSource CreateRunLoopSource ()
 		{
 			// order is currently ignored, we must pass 0

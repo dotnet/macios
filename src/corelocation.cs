@@ -67,7 +67,7 @@ namespace CoreLocation {
 		UnsupportedPlatform = 4,
 	}
 
-	[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0), TV (17, 0)]
+	[iOS (17, 0), MacCatalyst (17, 0), TV (17, 0)]
 	[Native]
 	public enum CLMonitoringState : ulong {
 		Unknown,
@@ -77,7 +77,7 @@ namespace CoreLocation {
 		Unmonitored,
 	}
 
-	[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0), TV (17, 0)]
+	[iOS (17, 0), MacCatalyst (17, 0), TV (17, 0)]
 	[Native]
 	public enum CLLiveUpdateConfiguration : long {
 		Default = 0,
@@ -85,6 +85,9 @@ namespace CoreLocation {
 		OtherNavigation,
 		Fitness,
 		Airborne,
+		/// <summary>Configures location updates for vehicular maritime navigation.</summary>
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		Maritime = 5,
 	}
 
 
@@ -177,7 +180,6 @@ namespace CoreLocation {
 		///         <remarks>
 		///           <para>This property is not be available on all devices.</para>
 		///         </remarks>
-		[TV (13, 0)] // API_UNAVAILABLE(tvos) removed in Xcode 11 beta 1
 		[MacCatalyst (13, 1)]
 		[Export ("course")]
 		double Course { get; }
@@ -190,7 +192,6 @@ namespace CoreLocation {
 		/// <summary>The instantaneous speed of the device, in meters per second.</summary>
 		///         <value>Negative values are invalid.</value>
 		///         <remarks>To be added.</remarks>
-		[TV (13, 0)] // API_UNAVAILABLE(tvos) removed in Xcode 11 beta 1
 		[MacCatalyst (13, 1)]
 		[Export ("speed")]
 		double Speed { get; }
@@ -492,9 +493,18 @@ namespace CoreLocation {
 		///         <value>The default value assumes that the app, in upright portrait mode, represents due North.</value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
+		[Deprecated (PlatformName.iOS, 27, 0, message: "Use 'HeadingBody' instead.")]
+		[Deprecated (PlatformName.MacOSX, 27, 0, message: "Use 'HeadingBody' instead.")]
 		[MacCatalyst (13, 1)]
+		[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Use 'HeadingBody' instead.")]
 		[Export ("headingOrientation", ArgumentSemantic.Assign)]
 		CLDeviceOrientation HeadingOrientation { get; set; }
+
+		/// <summary>Gets or sets the body used as the reference for heading calculations.</summary>
+		/// <value>The reference body, or <see langword="null" /> if no body is set.</value>
+		[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[NullAllowed, Export ("headingBody", ArgumentSemantic.Retain)]
+		ICLBodyIdentifiable HeadingBody { get; set; }
 
 		/// <summary>The most recent heading (direction in which the device is traveling).</summary>
 		///         <value>This value may be <see langword="null" /> if heading updates have not been started.</value>
@@ -676,7 +686,7 @@ namespace CoreLocation {
 		[Export ("rangedRegions", ArgumentSemantic.Copy)]
 		NSSet RangedRegions { get; }
 
-		[NoTV, iOS (13, 0)]
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("rangedBeaconConstraints", ArgumentSemantic.Copy)]
 		NSSet<CLBeaconIdentityConstraint> RangedBeaconConstraints { get; }
@@ -707,7 +717,7 @@ namespace CoreLocation {
 		[Export ("startRangingBeaconsInRegion:")]
 		void StartRangingBeacons (CLBeaconRegion region);
 
-		[NoTV, iOS (13, 0)]
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("startRangingBeaconsSatisfyingConstraint:")]
 		void StartRangingBeacons (CLBeaconIdentityConstraint constraint);
@@ -723,7 +733,7 @@ namespace CoreLocation {
 		[Export ("stopRangingBeaconsInRegion:")]
 		void StopRangingBeacons (CLBeaconRegion region);
 
-		[NoTV, iOS (13, 0)]
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("stopRangingBeaconsSatisfyingConstraint:")]
 		void StopRangingBeacons (CLBeaconIdentityConstraint constraint);
@@ -930,7 +940,7 @@ namespace CoreLocation {
 		[Export ("locationManager:didRangeBeacons:inRegion:"), EventArgs ("CLRegionBeaconsRanged")]
 		void DidRangeBeacons (CLLocationManager manager, CLBeacon [] beacons, CLBeaconRegion region);
 
-		[NoTV, iOS (13, 0)]
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("locationManager:didRangeBeacons:satisfyingConstraint:")]
 		[EventArgs ("CLRegionBeaconsConstraintRanged")]
@@ -950,7 +960,7 @@ namespace CoreLocation {
 		[Export ("locationManager:rangingBeaconsDidFailForRegion:withError:"), EventArgs ("CLRegionBeaconsFailed")]
 		void RangingBeaconsDidFailForRegion (CLLocationManager manager, CLBeaconRegion region, NSError error);
 
-		[NoTV, iOS (13, 0)]
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("locationManager:didFailRangingBeaconsForConstraint:error:")]
 		[EventArgs ("CLRegionBeaconsConstraintFailed")]
@@ -1317,7 +1327,6 @@ namespace CoreLocation {
 		[Export ("initWithProximityUUID:identifier:")]
 		NativeHandle _InitWithProximityUuid (NSUuid proximityUuid, string identifier);
 
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Internal] // signature conflict with deprecated API
 		[Export ("initWithUUID:identifier:")]
@@ -1334,7 +1343,6 @@ namespace CoreLocation {
 		[Export ("initWithProximityUUID:major:identifier:")]
 		NativeHandle _InitWithProximityUuid (NSUuid proximityUuid, ushort major, string identifier);
 
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Internal] // signature conflict with deprecated API
 		[Export ("initWithUUID:major:identifier:")]
@@ -1352,13 +1360,11 @@ namespace CoreLocation {
 		[Export ("initWithProximityUUID:major:minor:identifier:")]
 		NativeHandle _InitWithProximityUuid (NSUuid proximityUuid, ushort major, ushort minor, string identifier);
 
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Internal] // signature conflict with deprecated API
 		[Export ("initWithUUID:major:minor:identifier:")]
 		IntPtr _InitWithUuid (NSUuid uuid, ushort major, ushort minor, string identifier);
 
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("initWithBeaconIdentityConstraint:identifier:")]
 		NativeHandle Constructor (CLBeaconIdentityConstraint beaconIdentityConstraint, string identifier);
@@ -1387,7 +1393,6 @@ namespace CoreLocation {
 		[Export ("proximityUUID", ArgumentSemantic.Copy)]
 		NSUuid ProximityUuid { get; }
 
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("UUID", ArgumentSemantic.Copy)]
 		NSUuid Uuid { get; }
@@ -1412,7 +1417,6 @@ namespace CoreLocation {
 		[Export ("notifyEntryStateOnDisplay", ArgumentSemantic.Assign)]
 		bool NotifyEntryStateOnDisplay { get; set; }
 
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("beaconIdentityConstraint", ArgumentSemantic.Copy)]
 		CLBeaconIdentityConstraint BeaconIdentityConstraint { get; }
@@ -1434,7 +1438,6 @@ namespace CoreLocation {
 		[Export ("proximityUUID", ArgumentSemantic.Copy)]
 		NSUuid ProximityUuid { get; }
 
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("UUID", ArgumentSemantic.Copy)]
 		NSUuid Uuid { get; }
@@ -1478,7 +1481,6 @@ namespace CoreLocation {
 		[Export ("rssi")]
 		nint Rssi { get; }
 
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("timestamp", ArgumentSemantic.Copy)]
 		NSDate Timestamp { get; }
@@ -1738,7 +1740,7 @@ namespace CoreLocation {
 		double HorizontalAccuracy { get; }
 	}
 
-	[NoTV, iOS (13, 0)]
+	[NoTV]
 	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacOSX, 14, 0, message: "Use 'CLBeaconIdentityCondition' instead.")]
 	[Deprecated (PlatformName.iOS, 17, 0, message: "Use 'CLBeaconIdentityCondition' instead.")]
@@ -1768,6 +1770,13 @@ namespace CoreLocation {
 		NSNumber Minor { get; }
 	}
 
+	interface ICLBodyIdentifiable { }
+
+	[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[Protocol]
+	interface CLBodyIdentifiable {
+	}
+
 	[iOS (15, 0), NoTV, NoMacCatalyst, NoMac]
 	[Protocol]
 	interface CLLocationPushServiceExtension {
@@ -1792,7 +1801,7 @@ namespace CoreLocation {
 		bool IsProducedByAccessory { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	interface CLUpdate {
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'Stationary' instead.")]
@@ -1842,7 +1851,7 @@ namespace CoreLocation {
 		bool AuthorizationRequestInProgress { get; }
 	}
 
-	[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CLMonitoringRecord : NSSecureCoding {
@@ -1853,7 +1862,7 @@ namespace CoreLocation {
 		CLMonitoringEvent LastEvent { get; }
 	}
 
-	[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CLMonitoringEvent : NSSecureCoding {
@@ -1910,7 +1919,7 @@ namespace CoreLocation {
 		bool AuthorizationRequestInProgress { get; }
 	}
 
-	[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	interface CLMonitorConfiguration {
 		[Export ("name")]
@@ -1927,7 +1936,7 @@ namespace CoreLocation {
 		CLMonitorConfiguration Create (string name, DispatchQueue queue, Action<CLMonitor, CLMonitoringEvent> eventHandler);
 	}
 
-	[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CLMonitor {
@@ -1956,7 +1965,7 @@ namespace CoreLocation {
 		CLMonitoringRecord GetMonitoringRecord (string identifier);
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CLLocationUpdater {
@@ -1980,11 +1989,11 @@ namespace CoreLocation {
 		void Invalidate ();
 	}
 
-	[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	interface CLCondition : NSSecureCoding, NSCopying { }
 
-	[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (CLCondition))]
 	interface CLCircularGeographicCondition : NSSecureCoding {
 		[Export ("center")]
@@ -1997,7 +2006,7 @@ namespace CoreLocation {
 		NativeHandle Constructor (CLLocationCoordinate2D center, double radius);
 	}
 
-	[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (CLCondition))]
 	[DisableDefaultCtor]
 	interface CLBeaconIdentityCondition : NSCopying, NSSecureCoding {

@@ -36,7 +36,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 #else
 			var boolIsB = true;
 #endif
-			Assert.AreEqual (boolIsB ? "v@?B" : "v@?c", GetBlockSignature (&block), $"Signature ARM64: {Runtime.IsARM64CallingConvention}");
+			Assert.That (GetBlockSignature (&block), Is.EqualTo (boolIsB ? "v@?B" : "v@?c"), $"Signature ARM64: {Runtime.IsARM64CallingConvention}");
 		}
 
 		[Test]
@@ -45,7 +45,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		{
 			delegate* unmanaged<IntPtr, IntPtr, void> trampoline = &SignatureTestB;
 			using var block = new BlockLiteral (trampoline, null, typeof (BlocksTest), nameof (SignatureTestB));
-			Assert.AreEqual ("v@?@", GetBlockSignature (&block), "Signature");
+			Assert.That (GetBlockSignature (&block), Is.EqualTo ("v@?@"), "Signature");
 		}
 
 		[Test]
@@ -56,7 +56,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			using var block = new BlockLiteral (trampoline, null, typeof (BlocksTest), nameof (SignatureTestC));
 			// This is the wrong signature, but the registrar has no way of figuring out the correct
 			// one without the UserDelegateType attribute on the target method.
-			Assert.AreEqual ("v@?^v^v", GetBlockSignature (&block), "Signature");
+			Assert.That (GetBlockSignature (&block), Is.EqualTo ("v@?^v^v"), "Signature");
 		}
 
 		[UserDelegateType (typeof (Action<bool>))]
@@ -111,9 +111,9 @@ namespace MonoTouchFixtures.ObjCRuntime {
 
 			using (var obj = new TestClass ()) {
 				TestClass.OnCallback = ((IntPtr blockArgument, NativeHandle self, IntPtr argument) => {
-					Assert.AreNotEqual (IntPtr.Zero, blockArgument, "block");
-					Assert.AreEqual (obj.Handle, self, "self");
-					Assert.AreEqual (argument, (IntPtr) 0x12345678, "argument");
+					Assert.That (blockArgument, Is.Not.EqualTo (IntPtr.Zero), "block");
+					Assert.That (self, Is.EqualTo (obj.Handle), "self");
+					Assert.That (argument, Is.EqualTo ((IntPtr) 0x12345678), "argument");
 				});
 				Messaging.void_objc_msgSend_IntPtr (obj.Handle, Selector.GetHandle ("testBlocks:"), (IntPtr) 0x12345678);
 			}

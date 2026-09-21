@@ -4,8 +4,6 @@ namespace HomeKit {
 
 	public partial class HMCharacteristicMetadata {
 		/// <summary>Gets the units in which the characteristic is expressed.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		public HMCharacteristicMetadataUnits Units {
 			get {
 				var u = _Units;
@@ -33,8 +31,6 @@ namespace HomeKit {
 		}
 
 		/// <summary>Gets the data format of the characteristic.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		public HMCharacteristicMetadataFormat Format {
 			get {
 				var f = _Format;

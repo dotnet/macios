@@ -31,12 +31,10 @@ namespace AppKit {
 
 #if MONOMAC
 	// Class to access C functions
-	/// <summary>To be added.</summary>
-	///     <remarks>To be added.</remarks>
+	/// <summary>Provides access to AppKit framework C functions.</summary>
 	public partial class AppKitFramework {
 
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Plays the system alert sound.</summary>
 		[DllImport (Constants.AppKitLibrary)]
 		public static extern void NSBeep ();
 	}

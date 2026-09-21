@@ -9,6 +9,8 @@
 
 #nullable enable
 
+using System.ComponentModel;
+
 namespace CoreGraphics {
 
 	public enum MatrixOrder {
@@ -168,7 +170,6 @@ namespace CoreGraphics {
 		PlusLighter,
 	}
 
-	[iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	public enum CGPdfTagType /* int32_t */ {
 		Document = 100,
@@ -216,12 +217,20 @@ namespace CoreGraphics {
 		RubyPunctuation,
 		Warichu,
 		WarichuText,
-		WarichuPunctiation,
+		WarichuPunctuation,
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'WarichuPunctuation' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		WarichuPunctiation = WarichuPunctuation,
+#endif
 		Figure = 700,
 		Formula,
 		Form,
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		Object = 800,
+		/// <summary>A non-structural tag for content that should be excluded from the document's logical structure.</summary>
+		[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		Artifact = 900,
 	}
 
 	// untyped enum -> CGPDFObject.h

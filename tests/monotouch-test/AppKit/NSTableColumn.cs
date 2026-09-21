@@ -19,7 +19,7 @@ namespace Xamarin.Mac.Tests {
 			var title = column.Title;
 			column.Title = "Test";
 
-			Assert.IsFalse (column.Title == title, "NSTableColumnShouldChangeTitle - Failed to set the Title property");
+			Assert.That (column.Title == title, Is.False, "NSTableColumnShouldChangeTitle - Failed to set the Title property");
 		}
 	}
 }

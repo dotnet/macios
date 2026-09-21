@@ -1,5 +1,6 @@
 using Mono.Linker.Steps;
 using Xamarin.Linker;
+using Xamarin.Linker.Steps;
 
 using Mono.Cecil;
 using Mono.Tuner;
@@ -7,10 +8,27 @@ using Mono.Tuner;
 #nullable enable
 
 namespace Xamarin.Linker.Steps {
+#if ASSEMBLY_PREPARER
+	public class SetBeforeFieldInitStep : AssemblyModifierStep {
+#else
 	public class SetBeforeFieldInitStep : ConfigurationAwareSubStep {
+#endif
 		protected override string Name { get; } = "Set BeforeFieldInit";
 		protected override int ErrorCode { get; } = 2380;
 
+#if ASSEMBLY_PREPARER
+		protected override bool ModifyAssembly (AssemblyDefinition assembly)
+		{
+			if (Configuration.DerivedLinkContext.App.Optimizations.RegisterProtocols != true)
+				return false;
+			return base.ModifyAssembly (assembly);
+		}
+
+		protected override bool ProcessType (TypeDefinition type)
+		{
+			return ProcessTypeImpl (type);
+		}
+#else
 		public override SubStepTargets Targets {
 			get {
 				return SubStepTargets.Type;
@@ -19,6 +37,13 @@ namespace Xamarin.Linker.Steps {
 
 		protected override void Process (TypeDefinition type)
 		{
+			ProcessTypeImpl (type);
+		}
+#endif
+
+		bool ProcessTypeImpl (TypeDefinition type)
+		{
+			var modified = false;
 			// If we're registering protocols, we want to remove the static
 			// constructor on the protocol interface, because it's not needed
 			// (because we've removing all the DynamicDependency attributes
@@ -43,13 +68,17 @@ namespace Xamarin.Linker.Steps {
 			// the linker.
 
 			if (Configuration.DerivedLinkContext.App.Optimizations.RegisterProtocols != true)
-				return;
+				return modified;
 
 			if (!type.IsBeforeFieldInit && type.IsInterface && type.HasMethods) {
 				var cctor = type.GetTypeConstructor ();
-				if (cctor is not null && cctor.IsBindingImplOptimizableCode (LinkContext))
+				if (cctor is not null && cctor.IsBindingImplOptimizableCode (Configuration.DerivedLinkContext) && type.IsBeforeFieldInit == false) {
 					type.IsBeforeFieldInit = true;
+					modified = true;
+				}
 			}
+
+			return modified;
 		}
 	}
 }

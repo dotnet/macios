@@ -69,7 +69,7 @@ namespace LinkAll {
 		[Test]
 		public void TypeConverter_BuiltIn ()
 		{
-			Assert.NotNull (TypeDescriptor.GetConverter (new BuiltInConverter ()), "BuiltInConverter");
+			Assert.That (TypeDescriptor.GetConverter (new BuiltInConverter ()), Is.Not.Null, "BuiltInConverter");
 
 			string? name = (typeof (BuiltInConverter).GetCustomAttributes (false) [0] as TypeConverterAttribute)?.ConverterTypeName;
 			var typename = $"System.ComponentModel.BooleanConverter, System.ComponentModel.TypeConverter, Version={typeof (int).Assembly.GetName ().Version}, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a";
@@ -79,7 +79,7 @@ namespace LinkAll {
 		[Test]
 		public void TypeConverter_Custom ()
 		{
-			Assert.NotNull (TypeDescriptor.GetConverter (new TypeDescriptorTest ()), "TypeDescriptorTest");
+			Assert.That (TypeDescriptor.GetConverter (new TypeDescriptorTest ()), Is.Not.Null, "TypeDescriptorTest");
 
 			string? name = (typeof (TypeDescriptorTest).GetCustomAttributes (false) [0] as TypeConverterAttribute)?.ConverterTypeName;
 			var typename = "LinkAll.CustomConverter, link all, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null";
@@ -91,7 +91,7 @@ namespace LinkAll {
 		{
 			// Check that the Makefile generated a valid version number, e.g. "12.3." was not
 			// reference: https://github.com/dotnet/macios/issues/4859
-			Assert.True (Version.TryParse (ObjCRuntime.Constants.Version, out var _), "Version");
+			Assert.That (Version.TryParse (ObjCRuntime.Constants.Version, out var _), Is.True, "Version");
 		}
 	}
 }

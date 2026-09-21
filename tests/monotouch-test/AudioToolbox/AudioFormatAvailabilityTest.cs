@@ -17,13 +17,13 @@ namespace MonoTouchFixtures.AudioToolbox {
 		[Test]
 		public void GetDecoders ()
 		{
-			Assert.IsNotNull (AudioFormatAvailability.GetDecoders (AudioFormatType.LinearPCM));
+			Assert.That (AudioFormatAvailability.GetDecoders (AudioFormatType.LinearPCM), Is.Not.Null);
 		}
 
 		[Test]
 		public void GetEncoders ()
 		{
-			Assert.IsNotNull (AudioFormatAvailability.GetEncoders (AudioFormatType.AC3));
+			Assert.That (AudioFormatAvailability.GetEncoders (AudioFormatType.AC3), Is.Not.Null);
 		}
 	}
 }

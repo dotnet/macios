@@ -8,13 +8,10 @@ DOTNET_PACKS_PATH=$(DOTNET_DIR)/packs
 DOTNET_TEMPLATE_PACKS_PATH=$(DOTNET_DIR)/template-packs
 TMP_PKG_DIR=_pkg
 
-DOTNET_PLATFORMS_UPPERCASE:=$(shell echo $(DOTNET_PLATFORMS) | tr a-z A-Z)
-DOTNET_PLATFORMS_LOWERCASE:=$(shell echo $(DOTNET_PLATFORMS) | tr A-Z a-z)
-
 # Create variables prefixed with the correctly cased platform name from the upper-cased platform name. This makes some of the next sections somewhat simpler.
-$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(platform)_NUGET_VERSION_NO_METADATA:=$($(shell echo $(platform) | tr a-z A-Z)_NUGET_VERSION_NO_METADATA)))
-$(foreach platform,$(DOTNET_PLATFORMS),$(eval NET7_$(platform)_NUGET_VERSION_NO_METADATA:=$(NET7_$(shell echo $(platform) | tr a-z A-Z)_NUGET_VERSION_NO_METADATA)))
-$(foreach platform,$(DOTNET_PLATFORMS),$(eval NET8_$(platform)_NUGET_VERSION_NO_METADATA:=$(NET8_$(shell echo $(platform) | tr a-z A-Z)_NUGET_VERSION_NO_METADATA)))
+$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(platform)_NUGET_VERSION_NO_METADATA:=$($(call uppercase,$(platform))_NUGET_VERSION_NO_METADATA)))
+$(foreach platform,$(DOTNET_PLATFORMS),$(eval NET7_$(platform)_NUGET_VERSION_NO_METADATA:=$(NET7_$(call uppercase,$(platform))_NUGET_VERSION_NO_METADATA)))
+$(foreach platform,$(DOTNET_PLATFORMS),$(eval NET8_$(platform)_NUGET_VERSION_NO_METADATA:=$(NET8_$(call uppercase,$(platform))_NUGET_VERSION_NO_METADATA)))
 
 DOTNET_iOS_GLOBAL_USINGS=CoreGraphics Foundation UIKit
 DOTNET_tvOS_GLOBAL_USINGS=CoreGraphics Foundation UIKit
@@ -133,7 +130,7 @@ targets/Microsoft.$(1).Sdk.Versions.props: targets/Microsoft.Sdk.Versions.templa
 Microsoft.$1.Sdk/targets/Microsoft.$1.Sdk.Versions.props: targets/Microsoft.$1.Sdk.Versions.props
 	$$(Q) $$(CP) $$< $$@
 endef
-$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call VersionsTemplate,$(platform),$(shell echo $(platform) | tr a-z A-Z),$(DOTNET_$(shell echo $(platform) | tr a-z A-Z)_RUNTIME_IDENTIFIERS),$(shell echo $(DOTNET_$(shell echo $(platform) | tr a-z A-Z)_RUNTIME_IDENTIFIERS) | tr ' ' ';'),$(DOTNET_$(shell echo $(platform) | tr a-z A-Z)_RUNTIME_IDENTIFIERS_NO_ARCH))))
+$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call VersionsTemplate,$(platform),$(call uppercase,$(platform)),$(DOTNET_$(call uppercase,$(platform))_RUNTIME_IDENTIFIERS),$(shell echo $(DOTNET_$(call uppercase,$(platform))_RUNTIME_IDENTIFIERS) | tr ' ' ';'),$(DOTNET_$(call uppercase,$(platform))_RUNTIME_IDENTIFIERS_NO_ARCH))))
 
 # When building only sharpie, generate iOS version props so setup-publish-bar-manifest works for DARC
 ifdef ONLY_SHARPIE
@@ -185,7 +182,7 @@ Microsoft.$(1).Sdk/targets/Microsoft.$(1).Sdk.SupportedTargetPlatforms.props: $(
 	$(Q) $(GENERATE_TARGET_PLATFORMS_EXEC) $(1) "$(DOTNET_TFM)" "$$(SUPPORTED_API_VERSIONS_$(2))" $$@.tmp
 	$(Q) mv $$@.tmp $$@
 endef
-$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call SupportedTargetPlatforms,$(platform),$(shell echo $(platform) | tr a-z A-Z))))
+$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call SupportedTargetPlatforms,$(platform),$(call uppercase,$(platform)))))
 
 include $(TOP)/scripts/generate-workloadmanifest-json/fragment.mk
 include $(TOP)/scripts/generate-workloadmanifest-targets/fragment.mk
@@ -214,10 +211,10 @@ LOCAL_WORKLOAD_TARGETS += Workloads/Microsoft.NET.Sdk.$(1)/WorkloadManifest.json
 LOCAL_WORKLOAD_TARGETS += Workloads/Microsoft.NET.Sdk.$(1)/WorkloadManifest.targets
 LOCAL_WORKLOAD_TARGETS += Workloads/Microsoft.NET.Sdk.$(1)/WorkloadDependencies.json
 endef
-$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call WorkloadTargets,$(platform),$(shell echo $(platform) | tr A-Z a-z),$($(platform)_NUGET_VERSION_NO_METADATA),$(shell echo $(platform) | tr a-z A-Z),$(NET8_$(platform)_NUGET_VERSION_NO_METADATA))))
+$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call WorkloadTargets,$(platform),$(call lowercase,$(platform)),$($(platform)_NUGET_VERSION_NO_METADATA),$(call uppercase,$(platform)),$(NET8_$(platform)_NUGET_VERSION_NO_METADATA))))
 
 # Always use the commit distance as the third number in the VS component version, as it should always increase across all branches.
-$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(platform)_MSI_VERSION:=$($(shell echo $(platform) | tr '[:lower:]' '[:upper:]')_NUGET_OS_VERSION).$($(shell echo $(platform) | tr a-z A-Z)_NUGET_COMMIT_DISTANCE)))
+$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(platform)_MSI_VERSION:=$($(call uppercase,$(platform))_NUGET_OS_VERSION).$($(call uppercase,$(platform))_NUGET_COMMIT_DISTANCE)))
 
 include $(TOP)/scripts/generate-vs-workload/fragment.mk
 $(DOTNET_NUPKG_DIR)/vs-workload.props: Makefile $(GENERATE_VS_WORKLOAD)
@@ -225,13 +222,13 @@ $(DOTNET_NUPKG_DIR)/vs-workload.props: Makefile $(GENERATE_VS_WORKLOAD)
 	$(Q_GEN) $(GENERATE_VS_WORKLOAD_EXEC) \
 		$(foreach platform,$(DOTNET_PLATFORMS),--platform $(platform) $($(platform)_MSI_VERSION)) \
 		$(foreach platform,$(DOTNET_WINDOWS_PLATFORMS),--windows-platform $(platform)) \
-		$(foreach platform,$(DOTNET_PLATFORMS),--shorten $($(shell echo $(platform) | tr '[:lower:]' '[:upper:]')_NUGET_VERSION_NO_METADATA)=$($(platform)_MSI_VERSION)) \
+		$(foreach platform,$(DOTNET_PLATFORMS),--shorten $($(call uppercase,$(platform))_NUGET_VERSION_NO_METADATA)=$($(platform)_MSI_VERSION)) \
 		--shorten Microsoft.MacCatalyst.Runtime.maccatalyst=Microsoft.MacCatalyst.Runtime \
 		--shorten Microsoft.NET.Sdk.MacCatalyst.Manifest=Microsoft.MacCatalyst.Manifest \
 		--shorten Microsoft.tvOS.Runtime.tvossimulator=Microsoft.tvOS.Runtime \
 		--tfm $(DOTNET_TFM) \
 		--xcode $(XCODE_VERSION) \
-		$(foreach platform,$(DOTNET_PLATFORMS),--commit-distance-$(platform) "$($(shell echo $(platform) | tr a-z A-Z)_NUGET_COMMIT_DISTANCE)") \
+		$(foreach platform,$(DOTNET_PLATFORMS),--commit-distance-$(platform) "$($(call uppercase,$(platform))_NUGET_COMMIT_DISTANCE)") \
 		--output $@.tmp
 	$(Q) mv $@.tmp $@
 
@@ -243,7 +240,7 @@ ifdef NupkgWindowsDefinition
 nupkgs/$($(1)_NUGET_WINDOWS_SDK_NAME).%.nupkg: CURRENT_VERSION_NO_METADATA=$($(2)_WINDOWS_NUGET_VERSION_NO_METADATA)
 nupkgs/$($(1)_NUGET_WINDOWS_SDK_NAME).%.nupkg: CURRENT_VERSION_FULL=$($(2)_WINDOWS_NUGET_VERSION_FULL)
 endif
-$(foreach platform,$(DOTNET_WINDOWS_PLATFORMS),$(eval $(call NupkgWindowsDefinition,$(platform),$(shell echo $(platform) | tr '[:lower:]' '[:upper:]'))))
+$(foreach platform,$(DOTNET_WINDOWS_PLATFORMS),$(eval $(call NupkgWindowsDefinition,$(platform),$(call uppercase,$(platform)))))
 
 define NupkgDefinition
 nupkgs/$($(1)_NUGET).%.nupkg: CURRENT_VERSION_NO_METADATA=$($(1)_NUGET_VERSION_NO_METADATA)
@@ -275,7 +272,7 @@ endef
 
 # Create the NuGet packaging targets. It's amazing what make allows you to do...
 $(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call CreateNuGetTemplate,Microsoft.$(platform).Sdk,$($(platform)_NUGET_VERSION_NO_METADATA),$($(platform)_NUGET_TARGETS),,$(DOTNET_VERSION_BAND),$(platform))))
-$(foreach platform,$(DOTNET_WINDOWS_PLATFORMS),$(eval $(call CreateWindowsNuGetTemplate,Microsoft.$(platform).Windows.Sdk,$($(shell echo $(platform) | tr '[:lower:]' '[:upper:]')_WINDOWS_NUGET_VERSION_NO_METADATA),$($(platform)_WINDOWS_NUGET_TARGETS),,$(DOTNET_VERSION_BAND),$(platform))))
+$(foreach platform,$(DOTNET_WINDOWS_PLATFORMS),$(eval $(call CreateWindowsNuGetTemplate,Microsoft.$(platform).Windows.Sdk,$($(call uppercase,$(platform))_WINDOWS_NUGET_VERSION_NO_METADATA),$($(platform)_WINDOWS_NUGET_TARGETS),,$(DOTNET_VERSION_BAND),$(platform))))
 $(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call CreateNuGetTemplate,Microsoft.$(platform).Ref,$($(platform)_NUGET_VERSION_NO_METADATA),,,$(DOTNET_VERSION_BAND),$(platform))))
 $(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call CreateNuGetTemplateNoTargetFramework,Microsoft.$(platform).Templates,$($(platform)_NUGET_VERSION_NO_METADATA),,,$(DOTNET_VERSION_BAND),$(platform))))
 $(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call CreateNuGetTemplateNoTargetFramework,Microsoft.NET.Sdk.$(platform),$($(platform)_NUGET_VERSION_NO_METADATA),,.Manifest-$(MACIOS_MANIFEST_VERSION_BAND),$(MACIOS_MANIFEST_VERSION_BAND),$(platform))))
@@ -305,7 +302,7 @@ TEMPLATE_PACKS_$(1) = $(DOTNET_NUPKG_DIR)/$($(1)_NUGET).Templates.$($(1)_NUGET_V
 TEMPLATE_PACKS += $$(TEMPLATE_PACKS_$(1))
 WORKLOAD_PACKS_$(1) = $(DOTNET_NUPKG_DIR)/$(subst Microsoft.,Microsoft.NET.Sdk.,$($(1)_NUGET)).Manifest-$(MACIOS_MANIFEST_VERSION_BAND).$($(1)_NUGET_VERSION_NO_METADATA).nupkg
 WORKLOAD_PACKS += $$(WORKLOAD_PACKS_$(1))
-pack-$(shell echo $(1) | tr A-Z a-z): $$(RUNTIME_PACKS_$(1)) $$(REF_PACKS_$(1)) $$(SDK_PACKS_$(1)) $$(TEMPLATE_PACKS_$(1)) $$(WORKLOAD_PACKS_$(1))
+pack-$(call lowercase,$(1)): $$(RUNTIME_PACKS_$(1)) $$(REF_PACKS_$(1)) $$(SDK_PACKS_$(1)) $$(TEMPLATE_PACKS_$(1)) $$(WORKLOAD_PACKS_$(1))
 endef
 $(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),$(eval $(call PacksDefinitions,$(platform))))
 
@@ -328,7 +325,7 @@ $(DOTNET_PACKS_PATH)/$($(1)_NUGET_SDK_NAME)/$2: | $(DOTNET_PACKS_PATH)/$($(1)_NU
 $(DOTNET_PACKS_PATH)/$($(1)_NUGET_REF_NAME)/$2: | $(DOTNET_PACKS_PATH)/$($(1)_NUGET_REF_NAME)
 	$$(Q_LN) ln -Fs $$(abspath $(DOTNET_DESTDIR)/$($(1)_NUGET_REF_NAME)) $$(abspath $$@)
 
-$(DOTNET_TEMPLATE_PACKS_PATH)/Microsoft.$1.Templates.$(2).nupkg: $(TEMPLATE_PACKS_$(shell echo $(1) | tr a-z A-Z)) | $(DOTNET_TEMPLATE_PACKS_PATH)
+$(DOTNET_TEMPLATE_PACKS_PATH)/Microsoft.$1.Templates.$(2).nupkg: $(TEMPLATE_PACKS_$(call uppercase,$(1))) | $(DOTNET_TEMPLATE_PACKS_PATH)
 	$$(Q) $$(CP) $$< $$@
 
 WORKLOAD_TARGETS += \
@@ -339,7 +336,7 @@ WORKLOAD_TARGETS += \
 
 INSTALLED_SDK_MANIFESTS += $(DOTNET_SDK_MANIFESTS_PATH)/$(MACIOS_MANIFEST_VERSION_BAND)/microsoft.net.sdk.$3
 endef
-$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call InstallWorkload,$(platform),$($(platform)_NUGET_VERSION_NO_METADATA),$(shell echo $(platform) | tr A-Z a-z))))
+$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call InstallWorkload,$(platform),$($(platform)_NUGET_VERSION_NO_METADATA),$(call lowercase,$(platform)))))
 
 define InstallRuntimeManagedWorkload
 $(DOTNET_PACKS_PATH)/$$($(1)_NUGET_RUNTIME_MANAGED_NAME)/$2: | $(DOTNET_PACKS_PATH)/$$($(1)_NUGET_RUNTIME_MANAGED_NAME)
@@ -442,7 +439,7 @@ install-system-$(3): $(DOTNET_PKG_DIR)/Microsoft.$1.Bundle.$2.pkg
 
 INSTALL_SYSTEM_PACKAGE_TARGETS += install-system-$(3)
 endef
-$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call CreatePackage,$(platform),$($(platform)_NUGET_VERSION_NO_METADATA),$(shell echo $(platform) | tr A-Z a-z),$(shell echo $(platform) | tr a-z A-Z))))
+$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call CreatePackage,$(platform),$($(platform)_NUGET_VERSION_NO_METADATA),$(call lowercase,$(platform)),$(call uppercase,$(platform)))))
 
 define CreateWindowsBundle
 $(TMP_PKG_DIR)/Microsoft.$1.Windows.Bundle.$2.zip: $($(1)_NUGET_TARGETS) $($(1)_WINDOWS_NUGET_TARGETS) $(WORKLOAD_TARGETS) Makefile $(REF_PACKS_$(4)) $(SDK_PACKS_$(4)) $(SDK_PACKS_$(4)_WINDOWS) $(TEMPLATE_PACKS_$(4)) | $(TMP_PKG_DIR)
@@ -463,14 +460,14 @@ $(TMP_PKG_DIR)/Microsoft.$1.Windows.Bundle.$2.zip: $($(1)_NUGET_TARGETS) $($(1)_
 
 WINDOWS_PACKAGE_TARGETS += $(DOTNET_PKG_DIR)/Microsoft.$1.Windows.Bundle.$2.zip
 endef
-$(foreach platform,$(DOTNET_WINDOWS_PLATFORMS),$(eval $(call CreateWindowsBundle,$(platform),$($(platform)_NUGET_VERSION_NO_METADATA),$(shell echo $(platform) | tr A-Z a-z),$(shell echo $(platform) | tr a-z A-Z))))
+$(foreach platform,$(DOTNET_WINDOWS_PLATFORMS),$(eval $(call CreateWindowsBundle,$(platform),$($(platform)_NUGET_VERSION_NO_METADATA),$(call lowercase,$(platform)),$(call uppercase,$(platform)))))
 
 NUGET_SOURCES:=$(shell grep https://pkgs.dev.azure.com $(TOP)/NuGet.config | sed -e 's/.*value="//'  -e 's/".*//')
 .stamp-install-workloads: Makefile $(WORKLOAD_TARGETS) $(RUNTIME_PACKS) $(REF_PACKS) $(SDK_PACKS) $(TEMPLATE_PACKS) $(WORKLOAD_PACKS)
 	$(Q) $(DOTNET) workload install --skip-manifest-update \
 		$(foreach source,$(NUGET_SOURCES),--source $(source)) \
 		--source $(DOTNET_NUPKG_DIR) $(DOTNET_WORKLOAD_VERBOSITY) \
-		$(foreach platform,$(DOTNET_PLATFORMS),$(shell echo $(platform) | tr A-Z a-z))
+		$(DOTNET_PLATFORMS_LOWERCASE)
 	$(Q) touch $@
 
 ifndef ONLY_SHARPIE

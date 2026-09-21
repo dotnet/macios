@@ -50,7 +50,7 @@ static class CFunctions {
 	// extern void FuncWithNullableBlockParam (void (^ _Nullable)(NSObject * _Nullable) block);
 	[DllImport ("__Internal")]
 	[Verify (PlatformInvoke)]
-	static extern void FuncWithNullableBlockParam ([NullAllowed] Action<NSObject> block);
+	static extern void FuncWithNullableBlockParam ([NullAllowed] Action<NSObject?> block);
 
 	// extern void FuncWithNonnullBlock (void (^ _Nonnull)(void) block);
 	[DllImport ("__Internal")]
@@ -101,3 +101,4 @@ interface Foo {
 	[return: NullAllowed]
 	NSObject CreateObjectWithObject ([NullAllowed] NSObject otherObject);
 }
+

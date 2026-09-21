@@ -12,9 +12,8 @@
 namespace AppKit {
 
 	public partial class NSLevelIndicator {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the level indicator cell associated with this control.</summary>
+		/// <value>The <see cref="NSLevelIndicatorCell" /> used by this control.</value>
 		public new NSLevelIndicatorCell Cell {
 			get { return (NSLevelIndicatorCell) base.Cell; }
 			set { base.Cell = value; }

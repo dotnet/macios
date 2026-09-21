@@ -67,6 +67,54 @@ endif
 DOTNET_GENERATOR_FLAGS=$(GENERATOR_FLAGS) --lib=$(DOTNET_BCL_DIR) -attributelib:$(DOTNET_BINDING_ATTRIBUTES) $(DOTNET_REFERENCES)
 DOTNET_GENERATOR=$(DOTNET_BUILD_DIR)/bgen/bgen
 DOTNET_BINDING_ATTRIBUTES=$(DOTNET_BUILD_DIR)/Xamarin.Apple.BindingAttributes.dll
+APPLE_DOC_READER=$(TOP)/packages/appledocreader.$(ADR_RUNTIME_IDENTIFIER)/$(ADR_NUGET_VERSION)/tools/any/$(ADR_RUNTIME_IDENTIFIER)/AppleDocReader
+APPLE_DOC_READER_LOCK=$(BUILD_DIR)/.appledocreader.lock
+
+# AppleDocReader (ADR) enriches our generated XML documentation (Microsoft.iOS.xml,
+# Microsoft.tvOS.xml, ...) with links to Apple's documentation. It does this by reading Apple's
+# *offline* documentation cache that historically shipped inside Xcode as a SQLite database at:
+#
+#     <Xcode.app>/Contents/SharedFrameworks/DNTDocumentationSupport.framework/Versions/A/Resources/external/cache.db
+#
+# Starting with Xcode 27, Apple REMOVED this bundled offline documentation cache. In Xcode 27 that
+# directory contains only a tombstone file literally named "deleted", and a content-based scan of
+# the entire Xcode 27 app bundle finds no replacement documentation database (only an unrelated
+# AppIntentSchemas.sqlite). Instead, Xcode 27 downloads documentation on demand into a CoreSpotlight
+# index at:
+#
+#     ~/Library/Developer/Xcode/DocumentationCache/<cacheVersion>/<xcodeVersion>/DeveloperDocumentation.index
+#
+# which is a proprietary Spotlight metadata store (file magic "8tsd"), not SQLite. That on-demand
+# cache is unsuitable as a build input because it:
+#   * is not part of the Xcode bundle, so it cannot be a hermetic build input;
+#   * only exists after an interactive/on-demand documentation download, so it is absent on clean
+#     and CI machines;
+#   * is only queryable through Apple's private CoreDocumentation XPC service (there is no public API
+#     to query a standalone .index bundle), and its binary format is undocumented and changes between
+#     Xcode betas.
+#
+# As a result, AppleDocReader cannot enrich documentation when building with Xcode 27 or later. Rather
+# than fail the build, we detect the absence of the legacy offline cache and skip the enrichment step,
+# copying the XML documentation through unchanged (identical to the NO_XCODE behavior below). This only
+# affects whether <appledoc> links are present; the XML documentation is otherwise complete and correct.
+#
+# ENABLE_APPLE_DOC_READER is therefore set only when an Xcode with the legacy offline cache is
+# available. This is capability-based on purpose: if a future Xcode restores an offline cache at the
+# expected path, enrichment turns back on automatically with no further changes here.
+#
+# Follow-up: re-implementing documentation enrichment against a hermetic source (e.g. Apple's online
+# DocC render JSON at https://developer.apple.com/tutorials/data/documentation/<framework>/<symbol>.json,
+# which still carries the Clang USR, e.g. "c:objc(cs)UIView", that ADR keys on) should be tracked
+# separately.
+ifdef NO_XCODE
+ENABLE_APPLE_DOC_READER :=
+else
+APPLE_DOC_READER_CACHE_DB := $(abspath $(DEVELOPER_DIR)/../../Contents/SharedFrameworks/DNTDocumentationSupport.framework/Versions/A/Resources/external/cache.db)
+ENABLE_APPLE_DOC_READER := $(if $(wildcard $(APPLE_DOC_READER_CACHE_DB)),1,)
+ifneq ($(ENABLE_APPLE_DOC_READER),1)
+$(warning AppleDocReader: the Xcode offline documentation cache was not found at $(APPLE_DOC_READER_CACHE_DB) (Xcode 27+ no longer ships it); XML documentation will be generated WITHOUT Apple documentation links.)
+endif
+endif
 
 #
 # Specific warnings that we want reported as errors by generator
@@ -173,7 +221,7 @@ endef
 # pseudo-code:
 #     foreach (var platform in DOTNET_PLATFORMS)
 #        BuildDotNetIntermediateAssembly (platform, platform.ToUpper (), platform.ToLower ())
-$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call DotNetVariables,$(platform),$(shell echo $(platform) | tr '[:lower:]' '[:upper:]'),$(shell echo $(platform) | tr '[:upper:]' '[:lower:]'))))
+$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call DotNetVariables,$(platform),$(call uppercase,$(platform)),$(call lowercase,$(platform)))))
 
 #
 # iOS
@@ -346,17 +394,20 @@ $(DOTNET_DESTDIR)/$($(2)_NUGET_REF_NAME)/ref/$(DOTNET_TFM)/Microsoft.$(1).dll: $
 $(DOTNET_DESTDIR)/$($(2)_NUGET_REF_NAME)/ref/$(DOTNET_TFM)/Microsoft.$(1).xml: $($(2)_DOTNET_BUILD_DIR)/doc/Microsoft.$(1).xml | $(DOTNET_DESTDIR)/$($(2)_NUGET_REF_NAME)/ref/$(DOTNET_TFM)
 	$$(Q) $(CP) $$< $$@
 
-ifndef IS_LINUX
+ifeq ($(ENABLE_APPLE_DOC_READER),1)
+# AppleDocReader backs up a shared Xcode SQLite database, so serialize invocations.
 $($(2)_DOTNET_BUILD_DIR)/doc/Microsoft.$(1).xml: $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).xml $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).dll build/.build-adr-stamp | $($(2)_DOTNET_BUILD_DIR)/doc
-	$$(Q_GEN) $(TOP)/packages/appledocreader.$(ADR_RUNTIME_IDENTIFIER)/$(ADR_NUGET_VERSION)/tools/any/$(ADR_RUNTIME_IDENTIFIER)/AppleDocReader inject docs --assembly="$(abspath $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).dll)" --input="$(abspath $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).xml)" --output="$(abspath $$@)" --xcode="$(DEVELOPER_DIR)/../.." --runtimeDll="$(DOTNET_BCL_DIR)/System.Runtime.dll" -f
+	$$(Q_GEN) /usr/bin/lockf "$(APPLE_DOC_READER_LOCK)" "$(APPLE_DOC_READER)" inject docs --assembly="$(abspath $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).dll)" --input="$(abspath $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).xml)" --output="$(abspath $$@)" --xcode="$(DEVELOPER_DIR)/../.." --runtimeDll="$(DOTNET_BCL_DIR)/System.Runtime.dll" -f
 else
-# On Linux, skip AppleDocReader (macOS-only tool) and just copy the XML
+# Skip AppleDocReader and just copy the XML. This happens either when building without Xcode
+# (NO_XCODE), or when the Xcode in use does not ship the offline documentation cache that
+# AppleDocReader reads (Xcode 27+). See the ENABLE_APPLE_DOC_READER comment near the top of this file.
 $($(2)_DOTNET_BUILD_DIR)/doc/Microsoft.$(1).xml: $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).xml | $($(2)_DOTNET_BUILD_DIR)/doc
 	$(Q) $(CP) $$< $$@
 endif
 endef
 
-ifndef IS_LINUX
+ifeq ($(ENABLE_APPLE_DOC_READER),1)
 build/.build-adr-stamp:
 	$(MAKE) -C $(TOP)/tools/adr
 	$(Q) touch $@
@@ -369,7 +420,7 @@ endif
 # pseudo-code:
 #     foreach (var platform in DOTNET_PLATFORMS)
 #        BuildDotNetIntermediateAssembly (platform, platform.ToUpper (), platform.ToLower ())
-$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call BuildDotNetIntermediateAssembly,$(platform),$(shell echo $(platform) | tr '[:lower:]' '[:upper:]'),$(shell echo $(platform) | tr '[:upper:]' '[:lower:]'))))
+$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call BuildDotNetIntermediateAssembly,$(platform),$(call uppercase,$(platform)),$(call lowercase,$(platform)))))
 
 define BuildDotNetPlatformAssembly
 $(2)_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES = \
@@ -435,6 +486,15 @@ $($(2)_DOTNET_BUILD_DIR)/Microsoft.$(1).rsp: Makefile frameworks.sources $(RSP_D
 $($(2)_DOTNET_BUILD_DIR)/$(4)/Microsoft.$(1)%dll $($(2)_DOTNET_BUILD_DIR)/$(4)/Microsoft.$(1)%pdb $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1)%dll $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1)%xml: $$($(2)_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES) $$(ROSLYN_GENERATOR) $$(ROSLYN_ANALYZER) | $$($(2)_DOTNET_PLATFORM_ASSEMBLY_DIR_DEPENDENCIES)
 	$$(call Q_PROF_CSC,dotnet) $(DOTNET_CSC) @$($(2)_DOTNET_BUILD_DIR)/Microsoft.$(1).rsp
 
+ifdef SERIALIZE_CSC
+# This is to serialize the csc commands for the platform assembly. The platform assembly takes a while to compile (maxing out the CPU), and csc is already multi-threaded, which
+# means that if we're running multiple long csc tasks simultaneously, the CPU of the machine will get absolutely thrashed. csc (aka Roslyn) isn't exactly a cheapskate with memory either...
+# It looks a bit weird, but the idea is that in this template, every platform assembly depends on the assembly from the previous template expansion.
+# It's opt-in, because it slows down the build a bit.
+$($(2)_DOTNET_BUILD_DIR)/$(4)/Microsoft.$(1).dll: $(LAST_DLL)
+LAST_DLL=$($(2)_DOTNET_BUILD_DIR)/$(4)/Microsoft.$(1).dll
+endif
+
 dotnet-$(3):: $($(2)_DOTNET_BUILD_DIR)/$(4)/Microsoft.$(1).dll
 
 DOTNET_TARGETS_$(3) += \
@@ -468,7 +528,7 @@ endef
 # pseudo-code:
 #     foreach (var platform in DOTNET_PLATFORMS)
 #        BuildDotNetPlatformAssembly (platform, platform.ToUpper (), platform.ToLower (), 64)
-$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call BuildDotNetPlatformAssembly,$(platform),$(shell echo $(platform) | tr '[:lower:]' '[:upper:]'),$(shell echo $(platform) | tr '[:upper:]' '[:lower:]'),64)))
+$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call BuildDotNetPlatformAssembly,$(platform),$(call uppercase,$(platform)),$(call lowercase,$(platform)),64)))
 
 define DefineTargets
 $(1)_NUGET_TARGETS = \
@@ -500,7 +560,7 @@ $(DOTNET_BUILD_DIR)/%/Constants.generated.cs: Makefile $(GENERATE_FRAMEWORKS_CON
 
 # This target builds all the generated project files. It's not really useful by itself,
 # except to validate that the csproj files actually work.
-build-csproj: $(CSPROJECTS) $(foreach platform,$(DOTNET_PLATFORMS),$($(shell echo $(platform) | tr '[:lower:]' '[:upper:]')_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES))
+build-csproj: $(CSPROJECTS) $(foreach platform,$(DOTNET_PLATFORMS),$($(call uppercase,$(platform))_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES))
 	$(Q) set -e; \
 	for csproj in $(CSPROJECTS); do \
 		echo "Building $$csproj..."; \
@@ -509,7 +569,7 @@ build-csproj: $(CSPROJECTS) $(foreach platform,$(DOTNET_PLATFORMS),$($(shell ech
 	done
 
 # This targets runs 'dotnet format' on the generated project files.
-format-csproj: $(CSPROJECTS) $(foreach platform,$(DOTNET_PLATFORMS),$($(shell echo $(platform) | tr '[:lower:]' '[:upper:]')_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES))
+format-csproj: $(CSPROJECTS) $(foreach platform,$(DOTNET_PLATFORMS),$($(call uppercase,$(platform))_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES))
 	$(Q) set -e; \
 	for csproj in $(CSPROJECTS); do \
 		echo "Formatting $$csproj..."; \
@@ -519,7 +579,7 @@ format-csproj: $(CSPROJECTS) $(foreach platform,$(DOTNET_PLATFORMS),$($(shell ec
 
 # This builds the project files, enabling C# analyzers
 analyze:
-	$(Q) $(MAKE) -j $(CSPROJECTS) $(foreach platform,$(DOTNET_PLATFORMS),$($(shell echo $(platform) | tr '[:lower:]' '[:upper:]')_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES))
+	$(Q) $(MAKE) -j $(CSPROJECTS) $(foreach platform,$(DOTNET_PLATFORMS),$($(call uppercase,$(platform))_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES))
 	$(Q) set -e; \
 	for csproj in $(CSPROJECTS); do \
 		echo "Analyzing $$csproj..."; \
@@ -529,7 +589,7 @@ analyze:
 	done
 
 # This target builds the generated project files with StyleCop enabled.
-stylecop-csproj: $(CSPROJECTS) $(foreach platform,$(DOTNET_PLATFORMS),$($(shell echo $(platform) | tr '[:lower:]' '[:upper:]')_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES))
+stylecop-csproj: $(CSPROJECTS) $(foreach platform,$(DOTNET_PLATFORMS),$($(call uppercase,$(platform))_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES))
 	$(Q) set -e; \
 	for csproj in $(CSPROJECTS); do \
 		echo "Building $$csproj with StyleCop enabled..."; \

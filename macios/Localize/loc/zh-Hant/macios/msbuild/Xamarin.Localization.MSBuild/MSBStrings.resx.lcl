@@ -2734,6 +2734,33 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";E7175" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The {0} simulator runtime is not installed. This is required by Apple's development tools (even when building for physical devices). Install it by running 'xcodebuild -downloadPlatform {0}' from the command line, or from Xcode (Settings > Components).]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[未安裝 {0} 模擬器執行階段。即使是為實體裝置建置，也需要此執行階段。請從命令列執行 'xcodebuild -downloadPlatform {0}'，或在 Xcode 中前往［設定 > 元件］來安裝。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E7177" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The installed {0} simulator runtime is not compatible with the current Xcode version. Update the simulator runtime by running 'xcodebuild -downloadPlatform {0}' from the command line, or from Xcode (Settings > Components).]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[已安裝的 {0} 模擬器執行階段與目前的 Xcode 版本不相容。請從命令列執行 'xcodebuild -downloadPlatform {0}'，或在 Xcode 中前往［設定 > 元件］來更新模擬器執行階段。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E7178" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Console.StandardOutput or Console.StandardError was accessed during a build task. This should not happen, use the MSBuild logging infrastructure instead. Stack trace: {0}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[建置工作期間存取了 Console.StandardOutput 或 Console.StandardError。這不應該發生，請為改用 MSBuild 記錄基礎結構。堆疊追蹤: {0}]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";InvalidFramework" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Invalid framework: {0}]]></Val>
@@ -3621,6 +3648,51 @@
           <Val><![CDATA[Not creating a compressed binding resource package, because all the native references are already compressed.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[未建立壓縮的繫結資源套件，因為所有原生參考都已壓縮。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7171" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The environment variable '{0}' is deprecated, and will be ignored in .NET 11+. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[環境變數 '{0}' 已棄用，.NET 11+ 將忽略它。請使用 'DEVELOPER_DIR' 環境變數或 'XcodeLocation' MSBuild 屬性來選擇要使用的 Xcode。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7172" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The environment variable '{0}' is deprecated, and will be ignored. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[環境變數 '{0}' 已棄用，將被忽略。請使用 'DEVELOPER_DIR' 環境變數或 'XcodeLocation' MSBuild 屬性來選擇要使用的 Xcode。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7173" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The settings file '{0}' is deprecated, and will be ignored in .NET 11+. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[設定檔案 '{0}' 已棄用，.NET 11+ 將忽略它。請使用 'DEVELOPER_DIR' 環境變數或 'XcodeLocation' MSBuild 屬性來選擇要使用的 Xcode。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7174" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The settings file '{0}' is deprecated, and will be ignored. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[設定檔案 '{0}' 已棄用，將被忽略。請使用 'DEVELOPER_DIR' 環境變數或 'XcodeLocation' MSBuild 屬性來選擇要使用的 Xcode。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7176" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unable to determine if the {0} simulator runtime is installed. If the build fails or hangs, install the {0} simulator runtime by running 'xcodebuild -downloadPlatform {0}' from the command line.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[無法判斷是否已安裝 {0} 模擬器執行階段。如果建置失敗或卡住，請從命令列執行 'xcodebuild -downloadPlatform {0}' 來安裝 {0} 模擬器執行階段。]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

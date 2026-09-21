@@ -74,23 +74,23 @@ namespace LinkAll.Interfaces {
 			F (new A ());
 
 			// Foo and Bar methods are both used on A and must be present
-			Assert.NotNull (type_a.GetMethod ("Foo", BindingFlags.Instance | BindingFlags.Public), "A::Foo");
-			Assert.NotNull (type_a.GetMethod ("Bar", BindingFlags.Instance | BindingFlags.Public), "A::Bar");
+			Assert.That (type_a.GetMethod ("Foo", BindingFlags.Instance | BindingFlags.Public), Is.Not.Null, "A::Foo");
+			Assert.That (type_a.GetMethod ("Bar", BindingFlags.Instance | BindingFlags.Public), Is.Not.Null, "A::Bar");
 
 			// I::Foo is never used and can be removed
-			Assert.Null (type_i.GetMethod ("Foo", BindingFlags.Instance | BindingFlags.Public), "I::Foo");
+			Assert.That (type_i.GetMethod ("Foo", BindingFlags.Instance | BindingFlags.Public), Is.Null, "I::Foo");
 			// I::Bar is used in F so everyone implementing I needs Bar 
-			Assert.NotNull (type_i.GetMethod ("Bar", BindingFlags.Instance | BindingFlags.Public), "I::Bar");
+			Assert.That (type_i.GetMethod ("Bar", BindingFlags.Instance | BindingFlags.Public), Is.Not.Null, "I::Bar");
 
 			// Foo and Bar are never used on B - so they can be removed
-			Assert.Null (type_b.GetMethod ("Foo", BindingFlags.Instance | BindingFlags.Public), "B::Foo");
+			Assert.That (type_b.GetMethod ("Foo", BindingFlags.Instance | BindingFlags.Public), Is.Null, "B::Foo");
 		}
 
 		[Test]
 		public void Issue9566 ()
 		{
 			var ifaces = (I []) (object) new B [0];
-			Assert.IsNotNull (ifaces, "Array cast");
+			Assert.That (ifaces, Is.Not.Null, "Array cast");
 		}
 
 		[DllImport ("/usr/lib/system/libsystem_dnssd.dylib")]

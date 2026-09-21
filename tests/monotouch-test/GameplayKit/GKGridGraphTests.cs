@@ -44,7 +44,7 @@ namespace MonoTouchFixtures.GamePlayKit {
 			TestRuntime.AssertXcodeVersion (7, 0);
 
 			var graph = GKGridGraph.FromGridStartingAt (Vector2i.Zero, 10, 10, false);
-			Assert.NotNull (graph, "GKGridGraph.FromGridStartingAt should not be null");
+			Assert.That (graph, Is.Not.Null, "GKGridGraph.FromGridStartingAt should not be null");
 
 			var walls = new List<GKGridGraphNode> (10 * 10);
 			var spawnPoints = new List<GKGridGraphNode> ();
@@ -75,8 +75,8 @@ namespace MonoTouchFixtures.GamePlayKit {
 			if (TestRuntime.CheckXcodeVersion (7, 3))
 				graph.RemoveNodes (walls.ToArray ());
 
-			Assert.NotNull (startPosition, "startPosition must not be null");
-			Assert.AreEqual (new Vector2i (1, 1), startPosition.GridPosition, "GridPosition must be (1,1)");
+			Assert.That (startPosition, Is.Not.Null, "startPosition must not be null");
+			Assert.That (startPosition.GridPosition, Is.EqualTo (new Vector2i (1, 1)), "GridPosition must be (1,1)");
 			Assert.That (walls.Count > 0, "walls list must be higher than zero");
 			Assert.That (spawnPoints.Count > 0, "spawnPoints list must be higher than zero");
 		}
@@ -87,7 +87,7 @@ namespace MonoTouchFixtures.GamePlayKit {
 			TestRuntime.AssertXcodeVersion (7, 0);
 
 			var graph = new GKGridGraph (Vector2i.Zero, 10, 10, false);
-			Assert.NotNull (graph, "GKGridGraph.FromGridStartingAt should not be null");
+			Assert.That (graph, Is.Not.Null, "GKGridGraph.FromGridStartingAt should not be null");
 
 			var walls = new List<GKGridGraphNode> (10 * 10);
 			var spawnPoints = new List<GKGridGraphNode> ();
@@ -118,8 +118,8 @@ namespace MonoTouchFixtures.GamePlayKit {
 			if (TestRuntime.CheckXcodeVersion (7, 3))
 				graph.RemoveNodes (walls.ToArray ());
 
-			Assert.NotNull (startPosition, "startPosition must not be null");
-			Assert.AreEqual (new Vector2i (1, 1), startPosition.GridPosition, "GridPosition must be (1,1)");
+			Assert.That (startPosition, Is.Not.Null, "startPosition must not be null");
+			Assert.That (startPosition.GridPosition, Is.EqualTo (new Vector2i (1, 1)), "GridPosition must be (1,1)");
 			Assert.That (walls.Count > 0, "walls list must be higher than zero");
 			Assert.That (spawnPoints.Count > 0, "spawnPoints list must be higher than zero");
 		}

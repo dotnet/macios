@@ -45,22 +45,22 @@ namespace Linker.Sealer {
 		public void Sealed ()
 		{
 			// this can not be optimized into a sealed type
-			Assert.False (typeof (Unsealable).IsSealed, "Unsealed");
+			Assert.That (typeof (Unsealable).IsSealed, Is.False, "Unsealed");
 #if DEBUG || __MACOS__
 			// this is not a sealed type (in the source)
-			Assert.False (typeof (Sealable).IsSealed, "Sealable");
-			Assert.False (typeof (Base).IsSealed, "Base");
-			Assert.False (typeof (Subclass).IsSealed, "Subclass");
-			Assert.False (typeof (Interface).IsSealed, "Interface");
+			Assert.That (typeof (Sealable).IsSealed, Is.False, "Sealable");
+			Assert.That (typeof (Base).IsSealed, Is.False, "Base");
+			Assert.That (typeof (Subclass).IsSealed, Is.False, "Subclass");
+			Assert.That (typeof (Interface).IsSealed, Is.False, "Interface");
 #else
 			// Sealable can be optimized / sealed as nothing else is (or can) subclass it
-			Assert.True (typeof (Sealable).IsSealed, "Sealable");
+			Assert.That (typeof (Sealable).IsSealed, Is.True, "Sealable");
 			// Base is subclassed so it can't be sealed
-			Assert.False (typeof (Base).IsSealed, "Base");
+			Assert.That (typeof (Base).IsSealed, Is.False, "Base");
 			// Subclass is not subclassed anymore and can be sealed
-			Assert.True (typeof (Subclass).IsSealed, "Subclass");
+			Assert.That (typeof (Subclass).IsSealed, Is.True, "Subclass");
 			// interface can not be sealed
-			Assert.False (typeof (Interface).IsSealed, "Interface");
+			Assert.That (typeof (Interface).IsSealed, Is.False, "Interface");
 #endif
 		}
 
@@ -73,14 +73,14 @@ namespace Linker.Sealer {
 			var c = t.GetMethod ("C")!;
 #if DEBUG || __MACOS__
 			// this is not a sealed (C#) method (in the source)
-			Assert.False (a.IsFinal, "A");
-			Assert.False (b.IsFinal, "B");
-			Assert.False (c.IsFinal, "C");
+			Assert.That (a.IsFinal, Is.False, "A");
+			Assert.That (b.IsFinal, Is.False, "B");
+			Assert.That (c.IsFinal, Is.False, "C");
 #else
 			// but it can be optimized / sealed as nothing else is (or can) overrides it
-			Assert.True (a.IsFinal, "A");
-			Assert.True (b.IsFinal, "B");
-			Assert.False (c.IsFinal, "C"); // devirtualized
+			Assert.That (a.IsFinal, Is.True, "A");
+			Assert.That (b.IsFinal, Is.True, "B");
+			Assert.That (c.IsFinal, Is.False, "C"); // devirtualized
 #endif
 		}
 
@@ -93,16 +93,16 @@ namespace Linker.Sealer {
 			var c = t.GetMethod ("C")!;
 #if DEBUG || __MACOS__
 			// both methods are virtual (both in C# and IL)
-			Assert.True (a.IsVirtual, "A");
-			Assert.True (b.IsVirtual, "B");
-			Assert.True (c.IsVirtual, "C");
+			Assert.That (a.IsVirtual, Is.True, "A");
+			Assert.That (b.IsVirtual, Is.True, "B");
+			Assert.That (c.IsVirtual, Is.True, "C");
 #else
 			// calling A needs dispatch to base type Unsealable
-			Assert.True (a.IsVirtual, "A");
+			Assert.That (a.IsVirtual, Is.True, "A");
 			// B is an override and must remain virtual
-			Assert.True (b.IsVirtual, "B");
+			Assert.That (b.IsVirtual, Is.True, "B");
 			// C has no special requirement and can be de-virtualized
-			Assert.False (c.IsVirtual, "C");
+			Assert.That (c.IsVirtual, Is.False, "C");
 #endif
 		}
 
@@ -112,7 +112,7 @@ namespace Linker.Sealer {
 			var t = typeof (Subclass);
 			var a = t.GetMethod ("A")!;
 			// A cannot be de-virtualized since Concrete must satisfy Interface thru Base
-			Assert.True (a.IsVirtual, "A");
+			Assert.That (a.IsVirtual, Is.True, "A");
 		}
 	}
 }

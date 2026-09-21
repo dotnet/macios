@@ -15,6 +15,10 @@
 		<ItemGroup>
 			<_DotNetWatchVariable Include="@(RuntimeEnvironmentVariable)" Condition="'%(Identity)' == 'DOTNET_WATCH' And '%(Value)' == '1'" />
 		</ItemGroup>
+		<!-- The new WaitForExit property takes precedence over OpenWaitForExit -->
+		<PropertyGroup Condition="'$(WaitForExit)' != ''">
+			<OpenWaitForExit>$(WaitForExit)</OpenWaitForExit>
+		</PropertyGroup>
 		<PropertyGroup Condition="'$(RunWithOpen)' != 'false' And '@(_DotNetWatchVariable->Count())' == '1'">
 			<_IsDotNetWatch>true</_IsDotNetWatch>
 			<OpenNewInstance Condition="'$(OpenNewInstance)' == ''">true</OpenNewInstance>

@@ -14,8 +14,8 @@ namespace MonoTouchFixtures.CoreVideo {
 			TestRuntime.AssertSystemVersion (ApplePlatform.MacOSX, 12, 0);
 			Assert.DoesNotThrow (() => {
 				using var displayLink = CVDisplayLink.CreateFromDisplayId ((uint) CGDisplay.MainDisplayID);
-				Assert.NotNull (displayLink, "Not null");
-				Assert.AreEqual (CGDisplay.MainDisplayID, displayLink.GetCurrentDisplay (), "DisplayId");
+				Assert.That (displayLink, Is.Not.Null, "Not null");
+				Assert.That (displayLink.GetCurrentDisplay (), Is.EqualTo (CGDisplay.MainDisplayID), "DisplayId");
 			}, "Throws");
 		}
 
@@ -25,7 +25,7 @@ namespace MonoTouchFixtures.CoreVideo {
 			TestRuntime.AssertSystemVersion (ApplePlatform.MacOSX, 12, 0);
 			Assert.DoesNotThrow (() => {
 				using var displayLink = CVDisplayLink.CreateFromDisplayId (UInt32.MaxValue);
-				Assert.Null (displayLink, "null");
+				Assert.That (displayLink, Is.Null, "null");
 			}, "Throws");
 		}
 
@@ -37,7 +37,7 @@ namespace MonoTouchFixtures.CoreVideo {
 			// with a single one, there is nothing in the docs that say that we cannot do that
 			Assert.DoesNotThrow (() => {
 				using var displayLink = CVDisplayLink.CreateFromDisplayIds (new [] { (uint) CGDisplay.MainDisplayID });
-				Assert.NotNull (displayLink, "Not null");
+				Assert.That (displayLink, Is.Not.Null, "Not null");
 			}, "Throws");
 		}
 
@@ -48,7 +48,7 @@ namespace MonoTouchFixtures.CoreVideo {
 			var openGLMask = CGDisplay.GetOpenGLDisplayMask (CGDisplay.MainDisplayID);
 			Assert.DoesNotThrow (() => {
 				using var displayLink = CVDisplayLink.CreateFromOpenGLMask ((uint) openGLMask);
-				Assert.NotNull (displayLink, "Not null");
+				Assert.That (displayLink, Is.Not.Null, "Not null");
 			}, "Throws");
 		}
 
@@ -80,7 +80,7 @@ namespace MonoTouchFixtures.CoreVideo {
 			TestRuntime.IgnoreIfLockedScreen ();
 			Assert.DoesNotThrow (() => {
 				using var displayLink = new CVDisplayLink ();
-				Assert.AreEqual (CGDisplay.MainDisplayID, displayLink.GetCurrentDisplay ());
+				Assert.That (displayLink.GetCurrentDisplay (), Is.EqualTo (CGDisplay.MainDisplayID));
 			});
 		}
 
@@ -107,7 +107,7 @@ namespace MonoTouchFixtures.CoreVideo {
 			// it has to be running else you will get a crash
 			if (displayLink.Start () == 0) {
 				displayLink.GetCurrentTime (out var timeStamp);
-				Assert.True (displayLink.TryTranslateTime (timeStamp, ref outTime));
+				Assert.That (displayLink.TryTranslateTime (timeStamp, ref outTime), Is.True);
 				displayLink.Stop ();
 			}
 		}

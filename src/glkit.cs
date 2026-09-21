@@ -171,7 +171,6 @@ namespace GLKit {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Export ("label", ArgumentSemantic.Copy)]
-		[DisableZeroCopy]
 		[NullAllowed] // default is null on iOS 5.1.1
 		string Label { get; set; }
 
@@ -583,7 +582,6 @@ namespace GLKit {
 		///         <remarks>To be added.</remarks>
 		[NullAllowed] // by default this property is null
 		[Export ("label", ArgumentSemantic.Copy)]
-		[DisableZeroCopy]
 		string Label { get; set; }
 
 		/// <summary>To be added.</summary>

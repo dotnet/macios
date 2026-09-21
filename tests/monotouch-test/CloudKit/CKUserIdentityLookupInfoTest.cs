@@ -15,16 +15,16 @@ namespace MonoTouchFixtures.CloudKit {
 		public void TestFromEmail ()
 		{
 			var info = CKUserIdentityLookupInfo.FromEmail ("example@test.com");
-			Assert.NotNull (info);
-			Assert.AreNotEqual (info.Handle, IntPtr.Zero);
+			Assert.That (info, Is.Not.Null);
+			Assert.That (IntPtr.Zero, Is.Not.EqualTo (info.Handle));
 		}
 
 		[Test]
 		public void TestFromPhoneNumber ()
 		{
 			var info = CKUserIdentityLookupInfo.FromPhoneNumber ("91899899");
-			Assert.NotNull (info);
-			Assert.AreNotEqual (info.Handle, IntPtr.Zero);
+			Assert.That (info, Is.Not.Null);
+			Assert.That (IntPtr.Zero, Is.Not.EqualTo (info.Handle));
 		}
 
 		[Test]
@@ -32,8 +32,8 @@ namespace MonoTouchFixtures.CloudKit {
 		{
 			var record = new CKRecordID ("recordName");
 			var info = new CKUserIdentityLookupInfo (record);
-			Assert.NotNull (info);
-			Assert.AreNotEqual (info.Handle, IntPtr.Zero);
+			Assert.That (info, Is.Not.Null);
+			Assert.That (IntPtr.Zero, Is.Not.EqualTo (info.Handle));
 		}
 
 		[Test]
@@ -41,7 +41,7 @@ namespace MonoTouchFixtures.CloudKit {
 		{
 			var emails = new string [] { "example@test.com" };
 			var result = CKUserIdentityLookupInfo.GetLookupInfosWithEmails (emails);
-			Assert.AreEqual (1, result.Length);
+			Assert.That (result.Length, Is.EqualTo (1));
 		}
 
 		[Test]
@@ -49,7 +49,7 @@ namespace MonoTouchFixtures.CloudKit {
 		{
 			var numbers = new string [] { "9111223" };
 			var result = CKUserIdentityLookupInfo.GetLookupInfosWithPhoneNumbers (numbers);
-			Assert.AreEqual (1, result.Length);
+			Assert.That (result.Length, Is.EqualTo (1));
 		}
 
 		[Test]
@@ -58,7 +58,7 @@ namespace MonoTouchFixtures.CloudKit {
 			var record = new CKRecordID ("recordName");
 			var records = new CKRecordID [] { record };
 			var result = CKUserIdentityLookupInfo.GetLookupInfos (records);
-			Assert.AreEqual (1, result.Length);
+			Assert.That (result.Length, Is.EqualTo (1));
 		}
 	}
 }

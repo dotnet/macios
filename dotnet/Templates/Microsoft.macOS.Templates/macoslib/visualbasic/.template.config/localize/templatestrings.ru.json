@@ -1,5 +1,7 @@
 {
   "author": "Майкрософт",
   "name": "Библиотека классов macOS",
-  "description": "Проект создания библиотеки классов .NET macOS."
+  "description": "Проект создания библиотеки классов .NET macOS.",
+  "symbols/Framework/description": "The target framework for the project.",
+  "symbols/Framework/choices/net10.0-macos/description": "Target net10.0-macos"
 }

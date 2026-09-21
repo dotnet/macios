@@ -35,6 +35,8 @@ Usage: configure [options]
                             Select the Xcode developer root to use for the build.
 
     --ignore-unknown-params  alters the default behavior to not return an non-zero exit code when an unknown parameter is provided.
+
+    --no-xcode               Only do things that don't require Xcode. This won't produce anything useful, but might come in handy once in a blue moon when testing something that doesn't require Xcode somewhere Xcode can't be installed (Linux, older macOS devices, etc.)
 EOL
 }
 

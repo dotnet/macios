@@ -36,9 +36,9 @@ namespace MonoTouchFixtures.Network {
 			TestRuntime.AssertXcodeVersion (11, 0);
 
 			var defaultValue = 4294967295; // got it from running the code, if changes we will have an error.
-			Assert.AreEqual (defaultValue, listener.ConnectionLimit);
+			Assert.That (listener.ConnectionLimit, Is.EqualTo (defaultValue));
 			listener.ConnectionLimit = 10;
-			Assert.AreEqual (10, listener.ConnectionLimit, "New value was not stored.");
+			Assert.That (listener.ConnectionLimit, Is.EqualTo (10), "New value was not stored.");
 		}
 
 		[Test]
@@ -58,7 +58,7 @@ namespace MonoTouchFixtures.Network {
 		{
 			using var parameters = NWParameters.CreateTcp ();
 			using var instance = NWListener.Create (parameters, "xamarinlaunchdkey");
-			Assert.IsNotNull (instance, "Create");
+			Assert.That (instance, Is.Not.Null, "Create");
 		}
 #endif
 	}

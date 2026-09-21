@@ -319,7 +319,7 @@ namespace Introspection {
 				}
 				n++;
 			}
-			Assert.AreEqual (0, Errors, "{0} potential errors found in {1} default ctor validated{2}", Errors, n, Errors == 0 ? string.Empty : ":\n" + ErrorData.ToString () + "\n");
+			Assert.That (Errors, Is.EqualTo (0), $"{Errors} potential errors found in {n} default ctor validated:\n{ErrorData}\n");
 		}
 
 		// .NET constructors are not virtual, so we need to re-expose the base class .ctor when a subclass is created.
@@ -371,7 +371,7 @@ namespace Introspection {
 					n++;
 				}
 			}
-			Assert.AreEqual (0, Errors, "{0} potential errors found in {1} designated initializer validated", Errors, n);
+			Assert.That (Errors, Is.EqualTo (0), $"{Errors} potential errors found in {n} designated initializer validated");
 		}
 
 		protected virtual bool Match (ConstructorInfo ctor, Type type)
@@ -498,6 +498,11 @@ namespace Introspection {
 				if (ctor.ToString () == $"Void .ctor(Metal.IMTLDevice, MetalPerformanceShaders.MPSNDArrayDescriptor)")
 					return true;
 				break;
+			case "MFComposeAssistantViewController":
+				// The inherited UIViewController initializer aborts, and the header does not designate initWithDelegate:.
+				if (cstr == $"Void .ctor(System.String, Foundation.NSBundle)")
+					return true;
+				break;
 			case "MFMailComposeViewController": // You are meant to use the system provided one
 			case "MFMessageComposeViewController": // You are meant to use the system provided one
 			case "GKFriendRequestComposeViewController": // You are meant to use the system provided one
@@ -556,6 +561,12 @@ namespace Introspection {
 					return true;
 				break;
 			case "AVSpeechSynthesisProviderAudioUnit":
+				if (cstr == "Void .ctor(AudioUnit.AudioComponentDescription, AudioUnit.AudioComponentInstantiationOptions, Foundation.NSError ByRef)") {
+					// This constructor is exposed using a factory method.
+					return true;
+				}
+				break;
+			case "AUHeadTrackingBinauralRenderer":
 				if (cstr == "Void .ctor(AudioUnit.AudioComponentDescription, AudioUnit.AudioComponentInstantiationOptions, Foundation.NSError ByRef)") {
 					// This constructor is exposed using a factory method.
 					return true;
@@ -639,7 +650,7 @@ namespace Introspection {
 				}
 				n++;
 			}
-			Assert.AreEqual (0, Errors, $"{Errors} potential errors found in {n} BaseType empty ctor validated: \n{ErrorData}\n{(genObjCTestCode ? $"\n\n{objCCode}\n" : string.Empty)}");
+			Assert.That (Errors, Is.EqualTo (0), $"{Errors} potential errors found in {n} BaseType empty ctor validated: \n{ErrorData}\n{(genObjCTestCode ? $"\n\n{objCCode}\n" : string.Empty)}");
 		}
 
 		protected virtual bool SkipCheckShouldNotExposeDefaultCtor (Type type)
@@ -681,7 +692,7 @@ namespace Introspection {
 					ReportError ("{0} should re-expose IARAnchorCopying::.ctor(ARAnchor)", t);
 			}
 
-			Assert.AreEqual (0, Errors, "{0} potential errors found when validating if subclasses of 'ARAnchor' re-expose 'IARAnchorCopying' constructor", Errors);
+			Assert.That (Errors, Is.EqualTo (0), $"{Errors} potential errors found when validating if subclasses of 'ARAnchor' re-expose 'IARAnchorCopying' constructor");
 		}
 #endif
 	}

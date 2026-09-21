@@ -22,23 +22,25 @@
 //
 
 namespace MediaLibrary {
+	/// <summary>A bitmask specifying the kinds of media provided by a media source.</summary>
 	[Native]
 	public enum MLMediaSourceType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The source provides audio media.</summary>
 		Audio = 1 << 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The source provides image media.</summary>
 		Image = 1 << 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The source provides movie media.</summary>
 		Movie = 1 << 2,
 	}
 
+	/// <summary>A bitmask specifying one or more kinds of media objects.</summary>
 	[Native]
 	public enum MLMediaType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Audio media.</summary>
 		Audio = 1 << 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Image media.</summary>
 		Image = 1 << 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Movie media.</summary>
 		Movie = 1 << 2,
 	}
 }

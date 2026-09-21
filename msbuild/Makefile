@@ -99,7 +99,7 @@ $(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild/$(TARGETFRAMEWORK)/%: Xam
 	$$(Q) touch $$@
 endef
 
-$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call InstallFiles,$(platform),$(shell echo $(platform) | tr 'a-z' 'A-Z'))))
+$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call InstallFiles,$(platform),$(call uppercase,$(platform)))))
 
 MSBUILD_DIRECTORIES += $(DOTNET_DIRECTORIES)
 
@@ -119,7 +119,7 @@ DOTNET_IOS_WINDOWS_FILES += Messaging/Xamarin.Messaging.Build/obj/$(CONFIG)/Buil
 
 .dotnet-windows: .build-stamp .copy-windows-files
 
-ifndef IS_LINUX
+ifndef NO_XCODE
 all-local:: .dotnet-windows
 dotnet:: .dotnet-windows
 endif
@@ -130,7 +130,7 @@ endif
 
 # we must install locally during 'make all', because the F# build depends on the msbuild targets/assemblies.
 all-local:: $(MSBUILD_PRODUCTS)
-ifndef IS_LINUX
+ifndef NO_XCODE
 all-local:: .stamp-test-xml
 endif
 
@@ -165,9 +165,9 @@ clean-local::
 
 Versions.g.cs: Makefile $(TOP)/Make.config.inc
 	$(Q) printf "public static class VersionConstants {\\n" > $@.tmp
-	$(Q) printf "\\tpublic const string NuGetVersion = \"$($(shell echo $(firstword $(DOTNET_PLATFORMS)) | tr 'a-z' 'A-Z')_NUGET_VERSION)\";\\n" >> $@.tmp
-	$(Q) echo $(foreach platform,$(ALL_DOTNET_PLATFORMS),"\\tpublic const string Microsoft_$(platform)_Version = \"$($(shell echo $(platform) | tr 'a-z' 'A-Z')_NUGET_VERSION_FULL)\";\\n") >> $@.tmp
-	$(Q) echo $(foreach platform,$(ALL_DOTNET_PLATFORMS),"\\tpublic const string Microsoft_$(platform)_Standard_Version = \"$($(shell echo $(platform) | tr 'a-z' 'A-Z')_NUGET_VERSION_MAJOR).$($(shell echo $(platform) | tr 'a-z' 'A-Z')_NUGET_VERSION_MINOR).0.$($(shell echo $(platform) | tr 'a-z' 'A-Z')_NUGET_VERSION_PATCH)\";\\n") >> $@.tmp
+	$(Q) printf "\\tpublic const string NuGetVersion = \"$($(call uppercase,$(firstword $(DOTNET_PLATFORMS)))_NUGET_VERSION)\";\\n" >> $@.tmp
+	$(Q) echo $(foreach platform,$(ALL_DOTNET_PLATFORMS),"\\tpublic const string Microsoft_$(platform)_Version = \"$($(call uppercase,$(platform))_NUGET_VERSION_FULL)\";\\n") >> $@.tmp
+	$(Q) echo $(foreach platform,$(ALL_DOTNET_PLATFORMS),"\\tpublic const string Microsoft_$(platform)_Standard_Version = \"$($(call uppercase,$(platform))_NUGET_VERSION_MAJOR).$($(call uppercase,$(platform))_NUGET_VERSION_MINOR).0.$($(call uppercase,$(platform))_NUGET_VERSION_PATCH)\";\\n") >> $@.tmp
 	$(Q) printf "\\tpublic const string NuGetPrereleaseIdentifier = \"$(NUGET_PRERELEASE_IDENTIFIER)\";\\n" >> $@.tmp
 	$(Q) printf "\\tpublic const string NuGetBuildMetadata = \"$(NUGET_BUILD_METADATA)\";\\n" >> $@.tmp
 	$(Q) printf "\\tpublic const string Branch = \"$(CURRENT_BRANCH)\";\\n" >> $@.tmp

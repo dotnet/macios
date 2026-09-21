@@ -124,7 +124,7 @@ namespace Xharness.Jenkins.Reports {
 				writer.WriteLine ("<a href='{0}' type='text/plain;charset=UTF-8'>{1}</a><br />", GetLinkFullPath (log.FullPath.Substring (jenkins.LogDirectory.Length + 1)), log.Description);
 			writer.WriteLine ("</span>");
 
-			var headerColor = "black";
+			var headerColor = "currentcolor";
 			if (unfinishedTests.Any ()) {
 				; // default
 			} else if (failedTests.Any ()) {
@@ -676,7 +676,7 @@ namespace Xharness.Jenkins.Reports {
 				if (string.IsNullOrEmpty (failedTest.Message)) {
 					writer.WriteLine ("{0}<br />", failedTest.Name.AsHtml ());
 				} else {
-					writer.WriteLine ("{0}: {1}<br />", failedTest.Name.AsHtml (), failedTest.Message.AsHtml ());
+					writer.WriteLine ("{0}: {1}<br />", failedTest.Name.AsHtml (), failedTest.Message.Cap (1024).AsHtml ());
 				}
 				writer.WriteLine ("</li>");
 			}

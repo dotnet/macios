@@ -35,7 +35,6 @@ using CoreFoundation;
 namespace Security {
 
 	/// <summary>Encapsulates a security policy. A policy comprises a set of rules that specify how to evaluate a certificate for a certain level of trust.</summary>
-	///     <remarks>To be added.</remarks>
 	public partial class SecPolicy : NativeObject {
 		[Preserve (Conditional = true)]
 		internal SecPolicy (NativeHandle handle, bool owns)
@@ -73,7 +72,7 @@ namespace Security {
 		}
 
 		/// <summary>Type identifier for the Security.SecPolicy type.</summary>
-		///         <returns>To be added.</returns>
+		///         <returns>The Core Foundation type identifier for <see cref="SecPolicy" />.</returns>
 		///         <remarks>
 		///           <para>The returned token is the CoreFoundation type identifier (CFType) that has been assigned to this class.</para>
 		///           <para>This can be used to determine type identity between different CoreFoundation objects.</para>

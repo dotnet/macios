@@ -1,5 +1,7 @@
 {
   "author": "Microsoft",
   "name": "Bibliothèque de classes tvOS",
-  "description": "Projet de création d’une bibliothèque de classes .NET tvOS"
+  "description": "Projet de création d’une bibliothèque de classes .NET tvOS",
+  "symbols/Framework/description": "The target framework for the project.",
+  "symbols/Framework/choices/net10.0-tvos/description": "Target net10.0-tvos"
 }

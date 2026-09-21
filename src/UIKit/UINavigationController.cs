@@ -6,10 +6,9 @@ namespace UIKit {
 			return Class.GetHandle (t);
 		}
 
-		/// <param name="navigationBarType">To be added.</param>
-		///         <param name="toolbarType">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Creates a navigation controller with the specified navigation bar and toolbar types.</summary>
+		/// <param name="navigationBarType">The type of navigation bar to use.</param>
+		/// <param name="toolbarType">The type of toolbar to use.</param>
 		public UINavigationController (Type navigationBarType, Type toolbarType) : this (LookupClass (navigationBarType), LookupClass (toolbarType))
 		{
 		}

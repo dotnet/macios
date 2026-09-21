@@ -69,12 +69,12 @@ namespace monotouchtest.Network {
 			TestRuntime.RunAsync (TimeSpan.FromSeconds (3), () => { }, () => newPath is not null);
 			monitor.Cancel ();
 
-			Assert.IsNotNull (oldPath, "oldPath set (no timeout)");
-			Assert.IsNotNull (newPath, "newPath set (no timeout)");
+			Assert.That (oldPath, Is.Not.Null, "oldPath set (no timeout)");
+			Assert.That (newPath, Is.Not.Null, "newPath set (no timeout)");
 			// they might be the same native objects (happens on macOS and Catalyst) and,
 			// in such case, they will have the same `Handle` value, making them equal on the
 			// .net profile. However what we want to know here is if the path was updated
-			Assert.False (Object.ReferenceEquals (oldPath, newPath), "different instances");
+			Assert.That (Object.ReferenceEquals (oldPath, newPath), Is.False, "different instances");
 		}
 
 		[Test]
@@ -93,7 +93,7 @@ namespace monotouchtest.Network {
 		{
 			TestRuntime.AssertXcodeVersion (14, 0);
 			using var pathMonitor = NWPathMonitor.CreateForEthernetChannel ();
-			Assert.NotNull (pathMonitor);
+			Assert.That (pathMonitor, Is.Not.Null);
 		}
 #endif
 	}

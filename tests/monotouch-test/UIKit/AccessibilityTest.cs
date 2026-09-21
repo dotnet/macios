@@ -26,7 +26,7 @@ namespace MonoTouchFixtures.UIKit {
 			// should not affect execution since it needs to be a "supervised" device (and allowed in MDM)
 			UIAccessibility.RequestGuidedAccessSession (true, delegate (bool didSuccess)
 			{
-				Assert.False (didSuccess, "devices are not supervised by default");
+				Assert.That (didSuccess, Is.False, "devices are not supervised by default");
 			});
 			UIAccessibility.RequestGuidedAccessSession (false, null);
 		}
@@ -35,14 +35,14 @@ namespace MonoTouchFixtures.UIKit {
 		public void ButtonShapesEnabled ()
 		{
 			TestRuntime.AssertXcodeVersion (12, TestRuntime.MinorXcode12APIMismatch);
-			Assert.False (UIAccessibility.ButtonShapesEnabled);
+			Assert.That (UIAccessibility.ButtonShapesEnabled, Is.False);
 		}
 
 		[Test]
 		public void PrefersCrossFadeTransitions ()
 		{
 			TestRuntime.AssertXcodeVersion (12, TestRuntime.MinorXcode12APIMismatch);
-			Assert.False (UIAccessibility.PrefersCrossFadeTransitions);
+			Assert.That (UIAccessibility.PrefersCrossFadeTransitions, Is.False);
 		}
 	}
 }

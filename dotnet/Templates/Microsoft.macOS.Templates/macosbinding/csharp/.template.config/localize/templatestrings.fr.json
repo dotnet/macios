@@ -1,5 +1,7 @@
 {
   "author": "Microsoft",
   "name": "Bibliothèque de liaisons macOS",
-  "description": "Un projet de création d’une bibliothèque de liaisons .NET macOS"
+  "description": "Un projet de création d’une bibliothèque de liaisons .NET macOS",
+  "symbols/Framework/description": "The target framework for the project.",
+  "symbols/Framework/choices/net10.0-macos/description": "Target net10.0-macos"
 }

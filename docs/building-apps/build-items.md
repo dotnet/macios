@@ -186,7 +186,8 @@ Only applicable to iOS and tvOS projects.
 
 ## ImageAsset
 
-An item group that contains image assets.
+An item group that contains image assets, including files inside asset catalogs
+(\*.xcassets) and Icon Composer directories (\*.icon).
 
 ## InterfaceDefinition
 
@@ -247,6 +248,46 @@ An item group that contains environment variables that will be set when the app 
 
 > [!NOTE]
 > This only applies when launching the app from the command line (`dotnet run` or `dotnet build -t:Run`), not when launching from the IDE.
+
+## ApplicationArtifact
+
+An item group that contains final application artifacts produced by Apple platform builds and publishes. The item identity is the absolute path to the artifact. This can include:
+
+* `.app` app bundles for iOS, tvOS, macOS, and Mac Catalyst apps.
+* `.ipa` packages when [BuildIpa](build-properties.md#buildipa) is enabled.
+* `.pkg` installer packages when [CreatePackage](build-properties.md#createpackage) is enabled.
+* `.xcarchive` directories when [ArchiveOnBuild](build-properties.md#archiveonbuild) is enabled.
+
+The following metadata is set:
+
+* `PackageFormat`: The artifact format. Possible values are `app`, `ipa`, `pkg`, and `xcarchive`.
+* `IsDirectory`: `true` for `.app` and `.xcarchive` outputs; `false` for `.ipa` and `.pkg` outputs.
+* `PlatformName`: The Apple platform name, such as `iOS`, `tvOS`, `macOS`, or `MacCatalyst`.
+* `BundleIdentifier`: The resolved app bundle identifier.
+* `ApplicationId`: The resolved app bundle identifier.
+* `ApplicationTitle`: The final `CFBundleDisplayName` value.
+* `ApplicationName`: The final `CFBundleDisplayName` value, falling back to `CFBundleName` when `CFBundleDisplayName` isn't set.
+* `ApplicationDisplayVersion`: The final `CFBundleShortVersionString` value.
+* `ApplicationVersion`: The final `CFBundleVersion` value.
+
+The shared application metadata is read from the compiled app bundle
+`Info.plist`, so values supplied by a custom manifest take precedence over
+single-project properties. Values that are resolved or localized by Apple at a
+later stage are returned as written in the compiled manifest; the build does
+not choose a locale.
+
+Example:
+
+```xml
+<Target Name="WriteApplicationArtifacts" AfterTargets="Build">
+    <WriteLinesToFile
+        File="$(OutputPath)application-artifacts.txt"
+        Lines="%(ApplicationArtifact.Identity)|%(ApplicationArtifact.PackageFormat)"
+        Overwrite="true" />
+</Target>
+```
+
+See also the [GetApplicationArtifacts](build-targets.md#getapplicationartifacts) target.
 
 ## NativeReference
 

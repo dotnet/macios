@@ -16,8 +16,7 @@ using OS_nw_protocol_definition = System.IntPtr;
 using IntPtr = System.IntPtr;
 
 namespace Network {
-	/// <summary>To be added.</summary>
-	///     <remarks>To be added.</remarks>
+	/// <summary>Represents configuration options for a network protocol.</summary>
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
@@ -29,9 +28,8 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		internal static extern OS_nw_protocol_definition nw_protocol_options_copy_definition (IntPtr options);
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the protocol definition associated with these options.</summary>
+		/// <value>The <see cref="NWProtocolDefinition" /> for the protocol these options configure.</value>
 		public NWProtocolDefinition ProtocolDefinition => new NWProtocolDefinition (nw_protocol_options_copy_definition (GetCheckedHandle ()), owns: true);
 
 		[DllImport (Constants.NetworkLibrary)]
@@ -45,9 +43,9 @@ namespace Network {
 
 		// added to have a consistent API, but obsolete it
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.NetworkLibrary)]
 		internal static extern IntPtr nw_quic_create_options ();
@@ -70,16 +68,16 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		internal static extern void nw_ip_options_set_calculate_receive_time (IntPtr options, byte calculateReceiveTime);
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.NetworkLibrary)]
 		internal static extern void nw_ip_options_set_local_address_preference (IntPtr options, NWIPLocalAddressPreference preference);
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public NWIPLocalAddressPreference IPLocalAddressPreference {
 			set => nw_ip_options_set_local_address_preference (GetCheckedHandle (), value);
@@ -146,16 +144,16 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		internal extern static IntPtr nw_tls_copy_sec_protocol_options (IntPtr options);
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.NetworkLibrary)]
 		static extern byte nw_protocol_options_is_quic (IntPtr options);
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public bool IsQuic => nw_protocol_options_is_quic (GetCheckedHandle ()) != 0;
 	}

@@ -52,7 +52,7 @@ namespace Mono.ApiTools {
 			if (e.GetAttribute ("name") != Source.GetAttribute ("name"))
 				return false;
 
-			if (e.GetAttribute ("returntype") != Source.GetAttribute ("returntype"))
+			if (Helper.StripNullability (e.GetAttribute ("returntype")) != Helper.StripNullability (Source.GetAttribute ("returntype")))
 				return false;
 
 			var eGP = e.Element ("generic-parameters");

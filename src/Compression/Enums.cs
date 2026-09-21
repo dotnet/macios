@@ -19,7 +19,7 @@ namespace Compression {
 		/// <summary>The Brotli compression format. The encoder in the Compression framework only supports the Brotli level 2 encoder. The decoder supports all compression levels.</summary>
 		Brotli = 0xB02,
 		/// <summary>The LZBitmap compression format. This compression algorithm is only available on Apple devices.</summary>
-		[iOS (15, 0), Mac (12, 0), TV (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
 		LZBitmap = 0x702,
 	}
 

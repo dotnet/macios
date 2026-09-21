@@ -185,6 +185,8 @@ namespace AssetsLibrary {
 			throw new InvalidOperationException (Constants.AssetsLibraryRemoved);
 		}
 
+		/// <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>
+		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
 		protected internal ALAsset (NativeHandle handle) : base (handle)
 		{
 			throw new InvalidOperationException (Constants.AssetsLibraryRemoved);
@@ -523,6 +525,8 @@ namespace AssetsLibrary {
 			throw new InvalidOperationException (Constants.AssetsLibraryRemoved);
 		}
 
+		/// <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>
+		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
 		protected internal ALAssetRepresentation (NativeHandle handle) : base (handle)
 		{
 			throw new InvalidOperationException (Constants.AssetsLibraryRemoved);
@@ -657,6 +661,8 @@ namespace AssetsLibrary {
 			throw new InvalidOperationException (Constants.AssetsLibraryRemoved);
 		}
 
+		/// <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>
+		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
 		protected internal ALAssetsFilter (NativeHandle handle) : base (handle)
 		{
 			throw new InvalidOperationException (Constants.AssetsLibraryRemoved);
@@ -719,6 +725,8 @@ namespace AssetsLibrary {
 			throw new InvalidOperationException (Constants.AssetsLibraryRemoved);
 		}
 
+		/// <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>
+		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
 		protected internal ALAssetsGroup (NativeHandle handle) : base (handle)
 		{
 			throw new InvalidOperationException (Constants.AssetsLibraryRemoved);
@@ -889,6 +897,8 @@ namespace AssetsLibrary {
 			throw new InvalidOperationException (Constants.AssetsLibraryRemoved);
 		}
 
+		/// <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>
+		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
 		protected internal ALAssetsLibrary (NativeHandle handle) : base (handle)
 		{
 			throw new InvalidOperationException (Constants.AssetsLibraryRemoved);

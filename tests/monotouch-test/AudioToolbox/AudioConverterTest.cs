@@ -46,7 +46,7 @@ namespace MonoTouchFixtures.AudioToolbox {
 
 			// create the AudioConverter
 			using AudioConverter? converter = AudioConverter.Create (srcFormat, dstFormat, out var createResult);
-			Assert.AreEqual (AudioConverterError.None, createResult, $"AudioConverterCreate ({srcFormat} -> {dstFormat}): {createResult}");
+			Assert.That (createResult, Is.EqualTo (AudioConverterError.None), $"AudioConverterCreate ({srcFormat} -> {dstFormat}): {createResult}");
 
 			Assert.That (converter.PerformDownmix, Is.EqualTo (false), "PerformDownmix #0");
 			converter.PerformDownmix = true;
@@ -81,11 +81,11 @@ namespace MonoTouchFixtures.AudioToolbox {
 		public void Formats ()
 		{
 			var decodeFormats = AudioConverter.DecodeFormats;
-			Assert.NotNull (decodeFormats, "Decode #1");
+			Assert.That (decodeFormats, Is.Not.Null, "Decode #1");
 			Assert.That (decodeFormats.Length, Is.GreaterThan (10), "Decode Length #1");
 
 			var encodeFormats = AudioConverter.EncodeFormats;
-			Assert.NotNull (encodeFormats, "Encode #1");
+			Assert.That (encodeFormats, Is.Not.Null, "Encode #1");
 			Assert.That (encodeFormats.Length, Is.GreaterThan (10), "Encode Length #1");
 		}
 
@@ -200,14 +200,14 @@ namespace MonoTouchFixtures.AudioToolbox {
 				Assert.Ignore ("Couldn't figure out the right properties to make the Apac encoder work:/");
 				// use AudioFormat API to fill out the rest of the description
 				var afe = AudioStreamBasicDescription.GetFormatInfo (ref dstFormat);
-				Assert.AreEqual (AudioFormatError.None, afe, $"GetFormatInfo: {name}");
+				Assert.That (afe, Is.EqualTo (AudioFormatError.None), $"GetFormatInfo: {name}");
 			} else if (outputFormatType == AudioFormatType.AppleLossless) {
 				// compressed format - need to set at least format, sample rate and channel fields for kAudioFormatProperty_FormatInfo
 				dstFormat.ChannelsPerFrame = srcFormat.ChannelsPerFrame; // for iLBC num channels must be 1
 
 				// use AudioFormat API to fill out the rest of the description
 				var afe = AudioStreamBasicDescription.GetFormatInfo (ref dstFormat);
-				Assert.AreEqual (AudioFormatError.None, afe, $"GetFormatInfo: {name}");
+				Assert.That (afe, Is.EqualTo (AudioFormatError.None), $"GetFormatInfo: {name}");
 			} else {
 				throw new NotImplementedException ();
 			}
@@ -217,7 +217,7 @@ namespace MonoTouchFixtures.AudioToolbox {
 			using AudioConverter? converter = options.HasValue ?
 				AudioConverter.Create (srcFormat, dstFormat, options.Value, out ce) :
 				AudioConverter.Create (srcFormat, dstFormat, out ce);
-			Assert.AreEqual (AudioConverterError.None, ce, $"AudioConverterCreate : {name}\n\tSource format: {srcFormat}\n\tDestination format: {dstFormat})");
+			Assert.That (ce, Is.EqualTo (AudioConverterError.None), $"AudioConverterCreate : {name}\n\tSource format: {srcFormat}\n\tDestination format: {dstFormat})");
 
 			// set up source buffers and data proc info struct
 			var afio = new AudioFileIO (32 * 1024); // 32Kb
@@ -314,7 +314,7 @@ namespace MonoTouchFixtures.AudioToolbox {
 					fe = converter.FillComplexBuffer (ref ioOutputDataPackets, fillBufList, outputPacketDescriptions);
 				}
 				// if interrupted in the process of the conversion call, we must handle the error appropriately
-				Assert.AreEqual (AudioConverterError.None, fe, $"FillComplexBuffer: {name}");
+				Assert.That (fe, Is.EqualTo (AudioConverterError.None), $"FillComplexBuffer: {name}");
 
 				if (ioOutputDataPackets == 0) {
 					// this is the EOF conditon
@@ -325,7 +325,7 @@ namespace MonoTouchFixtures.AudioToolbox {
 				var inNumBytes = fillBufList [0].DataByteSize;
 
 				var we = destinationFile.WritePackets (false, inNumBytes, outputPacketDescriptions, outputFilePos, ref ioOutputDataPackets, outputBuffer);
-				Assert.AreEqual (AudioFileError.Success, we, $"WritePackets: {name}");
+				Assert.That (we, Is.EqualTo (AudioFileError.Success), $"WritePackets: {name}");
 
 				// advance output file packet position
 				outputFilePos += ioOutputDataPackets;

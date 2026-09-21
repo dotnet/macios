@@ -25,7 +25,7 @@ namespace MonoTouchFixtures.UIKit {
 			var frame = new CGRect (10, 10, 100, 100);
 			using (UIWebView wv = new UIWebView (frame)) {
 				Assert.That (wv.Frame, Is.EqualTo (frame), "Frame");
-				Assert.Null (wv.Request, "Request");
+				Assert.That (wv.Request, Is.Null, "Request");
 			}
 		}
 

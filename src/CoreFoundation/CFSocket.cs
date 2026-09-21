@@ -760,10 +760,15 @@ namespace CoreFoundation {
 			public CFSocketWriteEventArgs () { }
 		}
 
+		/// <summary>Raised when the listening socket accepts a new incoming connection. Use the event arguments' <see cref="CoreFoundation.CFSocket.CFSocketAcceptEventArgs.RemoteEndPoint" /> to inspect the remote peer and <see cref="CoreFoundation.CFSocket.CFSocketAcceptEventArgs.CreateSocket" /> to obtain a <see cref="CoreFoundation.CFSocket" /> for the accepted connection.</summary>
 		public event EventHandler<CFSocketAcceptEventArgs>? AcceptEvent;
+		/// <summary>Raised when a background connection attempt started with one of the <c>Connect</c> methods completes, reporting whether the connection succeeded or failed.</summary>
 		public event EventHandler<CFSocketConnectEventArgs>? ConnectEvent;
+		/// <summary>Raised when a complete block of data has been read from the socket and is available in the event arguments.</summary>
 		public event EventHandler<CFSocketDataEventArgs>? DataEvent;
+		/// <summary>Raised when the socket has data available to be read.</summary>
 		public event EventHandler<CFSocketReadEventArgs>? ReadEvent;
+		/// <summary>Raised when the socket is ready to accept data to be written without blocking.</summary>
 		public event EventHandler<CFSocketWriteEventArgs>? WriteEvent;
 
 		void OnAccepted (CFSocketAcceptEventArgs args)

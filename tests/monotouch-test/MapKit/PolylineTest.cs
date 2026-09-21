@@ -32,21 +32,21 @@ namespace MonoTouchFixtures.MapKit {
 				Assert.That (pl.Coordinate.Latitude, Is.EqualTo (-90f), "Coordinate.Latitude");
 			else
 				Assert.That (pl.Coordinate.Latitude, Is.NaN, "Coordinate.Latitude");
-			Assert.Null (pl.Title, "Title");
-			Assert.Null (pl.Subtitle, "Subtitle");
+			Assert.That (pl.Title, Is.Null, "Title");
+			Assert.That (pl.Subtitle, Is.Null, "Subtitle");
 			// MKOverlay
-			Assert.True (Double.IsPositiveInfinity (pl.BoundingMapRect.Origin.X), "BoundingMapRect.Origin.X");
-			Assert.True (Double.IsPositiveInfinity (pl.BoundingMapRect.Origin.Y), "BoundingMapRect.Origin.Y");
+			Assert.That (Double.IsPositiveInfinity (pl.BoundingMapRect.Origin.X), Is.True, "BoundingMapRect.Origin.X");
+			Assert.That (Double.IsPositiveInfinity (pl.BoundingMapRect.Origin.Y), Is.True, "BoundingMapRect.Origin.Y");
 			if (TestRuntime.CheckXcodeVersion (5, 0, 1)) {
 				Assert.That (pl.BoundingMapRect.Size.Height, Is.EqualTo (0.0f), "BoundingMapRect.Size.Height");
 				Assert.That (pl.BoundingMapRect.Size.Width, Is.EqualTo (0.0f), "BoundingMapRect.Size.Width");
 			} else {
-				Assert.True (Double.IsNegativeInfinity (pl.BoundingMapRect.Size.Height), "BoundingMapRect.Size.Height");
-				Assert.True (Double.IsNegativeInfinity (pl.BoundingMapRect.Size.Width), "BoundingMapRect.Size.Width");
+				Assert.That (Double.IsNegativeInfinity (pl.BoundingMapRect.Size.Height), Is.True, "BoundingMapRect.Size.Height");
+				Assert.That (Double.IsNegativeInfinity (pl.BoundingMapRect.Size.Width), Is.True, "BoundingMapRect.Size.Width");
 			}
-			Assert.False (pl.Intersects (pl.BoundingMapRect), "Intersect/Self");
+			Assert.That (pl.Intersects (pl.BoundingMapRect), Is.False, "Intersect/Self");
 			MKMapRect rect = new MKMapRect (0, 0, 0, 0);
-			Assert.False (pl.Intersects (rect), "Intersect/Empty");
+			Assert.That (pl.Intersects (rect), Is.False, "Intersect/Empty");
 
 			ShapeTest.CheckShape (pl);
 		}
@@ -83,7 +83,7 @@ namespace MonoTouchFixtures.MapKit {
 				pl.Coordinate = new CLLocationCoordinate2D (10, 20);
 			}
 			catch (ObjCException mte) {
-				Assert.True (mte.Message.Contains ("unrecognized selector sent to instance"));
+				Assert.That (mte.Message.Contains ("unrecognized selector sent to instance"), Is.True);
 			}
 			catch {
 				Assert.Fail ("API could be working/implemented");

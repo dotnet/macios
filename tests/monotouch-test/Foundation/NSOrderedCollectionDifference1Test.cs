@@ -21,7 +21,7 @@ namespace MonoTouchFixtures.Foundation {
 			});
 			// https://github.com/dotnet/macios/issues/15577 - Did not rewrite tests that were disabled
 			// Any reason for not asserting on the returned value?
-			// Assert.AreEqual (1, diff.Insertions.Length, "insertions");
+			// Assert.That (diff.Insertions.Length, Is.EqualTo (1), "insertions");
 			// (or whatever it's supposed to return)
 		}
 	}

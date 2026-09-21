@@ -35,7 +35,7 @@ namespace apitest {
 			using (var sleep = Process.Start ("/bin/sleep", sleep_duration)) {
 				using (var kqueue = new KernelQueue ()) {
 					var events = CreateEvents (sleep);
-					Assert.AreEqual (1, kqueue.KEvent (events, events, TimeSpan.FromSeconds (5)), "kevent");
+					Assert.That (kqueue.KEvent (events, events, TimeSpan.FromSeconds (5)), Is.EqualTo (1), "kevent");
 				}
 			}
 
@@ -43,7 +43,7 @@ namespace apitest {
 			using (var sleep = Process.Start ("/bin/sleep", sleep_duration)) {
 				using (var kqueue = new KernelQueue ()) {
 					var events = CreateEvents (sleep);
-					Assert.AreEqual (1, kqueue.KEvent (events, events, null), "kevent");
+					Assert.That (kqueue.KEvent (events, events, null), Is.EqualTo (1), "kevent");
 				}
 			}
 
@@ -54,7 +54,7 @@ namespace apitest {
 					TimeSpec ts = new TimeSpec {
 						Seconds = 5,
 					};
-					Assert.AreEqual (1, kqueue.KEvent (events, events.Length, events, events.Length, ts), "kevent");
+					Assert.That (kqueue.KEvent (events, events.Length, events, events.Length, ts), Is.EqualTo (1), "kevent");
 				}
 			}
 
@@ -62,7 +62,7 @@ namespace apitest {
 			using (var sleep = Process.Start ("/bin/sleep", sleep_duration)) {
 				using (var kqueue = new KernelQueue ()) {
 					var events = CreateEvents (sleep);
-					Assert.AreEqual (1, kqueue.KEvent (events, events.Length, events, events.Length, null), "kevent");
+					Assert.That (kqueue.KEvent (events, events.Length, events, events.Length, null), Is.EqualTo (1), "kevent");
 				}
 			}
 

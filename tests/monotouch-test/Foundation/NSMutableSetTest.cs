@@ -24,10 +24,10 @@ namespace MonoTouchFixtures.Foundation {
 			using (var set1 = new NSMutableSet (str1))
 			using (var set2 = new NSMutableSet (str2, str3))
 			using (var result = set1 + set2) {
-				Assert.AreEqual ((nuint) 3, result.Count, "AddTest Count");
-				Assert.IsTrue (result.Contains (str1), "AddTest Contains 1");
-				Assert.IsTrue (result.Contains (str2), "AddTest Contains 2");
-				Assert.IsTrue (result.Contains (str3), "AddTest Contains 3");
+				Assert.That (result.Count, Is.EqualTo ((nuint) 3), "AddTest Count");
+				Assert.That (result.Contains (str1), Is.True, "AddTest Contains 1");
+				Assert.That (result.Contains (str2), Is.True, "AddTest Contains 2");
+				Assert.That (result.Contains (str3), Is.True, "AddTest Contains 3");
 			}
 		}
 
@@ -43,11 +43,11 @@ namespace MonoTouchFixtures.Foundation {
 			var second = new NSMutableSet (str3, str4);
 			var third = first - second;
 
-			Assert.AreEqual ((nuint) 2, third.Count, "OperatorSubtract Count");
-			Assert.IsTrue (third.Contains (str1), "OperatorSubtract 1");
-			Assert.IsTrue (third.Contains (str2), "OperatorSubtract 2");
-			Assert.IsFalse (third.Contains (str3), "OperatorSubtract 3");
-			Assert.IsFalse (third.Contains (str4), "OperatorSubtract 4");
+			Assert.That (third.Count, Is.EqualTo ((nuint) 2), "OperatorSubtract Count");
+			Assert.That (third.Contains (str1), Is.True, "OperatorSubtract 1");
+			Assert.That (third.Contains (str2), Is.True, "OperatorSubtract 2");
+			Assert.That (third.Contains (str3), Is.False, "OperatorSubtract 3");
+			Assert.That (third.Contains (str4), Is.False, "OperatorSubtract 4");
 		}
 
 		[Test]
@@ -61,8 +61,8 @@ namespace MonoTouchFixtures.Foundation {
 			using (var sum3 = one + two) {
 
 			}
-			Assert.AreNotEqual (IntPtr.Zero, one.Handle, "Handle must be != IntPtr.Zero");
-			Assert.AreNotEqual (IntPtr.Zero, two.Handle, "Handle must be != IntPtr.Zero");
+			Assert.That (one.Handle, Is.Not.EqualTo (IntPtr.Zero), "Handle must be != IntPtr.Zero");
+			Assert.That (two.Handle, Is.Not.EqualTo (IntPtr.Zero), "Handle must be != IntPtr.Zero");
 		}
 
 		[Test]
@@ -71,7 +71,7 @@ namespace MonoTouchFixtures.Foundation {
 			NSMutableSet first = null;
 			NSMutableSet second = null;
 			var result = first + second;
-			Assert.IsNull (result, "BothNull should return null");
+			Assert.That (result, Is.Null, "BothNull should return null");
 		}
 
 		[Test]
@@ -80,10 +80,10 @@ namespace MonoTouchFixtures.Foundation {
 			NSMutableSet first = null;
 			using (var second = new NSMutableSet ("1", "2"))
 			using (var result = first + second) {
-				Assert.IsNotNull (result, "FirstNull should return new set");
-				Assert.AreEqual ((nuint) 2, result.Count, "FirstNull Count");
-				Assert.IsTrue (result.Contains ("1"), "FirstNull Contains 1");
-				Assert.IsTrue (result.Contains ("2"), "FirstNull Contains 2");
+				Assert.That (result, Is.Not.Null, "FirstNull should return new set");
+				Assert.That (result.Count, Is.EqualTo ((nuint) 2), "FirstNull Count");
+				Assert.That (result.Contains ("1"), Is.True, "FirstNull Contains 1");
+				Assert.That (result.Contains ("2"), Is.True, "FirstNull Contains 2");
 			}
 		}
 
@@ -93,8 +93,8 @@ namespace MonoTouchFixtures.Foundation {
 			NSMutableSet first = null;
 			using (var second = new NSMutableSet ())
 			using (var result = first + second) {
-				Assert.IsNotNull (result, "FirstNull SecondEmpty should return new set");
-				Assert.AreEqual ((nuint) 0, result.Count, "FirstNull SecondEmpty Count");
+				Assert.That (result, Is.Not.Null, "FirstNull SecondEmpty should return new set");
+				Assert.That (result.Count, Is.EqualTo ((nuint) 0), "FirstNull SecondEmpty Count");
 			}
 		}
 
@@ -103,10 +103,10 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			using (var first = new NSMutableSet ("1", "2"))
 			using (var result = first + null) {
-				Assert.IsNotNull (result, "SecondNull should return new set");
-				Assert.AreEqual ((nuint) 2, result.Count, "SecondNull Count");
-				Assert.IsTrue (result.Contains ("1"), "SecondNull Contains 1");
-				Assert.IsTrue (result.Contains ("2"), "SecondNull Contains 2");
+				Assert.That (result, Is.Not.Null, "SecondNull should return new set");
+				Assert.That (result.Count, Is.EqualTo ((nuint) 2), "SecondNull Count");
+				Assert.That (result.Contains ("1"), Is.True, "SecondNull Contains 1");
+				Assert.That (result.Contains ("2"), Is.True, "SecondNull Contains 2");
 			}
 		}
 
@@ -115,8 +115,8 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			using (var first = new NSMutableSet ())
 			using (var result = first + null) {
-				Assert.IsNotNull (result, "FirstEmpty SecondNull should return new set");
-				Assert.AreEqual ((nuint) 0, result.Count, "FirstEmpty SecondNull Count");
+				Assert.That (result, Is.Not.Null, "FirstEmpty SecondNull should return new set");
+				Assert.That (result.Count, Is.EqualTo ((nuint) 0), "FirstEmpty SecondNull Count");
 			}
 		}
 
@@ -126,10 +126,10 @@ namespace MonoTouchFixtures.Foundation {
 			using (var first = new NSMutableSet ())
 			using (var second = new NSMutableSet ("1", "2"))
 			using (var result = first + second) {
-				Assert.IsNotNull (result, "FirstEmpty should return copy of second");
-				Assert.AreEqual ((nuint) 2, result.Count, "FirstEmpty Count");
-				Assert.IsTrue (result.Contains ("1"), "FirstEmpty Contains 1");
-				Assert.IsTrue (result.Contains ("2"), "FirstEmpty Contains 2");
+				Assert.That (result, Is.Not.Null, "FirstEmpty should return copy of second");
+				Assert.That (result.Count, Is.EqualTo ((nuint) 2), "FirstEmpty Count");
+				Assert.That (result.Contains ("1"), Is.True, "FirstEmpty Contains 1");
+				Assert.That (result.Contains ("2"), Is.True, "FirstEmpty Contains 2");
 			}
 		}
 
@@ -139,10 +139,10 @@ namespace MonoTouchFixtures.Foundation {
 			using (var first = new NSMutableSet ("1", "2"))
 			using (var second = new NSMutableSet ())
 			using (var result = first + second) {
-				Assert.IsNotNull (result, "SecondEmpty should return copy of first");
-				Assert.AreEqual ((nuint) 2, result.Count, "SecondEmpty Count");
-				Assert.IsTrue (result.Contains ("1"), "SecondEmpty Contains 1");
-				Assert.IsTrue (result.Contains ("2"), "SecondEmpty Contains 2");
+				Assert.That (result, Is.Not.Null, "SecondEmpty should return copy of first");
+				Assert.That (result.Count, Is.EqualTo ((nuint) 2), "SecondEmpty Count");
+				Assert.That (result.Contains ("1"), Is.True, "SecondEmpty Contains 1");
+				Assert.That (result.Contains ("2"), Is.True, "SecondEmpty Contains 2");
 			}
 		}
 
@@ -152,8 +152,8 @@ namespace MonoTouchFixtures.Foundation {
 			using (var first = new NSMutableSet ())
 			using (var second = new NSMutableSet ())
 			using (var result = first + second) {
-				Assert.IsNotNull (result, "BothEmpty should return new empty set");
-				Assert.AreEqual ((nuint) 0, result.Count, "BothEmpty Count");
+				Assert.That (result, Is.Not.Null, "BothEmpty should return new empty set");
+				Assert.That (result.Count, Is.EqualTo ((nuint) 0), "BothEmpty Count");
 			}
 		}
 
@@ -163,12 +163,12 @@ namespace MonoTouchFixtures.Foundation {
 			using (var first = new NSMutableSet ("1", "2", "3"))
 			using (var second = new NSMutableSet ("2", "3", "4"))
 			using (var result = first + second) {
-				Assert.IsNotNull (result, "Overlapping should return new set");
-				Assert.AreEqual ((nuint) 4, result.Count, "Overlapping Count");
-				Assert.IsTrue (result.Contains ("1"), "Overlapping Contains 1");
-				Assert.IsTrue (result.Contains ("2"), "Overlapping Contains 2");
-				Assert.IsTrue (result.Contains ("3"), "Overlapping Contains 3");
-				Assert.IsTrue (result.Contains ("4"), "Overlapping Contains 4");
+				Assert.That (result, Is.Not.Null, "Overlapping should return new set");
+				Assert.That (result.Count, Is.EqualTo ((nuint) 4), "Overlapping Count");
+				Assert.That (result.Contains ("1"), Is.True, "Overlapping Contains 1");
+				Assert.That (result.Contains ("2"), Is.True, "Overlapping Contains 2");
+				Assert.That (result.Contains ("3"), Is.True, "Overlapping Contains 3");
+				Assert.That (result.Contains ("4"), Is.True, "Overlapping Contains 4");
 			}
 		}
 
@@ -178,7 +178,7 @@ namespace MonoTouchFixtures.Foundation {
 			NSMutableSet first = null;
 			using (var second = new NSMutableSet ("1", "2")) {
 				var result = first - second;
-				Assert.IsNull (result, "FirstNull should return null");
+				Assert.That (result, Is.Null, "FirstNull should return null");
 			}
 		}
 
@@ -187,10 +187,10 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			using (var first = new NSMutableSet ("1", "2"))
 			using (var result = first - null) {
-				Assert.IsNotNull (result, "SecondNull should return copy of first");
-				Assert.AreEqual ((nuint) 2, result.Count, "SecondNull Count");
-				Assert.IsTrue (result.Contains ("1"), "SecondNull Contains 1");
-				Assert.IsTrue (result.Contains ("2"), "SecondNull Contains 2");
+				Assert.That (result, Is.Not.Null, "SecondNull should return copy of first");
+				Assert.That (result.Count, Is.EqualTo ((nuint) 2), "SecondNull Count");
+				Assert.That (result.Contains ("1"), Is.True, "SecondNull Contains 1");
+				Assert.That (result.Contains ("2"), Is.True, "SecondNull Contains 2");
 			}
 		}
 
@@ -200,7 +200,7 @@ namespace MonoTouchFixtures.Foundation {
 			NSMutableSet first = null;
 			NSMutableSet second = null;
 			var result = first - second;
-			Assert.IsNull (result, "BothNull should return null");
+			Assert.That (result, Is.Null, "BothNull should return null");
 		}
 
 		[Test]
@@ -209,8 +209,8 @@ namespace MonoTouchFixtures.Foundation {
 			using (var first = new NSMutableSet ())
 			using (var second = new NSMutableSet ("1", "2"))
 			using (var result = first - second) {
-				Assert.IsNotNull (result, "FirstEmpty should return empty set");
-				Assert.AreEqual ((nuint) 0, result.Count, "FirstEmpty Count");
+				Assert.That (result, Is.Not.Null, "FirstEmpty should return empty set");
+				Assert.That (result.Count, Is.EqualTo ((nuint) 0), "FirstEmpty Count");
 			}
 		}
 
@@ -220,10 +220,10 @@ namespace MonoTouchFixtures.Foundation {
 			using (var first = new NSMutableSet ("1", "2"))
 			using (var second = new NSMutableSet ())
 			using (var result = first - second) {
-				Assert.IsNotNull (result, "SecondEmpty should return copy of first");
-				Assert.AreEqual ((nuint) 2, result.Count, "SecondEmpty Count");
-				Assert.IsTrue (result.Contains ("1"), "SecondEmpty Contains 1");
-				Assert.IsTrue (result.Contains ("2"), "SecondEmpty Contains 2");
+				Assert.That (result, Is.Not.Null, "SecondEmpty should return copy of first");
+				Assert.That (result.Count, Is.EqualTo ((nuint) 2), "SecondEmpty Count");
+				Assert.That (result.Contains ("1"), Is.True, "SecondEmpty Contains 1");
+				Assert.That (result.Contains ("2"), Is.True, "SecondEmpty Contains 2");
 			}
 		}
 
@@ -233,8 +233,8 @@ namespace MonoTouchFixtures.Foundation {
 			using (var first = new NSMutableSet ())
 			using (var second = new NSMutableSet ())
 			using (var result = first - second) {
-				Assert.IsNotNull (result, "BothEmpty should return empty set");
-				Assert.AreEqual ((nuint) 0, result.Count, "BothEmpty Count");
+				Assert.That (result, Is.Not.Null, "BothEmpty should return empty set");
+				Assert.That (result.Count, Is.EqualTo ((nuint) 0), "BothEmpty Count");
 			}
 		}
 
@@ -244,10 +244,10 @@ namespace MonoTouchFixtures.Foundation {
 			using (var first = new NSMutableSet ("1", "2"))
 			using (var second = new NSMutableSet ("3", "4"))
 			using (var result = first - second) {
-				Assert.IsNotNull (result, "NoOverlap should return copy of first");
-				Assert.AreEqual ((nuint) 2, result.Count, "NoOverlap Count");
-				Assert.IsTrue (result.Contains ("1"), "NoOverlap Contains 1");
-				Assert.IsTrue (result.Contains ("2"), "NoOverlap Contains 2");
+				Assert.That (result, Is.Not.Null, "NoOverlap should return copy of first");
+				Assert.That (result.Count, Is.EqualTo ((nuint) 2), "NoOverlap Count");
+				Assert.That (result.Contains ("1"), Is.True, "NoOverlap Contains 1");
+				Assert.That (result.Contains ("2"), Is.True, "NoOverlap Contains 2");
 			}
 		}
 
@@ -257,11 +257,11 @@ namespace MonoTouchFixtures.Foundation {
 			using (var first = new NSMutableSet ("1", "2", "3"))
 			using (var second = new NSMutableSet ("2", "3", "4"))
 			using (var result = first - second) {
-				Assert.IsNotNull (result, "PartialOverlap should return difference");
-				Assert.AreEqual ((nuint) 1, result.Count, "PartialOverlap Count");
-				Assert.IsTrue (result.Contains ("1"), "PartialOverlap Contains 1");
-				Assert.IsFalse (result.Contains ("2"), "PartialOverlap Not Contains 2");
-				Assert.IsFalse (result.Contains ("3"), "PartialOverlap Not Contains 3");
+				Assert.That (result, Is.Not.Null, "PartialOverlap should return difference");
+				Assert.That (result.Count, Is.EqualTo ((nuint) 1), "PartialOverlap Count");
+				Assert.That (result.Contains ("1"), Is.True, "PartialOverlap Contains 1");
+				Assert.That (result.Contains ("2"), Is.False, "PartialOverlap Not Contains 2");
+				Assert.That (result.Contains ("3"), Is.False, "PartialOverlap Not Contains 3");
 			}
 		}
 
@@ -271,8 +271,8 @@ namespace MonoTouchFixtures.Foundation {
 			using (var first = new NSMutableSet ("1", "2", "3"))
 			using (var second = new NSMutableSet ("1", "2", "3"))
 			using (var result = first - second) {
-				Assert.IsNotNull (result, "CompleteOverlap should return empty set");
-				Assert.AreEqual ((nuint) 0, result.Count, "CompleteOverlap Count");
+				Assert.That (result, Is.Not.Null, "CompleteOverlap should return empty set");
+				Assert.That (result.Count, Is.EqualTo ((nuint) 0), "CompleteOverlap Count");
 			}
 		}
 
@@ -282,8 +282,8 @@ namespace MonoTouchFixtures.Foundation {
 			using (var first = new NSMutableSet ("1", "2"))
 			using (var second = new NSMutableSet ("1", "2", "3", "4"))
 			using (var result = first - second) {
-				Assert.IsNotNull (result, "Superset should return empty set");
-				Assert.AreEqual ((nuint) 0, result.Count, "Superset Count");
+				Assert.That (result, Is.Not.Null, "Superset should return empty set");
+				Assert.That (result.Count, Is.EqualTo ((nuint) 0), "Superset Count");
 			}
 		}
 
@@ -293,9 +293,9 @@ namespace MonoTouchFixtures.Foundation {
 			var str1 = (NSString) "1";
 			NSObject? nullObj = null;
 			using (var set = new NSMutableSet (str1, nullObj)) {
-				Assert.AreEqual ((nuint) 2, set.Count, "Count should include null");
-				Assert.IsTrue (set.Contains (str1), "Should contain string");
-				Assert.IsTrue (set.Contains (NSNull.Null), "Should contain NSNull");
+				Assert.That (set.Count, Is.EqualTo ((nuint) 2), "Count should include null");
+				Assert.That (set.Contains (str1), Is.True, "Should contain string");
+				Assert.That (set.Contains (NSNull.Null), Is.True, "Should contain NSNull");
 			}
 		}
 
@@ -304,7 +304,7 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			NSObject []? objs = null;
 			using (var set = new NSMutableSet (objs)) {
-				Assert.AreEqual ((nuint) 0, set.Count, "Null array should create empty set");
+				Assert.That (set.Count, Is.EqualTo ((nuint) 0), "Null array should create empty set");
 			}
 		}
 	}

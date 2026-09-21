@@ -174,7 +174,7 @@ $(DOTNET_DESTDIR)/$($(1)_NUGET_SDK_NAME)/tools/buildinfo: $(TOP)/Make.config.inc
 	$$(Q) echo "Build date: $$(shell date '+%Y-%m-%d %H:%M:%S%z')" >> $$@.tmp
 	$$(Q) mv $$@.tmp $$@
 endef
-$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call BuildInfo,$(platform),$(shell echo $(platform) | tr a-z A-Z))))
+$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call BuildInfo,$(platform),$(call uppercase,$(platform)))))
 
 $(DOTNET_COMMON_DIRECTORIES):
 	$(Q) mkdir -p $@

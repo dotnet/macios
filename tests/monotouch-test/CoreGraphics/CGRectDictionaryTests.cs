@@ -22,25 +22,25 @@ public class CGRectDictionaryTests {
 			var rect = new CGRect (1, 2, 3, 4);
 			using var dict = rect.ToDictionary ();
 			var strongDict = new CGRectDictionary (dict);
-			Assert.AreEqual (rect.X, strongDict.X, "X");
-			Assert.AreEqual (rect.Y, strongDict.Y, "Y");
-			Assert.AreEqual (rect.Height, strongDict.Height, "Height");
-			Assert.AreEqual (rect.Width, strongDict.Width, "Width");
+			Assert.That (strongDict.X, Is.EqualTo (rect.X), "X");
+			Assert.That (strongDict.Y, Is.EqualTo (rect.Y), "Y");
+			Assert.That (strongDict.Height, Is.EqualTo (rect.Height), "Height");
+			Assert.That (strongDict.Width, Is.EqualTo (rect.Width), "Width");
 
 			var rect2 = strongDict.ToRect ();
-			Assert.AreEqual (rect, rect2, "Rect");
+			Assert.That (rect2, Is.EqualTo (rect), "Rect");
 
 			strongDict = new CGRectDictionary ();
 			strongDict.X = 3;
-			Assert.AreEqual ((nfloat) 3, strongDict.X, "X 2");
+			Assert.That (strongDict.X, Is.EqualTo ((nfloat) 3), "X 2");
 			strongDict.Y = 4;
-			Assert.AreEqual ((nfloat) 4, strongDict.Y, "Y 2");
+			Assert.That (strongDict.Y, Is.EqualTo ((nfloat) 4), "Y 2");
 			strongDict.Width = 5;
-			Assert.AreEqual ((nfloat) 5, strongDict.Width, "Width 2");
+			Assert.That (strongDict.Width, Is.EqualTo ((nfloat) 5), "Width 2");
 			strongDict.Height = 6;
-			Assert.AreEqual ((nfloat) 6, strongDict.Height, "Height 2");
+			Assert.That (strongDict.Height, Is.EqualTo ((nfloat) 6), "Height 2");
 			rect2 = strongDict.ToRect ();
-			Assert.AreEqual (new CGRect (3, 4, 5, 6), rect2, "Rect 2");
+			Assert.That (rect2, Is.EqualTo (new CGRect (3, 4, 5, 6)), "Rect 2");
 		});
 	}
 
@@ -49,12 +49,12 @@ public class CGRectDictionaryTests {
 	{
 		Assert.Multiple (() => {
 			var strongDict = new CGRectDictionary ();
-			Assert.IsNull (strongDict.X, "X");
-			Assert.IsNull (strongDict.Y, "Y");
-			Assert.IsNull (strongDict.Width, "Width");
-			Assert.IsNull (strongDict.Height, "Height");
+			Assert.That (strongDict.X, Is.Null, "X");
+			Assert.That (strongDict.Y, Is.Null, "Y");
+			Assert.That (strongDict.Width, Is.Null, "Width");
+			Assert.That (strongDict.Height, Is.Null, "Height");
 			var rect = strongDict.ToRect ();
-			Assert.AreEqual (default (CGRect), rect, "Rect");
+			Assert.That (rect, Is.EqualTo (default (CGRect)), "Rect");
 		});
 	}
 
@@ -62,8 +62,8 @@ public class CGRectDictionaryTests {
 	public void ToStringTest1 ()
 	{
 		var strongDict = new CGRectDictionary ();
-		Assert.AreEqual ("CoreGraphics.CGRectDictionary", strongDict.ToString (), "A");
-		Assert.AreEqual ("{\n}", strongDict.Dictionary.ToString (), "B");
+		Assert.That (strongDict.ToString (), Is.EqualTo ("CoreGraphics.CGRectDictionary"), "A");
+		Assert.That (strongDict.Dictionary.ToString (), Is.EqualTo ("{\n}"), "B");
 	}
 
 	[Test]
@@ -74,7 +74,7 @@ public class CGRectDictionaryTests {
 		strongDict.Y = 4;
 		strongDict.Width = 5;
 		strongDict.Height = 6;
-		Assert.AreEqual ("CoreGraphics.CGRectDictionary", strongDict.ToString (), "A");
-		Assert.AreEqual ("{\n    Height = 6;\n    Width = 5;\n    X = 3;\n    Y = 4;\n}", strongDict.Dictionary.ToString (), "B");
+		Assert.That (strongDict.ToString (), Is.EqualTo ("CoreGraphics.CGRectDictionary"), "A");
+		Assert.That (strongDict.Dictionary.ToString (), Is.EqualTo ("{\n    Height = 6;\n    Width = 5;\n    X = 3;\n    Y = 4;\n}"), "B");
 	}
 }

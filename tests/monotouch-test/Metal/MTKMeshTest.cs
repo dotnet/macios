@@ -33,11 +33,11 @@ namespace MonoTouchFixtures.MetalKit {
 
 			var result = MTKMesh.FromAsset (asset, device, out var sourceMeshes, out var error);
 
-			Assert.IsNull (error, "error");
-			Assert.IsNotNull (result, "result");
+			Assert.That (error, Is.Null, "error");
+			Assert.That (result, Is.Not.Null, "result");
 			Assert.That (result!.Length, Is.GreaterThan (0), "result length");
-			Assert.IsNotNull (sourceMeshes, "sourceMeshes");
-			Assert.AreEqual (result.Length, sourceMeshes!.Length, "sourceMeshes length");
+			Assert.That (sourceMeshes, Is.Not.Null, "sourceMeshes");
+			Assert.That (sourceMeshes!.Length, Is.EqualTo (result.Length), "sourceMeshes length");
 		}
 	}
 }

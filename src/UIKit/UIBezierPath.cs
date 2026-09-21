@@ -13,13 +13,12 @@ namespace UIKit {
 	public partial class UIBezierPath {
 
 		// from AppKit/NSBezierPath.cs
-		/// <param name="pattern">To be added.</param>
-		/// <param name="phase">To be added.</param>
+		/// <param name="pattern">On return, the dash pattern applied to the receiver's stroked path.</param>
+		/// <param name="phase">On return, the offset at which the dash pattern begins.</param>
 		/// <summary>Stores the stroking pattern and phase in the provided <see langword="out" /> parameters.</summary>
 		/// <remarks>
-		///           <para>(More documentation for this node is coming)</para>
-		///           <para tool="threads">This can be used from a background thread.</para>
-		///         </remarks>
+		///   <para tool="threads">This can be used from a background thread.</para>
+		/// </remarks>
 		public unsafe void GetLineDash (out nfloat [] pattern, out nfloat phase)
 		{
 			nint length;

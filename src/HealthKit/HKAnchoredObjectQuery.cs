@@ -5,8 +5,7 @@ namespace HealthKit {
 	public partial class HKAnchoredObjectQuery {
 
 		// #define HKAnchoredObjectQueryNoAnchor
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>A sentinel value indicating that no anchor has been set, causing the query to return all matching samples.</summary>
 		public const uint NoAnchor = 0;
 	}
 }

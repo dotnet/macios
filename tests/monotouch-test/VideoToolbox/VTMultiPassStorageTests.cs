@@ -26,7 +26,7 @@ namespace MonoTouchFixtures.VideoToolbox {
 			TestRuntime.AssertSystemVersion (ApplePlatform.TVOS, 10, 2, throwIfOtherPlatform: false);
 
 			using (var storage = VTMultiPassStorage.Create ()) {
-				Assert.IsNotNull (storage, "Storage should not be null");
+				Assert.That (storage, Is.Not.Null, "Storage should not be null");
 			}
 		}
 
@@ -39,7 +39,7 @@ namespace MonoTouchFixtures.VideoToolbox {
 
 			using (var storage = VTMultiPassStorage.Create ()) {
 				var result = storage.Close ();
-				Assert.IsTrue (result == VTStatus.Ok, "VTMultiPassStorage Close");
+				Assert.That (result == VTStatus.Ok, Is.True, "VTMultiPassStorage Close");
 			}
 		}
 	}

@@ -88,7 +88,7 @@ namespace VideoToolbox {
 		VideoDecoderReferenceMissing = -17694,
 		[iOS (15, 0), MacCatalyst (15, 0), TV (15, 0)]
 		VideoDecoderCallbackMessaging = -17695,
-		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 		VideoDecoderUnknownErr = -17696,
 		ExtensionDisabledErr = -17697,
 		VideoEncoderMVHEVCVideoLayerIDsMismatchErr = -17698,
@@ -140,10 +140,10 @@ namespace VideoToolbox {
 	}
 
 	// uint32_t -> VTCompressionSession.h
-	/// <summary>Flags to control encoder in multi pass compression sessions</summary>
+	/// <summary>Specifies options for controlling an encoder in multipass compression sessions.</summary>
 	[Flags]
 	public enum VTCompressionSessionOptionFlags : uint {
-		/// <summary>To be added.</summary>
+		/// <summary>Begins the final pass of a multipass compression session.</summary>
 		BeginFinalPass = 1 << 0,
 	}
 
@@ -450,7 +450,7 @@ namespace VideoToolbox {
 
 	}
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+	[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	public enum VTRotation {
 		[DefaultEnumValue]
 		[Field ("kVTRotation_0")]

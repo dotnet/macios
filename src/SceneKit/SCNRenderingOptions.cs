@@ -4,9 +4,8 @@
 
 namespace SceneKit {
 	public partial class SCNRenderingOptions {
-		/// <summary>To be added.</summary>
-		/// <value>To be added.</value>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Gets the rendering API used for this scene.</summary>
+		/// <value>The rendering API, or <see langword="null" /> if not specified.</value>
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]

@@ -47,7 +47,7 @@ namespace MonoTouchFixtures.Contacts {
 		{
 			var keys = new INativeObject [] { CNContactKey.GivenName, CNContactVCardSerialization.GetDescriptorFromRequiredKeys () };
 			using (var cfr = new CNContactFetchRequest (keys)) {
-				Assert.That ((nuint) 2, Is.EqualTo (cfr.KeysToFetch.Count), "KeysToFetch");
+				Assert.That (cfr.KeysToFetch.Count, Is.EqualTo ((nuint) 2), "KeysToFetch");
 			}
 		}
 	}

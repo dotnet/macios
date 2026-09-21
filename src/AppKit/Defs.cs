@@ -24,23 +24,18 @@
 #nullable enable
 
 namespace AppKit {
-	/// <summary>To be added.</summary>
-	///     <remarks>To be added.</remarks>
+	/// <summary>Defines the inset distances for views.</summary>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct NSEdgeInsets {
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The top edge inset value.</summary>
 		public nfloat Top;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The left edge inset value.</summary>
 		public nfloat Left;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The bottom edge inset value.</summary>
 		public nfloat Bottom;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The right edge inset value.</summary>
 		public nfloat Right;
 
 		public NSEdgeInsets (nfloat top, nfloat left, nfloat bottom, nfloat right)

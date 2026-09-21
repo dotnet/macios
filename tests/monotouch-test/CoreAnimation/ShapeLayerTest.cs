@@ -25,23 +25,23 @@ namespace MonoTouchFixtures.CoreAnimation {
 		public void NullableProperties ()
 		{
 			var sl = new CAShapeLayer ();
-			Assert.NotNull (sl.FillColor, "FillColor");
+			Assert.That (sl.FillColor, Is.Not.Null, "FillColor");
 			sl.FillColor = null;
-			Assert.Null (sl.Path, "Path");
+			Assert.That (sl.Path, Is.Null, "Path");
 			sl.Path = null;
-			Assert.Null (sl.LineDashPattern, "LineDashPattern");
+			Assert.That (sl.LineDashPattern, Is.Null, "LineDashPattern");
 			sl.LineDashPattern = null;
-			Assert.Null (sl.StrokeColor, "StrokeColor");
+			Assert.That (sl.StrokeColor, Is.Null, "StrokeColor");
 			sl.StrokeColor = null;
 
 			sl.FillColor = TestRuntime.GetCGColor (UIColor.Black);
-			Assert.NotNull (sl.FillColor, "FillColor");
+			Assert.That (sl.FillColor, Is.Not.Null, "FillColor");
 			sl.Path = new CGPath ();
-			Assert.NotNull (sl.Path, "Path");
+			Assert.That (sl.Path, Is.Not.Null, "Path");
 			sl.LineDashPattern = new [] { new NSNumber (5), new NSNumber (10) };
-			Assert.NotNull (sl.LineDashPattern, "LineDashPattern");
+			Assert.That (sl.LineDashPattern, Is.Not.Null, "LineDashPattern");
 			sl.StrokeColor = TestRuntime.GetCGColor (UIColor.White);
-			Assert.NotNull (sl.StrokeColor, "StrokeColor");
+			Assert.That (sl.StrokeColor, Is.Not.Null, "StrokeColor");
 		}
 	}
 }

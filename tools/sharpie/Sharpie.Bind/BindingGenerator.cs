@@ -93,9 +93,16 @@ public sealed class BindingGenerator : AstVisitor {
 		var underlyingDesugaredType = decl.UnderlyingType.UnqualifiedDesugaredType;
 		switch (underlyingDesugaredType?.TypeClass) {
 		case CX_TypeClass.CX_TypeClass_Enum:
-			var boundEnum = ((EnumType) underlyingDesugaredType).Decl.Annotation<TypeDeclaration> ();
-			if (boundEnum is not null)
+			var enumDecl = ((EnumType) underlyingDesugaredType).Decl;
+			var boundEnum = enumDecl.Annotation<TypeDeclaration> ();
+			if (boundEnum is not null) {
 				boundEnum.Name = decl.Name;
+				// The availability attributes for an enum may be attached to this typedef
+				// (e.g. `typedef NS_ENUM(NSInteger, Foo) { ... } API_UNAVAILABLE(maccatalyst);`)
+				// instead of to the enum declaration itself. Link the typedef to the enum so
+				// the AvailabilityMassager can pick up those attributes.
+				enumDecl.AddAnnotation (decl);
+			}
 			break;
 		case CX_TypeClass.CX_TypeClass_Record:
 			var boundRecord = ((RecordType) underlyingDesugaredType).Decl.Annotation<TypeDeclaration> ();
@@ -133,7 +140,8 @@ public sealed class BindingGenerator : AstVisitor {
 		int i = 0;
 		foreach (var typeArg in anonDelegate.TypeArguments) {
 			typeArg.Remove ();
-			del.Parameters.Add (new ParameterDeclaration (typeArg, String.Format ("arg{0}", i++)));
+			var paramType = UnwrapNullableType (typeArg);
+			del.Parameters.Add (new ParameterDeclaration (paramType, String.Format ("arg{0}", i++)));
 		}
 
 		var functionProtoType = anonDelegate.Annotation<FunctionProtoType> ();
@@ -701,4 +709,20 @@ public sealed class BindingGenerator : AstVisitor {
 	}
 
 	#endregion
+
+	/// <summary>
+	/// Unwraps a nullable ComposedType (T?) back to its base type while
+	/// preserving annotations, so that NullabilityMassager can add [NullAllowed]
+	/// to the delegate parameter instead.
+	/// </summary>
+	static AstType UnwrapNullableType (AstType type)
+	{
+		if (type is ComposedType composed && composed.HasNullableSpecifier && composed.PointerRank == 0) {
+			var baseType = composed.BaseType.Clone ();
+			foreach (var annotation in composed.Annotations)
+				baseType.AddAnnotation (annotation);
+			return baseType;
+		}
+		return type;
+	}
 }

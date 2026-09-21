@@ -22,7 +22,7 @@ namespace MonoTouchFixtures.Simd {
 		{
 			var actual = new MatrixFloat2x2 (1, 2, 3, 4);
 
-			Assert.AreEqual ("(1, 2)\n(3, 4)", actual.ToString (), "tostring");
+			Assert.That (actual.ToString (), Is.EqualTo ("(1, 2)\n(3, 4)"), "tostring");
 		}
 	}
 }

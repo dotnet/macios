@@ -25,18 +25,18 @@ namespace MonoTouchFixtures.Simd {
 			var expected = GetTestMatrix ();
 			var actual = (NMatrix4x3) expected;
 
-			Assert.AreEqual (expected.M11, actual.M11, "m11 getter");
-			Assert.AreEqual (expected.M12, actual.M12, "m12 getter");
-			Assert.AreEqual (expected.M13, actual.M13, "m13 getter");
-			Assert.AreEqual (expected.M14, actual.M14, "m14 getter");
-			Assert.AreEqual (expected.M21, actual.M21, "m21 getter");
-			Assert.AreEqual (expected.M22, actual.M22, "m22 getter");
-			Assert.AreEqual (expected.M23, actual.M23, "m23 getter");
-			Assert.AreEqual (expected.M24, actual.M24, "m24 getter");
-			Assert.AreEqual (expected.M31, actual.M31, "m31 getter");
-			Assert.AreEqual (expected.M32, actual.M32, "m32 getter");
-			Assert.AreEqual (expected.M33, actual.M33, "m33 getter");
-			Assert.AreEqual (expected.M34, actual.M34, "m34 getter");
+			Assert.That (actual.M11, Is.EqualTo (expected.M11), "m11 getter");
+			Assert.That (actual.M12, Is.EqualTo (expected.M12), "m12 getter");
+			Assert.That (actual.M13, Is.EqualTo (expected.M13), "m13 getter");
+			Assert.That (actual.M14, Is.EqualTo (expected.M14), "m14 getter");
+			Assert.That (actual.M21, Is.EqualTo (expected.M21), "m21 getter");
+			Assert.That (actual.M22, Is.EqualTo (expected.M22), "m22 getter");
+			Assert.That (actual.M23, Is.EqualTo (expected.M23), "m23 getter");
+			Assert.That (actual.M24, Is.EqualTo (expected.M24), "m24 getter");
+			Assert.That (actual.M31, Is.EqualTo (expected.M31), "m31 getter");
+			Assert.That (actual.M32, Is.EqualTo (expected.M32), "m32 getter");
+			Assert.That (actual.M33, Is.EqualTo (expected.M33), "m33 getter");
+			Assert.That (actual.M34, Is.EqualTo (expected.M34), "m34 getter");
 
 			var newExpected = GetTestMatrix ();
 			actual.M11 = newExpected.M11;
@@ -51,18 +51,18 @@ namespace MonoTouchFixtures.Simd {
 			actual.M32 = newExpected.M32;
 			actual.M33 = newExpected.M33;
 			actual.M34 = newExpected.M34;
-			Assert.AreEqual (newExpected.M11, actual.M11, "m11 setter");
-			Assert.AreEqual (newExpected.M12, actual.M12, "m12 setter");
-			Assert.AreEqual (newExpected.M13, actual.M13, "m13 setter");
-			Assert.AreEqual (newExpected.M14, actual.M14, "m14 setter");
-			Assert.AreEqual (newExpected.M21, actual.M21, "m21 setter");
-			Assert.AreEqual (newExpected.M22, actual.M22, "m22 setter");
-			Assert.AreEqual (newExpected.M23, actual.M23, "m23 setter");
-			Assert.AreEqual (newExpected.M24, actual.M24, "m24 setter");
-			Assert.AreEqual (newExpected.M31, actual.M31, "m31 setter");
-			Assert.AreEqual (newExpected.M32, actual.M32, "m32 setter");
-			Assert.AreEqual (newExpected.M33, actual.M33, "m33 setter");
-			Assert.AreEqual (newExpected.M34, actual.M34, "m34 setter");
+			Assert.That (actual.M11, Is.EqualTo (newExpected.M11), "m11 setter");
+			Assert.That (actual.M12, Is.EqualTo (newExpected.M12), "m12 setter");
+			Assert.That (actual.M13, Is.EqualTo (newExpected.M13), "m13 setter");
+			Assert.That (actual.M14, Is.EqualTo (newExpected.M14), "m14 setter");
+			Assert.That (actual.M21, Is.EqualTo (newExpected.M21), "m21 setter");
+			Assert.That (actual.M22, Is.EqualTo (newExpected.M22), "m22 setter");
+			Assert.That (actual.M23, Is.EqualTo (newExpected.M23), "m23 setter");
+			Assert.That (actual.M24, Is.EqualTo (newExpected.M24), "m24 setter");
+			Assert.That (actual.M31, Is.EqualTo (newExpected.M31), "m31 setter");
+			Assert.That (actual.M32, Is.EqualTo (newExpected.M32), "m32 setter");
+			Assert.That (actual.M33, Is.EqualTo (newExpected.M33), "m33 setter");
+			Assert.That (actual.M34, Is.EqualTo (newExpected.M34), "m34 setter");
 		}
 
 		[Test]
@@ -74,16 +74,16 @@ namespace MonoTouchFixtures.Simd {
 			var inputSimdR = (NMatrix4x3) inputR;
 
 			// matrices are different
-			Assert.AreEqual (inputL == inputR, inputSimdL == inputSimdR, "inequality");
-			Assert.IsFalse (inputL == inputR, "inequality 2 expected");
-			Assert.IsFalse (inputSimdL == inputSimdR, "inequality 2 actual");
+			Assert.That (inputSimdL == inputSimdR, Is.EqualTo (inputL == inputR), "inequality");
+			Assert.That (inputL == inputR, Is.False, "inequality 2 expected");
+			Assert.That (inputSimdL == inputSimdR, Is.False, "inequality 2 actual");
 
 			inputL = inputR;
 			inputSimdL = inputSimdR;
 			// matrices are identical
-			Assert.AreEqual (inputL == inputR, inputSimdL == inputSimdR, "equality");
-			Assert.IsTrue (inputL == inputR, "equality 2 expected");
-			Assert.IsTrue (inputSimdL == inputSimdR, "equality 2 actual");
+			Assert.That (inputSimdL == inputSimdR, Is.EqualTo (inputL == inputR), "equality");
+			Assert.That (inputL == inputR, Is.True, "equality 2 expected");
+			Assert.That (inputSimdL == inputSimdR, Is.True, "equality 2 actual");
 		}
 
 		[Test]
@@ -95,16 +95,16 @@ namespace MonoTouchFixtures.Simd {
 			var inputSimdR = (NMatrix4x3) inputR;
 
 			// matrices are different
-			Assert.AreEqual (inputL != inputR, inputSimdL != inputSimdR, "inequality");
-			Assert.IsTrue (inputL != inputR, "inequality 2 expected");
-			Assert.IsTrue (inputSimdL != inputSimdR, "inequality 2 actual");
+			Assert.That (inputSimdL != inputSimdR, Is.EqualTo (inputL != inputR), "inequality");
+			Assert.That (inputL != inputR, Is.True, "inequality 2 expected");
+			Assert.That (inputSimdL != inputSimdR, Is.True, "inequality 2 actual");
 
 			inputL = inputR;
 			inputSimdL = inputSimdR;
 			// matrices are identical
-			Assert.AreEqual (inputL != inputR, inputSimdL != inputSimdR, "equality");
-			Assert.IsFalse (inputL != inputR, "equality 2 expected");
-			Assert.IsFalse (inputSimdL != inputSimdR, "equality 2 actual");
+			Assert.That (inputSimdL != inputSimdR, Is.EqualTo (inputL != inputR), "equality");
+			Assert.That (inputL != inputR, Is.False, "equality 2 expected");
+			Assert.That (inputSimdL != inputSimdR, Is.False, "equality 2 actual");
 		}
 
 		[Test]
@@ -113,7 +113,7 @@ namespace MonoTouchFixtures.Simd {
 			var expected = GetTestMatrix ();
 			var actual = (NMatrix4x3) expected;
 
-			Assert.AreEqual (expected.ToString (), actual.ToString (), "tostring");
+			Assert.That (actual.ToString (), Is.EqualTo (expected.ToString ()), "tostring");
 		}
 
 		// GetHashCode doesn't have to be identical, so no need to test
@@ -126,10 +126,10 @@ namespace MonoTouchFixtures.Simd {
 			var actualA = (NMatrix4x3) expectedA;
 			var actualB = (NMatrix4x3) expectedB;
 
-			Assert.IsTrue (actualA.Equals ((object) actualA), "self");
-			Assert.IsFalse (actualA.Equals ((object) actualB), "other");
-			Assert.IsFalse (actualA.Equals (null), "null");
-			Assert.IsTrue (actualA.Equals (expectedA), "other type");
+			Assert.That (actualA.Equals ((object) actualA), Is.True, "self");
+			Assert.That (actualA.Equals ((object) actualB), Is.False, "other");
+			Assert.That (actualA.Equals (null), Is.False, "null");
+			Assert.That (actualA.Equals (expectedA), Is.True, "other type");
 		}
 
 		[Test]
@@ -140,8 +140,8 @@ namespace MonoTouchFixtures.Simd {
 			var actualA = (NMatrix4x3) expectedA;
 			var actualB = (NMatrix4x3) expectedB;
 
-			Assert.IsTrue (actualA.Equals (actualA), "self");
-			Assert.IsFalse (actualA.Equals (actualB), "other");
+			Assert.That (actualA.Equals (actualA), Is.True, "self");
+			Assert.That (actualA.Equals (actualB), Is.False, "other");
 		}
 
 		// A collection of test matrices.

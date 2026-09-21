@@ -43,15 +43,15 @@ namespace Xamarin.MacDev.Tasks {
 			Assert.That (VerbosityUtils.GetVerbosityLevel (commandLine), Is.EqualTo (result), commandLine);
 		}
 
-		[TestCase (LoggerVerbosity.Quiet, "-q -q -q -q")]
-		[TestCase (LoggerVerbosity.Minimal, "-q -q")]
-		[TestCase (LoggerVerbosity.Normal, "")]
-		[TestCase (LoggerVerbosity.Detailed, "-v -v")]
-		[TestCase (LoggerVerbosity.Diagnostic, "-v -v -v -v")]
-		[TestCase ((LoggerVerbosity) (-1), "")]
-		public void FromLoggerVerbosity (LoggerVerbosity v, string expectedResult)
+		[TestCase (LoggerVerbosity.Quiet, -4)]
+		[TestCase (LoggerVerbosity.Minimal, -2)]
+		[TestCase (LoggerVerbosity.Normal, 0)]
+		[TestCase (LoggerVerbosity.Detailed, 2)]
+		[TestCase (LoggerVerbosity.Diagnostic, 4)]
+		[TestCase ((LoggerVerbosity) (-1), 0)]
+		public void FromLoggerVerbosity (LoggerVerbosity v, int expectedResult)
 		{
-			var s = String.Join (" ", VerbosityUtils.GetVerbosityLevel (v));
+			var s = VerbosityUtils.GetVerbosityLevel (v);
 			Assert.That (s, Is.EqualTo (expectedResult), v.ToString ());
 		}
 	}

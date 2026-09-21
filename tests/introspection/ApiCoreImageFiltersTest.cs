@@ -70,6 +70,15 @@ namespace Introspection {
 				return true;
 			case "CIAreaAlphaWeightedHistogram": // not in Xcode 16 b1 or b2 headers.
 				return true;
+			// The iOS and tvOS 27 runtimes started exposing these barcode generator filters, but they are
+			// undocumented (not declared in CIFilterBuiltins.h on any platform), so - like the other undocumented
+			// filters above - we don't bind them and skip them here.
+			case "CICodabarBarcodeGenerator":
+			case "CICode39BarcodeGenerator":
+			case "CIEAN13BarcodeGenerator":
+			case "CIInterleaved2of5BarcodeGenerator":
+			case "CISeimensStarGenerator":
+				return true;
 #if __TVOS__
 			case "CIPersonSegmentation": // removed in Xcode 26?
 			case "CISaliencyMapFilter": // removed in Xcode 26?
@@ -98,7 +107,7 @@ namespace Introspection {
 				}
 				n++;
 			}
-			Assert.That (filters.Count, Is.EqualTo (0), "{0} native filters missing: {1}", filters.Count, String.Join (", ", filters));
+			Assert.That (filters.Count, Is.EqualTo (0), $"{filters.Count} native filters missing: {String.Join (", ", filters)}");
 		}
 
 		[Test]
@@ -149,7 +158,7 @@ namespace Introspection {
 				if (Skip (filters [i]))
 					filters.RemoveAt (i);
 			}
-			Assert.That (filters.Count, Is.EqualTo (0), "Managed filters not found for {0}", String.Join (", ", filters));
+			Assert.That (filters.Count, Is.EqualTo (0), $"Managed filters not found for {String.Join (", ", filters)}");
 		}
 
 		static void GenerateBinding (NSObject filter, TextWriter writer)
@@ -179,7 +188,12 @@ namespace Introspection {
 				writer.WriteLine ("[NoMac]");
 			} else {
 				try {
-					var mac = Version.Parse (value.ToString ()!);
+					var v = value.ToString ()!;
+					// just like the iOS attribute above, recent macOS versions report a single number
+					// (e.g. "27" for macOS 27.0), and System.Version requires at least "major.minor".
+					if (v.IndexOf ('.') == -1)
+						v += ".0";
+					var mac = Version.Parse (v);
 					// we only document availability for 10.7+
 					if (mac.Minor > 6)
 						writer.WriteLine ("[Mac ({0},{1})]", mac.Major, mac.Minor);
@@ -366,7 +380,7 @@ namespace Introspection {
 			if (to_confirm_manually.Length > 0) {
 				Console.WriteLine (to_confirm_manually);
 			}
-			Assert.AreEqual (0, Errors, "{0} potential errors found{1}", Errors, Errors == 0 ? string.Empty : ":\n" + ErrorData.ToString () + "\n");
+			Assert.That (Errors, Is.EqualTo (0), $"{Errors} potential errors found:\n{ErrorData}\n");
 		}
 
 		[Test]
@@ -535,7 +549,7 @@ namespace Introspection {
 						ReportError ($"{t.Name}: Property `{po.Name}` should NOT have a setter.");
 				}
 			}
-			Assert.AreEqual (0, Errors, "{0} potential errors found{1}", Errors, Errors == 0 ? string.Empty : ":\n" + ErrorData.ToString () + "\n");
+			Assert.That (Errors, Is.EqualTo (0), $"{Errors} potential errors found:\n{ErrorData}\n");
 		}
 	}
 }

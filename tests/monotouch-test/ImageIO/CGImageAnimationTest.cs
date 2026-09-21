@@ -94,40 +94,40 @@ namespace MonoTouchFixtures.ImageIO {
 		public void AnimateImageWithUrl ()
 		{
 			CallAnimateImage ( /* useUrl */ true, MyHandlerSetValueZero);
-			Assert.AreEqual (CGImageAnimationStatus.Ok, status, "status ok: handler called with url");
-			Assert.AreEqual (0, testValue, "handler called with url");
+			Assert.That (status, Is.EqualTo (CGImageAnimationStatus.Ok), "status ok: handler called with url");
+			Assert.That (testValue, Is.EqualTo (0), "handler called with url");
 		}
 
 		[Test]
 		public void AnimateImageWithData ()
 		{
 			CallAnimateImage ( /* useUrl */ false, MyHandlerSetValueZero);
-			Assert.AreEqual (CGImageAnimationStatus.Ok, status, "status ok: handler called with data");
-			Assert.AreEqual (0, testValue, "handler called with data");
+			Assert.That (status, Is.EqualTo (CGImageAnimationStatus.Ok), "status ok: handler called with data");
+			Assert.That (testValue, Is.EqualTo (0), "handler called with data");
 		}
 
 		[Test]
 		public void AnimateImageWithUrlChangeHandler ()
 		{
 			CallAnimateImage ( /* useUrl */ true, MyHandlerSetValueZero);
-			Assert.AreEqual (CGImageAnimationStatus.Ok, status, "status ok: first handler called with url");
-			Assert.AreEqual (0, testValue, "first handler called with url");
+			Assert.That (status, Is.EqualTo (CGImageAnimationStatus.Ok), "status ok: first handler called with url");
+			Assert.That (testValue, Is.EqualTo (0), "first handler called with url");
 
 			CallAnimateImage ( /* useUrl */ true, MyHandlerSetValueOne);
-			Assert.AreEqual (CGImageAnimationStatus.Ok, status, "status ok: second handler called with url");
-			Assert.AreEqual (1, testValue, "second handler called with url");
+			Assert.That (status, Is.EqualTo (CGImageAnimationStatus.Ok), "status ok: second handler called with url");
+			Assert.That (testValue, Is.EqualTo (1), "second handler called with url");
 		}
 
 		[Test]
 		public void AnimateImageWithDataChangeHandler ()
 		{
 			CallAnimateImage ( /* useUrl */ false, MyHandlerSetValueZero);
-			Assert.AreEqual (CGImageAnimationStatus.Ok, status, "status ok: first handler called with data");
-			Assert.AreEqual (0, testValue, "first handler called with data");
+			Assert.That (status, Is.EqualTo (CGImageAnimationStatus.Ok), "status ok: first handler called with data");
+			Assert.That (testValue, Is.EqualTo (0), "first handler called with data");
 
 			CallAnimateImage ( /* useUrl */ false, MyHandlerSetValueOne);
-			Assert.AreEqual (CGImageAnimationStatus.Ok, status, "status ok: second handler called with data");
-			Assert.AreEqual (1, testValue, "second handler called with data");
+			Assert.That (status, Is.EqualTo (CGImageAnimationStatus.Ok), "status ok: second handler called with data");
+			Assert.That (testValue, Is.EqualTo (1), "second handler called with data");
 		}
 
 		[Test]

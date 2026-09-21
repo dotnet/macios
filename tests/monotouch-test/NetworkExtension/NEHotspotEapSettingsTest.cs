@@ -16,7 +16,7 @@ namespace MonoTouchFixtures.NetworkExtension {
 		{
 			using var settings = new NEHotspotEapSettings ();
 			var types = settings.SupportedEapTypes;
-			Assert.IsNotNull (types, "Default value should not be null");
+			Assert.That (types, Is.Not.Null, "Default value should not be null");
 			Assert.That (types.Length, Is.EqualTo (0), "Default length");
 		}
 
@@ -30,7 +30,7 @@ namespace MonoTouchFixtures.NetworkExtension {
 			};
 			settings.SupportedEapTypes = expected;
 			var actual = settings.SupportedEapTypes;
-			Assert.IsNotNull (actual, "not null");
+			Assert.That (actual, Is.Not.Null, "not null");
 			Assert.That (actual.Length, Is.EqualTo (2), "Length");
 			Assert.That (actual [0], Is.EqualTo (NEHotspotConfigurationEapType.Tls), "[0]");
 			Assert.That (actual [1], Is.EqualTo (NEHotspotConfigurationEapType.Peap), "[1]");

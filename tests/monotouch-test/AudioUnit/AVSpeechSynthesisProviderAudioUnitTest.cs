@@ -19,8 +19,8 @@ namespace MonoTouchFixtures.AudioUnit {
 				ComponentManufacturer = AudioComponentManufacturerType.Apple,
 			};
 			using var unit = AVSpeechSynthesisProviderAudioUnit.Create (cd, (AudioComponentInstantiationOptions) 0, out var error);
-			Assert.IsNotNull (unit, "Unit");
-			Assert.IsNull (error, "Error");
+			Assert.That (unit, Is.Not.Null, "Unit");
+			Assert.That (error, Is.Null, "Error");
 		}
 	}
 }

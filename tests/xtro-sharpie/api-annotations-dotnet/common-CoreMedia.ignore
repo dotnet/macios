@@ -102,21 +102,12 @@
 !missing-field! kCMTimeCodeFormatDescriptionExtension_SourceReferenceName not bound
 !missing-field! kCMTimeCodeFormatDescriptionKey_LangCode not bound
 !missing-field! kCMTimeCodeFormatDescriptionKey_Value not bound
-!missing-field! kCMTimeEpochKey not bound
-!missing-field! kCMTimeFlagsKey not bound
 !missing-field! kCMTimeIndefinite not bound
 !missing-field! kCMTimeInvalid not bound
-!missing-field! kCMTimeMappingInvalid not bound
-!missing-field! kCMTimeMappingSourceKey not bound
-!missing-field! kCMTimeMappingTargetKey not bound
 !missing-field! kCMTimeNegativeInfinity not bound
 !missing-field! kCMTimePositiveInfinity not bound
 !missing-field! kCMTimeRangeDurationKey not bound
-!missing-field! kCMTimeRangeInvalid not bound
 !missing-field! kCMTimeRangeStartKey not bound
-!missing-field! kCMTimeRangeZero not bound
-!missing-field! kCMTimeScaleKey not bound
-!missing-field! kCMTimeValueKey not bound
 !missing-field! kCMTimeZero not bound
 !missing-field! kCMTimingInfoInvalid not bound
 !missing-pinvoke! CMAudioFormatDescriptionCopyAsBigEndianSoundDescriptionBlockBuffer is not bound
@@ -136,7 +127,9 @@
 !missing-pinvoke! CMBufferQueueGetMinPresentationTimeStamp is not bound
 !missing-pinvoke! CMBufferQueueGetTypeID is not bound
 !missing-pinvoke! CMBufferQueueCopyHead is not bound
+## The kCMMetadataDataType_* family and related registry APIs are intentionally unbound.
 !missing-field! kCMMetadataDataType_QuickTimeMetadataMilliLux not bound
+!missing-field! kCMMetadataDataType_QuickTimeMetadataSMPTE2094_50 not bound
 !missing-field! kCMMetadataDataType_QuickTimeMetadataUUID not bound
 
 !missing-pinvoke! CMBufferQueueInstallTrigger is not bound

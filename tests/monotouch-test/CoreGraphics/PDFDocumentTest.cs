@@ -44,10 +44,10 @@ namespace MonoTouchFixtures.CoreGraphics {
 
 		void CheckTamarin (CGPDFDocument pdf)
 		{
-			Assert.True (pdf.AllowsCopying, "AllowsCopying");
-			Assert.True (pdf.AllowsPrinting, "AllowsPrinting");
-			Assert.False (pdf.IsEncrypted, "IsEncrypted");
-			Assert.True (pdf.IsUnlocked, "IsUnlocked");
+			Assert.That (pdf.AllowsCopying, Is.True, "AllowsCopying");
+			Assert.That (pdf.AllowsPrinting, Is.True, "AllowsPrinting");
+			Assert.That (pdf.IsEncrypted, Is.False, "IsEncrypted");
+			Assert.That (pdf.IsUnlocked, Is.True, "IsUnlocked");
 			Assert.That (pdf.Pages, Is.EqualTo ((nint) 3), "Pages");
 
 			Assert.That (pdf.GetInfo ().Count, Is.EqualTo (7), "GetInfo");

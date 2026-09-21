@@ -18,7 +18,7 @@ namespace MonoTouchFixtures.CoreText {
 		{
 			using var font = new CTFont ("Helvetica", 12);
 			var tables = font.GetAvailableTables (CTFontTableOptions.None);
-			Assert.IsNotNull (tables, "tables");
+			Assert.That (tables, Is.Not.Null, "tables");
 			Assert.That (tables.Length, Is.GreaterThan (0), "tables/length");
 		}
 	}

@@ -8,50 +8,6 @@ namespace GeneratorTests {
 	[TestFixture]
 	[Parallelizable (ParallelScope.All)]
 	public class AttributeFactoryTests {
-		static void AssertAttributeCreation<T> (Func<PlatformName, int, int, string?, T> callback, PlatformName platform,
-			int major, int minor, string? message = null) where T : AvailabilityBaseAttribute
-		{
-			var typeName = typeof (T).Name;
-			var attr = callback (platform, major, minor, message) as T;
-			Assert.That (attr, Is.Not.Null, $"{typeName} attribute type");
-			Assert.That (attr.Platform, Is.EqualTo (platform), $"{typeName} Platform");
-			Assert.That (attr.Version!.Major, Is.EqualTo (major), $"{typeName} Major");
-			Assert.That (attr.Version!.Minor, Is.EqualTo (minor), $"{typeName} Minor");
-			Assert.That (attr.Message, Is.EqualTo (message));
-		}
-
-		static void AssertAttributeCreationNotVersion<T> (Func<PlatformName, string?, T> callback, PlatformName platform,
-			string? message = null) where T : AvailabilityBaseAttribute
-		{
-			var typeName = typeof (T).Name;
-			var attr = callback (platform, message) as T;
-			Assert.That (attr, Is.Not.Null, $"{typeName} attribute type");
-			Assert.That (attr.Platform, Is.EqualTo (platform), $"{typeName} Platform");
-			Assert.That (attr.Message, Is.EqualTo (message));
-		}
-
-
-		// simple tests, but we want to test it
-		[TestCase (PlatformName.iOS, 13, 4, "message")]
-		[TestCase (PlatformName.iOS, 12, 4, null)]
-		public void CreateAttributeTest (PlatformName platform, int major, int minor, string? message)
-		{
-			// call several times with diff types
-			AssertAttributeCreation (AttributeFactory.CreateNewAttribute<IntroducedAttribute>, platform, major, minor, message);
-			AssertAttributeCreation (AttributeFactory.CreateNewAttribute<DeprecatedAttribute>, platform, major, minor, message);
-			AssertAttributeCreation (AttributeFactory.CreateNewAttribute<ObsoletedAttribute>, platform, major, minor, message);
-		}
-
-		[TestCase (PlatformName.iOS, "message")]
-		[TestCase (PlatformName.iOS, null)]
-		public void CreateAttributeNoVersionTest (PlatformName platform, string? message)
-		{
-			// call several times with diff types
-			AssertAttributeCreationNotVersion (AttributeFactory.CreateNewAttribute<IntroducedAttribute>, platform, message);
-			AssertAttributeCreationNotVersion (AttributeFactory.CreateNewAttribute<UnavailableAttribute>, platform, message);
-			AssertAttributeCreationNotVersion (AttributeFactory.CreateNewAttribute<DeprecatedAttribute>, platform, message);
-			AssertAttributeCreationNotVersion (AttributeFactory.CreateNewAttribute<ObsoletedAttribute>, platform, message);
-		}
 
 		[TestCase (PlatformName.iOS)]
 		[TestCase (PlatformName.MacCatalyst)]

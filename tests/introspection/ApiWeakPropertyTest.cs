@@ -14,6 +14,10 @@ namespace Introspection {
 		/// <param name="type">Type to be tested</param>
 		protected virtual bool Skip (Type type)
 		{
+			// Dictionary entries are not Objective-C properties and have no argument semantics.
+			if (typeof (DictionaryContainer).IsAssignableFrom (type))
+				return true;
+
 			switch (type.Name) {
 			case "LinkWithAttribute": // LinkWithAttribute.WeakFrameworks
 				return true;
@@ -102,7 +106,7 @@ namespace Introspection {
 					n++;
 				}
 			}
-			Assert.AreEqual (0, Errors, "{0} errors found in {1} fields validated: {2}", Errors, n, string.Join (", ", failed_properties));
+			Assert.That (Errors, Is.EqualTo (0), $"{Errors} errors found in {n} fields validated: {string.Join (", ", failed_properties)}");
 		}
 
 		bool CheckArgumentSemantic (MethodInfo meth, [NotNullWhen (true)] out string? error)

@@ -61,10 +61,10 @@ namespace MonoTouchFixtures.Vision {
 		[Test]
 		public void IsIdentityTest ()
 		{
-			Assert.True (VNUtils.IsIdentityRect (new CGRect (0, 0, 1, 1)), "Identity");
-			Assert.False (VNUtils.IsIdentityRect (new CGRect (0, 0, 2, 2)), "Not Identity A");
-			Assert.False (VNUtils.IsIdentityRect (new CGRect (1, 1, 1, 1)), "Not Identity B");
-			Assert.False (VNUtils.IsIdentityRect (new CGRect (1, 1, 0, 0)), "Not Identity C");
+			Assert.That (VNUtils.IsIdentityRect (new CGRect (0, 0, 1, 1)), Is.True, "Identity");
+			Assert.That (VNUtils.IsIdentityRect (new CGRect (0, 0, 2, 2)), Is.False, "Not Identity A");
+			Assert.That (VNUtils.IsIdentityRect (new CGRect (1, 1, 1, 1)), Is.False, "Not Identity B");
+			Assert.That (VNUtils.IsIdentityRect (new CGRect (1, 1, 0, 0)), Is.False, "Not Identity C");
 		}
 
 	}

@@ -29,9 +29,9 @@ namespace MonoTouchFixtures.HomeKit {
 		public void SignificantEventPropertyTest ()
 		{
 			using (var obj = new HMMutableSignificantTimeEvent (HMSignificantEvent.Sunrise, null)) {
-				Assert.AreEqual (HMSignificantEvent.Sunrise, obj.SignificantEvent, "1 SignificantEvent Getter");
+				Assert.That (obj.SignificantEvent, Is.EqualTo (HMSignificantEvent.Sunrise), "1 SignificantEvent Getter");
 				obj.SignificantEvent = HMSignificantEvent.Sunset;
-				Assert.AreEqual (HMSignificantEvent.Sunset, obj.SignificantEvent, "2 PresenceType Setter");
+				Assert.That (obj.SignificantEvent, Is.EqualTo (HMSignificantEvent.Sunset), "2 PresenceType Setter");
 			}
 		}
 	}

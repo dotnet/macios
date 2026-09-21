@@ -38,8 +38,7 @@ namespace Xamarin.MacDev.Tasks {
 		public void GetVirtualProjectPathTest ()
 		{
 			Assert.Multiple (() => {
-				Assert.AreEqual ("Archer_Attack.atlas/archer_attack_0001.png",
-					BundleResource.GetVirtualProjectPath (
+				Assert.That (BundleResource.GetVirtualProjectPath (
 						new ResourceTask {
 							BuildEngine = new TestEngine (),
 							ProjectDir = "/Users/rolf/work/maccore/windows/xamarin-macios/tests/dotnet/LibraryWithResources/iOS",
@@ -48,11 +47,9 @@ namespace Xamarin.MacDev.Tasks {
 							"../Archer_Attack.atlas/archer_attack_0001.png",
 							localMSBuildProjectFullPath: "/Users/rolf/work/maccore/windows/xamarin-macios/tests/dotnet/LibraryWithResources/shared.csproj",
 							localDefiningProjectFullPath: "/Users/rolf/work/maccore/windows/xamarin-macios/tests/dotnet/LibraryWithResources/shared.csproj"
-						)),
-					"A");
+						)), Is.EqualTo ("Archer_Attack.atlas/archer_attack_0001.png"), "A");
 
-				Assert.AreEqual ("Archer_Attack.atlas/archer_attack_0001.png",
-					BundleResource.GetVirtualProjectPath (
+				Assert.That (BundleResource.GetVirtualProjectPath (
 						new ResourceTask {
 							BuildEngine = new TestEngine (),
 							ProjectDir = "C:/src/xamarin-macios/tests/dotnet/LibraryWithResources/iOS",
@@ -62,8 +59,7 @@ namespace Xamarin.MacDev.Tasks {
 							"../Archer_Attack.atlas/archer_attack_0001.png",
 							localMSBuildProjectFullPath: @"C:\src\xamarin-macios\tests\dotnet\LibraryWithResources\shared.csproj",
 							localDefiningProjectFullPath: @"C:\src\xamarin-macios\tests\dotnet\LibraryWithResources\shared.csproj"
-						)),
-					"B");
+						)), Is.EqualTo ("Archer_Attack.atlas/archer_attack_0001.png"), "B");
 			});
 		}
 	}

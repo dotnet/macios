@@ -573,6 +573,9 @@ namespace Cecil.Tests {
 						if (ctor.IsObsolete ())
 							continue;
 
+						if (!IsVisible (ctor))
+							continue;
+
 						foreach (var param in ctor.Parameters) {
 							if (param.ParameterType is not ByReferenceType)
 								continue;

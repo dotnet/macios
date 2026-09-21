@@ -84,7 +84,7 @@ namespace LinkAll.Serialization {
 			// the serialization attributes only keeps the method(s) if the type was used
 			var t = Helper.GetType ("LinkAll.Serialization.Unused");
 			// since it's not used in the app then it's removed by the linker
-			Assert.Null (t, "type");
+			Assert.That (t, Is.Null, "type");
 		}
 
 		[Test]
@@ -93,9 +93,9 @@ namespace LinkAll.Serialization {
 			// the serialization attributes only keeps the method(s) if the type was used
 			var t = Helper.GetType ("LinkAll.Serialization.Used");
 			// since it's used here...
-			Assert.NotNull (new Used (), "reference");
+			Assert.That (new Used (), Is.Not.Null, "reference");
 			// it's not removed by the linker
-			Assert.NotNull (t, "type");
+			Assert.That (t, Is.Not.Null, "type");
 			// and since it's not the 4 decorated methods are also kept (even if uncalled)
 			Assert.That (t.GetMethods ().Length, Is.EqualTo (4), "4");
 		}

@@ -30,8 +30,7 @@
 namespace AppKit {
 
 	public partial class NSBrowser {
-		/// <summary>To be added.</summary>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Occurs when the user double-clicks the control.</summary>
 		public event EventHandler DoubleClick {
 			add {
 				Target = ActionDispatcher.SetupDoubleAction (Target, value);
@@ -44,8 +43,7 @@ namespace AppKit {
 	}
 
 	public partial class NSMatrix {
-		/// <summary>To be added.</summary>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Occurs when the user double-clicks the control.</summary>
 		public event EventHandler DoubleClick {
 			add {
 				Target = ActionDispatcher.SetupDoubleAction (Target, value);
@@ -58,8 +56,7 @@ namespace AppKit {
 	}
 
 	public partial class NSPathCell {
-		/// <summary>To be added.</summary>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Occurs when the user double-clicks the control.</summary>
 		public event EventHandler DoubleClick {
 			add {
 				Target = ActionDispatcher.SetupDoubleAction (Target, value);
@@ -72,8 +69,7 @@ namespace AppKit {
 	}
 
 	public partial class NSPathControl {
-		/// <summary>To be added.</summary>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Occurs when the user double-clicks the control.</summary>
 		public event EventHandler DoubleClick {
 			add {
 				Target = ActionDispatcher.SetupDoubleAction (Target, value);
@@ -86,8 +82,7 @@ namespace AppKit {
 	}
 
 	public partial class NSStatusItem {
-		/// <summary>To be added.</summary>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Occurs when the user double-clicks the control.</summary>
 		public event EventHandler DoubleClick {
 			add {
 				Target = ActionDispatcher.SetupDoubleAction (Target, value);
@@ -100,8 +95,7 @@ namespace AppKit {
 	}
 
 	public partial class NSTableView {
-		/// <summary>To be added.</summary>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Occurs when the user double-clicks the control.</summary>
 		public event EventHandler DoubleClick {
 			add {
 				Target = ActionDispatcher.SetupDoubleAction (Target, value);

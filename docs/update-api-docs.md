@@ -24,7 +24,7 @@ The steps are:
     * Copy our platform assemblies and their xml files into their corresponding directory.
     * Create a new commit and push it to origin.
 
-4. Go here: [Continuous Integration](https://ops.microsoft.com/#/repos/85f784f4-01e7-ffb8-ed06-a012f7d649c0?tabName=ci) (might need VPN enabled, otherwise sometimes you'll get a 403 error page) and then:
+4. Go here: [OPS dotnet/macios-api-docs / Continuous Integration](https://ops.microsoft.com/#/repos/85f784f4-01e7-ffb8-ed06-a012f7d649c0?tabName=ci) (if you have to go through the authentication workflow you'll end up on the OPS homepage, in which case just click the link again) and then:
 
 	* Expand the '.NET macios API docs' job, and then:
 	* Change `Target Repo` -> `Target Branch` to `netX.Y-xcodeZ.W` (same branch as created above).

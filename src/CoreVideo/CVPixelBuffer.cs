@@ -128,16 +128,16 @@ namespace CoreVideo {
 			return Runtime.GetNSObject<NSDictionary> (resolvedDictionaryOut);
 		}
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.CoreVideoLibrary)]
 		static extern CFDictionaryRef CVPixelBufferCopyCreationAttributes (CVPixelBufferRef pixelBuffer);
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public CVPixelBufferAttributes? GetPixelBufferCreationAttributes ()
 		{
@@ -224,6 +224,7 @@ namespace CoreVideo {
 					DictionaryContainerHelper.GetHandle (pixelBufferAttributes),
 					&handle);
 			}
+			GC.KeepAlive (pixelBufferAttributes);
 
 			if (status != CVReturn.Success) {
 				gchandle.Free ();
@@ -370,6 +371,7 @@ namespace CoreVideo {
 					}
 				}
 			}
+			GC.KeepAlive (pixelBufferAttributes);
 
 			if (status != CVReturn.Success) {
 				ReleasePlanarBytesCallbackImpl (data_handle_ptr, IntPtr.Zero, 0, 0, IntPtr.Zero);

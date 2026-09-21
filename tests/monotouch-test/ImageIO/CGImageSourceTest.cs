@@ -1,6 +1,7 @@
 // Copyright 2012-2013 Xamarin Inc. All rights reserved
 
 using System.Drawing;
+using System.Reflection;
 using CoreGraphics;
 using ImageIO;
 
@@ -15,15 +16,61 @@ namespace MonoTouchFixtures.ImageIO {
 		public void FromUrlTest ()
 		{
 			using (var img = CGImageSource.FromUrl (fileUrl)) {
-				Assert.NotNull (img, "#a1");
+				Assert.That (img, Is.Not.Null, "#a1");
 			}
 
 			using (var img = CGImageSource.FromUrl (fileUrl, new CGImageOptions ())) {
-				Assert.NotNull (img, "#b1");
+				Assert.That (img, Is.Not.Null, "#b1");
 			}
 
 			using (var img = CGImageSource.FromUrl (fileUrl, null)) {
-				Assert.NotNull (img, "#c1");
+				Assert.That (img, Is.Not.Null, "#c1");
+			}
+		}
+
+		[Test]
+		public void AllowableTypes ()
+		{
+			TestRuntime.AssertXcodeVersion (27, 0);
+			TestRuntime.AssertSystemVersion (TestRuntime.CurrentPlatform, 27, 0);
+
+			bool CanDecode (string [] allowableTypes)
+			{
+				using (var source = CGImageSource.FromUrl (fileUrl, new CGImageOptions { AllowableTypes = allowableTypes })) {
+					if (source is null)
+						return false;
+					using (var image = source.CreateImage (0, null))
+						return image is not null;
+				}
+			}
+
+			Assert.That (CanDecode (new [] { "public.png" }), Is.True, "Allowed");
+			Assert.That (CanDecode (new [] { "public.jpeg" }), Is.False, "Disallowed");
+			Assert.That (CanDecode ([]), Is.False, "Empty");
+		}
+
+		[Test]
+		public void PrioritizeQuality ()
+		{
+			TestRuntime.AssertXcodeVersion (27, 0);
+			TestRuntime.AssertSystemVersion (TestRuntime.CurrentPlatform, 27, 0);
+
+			var lib = Dlfcn.dlopen (Constants.ImageIOLibrary, 0);
+			Assert.That (lib, Is.Not.EqualTo (IntPtr.Zero), "Library");
+			try {
+				var key = Dlfcn.GetStringConstant (lib, "kCGImageSourcePrioritizeQuality");
+				Assert.That (key, Is.Not.Null, "Key");
+				var toDictionary = typeof (CGImageOptions).GetMethod ("ToDictionary", BindingFlags.Instance | BindingFlags.NonPublic);
+				Assert.That (toDictionary, Is.Not.Null, "ToDictionary");
+				using var dictionary = (NSMutableDictionary) toDictionary.Invoke (new CGImageOptions { PrioritizeQuality = true }, null);
+				var value = dictionary [key] as NSNumber;
+				Assert.That (value, Is.Not.Null, "Value");
+				Assert.That (value.BoolValue, Is.True, "BoolValue");
+
+				using var defaultDictionary = (NSMutableDictionary) toDictionary.Invoke (new CGImageOptions (), null);
+				Assert.That (defaultDictionary [key], Is.Null, "Default");
+			} finally {
+				Dlfcn.dlclose (lib);
 			}
 		}
 
@@ -33,19 +80,19 @@ namespace MonoTouchFixtures.ImageIO {
 			var file = NSBundle.MainBundle.PathForResource ("xamarin2", "png");
 			using (var dp = new CGDataProvider (file)) {
 				using (var img = CGImageSource.FromDataProvider (dp)) {
-					Assert.NotNull (img, "#a1");
+					Assert.That (img, Is.Not.Null, "#a1");
 				}
 			}
 
 			using (var dp = new CGDataProvider (file)) {
 				using (var img = CGImageSource.FromDataProvider (dp, new CGImageOptions ())) {
-					Assert.NotNull (img, "#b1");
+					Assert.That (img, Is.Not.Null, "#b1");
 				}
 			}
 
 			using (var dp = new CGDataProvider (file)) {
 				using (var img = CGImageSource.FromDataProvider (dp, null)) {
-					Assert.NotNull (img, "#c1");
+					Assert.That (img, Is.Not.Null, "#c1");
 				}
 			}
 		}
@@ -56,15 +103,15 @@ namespace MonoTouchFixtures.ImageIO {
 			NSData data = NSData.FromFile (NSBundle.MainBundle.PathForResource ("xamarin2", "png"));
 
 			using (var img = CGImageSource.FromData (data)) {
-				Assert.NotNull (img, "#a1");
+				Assert.That (img, Is.Not.Null, "#a1");
 			}
 
 			using (var img = CGImageSource.FromData (data, new CGImageOptions ())) {
-				Assert.NotNull (img, "#b1");
+				Assert.That (img, Is.Not.Null, "#b1");
 			}
 
 			using (var img = CGImageSource.FromData (data, null)) {
-				Assert.NotNull (img, "#c1");
+				Assert.That (img, Is.Not.Null, "#c1");
 			}
 		}
 
@@ -73,10 +120,10 @@ namespace MonoTouchFixtures.ImageIO {
 		{
 			using (var imgsrc = CGImageSource.FromUrl (fileUrl)) {
 				using (var img = imgsrc.CreateImage (0, null)) {
-					Assert.NotNull (img, "#a1");
+					Assert.That (img, Is.Not.Null, "#a1");
 				}
 				using (var img = imgsrc.CreateImage (0, new CGImageOptions ())) {
-					Assert.NotNull (img, "#b1");
+					Assert.That (img, Is.Not.Null, "#b1");
 				}
 			}
 		}
@@ -98,11 +145,11 @@ namespace MonoTouchFixtures.ImageIO {
 		public void CreateIncrementalTest ()
 		{
 			using (var img = CGImageSource.CreateIncremental (null)) {
-				Assert.NotNull (img, "#a1");
+				Assert.That (img, Is.Not.Null, "#a1");
 			}
 
 			using (var img = CGImageSource.CreateIncremental (new CGImageOptions ())) {
-				Assert.NotNull (img, "#b1");
+				Assert.That (img, Is.Not.Null, "#b1");
 			}
 		}
 
@@ -120,8 +167,8 @@ namespace MonoTouchFixtures.ImageIO {
 					using (var dict = new NSMutableDictionary ()) {
 						dict [kCGImageSourceShouldCache] = NSNumber.FromBoolean (false);
 						using (var props = imageSource.CopyProperties (dict)) {
-							Assert.Null (props.ValueForKey (kCGImagePropertyPixelWidth), "kCGImagePropertyPixelWidth");
-							Assert.Null (props.ValueForKey (kCGImagePropertyPixelHeight), "kCGImagePropertyPixelHeight");
+							Assert.That (props.ValueForKey (kCGImagePropertyPixelWidth), Is.Null, "kCGImagePropertyPixelWidth");
+							Assert.That (props.ValueForKey (kCGImagePropertyPixelHeight), Is.Null, "kCGImagePropertyPixelHeight");
 							NSNumber n = (NSNumber) props ["FileSize"];
 							// image is "optimized" for devices (and a lot bigger at 10351 bytes ;-)
 							Assert.That ((int) n, Is.AtLeast (7318), "FileSize");
@@ -140,16 +187,16 @@ namespace MonoTouchFixtures.ImageIO {
 				CGImageOptions options = new CGImageOptions () { ShouldCache = false };
 
 				var props = imageSource.GetProperties (options);
-				Assert.Null (props.PixelWidth, "PixelHeight-0");
-				Assert.Null (props.PixelHeight, "PixelWidth-0");
+				Assert.That (props.PixelWidth, Is.Null, "PixelHeight-0");
+				Assert.That (props.PixelHeight, Is.Null, "PixelWidth-0");
 				// image is "optimized" for devices (and a lot bigger at 10351 bytes ;-)
 				Assert.That (props.FileSize, Is.AtLeast (7318), "FileSize");
 
 				props = imageSource.GetProperties (0, options);
-				Assert.AreEqual (57, props.PixelWidth, "PixelHeight");
-				Assert.AreEqual (57, props.PixelHeight, "PixelWidth");
-				Assert.AreEqual (CGImageColorModel.RGB, props.ColorModel, "ColorModel");
-				Assert.AreEqual (8, props.Depth, "Depth");
+				Assert.That (props.PixelWidth, Is.EqualTo (57), "PixelHeight");
+				Assert.That (props.PixelHeight, Is.EqualTo (57), "PixelWidth");
+				Assert.That (props.ColorModel, Is.EqualTo (CGImageColorModel.RGB), "ColorModel");
+				Assert.That (props.Depth, Is.EqualTo (8), "Depth");
 			}
 		}
 

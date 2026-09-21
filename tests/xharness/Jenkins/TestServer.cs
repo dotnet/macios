@@ -50,7 +50,7 @@ namespace Xharness.Jenkins {
 				var newPort = port != 0 ? port : r.Next (49152, 65535); // The suggested range for dynamic ports is 49152-65535 (IANA)
 				server = new HttpListener ();
 				server.Prefixes.Clear ();
-				server.Prefixes.Add ("http://*:" + newPort + "/");
+				server.Prefixes.Add ("http://localhost:" + newPort + "/");
 				try {
 					server.Start ();
 					port = newPort;
@@ -339,9 +339,9 @@ namespace Xharness.Jenkins {
 								}
 							}
 							var path = serveFile;
-							if (File.Exists (path)) {
+							if (File.Exists (path)) { // CodeQL [SM00414] This is an http server only used during testing, and it also only listens on localhost
 								var buffer = new byte [4096];
-								using (var fs = new FileStream (path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)) {
+								using (var fs = new FileStream (path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)) { // CodeQL [SM00414] This is an http server only used during testing, and it also only listens on localhost
 									int read;
 									response.ContentLength64 = fs.Length;
 									switch (Path.GetExtension (path).ToLowerInvariant ()) {
@@ -362,7 +362,7 @@ namespace Xharness.Jenkins {
 										break;
 									}
 									while ((read = fs.Read (buffer, 0, buffer.Length)) > 0)
-										response.OutputStream.Write (buffer, 0, read);
+										response.OutputStream.Write (buffer, 0, read); // CodeQL [SM00430] This is an http server only used during testing, and it also only listens on localhost
 								}
 							} else {
 								Console.WriteLine ($"404: {localPath}");

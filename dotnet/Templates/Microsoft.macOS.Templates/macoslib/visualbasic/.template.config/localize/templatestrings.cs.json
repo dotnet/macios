@@ -1,5 +1,7 @@
 {
   "author": "Microsoft",
   "name": "Knihona tříd macOS",
-  "description": "Projekt pro vytvoření knihovny tříd .NET pro macOS"
+  "description": "Projekt pro vytvoření knihovny tříd .NET pro macOS",
+  "symbols/Framework/description": "The target framework for the project.",
+  "symbols/Framework/choices/net10.0-macos/description": "Target net10.0-macos"
 }

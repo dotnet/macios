@@ -1,5 +1,7 @@
 {
   "author": "Microsoft",
   "name": "iOS 類別庫",
-  "description": "用於建立 .NET 6 iOS 類別庫的專案"
+  "description": "用於建立 .NET 6 iOS 類別庫的專案",
+  "symbols/Framework/description": "The target framework for the project.",
+  "symbols/Framework/choices/net10.0-ios/description": "Target net10.0-ios"
 }

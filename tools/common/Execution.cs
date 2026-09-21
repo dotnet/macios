@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -53,6 +54,13 @@ namespace Xamarin.Utils {
 					if (isError)
 						yield return line;
 				}
+			}
+		}
+
+		public IList<string> MergedOutputLines {
+			get {
+				VerifyComplete ();
+				return lines.Select (line => line.Line).ToList ();
 			}
 		}
 

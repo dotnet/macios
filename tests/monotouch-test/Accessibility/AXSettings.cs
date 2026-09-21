@@ -18,6 +18,13 @@ namespace MonoTouchFixtures.Accessibility {
 			Assert.That (AXSettings.IsAssistiveAccessEnabled, Is.EqualTo (true).Or.EqualTo (false), "IsAssistiveAccessEnabled");
 		}
 
+		[Test]
+		public void IsApplicationAccessibilityEnabled ()
+		{
+			TestRuntime.AssertXcodeVersion (27, 0);
+			Assert.That (AXSettings.IsApplicationAccessibilityEnabled, Is.EqualTo (true).Or.EqualTo (false), "IsApplicationAccessibilityEnabled");
+		}
+
 		static bool testedOnce;
 		[Test]
 		public void OpenSettingsFeature ()
@@ -35,8 +42,8 @@ namespace MonoTouchFixtures.Accessibility {
 				e = error;
 				didComplete.TrySetResult (true);
 			});
-			Assert.IsTrue (TestRuntime.RunAsync (TimeSpan.FromSeconds (30), didComplete.Task), "Timed out");
-			Assert.IsNull (error);
+			Assert.That (TestRuntime.RunAsync (TimeSpan.FromSeconds (30), didComplete.Task), Is.True, "Timed out");
+			Assert.That (error, Is.Null);
 		}
 	}
 }

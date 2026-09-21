@@ -23,19 +23,19 @@ public class VTCompressionPropertyCameraCalibrationTest {
 		Assert.Multiple (() => {
 			var dict = new VTCompressionPropertyCameraCalibration ();
 
-			Assert.IsNull (dict.LensAlgorithmKind, "LensAlgorithmKind");
-			Assert.IsNull (dict.LensDomain, "LensDomain");
-			Assert.IsNull (dict.LensIdentifier, "LensIdentifier");
-			Assert.IsNull (dict.LensRole, "LensRole");
-			Assert.IsNull (dict.LensDistortions, "LensDistortions");
-			Assert.IsNull (dict.RadialAngleLimit, "RadialAngleLimit");
-			Assert.IsNull (dict.LensFrameAdjustmentsPolynomialX, "LensFrameAdjustmentsPolynomialX");
-			Assert.IsNull (dict.LensFrameAdjustmentsPolynomialY, "LensFrameAdjustmentsPolynomialY");
-			Assert.IsNull (dict.IntrinsicMatrix, "IntrinsicMatrix");
-			Assert.IsNull (dict.IntrinsicMatrixProjectionOffset, "IntrinsicMatrixProjectionOffset");
-			Assert.IsNull (dict.IntrinsicMatrixReferenceDimensions, "IntrinsicMatrixReferenceDimensions");
-			Assert.IsNull (dict.ExtrinsicOriginSource, "ExtrinsicOriginSource");
-			Assert.IsNull (dict.ExtrinsicOrientationQuaternion, "ExtrinsicOrientationQuaternion");
+			Assert.That (dict.LensAlgorithmKind, Is.Null, "LensAlgorithmKind");
+			Assert.That (dict.LensDomain, Is.Null, "LensDomain");
+			Assert.That (dict.LensIdentifier, Is.Null, "LensIdentifier");
+			Assert.That (dict.LensRole, Is.Null, "LensRole");
+			Assert.That (dict.LensDistortions, Is.Null, "LensDistortions");
+			Assert.That (dict.RadialAngleLimit, Is.Null, "RadialAngleLimit");
+			Assert.That (dict.LensFrameAdjustmentsPolynomialX, Is.Null, "LensFrameAdjustmentsPolynomialX");
+			Assert.That (dict.LensFrameAdjustmentsPolynomialY, Is.Null, "LensFrameAdjustmentsPolynomialY");
+			Assert.That (dict.IntrinsicMatrix, Is.Null, "IntrinsicMatrix");
+			Assert.That (dict.IntrinsicMatrixProjectionOffset, Is.Null, "IntrinsicMatrixProjectionOffset");
+			Assert.That (dict.IntrinsicMatrixReferenceDimensions, Is.Null, "IntrinsicMatrixReferenceDimensions");
+			Assert.That (dict.ExtrinsicOriginSource, Is.Null, "ExtrinsicOriginSource");
+			Assert.That (dict.ExtrinsicOrientationQuaternion, Is.Null, "ExtrinsicOrientationQuaternion");
 			Assert.That (dict.ToString (), Is.EqualTo ("VideoToolbox.VTCompressionPropertyCameraCalibration"), "ToString");
 			Assert.That (dict.Dictionary.ToString (), Is.EqualTo ("{\n}"), "ToString");
 		});

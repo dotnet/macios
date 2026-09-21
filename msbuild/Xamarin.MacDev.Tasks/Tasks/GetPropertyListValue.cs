@@ -43,7 +43,7 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			try {
-				value = dict = PDictionary.FromFile (PropertyListFile);
+				value = dict = PDictionary.OpenFile (PropertyListFile);
 			} catch (Exception ex) {
 				Log.LogError (MSBStrings.E0010, PropertyListFile, ex.Message);
 				return false;

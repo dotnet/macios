@@ -94,6 +94,8 @@ namespace Extrospection {
 
 		public static bool FindObjcDeprecated (IEnumerable<Attr> attrs, out VersionTuple version)
 		{
+			// Note: the 'anyAppleOS' meta-platform (Xcode 27+) is not handled here; revisit if Apple
+			// starts shipping 'API_DEPRECATED(anyappleos(...))' (see Helpers.IsDeprecated which does).
 			var attr = attrs.GetAvailabilityAttributes ().FirstOrDefault (x => x.AvailabilityAttributeDeprecated.HasValue && !x.AvailabilityAttributeDeprecated.Value.IsEmptyVersionTuple && x.AvailabilityAttributePlatformIdentifierName == Helpers.ClangPlatformName);
 			if (attr is not null) {
 				version = attr.AvailabilityAttributeDeprecated!.Value;
@@ -133,6 +135,28 @@ namespace Extrospection {
 							AttributeHelpers.HasUnsupportedOSPlatform (attribute, Platforms.iOS)))
 					return true;
 			}
+			return false;
+		}
+
+		public static bool HasUnsupportedOSPlatform (ICustomAttributeProvider item)
+		{
+			if (Skip (item))
+				return false;
+
+			// Properties are a special case  as it is generated on the property itself and not the individual get_ \ set_ methods
+			// Cecil does not have a link between the MethodDefinition we have and the hosting PropertyDefinition, so we have to dig to find the match
+			if (item is MethodDefinition method) {
+				var property = method.DeclaringType.Properties.FirstOrDefault (p => p.GetMethod == method || p.SetMethod == method);
+				if (property is not null && HasUnsupportedOSPlatform (property)) {
+					return true;
+				}
+			}
+
+			foreach (var attribute in item.CustomAttributes) {
+				if (AttributeHelpers.HasUnsupportedOSPlatform (attribute, Helpers.Platform))
+					return true;
+			}
+
 			return false;
 		}
 

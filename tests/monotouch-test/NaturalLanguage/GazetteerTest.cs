@@ -25,11 +25,11 @@ namespace MonoTouchFixtures.NaturalLanguage {
 			Assert.That (wd.Count, Is.EqualTo ((nuint) 2), "Count");
 
 			using (var weak = new NLGazetteer (wd, NLLanguage.French.GetConstant (), out var error)) {
-				Assert.Null (error, "weak error");
+				Assert.That (error, Is.Null, "weak error");
 			}
 
 			using (var strong = new NLGazetteer (sd, NLLanguage.French, out var error)) {
-				Assert.Null (error, "strong error");
+				Assert.That (error, Is.Null, "strong error");
 			}
 		}
 	}

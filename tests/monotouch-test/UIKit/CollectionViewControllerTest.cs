@@ -19,7 +19,7 @@ namespace MonoTouchFixtures.UIKit {
 			using (var c = new UICollectionViewController (l)) {
 				// that's because Apple did not expose the init* argument as a property until 7.0
 				if (TestRuntime.CheckSystemVersion (ApplePlatform.iOS, 7, 0, throwIfOtherPlatform: false))
-					Assert.AreSame (l, c.Layout, "Layout");
+					Assert.That (c.Layout, Is.SameAs (l), "Layout");
 			}
 		}
 	}

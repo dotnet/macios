@@ -18,7 +18,7 @@ namespace Xamarin.Mac.Tests {
 			};
 			NSOpenGLPixelFormat pixelFormat = new NSOpenGLPixelFormat (_attribs);
 
-			Assert.NotNull (pixelFormat);
+			Assert.That (pixelFormat, Is.Not.Null);
 		}
 
 		[Test]
@@ -28,7 +28,7 @@ namespace Xamarin.Mac.Tests {
 			};
 			NSOpenGLPixelFormat pixelFormat = new NSOpenGLPixelFormat (_attribs);
 
-			Assert.NotNull (pixelFormat);
+			Assert.That (pixelFormat, Is.Not.Null);
 		}
 
 		[Test]

@@ -158,7 +158,11 @@
                 if (IsDirectBinding) {
                     Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
                 } else {
-                    Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
+                    unsafe {
+                        var __objc_super__ = new ObjCRuntime.ObjCSuper (this);
+                        Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (&__objc_super__, initWithFrame, frame);
+                    }
+                    GC.KeepAlive (this);
                 }
             }
             ]]></code>
@@ -275,6 +279,16 @@
             Summary for P1.PMethodWithArgs
             </summary>
         </member>
+        <member name="M:XmlDocumentation.IP1.PMethodWithBindAs(XmlDocumentation.E2)">
+            <summary>
+            Summary for P1.PMethodWithBindAs
+            </summary><param name="value">Docs for value.</param>
+        </member>
+        <member name="M:XmlDocumentation.IP1._PMethodWithBindAs(XmlDocumentation.IP1,XmlDocumentation.E2)">
+            <summary>
+            Summary for P1.PMethodWithBindAs
+            </summary><param name="value">Docs for value.</param>
+        </member>
         <member name="P:XmlDocumentation.IP1.PProperty">
             <summary>
             Summary for P1.PProperty
@@ -305,6 +319,11 @@
             <summary>
             Summary for P1.PMethodWithArgs
             </summary>
+        </member>
+        <member name="M:XmlDocumentation.P1_Extensions.PMethodWithBindAs(XmlDocumentation.IP1,XmlDocumentation.E2)">
+            <summary>
+            Summary for P1.PMethodWithBindAs
+            </summary><param name="value">Docs for value.</param>
         </member>
         <member name="M:XmlDocumentation.P1_Extensions.GetPProperty(XmlDocumentation.IP1)">
             <summary>
@@ -383,7 +402,11 @@
                 if (IsDirectBinding) {
                     Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
                 } else {
-                    Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
+                    unsafe {
+                        var __objc_super__ = new ObjCRuntime.ObjCSuper (this);
+                        Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (&__objc_super__, initWithFrame, frame);
+                    }
+                    GC.KeepAlive (this);
                 }
             }
             ]]></code>
@@ -404,6 +427,11 @@
             <summary>
             Summary for T2.#ctor(String)
             </summary>
+        </member>
+        <member name="M:XmlDocumentation.T1.Create(System.String,System.IntPtr)">
+            <summary>
+            Summary for T1.Create
+            </summary><param name="factoryName">Docs for factoryName.</param><param name="dummy">Docs for dummy.</param><returns>A new instance, or null on failure.</returns>
         </member>
         <member name="M:XmlDocumentation.T1.AsyncMethod(System.Action{System.Int32,System.Int64,Foundation.NSError})">
             <summary>
@@ -439,6 +467,11 @@
             <summary>
             Summary for P1.PMethodWithArgs
             </summary><param name="arg0">Docs for arg0.</param>
+        </member>
+        <member name="M:XmlDocumentation.T1.PMethodWithBindAs(XmlDocumentation.E2)">
+            <summary>
+            Summary for P1.PMethodWithBindAs
+            </summary><param name="value">Docs for value.</param>
         </member>
         <member name="M:XmlDocumentation.T1.PMethodWithUndocumentedArgs(System.Int32)">
             <summary>
@@ -578,7 +611,11 @@
                 if (IsDirectBinding) {
                     Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
                 } else {
-                    Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
+                    unsafe {
+                        var __objc_super__ = new ObjCRuntime.ObjCSuper (this);
+                        Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (&__objc_super__, initWithFrame, frame);
+                    }
+                    GC.KeepAlive (this);
                 }
             }
             ]]></code>
@@ -601,6 +638,15 @@
         <member name="E:XmlDocumentation.TClass.DidChangeMutteringVolume">
             <summary>TClassDelegate.DidChangeMutteringVolume - EventArgs.</summary>
         </member>
+        <member name="E:XmlDocumentation.TClass.DidChangeUtteringSpeed">
+            <summary>Raised by the object's delegate to signal an event, providing event data in a <see cref="T:XmlDocumentation.TUtteranceEventArgs" /> object.</summary>
+        </member>
+        <member name="E:XmlDocumentation.TClass.DidFinish">
+            <summary>Raised by the object's delegate to signal an event.</summary>
+        </member>
+        <member name="M:XmlDocumentation.TClass.Dispose(System.Boolean)">
+            <inheritdoc />
+        </member>
         <member name="T:XmlDocumentation.TMutteranceEventArgs">
             <summary>Provides data for an event based on an Objective-C protocol method.</summary>
         </member>
@@ -608,12 +654,18 @@
             <summary>Create a new instance of the <see cref="T:XmlDocumentation.TMutteranceEventArgs" /> with the specified event data.</summary>
             <param name="mutteringVolume">The value for the <see cref="P:XmlDocumentation.TMutteranceEventArgs.MutteringVolume" /> property.</param>
         </member>
+        <member name="P:XmlDocumentation.TMutteranceEventArgs.MutteringVolume">
+            <summary>The value of the <c>MutteringVolume</c> argument to the event.</summary>
+        </member>
         <member name="T:XmlDocumentation.TUtteranceEventArgs">
             <summary>Provides data for an event based on an Objective-C protocol method.</summary>
         </member>
         <member name="M:XmlDocumentation.TUtteranceEventArgs.#ctor(System.Double)">
             <summary>Create a new instance of the <see cref="T:XmlDocumentation.TUtteranceEventArgs" /> with the specified event data.</summary>
             <param name="utteringSpeed">The value for the <see cref="P:XmlDocumentation.TUtteranceEventArgs.UtteringSpeed" /> property.</param>
+        </member>
+        <member name="P:XmlDocumentation.TUtteranceEventArgs.UtteringSpeed">
+            <summary>The value of the <c>UtteringSpeed</c> argument to the event.</summary>
         </member>
         <member name="T:XmlDocumentation.ITClassDelegate">
             <summary>TClassDelegate</summary>
@@ -630,6 +682,18 @@
         <member name="M:XmlDocumentation.ITClassDelegate._DidChangeMutteringVolume(XmlDocumentation.ITClassDelegate,XmlDocumentation.TClass,System.Double)">
             <summary>TClassDelegate.DidChangeMutteringVolume</summary>
         </member>
+        <member name="M:XmlDocumentation.ITClassDelegate.ShouldMutter(XmlDocumentation.TClass,System.Double)">
+            <summary>TClassDelegate.ShouldMutter</summary>
+        </member>
+        <member name="M:XmlDocumentation.ITClassDelegate._ShouldMutter(XmlDocumentation.ITClassDelegate,XmlDocumentation.TClass,System.Double)">
+            <summary>TClassDelegate.ShouldMutter</summary>
+        </member>
+        <member name="M:XmlDocumentation.ITClassDelegate.DidFinish(XmlDocumentation.TClass)">
+            <summary>TClassDelegate.DidFinish</summary>
+        </member>
+        <member name="M:XmlDocumentation.ITClassDelegate._DidFinish(XmlDocumentation.ITClassDelegate,XmlDocumentation.TClass)">
+            <summary>TClassDelegate.DidFinish</summary>
+        </member>
         <member name="T:XmlDocumentation.TClassDelegate_Extensions">
             <summary>Extension methods to the <see cref="T:XmlDocumentation.ITClassDelegate" /> interface to support all the methods from the TClassDelegate protocol.</summary>
             <remarks>
@@ -641,6 +705,12 @@
         </member>
         <member name="M:XmlDocumentation.TClassDelegate_Extensions.DidChangeMutteringVolume(XmlDocumentation.ITClassDelegate,XmlDocumentation.TClass,System.Double)">
             <summary>TClassDelegate.DidChangeMutteringVolume</summary>
+        </member>
+        <member name="M:XmlDocumentation.TClassDelegate_Extensions.ShouldMutter(XmlDocumentation.ITClassDelegate,XmlDocumentation.TClass,System.Double)">
+            <summary>TClassDelegate.ShouldMutter</summary>
+        </member>
+        <member name="M:XmlDocumentation.TClassDelegate_Extensions.DidFinish(XmlDocumentation.ITClassDelegate,XmlDocumentation.TClass)">
+            <summary>TClassDelegate.DidFinish</summary>
         </member>
         <member name="T:XmlDocumentation.TClassDelegate">
             <summary>TClassDelegate</summary>
@@ -688,7 +758,11 @@
                 if (IsDirectBinding) {
                     Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
                 } else {
-                    Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
+                    unsafe {
+                        var __objc_super__ = new ObjCRuntime.ObjCSuper (this);
+                        Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (&__objc_super__, initWithFrame, frame);
+                    }
+                    GC.KeepAlive (this);
                 }
             }
             ]]></code>
@@ -710,6 +784,12 @@
         </member>
         <member name="M:XmlDocumentation.TClassDelegate.DidChangeUtteringSpeed(XmlDocumentation.TClass,System.Double)">
             <summary>TClassDelegate.DidChangeUtteringSpeed</summary>
+        </member>
+        <member name="M:XmlDocumentation.TClassDelegate.DidFinish(XmlDocumentation.TClass)">
+            <summary>TClassDelegate.DidFinish</summary>
+        </member>
+        <member name="M:XmlDocumentation.TClassDelegate.ShouldMutter(XmlDocumentation.TClass,System.Double)">
+            <summary>TClassDelegate.ShouldMutter</summary>
         </member>
         <member name="T:XmlDocumentation.TG1`2">
             <summary>
@@ -768,7 +848,11 @@
                 if (IsDirectBinding) {
                     Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
                 } else {
-                    Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
+                    unsafe {
+                        var __objc_super__ = new ObjCRuntime.ObjCSuper (this);
+                        Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (&__objc_super__, initWithFrame, frame);
+                    }
+                    GC.KeepAlive (this);
                 }
             }
             ]]></code>
@@ -858,7 +942,11 @@
                 if (IsDirectBinding) {
                     Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
                 } else {
-                    Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
+                    unsafe {
+                        var __objc_super__ = new ObjCRuntime.ObjCSuper (this);
+                        Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (&__objc_super__, initWithFrame, frame);
+                    }
+                    GC.KeepAlive (this);
                 }
             }
             ]]></code>
@@ -886,6 +974,16 @@
                 <para>This appearance class is a strongly typed subclass of UIAppearance that is intended to be used with objects of class <see cref="T:XmlDocumentation.TypeWithApparance" />.</para>
                 <para>You can obtain an instance to this class by either accessing the static <see cref="P:XmlDocumentation.TypeWithApparance.Appearance" /> property or by calling <see cref="M:XmlDocumentation.TypeWithApparance.AppearanceWhenContainedIn(System.Type[])" /> to get a UIAppearance that is context sensitive.</para>
             </remarks>
+        </member>
+        <member name="M:XmlDocumentation.TypeWithApparance.TypeWithApparanceAppearance.#ctor(System.IntPtr)">
+            <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>
+            <param name="handle">Pointer (handle) to the unmanaged object.</param>
+        </member>
+        <member name="P:XmlDocumentation.TypeWithApparance.TypeWithApparanceAppearance.BackgroundColor">
+            <summary>Appearance proxy for the <c>BackgroundColor</c> member of <see cref="T:XmlDocumentation.TypeWithApparance" />.</summary>
+        </member>
+        <member name="M:XmlDocumentation.TypeWithApparance.TypeWithApparanceAppearance.SetValue(System.IntPtr)">
+            <summary>Appearance proxy for the <c>SetValue</c> member of <see cref="T:XmlDocumentation.TypeWithApparance" />.</summary>
         </member>
         <member name="P:XmlDocumentation.TypeWithApparance.TypeWithApparanceAppearance.TintColor">
             <summary>
@@ -1046,6 +1144,15 @@
         <member name="M:XmlDocumentation.TEventArgs.#ctor(Foundation.NSNotification)">
             <summary>Initializes a new instance of the <see cref="T:XmlDocumentation.TEventArgs" /> class.</summary>
             <param name="notification">The underlying <see cref="T:Foundation.NSNotification" /> object from the posted notification.</param>
+        </member>
+        <member name="P:XmlDocumentation.TEventArgs.SomeValue">
+            <summary>TEventArgs.SomeValue</summary>
+        </member>
+        <member name="P:XmlDocumentation.TEventArgs.SomeOtherValue">
+            <summary>The value of the <c>TEventArgsSomeOtherValueKey</c> key from the underlying <see cref="T:Foundation.NSNotification" />'s user info dictionary.</summary>
+        </member>
+        <member name="T:XmlDocumentation.TShouldMutterEventArgs">
+            <summary>A delegate that represents the callback for the corresponding Objective-C delegate/protocol method.</summary>
         </member>
     </members>
 </doc>

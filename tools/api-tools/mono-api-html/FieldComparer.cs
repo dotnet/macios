@@ -146,7 +146,7 @@ namespace Mono.ApiTools {
 				var tgtType = target.GetTypeName ("fieldtype", State) ?? "";
 
 				if (srcType != tgtType) {
-					change.AppendModified (srcType, tgtType);
+					change.AppendTypeModified (srcType, tgtType);
 				} else {
 					change.Append (srcType);
 				}

@@ -1,5 +1,7 @@
 {
   "author": "Microsoft",
   "name": "Knihovna vazeb tvOS",
-  "description": "Projekt pro vytvoření knihovny vazeb .NET tvOS"
+  "description": "Projekt pro vytvoření knihovny vazeb .NET tvOS",
+  "symbols/Framework/description": "The target framework for the project.",
+  "symbols/Framework/choices/net10.0-tvos/description": "Target net10.0-tvos"
 }

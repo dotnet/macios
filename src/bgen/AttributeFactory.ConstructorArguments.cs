@@ -5,6 +5,10 @@ using System.Diagnostics.CodeAnalysis;
 public static partial class AttributeFactory {
 	public static readonly Type PlatformEnum = typeof (PlatformName);
 
+	static readonly Type [] ctorTypes_platform_message = new [] { PlatformEnum, typeof (string) };
+	static readonly Type [] ctorTypes_platform_major_minor_message = new [] { PlatformEnum, typeof (int), typeof (int), typeof (string) };
+	static readonly Type [] ctorTypes_platform_major_minor_build_message = new [] { PlatformEnum, typeof (int), typeof (int), typeof (int), typeof (string) };
+
 	public readonly struct ConstructorArguments {
 		readonly PlatformName platform;
 		readonly int? major;
@@ -52,13 +56,12 @@ public static partial class AttributeFactory {
 
 		public Type [] GetCtorTypes ()
 		{
-			if (major is null || minor is null) {
-				return new [] { PlatformEnum, typeof (string) };
-			}
+			if (major is null || minor is null)
+				return ctorTypes_platform_message;
 
 			if (build is null)
-				return new [] { PlatformEnum, typeof (int), typeof (int), typeof (string) };
-			return new [] { PlatformEnum, typeof (int), typeof (int), typeof (int), typeof (string) };
+				return ctorTypes_platform_major_minor_message;
+			return ctorTypes_platform_major_minor_build_message;
 		}
 
 		public static bool TryGetCtorArguments (object [] constructorArguments, PlatformName platform, [NotNullWhen (true)] out object? []? ctorValues, [NotNullWhen (true)] out Type []? ctorTypes)
@@ -71,7 +74,7 @@ public static partial class AttributeFactory {
 				if (constructorArguments [0] is byte &&
 					constructorArguments [1] is byte) {
 					ctorValues = new object? [] { (byte) platform, (int) (byte) constructorArguments [0], (int) (byte) constructorArguments [1], null };
-					ctorTypes = new [] { PlatformEnum, typeof (int), typeof (int), typeof (string) };
+					ctorTypes = ctorTypes_platform_major_minor_message;
 					return true;
 				}
 
@@ -81,7 +84,7 @@ public static partial class AttributeFactory {
 					constructorArguments [1] is byte &&
 					constructorArguments [2] is byte) {
 					ctorValues = new object? [] { (byte) platform, (int) (byte) constructorArguments [0], (int) (byte) constructorArguments [1], (int) (byte) constructorArguments [2], null };
-					ctorTypes = new [] { PlatformEnum, typeof (int), typeof (int), typeof (int), typeof (string) };
+					ctorTypes = ctorTypes_platform_major_minor_build_message;
 					return true;
 				}
 				return false;

@@ -423,10 +423,15 @@ namespace AccessorySetupKit {
 		NSNumber BluetoothRSSI { get; }
 	}
 
+	/// <summary>A picker display item created by customizing a discovered accessory.</summary>
 	[iOS (26, 1)]
 	[BaseType (typeof (ASPickerDisplayItem))]
 	[DisableDefaultCtor]
 	interface ASDiscoveredDisplayItem {
+		/// <summary>Creates a picker display item for a discovered accessory.</summary>
+		/// <param name="name">The accessory name to display in the picker.</param>
+		/// <param name="productImage">The accessory image to display in the picker.</param>
+		/// <param name="accessory">The discovered accessory to display in the picker.</param>
 		[Export ("initWithName:productImage:accessory:")]
 		NativeHandle Constructor (string name, UIImage productImage, ASDiscoveredAccessory accessory);
 	}

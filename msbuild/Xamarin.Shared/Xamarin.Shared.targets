@@ -3754,6 +3754,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		</ItemGroup>
 		<PropertyGroup>
 			<PreparedAssembliesDirectory>$([MSBuild]::EnsureTrailingSlash('$(DeviceSpecificIntermediateOutputPath)prepared-assemblies'))</PreparedAssembliesDirectory>
+			<_PreparedAssembliesItemsPath>$(DeviceSpecificIntermediateOutputPath)prepared-assemblies.items</_PreparedAssembliesItemsPath>
 			<_AssemblyPreparerConfigurationStamp>$(DeviceSpecificIntermediateOutputPath)assembly-preparer-configuration.txt</_AssemblyPreparerConfigurationStamp>
 		</PropertyGroup>
 		<WriteLinesToFile
@@ -3764,11 +3765,12 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		/>
 	</Target>
 
+	<!-- Persist the task outputs so _PrepareAssemblies can restore its item changes when this target is skipped. -->
 	<Target
-		Name="_PrepareAssemblies"
+		Name="_ExecutePrepareAssemblies"
 		Condition="'$(IsMacEnabled)' == 'true' And '$(PrepareAssemblies)' == 'true'"
 		Inputs="@(_AssembliesToPrepare);$(_LinkerCachePath);$(_AssemblyPreparerConfigurationStamp)"
-		Outputs="@(_AssembliesToPrepare->'$(PreparedAssembliesDirectory)%(Filename)%(Extension)');$(_AssemblyPreparerMSBuildOutputFile)"
+		Outputs="$(_PreparedAssembliesItemsPath);$(_AssemblyPreparerMSBuildOutputFile)"
 		DependsOnTargets="_PrepareAssembliesForPreparation;_ComputeAssembliesToPostprocessOnPublish;SelectRegistrar"
 		>
 		<PrepareAssemblies
@@ -3781,10 +3783,29 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<Output TaskParameter="OutputAssemblies" ItemName="_PreparedAssemblies" />
 		</PrepareAssemblies>
 
+		<WriteItemsToFile
+			Items="@(_PreparedAssemblies)"
+			ItemName="_PreparedAssemblies"
+			File="$(_PreparedAssembliesItemsPath)"
+			IncludeMetadata="true"
+			Overwrite="true"
+		/>
+	</Target>
+
+	<Target
+		Name="_PrepareAssemblies"
+		Condition="'$(IsMacEnabled)' == 'true' And '$(PrepareAssemblies)' == 'true'"
+		DependsOnTargets="_ExecutePrepareAssemblies"
+		>
+		<ReadItemsFromFile File="$(_PreparedAssembliesItemsPath)">
+			<Output TaskParameter="Items" ItemName="_RestoredPreparedAssemblies" />
+		</ReadItemsFromFile>
+
 		<ItemGroup>
 			<ResolvedFileToPublish Remove="@(_AssembliesToPrepare)" />
-			<ResolvedFileToPublish Include="@(_PreparedAssemblies)" />
-			<FileWrites Include="@(_PreparedAssemblies)" />
+			<ResolvedFileToPublish Include="@(_RestoredPreparedAssemblies)" />
+			<FileWrites Include="@(_RestoredPreparedAssemblies)" />
+			<FileWrites Include="$(_PreparedAssembliesItemsPath)" />
 			<FileWrites Include="$(_AssemblyPreparerConfigurationStamp)" />
 			<FileWrites Include="$(_UnmanagedCallersOnlyMapPath)" />
 			<FileWrites Include="$(_AssemblyPreparerMSBuildOutputFile)" Condition="Exists('$(_AssemblyPreparerMSBuildOutputFile)')" />
@@ -3803,6 +3824,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		</ItemGroup>
 		<PropertyGroup>
 			<_PostprocessedAssembliesDirectory>$([MSBuild]::EnsureTrailingSlash('$(DeviceSpecificIntermediateOutputPath)postprocessed-assemblies'))</_PostprocessedAssembliesDirectory>
+			<_PostprocessedAssembliesItemsPath>$(DeviceSpecificIntermediateOutputPath)postprocessed-assemblies.items</_PostprocessedAssembliesItemsPath>
 		</PropertyGroup>
 	</Target>
 
@@ -3811,13 +3833,12 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		Exception: when postprocessing runs after ILC instead (the trimmable-static + NativeAOT scenario), the
 		_PostprocessAssembliesAfterIlc target handles it, so skip this target then.
 	-->
+	<!-- Persist the task outputs so _PostprocessAssemblies can restore its item changes when this target is skipped. -->
 	<Target
-		Name="_PostprocessAssemblies"
+		Name="_ExecutePostprocessAssemblies"
 		Condition="'$(IsMacEnabled)' == 'true' And '$(PostProcessAssemblies)' == 'true' And '$(RuntimeIdentifiers)' == '' And '$(_PostprocessAssembliesAfterIlc)' != 'true'"
 		Inputs="@(_AssembliesToPostProcess);$(_LinkerCachePath)"
-		Outputs="@(_AssembliesToPostProcess->'$(_PostprocessedAssembliesDirectory)%(Filename)%(Extension)');$(_AssemblyPostProcessorMSBuildOutputFile)"
-		AfterTargets="ILLink"
-		BeforeTargets="NativeCompile;CreateReadyToRunImages"
+		Outputs="$(_PostprocessedAssembliesItemsPath);$(_AssemblyPostProcessorMSBuildOutputFile)"
 		DependsOnTargets="_PrepareAssembliesForPostProcessing;_ComputeLinkerInputs"
 		>
 		<PrepareAssemblies
@@ -3833,10 +3854,31 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<Output TaskParameter="OutputAssemblies" ItemName="_PostProcessedAssemblies" />
 		</PrepareAssemblies>
 
+		<WriteItemsToFile
+			Items="@(_PostProcessedAssemblies)"
+			ItemName="_PostProcessedAssemblies"
+			File="$(_PostprocessedAssembliesItemsPath)"
+			IncludeMetadata="true"
+			Overwrite="true"
+		/>
+	</Target>
+
+	<Target
+		Name="_PostprocessAssemblies"
+		Condition="'$(IsMacEnabled)' == 'true' And '$(PostProcessAssemblies)' == 'true' And '$(RuntimeIdentifiers)' == '' And '$(_PostprocessAssembliesAfterIlc)' != 'true'"
+		AfterTargets="ILLink"
+		BeforeTargets="NativeCompile;CreateReadyToRunImages"
+		DependsOnTargets="_ExecutePostprocessAssemblies"
+		>
+		<ReadItemsFromFile File="$(_PostprocessedAssembliesItemsPath)">
+			<Output TaskParameter="Items" ItemName="_RestoredPostProcessedAssemblies" />
+		</ReadItemsFromFile>
+
 		<ItemGroup>
 			<ResolvedFileToPublish Remove="@(_AssembliesToPostProcess)" />
-			<ResolvedFileToPublish Include="@(_PostProcessedAssemblies)" />
-			<FileWrites Include="@(_PostProcessedAssemblies)" />
+			<ResolvedFileToPublish Include="@(_RestoredPostProcessedAssemblies)" />
+			<FileWrites Include="@(_RestoredPostProcessedAssemblies)" />
+			<FileWrites Include="$(_PostprocessedAssembliesItemsPath)" />
 			<FileWrites Include="$(_AssemblyPostProcessorMSBuildOutputFile)" Condition="Exists('$(_AssemblyPostProcessorMSBuildOutputFile)')" />
 		</ItemGroup>
 	</Target>

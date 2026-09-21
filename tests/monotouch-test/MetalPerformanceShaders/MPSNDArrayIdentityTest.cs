@@ -96,9 +96,15 @@ namespace MonoTouchFixtures.MetalPerformanceShaders {
 				Assert.Inconclusive ("Could not create a Metal 4 command allocator.");
 
 			using var identity = new MPSNDArrayIdentity (device);
-			using var sourceArray = new MPSNDArray (device, 3.14f);
 			using var descriptor = MPSNDArrayDescriptor.Create (MPSDataType.Float32, new nuint [] { 1 });
-			using var destinationArray = new MPSNDArray (device, descriptor);
+			using var sizingArray = new MPSNDArray (device, descriptor);
+			var bufferSize = sizingArray.ResourceSize;
+			using var sourceBuffer = device.CreateBuffer (bufferSize, MTLResourceOptions.StorageModeShared);
+			using var destinationBuffer = device.CreateBuffer (bufferSize, MTLResourceOptions.StorageModeShared);
+			if (sourceBuffer is null || destinationBuffer is null)
+				Assert.Inconclusive ("Could not create Metal buffers for the NDArrays.");
+			using var sourceArray = new MPSNDArray (sourceBuffer, 0, descriptor);
+			using var destinationArray = new MPSNDArray (destinationBuffer, 0, descriptor);
 
 			commandBuffer.BeginCommandBuffer (allocator);
 			using var encoder = commandBuffer.CreateComputeCommandEncoder ();

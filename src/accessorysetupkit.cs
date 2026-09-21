@@ -191,6 +191,8 @@ namespace AccessorySetupKit {
 	/// <summary>A completion handler for updating the accessories shown in the picker.</summary>
 	/// <param name="error">The error that occurred, or <see langword="null" /> if the picker was updated successfully.</param>
 	delegate void ASAccessorySessionUpdatePickerHandler ([NullAllowed] NSError error);
+	/// <summary>A completion handler for finishing picker discovery.</summary>
+	/// <param name="error">The error that occurred, or <see langword="null" /> if discovery finished successfully.</param>
 	delegate void ASAccessorySessionFinishPickerDiscoveryHandler ([NullAllowed] NSError error);
 
 	[BaseType (typeof (NSObject))]

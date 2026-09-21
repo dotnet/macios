@@ -53796,7 +53796,6 @@ T:AccessorySetupKit.ASAccessory
 T:AccessorySetupKit.ASAccessoryEvent
 T:AccessorySetupKit.ASAccessoryEventType
 T:AccessorySetupKit.ASAccessorySession
-T:AccessorySetupKit.ASAccessorySessionFinishPickerDiscoveryHandler
 T:AccessorySetupKit.ASAccessorySettings
 T:AccessorySetupKit.ASDiscoveredAccessory
 T:AccessorySetupKit.ASDiscoveredDisplayItem

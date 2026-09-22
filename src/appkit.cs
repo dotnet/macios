@@ -29134,6 +29134,9 @@ namespace AppKit {
 		NSColor FromCGColor (CGColor cgColor);
 	}
 
+	/// <summary>Draws the contents of a custom image representation.</summary>
+	/// <param name="dstRect">The rectangle in which to draw the image.</param>
+	/// <returns><see langword="true"/> if drawing succeeded; otherwise, <see langword="false"/>.</returns>
 	delegate bool NSCustomImageRepDrawingHandler (CGRect dstRect);
 
 	partial interface NSCustomImageRep {

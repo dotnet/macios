@@ -53933,7 +53933,6 @@ T:AppKit.NSCursor
 T:AppKit.NSCursorFrameResizeDirections
 T:AppKit.NSCursorFrameResizePosition
 T:AppKit.NSCustomImageRep
-T:AppKit.NSCustomImageRepDrawingHandler
 T:AppKit.NSCustomTouchBarItem
 T:AppKit.NSDatePicker
 T:AppKit.NSDatePickerCell

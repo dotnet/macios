@@ -1127,6 +1127,9 @@ namespace AppKit {
 		NSString ApplicationVersion { get; }
 	}
 
+	/// <summary>Handles a window during application window enumeration.</summary>
+	/// <param name="window">The window being enumerated.</param>
+	/// <param name="stop">Set to <see langword="true"/> to stop the enumeration.</param>
 	delegate void NSApplicationEnumerateWindowsHandler (NSWindow window, ref bool stop);
 
 	[NoMacCatalyst]

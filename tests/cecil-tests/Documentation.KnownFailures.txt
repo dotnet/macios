@@ -53944,7 +53944,6 @@ T:AppKit.NSDockTile
 T:AppKit.NSDocument
 T:AppKit.NSDocumentController
 T:AppKit.NSDocumentControllerOpenPanelResultHandler
-T:AppKit.NSDocumentControllerOpenPanelWithCompletionHandler
 T:AppKit.NSDocumentLockDocumentCompletionHandler
 T:AppKit.NSDocumentMoveCompletionHandler
 T:AppKit.NSDocumentMoveToUrlCompletionHandler

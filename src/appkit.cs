@@ -29225,6 +29225,8 @@ namespace AppKit {
 		void EncodeRestorableState (NSCoder coder, NSOperationQueue queue);
 	}
 
+	/// <summary>Handles the completion of the document controller's open panel.</summary>
+	/// <param name="urlsToOpen">The URLs selected in the open panel.</param>
 	delegate void NSDocumentControllerOpenPanelWithCompletionHandler (NSArray urlsToOpen);
 	delegate void NSDocumentControllerOpenPanelResultHandler (nint result);
 

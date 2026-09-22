@@ -404,8 +404,10 @@ namespace Foundation {
 				// A native initializer may chain to another managed constructor on the same
 				// object. Reuse the wrapper created before the initializer was invoked.
 				var existing = Runtime.TryGetNSObjectFromIvar (handle);
-				if (existing is not null && existing.Handle == handle && type.IsAssignableFrom (existing.GetType ()))
+				if (existing is not null && !existing.disposed && !existing.InFinalizerQueue && existing.Handle == handle && type.IsAssignableFrom (existing.GetType ())) {
+					existing.flags |= flags;
 					return Runtime.AllocGCHandle (existing);
+				}
 
 				var obj = (NSObject) RuntimeHelpers.GetUninitializedObject (type);
 				obj.handle = handle;
@@ -414,6 +416,21 @@ namespace Foundation {
 			} catch (Exception e) {
 				throw ErrorHelper.CreateError (8041, e, Errors.MX8041 /* Unable to create an instance of the type {0} */, type.FullName);
 			}
+		}
+
+		internal static T GetOrCreateNSObjectForConstructor<[DynamicallyAccessedMembers (DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)] T> (IntPtr handle, uint flags)
+			where T : NSObject
+		{
+			var existing = Runtime.TryGetNSObjectFromIvar (handle);
+			if (existing is T typedExisting && !existing.disposed && !existing.InFinalizerQueue && existing.Handle == handle) {
+				existing.flags |= (Flags) flags;
+				return typedExisting;
+			}
+
+			var obj = (T) RuntimeHelpers.GetUninitializedObject (typeof (T));
+			obj.handle = handle;
+			obj.flags = (Flags) flags;
+			return obj;
 		}
 
 #if !XAMCORE_5_0
@@ -553,19 +570,21 @@ namespace Foundation {
 			if (isUserType) {
 				var existing = Runtime.GetGCHandleForObject (handle);
 				// Constructor chaining may initialize the same wrapper more than once.
-				if (!ReferenceEquals (Runtime.GetGCHandleTarget (existing), this)) {
-					var gchandle_flags = XamarinGCHandleFlags.HasManagedRef | XamarinGCHandleFlags.InitialSet;
-					var gchandle = GCHandle.Alloc (this, GCHandleType.WeakTrackResurrection);
-					var h = GCHandle.ToIntPtr (gchandle);
-					byte rv;
-					unsafe {
-						rv = xamarin_set_gchandle_with_flags_safe (handle, h, gchandle_flags, (IntPtr) GetData ());
-					}
-					if (rv == 0) {
-						// A GCHandle already existed: this shouldn't happen, but let's handle it anyway.
-						Runtime.NSLog ($"Tried to create a managed reference from an object that already has a managed reference (type: {GetType ()})");
-						gchandle.Free ();
-					}
+				// The existing wrapper already owns the native reference, so don't retain it again.
+				if (ReferenceEquals (Runtime.GetGCHandleTarget (existing), this))
+					return;
+
+				var gchandle_flags = XamarinGCHandleFlags.HasManagedRef | XamarinGCHandleFlags.InitialSet;
+				var gchandle = GCHandle.Alloc (this, GCHandleType.WeakTrackResurrection);
+				var h = GCHandle.ToIntPtr (gchandle);
+				byte rv;
+				unsafe {
+					rv = xamarin_set_gchandle_with_flags_safe (handle, h, gchandle_flags, (IntPtr) GetData ());
+				}
+				if (rv == 0) {
+					// A GCHandle already existed: this shouldn't happen, but let's handle it anyway.
+					Runtime.NSLog ($"Tried to create a managed reference from an object that already has a managed reference (type: {GetType ()})");
+					gchandle.Free ();
 				}
 			}
 

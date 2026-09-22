@@ -56,11 +56,12 @@ namespace Xamarin.Tests {
 		}
 
 		[Test]
-		[TestCase (ApplePlatform.iOS, "ios-arm64", "--installdev")]
-		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", "--installsim")]
-		[TestCase (ApplePlatform.TVOS, "tvos-arm64", "--installdev")]
-		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64", "--installsim")]
-		public void DeployToDevice (ApplePlatform platform, string runtimeIdentifiers, string expectedInstallArgument)
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "--installdev", "", "")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "--installdev", "explicit-device", "--devname explicit-device")]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", "--installsim", "", "")]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64", "--installdev", "", "")]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64", "--installsim", "", "")]
+		public void DeployToDevice (ApplePlatform platform, string runtimeIdentifiers, string expectedInstallArgument, string device, string expectedDeviceArgument)
 		{
 			var project = "MySimpleApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -69,6 +70,7 @@ namespace Xamarin.Tests {
 			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			properties ["EnableCodeSigning"] = "false"; // Skip code signing, since that would require making sure we have code signing configured on bots.
+			properties ["Device"] = device;
 
 			// Build the app first, since 'DeployToDevice' is meant to deploy an already-built app.
 			DotNet.Execute ("build", project_path, properties, target: "Clean");
@@ -82,6 +84,8 @@ namespace Xamarin.Tests {
 			// not whether the whole build (which includes actually installing the app) succeeded.
 			if (BinLog.TryFindPropertyValue (rv.BinLogPath, "MlaunchInstallArguments", out var mlaunchInstallArguments) && !string.IsNullOrEmpty (mlaunchInstallArguments)) {
 				Assert.That (mlaunchInstallArguments, Does.StartWith (expectedInstallArgument), "install arguments");
+				if (!string.IsNullOrEmpty (expectedDeviceArgument))
+					Assert.That (mlaunchInstallArguments, Does.Contain (expectedDeviceArgument), "device arguments");
 				return;
 			}
 

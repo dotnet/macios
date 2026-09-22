@@ -128,14 +128,6 @@
 		<GenerateTrustedPlatformAssemblies Condition="'$(GenerateTrustedPlatformAssemblies)' == '' And '$(_BundlerDebug)' != 'true'">true</GenerateTrustedPlatformAssemblies>
 		<GenerateTrustedPlatformAssemblies Condition="'$(GenerateTrustedPlatformAssemblies)' == ''">false</GenerateTrustedPlatformAssemblies>
 
-		<!--
-			Hot Reload requires that we don't modify user (reloadable) assemblies. It's a debug-only
-			feature, so default $(HotReloadCompatibleBuild) to the debug state: this keeps the current
-			behaviour (and app size) for release builds, where the extra unconditional preservation of
-			smart-enum conversion methods would otherwise cost a bit of app size.
-		-->
-		<HotReloadCompatibleBuild Condition="'$(HotReloadCompatibleBuild)' == ''">$(_BundlerDebug)</HotReloadCompatibleBuild>
-
 		<!-- On the other hand, we want the linker to link away debug support in the actual code unless we're building for Debug -->
 		<DebuggerSupport Condition="'$(DebuggerSupport)' == ''">$(_BundlerDebug)</DebuggerSupport>
 
@@ -589,8 +581,8 @@
 			<!-- Set the 'SysRoot' variable, so that NativeAOT's build logic doesn't try to compute it, which doesn't work when building remotely from Windows. -->
 			<SysRoot Condition="'$(SysRoot)' == ''">$(_SdkRoot)</SysRoot>
 
-			<!-- default 'UseLdClassicXCodeLinker' to our value for '_UseClassicLinker', and in case it's still not set, default to 'false', since typically the new linker will work. -->
-			<UseLdClassicXCodeLinker Condition="'$(UseLdClassicXCodeLinker)' == ''">$(_UseClassicLinker)</UseLdClassicXCodeLinker>
+			<!-- default 'UseLdClassicXCodeLinker' to our value for '_UseClassicLinker' before Xcode 27, and in case it's still not set, default to 'false', since typically the new linker will work. -->
+			<UseLdClassicXCodeLinker Condition="'$(UseLdClassicXCodeLinker)' == '' And $([MSBuild]::VersionLessThan('$(_XcodeVersion)', '27.0'))">$(_UseClassicLinker)</UseLdClassicXCodeLinker>
 			<UseLdClassicXCodeLinker Condition="'$(UseLdClassicXCodeLinker)' == ''">false</UseLdClassicXCodeLinker>
 
 			<!-- Ask ILC to produce a static library -->
@@ -642,9 +634,12 @@
 		</PropertyGroup>
 	</Target>
 
-	<Target Name="_SetRuntimeHostConfigurationOptions" BeforeTargets="GenerateBuildRuntimeConfigurationFiles" DependsOnTargets="SelectRegistrar">
+	<Target Name="_SetRuntimeHostConfigurationOptions" BeforeTargets="GenerateBuildRuntimeConfigurationFiles" DependsOnTargets="_ComputeHotReloadCompatibleBuild">
 		<ItemGroup Condition="'$(Registrar)' == 'trimmable-static'">
 			<RuntimeHostConfigurationOption Include="System.Runtime.InteropServices.TypeMappingEntryAssembly" Value="$(_TypeMapAssemblyName)" />
+		</ItemGroup>
+		<ItemGroup>
+			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.HotReloadCompatible" Value="$(HotReloadCompatibleBuild)" Trim="true" />
 		</ItemGroup>
 	</Target>
 
@@ -654,8 +649,8 @@
 		DetectApiUsageStep computes whether the dynamic registrar is needed (instead of rewriting the
 		platform assembly) and writes the value - as the 'DynamicRegistrationSupported' MSBuild output property -
 		to $(_AssemblyPreparerMSBuildOutputFile). This target runs after _PrepareAssemblies and before the trimmer.
-		It's not incremental-gated, so even if _PrepareAssemblies was skipped (because its outputs were up-to-date),
-		the value is still read from the (persisted) file and the feature switch is set. A user-specified
+		It's not incremental-gated, so even if _ExecutePrepareAssemblies was skipped (because its outputs were
+		up-to-date), the value is still read from the (persisted) file and the feature switch is set. A user-specified
 		$(DynamicRegistrationSupported) always wins.
 	-->
 	<Target Name="_SetDynamicRegistrationSupportedFeature" Condition="'$(PrepareAssemblies)' == 'true'">
@@ -702,7 +697,7 @@
 		preserves the framework-side conversion methods (GetConstant/GetValue), and reports its path as
 		the 'SmartEnumConversionsRootDescriptor' MSBuild output property in $(_AssemblyPreparerMSBuildOutputFile).
 		This target runs after _PrepareAssemblies and before the trimmer. It's not incremental-gated, so
-		even if _PrepareAssemblies was skipped (because its outputs were up-to-date), the value is still
+		even if _ExecutePrepareAssemblies was skipped (because its outputs were up-to-date), the value is still
 		read from the (persisted) file and the descriptor is added to the trimmer inputs.
 	-->
 	<Target Name="_SetSmartEnumConversionsRootDescriptor" Condition="'$(PrepareAssemblies)' == 'true'">
@@ -758,7 +753,29 @@
 
 	<Target Name="_ComputeLinkerArguments" DependsOnTargets="$(_ComputeLinkerArgumentsDependsOn)" />
 
-	<Target Name="_ComputeLinkerInputs">
+	<Target Name="_ComputeHotReloadCompatibleBuild" DependsOnTargets="_ComputePublishTrimmed;SelectRegistrar">
+		<PropertyGroup>
+			<!--
+				Hot Reload requires that we don't modify user (reloadable) assemblies. It's a debug-only
+				feature, so default $(HotReloadCompatibleBuild) to the debug state: this keeps the current
+				behaviour (and app size) for release builds, where the extra unconditional preservation of
+				smart-enum conversion methods would otherwise cost a bit of app size.
+			-->
+			<HotReloadCompatibleBuild Condition="'$(HotReloadCompatibleBuild)' == '' And '$(Registrar)' == 'managed-static'">false</HotReloadCompatibleBuild>
+			<HotReloadCompatibleBuild Condition="'$(HotReloadCompatibleBuild)' == '' And '$(_UseNativeAot)' != 'true'">$(_BundlerDebug)</HotReloadCompatibleBuild>
+			<HotReloadCompatibleBuild Condition="'$(HotReloadCompatibleBuild)' == ''">false</HotReloadCompatibleBuild>
+
+			<!--
+				$(HotReloadCompatibleBuild) requires that reloadable assemblies aren't modified, and the
+				linker fails the build with an error if that happens. This is a safety net to catch bugs, so
+				it's not meant to be a public/documented opt-out, but provide an (undocumented) escape hatch
+				in case the safety net itself has a bug and produces a false positive.
+			-->
+			<_HotReloadModifiedAssemblySafetyNet Condition="'$(_HotReloadModifiedAssemblySafetyNet)' == ''">true</_HotReloadModifiedAssemblySafetyNet>
+		</PropertyGroup>
+	</Target>
+
+	<Target Name="_ComputeLinkerInputs" DependsOnTargets="_ComputeHotReloadCompatibleBuild">
 		<!-- Validate the linker mode -->
 		<Error Text="Invalid link mode: '$(_LinkMode)'. Valid link modes are: 'None', 'SdkOnly' and 'Full'" Condition="'$(_LinkMode)' != 'None' And '$(_LinkMode)' != 'SdkOnly' And '$(_LinkMode)' != 'Full' And '$(_LinkMode)' != 'TrimMode'" />
 
@@ -780,6 +797,14 @@
 
 			<_UseDynamicDependenciesInsteadOfMarking Condition="'$(_UseDynamicDependenciesInsteadOfMarking)' == ''">true</_UseDynamicDependenciesInsteadOfMarking>
 			<_UseDynamicDependenciesForProtocolPreservation Condition="'$(_UseDynamicDependenciesForProtocolPreservation)' == ''">$(_UseDynamicDependenciesInsteadOfMarking)</_UseDynamicDependenciesForProtocolPreservation>
+			<!--
+				PreserveSmartEnumConversionsStep injects [DynamicDependency] attributes into the assembly that
+				references the smart enum, and that assembly may be reloadable (i.e. not trimmed), which would
+				break Hot Reload. So use the mark handler instead (it doesn't modify any assemblies) when we're
+				doing a Hot Reload compatible build (this doesn't apply when the assembly-preparer is used,
+				because it emits a root descriptor xml file instead - see PreserveSmartEnumConversionsStep).
+			-->
+			<_UseDynamicDependenciesForSmartEnumPreservation Condition="'$(_UseDynamicDependenciesForSmartEnumPreservation)' == '' And '$(HotReloadCompatibleBuild)' == 'true' And '$(PrepareAssemblies)' != 'true'">false</_UseDynamicDependenciesForSmartEnumPreservation>
 			<_UseDynamicDependenciesForSmartEnumPreservation Condition="'$(_UseDynamicDependenciesForSmartEnumPreservation)' == ''">$(_UseDynamicDependenciesInsteadOfMarking)</_UseDynamicDependenciesForSmartEnumPreservation>
 			<_UseDynamicDependenciesForBlockCodePreservation Condition="'$(_UseDynamicDependenciesForBlockCodePreservation)' == ''">$(_UseDynamicDependenciesInsteadOfMarking)</_UseDynamicDependenciesForBlockCodePreservation>
 			<_UseDynamicDependenciesForGeneratedCodeOptimizations Condition="'$(_UseDynamicDependenciesForGeneratedCodeOptimizations)' == ''">$(_UseDynamicDependenciesInsteadOfMarking)</_UseDynamicDependenciesForGeneratedCodeOptimizations>
@@ -914,6 +939,7 @@
 				InvariantGlobalization=$(InvariantGlobalization)
 				HybridGlobalization=$(HybridGlobalization)
 				HotReloadCompatibleBuild=$(HotReloadCompatibleBuild)
+				HotReloadModifiedAssemblySafetyNet=$(_HotReloadModifiedAssemblySafetyNet)
 				ItemsDirectory=$(_LinkerItemsDirectory)
 				IsAppExtension=$(IsAppExtension)
 				IsMultiRidBuild=$(_IsUniversalBuild)
@@ -1513,11 +1539,13 @@
 		earlier (e.g. inlined-class-gethandle.m). It's wired to run before _LoadLinkerOutput (via
 		_LoadLinkerOutputExtraDependsOn) so the *.items files it produces are loaded and fed to the native compile.
 	-->
+	<!-- Persist the task outputs so _PostprocessAssembliesAfterIlc can restore its item changes when this
+	     target is skipped. -->
 	<Target
-		Name="_PostprocessAssembliesAfterIlc"
+		Name="_ExecutePostprocessAssembliesAfterIlc"
 		Condition="'$(IsMacEnabled)' == 'true' And '$(_PostprocessAssembliesAfterIlc)' == 'true' And '$(RuntimeIdentifiers)' == ''"
 		Inputs="@(_AssembliesToPostProcess);$(_LinkerCachePath);$(NativeObject)"
-		Outputs="@(_AssembliesToPostProcess->'$(_PostprocessedAssembliesDirectory)%(Filename)%(Extension)');$(_AssemblyPostProcessorMSBuildOutputFile)"
+		Outputs="$(_PostprocessedAssembliesItemsPath);$(_AssemblyPostProcessorMSBuildOutputFile)"
 		DependsOnTargets="IlcCompile;ComputeFilesToPublish;_PrepareAssembliesForPostProcessing;_ComputeLinkerInputs"
 		>
 		<PrepareAssemblies
@@ -1533,8 +1561,27 @@
 			<Output TaskParameter="OutputAssemblies" ItemName="_PostProcessedAssemblies" />
 		</PrepareAssemblies>
 
+		<WriteItemsToFile
+			Items="@(_PostProcessedAssemblies)"
+			ItemName="_PostProcessedAssemblies"
+			File="$(_PostprocessedAssembliesItemsPath)"
+			IncludeMetadata="true"
+			Overwrite="true"
+		/>
+	</Target>
+
+	<Target
+		Name="_PostprocessAssembliesAfterIlc"
+		Condition="'$(IsMacEnabled)' == 'true' And '$(_PostprocessAssembliesAfterIlc)' == 'true' And '$(RuntimeIdentifiers)' == ''"
+		DependsOnTargets="_ExecutePostprocessAssembliesAfterIlc"
+		>
+		<ReadItemsFromFile File="$(_PostprocessedAssembliesItemsPath)">
+			<Output TaskParameter="Items" ItemName="_RestoredPostProcessedAssemblies" />
+		</ReadItemsFromFile>
+
 		<ItemGroup>
-			<FileWrites Include="@(_PostProcessedAssemblies)" />
+			<FileWrites Include="@(_RestoredPostProcessedAssemblies)" />
+			<FileWrites Include="$(_PostprocessedAssembliesItemsPath)" />
 			<FileWrites Include="$(_AssemblyPostProcessorMSBuildOutputFile)" Condition="Exists('$(_AssemblyPostProcessorMSBuildOutputFile)')" />
 		</ItemGroup>
 	</Target>
@@ -2478,8 +2525,8 @@
 			<_AllLinkerFlags Include="@(_AssemblyLinkerFlags);@(_MainLinkerFlags);@(_CustomLinkFlags)" />
 			<_AllLinkerFlags Condition="'$(_ExportSymbolsExplicitly)' != 'true'" Include="@(_ProcessedReferenceNativeSymbol->'-u%(Identity)')" />
 
-			<_AllLinkerFlags Condition="'$(_UseClassicLinker)' == 'true'" Include="-Xlinker" />
-			<_AllLinkerFlags Condition="'$(_UseClassicLinker)' == 'true'" Include="-ld_classic" />
+			<_AllLinkerFlags Condition="'$(_UseClassicLinker)' == 'true' And $([MSBuild]::VersionLessThan('$(_XcodeVersion)', '27.0'))" Include="-Xlinker" />
+			<_AllLinkerFlags Condition="'$(_UseClassicLinker)' == 'true' And $([MSBuild]::VersionLessThan('$(_XcodeVersion)', '27.0'))" Include="-ld_classic" />
 
 			<_AllLinkerFlags Include="@(LinkerArgument)" />
 		</ItemGroup>

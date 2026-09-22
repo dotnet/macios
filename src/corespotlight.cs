@@ -348,8 +348,7 @@ namespace CoreSpotlight {
 		/// <summary>Provides searchable items for the specified identifiers and file protection class.</summary>
 		[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
 		[Export ("searchableItemsForIdentifiers:protectionClass:searchableItemsHandler:")]
-		// FIXME: Strongly type protectionClass as NSFileProtectionType once https://github.com/dotnet/macios/issues/26273 is fixed.
-		void GetSearchableItems (string [] identifiers, NSString protectionClass, CSSearchableIndexDelegateGetSearchableItemsHandler searchableItemsHandler);
+		void GetSearchableItems (string [] identifiers, [BindAs (typeof (NSFileProtectionType))] NSString protectionClass, CSSearchableIndexDelegateGetSearchableItemsHandler searchableItemsHandler);
 
 		[NoTV]
 		[iOS (18, 4), Mac (15, 4), MacCatalyst (18, 4)]

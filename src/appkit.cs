@@ -6666,6 +6666,8 @@ namespace AppKit {
 		NSMenu DockMenu ();
 	}
 
+	/// <summary>Handles the completion of an asynchronous document operation.</summary>
+	/// <param name="nsErrorPointerOrZero">A native pointer to the error that occurred, or zero if the operation succeeded.</param>
 	delegate void NSDocumentCompletionHandler (IntPtr nsErrorPointerOrZero);
 
 	[NoMacCatalyst]

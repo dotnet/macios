@@ -53945,7 +53945,6 @@ T:AppKit.NSDiffableDataSourceSnapshot`2
 T:AppKit.NSDirectionalRectEdge
 T:AppKit.NSDockTile
 T:AppKit.NSDocument
-T:AppKit.NSDocumentCompletionHandler
 T:AppKit.NSDocumentController
 T:AppKit.NSDocumentControllerOpenPanelResultHandler
 T:AppKit.NSDocumentControllerOpenPanelWithCompletionHandler

@@ -71,6 +71,15 @@ namespace Xamarin.Tests {
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			properties ["EnableCodeSigning"] = "false"; // Skip code signing, since that would require making sure we have code signing configured on bots.
 			properties ["Device"] = device;
+			string? mlaunchOutput = null;
+			if (!string.IsNullOrEmpty (device)) {
+				var temporaryDirectory = Cache.CreateTemporaryDirectory ();
+				var mlaunchPath = Path.Combine (temporaryDirectory, "mlaunch");
+				mlaunchOutput = Path.Combine (temporaryDirectory, "mlaunch-output.txt");
+				File.WriteAllText (mlaunchPath, $"#!/bin/sh\nprintf '%s\\n' \"$*\" >> '{mlaunchOutput}'\n");
+				File.SetUnixFileMode (mlaunchPath, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute);
+				properties ["MlaunchPath"] = mlaunchPath;
+			}
 
 			// Build the app first, since 'DeployToDevice' is meant to deploy an already-built app.
 			DotNet.Execute ("build", project_path, properties, target: "Clean");
@@ -86,6 +95,10 @@ namespace Xamarin.Tests {
 				Assert.That (mlaunchInstallArguments, Does.StartWith (expectedInstallArgument), "install arguments");
 				if (!string.IsNullOrEmpty (expectedDeviceArgument))
 					Assert.That (mlaunchInstallArguments, Does.Contain (expectedDeviceArgument), "device arguments");
+				if (mlaunchOutput is not null) {
+					Assert.That (mlaunchOutput, Does.Exist, "mlaunch output");
+					Assert.That (File.ReadAllLines (mlaunchOutput), Does.Contain (mlaunchInstallArguments), "mlaunch invocation");
+				}
 				return;
 			}
 

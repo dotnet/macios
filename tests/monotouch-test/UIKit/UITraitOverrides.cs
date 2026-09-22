@@ -34,46 +34,57 @@ namespace MonoTouchFixtures.UIKit {
 			// RegisterForTraitChanges (Type [] traits, Action<IUITraitEnvironment, UITraitCollection> handler)
 			token = observable.RegisterForTraitChanges (new [] { typeof (UITraitVerticalSizeClass) }, (a, b) => { });
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 
 			// RegisterForTraitChanges (Action<IUITraitEnvironment, UITraitCollection> handler, params Type [] traits)
 			token = observable.RegisterForTraitChanges ((a, b) => { }, typeof (UITraitVerticalSizeClass), typeof (UITraitHorizontalSizeClass));
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 
 			// RegisterForTraitChanges<T> (Action<IUITraitEnvironment, UITraitCollection> handler)
 			token = observable.RegisterForTraitChanges<UITraitVerticalSizeClass> ((a, b) => { });
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 
 			// RegisterForTraitChanges<T1, T2> (Action<IUITraitEnvironment, UITraitCollection> handler)
 			token = observable.RegisterForTraitChanges<UITraitVerticalSizeClass, UITraitHorizontalSizeClass> ((a, b) => { });
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 
 			// RegisterForTraitChanges<T1, T2, T3> (Action<IUITraitEnvironment, UITraitCollection> handler)
 			token = observable.RegisterForTraitChanges<UITraitVerticalSizeClass, UITraitHorizontalSizeClass, UITraitHorizontalSizeClass> ((a, b) => { });
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 
 			// RegisterForTraitChanges<T1, T2, T3, T4> (Action<IUITraitEnvironment, UITraitCollection> handler)
 			token = observable.RegisterForTraitChanges<UITraitVerticalSizeClass, UITraitHorizontalSizeClass, UITraitHorizontalSizeClass, UITraitVerticalSizeClass> ((a, b) => { });
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 
 			// RegisterForTraitChanges (Type [] traits, NSObject target, Selector action)
 			token = observable.RegisterForTraitChanges (new [] { typeof (UITraitVerticalSizeClass), typeof (UITraitHorizontalSizeClass) }, obj, new Selector ("notifyTraitChange:collection:"));
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 
 			// RegisterForTraitChanges (Type [] traits, Selector action)
 			token = observable.RegisterForTraitChanges (new [] { typeof (UITraitVerticalSizeClass), typeof (UITraitHorizontalSizeClass) }, new Selector ("notifyTraitChange:collection:"));
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 
 			// RegisterForTraitChanges (Class [] traits, [BlockProxy (typeof (ObjCRuntime.Trampolines.IUITraitChangeObservable_RegisterForTraitChanges_NIDAction))] global::System.Action<IUITraitEnvironment, UITraitCollection> handler)
 			token = observable.RegisterForTraitChanges (new [] { new Class (typeof (UITraitVerticalSizeClass)) }, (a, b) => { });
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 
 			// RegisterForTraitChanges (Class [] traits, NSObject target, Selector action)
 			token = observable.RegisterForTraitChanges (new [] { new Class (typeof (UITraitVerticalSizeClass)) }, obj, new Selector ("notifyTraitChange:collection:"));
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 
 			// RegisterForTraitChanges (Class [] traits, Selector action)
 			token = observable.RegisterForTraitChanges (new [] { new Class (typeof (UITraitVerticalSizeClass)) }, new Selector ("notifyTraitChange:collection:"));
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 		}
 
 		[Test]
@@ -88,46 +99,57 @@ namespace MonoTouchFixtures.UIKit {
 			// RegisterForTraitChanges (Type [] traits, Action<IUITraitEnvironment, UITraitCollection> handler)
 			token = observable.RegisterForTraitChanges (new [] { typeof (UITraitVerticalSizeClass) }, (a, b) => { });
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 
 			// RegisterForTraitChanges (Action<IUITraitEnvironment, UITraitCollection> handler, params Type [] traits)
 			token = observable.RegisterForTraitChanges ((a, b) => { }, typeof (UITraitVerticalSizeClass), typeof (UITraitHorizontalSizeClass));
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 
 			// RegisterForTraitChanges<T> (Action<IUITraitEnvironment, UITraitCollection> handler)
 			token = observable.RegisterForTraitChanges<UITraitVerticalSizeClass> ((a, b) => { });
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 
 			// RegisterForTraitChanges<T1, T2> (Action<IUITraitEnvironment, UITraitCollection> handler)
 			token = observable.RegisterForTraitChanges<UITraitVerticalSizeClass, UITraitHorizontalSizeClass> ((a, b) => { });
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 
 			// RegisterForTraitChanges<T1, T2, T3> (Action<IUITraitEnvironment, UITraitCollection> handler)
 			token = observable.RegisterForTraitChanges<UITraitVerticalSizeClass, UITraitHorizontalSizeClass, UITraitHorizontalSizeClass> ((a, b) => { });
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 
 			// RegisterForTraitChanges<T1, T2, T3, T4> (Action<IUITraitEnvironment, UITraitCollection> handler)
 			token = observable.RegisterForTraitChanges<UITraitVerticalSizeClass, UITraitHorizontalSizeClass, UITraitHorizontalSizeClass, UITraitVerticalSizeClass> ((a, b) => { });
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 
 			// RegisterForTraitChanges (Type [] traits, NSObject target, Selector action)
 			token = observable.RegisterForTraitChanges (new [] { typeof (UITraitVerticalSizeClass), typeof (UITraitHorizontalSizeClass) }, obj, new Selector ("notifyTraitChange:collection:"));
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 
 			// RegisterForTraitChanges (Type [] traits, Selector action)
 			token = observable.RegisterForTraitChanges (new [] { typeof (UITraitVerticalSizeClass), typeof (UITraitHorizontalSizeClass) }, new Selector ("notifyTraitChange:collection:"));
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 
 			// RegisterForTraitChanges (Class [] traits, [BlockProxy (typeof (ObjCRuntime.Trampolines.IUITraitChangeObservable_RegisterForTraitChanges_NIDAction))] global::System.Action<IUITraitEnvironment, UITraitCollection> handler)
 			token = observable.RegisterForTraitChanges (new [] { new Class (typeof (UITraitVerticalSizeClass)) }, (a, b) => { });
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 
 			// RegisterForTraitChanges (Class [] traits, NSObject target, Selector action)
 			token = observable.RegisterForTraitChanges (new [] { new Class (typeof (UITraitVerticalSizeClass)) }, obj, new Selector ("notifyTraitChange:collection:"));
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 
 			// RegisterForTraitChanges (Class [] traits, Selector action)
 			token = observable.RegisterForTraitChanges (new [] { new Class (typeof (UITraitVerticalSizeClass)) }, new Selector ("notifyTraitChange:collection:"));
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 		}
 
 		[Test]
@@ -142,46 +164,57 @@ namespace MonoTouchFixtures.UIKit {
 			// RegisterForTraitChanges (Type [] traits, Action<IUITraitEnvironment, UITraitCollection> handler)
 			token = observable.RegisterForTraitChanges (new [] { typeof (UITraitVerticalSizeClass) }, (a, b) => { });
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 
 			// RegisterForTraitChanges (Action<IUITraitEnvironment, UITraitCollection> handler, params Type [] traits)
 			token = observable.RegisterForTraitChanges ((a, b) => { }, typeof (UITraitVerticalSizeClass), typeof (UITraitHorizontalSizeClass));
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 
 			// RegisterForTraitChanges<T> (Action<IUITraitEnvironment, UITraitCollection> handler)
 			token = observable.RegisterForTraitChanges<UITraitVerticalSizeClass> ((a, b) => { });
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 
 			// RegisterForTraitChanges<T1, T2> (Action<IUITraitEnvironment, UITraitCollection> handler)
 			token = observable.RegisterForTraitChanges<UITraitVerticalSizeClass, UITraitHorizontalSizeClass> ((a, b) => { });
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 
 			// RegisterForTraitChanges<T1, T2, T3> (Action<IUITraitEnvironment, UITraitCollection> handler)
 			token = observable.RegisterForTraitChanges<UITraitVerticalSizeClass, UITraitHorizontalSizeClass, UITraitHorizontalSizeClass> ((a, b) => { });
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 
 			// RegisterForTraitChanges<T1, T2, T3, T4> (Action<IUITraitEnvironment, UITraitCollection> handler)
 			token = observable.RegisterForTraitChanges<UITraitVerticalSizeClass, UITraitHorizontalSizeClass, UITraitHorizontalSizeClass, UITraitVerticalSizeClass> ((a, b) => { });
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 
 			// RegisterForTraitChanges (Type [] traits, NSObject target, Selector action)
 			token = observable.RegisterForTraitChanges (new [] { typeof (UITraitVerticalSizeClass), typeof (UITraitHorizontalSizeClass) }, obj, new Selector ("notifyTraitChange:collection:"));
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 
 			// RegisterForTraitChanges (Type [] traits, Selector action)
 			token = observable.RegisterForTraitChanges (new [] { typeof (UITraitVerticalSizeClass), typeof (UITraitHorizontalSizeClass) }, new Selector ("notifyTraitChange:collection:"));
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 
 			// RegisterForTraitChanges (Class [] traits, [BlockProxy (typeof (ObjCRuntime.Trampolines.IUITraitChangeObservable_RegisterForTraitChanges_NIDAction))] global::System.Action<IUITraitEnvironment, UITraitCollection> handler)
 			token = observable.RegisterForTraitChanges (new [] { new Class (typeof (UITraitVerticalSizeClass)) }, (a, b) => { });
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 
 			// RegisterForTraitChanges (Class [] traits, NSObject target, Selector action)
 			token = observable.RegisterForTraitChanges (new [] { new Class (typeof (UITraitVerticalSizeClass)) }, obj, new Selector ("notifyTraitChange:collection:"));
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 
 			// RegisterForTraitChanges (Class [] traits, Selector action)
 			token = observable.RegisterForTraitChanges (new [] { new Class (typeof (UITraitVerticalSizeClass)) }, new Selector ("notifyTraitChange:collection:"));
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 		}
 
 		[Test]
@@ -197,50 +230,62 @@ namespace MonoTouchFixtures.UIKit {
 			// RegisterForTraitChanges (Type [] traits, Action<IUITraitEnvironment, UITraitCollection> handler)
 			token = observable.RegisterForTraitChanges (new [] { typeof (UITraitVerticalSizeClass) }, (a, b) => { });
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 
 			// RegisterForTraitChanges (Action<IUITraitEnvironment, UITraitCollection> handler, params Type [] traits)
 			token = observable.RegisterForTraitChanges ((a, b) => { }, typeof (UITraitVerticalSizeClass), typeof (UITraitHorizontalSizeClass));
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 
 			// RegisterForTraitChanges<T> (Action<IUITraitEnvironment, UITraitCollection> handler)
 			token = observable.RegisterForTraitChanges<UITraitVerticalSizeClass> ((a, b) => { });
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 
 			// RegisterForTraitChanges<T1, T2> (Action<IUITraitEnvironment, UITraitCollection> handler)
 			token = observable.RegisterForTraitChanges<UITraitVerticalSizeClass, UITraitHorizontalSizeClass> ((a, b) => { });
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 
 			// RegisterForTraitChanges<T1, T2, T3> (Action<IUITraitEnvironment, UITraitCollection> handler)
 			token = observable.RegisterForTraitChanges<UITraitVerticalSizeClass, UITraitHorizontalSizeClass, UITraitHorizontalSizeClass> ((a, b) => { });
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 
 			// RegisterForTraitChanges<T1, T2, T3, T4> (Action<IUITraitEnvironment, UITraitCollection> handler)
 			token = observable.RegisterForTraitChanges<UITraitVerticalSizeClass, UITraitHorizontalSizeClass, UITraitHorizontalSizeClass, UITraitVerticalSizeClass> ((a, b) => { });
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 
 			// RegisterForTraitChanges (Type [] traits, NSObject target, Selector action)
 			token = observable.RegisterForTraitChanges (new [] { typeof (UITraitVerticalSizeClass), typeof (UITraitHorizontalSizeClass) }, obj, new Selector ("notifyTraitChange:collection:"));
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 
 			// RegisterForTraitChanges (Type [] traits, Selector action)
 			token = observable.RegisterForTraitChanges (new [] { typeof (UITraitVerticalSizeClass), typeof (UITraitHorizontalSizeClass) }, new Selector ("notifyTraitChange:collection:"));
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 
 			// RegisterForTraitChanges (Class [] traits, [BlockProxy (typeof (ObjCRuntime.Trampolines.IUITraitChangeObservable_RegisterForTraitChanges_NIDAction))] global::System.Action<IUITraitEnvironment, UITraitCollection> handler)
 			token = observable.RegisterForTraitChanges (new [] { new Class (typeof (UITraitVerticalSizeClass)) }, (a, b) => { });
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 
 			// RegisterForTraitChanges (Class [] traits, NSObject target, Selector action)
 			token = observable.RegisterForTraitChanges (new [] { new Class (typeof (UITraitVerticalSizeClass)) }, obj, new Selector ("notifyTraitChange:collection:"));
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 
 			// RegisterForTraitChanges (Class [] traits, Selector action)
 			token = observable.RegisterForTraitChanges (new [] { new Class (typeof (UITraitVerticalSizeClass)) }, new Selector ("notifyTraitChange:collection:"));
 			observable.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
 		}
 
-		[Test]
-		public void RegisterForTraitChanges_ClassArray ()
+		[TestCase (false)]
+		[TestCase (true)]
+		public void RegisterForTraitChanges_ClassArray (bool disposeRegistration)
 		{
 			TestRuntime.AssertXcodeVersion (15, 0);
 
@@ -249,7 +294,34 @@ namespace MonoTouchFixtures.UIKit {
 						new Class (typeof (UITraitVerticalSizeClass)),
 						new Class (typeof (UITraitHorizontalSizeClass)),
 						}, callback);
-			}, "ClassArray ");
+			}, "ClassArray ", disposeRegistration);
+		}
+
+		[TestCase (false)]
+		[TestCase (true)]
+		public void RegisterForTraitChanges_InterfaceAndExtensions (bool useExtensionMethods)
+		{
+			TestRuntime.AssertXcodeVersion (15, 0);
+
+			using var view = new UIView ();
+			IUITraitChangeObservable observable = view;
+			var traits = new [] { new Class (typeof (UITraitVerticalSizeClass)) };
+			var action = new Selector ("notifyTraitChange:collection:");
+			using var callbackRegistration = useExtensionMethods ?
+				UITraitChangeObservable_Extensions.RegisterForTraitChanges (observable, traits, (a, b) => { }) :
+				observable.RegisterForTraitChanges (traits, (a, b) => { });
+			using var targetRegistration = useExtensionMethods ?
+				UITraitChangeObservable_Extensions.RegisterForTraitChanges (observable, traits, view, action) :
+				observable.RegisterForTraitChanges (traits, view, action);
+			using var actionRegistration = useExtensionMethods ?
+				UITraitChangeObservable_Extensions.RegisterForTraitChanges (observable, traits, action) :
+				observable.RegisterForTraitChanges (traits, action);
+
+			foreach (var registration in new [] { callbackRegistration, targetRegistration, actionRegistration }) {
+				Assert.That (registration.Handle, Is.Not.EqualTo (NativeHandle.Zero), "Registered");
+				observable.UnregisterForTraitChanges (registration);
+				Assert.That (registration.Handle, Is.EqualTo (NativeHandle.Zero), "Unregistered");
+			}
 		}
 
 		[Test]
@@ -288,7 +360,7 @@ namespace MonoTouchFixtures.UIKit {
 			}, "Generic ");
 		}
 
-		void CallbackTest (Func<IUITraitChangeObservable, Action<IUITraitEnvironment, UITraitCollection>, IUITraitChangeRegistration> registerFunc, string prefix)
+		void CallbackTest (Func<IUITraitChangeObservable, Action<IUITraitEnvironment, UITraitCollection>, IUITraitChangeRegistration> registerFunc, string prefix, bool disposeRegistration = false)
 		{
 			TestRuntime.AssertXcodeVersion (15, 0);
 
@@ -338,7 +410,7 @@ namespace MonoTouchFixtures.UIKit {
 			var secondHorizontal = (initialHorizonal == UIUserInterfaceSizeClass.Regular) ? UIUserInterfaceSizeClass.Regular : UIUserInterfaceSizeClass.Compact;
 			var secondVertical = (initialVertical == UIUserInterfaceSizeClass.Regular) ? UIUserInterfaceSizeClass.Regular : UIUserInterfaceSizeClass.Compact;
 
-			var token = registerFunc (vc, callback);
+			using var token = registerFunc (vc, callback);
 
 			horizontal = firstHorizontal;
 			vc.TraitOverrides.HorizontalSizeClass = horizontal.Value;
@@ -380,7 +452,15 @@ namespace MonoTouchFixtures.UIKit {
 			Assert.That (callbackCounter, Is.EqualTo (5), $"{prefix}CallbackCounter 8");
 			Assert.That (ex, Is.Null, $"{prefix}Exception 8");
 
-			vc.UnregisterForTraitChanges (token);
+			if (disposeRegistration)
+				token.Dispose ();
+			else
+				vc.UnregisterForTraitChanges (token);
+			Assert.That (token.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
+
+			vc.TraitOverrides.HorizontalSizeClass = firstHorizontal;
+			Assert.That (callbackCounter, Is.EqualTo (5), $"{prefix}CallbackCounter after unregister");
+			Assert.That (ex, Is.Null, $"{prefix}Exception after unregister");
 		}
 	}
 }

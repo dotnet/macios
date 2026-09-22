@@ -124,7 +124,9 @@ _SizeTestApp.TypeMap.dll:System.Runtime.CompilerServices.IgnoresAccessChecksToAt
 Microsoft.MacCatalyst.dll:<Module>
 Microsoft.MacCatalyst.dll:<Module>..cctor()
 Microsoft.MacCatalyst.dll:AppKit.ActionDispatcher
+Microsoft.MacCatalyst.dll:AppKit.ActionDispatcher..cctor()
 Microsoft.MacCatalyst.dll:AppKit.ActionDispatcher..ctor()
+Microsoft.MacCatalyst.dll:AppKit.ActionDispatcher..ctor(System.EventHandler)
 Microsoft.MacCatalyst.dll:AppKit.ActionDispatcher.get_WorksWhenModal()
 Microsoft.MacCatalyst.dll:AppKit.ActionDispatcher.OnActivated(Foundation.NSObject)
 Microsoft.MacCatalyst.dll:AppKit.ActionDispatcher.OnActivated2(Foundation.NSObject)
@@ -974,6 +976,8 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.RuntimeTypeHandleEqualityComparer..ctor()
 Microsoft.MacCatalyst.dll:ObjCRuntime.RuntimeTypeHandleEqualityComparer.Equals(System.RuntimeTypeHandle, System.RuntimeTypeHandle)
 Microsoft.MacCatalyst.dll:ObjCRuntime.RuntimeTypeHandleEqualityComparer.GetHashCode(System.RuntimeTypeHandle)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Selector
+Microsoft.MacCatalyst.dll:ObjCRuntime.Selector AppKit.ActionDispatcher::Action
+Microsoft.MacCatalyst.dll:ObjCRuntime.Selector AppKit.ActionDispatcher::DoubleAction
 Microsoft.MacCatalyst.dll:ObjCRuntime.Selector Foundation.NSDispatcher::Selector
 Microsoft.MacCatalyst.dll:ObjCRuntime.Selector._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Selector..cctor()

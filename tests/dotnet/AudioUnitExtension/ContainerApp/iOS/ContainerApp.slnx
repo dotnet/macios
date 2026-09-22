@@ -1,4 +1,0 @@
-<Solution>
-  <Project Path="../../AppExtension/iOS/AppExtension.csproj" />
-  <Project Path="ContainerApp.csproj" />
-</Solution>

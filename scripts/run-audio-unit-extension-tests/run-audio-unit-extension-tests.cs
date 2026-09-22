@@ -135,7 +135,7 @@ sealed class AudioUnitExtensionTestRunner {
 
 			await ConfigureDefaultsAsync (port);
 
-			hostTask = StartHost (registeredAppPath, executablePath, hostCts.Token);
+			hostTask = StartHost (registeredAppPath, hostCts.Token);
 
 			var (result, timedOut) = await ReceiveResultsAsync (listener);
 
@@ -152,7 +152,7 @@ sealed class AudioUnitExtensionTestRunner {
 			listener.Stop ();
 
 			// Stop the container host so its process (and the extension) can exit.
-			if (options.SimulatorUdid is null && options.Platform == "MacCatalyst")
+			if (options.SimulatorUdid is null)
 				TerminateHostProcess (executablePath);
 			hostCts.Cancel ();
 			if (hostTask is not null) {
@@ -203,7 +203,7 @@ sealed class AudioUnitExtensionTestRunner {
 			await RunDefaultsToolAsync (true, "delete", DefaultsDomain, key);
 	}
 
-	async Task StartHost (string appPath, string executablePath, CancellationToken cancellationToken)
+	async Task StartHost (string appPath, CancellationToken cancellationToken)
 	{
 		var environment = new Dictionary<string, string?> {
 			[options.SimulatorUdid is null ? "RUN_EXTENSION_TESTS" : "SIMCTL_CHILD_RUN_EXTENSION_TESTS"] = "1",
@@ -221,7 +221,7 @@ sealed class AudioUnitExtensionTestRunner {
 			return;
 		}
 
-		if (options.Platform == "MacCatalyst") {
+		if (options.SimulatorUdid is null) {
 			var arguments = new List<string> { "-W", "-n", "--env", "RUN_EXTENSION_TESTS=1", appPath };
 			Log ($"Executing: open {StringUtils.FormatArguments (arguments)}");
 			await Execution.RunWithCallbacksAsync (
@@ -231,21 +231,6 @@ sealed class AudioUnitExtensionTestRunner {
 				standardError: Log,
 				cancellationToken: cancellationToken);
 			return;
-		}
-
-		while (!cancellationToken.IsCancellationRequested) {
-			Log ($"Executing: RUN_EXTENSION_TESTS=1 {executablePath}");
-			await Execution.RunWithCallbacksAsync (
-				executablePath,
-				new List<string> (),
-				environment: environment,
-				standardOutput: Log,
-				standardError: Log,
-				cancellationToken: cancellationToken);
-			if (!cancellationToken.IsCancellationRequested) {
-				Log ("The container host exited before the extension reported results; retrying in 2 seconds.");
-				await Task.Delay (TimeSpan.FromSeconds (2), cancellationToken);
-			}
 		}
 	}
 

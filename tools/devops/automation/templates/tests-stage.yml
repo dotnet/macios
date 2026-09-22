@@ -83,7 +83,7 @@ parameters:
       statusContext: 'arm64 - Mac Golden Gate (27)',
       vmVendor: 'ACES',
       demands: [
-        "ImageOverride -equals ACES_VM_SharedPool_GoldenGate_Beta"
+        "ImageOverride -equals ACES_VM_SharedPool_GoldenGate"
       ]
     }]
 

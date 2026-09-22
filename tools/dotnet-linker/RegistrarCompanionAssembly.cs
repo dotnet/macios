@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 using Mono.Cecil;
 using Mono.Cecil.Cil;
@@ -14,6 +15,15 @@ namespace Xamarin.Linker {
 	// that's shared between ManagedRegistrarStep and TrimmableRegistrarStep when
 	// HotReloadCompatibleBuild is enabled.
 	internal sealed class RegistrarCompanionAssembly {
+		public static string GetName (AssemblyDefinition userAssembly)
+		{
+			var name = userAssembly.Name.Name;
+			// A comma is parsed as the start of an assembly's display-name qualifiers.
+			if (name.Contains (',') || name.StartsWith ("Encoded_", StringComparison.Ordinal))
+				name = "Encoded_" + BitConverter.ToString (Encoding.UTF8.GetBytes (name)).Replace ("-", "");
+			return "_" + name + ".TypeMap";
+		}
+
 		// The companion assembly itself.
 		public AssemblyDefinition Assembly;
 
@@ -60,7 +70,7 @@ namespace Xamarin.Linker {
 				MetadataResolver = copyFrom.MetadataResolver,
 			};
 
-			var name = new AssemblyNameDefinition ("_" + userAssembly.Name.Name + ".TypeMap", new Version (1, 0, 0, 0));
+			var name = new AssemblyNameDefinition (GetName (userAssembly), new Version (1, 0, 0, 0));
 			var companion = AssemblyDefinition.CreateAssembly (name, name.Name, moduleParameters);
 			var path = System.IO.Path.Combine (app.TypeMapOutputDirectory, name.Name + ".dll");
 			annotations.SetAction (companion, annotations.GetAction (userAssembly));

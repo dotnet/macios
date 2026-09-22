@@ -183,9 +183,12 @@ partial class TestRuntime {
 				vc.View.Frame = initialRootViewController.View.Bounds;
 				vc.View.AutoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
 				vc.BeginAppearanceTransition (true, false);
-				initialRootViewController.View.AddSubview (vc.View);
-				vc.DidMoveToParentViewController (initialRootViewController);
-				vc.EndAppearanceTransition ();
+				try {
+					initialRootViewController.View.AddSubview (vc.View);
+					vc.DidMoveToParentViewController (initialRootViewController);
+				} finally {
+					vc.EndAppearanceTransition ();
+				}
 			}
 #else
 			var size = new CGRect (0, 0, 300, 300);
@@ -211,9 +214,12 @@ partial class TestRuntime {
 			} else if (child is not null) {
 				child.WillMoveToParentViewController (null);
 				child.BeginAppearanceTransition (false, false);
-				child.View.RemoveFromSuperview ();
-				child.RemoveFromParentViewController ();
-				child.EndAppearanceTransition ();
+				try {
+					child.View.RemoveFromSuperview ();
+					child.RemoveFromParentViewController ();
+				} finally {
+					child.EndAppearanceTransition ();
+				}
 				child = null;
 			}
 #endif // HAS_UIKIT

@@ -41,7 +41,7 @@ namespace Xamarin.MacDev.Tasks {
 		[Required]
 		public ITaskItem? OptionsFile { get; set; }
 
-		public string InlineDlfcnCacheDirectory { get; set; } = "";
+		public string? InlineDlfcnCacheDirectory { get; set; }
 		#endregion
 
 		public bool PostProcessing { get; set; }
@@ -86,7 +86,7 @@ namespace Xamarin.MacDev.Tasks {
 			try {
 				var infos = InputAssemblies.Select (GetAssemblyInfo).ToArray ();
 				using var preparer = new AssemblyPreparer (this, infos, OptionsFile?.ItemSpec ?? "");
-				preparer.InlineDlfcnCacheDirectory = InlineDlfcnCacheDirectory;
+				preparer.InlineDlfcnCacheDirectory = InlineDlfcnCacheDirectory ?? "";
 				msbuildOutputFile = PostProcessing ? preparer.Configuration.MSBuildPostProcessOutputFile : preparer.Configuration.MSBuildOutputFile;
 				preparer.MakeReproPath = MakeReproPath;
 				preparer.PreTrimAssemblies.AddRange (PreTrimAssemblies.Select (v => v.ItemSpec));

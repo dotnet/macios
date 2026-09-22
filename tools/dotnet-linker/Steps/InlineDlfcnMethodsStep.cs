@@ -55,8 +55,9 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 				return ProcessMethods (assembly, cachedMethods);
 			}
 
-			methodsToCache = new List<MethodDefinition> ();
-			var modified = ModifyAssemblyAndCacheFindings (assembly, cacheFile);
+			var findings = new List<MethodDefinition> ();
+			methodsToCache = findings;
+			var modified = ModifyAssemblyAndCacheFindings (assembly, cacheFile, findings);
 			methodsToCache = null;
 			return modified;
 		}
@@ -88,11 +89,11 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 	}
 
 #if ASSEMBLY_PREPARER
-	bool ModifyAssemblyAndCacheFindings (AssemblyDefinition assembly, string cacheFile)
+	bool ModifyAssemblyAndCacheFindings (AssemblyDefinition assembly, string cacheFile, IEnumerable<MethodDefinition> findings)
 	{
 		var modified = ModifyAssemblyCore (assembly);
 		Directory.CreateDirectory (Configuration.InlineDlfcnCacheDirectory);
-		File.WriteAllLines (cacheFile, methodsToCache!.Select (v => v.MetadataToken.ToUInt32 ().ToString ("x8", CultureInfo.InvariantCulture)));
+		File.WriteAllLines (cacheFile, findings.Select (v => v.MetadataToken.ToUInt32 ().ToString ("x8", CultureInfo.InvariantCulture)));
 		return modified;
 	}
 

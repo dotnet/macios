@@ -40,7 +40,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 
 		[TestCase (false)]
 		[TestCase (true)]
-		public void EnumerateMetadataWithCollection (bool stopAfterFirstTag)
+		public void EnumerateMetadataWithForcedGC (bool stopAfterFirstTag)
 		{
 			var data = SampleMetadata ();
 			var reference = new WeakReference (data);

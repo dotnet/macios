@@ -11,6 +11,7 @@
 
 using System.IO;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Threading;
 
 using UIKit;
@@ -322,6 +323,66 @@ namespace MonoTouchFixtures.UIKit {
 				observable.UnregisterForTraitChanges (registration);
 				Assert.That (registration.Handle, Is.EqualTo (NativeHandle.Zero), "Unregistered");
 			}
+		}
+
+		[Test]
+		public void RegisterForTraitChanges_Copy ()
+		{
+			TestRuntime.AssertXcodeVersion (15, 0);
+
+			using var view = new UIView ();
+			using var registration = view.RegisterForTraitChanges<UITraitVerticalSizeClass> ((a, b) => { });
+			using var copy = registration.Copy (null);
+			Assert.That (copy.Handle, Is.Not.EqualTo (NativeHandle.Zero), "Copy");
+
+			registration.Dispose ();
+			Assert.Throws<ObjectDisposedException> (() => registration.Copy (null), "Copy after disposal");
+		}
+
+		[MethodImpl (MethodImplOptions.NoInlining)]
+		static IUITraitChangeRegistration CreateRegistration (out WeakReference observable)
+		{
+			var view = new UIView ();
+			observable = new WeakReference (view);
+			return view.RegisterForTraitChanges<UITraitVerticalSizeClass> ((a, b) => { });
+		}
+
+		[MethodImpl (MethodImplOptions.NoInlining)]
+		static WeakReference AbandonRegistration (out WeakReference observable)
+		{
+			return new WeakReference (CreateRegistration (out observable), trackResurrection: true);
+		}
+
+		[Test]
+		public void RegisterForTraitChanges_RootsObservable ()
+		{
+			TestRuntime.AssertXcodeVersion (15, 0);
+
+			using var registration = CreateRegistration (out var observable);
+			GC.Collect ();
+			GC.WaitForPendingFinalizers ();
+			Assert.That (observable.IsAlive, Is.True, "Observable rooted");
+
+			registration.Dispose ();
+			Assert.That (TestRuntime.RunAsync (TimeSpan.FromSeconds (10), () => {
+				GC.Collect ();
+				GC.WaitForPendingFinalizers ();
+				return !observable.IsAlive;
+			}), Is.True, "Observable released");
+			GC.KeepAlive (registration);
+		}
+
+		[Test]
+		public void RegisterForTraitChanges_Finalizer ()
+		{
+			TestRuntime.AssertXcodeVersion (15, 0);
+
+			var registration = AbandonRegistration (out var observable);
+			Assert.That (TestRuntime.RunAsync (TimeSpan.FromSeconds (10), () => {
+				GC.Collect ();
+				GC.WaitForPendingFinalizers ();
+				return !registration.IsAlive && !observable.IsAlive;
+			}), Is.True, "Registration finalized and observable released");
 		}
 
 		[Test]

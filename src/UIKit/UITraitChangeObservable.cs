@@ -255,6 +255,13 @@ namespace UIKit {
 				this.registration = registration;
 			}
 
+			public NSObject Copy (NSZone? zone)
+			{
+				if (registration is null)
+					throw new ObjectDisposedException (nameof (UITraitChangeRegistrationToken));
+				return registration.Copy (zone);
+			}
+
 			~UITraitChangeRegistrationToken ()
 			{
 				Runtime.NSLog ("Warning: trait change registration object was not disposed manually with Dispose()");
@@ -272,10 +279,14 @@ namespace UIKit {
 				if (registration is null)
 					return;
 
-				var observable = this.observable.Target as IUITraitChangeObservable;
-				if (observable is null)
-					throw new InvalidOperationException ("The trait change observable has been collected.");
-				IUITraitChangeObservable.UnregisterForTraitChangesInternal (observable, registration);
+				if (disposing) {
+					var observable = this.observable.Target as IUITraitChangeObservable;
+					if (observable is null)
+						throw new InvalidOperationException ("The trait change observable has been collected.");
+					IUITraitChangeObservable.UnregisterForTraitChangesInternal (observable, registration);
+				}
+				// UIKit unregisters automatically when the observable is deallocated.
+				// The finalizer must not call UIKit's main-thread-only unregister method.
 				registration = null;
 				this.observable.Free ();
 			}

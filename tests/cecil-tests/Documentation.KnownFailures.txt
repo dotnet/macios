@@ -53800,7 +53800,6 @@ T:AdServices.AAAttribution
 T:AdServices.AAAttributionErrorCode
 T:AppClip.APActivationPayload
 T:AppClip.APActivationPayloadErrorCode
-T:AppKit.AttributedStringForCandidateHandler
 T:AppKit.DownloadFontAssetsRequestCompletionHandler
 T:AppKit.DrawerShouldCloseDelegate
 T:AppKit.DrawerShouldOpenDelegate

@@ -32907,6 +32907,10 @@ namespace AppKit {
 
 	public interface INSCandidateListTouchBarItemDelegate { }
 
+	/// <summary>Provides an attributed string for a candidate in a candidate list.</summary>
+	/// <param name="candidate">The candidate to represent.</param>
+	/// <param name="index">The index of the candidate in the list.</param>
+	/// <returns>The attributed string to display for the candidate.</returns>
 	delegate NSAttributedString AttributedStringForCandidateHandler (NSObject candidate, nint index);
 
 	[NoMacCatalyst]

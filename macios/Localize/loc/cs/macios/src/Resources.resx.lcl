@@ -582,10 +582,13 @@
       </Item>
       <Item ItemId=";BI1050" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[[BindAs]5D; cannot be used inside Protocol or Model types. Type: {0}]]></Val>
+          <Val><![CDATA[[BindAs]5D; cannot be used on properties or return values inside Protocol or Model types. Type: {0}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[[BindAs]5D; se nedá použít uvnitř typů Protocol nebo Model. Typ: {0}]]></Val>
+            <Val><![CDATA[[BindAs]5D; nelze použít u vlastností nebo návratových hodnot uvnitř typů Protocol nebo Model. Typ: {0}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[[BindAs]5D; cannot be used inside Protocol or Model types. Type: {0}]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -1140,6 +1143,42 @@
           <Val><![CDATA[Found a [Preserve]5D; attribute on {0}: [Preserve]5D; is deprecated; use [DynamicDependency]5D; instead.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Nalezen atribut [Preserve]5D; pro {0}: [Preserve]5D; je zastaralý; místo něj použijte [DynamicDependency]5D;.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1125" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The [FactoryMethod]5D; binding method '{0}.{1}' has an 'out NSError' parameter, but its return value is not nullable. Add [return: NullAllowed]5D; to the binding method so the generated factory method can return null when the native initializer fails.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Metoda vazby [FactoryMethod]5D; „{0}.{1}“ má parametr „out NSError“, ale její návratová hodnota nepovoluje hodnotu null. Přidejte k metodě vazby [return: NullAllowed]5D;, aby vygenerovaná tovární metoda mohla vrátit hodnotu null, když nativní inicializátor selže.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1126" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The [FactoryMethod]5D; attribute on '{0}.{1}' can only be used with an Objective-C 'init' selector (the selector must be 'init' or start with 'init' followed by an uppercase letter), but the selector is '{2}'.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Atribut [FactoryMethod]5D; v {0}.{1} se dá použít jenom se selektorem init jazyka Objective-C (selektor musí být init nebo začínat init následovaným velkým písmenem), ale selektor je '{2}'.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1127" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The [FactoryMethod]5D; attribute on '{0}.{1}' can't specify a method name when applied to a method that isn't a constructor. Remove the method name from the [FactoryMethod]5D; attribute; the name of the binding method is used instead.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Atribut [FactoryMethod]5D; {0}.{1} nemůže určit název metody při použití u metody, která není konstruktorem. Odeberte název metody z atributu [FactoryMethod]5D;; Místo toho se použije název metody vazby.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1128" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The [Field]5D; member '{0}.{1}' sets SymbolAddress, but its type is '{2}'; only System.IntPtr is supported.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Člen [Field]5D; „{0}.{1}“ nastavuje SymbolAddress, ale jeho typ je „{2}“. Podporuje se jen System.IntPtr.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

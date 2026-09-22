@@ -1255,6 +1255,12 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";E0192" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The PrepareAssemblies task failed without reporting a specific error. Please rebuild with increased verbosity for more details.]]></Val>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";E7001" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Could not resolve host IPs for WiFi debugger settings.]]></Val>
@@ -2725,12 +2731,30 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";E7165" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Invalid DotNetRuntime value: '{0}']]></Val>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E7166" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unexpected RuntimeLibLinkMode value for 'NativeAOT': '{0}']]></Val>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";E7169" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[The task '{0}' requires the property '{1}' to be set. Please file an issue at https://github.com/dotnet/macios/issues/new/choose.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA['{0}' 작업을 수행하려면 속성 '{1}'을(를) 설정해야 합니다. https://github.com/dotnet/macios/issues/new/choose에서 문제를 제기하세요.]]></Val>
           </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E7170" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Invalid RuntimeLibLinkMode value: '{0}']]></Val>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -2757,6 +2781,87 @@
           <Val><![CDATA[Console.StandardOutput or Console.StandardError was accessed during a build task. This should not happen, use the MSBuild logging infrastructure instead. Stack trace: {0}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[빌드 작업 중에 Console.StandardOutput 또는 Console.StandardError에 액세스했습니다. 이런 상황은 발생하면 안 됩니다. 대신 MSBuild 로깅 인프라를 사용하세요. 스택 추적: {0}]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E7180" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The native reference '{0}' in the binding resource package '{1}' is invalid: the name must be a relative path without '..' segments.]]></Val>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E7181" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The native library can't be reidentified to '{0}' because that path is outside the intended output directory '{1}'.]]></Val>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E7183" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The resource '{0}' in assembly '{1}' would extract to '{2}' which is outside of the target directory '{3}'.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[어셈블리 '{1}'의 리소스 '{0}' 대상 디렉터리 '{3}' 외부에 있는 '{2}'로 추출됩니다.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E7184" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Codesign failed with 'errSecInternalComponent'. This usually means the keychain is locked, which is common when building over SSH. Unlock the keychain first, for example by running 'security unlock-keychain ~/Library/Keychains/login.keychain-db'.]]></Val>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E7185" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Could not determine the on-device destination path after copying '{0}' to the device. The 'xcrun devicectl' JSON output was: {1}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[장치에 '{0}' 복사한 후 장치의 대상 경로를 확인할 수 없습니다. 'xcrun devicectl' JSON 출력: {1}]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E7186" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Could not read the runtime configuration file '{0}': {1}]]></Val>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E7187" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The value '{0}' for the property '{1}' is not a valid version number, because it contains whitespace.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA['{1}' 속성의 '{0}' 값은 공백을 포함하므로 올바른 버전 번호가 아닙니다.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E7188" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The runtime configuration file '{0}' is not a valid JSON object.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA['{0}' 런타임 구성 파일이 유효한 JSON 개체가 아닙니다.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E7189" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unknown type '{0}' for the app manifest entry '{1}' specified in the AppManifestEntry item group. Expected 'Remove', 'Boolean', 'String', or 'StringArray'.]]></Val>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E7190" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Invalid value '{0}' for the app manifest entry '{1}' of type '{2}' specified in the AppManifestEntry item group. Expected no value at all.]]></Val>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E7191" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Invalid value '{0}' for the app manifest entry '{1}' of type '{2}' specified in the AppManifestEntry item group. Expected 'true' or 'false'.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[AppManifestEntry 항목 그룹에 지정된 '{2}' 형식의 앱 매니페스트 항목 '{1}'에 대한 값이 잘못 '{0}'되었습니다. 'true' 또는 'false'가 필요합니다.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -3654,37 +3759,49 @@
       </Item>
       <Item ItemId=";W7171" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The environment variable '{0}' is deprecated, and will be ignored in .NET 11+. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
+          <Val><![CDATA[The environment variable '{0}' is deprecated, and will be ignored in .NET 11+. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use an Xcode other than the system's current default Xcode.]]></Val>
+          <Tgt Cat="Text" Stat="Update" Orig="New">
             <Val><![CDATA[환경 변수 '{0}'은(는) 더 이상 사용되지 않으며 .NET 11+에서 무시됩니다. 사용할 Xcode를 선택하려면 'DEVELOPER_DIR' 환경 변수 또는 'XcodeLocation' MSBuild 속성을 사용하세요.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The environment variable '{0}' is deprecated, and will be ignored in .NET 11+. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";W7172" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The environment variable '{0}' is deprecated, and will be ignored. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
+          <Val><![CDATA[The environment variable '{0}' is deprecated, and will be ignored. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use an Xcode other than the system's current default Xcode.]]></Val>
+          <Tgt Cat="Text" Stat="Update" Orig="New">
             <Val><![CDATA[환경 변수 '{0}'은(는) 더 이상 사용되지 않으며 무시됩니다. 사용할 Xcode를 선택하려면 'DEVELOPER_DIR' 환경 변수 또는 'XcodeLocation' MSBuild 속성을 사용하세요.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The environment variable '{0}' is deprecated, and will be ignored. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";W7173" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The settings file '{0}' is deprecated, and will be ignored in .NET 11+. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
+          <Val><![CDATA[The settings file '{0}' is deprecated, and will be ignored in .NET 11+. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use an Xcode other than the system's current default Xcode.]]></Val>
+          <Tgt Cat="Text" Stat="Update" Orig="New">
             <Val><![CDATA[설정 파일 '{0}'은(는) 더 이상 사용되지 않으며 .NET 11+에서 무시됩니다. 사용할 Xcode를 선택하려면 'DEVELOPER_DIR' 환경 변수 또는 'XcodeLocation' MSBuild 속성을 사용하세요.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The settings file '{0}' is deprecated, and will be ignored in .NET 11+. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";W7174" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The settings file '{0}' is deprecated, and will be ignored. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
+          <Val><![CDATA[The settings file '{0}' is deprecated, and will be ignored. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use an Xcode other than the system's current default Xcode.]]></Val>
+          <Tgt Cat="Text" Stat="Update" Orig="New">
             <Val><![CDATA[설정 파일 '{0}'은(는) 더 이상 사용되지 않으며 무시됩니다. 사용할 Xcode를 선택하려면 'DEVELOPER_DIR' 환경 변수 또는 'XcodeLocation' MSBuild 속성을 사용하세요.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The settings file '{0}' is deprecated, and will be ignored. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -3694,6 +3811,18 @@
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[{0} 시뮬레이터 런타임이 설치되어 있는지 확인할 수 없습니다. 빌드가 실패하거나 멈추면 명령줄에서 'xcodebuild -downloadPlatform {0}'을 실행하여 {0} 시뮬레이터 런타임을 설치하세요.]]></Val>
           </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7179" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Ignoring the metadata '{0}' for the native reference '{1}' in the binding resource package '{2}': this metadata is computed by the build and can't be set in a binding resource package manifest.]]></Val>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7182" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Ignoring a native reference with no name in the binding resource package '{0}'.]]></Val>
         </Str>
         <Disp Icon="Str" />
       </Item>

@@ -119,7 +119,7 @@ namespace Xharness.Jenkins.TestTasks {
 			// Iterate over all the project references as well.
 			var doc = new XmlDocument ();
 			doc.LoadWithoutNetworkAccess (projectFile);
-			foreach (var pr in doc.GetProjectReferences ()) {
+			foreach (var pr in doc.GetProjectReferenceIncludes ()) {
 				var path = pr.Replace ('\\', '/');
 				await CleanProjectAsync (path, SpecifyPlatform ? projectPlatform : null, SpecifyConfiguration ? projectConfiguration : null, cleanLog, mainLog);
 			}

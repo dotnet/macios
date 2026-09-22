@@ -3478,6 +3478,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";MT4192" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The registrar cannot use the model class '{0}' as a generic type argument in the generic type '{1}'. Use the protocol interface instead of the model class.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Il registrar non può usare la classe modello '{0}' come argomento di tipo generico nella '{1}' di tipo generico. Usare l'interfaccia del protocollo anziché la classe del modello.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";MT5101" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Missing '{0}' compiler. Please install Xcode 'Command-Line Tools' component]]></Val>
@@ -4647,6 +4656,60 @@
           <Val><![CDATA[Could not find the trampoline for the category method {0}.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Non è possibile trovare il trampolino per il metodo di categoria {0}.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX4193" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Export attributes cannot be removed because dynamic registration is supported.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Impossibile rimuovere gli attributi di esportazione perché è supportata la registrazione dinamica.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX4194" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Export attributes cannot be removed because the blockliteral-setupblock optimization is disabled.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Non è possibile rimuovere gli attributi di esportazione perché l'ottimizzazione blockliteral-setupblock è disabilitata.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX4195" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Export attributes cannot be removed because the static-block-to-delegate-lookup optimization is disabled.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Non è possibile rimuovere gli attributi di esportazione perché l'ottimizzazione static-block-to-delegate-lookup è disabilitata.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX4196" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Export attributes cannot be removed because the managed registrar must use Runtime.GetBlockWrapperCreator.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Non è possibile rimuovere gli attributi di esportazione perché il registrar gestito deve usare Runtime.GetBlockWrapperCreator.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX4197" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Export attributes cannot be removed because the managed registrar must use RegistrarHelper.GetBlockForDelegate.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Non è possibile rimuovere gli attributi di esportazione perché il registrar gestito deve usare RegistrarHelper.GetBlockForDelegate.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX4198" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Export attributes cannot be removed because the application uses an NSXpcInterface overload that obtains a selector from MethodInfo.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Non è possibile rimuovere gli attributi di esportazione perché l'applicazione utilizza un overload di NSXpcInterface che ottiene un selettore da MethodInfo.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

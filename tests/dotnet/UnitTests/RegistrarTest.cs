@@ -58,7 +58,7 @@ namespace Xamarin.Tests {
 			Assert.That (registrar, Is.EqualTo ("partial-static"), "Registrar");
 
 			var targets = BinLog.GetAllTargets (result.BinLogPath);
-			Assert.That (targets.Any (v => v.TargetName == "_PrepareAssemblies" && !v.Skipped), Is.True, "_PrepareAssemblies should execute when the registrar changes.");
+			Assert.That (targets.Any (v => v.TargetName == "_ExecutePrepareAssemblies" && !v.Skipped), Is.True, "_ExecutePrepareAssemblies should execute when the registrar changes.");
 
 			var objDir = GetObjDir (projectPath, platform, runtimeIdentifiers);
 			var registrarItemsPath = Path.Combine (objDir, "linker-items", "_RegistrarFile.items");

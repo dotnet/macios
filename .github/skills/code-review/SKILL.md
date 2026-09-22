@@ -19,7 +19,7 @@ Flag severity clearly in every comment:
 - ⚠️ **warning** — Should fix. Performance issues, missing validation, inconsistency with patterns.
 - 💡 **suggestion** — Consider changing. Style, readability, optional improvements.
 
-**Every review should produce at least one inline comment.** Even clean PRs have opportunities for improvement — code consolidation, missing edge-case tests, documentation gaps, or binding improvements. Use 💡 suggestions for these. Only omit inline comments if the PR is truly trivial (e.g., a 1-line typo fix or dependency bump).
+**Every eligible review should produce at least one inline comment.** Even clean PRs have opportunities for improvement — code consolidation, missing edge-case tests, documentation gaps, or binding improvements. Use 💡 suggestions for these. Only omit inline comments if the PR is truly trivial (e.g., a 1-line typo fix or dependency bump).
 
 ## Workflow
 
@@ -27,6 +27,14 @@ Flag severity clearly in every comment:
 
 If triggered from an agentic workflow (slash command on a PR), use the PR from the event context. Otherwise, extract `owner`, `repo`, `pr_number` from a URL or reference provided by the user.
 Formats: `https://github.com/{owner}/{repo}/pull/{number}`, `{owner}/{repo}#{number}`, or bare number (defaults to `dotnet/macios`).
+
+Retrieve the PR author before doing any other review work:
+
+```
+gh pr view {number} --repo {owner}/{repo} --json author
+```
+
+If the author's login is `csigs`, the PR was created by the localization pipeline. **Stop immediately without reading the diff, analyzing the PR, posting inline comments, or submitting a review summary or verdict.** In particular, never rubber-stamp these PRs with a green verdict.
 
 ### 2. Gather context (before reading PR description)
 

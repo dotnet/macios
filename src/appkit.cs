@@ -29152,6 +29152,8 @@ namespace AppKit {
 	delegate void NSDocumentMoveToUrlCompletionHandler (NSError error);
 	delegate void NSDocumentLockDocumentCompletionHandler (bool didLock);
 	delegate void NSDocumentUnlockDocumentCompletionHandler (bool didUnlock);
+	/// <summary>Handles the completion of an asynchronous document lock operation.</summary>
+	/// <param name="error">The error that occurred, or <see langword="null"/> if the operation succeeded.</param>
 	delegate void NSDocumentLockCompletionHandler (NSError error);
 	delegate void NSDocumentUnlockCompletionHandler (NSError error);
 

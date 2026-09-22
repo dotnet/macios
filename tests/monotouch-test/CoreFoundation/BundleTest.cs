@@ -11,9 +11,11 @@ namespace MonoTouchFixtures.CoreFoundation {
 	public class BundleTest {
 #if APP_EXTENSION
 		const string ExpectedAppName = "monotouchtest.appex";
+		const string ExpectedBundleExtension = ".appex";
 		const string ExpectedBundleId = "com.xamarin.monotouch-test.AudioUnitExtension";
 #else
 		const string ExpectedAppName = "monotouchtest.app";
+		const string ExpectedBundleExtension = ".app";
 		const string ExpectedBundleId = "com.xamarin.monotouch-test";
 #endif
 		const string ExpectedExecutableName = "monotouchtest";
@@ -79,6 +81,13 @@ namespace MonoTouchFixtures.CoreFoundation {
 			var main = CFBundle.GetMain ();
 			Assert.That (main.Identifier, Is.EqualTo (ExpectedBundleId));
 			Assert.That (main.HasLoadedExecutable, Is.True);
+		}
+
+		[Test]
+		public void TestMainBundleExtension ()
+		{
+			var main = CFBundle.GetMain ();
+			Assert.That (Path.GetExtension ((string) main.Url.Path), Is.EqualTo (ExpectedBundleExtension));
 		}
 
 		[Test]

@@ -7,8 +7,8 @@ include ../shared.mk
 #    make build
 #    make run
 #
-# Select the runtime, registrar and configuration using TEST_VARIATION (see
-# tests/common/test-variations.csproj for the full list), e.g.:
+# Select the runtime, registrar and configuration using TEST_VARIATION (run
+# 'make help' to see all variations), e.g.:
 #    make run TEST_VARIATION=coreclr
 #    make run TEST_VARIATION='trimmable-static-registrar|release'
 #

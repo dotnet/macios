@@ -23,8 +23,8 @@ LOGFILENAME:=$(TMPDIR)/monotouch-test/extensions/audio-unit/$(PLATFORM)-$(shell 
 RESULTSFILENAME?=$(patsubst %.log,%.nunit-results.xml,$(LOGFILENAME))
 
 # The runtime (CoreCLR/MonoVM), the registrar and other options are selected
-# using TEST_VARIATION (see tests/common/test-variations.csproj for the full
-# list of variations). Multiple variations can be combined with a pipe
+# using TEST_VARIATION (run 'make help' to see all variations). Multiple
+# variations can be combined with a pipe
 # character, e.g. TEST_VARIATION='trimmable-static-registrar|release'.
 ifeq ($(findstring |release|,|$(TEST_VARIATION)|),|release|)
 CONFIG=Release

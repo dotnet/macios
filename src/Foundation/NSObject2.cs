@@ -565,14 +565,17 @@ namespace Foundation {
 
 		void CreateManagedRef (bool isUserType, bool retain)
 		{
+			var hadManagedRef = HasManagedRef;
 			HasManagedRef = true;
 
 			if (isUserType) {
-				var existing = Runtime.GetGCHandleForObject (handle);
-				// Constructor chaining may initialize the same wrapper more than once.
-				// The existing wrapper already owns the native reference, so don't retain it again.
-				if (ReferenceEquals (Runtime.GetGCHandleTarget (existing), this))
-					return;
+				if (hadManagedRef) {
+					var existing = Runtime.GetGCHandleForObject (handle);
+					// Constructor chaining may initialize the same wrapper more than once.
+					// The existing wrapper already owns the native reference, so don't retain it again.
+					if (ReferenceEquals (Runtime.GetGCHandleTarget (existing), this))
+						return;
+				}
 
 				var gchandle_flags = XamarinGCHandleFlags.HasManagedRef | XamarinGCHandleFlags.InitialSet;
 				var gchandle = GCHandle.Alloc (this, GCHandleType.WeakTrackResurrection);

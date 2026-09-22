@@ -36932,36 +36932,24 @@ namespace UIKit {
 	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Protocol]
 	interface UITraitChangeObservable {
-		[Abstract]
-		[Internal]
+		[Abstract (GenerateExtensionMethod = true)]
+		[Manual]
 		[Export ("registerForTraitChanges:withHandler:")]
-		IUITraitChangeRegistration RegisterForTraitChangesCore (Class [] traits, Action<IUITraitEnvironment, UITraitCollection> handler);
-
-		[Wrap ("IUITraitChangeObservable._RegisterForTraitChanges (this, traits, handler)", IsVirtual = true)]
 		IUITraitChangeRegistration RegisterForTraitChanges (Class [] traits, Action<IUITraitEnvironment, UITraitCollection> handler);
 
-		[Abstract]
-		[Internal]
+		[Abstract (GenerateExtensionMethod = true)]
+		[Manual]
 		[Export ("registerForTraitChanges:withTarget:action:")]
-		IUITraitChangeRegistration RegisterForTraitChangesCore (Class [] traits, NSObject target, Selector action);
-
-		[Wrap ("IUITraitChangeObservable._RegisterForTraitChanges (this, traits, target, action)", IsVirtual = true)]
 		IUITraitChangeRegistration RegisterForTraitChanges (Class [] traits, NSObject target, Selector action);
 
-		[Abstract]
-		[Internal]
+		[Abstract (GenerateExtensionMethod = true)]
+		[Manual]
 		[Export ("registerForTraitChanges:withAction:")]
-		IUITraitChangeRegistration RegisterForTraitChangesCore (Class [] traits, Selector action);
-
-		[Wrap ("IUITraitChangeObservable._RegisterForTraitChanges (this, traits, action)", IsVirtual = true)]
 		IUITraitChangeRegistration RegisterForTraitChanges (Class [] traits, Selector action);
 
 		[Abstract]
-		[Internal]
+		[Manual]
 		[Export ("unregisterForTraitChanges:")]
-		void UnregisterForTraitChangesCore (IUITraitChangeRegistration registration);
-
-		[Wrap ("IUITraitChangeObservable.UnregisterForTraitChangesInternal (this, registration)", IsVirtual = true)]
 		void UnregisterForTraitChanges (IUITraitChangeRegistration registration);
 	}
 

@@ -326,6 +326,70 @@ namespace MonoTouchFixtures.UIKit {
 		}
 
 		[Test]
+		public void RegisterForTraitChanges_Overrides ()
+		{
+			TestRuntime.AssertXcodeVersion (15, 0);
+
+			using var view = new TraitObservableView ();
+			var traits = new [] { new Class (typeof (UITraitVerticalSizeClass)) };
+			var action = new Selector ("notifyTraitChange:collection:");
+			using var callbackRegistration = view.RegisterForTraitChanges (traits, (a, b) => { });
+			using var targetRegistration = view.RegisterForTraitChanges (traits, view, action);
+			using var actionRegistration = view.RegisterForTraitChanges (traits, action);
+			Assert.That (view.RegistrationCount, Is.EqualTo (3), "Managed registration overrides");
+
+			Messaging.void_objc_msgSend_IntPtr (view.Handle, new Selector ("unregisterForTraitChanges:").Handle, actionRegistration.Handle);
+			Assert.That (view.UnregistrationCount, Is.EqualTo (1), "Native unregistration override");
+
+			view.UnregisterForTraitChanges (callbackRegistration);
+			Assert.That (view.UnregistrationCount, Is.EqualTo (2), "Managed unregistration override");
+			Assert.That (callbackRegistration.Handle, Is.EqualTo (NativeHandle.Zero), "Managed unregistration disposed token");
+
+			targetRegistration.Dispose ();
+			Assert.That (view.UnregistrationCount, Is.EqualTo (3), "Dispose unregistration override");
+
+			using var array = NSArray.FromNSObjects (traits);
+			var handle = Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr (view.Handle,
+				new Selector ("registerForTraitChanges:withAction:").Handle, array.Handle, action.Handle);
+			Assert.That (handle, Is.Not.EqualTo (IntPtr.Zero), "Native registration");
+			Assert.That (view.RegistrationCount, Is.EqualTo (4), "Native registration override");
+			view.LastRegistration?.Dispose ();
+			GC.KeepAlive (view);
+			GC.KeepAlive (action);
+		}
+
+		[Register ("TraitObservableView")]
+		class TraitObservableView : UIView {
+			public int RegistrationCount;
+			public int UnregistrationCount;
+			public IUITraitChangeRegistration? LastRegistration;
+
+			public override IUITraitChangeRegistration RegisterForTraitChanges (Class [] traits, Action<IUITraitEnvironment, UITraitCollection> handler)
+			{
+				RegistrationCount++;
+				return LastRegistration = base.RegisterForTraitChanges (traits, handler);
+			}
+
+			public override IUITraitChangeRegistration RegisterForTraitChanges (Class [] traits, NSObject target, Selector action)
+			{
+				RegistrationCount++;
+				return LastRegistration = base.RegisterForTraitChanges (traits, target, action);
+			}
+
+			public override IUITraitChangeRegistration RegisterForTraitChanges (Class [] traits, Selector action)
+			{
+				RegistrationCount++;
+				return LastRegistration = base.RegisterForTraitChanges (traits, action);
+			}
+
+			public override void UnregisterForTraitChanges (IUITraitChangeRegistration registration)
+			{
+				UnregistrationCount++;
+				base.UnregisterForTraitChanges (registration);
+			}
+		}
+
+		[Test]
 		public void RegisterForTraitChanges_Copy ()
 		{
 			TestRuntime.AssertXcodeVersion (15, 0);

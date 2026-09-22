@@ -1,9 +1,9 @@
-AppBundleSize: 255,123,425 bytes (249,144.0 KB = 243.3 MB)
+AppBundleSize: 255,136,497 bytes (249,156.7 KB = 243.3 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 Contents/Info.plist:
     753 bytes (0.7 KB = 0.0 MB)
 Contents/MacOS/SizeTestApp:
-    8,114,216 bytes (7,924.0 KB = 7.7 MB)
+    8,130,360 bytes (7,939.8 KB = 7.8 MB)
 Contents/MonoBundle/.xamarin/osx-arm64/Microsoft.CSharp.dll:
     883,024 bytes (862.3 KB = 0.8 MB)
 Contents/MonoBundle/.xamarin/osx-arm64/Microsoft.Extensions.Caching.Abstractions.dll:
@@ -25,7 +25,7 @@ Contents/MonoBundle/.xamarin/osx-arm64/Microsoft.Extensions.Options.dll:
 Contents/MonoBundle/.xamarin/osx-arm64/Microsoft.Extensions.Primitives.dll:
     90,448 bytes (88.3 KB = 0.1 MB)
 Contents/MonoBundle/.xamarin/osx-arm64/Microsoft.macOS.dll:
-    37,416,448 bytes (36,539.5 KB = 35.7 MB)
+    37,414,912 bytes (36,538.0 KB = 35.7 MB)
 Contents/MonoBundle/.xamarin/osx-arm64/Microsoft.VisualBasic.Core.dll:
     1,337,128 bytes (1,305.8 KB = 1.3 MB)
 Contents/MonoBundle/.xamarin/osx-arm64/Microsoft.VisualBasic.dll:
@@ -391,7 +391,7 @@ Contents/MonoBundle/.xamarin/osx-x64/Microsoft.Extensions.Options.dll:
 Contents/MonoBundle/.xamarin/osx-x64/Microsoft.Extensions.Primitives.dll:
     83,280 bytes (81.3 KB = 0.1 MB)
 Contents/MonoBundle/.xamarin/osx-x64/Microsoft.macOS.dll:
-    37,416,448 bytes (36,539.5 KB = 35.7 MB)
+    37,414,912 bytes (36,538.0 KB = 35.7 MB)
 Contents/MonoBundle/.xamarin/osx-x64/Microsoft.VisualBasic.Core.dll:
     1,191,760 bytes (1,163.8 KB = 1.1 MB)
 Contents/MonoBundle/.xamarin/osx-x64/Microsoft.VisualBasic.dll:

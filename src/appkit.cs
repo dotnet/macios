@@ -29226,7 +29226,7 @@ namespace AppKit {
 	}
 
 	/// <summary>Handles the completion of the document controller's open panel.</summary>
-	/// <param name="urlsToOpen">The URLs selected in the open panel.</param>
+	/// <param name="urlsToOpen">The URLs selected in the open panel, or <see langword="null"/> if the user canceled the panel.</param>
 	delegate void NSDocumentControllerOpenPanelWithCompletionHandler (NSArray urlsToOpen);
 	/// <summary>Handles the response from a document controller open panel.</summary>
 	/// <param name="result">The modal response returned by the open panel.</param>

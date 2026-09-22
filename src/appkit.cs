@@ -9058,6 +9058,8 @@ namespace AppKit {
 	}
 
 	[NoMacCatalyst]
+	/// <summary>Handles events received by a global event monitor.</summary>
+	/// <param name="theEvent">The event received by the monitor.</param>
 	delegate void GlobalEventHandler (NSEvent theEvent);
 	[NoMacCatalyst]
 	delegate NSEvent LocalEventHandler (NSEvent theEvent);

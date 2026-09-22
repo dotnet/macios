@@ -62,13 +62,14 @@ namespace Network {
 		unsafe static extern void nw_browse_result_enumerate_interfaces (OS_nw_browse_result result, BlockLiteral* enumerator);
 
 		[UnmanagedCallersOnly]
-		static void TrampolineEnumerateInterfacesHandler (IntPtr block, IntPtr inter)
+		static byte TrampolineEnumerateInterfacesHandler (IntPtr block, IntPtr inter)
 		{
 			var del = BlockLiteral.GetTarget<Action<NWInterface>> (block);
 			if (del is not null) {
 				var nwInterface = new NWInterface (inter, owns: false);
 				del (nwInterface);
 			}
+			return 1;
 		}
 
 		[BindingImpl (BindingImplOptions.Optimizable)]
@@ -78,9 +79,10 @@ namespace Network {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handler));
 
 			unsafe {
-				delegate* unmanaged<IntPtr, IntPtr, void> trampoline = &TrampolineEnumerateInterfacesHandler;
+				delegate* unmanaged<IntPtr, IntPtr, byte> trampoline = &TrampolineEnumerateInterfacesHandler;
 				using var block = new BlockLiteral (trampoline, handler, typeof (NWBrowseResult), nameof (TrampolineEnumerateInterfacesHandler));
 				nw_browse_result_enumerate_interfaces (GetCheckedHandle (), &block);
+				GC.KeepAlive (this);
 			}
 		}
 	}

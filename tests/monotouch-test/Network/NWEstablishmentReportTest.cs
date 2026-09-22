@@ -21,7 +21,7 @@ namespace MonoTouchFixtures.Network {
 			reportEvent = new AutoResetEvent (false);
 
 
-			manager = new ConnectionManager ();
+			manager = new ConnectionManager (tcp: true);
 			connection = manager.CreateConnection ();
 
 			connection.GetEstablishmentReport (DispatchQueue.DefaultGlobalQueue, (r) => {
@@ -76,6 +76,17 @@ namespace MonoTouchFixtures.Network {
 		}
 
 		[Test]
+		public void TestEnumerateProtocols ()
+		{
+			var protocols = new List<IntPtr> ();
+			report.EnumerateProtocols ((protocol, duration, roundTripTime) => {
+				protocols.Add (protocol.Handle);
+			});
+			Assert.That (protocols, Is.Not.Empty, "Protocols");
+			Assert.That (protocols, Has.None.EqualTo (IntPtr.Zero), "Protocol handles");
+		}
+
+		[Test]
 		public void TestProxyEnpoint ()
 		{
 			TestRuntime.IgnoreInCI ("CI bots might have proxies setup and will mean that the test will fail.");
@@ -86,6 +97,12 @@ namespace MonoTouchFixtures.Network {
 		public void EnumerateResolutionReportsTest ()
 		{
 			TestRuntime.AssertXcodeVersion (13, 0);
+			TestRuntime.AssertDevice ();
+			var count = 0;
+			report.EnumerateResolutionReports (resolution => {
+				count++;
+			});
+			Assert.That (count, Is.GreaterThan (0), "Resolution reports");
 		}
 
 	}

@@ -1,4 +1,5 @@
 using System.Threading;
+using System.Threading.Tasks;
 
 using Network;
 
@@ -21,7 +22,7 @@ namespace MonoTouchFixtures.Network {
 			reportEvent = new AutoResetEvent (false);
 
 
-			manager = new ConnectionManager (tcp: true);
+			manager = new ConnectionManager ();
 			connection = manager.CreateConnection ();
 
 			connection.GetEstablishmentReport (DispatchQueue.DefaultGlobalQueue, (r) => {
@@ -78,12 +79,24 @@ namespace MonoTouchFixtures.Network {
 		[Test]
 		public void TestEnumerateProtocols ()
 		{
-			var protocols = new List<IntPtr> ();
-			report.EnumerateProtocols ((protocol, duration, roundTripTime) => {
-				protocols.Add (protocol.Handle);
-			});
-			Assert.That (protocols, Is.Not.Empty, "Protocols");
-			Assert.That (protocols, Has.None.EqualTo (IntPtr.Zero), "Protocol handles");
+			using var tcpManager = new ConnectionManager (tcp: true);
+			using var tcpConnection = tcpManager.CreateConnection (out var parameters);
+			using (parameters) {
+				try {
+					var completion = new TaskCompletionSource<NWEstablishmentReport> ();
+					tcpConnection.GetEstablishmentReport (DispatchQueue.DefaultGlobalQueue, completion.SetResult);
+					Assert.That (completion.Task.Wait (20000), Is.True, "Timed out fetching TCP establishment report");
+					using var tcpReport = completion.Task.Result;
+					var protocols = new List<IntPtr> ();
+					tcpReport.EnumerateProtocols ((protocol, duration, roundTripTime) => {
+						protocols.Add (protocol.Handle);
+					});
+					Assert.That (protocols, Is.Not.Empty, "Protocols");
+					Assert.That (protocols, Has.None.EqualTo (IntPtr.Zero), "Protocol handles");
+				} finally {
+					tcpConnection.Cancel ();
+				}
+			}
 		}
 
 		[Test]

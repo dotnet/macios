@@ -142,7 +142,6 @@ partial class TestRuntime {
 
 	class AsyncState : IDisposable {
 #if HAS_UIKIT
-		UIViewController? initialRootViewController;
 		UIViewController? child;
 		UIWindow? window;
 		UINavigationController? navigation;
@@ -162,13 +161,14 @@ partial class TestRuntime {
 						.ConnectedScenes
 						.SelectMany<UIScene, UIWindow> (v => (v as UIWindowScene)?.Windows ?? Array.Empty<UIWindow> ())
 						.LastOrDefault (v => v.IsKeyWindow);
-			if (window is null) {
+			var initialRootViewController = window?.RootViewController;
+			if (initialRootViewController is null) {
 				window = new UIWindow (UIScreen.MainScreen.Bounds);
 				window.RootViewController = vc;
 				window.MakeKeyAndVisible ();
 				close_window = true;
+				initialRootViewController = vc;
 			}
-			initialRootViewController = window.RootViewController!;
 			navigation = initialRootViewController as UINavigationController;
 
 			// Pushing something to a navigation controller doesn't seem to work on phones
@@ -182,8 +182,10 @@ partial class TestRuntime {
 				initialRootViewController.AddChildViewController (vc);
 				vc.View.Frame = initialRootViewController.View.Bounds;
 				vc.View.AutoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
+				vc.BeginAppearanceTransition (true, false);
 				initialRootViewController.View.AddSubview (vc.View);
 				vc.DidMoveToParentViewController (initialRootViewController);
+				vc.EndAppearanceTransition ();
 			}
 #else
 			var size = new CGRect (0, 0, 300, 300);
@@ -208,8 +210,10 @@ partial class TestRuntime {
 				navigation.PopViewController (false);
 			} else if (child is not null) {
 				child.WillMoveToParentViewController (null);
+				child.BeginAppearanceTransition (false, false);
 				child.View.RemoveFromSuperview ();
 				child.RemoveFromParentViewController ();
+				child.EndAppearanceTransition ();
 				child = null;
 			}
 #endif // HAS_UIKIT

@@ -9057,9 +9057,9 @@ namespace AppKit {
 		CGRect BoundingBox { get; }
 	}
 
-	[NoMacCatalyst]
 	/// <summary>Handles events received by a global event monitor.</summary>
 	/// <param name="theEvent">The event received by the monitor.</param>
+	[NoMacCatalyst]
 	delegate void GlobalEventHandler (NSEvent theEvent);
 	[NoMacCatalyst]
 	/// <summary>Filters events received by a local event monitor.</summary>

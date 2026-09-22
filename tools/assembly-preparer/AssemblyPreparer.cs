@@ -51,6 +51,13 @@ public class AssemblyPreparer : IDisposable {
 
 	public Optimizations Optimizations => configuration.Application.Optimizations;
 
+	public string InlineDlfcnCacheDirectory {
+		get => configuration.InlineDlfcnCacheDirectory;
+		set => configuration.InlineDlfcnCacheDirectory = value;
+	}
+
+	public int InlineDlfcnCacheHits => configuration.InlineDlfcnCacheHits;
+
 	public List<AssemblyPreparerInfo> Assemblies { get; set; } = new List<AssemblyPreparerInfo> ();
 
 	// The list of steps that were executed, along with how long each step took and whether it modified any assemblies.

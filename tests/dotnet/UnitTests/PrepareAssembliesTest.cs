@@ -45,6 +45,12 @@ namespace Xamarin.Tests {
 			targets = BinLog.GetAllTargets (result.BinLogPath);
 			AssertTargetExecuted (targets, "_ExecutePrepareAssemblies", "Source change preparation");
 			AssertTargetExecuted (targets, "_ExecutePostprocessAssemblies", "Source change post-processing");
+			var cacheMessages = BinLog.GetBuildMessages (result.BinLogPath)
+				.Select (v => v.Message)
+				.Where (v => v?.StartsWith ("InlineDlfcnMethodsStep cache hits:") == true)
+				.ToArray ();
+			Assert.That (cacheMessages, Is.Not.Empty, "Source change cache messages");
+			Assert.That (cacheMessages.Any (v => !v!.EndsWith (": 0", StringComparison.Ordinal)), Is.True, $"Source change cache hits: {string.Join (Environment.NewLine, cacheMessages)}");
 
 			properties ["DynamicRegistrationSupported"] = "true";
 			result = DotNet.AssertBuild (project_path, properties);

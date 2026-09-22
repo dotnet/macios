@@ -109,6 +109,8 @@ namespace Xamarin.Linker {
 #if ASSEMBLY_PREPARER
 		public List<AssemblyDefinition> Assemblies => Application.LinkContext.Assemblies;
 		public required List<AssemblyPreparerInfo> AssemblyInfos;
+		public string InlineDlfcnCacheDirectory = "";
+		public int InlineDlfcnCacheHits;
 		public List<(string Path, AssemblyDefinition Assembly, string? OriginatingAssembly)> AddedAssemblies = new ();
 		// The set of assemblies that were modified (i.e. that AppBundleRewriter.SaveAssembly was called for).
 		// Assemblies that aren't modified don't need to be re-serialized when saved.

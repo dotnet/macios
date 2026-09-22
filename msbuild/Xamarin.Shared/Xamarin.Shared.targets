@@ -3756,6 +3756,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<PreparedAssembliesDirectory>$([MSBuild]::EnsureTrailingSlash('$(DeviceSpecificIntermediateOutputPath)prepared-assemblies'))</PreparedAssembliesDirectory>
 			<_PreparedAssembliesItemsPath>$(DeviceSpecificIntermediateOutputPath)prepared-assemblies.items</_PreparedAssembliesItemsPath>
 			<_AssemblyPreparerConfigurationStamp>$(DeviceSpecificIntermediateOutputPath)assembly-preparer-configuration.txt</_AssemblyPreparerConfigurationStamp>
+			<_InlineDlfcnCacheDirectory>$([MSBuild]::EnsureTrailingSlash('$(DeviceSpecificIntermediateOutputPath)inline-dlfcn-cache'))</_InlineDlfcnCacheDirectory>
 		</PropertyGroup>
 		<WriteLinesToFile
 			File="$(_AssemblyPreparerConfigurationStamp)"
@@ -3775,6 +3776,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		>
 		<PrepareAssemblies
 			InputAssemblies="@(_AssembliesToPrepare)"
+			InlineDlfcnCacheDirectory="$(_InlineDlfcnCacheDirectory)"
 			MakeReproPath="$(_PrepareAssembliesMakeReproPath)"
 			OptionsFile="$(_CustomLinkerOptionsFile)"
 			OutputDirectory="$(PreparedAssembliesDirectory)"
@@ -3807,6 +3809,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<FileWrites Include="@(_RestoredPreparedAssemblies)" />
 			<FileWrites Include="$(_PreparedAssembliesItemsPath)" />
 			<FileWrites Include="$(_AssemblyPreparerConfigurationStamp)" />
+			<FileWrites Include="$(_InlineDlfcnCacheDirectory)*" />
 			<FileWrites Include="$(_UnmanagedCallersOnlyMapPath)" />
 			<FileWrites Include="$(_AssemblyPreparerMSBuildOutputFile)" Condition="Exists('$(_AssemblyPreparerMSBuildOutputFile)')" />
 		</ItemGroup>

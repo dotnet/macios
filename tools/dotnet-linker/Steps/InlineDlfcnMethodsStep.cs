@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 
@@ -27,6 +28,9 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 	protected override int ErrorCode { get; } = 2250;
 
 	bool strictMode;
+#if ASSEMBLY_PREPARER
+	List<MethodDefinition>? methodsToCache;
+#endif
 
 	public const string PInvokePrefix = "xamarin_Dlfcn_";
 	public const string PInvokeSuffix = "_Native";
@@ -42,6 +46,25 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 	bool inlining_enabled = true;
 
 	protected override bool ModifyAssembly (AssemblyDefinition assembly)
+	{
+#if ASSEMBLY_PREPARER
+		if (!string.IsNullOrEmpty (Configuration.InlineDlfcnCacheDirectory)) {
+			var cacheFile = GetCacheFile (assembly);
+			if (TryLoadCachedMethods (assembly, cacheFile, out var cachedMethods)) {
+				Configuration.InlineDlfcnCacheHits++;
+				return ProcessMethods (assembly, cachedMethods);
+			}
+
+			methodsToCache = new List<MethodDefinition> ();
+			var modified = ModifyAssemblyAndCacheFindings (assembly, cacheFile);
+			methodsToCache = null;
+			return modified;
+		}
+#endif
+		return ModifyAssemblyCore (assembly);
+	}
+
+	bool ModifyAssemblyCore (AssemblyDefinition assembly)
 	{
 		// Dlfcn calls can only appear in assemblies that reference (or, for the platform assembly, define)
 		// ObjCRuntime.Dlfcn, which is only the platform assembly and binding libraries. Skip everything else
@@ -63,6 +86,49 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 		inlining_enabled = true;
 		return modified;
 	}
+
+#if ASSEMBLY_PREPARER
+	bool ModifyAssemblyAndCacheFindings (AssemblyDefinition assembly, string cacheFile)
+	{
+		var modified = ModifyAssemblyCore (assembly);
+		Directory.CreateDirectory (Configuration.InlineDlfcnCacheDirectory);
+		File.WriteAllLines (cacheFile, methodsToCache!.Select (v => v.MetadataToken.ToUInt32 ().ToString ("x8", CultureInfo.InvariantCulture)));
+		return modified;
+	}
+
+	string GetCacheFile (AssemblyDefinition assembly)
+	{
+		return Path.Combine (Configuration.InlineDlfcnCacheDirectory, Path.GetFileNameWithoutExtension (assembly.MainModule.FileName) + ".txt");
+	}
+
+	bool TryLoadCachedMethods (AssemblyDefinition assembly, string cacheFile, out List<MethodDefinition> methods)
+	{
+		methods = new List<MethodDefinition> ();
+		if (!File.Exists (cacheFile) || File.GetLastWriteTimeUtc (cacheFile) < File.GetLastWriteTimeUtc (assembly.MainModule.FileName))
+			return false;
+
+		foreach (var line in File.ReadAllLines (cacheFile)) {
+			if (!uint.TryParse (line, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var token) ||
+				assembly.MainModule.LookupToken (unchecked ((int) token)) is not MethodDefinition method) {
+				App.Log (3, $"Invalid InlineDlfcnMethodsStep cache file '{cacheFile}', rescanning '{assembly.MainModule.FileName}'.");
+				methods.Clear ();
+				return false;
+			}
+			methods.Add (method);
+		}
+		return true;
+	}
+
+	bool ProcessMethods (AssemblyDefinition assembly, IEnumerable<MethodDefinition> methods)
+	{
+		inlining_enabled = !(Configuration.HotReloadCompatibleBuild && Annotations.GetAction (assembly) != AssemblyAction.Link);
+		var modified = false;
+		foreach (var group in methods.GroupBy (v => v.DeclaringType))
+			modified |= ProcessType (group.Key, group);
+		inlining_enabled = true;
+		return modified;
+	}
+#endif
 
 	// When inlining is disabled (Hot Reload compatible build + reloadable assembly), we don't rewrite the
 	// Dlfcn call site, but we still register the referenced native symbol so the native linker keeps it
@@ -97,6 +163,18 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 	string? current_framework;
 	protected override bool ProcessType (TypeDefinition type)
 	{
+#if ASSEMBLY_PREPARER
+		if (methodsToCache is not null) {
+			var methods = type.Methods.Where (ReferencesDlfcn).ToArray ();
+			methodsToCache.AddRange (methods);
+			return ProcessType (type, methods);
+		}
+#endif
+		return ProcessType (type, type.Methods);
+	}
+
+	bool ProcessType (TypeDefinition type, IEnumerable<MethodDefinition> methods)
+	{
 		var modified = false;
 		if (type.HasMethods) {
 			if (Frameworks.TryGetFramework (App, type, out Framework? framework) && framework.IsFrameworkUnavailable (App)) {
@@ -114,12 +192,19 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 
 			current_framework = framework?.Namespace;
 
-			foreach (var method in type.Methods)
+			foreach (var method in methods)
 				modified |= ProcessMethod (method);
 
 			current_framework = null;
 		}
 		return modified;
+	}
+
+	static bool ReferencesDlfcn (MethodDefinition method)
+	{
+		if (!method.HasBody)
+			return false;
+		return method.Body.Instructions.Any (v => v.Operand is MethodReference mr && mr.DeclaringType.Name == "Dlfcn" && mr.DeclaringType.Namespace == "ObjCRuntime");
 	}
 
 	TypeDefinition GetDlfcnType (MethodDefinition callingMethod)

@@ -3,10 +3,55 @@
 
 using Mono.Cecil.Cil;
 using Mono.Cecil.Rocks;
+using MonoTouch.Tuner;
+
+using Xamarin.Linker.Steps;
 
 namespace AssemblyPreparerTests;
 
 public class InlineDlfcnMethodsStepTests : BaseClass {
+	[TestCase (true)]
+	[TestCase (false)]
+	public void FindingsCache (bool cacheIsCurrent)
+	{
+		var code = @"
+		using System;
+		using Foundation;
+		using ObjCRuntime;
+
+		class MyClass : NSObject {
+			void GetIntPtr ()
+			{
+				Console.WriteLine (Dlfcn.GetIntPtr (0, ""NativeSymbol""));
+			}
+		}";
+
+		using var preparer = CreatePreparer (ApplePlatform.iOS, false, null, code, out var testInfo, inlineDlfcnMethods: "strict");
+		var cacheDirectory = Path.Combine (preparer.IntermediateOutputPath, "inline-dlfcn-cache");
+		var cacheFile = Path.Combine (cacheDirectory, "Test.txt");
+		Directory.CreateDirectory (cacheDirectory);
+		File.WriteAllText (cacheFile, "");
+		File.SetLastWriteTimeUtc (cacheFile, cacheIsCurrent ? DateTime.UtcNow.AddMinutes (1) : DateTime.UtcNow.AddYears (-1));
+		preparer.InlineDlfcnCacheDirectory = cacheDirectory;
+
+		var context = preparer.Configuration.DerivedLinkContext;
+		new LoadAssembliesStep ().Process (context);
+		new CollectFieldsStep ().Process (context);
+		new InlineDlfcnMethodsStep ().Process (context);
+
+		var assembly = context.GetAssemblies ().Single (v => v.Name.Name == "Test");
+		var method = assembly.MainModule.GetType ("MyClass").Methods.Single (v => v.Name == "GetIntPtr");
+		var callsDlfcn = method.Body.Instructions.Any (v => v.Operand is MethodReference mr && mr.DeclaringType.FullName == "ObjCRuntime.Dlfcn");
+		Assert.That (callsDlfcn, Is.EqualTo (cacheIsCurrent), "Dlfcn call");
+		Assert.That (preparer.InlineDlfcnCacheHits, Is.EqualTo (cacheIsCurrent ? 1 : 0), "Cache hits");
+
+		if (!cacheIsCurrent) {
+			Assert.That (File.GetLastWriteTimeUtc (cacheFile), Is.GreaterThanOrEqualTo (File.GetLastWriteTimeUtc (testInfo.InputPath)), "Cache timestamp");
+			var findings = File.ReadAllLines (cacheFile);
+			Assert.That (findings.All (v => v.Length == 8 && v.All (Uri.IsHexDigit)), Is.True, $"Cache findings: {string.Join (", ", findings)}");
+		}
+	}
+
 	[Test]
 	[TestCase (ApplePlatform.MacCatalyst, false)]
 	[TestCase (ApplePlatform.iOS, false)]

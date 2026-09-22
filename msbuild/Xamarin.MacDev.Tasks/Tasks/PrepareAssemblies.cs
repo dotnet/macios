@@ -40,6 +40,8 @@ namespace Xamarin.MacDev.Tasks {
 
 		[Required]
 		public ITaskItem? OptionsFile { get; set; }
+
+		public string InlineDlfcnCacheDirectory { get; set; } = "";
 		#endregion
 
 		public bool PostProcessing { get; set; }
@@ -84,6 +86,7 @@ namespace Xamarin.MacDev.Tasks {
 			try {
 				var infos = InputAssemblies.Select (GetAssemblyInfo).ToArray ();
 				using var preparer = new AssemblyPreparer (this, infos, OptionsFile?.ItemSpec ?? "");
+				preparer.InlineDlfcnCacheDirectory = InlineDlfcnCacheDirectory;
 				msbuildOutputFile = PostProcessing ? preparer.Configuration.MSBuildPostProcessOutputFile : preparer.Configuration.MSBuildOutputFile;
 				preparer.MakeReproPath = MakeReproPath;
 				preparer.PreTrimAssemblies.AddRange (PreTrimAssemblies.Select (v => v.ItemSpec));
@@ -168,6 +171,8 @@ namespace Xamarin.MacDev.Tasks {
 				if (!rv && !Log.HasLoggedErrors)
 					Log.LogError (MSBStrings.E0192);
 				success = rv && !Log.HasLoggedErrors;
+				if (success && !PostProcessing)
+					Log.LogMessage (MessageImportance.Low, $"InlineDlfcnMethodsStep cache hits: {preparer.InlineDlfcnCacheHits}");
 				return success;
 			} catch (Exception e) {
 				((IToolLog) this).LogException (e);

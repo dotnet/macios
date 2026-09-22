@@ -9062,6 +9062,9 @@ namespace AppKit {
 	/// <param name="theEvent">The event received by the monitor.</param>
 	delegate void GlobalEventHandler (NSEvent theEvent);
 	[NoMacCatalyst]
+	/// <summary>Filters events received by a local event monitor.</summary>
+	/// <param name="theEvent">The event received by the monitor.</param>
+	/// <returns>The event to dispatch, or <see langword="null"/> to suppress the event.</returns>
 	delegate NSEvent LocalEventHandler (NSEvent theEvent);
 	[NoMacCatalyst]
 	delegate void NSEventTrackHandler (nfloat gestureAmount, NSEventPhase eventPhase, bool isComplete, ref bool stop);

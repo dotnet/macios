@@ -53806,7 +53806,6 @@ T:AppKit.DrawerShouldCloseDelegate
 T:AppKit.DrawerShouldOpenDelegate
 T:AppKit.DrawerWillResizeContentsDelegate
 T:AppKit.INSDraggingInfo_Extensions
-T:AppKit.LocalEventHandler
 T:AppKit.NSAboutPanelOption
 T:AppKit.NSAccessibilityActions
 T:AppKit.NSAccessibilityAnnotationAttributeKey

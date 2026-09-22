@@ -171,6 +171,9 @@
 		<Compile Include="../dotnet-linker/Steps/AssemblyModifierStep.cs">
 			<Link>external/tools/dotnet-linker/Steps/AssemblyModifierStep.cs</Link>
 		</Compile>
+		<Compile Include="../dotnet-linker/Steps/AttributeIteratorBaseStep.cs">
+			<Link>external/tools/dotnet-linker/Steps/AttributeIteratorBaseStep.cs</Link>
+		</Compile>
 		<Compile Include="../dotnet-linker/Steps/ComputeAOTArguments.cs">
 			<Link>external/tools/dotnet-linker/Steps/ComputeAOTArguments.cs</Link>
 		</Compile>
@@ -213,6 +216,9 @@
 		<Compile Include="../dotnet-linker/Steps/RegistrarStep.cs">
 			<Link>external/tools/dotnet-linker/Steps/RegistrarStep.cs</Link>
 		</Compile>
+		<Compile Include="../dotnet-linker/Steps/RemoveAttributesStep.cs">
+			<Link>external/tools/dotnet-linker/Steps/RemoveAttributesStep.cs</Link>
+		</Compile>
 		<Compile Include="../dotnet-linker/Steps/SetBeforeFieldInitStep.cs">
 			<Link>external/tools/dotnet-linker/Steps/SetBeforeFieldInitStep.cs</Link>
 		</Compile>
@@ -243,8 +249,8 @@
 		<Compile Include="../linker/OptimizeGeneratedCode.cs">
 			<Link>external/tools/linker/OptimizeGeneratedCode.cs</Link>
 		</Compile>
-		<Compile Include="../linker/RegistrarRemovalTrackingStep.cs">
-			<Link>external/tools/linker/RegistrarRemovalTrackingStep.cs</Link>
+		<Compile Include="../linker/DetectApiUsageStep.cs">
+			<Link>external/tools/linker/DetectApiUsageStep.cs</Link>
 		</Compile>
 		<Compile Include="../linker/RemoveUserResourcesSubStep.cs">
 			<Link>external/tools/linker/RemoveUserResourcesSubStep.cs</Link>

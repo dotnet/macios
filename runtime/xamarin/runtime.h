@@ -220,7 +220,7 @@ MonoAssembly*	xamarin_assembly_preload_hook (MonoAssemblyName *aname, char **ass
 void			xamarin_handle_bridge_exception (GCHandle gchandle, const char *method);
 void			xamarin_vm_initialize ();
 bool			xamarin_bridge_vm_initialize (int propertyCount, const char **propertyKeys, const char **propertyValues);
-void*			xamarin_pinvoke_override (const char *libraryName, const char *entrypointName);
+const void*		xamarin_pinvoke_override (const char *libraryName, const char *entrypointName);
 void			xamarin_bridge_call_runtime_initialize (struct InitializationOptions* options, GCHandle* exception_gchandle);
 void			xamarin_bridge_register_product_assembly (GCHandle* exception_gchandle);
 MonoMethod *	xamarin_bridge_get_mono_method (MonoReflectionMethod *method);

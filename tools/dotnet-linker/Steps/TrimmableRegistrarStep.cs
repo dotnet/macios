@@ -95,39 +95,41 @@ namespace Xamarin.Linker {
 				MarkAssemblyAsTrimmable (rootTypeMapAssembly);
 
 			foreach (var assembly in assemblies.OrderBy (v => v.FullName)) {
+				var typeMapAssemblyName = RegistrarCompanionAssembly.GetName (assembly);
+
 				/*
 				 * [assembly: TypeMapAssemblyTarget<NSObject> ("...")]
 				 */
 				var attribute = abr.CreateAttribute (CreateMethodReference (abr.TypeMapAssemblyTargetAttribute_1_Constructor_String_Type_Type, abr.Foundation_NSObject));
-				attribute.ConstructorArguments.Add (new CustomAttributeArgument (abr.System_String, "_" + assembly.Name.Name + ".TypeMap"));
+				attribute.ConstructorArguments.Add (new CustomAttributeArgument (abr.System_String, typeMapAssemblyName));
 				rootTypeMapAssembly.CustomAttributes.Add (attribute);
 
 				/*
 				 * [assembly: TypeMapAssemblyTarget<SkippedObjectiveCTypeUniverse> ("...")]
 				 */
 				attribute = abr.CreateAttribute (CreateMethodReference (abr.TypeMapAssemblyTargetAttribute_1_Constructor_String_Type_Type, abr.ObjCRuntime_SkippedObjectiveCTypeUniverse));
-				attribute.ConstructorArguments.Add (new CustomAttributeArgument (abr.System_String, "_" + assembly.Name.Name + ".TypeMap"));
+				attribute.ConstructorArguments.Add (new CustomAttributeArgument (abr.System_String, typeMapAssemblyName));
 				rootTypeMapAssembly.CustomAttributes.Add (attribute);
 
 				/*
 				 * [assembly: TypeMapAssemblyTarget<INativeObject> ("...")]
 				 */
 				attribute = abr.CreateAttribute (CreateMethodReference (abr.TypeMapAssemblyTargetAttribute_1_Constructor_String_Type_Type, abr.ObjCRuntime_INativeObject));
-				attribute.ConstructorArguments.Add (new CustomAttributeArgument (abr.System_String, "_" + assembly.Name.Name + ".TypeMap"));
+				attribute.ConstructorArguments.Add (new CustomAttributeArgument (abr.System_String, typeMapAssemblyName));
 				rootTypeMapAssembly.CustomAttributes.Add (attribute);
 
 				/*
 				 * [assembly: TypeMapAssemblyTarget<ProtocolProxyAttribute> ("...")]
 				 */
 				attribute = abr.CreateAttribute (CreateMethodReference (abr.TypeMapAssemblyTargetAttribute_1_Constructor_String_Type_Type, abr.ObjCRuntime_ProtocolProxyAttribute));
-				attribute.ConstructorArguments.Add (new CustomAttributeArgument (abr.System_String, "_" + assembly.Name.Name + ".TypeMap"));
+				attribute.ConstructorArguments.Add (new CustomAttributeArgument (abr.System_String, typeMapAssemblyName));
 				rootTypeMapAssembly.CustomAttributes.Add (attribute);
 
 				/*
 				 * [assembly: TypeMapAssemblyTarget<ProtocolAttribute> ("...")]
 				 */
 				attribute = abr.CreateAttribute (CreateMethodReference (abr.TypeMapAssemblyTargetAttribute_1_Constructor_String_Type_Type, abr.Foundation_ProtocolAttribute));
-				attribute.ConstructorArguments.Add (new CustomAttributeArgument (abr.System_String, "_" + assembly.Name.Name + ".TypeMap"));
+				attribute.ConstructorArguments.Add (new CustomAttributeArgument (abr.System_String, typeMapAssemblyName));
 				rootTypeMapAssembly.CustomAttributes.Add (attribute);
 			}
 			abr.SaveCurrentAssembly ();
@@ -136,9 +138,21 @@ namespace Xamarin.Linker {
 			// We write the assembly here even if it hasn't changed, because otherwise we'll just end up re-creating
 			// it again during the next incremental build.
 			if (!useEntryAssemblyAsRootTypeMapAssembly) {
-				rootTypeMapAssembly.Write (createdRootTypeMapAssemblyPath);
+				WriteDeterministically (rootTypeMapAssembly, createdRootTypeMapAssemblyPath);
 			}
 			return rootTypeMapAssembly;
+		}
+
+		// Writes the assembly to disk with a deterministic module version id (MVID) and timestamp.
+		// The MVIDs of the typemap assemblies end up in the generated registrar code, so if we let Cecil
+		// compute a new random MVID every time, the registrar code would change on every build, and we'd
+		// have to recompile (and relink) it every time.
+		static void WriteDeterministically (AssemblyDefinition assembly, string path)
+		{
+			assembly.Write (path, new WriterParameters {
+				DeterministicMvid = true,
+				Timestamp = 0,
+			});
 		}
 
 		MethodReference CreateMethodReference (MethodReference methodReference, params TypeReference [] declaringTypeGenericArguments)
@@ -720,7 +734,7 @@ namespace Xamarin.Linker {
 
 				// We write the assembly here even if it hasn't changed, because otherwise we'll just end up re-creating
 				// it again during the next incremental build.
-				typeMapAssembly.Write (typeMapAssemblyPath);
+				WriteDeterministically (typeMapAssembly, typeMapAssemblyPath);
 			}
 
 			foreach (var kvp in postActionsByAssembly) {

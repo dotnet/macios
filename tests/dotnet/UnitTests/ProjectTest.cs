@@ -21,6 +21,8 @@ namespace Xamarin.Tests {
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifier);
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifier);
+			properties ["OptimizePNGs"] = "true";
+			properties ["OptimizePropertyLists"] = "true";
 			var result = DotNet.AssertBuild (project_path, properties);
 			AssertThatLinkerExecuted (result);
 			AssertAppContents (platform, appPath);
@@ -79,15 +81,49 @@ namespace Xamarin.Tests {
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifier);
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifier);
+			properties ["OptimizePNGs"] = "true";
+			properties ["OptimizePropertyLists"] = "true";
 			var result = DotNet.AssertBuild (project_path, properties);
 			AssertThatLinkerExecuted (result);
 			AssertAppContents (platform, appPath);
+			var targets = BinLog.GetAllTargets (result.BinLogPath);
+			AssertTargetExecuted (targets, "_OptimizePngImages", runtimeIdentifier ?? "default runtime identifier");
+			AssertTargetExecuted (targets, "_OptimizePropertyLists", runtimeIdentifier ?? "default runtime identifier");
+			AssertTargetExecuted (targets, "_OptimizeLocalizationFiles", runtimeIdentifier ?? "default runtime identifier");
+			AssertTargetExecuted (targets, "_CoreOptimizePngImages", runtimeIdentifier ?? "default runtime identifier");
+			AssertTargetExecuted (targets, "_CoreOptimizePropertyLists", runtimeIdentifier ?? "default runtime identifier");
+			AssertTargetExecuted (targets, "_CoreOptimizeLocalizationFiles", runtimeIdentifier ?? "default runtime identifier");
 			var infoPlistPath = Path.Combine (appPath, "Contents", "Info.plist");
 			var infoPlist = PDictionary.OpenFile (infoPlistPath);
 			Assert.That (infoPlist.GetString ("CFBundleIdentifier").Value, Is.EqualTo ("com.xamarin.mycatalystapp"), "CFBundleIdentifier");
 			Assert.That (infoPlist.GetString ("CFBundleDisplayName").Value, Is.EqualTo ("MyCatalystApp"), "CFBundleDisplayName");
 			Assert.That (infoPlist.GetString ("CFBundleVersion").Value, Is.EqualTo ("3.14"), "CFBundleVersion");
 			Assert.That (infoPlist.GetString ("CFBundleShortVersionString").Value, Is.EqualTo ("3.14"), "CFBundleShortVersionString");
+			var originalImagePath = Path.Combine (Path.GetDirectoryName (project_path)!, "Resources", "image.png");
+			var optimizedImagePath = Path.Combine (appPath, "Contents", "Resources", "image.png");
+			Assert.That (optimizedImagePath, Does.Exist, "Optimized image existence");
+			Assert.That (File.ReadAllBytes (optimizedImagePath), Is.Not.EqualTo (File.ReadAllBytes (originalImagePath)), "Optimized image contents");
+			var optimizedPropertyListPath = Path.Combine (appPath, "Contents", "Resources", "settings.plist");
+			PDictionary.OpenFile (optimizedPropertyListPath, out var propertyListIsBinary);
+			Assert.That (propertyListIsBinary, Is.True, "Optimized property list format");
+			var optimizedLocalizationPath = Path.Combine (appPath, "Contents", "Resources", "en.lproj", "Localizable.strings");
+			PDictionary.OpenFile (optimizedLocalizationPath, out var localizationIsBinary);
+			Assert.That (localizationIsBinary, Is.True, "Optimized localization format");
+
+			if (runtimeIdentifier == "maccatalyst-arm64") {
+				var imageTimestamp = File.GetLastWriteTimeUtc (optimizedImagePath);
+				var propertyListTimestamp = File.GetLastWriteTimeUtc (optimizedPropertyListPath);
+				var localizationTimestamp = File.GetLastWriteTimeUtc (optimizedLocalizationPath);
+
+				result = DotNet.AssertBuild (project_path, properties);
+				targets = BinLog.GetAllTargets (result.BinLogPath);
+				AssertTargetNotExecuted (targets, "_CoreOptimizePngImages", "Incremental PNG optimization");
+				AssertTargetNotExecuted (targets, "_CoreOptimizePropertyLists", "Incremental property list optimization");
+				AssertTargetNotExecuted (targets, "_CoreOptimizeLocalizationFiles", "Incremental localization optimization");
+				Assert.That (File.GetLastWriteTimeUtc (optimizedImagePath), Is.EqualTo (imageTimestamp), "Incremental image timestamp");
+				Assert.That (File.GetLastWriteTimeUtc (optimizedPropertyListPath), Is.EqualTo (propertyListTimestamp), "Incremental property list timestamp");
+				Assert.That (File.GetLastWriteTimeUtc (optimizedLocalizationPath), Is.EqualTo (localizationTimestamp), "Incremental localization timestamp");
+			}
 		}
 
 		[TestCase (ApplePlatform.iOS)]
@@ -190,6 +226,7 @@ namespace Xamarin.Tests {
 			var ad = AssemblyDefinition.ReadAssembly (asm, new ReaderParameters { ReadingMode = ReadingMode.Deferred });
 			var expectedFSharpResources = new List<string> {
 				"FSharpOptimizationCompressedData.fsharplibrary",
+				"FSharpOptimizationCompressedDataB.fsharplibrary",
 				"FSharpSignatureCompressedData.fsharplibrary",
 				"FSharpSignatureCompressedDataB.fsharplibrary",
 			};
@@ -473,6 +510,25 @@ namespace Xamarin.Tests {
 		}
 
 		[Test]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
+		public void PublishReadyToRunComposite_False_IsNotSupported (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			var project = "MySimpleApp";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			var project_path = GetProjectPath (project, platform: platform);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["PublishReadyToRunComposite"] = "false";
+			var rv = DotNet.AssertBuildFailure (project_path, properties);
+			var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray ();
+			Assert.That (errors.Length, Is.EqualTo (1), "Error count");
+			Assert.That (errors [0].Message, Does.StartWith ("Setting 'PublishReadyToRunComposite' to 'false' isn't supported"), "Error message");
+		}
+
+		[Test]
 		[TestCase (ApplePlatform.iOS, "ios-arm64;iossimulator-x64")]
 		[TestCase (ApplePlatform.iOS, "ios-arm64;iossimulator-arm64")]
 		[TestCase (ApplePlatform.TVOS, "tvos-arm64;tvossimulator-x64")]
@@ -495,10 +551,26 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.iOS, "iossimulator-x64", false)]
 		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]
 		[TestCase (ApplePlatform.iOS, "ios-arm64", true, null, "Release")]
-		[TestCase (ApplePlatform.iOS, "ios-arm64", true, "PublishTrimmed=true;UseInterpreter=true")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", true, "UseInterpreter=true")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64", false)]
 		[Category ("WindowsInclusive")]
-		public void IsNotMacBuild (ApplePlatform platform, string runtimeIdentifiers, bool isDeviceBuild, string? extraProperties = null, string configuration = "Debug")
+		public void IsNotMacBuild_Mono (ApplePlatform platform, string runtimeIdentifiers, bool isDeviceBuild, string? extraProperties = null, string configuration = "Debug")
+		{
+			IsNotMacBuild (platform, runtimeIdentifiers, isDeviceBuild, extraProperties, configuration, useMonoRuntime: true);
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS, "iossimulator-x64", false)]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", true, null, "Release")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64", false)]
+		[Category ("WindowsInclusive")]
+		public void IsNotMacBuild_CoreCLR (ApplePlatform platform, string runtimeIdentifiers, bool isDeviceBuild, string? extraProperties = null, string configuration = "Debug")
+		{
+			IsNotMacBuild (platform, runtimeIdentifiers, isDeviceBuild, extraProperties, configuration, useMonoRuntime: false);
+		}
+
+		void IsNotMacBuild (ApplePlatform platform, string runtimeIdentifiers, bool isDeviceBuild, string? extraProperties, string configuration, bool useMonoRuntime)
 		{
 			var project = "MySimpleApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -508,6 +580,7 @@ namespace Xamarin.Tests {
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			properties ["IsMacEnabled"] = "false";
+			properties ["UseMonoRuntime"] = useMonoRuntime ? "true" : "false";
 			if (!string.IsNullOrEmpty (configuration))
 				properties ["Configuration"] = configuration;
 			if (extraProperties is not null) {
@@ -577,6 +650,14 @@ namespace Xamarin.Tests {
 		[TestCase ("NativeFrameworkReferencesApp", ApplePlatform.MacOSX, "osx-x64")]
 		[TestCase ("NativeXCFrameworkReferencesApp", ApplePlatform.iOS, "iossimulator-x64")]
 		[TestCase ("NativeXCFrameworkReferencesApp", ApplePlatform.MacOSX, "osx-x64")]
+		[TestCase ("NativeMergeableFrameworkReferencesApp", ApplePlatform.iOS, "iossimulator-arm64")]
+		[TestCase ("NativeMergeableFrameworkReferencesApp", ApplePlatform.TVOS, "tvossimulator-arm64")]
+		[TestCase ("NativeMergeableFrameworkReferencesApp", ApplePlatform.MacOSX, "osx-arm64")]
+		[TestCase ("NativeMergeableFrameworkReferencesApp", ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
+		[TestCase ("NativeMergeableDylibReferencesApp", ApplePlatform.iOS, "iossimulator-arm64")]
+		[TestCase ("NativeMergeableDylibReferencesApp", ApplePlatform.TVOS, "tvossimulator-arm64")]
+		[TestCase ("NativeMergeableDylibReferencesApp", ApplePlatform.MacOSX, "osx-arm64")]
+		[TestCase ("NativeMergeableDylibReferencesApp", ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
 		public void BuildAndExecuteNativeReferencesTestApp (string project, ApplePlatform platform, string runtimeIdentifier)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -591,6 +672,60 @@ namespace Xamarin.Tests {
 				var appExecutable = Path.Combine (appPath, "Contents", "MacOS", Path.GetFileNameWithoutExtension (project_path));
 				Assert.That (appExecutable, Does.Exist, "There is an executable");
 				ExecuteWithMagicWordAndAssert (appExecutable);
+			}
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64", true)] // Optimize=true should strip atom info
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64", false)] // Optimize=false should preserve atom info
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", true)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", false)]
+		public void BuildNativeMergeableFrameworkReferencesApp_AtomInfoStripping (ApplePlatform platform, string runtimeIdentifier, bool optimize)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifier);
+
+			var project = "NativeMergeableFrameworkReferencesApp";
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifier, platform: platform, out var appPath);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifier);
+			properties ["Optimize"] = optimize.ToString ().ToLowerInvariant ();
+			DotNet.AssertBuild (project_path, properties);
+
+			var frameworkPath = Path.Combine (appPath, GetFrameworksRelativePath (platform), "XMergeableTest.framework", "XMergeableTest");
+			Assert.That (frameworkPath, Does.Exist, "Framework should exist in app bundle");
+
+			if (optimize) {
+				Assert.That (MachO.IsMergeableLibrary (frameworkPath), Is.False, "Framework should not be mergeable when Optimize=true");
+			} else {
+				Assert.That (MachO.IsMergeableLibrary (frameworkPath), Is.True, "Framework should be mergeable when Optimize=false");
+			}
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64", true)] // Optimize=true should strip atom info
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64", false)] // Optimize=false should preserve atom info
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", true)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", false)]
+		public void BuildNativeMergeableDylibReferencesApp_AtomInfoStripping (ApplePlatform platform, string runtimeIdentifier, bool optimize)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifier);
+
+			var project = "NativeMergeableDylibReferencesApp";
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifier, platform: platform, out var appPath);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifier);
+			properties ["Optimize"] = optimize.ToString ().ToLowerInvariant ();
+			DotNet.AssertBuild (project_path, properties);
+
+			var dylibPath = Path.Combine (appPath, GetRelativeDylibDirectory (platform), "libMergeableFramework.dylib");
+			Assert.That (dylibPath, Does.Exist, "Dylib should exist in app bundle");
+
+			if (optimize) {
+				Assert.That (MachO.IsMergeableLibrary (dylibPath), Is.False, "Dylib should not be mergeable when Optimize=true");
+			} else {
+				Assert.That (MachO.IsMergeableLibrary (dylibPath), Is.True, "Dylib should be mergeable when Optimize=false");
 			}
 		}
 
@@ -631,6 +766,27 @@ namespace Xamarin.Tests {
 				expectedError = $"The RuntimeIdentifier '{runtimeIdentifier}' is invalid.";
 			}
 			Assert.That (uniqueErrors [0], Is.EqualTo (expectedError), "Error message");
+		}
+
+		// A '*.csproj.user' file is imported after we've computed '_SdkIsSimulator' from the default
+		// (simulator) RuntimeIdentifier, so a device RuntimeIdentifier in such a file makes the build
+		// inconsistent. The test project has a checked-in '*.csproj.user' file that does exactly that.
+		// Note that the RuntimeIdentifier can't be passed as a property here, because a global property
+		// takes precedence over anything the '*.csproj.user' file does.
+		[Test]
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
+		public void RuntimeIdentifierChangedTooLate (ApplePlatform platform, string deviceRuntimeIdentifier)
+		{
+			var project = "RuntimeIdentifierInUserFile";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			var project_path = GetProjectPath (project, platform: platform);
+			Clean (project_path);
+
+			var rv = DotNet.AssertBuildFailure (project_path, GetDefaultProperties ());
+			var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray ();
+			AssertErrorMessages (errors, $"The RuntimeIdentifier was changed too late in the build (it's currently '{deviceRuntimeIdentifier}', but the build was already configured with SdkIsSimulator=true). A common reason is a '*.csproj.user' file changing it; if you're building outside of the IDE, delete this file.");
 		}
 
 		[Test]
@@ -993,6 +1149,7 @@ namespace Xamarin.Tests {
 						$"__{platformPrefix}_item_BundleResource_A.ttc",
 						$"__{platformPrefix}_item_BundleResource_B.otf",
 						$"__{platformPrefix}_item_BundleResource_C.ttf",
+						$"__{platformPrefix}_item_BundleResource_library-image.png",
 						$"__{platformPrefix}_item_Collada_scene.dae",
 						$"__{platformPrefix}_item_CoreMLModel_SqueezeNet.mlmodel",
 						$"__{platformPrefix}_item_ImageAsset_Images.xcassets_sContents.json",
@@ -1021,6 +1178,7 @@ namespace Xamarin.Tests {
 						$"__{platformPrefix}_content_C.ttf",
 						$"__{platformPrefix}_content_DirWithResources_slinkedArt.scnassets_sscene.scn",
 						$"__{platformPrefix}_content_DirWithResources_slinkedArt.scnassets_stexture.png",
+						$"__{platformPrefix}_content_library-image.png",
 						$"__{platformPrefix}_content_scene.dae"
 					};
 					switch (platform) {
@@ -1106,6 +1264,10 @@ namespace Xamarin.Tests {
 			var properties = GetDefaultProperties (runtimeIdentifiers, extraProperties);
 			properties ["Configuration"] = config;
 			properties ["BundleOriginalResources"] = bundleOriginalResources ? "true" : "false";
+			if (platform != ApplePlatform.MacOSX) {
+				properties ["OptimizePNGs"] = "true";
+				properties ["OptimizePropertyLists"] = "true";
+			}
 			if (remoteWindows) {
 				// Copy the app bundle to Windows so that we can inspect the results.
 				properties ["CopyAppBundleToWindows"] = "true";
@@ -1132,6 +1294,15 @@ namespace Xamarin.Tests {
 				Assert.That (appBundleContents, Does.Contain (fontAFile), "A.ttc existence");
 				Assert.That (appBundleContents, Does.Contain (fontBFile), "B.otf existence");
 				Assert.That (appBundleContents, Does.Contain (fontCFile), "C.ttf existence");
+
+				var imageFile = Path.Combine (resourcesDirectory, "library-image.png");
+				AssertExists (imageFile, "library-image.png");
+				var originalImage = File.ReadAllBytes (Path.Combine (Configuration.SourceRoot, "tests", "dotnet", "MyCatalystApp", "Resources", "image.png"));
+				var bundledImage = appBundleInfo.GetFile (imageFile);
+				if (platform == ApplePlatform.MacOSX)
+					Assert.That (bundledImage, Is.EqualTo (originalImage), "Unoptimized library image");
+				else
+					Assert.That (bundledImage, Is.Not.EqualTo (originalImage), "Optimized library image");
 
 				var atlasTexture = Path.Combine (resourcesDirectory, "Archer_Attack.atlasc", "Archer_Attack.plist");
 				AssertExists (atlasTexture, "AtlasTexture - Archer_Attack");
@@ -1965,6 +2136,50 @@ namespace Xamarin.Tests {
 			BuildProjectsWithExtensionsImpl (platform, runtimeIdentifier, isNativeAot, AddRemoteProperties ());
 		}
 
+		// App extensions must be embedded in the container app even when the project reference
+		// says ReferenceOutputAssembly=false. Ref: https://github.com/dotnet/macios/issues/26453
+		[TestCase (ApplePlatform.iOS, "iossimulator-x64")]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-x64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-x64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
+		public void BuildProjectsWithExtensionsWithoutReferenceOutputAssembly (ApplePlatform platform, string runtimeIdentifier)
+		{
+			var properties = new Dictionary<string, string> {
+				{ "TestReferenceOutputAssembly", "false" },
+			};
+			BuildProjectsWithExtensionsImpl (platform, runtimeIdentifier, isNativeAot: false, properties);
+		}
+
+		// Same as the previous test, but for the code path taken when the extension projects have
+		// already been built (which is what some versions of the IDE do). This exercises the other
+		// <MSBuild> invocation in the _ResolveAppExtensionReferences target.
+		[TestCase (ApplePlatform.iOS, "iossimulator-x64")]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-x64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-x64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
+		public void BuildProjectsWithPrebuiltExtensionsWithoutReferenceOutputAssembly (ApplePlatform platform, string runtimeIdentifier)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			var consumingProjectDir = GetProjectPath ("ExtensionConsumer", runtimeIdentifier, platform, out var appPath);
+			var extensionProjectDir = GetProjectPath ("ExtensionProject", platform: platform);
+
+			Clean (extensionProjectDir);
+			Clean (consumingProjectDir);
+
+			// Build the extension project first, ...
+			DotNet.AssertBuild (extensionProjectDir, GetDefaultProperties (runtimeIdentifier));
+
+			// ... and then build the container app without building the extension project again.
+			var properties = GetDefaultProperties (runtimeIdentifier);
+			properties ["TestReferenceOutputAssembly"] = "false";
+			properties ["_BuildReferencedExtensionProjects"] = "false";
+			DotNet.AssertBuild (consumingProjectDir, properties);
+
+			var extensionPath = Path.Combine (appPath, GetPlugInsRelativePath (platform), "ExtensionProject.appex");
+			Assert.That (Directory.Exists (extensionPath), $"App extension directory does not exist: {extensionPath}");
+		}
+
 		void BuildProjectsWithExtensionsImpl (ApplePlatform platform, string runtimeIdentifier, bool isNativeAot, Dictionary<string, string>? properties = null)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -2161,7 +2376,7 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
 		public void BuildNet9_0App (ApplePlatform platform, string runtimeIdentifiers)
 		{
-			BuildSupportedNetVersionApp (platform, runtimeIdentifiers, 9);
+			BuildUnsupportedNetVersionApp (platform, runtimeIdentifiers, 9, isFuture: false);
 		}
 
 		[Test]
@@ -2181,9 +2396,19 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
 		public void BuildNet11_0App (ApplePlatform platform, string runtimeIdentifiers)
 		{
-			BuildUnsupportedNetVersionApp (platform, runtimeIdentifiers, 11, isFuture: true);
-			// In .NET 11
-			// * Copy this test and create a new .NET 12 test
+			BuildSupportedNetVersionApp (platform, runtimeIdentifiers, 11);
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
+		public void BuildNet12_0App (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			BuildUnsupportedNetVersionApp (platform, runtimeIdentifiers, 12, isFuture: true);
+			// In .NET 12
+			// * Copy this test and create a new .NET 13 test
 			// * Update this test to call 'BuildSupportedNetVersionApp'
 			// * The SupportedOSPlatformVersion values in the test project might need updating.
 		}
@@ -2207,8 +2432,8 @@ namespace Xamarin.Tests {
 				AssertErrorMessages (errors,
 					$"The current .NET SDK does not support targeting .NET {majorNetVersion}.0.  Either target .NET {majorNetVersion - 1}.0 or lower, or use a version of the .NET SDK that supports .NET {majorNetVersion}.0. Download the .NET SDK from https://aka.ms/dotnet/download");
 			} else {
-				AssertErrorMessages (errors,
-					$"The workload '{targetFramework}' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/maui-support-policy for more information about the support policy.",
+				var uniqueErrors = errors.DistinctBy (v => v.Message).ToArray ();
+				AssertErrorMessages (uniqueErrors,
 					$"The workload '{targetFramework}' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/maui-support-policy for more information about the support policy.");
 			}
 		}
@@ -2235,7 +2460,11 @@ namespace Xamarin.Tests {
 			Assert.That (infoPlistPath, Does.Exist, "Info.plist");
 			var infoPlist = PDictionary.OpenFile (infoPlistPath);
 			Assert.That (infoPlist.GetString ("CFBundleIdentifier").Value, Is.EqualTo ("com.xamarin.mysimpleapp"), "CFBundleIdentifier");
-			Assert.That (infoPlist.GetString ("CFBundleDisplayName").Value, Is.EqualTo ("MySimpleApp"), "CFBundleDisplayName");
+			if (majorNetVersion >= 10) {
+				Assert.That (infoPlist.GetString ("CFBundleDisplayName").Value, Is.EqualTo (project), "CFBundleDisplayName");
+			} else {
+				Assert.That (infoPlist.GetString ("CFBundleDisplayName").Value, Is.EqualTo ("MySimpleApp"), "CFBundleDisplayName");
+			}
 			Assert.That (infoPlist.GetString ("CFBundleVersion").Value, Is.EqualTo (netVersion), "CFBundleVersion");
 			Assert.That (infoPlist.GetString ("CFBundleShortVersionString").Value, Is.EqualTo (netVersion), "CFBundleShortVersionString");
 
@@ -2258,9 +2487,10 @@ namespace Xamarin.Tests {
 			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
-			var extraArgs = "--require-pinvoke-wrappers:true --registrar:static"; // enable the static registrar too, see https://github.com/dotnet/macios/issues/15190.
+			var extraArgs = "--require-pinvoke-wrappers:true";
 			properties ["MonoBundlingExtraArgs"] = extraArgs;
 			properties ["MtouchExtraArgs"] = extraArgs;
+			properties ["Registrar"] = "static"; // enable the static registrar too, see https://github.com/dotnet/macios/issues/15190.
 
 			DotNet.AssertBuild (project_path, properties);
 		}
@@ -2305,12 +2535,19 @@ namespace Xamarin.Tests {
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
 		[TestCase (ApplePlatform.iOS, "iossimulator-x64;iossimulator-arm64")]
-		public void PluralRuntimeIdentifiers (ApplePlatform platform, string runtimeIdentifiers)
+		public void PluralRuntimeIdentifiers_Mono (ApplePlatform platform, string runtimeIdentifiers)
 		{
-			PluralRuntimeIdentifiersImpl (platform, runtimeIdentifiers);
+			PluralRuntimeIdentifiersImpl (platform, runtimeIdentifiers, useMonoRuntime: true);
 		}
 
-		internal static void PluralRuntimeIdentifiersImpl (ApplePlatform platform, string runtimeIdentifiers, Dictionary<string, string>? extraProperties = null, string configuration = "Debug")
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.iOS, "iossimulator-x64;iossimulator-arm64")]
+		public void PluralRuntimeIdentifiers_CoreCLR (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			PluralRuntimeIdentifiersImpl (platform, runtimeIdentifiers, useMonoRuntime: false);
+		}
+
+		internal static void PluralRuntimeIdentifiersImpl (ApplePlatform platform, string runtimeIdentifiers, bool useMonoRuntime = false, Dictionary<string, string>? extraProperties = null, string configuration = "Debug")
 		{
 			var project = "MySimpleApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -2321,19 +2558,24 @@ namespace Xamarin.Tests {
 			var properties = GetDefaultProperties (extraProperties: extraProperties);
 			properties ["Configuration"] = configuration;
 			properties ["RuntimeIdentifiers"] = runtimeIdentifiers;
+			properties ["UseMonoRuntime"] = useMonoRuntime ? "true" : "false";
 
 			DotNet.AssertBuild (project_path, properties);
 		}
 
-		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
-		[TestCase (ApplePlatform.iOS, "ios-arm64")]
-		public void CustomizedCodeSigning (ApplePlatform platform, string runtimeIdentifiers)
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64", true)]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64", false)]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", false)]
+		public void CustomizedCodeSigning (ApplePlatform platform, string runtimeIdentifiers, bool useMonoRuntime)
 		{
 			var project = "CustomizedCodeSigning";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
+
+			properties ["UseMonoRuntime"] = useMonoRuntime ? "true" : "false";
 
 			Clean (project_path);
 			DotNet.AssertBuild (project_path, properties);
@@ -2373,7 +2615,9 @@ namespace Xamarin.Tests {
 			appBundleContents.ExceptWith (directoriesThatMustExist);
 
 			// And that there are no other signed apps
-			var signatures = appBundleContents.Where (v => v.EndsWith ("_CodeSignature", StringComparison.Ordinal));
+			var signatures = appBundleContents
+				.Where (v => v.EndsWith ("_CodeSignature", StringComparison.Ordinal))
+				.Where (v => useMonoRuntime || !v.Contains (".framework/")); // CoreCLR runtime frameworks are signed - that's expected
 			Assert.That (signatures, Is.Empty, "No other signed app bundles");
 
 			// Assert that some dylibs are signed
@@ -2391,6 +2635,7 @@ namespace Xamarin.Tests {
 			// And that there are unsigned dylibs, but not the system ones
 			var remainingDylibs = appBundleContents
 				.Where (v => Path.GetExtension (v) == ".dylib")
+				.Where (v => useMonoRuntime || string.IsNullOrEmpty (dylibDir) || Path.GetDirectoryName (v) != dylibDir) // CoreCLR native runtime dylibs are signed - ignore them here
 				.ToArray ();
 			foreach (var unsignedDylib in remainingDylibs) {
 				var path = Path.Combine (appPath, unsignedDylib);
@@ -2415,19 +2660,28 @@ namespace Xamarin.Tests {
 				properties ["CodesignDisallowResourcesSubdirectoryInAppBundle"] = "false";
 				buildFailure = DotNet.AssertBuildFailure (project_path, properties);
 				errors = BinLog.GetBuildLogErrors (buildFailure.BinLogPath).ToArray ();
-				var errorMessagePrefixes = new string []
+				// codesign doesn't consistently print 'replacing existing signature' before reporting the
+				// malformed bundle. The app is signed by the initial successful build above, but this line
+				// was present locally and absent in CI, so accept both variations.
+				var replacingSignature = $"{appPath}: replacing existing signature\n";
+				var notSigned = $"{appPath}: code object is not signed at all\n";
+				// Each error message may show up in either of the listed variations.
+				var errorMessagePrefixes = new string [] []
 				{
-					$"/usr/bin/codesign exited with code 1:\n" +
-					$"{appPath}: replacing existing signature\n" +
-					$"{appPath}: code object is not signed at all\n",
+					new string [] {
+						$"/usr/bin/codesign exited with code 1:\n{replacingSignature}{notSigned}",
+						$"/usr/bin/codesign exited with code 1:\n{notSigned}",
+					},
 
-					$"Failed to codesign '{appPath}': {appPath}: replacing existing signature\n" +
-					$"{appPath}: code object is not signed at all\n",
+					new string [] {
+						$"Failed to codesign '{appPath}': {replacingSignature}{notSigned}",
+						$"Failed to codesign '{appPath}': {notSigned}",
+					},
 				};
 
 				AssertErrorMessages (errors,
-					errorMessagePrefixes.Select (prefix => new Func<string, bool> ((msg) => msg.StartsWith (prefix))).ToArray (),
-					errorMessagePrefixes.Select (prefix => new Func<string> (() => prefix)).ToArray ()
+					errorMessagePrefixes.Select (prefixes => new Func<string, bool> ((msg) => prefixes.Any (prefix => msg.StartsWith (prefix)))).ToArray (),
+					errorMessagePrefixes.Select (prefixes => new Func<string> (() => prefixes [0])).ToArray ()
 				);
 
 				// Remove the dir, and now the build should succeed again.
@@ -2701,6 +2955,20 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.TVOS, "tvossimulator-x64", "Release")]
 		public void PublishAot (ApplePlatform platform, string runtimeIdentifiers, string configuration)
 		{
+			PublishAotImpl (platform, runtimeIdentifiers, configuration);
+		}
+
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "Release")]
+		[Category ("RemoteWindows")]
+		public void PublishAotOnWindows (ApplePlatform platform, string runtimeIdentifiers, string configuration)
+		{
+			Configuration.IgnoreIfNotOnWindows ();
+
+			PublishAotImpl (platform, runtimeIdentifiers, configuration);
+		}
+
+		void PublishAotImpl (ApplePlatform platform, string runtimeIdentifiers, string configuration)
+		{
 			var project = "MySimpleApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
@@ -2746,10 +3014,13 @@ namespace Xamarin.Tests {
 			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath)
 								.FilterWarnings (platform);
 			var expectedWarnings = new ExpectedBuildMessage [] {
-				new ExpectedBuildMessage ($"ILLINK", $"It's not safe to remove the dynamic registrar, because monotouchtest references 'ObjCRuntime.Runtime.ConnectMethod (System.Reflection.MethodInfo, ObjCRuntime.Selector)'."),
-				new ExpectedBuildMessage ($"ILLINK", $"It's not safe to remove the dynamic registrar, because monotouchtest references 'ObjCRuntime.Runtime.ConnectMethod (System.Type, System.Reflection.MethodInfo, Foundation.ExportAttribute)'."),
-				new ExpectedBuildMessage ($"ILLINK", $"It's not safe to remove the dynamic registrar, because monotouchtest references 'ObjCRuntime.Runtime.ConnectMethod (System.Type, System.Reflection.MethodInfo, ObjCRuntime.Selector)'."),
-				new ExpectedBuildMessage ($"ILLINK", $"It's not safe to remove the dynamic registrar, because monotouchtest references 'ObjCRuntime.Runtime.RegisterAssembly (System.Reflection.Assembly)'."),
+				new ExpectedBuildMessage ($"ILC", $"MonoTouchFixtures.ObjCRuntime.ClassTest.GetHandle(): Using member 'System.Type.MakeArrayType()' which has 'RequiresDynamicCodeAttribute' can break functionality when AOT compiling. The code for an array of the specified type might not be available."),
+				new ExpectedBuildMessage ($"MSBuild", $"It's not safe to remove the dynamic registrar, because monotouchtest references 'ObjCRuntime.Runtime.ConnectMethod (System.Reflection.MethodInfo, ObjCRuntime.Selector)'."),
+				new ExpectedBuildMessage ($"MSBuild", $"It's not safe to remove the dynamic registrar, because monotouchtest references 'ObjCRuntime.Runtime.ConnectMethod (System.Type, System.Reflection.MethodInfo, Foundation.ExportAttribute)'."),
+				new ExpectedBuildMessage ($"MSBuild", $"It's not safe to remove the dynamic registrar, because monotouchtest references 'ObjCRuntime.Runtime.ConnectMethod (System.Type, System.Reflection.MethodInfo, ObjCRuntime.Selector)'."),
+				new ExpectedBuildMessage ($"MSBuild", $"It's not safe to remove the dynamic registrar, because monotouchtest references 'ObjCRuntime.Runtime.RegisterAssembly (System.Reflection.Assembly)'."),
+				new ExpectedBuildMessage ($"MSBuild", $"Export attributes cannot be removed because the managed registrar must use Runtime.GetBlockWrapperCreator."),
+				new ExpectedBuildMessage ($"MSBuild", $"Export attributes cannot be removed because the managed registrar must use RegistrarHelper.GetBlockForDelegate."),
 				new ExpectedBuildMessage ($"tests/bindings-test/RegistrarBindingTest.cs", $"Unable to locate the block to delegate conversion method for the method System.Void Xamarin.BindingTests.RegistrarBindingTest/FakePropertyBlock::set_MyOptionalProperty(Bindings.Test.SimpleCallback)'s parameter #1."),
 				new ExpectedBuildMessage ($"tests/bindings-test/RegistrarBindingTest.cs", $"Unable to locate the block to delegate conversion method for the method System.Void Xamarin.BindingTests.RegistrarBindingTest/FakePropertyBlock::set_MyOptionalStaticProperty(Bindings.Test.SimpleCallback)'s parameter #1."),
 				new ExpectedBuildMessage ($"tests/bindings-test/RegistrarBindingTest.cs", $"Unable to locate the block to delegate conversion method for the method System.Void Xamarin.BindingTests.RegistrarBindingTest/FakePropertyBlock::set_MyRequiredProperty(Bindings.Test.SimpleCallback)'s parameter #1."),
@@ -2759,7 +3030,6 @@ namespace Xamarin.Tests {
 				new ExpectedBuildMessage ($"tests/bindings-test/RegistrarBindingTest.cs", $"Unable to locate the delegate to block conversion type for the return value of the method Bindings.Test.SimpleCallback Xamarin.BindingTests.RegistrarBindingTest/FakePropertyBlock::get_MyRequiredProperty()."),
 				new ExpectedBuildMessage ($"tests/bindings-test/RegistrarBindingTest.cs", $"Unable to locate the delegate to block conversion type for the return value of the method Bindings.Test.SimpleCallback Xamarin.BindingTests.RegistrarBindingTest/FakePropertyBlock::get_MyRequiredStaticProperty()."),
 				new ExpectedBuildMessage ($"tests/monotouch-test/dotnet/{platform.AsString ()}/obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}linked/nunit.framework.dll", $"Assembly 'nunit.framework' produced AOT analysis warnings."),
-				new ExpectedBuildMessage ($"tests/monotouch-test/ObjCRuntime/ClassTest.cs", $"MonoTouchFixtures.ObjCRuntime.ClassTest.GetHandle(): Using member 'System.Type.MakeArrayType()' which has 'RequiresDynamicCodeAttribute' can break functionality when AOT compiling. The code for an array of the specified type might not be available."),
 				new ExpectedBuildMessage ($"tests/monotouch-test/ObjCRuntime/RegistrarTest.cs", $"Unable to locate the block to delegate conversion method for the method System.Void MonoTouchFixtures.ObjCRuntime.GHIssue7733::DoWork(System.String,MonoTouchFixtures.ObjCRuntime.ACompletionHandler)'s parameter #2."),
 				new ExpectedBuildMessage ($"tests/monotouch-test/ObjCRuntime/RegistrarTest.cs", $"Unable to locate the block to delegate conversion method for the method System.Void MonoTouchFixtures.ObjCRuntime.RegistrarTest/ClosedGenericParameter::Foo(System.Action`1<System.String>)'s parameter #1."),
 				new ExpectedBuildMessage ($"tests/monotouch-test/ObjCRuntime/RegistrarTest.cs", $"Unable to locate the block to delegate conversion method for the method System.Void MonoTouchFixtures.ObjCRuntime.RegistrarTest/RegistrarTestClass::TestNSAction(System.Action)'s parameter #1."),
@@ -3152,7 +3422,7 @@ namespace Xamarin.Tests {
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			properties ["MtouchInterpreter"] = $"\"{mtouchInterpreter}\"";
-
+			properties ["UseMonoRuntime"] = "true"; // this test only apples when using Mono
 			DotNet.AssertBuild (project_path, properties);
 
 			var objDir = GetObjDir (project_path, platform, runtimeIdentifiers);
@@ -3176,6 +3446,7 @@ namespace Xamarin.Tests {
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			properties ["MtouchInterpreter"] = $"\"{mtouchInterpreter}\"";
+			properties ["UseMonoRuntime"] = "true"; // this test only apples when using Mono
 
 			DotNet.AssertBuild (project_path, properties);
 
@@ -3197,6 +3468,7 @@ namespace Xamarin.Tests {
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			properties ["MtouchInterpreter"] = $"\"{mtouchInterpreter}\"";
+			properties ["UseMonoRuntime"] = "true"; // this test only apples when using Mono
 
 			DotNet.AssertBuild (project_path, properties);
 
@@ -3246,6 +3518,41 @@ namespace Xamarin.Tests {
 			DotNet.AssertBuild (project_path, properties);
 		}
 
+		static string [] coreclrFrameworks_iOS = [
+			"@rpath/libcoreclr.framework/libcoreclr",
+			"@rpath/libmscordaccore.framework/libmscordaccore",
+			"@rpath/libmscordbi.framework/libmscordbi",
+			"@rpath/libSystem.Globalization.Native.framework/libSystem.Globalization.Native",
+			"@rpath/libSystem.IO.Compression.Native.framework/libSystem.IO.Compression.Native",
+			"@rpath/libSystem.Native.framework/libSystem.Native",
+			"@rpath/libSystem.Net.Security.Native.framework/libSystem.Net.Security.Native",
+			"@rpath/libSystem.Security.Cryptography.Native.Apple.framework/libSystem.Security.Cryptography.Native.Apple",
+			"@rpath/MySimpleApp.r2r.framework/MySimpleApp.r2r",
+		];
+
+		static string [] coreclrFrameworks_tvOS = [
+			"@rpath/libcoreclr.framework/libcoreclr",
+			"@rpath/libmscordaccore.framework/libmscordaccore",
+			"@rpath/libmscordbi.framework/libmscordbi",
+			"@rpath/libSystem.Globalization.Native.framework/libSystem.Globalization.Native",
+			"@rpath/libSystem.IO.Compression.Native.framework/libSystem.IO.Compression.Native",
+			"@rpath/libSystem.Native.framework/libSystem.Native",
+			"@rpath/libSystem.Security.Cryptography.Native.Apple.framework/libSystem.Security.Cryptography.Native.Apple",
+			"@rpath/MySimpleApp.r2r.framework/MySimpleApp.r2r",
+		];
+
+		static string [] coreclrFrameworks_MacCatalyst = [
+			"@executable_path/../../Contents/MonoBundle/libcoreclr.dylib",
+			"@executable_path/../../Contents/MonoBundle/libmscordaccore.dylib",
+			"@executable_path/../../Contents/MonoBundle/libmscordbi.dylib",
+			"@executable_path/../../Contents/MonoBundle/libSystem.Globalization.Native.dylib",
+			"@executable_path/../../Contents/MonoBundle/libSystem.IO.Compression.Native.dylib",
+			"@executable_path/../../Contents/MonoBundle/libSystem.Native.dylib",
+			"@executable_path/../../Contents/MonoBundle/libSystem.Net.Security.Native.dylib",
+			"@executable_path/../../Contents/MonoBundle/libSystem.Security.Cryptography.Native.Apple.dylib",
+			"@executable_path/../../Contents/MonoBundle/MySimpleApp.r2r.dylib",
+		];
+
 		static string [] expectedFrameworks_iOS_None = [
 			"/System/Library/Frameworks/Accelerate.framework/Accelerate",
 			"/System/Library/Frameworks/Accessibility.framework/Accessibility",
@@ -3264,6 +3571,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/AVFoundation.framework/AVFoundation",
 			"/System/Library/Frameworks/AVKit.framework/AVKit",
 			"/System/Library/Frameworks/AVRouting.framework/AVRouting",
+			"/System/Library/Frameworks/AVSystemRouting.framework/AVSystemRouting",
 			"/System/Library/Frameworks/BackgroundAssets.framework/BackgroundAssets",
 			"/System/Library/Frameworks/BackgroundTasks.framework/BackgroundTasks",
 			"/System/Library/Frameworks/BusinessChat.framework/BusinessChat",
@@ -3322,6 +3630,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/IOSurface.framework/IOSurface",
 			"/System/Library/Frameworks/JavaScriptCore.framework/JavaScriptCore",
 			"/System/Library/Frameworks/LinkPresentation.framework/LinkPresentation",
+			"/System/Library/Frameworks/LinkSecurity.framework/LinkSecurity",
 			"/System/Library/Frameworks/LocalAuthentication.framework/LocalAuthentication",
 			"/System/Library/Frameworks/MapKit.framework/MapKit",
 			"/System/Library/Frameworks/MediaAccessibility.framework/MediaAccessibility",
@@ -3362,6 +3671,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/SafariServices.framework/SafariServices",
 			"/System/Library/Frameworks/SafetyKit.framework/SafetyKit",
 			"/System/Library/Frameworks/SceneKit.framework/SceneKit",
+			"/System/Library/Frameworks/ScreenCaptureKit.framework/ScreenCaptureKit",
 			"/System/Library/Frameworks/ScreenTime.framework/ScreenTime",
 			"/System/Library/Frameworks/Security.framework/Security",
 			"/System/Library/Frameworks/SecurityUI.framework/SecurityUI",
@@ -3374,6 +3684,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/SoundAnalysis.framework/SoundAnalysis",
 			"/System/Library/Frameworks/Speech.framework/Speech",
 			"/System/Library/Frameworks/SpriteKit.framework/SpriteKit",
+			"/System/Library/Frameworks/StateReporting.framework/StateReporting",
 			"/System/Library/Frameworks/StoreKit.framework/StoreKit",
 			"/System/Library/Frameworks/Symbols.framework/Symbols",
 			"/System/Library/Frameworks/SystemConfiguration.framework/SystemConfiguration",
@@ -3396,11 +3707,11 @@ namespace Xamarin.Tests {
 			"/usr/lib/libobjc.A.dylib",
 			"/usr/lib/libSystem.B.dylib",
 			"/usr/lib/libz.1.dylib",
-			"/System/Library/Frameworks/CryptoKit.framework/CryptoKit",
 			"/usr/lib/libicucore.A.dylib",
 			"/usr/lib/swift/libswiftCore.dylib",
 			"/usr/lib/swift/libswiftCoreFoundation.dylib",
 			"/usr/lib/swift/libswiftCoreImage.dylib",
+			"/usr/lib/swift/libswiftCoreLocation.dylib",
 			"/usr/lib/swift/libswiftDarwin.dylib",
 			"/usr/lib/swift/libswiftDispatch.dylib",
 			"/usr/lib/swift/libswiftFoundation.dylib",
@@ -3414,6 +3725,11 @@ namespace Xamarin.Tests {
 			"/usr/lib/swift/libswiftUIKit.dylib",
 			"/usr/lib/swift/libswiftUniformTypeIdentifiers.dylib",
 			"/usr/lib/swift/libswiftXPC.dylib",
+		];
+
+		static string [] expectedFrameworks_iOS_None_Mono = [
+			.. expectedFrameworks_iOS_None,
+			"/System/Library/Frameworks/CryptoKit.framework/CryptoKit",
 		];
 
 		static string [] expectedFrameworks_iOS_Full = [
@@ -3431,6 +3747,8 @@ namespace Xamarin.Tests {
 			"/usr/lib/libSystem.B.dylib",
 			"/usr/lib/libz.1.dylib",
 		];
+
+		static string [] expectedFrameworks_iOS_Full_Mono = expectedFrameworks_iOS_Full;
 
 		static string [] expectedFrameworks_tvOS_None = [
 			"/System/Library/Frameworks/Accelerate.framework/Accelerate",
@@ -3460,7 +3778,6 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/CoreSpotlight.framework/CoreSpotlight",
 			"/System/Library/Frameworks/CoreText.framework/CoreText",
 			"/System/Library/Frameworks/CoreVideo.framework/CoreVideo",
-			"/System/Library/Frameworks/CryptoKit.framework/CryptoKit",
 			"/System/Library/Frameworks/CryptoTokenKit.framework/CryptoTokenKit",
 			"/System/Library/Frameworks/DataDetection.framework/DataDetection",
 			"/System/Library/Frameworks/DeviceCheck.framework/DeviceCheck",
@@ -3477,6 +3794,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/IOSurface.framework/IOSurface",
 			"/System/Library/Frameworks/JavaScriptCore.framework/JavaScriptCore",
 			"/System/Library/Frameworks/LinkPresentation.framework/LinkPresentation",
+			"/System/Library/Frameworks/LinkSecurity.framework/LinkSecurity",
 			"/System/Library/Frameworks/MapKit.framework/MapKit",
 			"/System/Library/Frameworks/MediaAccessibility.framework/MediaAccessibility",
 			"/System/Library/Frameworks/MediaPlayer.framework/MediaPlayer",
@@ -3502,12 +3820,14 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/QuartzCore.framework/QuartzCore",
 			"/System/Library/Frameworks/ReplayKit.framework/ReplayKit",
 			"/System/Library/Frameworks/SceneKit.framework/SceneKit",
+			"/System/Library/Frameworks/ScreenCaptureKit.framework/ScreenCaptureKit",
 			"/System/Library/Frameworks/Security.framework/Security",
 			"/System/Library/Frameworks/SecurityUI.framework/SecurityUI",
 			"/System/Library/Frameworks/SharedWithYou.framework/SharedWithYou",
 			"/System/Library/Frameworks/ShazamKit.framework/ShazamKit",
 			"/System/Library/Frameworks/SoundAnalysis.framework/SoundAnalysis",
 			"/System/Library/Frameworks/SpriteKit.framework/SpriteKit",
+			"/System/Library/Frameworks/StateReporting.framework/StateReporting",
 			"/System/Library/Frameworks/StoreKit.framework/StoreKit",
 			"/System/Library/Frameworks/Symbols.framework/Symbols",
 			"/System/Library/Frameworks/SystemConfiguration.framework/SystemConfiguration",
@@ -3530,6 +3850,7 @@ namespace Xamarin.Tests {
 			"/usr/lib/swift/libswiftCore.dylib",
 			"/usr/lib/swift/libswiftCoreFoundation.dylib",
 			"/usr/lib/swift/libswiftCoreImage.dylib",
+			"/usr/lib/swift/libswiftCoreLocation.dylib",
 			"/usr/lib/swift/libswiftDarwin.dylib",
 			"/usr/lib/swift/libswiftDispatch.dylib",
 			"/usr/lib/swift/libswiftFoundation.dylib",
@@ -3545,6 +3866,11 @@ namespace Xamarin.Tests {
 			"/usr/lib/swift/libswiftXPC.dylib",
 		];
 
+		static string [] expectedFrameworks_tvOS_None_Mono = [
+			.. expectedFrameworks_tvOS_None,
+			"/System/Library/Frameworks/CryptoKit.framework/CryptoKit",
+		];
+
 		static string [] expectedFrameworks_tvOS_Full = [
 			"/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation",
 			"/System/Library/Frameworks/Foundation.framework/Foundation",
@@ -3558,6 +3884,8 @@ namespace Xamarin.Tests {
 			"/usr/lib/libSystem.B.dylib",
 			"/usr/lib/libz.1.dylib",
 		];
+
+		static string [] expectedFrameworks_tvOS_Full_Mono = expectedFrameworks_tvOS_Full;
 
 		static string [] expectedFrameworks_macOS_None = [
 			"@executable_path/../../Contents/MonoBundle/libclrgc.dylib",
@@ -3575,6 +3903,7 @@ namespace Xamarin.Tests {
 			"@executable_path/../../Contents/MonoBundle/libSystem.Security.Cryptography.Native.Apple.dylib",
 			"/System/Library/Frameworks/Accelerate.framework/Versions/A/Accelerate",
 			"/System/Library/Frameworks/Accessibility.framework/Versions/A/Accessibility",
+			"/System/Library/Frameworks/AccessoryAccess.framework/Versions/A/AccessoryAccess",
 			"/System/Library/Frameworks/Accounts.framework/Versions/A/Accounts",
 			"/System/Library/Frameworks/AdServices.framework/Versions/A/AdServices",
 			"/System/Library/Frameworks/AdSupport.framework/Versions/A/AdSupport",
@@ -3641,6 +3970,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/iTunesLibrary.framework/Versions/A/iTunesLibrary",
 			"/System/Library/Frameworks/JavaScriptCore.framework/Versions/A/JavaScriptCore",
 			"/System/Library/Frameworks/LinkPresentation.framework/Versions/A/LinkPresentation",
+			"/System/Library/Frameworks/LinkSecurity.framework/Versions/A/LinkSecurity",
 			"/System/Library/Frameworks/LocalAuthentication.framework/Versions/A/LocalAuthentication",
 			"/System/Library/Frameworks/LocalAuthenticationEmbeddedUI.framework/Versions/A/LocalAuthenticationEmbeddedUI",
 			"/System/Library/Frameworks/MailKit.framework/Versions/A/MailKit",
@@ -3684,6 +4014,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/ScreenTime.framework/Versions/A/ScreenTime",
 			"/System/Library/Frameworks/ScriptingBridge.framework/Versions/A/ScriptingBridge",
 			"/System/Library/Frameworks/Security.framework/Versions/A/Security",
+			"/System/Library/Frameworks/SecurityInterface.framework/Versions/A/SecurityInterface",
 			"/System/Library/Frameworks/SecurityUI.framework/Versions/A/SecurityUI",
 			"/System/Library/Frameworks/SensitiveContentAnalysis.framework/Versions/A/SensitiveContentAnalysis",
 			"/System/Library/Frameworks/ServiceManagement.framework/Versions/A/ServiceManagement",
@@ -3694,6 +4025,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/SoundAnalysis.framework/Versions/A/SoundAnalysis",
 			"/System/Library/Frameworks/Speech.framework/Versions/A/Speech",
 			"/System/Library/Frameworks/SpriteKit.framework/Versions/A/SpriteKit",
+			"/System/Library/Frameworks/StateReporting.framework/Versions/A/StateReporting",
 			"/System/Library/Frameworks/StoreKit.framework/Versions/A/StoreKit",
 			"/System/Library/Frameworks/Symbols.framework/Versions/A/Symbols",
 			"/System/Library/Frameworks/SystemConfiguration.framework/Versions/A/SystemConfiguration",
@@ -3717,7 +4049,6 @@ namespace Xamarin.Tests {
 			"/usr/lib/swift/libswiftCoreImage.dylib",
 			"/usr/lib/swift/libswiftDarwin.dylib",
 			"/usr/lib/swift/libswiftDispatch.dylib",
-			"/usr/lib/swift/libswiftFoundation.dylib",
 			"/usr/lib/swift/libswiftIOKit.dylib",
 			"/usr/lib/swift/libswiftMetal.dylib",
 			"/usr/lib/swift/libswiftObjectiveC.dylib",
@@ -3745,13 +4076,8 @@ namespace Xamarin.Tests {
 			"@executable_path/../../Contents/MonoBundle/libSystem.Net.Security.Native.dylib",
 			"@executable_path/../../Contents/MonoBundle/libSystem.Security.Cryptography.Native.Apple.dylib",
 			"/System/Library/Frameworks/AppKit.framework/Versions/C/AppKit",
-			"/System/Library/Frameworks/ApplicationServices.framework/Versions/A/ApplicationServices",
-			"/System/Library/Frameworks/CloudKit.framework/Versions/A/CloudKit",
-			"/System/Library/Frameworks/CoreData.framework/Versions/A/CoreData",
 			"/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation",
 			"/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation",
-			"/System/Library/Frameworks/Quartz.framework/Versions/A/Quartz",
-			"/System/Library/Frameworks/QuartzCore.framework/Versions/A/QuartzCore",
 			"/System/Library/Frameworks/Security.framework/Versions/A/Security",
 			"/usr/lib/libc++.1.dylib",
 			"/usr/lib/libcompression.dylib",
@@ -3847,7 +4173,6 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/CoreText.framework/Versions/A/CoreText",
 			"/System/Library/Frameworks/CoreVideo.framework/Versions/A/CoreVideo",
 			"/System/Library/Frameworks/CoreWLAN.framework/Versions/A/CoreWLAN",
-			"/System/Library/Frameworks/CryptoKit.framework/Versions/A/CryptoKit",
 			"/System/Library/Frameworks/CryptoTokenKit.framework/Versions/A/CryptoTokenKit",
 			"/System/Library/Frameworks/DataDetection.framework/Versions/A/DataDetection",
 			"/System/Library/Frameworks/DeviceCheck.framework/Versions/A/DeviceCheck",
@@ -3863,6 +4188,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/ImageIO.framework/Versions/A/ImageIO",
 			"/System/Library/Frameworks/Intents.framework/Versions/A/Intents",
 			"/System/Library/Frameworks/IOSurface.framework/Versions/A/IOSurface",
+			"/System/Library/Frameworks/LinkSecurity.framework/Versions/A/LinkSecurity",
 			"/System/Library/Frameworks/LocalAuthentication.framework/Versions/A/LocalAuthentication",
 			"/System/Library/Frameworks/MediaAccessibility.framework/Versions/A/MediaAccessibility",
 			"/System/Library/Frameworks/MediaToolbox.framework/Versions/A/MediaToolbox",
@@ -3893,6 +4219,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/ShazamKit.framework/Versions/A/ShazamKit",
 			"/System/Library/Frameworks/SoundAnalysis.framework/Versions/A/SoundAnalysis",
 			"/System/Library/Frameworks/Speech.framework/Versions/A/Speech",
+			"/System/Library/Frameworks/StateReporting.framework/Versions/A/StateReporting",
 			"/System/Library/Frameworks/Symbols.framework/Versions/A/Symbols",
 			"/System/Library/Frameworks/SystemConfiguration.framework/Versions/A/SystemConfiguration",
 			"/System/Library/Frameworks/ThreadNetwork.framework/Versions/A/ThreadNetwork",
@@ -3907,13 +4234,12 @@ namespace Xamarin.Tests {
 			"/usr/lib/libobjc.A.dylib",
 			"/usr/lib/libSystem.B.dylib",
 			"/usr/lib/libz.1.dylib",
-			"/System/iOSSupport/usr/lib/swift/libswiftUIKit.dylib",
 			"/usr/lib/swift/libswiftCore.dylib",
 			"/usr/lib/swift/libswiftCoreFoundation.dylib",
 			"/usr/lib/swift/libswiftCoreImage.dylib",
+			"/usr/lib/swift/libswiftCoreLocation.dylib",
 			"/usr/lib/swift/libswiftDarwin.dylib",
 			"/usr/lib/swift/libswiftDispatch.dylib",
-			"/usr/lib/swift/libswiftFoundation.dylib",
 			"/usr/lib/swift/libswiftIOKit.dylib",
 			"/usr/lib/swift/libswiftMetal.dylib",
 			"/usr/lib/swift/libswiftObjectiveC.dylib",
@@ -3924,6 +4250,11 @@ namespace Xamarin.Tests {
 			"/usr/lib/swift/libswiftSpatial.dylib",
 			"/usr/lib/swift/libswiftUniformTypeIdentifiers.dylib",
 			"/usr/lib/swift/libswiftXPC.dylib",
+		];
+
+		static string [] expectedFrameworks_MacCatalyst_None_Mono = [
+			.. expectedFrameworks_MacCatalyst_None,
+			"/System/Library/Frameworks/CryptoKit.framework/Versions/A/CryptoKit",
 		];
 
 		static string [] expectedFrameworks_MacCatalyst_Full = [
@@ -3946,7 +4277,35 @@ namespace Xamarin.Tests {
 			"/usr/lib/libz.1.dylib",
 		];
 
-		static IEnumerable<TestCaseData> GetLinkedWithNativeLibrariesTestCases ()
+		static string [] expectedFrameworks_MacCatalyst_Full_Mono = expectedFrameworks_MacCatalyst_Full;
+
+		static string [] expectedFrameworks_iOS_None_CoreCLR = [
+			.. coreclrFrameworks_iOS,
+			.. expectedFrameworks_iOS_None,
+		];
+		static string [] expectedFrameworks_iOS_Full_CoreCLR = [
+			.. coreclrFrameworks_iOS,
+			.. expectedFrameworks_iOS_Full,
+		];
+		static string [] expectedFrameworks_tvOS_None_CoreCLR = [
+			.. coreclrFrameworks_tvOS,
+			.. expectedFrameworks_tvOS_None,
+		];
+		static string [] expectedFrameworks_tvOS_Full_CoreCLR = [
+			.. coreclrFrameworks_tvOS,
+			.. expectedFrameworks_tvOS_Full,
+		];
+		static string [] expectedFrameworks_MacCatalyst_None_CoreCLR = [
+			.. coreclrFrameworks_MacCatalyst,
+			.. expectedFrameworks_MacCatalyst_None,
+		];
+		// CloudKit, CoreData, CoreGraphics and QuartzCore are trimmed away for CoreCLR (but not for Mono).
+		static string [] expectedFrameworks_MacCatalyst_Full_CoreCLR = [
+			.. coreclrFrameworks_MacCatalyst,
+			.. expectedFrameworks_MacCatalyst_Full.Where (v => !v.Contains ("/CloudKit.framework/") && !v.Contains ("/CoreData.framework/") && !v.Contains ("/CoreGraphics.framework/") && !v.Contains ("/QuartzCore.framework/")),
+		];
+
+		static IEnumerable<TestCaseData> GetLinkedWithNativeLibrariesTestCases_Mono ()
 		{
 			// Generally speaking, whenever we bind a new framework, we'll have to adjust the LinkMode="None" test cases,
 			// but we shouldn't have to adjust the LinkMode="Full" test cases (which would typically mean that we'll end
@@ -3957,18 +4316,48 @@ namespace Xamarin.Tests {
 			// However, new .NET versions often require updates to both the "None" and "Full lists of frameworks and libraries.
 			//
 
-			yield return new TestCaseData (ApplePlatform.iOS, "ios-arm64", "None", expectedFrameworks_iOS_None);
-			yield return new TestCaseData (ApplePlatform.iOS, "ios-arm64", "Full", expectedFrameworks_iOS_Full);
-			yield return new TestCaseData (ApplePlatform.TVOS, "tvos-arm64", "None", expectedFrameworks_tvOS_None);
-			yield return new TestCaseData (ApplePlatform.TVOS, "tvos-arm64", "Full", expectedFrameworks_tvOS_Full);
-			yield return new TestCaseData (ApplePlatform.MacOSX, "osx-arm64", "None", expectedFrameworks_macOS_None);
-			yield return new TestCaseData (ApplePlatform.MacOSX, "osx-arm64", "Full", expectedFrameworks_macOS_Full);
-			yield return new TestCaseData (ApplePlatform.MacCatalyst, "maccatalyst-x64", "None", expectedFrameworks_MacCatalyst_None);
-			yield return new TestCaseData (ApplePlatform.MacCatalyst, "maccatalyst-x64", "Full", expectedFrameworks_MacCatalyst_Full);
+			yield return new TestCaseData (ApplePlatform.iOS, "ios-arm64", "None", expectedFrameworks_iOS_None_Mono);
+			yield return new TestCaseData (ApplePlatform.iOS, "ios-arm64", "Full", expectedFrameworks_iOS_Full_Mono);
+			yield return new TestCaseData (ApplePlatform.TVOS, "tvos-arm64", "None", expectedFrameworks_tvOS_None_Mono);
+			yield return new TestCaseData (ApplePlatform.TVOS, "tvos-arm64", "Full", expectedFrameworks_tvOS_Full_Mono);
+			yield return new TestCaseData (ApplePlatform.MacCatalyst, "maccatalyst-x64", "None", expectedFrameworks_MacCatalyst_None_Mono);
+			yield return new TestCaseData (ApplePlatform.MacCatalyst, "maccatalyst-x64", "Full", expectedFrameworks_MacCatalyst_Full_Mono);
 		}
 
-		[TestCaseSource (nameof (GetLinkedWithNativeLibrariesTestCases))]
-		public void LinkedWithNativeLibraries (ApplePlatform platform, string runtimeIdentifiers, string linkMode, string [] expectedFrameworks)
+		static IEnumerable<TestCaseData> GetLinkedWithNativeLibrariesTestCases_CoreCLR ()
+		{
+			// Generally speaking, whenever we bind a new framework, we'll have to adjust the LinkMode="None" test cases,
+			// but we shouldn't have to adjust the LinkMode="Full" test cases (which would typically mean that we'll end
+			// up linking with said framework in every app - it's also an indication that we're not trimming away as much
+			// as we want, because just adding an (unused) framework shouldn't make it impossible to trim away all the
+			// code in that framework).
+			//
+			// However, new .NET versions often require updates to both the "None" and "Full lists of frameworks and libraries.
+			//
+
+			yield return new TestCaseData (ApplePlatform.iOS, "ios-arm64", "None", expectedFrameworks_iOS_None_CoreCLR);
+			yield return new TestCaseData (ApplePlatform.iOS, "ios-arm64", "Full", expectedFrameworks_iOS_Full_CoreCLR);
+			yield return new TestCaseData (ApplePlatform.TVOS, "tvos-arm64", "None", expectedFrameworks_tvOS_None_CoreCLR);
+			yield return new TestCaseData (ApplePlatform.TVOS, "tvos-arm64", "Full", expectedFrameworks_tvOS_Full_CoreCLR);
+			yield return new TestCaseData (ApplePlatform.MacOSX, "osx-arm64", "None", expectedFrameworks_macOS_None);
+			yield return new TestCaseData (ApplePlatform.MacOSX, "osx-arm64", "Full", expectedFrameworks_macOS_Full);
+			yield return new TestCaseData (ApplePlatform.MacCatalyst, "maccatalyst-x64", "None", expectedFrameworks_MacCatalyst_None_CoreCLR);
+			yield return new TestCaseData (ApplePlatform.MacCatalyst, "maccatalyst-x64", "Full", expectedFrameworks_MacCatalyst_Full_CoreCLR);
+		}
+
+		[TestCaseSource (nameof (GetLinkedWithNativeLibrariesTestCases_Mono))]
+		public void LinkedWithNativeLibraries_Mono (ApplePlatform platform, string runtimeIdentifiers, string linkMode, string [] expectedFrameworks)
+		{
+			LinkedWithNativeLibraries (platform, runtimeIdentifiers, linkMode, expectedFrameworks, useMonoRuntime: true);
+		}
+
+		[TestCaseSource (nameof (GetLinkedWithNativeLibrariesTestCases_CoreCLR))]
+		public void LinkedWithNativeLibraries_CoreCLR (ApplePlatform platform, string runtimeIdentifiers, string linkMode, string [] expectedFrameworks)
+		{
+			LinkedWithNativeLibraries (platform, runtimeIdentifiers, linkMode, expectedFrameworks, useMonoRuntime: false);
+		}
+
+		void LinkedWithNativeLibraries (ApplePlatform platform, string runtimeIdentifiers, string linkMode, string [] expectedFrameworks, bool useMonoRuntime)
 		{
 			var project = "MySimpleApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -3979,6 +4368,7 @@ namespace Xamarin.Tests {
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			properties ["MtouchLink"] = linkMode;
 			properties ["LinkMode"] = linkMode;
+			properties ["UseMonoRuntime"] = useMonoRuntime ? "true" : "false";
 			if (platform != ApplePlatform.MacOSX)
 				properties ["UseInterpreter"] = "true"; // just to speed up the build
 			DotNet.AssertBuild (project_path, properties);

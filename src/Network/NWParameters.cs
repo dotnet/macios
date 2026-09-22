@@ -29,16 +29,16 @@ namespace Network {
 
 #if !COREBUILD
 		[SupportedOSPlatform ("tvos16.0")]
-		[SupportedOSPlatform ("macos13.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.NetworkLibrary)]
 		static extern OS_nw_parameters nw_parameters_create_application_service ();
 
 		[SupportedOSPlatform ("tvos16.0")]
-		[SupportedOSPlatform ("macos13.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public static NWParameters CreateApplicationService () => new NWParameters (nw_parameters_create_application_service (), true);
 
 		static unsafe BlockLiteral* DEFAULT_CONFIGURATION () => (BlockLiteral*) NWParametersConstants._DefaultConfiguration;
@@ -540,62 +540,62 @@ namespace Network {
 			set => nw_parameters_set_include_peer_to_peer (GetCheckedHandle (), value.AsByte ());
 		}
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.NetworkLibrary)]
 		static extern byte nw_parameters_get_prohibit_constrained (IntPtr parameters);
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_parameters_set_prohibit_constrained (IntPtr parameters, byte prohibit_constrained);
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public bool ProhibitConstrained {
 			get => nw_parameters_get_prohibit_constrained (GetCheckedHandle ()) != 0;
 			set => nw_parameters_set_prohibit_constrained (GetCheckedHandle (), value.AsByte ());
 		}
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_parameters_set_attribution (OS_nw_parameters parameters, NWParametersAttribution attribution);
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.NetworkLibrary)]
 		static extern NWParametersAttribution nw_parameters_get_attribution (OS_nw_parameters parameters);
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public NWParametersAttribution Attribution {
 			get => nw_parameters_get_attribution (GetCheckedHandle ());
 			set => nw_parameters_set_attribution (GetCheckedHandle (), value);
 		}
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_parameters_set_privacy_context (OS_nw_parameters parameters, OS_nw_privacy_context privacy_context);
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public void SetPrivacyContext (NWPrivacyContext privacyContext)
 		{
@@ -603,16 +603,16 @@ namespace Network {
 			GC.KeepAlive (privacyContext);
 		}
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.NetworkLibrary)]
 		static unsafe extern OS_nw_parameters nw_parameters_create_quic (void* configureQuic);
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public unsafe static NWParameters CreateQuic (Action<NWProtocolOptions>? configureQuic = null)
@@ -629,23 +629,23 @@ namespace Network {
 		}
 
 		[SupportedOSPlatform ("tvos16.0")]
-		[SupportedOSPlatform ("macos13.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.NetworkLibrary)]
 		static extern byte nw_parameters_requires_dnssec_validation (OS_nw_parameters parameters);
 
 		[SupportedOSPlatform ("tvos16.0")]
-		[SupportedOSPlatform ("macos13.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_parameters_set_requires_dnssec_validation (OS_nw_parameters parameters, byte requires_dnssec_validation);
 
 		[SupportedOSPlatform ("tvos16.0")]
-		[SupportedOSPlatform ("macos13.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public bool RequiresDnssecValidation {
 			get => nw_parameters_requires_dnssec_validation (GetCheckedHandle ()) != 0;
 			set => nw_parameters_set_requires_dnssec_validation (GetCheckedHandle (), value.AsByte ());

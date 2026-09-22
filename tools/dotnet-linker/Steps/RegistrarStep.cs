@@ -17,6 +17,9 @@ namespace Xamarin.Linker {
 		{
 			var app = Configuration.Application;
 
+			// Always write this item file so that changing registrar modes doesn't leave stale generated registrar sources behind.
+			Configuration.WriteOutputForMSBuild ("_RegistrarFile", new List<MSBuildItem> ());
+
 			switch (app.Registrar) {
 			case RegistrarMode.Dynamic:
 				// Nothing to do here
@@ -52,6 +55,10 @@ namespace Xamarin.Linker {
 					new Dictionary<string, string> {
 						{ "Arch", abi.AsArchString () },
 						{ "Arguments", "-std=c++14" },
+						// The generated code #includes the generated header, so the header
+						// has to be next to the code when it's compiled. Declare it here, so
+						// that it's copied to the Mac when building remotely from Windows.
+						{ "AdditionalDependencies", header },
 					}
 				));
 

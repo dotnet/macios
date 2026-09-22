@@ -269,6 +269,10 @@ namespace ObjCRuntime {
 			}
 		}
 
+		[BindingImpl (BindingImplOptions.Optimizable)]
+		[FeatureSwitchDefinition ("ObjCRuntime.Runtime.HotReloadCompatible")]
+		internal static bool HotReloadCompatible => AppContext.TryGetSwitch ("ObjCRuntime.Runtime.HotReloadCompatible", out var value) && value;
+
 		/// <summary>If dynamic registration is supported.</summary>
 		/// <value>If dynamic registration is supported.</value>
 		/// <remarks>
@@ -1250,9 +1254,8 @@ namespace ObjCRuntime {
 
 		// Completes deferred object_map registration (issue #25861): when 'onlyIfNeeded' is
 		// true, registers the object only if the pointer isn't already present, and leaves
-		// any existing entry untouched. This avoids redundantly re-registering objects that
-		// were registered eagerly (e.g. direct bindings), and avoids clobbering a concurrent
-		// registration (e.g. another object reusing a freed native pointer).
+		// any live existing entry untouched. Dead entries are removed so they don't prevent
+		// registration of a new object for a reused native pointer.
 		internal static void RegisterNSObject (NSObject obj, IntPtr ptr, bool onlyIfNeeded = false)
 		{
 			GCHandle handle;
@@ -1264,11 +1267,18 @@ namespace ObjCRuntime {
 
 			lock (lock_obj) {
 				if (onlyIfNeeded) {
-					if (object_map.ContainsKey (ptr)) {
-						// Already registered; don't touch the existing entry, just free the
-						// handle we speculatively allocated.
-						handle.Free ();
-						return;
+					if (object_map.TryGetValue (ptr, out var existing)) {
+						if (existing.Target is not null) {
+							// Already registered; don't touch the existing entry, just free
+							// the handle we speculatively allocated.
+							handle.Free ();
+							return;
+						}
+
+						// The weak target was collected without the native object dying.
+						// Remove the stale entry before registering the replacement.
+						object_map.Remove (ptr);
+						existing.Free ();
 					}
 				} else {
 					if (object_map.Remove (ptr, out var existing))
@@ -1453,6 +1463,13 @@ namespace ObjCRuntime {
 #if LOG_TRIMMABLE_TYPEMAP
 					Runtime.NSLog ($"ConstructNSObject<{typeof (T).FullName}> (0x{@ptr:X}, {type}) failed to create instance using static interface factory method.");
 #endif
+					if (HotReloadCompatible) {
+						var reflectionCtor = GetIntPtrConstructor (type);
+						if (reflectionCtor is not null) {
+							var argument = reflectionCtor.GetParameters () [0].ParameterType == typeof (IntPtr) ? (object) ptr : new NativeHandle (ptr);
+							return (T?) reflectionCtor.Invoke ([argument]);
+						}
+					}
 					CannotCreateManagedInstanceOfGenericType (ptr, IntPtr.Zero, type, missingCtorResolution, sel, method_handle);
 					return null;
 				}
@@ -1566,6 +1583,24 @@ namespace ObjCRuntime {
 #if LOG_TRIMMABLE_TYPEMAP
 					Runtime.NSLog ($"ConstructINativeObject<{typeof (T).FullName}> (0x{@ptr:X}, {owns}, {type}, {target_type}) failed to create instance using static interface factory method.");
 #endif
+					if (HotReloadCompatible) {
+						if (type.IsSubclassOf (typeof (NSObject))) {
+							var nsObjectCtor = GetIntPtrConstructor (type);
+							if (nsObjectCtor is not null) {
+								var handle = nsObjectCtor.GetParameters () [0].ParameterType == typeof (IntPtr) ? (object) ptr : new NativeHandle (ptr);
+								var instance = (T?) nsObjectCtor.Invoke ([handle]);
+								if (instance is not null && owns)
+									Runtime.TryReleaseINativeObject (instance);
+								return instance;
+							}
+						}
+
+						var reflectionCtor = GetIntPtr_BoolConstructor (type);
+						if (reflectionCtor is not null) {
+							var handle = reflectionCtor.GetParameters () [0].ParameterType == typeof (IntPtr) ? (object) ptr : new NativeHandle (ptr);
+							return (T?) reflectionCtor.Invoke ([handle, owns]);
+						}
+					}
 					CannotCreateManagedInstanceOfGenericType (ptr, IntPtr.Zero, type, missingCtorResolution, sel, method_handle);
 					return default (T);
 				}

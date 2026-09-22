@@ -46,13 +46,13 @@ namespace MediaAccessibility {
 
 	[Static]
 	interface MAVideoAccommodations {
-		[Mac (13, 3), TV (16, 4), iOS (16, 4), MacCatalyst (16, 4)]
+		[TV (16, 4), iOS (16, 4), MacCatalyst (16, 4)]
 		[Notification]
 		[Field ("kMADimFlashingLightsChangedNotification")]
 		NSString DimFlashingLightsChangedNotification { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MAFlashingLightsProcessorResult {
 		[Export ("surfaceProcessed")]
@@ -65,7 +65,7 @@ namespace MediaAccessibility {
 		float IntensityLevel { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MAFlashingLightsProcessor {
 		[Export ("canProcessSurface:")]

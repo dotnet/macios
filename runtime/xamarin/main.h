@@ -130,12 +130,23 @@ extern enum XamarinLaunchMode xamarin_launch_mode;
 extern bool xamarin_supports_dynamic_registration;
 #endif
 extern const char *xamarin_runtime_configuration_name;
+extern int xamarin_runtime_config_property_count;
+extern const char **xamarin_runtime_config_property_keys;
+extern const char **xamarin_runtime_config_property_values;
 extern enum XamarinNativeLinkMode xamarin_libmono_native_link_mode;
 extern const char** xamarin_runtime_libraries;
 extern const char * const *xamarin_trusted_platform_assembly_names;
 #if defined (SUPPORTS_UNIVERSAL_BUILDS)
 extern bool xamarin_is_multi_rid_build;
 #endif
+
+struct xamarin_r2r_module {
+	const char *name;
+	void *header;
+};
+
+extern struct xamarin_r2r_module *xamarin_r2r_modules;
+extern int xamarin_r2r_module_count;
 
 typedef void (*xamarin_setup_callback) ();
 typedef int (*xamarin_extension_main_callback) (int argc, char** argv);

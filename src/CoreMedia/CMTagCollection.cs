@@ -14,8 +14,8 @@ namespace CoreMedia {
 
 	/// <summary>An unordered collection of zero or more <see cref="CMTag" /> values.</summary>
 	[SupportedOSPlatform ("ios17.0")]
-	[SupportedOSPlatform ("maccatalyst17.0")]
-	[SupportedOSPlatform ("macos14.0")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos17.0")]
 	public partial class CMTagCollection : NativeObject {
 #if !COREBUILD

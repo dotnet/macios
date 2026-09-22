@@ -523,8 +523,15 @@ namespace Linker.Shared {
 			method = typeof (Runtime).GetMethod ("GetIsARM64CallingConvention", BindingFlags.Static | BindingFlags.NonPublic)!;
 			instructions = new ILReader (method);
 			Assert.That (instructions.Count (), Is.EqualTo (2), "IL Count");
-			Assert.That (instructions.Skip (0).First ().OpCode, Is.EqualTo (OpCodes.Ldc_I4_0).Or.EqualTo (OpCodes.Ldc_I4_1), "IL 1");
-			Assert.That (instructions.Skip (1).First ().OpCode, Is.EqualTo (OpCodes.Ret), "IL 2");
+			// The method body should be either:
+			// - ldc.i4.X; ret (optimized to a constant by the trimmer feature switch), or
+			// - ldnull; throw (the linker stubbed the body after the value was inlined at all call sites)
+			Assert.That (instructions.Skip (0).First ().OpCode,
+				Is.EqualTo (OpCodes.Ldc_I4_0).Or.EqualTo (OpCodes.Ldc_I4_1).Or.EqualTo (OpCodes.Ldnull), "IL 1");
+			if (instructions.Skip (0).First ().OpCode == OpCodes.Ldnull)
+				Assert.That (instructions.Skip (1).First ().OpCode, Is.EqualTo (OpCodes.Throw), "IL 2 (linker-stubbed)");
+			else
+				Assert.That (instructions.Skip (1).First ().OpCode, Is.EqualTo (OpCodes.Ret), "IL 2");
 
 			// The trimmer knows the value of Runtime.IsARM64CallingConvention (from the feature
 			// switch), so it removes the dead branch in a method that branches on the field.

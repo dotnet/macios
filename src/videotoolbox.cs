@@ -7,6 +7,7 @@
 // Copyright 2014 Xamarin Inc
 //
 using System.Collections.Generic;
+using System.ComponentModel;
 
 using AVFoundation;
 using CoreGraphics;
@@ -96,7 +97,6 @@ namespace VideoToolbox {
 		[Field ("kVTCompressionPropertyKey_Quality")]
 		NSString Quality { get; }
 
-		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("kVTCompressionPropertyKey_TargetQualityForAlpha")]
 		NSString TargetQualityForAlpha { get; }
@@ -134,7 +134,7 @@ namespace VideoToolbox {
 		[Field ("kVTCompressionPropertyKey_Depth")]
 		NSString Depth { get; }
 
-		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 		[Field ("kVTCompressionPropertyKey_PreserveAlphaChannel")]
 		NSString PreserveAlphaChannel { get; }
 
@@ -203,7 +203,7 @@ namespace VideoToolbox {
 		[Field ("kVTCompressionPropertyKey_BaseLayerFrameRate")]
 		NSString BaseLayerFrameRate { get; }
 
-		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 		[Field ("kVTCompressionPropertyKey_ReferenceBufferCount")]
 		NSString ReferenceBufferCount { get; }
 
@@ -286,12 +286,10 @@ namespace VideoToolbox {
 
 		// AlphaChannelMode
 
-		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("kVTCompressionPropertyKey_AlphaChannelMode")]
 		NSString AlphaChannelMode { get; }
 
-		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("kVTCompressionPropertyKey_GammaLevel")]
 		NSString GammaLevel { get; }
@@ -336,19 +334,18 @@ namespace VideoToolbox {
 		[MacCatalyst (13, 1)]
 		NSString EncoderId { get; }
 
-		[NoiOS, NoTV, NoMacCatalyst, Mac (14, 0)]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Field ("kVTCompressionPropertyKey_RecommendedParallelizationLimit")]
 		NSString RecommendedParallelizationLimit { get; }
 
-		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0), Mac (14, 0)]
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 		[Field ("kVTCompressionPropertyKey_RecommendedParallelizedSubdivisionMinimumFrameCount")]
 		NSString RecommendedParallelizedSubdivisionMinimumFrameCount { get; }
 
-		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0), Mac (14, 0)]
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 		[Field ("kVTCompressionPropertyKey_RecommendedParallelizedSubdivisionMinimumDuration")]
 		NSString RecommendedParallelizedSubdivisionMinimumDuration { get; }
 
-		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("kVTCompressionPropertyKey_UsingGPURegistryID")]
 		NSString UsingGpuRegistryId { get; }
@@ -363,11 +360,11 @@ namespace VideoToolbox {
 		[Field ("kVTCompressionPropertyKey_PrioritizeEncodingSpeedOverQuality")]
 		NSString PrioritizeEncodingSpeedOverQuality { get; }
 
-		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 		[Field ("kVTCompressionPropertyKey_ConstantBitRate")]
 		NSString ConstantBitRate { get; }
 
-		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 		[Field ("kVTCompressionPropertyKey_EstimatedAverageBytesPerFrame")]
 		NSString EstimatedAverageBytesPerFrame { get; }
 
@@ -395,7 +392,7 @@ namespace VideoToolbox {
 		[Field ("kVTCompressionPropertyKey_MaxAllowedFrameQP")]
 		NSString MaxAllowedFrameQP { get; }
 
-		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 		[Field ("kVTCompressionPropertyKey_MinAllowedFrameQP")]
 		NSString MinAllowedFrameQP { get; }
 
@@ -403,7 +400,7 @@ namespace VideoToolbox {
 		[Field ("kVTCompressionPropertyKey_SupportsBaseFrameQP")]
 		NSString SupportsBaseFrameQP { get; }
 
-		[TV (15, 4), Mac (12, 3), iOS (15, 4), MacCatalyst (15, 4)]
+		[TV (15, 4), iOS (15, 4), MacCatalyst (15, 4)]
 		[Field ("kVTCompressionPropertyKey_OutputBitDepth")]
 		NSString OutputBitDepth { get; }
 
@@ -423,39 +420,39 @@ namespace VideoToolbox {
 		[Field ("kVTCompressionPropertyKey_SpatialAdaptiveQPLevel")]
 		NSString SpatialAdaptiveQPLevel { get; }
 
-		[iOS (17, 0), NoTV, MacCatalyst (17, 0), Mac (14, 0)]
+		[iOS (17, 0), NoTV, MacCatalyst (17, 0)]
 		[Field ("kVTCompressionPropertyKey_MVHEVCVideoLayerIDs")]
 		NSString MvHevcVideoLayerIds { get; }
 
-		[iOS (17, 0), NoTV, MacCatalyst (17, 0), Mac (14, 0)]
+		[iOS (17, 0), NoTV, MacCatalyst (17, 0)]
 		[Field ("kVTCompressionPropertyKey_MVHEVCViewIDs")]
 		NSString MvHevcViewIds { get; }
 
-		[iOS (17, 0), NoTV, MacCatalyst (17, 0), Mac (14, 0)]
+		[iOS (17, 0), NoTV, MacCatalyst (17, 0)]
 		[Field ("kVTCompressionPropertyKey_MVHEVCLeftAndRightViewIDs")]
 		NSString MvHevcLeftAndRightViewIds { get; }
 
-		[iOS (17, 0), NoTV, MacCatalyst (17, 0), Mac (14, 0)]
+		[iOS (17, 0), NoTV, MacCatalyst (17, 0)]
 		[Field ("kVTCompressionPropertyKey_HeroEye")]
 		NSString HeroEye { get; }
 
-		[iOS (17, 0), NoTV, MacCatalyst (17, 0), Mac (14, 0)]
+		[iOS (17, 0), NoTV, MacCatalyst (17, 0)]
 		[Field ("kVTCompressionPropertyKey_StereoCameraBaseline")]
 		NSString StereoCameraBaseline { get; }
 
-		[iOS (17, 0), NoTV, MacCatalyst (17, 0), Mac (14, 0)]
+		[iOS (17, 0), NoTV, MacCatalyst (17, 0)]
 		[Field ("kVTCompressionPropertyKey_HorizontalDisparityAdjustment")]
 		NSString HorizontalDisparityAdjustment { get; }
 
-		[iOS (17, 0), NoTV, MacCatalyst (17, 0), Mac (14, 0)]
+		[iOS (17, 0), NoTV, MacCatalyst (17, 0)]
 		[Field ("kVTCompressionPropertyKey_HasLeftStereoEyeView")]
 		NSString HasLeftStereoEyeView { get; }
 
-		[iOS (17, 0), NoTV, MacCatalyst (17, 0), Mac (14, 0)]
+		[iOS (17, 0), NoTV, MacCatalyst (17, 0)]
 		[Field ("kVTCompressionPropertyKey_HasRightStereoEyeView")]
 		NSString HasRightStereoEyeView { get; }
 
-		[iOS (17, 0), NoTV, MacCatalyst (17, 0), Mac (14, 0)]
+		[iOS (17, 0), NoTV, MacCatalyst (17, 0)]
 		[Field ("kVTCompressionPropertyKey_HorizontalFieldOfView")]
 		NSString HorizontalFieldOfView { get; }
 
@@ -485,6 +482,14 @@ namespace VideoToolbox {
 		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
 		[Field ("kVTCompressionPropertyKey_SupportedPresetDictionaries")]
 		NSString SupportedPresetDictionaries { get; }
+
+		[TV (27, 0), MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Field ("kVTCompressionPropertyKey_ConstantQualityFactor")]
+		NSString ConstantQualityFactor { get; }
+
+		[TV (27, 0), MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Field ("kVTCompressionPropertyKey_LogTransferFunction")]
+		NSString LogTransferFunction { get; }
 	}
 
 	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
@@ -501,6 +506,10 @@ namespace VideoToolbox {
 
 		[Field ("kVTCompressionPreset_VideoConferencing")]
 		NSString VideoConferencing { get; }
+
+		[TV (27, 0), MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Field ("kVTCompressionPreset_ConsistentQuality")]
+		NSString ConsistentQuality { get; }
 	}
 
 	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
@@ -511,9 +520,11 @@ namespace VideoToolbox {
 		NSDictionary Balanced { get; }
 		NSDictionary HighSpeed { get; }
 		NSDictionary VideoConferencing { get; }
+
+		[TV (27, 0), MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+		NSDictionary ConsistentQuality { get; }
 	}
 
-	[iOS (13, 0), TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	enum VTAlphaChannelMode {
 		[Field ("kVTAlphaChannelMode_StraightAlpha")]
@@ -607,7 +618,7 @@ namespace VideoToolbox {
 		[Export ("Depth")]
 		CMPixelFormat Depth { get; set; }
 
-		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 		[Export ("PreserveAlphaChannel")]
 		bool PreserveAlphaChannel { get; set; }
 
@@ -666,7 +677,7 @@ namespace VideoToolbox {
 		[Export ("BaseLayerFrameRate")]
 		double BaseLayerFrameRate { get; set; }
 
-		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 		[Export ("ReferenceBufferCount")]
 		long ReferenceBufferCount { get; }
 
@@ -743,38 +754,35 @@ namespace VideoToolbox {
 		[Export ("EncoderId")]
 		string EncoderId { get; set; }
 
-		[NoiOS, NoTV, NoMacCatalyst, Mac (14, 0)]
+		[NoiOS, NoTV, NoMacCatalyst]
 		[Export ("RecommendedParallelizationLimit")]
 		int RecommendedParallelizationLimit { get; }
 
-		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0), Mac (14, 0)]
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 		[Export ("RecommendedParallelizedSubdivisionMinimumFrameCount")]
 		ulong RecommendedParallelizedSubdivisionMinimumFrameCount { get; }
 
-		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0), Mac (14, 0)]
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 		[Export ("RecommendedParallelizedSubdivisionMinimumDuration")]
 		NSDictionary RecommendedParallelizedSubdivisionMinimumDuration { get; }
 
-		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("TargetQualityForAlpha")]
 		float TargetQualityForAlpha { get; set; }
 
-		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("GammaLevel")]
 		double GammaLevel { get; set; }
 
-		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("UsingGpuRegistryId")]
 		uint UsingGpuRegistryId { get; }
 
-		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 		[Export ("ConstantBitRate")]
 		long ConstantBitRate { get; set; }
 
-		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 		[Export ("EstimatedAverageBytesPerFrame")]
 		long EstimatedAverageBytesPerFrame { get; }
 
@@ -802,7 +810,7 @@ namespace VideoToolbox {
 		[Export ("MaxAllowedFrameQP")]
 		uint MaxAllowedFrameQP { get; set; }
 
-		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 		[Export ("MinAllowedFrameQP")]
 		uint MinAllowedFrameQP { get; }
 
@@ -810,7 +818,7 @@ namespace VideoToolbox {
 		[Export ("SupportsBaseFrameQP")]
 		bool SupportsBaseFrameQP { get; }
 
-		[TV (15, 4), Mac (12, 3), iOS (15, 4), MacCatalyst (15, 4)]
+		[TV (15, 4), iOS (15, 4), MacCatalyst (15, 4)]
 		[Export ("OutputBitDepth")]
 		bool OutputBitDepth { get; set; }
 
@@ -838,19 +846,19 @@ namespace VideoToolbox {
 		[Export ("SpatialAdaptiveQPLevel")]
 		VTQPModulationLevel /* NSNumber */ SpatialAdaptiveQPLevel { get; }
 
-		[iOS (17, 0), NoTV, MacCatalyst (17, 0), Mac (14, 0)]
+		[iOS (17, 0), NoTV, MacCatalyst (17, 0)]
 		[Export ("MvHevcVideoLayerIds")]
 		NSNumber [] MvHevcVideoLayerIds { get; set; }
 
-		[iOS (17, 0), NoTV, MacCatalyst (17, 0), Mac (14, 0)]
+		[iOS (17, 0), NoTV, MacCatalyst (17, 0)]
 		[Export ("MvHevcViewIds")]
 		NSNumber [] MvHevcViewIds { get; set; }
 
-		[iOS (17, 0), NoTV, MacCatalyst (17, 0), Mac (14, 0)]
+		[iOS (17, 0), NoTV, MacCatalyst (17, 0)]
 		[Export ("MvHevcLeftAndRightViewIds")]
 		NSNumber [] MvHevcLeftAndRightViewIds { get; set; }
 
-		[iOS (17, 0), NoTV, MacCatalyst (17, 0), Mac (14, 0)]
+		[iOS (17, 0), NoTV, MacCatalyst (17, 0)]
 		[Export ("HeroEye")]
 #if XAMCORE_5_0
 		VTHeroEye HeroEye { get; }
@@ -868,23 +876,23 @@ namespace VideoToolbox {
 		VTHeroEye VTHeroEye { get; }
 #endif
 
-		[iOS (17, 0), NoTV, MacCatalyst (17, 0), Mac (14, 0)]
+		[iOS (17, 0), NoTV, MacCatalyst (17, 0)]
 		[Export ("StereoCameraBaseline")]
 		uint StereoCameraBaseline { get; }
 
-		[iOS (17, 0), NoTV, MacCatalyst (17, 0), Mac (14, 0)]
+		[iOS (17, 0), NoTV, MacCatalyst (17, 0)]
 		[Export ("HorizontalDisparityAdjustment")]
 		int HorizontalDisparityAdjustment { get; }
 
-		[iOS (17, 0), NoTV, MacCatalyst (17, 0), Mac (14, 0)]
+		[iOS (17, 0), NoTV, MacCatalyst (17, 0)]
 		[Export ("HasLeftStereoEyeView")]
 		bool HasLeftStereoEyeView { get; set; }
 
-		[iOS (17, 0), NoTV, MacCatalyst (17, 0), Mac (14, 0)]
+		[iOS (17, 0), NoTV, MacCatalyst (17, 0)]
 		[Export ("HasRightStereoEyeView")]
 		bool HasRightStereoEyeView { get; set; }
 
-		[iOS (17, 0), NoTV, MacCatalyst (17, 0), Mac (14, 0)]
+		[iOS (17, 0), NoTV, MacCatalyst (17, 0)]
 		[Export ("HorizontalFieldOfView")]
 		uint HorizontalFieldOfView { get; set; }
 
@@ -914,6 +922,41 @@ namespace VideoToolbox {
 		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
 		[Export ("SupportedPresetDictionaries")]
 		VTCompressionPreset SupportedPresetDictionaries { get; }
+
+		[TV (27, 0), MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Export ("ConstantQualityFactor")]
+		float ConstantQualityFactor { get; set; }
+
+		/// <summary>Gets or sets the log transfer function identifier declared for the compressed content.</summary>
+		/// <value>
+		///   The log curve identifier, or <see langword="null" /> if none is specified.
+		///   Setting this property to <see langword="null" /> removes the dictionary entry.
+		/// </value>
+		/// <remarks>
+		///   Use this property to store or read identifiers without a corresponding <see cref="CMFormatDescriptionLogTransferFunction" /> value.
+		///   See <see cref="LogTransferFunction" /> for the requirements when configuring a compression session.
+		/// </remarks>
+		[TV (27, 0), MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+		// not strongly typed to CMFormatDescriptionLogTransferFunction because other values are allowed as well
+		[Export ("LogTransferFunction")]
+		string WeakLogTransferFunction { get; set; }
+
+		/// <summary>Gets or sets the log transfer function declared for the compressed content.</summary>
+		/// <value>
+		///   The log transfer function, or <see langword="null" /> if none is specified.
+		///   Setting this property to <see langword="null" /> removes the dictionary entry.
+		/// </value>
+		/// <exception cref="NotSupportedException">
+		///   The getter encountered an identifier without a corresponding <see cref="CMFormatDescriptionLogTransferFunction" /> value.
+		/// </exception>
+		/// <remarks>
+		///   When a log transfer function is specified for a <see cref="VTCompressionSession" />,
+		///   source image buffers must have exactly that log transfer function, or encoding fails.
+		///   Use <see cref="WeakLogTransferFunction" /> to access identifiers that are not represented by the enum.
+		/// </remarks>
+		[TV (27, 0), MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Export ("LogTransferFunction")]
+		CMFormatDescriptionLogTransferFunction LogTransferFunction { get; set; }
 	}
 
 	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
@@ -1039,6 +1082,10 @@ namespace VideoToolbox {
 
 		[Field ("kVTProjectionKind_ParametricImmersive")]
 		ParametricImmersive,
+
+		[NoTV, MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Field ("kVTProjectionKind_AppleImmersiveVideo")]
+		AppleImmersiveVideo,
 	}
 
 	[NoTV, MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
@@ -1076,14 +1123,14 @@ namespace VideoToolbox {
 		[Field ("kVTProfileLevel_HEVC_Main10_AutoLevel")]
 		NSString Hevc_Main10_AutoLevel { get; }
 
-		[TV (15, 4), Mac (12, 3), iOS (15, 4), MacCatalyst (15, 4)]
+		[TV (15, 4), iOS (15, 4), MacCatalyst (15, 4)]
 		[Field ("kVTProfileLevel_HEVC_Main42210_AutoLevel")]
 		NSString Hevc_Main42210_AutoLevel { get; }
 
 		[Field ("kVTProfileLevel_HEVC_Monochrome_AutoLevel")]
 		NSString Hevc_Monochrome_AutoLevel { get; }
 
-		[TV (13, 0), iOS (13, 0), MacCatalyst (13, 0)]
+		[MacCatalyst (13, 0)]
 		[Field ("kVTProfileLevel_HEVC_Monochrome10_AutoLevel")]
 		NSString Hevc_Monochrome10_AutoLevel { get; }
 
@@ -1452,12 +1499,10 @@ namespace VideoToolbox {
 		[Export ("EncoderID")]
 		string EncoderID { get; set; }
 
-		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("RequiredEncoderGpuRegistryId")]
 		uint RequiredEncoderGpuRegistryId { get; set; }
 
-		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("PreferredEncoderGpuRegistryId")]
 		uint PreferredEncoderGpuRegistryId { get; set; }
@@ -1488,12 +1533,10 @@ namespace VideoToolbox {
 		[Field ("kVTVideoEncoderSpecification_EncoderID")]
 		NSString EncoderID { get; }
 
-		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("kVTVideoEncoderSpecification_RequiredEncoderGPURegistryID")]
 		NSString RequiredEncoderGpuRegistryId { get; }
 
-		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("kVTVideoEncoderSpecification_PreferredEncoderGPURegistryID")]
 		NSString PreferredEncoderGpuRegistryId { get; }
@@ -1542,7 +1585,7 @@ namespace VideoToolbox {
 
 	[Static]
 	interface VTSampleAttachmentKey {
-		[TV (15, 0), Mac (12, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Field ("kVTSampleAttachmentKey_RequireLTRAcknowledgementToken")]
 		NSString RequireLtrAcknowledgementToken { get; }
 
@@ -1782,7 +1825,6 @@ namespace VideoToolbox {
 		[Field ("kVTDecompressionPropertyKey_PixelFormatsWithReducedResolutionSupport")]
 		NSString PixelFormatsWithReducedResolutionSupport { get; }
 
-		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("kVTDecompressionPropertyKey_UsingGPURegistryID")]
 		NSString UsingGpuRegistryId { get; }
@@ -1801,7 +1843,7 @@ namespace VideoToolbox {
 		[Field ("kVTDecompressionPropertyKey_PropagatePerFrameHDRDisplayMetadata")]
 		NSString PropagatePerFrameHdrDisplayMetadata { get; }
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Field ("kVTDecompressionPropertyKey_GeneratePerFrameHDRDisplayMetadata")]
 		NSString GeneratePerFrameHdrDisplayMetadata { get; }
 
@@ -1817,7 +1859,7 @@ namespace VideoToolbox {
 		[Field ("kVTDecompressionPropertyKey_RequestRAWOutput")]
 		NSString RequestRawWOutput { get; }
 
-		[iOS (17, 0), NoTV, Mac (14, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), NoTV, MacCatalyst (17, 0)]
 		[Field ("kVTDecompressionPropertyKey_RequestedMVHEVCVideoLayerIDs")]
 		NSString RequestedMvHevcVideoLayerIds { get; }
 	}
@@ -1959,7 +2001,6 @@ namespace VideoToolbox {
 		[Export ("PixelTransferProperties")]
 		VTPixelTransferProperties PixelTransferSettings { get; set; }
 
-		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("UsingGpuRegistryId")]
 		uint UsingGpuRegistryId { get; }
@@ -1975,7 +2016,7 @@ namespace VideoToolbox {
 #endif
 
 		[Export ("GeneratePerFrameHdrDisplayMetadata")]
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		bool GeneratePerFrameHdrDisplayMetadata { get; }
 
 		[Export ("AllowBitstreamToChangeFrameDimensions")]
@@ -1990,7 +2031,7 @@ namespace VideoToolbox {
 		[NoiOS, NoTV, NoMacCatalyst, Mac (15, 0)]
 		bool RequestRawWOutput { get; }
 
-		[iOS (17, 0), NoTV, Mac (14, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), NoTV, MacCatalyst (17, 0)]
 		[Export ("RequestedMvHevcVideoLayerIds")]
 		NSNumber [] RequestedMvHevcVideoLayerIds { get; }
 	}
@@ -2230,32 +2271,26 @@ namespace VideoToolbox {
 		[Field ("kVTVideoEncoderList_EncoderName")]
 		NSString EncoderName { get; }
 
-		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("kVTVideoEncoderList_GPURegistryID")]
 		NSString GpuRegistryId { get; }
 
-		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("kVTVideoEncoderList_SupportedSelectionProperties")]
 		NSString SupportedSelectionProperties { get; }
 
-		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("kVTVideoEncoderList_PerformanceRating")]
 		NSString PerformanceRating { get; }
 
-		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("kVTVideoEncoderList_QualityRating")]
 		NSString QualityRating { get; }
 
-		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("kVTVideoEncoderList_InstanceLimit")]
 		NSString InstanceLimit { get; }
 
-		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("kVTVideoEncoderList_IsHardwareAccelerated")]
 		NSString IsHardwareAccelerated { get; }
@@ -2323,7 +2358,6 @@ namespace VideoToolbox {
 		[Export ("DestinationICCProfile")]
 		NSData DestinationICCProfile { get; set; }
 
-		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("RealTime")]
 		bool RealTime { get; set; }
@@ -2439,13 +2473,12 @@ namespace VideoToolbox {
 		[Field ("kVTPixelTransferPropertyKey_DestinationYCbCrMatrix")]
 		NSString DestinationYCbCrMatrix { get; }
 
-		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("kVTPixelTransferPropertyKey_RealTime")]
 		NSString RealTime { get; }
 	}
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+	[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[StrongDictionary ("VTPixelRotationPropertyKeys")]
 	interface VTPixelRotationProperties {
 		[Export ("FlipHorizontalOrientation")]
@@ -2455,7 +2488,7 @@ namespace VideoToolbox {
 		bool FlipVerticalOrientation { get; set; }
 	}
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+	[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[Static]
 	[Advanced]
 	interface VTPixelRotationPropertyKeys {
@@ -2721,7 +2754,7 @@ namespace VideoToolbox {
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("VTSampleAttachmentKey", Suffix = "")]
 	interface VTSampleAttachments {
-		[TV (15, 0), Mac (12, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		NSNumber RequireLtrAcknowledgementToken { get; set; }
 
 		[iOS (17, 4), TV (17, 4), Mac (14, 4), MacCatalyst (17, 4)]
@@ -3178,6 +3211,16 @@ namespace VideoToolbox {
 		[Static]
 		[Export ("supported")]
 		bool Supported { [Bind ("isSupported")] get; }
+
+		[TV (27, 0), MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Static]
+		[Export ("maximumDimensionForSpatialScaleFactor:")]
+		nint GetMaximumDimension (nint spatialScaleFactor);
+
+		[TV (27, 0), MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Static]
+		[Export ("maximumPixelCountForSpatialScaleFactor:")]
+		nint GetMaximumPixelCount (nint spatialScaleFactor);
 	}
 
 	[UnsupportedSimulator ("ios")]
@@ -3219,10 +3262,65 @@ namespace VideoToolbox {
 		[Export ("supported")]
 		bool Supported { [Bind ("isSupported")] get; }
 
+		/// <summary>Gets the spatial scale factors supported by the low-latency super-resolution scaler.</summary>
+		[TV (27, 0), MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Static]
+		[Export ("supportedScaleFactors")]
+		[BindAs (typeof (float []))]
+		NSNumber [] SupportedScaleFactors { get; }
+
+#if XAMCORE_5_0
+		/// <summary>Gets the supported spatial scale factors for the specified source-frame dimensions.</summary>
+		/// <param name="frameWidth">The source-frame width.</param>
+		/// <param name="frameHeight">The source-frame height.</param>
+		/// <returns>The supported spatial scale factors, or an empty array if the dimensions are unsupported.</returns>
 		[Static]
 		[Export ("supportedScaleFactorsForFrameWidth:frameHeight:")]
-		[return: BindAs (typeof (nint []))]
+		[return: BindAs (typeof (float []))]
 		NSNumber [] GetSupportedScaleFactors (nint frameWidth, nint frameHeight);
+#else
+		/// <summary>Gets the supported spatial scale factors as native number objects for the specified source-frame dimensions.</summary>
+		/// <param name="frameWidth">The source-frame width.</param>
+		/// <param name="frameHeight">The source-frame height.</param>
+		/// <returns>The supported spatial scale factors as native number objects, or an empty array if the dimensions are unsupported.</returns>
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Advanced)]
+		[Export ("supportedScaleFactorsForFrameWidth:frameHeight:")]
+		NSNumber [] GetWeakSupportedScaleFactors (nint frameWidth, nint frameHeight);
+
+		/// <summary>Gets the supported spatial scale factors for the specified source-frame dimensions.</summary>
+		/// <param name="frameWidth">The source-frame width.</param>
+		/// <param name="frameHeight">The source-frame height.</param>
+		/// <returns>The supported spatial scale factors with fractional values truncated, or an empty array if the dimensions are unsupported.</returns>
+		[Static]
+		[Advice ("Fractional scale factors are truncated; use 'GetSupportedFloatScaleFactors' instead.")]
+		[Wrap ("Array.ConvertAll (GetWeakSupportedScaleFactors (frameWidth, frameHeight), v => v.NIntValue)")]
+		nint [] GetSupportedScaleFactors (nint frameWidth, nint frameHeight);
+
+		/// <summary>Gets the supported spatial scale factors without truncating fractional values.</summary>
+		/// <param name="frameWidth">The source-frame width.</param>
+		/// <param name="frameHeight">The source-frame height.</param>
+		/// <returns>The supported spatial scale factors, or an empty array if the dimensions are unsupported.</returns>
+		[Static]
+		[Wrap ("Array.ConvertAll (GetWeakSupportedScaleFactors (frameWidth, frameHeight), v => v.FloatValue)")]
+		float [] GetSupportedFloatScaleFactors (nint frameWidth, nint frameHeight);
+#endif
+
+		/// <summary>Gets the maximum source-frame dimension for a spatial scale factor.</summary>
+		/// <param name="spatialScaleFactor">The spatial scale factor to query.</param>
+		/// <returns>The maximum dimension in pixels, or zero if the scale factor or processor is unsupported.</returns>
+		[TV (27, 0), MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Static]
+		[Export ("maximumDimensionForSpatialScaleFactor:")]
+		nint GetMaximumDimension (float spatialScaleFactor);
+
+		/// <summary>Gets the maximum source-frame pixel count for a spatial scale factor.</summary>
+		/// <param name="spatialScaleFactor">The spatial scale factor to query.</param>
+		/// <returns>The maximum pixel count, or zero if the scale factor or processor is unsupported.</returns>
+		[TV (27, 0), MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Static]
+		[Export ("maximumPixelCountForSpatialScaleFactor:")]
+		nint GetMaximumPixelCount (float spatialScaleFactor);
 	}
 
 	[UnsupportedSimulator ("ios")]
@@ -3277,10 +3375,29 @@ namespace VideoToolbox {
 		[Export ("supported")]
 		bool Supported { [Bind ("isSupported")] get; }
 
+#if XAMCORE_5_0
+		/// <summary>Gets the spatial scale factors supported by the super-resolution scaler.</summary>
 		[Static]
 		[Export ("supportedScaleFactors")]
-		[BindAs (typeof (float []))]
+		[BindAs (typeof (nint []))]
 		NSNumber [] SupportedScaleFactors { get; }
+#else
+		/// <summary>Gets the spatial scale factors supported by the super-resolution scaler as native number objects.</summary>
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Advanced)]
+		[Export ("supportedScaleFactors")]
+		NSNumber [] WeakSupportedScaleFactors { get; }
+
+		/// <summary>Gets the integral spatial scale factors as floating-point values for binary compatibility.</summary>
+		[Static]
+		[Wrap ("Array.ConvertAll (WeakSupportedScaleFactors, v => v.FloatValue)")]
+		float [] SupportedScaleFactors { get; }
+
+		/// <summary>Gets the spatial scale factors using the native integer type from the platform declaration.</summary>
+		[Static]
+		[Wrap ("Array.ConvertAll (WeakSupportedScaleFactors, v => v.NIntValue)")]
+		nint [] SupportedIntegerScaleFactors { get; }
+#endif
 	}
 
 	delegate void VTSuperResolutionScalerConfigurationDownloadConfigurationModelCallback ([NullAllowed] NSError error);

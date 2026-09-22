@@ -54,6 +54,8 @@ struct Block_literal {
 
 struct Xamarin_block_descriptor *  xamarin_get_block_descriptor ();
 
+// Workaround for https://github.com/dotnet/runtime/issues/126299
+int32_t SystemNative_IsATty (intptr_t fd);
 
 #ifdef __cplusplus
 } /* extern "C" */

@@ -148,8 +148,74 @@
 	<Target
 		Name="_PrepareRunMobile"
 		BeforeTargets="ComputeRunArguments"
-		DependsOnTargets="_ValidateHotReloadConfiguration;_InstallMobile;ComputeMlaunchRunArguments"
+		DependsOnTargets="_ValidateHotReloadConfiguration;_InstallMobile;_CopyStartupHooksToDevice;ComputeMlaunchRunArguments"
 		Condition="'$(SdkIsDesktop)' != 'true'">
+	</Target>
+
+	<!--
+		When running under 'dotnet watch' on a physical device, the hot reload startup
+		hook DLL (DOTNET_STARTUP_HOOKS) needs to be on the device, not on the Mac.
+		Copy it to the device's app data container using 'xcrun devicectl', and update
+		the DOTNET_STARTUP_HOOKS environment variable to use the on-device path.
+		Also pass the hot reload WebSocket endpoint to mlaunch so it can set up port forwarding.
+	-->
+	<Target
+		Name="_CopyStartupHooksToDevice"
+		DependsOnTargets="_ValidateHotReloadConfiguration;_InstallMobile;_ReadAppManifest"
+		Condition="'$(SdkIsDevice)' == 'true'">
+
+		<ItemGroup>
+			<_DotNetWatchVariable Include="@(RuntimeEnvironmentVariable)" Condition="'%(Identity)' == 'DOTNET_WATCH' And '%(Value)' == '1'" />
+		</ItemGroup>
+
+		<ItemGroup Condition="'@(_DotNetWatchVariable)' != ''">
+			<_StartupHooksVariable Include="@(RuntimeEnvironmentVariable)" Condition="'%(Identity)' == 'DOTNET_STARTUP_HOOKS'" />
+			<_WebSocketVariable Include="@(RuntimeEnvironmentVariable)" Condition="'%(Identity)' == 'DOTNET_WATCH_HOTRELOAD_WEBSOCKET_ENDPOINT'" />
+		</ItemGroup>
+
+		<PropertyGroup Condition="'@(_StartupHooksVariable)' != ''">
+			<_StartupHooksPath>@(_StartupHooksVariable->'%(Value)')</_StartupHooksPath>
+			<_StartupHooksFilename>$([System.IO.Path]::GetFileName('$(_StartupHooksPath)'))</_StartupHooksFilename>
+		</PropertyGroup>
+
+		<!-- Copy the startup hooks DLL to the device's app data container, and get its on-device path -->
+		<DeviceCtl
+			Condition="'$(_StartupHooksPath)' != '' And '$(Device)' != ''"
+			SdkDevPath="$(_SdkDevPath)"
+			Device="$(Device)"
+			CopySource="$(_StartupHooksPath)"
+			CopyDestination="tmp/$(_StartupHooksFilename)"
+			DomainType="appDataContainer"
+			DomainIdentifier="$(_BundleIdentifier)">
+			<Output TaskParameter="CopiedDevicePath" PropertyName="_OnDeviceStartupHooksPath" />
+		</DeviceCtl>
+
+		<!-- Update the DOTNET_STARTUP_HOOKS env var to the on-device path -->
+		<ItemGroup Condition="'$(_OnDeviceStartupHooksPath)' != ''">
+			<RuntimeEnvironmentVariable Remove="DOTNET_STARTUP_HOOKS" />
+			<RuntimeEnvironmentVariable Include="DOTNET_STARTUP_HOOKS">
+				<Value>$(_OnDeviceStartupHooksPath)</Value>
+			</RuntimeEnvironmentVariable>
+		</ItemGroup>
+
+		<!-- Set up hot reload forwarding for the WebSocket connection: pass the endpoint URL to
+		     mlaunch (which extracts the port) so the device can connect back to the Mac. -->
+		<PropertyGroup Condition="'@(_WebSocketVariable)' != ''">
+			<_HotReloadUrl>@(_WebSocketVariable->'%(Value)')</_HotReloadUrl>
+			<!-- How the device connects back to the mac for hot reload: usb (default) or wifi. -->
+			<_HotReloadConnectionMode Condition="'$(HotReloadConnectionMode)' != ''">$(HotReloadConnectionMode)</_HotReloadConnectionMode>
+			<_HotReloadConnectionMode Condition="'$(_HotReloadConnectionMode)' == ''">usb</_HotReloadConnectionMode>
+		</PropertyGroup>
+
+		<ItemGroup Condition="'@(_WebSocketVariable)' != ''">
+			<MlaunchAdditionalArguments Include="--hotreload-url=$(_HotReloadUrl)" />
+			<MlaunchAdditionalArguments Include="--hotreload-connection-mode=$(_HotReloadConnectionMode)" />
+			<MlaunchAdditionalArguments Include="--hotreload-connection-port=$(IOSDebuggerPort)" Condition="'$(IOSDebuggerPort)' != ''" />
+			<!-- Enable hot reload startup hook logging so we can diagnose connection issues -->
+			<RuntimeEnvironmentVariable Include="HOTRELOAD_DELTA_CLIENT_LOG_MESSAGES">
+				<Value>[hot-reload]</Value>
+			</RuntimeEnvironmentVariable>
+		</ItemGroup>
 	</Target>
 
 	<!--

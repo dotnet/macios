@@ -85,9 +85,9 @@ namespace Security {
 			}
 		}
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.SecurityLibrary)]
 		unsafe static extern byte sec_identity_access_certificates (IntPtr identity, BlockLiteral* block);
@@ -100,9 +100,9 @@ namespace Security {
 				del (new SecCertificate2 (cert, false));
 		}
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		// no [Async] as it can be called multiple times
 		[BindingImpl (BindingImplOptions.Optimizable)]

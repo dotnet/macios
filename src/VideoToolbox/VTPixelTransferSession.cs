@@ -16,7 +16,7 @@ using CoreVideo;
 namespace VideoToolbox {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios16.0")]
-	[SupportedOSPlatform ("maccatalyst16.0")]
+	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("tvos16.0")]
 	public class VTPixelTransferSession : VTSession {
 

@@ -24,7 +24,6 @@ namespace AVKit {
 	// The version of the AVError.h header file in the tvOS SDK is much newer than in the iOS SDKs,
 	// (copyright 2016 vs 2019), so this is reflecting the tvOS SDK.
 	/// <summary>Enumeration of error states that can occur while using AVKit.</summary>
-	[TV (13, 0)]
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	[Native]
@@ -44,7 +43,6 @@ namespace AVKit {
 
 	[NoTV]
 	[NoMac]
-	[iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum AVAudioSessionRouteSelection : long {
@@ -78,6 +76,37 @@ namespace AVKit {
 		Legible = 1L << 0,
 		CaptionAppearance = 1L << 1,
 		All = Legible | CaptionAppearance,
+	}
+
+	[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+	[Native]
+	public enum AVPlaybackUserInterfacePlaybackState : long {
+		Normal = 0,
+		Scanning,
+		Scrubbing,
+	}
+
+	[Flags]
+	[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+	[Native]
+	public enum AVPlaybackUserInterfaceSeekCapabilities : ulong {
+		None = 0,
+		ScanForward = 1uL << 0,
+		ScanBackward = 1uL << 1,
+		Seek = 1uL << 2,
+	}
+
+	[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+	[Native]
+	public enum AVPlaybackUserInterfaceTimelineSegmentType : long {
+		Primary = 0,
+		Advertisement,
+		Bonus,
+		Credits,
+		Intro,
+		Recap,
+		Trailer,
+		Other,
 	}
 
 }

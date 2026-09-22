@@ -63,6 +63,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.DetectDebugNetworkConfiguration" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.DetectSdkLocations" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.DetectSigningIdentity" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.DeviceCtl" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.Ditto" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.DSymUtil" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.EmbedProvisionProfile" AssemblyFile="$(_TaskAssemblyName)" />
@@ -81,6 +82,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.Metal" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.MetalLib" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.OptimizeImage" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.OptimizeLocalization" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.OptimizePropertyList" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.PackLibraryResources" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ParseBundlerArguments" AssemblyFile="$(_TaskAssemblyName)" />
@@ -88,6 +90,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.PrepareAssemblies" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.PrepareNativeReferences" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.PrepareResourceRules" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ProcessRuntimeLibraries" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.PropertyListEditor" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ReadAppManifest" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ReadItemsFromFile" AssemblyFile="$(_TaskAssemblyName)" />
@@ -97,6 +100,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.SmartCopy" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.SpotlightIndexer" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.StripFrameworkHeaders" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.StripMergeableLibraryMetadata" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.SymbolStrip" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.TextureAtlas" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.UnpackLibraryResources" AssemblyFile="$(_TaskAssemblyName)" />
@@ -422,6 +426,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 		<CollectBundleResourcesDependsOn>
 			$(CollectBundleResourcesDependsOn);
+			_ValidateResourcePrefixCount;
 			_DetectBuildType;
 			_ComputeTargetArchitectures;
 			_ComputeTargetFrameworkMoniker;
@@ -440,6 +445,11 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			_SetResourceMetadata;
 		</CollectBundleResourcesDependsOn>
 	</PropertyGroup>
+
+	<!-- Validate that the number of resource prefixes doesn't exceed the supported limit of 3. -->
+	<Target Name="_ValidateResourcePrefixCount" Condition="'$(_ResourcePrefixCount)' != '' And $(_ResourcePrefixCount) &gt; 3">
+		<Error Text="AppBundleResourcePrefix supports up to 3 semicolon-separated paths, but $(_ResourcePrefixCount) were specified: '$(_ResourcePrefix)'. Please reduce the number of resource prefix paths." />
+	</Target>
 
 	<Target Name="_CollectBundleResources" DependsOnTargets="$(CollectBundleResourcesDependsOn)">
 		<!-- For multi-RID builds, we first build once for each RuntimeIdentifier, then build again to create a universal app bundle.
@@ -472,6 +482,13 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			>
 			<Output TaskParameter="BundleResourcesWithLogicalNames" ItemName="_BundleResourceWithLogicalName" />
 		</CollectBundleResources>
+		<ItemGroup>
+			<!-- Resources embedded in their original form must use the consuming app's optimization settings. -->
+			<_BundleResourceWithLogicalName Update="@(_BundleResourceWithLogicalName)" Condition="'%(_BundleResourceWithLogicalName.IsOriginalResource)' == 'true'">
+				<Optimize Condition="'%(_BundleResourceWithLogicalName.Extension)' == '.png'">$(OptimizePNGs)</Optimize>
+				<Optimize Condition="'%(_BundleResourceWithLogicalName.Extension)' == '.plist' Or '%(_BundleResourceWithLogicalName.Extension)' == '.strings'">$(OptimizePropertyLists)</Optimize>
+			</_BundleResourceWithLogicalName>
+		</ItemGroup>
 
 		<!-- Write out the list of assets we've processed, so that an inner build in a multi-rid build can skip processing them.
 		     Items with a PublishFolderType are not actually processed by CollectBundleResources (they go to ResolvedFileToPublish instead),
@@ -584,9 +601,10 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		    * An Info.plist in their project file (by using a `None` item with filename "Info.plist" or with a `Link` metadata with filename "Info.plist"). We figure this out in the DetectAppManifest target.
 		    * A partial plist in their project (using the `PartialAppManifest` item group). Developers can add targets to the public CollectAppManifestsDependsOn
 		      property to run targets that add to the `PartialAppManifest` item group before we process them.
+		    * Individual entries in the `AppManifestEntry` item group.
 		    * Some MSBuild properties can also add values.
 
-		    The precedence is: MSBuild properties can be overridden by the Info.plist, which can be overridden by a partial plist (a partial plist can also specify the "Overwrite=false" metadata to not overwrite any existing entries).
+		    The precedence is: MSBuild properties can be overridden by the Info.plist, which can be overridden by a partial plist (a partial plist can also specify the "Overwrite=false" metadata to not overwrite any existing entries), which can be overridden by an AppManifestEntry item.
 
 		2. In the `CompileAppManifest` target we get all the inputs from above, and compute a temporary app manifest, which is written to a temporary output file.
 
@@ -623,7 +641,16 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<Target Name="_CompileAppManifestInputs" Condition="'$(IsMacEnabled)' == 'true'" >
 		<ItemGroup>
 			<_FontFilesToRegister Include="@(BundleResource)" Condition="'%(BundleResource.RegisterFont)' == 'true'" />
+			<_AppManifestEntryToHash Include="@(AppManifestEntry)" />
+			<_AppManifestEntryHashMetadata Include="Identity;Type;Value;ArraySeparator" />
 		</ItemGroup>
+		<ComputeHashForItems
+			Input="@(_AppManifestEntryToHash)"
+			InputMetadata="@(_AppManifestEntryHashMetadata)"
+			OutputMetadata="_Hash"
+			>
+			<Output TaskParameter="Output" ItemName="_AppManifestEntryWithHash" />
+		</ComputeHashForItems>
 
 		<PropertyGroup>
 			<_CompileAppManifestInputFile>$(DeviceSpecificIntermediateOutputPath)_CompileAppManifest.inputs</_CompileAppManifestInputFile>
@@ -638,6 +665,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<_CompileAppManifestInputLine Include="ApplicationTitle=$(ApplicationTitle)" />
 			<_CompileAppManifestInputLine Include="ApplicationVersion=$(ApplicationVersion)" />
 			<_CompileAppManifestInputLine Include="AppManifest=$(AppBundleManifest)" />
+			<_CompileAppManifestInputLine Include="AppManifestEntry=%(_AppManifestEntryWithHash._Hash)" />
 			<_CompileAppManifestInputLine Include="CompiledAppManifest=$(_TemporaryAppManifest)" />
 			<_CompileAppManifestInputLine Include="DefaultSdkVersion=$(_SdkVersion)" />
 			<_CompileAppManifestInputLine Include="FontFilesToRegister=$(_CompileAppManifestFontFilesToRegister)" />
@@ -688,6 +716,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			ApplicationTitle="$(ApplicationTitle)"
 			ApplicationVersion="$(ApplicationVersion)"
 			AppManifest="$(AppBundleManifest)"
+			AppManifestEntries="@(AppManifestEntry)"
 			BundleExecutable="$(_NativeExecutableName)"
 			CompiledAppManifest="$(_TemporaryAppManifest)"
 			DefaultSdkVersion="$(_SdkVersion)"
@@ -1376,9 +1405,22 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		</ItemGroup>
 	</Target>
 
+	<PropertyGroup>
+		<_ComputeBundleResourceOutputPathsDependsOn>
+			$(_ComputeBundleResourceOutputPathsDependsOn);
+			_CollectBundleResources;
+			_OptimizePngImages;
+			_OptimizePropertyLists;
+			_OptimizeLocalizationFiles;
+			_GenerateBundleName;
+			_DetectSigningIdentity;
+			_ReadAppManifest;
+		</_ComputeBundleResourceOutputPathsDependsOn>
+	</PropertyGroup>
+
 	<Target Name="_ComputeBundleResourceOutputPaths"
 		Condition="'$(_CanOutputAppBundle)' == 'true'"
-		DependsOnTargets="_CollectBundleResources;_GenerateBundleName;_DetectSigningIdentity;_ReadAppManifest">
+		DependsOnTargets="$(_ComputeBundleResourceOutputPathsDependsOn)">
 		<ComputeBundleResourceOutputPaths
 			SessionId="$(BuildSessionId)"
 			Condition="'$(IsMacEnabled)' == 'true'"
@@ -1725,6 +1767,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<!-- Optimize png images -->
 
 	<PropertyGroup>
+		<_StripPngText Condition="'$(_PlatformName)' != 'macOS'">true</_StripPngText>
 		<OptimizePngImagesDependsOn>
 			_CollectPngImages;
 			_CoreOptimizePngImages;
@@ -1735,9 +1778,10 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<Target Name="_OptimizePngImages" DependsOnTargets="$(OptimizePngImagesDependsOn)" />
 
 	<Target Name="_CollectPngImages" DependsOnTargets="_CollectBundleResources">
-		<CreateItem Include="@(_BundleResourceWithLogicalName)" Condition="'%(_BundleResourceWithLogicalName.Extension)' == '.png' And '%(_BundleResourceWithLogicalName.Optimize)' == 'true'">
-			<Output TaskParameter="Include" ItemName="_PngImage" />
-		</CreateItem>
+		<ItemGroup>
+			<_PngImage Include="@(_BundleResourceWithLogicalName)" Condition="'%(_BundleResourceWithLogicalName.Extension)' == '.png' And '%(_BundleResourceWithLogicalName.Optimize)' == 'true'" />
+			<FileWrites Include="@(_PngImage -> '$(DeviceSpecificIntermediateOutputPath)optimized\%(LogicalName)')" />
+		</ItemGroup>
 	</Target>
 
 	<Target Name="_CoreOptimizePngImages"
@@ -1750,20 +1794,20 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			Condition="'$(IsMacEnabled)' == 'true'"
 			PngCrushPath="$(PngcrushPath)"
 			SdkDevPath="$(_SdkDevPath)"
+			StripPngText="$(_StripPngText)"
 			InputImages="@(_PngImage)"
-			OutputImages="@(_PngImage -> '$(DeviceSpecificIntermediateOutputPath)optimized\%(LogicalName)')">
-			<Output TaskParameter="OutputImages" ItemName="FileWrites" />
-		</OptimizeImage>
+			OutputImages="@(_PngImage -> '$(DeviceSpecificIntermediateOutputPath)optimized\%(LogicalName)')" />
 	</Target>
 
 	<Target Name="_AfterCoreOptimizePngImages" Condition="'@(_PngImage)' != ''">
 		<ItemGroup>
 			<_BundleResourceWithLogicalName Remove="@(_PngImage)" />
+			<_BundleResourceWithLogicalName Include="$(DeviceSpecificIntermediateOutputPath)optimized\%(_PngImage.LogicalName)">
+				<LogicalName>%(_PngImage.LogicalName)</LogicalName>
+				<Optimize>false</Optimize>
+				<ResourceTags>%(_PngImage.ResourceTags)</ResourceTags>
+			</_BundleResourceWithLogicalName>
 		</ItemGroup>
-
-		<CreateItem Include="$(DeviceSpecificIntermediateOutputPath)optimized\%(_PngImage.LogicalName)" AdditionalMetadata="LogicalName=%(_PngImage.LogicalName);Optimize='false';ResourceTags=%(_PngImage.ResourceTags)">
-			<Output TaskParameter="Include" ItemName="_BundleResourceWithLogicalName" />
-		</CreateItem>
 	</Target>
 
 	<!-- Optimize property lists -->
@@ -1779,24 +1823,19 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<Target Name="_OptimizePropertyLists" DependsOnTargets="$(OptimizePropertyListsDependsOn)" />
 
 	<Target Name="_CollectPropertyLists" DependsOnTargets="_CollectBundleResources">
-		<CreateItem Include="@(_BundleResourceWithLogicalName)" Condition="'%(_BundleResourceWithLogicalName.Extension)' == '.plist' And '%(_BundleResourceWithLogicalName.Optimize)' == 'true'">
-			<Output TaskParameter="Include" ItemName="_PropertyList" />
-		</CreateItem>
 		<ItemGroup>
-			<FileWrites Include="$(DeviceSpecificIntermediateOutputPath)optimized\%(_PropertyList.LogicalName)" />
+			<_PropertyList Include="@(_BundleResourceWithLogicalName)" Condition="'%(_BundleResourceWithLogicalName.Extension)' == '.plist' And '%(_BundleResourceWithLogicalName.Optimize)' == 'true'" />
+			<FileWrites Include="@(_PropertyList -> '$(DeviceSpecificIntermediateOutputPath)optimized\%(LogicalName)')" />
 		</ItemGroup>
 	</Target>
 
 	<Target Name="_CoreOptimizePropertyLists"
-		DependsOnTargets="_CollectPropertyLists;_DetectSdkLocations"
+		DependsOnTargets="_CollectPropertyLists"
 		Inputs="@(_PropertyList)"
 		Outputs="$(DeviceSpecificIntermediateOutputPath)optimized\%(_PropertyList.LogicalName)"
 		>
 
 		<OptimizePropertyList
-			SessionId="$(BuildSessionId)"
-			Condition="'$(IsMacEnabled)' == 'true'"
-			PlutilPath="$(PlutilPath)"
 			Input="%(_PropertyList.Identity)"
 			Output="$(DeviceSpecificIntermediateOutputPath)optimized\%(_PropertyList.LogicalName)">
 		</OptimizePropertyList>
@@ -1805,11 +1844,11 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<Target Name="_AfterCoreOptimizePropertyLists" Condition="'@(_PropertyList)' != ''">
 		<ItemGroup>
 			<_BundleResourceWithLogicalName Remove="@(_PropertyList)" />
+			<_BundleResourceWithLogicalName Include="$(DeviceSpecificIntermediateOutputPath)optimized\%(_PropertyList.LogicalName)">
+				<LogicalName>%(_PropertyList.LogicalName)</LogicalName>
+				<Optimize>false</Optimize>
+			</_BundleResourceWithLogicalName>
 		</ItemGroup>
-
-		<CreateItem Include="$(DeviceSpecificIntermediateOutputPath)optimized\%(_PropertyList.LogicalName)" AdditionalMetadata="LogicalName=%(_PropertyList.LogicalName);Optimize='false'">
-			<Output TaskParameter="Include" ItemName="_BundleResourceWithLogicalName" />
-		</CreateItem>
 	</Target>
 
 	<!-- Optimize localization files (*.strings) -->
@@ -1825,11 +1864,9 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<Target Name="_OptimizeLocalizationFiles" DependsOnTargets="$(OptimizeLocalizationFilesDependsOn)" />
 
 	<Target Name="_CollectLocalizationFiles" DependsOnTargets="_CollectBundleResources">
-		<CreateItem Include="@(_BundleResourceWithLogicalName)" Condition="'%(_BundleResourceWithLogicalName.Extension)' == '.strings' And '%(_BundleResourceWithLogicalName.Optimize)' == 'true'">
-			<Output TaskParameter="Include" ItemName="_LocalizationFile" />
-		</CreateItem>
 		<ItemGroup>
-			<FileWrites Include="$(DeviceSpecificIntermediateOutputPath)optimized\%(_LocalizationFile.LogicalName)" />
+			<_LocalizationFile Include="@(_BundleResourceWithLogicalName)" Condition="'%(_BundleResourceWithLogicalName.Extension)' == '.strings' And '%(_BundleResourceWithLogicalName.Optimize)' == 'true'" />
+			<FileWrites Include="@(_LocalizationFile -> '$(DeviceSpecificIntermediateOutputPath)optimized\%(LogicalName)')" />
 		</ItemGroup>
 	</Target>
 
@@ -1839,23 +1876,23 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		Outputs="$(DeviceSpecificIntermediateOutputPath)optimized\%(_LocalizationFile.LogicalName)"
 		>
 
-		<OptimizePropertyList
+		<OptimizeLocalization
 			SessionId="$(BuildSessionId)"
 			Condition="'$(IsMacEnabled)' == 'true'"
 			PlutilPath="$(PlutilPath)"
 			Input="%(_LocalizationFile.Identity)"
 			Output="$(DeviceSpecificIntermediateOutputPath)optimized\%(_LocalizationFile.LogicalName)">
-		</OptimizePropertyList>
+		</OptimizeLocalization>
 	</Target>
 
 	<Target Name="_AfterCoreOptimizeLocalizationFiles" Condition="'@(_LocalizationFile)' != ''">
 		<ItemGroup>
 			<_BundleResourceWithLogicalName Remove="@(_LocalizationFile)" />
+			<_BundleResourceWithLogicalName Include="$(DeviceSpecificIntermediateOutputPath)optimized\%(_LocalizationFile.LogicalName)">
+				<LogicalName>%(_LocalizationFile.LogicalName)</LogicalName>
+				<Optimize>false</Optimize>
+			</_BundleResourceWithLogicalName>
 		</ItemGroup>
-
-		<CreateItem Include="$(DeviceSpecificIntermediateOutputPath)optimized\%(_LocalizationFile.LogicalName)" AdditionalMetadata="LogicalName=%(_LocalizationFile.LogicalName);Optimize='false'">
-			<Output TaskParameter="Include" ItemName="_BundleResourceWithLogicalName" />
-		</CreateItem>
 	</Target>
 
 	<PropertyGroup Condition="'$(IsBindingProject)' == 'true'">
@@ -2162,6 +2199,9 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		<_PackLibraryResourcesDependsOn Condition="'$(_BundleOriginalResources)' != 'true'">
 			$(_PackLibraryResourcesDependsOn);
 			_CollectBundleResources;
+			_OptimizePngImages;
+			_OptimizePropertyLists;
+			_OptimizeLocalizationFiles;
 		</_PackLibraryResourcesDependsOn>
 		<_PackLibraryResourcesDependsOn Condition="'$(_BundleOriginalResources)' == 'true'">
 			$(_PackLibraryResourcesDependsOn);
@@ -2369,6 +2409,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 		<ItemGroup>
 			<_BundlerEnvironmentVariables Condition="'$(MonoUseCompressedInterfaceBitmap)' == 'true'" Include="MONO_COMPRESSED_INTERFACE_BITMAP" Value="1" />
+			<_BundlerEnvironmentVariables Condition="'$(EnableCrashReport)' == 'true'" Include="DOTNET_EnableCrashReport" Value="1" />
 		</ItemGroup>
 
 		<ParseBundlerArguments
@@ -2861,7 +2902,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			Properties="%(_AppExtensionReferenceWithConfigurationExistent.SetConfiguration); %(_AppExtensionReferenceWithConfigurationExistent.SetPlatform)"
 			Condition="'@(_AppExtensionReferenceWithConfigurationExistent)' != '' and '$(_BuildReferencedExtensionProjects)' != 'true'">
 
-			<Output TaskParameter="TargetOutputs" ItemName="_ResolvedAppExtensionReferences" Condition="'%(_AppExtensionReferenceWithConfigurationExistent.ReferenceOutputAssembly)' != 'false'"/>
+			<Output TaskParameter="TargetOutputs" ItemName="_ResolvedAppExtensionReferences" />
 		</MSBuild>
 
 		<!-- Build the referenced project if required -->
@@ -2871,7 +2912,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			Properties="%(_AppExtensionReferenceWithConfigurationExistent.SetConfiguration); %(_AppExtensionReferenceWithConfigurationExistent.SetPlatform)"
 			Condition="'@(_AppExtensionReferenceWithConfigurationExistent)' != '' and '$(_BuildReferencedExtensionProjects)' == 'true' ">
 
-			<Output TaskParameter="TargetOutputs" ItemName="_ResolvedAppExtensionReferences" Condition="'%(_AppExtensionReferenceWithConfigurationExistent.ReferenceOutputAssembly)' != 'false'"/>
+			<Output TaskParameter="TargetOutputs" ItemName="_ResolvedAppExtensionReferences" />
 		</MSBuild>
 
 		<Warning Text="Referenced $(_PlatformName) App Extension Project %(_AppExtensionReferenceWithConfigurationNonExistent.Identity) not found, ignoring."
@@ -3105,17 +3146,19 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 				<!-- This is the name of the dSYM that will be created (if that's the case) -->
 				<DSymName>%(Filename)%(Extension).framework.dSYM</DSymName>
 			</_PostProcessingItem>
-			<!-- Compute the app-bundle-relative path for each dynamic native library, so that dsymutil and
-			     symbol stripping target the file's actual location in the app bundle (which may include a
-			     subdirectory). Mirror the logic in the '_ComputeDynamicLibrariesToPublish' target: use the
-			     'RelativePath' metadata when it's set (normalizing directory separators to forward slashes),
-			     otherwise fall back to the default (top-level) bundle location. Ref: https://github.com/dotnet/macios/issues/21553 -->
-			<_DynamicNativeReferenceToPostProcess Include="@(_FileNativeReference)" Condition="'%(_FileNativeReference.Kind)' == 'Dynamic'">
-				<BundleRelativePath Condition="'%(_FileNativeReference.RelativePath)' != ''">$([System.String]::Copy('%(_FileNativeReference.RelativePath)').Replace('\', '/'))</BundleRelativePath>
-				<BundleRelativePath Condition="'%(_FileNativeReference.RelativePath)' == ''">$(_AppContentsRelativePathForPostProcessing)%(Filename)%(Extension)</BundleRelativePath>
-			</_DynamicNativeReferenceToPostProcess>
+			<!-- Use ComputedRelativePath for dynamic native references to preserve any subdirectory structure.
+			     Using %(Filename)%(Extension) alone would lose subdirectory paths (e.g., subdir/libframework.so becomes libframework.so). -->
 			<!-- add dylibs, with the path relative to the app bundle -->
-			<_PostProcessingItem Include="@(_DynamicNativeReferenceToPostProcess->'$(_AppBundleName)$(AppBundleExtension)/%(BundleRelativePath)')">
+			<_PostProcessingItem Include="@(_FileNativeReference->'$(_AppBundleName)$(AppBundleExtension)/%(ComputedRelativePath)')" Condition="'%(_FileNativeReference.Kind)' == 'Dynamic' And '%(_FileNativeReference.ComputedRelativePath)' != ''">
+				<!-- Store where this item came from -->
+				<ItemSourcePath>%(Identity)</ItemSourcePath>
+				<!-- If the item in question came with a .dSYM directory, this would be the path to it: -->
+				<dSYMSourcePath>%(Identity).dSYM</dSYMSourcePath>
+				<!-- This is the name of the dSYM that will be created (if that's the case) -->
+				<DSymName>%(Filename).dSYM</DSymName>
+			</_PostProcessingItem>
+			<!-- Fallback for items without ComputedRelativePath -->
+			<_PostProcessingItem Include="@(_FileNativeReference->'$(_AppBundleName)$(AppBundleExtension)/$(_AppContentsRelativePathForPostProcessing)%(Filename)%(Extension)')" Condition="'%(_FileNativeReference.Kind)' == 'Dynamic' And '%(_FileNativeReference.ComputedRelativePath)' == ''">
 				<!-- Store where this item came from -->
 				<ItemSourcePath>%(Identity)</ItemSourcePath>
 				<!-- If the item in question came with a .dSYM directory, this would be the path to it: -->
@@ -3153,11 +3196,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 				<!-- Compute info.plist path inside the dSYM -->
 				<dSYMInfoPlistRelativePath>%(DSymName)\Contents\Info.plist</dSYMInfoPlistRelativePath>
 				<BCSymbolMapName>%(Filename)%(Extension).bcsymbolmap</BCSymbolMapName>
-			</_PostProcessingItem>
-
-			<!-- Don't strip dylibs from the .NET runtime - they may contain symbols that can't be stripped (https://github.com/dotnet/runtime/issues/124570) -->
-			<_PostProcessingItem Condition="$([MSBuild]::ValueOrDefault('%(_PostProcessingItem.NuGetPackageId)', '').StartsWith('Microsoft.NETCore.App.Runtime'))">
-				<NoSymbolStrip>true</NoSymbolStrip>
 			</_PostProcessingItem>
 
 			<!-- Add any items from app extensions -->
@@ -3222,6 +3260,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			_ComputeXCFrameworkDSyms;
 			_CopyXCFrameworkDSyms;
 			_NativeStripFiles;
+			_StripMergeableLibraryMetadata;
 			_NotifySpotlight;
 		</_PostProcessAppBundleDependsOn>
 	</PropertyGroup>
@@ -3370,6 +3409,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			Executable="$(_AppContainerDir)%(_NativeStripItems.Identity)"
 			Kind="%(_NativeStripItems.Kind)"
 			MaxDegreeOfParallelism="$(SymbolStripMaxDegreeOfParallelism)"
+			StripMergeableLibraries="$(StripMergeableLibraries)"
 			StripPath="$(StripPath)"
 			SymbolFile="%(_NativeStripItems.SymbolFile)"
 			SymbolFileLocalPath="%(_NativeStripItems.SymbolFileLocalPath)"
@@ -3396,6 +3436,29 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			Condition="'$(IsMacEnabled)' == 'true' And Exists('%(_NativeStripItems.dSYMInfoPlist)')"
 			Files="%(_NativeStripItems.dSYMInfoPlist)"
 		/>
+	</Target>
+
+	<!--
+		Strip mergeable library metadata (LC_ATOM_INFO) from frameworks and dylibs in the app bundle.
+		This runs independently of the regular symbol stripping, because symbol stripping
+		may be disabled (e.g. simulator builds, debug builds, macOS/MacCatalyst).
+	-->
+	<Target
+		Name="_StripMergeableLibraryMetadata"
+		Condition="'$(_PostProcess)' == 'true' And '$(StripMergeableLibraries)' == 'true'"
+		DependsOnTargets="_PreparePostProcessing"
+		>
+
+		<StripMergeableLibraryMetadata
+			SessionId="$(BuildSessionId)"
+			Condition="'$(IsMacEnabled)' == 'true'"
+			FrameworksDirectory="$(_AppFrameworksPath)"
+			DylibDirectories="$(_AppBundlePath);$(_AppContentsPath)"
+			StampDirectory="$(DeviceSpecificIntermediateOutputPath)mergeable-library-metadata"
+			StripPath="$(StripPath)"
+			>
+			<Output TaskParameter="FileWrites" ItemName="FileWrites" />
+		</StripMergeableLibraryMetadata>
 	</Target>
 
 	<!-- make sure spotlight indexes everything we've built -->
@@ -3675,6 +3738,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		<_PrepareAssembliesForPreparationDependsOn>
 			_ComputeAssembliesToPostprocessOnPublish;
 			_ComputeLinkerInputs;
+			$(_PrepareAssembliesForPreparationDependsOnExtra);
 		</_PrepareAssembliesForPreparationDependsOn>
 	</PropertyGroup>
 
@@ -3690,14 +3754,23 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		</ItemGroup>
 		<PropertyGroup>
 			<PreparedAssembliesDirectory>$([MSBuild]::EnsureTrailingSlash('$(DeviceSpecificIntermediateOutputPath)prepared-assemblies'))</PreparedAssembliesDirectory>
+			<_PreparedAssembliesItemsPath>$(DeviceSpecificIntermediateOutputPath)prepared-assemblies.items</_PreparedAssembliesItemsPath>
+			<_AssemblyPreparerConfigurationStamp>$(DeviceSpecificIntermediateOutputPath)assembly-preparer-configuration.txt</_AssemblyPreparerConfigurationStamp>
 		</PropertyGroup>
+		<WriteLinesToFile
+			File="$(_AssemblyPreparerConfigurationStamp)"
+			Lines="DynamicRegistrationSupported=$(DynamicRegistrationSupported);LinkMode=$(_LinkMode);Optimize=$(_BundlerOptimize);PublishTrimmed=$(PublishTrimmed);TrimMode=$(TrimMode);TrimExportAttributes=$(_TrimExportAttributes);@(_AssembliesToPrepare -> 'Assembly=%(Identity)|IsTrimmable=%(IsTrimmable)|TrimMode=%(TrimMode)')"
+			Overwrite="true"
+			WriteOnlyWhenDifferent="true"
+		/>
 	</Target>
 
+	<!-- Persist the task outputs so _PrepareAssemblies can restore its item changes when this target is skipped. -->
 	<Target
-		Name="_PrepareAssemblies"
-		Condition="'$(PrepareAssemblies)' == 'true'"
-		Inputs="@(_AssembliesToPrepare)"
-		Outputs="@(_AssembliesToPrepare->'$(PreparedAssembliesDirectory)%(Filename)%(Extension)');$(_AssemblyPreparerMSBuildOutputFile)"
+		Name="_ExecutePrepareAssemblies"
+		Condition="'$(IsMacEnabled)' == 'true' And '$(PrepareAssemblies)' == 'true'"
+		Inputs="@(_AssembliesToPrepare);$(_LinkerCachePath);$(_AssemblyPreparerConfigurationStamp)"
+		Outputs="$(_PreparedAssembliesItemsPath);$(_AssemblyPreparerMSBuildOutputFile)"
 		DependsOnTargets="_PrepareAssembliesForPreparation;_ComputeAssembliesToPostprocessOnPublish;SelectRegistrar"
 		>
 		<PrepareAssemblies
@@ -3710,10 +3783,30 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<Output TaskParameter="OutputAssemblies" ItemName="_PreparedAssemblies" />
 		</PrepareAssemblies>
 
+		<WriteItemsToFile
+			Items="@(_PreparedAssemblies)"
+			ItemName="_PreparedAssemblies"
+			File="$(_PreparedAssembliesItemsPath)"
+			IncludeMetadata="true"
+			Overwrite="true"
+		/>
+	</Target>
+
+	<Target
+		Name="_PrepareAssemblies"
+		Condition="'$(IsMacEnabled)' == 'true' And '$(PrepareAssemblies)' == 'true'"
+		DependsOnTargets="_ExecutePrepareAssemblies"
+		>
+		<ReadItemsFromFile File="$(_PreparedAssembliesItemsPath)">
+			<Output TaskParameter="Items" ItemName="_RestoredPreparedAssemblies" />
+		</ReadItemsFromFile>
+
 		<ItemGroup>
 			<ResolvedFileToPublish Remove="@(_AssembliesToPrepare)" />
-			<ResolvedFileToPublish Include="@(_PreparedAssemblies)" />
-			<FileWrites Include="@(_PreparedAssemblies)" />
+			<ResolvedFileToPublish Include="@(_RestoredPreparedAssemblies)" />
+			<FileWrites Include="@(_RestoredPreparedAssemblies)" />
+			<FileWrites Include="$(_PreparedAssembliesItemsPath)" />
+			<FileWrites Include="$(_AssemblyPreparerConfigurationStamp)" />
 			<FileWrites Include="$(_UnmanagedCallersOnlyMapPath)" />
 			<FileWrites Include="$(_AssemblyPreparerMSBuildOutputFile)" Condition="Exists('$(_AssemblyPreparerMSBuildOutputFile)')" />
 		</ItemGroup>
@@ -3731,6 +3824,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		</ItemGroup>
 		<PropertyGroup>
 			<_PostprocessedAssembliesDirectory>$([MSBuild]::EnsureTrailingSlash('$(DeviceSpecificIntermediateOutputPath)postprocessed-assemblies'))</_PostprocessedAssembliesDirectory>
+			<_PostprocessedAssembliesItemsPath>$(DeviceSpecificIntermediateOutputPath)postprocessed-assemblies.items</_PostprocessedAssembliesItemsPath>
 		</PropertyGroup>
 	</Target>
 
@@ -3739,31 +3833,52 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		Exception: when postprocessing runs after ILC instead (the trimmable-static + NativeAOT scenario), the
 		_PostprocessAssembliesAfterIlc target handles it, so skip this target then.
 	-->
+	<!-- Persist the task outputs so _PostprocessAssemblies can restore its item changes when this target is skipped. -->
 	<Target
-		Name="_PostprocessAssemblies"
-		Condition="'$(PostProcessAssemblies)' == 'true' And '$(RuntimeIdentifiers)' == '' And '$(_PostprocessAssembliesAfterIlc)' != 'true'"
+		Name="_ExecutePostprocessAssemblies"
+		Condition="'$(IsMacEnabled)' == 'true' And '$(PostProcessAssemblies)' == 'true' And '$(RuntimeIdentifiers)' == '' And '$(_PostprocessAssembliesAfterIlc)' != 'true'"
 		Inputs="@(_AssembliesToPostProcess);$(_LinkerCachePath)"
-		Outputs="@(_AssembliesToPostProcess->'$(_PostprocessedAssembliesDirectory)%(Filename)%(Extension)');$(_AssemblyPostProcessorMSBuildOutputFile)"
-		AfterTargets="ILLink"
-		BeforeTargets="NativeCompile;CreateReadyToRunImages"
+		Outputs="$(_PostprocessedAssembliesItemsPath);$(_AssemblyPostProcessorMSBuildOutputFile)"
 		DependsOnTargets="_PrepareAssembliesForPostProcessing;_ComputeLinkerInputs"
 		>
 		<PrepareAssemblies
 			InputAssemblies="@(_AssembliesToPostProcess)"
+			DynamicRegistrationSupported="$(_DynamicRegistrationSupported)"
 			MakeReproPath="$(_PostprocessAssembliesMakeReproPath)"
 			OptionsFile="$(_CustomLinkerOptionsFile)"
 			OutputDirectory="$(_PostprocessedAssembliesDirectory)"
 			Postprocessing="true"
-			PreTrimAssemblies="@(ManagedAssemblyToLink)"
+			PreTrimAssemblies="@(_AssembliesToPrepare)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 		>
 			<Output TaskParameter="OutputAssemblies" ItemName="_PostProcessedAssemblies" />
 		</PrepareAssemblies>
 
+		<WriteItemsToFile
+			Items="@(_PostProcessedAssemblies)"
+			ItemName="_PostProcessedAssemblies"
+			File="$(_PostprocessedAssembliesItemsPath)"
+			IncludeMetadata="true"
+			Overwrite="true"
+		/>
+	</Target>
+
+	<Target
+		Name="_PostprocessAssemblies"
+		Condition="'$(IsMacEnabled)' == 'true' And '$(PostProcessAssemblies)' == 'true' And '$(RuntimeIdentifiers)' == '' And '$(_PostprocessAssembliesAfterIlc)' != 'true'"
+		AfterTargets="ILLink"
+		BeforeTargets="NativeCompile;CreateReadyToRunImages"
+		DependsOnTargets="_ExecutePostprocessAssemblies"
+		>
+		<ReadItemsFromFile File="$(_PostprocessedAssembliesItemsPath)">
+			<Output TaskParameter="Items" ItemName="_RestoredPostProcessedAssemblies" />
+		</ReadItemsFromFile>
+
 		<ItemGroup>
 			<ResolvedFileToPublish Remove="@(_AssembliesToPostProcess)" />
-			<ResolvedFileToPublish Include="@(_PostProcessedAssemblies)" />
-			<FileWrites Include="@(_PostProcessedAssemblies)" />
+			<ResolvedFileToPublish Include="@(_RestoredPostProcessedAssemblies)" />
+			<FileWrites Include="@(_RestoredPostProcessedAssemblies)" />
+			<FileWrites Include="$(_PostprocessedAssembliesItemsPath)" />
 			<FileWrites Include="$(_AssemblyPostProcessorMSBuildOutputFile)" Condition="Exists('$(_AssemblyPostProcessorMSBuildOutputFile)')" />
 		</ItemGroup>
 	</Target>

@@ -55,7 +55,7 @@
       "description": "Overrides SupportedOSPlatformVersion in the project file",
       "replaces": "minOSVersion",
       "datatype": "string",
-      "defaultValue": "13.0"
+      "defaultValue": "15.0"
     },
     "Framework": {
       "type": "parameter",
@@ -63,12 +63,16 @@
       "datatype": "choice",
       "choices": [
         {
+          "choice": "net11.0-ios",
+          "description": "Target net11.0-ios"
+        },
+        {
           "choice": "net10.0-ios",
           "description": "Target net10.0-ios"
         }
       ],
-      "replaces": "DOTNET_TFM",
-      "defaultValue": "net10.0-ios"
+      "replaces": "net11.0-ios",
+      "defaultValue": "net11.0-ios"
     }
   },
   "defaultName": "iOSNotificationContentExtension1"

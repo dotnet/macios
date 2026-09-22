@@ -1,0 +1,4 @@
+!missing-null-allowed! 'System.Void QuickLook.IQLPreviewingController::PreparePreviewOfFile(Foundation.NSUrl,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #0
+!missing-null-allowed! 'System.Void QuickLook.IQLPreviewingController::PreparePreviewOfSearchableItem(System.String,System.String,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #0
+!missing-null-allowed! 'System.Void QuickLook.IQLPreviewingController::ProvidePreview(QuickLook.QLFilePreviewRequest,System.Action`2<QuickLook.QLPreviewReply,Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #0
+!missing-null-allowed! 'System.Void QuickLook.IQLPreviewingController::ProvidePreview(QuickLook.QLFilePreviewRequest,System.Action`2<QuickLook.QLPreviewReply,Foundation.NSError>)' is missing a '?' on parameter 'handler' block parameter #1

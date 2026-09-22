@@ -192,8 +192,8 @@ namespace CoreVideo {
 		[Obsolete ("Use 'CVPixelFormatKeys.ContainsSenselArray' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
-		[SupportedOSPlatform ("macos13.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos16.0")]
 #pragma warning disable CA1416 // This call site is reachable on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 12.0 and later, 'tvos' 12.2 and later. 'CVPixelFormatKeys.ContainsSenselArray.get' is only supported on: 'ios' 16.0 and later, 'maccatalyst' 16.0 and later, 'macOS/OSX' 13.0 and later, 'tvos' 16.0 and later.
 		public static readonly NSString ContainsSenselArray = CVPixelFormatKeys.ContainsSenselArray;
@@ -269,8 +269,8 @@ namespace CoreVideo {
 		}
 
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("tvos15.0")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.CoreVideoLibrary)]
 		extern static byte CVIsCompressedPixelFormatAvailable (int /* OSType = int32_t */ pixelFormat);
@@ -279,8 +279,8 @@ namespace CoreVideo {
 		/// <param name="pixelFormat">The pixel format to check.</param>
 		/// <returns>Whether the specified pixel format is supported or not.</returns>
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("tvos15.0")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public static bool IsPixelFormatAvailable (CVPixelFormatType pixelFormat)
 		{

@@ -103,7 +103,7 @@ namespace Xamarin.Linker {
 		// pass (and the RegistrarCompanionAssemblies dictionary is empty because it's a fresh process).
 		AssemblyDefinition? FindRelocatedCompanionAssembly (AssemblyDefinition userAssembly)
 		{
-			var companionName = "_" + userAssembly.Name.Name + ".TypeMap";
+			var companionName = RegistrarCompanionAssembly.GetName (userAssembly);
 			foreach (var assembly in Configuration.Assemblies) {
 				if (assembly.Name.Name == companionName)
 					return assembly;
@@ -241,14 +241,17 @@ namespace Xamarin.Linker {
 			// The factory methods must be added before trimming: either in the assembly preparer (when
 			// PrepareAssemblies=true), or inside ILLink itself (when PrepareAssemblies=false). They must not
 			// be added again when post-processing assemblies, since they're already there at that point.
-			if (App.Registrar == RegistrarMode.TrimmableStatic && !type.IsAbstract && !type.IsInterface && !App.IsPostProcessingAssemblies) {
+			if (App.Registrar == RegistrarMode.TrimmableStatic && !type.IsAbstract && !type.IsInterface && !App.IsPostProcessingAssemblies
+				&& (!Configuration.HotReloadCompatibleBuild || Annotations.GetAction (type.Module.Assembly) == AssemblyAction.Link)) {
 				if (isNSObject) {
 					var ctorRef = AppBundleRewriter.FindNSObjectConstructor (type);
 					if (ctorRef is not null) {
 						var ctor = abr.CurrentAssembly.MainModule.ImportReference (ctorRef);
 
-						// Implement INSObjectFactory._Xamarin_ConstructNSObject
-						modified |= abr.ImplementConstructNSObjectFactoryMethod (DerivedLinkContext, type, ctor);
+						// Generic types can't be instantiated by the type map, because the concrete generic
+						// arguments aren't known there, so they must provide their own factory method.
+						if (type.HasGenericParameters)
+							modified |= abr.ImplementConstructNSObjectFactoryMethod (DerivedLinkContext, type, ctor);
 						// Implement INativeObject._Xamarin_ConstructINativeObject
 						modified |= abr.ImplementConstructINativeObjectFactoryMethod (DerivedLinkContext, type, ctor);
 					}
@@ -469,7 +472,7 @@ namespace Xamarin.Linker {
 			}
 
 			var callback = callbackType.AddMethod (name, MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.HideBySig, placeholderType);
-			callback.CustomAttributes.Add (CreateUnmanagedCallersAttribute (name));
+			callback.CustomAttributes.Add (CreateUnmanagedCallersAttribute (name, method.DeclaringType));
 			infos.Add (new TrampolineInfo (callback, method, name));
 
 			// If the target method is marked, then we must mark the trampoline as well.
@@ -755,7 +758,7 @@ namespace Xamarin.Linker {
 			}
 			il.Emit (OpCodes.Ret);
 
-			body.GenerateILOffsets ();
+			body.FinalizeGeneratedBody ();
 		}
 
 		// Recursively substitutes generic parameters in a type reference according to the given map.
@@ -929,7 +932,7 @@ namespace Xamarin.Linker {
 			il.Emit (OpCodes.Callvirt, proxyInterfaceMethod);
 			il.Emit (OpCodes.Ret);
 
-			body.GenerateILOffsets ();
+			body.FinalizeGeneratedBody ();
 		}
 
 		public void EmitCallToExportedMethod (MethodDefinition method, MethodDefinition callback)
@@ -1243,7 +1246,7 @@ namespace Xamarin.Linker {
 				instr.Operand = leaveTryInstructionOperand;
 			eh.HandlerEnd = (Instruction) leaveEHInstruction.Operand;
 
-			body.GenerateILOffsets ();
+			body.FinalizeGeneratedBody ();
 		}
 
 		void AddExceptionHandler (ILProcessor il, VariableDefinition? returnVariable, Instruction placeholderNextInstruction, out ExceptionHandler eh, out Instruction leaveEHInstruction)
@@ -1667,6 +1670,8 @@ namespace Xamarin.Linker {
 				if (toManaged) {
 					var createMethod = StaticRegistrar.GetBlockWrapperCreator (objcMethod, parameter);
 					if (createMethod is null) {
+						if (App.TrimExportAttributes != false)
+							App.TrimExportAttributesBlockers.Add (ExportAttributeRemovalBlocker.RuntimeGetBlockWrapperCreatorRequired);
 						AddException (ErrorHelper.CreateWarning (App, 4174 /* Unable to locate the block to delegate conversion method for the method {0}'s parameter #{1}. */, method, Errors.MT4174, method.FullName, parameter + 1));
 						// var blockCopy = BlockLiteral.Copy (block);
 						var tmpVariable = il.Body.AddVariable (abr.System_IntPtr);
@@ -1723,6 +1728,8 @@ namespace Xamarin.Linker {
 						il.Emit (OpCodes.Ldstr, signature);
 						il.Emit (OpCodes.Call, abr.BlockLiteral_CreateBlockForDelegate);
 					} else {
+						if (App.TrimExportAttributes != false)
+							App.TrimExportAttributesBlockers.Add (ExportAttributeRemovalBlocker.RegistrarHelperGetBlockForDelegateRequired);
 						il.Emit (OpCodes.Ldtoken, method);
 						il.Emit (OpCodes.Call, abr.RegistrarHelper_GetBlockForDelegate);
 					}
@@ -1757,14 +1764,24 @@ namespace Xamarin.Linker {
 			return IsOpenType (tr.Resolve ());
 		}
 
-		static void EnsureVisible (MethodDefinition caller, FieldDefinition field)
+		void EnsureVisible (MethodDefinition caller, FieldDefinition field)
 		{
+			if (ShouldRelocateTrampolines (caller)) {
+				Configuration.RegistrarCompanionAssemblies [caller.Module.Assembly].AccessesAssemblies.Add (field.Module.Assembly);
+				return;
+			}
+
 			field.IsPublic = true;
 			EnsureVisible (caller, field.DeclaringType);
 		}
 
-		static void EnsureVisible (MethodDefinition caller, TypeDefinition type)
+		void EnsureVisible (MethodDefinition caller, TypeDefinition type)
 		{
+			if (ShouldRelocateTrampolines (caller)) {
+				Configuration.RegistrarCompanionAssemblies [caller.Module.Assembly].AccessesAssemblies.Add (type.Module.Assembly);
+				return;
+			}
+
 			if (type.IsNested) {
 				type.IsNestedPublic = true;
 				EnsureVisible (caller, type.DeclaringType);
@@ -1773,9 +1790,14 @@ namespace Xamarin.Linker {
 			}
 		}
 
-		static void EnsureVisible (MethodDefinition caller, MethodReference method)
+		void EnsureVisible (MethodDefinition caller, MethodReference method)
 		{
 			var md = method.Resolve ();
+			if (ShouldRelocateTrampolines (caller)) {
+				Configuration.RegistrarCompanionAssemblies [caller.Module.Assembly].AccessesAssemblies.Add (md.Module.Assembly);
+				return;
+			}
+
 			md.IsPublic = true;
 			EnsureVisible (caller, md.DeclaringType);
 		}
@@ -1789,11 +1811,41 @@ namespace Xamarin.Linker {
 			get { return DerivedLinkContext.StaticRegistrar; }
 		}
 
-		CustomAttribute CreateUnmanagedCallersAttribute (string entryPoint)
+		CustomAttribute CreateUnmanagedCallersAttribute (string entryPoint, TypeReference? associatedSourceType = null)
 		{
 			var unmanagedCallersAttribute = new CustomAttribute (abr.UnmanagedCallersOnlyAttribute_Constructor);
+
+			// The AssociatedSourceType field tells the NativeAOT compiler (ILC) that the trampoline's
+			// native export is only needed if the associated type is kept. This only works safely when
+			// all of these are true:
+			// * We're compiling for NativeAOT (only ILC understands the field; the CoreCLR runtime's
+			//   attribute parser even rejects any UnmanagedCallersOnly named argument it doesn't know).
+			// * We're using the trimmable static registrar, whose native glue references the trampoline
+			//   symbols directly. This means ILC may drop the native export for a trampoline whose
+			//   associated type can't be constructed, while the generated native registrar code still
+			//   references it - which would result in an undefined symbol at native link time.
+			// * We're preparing assemblies (PrepareAssemblies), which is the mode that has a post-ILC
+			//   step (the _PostprocessAssembliesAfterIlc target) that regenerates the native registrar
+			//   code after ILC, routing any trampoline that didn't survive ILC through the dlsym fallback
+			//   instead of a direct native reference. Without that reconciliation step (i.e. in the
+			//   non-prepare mode) we must not let ILC drop any trampoline export, so we don't emit the
+			//   field there.
+			if (associatedSourceType is not null
+				&& App.XamarinRuntime == XamarinRuntime.NativeAOT
+				&& App.Registrar == RegistrarMode.TrimmableStatic
+				&& App.PrepareAssemblies) {
+				// Import the type into the current assembly, otherwise Cecil will serialize the Type argument
+				// without an assembly-qualified name when 'associatedSourceType' is a TypeDefinition from another
+				// assembly (because a TypeDefinition's Scope is its own module), and ILC won't be able to resolve
+				// it (the trampolines are emitted into the companion assembly, while the associated type is in the
+				// user assembly).
+				var importedSourceType = abr.CurrentAssembly.MainModule.ImportReference (associatedSourceType);
+				unmanagedCallersAttribute.Fields.Add (new CustomAttributeNamedArgument ("AssociatedSourceType", new CustomAttributeArgument (abr.System_Type, importedSourceType)));
+			}
+
 			if (App.XamarinRuntime != XamarinRuntime.CoreCLR)
 				unmanagedCallersAttribute.Fields.Add (new CustomAttributeNamedArgument ("EntryPoint", new CustomAttributeArgument (abr.System_String, entryPoint)));
+
 			return unmanagedCallersAttribute;
 		}
 
@@ -2039,7 +2091,7 @@ namespace Xamarin.Linker {
 			il.Emit (OpCodes.Call, ctor);
 			il.Emit (OpCodes.Ret);
 
-			body.GenerateILOffsets ();
+			body.FinalizeGeneratedBody ();
 
 			return clonedCtor;
 		}
@@ -2059,7 +2111,7 @@ namespace Xamarin.Linker {
 
 				var body = registerToggleRef!.CreateBody (out var il);
 				il.Emit (OpCodes.Ret);
-				body.GenerateILOffsets ();
+				body.FinalizeGeneratedBody ();
 			}
 		}
 	}

@@ -30,6 +30,12 @@ namespace Xamarin.MacDev.Tasks {
 
 		public string MakeReproPath { get; set; } = "";
 
+		// The value of the $(_DynamicRegistrationSupported) MSBuild property. During post-processing this is
+		// how the value DetectApiUsageStep computed during the preparation pass is passed back to
+		// the assembly-preparer (the native main file is generated during post-processing, and it must agree
+		// with the managed side about whether the dynamic registrar is available).
+		public string DynamicRegistrationSupported { get; set; } = "";
+
 		public string OutputDirectory { get; set; } = "";
 
 		[Required]
@@ -38,8 +44,8 @@ namespace Xamarin.MacDev.Tasks {
 
 		public bool PostProcessing { get; set; }
 
-		// The pre-trim (untrimmed) assemblies (the trimmer's input), used during post-processing to read
-		// the [ProtocolMember] attributes the trimmer removed from the post-trim assemblies.
+		// The original assemblies from before preparation and trimming, used during post-processing to read
+		// selected registrar attributes removed during trimming.
 		public ITaskItem [] PreTrimAssemblies { get; set; } = [];
 
 		// When set (to ILC's output object file), the defined symbols in this file are used to determine
@@ -62,7 +68,8 @@ namespace Xamarin.MacDev.Tasks {
 			var isTrimmableString = item.GetMetadata ("IsTrimmable");
 			var isTrimmable = string.IsNullOrEmpty (isTrimmableString) ? (bool?) null : string.Equals (isTrimmableString, "true", StringComparison.OrdinalIgnoreCase);
 			var trimMode = item.GetMetadata ("TrimMode");
-			var rv = new AssemblyPreparerInfo (inputPath, outputPath, isTrimmable, trimMode);
+			var originalInputPath = item.GetMetadata ("OriginalItemSpec");
+			var rv = new AssemblyPreparerInfo (inputPath, outputPath, originalInputPath, isTrimmable, trimMode);
 			map [rv] = item;
 			return rv;
 		}
@@ -71,12 +78,21 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			// Capture Console usage and show an error if anything uses Console.[Error.]Write*
 			using var consoleToLog = ConsoleToTaskWriter.EnsureNoConsoleUsage (Log);
+			var success = false;
+			var msbuildOutputFile = "";
 
 			try {
 				var infos = InputAssemblies.Select (GetAssemblyInfo).ToArray ();
 				using var preparer = new AssemblyPreparer (this, infos, OptionsFile?.ItemSpec ?? "");
+				msbuildOutputFile = PostProcessing ? preparer.Configuration.MSBuildPostProcessOutputFile : preparer.Configuration.MSBuildOutputFile;
 				preparer.MakeReproPath = MakeReproPath;
 				preparer.PreTrimAssemblies.AddRange (PreTrimAssemblies.Select (v => v.ItemSpec));
+
+				if (!string.IsNullOrEmpty (DynamicRegistrationSupported)) {
+					var dynamicRegistrationSupported = string.Equals (DynamicRegistrationSupported, "true", StringComparison.OrdinalIgnoreCase);
+					preparer.Configuration.DynamicRegistrationSupported = dynamicRegistrationSupported;
+					preparer.Configuration.Application.Optimizations.RemoveDynamicRegistrar = !dynamicRegistrationSupported;
+				}
 				bool rv;
 				List<ProductException> exceptions;
 
@@ -91,6 +107,12 @@ namespace Xamarin.MacDev.Tasks {
 							survivingSymbols.Add (name);
 						}
 						preparer.Configuration.Application.SurvivingTrampolineSymbols = survivingSymbols;
+
+						// A class whose trampolines were all trimmed away by ILC must still be registered if
+						// managed code that survived ILC looks up its class handle, because the generated
+						// inlined Class.GetHandle native code references the Objective-C class.
+						var referencedClasses = new HashSet<string> (CollectPostILTrimInformation.FilterToClassSymbols (Xamarin.StaticLibrary.GetUnresolvedSymbols (NativeAOTObjectFile)));
+						preparer.Configuration.Application.ClassesReferencedByInlinedClassGetHandle = referencedClasses;
 					}
 					rv = preparer.PostProcess (out exceptions);
 				} else {
@@ -121,10 +143,14 @@ namespace Xamarin.MacDev.Tasks {
 
 				outputAssemblies.AddRange (preparer.AddedAssemblies.Select (v => {
 					var rv = new TaskItem (v.Path);
+					var relativePath = preparer.Configuration.AssemblyPublishDir + Path.GetFileName (v.Path);
 					rv.SetMetadata ("PostprocessAssembly", "true");
-					rv.SetMetadata ("RelativePath", preparer.Configuration.AssemblyPublishDir + Path.GetFileName (v.Path));
+					rv.SetMetadata ("OriginalRelativePath", relativePath);
+					rv.SetMetadata ("RelativePath", relativePath);
 					if (v.OriginatingAssembly is not null) {
-						var originatingItem = map.SingleOrDefault (kvp => Path.GetFileName (kvp.Key.InputPath) == Path.GetFileName (v.OriginatingAssembly)).Value;
+						var originatingAssembly = preparer.Assemblies.SingleOrDefault (assembly => assembly.InputPath == v.OriginatingAssembly);
+						originatingAssembly ??= preparer.Assemblies.SingleOrDefault (assembly => assembly.IsCILAssembly && Path.GetFileName (assembly.InputPath) == Path.GetFileName (v.OriginatingAssembly));
+						var originatingItem = originatingAssembly is null ? null : map [originatingAssembly];
 						if (originatingItem is null) {
 							Log.LogMessage (MessageImportance.Low, $"Could not find originating assembly for {v.Path} with originating assembly name {v.OriginatingAssembly}");
 						} else {
@@ -141,10 +167,14 @@ namespace Xamarin.MacDev.Tasks {
 				OutputAssemblies = outputAssemblies.ToArray ();
 				if (!rv && !Log.HasLoggedErrors)
 					Log.LogError (MSBStrings.E0192);
-				return rv && !Log.HasLoggedErrors;
+				success = rv && !Log.HasLoggedErrors;
+				return success;
 			} catch (Exception e) {
 				((IToolLog) this).LogException (e);
 				return false;
+			} finally {
+				if (!success && !string.IsNullOrEmpty (msbuildOutputFile))
+					File.Delete (msbuildOutputFile);
 			}
 		}
 	}

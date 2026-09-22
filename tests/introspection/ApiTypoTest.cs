@@ -80,7 +80,7 @@ namespace Introspection {
 			{ "Ahap", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst }, // Apple Haptics Pattern
 			{ "Aifc", All }, // AIFF-C audio format
 			{ "Aiff", All }, // Audio Interchange File
-			{ "Aime", ApplePlatform.MacOSX }, // cashless payment brand
+			{ "Aime", All }, // AVMetadataIdentifierQuickTimeMetadataAIMEData
 			{ "Aio", ApplePlatform.MacOSX }, // all-in-one abbreviation
 			{ "Alg", All }, // short for Algorithm
 			{ "Alem", All }, // Ethiopic "Amete Alem" calendar
@@ -223,6 +223,7 @@ namespace Introspection {
 			{ "Denoiser", All }, // noise reduction filter
 			{ "Depthwise", All }, // ML convolution term
 			{ "Dequantize", All }, // signal processing term
+			{ "Despeckle", All }, // image noise correction term
 			{ "Dfsi", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // Apple API abbreviation
 			{ "Dhe", All }, // Diffie–Hellman key exchange
 			{ "Dhs", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // Apple API abbreviation
@@ -278,6 +279,7 @@ namespace Introspection {
 			{ "Eftpos", All & ~ApplePlatform.TVOS }, // Electronic funds transfer at point of sale
 			{ "Eisu", ApplePlatform.MacOSX }, // Japanese input mode
 			{ "Elative", All }, // linguistic case
+			{ "Elcard", All & ~ApplePlatform.TVOS }, // Kyrgyz payment network
 			{ "Elu", All }, // activation function
 			{ "Emagic", All }, // audio software brand
 			{ "Embd", All }, // embedded abbreviation
@@ -325,6 +327,7 @@ namespace Introspection {
 			{ "Gcm", All }, // Galois/Counter Mode
 			{ "Gelu", All }, // Gaussian Error Linear Unit (ML)
 			{ "Gen", All }, // generation (e.g. SiriRemote1stGen)
+			{ "Genlock", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst }, // generator locking synchronization
 			{ "Gibibits", All }, // IEC unit name
 			{ "Gid", ApplePlatform.MacOSX }, // group identifier
 			{ "Gigapascals", All }, // SI unit name
@@ -353,6 +356,7 @@ namespace Introspection {
 			{ "Hfp", All & ~ApplePlatform.MacOSX }, // Bluetooth Hands-Free Profile
 			{ "Hhr", All }, // Apple API abbreviation
 			{ "Himyan", All & ~ApplePlatform.TVOS }, // South Arabian script
+			{ "Humo", All & ~ApplePlatform.TVOS }, // Uzbek payment network
 			{ "Hermitean", All }, // Apple's spelling of Hermitian in MPSGraph FFT methods
 			{ "Hindlegs", All }, // compound word
 			{ "Hipass", All }, // high-pass filter
@@ -360,6 +364,7 @@ namespace Introspection {
 			{ "Hlg", All }, // Hybrid Log-Gamma
 			{ "Hls", All }, // HTTP Live Streaming
 			{ "Hoa", All }, // higher-order ambisonics
+			{ "Hov", ApplePlatform.iOS }, // high-occupancy vehicle
 			{ "Hpke", ApplePlatform.MacOSX }, // Hybrid Public Key Encryption
 			{ "Hrtf", All }, // acronym used in AUSpatializationAlgorithm
 			{ "Hsb", ApplePlatform.MacOSX }, // hue-saturation-brightness
@@ -433,6 +438,7 @@ namespace Introspection {
 			{ "Kiloamperes", All }, // SI unit name
 			{ "Kiloohms", All }, // SI unit name
 			{ "Kilopascals", All }, // SI unit name
+			{ "Koio", ApplePlatform.MacOSX }, // Kernel Offloaded I/O
 			{ "ks", All }, // word fragment from spell checker
 			{ "Kullback", All }, // Kullback-Leibler Divergence
 			{ "Lacunarity", All }, // fractal geometry term
@@ -461,6 +467,7 @@ namespace Introspection {
 			{ "Lzfse", All }, // acronym
 			{ "Lzma", All }, // acronym
 			{ "Lzw", ApplePlatform.MacOSX }, // Lempel-Ziv-Welch
+			{ "Maal", All & ~ApplePlatform.TVOS }, // Maldivian payment network
 			{ "Mada", All & ~ApplePlatform.TVOS }, // payment system
 			{ "Mcp", All }, // metacarpophalangeal (hand)
 			{ "Mebibits", All }, // IEC unit name
@@ -560,6 +567,7 @@ namespace Introspection {
 			{ "ove", All }, // word fragment from spell checker
 			{ "Overline", All & ~ApplePlatform.TVOS }, // typography term
 			{ "Paeth", All }, // PNG filter
+			{ "Pak", All & ~ApplePlatform.TVOS }, // PayPak, Pakistani payment network
 			{ "Palettize", All }, // graphics term
 			{ "Parms", All }, // parameters abbreviation
 			{ "Pausable", All }, // valid English derivative
@@ -623,6 +631,7 @@ namespace Introspection {
 			{ "Qwac", All }, // qualified website cert
 			{ "Raycast", ApplePlatform.iOS }, // graphics/AR term
 			{ "Raycasts", ApplePlatform.iOS }, // graphics/AR term
+			{ "Rdd", All }, // SMPTE RDD 18 ancillary data standard
 			{ "Reacquirer", All }, // valid English noun
 			{ "Reassociation", ApplePlatform.MacOSX }, // networking term
 			{ "Reauthentication", ApplePlatform.MacOSX }, // compound word
@@ -643,6 +652,7 @@ namespace Introspection {
 			{ "Rint", All }, // round-to-integer function
 			{ "Rle", All }, // run-length encoding
 			{ "Rms", All }, // root mean square
+			{ "Rmssd", All & ~ApplePlatform.TVOS }, // root mean square of successive differences
 			{ "Rnn", All }, // recurrent neural network
 			{ "Roi", All }, // region of interest
 			{ "Romm", All }, // acronym: Reference Output Medium Metric
@@ -663,6 +673,7 @@ namespace Introspection {
 			{ "Sdk", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst }, // software development kit
 			{ "Sdnn", All & ~ApplePlatform.TVOS }, // Apple API abbreviation
 			{ "Sdof", ApplePlatform.MacOSX }, // synthetic depth of field
+			{ "Sdpa", All }, // Scaled Dot Product Attention
 			{ "Sdr", All }, // standard dynamic range
 			{ "Sdtv", ApplePlatform.TVOS }, // acronym: Standard Definition Tele Vision
 			{ "Securit", ApplePlatform.iOS }, // Apple API selector fragment
@@ -675,6 +686,7 @@ namespace Introspection {
 			{ "Shadable", All }, // graphics term
 			{ "Siemen", All & ~ApplePlatform.TVOS }, // Apple API singular form
 			{ "Signbit", All }, // math library term
+			{ "Simd", All }, // Single Instruction, Multiple Data
 			{ "Sint", All }, // as in "Signed Integer"
 			{ "Sixtyfour", ApplePlatform.MacOSX }, // compound number word
 			{ "Slerp", All }, // spherical interpolation
@@ -757,9 +769,10 @@ namespace Introspection {
 			{ "Twips", ApplePlatform.MacOSX }, // typography unit
 			{ "tx", All }, // translation x axis
 			{ "ty", All }, // translation y axis
+			{ "Udam", All }, // User Defined Acquisition Metadata
 			{ "Udi", All & ~ApplePlatform.TVOS }, // device identifier standard
 			{ "Udp", All }, // User Datagram Protocol
-			{ "Uid", All & ~ApplePlatform.TVOS }, // user identifier
+			{ "Uid", All }, // user identifier
 			{ "Unconfigured", All & ~ApplePlatform.MacOSX }, // valid English derivative
 			{ "Undecodable", All }, // valid English derivative
 			{ "Underrun", All }, // audio/buffer term
@@ -782,7 +795,7 @@ namespace Introspection {
 			{ "Unsynced", ApplePlatform.MacOSX | ApplePlatform.iOS }, // sync state adjective
 			{ "Untrash", ApplePlatform.iOS }, // mail/files verb
 			{ "Upce", All }, // UPC-E barcode
-			{ "Upi", ApplePlatform.iOS }, // Unified Payments Interface
+			{ "Upi", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // Unified Payments Interface
 			{ "Uri", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst }, // Uniform Resource Identifier
 			{ "Usac", All }, // Unified Speech and Audio Coding
 			{ "Usd", All }, // Universal Scene Description
@@ -935,30 +948,33 @@ namespace Introspection {
 			using var checker = new SpellChecker ();
 
 			// Collect all unique words from public API names (split on uppercase boundaries)
-			var words = new HashSet<string> (StringComparer.Ordinal);
+			var words = new Dictionary<string, List<MemberInfo>> (StringComparer.Ordinal);
 			var types = Assembly.GetTypes ();
 			foreach (Type t in types) {
 				if (!t.IsPublic || IsObsolete (t))
 					continue;
 
-				SplitIntoWords (words, t.Name);
+				SplitIntoWords (words, t.Name, t);
 
 				foreach (FieldInfo f in t.GetFields ()) {
 					if ((!f.IsPublic && !f.IsFamily) || IsObsolete (f))
 						continue;
-					SplitIntoWords (words, f.Name);
+					SplitIntoWords (words, f.Name, f);
 				}
 
 				foreach (MethodInfo m in t.GetMethods ()) {
 					if ((!m.IsPublic && !m.IsFamily) || IsObsolete (m))
 						continue;
-					SplitIntoWords (words, m.Name);
+					if (Skip (m))
+						continue;
+					SplitIntoWords (words, m.Name, m);
 				}
 			}
 
 			// Check each unique word individually with the spell checker
-			var typos = new HashSet<string> (StringComparer.Ordinal);
-			foreach (var word in words) {
+			var typos = new Dictionary<string, List<MemberInfo>> (StringComparer.Ordinal);
+			foreach (var kvp in words) {
+				var word = kvp.Key;
 				var checkRange = new NSRange (0, word.Length);
 #if MONOMAC
 				var typoRange = checker.CheckSpelling (word, 0, "en_US", false, 0, out var _);
@@ -966,19 +982,20 @@ namespace Introspection {
 				var typoRange = checker.RangeOfMisspelledWordInString (word, checkRange, checkRange.Location, false, "en_US");
 #endif
 				if (typoRange.Length > 0)
-					typos.Add (word.Substring ((int) typoRange.Location, (int) typoRange.Length));
+					typos [word.Substring ((int) typoRange.Location, (int) typoRange.Length)] = kvp.Value;
 			}
 
 			// Check each typo against allowed list
 			int totalErrors = 0;
 			var currentPlatform = TestRuntime.CurrentPlatform;
 			var usedAllowed = new HashSet<string> ();
-			foreach (var typo in typos) {
+			foreach (var kvp in typos) {
+				var typo = kvp.Key;
 				if (allowed.TryGetValue (typo, out var platforms) && platforms.HasFlag (currentPlatform)) {
 					usedAllowed.Add (typo);
 					continue;
 				}
-				ReportError ("Typo: {0}", typo);
+				ReportError ($"Typo: {typo}, found in {kvp.Value.Count} APIs:\n\t{string.Join ("\n\t", kvp.Value.Select (v => v.ToString ()))}", typo);
 				totalErrors++;
 			}
 
@@ -996,25 +1013,44 @@ namespace Introspection {
 		}
 
 		// Split an API name into words on uppercase/digit/symbol boundaries and add to the set
-		static void SplitIntoWords (HashSet<string> words, string name)
+		static void SplitIntoWords (Dictionary<string, List<MemberInfo>> words, string name, MemberInfo member)
 		{
 			int start = -1;
 			for (int i = 0; i < name.Length; i++) {
 				char c = name [i];
 				if (Char.IsUpper (c)) {
 					if (start >= 0 && i > start)
-						words.Add (name.Substring (start, i - start));
+						Add (words, name.Substring (start, i - start), member);
 					start = i;
 				} else if (Char.IsDigit (c) || c == '<' || c == '>' || c == '_') {
 					if (start >= 0 && i > start)
-						words.Add (name.Substring (start, i - start));
+						Add (words, name.Substring (start, i - start), member);
 					start = -1;
 				} else if (start < 0) {
 					// lowercase char with no word start — skip
 				}
 			}
 			if (start >= 0 && name.Length > start)
-				words.Add (name.Substring (start));
+				Add (words, name.Substring (start), member);
+		}
+
+		static void Add (Dictionary<string, List<MemberInfo>> words, string name, MemberInfo member)
+		{
+			if (!words.TryGetValue (name, out var list))
+				words [name] = list = new List<MemberInfo> ();
+			list.Add (member);
+		}
+
+		bool Skip (MethodInfo method)
+		{
+			// These are methods injected by the registrar, and not API we expose, so skip them.
+			switch (method.Name) {
+			case "_Xamarin_ConstructINativeObject":
+			case "_Xamarin_ConstructNSObject":
+				return true;
+			}
+
+			return false;
 		}
 
 		string? GetMessage (object attribute)
@@ -1159,7 +1195,9 @@ namespace Introspection {
 					break;
 #endif
 #if !__MACOS__
+				case "AVSystemRoutingLibrary":
 				case "CinematicLibrary":
+				case "ScreenCaptureKitLibrary":
 				case "ThreadNetworkLibrary":
 				case "MediaSetupLibrary":
 				case "MLComputeLibrary":

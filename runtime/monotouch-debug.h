@@ -22,6 +22,7 @@ void monotouch_start_launch_timer ();
 void xamarin_capture_debugging_settings ();
 void monotouch_configure_debugging ();
 void monotouch_start_debugging ();
+void monotouch_wait_for_port_forwarding ();
 void monotouch_start_profiling ();
 
 void monotouch_set_connection_mode (const char *mode);

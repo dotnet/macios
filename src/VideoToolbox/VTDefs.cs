@@ -88,7 +88,7 @@ namespace VideoToolbox {
 		VideoDecoderReferenceMissing = -17694,
 		[iOS (15, 0), MacCatalyst (15, 0), TV (15, 0)]
 		VideoDecoderCallbackMessaging = -17695,
-		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 		VideoDecoderUnknownErr = -17696,
 		ExtensionDisabledErr = -17697,
 		VideoEncoderMVHEVCVideoLayerIDsMismatchErr = -17698,
@@ -450,7 +450,7 @@ namespace VideoToolbox {
 
 	}
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+	[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	public enum VTRotation {
 		[DefaultEnumValue]
 		[Field ("kVTRotation_0")]

@@ -465,7 +465,6 @@ namespace CoreVideo {
 		[Field ("kCVImageBufferContentLightLevelInfoKey")]
 		NSString ContentLightLevelInfoKey { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("kCVImageBufferAlphaChannelModeKey")]
 		NSString AlphaChannelModeKey { get; }
@@ -513,6 +512,10 @@ namespace CoreVideo {
 		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 		[Field ("kCVImageBufferDisplayMaskRectangleStereoRightKey")]
 		NSString DisplayMaskRectangleStereoRightKey { get; }
+
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[Field ("kCVImageBufferHorizontalDisparityAdjustmentKey")]
+		NSString HorizontalDisparityAdjustmentKey { get; }
 	}
 
 	[MacCatalyst (13, 1)]
@@ -809,7 +812,7 @@ namespace CoreVideo {
 		[Field ("kCVPixelBufferProResRAWKey_MetadataExtension")]
 		NSString MetadataExtension { get; }
 
-		[MacCatalyst (15, 0), TV (15, 0), Mac (12, 0), iOS (15, 0)]
+		[MacCatalyst (15, 0), TV (15, 0), iOS (15, 0)]
 		[Field ("kCVPixelBufferIOSurfacePurgeableKey")]
 		NSString IOSurfacePurgeableKey { get; }
 	}
@@ -839,7 +842,6 @@ namespace CoreVideo {
 		[Field ("kCVMetalTextureCacheMaximumTextureAgeKey")]
 		IntPtr MaxTextureAge { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("kCVMetalTextureStorageMode")]
 		NSString StorageMode { get; }
@@ -914,7 +916,7 @@ namespace CoreVideo {
 		[Field ("kCVPixelFormatContainsGrayscale")]
 		NSString ContainsGrayscale { get; }
 
-		[iOS (16, 0), Mac (13, 0), MacCatalyst (16, 0), TV (16, 0)]
+		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 		[Field ("kCVPixelFormatContainsSenselArray")]
 		NSString ContainsSenselArray { get; }
 
@@ -1057,7 +1059,7 @@ namespace CoreVideo {
 
 		bool ContainsGrayscale { get; set; }
 
-		[iOS (16, 0), Mac (13, 0), MacCatalyst (16, 0), TV (16, 0)]
+		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 #if XAMCORE_5_0
 		bool ContainsSenselArray { get; set; }
 #else

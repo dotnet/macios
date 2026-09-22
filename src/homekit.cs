@@ -87,7 +87,7 @@ namespace HomeKit {
 		[Export ("removeHome:completionHandler:")]
 		void RemoveHome (HMHome home, Action<NSError> completion);
 
-		[iOS (13, 0), TV (13, 0), NoMac]
+		[NoMac]
 		[MacCatalyst (14, 0)]
 		[Export ("authorizationStatus")]
 		HMHomeManagerAuthorizationStatus AuthorizationStatus { get; }
@@ -152,14 +152,14 @@ namespace HomeKit {
 			""")]
 		void DidRemoveHome (HMHomeManager manager, HMHome home);
 
-		[iOS (13, 0), NoTV, NoMac]
+		[NoTV, NoMac]
 		[NoMacCatalyst]
 		[Deprecated (PlatformName.iOS, 15, 0, message: "This method is no longer supported.")]
 		[Deprecated (PlatformName.MacCatalyst, 15, 0, message: "This method is no longer supported.")]
 		[Export ("homeManager:didReceiveAddAccessoryRequest:"), EventArgs ("HMHomeManagerAddAccessoryRequest")]
 		void DidReceiveAddAccessoryRequest (HMHomeManager manager, HMAddAccessoryRequest request);
 
-		[iOS (13, 0), TV (13, 0), NoMac]
+		[NoMac]
 		[MacCatalyst (14, 0)]
 		[Export ("homeManager:didUpdateAuthorizationStatus:"), EventArgs ("HMHomeManagerAuthorizationStatus")]
 		void DidUpdateAuthorizationStatus (HMHomeManager manager, HMHomeManagerAuthorizationStatus status);
@@ -257,7 +257,7 @@ namespace HomeKit {
 		string FirmwareVersion { get; }
 
 		[NullAllowed]
-		[Mac (13, 0), iOS (16, 1), MacCatalyst (16, 2), TV (16, 1)]
+		[iOS (16, 1), MacCatalyst (16, 2), TV (16, 1)]
 		[Export ("matterNodeID", ArgumentSemantic.Copy)]
 		NSNumber MatterNodeId { get; }
 
@@ -2637,7 +2637,7 @@ namespace HomeKit {
 		NSNumber Max { get; }
 	}
 
-	[iOS (13, 0), NoMac, NoTV, NoMacCatalyst]
+	[NoMac, NoTV, MacCatalyst (27, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface HMAccessoryOwnershipToken {
@@ -2645,7 +2645,7 @@ namespace HomeKit {
 		NativeHandle Constructor (NSData data);
 	}
 
-	[iOS (13, 0), NoMac, NoTV]
+	[NoMac, NoTV]
 	[NoMacCatalyst]
 	[Deprecated (PlatformName.iOS, 15, 0, message: "This class is no longer supported.")]
 	[Deprecated (PlatformName.MacCatalyst, 15, 0, message: "This class is no longer supported.")]
@@ -2680,7 +2680,7 @@ namespace HomeKit {
 		HMAccessorySetupPayload GetPayload (NSUrl setupPayloadUrl, HMAccessoryOwnershipToken ownershipToken);
 	}
 
-	[iOS (13, 0), TV (13, 0), NoMac, MacCatalyst (14, 0)]
+	[NoMac, MacCatalyst (14, 0)]
 	[BaseType (typeof (HMAccessoryProfile))]
 	[DisableDefaultCtor]
 	interface HMNetworkConfigurationProfile {
@@ -2697,7 +2697,7 @@ namespace HomeKit {
 
 	interface IHMNetworkConfigurationProfileDelegate { }
 
-	[TV (13, 0), NoMac, iOS (13, 0), MacCatalyst (14, 0)]
+	[NoMac, MacCatalyst (14, 0)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface HMNetworkConfigurationProfileDelegate {
@@ -2705,14 +2705,13 @@ namespace HomeKit {
 		void DidUpdateNetworkAccessMode (HMNetworkConfigurationProfile profile);
 	}
 
-	[NoTV, NoMacCatalyst]
+	[NoTV, MacCatalyst (27, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface HMAccessorySetupPayload {
 		[Export ("initWithURL:")]
 		NativeHandle Constructor ([NullAllowed] NSUrl setupPayloadUrl);
 
-		[iOS (13, 0)]
 		[Export ("initWithURL:ownershipToken:")]
 		NativeHandle Constructor (NSUrl setupPayloadUrl, [NullAllowed] HMAccessoryOwnershipToken ownershipToken);
 	}
@@ -2829,7 +2828,7 @@ namespace HomeKit {
 
 	}
 
-	[NoTV, NoMacCatalyst, NoMac, iOS (15, 4)]
+	[NoTV, MacCatalyst (27, 0), NoMac, iOS (15, 4)]
 	[BaseType (typeof (NSObject))]
 	interface HMAccessorySetupRequest : NSCopying {
 
@@ -2846,7 +2845,7 @@ namespace HomeKit {
 		string SuggestedAccessoryName { get; set; }
 	}
 
-	[NoTV, NoMacCatalyst, NoMac, iOS (15, 4)]
+	[NoTV, MacCatalyst (27, 0), NoMac, iOS (15, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface HMAccessorySetupResult : NSCopying {
@@ -2858,9 +2857,15 @@ namespace HomeKit {
 		NSUuid [] AccessoryUniqueIdentifiers { get; }
 	}
 
-	[iOS (15, 2), NoTV, NoMacCatalyst]
+	[iOS (15, 2), NoTV, MacCatalyst (27, 0)]
 	[BaseType (typeof (NSObject))]
 	interface HMAccessorySetupManager {
+		/// <summary>Gets a value that indicates whether accessory setup is supported on the current device.</summary>
+		[MacCatalyst (27, 0), iOS (27, 0)]
+		[Static]
+		[Export ("supported")]
+		bool Supported { [Bind ("isSupported")] get; }
+
 		[Async]
 		[iOS (15, 4)]
 		[Export ("performAccessorySetupUsingRequest:completionHandler:")]

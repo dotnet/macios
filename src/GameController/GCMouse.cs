@@ -25,9 +25,9 @@ namespace GameController {
 			}
 		}
 
-		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("tvos14.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		[EditorBrowsable (EditorBrowsableState.Never)]

@@ -5,3 +5,12 @@
 !unknown-selector! MDLAsset::componentConformingToProtocol: not found
 !unknown-selector! MDLAsset::components not found
 !unknown-selector! MDLAsset::setComponent:forProtocol: not found
+!extra-null-allowed! 'ModelIO.IMDLMeshBufferZone ModelIO.IMDLMeshBuffer::get_Zone()' has a extraneous [NullAllowed] on return type
+!wrong-simd-missing-marshaldirective! CoreGraphics.NMatrix4 ModelIO.IMDLTransformComponent::get_Matrix(): simd type: matrix_float4x4
+!wrong-simd-missing-marshaldirective! CoreGraphics.NMatrix4 ModelIO.IMDLTransformComponent::GetLocalTransform(System.Double): simd type: matrix_float4x4
+!wrong-simd-missing-marshaldirective! Foundation.NSData ModelIO.IMDLLightProbeIrradianceDataSource::GetSphericalHarmonicsCoefficients(System.Numerics.Vector3): simd type: vector_float3
+!wrong-simd-missing-marshaldirective! ModelIO.MDLAxisAlignedBoundingBox ModelIO.IMDLLightProbeIrradianceDataSource::get_BoundingBox(): simd type: MDLAxisAlignedBoundingBox
+!wrong-simd-missing-marshaldirective! System.Void ModelIO.IMDLLightProbeIrradianceDataSource::set_BoundingBox(ModelIO.MDLAxisAlignedBoundingBox): simd type: MDLAxisAlignedBoundingBox
+!wrong-simd-missing-marshaldirective! System.Void ModelIO.IMDLTransformComponent::set_Matrix(CoreGraphics.NMatrix4): simd type: matrix_float4x4
+!wrong-simd-missing-marshaldirective! System.Void ModelIO.IMDLTransformComponent::SetLocalTransform(CoreGraphics.NMatrix4,System.Double): simd type: matrix_float4x4
+!wrong-simd-missing-marshaldirective! System.Void ModelIO.IMDLTransformComponent::SetLocalTransform(CoreGraphics.NMatrix4): simd type: matrix_float4x4

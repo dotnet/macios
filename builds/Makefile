@@ -27,7 +27,7 @@ downloads/$(DOTNET_INSTALL_NAME): $(DOTNET_INSTALL_SCRIPT)
 	$(Q) echo "Downloading and installing .NET $(DOTNET_VERSION) ($(DOTNET_ARCH)) into $@..."
 ifeq ($(OS),Windows_NT)
 	rm -Rf "$@"
-	pwsh -ExecutionPolicy ByPass -NoProfile -Command '& ./$(DOTNET_INSTALL_SCRIPT) -Version "$(DOTNET_VERSION)" -InstallDir "$@.tmp" -Verbose'
+	pwsh -ExecutionPolicy ByPass -NoProfile -Command '& ./$(DOTNET_INSTALL_SCRIPT) -Version "$(DOTNET_VERSION)" -InstallDir "$@.tmp" -ZipPath "downloads/$(DOTNET_FILENAME)" -Verbose'
 	mv "$@.tmp" "$@"
 else
 	$(Q) if test -f $(DOTNET_CACHE_FILENAME); then \

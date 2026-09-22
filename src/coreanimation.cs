@@ -221,7 +221,6 @@ namespace CoreAnimation {
 	}
 
 	/// <include file="../docs/api/CoreAnimation/CADisplayLink.xml" path="/Documentation/Docs[@DocId='T:CoreAnimation.CADisplayLink']/*" />
-	[Mac (14, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface CADisplayLink {
@@ -1266,14 +1265,10 @@ namespace CoreAnimation {
 		CACornerMask MaskedCorners { get; set; }
 
 		[BindAs (typeof (CACornerCurve))]
-		[TV (13, 0)]
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("cornerCurve")]
 		NSString CornerCurve { get; set; }
 
-		[TV (13, 0)]
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("cornerCurveExpansionFactor:")]
@@ -1285,7 +1280,6 @@ namespace CoreAnimation {
 		[NoTV]
 		[iOS (17, 0)]
 		[MacCatalyst (17, 0)]
-		[Mac (14, 0)]
 		[Export ("wantsExtendedDynamicRangeContent")]
 		bool WantsExtendedDynamicRangeContent { get; set; }
 
@@ -1317,8 +1311,6 @@ namespace CoreAnimation {
 		CALayer GetLayerWithRemoteClientId (uint client_id);
 	}
 
-	[TV (13, 0)]
-	[iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	enum CACornerCurve {
 		[DefaultEnumValue]
@@ -1430,14 +1422,10 @@ namespace CoreAnimation {
 		[Export ("maximumDrawableCount")]
 		nuint MaximumDrawableCount { get; set; }
 
-		[TV (13, 0)]
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("colorspace", ArgumentSemantic.Assign)]
 		CGColorSpace ColorSpace { get; set; }
 
-		[TV (13, 0)]
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("preferredDevice")]
 		IMTLDevice PreferredDevice { get; }
@@ -1457,7 +1445,6 @@ namespace CoreAnimation {
 		[TV (16, 0)]
 		[iOS (16, 0)]
 		[MacCatalyst (16, 0)]
-		[Mac (13, 0)]
 		[Export ("developerHUDProperties", ArgumentSemantic.Copy)]
 		[NullAllowed]
 		// There's no documentation about which values are valid in this dictionary, so we can't create any strong bindings for it.
@@ -2580,19 +2567,19 @@ namespace CoreAnimation {
 		[Export ("settlingDuration")]
 		double /* CFTimeInterval */ SettlingDuration { get; }
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Export ("allowsOverdamping")]
 		bool AllowsOverdamping { get; set; }
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Export ("initWithPerceptualDuration:bounce:")]
 		NativeHandle Constructor (double /* CFTimeInterval */ perceptualDuration, nfloat bounce);
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Export ("perceptualDuration")]
 		double /* CFTimeInterval */ PerceptualDuration { get; }
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Export ("bounce")]
 		nfloat Bounce { get; }
 	}
@@ -3877,20 +3864,19 @@ namespace CoreAnimation {
 		[Export ("HLGMetadata", ArgumentSemantic.Retain)]
 		CAEdrMetadata HlgMetadata { get; }
 
-		[Mac (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("available")]
 		bool Available { [Bind ("isAvailable")] get; }
 
 		[Static]
-		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("HLGMetadataWithAmbientViewingEnvironment:")]
 		CAEdrMetadata GetHlgMetadata (NSData ambientViewingEnvironmentData);
 	}
 
 	[BaseType (typeof (NSObject))]
-	[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
+	[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 	[DisableDefaultCtor]
 	interface CAMetalDisplayLinkUpdate {
 		[Export ("drawable")]
@@ -3905,7 +3891,7 @@ namespace CoreAnimation {
 
 	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
 	[BaseType (typeof (NSObject))]
-	[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
+	[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 	interface CAMetalDisplayLinkDelegate {
 		[Abstract]
 		[Export ("metalDisplayLink:needsUpdate:")]
@@ -3915,7 +3901,7 @@ namespace CoreAnimation {
 	interface ICAMetalDisplayLinkDelegate { }
 
 	[BaseType (typeof (NSObject))]
-	[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
+	[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 	[DisableDefaultCtor]
 	interface CAMetalDisplayLink {
 		[Export ("initWithMetalLayer:")]

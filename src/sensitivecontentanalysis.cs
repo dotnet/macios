@@ -1,15 +1,34 @@
+using System.Collections.Generic;
+
 using AVFoundation;
 using CoreGraphics;
 using CoreVideo;
 using VideoToolbox;
 
 namespace SensitiveContentAnalysis {
-	[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+	public enum SCSensitiveContentType {
+		[Field ("SCSensitiveContentTypeSexuallyExplicit")]
+		SexuallyExplicit,
+
+		[Field ("SCSensitiveContentTypeGoreOrViolence")]
+		GoreOrViolence,
+	}
+
+	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SCSensitivityAnalysis {
 		[Export ("sensitive")]
 		bool Sensitive { [Bind ("isSensitive")] get; }
+
+		[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[Export ("detectedTypes", ArgumentSemantic.Copy)]
+		NSSet<NSString> WeakDetectedTypes { get; }
+
+		[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[Wrap ("WeakDetectedTypes.ToHashSet (v => SCSensitiveContentTypeExtensions.GetValue (v))")]
+		HashSet<SCSensitiveContentType> DetectedTypes { get; }
 
 		// From the VideoStreamAnalysis (SCSensitiveAnalysis) category
 		[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
@@ -27,7 +46,7 @@ namespace SensitiveContentAnalysis {
 		bool ShouldMuteAudio { get; }
 	}
 
-	[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum SCSensitivityAnalysisPolicy : long {
 		Disabled = 0,
@@ -35,7 +54,7 @@ namespace SensitiveContentAnalysis {
 		DescriptiveInterventions = 2,
 	}
 
-	[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	interface SCSensitivityAnalyzer {
 		[Export ("analysisPolicy", ArgumentSemantic.Assign)]

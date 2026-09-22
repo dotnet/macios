@@ -72,5 +72,23 @@ namespace Xamarin.MacDev.Tasks {
 			var extractedPath = Path.Combine (tmpdir, "intermediate", "unpack", "TestValid", "content", "sub", "file.txt");
 			Assert.That (File.Exists (extractedPath), Is.True, $"File should have been extracted to {extractedPath}");
 		}
+
+		[Test]
+		public void OriginalBundleResource_IsMarkedForProcessing ()
+		{
+			var tmpdir = Cache.CreateTemporaryDirectory ();
+			var assemblyPath = CreateAssemblyWithResource (tmpdir, "TestOriginal", "__monotouch_item_BundleResource_image.png", new byte [] { 0x41 });
+
+			var task = CreateTask<UnpackLibraryResources> ();
+			task.Prefix = "monotouch";
+			task.IntermediateOutputPath = Path.Combine (tmpdir, "intermediate");
+			task.ReferencedLibraries = new [] { new TaskItem (assemblyPath) };
+			task.TargetFrameworkDirectory = [];
+
+			ExecuteTask (task, expectedErrorCount: 0);
+
+			Assert.That (task.BundleResourcesWithLogicalNames, Has.Length.EqualTo (1), "Bundle resource count");
+			Assert.That (task.BundleResourcesWithLogicalNames? [0].GetMetadata ("IsOriginalResource"), Is.EqualTo ("true"), "IsOriginalResource");
+		}
 	}
 }

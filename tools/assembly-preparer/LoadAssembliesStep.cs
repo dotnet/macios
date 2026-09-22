@@ -99,9 +99,11 @@ namespace MonoTouch.Tuner {
 				.SingleOrDefault ();
 
 			if (isTrimmableAttribute is null) {
-				// If the attribute is not present, then we trim if the global 'TrimMode' is 'full'
+				// If the attribute is not present, then we trim if the global 'TrimMode' is 'full' or 'link'.
+				// 'link' is the legacy name for trimming every assembly: the SDK doesn't pass '--action' to
+				// ILLink in that case, and ILLink's default action is to link every assembly.
 				return globalTrimMode switch {
-					"link" => AssemblyAction.Copy,
+					"link" => AssemblyAction.Link,
 					"partial" => AssemblyAction.Copy,
 					"full" => AssemblyAction.Link,
 					_ => throw new ArgumentException ($"Unknown global trim mode: {Configuration.TrimMode}"),

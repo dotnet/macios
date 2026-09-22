@@ -1,9 +1,11 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 using Mono.Cecil;
 
 using Xamarin.Linker;
+using Xamarin.Utils;
 
 #nullable enable
 
@@ -40,7 +42,7 @@ namespace Xamarin {
 			var items = new List<MSBuildItem> ();
 			foreach (var fw in Frameworks.OrderBy (v => v)) {
 				items.Add (new MSBuildItem (
-					fw,
+					GetRelativePathIfFullPath (fw),
 					new Dictionary<string, string> {
 						{ "IsWeak", "false" },
 					}
@@ -48,7 +50,7 @@ namespace Xamarin {
 			}
 			foreach (var fw in WeakFrameworks.OrderBy (v => v)) {
 				items.Add (new MSBuildItem (
-					fw,
+					GetRelativePathIfFullPath (fw),
 					new Dictionary<string, string> {
 						{ "IsWeak", "true" },
 					}
@@ -56,6 +58,13 @@ namespace Xamarin {
 			}
 
 			Configuration.WriteOutputForMSBuild ("_LinkerFrameworks", items);
+		}
+
+		string GetRelativePathIfFullPath (string path)
+		{
+			if (!Path.IsPathRooted (path))
+				return path;
+			return PathUtils.AbsoluteToRelative (Environment.CurrentDirectory, path);
 		}
 	}
 }

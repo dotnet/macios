@@ -676,7 +676,7 @@ namespace Xharness.Jenkins.Reports {
 				if (string.IsNullOrEmpty (failedTest.Message)) {
 					writer.WriteLine ("{0}<br />", failedTest.Name.AsHtml ());
 				} else {
-					writer.WriteLine ("{0}: {1}<br />", failedTest.Name.AsHtml (), failedTest.Message.AsHtml ());
+					writer.WriteLine ("{0}: {1}<br />", failedTest.Name.AsHtml (), failedTest.Message.Cap (1024).AsHtml ());
 				}
 				writer.WriteLine ("</li>");
 			}

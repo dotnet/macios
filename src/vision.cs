@@ -79,6 +79,8 @@ namespace Vision {
 		Timeout,
 		UnsupportedComputeStage,
 		UnsupportedComputeDevice,
+		ResourceUnavailable,
+		ResourceCorrupted,
 	}
 
 	/// <summary>Enumerates the emphasis of the tracking algorithm.</summary>
@@ -101,9 +103,9 @@ namespace Vision {
 		ScaleFit = 1,
 		/// <summary>If the image is not of the expected size, the image is scaled to fill both dimensions, changing the aspect ratio as necessary.</summary>
 		ScaleFill = 2,
-		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		ScaleFitRotate90Ccw = 256 + ScaleFit,
-		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		ScaleFillRotate90Ccw = 256 + ScaleFill,
 	}
 
@@ -202,7 +204,7 @@ namespace Vision {
 		[Field ("VNBarcodeSymbologyMicroQR")]
 		MicroQR,
 
-		[iOS (17, 0), Mac (14, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Field ("VNBarcodeSymbologyMSIPlessey")]
 		MsiPlessey,
 	}
@@ -253,9 +255,9 @@ namespace Vision {
 		[Deprecated (PlatformName.TvOS, 18, 0, message: "Use 'Three' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'Three' instead.")]
 		Two = 2,
-		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		Three = 3,
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		Four = 4,
 	}
 
@@ -268,7 +270,6 @@ namespace Vision {
 		One = 1,
 		/// <summary>To be added.</summary>
 		Two = 2,
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		Three = 3,
 	}
@@ -339,7 +340,6 @@ namespace Vision {
 		Unspecified = 0,
 		/// <summary>To be added.</summary>
 		One = 1,
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		Two = 2,
 	}
@@ -419,13 +419,12 @@ namespace Vision {
 		Two = 2,
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum VNClassifyImageRequestRevision : ulong {
 		Unspecified = 0,
 		One = 1,
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		Two = 2,
 	}
 
@@ -435,7 +434,6 @@ namespace Vision {
 		One = 1,
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum VNDetectFaceCaptureQualityRequestRevision : ulong {
@@ -444,11 +442,10 @@ namespace Vision {
 		[TV (14, 0), iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		Two = 2,
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		Three = 3,
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum VNRequestFaceLandmarksConstellation : ulong {
@@ -457,7 +454,6 @@ namespace Vision {
 		SeventySixPoints,
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum VNDetectHumanRectanglesRequestRevision : ulong {
@@ -467,37 +463,33 @@ namespace Vision {
 		Two = 2,
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum VNGenerateAttentionBasedSaliencyImageRequestRevision : ulong {
 		Unspecified = 0,
 		One = 1,
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		Two = 2,
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum VNGenerateImageFeaturePrintRequestRevision : ulong {
 		Unspecified = 0,
 		One = 1,
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		Two = 2,
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum VNGenerateObjectnessBasedSaliencyImageRequestRevision : ulong {
 		Unspecified = 0,
 		One = 1,
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		Two = 2,
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum VNRecognizeAnimalsRequestRevision : ulong {
@@ -507,7 +499,6 @@ namespace Vision {
 		Two = 2,
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum VNRequestTextRecognitionLevel : long {
@@ -515,7 +506,6 @@ namespace Vision {
 		Fast,
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum VNRecognizeTextRequestRevision : ulong {
@@ -528,11 +518,10 @@ namespace Vision {
 		[TV (14, 0), iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		Two = 2,
-		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		Three = 3,
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum VNElementType : ulong {
@@ -605,25 +594,25 @@ namespace Vision {
 		One = 1,
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	enum VNDetectHumanBodyPose3DRequestRevision : ulong {
 		One = 1,
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	enum VNTrackHomographicImageRegistrationRequestRevision : ulong {
 		One = 1,
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	enum VNTrackTranslationalImageRegistrationRequestRevision : ulong {
 		One = 1,
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	enum VNTrackOpticalFlowRequestRevision : ulong {
 		One = 1,
@@ -834,7 +823,7 @@ namespace Vision {
 		Fast,
 	}
 
-	[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[Native]
 	public enum VNPointsClassification : long {
 		Disconnected = 0,
@@ -842,7 +831,7 @@ namespace Vision {
 		ClosedPath,
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	public enum VNAnimalBodyPoseObservationJointName {
 		[DefaultEnumValue]
 		[Field (null)]
@@ -924,7 +913,7 @@ namespace Vision {
 		TailBottom,
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	public enum VNAnimalBodyPoseObservationJointsGroupName {
 		[DefaultEnumValue]
 		[Field (null)]
@@ -949,7 +938,7 @@ namespace Vision {
 		All,
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	public enum VNHumanBodyPose3DObservationJointName {
 		[DefaultEnumValue]
 		[Field (null)]
@@ -1007,7 +996,7 @@ namespace Vision {
 		RightWrist,
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	public enum VNHumanBodyPose3DObservationJointsGroupName {
 		[DefaultEnumValue]
 		[Field (null)]
@@ -1035,7 +1024,7 @@ namespace Vision {
 		All,
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	public enum VNComputeStage {
 		[DefaultEnumValue]
 		[Field (null)]
@@ -1048,7 +1037,7 @@ namespace Vision {
 		PostProcessing,
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum VNBarcodeCompositeType : long {
 		None = 0,
@@ -1058,14 +1047,14 @@ namespace Vision {
 		Gs1TypeC,
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum VNHumanBodyPose3DObservationHeightEstimation : long {
 		Reference = 0,
 		Measured,
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum VNTrackOpticalFlowRequestComputationAccuracy : ulong {
 		Low = 0,
@@ -1094,12 +1083,10 @@ namespace Vision {
 		[return: NullAllowed]
 		VNCoreMLModel FromMLModel (MLModel model, out NSError error);
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("inputImageFeatureName")]
 		string InputImageFeatureName { get; set; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("featureProvider", ArgumentSemantic.Strong)]
 		IMLFeatureProvider FeatureProvider { get; set; }
@@ -1261,7 +1248,7 @@ namespace Vision {
 		[Export ("currentRevision")]
 		VNDetectBarcodesRequestRevision CurrentRevision { get; }
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("coalesceCompositeSymbologies")]
 		bool CoalesceCompositeSymbologies { get; set; }
 	}
@@ -1276,13 +1263,11 @@ namespace Vision {
 		[DesignatedInitializer]
 		NativeHandle Constructor ([NullAllowed] VNRequestCompletionHandler completionHandler);
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("revision:supportsConstellation:")]
 		bool SupportsConstellation (VNDetectFaceLandmarksRequestRevision revision, VNRequestFaceLandmarksConstellation constellation);
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("constellation", ArgumentSemantic.Assign)]
 		VNRequestFaceLandmarksConstellation Constellation { get; set; }
@@ -1553,13 +1538,12 @@ namespace Vision {
 		[Export ("pointsInImageOfSize:")]
 		IntPtr _GetPointsInImage (CGSize imageSize);
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[BindAs (typeof (nfloat []))]
 		[NullAllowed, Export ("precisionEstimatesPerPoint")]
 		NSNumber [] PrecisionEstimatesPerPoint { get; }
 
-		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("pointsClassification")]
 		VNPointsClassification PointsClassification { get; }
 	}
@@ -2459,7 +2443,6 @@ namespace Vision {
 		[Export ("faceObservationWithRequestRevision:boundingBox:roll:yaw:pitch:")]
 		VNFaceObservation FromBoundingBox (VNFaceObservationRequestRevision requestRevision, CGRect boundingBox, [NullAllowed][BindAs (typeof (nfloat?))] NSNumber roll, [NullAllowed][BindAs (typeof (nfloat?))] NSNumber yaw, [NullAllowed][BindAs (typeof (nfloat?))] NSNumber pitch);
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[BindAs (typeof (float?))]
 		[NullAllowed, Export ("faceCaptureQuality", ArgumentSemantic.Strong)]
@@ -2510,17 +2493,14 @@ namespace Vision {
 
 		// From interface VNClassificationObservation
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("hasPrecisionRecallCurve")]
 		bool HasPrecisionRecallCurve { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("hasMinimumRecall:forPrecision:")]
 		bool HasMinimumRecall (float minimumRecall, float precision);
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("hasMinimumPrecision:forRecall:")]
 		bool HasMinimumPrecision (float minimumPrecision, float recall);
@@ -2535,7 +2515,6 @@ namespace Vision {
 		[Export ("featureValue", ArgumentSemantic.Copy)]
 		MLFeatureValue FeatureValue { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("featureName")]
 		string FeatureName { get; }
@@ -2550,7 +2529,6 @@ namespace Vision {
 		[Export ("pixelBuffer")]
 		CVPixelBuffer PixelBuffer { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("featureName")]
 		string FeatureName { get; }
@@ -2566,7 +2544,6 @@ namespace Vision {
 		[Deprecated (PlatformName.iOS, 17, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 17, 0)]
 		[Deprecated (PlatformName.TvOS, 17, 0)]
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("rectangleObservationWithRequestRevision:topLeft:bottomLeft:bottomRight:topRight:")]
@@ -2594,7 +2571,7 @@ namespace Vision {
 		[Export ("observationWithRequestRevision:boundingBox:")]
 		VNRectangleObservation FromBoundingBox (VNRectangleObservationRequestRevision requestRevision, CGRect boundingBox);
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Static]
 		[Export ("rectangleObservationWithRequestRevision:topLeft:topRight:bottomRight:bottomLeft:")]
 		VNRectangleObservation FromRectangleObservation (VNRectangleObservationRequestRevision requestRevision, CGPoint topLeft, CGPoint topRight, CGPoint bottomRight, CGPoint bottomLeft);
@@ -2651,27 +2628,27 @@ namespace Vision {
 		[NullAllowed, Export ("payloadStringValue")]
 		string PayloadStringValue { get; }
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[NullAllowed, Export ("payloadData", ArgumentSemantic.Copy)]
 		NSData PayloadData { get; }
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("isGS1DataCarrier")]
 		bool IsGS1DataCarrier { get; }
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("isColorInverted")]
 		bool IsColorInverted { get; }
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("supplementalCompositeType")]
 		VNBarcodeCompositeType SupplementalCompositeType { get; }
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[NullAllowed, Export ("supplementalPayloadString")]
 		string SupplementalPayloadString { get; }
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[NullAllowed, Export ("supplementalPayloadData", ArgumentSemantic.Copy)]
 		NSData SupplementalPayloadData { get; }
 	}
@@ -2712,7 +2689,7 @@ namespace Vision {
 		[Export ("angle")]
 		nfloat Angle { get; }
 
-		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("transformForImageWidth:height:")]
 		CGAffineTransform CreateTransform (nuint width, nuint height);
 	}
@@ -2784,7 +2761,6 @@ namespace Vision {
 		[Export ("usesCPUOnly")]
 		bool UsesCpuOnly { get; set; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("cancel")]
 		void Cancel ();
@@ -2812,17 +2788,17 @@ namespace Vision {
 		//[Export ("currentRevision")]
 		//VNRequestRevision CurrentRevision { get; }
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("supportedComputeStageDevicesAndReturnError:")]
 		[return: NullAllowed]
 		NSDictionary<NSString, NSArray<IMLComputeDeviceProtocol>> GetSupportedComputeDevices ([NullAllowed] out NSError error);
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("computeDeviceForComputeStage:")]
 		[return: NullAllowed]
 		IMLComputeDeviceProtocol GetComputeDevice (string computeStage);
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("setComputeDevice:forComputeStage:")]
 		void SetComputeDevice ([NullAllowed] IMLComputeDeviceProtocol computeDevice, string computeStage);
 	}
@@ -3016,11 +2992,11 @@ namespace Vision {
 		[Export ("performRequests:error:")]
 		bool Perform (VNRequest [] requests, out NSError error);
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("initWithCVPixelBuffer:depthData:orientation:options:")]
 		NativeHandle Constructor (CVPixelBuffer pixelBuffer, AVDepthData depthData, CGImagePropertyOrientation orientation, NSDictionary<NSString, NSObject> options);
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("initWithCMSampleBuffer:depthData:orientation:options:")]
 		NativeHandle Constructor (CMSampleBuffer sampleBuffer, AVDepthData depthData, CGImagePropertyOrientation orientation, NSDictionary<NSString, NSObject> options);
 	}
@@ -3468,7 +3444,7 @@ namespace Vision {
 		[Export ("lastFrame")]
 		bool LastFrame { [Bind ("isLastFrame")] get; set; }
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("supportedNumberOfTrackersAndReturnError:")]
 		nuint GetSupportedNumberOfTrackers ([NullAllowed] out NSError error);
 	}
@@ -3485,7 +3461,6 @@ namespace Vision {
 		VNRequestRevision RequestRevision { get; }
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (VNImageBasedRequest))]
 	[DisableDefaultCtor]
@@ -3537,7 +3512,6 @@ namespace Vision {
 		VNClassifyImageRequestRevision CurrentRevision { get; }
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (VNImageBasedRequest))]
 	[DisableDefaultCtor]
@@ -3575,7 +3549,6 @@ namespace Vision {
 		VNDetectFaceCaptureQualityRequestRevision CurrentRevision { get; }
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (VNImageBasedRequest))]
 	[DisableDefaultCtor]
@@ -3617,7 +3590,6 @@ namespace Vision {
 		VNDetectHumanRectanglesRequestRevision CurrentRevision { get; }
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (VNImageBasedRequest))]
 	[DisableDefaultCtor]
@@ -3655,7 +3627,6 @@ namespace Vision {
 		VNGenerateAttentionBasedSaliencyImageRequestRevision CurrentRevision { get; }
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (VNImageBasedRequest))]
 	[DisableDefaultCtor]
@@ -3696,7 +3667,6 @@ namespace Vision {
 		VNGenerateImageFeaturePrintRequestRevision CurrentRevision { get; }
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (VNImageBasedRequest))]
 	[DisableDefaultCtor]
@@ -3734,7 +3704,6 @@ namespace Vision {
 		VNGenerateObjectnessBasedSaliencyImageRequestRevision CurrentRevision { get; }
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -3751,7 +3720,6 @@ namespace Vision {
 		VNRectangleObservation GetBoundingBox (NSRange range, [NullAllowed] out NSError error);
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (VNRectangleObservation))]
 	[DisableDefaultCtor]
@@ -3765,7 +3733,6 @@ namespace Vision {
 		VNRecognizedTextObservation Create (CGRect boundingBox);
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (VNPixelBufferObservation))]
@@ -3775,7 +3742,6 @@ namespace Vision {
 		VNRectangleObservation [] SalientObjects { get; }
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (VNObservation))]
 	[DisableDefaultCtor]
@@ -3795,7 +3761,6 @@ namespace Vision {
 		bool _ComputeDistance (IntPtr outDistance, VNFeaturePrintObservation featurePrint, [NullAllowed] out NSError error);
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	enum VNAnimalIdentifier {
 
@@ -3810,7 +3775,6 @@ namespace Vision {
 		Cat,
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (VNImageBasedRequest))]
 	[DisableDefaultCtor]
@@ -3864,7 +3828,6 @@ namespace Vision {
 		VNRecognizeAnimalsRequestRevision CurrentRevision { get; }
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (VNImageBasedRequest))]
 	[DisableDefaultCtor]
@@ -3930,17 +3893,15 @@ namespace Vision {
 		[Export ("currentRevision")]
 		VNRecognizeTextRequestRevision CurrentRevision { get; }
 
-		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("automaticallyDetectsLanguage")]
 		bool AutomaticallyDetectsLanguage { get; set; }
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	delegate void VNRequestProgressHandler (VNRequest request, double fractionCompleted, [NullAllowed] NSError error);
 	interface IVNRequestProgressProviding { }
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface VNRequestProgressProviding {
@@ -4084,13 +4045,13 @@ namespace Vision {
 		[Export ("currentRevision")]
 		VNDetectHumanBodyPoseRequestRevision CurrentRevision { get; }
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("supportedJointsGroupNamesAndReturnError:")]
 		[return: NullAllowed]
 		[return: BindAs (typeof (VNHumanBodyPoseObservationJointsGroupName []))]
 		NSString [] GetSupportedJointsGroupNames ([NullAllowed] out NSError error);
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("supportedJointNamesAndReturnError:")]
 		[return: NullAllowed]
 		[return: BindAs (typeof (VNHumanBodyPoseObservationJointName []))]
@@ -4183,13 +4144,13 @@ namespace Vision {
 		[Export ("currentRevision")]
 		VNDetectHumanHandPoseRequestRevision CurrentRevision { get; }
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("supportedJointNamesAndReturnError:")]
 		[return: NullAllowed]
 		[return: BindAs (typeof (VNHumanHandPoseObservationJointName []))]
 		NSString [] GetSupportedJointNames ([NullAllowed] out NSError error);
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("supportedJointsGroupNamesAndReturnError:")]
 		[return: NullAllowed]
 		[return: BindAs (typeof (VNHumanHandPoseObservationJointsGroupName []))]
@@ -4624,7 +4585,7 @@ namespace Vision {
 		[Export ("currentRevision")]
 		VNGenerateOpticalFlowRequestRevision CurrentRevision { get; }
 
-		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("keepNetworkOutput")]
 		bool KeepNetworkOutput { get; set; }
 	}
@@ -4872,7 +4833,7 @@ namespace Vision {
 		VNRectangleObservation [] Results { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (VNImageBasedRequest))]
 	[DisableDefaultCtor]
 	interface VNGenerateForegroundInstanceMaskRequest {
@@ -4883,7 +4844,7 @@ namespace Vision {
 		VNInstanceMaskObservation [] Results { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (VNImageBasedRequest))]
 	[DisableDefaultCtor]
 	interface VNGeneratePersonInstanceMaskRequest {
@@ -4894,7 +4855,7 @@ namespace Vision {
 		VNInstanceMaskObservation [] Results { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (VNStatefulRequest))]
 	interface VNTrackTranslationalImageRegistrationRequest {
 		[Export ("initWithCompletionHandler:")]
@@ -4923,7 +4884,7 @@ namespace Vision {
 		VNTrackTranslationalImageRegistrationRequestRevision CurrentRevision { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (VNStatefulRequest))]
 	interface VNTrackHomographicImageRegistrationRequest {
 		[Export ("initWithCompletionHandler:")]
@@ -4952,7 +4913,7 @@ namespace Vision {
 		VNTrackHomographicImageRegistrationRequestRevision CurrentRevision { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (VNStatefulRequest))]
 	interface VNTrackOpticalFlowRequest {
 		[Export ("initWithCompletionHandler:")]
@@ -4971,7 +4932,7 @@ namespace Vision {
 		VNPixelBufferObservation [] Results { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (VNImageBasedRequest))]
 	[DisableDefaultCtor]
 	interface VNDetectAnimalBodyPoseRequest {
@@ -4993,7 +4954,7 @@ namespace Vision {
 		VNAnimalBodyPoseObservation [] Results { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (VNStatefulRequest))]
 	interface VNDetectHumanBodyPose3DRequest {
 		[Export ("initWithCompletionHandler:")]
@@ -5032,7 +4993,7 @@ namespace Vision {
 		VNDetectHumanBodyPose3DRequestRevision CurrentRevision { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface VNPoint3D : NSCopying, NSSecureCoding {
@@ -5048,7 +5009,7 @@ namespace Vision {
 		}
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (VNPoint3D))]
 	[DisableDefaultCtor]
 	interface VNRecognizedPoint3D {
@@ -5064,7 +5025,7 @@ namespace Vision {
 		NSString GroupKeyAll { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (VNObservation))]
 	[DisableDefaultCtor]
 	interface VNRecognizedPoints3DObservation {
@@ -5083,7 +5044,7 @@ namespace Vision {
 		NSDictionary<NSString, VNRecognizedPoint3D> GetRecognizedPoints (NSString groupKey, [NullAllowed] out NSError error);
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (VNRecognizedPoint3D))]
 	[DisableDefaultCtor]
 	interface VNHumanBodyRecognizedPoint3D {
@@ -5102,7 +5063,7 @@ namespace Vision {
 		VNHumanBodyPose3DObservationJointName ParentJoint { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (VNObservation))]
 	[DisableDefaultCtor]
 	interface VNInstanceMaskObservation {
@@ -5125,7 +5086,7 @@ namespace Vision {
 		CVPixelBuffer GenerateScaledMask (NSIndexSet instances, VNImageRequestHandler requestHandler, [NullAllowed] out NSError error);
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (VNRecognizedPoints3DObservation))]
 	[DisableDefaultCtor]
 	interface VNHumanBodyPose3DObservation {
@@ -5171,7 +5132,7 @@ namespace Vision {
 		bool GetCameraRelativePosition (out Matrix4 modelPositionOut, [BindAs (typeof (VNHumanBodyPose3DObservationJointName))] NSString jointName, [NullAllowed] out NSError error);
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (VNRecognizedPointsObservation))]
 	[DisableDefaultCtor]
 	interface VNAnimalBodyPoseObservation {

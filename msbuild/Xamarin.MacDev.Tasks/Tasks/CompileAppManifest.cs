@@ -34,6 +34,8 @@ namespace Xamarin.MacDev.Tasks {
 		// This must be an ITaskItem to copy the file to Windows for remote builds.
 		public ITaskItem? AppManifest { get; set; }
 
+		public ITaskItem [] AppManifestEntries { get; set; } = [];
+
 		[Required]
 		public string BundleExecutable { get; set; } = "";
 
@@ -50,6 +52,8 @@ namespace Xamarin.MacDev.Tasks {
 
 		[Required]
 		public bool IsAppExtension { get; set; }
+
+		public bool IsFramework { get; set; }
 
 		[Required]
 		public string MinSupportedOSPlatformVersion { get; set; } = string.Empty;
@@ -120,7 +124,7 @@ namespace Xamarin.MacDev.Tasks {
 			if (GenerateApplicationManifest && !string.IsNullOrEmpty (ApplicationId))
 				plist.SetIfNotPresent (ManifestKeys.CFBundleIdentifier, ApplicationId);
 			plist.SetIfNotPresent (ManifestKeys.CFBundleInfoDictionaryVersion, "6.0");
-			plist.SetIfNotPresent (ManifestKeys.CFBundlePackageType, IsAppExtension ? "XPC!" : "APPL");
+			plist.SetIfNotPresent (ManifestKeys.CFBundlePackageType, IsFramework ? "FMWK" : (IsAppExtension ? "XPC!" : "APPL"));
 			plist.SetIfNotPresent (ManifestKeys.CFBundleSignature, "????");
 			plist.SetIfNotPresent (ManifestKeys.CFBundleExecutable, BundleExecutable);
 			plist.SetIfNotPresent (ManifestKeys.CFBundleName, AppBundleName);
@@ -157,6 +161,8 @@ namespace Xamarin.MacDev.Tasks {
 			// Merge with any partial plists...
 			MergePartialPlistTemplates (plist);
 
+			AddAppManifestEntries (plist);
+
 			Validation (plist);
 
 			// write the resulting app manifest
@@ -178,6 +184,18 @@ namespace Xamarin.MacDev.Tasks {
 			var dict = new PDictionary ();
 			dict.Add ("Version", new PString (value));
 			plist.Add (name, dict);
+		}
+
+		void AddAppManifestEntries (PDictionary plist)
+		{
+			PListItemGroup.Merge (
+				Log,
+				plist,
+				AppManifestEntries,
+				static (value, _) => value,
+				MSBStrings.E7190, /* Invalid value '{0}' for the app manifest entry '{1}' of type '{2}' specified in the AppManifestEntry item group. Expected no value at all. */
+				MSBStrings.E7191, /* Invalid value '{0}' for the app manifest entry '{1}' of type '{2}' specified in the AppManifestEntry item group. Expected 'true' or 'false'. */
+				MSBStrings.E7189 /* Unknown type '{0}' for the app manifest entry '{1}' specified in the AppManifestEntry item group. Expected 'Remove', 'Boolean', 'String', or 'StringArray'. */);
 		}
 
 		void RegisterFonts (PDictionary plist)
@@ -228,6 +246,11 @@ namespace Xamarin.MacDev.Tasks {
 
 		bool SetMinimumOSVersion (PDictionary plist)
 		{
+			if (!IsValidVersionValue (SupportedOSPlatformVersion, nameof (SupportedOSPlatformVersion)))
+				return false;
+			if (!IsValidVersionValue (MinSupportedOSPlatformVersion, nameof (MinSupportedOSPlatformVersion)))
+				return false;
+
 			var minimumVersionKey = PlatformFrameworkHelper.GetMinimumOSVersionKey (Platform);
 			var minimumOSVersionInManifest = plist.Get<PString> (minimumVersionKey)?.Value;
 			string convertedSupportedOSPlatformVersion;
@@ -290,6 +313,22 @@ namespace Xamarin.MacDev.Tasks {
 
 			// Write out our value
 			plist [minimumVersionKey] = minimumOSVersion;
+
+			return true;
+		}
+
+		// Verify that the value doesn't contain any whitespace (in particular newlines), because such values
+		// end up breaking other parts of the build (even though they may successfully parse as a Version).
+		bool IsValidVersionValue (string value, string propertyName)
+		{
+			if (string.IsNullOrEmpty (value))
+				return true;
+
+			if (value.Any (char.IsWhiteSpace)) {
+				var printableValue = value.Replace ("\r", "\\r").Replace ("\n", "\\n").Replace ("\t", "\\t");
+				Log.LogError (MSBStrings.E7187 /* The value '{0}' for the property '{1}' is not a valid version number, because it contains whitespace. */, printableValue, propertyName);
+				return false;
+			}
 
 			return true;
 		}
@@ -532,6 +571,16 @@ namespace Xamarin.MacDev.Tasks {
 				return;
 
 			PObject? capabilities;
+
+			if (IsFramework) {
+				// When building universal apps, we might get called here once for each architecture.
+				// This will lead to different app manifests in each architecture-specific app bundle,
+				// and then merging them into a universal bundle will fail.
+				// Typically this is not a problem for normal apps, because we compile the app manifest
+				// once for the universal app bundle, but for frameworks we do it once for each architecture,
+				// so just skip setting UIRequiredDeviceCapabilities in that case.
+				return;
+			}
 
 			if (plist.TryGetValue (ManifestKeys.UIRequiredDeviceCapabilities, out capabilities)) {
 				if (capabilities is PArray) {

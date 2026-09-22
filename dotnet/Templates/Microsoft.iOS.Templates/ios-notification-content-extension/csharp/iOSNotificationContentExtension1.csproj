@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>DOTNET_TFM</TargetFramework>
+    <TargetFramework>net11.0-ios</TargetFramework>
     <OutputType>Library</OutputType>
     <RootNamespace Condition="'$(name)' != '$(name{-VALUE-FORMS-}safe_namespace)'">iOSNotificationContentExtension1</RootNamespace>
     <Nullable>enable</Nullable>

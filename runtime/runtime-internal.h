@@ -16,14 +16,9 @@
 #define PRINT(...) do { xamarin_printf (__VA_ARGS__); } while (0);
 #define LOG(...) do { if (xamarin_log_level > 0) xamarin_printf (__VA_ARGS__); } while (0);
 
-// #define DEBUG_LAUNCH_TIME
-
-#ifdef DEBUG_LAUNCH_TIME
-#define DEBUG_LAUNCH_TIME_PRINT(msg) \
-	debug_launch_time_print (msg);
-#else
-#define DEBUG_LAUNCH_TIME_PRINT(...)
-#endif
+void xamarin_launch_time_print (const char *msg);
+#define XAMARIN_LAUNCH_TIME_PRINT(msg) \
+	xamarin_launch_time_print (msg);
 
 // Uncomment the TRACK_MONOOBJECTS define to show a summary at process exit of
 // the MonoObjects that were created, and if any were not freed. If there are

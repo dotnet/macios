@@ -25,8 +25,13 @@ namespace Xamarin.MacDev.Tasks {
 
 		public override bool Execute ()
 		{
-			if (ShouldExecuteRemotely ())
-				return ExecuteRemotely ();
+			if (ShouldExecuteRemotely ()) {
+				if (ExecuteRemotely (out var taskRunner)) {
+					CopyFilesToWindowsAsync (taskRunner, AppBundleManifest!).Wait ();
+					return true;
+				}
+				return false;
+			}
 
 			PDictionary plist;
 

@@ -27,6 +27,7 @@ namespace Xamarin.Tests {
 
 		public static ExecutionResult AssertPack (string project, Dictionary<string, string>? properties = null, bool? msbuildParallelism = null)
 		{
+			IgnoreIfUnsupportedMonoRuntime (properties);
 			return Execute ("pack", project, properties, true, msbuildParallelism: msbuildParallelism);
 		}
 
@@ -39,6 +40,7 @@ namespace Xamarin.Tests {
 
 		public static ExecutionResult AssertPublish (string project, Dictionary<string, string>? properties = null)
 		{
+			IgnoreIfUnsupportedMonoRuntime (properties);
 			return Execute ("publish", project, properties, true);
 		}
 
@@ -59,9 +61,31 @@ namespace Xamarin.Tests {
 			return Execute ("restore", project, properties, false);
 		}
 
-		public static ExecutionResult AssertBuild (string project, Dictionary<string, string>? properties = null, string? target = null, TimeSpan? timeout = null)
+		public static ExecutionResult AssertBuild (string project, Dictionary<string, string>? properties = null, string? target = null, TimeSpan? timeout = null, Dictionary<string, string?>? environmentVariables = null)
 		{
-			return Execute ("build", project, properties, true, target: target, timeout: timeout);
+			IgnoreIfUnsupportedMonoRuntime (properties);
+			return Execute ("build", project, properties, true, target: target, timeout: timeout, environmentVariables: environmentVariables);
+		}
+
+		static void IgnoreIfUnsupportedMonoRuntime (Dictionary<string, string>? properties)
+		{
+			if (properties is null)
+				return;
+			if (!properties.TryGetValue ("UseMonoRuntime", out var useMonoRuntime))
+				return;
+			var usingMonoRuntime = string.Equals (useMonoRuntime, "true", StringComparison.OrdinalIgnoreCase);
+			IgnoreIfUnsupportedMonoRuntime (usingMonoRuntime);
+			if (usingMonoRuntime)
+				properties ["_DisableCheckForUnsupportedMonoMobileRuntime"] = "true";
+		}
+
+		public static void IgnoreIfUnsupportedMonoRuntime (bool useMonoRuntime)
+		{
+			if (!useMonoRuntime)
+				return;
+			if (Configuration.dotnet_monovm_supported)
+				return;
+			Assert.Ignore ("Mono is not supported");
 		}
 
 		public static ExecutionResult AssertRun (string project, Dictionary<string, string>? properties = null, TimeSpan? timeout = null, Dictionary<string, string>? environmentVariables = null)
@@ -70,9 +94,9 @@ namespace Xamarin.Tests {
 			return Execute ("run", project, properties, true, timeout: timeout, extraArguments: extraArguments);
 		}
 
-		public static ExecutionResult AssertBuildFailure (string project, Dictionary<string, string>? properties = null)
+		public static ExecutionResult AssertBuildFailure (string project, Dictionary<string, string>? properties = null, string? target = null)
 		{
-			var rv = Execute ("build", project, properties, false);
+			var rv = Execute ("build", project, properties, false, target: target);
 			Assert.That (rv.ExitCode, Is.Not.EqualTo (0), "Unexpected success");
 			return rv;
 		}
@@ -231,7 +255,7 @@ namespace Xamarin.Tests {
 				string.Join ("\n", lastLines);
 		}
 
-		public static ExecutionResult Execute (string verb, string project, Dictionary<string, string>? properties, bool assert_success = true, string? target = null, bool? msbuildParallelism = null, TimeSpan? timeout = null, params string [] extraArguments)
+		public static ExecutionResult Execute (string verb, string project, Dictionary<string, string>? properties, bool assert_success = true, string? target = null, bool? msbuildParallelism = null, TimeSpan? timeout = null, Dictionary<string, string?>? environmentVariables = null, params string [] extraArguments)
 		{
 			if (!File.Exists (project))
 				throw new FileNotFoundException ($"The project file '{project}' does not exist.");
@@ -244,6 +268,7 @@ namespace Xamarin.Tests {
 			case "publish":
 			case "restore":
 			case "run":
+			case "test":
 				var args = new List<string> ();
 				args.Add (verb);
 				args.Add (project);
@@ -310,11 +335,15 @@ namespace Xamarin.Tests {
 				Console.WriteLine ($"Binlog: {binlogPath}");
 
 				// Work around https://github.com/dotnet/msbuild/issues/8845
-				args.Add ("/v:diag");
-				args.Add ("/consoleloggerparameters:Verbosity=Quiet");
-				// vb does not have preview lang, so we force it to latest
-				if (project.EndsWith (".vbproj", StringComparison.OrdinalIgnoreCase))
-					args.Add ("/p:LangVersion=latest");
+				// Skip these for 'dotnet test' because they leak through '-- ' in
+				// RunArguments and get passed to the test runner as app arguments.
+				if (verb != "test") {
+					args.Add ("/v:diag");
+					args.Add ("/consoleloggerparameters:Verbosity=Quiet");
+					// vb does not have preview lang, so we force it to latest
+					if (project.EndsWith (".vbproj", StringComparison.OrdinalIgnoreCase))
+						args.Add ("/p:LangVersion=latest");
+				}
 				// End workaround
 
 				if (msbuildParallelism.HasValue) {
@@ -329,6 +358,10 @@ namespace Xamarin.Tests {
 				var env = new Dictionary<string, string?> ();
 				env ["MSBuildSDKsPath"] = null;
 				env ["MSBUILD_EXE_PATH"] = null;
+				if (environmentVariables is not null) {
+					foreach (var kvp in environmentVariables)
+						env [kvp.Key] = kvp.Value;
+				}
 				timeout ??= TimeSpan.FromMinutes (10);
 				var rv = Execution.RunAsync (Executable, args, env, Console.Out, workingDirectory: Path.GetDirectoryName (project), timeout: timeout).Result;
 				var output = rv.Output.MergedOutput;

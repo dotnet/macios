@@ -840,6 +840,27 @@ Describe "TestResults tests" {
         }
     }
 
+    Context "skipped due to beta version mismatch" {
+        BeforeAll {
+            $skipDir = Join-Path -Path $TestDrive -ChildPath "skipped_beta"
+            New-Item -Path $skipDir -ItemType Directory -Force | Out-Null
+            $skipPath = Join-Path -Path $skipDir -ChildPath "TestSummary.md"
+            Set-Content -Path $skipPath -Value "# ⚠️ arm64 - Mac Golden Gate (27): Tests skipped, incorrect beta version`n`nTests skipped: current macOS build version '26A5368g' does not match expected '26A5372a'.`n"
+            $testResult = [TestResult]::new($skipPath, "Succeeded", $testConfig, $attempt)
+        }
+
+        It "is a success" {
+            $testResult.IsSuccess() | Should -Be $true
+        }
+
+        It "does not throw and reports zero passed tests." {
+            $result = $testResult.GetPassedTests()
+            $result.Passed | Should -Be 0
+            $result.Failed | Should -Be 0
+            $testResult.Skipped | Should -Be $true
+        }
+    }
+
     Context "new test summmary results" -Skip {
         It "finds the right stuff" {
             $testDirectory = Join-Path "." "subdir"

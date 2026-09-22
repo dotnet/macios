@@ -14,6 +14,7 @@ namespace Xamarin.Tests {
 		}
 
 		[Test]
+		[TestCase (ApplePlatform.iOS)]
 		[TestCase (ApplePlatform.MacOSX)]
 		public void PrepareAssemblies_CoreCLR (ApplePlatform platform)
 		{

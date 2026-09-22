@@ -57,6 +57,15 @@ namespace Xamarin.Bundler {
 		Trace = 1,
 	}
 
+	public enum ExportAttributeRemovalBlocker {
+		DynamicRegistrationSupported,
+		BlockLiteralSetupBlockOptimizationDisabled,
+		StaticBlockToDelegateLookupOptimizationDisabled,
+		RuntimeGetBlockWrapperCreatorRequired,
+		RegistrarHelperGetBlockForDelegateRequired,
+		NSXpcInterfaceMethodInfoOverloadUsed,
+	}
+
 	public partial class Application : IToolLog {
 		public Cache? Cache;
 		public string AppDirectory = ".";
@@ -75,12 +84,16 @@ namespace Xamarin.Bundler {
 		public RegistrarOptions RegistrarOptions = RegistrarOptions.Default;
 		public SymbolMode SymbolMode;
 		public HashSet<string> IgnoredSymbols = new HashSet<string> ();
+		public bool? PublishReadyToRun;
+		public string PublishReadyToRunContainerFormat = "";
 
 		// The AOT arguments are currently not used for macOS, but they could eventually be used there as well (there's no mmp option to set these yet).
 		public List<string> AotArguments = new List<string> ();
 		public List<string>? AotOtherArguments = null;
 		public bool? AotFloat32 = null;
 		public bool PrepareAssemblies; // True if '$(PrepareAssemblies)' == 'true'
+		public bool? TrimExportAttributes;
+		public HashSet<ExportAttributeRemovalBlocker> TrimExportAttributesBlockers = new HashSet<ExportAttributeRemovalBlocker> ();
 
 		// The set of UnmanagedCallersOnly trampoline symbols (without the leading Mach-O underscore)
 		// that survived the NativeAOT compiler (ILC). This is only set when the native registrar code
@@ -100,13 +113,30 @@ namespace Xamarin.Bundler {
 			return SurvivingTrampolineSymbols.Contains (ucoEntryPoint);
 		}
 
+		// The set of Objective-C class names whose inlined Class.GetHandle native function is still
+		// referenced by the NativeAOT compiler's (ILC) output. These classes must be registered in the
+		// native registrar code even if all their trampolines were trimmed away, because managed code
+		// still looks up their class handle (and the generated native code references the Objective-C
+		// class, which wouldn't exist otherwise). This is set alongside SurvivingTrampolineSymbols.
+		// See docs/code/class-handles.md.
+		public HashSet<string>? ClassesReferencedByInlinedClassGetHandle;
+
+		// Returns true if managed code that survived ILC looks up the class handle for the given
+		// Objective-C class name using the inlined Class.GetHandle optimization.
+		public bool IsClassReferencedByInlinedClassGetHandle (string exportedName)
+		{
+			if (ClassesReferencedByInlinedClassGetHandle is null)
+				return false;
+			return ClassesReferencedByInlinedClassGetHandle.Contains (exportedName);
+		}
+
 #if ASSEMBLY_PREPARER
 		public bool InCustomTrimmerStep = false;
 		public bool IsPostProcessingAssemblies;
-		// When post-processing assemblies with the trimmable static registrar, the [ProtocolMember] attributes
-		// have been removed by the trimmer, so the registrar reads them from the pre-trim (untrimmed) assemblies
-		// instead. This resolver provides access to the pre-trim assemblies (a separate metadata universe from
-		// the post-trim assemblies), and is null when not applicable.
+		// When post-processing assemblies with the trimmable static registrar, selected registrar attributes
+		// have been removed during trimming, so the registrar reads them from the original assemblies.
+		// This resolver provides access to the original assemblies (a separate metadata universe from the
+		// post-trim assemblies), and is null when not applicable.
 		public Mono.Cecil.IAssemblyResolver? PreTrimAssemblyResolver;
 #else
 		public bool InCustomTrimmerStep = true;
@@ -126,6 +156,7 @@ namespace Xamarin.Bundler {
 		public TargetFramework TargetFramework { get; set; }
 		public ApplePlatform Platform { get { return TargetFramework.Platform; } }
 
+		public List<string> DylibsToConvertToFrameworks = new List<string> ();
 		public List<string> MonoLibraries = new List<string> ();
 		public List<string> InterpretedAssemblies = new List<string> ();
 

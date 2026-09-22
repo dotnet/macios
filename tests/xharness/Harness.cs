@@ -195,12 +195,38 @@ namespace Xharness {
 			return result;
 		}
 
+		string? spawnerPath;
+		public string SpawnerPath {
+			get {
+				if (spawnerPath is null)
+					spawnerPath = Path.GetFullPath (Path.Combine (RootDirectory, "..", "tools", "spawner", "spawner"));
+				return spawnerPath;
+			}
+		}
+
+		public void UseSpawner (ProcessStartInfo processStartInfo, IList<string> arguments)
+		{
+			if (!string.IsNullOrEmpty (processStartInfo.Arguments))
+				throw new InvalidOperationException ($"ProcessStartInfo.Arguments must be empty when using UseSpawner.");
+			if (processStartInfo.ArgumentList.Count > 0)
+				throw new InvalidOperationException ($"ProcessStartInfo.ArgumentList must be empty when using UseSpawner.");
+			if (!File.Exists (SpawnerPath))
+				throw new FileNotFoundException ($"The spawner executable was not found. Did you build it? (make -C tools/spawner)", SpawnerPath);
+
+			var originalFileName = processStartInfo.FileName;
+			processStartInfo.FileName = SpawnerPath;
+			processStartInfo.ArgumentList.Add (originalFileName);
+			foreach (var args in arguments)
+				processStartInfo.ArgumentList.Add (args);
+		}
+
 		public List<TestProject> TestProjects { get; } = new ();
 
 		public bool INCLUDE_IOS { get; }
 		public bool INCLUDE_TVOS { get; }
 		public bool INCLUDE_MAC { get; }
 		public bool INCLUDE_MACCATALYST { get; }
+		public bool DOTNET_MONOVM_SUPPORTED { get; }
 		public string JENKINS_RESULTS_DIRECTORY { get; } // Use same name as in Makefiles, so that a grep finds it.
 		public string DOTNET_DIR { get; set; }
 		public string DOTNET_TFM { get; set; }
@@ -267,6 +293,7 @@ namespace Xharness {
 			JENKINS_RESULTS_DIRECTORY = GetVariable (nameof (JENKINS_RESULTS_DIRECTORY)) ?? throw new Exception ($"Could not get the Jenkins results directory from the environment variable {nameof (JENKINS_RESULTS_DIRECTORY)}");
 			INCLUDE_MAC = IsVariableSet (nameof (INCLUDE_MAC));
 			INCLUDE_MACCATALYST = IsVariableSet (nameof (INCLUDE_MACCATALYST));
+			DOTNET_MONOVM_SUPPORTED = IsVariableSet (nameof (DOTNET_MONOVM_SUPPORTED));
 			DOTNET_DIR = GetVariable (nameof (DOTNET_DIR)) ?? throw new Exception ($"Could not get the .NET directory from the environment variable {nameof (DOTNET_DIR)}");
 			DOTNET_TFM = GetVariable (nameof (DOTNET_TFM)) ?? throw new Exception ($"Could not get the .NET TFM from the environment variable {nameof (DOTNET_TFM)}");
 
@@ -288,7 +315,8 @@ namespace Xharness {
 			switch (platform) {
 			case TestPlatform.iOS:
 			case TestPlatform.Mac:
-				// On macOS we can't edit the TCC database easily
+			case TestPlatform.MacCatalyst:
+				// On macOS (and Mac Catalyst, which also runs natively, not in a simulator) we can't edit the TCC database easily
 				// (it requires adding the mac has to be using MDM: https://carlashley.com/2018/09/28/tcc-round-up/)
 				// So by default ignore any tests that would pop up permission dialogs in CI.
 				return !InCI;
@@ -353,7 +381,7 @@ namespace Xharness {
 					Label = TestLabel.AssemblyProcessing,
 					ProjectPath = Path.GetFullPath (Path.Combine (HarnessConfiguration.RootDirectory, "assembly-preparer", "assembly-preparer-tests.csproj")),
 					Name = "Assembly processing tests",
-					Timeout = (TimeSpan?) TimeSpan.FromMinutes (10),
+					Timeout = (TimeSpan?) TimeSpan.FromMinutes (30),
 					Filter = "",
 				},
 				new {

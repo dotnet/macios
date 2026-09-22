@@ -24,6 +24,8 @@ namespace CoreGraphics {
 		IturRecommended,
 		ExrGamma,
 		None,
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		HeadroomAdaptiveGainCurve = 6,
 	}
 
 	/// <summary>Specifies various boxes for the <see cref="CoreGraphics.CGContextPDF.BeginPage(CoreGraphics.CGPDFPageInfo)" /> method.</summary>
@@ -200,12 +202,12 @@ namespace CoreGraphics {
 		[Field ("kCGColorSpaceITUR_709")]
 		NSString ItuR_709 { get; }
 
-		[Mac (12, 1), iOS (15, 2), TV (15, 2)]
+		[iOS (15, 2), TV (15, 2)]
 		[MacCatalyst (15, 2)]
 		[Field ("kCGColorSpaceITUR_709_PQ")]
 		NSString ItuR_709_PQ { get; }
 
-		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Field ("kCGColorSpaceITUR_709_HLG")]
 		NSString ItuR_709_Hlg { get; }
 
@@ -216,7 +218,7 @@ namespace CoreGraphics {
 		[Field ("kCGColorSpaceITUR_2020")]
 		NSString ItuR_2020 { get; }
 
-		[Mac (12, 1), iOS (15, 2), TV (15, 2)]
+		[iOS (15, 2), TV (15, 2)]
 		[MacCatalyst (15, 2)]
 		[Field ("kCGColorSpaceITUR_2020_sRGBGamma")]
 		NSString ItuR_2020_sRgbGamma { get; }
@@ -334,8 +336,6 @@ namespace CoreGraphics {
 		[Field ("kCGColorSpaceGenericLab")]
 		NSString GenericLab { get; }
 
-		[iOS (12, 3)]
-		[TV (12, 3)]
 		[MacCatalyst (13, 1)]
 		[Field ("kCGColorSpaceExtendedLinearITUR_2020")]
 		NSString ExtendedLinearItur_2020 { get; }
@@ -345,8 +345,6 @@ namespace CoreGraphics {
 		[Field ("kCGColorSpaceExtendedITUR_2020")]
 		NSString ExtendedItur_2020 { get; }
 
-		[iOS (12, 3)]
-		[TV (12, 3)]
 		[MacCatalyst (13, 1)]
 		[Field ("kCGColorSpaceExtendedLinearDisplayP3")]
 		NSString ExtendedLinearDisplayP3 { get; }
@@ -373,8 +371,6 @@ namespace CoreGraphics {
 		[Field ("kCGColorSpaceITUR_2020_PQ")]
 		NSString Itur_2020_PQ { get; }
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 15, 4)]
 		[Deprecated (PlatformName.iOS, 13, 4)]
 		[Deprecated (PlatformName.TvOS, 13, 4)]
@@ -388,14 +384,10 @@ namespace CoreGraphics {
 		[Field ("kCGColorSpaceDisplayP3_PQ")]
 		NSString DisplayP3_PQ { get; }
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("kCGColorSpaceDisplayP3_HLG")]
 		NSString DisplayP3_Hlg { get; }
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[Deprecated (PlatformName.MacOSX, 11, 0, message: "Use 'Itur_2100_PQ' instead.")]
 		[Deprecated (PlatformName.iOS, 14, 0, message: "Use 'Itur_2100_PQ' instead.")]
 		[Deprecated (PlatformName.TvOS, 14, 0, message: "Use 'Itur_2100_PQ' instead.")]
@@ -505,8 +497,6 @@ namespace CoreGraphics {
 		CGRect DestinationRect { get; set; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Static]
 	[Internal]
@@ -524,8 +514,6 @@ namespace CoreGraphics {
 		NSString LanguageTextKey { get; }
 	}
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("CGPdfTagPropertyKeys")]
 	interface CGPdfTagProperties {

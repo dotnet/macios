@@ -2,6 +2,9 @@ name: Add changelog for Maestro bump
 
 on: pull_request
 
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+
 permissions: {}
 
 jobs:

@@ -142,28 +142,28 @@ namespace Network {
 			}
 		}
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_path_monitor_prohibit_interface_type (OS_nw_path_monitor monitor, NWInterfaceType interfaceType);
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public void ProhibitInterfaceType (NWInterfaceType interfaceType)
 			=> nw_path_monitor_prohibit_interface_type (GetCheckedHandle (), interfaceType);
 
 #if MONOMAC
-		[SupportedOSPlatform ("macos13.0")]
+		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("ios")]
 		[DllImport (Constants.NetworkLibrary)]
 		static extern OS_nw_path_monitor nw_path_monitor_create_for_ethernet_channel ();
 
-		[SupportedOSPlatform ("macos13.0")]
+		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("maccatalyst")]

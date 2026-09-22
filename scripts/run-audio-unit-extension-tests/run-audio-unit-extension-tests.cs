@@ -60,7 +60,7 @@ sealed class AudioUnitExtensionTestRunner {
 	readonly object logLock = new ();
 
 	string BundleIdentifier => options.Platform == "MacCatalyst" ? MacCatalystBundleIdentifier : DefaultBundleIdentifier;
-	string DefaultsDomain => options.Platform == "MacCatalyst"
+	string DefaultsDomain => options.SimulatorUdid is null
 		? Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.UserProfile), "Library", "Containers", BundleIdentifier, "Data", "Library", "Preferences", BundleIdentifier + ".plist")
 		: BundleIdentifier;
 	string ContainerBundleIdentifier => options.SimulatorUdid is null ? DesktopContainerBundleIdentifier : MobileContainerBundleIdentifier;

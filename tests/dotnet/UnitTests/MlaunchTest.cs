@@ -72,7 +72,7 @@ namespace Xamarin.Tests {
 			properties ["EnableCodeSigning"] = "false"; // Skip code signing, since that would require making sure we have code signing configured on bots.
 			properties ["Device"] = device;
 			string? mlaunchOutput = null;
-			if (!string.IsNullOrEmpty (device)) {
+			if (!string.IsNullOrEmpty (device) && !OperatingSystem.IsWindows ()) {
 				var temporaryDirectory = Cache.CreateTemporaryDirectory ();
 				var mlaunchPath = Path.Combine (temporaryDirectory, "mlaunch");
 				mlaunchOutput = Path.Combine (temporaryDirectory, "mlaunch-output.txt");

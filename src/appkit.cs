@@ -1132,9 +1132,9 @@ namespace AppKit {
 	/// <param name="stop">Set to <see langword="true"/> to stop the enumeration.</param>
 	delegate void NSApplicationEnumerateWindowsHandler (NSWindow window, ref bool stop);
 
-	[NoMacCatalyst]
 	/// <summary>Provides the objects used to restore a continued user activity.</summary>
 	/// <param name="restorableObjects">The objects that participate in restoring the user activity.</param>
+	[NoMacCatalyst]
 	delegate void ContinueUserActivityRestorationHandler (INSUserActivityRestoring [] restorableObjects);
 
 	interface INSApplicationDelegate { }

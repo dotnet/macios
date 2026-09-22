@@ -2556,6 +2556,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				Assert.That (obj.InitCalled, Is.True, "Init called");
 				Assert.That (obj.InitCallsInitCalled, Is.True, "InitCallsInit called");
 				Assert.That (CtorChaining2.InitializedInstance, Is.SameAs (obj), "Initialized instance");
+				Assert.That (obj.RetainCount, Is.EqualTo ((nuint) 1), "Retain count");
 			}
 		}
 

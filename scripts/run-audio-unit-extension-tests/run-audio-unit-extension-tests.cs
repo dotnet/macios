@@ -128,7 +128,6 @@ sealed class AudioUnitExtensionTestRunner {
 				Log ("");
 				await RunToolAsync ("pluginkit", "-a", registeredExtensionPath);
 				Log ("");
-				await WaitForAudioUnitRegistrationAsync (registeredAppPath, registeredExtensionPath);
 			} else {
 				await RunToolAsync ("xcrun", "simctl", "install", options.SimulatorUdid, options.AppPath);
 				Log ("");
@@ -258,45 +257,13 @@ sealed class AudioUnitExtensionTestRunner {
 					if (process.MainModule?.FileName == executablePath) {
 						Log ($"Terminating host process {process.Id}: {executablePath}");
 						process.Kill ();
-						process.WaitForExit (10000);
+						process.WaitForExit (TimeSpan.FromSeconds (10));
 					}
 				} catch (Exception ex) {
 					Log ($"Could not terminate host process {process.Id}: {ex.Message}");
 				}
 			}
 		}
-	}
-
-	async Task WaitForAudioUnitRegistrationAsync (string appPath, string extensionPath)
-	{
-		var componentSubType = options.Platform == "MacCatalyst" ? "mttc" : "mtts";
-		var expectedComponent = $"aufx {componentSubType} Xmrn";
-		var timeout = TimeSpan.FromMinutes (2);
-		var stopwatch = System.Diagnostics.Stopwatch.StartNew ();
-		Execution? execution = null;
-		var attempts = 0;
-
-		while (stopwatch.Elapsed < timeout) {
-			attempts++;
-			var output = new StringBuilder ();
-			execution = await Execution.RunWithCallbacksAsync (
-				"auvaltool",
-				new List<string> { "-a" },
-				standardOutput: line => output.AppendLine (line),
-				standardError: AppendToLogFile);
-			if (execution.ExitCode == 0 && output.ToString ().Contains (expectedComponent, StringComparison.Ordinal)) {
-				Log ($"Audio Unit registration is available: {expectedComponent}");
-				Log ("");
-				return;
-			}
-			if (attempts % 10 == 0) {
-				await RunBestEffortAsync (options.LsRegisterPath, "-f", appPath);
-				await RunBestEffortAsync ("pluginkit", "-a", extensionPath);
-			}
-			await Task.Delay (TimeSpan.FromSeconds (1));
-		}
-
-		throw new InvalidOperationException ($"Audio Unit registration did not become available within {timeout.TotalSeconds:0} seconds: {expectedComponent} (last auvaltool exit code: {execution?.ExitCode})");
 	}
 
 	Task RunDefaultsToolAsync (bool bestEffort, params string [] arguments)

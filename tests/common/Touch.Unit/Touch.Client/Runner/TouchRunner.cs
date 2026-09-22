@@ -597,15 +597,9 @@ namespace MonoTouch.NUnit.UI {
 			}
 		}
 
-		Dictionary<string, object> default_settings = new Dictionary<string, object> () {
-#if NUNITLITE_NUGET
-			//			{ "RunOnMainThread", true },
-#endif
-		};
-
 		SettingsDictionary CreateSettings (SettingsDictionary? settings)
 		{
-			var dict = new Dictionary<string, object> (default_settings);
+			var dict = new Dictionary<string, object> ();
 
 			if (RunOnMainThread)
 				dict ["RunOnMainThread"] = true;

@@ -382,7 +382,7 @@ namespace Xamarin.Tests {
 					try {
 						if (process.MainModule?.FileName == executablePath) {
 							process.Kill ();
-							process.WaitForExit (10000);
+							process.WaitForExit (TimeSpan.FromSeconds (10));
 						}
 					} catch (Exception ex) {
 						Console.WriteLine ($"Could not terminate host process {process.Id}: {ex.Message}");

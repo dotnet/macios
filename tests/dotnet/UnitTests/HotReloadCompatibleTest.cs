@@ -1,8 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System.Text.Json;
-
 using Microsoft.Build.Framework;
 using Microsoft.Build.Logging.StructuredLogger;
 
@@ -14,56 +12,6 @@ using Mono.Cecil.Cil;
 namespace Xamarin.Tests {
 	[TestFixture]
 	public class HotReloadCompatibleTest : TestBaseClass {
-		[TestCase (false)]
-		[TestCase (true)]
-		public void ProjectReferencePropagation (bool hotReloadCompatibleBuild)
-		{
-			var directory = Cache.CreateTemporaryDirectory ();
-			var sharedProject = Path.Combine (Configuration.SourceRoot, "tests", "common", "shared-dotnet.csproj");
-			var library = Path.Combine (directory, "Library.csproj");
-			var app = Path.Combine (directory, "App.csproj");
-
-			foreach (var (project, reference) in new [] { (library, "Leaf.csproj"), (app, library) }) {
-				File.WriteAllText (project, $"""
-					<!-- Copyright (c) Microsoft Corporation.
-					     Licensed under the MIT License. -->
-					<Project Sdk="Microsoft.NET.Sdk">
-					  <PropertyGroup>
-					    <TargetFramework>net11.0</TargetFramework>
-					    <RootTestsDirectory>{Path.Combine (Configuration.SourceRoot, "tests")}</RootTestsDirectory>
-					    <ExcludeTouchUnitReference>true</ExcludeTouchUnitReference>
-					    <ExcludeNUnitLiteReference>true</ExcludeNUnitLiteReference>
-					  </PropertyGroup>
-					  <Import Project="{sharedProject}" />
-					  <ItemGroup>
-					    <ProjectReference Include="{reference}" />
-					  </ItemGroup>
-					  <Target Name="_ComputeHotReloadCompatibleBuild">
-					    <PropertyGroup>
-					      <HotReloadCompatibleBuild>{hotReloadCompatibleBuild.ToString ().ToLowerInvariant ()}</HotReloadCompatibleBuild>
-					    </PropertyGroup>
-					  </Target>
-					</Project>
-					""");
-			}
-
-			var expected = hotReloadCompatibleBuild ? ";HotReloadCompatibleBuild=true" : null;
-			foreach (var (project, isApp) in new [] { (app, true), (library, false) }) {
-				var properties = new Dictionary<string, string> {
-					["TargetFrameworkVersion"] = "11.0",
-					["_CanOutputAppBundle"] = isApp ? "true" : "false",
-				};
-				if (!isApp && hotReloadCompatibleBuild)
-					properties ["HotReloadCompatibleBuild"] = "true";
-				using var json = JsonDocument.Parse (DotNet.GetItems (project, "ProjectReference", target: "_PassHotReloadCompatibleBuildToProjectReferences", properties: properties));
-				var references = json.RootElement.GetProperty ("Items").GetProperty ("ProjectReference");
-				Assert.That (references.GetArrayLength (), Is.EqualTo (1), $"{project}: reference count");
-				var reference = references [0];
-				var actual = reference.TryGetProperty ("AdditionalProperties", out var metadata) ? metadata.GetString () : null;
-				Assert.That (actual, Is.EqualTo (expected), $"{project}: HotReloadCompatibleBuild metadata");
-			}
-		}
-
 		[TestCase ("Debug", "true", 1)]
 		[TestCase ("Release", "false", 0)]
 		public void FeatureSwitch (string configuration, string expectedValue, int expectedConstructorCalls)

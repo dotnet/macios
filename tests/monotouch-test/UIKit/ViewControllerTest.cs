@@ -212,7 +212,7 @@ namespace MonoTouchFixtures.UIKit {
 							Assert.That (overlay.View.Window, Is.SameAs (window), "Overlay window");
 							Assert.That (overlay.View.Frame, Is.EqualTo (root.View.Bounds), "Overlay frame");
 							if (navigation is not null)
-								Assert.That (navigation.ViewControllers, Is.EqualTo (new [] { content }), "Navigation stack");
+								Assert.That (navigation.ViewControllers, Is.EqualTo (new UIViewController [] { content, overlay }), "Navigation stack with overlay");
 							inspected = true;
 						}, () => inspected), Is.True, "RunAsync completed");
 						Assert.That (inspected, Is.True, "Inspected overlay");
@@ -220,6 +220,8 @@ namespace MonoTouchFixtures.UIKit {
 						Assert.That (overlay.View.Superview, Is.Null, "Detached overlay view");
 						Assert.That (window.RootViewController, Is.SameAs (root), "Root after RunAsync");
 						Assert.That (root.ChildViewControllers, Is.EqualTo (originalChildren), "Restored children");
+						if (navigation is not null)
+							Assert.That (navigation.ViewControllers, Is.EqualTo (new [] { content }), "Restored navigation stack");
 						Assert.That (content.Appearance, Is.EqualTo (originalAppearance), "Root appearance unchanged");
 					} finally {
 						overlay?.Dispose ();

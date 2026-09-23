@@ -9053,6 +9053,7 @@ namespace AppKit {
 	[NoMacCatalyst]
 	delegate void GlobalEventHandler (NSEvent theEvent);
 	[NoMacCatalyst]
+	[return: NullAllowed]
 	delegate NSEvent LocalEventHandler (NSEvent theEvent);
 	[NoMacCatalyst]
 	delegate void NSEventTrackHandler (nfloat gestureAmount, NSEventPhase eventPhase, bool isComplete, ref bool stop);
@@ -29137,7 +29138,7 @@ namespace AppKit {
 	delegate void NSDocumentMoveToUrlCompletionHandler (NSError error);
 	delegate void NSDocumentLockDocumentCompletionHandler (bool didLock);
 	delegate void NSDocumentUnlockDocumentCompletionHandler (bool didUnlock);
-	delegate void NSDocumentLockCompletionHandler (NSError error);
+	delegate void NSDocumentLockCompletionHandler ([NullAllowed] NSError error);
 	delegate void NSDocumentUnlockCompletionHandler (NSError error);
 
 	partial interface NSDocument : NSEditorRegistration, NSFilePresenter, NSMenuItemValidation
@@ -29208,7 +29209,7 @@ namespace AppKit {
 		void EncodeRestorableState (NSCoder coder, NSOperationQueue queue);
 	}
 
-	delegate void NSDocumentControllerOpenPanelWithCompletionHandler (NSArray urlsToOpen);
+	delegate void NSDocumentControllerOpenPanelWithCompletionHandler ([NullAllowed] NSArray urlsToOpen);
 	delegate void NSDocumentControllerOpenPanelResultHandler (nint result);
 
 	partial interface NSDocumentController : NSMenuItemValidation

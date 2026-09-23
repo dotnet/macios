@@ -11,6 +11,13 @@ namespace Xamarin.Tests {
 	[TestFixture]
 	public class DotNetTestTest : TestBaseClass {
 		[Test]
+		public void UnsupportedMonoRuntime ()
+		{
+			Assert.Throws<IgnoreException> (() => DotNet.IgnoreIfUnsupportedMonoRuntime (true));
+			Assert.DoesNotThrow (() => DotNet.IgnoreIfUnsupportedMonoRuntime (false));
+		}
+
+		[Test]
 		[TestCase (ApplePlatform.iOS, "iostest")]
 		[TestCase (ApplePlatform.TVOS, "tvostest")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalysttest")]

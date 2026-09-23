@@ -9,6 +9,9 @@ using Mono.Cecil;
 namespace Xamarin.Tests {
 	[TestFixture]
 	public class AppSizeTest : TestBaseClass {
+		static readonly Dictionary<string, string?> EnablePropertyTracking = new Dictionary<string, string?> {
+			{ "MSBuildLogPropertyTracking", "1" },
+		};
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
 		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
@@ -46,7 +49,10 @@ namespace Xamarin.Tests {
 				{ "_IsPublishing", "true" },
 				{ "NoDSymUtil", "false" }, // off by default for macOS, but we want to test it, so enable it
 			};
-			Run (platform, runtimeIdentifiers, "Release", $"{platform}-NativeAOT", false, dict);
+			var result = Run (platform, runtimeIdentifiers, "Release", $"{platform}-NativeAOT", false, dict, environmentVariables: EnablePropertyTracking);
+
+			Assert.That (BinLog.TryFindPropertyValue (result.BinLogPath, "Registrar", out var registrar), Is.True, "Could not find the 'Registrar' property in the binlog.");
+			Assert.That (registrar, Is.EqualTo ("trimmable-static"), "Registrar");
 		}
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]
@@ -87,7 +93,7 @@ namespace Xamarin.Tests {
 		// * Files added or removed from app bundle
 		// * Total app size changed >10kb
 		// * For those apps where assembly APIs can be compared, any API was added or removed.
-		void Run (ApplePlatform platform, string runtimeIdentifiers, string configuration, string name, bool supportsAssemblyInspection, Dictionary<string, string>? extraProperties = null)
+		ExecutionResult Run (ApplePlatform platform, string runtimeIdentifiers, string configuration, string name, bool supportsAssemblyInspection, Dictionary<string, string>? extraProperties = null, Dictionary<string, string?>? environmentVariables = null)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
@@ -109,7 +115,7 @@ namespace Xamarin.Tests {
 			// so the app size would otherwise differ depending on the macOS version of the machine that built the app.
 			properties ["EnableCodeSigning"] = "false";
 
-			DotNet.AssertBuild (project_path, properties);
+			var result = DotNet.AssertBuild (project_path, properties, environmentVariables: environmentVariables);
 
 			// FORCE_UPDATE_KNOWN_FAILURES will update the known failures files even if the test doesn't actually fail
 			// WRITE_KNOWN_FAILURES will only update the known failures files if the test fails (and mark the test as passed)
@@ -134,6 +140,8 @@ namespace Xamarin.Tests {
 				CopyAppBundleForDiagnostics (name, appPath);
 				throw;
 			}
+
+			return result;
 		}
 
 		static void CopyAppBundleForDiagnostics (string name, string appPath)

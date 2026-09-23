@@ -136,6 +136,42 @@ namespace Xamarin.Tests {
 			Assert.That (string.Join ("\n", errors), Does.Contain ("The app must be built before the arguments to launch the app using mlaunch can be computed."));
 		}
 
+		[Test]
+		[NonParallelizable]
+		public void RunDeploysToDevice ()
+		{
+			if (OperatingSystem.IsWindows ()) {
+				Assert.Ignore ("Launching an app from the command line is not supported on Windows.");
+				return;
+			}
+
+			var platform = ApplePlatform.iOS;
+			var runtimeIdentifiers = "ios-arm64";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var project_path = GetProjectPath ("MySimpleApp", runtimeIdentifiers: runtimeIdentifiers, platform: platform, out _);
+			var temporaryDirectory = Cache.CreateTemporaryDirectory ();
+			var mlaunchPath = Path.Combine (temporaryDirectory, "mlaunch");
+			var mlaunchOutput = Path.Combine (temporaryDirectory, "mlaunch-output.txt");
+			File.WriteAllText (mlaunchPath, $"#!/bin/sh\nprintf '%s\\n' \"$*\" >> '{mlaunchOutput}'\n");
+			File.SetUnixFileMode (mlaunchPath, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute);
+
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["Device"] = "explicit-device";
+			properties ["EnableCodeSigning"] = "false";
+			properties ["MlaunchPath"] = mlaunchPath;
+
+			DotNet.Execute ("build", project_path, properties, target: "Clean");
+			DotNet.AssertBuild (project_path, properties);
+			DotNet.AssertBuild (project_path, properties, target: "Run");
+
+			var invocations = File.ReadAllLines (mlaunchOutput);
+			Assert.That (invocations, Has.Length.EqualTo (2), "mlaunch invocation count");
+			Assert.That (invocations [0], Does.StartWith ("--installdev "), "install invocation");
+			Assert.That (invocations [1], Does.StartWith ("--launchdev "), "run invocation");
+		}
+
 		public static object [] GetMlaunchRunArgumentsTestCases ()
 		{
 			return new object [] {

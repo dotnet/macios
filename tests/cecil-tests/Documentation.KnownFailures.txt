@@ -15656,8 +15656,6 @@ M:CoreMidi.MidiCISession.SendProfile(CoreMidi.MidiCIProfile,System.Byte,Foundati
 M:CoreMidi.MidiDevice.Add(System.String,System.Boolean,System.UIntPtr,System.UIntPtr,CoreMidi.MidiEntity)
 M:CoreMidi.MidiDevice.GetEntity(System.IntPtr)
 M:CoreMidi.MidiDeviceList.Get(System.UIntPtr)
-M:CoreMidi.MidiDriver.#ctor
-M:CoreMidi.MidiDriver.Finalize
 M:CoreMidi.MidiEndpoint.GetDestination(System.IntPtr)
 M:CoreMidi.MidiEndpoint.GetSource(System.IntPtr)
 M:CoreMidi.MidiEntity.GetDestination(System.IntPtr)

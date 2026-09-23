@@ -6,8 +6,6 @@
 
 #if HAS_COREMIDI && !__TVOS__
 
-#pragma warning disable APL0005 // MidiDevice.Create is experimental
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -226,7 +224,7 @@ namespace MonoTouchFixtures.CoreMidi {
 		public void Create ()
 		{
 			// MIDIDeviceCreate requires a MIDI driver context, returns -50 (paramErr) in user-space
-			var device = MidiDevice.Create (null, "TestDevice", "Manufacturer", "Model", out var status);
+			var device = MidiDevice.Create ("TestDevice", "Manufacturer", "Model", out var status);
 			Assert.That ((int) status, Is.EqualTo (-50), "Create returns paramErr without driver");
 			Assert.That (device, Is.Null, "Device is null without driver");
 		}
@@ -505,6 +503,23 @@ namespace MonoTouchFixtures.CoreMidi {
 			var count = 0;
 			list.Iterate ((ref MidiEventPacket packet) => { count++; });
 			Assert.That (count, Is.EqualTo (0), "Empty iteration count");
+		}
+
+		[Test]
+		public void Iterate_CallbackMayMutatePacket ()
+		{
+			using var list = new MidiEventList (MidiProtocolId.Protocol_1_0, 1024);
+
+			list.Add (100, new uint [] { 0x20906040 });
+			list.Add (200, new uint [] { 0x20806040 });
+
+			var timestamps = new List<ulong> ();
+			list.Iterate ((ref MidiEventPacket packet) => {
+				timestamps.Add (packet.Timestamp);
+				packet.WordCount = 0;
+			});
+
+			Assert.That (timestamps, Is.EqualTo (new ulong [] { 100, 200 }), "Timestamps");
 		}
 
 		[Test]

@@ -628,7 +628,6 @@ COREMEDIA_SOURCES = \
 
 COREMIDI_CORE_SOURCES = \
 	CoreMidi/MidiCIDeviceIdentification.cs \
-	CoreMidi/MidiDriverInterface.cs \
 	CoreMidi/MidiServices.cs \
 	CoreMidi/MidiStructs.cs \
 	CoreMidi/MidiThruConnection.cs \

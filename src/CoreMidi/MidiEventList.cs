@@ -274,15 +274,16 @@ namespace CoreMidi {
 		/// <param name="callback">The function to call for each packet.</param>
 		public unsafe void Iterate (MidiEventListIterator callback)
 		{
-			if (PacketCount == 0)
+			var packetCount = PacketCount;
+			if (packetCount == 0)
 				return;
 
 			MidiEventPacket* packet = &midiDataPointer->packet;
-			callback (ref Unsafe.AsRef<MidiEventPacket> (packet));
-			for (var i = 1; i < PacketCount; i++) {
+			for (var i = 0; i < packetCount; i++) {
 				uint* wordPointer = &packet->word_00;
-				packet = (MidiEventPacket*) (wordPointer + packet->WordCount);
+				var nextPacket = (MidiEventPacket*) (wordPointer + packet->WordCount);
 				callback (ref Unsafe.AsRef<MidiEventPacket> (packet));
+				packet = nextPacket;
 			}
 		}
 

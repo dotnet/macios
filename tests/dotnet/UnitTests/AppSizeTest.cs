@@ -51,8 +51,7 @@ namespace Xamarin.Tests {
 			};
 			var result = Run (platform, runtimeIdentifiers, "Release", $"{platform}-NativeAOT", false, dict, environmentVariables: EnablePropertyTracking);
 
-			Assert.That (BinLog.TryFindPropertyValue (result.BinLogPath, "Registrar", out var registrar), Is.True, "Could not find the 'Registrar' property in the binlog.");
-			Assert.That (registrar, Is.EqualTo ("trimmable-static"), "Registrar");
+			AssertRegistrar (result, "trimmable-static");
 		}
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]
@@ -66,7 +65,11 @@ namespace Xamarin.Tests {
 				{ "PublishReadyToRun", "false" },
 				{ "NoDSymUtil", "false" }, // off by default for macOS, but we want to test it, so enable it
 			};
-			Run (platform, runtimeIdentifiers, "Release", $"{platform}-CoreCLR-Interpreter", isTrimmed, dict);
+			var environmentVariables = platform == ApplePlatform.MacOSX ? EnablePropertyTracking : null;
+			var result = Run (platform, runtimeIdentifiers, "Release", $"{platform}-CoreCLR-Interpreter", isTrimmed, dict, environmentVariables: environmentVariables);
+
+			if (platform == ApplePlatform.MacOSX)
+				AssertRegistrar (result, "trimmable-static");
 		}
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]
@@ -142,6 +145,12 @@ namespace Xamarin.Tests {
 			}
 
 			return result;
+		}
+
+		static void AssertRegistrar (ExecutionResult result, string expectedRegistrar)
+		{
+			Assert.That (BinLog.TryFindPropertyValue (result.BinLogPath, "Registrar", out var registrar), Is.True, "Could not find the 'Registrar' property in the binlog.");
+			Assert.That (registrar, Is.EqualTo (expectedRegistrar), "Registrar");
 		}
 
 		static void CopyAppBundleForDiagnostics (string name, string appPath)

@@ -87,7 +87,6 @@ namespace Xamarin.Tests {
 				{ "PublishAot", "true" },
 				{ "_IsPublishing", "true" },
 				{ "NoDSymUtil", "false" }, // off by default for macOS, but we want to test it, so enable it
-				{ "Registrar", "trimmable-static" },
 			};
 			Run (platform, runtimeIdentifiers, "Release", $"{platform}-NativeAOT-TrimmableStatic", false, dict);
 		}
@@ -99,7 +98,6 @@ namespace Xamarin.Tests {
 				{ "UseMonoRuntime", "false" },
 				{ "PublishReadyToRun", "false" },
 				{ "NoDSymUtil", "false" }, // off by default for macOS, but we want to test it, so enable it
-				{ "Registrar", "trimmable-static" },
 			};
 			Run (platform, runtimeIdentifiers, "Release", $"{platform}-CoreCLR-Interpreter-TrimmableStatic", isTrimmed, dict);
 		}

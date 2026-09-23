@@ -83,7 +83,10 @@ namespace Xamarin.Tests {
 			}
 
 			// Build the app first, since 'DeployToDevice' is meant to deploy an already-built app.
-			DotNet.Execute ("build", project_path, properties, target: "Clean");
+			var cleanProperties = new Dictionary<string, string> (properties) {
+				["BuildProjectReferences"] = "false",
+			};
+			DotNet.Execute ("build", project_path, cleanProperties, target: "Clean");
 			DotNet.AssertBuild (project_path, properties);
 
 			var rv = DotNet.Execute ("build", project_path, properties, assert_success: false, target: "DeployToDevice");
@@ -162,7 +165,10 @@ namespace Xamarin.Tests {
 			properties ["EnableCodeSigning"] = "false";
 			properties ["MlaunchPath"] = mlaunchPath;
 
-			DotNet.Execute ("build", project_path, properties, target: "Clean");
+			var cleanProperties = new Dictionary<string, string> (properties) {
+				["BuildProjectReferences"] = "false",
+			};
+			DotNet.Execute ("build", project_path, cleanProperties, target: "Clean");
 			DotNet.AssertBuild (project_path, properties);
 			DotNet.AssertBuild (project_path, properties, target: "Run");
 

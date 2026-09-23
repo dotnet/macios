@@ -158,6 +158,11 @@
 		</PropertyGroup>
 	</Target>
 
+	<!-- The .NET SDK invokes DeployToDevice and ComputeRunArguments separately, but direct Run target invocations need both. -->
+	<Target Name="Run" DependsOnTargets="DeployToDevice;ComputeRunArguments">
+		<Exec Command="$(RunCommand) $(RunArguments)" WorkingDirectory="$(RunWorkingDirectory)" />
+	</Target>
+
 	<!-- This is only needed for mobile platforms, RunCommand and RunArguments are defined for macOS in Microsoft.macOS.Sdk.targets. -->
 	<Target
 		Name="_PrepareRunMobile"
